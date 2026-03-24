@@ -12,6 +12,7 @@ const nextConfig = {
     "@iching-oracle/context-engine",
     "@iching-oracle/image-engine",
     "@iching-oracle/i18n",
+    "@iching-oracle/sharing",
     "@iching-oracle/ui",
     "@iching-oracle/claude",
   ],

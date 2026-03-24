@@ -1,5 +1,31 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": [
+    "ANTHROPIC_API_KEY",
+    "GROQ_API_KEY",
+    "GROQ_MODEL",
+    "SUPABASE_URL",
+    "SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "TOGETHER_API_KEY",
+    "TOGETHER_IMAGE_MODEL",
+    "TOGETHER_IMAGE_STEPS",
+    "IMAGE_PROVIDER",
+    "POLLINATIONS_MODEL",
+    "POLLINATIONS_WIDTH",
+    "POLLINATIONS_HEIGHT",
+    "ADMIN_PANEL_KEY",
+    "REVENUECAT_WEBHOOK_SECRET",
+    "REVENUECAT_SECRET_KEY",
+    "NEXT_PUBLIC_APP_URL",
+    "UPSTASH_REDIS_REST_URL",
+    "UPSTASH_REDIS_REST_TOKEN",
+    "TOTP_ENCRYPTION_KEY",
+    "HCAPTCHA_SECRET_KEY",
+    "NEXT_PUBLIC_HCAPTCHA_SITE_KEY"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

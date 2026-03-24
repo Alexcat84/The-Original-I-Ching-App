@@ -17,6 +17,7 @@
     "@iching-oracle/iching-engine": "file:../../packages/iching-engine",
     "@iching-oracle/image-engine": "file:../../packages/image-engine",
     "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
+    "@iching-oracle/sharing": "file:../../packages/sharing",
     "@iching-oracle/ui": "file:../../packages/ui",
     "@supabase/supabase-js": "^2.100.0",
     "@swc/helpers": "^0.5.19",
