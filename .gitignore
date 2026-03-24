@@ -1,0 +1,17 @@
+node_modules
+.cursor
+mcps
+.turbo
+dist
+.next
+out
+build
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store
+coverage
+.expo
+apps/mobile/.expo
+apps/mobile/dist
+packages/iching-data/src/generated

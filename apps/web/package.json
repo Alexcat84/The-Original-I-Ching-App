@@ -1,0 +1,41 @@
+{
+  "name": "@iching-oracle/web",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "clean": "rimraf .next"
+  },
+  "dependencies": {
+    "@iching-oracle/auth-backend": "file:../../backend/auth",
+    "@iching-oracle/claude": "file:../../backend/claude",
+    "@iching-oracle/context-engine": "file:../../packages/context-engine",
+    "@iching-oracle/i18n": "file:../../packages/i18n",
+    "@iching-oracle/iching-engine": "file:../../packages/iching-engine",
+    "@iching-oracle/image-engine": "file:../../packages/image-engine",
+    "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
+    "@iching-oracle/ui": "file:../../packages/ui",
+    "@supabase/supabase-js": "^2.100.0",
+    "@swc/helpers": "^0.5.19",
+    "@upstash/redis": "^1.37.0",
+    "jspdf": "^4.2.1",
+    "next": "14.2.28",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-markdown": "^9.1.0",
+    "sharp": "^0.33.5",
+    "styled-jsx": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.28",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.3"
+  }
+}

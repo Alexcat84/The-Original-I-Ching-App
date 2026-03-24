@@ -1,0 +1,5 @@
+# Optional: use with pnpm when available. Primary workspaces are npm in package.json.
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "backend/*"

@@ -1,0 +1,30 @@
+{
+  "name": "@iching-oracle/claude",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@iching-oracle/context-engine": "file:../../packages/context-engine",
+    "@iching-oracle/iching-engine": "file:../../packages/iching-engine",
+    "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
+    "@iching-oracle/image-engine": "file:../../packages/image-engine",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.3"
+  }
+}
