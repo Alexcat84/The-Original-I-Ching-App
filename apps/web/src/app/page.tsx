@@ -186,6 +186,8 @@ export default function HomePage() {
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
   const [deepenPromptsOpen, setDeepenPromptsOpen] = useState(false);
   const [sharingPersisted, setSharingPersisted] = useState(true);
+  /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
+  const [authContinueOpen, setAuthContinueOpen] = useState(false);
 
   const shuffledCoins = useMemo(
     () =>
@@ -371,6 +373,15 @@ export default function HomePage() {
   useEffect(() => {
     setDeepenPromptsOpen(false);
   }, [activeSession?.localId]);
+
+  useEffect(() => {
+    if (!authContinueOpen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setAuthContinueOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [authContinueOpen]);
 
   const startNewSession = useCallback(() => {
     const created = createLocalSession("Nueva sesión");
@@ -625,7 +636,7 @@ export default function HomePage() {
       return;
     }
     if (!accessToken) {
-      setError("Inicia sesión para consultar.");
+      setAuthContinueOpen(true);
       return;
     }
     setLoading(true);
@@ -768,27 +779,35 @@ export default function HomePage() {
   return (
     <OracleShell title={t.appTitle} variant="chat">
       <div className="oracle-chat-app">
-        {authReady && supabaseConfigError ? (
-          <div className="auth-gate-overlay" role="alert">
-            <div className="auth-gate-card">
-              <h2 className="auth-gate-title">Configuración incompleta</h2>
-              <p className="auth-gate-text">
-                Faltan <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> y{" "}
-                <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> en el entorno del cliente.
+        {authContinueOpen ? (
+          <div className="auth-soft-backdrop" role="presentation" onClick={() => setAuthContinueOpen(false)}>
+            <div
+              className="auth-soft-dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="auth-soft-title"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="auth-soft-eyebrow">Un paso más</p>
+              <h2 id="auth-soft-title" className="auth-soft-title">
+                Para recibir tu lectura
+              </h2>
+              <p className="auth-soft-body">
+                Puedes explorar el ritual y escribir tu consulta con libertad. Cuando quieras el veredicto del oráculo,
+                crea una cuenta gratuita o entra con Google — correo verificado, sin trampas.
               </p>
-            </div>
-          </div>
-        ) : null}
-        {authReady && !supabaseConfigError && !accessToken ? (
-          <div className="auth-gate-overlay">
-            <div className="auth-gate-card">
-              <h2 className="auth-gate-title">Cuenta requerida</h2>
-              <p className="auth-gate-text">
-                Para usar el oráculo necesitas registrarte con un correo válido (confirmado) o iniciar sesión con Google.
-              </p>
-              <Link href="/login" className="auth-gate-cta">
-                Iniciar sesión o registrarse
-              </Link>
+              <ul className="auth-soft-list">
+                <li>Plan gratuito: 2 consultas al mes</li>
+                <li>Mismo hilo: profundizar cuenta como una consulta</li>
+              </ul>
+              <div className="auth-soft-actions">
+                <Link href="/login" className="auth-soft-primary" onClick={() => setAuthContinueOpen(false)}>
+                  Crear cuenta o entrar
+                </Link>
+                <button type="button" className="auth-soft-secondary" onClick={() => setAuthContinueOpen(false)}>
+                  Seguir explorando
+                </button>
+              </div>
             </div>
           </div>
         ) : null}
@@ -867,6 +886,25 @@ export default function HomePage() {
         </aside>
 
         <div className="chat-surface">
+        {authReady && supabaseConfigError ? (
+          <div className="auth-config-banner" role="alert">
+            <span>
+              Falta configuración del cliente:{" "}
+              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> y{" "}
+              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
+            </span>
+          </div>
+        ) : null}
+        {authReady && !supabaseConfigError && !accessToken ? (
+          <div className="auth-explore-strip">
+            <span className="auth-explore-strip-text">
+              Explora el oráculo con calma. La lectura completa pide una cuenta gratuita (correo o Google).
+            </span>
+            <Link href="/login" className="auth-explore-strip-cta">
+              Entrar
+            </Link>
+          </div>
+        ) : null}
         <header className="chat-app-bar oracle-intro">
           <div className="chat-app-bar-row">
             <div className="chat-bar-lead">
@@ -901,7 +939,11 @@ export default function HomePage() {
                 <button type="button" className="chat-icon-btn chat-sign-out-btn" onClick={() => void signOut()}>
                   Salir
                 </button>
-              ) : null}
+              ) : (
+                <Link href="/login" className="chat-icon-btn chat-entrar-link">
+                  Entrar
+                </Link>
+              )}
               <ThemeToggle />
             </div>
           </div>
