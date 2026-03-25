@@ -926,12 +926,22 @@ export default function HomePage() {
         ) : null}
         {authReady && !supabaseConfigError && !accessToken ? (
           <div className="auth-explore-strip">
-            <span className="auth-explore-strip-text">
-              Explora el oráculo con calma. La lectura completa pide una cuenta gratuita (correo o Google).
-            </span>
+            <span className="auth-explore-strip-text">Explora el oráculo con calma.</span>
             <Link href="/login" className="auth-explore-strip-cta">
-              Entrar
+              Iniciar sesión
             </Link>
+          </div>
+        ) : null}
+        {authReady && !supabaseConfigError && accessToken && authEmail ? (
+          <div className="auth-explore-strip auth-explore-strip--session">
+            <div className="auth-explore-strip-session">
+              <span className="auth-explore-strip-email" title={authEmail}>
+                {authEmail}
+              </span>
+              <button type="button" className="auth-explore-strip-signout" onClick={() => void signOut()}>
+                Cerrar sesión
+              </button>
+            </div>
           </div>
         ) : null}
         <header className="chat-app-bar oracle-intro">
@@ -959,24 +969,9 @@ export default function HomePage() {
               />
             </div>
             <div className="chat-bar-trail chat-bar-trail--top">
-              {!accessToken ? (
-                <Link href="/login" className="chat-icon-btn chat-entrar-link">
-                  Entrar
-                </Link>
-              ) : null}
               <ThemeToggle />
             </div>
           </div>
-          {accessToken && authEmail ? (
-            <div className="chat-app-bar-account">
-              <span className="chat-app-bar-account-email" title={authEmail}>
-                {authEmail}
-              </span>
-              <button type="button" className="chat-app-bar-signout" onClick={() => void signOut()}>
-                Cerrar sesión
-              </button>
-            </div>
-          ) : null}
           <div className="chat-app-brand">
             <div className="oracle-brand-line">
               {oracleMode === "iching" ? (
