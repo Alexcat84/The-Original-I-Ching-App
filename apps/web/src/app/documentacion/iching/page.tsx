@@ -44,11 +44,30 @@ export default function DocumentacionIchingPage() {
           informadas por la literatura arqueológica, no reproducciones de piezas concretas.
         </p>
 
-        <h2>Más lectura</h2>
+        <h2 id="notas-metodos">Notas y origen de los métodos (I Ching y Huesos)</h2>
         <p>
-          En el panel <strong>Opciones</strong> puedes abrir <em>notas y fuentes</em> con enlaces externos (Wikipedia y
-          artículos de conjunto). Para uso práctico del interfaz, ve la{" "}
-          <Link href="/guia">guía rápida</Link>.
+          Los modos de la app son <strong>inspirados</strong> en tradiciones históricas; las imágenes y grietas en
+          pantalla son <strong>estilización</strong>, no copia de piezas concretas. Enlaces de referencia general:
+        </p>
+        <ul>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/I_Ching" target="_blank" rel="noreferrer">
+              I Ching (Zhouyi 周易)
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Oracle_bone_script" target="_blank" rel="noreferrer">
+              Escritura de hueso de oráculo 甲骨文
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Chinese_pyromancy" target="_blank" rel="noreferrer">
+              Piromancia y adivinación en la China antigua
+            </a>
+          </li>
+        </ul>
+        <p>
+          Para el uso del interfaz: <Link href="/guia">guía rápida</Link>.
         </p>
       </article>
     </div>

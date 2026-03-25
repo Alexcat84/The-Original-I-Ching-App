@@ -7,7 +7,7 @@ import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
 import { OracleInterpretationMarkdown } from "@/components/OracleInterpretationMarkdown";
-import { OracleMethodSources } from "@/components/OracleMethodSources";
+import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -193,6 +193,8 @@ export default function HomePage() {
   const activeThread = activeSession?.thread ?? [];
   const result = activeThread.at(-1) ?? null;
   const questionTrimmed = question.trim();
+  const threadLimitReached =
+    activeThread.length > 0 && result !== null && !result.canDeepen;
   const showFloatingDeepen =
     activeThread.length > 0 &&
     Boolean(result?.canDeepen) &&
@@ -459,8 +461,7 @@ export default function HomePage() {
       setActiveSessionLocalId(created.localId);
       return;
     }
-    if (activeThread.length > 0 && result && !result.canDeepen) {
-      setError("Llegaste al límite de este hilo. Inicia una nueva sesión para continuar.");
+    if (threadLimitReached) {
       return;
     }
     if (oracleMode === "oracle_bones" && !question.trim()) {
@@ -593,14 +594,12 @@ export default function HomePage() {
             <h2>Chats</h2>
             <button
               type="button"
-              className="chat-icon-btn"
-              onClick={() => {
-                startNewSession();
-              }}
+              className="chat-drawer-new-session"
+              data-testid="new-session-btn"
+              onClick={() => startNewSession()}
               disabled={loading}
-              title="Nuevo chat"
             >
-              +
+              Nueva sesión
             </button>
           </div>
           <div className="sidebar-stats" aria-label="Estadísticas de uso">
@@ -662,16 +661,6 @@ export default function HomePage() {
               >
                 Chats
               </button>
-              <button
-                type="button"
-                className="chat-icon-btn chat-icon-btn--session"
-                data-testid="new-session-btn"
-                onClick={() => startNewSession()}
-                disabled={loading}
-                title="Iniciar conversación nueva"
-              >
-                Nueva sesión
-              </button>
             </div>
             <div className="chat-title-logo-wrap">
               {/* eslint-disable-next-line @next/next/no-img-element -- local brand asset, responsive CSS sizing */}
@@ -690,9 +679,15 @@ export default function HomePage() {
           </div>
           <div className="chat-app-brand">
             <div className="oracle-brand-line">
-              <span className="oracle-cn-mark" lang={oracleMode === "iching" ? "zh-Hant" : "zh-Hans"}>
-                {oracleMode === "iching" ? "周易" : "甲骨文"}
-              </span>
+              {oracleMode === "iching" ? (
+                <span className="oracle-cn-mark" lang="zh-Hant">
+                  周易
+                </span>
+              ) : (
+                <span className="oracle-brand-mark-lat" lang="es">
+                  Huesos
+                </span>
+              )}
               <span className="oracle-brand-rule" aria-hidden />
               <p className="oracle-tagline">
                 {oracleMode === "iching"
@@ -700,59 +695,34 @@ export default function HomePage() {
                   : "Grietas 兆 (estilo Shang) · sí / no sobre cargos"}
               </p>
             </div>
-            <div className="oracle-mode-showcase" aria-label="Configuración activa de la consulta">
-              <div
-                className={`oracle-mode-showcase-primary oracle-mode-showcase-primary--${oracleMode === "iching" ? "iching" : "bones"}`}
-              >
-                <div className="oracle-mode-showcase-art" aria-hidden>
-                  {oracleMode === "iching" ? (
-                    <svg className="mode-art-svg mode-art-svg--coins" viewBox="0 0 88 72" width="88" height="72">
-                      <defs>
-                        <linearGradient id="coinG" x1="0" y1="0" x2="1" y2="1">
-                          <stop offset="0%" stopColor="#c9a227" />
-                          <stop offset="100%" stopColor="#8b6914" />
-                        </linearGradient>
-                      </defs>
-                      <circle cx="44" cy="22" r="18" fill="url(#coinG)" opacity="0.92" />
-                      <circle cx="44" cy="22" r="12" fill="none" stroke="#3d2810" strokeWidth="1.2" />
-                      <rect x="40" y="18" width="8" height="8" fill="#3d2810" opacity="0.85" />
-                      <circle cx="30" cy="48" r="16" fill="url(#coinG)" opacity="0.75" />
-                      <circle cx="58" cy="48" r="16" fill="url(#coinG)" opacity="0.75" />
-                    </svg>
-                  ) : (
-                    <svg className="mode-art-svg mode-art-svg--bone" viewBox="0 0 88 72" width="88" height="72">
-                      <path
-                        d="M14 52 Q44 8 74 50 Q58 64 44 58 Q30 64 14 52 Z"
-                        fill="#e8dcc8"
-                        stroke="#5c4030"
-                        strokeWidth="2"
-                      />
-                      <path
-                        d="M38 28 L42 48 M50 24 L48 44 M56 32 L54 50"
-                        stroke="#4a3020"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        opacity="0.85"
-                      />
-                      <ellipse cx="44" cy="20" rx="5" ry="4" fill="#c4a882" stroke="#5c4030" strokeWidth="1" />
-                    </svg>
-                  )}
+            <div className="oracle-mode-banner" aria-label="Configuración activa de la consulta">
+              <div className="oracle-mode-banner-inner">
+                <div className={`oracle-mode-banner-icon-wrap oracle-mode-banner-icon-wrap--${oracleMode === "iching" ? "iching" : "bones"}`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- local mode assets */}
+                  <img
+                    src={oracleMode === "iching" ? "/brand/mode-iching-coin.png" : "/brand/mode-bones-symbol.png"}
+                    alt=""
+                    className={`oracle-mode-asset-img oracle-mode-asset-img--${oracleMode === "iching" ? "coin" : "bones"}`}
+                    width={88}
+                    height={88}
+                    decoding="async"
+                  />
                 </div>
-                <div className="oracle-mode-showcase-copy">
-                  <span className="oracle-mode-showcase-eyebrow">Oráculo activo</span>
-                  <span className="oracle-mode-showcase-title">
-                    {oracleMode === "iching" ? "I Ching 易經" : "甲骨 Divinación"}
+                <div className="oracle-mode-banner-main">
+                  <span className="oracle-mode-banner-eyebrow">Oráculo activo</span>
+                  <span className="oracle-mode-banner-title">
+                    {oracleMode === "iching" ? "I Ching" : "Huesos de oráculo"}
                   </span>
-                  <span className="oracle-mode-showcase-sub">
+                  <span className="oracle-mode-banner-sub">
                     {oracleMode === "iching"
                       ? "Seis líneas · tres monedas · Zhu Xi"
-                      : "Sí / no sobre cargas · grietas 兆 · plastrón (visual)"}
+                      : "Sí / no sobre cargas · grietas al estilo 兆"}
                   </span>
                 </div>
-              </div>
-              <div className="oracle-mode-showcase-reading">
-                <span className="oracle-mode-showcase-reading-label">Texto de la lectura</span>
-                <span className="oracle-mode-showcase-reading-value">{responseModeLabelEs(responseMode)}</span>
+                <div className="oracle-mode-banner-reading">
+                  <span className="oracle-mode-banner-reading-k">Modo lectura</span>
+                  <span className="oracle-mode-banner-reading-v">{responseModeLabelEs(responseMode)}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -798,7 +768,7 @@ export default function HomePage() {
                   {entry.oracleType === "oracle_bones" && entry.oracleBones ? (
                     <div className="reading-grid reading-grid--bones-solo">
                       <section className="hexagram-card">
-                        <h3>甲骨文 · Huesos de oráculo</h3>
+                        <h3>Huesos de oráculo</h3>
                         <p className="meta-line">
                           Medio: {entry.oracleBones.medium === "turtle" ? "Plastrón de tortuga" : "Escápula de buey"}
                           {entry.oracleBones.ambiguousPasses > 0
@@ -960,51 +930,78 @@ export default function HomePage() {
                         Cerrar
                       </button>
                     </div>
-                    <div className="oracle-mode-select" role="group" aria-label="Modo de oráculo">
-                      <label>
-                        <input
-                          type="radio"
-                          name="oracle-mode"
-                          checked={oracleMode === "iching"}
-                          onChange={() => setOracleMode("iching")}
-                          disabled={loading}
-                        />
-                        I Ching (易)
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          name="oracle-mode"
-                          checked={oracleMode === "oracle_bones"}
-                          onChange={() => setOracleMode("oracle_bones")}
-                          disabled={loading}
-                        />
-                        Huesos 甲骨
-                      </label>
+                    <div className="composer-oracle-switch" role="group" aria-label="Tipo de consulta">
+                      <div className="composer-oracle-switch-row">
+                        <div
+                          className="composer-switch-track composer-switch-track--visual"
+                          role="tablist"
+                          aria-label="I Ching o huesos de oráculo"
+                        >
+                          <button
+                            type="button"
+                            role="tab"
+                            aria-selected={oracleMode === "iching"}
+                            className={`composer-switch-seg composer-switch-seg--visual ${oracleMode === "iching" ? "is-active" : ""}`}
+                            onClick={() => setOracleMode("iching")}
+                            disabled={loading}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element -- local mode assets */}
+                            <img
+                              className="composer-switch-asset"
+                              src="/brand/mode-iching-coin.png"
+                              alt=""
+                              width={44}
+                              height={44}
+                              decoding="async"
+                            />
+                            <span className="composer-switch-label">I Ching</span>
+                          </button>
+                          <button
+                            type="button"
+                            role="tab"
+                            aria-selected={oracleMode === "oracle_bones"}
+                            className={`composer-switch-seg composer-switch-seg--visual ${oracleMode === "oracle_bones" ? "is-active" : ""}`}
+                            onClick={() => setOracleMode("oracle_bones")}
+                            disabled={loading}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element -- local mode assets */}
+                            <img
+                              className="composer-switch-asset composer-switch-asset--bones"
+                              src="/brand/mode-bones-symbol.png"
+                              alt=""
+                              width={44}
+                              height={44}
+                              decoding="async"
+                            />
+                            <span className="composer-switch-label">Huesos</span>
+                          </button>
+                        </div>
+                        <p className="composer-switch-caption">
+                          {oracleMode === "iching"
+                            ? "Seis líneas y tres monedas por línea; mutación Zhu Xi."
+                            : "Pregunta sí / no con cargo afirmativo; lectura por grietas 兆."}
+                        </p>
+                      </div>
                     </div>
-                    <OracleMethodSources />
-                    {oracleMode === "oracle_bones" ? (
-                      <p className="meta-line bones-auto-hint">
-                        El cargo opuesto se formula automáticamente en el servidor a partir de tu afirmación.
-                      </p>
-                    ) : null}
-                    <div className="composer-actions">
-                      <label htmlFor="response-mode">Modo de lectura del texto</label>
-                      <select
-                        id="response-mode"
-                        value={responseMode}
-                        onChange={(e) => setResponseMode(e.target.value as ResponseMode)}
-                        disabled={loading}
-                      >
-                        <option value="directo">Directo — 2 secciones breves</option>
-                        <option value="ritual">Ritual — pergamino completo (5 partes)</option>
-                        <option value="profundizar">Profundizar — solo en el mismo hilo</option>
-                      </select>
-                      <p className="meta-line mode-select-hint">
-                        <a href="/guia#modos-lectura" className="inline-doc-link">
-                          ¿Qué cambia entre directo, ritual y profundizar?
-                        </a>
-                      </p>
+                    <div className="composer-reading-row" role="group" aria-label="Modo de lectura">
+                      <span className="composer-reading-label">Modo lectura</span>
+                      <div className="composer-reading-segmented">
+                        {(["directo", "ritual", "profundizar"] as const).map((m) => (
+                          <button
+                            key={m}
+                            type="button"
+                            className={`composer-reading-pill ${responseMode === m ? "is-active" : ""}`}
+                            onClick={() => setResponseMode(m)}
+                            disabled={loading}
+                          >
+                            {responseModeLabelEs(m)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="composer-doc-links">
+                      <Link href="/guia">Guía rápida de uso</Link>
+                      <Link href="/documentacion/iching#notas-metodos">Notas y origen de los métodos (I Ching y Huesos)</Link>
                     </div>
                     {result ? (
                       <div className="session-progress">
@@ -1083,6 +1080,23 @@ export default function HomePage() {
                 </div>
               ) : null}
 
+              {threadLimitReached ? (
+                <div className="composer-session-limit-float" role="status" aria-live="polite">
+                  <p className="composer-session-limit-text">
+                    Este hilo ya no admite más consultas en tu plan. Para seguir, abre una sesión nueva.
+                  </p>
+                  <button
+                    type="button"
+                    className="composer-session-limit-btn"
+                    data-testid="new-session-float-btn"
+                    onClick={() => startNewSession()}
+                    disabled={loading}
+                  >
+                    Nueva sesión
+                  </button>
+                </div>
+              ) : null}
+
               <div className="composer-minibar">
                 <button
                   type="button"
@@ -1105,21 +1119,25 @@ export default function HomePage() {
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
-                        if (!loading) void onConsult();
+                        if (!loading && !threadLimitReached) void onConsult();
                       }
                     }}
                     placeholder={
-                      oracleMode === "oracle_bones"
-                        ? "Cargo positivo (afirmación)…"
-                        : "Escribe tu consulta…"
+                      threadLimitReached
+                        ? "Límite de hilo alcanzado — usa «Nueva sesión» arriba"
+                        : oracleMode === "oracle_bones"
+                          ? "Cargo positivo (afirmación)…"
+                          : "Escribe tu consulta…"
                     }
                     aria-label="Question"
                     rows={1}
+                    readOnly={threadLimitReached}
+                    aria-disabled={threadLimitReached}
                   />
                   <button
                     type="button"
                     data-testid="consult-btn"
-                    disabled={loading}
+                    disabled={loading || threadLimitReached}
                     onClick={() => void onConsult()}
                     aria-label={loading ? "Enviando" : "Enviar"}
                   >
