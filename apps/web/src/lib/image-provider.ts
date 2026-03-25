@@ -11,6 +11,21 @@ export type ImageProvider = "auto" | "mock" | "svg-art" | "pollinations" | "fal"
 /** Provider after resolving "auto" / env; never "auto". */
 export type ResolvedImageProvider = Exclude<ImageProvider, "auto">;
 
+export type TogetherDebug = {
+  attempted: boolean;
+  hasKey: boolean;
+  status?: number;
+  errorSnippet?: string;
+};
+
+export type ImageProviderDebug = {
+  providerResolved: ResolvedImageProvider;
+  providerOverride?: ImageProvider;
+  imageProviderEnv?: string | null;
+  sumiOnlyMode: boolean;
+  together?: TogetherDebug;
+};
+
 function isDebugImageProvider(): boolean {
   return process.env.DEBUG_IMAGE_PROVIDER === "1" || process.env.DEBUG_IMAGE_PROVIDER === "true";
 }
@@ -164,16 +179,24 @@ async function generateWithGptImage(prompt: string, width: number, height: numbe
   return null;
 }
 
-async function generateWithTogether(prompt: string, width: number, height: number): Promise<string | null> {
+async function generateWithTogether(prompt: string, width: number, height: number): Promise<{ url: string | null; debug: TogetherDebug }> {
   const key = process.env.TOGETHER_API_KEY;
   if (!key) {
-    debugLog("together: missing TOGETHER_API_KEY", { hasKey: false });
-    return null;
+    return {
+      url: null,
+      debug: {
+        attempted: true,
+        hasKey: false,
+      },
+    };
   }
+  debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL });
   const model =
     process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
-  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "20");
-  const steps = Math.min(40, Math.max(4, Number.isFinite(stepsRaw) ? stepsRaw : 20));
+  // Together (FLUX.1-schnell) rechaza valores fuera de 1..12.
+  // Mantenemos un rango seguro para evitar fallback a svg-art.
+  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "10");
+  const steps = Math.min(12, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 10));
   const w = Math.min(Math.max(512, width), 1024);
   const h = Math.min(Math.max(512, height), 1024);
   const res = await fetch("https://api.together.xyz/v1/images/generations", {
@@ -200,24 +223,58 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
       err = "";
     }
     debugLog("together: request failed", { status: res.status, snippet: err.slice(0, 500) });
-    return null;
+    return {
+      url: null,
+      debug: {
+        attempted: true,
+        hasKey: true,
+        status: res.status,
+        errorSnippet: err.slice(0, 300),
+      },
+    };
   }
   const data = (await res.json()) as { data?: Array<{ url?: string; b64_json?: string }> };
   const first = data.data?.[0];
   if (!first) {
     debugLog("together: missing data.data[0]", { hasData: Boolean(data.data?.length) });
-    return null;
+    return {
+      url: null,
+      debug: {
+        attempted: true,
+        hasKey: true,
+        errorSnippet: "missing data.data[0]",
+      },
+    };
   }
   if (first.url) {
     debugLog("together: got url", { urlPrefix: first.url.slice(0, 40) });
-    return first.url;
+    return {
+      url: first.url,
+      debug: {
+        attempted: true,
+        hasKey: true,
+      },
+    };
   }
   if (first.b64_json) {
     debugLog("together: got b64_json", { bytesApprox: first.b64_json.length });
-    return `data:image/png;base64,${first.b64_json}`;
+    return {
+      url: `data:image/png;base64,${first.b64_json}`,
+      debug: {
+        attempted: true,
+        hasKey: true,
+      },
+    };
   }
   debugLog("together: unexpected response shape", { keys: Object.keys(first ?? {}) });
-  return null;
+  return {
+    url: null,
+    debug: {
+      attempted: true,
+      hasKey: true,
+      errorSnippet: "unexpected response shape",
+    },
+  };
 }
 
 function sumiUrlForIChing(params: {
@@ -266,7 +323,12 @@ export async function buildImageAsset(params: {
   providerOverride?: ImageProvider;
   /** Drives unique sumi-e background per consultation when APIs are off. */
   consultationId?: string;
-}): Promise<{ provider: ResolvedImageProvider; imageUrl: string; fallbackImageUrl: string }> {
+}): Promise<{
+  provider: ResolvedImageProvider;
+  imageUrl: string;
+  fallbackImageUrl: string;
+  debug?: ImageProviderDebug;
+}> {
   const sumiFallback = sumiUrlForIChing({
     lines: params.lines,
     primaryHexagram: params.primaryHexagram,
@@ -280,10 +342,22 @@ export async function buildImageAsset(params: {
   });
 
   if (sumiOnlyMode()) {
-    return { provider: "svg-art", imageUrl: sumiFallback, fallbackImageUrl: sumiFallback };
+    const debug: ImageProviderDebug = {
+      providerResolved: "svg-art",
+      providerOverride: params.providerOverride,
+      imageProviderEnv: process.env.IMAGE_PROVIDER ?? null,
+      sumiOnlyMode: true,
+    };
+    return { provider: "svg-art", imageUrl: sumiFallback, fallbackImageUrl: sumiFallback, debug };
   }
 
   const provider = resolveProvider(params.providerOverride);
+  const debug: ImageProviderDebug = {
+    providerResolved: provider,
+    providerOverride: params.providerOverride,
+    imageProviderEnv: process.env.IMAGE_PROVIDER ?? null,
+    sumiOnlyMode: sumiOnlyMode(),
+  };
   debugLog("buildImageAsset: provider resolved", {
     provider,
     override: params.providerOverride ?? null,
@@ -304,27 +378,28 @@ export async function buildImageAsset(params: {
     const imageUrl =
       `https://image.pollinations.ai/prompt/${encoded}` +
       `?model=${encodeURIComponent(model)}&width=${width}&height=${height}&seed=${seed}&nologo=true`;
-    return { provider, imageUrl, fallbackImageUrl };
+    return { provider, imageUrl, fallbackImageUrl, debug };
   }
 
   if (provider === "fal") {
     const falImage = await generateWithFal(promptForRemote, tierWidth, tierHeight);
     if (falImage) {
-      return { provider, imageUrl: falImage, fallbackImageUrl };
+      return { provider, imageUrl: falImage, fallbackImageUrl, debug };
     }
   }
 
   if (provider === "gpt-image") {
     const gptImage = await generateWithGptImage(promptForRemote, tierWidth, tierHeight);
     if (gptImage) {
-      return { provider, imageUrl: gptImage, fallbackImageUrl };
+      return { provider, imageUrl: gptImage, fallbackImageUrl, debug };
     }
   }
 
   if (provider === "together") {
-    const togetherImage = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
-    if (togetherImage) {
-      return { provider, imageUrl: togetherImage, fallbackImageUrl };
+    const { url, debug: togetherDebug } = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
+    debug.together = togetherDebug;
+    if (url) {
+      return { provider, imageUrl: url, fallbackImageUrl, debug };
     }
   }
 
@@ -332,6 +407,7 @@ export async function buildImageAsset(params: {
     provider: "svg-art",
     imageUrl: sumiFallback,
     fallbackImageUrl,
+    debug: { ...debug, together: debug.together ?? undefined },
   };
 }
 
@@ -377,8 +453,8 @@ export async function buildOracleBonesImageAsset(params: {
   }
 
   if (provider === "together") {
-    const togetherImage = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
-    if (togetherImage) return { provider, imageUrl: togetherImage, fallbackImageUrl };
+    const { url } = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
+    if (url) return { provider, imageUrl: url, fallbackImageUrl };
   }
 
   return { provider: "mock", imageUrl: fallbackImageUrl, fallbackImageUrl };

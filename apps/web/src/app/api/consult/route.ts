@@ -389,6 +389,7 @@ export async function POST(req: Request) {
     imageProvider: image.provider,
     imageUrl: image.imageUrl,
     imageFallbackUrl: image.fallbackImageUrl,
+    imageProviderDebug: image.debug ?? undefined,
     sessionId,
     sessionPosition: nextPosition,
     canDeepen,

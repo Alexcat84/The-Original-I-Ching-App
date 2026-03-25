@@ -1,10 +1,11 @@
-import type { ResolvedImageProvider } from "@/lib/image-provider";
+import type { ImageProviderDebug, ResolvedImageProvider } from "@/lib/image-provider";
 import { applyReadingImageWatermark, injectSvgDataUrlWatermark } from "@/lib/watermark-image";
 
 type ImageAsset = {
   provider: ResolvedImageProvider;
   imageUrl: string;
   fallbackImageUrl: string;
+  debug?: ImageProviderDebug;
 };
 
 export async function finalizeReadingImages(asset: ImageAsset, tier: string): Promise<ImageAsset> {
@@ -17,5 +18,5 @@ export async function finalizeReadingImages(asset: ImageAsset, tier: string): Pr
   } else {
     fallbackImageUrl = imageUrl;
   }
-  return { provider: asset.provider, imageUrl, fallbackImageUrl };
+  return { provider: asset.provider, imageUrl, fallbackImageUrl, debug: asset.debug };
 }
