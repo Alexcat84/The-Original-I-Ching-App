@@ -161,7 +161,12 @@ export async function POST(req: Request) {
   const credit = await consumeTierCredit(authedUserId, tierResolved);
   if (!credit.allowed) {
     return NextResponse.json(
-      { error: "credits_exhausted", message: "No credits left for this cycle." },
+      {
+        error: "credits_exhausted",
+        tier: tierResolved,
+        creditsLimit: credit.limit,
+        cycleEndsAt: credit.cycleEndIso ?? null,
+      },
       { status: 402 },
     );
   }

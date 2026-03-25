@@ -53,6 +53,8 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   allowed: boolean;
   remaining: number;
   limit: number;
+  /** Present when Supabase row exists and credits are exhausted (for UX copy). */
+  cycleEndIso?: string | null;
 }> {
   const incomingTier = (["free", "seeker", "practitioner", "master", "oracle"] as const).includes(tier as Tier)
     ? (tier as Tier)
@@ -84,7 +86,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
     const total = cycleEnded ? limit : row.credits_total;
     const used = cycleEnded ? 0 : row.credits_used;
     if (used >= total) {
-      return { allowed: false, remaining: 0, limit: total };
+      return { allowed: false, remaining: 0, limit: total, cycleEndIso: row.cycle_end };
     }
     const nextUsed = used + 1;
     const cycleStart = cycleEnded ? new Date(now).toISOString() : row.cycle_start;

@@ -21,8 +21,11 @@ import {
   drawPdfReadingBlocks,
   interpretationMarkdownToPdfBlocks,
 } from "@/lib/pdf-chat-export";
+import { creditsExhaustedBlock, type BillingTier } from "@/lib/credits-ui-copy";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+const PLANS_HREF = process.env.NEXT_PUBLIC_PLANS_URL?.trim() || "/guia";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
@@ -178,6 +181,11 @@ export default function HomePage() {
   const [sessionsHydrated, setSessionsHydrated] = useState(false);
   const [responseMode, setResponseMode] = useState<ResponseMode>("ritual");
   const [error, setError] = useState<string | null>(null);
+  const [creditsNotice, setCreditsNotice] = useState<{
+    tier: BillingTier;
+    limit: number;
+    cycleEndsAt: string | null;
+  } | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -641,6 +649,7 @@ export default function HomePage() {
     }
     setLoading(true);
     setError(null);
+    setCreditsNotice(null);
     const showRitualAnimation =
       (oracleMode === "iching" && responseMode !== "directo") ||
       (oracleMode === "oracle_bones" && responseMode !== "directo");
@@ -701,7 +710,13 @@ export default function HomePage() {
         }),
       });
       const rawText = await res.text();
-      let data: ConsultResponse & { error?: string; message?: string };
+      let data: ConsultResponse & {
+        error?: string;
+        message?: string;
+        tier?: string;
+        creditsLimit?: number;
+        cycleEndsAt?: string | null;
+      };
       try {
         if (!rawText.trim()) {
           throw new SyntaxError("empty body");
@@ -719,6 +734,17 @@ export default function HomePage() {
         if (res.status === 401) {
           setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
           void signOut();
+          return;
+        }
+        if (res.status === 402 && data.error === "credits_exhausted") {
+          const tiers: BillingTier[] = ["free", "seeker", "practitioner", "master", "oracle"];
+          const t = tiers.includes(data.tier as BillingTier) ? (data.tier as BillingTier) : "free";
+          const lim = typeof data.creditsLimit === "number" ? data.creditsLimit : 2;
+          setCreditsNotice({
+            tier: t,
+            limit: lim,
+            cycleEndsAt: typeof data.cycleEndsAt === "string" ? data.cycleEndsAt : null,
+          });
           return;
         }
         const detail =
@@ -775,6 +801,10 @@ export default function HomePage() {
       }
     }
   }
+
+  const creditsExhaustedCopy = creditsNotice
+    ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.limit, creditsNotice.cycleEndsAt)
+    : null;
 
   return (
     <OracleShell title={t.appTitle} variant="chat">
@@ -905,7 +935,7 @@ export default function HomePage() {
           </div>
         ) : null}
         <header className="chat-app-bar oracle-intro">
-          <div className="chat-app-bar-row">
+          <div className="chat-app-bar-row chat-app-bar-row--top">
             <div className="chat-bar-lead">
               <button
                 type="button"
@@ -928,24 +958,25 @@ export default function HomePage() {
                 decoding="async"
               />
             </div>
-            <div className="chat-bar-trail">
-              {accessToken && authEmail ? (
-                <span className="chat-auth-email" title={authEmail}>
-                  {authEmail.length > 22 ? `${authEmail.slice(0, 20)}…` : authEmail}
-                </span>
-              ) : null}
-              {accessToken ? (
-                <button type="button" className="chat-icon-btn chat-sign-out-btn" onClick={() => void signOut()}>
-                  Salir
-                </button>
-              ) : (
+            <div className="chat-bar-trail chat-bar-trail--top">
+              {!accessToken ? (
                 <Link href="/login" className="chat-icon-btn chat-entrar-link">
                   Entrar
                 </Link>
-              )}
+              ) : null}
               <ThemeToggle />
             </div>
           </div>
+          {accessToken && authEmail ? (
+            <div className="chat-app-bar-account">
+              <span className="chat-app-bar-account-email" title={authEmail}>
+                {authEmail}
+              </span>
+              <button type="button" className="chat-app-bar-signout" onClick={() => void signOut()}>
+                Cerrar sesión
+              </button>
+            </div>
+          ) : null}
           <div className="chat-app-brand">
             <div className="oracle-brand-line">
               {oracleMode === "iching" ? (
@@ -1170,6 +1201,21 @@ export default function HomePage() {
               </section>
             ) : null}
 
+            {creditsExhaustedCopy ? (
+              <div className="credits-notice-card" role="status">
+                <p className="credits-notice-title">{creditsExhaustedCopy.title}</p>
+                <p className="credits-notice-body">{creditsExhaustedCopy.body}</p>
+                <p className="credits-notice-reset">{creditsExhaustedCopy.resetLine}</p>
+                <div className="credits-notice-actions">
+                  <Link href={PLANS_HREF} className="credits-notice-primary">
+                    {creditsExhaustedCopy.primaryCta}
+                  </Link>
+                  <button type="button" className="credits-notice-dismiss" onClick={() => setCreditsNotice(null)}>
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            ) : null}
             {error ? <div className="chat-error-bubble">{error}</div> : null}
             <div ref={endRef} />
           </section>

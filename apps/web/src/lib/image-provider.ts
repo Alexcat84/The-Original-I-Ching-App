@@ -112,6 +112,17 @@ function buildOracleBonesSymbolOverlaySvgDataUrl(params: {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
+function oracleBonesVerdictLabelEs(verdict: OracleBonesVerdict): string {
+  const m: Record<OracleBonesVerdict, string> = {
+    auspicious_clear: "吉 — favorable claro",
+    auspicious_moderate: "吉 — favorable moderado",
+    inauspicious_moderate: "凶 — desfavorable moderado",
+    inauspicious_clear: "凶 — desfavorable claro",
+    silent: "Silencio / sin respuesta clara",
+  };
+  return m[verdict];
+}
+
 function buildOracleBonesMockDataUrl(params: {
   patternId: number;
   verdict: OracleBonesVerdict;
@@ -149,7 +160,7 @@ function buildOracleBonesMockDataUrl(params: {
   <path fill="none" stroke="rgba(160,140,110,${grainB})" stroke-width="0.9" d="M0 ${Math.round(520 + rng() * 60)} Q500 ${Math.round(580 + rng() * 50)} 1000 ${Math.round(540 + rng() * 70)} T1344 ${Math.round(600 + rng() * 40)}"/>
   <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}" fill="url(#bone)" stroke="${stroke}" stroke-width="3"/>
   <text x="${cx}" y="90" text-anchor="middle" fill="${accent}" font-size="36" font-family="Segoe UI, Arial">甲骨文 · ${bone} · patrón ${params.patternId}</text>
-  <text x="${cx}" y="690" text-anchor="middle" fill="${sub}" font-size="24" font-family="Segoe UI, Arial">Vista simbólica (respaldo) · ${params.verdict}</text>
+  <text x="${cx}" y="690" text-anchor="middle" fill="${sub}" font-size="24" font-family="Segoe UI, Arial">Vista simbólica (respaldo) · ${oracleBonesVerdictLabelEs(params.verdict)}</text>
 </svg>`.trim();
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
