@@ -48,6 +48,70 @@ function shiftHexForOracle(hex: string, rng: () => number, spread: number): stri
     .join("")}`;
 }
 
+function buildOracleBonesSymbolOverlaySvgDataUrl(params: {
+  patternId: number;
+  outputWidth: number;
+  outputHeight: number;
+}): string {
+  const W = 1344;
+  const H = 768;
+  const sx = params.outputWidth / W;
+  const sy = params.outputHeight / H;
+  const s = Math.min(sx, sy);
+  const cx = params.outputWidth / 2;
+  const cy = params.outputHeight / 2;
+  /** Dominant foreground symbol; clamped so the 200×240 motif stays inside the frame. */
+  const maxBoostW = (params.outputWidth * 0.92) / (200 * s);
+  const maxBoostH = (params.outputHeight * 0.88) / (240 * s);
+  const symBoost = Math.min(2.72, maxBoostW, maxBoostH);
+  const effS = s * symBoost;
+  const tx = cx - 100 * effS;
+  const ty = cy - 120 * effS;
+  const pid = params.patternId >= 1 && params.patternId <= 5 ? params.patternId : 5;
+
+  const drillsByPattern: Record<number, string> = {
+    1: `<g><circle cx="100" cy="188" r="8.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="100" cy="188" r="7" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="100" cy="188" r="3.15" fill="rgba(139,115,85,0.35)"/></g>`,
+    2: `<g><circle cx="100" cy="192" r="7.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="100" cy="192" r="6" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="100" cy="192" r="2.7" fill="rgba(139,115,85,0.35)"/></g>`,
+    3: `<g><circle cx="72" cy="175" r="6.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="72" cy="175" r="5" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="72" cy="175" r="2.25" fill="rgba(139,115,85,0.35)"/><circle cx="132" cy="168" r="6.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="132" cy="168" r="5" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="132" cy="168" r="2.25" fill="rgba(139,115,85,0.35)"/></g>`,
+    4: `<g><circle cx="100" cy="188" r="8.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="100" cy="188" r="7" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="100" cy="188" r="3.15" fill="rgba(139,115,85,0.35)"/></g>`,
+    5: `<g><circle cx="58" cy="178" r="5.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="58" cy="178" r="4" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="58" cy="178" r="1.8" fill="rgba(139,115,85,0.35)"/><circle cx="100" cy="190" r="5.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="100" cy="190" r="4" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="100" cy="190" r="1.8" fill="rgba(139,115,85,0.35)"/><circle cx="142" cy="172" r="5.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="142" cy="172" r="4" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="142" cy="172" r="1.8" fill="rgba(139,115,85,0.35)"/></g>`,
+  };
+
+  /** Wide light under-painting so cracks read on busy 3D shells / photos. */
+  const halosByPattern: Record<number, string> = {
+    1: `<path d="M100 181 L100 42" stroke="rgba(255,248,240,0.97)" stroke-width="12"/><path d="M100 110 L148 110" stroke="rgba(255,248,240,0.97)" stroke-width="11"/><path d="M100 72 L88 58 M100 72 L112 58" stroke="rgba(255,252,248,0.9)" stroke-width="6.5"/>`,
+    2: `<path d="M100 185 Q98 120 102 38" stroke="rgba(255,248,240,0.97)" stroke-width="11"/><path d="M102 95 Q118 88 132 82" stroke="rgba(255,252,248,0.88)" stroke-width="6"/>`,
+    3: `<path d="M72 168 L132 72" stroke="rgba(255,248,240,0.97)" stroke-width="10"/><path d="M132 161 L68 78" stroke="rgba(255,248,240,0.97)" stroke-width="10"/><circle cx="100" cy="118" r="5.5" fill="none" stroke="rgba(255,250,245,0.85)" stroke-width="4"/>`,
+    4: `<path d="M100 181 L100 52" stroke="rgba(255,248,240,0.97)" stroke-width="11"/><path d="M100 118 L62 198" stroke="rgba(255,248,240,0.97)" stroke-width="9.5"/><path d="M100 118 L142 192" stroke="rgba(255,248,240,0.97)" stroke-width="9.5"/><path d="M100 78 L92 64 M100 78 L108 64" stroke="rgba(255,252,248,0.88)" stroke-width="5.5"/>`,
+    5: `<path d="M58 171 Q65 130 78 95" stroke="rgba(255,248,240,0.92)" stroke-width="8"/><path d="M100 183 L108 120 L95 70" stroke="rgba(255,248,240,0.92)" stroke-width="7.5"/><path d="M142 165 Q130 130 118 88" stroke="rgba(255,248,240,0.92)" stroke-width="8"/><path d="M75 200 Q100 175 128 205" stroke="rgba(255,252,248,0.75)" stroke-width="5.5"/><path d="M44 92 L156 58" stroke="rgba(255,252,248,0.55)" stroke-width="4.5"/>`,
+  };
+
+  const cracksByPattern: Record<number, string> = {
+    1: `<path d="M100 181 L100 42" stroke="#5c3010" stroke-width="3.6"/><path d="M100 110 L148 110" stroke="#5c3010" stroke-width="3.2"/><path d="M100 72 L88 58 M100 72 L112 58" stroke="#7a4a28" stroke-width="1.7" opacity="0.9"/>`,
+    2: `<path d="M100 185 Q98 120 102 38" stroke="#5c3010" stroke-width="3.4"/><path d="M102 95 Q118 88 132 82" stroke="#7a4a28" stroke-width="1.8" opacity="0.85"/>`,
+    3: `<path d="M72 168 L132 72" stroke="#5c3010" stroke-width="3.2"/><path d="M132 161 L68 78" stroke="#5c3010" stroke-width="3.2"/><circle cx="100" cy="118" r="4" fill="none" stroke="#7a4a28" stroke-width="1.4" opacity="0.78"/>`,
+    4: `<path d="M100 181 L100 52" stroke="#5c3010" stroke-width="3.4"/><path d="M100 118 L62 198" stroke="#5c3010" stroke-width="3"/><path d="M100 118 L142 192" stroke="#5c3010" stroke-width="3"/><path d="M100 78 L92 64 M100 78 L108 64" stroke="#7a4a28" stroke-width="1.5"/>`,
+    5: `<path d="M58 171 Q65 130 78 95" stroke="#5c3010" stroke-width="2.4" opacity="0.92"/><path d="M100 183 L108 120 L95 70" stroke="#5c3010" stroke-width="2.2" opacity="0.88"/><path d="M142 165 Q130 130 118 88" stroke="#5c3010" stroke-width="2.4" opacity="0.9"/><path d="M75 200 Q100 175 128 205" stroke="#7a4a28" stroke-width="1.6" opacity="0.62"/><path d="M44 92 L156 58" stroke="#7a4a28" stroke-width="1.4" opacity="0.42"/>`,
+  };
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${params.outputWidth}" height="${params.outputHeight}" viewBox="0 0 ${params.outputWidth} ${params.outputHeight}">
+<defs>
+  <filter id="crack-glow" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="${1.85 * effS}" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+<g transform="translate(${tx} ${ty}) scale(${effS})" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  ${halosByPattern[pid]}
+  <g filter="url(#crack-glow)">
+    ${drillsByPattern[pid]}
+    ${cracksByPattern[pid]}
+  </g>
+</g>
+</svg>`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+
 function buildOracleBonesMockDataUrl(params: {
   patternId: number;
   verdict: OracleBonesVerdict;
@@ -454,7 +518,12 @@ export async function buildOracleBonesImageAsset(params: {
   tier?: string;
   providerOverride?: ImageProvider;
   consultationId?: string;
-}): Promise<{ provider: ResolvedImageProvider; imageUrl: string; fallbackImageUrl: string }> {
+}): Promise<{
+  provider: ResolvedImageProvider;
+  imageUrl: string;
+  fallbackImageUrl: string;
+  overlaySvgDataUrl?: string;
+}> {
   const provider = resolveProvider(params.providerOverride);
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
   const promptForRemote = compactPrompt(params.prompt, 900);
@@ -474,22 +543,48 @@ export async function buildOracleBonesImageAsset(params: {
     const imageUrl =
       `https://image.pollinations.ai/prompt/${encoded}` +
       `?model=${encodeURIComponent(model)}&width=${width}&height=${height}&seed=${seed}&nologo=true`;
-    return { provider, imageUrl, fallbackImageUrl };
+    const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
+      patternId: params.patternId,
+      outputWidth: width,
+      outputHeight: height,
+    });
+    return { provider, imageUrl, fallbackImageUrl, overlaySvgDataUrl };
   }
 
   if (provider === "fal") {
     const falImage = await generateWithFal(promptForRemote, tierWidth, tierHeight);
-    if (falImage) return { provider, imageUrl: falImage, fallbackImageUrl };
+    if (falImage) {
+      const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
+        patternId: params.patternId,
+        outputWidth: tierWidth,
+        outputHeight: tierHeight,
+      });
+      return { provider, imageUrl: falImage, fallbackImageUrl, overlaySvgDataUrl };
+    }
   }
 
   if (provider === "gpt-image") {
     const gptImage = await generateWithGptImage(promptForRemote, tierWidth, tierHeight);
-    if (gptImage) return { provider, imageUrl: gptImage, fallbackImageUrl };
+    if (gptImage) {
+      const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
+        patternId: params.patternId,
+        outputWidth: tierWidth,
+        outputHeight: tierHeight,
+      });
+      return { provider, imageUrl: gptImage, fallbackImageUrl, overlaySvgDataUrl };
+    }
   }
 
   if (provider === "together") {
     const { url } = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
-    if (url) return { provider, imageUrl: url, fallbackImageUrl };
+    if (url) {
+      const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
+        patternId: params.patternId,
+        outputWidth: Math.min(Math.max(512, tierWidth), 1024),
+        outputHeight: Math.min(Math.max(512, tierHeight), 1024),
+      });
+      return { provider, imageUrl: url, fallbackImageUrl, overlaySvgDataUrl };
+    }
   }
 
   return { provider: "mock", imageUrl: fallbackImageUrl, fallbackImageUrl };

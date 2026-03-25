@@ -77,10 +77,11 @@ export default function GuiaRapidaPage() {
           anterior. Aparecerán <strong>sugerencias para profundizar</strong> opcionales junto al teclado.
         </p>
 
-        <h2>Imprimir, PDF y compartir</h2>
+        <h2>PDF y compartir</h2>
         <p>
-          Cada lectura incluye acciones para imprimir o exportar el chat, y enlaces de compartir si el servidor tiene
-          almacenamiento configurado (Supabase o Upstash).
+          Puedes exportar el hilo actual a PDF (formato claro, sin marcas de Markdown). Los enlaces de compartir lectura
+          o sesión funcionan cuando el servidor tiene Supabase y/o Upstash Redis configurados (persistencia entre
+          instancias y reinicios).
         </p>
 
         <p className="doc-footer-links">

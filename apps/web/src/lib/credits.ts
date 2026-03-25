@@ -1,12 +1,13 @@
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isPersistableUuid } from "@/lib/session-ids";
+import { getUpstashRedis } from "@/lib/rate-limit";
 
 type Tier = "free" | "seeker" | "practitioner" | "master" | "oracle";
 
 const MONTH_MS = 30 * 24 * 60 * 60 * 1000;
 
-const CREDITS_PER_MONTH: Record<Tier, number> = {
-  free: 3,
+export const CREDITS_PER_MONTH: Record<Tier, number> = {
+  free: 2,
   seeker: 60,
   practitioner: 180,
   master: 500,
@@ -20,6 +21,33 @@ interface UserCreditState {
 
 const creditsByKey = new Map<string, UserCreditState>();
 const tierByUser = new Map<string, Tier>();
+
+const CREDIT_REDIS_TTL_SEC = 40 * 24 * 60 * 60;
+
+async function consumeTierCreditRedis(
+  userKey: string,
+  safeTier: Tier,
+  limit: number,
+): Promise<{ allowed: boolean; remaining: number; limit: number } | null> {
+  const r = getUpstashRedis();
+  if (!r) return null;
+  const ym = new Date().toISOString().slice(0, 7);
+  const safeKey = userKey.replace(/[^a-zA-Z0-9:_-]/g, "_").slice(0, 120);
+  const redisKey = `iching:queries:v1:${ym}:${safeKey}:${safeTier}`;
+  try {
+    const used = await r.incr(redisKey);
+    if (used === 1) {
+      await r.expire(redisKey, CREDIT_REDIS_TTL_SEC);
+    }
+    if (used > limit) {
+      await r.decr(redisKey);
+      return { allowed: false, remaining: 0, limit };
+    }
+    return { allowed: true, remaining: limit - used, limit };
+  } catch {
+    return null;
+  }
+}
 
 export async function consumeTierCredit(userKey: string, tier: string): Promise<{
   allowed: boolean;
@@ -74,6 +102,12 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
       .eq("id", row.id);
     return { allowed: true, remaining: total - nextUsed, limit: total };
   }
+
+  const fromRedis = await consumeTierCreditRedis(userKey, safeTier, limit);
+  if (fromRedis) {
+    return fromRedis;
+  }
+
   const current = creditsByKey.get(userKey);
   if (!current || now - current.cycleStartedAt >= MONTH_MS) {
     const next: UserCreditState = { remaining: limit, cycleStartedAt: now };
@@ -85,6 +119,17 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   }
   state.remaining -= 1;
   return { allowed: true, remaining: state.remaining, limit };
+}
+
+export async function getUserBillingTier(userId: string): Promise<Tier> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return "free";
+  const { data } = await supabase.from("query_credits").select("tier").eq("user_id", userId).maybeSingle();
+  const t = data?.tier;
+  if (t === "seeker" || t === "practitioner" || t === "master" || t === "oracle" || t === "free") {
+    return t;
+  }
+  return "free";
 }
 
 export async function upsertUserTier(

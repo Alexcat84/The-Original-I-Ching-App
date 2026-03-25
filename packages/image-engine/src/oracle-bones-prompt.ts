@@ -51,13 +51,13 @@ export function buildOracleBonesImagePrompt(params: {
   const topology = describeOracleBoneCrackTopology(params.patternId);
 
   return [
-    "Photorealistic Shang dynasty (c. 1200 BCE) oracle bone divination still life, museum diorama quality, widescreen 16:9, cinematic torchlight.",
+    "Photorealistic ancient Chinese ritual ambience, museum quality, widescreen 16:9, restrained cinematic lighting.",
     `Surface: ${bone}; subtle knife-work along edges; natural cracks from age separate from fresh pyromantic 兆.`,
     "Pyromancy evidence: paired circular/oval drill pits (鑽) where heat was applied; burnt halos; main divination cracks (兆) propagate upward from pits — not random scratches.",
     topology,
-    "Inscriptions: several vertical columns of stylized oracle bone script (甲骨文) — pictographic, incised, thin angular strokes; characters are ornamental pseudo-glyphs, NOT readable modern Chinese sentences, no Latin letters.",
-    `Altar context echoing mood (${params.verdictLabel}): ${theme.environment}; ${theme.mood}. Include bronze gu or jue silhouette, coarse woven mat, ochre and cinnabar dust.`,
-    "Lighting: harsh warm torch from one side, deep shadows in carved grooves, specular highlights on bone rim.",
-    "Negative: no clean digital gradient backdrops, no neon, no modern objects, no watermark, no logo.",
+    `Background atmosphere (subtle, non-distracting): misty shanshui landscape, distant mountains, calm water, light incense haze; mood ${theme.mood}. Keep background soft and low-contrast so foreground symbol remains clear.`,
+    "Lighting: soft dawn or dusk diffusion, gentle warm-cool balance, no harsh spotlight.",
+    "Hard negative rules: no text, no letters, no numbers, no Chinese characters, no calligraphy, no logos, no watermark, no UI elements.",
+    "Composition rule: keep center area visually calm and uncluttered for symbol overlay.",
   ].join(" ");
 }

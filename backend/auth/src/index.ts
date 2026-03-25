@@ -11,6 +11,21 @@ const DISPOSABLE_EMAIL_DOMAINS = new Set([
   "10minutemail.com",
   "tempmail.com",
   "yopmail.com",
+  "temp-mail.org",
+  "throwaway.email",
+  "trashmail.com",
+  "getnada.com",
+  "maildrop.cc",
+  "sharklasers.com",
+  "grr.la",
+  "dispostable.com",
+  "mintemail.com",
+  "emailondeck.com",
+  "fakeinbox.com",
+  "mailnesia.com",
+  "moakt.com",
+  "tmpmail.org",
+  "guerrillamailblock.com",
 ]);
 
 export const registerStep1Schema = z.object({

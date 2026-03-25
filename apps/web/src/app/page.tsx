@@ -15,6 +15,12 @@ import {
   buildDeepenPrompts,
   type SuggestionConsultSnapshot,
 } from "@/lib/chat-suggestions";
+import { isPersistableUuid } from "@/lib/session-ids";
+import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
+import {
+  drawPdfReadingBlocks,
+  interpretationMarkdownToPdfBlocks,
+} from "@/lib/pdf-chat-export";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -98,11 +104,22 @@ type ChatSessionState = {
   updatedAt: number;
 };
 
+function newClientUuid(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 function createLocalSession(title = "Nueva sesión"): ChatSessionState {
   return {
     localId: `sess-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
     title,
-    sessionId: null,
+    sessionId: newClientUuid(),
     publicSessionId: null,
     thread: [],
     updatedAt: Date.now(),
@@ -146,7 +163,11 @@ function detectInputLanguage(question: string): QueryLanguage {
 export default function HomePage() {
   const locale = DEFAULT_LOCALE;
   const t = commonStrings[locale];
-  const [tier] = useState<Tier>("seeker");
+  const [tier, setTier] = useState<Tier>("free");
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [authReady, setAuthReady] = useState(false);
+  const [authEmail, setAuthEmail] = useState<string | null>(null);
+  const [supabaseConfigError, setSupabaseConfigError] = useState(false);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState<"idle" | "coins" | "bones" | "reading">("idle");
@@ -254,51 +275,83 @@ export default function HomePage() {
     if (!activeThread.length) return;
     const { jsPDF } = await import("jspdf");
     const lang = detectInputLanguage(activeThread.at(-1)?.question ?? question);
-    const title = lang === "en" ? "Authentic I Ching App — Chat Export" : "El autentico I ching app — Exportación de chat";
+    const title =
+      lang === "en"
+        ? "The Original I Ching — Consultation export"
+        : "The Original I Ching — Exportación de consulta";
     const doc = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
     const pageW = doc.internal.pageSize.getWidth();
     const pageH = doc.internal.pageSize.getHeight();
-    const margin = 44;
+    const margin = 48;
     const maxW = pageW - margin * 2;
     let y = margin;
-    const heading = activeSession?.title?.trim() || (lang === "en" ? "Consultation Chat" : "Chat de consulta");
+    const heading = activeSession?.title?.trim() || (lang === "en" ? "Consultation" : "Consulta");
     const idRef = activeThread.at(-1)?.consultationId ?? activeThread[0]?.consultationId ?? "CHAT";
     const fileBase = formatPrintFilename(idRef);
-    doc.setFont("times", "bold");
-    doc.setFontSize(18);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.setTextColor(28, 32, 36);
     doc.text(title, margin, y);
     y += 24;
-    doc.setFont("times", "normal");
-    doc.setFontSize(11);
-    doc.text(`${lang === "en" ? "Thread" : "Hilo"}: ${heading}`, margin, y);
-    y += 18;
-    doc.text(`${lang === "en" ? "Entries" : "Entradas"}: ${activeThread.length}`, margin, y);
-    y += 24;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(88, 96, 104);
+    doc.text(
+      lang === "en"
+        ? `Session: ${heading} · Entries: ${activeThread.length}`
+        : `Hilo: ${heading} · Entradas: ${activeThread.length}`,
+      margin,
+      y,
+    );
+    y += 28;
+    doc.setTextColor(28, 32, 36);
 
     for (let i = 0; i < activeThread.length; i++) {
       const entry = activeThread[i]!;
       const qLabel = lang === "en" ? "Question" : "Pregunta";
       const aLabel = lang === "en" ? "Reading" : "Lectura";
-      const questionLines = doc.splitTextToSize(`${qLabel} ${i + 1}: ${entry.question}`, maxW);
-      const text = stripInterpretationFluff(entry.interpretation);
-      const readingLines = doc.splitTextToSize(`${aLabel} ${i + 1}: ${text}`, maxW);
-      const needed = questionLines.length * 13 + readingLines.length * 13 + 36;
-      if (y + needed > pageH - margin) {
-        doc.addPage();
-        y = margin;
-      }
-      doc.setFont("times", "bold");
-      doc.setFontSize(12);
-      doc.text(questionLines, margin, y);
-      y += questionLines.length * 13 + 8;
-      doc.setFont("times", "normal");
-      doc.setFontSize(11);
-      doc.text(readingLines, margin, y);
-      y += readingLines.length * 13 + 14;
-      doc.setDrawColor(185, 185, 185);
-      doc.line(margin, y, pageW - margin, y);
+      const innerPad = 10;
+      const innerW = maxW - innerPad * 2;
+
+      const ensure = (h: number) => {
+        if (y + h > pageH - margin) {
+          doc.addPage();
+          y = margin;
+        }
+      };
+
+      ensure(48);
+      doc.setFillColor(241, 246, 248);
+      doc.roundedRect(margin, y - 10, maxW, 36, 5, 5, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(70, 110, 120);
+      doc.text(`${qLabel} ${i + 1}`, margin + innerPad, y + 4);
       y += 16;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(11);
+      doc.setTextColor(22, 26, 32);
+      const qLines = doc.splitTextToSize(entry.question, innerW);
+      ensure(qLines.length * 13 + 12);
+      doc.text(qLines, margin + innerPad, y);
+      y += qLines.length * 13 + 20;
+
+      ensure(36);
+      doc.setFillColor(252, 250, 246);
+      doc.roundedRect(margin, y - 8, maxW, 28, 5, 5, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(120, 82, 60);
+      doc.text(`${aLabel} ${i + 1}`, margin + innerPad, y + 2);
+      y += 16;
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(28, 32, 36);
+
+      const blocks = interpretationMarkdownToPdfBlocks(entry.interpretation);
+      y = drawPdfReadingBlocks(doc, blocks, margin + innerPad, innerW, pageH, y);
     }
+
     doc.save(`${fileBase}.pdf`);
   }
 
@@ -329,18 +382,18 @@ export default function HomePage() {
     setConsultPanelOpen(false);
   }, []);
 
-  const sessionsListed = useMemo(() => sessions.filter((s) => s.thread.length > 0), [sessions]);
-
-  useEffect(() => {
-    function afterPrint() {
-      document.body.removeAttribute("data-print-reading");
-      document.querySelectorAll("[data-print-reading-sheet]").forEach((el) => {
-        el.removeAttribute("data-print-reading-sheet");
-      });
+  const signOut = useCallback(async () => {
+    if (!isSupabaseBrowserConfigured()) return;
+    try {
+      await getSupabaseBrowser().auth.signOut();
+    } catch {
+      // ignore
     }
-    window.addEventListener("afterprint", afterPrint);
-    return () => window.removeEventListener("afterprint", afterPrint);
+    setAccessToken(null);
+    setAuthEmail(null);
   }, []);
+
+  const sessionsListed = useMemo(() => sessions.filter((s) => s.thread.length > 0), [sessions]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -390,6 +443,50 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (!isSupabaseBrowserConfigured()) {
+      setSupabaseConfigError(true);
+      setAuthReady(true);
+      return;
+    }
+    let cancelled = false;
+    const sb = getSupabaseBrowser();
+    void sb.auth.getSession().then(({ data: { session } }) => {
+      if (cancelled) return;
+      setAccessToken(session?.access_token ?? null);
+      setAuthEmail(session?.user?.email ?? null);
+      setAuthReady(true);
+    });
+    const { data: sub } = sb.auth.onAuthStateChange((_event, session) => {
+      setAccessToken(session?.access_token ?? null);
+      setAuthEmail(session?.user?.email ?? null);
+    });
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!accessToken) {
+      setTier("free");
+      return;
+    }
+    let cancelled = false;
+    void fetch("/api/account/me", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j: { tier?: Tier } | null) => {
+        if (cancelled || !j?.tier) return;
+        setTier(j.tier);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [accessToken]);
+
+  useEffect(() => {
     async function loadPublicConfig() {
       try {
         const res = await fetch("/api/admin/public-config", { method: "GET" });
@@ -419,6 +516,7 @@ export default function HomePage() {
           const normalized = parsed.sessions.map((s) => ({
             ...s,
             publicSessionId: s.publicSessionId ?? null,
+            sessionId: isPersistableUuid(s.sessionId) ? s.sessionId : newClientUuid(),
           }));
           const withMessages = normalized.filter((s) => s.thread.length > 0);
           if (withMessages.length === 0) {
@@ -445,7 +543,7 @@ export default function HomePage() {
           };
           const migrated = createLocalSession(parsed.sessionTitle ?? "Consulta en progreso");
           migrated.thread = parsed.thread ?? [];
-          migrated.sessionId = parsed.sessionId ?? null;
+          migrated.sessionId = isPersistableUuid(parsed.sessionId) ? parsed.sessionId : newClientUuid();
           migrated.publicSessionId = null;
           nextSessions = [migrated];
           nextActive = migrated.localId;
@@ -526,6 +624,10 @@ export default function HomePage() {
       setError("Escribe el cargo positivo (una afirmación clara) para consultar los huesos.");
       return;
     }
+    if (!accessToken) {
+      setError("Inicia sesión para consultar.");
+      return;
+    }
     setLoading(true);
     setError(null);
     const showRitualAnimation =
@@ -537,14 +639,21 @@ export default function HomePage() {
       ? window.setInterval(() => setCoinTick((t0) => t0 + 1), 140)
       : null;
     try {
+      let sessionIdForRequest = activeSession.sessionId;
+      if (!isPersistableUuid(sessionIdForRequest)) {
+        sessionIdForRequest = newClientUuid();
+        updateActiveSession((c) => ({ ...c, sessionId: sessionIdForRequest }));
+      }
       const res = await fetch("/api/consult", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({
           question: question.trim() || "Silent consultation",
           language: detectInputLanguage(question),
-          tier,
-          sessionId: activeSession.sessionId,
+          sessionId: sessionIdForRequest,
           sessionTitle: activeSession.title,
           isDeepening: activeThread.length > 0,
           responseMode,
@@ -596,6 +705,11 @@ export default function HomePage() {
         return;
       }
       if (!res.ok) {
+        if (res.status === 401) {
+          setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
+          void signOut();
+          return;
+        }
         const detail =
           typeof data.message === "string" && data.message
             ? ` ${data.message}`
@@ -654,6 +768,30 @@ export default function HomePage() {
   return (
     <OracleShell title={t.appTitle} variant="chat">
       <div className="oracle-chat-app">
+        {authReady && supabaseConfigError ? (
+          <div className="auth-gate-overlay" role="alert">
+            <div className="auth-gate-card">
+              <h2 className="auth-gate-title">Configuración incompleta</h2>
+              <p className="auth-gate-text">
+                Faltan <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> y{" "}
+                <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> en el entorno del cliente.
+              </p>
+            </div>
+          </div>
+        ) : null}
+        {authReady && !supabaseConfigError && !accessToken ? (
+          <div className="auth-gate-overlay">
+            <div className="auth-gate-card">
+              <h2 className="auth-gate-title">Cuenta requerida</h2>
+              <p className="auth-gate-text">
+                Para usar el oráculo necesitas registrarte con un correo válido (confirmado) o iniciar sesión con Google.
+              </p>
+              <Link href="/login" className="auth-gate-cta">
+                Iniciar sesión o registrarse
+              </Link>
+            </div>
+          </div>
+        ) : null}
         {chatsOpen ? (
           <div
             className="chat-drawer-backdrop"
@@ -754,6 +892,16 @@ export default function HomePage() {
               />
             </div>
             <div className="chat-bar-trail">
+              {accessToken && authEmail ? (
+                <span className="chat-auth-email" title={authEmail}>
+                  {authEmail.length > 22 ? `${authEmail.slice(0, 20)}…` : authEmail}
+                </span>
+              ) : null}
+              {accessToken ? (
+                <button type="button" className="chat-icon-btn chat-sign-out-btn" onClick={() => void signOut()}>
+                  Salir
+                </button>
+              ) : null}
               <ThemeToggle />
             </div>
           </div>
@@ -861,8 +1009,22 @@ export default function HomePage() {
                         <p className="meta-line">
                           <strong>Cargo −:</strong> {entry.oracleBones.negativeCharge}
                         </p>
-                        <div className="crack-visual-wrap">
-                          <CrackPatternGraphic patternId={entry.oracleBones.patternId} />
+                        <div className="bones-background-pane">
+                          <ReadingOracleImage
+                            imageUrl={entry.imageUrl}
+                            imageFallbackUrl={entry.imageFallbackUrl}
+                            downloadBasename={`bones-${entry.consultationId.replace(/-/g, "").slice(0, 12)}`}
+                          />
+                          {entry.imageUrl.startsWith("data:image/svg+xml") ? (
+                            <div className="bones-symbol-overlay" aria-hidden="true">
+                              <CrackPatternGraphic
+                                patternId={entry.oracleBones.patternId}
+                                variant="overlay"
+                              />
+                            </div>
+                          ) : null}
+                        </div>
+                        <div className="crack-visual-wrap crack-visual-wrap--summary">
                           <span
                             className={`verdict-pill ${
                               entry.oracleBones.verdict === "silent"
@@ -889,19 +1051,6 @@ export default function HomePage() {
                     </div>
                   ) : null}
                   <div className="session-actions">
-                    <button
-                      type="button"
-                      className="secondary-btn"
-                      onClick={() => {
-                        const el = document.getElementById(`reading-sheet-${entry.consultationId}`);
-                        el?.setAttribute("data-print-reading-sheet", "true");
-                        document.body.setAttribute("data-print-reading", "1");
-                        document.title = formatPrintFilename(entry.consultationId);
-                        window.print();
-                      }}
-                    >
-                      Imprimir / PDF
-                    </button>
                     <button type="button" className="secondary-btn" onClick={() => void exportChatPdf()}>
                       Exportar chat PDF
                     </button>
@@ -967,10 +1116,13 @@ export default function HomePage() {
                   {shuffledCoins.map((coin) => (
                     <div
                       key={coin.id}
-                      className={`coin ${coin.flip ? "coin-heads" : "coin-tails"}`}
+                      className={`coin ${coin.flip ? "coin-heads" : "coin-tails"} coin-tone-${((coin.id - 1) % 5) + 1}`}
                       style={{ animationDelay: `${coin.delay}ms` }}
                     >
-                      {coin.flip ? "☯" : "◍"}
+                      <span className="yin-yang" aria-hidden="true">
+                        <span className="dot dot-light" />
+                        <span className="dot dot-dark" />
+                      </span>
                     </div>
                   ))}
                 </div>

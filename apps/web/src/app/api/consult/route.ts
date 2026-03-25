@@ -10,12 +10,15 @@ import {
 import { performCast } from "@iching-oracle/iching-engine";
 import { buildImagePrompt, buildOracleBonesImagePrompt } from "@iching-oracle/image-engine";
 import { defaultNegativeCharge, performOracleBonesCast } from "@iching-oracle/oracle-bones-engine";
+import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { buildImageAsset, buildOracleBonesImageAsset, type ImageProvider } from "@/lib/image-provider";
 import { getAdminConfig } from "@/lib/admin-config";
-import { consumeTierCredit } from "@/lib/credits";
+import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
+import { consumeTierCredit, getUserBillingTier } from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { rateLimitByKey } from "@/lib/rate-limit";
+import { isPersistableUuid } from "@/lib/session-ids";
 import { isSharingPersistenceAvailable, upsertSessionAndConsultation } from "@/lib/session-store";
 
 export const runtime = "nodejs";
@@ -86,7 +89,6 @@ export async function POST(req: Request) {
     question?: string;
     language?: string;
     tier?: string;
-    userId?: string | null;
     sessionId?: string | null;
     isDeepening?: boolean;
     responseMode?: "directo" | "ritual" | "profundizar";
@@ -110,9 +112,22 @@ export async function POST(req: Request) {
   try {
   const question = typeof body.question === "string" ? body.question : "";
   const language = typeof body.language === "string" ? body.language : "es";
-  const tier = typeof body.tier === "string" ? body.tier : "free";
-  const userId = body.userId ?? null;
   const oracleMode: OracleType = body.oracleMode === "oracle_bones" ? "oracle_bones" : "iching";
+
+  const authUser = await getAuthenticatedUser(req);
+  if (!authUser) {
+    return NextResponse.json(
+      {
+        error: "auth_required",
+        message:
+          "Inicia sesión con un correo verificado o con Google. Crea cuenta en /login si aún no tienes una.",
+      },
+      { status: 401 },
+    );
+  }
+  const authedUserId = authUser.userId;
+  const tierResolved = await getUserBillingTier(authedUserId);
+  const tierKey = (tierResolved in CONTEXT_LIMITS ? tierResolved : "free") as TierKey;
 
   const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
   const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
@@ -124,23 +139,26 @@ export async function POST(req: Request) {
   if (!rl.ok) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
-  const tierKey = (tier as TierKey) in CONTEXT_LIMITS ? (tier as TierKey) : "free";
   if (["practitioner", "master", "oracle"].includes(tierKey)) {
     const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
     const supabase = getSupabaseAdmin();
-    if (supabase && userId) {
+    if (supabase) {
       const { data: user } = await supabase
         .from("users")
         .select("two_factor_enabled")
-        .eq("id", userId)
+        .eq("id", authedUserId)
         .maybeSingle();
       if (!user?.two_factor_enabled) {
         return NextResponse.json({ error: "two_factor_required" }, { status: 403 });
       }
     }
   }
-  const sessionId = body.sessionId ?? `local-${Date.now().toString(36)}`;
-  const credit = await consumeTierCredit(sessionId, tier);
+  const sessionId =
+    typeof body.sessionId === "string" && isPersistableUuid(body.sessionId)
+      ? body.sessionId
+      : randomUUID();
+
+  const credit = await consumeTierCredit(authedUserId, tierResolved);
   if (!credit.allowed) {
     return NextResponse.json(
       { error: "credits_exhausted", message: "No credits left for this cycle." },
@@ -184,7 +202,7 @@ export async function POST(req: Request) {
 
     const { text: interpretation, category } = await generateOracleBonesInterpretation(
       bonesCast,
-      tier,
+      tierResolved,
       context,
       responseMode,
       language,
@@ -201,11 +219,11 @@ export async function POST(req: Request) {
       patternId: bonesCast.patternId,
       verdict: bonesCast.verdict,
       medium: bonesCast.medium,
-      tier,
+      tier: tierResolved,
       providerOverride: imageProviderOverride,
       consultationId: bonesCast.id,
     });
-    image = await finalizeReadingImages(image, tier);
+    image = await finalizeReadingImages(image, tierResolved);
 
     const oracleBonesSnapshot: OracleBonesHistorySnapshot = {
       pattern_id: bonesCast.patternId,
@@ -220,6 +238,7 @@ export async function POST(req: Request) {
     const maxDepth = Math.max(1, CONTEXT_LIMITS[tierKey].sessionDepth);
     const canDeepen = nextPosition < maxDepth;
     const sharing = await upsertSessionAndConsultation({
+      userId: authedUserId,
       sessionId,
       sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
       language,
@@ -298,7 +317,7 @@ export async function POST(req: Request) {
 
   const { text: interpretation, category } = await generateInterpretation(
     castResult,
-    tier,
+    tierResolved,
     context,
     responseMode,
   );
@@ -332,16 +351,17 @@ export async function POST(req: Request) {
       value: l.value,
       isChanging: l.isChanging,
     })),
-    tier,
+    tier: tierResolved,
     providerOverride: imageProviderOverride,
     consultationId: castResult.id,
   });
-  image = await finalizeReadingImages(image, tier);
+  image = await finalizeReadingImages(image, tierResolved);
 
   const nextPosition = previousRows.length + 1;
   const maxDepth = Math.max(1, CONTEXT_LIMITS[tierKey].sessionDepth);
   const canDeepen = nextPosition < maxDepth;
   const sharing = await upsertSessionAndConsultation({
+    userId: authedUserId,
     sessionId,
     sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
     language,

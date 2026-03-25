@@ -16,11 +16,11 @@ Do not append generic legal or symbolic-vs-prediction disclaimers; the app handl
 
 /** max_tokens by product tier; model = getAnthropicModelId(env) for every tier. */
 const MAX_TOKENS_BY_TIER = {
-  free: 500,
-  seeker: 650,
-  practitioner: 800,
-  master: 950,
-  oracle: 1100,
+  free: 900,
+  seeker: 1100,
+  practitioner: 1400,
+  master: 1800,
+  oracle: 2048,
 } as const;
 
 function getLanguageName(language: string): string {
@@ -127,8 +127,10 @@ export async function generateOracleBonesInterpretation(
         system: systemPrompt,
         messages: [{ role: "user", content: userContent }],
       });
-      const block = response.content[0];
-      const fullText = block?.type === "text" ? block.text : "";
+      const fullText = response.content
+        .filter((b) => b.type === "text")
+        .map((b) => (b as { text: string }).text)
+        .join("");
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
       const cleanText = stripInterpretationFluff(

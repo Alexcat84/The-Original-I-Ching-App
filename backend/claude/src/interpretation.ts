@@ -23,13 +23,17 @@ ABSOLUTE RULES:
 9. ANTI-REPETITION: Each concrete point (a line's counsel, a judgment phrase, a practical recommendation) appears at most once in the entire answer. Do not restate the same advice across sections with different wording.
 10. GROUNDING: Every interpretive claim must tether to the supplied judgment, Image, or line text—paraphrase or quote in blockquote, then bridge to the question. Avoid vague uplift that could apply to any hexagram.`;
 
-/** max_tokens by product tier; model = getAnthropicModelId(env) for every tier. */
+/**
+ * Output budget by tier. Scroll-style I Ching answers with 5 sections + quotes
+ * routinely need 900–1800+ tokens in Spanish; lower ceilings cut off mid-sentence.
+ * Capped at 4096 for broad Anthropic model compatibility.
+ */
 const MAX_TOKENS_BY_TIER = {
-  free: 520,
-  seeker: 780,
-  practitioner: 1200,
-  master: 1600,
-  oracle: 2000,
+  free: 2048,
+  seeker: 3072,
+  practitioner: 4096,
+  master: 4096,
+  oracle: 4096,
 } as const;
 
 function getLanguageName(language: string): string {
@@ -157,6 +161,7 @@ INSTRUCTIONS:
 - ${modeInstruction}
 - Length: ${wordCounts[tier] ?? wordCounts.free} words
 - If source excerpts arrive in a different language (often English), TRANSLATE them into the response language before quoting. Do not leave mixed-language fragments.
+- CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
 - Respond in ${getLanguageName(language)}
 `.trim();
 }
@@ -191,8 +196,16 @@ export async function generateInterpretation(
         messages: [{ role: "user", content: userContent }],
       });
 
-      const block = response.content[0];
-      const fullText = block?.type === "text" ? block.text : "";
+      const fullText = response.content
+        .filter((b) => b.type === "text")
+        .map((b) => (b as { text: string }).text)
+        .join("");
+      if (response.stop_reason === "max_tokens") {
+        console.warn("[generateInterpretation] hit max_tokens (output may be truncated)", {
+          tier,
+          maxTokens,
+        });
+      }
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
       const cleanText = stripInterpretationFluff(

@@ -309,10 +309,11 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
   const H = 768;
   const cx = W / 2;
   const sorted = [...params.lines].sort((a, b) => a.position - b.position);
-  const lineGap = 56;
-  const baseY = 520;
-  const barH = 20;
-  const halfW = 220;
+  const lineGap = 58;
+  const baseY = 528;
+  const barH = 28;
+  const halfW = 244;
+  const yinGap = 60;
   const outputWidth = params.outputWidth ?? W;
   const outputHeight = params.outputHeight ?? H;
 
@@ -322,20 +323,19 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
     const y = baseY - i * lineGap;
     const yang = isYang(line.value);
     const gOpen = line.isChanging ? `<g filter="url(#goldGlow)">` : `<g>`;
-    const fill = line.isChanging ? "#e8c547" : "#14120f";
-    const stroke = line.isChanging ? "#fff6d0" : "#0a0908";
-    const sw = line.isChanging ? 2.2 : 1.5;
+    const fill = line.isChanging ? "#c9a010" : "#4a2c18";
+    const stroke = line.isChanging ? "#fffef8" : "#faf4eb";
+    const sw = line.isChanging ? 4.2 : 3.5;
 
     if (yang) {
       lineEls.push(
-        `${gOpen}<rect x="${cx - halfW}" y="${y}" width="${halfW * 2}" height="${barH}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/></g>`,
+        `${gOpen}<rect x="${cx - halfW}" y="${y}" width="${halfW * 2}" height="${barH}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/></g>`,
       );
     } else {
-      const gap = 56;
-      const segW = halfW - gap / 2;
+      const segW = halfW - yinGap / 2;
       lineEls.push(
-        `${gOpen}<rect x="${cx - halfW}" y="${y}" width="${segW}" height="${barH}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-<rect x="${cx + gap / 2}" y="${y}" width="${segW}" height="${barH}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/></g>`,
+        `${gOpen}<rect x="${cx - halfW}" y="${y}" width="${segW}" height="${barH}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+<rect x="${cx + yinGap / 2}" y="${y}" width="${segW}" height="${barH}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/></g>`,
       );
     }
   }
@@ -353,7 +353,7 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${outputWidth}" height="${outputHeight}" viewBox="0 0 ${W} ${H}">
 <defs>
   <filter id="goldGlow" x="-80%" y="-80%" width="260%" height="260%">
-    <feGaussianBlur stdDeviation="6" result="b"/>
+    <feGaussianBlur stdDeviation="7" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
 </defs>
@@ -362,9 +362,9 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
 <rect x="1188" y="48" width="58" height="58" rx="5" fill="none" stroke="rgba(168,52,52,0.5)" stroke-width="2"/>
 <text x="1217" y="88" text-anchor="middle" fill="rgba(168,52,52,0.48)" font-size="30" font-family="serif">易</text>
 <!-- primary titles: large, centered -->
-<text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" font-size="92" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
-<text x="${cx}" y="178" text-anchor="middle" fill="#3d3830" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
-${subPy ? `<text x="${cx}" y="212" text-anchor="middle" fill="rgba(61,56,48,0.65)" font-size="22" font-family="Georgia, serif" font-style="italic">${subPy}</text>` : ""}
+<text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
+<text x="${cx}" y="178" text-anchor="middle" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
+${subPy ? `<text x="${cx}" y="212" text-anchor="middle" fill="rgba(45,40,36,0.88)" stroke="rgba(255,250,245,0.75)" stroke-width="2" paint-order="stroke fill" font-size="22" font-family="Georgia, serif" font-style="italic">${subPy}</text>` : ""}
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;

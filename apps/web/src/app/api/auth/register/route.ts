@@ -49,6 +49,13 @@ export async function POST(req: Request) {
   if (created.error) {
     return NextResponse.json({ error: "create_user_failed", message: created.error.message }, { status: 400 });
   }
-  return NextResponse.json({ ok: true, userId: created.data.user?.id ?? null });
+  const uid = created.data.user?.id;
+  if (uid) {
+    await supabase.from("users").upsert(
+      { id: uid, email: parsed.data.email.toLowerCase() },
+      { onConflict: "id" },
+    );
+  }
+  return NextResponse.json({ ok: true, userId: uid ?? null });
 }
 

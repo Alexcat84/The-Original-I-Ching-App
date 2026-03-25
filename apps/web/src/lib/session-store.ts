@@ -318,6 +318,8 @@ export async function getSessionByPublicId(publicId: string): Promise<{
 }
 
 export async function upsertSessionAndConsultation(params: {
+  /** Required when persisting to Supabase (FK + RLS). */
+  userId: string;
   sessionId: string;
   sessionTitle: string;
   language: string;
@@ -354,6 +356,7 @@ export async function upsertSessionAndConsultation(params: {
       .from("consultation_sessions")
       .insert({
         id: params.sessionId,
+        user_id: params.userId,
         title: params.sessionTitle,
         theme_category: params.category,
         language: params.language,
@@ -367,6 +370,7 @@ export async function upsertSessionAndConsultation(params: {
     .from("consultations")
     .insert({
       id: params.consultation.consultationId,
+      user_id: params.userId,
       session_id: params.consultation.sessionId,
       session_position: params.consultation.sessionPosition,
       question: params.consultation.question,

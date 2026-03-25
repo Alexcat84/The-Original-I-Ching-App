@@ -10,6 +10,11 @@ function redis(): Redis | null {
   return redisClient;
 }
 
+/** Shared Upstash client for rate limits, monthly credits, and session KV (see session-store). */
+export function getUpstashRedis(): Redis | null {
+  return redis();
+}
+
 const inMemoryBucket = new Map<string, { count: number; resetAt: number }>();
 
 export async function rateLimitByKey(params: {
