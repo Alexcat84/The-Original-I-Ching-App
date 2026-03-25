@@ -39,8 +39,9 @@ export default function DocumentacionIchingPage() {
         <h2>Modo 甲骨 (huesos)</h2>
         <p>
           Es un módulo aparte, inspirado en la <strong>piromancia shang</strong>: grietas 兆 desde puntos de perforación
-          y lectura de sí/no sobre cargas enfrentadas. Los dibujos en pantalla y las imágenes generadas son
-          estilizaciones informadas por la literatura arqueológica, no reproducciones de piezas concretas.
+          y lectura de sí/no sobre cargas enfrentadas. Solo escribes el cargo afirmativo; el opuesto se deriva en el
+          servidor para emparejar la pregunta. Los dibujos en pantalla y las imágenes generadas son estilizaciones
+          informadas por la literatura arqueológica, no reproducciones de piezas concretas.
         </p>
 
         <h2>Más lectura</h2>

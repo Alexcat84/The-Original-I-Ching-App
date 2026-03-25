@@ -37,18 +37,38 @@ export default function GuiaRapidaPage() {
             texto en la línea de Wilhelm/Baynes y comentarios clásicos.
           </li>
           <li>
-            <strong>Huesos 甲骨</strong> — Formulas un <em>cargo positivo</em> (afirmación) y, si quieres, un{" "}
-            <em>cargo negativo</em>. El oráculo devuelve un veredicto simbólico y un patrón de grieta estilizado. El
-            soporte (plastrón / escápula) solo afecta la imagen generada.
-          </li>
-          <li>
-            <strong>Modo de lectura</strong> — <em>Directo</em> va al mensaje; <em>Ritual</em> incluye pasos visuales
-            (monedas o calor sobre el hueso); <em>Profundizar</em> prepara el tono para seguir el hilo con más
-            contexto.
+            <strong>Huesos 甲骨</strong> — Escribes un <em>cargo positivo</em> (afirmación). El servidor formula el
+            cargo opuesto automáticamente para la tirada sí/no. Veredicto simbólico y patrón de grieta estilizado.
           </li>
         </ul>
+
+        <h2 id="modos-lectura">Directo, ritual y profundizar (qué cambia de verdad)</h2>
         <p>
-          En la cabecera verás siempre un resumen de lo activo: oráculo, lectura y, en huesos, el soporte elegido.
+          Los tres modos alteran la <strong>forma del texto</strong> que genera el modelo (secciones del markdown), no
+          el sorteo del hexagrama ni la lógica de mutación. Por eso antes podía parecer “lo mismo”: la diferencia está
+          en la estructura de la interpretación.
+        </p>
+        <ul>
+          <li>
+            <strong>Ritual</strong> — Respuesta tipo <em>pergamino</em>: varias partes (encuadre, juicio con cita,
+            líneas en movimiento, 之卦 si aplica, síntesis). Es la experiencia más completa y ceremonial en texto.
+          </li>
+          <li>
+            <strong>Directo</strong> — Solo <strong>dos secciones</strong> tituladas (lectura directa + lectura
+            simbólica). Más corto y escaneable. Además, en la app <strong>no se muestra la animación</strong> de monedas
+            ni la de calor en el hueso: la consulta va en línea recta mientras se genera la respuesta.
+          </li>
+          <li>
+            <strong>Profundizar</strong> — Pensado para la <strong>segunda (y siguientes) consultas del mismo hilo</strong>
+            : dos secciones enfocadas en continuidad respecto a la tirada anterior y en lo nuevo que aporta esta tirada.
+            Si es la primera consulta del hilo, el tono sigue siendo “profundizar” pero sin contraste explícito con un
+            mensaje previo.
+          </li>
+        </ul>
+
+        <p>
+          Las estadísticas (racha, consultas hoy, chats con mensajes) están en el menú <strong>Chats</strong>, no en la
+          cabecera principal.
         </p>
 
         <h2>Profundizar en el mismo hilo</h2>

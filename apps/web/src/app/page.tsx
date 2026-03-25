@@ -18,6 +18,9 @@ import {
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+/** Default bone surface for API when UI no longer exposes the selector. */
+const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
+
 type ApiLine = {
   position: 1 | 2 | 3 | 4 | 5 | 6;
   value: 6 | 7 | 8 | 9;
@@ -149,13 +152,10 @@ export default function HomePage() {
   const [phase, setPhase] = useState<"idle" | "coins" | "bones" | "reading">("idle");
   const [coinTick, setCoinTick] = useState(0);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
-  const [bonesNegative, setBonesNegative] = useState("");
-  const [bonesMedium, setBonesMedium] = useState<"turtle" | "ox">("turtle");
   const [sessions, setSessions] = useState<ChatSessionState[]>(() => [createLocalSession("Consulta en progreso")]);
   const [activeSessionLocalId, setActiveSessionLocalId] = useState<string | null>(null);
   const [responseMode, setResponseMode] = useState<ResponseMode>("ritual");
   const [error, setError] = useState<string | null>(null);
-  const [showInsights, setShowInsights] = useState(true);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -309,13 +309,15 @@ export default function HomePage() {
 
   const startNewSession = useCallback(() => {
     const created = createLocalSession("Nueva sesión");
-    setSessions((prev) => [created, ...prev]);
+    setSessions((prev) => [created, ...prev.filter((s) => s.thread.length > 0)]);
     setActiveSessionLocalId(created.localId);
     setQuestion("");
     setError(null);
     setChatsOpen(false);
     setConsultPanelOpen(false);
   }, []);
+
+  const sessionsListed = useMemo(() => sessions.filter((s) => s.thread.length > 0), [sessions]);
 
   useEffect(() => {
     function afterPrint() {
@@ -383,12 +385,10 @@ export default function HomePage() {
           ok: boolean;
           config?: {
             responseModeDefault?: ResponseMode;
-            insightsDefault?: boolean;
           };
         };
         if (!res.ok || !data.ok || !data.config) return;
         if (data.config.responseModeDefault) setResponseMode(data.config.responseModeDefault);
-        if (typeof data.config.insightsDefault === "boolean") setShowInsights(data.config.insightsDefault);
       } catch {
         // ignore config load errors
       }
@@ -402,13 +402,24 @@ export default function HomePage() {
       if (sessionsRaw) {
         const parsed = JSON.parse(sessionsRaw) as { sessions: ChatSessionState[]; activeSessionLocalId: string | null };
         if (parsed.sessions?.length) {
-          setSessions(
-            parsed.sessions.map((s) => ({
-              ...s,
-              publicSessionId: s.publicSessionId ?? null,
-            })),
-          );
-          setActiveSessionLocalId(parsed.activeSessionLocalId ?? parsed.sessions[0]?.localId ?? null);
+          const normalized = parsed.sessions.map((s) => ({
+            ...s,
+            publicSessionId: s.publicSessionId ?? null,
+          }));
+          const withMessages = normalized.filter((s) => s.thread.length > 0);
+          let nextSessions: ChatSessionState[];
+          let nextActive: string | null = parsed.activeSessionLocalId;
+          if (withMessages.length === 0) {
+            nextSessions = [createLocalSession("Nueva sesión")];
+            nextActive = nextSessions[0]!.localId;
+          } else if (nextActive && withMessages.some((s) => s.localId === nextActive)) {
+            nextSessions = withMessages;
+          } else {
+            nextSessions = withMessages;
+            nextActive = withMessages[0]!.localId;
+          }
+          setSessions(nextSessions);
+          setActiveSessionLocalId(nextActive);
           return;
         }
       }
@@ -432,9 +443,11 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    const activeId = activeSession?.localId ?? null;
+    const storable = sessions.filter((s) => s.thread.length > 0 || s.localId === activeId);
     const payload = JSON.stringify({
-      sessions,
-      activeSessionLocalId: activeSession?.localId ?? null,
+      sessions: storable,
+      activeSessionLocalId: activeId,
     });
     localStorage.setItem("iching_sessions_v2", payload);
   }, [sessions, activeSession]);
@@ -456,9 +469,14 @@ export default function HomePage() {
     }
     setLoading(true);
     setError(null);
-    setPhase(oracleMode === "oracle_bones" ? "bones" : "coins");
+    const showRitualAnimation =
+      (oracleMode === "iching" && responseMode !== "directo") ||
+      (oracleMode === "oracle_bones" && responseMode !== "directo");
+    setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
     let ok = false;
-    const ticker = window.setInterval(() => setCoinTick((t0) => t0 + 1), 140);
+    const ticker = showRitualAnimation
+      ? window.setInterval(() => setCoinTick((t0) => t0 + 1), 140)
+      : null;
     try {
       const res = await fetch("/api/consult", {
         method: "POST",
@@ -476,8 +494,8 @@ export default function HomePage() {
             oracleMode === "oracle_bones"
               ? {
                   positiveCharge: question.trim(),
-                  negativeCharge: bonesNegative.trim() || undefined,
-                  medium: bonesMedium,
+                  negativeCharge: undefined,
+                  medium: DEFAULT_BONES_MEDIUM,
                 }
               : undefined,
           history: activeThread.map((item) => ({
@@ -511,7 +529,7 @@ export default function HomePage() {
       if (typeof data.sharingPersisted === "boolean") {
         setSharingPersisted(data.sharingPersisted);
       }
-      await new Promise((r) => window.setTimeout(r, 900));
+      await new Promise((r) => window.setTimeout(r, showRitualAnimation ? 900 : 0));
       const item: ConsultationItem = {
         ...data,
         oracleType: data.oracleType ?? "iching",
@@ -544,7 +562,7 @@ export default function HomePage() {
     } catch (e) {
       setError(e instanceof Error ? e.message : "Error");
     } finally {
-      window.clearInterval(ticker);
+      if (ticker !== null) window.clearInterval(ticker);
       setLoading(false);
       if (!ok) {
         setPhase("idle");
@@ -585,13 +603,33 @@ export default function HomePage() {
               +
             </button>
           </div>
-          <div className="sidebar-presence">
-            <p>Estado del oráculo</p>
-            <strong>{loading ? "Canalizando…" : "Presencia serena"}</strong>
-            <small>{loading ? "Lanzando monedas y abriendo patrón" : "Listo para una nueva pregunta"}</small>
+          <div className="sidebar-stats" aria-label="Estadísticas de uso">
+            <p className="sidebar-stats-label">Tu actividad</p>
+            <div className="sidebar-stats-grid">
+              <div className="sidebar-stat-card">
+                <span className="sidebar-stat-value">{streakDays}</span>
+                <span className="sidebar-stat-key">Racha (días)</span>
+              </div>
+              <div className="sidebar-stat-card">
+                <span className="sidebar-stat-value">{dailyCount}</span>
+                <span className="sidebar-stat-key">Consultas hoy</span>
+              </div>
+              <div className="sidebar-stat-card">
+                <span className="sidebar-stat-value">{sessionsListed.length}</span>
+                <span className="sidebar-stat-key">Chats con mensajes</span>
+              </div>
+            </div>
+            {loading ? (
+              <p className="sidebar-stats-hint">Canalizando consulta…</p>
+            ) : (
+              <p className="sidebar-stats-hint">Solo se listan hilos con al menos una lectura.</p>
+            )}
           </div>
           <div className="chat-drawer-list">
-            {[...sessions]
+            {sessionsListed.length === 0 ? (
+              <p className="chat-drawer-empty">Aún no hay conversaciones guardadas. Envía una consulta para verla aquí.</p>
+            ) : null}
+            {[...sessionsListed]
               .sort((a, b) => b.updatedAt - a.updatedAt)
               .map((session) => (
                 <button
@@ -635,17 +673,18 @@ export default function HomePage() {
                 Nueva sesión
               </button>
             </div>
-            <h1 className="chat-title-display">{t.appTitle}</h1>
+            <div className="chat-title-logo-wrap">
+              {/* eslint-disable-next-line @next/next/no-img-element -- local brand asset, responsive CSS sizing */}
+              <img
+                src="/brand/logo.png"
+                alt="The Original I Ching App — 真正的易经"
+                className="chat-header-logo"
+                width={268}
+                height={78}
+                decoding="async"
+              />
+            </div>
             <div className="chat-bar-trail">
-              <button
-                type="button"
-                className={`chat-icon-btn chat-icon-btn--stats${showInsights ? " chat-icon-btn--stats-on" : ""}`}
-                onClick={() => setShowInsights((v) => !v)}
-                aria-pressed={showInsights}
-                aria-label={showInsights ? "Ocultar estadísticas" : "Mostrar estadísticas"}
-              >
-                Stats
-              </button>
               <ThemeToggle />
             </div>
           </div>
@@ -661,35 +700,60 @@ export default function HomePage() {
                   : "Grietas 兆 (estilo Shang) · sí / no sobre cargos"}
               </p>
             </div>
-            <div className="oracle-status-strip" aria-label="Configuración activa de la consulta">
-              <span
-                className={`oracle-status-pill oracle-status-pill--oracle oracle-status-pill--${oracleMode === "iching" ? "iching" : "bones"}`}
+            <div className="oracle-mode-showcase" aria-label="Configuración activa de la consulta">
+              <div
+                className={`oracle-mode-showcase-primary oracle-mode-showcase-primary--${oracleMode === "iching" ? "iching" : "bones"}`}
               >
-                <span className="oracle-status-pill-title">
-                  {oracleMode === "iching" ? "I Ching · 易" : "甲骨 · huesos"}
-                </span>
-                {oracleMode === "oracle_bones" ? (
-                  <span className="oracle-status-pill-sub">
-                    {bonesMedium === "turtle" ? "Plastrón tortuga" : "Escápula buey"}
-                  </span>
-                ) : (
-                  <span className="oracle-status-pill-sub">Seis líneas · mutación clásica</span>
-                )}
-              </span>
-              <span className="oracle-status-pill oracle-status-pill--response" title="Modo de lectura del texto">
-                <span className="oracle-status-pill-kicker">Lectura</span>
-                <span className="oracle-status-pill-strong">{responseModeLabelEs(responseMode)}</span>
-              </span>
-              {oracleMode === "oracle_bones" ? (
-                <span className="oracle-status-pill oracle-status-pill--hint">5 patrones de grieta · cargas</span>
-              ) : null}
-              {showInsights ? (
-                <div className="insights-strip insights-strip--inline">
-                  <span>Racha {streakDays}d</span>
-                  <span>Hoy {dailyCount}</span>
-                  <span>{sessions.length} chats</span>
+                <div className="oracle-mode-showcase-art" aria-hidden>
+                  {oracleMode === "iching" ? (
+                    <svg className="mode-art-svg mode-art-svg--coins" viewBox="0 0 88 72" width="88" height="72">
+                      <defs>
+                        <linearGradient id="coinG" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stopColor="#c9a227" />
+                          <stop offset="100%" stopColor="#8b6914" />
+                        </linearGradient>
+                      </defs>
+                      <circle cx="44" cy="22" r="18" fill="url(#coinG)" opacity="0.92" />
+                      <circle cx="44" cy="22" r="12" fill="none" stroke="#3d2810" strokeWidth="1.2" />
+                      <rect x="40" y="18" width="8" height="8" fill="#3d2810" opacity="0.85" />
+                      <circle cx="30" cy="48" r="16" fill="url(#coinG)" opacity="0.75" />
+                      <circle cx="58" cy="48" r="16" fill="url(#coinG)" opacity="0.75" />
+                    </svg>
+                  ) : (
+                    <svg className="mode-art-svg mode-art-svg--bone" viewBox="0 0 88 72" width="88" height="72">
+                      <path
+                        d="M14 52 Q44 8 74 50 Q58 64 44 58 Q30 64 14 52 Z"
+                        fill="#e8dcc8"
+                        stroke="#5c4030"
+                        strokeWidth="2"
+                      />
+                      <path
+                        d="M38 28 L42 48 M50 24 L48 44 M56 32 L54 50"
+                        stroke="#4a3020"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        opacity="0.85"
+                      />
+                      <ellipse cx="44" cy="20" rx="5" ry="4" fill="#c4a882" stroke="#5c4030" strokeWidth="1" />
+                    </svg>
+                  )}
                 </div>
-              ) : null}
+                <div className="oracle-mode-showcase-copy">
+                  <span className="oracle-mode-showcase-eyebrow">Oráculo activo</span>
+                  <span className="oracle-mode-showcase-title">
+                    {oracleMode === "iching" ? "I Ching 易經" : "甲骨 Divinación"}
+                  </span>
+                  <span className="oracle-mode-showcase-sub">
+                    {oracleMode === "iching"
+                      ? "Seis líneas · tres monedas · Zhu Xi"
+                      : "Sí / no sobre cargas · grietas 兆 · plastrón (visual)"}
+                  </span>
+                </div>
+              </div>
+              <div className="oracle-mode-showcase-reading">
+                <span className="oracle-mode-showcase-reading-label">Texto de la lectura</span>
+                <span className="oracle-mode-showcase-reading-value">{responseModeLabelEs(responseMode)}</span>
+              </div>
             </div>
           </div>
         </header>
@@ -697,10 +761,7 @@ export default function HomePage() {
         <div className="chat-room">
           <section className="chat-history" ref={historyRef}>
             {activeThread.length === 0 ? (
-              <div className="chat-empty-hint chat-empty-hint--welcome">
-                <p className="welcome-lead">{emptyThreadInvite}</p>
-                <p className="welcome-hint-below">Escribe en el campo de abajo y envía cuando estés listo.</p>
-              </div>
+              <p className="chat-empty-line">{emptyThreadInvite}</p>
             ) : null}
             {activeThread.map((entry) => (
               <div
@@ -923,44 +984,27 @@ export default function HomePage() {
                     </div>
                     <OracleMethodSources />
                     {oracleMode === "oracle_bones" ? (
-                      <div className="bones-extra-fields">
-                        <label htmlFor="bones-negative" className="meta-line">
-                          Cargo negativo (opcional; si lo dejas vacío se genera uno complementario)
-                        </label>
-                        <textarea
-                          id="bones-negative"
-                          value={bonesNegative}
-                          onChange={(e) => setBonesNegative(e.target.value)}
-                          placeholder='Ej.: "No aceptaré la oferta / no será favorable."'
-                          rows={2}
-                          disabled={loading}
-                        />
-                        <label htmlFor="bones-medium" className="meta-line">
-                          Soporte ritual (solo estética de imagen)
-                        </label>
-                        <select
-                          id="bones-medium"
-                          value={bonesMedium}
-                          onChange={(e) => setBonesMedium(e.target.value as "turtle" | "ox")}
-                          disabled={loading}
-                        >
-                          <option value="turtle">Plastrón de tortuga (龟甲)</option>
-                          <option value="ox">Escápula de buey (牛骨)</option>
-                        </select>
-                      </div>
+                      <p className="meta-line bones-auto-hint">
+                        El cargo opuesto se formula automáticamente en el servidor a partir de tu afirmación.
+                      </p>
                     ) : null}
                     <div className="composer-actions">
-                      <label htmlFor="response-mode">Modo</label>
+                      <label htmlFor="response-mode">Modo de lectura del texto</label>
                       <select
                         id="response-mode"
                         value={responseMode}
                         onChange={(e) => setResponseMode(e.target.value as ResponseMode)}
                         disabled={loading}
                       >
-                        <option value="directo">Directo</option>
-                        <option value="ritual">Ritual</option>
-                        <option value="profundizar">Profundizar</option>
+                        <option value="directo">Directo — 2 secciones breves</option>
+                        <option value="ritual">Ritual — pergamino completo (5 partes)</option>
+                        <option value="profundizar">Profundizar — solo en el mismo hilo</option>
                       </select>
+                      <p className="meta-line mode-select-hint">
+                        <a href="/guia#modos-lectura" className="inline-doc-link">
+                          ¿Qué cambia entre directo, ritual y profundizar?
+                        </a>
+                      </p>
                     </div>
                     {result ? (
                       <div className="session-progress">
