@@ -469,11 +469,47 @@ export default function HomePage() {
     if (!sessionsHydrated) return;
     const activeId = activeSession?.localId ?? null;
     const storable = sessions.filter((s) => s.thread.length > 0 || s.localId === activeId);
+    const isDataImageUrl = (url: string): boolean =>
+      url.startsWith("data:image/svg+xml") || url.startsWith("data:image/png;base64,") || url.startsWith("data:image/jpeg;base64,");
+
+    const sanitizeForLocalStorage = (item: ConsultationItem): ConsultationItem => {
+      // Avoid stuffing large SVG/raster payloads into localStorage (QuotaExceeded happens fast).
+      const safeImageUrl = isDataImageUrl(item.imageUrl) ? "/oracle-fallback.svg" : item.imageUrl;
+      const safeFallbackUrl = isDataImageUrl(item.imageFallbackUrl) ? "/oracle-fallback.svg" : item.imageFallbackUrl;
+
+      // imageProviderDebug is only diagnostic; it's not used by UI and adds size.
+      const { imageProviderDebug: _ignoredDebug, ...rest } = item as ConsultationItem & { imageProviderDebug?: unknown };
+      return {
+        ...rest,
+        imagePrompt: "",
+        imageUrl: safeImageUrl,
+        imageFallbackUrl: safeFallbackUrl,
+      };
+    };
+
+    // Keep localStorage bounded; user can always regenerate images server-side.
+    const maxSessionsToStore = 3;
+    const maxThreadItemsPerSession = 6;
+
+    const trimmed = [...storable]
+      .sort((a, b) => b.updatedAt - a.updatedAt)
+      .slice(0, maxSessionsToStore)
+      .map((s) => ({
+        ...s,
+        thread: s.thread.slice(-maxThreadItemsPerSession).map(sanitizeForLocalStorage),
+      }));
     const payload = JSON.stringify({
-      sessions: storable,
+      sessions: trimmed,
       activeSessionLocalId: activeId,
     });
-    localStorage.setItem("iching_sessions_v2", payload);
+    try {
+      localStorage.setItem("iching_sessions_v2", payload);
+    } catch (e) {
+      // QuotaExceededError can happen when images are embedded as data URLs.
+      if (e instanceof DOMException && e.name === "QuotaExceededError") {
+        localStorage.removeItem("iching_sessions_v2");
+      }
+    }
   }, [sessions, activeSession, sessionsHydrated]);
 
   async function onConsult() {
