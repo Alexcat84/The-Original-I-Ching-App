@@ -2,12 +2,12 @@ import { registerStep1Schema, validateEmailForRegistration } from "@iching-oracl
 import { NextResponse } from "next/server";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { verifyHCaptcha } from "@/lib/hcaptcha";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  let body: { email?: string; password?: string; hcaptchaToken?: string };
+  let body: { email?: string; password?: string; turnstileToken?: string; hcaptchaToken?: string };
   try {
     body = (await req.json()) as typeof body;
   } catch {
@@ -25,9 +25,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid_payload", issues: parsed.error.flatten() }, { status: 400 });
   }
 
-  const hcaptchaOk = await verifyHCaptcha(body.hcaptchaToken ?? "", ip);
-  if (!hcaptchaOk) {
-    return NextResponse.json({ error: "hcaptcha_failed" }, { status: 400 });
+  const captchaToken = body.turnstileToken ?? body.hcaptchaToken ?? "";
+  const turnstileOk = await verifyTurnstile(captchaToken, ip);
+  if (!turnstileOk) {
+    return NextResponse.json({ error: "turnstile_failed" }, { status: 400 });
   }
 
   const emailOk = await validateEmailForRegistration(parsed.data.email);

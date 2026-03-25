@@ -3,7 +3,9 @@ import { upsertUserTier } from "@/lib/credits";
 
 export const runtime = "edge";
 
-const KNOWN_ENTITLEMENTS = new Set(["oracle", "master", "practitioner", "seeker"]);
+/** Match RevenueCat entitlement identifiers case-insensitively; normalize to DB tier keys (lowercase). */
+const TIER_PRIORITY = ["oracle", "master", "practitioner", "seeker"] as const;
+const TIER_SET = new Set<string>(TIER_PRIORITY);
 
 /** Events where we refresh tier + billing cycle from RevenueCat payload. */
 const GRANT_UPDATE_TYPES = new Set([
@@ -33,10 +35,14 @@ function authMatches(req: Request, secret: string): boolean {
 }
 
 function pickTierFromEvent(ev: RevenueCatEvent): string {
-  const ids = ev.entitlement_ids ?? [];
-  const hit = ids.find((id) => KNOWN_ENTITLEMENTS.has(id));
-  if (hit) return hit;
-  if (ev.entitlement_id && KNOWN_ENTITLEMENTS.has(ev.entitlement_id)) return ev.entitlement_id;
+  const raw = [...(ev.entitlement_ids ?? [])];
+  if (ev.entitlement_id) raw.push(ev.entitlement_id);
+  const normalized = new Set(
+    raw.map((id) => id.trim().toLowerCase()).filter((id) => TIER_SET.has(id)),
+  );
+  for (const tier of TIER_PRIORITY) {
+    if (normalized.has(tier)) return tier;
+  }
   return "free";
 }
 

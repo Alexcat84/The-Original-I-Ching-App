@@ -1,12 +1,14 @@
-export async function verifyHCaptcha(token: string, remoteIp?: string): Promise<boolean> {
-  const secret = process.env.HCAPTCHA_SECRET_KEY;
+const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+
+export async function verifyTurnstile(token: string, remoteIp?: string): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) return true;
   const form = new URLSearchParams({
     secret,
     response: token,
   });
   if (remoteIp) form.set("remoteip", remoteIp);
-  const response = await fetch("https://hcaptcha.com/siteverify", {
+  const response = await fetch(TURNSTILE_VERIFY_URL, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: form.toString(),
@@ -15,4 +17,3 @@ export async function verifyHCaptcha(token: string, remoteIp?: string): Promise<
   const payload = (await response.json()) as { success?: boolean };
   return Boolean(payload.success);
 }
-
