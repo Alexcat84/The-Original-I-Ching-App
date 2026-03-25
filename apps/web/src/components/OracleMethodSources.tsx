@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 const SOURCES = [
@@ -31,11 +32,16 @@ export function OracleMethodSources() {
       </button>
       {open ? (
         <div className="sources-panel">
+          <p className="meta-line doc-help-links">
+            <Link href="/guia">Guía rápida de uso</Link>
+            {" · "}
+            <Link href="/documentacion/iching">El I Ching en esta app</Link>
+          </p>
           <p className="meta-line">
             Los dos modos de esta app son <strong>inspirados</strong> en tradiciones históricas: el <strong>I Ching</strong> como
             sistema de líneas y textos del Zhouyi, y los <strong>huesos de oráculo</strong> como práctica shang de sí/no sobre
-            cargos en pareja. Los patrones de grieta aquí son <strong>estilización simbólica</strong>, no una copia arqueológica
-            de cada fisura real.
+            cargos en pareja. Los motivos de grieta y las imágenes siguen una <strong>estilización</strong> guiada por descripciones
+            de perforaciones y 兆; no sustituyen el estudio de piezas reales en museo o publicación académica.
           </p>
           <ul>
             {SOURCES.map((s) => (

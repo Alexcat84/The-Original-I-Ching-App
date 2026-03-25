@@ -12,14 +12,11 @@ import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   buildBonesDeepenPrompts,
-  buildBonesWelcomePrompts,
   buildDeepenPrompts,
-  buildWelcomePrompts,
-  stableSuggestionSeed,
   type SuggestionConsultSnapshot,
 } from "@/lib/chat-suggestions";
 import { stripInterpretationFluff } from "@/lib/response-clean";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type ApiLine = {
   position: 1 | 2 | 3 | 4 | 5 | 6;
@@ -165,7 +162,6 @@ export default function HomePage() {
   const historyRef = useRef<HTMLElement | null>(null);
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
-  const [welcomePromptsOpen, setWelcomePromptsOpen] = useState(true);
   const [deepenPromptsOpen, setDeepenPromptsOpen] = useState(false);
   const [sharingPersisted, setSharingPersisted] = useState(true);
 
@@ -197,8 +193,6 @@ export default function HomePage() {
   const activeThread = activeSession?.thread ?? [];
   const result = activeThread.at(-1) ?? null;
   const questionTrimmed = question.trim();
-  const showFloatingWelcome =
-    activeThread.length === 0 && !loading && questionTrimmed === "" && phase !== "coins" && phase !== "bones";
   const showFloatingDeepen =
     activeThread.length > 0 &&
     Boolean(result?.canDeepen) &&
@@ -216,15 +210,6 @@ export default function HomePage() {
         primaryHexagram: e.primaryHexagram,
         changingLines: e.changingLines,
       })),
-    [activeThread],
-  );
-  const welcomePromptList = useMemo(
-    () =>
-      buildWelcomePrompts({
-        threadLength: activeThread.length,
-        lastQuestion: activeThread.at(-1)?.question,
-        hour: new Date().getHours(),
-      }),
     [activeThread],
   );
   const deepenPromptList = useMemo(() => {
@@ -245,10 +230,6 @@ export default function HomePage() {
       suggestionSnapshots,
     );
   }, [activeThread, oracleMode, suggestionSnapshots]);
-  const bonesWelcomeList = useMemo(
-    () => buildBonesWelcomePrompts(stableSuggestionSeed(activeSession?.localId ?? "session")),
-    [activeSession?.localId],
-  );
   const bonesDeepenList = useMemo(() => {
     const last = activeThread.at(-1);
     return buildBonesDeepenPrompts(
@@ -323,9 +304,18 @@ export default function HomePage() {
   }, [activeThread.length, phase, error, activeSession?.localId]);
 
   useEffect(() => {
-    setWelcomePromptsOpen(true);
     setDeepenPromptsOpen(false);
   }, [activeSession?.localId]);
+
+  const startNewSession = useCallback(() => {
+    const created = createLocalSession("Nueva sesión");
+    setSessions((prev) => [created, ...prev]);
+    setActiveSessionLocalId(created.localId);
+    setQuestion("");
+    setError(null);
+    setChatsOpen(false);
+    setConsultPanelOpen(false);
+  }, []);
 
   useEffect(() => {
     function afterPrint() {
@@ -587,12 +577,7 @@ export default function HomePage() {
               type="button"
               className="chat-icon-btn"
               onClick={() => {
-                const created = createLocalSession("Nueva sesión");
-                setSessions((prev) => [created, ...prev]);
-                setActiveSessionLocalId(created.localId);
-                setQuestion("");
-                setError(null);
-                setChatsOpen(false);
+                startNewSession();
               }}
               disabled={loading}
               title="Nuevo chat"
@@ -639,6 +624,16 @@ export default function HomePage() {
               >
                 Chats
               </button>
+              <button
+                type="button"
+                className="chat-icon-btn chat-icon-btn--session"
+                data-testid="new-session-btn"
+                onClick={() => startNewSession()}
+                disabled={loading}
+                title="Iniciar conversación nueva"
+              >
+                Nueva sesión
+              </button>
             </div>
             <h1 className="chat-title-display">{t.appTitle}</h1>
             <div className="chat-bar-trail">
@@ -662,30 +657,34 @@ export default function HomePage() {
               <span className="oracle-brand-rule" aria-hidden />
               <p className="oracle-tagline">
                 {oracleMode === "iching"
-                  ? "Ritual de tres monedas · Zhu Xi · Wilhelm/Baynes"
-                  : "Adivinación por grietas (estilo Shang) · sí / no sobre cargos"}
+                  ? "Tres monedas · Zhu Xi · Wilhelm/Baynes"
+                  : "Grietas 兆 (estilo Shang) · sí / no sobre cargos"}
               </p>
             </div>
-            <div className="oracle-reading-mode-bar" aria-label="Modo de respuesta">
-              <span className="oracle-reading-mode-bar-label">Modo de lectura</span>
-              <span className="oracle-reading-mode-bar-value">{responseModeLabelEs(responseMode)}</span>
-            </div>
-            <div className="oracle-meta-row">
-              <div className="oracle-badges" aria-label="Modo de consulta">
-                {oracleMode === "iching" ? (
-                  <>
-                    <span className="oracle-badge oracle-badge--label-meta">6 líneas</span>
-                    <span className="oracle-badge oracle-badge--mode-strong">Mutación clásica</span>
-                  </>
+            <div className="oracle-status-strip" aria-label="Configuración activa de la consulta">
+              <span
+                className={`oracle-status-pill oracle-status-pill--oracle oracle-status-pill--${oracleMode === "iching" ? "iching" : "bones"}`}
+              >
+                <span className="oracle-status-pill-title">
+                  {oracleMode === "iching" ? "I Ching · 易" : "甲骨 · huesos"}
+                </span>
+                {oracleMode === "oracle_bones" ? (
+                  <span className="oracle-status-pill-sub">
+                    {bonesMedium === "turtle" ? "Plastrón tortuga" : "Escápula buey"}
+                  </span>
                 ) : (
-                  <>
-                    <span className="oracle-badge oracle-badge--label-meta">5 patrones</span>
-                    <span className="oracle-badge oracle-badge--mode-strong">Carga + / −</span>
-                  </>
+                  <span className="oracle-status-pill-sub">Seis líneas · mutación clásica</span>
                 )}
-              </div>
+              </span>
+              <span className="oracle-status-pill oracle-status-pill--response" title="Modo de lectura del texto">
+                <span className="oracle-status-pill-kicker">Lectura</span>
+                <span className="oracle-status-pill-strong">{responseModeLabelEs(responseMode)}</span>
+              </span>
+              {oracleMode === "oracle_bones" ? (
+                <span className="oracle-status-pill oracle-status-pill--hint">5 patrones de grieta · cargas</span>
+              ) : null}
               {showInsights ? (
-                <div className="insights-strip">
+                <div className="insights-strip insights-strip--inline">
                   <span>Racha {streakDays}d</span>
                   <span>Hoy {dailyCount}</span>
                   <span>{sessions.length} chats</span>
@@ -700,9 +699,7 @@ export default function HomePage() {
             {activeThread.length === 0 ? (
               <div className="chat-empty-hint chat-empty-hint--welcome">
                 <p className="welcome-lead">{emptyThreadInvite}</p>
-                <p className="welcome-hint-below">
-                  Usa el campo de abajo para escribir o elige una idea sugerida junto al teclado.
-                </p>
+                <p className="welcome-hint-below">Escribe en el campo de abajo y envía cuando estés listo.</p>
               </div>
             ) : null}
             {activeThread.map((entry) => (
@@ -964,22 +961,6 @@ export default function HomePage() {
                         <option value="ritual">Ritual</option>
                         <option value="profundizar">Profundizar</option>
                       </select>
-                      <button
-                        type="button"
-                        data-testid="new-session-btn"
-                        className="secondary-btn composer-secondary-btn"
-                        onClick={() => {
-                          const created = createLocalSession("Nueva sesión");
-                          setSessions((prev) => [created, ...prev]);
-                          setActiveSessionLocalId(created.localId);
-                          setError(null);
-                          setQuestion("");
-                          setConsultPanelOpen(false);
-                        }}
-                        disabled={loading}
-                      >
-                        Nueva sesión
-                      </button>
                     </div>
                     {result ? (
                       <div className="session-progress">
@@ -1011,31 +992,11 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {(showFloatingWelcome || showFloatingDeepen) && (
+              {showFloatingDeepen ? (
                 <div className="composer-floating-suggestions" aria-live="polite">
                   <div className="composer-floating-toolbar">
-                    <p className="composer-floating-label">
-                      {showFloatingWelcome ? "Ideas para empezar" : "Sugerencias para profundizar"}
-                    </p>
-                    {showFloatingWelcome ? (
-                      welcomePromptsOpen ? (
-                        <button
-                          type="button"
-                          className="composer-floating-toggle"
-                          onClick={() => setWelcomePromptsOpen(false)}
-                        >
-                          Ocultar
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="composer-floating-toggle"
-                          onClick={() => setWelcomePromptsOpen(true)}
-                        >
-                          Mostrar
-                        </button>
-                      )
-                    ) : deepenPromptsOpen ? (
+                    <p className="composer-floating-label">Sugerencias para profundizar</p>
+                    {deepenPromptsOpen ? (
                       <button
                         type="button"
                         className="composer-floating-toggle"
@@ -1053,29 +1014,7 @@ export default function HomePage() {
                       </button>
                     )}
                   </div>
-                  {showFloatingWelcome && welcomePromptsOpen ? (
-                    <div
-                      className="composer-floating-chips composer-floating-chips--scroll"
-                      role="group"
-                      aria-label="Ejemplos de consulta sugeridos"
-                    >
-                      {(oracleMode === "iching" ? welcomePromptList : bonesWelcomeList).map((q) => (
-                        <button
-                          key={q}
-                          type="button"
-                          className="composer-floating-chip"
-                          disabled={loading}
-                          onClick={() => {
-                            setQuestion(q);
-                            questionInputRef.current?.focus();
-                          }}
-                        >
-                          {q}
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
-                  {showFloatingDeepen && deepenPromptsOpen ? (
+                  {deepenPromptsOpen ? (
                     <div
                       className="composer-floating-chips composer-floating-chips--scroll"
                       role="group"
@@ -1098,7 +1037,7 @@ export default function HomePage() {
                     </div>
                   ) : null}
                 </div>
-              )}
+              ) : null}
 
               <div className="composer-minibar">
                 <button
@@ -1106,11 +1045,12 @@ export default function HomePage() {
                   className="composer-options-btn"
                   aria-expanded={consultPanelOpen}
                   aria-controls="consult-panel"
+                  aria-label={consultPanelOpen ? "Cerrar opciones de consulta" : "Abrir opciones de consulta"}
                   disabled={loading}
                   onClick={() => setConsultPanelOpen((o) => !o)}
                 >
-                  <span>{consultPanelOpen ? "▾" : "☰"}</span>
-                  <span className="composer-mode-tag">{oracleMode === "iching" ? "I Ching" : "甲骨"}</span>
+                  <span aria-hidden>{consultPanelOpen ? "▾" : "☰"}</span>
+                  <span className="composer-mode-tag">Opciones</span>
                 </button>
                 <div className="composer-input-row">
                   <textarea

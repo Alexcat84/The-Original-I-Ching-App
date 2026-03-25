@@ -307,6 +307,7 @@ export async function POST(req: Request) {
     category,
     castResult.changingLines,
     castResult.lines,
+    castResult.id,
   );
   let image = await buildImageAsset({
     prompt: imagePrompt,

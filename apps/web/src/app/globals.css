@@ -2,8 +2,8 @@
 html[data-theme="light"],
 html:not([data-theme]) {
   color-scheme: light;
-  --radius: 14px;
-  --radius-bubble: 18px;
+  --radius: 22px;
+  --radius-bubble: 32px;
   --drawer-width: min(22rem, 88vw);
   --bg: #e8f2f9;
   --bg-deep: #dceaf4;
@@ -100,8 +100,8 @@ html:not([data-theme]) {
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --radius: 14px;
-  --radius-bubble: 18px;
+  --radius: 22px;
+  --radius-bubble: 32px;
   --drawer-width: min(22rem, 88vw);
   /* High-contrast “pro” dark: near-black canvas */
   --bg: #000000;
@@ -290,7 +290,17 @@ body {
 .chat-bar-lead {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
   min-width: 0;
+}
+
+.chat-icon-btn--session {
+  font-size: 0.78rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
 }
 
 .chat-bar-trail {
@@ -498,6 +508,108 @@ html[data-theme="dark"] .oracle-reading-mode-bar-value {
   justify-content: flex-start;
 }
 
+/* Active oracle / reading mode — mirrors Opciones panel at a glance */
+.oracle-status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.4rem 0.45rem;
+  padding: 0.2rem 0 0.05rem;
+}
+
+.oracle-status-pill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.08rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--badge-border);
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.25;
+  max-width: 100%;
+}
+
+.oracle-status-pill--oracle {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--badge-border));
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--accent) 14%, var(--badge-bg)) 0%,
+    var(--badge-bg) 100%
+  );
+}
+
+.oracle-status-pill--iching {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.oracle-status-pill--bones {
+  border-color: color-mix(in srgb, var(--oracle-gold-mid) 35%, var(--badge-border));
+}
+
+.oracle-status-pill-title {
+  font-family: var(--font-oracle-serif), "Noto Serif", Georgia, serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+}
+
+.oracle-status-pill-sub {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--fg-muted);
+  letter-spacing: 0.02em;
+}
+
+.oracle-status-pill--response {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.35rem;
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--badge-border));
+}
+
+.oracle-status-pill-kicker {
+  font-family: var(--font-oracle-display), Cinzel, serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  opacity: 0.95;
+}
+
+.oracle-status-pill-strong {
+  font-family: var(--font-oracle-serif), "Noto Serif", Georgia, serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--accent) 28%, var(--fg));
+}
+
+.oracle-status-pill--hint {
+  font-style: italic;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--fg-muted) 90%, var(--fg));
+  background: color-mix(in srgb, var(--badge-bg) 50%, transparent);
+  border-style: dashed;
+}
+
+.insights-strip--inline {
+  margin-left: auto;
+}
+
+@media (max-width: 420px) {
+  .insights-strip--inline {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
 .oracle-badges {
   display: flex;
   gap: 0.35rem;
@@ -665,7 +777,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   all: unset;
   cursor: pointer;
   border: 1px solid var(--session-border);
-  border-radius: 12px;
+  border-radius: 20px;
   padding: 0.6rem 0.65rem;
   background: var(--session-item-bg);
   display: flex;
@@ -753,7 +865,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   align-self: flex-end;
   background: var(--bubble-user);
   border: 1px solid var(--bubble-user-border);
-  border-bottom-right-radius: 6px;
+  border-bottom-right-radius: 20px;
   color: var(--bubble-user-fg);
 }
 
@@ -761,7 +873,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   align-self: flex-start;
   background: var(--bubble-assistant);
   border: 1px solid var(--bubble-assistant-border);
-  border-bottom-left-radius: 6px;
+  border-bottom-left-radius: 20px;
   color: var(--fg);
   max-width: min(96%, 40rem);
   text-align: justify;
@@ -887,7 +999,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   gap: 0.1rem;
   min-width: 3.25rem;
   padding: 0.4rem 0.35rem;
-  border-radius: 14px;
+  border-radius: 20px;
   border: 1px solid var(--icon-btn-border);
   background: var(--icon-btn-bg);
   color: var(--icon-btn-fg);
@@ -1338,7 +1450,7 @@ button:disabled {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 10px;
+  border-radius: 18px;
 }
 
 .tier-hint-line {
@@ -1350,7 +1462,7 @@ button:disabled {
 .image-card {
   margin: 0;
   padding: 0.75rem;
-  border-radius: 12px;
+  border-radius: 22px;
   background: var(--hex-card-bg);
   border: 1px solid var(--hex-card-border);
 }
@@ -1429,7 +1541,7 @@ button:disabled {
 
 .oracle-image {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 18px;
   border: 1px solid var(--image-border);
   display: block;
 }
@@ -1612,6 +1724,11 @@ html[data-theme="dark"] .ritual-line.done {
   font-size: 0.8rem;
 }
 
+.oracle-method-sources .doc-help-links a {
+  color: var(--ghost-link, #2a7a94);
+  font-weight: 600;
+}
+
 .oracle-mode-select {
   display: flex;
   flex-wrap: wrap;
@@ -1760,6 +1877,55 @@ html[data-theme="dark"] .verdict-pill--silent {
 
 .oracle-shell h1 {
   color: var(--title-shell);
+}
+
+/* Static help pages (/guia, /documentacion/iching) */
+.doc-page {
+  max-width: 42rem;
+}
+
+.doc-nav {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.doc-nav a {
+  color: var(--ghost-link, #2a7a94);
+  text-decoration: underline;
+}
+
+.doc-article h1 {
+  font-family: var(--font-oracle-display), Cinzel, Georgia, serif;
+  font-size: 1.55rem;
+  margin: 0 0 0.75rem;
+  color: var(--title-shell);
+}
+
+.doc-article h2 {
+  font-size: 1.05rem;
+  margin: 1.35rem 0 0.45rem;
+  color: var(--title-chat);
+}
+
+.doc-lead {
+  margin: 0 0 0.75rem;
+  line-height: 1.55;
+  color: var(--fg);
+}
+
+.doc-article ul {
+  margin: 0.35rem 0 0.75rem;
+  padding-left: 1.25rem;
+  line-height: 1.5;
+}
+
+.doc-article li {
+  margin-bottom: 0.35rem;
+}
+
+.doc-footer-links {
+  margin-top: 1.5rem;
+  font-size: 0.92rem;
 }
 
 @media (min-width: 720px) {
