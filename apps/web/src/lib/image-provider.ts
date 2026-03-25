@@ -1,29 +1,65 @@
 import type { OracleBoneMedium, OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
-import { buildSumiHexagramSvgDataUrl, type SumiLineInput } from "@/lib/sumi-hexagram-art";
+import {
+  buildSumiHexagramSvgDataUrl,
+  fnv1a32,
+  mulberry32,
+  type SumiLineInput,
+} from "@/lib/sumi-hexagram-art";
 
 export type ImageProvider = "auto" | "mock" | "svg-art" | "pollinations" | "fal" | "gpt-image" | "together";
 
 /** Provider after resolving "auto" / env; never "auto". */
 export type ResolvedImageProvider = Exclude<ImageProvider, "auto">;
 
+function shiftHexForOracle(hex: string, rng: () => number, spread: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const d = () => Math.round((rng() - 0.5) * spread);
+  const c = (x: number) => Math.max(0, Math.min(255, x));
+  return `#${[c(r + d()), c(g + d()), c(b + d())]
+    .map((x) => x.toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
 function buildOracleBonesMockDataUrl(params: {
   patternId: number;
   verdict: OracleBonesVerdict;
   medium: OracleBoneMedium;
+  consultationId?: string;
 }): string {
   const bone = params.medium === "turtle" ? "Plastrón" : "Escápula";
+  const seedStr =
+    params.consultationId ?? `oracle-bones|${params.patternId}|${params.verdict}|${params.medium}`;
+  const rng = mulberry32(fnv1a32(seedStr));
+  const bg = shiftHexForOracle("#1a1510", rng, 18);
+  const boneTop = shiftHexForOracle("#e8dcc8", rng, 20);
+  const boneBot = shiftHexForOracle("#c4b29a", rng, 20);
+  const stroke = shiftHexForOracle("#5c4a3a", rng, 16);
+  const accent = shiftHexForOracle("#c9a227", rng, 22);
+  const sub = shiftHexForOracle("#8a7a68", rng, 18);
+  const grainA = (0.04 + rng() * 0.06).toFixed(3);
+  const grainB = (0.03 + rng() * 0.05).toFixed(3);
+  const bx = Math.round(400 + rng() * 80);
+  const by = Math.round(108 + rng() * 36);
+  const bw = Math.round(480 + rng() * 60);
+  const bh = Math.round(500 + rng() * 56);
+  const br = Math.round(40 + rng() * 16);
+  const cx = bx + bw / 2;
   const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1344" height="768" viewBox="0 0 1344 768">
   <defs>
     <linearGradient id="bone" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#e8dcc8" />
-      <stop offset="100%" stop-color="#c4b29a" />
+      <stop offset="0%" stop-color="${boneTop}" />
+      <stop offset="100%" stop-color="${boneBot}" />
     </linearGradient>
   </defs>
-  <rect width="1344" height="768" fill="#1a1510" />
-  <rect x="420" y="120" width="504" height="528" rx="48" fill="url(#bone)" stroke="#5c4a3a" stroke-width="3"/>
-  <text x="672" y="90" text-anchor="middle" fill="#c9a227" font-size="36" font-family="Segoe UI, Arial">甲骨文 · ${bone} · patrón ${params.patternId}</text>
-  <text x="672" y="690" text-anchor="middle" fill="#8a7a68" font-size="24" font-family="Segoe UI, Arial">Vista simbólica (respaldo) · ${params.verdict}</text>
+  <rect width="1344" height="768" fill="${bg}" />
+  <path fill="none" stroke="rgba(200,180,140,${grainA})" stroke-width="1.2" d="M0 ${Math.round(180 + rng() * 120)} Q400 ${Math.round(320 + rng() * 80)} 800 ${Math.round(260 + rng() * 100)} T1344 ${Math.round(200 + rng() * 90)}"/>
+  <path fill="none" stroke="rgba(160,140,110,${grainB})" stroke-width="0.9" d="M0 ${Math.round(520 + rng() * 60)} Q500 ${Math.round(580 + rng() * 50)} 1000 ${Math.round(540 + rng() * 70)} T1344 ${Math.round(600 + rng() * 40)}"/>
+  <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}" fill="url(#bone)" stroke="${stroke}" stroke-width="3"/>
+  <text x="${cx}" y="90" text-anchor="middle" fill="${accent}" font-size="36" font-family="Segoe UI, Arial">甲骨文 · ${bone} · patrón ${params.patternId}</text>
+  <text x="${cx}" y="690" text-anchor="middle" fill="${sub}" font-size="24" font-family="Segoe UI, Arial">Vista simbólica (respaldo) · ${params.verdict}</text>
 </svg>`.trim();
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
@@ -159,6 +195,9 @@ function sumiUrlForIChing(params: {
   primaryChinese: string;
   pinyin?: string;
   transformed?: { number: number; name: string; chineseName: string } | null;
+  consultationId?: string;
+  category: string;
+  changingLines: number[];
 }): string {
   return buildSumiHexagramSvgDataUrl({
     lines: params.lines,
@@ -169,6 +208,9 @@ function sumiUrlForIChing(params: {
     transformedNumber: params.transformed?.number ?? null,
     transformedName: params.transformed?.name ?? null,
     transformedChinese: params.transformed?.chineseName ?? null,
+    artSeed: params.consultationId,
+    category: params.category,
+    changingLines: params.changingLines,
   });
 }
 
@@ -190,6 +232,8 @@ export async function buildImageAsset(params: {
   lines: SumiLineInput[];
   tier?: string;
   providerOverride?: ImageProvider;
+  /** Drives unique sumi-e background per consultation when APIs are off. */
+  consultationId?: string;
 }): Promise<{ provider: ResolvedImageProvider; imageUrl: string; fallbackImageUrl: string }> {
   const sumiFallback = sumiUrlForIChing({
     lines: params.lines,
@@ -198,6 +242,9 @@ export async function buildImageAsset(params: {
     primaryChinese: params.primaryChinese,
     pinyin: params.pinyin,
     transformed: params.transformedHexagram ?? null,
+    consultationId: params.consultationId,
+    category: params.category,
+    changingLines: params.changingLines,
   });
 
   if (sumiOnlyMode()) {
@@ -256,6 +303,7 @@ export async function buildOracleBonesImageAsset(params: {
   medium: OracleBoneMedium;
   tier?: string;
   providerOverride?: ImageProvider;
+  consultationId?: string;
 }): Promise<{ provider: ResolvedImageProvider; imageUrl: string; fallbackImageUrl: string }> {
   const provider = resolveProvider(params.providerOverride);
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
@@ -264,6 +312,7 @@ export async function buildOracleBonesImageAsset(params: {
     patternId: params.patternId,
     verdict: params.verdict,
     medium: params.medium,
+    consultationId: params.consultationId,
   });
 
   if (provider === "pollinations") {

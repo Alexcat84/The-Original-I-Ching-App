@@ -203,6 +203,7 @@ export async function POST(req: Request) {
       medium: bonesCast.medium,
       tier,
       providerOverride: imageProviderOverride,
+      consultationId: bonesCast.id,
     });
     image = await finalizeReadingImages(image, tier);
 
@@ -333,6 +334,7 @@ export async function POST(req: Request) {
     })),
     tier,
     providerOverride: imageProviderOverride,
+    consultationId: castResult.id,
   });
   image = await finalizeReadingImages(image, tier);
 
