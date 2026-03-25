@@ -1,4 +1,5 @@
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { isPersistableUuid } from "@/lib/session-ids";
 
 type Tier = "free" | "seeker" | "practitioner" | "master" | "oracle";
 
@@ -32,7 +33,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   const now = Date.now();
   const limit = CREDITS_PER_MONTH[safeTier];
   const supabase = getSupabaseAdmin();
-  if (supabase) {
+  if (supabase && isPersistableUuid(userKey)) {
     const { data: row } = await supabase
       .from("query_credits")
       .select("id, credits_total, credits_used, cycle_start, cycle_end")

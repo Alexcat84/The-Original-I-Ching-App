@@ -107,6 +107,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
+  try {
   const question = typeof body.question === "string" ? body.question : "";
   const language = typeof body.language === "string" ? body.language : "es";
   const tier = typeof body.tier === "string" ? body.tier : "free";
@@ -394,4 +395,15 @@ export async function POST(req: Request) {
     publicReadingId: sharing.publicReadingId,
     publicSessionId: sharing.publicSessionId,
   });
+  } catch (e) {
+    console.error("[api/consult]", e);
+    const message = e instanceof Error ? e.message : String(e);
+    return NextResponse.json(
+      {
+        error: "consult_failed",
+        message: process.env.NODE_ENV === "development" ? message : undefined,
+      },
+      { status: 500 },
+    );
+  }
 }

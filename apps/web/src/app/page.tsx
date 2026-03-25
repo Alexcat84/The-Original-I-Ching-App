@@ -152,8 +152,9 @@ export default function HomePage() {
   const [phase, setPhase] = useState<"idle" | "coins" | "bones" | "reading">("idle");
   const [coinTick, setCoinTick] = useState(0);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
-  const [sessions, setSessions] = useState<ChatSessionState[]>(() => [createLocalSession("Consulta en progreso")]);
+  const [sessions, setSessions] = useState<ChatSessionState[]>([]);
   const [activeSessionLocalId, setActiveSessionLocalId] = useState<string | null>(null);
+  const [sessionsHydrated, setSessionsHydrated] = useState(false);
   const [responseMode, setResponseMode] = useState<ResponseMode>("ritual");
   const [error, setError] = useState<string | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
@@ -175,15 +176,24 @@ export default function HomePage() {
     [coinTick],
   );
   const activeRitualLine = (coinTick % 6) + 1;
-  const emptyThreadInvite = useMemo(() => {
+  const [emptyThreadInvite, setEmptyThreadInvite] = useState(
+    "¿Qué quieres explorar? Escribe tu consulta abajo cuando estés listo.",
+  );
+  useEffect(() => {
     const h = new Date().getHours();
     if (h < 12) {
-      return "Buen momento para escuchar al oráculo. ¿Qué inquietud trae este nuevo día? Escribe tu consulta con intención: al enviar, el ritual de las tres monedas trazará el patrón.";
+      setEmptyThreadInvite(
+        "Buen momento para escuchar al oráculo. ¿Qué inquietud trae este nuevo día? Escribe tu consulta con intención: al enviar, el ritual de las tres monedas trazará el patrón.",
+      );
+    } else if (h < 20) {
+      setEmptyThreadInvite(
+        "El cambio sigue moviéndose. ¿Qué necesitas ver con más claridad en el curso de hoy? Tu pregunta abre la consulta; el I Ching mostrará el hexagrama que corresponda.",
+      );
+    } else {
+      setEmptyThreadInvite(
+        "La noche también pregunta. ¿Qué frente de tu vida quieres explorar? Deja tu consulta abajo: las monedas dispondrán las líneas del momento.",
+      );
     }
-    if (h < 20) {
-      return "El cambio sigue moviéndose. ¿Qué necesitas ver con más claridad en el curso de hoy? Tu pregunta abre la consulta; el I Ching mostrará el hexagrama que corresponda.";
-    }
-    return "La noche también pregunta. ¿Qué frente de tu vida quieres explorar? Deja tu consulta abajo: las monedas dispondrán las líneas del momento.";
   }, []);
   const activeSession = useMemo(() => {
     if (!sessions.length) return null;
@@ -399,6 +409,8 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    let nextSessions: ChatSessionState[] | null = null;
+    let nextActive: string | null = null;
     try {
       const sessionsRaw = localStorage.getItem("iching_sessions_v2");
       if (sessionsRaw) {
@@ -409,42 +421,52 @@ export default function HomePage() {
             publicSessionId: s.publicSessionId ?? null,
           }));
           const withMessages = normalized.filter((s) => s.thread.length > 0);
-          let nextSessions: ChatSessionState[];
-          let nextActive: string | null = parsed.activeSessionLocalId;
           if (withMessages.length === 0) {
-            nextSessions = [createLocalSession("Nueva sesión")];
-            nextActive = nextSessions[0]!.localId;
-          } else if (nextActive && withMessages.some((s) => s.localId === nextActive)) {
+            const fresh = createLocalSession("Nueva sesión");
+            nextSessions = [fresh];
+            nextActive = fresh.localId;
+          } else if (parsed.activeSessionLocalId && withMessages.some((s) => s.localId === parsed.activeSessionLocalId)) {
             nextSessions = withMessages;
+            nextActive = parsed.activeSessionLocalId;
           } else {
             nextSessions = withMessages;
             nextActive = withMessages[0]!.localId;
           }
-          setSessions(nextSessions);
-          setActiveSessionLocalId(nextActive);
-          return;
         }
       }
 
-      const raw = localStorage.getItem("iching_session_v1");
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as {
-        thread: ConsultationItem[];
-        sessionId: string | null;
-        sessionTitle?: string;
-      };
-      const migrated = createLocalSession(parsed.sessionTitle ?? "Consulta en progreso");
-      migrated.thread = parsed.thread ?? [];
-      migrated.sessionId = parsed.sessionId ?? null;
-      migrated.publicSessionId = null;
-      setSessions([migrated]);
-      setActiveSessionLocalId(migrated.localId);
+      if (!nextSessions) {
+        const raw = localStorage.getItem("iching_session_v1");
+        if (raw) {
+          const parsed = JSON.parse(raw) as {
+            thread: ConsultationItem[];
+            sessionId: string | null;
+            sessionTitle?: string;
+          };
+          const migrated = createLocalSession(parsed.sessionTitle ?? "Consulta en progreso");
+          migrated.thread = parsed.thread ?? [];
+          migrated.sessionId = parsed.sessionId ?? null;
+          migrated.publicSessionId = null;
+          nextSessions = [migrated];
+          nextActive = migrated.localId;
+        }
+      }
     } catch {
-      // ignore malformed storage
+      nextSessions = null;
     }
+
+    if (!nextSessions?.length) {
+      const fresh = createLocalSession("Consulta en progreso");
+      nextSessions = [fresh];
+      nextActive = fresh.localId;
+    }
+    setSessions(nextSessions);
+    setActiveSessionLocalId(nextActive);
+    setSessionsHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!sessionsHydrated) return;
     const activeId = activeSession?.localId ?? null;
     const storable = sessions.filter((s) => s.thread.length > 0 || s.localId === activeId);
     const payload = JSON.stringify({
@@ -452,7 +474,7 @@ export default function HomePage() {
       activeSessionLocalId: activeId,
     });
     localStorage.setItem("iching_sessions_v2", payload);
-  }, [sessions, activeSession]);
+  }, [sessions, activeSession, sessionsHydrated]);
 
   async function onConsult() {
     if (!activeSession) {
@@ -522,9 +544,31 @@ export default function HomePage() {
           })),
         }),
       });
-      const data = (await res.json()) as ConsultResponse & { error?: string };
+      const rawText = await res.text();
+      let data: ConsultResponse & { error?: string; message?: string };
+      try {
+        if (!rawText.trim()) {
+          throw new SyntaxError("empty body");
+        }
+        data = JSON.parse(rawText) as ConsultResponse & { error?: string; message?: string };
+      } catch {
+        setError(
+          res.ok
+            ? "Respuesta del servidor inválida."
+            : `Error del servidor (${res.status}). Inténtalo de nuevo en unos minutos.`,
+        );
+        return;
+      }
       if (!res.ok) {
-        setError(data.error ?? "Request failed");
+        const detail =
+          typeof data.message === "string" && data.message
+            ? ` ${data.message}`
+            : "";
+        setError(
+          data.error === "consult_failed"
+            ? `No se pudo completar la consulta.${detail || " Si persiste, revisa la configuración del servidor."}`
+            : (data.error ?? `Solicitud fallida (${res.status})`) + detail,
+        );
         return;
       }
       if (typeof data.sharingPersisted === "boolean") {

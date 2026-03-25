@@ -1,6 +1,7 @@
 import type { OracleBonesHistorySnapshot, OracleType } from "@iching-oracle/context-engine";
 import { Redis } from "@upstash/redis";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { isPersistableUuid } from "@/lib/session-ids";
 
 let shareKvRedis: Redis | null | undefined;
 
@@ -325,7 +326,7 @@ export async function upsertSessionAndConsultation(params: {
   consultation: Omit<StoredConsultation, "publicId" | "createdAt">;
 }): Promise<{ publicReadingId: string; publicSessionId: string }> {
   const supabase = getSupabaseAdmin();
-  if (!supabase) {
+  if (!supabase || !isPersistableUuid(params.sessionId)) {
     const session = ensureSession({
       sessionId: params.sessionId,
       title: params.sessionTitle,
