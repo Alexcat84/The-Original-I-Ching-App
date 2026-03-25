@@ -22,12 +22,13 @@ ABSOLUTE RULES:
 9. ANTI-REPETITION: Each concrete point (a line's counsel, a judgment phrase, a practical recommendation) appears at most once in the entire answer. Do not restate the same advice across sections with different wording.
 10. GROUNDING: Every interpretive claim must tether to the supplied judgment, Image, or line text—paraphrase or quote in blockquote, then bridge to the question. Avoid vague uplift that could apply to any hexagram.`;
 
+/** Aliases from Anthropic docs; override with ANTHROPIC_MODEL_HAIKU / ANTHROPIC_MODEL_SONNET. */
 const MODEL_CONFIG = {
-  free: { model: "claude-3-5-haiku-20241022", maxTokens: 520 },
-  seeker: { model: "claude-3-5-haiku-20241022", maxTokens: 780 },
-  practitioner: { model: "claude-3-5-sonnet-20241022", maxTokens: 1200 },
-  master: { model: "claude-3-5-sonnet-20241022", maxTokens: 1600 },
-  oracle: { model: "claude-3-5-sonnet-20241022", maxTokens: 2000 },
+  free: { model: process.env.ANTHROPIC_MODEL_HAIKU ?? "claude-haiku-4-5", maxTokens: 520 },
+  seeker: { model: process.env.ANTHROPIC_MODEL_HAIKU ?? "claude-haiku-4-5", maxTokens: 780 },
+  practitioner: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 1200 },
+  master: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 1600 },
+  oracle: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 2000 },
 } as const;
 
 function getLanguageName(language: string): string {
@@ -178,20 +179,28 @@ export async function generateInterpretation(
   const systemPrompt = `${SYSTEM_PROMPT}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
 
   if (ANTHROPIC_API_KEY) {
-    const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
-    const response = await client.messages.create({
-      model: cfg.model,
-      max_tokens: cfg.maxTokens,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userContent }],
-    });
+    try {
+      const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+      const response = await client.messages.create({
+        model: cfg.model,
+        max_tokens: cfg.maxTokens,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userContent }],
+      });
 
-    const block = response.content[0];
-    const fullText = block.type === "text" ? block.text : "";
-    const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
-    const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
-    const cleanText = stripInterpretationFluff(fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim());
-    return { text: cleanText, category };
+      const block = response.content[0];
+      const fullText = block?.type === "text" ? block.text : "";
+      const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
+      const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
+      const cleanText = stripInterpretationFluff(
+        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+      );
+      if (cleanText.trim().length > 0) {
+        return { text: cleanText, category };
+      }
+    } catch (err) {
+      console.warn("[generateInterpretation] Anthropic failed, trying fallback chain", err);
+    }
   }
 
   if (GROQ_API_KEY) {

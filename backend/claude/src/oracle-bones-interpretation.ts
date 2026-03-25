@@ -13,12 +13,13 @@ One or two short flowing paragraphs, no bullet lists.
 Write entirely in the user's requested language—no mixing Spanish and English (or other pairs) in the same response.
 Do not append generic legal or symbolic-vs-prediction disclaimers; the app handles compliance elsewhere.`;
 
+/** Aliases from https://docs.anthropic.com/en/docs/about-claude/models — overridable via env. */
 const MODEL_CONFIG = {
-  free: { model: "claude-3-5-haiku-20241022", maxTokens: 500 },
-  seeker: { model: "claude-3-5-haiku-20241022", maxTokens: 650 },
-  practitioner: { model: "claude-3-5-sonnet-20241022", maxTokens: 800 },
-  master: { model: "claude-3-5-sonnet-20241022", maxTokens: 950 },
-  oracle: { model: "claude-3-5-sonnet-20241022", maxTokens: 1100 },
+  free: { model: process.env.ANTHROPIC_MODEL_HAIKU ?? "claude-haiku-4-5", maxTokens: 500 },
+  seeker: { model: process.env.ANTHROPIC_MODEL_HAIKU ?? "claude-haiku-4-5", maxTokens: 650 },
+  practitioner: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 800 },
+  master: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 950 },
+  oracle: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 1100 },
 } as const;
 
 function getLanguageName(language: string): string {
@@ -115,19 +116,27 @@ export async function generateOracleBonesInterpretation(
   const systemPrompt = `${ORACLE_BONES_SYSTEM}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
 
   if (ANTHROPIC_API_KEY) {
-    const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
-    const response = await client.messages.create({
-      model: cfg.model,
-      max_tokens: cfg.maxTokens,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userContent }],
-    });
-    const block = response.content[0];
-    const fullText = block.type === "text" ? block.text : "";
-    const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
-    const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
-    const cleanText = stripInterpretationFluff(fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim());
-    return { text: cleanText, category };
+    try {
+      const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+      const response = await client.messages.create({
+        model: cfg.model,
+        max_tokens: cfg.maxTokens,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userContent }],
+      });
+      const block = response.content[0];
+      const fullText = block?.type === "text" ? block.text : "";
+      const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
+      const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
+      const cleanText = stripInterpretationFluff(
+        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+      );
+      if (cleanText.trim().length > 0) {
+        return { text: cleanText, category };
+      }
+    } catch (err) {
+      console.warn("[generateOracleBonesInterpretation] Anthropic failed, trying fallback chain", err);
+    }
   }
 
   if (GROQ_API_KEY) {
