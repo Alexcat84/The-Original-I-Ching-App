@@ -251,13 +251,8 @@ export default function LoginPage() {
           </p>
           <h1 className="auth-pro-brand-title">The Original I Ching</h1>
           <p className="auth-pro-brand-text">
-            Lectura clásica con Zhu Xi y Wilhelm/Baynes. Tu consulta merece una cuenta estable: correo verificado o Google.
+            Lectura clásica con Zhu Xi y Wilhelm/Baynes.
           </p>
-          <ul className="auth-pro-brand-list">
-            <li>2 consultas gratuitas al mes</li>
-            <li>Sin correos desechables</li>
-            <li>Mismo ritual en pantalla antes de pedir acceso</li>
-          </ul>
         </div>
       </aside>
 
