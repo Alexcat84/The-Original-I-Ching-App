@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { SessionContext } from "@iching-oracle/context-engine";
 import type { OracleBonesCastResult } from "@iching-oracle/oracle-bones-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
+import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { buildContextBlock, type ResponseMode } from "./interpretation-context.js";
 import { loadClaudeEnv } from "./env.js";
 import { stripInterpretationFluff } from "./response-clean.js";
@@ -13,13 +14,13 @@ One or two short flowing paragraphs, no bullet lists.
 Write entirely in the user's requested language—no mixing Spanish and English (or other pairs) in the same response.
 Do not append generic legal or symbolic-vs-prediction disclaimers; the app handles compliance elsewhere.`;
 
-/** Aliases from https://docs.anthropic.com/en/docs/about-claude/models — overridable via env. */
-const MODEL_CONFIG = {
-  free: { model: process.env.ANTHROPIC_MODEL_HAIKU ?? "claude-haiku-4-5", maxTokens: 500 },
-  seeker: { model: process.env.ANTHROPIC_MODEL_HAIKU ?? "claude-haiku-4-5", maxTokens: 650 },
-  practitioner: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 800 },
-  master: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 950 },
-  oracle: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 1100 },
+/** max_tokens by product tier; model = getAnthropicModelId(env) for every tier. */
+const MAX_TOKENS_BY_TIER = {
+  free: 500,
+  seeker: 650,
+  practitioner: 800,
+  master: 950,
+  oracle: 1100,
 } as const;
 
 function getLanguageName(language: string): string {
@@ -107,7 +108,9 @@ export async function generateOracleBonesInterpretation(
   }
 
   const { ANTHROPIC_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
-  const cfg = MODEL_CONFIG[tier as keyof typeof MODEL_CONFIG] ?? MODEL_CONFIG.free;
+  const maxTokens =
+    MAX_TOKENS_BY_TIER[tier as keyof typeof MAX_TOKENS_BY_TIER] ?? MAX_TOKENS_BY_TIER.free;
+  const model = getAnthropicModelId(env);
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
   const userContent = hasContext && context
     ? `${buildContextBlock(context, language, mode)}\n\n${buildOracleBonesUserContent(cast, tier, language, true, mode)}`
@@ -119,8 +122,8 @@ export async function generateOracleBonesInterpretation(
     try {
       const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
       const response = await client.messages.create({
-        model: cfg.model,
-        max_tokens: cfg.maxTokens,
+        model,
+        max_tokens: maxTokens,
         system: systemPrompt,
         messages: [{ role: "user", content: userContent }],
       });
@@ -149,7 +152,7 @@ export async function generateOracleBonesInterpretation(
       body: JSON.stringify({
         model: GROQ_MODEL ?? "llama-3.3-70b-versatile",
         temperature: 0.45,
-        max_tokens: cfg.maxTokens,
+        max_tokens: maxTokens,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userContent },

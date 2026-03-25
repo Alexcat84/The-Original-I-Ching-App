@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { SessionContext } from "@iching-oracle/context-engine";
 import type { CastResult } from "@iching-oracle/iching-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
+import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { loadClaudeEnv } from "./env.js";
 import { buildContextBlock, type ResponseMode } from "./interpretation-context.js";
 import { stripInterpretationFluff } from "./response-clean.js";
@@ -22,13 +23,13 @@ ABSOLUTE RULES:
 9. ANTI-REPETITION: Each concrete point (a line's counsel, a judgment phrase, a practical recommendation) appears at most once in the entire answer. Do not restate the same advice across sections with different wording.
 10. GROUNDING: Every interpretive claim must tether to the supplied judgment, Image, or line text—paraphrase or quote in blockquote, then bridge to the question. Avoid vague uplift that could apply to any hexagram.`;
 
-/** Aliases from Anthropic docs; override with ANTHROPIC_MODEL_HAIKU / ANTHROPIC_MODEL_SONNET. */
-const MODEL_CONFIG = {
-  free: { model: process.env.ANTHROPIC_MODEL_HAIKU ?? "claude-haiku-4-5", maxTokens: 520 },
-  seeker: { model: process.env.ANTHROPIC_MODEL_HAIKU ?? "claude-haiku-4-5", maxTokens: 780 },
-  practitioner: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 1200 },
-  master: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 1600 },
-  oracle: { model: process.env.ANTHROPIC_MODEL_SONNET ?? "claude-sonnet-4-6", maxTokens: 2000 },
+/** max_tokens by product tier; model = getAnthropicModelId(env) for every tier. */
+const MAX_TOKENS_BY_TIER = {
+  free: 520,
+  seeker: 780,
+  practitioner: 1200,
+  master: 1600,
+  oracle: 2000,
 } as const;
 
 function getLanguageName(language: string): string {
@@ -169,7 +170,9 @@ export async function generateInterpretation(
 ): Promise<{ text: string; category: ConsultationCategory }> {
   const { ANTHROPIC_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const language = castResult.language;
-  const cfg = MODEL_CONFIG[tier as keyof typeof MODEL_CONFIG] ?? MODEL_CONFIG.free;
+  const maxTokens =
+    MAX_TOKENS_BY_TIER[tier as keyof typeof MAX_TOKENS_BY_TIER] ?? MAX_TOKENS_BY_TIER.free;
+  const model = getAnthropicModelId(env);
 
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
   const userContent = hasContext && context
@@ -182,8 +185,8 @@ export async function generateInterpretation(
     try {
       const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
       const response = await client.messages.create({
-        model: cfg.model,
-        max_tokens: cfg.maxTokens,
+        model,
+        max_tokens: maxTokens,
         system: systemPrompt,
         messages: [{ role: "user", content: userContent }],
       });
@@ -213,7 +216,7 @@ export async function generateInterpretation(
       body: JSON.stringify({
         model: GROQ_MODEL ?? "llama-3.3-70b-versatile",
         temperature: 0.5,
-        max_tokens: cfg.maxTokens,
+        max_tokens: maxTokens,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userContent },
