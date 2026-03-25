@@ -794,11 +794,10 @@ export default function HomePage() {
               </h2>
               <p className="auth-soft-body">
                 Puedes explorar el ritual y escribir tu consulta con libertad. Cuando quieras el veredicto del oráculo,
-                crea una cuenta gratuita o entra con Google — correo verificado, sin trampas.
+                crea una cuenta gratuita o entra con Google.
               </p>
               <ul className="auth-soft-list">
                 <li>Plan gratuito: 2 consultas al mes</li>
-                <li>Mismo hilo: profundizar cuenta como una consulta</li>
               </ul>
               <div className="auth-soft-actions">
                 <Link href="/login" className="auth-soft-primary" onClick={() => setAuthContinueOpen(false)}>
