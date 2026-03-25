@@ -11,6 +11,16 @@ export type ImageProvider = "auto" | "mock" | "svg-art" | "pollinations" | "fal"
 /** Provider after resolving "auto" / env; never "auto". */
 export type ResolvedImageProvider = Exclude<ImageProvider, "auto">;
 
+function isDebugImageProvider(): boolean {
+  return process.env.DEBUG_IMAGE_PROVIDER === "1" || process.env.DEBUG_IMAGE_PROVIDER === "true";
+}
+
+function debugLog(message: string, details?: Record<string, unknown>): void {
+  if (!isDebugImageProvider()) return;
+  // eslint-disable-next-line no-console
+  console.info("[image-provider]", message, details ?? {});
+}
+
 function shiftHexForOracle(hex: string, rng: () => number, spread: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -156,7 +166,10 @@ async function generateWithGptImage(prompt: string, width: number, height: numbe
 
 async function generateWithTogether(prompt: string, width: number, height: number): Promise<string | null> {
   const key = process.env.TOGETHER_API_KEY;
-  if (!key) return null;
+  if (!key) {
+    debugLog("together: missing TOGETHER_API_KEY", { hasKey: false });
+    return null;
+  }
   const model =
     process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "20");
@@ -179,12 +192,31 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
       response_format: "url",
     }),
   });
-  if (!res.ok) return null;
+  if (!res.ok) {
+    let err = "";
+    try {
+      err = await res.text();
+    } catch {
+      err = "";
+    }
+    debugLog("together: request failed", { status: res.status, snippet: err.slice(0, 500) });
+    return null;
+  }
   const data = (await res.json()) as { data?: Array<{ url?: string; b64_json?: string }> };
   const first = data.data?.[0];
-  if (!first) return null;
-  if (first.url) return first.url;
-  if (first.b64_json) return `data:image/png;base64,${first.b64_json}`;
+  if (!first) {
+    debugLog("together: missing data.data[0]", { hasData: Boolean(data.data?.length) });
+    return null;
+  }
+  if (first.url) {
+    debugLog("together: got url", { urlPrefix: first.url.slice(0, 40) });
+    return first.url;
+  }
+  if (first.b64_json) {
+    debugLog("together: got b64_json", { bytesApprox: first.b64_json.length });
+    return `data:image/png;base64,${first.b64_json}`;
+  }
+  debugLog("together: unexpected response shape", { keys: Object.keys(first ?? {}) });
   return null;
 }
 
@@ -252,6 +284,13 @@ export async function buildImageAsset(params: {
   }
 
   const provider = resolveProvider(params.providerOverride);
+  debugLog("buildImageAsset: provider resolved", {
+    provider,
+    override: params.providerOverride ?? null,
+    imageProviderEnv: process.env.IMAGE_PROVIDER ?? null,
+    togetherHasKey: Boolean(process.env.TOGETHER_API_KEY),
+    sumiOnlyMode: sumiOnlyMode(),
+  });
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
   const promptForRemote = compactPrompt(params.prompt, provider === "pollinations" ? 900 : 1100);
   const fallbackImageUrl = sumiFallback;
