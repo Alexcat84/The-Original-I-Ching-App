@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { upsertUserTier } from "@/lib/credits";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 /** Match RevenueCat entitlement identifiers case-insensitively; normalize to DB tier keys (lowercase). */
 const TIER_PRIORITY = ["oracle", "master", "practitioner", "seeker"] as const;
