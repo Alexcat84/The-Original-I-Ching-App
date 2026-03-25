@@ -1,6 +1,7 @@
 import type { OracleBoneMedium, OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import {
   buildSumiHexagramSvgDataUrl,
+  buildSumiHexagramOverlaySvgDataUrl,
   fnv1a32,
   mulberry32,
   type SumiLineInput,
@@ -328,6 +329,8 @@ export async function buildImageAsset(params: {
   imageUrl: string;
   fallbackImageUrl: string;
   debug?: ImageProviderDebug;
+  /** When present, the compositor will overlay deterministic bars/text on top of the remote background. */
+  overlaySvgDataUrl?: string;
 }> {
   const sumiFallback = sumiUrlForIChing({
     lines: params.lines,
@@ -369,6 +372,17 @@ export async function buildImageAsset(params: {
   const promptForRemote = compactPrompt(params.prompt, provider === "pollinations" ? 900 : 1100);
   const fallbackImageUrl = sumiFallback;
 
+  const overlayBase = {
+    lines: params.lines,
+    primaryNumber: params.primaryHexagram,
+    primaryName: params.primaryHexagramName,
+    primaryChinese: params.primaryChinese,
+    pinyin: params.pinyin,
+    transformedNumber: params.transformedHexagram?.number ?? null,
+    transformedName: params.transformedHexagram?.name ?? null,
+    transformedChinese: params.transformedHexagram?.chineseName ?? null,
+  };
+
   if (provider === "pollinations") {
     const model = process.env.POLLINATIONS_MODEL ?? "flux";
     const width = Number(process.env.POLLINATIONS_WIDTH ?? String(tierWidth));
@@ -378,20 +392,35 @@ export async function buildImageAsset(params: {
     const imageUrl =
       `https://image.pollinations.ai/prompt/${encoded}` +
       `?model=${encodeURIComponent(model)}&width=${width}&height=${height}&seed=${seed}&nologo=true`;
-    return { provider, imageUrl, fallbackImageUrl, debug };
+    const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+      ...overlayBase,
+      outputWidth: width,
+      outputHeight: height,
+    });
+    return { provider, imageUrl, fallbackImageUrl, debug, overlaySvgDataUrl };
   }
 
   if (provider === "fal") {
     const falImage = await generateWithFal(promptForRemote, tierWidth, tierHeight);
     if (falImage) {
-      return { provider, imageUrl: falImage, fallbackImageUrl, debug };
+      const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+        ...overlayBase,
+        outputWidth: tierWidth,
+        outputHeight: tierHeight,
+      });
+      return { provider, imageUrl: falImage, fallbackImageUrl, debug, overlaySvgDataUrl };
     }
   }
 
   if (provider === "gpt-image") {
     const gptImage = await generateWithGptImage(promptForRemote, tierWidth, tierHeight);
     if (gptImage) {
-      return { provider, imageUrl: gptImage, fallbackImageUrl, debug };
+      const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+        ...overlayBase,
+        outputWidth: tierWidth,
+        outputHeight: tierHeight,
+      });
+      return { provider, imageUrl: gptImage, fallbackImageUrl, debug, overlaySvgDataUrl };
     }
   }
 
@@ -399,7 +428,13 @@ export async function buildImageAsset(params: {
     const { url, debug: togetherDebug } = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
     debug.together = togetherDebug;
     if (url) {
-      return { provider, imageUrl: url, fallbackImageUrl, debug };
+      const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+        ...overlayBase,
+        // generateWithTogether clamps output size to 512..1024, so we mirror what it uses.
+        outputWidth: Math.min(Math.max(512, tierWidth), 1024),
+        outputHeight: Math.min(Math.max(512, tierHeight), 1024),
+      });
+      return { provider, imageUrl: url, fallbackImageUrl, debug, overlaySvgDataUrl };
     }
   }
 

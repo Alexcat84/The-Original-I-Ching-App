@@ -43,25 +43,13 @@ const ATMOSPHERE_ROTATIONS = [
 
 export function buildImagePrompt(
   primary: Hexagram,
-  transformed: Hexagram | null,
+  _transformed: Hexagram | null,
   category: ConsultationCategory,
-  changingLines: number[],
-  castLines?: Line[],
+  _changingLines: number[],
+  _castLines?: Line[],
   consultationId?: string,
 ): string {
   const theme = VISUAL_THEMES[category] ?? VISUAL_THEMES.general;
-  const mut =
-    changingLines.length > 0
-      ? `Changing lines (Zhu Xi method): positions ${changingLines.join(", ")} — only these lines get gold glow.`
-      : "No changing lines; all six lines are stable black ink.";
-  const second = transformed
-    ? `Transformed hexagram (potential outcome): #${transformed.number} ${transformed.name} (${transformed.chineseName}).`
-    : "Single-hexagram reading; no transformed figure.";
-
-  const stack =
-    castLines && castLines.length === 6
-      ? `HEXAGRAM STACK (bottom to top, must match exactly): ${describeHexagramLinesForImage(castLines)}`
-      : "";
 
   const seed = `${consultationId ?? "na"}:${primary.number}:${category}`;
   const h = hashToUint(seed);
@@ -81,16 +69,9 @@ export function buildImagePrompt(
   return [
     "Elegant ancient Chinese ink wash painting (sumi-e) on textured handmade xuan paper, widescreen 16:9, museum quality, scholarly Zhouyi consultation.",
     settingBlock,
-    "Center MUST be the hexagram as SIX HORIZONTAL INK BARS stacked vertically (not a single Chinese character or glyph).",
-    "YIN lines must be drawn as TWO separate ink segments with a visible gap; YANG lines must be one continuous thick bar.",
-    "Changing lines MUST be warm metallic gold / amber glowing ink bars (only for the changing line positions described below); stable lines MUST be deep black sumi ink with dry-brush texture.",
-    "Hard rule: do not render any Chinese character or seal-script glyph at the hexagram center. The only center content is the six bars.",
-    stack,
+    "Center MUST be a large blank, uncluttered misty space with NO calligraphy characters, NO seal-script glyphs, and NO hexagram bars/lines.",
+    "Hard rule: do not draw any Chinese characters, pinyin, roman text, numbers, symbols, or seal chops anywhere in the image.",
     "Foreground: weathered wooden scholar table with bronze incense burner (thin smoke trail), scattered round copper cash coins with square holes.",
-    `Primary hexagram: #${primary.number} ${primary.name} (${primary.chineseName}, ${primary.pinyin}).`,
-    `Top text (exact, no substitutions): write the primary Chinese title exactly as "${primary.chineseName}" near the upper center. If you add pinyin, use exactly "${primary.pinyin}".`,
-    second,
-    mut,
     `Emotional register for consultation theme (${category}): ${theme.mood}.`,
   ]
     .filter(Boolean)
