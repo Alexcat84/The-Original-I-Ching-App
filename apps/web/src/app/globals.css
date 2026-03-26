@@ -340,8 +340,8 @@ body {
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
   align-items: center;
   gap: 0.35rem;
-  padding: 0.65rem 0.85rem;
-  min-height: 3.25rem;
+  padding: 0.48rem 0.72rem;
+  min-height: 2.9rem;
 }
 
 /* Top row: Chats + logo + theme; logo does not steal clicks from side controls */
@@ -372,7 +372,7 @@ body {
 
 .chat-header-logo {
   display: block;
-  height: clamp(2.85rem, 11vw, 4.6rem);
+  height: clamp(2.45rem, 9.5vw, 3.95rem);
   width: auto;
   max-width: min(340px, 88vw);
   object-fit: contain;
@@ -441,12 +441,12 @@ html:not([data-theme]) .chat-title-display {
 }
 
 .chat-app-brand {
-  padding: 0.5rem 0.85rem 0.75rem;
+  padding: 0.2rem 0.72rem 0.02rem;
   border-top: none;
   background: linear-gradient(180deg, color-mix(in srgb, var(--bar) 88%, transparent) 0%, var(--bar) 100%);
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.08rem;
   border-radius: 0;
 }
 
@@ -454,8 +454,16 @@ html:not([data-theme]) .chat-title-display {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem 0.65rem;
+  gap: 0.4rem 0.56rem;
   min-width: 0;
+  padding: 0.16rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--bar-border) 88%, var(--accent));
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--accent) 10%, var(--empty-hint-bg)) 0%,
+    color-mix(in srgb, var(--bar) 88%, transparent) 100%
+  );
 }
 
 .oracle-cn-mark {
@@ -523,8 +531,8 @@ html:not([data-theme]) .chat-title-display {
   min-width: 8rem;
   font-family: var(--font-oracle-serif), "Noto Serif", Georgia, "Times New Roman", serif;
   font-weight: 500;
-  font-size: clamp(0.78rem, 2.5vw, 0.9rem);
-  line-height: 1.55;
+  font-size: clamp(0.74rem, 2.2vw, 0.84rem);
+  line-height: 1.35;
   letter-spacing: 0.08em;
   font-feature-settings: "kern" 1, "liga" 1;
   color: color-mix(in srgb, var(--fg-muted) 35%, var(--fg));
@@ -535,136 +543,30 @@ html[data-theme="dark"] .oracle-tagline {
   text-shadow: 0 0 24px color-mix(in srgb, var(--oracle-gold-mid) 18%, transparent);
 }
 
-/* Ritual / directo / profundizar: always visible, separate from Stats */
-.oracle-reading-mode-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 0.55rem;
-  padding: 0.15rem 0 0.1rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 85%, transparent);
-  margin-bottom: 0.15rem;
-}
-
-.oracle-reading-mode-bar-label {
-  font-family: var(--font-oracle-display), Cinzel, serif;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  opacity: 0.9;
-}
-
-.oracle-reading-mode-bar-value {
-  font-family: var(--font-oracle-serif), "Noto Serif", Georgia, serif;
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: color-mix(in srgb, var(--accent) 22%, var(--fg));
-}
-
-html[data-theme="dark"] .oracle-reading-mode-bar-value {
-  color: color-mix(in srgb, var(--accent) 35%, #e8f4f2);
-}
-
-.oracle-meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 0.55rem;
-  justify-content: flex-start;
-}
-
-/* Active oracle / reading mode — mirrors Opciones panel at a glance */
-.oracle-status-strip {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  gap: 0.4rem 0.45rem;
-  padding: 0.2rem 0 0.05rem;
-}
-
-.oracle-status-pill {
+.oracle-reading-pill {
   display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  gap: 0.08rem;
-  padding: 0.35rem 0.65rem;
   border-radius: 999px;
-  border: 1px solid var(--badge-border);
-  background: var(--badge-bg);
-  color: var(--badge-fg);
-  font-size: 0.68rem;
-  font-weight: 600;
-  line-height: 1.25;
-  max-width: 100%;
-}
-
-.oracle-status-pill--oracle {
-  border-color: color-mix(in srgb, var(--accent) 38%, var(--badge-border));
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--badge-border));
   background: linear-gradient(
     165deg,
-    color-mix(in srgb, var(--accent) 14%, var(--badge-bg)) 0%,
-    var(--badge-bg) 100%
+    color-mix(in srgb, var(--accent) 20%, var(--badge-bg)) 0%,
+    color-mix(in srgb, var(--accent) 9%, var(--badge-bg)) 100%
   );
-}
-
-.oracle-status-pill--iching {
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
-}
-
-.oracle-status-pill--bones {
-  border-color: color-mix(in srgb, var(--oracle-gold-mid) 35%, var(--badge-border));
-}
-
-.oracle-status-pill-title {
-  font-family: var(--font-oracle-serif), "Noto Serif", Georgia, serif;
-  font-size: 0.76rem;
+  color: color-mix(in srgb, var(--fg) 88%, var(--accent));
+  font-size: 0.63rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: var(--fg);
+  line-height: 1;
+  padding: 0.3rem 0.56rem;
+  white-space: nowrap;
 }
 
-.oracle-status-pill-sub {
-  font-size: 0.65rem;
-  font-weight: 500;
-  color: var(--fg-muted);
-  letter-spacing: 0.02em;
-}
-
-.oracle-status-pill--response {
-  flex-direction: row;
-  align-items: baseline;
-  gap: 0.35rem;
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--badge-border));
-}
-
-.oracle-status-pill-kicker {
-  font-family: var(--font-oracle-display), Cinzel, serif;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  opacity: 0.95;
-}
-
-.oracle-status-pill-strong {
-  font-family: var(--font-oracle-serif), "Noto Serif", Georgia, serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: color-mix(in srgb, var(--accent) 28%, var(--fg));
-}
-
-.oracle-status-pill--hint {
-  font-style: italic;
-  font-weight: 500;
-  color: color-mix(in srgb, var(--fg-muted) 90%, var(--fg));
-  background: color-mix(in srgb, var(--badge-bg) 50%, transparent);
-  border-style: dashed;
+.oracle-reading-pill,
+.chat-icon-btn,
+.auth-explore-strip-signout {
+  border-radius: 999px;
 }
 
 .insights-strip--inline {
@@ -676,136 +578,6 @@ html[data-theme="dark"] .oracle-reading-mode-bar-value {
     margin-left: 0;
     width: 100%;
   }
-}
-
-/* Active oracle — one soft panel; no inner card borders */
-.oracle-mode-banner {
-  margin: 0.2rem 0 0.05rem;
-  padding: 0.65rem 0.85rem;
-  border-radius: var(--radius);
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--accent) 10%, var(--empty-hint-bg)) 0%,
-    color-mix(in srgb, var(--oracle-gold-mid) 8%, var(--session-active-bg)) 100%
-  );
-  border: 1px solid color-mix(in srgb, var(--bar-border) 88%, var(--accent));
-  box-shadow: 0 4px 22px color-mix(in srgb, var(--fg) 5%, transparent);
-}
-
-html[data-theme="dark"] .oracle-mode-banner {
-  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.4);
-}
-
-.oracle-mode-banner-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1rem;
-}
-
-.oracle-mode-banner-icon-wrap {
-  flex-shrink: 0;
-  width: 4.5rem;
-  height: 4.5rem;
-  display: grid;
-  place-items: center;
-  border-radius: 22px;
-  overflow: hidden;
-}
-
-.oracle-mode-banner-icon-wrap--iching {
-  background:
-    radial-gradient(ellipse 85% 75% at 50% 42%, color-mix(in srgb, var(--oracle-gold-mid) 42%, transparent), transparent 72%),
-    linear-gradient(160deg, var(--session-active-bg), var(--empty-hint-bg));
-  padding: 0.35rem;
-}
-
-.oracle-mode-banner-icon-wrap--bones {
-  background: color-mix(in srgb, var(--session-active-bg) 92%, var(--fg-muted));
-}
-
-html[data-theme="dark"] .oracle-mode-banner-icon-wrap--bones {
-  background: color-mix(in srgb, #fff 6%, #121416);
-}
-
-.oracle-mode-asset-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-.oracle-mode-asset-img--bones {
-  padding: 0.2rem;
-}
-
-html[data-theme="dark"] .oracle-mode-asset-img--bones {
-  filter: invert(1) brightness(1.06);
-}
-
-.oracle-mode-banner-main {
-  flex: 1 1 10rem;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.12rem;
-}
-
-.oracle-mode-banner-reading {
-  flex: 0 0 auto;
-  min-width: 6.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.12rem;
-  margin-left: auto;
-  padding-left: 0.35rem;
-}
-
-@media (max-width: 520px) {
-  .oracle-mode-banner-reading {
-    margin-left: 0;
-    padding-left: 0;
-    flex-basis: 100%;
-  }
-}
-
-.oracle-mode-banner-eyebrow {
-  font-family: var(--font-oracle-display), Cinzel, serif;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-}
-
-.oracle-mode-banner-title {
-  font-family: var(--font-oracle-serif), "Noto Serif", Georgia, serif;
-  font-size: 1.02rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--fg);
-}
-
-.oracle-mode-banner-sub {
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--fg-muted);
-  line-height: 1.35;
-}
-
-.oracle-mode-banner-reading-k {
-  font-size: 0.58rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-weight: 700;
-  color: var(--fg-muted);
-}
-
-.oracle-mode-banner-reading-v {
-  font-family: var(--font-oracle-serif), "Noto Serif", Georgia, serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: color-mix(in srgb, var(--accent) 28%, var(--fg));
 }
 
 .chat-empty-line {
@@ -3064,16 +2836,33 @@ html[data-theme="dark"] .auth-config-banner {
 }
 
 .auth-explore-strip--session {
-  justify-content: flex-end;
+  justify-content: space-between;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
 }
 
-.auth-explore-strip-session {
+.auth-explore-strip-account {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.5rem 0.75rem;
+  gap: 0.45rem 0.65rem;
   min-width: 0;
+}
+
+.auth-explore-strip-tier {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--input-border));
+  background: color-mix(in srgb, var(--accent) 10%, var(--secondary-bg));
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.33rem 0.62rem;
+  border-radius: 999px;
+  min-height: 1.9rem;
+  white-space: nowrap;
 }
 
 .auth-explore-strip-email {
@@ -3081,19 +2870,26 @@ html[data-theme="dark"] .auth-config-banner {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.78rem;
+  font-size: 0.79rem;
+  line-height: 1;
   color: var(--fg-muted);
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.9rem;
 }
 
 .auth-explore-strip-signout {
   flex-shrink: 0;
-  padding: 0.25rem 0.55rem;
-  border-radius: 8px;
+  padding: 0.33rem 0.62rem;
   border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--input-border));
   background: color-mix(in srgb, var(--accent) 8%, var(--secondary-bg));
   color: var(--accent);
   font-size: 0.76rem;
   font-weight: 600;
+  line-height: 1;
+  min-height: 1.9rem;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
 }
 

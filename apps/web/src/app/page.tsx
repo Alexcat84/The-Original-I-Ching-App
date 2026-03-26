@@ -10,11 +10,6 @@ import { OracleInterpretationMarkdown } from "@/components/OracleInterpretationM
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import {
-  buildBonesDeepenPrompts,
-  buildDeepenPrompts,
-  type SuggestionConsultSnapshot,
-} from "@/lib/chat-suggestions";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import {
@@ -211,6 +206,7 @@ export default function HomePage() {
   const locale = DEFAULT_LOCALE;
   const t = commonStrings[locale];
   const [tier, setTier] = useState<Tier>("free");
+  const [monthlyCreditsLimit, setMonthlyCreditsLimit] = useState(2);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
@@ -235,7 +231,10 @@ export default function HomePage() {
   const [twoFactorSetupOpen, setTwoFactorSetupOpen] = useState(false);
   const [twoFactorQrDataUrl, setTwoFactorQrDataUrl] = useState<string | null>(null);
   const [twoFactorCode, setTwoFactorCode] = useState("");
+  const [twoFactorEmailCode, setTwoFactorEmailCode] = useState("");
+  const [twoFactorEmailSent, setTwoFactorEmailSent] = useState(false);
   const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<string[]>([]);
+  const [pendingUserQuestion, setPendingUserQuestion] = useState<string | null>(null);
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
@@ -243,7 +242,6 @@ export default function HomePage() {
   const historyRef = useRef<HTMLElement | null>(null);
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
-  const [deepenPromptsOpen, setDeepenPromptsOpen] = useState(false);
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
 
@@ -283,52 +281,8 @@ export default function HomePage() {
   }, [sessions, activeSessionLocalId]);
   const activeThread = activeSession?.thread ?? [];
   const result = activeThread.at(-1) ?? null;
-  const questionTrimmed = question.trim();
   const threadLimitReached =
     activeThread.length > 0 && result !== null && !result.canDeepen;
-  const showFloatingDeepen =
-    activeThread.length > 0 &&
-    Boolean(result?.canDeepen) &&
-    !loading &&
-    questionTrimmed === "" &&
-    phase !== "coins" &&
-    phase !== "bones";
-  const suggestionSnapshots: SuggestionConsultSnapshot[] = useMemo(
-    () =>
-      activeThread.map((e) => ({
-        consultationId: e.consultationId,
-        question: e.question,
-        interpretation: e.interpretation,
-        category: e.category,
-        primaryHexagram: e.primaryHexagram,
-        changingLines: e.changingLines,
-      })),
-    [activeThread],
-  );
-  const deepenPromptList = useMemo(() => {
-    const last = activeThread.at(-1);
-    if (!last || oracleMode !== "iching") return [];
-    if (last.oracleType === "oracle_bones") {
-      return buildDeepenPrompts(null, suggestionSnapshots);
-    }
-    return buildDeepenPrompts(
-      {
-        consultationId: last.consultationId,
-        question: last.question,
-        interpretation: last.interpretation,
-        category: last.category,
-        primaryHexagram: last.primaryHexagram,
-        changingLines: last.changingLines,
-      },
-      suggestionSnapshots,
-    );
-  }, [activeThread, oracleMode, suggestionSnapshots]);
-  const bonesDeepenList = useMemo(() => {
-    const last = activeThread.at(-1);
-    return buildBonesDeepenPrompts(
-      last ? { consultationId: last.consultationId, question: last.question } : null,
-    );
-  }, [activeThread]);
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   async function exportChatPdf(): Promise<void> {
@@ -427,10 +381,6 @@ export default function HomePage() {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [activeThread.length, phase, error, activeSession?.localId]);
-
-  useEffect(() => {
-    setDeepenPromptsOpen(false);
-  }, [activeSession?.localId]);
 
   useEffect(() => {
     if (!authContinueOpen) return;
@@ -538,6 +488,7 @@ export default function HomePage() {
   useEffect(() => {
     if (!accessToken) {
       setTier("free");
+      setMonthlyCreditsLimit(2);
       setTwoFactorEnabled(false);
       setTwoFactorMethod(null);
       return;
@@ -548,9 +499,12 @@ export default function HomePage() {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
         .then((r) => (r.ok ? r.json() : null))
-        .then((j: { tier?: Tier; twoFactorEnabled?: boolean; twoFactorMethod?: string | null } | null) => {
+        .then((j: { tier?: Tier; creditsLimit?: number; twoFactorEnabled?: boolean; twoFactorMethod?: string | null } | null) => {
           if (cancelled || !j?.tier) return;
           setTier(j.tier);
+          if (typeof j.creditsLimit === "number" && Number.isFinite(j.creditsLimit)) {
+            setMonthlyCreditsLimit(j.creditsLimit);
+          }
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
           setTwoFactorMethod(j.twoFactorMethod ?? null);
         })
@@ -682,8 +636,20 @@ export default function HomePage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const data = (await res.json()) as { qrDataUrl?: string; error?: string };
+      const data = (await res.json()) as {
+        qrDataUrl?: string;
+        error?: string;
+        code?: string;
+      };
       if (!res.ok || !data.qrDataUrl) {
+        if (data.code === "TWO_FACTOR_ENCRYPTION_KEY_MISSING") {
+          setError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
+          return;
+        }
+        if (data.code === "AUTH_PROVIDER_NOT_CONFIGURED") {
+          setError("2FA no disponible: falta configuración de Supabase en servidor.");
+          return;
+        }
         setError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
         return;
       }
@@ -710,8 +676,16 @@ export default function HomePage() {
         },
         body: JSON.stringify({ token: twoFactorCode.trim() }),
       });
-      const data = (await res.json()) as { recoveryCodes?: string[]; error?: string };
+      const data = (await res.json()) as { recoveryCodes?: string[]; error?: string; code?: string };
       if (!res.ok || !Array.isArray(data.recoveryCodes)) {
+        if (data.code === "TWO_FACTOR_NOT_ENROLLED") {
+          setError("Primero activa 2FA con Authenticator para generar el QR.");
+          return;
+        }
+        if (data.code === "TWO_FACTOR_ENCRYPTION_KEY_MISSING") {
+          setError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
+          return;
+        }
         setError("Código 2FA inválido o expirado. Revisa tu app Authenticator e inténtalo de nuevo.");
         return;
       }
@@ -721,6 +695,75 @@ export default function HomePage() {
       setTwoFactorCode("");
     } catch {
       setError("No se pudo verificar 2FA ahora. Inténtalo de nuevo.");
+    } finally {
+      setTwoFactorBusy(false);
+    }
+  }
+
+  async function sendEmailTwoFactorCode() {
+    if (!accessToken) {
+      setError("Inicia sesión para configurar la verificación en dos pasos.");
+      return;
+    }
+    setTwoFactorBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/auth/2fa/email/send", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = (await res.json()) as { ok?: boolean; code?: string };
+      if (!res.ok || !data.ok) {
+        if (data.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
+          setError("2FA por email no está habilitado en servidor (faltan variables de entorno).");
+          return;
+        }
+        setError("No se pudo enviar el código por email. Inténtalo de nuevo.");
+        return;
+      }
+      setTwoFactorEmailSent(true);
+    } catch {
+      setError("No se pudo enviar el código por email. Inténtalo de nuevo.");
+    } finally {
+      setTwoFactorBusy(false);
+    }
+  }
+
+  async function verifyEmailTwoFactorCode() {
+    if (!accessToken || !twoFactorEmailCode.trim()) return;
+    setTwoFactorBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/auth/2fa/email/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ code: twoFactorEmailCode.trim() }),
+      });
+      const data = (await res.json()) as { recoveryCodes?: string[]; code?: string };
+      if (!res.ok || !Array.isArray(data.recoveryCodes)) {
+        if (data.code === "TWO_FACTOR_EMAIL_CODE_EXPIRED") {
+          setError("El código por email expiró. Solicita uno nuevo.");
+          return;
+        }
+        if (data.code === "TWO_FACTOR_EMAIL_CODE_MISSING") {
+          setError("Primero solicita el código por email.");
+          return;
+        }
+        setError("Código por email inválido. Revisa tu bandeja e inténtalo de nuevo.");
+        return;
+      }
+      setTwoFactorEnabled(true);
+      setTwoFactorMethod("email");
+      setTwoFactorRecoveryCodes(data.recoveryCodes);
+      setTwoFactorEmailCode("");
+      setTwoFactorEmailSent(false);
+    } catch {
+      setError("No se pudo verificar el código por email. Inténtalo de nuevo.");
     } finally {
       setTwoFactorBusy(false);
     }
@@ -736,7 +779,8 @@ export default function HomePage() {
     if (threadLimitReached) {
       return;
     }
-    if (oracleMode === "oracle_bones" && !question.trim()) {
+    const questionForRequest = question.trim();
+    if (oracleMode === "oracle_bones" && !questionForRequest) {
       setError("Escribe el cargo positivo (una afirmación clara) para consultar los huesos.");
       return;
     }
@@ -747,6 +791,8 @@ export default function HomePage() {
     setLoading(true);
     setError(null);
     setCreditsNotice(null);
+    setPendingUserQuestion(questionForRequest || null);
+    setQuestion("");
     const showRitualAnimation =
       (oracleMode === "iching" && responseMode !== "directo") ||
       (oracleMode === "oracle_bones" && responseMode !== "directo");
@@ -768,8 +814,8 @@ export default function HomePage() {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          question: question.trim() || "Silent consultation",
-          language: detectInputLanguage(question),
+          question: questionForRequest || "Silent consultation",
+          language: detectInputLanguage(questionForRequest),
           sessionId: sessionIdForRequest,
           sessionTitle: activeSession.title,
           isDeepening: activeThread.length > 0,
@@ -778,7 +824,7 @@ export default function HomePage() {
           oracleBones:
             oracleMode === "oracle_bones"
               ? {
-                  positiveCharge: question.trim(),
+                  positiveCharge: questionForRequest,
                   negativeCharge: undefined,
                   medium: DEFAULT_BONES_MEDIUM,
                 }
@@ -869,7 +915,7 @@ export default function HomePage() {
         question:
           data.oracleType === "oracle_bones" && data.oracleBones?.positiveCharge
             ? data.oracleBones.positiveCharge
-            : question.trim() || "Silent consultation",
+            : questionForRequest || "Silent consultation",
       };
       updateActiveSession((current) => ({
         ...current,
@@ -881,7 +927,7 @@ export default function HomePage() {
           : current.title,
         updatedAt: Date.now(),
       }));
-      setQuestion("");
+      setPendingUserQuestion(null);
       const today = new Date().toISOString().slice(0, 10);
       setDailyCount((prev) => {
         const next = prev + 1;
@@ -890,15 +936,16 @@ export default function HomePage() {
       });
       setPhase("reading");
       setConsultPanelOpen(false);
-      setDeepenPromptsOpen(false);
       ok = true;
     } catch (e) {
       setError(e instanceof Error ? e.message : "Error");
+      setPendingUserQuestion(null);
     } finally {
       if (ticker !== null) window.clearInterval(ticker);
       setLoading(false);
       if (!ok) {
         setPhase("idle");
+        setPendingUserQuestion(null);
       }
     }
   }
@@ -1035,7 +1082,10 @@ export default function HomePage() {
         ) : null}
         {authReady && !supabaseConfigError && accessToken && authEmail ? (
           <div className="auth-explore-strip auth-explore-strip--session">
-            <div className="auth-explore-strip-session">
+            <span className="auth-explore-strip-tier" aria-label={`Plan ${tier}`}>
+              Plan: {tier}
+            </span>
+            <div className="auth-explore-strip-account">
               <span className="auth-explore-strip-email" title={authEmail}>
                 {authEmail}
               </span>
@@ -1090,36 +1140,9 @@ export default function HomePage() {
                   ? "Tres monedas · Zhu Xi · Wilhelm/Baynes"
                   : "Grietas 兆 (estilo Shang) · sí / no sobre cargos"}
               </p>
-            </div>
-            <div className="oracle-mode-banner" aria-label="Configuración activa de la consulta">
-              <div className="oracle-mode-banner-inner">
-                <div className={`oracle-mode-banner-icon-wrap oracle-mode-banner-icon-wrap--${oracleMode === "iching" ? "iching" : "bones"}`}>
-                  {/* eslint-disable-next-line @next/next/no-img-element -- local mode assets */}
-                  <img
-                    src={oracleMode === "iching" ? "/brand/mode-iching-coin.png" : "/brand/mode-bones-symbol.png"}
-                    alt=""
-                    className={`oracle-mode-asset-img oracle-mode-asset-img--${oracleMode === "iching" ? "coin" : "bones"}`}
-                    width={88}
-                    height={88}
-                    decoding="async"
-                  />
-                </div>
-                <div className="oracle-mode-banner-main">
-                  <span className="oracle-mode-banner-eyebrow">Oráculo activo</span>
-                  <span className="oracle-mode-banner-title">
-                    {oracleMode === "iching" ? "I Ching" : "Huesos de oráculo"}
-                  </span>
-                  <span className="oracle-mode-banner-sub">
-                    {oracleMode === "iching"
-                      ? "Seis líneas · tres monedas · Zhu Xi"
-                      : "Sí / no sobre cargas · grietas al estilo 兆"}
-                  </span>
-                </div>
-                <div className="oracle-mode-banner-reading">
-                  <span className="oracle-mode-banner-reading-k">Modo lectura</span>
-                  <span className="oracle-mode-banner-reading-v">{responseModeLabelEs(responseMode)}</span>
-                </div>
-              </div>
+              <span className="oracle-reading-pill" aria-label={`Modo lectura ${responseModeLabelEs(responseMode)}`}>
+                Modo: {responseModeLabelEs(responseMode)}
+              </span>
             </div>
           </div>
         </header>
@@ -1226,6 +1249,13 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
+            {pendingUserQuestion ? (
+              <div className="thread-block chat-entry">
+                <div className="chat-bubble chat-user">
+                  <p className="question-chip">{pendingUserQuestion}</p>
+                </div>
+              </div>
+            ) : null}
 
             {phase === "bones" ? (
               <section className="coins-stage" data-testid="bone-ritual">
@@ -1400,18 +1430,28 @@ export default function HomePage() {
                         {twoFactorMethod ? ` · método ${twoFactorMethod.toUpperCase()}` : ""}
                       </p>
                       <p className="meta-line tier-hint-line">
-                        Puedes activar verificación con <strong>Authenticator (TOTP)</strong>. Verificación por email:
-                        <strong> próximamente</strong>.
+                        Puedes activar verificación con <strong>Authenticator (TOTP)</strong> o con{" "}
+                        <strong>código por email</strong>.
                       </p>
                       {!twoFactorEnabled ? (
-                        <button
-                          type="button"
-                          className="composer-reading-pill is-active"
-                          onClick={() => void startTwoFactorEnrollment()}
-                          disabled={twoFactorBusy || !accessToken}
-                        >
-                          {twoFactorBusy ? "Preparando..." : "Activar con Authenticator"}
-                        </button>
+                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            onClick={() => void startTwoFactorEnrollment()}
+                            disabled={twoFactorBusy || !accessToken}
+                          >
+                            {twoFactorBusy ? "Preparando..." : "Activar con Authenticator"}
+                          </button>
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            onClick={() => void sendEmailTwoFactorCode()}
+                            disabled={twoFactorBusy || !accessToken}
+                          >
+                            {twoFactorBusy ? "Enviando..." : "Enviar código por email"}
+                          </button>
+                        </div>
                       ) : null}
                       {twoFactorSetupOpen && twoFactorQrDataUrl ? (
                         <div style={{ marginTop: 10 }}>
@@ -1441,6 +1481,26 @@ export default function HomePage() {
                           </div>
                         </div>
                       ) : null}
+                      {!twoFactorEnabled && twoFactorEmailSent ? (
+                        <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                          <input
+                            type="text"
+                            value={twoFactorEmailCode}
+                            onChange={(e) => setTwoFactorEmailCode(e.target.value)}
+                            placeholder="Código por email (6 dígitos)"
+                            className="composer-input"
+                            style={{ maxWidth: 220 }}
+                          />
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            onClick={() => void verifyEmailTwoFactorCode()}
+                            disabled={twoFactorBusy || twoFactorEmailCode.trim().length < 6}
+                          >
+                            Verificar email
+                          </button>
+                        </div>
+                      ) : null}
                       {twoFactorRecoveryCodes.length > 0 ? (
                         <p className="meta-line tier-hint-line">
                           Códigos de recuperación: <code>{twoFactorRecoveryCodes.join(" · ")}</code>
@@ -1451,8 +1511,8 @@ export default function HomePage() {
                       <div className="session-progress">
                         <span>Profundidad del hilo</span>
                         <p className="meta-line tier-hint-line">
-                          Plan <strong>{tier}</strong>: hasta {CONTEXT_LIMITS[tier].sessionDepth} consultas en este hilo
-                          (límite de producto, no de tokens).
+                          Plan <strong>{tier}</strong>: {monthlyCreditsLimit} consultas por mes · hasta{" "}
+                          {CONTEXT_LIMITS[tier].sessionDepth} en este hilo.
                         </p>
                         <div className="session-progress-bar">
                           <div
@@ -1476,53 +1536,6 @@ export default function HomePage() {
                   </section>
                 </div>
               </div>
-
-              {showFloatingDeepen ? (
-                <div className="composer-floating-suggestions" aria-live="polite">
-                  <div className="composer-floating-toolbar">
-                    <p className="composer-floating-label">Sugerencias para profundizar</p>
-                    {deepenPromptsOpen ? (
-                      <button
-                        type="button"
-                        className="composer-floating-toggle"
-                        onClick={() => setDeepenPromptsOpen(false)}
-                      >
-                        Ocultar
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className="composer-floating-toggle"
-                        onClick={() => setDeepenPromptsOpen(true)}
-                      >
-                        Mostrar
-                      </button>
-                    )}
-                  </div>
-                  {deepenPromptsOpen ? (
-                    <div
-                      className="composer-floating-chips composer-floating-chips--scroll"
-                      role="group"
-                      aria-label="Preguntas sugeridas según la lectura"
-                    >
-                      {(oracleMode === "iching" ? deepenPromptList : bonesDeepenList).map((q) => (
-                        <button
-                          key={q}
-                          type="button"
-                          className="composer-floating-chip"
-                          disabled={loading}
-                          onClick={() => {
-                            setQuestion(q);
-                            questionInputRef.current?.focus();
-                          }}
-                        >
-                          {q}
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              ) : null}
 
               {threadLimitReached ? (
                 <div className="composer-session-limit-float" role="status" aria-live="polite">

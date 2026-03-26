@@ -39,6 +39,13 @@ export async function POST(req: Request) {
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(20);
+  if (!attempts) {
+    return apiError(500, {
+      error: "two_factor_attempts_read_failed",
+      code: "TWO_FACTOR_ATTEMPTS_READ_FAILED",
+      action: "retry",
+    });
+  }
   const locked = shouldLockTwoFactor(
     (attempts ?? []).map((a) => ({
       timestampMs: new Date(a.created_at).getTime(),
@@ -48,11 +55,19 @@ export async function POST(req: Request) {
   if (locked) {
     return apiError(423, { error: "two_factor_locked", code: "TWO_FACTOR_LOCKED", action: "wait_and_retry" });
   }
-  const { data: user } = await supabase
+  const { data: user, error: userError } = await supabase
     .from("users")
     .select("totp_secret")
     .eq("id", userId)
     .maybeSingle();
+  if (userError) {
+    return apiError(500, {
+      error: "two_factor_user_read_failed",
+      code: "TWO_FACTOR_USER_READ_FAILED",
+      action: "retry",
+      details: process.env.NODE_ENV === "development" ? userError.message : undefined,
+    });
+  }
   if (!user?.totp_secret) {
     return apiError(400, { error: "totp_not_enrolled", code: "TWO_FACTOR_NOT_ENROLLED", action: "setup_2fa" });
   }
@@ -72,47 +87,85 @@ export async function POST(req: Request) {
   }
 
   if (!verified && body.recoveryCode) {
-    const { data: codes } = await supabase
+    const { data: codes, error: codesError } = await supabase
       .from("two_factor_recovery_codes")
       .select("id, code_hash")
       .eq("user_id", userId)
       .is("used_at", null);
+    if (codesError) {
+      return apiError(500, {
+        error: "two_factor_recovery_read_failed",
+        code: "TWO_FACTOR_RECOVERY_READ_FAILED",
+        action: "retry",
+        details: process.env.NODE_ENV === "development" ? codesError.message : undefined,
+      });
+    }
     const hashes = (codes ?? []).map((c) => c.code_hash);
     const consumed = await consumeRecoveryCode(body.recoveryCode, hashes);
     if (consumed.consumed) {
       verified = true;
       const usedCodeHash = hashes.find((h) => !consumed.remainingHashes.includes(h));
       if (usedCodeHash) {
-        await supabase
+        const { error: recoveryUpdateError } = await supabase
           .from("two_factor_recovery_codes")
           .update({ used_at: new Date().toISOString() })
           .eq("user_id", userId)
           .eq("code_hash", usedCodeHash);
+        if (recoveryUpdateError) {
+          return apiError(500, {
+            error: "two_factor_recovery_consume_failed",
+            code: "TWO_FACTOR_RECOVERY_CONSUME_FAILED",
+            action: "retry",
+            details: process.env.NODE_ENV === "development" ? recoveryUpdateError.message : undefined,
+          });
+        }
       }
     }
   }
 
   if (!verified) {
-    await supabase.from("two_factor_attempts").insert({
+    const { error: failAttemptError } = await supabase.from("two_factor_attempts").insert({
       user_id: userId,
       ip_address: ip,
       success: false,
     });
+    if (failAttemptError) {
+      return apiError(500, {
+        error: "two_factor_attempt_write_failed",
+        code: "TWO_FACTOR_ATTEMPT_WRITE_FAILED",
+        action: "retry",
+      });
+    }
     return apiError(401, { error: "invalid_2fa_code", code: "TWO_FACTOR_INVALID_CODE", action: "retry" });
   }
-  await supabase.from("two_factor_attempts").insert({
+  const { error: successAttemptError } = await supabase.from("two_factor_attempts").insert({
     user_id: userId,
     ip_address: ip,
     success: true,
   });
+  if (successAttemptError) {
+    return apiError(500, {
+      error: "two_factor_attempt_write_failed",
+      code: "TWO_FACTOR_ATTEMPT_WRITE_FAILED",
+      action: "retry",
+    });
+  }
 
-  await supabase
+  const { error: userUpdateError } = await supabase
     .from("users")
     .update({
       two_factor_enabled: true,
       totp_verified_at: new Date().toISOString(),
     })
     .eq("id", userId);
+  if (userUpdateError) {
+    return apiError(500, {
+      error: "two_factor_user_update_failed",
+      code: "TWO_FACTOR_USER_UPDATE_FAILED",
+      action: "retry",
+      details: process.env.NODE_ENV === "development" ? userUpdateError.message : undefined,
+    });
+  }
 
   const recoveryCodes = [
     crypto.randomUUID().slice(0, 8).toUpperCase(),
@@ -125,12 +178,25 @@ export async function POST(req: Request) {
     crypto.randomUUID().slice(0, 8).toUpperCase(),
   ];
   const hashed = await hashRecoveryCodes(recoveryCodes);
-  await supabase.from("two_factor_recovery_codes").insert(
+  await supabase
+    .from("two_factor_recovery_codes")
+    .delete()
+    .eq("user_id", userId)
+    .is("used_at", null);
+  const { error: recoveryInsertError } = await supabase.from("two_factor_recovery_codes").insert(
     hashed.map((hash) => ({
       user_id: userId,
       code_hash: hash,
     })),
   );
+  if (recoveryInsertError) {
+    return apiError(500, {
+      error: "two_factor_recovery_insert_failed",
+      code: "TWO_FACTOR_RECOVERY_INSERT_FAILED",
+      action: "retry",
+      details: process.env.NODE_ENV === "development" ? recoveryInsertError.message : undefined,
+    });
+  }
 
   return NextResponse.json({
     ok: true,

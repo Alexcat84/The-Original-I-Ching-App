@@ -29,12 +29,20 @@ export async function POST(req: Request) {
     });
   }
   const encrypted = encryptTotpSecret(enrollment.secret, encryptionKey);
-  await supabase.from("users").upsert({
+  const { error } = await supabase.from("users").upsert({
     id: authUser.userId,
     email: authUser.email,
     totp_secret: encrypted,
     two_factor_method: "totp",
   });
+  if (error) {
+    return apiError(500, {
+      error: "two_factor_enroll_failed",
+      code: "TWO_FACTOR_ENROLL_FAILED",
+      action: "retry",
+      details: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
   return NextResponse.json({
     ok: true,
     otpauthUrl: enrollment.otpauthUrl,
