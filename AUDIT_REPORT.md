@@ -57,7 +57,7 @@
 ### [ALTO-002] Sin CI en GitHub
 
 - **Archivo:** `.github/workflows/ci.yml`
-- **Solución:** Workflow `npm ci`, `typecheck`, `lint`, `test`, `build` en `main` y PRs.
+- **Solución:** Workflow `npm ci`, `typecheck`, `test`, `build` en `main` y PRs. El paso **`lint` está comentado** hasta que `eslint-config-next` resuelva el parser con el hoisting npm del monorepo (ver nota de `npm run lint` arriba).
 
 ## Problemas medios / mejoras
 
