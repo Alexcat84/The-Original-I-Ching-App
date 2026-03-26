@@ -107,6 +107,50 @@ type ChatSessionState = {
   updatedAt: number;
 };
 
+type AccountChatsResponse = {
+  sessions: Array<{
+    session: {
+      sessionId: string;
+      title: string;
+      themeCategory: string;
+      language: string;
+      publicId: string;
+      consultationIds: string[];
+      createdAt: number;
+    };
+    consultations: Array<{
+      consultationId: string;
+      sessionId: string;
+      sessionPosition: number;
+      question: string;
+      language: string;
+      primaryHexagram: number;
+      primaryHexagramName: string;
+      primaryHexagramChinese: string;
+      transformedHexagram: number | null;
+      transformedHexagramName: string | null;
+      mutationRule: string;
+      lines: ApiLine[];
+      changingLines: number[];
+      interpretation: string;
+      category: string;
+      imageProvider: ConsultResponse["imageProvider"];
+      imageUrl: string;
+      imageFallbackUrl?: string;
+      publicId: string;
+      oracleType: "iching" | "oracle_bones";
+      oracleBones?: {
+        pattern_id: number;
+        verdict: OracleBonesVerdict;
+        positive_charge: string;
+        negative_charge: string;
+        medium: "turtle" | "ox";
+        ambiguous_passes: number;
+      } | null;
+    }>;
+  }>;
+};
+
 function newClientUuid(): string {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
@@ -200,7 +244,6 @@ export default function HomePage() {
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
   const [deepenPromptsOpen, setDeepenPromptsOpen] = useState(false);
-  const [sharingPersisted, setSharingPersisted] = useState(true);
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
 
@@ -544,60 +587,9 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    let nextSessions: ChatSessionState[] | null = null;
-    let nextActive: string | null = null;
-    try {
-      const sessionsRaw = localStorage.getItem("iching_sessions_v2");
-      if (sessionsRaw) {
-        const parsed = JSON.parse(sessionsRaw) as { sessions: ChatSessionState[]; activeSessionLocalId: string | null };
-        if (parsed.sessions?.length) {
-          const normalized = parsed.sessions.map((s) => ({
-            ...s,
-            publicSessionId: s.publicSessionId ?? null,
-            sessionId: isPersistableUuid(s.sessionId) ? s.sessionId : newClientUuid(),
-          }));
-          const withMessages = normalized.filter((s) => s.thread.length > 0);
-          if (withMessages.length === 0) {
-            const fresh = createLocalSession("Nueva sesión");
-            nextSessions = [fresh];
-            nextActive = fresh.localId;
-          } else if (parsed.activeSessionLocalId && withMessages.some((s) => s.localId === parsed.activeSessionLocalId)) {
-            nextSessions = withMessages;
-            nextActive = parsed.activeSessionLocalId;
-          } else {
-            nextSessions = withMessages;
-            nextActive = withMessages[0]!.localId;
-          }
-        }
-      }
-
-      if (!nextSessions) {
-        const raw = localStorage.getItem("iching_session_v1");
-        if (raw) {
-          const parsed = JSON.parse(raw) as {
-            thread: ConsultationItem[];
-            sessionId: string | null;
-            sessionTitle?: string;
-          };
-          const migrated = createLocalSession(parsed.sessionTitle ?? "Consulta en progreso");
-          migrated.thread = parsed.thread ?? [];
-          migrated.sessionId = isPersistableUuid(parsed.sessionId) ? parsed.sessionId : newClientUuid();
-          migrated.publicSessionId = null;
-          nextSessions = [migrated];
-          nextActive = migrated.localId;
-        }
-      }
-    } catch {
-      nextSessions = null;
-    }
-
-    if (!nextSessions?.length) {
-      const fresh = createLocalSession("Consulta en progreso");
-      nextSessions = [fresh];
-      nextActive = fresh.localId;
-    }
-    setSessions(nextSessions);
-    setActiveSessionLocalId(nextActive);
+    const fresh = createLocalSession("Consulta en progreso");
+    setSessions([fresh]);
+    setActiveSessionLocalId(fresh.localId);
     setSessionsHydrated(true);
   }, []);
 
@@ -607,69 +599,74 @@ export default function HomePage() {
     const fresh = createLocalSession("Consulta en progreso");
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
-    try {
-      localStorage.removeItem("iching_sessions_v2");
-      localStorage.removeItem("iching_session_v1");
-    } catch {
-      // ignore storage errors
-    }
   }, [authReady, accessToken]);
 
   useEffect(() => {
-    if (!sessionsHydrated) return;
-    if (!accessToken) return;
-    const activeId = activeSession?.localId ?? null;
-    const storable = sessions.filter((s) => s.thread.length > 0 || s.localId === activeId);
-    const isDataImageUrl = (url: string): boolean =>
-      url.startsWith("data:image/svg+xml") || url.startsWith("data:image/png;base64,") || url.startsWith("data:image/jpeg;base64,");
-    const MAX_INLINE_IMAGE_URL_LENGTH = 240_000;
-
-    const sanitizeForLocalStorage = (item: ConsultationItem): ConsultationItem => {
-      // Keep inlined images when reasonably small so the chat can be restored after re-login.
-      const keepImageDataUrl = isDataImageUrl(item.imageUrl) && item.imageUrl.length <= MAX_INLINE_IMAGE_URL_LENGTH;
-      const keepFallbackDataUrl =
-        isDataImageUrl(item.imageFallbackUrl) && item.imageFallbackUrl.length <= MAX_INLINE_IMAGE_URL_LENGTH;
-      const safeImageUrl = keepImageDataUrl ? item.imageUrl : isDataImageUrl(item.imageUrl) ? "/oracle-fallback.svg" : item.imageUrl;
-      const safeFallbackUrl = keepFallbackDataUrl
-        ? item.imageFallbackUrl
-        : isDataImageUrl(item.imageFallbackUrl)
-          ? "/oracle-fallback.svg"
-          : item.imageFallbackUrl;
-
-      // imageProviderDebug is only diagnostic; it's not used by UI and adds size.
-      const { imageProviderDebug: _ignoredDebug, ...rest } = item as ConsultationItem & { imageProviderDebug?: unknown };
-      return {
-        ...rest,
-        imagePrompt: "",
-        imageUrl: safeImageUrl,
-        imageFallbackUrl: safeFallbackUrl,
-      };
+    if (!authReady || !accessToken || !sessionsHydrated) return;
+    let cancelled = false;
+    void fetch("/api/account/chats", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((payload: AccountChatsResponse | null) => {
+        if (cancelled || !payload) return;
+        const hydrated = payload.sessions
+          .map((entry): ChatSessionState => {
+            const thread: ConsultationItem[] = entry.consultations.map((c) => ({
+              oracleType: c.oracleType,
+              consultationId: c.consultationId,
+              primaryHexagram: c.primaryHexagram,
+              primaryHexagramName: c.primaryHexagramName,
+              primaryHexagramChinese: c.primaryHexagramChinese,
+              transformedHexagram: c.transformedHexagram,
+              transformedHexagramName: c.transformedHexagramName,
+              mutationRule: c.mutationRule,
+              lines: c.lines,
+              changingLines: c.changingLines,
+              interpretation: c.interpretation,
+              category: c.category,
+              imageProvider: c.imageProvider,
+              imagePrompt: "",
+              imageUrl: c.imageUrl,
+              imageFallbackUrl: c.imageFallbackUrl ?? c.imageUrl,
+              sessionId: c.sessionId,
+              sessionPosition: c.sessionPosition,
+              canDeepen: true,
+              publicReadingId: c.publicId,
+              publicSessionId: entry.session.publicId,
+              sharingPersisted: true,
+              question: c.question,
+              oracleBones: c.oracleBones
+                ? {
+                    patternId: c.oracleBones.pattern_id,
+                    verdict: c.oracleBones.verdict,
+                    affirmsPositive: null,
+                    ambiguousPasses: c.oracleBones.ambiguous_passes,
+                    positiveCharge: c.oracleBones.positive_charge,
+                    negativeCharge: c.oracleBones.negative_charge,
+                    medium: c.oracleBones.medium,
+                  }
+                : undefined,
+            }));
+            return {
+              localId: `db-${entry.session.sessionId}`,
+              title: entry.session.title || "Consulta",
+              sessionId: entry.session.sessionId,
+              publicSessionId: null,
+              thread,
+              updatedAt: thread.at(-1)?.sessionPosition ?? 0,
+            };
+          })
+          .filter((s) => s.thread.length > 0);
+        if (hydrated.length === 0) return;
+        setSessions(hydrated);
+        setActiveSessionLocalId(hydrated[0]?.localId ?? null);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
     };
-
-    // Keep localStorage bounded; user can always regenerate images server-side.
-    const maxSessionsToStore = 3;
-    const maxThreadItemsPerSession = 6;
-
-    const trimmed = [...storable]
-      .sort((a, b) => b.updatedAt - a.updatedAt)
-      .slice(0, maxSessionsToStore)
-      .map((s) => ({
-        ...s,
-        thread: s.thread.slice(-maxThreadItemsPerSession).map(sanitizeForLocalStorage),
-      }));
-    const payload = JSON.stringify({
-      sessions: trimmed,
-      activeSessionLocalId: activeId,
-    });
-    try {
-      localStorage.setItem("iching_sessions_v2", payload);
-    } catch (e) {
-      // QuotaExceededError can happen when images are embedded as data URLs.
-      if (e instanceof DOMException && e.name === "QuotaExceededError") {
-        localStorage.removeItem("iching_sessions_v2");
-      }
-    }
-  }, [sessions, activeSession, sessionsHydrated, accessToken]);
+  }, [authReady, accessToken, sessionsHydrated]);
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
@@ -864,9 +861,6 @@ export default function HomePage() {
             : (data.error ?? `Solicitud fallida (${res.status})`) + detail,
         );
         return;
-      }
-      if (typeof data.sharingPersisted === "boolean") {
-        setSharingPersisted(data.sharingPersisted);
       }
       await new Promise((r) => window.setTimeout(r, showRitualAnimation ? 900 : 0));
       const item: ConsultationItem = {
@@ -1228,32 +1222,6 @@ export default function HomePage() {
                     <button type="button" className="secondary-btn" onClick={() => void exportChatPdf()}>
                       Exportar chat PDF
                     </button>
-                    <a
-                      className={`secondary-btn${!sharingPersisted ? " secondary-btn--muted" : ""}`}
-                      href={`/r/${entry.publicReadingId}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      title={
-                        sharingPersisted
-                          ? "Abrir lectura compartida"
-                          : "Activa Supabase o Upstash Redis en el servidor para que este enlace funcione entre dispositivos y tras reinicios."
-                      }
-                    >
-                      Compartir lectura
-                    </a>
-                    <a
-                      className={`secondary-btn${!sharingPersisted ? " secondary-btn--muted" : ""}`}
-                      href={`/s/${activeSession?.publicSessionId ?? entry.publicSessionId}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      title={
-                        sharingPersisted
-                          ? "Abrir sesión compartida"
-                          : "Activa Supabase o Upstash Redis en el servidor para que este enlace funcione entre dispositivos y tras reinicios."
-                      }
-                    >
-                      Compartir sesión
-                    </a>
                   </div>
                 </div>
               </div>

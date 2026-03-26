@@ -1,26 +1,11 @@
 import type { OracleBonesHistorySnapshot, OracleType } from "@iching-oracle/context-engine";
-import { Redis } from "@upstash/redis";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isPersistableUuid } from "@/lib/session-ids";
 
-let shareKvRedis: Redis | null | undefined;
-
-function shareKv(): Redis | null {
-  if (shareKvRedis !== undefined) return shareKvRedis;
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  shareKvRedis = url && token ? new Redis({ url, token }) : null;
-  return shareKvRedis;
-}
-
 /** Shared /r and /s links resolve across isolates only with Supabase and/or Upstash KV. */
 export function isSharingPersistenceAvailable(): boolean {
-  return Boolean(shareKv()) || Boolean(getSupabaseAdmin());
+  return false;
 }
-
-const KV_READING = "iching:reading:v1:";
-const KV_SESSION = "iching:session:v1:";
-const KV_TTL = 60 * 60 * 24 * 60;
 
 export interface StoredConsultation {
   consultationId: string;
@@ -62,54 +47,11 @@ export interface StoredSession {
   createdAt: number;
 }
 
-async function persistSharedReadingKv(c: StoredConsultation): Promise<void> {
-  const r = shareKv();
-  if (!r) return;
-  try {
-    await r.set(KV_READING + c.publicId, JSON.stringify(c), { ex: KV_TTL });
-  } catch {
-    /* ignore */
-  }
-}
-
-async function loadSharedReadingKv(publicId: string): Promise<StoredConsultation | null> {
-  const r = shareKv();
-  if (!r) return null;
-  try {
-    const raw = await r.get<string>(KV_READING + publicId);
-    if (!raw || typeof raw !== "string") return null;
-    return JSON.parse(raw) as StoredConsultation;
-  } catch {
-    return null;
-  }
-}
-
-async function persistSharedSessionKv(session: StoredSession, consultations: StoredConsultation[]): Promise<void> {
-  const r = shareKv();
-  if (!r) return;
-  try {
-    await r.set(KV_SESSION + session.publicId, JSON.stringify({ session, consultations }), { ex: KV_TTL });
-  } catch {
-    /* ignore */
-  }
-}
-
-async function loadSharedSessionKv(publicId: string): Promise<{
+export interface UserSessionWithConsultations {
   session: StoredSession;
   consultations: StoredConsultation[];
-} | null> {
-  const r = shareKv();
-  if (!r) return null;
-  try {
-    const raw = await r.get<string>(KV_SESSION + publicId);
-    if (!raw || typeof raw !== "string") return null;
-    const parsed = JSON.parse(raw) as { session: StoredSession; consultations: StoredConsultation[] };
-    if (!parsed?.session || !Array.isArray(parsed.consultations)) return null;
-    return parsed;
-  } catch {
-    return null;
-  }
 }
+
 
 /** Map a Supabase consultations row to StoredConsultation (shared shape for reads + KV mirror). */
 function consultationFromDbRow(data: {
@@ -161,41 +103,6 @@ function consultationFromDbRow(data: {
   };
 }
 
-/** Replicate latest session snapshot to Upstash so /r and /s resolve on cold Edge isolates. */
-async function mirrorSupabaseSessionToKv(sessionId: string): Promise<void> {
-  if (!shareKv()) return;
-  const supabase = getSupabaseAdmin();
-  if (!supabase) return;
-  try {
-    const { data: session } = await supabase
-      .from("consultation_sessions")
-      .select("id, title, theme_category, language, public_sharing_id, created_at")
-      .eq("id", sessionId)
-      .maybeSingle();
-    if (!session) return;
-    const { data: rows } = await supabase
-      .from("consultations")
-      .select("*")
-      .eq("session_id", sessionId)
-      .order("session_position", { ascending: true });
-    const mapped = (rows ?? []).map((row) => consultationFromDbRow(row as never));
-    const storedSession: StoredSession = {
-      sessionId: session.id,
-      title: session.title ?? "",
-      themeCategory: session.theme_category,
-      language: session.language,
-      publicId: session.public_sharing_id,
-      consultationIds: mapped.map((m) => m.consultationId),
-      createdAt: new Date(session.created_at).getTime(),
-    };
-    for (const c of mapped) {
-      await persistSharedReadingKv(c);
-    }
-    await persistSharedSessionKv(storedSession, mapped);
-  } catch {
-    /* ignore mirror failures */
-  }
-}
 
 const sessions = new Map<string, StoredSession>();
 const consultations = new Map<string, StoredConsultation>();
@@ -254,72 +161,16 @@ export function saveConsultation(input: Omit<StoredConsultation, "publicId" | "c
 }
 
 export async function getConsultationByPublicId(publicId: string): Promise<StoredConsultation | null> {
-  const supabase = getSupabaseAdmin();
-  if (supabase) {
-    const { data } = await supabase
-      .from("consultations")
-      .select("*")
-      .eq("public_sharing_id", publicId)
-      .eq("is_public", true)
-      .maybeSingle();
-    if (data) {
-      return consultationFromDbRow(data as never);
-    }
-  }
-  const fromKv = await loadSharedReadingKv(publicId);
-  if (fromKv) return fromKv;
-  const id = consultationByPublicId.get(publicId);
-  if (!id) return null;
-  return consultations.get(id) ?? null;
+  void publicId;
+  return null;
 }
 
 export async function getSessionByPublicId(publicId: string): Promise<{
   session: StoredSession;
   consultations: StoredConsultation[];
 } | null> {
-  const supabase = getSupabaseAdmin();
-  if (supabase) {
-    const { data: session } = await supabase
-      .from("consultation_sessions")
-      .select("*")
-      .eq("public_sharing_id", publicId)
-      .maybeSingle();
-    if (session) {
-      const { data: rows } = await supabase
-        .from("consultations")
-        .select("*")
-        .eq("session_id", session.id)
-        .eq("is_public", true)
-        .order("session_position", { ascending: true });
-      const mapped = (rows ?? []).map((data) => consultationFromDbRow(data as never));
-      if (mapped.length === 0) {
-        return null;
-      }
-      return {
-        session: {
-          sessionId: session.id,
-          title: session.title,
-          themeCategory: session.theme_category,
-          language: session.language,
-          publicId: session.public_sharing_id,
-          consultationIds: mapped.map((m) => m.consultationId),
-          createdAt: new Date(session.created_at).getTime(),
-        },
-        consultations: mapped,
-      };
-    }
-  }
-  const fromKv = await loadSharedSessionKv(publicId);
-  if (fromKv) return fromKv;
-  const sessionId = sessionByPublicId.get(publicId);
-  if (!sessionId) return null;
-  const session = sessions.get(sessionId);
-  if (!session) return null;
-  const rows = session.consultationIds
-    .map((id) => consultations.get(id))
-    .filter((x): x is StoredConsultation => Boolean(x))
-    .sort((a, b) => a.sessionPosition - b.sessionPosition);
-  return { session, consultations: rows };
+  void publicId;
+  return null;
 }
 
 export async function upsertSessionAndConsultation(params: {
@@ -341,12 +192,6 @@ export async function upsertSessionAndConsultation(params: {
       language: params.language,
     });
     const saved = saveConsultation(params.consultation);
-    const rows = session.consultationIds
-      .map((cid) => consultations.get(cid))
-      .filter((x): x is StoredConsultation => Boolean(x))
-      .sort((a, b) => a.sessionPosition - b.sessionPosition);
-    await persistSharedReadingKv(saved);
-    await persistSharedSessionKv(session, rows);
     return { publicReadingId: saved.publicId, publicSessionId: session.publicId };
   }
 
@@ -394,7 +239,7 @@ export async function upsertSessionAndConsultation(params: {
       thumbnail_url: params.consultation.imageFallbackUrl ?? params.consultation.imageUrl,
       oracle_type: params.consultation.oracleType,
       oracle_bones: params.consultation.oracleBones ?? null,
-      is_public: true,
+      is_public: false,
     })
     .select("public_sharing_id")
     .single();
@@ -407,11 +252,53 @@ export async function upsertSessionAndConsultation(params: {
   const finalSessionPublicId =
     (sessionRefresh?.public_sharing_id as string | undefined) ?? sessionPublicId;
 
-  await mirrorSupabaseSessionToKv(params.sessionId);
-
   return {
     publicReadingId: createdConsultation?.public_sharing_id ?? randomPublicId(8),
     publicSessionId: finalSessionPublicId ?? randomPublicId(8),
   };
+}
+
+export async function getUserSessionsWithConsultations(userId: string): Promise<UserSessionWithConsultations[]> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return [];
+  const { data: sessionRows, error: sessionsError } = await supabase
+    .from("consultation_sessions")
+    .select("id, title, theme_category, language, public_sharing_id, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  if (sessionsError || !sessionRows?.length) return [];
+
+  const sessionIds = sessionRows.map((s) => s.id);
+  const { data: consultRows, error: consultError } = await supabase
+    .from("consultations")
+    .select("*")
+    .eq("user_id", userId)
+    .in("session_id", sessionIds)
+    .order("session_position", { ascending: true });
+  if (consultError) return [];
+
+  const bySession = new Map<string, StoredConsultation[]>();
+  for (const row of consultRows ?? []) {
+    const mapped = consultationFromDbRow(row as never);
+    const list = bySession.get(mapped.sessionId) ?? [];
+    list.push(mapped);
+    bySession.set(mapped.sessionId, list);
+  }
+
+  return sessionRows.map((s) => {
+    const rows = bySession.get(s.id) ?? [];
+    return {
+      session: {
+        sessionId: s.id,
+        title: s.title ?? "",
+        themeCategory: s.theme_category,
+        language: s.language,
+        publicId: s.public_sharing_id,
+        consultationIds: rows.map((r) => r.consultationId),
+        createdAt: new Date(s.created_at).getTime(),
+      },
+      consultations: rows.sort((a, b) => a.sessionPosition - b.sessionPosition),
+    };
+  });
 }
 
