@@ -14,7 +14,6 @@ import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { buildImageAsset, buildOracleBonesImageAsset, type ImageProvider } from "@/lib/image-provider";
 import { getAdminConfig } from "@/lib/admin-config";
-import { getAdminSessionTokenFromCookies, isValidAdminSession } from "@/lib/admin-auth";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { consumeTierCredit, getUserBillingTier } from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
@@ -23,6 +22,16 @@ import { isPersistableUuid } from "@/lib/session-ids";
 import { isSharingPersistenceAvailable, upsertSessionAndConsultation } from "@/lib/session-store";
 
 export const runtime = "nodejs";
+
+function parseEmailAllowlist(raw: string | undefined | null): Set<string> {
+  if (!raw) return new Set();
+  return new Set(
+    raw
+      .split(/[,\n;]/g)
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean),
+  );
+}
 
 type HistoryEntry = {
   oracleType?: OracleType;
@@ -127,12 +136,8 @@ export async function POST(req: Request) {
     );
   }
   const authedUserId = authUser.userId;
-  const adminCookieToken = getAdminSessionTokenFromCookies();
-  const adminCookieAllowed = isValidAdminSession(adminCookieToken);
-  const adminKeySecret = process.env.ADMIN_PANEL_KEY;
-  const adminKeyAllowed =
-    Boolean(adminKeySecret) && typeof body.adminKey === "string" && body.adminKey === adminKeySecret;
-  const adminBypassAllowed = adminCookieAllowed || adminKeyAllowed;
+  const allow = parseEmailAllowlist(process.env.ADMIN_EMAIL_ALLOWLIST);
+  const adminBypassAllowed = allow.has(authUser.email.trim().toLowerCase());
   const tierResolved = await getUserBillingTier(authedUserId);
   const tierEffective = (adminBypassAllowed ? "oracle" : tierResolved) as string;
   const tierKey = (tierEffective in CONTEXT_LIMITS ? tierEffective : "free") as TierKey;

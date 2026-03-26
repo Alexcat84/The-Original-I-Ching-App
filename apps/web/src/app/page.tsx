@@ -672,7 +672,6 @@ export default function HomePage() {
         sessionIdForRequest = newClientUuid();
         updateActiveSession((c) => ({ ...c, sessionId: sessionIdForRequest }));
       }
-      const adminKeyForRequest = sessionStorage.getItem("iching_admin_key") ?? undefined;
       const res = await fetch("/api/consult", {
         method: "POST",
         headers: {
@@ -687,7 +686,6 @@ export default function HomePage() {
           isDeepening: activeThread.length > 0,
           responseMode,
           oracleMode,
-          ...(adminKeyForRequest ? { adminKey: adminKeyForRequest } : {}),
           oracleBones:
             oracleMode === "oracle_bones"
               ? {
