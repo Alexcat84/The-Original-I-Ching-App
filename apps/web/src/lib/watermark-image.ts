@@ -11,6 +11,19 @@ function tierOrFree(tier: string): TierKey {
   return k in WATERMARK_CONFIG ? k : "free";
 }
 
+function buildYinYangMarkSvg(x: number, y: number, radius: number, opacity: number): string {
+  const r = Math.max(5, radius);
+  const half = r / 2;
+  const dot = Math.max(1.5, r / 6);
+  return `
+<g opacity="${opacity}">
+  <circle cx="${x}" cy="${y}" r="${r}" fill="rgba(255,255,255,0.92)"/>
+  <path d="M ${x} ${y - r} A ${half} ${half} 0 1 1 ${x} ${y} A ${half} ${half} 0 1 0 ${x} ${y + r} A ${r} ${r} 0 1 1 ${x} ${y - r} Z" fill="rgba(20,20,20,0.92)"/>
+  <circle cx="${x}" cy="${y - half}" r="${dot}" fill="rgba(255,255,255,0.95)"/>
+  <circle cx="${x}" cy="${y + half}" r="${dot}" fill="rgba(20,20,20,0.95)"/>
+</g>`.trim();
+}
+
 /**
  * Burn-in watermark for SVG data URLs (sumi-e fallback, no Sharp decode of raster).
  */
@@ -28,7 +41,12 @@ export function injectSvgDataUrlWatermark(dataUrl: string, tier: string): string
   const wMatch = svg.match(/viewBox="0\s+0\s+(\d+)\s+(\d+)"/);
   const width = wMatch ? Number(wMatch[1]) : 1344;
   const height = wMatch ? Number(wMatch[2]) : 768;
-  const insert = `<text x="${width - 24}" y="${height - 24}" text-anchor="end" fill="rgba(255,255,255,${cfg.opacity})" font-size="${cfg.fontSize}" font-family="system-ui,sans-serif" font-weight="600">${escapeXml(cfg.text)}</text>`;
+  const hasSymbol = cfg.text.includes("☯");
+  const watermarkText = cfg.text.replace("☯", "").trim();
+  const textX = hasSymbol ? width - 56 : width - 24;
+  const insertText = `<text x="${textX}" y="${height - 24}" text-anchor="end" fill="rgba(255,255,255,${cfg.opacity})" font-size="${cfg.fontSize}" font-family="system-ui,sans-serif" font-weight="600">${escapeXml(watermarkText || cfg.text)}</text>`;
+  const insertSymbol = hasSymbol ? buildYinYangMarkSvg(width - 24, height - 30, Math.max(7, cfg.fontSize * 0.5), cfg.opacity) : "";
+  const insert = `${insertText}${insertSymbol}`;
   const idx = svg.lastIndexOf("</svg>");
   if (idx === -1) return dataUrl;
   const newSvg = `${svg.slice(0, idx)}${insert}${svg.slice(idx)}`;
@@ -41,7 +59,11 @@ async function watermarkRasterBuffer(buf: Buffer, tier: string): Promise<string>
   const meta = await sharp(buf).metadata();
   const width = meta.width ?? 1344;
   const height = meta.height ?? 768;
-  const svg = `<svg width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${cfg.opacity});font-size:${cfg.fontSize}px;font-family:system-ui,sans-serif;font-weight:600}</style><text x="${width - 24}" y="${height - 24}" text-anchor="end" class="wm">${escapeXml(cfg.text)}</text></svg>`;
+  const hasSymbol = cfg.text.includes("☯");
+  const watermarkText = cfg.text.replace("☯", "").trim();
+  const textX = hasSymbol ? width - 56 : width - 24;
+  const symbol = hasSymbol ? buildYinYangMarkSvg(width - 24, height - 30, Math.max(7, cfg.fontSize * 0.5), cfg.opacity) : "";
+  const svg = `<svg width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${cfg.opacity});font-size:${cfg.fontSize}px;font-family:system-ui,sans-serif;font-weight:600}</style><text x="${textX}" y="${height - 24}" text-anchor="end" class="wm">${escapeXml(watermarkText || cfg.text)}</text>${symbol}</svg>`;
   const out = await sharp(buf)
     .composite([{ input: Buffer.from(svg), top: 0, left: 0 }])
     .png({ compressionLevel: 9 })

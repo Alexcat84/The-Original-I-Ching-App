@@ -1,5 +1,5 @@
 import { registerStep1Schema, validateEmailForRegistration } from "@iching-oracle/auth-backend";
-import { NextResponse } from "next/server";
+import { apiError } from "@/lib/api-error";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { verifyTurnstile } from "@/lib/turnstile";
@@ -11,34 +11,50 @@ export async function POST(req: Request) {
   try {
     body = (await req.json()) as typeof body;
   } catch {
-    return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+    return apiError(400, { error: "invalid_json", code: "REQUEST_INVALID_JSON", action: "fix_input" });
   }
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
   const rl = await rateLimitByKey({ key: `register:${ip}`, limit: 5, windowSeconds: 3600 });
-  if (!rl.ok) return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  if (!rl.ok) {
+    return apiError(429, { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" });
+  }
 
   const parsed = registerStep1Schema.safeParse({
     email: body.email,
     password: body.password,
   });
   if (!parsed.success) {
-    return NextResponse.json({ error: "invalid_payload", issues: parsed.error.flatten() }, { status: 400 });
+    return apiError(400, {
+      error: "invalid_payload",
+      code: "REGISTER_INVALID_PAYLOAD",
+      action: "fix_input",
+      details: parsed.error.flatten(),
+    });
   }
 
   const captchaToken = body.turnstileToken ?? body.hcaptchaToken ?? "";
   const turnstileOk = await verifyTurnstile(captchaToken, ip);
   if (!turnstileOk) {
-    return NextResponse.json({ error: "turnstile_failed" }, { status: 400 });
+    return apiError(400, { error: "turnstile_failed", code: "BOT_CHECK_FAILED", action: "retry" });
   }
 
   const emailOk = await validateEmailForRegistration(parsed.data.email);
   if (!emailOk.ok) {
-    return NextResponse.json({ error: "email_rejected", reason: emailOk.reason }, { status: 400 });
+    return apiError(400, {
+      error: "email_rejected",
+      code: "REGISTER_EMAIL_REJECTED",
+      action: "fix_input",
+      details: { reason: emailOk.reason },
+    });
   }
 
   const supabase = getSupabaseAdmin();
   if (!supabase) {
-    return NextResponse.json({ error: "supabase_not_configured" }, { status: 503 });
+    return apiError(503, {
+      error: "supabase_not_configured",
+      code: "AUTH_PROVIDER_NOT_CONFIGURED",
+      action: "check_config",
+    });
   }
   const created = await supabase.auth.admin.createUser({
     email: parsed.data.email,
@@ -47,7 +63,12 @@ export async function POST(req: Request) {
     user_metadata: { status: "pending" },
   });
   if (created.error) {
-    return NextResponse.json({ error: "create_user_failed", message: created.error.message }, { status: 400 });
+    return apiError(400, {
+      error: "create_user_failed",
+      code: "REGISTER_CREATE_USER_FAILED",
+      action: "retry",
+      message: created.error.message,
+    });
   }
   const uid = created.data.user?.id;
   if (uid) {
@@ -56,6 +77,6 @@ export async function POST(req: Request) {
       { onConflict: "id" },
     );
   }
-  return NextResponse.json({ ok: true, userId: uid ?? null });
+  return Response.json({ ok: true, userId: uid ?? null });
 }
 

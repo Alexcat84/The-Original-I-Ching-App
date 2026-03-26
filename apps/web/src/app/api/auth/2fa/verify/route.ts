@@ -6,27 +6,37 @@ import {
   verifyTotpToken,
 } from "@iching-oracle/auth-backend";
 import { NextResponse } from "next/server";
+import { apiError } from "@/lib/api-error";
+import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  let body: { userId?: string; token?: string; recoveryCode?: string };
+  const authUser = await getAuthenticatedUser(req);
+  if (!authUser) {
+    return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
+  }
+  let body: { token?: string; recoveryCode?: string };
   try {
     body = (await req.json()) as typeof body;
   } catch {
-    return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+    return apiError(400, { error: "invalid_json", code: "REQUEST_INVALID_JSON", action: "fix_input" });
   }
-  if (!body.userId) return NextResponse.json({ error: "missing_user" }, { status: 400 });
+  const userId = authUser.userId;
   const supabase = getSupabaseAdmin();
   if (!supabase) {
-    return NextResponse.json({ error: "supabase_not_configured" }, { status: 503 });
+    return apiError(503, {
+      error: "supabase_not_configured",
+      code: "AUTH_PROVIDER_NOT_CONFIGURED",
+      action: "check_config",
+    });
   }
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
   const { data: attempts } = await supabase
     .from("two_factor_attempts")
     .select("created_at, success")
-    .eq("user_id", body.userId)
+    .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(20);
   const locked = shouldLockTwoFactor(
@@ -36,19 +46,23 @@ export async function POST(req: Request) {
     })),
   );
   if (locked) {
-    return NextResponse.json({ error: "two_factor_locked" }, { status: 423 });
+    return apiError(423, { error: "two_factor_locked", code: "TWO_FACTOR_LOCKED", action: "wait_and_retry" });
   }
   const { data: user } = await supabase
     .from("users")
     .select("totp_secret")
-    .eq("id", body.userId)
+    .eq("id", userId)
     .maybeSingle();
   if (!user?.totp_secret) {
-    return NextResponse.json({ error: "totp_not_enrolled" }, { status: 400 });
+    return apiError(400, { error: "totp_not_enrolled", code: "TWO_FACTOR_NOT_ENROLLED", action: "setup_2fa" });
   }
   const encryptionKey = process.env.TOTP_ENCRYPTION_KEY;
   if (!encryptionKey) {
-    return NextResponse.json({ error: "missing_totp_encryption_key" }, { status: 503 });
+    return apiError(503, {
+      error: "missing_totp_encryption_key",
+      code: "TWO_FACTOR_ENCRYPTION_KEY_MISSING",
+      action: "check_config",
+    });
   }
 
   let verified = false;
@@ -61,7 +75,7 @@ export async function POST(req: Request) {
     const { data: codes } = await supabase
       .from("two_factor_recovery_codes")
       .select("id, code_hash")
-      .eq("user_id", body.userId)
+      .eq("user_id", userId)
       .is("used_at", null);
     const hashes = (codes ?? []).map((c) => c.code_hash);
     const consumed = await consumeRecoveryCode(body.recoveryCode, hashes);
@@ -72,7 +86,7 @@ export async function POST(req: Request) {
         await supabase
           .from("two_factor_recovery_codes")
           .update({ used_at: new Date().toISOString() })
-          .eq("user_id", body.userId)
+          .eq("user_id", userId)
           .eq("code_hash", usedCodeHash);
       }
     }
@@ -80,14 +94,14 @@ export async function POST(req: Request) {
 
   if (!verified) {
     await supabase.from("two_factor_attempts").insert({
-      user_id: body.userId,
+      user_id: userId,
       ip_address: ip,
       success: false,
     });
-    return NextResponse.json({ error: "invalid_2fa_code" }, { status: 401 });
+    return apiError(401, { error: "invalid_2fa_code", code: "TWO_FACTOR_INVALID_CODE", action: "retry" });
   }
   await supabase.from("two_factor_attempts").insert({
-    user_id: body.userId,
+    user_id: userId,
     ip_address: ip,
     success: true,
   });
@@ -98,7 +112,7 @@ export async function POST(req: Request) {
       two_factor_enabled: true,
       totp_verified_at: new Date().toISOString(),
     })
-    .eq("id", body.userId);
+    .eq("id", userId);
 
   const recoveryCodes = [
     crypto.randomUUID().slice(0, 8).toUpperCase(),
@@ -113,7 +127,7 @@ export async function POST(req: Request) {
   const hashed = await hashRecoveryCodes(recoveryCodes);
   await supabase.from("two_factor_recovery_codes").insert(
     hashed.map((hash) => ({
-      user_id: body.userId!,
+      user_id: userId,
       code_hash: hash,
     })),
   );

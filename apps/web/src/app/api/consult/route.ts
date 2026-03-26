@@ -5,7 +5,6 @@ import {
   type OracleBonesHistorySnapshot,
   type OracleType,
   type PreviousConsultationRow,
-  type TierKey,
 } from "@iching-oracle/context-engine";
 import { performCast } from "@iching-oracle/iching-engine";
 import { buildImagePrompt, buildOracleBonesImagePrompt } from "@iching-oracle/image-engine";
@@ -17,26 +16,12 @@ import { getAdminConfig } from "@/lib/admin-config";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { consumeTierCredit, getUserBillingTier } from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
+import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { isSharingPersistenceAvailable, upsertSessionAndConsultation } from "@/lib/session-store";
 
 export const runtime = "nodejs";
-
-function parseEmailAllowlist(raw: string | undefined | null): Set<string> {
-  if (!raw) return new Set();
-  return new Set(
-    raw
-      .split(/[,\n;]/g)
-      .map((s) => s.trim().toLowerCase())
-      .filter(Boolean),
-  );
-}
-
-function shouldEnforceTierTwoFactor(): boolean {
-  const raw = (process.env.ENFORCE_TIER_2FA ?? "").trim().toLowerCase();
-  return raw === "1" || raw === "true";
-}
 
 type HistoryEntry = {
   oracleType?: OracleType;
@@ -121,7 +106,10 @@ export async function POST(req: Request) {
   try {
     body = (await req.json()) as typeof body;
   } catch {
-    return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+    return NextResponse.json(
+      { error: "invalid_json", code: "REQUEST_INVALID_JSON", action: "retry" },
+      { status: 400 },
+    );
   }
 
   try {
@@ -134,6 +122,8 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         error: "auth_required",
+        code: "AUTH_REQUIRED",
+        action: "login",
         message:
           "Inicia sesión con un correo verificado o con Google. Crea cuenta en /login si aún no tienes una.",
       },
@@ -141,11 +131,9 @@ export async function POST(req: Request) {
     );
   }
   const authedUserId = authUser.userId;
-  const allow = parseEmailAllowlist(process.env.ADMIN_EMAIL_ALLOWLIST);
-  const adminBypassAllowed = allow.has(authUser.email.trim().toLowerCase());
   const tierResolved = await getUserBillingTier(authedUserId);
-  const tierEffective = (adminBypassAllowed ? "oracle" : tierResolved) as string;
-  const tierKey = (tierEffective in CONTEXT_LIMITS ? tierEffective : "free") as TierKey;
+  const policy = await resolveConsultPolicy({ authUser, tierResolved });
+  const { adminBypassAllowed, adminUnlimitedCredits, tierEffective, tierKey } = policy;
 
   const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
   const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
@@ -155,34 +143,31 @@ export async function POST(req: Request) {
     windowSeconds: 60,
   });
   if (!rl.ok) {
-    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+    return NextResponse.json(
+      { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" },
+      { status: 429 },
+    );
   }
-  if (shouldEnforceTierTwoFactor() && !adminBypassAllowed && ["practitioner", "master", "oracle"].includes(tierKey)) {
-    const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
-    const supabase = getSupabaseAdmin();
-    if (supabase) {
-      const { data: user } = await supabase
-        .from("users")
-        .select("two_factor_enabled")
-        .eq("id", authedUserId)
-        .maybeSingle();
-      if (!user?.two_factor_enabled) {
-        return NextResponse.json({ error: "two_factor_required" }, { status: 403 });
-      }
-    }
+  if (policy.twoFactorRequired) {
+    return NextResponse.json(
+      { error: "two_factor_required", code: "TWO_FACTOR_REQUIRED", action: "setup_2fa" },
+      { status: 403 },
+    );
   }
   const sessionId =
     typeof body.sessionId === "string" && isPersistableUuid(body.sessionId)
       ? body.sessionId
       : randomUUID();
 
-  const credit = adminBypassAllowed
+  const credit = adminUnlimitedCredits
     ? { allowed: true, remaining: 999_999, limit: 999_999, cycleEndIso: null as string | null }
     : await consumeTierCredit(authedUserId, tierResolved);
   if (!credit.allowed) {
     return NextResponse.json(
       {
         error: "credits_exhausted",
+        code: "BILLING_CREDITS_EXHAUSTED",
+        action: "upgrade_plan",
         tier: tierResolved,
         creditsLimit: credit.limit,
         cycleEndsAt: credit.cycleEndIso ?? null,
@@ -209,7 +194,10 @@ export async function POST(req: Request) {
         ? body.oracleBones.positiveCharge.trim()
         : question.trim();
     if (!positive) {
-      return NextResponse.json({ error: "oracle_bones_charge_required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "oracle_bones_charge_required", code: "ORACLE_BONES_CHARGE_REQUIRED", action: "fix_input" },
+        { status: 400 },
+      );
     }
     const medium = body.oracleBones?.medium === "ox" ? "ox" : "turtle";
     const negativeRaw = typeof body.oracleBones?.negativeCharge === "string" ? body.oracleBones.negativeCharge.trim() : "";
@@ -449,6 +437,8 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         error: "consult_failed",
+        code: "CONSULT_FAILED",
+        action: "retry",
         message: process.env.NODE_ENV === "development" ? message : undefined,
       },
       { status: 500 },

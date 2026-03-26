@@ -591,16 +591,39 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (!authReady) return;
+    if (accessToken) return;
+    const fresh = createLocalSession("Consulta en progreso");
+    setSessions([fresh]);
+    setActiveSessionLocalId(fresh.localId);
+    try {
+      localStorage.removeItem("iching_sessions_v2");
+      localStorage.removeItem("iching_session_v1");
+    } catch {
+      // ignore storage errors
+    }
+  }, [authReady, accessToken]);
+
+  useEffect(() => {
     if (!sessionsHydrated) return;
+    if (!accessToken) return;
     const activeId = activeSession?.localId ?? null;
     const storable = sessions.filter((s) => s.thread.length > 0 || s.localId === activeId);
     const isDataImageUrl = (url: string): boolean =>
       url.startsWith("data:image/svg+xml") || url.startsWith("data:image/png;base64,") || url.startsWith("data:image/jpeg;base64,");
+    const MAX_INLINE_IMAGE_URL_LENGTH = 240_000;
 
     const sanitizeForLocalStorage = (item: ConsultationItem): ConsultationItem => {
-      // Avoid stuffing large SVG/raster payloads into localStorage (QuotaExceeded happens fast).
-      const safeImageUrl = isDataImageUrl(item.imageUrl) ? "/oracle-fallback.svg" : item.imageUrl;
-      const safeFallbackUrl = isDataImageUrl(item.imageFallbackUrl) ? "/oracle-fallback.svg" : item.imageFallbackUrl;
+      // Keep inlined images when reasonably small so the chat can be restored after re-login.
+      const keepImageDataUrl = isDataImageUrl(item.imageUrl) && item.imageUrl.length <= MAX_INLINE_IMAGE_URL_LENGTH;
+      const keepFallbackDataUrl =
+        isDataImageUrl(item.imageFallbackUrl) && item.imageFallbackUrl.length <= MAX_INLINE_IMAGE_URL_LENGTH;
+      const safeImageUrl = keepImageDataUrl ? item.imageUrl : isDataImageUrl(item.imageUrl) ? "/oracle-fallback.svg" : item.imageUrl;
+      const safeFallbackUrl = keepFallbackDataUrl
+        ? item.imageFallbackUrl
+        : isDataImageUrl(item.imageFallbackUrl)
+          ? "/oracle-fallback.svg"
+          : item.imageFallbackUrl;
 
       // imageProviderDebug is only diagnostic; it's not used by UI and adds size.
       const { imageProviderDebug: _ignoredDebug, ...rest } = item as ConsultationItem & { imageProviderDebug?: unknown };
@@ -635,7 +658,7 @@ export default function HomePage() {
         localStorage.removeItem("iching_sessions_v2");
       }
     }
-  }, [sessions, activeSession, sessionsHydrated]);
+  }, [sessions, activeSession, sessionsHydrated, accessToken]);
 
   async function onConsult() {
     if (!activeSession) {
@@ -720,6 +743,8 @@ export default function HomePage() {
       const rawText = await res.text();
       let data: ConsultResponse & {
         error?: string;
+        code?: string;
+        action?: string;
         message?: string;
         tier?: string;
         creditsLimit?: number;
@@ -755,7 +780,7 @@ export default function HomePage() {
           });
           return;
         }
-        if (res.status === 403 && data.error === "two_factor_required") {
+        if (res.status === 403 && (data.error === "two_factor_required" || data.action === "setup_2fa")) {
           setError("Tu plan requiere 2FA, pero tu cuenta aún no lo tiene activado. Contacta soporte o usa otro método de acceso temporal.");
           return;
         }
