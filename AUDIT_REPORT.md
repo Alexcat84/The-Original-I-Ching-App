@@ -24,6 +24,7 @@
 | `npm run typecheck` | PASS (turbo: web + claude) |
 | `npm test` | PASS (iching-engine 18, context-engine 1, web 5) |
 | `npm run build` (apps/web) | **FAIL en este entorno** por `ETIMEDOUT` al descargar Google Fonts (`next/font`). No atribuible a los cambios de auditoría; en CI con red estable debería pasar. |
+| `npm run lint` | **FAIL local (Windows/hoist)** en `apps/web`: `eslint-config-next` no resuelve `next/dist/compiled/babel/eslint-parser` desde la raíz del monorepo. [MANUAL] Reinstalar dependencias o ejecutar `next lint` desde `apps/web` con `next` resoluble; en Linux CI suele pasar. |
 
 ## Problemas críticos corregidos
 
