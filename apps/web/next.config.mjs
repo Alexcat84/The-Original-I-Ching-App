@@ -20,6 +20,9 @@ const nextConfig = {
   },
   experimental: {
     serverComponentsExternalPackages: ["sharp", "@resvg/resvg-js"],
+    outputFileTracingIncludes: {
+      "/api/**": ["./fonts/**"],
+    },
   },
   transpilePackages: [
     "@iching-oracle/iching-data",
