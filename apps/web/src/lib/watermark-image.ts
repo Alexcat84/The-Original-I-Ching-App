@@ -1,5 +1,6 @@
 import type { TierKey } from "@iching-oracle/context-engine";
 import { WATERMARK_CONFIG } from "@iching-oracle/image-engine";
+import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
 import sharp from "sharp";
 
 function escapeXml(s: string): string {
@@ -56,7 +57,7 @@ export function injectSvgDataUrlWatermark(dataUrl: string, tier: string): string
   const boxX = Math.max(8, width - boxW - 10);
   const boxY = Math.max(8, baselineY - boxH + 8);
   const backdrop = buildWatermarkBackdropSvg(boxX, boxY, boxW, boxH, Math.max(8, Math.round(boxH * 0.32)));
-  const insertText = `<text x="${textX}" y="${baselineY}" text-anchor="end" fill="rgba(255,255,255,${Math.min(1, cfg.opacity + 0.12)})" stroke="rgba(0,0,0,0.45)" stroke-width="0.9" paint-order="stroke fill" font-size="${cfg.fontSize}" font-family="system-ui,sans-serif" font-weight="700">${escapeXml(text)}</text>`;
+  const insertText = `<text x="${textX}" y="${baselineY}" text-anchor="end" fill="rgba(255,255,255,${Math.min(1, cfg.opacity + 0.12)})" stroke="rgba(0,0,0,0.45)" stroke-width="0.9" paint-order="stroke fill" font-size="${cfg.fontSize}" font-family="Noto Serif SC, SimSun, STSong, serif" font-weight="700">${escapeXml(text)}</text>`;
   const insertSymbol = hasSymbol ? buildYinYangMarkSvg(width - 22, baselineY - 6, Math.max(7, cfg.fontSize * 0.52), Math.min(1, cfg.opacity + 0.12)) : "";
   const insert = `${backdrop}${insertText}${insertSymbol}`;
   const idx = svg.lastIndexOf("</svg>");
@@ -82,8 +83,11 @@ async function watermarkRasterBuffer(buf: Buffer, tier: string): Promise<string>
   const boxX = Math.max(8, width - boxW - 10);
   const boxY = Math.max(8, baselineY - boxH + 8);
   const backdrop = buildWatermarkBackdropSvg(boxX, boxY, boxW, boxH, Math.max(8, Math.round(boxH * 0.32)));
-  const symbol = hasSymbol ? buildYinYangMarkSvg(width - 24, height - 30, Math.max(7, cfg.fontSize * 0.5), cfg.opacity) : "";
-  const svg = `<svg width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${Math.min(1, cfg.opacity + 0.12)});stroke:rgba(0,0,0,0.45);stroke-width:0.9px;paint-order:stroke fill;font-size:${cfg.fontSize}px;font-family:system-ui,sans-serif;font-weight:700}</style>${backdrop}<text x="${textX}" y="${baselineY}" text-anchor="end" class="wm">${escapeXml(text)}</text>${symbol}</svg>`;
+  const symbol = hasSymbol
+    ? buildYinYangMarkSvg(width - 22, baselineY - 6, Math.max(7, cfg.fontSize * 0.52), Math.min(1, cfg.opacity + 0.12))
+    : "";
+  let svg = `<svg width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${Math.min(1, cfg.opacity + 0.12)});stroke:rgba(0,0,0,0.45);stroke-width:0.9px;paint-order:stroke fill;font-size:${cfg.fontSize}px;font-family:"Noto Serif SC",SimSun,STSong,serif;font-weight:700}</style>${backdrop}<text x="${textX}" y="${baselineY}" text-anchor="end" class="wm">${escapeXml(text)}</text>${symbol}</svg>`;
+  svg = await embedCjkFontInOverlaySvg(svg);
   const out = await sharp(buf)
     .composite([{ input: Buffer.from(svg), top: 0, left: 0 }])
     .png({ compressionLevel: 9 })

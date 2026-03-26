@@ -16,6 +16,24 @@ export function collectOverlaySubsetChars(svg: string): string {
     const cp = ch.codePointAt(0) ?? 0;
     if ((cp >= 0x4e00 && cp <= 0x9fff) || (cp >= 0x3400 && cp <= 0x4dbf)) {
       set.add(ch);
+      continue;
+    }
+    // Also include latin/digits/punctuation to cover English watermark and subtitles.
+    if (
+      (cp >= 0x30 && cp <= 0x39) || // 0-9
+      (cp >= 0x41 && cp <= 0x5a) || // A-Z
+      (cp >= 0x61 && cp <= 0x7a) || // a-z
+      ch === " " ||
+      ch === "#" ||
+      ch === "-" ||
+      ch === "." ||
+      ch === ":" ||
+      ch === "/" ||
+      ch === "(" ||
+      ch === ")" ||
+      ch === "&"
+    ) {
+      set.add(ch);
     }
   }
   set.add("易");
@@ -75,6 +93,8 @@ export async function embedCjkFontInOverlaySvg(svg: string): Promise<string> {
     return withDefs
       .replaceAll("font-family='Noto Serif SC, SimSun, STSong, serif'", `font-family='${FONT_FAMILY}, serif'`)
       .replaceAll('font-family="Noto Serif SC, SimSun, STSong, serif"', `font-family="${FONT_FAMILY}, serif"`)
+      .replaceAll('font-family="Georgia, \'Noto Serif\', serif"', `font-family="${FONT_FAMILY}, serif"`)
+      .replaceAll('font-family="system-ui,sans-serif"', `font-family="${FONT_FAMILY}, serif"`)
       .replaceAll(
         'font-size="30" font-family="serif">易',
         `font-size="30" font-family="${FONT_FAMILY}, serif">易`,
