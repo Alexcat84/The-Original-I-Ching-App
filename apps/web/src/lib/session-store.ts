@@ -195,14 +195,17 @@ export async function upsertSessionAndConsultation(params: {
     return { publicReadingId: saved.publicId, publicSessionId: session.publicId };
   }
 
-  const { data: existingSession } = await supabase
+  const { data: existingSession, error: existingSessionError } = await supabase
     .from("consultation_sessions")
     .select("id, public_sharing_id")
     .eq("id", params.sessionId)
     .maybeSingle();
+  if (existingSessionError) {
+    throw new Error(`consultation_session_lookup_failed:${existingSessionError.message}`);
+  }
   let sessionPublicId = existingSession?.public_sharing_id as string | undefined;
   if (!existingSession) {
-    const { data: created } = await supabase
+    const { data: created, error: createSessionError } = await supabase
       .from("consultation_sessions")
       .insert({
         id: params.sessionId,
@@ -214,41 +217,76 @@ export async function upsertSessionAndConsultation(params: {
       })
       .select("public_sharing_id")
       .single();
+    if (createSessionError) {
+      throw new Error(`consultation_session_create_failed:${createSessionError.message}`);
+    }
     sessionPublicId = created?.public_sharing_id;
   }
-  const { data: createdConsultation } = await supabase
+  const consultationBasePayload = {
+    id: params.consultation.consultationId,
+    user_id: params.userId,
+    session_id: params.consultation.sessionId,
+    session_position: params.consultation.sessionPosition,
+    question: params.consultation.question,
+    language: params.consultation.language,
+    lines: params.consultation.lines,
+    primary_hexagram_number: params.consultation.primaryHexagram,
+    primary_hexagram_name: params.consultation.primaryHexagramName,
+    primary_hexagram_chinese: params.consultation.primaryHexagramChinese,
+    transformed_hexagram_number: params.consultation.transformedHexagram,
+    transformed_hexagram_name: params.consultation.transformedHexagramName,
+    changing_lines: params.consultation.changingLines,
+    mutation_rule: params.consultation.mutationRule,
+    category: params.consultation.category,
+    interpretation: params.consultation.interpretation,
+    image_url: params.consultation.imageUrl,
+    thumbnail_url: params.consultation.imageFallbackUrl ?? params.consultation.imageUrl,
+    is_public: false,
+  };
+  let createdConsultation: { public_sharing_id?: string } | null = null;
+  let createConsultationError: string | null = null;
+  const withOraclePayload = {
+    ...consultationBasePayload,
+    oracle_type: params.consultation.oracleType,
+    oracle_bones: params.consultation.oracleBones ?? null,
+  };
+  const withOracleRes = await supabase
     .from("consultations")
-    .insert({
-      id: params.consultation.consultationId,
-      user_id: params.userId,
-      session_id: params.consultation.sessionId,
-      session_position: params.consultation.sessionPosition,
-      question: params.consultation.question,
-      language: params.consultation.language,
-      lines: params.consultation.lines,
-      primary_hexagram_number: params.consultation.primaryHexagram,
-      primary_hexagram_name: params.consultation.primaryHexagramName,
-      primary_hexagram_chinese: params.consultation.primaryHexagramChinese,
-      transformed_hexagram_number: params.consultation.transformedHexagram,
-      transformed_hexagram_name: params.consultation.transformedHexagramName,
-      changing_lines: params.consultation.changingLines,
-      mutation_rule: params.consultation.mutationRule,
-      category: params.consultation.category,
-      interpretation: params.consultation.interpretation,
-      image_url: params.consultation.imageUrl,
-      thumbnail_url: params.consultation.imageFallbackUrl ?? params.consultation.imageUrl,
-      oracle_type: params.consultation.oracleType,
-      oracle_bones: params.consultation.oracleBones ?? null,
-      is_public: false,
-    })
+    .insert(withOraclePayload)
     .select("public_sharing_id")
     .single();
+  if (!withOracleRes.error) {
+    createdConsultation = withOracleRes.data;
+  } else {
+    const msg = withOracleRes.error.message ?? "";
+    // Backward-compatible path for DBs missing oracle_bones/oracle_type columns.
+    if (msg.includes("oracle_type") || msg.includes("oracle_bones")) {
+      const fallbackRes = await supabase
+        .from("consultations")
+        .insert(consultationBasePayload)
+        .select("public_sharing_id")
+        .single();
+      if (!fallbackRes.error) {
+        createdConsultation = fallbackRes.data;
+      } else {
+        createConsultationError = fallbackRes.error.message;
+      }
+    } else {
+      createConsultationError = msg;
+    }
+  }
+  if (createConsultationError) {
+    throw new Error(`consultation_create_failed:${createConsultationError}`);
+  }
 
-  const { data: sessionRefresh } = await supabase
+  const { data: sessionRefresh, error: sessionRefreshError } = await supabase
     .from("consultation_sessions")
     .select("public_sharing_id")
     .eq("id", params.sessionId)
     .maybeSingle();
+  if (sessionRefreshError) {
+    throw new Error(`consultation_session_refresh_failed:${sessionRefreshError.message}`);
+  }
   const finalSessionPublicId =
     (sessionRefresh?.public_sharing_id as string | undefined) ?? sessionPublicId;
 
