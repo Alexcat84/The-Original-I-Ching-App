@@ -40,7 +40,8 @@ export const CONTEXT_LIMITS: Record<
   TierKey,
   { sessionDepth: number; historyCount: number }
 > = {
-  free: { sessionDepth: 1, historyCount: 0 },
+  /** Align with CREDITS_PER_MONTH.free (2/mes): two follow-ups in one thread before "Nueva sesión". */
+  free: { sessionDepth: 2, historyCount: 0 },
   seeker: { sessionDepth: 3, historyCount: 0 },
   practitioner: { sessionDepth: 5, historyCount: 0 },
   master: { sessionDepth: 8, historyCount: 10 },
