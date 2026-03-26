@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { createRequire } from "node:module";
 import path from "node:path";
 
 /**
@@ -14,6 +15,8 @@ import path from "node:path";
  */
 
 const FONT_FAMILY = "NotoSerifTCOverlay";
+const LOCAL_TC_FONT_SPEC = "@fontsource/noto-serif-tc/files/noto-serif-tc-chinese-traditional-700-normal.woff2";
+const requireForResolve = createRequire(import.meta.url);
 
 let cachedSubsetKey: string | null = null;
 let cachedWoff2Base64: string | null = null;
@@ -41,7 +44,7 @@ async function fetchSubsetWoff2Base64(subsetText: string): Promise<string | null
   const cssUrl =
     "https://fonts.googleapis.com/css2?" +
     new URLSearchParams({
-      family: "Noto Serif SC:wght@700",
+      family: "Noto Serif TC:wght@700",
       display: "swap",
       text: subsetText,
     }).toString();
@@ -71,20 +74,29 @@ async function fetchSubsetWoff2Base64(subsetText: string): Promise<string | null
 async function loadLocalWoff2Base64(): Promise<string | null> {
   if (cachedLocalWoff2Base64 !== undefined) return cachedLocalWoff2Base64;
   try {
-    const localPath = path.join(
-      process.cwd(),
-      "node_modules",
-      "@fontsource",
-      "noto-serif-tc",
-      "files",
-      "noto-serif-tc-chinese-traditional-700-normal.woff2",
-    );
-    const buf = await readFile(localPath);
+    // Vercel/serverless friendly: resolve traced dependency path first.
+    const resolved = requireForResolve.resolve(LOCAL_TC_FONT_SPEC);
+    const buf = await readFile(resolved);
     cachedLocalWoff2Base64 = buf.toString("base64");
     return cachedLocalWoff2Base64;
   } catch {
-    cachedLocalWoff2Base64 = null;
-    return null;
+    // Local/dev fallback for workspace installs without resolver trace.
+    try {
+      const localPath = path.join(
+        process.cwd(),
+        "node_modules",
+        "@fontsource",
+        "noto-serif-tc",
+        "files",
+        "noto-serif-tc-chinese-traditional-700-normal.woff2",
+      );
+      const buf = await readFile(localPath);
+      cachedLocalWoff2Base64 = buf.toString("base64");
+      return cachedLocalWoff2Base64;
+    } catch {
+      cachedLocalWoff2Base64 = null;
+      return null;
+    }
   }
 }
 
