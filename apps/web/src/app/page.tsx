@@ -755,6 +755,10 @@ export default function HomePage() {
           });
           return;
         }
+        if (res.status === 403 && data.error === "two_factor_required") {
+          setError("Tu plan requiere 2FA, pero tu cuenta aún no lo tiene activado. Contacta soporte o usa otro método de acceso temporal.");
+          return;
+        }
         const detail =
           typeof data.message === "string" && data.message
             ? ` ${data.message}`

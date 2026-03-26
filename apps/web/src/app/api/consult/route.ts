@@ -33,6 +33,11 @@ function parseEmailAllowlist(raw: string | undefined | null): Set<string> {
   );
 }
 
+function shouldEnforceTierTwoFactor(): boolean {
+  const raw = (process.env.ENFORCE_TIER_2FA ?? "").trim().toLowerCase();
+  return raw === "1" || raw === "true";
+}
+
 type HistoryEntry = {
   oracleType?: OracleType;
   question: string;
@@ -152,7 +157,7 @@ export async function POST(req: Request) {
   if (!rl.ok) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
-  if (!adminBypassAllowed && ["practitioner", "master", "oracle"].includes(tierKey)) {
+  if (shouldEnforceTierTwoFactor() && !adminBypassAllowed && ["practitioner", "master", "oracle"].includes(tierKey)) {
     const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
     const supabase = getSupabaseAdmin();
     if (supabase) {
