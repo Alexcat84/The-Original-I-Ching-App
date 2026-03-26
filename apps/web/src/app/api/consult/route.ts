@@ -152,7 +152,7 @@ export async function POST(req: Request) {
   if (!rl.ok) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
-  if (["practitioner", "master", "oracle"].includes(tierKey)) {
+  if (!adminBypassAllowed && ["practitioner", "master", "oracle"].includes(tierKey)) {
     const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
     const supabase = getSupabaseAdmin();
     if (supabase) {
