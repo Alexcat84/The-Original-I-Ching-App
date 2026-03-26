@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
 import { upsertUserTier } from "@/lib/credits";
+import { pickTierFromWebhookEntitlements } from "@/lib/revenuecat-tiers";
+import { revenueCatWebhookAuthorized } from "@/lib/revenuecat-webhook-auth";
 
 export const runtime = "nodejs";
-
-/** Match RevenueCat entitlement identifiers case-insensitively; normalize to DB tier keys (lowercase). */
-const TIER_PRIORITY = ["oracle", "master", "practitioner", "seeker"] as const;
-const TIER_SET = new Set<string>(TIER_PRIORITY);
 
 /** Events where we refresh tier + billing cycle from RevenueCat payload. */
 const GRANT_UPDATE_TYPES = new Set([
@@ -29,26 +27,13 @@ interface RevenueCatEvent {
   purchased_at_ms?: number;
 }
 
-function authMatches(req: Request, secret: string): boolean {
-  const h = req.headers.get("authorization")?.trim() ?? "";
-  return h === secret || h === `Bearer ${secret}`;
-}
-
-function pickTierFromEvent(ev: RevenueCatEvent): string {
-  const raw = [...(ev.entitlement_ids ?? [])];
-  if (ev.entitlement_id) raw.push(ev.entitlement_id);
-  const normalized = new Set(
-    raw.map((id) => id.trim().toLowerCase()).filter((id) => TIER_SET.has(id)),
-  );
-  for (const tier of TIER_PRIORITY) {
-    if (normalized.has(tier)) return tier;
-  }
-  return "free";
-}
-
 export async function POST(req: Request) {
   const secret = process.env.REVENUECAT_WEBHOOK_SECRET?.trim();
-  if (secret && !authMatches(req, secret)) {
+  if (!secret) {
+    console.error("[API /api/webhooks/revenuecat] REVENUECAT_WEBHOOK_SECRET is not set — rejecting webhook");
+    return NextResponse.json({ ok: false, error: "webhook_not_configured" }, { status: 503 });
+  }
+  if (!revenueCatWebhookAuthorized(req, secret)) {
     return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
 
@@ -88,7 +73,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, skipped: true, eventType: type });
   }
 
-  const tier = pickTierFromEvent(event);
+  const tier = pickTierFromWebhookEntitlements(event.entitlement_ids, event.entitlement_id);
   if (tier === "free") {
     return NextResponse.json({
       ok: true,

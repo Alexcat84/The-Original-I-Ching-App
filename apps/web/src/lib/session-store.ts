@@ -260,6 +260,7 @@ export async function getConsultationByPublicId(publicId: string): Promise<Store
       .from("consultations")
       .select("*")
       .eq("public_sharing_id", publicId)
+      .eq("is_public", true)
       .maybeSingle();
     if (data) {
       return consultationFromDbRow(data as never);
@@ -288,8 +289,12 @@ export async function getSessionByPublicId(publicId: string): Promise<{
         .from("consultations")
         .select("*")
         .eq("session_id", session.id)
+        .eq("is_public", true)
         .order("session_position", { ascending: true });
       const mapped = (rows ?? []).map((data) => consultationFromDbRow(data as never));
+      if (mapped.length === 0) {
+        return null;
+      }
       return {
         session: {
           sessionId: session.id,
@@ -389,6 +394,7 @@ export async function upsertSessionAndConsultation(params: {
       thumbnail_url: params.consultation.imageFallbackUrl ?? params.consultation.imageUrl,
       oracle_type: params.consultation.oracleType,
       oracle_bones: params.consultation.oracleBones ?? null,
+      is_public: true,
     })
     .select("public_sharing_id")
     .single();

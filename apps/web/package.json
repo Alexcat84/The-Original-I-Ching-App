@@ -9,6 +9,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "clean": "rimraf .next"
   },
   "dependencies": {
@@ -21,9 +23,12 @@
     "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
     "@iching-oracle/sharing": "file:../../packages/sharing",
     "@iching-oracle/ui": "file:../../packages/ui",
+    "@revenuecat/purchases-js": "^1.29.1",
     "@supabase/supabase-js": "^2.100.0",
     "@swc/helpers": "^0.5.19",
     "@upstash/redis": "^1.37.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "jspdf": "^4.2.1",
     "next": "14.2.28",
     "react": "18.2.0",
@@ -39,6 +44,7 @@
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.28",
     "rimraf": "^6.0.1",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
   }
 }

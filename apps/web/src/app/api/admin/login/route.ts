@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ADMIN_COOKIE_NAME, expectedAdminToken } from "@/lib/admin-auth";
+import { rateLimitByKey } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -9,6 +10,11 @@ export async function POST(req: Request) {
     body = (await req.json()) as { key?: string };
   } catch {
     return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
+  }
+  const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
+  const rl = await rateLimitByKey({ key: `admin_login:${ip}`, limit: 10, windowSeconds: 900 });
+  if (!rl.ok) {
+    return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
   }
   const secret = process.env.ADMIN_PANEL_KEY;
   if (!secret) {

@@ -491,17 +491,25 @@ export default function HomePage() {
       return;
     }
     let cancelled = false;
-    void fetch("/api/account/me", {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j: { tier?: Tier } | null) => {
-        if (cancelled || !j?.tier) return;
-        setTier(j.tier);
+    function loadAccountTier() {
+      void fetch("/api/account/me", {
+        headers: { Authorization: `Bearer ${accessToken}` },
       })
-      .catch(() => {});
+        .then((r) => (r.ok ? r.json() : null))
+        .then((j: { tier?: Tier } | null) => {
+          if (cancelled || !j?.tier) return;
+          setTier(j.tier);
+        })
+        .catch(() => {});
+    }
+    loadAccountTier();
+    function onAccountRefresh() {
+      if (!cancelled) loadAccountTier();
+    }
+    window.addEventListener("iching:account-refresh", onAccountRefresh);
     return () => {
       cancelled = true;
+      window.removeEventListener("iching:account-refresh", onAccountRefresh);
     };
   }, [accessToken]);
 

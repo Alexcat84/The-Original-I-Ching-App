@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Cinzel, Ma_Shan_Zheng, Noto_Serif } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -46,7 +49,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
+        <RevenueCatSupabaseSync />
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -19,6 +19,7 @@
     "ADMIN_PANEL_KEY",
     "REVENUECAT_WEBHOOK_SECRET",
     "REVENUECAT_SECRET_KEY",
+    "NEXT_PUBLIC_REVENUECAT_API_KEY",
     "NEXT_PUBLIC_APP_URL",
     "UPSTASH_REDIS_REST_URL",
     "UPSTASH_REDIS_REST_TOKEN",
@@ -40,6 +41,9 @@
     },
     "test": {
       "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "dependsOn": []
     },
     "clean": {
       "cache": false

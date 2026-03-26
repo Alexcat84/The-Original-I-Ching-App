@@ -84,6 +84,21 @@ export default function GuiaRapidaPage() {
           instancias y reinicios).
         </p>
 
+        <h2 id="planes">Planes y pagos</h2>
+        <p>
+          Los límites de consultas y funciones avanzadas dependen de tu <strong>plan</strong> (gratuito, Seeker,
+          Practitioner, Master u Oracle). La app enlaza el usuario de Supabase con{" "}
+          <strong>RevenueCat</strong> para suscripciones web; el servidor actualiza tu plan vía webhook y, si está
+          configurada la API secreta, con una sincronización tras iniciar sesión. La conexión con{" "}
+          <strong>Stripe</strong> en el panel de RevenueCat puedes dejarla para cuando vayas a cobrar de verdad: hasta
+          entonces puedes seguir probando el resto del flujo.
+        </p>
+        <p>
+          En RevenueCat, los identificadores de <em>entitlements</em> deben coincidir con los planes (por ejemplo{" "}
+          <code>seeker</code>, <code>practitioner</code>, <code>master</code>, <code>oracle</code>, en minúsculas) para
+          que coincidan con la base de datos de la app.
+        </p>
+
         <p className="doc-footer-links">
           <Link href="/documentacion/iching">Documentación sobre el I Ching</Link>
         </p>
