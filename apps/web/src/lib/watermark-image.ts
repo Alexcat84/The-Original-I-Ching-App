@@ -1,5 +1,6 @@
 import type { TierKey } from "@iching-oracle/context-engine";
 import { WATERMARK_CONFIG } from "@iching-oracle/image-engine";
+import { renderSvgToPng } from "@/lib/svg-to-png";
 import sharp from "sharp";
 
 function escapeXml(s: string): string {
@@ -75,9 +76,11 @@ async function watermarkRasterBuffer(buf: Buffer, tier: string): Promise<string>
   const symbol = hasSymbol
     ? buildYinYangMarkSvg(width - 24, height - 30, Math.max(7, wm.fontSize * 0.5), wm.opacity)
     : "";
-  const svg = `<svg width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${wm.opacity});font-size:${wm.fontSize}px;font-family:system-ui,sans-serif;font-weight:600}</style><text x="${textX}" y="${height - 24}" text-anchor="end" class="wm">${escapeXml(watermarkText || wm.text)}</text>${symbol}</svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${wm.opacity});font-size:${wm.fontSize}px;font-family:system-ui,sans-serif;font-weight:600}</style><text x="${textX}" y="${height - 24}" text-anchor="end" class="wm">${escapeXml(watermarkText || wm.text)}</text>${symbol}</svg>`;
+  // Render watermark SVG → PNG via resvg so text renders on Vercel (librsvg misses fonts).
+  const wmPng = await renderSvgToPng(svg, width);
   const out = await sharp(buf)
-    .composite([{ input: Buffer.from(svg), top: 0, left: 0 }])
+    .composite([{ input: wmPng, top: 0, left: 0 }])
     .png({ compressionLevel: 9 })
     .toBuffer();
   return `data:image/png;base64,${out.toString("base64")}`;

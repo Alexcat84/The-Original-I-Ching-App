@@ -25,6 +25,7 @@
     "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
     "@iching-oracle/sharing": "file:../../packages/sharing",
     "@iching-oracle/ui": "file:../../packages/ui",
+    "@resvg/resvg-js": "^2.6.2",
     "@revenuecat/purchases-js": "^1.29.1",
     "@supabase/supabase-js": "^2.100.0",
     "@swc/helpers": "^0.5.19",

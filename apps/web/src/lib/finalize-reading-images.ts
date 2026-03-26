@@ -1,5 +1,6 @@
 import type { ImageProviderDebug, ResolvedImageProvider } from "@/lib/image-provider";
 import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
+import { renderSvgToPng } from "@/lib/svg-to-png";
 import { applyReadingImageWatermark, injectSvgDataUrlWatermark } from "@/lib/watermark-image";
 import sharp from "sharp";
 
@@ -26,8 +27,11 @@ async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undef
       .replace(/width="\d+"/, `width="${width}"`)
       .replace(/height="\d+"/, `height="${height}"`);
     const overlayWithFont = await embedCjkFontInOverlaySvg(overlaySized);
+    // Render overlay SVG → PNG via resvg (supports @font-face / custom fonts)
+    // so CJK glyphs render correctly on Vercel where librsvg has no CJK fonts.
+    const overlayPng = await renderSvgToPng(overlayWithFont, width);
     const out = await sharp(baseBuf)
-      .composite([{ input: Buffer.from(overlayWithFont), top: 0, left: 0 }])
+      .composite([{ input: overlayPng, top: 0, left: 0 }])
       .png({ compressionLevel: 9 })
       .toBuffer();
     return `data:image/png;base64,${out.toString("base64")}`;
