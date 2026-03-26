@@ -13,10 +13,26 @@ export async function GET(req: Request) {
   }
   const tier = await getUserBillingTier(user.userId);
   const tierKey = (tier in CONTEXT_LIMITS ? tier : "free") as TierKey;
+  const twoFactor = await (async () => {
+    const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
+    const supabase = getSupabaseAdmin();
+    if (!supabase) return { enabled: false, method: null as string | null };
+    const { data } = await supabase
+      .from("users")
+      .select("two_factor_enabled, two_factor_method")
+      .eq("id", user.userId)
+      .maybeSingle();
+    return {
+      enabled: Boolean(data?.two_factor_enabled),
+      method: (data?.two_factor_method as string | null) ?? null,
+    };
+  })();
   return NextResponse.json({
     email: user.email,
     tier: tierKey,
     creditsLimit: CREDITS_PER_MONTH[tierKey],
     sessionDepthLimit: CONTEXT_LIMITS[tierKey].sessionDepth,
+    twoFactorEnabled: twoFactor.enabled,
+    twoFactorMethod: twoFactor.method,
   });
 }

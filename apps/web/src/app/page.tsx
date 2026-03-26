@@ -186,6 +186,13 @@ export default function HomePage() {
     limit: number;
     cycleEndsAt: string | null;
   } | null>(null);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [twoFactorMethod, setTwoFactorMethod] = useState<string | null>(null);
+  const [twoFactorSetupOpen, setTwoFactorSetupOpen] = useState(false);
+  const [twoFactorQrDataUrl, setTwoFactorQrDataUrl] = useState<string | null>(null);
+  const [twoFactorCode, setTwoFactorCode] = useState("");
+  const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<string[]>([]);
+  const [twoFactorBusy, setTwoFactorBusy] = useState(false);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -488,6 +495,8 @@ export default function HomePage() {
   useEffect(() => {
     if (!accessToken) {
       setTier("free");
+      setTwoFactorEnabled(false);
+      setTwoFactorMethod(null);
       return;
     }
     let cancelled = false;
@@ -496,9 +505,11 @@ export default function HomePage() {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
         .then((r) => (r.ok ? r.json() : null))
-        .then((j: { tier?: Tier } | null) => {
+        .then((j: { tier?: Tier; twoFactorEnabled?: boolean; twoFactorMethod?: string | null } | null) => {
           if (cancelled || !j?.tier) return;
           setTier(j.tier);
+          setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
+          setTwoFactorMethod(j.twoFactorMethod ?? null);
         })
         .catch(() => {});
     }
@@ -660,6 +671,64 @@ export default function HomePage() {
     }
   }, [sessions, activeSession, sessionsHydrated, accessToken]);
 
+  async function startTwoFactorEnrollment() {
+    if (!accessToken) {
+      setError("Inicia sesión para configurar la verificación en dos pasos.");
+      return;
+    }
+    setTwoFactorBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/auth/2fa/enroll", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = (await res.json()) as { qrDataUrl?: string; error?: string };
+      if (!res.ok || !data.qrDataUrl) {
+        setError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
+        return;
+      }
+      setTwoFactorQrDataUrl(data.qrDataUrl);
+      setTwoFactorSetupOpen(true);
+      setTwoFactorRecoveryCodes([]);
+    } catch {
+      setError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
+    } finally {
+      setTwoFactorBusy(false);
+    }
+  }
+
+  async function confirmTwoFactorEnrollment() {
+    if (!accessToken || !twoFactorCode.trim()) return;
+    setTwoFactorBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/auth/2fa/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ token: twoFactorCode.trim() }),
+      });
+      const data = (await res.json()) as { recoveryCodes?: string[]; error?: string };
+      if (!res.ok || !Array.isArray(data.recoveryCodes)) {
+        setError("Código 2FA inválido o expirado. Revisa tu app Authenticator e inténtalo de nuevo.");
+        return;
+      }
+      setTwoFactorEnabled(true);
+      setTwoFactorMethod("totp");
+      setTwoFactorRecoveryCodes(data.recoveryCodes);
+      setTwoFactorCode("");
+    } catch {
+      setError("No se pudo verificar 2FA ahora. Inténtalo de nuevo.");
+    } finally {
+      setTwoFactorBusy(false);
+    }
+  }
+
   async function onConsult() {
     if (!activeSession) {
       const created = createLocalSession("Consulta en progreso");
@@ -781,7 +850,8 @@ export default function HomePage() {
           return;
         }
         if (res.status === 403 && (data.error === "two_factor_required" || data.action === "setup_2fa")) {
-          setError("Tu plan requiere 2FA, pero tu cuenta aún no lo tiene activado. Contacta soporte o usa otro método de acceso temporal.");
+          setConsultPanelOpen(true);
+          setError("Tu cuenta tiene 2FA obligatorio en este entorno. Actívalo en Opciones > Seguridad.");
           return;
         }
         const detail =
@@ -1353,6 +1423,61 @@ export default function HomePage() {
                     <div className="composer-doc-links">
                       <Link href="/guia">Guía rápida de uso</Link>
                       <Link href="/documentacion/iching#notas-metodos">Notas y origen de los métodos (I Ching y Huesos)</Link>
+                    </div>
+                    <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
+                      <span>Seguridad (2FA opcional)</span>
+                      <p className="meta-line tier-hint-line">
+                        Estado:{" "}
+                        <strong>{twoFactorEnabled ? "Activado" : "Desactivado"}</strong>
+                        {twoFactorMethod ? ` · método ${twoFactorMethod.toUpperCase()}` : ""}
+                      </p>
+                      <p className="meta-line tier-hint-line">
+                        Puedes activar verificación con <strong>Authenticator (TOTP)</strong>. Verificación por email:
+                        <strong> próximamente</strong>.
+                      </p>
+                      {!twoFactorEnabled ? (
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => void startTwoFactorEnrollment()}
+                          disabled={twoFactorBusy || !accessToken}
+                        >
+                          {twoFactorBusy ? "Preparando..." : "Activar con Authenticator"}
+                        </button>
+                      ) : null}
+                      {twoFactorSetupOpen && twoFactorQrDataUrl ? (
+                        <div style={{ marginTop: 10 }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={twoFactorQrDataUrl}
+                            alt="Código QR para app Authenticator"
+                            style={{ width: 180, height: 180, borderRadius: 8, background: "#fff" }}
+                          />
+                          <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center" }}>
+                            <input
+                              type="text"
+                              value={twoFactorCode}
+                              onChange={(e) => setTwoFactorCode(e.target.value)}
+                              placeholder="Código de 6 dígitos"
+                              className="composer-input"
+                              style={{ maxWidth: 180 }}
+                            />
+                            <button
+                              type="button"
+                              className="composer-reading-pill is-active"
+                              onClick={() => void confirmTwoFactorEnrollment()}
+                              disabled={twoFactorBusy || twoFactorCode.trim().length < 6}
+                            >
+                              Verificar
+                            </button>
+                          </div>
+                        </div>
+                      ) : null}
+                      {twoFactorRecoveryCodes.length > 0 ? (
+                        <p className="meta-line tier-hint-line">
+                          Códigos de recuperación: <code>{twoFactorRecoveryCodes.join(" · ")}</code>
+                        </p>
+                      ) : null}
                     </div>
                     {result ? (
                       <div className="session-progress">
