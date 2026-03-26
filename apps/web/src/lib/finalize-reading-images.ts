@@ -24,8 +24,7 @@ async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undef
     const overlaySvg = decodeURIComponent(overlayDataUrl.slice("data:image/svg+xml;charset=utf-8,".length));
     const overlaySized = overlaySvg
       .replace(/width="\d+"/, `width="${width}"`)
-      .replace(/height="\d+"/, `height="${height}"`)
-      .replace(/viewBox="0 0 \d+ \d+"/, `viewBox="0 0 ${width} ${height}"`);
+      .replace(/height="\d+"/, `height="${height}"`);
     const overlayWithFont = await embedCjkFontInOverlaySvg(overlaySized);
     const out = await sharp(baseBuf)
       .composite([{ input: Buffer.from(overlayWithFont), top: 0, left: 0 }])
