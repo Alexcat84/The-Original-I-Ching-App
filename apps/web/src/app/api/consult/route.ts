@@ -129,8 +129,12 @@ export async function POST(req: Request) {
   const authedUserId = authUser.userId;
   const adminCookieToken = getAdminSessionTokenFromCookies();
   const adminCookieAllowed = isValidAdminSession(adminCookieToken);
+  const adminKeySecret = process.env.ADMIN_PANEL_KEY;
+  const adminKeyAllowed =
+    Boolean(adminKeySecret) && typeof body.adminKey === "string" && body.adminKey === adminKeySecret;
+  const adminBypassAllowed = adminCookieAllowed || adminKeyAllowed;
   const tierResolved = await getUserBillingTier(authedUserId);
-  const tierEffective = (adminCookieAllowed ? "oracle" : tierResolved) as string;
+  const tierEffective = (adminBypassAllowed ? "oracle" : tierResolved) as string;
   const tierKey = (tierEffective in CONTEXT_LIMITS ? tierEffective : "free") as TierKey;
 
   const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
@@ -162,7 +166,7 @@ export async function POST(req: Request) {
       ? body.sessionId
       : randomUUID();
 
-  const credit = adminCookieAllowed
+  const credit = adminBypassAllowed
     ? { allowed: true, remaining: 999_999, limit: 999_999, cycleEndIso: null as string | null }
     : await consumeTierCredit(authedUserId, tierResolved);
   if (!credit.allowed) {
@@ -178,8 +182,7 @@ export async function POST(req: Request) {
   }
   const isDeepening = Boolean(body.isDeepening);
   const adminConfig = getAdminConfig();
-  const adminAllowed =
-    adminCookieAllowed || (Boolean(process.env.ADMIN_PANEL_KEY) && body.adminKey === process.env.ADMIN_PANEL_KEY);
+  const adminAllowed = adminBypassAllowed;
   const responseMode =
     body.responseMode === "directo" || body.responseMode === "ritual" || body.responseMode === "profundizar"
       ? body.responseMode

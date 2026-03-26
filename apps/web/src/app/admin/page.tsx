@@ -55,6 +55,13 @@ export default function AdminPage() {
       return;
     }
     await loadConfig();
+    // Fallback for testing: also pass this key in /api/consult payload.
+    // (Cookie is httpOnly; some browser policies can still interfere.)
+    try {
+      sessionStorage.setItem("iching_admin_key", adminKey);
+    } catch {
+      // ignore
+    }
     setMessage("Sesión admin iniciada.");
   }
 
@@ -74,6 +81,11 @@ export default function AdminPage() {
 
   async function onLogout() {
     await fetch("/api/admin/logout", { method: "POST" });
+    try {
+      sessionStorage.removeItem("iching_admin_key");
+    } catch {
+      // ignore
+    }
     setAuthenticated(false);
     setMessage("Sesión cerrada.");
   }
