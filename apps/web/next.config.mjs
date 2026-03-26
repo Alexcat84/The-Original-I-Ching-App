@@ -19,7 +19,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
-    serverComponentsExternalPackages: ["sharp"],
+    serverComponentsExternalPackages: ["sharp", "@resvg/resvg-js"],
   },
   transpilePackages: [
     "@iching-oracle/iching-data",
