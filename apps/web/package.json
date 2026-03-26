@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@fontsource/noto-serif-sc": "^5.2.9",
+    "@fontsource/noto-serif-tc": "^5.2.9",
     "@iching-oracle/auth-backend": "file:../../backend/auth",
     "@iching-oracle/claude": "file:../../backend/claude",
     "@iching-oracle/context-engine": "file:../../packages/context-engine",

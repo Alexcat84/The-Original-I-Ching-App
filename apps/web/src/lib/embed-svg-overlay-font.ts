@@ -4,10 +4,16 @@ import path from "node:path";
 /**
  * Sharp/librsvg on Linux (e.g. Vercel) has no CJK fonts. Overlay SVGs use <text> with Chinese;
  * without an embedded @font-face, glyphs render as tofu boxes.
- * Google Fonts css2 API with `text=` returns a small woff2 subset we embed as data: URL.
+ *
+ * IMPORTANT REGRESSION NOTE:
+ * - Keep local Traditional Chinese font loading as primary path.
+ * - Do NOT depend only on runtime Google Fonts fetch; it can fail and break glyph rendering.
+ * - Do NOT replace all latin/system font families with this CJK face; that caused subtitle/watermark regressions.
+ *
+ * Google Fonts css2 API with `text=` remains fallback-only.
  */
 
-const FONT_FAMILY = "NotoSerifSCOverlay";
+const FONT_FAMILY = "NotoSerifTCOverlay";
 
 let cachedSubsetKey: string | null = null;
 let cachedWoff2Base64: string | null = null;
@@ -60,7 +66,7 @@ async function fetchSubsetWoff2Base64(subsetText: string): Promise<string | null
 }
 
 /**
- * Prefer bundled local font first (no runtime network dependency on Google Fonts).
+ * Prefer bundled local Traditional Chinese font first (no runtime network dependency on Google Fonts).
  */
 async function loadLocalWoff2Base64(): Promise<string | null> {
   if (cachedLocalWoff2Base64 !== undefined) return cachedLocalWoff2Base64;
@@ -69,9 +75,9 @@ async function loadLocalWoff2Base64(): Promise<string | null> {
       process.cwd(),
       "node_modules",
       "@fontsource",
-      "noto-serif-sc",
+      "noto-serif-tc",
       "files",
-      "noto-serif-sc-chinese-simplified-700-normal.woff2",
+      "noto-serif-tc-chinese-traditional-700-normal.woff2",
     );
     const buf = await readFile(localPath);
     cachedLocalWoff2Base64 = buf.toString("base64");
