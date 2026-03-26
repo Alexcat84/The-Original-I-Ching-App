@@ -44,7 +44,7 @@
       "dependsOn": ["^build"]
     },
     "typecheck": {
-      "dependsOn": []
+      "dependsOn": ["^build"]
     },
     "clean": {
       "cache": false
