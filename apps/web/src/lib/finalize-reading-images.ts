@@ -1,4 +1,5 @@
 import type { ImageProviderDebug, ResolvedImageProvider } from "@/lib/image-provider";
+import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
 import { applyReadingImageWatermark, injectSvgDataUrlWatermark } from "@/lib/watermark-image";
 import sharp from "sharp";
 
@@ -23,7 +24,8 @@ export async function finalizeReadingImages(asset: ImageAsset, tier: string): Pr
           : "";
 
       if (overlaySvg) {
-        const overlayBuf = Buffer.from(overlaySvg, "utf8");
+        const overlayForSharp = await embedCjkFontInOverlaySvg(overlaySvg);
+        const overlayBuf = Buffer.from(overlayForSharp, "utf8");
 
         let baseBuf: Buffer | null = null;
         if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
