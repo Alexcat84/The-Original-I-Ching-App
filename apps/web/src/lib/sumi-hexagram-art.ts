@@ -93,10 +93,10 @@ export function buildSumiHexagramSvgDataUrl(params: {
   const H = 768;
   const cx = W / 2;
   const sorted = [...params.lines].sort((a, b) => a.position - b.position);
-  const lineGap = 60;
-  const baseY = 570;
-  const barH = 26;
-  const halfW = 260;
+  const lineGap = 56;
+  const baseY = 520;
+  const barH = 20;
+  const halfW = 220;
 
   const lineEls: string[] = [];
   for (let i = 0; i < sorted.length; i++) {
@@ -279,9 +279,9 @@ export function buildSumiHexagramSvgDataUrl(params: {
 <rect x="1188" y="48" width="58" height="58" rx="5" fill="none" stroke="rgba(168,52,52,0.5)" stroke-width="2"/>
 <text x="1217" y="88" text-anchor="middle" fill="rgba(168,52,52,0.48)" font-size="30" font-family="serif">易</text>
 <!-- primary titles: large, centered -->
-<text x="${cx}" y="136" text-anchor="middle" fill="#1c1a16" font-size="108" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
-<text x="${cx}" y="192" text-anchor="middle" fill="#3d3830" font-size="42" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
-${subPy ? `<text x="${cx}" y="226" text-anchor="middle" fill="rgba(61,56,48,0.72)" font-size="28" font-family="Georgia, serif" font-style="italic">${subPy}</text>` : ""}
+<text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" font-size="92" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
+<text x="${cx}" y="178" text-anchor="middle" fill="#3d3830" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
+${subPy ? `<text x="${cx}" y="212" text-anchor="middle" fill="rgba(61,56,48,0.65)" font-size="22" font-family="Georgia, serif" font-style="italic">${subPy}</text>` : ""}
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
@@ -309,11 +309,11 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
   const H = 768;
   const cx = W / 2;
   const sorted = [...params.lines].sort((a, b) => a.position - b.position);
-  const lineGap = 62;
-  const baseY = 580;
-  const barH = 34;
-  const halfW = 282;
-  const yinGap = 64;
+  const lineGap = 58;
+  const baseY = 528;
+  const barH = 28;
+  const halfW = 244;
+  const yinGap = 60;
   const outputWidth = params.outputWidth ?? W;
   const outputHeight = params.outputHeight ?? H;
 
@@ -362,9 +362,9 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
 <rect x="1188" y="48" width="58" height="58" rx="5" fill="none" stroke="rgba(168,52,52,0.5)" stroke-width="2"/>
 <text x="1217" y="88" text-anchor="middle" fill="rgba(168,52,52,0.48)" font-size="30" font-family="serif">易</text>
 <!-- primary titles: large, centered -->
-<text x="${cx}" y="136" text-anchor="middle" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5.8" paint-order="stroke fill" font-size="108" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
-<text x="${cx}" y="192" text-anchor="middle" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3.4" paint-order="stroke fill" font-size="42" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
-${subPy ? `<text x="${cx}" y="226" text-anchor="middle" fill="rgba(45,40,36,0.9)" stroke="rgba(255,250,245,0.78)" stroke-width="2.2" paint-order="stroke fill" font-size="28" font-family="Georgia, serif" font-style="italic">${subPy}</text>` : ""}
+<text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
+<text x="${cx}" y="178" text-anchor="middle" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
+${subPy ? `<text x="${cx}" y="212" text-anchor="middle" fill="rgba(45,40,36,0.88)" stroke="rgba(255,250,245,0.75)" stroke-width="2" paint-order="stroke fill" font-size="22" font-family="Georgia, serif" font-style="italic">${subPy}</text>` : ""}
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
