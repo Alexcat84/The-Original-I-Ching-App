@@ -29,6 +29,11 @@ export function collectOverlaySubsetChars(svg: string): string {
     const cp = ch.codePointAt(0) ?? 0;
     if ((cp >= 0x4e00 && cp <= 0x9fff) || (cp >= 0x3400 && cp <= 0x4dbf)) {
       set.add(ch);
+      continue;
+    }
+    // Include basic latin so remote subset fallback can render #, names, pinyin, etc.
+    if (cp >= 0x20 && cp <= 0x7e) {
+      set.add(ch);
     }
   }
   set.add("易");
