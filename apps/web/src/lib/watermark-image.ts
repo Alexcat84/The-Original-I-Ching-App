@@ -28,7 +28,7 @@ export function injectSvgDataUrlWatermark(dataUrl: string, tier: string): string
   const wMatch = svg.match(/viewBox="0\s+0\s+(\d+)\s+(\d+)"/);
   const width = wMatch ? Number(wMatch[1]) : 1344;
   const height = wMatch ? Number(wMatch[2]) : 768;
-  const insert = `<text x="${width - 24}" y="${height - 24}" text-anchor="end" fill="rgba(255,255,255,${cfg.opacity})" font-size="${cfg.fontSize}" font-family="DejaVu Sans, Liberation Sans, Arial, sans-serif" font-weight="600">${escapeXml(cfg.text)}</text>`;
+  const insert = `<text x="${width - 24}" y="${height - 24}" text-anchor="end" fill="rgba(255,255,255,${cfg.opacity})" font-size="${cfg.fontSize}" font-family="system-ui,sans-serif" font-weight="600">${escapeXml(cfg.text)}</text>`;
   const idx = svg.lastIndexOf("</svg>");
   if (idx === -1) return dataUrl;
   const newSvg = `${svg.slice(0, idx)}${insert}${svg.slice(idx)}`;
@@ -41,7 +41,7 @@ async function watermarkRasterBuffer(buf: Buffer, tier: string): Promise<string>
   const meta = await sharp(buf).metadata();
   const width = meta.width ?? 1344;
   const height = meta.height ?? 768;
-  const svg = `<svg width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${cfg.opacity});font-size:${cfg.fontSize}px;font-family:DejaVu Sans, Liberation Sans, Arial, sans-serif;font-weight:600}</style><text x="${width - 24}" y="${height - 24}" text-anchor="end" class="wm">${escapeXml(cfg.text)}</text></svg>`;
+  const svg = `<svg width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${cfg.opacity});font-size:${cfg.fontSize}px;font-family:system-ui,sans-serif;font-weight:600}</style><text x="${width - 24}" y="${height - 24}" text-anchor="end" class="wm">${escapeXml(cfg.text)}</text></svg>`;
   const out = await sharp(buf)
     .composite([{ input: Buffer.from(svg), top: 0, left: 0 }])
     .png({ compressionLevel: 9 })

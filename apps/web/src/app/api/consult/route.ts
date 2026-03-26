@@ -14,6 +14,7 @@ import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { buildImageAsset, buildOracleBonesImageAsset, type ImageProvider } from "@/lib/image-provider";
 import { getAdminConfig } from "@/lib/admin-config";
+import { getAdminSessionTokenFromCookies, isValidAdminSession } from "@/lib/admin-auth";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { consumeTierCredit, getUserBillingTier } from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
@@ -126,8 +127,11 @@ export async function POST(req: Request) {
     );
   }
   const authedUserId = authUser.userId;
+  const adminCookieToken = getAdminSessionTokenFromCookies();
+  const adminCookieAllowed = isValidAdminSession(adminCookieToken);
   const tierResolved = await getUserBillingTier(authedUserId);
-  const tierKey = (tierResolved in CONTEXT_LIMITS ? tierResolved : "free") as TierKey;
+  const tierEffective = (adminCookieAllowed ? "oracle" : tierResolved) as string;
+  const tierKey = (tierEffective in CONTEXT_LIMITS ? tierEffective : "free") as TierKey;
 
   const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
   const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
@@ -158,7 +162,9 @@ export async function POST(req: Request) {
       ? body.sessionId
       : randomUUID();
 
-  const credit = await consumeTierCredit(authedUserId, tierResolved);
+  const credit = adminCookieAllowed
+    ? { allowed: true, remaining: 999_999, limit: 999_999, cycleEndIso: null as string | null }
+    : await consumeTierCredit(authedUserId, tierResolved);
   if (!credit.allowed) {
     return NextResponse.json(
       {
@@ -172,7 +178,8 @@ export async function POST(req: Request) {
   }
   const isDeepening = Boolean(body.isDeepening);
   const adminConfig = getAdminConfig();
-  const adminAllowed = Boolean(process.env.ADMIN_PANEL_KEY) && body.adminKey === process.env.ADMIN_PANEL_KEY;
+  const adminAllowed =
+    adminCookieAllowed || (Boolean(process.env.ADMIN_PANEL_KEY) && body.adminKey === process.env.ADMIN_PANEL_KEY);
   const responseMode =
     body.responseMode === "directo" || body.responseMode === "ritual" || body.responseMode === "profundizar"
       ? body.responseMode
@@ -207,7 +214,7 @@ export async function POST(req: Request) {
 
     const { text: interpretation, category } = await generateOracleBonesInterpretation(
       bonesCast,
-      tierResolved,
+      tierEffective,
       context,
       responseMode,
       language,
@@ -224,11 +231,11 @@ export async function POST(req: Request) {
       patternId: bonesCast.patternId,
       verdict: bonesCast.verdict,
       medium: bonesCast.medium,
-      tier: tierResolved,
+      tier: tierEffective,
       providerOverride: imageProviderOverride,
       consultationId: bonesCast.id,
     });
-    image = await finalizeReadingImages(image, tierResolved);
+    image = await finalizeReadingImages(image, tierEffective);
 
     const oracleBonesSnapshot: OracleBonesHistorySnapshot = {
       pattern_id: bonesCast.patternId,
@@ -322,7 +329,7 @@ export async function POST(req: Request) {
 
   const { text: interpretation, category } = await generateInterpretation(
     castResult,
-    tierResolved,
+    tierEffective,
     context,
     responseMode,
   );
@@ -356,11 +363,11 @@ export async function POST(req: Request) {
       value: l.value,
       isChanging: l.isChanging,
     })),
-    tier: tierResolved,
+    tier: tierEffective,
     providerOverride: imageProviderOverride,
     consultationId: castResult.id,
   });
-  image = await finalizeReadingImages(image, tierResolved);
+  image = await finalizeReadingImages(image, tierEffective);
 
   const nextPosition = previousRows.length + 1;
   const maxDepth = Math.max(1, CONTEXT_LIMITS[tierKey].sessionDepth);
