@@ -24,6 +24,10 @@ function buildYinYangMarkSvg(x: number, y: number, radius: number, opacity: numb
 </g>`.trim();
 }
 
+function buildWatermarkBackdropSvg(x: number, y: number, width: number, height: number, radius: number): string {
+  return `<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${radius}" fill="rgba(18,14,10,0.42)"/>`;
+}
+
 /**
  * Burn-in watermark for SVG data URLs (sumi-e fallback, no Sharp decode of raster).
  */
@@ -43,10 +47,18 @@ export function injectSvgDataUrlWatermark(dataUrl: string, tier: string): string
   const height = wMatch ? Number(wMatch[2]) : 768;
   const hasSymbol = cfg.text.includes("☯");
   const watermarkText = cfg.text.replace("☯", "").trim();
-  const textX = hasSymbol ? width - 56 : width - 24;
-  const insertText = `<text x="${textX}" y="${height - 24}" text-anchor="end" fill="rgba(255,255,255,${cfg.opacity})" font-size="${cfg.fontSize}" font-family="system-ui,sans-serif" font-weight="600">${escapeXml(watermarkText || cfg.text)}</text>`;
-  const insertSymbol = hasSymbol ? buildYinYangMarkSvg(width - 24, height - 30, Math.max(7, cfg.fontSize * 0.5), cfg.opacity) : "";
-  const insert = `${insertText}${insertSymbol}`;
+  const text = watermarkText || cfg.text;
+  const textX = hasSymbol ? width - 52 : width - 22;
+  const baselineY = height - 24;
+  const textApproxW = Math.max(74, Math.round(text.length * cfg.fontSize * 0.58));
+  const boxW = textApproxW + (hasSymbol ? 42 : 20);
+  const boxH = Math.max(26, Math.round(cfg.fontSize * 1.45));
+  const boxX = Math.max(8, width - boxW - 10);
+  const boxY = Math.max(8, baselineY - boxH + 8);
+  const backdrop = buildWatermarkBackdropSvg(boxX, boxY, boxW, boxH, Math.max(8, Math.round(boxH * 0.32)));
+  const insertText = `<text x="${textX}" y="${baselineY}" text-anchor="end" fill="rgba(255,255,255,${Math.min(1, cfg.opacity + 0.12)})" stroke="rgba(0,0,0,0.45)" stroke-width="0.9" paint-order="stroke fill" font-size="${cfg.fontSize}" font-family="system-ui,sans-serif" font-weight="700">${escapeXml(text)}</text>`;
+  const insertSymbol = hasSymbol ? buildYinYangMarkSvg(width - 22, baselineY - 6, Math.max(7, cfg.fontSize * 0.52), Math.min(1, cfg.opacity + 0.12)) : "";
+  const insert = `${backdrop}${insertText}${insertSymbol}`;
   const idx = svg.lastIndexOf("</svg>");
   if (idx === -1) return dataUrl;
   const newSvg = `${svg.slice(0, idx)}${insert}${svg.slice(idx)}`;
@@ -61,9 +73,17 @@ async function watermarkRasterBuffer(buf: Buffer, tier: string): Promise<string>
   const height = meta.height ?? 768;
   const hasSymbol = cfg.text.includes("☯");
   const watermarkText = cfg.text.replace("☯", "").trim();
-  const textX = hasSymbol ? width - 56 : width - 24;
+  const text = watermarkText || cfg.text;
+  const textX = hasSymbol ? width - 52 : width - 22;
+  const baselineY = height - 24;
+  const textApproxW = Math.max(74, Math.round(text.length * cfg.fontSize * 0.58));
+  const boxW = textApproxW + (hasSymbol ? 42 : 20);
+  const boxH = Math.max(26, Math.round(cfg.fontSize * 1.45));
+  const boxX = Math.max(8, width - boxW - 10);
+  const boxY = Math.max(8, baselineY - boxH + 8);
+  const backdrop = buildWatermarkBackdropSvg(boxX, boxY, boxW, boxH, Math.max(8, Math.round(boxH * 0.32)));
   const symbol = hasSymbol ? buildYinYangMarkSvg(width - 24, height - 30, Math.max(7, cfg.fontSize * 0.5), cfg.opacity) : "";
-  const svg = `<svg width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${cfg.opacity});font-size:${cfg.fontSize}px;font-family:system-ui,sans-serif;font-weight:600}</style><text x="${textX}" y="${height - 24}" text-anchor="end" class="wm">${escapeXml(watermarkText || cfg.text)}</text>${symbol}</svg>`;
+  const svg = `<svg width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${Math.min(1, cfg.opacity + 0.12)});stroke:rgba(0,0,0,0.45);stroke-width:0.9px;paint-order:stroke fill;font-size:${cfg.fontSize}px;font-family:system-ui,sans-serif;font-weight:700}</style>${backdrop}<text x="${textX}" y="${baselineY}" text-anchor="end" class="wm">${escapeXml(text)}</text>${symbol}</svg>`;
   const out = await sharp(buf)
     .composite([{ input: Buffer.from(svg), top: 0, left: 0 }])
     .png({ compressionLevel: 9 })

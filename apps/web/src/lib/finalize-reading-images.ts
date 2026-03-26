@@ -24,8 +24,7 @@ async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undef
     const overlaySvg = decodeURIComponent(overlayDataUrl.slice("data:image/svg+xml;charset=utf-8,".length));
     const overlaySized = overlaySvg
       .replace(/width="\d+"/, `width="${width}"`)
-      .replace(/height="\d+"/, `height="${height}"`)
-      .replace(/viewBox="0 0 \d+ \d+"/, `viewBox="0 0 ${width} ${height}"`);
+      .replace(/height="\d+"/, `height="${height}"`);
     const overlayWithFont = await embedCjkFontInOverlaySvg(overlaySized);
     const out = await sharp(baseBuf)
       .composite([{ input: Buffer.from(overlayWithFont), top: 0, left: 0 }])
@@ -38,10 +37,29 @@ async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undef
 }
 
 export async function finalizeReadingImages(asset: ImageAsset, tier: string): Promise<ImageAsset> {
-  const composedOrOriginal = await tryComposeOverlay(asset.imageUrl, asset.overlaySvgDataUrl);
+  let baseImageUrl = asset.imageUrl;
+  // Ensure Chinese glyphs are embedded even when the main result is direct SVG fallback.
+  if (baseImageUrl.startsWith("data:image/svg+xml")) {
+    try {
+      const raw = decodeURIComponent(baseImageUrl.slice("data:image/svg+xml;charset=utf-8,".length));
+      const withFont = await embedCjkFontInOverlaySvg(raw);
+      baseImageUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(withFont)}`;
+    } catch {
+      // keep original URL on decode/encode failures
+    }
+  }
+
+  const composedOrOriginal = await tryComposeOverlay(baseImageUrl, asset.overlaySvgDataUrl);
   let imageUrl = await applyReadingImageWatermark(composedOrOriginal, tier);
   let fallbackImageUrl = asset.fallbackImageUrl;
   if (fallbackImageUrl.startsWith("data:image/svg+xml")) {
+    try {
+      const raw = decodeURIComponent(fallbackImageUrl.slice("data:image/svg+xml;charset=utf-8,".length));
+      const withFont = await embedCjkFontInOverlaySvg(raw);
+      fallbackImageUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(withFont)}`;
+    } catch {
+      // keep original fallback when encoding fails
+    }
     fallbackImageUrl = injectSvgDataUrlWatermark(fallbackImageUrl, tier);
   } else if (fallbackImageUrl !== asset.imageUrl) {
     fallbackImageUrl = await applyReadingImageWatermark(fallbackImageUrl, tier);
