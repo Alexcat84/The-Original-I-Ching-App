@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+
 /**
  * Sharp/librsvg on Linux (e.g. Vercel) has no CJK fonts. Overlay SVGs use <text> with Chinese;
  * without an embedded @font-face, glyphs render as tofu boxes.
@@ -8,6 +11,7 @@ const FONT_FAMILY = "NotoSerifSCOverlay";
 
 let cachedSubsetKey: string | null = null;
 let cachedWoff2Base64: string | null = null;
+let cachedLocalWoff2Base64: string | null | undefined;
 
 /** CJK + common punctuation used in overlay titles (e.g. arrow between hexagram names). */
 export function collectOverlaySubsetChars(svg: string): string {
@@ -56,6 +60,29 @@ async function fetchSubsetWoff2Base64(subsetText: string): Promise<string | null
 }
 
 /**
+ * Prefer bundled local font first (no runtime network dependency on Google Fonts).
+ */
+async function loadLocalWoff2Base64(): Promise<string | null> {
+  if (cachedLocalWoff2Base64 !== undefined) return cachedLocalWoff2Base64;
+  try {
+    const localPath = path.join(
+      process.cwd(),
+      "node_modules",
+      "@fontsource",
+      "noto-serif-sc",
+      "files",
+      "noto-serif-sc-chinese-simplified-700-normal.woff2",
+    );
+    const buf = await readFile(localPath);
+    cachedLocalWoff2Base64 = buf.toString("base64");
+    return cachedLocalWoff2Base64;
+  } catch {
+    cachedLocalWoff2Base64 = null;
+    return null;
+  }
+}
+
+/**
  * Injects a WOFF2 @font-face and rewrites font-family so librsvg can render Chinese overlay text.
  */
 export async function embedCjkFontInOverlaySvg(svg: string): Promise<string> {
@@ -64,7 +91,7 @@ export async function embedCjkFontInOverlaySvg(svg: string): Promise<string> {
   if (!subset) return svg;
 
   try {
-    const b64 = await fetchSubsetWoff2Base64(subset);
+    const b64 = (await loadLocalWoff2Base64()) ?? (await fetchSubsetWoff2Base64(subset));
     if (!b64) return svg;
 
     const face = `<defs><style type="text/css"><![CDATA[
