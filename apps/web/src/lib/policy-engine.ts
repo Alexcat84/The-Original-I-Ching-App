@@ -27,7 +27,7 @@ function parseEmailAllowlist(raw: string | undefined | null): Set<string> {
 
 function shouldEnforceTierTwoFactor(): boolean {
   const raw = (process.env.ENFORCE_TIER_2FA ?? "").trim().toLowerCase();
-  if (!raw) return true;
+  if (!raw) return false;
   return raw === "1" || raw === "true";
 }
 
