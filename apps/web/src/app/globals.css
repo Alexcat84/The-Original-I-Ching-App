@@ -1,3 +1,10 @@
+/* CI / offline: layout adds class when SKIP_GOOGLE_FONTS=1 so next build avoids fetching Google Fonts. */
+html.oracle-fonts-ci-stub {
+  --font-oracle-display: Georgia, "Times New Roman", ui-serif, serif;
+  --font-oracle-cn: serif;
+  --font-oracle-serif: Georgia, "Times New Roman", ui-serif, serif;
+}
+
 /* Theme tokens: html[data-theme] (customizable UI pattern; sync with @/lib/theme + layout Script) */
 html[data-theme="light"],
 html:not([data-theme]) {

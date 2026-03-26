@@ -34,6 +34,8 @@ jobs:
       - name: Build
         run: npm run build
         env:
+          # next/font/google hits fonts.gstatic.com; skip in CI to avoid flaky timeouts / blocks.
+          SKIP_GOOGLE_FONTS: "1"
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}

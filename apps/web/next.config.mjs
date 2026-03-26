@@ -1,3 +1,8 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
@@ -44,6 +49,17 @@ const nextConfig = {
         headers: securityHeaders,
       },
     ];
+  },
+  webpack: (config, { webpack: webpackMod }) => {
+    const skip =
+      process.env.SKIP_GOOGLE_FONTS === "1" || process.env.SKIP_GOOGLE_FONTS === "true";
+    if (skip) {
+      const stub = path.join(__dirname, "src", "lib", "google-fonts-root.ci.ts");
+      config.plugins.push(
+        new webpackMod.NormalModuleReplacementPlugin(/google-fonts-root\.ts$/, stub),
+      );
+    }
+    return config;
   },
 };
 
