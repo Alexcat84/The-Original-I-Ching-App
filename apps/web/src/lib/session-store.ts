@@ -340,3 +340,49 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
   });
 }
 
+export async function deleteUserSession(userId: string, sessionId: string): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase || !isPersistableUuid(sessionId)) {
+    const session = sessions.get(sessionId);
+    if (!session) return false;
+    if (session.consultationIds.length > 0) {
+      for (const id of session.consultationIds) {
+        const row = consultations.get(id);
+        if (row) consultationByPublicId.delete(row.publicId);
+        consultations.delete(id);
+      }
+    }
+    sessionByPublicId.delete(session.publicId);
+    sessions.delete(sessionId);
+    return true;
+  }
+
+  const { data: existing, error: existingError } = await supabase
+    .from("consultation_sessions")
+    .select("id")
+    .eq("id", sessionId)
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (existingError || !existing) return false;
+
+  const { error: consultDeleteError } = await supabase
+    .from("consultations")
+    .delete()
+    .eq("session_id", sessionId)
+    .eq("user_id", userId);
+  if (consultDeleteError) {
+    throw new Error(`consultations_delete_failed:${consultDeleteError.message}`);
+  }
+
+  const { error: sessionDeleteError } = await supabase
+    .from("consultation_sessions")
+    .delete()
+    .eq("id", sessionId)
+    .eq("user_id", userId);
+  if (sessionDeleteError) {
+    throw new Error(`consultation_session_delete_failed:${sessionDeleteError.message}`);
+  }
+
+  return true;
+}
+

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
-import { getUserSessionsWithConsultations } from "@/lib/session-store";
+import { deleteUserSession, getUserSessionsWithConsultations } from "@/lib/session-store";
 
 export const runtime = "nodejs";
 
@@ -18,5 +18,22 @@ export async function GET(req: Request) {
       consultations: entry.consultations,
     })),
   });
+}
+
+export async function DELETE(req: Request) {
+  const user = await getAuthenticatedUser(req);
+  if (!user) {
+    return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
+  }
+  const url = new URL(req.url);
+  const sessionId = url.searchParams.get("sessionId");
+  if (!sessionId) {
+    return apiError(400, { error: "invalid_session_id", code: "SESSION_ID_REQUIRED", action: "fix_input" });
+  }
+  const ok = await deleteUserSession(user.userId, sessionId);
+  if (!ok) {
+    return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
+  }
+  return NextResponse.json({ ok: true });
 }
 

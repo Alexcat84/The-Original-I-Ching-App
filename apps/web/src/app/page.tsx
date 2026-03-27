@@ -12,10 +12,7 @@ import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
-import {
-  drawPdfReadingBlocks,
-  interpretationMarkdownToPdfBlocks,
-} from "@/lib/pdf-chat-export";
+import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
 import { creditsExhaustedBlock, type BillingTier } from "@/lib/credits-ui-copy";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -58,6 +55,7 @@ type ConsultResponse = {
   imagePrompt: string;
   imageUrl: string;
   imageFallbackUrl: string;
+  createdAt?: number;
   sessionId: string | null;
   sessionPosition: number;
   canDeepen: boolean;
@@ -223,6 +221,121 @@ const RUNTIME_TEXT: Record<
     chargeMinus: "명제 −",
     leansPositive: "긍정 명제 쪽으로 기웁니다.",
     leansNegative: "명제 부정 쪽으로 기웁니다.",
+  },
+};
+
+const DRAWER_TEXT: Record<
+  AppLocale,
+  {
+    activity: string;
+    streak: string;
+    consultationsToday: string;
+    chatsWithMessages: string;
+    loading: string;
+    onlyThreads: string;
+    noSaved: string;
+    messages: string;
+    deleteConversation: string;
+  }
+> = {
+  es: {
+    activity: "Tu actividad",
+    streak: "Racha (días)",
+    consultationsToday: "Consultas hoy",
+    chatsWithMessages: "Chats con mensajes",
+    loading: "Canalizando consulta…",
+    onlyThreads: "Solo se listan hilos con al menos una lectura.",
+    noSaved: "Aún no hay conversaciones guardadas. Envía una consulta para verla aquí.",
+    messages: "mensajes",
+    deleteConversation: "Eliminar conversación",
+  },
+  en: {
+    activity: "Your activity",
+    streak: "Streak (days)",
+    consultationsToday: "Consultations today",
+    chatsWithMessages: "Chats with messages",
+    loading: "Channeling consultation…",
+    onlyThreads: "Only threads with at least one reading are listed.",
+    noSaved: "No saved conversations yet. Send a consultation to see it here.",
+    messages: "messages",
+    deleteConversation: "Delete conversation",
+  },
+  pt: {
+    activity: "Sua atividade",
+    streak: "Sequência (dias)",
+    consultationsToday: "Consultas hoje",
+    chatsWithMessages: "Chats com mensagens",
+    loading: "Canalizando consulta…",
+    onlyThreads: "Somente fios com ao menos uma leitura são listados.",
+    noSaved: "Ainda não há conversas salvas. Envie uma consulta para vê-la aqui.",
+    messages: "mensagens",
+    deleteConversation: "Excluir conversa",
+  },
+  fr: {
+    activity: "Votre activité",
+    streak: "Série (jours)",
+    consultationsToday: "Consultations aujourd'hui",
+    chatsWithMessages: "Chats avec messages",
+    loading: "Canalisation en cours…",
+    onlyThreads: "Seuls les fils avec au moins une lecture sont listés.",
+    noSaved: "Aucune conversation enregistrée pour le moment.",
+    messages: "messages",
+    deleteConversation: "Supprimer la conversation",
+  },
+  de: {
+    activity: "Deine Aktivität",
+    streak: "Serie (Tage)",
+    consultationsToday: "Heutige Konsultationen",
+    chatsWithMessages: "Chats mit Nachrichten",
+    loading: "Konsultation wird kanalisiert…",
+    onlyThreads: "Nur Threads mit mindestens einer Lesung werden gelistet.",
+    noSaved: "Noch keine gespeicherten Konversationen.",
+    messages: "Nachrichten",
+    deleteConversation: "Konversation löschen",
+  },
+  it: {
+    activity: "La tua attività",
+    streak: "Serie (giorni)",
+    consultationsToday: "Consultazioni oggi",
+    chatsWithMessages: "Chat con messaggi",
+    loading: "Canalizzazione in corso…",
+    onlyThreads: "Sono elencati solo i thread con almeno una lettura.",
+    noSaved: "Nessuna conversazione salvata al momento.",
+    messages: "messaggi",
+    deleteConversation: "Elimina conversazione",
+  },
+  ja: {
+    activity: "あなたの履歴",
+    streak: "連続日数",
+    consultationsToday: "本日の相談",
+    chatsWithMessages: "メッセージ付きチャット",
+    loading: "相談を生成中…",
+    onlyThreads: "少なくとも1件の読みがあるスレッドのみ表示されます。",
+    noSaved: "保存された会話はまだありません。",
+    messages: "件のメッセージ",
+    deleteConversation: "会話を削除",
+  },
+  zh: {
+    activity: "你的活动",
+    streak: "连续天数",
+    consultationsToday: "今日咨询",
+    chatsWithMessages: "有消息的聊天",
+    loading: "正在生成咨询…",
+    onlyThreads: "仅显示至少含1次解读的线程。",
+    noSaved: "暂时没有已保存的对话。",
+    messages: "条消息",
+    deleteConversation: "删除对话",
+  },
+  ko: {
+    activity: "활동 내역",
+    streak: "연속 일수",
+    consultationsToday: "오늘의 상담",
+    chatsWithMessages: "메시지가 있는 채팅",
+    loading: "상담 생성 중…",
+    onlyThreads: "최소 한 번의 리딩이 있는 스레드만 표시됩니다.",
+    noSaved: "저장된 대화가 아직 없습니다.",
+    messages: "개의 메시지",
+    deleteConversation: "대화 삭제",
   },
 };
 
@@ -577,6 +690,7 @@ type ChatSessionState = {
   publicSessionId: string | null;
   thread: ConsultationItem[];
   updatedAt: number;
+  firstConsultationAt: number | null;
 };
 
 type AccountChatsResponse = {
@@ -609,6 +723,7 @@ type AccountChatsResponse = {
       imageProvider: ConsultResponse["imageProvider"];
       imageUrl: string;
       imageFallbackUrl?: string;
+      createdAt: number;
       publicId: string;
       oracleType: "iching" | "oracle_bones";
       oracleBones?: {
@@ -642,6 +757,7 @@ function createLocalSession(title = "Nueva sesión"): ChatSessionState {
     publicSessionId: null,
     thread: [],
     updatedAt: Date.now(),
+    firstConsultationAt: null,
   };
 }
 
@@ -700,6 +816,7 @@ export default function HomePage() {
   const t = commonStrings[locale];
   const isSpanish = locale === "es";
   const runtimeText = RUNTIME_TEXT[locale];
+  const drawerText = DRAWER_TEXT[locale];
   const exportPdfLabel = isSpanish ? "Exportar chat PDF" : "Export chat PDF";
   const downloadImageLabel = isSpanish ? "Descargar imagen" : "Download image";
   const openImageLabel = isSpanish ? "Abrir imagen en tamaño completo" : "Open full-size image";
@@ -803,18 +920,12 @@ export default function HomePage() {
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
     const { jsPDF } = await import("jspdf");
-      const lang = detectInputLanguage(activeThread.at(-1)?.question ?? question, locale);
+    const lang = detectInputLanguage(activeThread.at(-1)?.question ?? question, locale);
     const isEsPdf = lang === "es";
-    const title = isEsPdf ? "The Original I Ching — Exportación de consulta" : "The Original I Ching — Consultation export";
     const doc = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
-    const pageW = doc.internal.pageSize.getWidth();
-    const pageH = doc.internal.pageSize.getHeight();
-    const margin = 48;
-    const maxW = pageW - margin * 2;
-    let y = margin;
-    const heading = activeSession?.title?.trim() || (isEsPdf ? "Consulta" : "Consultation");
-    const idRef = activeThread.at(-1)?.consultationId ?? activeThread[0]?.consultationId ?? "CHAT";
-    const fileBase = formatPrintFilename(idRef);
+    const fileBase = formatPrintFilename(
+      activeThread.at(-1)?.consultationId ?? activeThread[0]?.consultationId ?? "CHAT",
+    );
 
     const toDataUrl = (blob: Blob) =>
       new Promise<string>((resolve, reject) => {
@@ -823,150 +934,209 @@ export default function HomePage() {
         reader.onerror = () => reject(new Error("blob_to_data_url_failed"));
         reader.readAsDataURL(blob);
       });
+    const fetchImageDataUrl = async (url: string): Promise<string | null> => {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        return await toDataUrl(await res.blob());
+      } catch {
+        return null;
+      }
+    };
+    const loadImage = (src: string) =>
+      new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error("image_load_failed"));
+        img.src = src;
+      });
 
-    const resolveImageDataUrl = async (urls: string[]): Promise<string | null> => {
-      for (const url of urls.filter(Boolean)) {
-        try {
-          const res = await fetch(url);
-          if (!res.ok) continue;
-          const blob = await res.blob();
-          return await toDataUrl(blob);
-        } catch {
-          // continue
+    const pageW = 1240;
+    const pageH = 1754;
+    const cjkFont =
+      "\"Noto Sans CJK JP\",\"Yu Gothic UI\",\"Meiryo\",\"Microsoft YaHei\",\"Malgun Gothic\",\"Segoe UI\",sans-serif";
+    const serifFont = "\"Noto Serif CJK JP\",\"Yu Mincho\",\"MS Mincho\",serif";
+
+    const wrapText = (ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] => {
+      const lines: string[] = [];
+      let line = "";
+      for (const ch of Array.from(text.replace(/\r/g, ""))) {
+        if (ch === "\n") {
+          lines.push(line);
+          line = "";
+          continue;
+        }
+        const test = line + ch;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line.trimEnd());
+          line = ch;
+        } else {
+          line = test;
         }
       }
-      return null;
+      if (line.trim().length > 0) lines.push(line.trimEnd());
+      return lines;
     };
 
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(17);
-    doc.setTextColor(22, 28, 36);
-    doc.text(title, margin, y);
-    y += 24;
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(88, 96, 104);
-    doc.text(
-      isEsPdf
-        ? `Hilo: ${heading} · Entradas: ${activeThread.length}`
-        : `Thread: ${heading} · Entries: ${activeThread.length}`,
-      margin,
-      y,
-    );
-    y += 20;
-    doc.setDrawColor(146, 171, 182);
-    doc.setLineWidth(0.9);
-    doc.line(margin, y, pageW - margin, y);
-    y += 16;
-    doc.setTextColor(28, 32, 36);
+    const drawWrapped = (
+      ctx: CanvasRenderingContext2D,
+      text: string,
+      x: number,
+      y: number,
+      maxWidth: number,
+      lineHeight: number,
+      maxLines?: number,
+    ): number => {
+      const lines = wrapText(ctx, text, maxWidth);
+      const use = typeof maxLines === "number" ? lines.slice(0, maxLines) : lines;
+      use.forEach((l) => {
+        ctx.fillText(l, x, y);
+        y += lineHeight;
+      });
+      if (typeof maxLines === "number" && lines.length > maxLines) {
+        ctx.fillText("…", x, y);
+        y += lineHeight;
+      }
+      return y;
+    };
 
     for (let i = 0; i < activeThread.length; i++) {
       const entry = activeThread[i]!;
-      const qLabel = isEsPdf ? "Pregunta" : "Question";
-      const aLabel = isEsPdf ? "Lectura" : "Reading";
-      const innerPad = 10;
-      const innerW = maxW - innerPad * 2;
+      if (i > 0) doc.addPage();
 
-      const ensure = (h: number) => {
-        if (y + h > pageH - margin) {
-          doc.addPage();
-          y = margin;
-        }
+      const canvas = document.createElement("canvas");
+      canvas.width = pageW;
+      canvas.height = pageH;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) continue;
+
+      // Background and subtle bands.
+      ctx.fillStyle = "#f6fbfd";
+      ctx.fillRect(0, 0, pageW, pageH);
+      ctx.fillStyle = "rgba(30,131,148,0.08)";
+      ctx.fillRect(0, 0, pageW, 140);
+      ctx.fillStyle = "rgba(28,94,122,0.06)";
+      ctx.fillRect(0, 146, pageW, 8);
+
+      const accent = entry.oracleType === "oracle_bones" ? "#2a857a" : "#1f6f8f";
+
+      // Header
+      ctx.fillStyle = "#17212b";
+      ctx.font = `700 42px ${serifFont}`;
+      ctx.fillText(isEsPdf ? "Consulta del Oráculo" : "Oracle Consultation", 64, 76);
+      ctx.font = `500 23px ${cjkFont}`;
+      ctx.fillStyle = "#36515d";
+      ctx.fillText(`${isEsPdf ? "Entrada" : "Entry"} ${i + 1} · ${new Date().toLocaleString(locale)}`, 64, 112);
+
+      // Question ribbon
+      ctx.fillStyle = "rgba(255,255,255,0.92)";
+      ctx.strokeStyle = "rgba(52,117,145,0.35)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(54, 186, pageW - 108, 174, 22);
+      ctx.fill();
+      ctx.stroke();
+      ctx.font = `700 24px ${cjkFont}`;
+      ctx.fillStyle = accent;
+      ctx.fillText(isEsPdf ? "Pregunta" : "Question", 86, 232);
+      ctx.font = `500 29px ${cjkFont}`;
+      ctx.fillStyle = "#1e2a35";
+      drawWrapped(ctx, entry.question, 86, 276, pageW - 172, 40, 3);
+
+      // Summary + image cards
+      const cardY = 394;
+      const cardH = 360;
+      const leftW = 560;
+      const rightW = pageW - 54 - 54 - leftW - 24;
+
+      ctx.fillStyle = "rgba(242,249,251,0.96)";
+      ctx.strokeStyle = "rgba(52,117,145,0.28)";
+      ctx.beginPath();
+      ctx.roundRect(54, cardY, leftW, cardH, 20);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(245,250,252,0.98)";
+      ctx.beginPath();
+      ctx.roundRect(54 + leftW + 24, cardY, rightW, cardH, 20);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.font = `700 24px ${cjkFont}`;
+      ctx.fillStyle = accent;
+      ctx.fillText(isEsPdf ? "Resumen" : "Summary", 84, cardY + 46);
+      ctx.font = `500 25px ${cjkFont}`;
+      ctx.fillStyle = "#22313f";
+      let sy = cardY + 92;
+      const summaryLine = (label: string, value: string) => {
+        sy = drawWrapped(ctx, `${label} ${value}`, 84, sy, leftW - 60, 34, 2) + 6;
       };
-
-      const isBones = entry.oracleType === "oracle_bones";
-      const accent = isBones ? [42, 133, 122] : [38, 112, 146];
-      const soft = isBones ? [237, 248, 246] : [237, 245, 249];
-      const warm = isBones ? [248, 252, 251] : [251, 249, 244];
-
-      ensure(64);
-      doc.setFillColor(soft[0], soft[1], soft[2]);
-      doc.roundedRect(margin, y - 10, maxW, 44, 8, 8, "F");
-      doc.setDrawColor(accent[0], accent[1], accent[2]);
-      doc.setLineWidth(0.6);
-      doc.roundedRect(margin, y - 10, maxW, 44, 8, 8, "S");
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(9.5);
-      doc.setTextColor(accent[0], accent[1], accent[2]);
-      doc.text(`${qLabel} ${i + 1}`, margin + innerPad, y + 2);
-      y += 18;
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(11);
-      doc.setTextColor(22, 26, 32);
-      const qLines = doc.splitTextToSize(entry.question, innerW);
-      ensure(qLines.length * 13 + 12);
-      doc.text(qLines, margin + innerPad, y);
-      y += qLines.length * 13 + 12;
-
-      const cardGap = 10;
-      const cardLeftW = Math.floor((maxW - cardGap) * 0.48);
-      const cardRightW = maxW - cardLeftW - cardGap;
-      const cardTop = y;
-      const cardH = 146;
-      ensure(cardH + 18);
-
-      doc.setFillColor(245, 249, 251);
-      doc.roundedRect(margin, cardTop, cardLeftW, cardH, 8, 8, "F");
-      doc.setDrawColor(185, 207, 216);
-      doc.setLineWidth(0.5);
-      doc.roundedRect(margin, cardTop, cardLeftW, cardH, 8, 8, "S");
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(9);
-      doc.setTextColor(60, 88, 98);
-      doc.text(isEsPdf ? "Resumen" : "Summary", margin + 10, cardTop + 14);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.setTextColor(26, 32, 40);
-
-      let yy = cardTop + 30;
-      const line = (label: string, value: string) => {
-        const text = `${label} ${value}`;
-        const lines = doc.splitTextToSize(text, cardLeftW - 20) as string[];
-        doc.text(lines, margin + 10, yy);
-        yy += lines.length * 12 + 3;
-      };
-
-      if (isBones && entry.oracleBones) {
-        line(`${isEsPdf ? "Tipo:" : "Type:"}`, isEsPdf ? "Huesos" : "Bones");
-        line(`${isEsPdf ? "Veredicto:" : "Verdict:"}`, verdictLabel(entry.oracleBones.verdict, lang));
-        line(`${isEsPdf ? "Cargo +:" : "Charge +:"}`, entry.oracleBones.positiveCharge);
+      if (entry.oracleType === "oracle_bones" && entry.oracleBones) {
+        summaryLine(isEsPdf ? "Tipo:" : "Type:", isEsPdf ? "Huesos" : "Bones");
+        summaryLine(isEsPdf ? "Veredicto:" : "Verdict:", verdictLabel(entry.oracleBones.verdict, lang));
+        summaryLine(isEsPdf ? "Cargo +:" : "Charge +:", entry.oracleBones.positiveCharge);
       } else {
-        line(`${isEsPdf ? "Hexagrama:" : "Hexagram:"}`, `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`);
-        line(`${isEsPdf ? "Regla:" : "Rule:"}`, entry.mutationRule);
-        line(`${isEsPdf ? "En hilo:" : "In thread:"}`, `${entry.sessionPosition}`);
+        summaryLine(isEsPdf ? "Hexagrama:" : "Hexagram:", `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`);
+        summaryLine(isEsPdf ? "Regla:" : "Rule:", entry.mutationRule);
+        summaryLine(isEsPdf ? "En hilo:" : "In thread:", `${entry.sessionPosition}`);
       }
 
-      const imageX = margin + cardLeftW + cardGap;
-      const imageY = cardTop;
-      doc.setFillColor(warm[0], warm[1], warm[2]);
-      doc.roundedRect(imageX, imageY, cardRightW, cardH, 8, 8, "F");
-      doc.setDrawColor(185, 207, 216);
-      doc.setLineWidth(0.5);
-      doc.roundedRect(imageX, imageY, cardRightW, cardH, 8, 8, "S");
-      const imgDataUrl = await resolveImageDataUrl([entry.imageUrl, entry.imageFallbackUrl]);
+      const imgDataUrl =
+        (await fetchImageDataUrl(entry.imageUrl)) ?? (await fetchImageDataUrl(entry.imageFallbackUrl ?? ""));
       if (imgDataUrl) {
         try {
-          doc.addImage(imgDataUrl, "JPEG", imageX + 6, imageY + 6, cardRightW - 12, cardH - 12, undefined, "FAST");
+          const image = await loadImage(imgDataUrl);
+          const ix = 54 + leftW + 24 + 16;
+          const iy = cardY + 16;
+          const iw = rightW - 32;
+          const ih = cardH - 32;
+          ctx.drawImage(image, ix, iy, iw, ih);
         } catch {
-          // ignore image rendering failure
+          // ignore rendering failures
         }
       }
-      y = cardTop + cardH + 16;
 
-      ensure(36);
-      doc.setFillColor(250, 252, 252);
-      doc.roundedRect(margin, y - 8, maxW, 28, 5, 5, "F");
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(9);
-      doc.setTextColor(accent[0], accent[1], accent[2]);
-      doc.text(`${aLabel} ${i + 1}`, margin + innerPad, y + 2);
-      y += 16;
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(28, 32, 36);
+      // Reading panel
+      const panelY = 786;
+      const panelH = pageH - panelY - 58;
+      ctx.fillStyle = "rgba(255,255,255,0.96)";
+      ctx.strokeStyle = "rgba(52,117,145,0.3)";
+      ctx.beginPath();
+      ctx.roundRect(54, panelY, pageW - 108, panelH, 22);
+      ctx.fill();
+      ctx.stroke();
 
+      ctx.fillStyle = accent;
+      ctx.font = `700 24px ${cjkFont}`;
+      ctx.fillText(isEsPdf ? "Lectura" : "Reading", 84, panelY + 44);
       const blocks = interpretationMarkdownToPdfBlocks(entry.interpretation);
-      y = drawPdfReadingBlocks(doc, blocks, margin + innerPad, innerW, pageH, y);
+      const plain = blocks
+        .map((b) => b.text)
+        .join("\n\n")
+        .replace(/\s+\n/g, "\n")
+        .trim();
+      ctx.fillStyle = "#1f2a36";
+      let readingFontSize = 24;
+      let readingLineHeight = 34;
+      let maxReadingLines = Math.floor((panelH - 112) / readingLineHeight);
+      ctx.font = `500 ${readingFontSize}px ${cjkFont}`;
+      let readingLines = wrapText(ctx, plain, pageW - 168);
+      while (readingLines.length > maxReadingLines && readingFontSize > 16) {
+        readingFontSize -= 1;
+        readingLineHeight = Math.round(readingFontSize * 1.38);
+        maxReadingLines = Math.floor((panelH - 112) / readingLineHeight);
+        ctx.font = `500 ${readingFontSize}px ${cjkFont}`;
+        readingLines = wrapText(ctx, plain, pageW - 168);
+      }
+      readingLines.slice(0, maxReadingLines).forEach((line, index) => {
+        ctx.fillText(line, 84, panelY + 84 + index * readingLineHeight);
+      });
+      if (readingLines.length > maxReadingLines) {
+        ctx.fillText("…", 84, panelY + 84 + maxReadingLines * readingLineHeight);
+      }
+
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
+      doc.addImage(dataUrl, "JPEG", 0, 0, 595.28, 841.89, undefined, "FAST");
     }
 
     doc.save(`${fileBase}.pdf`);
@@ -1016,6 +1186,36 @@ export default function HomePage() {
   }, []);
 
   const sessionsListed = useMemo(() => sessions.filter((s) => s.thread.length > 0), [sessions]);
+  const removeSession = useCallback(
+    async (session: ChatSessionState) => {
+      if (!accessToken || !session.sessionId) return;
+      const ok = window.confirm(
+        isSpanish
+          ? "¿Eliminar esta conversación de forma permanente?"
+          : "Delete this conversation permanently?",
+      );
+      if (!ok) return;
+      try {
+        const res = await fetch(`/api/account/chats?sessionId=${encodeURIComponent(session.sessionId)}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (!res.ok) {
+          setError(isSpanish ? "No se pudo eliminar la conversación." : "Could not delete conversation.");
+          return;
+        }
+        setSessions((prev) => {
+          const next = prev.filter((s) => s.localId !== session.localId);
+          const nextActive = next[0]?.localId ?? null;
+          setActiveSessionLocalId((current) => (current === session.localId ? nextActive : current));
+          return next;
+        });
+      } catch {
+        setError(isSpanish ? "No se pudo eliminar la conversación." : "Could not delete conversation.");
+      }
+    },
+    [accessToken, isSpanish],
+  );
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -1186,6 +1386,7 @@ export default function HomePage() {
               imagePrompt: "",
               imageUrl: c.imageUrl,
               imageFallbackUrl: c.imageFallbackUrl ?? c.imageUrl,
+              createdAt: c.createdAt,
               sessionId: c.sessionId,
               sessionPosition: c.sessionPosition,
               canDeepen: true,
@@ -1214,7 +1415,8 @@ export default function HomePage() {
               sessionId: entry.session.sessionId,
               publicSessionId: null,
               thread,
-              updatedAt: thread.at(-1)?.sessionPosition ?? 0,
+              updatedAt: thread.at(-1)?.createdAt ?? entry.session.createdAt,
+              firstConsultationAt: thread[0]?.createdAt ?? null,
             };
           })
           .filter((s) => s.thread.length > 0);
@@ -1526,6 +1728,7 @@ export default function HomePage() {
           data.oracleType === "oracle_bones" && data.oracleBones?.positiveCharge
             ? data.oracleBones.positiveCharge
             : questionForRequest || "Silent consultation",
+        createdAt: Date.now(),
       };
       updateActiveSession((current) => ({
         ...current,
@@ -1535,7 +1738,8 @@ export default function HomePage() {
         title: knownInProgressTitles.has(current.title) || knownNewSessionTitles.has(current.title)
           ? item.question.slice(0, 60)
           : current.title,
-        updatedAt: Date.now(),
+        updatedAt: item.createdAt ?? Date.now(),
+        firstConsultationAt: current.firstConsultationAt ?? item.createdAt ?? Date.now(),
       }));
       setPendingUserQuestion(null);
       const today = new Date().toISOString().slice(0, 10);
@@ -1645,57 +1849,73 @@ export default function HomePage() {
             </button>
           </div>
           <div className="sidebar-stats" aria-label="Estadísticas de uso">
-            <p className="sidebar-stats-label">{isSpanish ? "Tu actividad" : "Your activity"}</p>
+            <p className="sidebar-stats-label">{drawerText.activity}</p>
             <div className="sidebar-stats-grid">
               <div className="sidebar-stat-card">
                 <span className="sidebar-stat-value">{streakDays}</span>
-                <span className="sidebar-stat-key">{isSpanish ? "Racha (días)" : "Streak (days)"}</span>
+                <span className="sidebar-stat-key">{drawerText.streak}</span>
               </div>
               <div className="sidebar-stat-card">
                 <span className="sidebar-stat-value">{dailyCount}</span>
-                <span className="sidebar-stat-key">{isSpanish ? "Consultas hoy" : "Consultations today"}</span>
+                <span className="sidebar-stat-key">{drawerText.consultationsToday}</span>
               </div>
               <div className="sidebar-stat-card">
                 <span className="sidebar-stat-value">{sessionsListed.length}</span>
-                <span className="sidebar-stat-key">{isSpanish ? "Chats con mensajes" : "Chats with messages"}</span>
+                <span className="sidebar-stat-key">{drawerText.chatsWithMessages}</span>
               </div>
             </div>
             {loading ? (
-              <p className="sidebar-stats-hint">{isSpanish ? "Canalizando consulta…" : "Channeling consultation…"}</p>
+              <p className="sidebar-stats-hint">{drawerText.loading}</p>
             ) : (
-              <p className="sidebar-stats-hint">
-                {isSpanish
-                  ? "Solo se listan hilos con al menos una lectura."
-                  : "Only threads with at least one reading are listed."}
-              </p>
+              <p className="sidebar-stats-hint">{drawerText.onlyThreads}</p>
             )}
           </div>
           <div className="chat-drawer-list">
             {sessionsListed.length === 0 ? (
-              <p className="chat-drawer-empty">
-                {isSpanish
-                  ? "Aún no hay conversaciones guardadas. Envía una consulta para verla aquí."
-                  : "No saved conversations yet. Send a consultation to see it here."}
-              </p>
+              <p className="chat-drawer-empty">{drawerText.noSaved}</p>
             ) : null}
             {[...sessionsListed]
               .sort((a, b) => b.updatedAt - a.updatedAt)
               .map((session) => (
-                <button
+                <div
                   key={session.localId}
-                  type="button"
                   className={`chat-session-item ${session.localId === activeSession?.localId ? "active" : ""}`}
-                  onClick={() => {
-                    setActiveSessionLocalId(session.localId);
-                    setError(null);
-                    setChatsOpen(false);
-                  }}
                 >
-                  <span className="chat-session-title">{session.title}</span>
-                  <span className="chat-session-meta">
-                    {session.thread.length} {isSpanish ? "mensajes" : "messages"}
-                  </span>
-                </button>
+                  <button
+                    type="button"
+                    className="chat-session-main-btn"
+                    onClick={() => {
+                      setActiveSessionLocalId(session.localId);
+                      setError(null);
+                      setChatsOpen(false);
+                    }}
+                  >
+                    <span className="chat-session-title">{session.title}</span>
+                    <span className="chat-session-meta">
+                      {session.thread.length} {drawerText.messages}
+                    </span>
+                    <span className="chat-session-time">
+                      {session.firstConsultationAt
+                        ? new Date(session.firstConsultationAt).toLocaleString(locale, {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        : ""}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className="chat-session-delete"
+                    aria-label={drawerText.deleteConversation}
+                    title={drawerText.deleteConversation}
+                    onClick={() => void removeSession(session)}
+                  >
+                    ×
+                  </button>
+                </div>
               ))}
           </div>
         </aside>

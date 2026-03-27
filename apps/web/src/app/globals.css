@@ -832,15 +832,14 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
 }
 
 .chat-session-item {
-  all: unset;
-  cursor: pointer;
   border: 1px solid var(--session-border);
   border-radius: var(--radius);
-  padding: 0.6rem 0.65rem;
+  padding: 0.45rem 0.45rem 0.45rem 0.6rem;
   background: var(--session-item-bg);
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -866,6 +865,43 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
 .chat-session-meta {
   color: var(--fg-muted);
   font-size: 0.75rem;
+}
+
+.chat-session-main-btn {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.chat-session-time {
+  color: color-mix(in srgb, var(--fg-muted) 85%, var(--accent));
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.chat-session-delete {
+  border: 1px solid color-mix(in srgb, var(--session-border) 75%, var(--accent));
+  background: color-mix(in srgb, var(--session-item-bg) 72%, transparent);
+  color: var(--fg-muted);
+  border-radius: 999px;
+  width: 1.35rem;
+  height: 1.35rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.chat-session-delete:hover {
+  color: #c0392b;
+  border-color: color-mix(in srgb, #c0392b 70%, var(--session-border));
+  background: color-mix(in srgb, #c0392b 14%, var(--session-item-bg));
 }
 
 /* —— Chat room (WhatsApp-like) —— */
