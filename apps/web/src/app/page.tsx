@@ -1073,7 +1073,14 @@ export default function HomePage() {
           </div>
         ) : null}
         {authReady && !supabaseConfigError && !accessToken ? (
-          <div className="auth-explore-strip">
+          <div
+            className="auth-explore-strip"
+            style={{
+              minHeight: "2.2rem",
+              paddingTop: "0.4rem",
+              paddingBottom: "0.5rem",
+            }}
+          >
             <span className="auth-explore-strip-text">Explora el oráculo con calma.</span>
             <Link href="/login" className="auth-explore-strip-cta">
               Iniciar sesión
@@ -1081,22 +1088,78 @@ export default function HomePage() {
           </div>
         ) : null}
         {authReady && !supabaseConfigError && accessToken && authEmail ? (
-          <div className="auth-explore-strip auth-explore-strip--session">
-            <span className="auth-explore-strip-tier" aria-label={`Plan ${tier}`}>
+          <div
+            className="auth-explore-strip auth-explore-strip--session"
+            style={{
+              display: "grid",
+              position: "relative",
+              gridTemplateColumns: "1fr",
+              alignItems: "center",
+              minHeight: "2.55rem",
+              paddingTop: "0.16rem",
+              paddingBottom: "0.24rem",
+              paddingInline: "1rem",
+              overflow: "hidden",
+            }}
+          >
+            <span
+              className="auth-explore-strip-tier"
+              aria-label={`Plan ${tier}`}
+              style={{
+                position: "absolute",
+                left: "0.72rem",
+                top: "50%",
+                transform: "translateY(-50%)",
+                height: "2.04rem",
+                display: "inline-flex",
+                alignItems: "center",
+                fontSize: "0.76rem",
+              }}
+            >
               Plan: {tier}
             </span>
-            <div className="auth-explore-strip-account">
-              <span className="auth-explore-strip-email" title={authEmail}>
-                {authEmail}
-              </span>
-              <button type="button" className="auth-explore-strip-signout" onClick={() => void signOut()}>
-                Cerrar sesión
-              </button>
-            </div>
+            <span
+              className="auth-explore-strip-email"
+              title={authEmail}
+              style={{
+                height: "2.04rem",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 700,
+                fontSize: "0.79rem",
+                width: "100%",
+                paddingInline: "5.6rem",
+              }}
+            >
+              {authEmail}
+            </span>
+            <button
+              type="button"
+              className="auth-explore-strip-signout"
+              onClick={() => void signOut()}
+              style={{
+                position: "absolute",
+                right: "0.72rem",
+                top: "calc(50% - 12px)",
+                transform: "translateY(-50%)",
+                height: "2.04rem",
+                display: "inline-flex",
+                alignItems: "center",
+                lineHeight: 1,
+                padding: "0 0.62rem",
+                fontSize: "0.76rem",
+              }}
+            >
+              Cerrar sesión
+            </button>
           </div>
         ) : null}
-        <header className="chat-app-bar oracle-intro">
-          <div className="chat-app-bar-row chat-app-bar-row--top">
+        <header className="chat-app-bar oracle-intro" style={{ marginBottom: 0, paddingBottom: 0 }}>
+          <div
+            className="chat-app-bar-row chat-app-bar-row--top"
+            style={{ minHeight: "2.45rem", paddingTop: "0.3rem", paddingBottom: "0.2rem" }}
+          >
             <div className="chat-bar-lead">
               <button
                 type="button"
@@ -1123,8 +1186,40 @@ export default function HomePage() {
               <ThemeToggle />
             </div>
           </div>
-          <div className="chat-app-brand">
-            <div className="oracle-brand-line">
+          <div
+            className="chat-app-brand"
+            style={{
+              paddingTop: 0,
+              paddingBottom: 0,
+              paddingInline: 0,
+              paddingLeft: 0,
+              paddingRight: 0,
+              marginBottom: 0,
+              gap: "0.02rem",
+              background: "transparent",
+              width: "100%",
+              marginLeft: 0,
+              marginRight: 0,
+            }}
+          >
+            <div
+              className="oracle-brand-line"
+              style={{
+                width: "100vw",
+                maxWidth: "none",
+                marginBottom: 0,
+                marginLeft: "calc(50% - 50vw)",
+                marginRight: "calc(50% - 50vw)",
+                borderRadius: 0,
+                background:
+                  "linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, var(--secondary-bg)) 0%, color-mix(in srgb, var(--accent) 10%, var(--secondary-bg)) 100%)",
+                border: "1px solid color-mix(in srgb, var(--accent) 68%, var(--input-border))",
+                color: "var(--fg)",
+                paddingLeft: "calc((100vw - 100%) / 2 + 0.6rem)",
+                paddingRight: "calc((100vw - 100%) / 2 + 0.6rem)",
+                boxSizing: "border-box",
+              }}
+            >
               {oracleMode === "iching" ? (
                 <span className="oracle-cn-mark" lang="zh-Hant">
                   周易
@@ -1135,7 +1230,7 @@ export default function HomePage() {
                 </span>
               )}
               <span className="oracle-brand-rule" aria-hidden />
-              <p className="oracle-tagline">
+              <p className="oracle-tagline" style={{ color: "var(--fg)" }}>
                 {oracleMode === "iching"
                   ? "Tres monedas · Zhu Xi · Wilhelm/Baynes"
                   : "Grietas 兆 (estilo Shang) · sí / no sobre cargos"}
@@ -1148,7 +1243,7 @@ export default function HomePage() {
         </header>
 
         <div className="chat-room">
-          <section className="chat-history" ref={historyRef}>
+          <section className="chat-history" ref={historyRef} style={{ paddingTop: 0, marginTop: 0 }}>
             {activeThread.length === 0 ? (
               <p className="chat-empty-line">{emptyThreadInvite}</p>
             ) : null}
