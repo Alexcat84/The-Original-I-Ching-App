@@ -1361,11 +1361,23 @@ export default function HomePage() {
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
     let cancelled = false;
-    void fetch("/api/account/chats", {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((payload: AccountChatsResponse | null) => {
+    void (async () => {
+      try {
+        const res = await fetch("/api/account/chats", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (!res.ok) {
+          const err = (await res.json().catch(() => null)) as { code?: string } | null;
+          if (err?.code === "CHAT_PERSISTENCE_NOT_CONFIGURED") {
+            setError(
+              isSpanish
+                ? "No se puede cargar el historial: falta configurar SUPABASE_SERVICE_ROLE_KEY en el servidor."
+                : "Could not load chat history: SUPABASE_SERVICE_ROLE_KEY is missing on the server.",
+            );
+          }
+          return;
+        }
+        const payload = (await res.json()) as AccountChatsResponse;
         if (cancelled || !payload) return;
         const hydrated = payload.sessions
           .map((entry): ChatSessionState => {
@@ -1423,8 +1435,10 @@ export default function HomePage() {
         if (hydrated.length === 0) return;
         setSessions(hydrated);
         setActiveSessionLocalId(hydrated[0]?.localId ?? null);
-      })
-      .catch(() => {});
+      } catch {
+        // ignore network errors
+      }
+    })();
     return () => {
       cancelled = true;
     };

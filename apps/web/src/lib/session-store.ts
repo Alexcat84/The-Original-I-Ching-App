@@ -109,6 +109,10 @@ const consultations = new Map<string, StoredConsultation>();
 const consultationByPublicId = new Map<string, string>();
 const sessionByPublicId = new Map<string, string>();
 
+export function isChatPersistenceConfigured(): boolean {
+  return Boolean(getSupabaseAdmin());
+}
+
 function imageProviderFromUrl(url: string | null | undefined): StoredConsultation["imageProvider"] {
   if (!url) return "mock";
   if (url.startsWith("data:image/svg+xml")) return "svg-art";

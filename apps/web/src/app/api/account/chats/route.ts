@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
-import { deleteUserSession, getUserSessionsWithConsultations } from "@/lib/session-store";
+import {
+  deleteUserSession,
+  getUserSessionsWithConsultations,
+  isChatPersistenceConfigured,
+} from "@/lib/session-store";
 
 export const runtime = "nodejs";
 
@@ -9,6 +13,13 @@ export async function GET(req: Request) {
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
+  }
+  if (!isChatPersistenceConfigured()) {
+    return apiError(503, {
+      error: "chat_persistence_not_configured",
+      code: "CHAT_PERSISTENCE_NOT_CONFIGURED",
+      action: "check_config",
+    });
   }
 
   const sessions = await getUserSessionsWithConsultations(user.userId);
