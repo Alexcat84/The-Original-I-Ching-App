@@ -689,53 +689,65 @@ type ChatSessionState = {
   /** Last known public id for /s/… links (synced from API). */
   publicSessionId: string | null;
   thread: ConsultationItem[];
+  messageCount: number;
   updatedAt: number;
   firstConsultationAt: number | null;
 };
 
-type AccountChatsResponse = {
+type ApiChatSession = {
+  sessionId: string;
+  title: string;
+  themeCategory: string;
+  language: string;
+  publicId: string;
+  consultationIds: string[];
+  createdAt: number;
+};
+
+type ApiChatConsultation = {
+  consultationId: string;
+  sessionId: string;
+  sessionPosition: number;
+  question: string;
+  language: string;
+  primaryHexagram: number;
+  primaryHexagramName: string;
+  primaryHexagramChinese: string;
+  transformedHexagram: number | null;
+  transformedHexagramName: string | null;
+  mutationRule: string;
+  lines: ApiLine[];
+  changingLines: number[];
+  interpretation: string;
+  category: string;
+  imageProvider: ConsultResponse["imageProvider"];
+  imageUrl: string;
+  imageFallbackUrl?: string;
+  createdAt: number;
+  publicId: string;
+  oracleType: "iching" | "oracle_bones";
+  oracleBones?: {
+    pattern_id: number;
+    verdict: OracleBonesVerdict;
+    positive_charge: string;
+    negative_charge: string;
+    medium: "turtle" | "ox";
+    ambiguous_passes: number;
+  } | null;
+};
+
+type AccountChatsSummaryResponse = {
   sessions: Array<{
-    session: {
-      sessionId: string;
-      title: string;
-      themeCategory: string;
-      language: string;
-      publicId: string;
-      consultationIds: string[];
-      createdAt: number;
-    };
-    consultations: Array<{
-      consultationId: string;
-      sessionId: string;
-      sessionPosition: number;
-      question: string;
-      language: string;
-      primaryHexagram: number;
-      primaryHexagramName: string;
-      primaryHexagramChinese: string;
-      transformedHexagram: number | null;
-      transformedHexagramName: string | null;
-      mutationRule: string;
-      lines: ApiLine[];
-      changingLines: number[];
-      interpretation: string;
-      category: string;
-      imageProvider: ConsultResponse["imageProvider"];
-      imageUrl: string;
-      imageFallbackUrl?: string;
-      createdAt: number;
-      publicId: string;
-      oracleType: "iching" | "oracle_bones";
-      oracleBones?: {
-        pattern_id: number;
-        verdict: OracleBonesVerdict;
-        positive_charge: string;
-        negative_charge: string;
-        medium: "turtle" | "ox";
-        ambiguous_passes: number;
-      } | null;
-    }>;
+    session: ApiChatSession;
+    messageCount: number;
+    firstConsultationAt: number | null;
+    updatedAt: number;
   }>;
+};
+
+type AccountChatSessionResponse = {
+  session: ApiChatSession;
+  consultations: ApiChatConsultation[];
 };
 
 function newClientUuid(): string {
@@ -756,6 +768,7 @@ function createLocalSession(title = "Nueva sesión"): ChatSessionState {
     sessionId: newClientUuid(),
     publicSessionId: null,
     thread: [],
+    messageCount: 0,
     updatedAt: Date.now(),
     firstConsultationAt: null,
   };
@@ -780,6 +793,49 @@ function formatPrintFilename(consultationId: string): string {
   const mm = String(now.getMinutes()).padStart(2, "0");
   const id = consultationId.replace(/[^a-zA-Z0-9]/g, "").slice(0, 10).toUpperCase();
   return `${y}${m}${d}-${hh}${mm}-${id}`;
+}
+
+function mapApiConsultationToItem(
+  c: ApiChatConsultation,
+  sessionPublicId: string,
+): ConsultationItem {
+  return {
+    oracleType: c.oracleType,
+    consultationId: c.consultationId,
+    primaryHexagram: c.primaryHexagram,
+    primaryHexagramName: c.primaryHexagramName,
+    primaryHexagramChinese: c.primaryHexagramChinese,
+    transformedHexagram: c.transformedHexagram,
+    transformedHexagramName: c.transformedHexagramName,
+    mutationRule: c.mutationRule,
+    lines: c.lines,
+    changingLines: c.changingLines,
+    interpretation: c.interpretation,
+    category: c.category,
+    imageProvider: c.imageProvider,
+    imagePrompt: "",
+    imageUrl: c.imageUrl,
+    imageFallbackUrl: c.imageFallbackUrl ?? c.imageUrl,
+    createdAt: c.createdAt,
+    sessionId: c.sessionId,
+    sessionPosition: c.sessionPosition,
+    canDeepen: true,
+    publicReadingId: c.publicId,
+    publicSessionId: sessionPublicId,
+    sharingPersisted: true,
+    question: c.question,
+    oracleBones: c.oracleBones
+      ? {
+          patternId: c.oracleBones.pattern_id,
+          verdict: c.oracleBones.verdict,
+          affirmsPositive: null,
+          ambiguousPasses: c.oracleBones.ambiguous_passes,
+          positiveCharge: c.oracleBones.positive_charge,
+          negativeCharge: c.oracleBones.negative_charge,
+          medium: c.oracleBones.medium,
+        }
+      : undefined,
+  };
 }
 
 function detectInputLanguage(question: string, fallbackLocale: AppLocale): AppLocale {
@@ -1166,7 +1222,7 @@ export default function HomePage() {
 
   const startNewSession = useCallback(() => {
     const created = createLocalSession(ui.sessionNew);
-    setSessions((prev) => [created, ...prev.filter((s) => s.thread.length > 0)]);
+    setSessions((prev) => [created, ...prev.filter((s) => s.messageCount > 0)]);
     setActiveSessionLocalId(created.localId);
     setQuestion("");
     setError(null);
@@ -1185,7 +1241,44 @@ export default function HomePage() {
     setAuthEmail(null);
   }, []);
 
-  const sessionsListed = useMemo(() => sessions.filter((s) => s.thread.length > 0), [sessions]);
+  const sessionsListed = useMemo(() => sessions.filter((s) => s.messageCount > 0), [sessions]);
+  const loadSessionThread = useCallback(
+    async (sessionId: string, localId: string) => {
+      if (!accessToken) return;
+      try {
+        const res = await fetch(`/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (!res.ok) return;
+        const payload = (await res.json()) as AccountChatSessionResponse;
+        if (!payload?.session) return;
+        const thread = payload.consultations.map((c) => mapApiConsultationToItem(c, payload.session.publicId));
+        setSessions((prev) =>
+          prev.map((s) => {
+            if (s.localId !== localId) return s;
+            return {
+              ...s,
+              title:
+                payload.session.title &&
+                !knownNewSessionTitles.has(payload.session.title) &&
+                !knownInProgressTitles.has(payload.session.title)
+                  ? payload.session.title
+                  : (thread[0]?.question.slice(0, 60) ?? (isSpanish ? "Consulta" : "Consultation")),
+              sessionId: payload.session.sessionId,
+              publicSessionId: payload.session.publicId,
+              thread,
+              messageCount: Math.max(thread.length, s.messageCount),
+              updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
+              firstConsultationAt: thread[0]?.createdAt ?? s.firstConsultationAt,
+            };
+          }),
+        );
+      } catch {
+        // ignore network errors
+      }
+    },
+    [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish],
+  );
   const removeSession = useCallback(
     async (session: ChatSessionState) => {
       if (!accessToken || !session.sessionId) return;
@@ -1363,7 +1456,7 @@ export default function HomePage() {
     let cancelled = false;
     void (async () => {
       try {
-        const res = await fetch("/api/account/chats", {
+        const res = await fetch("/api/account/chats?summary=1", {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         if (!res.ok) {
@@ -1377,64 +1470,32 @@ export default function HomePage() {
           }
           return;
         }
-        const payload = (await res.json()) as AccountChatsResponse;
+        const payload = (await res.json()) as AccountChatsSummaryResponse;
         if (cancelled || !payload) return;
         const hydrated = payload.sessions
           .map((entry): ChatSessionState => {
-            const thread: ConsultationItem[] = entry.consultations.map((c) => ({
-              oracleType: c.oracleType,
-              consultationId: c.consultationId,
-              primaryHexagram: c.primaryHexagram,
-              primaryHexagramName: c.primaryHexagramName,
-              primaryHexagramChinese: c.primaryHexagramChinese,
-              transformedHexagram: c.transformedHexagram,
-              transformedHexagramName: c.transformedHexagramName,
-              mutationRule: c.mutationRule,
-              lines: c.lines,
-              changingLines: c.changingLines,
-              interpretation: c.interpretation,
-              category: c.category,
-              imageProvider: c.imageProvider,
-              imagePrompt: "",
-              imageUrl: c.imageUrl,
-              imageFallbackUrl: c.imageFallbackUrl ?? c.imageUrl,
-              createdAt: c.createdAt,
-              sessionId: c.sessionId,
-              sessionPosition: c.sessionPosition,
-              canDeepen: true,
-              publicReadingId: c.publicId,
-              publicSessionId: entry.session.publicId,
-              sharingPersisted: true,
-              question: c.question,
-              oracleBones: c.oracleBones
-                ? {
-                    patternId: c.oracleBones.pattern_id,
-                    verdict: c.oracleBones.verdict,
-                    affirmsPositive: null,
-                    ambiguousPasses: c.oracleBones.ambiguous_passes,
-                    positiveCharge: c.oracleBones.positive_charge,
-                    negativeCharge: c.oracleBones.negative_charge,
-                    medium: c.oracleBones.medium,
-                  }
-                : undefined,
-            }));
             return {
               localId: `db-${entry.session.sessionId}`,
               title:
                 entry.session.title && !knownNewSessionTitles.has(entry.session.title) && !knownInProgressTitles.has(entry.session.title)
                   ? entry.session.title
-                  : (thread[0]?.question.slice(0, 60) ?? (isSpanish ? "Consulta" : "Consultation")),
+                  : (isSpanish ? "Consulta" : "Consultation"),
               sessionId: entry.session.sessionId,
-              publicSessionId: null,
-              thread,
-              updatedAt: thread.at(-1)?.createdAt ?? entry.session.createdAt,
-              firstConsultationAt: thread[0]?.createdAt ?? null,
+              publicSessionId: entry.session.publicId,
+              thread: [],
+              messageCount: entry.messageCount,
+              updatedAt: entry.updatedAt ?? entry.session.createdAt,
+              firstConsultationAt: entry.firstConsultationAt ?? null,
             };
           })
-          .filter((s) => s.thread.length > 0);
+          .filter((s) => s.messageCount > 0);
         if (hydrated.length === 0) return;
         setSessions(hydrated);
-        setActiveSessionLocalId(hydrated[0]?.localId ?? null);
+        const first = hydrated[0];
+        setActiveSessionLocalId(first?.localId ?? null);
+        if (first?.sessionId) {
+          void loadSessionThread(first.sessionId, first.localId);
+        }
       } catch {
         // ignore network errors
       }
@@ -1442,7 +1503,7 @@ export default function HomePage() {
     return () => {
       cancelled = true;
     };
-  }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish]);
+  }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish, loadSessionThread]);
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
@@ -1747,6 +1808,7 @@ export default function HomePage() {
       updateActiveSession((current) => ({
         ...current,
         thread: [...current.thread, item],
+        messageCount: Math.max(current.messageCount, current.thread.length + 1),
         sessionId: data.sessionId,
         publicSessionId: data.publicSessionId ?? current.publicSessionId,
         title: knownInProgressTitles.has(current.title) || knownNewSessionTitles.has(current.title)
@@ -1902,12 +1964,15 @@ export default function HomePage() {
                       setActiveSessionLocalId(session.localId);
                       setError(null);
                       setChatsOpen(false);
+                      if (session.thread.length === 0 && session.sessionId) {
+                        void loadSessionThread(session.sessionId, session.localId);
+                      }
                     }}
                   >
                     <span className="chat-session-title">{session.title}</span>
                     <span className="chat-session-meta">
                       <span>
-                        {session.thread.length} {drawerText.messages}
+                        {session.messageCount} {drawerText.messages}
                       </span>
                       <span aria-hidden="true">·</span>
                       <span className="chat-session-time">
@@ -1930,9 +1995,9 @@ export default function HomePage() {
                     title={drawerText.deleteConversation}
                     onClick={() => void removeSession(session)}
                   >
-                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
                       <path
-                        d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h2v9H7V9Zm4 0h2v9h-2V9Zm4 0h2v9h-2V9ZM6 21a2 2 0 0 1-2-2V8h16v11a2 2 0 0 1-2 2H6Z"
+                        d="M6 7h12v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7Zm3 3v9h2v-9H9Zm4 0v9h2v-9h-2ZM9 2h6a2 2 0 0 1 2 2v1h4v2H3V5h4V4a2 2 0 0 1 2-2Zm0 3h6V4H9v1Z"
                         fill="currentColor"
                       />
                     </svg>

@@ -888,18 +888,22 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
 }
 
 .chat-session-delete {
+  all: unset;
+  box-sizing: border-box;
   border: 1px solid color-mix(in srgb, var(--session-border) 75%, var(--accent));
   background: color-mix(in srgb, var(--session-item-bg) 72%, transparent);
-  color: var(--fg-muted);
+  color: color-mix(in srgb, var(--fg) 80%, var(--fg-muted));
   border-radius: 999px;
-  width: 1.35rem;
-  height: 1.35rem;
+  width: 1.9rem;
+  height: 1.9rem;
   line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
+  margin-top: 0;
+  padding: 0;
 }
 
 .chat-session-delete:hover {

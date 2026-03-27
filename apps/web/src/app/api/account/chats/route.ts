@@ -3,6 +3,8 @@ import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
 import {
   deleteUserSession,
+  getUserSessionSummaries,
+  getUserSessionWithConsultations,
   getUserSessionsWithConsultations,
   isChatPersistenceConfigured,
 } from "@/lib/session-store";
@@ -19,6 +21,32 @@ export async function GET(req: Request) {
       error: "chat_persistence_not_configured",
       code: "CHAT_PERSISTENCE_NOT_CONFIGURED",
       action: "check_config",
+    });
+  }
+  const url = new URL(req.url);
+  const summary = url.searchParams.get("summary") === "1";
+  const sessionId = url.searchParams.get("sessionId");
+
+  if (sessionId) {
+    const entry = await getUserSessionWithConsultations(user.userId, sessionId);
+    if (!entry) {
+      return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
+    }
+    return NextResponse.json({
+      session: entry.session,
+      consultations: entry.consultations,
+    });
+  }
+
+  if (summary) {
+    const sessions = await getUserSessionSummaries(user.userId);
+    return NextResponse.json({
+      sessions: sessions.map((entry) => ({
+        session: entry.session,
+        messageCount: entry.messageCount,
+        firstConsultationAt: entry.firstConsultationAt,
+        updatedAt: entry.updatedAt,
+      })),
     });
   }
 

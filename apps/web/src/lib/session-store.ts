@@ -52,6 +52,13 @@ export interface UserSessionWithConsultations {
   consultations: StoredConsultation[];
 }
 
+export interface UserSessionSummary {
+  session: StoredSession;
+  messageCount: number;
+  firstConsultationAt: number | null;
+  updatedAt: number;
+}
+
 
 /** Map a Supabase consultations row to StoredConsultation (shared shape for reads + KV mirror). */
 function consultationFromDbRow(data: {
@@ -366,6 +373,123 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
       consultations: rows.sort((a, b) => a.sessionPosition - b.sessionPosition),
     };
   });
+}
+
+export async function getUserSessionSummaries(userId: string): Promise<UserSessionSummary[]> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return [];
+
+  const { data: sessionRows, error: sessionsError } = await supabase
+    .from("consultation_sessions")
+    .select("id, title, theme_category, language, public_sharing_id, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  if (sessionsError || !sessionRows?.length) return [];
+
+  const sessionIds = sessionRows.map((s) => s.id);
+  const { data: consultRows, error: consultError } = await supabase
+    .from("consultations")
+    .select("session_id, created_at")
+    .eq("user_id", userId)
+    .in("session_id", sessionIds)
+    .order("created_at", { ascending: true });
+  if (consultError) return [];
+
+  const bySession = new Map<string, { count: number; firstAt: number | null; lastAt: number | null }>();
+  for (const row of consultRows ?? []) {
+    const sessionId = String((row as { session_id: string }).session_id);
+    const createdAt = new Date((row as { created_at: string }).created_at).getTime();
+    const current = bySession.get(sessionId);
+    if (!current) {
+      bySession.set(sessionId, { count: 1, firstAt: createdAt, lastAt: createdAt });
+      continue;
+    }
+    bySession.set(sessionId, {
+      count: current.count + 1,
+      firstAt: current.firstAt ?? createdAt,
+      lastAt: createdAt,
+    });
+  }
+
+  return sessionRows.map((s) => {
+    const agg = bySession.get(s.id);
+    const createdAt = new Date(s.created_at).getTime();
+    return {
+      session: {
+        sessionId: s.id,
+        title: s.title ?? "",
+        themeCategory: s.theme_category,
+        language: s.language,
+        publicId: s.public_sharing_id,
+        consultationIds: [],
+        createdAt,
+      },
+      messageCount: agg?.count ?? 0,
+      firstConsultationAt: agg?.firstAt ?? null,
+      updatedAt: agg?.lastAt ?? createdAt,
+    };
+  });
+}
+
+export async function getUserSessionWithConsultations(
+  userId: string,
+  sessionId: string,
+): Promise<UserSessionWithConsultations | null> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return null;
+
+  const { data: sessionRow, error: sessionError } = await supabase
+    .from("consultation_sessions")
+    .select("id, title, theme_category, language, public_sharing_id, created_at")
+    .eq("id", sessionId)
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (sessionError || !sessionRow) return null;
+
+  const baseConsultColumns =
+    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, image_url, thumbnail_url, public_sharing_id, created_at";
+  const withOracleColumns = `${baseConsultColumns}, oracle_type, oracle_bones`;
+
+  let consultRows: unknown[] | null = null;
+  let consultError: { message?: string } | null = null;
+
+  const withOracleRes = await supabase
+    .from("consultations")
+    .select(withOracleColumns)
+    .eq("user_id", userId)
+    .eq("session_id", sessionId)
+    .order("session_position", { ascending: true });
+  consultRows = withOracleRes.data as unknown[] | null;
+  consultError = withOracleRes.error;
+
+  if (consultError) {
+    const msg = consultError.message ?? "";
+    if (msg.includes("oracle_type") || msg.includes("oracle_bones")) {
+      const fallbackRes = await supabase
+        .from("consultations")
+        .select(baseConsultColumns)
+        .eq("user_id", userId)
+        .eq("session_id", sessionId)
+        .order("session_position", { ascending: true });
+      consultRows = fallbackRes.data as unknown[] | null;
+      consultError = fallbackRes.error;
+    }
+  }
+  if (consultError) return null;
+
+  const consultations = (consultRows ?? []).map((row) => consultationFromDbRow(row as never));
+  return {
+    session: {
+      sessionId: sessionRow.id,
+      title: sessionRow.title ?? "",
+      themeCategory: sessionRow.theme_category,
+      language: sessionRow.language,
+      publicId: sessionRow.public_sharing_id,
+      consultationIds: consultations.map((r) => r.consultationId),
+      createdAt: new Date(sessionRow.created_at).getTime(),
+    },
+    consultations: consultations.sort((a, b) => a.sessionPosition - b.sessionPosition),
+  };
 }
 
 export async function deleteUserSession(userId: string, sessionId: string): Promise<boolean> {
