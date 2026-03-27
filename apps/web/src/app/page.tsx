@@ -2,7 +2,7 @@
 
 import { CONTEXT_LIMITS } from "@iching-oracle/context-engine";
 import { OracleShell } from "@iching-oracle/ui";
-import { commonStrings, DEFAULT_LOCALE } from "@iching-oracle/i18n";
+import { commonStrings, DEFAULT_LOCALE, SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
@@ -71,26 +71,503 @@ type Tier = "free" | "seeker" | "practitioner" | "master" | "oracle";
 type ResponseMode = "directo" | "ritual" | "profundizar";
 type OracleMode = "iching" | "oracle_bones";
 
-type QueryLanguage = "es" | "en";
+const RUNTIME_TEXT: Record<
+  AppLocale,
+  {
+    ritualCoins: string;
+    ritualBones: string;
+    ritualBonesHint: string;
+    line: string;
+    signReading: string;
+    oracleBones: string;
+    medium: string;
+    turtle: string;
+    ox: string;
+    chargePlus: string;
+    chargeMinus: string;
+    leansPositive: string;
+    leansNegative: string;
+  }
+> = {
+  es: {
+    ritualCoins: "Ritual en curso · lanzando monedas",
+    ritualBones: "Ritual en curso · calor sobre el hueso",
+    ritualBonesHint: "Estilización del procedimiento shang: el patrón de grieta se fija al completar la consulta.",
+    line: "Línea",
+    signReading: "Lectura del signo:",
+    oracleBones: "Huesos de oráculo",
+    medium: "Medio",
+    turtle: "Plastrón de tortuga",
+    ox: "Escápula de buey",
+    chargePlus: "Cargo +",
+    chargeMinus: "Cargo −",
+    leansPositive: "Inclina hacia el cargo positivo.",
+    leansNegative: "Inclina hacia la negación del cargo.",
+  },
+  en: {
+    ritualCoins: "Ritual in progress · tossing coins",
+    ritualBones: "Ritual in progress · heat over bone",
+    ritualBonesHint: "Stylized Shang procedure: the crack pattern is fixed when the consultation completes.",
+    line: "Line",
+    signReading: "Sign reading:",
+    oracleBones: "Oracle bones",
+    medium: "Medium",
+    turtle: "Turtle plastron",
+    ox: "Ox scapula",
+    chargePlus: "Charge +",
+    chargeMinus: "Charge −",
+    leansPositive: "Leans toward the positive charge.",
+    leansNegative: "Leans toward negating the charge.",
+  },
+  pt: {
+    ritualCoins: "Ritual em curso · lançando moedas",
+    ritualBones: "Ritual em curso · calor sobre o osso",
+    ritualBonesHint: "Estilização do procedimento Shang: o padrão da fissura é fixado ao concluir a consulta.",
+    line: "Linha",
+    signReading: "Leitura do sinal:",
+    oracleBones: "Ossos oraculares",
+    medium: "Meio",
+    turtle: "Plastrão de tartaruga",
+    ox: "Escápula de boi",
+    chargePlus: "Carga +",
+    chargeMinus: "Carga −",
+    leansPositive: "Inclina-se para a carga positiva.",
+    leansNegative: "Inclina-se para negar a carga.",
+  },
+  fr: {
+    ritualCoins: "Rituel en cours · lancer des pièces",
+    ritualBones: "Rituel en cours · chaleur sur l'os",
+    ritualBonesHint: "Stylisation du procédé Shang : le motif de fissure se fixe à la fin de la consultation.",
+    line: "Ligne",
+    signReading: "Lecture du signe :",
+    oracleBones: "Os oraculaires",
+    medium: "Support",
+    turtle: "Plastron de tortue",
+    ox: "Omoplate de bœuf",
+    chargePlus: "Charge +",
+    chargeMinus: "Charge −",
+    leansPositive: "Penche vers la charge positive.",
+    leansNegative: "Penche vers la négation de la charge.",
+  },
+  de: {
+    ritualCoins: "Ritual läuft · Münzwurf",
+    ritualBones: "Ritual läuft · Hitze auf dem Knochen",
+    ritualBonesHint: "Stilisierung des Shang-Verfahrens: Das Rissmuster wird nach Abschluss der Anfrage festgelegt.",
+    line: "Linie",
+    signReading: "Zeichenlesung:",
+    oracleBones: "Orakelknochen",
+    medium: "Medium",
+    turtle: "Schildkrötenpanzer",
+    ox: "Rinderschulterblatt",
+    chargePlus: "Ladung +",
+    chargeMinus: "Ladung −",
+    leansPositive: "Neigt zur positiven Ladung.",
+    leansNegative: "Neigt zur Verneinung der Ladung.",
+  },
+  it: {
+    ritualCoins: "Rituale in corso · lancio delle monete",
+    ritualBones: "Rituale in corso · calore sull'osso",
+    ritualBonesHint: "Stilizzazione del procedimento Shang: il pattern di crepa si fissa al termine della consultazione.",
+    line: "Linea",
+    signReading: "Lettura del segno:",
+    oracleBones: "Ossa oracolari",
+    medium: "Supporto",
+    turtle: "Piastrone di tartaruga",
+    ox: "Scapola di bue",
+    chargePlus: "Carica +",
+    chargeMinus: "Carica −",
+    leansPositive: "Inclina verso la carica positiva.",
+    leansNegative: "Inclina verso la negazione della carica.",
+  },
+  ja: {
+    ritualCoins: "儀式進行中・コインを投げています",
+    ritualBones: "儀式進行中・骨に熱を加えています",
+    ritualBonesHint: "殷式手順の演出：相談が完了すると亀裂パターンが確定します。",
+    line: "爻",
+    signReading: "徴の読み:",
+    oracleBones: "甲骨",
+    medium: "媒体",
+    turtle: "亀の腹甲",
+    ox: "牛の肩甲骨",
+    chargePlus: "命題 +",
+    chargeMinus: "命題 −",
+    leansPositive: "肯定命題の側に傾きます。",
+    leansNegative: "否定命題の側に傾きます。",
+  },
+  zh: {
+    ritualCoins: "仪式进行中 · 正在掷币",
+    ritualBones: "仪式进行中 · 骨上加热",
+    ritualBonesHint: "商式流程的风格化展示：咨询完成后裂纹图案会固定。",
+    line: "爻",
+    signReading: "征兆解读：",
+    oracleBones: "甲骨占",
+    medium: "介质",
+    turtle: "龟甲腹甲",
+    ox: "牛肩胛骨",
+    chargePlus: "命题 +",
+    chargeMinus: "命题 −",
+    leansPositive: "倾向于肯定命题。",
+    leansNegative: "倾向于否定命题。",
+  },
+  ko: {
+    ritualCoins: "의식 진행 중 · 동전 투척",
+    ritualBones: "의식 진행 중 · 뼈에 열 가하기",
+    ritualBonesHint: "상(商)식 절차의 스타일화: 상담이 완료되면 균열 패턴이 확정됩니다.",
+    line: "효",
+    signReading: "징후 해석:",
+    oracleBones: "갑골 점복",
+    medium: "매체",
+    turtle: "거북 배딱지",
+    ox: "소 견갑골",
+    chargePlus: "명제 +",
+    chargeMinus: "명제 −",
+    leansPositive: "긍정 명제 쪽으로 기웁니다.",
+    leansNegative: "명제 부정 쪽으로 기웁니다.",
+  },
+};
 
-function responseModeLabelEs(mode: ResponseMode): string {
-  const labels: Record<ResponseMode, string> = {
-    directo: "Directo",
-    ritual: "Ritual",
-    profundizar: "Profundizar",
+const LOCALE_STORAGE_KEY = "iching_ui_locale_v1";
+
+const LANGUAGE_LABELS: Record<AppLocale, string> = {
+  es: "Español",
+  en: "English",
+  pt: "Português",
+  fr: "Français",
+  de: "Deutsch",
+  it: "Italiano",
+  ja: "日本語",
+  zh: "中文",
+  ko: "한국어",
+};
+
+type UiCopy = {
+  language: string;
+  chats: string;
+  signIn: string;
+  signOut: string;
+  plan: string;
+  options: string;
+  mode: string;
+  readMode: string;
+  writeConsultation: string;
+  positiveCharge: string;
+  threadLimitReached: string;
+  sessionNew: string;
+  drawerClose: string;
+  iChing: string;
+  bones: string;
+  iChingTagline: string;
+  bonesTagline: string;
+  modeIChingHint: string;
+  modeBonesHint: string;
+  emptyInviteMorning: string;
+  emptyInviteAfternoon: string;
+  emptyInviteNight: string;
+};
+
+const UI_COPY: Record<AppLocale, UiCopy> = {
+  es: {
+    language: "Idioma",
+    chats: "Chats",
+    signIn: "Iniciar sesión",
+    signOut: "Cerrar sesión",
+    plan: "Plan",
+    options: "Opciones",
+    mode: "Modo",
+    readMode: "Modo lectura",
+    writeConsultation: "Escribe tu consulta…",
+    positiveCharge: "Cargo positivo (afirmación)…",
+    threadLimitReached: "Límite de hilo alcanzado — usa «Nueva sesión» arriba",
+    sessionNew: "Nueva sesión",
+    drawerClose: "Cerrar",
+    iChing: "I Ching",
+    bones: "Huesos",
+    iChingTagline: "Tres monedas · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Grietas 兆 (estilo Shang) · sí / no sobre cargos",
+    modeIChingHint: "Seis líneas y tres monedas por línea; mutación Zhu Xi.",
+    modeBonesHint: "Pregunta sí / no con cargo afirmativo; lectura por grietas 兆.",
+    emptyInviteMorning:
+      "Buen momento para escuchar al oráculo. ¿Qué inquietud trae este nuevo día? Escribe tu consulta con intención.",
+    emptyInviteAfternoon:
+      "El cambio sigue moviéndose. ¿Qué necesitas ver con más claridad en el curso de hoy?",
+    emptyInviteNight: "La noche también pregunta. ¿Qué frente de tu vida quieres explorar?",
+  },
+  en: {
+    language: "Language",
+    chats: "Chats",
+    signIn: "Sign in",
+    signOut: "Sign out",
+    plan: "Plan",
+    options: "Options",
+    mode: "Mode",
+    readMode: "Reading mode",
+    writeConsultation: "Type your consultation…",
+    positiveCharge: "Positive charge (affirmation)…",
+    threadLimitReached: "Thread limit reached — use \"New session\" above",
+    sessionNew: "New session",
+    drawerClose: "Close",
+    iChing: "I Ching",
+    bones: "Bones",
+    iChingTagline: "Three coins · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Cracks 兆 (Shang style) · yes / no by charge",
+    modeIChingHint: "Six lines and three coins per line; Zhu Xi mutation.",
+    modeBonesHint: "Yes / no by affirmative charge; crack reading 兆.",
+    emptyInviteMorning: "Good time to consult the oracle. What concern comes with this new day?",
+    emptyInviteAfternoon: "Change keeps moving. What do you need to see more clearly today?",
+    emptyInviteNight: "The night also asks. Which part of your life do you want to explore?",
+  },
+  pt: {
+    language: "Idioma",
+    chats: "Conversas",
+    signIn: "Entrar",
+    signOut: "Sair",
+    plan: "Plano",
+    options: "Opções",
+    mode: "Modo",
+    readMode: "Modo de leitura",
+    writeConsultation: "Escreva sua consulta…",
+    positiveCharge: "Cargo positivo (afirmação)…",
+    threadLimitReached: "Limite do fio atingido — use «Nova sessão» acima",
+    sessionNew: "Nova sessão",
+    drawerClose: "Fechar",
+    iChing: "I Ching",
+    bones: "Ossos",
+    iChingTagline: "Três moedas · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Fissuras 兆 (estilo Shang) · sim / não por cargo",
+    modeIChingHint: "Seis linhas e três moedas por linha; mutação Zhu Xi.",
+    modeBonesHint: "Pergunta sim / não com cargo afirmativo; leitura por fissuras 兆.",
+    emptyInviteMorning: "Bom momento para ouvir o oráculo. Que inquietação traz este novo dia?",
+    emptyInviteAfternoon: "A mudança continua. O que você precisa ver com mais clareza hoje?",
+    emptyInviteNight: "A noite também pergunta. Qual frente da sua vida você quer explorar?",
+  },
+  fr: {
+    language: "Langue",
+    chats: "Discussions",
+    signIn: "Se connecter",
+    signOut: "Se déconnecter",
+    plan: "Forfait",
+    options: "Options",
+    mode: "Mode",
+    readMode: "Mode de lecture",
+    writeConsultation: "Écris ta consultation…",
+    positiveCharge: "Charge positive (affirmation)…",
+    threadLimitReached: "Limite du fil atteinte — utilisez « Nouvelle session »",
+    sessionNew: "Nouvelle session",
+    drawerClose: "Fermer",
+    iChing: "I Ching",
+    bones: "Os",
+    iChingTagline: "Trois pièces · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Fissures 兆 (style Shang) · oui / non par charge",
+    modeIChingHint: "Six lignes et trois pièces par ligne ; mutation Zhu Xi.",
+    modeBonesHint: "Question oui / non avec charge affirmative ; lecture des fissures 兆.",
+    emptyInviteMorning: "Bon moment pour écouter l'oracle. Quelle préoccupation t'accompagne aujourd'hui ?",
+    emptyInviteAfternoon: "Le changement continue. Que dois-tu voir plus clairement aujourd'hui ?",
+    emptyInviteNight: "La nuit pose aussi des questions. Quelle partie de ta vie veux-tu explorer ?",
+  },
+  de: {
+    language: "Sprache",
+    chats: "Chats",
+    signIn: "Anmelden",
+    signOut: "Abmelden",
+    plan: "Plan",
+    options: "Optionen",
+    mode: "Modus",
+    readMode: "Lesemodus",
+    writeConsultation: "Schreibe deine Frage…",
+    positiveCharge: "Positive Ladung (Bejahung)…",
+    threadLimitReached: "Thread-Limit erreicht — oben «Neue Sitzung» verwenden",
+    sessionNew: "Neue Sitzung",
+    drawerClose: "Schließen",
+    iChing: "I Ching",
+    bones: "Knochen",
+    iChingTagline: "Drei Münzen · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Risse 兆 (Shang-Stil) · Ja / Nein nach Ladung",
+    modeIChingHint: "Sechs Linien und drei Münzen pro Linie; Zhu-Xi-Mutation.",
+    modeBonesHint: "Ja/Nein-Frage mit positiver Ladung; Risslesung 兆.",
+    emptyInviteMorning: "Guter Zeitpunkt für das Orakel. Welche Frage bringt dieser Tag mit sich?",
+    emptyInviteAfternoon: "Der Wandel geht weiter. Was musst du heute klarer sehen?",
+    emptyInviteNight: "Auch die Nacht fragt. Welchen Bereich deines Lebens möchtest du erkunden?",
+  },
+  it: {
+    language: "Lingua",
+    chats: "Chat",
+    signIn: "Accedi",
+    signOut: "Esci",
+    plan: "Piano",
+    options: "Opzioni",
+    mode: "Modalità",
+    readMode: "Modalità lettura",
+    writeConsultation: "Scrivi la tua consultazione…",
+    positiveCharge: "Carica positiva (affermazione)…",
+    threadLimitReached: "Limite del thread raggiunto — usa «Nuova sessione»",
+    sessionNew: "Nuova sessione",
+    drawerClose: "Chiudi",
+    iChing: "I Ching",
+    bones: "Ossa",
+    iChingTagline: "Tre monete · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Crepe 兆 (stile Shang) · sì / no per carica",
+    modeIChingHint: "Sei linee e tre monete per linea; mutazione Zhu Xi.",
+    modeBonesHint: "Domanda sì / no con carica affermativa; lettura delle crepe 兆.",
+    emptyInviteMorning: "Momento ideale per l'oracolo. Quale inquietudine porta questo nuovo giorno?",
+    emptyInviteAfternoon: "Il cambiamento continua. Cosa devi vedere con più chiarezza oggi?",
+    emptyInviteNight: "Anche la notte fa domande. Quale fronte della tua vita vuoi esplorare?",
+  },
+  ja: {
+    language: "言語",
+    chats: "チャット",
+    signIn: "ログイン",
+    signOut: "ログアウト",
+    plan: "プラン",
+    options: "オプション",
+    mode: "モード",
+    readMode: "読解モード",
+    writeConsultation: "相談内容を入力…",
+    positiveCharge: "肯定の問い（肯定電荷）…",
+    threadLimitReached: "スレッド上限です — 上の「新しいセッション」を使用",
+    sessionNew: "新しいセッション",
+    drawerClose: "閉じる",
+    iChing: "I Ching",
+    bones: "骨占",
+    iChingTagline: "三枚の硬貨 · 朱熹 · ヴィルヘルム/ベインズ",
+    bonesTagline: "亀裂 兆（殷様式）· 問いの肯否",
+    modeIChingHint: "六爻、各爻に三枚の硬貨。朱熹の変爻法。",
+    modeBonesHint: "肯定電荷による Yes/No。亀裂 兆 の読解。",
+    emptyInviteMorning: "いまは託宣に向いた時間。今日の不安を問いにしてみましょう。",
+    emptyInviteAfternoon: "変化は動き続けています。今日、何をより明確に見たいですか。",
+    emptyInviteNight: "夜もまた問いを生みます。人生のどの面を探りますか。",
+  },
+  zh: {
+    language: "语言",
+    chats: "聊天",
+    signIn: "登录",
+    signOut: "退出登录",
+    plan: "方案",
+    options: "选项",
+    mode: "模式",
+    readMode: "解读模式",
+    writeConsultation: "输入你的咨询…",
+    positiveCharge: "正向命题（肯定）…",
+    threadLimitReached: "线程已达上限 — 请使用“新会话”",
+    sessionNew: "新会话",
+    drawerClose: "关闭",
+    iChing: "I Ching",
+    bones: "甲骨",
+    iChingTagline: "三枚铜钱 · 朱熹 · Wilhelm/Baynes",
+    bonesTagline: "裂纹 兆（商式）· 依命题判断是/否",
+    modeIChingHint: "六爻，每爻三枚铜钱；朱熹变爻法。",
+    modeBonesHint: "以肯定命题进行是/否占；裂纹 兆 解读。",
+    emptyInviteMorning: "此刻适合聆听神谕。今天你带着什么问题而来？",
+    emptyInviteAfternoon: "变化仍在流动。今天你需要看清什么？",
+    emptyInviteNight: "夜晚也会发问。你想探索人生的哪一面？",
+  },
+  ko: {
+    language: "언어",
+    chats: "채팅",
+    signIn: "로그인",
+    signOut: "로그아웃",
+    plan: "플랜",
+    options: "옵션",
+    mode: "모드",
+    readMode: "해석 모드",
+    writeConsultation: "질문을 입력하세요…",
+    positiveCharge: "긍정 명제(affirmation)…",
+    threadLimitReached: "스레드 한도 도달 — 위의 «새 세션» 사용",
+    sessionNew: "새 세션",
+    drawerClose: "닫기",
+    iChing: "I Ching",
+    bones: "골복",
+    iChingTagline: "세 동전 · 주희 · Wilhelm/Baynes",
+    bonesTagline: "균열 兆 (상식) · 긍정 명제로 예/아니오",
+    modeIChingHint: "육효, 효마다 동전 3개; 주희 변효 규칙.",
+    modeBonesHint: "긍정 명제로 예/아니오 질문; 균열 兆 해석.",
+    emptyInviteMorning: "지금은 오라클에 귀 기울이기 좋은 시간입니다. 어떤 고민이 있나요?",
+    emptyInviteAfternoon: "변화는 계속 움직입니다. 오늘 무엇을 더 분명히 보고 싶나요?",
+    emptyInviteNight: "밤도 질문합니다. 삶의 어떤 영역을 탐색하고 싶나요?",
+  },
+};
+
+function responseModeLabel(mode: ResponseMode, locale: AppLocale): string {
+  const byLocale: Record<AppLocale, Record<ResponseMode, string>> = {
+    es: { directo: "Directo", ritual: "Ritual", profundizar: "Profundizar" },
+    en: { directo: "Direct", ritual: "Ritual", profundizar: "Deepen" },
+    pt: { directo: "Direto", ritual: "Ritual", profundizar: "Aprofundar" },
+    fr: { directo: "Direct", ritual: "Rituel", profundizar: "Approfondir" },
+    de: { directo: "Direkt", ritual: "Ritual", profundizar: "Vertiefen" },
+    it: { directo: "Diretto", ritual: "Rituale", profundizar: "Approfondire" },
+    ja: { directo: "直截", ritual: "儀礼", profundizar: "深化" },
+    zh: { directo: "直接", ritual: "仪式", profundizar: "深入" },
+    ko: { directo: "직접", ritual: "의식", profundizar: "심화" },
   };
-  return labels[mode];
+  return byLocale[locale][mode];
 }
 
-function verdictLabelEs(v: OracleBonesVerdict): string {
-  const m: Record<OracleBonesVerdict, string> = {
-    auspicious_clear: "吉 — favorable claro (carga positiva)",
-    auspicious_moderate: "吉 — favorable moderado",
-    inauspicious_moderate: "凶 — desfavorable moderado",
-    inauspicious_clear: "凶 — desfavorable claro (carga negativa)",
-    silent: "Sin respuesta clara — silencio ancestral",
+function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
+  const mapByLocale: Record<AppLocale, Record<OracleBonesVerdict, string>> = {
+    es: {
+      auspicious_clear: "吉 — favorable claro (carga positiva)",
+      auspicious_moderate: "吉 — favorable moderado",
+      inauspicious_moderate: "凶 — desfavorable moderado",
+      inauspicious_clear: "凶 — desfavorable claro (carga negativa)",
+      silent: "Sin respuesta clara — silencio ancestral",
+    },
+    en: {
+      auspicious_clear: "吉 — clear favorable (positive charge)",
+      auspicious_moderate: "吉 — moderate favorable",
+      inauspicious_moderate: "凶 — moderate unfavorable",
+      inauspicious_clear: "凶 — clear unfavorable (negative charge)",
+      silent: "No clear answer — ancestral silence",
+    },
+    pt: {
+      auspicious_clear: "吉 — favorável claro (carga positiva)",
+      auspicious_moderate: "吉 — favorável moderado",
+      inauspicious_moderate: "凶 — desfavorável moderado",
+      inauspicious_clear: "凶 — desfavorável claro (carga negativa)",
+      silent: "Sem resposta clara — silêncio ancestral",
+    },
+    fr: {
+      auspicious_clear: "吉 — favorable net (charge positive)",
+      auspicious_moderate: "吉 — favorable modéré",
+      inauspicious_moderate: "凶 — défavorable modéré",
+      inauspicious_clear: "凶 — défavorable net (charge négative)",
+      silent: "Pas de réponse claire — silence ancestral",
+    },
+    de: {
+      auspicious_clear: "吉 — klar günstig (positive Ladung)",
+      auspicious_moderate: "吉 — mäßig günstig",
+      inauspicious_moderate: "凶 — mäßig ungünstig",
+      inauspicious_clear: "凶 — klar ungünstig (negative Ladung)",
+      silent: "Keine klare Antwort — Ahnenstille",
+    },
+    it: {
+      auspicious_clear: "吉 — favorevole chiaro (carica positiva)",
+      auspicious_moderate: "吉 — favorevole moderato",
+      inauspicious_moderate: "凶 — sfavorevole moderato",
+      inauspicious_clear: "凶 — sfavorevole chiaro (carica negativa)",
+      silent: "Nessuna risposta chiara — silenzio ancestrale",
+    },
+    ja: {
+      auspicious_clear: "吉 — 明確に吉（正の荷）",
+      auspicious_moderate: "吉 — 中庸の吉",
+      inauspicious_moderate: "凶 — 中庸の凶",
+      inauspicious_clear: "凶 — 明確に凶（負の荷）",
+      silent: "明確な答えなし — 祖の沈黙",
+    },
+    zh: {
+      auspicious_clear: "吉 — 明确吉（正向命题）",
+      auspicious_moderate: "吉 — 中度吉",
+      inauspicious_moderate: "凶 — 中度凶",
+      inauspicious_clear: "凶 — 明确凶（负向命题）",
+      silent: "无明确答案 — 祖灵沉默",
+    },
+    ko: {
+      auspicious_clear: "吉 — 뚜렷한 길(긍정 전하)",
+      auspicious_moderate: "吉 — 보통의 길",
+      inauspicious_moderate: "凶 — 보통의 흉",
+      inauspicious_clear: "凶 — 뚜렷한 흉(부정 전하)",
+      silent: "명확한 답 없음 — 조상의 침묵",
+    },
   };
-  return m[v];
+  return mapByLocale[locale][v];
 }
 type ChatSessionState = {
   localId: string;
@@ -189,9 +666,22 @@ function formatPrintFilename(consultationId: string): string {
   return `${y}${m}${d}-${hh}${mm}-${id}`;
 }
 
-function detectInputLanguage(question: string): QueryLanguage {
+function detectInputLanguage(question: string, fallbackLocale: AppLocale): AppLocale {
   const text = question.trim().toLowerCase();
-  if (!text) return "es";
+  if (!text) return fallbackLocale;
+  if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(text)) return "ko";
+  if (/[ぁ-ゖァ-ヺ]/.test(text)) return "ja";
+  if (/[一-鿿]/.test(text)) return "zh";
+
+  const ptHits = (text.match(/\b(não|você|porque|está|ção|ções|pra|queria)\b/g) ?? []).length;
+  const frHits = (text.match(/\b(être|avec|pourquoi|où|ça|merci|vous)\b/g) ?? []).length;
+  const deHits = (text.match(/\b(und|nicht|ich|dass|über|möchte|fragen)\b/g) ?? []).length;
+  const itHits = (text.match(/\b(perché|con|sono|voglio|grazie|quindi|domanda)\b/g) ?? []).length;
+  if (ptHits >= 2) return "pt";
+  if (frHits >= 2) return "fr";
+  if (deHits >= 2) return "de";
+  if (itHits >= 2) return "it";
+
   const esHits =
     (text.match(/\b(el|la|los|las|de|que|para|con|por|como|qué|dónde|cuál|mensaje|consulta|camino|relación)\b/g) ?? [])
       .length +
@@ -199,12 +689,26 @@ function detectInputLanguage(question: string): QueryLanguage {
   const enHits =
     (text.match(/\b(the|and|what|where|when|why|how|message|relationship|question|path|oracle|reading)\b/g) ?? [])
       .length;
-  return enHits > esHits ? "en" : "es";
+  if (enHits > esHits) return "en";
+  if (esHits > 0) return "es";
+  return fallbackLocale;
 }
 
 export default function HomePage() {
-  const locale = DEFAULT_LOCALE;
+  const [locale, setLocale] = useState<AppLocale>(DEFAULT_LOCALE);
+  const ui = UI_COPY[locale];
   const t = commonStrings[locale];
+  const isSpanish = locale === "es";
+  const runtimeText = RUNTIME_TEXT[locale];
+  const exportPdfLabel = isSpanish ? "Exportar chat PDF" : "Export chat PDF";
+  const downloadImageLabel = isSpanish ? "Descargar imagen" : "Download image";
+  const openImageLabel = isSpanish ? "Abrir imagen en tamaño completo" : "Open full-size image";
+  const symbolicImageAlt = isSpanish ? "Representación simbólica del trazado" : "Symbolic reading image";
+  const inProgressTitle = locale === "es" ? "Consulta en progreso" : "Consultation in progress";
+  const knownNewSessionTitles = useMemo(() => {
+    return new Set<string>(SUPPORTED_LOCALES.map((code) => UI_COPY[code].sessionNew));
+  }, []);
+  const knownInProgressTitles = useMemo(() => new Set<string>(["Consulta en progreso", "Consultation in progress"]), []);
   const [tier, setTier] = useState<Tier>("free");
   const [monthlyCreditsLimit, setMonthlyCreditsLimit] = useState(2);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -245,6 +749,25 @@ export default function HomePage() {
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
 
+  useEffect(() => {
+    const raw = window.localStorage.getItem(LOCALE_STORAGE_KEY);
+    if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
+      setLocale(raw as AppLocale);
+      return;
+    }
+    const cookieMatch = document.cookie.match(/(?:^|;\s*)iching_ui_locale=([^;]+)/);
+    const cookieLocale = cookieMatch ? decodeURIComponent(cookieMatch[1] ?? "") : "";
+    if ((SUPPORTED_LOCALES as readonly string[]).includes(cookieLocale)) {
+      setLocale(cookieLocale as AppLocale);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+    document.documentElement.lang = locale;
+    document.cookie = `iching_ui_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
+  }, [locale]);
+
   const shuffledCoins = useMemo(
     () =>
       Array.from({ length: 6 }, (_, i) => ({
@@ -255,25 +778,17 @@ export default function HomePage() {
     [coinTick],
   );
   const activeRitualLine = (coinTick % 6) + 1;
-  const [emptyThreadInvite, setEmptyThreadInvite] = useState(
-    "¿Qué quieres explorar? Escribe tu consulta abajo cuando estés listo.",
-  );
+  const [emptyThreadInvite, setEmptyThreadInvite] = useState(ui.emptyInviteMorning);
   useEffect(() => {
     const h = new Date().getHours();
     if (h < 12) {
-      setEmptyThreadInvite(
-        "Buen momento para escuchar al oráculo. ¿Qué inquietud trae este nuevo día? Escribe tu consulta con intención: al enviar, el ritual de las tres monedas trazará el patrón.",
-      );
+      setEmptyThreadInvite(ui.emptyInviteMorning);
     } else if (h < 20) {
-      setEmptyThreadInvite(
-        "El cambio sigue moviéndose. ¿Qué necesitas ver con más claridad en el curso de hoy? Tu pregunta abre la consulta; el I Ching mostrará el hexagrama que corresponda.",
-      );
+      setEmptyThreadInvite(ui.emptyInviteAfternoon);
     } else {
-      setEmptyThreadInvite(
-        "La noche también pregunta. ¿Qué frente de tu vida quieres explorar? Deja tu consulta abajo: las monedas dispondrán las líneas del momento.",
-      );
+      setEmptyThreadInvite(ui.emptyInviteNight);
     }
-  }, []);
+  }, [ui.emptyInviteAfternoon, ui.emptyInviteMorning, ui.emptyInviteNight]);
   const activeSession = useMemo(() => {
     if (!sessions.length) return null;
     if (!activeSessionLocalId) return sessions[0] ?? null;
@@ -288,43 +803,67 @@ export default function HomePage() {
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
     const { jsPDF } = await import("jspdf");
-    const lang = detectInputLanguage(activeThread.at(-1)?.question ?? question);
-    const title =
-      lang === "en"
-        ? "The Original I Ching — Consultation export"
-        : "The Original I Ching — Exportación de consulta";
+      const lang = detectInputLanguage(activeThread.at(-1)?.question ?? question, locale);
+    const isEsPdf = lang === "es";
+    const title = isEsPdf ? "The Original I Ching — Exportación de consulta" : "The Original I Ching — Consultation export";
     const doc = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
     const pageW = doc.internal.pageSize.getWidth();
     const pageH = doc.internal.pageSize.getHeight();
     const margin = 48;
     const maxW = pageW - margin * 2;
     let y = margin;
-    const heading = activeSession?.title?.trim() || (lang === "en" ? "Consultation" : "Consulta");
+    const heading = activeSession?.title?.trim() || (isEsPdf ? "Consulta" : "Consultation");
     const idRef = activeThread.at(-1)?.consultationId ?? activeThread[0]?.consultationId ?? "CHAT";
     const fileBase = formatPrintFilename(idRef);
 
+    const toDataUrl = (blob: Blob) =>
+      new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result ?? ""));
+        reader.onerror = () => reject(new Error("blob_to_data_url_failed"));
+        reader.readAsDataURL(blob);
+      });
+
+    const resolveImageDataUrl = async (urls: string[]): Promise<string | null> => {
+      for (const url of urls.filter(Boolean)) {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) continue;
+          const blob = await res.blob();
+          return await toDataUrl(blob);
+        } catch {
+          // continue
+        }
+      }
+      return null;
+    };
+
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.setTextColor(28, 32, 36);
+    doc.setFontSize(17);
+    doc.setTextColor(22, 28, 36);
     doc.text(title, margin, y);
     y += 24;
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.setTextColor(88, 96, 104);
     doc.text(
-      lang === "en"
-        ? `Session: ${heading} · Entries: ${activeThread.length}`
-        : `Hilo: ${heading} · Entradas: ${activeThread.length}`,
+      isEsPdf
+        ? `Hilo: ${heading} · Entradas: ${activeThread.length}`
+        : `Thread: ${heading} · Entries: ${activeThread.length}`,
       margin,
       y,
     );
-    y += 28;
+    y += 20;
+    doc.setDrawColor(146, 171, 182);
+    doc.setLineWidth(0.9);
+    doc.line(margin, y, pageW - margin, y);
+    y += 16;
     doc.setTextColor(28, 32, 36);
 
     for (let i = 0; i < activeThread.length; i++) {
       const entry = activeThread[i]!;
-      const qLabel = lang === "en" ? "Question" : "Pregunta";
-      const aLabel = lang === "en" ? "Reading" : "Lectura";
+      const qLabel = isEsPdf ? "Pregunta" : "Question";
+      const aLabel = isEsPdf ? "Lectura" : "Reading";
       const innerPad = 10;
       const innerW = maxW - innerPad * 2;
 
@@ -335,28 +874,92 @@ export default function HomePage() {
         }
       };
 
-      ensure(48);
-      doc.setFillColor(241, 246, 248);
-      doc.roundedRect(margin, y - 10, maxW, 36, 5, 5, "F");
+      const isBones = entry.oracleType === "oracle_bones";
+      const accent = isBones ? [42, 133, 122] : [38, 112, 146];
+      const soft = isBones ? [237, 248, 246] : [237, 245, 249];
+      const warm = isBones ? [248, 252, 251] : [251, 249, 244];
+
+      ensure(64);
+      doc.setFillColor(soft[0], soft[1], soft[2]);
+      doc.roundedRect(margin, y - 10, maxW, 44, 8, 8, "F");
+      doc.setDrawColor(accent[0], accent[1], accent[2]);
+      doc.setLineWidth(0.6);
+      doc.roundedRect(margin, y - 10, maxW, 44, 8, 8, "S");
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(9);
-      doc.setTextColor(70, 110, 120);
-      doc.text(`${qLabel} ${i + 1}`, margin + innerPad, y + 4);
-      y += 16;
+      doc.setFontSize(9.5);
+      doc.setTextColor(accent[0], accent[1], accent[2]);
+      doc.text(`${qLabel} ${i + 1}`, margin + innerPad, y + 2);
+      y += 18;
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
       doc.setTextColor(22, 26, 32);
       const qLines = doc.splitTextToSize(entry.question, innerW);
       ensure(qLines.length * 13 + 12);
       doc.text(qLines, margin + innerPad, y);
-      y += qLines.length * 13 + 20;
+      y += qLines.length * 13 + 12;
+
+      const cardGap = 10;
+      const cardLeftW = Math.floor((maxW - cardGap) * 0.48);
+      const cardRightW = maxW - cardLeftW - cardGap;
+      const cardTop = y;
+      const cardH = 146;
+      ensure(cardH + 18);
+
+      doc.setFillColor(245, 249, 251);
+      doc.roundedRect(margin, cardTop, cardLeftW, cardH, 8, 8, "F");
+      doc.setDrawColor(185, 207, 216);
+      doc.setLineWidth(0.5);
+      doc.roundedRect(margin, cardTop, cardLeftW, cardH, 8, 8, "S");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(60, 88, 98);
+      doc.text(isEsPdf ? "Resumen" : "Summary", margin + 10, cardTop + 14);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(26, 32, 40);
+
+      let yy = cardTop + 30;
+      const line = (label: string, value: string) => {
+        const text = `${label} ${value}`;
+        const lines = doc.splitTextToSize(text, cardLeftW - 20) as string[];
+        doc.text(lines, margin + 10, yy);
+        yy += lines.length * 12 + 3;
+      };
+
+      if (isBones && entry.oracleBones) {
+        line(`${isEsPdf ? "Tipo:" : "Type:"}`, isEsPdf ? "Huesos" : "Bones");
+        line(`${isEsPdf ? "Veredicto:" : "Verdict:"}`, verdictLabel(entry.oracleBones.verdict, lang));
+        line(`${isEsPdf ? "Cargo +:" : "Charge +:"}`, entry.oracleBones.positiveCharge);
+      } else {
+        line(`${isEsPdf ? "Hexagrama:" : "Hexagram:"}`, `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`);
+        line(`${isEsPdf ? "Regla:" : "Rule:"}`, entry.mutationRule);
+        line(`${isEsPdf ? "En hilo:" : "In thread:"}`, `${entry.sessionPosition}`);
+      }
+
+      const imageX = margin + cardLeftW + cardGap;
+      const imageY = cardTop;
+      doc.setFillColor(warm[0], warm[1], warm[2]);
+      doc.roundedRect(imageX, imageY, cardRightW, cardH, 8, 8, "F");
+      doc.setDrawColor(185, 207, 216);
+      doc.setLineWidth(0.5);
+      doc.roundedRect(imageX, imageY, cardRightW, cardH, 8, 8, "S");
+      const imgDataUrl = await resolveImageDataUrl([entry.imageUrl, entry.imageFallbackUrl]);
+      if (imgDataUrl) {
+        try {
+          doc.addImage(imgDataUrl, "JPEG", imageX + 6, imageY + 6, cardRightW - 12, cardH - 12, undefined, "FAST");
+        } catch {
+          // ignore image rendering failure
+        }
+      }
+      y = cardTop + cardH + 16;
 
       ensure(36);
-      doc.setFillColor(252, 250, 246);
+      doc.setFillColor(250, 252, 252);
       doc.roundedRect(margin, y - 8, maxW, 28, 5, 5, "F");
       doc.setFont("helvetica", "bold");
       doc.setFontSize(9);
-      doc.setTextColor(120, 82, 60);
+      doc.setTextColor(accent[0], accent[1], accent[2]);
       doc.text(`${aLabel} ${i + 1}`, margin + innerPad, y + 2);
       y += 16;
       doc.setFont("helvetica", "normal");
@@ -392,14 +995,14 @@ export default function HomePage() {
   }, [authContinueOpen]);
 
   const startNewSession = useCallback(() => {
-    const created = createLocalSession("Nueva sesión");
+    const created = createLocalSession(ui.sessionNew);
     setSessions((prev) => [created, ...prev.filter((s) => s.thread.length > 0)]);
     setActiveSessionLocalId(created.localId);
     setQuestion("");
     setError(null);
     setChatsOpen(false);
     setConsultPanelOpen(false);
-  }, []);
+  }, [ui.sessionNew]);
 
   const signOut = useCallback(async () => {
     if (!isSupabaseBrowserConfigured()) return;
@@ -541,7 +1144,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const fresh = createLocalSession("Consulta en progreso");
+    const fresh = createLocalSession(inProgressTitle);
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
     setSessionsHydrated(true);
@@ -550,7 +1153,7 @@ export default function HomePage() {
   useEffect(() => {
     if (!authReady) return;
     if (accessToken) return;
-    const fresh = createLocalSession("Consulta en progreso");
+    const fresh = createLocalSession(inProgressTitle);
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
   }, [authReady, accessToken]);
@@ -604,7 +1207,10 @@ export default function HomePage() {
             }));
             return {
               localId: `db-${entry.session.sessionId}`,
-              title: entry.session.title || "Consulta",
+              title:
+                entry.session.title && !knownNewSessionTitles.has(entry.session.title) && !knownInProgressTitles.has(entry.session.title)
+                  ? entry.session.title
+                  : (thread[0]?.question.slice(0, 60) ?? (isSpanish ? "Consulta" : "Consultation")),
               sessionId: entry.session.sessionId,
               publicSessionId: null,
               thread,
@@ -620,7 +1226,7 @@ export default function HomePage() {
     return () => {
       cancelled = true;
     };
-  }, [authReady, accessToken, sessionsHydrated]);
+  }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish]);
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
@@ -771,7 +1377,7 @@ export default function HomePage() {
 
   async function onConsult() {
     if (!activeSession) {
-      const created = createLocalSession("Consulta en progreso");
+      const created = createLocalSession(inProgressTitle);
       setSessions([created]);
       setActiveSessionLocalId(created.localId);
       return;
@@ -815,7 +1421,7 @@ export default function HomePage() {
         },
         body: JSON.stringify({
           question: questionForRequest || "Silent consultation",
-          language: detectInputLanguage(questionForRequest),
+          language: detectInputLanguage(questionForRequest, locale),
           sessionId: sessionIdForRequest,
           sessionTitle: activeSession.title,
           isDeepening: activeThread.length > 0,
@@ -894,7 +1500,11 @@ export default function HomePage() {
         }
         if (res.status === 403 && (data.error === "two_factor_required" || data.action === "setup_2fa")) {
           setConsultPanelOpen(true);
-          setError("Tu cuenta tiene 2FA obligatorio en este entorno. Actívalo en Opciones > Seguridad.");
+          setError(
+            isSpanish
+              ? "Tu cuenta tiene 2FA obligatorio en este entorno. Actívalo en Opciones > Seguridad."
+              : "Your account requires 2FA in this environment. Enable it in Options > Security.",
+          );
           return;
         }
         const detail =
@@ -922,7 +1532,7 @@ export default function HomePage() {
         thread: [...current.thread, item],
         sessionId: data.sessionId,
         publicSessionId: data.publicSessionId ?? current.publicSessionId,
-        title: current.title === "Consulta en progreso" || current.title === "Nueva sesión"
+        title: knownInProgressTitles.has(current.title) || knownNewSessionTitles.has(current.title)
           ? item.question.slice(0, 60)
           : current.title,
         updatedAt: Date.now(),
@@ -953,6 +1563,24 @@ export default function HomePage() {
   const creditsExhaustedCopy = creditsNotice
     ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.limit, creditsNotice.cycleEndsAt)
     : null;
+
+  const localeSelector = (
+    <label className="locale-control" htmlFor="ui-locale-select">
+      <span>{ui.language}</span>
+      <select
+        id="ui-locale-select"
+        className="locale-select"
+        value={locale}
+        onChange={(e) => setLocale(e.target.value as AppLocale)}
+      >
+        {SUPPORTED_LOCALES.map((code) => (
+          <option key={code} value={code}>
+            {LANGUAGE_LABELS[code]}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
 
   return (
     <OracleShell title={t.appTitle} variant="chat">
@@ -1002,10 +1630,10 @@ export default function HomePage() {
           id="chat-drawer"
         >
           <div className="chat-drawer-header">
-            <button type="button" className="chat-icon-btn" onClick={() => setChatsOpen(false)} aria-label="Cerrar">
+            <button type="button" className="chat-icon-btn" onClick={() => setChatsOpen(false)} aria-label={ui.drawerClose}>
               ✕
             </button>
-            <h2>Chats</h2>
+            <h2>{ui.chats}</h2>
             <button
               type="button"
               className="chat-drawer-new-session"
@@ -1013,34 +1641,42 @@ export default function HomePage() {
               onClick={() => startNewSession()}
               disabled={loading}
             >
-              Nueva sesión
+              {ui.sessionNew}
             </button>
           </div>
           <div className="sidebar-stats" aria-label="Estadísticas de uso">
-            <p className="sidebar-stats-label">Tu actividad</p>
+            <p className="sidebar-stats-label">{isSpanish ? "Tu actividad" : "Your activity"}</p>
             <div className="sidebar-stats-grid">
               <div className="sidebar-stat-card">
                 <span className="sidebar-stat-value">{streakDays}</span>
-                <span className="sidebar-stat-key">Racha (días)</span>
+                <span className="sidebar-stat-key">{isSpanish ? "Racha (días)" : "Streak (days)"}</span>
               </div>
               <div className="sidebar-stat-card">
                 <span className="sidebar-stat-value">{dailyCount}</span>
-                <span className="sidebar-stat-key">Consultas hoy</span>
+                <span className="sidebar-stat-key">{isSpanish ? "Consultas hoy" : "Consultations today"}</span>
               </div>
               <div className="sidebar-stat-card">
                 <span className="sidebar-stat-value">{sessionsListed.length}</span>
-                <span className="sidebar-stat-key">Chats con mensajes</span>
+                <span className="sidebar-stat-key">{isSpanish ? "Chats con mensajes" : "Chats with messages"}</span>
               </div>
             </div>
             {loading ? (
-              <p className="sidebar-stats-hint">Canalizando consulta…</p>
+              <p className="sidebar-stats-hint">{isSpanish ? "Canalizando consulta…" : "Channeling consultation…"}</p>
             ) : (
-              <p className="sidebar-stats-hint">Solo se listan hilos con al menos una lectura.</p>
+              <p className="sidebar-stats-hint">
+                {isSpanish
+                  ? "Solo se listan hilos con al menos una lectura."
+                  : "Only threads with at least one reading are listed."}
+              </p>
             )}
           </div>
           <div className="chat-drawer-list">
             {sessionsListed.length === 0 ? (
-              <p className="chat-drawer-empty">Aún no hay conversaciones guardadas. Envía una consulta para verla aquí.</p>
+              <p className="chat-drawer-empty">
+                {isSpanish
+                  ? "Aún no hay conversaciones guardadas. Envía una consulta para verla aquí."
+                  : "No saved conversations yet. Send a consultation to see it here."}
+              </p>
             ) : null}
             {[...sessionsListed]
               .sort((a, b) => b.updatedAt - a.updatedAt)
@@ -1056,7 +1692,9 @@ export default function HomePage() {
                   }}
                 >
                   <span className="chat-session-title">{session.title}</span>
-                  <span className="chat-session-meta">{session.thread.length} mensajes</span>
+                  <span className="chat-session-meta">
+                    {session.thread.length} {isSpanish ? "mensajes" : "messages"}
+                  </span>
                 </button>
               ))}
           </div>
@@ -1066,8 +1704,8 @@ export default function HomePage() {
         {authReady && supabaseConfigError ? (
           <div className="auth-config-banner" role="alert">
             <span>
-              Falta configuración del cliente:{" "}
-              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> y{" "}
+              {isSpanish ? "Falta configuración del cliente:" : "Missing client configuration:"}{" "}
+              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> {isSpanish ? "y" : "and"}{" "}
               <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
             </span>
           </div>
@@ -1081,9 +1719,9 @@ export default function HomePage() {
               paddingBottom: "0.5rem",
             }}
           >
-            <span className="auth-explore-strip-text">Explora el oráculo con calma.</span>
+            {localeSelector}
             <Link href="/login" className="auth-explore-strip-cta">
-              Iniciar sesión
+              {ui.signIn}
             </Link>
           </div>
         ) : null}
@@ -1104,7 +1742,7 @@ export default function HomePage() {
           >
             <span
               className="auth-explore-strip-tier"
-              aria-label={`Plan ${tier}`}
+              aria-label={`${ui.plan} ${tier}`}
               style={{
                 position: "absolute",
                 left: "0.72rem",
@@ -1116,8 +1754,20 @@ export default function HomePage() {
                 fontSize: "0.76rem",
               }}
             >
-              Plan: {tier}
+              {ui.plan}: {tier}
             </span>
+            <div
+              style={{
+                position: "absolute",
+                left: "7.2rem",
+                top: "50%",
+                transform: "translateY(-50%)",
+                display: "inline-flex",
+                alignItems: "center",
+              }}
+            >
+              {localeSelector}
+            </div>
             <span
               className="auth-explore-strip-email"
               title={authEmail}
@@ -1129,7 +1779,7 @@ export default function HomePage() {
                 fontWeight: 700,
                 fontSize: "0.79rem",
                 width: "100%",
-                paddingInline: "5.6rem",
+                paddingInline: "12rem 5.6rem",
               }}
             >
               {authEmail}
@@ -1151,7 +1801,7 @@ export default function HomePage() {
                 fontSize: "0.76rem",
               }}
             >
-              Cerrar sesión
+              {ui.signOut}
             </button>
           </div>
         ) : null}
@@ -1168,7 +1818,7 @@ export default function HomePage() {
                 aria-expanded={chatsOpen}
                 aria-controls="chat-drawer"
               >
-                Chats
+                {ui.chats}
               </button>
             </div>
             <div className="chat-title-logo-wrap">
@@ -1211,6 +1861,7 @@ export default function HomePage() {
                 marginLeft: "calc(50% - 50vw)",
                 marginRight: "calc(50% - 50vw)",
                 borderRadius: 0,
+                flexWrap: "nowrap",
                 background:
                   "linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, var(--secondary-bg)) 0%, color-mix(in srgb, var(--accent) 10%, var(--secondary-bg)) 100%)",
                 border: "1px solid color-mix(in srgb, var(--accent) 68%, var(--input-border))",
@@ -1220,23 +1871,29 @@ export default function HomePage() {
                 boxSizing: "border-box",
               }}
             >
-              {oracleMode === "iching" ? (
-                <span className="oracle-cn-mark" lang="zh-Hant">
-                  周易
-                </span>
-              ) : (
-                <span className="oracle-brand-mark-lat" lang="es">
-                  Huesos
-                </span>
-              )}
+              <span
+                className="oracle-brand-mark-lat"
+                lang={oracleMode === "iching" ? "en" : "es"}
+                style={{
+                  letterSpacing: "0.04em",
+                  textTransform: "none",
+                  fontSize: "clamp(1.05rem, 3.6vw, 1.45rem)",
+                  padding: "0.08rem 0",
+                }}
+              >
+                {oracleMode === "iching" ? ui.iChing : ui.bones}
+              </span>
               <span className="oracle-brand-rule" aria-hidden />
-              <p className="oracle-tagline" style={{ color: "var(--fg)" }}>
+              <p
+                className="oracle-tagline"
+                style={{ color: "var(--fg)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+              >
                 {oracleMode === "iching"
-                  ? "Tres monedas · Zhu Xi · Wilhelm/Baynes"
-                  : "Grietas 兆 (estilo Shang) · sí / no sobre cargos"}
+                  ? ui.iChingTagline
+                  : ui.bonesTagline}
               </p>
-              <span className="oracle-reading-pill" aria-label={`Modo lectura ${responseModeLabelEs(responseMode)}`}>
-                Modo: {responseModeLabelEs(responseMode)}
+              <span className="oracle-reading-pill" aria-label={`${ui.readMode} ${responseModeLabel(responseMode, locale)}`}>
+                {ui.mode}: {responseModeLabel(responseMode, locale)}
               </span>
             </div>
           </div>
@@ -1271,35 +1928,42 @@ export default function HomePage() {
                         transformedHexagram={entry.transformedHexagram}
                         mutationRule={entry.mutationRule}
                         oracleType={entry.oracleType ?? "iching"}
+                        locale={locale}
                       />
                       <ReadingOracleImage
                         imageUrl={entry.imageUrl}
                         imageFallbackUrl={entry.imageFallbackUrl}
                         downloadBasename={`iching-${entry.consultationId.replace(/-/g, "").slice(0, 12)}`}
+                        downloadLabel={downloadImageLabel}
+                        openLabel={openImageLabel}
+                        imageAlt={symbolicImageAlt}
                       />
                     </div>
                   ) : null}
                   {entry.oracleType === "oracle_bones" && entry.oracleBones ? (
                     <div className="reading-grid reading-grid--bones-solo">
                       <section className="hexagram-card">
-                        <h3>Huesos de oráculo</h3>
+                        <h3>{runtimeText.oracleBones}</h3>
                         <p className="meta-line">
-                          Medio: {entry.oracleBones.medium === "turtle" ? "Plastrón de tortuga" : "Escápula de buey"}
+                          {runtimeText.medium}: {entry.oracleBones.medium === "turtle" ? runtimeText.turtle : runtimeText.ox}
                           {entry.oracleBones.ambiguousPasses > 0
-                            ? ` · Lecturas ambiguas previas: ${entry.oracleBones.ambiguousPasses}`
+                            ? ` · ${isSpanish ? "Lecturas ambiguas previas" : "Previous ambiguous readings"}: ${entry.oracleBones.ambiguousPasses}`
                             : ""}
                         </p>
                         <p className="meta-line">
-                          <strong>Cargo +:</strong> {entry.oracleBones.positiveCharge}
+                          <strong>{runtimeText.chargePlus}:</strong> {entry.oracleBones.positiveCharge}
                         </p>
                         <p className="meta-line">
-                          <strong>Cargo −:</strong> {entry.oracleBones.negativeCharge}
+                          <strong>{runtimeText.chargeMinus}:</strong> {entry.oracleBones.negativeCharge}
                         </p>
                         <div className="bones-background-pane">
                           <ReadingOracleImage
                             imageUrl={entry.imageUrl}
                             imageFallbackUrl={entry.imageFallbackUrl}
                             downloadBasename={`bones-${entry.consultationId.replace(/-/g, "").slice(0, 12)}`}
+                            downloadLabel={downloadImageLabel}
+                            openLabel={openImageLabel}
+                            imageAlt={symbolicImageAlt}
                           />
                           {entry.imageUrl.startsWith("data:image/svg+xml") ? (
                             <div className="bones-symbol-overlay" aria-hidden="true">
@@ -1320,15 +1984,15 @@ export default function HomePage() {
                                   : "verdict-pill--xiong"
                             }`}
                           >
-                            {verdictLabelEs(entry.oracleBones.verdict)}
+                            {verdictLabel(entry.oracleBones.verdict, locale)}
                           </span>
                           {entry.oracleBones.affirmsPositive !== null ? (
                             <p className="meta-line">
-                              Lectura del signo:{" "}
+                              {runtimeText.signReading}{" "}
                               <strong>
                                 {entry.oracleBones.affirmsPositive
-                                  ? "Inclina hacia el cargo positivo."
-                                  : "Inclina hacia la negación del cargo."}
+                                  ? runtimeText.leansPositive
+                                  : runtimeText.leansNegative}
                               </strong>
                             </p>
                           ) : null}
@@ -1338,7 +2002,7 @@ export default function HomePage() {
                   ) : null}
                   <div className="session-actions">
                     <button type="button" className="secondary-btn" onClick={() => void exportChatPdf()}>
-                      Exportar chat PDF
+                      {exportPdfLabel}
                     </button>
                   </div>
                 </div>
@@ -1354,9 +2018,9 @@ export default function HomePage() {
 
             {phase === "bones" ? (
               <section className="coins-stage" data-testid="bone-ritual">
-                <p className="coins-title">Ritual en curso · calor sobre el hueso</p>
+                <p className="coins-title">{runtimeText.ritualBones}</p>
                 <p className="meta-line" style={{ textAlign: "center", maxWidth: "22rem", margin: "0 auto" }}>
-                  Estilización del procedimiento shang: el patrón de grieta se fija al completar la consulta.
+                  {runtimeText.ritualBonesHint}
                 </p>
                 <div className="crack-visual-wrap">
                   <CrackPatternGraphic patternId={((coinTick % 4) + 1) as number} />
@@ -1366,7 +2030,7 @@ export default function HomePage() {
 
             {phase === "coins" ? (
               <section className="coins-stage" data-testid="coin-throw">
-                <p className="coins-title">Ritual en curso · lanzando monedas</p>
+                <p className="coins-title">{runtimeText.ritualCoins}</p>
                 <div className="ritual-progress">
                   {Array.from({ length: 6 }, (_, i) => {
                     const line = i + 1;
@@ -1374,7 +2038,7 @@ export default function HomePage() {
                     const done = line < activeRitualLine;
                     return (
                       <div key={line} className={`ritual-line ${active ? "active" : ""} ${done ? "done" : ""}`}>
-                        <span>Línea {line}</span>
+                        <span>{runtimeText.line} {line}</span>
                       </div>
                     );
                   })}
@@ -1468,7 +2132,7 @@ export default function HomePage() {
                               height={44}
                               decoding="async"
                             />
-                            <span className="composer-switch-label">I Ching</span>
+                            <span className="composer-switch-label">{ui.iChing}</span>
                           </button>
                           <button
                             type="button"
@@ -1487,18 +2151,18 @@ export default function HomePage() {
                               height={44}
                               decoding="async"
                             />
-                            <span className="composer-switch-label">Huesos</span>
+                            <span className="composer-switch-label">{ui.bones}</span>
                           </button>
                         </div>
                         <p className="composer-switch-caption">
                           {oracleMode === "iching"
-                            ? "Seis líneas y tres monedas por línea; mutación Zhu Xi."
-                            : "Pregunta sí / no con cargo afirmativo; lectura por grietas 兆."}
+                            ? ui.modeIChingHint
+                            : ui.modeBonesHint}
                         </p>
                       </div>
                     </div>
                     <div className="composer-reading-row" role="group" aria-label="Modo de lectura">
-                      <span className="composer-reading-label">Modo lectura</span>
+                      <span className="composer-reading-label">{ui.readMode}</span>
                       <div className="composer-reading-segmented">
                         {(["directo", "ritual", "profundizar"] as const).map((m) => (
                           <button
@@ -1508,25 +2172,28 @@ export default function HomePage() {
                             onClick={() => setResponseMode(m)}
                             disabled={loading}
                           >
-                            {responseModeLabelEs(m)}
+                            {responseModeLabel(m, locale)}
                           </button>
                         ))}
                       </div>
                     </div>
                     <div className="composer-doc-links">
-                      <Link href="/guia">Guía rápida de uso</Link>
-                      <Link href="/documentacion/iching#notas-metodos">Notas y origen de los métodos (I Ching y Huesos)</Link>
+                      <Link href="/guia">{isSpanish ? "Guía rápida de uso" : "Quick usage guide"}</Link>
+                      <Link href="/documentacion/iching#notas-metodos">
+                        {isSpanish ? "Notas y origen de los métodos (I Ching y Huesos)" : "Method notes and origins (I Ching and Bones)"}
+                      </Link>
                     </div>
                     <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
-                      <span>Seguridad (2FA opcional)</span>
+                      <span>{isSpanish ? "Seguridad (2FA opcional)" : "Security (optional 2FA)"}</span>
                       <p className="meta-line tier-hint-line">
-                        Estado:{" "}
-                        <strong>{twoFactorEnabled ? "Activado" : "Desactivado"}</strong>
-                        {twoFactorMethod ? ` · método ${twoFactorMethod.toUpperCase()}` : ""}
+                        {isSpanish ? "Estado:" : "Status:"}{" "}
+                        <strong>{twoFactorEnabled ? (isSpanish ? "Activado" : "Enabled") : (isSpanish ? "Desactivado" : "Disabled")}</strong>
+                        {twoFactorMethod ? `${isSpanish ? " · método " : " · method "}${twoFactorMethod.toUpperCase()}` : ""}
                       </p>
                       <p className="meta-line tier-hint-line">
-                        Puedes activar verificación con <strong>Authenticator (TOTP)</strong> o con{" "}
-                        <strong>código por email</strong>.
+                        {isSpanish ? "Puedes activar verificación con " : "You can enable verification with "}
+                        <strong>Authenticator (TOTP)</strong> {isSpanish ? "o con" : "or with"}{" "}
+                        <strong>{isSpanish ? "código por email" : "email code"}</strong>.
                       </p>
                       {!twoFactorEnabled ? (
                         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
@@ -1536,7 +2203,7 @@ export default function HomePage() {
                             onClick={() => void startTwoFactorEnrollment()}
                             disabled={twoFactorBusy || !accessToken}
                           >
-                            {twoFactorBusy ? "Preparando..." : "Activar con Authenticator"}
+                            {twoFactorBusy ? (isSpanish ? "Preparando..." : "Preparing...") : isSpanish ? "Activar con Authenticator" : "Enable with Authenticator"}
                           </button>
                           <button
                             type="button"
@@ -1544,7 +2211,7 @@ export default function HomePage() {
                             onClick={() => void sendEmailTwoFactorCode()}
                             disabled={twoFactorBusy || !accessToken}
                           >
-                            {twoFactorBusy ? "Enviando..." : "Enviar código por email"}
+                            {twoFactorBusy ? (isSpanish ? "Enviando..." : "Sending...") : isSpanish ? "Enviar código por email" : "Send code by email"}
                           </button>
                         </div>
                       ) : null}
@@ -1561,7 +2228,7 @@ export default function HomePage() {
                               type="text"
                               value={twoFactorCode}
                               onChange={(e) => setTwoFactorCode(e.target.value)}
-                              placeholder="Código de 6 dígitos"
+                              placeholder={isSpanish ? "Código de 6 dígitos" : "6-digit code"}
                               className="composer-input"
                               style={{ maxWidth: 180 }}
                             />
@@ -1571,7 +2238,7 @@ export default function HomePage() {
                               onClick={() => void confirmTwoFactorEnrollment()}
                               disabled={twoFactorBusy || twoFactorCode.trim().length < 6}
                             >
-                              Verificar
+                              {isSpanish ? "Verificar" : "Verify"}
                             </button>
                           </div>
                         </div>
@@ -1582,7 +2249,7 @@ export default function HomePage() {
                             type="text"
                             value={twoFactorEmailCode}
                             onChange={(e) => setTwoFactorEmailCode(e.target.value)}
-                            placeholder="Código por email (6 dígitos)"
+                              placeholder={isSpanish ? "Código por email (6 dígitos)" : "Email code (6 digits)"}
                             className="composer-input"
                             style={{ maxWidth: 220 }}
                           />
@@ -1592,22 +2259,23 @@ export default function HomePage() {
                             onClick={() => void verifyEmailTwoFactorCode()}
                             disabled={twoFactorBusy || twoFactorEmailCode.trim().length < 6}
                           >
-                            Verificar email
+                            {isSpanish ? "Verificar email" : "Verify email"}
                           </button>
                         </div>
                       ) : null}
                       {twoFactorRecoveryCodes.length > 0 ? (
                         <p className="meta-line tier-hint-line">
-                          Códigos de recuperación: <code>{twoFactorRecoveryCodes.join(" · ")}</code>
+                          {isSpanish ? "Códigos de recuperación:" : "Recovery codes:"} <code>{twoFactorRecoveryCodes.join(" · ")}</code>
                         </p>
                       ) : null}
                     </div>
                     {result ? (
                       <div className="session-progress">
-                        <span>Profundidad del hilo</span>
+                        <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
                         <p className="meta-line tier-hint-line">
-                          Plan <strong>{tier}</strong>: {monthlyCreditsLimit} consultas por mes · hasta{" "}
-                          {CONTEXT_LIMITS[tier].sessionDepth} en este hilo.
+                          {isSpanish ? "Plan " : "Plan "}<strong>{tier}</strong>: {monthlyCreditsLimit}{" "}
+                          {isSpanish ? "consultas por mes" : "consultations per month"} · {isSpanish ? "hasta" : "up to"}{" "}
+                          {CONTEXT_LIMITS[tier].sessionDepth} {isSpanish ? "en este hilo." : "in this thread."}
                         </p>
                         <div className="session-progress-bar">
                           <div
@@ -1622,11 +2290,21 @@ export default function HomePage() {
                             }}
                           />
                         </div>
-                        <small>{result.canDeepen ? "Puedes profundizar en este hilo." : "Límite de hilo alcanzado."}</small>
+                        <small>
+                          {result.canDeepen
+                            ? isSpanish
+                              ? "Puedes profundizar en este hilo."
+                              : "You can deepen this thread."
+                            : isSpanish
+                              ? "Límite de hilo alcanzado."
+                              : "Thread limit reached."}
+                        </small>
                       </div>
                     ) : null}
                     {activeThread.length > 0 ? (
-                      <p className="meta-line composer-hint-line">Siguiente mensaje sigue en este hilo.</p>
+                      <p className="meta-line composer-hint-line">
+                        {isSpanish ? "Siguiente mensaje sigue en este hilo." : "Your next message continues in this thread."}
+                      </p>
                     ) : null}
                   </section>
                 </div>
@@ -1644,7 +2322,7 @@ export default function HomePage() {
                     onClick={() => startNewSession()}
                     disabled={loading}
                   >
-                    Nueva sesión
+                    {ui.sessionNew}
                   </button>
                 </div>
               ) : null}
@@ -1660,7 +2338,7 @@ export default function HomePage() {
                   onClick={() => setConsultPanelOpen((o) => !o)}
                 >
                   <span aria-hidden>{consultPanelOpen ? "▾" : "☰"}</span>
-                  <span className="composer-mode-tag">Opciones</span>
+                  <span className="composer-mode-tag">{ui.options}</span>
                 </button>
                 <div className="composer-input-row">
                   <textarea
@@ -1676,10 +2354,10 @@ export default function HomePage() {
                     }}
                     placeholder={
                       threadLimitReached
-                        ? "Límite de hilo alcanzado — usa «Nueva sesión» arriba"
+                        ? ui.threadLimitReached
                         : oracleMode === "oracle_bones"
-                          ? "Cargo positivo (afirmación)…"
-                          : "Escribe tu consulta…"
+                          ? ui.positiveCharge
+                          : ui.writeConsultation
                     }
                     aria-label="Question"
                     rows={1}

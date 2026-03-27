@@ -86,6 +86,53 @@ const PT_HEAD = 15;
 const PT_QUOTE = 11.5;
 const PT_LIST = 11.5;
 
+function drawJustifiedParagraph(
+  doc: jsPDF,
+  text: string,
+  x: number,
+  y: number,
+  maxW: number,
+  lineHeight: number,
+): number {
+  const lines = doc.splitTextToSize(text, maxW) as string[];
+  if (!lines.length) return y;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]!.trim();
+    const isLast = i === lines.length - 1;
+    const words = line.split(/\s+/).filter(Boolean);
+    const hasSpaces = words.length > 1;
+
+    if (!isLast && hasSpaces) {
+      const lineW = doc.getTextWidth(line);
+      const extra = maxW - lineW;
+      const gaps = words.length - 1;
+      const extraPerGap = gaps > 0 ? extra / gaps : 0;
+
+      // Avoid ugly stretched lines when very short.
+      if (extraPerGap > 0 && extraPerGap <= 1.35) {
+        let cursorX = x;
+        for (let w = 0; w < words.length; w++) {
+          const word = words[w]!;
+          doc.text(word, cursorX, y);
+          const base = doc.getTextWidth(word);
+          if (w < words.length - 1) {
+            const spaceW = doc.getTextWidth(" ");
+            cursorX += base + spaceW + extraPerGap;
+          }
+        }
+      } else {
+        doc.text(line, x, y);
+      }
+    } else {
+      doc.text(line, x, y);
+    }
+    y += lineHeight;
+  }
+
+  return y;
+}
+
 /** Draw reading blocks with spacing similar to the in-app scroll (headings, quotes, lists). */
 export function drawPdfReadingBlocks(
   doc: jsPDF,
@@ -110,7 +157,7 @@ export function drawPdfReadingBlocks(
       needSpace(PT_HEAD + 10);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(12);
-      const lines = doc.splitTextToSize(b.text.toUpperCase(), maxW);
+      const lines = doc.splitTextToSize(b.text, maxW);
       doc.text(lines, margin, y);
       y += lines.length * PT_HEAD + 6;
       doc.setFont("helvetica", "normal");
@@ -123,12 +170,12 @@ export function drawPdfReadingBlocks(
       doc.setFontSize(10.5);
       const indent = margin + 14;
       const qW = maxW - 14;
-      const lines = doc.splitTextToSize(b.text, qW);
       doc.setDrawColor(160, 140, 120);
       doc.setLineWidth(0.6);
-      doc.line(margin + 4, y - 2, margin + 4, y + Math.max(lines.length * PT_QUOTE, PT_QUOTE) - 2);
-      doc.text(lines, indent, y);
-      y += lines.length * PT_QUOTE + 10;
+      const qLines = doc.splitTextToSize(b.text, qW) as string[];
+      doc.line(margin + 4, y - 2, margin + 4, y + Math.max(qLines.length * PT_QUOTE, PT_QUOTE) - 2);
+      y = drawJustifiedParagraph(doc, b.text, indent, y, qW, PT_QUOTE);
+      y += 10;
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
       continue;
@@ -145,10 +192,10 @@ export function drawPdfReadingBlocks(
     }
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
-    const lines = doc.splitTextToSize(b.text, maxW);
-    needSpace(lines.length * PT_LINE + 6);
-    doc.text(lines, margin, y);
-    y += lines.length * PT_LINE + 6;
+    const pLines = doc.splitTextToSize(b.text, maxW) as string[];
+    needSpace(pLines.length * PT_LINE + 6);
+    y = drawJustifiedParagraph(doc, b.text, margin, y, maxW, PT_LINE);
+    y += 6;
   }
 
   doc.setDrawColor(200, 200, 200);

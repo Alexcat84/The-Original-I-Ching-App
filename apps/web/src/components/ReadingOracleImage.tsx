@@ -4,9 +4,19 @@ type Props = {
   imageUrl: string;
   imageFallbackUrl: string;
   downloadBasename: string;
+  downloadLabel?: string;
+  openLabel?: string;
+  imageAlt?: string;
 };
 
-export function ReadingOracleImage({ imageUrl, imageFallbackUrl, downloadBasename }: Props) {
+export function ReadingOracleImage({
+  imageUrl,
+  imageFallbackUrl,
+  downloadBasename,
+  downloadLabel = "Descargar imagen",
+  openLabel = "Abrir imagen en tamaño completo",
+  imageAlt = "Representación simbólica del trazado",
+}: Props) {
   async function resolveImageObjectUrl(): Promise<string | null> {
     const tryUrls = [imageUrl, imageFallbackUrl].filter(Boolean);
     for (const url of tryUrls) {
@@ -80,11 +90,11 @@ export function ReadingOracleImage({ imageUrl, imageFallbackUrl, downloadBasenam
         type="button"
         className="reading-visual-zoom-link"
         onClick={() => void openFullImage()}
-        aria-label="Abrir imagen en tamaño completo"
+        aria-label={openLabel}
       >
         <img
           src={imageUrl}
-          alt="Representación simbólica del trazado"
+          alt={imageAlt}
           className="oracle-image reading-visual-thumb"
           data-testid="consultation-image"
           referrerPolicy="no-referrer"
@@ -99,7 +109,7 @@ export function ReadingOracleImage({ imageUrl, imageFallbackUrl, downloadBasenam
       </button>
       <div className="reading-visual-actions">
         <button type="button" className="secondary-btn reading-visual-action-btn" onClick={() => void download()}>
-          Descargar imagen
+          {downloadLabel}
         </button>
       </div>
     </div>

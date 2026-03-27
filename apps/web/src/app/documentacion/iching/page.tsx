@@ -1,53 +1,74 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
+
+function resolveLocale(raw: string | undefined): AppLocale {
+  if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
+    return raw as AppLocale;
+  }
+  return "es";
+}
 
 export default function DocumentacionIchingPage() {
+  const locale = resolveLocale(cookies().get("iching_ui_locale")?.value);
+  const isEs = locale === "es";
+
   return (
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
-        <Link href="/">← Volver al oráculo</Link> · <Link href="/guia">Guía rápida</Link>
+        <Link href="/">{isEs ? "← Volver al oráculo" : "← Back to oracle"}</Link> ·{" "}
+        <Link href="/guia">{isEs ? "Guía rápida" : "Quick guide"}</Link>
       </nav>
       <article className="doc-article">
-        <h1>El I Ching en esta aplicación</h1>
+        <h1>{isEs ? "El I Ching en esta aplicación" : "I Ching in this app"}</h1>
         <p className="doc-lead">
-          El <strong>Zhouyi 周易</strong> (libro de los cambios) es un corpus antiguo de China: textos oraculares
-          asociados a sesenta y cuatro figuras de seis líneas (hexagramas), cada línea siendo <em>yin</em> o{" "}
-          <em>yang</em>, estable o <em>mutante</em> según el método de conteo que uses.
+          {isEs ? (
+            <>
+              El <strong>Zhouyi 周易</strong> (I Ching) es una tradición clásica de lectura simbólica basada en 64
+              hexagramas. En la app lo usamos como una guía de reflexión para ayudarte a ordenar preguntas y ver
+              opciones.
+            </>
+          ) : (
+            <>
+              <strong>Zhouyi 周易</strong> (I Ching) is a classical symbolic reading tradition based on 64 hexagrams.
+              In this app, it works as a reflective guide to help clarify questions and decisions.
+            </>
+          )}
         </p>
 
-        <h2>Qué hace esta app</h2>
+        <h2>{isEs ? "Qué hace esta app" : "What this app does"}</h2>
         <p>
-          Generamos el hexagrama principal con <strong>tres monedas por línea</strong> (valores 6–9), aplicamos la{" "}
-          <strong>regla de mutación de Zhu Xi</strong> para saber qué líneas cambian y, si procede, el hexagrama
-          resultante. La interpretación sigue la voz del comentarista configurado (p. ej. tono Wilhelm/Baynes) y los
-          textos del paquete de datos del proyecto.
+          {isEs
+            ? "Cuando consultas en modo I Ching, la app genera una lectura basada en monedas y líneas cambiantes, y luego te devuelve una interpretación en el estilo que elijas (directo, ritual o profundizar)."
+            : "In I Ching mode, the app generates a reading from coin throws and changing lines, then returns an interpretation in your selected style (direct, ritual, or deepen)."}
         </p>
 
-        <h2>No confundir con adivinación literal</h2>
+        <h2>{isEs ? "No confundir con adivinación literal" : "Not literal fortune-telling"}</h2>
         <p>
-          El I Ching se ha usado durante milenios como espejo simbólico. La app no predice hechos externos verificables;
-          ofrece lenguaje imaginal para ordenar la pregunta y ver tensiones, oportunidades y límites.
+          {isEs
+            ? "La app no “predice el futuro” de forma literal. Funciona como un espejo simbólico para pensar con más claridad una situación personal."
+            : "The app does not literally predict the future. It works as a symbolic mirror to think more clearly about personal situations."}
         </p>
 
-        <h2>Imágenes del hexagrama</h2>
+        <h2>{isEs ? "Imágenes del hexagrama" : "Hexagram images"}</h2>
         <p>
-          Cuando hay generación remota activa, pedimos una escena de <em>sumi-e</em> coherente con la{" "}
-          <strong>categoría temática</strong> de la consulta (amor, trabajo, etc.) y con variación por consulta, para
-          evitar fondos genéricos repetidos. El hexagrama y las líneas mutantes deben respetar el trazo indicado en el
-          prompt técnico.
+          {isEs
+            ? "Cada lectura puede incluir una imagen artística coherente con el resultado. También puedes descargar la imagen y exportar el chat a PDF desde la interfaz."
+            : "Each reading may include an artistic image aligned with the result. You can also download images and export chat threads as PDF."}
         </p>
 
-        <h2>Modo 甲骨 (huesos)</h2>
+        <h2>{isEs ? "Modo 甲骨 (huesos)" : "甲骨 mode (bones)"}</h2>
         <p>
-          Es un módulo aparte, inspirado en la <strong>piromancia shang</strong>: grietas 兆 desde puntos de perforación
-          y lectura de sí/no sobre cargas enfrentadas. Solo escribes el cargo afirmativo; el opuesto se deriva en el
-          servidor para emparejar la pregunta. Los dibujos en pantalla y las imágenes generadas son estilizaciones
-          informadas por la literatura arqueológica, no reproducciones de piezas concretas.
+          {isEs
+            ? "Es un modo alternativo de consulta, inspirado en la tradición de lectura por grietas. Está orientado a preguntas tipo sí/no y se presenta de forma visual para facilitar interpretación."
+            : "This is an alternative consultation mode inspired by crack-reading tradition. It is oriented to yes/no style questions and presented visually for easier interpretation."}
         </p>
 
-        <h2 id="notas-metodos">Notas y origen de los métodos (I Ching y Huesos)</h2>
+        <h2 id="notas-metodos">{isEs ? "Notas y origen de los métodos (I Ching y Huesos)" : "Method notes and origins (I Ching and Bones)"}</h2>
         <p>
-          Los modos de la app son <strong>inspirados</strong> en tradiciones históricas; las imágenes y grietas en
-          pantalla son <strong>estilización</strong>, no copia de piezas concretas. Enlaces de referencia general:
+          {isEs
+            ? "Los métodos de la app están inspirados en tradiciones históricas y se muestran con una presentación moderna y accesible para uso cotidiano."
+            : "The app methods are inspired by historical traditions and presented in a modern, accessible format for daily use."}
         </p>
         <ul>
           <li>
@@ -67,7 +88,8 @@ export default function DocumentacionIchingPage() {
           </li>
         </ul>
         <p>
-          Para el uso del interfaz: <Link href="/guia">guía rápida</Link>.
+          {isEs ? "Para límites por plan, privacidad y uso diario, visita la " : "For plan limits, privacy, and daily usage, visit the "}
+          <Link href="/guia">{isEs ? "guía rápida" : "quick guide"}</Link>.
         </p>
       </article>
     </div>

@@ -84,8 +84,15 @@ export function performOracleBonesCast(
 export function defaultNegativeCharge(positiveCharge: string, language: string): string {
   const p = positiveCharge.trim().replace(/\s+/g, " ");
   if (!p) return "";
-  if (language.startsWith("en")) {
-    return `It will not be the case that: ${p.replace(/\.$/, "")}.`;
-  }
-  return `No se confirma que: ${p.replace(/\.$/, "")}.`;
+  const core = p.replace(/\.$/, "");
+  if (language.startsWith("es")) return `No se confirma que: ${core}.`;
+  if (language.startsWith("en")) return `It will not be the case that: ${core}.`;
+  if (language.startsWith("pt")) return `Não se confirma que: ${core}.`;
+  if (language.startsWith("fr")) return `Il n'est pas confirmé que : ${core}.`;
+  if (language.startsWith("de")) return `Es ist nicht bestätigt, dass: ${core}.`;
+  if (language.startsWith("it")) return `Non è confermato che: ${core}.`;
+  if (language.startsWith("ja")) return `次の内容は確認されません：${core}。`;
+  if (language.startsWith("zh")) return `未能确认以下命题：${core}。`;
+  if (language.startsWith("ko")) return `다음 명제는 확인되지 않습니다: ${core}.`;
+  return `It will not be the case that: ${core}.`;
 }

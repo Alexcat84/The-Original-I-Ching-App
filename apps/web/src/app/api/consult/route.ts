@@ -7,6 +7,7 @@ import {
   type PreviousConsultationRow,
 } from "@iching-oracle/context-engine";
 import { performCast } from "@iching-oracle/iching-engine";
+import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
 import { buildImagePrompt, buildOracleBonesImagePrompt } from "@iching-oracle/image-engine";
 import { defaultNegativeCharge, performOracleBonesCast } from "@iching-oracle/oracle-bones-engine";
 import { randomUUID } from "node:crypto";
@@ -114,7 +115,9 @@ export async function POST(req: Request) {
 
   try {
   const question = typeof body.question === "string" ? body.question : "";
-  const language = typeof body.language === "string" ? body.language : "es";
+  const rawLanguage = typeof body.language === "string" ? body.language : "es";
+  const language: AppLocale =
+    (SUPPORTED_LOCALES as readonly string[]).includes(rawLanguage) ? (rawLanguage as AppLocale) : "es";
   const oracleMode: OracleType = body.oracleMode === "oracle_bones" ? "oracle_bones" : "iching";
 
   const authUser = await getAuthenticatedUser(req);
