@@ -309,7 +309,9 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
   const sessionIds = sessionRows.map((s) => s.id);
   const { data: consultRows, error: consultError } = await supabase
     .from("consultations")
-    .select("*")
+    .select(
+      "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, image_url, thumbnail_url, public_sharing_id, created_at, oracle_type, oracle_bones",
+    )
     .eq("user_id", userId)
     .in("session_id", sessionIds)
     .order("session_position", { ascending: true });

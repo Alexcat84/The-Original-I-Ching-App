@@ -1892,9 +1892,11 @@ export default function HomePage() {
                   >
                     <span className="chat-session-title">{session.title}</span>
                     <span className="chat-session-meta">
-                      {session.thread.length} {drawerText.messages}
-                    </span>
-                    <span className="chat-session-time">
+                      <span>
+                        {session.thread.length} {drawerText.messages}
+                      </span>
+                      <span aria-hidden="true">·</span>
+                      <span className="chat-session-time">
                       {session.firstConsultationAt
                         ? new Date(session.firstConsultationAt).toLocaleString(locale, {
                             year: "numeric",
@@ -1905,6 +1907,7 @@ export default function HomePage() {
                           })
                         : ""}
                     </span>
+                    </span>
                   </button>
                   <button
                     type="button"
@@ -1913,7 +1916,12 @@ export default function HomePage() {
                     title={drawerText.deleteConversation}
                     onClick={() => void removeSession(session)}
                   >
-                    ×
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                      <path
+                        d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h2v9H7V9Zm4 0h2v9h-2V9Zm4 0h2v9h-2V9ZM6 21a2 2 0 0 1-2-2V8h16v11a2 2 0 0 1-2 2H6Z"
+                        fill="currentColor"
+                      />
+                    </svg>
                   </button>
                 </div>
               ))}

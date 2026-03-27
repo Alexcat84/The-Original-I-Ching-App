@@ -12,11 +12,20 @@ export function getSupabaseBrowser(): SupabaseClient {
   if (!url || !anon) {
     throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
   }
+  const storage =
+    typeof window !== "undefined"
+      ? {
+          getItem: (key: string) => window.sessionStorage.getItem(key),
+          setItem: (key: string, value: string) => window.sessionStorage.setItem(key, value),
+          removeItem: (key: string) => window.sessionStorage.removeItem(key),
+        }
+      : undefined;
   browserClient = createClient(url, anon, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
+      storage,
     },
   });
   return browserClient;

@@ -865,6 +865,10 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
 .chat-session-meta {
   color: var(--fg-muted);
   font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  white-space: nowrap;
 }
 
 .chat-session-main-btn {
@@ -879,7 +883,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
 
 .chat-session-time {
   color: color-mix(in srgb, var(--fg-muted) 85%, var(--accent));
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   line-height: 1.2;
 }
 
