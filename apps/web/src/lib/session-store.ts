@@ -307,14 +307,36 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
   if (sessionsError || !sessionRows?.length) return [];
 
   const sessionIds = sessionRows.map((s) => s.id);
-  const { data: consultRows, error: consultError } = await supabase
+  const baseConsultColumns =
+    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, image_url, thumbnail_url, public_sharing_id, created_at";
+  const withOracleColumns = `${baseConsultColumns}, oracle_type, oracle_bones`;
+
+  let consultRows: unknown[] | null = null;
+  let consultError: { message?: string } | null = null;
+
+  const withOracleRes = await supabase
     .from("consultations")
-    .select(
-      "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, image_url, thumbnail_url, public_sharing_id, created_at, oracle_type, oracle_bones",
-    )
+    .select(withOracleColumns)
     .eq("user_id", userId)
     .in("session_id", sessionIds)
     .order("session_position", { ascending: true });
+  consultRows = withOracleRes.data as unknown[] | null;
+  consultError = withOracleRes.error;
+
+  if (consultError) {
+    const msg = consultError.message ?? "";
+    // Backward-compatible path for DBs that still miss oracle columns.
+    if (msg.includes("oracle_type") || msg.includes("oracle_bones")) {
+      const fallbackRes = await supabase
+        .from("consultations")
+        .select(baseConsultColumns)
+        .eq("user_id", userId)
+        .in("session_id", sessionIds)
+        .order("session_position", { ascending: true });
+      consultRows = fallbackRes.data as unknown[] | null;
+      consultError = fallbackRes.error;
+    }
+  }
   if (consultError) return [];
 
   const bySession = new Map<string, StoredConsultation[]>();
