@@ -61,13 +61,18 @@ function registerErrorMessage(data: {
       return data.reason === "disposable"
         ? "No se aceptan correos temporales o desechables."
         : "El correo no pasó la validación (dominio o MX).";
-    case "create_user_failed":
+    case "sign_up_failed":
       return data.message ?? "No se pudo crear la cuenta (¿correo ya registrado?).";
     case "supabase_not_configured":
       return "El servidor no tiene Supabase configurado.";
     default:
       return data.message ?? "No se pudo registrar. Inténtalo de nuevo.";
   }
+}
+
+function isEmailNotConfirmedError(message: string): boolean {
+  const lower = message.toLowerCase();
+  return lower.includes("email not confirmed") || lower.includes("email_not_confirmed");
 }
 
 export default function LoginPage() {
@@ -83,6 +88,13 @@ export default function LoginPage() {
   const turnstileWidgetIdRef = useRef<string | null>(null);
   const turnstileHostRef = useRef<HTMLDivElement | null>(null);
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+  function switchMode(nextMode: "signin" | "signup") {
+    setMode(nextMode);
+    setPassword("");
+    setErr(null);
+    setMsg(null);
+  }
 
   useEffect(() => {
     if (!isSupabaseBrowserConfigured()) {
@@ -164,6 +176,10 @@ export default function LoginPage() {
       const sb = getSupabaseBrowser();
       const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password });
       if (error) {
+        if (isEmailNotConfirmedError(error.message)) {
+          setErr("Tu correo aún no está confirmado. Revisa tu bandeja y usa «Reenviar confirmación» si no lo recibiste.");
+          return;
+        }
         setErr(error.message);
         return;
       }
@@ -215,10 +231,64 @@ export default function LoginPage() {
         setErr(registerErrorMessage(data));
         return;
       }
-      setMsg("Te enviamos un enlace de confirmación. Ábrelo y luego vuelve aquí a iniciar sesión.");
-      setMode("signin");
+      setMsg("Te enviamos un enlace de confirmación al correo. Ábrelo para verificar tu cuenta y luego inicia sesión.");
+      switchMode("signin");
     } catch {
       setErr("Error de red. Inténtalo de nuevo.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function onResendConfirmation() {
+    setErr(null);
+    setMsg(null);
+    if (!isSupabaseBrowserConfigured()) return;
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
+      setErr("Escribe tu correo para reenviar la confirmación.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const sb = getSupabaseBrowser();
+      const origin = window.location.origin;
+      const { error } = await sb.auth.resend({
+        type: "signup",
+        email: normalizedEmail,
+        options: { emailRedirectTo: `${origin}/auth/callback` },
+      });
+      if (error) {
+        setErr(error.message);
+        return;
+      }
+      setMsg("Reenviamos el correo de confirmación. Revisa también tu carpeta de spam/no deseado.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function onForgotPassword() {
+    setErr(null);
+    setMsg(null);
+    if (!isSupabaseBrowserConfigured()) return;
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
+      setErr("Escribe tu correo para enviarte las instrucciones de restablecimiento.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const sb = getSupabaseBrowser();
+      const origin = window.location.origin;
+      const { error } = await sb.auth.resetPasswordForEmail(normalizedEmail, {
+        redirectTo: `${origin}/auth/callback`,
+      });
+      if (error) {
+        setErr(error.message);
+        return;
+      }
+      setMsg("Te enviamos instrucciones para restablecer tu contraseña. Revisa tu bandeja y spam/no deseado.");
     } finally {
       setLoading(false);
     }
@@ -265,9 +335,7 @@ export default function LoginPage() {
               aria-selected={mode === "signin"}
               className={`auth-pro-tab ${mode === "signin" ? "active" : ""}`}
               onClick={() => {
-                setMode("signin");
-                setErr(null);
-                setMsg(null);
+                switchMode("signin");
               }}
             >
               Iniciar sesión
@@ -278,9 +346,7 @@ export default function LoginPage() {
               aria-selected={mode === "signup"}
               className={`auth-pro-tab ${mode === "signup" ? "active" : ""}`}
               onClick={() => {
-                setMode("signup");
-                setErr(null);
-                setMsg(null);
+                switchMode("signup");
               }}
             >
               Crear cuenta
@@ -313,6 +379,24 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   required
                 />
+              </div>
+              <div className="auth-pro-actions-row">
+                <button
+                  type="button"
+                  className="auth-pro-inline-btn"
+                  onClick={() => void onForgotPassword()}
+                  disabled={loading}
+                >
+                  Olvidé mi contraseña
+                </button>
+                <button
+                  type="button"
+                  className="auth-pro-inline-btn"
+                  onClick={() => void onResendConfirmation()}
+                  disabled={loading}
+                >
+                  Reenviar confirmación
+                </button>
               </div>
               <button type="submit" className="auth-pro-btn auth-pro-btn-primary" disabled={loading}>
                 {loading ? "Entrando…" : "Entrar"}

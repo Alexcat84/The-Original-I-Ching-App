@@ -20,7 +20,7 @@ export default function AuthCallbackPage() {
 
   return (
     <div className="auth-callback-wrap">
-      <p>Finalizando sesión…</p>
+      <p>Verificando acceso… si venís de correo, estamos finalizando la confirmación o el restablecimiento.</p>
     </div>
   );
 }

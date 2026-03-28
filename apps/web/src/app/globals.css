@@ -3211,6 +3211,34 @@ html[data-theme="dark"] .auth-pro-tab.active {
   min-height: 2.5rem;
 }
 
+.auth-pro-actions-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.65rem;
+  margin: -0.25rem 0 0.85rem;
+  flex-wrap: wrap;
+}
+
+.auth-pro-inline-btn {
+  border: 0;
+  background: transparent;
+  color: var(--ghost-link);
+  font-size: 0.83rem;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.auth-pro-inline-btn:hover:not(:disabled) {
+  color: var(--fg);
+}
+
+.auth-pro-inline-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .auth-pro-btn {
   display: inline-flex;
   align-items: center;
