@@ -915,6 +915,8 @@ export default function HomePage() {
   const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<string[]>([]);
   const [pendingUserQuestion, setPendingUserQuestion] = useState<string | null>(null);
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
+  const [manageSubBusy, setManageSubBusy] = useState(false);
+  const [manageSubMessage, setManageSubMessage] = useState<string | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -1659,6 +1661,55 @@ export default function HomePage() {
       setError("No se pudo verificar el código por email. Inténtalo de nuevo.");
     } finally {
       setTwoFactorBusy(false);
+    }
+  }
+
+  async function openSubscriptionManagement() {
+    if (!accessToken) {
+      setError(isSpanish ? "Inicia sesión para gestionar tu suscripción." : "Sign in to manage your subscription.");
+      return;
+    }
+    setManageSubBusy(true);
+    setManageSubMessage(null);
+    try {
+      const res = await fetch("/api/account/subscription/manage", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      const data = (await res.json().catch(() => null)) as
+        | { ok?: boolean; managementUrl?: string; code?: string; message?: string }
+        | null;
+      if (!res.ok || !data?.ok || !data.managementUrl) {
+        const fallback = isSpanish
+          ? "No se pudo abrir la gestión de suscripción. Inténtalo de nuevo en unos minutos."
+          : "Could not open subscription management. Please try again in a few minutes.";
+        if (data?.code === "BILLING_NOT_CONFIGURED") {
+          setManageSubMessage(
+            isSpanish
+              ? "Falta configuración de billing (RevenueCat) en servidor."
+              : "Billing (RevenueCat) is not fully configured on server.",
+          );
+        } else if (data?.code === "BILLING_SYNC_FAILED") {
+          setManageSubMessage(fallback);
+        } else {
+          setManageSubMessage(fallback);
+        }
+        return;
+      }
+      window.open(data.managementUrl, "_blank", "noopener,noreferrer");
+      setManageSubMessage(
+        isSpanish
+          ? "Se abrió el portal de suscripción en una nueva pestaña."
+          : "Subscription portal opened in a new tab.",
+      );
+    } catch {
+      setManageSubMessage(
+        isSpanish
+          ? "No se pudo abrir la gestión de suscripción. Inténtalo de nuevo."
+          : "Could not open subscription management. Please try again.",
+      );
+    } finally {
+      setManageSubBusy(false);
     }
   }
 
@@ -2501,6 +2552,35 @@ export default function HomePage() {
                       </Link>
                       <Link href="/privacy">{isSpanish ? "Política de Privacidad" : "Privacy Policy"}</Link>
                       <Link href="/terms">{isSpanish ? "Términos del Servicio" : "Terms of Service"}</Link>
+                    </div>
+                    <div className="session-progress" role="group" aria-label="Gestión de suscripción">
+                      <span>{isSpanish ? "Suscripción" : "Subscription"}</span>
+                      <p className="meta-line tier-hint-line">
+                        {isSpanish
+                          ? "Auto-renovación y cancelación se gestionan desde tu portal de suscripción."
+                          : "Auto-renewal and cancellation are managed from your subscription portal."}
+                      </p>
+                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+                        <button
+                          type="button"
+                          className="composer-reading-pill"
+                          onClick={() => void openSubscriptionManagement()}
+                          disabled={manageSubBusy || !accessToken}
+                        >
+                          {manageSubBusy
+                            ? isSpanish
+                              ? "Abriendo..."
+                              : "Opening..."
+                            : isSpanish
+                              ? "Gestionar suscripción"
+                              : "Manage subscription"}
+                        </button>
+                      </div>
+                      {manageSubMessage ? (
+                        <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                          {manageSubMessage}
+                        </p>
+                      ) : null}
                     </div>
                     <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
                       <span>{isSpanish ? "Seguridad (2FA opcional)" : "Security (optional 2FA)"}</span>
