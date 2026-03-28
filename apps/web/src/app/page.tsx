@@ -17,7 +17,7 @@ import { creditsExhaustedBlock, type BillingTier } from "@/lib/credits-ui-copy";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-const PLANS_HREF = process.env.NEXT_PUBLIC_PLANS_URL?.trim() || "/guia";
+const PLANS_HREF = "/pricing";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
@@ -889,6 +889,7 @@ export default function HomePage() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
+  const [authUserId, setAuthUserId] = useState<string | null>(null);
   const [supabaseConfigError, setSupabaseConfigError] = useState(false);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
@@ -956,6 +957,13 @@ export default function HomePage() {
   );
   const activeRitualLine = (coinTick % 6) + 1;
   const [emptyThreadInvite, setEmptyThreadInvite] = useState(ui.emptyInviteMorning);
+  const userStorageScope = authUserId ?? "anon";
+  const streakDayStorageKey = `iching_last_day_${userStorageScope}`;
+  const streakDaysStorageKey = `iching_streak_days_${userStorageScope}`;
+  const dailyCountStorageKey = useCallback(
+    (day: string) => `iching_daily_count_${userStorageScope}_${day}`,
+    [userStorageScope],
+  );
   useEffect(() => {
     const h = new Date().getHours();
     if (h < 12) {
@@ -1338,14 +1346,14 @@ export default function HomePage() {
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);
-    const lastDay = localStorage.getItem("iching_last_day");
-    const storedStreak = Number(localStorage.getItem("iching_streak_days") ?? "0");
-    const storedDaily = Number(localStorage.getItem(`iching_daily_count_${today}`) ?? "0");
+    const lastDay = localStorage.getItem(streakDayStorageKey);
+    const storedStreak = Number(localStorage.getItem(streakDaysStorageKey) ?? "0");
+    const storedDaily = Number(localStorage.getItem(dailyCountStorageKey(today)) ?? "0");
     setDailyCount(storedDaily);
     if (!lastDay) {
       setStreakDays(Math.max(storedStreak, 1));
-      localStorage.setItem("iching_last_day", today);
-      localStorage.setItem("iching_streak_days", String(Math.max(storedStreak, 1)));
+      localStorage.setItem(streakDayStorageKey, today);
+      localStorage.setItem(streakDaysStorageKey, String(Math.max(storedStreak, 1)));
       return;
     }
     if (lastDay === today) {
@@ -1357,9 +1365,9 @@ export default function HomePage() {
     const diffDays = Math.round((curr.getTime() - last.getTime()) / (24 * 60 * 60 * 1000));
     const nextStreak = diffDays === 1 ? Math.max(storedStreak, 1) + 1 : 1;
     setStreakDays(nextStreak);
-    localStorage.setItem("iching_last_day", today);
-    localStorage.setItem("iching_streak_days", String(nextStreak));
-  }, []);
+    localStorage.setItem(streakDayStorageKey, today);
+    localStorage.setItem(streakDaysStorageKey, String(nextStreak));
+  }, [dailyCountStorageKey, streakDayStorageKey, streakDaysStorageKey]);
 
   useEffect(() => {
     if (!isSupabaseBrowserConfigured()) {
@@ -1373,11 +1381,13 @@ export default function HomePage() {
       if (cancelled) return;
       setAccessToken(session?.access_token ?? null);
       setAuthEmail(session?.user?.email ?? null);
+      setAuthUserId(session?.user?.id ?? null);
       setAuthReady(true);
     });
     const { data: sub } = sb.auth.onAuthStateChange((_event, session) => {
       setAccessToken(session?.access_token ?? null);
       setAuthEmail(session?.user?.email ?? null);
+      setAuthUserId(session?.user?.id ?? null);
     });
     return () => {
       cancelled = true;
@@ -1689,6 +1699,12 @@ export default function HomePage() {
               ? "Falta configuración de billing (RevenueCat) en servidor."
               : "Billing (RevenueCat) is not fully configured on server.",
           );
+        } else if (data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
+          setManageSubMessage(
+            isSpanish
+              ? "Tu cuenta no tiene una suscripción activa para gestionar."
+              : "Your account has no active subscription to manage.",
+          );
         } else if (data?.code === "BILLING_SYNC_FAILED") {
           setManageSubMessage(fallback);
         } else {
@@ -1882,7 +1898,7 @@ export default function HomePage() {
       const today = new Date().toISOString().slice(0, 10);
       setDailyCount((prev) => {
         const next = prev + 1;
-        localStorage.setItem(`iching_daily_count_${today}`, String(next));
+        localStorage.setItem(dailyCountStorageKey(today), String(next));
         return next;
       });
       setPhase("reading");

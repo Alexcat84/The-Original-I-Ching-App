@@ -17,11 +17,18 @@ export async function POST(req: Request) {
 
   const result = await syncUserTierFromRevenueCatRest(user.userId);
   if (!result.ok) {
-    const status = result.error === "not_configured" ? 503 : 502;
+    if (result.error === "not_configured") {
+      return NextResponse.json({
+        ok: false,
+        skipped: true,
+        reason: "billing_not_configured",
+      });
+    }
+    const status = 502;
     return apiError(status, {
       error: result.error,
-      code: result.error === "not_configured" ? "BILLING_NOT_CONFIGURED" : "BILLING_SYNC_FAILED",
-      action: result.error === "not_configured" ? "check_config" : "retry",
+      code: "BILLING_SYNC_FAILED",
+      action: "retry",
     });
   }
 

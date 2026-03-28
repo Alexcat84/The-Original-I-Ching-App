@@ -66,7 +66,7 @@ export async function POST(req: Request) {
   if (!subscriptionId) {
     return apiError(404, {
       error: "no_active_subscription",
-      code: "BILLING_NOT_CONFIGURED",
+      code: "BILLING_NO_ACTIVE_SUBSCRIPTION",
       action: "fix_input",
       message: "No active subscription found for this account.",
     });
