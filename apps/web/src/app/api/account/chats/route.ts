@@ -46,6 +46,7 @@ export async function GET(req: Request) {
         messageCount: entry.messageCount,
         firstConsultationAt: entry.firstConsultationAt,
         updatedAt: entry.updatedAt,
+        firstQuestion: entry.firstQuestion,
       })),
     });
   }

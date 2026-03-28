@@ -57,6 +57,7 @@ export interface UserSessionSummary {
   messageCount: number;
   firstConsultationAt: number | null;
   updatedAt: number;
+  firstQuestion: string | null;
 }
 
 
@@ -389,25 +390,35 @@ export async function getUserSessionSummaries(userId: string): Promise<UserSessi
   const sessionIds = sessionRows.map((s) => s.id);
   const { data: consultRows, error: consultError } = await supabase
     .from("consultations")
-    .select("session_id, created_at")
+    .select("session_id, created_at, question, session_position")
     .eq("user_id", userId)
     .in("session_id", sessionIds)
-    .order("created_at", { ascending: true });
+    .order("session_position", { ascending: true });
   if (consultError) return [];
 
-  const bySession = new Map<string, { count: number; firstAt: number | null; lastAt: number | null }>();
+  const bySession = new Map<
+    string,
+    { count: number; firstAt: number | null; lastAt: number | null; firstQuestion: string | null }
+  >();
   for (const row of consultRows ?? []) {
     const sessionId = String((row as { session_id: string }).session_id);
     const createdAt = new Date((row as { created_at: string }).created_at).getTime();
+    const question = String((row as { question?: string }).question ?? "").trim();
     const current = bySession.get(sessionId);
     if (!current) {
-      bySession.set(sessionId, { count: 1, firstAt: createdAt, lastAt: createdAt });
+      bySession.set(sessionId, {
+        count: 1,
+        firstAt: createdAt,
+        lastAt: createdAt,
+        firstQuestion: question || null,
+      });
       continue;
     }
     bySession.set(sessionId, {
       count: current.count + 1,
       firstAt: current.firstAt ?? createdAt,
       lastAt: createdAt,
+      firstQuestion: current.firstQuestion ?? (question || null),
     });
   }
 
@@ -427,6 +438,7 @@ export async function getUserSessionSummaries(userId: string): Promise<UserSessi
       messageCount: agg?.count ?? 0,
       firstConsultationAt: agg?.firstAt ?? null,
       updatedAt: agg?.lastAt ?? createdAt,
+      firstQuestion: agg?.firstQuestion ?? null,
     };
   });
 }

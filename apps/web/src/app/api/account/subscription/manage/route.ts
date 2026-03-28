@@ -49,6 +49,13 @@ export async function POST(req: Request) {
   }
 
   if (!listRes.ok) {
+    if (listRes.status === 404 || listRes.status === 400) {
+      return apiError(404, {
+        error: "no_active_subscription",
+        code: "BILLING_NO_ACTIVE_SUBSCRIPTION",
+        action: "fix_input",
+      });
+    }
     return apiError(502, { error: "billing_upstream_failed", code: "BILLING_SYNC_FAILED", action: "retry" });
   }
 

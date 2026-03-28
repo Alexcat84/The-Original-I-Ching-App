@@ -743,6 +743,7 @@ type AccountChatsSummaryResponse = {
     messageCount: number;
     firstConsultationAt: number | null;
     updatedAt: number;
+    firstQuestion?: string | null;
   }>;
 };
 
@@ -984,6 +985,7 @@ export default function HomePage() {
   const threadLimitReached =
     activeThread.length > 0 && result !== null && !result.canDeepen;
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
+  const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;
 
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
@@ -1476,6 +1478,20 @@ export default function HomePage() {
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
     let cancelled = false;
+    if (summaryCacheKey) {
+      try {
+        const cachedRaw = sessionStorage.getItem(summaryCacheKey);
+        if (cachedRaw) {
+          const cached = JSON.parse(cachedRaw) as ChatSessionState[];
+          if (Array.isArray(cached) && cached.length > 0) {
+            setSessions(cached);
+            setActiveSessionLocalId(cached[0]?.localId ?? null);
+          }
+        }
+      } catch {
+        // ignore cache hydration errors
+      }
+    }
     void (async () => {
       try {
         const res = await fetch("/api/account/chats?summary=1", {
@@ -1501,7 +1517,7 @@ export default function HomePage() {
               title:
                 entry.session.title && !knownNewSessionTitles.has(entry.session.title) && !knownInProgressTitles.has(entry.session.title)
                   ? entry.session.title
-                  : (isSpanish ? "Consulta" : "Consultation"),
+                  : (entry.firstQuestion?.trim().slice(0, 80) || (isSpanish ? "Consulta" : "Consultation")),
               sessionId: entry.session.sessionId,
               publicSessionId: entry.session.publicId,
               thread: [],
@@ -1513,6 +1529,13 @@ export default function HomePage() {
           .filter((s) => s.messageCount > 0);
         if (hydrated.length === 0) return;
         setSessions(hydrated);
+        if (summaryCacheKey) {
+          try {
+            sessionStorage.setItem(summaryCacheKey, JSON.stringify(hydrated));
+          } catch {
+            // ignore cache save errors
+          }
+        }
         const first = hydrated[0];
         setActiveSessionLocalId(first?.localId ?? null);
         if (first?.sessionId) {
@@ -1525,7 +1548,21 @@ export default function HomePage() {
     return () => {
       cancelled = true;
     };
-  }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish, loadSessionThread]);
+  }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish, loadSessionThread, summaryCacheKey]);
+
+  useEffect(() => {
+    if (!summaryCacheKey) return;
+    const entries = sessions.filter((s) => s.messageCount > 0).map((s) => ({ ...s, thread: [] }));
+    try {
+      if (entries.length === 0) {
+        sessionStorage.removeItem(summaryCacheKey);
+      } else {
+        sessionStorage.setItem(summaryCacheKey, JSON.stringify(entries));
+      }
+    } catch {
+      // ignore cache persistence errors
+    }
+  }, [sessions, summaryCacheKey]);
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
@@ -1622,7 +1659,15 @@ export default function HomePage() {
       const data = (await res.json()) as { ok?: boolean; code?: string };
       if (!res.ok || !data.ok) {
         if (data.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
-          setError("2FA por email no está habilitado en servidor (faltan variables de entorno).");
+          setError(
+            "2FA por email no está habilitado en servidor. Revisa RESEND_API_KEY, TWO_FACTOR_EMAIL_FROM y TWO_FACTOR_EMAIL_CODE_SECRET.",
+          );
+          return;
+        }
+        if (data.code === "TWO_FACTOR_EMAIL_DELIVERY_FAILED") {
+          setError(
+            "No se pudo enviar el código por email. Verifica que TWO_FACTOR_EMAIL_FROM esté validado en Resend y que la API key sea correcta.",
+          );
           return;
         }
         setError("No se pudo enviar el código por email. Inténtalo de nuevo.");
