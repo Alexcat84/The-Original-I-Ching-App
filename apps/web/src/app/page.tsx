@@ -1740,8 +1740,12 @@ export default function HomePage() {
       return;
     }
     const questionForRequest = question.trim();
-    if (oracleMode === "oracle_bones" && !questionForRequest) {
-      setError("Escribe el cargo positivo (una afirmación clara) para consultar los huesos.");
+    if (!questionForRequest) {
+      setError(
+        oracleMode === "oracle_bones"
+          ? "Escribe el cargo positivo (una afirmación clara) para consultar los huesos."
+          : "Escribe una consulta antes de enviar.",
+      );
       return;
     }
     if (!accessToken) {
@@ -1774,7 +1778,7 @@ export default function HomePage() {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          question: questionForRequest || "Silent consultation",
+          question: questionForRequest,
           language: detectInputLanguage(questionForRequest, locale),
           sessionId: sessionIdForRequest,
           sessionTitle: activeSession.title,
@@ -1879,7 +1883,7 @@ export default function HomePage() {
         question:
           data.oracleType === "oracle_bones" && data.oracleBones?.positiveCharge
             ? data.oracleBones.positiveCharge
-            : questionForRequest || "Silent consultation",
+            : questionForRequest,
         createdAt: Date.now(),
       };
       updateActiveSession((current) => ({

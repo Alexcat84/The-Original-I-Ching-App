@@ -115,6 +115,7 @@ export async function POST(req: Request) {
 
   try {
   const question = typeof body.question === "string" ? body.question : "";
+  const trimmedQuestion = question.trim();
   const rawLanguage = typeof body.language === "string" ? body.language : "es";
   const language: AppLocale =
     (SUPPORTED_LOCALES as readonly string[]).includes(rawLanguage) ? (rawLanguage as AppLocale) : "es";
@@ -137,6 +138,7 @@ export async function POST(req: Request) {
   const tierResolved = await getUserBillingTier(authedUserId);
   const policy = await resolveConsultPolicy({ authUser, tierResolved });
   const { adminBypassAllowed, adminUnlimitedCredits, tierEffective, tierKey } = policy;
+  const maxDepth = Math.max(1, CONTEXT_LIMITS[tierKey].sessionDepth);
 
   const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
   const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
@@ -157,10 +159,25 @@ export async function POST(req: Request) {
       { status: 403 },
     );
   }
+  if (oracleMode === "iching" && !trimmedQuestion) {
+    return NextResponse.json(
+      { error: "question_required", code: "CONSULT_QUESTION_REQUIRED", action: "fix_input" },
+      { status: 400 },
+    );
+  }
   const sessionId =
     typeof body.sessionId === "string" && isPersistableUuid(body.sessionId)
       ? body.sessionId
       : randomUUID();
+
+  const isDeepening = Boolean(body.isDeepening);
+  const previousRows = mapHistoryToRows(body.history);
+  if (isDeepening && previousRows.length >= maxDepth) {
+    return NextResponse.json(
+      { error: "thread_limit_reached", code: "CONSULT_THREAD_LIMIT_REACHED", action: "new_session" },
+      { status: 409 },
+    );
+  }
 
   const credit = adminUnlimitedCredits
     ? { allowed: true, remaining: 999_999, limit: 999_999, cycleEndIso: null as string | null }
@@ -178,7 +195,6 @@ export async function POST(req: Request) {
       { status: 402 },
     );
   }
-  const isDeepening = Boolean(body.isDeepening);
   const adminConfig = getAdminConfig();
   const adminAllowed = adminBypassAllowed;
   const responseMode =
@@ -189,13 +205,11 @@ export async function POST(req: Request) {
         : adminConfig.responseModeDefault;
   const imageProviderOverride =
     adminAllowed && body.imageProviderOverride ? body.imageProviderOverride : adminConfig.imageProviderDefault;
-  const previousRows = mapHistoryToRows(body.history);
-
   if (oracleMode === "oracle_bones") {
     const positive =
       typeof body.oracleBones?.positiveCharge === "string" && body.oracleBones.positiveCharge.trim()
         ? body.oracleBones.positiveCharge.trim()
-        : question.trim();
+        : trimmedQuestion;
     if (!positive) {
       return NextResponse.json(
         { error: "oracle_bones_charge_required", code: "ORACLE_BONES_CHARGE_REQUIRED", action: "fix_input" },
@@ -251,7 +265,6 @@ export async function POST(req: Request) {
     };
 
     const nextPosition = previousRows.length + 1;
-    const maxDepth = Math.max(1, CONTEXT_LIMITS[tierKey].sessionDepth);
     const canDeepen = nextPosition < maxDepth;
     const sharing = await upsertSessionAndConsultation({
       userId: authedUserId,
@@ -321,7 +334,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const castResult = performCast(question, language);
+  const castResult = performCast(trimmedQuestion, language);
   const context = resolveSessionContext({
     tier: tierKey,
     sessionId,
@@ -374,7 +387,6 @@ export async function POST(req: Request) {
   image = await finalizeReadingImages(image, tierEffective);
 
   const nextPosition = previousRows.length + 1;
-  const maxDepth = Math.max(1, CONTEXT_LIMITS[tierKey].sessionDepth);
   const canDeepen = nextPosition < maxDepth;
   const sharing = await upsertSessionAndConsultation({
     userId: authedUserId,
@@ -387,7 +399,7 @@ export async function POST(req: Request) {
       consultationId: castResult.id,
       sessionId,
       sessionPosition: nextPosition,
-      question,
+      question: trimmedQuestion,
       language,
       primaryHexagram: castResult.primaryHexagram.number,
       primaryHexagramName: castResult.primaryHexagram.name,
