@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const defaultHost = process.env.NEXT_PUBLIC_APP_URL ?? "https://ichingora.app";
+const defaultHost = process.env.NEXT_PUBLIC_APP_URL ?? "https://theoriginaliching.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = defaultHost.replace(/\/$/, "");

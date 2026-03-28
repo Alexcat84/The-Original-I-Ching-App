@@ -66,6 +66,7 @@ type ConsultResponse = {
 
 type ConsultationItem = ConsultResponse & { question: string };
 type Tier = "free" | "seeker" | "practitioner" | "master" | "oracle";
+type CreditsType = "monthly" | "lifetime";
 type ResponseMode = "directo" | "ritual" | "profundizar";
 type OracleMode = "iching" | "oracle_bones";
 
@@ -884,6 +885,7 @@ export default function HomePage() {
   const knownInProgressTitles = useMemo(() => new Set<string>(["Consulta en progreso", "Consultation in progress"]), []);
   const [tier, setTier] = useState<Tier>("free");
   const [monthlyCreditsLimit, setMonthlyCreditsLimit] = useState(2);
+  const [creditsType, setCreditsType] = useState<CreditsType>("lifetime");
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
@@ -1385,6 +1387,7 @@ export default function HomePage() {
     if (!accessToken) {
       setTier("free");
       setMonthlyCreditsLimit(2);
+      setCreditsType("lifetime");
       setTwoFactorEnabled(false);
       setTwoFactorMethod(null);
       return;
@@ -1395,12 +1398,19 @@ export default function HomePage() {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
         .then((r) => (r.ok ? r.json() : null))
-        .then((j: { tier?: Tier; creditsLimit?: number; twoFactorEnabled?: boolean; twoFactorMethod?: string | null } | null) => {
+        .then((j: {
+          tier?: Tier;
+          creditsLimit?: number;
+          creditsType?: CreditsType;
+          twoFactorEnabled?: boolean;
+          twoFactorMethod?: string | null;
+        } | null) => {
           if (cancelled || !j?.tier) return;
           setTier(j.tier);
           if (typeof j.creditsLimit === "number" && Number.isFinite(j.creditsLimit)) {
             setMonthlyCreditsLimit(j.creditsLimit);
           }
+          setCreditsType(j.creditsType === "monthly" ? "monthly" : "lifetime");
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
           setTwoFactorMethod(j.twoFactorMethod ?? null);
         })
@@ -1883,7 +1893,7 @@ export default function HomePage() {
                 crea una cuenta gratuita o entra con Google.
               </p>
               <ul className="auth-soft-list">
-                <li>Plan gratuito: 2 consultas al mes</li>
+                <li>Plan gratuito: 2 consultas de prueba (lifetime)</li>
               </ul>
               <div className="auth-soft-actions">
                 <Link href="/login" className="auth-soft-primary" onClick={() => setAuthContinueOpen(false)}>
@@ -2581,7 +2591,14 @@ export default function HomePage() {
                         <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
                         <p className="meta-line tier-hint-line">
                           {isSpanish ? "Plan " : "Plan "}<strong>{tier}</strong>: {monthlyCreditsLimit}{" "}
-                          {isSpanish ? "consultas por mes" : "consultations per month"} · {isSpanish ? "hasta" : "up to"}{" "}
+                          {creditsType === "lifetime"
+                            ? isSpanish
+                              ? "consultas lifetime"
+                              : "lifetime consultations"
+                            : isSpanish
+                              ? "consultas por mes"
+                              : "consultations per month"}{" "}
+                          · {isSpanish ? "hasta" : "up to"}{" "}
                           {CONTEXT_LIMITS[tier].sessionDepth} {isSpanish ? "en este hilo." : "in this thread."}
                         </p>
                         <div className="session-progress-bar">

@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { sharingUtm } from "@iching-oracle/sharing";
-import { CopyShareLinkButton } from "@/components/CopyShareLinkButton";
 import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
 import { getConsultationByPublicId } from "@/lib/session-store";
 
@@ -40,17 +38,10 @@ export default async function ReadingPage({ params }: ReadingPageProps) {
   if (!row) {
     return <main className="oracle-shell"><p>Lectura no encontrada.</p></main>;
   }
-  const sharePath = `/r/${params.id}`;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://ichingora.app";
-  const fullShareUrl = `${appUrl}${sharePath}`;
-  const whatsapp = `https://wa.me/?text=${encodeURIComponent(fullShareUrl)}`;
-  const x = `https://x.com/intent/tweet?url=${encodeURIComponent(fullShareUrl)}`;
-  const facebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullShareUrl)}`;
-  const telegram = `https://t.me/share/url?url=${encodeURIComponent(fullShareUrl)}`;
   return (
     <main className="oracle-shell">
       <section className="oracle-card">
-        <p className="eyebrow">Lectura compartida</p>
+        <p className="eyebrow">Lectura archivada</p>
         <h1>
           {row.oracleType === "oracle_bones" ? "甲骨文" : `${row.primaryHexagram}.`} {row.primaryHexagramName}
         </h1>
@@ -64,20 +55,8 @@ export default async function ReadingPage({ params }: ReadingPageProps) {
         <p>{row.interpretation}</p>
         <img src={row.imageUrl} alt={`Imagen de ${row.primaryHexagramName}`} className="oracle-image" />
         <div className="session-actions">
-          <a className="secondary-btn" href={whatsapp} target="_blank" rel="noreferrer">WhatsApp</a>
-          <a className="secondary-btn" href={x} target="_blank" rel="noreferrer">X</a>
-          <a className="secondary-btn" href={facebook} target="_blank" rel="noreferrer">Facebook</a>
-          <a className="secondary-btn" href={telegram} target="_blank" rel="noreferrer">Telegram</a>
-          <CopyShareLinkButton url={fullShareUrl} label="Instagram (copiar enlace)" />
           <a className="secondary-btn" href={row.imageUrl} target="_blank" rel="noreferrer" download>
             Descargar imagen
-          </a>
-          <a
-            className="secondary-btn"
-            data-testid="cta-register-btn"
-            href={sharingUtm("/register", "whatsapp", appUrl)}
-          >
-            🔮 Consulta tu propio I Ching — Gratis
           </a>
         </div>
       </section>

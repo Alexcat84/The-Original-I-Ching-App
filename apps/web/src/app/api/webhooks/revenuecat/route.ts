@@ -30,6 +30,7 @@ interface RevenueCatEvent {
   entitlement_ids?: string[] | null;
   entitlement_id?: string;
   purchased_at_ms?: number;
+  expiration_at_ms?: number;
 }
 
 async function claimEventOnce(eventHash: string, event?: RevenueCatEvent): Promise<"claimed" | "duplicate" | "no_store"> {
@@ -121,9 +122,8 @@ export async function POST(req: Request) {
     });
   }
 
-  const renewalDate = event.purchased_at_ms
-    ? new Date(event.purchased_at_ms).toISOString()
-    : undefined;
+  const renewalDateMs = typeof event.expiration_at_ms === "number" ? event.expiration_at_ms : event.purchased_at_ms;
+  const renewalDate = renewalDateMs ? new Date(renewalDateMs).toISOString() : undefined;
   await upsertUserTier(event.app_user_id, tier, renewalDate);
 
   return NextResponse.json({

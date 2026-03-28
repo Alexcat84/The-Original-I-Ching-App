@@ -5,5 +5,5 @@
 export function getAnthropicModelId(env: NodeJS.ProcessEnv = process.env): string {
   const id = env.ANTHROPIC_MODEL?.trim();
   if (id) return id;
-  return "claude-sonnet-4-5";
+  return "claude-sonnet-4-5-20250929";
 }

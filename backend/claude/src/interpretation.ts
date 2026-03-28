@@ -23,18 +23,8 @@ ABSOLUTE RULES:
 9. ANTI-REPETITION: Each concrete point (a line's counsel, a judgment phrase, a practical recommendation) appears at most once in the entire answer. Do not restate the same advice across sections with different wording.
 10. GROUNDING: Every interpretive claim must tether to the supplied judgment, Image, or line text—paraphrase or quote in blockquote, then bridge to the question. Avoid vague uplift that could apply to any hexagram.`;
 
-/**
- * Output budget by tier. Scroll-style I Ching answers with 5 sections + quotes
- * routinely need 900–1800+ tokens in Spanish; lower ceilings cut off mid-sentence.
- * Capped at 4096 for broad Anthropic model compatibility.
- */
-const MAX_TOKENS_BY_TIER = {
-  free: 2048,
-  seeker: 3072,
-  practitioner: 4096,
-  master: 4096,
-  oracle: 4096,
-} as const;
+/** Same token budget for all tiers. */
+const MAX_TOKENS = 4096;
 
 function getLanguageName(language: string): string {
   const map: Record<string, string> = {
@@ -53,19 +43,13 @@ function getLanguageName(language: string): string {
 
 function buildCurrentCastPrompt(
   cast: CastResult,
-  tier: string,
+  _tier: string,
   language: string,
   hasContext: boolean,
   mode: ResponseMode,
 ): string {
   const { question, textsForClaude: t, primaryHexagram: p, transformedHexagram: tr, mutationRule } = cast;
-  const wordCounts: Record<string, string> = {
-    free: "200-260",
-    seeker: "340-420",
-    practitioner: "480-580",
-    master: "600-720",
-    oracle: "720-880",
-  };
+  const targetWordCount = "700-900";
 
   const lineBlock =
     t.selectedLineTexts.length > 0
@@ -159,7 +143,7 @@ INSTRUCTIONS:
 - ANTI-REPETITION: if you already stated an idea, do not restate it in other words in another section.
 - ${mode === "ritual" ? "Follow the scroll structure; keep paragraphs visually compact (avoid stacking many one-line paragraphs)." : mode === "profundizar" ? "Max 2 sections as specified." : "Max 2 titled sections as specified."}
 - ${modeInstruction}
-- Length: ${wordCounts[tier] ?? wordCounts.free} words
+- Length: ${targetWordCount} words
 - If source excerpts arrive in a different language (often English), TRANSLATE them into the response language before quoting. Do not leave mixed-language fragments.
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
 - Respond in ${getLanguageName(language)}
@@ -175,8 +159,7 @@ export async function generateInterpretation(
 ): Promise<{ text: string; category: ConsultationCategory }> {
   const { ANTHROPIC_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const language = castResult.language;
-  const maxTokens =
-    MAX_TOKENS_BY_TIER[tier as keyof typeof MAX_TOKENS_BY_TIER] ?? MAX_TOKENS_BY_TIER.free;
+  const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
 
   const hasContext = Boolean(context && context.previousConsultations.length > 0);

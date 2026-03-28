@@ -50,7 +50,8 @@ function resolveTierKey(tier: string): TierKey {
 }
 
 function tierRequiresTwoFactor(tierKey: TierKey): boolean {
-  return tierKey === "practitioner" || tierKey === "master" || tierKey === "oracle";
+  void tierKey;
+  return false;
 }
 
 async function getTwoFactorEnabled(userId: string): Promise<boolean> {

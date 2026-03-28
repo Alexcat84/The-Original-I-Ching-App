@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
-import { CREDITS_PER_MONTH, getUserBillingTier } from "@/lib/credits";
+import { CREDITS_PER_MONTH, getUserBillingTier, TIER_CONFIG } from "@/lib/credits";
 import { CONTEXT_LIMITS, type TierKey } from "@iching-oracle/context-engine";
 
 export const runtime = "nodejs";
@@ -31,6 +31,7 @@ export async function GET(req: Request) {
     email: user.email,
     tier: tierKey,
     creditsLimit: CREDITS_PER_MONTH[tierKey],
+    creditsType: TIER_CONFIG[tierKey].creditsType,
     sessionDepthLimit: CONTEXT_LIMITS[tierKey].sessionDepth,
     twoFactorEnabled: twoFactor.enabled,
     twoFactorMethod: twoFactor.method,

@@ -23,8 +23,8 @@ export function creditsExhaustedBlock(
     case "free":
       return {
         title: "Llegaste al límite del plan gratuito",
-        body: `Este mes ya usaste las ${limit} consultas incluidas. Si quieres seguir consultando sin esperar, puedes pasar a un plan con más lecturas y funciones.`,
-        resetLine,
+        body: `Ya usaste tus ${limit} consultas de prueba (lifetime). Para seguir consultando, debes activar un plan premium.`,
+        resetLine: "El plan Free no se reinicia por ciclo: las consultas de prueba son únicas.",
         primaryCta: "Ver planes y ampliar",
       };
     case "seeker":

@@ -37,8 +37,8 @@ export default function GuiaRapidaPage() {
         <h2>{isEs ? "Privacidad" : "Privacy"}</h2>
         <ul>
           <li>{isEs ? "Tus chats e imágenes son privados de tu cuenta." : "Your chats and images are private to your account."}</li>
-          <li>{isEs ? "No se publican automáticamente ni se comparten por defecto." : "Nothing is auto-published or shared by default."}</li>
-          <li>{isEs ? "Para compartir, siempre debes hacerlo tú de forma explícita." : "Sharing is always explicit and user-initiated."}</li>
+          <li>{isEs ? "No existe publicación ni compartido viral de lecturas." : "There is no public/viral sharing for readings."}</li>
+          <li>{isEs ? "La salida externa permitida es descarga de imagen y exportación PDF." : "The only outbound options are image download and PDF export."}</li>
         </ul>
 
         <h2>{isEs ? "Chats y sesiones" : "Chats and sessions"}</h2>
@@ -96,20 +96,21 @@ export default function GuiaRapidaPage() {
         <h2 id="planes">{isEs ? "Planes y pagos" : "Plans and pricing"}</h2>
         <p>{isEs ? "Precios actuales:" : "Current pricing:"}</p>
         <ul>
-          <li><strong>Free:</strong> {isEs ? "$0 · 2 consultas al mes" : "$0 · 2 consultations / month"}</li>
-          <li><strong>Seeker:</strong> {isEs ? "$6.99/mes · $67.10/año" : "$6.99/month · $67.10/year"}</li>
-          <li><strong>Practitioner:</strong> {isEs ? "$11.99/mes · $115.10/año" : "$11.99/month · $115.10/year"}</li>
-          <li><strong>Master:</strong> {isEs ? "$19.99/mes · $191.90/año" : "$19.99/month · $191.90/year"}</li>
-          <li><strong>Oracle:</strong> {isEs ? "$44.99/mes · $431.90/año" : "$44.99/month · $431.90/year"}</li>
+          <li><strong>Free:</strong> {isEs ? "$0 · 2 consultas de prueba (lifetime)" : "$0 · 2 lifetime trial consultations"}</li>
+          <li><strong>Seeker:</strong> {isEs ? "$6.99/mes · $75.49/año" : "$6.99/month · $75.49/year"}</li>
+          <li><strong>Practitioner:</strong> {isEs ? "$11.99/mes · $129.49/año" : "$11.99/month · $129.49/year"}</li>
+          <li><strong>Master:</strong> {isEs ? "$19.99/mes · $215.89/año" : "$19.99/month · $215.89/year"}</li>
+          <li><strong>Oracle:</strong> {isEs ? "$44.99/mes · $485.89/año" : "$44.99/month · $485.89/year"}</li>
         </ul>
+        <p>{isEs ? "Plan anual: ahorro exacto del 10% frente al pago mes a mes." : "Annual plan: exact 10% savings vs month-to-month."}</p>
 
         <p>{isEs ? "Límites por plan (consultas al mes / máximo en un mismo chat):" : "Plan limits (monthly consultations / max in same thread):"}</p>
         <ul>
-          <li><strong>Free:</strong> {isEs ? "2 al mes · hasta 2 en el mismo chat" : "2/month · up to 2 in one thread"}</li>
-          <li><strong>Seeker:</strong> {isEs ? "60 al mes · hasta 3 en el mismo chat" : "60/month · up to 3 in one thread"}</li>
-          <li><strong>Practitioner:</strong> {isEs ? "180 al mes · hasta 5 en el mismo chat" : "180/month · up to 5 in one thread"}</li>
-          <li><strong>Master:</strong> {isEs ? "500 al mes · hasta 8 en el mismo chat" : "500/month · up to 8 in one thread"}</li>
-          <li><strong>Oracle:</strong> {isEs ? "2000 al mes · hasta 10 en el mismo chat" : "2000/month · up to 10 in one thread"}</li>
+          <li><strong>Free:</strong> {isEs ? "2 lifetime · sin continuidad en hilo (1 por sesión)" : "2 lifetime · no thread continuity (1 per session)"}</li>
+          <li><strong>Seeker:</strong> {isEs ? "15 al mes · hasta 3 en el mismo chat" : "15/month · up to 3 in one thread"}</li>
+          <li><strong>Practitioner:</strong> {isEs ? "40 al mes · hasta 5 en el mismo chat" : "40/month · up to 5 in one thread"}</li>
+          <li><strong>Master:</strong> {isEs ? "100 al mes · hasta 8 en el mismo chat" : "100/month · up to 8 in one thread"}</li>
+          <li><strong>Oracle:</strong> {isEs ? "350 al mes · hasta 12 en el mismo chat" : "350/month · up to 12 in one thread"}</li>
         </ul>
 
         <p>

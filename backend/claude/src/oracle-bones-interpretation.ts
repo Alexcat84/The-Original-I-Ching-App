@@ -14,14 +14,8 @@ One or two short flowing paragraphs, no bullet lists.
 Write entirely in the user's requested language—no mixing Spanish and English (or other pairs) in the same response.
 Do not append generic legal or symbolic-vs-prediction disclaimers; the app handles compliance elsewhere.`;
 
-/** max_tokens by product tier; model = getAnthropicModelId(env) for every tier. */
-const MAX_TOKENS_BY_TIER = {
-  free: 900,
-  seeker: 1100,
-  practitioner: 1400,
-  master: 1800,
-  oracle: 2048,
-} as const;
+/** Same token budget for all tiers. */
+const MAX_TOKENS = 4096;
 
 function getLanguageName(language: string): string {
   const map: Record<string, string> = {
@@ -40,18 +34,12 @@ function getLanguageName(language: string): string {
 
 function buildOracleBonesUserContent(
   cast: OracleBonesCastResult,
-  tier: string,
+  _tier: string,
   language: string,
   hasContext: boolean,
   mode: ResponseMode,
 ): string {
-  const wordCounts: Record<string, string> = {
-    free: "120-150",
-    seeker: "150-180",
-    practitioner: "220-260",
-    master: "300-340",
-    oracle: "380-420",
-  };
+  const targetWordCount = "380-500";
   const aff =
     cast.affirmsPositive === null
       ? "ANCESTORS SILENT — no clear yes/no after repeated indeterminate cracks."
@@ -86,7 +74,7 @@ INSTRUCTIONS:
   spiritual_inner, family_home, decision_path, conflict_challenge,
   travel_change, general
 - Do not invent a different crack shape or verdict.
-- Length: ${wordCounts[tier] ?? wordCounts.free} words
+- Length: ${targetWordCount} words
 - Respond in ${getLanguageName(language)}
 `.trim();
 }
@@ -108,8 +96,7 @@ export async function generateOracleBonesInterpretation(
   }
 
   const { ANTHROPIC_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
-  const maxTokens =
-    MAX_TOKENS_BY_TIER[tier as keyof typeof MAX_TOKENS_BY_TIER] ?? MAX_TOKENS_BY_TIER.free;
+  const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
   const userContent = hasContext && context
