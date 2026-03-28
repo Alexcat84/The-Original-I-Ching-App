@@ -2495,10 +2495,12 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="composer-doc-links">
-                      <Link href="/guia">{isSpanish ? "Guía rápida de uso" : "Quick usage guide"}</Link>
-                      <Link href="/documentacion/iching#notas-metodos">
+                      <Link href="/quickstart">{isSpanish ? "Quickstart (uso)" : "Quickstart (usage)"}</Link>
+                      <Link href="/notes">
                         {isSpanish ? "Notas y origen de los métodos (I Ching y Huesos)" : "Method notes and origins (I Ching and Bones)"}
                       </Link>
+                      <Link href="/privacy">{isSpanish ? "Política de Privacidad" : "Privacy Policy"}</Link>
+                      <Link href="/terms">{isSpanish ? "Términos del Servicio" : "Terms of Service"}</Link>
                     </div>
                     <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
                       <span>{isSpanish ? "Seguridad (2FA opcional)" : "Security (optional 2FA)"}</span>

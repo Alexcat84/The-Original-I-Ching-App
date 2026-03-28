@@ -16,7 +16,9 @@ export default function GuiaRapidaPage() {
   return (
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
-        <Link href="/">{isEs ? "← Volver al oráculo" : "← Back to oracle"}</Link>
+        <Link href="/">{isEs ? "← Volver al oráculo" : "← Back to oracle"}</Link> ·{" "}
+        <Link href="/quickstart">{isEs ? "Quickstart" : "Quickstart"}</Link> ·{" "}
+        <Link href="/notes">{isEs ? "Notas de métodos" : "Method notes"}</Link>
       </nav>
       <article className="doc-article">
         <h1>{isEs ? "Guía rápida de uso" : "Quick usage guide"}</h1>
@@ -120,7 +122,9 @@ export default function GuiaRapidaPage() {
         </p>
 
         <p className="doc-footer-links">
-          <Link href="/documentacion/iching">{isEs ? "Documentación sobre el I Ching" : "I Ching documentation"}</Link>
+          <Link href="/documentacion/iching">{isEs ? "Documentación sobre el I Ching" : "I Ching documentation"}</Link> ·{" "}
+          <Link href="/privacy">{isEs ? "Política de Privacidad" : "Privacy Policy"}</Link> ·{" "}
+          <Link href="/terms">{isEs ? "Términos del Servicio" : "Terms of Service"}</Link>
         </p>
       </article>
     </div>
