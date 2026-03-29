@@ -69,6 +69,15 @@ type Tier = "free" | "seeker" | "practitioner" | "master" | "oracle";
 type CreditsType = "monthly" | "lifetime";
 type ResponseMode = "directo" | "ritual" | "profundizar";
 type OracleMode = "iching" | "oracle_bones";
+type SubscriptionStatusView = {
+  id: string | null;
+  status: string | null;
+  givesAccess: boolean;
+  store: string | null;
+  productId: string | null;
+  currentPeriodEndsAt: string | null;
+  autoRenew: boolean | null;
+};
 
 const RUNTIME_TEXT: Record<
   AppLocale,
@@ -925,6 +934,12 @@ export default function HomePage() {
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
   const [manageSubBusy, setManageSubBusy] = useState(false);
   const [manageSubMessage, setManageSubMessage] = useState<string | null>(null);
+  const [subscriptionCenterOpen, setSubscriptionCenterOpen] = useState(false);
+  const [subscriptionCenterBusy, setSubscriptionCenterBusy] = useState(false);
+  const [subscriptionCenterError, setSubscriptionCenterError] = useState<string | null>(null);
+  const [subscriptionManagementUrl, setSubscriptionManagementUrl] = useState<string | null>(null);
+  const [subscriptionPrimary, setSubscriptionPrimary] = useState<SubscriptionStatusView | null>(null);
+  const [subscriptionItems, setSubscriptionItems] = useState<SubscriptionStatusView[]>([]);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -1273,6 +1288,11 @@ export default function HomePage() {
     setAuthUserId(null);
     setSecondFactorVerified(false);
     setTwoFactorModalOpen(false);
+    setSubscriptionCenterOpen(false);
+    setSubscriptionManagementUrl(null);
+    setSubscriptionPrimary(null);
+    setSubscriptionItems([]);
+    setSubscriptionCenterError(null);
   }, [authUserId]);
 
   const sessionsListed = useMemo(() => sessions.filter((s) => s.messageCount > 0), [sessions]);
@@ -1428,6 +1448,11 @@ export default function HomePage() {
       setTwoFactorMethod(null);
       setSecondFactorVerified(false);
       setTwoFactorModalOpen(false);
+      setSubscriptionCenterOpen(false);
+      setSubscriptionManagementUrl(null);
+      setSubscriptionPrimary(null);
+      setSubscriptionItems([]);
+      setSubscriptionCenterError(null);
       return;
     }
     let cancelled = false;
@@ -1945,6 +1970,70 @@ export default function HomePage() {
       );
     } finally {
       setManageSubBusy(false);
+    }
+  }
+
+  async function openSubscriptionCenter() {
+    if (!accessToken) {
+      setError(isSpanish ? "Inicia sesión para gestionar tu suscripción." : "Sign in to manage your subscription.");
+      return;
+    }
+    setSubscriptionCenterOpen(true);
+    setSubscriptionCenterBusy(true);
+    setSubscriptionCenterError(null);
+    setManageSubMessage(null);
+    try {
+      const res = await fetch("/api/account/subscription/status", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${accessToken}` },
+        cache: "no-store",
+      });
+      const data = (await res.json().catch(() => null)) as
+        | {
+            ok?: boolean;
+            code?: string;
+            tier?: Tier;
+            hasActiveSubscription?: boolean;
+            primarySubscription?: SubscriptionStatusView | null;
+            subscriptions?: SubscriptionStatusView[];
+            managementUrl?: string | null;
+          }
+        | null;
+      if (!res.ok || !data?.ok) {
+        if (data?.code === "BILLING_NOT_CONFIGURED") {
+          setSubscriptionCenterError(
+            isSpanish
+              ? "Falta configuración de billing (RevenueCat) en servidor."
+              : "Billing (RevenueCat) is not fully configured on server.",
+          );
+          return;
+        }
+        setSubscriptionCenterError(
+          isSpanish
+            ? "No se pudo cargar el panel de suscripción. Inténtalo de nuevo."
+            : "Could not load subscription center. Please try again.",
+        );
+        return;
+      }
+      if (data.tier) setTier(data.tier);
+      setSubscriptionPrimary(data.primarySubscription ?? null);
+      setSubscriptionItems(Array.isArray(data.subscriptions) ? data.subscriptions : []);
+      setSubscriptionManagementUrl(data.managementUrl ?? null);
+      if (!data.hasActiveSubscription) {
+        setManageSubMessage(
+          isSpanish
+            ? "No hay suscripción activa en este momento. Puedes iniciar o mejorar tu plan."
+            : "No active subscription found right now. You can start or upgrade your plan.",
+        );
+      }
+    } catch {
+      setSubscriptionCenterError(
+        isSpanish
+          ? "No se pudo cargar el panel de suscripción. Inténtalo de nuevo."
+          : "Could not load subscription center. Please try again.",
+      );
+    } finally {
+      setSubscriptionCenterBusy(false);
     }
   }
 
@@ -2825,16 +2914,16 @@ export default function HomePage() {
                         <button
                           type="button"
                           className="composer-reading-pill"
-                          onClick={() => void openSubscriptionManagement()}
-                          disabled={manageSubBusy || !accessToken}
+                          onClick={() => void openSubscriptionCenter()}
+                          disabled={(manageSubBusy || subscriptionCenterBusy) || !accessToken}
                         >
-                          {manageSubBusy
+                          {subscriptionCenterBusy
                             ? isSpanish
-                              ? "Abriendo..."
-                              : "Opening..."
+                              ? "Cargando..."
+                              : "Loading..."
                             : isSpanish
-                              ? "Gestionar suscripción"
-                              : "Manage subscription"}
+                              ? "Centro de suscripción"
+                              : "Subscription center"}
                         </button>
                         <button
                           type="button"
@@ -3110,6 +3199,165 @@ export default function HomePage() {
                           {isSpanish ? "Cerrar sesión" : "Sign out"}
                         </button>
                       </div>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+
+              {subscriptionCenterOpen ? (
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  style={{
+                    position: "fixed",
+                    inset: 0,
+                    zIndex: 1190,
+                    background: "rgba(4, 8, 13, 0.72)",
+                    display: "grid",
+                    placeItems: "center",
+                    padding: 16,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "min(820px, 97vw)",
+                      borderRadius: 16,
+                      border: "1px solid rgba(106,181,205,0.3)",
+                      background: "linear-gradient(180deg, rgba(14,29,41,0.98), rgba(9,20,30,0.98))",
+                      boxShadow: "0 18px 48px rgba(0,0,0,0.45)",
+                      padding: 16,
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                      <strong style={{ color: "#d8edf5" }}>
+                        {isSpanish ? "Centro de suscripción" : "Subscription center"}
+                      </strong>
+                      <button
+                        type="button"
+                        className="composer-reading-pill"
+                        onClick={() => setSubscriptionCenterOpen(false)}
+                      >
+                        {isSpanish ? "Cerrar" : "Close"}
+                      </button>
+                    </div>
+                    <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                      {isSpanish
+                        ? "Administra estado, renovación, cancelación y cambios de plan."
+                        : "Manage status, renewal, cancellation, and plan changes."}
+                    </p>
+
+                    <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
+                      <p className="meta-line tier-hint-line">
+                        {isSpanish ? "Plan actual:" : "Current plan:"} <strong>{tier}</strong>
+                      </p>
+                      <p className="meta-line tier-hint-line">
+                        {isSpanish ? "Consultas restantes:" : "Remaining consultations:"}{" "}
+                        <strong>{subscriptionCreditsRemaining ?? "—"}</strong> / {monthlyCreditsLimit}
+                      </p>
+                      <p className="meta-line tier-hint-line">
+                        {isSpanish ? "Ciclo vigente hasta:" : "Current cycle until:"}{" "}
+                        <strong>
+                          {subscriptionCycleEnd ? new Date(subscriptionCycleEnd).toLocaleString(locale) : "—"}
+                        </strong>
+                      </p>
+                      <p className="meta-line tier-hint-line">
+                        {isSpanish ? "Estado de suscripción:" : "Subscription status:"}{" "}
+                        <strong>{subscriptionPrimary?.status ?? (isSpanish ? "sin datos" : "no data")}</strong>
+                      </p>
+                      <p className="meta-line tier-hint-line">
+                        {isSpanish ? "Renovación automática:" : "Auto-renewal:"}{" "}
+                        <strong>
+                          {subscriptionPrimary?.autoRenew == null
+                            ? isSpanish
+                              ? "No disponible"
+                              : "Unavailable"
+                            : subscriptionPrimary?.autoRenew
+                              ? isSpanish
+                                ? "Activada"
+                                : "Enabled"
+                              : isSpanish
+                                ? "Desactivada"
+                                : "Disabled"}
+                        </strong>
+                      </p>
+                      <p className="meta-line tier-hint-line">
+                        {isSpanish ? "Vía de cobro:" : "Billing store:"}{" "}
+                        <strong>{subscriptionPrimary?.store ?? "—"}</strong>
+                        {" · "}
+                        {isSpanish ? "Producto:" : "Product:"}{" "}
+                        <strong>{subscriptionPrimary?.productId ?? "—"}</strong>
+                      </p>
+                      <p className="meta-line tier-hint-line">
+                        {isSpanish ? "Próxima renovación / vencimiento:" : "Next renewal / expiry:"}{" "}
+                        <strong>
+                          {subscriptionPrimary?.currentPeriodEndsAt
+                            ? new Date(subscriptionPrimary.currentPeriodEndsAt).toLocaleString(locale)
+                            : "—"}
+                        </strong>
+                      </p>
+                    </div>
+
+                    {subscriptionCenterError ? (
+                      <p className="meta-line tier-hint-line" style={{ marginTop: 10 }}>
+                        {subscriptionCenterError}
+                      </p>
+                    ) : null}
+                    {manageSubMessage ? (
+                      <p className="meta-line tier-hint-line" style={{ marginTop: 10 }}>
+                        {manageSubMessage}
+                      </p>
+                    ) : null}
+
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
+                      <button
+                        type="button"
+                        className="composer-reading-pill is-active"
+                        onClick={() => void openSubscriptionCenter()}
+                        disabled={subscriptionCenterBusy}
+                      >
+                        {subscriptionCenterBusy
+                          ? isSpanish
+                            ? "Actualizando..."
+                            : "Refreshing..."
+                          : isSpanish
+                            ? "Actualizar estado"
+                            : "Refresh status"}
+                      </button>
+                      <button
+                        type="button"
+                        className="composer-reading-pill"
+                        onClick={() => {
+                          if (subscriptionManagementUrl) {
+                            window.open(subscriptionManagementUrl, "_blank", "noopener,noreferrer");
+                            return;
+                          }
+                          void openSubscriptionManagement();
+                        }}
+                        disabled={manageSubBusy}
+                      >
+                        {manageSubBusy
+                          ? isSpanish
+                            ? "Abriendo portal..."
+                            : "Opening portal..."
+                          : isSpanish
+                            ? "Gestionar / cancelar"
+                            : "Manage / cancel"}
+                      </button>
+                      <button
+                        type="button"
+                        className="composer-reading-pill"
+                        onClick={() => window.open("/pricing", "_blank", "noopener,noreferrer")}
+                      >
+                        {isSpanish ? "Upgrade / cambiar plan" : "Upgrade / change plan"}
+                      </button>
+                    </div>
+
+                    {subscriptionItems.length > 1 ? (
+                      <p className="meta-line tier-hint-line" style={{ marginTop: 10 }}>
+                        {isSpanish
+                          ? `Suscripciones detectadas: ${subscriptionItems.length}.`
+                          : `Detected subscriptions: ${subscriptionItems.length}.`}
+                      </p>
                     ) : null}
                   </div>
                 </div>
