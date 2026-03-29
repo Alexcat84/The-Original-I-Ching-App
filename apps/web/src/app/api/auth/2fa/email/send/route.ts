@@ -138,19 +138,6 @@ export async function POST(req: Request) {
     });
   }
 
-  const { error: methodError } = await supabase
-    .from("users")
-    .update({ two_factor_method: "email" })
-    .eq("id", authUser.userId);
-  if (methodError) {
-    return apiError(500, {
-      error: "two_factor_method_update_failed",
-      code: "TWO_FACTOR_METHOD_UPDATE_FAILED",
-      action: "retry",
-      details: process.env.NODE_ENV === "development" ? methodError.message : undefined,
-    });
-  }
-
   return NextResponse.json({
     ok: true,
     expiresInMinutes: EMAIL_CODE_TTL_MINUTES,
