@@ -58,9 +58,11 @@ export async function renderSvgToPng(svg: string, width?: number): Promise<Buffe
     font: {
       fontFiles: fontPath ? [fontPath] : [],
       loadSystemFonts: true,
-      defaultFontFamily: "Noto Serif TC",
-      serifFamily: "Noto Serif TC",
-      sansSerifFamily: "Noto Serif TC",
+      // Keep CJK glyphs explicit in SVG via embedded font-family replacements,
+      // but prefer Latin-friendly fallback families for pinyin/roman text.
+      defaultFontFamily: "Times New Roman",
+      serifFamily: "Times New Roman",
+      sansSerifFamily: "Arial",
     },
   };
 

@@ -31,8 +31,12 @@ export function collectOverlaySubsetChars(svg: string): string {
       set.add(ch);
       continue;
     }
-    // Include basic latin so remote subset fallback can render #, names, pinyin, etc.
-    if (cp >= 0x20 && cp <= 0x7e) {
+    // Include basic Latin and Latin Extended ranges for pinyin tone marks.
+    if (
+      (cp >= 0x20 && cp <= 0x7e) || // basic Latin
+      (cp >= 0x00a0 && cp <= 0x024f) || // Latin-1 + Latin Extended-A/B
+      (cp >= 0x0300 && cp <= 0x036f) // combining diacritical marks
+    ) {
       set.add(ch);
     }
   }
