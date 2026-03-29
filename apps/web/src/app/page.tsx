@@ -2037,6 +2037,21 @@ export default function HomePage() {
     }
   }
 
+  const primarySubscriptionStatus = (subscriptionPrimary?.status ?? "").toLowerCase();
+  const subscriptionStatusLabel = (() => {
+    if (primarySubscriptionStatus === "active") return isSpanish ? "Activa" : "Active";
+    if (primarySubscriptionStatus === "trialing") return isSpanish ? "Prueba" : "Trial";
+    if (primarySubscriptionStatus === "canceled") return isSpanish ? "Cancelada" : "Canceled";
+    if (primarySubscriptionStatus === "expired") return isSpanish ? "Expirada" : "Expired";
+    return subscriptionPrimary?.status ?? (isSpanish ? "Sin datos" : "No data");
+  })();
+  const subscriptionStatusBadgeClass =
+    primarySubscriptionStatus === "active" || primarySubscriptionStatus === "trialing"
+      ? "subscription-center-badge subscription-center-badge--active"
+      : primarySubscriptionStatus === "canceled" || primarySubscriptionStatus === "expired"
+        ? "subscription-center-badge subscription-center-badge--ended"
+        : "subscription-center-badge";
+
   async function onConsult() {
     if (!activeSession) {
       const created = createLocalSession(inProgressTitle);
@@ -3205,33 +3220,10 @@ export default function HomePage() {
               ) : null}
 
               {subscriptionCenterOpen ? (
-                <div
-                  role="dialog"
-                  aria-modal="true"
-                  style={{
-                    position: "fixed",
-                    inset: 0,
-                    zIndex: 1190,
-                    background: "rgba(4, 8, 13, 0.72)",
-                    display: "grid",
-                    placeItems: "center",
-                    padding: 16,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "min(820px, 97vw)",
-                      borderRadius: 16,
-                      border: "1px solid rgba(106,181,205,0.3)",
-                      background: "linear-gradient(180deg, rgba(14,29,41,0.98), rgba(9,20,30,0.98))",
-                      boxShadow: "0 18px 48px rgba(0,0,0,0.45)",
-                      padding: 16,
-                    }}
-                  >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-                      <strong style={{ color: "#d8edf5" }}>
-                        {isSpanish ? "Centro de suscripción" : "Subscription center"}
-                      </strong>
+                <div role="dialog" aria-modal="true" className="subscription-center-backdrop">
+                  <div className="subscription-center-card">
+                    <div className="subscription-center-header">
+                      <strong className="subscription-center-title">{isSpanish ? "Centro de suscripción" : "Subscription center"}</strong>
                       <button
                         type="button"
                         className="composer-reading-pill"
@@ -3240,32 +3232,32 @@ export default function HomePage() {
                         {isSpanish ? "Cerrar" : "Close"}
                       </button>
                     </div>
-                    <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                    <p className="meta-line tier-hint-line subscription-center-subtitle">
                       {isSpanish
                         ? "Administra estado, renovación, cancelación y cambios de plan."
                         : "Manage status, renewal, cancellation, and plan changes."}
                     </p>
 
-                    <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Plan actual:" : "Current plan:"} <strong>{tier}</strong>
+                    <div className="subscription-center-grid">
+                      <p className="meta-line tier-hint-line subscription-center-row">
+                        <span>{isSpanish ? "Plan actual:" : "Current plan:"}</span> <strong>{tier}</strong>
                       </p>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Consultas restantes:" : "Remaining consultations:"}{" "}
+                      <p className="meta-line tier-hint-line subscription-center-row">
+                        <span>{isSpanish ? "Consultas restantes:" : "Remaining consultations:"}</span>{" "}
                         <strong>{subscriptionCreditsRemaining ?? "—"}</strong> / {monthlyCreditsLimit}
                       </p>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Ciclo vigente hasta:" : "Current cycle until:"}{" "}
+                      <p className="meta-line tier-hint-line subscription-center-row">
+                        <span>{isSpanish ? "Ciclo vigente hasta:" : "Current cycle until:"}</span>{" "}
                         <strong>
                           {subscriptionCycleEnd ? new Date(subscriptionCycleEnd).toLocaleString(locale) : "—"}
                         </strong>
                       </p>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Estado de suscripción:" : "Subscription status:"}{" "}
-                        <strong>{subscriptionPrimary?.status ?? (isSpanish ? "sin datos" : "no data")}</strong>
+                      <p className="meta-line tier-hint-line subscription-center-row">
+                        <span>{isSpanish ? "Estado de suscripción:" : "Subscription status:"}</span>{" "}
+                        <span className={subscriptionStatusBadgeClass}>{subscriptionStatusLabel}</span>
                       </p>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Renovación automática:" : "Auto-renewal:"}{" "}
+                      <p className="meta-line tier-hint-line subscription-center-row">
+                        <span>{isSpanish ? "Renovación automática:" : "Auto-renewal:"}</span>{" "}
                         <strong>
                           {subscriptionPrimary?.autoRenew == null
                             ? isSpanish
@@ -3280,15 +3272,15 @@ export default function HomePage() {
                                 : "Disabled"}
                         </strong>
                       </p>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Vía de cobro:" : "Billing store:"}{" "}
+                      <p className="meta-line tier-hint-line subscription-center-row">
+                        <span>{isSpanish ? "Vía de cobro:" : "Billing store:"}</span>{" "}
                         <strong>{subscriptionPrimary?.store ?? "—"}</strong>
                         {" · "}
                         {isSpanish ? "Producto:" : "Product:"}{" "}
                         <strong>{subscriptionPrimary?.productId ?? "—"}</strong>
                       </p>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Próxima renovación / vencimiento:" : "Next renewal / expiry:"}{" "}
+                      <p className="meta-line tier-hint-line subscription-center-row">
+                        <span>{isSpanish ? "Próxima renovación / vencimiento:" : "Next renewal / expiry:"}</span>{" "}
                         <strong>
                           {subscriptionPrimary?.currentPeriodEndsAt
                             ? new Date(subscriptionPrimary.currentPeriodEndsAt).toLocaleString(locale)
@@ -3298,17 +3290,17 @@ export default function HomePage() {
                     </div>
 
                     {subscriptionCenterError ? (
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 10 }}>
+                      <p className="meta-line tier-hint-line subscription-center-message">
                         {subscriptionCenterError}
                       </p>
                     ) : null}
                     {manageSubMessage ? (
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 10 }}>
+                      <p className="meta-line tier-hint-line subscription-center-message">
                         {manageSubMessage}
                       </p>
                     ) : null}
 
-                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
+                    <div className="subscription-center-actions">
                       <button
                         type="button"
                         className="composer-reading-pill is-active"
@@ -3353,7 +3345,7 @@ export default function HomePage() {
                     </div>
 
                     {subscriptionItems.length > 1 ? (
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 10 }}>
+                      <p className="meta-line tier-hint-line subscription-center-message">
                         {isSpanish
                           ? `Suscripciones detectadas: ${subscriptionItems.length}.`
                           : `Detected subscriptions: ${subscriptionItems.length}.`}
