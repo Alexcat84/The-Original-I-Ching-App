@@ -986,6 +986,7 @@ export default function HomePage() {
     activeThread.length > 0 && result !== null && !result.canDeepen;
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
   const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;
+  const chatStateCacheKey = authUserId ? `iching_chat_state_v1:${authUserId}` : null;
 
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
@@ -1246,14 +1247,24 @@ export default function HomePage() {
 
   const signOut = useCallback(async () => {
     if (!isSupabaseBrowserConfigured()) return;
+    const uid = authUserId;
     try {
       await getSupabaseBrowser().auth.signOut();
     } catch {
       // ignore
     }
+    if (uid) {
+      try {
+        sessionStorage.removeItem(`iching_chat_summaries_v1:${uid}`);
+        sessionStorage.removeItem(`iching_chat_state_v1:${uid}`);
+      } catch {
+        // ignore cache clear errors
+      }
+    }
     setAccessToken(null);
     setAuthEmail(null);
-  }, []);
+    setAuthUserId(null);
+  }, [authUserId]);
 
   const sessionsListed = useMemo(() => sessions.filter((s) => s.messageCount > 0), [sessions]);
   const loadSessionThread = useCallback(
@@ -1478,6 +1489,20 @@ export default function HomePage() {
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
     let cancelled = false;
+    if (chatStateCacheKey) {
+      try {
+        const stateRaw = sessionStorage.getItem(chatStateCacheKey);
+        if (stateRaw) {
+          const state = JSON.parse(stateRaw) as { sessions?: ChatSessionState[]; activeSessionLocalId?: string | null };
+          if (Array.isArray(state.sessions) && state.sessions.length > 0) {
+            setSessions(state.sessions);
+            setActiveSessionLocalId(state.activeSessionLocalId ?? state.sessions[0]?.localId ?? null);
+          }
+        }
+      } catch {
+        // ignore chat state cache hydration errors
+      }
+    }
     if (summaryCacheKey) {
       try {
         const cachedRaw = sessionStorage.getItem(summaryCacheKey);
@@ -1528,7 +1553,23 @@ export default function HomePage() {
           })
           .filter((s) => s.messageCount > 0);
         if (hydrated.length === 0) return;
-        setSessions(hydrated);
+        setSessions((prev) =>
+          hydrated.map((next) => {
+            const existing = prev.find((s) => s.sessionId === next.sessionId);
+            if (!existing) return next;
+            return {
+              ...next,
+              title:
+                existing.title && !knownNewSessionTitles.has(existing.title) && !knownInProgressTitles.has(existing.title)
+                  ? existing.title
+                  : next.title,
+              thread: existing.thread,
+              messageCount: Math.max(next.messageCount, existing.messageCount),
+              updatedAt: Math.max(next.updatedAt, existing.updatedAt),
+              firstConsultationAt: next.firstConsultationAt ?? existing.firstConsultationAt,
+            };
+          }),
+        );
         if (summaryCacheKey) {
           try {
             sessionStorage.setItem(summaryCacheKey, JSON.stringify(hydrated));
@@ -1538,7 +1579,7 @@ export default function HomePage() {
         }
         const first = hydrated[0];
         setActiveSessionLocalId(first?.localId ?? null);
-        if (first?.sessionId) {
+        if (first?.sessionId && first.thread.length === 0) {
           void loadSessionThread(first.sessionId, first.localId);
         }
       } catch {
@@ -1548,7 +1589,7 @@ export default function HomePage() {
     return () => {
       cancelled = true;
     };
-  }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish, loadSessionThread, summaryCacheKey]);
+  }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish, loadSessionThread, summaryCacheKey, chatStateCacheKey]);
 
   useEffect(() => {
     if (!summaryCacheKey) return;
@@ -1563,6 +1604,26 @@ export default function HomePage() {
       // ignore cache persistence errors
     }
   }, [sessions, summaryCacheKey]);
+
+  useEffect(() => {
+    if (!chatStateCacheKey) return;
+    const entries = sessions.filter((s) => s.messageCount > 0);
+    try {
+      if (entries.length === 0) {
+        sessionStorage.removeItem(chatStateCacheKey);
+      } else {
+        sessionStorage.setItem(
+          chatStateCacheKey,
+          JSON.stringify({
+            sessions: entries,
+            activeSessionLocalId,
+          }),
+        );
+      }
+    } catch {
+      // ignore state cache persistence errors
+    }
+  }, [sessions, activeSessionLocalId, chatStateCacheKey]);
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
@@ -1665,8 +1726,14 @@ export default function HomePage() {
           return;
         }
         if (data.code === "TWO_FACTOR_EMAIL_DELIVERY_FAILED") {
+          const deliveryMessage =
+            "message" in data && typeof (data as { message?: unknown }).message === "string"
+              ? (data as { message: string }).message
+              : null;
           setError(
-            "No se pudo enviar el código por email. Verifica que TWO_FACTOR_EMAIL_FROM esté validado en Resend y que la API key sea correcta.",
+            deliveryMessage
+              ? `No se pudo enviar el código por email: ${deliveryMessage}`
+              : "No se pudo enviar el código por email. Verifica que TWO_FACTOR_EMAIL_FROM esté validado en Resend y que la API key sea correcta.",
           );
           return;
         }

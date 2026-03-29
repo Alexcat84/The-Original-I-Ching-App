@@ -22,7 +22,7 @@ async function sendEmail2faCode(params: {
   to: string;
   code: string;
   ttlMinutes: number;
-}): Promise<boolean> {
+}): Promise<{ ok: boolean; status: number; message?: string }> {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -37,7 +37,17 @@ async function sendEmail2faCode(params: {
       html: `<p>Tu código de verificación es:</p><p style="font-size:24px;font-weight:700;letter-spacing:3px">${params.code}</p><p>Expira en ${params.ttlMinutes} minutos.</p>`,
     }),
   });
-  return response.ok;
+  if (response.ok) {
+    return { ok: true, status: response.status };
+  }
+  let message: string | undefined;
+  try {
+    const body = (await response.json()) as { message?: string; error?: { message?: string } };
+    message = body.error?.message ?? body.message;
+  } catch {
+    message = undefined;
+  }
+  return { ok: false, status: response.status, message };
 }
 
 export async function POST(req: Request) {
@@ -103,7 +113,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const delivered = await sendEmail2faCode({
+  const delivery = await sendEmail2faCode({
     apiKey: resendApiKey,
     from: resendFrom,
     to: authUser.email,
@@ -111,7 +121,7 @@ export async function POST(req: Request) {
     ttlMinutes: EMAIL_CODE_TTL_MINUTES,
   });
 
-  if (!delivered) {
+  if (!delivery.ok) {
     await supabase
       .from("two_factor_email_codes")
       .delete()
@@ -121,6 +131,10 @@ export async function POST(req: Request) {
       error: "two_factor_email_delivery_failed",
       code: "TWO_FACTOR_EMAIL_DELIVERY_FAILED",
       action: "retry",
+      message: delivery.message,
+      details: {
+        providerStatus: delivery.status,
+      },
     });
   }
 
