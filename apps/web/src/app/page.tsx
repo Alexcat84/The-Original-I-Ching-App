@@ -1957,6 +1957,10 @@ export default function HomePage() {
           void signOut();
           return;
         }
+        if (res.status === 409 && data.error === "thread_limit_reached") {
+          setError(isSpanish ? "Límite de hilo alcanzado. Usa «Nueva sesión» para continuar." : "Thread limit reached. Use \"New session\" to continue.");
+          return;
+        }
         if (res.status === 402 && data.error === "credits_exhausted") {
           const tiers: BillingTier[] = ["free", "seeker", "practitioner", "master", "oracle"];
           const t = tiers.includes(data.tier as BillingTier) ? (data.tier as BillingTier) : "free";

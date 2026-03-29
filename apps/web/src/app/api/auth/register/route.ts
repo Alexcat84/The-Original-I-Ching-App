@@ -1,4 +1,5 @@
 import { registerStep1Schema, validateEmailForRegistration } from "@iching-oracle/auth-backend";
+import { createClient } from "@supabase/supabase-js";
 import { apiError } from "@/lib/api-error";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -56,21 +57,51 @@ export async function POST(req: Request) {
       action: "check_config",
     });
   }
-  const created = await supabase.auth.admin.createUser({
-    email: parsed.data.email,
-    password: parsed.data.password,
-    email_confirm: false,
-    user_metadata: { status: "pending" },
-  });
-  if (created.error) {
-    return apiError(400, {
-      error: "create_user_failed",
-      code: "REGISTER_CREATE_USER_FAILED",
-      action: "retry",
-      message: created.error.message,
+  const publicUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!publicUrl || !anonKey) {
+    return apiError(503, {
+      error: "supabase_public_client_not_configured",
+      code: "AUTH_PROVIDER_NOT_CONFIGURED",
+      action: "check_config",
     });
   }
-  const uid = created.data.user?.id;
+
+  const authClient = createClient(publicUrl, anonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const origin = req.headers.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const signUp = await authClient.auth.signUp({
+    email: parsed.data.email,
+    password: parsed.data.password,
+    options: {
+      emailRedirectTo: `${origin.replace(/\/$/, "")}/auth/callback`,
+    },
+  });
+  if (signUp.error) {
+    const lower = signUp.error.message.toLowerCase();
+    if (
+      lower.includes("user already registered") ||
+      lower.includes("already registered") ||
+      lower.includes("database error creating new user")
+    ) {
+      return apiError(409, {
+        error: "email_exists",
+        code: "REGISTER_EMAIL_EXISTS",
+        action: "login",
+        message:
+          "Este correo ya existe o quedó con registro previo. Intenta iniciar sesión o usar «Reenviar confirmación».",
+      });
+    }
+    return apiError(400, {
+      error: "sign_up_failed",
+      code: "REGISTER_CREATE_USER_FAILED",
+      action: "retry",
+      message: signUp.error.message,
+    });
+  }
+
+  const uid = signUp.data.user?.id;
   if (uid) {
     await supabase.from("users").upsert(
       { id: uid, email: parsed.data.email.toLowerCase() },

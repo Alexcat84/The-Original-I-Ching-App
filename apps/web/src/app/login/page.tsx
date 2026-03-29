@@ -63,6 +63,11 @@ function registerErrorMessage(data: {
         : "El correo no pasó la validación (dominio o MX).";
     case "sign_up_failed":
       return data.message ?? "No se pudo crear la cuenta (¿correo ya registrado?).";
+    case "email_exists":
+      return (
+        data.message ??
+        "Ese correo ya está registrado. Inicia sesión, reenvía confirmación o restablece contraseña."
+      );
     case "supabase_not_configured":
       return "El servidor no tiene Supabase configurado.";
     default:
