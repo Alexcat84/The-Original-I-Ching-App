@@ -11,12 +11,22 @@ export type RevenueCatBillingTier = PaidTier | "free";
 
 const TIER_SET = new Set<string>(TIER_PRIORITY);
 
-export function pickTierFromEntitlementIdList(raw: string[]): RevenueCatBillingTier {
-  const normalized = new Set(
-    raw.map((id) => id.trim().toLowerCase()).filter((id) => TIER_SET.has(id)),
-  );
+function normalizeToken(value: string): string {
+  return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "_");
+}
+
+function resolveTierFromToken(token: string): RevenueCatBillingTier {
+  if (TIER_SET.has(token)) return token as RevenueCatBillingTier;
   for (const tier of TIER_PRIORITY) {
-    if (normalized.has(tier)) return tier;
+    if (token.includes(tier)) return tier;
+  }
+  return "free";
+}
+
+export function pickTierFromEntitlementIdList(raw: string[]): RevenueCatBillingTier {
+  const normalized = raw.map((id) => normalizeToken(id)).filter((id) => id.length > 0);
+  for (const tier of TIER_PRIORITY) {
+    if (normalized.some((id) => resolveTierFromToken(id) === tier)) return tier;
   }
   return "free";
 }
@@ -25,9 +35,11 @@ export function pickTierFromEntitlementIdList(raw: string[]): RevenueCatBillingT
 export function pickTierFromWebhookEntitlements(
   entitlement_ids: string[] | null | undefined,
   entitlement_id: string | undefined,
+  product_id?: string,
 ): RevenueCatBillingTier {
   const raw = [...(entitlement_ids ?? [])];
   if (entitlement_id) raw.push(entitlement_id);
+  if (product_id) raw.push(product_id);
   return pickTierFromEntitlementIdList(raw);
 }
 
@@ -59,9 +71,8 @@ export function pickTierFromSubscriberEntitlements(
   if (!entitlements) return "free";
   const activeIds: string[] = [];
   for (const [key, details] of Object.entries(entitlements)) {
-    const id = key.trim().toLowerCase();
-    if (!TIER_SET.has(id)) continue;
-    if (isEntitlementActive(details, nowMs)) activeIds.push(id);
+    if (!isEntitlementActive(details, nowMs)) continue;
+    activeIds.push(key);
   }
   return pickTierFromEntitlementIdList(activeIds);
 }
@@ -75,8 +86,8 @@ export function latestExpiresMsForTier(
   if (!entitlements || tier === "free") return null;
   let max: number | null = null;
   for (const [key, details] of Object.entries(entitlements)) {
-    const id = key.trim().toLowerCase();
-    if (id !== tier) continue;
+    const entryTier = resolveTierFromToken(normalizeToken(key));
+    if (entryTier !== tier) continue;
     if (!isEntitlementActive(details, nowMs)) continue;
     if (details.expires_date === null || details.expires_date === undefined) {
       return null;

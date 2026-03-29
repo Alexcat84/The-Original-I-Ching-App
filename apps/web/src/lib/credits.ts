@@ -285,13 +285,16 @@ export async function upsertUserTier(
       .eq("user_id", userKey)
       .maybeSingle();
     const isLifetime = targetConfig.creditsType === "lifetime";
-    const cycleStart =
-      isLifetime
-        ? (existing?.cycle_start ?? new Date().toISOString())
-        : renewalDateIso
-          ? new Date(renewalDateIso).toISOString()
-          : new Date().toISOString();
-    const cycleEnd = isLifetime ? LIFETIME_END_ISO : new Date(new Date(cycleStart).getTime() + MONTH_MS).toISOString();
+    const nowMs = Date.now();
+    const nowIso = new Date(nowMs).toISOString();
+    const renewalMs = renewalDateIso ? new Date(renewalDateIso).getTime() : NaN;
+    const hasFutureRenewal = Number.isFinite(renewalMs) && renewalMs > nowMs;
+    const cycleStart = isLifetime ? (existing?.cycle_start ?? nowIso) : nowIso;
+    const cycleEnd = isLifetime
+      ? LIFETIME_END_ISO
+      : hasFutureRenewal
+        ? new Date(renewalMs).toISOString()
+        : new Date(nowMs + MONTH_MS).toISOString();
     const creditsUsed = isLifetime && existing && existing.credits_type === "lifetime" ? existing.credits_used : 0;
     await supabase
       .from("query_credits")

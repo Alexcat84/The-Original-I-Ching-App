@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { upsertUserTier } from "@/lib/credits";
 import { isDuplicateInsertErrorMessage } from "@/lib/db-idempotency";
+import { syncUserTierFromRevenueCatRest } from "@/lib/revenuecat-rest";
 import { pickTierFromWebhookEntitlements } from "@/lib/revenuecat-tiers";
 import { computeRevenueCatEventHash } from "@/lib/revenuecat-webhook-idempotency";
 import { revenueCatWebhookAuthorized } from "@/lib/revenuecat-webhook-auth";
@@ -29,6 +30,8 @@ interface RevenueCatEvent {
   app_user_id?: string;
   entitlement_ids?: string[] | null;
   entitlement_id?: string;
+  product_id?: string;
+  store?: string;
   purchased_at_ms?: number;
   expiration_at_ms?: number;
 }
@@ -112,13 +115,25 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, skipped: true, eventType: type });
   }
 
-  const tier = pickTierFromWebhookEntitlements(event.entitlement_ids, event.entitlement_id);
+  const tier = pickTierFromWebhookEntitlements(event.entitlement_ids, event.entitlement_id, event.product_id);
   if (tier === "free") {
+    const syncResult = await syncUserTierFromRevenueCatRest(event.app_user_id);
+    if (syncResult.ok && syncResult.tier !== "free") {
+      return NextResponse.json({
+        ok: true,
+        appUserId: event.app_user_id,
+        eventType: type,
+        tier: syncResult.tier,
+        source: "rest_fallback",
+        store: event.store ?? null,
+      });
+    }
     return NextResponse.json({
       ok: true,
       skipped: true,
       eventType: type,
       reason: "no_mapped_entitlement",
+      store: event.store ?? null,
     });
   }
 
