@@ -17,16 +17,20 @@ export async function POST(req: Request) {
 
   const result = await syncUserTierFromRevenueCatRest(user.userId);
   if (!result.ok) {
-    if (result.error === "not_configured") {
+    if (result.error === "not_configured" || result.error === "upstream" || result.error === "invalid_response") {
       return NextResponse.json({
         ok: false,
         skipped: true,
-        reason: "billing_not_configured",
+        reason:
+          result.error === "not_configured"
+            ? "billing_not_configured"
+            : result.error === "upstream"
+              ? "billing_upstream_unavailable"
+              : "billing_invalid_response",
       });
     }
-    const status = 502;
-    return apiError(status, {
-      error: result.error,
+    return apiError(502, {
+      error: "billing_sync_failed",
       code: "BILLING_SYNC_FAILED",
       action: "retry",
     });

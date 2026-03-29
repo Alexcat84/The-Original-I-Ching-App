@@ -6,7 +6,7 @@ function resolveLocale(raw: string | undefined): AppLocale {
   if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
     return raw as AppLocale;
   }
-  return "es";
+  return "en";
 }
 
 export default function TermsPage() {

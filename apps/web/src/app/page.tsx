@@ -847,19 +847,20 @@ function detectInputLanguage(question: string, fallbackLocale: AppLocale): AppLo
   if (/[ぁ-ゖァ-ヺ]/.test(text)) return "ja";
   if (/[一-鿿]/.test(text)) return "zh";
 
-  const ptHits = (text.match(/\b(não|você|porque|está|ção|ções|pra|queria)\b/g) ?? []).length;
+  const ptHits = (text.match(/\b(não|você|está|ção|ções|pra|queria)\b/g) ?? []).length;
   const frHits = (text.match(/\b(être|avec|pourquoi|où|ça|merci|vous)\b/g) ?? []).length;
   const deHits = (text.match(/\b(und|nicht|ich|dass|über|möchte|fragen)\b/g) ?? []).length;
   const itHits = (text.match(/\b(perché|con|sono|voglio|grazie|quindi|domanda)\b/g) ?? []).length;
-  if (ptHits >= 2) return "pt";
-  if (frHits >= 2) return "fr";
-  if (deHits >= 2) return "de";
-  if (itHits >= 2) return "it";
 
   const esHits =
     (text.match(/\b(el|la|los|las|de|que|para|con|por|como|qué|dónde|cuál|mensaje|consulta|camino|relación)\b/g) ?? [])
       .length +
     (text.match(/[áéíóúñ¿¡]/g) ?? []).length;
+  if (fallbackLocale === "es" && esHits > 0) return "es";
+  if (ptHits >= 3 && ptHits > esHits + 1) return "pt";
+  if (frHits >= 2) return "fr";
+  if (deHits >= 2) return "de";
+  if (itHits >= 2) return "it";
   const enHits =
     (text.match(/\b(the|and|what|where|when|why|how|message|relationship|question|path|oracle|reading)\b/g) ?? [])
       .length;
@@ -1592,6 +1593,7 @@ export default function HomePage() {
   }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish, loadSessionThread, summaryCacheKey, chatStateCacheKey]);
 
   useEffect(() => {
+    if (!sessionsHydrated) return;
     if (!summaryCacheKey) return;
     const entries = sessions.filter((s) => s.messageCount > 0).map((s) => ({ ...s, thread: [] }));
     try {
@@ -1603,9 +1605,10 @@ export default function HomePage() {
     } catch {
       // ignore cache persistence errors
     }
-  }, [sessions, summaryCacheKey]);
+  }, [sessions, summaryCacheKey, sessionsHydrated]);
 
   useEffect(() => {
+    if (!sessionsHydrated) return;
     if (!chatStateCacheKey) return;
     const entries = sessions.filter((s) => s.messageCount > 0);
     try {
@@ -1623,7 +1626,7 @@ export default function HomePage() {
     } catch {
       // ignore state cache persistence errors
     }
-  }, [sessions, activeSessionLocalId, chatStateCacheKey]);
+  }, [sessions, activeSessionLocalId, chatStateCacheKey, sessionsHydrated]);
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
@@ -1812,10 +1815,12 @@ export default function HomePage() {
               : "Billing (RevenueCat) is not fully configured on server.",
           );
         } else if (data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
+          const plansHref = "/pricing";
+          window.open(plansHref, "_blank", "noopener,noreferrer");
           setManageSubMessage(
             isSpanish
-              ? "Tu cuenta no tiene una suscripción activa para gestionar."
-              : "Your account has no active subscription to manage.",
+              ? "Tu cuenta no tiene una suscripción activa para gestionar. Te abrimos los planes para elegir o actualizar."
+              : "Your account has no active subscription to manage. We opened plans so you can subscribe or upgrade.",
           );
         } else if (data?.code === "BILLING_SYNC_FAILED") {
           setManageSubMessage(fallback);

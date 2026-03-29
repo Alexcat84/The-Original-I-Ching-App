@@ -40,7 +40,6 @@ export function collectOverlaySubsetChars(svg: string): string {
       set.add(ch);
     }
   }
-  set.add("易");
   set.add("\u2192");
   return [...set].join("");
 }
@@ -129,10 +128,7 @@ export async function embedCjkFontInOverlaySvg(svg: string): Promise<string> {
     return withDefs
       .replaceAll("font-family='Noto Serif SC, SimSun, STSong, serif'", `font-family='${FONT_FAMILY}, serif'`)
       .replaceAll('font-family="Noto Serif SC, SimSun, STSong, serif"', `font-family="${FONT_FAMILY}, serif"`)
-      .replaceAll(
-        'font-size="30" font-family="serif">易',
-        `font-size="30" font-family="${FONT_FAMILY}, serif">易`,
-      );
+      ;
   } catch {
     return svg;
   }

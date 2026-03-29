@@ -71,6 +71,7 @@ export function buildImagePrompt(
     settingBlock,
     "Center MUST be a large blank, uncluttered misty space with NO calligraphy characters, NO seal-script glyphs, and NO hexagram bars/lines.",
     "Hard rule: do not draw any Chinese characters, pinyin, roman text, numbers, symbols, or seal chops anywhere in the image.",
+    "Absolutely forbidden: red stamps, signature seals, poem columns, vertical black calligraphy, logos, watermarks, decorative corner glyphs, or any textual mark in any corner.",
     "Foreground: weathered wooden scholar table with bronze incense burner (thin smoke trail), scattered round copper cash coins with square holes.",
     `Emotional register for consultation theme (${category}): ${theme.mood}.`,
   ]
