@@ -130,7 +130,6 @@ export function buildSumiHexagramSvgDataUrl(params: {
       params.transformedNumber ? ` → #${params.transformedNumber} ${params.transformedName ?? ""}` : ""
     }`,
   );
-  const subPy = params.pinyin ? escapeXml(params.pinyin) : "";
 
   const seedStr =
     params.artSeed ??
@@ -281,7 +280,6 @@ export function buildSumiHexagramSvgDataUrl(params: {
 <!-- primary titles: large, centered -->
 <text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" font-size="92" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
 <text x="${cx}" y="178" text-anchor="middle" fill="#3d3830" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
-${subPy ? `<text x="${cx}" y="212" text-anchor="middle" fill="rgba(61,56,48,0.65)" font-size="22" font-family="Georgia, serif" font-style="italic">${subPy}</text>` : ""}
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
@@ -348,7 +346,6 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
       params.transformedNumber ? ` → #${params.transformedNumber} ${params.transformedName ?? ""}` : ""
     }`,
   );
-  const subPy = params.pinyin ? escapeXml(params.pinyin) : "";
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${outputWidth}" height="${outputHeight}" viewBox="0 0 ${W} ${H}">
 <defs>
@@ -364,7 +361,6 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
 <!-- primary titles: large, centered -->
 <text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
 <text x="${cx}" y="178" text-anchor="middle" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
-${subPy ? `<text x="${cx}" y="212" text-anchor="middle" fill="rgba(45,40,36,0.88)" stroke="rgba(255,250,245,0.75)" stroke-width="2" paint-order="stroke fill" font-size="22" font-family="Georgia, serif" font-style="italic">${subPy}</text>` : ""}
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
