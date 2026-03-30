@@ -142,7 +142,8 @@ export async function POST(req: Request) {
       });
     }
     const expectedHash = hashEmailCode(normalizedEmailCode, codeSecret);
-    if (secureEqualHex(expectedHash, row.code_hash)) {
+    const storedHash = String(row.code_hash).trim().toLowerCase();
+    if (secureEqualHex(expectedHash.toLowerCase(), storedHash)) {
       verified = true;
       await supabase
         .from("two_factor_email_codes")

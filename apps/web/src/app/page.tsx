@@ -3314,7 +3314,18 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {twoFactorEmailSent && (twoFactorModalMode === "manage" || twoFactorChallengeMethod === "email") ? (
+                    {twoFactorModalMode === "challenge" &&
+                    twoFactorChallengeMethod === "email" &&
+                    !twoFactorEmailSent ? (
+                      <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                        {isSpanish
+                          ? "Pulsa «Enviar código por email» y revisa tu bandeja (y spam). Luego introduce los 6 dígitos."
+                          : "Tap «Send email code» and check your inbox (and spam). Then enter the 6-digit code."}
+                      </p>
+                    ) : null}
+
+                    {((twoFactorModalMode === "manage" && twoFactorEmailSent) ||
+                      (twoFactorModalMode === "challenge" && twoFactorChallengeMethod === "email")) ? (
                       <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                         <input
                           type="text"
