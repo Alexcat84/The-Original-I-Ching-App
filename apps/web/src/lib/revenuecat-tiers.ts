@@ -43,9 +43,11 @@ export function pickTierFromWebhookEntitlements(
   return pickTierFromEntitlementIdList(raw);
 }
 
-interface RestEntitlementShape {
-  expires_date: string | null;
+export interface RestEntitlementShape {
+  expires_date: string | null | undefined;
   grace_period_expires_date?: string | null;
+  /** Present on v1 subscriber entitlements; links display name to store product id. */
+  product_identifier?: string | null;
 }
 
 function isEntitlementActive(details: RestEntitlementShape, nowMs: number): boolean {
@@ -61,6 +63,40 @@ function isEntitlementActive(details: RestEntitlementShape, nowMs: number): bool
   return false;
 }
 
+/** Active entitlement + subscription records as returned by GET /v1/subscribers/{id}. */
+function collectTierTokensFromSubscriberRecords(
+  entitlements: Record<string, RestEntitlementShape> | undefined,
+  subscriptions: Record<string, RestEntitlementShape> | undefined,
+  nowMs: number,
+): string[] {
+  const tokens: string[] = [];
+  for (const [key, details] of Object.entries(entitlements ?? {})) {
+    if (!isEntitlementActive(details, nowMs)) continue;
+    tokens.push(key);
+    const pid = details.product_identifier?.trim();
+    if (pid) tokens.push(pid);
+  }
+  for (const [productId, details] of Object.entries(subscriptions ?? {})) {
+    if (!isEntitlementActive(details, nowMs)) continue;
+    tokens.push(productId);
+  }
+  return tokens;
+}
+
+/**
+ * Full v1 subscriber: Web Billing often exposes the paid tier via subscription keys / product ids,
+ * not only entitlement identifiers.
+ */
+export function pickTierFromSubscriberBundle(
+  entitlements: Record<string, RestEntitlementShape> | undefined,
+  subscriptions: Record<string, RestEntitlementShape> | undefined,
+  nowMs: number = Date.now(),
+): RevenueCatBillingTier {
+  const tokens = collectTierTokensFromSubscriberRecords(entitlements, subscriptions, nowMs);
+  if (tokens.length === 0) return "free";
+  return pickTierFromEntitlementIdList(tokens);
+}
+
 /**
  * REST subscriber object: all entitlements are listed; expired ones must be ignored.
  */
@@ -68,13 +104,7 @@ export function pickTierFromSubscriberEntitlements(
   entitlements: Record<string, RestEntitlementShape> | undefined,
   nowMs: number = Date.now(),
 ): RevenueCatBillingTier {
-  if (!entitlements) return "free";
-  const activeIds: string[] = [];
-  for (const [key, details] of Object.entries(entitlements)) {
-    if (!isEntitlementActive(details, nowMs)) continue;
-    activeIds.push(key);
-  }
-  return pickTierFromEntitlementIdList(activeIds);
+  return pickTierFromSubscriberBundle(entitlements, undefined, nowMs);
 }
 
 /** Latest expiration among active entitlements that match the resolved tier (for billing cycle hints). */
@@ -83,16 +113,43 @@ export function latestExpiresMsForTier(
   tier: RevenueCatBillingTier,
   nowMs: number = Date.now(),
 ): number | null {
-  if (!entitlements || tier === "free") return null;
-  let max: number | null = null;
-  for (const [key, details] of Object.entries(entitlements)) {
-    const entryTier = resolveTierFromToken(normalizeToken(key));
-    if (entryTier !== tier) continue;
+  return latestExpiresMsForSubscriberBundle(entitlements, undefined, tier, nowMs);
+}
+
+/** Like latestExpiresMsForTier but includes subscription product ids and entitlement product_identifier. */
+export function latestExpiresMsForSubscriberBundle(
+  entitlements: Record<string, RestEntitlementShape> | undefined,
+  subscriptions: Record<string, RestEntitlementShape> | undefined,
+  tier: RevenueCatBillingTier,
+  nowMs: number = Date.now(),
+): number | null {
+  if (tier === "free") return null;
+
+  type Row = { tokens: string[]; details: RestEntitlementShape };
+  const rows: Row[] = [];
+  for (const [key, details] of Object.entries(entitlements ?? {})) {
     if (!isEntitlementActive(details, nowMs)) continue;
-    if (details.expires_date === null || details.expires_date === undefined) {
-      return null;
-    }
-    const exp = new Date(details.expires_date).getTime();
+    const tokens = [key];
+    const pid = details.product_identifier?.trim();
+    if (pid) tokens.push(pid);
+    rows.push({ tokens, details });
+  }
+  for (const [productId, details] of Object.entries(subscriptions ?? {})) {
+    if (!isEntitlementActive(details, nowMs)) continue;
+    rows.push({ tokens: [productId], details });
+  }
+
+  const relevant = rows.filter((row) =>
+    row.tokens.some((t) => resolveTierFromToken(normalizeToken(t)) === tier),
+  );
+  if (relevant.length === 0) return null;
+  if (relevant.some((r) => r.details.expires_date === null || r.details.expires_date === undefined)) {
+    return null;
+  }
+
+  let max: number | null = null;
+  for (const r of relevant) {
+    const exp = new Date(r.details.expires_date as string).getTime();
     if (Number.isNaN(exp)) continue;
     max = max === null ? exp : Math.max(max, exp);
   }

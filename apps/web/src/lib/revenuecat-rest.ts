@@ -1,7 +1,7 @@
 import { upsertUserTier } from "@/lib/credits";
 import {
-  latestExpiresMsForTier,
-  pickTierFromSubscriberEntitlements,
+  latestExpiresMsForSubscriberBundle,
+  pickTierFromSubscriberBundle,
   type RevenueCatBillingTier,
 } from "@/lib/revenuecat-tiers";
 
@@ -9,7 +9,15 @@ const RC_API = "https://api.revenuecat.com/v1";
 
 interface SubscriberResponse {
   subscriber?: {
-    entitlements?: Record<string, { expires_date: string | null; grace_period_expires_date?: string | null }>;
+    entitlements?: Record<
+      string,
+      {
+        expires_date: string | null;
+        grace_period_expires_date?: string | null;
+        product_identifier?: string | null;
+      }
+    >;
+    subscriptions?: Record<string, { expires_date: string | null; grace_period_expires_date?: string | null }>;
   };
 }
 
@@ -55,9 +63,10 @@ export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise
   }
 
   const entitlements = body.subscriber?.entitlements;
+  const subscriptions = body.subscriber?.subscriptions;
   const now = Date.now();
-  const tier = pickTierFromSubscriberEntitlements(entitlements, now);
-  const renewalMs = latestExpiresMsForTier(entitlements, tier, now);
+  const tier = pickTierFromSubscriberBundle(entitlements, subscriptions, now);
+  const renewalMs = latestExpiresMsForSubscriberBundle(entitlements, subscriptions, tier, now);
   const renewalIso =
     renewalMs !== null && Number.isFinite(renewalMs) ? new Date(renewalMs).toISOString() : undefined;
 

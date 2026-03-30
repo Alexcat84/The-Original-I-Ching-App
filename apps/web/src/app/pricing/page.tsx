@@ -38,8 +38,17 @@ export default function PricingPage() {
     const redirectToCheckout = async () => {
       if (isSupabaseBrowserConfigured()) {
         const sb = getSupabaseBrowser();
-        const { data } = await sb.auth.getSession();
-        const appUserId = data.session?.user?.id?.trim();
+        const deadline = Date.now() + 2500;
+        let appUserId: string | undefined;
+        while (Date.now() < deadline) {
+          const { data } = await sb.auth.getSession();
+          const id = data.session?.user?.id?.trim();
+          if (id) {
+            appUserId = id;
+            break;
+          }
+          await new Promise((r) => setTimeout(r, 120));
+        }
         if (appUserId) {
           target.searchParams.set("app_user_id", appUserId);
           target.searchParams.set("rc_app_user_id", appUserId);

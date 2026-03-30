@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   latestExpiresMsForTier,
+  pickTierFromSubscriberBundle,
   pickTierFromSubscriberEntitlements,
   pickTierFromWebhookEntitlements,
 } from "@/lib/revenuecat-tiers";
@@ -23,5 +24,24 @@ describe("revenuecat tier mapping", () => {
     };
     expect(pickTierFromSubscriberEntitlements(entitlements, now)).toBe("oracle");
     expect(latestExpiresMsForTier(entitlements, "oracle", now)).toBe(new Date("2026-04-28T00:00:00.000Z").getTime());
+  });
+
+  it("maps tier from entitlement product_identifier when entitlement id is opaque", () => {
+    const now = new Date("2026-03-28T00:00:00.000Z").getTime();
+    const entitlements = {
+      premium: {
+        expires_date: "2026-04-28T00:00:00.000Z",
+        product_identifier: "the-original-iching-practitioner-annual",
+      },
+    };
+    expect(pickTierFromSubscriberBundle(entitlements, undefined, now)).toBe("practitioner");
+  });
+
+  it("maps tier from v1 subscription keys (web billing)", () => {
+    const now = new Date("2026-03-28T00:00:00.000Z").getTime();
+    const subscriptions = {
+      prod494dadcda2_practitioner: { expires_date: "2026-04-28T00:00:00.000Z" },
+    };
+    expect(pickTierFromSubscriberBundle(undefined, subscriptions, now)).toBe("practitioner");
   });
 });

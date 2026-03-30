@@ -102,12 +102,32 @@ export async function POST(req: Request) {
   const type = event.type;
 
   if (REVOKE_TYPES.has(type)) {
-    await upsertUserTier(event.app_user_id, "free", undefined);
+    // EXPIRATION is per product; the user may still have another active plan (e.g. upgrade). Re-fetch RC.
+    const syncResult = await syncUserTierFromRevenueCatRest(event.app_user_id);
+    if (!syncResult.ok) {
+      return NextResponse.json({
+        ok: true,
+        skipped: true,
+        eventType: type,
+        reason: "revoke_rest_unavailable",
+      });
+    }
+    if (syncResult.source === "not_found") {
+      await upsertUserTier(event.app_user_id, "free", undefined);
+      return NextResponse.json({
+        ok: true,
+        appUserId: event.app_user_id,
+        eventType: type,
+        tier: "free",
+        source: "not_found",
+      });
+    }
     return NextResponse.json({
       ok: true,
       appUserId: event.app_user_id,
       eventType: type,
-      tier: "free",
+      tier: syncResult.tier,
+      source: "rest_after_revoke",
     });
   }
 
