@@ -929,6 +929,7 @@ export default function HomePage() {
   const [twoFactorModalMode, setTwoFactorModalMode] = useState<"manage" | "challenge">("manage");
   const [twoFactorChallengeMethod, setTwoFactorChallengeMethod] = useState<"totp" | "email">("totp");
   const [twoFactorInfo, setTwoFactorInfo] = useState<string | null>(null);
+  const [twoFactorError, setTwoFactorError] = useState<string | null>(null);
   const [secondFactorVerified, setSecondFactorVerified] = useState(false);
   const [subscriptionCreditsRemaining, setSubscriptionCreditsRemaining] = useState<number | null>(null);
   const [subscriptionCycleEnd, setSubscriptionCycleEnd] = useState<string | null>(null);
@@ -1007,6 +1008,9 @@ export default function HomePage() {
   const result = activeThread.at(-1) ?? null;
   const threadLimitReached =
     activeThread.length > 0 && result !== null && !result.canDeepen;
+  const preferredTwoFactorMethod: "totp" | "email" = twoFactorMethod === "email" ? "email" : "totp";
+  const allowsTotpChallenge = twoFactorMethod !== "email";
+  const allowsEmailChallenge = twoFactorMethod !== "totp";
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
   const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;
   const chatStateCacheKey = authUserId ? `iching_chat_state_v1:${authUserId}` : null;
@@ -1292,6 +1296,7 @@ export default function HomePage() {
     setTwoFactorModalOpen(false);
     setTwoFactorChallengeMethod("totp");
     setTwoFactorInfo(null);
+    setTwoFactorError(null);
     setSubscriptionCenterOpen(false);
     setSubscriptionManagementUrl(null);
     setSubscriptionPrimary(null);
@@ -1453,6 +1458,7 @@ export default function HomePage() {
       setSecondFactorVerified(false);
       setTwoFactorModalOpen(false);
       setTwoFactorInfo(null);
+      setTwoFactorError(null);
       setSubscriptionCenterOpen(false);
       setSubscriptionManagementUrl(null);
       setSubscriptionPrimary(null);
@@ -1518,11 +1524,12 @@ export default function HomePage() {
     setTwoFactorCode("");
     setTwoFactorEmailCode("");
     setTwoFactorEmailSent(false);
-    setTwoFactorChallengeMethod("totp");
+    setTwoFactorChallengeMethod(preferredTwoFactorMethod);
     setTwoFactorInfo(null);
+    setTwoFactorError(null);
     setTwoFactorModalMode("challenge");
     setTwoFactorModalOpen(true);
-  }, [accessToken, authUserId, twoFactorEnabled]);
+  }, [accessToken, authUserId, preferredTwoFactorMethod, twoFactorEnabled]);
 
   useEffect(() => {
     async function loadPublicConfig() {
@@ -1701,11 +1708,11 @@ export default function HomePage() {
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
-      setError("Inicia sesión para configurar la verificación en dos pasos.");
+      setTwoFactorError("Inicia sesión para configurar la verificación en dos pasos.");
       return;
     }
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
     setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/enroll", {
@@ -1721,21 +1728,21 @@ export default function HomePage() {
       };
       if (!res.ok || !data.qrDataUrl) {
         if (data.code === "TWO_FACTOR_ENCRYPTION_KEY_MISSING") {
-          setError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
+          setTwoFactorError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
           return;
         }
         if (data.code === "AUTH_PROVIDER_NOT_CONFIGURED") {
-          setError("2FA no disponible: falta configuración de Supabase en servidor.");
+          setTwoFactorError("2FA no disponible: falta configuración de Supabase en servidor.");
           return;
         }
-        setError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
+        setTwoFactorError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
         return;
       }
       setTwoFactorQrDataUrl(data.qrDataUrl);
       setTwoFactorSetupOpen(true);
       setTwoFactorRecoveryCodes([]);
     } catch {
-      setError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
+      setTwoFactorError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
     } finally {
       setTwoFactorBusy(false);
     }
@@ -1744,7 +1751,7 @@ export default function HomePage() {
   async function confirmTwoFactorEnrollment() {
     if (!accessToken || !twoFactorCode.trim()) return;
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
     setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/verify", {
@@ -1758,14 +1765,14 @@ export default function HomePage() {
       const data = (await res.json()) as { recoveryCodes?: string[]; error?: string; code?: string };
       if (!res.ok || !Array.isArray(data.recoveryCodes)) {
         if (data.code === "TWO_FACTOR_NOT_ENROLLED") {
-          setError("Primero activa 2FA con Authenticator para generar el QR.");
+          setTwoFactorError("Primero activa 2FA con Authenticator para generar el QR.");
           return;
         }
         if (data.code === "TWO_FACTOR_ENCRYPTION_KEY_MISSING") {
-          setError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
+          setTwoFactorError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
           return;
         }
-        setError("Código 2FA inválido o expirado. Revisa tu app Authenticator e inténtalo de nuevo.");
+        setTwoFactorError("Código 2FA inválido o expirado. Revisa tu app Authenticator e inténtalo de nuevo.");
         return;
       }
       setTwoFactorEnabled(true);
@@ -1773,7 +1780,7 @@ export default function HomePage() {
       setTwoFactorRecoveryCodes(data.recoveryCodes);
       setTwoFactorCode("");
     } catch {
-      setError("No se pudo verificar 2FA ahora. Inténtalo de nuevo.");
+      setTwoFactorError("No se pudo verificar 2FA ahora. Inténtalo de nuevo.");
     } finally {
       setTwoFactorBusy(false);
     }
@@ -1781,11 +1788,11 @@ export default function HomePage() {
 
   async function sendEmailTwoFactorCode() {
     if (!accessToken) {
-      setError("Inicia sesión para configurar la verificación en dos pasos.");
+      setTwoFactorError("Inicia sesión para configurar la verificación en dos pasos.");
       return;
     }
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
     setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/email/send", {
@@ -1794,27 +1801,39 @@ export default function HomePage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const data = (await res.json()) as { ok?: boolean; code?: string };
-      if (!res.ok || !data.ok) {
-        if (data.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
-          setError(
+      const data = (await res.json().catch(() => null)) as { ok?: boolean; code?: string; message?: string } | null;
+      if (!res.ok || !data?.ok) {
+        if (data?.code === "AUTH_REQUIRED") {
+          setTwoFactorError(isSpanish ? "Tu sesión expiró. Inicia sesión de nuevo." : "Your session expired. Please sign in again.");
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_LOCKED") {
+          setTwoFactorError(
+            isSpanish
+              ? "2FA bloqueado temporalmente por intentos fallidos. Espera 15 minutos e intenta de nuevo."
+              : "2FA is temporarily locked after failed attempts. Wait 15 minutes and try again.",
+          );
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
+          setTwoFactorError(
             "2FA por email no está habilitado en servidor. Revisa RESEND_API_KEY, TWO_FACTOR_EMAIL_FROM y TWO_FACTOR_EMAIL_CODE_SECRET.",
           );
           return;
         }
-        if (data.code === "TWO_FACTOR_EMAIL_DELIVERY_FAILED") {
+        if (data?.code === "TWO_FACTOR_EMAIL_DELIVERY_FAILED") {
           const deliveryMessage =
-            "message" in data && typeof (data as { message?: unknown }).message === "string"
-              ? (data as { message: string }).message
+            typeof data?.message === "string"
+              ? data.message
               : null;
-          setError(
+          setTwoFactorError(
             deliveryMessage
               ? `No se pudo enviar el código por email: ${deliveryMessage}`
               : "No se pudo enviar el código por email. Verifica que TWO_FACTOR_EMAIL_FROM esté validado en Resend y que la API key sea correcta.",
           );
           return;
         }
-        setError("No se pudo enviar el código por email. Inténtalo de nuevo.");
+        setTwoFactorError("No se pudo enviar el código por email. Inténtalo de nuevo.");
         return;
       }
       setTwoFactorEmailSent(true);
@@ -1824,7 +1843,7 @@ export default function HomePage() {
           : "Code sent by email. Check inbox and spam folder.",
       );
     } catch {
-      setError("No se pudo enviar el código por email. Inténtalo de nuevo.");
+      setTwoFactorError("No se pudo enviar el código por email. Inténtalo de nuevo.");
     } finally {
       setTwoFactorBusy(false);
     }
@@ -1833,7 +1852,7 @@ export default function HomePage() {
   async function verifyEmailTwoFactorCode() {
     if (!accessToken || !twoFactorEmailCode.trim()) return;
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
     setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/email/verify", {
@@ -1847,14 +1866,14 @@ export default function HomePage() {
       const data = (await res.json()) as { recoveryCodes?: string[]; code?: string };
       if (!res.ok || !Array.isArray(data.recoveryCodes)) {
         if (data.code === "TWO_FACTOR_EMAIL_CODE_EXPIRED") {
-          setError("El código por email expiró. Solicita uno nuevo.");
+          setTwoFactorError("El código por email expiró. Solicita uno nuevo.");
           return;
         }
         if (data.code === "TWO_FACTOR_EMAIL_CODE_MISSING") {
-          setError("Primero solicita el código por email.");
+          setTwoFactorError("Primero solicita el código por email.");
           return;
         }
-        setError("Código por email inválido. Revisa tu bandeja e inténtalo de nuevo.");
+        setTwoFactorError("Código por email inválido. Revisa tu bandeja e inténtalo de nuevo.");
         return;
       }
       setTwoFactorEnabled(true);
@@ -1863,7 +1882,7 @@ export default function HomePage() {
       setTwoFactorEmailCode("");
       setTwoFactorEmailSent(false);
     } catch {
-      setError("No se pudo verificar el código por email. Inténtalo de nuevo.");
+      setTwoFactorError("No se pudo verificar el código por email. Inténtalo de nuevo.");
     } finally {
       setTwoFactorBusy(false);
     }
@@ -1872,7 +1891,7 @@ export default function HomePage() {
   async function disableTwoFactor() {
     if (!accessToken) return;
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
     setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/disable", {
@@ -1880,7 +1899,7 @@ export default function HomePage() {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (!res.ok) {
-        setError(isSpanish ? "No se pudo desactivar 2FA." : "Could not disable 2FA.");
+        setTwoFactorError(isSpanish ? "No se pudo desactivar 2FA." : "Could not disable 2FA.");
         return;
       }
       setTwoFactorEnabled(false);
@@ -1898,7 +1917,7 @@ export default function HomePage() {
       setTwoFactorModalOpen(false);
       setTwoFactorInfo(isSpanish ? "2FA desactivado." : "2FA disabled.");
     } catch {
-      setError(isSpanish ? "No se pudo desactivar 2FA." : "Could not disable 2FA.");
+      setTwoFactorError(isSpanish ? "No se pudo desactivar 2FA." : "Could not disable 2FA.");
     } finally {
       setTwoFactorBusy(false);
     }
@@ -1914,11 +1933,11 @@ export default function HomePage() {
       payload.emailCode = twoFactorEmailCode.trim();
     }
     if (!payload.token && !payload.emailCode) {
-      setError(isSpanish ? "Ingresa un código válido de 6 dígitos." : "Enter a valid 6-digit code.");
+      setTwoFactorError(isSpanish ? "Ingresa un código válido de 6 dígitos." : "Enter a valid 6-digit code.");
       return;
     }
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
     setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/challenge/verify", {
@@ -1928,27 +1947,43 @@ export default function HomePage() {
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => null)) as { code?: string } | null;
+        if (data?.code === "AUTH_REQUIRED") {
+          setTwoFactorError(isSpanish ? "Tu sesión expiró. Inicia sesión de nuevo." : "Your session expired. Please sign in again.");
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_LOCKED") {
+          setTwoFactorError(
+            isSpanish
+              ? "2FA bloqueado temporalmente por intentos fallidos. Espera 15 minutos e intenta de nuevo."
+              : "2FA is temporarily locked after failed attempts. Wait 15 minutes and try again.",
+          );
+          return;
+        }
         if (data?.code === "TWO_FACTOR_EMAIL_CODE_MISSING") {
-          setError(isSpanish ? "Primero envía el código por email." : "Send an email code first.");
+          setTwoFactorError(isSpanish ? "Primero envía el código por email." : "Send an email code first.");
           return;
         }
         if (data?.code === "TWO_FACTOR_EMAIL_CODE_EXPIRED") {
-          setError(isSpanish ? "El código por email expiró. Solicita uno nuevo." : "Email code expired. Request a new one.");
+          setTwoFactorError(isSpanish ? "El código por email expiró. Solicita uno nuevo." : "Email code expired. Request a new one.");
           return;
         }
         if (data?.code === "TWO_FACTOR_NOT_ENROLLED") {
-          setError(isSpanish ? "Este método no está vinculado. Usa Email o vincula Authenticator." : "This method is not linked. Use Email or link Authenticator.");
+          setTwoFactorError(
+            isSpanish
+              ? "Este método no está vinculado a tu cuenta."
+              : "This method is not linked to your account.",
+          );
           return;
         }
         if (data?.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
-          setError(
+          setTwoFactorError(
             isSpanish
               ? "2FA por email no está configurado en servidor. Falta revisar Resend/variables."
               : "Email 2FA is not configured on server. Check Resend/environment variables.",
           );
           return;
         }
-        setError(isSpanish ? "Código 2FA inválido o expirado." : "Invalid or expired 2FA code.");
+        setTwoFactorError(isSpanish ? "Código 2FA inválido o expirado." : "Invalid or expired 2FA code.");
         return;
       }
       if (authUserId) {
@@ -1961,7 +1996,7 @@ export default function HomePage() {
       setTwoFactorModalMode("manage");
       setTwoFactorChallengeMethod("totp");
     } catch {
-      setError(isSpanish ? "No se pudo verificar 2FA." : "Could not verify 2FA.");
+      setTwoFactorError(isSpanish ? "No se pudo verificar 2FA." : "Could not verify 2FA.");
     } finally {
       setTwoFactorBusy(false);
     }
@@ -2133,8 +2168,9 @@ export default function HomePage() {
       setTwoFactorCode("");
       setTwoFactorEmailCode("");
       setTwoFactorEmailSent(false);
-      setTwoFactorChallengeMethod("totp");
+      setTwoFactorChallengeMethod(preferredTwoFactorMethod);
       setTwoFactorInfo(null);
+      setTwoFactorError(null);
       setTwoFactorModalMode("challenge");
       setTwoFactorModalOpen(true);
       setError(isSpanish ? "Verifica 2FA para continuar." : "Verify 2FA to continue.");
@@ -3036,6 +3072,7 @@ export default function HomePage() {
                             setTwoFactorEmailCode("");
                             setTwoFactorEmailSent(false);
                             setTwoFactorInfo(null);
+                            setTwoFactorError(null);
                             setTwoFactorModalOpen(true);
                           }}
                           disabled={twoFactorBusy || !accessToken}
@@ -3150,12 +3187,17 @@ export default function HomePage() {
                     <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
                       {twoFactorModalMode === "challenge"
                         ? isSpanish
-                          ? "Para continuar en esta sesión, verifica tu cuenta con Authenticator (TOTP) o código por email."
-                          : "To continue in this session, verify your account with Authenticator (TOTP) or email code."
+                          ? `Para continuar en esta sesión, verifica tu cuenta con ${preferredTwoFactorMethod === "email" ? "código por email" : "Authenticator (TOTP)"}.`
+                          : `To continue in this session, verify your account with ${preferredTwoFactorMethod === "email" ? "email code" : "Authenticator (TOTP)"}.`
                         : isSpanish
                           ? "Activa o desactiva métodos 2FA de forma segura. Los códigos sensibles solo se muestran en esta ventana."
                           : "Enable or disable 2FA methods safely. Sensitive codes are shown only in this modal."}
                     </p>
+                    {twoFactorError ? (
+                      <p className="meta-line tier-hint-line" style={{ marginTop: 6 }}>
+                        {twoFactorError}
+                      </p>
+                    ) : null}
                     {twoFactorInfo ? (
                       <p className="meta-line tier-hint-line" style={{ marginTop: 6 }}>
                         {twoFactorInfo}
@@ -3165,22 +3207,26 @@ export default function HomePage() {
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
                       {twoFactorModalMode === "challenge" ? (
                         <>
-                          <button
-                            type="button"
-                            className={`composer-reading-pill ${twoFactorChallengeMethod === "totp" ? "is-active" : ""}`}
-                            onClick={() => setTwoFactorChallengeMethod("totp")}
-                            disabled={twoFactorBusy}
-                          >
-                            {isSpanish ? "Authenticator (TOTP)" : "Authenticator (TOTP)"}
-                          </button>
-                          <button
-                            type="button"
-                            className={`composer-reading-pill ${twoFactorChallengeMethod === "email" ? "is-active" : ""}`}
-                            onClick={() => setTwoFactorChallengeMethod("email")}
-                            disabled={twoFactorBusy}
-                          >
-                            {isSpanish ? "Código por email" : "Email code"}
-                          </button>
+                          {allowsTotpChallenge ? (
+                            <button
+                              type="button"
+                              className={`composer-reading-pill ${twoFactorChallengeMethod === "totp" ? "is-active" : ""}`}
+                              onClick={() => setTwoFactorChallengeMethod("totp")}
+                              disabled={twoFactorBusy}
+                            >
+                              {isSpanish ? "Authenticator (TOTP)" : "Authenticator (TOTP)"}
+                            </button>
+                          ) : null}
+                          {allowsEmailChallenge ? (
+                            <button
+                              type="button"
+                              className={`composer-reading-pill ${twoFactorChallengeMethod === "email" ? "is-active" : ""}`}
+                              onClick={() => setTwoFactorChallengeMethod("email")}
+                              disabled={twoFactorBusy}
+                            >
+                              {isSpanish ? "Código por email" : "Email code"}
+                            </button>
+                          ) : null}
                         </>
                       ) : (
                         <>

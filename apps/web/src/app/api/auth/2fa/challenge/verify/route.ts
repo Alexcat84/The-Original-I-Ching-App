@@ -64,18 +64,19 @@ export async function POST(req: Request) {
 
   const { data: user } = await supabase
     .from("users")
-    .select("two_factor_enabled, totp_secret")
+    .select("two_factor_enabled, two_factor_method, totp_secret")
     .eq("id", userId)
     .maybeSingle();
   if (!user?.two_factor_enabled) {
     return NextResponse.json({ ok: true, skipped: true, reason: "two_factor_not_enabled" });
   }
 
+  const configuredMethod = user.two_factor_method === "email" ? "email" : "totp";
   const normalizedToken = typeof body.token === "string" ? normalizeCode(body.token) : "";
   const normalizedEmailCode = typeof body.emailCode === "string" ? normalizeCode(body.emailCode) : "";
   let verified = false;
 
-  if (normalizedToken.length === 6 && user.totp_secret) {
+  if (configuredMethod === "totp" && normalizedToken.length === 6 && user.totp_secret) {
     const encryptionKey = process.env.TOTP_ENCRYPTION_KEY;
     if (!encryptionKey) {
       return apiError(503, {
@@ -109,7 +110,7 @@ export async function POST(req: Request) {
     }
   }
 
-  if (!verified && normalizedEmailCode.length === 6) {
+  if (!verified && configuredMethod === "email" && normalizedEmailCode.length === 6) {
     const codeSecret = process.env.TWO_FACTOR_EMAIL_CODE_SECRET?.trim();
     if (!codeSecret) {
       return apiError(503, {
@@ -151,7 +152,7 @@ export async function POST(req: Request) {
     }
   }
 
-  if (!verified && normalizedToken.length > 0 && !user.totp_secret) {
+  if (!verified && configuredMethod === "totp" && normalizedToken.length > 0 && !user.totp_secret) {
     return apiError(400, {
       error: "totp_not_enrolled",
       code: "TWO_FACTOR_NOT_ENROLLED",
@@ -159,7 +160,12 @@ export async function POST(req: Request) {
     });
   }
 
-  if (!verified && normalizedToken.length !== 6 && normalizedEmailCode.length !== 6 && !body.recoveryCode) {
+  if (
+    !verified &&
+    ((configuredMethod === "totp" && normalizedToken.length !== 6) ||
+      (configuredMethod === "email" && normalizedEmailCode.length !== 6)) &&
+    !body.recoveryCode
+  ) {
     return apiError(400, {
       error: "invalid_code",
       code: "TWO_FACTOR_INVALID_CODE",
