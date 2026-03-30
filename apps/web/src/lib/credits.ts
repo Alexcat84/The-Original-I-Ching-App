@@ -178,11 +178,17 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   const tierCreditsType = tierConfig.creditsType;
   const supabase = getSupabaseAdmin();
   if (supabase && isPersistableUuid(userKey)) {
-    const { data: row } = await supabase
+    const { data: row, error: rowError } = await supabase
       .from("query_credits")
       .select("id, credits_total, credits_used, cycle_start, cycle_end, credits_type")
       .eq("user_id", userKey)
+      .order("updated_at", { ascending: false })
+      .limit(1)
       .maybeSingle();
+    if (rowError) {
+      console.error("[consumeTierCredit] query_credits read failed", rowError.message);
+      return { allowed: false, remaining: 0, limit };
+    }
     if (!row) {
       const cycleStart = new Date(now);
       const cycleEnd = tierCreditsType === "lifetime" ? new Date(LIFETIME_END_ISO) : new Date(now + MONTH_MS);
@@ -222,7 +228,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
         : rowCreditsType === "lifetime"
           ? LIFETIME_END_ISO
           : row.cycle_end;
-    await supabase
+    const { error: updateError } = await supabase
       .from("query_credits")
       .update({
         tier: safeTier,
@@ -234,6 +240,10 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
         updated_at: new Date().toISOString(),
       })
       .eq("id", row.id);
+    if (updateError) {
+      console.error("[consumeTierCredit] query_credits update failed", updateError.message);
+      return { allowed: false, remaining: 0, limit };
+    }
     return { allowed: true, remaining: total - nextUsed, limit: total };
   }
 
@@ -296,11 +306,17 @@ export async function upsertUserTier(
     }
 
     const targetConfig = TIER_CONFIG[safeTier];
-    const { data: existing } = await supabase
+    const { data: existing, error: existingError } = await supabase
       .from("query_credits")
       .select("id, credits_used, cycle_start, credits_type")
       .eq("user_id", userKey)
+      .order("updated_at", { ascending: false })
+      .limit(1)
       .maybeSingle();
+    if (existingError) {
+      console.error("[upsertUserTier] query_credits read failed", existingError.message);
+      throw new Error(`query_credits_read: ${existingError.message}`);
+    }
     const isLifetime = targetConfig.creditsType === "lifetime";
     const nowMs = Date.now();
     const nowIso = new Date(nowMs).toISOString();
@@ -313,8 +329,25 @@ export async function upsertUserTier(
         ? new Date(renewalMs).toISOString()
         : new Date(nowMs + MONTH_MS).toISOString();
     const creditsUsed = isLifetime && existing && existing.credits_type === "lifetime" ? existing.credits_used : 0;
-    const { error: upsertError } = await supabase.from("query_credits").upsert(
-      {
+    if (existing?.id) {
+      const { error: updateError } = await supabase
+        .from("query_credits")
+        .update({
+          tier: safeTier,
+          credits_total: targetConfig.creditsTotal,
+          credits_used: creditsUsed,
+          credits_type: targetConfig.creditsType,
+          cycle_start: cycleStart,
+          cycle_end: cycleEnd,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", existing.id);
+      if (updateError) {
+        console.error("[upsertUserTier] query_credits update failed", updateError.message);
+        throw new Error(`query_credits_update: ${updateError.message}`);
+      }
+    } else {
+      const { error: insertError } = await supabase.from("query_credits").insert({
         user_id: userKey,
         tier: safeTier,
         credits_total: targetConfig.creditsTotal,
@@ -323,12 +356,11 @@ export async function upsertUserTier(
         cycle_start: cycleStart,
         cycle_end: cycleEnd,
         updated_at: new Date().toISOString(),
-      },
-      { onConflict: "user_id" },
-    );
-    if (upsertError) {
-      console.error("[upsertUserTier] query_credits upsert failed", upsertError.message);
-      throw new Error(`query_credits_upsert: ${upsertError.message}`);
+      });
+      if (insertError) {
+        console.error("[upsertUserTier] query_credits insert failed", insertError.message);
+        throw new Error(`query_credits_insert: ${insertError.message}`);
+      }
     }
   }
   return safeTier;
