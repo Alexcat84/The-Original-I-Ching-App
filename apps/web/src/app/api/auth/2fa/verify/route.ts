@@ -12,6 +12,10 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 
+function normalizeCode(raw: string): string {
+  return raw.replace(/\D/g, "").slice(0, 6);
+}
+
 export async function POST(req: Request) {
   const authUser = await getAuthenticatedUser(req);
   if (!authUser) {
@@ -81,9 +85,10 @@ export async function POST(req: Request) {
   }
 
   let verified = false;
-  if (body.token) {
+  const normalizedToken = typeof body.token === "string" ? normalizeCode(body.token) : "";
+  if (normalizedToken.length === 6) {
     const decrypted = decryptTotpSecret(user.totp_secret, encryptionKey);
-    verified = verifyTotpToken(decrypted, body.token);
+    verified = verifyTotpToken(decrypted, normalizedToken);
   }
 
   if (!verified && body.recoveryCode) {

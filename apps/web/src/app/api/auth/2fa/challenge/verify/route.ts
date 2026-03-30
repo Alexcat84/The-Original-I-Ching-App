@@ -71,9 +71,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, skipped: true, reason: "two_factor_not_enabled" });
   }
 
+  const normalizedToken = typeof body.token === "string" ? normalizeCode(body.token) : "";
+  const normalizedEmailCode = typeof body.emailCode === "string" ? normalizeCode(body.emailCode) : "";
   let verified = false;
 
-  if (body.token && user.totp_secret) {
+  if (normalizedToken.length === 6 && user.totp_secret) {
     const encryptionKey = process.env.TOTP_ENCRYPTION_KEY;
     if (!encryptionKey) {
       return apiError(503, {
@@ -83,7 +85,7 @@ export async function POST(req: Request) {
       });
     }
     const decrypted = decryptTotpSecret(user.totp_secret, encryptionKey);
-    verified = verifyTotpToken(decrypted, body.token);
+    verified = verifyTotpToken(decrypted, normalizedToken);
   }
 
   if (!verified && body.recoveryCode) {
@@ -107,7 +109,7 @@ export async function POST(req: Request) {
     }
   }
 
-  if (!verified && body.emailCode) {
+  if (!verified && normalizedEmailCode.length === 6) {
     const codeSecret = process.env.TWO_FACTOR_EMAIL_CODE_SECRET?.trim();
     if (!codeSecret) {
       return apiError(503, {
@@ -116,28 +118,53 @@ export async function POST(req: Request) {
         action: "check_config",
       });
     }
-    const code = normalizeCode(body.emailCode);
-    if (code.length === 6) {
-      const { data: row } = await supabase
-        .from("two_factor_email_codes")
-        .select("id, code_hash, expires_at")
-        .eq("user_id", userId)
-        .is("consumed_at", null)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (row && new Date(row.expires_at).getTime() >= Date.now()) {
-        const expectedHash = hashEmailCode(code, codeSecret);
-        if (secureEqualHex(expectedHash, row.code_hash)) {
-          verified = true;
-          await supabase
-            .from("two_factor_email_codes")
-            .update({ consumed_at: new Date().toISOString() })
-            .eq("id", row.id)
-            .eq("user_id", userId);
-        }
-      }
+    const { data: row } = await supabase
+      .from("two_factor_email_codes")
+      .select("id, code_hash, expires_at")
+      .eq("user_id", userId)
+      .is("consumed_at", null)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (!row) {
+      return apiError(400, {
+        error: "two_factor_email_code_missing",
+        code: "TWO_FACTOR_EMAIL_CODE_MISSING",
+        action: "retry",
+      });
     }
+    if (new Date(row.expires_at).getTime() < Date.now()) {
+      return apiError(400, {
+        error: "two_factor_email_code_expired",
+        code: "TWO_FACTOR_EMAIL_CODE_EXPIRED",
+        action: "retry",
+      });
+    }
+    const expectedHash = hashEmailCode(normalizedEmailCode, codeSecret);
+    if (secureEqualHex(expectedHash, row.code_hash)) {
+      verified = true;
+      await supabase
+        .from("two_factor_email_codes")
+        .update({ consumed_at: new Date().toISOString() })
+        .eq("id", row.id)
+        .eq("user_id", userId);
+    }
+  }
+
+  if (!verified && normalizedToken.length > 0 && !user.totp_secret) {
+    return apiError(400, {
+      error: "totp_not_enrolled",
+      code: "TWO_FACTOR_NOT_ENROLLED",
+      action: "setup_2fa",
+    });
+  }
+
+  if (!verified && normalizedToken.length !== 6 && normalizedEmailCode.length !== 6 && !body.recoveryCode) {
+    return apiError(400, {
+      error: "invalid_code",
+      code: "TWO_FACTOR_INVALID_CODE",
+      action: "fix_input",
+    });
   }
 
   await supabase.from("two_factor_attempts").insert({

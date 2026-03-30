@@ -928,6 +928,7 @@ export default function HomePage() {
   const [twoFactorModalOpen, setTwoFactorModalOpen] = useState(false);
   const [twoFactorModalMode, setTwoFactorModalMode] = useState<"manage" | "challenge">("manage");
   const [twoFactorChallengeMethod, setTwoFactorChallengeMethod] = useState<"totp" | "email">("totp");
+  const [twoFactorInfo, setTwoFactorInfo] = useState<string | null>(null);
   const [secondFactorVerified, setSecondFactorVerified] = useState(false);
   const [subscriptionCreditsRemaining, setSubscriptionCreditsRemaining] = useState<number | null>(null);
   const [subscriptionCycleEnd, setSubscriptionCycleEnd] = useState<string | null>(null);
@@ -1290,6 +1291,7 @@ export default function HomePage() {
     setSecondFactorVerified(false);
     setTwoFactorModalOpen(false);
     setTwoFactorChallengeMethod("totp");
+    setTwoFactorInfo(null);
     setSubscriptionCenterOpen(false);
     setSubscriptionManagementUrl(null);
     setSubscriptionPrimary(null);
@@ -1450,6 +1452,7 @@ export default function HomePage() {
       setTwoFactorMethod(null);
       setSecondFactorVerified(false);
       setTwoFactorModalOpen(false);
+      setTwoFactorInfo(null);
       setSubscriptionCenterOpen(false);
       setSubscriptionManagementUrl(null);
       setSubscriptionPrimary(null);
@@ -1516,6 +1519,7 @@ export default function HomePage() {
     setTwoFactorEmailCode("");
     setTwoFactorEmailSent(false);
     setTwoFactorChallengeMethod("totp");
+    setTwoFactorInfo(null);
     setTwoFactorModalMode("challenge");
     setTwoFactorModalOpen(true);
   }, [accessToken, authUserId, twoFactorEnabled]);
@@ -1702,6 +1706,7 @@ export default function HomePage() {
     }
     setTwoFactorBusy(true);
     setError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/enroll", {
         method: "POST",
@@ -1740,6 +1745,7 @@ export default function HomePage() {
     if (!accessToken || !twoFactorCode.trim()) return;
     setTwoFactorBusy(true);
     setError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/verify", {
         method: "POST",
@@ -1780,6 +1786,7 @@ export default function HomePage() {
     }
     setTwoFactorBusy(true);
     setError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/email/send", {
         method: "POST",
@@ -1811,6 +1818,11 @@ export default function HomePage() {
         return;
       }
       setTwoFactorEmailSent(true);
+      setTwoFactorInfo(
+        isSpanish
+          ? "Código enviado por email. Revisa bandeja principal y spam."
+          : "Code sent by email. Check inbox and spam folder.",
+      );
     } catch {
       setError("No se pudo enviar el código por email. Inténtalo de nuevo.");
     } finally {
@@ -1822,6 +1834,7 @@ export default function HomePage() {
     if (!accessToken || !twoFactorEmailCode.trim()) return;
     setTwoFactorBusy(true);
     setError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/email/verify", {
         method: "POST",
@@ -1860,6 +1873,7 @@ export default function HomePage() {
     if (!accessToken) return;
     setTwoFactorBusy(true);
     setError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/disable", {
         method: "POST",
@@ -1882,6 +1896,7 @@ export default function HomePage() {
       }
       setSecondFactorVerified(false);
       setTwoFactorModalOpen(false);
+      setTwoFactorInfo(isSpanish ? "2FA desactivado." : "2FA disabled.");
     } catch {
       setError(isSpanish ? "No se pudo desactivar 2FA." : "Could not disable 2FA.");
     } finally {
@@ -1904,6 +1919,7 @@ export default function HomePage() {
     }
     setTwoFactorBusy(true);
     setError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/challenge/verify", {
         method: "POST",
@@ -1911,6 +1927,27 @@ export default function HomePage() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as { code?: string } | null;
+        if (data?.code === "TWO_FACTOR_EMAIL_CODE_MISSING") {
+          setError(isSpanish ? "Primero envía el código por email." : "Send an email code first.");
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_EMAIL_CODE_EXPIRED") {
+          setError(isSpanish ? "El código por email expiró. Solicita uno nuevo." : "Email code expired. Request a new one.");
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_NOT_ENROLLED") {
+          setError(isSpanish ? "Este método no está vinculado. Usa Email o vincula Authenticator." : "This method is not linked. Use Email or link Authenticator.");
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
+          setError(
+            isSpanish
+              ? "2FA por email no está configurado en servidor. Falta revisar Resend/variables."
+              : "Email 2FA is not configured on server. Check Resend/environment variables.",
+          );
+          return;
+        }
         setError(isSpanish ? "Código 2FA inválido o expirado." : "Invalid or expired 2FA code.");
         return;
       }
@@ -2097,6 +2134,7 @@ export default function HomePage() {
       setTwoFactorEmailCode("");
       setTwoFactorEmailSent(false);
       setTwoFactorChallengeMethod("totp");
+      setTwoFactorInfo(null);
       setTwoFactorModalMode("challenge");
       setTwoFactorModalOpen(true);
       setError(isSpanish ? "Verifica 2FA para continuar." : "Verify 2FA to continue.");
@@ -2997,6 +3035,7 @@ export default function HomePage() {
                             setTwoFactorCode("");
                             setTwoFactorEmailCode("");
                             setTwoFactorEmailSent(false);
+                            setTwoFactorInfo(null);
                             setTwoFactorModalOpen(true);
                           }}
                           disabled={twoFactorBusy || !accessToken}
@@ -3117,6 +3156,11 @@ export default function HomePage() {
                           ? "Activa o desactiva métodos 2FA de forma segura. Los códigos sensibles solo se muestran en esta ventana."
                           : "Enable or disable 2FA methods safely. Sensitive codes are shown only in this modal."}
                     </p>
+                    {twoFactorInfo ? (
+                      <p className="meta-line tier-hint-line" style={{ marginTop: 6 }}>
+                        {twoFactorInfo}
+                      </p>
+                    ) : null}
 
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
                       {twoFactorModalMode === "challenge" ? (
@@ -3234,16 +3278,16 @@ export default function HomePage() {
                           className="composer-input"
                           style={{ maxWidth: 220 }}
                         />
-                        <button
-                          type="button"
-                          className="composer-reading-pill is-active"
-                          onClick={() =>
-                            void (twoFactorModalMode === "challenge" ? verifyTwoFactorChallenge() : verifyEmailTwoFactorCode())
-                          }
-                          disabled={twoFactorBusy || twoFactorEmailCode.trim().length < 6}
-                        >
-                          {isSpanish ? "Verificar email" : "Verify email"}
-                        </button>
+                        {twoFactorModalMode === "manage" ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            onClick={() => void verifyEmailTwoFactorCode()}
+                            disabled={twoFactorBusy || twoFactorEmailCode.trim().length < 6}
+                          >
+                            {isSpanish ? "Verificar email" : "Verify email"}
+                          </button>
+                        ) : null}
                       </div>
                     ) : null}
 
