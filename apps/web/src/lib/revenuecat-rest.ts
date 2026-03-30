@@ -2,8 +2,8 @@ import { upsertUserTier } from "@/lib/credits";
 import {
   latestExpiresMsForSubscriberBundle,
   maxBillingTier,
+  pickTierFromEntitlementIdList,
   pickTierFromSubscriberBundle,
-  pickTierFromWebhookEntitlements,
   type RevenueCatBillingTier,
 } from "@/lib/revenuecat-tiers";
 
@@ -32,6 +32,52 @@ function asString(value: unknown): string | null {
   return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
 }
 
+/** v2 API often returns epoch ms (number); list endpoint may omit ISO strings. */
+function asIsoFromUnknown(value: unknown): string | null {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return new Date(value).toISOString();
+  }
+  if (typeof value === "string" && value.trim().length > 0) {
+    const ms = Date.parse(value);
+    if (!Number.isNaN(ms)) return new Date(ms).toISOString();
+  }
+  return null;
+}
+
+/** RC Billing product_id is often opaque (prod_…); entitlement lookup_key/display_name carry tier names. */
+function collectV2SubscriptionTierTokens(sub: Record<string, unknown>): string[] {
+  const tokens: string[] = [];
+  for (const key of ["product_id", "product_identifier"] as const) {
+    const v = asString(sub[key]);
+    if (v) tokens.push(v);
+  }
+  const ent = sub.entitlements;
+  if (ent && typeof ent === "object" && ent !== null) {
+    const items = (ent as { items?: unknown }).items;
+    if (Array.isArray(items)) {
+      for (const it of items) {
+        if (!it || typeof it !== "object") continue;
+        const o = it as Record<string, unknown>;
+        for (const k of ["lookup_key", "display_name", "id"] as const) {
+          const v = asString(o[k]);
+          if (v) tokens.push(v);
+        }
+      }
+    }
+  }
+  const pend = sub.pending_changes;
+  if (pend && typeof pend === "object" && pend !== null) {
+    const prod = (pend as { product?: unknown }).product;
+    if (prod && typeof prod === "object" && prod !== null) {
+      const p = prod as Record<string, unknown>;
+      for (const v of [asString(p.id), asString(p.store_identifier), asString(p.display_name)]) {
+        if (v) tokens.push(v);
+      }
+    }
+  }
+  return tokens;
+}
+
 function parseV2SubscriptionItem(raw: Record<string, unknown>): {
   id: string | null;
   status: string | null;
@@ -45,10 +91,11 @@ function parseV2SubscriptionItem(raw: Record<string, unknown>): {
     givesAccess: raw.gives_access === true,
     productId: asString(raw.product_id) ?? asString(raw.product_identifier),
     currentPeriodEndsAt:
-      asString(raw.current_period_ends_at) ??
-      asString(raw.renews_at) ??
-      asString(raw.expires_at) ??
-      asString(raw.expiration_at),
+      asIsoFromUnknown(raw.current_period_ends_at) ??
+      asIsoFromUnknown(raw.ends_at) ??
+      asIsoFromUnknown(raw.expires_at) ??
+      asIsoFromUnknown(raw.expiration_at) ??
+      asIsoFromUnknown(raw.renews_at),
   };
 }
 
@@ -92,23 +139,34 @@ async function loadTierFromV2CustomerSubscriptions(
     return { kind: "failed" };
   }
 
-  const rows = payload.items
-    .filter((it): it is Record<string, unknown> => typeof it === "object" && it !== null)
-    .map(parseV2SubscriptionItem);
+  const rawRows = payload.items.filter(
+    (it): it is Record<string, unknown> => typeof it === "object" && it !== null,
+  );
+  const paired = rawRows.map((raw) => ({ raw, p: parseV2SubscriptionItem(raw) }));
 
-  const primary =
-    rows.find((s) => s.givesAccess && isActiveSubscriptionStatus(s.status)) ??
-    rows.find((s) => isActiveSubscriptionStatus(s.status)) ??
-    rows[0] ??
+  const chosen =
+    paired.find(({ p }) => p.givesAccess && isActiveSubscriptionStatus(p.status)) ??
+    paired.find(({ p }) => isActiveSubscriptionStatus(p.status)) ??
+    paired[0] ??
     null;
 
+  const primary = chosen?.p ?? null;
+  const primaryRaw = chosen?.raw ?? null;
+
   const hasAccess = Boolean(primary && (primary.givesAccess || isActiveSubscriptionStatus(primary.status)));
-  if (!hasAccess || !primary?.productId) {
+  if (!hasAccess || !primaryRaw) {
     return { kind: "none" };
   }
 
-  const tier = pickTierFromWebhookEntitlements(null, undefined, primary.productId);
+  const tierTokens = collectV2SubscriptionTierTokens(primaryRaw);
+  const tier = pickTierFromEntitlementIdList(tierTokens);
   if (tier === "free") {
+    if (process.env.NODE_ENV === "development" || process.env.VERCEL_ENV === "preview") {
+      console.warn(
+        "[revenuecat-rest] v2 subscription has access but tier mapped to free; check entitlement lookup_key vs TIER_PRIORITY. tokens=",
+        tierTokens,
+      );
+    }
     return { kind: "none" };
   }
 

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   latestExpiresMsForTier,
   maxBillingTier,
+  pickTierFromEntitlementIdList,
   pickTierFromSubscriberBundle,
   pickTierFromSubscriberEntitlements,
   pickTierFromWebhookEntitlements,
@@ -50,5 +51,10 @@ describe("revenuecat tier mapping", () => {
       prod494dadcda2_practitioner: { expires_date: "2026-04-28T00:00:00.000Z" },
     };
     expect(pickTierFromSubscriberBundle(undefined, subscriptions, now)).toBe("practitioner");
+  });
+
+  it("maps v2-style entitlement lookup_key and opaque product_id together", () => {
+    const tokens = ["prod1a2b3c4d5e", "master", "Master Monthly"];
+    expect(pickTierFromEntitlementIdList(tokens)).toBe("master");
   });
 });

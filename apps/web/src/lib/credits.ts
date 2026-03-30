@@ -296,21 +296,23 @@ export async function upsertUserTier(
         ? new Date(renewalMs).toISOString()
         : new Date(nowMs + MONTH_MS).toISOString();
     const creditsUsed = isLifetime && existing && existing.credits_type === "lifetime" ? existing.credits_used : 0;
-    await supabase
-      .from("query_credits")
-      .upsert(
-        {
-          user_id: userKey,
-          tier: safeTier,
-          credits_total: targetConfig.creditsTotal,
-          credits_used: creditsUsed,
-          credits_type: targetConfig.creditsType,
-          cycle_start: cycleStart,
-          cycle_end: cycleEnd,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "user_id" },
-      );
+    const { error: upsertError } = await supabase.from("query_credits").upsert(
+      {
+        user_id: userKey,
+        tier: safeTier,
+        credits_total: targetConfig.creditsTotal,
+        credits_used: creditsUsed,
+        credits_type: targetConfig.creditsType,
+        cycle_start: cycleStart,
+        cycle_end: cycleEnd,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "user_id" },
+    );
+    if (upsertError) {
+      console.error("[upsertUserTier] query_credits upsert failed", upsertError.message);
+      throw new Error(`query_credits_upsert: ${upsertError.message}`);
+    }
   }
   return safeTier;
 }

@@ -19,6 +19,17 @@ function asString(value: unknown): string | null {
   return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
 }
 
+function asIsoFromUnknown(value: unknown): string | null {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return new Date(value).toISOString();
+  }
+  if (typeof value === "string" && value.trim().length > 0) {
+    const ms = Date.parse(value);
+    if (!Number.isNaN(ms)) return new Date(ms).toISOString();
+  }
+  return null;
+}
+
 function asBoolean(value: unknown): boolean | null {
   if (typeof value === "boolean") return value;
   if (typeof value === "string") {
@@ -46,10 +57,11 @@ function parseSubscription(raw: Record<string, unknown>): SubscriptionView {
     store: asString(raw.store),
     productId: asString(raw.product_id) ?? asString(raw.product_identifier),
     currentPeriodEndsAt:
-      asString(raw.current_period_ends_at) ??
-      asString(raw.renews_at) ??
-      asString(raw.expires_at) ??
-      asString(raw.expiration_at),
+      asIsoFromUnknown(raw.current_period_ends_at) ??
+      asIsoFromUnknown(raw.ends_at) ??
+      asIsoFromUnknown(raw.renews_at) ??
+      asIsoFromUnknown(raw.expires_at) ??
+      asIsoFromUnknown(raw.expiration_at),
     autoRenew: parseAutoRenew(raw),
   };
 }
