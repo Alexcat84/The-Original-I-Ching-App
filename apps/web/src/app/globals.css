@@ -1943,8 +1943,8 @@ button:disabled {
 }
 
 .subscription-center-card {
-  width: min(820px, 97vw);
-  border-radius: 16px;
+  width: min(560px, 96vw);
+  border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--bar-border));
   background: linear-gradient(
     180deg,
@@ -1952,7 +1952,9 @@ button:disabled {
     color-mix(in srgb, var(--bg-deep) 85%, var(--composer-bg)) 100%
   );
   box-shadow: 0 18px 48px color-mix(in srgb, #000 50%, transparent);
-  padding: 1rem;
+  padding: 0.85rem;
+  max-height: 82vh;
+  overflow-y: auto;
 }
 
 .subscription-center-header {
@@ -1964,8 +1966,24 @@ button:disabled {
 
 .subscription-center-title {
   color: var(--card-title);
-  font-size: 1rem;
+  font-size: 0.98rem;
   letter-spacing: 0.02em;
+}
+
+.subscription-center-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--bar-border));
+  background: color-mix(in srgb, var(--composer-bg) 90%, var(--bg-mid));
+  color: var(--fg);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.subscription-center-close:hover {
+  border-color: color-mix(in srgb, var(--accent) 68%, var(--bar-border));
 }
 
 .subscription-center-subtitle {

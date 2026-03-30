@@ -67,7 +67,6 @@ type ConsultResponse = {
 
 type ConsultationItem = ConsultResponse & { question: string };
 type CreditsType = "monthly" | "lifetime";
-type ResponseMode = "directo" | "ritual" | "profundizar";
 type OracleMode = "iching" | "oracle_bones";
 type SubscriptionStatusView = {
   id: string | null;
@@ -370,8 +369,6 @@ type UiCopy = {
   signOut: string;
   plan: string;
   options: string;
-  mode: string;
-  readMode: string;
   writeConsultation: string;
   positiveCharge: string;
   threadLimitReached: string;
@@ -396,8 +393,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Cerrar sesión",
     plan: "Plan",
     options: "Opciones",
-    mode: "Modo",
-    readMode: "Modo lectura",
     writeConsultation: "Escribe tu consulta…",
     positiveCharge: "Cargo positivo (afirmación)…",
     threadLimitReached: "Límite de hilo alcanzado — usa «Nueva sesión» arriba",
@@ -422,8 +417,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Sign out",
     plan: "Plan",
     options: "Options",
-    mode: "Mode",
-    readMode: "Reading mode",
     writeConsultation: "Type your consultation…",
     positiveCharge: "Positive charge (affirmation)…",
     threadLimitReached: "Thread limit reached — use \"New session\" above",
@@ -446,8 +439,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Sair",
     plan: "Plano",
     options: "Opções",
-    mode: "Modo",
-    readMode: "Modo de leitura",
     writeConsultation: "Escreva sua consulta…",
     positiveCharge: "Cargo positivo (afirmação)…",
     threadLimitReached: "Limite do fio atingido — use «Nova sessão» acima",
@@ -470,8 +461,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Se déconnecter",
     plan: "Forfait",
     options: "Options",
-    mode: "Mode",
-    readMode: "Mode de lecture",
     writeConsultation: "Écris ta consultation…",
     positiveCharge: "Charge positive (affirmation)…",
     threadLimitReached: "Limite du fil atteinte — utilisez « Nouvelle session »",
@@ -494,8 +483,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Abmelden",
     plan: "Plan",
     options: "Optionen",
-    mode: "Modus",
-    readMode: "Lesemodus",
     writeConsultation: "Schreibe deine Frage…",
     positiveCharge: "Positive Ladung (Bejahung)…",
     threadLimitReached: "Thread-Limit erreicht — oben «Neue Sitzung» verwenden",
@@ -518,8 +505,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Esci",
     plan: "Piano",
     options: "Opzioni",
-    mode: "Modalità",
-    readMode: "Modalità lettura",
     writeConsultation: "Scrivi la tua consultazione…",
     positiveCharge: "Carica positiva (affermazione)…",
     threadLimitReached: "Limite del thread raggiunto — usa «Nuova sessione»",
@@ -542,8 +527,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "ログアウト",
     plan: "プラン",
     options: "オプション",
-    mode: "モード",
-    readMode: "読解モード",
     writeConsultation: "相談内容を入力…",
     positiveCharge: "肯定の問い（肯定電荷）…",
     threadLimitReached: "スレッド上限です — 上の「新しいセッション」を使用",
@@ -566,8 +549,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "退出登录",
     plan: "方案",
     options: "选项",
-    mode: "模式",
-    readMode: "解读模式",
     writeConsultation: "输入你的咨询…",
     positiveCharge: "正向命题（肯定）…",
     threadLimitReached: "线程已达上限 — 请使用“新会话”",
@@ -590,8 +571,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "로그아웃",
     plan: "플랜",
     options: "옵션",
-    mode: "모드",
-    readMode: "해석 모드",
     writeConsultation: "질문을 입력하세요…",
     positiveCharge: "긍정 명제(affirmation)…",
     threadLimitReached: "스레드 한도 도달 — 위의 «새 세션» 사용",
@@ -608,21 +587,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     emptyInviteNight: "밤도 질문합니다. 삶의 어떤 영역을 탐색하고 싶나요?",
   },
 };
-
-function responseModeLabel(mode: ResponseMode, locale: AppLocale): string {
-  const byLocale: Record<AppLocale, Record<ResponseMode, string>> = {
-    es: { directo: "Directo", ritual: "Ritual", profundizar: "Profundizar" },
-    en: { directo: "Direct", ritual: "Ritual", profundizar: "Deepen" },
-    pt: { directo: "Direto", ritual: "Ritual", profundizar: "Aprofundar" },
-    fr: { directo: "Direct", ritual: "Rituel", profundizar: "Approfondir" },
-    de: { directo: "Direkt", ritual: "Ritual", profundizar: "Vertiefen" },
-    it: { directo: "Diretto", ritual: "Rituale", profundizar: "Approfondire" },
-    ja: { directo: "直截", ritual: "儀礼", profundizar: "深化" },
-    zh: { directo: "直接", ritual: "仪式", profundizar: "深入" },
-    ko: { directo: "직접", ritual: "의식", profundizar: "심화" },
-  };
-  return byLocale[locale][mode];
-}
 
 function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
   const mapByLocale: Record<AppLocale, Record<OracleBonesVerdict, string>> = {
@@ -910,7 +874,6 @@ export default function HomePage() {
   const [sessions, setSessions] = useState<ChatSessionState[]>([]);
   const [activeSessionLocalId, setActiveSessionLocalId] = useState<string | null>(null);
   const [sessionsHydrated, setSessionsHydrated] = useState(false);
-  const [responseMode, setResponseMode] = useState<ResponseMode>("ritual");
   const [error, setError] = useState<string | null>(null);
   const [creditsNotice, setCreditsNotice] = useState<{
     tier: BillingTier;
@@ -927,7 +890,9 @@ export default function HomePage() {
   const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<string[]>([]);
   const [twoFactorModalOpen, setTwoFactorModalOpen] = useState(false);
   const [twoFactorModalMode, setTwoFactorModalMode] = useState<"manage" | "challenge">("manage");
+  const [twoFactorSetupMethod, setTwoFactorSetupMethod] = useState<"menu" | "totp" | "email">("menu");
   const [twoFactorChallengeMethod, setTwoFactorChallengeMethod] = useState<"totp" | "email">("totp");
+  const [twoFactorRecoveryAck, setTwoFactorRecoveryAck] = useState(false);
   const [twoFactorInfo, setTwoFactorInfo] = useState<string | null>(null);
   const [twoFactorError, setTwoFactorError] = useState<string | null>(null);
   const [secondFactorVerified, setSecondFactorVerified] = useState(false);
@@ -1532,25 +1497,6 @@ export default function HomePage() {
   }, [accessToken, authUserId, preferredTwoFactorMethod, twoFactorEnabled]);
 
   useEffect(() => {
-    async function loadPublicConfig() {
-      try {
-        const res = await fetch("/api/admin/public-config", { method: "GET" });
-        const data = (await res.json()) as {
-          ok: boolean;
-          config?: {
-            responseModeDefault?: ResponseMode;
-          };
-        };
-        if (!res.ok || !data.ok || !data.config) return;
-        if (data.config.responseModeDefault) setResponseMode(data.config.responseModeDefault);
-      } catch {
-        // ignore config load errors
-      }
-    }
-    void loadPublicConfig();
-  }, []);
-
-  useEffect(() => {
     const fresh = createLocalSession(inProgressTitle);
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
@@ -1741,6 +1687,7 @@ export default function HomePage() {
       setTwoFactorQrDataUrl(data.qrDataUrl);
       setTwoFactorSetupOpen(true);
       setTwoFactorRecoveryCodes([]);
+      setTwoFactorRecoveryAck(false);
     } catch {
       setTwoFactorError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
     } finally {
@@ -1779,6 +1726,7 @@ export default function HomePage() {
       setTwoFactorMethod("totp");
       setTwoFactorRecoveryCodes(data.recoveryCodes);
       setTwoFactorCode("");
+      setTwoFactorRecoveryAck(false);
     } catch {
       setTwoFactorError("No se pudo verificar 2FA ahora. Inténtalo de nuevo.");
     } finally {
@@ -1881,6 +1829,7 @@ export default function HomePage() {
       setTwoFactorRecoveryCodes(data.recoveryCodes);
       setTwoFactorEmailCode("");
       setTwoFactorEmailSent(false);
+      setTwoFactorRecoveryAck(false);
     } catch {
       setTwoFactorError("No se pudo verificar el código por email. Inténtalo de nuevo.");
     } finally {
@@ -2028,12 +1977,11 @@ export default function HomePage() {
               : "Billing (RevenueCat) is not fully configured on server.",
           );
         } else if (data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
-          const plansHref = "/pricing";
-          window.open(plansHref, "_blank", "noopener,noreferrer");
+          window.open("/guia#planes", "_blank", "noopener,noreferrer");
           setManageSubMessage(
             isSpanish
-              ? "Tu cuenta no tiene una suscripción activa para gestionar. Te abrimos los planes para elegir o actualizar."
-              : "Your account has no active subscription to manage. We opened plans so you can subscribe or upgrade.",
+              ? "Tu cuenta no tiene suscripción activa. Te abrimos la guía de planes."
+              : "Your account has no active subscription. We opened the plans guide.",
           );
         } else if (data?.code === "BILLING_SYNC_FAILED") {
           setManageSubMessage(fallback);
@@ -2181,9 +2129,7 @@ export default function HomePage() {
     setCreditsNotice(null);
     setPendingUserQuestion(questionForRequest || null);
     setQuestion("");
-    const showRitualAnimation =
-      (oracleMode === "iching" && responseMode !== "directo") ||
-      (oracleMode === "oracle_bones" && responseMode !== "directo");
+    const showRitualAnimation = true;
     setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
     let ok = false;
     const ticker = showRitualAnimation
@@ -2207,7 +2153,6 @@ export default function HomePage() {
           sessionId: sessionIdForRequest,
           sessionTitle: activeSession.title,
           isDeepening: activeThread.length > 0,
-          responseMode,
           oracleMode,
           oracleBones:
             oracleMode === "oracle_bones"
@@ -2275,7 +2220,7 @@ export default function HomePage() {
         }
         if (res.status === 402 && data.error === "credits_exhausted") {
           const t = tierToBillingTierCopy(typeof data.tier === "string" ? data.tier : "free");
-          const lim = typeof data.creditsLimit === "number" ? data.creditsLimit : 2;
+          const lim = typeof data.creditsLimit === "number" ? data.creditsLimit : monthlyCreditsLimit;
           setCreditsNotice({
             tier: t,
             limit: lim,
@@ -2707,9 +2652,6 @@ export default function HomePage() {
                   ? ui.iChingTagline
                   : ui.bonesTagline}
               </p>
-              <span className="oracle-reading-pill" aria-label={`${ui.readMode} ${responseModeLabel(responseMode, locale)}`}>
-                {ui.mode}: {responseModeLabel(responseMode, locale)}
-              </span>
             </div>
           </div>
         </header>
@@ -2976,22 +2918,6 @@ export default function HomePage() {
                         </p>
                       </div>
                     </div>
-                    <div className="composer-reading-row" role="group" aria-label="Modo de lectura">
-                      <span className="composer-reading-label">{ui.readMode}</span>
-                      <div className="composer-reading-segmented">
-                        {(["directo", "ritual", "profundizar"] as const).map((m) => (
-                          <button
-                            key={m}
-                            type="button"
-                            className={`composer-reading-pill ${responseMode === m ? "is-active" : ""}`}
-                            onClick={() => setResponseMode(m)}
-                            disabled={loading}
-                          >
-                            {responseModeLabel(m, locale)}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
                     <div className="composer-doc-links">
                       <Link href="/quickstart">{isSpanish ? "Quickstart (uso)" : "Quickstart (usage)"}</Link>
                       <Link href="/notes">
@@ -3035,13 +2961,6 @@ export default function HomePage() {
                               ? "Centro de suscripción"
                               : "Subscription center"}
                         </button>
-                        <button
-                          type="button"
-                          className="composer-reading-pill"
-                          onClick={() => window.open("/pricing", "_blank", "noopener,noreferrer")}
-                        >
-                          {isSpanish ? "Ver planes / upgrade" : "Plans / upgrade"}
-                        </button>
                       </div>
                       {manageSubMessage ? (
                         <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
@@ -3067,10 +2986,15 @@ export default function HomePage() {
                           className="composer-reading-pill is-active"
                           onClick={() => {
                             setTwoFactorModalMode("manage");
+                            setTwoFactorSetupMethod("menu");
                             setTwoFactorChallengeMethod("totp");
+                            setTwoFactorSetupOpen(false);
+                            setTwoFactorQrDataUrl(null);
+                            setTwoFactorRecoveryCodes([]);
                             setTwoFactorCode("");
                             setTwoFactorEmailCode("");
                             setTwoFactorEmailSent(false);
+                            setTwoFactorRecoveryAck(false);
                             setTwoFactorInfo(null);
                             setTwoFactorError(null);
                             setTwoFactorModalOpen(true);
@@ -3157,12 +3081,14 @@ export default function HomePage() {
                 >
                   <div
                     style={{
-                      width: "min(760px, 96vw)",
+                      width: "min(560px, 96vw)",
                       borderRadius: 16,
                       border: "1px solid rgba(84,160,186,0.35)",
                       background: "linear-gradient(180deg, rgba(16,31,45,0.98), rgba(9,20,31,0.98))",
                       boxShadow: "0 18px 48px rgba(0,0,0,0.45)",
-                      padding: 16,
+                      padding: 14,
+                      maxHeight: "82vh",
+                      overflowY: "auto",
                     }}
                   >
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
@@ -3178,11 +3104,23 @@ export default function HomePage() {
                       {twoFactorModalMode === "manage" ? (
                         <button
                           type="button"
-                          className="composer-reading-pill"
+                          aria-label={isSpanish ? "Cerrar ventana 2FA" : "Close 2FA dialog"}
+                          title={isSpanish ? "Cerrar" : "Close"}
                           onClick={() => setTwoFactorModalOpen(false)}
-                          disabled={twoFactorBusy}
+                          disabled={twoFactorBusy || (twoFactorRecoveryCodes.length > 0 && !twoFactorRecoveryAck)}
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: 999,
+                            border: "1px solid rgba(84,160,186,0.45)",
+                            background: "rgba(12, 23, 35, 0.95)",
+                            color: "#d8edf5",
+                            fontSize: 18,
+                            lineHeight: 1,
+                            cursor: "pointer",
+                          }}
                         >
-                          {isSpanish ? "Cerrar" : "Close"}
+                          ×
                         </button>
                       ) : null}
                     </div>
@@ -3192,8 +3130,8 @@ export default function HomePage() {
                           ? `Para continuar en esta sesión, verifica tu cuenta con ${preferredTwoFactorMethod === "email" ? "código por email" : "Authenticator (TOTP)"}.`
                           : `To continue in this session, verify your account with ${preferredTwoFactorMethod === "email" ? "email code" : "Authenticator (TOTP)"}.`
                         : isSpanish
-                          ? "Activa o desactiva métodos 2FA de forma segura. Los códigos sensibles solo se muestran en esta ventana."
-                          : "Enable or disable 2FA methods safely. Sensitive codes are shown only in this modal."}
+                          ? "Elige un solo método para configurarlo paso a paso."
+                          : "Choose one method and configure it step by step."}
                     </p>
                     {twoFactorError ? (
                       <p className="meta-line tier-hint-line" style={{ marginTop: 6 }}>
@@ -3234,31 +3172,29 @@ export default function HomePage() {
                         <>
                           <button
                             type="button"
-                            className="composer-reading-pill is-active"
-                            onClick={() => void startTwoFactorEnrollment()}
+                            className={`composer-reading-pill ${twoFactorSetupMethod === "totp" ? "is-active" : ""}`}
+                            onClick={() => {
+                              setTwoFactorSetupMethod("totp");
+                              setTwoFactorInfo(null);
+                              setTwoFactorError(null);
+                              setTwoFactorEmailCode("");
+                            }}
                             disabled={twoFactorBusy || !accessToken}
                           >
-                            {twoFactorBusy
-                              ? isSpanish
-                                ? "Preparando..."
-                                : "Preparing..."
-                              : isSpanish
-                                ? "Vincular Authenticator (TOTP)"
-                                : "Link Authenticator (TOTP)"}
+                            {isSpanish ? "Authenticator (TOTP)" : "Authenticator (TOTP)"}
                           </button>
                           <button
                             type="button"
-                            className="composer-reading-pill"
-                            onClick={() => void sendEmailTwoFactorCode()}
+                            className={`composer-reading-pill ${twoFactorSetupMethod === "email" ? "is-active" : ""}`}
+                            onClick={() => {
+                              setTwoFactorSetupMethod("email");
+                              setTwoFactorInfo(null);
+                              setTwoFactorError(null);
+                              setTwoFactorCode("");
+                            }}
                             disabled={twoFactorBusy || !accessToken}
                           >
-                            {twoFactorBusy
-                              ? isSpanish
-                                ? "Enviando..."
-                                : "Sending..."
-                              : isSpanish
-                                ? "Activar código por email"
-                                : "Enable email code"}
+                            {isSpanish ? "Código por email" : "Email code"}
                           </button>
                           {twoFactorEnabled ? (
                             <button
@@ -3287,13 +3223,37 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {twoFactorModalMode === "manage" && twoFactorSetupOpen && twoFactorQrDataUrl ? (
+                    {twoFactorModalMode === "manage" && twoFactorSetupMethod === "totp" && !twoFactorSetupOpen ? (
+                      <div style={{ marginTop: 10 }}>
+                        <p className="meta-line tier-hint-line">
+                          {isSpanish
+                            ? "1) Pulsa «Generar QR»  2) Escanéalo con tu app Authenticator  3) Escribe el código de 6 dígitos."
+                            : "1) Tap \"Generate QR\"  2) Scan it with your Authenticator app  3) Enter the 6-digit code."}
+                        </p>
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => void startTwoFactorEnrollment()}
+                          disabled={twoFactorBusy || !accessToken}
+                        >
+                          {twoFactorBusy
+                            ? isSpanish
+                              ? "Preparando..."
+                              : "Preparing..."
+                            : isSpanish
+                              ? "Generar QR"
+                              : "Generate QR"}
+                        </button>
+                      </div>
+                    ) : null}
+
+                    {twoFactorModalMode === "manage" && twoFactorSetupMethod === "totp" && twoFactorSetupOpen && twoFactorQrDataUrl ? (
                       <div style={{ marginTop: 12 }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={twoFactorQrDataUrl}
                           alt="Authenticator QR"
-                          style={{ width: 190, height: 190, borderRadius: 8, background: "#fff" }}
+                          style={{ width: 160, height: 160, borderRadius: 8, background: "#fff" }}
                         />
                         <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                           <input
@@ -3326,7 +3286,31 @@ export default function HomePage() {
                       </p>
                     ) : null}
 
-                    {((twoFactorModalMode === "manage" && twoFactorEmailSent) ||
+                    {twoFactorModalMode === "manage" && twoFactorSetupMethod === "email" && !twoFactorEmailSent ? (
+                      <div style={{ marginTop: 10 }}>
+                        <p className="meta-line tier-hint-line">
+                          {isSpanish
+                            ? "Pulsa «Enviar código por email», revisa tu bandeja y escribe el código de 6 dígitos."
+                            : "Tap \"Send email code\", check your inbox, and enter the 6-digit code."}
+                        </p>
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => void sendEmailTwoFactorCode()}
+                          disabled={twoFactorBusy || !accessToken}
+                        >
+                          {twoFactorBusy
+                            ? isSpanish
+                              ? "Enviando..."
+                              : "Sending..."
+                            : isSpanish
+                              ? "Enviar código por email"
+                              : "Send email code"}
+                        </button>
+                      </div>
+                    ) : null}
+
+                    {((twoFactorModalMode === "manage" && twoFactorSetupMethod === "email" && twoFactorEmailSent) ||
                       (twoFactorModalMode === "challenge" && twoFactorChallengeMethod === "email")) ? (
                       <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                         <input
@@ -3351,10 +3335,26 @@ export default function HomePage() {
                     ) : null}
 
                     {twoFactorRecoveryCodes.length > 0 && twoFactorModalMode === "manage" ? (
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 10 }}>
-                        {isSpanish ? "Guarda tus códigos de recuperación:" : "Save your recovery codes:"}{" "}
-                        <code>{twoFactorRecoveryCodes.join(" · ")}</code>
-                      </p>
+                      <div style={{ marginTop: 10 }}>
+                        <p className="meta-line tier-hint-line">
+                          {isSpanish
+                            ? "Códigos de recuperación (se muestran una sola vez). Guárdalos en un lugar seguro:"
+                            : "Recovery codes (shown only once). Save them in a safe place:"}{" "}
+                          <code>{twoFactorRecoveryCodes.join(" · ")}</code>
+                        </p>
+                        <label className="meta-line tier-hint-line" style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                          <input
+                            type="checkbox"
+                            checked={twoFactorRecoveryAck}
+                            onChange={(e) => setTwoFactorRecoveryAck(e.target.checked)}
+                          />
+                          <span>
+                            {isSpanish
+                              ? "He guardado mis códigos de recuperación y entiendo que no se volverán a mostrar."
+                              : "I saved my recovery codes and understand they will not be shown again."}
+                          </span>
+                        </label>
+                      </div>
                     ) : null}
 
                     {twoFactorModalMode === "challenge" ? (
@@ -3404,10 +3404,12 @@ export default function HomePage() {
                       <strong className="subscription-center-title">{isSpanish ? "Centro de suscripción" : "Subscription center"}</strong>
                       <button
                         type="button"
-                        className="composer-reading-pill"
+                        className="subscription-center-close"
+                        aria-label={isSpanish ? "Cerrar centro de suscripción" : "Close subscription center"}
+                        title={isSpanish ? "Cerrar" : "Close"}
                         onClick={() => setSubscriptionCenterOpen(false)}
                       >
-                        {isSpanish ? "Cerrar" : "Close"}
+                        ×
                       </button>
                     </div>
                     <p className="meta-line tier-hint-line subscription-center-subtitle">
@@ -3425,47 +3427,45 @@ export default function HomePage() {
                         <span>{isSpanish ? "Consultas restantes:" : "Remaining consultations:"}</span>{" "}
                         <strong>{subscriptionCreditsRemaining ?? "—"}</strong> / {monthlyCreditsLimit}
                       </p>
-                      <p className="meta-line tier-hint-line subscription-center-row">
-                        <span>{isSpanish ? "Ciclo vigente hasta:" : "Current cycle until:"}</span>{" "}
-                        <strong>
-                          {subscriptionCycleEnd ? new Date(subscriptionCycleEnd).toLocaleString(locale) : "—"}
-                        </strong>
-                      </p>
+                      {subscriptionCycleEnd ? (
+                        <p className="meta-line tier-hint-line subscription-center-row">
+                          <span>{isSpanish ? "Ciclo vigente hasta:" : "Current cycle until:"}</span>{" "}
+                          <strong>{new Date(subscriptionCycleEnd).toLocaleString(locale)}</strong>
+                        </p>
+                      ) : null}
                       <p className="meta-line tier-hint-line subscription-center-row">
                         <span>{isSpanish ? "Estado de suscripción:" : "Subscription status:"}</span>{" "}
                         <span className={subscriptionStatusBadgeClass}>{subscriptionStatusLabel}</span>
                       </p>
-                      <p className="meta-line tier-hint-line subscription-center-row">
-                        <span>{isSpanish ? "Renovación automática:" : "Auto-renewal:"}</span>{" "}
-                        <strong>
-                          {subscriptionPrimary?.autoRenew == null
-                            ? isSpanish
-                              ? "No disponible"
-                              : "Unavailable"
-                            : subscriptionPrimary?.autoRenew
+                      {subscriptionPrimary?.autoRenew != null ? (
+                        <p className="meta-line tier-hint-line subscription-center-row">
+                          <span>{isSpanish ? "Renovación automática:" : "Auto-renewal:"}</span>{" "}
+                          <strong>
+                            {subscriptionPrimary.autoRenew
                               ? isSpanish
                                 ? "Activada"
                                 : "Enabled"
                               : isSpanish
                                 ? "Desactivada"
                                 : "Disabled"}
-                        </strong>
-                      </p>
-                      <p className="meta-line tier-hint-line subscription-center-row">
-                        <span>{isSpanish ? "Vía de cobro:" : "Billing store:"}</span>{" "}
-                        <strong>{subscriptionPrimary?.store ?? "—"}</strong>
-                        {" · "}
-                        {isSpanish ? "Producto:" : "Product:"}{" "}
-                        <strong>{subscriptionPrimary?.productId ?? "—"}</strong>
-                      </p>
-                      <p className="meta-line tier-hint-line subscription-center-row">
-                        <span>{isSpanish ? "Próxima renovación / vencimiento:" : "Next renewal / expiry:"}</span>{" "}
-                        <strong>
-                          {subscriptionPrimary?.currentPeriodEndsAt
-                            ? new Date(subscriptionPrimary.currentPeriodEndsAt).toLocaleString(locale)
-                            : "—"}
-                        </strong>
-                      </p>
+                          </strong>
+                        </p>
+                      ) : null}
+                      {subscriptionPrimary?.store || subscriptionPrimary?.productId ? (
+                        <p className="meta-line tier-hint-line subscription-center-row">
+                          <span>{isSpanish ? "Vía de cobro:" : "Billing store:"}</span>{" "}
+                          <strong>{subscriptionPrimary?.store ?? "—"}</strong>
+                          {" · "}
+                          {isSpanish ? "Producto:" : "Product:"}{" "}
+                          <strong>{subscriptionPrimary?.productId ?? "—"}</strong>
+                        </p>
+                      ) : null}
+                      {subscriptionPrimary?.currentPeriodEndsAt ? (
+                        <p className="meta-line tier-hint-line subscription-center-row">
+                          <span>{isSpanish ? "Próxima renovación / vencimiento:" : "Next renewal / expiry:"}</span>{" "}
+                          <strong>{new Date(subscriptionPrimary.currentPeriodEndsAt).toLocaleString(locale)}</strong>
+                        </p>
+                      ) : null}
                     </div>
 
                     {subscriptionCenterError ? (
@@ -3517,9 +3517,9 @@ export default function HomePage() {
                       <button
                         type="button"
                         className="composer-reading-pill"
-                        onClick={() => window.open("/pricing", "_blank", "noopener,noreferrer")}
+                        onClick={() => window.open("/guia#planes", "_blank", "noopener,noreferrer")}
                       >
-                        {isSpanish ? "Upgrade / cambiar plan" : "Upgrade / change plan"}
+                        {isSpanish ? "Guía de planes" : "Plans guide"}
                       </button>
                     </div>
 

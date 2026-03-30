@@ -87,6 +87,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [verifyEmailModalOpen, setVerifyEmailModalOpen] = useState(false);
+  const [pendingVerificationEmail, setPendingVerificationEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [configError, setConfigError] = useState(false);
   const turnstileTokenRef = useRef("");
@@ -236,13 +238,22 @@ export default function LoginPage() {
         setErr(registerErrorMessage(data));
         return;
       }
-      setMsg("Te enviamos un enlace de confirmación al correo. Ábrelo para verificar tu cuenta y luego inicia sesión.");
+      const normalizedEmail = email.trim();
+      setPendingVerificationEmail(normalizedEmail);
+      setVerifyEmailModalOpen(true);
+      setMsg(null);
+      setErr(null);
       switchMode("signin");
     } catch {
       setErr("Error de red. Inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
+  }
+
+  function closeVerifyEmailModal() {
+    setVerifyEmailModalOpen(false);
+    setMode("signin");
   }
 
   async function onResendConfirmation() {
@@ -464,6 +475,72 @@ export default function LoginPage() {
           </Link>
         </div>
       </div>
+
+      {verifyEmailModalOpen ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1200,
+            background: "rgba(5, 8, 14, 0.78)",
+            display: "grid",
+            placeItems: "center",
+            padding: 16,
+          }}
+        >
+          <div
+            style={{
+              width: "min(460px, 94vw)",
+              borderRadius: 14,
+              border: "1px solid rgba(84,160,186,0.35)",
+              background: "linear-gradient(180deg, rgba(16,31,45,0.98), rgba(9,20,31,0.98))",
+              boxShadow: "0 18px 48px rgba(0,0,0,0.45)",
+              padding: 14,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+              <strong style={{ color: "#d8edf5" }}>Verifica tu cuenta por correo</strong>
+              <button
+                type="button"
+                aria-label="Cerrar"
+                onClick={closeVerifyEmailModal}
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 999,
+                  border: "1px solid rgba(84,160,186,0.45)",
+                  background: "rgba(12, 23, 35, 0.95)",
+                  color: "#d8edf5",
+                  fontSize: 18,
+                  lineHeight: 1,
+                  cursor: "pointer",
+                }}
+              >
+                ×
+              </button>
+            </div>
+            <p className="auth-pro-msg" style={{ marginTop: 10 }}>
+              Te enviamos un enlace de verificación a <strong>{pendingVerificationEmail}</strong>.
+              <br />
+              Abre tu correo, busca el mensaje (revisa spam/no deseado) y haz clic en el enlace para activar tu cuenta.
+            </p>
+            <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <button
+                type="button"
+                className="auth-pro-btn auth-pro-btn-primary"
+                onClick={() => window.open("mailto:", "_blank", "noopener,noreferrer")}
+              >
+                Abrir app de correo
+              </button>
+              <button type="button" className="auth-pro-btn auth-pro-btn-google" onClick={closeVerifyEmailModal}>
+                Entendido
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

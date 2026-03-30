@@ -92,7 +92,7 @@ export async function POST(req: Request) {
     tier?: string;
     sessionId?: string | null;
     isDeepening?: boolean;
-    responseMode?: "directo" | "ritual" | "profundizar";
+    responseMode?: "ritual";
     adminKey?: string;
     imageProviderOverride?: ImageProvider;
     sessionTitle?: string | null;
@@ -197,12 +197,7 @@ export async function POST(req: Request) {
   }
   const adminConfig = getAdminConfig();
   const adminAllowed = adminBypassAllowed;
-  const responseMode =
-    body.responseMode === "directo" || body.responseMode === "ritual" || body.responseMode === "profundizar"
-      ? body.responseMode
-      : isDeepening
-        ? "profundizar"
-        : adminConfig.responseModeDefault;
+  const responseMode: "ritual" = "ritual";
   const imageProviderOverride =
     adminAllowed && body.imageProviderOverride ? body.imageProviderOverride : adminConfig.imageProviderDefault;
   if (oracleMode === "oracle_bones") {
