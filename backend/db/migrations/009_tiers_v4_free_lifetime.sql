@@ -17,7 +17,7 @@ WHERE tier = 'free';
 -- Keep paid tiers as monthly.
 UPDATE public.query_credits
 SET credits_type = 'monthly'
-WHERE tier IN ('seeker', 'seeker_monthly', 'seeker_annual', 'practitioner', 'master', 'oracle');
+WHERE tier IN ('seeker', 'practitioner', 'master', 'oracle');
 
 -- Optional retention field for projects that already have a subscriptions table.
 DO $$
