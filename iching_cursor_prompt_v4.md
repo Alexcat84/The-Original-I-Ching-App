@@ -90,9 +90,9 @@ PASO 1 — Datos básicos:
 PASO 2 — Confirmación de email:
   → Supabase envía link (expira 24h)
   → Sin confirmar: cuenta "pending" — puede ver la app, no consultar
-  → Al confirmar: cuenta "active" — recibe 3 créditos de bienvenida
+  → Al confirmar: cuenta "active" — recibe cupo Free lifetime (2 consultas totales; ver `FREE_LIFETIME_CONSULTATIONS`)
 
-PASO 3 — 2FA (obligatorio Practitioner+, opcional Free/Seeker):
+PASO 3 — 2FA (opcional en todos los tiers salvo política de producto / env):
   OPCIÓN A — TOTP (Authenticator App):
     → Generar secret con otplib → QR code → verificar con código de 6 dígitos
     → Secret guardado encriptado AES-256 en DB
@@ -668,7 +668,8 @@ export async function generateInterpretation(
   context: SessionContext | null,
 ): Promise<{ text: string; category: ConsultationCategory }> {
 
-  const { model, maxTokens } = MODEL_CONFIG[tier] ?? MODEL_CONFIG.free;
+  const model = getAnthropicModelId(process.env); // default claude-sonnet-4-5-20250929 — anthropic-model-id.ts
+  const maxTokens = 4096; // mismo en todos los tiers — interpretation.ts (const MAX_TOKENS)
   const language = castResult.language;
 
   // Construir messages array — el contexto previo va CACHEADO
@@ -832,14 +833,8 @@ INSTRUCCIONES:
 `.trim();
 }
 
-// Configuración de modelos por tier
-const MODEL_CONFIG = {
-  free:         { model: 'claude-haiku-4-5-20251001', maxTokens: 400  },
-  seeker:       { model: 'claude-haiku-4-5-20251001', maxTokens: 600  },
-  practitioner: { model: 'claude-sonnet-4-20250514',  maxTokens: 900  },
-  master:       { model: 'claude-sonnet-4-20250514',  maxTokens: 1200 },
-  oracle:       { model: 'claude-sonnet-4-20250514',  maxTokens: 1500 },
-};
+// Modelo y max_tokens: un solo modelo vía env (ANTHROPIC_MODEL) y MAX_TOKENS = 4096 para todos los tiers.
+// Implementación: backend/claude/src/interpretation.ts + anthropic-model-id.ts
 
 const DISCLAIMERS: Record<string, string> = {
   es: '*Esta interpretación se basa en los textos clásicos del I Ching de Wilhelm/Baynes. El oráculo revela patrones, no predice el futuro.*',
@@ -1077,8 +1072,8 @@ const WATERMARK_CONFIG = {
 // URL de sesión completa:     ichingora.app/s/yM7nQ4wT
 
 // Open Graph para sesión:
-// og:title    "Mi jornada con el I Ching — 3 consultas sobre [tema]"
-// og:image    Collage de las 3 imágenes de la sesión (generado por Sharp)
+// og:title    "Mi jornada con el I Ching — [N] consultas sobre [tema]" (N = tamaño de la sesión compartida)
+// og:image    Collage de imágenes de la sesión (generado por Sharp)
 // og:description  Resumen de los hexagramas consultados
 
 // Botones de share: WhatsApp, X, Facebook, Telegram, Instagram, Descargar
@@ -1089,116 +1084,44 @@ const WATERMARK_CONFIG = {
 
 ---
 
-## 💰 FASE 6 — PRECIOS ACTUALIZADOS v4
+## 💰 FASE 6 — PRECIOS Y CUPOS (alineado con repo, marzo 2026)
 ### Agente: @product-manager
 
+> **Fuente de verdad en código:** `apps/web/src/lib/tier-billing-constants.ts` (cupos + precios USD + descuento anual 10%) y `apps/web/src/lib/credits.ts` (`TIER_CONFIG`). Profundidad de hilo: `packages/context-engine` → `CONTEXT_LIMITS`. Documento de producto: `iching_tiers_prompt_v4_final.md`.  
+> Los modelos de coste por token debajo son **orientativos**; recalcular con tarifas Anthropic/imagen vigentes.
+
 ```
-COSTOS REALES POR CONSULTA (con contexto + imagen + caching):
+RESUMEN DE PLANES (valores numéricos = código actual)
 
-  BASE (sin contexto):
-    Haiku + imagen:  $0.002 + $0.003 = $0.0050
-    Sonnet + imagen: $0.005 + $0.003 = $0.0080
+  FREE
+    Consultas:   2 LIFETIME (no se renuevan)
+    Sesión:      1 consulta por hilo sin continuidad profunda
+    Modelo:      claude-sonnet-4-5-20250929 (igual en todos los tiers)
+    2FA:         Opcional
 
-  CONTEXTO ADICIONAL (con prompt caching, 90% descuento):
-    Por cada consulta previa en contexto: +$0.00024
-    Seeker (3 previas max):    +$0.0005
-    Practitioner (5 previas):  +$0.0010
-    Master (8 sesión + 10 hist): +$0.0043
-    Oracle (10 sesión + 30 hist): +$0.0096
+  SEEKER — $6.99/mes | $75.49/año (10% off sobre 12× mensual)
+    Consultas:   20 / mes (plan mensual o anual: mismo cupo mensual cada ciclo)
+    RC tiers:    seeker_monthly | seeker_annual (mismo creditsTotal)
+    Sesión:      hasta 3 consultas en el mismo hilo (CONTEXT_LIMITS.seeker)
+    Historial:   90 días
+    2FA:         Opcional
 
-  COSTO TOTAL POR CONSULTA:
-    Free:         $0.0050  (Haiku, sin contexto)
-    Seeker:       $0.0055  (Haiku + contexto 3)
-    Practitioner: $0.0090  (Sonnet + contexto 5)
-    Master:       $0.0123  (Sonnet + contexto extendido)
-    Oracle:       $0.0176  (Sonnet + contexto profundo)
+  PRACTITIONER — $11.99/mes | $129.49/año
+    Consultas:   40 / mes
+    Sesión:      hasta 5 en el mismo hilo
 
-COMISIONES: 35% total (30% stores + 5% otros)
-─────────────────────────────────────────────────────────────
+  MASTER — $19.99/mes | $215.89/año
+    Consultas:   100 / mes
+    Sesión:      hasta 8 + análisis de patrones hasta 10 consultas históricas
 
-TIER: FREE
-  Consultas:      3 / ciclo de 30 días desde primer uso
-  Contexto:       ✗ — cada consulta independiente
-  Historial:      ✅ persistente (gancho de conversión)
-  Imagen:         ✅ watermark prominente
-  Resolución:     1344×768
-  2FA:            Opcional
-  Modelo:         Haiku
-  Precio:         $0
-  Costo max:      3 × $0.005 = $0.015
-  Objetivo:       Demostrar valor → convertir a Seeker
+  ORACLE — $44.99/mes | $485.89/año
+    Consultas:   350 / mes (no 500)
+    Sesión:      hasta 12 en el mismo hilo + patrones hasta 30 consultas
+    2FA:         Opcional (mismo criterio que el resto salvo env específico)
 
-─────────────────────────────────────────────────────────────
-
-TIER: SEEKER — $6.99/mes | $67.10/año (20% off → $5.59/mes equiv.)
-  Consultas:      15 / ciclo desde fecha de suscripción
-  Contexto:       ✅ sesión temática hasta 3 consultas
-  Historial:      ✅ 90 días
-  Imagen:         ✅ watermark medio
-  Resolución:     1344×768
-  2FA:            Opcional
-  Modelo:         Haiku
-  Costo max:      15 × $0.0055 = $0.083
-  Ingreso neto:   $6.99 × 0.65 = $4.54
-  Margen neto:    $4.54 - $0.08 = $4.46 ✅
-
-─────────────────────────────────────────────────────────────
-
-TIER: PRACTITIONER — $11.99/mes | $115.10/año (20% off)
-  Consultas:      40 / ciclo desde fecha de suscripción
-  Contexto:       ✅ sesión temática hasta 5 consultas
-  Historial:      ✅ ilimitado + notas personales
-  Imagen:         ✅ watermark discreto
-  Resolución:     1344×768 + alta 2688×1536
-  Exportar PDF:   ✅ (incluye imagen)
-  2FA:            ✅ OBLIGATORIO
-  Modelo:         Sonnet
-  Costo max:      40 × $0.009 = $0.36
-  Ingreso neto:   $11.99 × 0.65 = $7.79
-  Margen neto:    $7.79 - $0.36 = $7.43 ✅
-
-─────────────────────────────────────────────────────────────
-
-TIER: MASTER — $19.99/mes | $191.90/año (20% off)
-  Consultas:      100 / ciclo desde fecha de suscripción
-  Contexto:       ✅ sesión hasta 8 + análisis histórico 10 consultas
-  Historial:      ✅ ilimitado + notas + etiquetas
-  Imagen:         ✅ watermark mínimo + alta resolución
-  Análisis:       ✅ patrones entre consultas (Claude analiza últimas 10)
-  Journaling:     ✅ integrado
-  Estadísticas:   ✅ hexagramas frecuentes, categorías, rachas
-  Exportar:       ✅ PDF, sesiones completas
-  2FA:            ✅ OBLIGATORIO
-  Modelo:         Sonnet
-  Costo max:      100 × $0.0123 = $1.23
-  Ingreso neto:   $19.99 × 0.65 = $12.99
-  Margen neto:    $12.99 - $1.23 = $11.76 ✅
-
-─────────────────────────────────────────────────────────────
-
-TIER: ORACLE — $44.99/mes | $431.90/año (20% off → $36/mes equiv.)
-  Consultas:      500 / ciclo desde fecha de suscripción
-  Contexto:       ✅ sesión hasta 10 + análisis histórico 30 consultas
-  Historial:      ✅ completo, exportable en todos los formatos
-  Imagen:         ✅ watermark casi invisible + ultra alta resolución
-  Análisis:       ✅ patrones profundos (últimas 30 consultas)
-  Todo de Master + acceso prioritario a nuevas features
-  2FA:            ✅ OBLIGATORIO
-  Modelo:         Sonnet (extended context)
-  Costo max:      500 × $0.0176 = $8.80
-  Ingreso neto:   $44.99 × 0.65 = $29.24
-  Margen neto:    $29.24 - $8.80 = $20.44 ✅
-
-─────────────────────────────────────────────────────────────
-
-RESUMEN COMPARATIVO DE PRECIOS:
-  Free:          $0
-  Seeker:        $6.99/mes  | $67.10/año
-  Practitioner:  $11.99/mes | $115.10/año
-  Master:        $19.99/mes | $191.90/año
-  Oracle:        $44.99/mes | $431.90/año
-
-TODOS LOS MÁRGENES SON POSITIVOS ✅
+NOTAS
+  - Plan anual: ANNUAL_PLAN_DISCOUNT = 0.1 → precio anual = monthly × 12 × 0.9 (redondeo 2 decimales).
+  - Para cambiar cupos o precios sin cazar strings sueltos: editar solo tier-billing-constants.ts.
 ```
 
 ---
@@ -1440,7 +1363,7 @@ AUTH + 2FA:
 [ ] SMS: Twilio Verify funcional
 [ ] 8 códigos de recuperación bcrypt single-use
 [ ] Bloqueo tras 5 intentos fallidos / 15 min
-[ ] 2FA obligatorio Practitioner, Master, Oracle
+[ ] 2FA opcional en todos los tiers (comportamiento vigente en backend)
 [ ] TOTP secret encriptado AES-256 en DB
 
 CONTEXTO DE SESIÓN (NUEVO v4):
@@ -1448,7 +1371,7 @@ CONTEXTO DE SESIÓN (NUEVO v4):
 [ ] Seeker: sesión hasta 3 consultas en contexto
 [ ] Practitioner: sesión hasta 5 consultas
 [ ] Master: sesión 8 + análisis histórico 10 consultas
-[ ] Oracle: sesión 10 + análisis histórico 30 consultas
+[ ] Oracle: sesión 12 + análisis histórico 30 consultas (`CONTEXT_LIMITS.oracle`)
 [ ] Prompt caching activo para contexto histórico
 [ ] buildContextBlock genera texto en idioma del usuario
 [ ] Claude referencia hexagramas previos explícitamente
@@ -1476,12 +1399,12 @@ SHARING VIRAL:
 [ ] CTA conversión en landing pública con UTM tracking
 [ ] Collage de imágenes para compartir sesión completa
 
-PRECIOS ACTUALIZADOS:
-[ ] Free: $0 / 3 consultas
-[ ] Seeker: $6.99/mes | $67.10/año
-[ ] Practitioner: $11.99/mes | $115.10/año
-[ ] Master: $19.99/mes | $191.90/año
-[ ] Oracle: $44.99/mes | $431.90/año
+PRECIOS ACTUALIZADOS (ver `tier-billing-constants.ts` + 10% anual):
+[ ] Free: $0 / 2 consultas lifetime
+[ ] Seeker: $6.99/mes | $75.49/año — 20 consultas/mes (mensual y anual)
+[ ] Practitioner: $11.99/mes | $129.49/año
+[ ] Master: $19.99/mes | $215.89/año
+[ ] Oracle: $44.99/mes | $485.89/año — 350 consultas/mes
 [ ] Todos los márgenes positivos verificados
 [ ] Reset créditos por fecha renovación (no 1ro del mes)
 [ ] RevenueCat webhook RENEWAL funcional

@@ -69,6 +69,7 @@
 - **Vercel Analytics + Speed Insights** en `layout.tsx`.
 - **A11y:** bloque global `prefers-reduced-motion` en `globals.css`.
 - **SEO:** `app/robots.ts`, `app/sitemap.ts` usando `NEXT_PUBLIC_APP_URL` con fallback.
+- **Facturación / cupos por tier:** valores numéricos centralizados en `apps/web/src/lib/tier-billing-constants.ts` (precios mensuales USD, descuento anual 10%, cupos mensuales incl. Oracle 350 y Seeker 20); `credits.ts` y la guía de producto deben leer desde ahí. Spec de producto: `iching_tiers_prompt_v4_final.md`.
 
 ## Pendientes [MANUAL]
 
