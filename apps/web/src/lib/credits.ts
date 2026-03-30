@@ -186,7 +186,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
     if (!row) {
       const cycleStart = new Date(now);
       const cycleEnd = tierCreditsType === "lifetime" ? new Date(LIFETIME_END_ISO) : new Date(now + MONTH_MS);
-      await supabase.from("query_credits").insert({
+      const { error: insertError } = await supabase.from("query_credits").insert({
         user_id: userKey,
         tier: safeTier,
         credits_total: limit,
@@ -195,6 +195,10 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
         cycle_start: cycleStart.toISOString(),
         cycle_end: cycleEnd.toISOString(),
       });
+      if (insertError) {
+        console.error("[consumeTierCredit] initial query_credits insert failed", insertError.message);
+        return { allowed: false, remaining: 0, limit };
+      }
       return { allowed: true, remaining: limit - 1, limit };
     }
     const rowCreditsType: CreditsType = row.credits_type === "lifetime" ? "lifetime" : tierCreditsType;
@@ -278,6 +282,19 @@ export async function upsertUserTier(
   creditsByKey.delete(userKey);
   const supabase = getSupabaseAdmin();
   if (supabase) {
+    const { data: userRow, error: userRowError } = await supabase
+      .from("users")
+      .select("id")
+      .eq("id", userKey)
+      .maybeSingle();
+    if (userRowError) {
+      console.error("[upsertUserTier] public.users read failed", userRowError.message);
+      throw new Error(`public_users_read: ${userRowError.message}`);
+    }
+    if (!userRow) {
+      throw new Error("public_user_missing");
+    }
+
     const targetConfig = TIER_CONFIG[safeTier];
     const { data: existing } = await supabase
       .from("query_credits")

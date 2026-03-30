@@ -27,5 +27,20 @@ export async function getAuthenticatedUser(req: Request): Promise<AuthenticatedU
     return null;
   }
 
+  // Self-heal: some environments missed migration 003 trigger, leaving auth.users
+  // without matching public.users row. Billing/2FA tables depend on public.users FK.
+  const { error: ensurePublicUserError } = await supabase
+    .from("users")
+    .upsert(
+      {
+        id: data.user.id,
+        email,
+      },
+      { onConflict: "id" },
+    );
+  if (ensurePublicUserError) {
+    console.error("[getAuthenticatedUser] failed to upsert public.users", ensurePublicUserError.message);
+  }
+
   return { userId: data.user.id, email };
 }

@@ -30,6 +30,14 @@ export async function POST(req: Request) {
     result = await syncUserTierFromRevenueCatRest(user.userId);
   } catch (e) {
     console.error("[API /api/account/sync-billing] syncUserTierFromRevenueCatRest threw", e);
+    const msg = e instanceof Error ? e.message : "";
+    if (msg.includes("public_user_missing")) {
+      return NextResponse.json({
+        ok: false,
+        skipped: true,
+        reason: "public_user_missing",
+      });
+    }
     return apiError(502, {
       error: "billing_sync_failed",
       code: "BILLING_SYNC_FAILED",
