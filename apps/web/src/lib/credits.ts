@@ -1,6 +1,39 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getUpstashRedis } from "@/lib/rate-limit";
+
+/**
+ * Webhooks and server jobs use app_user_id without a Bearer session. If migration 003
+ * never ran or a race left auth.users without public.users, billing writes fail. Heal
+ * from Auth Admin when the UUID exists in auth.users.
+ */
+async function ensurePublicUserRowFromAuth(supabase: SupabaseClient, userId: string): Promise<boolean> {
+  const { data: row, error: readErr } = await supabase.from("users").select("id").eq("id", userId).maybeSingle();
+  if (readErr) {
+    console.error("[ensurePublicUserRowFromAuth] public.users read failed", readErr.message);
+    return false;
+  }
+  if (row) return true;
+
+  const { data: authRes, error: authErr } = await supabase.auth.admin.getUserById(userId);
+  if (authErr || !authRes.user?.id) {
+    console.warn("[ensurePublicUserRowFromAuth] no auth.users row for app_user_id", userId, authErr?.message);
+    return false;
+  }
+  const email = authRes.user.email ?? "";
+  if (!email) {
+    console.warn("[ensurePublicUserRowFromAuth] auth user has no email", userId);
+    return false;
+  }
+
+  const { error: upErr } = await supabase.from("users").upsert({ id: userId, email }, { onConflict: "id" });
+  if (upErr) {
+    console.error("[ensurePublicUserRowFromAuth] public.users upsert failed", upErr.message);
+    return false;
+  }
+  return true;
+}
 
 export type Tier = "free" | "seeker" | "practitioner" | "master" | "oracle";
 export type CreditsType = "monthly" | "lifetime";
@@ -302,7 +335,10 @@ export async function upsertUserTier(
       throw new Error(`public_users_read: ${userRowError.message}`);
     }
     if (!userRow) {
-      throw new Error("public_user_missing");
+      const healed = await ensurePublicUserRowFromAuth(supabase, userKey);
+      if (!healed) {
+        throw new Error("public_user_missing");
+      }
     }
 
     const targetConfig = TIER_CONFIG[safeTier];

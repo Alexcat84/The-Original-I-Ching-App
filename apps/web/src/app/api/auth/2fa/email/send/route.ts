@@ -8,6 +8,15 @@ export const runtime = "nodejs";
 
 const EMAIL_CODE_TTL_MINUTES = 10;
 
+function isMissingTwoFactorEmailTableError(message: string): boolean {
+  const m = message.toLowerCase();
+  return (
+    m.includes("42p01") ||
+    (m.includes("does not exist") && m.includes("two_factor_email_codes")) ||
+    m.includes("schema cache")
+  );
+}
+
 function hashEmailCode(code: string, secret: string): string {
   return createHash("sha256").update(`${code}:${secret}`).digest("hex");
 }
@@ -91,6 +100,15 @@ export async function POST(req: Request) {
     .eq("user_id", authUser.userId)
     .is("consumed_at", null);
   if (clearError) {
+    if (isMissingTwoFactorEmailTableError(clearError.message)) {
+      return apiError(503, {
+        error: "two_factor_email_schema_missing",
+        code: "TWO_FACTOR_EMAIL_TABLE_MISSING",
+        action: "run_migration_007",
+        message:
+          "Table public.two_factor_email_codes is missing. Run backend/db/migrations/007_two_factor_email_codes.sql in Supabase SQL Editor.",
+      });
+    }
     return apiError(500, {
       error: "two_factor_email_cleanup_failed",
       code: "TWO_FACTOR_EMAIL_CLEANUP_FAILED",
@@ -105,6 +123,15 @@ export async function POST(req: Request) {
     expires_at: expiresAt,
   });
   if (insertError) {
+    if (isMissingTwoFactorEmailTableError(insertError.message)) {
+      return apiError(503, {
+        error: "two_factor_email_schema_missing",
+        code: "TWO_FACTOR_EMAIL_TABLE_MISSING",
+        action: "run_migration_007",
+        message:
+          "Table public.two_factor_email_codes is missing. Run backend/db/migrations/007_two_factor_email_codes.sql in Supabase SQL Editor.",
+      });
+    }
     return apiError(500, {
       error: "two_factor_email_insert_failed",
       code: "TWO_FACTOR_EMAIL_INSERT_FAILED",
