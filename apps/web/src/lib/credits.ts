@@ -2,6 +2,15 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getUpstashRedis } from "@/lib/rate-limit";
+import {
+  annualPriceUsd,
+  FREE_LIFETIME_CONSULTATIONS,
+  MASTER_CONSULTATIONS_PER_MONTH,
+  ORACLE_CONSULTATIONS_PER_MONTH,
+  PRACTITIONER_CONSULTATIONS_PER_MONTH,
+  SEEKER_CONSULTATIONS_PER_MONTH,
+  TIER_MONTHLY_PRICES_USD,
+} from "@/lib/tier-billing-constants";
 
 /**
  * Webhooks and server jobs use app_user_id without a Bearer session. If migration 003
@@ -82,11 +91,6 @@ export function tierLabelForDisplay(tier: string): string {
 
 const MONTH_MS = 30 * 24 * 60 * 60 * 1000;
 const LIFETIME_END_ISO = "2999-12-31T00:00:00.000Z";
-const ANNUAL_DISCOUNT = 0.1;
-
-function annualPrice(monthly: number): number {
-  return Number((monthly * 12 * (1 - ANNUAL_DISCOUNT)).toFixed(2));
-}
 
 export interface TierConfig {
   creditsTotal: number;
@@ -107,7 +111,7 @@ export interface TierConfig {
 
 export const TIER_CONFIG: Record<Tier, TierConfig> = {
   free: {
-    creditsTotal: 2,
+    creditsTotal: FREE_LIFETIME_CONSULTATIONS,
     creditsType: "lifetime",
     maxSessionConsultations: 1,
     historyDays: 0,
@@ -122,9 +126,9 @@ export const TIER_CONFIG: Record<Tier, TierConfig> = {
     priceMonthly: 0,
     priceAnnual: 0,
   },
-  /** Legacy / generic RC entitlement id `seeker` — same cupo as monthly (20/mes). */
+  /** Legacy / generic RC entitlement id `seeker` — uses `SEEKER_CONSULTATIONS_PER_MONTH` in tier-billing-constants. */
   seeker: {
-    creditsTotal: 20,
+    creditsTotal: SEEKER_CONSULTATIONS_PER_MONTH,
     creditsType: "monthly",
     maxSessionConsultations: 3,
     historyDays: 90,
@@ -136,11 +140,11 @@ export const TIER_CONFIG: Record<Tier, TierConfig> = {
     sharingEnabled: false,
     pdfDownload: true,
     claudeModel: "claude-sonnet-4-5-20250929",
-    priceMonthly: 6.99,
-    priceAnnual: annualPrice(6.99),
+    priceMonthly: TIER_MONTHLY_PRICES_USD.seeker,
+    priceAnnual: annualPriceUsd(TIER_MONTHLY_PRICES_USD.seeker),
   },
   seeker_monthly: {
-    creditsTotal: 20,
+    creditsTotal: SEEKER_CONSULTATIONS_PER_MONTH,
     creditsType: "monthly",
     maxSessionConsultations: 3,
     historyDays: 90,
@@ -152,11 +156,11 @@ export const TIER_CONFIG: Record<Tier, TierConfig> = {
     sharingEnabled: false,
     pdfDownload: true,
     claudeModel: "claude-sonnet-4-5-20250929",
-    priceMonthly: 6.99,
-    priceAnnual: annualPrice(6.99),
+    priceMonthly: TIER_MONTHLY_PRICES_USD.seeker,
+    priceAnnual: annualPriceUsd(TIER_MONTHLY_PRICES_USD.seeker),
   },
   seeker_annual: {
-    creditsTotal: 15,
+    creditsTotal: SEEKER_CONSULTATIONS_PER_MONTH,
     creditsType: "monthly",
     maxSessionConsultations: 3,
     historyDays: 90,
@@ -168,11 +172,11 @@ export const TIER_CONFIG: Record<Tier, TierConfig> = {
     sharingEnabled: false,
     pdfDownload: true,
     claudeModel: "claude-sonnet-4-5-20250929",
-    priceMonthly: 6.99,
-    priceAnnual: annualPrice(6.99),
+    priceMonthly: TIER_MONTHLY_PRICES_USD.seeker,
+    priceAnnual: annualPriceUsd(TIER_MONTHLY_PRICES_USD.seeker),
   },
   practitioner: {
-    creditsTotal: 40,
+    creditsTotal: PRACTITIONER_CONSULTATIONS_PER_MONTH,
     creditsType: "monthly",
     maxSessionConsultations: 5,
     historyDays: 0,
@@ -184,11 +188,11 @@ export const TIER_CONFIG: Record<Tier, TierConfig> = {
     sharingEnabled: false,
     pdfDownload: true,
     claudeModel: "claude-sonnet-4-5-20250929",
-    priceMonthly: 11.99,
-    priceAnnual: annualPrice(11.99),
+    priceMonthly: TIER_MONTHLY_PRICES_USD.practitioner,
+    priceAnnual: annualPriceUsd(TIER_MONTHLY_PRICES_USD.practitioner),
   },
   master: {
-    creditsTotal: 100,
+    creditsTotal: MASTER_CONSULTATIONS_PER_MONTH,
     creditsType: "monthly",
     maxSessionConsultations: 8,
     historyDays: 0,
@@ -200,11 +204,11 @@ export const TIER_CONFIG: Record<Tier, TierConfig> = {
     sharingEnabled: false,
     pdfDownload: true,
     claudeModel: "claude-sonnet-4-5-20250929",
-    priceMonthly: 19.99,
-    priceAnnual: annualPrice(19.99),
+    priceMonthly: TIER_MONTHLY_PRICES_USD.master,
+    priceAnnual: annualPriceUsd(TIER_MONTHLY_PRICES_USD.master),
   },
   oracle: {
-    creditsTotal: 350,
+    creditsTotal: ORACLE_CONSULTATIONS_PER_MONTH,
     creditsType: "monthly",
     maxSessionConsultations: 12,
     historyDays: 0,
@@ -216,8 +220,8 @@ export const TIER_CONFIG: Record<Tier, TierConfig> = {
     sharingEnabled: false,
     pdfDownload: true,
     claudeModel: "claude-sonnet-4-5-20250929",
-    priceMonthly: 44.99,
-    priceAnnual: annualPrice(44.99),
+    priceMonthly: TIER_MONTHLY_PRICES_USD.oracle,
+    priceAnnual: annualPriceUsd(TIER_MONTHLY_PRICES_USD.oracle),
   },
 };
 

@@ -1,6 +1,17 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { CONTEXT_LIMITS } from "@iching-oracle/context-engine";
 import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
+import {
+  ANNUAL_PLAN_DISCOUNT,
+  annualPriceUsd,
+  FREE_LIFETIME_CONSULTATIONS,
+  MASTER_CONSULTATIONS_PER_MONTH,
+  ORACLE_CONSULTATIONS_PER_MONTH,
+  PRACTITIONER_CONSULTATIONS_PER_MONTH,
+  SEEKER_CONSULTATIONS_PER_MONTH,
+  TIER_MONTHLY_PRICES_USD,
+} from "@/lib/tier-billing-constants";
 
 function resolveLocale(raw: string | undefined): AppLocale {
   if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
@@ -98,26 +109,75 @@ export default function GuiaRapidaPage() {
         <h2 id="planes">{isEs ? "Planes y pagos" : "Plans and pricing"}</h2>
         <p>{isEs ? "Precios actuales:" : "Current pricing:"}</p>
         <ul>
-          <li><strong>Free:</strong> {isEs ? "$0 · 2 consultas de prueba (lifetime)" : "$0 · 2 lifetime trial consultations"}</li>
-          <li><strong>Seeker:</strong> {isEs ? "$6.99/mes · $75.49/año" : "$6.99/month · $75.49/year"}</li>
-          <li><strong>Practitioner:</strong> {isEs ? "$11.99/mes · $129.49/año" : "$11.99/month · $129.49/year"}</li>
-          <li><strong>Master:</strong> {isEs ? "$19.99/mes · $215.89/año" : "$19.99/month · $215.89/year"}</li>
-          <li><strong>Oracle:</strong> {isEs ? "$44.99/mes · $485.89/año" : "$44.99/month · $485.89/year"}</li>
-        </ul>
-        <p>{isEs ? "Plan anual: ahorro exacto del 10% frente al pago mes a mes." : "Annual plan: exact 10% savings vs month-to-month."}</p>
-
-        <p>{isEs ? "Límites por plan (consultas al mes / máximo en un mismo chat):" : "Plan limits (monthly consultations / max in same thread):"}</p>
-        <ul>
-          <li><strong>Free:</strong> {isEs ? "2 lifetime · sin continuidad en hilo (1 por sesión)" : "2 lifetime · no thread continuity (1 per session)"}</li>
+          <li>
+            <strong>Free:</strong>{" "}
+            {isEs
+              ? `$0 · ${FREE_LIFETIME_CONSULTATIONS} consultas de prueba (lifetime)`
+              : `$0 · ${FREE_LIFETIME_CONSULTATIONS} lifetime trial consultations`}
+          </li>
           <li>
             <strong>Seeker:</strong>{" "}
             {isEs
-              ? "20 al mes (mensual) o 15 al mes (anual, por cada mes del año) · hasta 3 en el mismo chat"
-              : "20/month (monthly) or 15/month (annual plan, per month of the year) · up to 3 in one thread"}
+              ? `$${TIER_MONTHLY_PRICES_USD.seeker}/mes · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.seeker)}/año`
+              : `$${TIER_MONTHLY_PRICES_USD.seeker}/month · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.seeker)}/year`}
           </li>
-          <li><strong>Practitioner:</strong> {isEs ? "40 al mes · hasta 5 en el mismo chat" : "40/month · up to 5 in one thread"}</li>
-          <li><strong>Master:</strong> {isEs ? "100 al mes · hasta 8 en el mismo chat" : "100/month · up to 8 in one thread"}</li>
-          <li><strong>Oracle:</strong> {isEs ? "350 al mes · hasta 12 en el mismo chat" : "350/month · up to 12 in one thread"}</li>
+          <li>
+            <strong>Practitioner:</strong>{" "}
+            {isEs
+              ? `$${TIER_MONTHLY_PRICES_USD.practitioner}/mes · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.practitioner)}/año`
+              : `$${TIER_MONTHLY_PRICES_USD.practitioner}/month · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.practitioner)}/year`}
+          </li>
+          <li>
+            <strong>Master:</strong>{" "}
+            {isEs
+              ? `$${TIER_MONTHLY_PRICES_USD.master}/mes · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.master)}/año`
+              : `$${TIER_MONTHLY_PRICES_USD.master}/month · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.master)}/year`}
+          </li>
+          <li>
+            <strong>Oracle:</strong>{" "}
+            {isEs
+              ? `$${TIER_MONTHLY_PRICES_USD.oracle}/mes · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.oracle)}/año`
+              : `$${TIER_MONTHLY_PRICES_USD.oracle}/month · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.oracle)}/year`}
+          </li>
+        </ul>
+        <p>
+          {isEs
+            ? `Plan anual: ahorro exacto del ${Math.round(ANNUAL_PLAN_DISCOUNT * 100)}% frente al pago mes a mes.`
+            : `Annual plan: exact ${Math.round(ANNUAL_PLAN_DISCOUNT * 100)}% savings vs month-to-month.`}
+        </p>
+
+        <p>{isEs ? "Límites por plan (consultas al mes / máximo en un mismo chat):" : "Plan limits (monthly consultations / max in same thread):"}</p>
+        <ul>
+          <li>
+            <strong>Free:</strong>{" "}
+            {isEs
+              ? `${FREE_LIFETIME_CONSULTATIONS} lifetime · sin continuidad en hilo (1 por sesión)`
+              : `${FREE_LIFETIME_CONSULTATIONS} lifetime · no thread continuity (1 per session)`}
+          </li>
+          <li>
+            <strong>Seeker:</strong>{" "}
+            {isEs
+              ? `${SEEKER_CONSULTATIONS_PER_MONTH} al mes (mensual o anual) · hasta ${CONTEXT_LIMITS.seeker.sessionDepth} en el mismo chat`
+              : `${SEEKER_CONSULTATIONS_PER_MONTH}/month (monthly or annual) · up to ${CONTEXT_LIMITS.seeker.sessionDepth} in one thread`}
+          </li>
+          <li>
+            <strong>Practitioner:</strong>{" "}
+            {isEs
+              ? `${PRACTITIONER_CONSULTATIONS_PER_MONTH} al mes · hasta ${CONTEXT_LIMITS.practitioner.sessionDepth} en el mismo chat`
+              : `${PRACTITIONER_CONSULTATIONS_PER_MONTH}/month · up to ${CONTEXT_LIMITS.practitioner.sessionDepth} in one thread`}
+          </li>
+          <li>
+            <strong>Master:</strong>{" "}
+            {isEs
+              ? `${MASTER_CONSULTATIONS_PER_MONTH} al mes · hasta ${CONTEXT_LIMITS.master.sessionDepth} en el mismo chat`
+              : `${MASTER_CONSULTATIONS_PER_MONTH}/month · up to ${CONTEXT_LIMITS.master.sessionDepth} in one thread`}
+          </li>
+          <li>
+            <strong>Oracle:</strong>{" "}
+            {isEs
+              ? `${ORACLE_CONSULTATIONS_PER_MONTH} al mes · hasta ${CONTEXT_LIMITS.oracle.sessionDepth} en el mismo chat`
+              : `${ORACLE_CONSULTATIONS_PER_MONTH}/month · up to ${CONTEXT_LIMITS.oracle.sessionDepth} in one thread`}
+          </li>
         </ul>
 
         <p>
