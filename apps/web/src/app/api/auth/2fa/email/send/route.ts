@@ -104,7 +104,7 @@ export async function POST(req: Request) {
       return apiError(503, {
         error: "two_factor_email_schema_missing",
         code: "TWO_FACTOR_EMAIL_TABLE_MISSING",
-        action: "run_migration_007",
+        action: "apply_db_migration",
         message:
           "Table public.two_factor_email_codes is missing. Run backend/db/migrations/007_two_factor_email_codes.sql in Supabase SQL Editor.",
       });
@@ -127,7 +127,7 @@ export async function POST(req: Request) {
       return apiError(503, {
         error: "two_factor_email_schema_missing",
         code: "TWO_FACTOR_EMAIL_TABLE_MISSING",
-        action: "run_migration_007",
+        action: "apply_db_migration",
         message:
           "Table public.two_factor_email_codes is missing. Run backend/db/migrations/007_two_factor_email_codes.sql in Supabase SQL Editor.",
       });

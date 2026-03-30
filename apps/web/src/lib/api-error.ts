@@ -7,7 +7,8 @@ export type ApiErrorAction =
   | "upgrade_plan"
   | "setup_2fa"
   | "fix_input"
-  | "check_config";
+  | "check_config"
+  | "apply_db_migration";
 
 type ApiErrorPayload = {
   error: string;
