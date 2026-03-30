@@ -109,7 +109,12 @@ export default function GuiaRapidaPage() {
         <p>{isEs ? "Límites por plan (consultas al mes / máximo en un mismo chat):" : "Plan limits (monthly consultations / max in same thread):"}</p>
         <ul>
           <li><strong>Free:</strong> {isEs ? "2 lifetime · sin continuidad en hilo (1 por sesión)" : "2 lifetime · no thread continuity (1 per session)"}</li>
-          <li><strong>Seeker:</strong> {isEs ? "15 al mes · hasta 3 en el mismo chat" : "15/month · up to 3 in one thread"}</li>
+          <li>
+            <strong>Seeker:</strong>{" "}
+            {isEs
+              ? "20 al mes (mensual) o 15 al mes (anual, por cada mes del año) · hasta 3 en el mismo chat"
+              : "20/month (monthly) or 15/month (annual plan, per month of the year) · up to 3 in one thread"}
+          </li>
           <li><strong>Practitioner:</strong> {isEs ? "40 al mes · hasta 5 en el mismo chat" : "40/month · up to 5 in one thread"}</li>
           <li><strong>Master:</strong> {isEs ? "100 al mes · hasta 8 en el mismo chat" : "100/month · up to 8 in one thread"}</li>
           <li><strong>Oracle:</strong> {isEs ? "350 al mes · hasta 12 en el mismo chat" : "350/month · up to 12 in one thread"}</li>

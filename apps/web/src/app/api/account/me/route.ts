@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
-import { CREDITS_PER_MONTH, getUserBillingTier, TIER_CONFIG } from "@/lib/credits";
+import {
+  CREDITS_PER_MONTH,
+  getUserBillingTier,
+  TIER_CONFIG,
+  toContextTierKey,
+  type Tier,
+} from "@/lib/credits";
 import { CONTEXT_LIMITS, type TierKey } from "@iching-oracle/context-engine";
 
 export const runtime = "nodejs";
@@ -12,7 +18,7 @@ export async function GET(req: Request) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
   const tier = await getUserBillingTier(user.userId);
-  const tierKey = (tier in CONTEXT_LIMITS ? tier : "free") as TierKey;
+  const tierKey = toContextTierKey(tier) as TierKey;
   const twoFactor = await (async () => {
     const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
     const supabase = getSupabaseAdmin();
@@ -33,7 +39,7 @@ export async function GET(req: Request) {
     if (!supabase) {
       return {
         creditsUsed: 0,
-        creditsRemaining: CREDITS_PER_MONTH[tierKey],
+        creditsRemaining: CREDITS_PER_MONTH[tier as Tier],
         cycleEnd: null as string | null,
       };
     }
@@ -42,7 +48,7 @@ export async function GET(req: Request) {
       .select("credits_total, credits_used, cycle_end")
       .eq("user_id", user.userId)
       .maybeSingle();
-    const total = typeof data?.credits_total === "number" ? data.credits_total : CREDITS_PER_MONTH[tierKey];
+    const total = typeof data?.credits_total === "number" ? data.credits_total : CREDITS_PER_MONTH[tier as Tier];
     const used = typeof data?.credits_used === "number" ? data.credits_used : 0;
     return {
       creditsUsed: used,
@@ -52,9 +58,9 @@ export async function GET(req: Request) {
   })();
   return NextResponse.json({
     email: user.email,
-    tier: tierKey,
-    creditsLimit: CREDITS_PER_MONTH[tierKey],
-    creditsType: TIER_CONFIG[tierKey].creditsType,
+    tier,
+    creditsLimit: CREDITS_PER_MONTH[tier as Tier],
+    creditsType: TIER_CONFIG[tier as Tier].creditsType,
     sessionDepthLimit: CONTEXT_LIMITS[tierKey].sessionDepth,
     creditsUsed: credits.creditsUsed,
     creditsRemaining: credits.creditsRemaining,

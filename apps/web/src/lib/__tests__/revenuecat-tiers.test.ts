@@ -16,7 +16,8 @@ describe("revenuecat tier mapping", () => {
   });
 
   it("maps webhook entitlements with suffixes", () => {
-    expect(pickTierFromWebhookEntitlements(["seeker_annual"], undefined)).toBe("seeker");
+    expect(pickTierFromWebhookEntitlements(["seeker_annual"], undefined)).toBe("seeker_annual");
+    expect(pickTierFromWebhookEntitlements(["seeker_monthly"], undefined)).toBe("seeker_monthly");
     expect(pickTierFromWebhookEntitlements(["plan_practitioner_monthly"], undefined)).toBe("practitioner");
   });
 

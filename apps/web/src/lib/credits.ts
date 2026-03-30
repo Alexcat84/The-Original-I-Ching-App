@@ -35,8 +35,50 @@ async function ensurePublicUserRowFromAuth(supabase: SupabaseClient, userId: str
   return true;
 }
 
-export type Tier = "free" | "seeker" | "practitioner" | "master" | "oracle";
+export type Tier =
+  | "free"
+  | "seeker"
+  | "seeker_monthly"
+  | "seeker_annual"
+  | "practitioner"
+  | "master"
+  | "oracle";
+
 export type CreditsType = "monthly" | "lifetime";
+
+const KNOWN_TIERS = [
+  "free",
+  "seeker",
+  "seeker_monthly",
+  "seeker_annual",
+  "practitioner",
+  "master",
+  "oracle",
+] as const satisfies readonly Tier[];
+
+/** Map legacy/generic RC tier and DB values to persisted app tier. */
+export function normalizeBillingTier(tier: string): Tier {
+  if (tier === "seeker") return "seeker_monthly";
+  if ((KNOWN_TIERS as readonly string[]).includes(tier)) return tier as Tier;
+  return "free";
+}
+
+/** Collapse Seeker variants for context-engine / watermark (same session depth as `seeker`). */
+export type ContextTierKey = "free" | "seeker" | "practitioner" | "master" | "oracle";
+
+export function toContextTierKey(tier: string): ContextTierKey {
+  const t = normalizeBillingTier(tier);
+  if (t === "seeker_monthly" || t === "seeker_annual") return "seeker";
+  if (t === "practitioner" || t === "master" || t === "oracle" || t === "free") return t;
+  return "free";
+}
+
+/** Short label for UI (Seeker monthly/annual both show as `seeker`). */
+export function tierLabelForDisplay(tier: string): string {
+  const t = normalizeBillingTier(tier);
+  if (t === "seeker_monthly" || t === "seeker_annual") return "seeker";
+  return t;
+}
 
 const MONTH_MS = 30 * 24 * 60 * 60 * 1000;
 const LIFETIME_END_ISO = "2999-12-31T00:00:00.000Z";
@@ -80,7 +122,40 @@ export const TIER_CONFIG: Record<Tier, TierConfig> = {
     priceMonthly: 0,
     priceAnnual: 0,
   },
+  /** Legacy / generic RC entitlement id `seeker` — same cupo as monthly (20/mes). */
   seeker: {
+    creditsTotal: 20,
+    creditsType: "monthly",
+    maxSessionConsultations: 3,
+    historyDays: 90,
+    patternAnalysisLookback: 0,
+    imageWatermark: true,
+    oracleBonesEnabled: true,
+    yarrowMethodEnabled: true,
+    twoFactorRequired: false,
+    sharingEnabled: false,
+    pdfDownload: true,
+    claudeModel: "claude-sonnet-4-5-20250929",
+    priceMonthly: 6.99,
+    priceAnnual: annualPrice(6.99),
+  },
+  seeker_monthly: {
+    creditsTotal: 20,
+    creditsType: "monthly",
+    maxSessionConsultations: 3,
+    historyDays: 90,
+    patternAnalysisLookback: 0,
+    imageWatermark: true,
+    oracleBonesEnabled: true,
+    yarrowMethodEnabled: true,
+    twoFactorRequired: false,
+    sharingEnabled: false,
+    pdfDownload: true,
+    claudeModel: "claude-sonnet-4-5-20250929",
+    priceMonthly: 6.99,
+    priceAnnual: annualPrice(6.99),
+  },
+  seeker_annual: {
     creditsTotal: 15,
     creditsType: "monthly",
     maxSessionConsultations: 3,
@@ -149,6 +224,8 @@ export const TIER_CONFIG: Record<Tier, TierConfig> = {
 export const CREDITS_PER_MONTH: Record<Tier, number> = {
   free: TIER_CONFIG.free.creditsTotal,
   seeker: TIER_CONFIG.seeker.creditsTotal,
+  seeker_monthly: TIER_CONFIG.seeker_monthly.creditsTotal,
+  seeker_annual: TIER_CONFIG.seeker_annual.creditsTotal,
   practitioner: TIER_CONFIG.practitioner.creditsTotal,
   master: TIER_CONFIG.master.creditsTotal,
   oracle: TIER_CONFIG.oracle.creditsTotal,
@@ -201,9 +278,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   /** Present when Supabase row exists and credits are exhausted (for UX copy). */
   cycleEndIso?: string | null;
 }> {
-  const incomingTier = (["free", "seeker", "practitioner", "master", "oracle"] as const).includes(tier as Tier)
-    ? (tier as Tier)
-    : "free";
+  const incomingTier = normalizeBillingTier(tier);
   const safeTier = tierByUser.get(userKey) ?? incomingTier;
   const now = Date.now();
   const tierConfig = TIER_CONFIG[safeTier];
@@ -242,7 +317,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
     }
     const rowCreditsType: CreditsType = row.credits_type === "lifetime" ? "lifetime" : tierCreditsType;
     const cycleEnded = rowCreditsType === "monthly" && now >= new Date(row.cycle_end).getTime();
-    const total = limit;
+    const total = row.credits_total > 0 ? row.credits_total : limit;
     const used = cycleEnded ? 0 : row.credits_used;
     if (used >= total) {
       return {
@@ -307,8 +382,8 @@ export async function getUserBillingTier(userId: string): Promise<Tier> {
   if (!supabase) return "free";
   const { data } = await supabase.from("query_credits").select("tier").eq("user_id", userId).maybeSingle();
   const t = data?.tier;
-  if (t === "seeker" || t === "practitioner" || t === "master" || t === "oracle" || t === "free") {
-    return t;
+  if (typeof t === "string" && (KNOWN_TIERS as readonly string[]).includes(t)) {
+    return normalizeBillingTier(t);
   }
   return "free";
 }
@@ -318,9 +393,7 @@ export async function upsertUserTier(
   tier: string,
   renewalDateIso?: string,
 ): Promise<Tier> {
-  const safeTier = (["free", "seeker", "practitioner", "master", "oracle"] as const).includes(tier as Tier)
-    ? (tier as Tier)
-    : "free";
+  const safeTier = normalizeBillingTier(tier);
   tierByUser.set(userKey, safeTier);
   creditsByKey.delete(userKey);
   const supabase = getSupabaseAdmin();

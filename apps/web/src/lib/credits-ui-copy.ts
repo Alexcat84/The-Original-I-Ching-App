@@ -2,6 +2,13 @@
 
 export type BillingTier = "free" | "seeker" | "practitioner" | "master" | "oracle";
 
+/** Map stored billing tier (incl. Seeker variants) to copy bucket. */
+export function tierToBillingTierCopy(tier: string): BillingTier {
+  if (tier === "seeker_monthly" || tier === "seeker_annual" || tier === "seeker") return "seeker";
+  if (tier === "practitioner" || tier === "master" || tier === "oracle" || tier === "free") return tier;
+  return "free";
+}
+
 function formatResetDate(iso: string | null): string | null {
   if (!iso) return null;
   const d = new Date(iso);

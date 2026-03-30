@@ -1,3 +1,4 @@
+import { toContextTierKey } from "@/lib/credits";
 import type { TierKey } from "@iching-oracle/context-engine";
 import { WATERMARK_CONFIG } from "@iching-oracle/image-engine";
 import { renderSvgToPng } from "@/lib/svg-to-png";
@@ -8,7 +9,7 @@ function escapeXml(s: string): string {
 }
 
 function tierOrFree(tier: string): TierKey {
-  const k = tier as TierKey;
+  const k = toContextTierKey(tier);
   return k in WATERMARK_CONFIG ? k : "free";
 }
 

@@ -1,4 +1,5 @@
-import { type TierKey, CONTEXT_LIMITS } from "@iching-oracle/context-engine";
+import { toContextTierKey } from "@/lib/credits";
+import type { TierKey } from "@iching-oracle/context-engine";
 import type { AuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -43,10 +44,7 @@ function shouldAllowAdminUnlimitedCredits(): boolean {
 }
 
 function resolveTierKey(tier: string): TierKey {
-  if (tier in CONTEXT_LIMITS) {
-    return tier as TierKey;
-  }
-  return "free";
+  return toContextTierKey(tier);
 }
 
 function tierRequiresTwoFactor(tierKey: TierKey): boolean {

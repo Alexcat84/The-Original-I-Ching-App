@@ -3,7 +3,8 @@
  * Identifiers in the RC dashboard must match these names (case-insensitive).
  */
 
-export const TIER_PRIORITY = ["oracle", "master", "practitioner", "seeker"] as const;
+/** Higher tiers first; seeker variants before generic `seeker` so product ids match precisely. */
+export const TIER_PRIORITY = ["oracle", "master", "practitioner", "seeker_annual", "seeker_monthly", "seeker"] as const;
 
 export type PaidTier = (typeof TIER_PRIORITY)[number];
 
@@ -12,6 +13,8 @@ export type RevenueCatBillingTier = PaidTier | "free";
 const TIER_RANK: Record<RevenueCatBillingTier, number> = {
   free: 0,
   seeker: 1,
+  seeker_monthly: 1,
+  seeker_annual: 1,
   practitioner: 2,
   master: 3,
   oracle: 4,
@@ -30,10 +33,26 @@ function normalizeToken(value: string): string {
 
 function resolveTierFromToken(token: string): RevenueCatBillingTier {
   if (TIER_SET.has(token)) return token as RevenueCatBillingTier;
+  if (token.includes("seeker") && token.includes("annual")) return "seeker_annual";
+  if (token.includes("seeker") && token.includes("monthly")) return "seeker_monthly";
   for (const tier of TIER_PRIORITY) {
     if (token.includes(tier)) return tier;
   }
   return "free";
+}
+
+function seekerFamily(t: RevenueCatBillingTier): boolean {
+  return t === "seeker" || t === "seeker_monthly" || t === "seeker_annual";
+}
+
+/** Match entitlement tokens to billing tier (Seeker monthly/annual/generic share one product family). */
+export function tierTokenMatchesBillingTier(
+  resolved: RevenueCatBillingTier,
+  target: RevenueCatBillingTier,
+): boolean {
+  if (resolved === target) return true;
+  if (seekerFamily(resolved) && seekerFamily(target)) return true;
+  return false;
 }
 
 export function pickTierFromEntitlementIdList(raw: string[]): RevenueCatBillingTier {
@@ -153,7 +172,9 @@ export function latestExpiresMsForSubscriberBundle(
   }
 
   const relevant = rows.filter((row) =>
-    row.tokens.some((t) => resolveTierFromToken(normalizeToken(t)) === tier),
+    row.tokens.some((t) =>
+      tierTokenMatchesBillingTier(resolveTierFromToken(normalizeToken(t)), tier),
+    ),
   );
   if (relevant.length === 0) return null;
   if (relevant.some((r) => r.details.expires_date === null || r.details.expires_date === undefined)) {

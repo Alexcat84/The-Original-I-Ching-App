@@ -13,7 +13,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
-import { creditsExhaustedBlock, type BillingTier } from "@/lib/credits-ui-copy";
+import { tierLabelForDisplay, toContextTierKey, type Tier } from "@/lib/credits";
+import { creditsExhaustedBlock, tierToBillingTierCopy, type BillingTier } from "@/lib/credits-ui-copy";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -65,7 +66,6 @@ type ConsultResponse = {
 };
 
 type ConsultationItem = ConsultResponse & { question: string };
-type Tier = "free" | "seeker" | "practitioner" | "master" | "oracle";
 type CreditsType = "monthly" | "lifetime";
 type ResponseMode = "directo" | "ritual" | "profundizar";
 type OracleMode = "iching" | "oracle_bones";
@@ -2274,8 +2274,7 @@ export default function HomePage() {
           return;
         }
         if (res.status === 402 && data.error === "credits_exhausted") {
-          const tiers: BillingTier[] = ["free", "seeker", "practitioner", "master", "oracle"];
-          const t = tiers.includes(data.tier as BillingTier) ? (data.tier as BillingTier) : "free";
+          const t = tierToBillingTierCopy(typeof data.tier === "string" ? data.tier : "free");
           const lim = typeof data.creditsLimit === "number" ? data.creditsLimit : 2;
           setCreditsNotice({
             tier: t,
@@ -2558,7 +2557,7 @@ export default function HomePage() {
           >
             <span
               className="auth-explore-strip-tier"
-              aria-label={`${ui.plan} ${tier}`}
+              aria-label={`${ui.plan} ${tierLabelForDisplay(tier)}`}
               style={{
                 position: "absolute",
                 left: "0.72rem",
@@ -2570,7 +2569,7 @@ export default function HomePage() {
                 fontSize: "0.76rem",
               }}
             >
-              {ui.plan}: {tier}
+              {ui.plan}: {tierLabelForDisplay(tier)}
             </span>
             <div
               style={{
@@ -3004,7 +3003,8 @@ export default function HomePage() {
                     <div className="session-progress" role="group" aria-label="Gestión de suscripción">
                       <span>{isSpanish ? "Suscripción" : "Subscription"}</span>
                       <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Plan actual:" : "Current plan:"} <strong>{tier}</strong>
+                        {isSpanish ? "Plan actual:" : "Current plan:"}{" "}
+                        <strong>{tierLabelForDisplay(tier)}</strong>
                         {subscriptionCreditsRemaining !== null
                           ? ` · ${isSpanish ? "restantes" : "remaining"}: ${subscriptionCreditsRemaining}`
                           : ""}
@@ -3095,7 +3095,8 @@ export default function HomePage() {
                       <div className="session-progress">
                         <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
                         <p className="meta-line tier-hint-line">
-                          {isSpanish ? "Plan " : "Plan "}<strong>{tier}</strong>: {monthlyCreditsLimit}{" "}
+                          {isSpanish ? "Plan " : "Plan "}
+                          <strong>{tierLabelForDisplay(tier)}</strong>: {monthlyCreditsLimit}{" "}
                           {creditsType === "lifetime"
                             ? isSpanish
                               ? "consultas lifetime"
@@ -3104,7 +3105,8 @@ export default function HomePage() {
                               ? "consultas por mes"
                               : "consultations per month"}{" "}
                           · {isSpanish ? "hasta" : "up to"}{" "}
-                          {CONTEXT_LIMITS[tier].sessionDepth} {isSpanish ? "en este hilo." : "in this thread."}
+                          {CONTEXT_LIMITS[toContextTierKey(tier)].sessionDepth}{" "}
+                          {isSpanish ? "en este hilo." : "in this thread."}
                         </p>
                         <div className="session-progress-bar">
                           <div
@@ -3416,7 +3418,8 @@ export default function HomePage() {
 
                     <div className="subscription-center-grid">
                       <p className="meta-line tier-hint-line subscription-center-row">
-                        <span>{isSpanish ? "Plan actual:" : "Current plan:"}</span> <strong>{tier}</strong>
+                        <span>{isSpanish ? "Plan actual:" : "Current plan:"}</span>{" "}
+                        <strong>{tierLabelForDisplay(tier)}</strong>
                       </p>
                       <p className="meta-line tier-hint-line subscription-center-row">
                         <span>{isSpanish ? "Consultas restantes:" : "Remaining consultations:"}</span>{" "}
