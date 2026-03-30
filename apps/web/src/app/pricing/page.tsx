@@ -1,6 +1,7 @@
 "use client";
 
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
+import { ensureRevenueCatUserAligned } from "@/components/RevenueCatSupabaseSync";
 import { useEffect } from "react";
 
 const FALLBACK_PATH = "/guia#planes";
@@ -42,6 +43,7 @@ export default function PricingPage() {
         let appUserId: string | undefined;
         while (Date.now() < deadline) {
           const { data } = await sb.auth.getSession();
+          await ensureRevenueCatUserAligned(data.session ?? null);
           const id = data.session?.user?.id?.trim();
           if (id) {
             appUserId = id;

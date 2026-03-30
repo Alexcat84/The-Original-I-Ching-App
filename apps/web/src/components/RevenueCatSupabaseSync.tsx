@@ -12,43 +12,54 @@ const revenueCatWebApiKey = process.env.NEXT_PUBLIC_REVENUECAT_API_KEY?.trim() ?
 /**
  * Keeps RevenueCat Web Billing `app_user_id` aligned with Supabase Auth:
  * logged-in users use `session.user.id` (UUID); logged-out users get a fresh anonymous RC id.
+ * Returns whether Purchases app_user_id now matches current Supabase user (when present).
  */
-export function syncRevenueCatWithSupabaseSession(session: Session | null): void {
-  if (typeof window === "undefined" || !revenueCatWebApiKey) return;
+export async function ensureRevenueCatUserAligned(session: Session | null): Promise<boolean> {
+  if (typeof window === "undefined" || !revenueCatWebApiKey) return false;
 
   try {
     if (!Purchases.isConfigured()) {
       const appUserId =
         session?.user?.id ?? Purchases.generateRevenueCatAnonymousAppUserId();
       Purchases.configure({ apiKey: revenueCatWebApiKey, appUserId });
-      return;
+      return session?.user?.id ? appUserId === session.user.id : true;
     }
 
     const purchases = Purchases.getSharedInstance();
     const supabaseUserId = session?.user?.id ?? null;
 
     if (supabaseUserId) {
-      if (purchases.getAppUserId() === supabaseUserId) return;
+      if (purchases.getAppUserId() === supabaseUserId) return true;
       if (purchases.isAnonymous()) {
-        void purchases.identifyUser(supabaseUserId).catch(() => {
-          // Non-fatal: tier can still update via server webhook
-        });
+        try {
+          await purchases.identifyUser(supabaseUserId);
+        } catch {
+          return false;
+        }
       } else {
-        void purchases.changeUser(supabaseUserId).catch(() => {
-          // Non-fatal
-        });
+        try {
+          await purchases.changeUser(supabaseUserId);
+        } catch {
+          return false;
+        }
       }
-      return;
+      return purchases.getAppUserId() === supabaseUserId;
     }
 
-    void purchases
-      .changeUser(Purchases.generateRevenueCatAnonymousAppUserId())
-      .catch(() => {
-        // Non-fatal
-      });
+    try {
+      await purchases.changeUser(Purchases.generateRevenueCatAnonymousAppUserId());
+    } catch {
+      return false;
+    }
+    return true;
   } catch {
     // Do not break auth or the rest of the app
+    return false;
   }
+}
+
+export function syncRevenueCatWithSupabaseSession(session: Session | null): void {
+  void ensureRevenueCatUserAligned(session);
 }
 
 /** Mount once (e.g. in root layout) to sync RevenueCat on every Supabase auth change. */
