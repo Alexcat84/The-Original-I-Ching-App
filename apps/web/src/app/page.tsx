@@ -927,6 +927,7 @@ export default function HomePage() {
   const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<string[]>([]);
   const [twoFactorModalOpen, setTwoFactorModalOpen] = useState(false);
   const [twoFactorModalMode, setTwoFactorModalMode] = useState<"manage" | "challenge">("manage");
+  const [twoFactorChallengeMethod, setTwoFactorChallengeMethod] = useState<"totp" | "email">("totp");
   const [secondFactorVerified, setSecondFactorVerified] = useState(false);
   const [subscriptionCreditsRemaining, setSubscriptionCreditsRemaining] = useState<number | null>(null);
   const [subscriptionCycleEnd, setSubscriptionCycleEnd] = useState<string | null>(null);
@@ -1288,6 +1289,7 @@ export default function HomePage() {
     setAuthUserId(null);
     setSecondFactorVerified(false);
     setTwoFactorModalOpen(false);
+    setTwoFactorChallengeMethod("totp");
     setSubscriptionCenterOpen(false);
     setSubscriptionManagementUrl(null);
     setSubscriptionPrimary(null);
@@ -1507,6 +1509,13 @@ export default function HomePage() {
       return;
     }
     setSecondFactorVerified(false);
+    setTwoFactorSetupOpen(false);
+    setTwoFactorQrDataUrl(null);
+    setTwoFactorRecoveryCodes([]);
+    setTwoFactorCode("");
+    setTwoFactorEmailCode("");
+    setTwoFactorEmailSent(false);
+    setTwoFactorChallengeMethod("totp");
     setTwoFactorModalMode("challenge");
     setTwoFactorModalOpen(true);
   }, [accessToken, authUserId, twoFactorEnabled]);
@@ -1883,8 +1892,12 @@ export default function HomePage() {
   async function verifyTwoFactorChallenge() {
     if (!accessToken) return;
     const payload: { token?: string; emailCode?: string; recoveryCode?: string } = {};
-    if (twoFactorCode.trim().length >= 6) payload.token = twoFactorCode.trim();
-    if (twoFactorEmailCode.trim().length >= 6) payload.emailCode = twoFactorEmailCode.trim();
+    if (twoFactorChallengeMethod === "totp" && twoFactorCode.trim().length >= 6) {
+      payload.token = twoFactorCode.trim();
+    }
+    if (twoFactorChallengeMethod === "email" && twoFactorEmailCode.trim().length >= 6) {
+      payload.emailCode = twoFactorEmailCode.trim();
+    }
     if (!payload.token && !payload.emailCode) {
       setError(isSpanish ? "Ingresa un código válido de 6 dígitos." : "Enter a valid 6-digit code.");
       return;
@@ -1909,6 +1922,7 @@ export default function HomePage() {
       setTwoFactorEmailCode("");
       setTwoFactorModalOpen(false);
       setTwoFactorModalMode("manage");
+      setTwoFactorChallengeMethod("totp");
     } catch {
       setError(isSpanish ? "No se pudo verificar 2FA." : "Could not verify 2FA.");
     } finally {
@@ -2076,6 +2090,13 @@ export default function HomePage() {
       return;
     }
     if (twoFactorEnabled && !secondFactorVerified) {
+      setTwoFactorSetupOpen(false);
+      setTwoFactorQrDataUrl(null);
+      setTwoFactorRecoveryCodes([]);
+      setTwoFactorCode("");
+      setTwoFactorEmailCode("");
+      setTwoFactorEmailSent(false);
+      setTwoFactorChallengeMethod("totp");
       setTwoFactorModalMode("challenge");
       setTwoFactorModalOpen(true);
       setError(isSpanish ? "Verifica 2FA para continuar." : "Verify 2FA to continue.");
@@ -2972,6 +2993,10 @@ export default function HomePage() {
                           className="composer-reading-pill is-active"
                           onClick={() => {
                             setTwoFactorModalMode("manage");
+                            setTwoFactorChallengeMethod("totp");
+                            setTwoFactorCode("");
+                            setTwoFactorEmailCode("");
+                            setTwoFactorEmailSent(false);
                             setTwoFactorModalOpen(true);
                           }}
                           disabled={twoFactorBusy || !accessToken}
@@ -3094,35 +3119,70 @@ export default function HomePage() {
                     </p>
 
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
-                      <button
-                        type="button"
-                        className="composer-reading-pill is-active"
-                        onClick={() => void startTwoFactorEnrollment()}
-                        disabled={twoFactorBusy || !accessToken}
-                      >
-                        {twoFactorBusy ? (isSpanish ? "Preparando..." : "Preparing...") : isSpanish ? "Authenticator (TOTP)" : "Authenticator (TOTP)"}
-                      </button>
-                      <button
-                        type="button"
-                        className="composer-reading-pill"
-                        onClick={() => void sendEmailTwoFactorCode()}
-                        disabled={twoFactorBusy || !accessToken}
-                      >
-                        {twoFactorBusy ? (isSpanish ? "Enviando..." : "Sending...") : isSpanish ? "Código por email" : "Email code"}
-                      </button>
-                      {twoFactorModalMode === "manage" && twoFactorEnabled ? (
-                        <button
-                          type="button"
-                          className="composer-reading-pill"
-                          onClick={() => void disableTwoFactor()}
-                          disabled={twoFactorBusy}
-                        >
-                          {isSpanish ? "Desactivar 2FA" : "Disable 2FA"}
-                        </button>
-                      ) : null}
+                      {twoFactorModalMode === "challenge" ? (
+                        <>
+                          <button
+                            type="button"
+                            className={`composer-reading-pill ${twoFactorChallengeMethod === "totp" ? "is-active" : ""}`}
+                            onClick={() => setTwoFactorChallengeMethod("totp")}
+                            disabled={twoFactorBusy}
+                          >
+                            {isSpanish ? "Authenticator (TOTP)" : "Authenticator (TOTP)"}
+                          </button>
+                          <button
+                            type="button"
+                            className={`composer-reading-pill ${twoFactorChallengeMethod === "email" ? "is-active" : ""}`}
+                            onClick={() => setTwoFactorChallengeMethod("email")}
+                            disabled={twoFactorBusy}
+                          >
+                            {isSpanish ? "Código por email" : "Email code"}
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            onClick={() => void startTwoFactorEnrollment()}
+                            disabled={twoFactorBusy || !accessToken}
+                          >
+                            {twoFactorBusy
+                              ? isSpanish
+                                ? "Preparando..."
+                                : "Preparing..."
+                              : isSpanish
+                                ? "Vincular Authenticator (TOTP)"
+                                : "Link Authenticator (TOTP)"}
+                          </button>
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            onClick={() => void sendEmailTwoFactorCode()}
+                            disabled={twoFactorBusy || !accessToken}
+                          >
+                            {twoFactorBusy
+                              ? isSpanish
+                                ? "Enviando..."
+                                : "Sending..."
+                              : isSpanish
+                                ? "Activar código por email"
+                                : "Enable email code"}
+                          </button>
+                          {twoFactorEnabled ? (
+                            <button
+                              type="button"
+                              className="composer-reading-pill"
+                              onClick={() => void disableTwoFactor()}
+                              disabled={twoFactorBusy}
+                            >
+                              {isSpanish ? "Desactivar 2FA" : "Disable 2FA"}
+                            </button>
+                          ) : null}
+                        </>
+                      )}
                     </div>
 
-                    {twoFactorModalMode === "challenge" ? (
+                    {twoFactorModalMode === "challenge" && twoFactorChallengeMethod === "totp" ? (
                       <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                         <input
                           type="text"
@@ -3135,7 +3195,7 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {twoFactorSetupOpen && twoFactorQrDataUrl ? (
+                    {twoFactorModalMode === "manage" && twoFactorSetupOpen && twoFactorQrDataUrl ? (
                       <div style={{ marginTop: 12 }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -3155,11 +3215,7 @@ export default function HomePage() {
                           <button
                             type="button"
                             className="composer-reading-pill is-active"
-                            onClick={() =>
-                              void (twoFactorModalMode === "challenge"
-                                ? verifyTwoFactorChallenge()
-                                : confirmTwoFactorEnrollment())
-                            }
+                            onClick={() => void confirmTwoFactorEnrollment()}
                             disabled={twoFactorBusy || twoFactorCode.trim().length < 6}
                           >
                             {isSpanish ? "Verificar" : "Verify"}
@@ -3168,7 +3224,7 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {twoFactorEmailSent ? (
+                    {twoFactorEmailSent && (twoFactorModalMode === "manage" || twoFactorChallengeMethod === "email") ? (
                       <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                         <input
                           type="text"
@@ -3182,9 +3238,7 @@ export default function HomePage() {
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() =>
-                            void (twoFactorModalMode === "challenge"
-                              ? verifyTwoFactorChallenge()
-                              : verifyEmailTwoFactorCode())
+                            void (twoFactorModalMode === "challenge" ? verifyTwoFactorChallenge() : verifyEmailTwoFactorCode())
                           }
                           disabled={twoFactorBusy || twoFactorEmailCode.trim().length < 6}
                         >
@@ -3202,11 +3256,32 @@ export default function HomePage() {
 
                     {twoFactorModalMode === "challenge" ? (
                       <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        {twoFactorChallengeMethod === "email" ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            onClick={() => void sendEmailTwoFactorCode()}
+                            disabled={twoFactorBusy || !accessToken}
+                          >
+                            {twoFactorBusy
+                              ? isSpanish
+                                ? "Enviando..."
+                                : "Sending..."
+                              : isSpanish
+                                ? "Enviar código por email"
+                                : "Send email code"}
+                          </button>
+                        ) : null}
                         <button
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() => void verifyTwoFactorChallenge()}
-                          disabled={twoFactorBusy || (twoFactorCode.trim().length < 6 && twoFactorEmailCode.trim().length < 6)}
+                          disabled={
+                            twoFactorBusy ||
+                            (twoFactorChallengeMethod === "totp"
+                              ? twoFactorCode.trim().length < 6
+                              : twoFactorEmailCode.trim().length < 6)
+                          }
                         >
                           {isSpanish ? "Continuar con verificación" : "Continue with verification"}
                         </button>
