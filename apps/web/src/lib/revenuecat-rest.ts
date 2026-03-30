@@ -1,11 +1,14 @@
 import { upsertUserTier } from "@/lib/credits";
 import {
   latestExpiresMsForSubscriberBundle,
+  maxBillingTier,
   pickTierFromSubscriberBundle,
+  pickTierFromWebhookEntitlements,
   type RevenueCatBillingTier,
 } from "@/lib/revenuecat-tiers";
 
-const RC_API = "https://api.revenuecat.com/v1";
+const RC_V1 = "https://api.revenuecat.com/v1";
+const RC_V2 = "https://api.revenuecat.com/v2";
 
 interface SubscriberResponse {
   subscriber?: {
@@ -25,17 +28,101 @@ export type SyncFromRevenueCatResult =
   | { ok: true; tier: RevenueCatBillingTier; source: "subscriber" | "not_found" }
   | { ok: false; error: "not_configured" | "upstream" | "invalid_response" };
 
+function asString(value: unknown): string | null {
+  return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
+}
+
+function parseV2SubscriptionItem(raw: Record<string, unknown>): {
+  id: string | null;
+  status: string | null;
+  givesAccess: boolean;
+  productId: string | null;
+  currentPeriodEndsAt: string | null;
+} {
+  return {
+    id: asString(raw.id),
+    status: asString(raw.status),
+    givesAccess: raw.gives_access === true,
+    productId: asString(raw.product_id) ?? asString(raw.product_identifier),
+    currentPeriodEndsAt:
+      asString(raw.current_period_ends_at) ??
+      asString(raw.renews_at) ??
+      asString(raw.expires_at) ??
+      asString(raw.expiration_at),
+  };
+}
+
+function isActiveSubscriptionStatus(status: string | null): boolean {
+  if (!status) return false;
+  const normalized = status.toLowerCase();
+  return normalized === "active" || normalized === "trialing" || normalized === "in_grace_period";
+}
+
 /**
- * Loads the subscriber from RevenueCat REST API and updates query_credits tier to match active entitlements.
- * Use when webhooks are delayed, or after the Web SDK identifies the user.
+ * Web Billing / RC Billing often appears in v2 customer subscriptions while v1 /subscribers
+ * may be empty or slow to reflect entitlements — same source as subscription status UI.
  */
-export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise<SyncFromRevenueCatResult> {
-  const secret = process.env.REVENUECAT_SECRET_KEY?.trim();
-  if (!secret) {
-    return { ok: false, error: "not_configured" };
+async function loadTierFromV2CustomerSubscriptions(
+  secret: string,
+  projectId: string,
+  appUserId: string,
+): Promise<
+  | { kind: "paid"; tier: RevenueCatBillingTier; renewalIso?: string }
+  | { kind: "none" }
+  | { kind: "failed" }
+> {
+  const customerId = encodeURIComponent(appUserId);
+  let listRes: Response;
+  try {
+    listRes = await fetch(
+      `${RC_V2}/projects/${projectId}/customers/${customerId}/subscriptions`,
+      { headers: { Authorization: `Bearer ${secret}` }, cache: "no-store" },
+    );
+  } catch {
+    return { kind: "failed" };
   }
 
-  const url = `${RC_API}/subscribers/${encodeURIComponent(appUserId)}`;
+  if (!listRes.ok) {
+    if (listRes.status === 404 || listRes.status === 400) return { kind: "none" };
+    return { kind: "failed" };
+  }
+
+  const payload = (await listRes.json().catch(() => null)) as { items?: unknown[] } | null;
+  if (!payload || !Array.isArray(payload.items)) {
+    return { kind: "failed" };
+  }
+
+  const rows = payload.items
+    .filter((it): it is Record<string, unknown> => typeof it === "object" && it !== null)
+    .map(parseV2SubscriptionItem);
+
+  const primary =
+    rows.find((s) => s.givesAccess && isActiveSubscriptionStatus(s.status)) ??
+    rows.find((s) => isActiveSubscriptionStatus(s.status)) ??
+    rows[0] ??
+    null;
+
+  const hasAccess = Boolean(primary && (primary.givesAccess || isActiveSubscriptionStatus(primary.status)));
+  if (!hasAccess || !primary?.productId) {
+    return { kind: "none" };
+  }
+
+  const tier = pickTierFromWebhookEntitlements(null, undefined, primary.productId);
+  if (tier === "free") {
+    return { kind: "none" };
+  }
+
+  const end = primary.currentPeriodEndsAt;
+  const renewalIso =
+    end && !Number.isNaN(new Date(end).getTime()) ? new Date(end).toISOString() : undefined;
+
+  return { kind: "paid", tier, renewalIso };
+}
+
+type V1Load = { kind: "ok"; body: SubscriberResponse } | { kind: "404" } | { kind: "error" };
+
+async function loadV1Subscriber(secret: string, appUserId: string): Promise<V1Load> {
+  const url = `${RC_V1}/subscribers/${encodeURIComponent(appUserId)}`;
   let res: Response;
   try {
     res = await fetch(url, {
@@ -43,34 +130,86 @@ export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise
       cache: "no-store",
     });
   } catch {
-    return { ok: false, error: "upstream" };
+    return { kind: "error" };
   }
 
-  if (res.status === 404) {
-    // No subscriber in RevenueCat yet — do not overwrite DB (avoid resetting credits on transient errors).
-    return { ok: true, tier: "free", source: "not_found" };
-  }
+  if (res.status === 404) return { kind: "404" };
+  if (!res.ok) return { kind: "error" };
 
-  if (!res.ok) {
-    return { ok: false, error: "upstream" };
-  }
-
-  let body: SubscriberResponse;
   try {
-    body = (await res.json()) as SubscriberResponse;
+    const body = (await res.json()) as SubscriberResponse;
+    return { kind: "ok", body };
   } catch {
-    return { ok: false, error: "invalid_response" };
+    return { kind: "error" };
+  }
+}
+
+function latestRenewalIso(isos: (string | undefined)[]): string | undefined {
+  let bestMs = 0;
+  let best: string | undefined;
+  for (const raw of isos) {
+    if (!raw) continue;
+    const ms = new Date(raw).getTime();
+    if (!Number.isFinite(ms)) continue;
+    if (ms > bestMs) {
+      bestMs = ms;
+      best = new Date(ms).toISOString();
+    }
+  }
+  return best;
+}
+
+/**
+ * Merges RevenueCat v1 subscriber payload with v2 customer subscriptions (Web Billing).
+ * Avoids leaving users on `free` when only v2 has the active Stripe/RC Billing subscription.
+ */
+export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise<SyncFromRevenueCatResult> {
+  const secret = process.env.REVENUECAT_SECRET_KEY?.trim();
+  if (!secret) {
+    return { ok: false, error: "not_configured" };
   }
 
-  const entitlements = body.subscriber?.entitlements;
-  const subscriptions = body.subscriber?.subscriptions;
+  const projectId = process.env.REVENUECAT_PROJECT_ID?.trim();
+
+  const v1 = await loadV1Subscriber(secret, appUserId);
+
   const now = Date.now();
-  const tier = pickTierFromSubscriberBundle(entitlements, subscriptions, now);
-  const renewalMs = latestExpiresMsForSubscriberBundle(entitlements, subscriptions, tier, now);
-  const renewalIso =
-    renewalMs !== null && Number.isFinite(renewalMs) ? new Date(renewalMs).toISOString() : undefined;
+  const candidates: { tier: RevenueCatBillingTier; renewalIso?: string }[] = [];
 
-  await upsertUserTier(appUserId, tier, renewalIso);
+  if (v1.kind === "ok") {
+    const entitlements = v1.body.subscriber?.entitlements;
+    const subscriptions = v1.body.subscriber?.subscriptions;
+    const tier = pickTierFromSubscriberBundle(entitlements, subscriptions, now);
+    const renewalMs = latestExpiresMsForSubscriberBundle(entitlements, subscriptions, tier, now);
+    const renewalIso =
+      renewalMs !== null && Number.isFinite(renewalMs) ? new Date(renewalMs).toISOString() : undefined;
+    candidates.push({ tier, renewalIso });
+  }
 
-  return { ok: true, tier, source: "subscriber" };
+  let v2Outcome: "skipped" | "paid" | "none" | "failed" = "skipped";
+  if (projectId) {
+    const v2 = await loadTierFromV2CustomerSubscriptions(secret, projectId, appUserId);
+    if (v2.kind === "paid") {
+      v2Outcome = "paid";
+      candidates.push({ tier: v2.tier, renewalIso: v2.renewalIso });
+    } else if (v2.kind === "none") {
+      v2Outcome = "none";
+    } else {
+      v2Outcome = "failed";
+    }
+  }
+
+  if (candidates.length === 0) {
+    if (v1.kind === "404" && (v2Outcome === "none" || v2Outcome === "skipped")) {
+      return { ok: true, tier: "free", source: "not_found" };
+    }
+    return { ok: false, error: "upstream" };
+  }
+
+  const finalTier = candidates.map((c) => c.tier).reduce(maxBillingTier);
+  const renewalIso = latestRenewalIso(candidates.map((c) => c.renewalIso));
+
+  await upsertUserTier(appUserId, finalTier, renewalIso);
+
+  return { ok: true, tier: finalTier, source: "subscriber" };
 }

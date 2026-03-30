@@ -10,12 +10,33 @@ export const runtime = "nodejs";
  * Complements webhooks (e.g. after Web SDK identify, or if a webhook was missed).
  */
 export async function POST(req: Request) {
-  const user = await getAuthenticatedUser(req);
+  let user: Awaited<ReturnType<typeof getAuthenticatedUser>>;
+  try {
+    user = await getAuthenticatedUser(req);
+  } catch (e) {
+    console.error("[API /api/account/sync-billing] getAuthenticatedUser failed", e);
+    return apiError(502, {
+      error: "billing_sync_failed",
+      code: "BILLING_SYNC_FAILED",
+      action: "retry",
+    });
+  }
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
 
-  const result = await syncUserTierFromRevenueCatRest(user.userId);
+  let result: Awaited<ReturnType<typeof syncUserTierFromRevenueCatRest>>;
+  try {
+    result = await syncUserTierFromRevenueCatRest(user.userId);
+  } catch (e) {
+    console.error("[API /api/account/sync-billing] syncUserTierFromRevenueCatRest threw", e);
+    return apiError(502, {
+      error: "billing_sync_failed",
+      code: "BILLING_SYNC_FAILED",
+      action: "retry",
+    });
+  }
+
   if (!result.ok) {
     if (result.error === "not_configured" || result.error === "upstream" || result.error === "invalid_response") {
       return NextResponse.json({

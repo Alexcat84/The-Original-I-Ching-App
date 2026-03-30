@@ -1,12 +1,19 @@
 import { describe, expect, it } from "vitest";
 import {
   latestExpiresMsForTier,
+  maxBillingTier,
   pickTierFromSubscriberBundle,
   pickTierFromSubscriberEntitlements,
   pickTierFromWebhookEntitlements,
 } from "@/lib/revenuecat-tiers";
 
 describe("revenuecat tier mapping", () => {
+  it("maxBillingTier picks highest paid tier", () => {
+    expect(maxBillingTier("free", "practitioner")).toBe("practitioner");
+    expect(maxBillingTier("seeker", "practitioner")).toBe("practitioner");
+    expect(maxBillingTier("oracle", "master")).toBe("oracle");
+  });
+
   it("maps webhook entitlements with suffixes", () => {
     expect(pickTierFromWebhookEntitlements(["seeker_annual"], undefined)).toBe("seeker");
     expect(pickTierFromWebhookEntitlements(["plan_practitioner_monthly"], undefined)).toBe("practitioner");

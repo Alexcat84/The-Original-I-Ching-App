@@ -9,6 +9,19 @@ export type PaidTier = (typeof TIER_PRIORITY)[number];
 
 export type RevenueCatBillingTier = PaidTier | "free";
 
+const TIER_RANK: Record<RevenueCatBillingTier, number> = {
+  free: 0,
+  seeker: 1,
+  practitioner: 2,
+  master: 3,
+  oracle: 4,
+};
+
+/** Highest paid tier wins (for merging v1 subscriber + v2 Web Billing). */
+export function maxBillingTier(a: RevenueCatBillingTier, b: RevenueCatBillingTier): RevenueCatBillingTier {
+  return TIER_RANK[a] >= TIER_RANK[b] ? a : b;
+}
+
 const TIER_SET = new Set<string>(TIER_PRIORITY);
 
 function normalizeToken(value: string): string {
