@@ -133,6 +133,7 @@ async function loadTierFromV2CustomerSubscriptions(
   }
 
   if (!listRes.ok) {
+    console.warn("[RC REST v2] failed", listRes.status, appUserId.slice(0, 8));
     if (listRes.status === 404 || listRes.status === 400) return { kind: "none" };
     return { kind: "failed" };
   }
@@ -195,7 +196,10 @@ async function loadV1Subscriber(secret: string, appUserId: string): Promise<V1Lo
   }
 
   if (res.status === 404) return { kind: "404" };
-  if (!res.ok) return { kind: "error" };
+  if (!res.ok) {
+    console.warn("[RC REST v1] failed", res.status, appUserId.slice(0, 8));
+    return { kind: "error" };
+  }
 
   try {
     const body = (await res.json()) as SubscriberResponse;
@@ -264,6 +268,7 @@ export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise
     if (v1.kind === "404" && (v2Outcome === "none" || v2Outcome === "skipped")) {
       return { ok: true, tier: "free", source: "not_found" };
     }
+    console.warn("[RC REST] upstream - v1:", v1.kind, "v2:", v2Outcome);
     return { ok: false, error: "upstream" };
   }
 
