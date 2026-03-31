@@ -3470,6 +3470,62 @@ html[data-theme="dark"] .auth-pro-err {
   color: var(--fg-muted);
 }
 
+/* Post–Web Billing return page (/checkout/success) */
+.checkout-success-root {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.checkout-success-card {
+  width: min(440px, 100%);
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  border-radius: var(--radius);
+  border: 1px solid var(--input-border);
+  background: var(--secondary-bg);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.checkout-success-title {
+  margin: 0;
+  font-size: clamp(1.15rem, 3.5vw, 1.45rem);
+  font-weight: 600;
+  color: var(--card-title);
+  line-height: 1.35;
+}
+
+.checkout-success-sub {
+  margin: 0.85rem 0 0;
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+  line-height: 1.45;
+}
+
+.checkout-success-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 1.25rem auto 0;
+  border: 3px solid var(--progress-track);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: checkout-success-spin 0.75s linear infinite;
+}
+
+@keyframes checkout-success-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.checkout-success-cta {
+  margin-top: 1.5rem;
+}
+
 /* —— Impresión del navegador (Ctrl+P): oculta cromo de la app —— */
 @media print {
   @page {
