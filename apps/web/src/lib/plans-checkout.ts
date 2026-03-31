@@ -63,6 +63,15 @@ export async function buildPlansCheckoutUrl(
 
   try {
     const target = new URL(base, window.location.origin);
+
+    // Strip any UUID that was accidentally embedded as a path segment in the plans URL.
+    // NEXT_PUBLIC_PLANS_URL must be the base URL (e.g. https://pay.rev.cat/sandbox/slug/)
+    // with the UUID only as ?app_user_id=, never in the path.
+    const UUID_PATH_RE = /\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/?$/i;
+    if (UUID_PATH_RE.test(target.pathname)) {
+      target.pathname = target.pathname.replace(UUID_PATH_RE, "/");
+    }
+
     let appUserId: string | undefined = options?.appUserId?.trim() || undefined;
 
     if (isSupabaseBrowserConfigured()) {
