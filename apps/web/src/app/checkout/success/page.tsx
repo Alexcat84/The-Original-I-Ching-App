@@ -1,7 +1,7 @@
 "use client";
 
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
-import { normalizeBillingTier, type Tier } from "@/lib/credits";
+import { tierLabelForDisplay } from "@/lib/credits";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -16,17 +16,8 @@ function sleep(ms: number): Promise<void> {
 }
 
 function tierWelcomeLabel(tier: string): string {
-  const t = normalizeBillingTier(tier);
-  const labels: Record<Tier, string> = {
-    free: "Free",
-    seeker: "Seeker",
-    seeker_monthly: "Seeker",
-    seeker_annual: "Seeker",
-    practitioner: "Practitioner",
-    master: "Master",
-    oracle: "Oracle",
-  };
-  return labels[t] ?? tier;
+  const label = tierLabelForDisplay(tier); // "seeker" | "practitioner" | "master" | "oracle" | "free"
+  return label.charAt(0).toUpperCase() + label.slice(1);
 }
 
 async function getAccessToken(): Promise<string | null> {
@@ -45,11 +36,13 @@ async function fetchAccountMe(token: string): Promise<{ ok: true; tier: string }
     return { ok: false, status: res.status };
   }
   const body = (await res.json()) as { tier?: string };
-  return { ok: true, tier: typeof body.tier === "string" ? body.tier : "free" };
+  const tier = typeof body.tier === "string" ? body.tier : "free";
+  console.log("[checkout/success] /api/account/me →", { tier, raw: body });
+  return { ok: true, tier };
 }
 
 function isPaidTier(tier: string): boolean {
-  return normalizeBillingTier(tier) !== "free";
+  return tierLabelForDisplay(tier) !== "free";
 }
 
 export default function CheckoutSuccessPage() {
