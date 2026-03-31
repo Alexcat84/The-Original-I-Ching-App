@@ -138,7 +138,16 @@ export function pickBestActiveV2SubscriptionFromItems(items: unknown[]): BestV2S
     })
     .filter((s) => s.tier !== "free");
 
-  if (scored.length === 0) return null;
+  if (scored.length === 0) {
+    if (actives.length > 0) {
+      const tokenBlobs = actives.map(({ raw }) => collectV2SubscriptionTierTokens(raw));
+      console.warn(
+        "[RC REST v2] active subscription rows but tier mapped to free; tokens=",
+        tokenBlobs,
+      );
+    }
+    return null;
+  }
 
   const best = scored.reduce((a, b) => {
     const winner = maxBillingTier(a.tier, b.tier);
