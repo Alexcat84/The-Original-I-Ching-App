@@ -912,7 +912,6 @@ export default function HomePage() {
   const [subscriptionCenterError, setSubscriptionCenterError] = useState<string | null>(null);
   const [subscriptionManagementUrl, setSubscriptionManagementUrl] = useState<string | null>(null);
   const [subscriptionPrimary, setSubscriptionPrimary] = useState<SubscriptionStatusView | null>(null);
-  const [subscriptionItems, setSubscriptionItems] = useState<SubscriptionStatusView[]>([]);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -1270,7 +1269,6 @@ export default function HomePage() {
     setSubscriptionCenterOpen(false);
     setSubscriptionManagementUrl(null);
     setSubscriptionPrimary(null);
-    setSubscriptionItems([]);
     setSubscriptionCenterError(null);
   }, [authUserId]);
 
@@ -1432,7 +1430,6 @@ export default function HomePage() {
       setSubscriptionCenterOpen(false);
       setSubscriptionManagementUrl(null);
       setSubscriptionPrimary(null);
-      setSubscriptionItems([]);
       setSubscriptionCenterError(null);
       return;
     }
@@ -2079,7 +2076,6 @@ export default function HomePage() {
       }
       if (data.tier) setTier(data.tier);
       setSubscriptionPrimary(data.primarySubscription ?? null);
-      setSubscriptionItems(Array.isArray(data.subscriptions) ? data.subscriptions : []);
       setSubscriptionManagementUrl(data.managementUrl ?? null);
       if (!data.hasActiveSubscription) {
         setManageSubMessage(
@@ -3640,13 +3636,6 @@ export default function HomePage() {
                       </a>
                     </p>
 
-                    {subscriptionItems.length > 1 ? (
-                      <p className="meta-line tier-hint-line subscription-center-message">
-                        {isSpanish
-                          ? `Suscripciones detectadas: ${subscriptionItems.length}.`
-                          : `Detected subscriptions: ${subscriptionItems.length}.`}
-                      </p>
-                    ) : null}
                   </div>
                 </div>
               ) : null}
