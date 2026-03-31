@@ -89,8 +89,55 @@ export function tierLabelForDisplay(tier: string): string {
   return t;
 }
 
-const MONTH_MS = 30 * 24 * 60 * 60 * 1000;
+/** Degraded in-memory fallback only when Supabase is unavailable (no RC mirror in-process). */
+const MEMORY_FALLBACK_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
 const LIFETIME_END_ISO = "2999-12-31T00:00:00.000Z";
+
+export type UpsertUserTierOptions = {
+  /** Set when called from syncUserTierFromRevenueCatRest to avoid infinite resync loops. */
+  fromRevenueCatRest?: boolean;
+};
+
+function billingPeriodRedisKey(
+  creditsType: CreditsType,
+  cycleStart: string | null | undefined,
+  cycleEnd: string | null | undefined,
+): string | null {
+  if (creditsType !== "monthly") return null;
+  if (typeof cycleStart !== "string" || typeof cycleEnd !== "string") return null;
+  if (!cycleStart.trim() || !cycleEnd.trim()) return null;
+  const h = cycleStart.trim().slice(0, 40) + "_" + cycleEnd.trim().slice(0, 40);
+  return h.replace(/[^a-zA-Z0-9:_-]/g, "_").slice(0, 120);
+}
+
+async function syncBillingFromRevenueCat(userKey: string): Promise<void> {
+  const { syncUserTierFromRevenueCatRest } = await import("@/lib/revenuecat-rest");
+  const res = await syncUserTierFromRevenueCatRest(userKey);
+  if (!res.ok) {
+    console.warn("[credits] RevenueCat REST sync failed", userKey.slice(0, 8), res.error);
+  }
+}
+
+/**
+ * When Postgres still shows a paid tier but cycle_end is in the past, re-pull from RevenueCat
+ * (webhooks are the primary path; this is a safety net for /me and UI entry points).
+ */
+export async function refreshUserBillingIfStale(userId: string): Promise<void> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase || !isPersistableUuid(userId)) return;
+  const { data } = await supabase
+    .from("query_credits")
+    .select("tier, cycle_end")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const tier = typeof data?.tier === "string" ? normalizeBillingTier(data.tier) : "free";
+  if (tier === "free") return;
+  const endMs = data?.cycle_end ? new Date(data.cycle_end).getTime() : NaN;
+  if (!Number.isFinite(endMs) || endMs >= Date.now()) return;
+  await syncBillingFromRevenueCat(userId);
+}
 
 export interface TierConfig {
   creditsTotal: number;
@@ -251,15 +298,23 @@ async function consumeTierCreditRedis(
   safeTier: Tier,
   creditsType: CreditsType,
   limit: number,
+  /** When set (monthly), aligns Redis with RevenueCat billing period from query_credits. */
+  billingPeriodKey: string | null,
 ): Promise<{ allowed: boolean; remaining: number; limit: number } | null> {
   const r = getUpstashRedis();
   if (!r) return null;
   const ym = new Date().toISOString().slice(0, 7);
   const safeKey = userKey.replace(/[^a-zA-Z0-9:_-]/g, "_").slice(0, 120);
+  const periodSeg =
+    creditsType === "monthly"
+      ? billingPeriodKey && billingPeriodKey.length > 0
+        ? billingPeriodKey
+        : ym
+      : null;
   const redisKey =
     creditsType === "lifetime"
       ? `iching:queries:v2:lifetime:${safeKey}:${safeTier}`
-      : `iching:queries:v2:${ym}:${safeKey}:${safeTier}`;
+      : `iching:queries:v2:period:${periodSeg}:${safeKey}:${safeTier}`;
   try {
     const used = await r.incr(redisKey);
     if (used === 1) {
@@ -283,83 +338,137 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   cycleEndIso?: string | null;
 }> {
   const incomingTier = normalizeBillingTier(tier);
-  const safeTier = tierByUser.get(userKey) ?? incomingTier;
   const now = Date.now();
-  const tierConfig = TIER_CONFIG[safeTier];
-  const limit = tierConfig.creditsTotal;
-  const tierCreditsType = tierConfig.creditsType;
+
   const supabase = getSupabaseAdmin();
   if (supabase && isPersistableUuid(userKey)) {
-    const { data: row, error: rowError } = await supabase
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const { data: row, error: rowError } = await supabase
+        .from("query_credits")
+        .select("id, tier, credits_total, credits_used, cycle_start, cycle_end, credits_type")
+        .eq("user_id", userKey)
+        .order("updated_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (rowError) {
+        console.error("[consumeTierCredit] query_credits read failed", rowError.message);
+        return { allowed: false, remaining: 0, limit: TIER_CONFIG.free.creditsTotal };
+      }
+
+      const safeTier = normalizeBillingTier(
+        typeof row?.tier === "string" ? row.tier : tierByUser.get(userKey) ?? incomingTier,
+      );
+      const tierConfig = TIER_CONFIG[safeTier];
+      const limit = tierConfig.creditsTotal;
+      const tierCreditsTypeFromConfig = tierConfig.creditsType;
+
+      if (!row) {
+        if (tierCreditsTypeFromConfig === "monthly") {
+          await syncBillingFromRevenueCat(userKey);
+          continue;
+        }
+        const cycleStart = new Date(now);
+        const cycleEnd = new Date(LIFETIME_END_ISO);
+        const { error: insertError } = await supabase.from("query_credits").insert({
+          user_id: userKey,
+          tier: safeTier,
+          credits_total: limit,
+          credits_used: 1,
+          credits_type: "lifetime",
+          cycle_start: cycleStart.toISOString(),
+          cycle_end: cycleEnd.toISOString(),
+        });
+        if (insertError) {
+          console.error("[consumeTierCredit] initial query_credits insert failed", insertError.message);
+          return { allowed: false, remaining: 0, limit };
+        }
+        return { allowed: true, remaining: limit - 1, limit };
+      }
+
+      const rowCreditsType: CreditsType = row.credits_type === "lifetime" ? "lifetime" : tierCreditsTypeFromConfig;
+      const cycleEnded = rowCreditsType === "monthly" && now >= new Date(row.cycle_end).getTime();
+
+      if (cycleEnded) {
+        await syncBillingFromRevenueCat(userKey);
+        continue;
+      }
+
+      const total = row.credits_total > 0 ? row.credits_total : limit;
+      const used = row.credits_used;
+      if (used >= total) {
+        return {
+          allowed: false,
+          remaining: 0,
+          limit: total,
+          cycleEndIso: rowCreditsType === "monthly" ? row.cycle_end : null,
+        };
+      }
+      const nextUsed = used + 1;
+      const { error: updateError } = await supabase
+        .from("query_credits")
+        .update({
+          tier: safeTier,
+          credits_total: total,
+          credits_used: nextUsed,
+          credits_type: rowCreditsType,
+          cycle_start: row.cycle_start,
+          cycle_end: row.cycle_end,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", row.id);
+      if (updateError) {
+        console.error("[consumeTierCredit] query_credits update failed", updateError.message);
+        return { allowed: false, remaining: 0, limit };
+      }
+      return { allowed: true, remaining: total - nextUsed, limit: total };
+    }
+
+    const { data: finalRow } = await supabase
       .from("query_credits")
-      .select("id, credits_total, credits_used, cycle_start, cycle_end, credits_type")
+      .select("credits_total, credits_used, cycle_end, credits_type, tier")
       .eq("user_id", userKey)
       .order("updated_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    if (rowError) {
-      console.error("[consumeTierCredit] query_credits read failed", rowError.message);
-      return { allowed: false, remaining: 0, limit };
-    }
-    if (!row) {
-      const cycleStart = new Date(now);
-      const cycleEnd = tierCreditsType === "lifetime" ? new Date(LIFETIME_END_ISO) : new Date(now + MONTH_MS);
-      const { error: insertError } = await supabase.from("query_credits").insert({
-        user_id: userKey,
-        tier: safeTier,
-        credits_total: limit,
-        credits_used: 1,
-        credits_type: tierCreditsType,
-        cycle_start: cycleStart.toISOString(),
-        cycle_end: cycleEnd.toISOString(),
-      });
-      if (insertError) {
-        console.error("[consumeTierCredit] initial query_credits insert failed", insertError.message);
-        return { allowed: false, remaining: 0, limit };
-      }
-      return { allowed: true, remaining: limit - 1, limit };
-    }
-    const rowCreditsType: CreditsType = row.credits_type === "lifetime" ? "lifetime" : tierCreditsType;
-    const cycleEnded = rowCreditsType === "monthly" && now >= new Date(row.cycle_end).getTime();
-    const total = row.credits_total > 0 ? row.credits_total : limit;
-    const used = cycleEnded ? 0 : row.credits_used;
-    if (used >= total) {
-      return {
-        allowed: false,
-        remaining: 0,
-        limit: total,
-        cycleEndIso: rowCreditsType === "monthly" ? row.cycle_end : null,
-      };
-    }
-    const nextUsed = used + 1;
-    const cycleStart =
-      rowCreditsType === "monthly" && cycleEnded ? new Date(now).toISOString() : row.cycle_start;
-    const cycleEnd =
-      rowCreditsType === "monthly" && cycleEnded
-        ? new Date(now + MONTH_MS).toISOString()
-        : rowCreditsType === "lifetime"
-          ? LIFETIME_END_ISO
-          : row.cycle_end;
-    const { error: updateError } = await supabase
-      .from("query_credits")
-      .update({
-        tier: safeTier,
-        credits_total: total,
-        credits_used: nextUsed,
-        credits_type: rowCreditsType,
-        cycle_start: cycleStart,
-        cycle_end: cycleEnd,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", row.id);
-    if (updateError) {
-      console.error("[consumeTierCredit] query_credits update failed", updateError.message);
-      return { allowed: false, remaining: 0, limit };
-    }
-    return { allowed: true, remaining: total - nextUsed, limit: total };
+    const t = normalizeBillingTier(typeof finalRow?.tier === "string" ? finalRow.tier : incomingTier);
+    const lim = TIER_CONFIG[t].creditsTotal;
+    return {
+      allowed: false,
+      remaining: 0,
+      limit: lim,
+      cycleEndIso:
+        finalRow?.credits_type !== "lifetime" && typeof finalRow?.cycle_end === "string" ? finalRow.cycle_end : null,
+    };
   }
 
-  const fromRedis = await consumeTierCreditRedis(userKey, safeTier, tierCreditsType, limit);
+  const safeTier = tierByUser.get(userKey) ?? incomingTier;
+  const tierConfig = TIER_CONFIG[safeTier];
+  const limit = tierConfig.creditsTotal;
+  const tierCreditsType = tierConfig.creditsType;
+
+  let redisBillingPeriodKey: string | null = null;
+  if (getUpstashRedis() && supabase && isPersistableUuid(userKey)) {
+    const { data: pr } = await supabase
+      .from("query_credits")
+      .select("cycle_start, cycle_end, credits_type")
+      .eq("user_id", userKey)
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    redisBillingPeriodKey = billingPeriodRedisKey(
+      pr?.credits_type === "lifetime" ? "lifetime" : "monthly",
+      pr?.cycle_start as string | undefined,
+      pr?.cycle_end as string | undefined,
+    );
+  }
+
+  const fromRedis = await consumeTierCreditRedis(
+    userKey,
+    safeTier,
+    tierCreditsType,
+    limit,
+    redisBillingPeriodKey,
+  );
   if (fromRedis) {
     return fromRedis;
   }
@@ -367,7 +476,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   const current = creditsByKey.get(userKey);
   if (
     !current ||
-    (tierCreditsType === "monthly" && now - current.cycleStartedAt >= MONTH_MS) ||
+    (tierCreditsType === "monthly" && now - current.cycleStartedAt >= MEMORY_FALLBACK_MONTH_MS) ||
     current.creditsType !== tierCreditsType
   ) {
     const next: UserCreditState = { remaining: limit, cycleStartedAt: now, creditsType: tierCreditsType };
@@ -396,6 +505,7 @@ export async function upsertUserTier(
   userKey: string,
   tier: string,
   renewalDateIso?: string,
+  options?: UpsertUserTierOptions,
 ): Promise<Tier> {
   const safeTier = normalizeBillingTier(tier);
   tierByUser.set(userKey, safeTier);
@@ -421,7 +531,7 @@ export async function upsertUserTier(
     const targetConfig = TIER_CONFIG[safeTier];
     const { data: existing, error: existingError } = await supabase
       .from("query_credits")
-      .select("id, credits_used, cycle_start, credits_type")
+      .select("id, tier, credits_used, cycle_start, cycle_end, credits_type")
       .eq("user_id", userKey)
       .order("updated_at", { ascending: false })
       .limit(1)
@@ -430,18 +540,64 @@ export async function upsertUserTier(
       console.error("[upsertUserTier] query_credits read failed", existingError.message);
       throw new Error(`query_credits_read: ${existingError.message}`);
     }
-    const isLifetime = targetConfig.creditsType === "lifetime";
+    const isLifetimeTarget = targetConfig.creditsType === "lifetime";
     const nowMs = Date.now();
     const nowIso = new Date(nowMs).toISOString();
     const renewalMs = renewalDateIso ? new Date(renewalDateIso).getTime() : NaN;
     const hasFutureRenewal = Number.isFinite(renewalMs) && renewalMs > nowMs;
-    const cycleStart = isLifetime ? (existing?.cycle_start ?? nowIso) : nowIso;
-    const cycleEnd = isLifetime
-      ? LIFETIME_END_ISO
-      : hasFutureRenewal
-        ? new Date(renewalMs).toISOString()
-        : new Date(nowMs + MONTH_MS).toISOString();
-    const creditsUsed = isLifetime && existing && existing.credits_type === "lifetime" ? existing.credits_used : 0;
+
+    let cycleStart: string;
+    let cycleEnd: string;
+    let creditsUsed: number;
+
+    if (safeTier === "free" || isLifetimeTarget) {
+      cycleStart = existing?.cycle_start ?? nowIso;
+      cycleEnd = LIFETIME_END_ISO;
+      if (existing?.credits_type === "lifetime") {
+        creditsUsed = Math.min(existing.credits_used, FREE_LIFETIME_CONSULTATIONS);
+      } else {
+        creditsUsed = 0;
+      }
+    } else {
+      if (!hasFutureRenewal) {
+        if (!options?.fromRevenueCatRest) {
+          const { syncUserTierFromRevenueCatRest } = await import("@/lib/revenuecat-rest");
+          const syncRes = await syncUserTierFromRevenueCatRest(userKey);
+          if (syncRes.ok) {
+            return normalizeBillingTier(syncRes.tier);
+          }
+          throw new Error("billing_sync_required");
+        }
+        if (existing?.cycle_start && existing?.cycle_end) {
+          cycleStart = existing.cycle_start;
+          cycleEnd = existing.cycle_end;
+        } else {
+          cycleStart = nowIso;
+          cycleEnd = nowIso;
+        }
+      } else {
+        cycleStart = nowIso;
+        cycleEnd = new Date(renewalMs).toISOString();
+      }
+
+      const oldEndMs = existing?.cycle_end ? new Date(existing.cycle_end).getTime() : NaN;
+      const newEndMs = new Date(cycleEnd).getTime();
+      const periodUnchanged =
+        Boolean(existing) &&
+        existing!.credits_type === "monthly" &&
+        normalizeBillingTier(existing!.tier) === safeTier &&
+        Number.isFinite(oldEndMs) &&
+        Number.isFinite(newEndMs) &&
+        oldEndMs === newEndMs;
+
+      creditsUsed = periodUnchanged && existing ? existing.credits_used : 0;
+
+      if (periodUnchanged && existing) {
+        cycleStart = existing.cycle_start;
+        cycleEnd = existing.cycle_end;
+      }
+    }
+
     if (existing?.id) {
       const { error: updateError } = await supabase
         .from("query_credits")

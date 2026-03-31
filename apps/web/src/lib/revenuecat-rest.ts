@@ -267,7 +267,7 @@ export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise
   const finalTier = candidates.map((c) => c.tier).reduce(maxBillingTier);
   const renewalIso = latestRenewalIso(candidates.map((c) => c.renewalIso));
 
-  await upsertUserTier(appUserId, finalTier, renewalIso);
+  await upsertUserTier(appUserId, finalTier, renewalIso, { fromRevenueCatRest: true });
 
   return { ok: true, tier: finalTier, source: "subscriber" };
 }

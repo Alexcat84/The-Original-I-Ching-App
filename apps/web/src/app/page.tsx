@@ -2027,6 +2027,11 @@ export default function HomePage() {
     setSubscriptionCenterError(null);
     setManageSubMessage(null);
     try {
+      await fetch("/api/account/sync-billing", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${accessToken}` },
+        cache: "no-store",
+      });
       const res = await fetch("/api/account/subscription/status", {
         method: "GET",
         headers: { Authorization: `Bearer ${accessToken}` },

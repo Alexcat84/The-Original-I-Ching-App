@@ -4,6 +4,7 @@ import { apiError } from "@/lib/api-error";
 import {
   CREDITS_PER_MONTH,
   getUserBillingTier,
+  refreshUserBillingIfStale,
   TIER_CONFIG,
   toContextTierKey,
   type Tier,
@@ -17,6 +18,7 @@ export async function GET(req: Request) {
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
+  await refreshUserBillingIfStale(user.userId);
   const tier = await getUserBillingTier(user.userId);
   const tierKey = toContextTierKey(tier) as TierKey;
   const twoFactor = await (async () => {

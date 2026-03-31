@@ -15,6 +15,7 @@ const GRANT_UPDATE_TYPES = new Set([
   "INITIAL_PURCHASE",
   "RENEWAL",
   "UNCANCELLATION",
+  "CANCELLATION",
   "NON_RENEWING_PURCHASE",
   "PRODUCT_CHANGE",
   "SUBSCRIPTION_EXTENDED",
@@ -113,7 +114,7 @@ export async function POST(req: Request) {
       });
     }
     if (syncResult.source === "not_found") {
-      await upsertUserTier(event.app_user_id, "free", undefined);
+      await upsertUserTier(event.app_user_id, "free", undefined, { fromRevenueCatRest: true });
       return NextResponse.json({
         ok: true,
         appUserId: event.app_user_id,
@@ -122,12 +123,15 @@ export async function POST(req: Request) {
         source: "not_found",
       });
     }
+    if (syncResult.tier === "free") {
+      await upsertUserTier(event.app_user_id, "free", undefined, { fromRevenueCatRest: true });
+    }
     return NextResponse.json({
       ok: true,
       appUserId: event.app_user_id,
       eventType: type,
       tier: syncResult.tier,
-      source: "rest_after_revoke",
+      source: syncResult.tier === "free" ? "expiration_free" : "rest_after_revoke",
     });
   }
 
