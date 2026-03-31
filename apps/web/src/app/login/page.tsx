@@ -81,13 +81,14 @@ function isEmailNotConfirmedError(message: string): boolean {
 }
 
 export default function LoginPage() {
+  type RegisterModalKind = "verify" | "exists";
   const router = useRouter();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [verifyEmailModalOpen, setVerifyEmailModalOpen] = useState(false);
+  const [registerModalKind, setRegisterModalKind] = useState<RegisterModalKind | null>(null);
   const [pendingVerificationEmail, setPendingVerificationEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [configError, setConfigError] = useState(false);
@@ -235,12 +236,18 @@ export default function LoginPage() {
         message?: string;
       };
       if (!res.ok) {
+        if (data.error === "email_exists") {
+          setPendingVerificationEmail(email.trim());
+          setRegisterModalKind("exists");
+          switchMode("signin");
+          return;
+        }
         setErr(registerErrorMessage(data));
         return;
       }
       const normalizedEmail = email.trim();
       setPendingVerificationEmail(normalizedEmail);
-      setVerifyEmailModalOpen(true);
+      setRegisterModalKind("verify");
       setMsg(null);
       setErr(null);
       switchMode("signin");
@@ -251,8 +258,8 @@ export default function LoginPage() {
     }
   }
 
-  function closeVerifyEmailModal() {
-    setVerifyEmailModalOpen(false);
+  function closeRegisterModal() {
+    setRegisterModalKind(null);
     setMode("signin");
   }
 
@@ -476,7 +483,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {verifyEmailModalOpen ? (
+      {registerModalKind ? (
         <div
           role="dialog"
           aria-modal="true"
@@ -501,25 +508,31 @@ export default function LoginPage() {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-              <strong style={{ color: "#d8edf5" }}>Verifica tu cuenta por correo</strong>
-              <button type="button" className="modal-close-x" aria-label="Cerrar" onClick={closeVerifyEmailModal}>
+              <strong style={{ color: "#d8edf5" }}>
+                {registerModalKind === "verify" ? "Verifica tu cuenta por correo" : "Correo ya registrado"}
+              </strong>
+              <button type="button" className="modal-close-x" aria-label="Cerrar" onClick={closeRegisterModal}>
                 ×
               </button>
             </div>
             <p className="auth-pro-msg" style={{ marginTop: 10 }}>
-              Te enviamos un enlace de verificación a <strong>{pendingVerificationEmail}</strong>.
-              <br />
-              Abre tu correo, busca el mensaje (revisa spam/no deseado) y haz clic en el enlace para activar tu cuenta.
+              {registerModalKind === "verify" ? (
+                <>
+                  Te enviamos un enlace de verificación a <strong>{pendingVerificationEmail}</strong>.
+                  <br />
+                  Abre tu correo, busca el mensaje (revisa spam/no deseado) y haz clic en el enlace para activar tu
+                  cuenta.
+                </>
+              ) : (
+                <>
+                  El correo <strong>{pendingVerificationEmail}</strong> ya está registrado.
+                  <br />
+                  Inicia sesión con ese correo.
+                </>
+              )}
             </p>
             <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <button
-                type="button"
-                className="auth-pro-btn auth-pro-btn-primary"
-                onClick={() => window.open("mailto:", "_blank", "noopener,noreferrer")}
-              >
-                Abrir app de correo
-              </button>
-              <button type="button" className="auth-pro-btn auth-pro-btn-google" onClick={closeVerifyEmailModal}>
+              <button type="button" className="auth-pro-btn auth-pro-btn-primary" onClick={closeRegisterModal}>
                 Entendido
               </button>
             </div>
