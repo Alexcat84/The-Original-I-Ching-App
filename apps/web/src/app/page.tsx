@@ -912,6 +912,8 @@ export default function HomePage() {
   const [subscriptionCenterError, setSubscriptionCenterError] = useState<string | null>(null);
   const [subscriptionManagementUrl, setSubscriptionManagementUrl] = useState<string | null>(null);
   const [subscriptionPrimary, setSubscriptionPrimary] = useState<SubscriptionStatusView | null>(null);
+  /** From last subscription/status load: paid subscription active in RevenueCat (false = free / no paid sub). */
+  const [subscriptionHasActivePaid, setSubscriptionHasActivePaid] = useState<boolean | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -2029,6 +2031,7 @@ export default function HomePage() {
     setSubscriptionCenterBusy(true);
     setSubscriptionCenterError(null);
     setManageSubMessage(null);
+    setSubscriptionHasActivePaid(null);
     try {
       try {
         const syncRes = await fetch("/api/account/sync-billing", {
@@ -2077,6 +2080,7 @@ export default function HomePage() {
       if (data.tier) setTier(data.tier);
       setSubscriptionPrimary(data.primarySubscription ?? null);
       setSubscriptionManagementUrl(data.managementUrl ?? null);
+      setSubscriptionHasActivePaid(Boolean(data.hasActiveSubscription));
       if (!data.hasActiveSubscription) {
         setManageSubMessage(
           isSpanish
@@ -2097,6 +2101,9 @@ export default function HomePage() {
 
   const primarySubscriptionStatus = (subscriptionPrimary?.status ?? "").toLowerCase();
   const subscriptionStatusLabel = (() => {
+    if (subscriptionCenterOpen && subscriptionCenterBusy) {
+      return isSpanish ? "Cargando…" : "Loading…";
+    }
     if (primarySubscriptionStatus === "active") {
       if (subscriptionPrimary?.autoRenew === false) {
         return isSpanish ? "Activa (cancelada al vencimiento)" : "Active (cancels at period end)";
@@ -2106,6 +2113,15 @@ export default function HomePage() {
     if (primarySubscriptionStatus === "trialing") return isSpanish ? "Prueba" : "Trial";
     if (primarySubscriptionStatus === "canceled") return isSpanish ? "Cancelada" : "Canceled";
     if (primarySubscriptionStatus === "expired") return isSpanish ? "Expirada" : "Expired";
+    if (subscriptionHasActivePaid === true) {
+      return isSpanish ? "Activa" : "Active";
+    }
+    if (subscriptionHasActivePaid === false && tier === "free") {
+      return isSpanish ? "Activa (plan gratuito)" : "Active (free plan)";
+    }
+    if (subscriptionHasActivePaid === false) {
+      return isSpanish ? "Sin suscripción pagada" : "No paid subscription";
+    }
     return subscriptionPrimary?.status ?? (isSpanish ? "Sin datos" : "No data");
   })();
   const subscriptionStatusBadgeClass =
@@ -2113,7 +2129,11 @@ export default function HomePage() {
       ? "subscription-center-badge subscription-center-badge--active"
       : primarySubscriptionStatus === "canceled" || primarySubscriptionStatus === "expired"
         ? "subscription-center-badge subscription-center-badge--ended"
-        : "subscription-center-badge";
+        : subscriptionHasActivePaid === true
+          ? "subscription-center-badge subscription-center-badge--active"
+          : subscriptionHasActivePaid === false && tier === "free"
+            ? "subscription-center-badge subscription-center-badge--active"
+            : "subscription-center-badge";
 
   async function onConsult() {
     if (!activeSession) {
@@ -3597,7 +3617,19 @@ export default function HomePage() {
                           }
                           void openSubscriptionManagement();
                         }}
-                        disabled={manageSubBusy}
+                        disabled={
+                          manageSubBusy ||
+                          subscriptionCenterBusy ||
+                          subscriptionHasActivePaid === false ||
+                          (subscriptionHasActivePaid === null && !subscriptionManagementUrl)
+                        }
+                        title={
+                          subscriptionHasActivePaid === false
+                            ? isSpanish
+                              ? "No hay suscripción de pago en RevenueCat; usa Planes y pago para suscribirte."
+                              : "No paid subscription in RevenueCat; use Plans & checkout to subscribe."
+                            : undefined
+                        }
                       >
                         {manageSubBusy
                           ? isSpanish
