@@ -471,7 +471,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
         };
       }
       const nextUsed = used + 1;
-      const { error: updateError } = await supabase
+      const { data: updatedRows, error: updateError } = await supabase
         .from("query_credits")
         .update({
           tier: safeTier,
@@ -482,13 +482,22 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
           cycle_end: row.cycle_end,
           updated_at: new Date().toISOString(),
         })
-        .eq("id", row.id);
+        .eq("id", row.id)
+        .eq("credits_used", used)
+        .select("id")
+        .limit(1);
       if (updateError) {
         console.error("[consumeTierCredit] query_credits update failed", updateError.message);
         return { allowed: false, remaining: 0, limit };
       }
+      if (!updatedRows?.[0]?.id) {
+        // Concurrent write won the race. Retry with a fresh read.
+        continue;
+      }
       return { allowed: true, remaining: total - nextUsed, limit: total };
     }
+
+    console.warn("[consumeTierCredit] exhausted retries after contention/sync checks", userKey.slice(0, 8));
 
     const { data: finalRow } = await supabase
       .from("query_credits")

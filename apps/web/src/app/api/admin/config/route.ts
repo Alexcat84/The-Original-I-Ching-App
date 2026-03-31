@@ -11,7 +11,7 @@ function unauthorized() {
 export async function GET() {
   const token = getAdminSessionTokenFromCookies();
   if (!isValidAdminSession(token)) return unauthorized();
-  return NextResponse.json({ ok: true, config: getAdminConfig() });
+  return NextResponse.json({ ok: true, config: await getAdminConfig() });
 }
 
 export async function POST(req: Request) {
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   } catch {
     return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
   }
-  const next = updateAdminConfig(body);
+  const next = await updateAdminConfig(body);
   return NextResponse.json({ ok: true, config: next });
 }
 

@@ -1,9 +1,10 @@
 import {
   consumeRecoveryCode,
   decryptTotpSecret,
+  generateRecoveryCodes,
   hashRecoveryCodes,
   shouldLockTwoFactor,
-  verifyTotpToken,
+  verifyTotpTokenWithReplayGuard,
 } from "@iching-oracle/auth-backend";
 import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
@@ -61,7 +62,7 @@ export async function POST(req: Request) {
   }
   const { data: user, error: userError } = await supabase
     .from("users")
-    .select("totp_secret")
+    .select("totp_secret, totp_last_used_step")
     .eq("id", userId)
     .maybeSingle();
   if (userError) {
@@ -85,10 +86,22 @@ export async function POST(req: Request) {
   }
 
   let verified = false;
+  let verifiedTotpStep: number | null = null;
   const normalizedToken = typeof body.token === "string" ? normalizeCode(body.token) : "";
   if (normalizedToken.length === 6) {
     const decrypted = decryptTotpSecret(user.totp_secret, encryptionKey);
-    verified = verifyTotpToken(decrypted, normalizedToken);
+    const totpResult = verifyTotpTokenWithReplayGuard(decrypted, normalizedToken, {
+      lastUsedStep: user.totp_last_used_step as number | null | undefined,
+    });
+    verified = totpResult.verified;
+    verifiedTotpStep = totpResult.usedStep;
+    if (totpResult.replayed) {
+      return apiError(401, {
+        error: "invalid_2fa_code",
+        code: "TWO_FACTOR_INVALID_CODE",
+        action: "retry",
+      });
+    }
   }
 
   if (!verified && body.recoveryCode) {
@@ -161,6 +174,7 @@ export async function POST(req: Request) {
     .update({
       two_factor_enabled: true,
       totp_verified_at: new Date().toISOString(),
+      ...(verifiedTotpStep !== null ? { totp_last_used_step: verifiedTotpStep } : {}),
     })
     .eq("id", userId);
   if (userUpdateError) {
@@ -172,16 +186,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const recoveryCodes = [
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-  ];
+  const recoveryCodes = generateRecoveryCodes(8);
   const hashed = await hashRecoveryCodes(recoveryCodes);
   await supabase
     .from("two_factor_recovery_codes")

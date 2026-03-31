@@ -1,4 +1,9 @@
-import { consumeRecoveryCode, decryptTotpSecret, shouldLockTwoFactor, verifyTotpToken } from "@iching-oracle/auth-backend";
+import {
+  consumeRecoveryCode,
+  decryptTotpSecret,
+  shouldLockTwoFactor,
+  verifyTotpTokenWithReplayGuard,
+} from "@iching-oracle/auth-backend";
 import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
@@ -64,7 +69,7 @@ export async function POST(req: Request) {
 
   const { data: user } = await supabase
     .from("users")
-    .select("two_factor_enabled, two_factor_method, totp_secret")
+    .select("two_factor_enabled, two_factor_method, totp_secret, totp_last_used_step")
     .eq("id", userId)
     .maybeSingle();
   if (!user?.two_factor_enabled) {
@@ -75,6 +80,7 @@ export async function POST(req: Request) {
   const normalizedToken = typeof body.token === "string" ? normalizeCode(body.token) : "";
   const normalizedEmailCode = typeof body.emailCode === "string" ? normalizeCode(body.emailCode) : "";
   let verified = false;
+  let verifiedTotpStep: number | null = null;
 
   if (configuredMethod === "totp" && normalizedToken.length === 6 && user.totp_secret) {
     const encryptionKey = process.env.TOTP_ENCRYPTION_KEY;
@@ -86,7 +92,14 @@ export async function POST(req: Request) {
       });
     }
     const decrypted = decryptTotpSecret(user.totp_secret, encryptionKey);
-    verified = verifyTotpToken(decrypted, normalizedToken);
+    const totpResult = verifyTotpTokenWithReplayGuard(decrypted, normalizedToken, {
+      lastUsedStep: user.totp_last_used_step as number | null | undefined,
+    });
+    verified = totpResult.verified;
+    verifiedTotpStep = totpResult.usedStep;
+    if (totpResult.replayed) {
+      return apiError(401, { error: "invalid_2fa_code", code: "TWO_FACTOR_INVALID_CODE", action: "retry" });
+    }
   }
 
   if (!verified && body.recoveryCode) {
@@ -182,6 +195,20 @@ export async function POST(req: Request) {
 
   if (!verified) {
     return apiError(401, { error: "invalid_2fa_code", code: "TWO_FACTOR_INVALID_CODE", action: "retry" });
+  }
+
+  if (verifiedTotpStep !== null) {
+    const { error: stepUpdateError } = await supabase
+      .from("users")
+      .update({ totp_last_used_step: verifiedTotpStep, totp_verified_at: new Date().toISOString() })
+      .eq("id", userId);
+    if (stepUpdateError) {
+      return apiError(500, {
+        error: "two_factor_user_update_failed",
+        code: "TWO_FACTOR_USER_UPDATE_FAILED",
+        action: "retry",
+      });
+    }
   }
 
   return NextResponse.json({ ok: true });

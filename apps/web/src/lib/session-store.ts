@@ -1,6 +1,7 @@
 import type { OracleBonesHistorySnapshot, OracleType } from "@iching-oracle/context-engine";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isPersistableUuid } from "@/lib/session-ids";
+import { randomBytes } from "node:crypto";
 
 /** Shared /r and /s links resolve across isolates only with Supabase and/or Upstash KV. */
 export function isSharingPersistenceAvailable(): boolean {
@@ -132,7 +133,8 @@ function imageProviderFromUrl(url: string | null | undefined): StoredConsultatio
 }
 
 function randomPublicId(length = 8): string {
-  return Math.random().toString(36).slice(2, 2 + length);
+  const bytesNeeded = Math.max(6, Math.ceil((length * 3) / 4));
+  return randomBytes(bytesNeeded).toString("base64url").slice(0, length);
 }
 
 export function ensureSession(params: {

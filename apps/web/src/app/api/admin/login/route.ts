@@ -1,8 +1,20 @@
 import { NextResponse } from "next/server";
 import { ADMIN_COOKIE_NAME, expectedAdminToken } from "@/lib/admin-auth";
 import { rateLimitByKey } from "@/lib/rate-limit";
+import bcrypt from "bcryptjs";
+import { createHash, timingSafeEqual } from "node:crypto";
 
 export const runtime = "nodejs";
+
+function sha256ToBuffer(input: string): Buffer {
+  return createHash("sha256").update(input).digest();
+}
+
+function timingSafeStringEqual(a: string, b: string): boolean {
+  const aBuf = sha256ToBuffer(a);
+  const bBuf = sha256ToBuffer(b);
+  return timingSafeEqual(aBuf, bBuf);
+}
 
 export async function POST(req: Request) {
   let body: { key?: string };
@@ -16,14 +28,26 @@ export async function POST(req: Request) {
   if (!rl.ok) {
     return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
   }
-  const secret = process.env.ADMIN_PANEL_KEY;
-  if (!secret) {
+  const secret = process.env.ADMIN_PANEL_KEY?.trim();
+  const secretHash = process.env.ADMIN_PANEL_KEY_HASH?.trim();
+  if (!secret && !secretHash) {
     return NextResponse.json({ ok: false, error: "admin_not_configured" }, { status: 503 });
   }
-  if (!body.key || body.key !== secret) {
+  const inputKey = (body.key ?? "").trim();
+  if (!inputKey) {
     return NextResponse.json({ ok: false, error: "invalid_key" }, { status: 401 });
   }
-  const token = expectedAdminToken(secret);
+  let isValid = false;
+  if (secretHash) {
+    isValid = await bcrypt.compare(inputKey, secretHash);
+  } else if (secret) {
+    isValid = timingSafeStringEqual(inputKey, secret);
+  }
+  if (!isValid) {
+    return NextResponse.json({ ok: false, error: "invalid_key" }, { status: 401 });
+  }
+  const tokenSeed = secretHash || secret!;
+  const token = expectedAdminToken(tokenSeed);
   const res = NextResponse.json({ ok: true });
   res.cookies.set(ADMIN_COOKIE_NAME, token, {
     httpOnly: true,

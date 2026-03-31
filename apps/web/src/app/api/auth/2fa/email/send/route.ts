@@ -2,6 +2,7 @@ import { createHash, randomInt } from "node:crypto";
 import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
+import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
@@ -63,6 +64,32 @@ export async function POST(req: Request) {
   const authUser = await getAuthenticatedUser(req);
   if (!authUser) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
+  }
+  const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
+  const rlUser = await rateLimitByKey({
+    key: `2fa_email_send:user:${authUser.userId}`,
+    limit: 5,
+    windowSeconds: 10 * 60,
+  });
+  if (!rlUser.ok) {
+    return apiError(429, {
+      error: "rate_limited",
+      code: "RATE_LIMITED",
+      action: "wait_and_retry",
+      message: "Demasiados envíos de código. Intenta de nuevo en unos minutos.",
+    });
+  }
+  const rlIp = await rateLimitByKey({
+    key: `2fa_email_send:ip:${ip}`,
+    limit: 20,
+    windowSeconds: 10 * 60,
+  });
+  if (!rlIp.ok) {
+    return apiError(429, {
+      error: "rate_limited",
+      code: "RATE_LIMITED",
+      action: "wait_and_retry",
+    });
   }
 
   const supabase = getSupabaseAdmin();

@@ -11,10 +11,18 @@ export function expectedAdminToken(secret: string): string {
   return sha256(`iching-admin:${secret}`);
 }
 
+function adminSessionSeed(): string | null {
+  const fromHash = process.env.ADMIN_PANEL_KEY_HASH?.trim();
+  if (fromHash) return fromHash;
+  const fromPlain = process.env.ADMIN_PANEL_KEY?.trim();
+  if (fromPlain) return fromPlain;
+  return null;
+}
+
 export function isValidAdminSession(token: string | undefined | null): boolean {
-  const secret = process.env.ADMIN_PANEL_KEY;
-  if (!secret || !token) return false;
-  return token === expectedAdminToken(secret);
+  const seed = adminSessionSeed();
+  if (!seed || !token) return false;
+  return token === expectedAdminToken(seed);
 }
 
 export function getAdminSessionTokenFromCookies(): string | undefined {

@@ -3,6 +3,8 @@ import type { TierKey } from "@iching-oracle/context-engine";
 import type { AuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
+const EMAIL_EXACT_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 type ConsultPolicyInput = {
   authUser: AuthenticatedUser;
   tierResolved: string;
@@ -22,7 +24,7 @@ function parseEmailAllowlist(raw: string | undefined | null): Set<string> {
     raw
       .split(/[,\n;]/g)
       .map((value) => value.trim().toLowerCase())
-      .filter(Boolean),
+      .filter((value) => value.length > 3 && value.length <= 254 && EMAIL_EXACT_PATTERN.test(value)),
   );
 }
 

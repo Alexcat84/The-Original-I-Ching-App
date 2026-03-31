@@ -97,7 +97,10 @@ export async function POST(req: Request) {
       error: "sign_up_failed",
       code: "REGISTER_CREATE_USER_FAILED",
       action: "retry",
-      message: signUp.error.message,
+      message:
+        process.env.NODE_ENV === "development"
+          ? signUp.error.message
+          : "No se pudo crear la cuenta en este momento. Intenta de nuevo.",
     });
   }
 

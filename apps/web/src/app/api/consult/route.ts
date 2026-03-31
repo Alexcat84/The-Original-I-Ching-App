@@ -195,7 +195,7 @@ export async function POST(req: Request) {
       { status: 402 },
     );
   }
-  const adminConfig = getAdminConfig();
+  const adminConfig = await getAdminConfig();
   const adminAllowed = adminBypassAllowed;
   const responseMode: "ritual" = "ritual";
   const imageProviderOverride =

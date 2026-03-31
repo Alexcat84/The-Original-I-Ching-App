@@ -67,6 +67,13 @@ export interface TotpEnrollment {
   qrDataUrl: string;
 }
 
+const TOTP_STEP_MS = 30_000;
+/**
+ * Allow +/- 1 step (~30s each side) to account for modest client clock drift.
+ * Reduce to 0 only when clients are tightly NTP-synced.
+ */
+const TOTP_VERIFY_WINDOW = 1;
+
 export async function createTotpEnrollment(email: string, issuer = "I Ching Oracle"): Promise<TotpEnrollment> {
   const secret = authenticator.generateSecret();
   const otpauthUrl = authenticator.keyuri(email, issuer, secret);
@@ -77,13 +84,38 @@ export async function createTotpEnrollment(email: string, issuer = "I Ching Orac
   return { secret, otpauthUrl, qrDataUrl };
 }
 
+export type TotpVerificationResult = {
+  verified: boolean;
+  replayed: boolean;
+  usedStep: number | null;
+};
+
+export function verifyTotpTokenWithReplayGuard(
+  secret: string,
+  token: string,
+  opts?: { lastUsedStep?: number | null; nowMs?: number },
+): TotpVerificationResult {
+  const nowMs = opts?.nowMs ?? Date.now();
+  authenticator.options = { window: TOTP_VERIFY_WINDOW };
+  const delta = authenticator.checkDelta(token, secret);
+  if (typeof delta !== "number") {
+    return { verified: false, replayed: false, usedStep: null };
+  }
+  const usedStep = Math.floor(nowMs / TOTP_STEP_MS) + delta;
+  const lastUsedStep = opts?.lastUsedStep;
+  if (typeof lastUsedStep === "number" && usedStep <= lastUsedStep) {
+    return { verified: false, replayed: true, usedStep };
+  }
+  return { verified: true, replayed: false, usedStep };
+}
+
 export function verifyTotpToken(secret: string, token: string): boolean {
-  authenticator.options = { window: 1 };
-  return authenticator.verify({ secret, token });
+  return verifyTotpTokenWithReplayGuard(secret, token).verified;
 }
 
 export function generateRecoveryCodes(count = 8): string[] {
-  return Array.from({ length: count }, () => randomBytes(4).toString("hex").toUpperCase());
+  // 12 hex chars => 48 bits entropy per code.
+  return Array.from({ length: count }, () => randomBytes(6).toString("hex").toUpperCase());
 }
 
 export async function hashRecoveryCodes(codes: string[]): Promise<string[]> {
