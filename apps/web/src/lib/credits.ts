@@ -58,7 +58,8 @@ export type CreditDenyReason =
   | "credits_depleted"
   | "period_expired"
   | "free_lifetime_depleted"
-  | "billing_unavailable";
+  | "billing_unavailable"
+  | "grace_exhausted";
 
 const KNOWN_TIERS = [
   "free",
@@ -97,6 +98,9 @@ export function tierLabelForDisplay(tier: string): string {
 /** Degraded in-memory fallback only when Supabase is unavailable (no RC mirror in-process). */
 const MEMORY_FALLBACK_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
 const GRACE_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 horas
+const GRACE_MAX_CONSULTATIONS = 3;
+const GRACE_REDIS_KEY_PREFIX = "iching:grace:v1:";
+const GRACE_REDIS_TTL_SEC = 24 * 60 * 60;
 const LIFETIME_END_ISO = "2999-12-31T00:00:00.000Z";
 
 export type UpsertUserTierOptions = {
@@ -527,6 +531,28 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
       Number.isFinite(finalCycleEndMs) && finalCycleEndMs < Date.now() && Date.now() - finalCycleEndMs > GRACE_WINDOW_MS;
 
     if (isPaidTier && cycleRecentlyExpired && typeof finalRow?.cycle_end === "string") {
+      const redis = getUpstashRedis();
+      if (redis) {
+        const graceKey = `${GRACE_REDIS_KEY_PREFIX}${userKey.replace(/[^a-zA-Z0-9:_-]/g, "_").slice(0, 120)}`;
+        try {
+          const graceCount = await redis.incr(graceKey);
+          if (graceCount === 1) {
+            await redis.expire(graceKey, GRACE_REDIS_TTL_SEC);
+          }
+          if (graceCount > GRACE_MAX_CONSULTATIONS) {
+            await redis.decr(graceKey);
+            return {
+              allowed: false,
+              remaining: 0,
+              limit: lim,
+              cycleEndIso: finalRow.cycle_end,
+              denyReason: "grace_exhausted",
+            };
+          }
+        } catch {
+          // If grace counter storage fails, do not hard-block paid users.
+        }
+      }
       console.warn(
         "[consumeTierCredit] billing unavailable grace window applied",
         userKey.slice(0, 8),
@@ -534,7 +560,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
       );
       return {
         allowed: true,
-        remaining: Math.max(0, lim - (typeof finalRow?.credits_used === "number" ? finalRow.credits_used : 0)),
+        remaining: 0,
         limit: lim,
         cycleEndIso: finalRow.cycle_end,
         denyReason: "billing_unavailable",

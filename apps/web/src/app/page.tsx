@@ -2262,7 +2262,8 @@ export default function HomePage() {
             reason:
               data.creditsReason === "period_expired" ||
               data.creditsReason === "free_lifetime_depleted" ||
-              data.creditsReason === "billing_unavailable"
+              data.creditsReason === "billing_unavailable" ||
+              data.creditsReason === "grace_exhausted"
                 ? data.creditsReason
                 : "credits_depleted",
           });
@@ -2867,7 +2868,7 @@ export default function HomePage() {
                     type="button"
                     className="credits-notice-primary"
                     onClick={() => {
-                      if (creditsNotice?.reason === "billing_unavailable") {
+                      if (creditsExhaustedCopy.primaryCta.action === "sync-billing") {
                         void openSubscriptionCenter();
                         setCreditsNotice(null);
                         return;
@@ -2886,8 +2887,23 @@ export default function HomePage() {
                       })();
                     }}
                   >
-                    {creditsExhaustedCopy.primaryCta}
+                    {creditsExhaustedCopy.primaryCta.label}
                   </button>
+                  {creditsExhaustedCopy.secondaryCta ? (
+                    <button
+                      type="button"
+                      className="credits-notice-dismiss"
+                      onClick={() => {
+                        if (creditsExhaustedCopy.secondaryCta?.action === "mailto" && creditsExhaustedCopy.secondaryCta.href) {
+                          window.open(creditsExhaustedCopy.secondaryCta.href, "_blank", "noopener,noreferrer");
+                          return;
+                        }
+                        setCreditsNotice(null);
+                      }}
+                    >
+                      {creditsExhaustedCopy.secondaryCta.label}
+                    </button>
+                  ) : null}
                   <button type="button" className="credits-notice-dismiss" onClick={() => setCreditsNotice(null)}>
                     Cerrar
                   </button>
