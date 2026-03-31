@@ -81,14 +81,13 @@ function isEmailNotConfirmedError(message: string): boolean {
 }
 
 export default function LoginPage() {
-  type RegisterModalKind = "verify" | "exists";
   const router = useRouter();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [registerModalKind, setRegisterModalKind] = useState<RegisterModalKind | null>(null);
+  const [verifyEmailModalOpen, setVerifyEmailModalOpen] = useState(false);
   const [pendingVerificationEmail, setPendingVerificationEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [configError, setConfigError] = useState(false);
@@ -236,18 +235,12 @@ export default function LoginPage() {
         message?: string;
       };
       if (!res.ok) {
-        if (data.error === "email_exists") {
-          setPendingVerificationEmail(email.trim());
-          setRegisterModalKind("exists");
-          switchMode("signin");
-          return;
-        }
         setErr(registerErrorMessage(data));
         return;
       }
       const normalizedEmail = email.trim();
       setPendingVerificationEmail(normalizedEmail);
-      setRegisterModalKind("verify");
+      setVerifyEmailModalOpen(true);
       setMsg(null);
       setErr(null);
       switchMode("signin");
@@ -258,8 +251,8 @@ export default function LoginPage() {
     }
   }
 
-  function closeRegisterModal() {
-    setRegisterModalKind(null);
+  function closeVerifyEmailModal() {
+    setVerifyEmailModalOpen(false);
     setMode("signin");
   }
 
@@ -483,7 +476,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {registerModalKind ? (
+      {verifyEmailModalOpen ? (
         <div
           role="dialog"
           aria-modal="true"
@@ -508,31 +501,25 @@ export default function LoginPage() {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-              <strong style={{ color: "#d8edf5" }}>
-                {registerModalKind === "verify" ? "Verifica tu cuenta por correo" : "Correo ya registrado"}
-              </strong>
-              <button type="button" className="modal-close-x" aria-label="Cerrar" onClick={closeRegisterModal}>
+              <strong style={{ color: "#d8edf5" }}>Verifica tu cuenta por correo</strong>
+              <button type="button" className="modal-close-x" aria-label="Cerrar" onClick={closeVerifyEmailModal}>
                 ×
               </button>
             </div>
             <p className="auth-pro-msg" style={{ marginTop: 10 }}>
-              {registerModalKind === "verify" ? (
-                <>
-                  Te enviamos un enlace de verificación a <strong>{pendingVerificationEmail}</strong>.
-                  <br />
-                  Abre tu correo, busca el mensaje (revisa spam/no deseado) y haz clic en el enlace para activar tu
-                  cuenta.
-                </>
-              ) : (
-                <>
-                  El correo <strong>{pendingVerificationEmail}</strong> ya está registrado.
-                  <br />
-                  Inicia sesión con ese correo.
-                </>
-              )}
+              Te enviamos un enlace de verificación a <strong>{pendingVerificationEmail}</strong>.
+              <br />
+              Abre tu correo, busca el mensaje (revisa spam/no deseado) y haz clic en el enlace para activar tu cuenta.
             </p>
             <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <button type="button" className="auth-pro-btn auth-pro-btn-primary" onClick={closeRegisterModal}>
+              <button
+                type="button"
+                className="auth-pro-btn auth-pro-btn-primary"
+                onClick={() => window.open("mailto:", "_blank", "noopener,noreferrer")}
+              >
+                Abrir app de correo
+              </button>
+              <button type="button" className="auth-pro-btn auth-pro-btn-google" onClick={closeVerifyEmailModal}>
                 Entendido
               </button>
             </div>

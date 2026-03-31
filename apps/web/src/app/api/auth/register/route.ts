@@ -70,30 +70,9 @@ export async function POST(req: Request) {
   const authClient = createClient(publicUrl, anonKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
-  const normalizedEmail = parsed.data.email.toLowerCase();
-  const { data: existingUser, error: existingUserError } = await supabase
-    .from("users")
-    .select("id")
-    .eq("email", normalizedEmail)
-    .maybeSingle();
-  if (existingUserError) {
-    return apiError(500, {
-      error: "register_precheck_failed",
-      code: "REGISTER_PRECHECK_FAILED",
-      action: "retry",
-    });
-  }
-  if (existingUser?.id) {
-    return apiError(409, {
-      error: "email_exists",
-      code: "REGISTER_EMAIL_EXISTS",
-      action: "login",
-      message: "Ese correo ya está registrado. Inicia sesión.",
-    });
-  }
   const origin = req.headers.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
   const signUp = await authClient.auth.signUp({
-    email: normalizedEmail,
+    email: parsed.data.email,
     password: parsed.data.password,
     options: {
       emailRedirectTo: `${origin.replace(/\/$/, "")}/auth/callback`,
@@ -128,7 +107,7 @@ export async function POST(req: Request) {
   const uid = signUp.data.user?.id;
   if (uid) {
     await supabase.from("users").upsert(
-      { id: uid, email: normalizedEmail },
+      { id: uid, email: parsed.data.email.toLowerCase() },
       { onConflict: "id" },
     );
   }
