@@ -14,7 +14,12 @@ import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
 import { tierLabelForDisplay, toContextTierKey, type Tier } from "@/lib/credits";
-import { creditsExhaustedBlock, tierToBillingTierCopy, type BillingTier } from "@/lib/credits-ui-copy";
+import {
+  creditsExhaustedBlock,
+  tierToBillingTierCopy,
+  type BillingTier,
+  type CreditsNoticeReason,
+} from "@/lib/credits-ui-copy";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -878,6 +883,7 @@ export default function HomePage() {
     tier: BillingTier;
     limit: number;
     cycleEndsAt: string | null;
+    reason: CreditsNoticeReason;
   } | null>(null);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [twoFactorMethod, setTwoFactorMethod] = useState<string | null>(null);
@@ -2095,7 +2101,12 @@ export default function HomePage() {
 
   const primarySubscriptionStatus = (subscriptionPrimary?.status ?? "").toLowerCase();
   const subscriptionStatusLabel = (() => {
-    if (primarySubscriptionStatus === "active") return isSpanish ? "Activa" : "Active";
+    if (primarySubscriptionStatus === "active") {
+      if (subscriptionPrimary?.autoRenew === false) {
+        return isSpanish ? "Activa (cancelada al vencimiento)" : "Active (cancels at period end)";
+      }
+      return isSpanish ? "Activa" : "Active";
+    }
     if (primarySubscriptionStatus === "trialing") return isSpanish ? "Prueba" : "Trial";
     if (primarySubscriptionStatus === "canceled") return isSpanish ? "Cancelada" : "Canceled";
     if (primarySubscriptionStatus === "expired") return isSpanish ? "Expirada" : "Expired";
@@ -2216,6 +2227,7 @@ export default function HomePage() {
         tier?: string;
         creditsLimit?: number;
         cycleEndsAt?: string | null;
+        creditsReason?: string | null;
       };
       try {
         if (!rawText.trim()) {
@@ -2247,6 +2259,12 @@ export default function HomePage() {
             tier: t,
             limit: lim,
             cycleEndsAt: typeof data.cycleEndsAt === "string" ? data.cycleEndsAt : null,
+            reason:
+              data.creditsReason === "period_expired" ||
+              data.creditsReason === "free_lifetime_depleted" ||
+              data.creditsReason === "billing_unavailable"
+                ? data.creditsReason
+                : "credits_depleted",
           });
           return;
         }
@@ -2316,7 +2334,7 @@ export default function HomePage() {
   }
 
   const creditsExhaustedCopy = creditsNotice
-    ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.limit, creditsNotice.cycleEndsAt)
+    ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.limit, creditsNotice.cycleEndsAt, creditsNotice.reason)
     : null;
 
   const localeSelector = (
@@ -2849,6 +2867,11 @@ export default function HomePage() {
                     type="button"
                     className="credits-notice-primary"
                     onClick={() => {
+                      if (creditsNotice?.reason === "billing_unavailable") {
+                        void openSubscriptionCenter();
+                        setCreditsNotice(null);
+                        return;
+                      }
                       void (async () => {
                         const ok = await openPlansCheckoutNewTab();
                         if (ok) {

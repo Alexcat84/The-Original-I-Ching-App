@@ -54,6 +54,11 @@ export type Tier =
   | "oracle";
 
 export type CreditsType = "monthly" | "lifetime";
+export type CreditDenyReason =
+  | "credits_depleted"
+  | "period_expired"
+  | "free_lifetime_depleted"
+  | "billing_unavailable";
 
 const KNOWN_TIERS = [
   "free",
@@ -91,6 +96,7 @@ export function tierLabelForDisplay(tier: string): string {
 
 /** Degraded in-memory fallback only when Supabase is unavailable (no RC mirror in-process). */
 const MEMORY_FALLBACK_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
+const GRACE_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 horas
 const LIFETIME_END_ISO = "2999-12-31T00:00:00.000Z";
 
 export type UpsertUserTierOptions = {
@@ -384,6 +390,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   limit: number;
   /** Present when Supabase row exists and credits are exhausted (for UX copy). */
   cycleEndIso?: string | null;
+  denyReason?: CreditDenyReason;
 }> {
   const incomingTier = normalizeBillingTier(tier);
   const now = Date.now();
@@ -419,7 +426,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
         .maybeSingle();
       if (rowError) {
         console.error("[consumeTierCredit] query_credits read failed", rowError.message);
-        return { allowed: false, remaining: 0, limit: TIER_CONFIG.free.creditsTotal };
+        return { allowed: false, remaining: 0, limit: TIER_CONFIG.free.creditsTotal, denyReason: "billing_unavailable" };
       }
 
       const safeTier = normalizeBillingTier(
@@ -447,7 +454,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
         });
         if (insertError) {
           console.error("[consumeTierCredit] initial query_credits insert failed", insertError.message);
-          return { allowed: false, remaining: 0, limit };
+          return { allowed: false, remaining: 0, limit, denyReason: "billing_unavailable" };
         }
         return { allowed: true, remaining: limit - 1, limit };
       }
@@ -468,6 +475,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
           remaining: 0,
           limit: total,
           cycleEndIso: rowCreditsType === "monthly" ? row.cycle_end : null,
+          denyReason: rowCreditsType === "lifetime" ? "free_lifetime_depleted" : "credits_depleted",
         };
       }
       const nextUsed = used + 1;
@@ -488,7 +496,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
         .limit(1);
       if (updateError) {
         console.error("[consumeTierCredit] query_credits update failed", updateError.message);
-        return { allowed: false, remaining: 0, limit };
+        return { allowed: false, remaining: 0, limit, denyReason: "billing_unavailable" };
       }
       if (!updatedRows?.[0]?.id) {
         // Concurrent write won the race. Retry with a fresh read.
@@ -508,12 +516,58 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
       .maybeSingle();
     const t = normalizeBillingTier(typeof finalRow?.tier === "string" ? finalRow.tier : incomingTier);
     const lim = TIER_CONFIG[t].creditsTotal;
+    const finalCycleEndMs =
+      finalRow?.credits_type !== "lifetime" && typeof finalRow?.cycle_end === "string"
+        ? new Date(finalRow.cycle_end).getTime()
+        : NaN;
+    const isPaidTier = t !== "free";
+    const cycleRecentlyExpired =
+      Number.isFinite(finalCycleEndMs) && finalCycleEndMs < Date.now() && Date.now() - finalCycleEndMs <= GRACE_WINDOW_MS;
+    const cycleExpiredBeyondGrace =
+      Number.isFinite(finalCycleEndMs) && finalCycleEndMs < Date.now() && Date.now() - finalCycleEndMs > GRACE_WINDOW_MS;
+
+    if (isPaidTier && cycleRecentlyExpired && typeof finalRow?.cycle_end === "string") {
+      console.warn(
+        "[consumeTierCredit] billing unavailable grace window applied",
+        userKey.slice(0, 8),
+        finalRow.cycle_end,
+      );
+      return {
+        allowed: true,
+        remaining: Math.max(0, lim - (typeof finalRow?.credits_used === "number" ? finalRow.credits_used : 0)),
+        limit: lim,
+        cycleEndIso: finalRow.cycle_end,
+        denyReason: "billing_unavailable",
+      };
+    }
+
+    if (isPaidTier && cycleExpiredBeyondGrace) {
+      return {
+        allowed: false,
+        remaining: 0,
+        limit: lim,
+        cycleEndIso: typeof finalRow?.cycle_end === "string" ? finalRow.cycle_end : null,
+        denyReason: "period_expired",
+      };
+    }
+
+    if (t === "free") {
+      return {
+        allowed: false,
+        remaining: 0,
+        limit: lim,
+        cycleEndIso: null,
+        denyReason: "free_lifetime_depleted",
+      };
+    }
+
     return {
       allowed: false,
       remaining: 0,
       limit: lim,
       cycleEndIso:
         finalRow?.credits_type !== "lifetime" && typeof finalRow?.cycle_end === "string" ? finalRow.cycle_end : null,
+      denyReason: "billing_unavailable",
     };
   }
 
@@ -544,7 +598,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   }
   const state = creditsByKey.get(userKey)!;
   if (state.remaining <= 0) {
-    return { allowed: false, remaining: 0, limit };
+    return { allowed: false, remaining: 0, limit, denyReason: "credits_depleted" };
   }
   state.remaining -= 1;
   return { allowed: true, remaining: state.remaining, limit };

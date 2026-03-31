@@ -191,6 +191,7 @@ export async function POST(req: Request) {
         tier: tierResolved,
         creditsLimit: credit.limit,
         cycleEndsAt: credit.cycleEndIso ?? null,
+        creditsReason: credit.denyReason ?? null,
       },
       { status: 402 },
     );
