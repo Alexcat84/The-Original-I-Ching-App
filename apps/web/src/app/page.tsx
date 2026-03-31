@@ -912,7 +912,7 @@ export default function HomePage() {
   const [subscriptionCenterError, setSubscriptionCenterError] = useState<string | null>(null);
   const [subscriptionManagementUrl, setSubscriptionManagementUrl] = useState<string | null>(null);
   const [subscriptionPrimary, setSubscriptionPrimary] = useState<SubscriptionStatusView | null>(null);
-  /** From last subscription/status load: paid subscription active in RevenueCat (false = free / no paid sub). */
+  /** From last subscription/status load: paid subscription active upstream (false = free / no paid sub). */
   const [subscriptionHasActivePaid, setSubscriptionHasActivePaid] = useState<boolean | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
@@ -1984,8 +1984,8 @@ export default function HomePage() {
         if (data?.code === "BILLING_NOT_CONFIGURED") {
           setManageSubMessage(
             isSpanish
-              ? "Falta configuración de billing (RevenueCat) en servidor."
-              : "Billing (RevenueCat) is not fully configured on server.",
+              ? "Falta configuración de pagos en el servidor. Contacta con soporte."
+              : "Payment billing is not configured on the server. Please contact support.",
           );
         } else if (data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
           const opened = await openPlansCheckoutNewTab();
@@ -1995,8 +1995,8 @@ export default function HomePage() {
                 ? "No hay suscripción activa. Te abrimos la página de planes y pago (checkout)."
                 : "No active subscription. We opened the plans and checkout page."
               : isSpanish
-                ? "No hay suscripción activa. Configura NEXT_PUBLIC_PLANS_URL en Vercel con el enlace de pago de RevenueCat (sandbox o producción)."
-                : "No active subscription. Set NEXT_PUBLIC_PLANS_URL to your RevenueCat payment/checkout link (sandbox or production).",
+                ? "No se abrió la tienda de planes. Quien administra el despliegue debe poner como URL de planes el enlace completo de pago (sandbox o producción), no la página principal del sitio."
+                : "The plans store did not open. Your deploy must set the plans URL to the full payment/checkout link (sandbox or production), not the site homepage.",
           );
         } else if (data?.code === "BILLING_SYNC_FAILED") {
           setManageSubMessage(fallback);
@@ -2065,8 +2065,8 @@ export default function HomePage() {
         if (data?.code === "BILLING_NOT_CONFIGURED") {
           setSubscriptionCenterError(
             isSpanish
-              ? "Falta configuración de billing (RevenueCat) en servidor."
-              : "Billing (RevenueCat) is not fully configured on server.",
+              ? "Falta configuración de pagos en el servidor. Contacta con soporte."
+              : "Payment billing is not configured on the server. Please contact support.",
           );
           return;
         }
@@ -2082,11 +2082,19 @@ export default function HomePage() {
       setSubscriptionManagementUrl(data.managementUrl ?? null);
       setSubscriptionHasActivePaid(Boolean(data.hasActiveSubscription));
       if (!data.hasActiveSubscription) {
-        setManageSubMessage(
-          isSpanish
-            ? "No hay suscripción activa en este momento. Puedes iniciar o mejorar tu plan."
-            : "No active subscription found right now. You can start or upgrade your plan.",
-        );
+        if (data.tier === "free") {
+          setManageSubMessage(
+            isSpanish
+              ? "Tu plan gratuito está activo. Si quieres más consultas, usa Planes y pago."
+              : "Your free plan is active. For more consultations, use Plans & checkout.",
+          );
+        } else {
+          setManageSubMessage(
+            isSpanish
+              ? "No hay suscripción de pago activa en este momento. Puedes iniciar o mejorar tu plan en Planes y pago."
+              : "No active paid subscription right now. You can start or upgrade your plan in Plans & checkout.",
+          );
+        }
       }
     } catch {
       setSubscriptionCenterError(
@@ -2897,8 +2905,8 @@ export default function HomePage() {
                         }
                         setError(
                           isSpanish
-                            ? "No hay enlace de pago configurado. Añade NEXT_PUBLIC_PLANS_URL (RevenueCat) en el proyecto."
-                            : "Payment link is not configured. Add NEXT_PUBLIC_PLANS_URL (RevenueCat) to the project.",
+                            ? "No hay enlace de pago configurado o apunta solo a esta web. Revisa la URL de planes en el despliegue (debe ser el enlace completo de la tienda, no la página de inicio)."
+                            : "Payment link is missing or points at this site only. Check the plans URL in your deploy (it must be the full store link, not the homepage).",
                         );
                       })();
                     }}
@@ -3626,8 +3634,8 @@ export default function HomePage() {
                         title={
                           subscriptionHasActivePaid === false
                             ? isSpanish
-                              ? "No hay suscripción de pago en RevenueCat; usa Planes y pago para suscribirte."
-                              : "No paid subscription in RevenueCat; use Plans & checkout to subscribe."
+                              ? "Aquí solo se gestionan suscripciones de pago. Para suscribirte o ampliar plan, usa Planes y pago."
+                              : "Paid subscription management opens here only after you subscribe. Use Plans & checkout to subscribe or upgrade."
                             : undefined
                         }
                       >
@@ -3651,8 +3659,8 @@ export default function HomePage() {
                                   ? "Se abrió la página de planes y pago en una nueva pestaña."
                                   : "Plans and checkout opened in a new tab."
                                 : isSpanish
-                                  ? "No hay enlace de pago: configura NEXT_PUBLIC_PLANS_URL (RevenueCat) en Vercel."
-                                  : "Missing payment link: set NEXT_PUBLIC_PLANS_URL (RevenueCat) in Vercel.",
+                                  ? "No hay enlace de pago o apunta a la página principal. Revisa la variable de planes en el despliegue (URL completa de la tienda)."
+                                  : "Missing payment link or it points at the homepage. Check the plans URL env var (full store URL).",
                             );
                           })();
                         }}

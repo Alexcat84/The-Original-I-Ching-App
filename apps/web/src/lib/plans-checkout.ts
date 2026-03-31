@@ -30,7 +30,7 @@ export type BuildPlansCheckoutUrlResult =
   | { ok: false; code: "not_configured" | "build_failed" };
 
 /**
- * Builds the full checkout URL with RevenueCat app user id when Supabase session exists.
+ * Builds the full checkout URL with billing `app_user_id` when Supabase session exists.
  * Call only from the browser (client components).
  */
 export async function buildPlansCheckoutUrl(plansUrlEnv: string | undefined): Promise<BuildPlansCheckoutUrlResult> {
@@ -62,6 +62,13 @@ export async function buildPlansCheckoutUrl(plansUrlEnv: string | undefined): Pr
         target.searchParams.set("app_user_id", appUserId);
         target.searchParams.set("rc_app_user_id", appUserId);
       }
+    }
+    const pathOnly = target.pathname.replace(/\/+$/, "") || "/";
+    if (target.origin === window.location.origin && pathOnly === "/") {
+      console.warn(
+        "[plans-checkout] NEXT_PUBLIC_PLANS_URL must be the full external checkout URL, not this app’s homepage.",
+      );
+      return { ok: false, code: "not_configured" };
     }
     return { ok: true, url: target.toString() };
   } catch {

@@ -17,7 +17,9 @@ export default function PricingPage() {
     setMessage(null);
     const built = await buildPlansCheckoutUrl(process.env.NEXT_PUBLIC_PLANS_URL);
     if (!built.ok) {
-      setMessage("No se pudo preparar el enlace de pago. Revisa NEXT_PUBLIC_PLANS_URL.");
+      setMessage(
+        "No se pudo preparar el enlace de pago. Comprueba que la URL de planes sea el enlace completo de la tienda, no la página principal.",
+      );
       setBusy(false);
       return;
     }
