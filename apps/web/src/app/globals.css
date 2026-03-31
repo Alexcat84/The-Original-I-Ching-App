@@ -1970,19 +1970,29 @@ button:disabled {
   letter-spacing: 0.02em;
 }
 
-.subscription-center-close {
+.subscription-center-close,
+.modal-close-x {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 28px;
   height: 28px;
+  margin: 0;
+  padding: 0;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--bar-border));
   background: color-mix(in srgb, var(--composer-bg) 90%, var(--bg-mid));
   color: var(--fg);
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1;
+  font-family: inherit;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-.subscription-center-close:hover {
+.subscription-center-close:hover,
+.modal-close-x:hover {
   border-color: color-mix(in srgb, var(--accent) 68%, var(--bar-border));
 }
 
@@ -2371,7 +2381,8 @@ html[data-theme="dark"] .ritual-line.done {
   gap: 0.5rem;
 }
 
-a.credits-notice-primary {
+a.credits-notice-primary,
+button.credits-notice-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2382,9 +2393,13 @@ a.credits-notice-primary {
   text-decoration: none;
   background: var(--accent);
   color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 
-a.credits-notice-primary:hover {
+a.credits-notice-primary:hover,
+button.credits-notice-primary:hover {
   background: var(--accent-hover);
 }
 

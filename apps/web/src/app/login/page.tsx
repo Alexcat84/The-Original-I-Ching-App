@@ -502,22 +502,7 @@ export default function LoginPage() {
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
               <strong style={{ color: "#d8edf5" }}>Verifica tu cuenta por correo</strong>
-              <button
-                type="button"
-                aria-label="Cerrar"
-                onClick={closeVerifyEmailModal}
-                style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: 999,
-                  border: "1px solid rgba(84,160,186,0.45)",
-                  background: "rgba(12, 23, 35, 0.95)",
-                  color: "#d8edf5",
-                  fontSize: 18,
-                  lineHeight: 1,
-                  cursor: "pointer",
-                }}
-              >
+              <button type="button" className="modal-close-x" aria-label="Cerrar" onClick={closeVerifyEmailModal}>
                 ×
               </button>
             </div>

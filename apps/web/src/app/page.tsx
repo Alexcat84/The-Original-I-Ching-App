@@ -16,9 +16,8 @@ import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
 import { tierLabelForDisplay, toContextTierKey, type Tier } from "@/lib/credits";
 import { creditsExhaustedBlock, tierToBillingTierCopy, type BillingTier } from "@/lib/credits-ui-copy";
 import { stripInterpretationFluff } from "@/lib/response-clean";
+import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
-const PLANS_HREF = "/pricing";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
@@ -1951,6 +1950,13 @@ export default function HomePage() {
     }
   }
 
+  async function openPlansCheckoutNewTab(): Promise<boolean> {
+    const built = await buildPlansCheckoutUrl(process.env.NEXT_PUBLIC_PLANS_URL);
+    if (!built.ok) return false;
+    window.open(built.url, "_blank", "noopener,noreferrer");
+    return true;
+  }
+
   async function openSubscriptionManagement() {
     if (!accessToken) {
       setError(isSpanish ? "Inicia sesión para gestionar tu suscripción." : "Sign in to manage your subscription.");
@@ -1977,11 +1983,15 @@ export default function HomePage() {
               : "Billing (RevenueCat) is not fully configured on server.",
           );
         } else if (data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
-          window.open("/guia#planes", "_blank", "noopener,noreferrer");
+          const opened = await openPlansCheckoutNewTab();
           setManageSubMessage(
-            isSpanish
-              ? "Tu cuenta no tiene suscripción activa. Te abrimos la guía de planes."
-              : "Your account has no active subscription. We opened the plans guide.",
+            opened
+              ? isSpanish
+                ? "No hay suscripción activa. Te abrimos la página de planes y pago (checkout)."
+                : "No active subscription. We opened the plans and checkout page."
+              : isSpanish
+                ? "No hay suscripción activa. Configura NEXT_PUBLIC_PLANS_URL en Vercel con el enlace de pago de RevenueCat (sandbox o producción)."
+                : "No active subscription. Set NEXT_PUBLIC_PLANS_URL to your RevenueCat payment/checkout link (sandbox or production).",
           );
         } else if (data?.code === "BILLING_SYNC_FAILED") {
           setManageSubMessage(fallback);
@@ -2823,9 +2833,26 @@ export default function HomePage() {
                 <p className="credits-notice-body">{creditsExhaustedCopy.body}</p>
                 <p className="credits-notice-reset">{creditsExhaustedCopy.resetLine}</p>
                 <div className="credits-notice-actions">
-                  <Link href={PLANS_HREF} className="credits-notice-primary">
+                  <button
+                    type="button"
+                    className="credits-notice-primary"
+                    onClick={() => {
+                      void (async () => {
+                        const ok = await openPlansCheckoutNewTab();
+                        if (ok) {
+                          setCreditsNotice(null);
+                          return;
+                        }
+                        setError(
+                          isSpanish
+                            ? "No hay enlace de pago configurado. Añade NEXT_PUBLIC_PLANS_URL (RevenueCat) en el proyecto."
+                            : "Payment link is not configured. Add NEXT_PUBLIC_PLANS_URL (RevenueCat) to the project.",
+                        );
+                      })();
+                    }}
+                  >
                     {creditsExhaustedCopy.primaryCta}
-                  </Link>
+                  </button>
                   <button type="button" className="credits-notice-dismiss" onClick={() => setCreditsNotice(null)}>
                     Cerrar
                   </button>
@@ -3104,21 +3131,11 @@ export default function HomePage() {
                       {twoFactorModalMode === "manage" ? (
                         <button
                           type="button"
+                          className="modal-close-x"
                           aria-label={isSpanish ? "Cerrar ventana 2FA" : "Close 2FA dialog"}
                           title={isSpanish ? "Cerrar" : "Close"}
                           onClick={() => setTwoFactorModalOpen(false)}
                           disabled={twoFactorBusy || (twoFactorRecoveryCodes.length > 0 && !twoFactorRecoveryAck)}
-                          style={{
-                            width: 28,
-                            height: 28,
-                            borderRadius: 999,
-                            border: "1px solid rgba(84,160,186,0.45)",
-                            background: "rgba(12, 23, 35, 0.95)",
-                            color: "#d8edf5",
-                            fontSize: 18,
-                            lineHeight: 1,
-                            cursor: "pointer",
-                          }}
                         >
                           ×
                         </button>
@@ -3129,9 +3146,17 @@ export default function HomePage() {
                         ? isSpanish
                           ? `Para continuar en esta sesión, verifica tu cuenta con ${preferredTwoFactorMethod === "email" ? "código por email" : "Authenticator (TOTP)"}.`
                           : `To continue in this session, verify your account with ${preferredTwoFactorMethod === "email" ? "email code" : "Authenticator (TOTP)"}.`
-                        : isSpanish
-                          ? "Elige un solo método para configurarlo paso a paso."
-                          : "Choose one method and configure it step by step."}
+                        : twoFactorSetupMethod === "menu"
+                          ? isSpanish
+                            ? "Elige un solo método para configurarlo paso a paso."
+                            : "Choose one method and configure it step by step."
+                          : twoFactorSetupMethod === "totp"
+                            ? isSpanish
+                              ? "Solo Authenticator (TOTP). Usa «Elegir otro método» si prefieres el correo."
+                              : "Authenticator (TOTP) only. Use “Choose another method” if you prefer email."
+                            : isSpanish
+                              ? "Solo verificación por email. Usa «Elegir otro método» si prefieres Authenticator."
+                              : "Email verification only. Use “Choose another method” if you prefer Authenticator."}
                     </p>
                     {twoFactorError ? (
                       <p className="meta-line tier-hint-line" style={{ marginTop: 6 }}>
@@ -3168,16 +3193,17 @@ export default function HomePage() {
                             </button>
                           ) : null}
                         </>
-                      ) : (
+                      ) : twoFactorSetupMethod === "menu" ? (
                         <>
                           <button
                             type="button"
-                            className={`composer-reading-pill ${twoFactorSetupMethod === "totp" ? "is-active" : ""}`}
+                            className="composer-reading-pill is-active"
                             onClick={() => {
                               setTwoFactorSetupMethod("totp");
                               setTwoFactorInfo(null);
                               setTwoFactorError(null);
                               setTwoFactorEmailCode("");
+                              setTwoFactorEmailSent(false);
                             }}
                             disabled={twoFactorBusy || !accessToken}
                           >
@@ -3185,12 +3211,14 @@ export default function HomePage() {
                           </button>
                           <button
                             type="button"
-                            className={`composer-reading-pill ${twoFactorSetupMethod === "email" ? "is-active" : ""}`}
+                            className="composer-reading-pill"
                             onClick={() => {
                               setTwoFactorSetupMethod("email");
                               setTwoFactorInfo(null);
                               setTwoFactorError(null);
                               setTwoFactorCode("");
+                              setTwoFactorSetupOpen(false);
+                              setTwoFactorQrDataUrl(null);
                             }}
                             disabled={twoFactorBusy || !accessToken}
                           >
@@ -3207,6 +3235,24 @@ export default function HomePage() {
                             </button>
                           ) : null}
                         </>
+                      ) : (
+                        <button
+                          type="button"
+                          className="composer-reading-pill"
+                          onClick={() => {
+                            setTwoFactorSetupMethod("menu");
+                            setTwoFactorSetupOpen(false);
+                            setTwoFactorQrDataUrl(null);
+                            setTwoFactorCode("");
+                            setTwoFactorEmailCode("");
+                            setTwoFactorEmailSent(false);
+                            setTwoFactorInfo(null);
+                            setTwoFactorError(null);
+                          }}
+                          disabled={twoFactorBusy}
+                        >
+                          {isSpanish ? "← Elegir otro método" : "← Choose another method"}
+                        </button>
                       )}
                     </div>
 
@@ -3516,12 +3562,32 @@ export default function HomePage() {
                       </button>
                       <button
                         type="button"
-                        className="composer-reading-pill"
-                        onClick={() => window.open("/guia#planes", "_blank", "noopener,noreferrer")}
+                        className="composer-reading-pill is-active"
+                        onClick={() => {
+                          void (async () => {
+                            const ok = await openPlansCheckoutNewTab();
+                            setManageSubMessage(
+                              ok
+                                ? isSpanish
+                                  ? "Se abrió la página de planes y pago en una nueva pestaña."
+                                  : "Plans and checkout opened in a new tab."
+                                : isSpanish
+                                  ? "No hay enlace de pago: configura NEXT_PUBLIC_PLANS_URL (RevenueCat) en Vercel."
+                                  : "Missing payment link: set NEXT_PUBLIC_PLANS_URL (RevenueCat) in Vercel.",
+                            );
+                          })();
+                        }}
                       >
-                        {isSpanish ? "Guía de planes" : "Plans guide"}
+                        {isSpanish ? "Planes y pago" : "Plans & checkout"}
                       </button>
                     </div>
+                    <p className="meta-line tier-hint-line subscription-center-message" style={{ marginTop: 8 }}>
+                      <a href="/guia#planes" target="_blank" rel="noopener noreferrer">
+                        {isSpanish
+                          ? "Detalle de cupos y precios en la guía (solo lectura)"
+                          : "Plan details in the guide (read-only)"}
+                      </a>
+                    </p>
 
                     {subscriptionItems.length > 1 ? (
                       <p className="meta-line tier-hint-line subscription-center-message">
