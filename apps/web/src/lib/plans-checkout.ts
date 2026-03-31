@@ -25,15 +25,26 @@ export function resolveBasePlansUrl(raw: string): string | null {
   }
 }
 
+export type BuildPlansCheckoutUrlOptions = {
+  /** Known Supabase user id (e.g. React state) — combined with getSession to avoid races. */
+  appUserId?: string | null;
+  /** If true, fail when no user id can be resolved (authenticated CTAs must pass app_user_id). */
+  requireAppUserId?: boolean;
+};
+
 export type BuildPlansCheckoutUrlResult =
   | { ok: true; url: string }
-  | { ok: false; code: "not_configured" | "build_failed" };
+  | { ok: false; code: "not_configured" | "build_failed" | "missing_app_user_id" };
 
 /**
- * Builds the full checkout URL with billing `app_user_id` when Supabase session exists.
+ * Builds the checkout URL: base from `NEXT_PUBLIC_PLANS_URL` plus `app_user_id` (and `rc_app_user_id`)
+ * when a Supabase session / optional explicit id is available.
  * Call only from the browser (client components).
  */
-export async function buildPlansCheckoutUrl(plansUrlEnv: string | undefined): Promise<BuildPlansCheckoutUrlResult> {
+export async function buildPlansCheckoutUrl(
+  plansUrlEnv: string | undefined,
+  options?: BuildPlansCheckoutUrlOptions,
+): Promise<BuildPlansCheckoutUrlResult> {
   const base = resolveBasePlansUrl((plansUrlEnv ?? "").trim());
   if (!base) {
     return { ok: false, code: "not_configured" };
@@ -44,24 +55,38 @@ export async function buildPlansCheckoutUrl(plansUrlEnv: string | undefined): Pr
 
   try {
     const target = new URL(base, window.location.origin);
+    let appUserId: string | undefined = options?.appUserId?.trim() || undefined;
+
     if (isSupabaseBrowserConfigured()) {
       const sb = getSupabaseBrowser();
-      const deadline = Date.now() + 2500;
-      let appUserId: string | undefined;
-      while (Date.now() < deadline) {
+      const alignAndReadId = async (): Promise<string | undefined> => {
         const { data } = await sb.auth.getSession();
         await ensureRevenueCatUserAligned(data.session ?? null);
-        const id = data.session?.user?.id?.trim();
-        if (id) {
-          appUserId = id;
-          break;
-        }
-        await new Promise((r) => setTimeout(r, 120));
-      }
+        return data.session?.user?.id?.trim();
+      };
+
       if (appUserId) {
-        target.searchParams.set("app_user_id", appUserId);
-        target.searchParams.set("rc_app_user_id", appUserId);
+        await alignAndReadId();
+      } else {
+        const deadline = Date.now() + 2500;
+        while (Date.now() < deadline) {
+          const id = await alignAndReadId();
+          if (id) {
+            appUserId = id;
+            break;
+          }
+          await new Promise((r) => setTimeout(r, 120));
+        }
       }
+    }
+
+    if (options?.requireAppUserId && !appUserId) {
+      return { ok: false, code: "missing_app_user_id" };
+    }
+
+    if (appUserId) {
+      target.searchParams.set("app_user_id", appUserId);
+      target.searchParams.set("rc_app_user_id", appUserId);
     }
     const pathOnly = target.pathname.replace(/\/+$/, "") || "/";
     if (target.origin === window.location.origin && pathOnly === "/") {

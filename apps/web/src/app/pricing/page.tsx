@@ -1,6 +1,7 @@
 "use client";
 
 import { buildPlansCheckoutUrl, resolveBasePlansUrl } from "@/lib/plans-checkout";
+import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -15,7 +16,12 @@ export default function PricingPage() {
     if (!baseUrl) return;
     setBusy(true);
     setMessage(null);
-    const built = await buildPlansCheckoutUrl(process.env.NEXT_PUBLIC_PLANS_URL);
+    let appUserId: string | null = null;
+    if (isSupabaseBrowserConfigured()) {
+      const { data } = await getSupabaseBrowser().auth.getSession();
+      appUserId = data.session?.user?.id?.trim() ?? null;
+    }
+    const built = await buildPlansCheckoutUrl(process.env.NEXT_PUBLIC_PLANS_URL, { appUserId });
     if (!built.ok) {
       setMessage(
         "No se pudo preparar el enlace de pago. Comprueba que la URL de planes sea el enlace completo de la tienda, no la página principal.",

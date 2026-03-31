@@ -1956,7 +1956,11 @@ export default function HomePage() {
   }
 
   async function openPlansCheckoutNewTab(): Promise<boolean> {
-    const built = await buildPlansCheckoutUrl(process.env.NEXT_PUBLIC_PLANS_URL);
+    const built = await buildPlansCheckoutUrl(process.env.NEXT_PUBLIC_PLANS_URL, {
+      appUserId: authUserId,
+      /** Authenticated CTAs must send app_user_id; fail the open if we cannot resolve it. */
+      requireAppUserId: Boolean(accessToken),
+    });
     if (!built.ok) return false;
     window.open(built.url, "_blank", "noopener,noreferrer");
     return true;
