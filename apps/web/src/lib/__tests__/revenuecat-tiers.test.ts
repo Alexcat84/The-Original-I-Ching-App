@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   latestExpiresMsForTier,
   maxBillingTier,
+  parseRevenueCatProductTierMapJson,
+  pickTierFromEntitlementAndProductId,
   pickTierFromEntitlementIdList,
   pickTierFromSubscriberBundle,
   pickTierFromSubscriberEntitlements,
@@ -57,5 +59,17 @@ describe("revenuecat tier mapping", () => {
   it("maps v2-style entitlement lookup_key and opaque product_id together", () => {
     const tokens = ["prod1a2b3c4d5e", "master", "Master Monthly"];
     expect(pickTierFromEntitlementIdList(tokens)).toBe("master");
+  });
+
+  it("parseRevenueCatProductTierMapJson accepts opaque keys and tier values", () => {
+    const map = parseRevenueCatProductTierMapJson('{"prod559a41dadb":"oracle"}');
+    expect(map["prod559a41dadb"]).toBe("oracle");
+  });
+
+  it("pickTierFromEntitlementAndProductId uses map when tokens only have opaque id", () => {
+    const map = { prod559a41dadb: "oracle" as const };
+    expect(pickTierFromEntitlementAndProductId(["prod559a41dadb"], "prod559a41dadb", map)).toBe("oracle");
+    expect(pickTierFromEntitlementAndProductId([], "Prod559a41dadb", map)).toBe("oracle");
+    expect(pickTierFromEntitlementAndProductId(["oracle_annual"], "prod559a41dadb", map)).toBe("oracle");
   });
 });

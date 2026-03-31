@@ -66,6 +66,23 @@ describe("pickBestActiveV2SubscriptionFromItems", () => {
     expect(best!.tier).toBe("oracle");
   });
 
+  it("resolves tier from nested product.display_name when entitlements are empty", () => {
+    const items = [
+      {
+        id: "sub_wb",
+        status: "active",
+        gives_access: true,
+        product_id: "prod_opaque",
+        current_period_ends_at: new Date("2027-06-01T00:00:00.000Z").getTime(),
+        product: { display_name: "Oracle Annual", id: "prod_opaque" },
+        entitlements: { items: [] },
+      },
+    ];
+    const best = pickBestActiveV2SubscriptionFromItems(items);
+    expect(best).not.toBeNull();
+    expect(best!.tier).toBe("oracle");
+  });
+
   it("when two active rows exist, picks the higher billing tier", () => {
     const items = [
       {

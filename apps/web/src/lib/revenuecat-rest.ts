@@ -2,7 +2,8 @@ import { upsertUserTier } from "@/lib/credits";
 import {
   latestExpiresMsForSubscriberBundle,
   maxBillingTier,
-  pickTierFromEntitlementIdList,
+  parseRevenueCatProductTierMapJson,
+  pickTierFromEntitlementAndProductId,
   pickTierFromSubscriberBundle,
   type RevenueCatBillingTier,
 } from "@/lib/revenuecat-tiers";
@@ -47,6 +48,19 @@ function asIsoFromUnknown(value: unknown): string | null {
   return null;
 }
 
+function pushV2ProductObjectTokens(prod: unknown, tokens: string[]): void {
+  if (!prod || typeof prod !== "object") return;
+  const p = prod as Record<string, unknown>;
+  for (const v of [
+    asString(p.id),
+    asString(p.store_identifier),
+    asString(p.display_name),
+    asString(p.lookup_key),
+  ]) {
+    if (v) tokens.push(v);
+  }
+}
+
 /** RC Billing product_id is often opaque (prod_…); entitlement lookup_key/display_name carry tier names. */
 function collectV2SubscriptionTierTokens(sub: Record<string, unknown>): string[] {
   const tokens: string[] = [];
@@ -54,6 +68,7 @@ function collectV2SubscriptionTierTokens(sub: Record<string, unknown>): string[]
     const v = asString(sub[key]);
     if (v) tokens.push(v);
   }
+  pushV2ProductObjectTokens(sub.product, tokens);
   const ent = sub.entitlements;
   if (ent && typeof ent === "object" && ent !== null) {
     const items = (ent as { items?: unknown }).items;
@@ -70,13 +85,7 @@ function collectV2SubscriptionTierTokens(sub: Record<string, unknown>): string[]
   }
   const pend = sub.pending_changes;
   if (pend && typeof pend === "object" && pend !== null) {
-    const prod = (pend as { product?: unknown }).product;
-    if (prod && typeof prod === "object" && prod !== null) {
-      const p = prod as Record<string, unknown>;
-      for (const v of [asString(p.id), asString(p.store_identifier), asString(p.display_name)]) {
-        if (v) tokens.push(v);
-      }
-    }
+    pushV2ProductObjectTokens((pend as { product?: unknown }).product, tokens);
   }
   return tokens;
 }
@@ -172,10 +181,11 @@ export function pickBestActiveV2SubscriptionFromItems(items: unknown[]): BestV2S
   const actives = paired.filter(({ raw, p }) => isEligibleV2SubscriptionCandidate(raw, p));
   if (actives.length === 0) return null;
 
+  const productTierMap = parseRevenueCatProductTierMapJson(process.env.REVENUECAT_PRODUCT_TIER_MAP);
   const scored = actives
     .map(({ raw, p }) => {
       const tierTokens = collectV2SubscriptionTierTokens(raw);
-      const tier = pickTierFromEntitlementIdList(tierTokens);
+      const tier = pickTierFromEntitlementAndProductId(tierTokens, p.productId, productTierMap);
       const end = p.currentPeriodEndsAt;
       const renewalIso =
         end && !Number.isNaN(new Date(end).getTime()) ? new Date(end).toISOString() : undefined;

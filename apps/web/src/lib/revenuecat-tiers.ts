@@ -63,6 +63,59 @@ export function pickTierFromEntitlementIdList(raw: string[]): RevenueCatBillingT
   return "free";
 }
 
+/**
+ * Optional JSON map for Web Billing opaque product ids (e.g. prod_abc) → tier when v2 list
+ * payloads omit entitlement lookup_key. Example: {"prod559a41dadb":"oracle"}
+ */
+export function parseRevenueCatProductTierMapJson(
+  raw: string | null | undefined,
+): Readonly<Record<string, RevenueCatBillingTier>> {
+  const trimmed = raw?.trim();
+  if (!trimmed) return {};
+  try {
+    const parsed = JSON.parse(trimmed) as unknown;
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    const out: Record<string, RevenueCatBillingTier> = {};
+    for (const [k, v] of Object.entries(parsed)) {
+      if (typeof k !== "string" || typeof v !== "string") continue;
+      const key = k.trim().toLowerCase();
+      if (!key) continue;
+      const val = v.trim().toLowerCase();
+      if (val === "free") {
+        out[key] = "free";
+        continue;
+      }
+      const resolved = resolveTierFromToken(normalizeToken(v));
+      if (resolved === "free") continue;
+      out[key] = resolved;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+function productTierMapFromEnv(): Readonly<Record<string, RevenueCatBillingTier>> {
+  return parseRevenueCatProductTierMapJson(process.env.REVENUECAT_PRODUCT_TIER_MAP);
+}
+
+/**
+ * Same as pickTierFromEntitlementIdList, then optional opaque Web Billing product_id → tier via env map.
+ */
+export function pickTierFromEntitlementAndProductId(
+  entitlementTokens: string[],
+  opaqueProductId: string | null | undefined,
+  productTierMap?: Readonly<Record<string, RevenueCatBillingTier>>,
+): RevenueCatBillingTier {
+  const fromEntitlements = pickTierFromEntitlementIdList(entitlementTokens);
+  if (fromEntitlements !== "free") return fromEntitlements;
+  const map = productTierMap ?? productTierMapFromEnv();
+  const key = opaqueProductId?.trim().toLowerCase();
+  if (!key) return "free";
+  const mapped = map[key];
+  return mapped ?? "free";
+}
+
 /** Webhook payload: entitlement_ids array plus optional single entitlement_id. */
 export function pickTierFromWebhookEntitlements(
   entitlement_ids: string[] | null | undefined,
