@@ -13,9 +13,21 @@ export default function AuthCallbackPage() {
       return;
     }
     const sb = getSupabaseBrowser();
-    void sb.auth.getSession().then(() => {
-      router.replace("/");
-    });
+    void (async () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
+        if (code) {
+          const { error } = await sb.auth.exchangeCodeForSession(code);
+          if (error) {
+            console.warn("[auth/callback] exchangeCodeForSession:", error.message);
+          }
+        }
+        await sb.auth.getSession();
+      } finally {
+        router.replace("/");
+      }
+    })();
   }, [router]);
 
   return (
