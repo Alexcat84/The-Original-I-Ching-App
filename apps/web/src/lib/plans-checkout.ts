@@ -9,18 +9,26 @@ export function resolveBasePlansUrl(raw: string): string | null {
   const plansUrl = raw.trim();
   if (!plansUrl) return null;
 
-  if (plansUrl === "/pricing" || plansUrl === "pricing" || plansUrl.startsWith("/pricing?")) {
+  // Reject known internal-only paths (relative form).
+  // /checkout/* are return URLs from RevenueCat, not the checkout entry point.
+  if (
+    plansUrl === "/pricing" ||
+    plansUrl === "pricing" ||
+    plansUrl.startsWith("/pricing?") ||
+    plansUrl.startsWith("/checkout")
+  ) {
     return null;
   }
 
   try {
     const parsed = new URL(plansUrl);
     const pathname = parsed.pathname.replace(/\/+$/, "") || "/";
-    if (pathname === "/pricing") {
+    if (pathname === "/pricing" || pathname.startsWith("/checkout")) {
       return null;
     }
     return parsed.toString();
   } catch {
+    // Relative path not blocked by string checks above — return as-is for buildPlansCheckoutUrl to validate.
     return plansUrl;
   }
 }
@@ -89,9 +97,11 @@ export async function buildPlansCheckoutUrl(
       target.searchParams.set("rc_app_user_id", appUserId);
     }
     const pathOnly = target.pathname.replace(/\/+$/, "") || "/";
-    if (target.origin === window.location.origin && pathOnly === "/") {
+    const isSameOrigin = target.origin === window.location.origin;
+    // Block same-origin homepage and any internal path that is a return URL, not a checkout entry.
+    if (isSameOrigin && (pathOnly === "/" || pathOnly === "/pricing" || pathOnly.startsWith("/checkout"))) {
       console.warn(
-        "[plans-checkout] NEXT_PUBLIC_PLANS_URL must be the full external checkout URL, not this app’s homepage.",
+        "[plans-checkout] NEXT_PUBLIC_PLANS_URL resolves to an internal page. It must be the full external checkout URL (e.g. https://pay.rev.cat/...).",
       );
       return { ok: false, code: "not_configured" };
     }

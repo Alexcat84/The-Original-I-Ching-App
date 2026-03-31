@@ -72,4 +72,24 @@ describe("revenuecat tier mapping", () => {
     expect(pickTierFromEntitlementAndProductId([], "Prod559a41dadb", map)).toBe("oracle");
     expect(pickTierFromEntitlementAndProductId(["oracle_annual"], "prod559a41dadb", map)).toBe("oracle");
   });
+
+  it("maps oracle_monthly and oracle_annual product IDs from env map", () => {
+    const rawMap =
+      '{"prod5d80d30e47":"seeker_monthly","prod5b3dc0e149":"seeker_annual",' +
+      '"prod9ec903a9e4":"practitioner","prod494dadcda2":"practitioner",' +
+      '"prod0d99ab91a8":"master","prod502ee01b70":"master",' +
+      '"proda07412ce4d":"oracle","prod559a41dadb":"oracle"}';
+    const map = parseRevenueCatProductTierMapJson(rawMap);
+    // oracle_monthly
+    expect(pickTierFromEntitlementAndProductId([], "proda07412ce4d", map)).toBe("oracle");
+    // oracle_annual
+    expect(pickTierFromEntitlementAndProductId([], "prod559a41dadb", map)).toBe("oracle");
+    // seeker variants
+    expect(pickTierFromEntitlementAndProductId([], "prod5d80d30e47", map)).toBe("seeker_monthly");
+    expect(pickTierFromEntitlementAndProductId([], "prod5b3dc0e149", map)).toBe("seeker_annual");
+    // practitioner
+    expect(pickTierFromEntitlementAndProductId([], "prod9ec903a9e4", map)).toBe("practitioner");
+    // master
+    expect(pickTierFromEntitlementAndProductId([], "prod0d99ab91a8", map)).toBe("master");
+  });
 });

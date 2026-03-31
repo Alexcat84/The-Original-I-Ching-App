@@ -259,7 +259,11 @@ async function loadTierFromV2CustomerSubscriptions(
   return { kind: "paid", tier: best.tier, renewalIso: best.renewalIso };
 }
 
-type V1Load = { kind: "ok"; body: SubscriberResponse } | { kind: "404" } | { kind: "error" };
+type V1Load =
+  | { kind: "ok"; body: SubscriberResponse }
+  | { kind: "404" }
+  | { kind: "forbidden" }
+  | { kind: "error" };
 
 async function loadV1Subscriber(secret: string, appUserId: string): Promise<V1Load> {
   const url = `${RC_V1}/subscribers/${encodeURIComponent(appUserId)}`;
@@ -274,6 +278,7 @@ async function loadV1Subscriber(secret: string, appUserId: string): Promise<V1Lo
   }
 
   if (res.status === 404) return { kind: "404" };
+  if (res.status === 403) return { kind: "forbidden" };
   if (!res.ok) {
     console.warn("[RC REST v1] failed", res.status, appUserId.slice(0, 8));
     return { kind: "error" };
@@ -316,6 +321,10 @@ export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise
 
   const v1 = await loadV1Subscriber(secret, appUserId);
 
+  if (v1.kind === "forbidden") {
+    console.warn("[RC REST] v1 returned 403 — key may be V2-only, using v2 only");
+  }
+
   const now = Date.now();
   const candidates: { tier: RevenueCatBillingTier; renewalIso?: string }[] = [];
 
@@ -343,10 +352,13 @@ export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise
   }
 
   if (candidates.length === 0) {
-    if (v1.kind === "404" && (v2Outcome === "none" || v2Outcome === "skipped")) {
+    const v1Missing = v1.kind === "404" || v1.kind === "forbidden";
+    if (v1Missing && (v2Outcome === "none" || v2Outcome === "skipped")) {
       return { ok: true, tier: "free", source: "not_found" };
     }
-    console.warn("[RC REST] upstream - v1:", v1.kind, "v2:", v2Outcome);
+    if (v1.kind !== "forbidden") {
+      console.warn("[RC REST] upstream - v1:", v1.kind, "v2:", v2Outcome);
+    }
     return { ok: false, error: "upstream" };
   }
 
