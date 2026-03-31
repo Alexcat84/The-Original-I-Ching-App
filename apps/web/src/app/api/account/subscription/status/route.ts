@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getUserBillingTier } from "@/lib/credits";
+import { pickBestActiveV2SubscriptionFromItems } from "@/lib/revenuecat-rest";
 
 export const runtime = "nodejs";
 
@@ -122,15 +123,13 @@ export async function GET(req: Request) {
     return apiError(502, { error: "billing_invalid_response", code: "BILLING_SYNC_FAILED", action: "retry" });
   }
 
-  const subscriptions = payload.items
-    .filter((it): it is Record<string, unknown> => typeof it === "object" && it !== null)
-    .map(parseSubscription);
+  const rawItems = payload.items.filter(
+    (it): it is Record<string, unknown> => typeof it === "object" && it !== null,
+  );
+  const subscriptions = rawItems.map(parseSubscription);
 
-  const primary =
-    subscriptions.find((s) => s.givesAccess && isActiveStatus(s.status)) ??
-    subscriptions.find((s) => isActiveStatus(s.status)) ??
-    subscriptions[0] ??
-    null;
+  const bestRaw = pickBestActiveV2SubscriptionFromItems(payload.items);
+  const primary = bestRaw ? parseSubscription(bestRaw.raw) : null;
 
   let managementUrl: string | null = null;
   if (primary?.id) {

@@ -108,6 +108,50 @@ function isActiveSubscriptionStatus(status: string | null): boolean {
   return normalized === "active" || normalized === "trialing" || normalized === "in_grace_period";
 }
 
+export type BestV2SubscriptionPick = {
+  raw: Record<string, unknown>;
+  tier: RevenueCatBillingTier;
+  renewalIso?: string;
+};
+
+/**
+ * RC v2 `.../customers/{id}/subscriptions` returns multiple rows (history + current).
+ * Never use `items[0]` — order is not guaranteed; an expired plan can appear first.
+ * Among rows with an active status, choose the highest billing tier; tie-break by later period end.
+ */
+export function pickBestActiveV2SubscriptionFromItems(items: unknown[]): BestV2SubscriptionPick | null {
+  const rawRows = items.filter(
+    (it): it is Record<string, unknown> => typeof it === "object" && it !== null,
+  );
+  const paired = rawRows.map((raw) => ({ raw, p: parseV2SubscriptionItem(raw) }));
+  const actives = paired.filter(({ p }) => isActiveSubscriptionStatus(p.status));
+  if (actives.length === 0) return null;
+
+  const scored = actives
+    .map(({ raw, p }) => {
+      const tierTokens = collectV2SubscriptionTierTokens(raw);
+      const tier = pickTierFromEntitlementIdList(tierTokens);
+      const end = p.currentPeriodEndsAt;
+      const renewalIso =
+        end && !Number.isNaN(new Date(end).getTime()) ? new Date(end).toISOString() : undefined;
+      return { raw, p, tier, renewalIso };
+    })
+    .filter((s) => s.tier !== "free");
+
+  if (scored.length === 0) return null;
+
+  const best = scored.reduce((a, b) => {
+    const winner = maxBillingTier(a.tier, b.tier);
+    if (winner === b.tier && b.tier !== a.tier) return b;
+    if (winner === a.tier && a.tier !== b.tier) return a;
+    const aMs = a.renewalIso ? new Date(a.renewalIso).getTime() : 0;
+    const bMs = b.renewalIso ? new Date(b.renewalIso).getTime() : 0;
+    return bMs >= aMs ? b : a;
+  });
+
+  return { raw: best.raw, tier: best.tier, renewalIso: best.renewalIso };
+}
+
 /**
  * Web Billing / RC Billing often appears in v2 customer subscriptions while v1 /subscribers
  * may be empty or slow to reflect entitlements — same source as subscription status UI.
@@ -143,42 +187,12 @@ async function loadTierFromV2CustomerSubscriptions(
     return { kind: "failed" };
   }
 
-  const rawRows = payload.items.filter(
-    (it): it is Record<string, unknown> => typeof it === "object" && it !== null,
-  );
-  const paired = rawRows.map((raw) => ({ raw, p: parseV2SubscriptionItem(raw) }));
-
-  const chosen =
-    paired.find(({ p }) => p.givesAccess && isActiveSubscriptionStatus(p.status)) ??
-    paired.find(({ p }) => isActiveSubscriptionStatus(p.status)) ??
-    paired[0] ??
-    null;
-
-  const primary = chosen?.p ?? null;
-  const primaryRaw = chosen?.raw ?? null;
-
-  const hasAccess = Boolean(primary && (primary.givesAccess || isActiveSubscriptionStatus(primary.status)));
-  if (!hasAccess || !primaryRaw) {
+  const best = pickBestActiveV2SubscriptionFromItems(payload.items);
+  if (!best) {
     return { kind: "none" };
   }
 
-  const tierTokens = collectV2SubscriptionTierTokens(primaryRaw);
-  const tier = pickTierFromEntitlementIdList(tierTokens);
-  if (tier === "free") {
-    if (process.env.NODE_ENV === "development" || process.env.VERCEL_ENV === "preview") {
-      console.warn(
-        "[revenuecat-rest] v2 subscription has access but tier mapped to free; check entitlement lookup_key vs TIER_PRIORITY. tokens=",
-        tierTokens,
-      );
-    }
-    return { kind: "none" };
-  }
-
-  const end = primary.currentPeriodEndsAt;
-  const renewalIso =
-    end && !Number.isNaN(new Date(end).getTime()) ? new Date(end).toISOString() : undefined;
-
-  return { kind: "paid", tier, renewalIso };
+  return { kind: "paid", tier: best.tier, renewalIso: best.renewalIso };
 }
 
 type V1Load = { kind: "ok"; body: SubscriberResponse } | { kind: "404" } | { kind: "error" };
