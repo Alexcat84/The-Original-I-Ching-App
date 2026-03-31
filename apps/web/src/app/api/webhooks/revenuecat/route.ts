@@ -178,8 +178,25 @@ export async function POST(req: Request) {
   }
 
   const tier = pickTierFromWebhookEntitlements(event.entitlement_ids, event.entitlement_id, event.product_id);
+
+  if (type === "PRODUCT_CHANGE") {
+    console.log("[webhook PRODUCT_CHANGE]", {
+      appUserId: event.app_user_id?.slice(0, 8),
+      entitlement_ids: event.entitlement_ids,
+      entitlement_id: event.entitlement_id,
+      product_id: event.product_id,
+      resolvedTier: tier,
+    });
+  }
+
   if (tier === "free") {
     const syncResult = await syncUserTierFromRevenueCatRest(event.app_user_id);
+    if (type === "PRODUCT_CHANGE") {
+      console.log("[webhook PRODUCT_CHANGE] tier mapped to free — REST fallback:", {
+        syncOk: syncResult.ok,
+        syncTier: syncResult.ok ? syncResult.tier : null,
+      });
+    }
     if (syncResult.ok && syncResult.tier !== "free") {
       return NextResponse.json({
         ok: true,

@@ -73,6 +73,24 @@ describe("revenuecat tier mapping", () => {
     expect(pickTierFromEntitlementAndProductId(["oracle_annual"], "prod559a41dadb", map)).toBe("oracle");
   });
 
+  it("pickTierFromWebhookEntitlements resolves opaque product_id via explicit map (PRODUCT_CHANGE downgrade)", () => {
+    // Before the fix: product_id was pushed into entitlementTokens and matched by
+    // string pattern only → "free" for opaque IDs like prod5b3dc0e149.
+    // After the fix: product_id is looked up in the product tier map.
+    const map = {
+      prod5b3dc0e149: "seeker_annual" as const,
+      prod0d99ab91a8: "master" as const,
+    };
+    // Downgrade: PRODUCT_CHANGE fires with empty entitlement_ids and opaque product_id
+    expect(pickTierFromWebhookEntitlements([], undefined, "prod5b3dc0e149", map)).toBe("seeker_annual");
+    // Upgrade: same mechansim
+    expect(pickTierFromWebhookEntitlements([], undefined, "prod0d99ab91a8", map)).toBe("master");
+    // Named entitlement still wins when present
+    expect(pickTierFromWebhookEntitlements(["oracle_annual"], undefined, "prod5b3dc0e149", map)).toBe("oracle");
+    // No entitlements, unknown product_id → free
+    expect(pickTierFromWebhookEntitlements([], undefined, "prod_unknown", map)).toBe("free");
+  });
+
   it("maps oracle_monthly and oracle_annual product IDs from env map", () => {
     const rawMap =
       '{"prod5d80d30e47":"seeker_monthly","prod5b3dc0e149":"seeker_annual",' +

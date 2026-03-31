@@ -116,16 +116,37 @@ export function pickTierFromEntitlementAndProductId(
   return mapped ?? "free";
 }
 
-/** Webhook payload: entitlement_ids array plus optional single entitlement_id. */
+/**
+ * Webhook payload: entitlement_ids array plus optional single entitlement_id.
+ * product_id is kept separate and passed to pickTierFromEntitlementAndProductId
+ * so opaque RC Billing product IDs (e.g. prod5b3dc0e149) are resolved via
+ * REVENUECAT_PRODUCT_TIER_MAP — the same path used by the v2 REST picker.
+ * Pass an explicit productTierMap to override the env var (useful in tests).
+ */
+/**
+ * Webhook payload: entitlement_ids array plus optional single entitlement_id.
+ *
+ * product_id is added to the token list so string-pattern matching still resolves
+ * human-readable App Store IDs (e.g. "the-original-iching-master-monthly" → "master").
+ * It is also passed as opaqueProductId to pickTierFromEntitlementAndProductId so that
+ * fully opaque RC Web Billing IDs (e.g. "prod5b3dc0e149") are resolved via
+ * REVENUECAT_PRODUCT_TIER_MAP as a second-pass fallback.
+ *
+ * Pass an explicit productTierMap to override the env var (useful in tests).
+ */
 export function pickTierFromWebhookEntitlements(
   entitlement_ids: string[] | null | undefined,
   entitlement_id: string | undefined,
   product_id?: string,
+  productTierMap?: Readonly<Record<string, RevenueCatBillingTier>>,
 ): RevenueCatBillingTier {
-  const raw = [...(entitlement_ids ?? [])];
-  if (entitlement_id) raw.push(entitlement_id);
-  if (product_id) raw.push(product_id);
-  return pickTierFromEntitlementIdList(raw);
+  const entitlementTokens = [...(entitlement_ids ?? [])];
+  if (entitlement_id) entitlementTokens.push(entitlement_id);
+  if (product_id) entitlementTokens.push(product_id);
+  // Pass product_id separately as opaqueProductId: when pattern matching on token returns
+  // "free" (opaque IDs like "prod5b3dc0e149" contain no tier string), the product tier
+  // map is consulted as a second-pass fallback.
+  return pickTierFromEntitlementAndProductId(entitlementTokens, product_id ?? null, productTierMap);
 }
 
 export interface RestEntitlementShape {
