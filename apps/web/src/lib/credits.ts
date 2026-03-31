@@ -96,6 +96,17 @@ const LIFETIME_END_ISO = "2999-12-31T00:00:00.000Z";
 export type UpsertUserTierOptions = {
   /** Set when called from syncUserTierFromRevenueCatRest to avoid infinite resync loops. */
   fromRevenueCatRest?: boolean;
+  /** e.g. RevenueCat CANCELLATION — refresh period end without resetting monthly credits. */
+  preserveMonthlyCredits?: boolean;
+};
+
+export type AccountBillingSnapshot = {
+  tier: Tier;
+  creditsUsed: number;
+  creditsRemaining: number;
+  cycleEnd: string | null;
+  creditsLimit: number;
+  creditsType: CreditsType;
 };
 
 function billingPeriodRedisKey(
@@ -116,27 +127,6 @@ async function syncBillingFromRevenueCat(userKey: string): Promise<void> {
   if (!res.ok) {
     console.warn("[credits] RevenueCat REST sync failed", userKey.slice(0, 8), res.error);
   }
-}
-
-/**
- * When Postgres still shows a paid tier but cycle_end is in the past, re-pull from RevenueCat
- * (webhooks are the primary path; this is a safety net for /me and UI entry points).
- */
-export async function refreshUserBillingIfStale(userId: string): Promise<void> {
-  const supabase = getSupabaseAdmin();
-  if (!supabase || !isPersistableUuid(userId)) return;
-  const { data } = await supabase
-    .from("query_credits")
-    .select("tier, cycle_end")
-    .eq("user_id", userId)
-    .order("updated_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  const tier = typeof data?.tier === "string" ? normalizeBillingTier(data.tier) : "free";
-  if (tier === "free") return;
-  const endMs = data?.cycle_end ? new Date(data.cycle_end).getTime() : NaN;
-  if (!Number.isFinite(endMs) || endMs >= Date.now()) return;
-  await syncBillingFromRevenueCat(userId);
 }
 
 export interface TierConfig {
@@ -282,6 +272,64 @@ export const CREDITS_PER_MONTH: Record<Tier, number> = {
   oracle: TIER_CONFIG.oracle.creditsTotal,
 };
 
+/**
+ * Single read (+ optional one re-read after stale billing sync). For /api/account/me.
+ */
+export async function getAccountBillingSnapshot(userId: string): Promise<AccountBillingSnapshot> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase || !isPersistableUuid(userId)) {
+    const t: Tier = "free";
+    const lim = CREDITS_PER_MONTH[t];
+    return {
+      tier: t,
+      creditsUsed: 0,
+      creditsRemaining: lim,
+      cycleEnd: null,
+      creditsLimit: lim,
+      creditsType: TIER_CONFIG[t].creditsType,
+    };
+  }
+
+  const readRow = () =>
+    supabase
+      .from("query_credits")
+      .select("tier, cycle_end, credits_total, credits_used, credits_type")
+      .eq("user_id", userId)
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+  let { data } = await readRow();
+  let tier: Tier =
+    typeof data?.tier === "string" && (KNOWN_TIERS as readonly string[]).includes(data.tier)
+      ? normalizeBillingTier(data.tier)
+      : "free";
+
+  const endMs = data?.cycle_end ? new Date(data.cycle_end).getTime() : NaN;
+  if (tier !== "free" && Number.isFinite(endMs) && endMs < Date.now()) {
+    await syncBillingFromRevenueCat(userId);
+    const again = await readRow();
+    data = again.data;
+    tier =
+      typeof data?.tier === "string" && (KNOWN_TIERS as readonly string[]).includes(data.tier)
+        ? normalizeBillingTier(data.tier)
+        : "free";
+  }
+
+  const lim = CREDITS_PER_MONTH[tier];
+  const total = typeof data?.credits_total === "number" ? data.credits_total : lim;
+  const used = typeof data?.credits_used === "number" ? data.credits_used : 0;
+
+  return {
+    tier,
+    creditsUsed: used,
+    creditsRemaining: Math.max(0, total - used),
+    cycleEnd: typeof data?.cycle_end === "string" ? data.cycle_end : null,
+    creditsLimit: lim,
+    creditsType: TIER_CONFIG[tier].creditsType,
+  };
+}
+
 interface UserCreditState {
   remaining: number;
   cycleStartedAt: number;
@@ -339,6 +387,25 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
 }> {
   const incomingTier = normalizeBillingTier(tier);
   const now = Date.now();
+
+  let redisBillingPeriodKey: string | null = null;
+  if (getUpstashRedis()) {
+    const admin = getSupabaseAdmin();
+    if (admin && isPersistableUuid(userKey)) {
+      const { data: pr } = await admin
+        .from("query_credits")
+        .select("cycle_start, cycle_end, credits_type")
+        .eq("user_id", userKey)
+        .order("updated_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      redisBillingPeriodKey = billingPeriodRedisKey(
+        pr?.credits_type === "lifetime" ? "lifetime" : "monthly",
+        pr?.cycle_start as string | undefined,
+        pr?.cycle_end as string | undefined,
+      );
+    }
+  }
 
   const supabase = getSupabaseAdmin();
   if (supabase && isPersistableUuid(userKey)) {
@@ -446,22 +513,6 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
   const limit = tierConfig.creditsTotal;
   const tierCreditsType = tierConfig.creditsType;
 
-  let redisBillingPeriodKey: string | null = null;
-  if (getUpstashRedis() && supabase && isPersistableUuid(userKey)) {
-    const { data: pr } = await supabase
-      .from("query_credits")
-      .select("cycle_start, cycle_end, credits_type")
-      .eq("user_id", userKey)
-      .order("updated_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    redisBillingPeriodKey = billingPeriodRedisKey(
-      pr?.credits_type === "lifetime" ? "lifetime" : "monthly",
-      pr?.cycle_start as string | undefined,
-      pr?.cycle_end as string | undefined,
-    );
-  }
-
   const fromRedis = await consumeTierCreditRedis(
     userKey,
     safeTier,
@@ -493,7 +544,13 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
 export async function getUserBillingTier(userId: string): Promise<Tier> {
   const supabase = getSupabaseAdmin();
   if (!supabase) return "free";
-  const { data } = await supabase.from("query_credits").select("tier").eq("user_id", userId).maybeSingle();
+  const { data } = await supabase
+    .from("query_credits")
+    .select("tier")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
   const t = data?.tier;
   if (typeof t === "string" && (KNOWN_TIERS as readonly string[]).includes(t)) {
     return normalizeBillingTier(t);
@@ -568,12 +625,27 @@ export async function upsertUserTier(
           }
           throw new Error("billing_sync_required");
         }
-        if (existing?.cycle_start && existing?.cycle_end) {
+        const existingEndMs = existing?.cycle_end ? new Date(existing.cycle_end).getTime() : NaN;
+        const existingCycleStillValid =
+          Number.isFinite(existingEndMs) &&
+          existingEndMs > nowMs &&
+          Boolean(existing?.cycle_start) &&
+          Boolean(existing?.cycle_end);
+        if (existingCycleStillValid && existing?.cycle_start && existing?.cycle_end) {
           cycleStart = existing.cycle_start;
           cycleEnd = existing.cycle_end;
+        } else if (existing?.id) {
+          console.warn(
+            "[upsertUserTier] RC REST paid tier without future renewalIso; refusing to persist expired or unknown cycle",
+            userKey.slice(0, 8),
+          );
+          throw new Error("billing_cycle_end_stale");
         } else {
-          cycleStart = nowIso;
-          cycleEnd = nowIso;
+          console.warn(
+            "[upsertUserTier] RC REST paid tier without renewalIso and no query_credits row; refusing insert",
+            userKey.slice(0, 8),
+          );
+          throw new Error("billing_cycle_end_missing");
         }
       } else {
         cycleStart = nowIso;
@@ -591,6 +663,15 @@ export async function upsertUserTier(
         oldEndMs === newEndMs;
 
       creditsUsed = periodUnchanged && existing ? existing.credits_used : 0;
+
+      if (
+        options?.preserveMonthlyCredits &&
+        existing &&
+        normalizeBillingTier(existing.tier) === safeTier &&
+        existing.credits_type === "monthly"
+      ) {
+        creditsUsed = existing.credits_used;
+      }
 
       if (periodUnchanged && existing) {
         cycleStart = existing.cycle_start;

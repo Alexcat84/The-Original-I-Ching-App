@@ -26,7 +26,10 @@ interface SubscriberResponse {
 
 export type SyncFromRevenueCatResult =
   | { ok: true; tier: RevenueCatBillingTier; source: "subscriber" | "not_found" }
-  | { ok: false; error: "not_configured" | "upstream" | "invalid_response" };
+  | {
+      ok: false;
+      error: "not_configured" | "upstream" | "invalid_response" | "billing_cycle_incomplete";
+    };
 
 function asString(value: unknown): string | null {
   return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
@@ -267,7 +270,16 @@ export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise
   const finalTier = candidates.map((c) => c.tier).reduce(maxBillingTier);
   const renewalIso = latestRenewalIso(candidates.map((c) => c.renewalIso));
 
-  await upsertUserTier(appUserId, finalTier, renewalIso, { fromRevenueCatRest: true });
+  try {
+    await upsertUserTier(appUserId, finalTier, renewalIso, { fromRevenueCatRest: true });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "";
+    if (msg === "billing_cycle_end_stale" || msg === "billing_cycle_end_missing") {
+      console.warn("[revenuecat-rest] upsert skipped: incomplete billing cycle from REST", appUserId.slice(0, 8));
+      return { ok: false, error: "billing_cycle_incomplete" };
+    }
+    throw e;
+  }
 
   return { ok: true, tier: finalTier, source: "subscriber" };
 }

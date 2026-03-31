@@ -15,7 +15,6 @@ const GRANT_UPDATE_TYPES = new Set([
   "INITIAL_PURCHASE",
   "RENEWAL",
   "UNCANCELLATION",
-  "CANCELLATION",
   "NON_RENEWING_PURCHASE",
   "PRODUCT_CHANGE",
   "SUBSCRIPTION_EXTENDED",
@@ -123,15 +122,54 @@ export async function POST(req: Request) {
         source: "not_found",
       });
     }
-    if (syncResult.tier === "free") {
-      await upsertUserTier(event.app_user_id, "free", undefined, { fromRevenueCatRest: true });
-    }
     return NextResponse.json({
       ok: true,
       appUserId: event.app_user_id,
       eventType: type,
       tier: syncResult.tier,
       source: syncResult.tier === "free" ? "expiration_free" : "rest_after_revoke",
+    });
+  }
+
+  if (type === "CANCELLATION") {
+    const cancelTier = pickTierFromWebhookEntitlements(event.entitlement_ids, event.entitlement_id, event.product_id);
+    if (cancelTier === "free") {
+      const syncResult = await syncUserTierFromRevenueCatRest(event.app_user_id);
+      if (!syncResult.ok) {
+        return NextResponse.json({
+          ok: true,
+          skipped: true,
+          eventType: type,
+          reason: "cancellation_rest_unavailable",
+        });
+      }
+      if (syncResult.source === "not_found") {
+        await upsertUserTier(event.app_user_id, "free", undefined, { fromRevenueCatRest: true });
+        return NextResponse.json({
+          ok: true,
+          appUserId: event.app_user_id,
+          eventType: type,
+          tier: "free",
+          source: "not_found",
+        });
+      }
+      return NextResponse.json({
+        ok: true,
+        appUserId: event.app_user_id,
+        eventType: type,
+        tier: syncResult.tier,
+        source: "cancellation_rest",
+      });
+    }
+    const cancelRenewalMs =
+      typeof event.expiration_at_ms === "number" ? event.expiration_at_ms : event.purchased_at_ms;
+    const cancelRenewal = cancelRenewalMs ? new Date(cancelRenewalMs).toISOString() : undefined;
+    await upsertUserTier(event.app_user_id, cancelTier, cancelRenewal, { preserveMonthlyCredits: true });
+    return NextResponse.json({
+      ok: true,
+      appUserId: event.app_user_id,
+      eventType: type,
+      tier: cancelTier,
     });
   }
 

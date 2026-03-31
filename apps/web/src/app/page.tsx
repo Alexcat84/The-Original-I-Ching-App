@@ -2027,11 +2027,18 @@ export default function HomePage() {
     setSubscriptionCenterError(null);
     setManageSubMessage(null);
     try {
-      await fetch("/api/account/sync-billing", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${accessToken}` },
-        cache: "no-store",
-      });
+      try {
+        const syncRes = await fetch("/api/account/sync-billing", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${accessToken}` },
+          cache: "no-store",
+        });
+        if (!syncRes.ok) {
+          /* best-effort: subscription/status still loads */
+        }
+      } catch {
+        /* network failure — subscription/status still loads */
+      }
       const res = await fetch("/api/account/subscription/status", {
         method: "GET",
         headers: { Authorization: `Bearer ${accessToken}` },

@@ -46,7 +46,12 @@ export async function POST(req: Request) {
   }
 
   if (!result.ok) {
-    if (result.error === "not_configured" || result.error === "upstream" || result.error === "invalid_response") {
+    if (
+      result.error === "not_configured" ||
+      result.error === "upstream" ||
+      result.error === "invalid_response" ||
+      result.error === "billing_cycle_incomplete"
+    ) {
       return NextResponse.json({
         ok: false,
         skipped: true,
@@ -55,7 +60,9 @@ export async function POST(req: Request) {
             ? "billing_not_configured"
             : result.error === "upstream"
               ? "billing_upstream_unavailable"
-              : "billing_invalid_response",
+              : result.error === "billing_cycle_incomplete"
+                ? "billing_cycle_incomplete"
+                : "billing_invalid_response",
       });
     }
     return apiError(502, {
