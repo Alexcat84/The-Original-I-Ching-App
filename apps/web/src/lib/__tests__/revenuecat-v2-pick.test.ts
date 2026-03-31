@@ -38,6 +38,34 @@ describe("pickBestActiveV2SubscriptionFromItems", () => {
     expect(pickBestActiveV2SubscriptionFromItems(items)).toBeNull();
   });
 
+  it("includes Web Billing row when status is omitted but gives_access is true", () => {
+    const items = [
+      {
+        id: "sub_wb",
+        gives_access: true,
+        current_period_ends_at: new Date("2027-06-01T00:00:00.000Z").getTime(),
+        entitlements: { items: [{ lookup_key: "oracle_annual" }] },
+      },
+    ];
+    const best = pickBestActiveV2SubscriptionFromItems(items);
+    expect(best).not.toBeNull();
+    expect(best!.tier).toBe("oracle");
+  });
+
+  it("includes row when status missing, gives_access false, but period end is in the future", () => {
+    const items = [
+      {
+        id: "sub_partial",
+        gives_access: false,
+        current_period_ends_at: new Date("2027-01-15T00:00:00.000Z").getTime(),
+        entitlements: { items: [{ lookup_key: "oracle" }] },
+      },
+    ];
+    const best = pickBestActiveV2SubscriptionFromItems(items);
+    expect(best).not.toBeNull();
+    expect(best!.tier).toBe("oracle");
+  });
+
   it("when two active rows exist, picks the higher billing tier", () => {
     const items = [
       {

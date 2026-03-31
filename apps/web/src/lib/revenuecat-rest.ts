@@ -81,6 +81,22 @@ function collectV2SubscriptionTierTokens(sub: Record<string, unknown>): string[]
   return tokens;
 }
 
+/** RC v2 / Web Billing payloads sometimes omit `status` or use alternate keys. */
+export function rcV2SubscriptionStatusFromRaw(raw: Record<string, unknown>): string | null {
+  const lifecycle =
+    raw.lifecycle && typeof raw.lifecycle === "object" && raw.lifecycle !== null
+      ? (raw.lifecycle as Record<string, unknown>)
+      : null;
+  return (
+    asString(raw.status) ??
+    asString(raw.state) ??
+    asString(raw.subscription_status) ??
+    asString(raw.display_status) ??
+    asString(lifecycle?.status) ??
+    asString(lifecycle?.state)
+  );
+}
+
 function parseV2SubscriptionItem(raw: Record<string, unknown>): {
   id: string | null;
   status: string | null;
@@ -90,7 +106,7 @@ function parseV2SubscriptionItem(raw: Record<string, unknown>): {
 } {
   return {
     id: asString(raw.id),
-    status: asString(raw.status),
+    status: rcV2SubscriptionStatusFromRaw(raw),
     givesAccess: raw.gives_access === true,
     productId: asString(raw.product_id) ?? asString(raw.product_identifier),
     currentPeriodEndsAt:
@@ -108,6 +124,35 @@ function isActiveSubscriptionStatus(status: string | null): boolean {
   return normalized === "active" || normalized === "trialing" || normalized === "in_grace_period";
 }
 
+function isTerminalV2SubscriptionStatus(status: string | null): boolean {
+  if (!status) return false;
+  const n = status.toLowerCase();
+  return (
+    n === "expired" ||
+    n === "canceled" ||
+    n === "cancelled" ||
+    n === "revoked" ||
+    n === "refunded"
+  );
+}
+
+/**
+ * Row is a billing candidate if not clearly ended and any of:
+ * - known active status string
+ * - RC marks gives_access
+ * - current period end is still in the future (status sometimes missing on Web Billing)
+ */
+function isEligibleV2SubscriptionCandidate(
+  raw: Record<string, unknown>,
+  p: ReturnType<typeof parseV2SubscriptionItem>,
+): boolean {
+  if (isTerminalV2SubscriptionStatus(p.status)) return false;
+  if (isActiveSubscriptionStatus(p.status)) return true;
+  if (raw.gives_access === true) return true;
+  const endMs = p.currentPeriodEndsAt ? new Date(p.currentPeriodEndsAt).getTime() : NaN;
+  return Number.isFinite(endMs) && endMs > Date.now();
+}
+
 export type BestV2SubscriptionPick = {
   raw: Record<string, unknown>;
   tier: RevenueCatBillingTier;
@@ -117,14 +162,14 @@ export type BestV2SubscriptionPick = {
 /**
  * RC v2 `.../customers/{id}/subscriptions` returns multiple rows (history + current).
  * Never use `items[0]` — order is not guaranteed; an expired plan can appear first.
- * Among rows with an active status, choose the highest billing tier; tie-break by later period end.
+ * Among eligible rows (active status, gives_access, or future period end), pick highest tier.
  */
 export function pickBestActiveV2SubscriptionFromItems(items: unknown[]): BestV2SubscriptionPick | null {
   const rawRows = items.filter(
     (it): it is Record<string, unknown> => typeof it === "object" && it !== null,
   );
   const paired = rawRows.map((raw) => ({ raw, p: parseV2SubscriptionItem(raw) }));
-  const actives = paired.filter(({ p }) => isActiveSubscriptionStatus(p.status));
+  const actives = paired.filter(({ raw, p }) => isEligibleV2SubscriptionCandidate(raw, p));
   if (actives.length === 0) return null;
 
   const scored = actives

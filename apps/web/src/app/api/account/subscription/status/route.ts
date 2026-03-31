@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getUserBillingTier } from "@/lib/credits";
-import { pickBestActiveV2SubscriptionFromItems } from "@/lib/revenuecat-rest";
+import { pickBestActiveV2SubscriptionFromItems, rcV2SubscriptionStatusFromRaw } from "@/lib/revenuecat-rest";
 
 export const runtime = "nodejs";
 
@@ -53,7 +53,7 @@ function parseAutoRenew(raw: Record<string, unknown>): boolean | null {
 function parseSubscription(raw: Record<string, unknown>): SubscriptionView {
   return {
     id: asString(raw.id),
-    status: asString(raw.status),
+    status: rcV2SubscriptionStatusFromRaw(raw),
     givesAccess: raw.gives_access === true,
     store: asString(raw.store),
     productId: asString(raw.product_id) ?? asString(raw.product_identifier),
@@ -71,6 +71,12 @@ function isActiveStatus(status: string | null): boolean {
   if (!status) return false;
   const normalized = status.toLowerCase();
   return normalized === "active" || normalized === "trialing" || normalized === "in_grace_period";
+}
+
+function subscriptionPeriodEndInFuture(iso: string | null): boolean {
+  if (!iso) return false;
+  const ms = Date.parse(iso);
+  return Number.isFinite(ms) && ms > Date.now();
 }
 
 export async function GET(req: Request) {
@@ -150,7 +156,12 @@ export async function GET(req: Request) {
   return NextResponse.json({
     ok: true,
     tier: await getUserBillingTier(user.userId),
-    hasActiveSubscription: Boolean(primary && (primary.givesAccess || isActiveStatus(primary.status))),
+    hasActiveSubscription: Boolean(
+      primary &&
+        (primary.givesAccess ||
+          isActiveStatus(primary.status) ||
+          subscriptionPeriodEndInFuture(primary.currentPeriodEndsAt)),
+    ),
     subscriptions,
     primarySubscription: primary,
     managementUrl,

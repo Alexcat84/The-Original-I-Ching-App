@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
+import { pickBestActiveV2SubscriptionFromItems } from "@/lib/revenuecat-rest";
 
 export const runtime = "nodejs";
 
@@ -66,10 +67,9 @@ export async function POST(req: Request) {
     return apiError(502, { error: "billing_invalid_response", code: "BILLING_SYNC_FAILED", action: "retry" });
   }
 
-  const active = (listJson.items ?? []).find(
-    (s) => (s.status === "active" || s.status === "trialing") && s.gives_access === true,
-  );
-  const subscriptionId = active?.id;
+  const best = pickBestActiveV2SubscriptionFromItems(listJson.items ?? []);
+  const subscriptionId =
+    best && typeof best.raw.id === "string" && best.raw.id.trim().length > 0 ? best.raw.id.trim() : null;
   if (!subscriptionId) {
     return apiError(404, {
       error: "no_active_subscription",
