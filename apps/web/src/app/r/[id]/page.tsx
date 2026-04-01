@@ -3,11 +3,12 @@ import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
 import { getConsultationByPublicId } from "@/lib/session-store";
 
 interface ReadingPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: ReadingPageProps): Promise<Metadata> {
-  const row = await getConsultationByPublicId(params.id);
+  const { id } = await params;
+  const row = await getConsultationByPublicId(id);
   if (!row) {
     return { title: "Lectura no encontrada" };
   }
@@ -34,7 +35,8 @@ export async function generateMetadata({ params }: ReadingPageProps): Promise<Me
 }
 
 export default async function ReadingPage({ params }: ReadingPageProps) {
-  const row = await getConsultationByPublicId(params.id);
+  const { id } = await params;
+  const row = await getConsultationByPublicId(id);
   if (!row) {
     return <main className="oracle-shell"><p>Lectura no encontrada.</p></main>;
   }

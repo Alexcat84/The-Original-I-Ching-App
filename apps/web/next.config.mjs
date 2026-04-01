@@ -24,11 +24,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    serverComponentsExternalPackages: ["sharp", "@resvg/resvg-js"],
-    outputFileTracingIncludes: {
-      "/api/**": ["./fonts/**"],
-    },
+  serverExternalPackages: ["sharp", "@resvg/resvg-js"],
+  outputFileTracingIncludes: {
+    "/api/**": ["./fonts/**"],
   },
   transpilePackages: [
     "@iching-oracle/iching-data",

@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { getSessionByPublicId } from "@/lib/session-store";
 
 interface SessionPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: SessionPageProps): Promise<Metadata> {
-  const data = await getSessionByPublicId(params.id);
+  const { id } = await params;
+  const data = await getSessionByPublicId(id);
   if (!data) return { title: "Sesión no encontrada" };
   const title = `Sesión I Ching: ${data.session.title}`;
   const description = `Consultas: ${data.consultations.length}. Tema: ${data.session.themeCategory}.`;
@@ -29,7 +30,8 @@ export async function generateMetadata({ params }: SessionPageProps): Promise<Me
 }
 
 export default async function SessionPage({ params }: SessionPageProps) {
-  const data = await getSessionByPublicId(params.id);
+  const { id } = await params;
+  const data = await getSessionByPublicId(id);
   if (!data) {
     return <main className="oracle-shell"><p>Sesión no encontrada.</p></main>;
   }
