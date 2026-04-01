@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
-import { getAccountBillingSnapshot, toContextTierKey } from "@/lib/credits";
-import { CONTEXT_LIMITS, type TierKey } from "@iching-oracle/context-engine";
+import { getAccountBillingSnapshot } from "@/lib/credits";
+import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
 
 export const runtime = "nodejs";
 
@@ -12,8 +12,6 @@ export async function GET(req: Request) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
   const billing = await getAccountBillingSnapshot(user.userId);
-  const tier = billing.tier;
-  const tierKey = toContextTierKey(tier) as TierKey;
   const twoFactor = await (async () => {
     const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
     const supabase = getSupabaseAdmin();
@@ -29,14 +27,13 @@ export async function GET(req: Request) {
     };
   })();
   return NextResponse.json({
+    id: user.userId,
     email: user.email,
-    tier,
-    creditsLimit: billing.creditsLimit,
-    creditsType: billing.creditsType,
-    sessionDepthLimit: CONTEXT_LIMITS[tierKey].sessionDepth,
-    creditsUsed: billing.creditsUsed,
-    creditsRemaining: billing.creditsRemaining,
-    cycleEnd: billing.cycleEnd,
+    tokens_available: billing.creditsRemaining,
+    tokens_used_lifetime: billing.creditsUsed,
+    tokens_purchased_lifetime: billing.tokensPurchasedLifetime,
+    session_limit: getSessionLimitFromPack(billing.lastPack),
+    last_pack: billing.lastPack,
     twoFactorEnabled: twoFactor.enabled,
     twoFactorMethod: twoFactor.method,
   });

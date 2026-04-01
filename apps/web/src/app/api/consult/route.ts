@@ -15,7 +15,7 @@ import { NextResponse } from "next/server";
 import { buildImageAsset, buildOracleBonesImageAsset, type ImageProvider } from "@/lib/image-provider";
 import { getAdminConfig } from "@/lib/admin-config";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
-import { consumeTierCredit, getUserBillingTier } from "@/lib/credits";
+import { consumeToken, getSessionLimit, getUserBillingTier } from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey } from "@/lib/rate-limit";
@@ -135,10 +135,11 @@ export async function POST(req: Request) {
     );
   }
   const authedUserId = authUser.userId;
-  const tierResolved = await getUserBillingTier(authedUserId);
-  const policy = await resolveConsultPolicy({ authUser, tierResolved });
+  const lastPack = await getUserBillingTier(authedUserId);
+  const policy = await resolveConsultPolicy({ authUser, tierResolved: lastPack });
   const { adminBypassAllowed, adminUnlimitedCredits, tierEffective, tierKey } = policy;
-  const maxDepth = Math.max(1, CONTEXT_LIMITS[tierKey].sessionDepth);
+  const packSessionLimit = await getSessionLimit(authedUserId);
+  const maxDepth = Math.max(1, packSessionLimit || CONTEXT_LIMITS[tierKey].sessionDepth);
 
   const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
   const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
@@ -174,24 +175,22 @@ export async function POST(req: Request) {
   const previousRows = mapHistoryToRows(body.history);
   if (isDeepening && previousRows.length >= maxDepth) {
     return NextResponse.json(
-      { error: "thread_limit_reached", code: "CONSULT_THREAD_LIMIT_REACHED", action: "new_session" },
-      { status: 409 },
+      {
+        error: "session_limit",
+        message: "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar explorando.",
+        session_limit: maxDepth,
+      },
+      { status: 429 },
     );
   }
 
-  const credit = adminUnlimitedCredits
-    ? { allowed: true, remaining: 999_999, limit: 999_999, cycleEndIso: null as string | null }
-    : await consumeTierCredit(authedUserId, tierResolved);
-  if (!credit.allowed) {
+  const remainingAfterConsume = adminUnlimitedCredits ? 999_999 : await consumeToken(authedUserId);
+  if (remainingAfterConsume === -1) {
     return NextResponse.json(
       {
-        error: "credits_exhausted",
-        code: "BILLING_CREDITS_EXHAUSTED",
-        action: "upgrade_plan",
-        tier: tierResolved,
-        creditsLimit: credit.limit,
-        cycleEndsAt: credit.cycleEndIso ?? null,
-        creditsReason: credit.denyReason ?? null,
+        error: "no_tokens",
+        message: "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
+        tokens_available: 0,
       },
       { status: 402 },
     );
@@ -314,8 +313,8 @@ export async function POST(req: Request) {
       sessionId,
       sessionPosition: nextPosition,
       canDeepen,
-      remainingCredits: credit.remaining,
-      creditLimit: credit.limit,
+      remainingCredits: remainingAfterConsume,
+      creditLimit: null,
       publicReadingId: sharing.publicReadingId,
       publicSessionId: sharing.publicSessionId,
       oracleBones: {
@@ -437,8 +436,8 @@ export async function POST(req: Request) {
     sessionId,
     sessionPosition: nextPosition,
     canDeepen,
-    remainingCredits: credit.remaining,
-    creditLimit: credit.limit,
+    remainingCredits: remainingAfterConsume,
+    creditLimit: null,
     publicReadingId: sharing.publicReadingId,
     publicSessionId: sharing.publicSessionId,
   });

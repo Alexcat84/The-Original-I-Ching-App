@@ -1,9 +1,9 @@
 "use client";
 
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
-import { tierLabelForDisplay } from "@/lib/credits";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { getPackConfig } from "@/lib/token-packs";
 
 const POLL_INTERVAL_MS = 3000;
 const POLL_MAX_MS = 30_000;
@@ -15,9 +15,9 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function tierWelcomeLabel(tier: string): string {
-  const label = tierLabelForDisplay(tier); // "seeker" | "practitioner" | "master" | "oracle" | "free"
-  return label.charAt(0).toUpperCase() + label.slice(1);
+function packWelcomeLabel(lastPack: string): string {
+  if (lastPack === "free") return "Free";
+  return getPackConfig(lastPack)?.label ?? "Pack";
 }
 
 async function getAccessToken(): Promise<string | null> {
@@ -26,7 +26,9 @@ async function getAccessToken(): Promise<string | null> {
   return data.session?.access_token?.trim() ?? null;
 }
 
-async function fetchAccountMe(token: string): Promise<{ ok: true; tier: string } | { ok: false; status: number }> {
+async function fetchAccountMe(
+  token: string,
+): Promise<{ ok: true; lastPack: string; tokensAvailable: number } | { ok: false; status: number }> {
   const res = await fetch("/api/account/me", {
     method: "GET",
     headers: { Authorization: `Bearer ${token}` },
@@ -35,14 +37,15 @@ async function fetchAccountMe(token: string): Promise<{ ok: true; tier: string }
   if (!res.ok) {
     return { ok: false, status: res.status };
   }
-  const body = (await res.json()) as { tier?: string };
-  const tier = typeof body.tier === "string" ? body.tier : "free";
-  console.log("[checkout/success] /api/account/me →", { tier, raw: body });
-  return { ok: true, tier };
+  const body = (await res.json()) as { last_pack?: string; tokens_available?: number };
+  const lastPack = typeof body.last_pack === "string" ? body.last_pack : "free";
+  const tokensAvailable = typeof body.tokens_available === "number" ? body.tokens_available : 0;
+  console.log("[checkout/success] /api/account/me →", { lastPack, tokensAvailable, raw: body });
+  return { ok: true, lastPack, tokensAvailable };
 }
 
-function isPaidTier(tier: string): boolean {
-  return tierLabelForDisplay(tier) !== "free";
+function hasPurchasedTokens(lastPack: string, tokensAvailable: number): boolean {
+  return lastPack !== "free" || tokensAvailable > 2;
 }
 
 export default function CheckoutSuccessPage() {
@@ -86,8 +89,8 @@ export default function CheckoutSuccessPage() {
         router.replace("/login");
         return;
       }
-      if (me.ok && isPaidTier(me.tier)) {
-        setPaidTierLabel(tierWelcomeLabel(me.tier));
+      if (me.ok && hasPurchasedTokens(me.lastPack, me.tokensAvailable)) {
+        setPaidTierLabel(packWelcomeLabel(me.lastPack));
         setPhase("success");
         return;
       }
@@ -105,8 +108,8 @@ export default function CheckoutSuccessPage() {
           router.replace("/login");
           return;
         }
-        if (me.ok && isPaidTier(me.tier)) {
-          setPaidTierLabel(tierWelcomeLabel(me.tier));
+        if (me.ok && hasPurchasedTokens(me.lastPack, me.tokensAvailable)) {
+          setPaidTierLabel(packWelcomeLabel(me.lastPack));
           setPhase("success");
           return;
         }
@@ -127,7 +130,7 @@ export default function CheckoutSuccessPage() {
           </>
         ) : phase === "processing" ? (
           <>
-            <h1 className="checkout-success-title">Procesando tu suscripción…</h1>
+            <h1 className="checkout-success-title">Procesando tu compra de tokens…</h1>
             <div className="checkout-success-spinner" aria-hidden />
           </>
         ) : phase === "success" ? (
@@ -146,7 +149,7 @@ export default function CheckoutSuccessPage() {
           <>
             <h1 className="checkout-success-title">Tu pago está siendo procesado.</h1>
             <p className="checkout-success-sub">
-              En unos minutos verás tu nuevo plan activo. Puedes seguir usando la app.
+              En unos minutos verás tus tokens acreditados. Puedes seguir usando la app.
             </p>
             <button
               type="button"

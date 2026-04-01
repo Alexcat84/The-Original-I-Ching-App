@@ -16,7 +16,6 @@ import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
 import { tierLabelForDisplay, toContextTierKey, type Tier } from "@/lib/credits";
 import {
   creditsExhaustedBlock,
-  tierToBillingTierCopy,
   type BillingTier,
   type CreditsNoticeReason,
 } from "@/lib/credits-ui-copy";
@@ -1439,22 +1438,21 @@ export default function HomePage() {
       })
         .then((r) => (r.ok ? r.json() : null))
         .then((j: {
-          tier?: Tier;
-          creditsLimit?: number;
-          creditsType?: CreditsType;
-          creditsRemaining?: number;
-          cycleEnd?: string | null;
+          last_pack?: string;
+          tokens_available?: number;
+          session_limit?: number;
           twoFactorEnabled?: boolean;
           twoFactorMethod?: string | null;
         } | null) => {
-          if (cancelled || !j?.tier) return;
-          setTier(j.tier);
-          if (typeof j.creditsLimit === "number" && Number.isFinite(j.creditsLimit)) {
-            setMonthlyCreditsLimit(j.creditsLimit);
+          if (cancelled || !j) return;
+          const lastPack = typeof j.last_pack === "string" ? j.last_pack : "free";
+          setTier(lastPack as Tier);
+          if (typeof j.session_limit === "number" && Number.isFinite(j.session_limit)) {
+            setMonthlyCreditsLimit(j.session_limit);
           }
-          setCreditsType(j.creditsType === "monthly" ? "monthly" : "lifetime");
-          setSubscriptionCreditsRemaining(typeof j.creditsRemaining === "number" ? j.creditsRemaining : null);
-          setSubscriptionCycleEnd(typeof j.cycleEnd === "string" ? j.cycleEnd : null);
+          setCreditsType("lifetime");
+          setSubscriptionCreditsRemaining(typeof j.tokens_available === "number" ? j.tokens_available : null);
+          setSubscriptionCycleEnd(null);
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
           setTwoFactorMethod(j.twoFactorMethod ?? null);
         })
@@ -2038,7 +2036,9 @@ export default function HomePage() {
         | {
             ok?: boolean;
             code?: string;
-            tier?: Tier;
+            last_pack?: string;
+            tokens_available?: number;
+            session_limit?: number;
             hasActiveSubscription?: boolean;
             primarySubscription?: SubscriptionStatusView | null;
             subscriptions?: SubscriptionStatusView[];
@@ -2061,21 +2061,23 @@ export default function HomePage() {
         );
         return;
       }
-      if (data.tier) setTier(data.tier);
+      if (typeof data.last_pack === "string") setTier(data.last_pack as Tier);
+      if (typeof data.tokens_available === "number") setSubscriptionCreditsRemaining(data.tokens_available);
+      if (typeof data.session_limit === "number") setMonthlyCreditsLimit(data.session_limit);
       setSubscriptionPrimary(data.primarySubscription ?? null);
       setSubscriptionHasActivePaid(Boolean(data.hasActiveSubscription));
       if (!data.hasActiveSubscription) {
-        if (data.tier === "free") {
+        if (data.last_pack === "free") {
           setManageSubMessage(
             isSpanish
-              ? "Tu plan gratuito está activo. Si quieres más consultas, usa Planes y pago."
-              : "Your free plan is active. For more consultations, use Plans & checkout.",
+              ? "Tu estado gratuito está activo. Si quieres más consultas, compra tokens en Planes y pagos."
+              : "Your free state is active. If you want more consultations, buy tokens in Plans & payments.",
           );
         } else {
           setManageSubMessage(
             isSpanish
-              ? "No hay suscripción de pago activa en este momento. Puedes iniciar o mejorar tu plan en Planes y pago."
-              : "No active paid subscription right now. You can start or upgrade your plan in Plans & checkout.",
+              ? "No hay una compra activa reciente. Puedes comprar más tokens en Planes y pagos."
+              : "There is no recent active purchase. You can buy more tokens in Plans & payments.",
           );
         }
       }
@@ -2255,25 +2257,26 @@ export default function HomePage() {
           void signOut();
           return;
         }
-        if (res.status === 409 && data.error === "thread_limit_reached") {
-          setError(isSpanish ? "Límite de hilo alcanzado. Usa «Nueva sesión» para continuar." : "Thread limit reached. Use \"New session\" to continue.");
+        if (res.status === 429 && data.error === "session_limit") {
+          setError(
+            isSpanish
+              ? "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar."
+              : "You reached this thread limit. Start a new session to continue.",
+          );
           return;
         }
-        if (res.status === 402 && data.error === "credits_exhausted") {
-          const t = tierToBillingTierCopy(typeof data.tier === "string" ? data.tier : "free");
-          const lim = typeof data.creditsLimit === "number" ? data.creditsLimit : monthlyCreditsLimit;
+        if (res.status === 402 && data.error === "no_tokens") {
           setCreditsNotice({
-            tier: t,
-            limit: lim,
-            cycleEndsAt: typeof data.cycleEndsAt === "string" ? data.cycleEndsAt : null,
-            reason:
-              data.creditsReason === "period_expired" ||
-              data.creditsReason === "free_lifetime_depleted" ||
-              data.creditsReason === "billing_unavailable" ||
-              data.creditsReason === "grace_exhausted"
-                ? data.creditsReason
-                : "credits_depleted",
+            tier: "free",
+            limit: 0,
+            cycleEndsAt: null,
+            reason: "credits_depleted",
           });
+          setError(
+            isSpanish
+              ? "Has usado todos tus tokens. Compra un nuevo paquete para continuar."
+              : "You used all your tokens. Buy a new pack to continue.",
+          );
           return;
         }
         if (res.status === 403 && (data.error === "two_factor_required" || data.action === "setup_2fa")) {

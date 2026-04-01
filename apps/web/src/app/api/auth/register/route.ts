@@ -4,6 +4,7 @@ import { apiError } from "@/lib/api-error";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { initFreeUser } from "@/lib/credits";
 
 export const runtime = "nodejs";
 
@@ -150,6 +151,7 @@ export async function POST(req: Request) {
       { id: uid, email: normalizedEmail },
       { onConflict: "id" },
     );
+    await initFreeUser(uid);
   }
   return Response.json({ ok: true, userId: uid ?? null });
 }
