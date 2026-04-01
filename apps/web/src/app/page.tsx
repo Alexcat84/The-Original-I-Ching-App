@@ -910,7 +910,6 @@ export default function HomePage() {
   const [subscriptionCenterOpen, setSubscriptionCenterOpen] = useState(false);
   const [subscriptionCenterBusy, setSubscriptionCenterBusy] = useState(false);
   const [subscriptionCenterError, setSubscriptionCenterError] = useState<string | null>(null);
-  const [subscriptionManagementUrl, setSubscriptionManagementUrl] = useState<string | null>(null);
   const [subscriptionPrimary, setSubscriptionPrimary] = useState<SubscriptionStatusView | null>(null);
   /** From last subscription/status load: paid subscription active upstream (false = free / no paid sub). */
   const [subscriptionHasActivePaid, setSubscriptionHasActivePaid] = useState<boolean | null>(null);
@@ -1269,7 +1268,6 @@ export default function HomePage() {
     setTwoFactorInfo(null);
     setTwoFactorError(null);
     setSubscriptionCenterOpen(false);
-    setSubscriptionManagementUrl(null);
     setSubscriptionPrimary(null);
     setSubscriptionCenterError(null);
   }, [authUserId]);
@@ -1430,8 +1428,7 @@ export default function HomePage() {
       setTwoFactorInfo(null);
       setTwoFactorError(null);
       setSubscriptionCenterOpen(false);
-      setSubscriptionManagementUrl(null);
-      setSubscriptionPrimary(null);
+        setSubscriptionPrimary(null);
       setSubscriptionCenterError(null);
       return;
     }
@@ -1966,7 +1963,7 @@ export default function HomePage() {
     return true;
   }
 
-  async function openSubscriptionManagement() {
+  async function openRCPortal() {
     if (!accessToken) {
       setError(isSpanish ? "Inicia sesión para gestionar tu suscripción." : "Sign in to manage your subscription.");
       return;
@@ -1974,52 +1971,27 @@ export default function HomePage() {
     setManageSubBusy(true);
     setManageSubMessage(null);
     try {
-      const res = await fetch("/api/account/subscription/manage", {
+      const res = await fetch("/api/account/create-portal-session", {
         method: "POST",
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       const data = (await res.json().catch(() => null)) as
-        | { ok?: boolean; managementUrl?: string; code?: string; message?: string }
+        | { ok?: boolean; url?: string; code?: string; message?: string }
         | null;
-      if (!res.ok || !data?.ok || !data.managementUrl) {
-        const fallback = isSpanish
-          ? "No se pudo abrir la gestión de suscripción. Inténtalo de nuevo en unos minutos."
-          : "Could not open subscription management. Please try again in a few minutes.";
-        if (data?.code === "BILLING_NOT_CONFIGURED") {
-          setManageSubMessage(
-            isSpanish
-              ? "Falta configuración de pagos en el servidor. Contacta con soporte."
-              : "Payment billing is not configured on the server. Please contact support.",
-          );
-        } else if (data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
-          const opened = await openPlansCheckoutNewTab();
-          setManageSubMessage(
-            opened
-              ? isSpanish
-                ? "No hay suscripción activa. Te abrimos la página de planes y pago (checkout)."
-                : "No active subscription. We opened the plans and checkout page."
-              : isSpanish
-                ? "No se abrió la tienda de planes. Quien administra el despliegue debe poner como URL de planes el enlace completo de pago (sandbox o producción), no la página principal del sitio."
-                : "The plans store did not open. Your deploy must set the plans URL to the full payment/checkout link (sandbox or production), not the site homepage.",
-          );
-        } else if (data?.code === "BILLING_SYNC_FAILED") {
-          setManageSubMessage(fallback);
-        } else {
-          setManageSubMessage(fallback);
-        }
+      if (!res.ok || !data?.ok || !data.url) {
+        setManageSubMessage(
+          isSpanish
+            ? "No se pudo abrir el portal. Intenta de nuevo."
+            : "Could not open the portal. Please try again.",
+        );
         return;
       }
-      window.open(data.managementUrl, "_blank", "noopener,noreferrer");
-      setManageSubMessage(
-        isSpanish
-          ? "Se abrió el portal de suscripción en una nueva pestaña."
-          : "Subscription portal opened in a new tab.",
-      );
+      window.location.href = data.url;
     } catch {
       setManageSubMessage(
         isSpanish
-          ? "No se pudo abrir la gestión de suscripción. Inténtalo de nuevo."
-          : "Could not open subscription management. Please try again.",
+          ? "No se pudo abrir el portal. Intenta de nuevo."
+          : "Could not open the portal. Please try again.",
       );
     } finally {
       setManageSubBusy(false);
@@ -2083,7 +2055,6 @@ export default function HomePage() {
       }
       if (data.tier) setTier(data.tier);
       setSubscriptionPrimary(data.primarySubscription ?? null);
-      setSubscriptionManagementUrl(data.managementUrl ?? null);
       setSubscriptionHasActivePaid(Boolean(data.hasActiveSubscription));
       if (!data.hasActiveSubscription) {
         if (data.tier === "free") {
@@ -3622,21 +3593,14 @@ export default function HomePage() {
                       <button
                         type="button"
                         className="composer-reading-pill"
-                        onClick={() => {
-                          if (subscriptionManagementUrl) {
-                            window.open(subscriptionManagementUrl, "_blank", "noopener,noreferrer");
-                            return;
-                          }
-                          void openSubscriptionManagement();
-                        }}
+                        onClick={() => void openRCPortal()}
                         disabled={
                           manageSubBusy ||
                           subscriptionCenterBusy ||
-                          subscriptionHasActivePaid === false ||
-                          (subscriptionHasActivePaid === null && !subscriptionManagementUrl)
+                          tier === "free"
                         }
                         title={
-                          subscriptionHasActivePaid === false
+                          tier === "free"
                             ? isSpanish
                               ? "Aquí solo se gestionan suscripciones de pago. Para suscribirte o ampliar plan, usa Planes y pago."
                               : "Paid subscription management opens here only after you subscribe. Use Plans & checkout to subscribe or upgrade."
@@ -3655,6 +3619,10 @@ export default function HomePage() {
                         type="button"
                         className="composer-reading-pill is-active"
                         onClick={() => {
+                          if (tier !== "free") {
+                            void openRCPortal();
+                            return;
+                          }
                           void (async () => {
                             const ok = await openPlansCheckoutNewTab();
                             setManageSubMessage(

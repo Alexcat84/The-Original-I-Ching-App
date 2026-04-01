@@ -114,6 +114,7 @@ export async function POST(req: Request) {
     }
     if (syncResult.source === "not_found") {
       await upsertUserTier(event.app_user_id, "free", undefined, { fromRevenueCatRest: true });
+      console.log("[webhook EXPIRATION] user downgraded to free:", event.app_user_id?.slice(0, 8));
       return NextResponse.json({
         ok: true,
         appUserId: event.app_user_id,
@@ -121,6 +122,9 @@ export async function POST(req: Request) {
         tier: "free",
         source: "not_found",
       });
+    }
+    if (syncResult.tier === "free") {
+      console.log("[webhook EXPIRATION] user downgraded to free:", event.app_user_id?.slice(0, 8));
     }
     return NextResponse.json({
       ok: true,
@@ -178,6 +182,48 @@ export async function POST(req: Request) {
   }
 
   const tier = pickTierFromWebhookEntitlements(event.entitlement_ids, event.entitlement_id, event.product_id);
+
+  // RENEWAL guard: skip if a more recent PRODUCT_CHANGE already set a higher tier.
+  // Compares DB tier rank vs renewal tier rank; if DB is strictly higher and the DB
+  // cycle_start postdates this event's purchased_at_ms, the RENEWAL is stale.
+  if (type === "RENEWAL" && tier !== "free") {
+    const supabase = getSupabaseAdmin();
+    if (supabase) {
+      const { data: credRow } = await supabase
+        .from("query_credits")
+        .select("tier, cycle_start")
+        .eq("user_id", event.app_user_id)
+        .maybeSingle();
+      if (credRow) {
+        const tierRankMap: Record<string, number> = {
+          free: 0, seeker: 1, seeker_monthly: 1, seeker_annual: 1,
+          practitioner: 2, master: 3, oracle: 4,
+        };
+        const dbRank = tierRankMap[credRow.tier as string] ?? 0;
+        const renewalRank = tierRankMap[tier] ?? 0;
+        const dbCycleStartMs = credRow.cycle_start
+          ? new Date(credRow.cycle_start as string).getTime()
+          : 0;
+        const eventPurchasedMs =
+          typeof event.purchased_at_ms === "number" ? event.purchased_at_ms : 0;
+        if (dbRank > renewalRank && dbCycleStartMs > eventPurchasedMs) {
+          console.log("[webhook RENEWAL] skipped — newer plan change detected", {
+            appUserId: event.app_user_id?.slice(0, 8),
+            dbTier: credRow.tier,
+            renewalTier: tier,
+            dbCycleStartMs,
+            eventPurchasedMs,
+          });
+          return NextResponse.json({
+            ok: true,
+            skipped: true,
+            eventType: type,
+            reason: "newer_plan_change",
+          });
+        }
+      }
+    }
+  }
 
   if (type === "PRODUCT_CHANGE") {
     console.log("[webhook PRODUCT_CHANGE]", {
