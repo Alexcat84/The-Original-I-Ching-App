@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { CHECKOUT_SUCCESS_PATH } from "@/lib/checkout-routes";
+import { lookupCanonicalRevenueCatAppUserId } from "@/lib/revenuecat-alias-map";
 
 export const runtime = "nodejs";
 
@@ -226,21 +227,29 @@ export async function POST(req: Request) {
   console.log("[portal] app_user_id (Supabase UUID):", user.userId);
   console.log("[portal] return_url:", returnUrl);
 
-  // Step 1: try with the Supabase UUID directly
-  let attempt: { status: number; body: string };
-  try {
-    attempt = await createPortalSession(secretKey, projectId, user.userId, returnUrl);
-  } catch (e) {
-    console.error("[portal] RC fetch failed (step 1)", e);
-    return apiError(503, {
-      error: "portal_session_failed",
-      code: "PORTAL_SESSION_FAILED",
-      action: "retry",
-    });
+  const mappedCanonical = await lookupCanonicalRevenueCatAppUserId(user.userId);
+  if (mappedCanonical) {
+    console.log("[portal] mapped canonical app_user_id from DB:", mappedCanonical);
   }
+  const candidateIds = uniqueNonEmpty([user.userId, mappedCanonical]);
 
-  if (attempt.status !== 404) {
-    // Success or a non-404 error — handle without alias fallback
+  let last404 = false;
+  for (const candidate of candidateIds) {
+    let attempt: { status: number; body: string };
+    try {
+      attempt = await createPortalSession(secretKey, projectId, candidate, returnUrl);
+    } catch (e) {
+      console.error("[portal] RC fetch failed for candidate:", candidate, e);
+      return apiError(503, {
+        error: "portal_session_failed",
+        code: "PORTAL_SESSION_FAILED",
+        action: "retry",
+      });
+    }
+    if (attempt.status === 404) {
+      last404 = true;
+      continue;
+    }
     if (!isOkStatus(attempt.status)) {
       return apiError(503, {
         error: "portal_session_failed",
@@ -251,25 +260,30 @@ export async function POST(req: Request) {
     return portalSessionResponse(attempt.body);
   }
 
-  // Step 2: UUID is an alias — look up the original RC app_user_id
-  console.log("[portal] step 1 returned 404 — looking up RC original app_user_id");
+  // UUID may still be an alias and DB map may be stale/missing.
+  console.log("[portal] all known candidates returned 404 — looking up RC original app_user_id");
   const originalId = await lookupRCOriginalUserId(secretKey, projectId, user.userId);
-  if (!originalId || originalId === user.userId) {
-    // No original ID found or same as alias — cannot proceed
-    return apiError(404, {
-      error: "no_active_subscription",
-      code: "BILLING_NO_ACTIVE_SUBSCRIPTION",
-      message: "No tienes una suscripción activa.",
-      action: "upgrade_plan",
+  if (!originalId || candidateIds.includes(originalId)) {
+    if (last404) {
+      return apiError(404, {
+        error: "no_active_subscription",
+        code: "BILLING_NO_ACTIVE_SUBSCRIPTION",
+        message: "No tienes una suscripción activa.",
+        action: "upgrade_plan",
+      });
+    }
+    return apiError(503, {
+      error: "portal_session_failed",
+      code: "PORTAL_SESSION_FAILED",
+      action: "retry",
     });
   }
 
-  // Step 3: retry with the original ID
   let retry: { status: number; body: string };
   try {
     retry = await createPortalSession(secretKey, projectId, originalId, returnUrl);
   } catch (e) {
-    console.error("[portal] RC fetch failed (step 3)", e);
+    console.error("[portal] RC fetch failed (originalId retry)", e);
     return apiError(503, {
       error: "portal_session_failed",
       code: "PORTAL_SESSION_FAILED",
@@ -285,7 +299,6 @@ export async function POST(req: Request) {
       action: "upgrade_plan",
     });
   }
-
   if (!isOkStatus(retry.status)) {
     return apiError(503, {
       error: "portal_session_failed",
@@ -293,7 +306,6 @@ export async function POST(req: Request) {
       action: "retry",
     });
   }
-
   return portalSessionResponse(retry.body);
 }
 

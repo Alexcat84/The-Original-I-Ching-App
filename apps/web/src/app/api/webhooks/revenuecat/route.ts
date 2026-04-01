@@ -6,6 +6,7 @@ import { syncUserTierFromRevenueCatRest } from "@/lib/revenuecat-rest";
 import { pickTierFromWebhookEntitlements } from "@/lib/revenuecat-tiers";
 import { computeRevenueCatEventHash } from "@/lib/revenuecat-webhook-idempotency";
 import { revenueCatWebhookAuthorized } from "@/lib/revenuecat-webhook-auth";
+import { canonicalFromAliasGraph, upsertRevenueCatAliasGraph } from "@/lib/revenuecat-alias-map";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
@@ -28,6 +29,8 @@ interface RevenueCatEvent {
   type?: string;
   id?: string;
   app_user_id?: string;
+  original_app_user_id?: string;
+  aliases?: string[] | null;
   entitlement_ids?: string[] | null;
   entitlement_id?: string;
   product_id?: string;
@@ -91,6 +94,16 @@ export async function POST(req: Request) {
 
   if (!event.app_user_id) {
     return apiError(400, { error: "missing_user", code: "WEBHOOK_MISSING_USER", action: "fix_input" });
+  }
+
+  // Persist alias graph so portal-session API can resolve canonical IDs for legacy anonymous customers.
+  const aliasGraph = canonicalFromAliasGraph({
+    appUserId: event.app_user_id,
+    originalAppUserId: event.original_app_user_id,
+    aliases: event.aliases,
+  });
+  if (aliasGraph) {
+    await upsertRevenueCatAliasGraph(aliasGraph);
   }
 
   const eventHash = computeRevenueCatEventHash(rawBody, event);
