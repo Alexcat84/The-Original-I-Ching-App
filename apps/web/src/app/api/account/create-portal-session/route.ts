@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { lookupCanonicalRevenueCatAppUserId } from "@/lib/revenuecat-alias-map";
-import { pickBestActiveV2SubscriptionFromItems } from "@/lib/revenuecat-rest";
+import { pickPrimaryActiveV2Subscription } from "@/lib/revenuecat-v2-active-subscription";
 
 export const runtime = "nodejs";
 
@@ -158,10 +158,29 @@ async function createPortalSession(
     return { status: listRes.status, body: listBody };
   }
   const listJson = (await listRes.json().catch(() => null)) as { items?: unknown[] } | null;
-  const best = pickBestActiveV2SubscriptionFromItems(listJson?.items ?? []);
+  const best = pickPrimaryActiveV2Subscription(listJson?.items ?? []);
   const subscriptionId =
-    best && typeof best.raw.id === "string" && best.raw.id.trim().length > 0 ? best.raw.id.trim() : null;
+    best && typeof best.id === "string" && best.id.trim().length > 0 ? best.id.trim() : null;
   if (!subscriptionId) {
+    const sample = Array.isArray(listJson?.items)
+      ? listJson.items
+          .filter((it): it is Record<string, unknown> => typeof it === "object" && it !== null)
+          .slice(0, 5)
+          .map((it) => ({
+            id: typeof it.id === "string" ? it.id : null,
+            status: typeof it.status === "string" ? it.status : null,
+            gives_access: it.gives_access === true,
+            current_period_ends_at:
+              typeof it.current_period_ends_at === "string" || typeof it.current_period_ends_at === "number"
+                ? it.current_period_ends_at
+                : null,
+            auto_renewal_status:
+              typeof it.auto_renewal_status === "string" || typeof it.auto_renewal_status === "boolean"
+                ? it.auto_renewal_status
+                : null,
+          }))
+      : [];
+    console.log("[portal] subscriptions list did not yield active row; sample:", sample);
     console.log("[portal] no active subscription for:", appUserId);
     return { status: 404, body: "{\"error\":\"no_active_subscription\"}" };
   }

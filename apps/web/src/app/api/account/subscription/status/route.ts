@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getUserBillingTier } from "@/lib/credits";
-import { pickBestActiveV2SubscriptionFromItems, rcV2SubscriptionStatusFromRaw } from "@/lib/revenuecat-rest";
+import { rcV2SubscriptionStatusFromRaw } from "@/lib/revenuecat-rest";
+import { pickPrimaryActiveV2Subscription } from "@/lib/revenuecat-v2-active-subscription";
 
 export const runtime = "nodejs";
 
@@ -134,8 +135,8 @@ export async function GET(req: Request) {
   );
   const subscriptions = rawItems.map(parseSubscription);
 
-  const bestRaw = pickBestActiveV2SubscriptionFromItems(payload.items);
-  const primary = bestRaw ? parseSubscription(bestRaw.raw) : null;
+  const primaryRaw = pickPrimaryActiveV2Subscription(payload.items);
+  const primary = primaryRaw ? parseSubscription(primaryRaw) : null;
 
   let managementUrl: string | null = null;
   if (primary?.id) {
