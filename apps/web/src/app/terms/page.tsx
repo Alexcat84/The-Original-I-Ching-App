@@ -43,10 +43,10 @@ export default async function TermsPage() {
           <li>{isEs ? "Podemos suspender cuentas por abuso, fraude o incumplimiento grave." : "We may suspend accounts for abuse, fraud, or material violations."}</li>
         </ul>
 
-        <h2>{isEs ? "3) Planes, pagos y suscripciones" : "3) Plans, payments, and subscriptions"}</h2>
+        <h2>{isEs ? "3) Packs de tokens y pagos" : "3) Token packs and payments"}</h2>
         <ul>
-          <li>{isEs ? "El servicio ofrece plan Free y planes premium con límites y capacidades distintas." : "The service offers a Free plan and premium plans with different limits and capabilities."}</li>
-          <li>{isEs ? "Los cobros recurrentes, renovaciones y cancelaciones se gestionan mediante proveedores de pago autorizados." : "Recurring charges, renewals, and cancellations are handled by authorized payment providers."}</li>
+          <li>{isEs ? "El servicio usa packs de tokens consumibles y un saldo gratuito inicial único." : "The service uses consumable token packs plus a one-time initial free balance."}</li>
+          <li>{isEs ? "No existen cobros recurrentes ni renovaciones automáticas en el modelo actual." : "There are no recurring charges or auto-renewals in the current model."}</li>
           <li>{isEs ? "Los precios pueden actualizarse; cualquier cambio se reflejará en la información comercial vigente." : "Prices may be updated; any change will be reflected in current commercial information."}</li>
         </ul>
 
@@ -54,7 +54,7 @@ export default async function TermsPage() {
         <ul>
           <li>{isEs ? "No usar el servicio para actividades ilícitas, fraudulentas o de acoso." : "Do not use the service for unlawful, fraudulent, or harassing activities."}</li>
           <li>{isEs ? "No intentar acceder de forma no autorizada a cuentas, sistemas o datos." : "Do not attempt unauthorized access to accounts, systems, or data."}</li>
-          <li>{isEs ? "No automatizar abuso de consultas ni evadir límites técnicos o de plan." : "Do not automate abusive requests or evade technical/plan limits."}</li>
+          <li>{isEs ? "No automatizar abuso de consultas ni evadir límites técnicos o de tokens." : "Do not automate abusive requests or evade technical or token limits."}</li>
         </ul>
 
         <h2>{isEs ? "5) Contenido del usuario" : "5) User content"}</h2>

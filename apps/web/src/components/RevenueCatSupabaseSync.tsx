@@ -3,9 +3,7 @@
 import { Purchases } from "@revenuecat/purchases-js";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import type { Session } from "@supabase/supabase-js";
-import { useEffect, useRef } from "react";
-
-const BILLING_PULL_DEBOUNCE_MS = 900;
+import { useEffect } from "react";
 
 const revenueCatWebApiKey = process.env.NEXT_PUBLIC_REVENUECAT_API_KEY?.trim() ?? "";
 
@@ -55,51 +53,21 @@ export function syncRevenueCatWithSupabaseSession(session: Session | null): void
 
 /** Mount once (e.g. in root layout) to sync RevenueCat on every Supabase auth change. */
 export default function RevenueCatSupabaseSync() {
-  const pullTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   useEffect(() => {
     if (!isSupabaseBrowserConfigured()) return;
 
     const sb = getSupabaseBrowser();
 
-    function scheduleBillingPullFromRest(session: Session | null) {
-      if (pullTimerRef.current) {
-        clearTimeout(pullTimerRef.current);
-        pullTimerRef.current = null;
-      }
-      const uid = session?.user?.id;
-      const token = session?.access_token;
-      if (!uid || !token) return;
-
-      pullTimerRef.current = setTimeout(() => {
-        pullTimerRef.current = null;
-        void fetch("/api/account/sync-billing", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-        })
-          .then((res) => {
-            if (res.ok) {
-              window.dispatchEvent(new Event("iching:account-refresh"));
-            }
-          })
-          .catch(() => {
-            // Non-fatal (e.g. REVENUECAT_SECRET_KEY not set yet)
-          });
-      }, BILLING_PULL_DEBOUNCE_MS);
-    }
-
     void sb.auth.getSession().then(({ data: { session } }) => {
       syncRevenueCatWithSupabaseSession(session);
-      scheduleBillingPullFromRest(session);
     });
 
     const { data: sub } = sb.auth.onAuthStateChange((_event, session) => {
       syncRevenueCatWithSupabaseSession(session);
-      scheduleBillingPullFromRest(session);
+      window.dispatchEvent(new Event("iching:account-refresh"));
     });
 
     return () => {
-      if (pullTimerRef.current) clearTimeout(pullTimerRef.current);
       sub.subscription.unsubscribe();
     };
   }, []);

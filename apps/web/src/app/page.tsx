@@ -71,15 +71,6 @@ type ConsultResponse = {
 type ConsultationItem = ConsultResponse & { question: string };
 type CreditsType = "monthly" | "lifetime";
 type OracleMode = "iching" | "oracle_bones";
-type SubscriptionStatusView = {
-  id: string | null;
-  status: string | null;
-  givesAccess: boolean;
-  store: string | null;
-  productId: string | null;
-  currentPeriodEndsAt: string | null;
-  autoRenew: boolean | null;
-};
 
 const RUNTIME_TEXT: Record<
   AppLocale,
@@ -901,7 +892,6 @@ export default function HomePage() {
   const [twoFactorError, setTwoFactorError] = useState<string | null>(null);
   const [secondFactorVerified, setSecondFactorVerified] = useState(false);
   const [subscriptionCreditsRemaining, setSubscriptionCreditsRemaining] = useState<number | null>(null);
-  const [subscriptionCycleEnd, setSubscriptionCycleEnd] = useState<string | null>(null);
   const [pendingUserQuestion, setPendingUserQuestion] = useState<string | null>(null);
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
   const [manageSubBusy, setManageSubBusy] = useState(false);
@@ -909,9 +899,6 @@ export default function HomePage() {
   const [subscriptionCenterOpen, setSubscriptionCenterOpen] = useState(false);
   const [subscriptionCenterBusy, setSubscriptionCenterBusy] = useState(false);
   const [subscriptionCenterError, setSubscriptionCenterError] = useState<string | null>(null);
-  const [subscriptionPrimary, setSubscriptionPrimary] = useState<SubscriptionStatusView | null>(null);
-  /** From last subscription/status load: paid subscription active upstream (false = free / no paid sub). */
-  const [subscriptionHasActivePaid, setSubscriptionHasActivePaid] = useState<boolean | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -1267,7 +1254,6 @@ export default function HomePage() {
     setTwoFactorInfo(null);
     setTwoFactorError(null);
     setSubscriptionCenterOpen(false);
-    setSubscriptionPrimary(null);
     setSubscriptionCenterError(null);
   }, [authUserId]);
 
@@ -1419,7 +1405,6 @@ export default function HomePage() {
       setMonthlyCreditsLimit(2);
       setCreditsType("lifetime");
       setSubscriptionCreditsRemaining(null);
-      setSubscriptionCycleEnd(null);
       setTwoFactorEnabled(false);
       setTwoFactorMethod(null);
       setSecondFactorVerified(false);
@@ -1427,7 +1412,6 @@ export default function HomePage() {
       setTwoFactorInfo(null);
       setTwoFactorError(null);
       setSubscriptionCenterOpen(false);
-        setSubscriptionPrimary(null);
       setSubscriptionCenterError(null);
       return;
     }
@@ -1452,7 +1436,6 @@ export default function HomePage() {
           }
           setCreditsType("lifetime");
           setSubscriptionCreditsRemaining(typeof j.tokens_available === "number" ? j.tokens_available : null);
-          setSubscriptionCycleEnd(null);
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
           setTwoFactorMethod(j.twoFactorMethod ?? null);
         })
@@ -1963,7 +1946,7 @@ export default function HomePage() {
 
   async function openRCPortal() {
     if (!accessToken) {
-      setError(isSpanish ? "Inicia sesión para gestionar tu suscripción." : "Sign in to manage your subscription.");
+      setError(isSpanish ? "Inicia sesión para comprar tokens." : "Sign in to buy tokens.");
       return;
     }
     setManageSubBusy(true);
@@ -1980,8 +1963,8 @@ export default function HomePage() {
         if (res.status === 404 || data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
           setManageSubMessage(
             isSpanish
-              ? "Para gestionar o cancelar tu suscripción, revisa el email que recibiste al suscribirte — contiene un enlace directo a tu portal de gestión. También puedes escribirnos a soporte para ayudarte."
-              : "To manage or cancel your subscription, check the email you received when you subscribed — it contains a direct link to your management portal. You can also contact support for help.",
+              ? "No se pudo abrir la página de compra. Inténtalo de nuevo desde Planes y pagos."
+              : "Could not open purchase page. Try again from Plans and payments.",
           );
           return;
         }
@@ -2006,71 +1989,43 @@ export default function HomePage() {
 
   async function openSubscriptionCenter() {
     if (!accessToken) {
-      setError(isSpanish ? "Inicia sesión para gestionar tu suscripción." : "Sign in to manage your subscription.");
+      setError(isSpanish ? "Inicia sesión para ver tu saldo." : "Sign in to view your balance.");
       return;
     }
     setSubscriptionCenterOpen(true);
     setSubscriptionCenterBusy(true);
     setSubscriptionCenterError(null);
     setManageSubMessage(null);
-    setSubscriptionHasActivePaid(null);
     try {
-      try {
-        const syncRes = await fetch("/api/account/sync-billing", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${accessToken}` },
-          cache: "no-store",
-        });
-        if (!syncRes.ok) {
-          /* best-effort: subscription/status still loads */
-        }
-      } catch {
-        /* network failure — subscription/status still loads */
-      }
-      const res = await fetch("/api/account/subscription/status", {
+      const res = await fetch("/api/account/me", {
         method: "GET",
         headers: { Authorization: `Bearer ${accessToken}` },
         cache: "no-store",
       });
       const data = (await res.json().catch(() => null)) as
         | {
-            ok?: boolean;
-            code?: string;
+            id?: string;
             last_pack?: string;
             tokens_available?: number;
             session_limit?: number;
-            hasActiveSubscription?: boolean;
-            primarySubscription?: SubscriptionStatusView | null;
-            subscriptions?: SubscriptionStatusView[];
-            managementUrl?: string | null;
           }
         | null;
-      if (!res.ok || !data?.ok) {
-        if (data?.code === "BILLING_NOT_CONFIGURED") {
-          setSubscriptionCenterError(
-            isSpanish
-              ? "Falta configuración de pagos en el servidor. Contacta con soporte."
-              : "Payment billing is not configured on the server. Please contact support.",
-          );
-          return;
-        }
+      if (!res.ok || !data) {
         setSubscriptionCenterError(
           isSpanish
-            ? "No se pudo cargar el panel de suscripción. Inténtalo de nuevo."
-            : "Could not load subscription center. Please try again.",
+            ? "No se pudo cargar el centro de tokens. Inténtalo de nuevo."
+            : "Could not load token center. Please try again.",
         );
         return;
       }
       if (typeof data.last_pack === "string") setTier(data.last_pack as Tier);
       if (typeof data.tokens_available === "number") setSubscriptionCreditsRemaining(data.tokens_available);
       if (typeof data.session_limit === "number") setMonthlyCreditsLimit(data.session_limit);
-      setSubscriptionPrimary(data.primarySubscription ?? null);
-      setSubscriptionHasActivePaid(Boolean(data.hasActiveSubscription));
-      if (!data.hasActiveSubscription) {
+      if (typeof data.tokens_available === "number" && data.tokens_available <= 0) {
         if (data.last_pack === "free") {
           setManageSubMessage(
             isSpanish
-              ? "Tu estado gratuito está activo. Si quieres más consultas, compra tokens en Planes y pagos."
+              ? "Tu estado gratuito está activo. Si quieres más consultas, compra tokens."
               : "Your free state is active. If you want more consultations, buy tokens in Plans & payments.",
           );
         } else {
@@ -2084,49 +2039,13 @@ export default function HomePage() {
     } catch {
       setSubscriptionCenterError(
         isSpanish
-          ? "No se pudo cargar el panel de suscripción. Inténtalo de nuevo."
-          : "Could not load subscription center. Please try again.",
+          ? "No se pudo cargar el centro de tokens. Inténtalo de nuevo."
+          : "Could not load token center. Please try again.",
       );
     } finally {
       setSubscriptionCenterBusy(false);
     }
   }
-
-  const primarySubscriptionStatus = (subscriptionPrimary?.status ?? "").toLowerCase();
-  const subscriptionStatusLabel = (() => {
-    if (subscriptionCenterOpen && subscriptionCenterBusy) {
-      return isSpanish ? "Cargando…" : "Loading…";
-    }
-    if (primarySubscriptionStatus === "active") {
-      if (subscriptionPrimary?.autoRenew === false) {
-        return isSpanish ? "Activa (cancelada al vencimiento)" : "Active (cancels at period end)";
-      }
-      return isSpanish ? "Activa" : "Active";
-    }
-    if (primarySubscriptionStatus === "trialing") return isSpanish ? "Prueba" : "Trial";
-    if (primarySubscriptionStatus === "canceled") return isSpanish ? "Cancelada" : "Canceled";
-    if (primarySubscriptionStatus === "expired") return isSpanish ? "Expirada" : "Expired";
-    if (subscriptionHasActivePaid === true) {
-      return isSpanish ? "Activa" : "Active";
-    }
-    if (subscriptionHasActivePaid === false && tier === "free") {
-      return isSpanish ? "Activa (plan gratuito)" : "Active (free plan)";
-    }
-    if (subscriptionHasActivePaid === false) {
-      return isSpanish ? "Sin suscripción pagada" : "No paid subscription";
-    }
-    return subscriptionPrimary?.status ?? (isSpanish ? "Sin datos" : "No data");
-  })();
-  const subscriptionStatusBadgeClass =
-    primarySubscriptionStatus === "active" || primarySubscriptionStatus === "trialing"
-      ? "subscription-center-badge subscription-center-badge--active"
-      : primarySubscriptionStatus === "canceled" || primarySubscriptionStatus === "expired"
-        ? "subscription-center-badge subscription-center-badge--ended"
-        : subscriptionHasActivePaid === true
-          ? "subscription-center-badge subscription-center-badge--active"
-          : subscriptionHasActivePaid === false && tier === "free"
-            ? "subscription-center-badge subscription-center-badge--active"
-            : "subscription-center-badge";
 
   async function onConsult() {
     if (!activeSession) {
@@ -3014,25 +2933,19 @@ export default function HomePage() {
                       <Link href="/privacy">{isSpanish ? "Política de Privacidad" : "Privacy Policy"}</Link>
                       <Link href="/terms">{isSpanish ? "Términos del Servicio" : "Terms of Service"}</Link>
                     </div>
-                    <div className="session-progress" role="group" aria-label="Gestión de suscripción">
-                      <span>{isSpanish ? "Suscripción" : "Subscription"}</span>
+                    <div className="session-progress" role="group" aria-label="Gestión de tokens">
+                      <span>{isSpanish ? "Tokens" : "Tokens"}</span>
                       <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Plan actual:" : "Current plan:"}{" "}
+                        {isSpanish ? "Último pack:" : "Last pack:"}{" "}
                         <strong>{tierLabelForDisplay(tier)}</strong>
                         {subscriptionCreditsRemaining !== null
                           ? ` · ${isSpanish ? "restantes" : "remaining"}: ${subscriptionCreditsRemaining}`
                           : ""}
                       </p>
-                      {subscriptionCycleEnd ? (
-                        <p className="meta-line tier-hint-line">
-                          {isSpanish ? "Renovación / ciclo hasta:" : "Renewal / cycle end:"}{" "}
-                          {new Date(subscriptionCycleEnd).toLocaleString(locale)}
-                        </p>
-                      ) : null}
                       <p className="meta-line tier-hint-line">
                         {isSpanish
-                          ? "Auto-renovación y cancelación se gestionan desde tu portal de suscripción."
-                          : "Auto-renewal and cancellation are managed from your subscription portal."}
+                          ? "No hay renovaciones automáticas: compras tokens consumibles."
+                          : "No auto-renewal: you buy consumable token packs."}
                       </p>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
                         <button
@@ -3046,8 +2959,8 @@ export default function HomePage() {
                               ? "Cargando..."
                               : "Loading..."
                             : isSpanish
-                              ? "Centro de suscripción"
-                              : "Subscription center"}
+                              ? "Centro de tokens"
+                              : "Token center"}
                         </button>
                       </div>
                       {manageSubMessage ? (
@@ -3508,11 +3421,11 @@ export default function HomePage() {
                 <div role="dialog" aria-modal="true" className="subscription-center-backdrop">
                   <div className="subscription-center-card">
                     <div className="subscription-center-header">
-                      <strong className="subscription-center-title">{isSpanish ? "Centro de suscripción" : "Subscription center"}</strong>
+                      <strong className="subscription-center-title">{isSpanish ? "Centro de tokens" : "Token center"}</strong>
                       <button
                         type="button"
                         className="subscription-center-close"
-                        aria-label={isSpanish ? "Cerrar centro de suscripción" : "Close subscription center"}
+                        aria-label={isSpanish ? "Cerrar centro de tokens" : "Close token center"}
                         title={isSpanish ? "Cerrar" : "Close"}
                         onClick={() => setSubscriptionCenterOpen(false)}
                       >
@@ -3521,58 +3434,23 @@ export default function HomePage() {
                     </div>
                     <p className="meta-line tier-hint-line subscription-center-subtitle">
                       {isSpanish
-                        ? "Administra estado, renovación, cancelación y cambios de plan."
-                        : "Manage status, renewal, cancellation, and plan changes."}
+                        ? "Consulta tu saldo y abre la compra de tokens."
+                        : "Check your balance and open token purchase."}
                     </p>
 
                     <div className="subscription-center-grid">
                       <p className="meta-line tier-hint-line subscription-center-row">
-                        <span>{isSpanish ? "Plan actual:" : "Current plan:"}</span>{" "}
+                        <span>{isSpanish ? "Último pack:" : "Last pack:"}</span>{" "}
                         <strong>{tierLabelForDisplay(tier)}</strong>
                       </p>
                       <p className="meta-line tier-hint-line subscription-center-row">
-                        <span>{isSpanish ? "Consultas restantes:" : "Remaining consultations:"}</span>{" "}
-                        <strong>{subscriptionCreditsRemaining ?? "—"}</strong> / {monthlyCreditsLimit}
+                        <span>{isSpanish ? "Tokens disponibles:" : "Available tokens:"}</span>{" "}
+                        <strong>{subscriptionCreditsRemaining ?? "—"}</strong>
                       </p>
-                      {subscriptionCycleEnd ? (
-                        <p className="meta-line tier-hint-line subscription-center-row">
-                          <span>{isSpanish ? "Ciclo vigente hasta:" : "Current cycle until:"}</span>{" "}
-                          <strong>{new Date(subscriptionCycleEnd).toLocaleString(locale)}</strong>
-                        </p>
-                      ) : null}
                       <p className="meta-line tier-hint-line subscription-center-row">
-                        <span>{isSpanish ? "Estado de suscripción:" : "Subscription status:"}</span>{" "}
-                        <span className={subscriptionStatusBadgeClass}>{subscriptionStatusLabel}</span>
+                        <span>{isSpanish ? "Límite por hilo:" : "Thread limit:"}</span>{" "}
+                        <strong>{monthlyCreditsLimit}</strong>
                       </p>
-                      {subscriptionPrimary?.autoRenew != null ? (
-                        <p className="meta-line tier-hint-line subscription-center-row">
-                          <span>{isSpanish ? "Renovación automática:" : "Auto-renewal:"}</span>{" "}
-                          <strong>
-                            {subscriptionPrimary.autoRenew
-                              ? isSpanish
-                                ? "Activada"
-                                : "Enabled"
-                              : isSpanish
-                                ? "Desactivada"
-                                : "Disabled"}
-                          </strong>
-                        </p>
-                      ) : null}
-                      {subscriptionPrimary?.store || subscriptionPrimary?.productId ? (
-                        <p className="meta-line tier-hint-line subscription-center-row">
-                          <span>{isSpanish ? "Vía de cobro:" : "Billing store:"}</span>{" "}
-                          <strong>{subscriptionPrimary?.store ?? "—"}</strong>
-                          {" · "}
-                          {isSpanish ? "Producto:" : "Product:"}{" "}
-                          <strong>{subscriptionPrimary?.productId ?? "—"}</strong>
-                        </p>
-                      ) : null}
-                      {subscriptionPrimary?.currentPeriodEndsAt ? (
-                        <p className="meta-line tier-hint-line subscription-center-row">
-                          <span>{isSpanish ? "Próxima renovación / vencimiento:" : "Next renewal / expiry:"}</span>{" "}
-                          <strong>{new Date(subscriptionPrimary.currentPeriodEndsAt).toLocaleString(locale)}</strong>
-                        </p>
-                      ) : null}
                     </div>
 
                     {subscriptionCenterError ? (
@@ -3605,42 +3483,27 @@ export default function HomePage() {
                         type="button"
                         className="composer-reading-pill"
                         onClick={() => void openRCPortal()}
-                        disabled={
-                          manageSubBusy ||
-                          subscriptionCenterBusy ||
-                          tier === "free"
-                        }
-                        title={
-                          tier === "free"
-                            ? isSpanish
-                              ? "Aquí solo se gestionan suscripciones de pago. Para suscribirte o ampliar plan, usa Planes y pago."
-                              : "Paid subscription management opens here only after you subscribe. Use Plans & checkout to subscribe or upgrade."
-                            : undefined
-                        }
+                        disabled={manageSubBusy || subscriptionCenterBusy}
                       >
                         {manageSubBusy
                           ? isSpanish
                             ? "Abriendo portal..."
                             : "Opening portal..."
                           : isSpanish
-                            ? "Gestionar / cancelar"
-                            : "Manage / cancel"}
+                            ? "Comprar tokens"
+                            : "Buy tokens"}
                       </button>
                       <button
                         type="button"
                         className="composer-reading-pill is-active"
                         onClick={() => {
-                          if (tier !== "free") {
-                            void openRCPortal();
-                            return;
-                          }
                           void (async () => {
                             const ok = await openPlansCheckoutNewTab();
                             setManageSubMessage(
                               ok
                                 ? isSpanish
-                                  ? "Se abrió la página de planes y pago en una nueva pestaña."
-                                  : "Plans and checkout opened in a new tab."
+                                  ? "Se abrió la página de compra en una nueva pestaña."
+                                  : "Purchase page opened in a new tab."
                                 : isSpanish
                                   ? "No hay enlace de pago o apunta a la página principal. Revisa la variable de planes en el despliegue (URL completa de la tienda)."
                                   : "Missing payment link or it points at the homepage. Check the plans URL env var (full store URL).",
@@ -3648,14 +3511,14 @@ export default function HomePage() {
                           })();
                         }}
                       >
-                        {isSpanish ? "Planes y pago" : "Plans & checkout"}
+                        {isSpanish ? "Ver packs" : "View packs"}
                       </button>
                     </div>
                     <p className="meta-line tier-hint-line subscription-center-message" style={{ marginTop: 8 }}>
                       <a href="/guia#planes" target="_blank" rel="noopener noreferrer">
                         {isSpanish
-                          ? "Detalle de cupos y precios en la guía (solo lectura)"
-                          : "Plan details in the guide (read-only)"}
+                          ? "Detalle de packs y límites en la guía (solo lectura)"
+                          : "Pack details and limits in the guide (read-only)"}
                       </a>
                     </p>
 
@@ -3666,7 +3529,7 @@ export default function HomePage() {
               {threadLimitReached ? (
                 <div className="composer-session-limit-float" role="status" aria-live="polite">
                   <p className="composer-session-limit-text">
-                    Este hilo ya no admite más consultas en tu plan. Para seguir, abre una sesión nueva.
+                    Has alcanzado el límite de este hilo. Abre una sesión nueva para continuar.
                   </p>
                   <button
                     type="button"

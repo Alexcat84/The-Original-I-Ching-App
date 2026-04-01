@@ -1,17 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { CONTEXT_LIMITS } from "@iching-oracle/context-engine";
 import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
-import {
-  ANNUAL_PLAN_DISCOUNT,
-  annualPriceUsd,
-  FREE_LIFETIME_CONSULTATIONS,
-  MASTER_CONSULTATIONS_PER_MONTH,
-  ORACLE_CONSULTATIONS_PER_MONTH,
-  PRACTITIONER_CONSULTATIONS_PER_MONTH,
-  SEEKER_CONSULTATIONS_PER_MONTH,
-  TIER_MONTHLY_PRICES_USD,
-} from "@/lib/tier-billing-constants";
+import { FREE_TOKENS, TOKEN_PACKS } from "@/lib/token-packs";
 
 function resolveLocale(raw: string | undefined): AppLocale {
   if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
@@ -107,84 +97,66 @@ export default async function GuiaRapidaPage() {
             : "You can download the reading image and export the current thread to PDF."}
         </p>
 
-        <h2 id="planes">{isEs ? "Planes y pagos" : "Plans and pricing"}</h2>
+        <h2 id="planes">{isEs ? "Packs y pagos" : "Packs and pricing"}</h2>
         <p>{isEs ? "Precios actuales:" : "Current pricing:"}</p>
         <ul>
           <li>
             <strong>Free:</strong>{" "}
             {isEs
-              ? `$0 · ${FREE_LIFETIME_CONSULTATIONS} consultas de prueba (lifetime)`
-              : `$0 · ${FREE_LIFETIME_CONSULTATIONS} lifetime trial consultations`}
+              ? `$0 · ${FREE_TOKENS} consultas gratuitas de por vida`
+              : `$0 · ${FREE_TOKENS} free lifetime consultations`}
           </li>
           <li>
-            <strong>Seeker:</strong>{" "}
+            <strong>{TOKEN_PACKS.tokens_seeker_20.label}:</strong>{" "}
             {isEs
-              ? `$${TIER_MONTHLY_PRICES_USD.seeker}/mes · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.seeker)}/año`
-              : `$${TIER_MONTHLY_PRICES_USD.seeker}/month · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.seeker)}/year`}
+              ? `$${TOKEN_PACKS.tokens_seeker_20.price} · ${TOKEN_PACKS.tokens_seeker_20.tokens} tokens`
+              : `$${TOKEN_PACKS.tokens_seeker_20.price} · ${TOKEN_PACKS.tokens_seeker_20.tokens} tokens`}
           </li>
           <li>
-            <strong>Practitioner:</strong>{" "}
+            <strong>{TOKEN_PACKS.tokens_practitioner_40.label}:</strong>{" "}
             {isEs
-              ? `$${TIER_MONTHLY_PRICES_USD.practitioner}/mes · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.practitioner)}/año`
-              : `$${TIER_MONTHLY_PRICES_USD.practitioner}/month · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.practitioner)}/year`}
+              ? `$${TOKEN_PACKS.tokens_practitioner_40.price} · ${TOKEN_PACKS.tokens_practitioner_40.tokens} tokens`
+              : `$${TOKEN_PACKS.tokens_practitioner_40.price} · ${TOKEN_PACKS.tokens_practitioner_40.tokens} tokens`}
           </li>
           <li>
-            <strong>Master:</strong>{" "}
+            <strong>{TOKEN_PACKS.tokens_master_100.label}:</strong>{" "}
             {isEs
-              ? `$${TIER_MONTHLY_PRICES_USD.master}/mes · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.master)}/año`
-              : `$${TIER_MONTHLY_PRICES_USD.master}/month · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.master)}/year`}
-          </li>
-          <li>
-            <strong>Oracle:</strong>{" "}
-            {isEs
-              ? `$${TIER_MONTHLY_PRICES_USD.oracle}/mes · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.oracle)}/año`
-              : `$${TIER_MONTHLY_PRICES_USD.oracle}/month · $${annualPriceUsd(TIER_MONTHLY_PRICES_USD.oracle)}/year`}
+              ? `$${TOKEN_PACKS.tokens_master_100.price} · ${TOKEN_PACKS.tokens_master_100.tokens} tokens`
+              : `$${TOKEN_PACKS.tokens_master_100.price} · ${TOKEN_PACKS.tokens_master_100.tokens} tokens`}
           </li>
         </ul>
-        <p>
-          {isEs
-            ? `Plan anual: ahorro exacto del ${Math.round(ANNUAL_PLAN_DISCOUNT * 100)}% frente al pago mes a mes.`
-            : `Annual plan: exact ${Math.round(ANNUAL_PLAN_DISCOUNT * 100)}% savings vs month-to-month.`}
-        </p>
-
-        <p>{isEs ? "Límites por plan (consultas al mes / máximo en un mismo chat):" : "Plan limits (monthly consultations / max in same thread):"}</p>
+        <p>{isEs ? "Límites por hilo (control de contexto):" : "Per-thread limits (context control):"}</p>
         <ul>
           <li>
             <strong>Free:</strong>{" "}
             {isEs
-              ? `${FREE_LIFETIME_CONSULTATIONS} lifetime · sin continuidad en hilo (1 por sesión)`
-              : `${FREE_LIFETIME_CONSULTATIONS} lifetime · no thread continuity (1 per session)`}
+              ? `${FREE_TOKENS} tokens de por vida · 1 pregunta por hilo`
+              : `${FREE_TOKENS} lifetime tokens · 1 question per thread`}
           </li>
           <li>
-            <strong>Seeker:</strong>{" "}
+            <strong>{TOKEN_PACKS.tokens_seeker_20.label}:</strong>{" "}
             {isEs
-              ? `${SEEKER_CONSULTATIONS_PER_MONTH} al mes (mensual o anual) · hasta ${CONTEXT_LIMITS.seeker.sessionDepth} en el mismo chat`
-              : `${SEEKER_CONSULTATIONS_PER_MONTH}/month (monthly or annual) · up to ${CONTEXT_LIMITS.seeker.sessionDepth} in one thread`}
+              ? `${TOKEN_PACKS.tokens_seeker_20.tokens} tokens por compra · hasta ${TOKEN_PACKS.tokens_seeker_20.sessionLimit} preguntas por hilo`
+              : `${TOKEN_PACKS.tokens_seeker_20.tokens} tokens per purchase · up to ${TOKEN_PACKS.tokens_seeker_20.sessionLimit} questions per thread`}
           </li>
           <li>
-            <strong>Practitioner:</strong>{" "}
+            <strong>{TOKEN_PACKS.tokens_practitioner_40.label}:</strong>{" "}
             {isEs
-              ? `${PRACTITIONER_CONSULTATIONS_PER_MONTH} al mes · hasta ${CONTEXT_LIMITS.practitioner.sessionDepth} en el mismo chat`
-              : `${PRACTITIONER_CONSULTATIONS_PER_MONTH}/month · up to ${CONTEXT_LIMITS.practitioner.sessionDepth} in one thread`}
+              ? `${TOKEN_PACKS.tokens_practitioner_40.tokens} tokens por compra · hasta ${TOKEN_PACKS.tokens_practitioner_40.sessionLimit} preguntas por hilo`
+              : `${TOKEN_PACKS.tokens_practitioner_40.tokens} tokens per purchase · up to ${TOKEN_PACKS.tokens_practitioner_40.sessionLimit} questions per thread`}
           </li>
           <li>
-            <strong>Master:</strong>{" "}
+            <strong>{TOKEN_PACKS.tokens_master_100.label}:</strong>{" "}
             {isEs
-              ? `${MASTER_CONSULTATIONS_PER_MONTH} al mes · hasta ${CONTEXT_LIMITS.master.sessionDepth} en el mismo chat`
-              : `${MASTER_CONSULTATIONS_PER_MONTH}/month · up to ${CONTEXT_LIMITS.master.sessionDepth} in one thread`}
-          </li>
-          <li>
-            <strong>Oracle:</strong>{" "}
-            {isEs
-              ? `${ORACLE_CONSULTATIONS_PER_MONTH} al mes · hasta ${CONTEXT_LIMITS.oracle.sessionDepth} en el mismo chat`
-              : `${ORACLE_CONSULTATIONS_PER_MONTH}/month · up to ${CONTEXT_LIMITS.oracle.sessionDepth} in one thread`}
+              ? `${TOKEN_PACKS.tokens_master_100.tokens} tokens por compra · hasta ${TOKEN_PACKS.tokens_master_100.sessionLimit} preguntas por hilo`
+              : `${TOKEN_PACKS.tokens_master_100.tokens} tokens per purchase · up to ${TOKEN_PACKS.tokens_master_100.sessionLimit} questions per thread`}
           </li>
         </ul>
 
         <p>
           {isEs
-            ? "En resumen: no te limita la cantidad de chats que creas, te limita el número de consultas del mes y el máximo de consultas dentro de un mismo chat según tu plan."
-            : "In short: chat count is flexible, while monthly consultations and depth per thread depend on your plan."}
+            ? "En resumen: no hay renovaciones automáticas. Gastas tokens por consulta y puedes comprar más cuando quieras."
+            : "In short: there is no recurring billing. You spend one token per consultation and can buy more anytime."}
         </p>
 
         <p className="doc-footer-links">

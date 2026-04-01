@@ -76,7 +76,7 @@ export default function PricingPage() {
           {typeof balance === "number" ? `Tienes ${balance} tokens disponibles` : "Inicia sesión para ver tu saldo"}
         </p>
         <p style={{ marginTop: 8, opacity: 0.85 }}>
-          Las suscripciones ya no están activas. Ahora compras tokens consumibles por paquete.
+          El modelo activo es 100% por packs de tokens consumibles.
         </p>
 
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", marginTop: 14 }}>

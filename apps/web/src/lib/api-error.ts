@@ -4,7 +4,7 @@ export type ApiErrorAction =
   | "retry"
   | "login"
   | "wait_and_retry"
-  | "upgrade_plan"
+  | "buy_tokens"
   | "setup_2fa"
   | "fix_input"
   | "check_config"

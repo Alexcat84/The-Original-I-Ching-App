@@ -55,17 +55,17 @@ export default async function PrivacyPage() {
           </li>
           <li>
             {isEs
-              ? "Datos de facturación/subscripción procesados por proveedores de pago e infraestructura de billing."
-              : "Billing/subscription data processed by payment and billing infrastructure providers."}
+              ? "Datos de facturación y compras de tokens procesados por proveedores de pago e infraestructura de billing."
+              : "Billing and token-purchase data processed by payment and billing infrastructure providers."}
           </li>
         </ul>
 
         <h2>{isEs ? "3) Cómo usamos tus datos" : "3) How we use your data"}</h2>
         <ul>
           <li>{isEs ? "Prestar el servicio de consultas, historial e imágenes." : "Provide consultations, history, and images."}</li>
-          <li>{isEs ? "Aplicar límites de plan, seguridad y prevención de abuso." : "Apply plan limits, security, and abuse prevention."}</li>
+          <li>{isEs ? "Aplicar límites de tokens/sesión, seguridad y prevención de abuso." : "Apply token/session limits, security, and abuse prevention."}</li>
           <li>{isEs ? "Gestionar autenticación, 2FA y recuperación de cuenta." : "Manage authentication, 2FA, and account recovery."}</li>
-          <li>{isEs ? "Procesar estado de suscripciones y pagos." : "Process subscription and payment status."}</li>
+          <li>{isEs ? "Procesar estado de compras y saldo de tokens." : "Process purchase status and token balance."}</li>
         </ul>
 
         <h2>{isEs ? "4) Privacidad de chats e imágenes" : "4) Chat and image privacy"}</h2>
@@ -82,11 +82,11 @@ export default async function PrivacyPage() {
             : "To operate the service, we use technical providers (for example, authentication, database, transactional email, AI, and payments). We share only the information required to run each function."}
         </p>
 
-        <h2>{isEs ? "6) Pagos y suscripciones" : "6) Payments and subscriptions"}</h2>
+        <h2>{isEs ? "6) Pagos y tokens" : "6) Payments and tokens"}</h2>
         <p>
           {isEs
-            ? "Los pagos son gestionados por proveedores especializados. No almacenamos números completos de tarjeta en nuestros servidores. El estado de suscripción se sincroniza para habilitar límites y funcionalidades del plan."
-            : "Payments are handled by specialized providers. We do not store full card numbers on our servers. Subscription status is synced to enable plan limits and features."}
+            ? "Los pagos son gestionados por proveedores especializados. No almacenamos números completos de tarjeta en nuestros servidores. El estado de compra se sincroniza para habilitar saldo de tokens y límites por hilo."
+            : "Payments are handled by specialized providers. We do not store full card numbers on our servers. Purchase status is synced to enable token balance and thread limits."}
         </p>
 
         <h2>{isEs ? "7) Seguridad" : "7) Security"}</h2>
