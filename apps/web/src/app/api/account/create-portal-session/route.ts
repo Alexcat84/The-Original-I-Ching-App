@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   try {
     user = await getAuthenticatedUser(req);
   } catch (e) {
-    console.error("[API /api/account/create-portal-session] getAuthenticatedUser failed", e);
+    console.error("[portal] getAuthenticatedUser failed", e);
     return apiError(502, {
       error: "portal_session_failed",
       code: "PORTAL_SESSION_FAILED",
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL?.trim();
 
   if (!secretKey || !projectId) {
-    console.error("[API /api/account/create-portal-session] RevenueCat env vars not configured");
+    console.error("[portal] RevenueCat env vars not configured");
     return apiError(503, {
       error: "billing_not_configured",
       code: "BILLING_NOT_CONFIGURED",
@@ -38,29 +38,36 @@ export async function POST(req: Request) {
   }
 
   const returnUrl = appUrl ? `${appUrl}/checkout/success` : "/checkout/success";
+  const encodedUserId = encodeURIComponent(user.userId);
+  const rcUrl = `https://api.revenuecat.com/v2/projects/${projectId}/customers/${encodedUserId}/customer_portal_sessions`;
+
+  console.log("[portal] app_user_id sent to RC:", user.userId);
+  console.log("[portal] RC endpoint:", rcUrl);
+  console.log("[portal] return_url:", returnUrl);
 
   let rcRes: Response;
   try {
-    rcRes = await fetch(
-      `https://api.revenuecat.com/v2/projects/${projectId}/customers/${user.userId}/customer_portal_sessions`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${secretKey}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ return_url: returnUrl }),
+    rcRes = await fetch(rcUrl, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${secretKey}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
-    );
+      body: JSON.stringify({ return_url: returnUrl }),
+    });
   } catch (e) {
-    console.error("[API /api/account/create-portal-session] RC fetch failed", e);
+    console.error("[portal] RC fetch failed", e);
     return apiError(503, {
       error: "portal_session_failed",
       code: "PORTAL_SESSION_FAILED",
       action: "retry",
     });
   }
+
+  console.log("[portal] RC response status:", rcRes.status);
+  const rawBody = await rcRes.text();
+  console.log("[portal] RC response body:", rawBody);
 
   if (rcRes.status === 404) {
     return apiError(404, {
@@ -72,7 +79,6 @@ export async function POST(req: Request) {
   }
 
   if (!rcRes.ok) {
-    console.error("[API /api/account/create-portal-session] RC returned", rcRes.status);
     return apiError(503, {
       error: "portal_session_failed",
       code: "PORTAL_SESSION_FAILED",
@@ -82,8 +88,9 @@ export async function POST(req: Request) {
 
   let body: unknown;
   try {
-    body = await rcRes.json();
+    body = JSON.parse(rawBody);
   } catch {
+    console.error("[portal] failed to parse RC response as JSON");
     return apiError(503, {
       error: "portal_session_failed",
       code: "PORTAL_SESSION_FAILED",
@@ -93,7 +100,7 @@ export async function POST(req: Request) {
 
   const url = (body as Record<string, unknown>)?.url;
   if (typeof url !== "string" || !url) {
-    console.error("[API /api/account/create-portal-session] RC response missing url", body);
+    console.error("[portal] RC response missing url", body);
     return apiError(503, {
       error: "portal_session_failed",
       code: "PORTAL_SESSION_FAILED",

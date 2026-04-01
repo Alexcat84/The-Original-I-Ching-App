@@ -1,29 +1,12 @@
 import { upsertUserTier } from "@/lib/credits";
 import {
-  latestExpiresMsForSubscriberBundle,
   maxBillingTier,
   parseRevenueCatProductTierMapJson,
   pickTierFromEntitlementAndProductId,
-  pickTierFromSubscriberBundle,
   type RevenueCatBillingTier,
 } from "@/lib/revenuecat-tiers";
 
-const RC_V1 = "https://api.revenuecat.com/v1";
 const RC_V2 = "https://api.revenuecat.com/v2";
-
-interface SubscriberResponse {
-  subscriber?: {
-    entitlements?: Record<
-      string,
-      {
-        expires_date: string | null;
-        grace_period_expires_date?: string | null;
-        product_identifier?: string | null;
-      }
-    >;
-    subscriptions?: Record<string, { expires_date: string | null; grace_period_expires_date?: string | null }>;
-  };
-}
 
 export type SyncFromRevenueCatResult =
   | { ok: true; tier: RevenueCatBillingTier; source: "subscriber" | "not_found" }
@@ -217,8 +200,7 @@ export function pickBestActiveV2SubscriptionFromItems(items: unknown[]): BestV2S
 }
 
 /**
- * Web Billing / RC Billing often appears in v2 customer subscriptions while v1 /subscribers
- * may be empty or slow to reflect entitlements — same source as subscription status UI.
+ * Web Billing / RC Billing appears in v2 customer subscriptions.
  */
 async function loadTierFromV2CustomerSubscriptions(
   secret: string,
@@ -259,122 +241,36 @@ async function loadTierFromV2CustomerSubscriptions(
   return { kind: "paid", tier: best.tier, renewalIso: best.renewalIso };
 }
 
-type V1Load =
-  | { kind: "ok"; body: SubscriberResponse }
-  | { kind: "404" }
-  | { kind: "forbidden" }
-  | { kind: "error" };
-
-async function loadV1Subscriber(secret: string, appUserId: string): Promise<V1Load> {
-  const url = `${RC_V1}/subscribers/${encodeURIComponent(appUserId)}`;
-  let res: Response;
-  try {
-    res = await fetch(url, {
-      headers: { Authorization: `Bearer ${secret}` },
-      cache: "no-store",
-    });
-  } catch {
-    return { kind: "error" };
-  }
-
-  if (res.status === 404) return { kind: "404" };
-  if (res.status === 403) return { kind: "forbidden" };
-  if (!res.ok) {
-    console.warn("[RC REST v1] failed", res.status, appUserId.slice(0, 8));
-    return { kind: "error" };
-  }
-
-  try {
-    const body = (await res.json()) as SubscriberResponse;
-    return { kind: "ok", body };
-  } catch {
-    return { kind: "error" };
-  }
-}
-
-function latestRenewalIso(isos: (string | undefined)[]): string | undefined {
-  let bestMs = 0;
-  let best: string | undefined;
-  for (const raw of isos) {
-    if (!raw) continue;
-    const ms = new Date(raw).getTime();
-    if (!Number.isFinite(ms)) continue;
-    if (ms > bestMs) {
-      bestMs = ms;
-      best = new Date(ms).toISOString();
-    }
-  }
-  return best;
-}
-
 /**
- * Merges RevenueCat v1 subscriber payload with v2 customer subscriptions (Web Billing).
- * Avoids leaving users on `free` when only v2 has the active Stripe/RC Billing subscription.
+ * Fetches the current subscriber tier from RevenueCat v2 and updates Postgres tier/credits.
  */
 export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise<SyncFromRevenueCatResult> {
   const secret = process.env.REVENUECAT_SECRET_KEY?.trim();
-  if (!secret) {
-    return { ok: false, error: "not_configured" };
-  }
+  if (!secret) return { ok: false, error: "not_configured" };
 
   const projectId = process.env.REVENUECAT_PROJECT_ID?.trim();
+  if (!projectId) return { ok: false, error: "not_configured" };
 
-  const v1 = await loadV1Subscriber(secret, appUserId);
+  const v2 = await loadTierFromV2CustomerSubscriptions(secret, projectId, appUserId);
 
-  if (v1.kind === "forbidden") {
-    console.warn("[RC REST] v1 returned 403 — key may be V2-only, using v2 only");
-  }
-
-  const now = Date.now();
-  const candidates: { tier: RevenueCatBillingTier; renewalIso?: string }[] = [];
-
-  if (v1.kind === "ok") {
-    const entitlements = v1.body.subscriber?.entitlements;
-    const subscriptions = v1.body.subscriber?.subscriptions;
-    const tier = pickTierFromSubscriberBundle(entitlements, subscriptions, now);
-    const renewalMs = latestExpiresMsForSubscriberBundle(entitlements, subscriptions, tier, now);
-    const renewalIso =
-      renewalMs !== null && Number.isFinite(renewalMs) ? new Date(renewalMs).toISOString() : undefined;
-    candidates.push({ tier, renewalIso });
-  }
-
-  let v2Outcome: "skipped" | "paid" | "none" | "failed" = "skipped";
-  if (projectId) {
-    const v2 = await loadTierFromV2CustomerSubscriptions(secret, projectId, appUserId);
-    if (v2.kind === "paid") {
-      v2Outcome = "paid";
-      candidates.push({ tier: v2.tier, renewalIso: v2.renewalIso });
-    } else if (v2.kind === "none") {
-      v2Outcome = "none";
-    } else {
-      v2Outcome = "failed";
+  if (v2.kind === "paid") {
+    try {
+      await upsertUserTier(appUserId, v2.tier, v2.renewalIso, { fromRevenueCatRest: true });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "";
+      if (msg === "billing_cycle_end_stale" || msg === "billing_cycle_end_missing") {
+        console.warn("[revenuecat-rest] upsert skipped: incomplete billing cycle from REST", appUserId.slice(0, 8));
+        return { ok: false, error: "billing_cycle_incomplete" };
+      }
+      throw e;
     }
+    return { ok: true, tier: v2.tier, source: "subscriber" };
   }
 
-  if (candidates.length === 0) {
-    const v1Missing = v1.kind === "404" || v1.kind === "forbidden";
-    if (v1Missing && (v2Outcome === "none" || v2Outcome === "skipped")) {
-      return { ok: true, tier: "free", source: "not_found" };
-    }
-    if (v1.kind !== "forbidden") {
-      console.warn("[RC REST] upstream - v1:", v1.kind, "v2:", v2Outcome);
-    }
-    return { ok: false, error: "upstream" };
+  if (v2.kind === "none") {
+    return { ok: true, tier: "free", source: "not_found" };
   }
 
-  const finalTier = candidates.map((c) => c.tier).reduce(maxBillingTier);
-  const renewalIso = latestRenewalIso(candidates.map((c) => c.renewalIso));
-
-  try {
-    await upsertUserTier(appUserId, finalTier, renewalIso, { fromRevenueCatRest: true });
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : "";
-    if (msg === "billing_cycle_end_stale" || msg === "billing_cycle_end_missing") {
-      console.warn("[revenuecat-rest] upsert skipped: incomplete billing cycle from REST", appUserId.slice(0, 8));
-      return { ok: false, error: "billing_cycle_incomplete" };
-    }
-    throw e;
-  }
-
-  return { ok: true, tier: finalTier, source: "subscriber" };
+  // v2.kind === "failed"
+  return { ok: false, error: "upstream" };
 }
