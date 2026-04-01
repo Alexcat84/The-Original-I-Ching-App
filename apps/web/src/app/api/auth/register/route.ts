@@ -7,6 +7,25 @@ import { verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
 
+function normalizeOrigin(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return null;
+  }
+}
+
+function safeAuthRedirectOrigin(req: Request): string {
+  const configured = normalizeOrigin(process.env.NEXT_PUBLIC_APP_URL) ?? "http://localhost:3000";
+  const requestOrigin = normalizeOrigin(req.headers.get("origin"));
+  if (!requestOrigin) return configured;
+  if (requestOrigin === configured) return requestOrigin;
+  const isLocalDev = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(requestOrigin);
+  if (process.env.NODE_ENV !== "production" && isLocalDev) return requestOrigin;
+  return configured;
+}
+
 export async function POST(req: Request) {
   let body: { email?: string; password?: string; turnstileToken?: string; hcaptchaToken?: string };
   try {
@@ -91,7 +110,7 @@ export async function POST(req: Request) {
       message: "Ese correo ya está registrado. Inicia sesión.",
     });
   }
-  const origin = req.headers.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const origin = safeAuthRedirectOrigin(req);
   const signUp = await authClient.auth.signUp({
     email: normalizedEmail,
     password: parsed.data.password,

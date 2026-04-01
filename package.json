@@ -23,6 +23,10 @@
   },
   "overrides": {
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "brace-expansion@<1.1.13": "1.1.13",
+    "brace-expansion@>=2.0.0 <2.0.3": "2.0.3",
+    "picomatch@<2.3.2": "2.3.2",
+    "picomatch@>=3.0.0 <3.0.2": "3.0.2"
   }
 }

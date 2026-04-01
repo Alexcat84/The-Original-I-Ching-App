@@ -7,6 +7,7 @@ import { lookupCanonicalRevenueCatAppUserId } from "@/lib/revenuecat-alias-map";
 export const runtime = "nodejs";
 
 const RC_V2 = "https://api.revenuecat.com/v2";
+const LOG_RC_VERBOSE = process.env.LOG_RC_VERBOSE === "1" || process.env.LOG_RC_VERBOSE === "true";
 
 function uniqueNonEmpty(values: Array<string | null | undefined>): string[] {
   const out: string[] = [];
@@ -149,7 +150,11 @@ async function createPortalSession(
     body: JSON.stringify({ return_url: returnUrl }),
   });
   const body = await res.text();
-  console.log("[portal] RC response status:", res.status, "body:", body);
+  if (LOG_RC_VERBOSE) {
+    console.log("[portal] RC response status:", res.status, "body:", body);
+  } else {
+    console.log("[portal] RC response status:", res.status);
+  }
   return { status: res.status, body };
 }
 
@@ -171,7 +176,11 @@ async function lookupRCOriginalUserId(
     return null;
   }
   const text = await res.text();
-  console.log("[portal] RC customer lookup status:", res.status, "body:", text);
+  if (LOG_RC_VERBOSE) {
+    console.log("[portal] RC customer lookup status:", res.status, "body:", text);
+  } else {
+    console.log("[portal] RC customer lookup status:", res.status);
+  }
   if (!res.ok) return null;
   let data: unknown;
   try {
@@ -179,7 +188,9 @@ async function lookupRCOriginalUserId(
   } catch {
     return null;
   }
-  console.log("[portal] RC customer FULL body:", JSON.stringify(data, null, 2));
+  if (LOG_RC_VERBOSE) {
+    console.log("[portal] RC customer FULL body:", JSON.stringify(data, null, 2));
+  }
   const extracted = extractPortalCandidateIds(data, aliasId);
   console.log("[portal] RC customer candidate ids:", extracted.candidates);
   if (extracted.picked) {

@@ -20,8 +20,9 @@ function resolveLocale(raw: string | undefined): AppLocale {
   return "es";
 }
 
-export default function GuiaRapidaPage() {
-  const locale = resolveLocale(cookies().get("iching_ui_locale")?.value);
+export default async function GuiaRapidaPage() {
+  const cookieStore = await cookies();
+  const locale = resolveLocale(cookieStore.get("iching_ui_locale")?.value);
   const isEs = locale === "es";
 
   return (

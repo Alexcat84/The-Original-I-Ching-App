@@ -25,7 +25,8 @@ export function isValidAdminSession(token: string | undefined | null): boolean {
   return token === expectedAdminToken(seed);
 }
 
-export function getAdminSessionTokenFromCookies(): string | undefined {
-  return cookies().get(ADMIN_COOKIE_NAME)?.value;
+export async function getAdminSessionTokenFromCookies(): Promise<string | undefined> {
+  const cookieStore = await cookies();
+  return cookieStore.get(ADMIN_COOKIE_NAME)?.value;
 }
 
