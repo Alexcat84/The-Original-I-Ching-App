@@ -1979,6 +1979,14 @@ export default function HomePage() {
         | { ok?: boolean; url?: string; code?: string; message?: string }
         | null;
       if (!res.ok || !data?.ok || !data.url) {
+        if (res.status === 404 || data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
+          setManageSubMessage(
+            isSpanish
+              ? "Para gestionar o cancelar tu suscripción, revisa el email que recibiste al suscribirte — contiene un enlace directo a tu portal de gestión. También puedes escribirnos a soporte para ayudarte."
+              : "To manage or cancel your subscription, check the email you received when you subscribed — it contains a direct link to your management portal. You can also contact support for help.",
+          );
+          return;
+        }
         setManageSubMessage(
           isSpanish
             ? "No se pudo abrir el portal. Intenta de nuevo."
