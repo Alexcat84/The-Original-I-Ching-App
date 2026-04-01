@@ -69,8 +69,8 @@ export async function resolveConsultPolicy(input: ConsultPolicyInput): Promise<C
   const allowlist = parseEmailAllowlist(process.env.ADMIN_EMAIL_ALLOWLIST);
   const adminBypassAllowed = allowlist.has(input.authUser.email.trim().toLowerCase());
   const adminUnlimitedCredits = adminBypassAllowed && shouldAllowAdminUnlimitedCredits();
-  // For allowlisted admin sessions, unlock full in-thread depth/features.
-  const tierEffective = adminUnlimitedCredits ? "oracle" : input.tierResolved;
+  // For allowlisted admin sessions, unlock max in-thread depth/features.
+  const tierEffective = adminUnlimitedCredits ? "tokens_master_100" : input.tierResolved;
   const tierKey = resolveTierKey(tierEffective);
   const twoFactorRequiredByTier = shouldEnforceTierTwoFactor() && tierRequiresTwoFactor(tierKey);
   const twoFactorEnabled = twoFactorRequiredByTier ? await getTwoFactorEnabled(input.authUser.userId) : true;

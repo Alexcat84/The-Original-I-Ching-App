@@ -198,7 +198,7 @@ function compactPrompt(prompt: string, maxLen: number): string {
 }
 
 function resolveTierSize(tier?: string): { width: number; height: number } {
-  const highRes = new Set(["practitioner", "master", "oracle"]);
+  const highRes = new Set(["practitioner", "master"]);
   if (tier && highRes.has(tier)) {
     return { width: 2688, height: 1536 };
   }

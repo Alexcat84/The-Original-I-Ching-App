@@ -13,7 +13,7 @@ type ImageAsset = {
 };
 
 function targetSizeForTier(tier: string): { width: number; height: number } {
-  const hi = new Set(["practitioner", "master", "oracle"]);
+  const hi = new Set(["practitioner", "master"]);
   if (hi.has(tier)) {
     return { width: 2688, height: 1536 };
   }

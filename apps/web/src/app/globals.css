@@ -1931,7 +1931,7 @@ button:disabled {
   font-size: 0.8rem;
 }
 
-.subscription-center-backdrop {
+.token-center-backdrop {
   position: fixed;
   inset: 0;
   z-index: 1190;
@@ -1942,7 +1942,7 @@ button:disabled {
   backdrop-filter: blur(3px);
 }
 
-.subscription-center-card {
+.token-center-card {
   width: min(560px, 96vw);
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--bar-border));
@@ -1957,20 +1957,20 @@ button:disabled {
   overflow-y: auto;
 }
 
-.subscription-center-header {
+.token-center-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.75rem;
 }
 
-.subscription-center-title {
+.token-center-title {
   color: var(--card-title);
   font-size: 0.98rem;
   letter-spacing: 0.02em;
 }
 
-.subscription-center-close,
+.token-center-close,
 .modal-close-x {
   box-sizing: border-box;
   display: inline-flex;
@@ -1991,55 +1991,33 @@ button:disabled {
   flex-shrink: 0;
 }
 
-.subscription-center-close:hover,
+.token-center-close:hover,
 .modal-close-x:hover {
   border-color: color-mix(in srgb, var(--accent) 68%, var(--bar-border));
 }
 
-.subscription-center-subtitle {
+.token-center-subtitle {
   margin-top: 0.45rem;
 }
 
-.subscription-center-grid {
+.token-center-grid {
   margin-top: 0.7rem;
   display: grid;
   gap: 0.4rem;
 }
 
-.subscription-center-row {
+.token-center-row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.35rem;
 }
 
-.subscription-center-badge {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 0.08rem 0.5rem;
-  border: 1px solid color-mix(in srgb, var(--bar-border) 78%, transparent);
-  background: color-mix(in srgb, var(--session-item-bg) 85%, transparent);
-  color: var(--fg);
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.subscription-center-badge--active {
-  border-color: color-mix(in srgb, var(--accent) 58%, transparent);
-  background: color-mix(in srgb, var(--accent) 20%, var(--session-active-bg));
-}
-
-.subscription-center-badge--ended {
-  border-color: color-mix(in srgb, #d45a5a 55%, var(--bar-border));
-  background: color-mix(in srgb, #d45a5a 15%, var(--session-item-bg));
-}
-
-.subscription-center-message {
+.token-center-message {
   margin-top: 0.65rem;
 }
 
-.subscription-center-actions {
+.token-center-actions {
   margin-top: 0.75rem;
   display: flex;
   gap: 0.5rem;

@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type AdminImageProvider = "auto" | "mock" | "pollinations" | "fal" | "gpt-image" | "together";
@@ -108,7 +109,7 @@ export default function AdminPage() {
           />
           <div className="composer-actions">
             <button type="button" onClick={() => void onLogin()}>Entrar</button>
-            <a className="secondary-btn" href="/">Volver al chat</a>
+            <Link className="secondary-btn" href="/">Volver al chat</Link>
           </div>
           {message ? <p className="meta-line">{message}</p> : null}
         </section>
@@ -167,7 +168,7 @@ export default function AdminPage() {
         <div className="composer-actions">
           <button type="button" onClick={() => void onSave()}>Guardar cambios</button>
           <button type="button" className="secondary-btn" onClick={() => void onLogout()}>Cerrar sesión admin</button>
-          <a className="secondary-btn" href="/">Abrir chat</a>
+          <Link className="secondary-btn" href="/">Abrir chat</Link>
         </div>
 
         {message ? <p className="meta-line">{message}</p> : null}

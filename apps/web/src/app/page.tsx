@@ -891,14 +891,14 @@ export default function HomePage() {
   const [twoFactorInfo, setTwoFactorInfo] = useState<string | null>(null);
   const [twoFactorError, setTwoFactorError] = useState<string | null>(null);
   const [secondFactorVerified, setSecondFactorVerified] = useState(false);
-  const [subscriptionCreditsRemaining, setSubscriptionCreditsRemaining] = useState<number | null>(null);
+  const [tokenBalance, setTokenBalance] = useState<number | null>(null);
   const [pendingUserQuestion, setPendingUserQuestion] = useState<string | null>(null);
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
-  const [manageSubBusy, setManageSubBusy] = useState(false);
-  const [manageSubMessage, setManageSubMessage] = useState<string | null>(null);
-  const [subscriptionCenterOpen, setSubscriptionCenterOpen] = useState(false);
-  const [subscriptionCenterBusy, setSubscriptionCenterBusy] = useState(false);
-  const [subscriptionCenterError, setSubscriptionCenterError] = useState<string | null>(null);
+  const [tokenStoreBusy, setTokenStoreBusy] = useState(false);
+  const [tokenCenterMessage, setTokenCenterMessage] = useState<string | null>(null);
+  const [tokenCenterOpen, setTokenCenterOpen] = useState(false);
+  const [tokenCenterBusy, setTokenCenterBusy] = useState(false);
+  const [tokenCenterError, setTokenCenterError] = useState<string | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -1253,8 +1253,8 @@ export default function HomePage() {
     setTwoFactorChallengeMethod("totp");
     setTwoFactorInfo(null);
     setTwoFactorError(null);
-    setSubscriptionCenterOpen(false);
-    setSubscriptionCenterError(null);
+    setTokenCenterOpen(false);
+    setTokenCenterError(null);
   }, [authUserId]);
 
   const sessionsListed = useMemo(() => sessions.filter((s) => s.messageCount > 0), [sessions]);
@@ -1404,15 +1404,15 @@ export default function HomePage() {
       setTier("free");
       setMonthlyCreditsLimit(2);
       setCreditsType("lifetime");
-      setSubscriptionCreditsRemaining(null);
+      setTokenBalance(null);
       setTwoFactorEnabled(false);
       setTwoFactorMethod(null);
       setSecondFactorVerified(false);
       setTwoFactorModalOpen(false);
       setTwoFactorInfo(null);
       setTwoFactorError(null);
-      setSubscriptionCenterOpen(false);
-      setSubscriptionCenterError(null);
+      setTokenCenterOpen(false);
+      setTokenCenterError(null);
       return;
     }
     let cancelled = false;
@@ -1435,7 +1435,7 @@ export default function HomePage() {
             setMonthlyCreditsLimit(j.session_limit);
           }
           setCreditsType("lifetime");
-          setSubscriptionCreditsRemaining(typeof j.tokens_available === "number" ? j.tokens_available : null);
+          setTokenBalance(typeof j.tokens_available === "number" ? j.tokens_available : null);
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
           setTwoFactorMethod(j.twoFactorMethod ?? null);
         })
@@ -1483,7 +1483,7 @@ export default function HomePage() {
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
     setSessionsHydrated(true);
-  }, []);
+  }, [inProgressTitle]);
 
   useEffect(() => {
     if (!authReady) return;
@@ -1491,7 +1491,7 @@ export default function HomePage() {
     const fresh = createLocalSession(inProgressTitle);
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
-  }, [authReady, accessToken]);
+  }, [authReady, accessToken, inProgressTitle]);
 
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
@@ -1944,13 +1944,13 @@ export default function HomePage() {
     return true;
   }
 
-  async function openRCPortal() {
+  async function openTokenStore() {
     if (!accessToken) {
       setError(isSpanish ? "Inicia sesión para comprar tokens." : "Sign in to buy tokens.");
       return;
     }
-    setManageSubBusy(true);
-    setManageSubMessage(null);
+    setTokenStoreBusy(true);
+    setTokenCenterMessage(null);
     try {
       const res = await fetch("/api/account/create-portal-session", {
         method: "POST",
@@ -1961,14 +1961,14 @@ export default function HomePage() {
         | null;
       if (!res.ok || !data?.ok || !data.url) {
         if (res.status === 404 || data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
-          setManageSubMessage(
+          setTokenCenterMessage(
             isSpanish
               ? "No se pudo abrir la página de compra. Inténtalo de nuevo desde Planes y pagos."
               : "Could not open purchase page. Try again from Plans and payments.",
           );
           return;
         }
-        setManageSubMessage(
+        setTokenCenterMessage(
           isSpanish
             ? "No se pudo abrir el portal. Intenta de nuevo."
             : "Could not open the portal. Please try again.",
@@ -1977,25 +1977,25 @@ export default function HomePage() {
       }
       window.location.href = data.url;
     } catch {
-      setManageSubMessage(
+      setTokenCenterMessage(
         isSpanish
           ? "No se pudo abrir el portal. Intenta de nuevo."
           : "Could not open the portal. Please try again.",
       );
     } finally {
-      setManageSubBusy(false);
+      setTokenStoreBusy(false);
     }
   }
 
-  async function openSubscriptionCenter() {
+  async function openTokenCenter() {
     if (!accessToken) {
       setError(isSpanish ? "Inicia sesión para ver tu saldo." : "Sign in to view your balance.");
       return;
     }
-    setSubscriptionCenterOpen(true);
-    setSubscriptionCenterBusy(true);
-    setSubscriptionCenterError(null);
-    setManageSubMessage(null);
+    setTokenCenterOpen(true);
+    setTokenCenterBusy(true);
+    setTokenCenterError(null);
+    setTokenCenterMessage(null);
     try {
       const res = await fetch("/api/account/me", {
         method: "GET",
@@ -2011,7 +2011,7 @@ export default function HomePage() {
           }
         | null;
       if (!res.ok || !data) {
-        setSubscriptionCenterError(
+        setTokenCenterError(
           isSpanish
             ? "No se pudo cargar el centro de tokens. Inténtalo de nuevo."
             : "Could not load token center. Please try again.",
@@ -2019,17 +2019,17 @@ export default function HomePage() {
         return;
       }
       if (typeof data.last_pack === "string") setTier(data.last_pack as Tier);
-      if (typeof data.tokens_available === "number") setSubscriptionCreditsRemaining(data.tokens_available);
+      if (typeof data.tokens_available === "number") setTokenBalance(data.tokens_available);
       if (typeof data.session_limit === "number") setMonthlyCreditsLimit(data.session_limit);
       if (typeof data.tokens_available === "number" && data.tokens_available <= 0) {
         if (data.last_pack === "free") {
-          setManageSubMessage(
+          setTokenCenterMessage(
             isSpanish
               ? "Tu estado gratuito está activo. Si quieres más consultas, compra tokens."
               : "Your free state is active. If you want more consultations, buy tokens in Plans & payments.",
           );
         } else {
-          setManageSubMessage(
+          setTokenCenterMessage(
             isSpanish
               ? "No hay una compra activa reciente. Puedes comprar más tokens en Planes y pagos."
               : "There is no recent active purchase. You can buy more tokens in Plans & payments.",
@@ -2037,13 +2037,13 @@ export default function HomePage() {
         }
       }
     } catch {
-      setSubscriptionCenterError(
+      setTokenCenterError(
         isSpanish
           ? "No se pudo cargar el centro de tokens. Inténtalo de nuevo."
           : "Could not load token center. Please try again.",
       );
     } finally {
-      setSubscriptionCenterBusy(false);
+      setTokenCenterBusy(false);
     }
   }
 
@@ -2798,7 +2798,7 @@ export default function HomePage() {
                     className="credits-notice-primary"
                     onClick={() => {
                       if (creditsExhaustedCopy.primaryCta.action === "sync-billing") {
-                        void openSubscriptionCenter();
+                        void openTokenCenter();
                         setCreditsNotice(null);
                         return;
                       }
@@ -2938,8 +2938,8 @@ export default function HomePage() {
                       <p className="meta-line tier-hint-line">
                         {isSpanish ? "Último pack:" : "Last pack:"}{" "}
                         <strong>{tierLabelForDisplay(tier)}</strong>
-                        {subscriptionCreditsRemaining !== null
-                          ? ` · ${isSpanish ? "restantes" : "remaining"}: ${subscriptionCreditsRemaining}`
+                        {tokenBalance !== null
+                          ? ` · ${isSpanish ? "restantes" : "remaining"}: ${tokenBalance}`
                           : ""}
                       </p>
                       <p className="meta-line tier-hint-line">
@@ -2951,10 +2951,10 @@ export default function HomePage() {
                         <button
                           type="button"
                           className="composer-reading-pill"
-                          onClick={() => void openSubscriptionCenter()}
-                          disabled={(manageSubBusy || subscriptionCenterBusy) || !accessToken}
+                          onClick={() => void openTokenCenter()}
+                          disabled={(tokenStoreBusy || tokenCenterBusy) || !accessToken}
                         >
-                          {subscriptionCenterBusy
+                          {tokenCenterBusy
                             ? isSpanish
                               ? "Cargando..."
                               : "Loading..."
@@ -2963,9 +2963,9 @@ export default function HomePage() {
                               : "Token center"}
                         </button>
                       </div>
-                      {manageSubMessage ? (
+                      {tokenCenterMessage ? (
                         <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
-                          {manageSubMessage}
+                          {tokenCenterMessage}
                         </p>
                       ) : null}
                     </div>
@@ -3417,61 +3417,61 @@ export default function HomePage() {
                 </div>
               ) : null}
 
-              {subscriptionCenterOpen ? (
-                <div role="dialog" aria-modal="true" className="subscription-center-backdrop">
-                  <div className="subscription-center-card">
-                    <div className="subscription-center-header">
-                      <strong className="subscription-center-title">{isSpanish ? "Centro de tokens" : "Token center"}</strong>
+              {tokenCenterOpen ? (
+                <div role="dialog" aria-modal="true" className="token-center-backdrop">
+                  <div className="token-center-card">
+                    <div className="token-center-header">
+                      <strong className="token-center-title">{isSpanish ? "Centro de tokens" : "Token center"}</strong>
                       <button
                         type="button"
-                        className="subscription-center-close"
+                        className="token-center-close"
                         aria-label={isSpanish ? "Cerrar centro de tokens" : "Close token center"}
                         title={isSpanish ? "Cerrar" : "Close"}
-                        onClick={() => setSubscriptionCenterOpen(false)}
+                        onClick={() => setTokenCenterOpen(false)}
                       >
                         ×
                       </button>
                     </div>
-                    <p className="meta-line tier-hint-line subscription-center-subtitle">
+                    <p className="meta-line tier-hint-line token-center-subtitle">
                       {isSpanish
                         ? "Consulta tu saldo y abre la compra de tokens."
                         : "Check your balance and open token purchase."}
                     </p>
 
-                    <div className="subscription-center-grid">
-                      <p className="meta-line tier-hint-line subscription-center-row">
+                    <div className="token-center-grid">
+                      <p className="meta-line tier-hint-line token-center-row">
                         <span>{isSpanish ? "Último pack:" : "Last pack:"}</span>{" "}
                         <strong>{tierLabelForDisplay(tier)}</strong>
                       </p>
-                      <p className="meta-line tier-hint-line subscription-center-row">
+                      <p className="meta-line tier-hint-line token-center-row">
                         <span>{isSpanish ? "Tokens disponibles:" : "Available tokens:"}</span>{" "}
-                        <strong>{subscriptionCreditsRemaining ?? "—"}</strong>
+                        <strong>{tokenBalance ?? "—"}</strong>
                       </p>
-                      <p className="meta-line tier-hint-line subscription-center-row">
+                      <p className="meta-line tier-hint-line token-center-row">
                         <span>{isSpanish ? "Límite por hilo:" : "Thread limit:"}</span>{" "}
                         <strong>{monthlyCreditsLimit}</strong>
                       </p>
                     </div>
 
-                    {subscriptionCenterError ? (
-                      <p className="meta-line tier-hint-line subscription-center-message">
-                        {subscriptionCenterError}
+                    {tokenCenterError ? (
+                      <p className="meta-line tier-hint-line token-center-message">
+                        {tokenCenterError}
                       </p>
                     ) : null}
-                    {manageSubMessage ? (
-                      <p className="meta-line tier-hint-line subscription-center-message">
-                        {manageSubMessage}
+                    {tokenCenterMessage ? (
+                      <p className="meta-line tier-hint-line token-center-message">
+                        {tokenCenterMessage}
                       </p>
                     ) : null}
 
-                    <div className="subscription-center-actions">
+                    <div className="token-center-actions">
                       <button
                         type="button"
                         className="composer-reading-pill is-active"
-                        onClick={() => void openSubscriptionCenter()}
-                        disabled={subscriptionCenterBusy}
+                        onClick={() => void openTokenCenter()}
+                        disabled={tokenCenterBusy}
                       >
-                        {subscriptionCenterBusy
+                        {tokenCenterBusy
                           ? isSpanish
                             ? "Actualizando..."
                             : "Refreshing..."
@@ -3482,10 +3482,10 @@ export default function HomePage() {
                       <button
                         type="button"
                         className="composer-reading-pill"
-                        onClick={() => void openRCPortal()}
-                        disabled={manageSubBusy || subscriptionCenterBusy}
+                        onClick={() => void openTokenStore()}
+                        disabled={tokenStoreBusy || tokenCenterBusy}
                       >
-                        {manageSubBusy
+                        {tokenStoreBusy
                           ? isSpanish
                             ? "Abriendo portal..."
                             : "Opening portal..."
@@ -3499,7 +3499,7 @@ export default function HomePage() {
                         onClick={() => {
                           void (async () => {
                             const ok = await openPlansCheckoutNewTab();
-                            setManageSubMessage(
+                            setTokenCenterMessage(
                               ok
                                 ? isSpanish
                                   ? "Se abrió la página de compra en una nueva pestaña."
@@ -3514,7 +3514,7 @@ export default function HomePage() {
                         {isSpanish ? "Ver packs" : "View packs"}
                       </button>
                     </div>
-                    <p className="meta-line tier-hint-line subscription-center-message" style={{ marginTop: 8 }}>
+                    <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
                       <a href="/guia#planes" target="_blank" rel="noopener noreferrer">
                         {isSpanish
                           ? "Detalle de packs y límites en la guía (solo lectura)"
