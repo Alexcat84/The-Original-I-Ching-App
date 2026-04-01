@@ -1,5 +1,15 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "ADMIN_EMAIL_ALLOWLIST",
+    "RESEND_API_KEY",
+    "TWO_FACTOR_EMAIL_FROM",
+    "TWO_FACTOR_EMAIL_CODE_SECRET",
+    "REVENUECAT_PROJECT_ID",
+    "REVENUECAT_PRODUCT_TIER_MAP",
+    "STRIPE_PUBLISHABLE_KEY",
+    "STRIPE_SECRET_KEY"
+  ],
   "globalPassThroughEnv": [
     "SKIP_GOOGLE_FONTS",
     "ANTHROPIC_API_KEY",
