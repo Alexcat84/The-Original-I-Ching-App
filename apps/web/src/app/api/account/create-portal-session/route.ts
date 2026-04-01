@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
-import { CHECKOUT_SUCCESS_PATH } from "@/lib/checkout-routes";
 import { lookupCanonicalRevenueCatAppUserId } from "@/lib/revenuecat-alias-map";
+import { pickBestActiveV2SubscriptionFromItems } from "@/lib/revenuecat-rest";
 
 export const runtime = "nodejs";
 
@@ -136,18 +136,44 @@ async function createPortalSession(
   secretKey: string,
   projectId: string,
   appUserId: string,
-  returnUrl: string,
 ): Promise<{ status: number; body: string }> {
-  const url = `${RC_V2}/projects/${projectId}/customers/${encodeURIComponent(appUserId)}/customer_portal_sessions`;
-  console.log("[portal] POST customer_portal_sessions for:", appUserId);
-  const res = await fetch(url, {
-    method: "POST",
+  const customerId = encodeURIComponent(appUserId);
+  const listUrl = `${RC_V2}/projects/${projectId}/customers/${customerId}/subscriptions`;
+  console.log("[portal] GET subscriptions for:", appUserId);
+  const listRes = await fetch(listUrl, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${secretKey}`,
-      "Content-Type": "application/json",
       Accept: "application/json",
     },
-    body: JSON.stringify({ return_url: returnUrl }),
+    cache: "no-store",
+  });
+  if (!listRes.ok) {
+    const listBody = await listRes.text();
+    if (LOG_RC_VERBOSE) {
+      console.log("[portal] RC subscriptions status:", listRes.status, "body:", listBody);
+    } else {
+      console.log("[portal] RC subscriptions status:", listRes.status);
+    }
+    return { status: listRes.status, body: listBody };
+  }
+  const listJson = (await listRes.json().catch(() => null)) as { items?: unknown[] } | null;
+  const best = pickBestActiveV2SubscriptionFromItems(listJson?.items ?? []);
+  const subscriptionId =
+    best && typeof best.raw.id === "string" && best.raw.id.trim().length > 0 ? best.raw.id.trim() : null;
+  if (!subscriptionId) {
+    console.log("[portal] no active subscription for:", appUserId);
+    return { status: 404, body: "{\"error\":\"no_active_subscription\"}" };
+  }
+  const url = `${RC_V2}/projects/${projectId}/subscriptions/${encodeURIComponent(subscriptionId)}/authenticated_management_url`;
+  console.log("[portal] GET authenticated_management_url for subscription:", subscriptionId);
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${secretKey}`,
+      Accept: "application/json",
+    },
+    cache: "no-store",
   });
   const body = await res.text();
   if (LOG_RC_VERBOSE) {
@@ -200,10 +226,9 @@ async function lookupRCOriginalUserId(
 }
 
 /**
- * Creates a RevenueCat Customer Portal session for the authenticated user.
- * RC's customer_portal_sessions endpoint requires the *original* app_user_id,
- * not an alias. If the Supabase UUID is only an alias, we look up the customer
- * to get the original ID and retry.
+ * Creates a RevenueCat Web Billing management URL for the authenticated user.
+ * Uses v2 subscriptions + authenticated_management_url and retries with alias
+ * fallbacks when the Supabase UUID is not the canonical RC app_user_id.
  */
 export async function POST(req: Request) {
   let user: Awaited<ReturnType<typeof getAuthenticatedUser>>;
@@ -223,7 +248,6 @@ export async function POST(req: Request) {
 
   const secretKey = process.env.REVENUECAT_SECRET_KEY?.trim();
   const projectId = process.env.REVENUECAT_PROJECT_ID?.trim();
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL?.trim();
 
   if (!secretKey || !projectId) {
     console.error("[portal] RevenueCat env vars not configured");
@@ -234,9 +258,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const returnUrl = appUrl ? `${appUrl}${CHECKOUT_SUCCESS_PATH}` : CHECKOUT_SUCCESS_PATH;
   console.log("[portal] app_user_id (Supabase UUID):", user.userId);
-  console.log("[portal] return_url:", returnUrl);
 
   const mappedCanonical = await lookupCanonicalRevenueCatAppUserId(user.userId);
   if (mappedCanonical) {
@@ -248,7 +270,7 @@ export async function POST(req: Request) {
   for (const candidate of candidateIds) {
     let attempt: { status: number; body: string };
     try {
-      attempt = await createPortalSession(secretKey, projectId, candidate, returnUrl);
+      attempt = await createPortalSession(secretKey, projectId, candidate);
     } catch (e) {
       console.error("[portal] RC fetch failed for candidate:", candidate, e);
       return apiError(503, {
@@ -292,7 +314,7 @@ export async function POST(req: Request) {
 
   let retry: { status: number; body: string };
   try {
-    retry = await createPortalSession(secretKey, projectId, originalId, returnUrl);
+    retry = await createPortalSession(secretKey, projectId, originalId);
   } catch (e) {
     console.error("[portal] RC fetch failed (originalId retry)", e);
     return apiError(503, {
@@ -336,7 +358,10 @@ function portalSessionResponse(rawBody: string) {
       action: "retry",
     });
   }
-  const url = (body as Record<string, unknown>)?.url;
+  const obj = body as Record<string, unknown>;
+  const url =
+    (typeof obj.management_url === "string" ? obj.management_url : null) ??
+    (typeof obj.url === "string" ? obj.url : null);
   if (typeof url !== "string" || !url) {
     console.error("[portal] RC response missing url", body);
     return apiError(503, {
