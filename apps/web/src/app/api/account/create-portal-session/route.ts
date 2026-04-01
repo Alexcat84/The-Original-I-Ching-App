@@ -132,6 +132,49 @@ function extractPortalCandidateIds(
   return { candidates, picked };
 }
 
+function parseEpochMs(value: unknown): number {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value < 1_000_000_000_000 ? value * 1000 : value;
+  }
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Date.parse(value);
+    if (!Number.isNaN(parsed)) return parsed;
+  }
+  return NaN;
+}
+
+function pickLatestSubscriptionId(items: unknown[]): string | null {
+  const rows = items
+    .filter((it): it is Record<string, unknown> => typeof it === "object" && it !== null)
+    .map((it) => ({
+      id: typeof it.id === "string" ? it.id.trim() : "",
+      ts:
+        parseEpochMs(it.current_period_ends_at) ||
+        parseEpochMs(it.expires_at) ||
+        parseEpochMs(it.ends_at) ||
+        parseEpochMs(it.current_period_starts_at) ||
+        parseEpochMs(it.purchased_at),
+    }))
+    .filter((r) => r.id.length > 0);
+  if (rows.length === 0) return null;
+  rows.sort((a, b) => (Number.isFinite(b.ts) ? b.ts : 0) - (Number.isFinite(a.ts) ? a.ts : 0));
+  return rows[0]?.id ?? null;
+}
+
+function buildPlansFallbackUrl(appUserId: string): string | null {
+  const raw = process.env.NEXT_PUBLIC_PLANS_URL?.trim();
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    if (!url.searchParams.get("app_user_id")) {
+      url.searchParams.set("app_user_id", appUserId);
+    }
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
 async function createPortalSession(
   secretKey: string,
   projectId: string,
@@ -159,8 +202,10 @@ async function createPortalSession(
   }
   const listJson = (await listRes.json().catch(() => null)) as { items?: unknown[] } | null;
   const best = pickPrimaryActiveV2Subscription(listJson?.items ?? []);
-  const subscriptionId =
+  const activeSubscriptionId =
     best && typeof best.id === "string" && best.id.trim().length > 0 ? best.id.trim() : null;
+  const fallbackSubscriptionId = pickLatestSubscriptionId(listJson?.items ?? []);
+  const subscriptionId = activeSubscriptionId ?? fallbackSubscriptionId;
   if (!subscriptionId) {
     const sample = Array.isArray(listJson?.items)
       ? listJson.items
@@ -183,6 +228,9 @@ async function createPortalSession(
     console.log("[portal] subscriptions list did not yield active row; sample:", sample);
     console.log("[portal] no active subscription for:", appUserId);
     return { status: 404, body: "{\"error\":\"no_active_subscription\"}" };
+  }
+  if (!activeSubscriptionId && fallbackSubscriptionId) {
+    console.log("[portal] using latest non-active subscription fallback:", fallbackSubscriptionId);
   }
   const url = `${RC_V2}/projects/${projectId}/subscriptions/${encodeURIComponent(subscriptionId)}/authenticated_management_url`;
   console.log("[portal] GET authenticated_management_url for subscription:", subscriptionId);
@@ -317,6 +365,10 @@ export async function POST(req: Request) {
   const originalId = await lookupRCOriginalUserId(secretKey, projectId, user.userId);
   if (!originalId || candidateIds.includes(originalId)) {
     if (last404) {
+      const fallbackUrl = buildPlansFallbackUrl(user.userId);
+      if (fallbackUrl) {
+        return NextResponse.json({ ok: true, url: fallbackUrl, fallback: "plans" });
+      }
       return apiError(404, {
         error: "no_active_subscription",
         code: "BILLING_NO_ACTIVE_SUBSCRIPTION",
@@ -344,6 +396,10 @@ export async function POST(req: Request) {
   }
 
   if (retry.status === 404) {
+    const fallbackUrl = buildPlansFallbackUrl(user.userId);
+    if (fallbackUrl) {
+      return NextResponse.json({ ok: true, url: fallbackUrl, fallback: "plans" });
+    }
     return apiError(404, {
       error: "no_active_subscription",
       code: "BILLING_NO_ACTIVE_SUBSCRIPTION",

@@ -423,7 +423,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
     for (let attempt = 0; attempt < 3; attempt++) {
       const { data: row, error: rowError } = await supabase
         .from("query_credits")
-        .select("id, tier, credits_total, credits_used, cycle_start, cycle_end, credits_type")
+        .select("id, tier, credits_total, credits_used, cycle_start, cycle_end, credits_type, free_lifetime_used")
         .eq("user_id", userKey)
         .order("updated_at", { ascending: false })
         .limit(1)
@@ -452,6 +452,7 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
           tier: safeTier,
           credits_total: limit,
           credits_used: 1,
+          free_lifetime_used: 1,
           credits_type: "lifetime",
           cycle_start: cycleStart.toISOString(),
           cycle_end: cycleEnd.toISOString(),
@@ -464,6 +465,17 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
       }
 
       const rowCreditsType: CreditsType = row.credits_type === "lifetime" ? "lifetime" : tierCreditsTypeFromConfig;
+      const freeLifetimeUsed = Math.min(
+        FREE_LIFETIME_CONSULTATIONS,
+        Math.max(
+          0,
+          typeof row.free_lifetime_used === "number"
+            ? row.free_lifetime_used
+            : rowCreditsType === "lifetime"
+              ? row.credits_used
+              : 0,
+        ),
+      );
       const cycleEnded = rowCreditsType === "monthly" && now >= new Date(row.cycle_end).getTime();
 
       if (cycleEnded) {
@@ -489,6 +501,8 @@ export async function consumeTierCredit(userKey: string, tier: string): Promise<
           tier: safeTier,
           credits_total: total,
           credits_used: nextUsed,
+          free_lifetime_used:
+            rowCreditsType === "lifetime" ? Math.max(freeLifetimeUsed, nextUsed) : freeLifetimeUsed,
           credits_type: rowCreditsType,
           cycle_start: row.cycle_start,
           cycle_end: row.cycle_end,
@@ -677,7 +691,7 @@ export async function upsertUserTier(
     const targetConfig = TIER_CONFIG[safeTier];
     const { data: existing, error: existingError } = await supabase
       .from("query_credits")
-      .select("id, tier, credits_used, cycle_start, cycle_end, credits_type")
+      .select("id, tier, credits_used, cycle_start, cycle_end, credits_type, free_lifetime_used")
       .eq("user_id", userKey)
       .order("updated_at", { ascending: false })
       .limit(1)
@@ -695,15 +709,22 @@ export async function upsertUserTier(
     let cycleStart: string;
     let cycleEnd: string;
     let creditsUsed: number;
+    const freeLifetimeUsed = Math.min(
+      FREE_LIFETIME_CONSULTATIONS,
+      Math.max(
+        0,
+        typeof existing?.free_lifetime_used === "number"
+          ? existing.free_lifetime_used
+          : existing?.credits_type === "lifetime"
+            ? existing.credits_used
+            : 0,
+      ),
+    );
 
     if (safeTier === "free" || isLifetimeTarget) {
       cycleStart = existing?.cycle_start ?? nowIso;
       cycleEnd = LIFETIME_END_ISO;
-      if (existing?.credits_type === "lifetime") {
-        creditsUsed = Math.min(existing.credits_used, FREE_LIFETIME_CONSULTATIONS);
-      } else {
-        creditsUsed = 0;
-      }
+      creditsUsed = freeLifetimeUsed;
     } else {
       if (!hasFutureRenewal) {
         if (!options?.fromRevenueCatRest) {
@@ -775,6 +796,7 @@ export async function upsertUserTier(
           tier: safeTier,
           credits_total: targetConfig.creditsTotal,
           credits_used: creditsUsed,
+          free_lifetime_used: freeLifetimeUsed,
           credits_type: targetConfig.creditsType,
           cycle_start: cycleStart,
           cycle_end: cycleEnd,
@@ -791,6 +813,7 @@ export async function upsertUserTier(
         tier: safeTier,
         credits_total: targetConfig.creditsTotal,
         credits_used: creditsUsed,
+        free_lifetime_used: freeLifetimeUsed,
         credits_type: targetConfig.creditsType,
         cycle_start: cycleStart,
         cycle_end: cycleEnd,
