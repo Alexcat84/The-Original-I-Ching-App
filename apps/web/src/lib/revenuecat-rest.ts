@@ -268,6 +268,7 @@ export async function syncUserTierFromRevenueCatRest(appUserId: string): Promise
   }
 
   if (v2.kind === "none") {
+    await upsertUserTier(appUserId, "free", undefined, { fromRevenueCatRest: true });
     return { ok: true, tier: "free", source: "not_found" };
   }
 

@@ -4,6 +4,7 @@ import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getUserBillingTier } from "@/lib/credits";
 import { rcV2SubscriptionStatusFromRaw } from "@/lib/revenuecat-rest";
 import { pickPrimaryActiveV2Subscription } from "@/lib/revenuecat-v2-active-subscription";
+import { syncUserTierFromRevenueCatRest } from "@/lib/revenuecat-rest";
 
 export const runtime = "nodejs";
 
@@ -154,9 +155,17 @@ export async function GET(req: Request) {
     }
   }
 
+  let tier = await getUserBillingTier(user.userId);
+  if (!primary && tier !== "free") {
+    const sync = await syncUserTierFromRevenueCatRest(user.userId).catch(() => null);
+    if (sync?.ok) {
+      tier = sync.tier;
+    }
+  }
+
   return NextResponse.json({
     ok: true,
-    tier: await getUserBillingTier(user.userId),
+    tier,
     hasActiveSubscription: Boolean(
       primary &&
         (primary.givesAccess ||
