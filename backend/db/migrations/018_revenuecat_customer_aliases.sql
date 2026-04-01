@@ -12,3 +12,7 @@ CREATE TABLE IF NOT EXISTS public.revenuecat_customer_aliases (
 CREATE INDEX IF NOT EXISTS idx_revenuecat_customer_aliases_canonical
   ON public.revenuecat_customer_aliases (canonical_app_user_id);
 
+ALTER TABLE public.revenuecat_customer_aliases ENABLE ROW LEVEL SECURITY;
+
+REVOKE ALL ON TABLE public.revenuecat_customer_aliases FROM anon, authenticated;
+
