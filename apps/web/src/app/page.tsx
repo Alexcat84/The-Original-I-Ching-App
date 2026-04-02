@@ -1982,8 +1982,8 @@ export default function HomePage() {
         if (data.last_pack === "free") {
           setTokenCenterMessage(
             isSpanish
-              ? "Tu estado gratuito está activo. Si quieres más consultas, compra tokens."
-              : "Your free state is active. If you want more consultations, buy tokens in Plans & payments.",
+              ? "Has agotado tus consultas gratuitas de por vida. Compra tokens en Planes y pagos para continuar."
+              : "You have used your lifetime free consultations. Buy tokens in Plans & payments to continue.",
           );
         } else {
           setTokenCenterMessage(

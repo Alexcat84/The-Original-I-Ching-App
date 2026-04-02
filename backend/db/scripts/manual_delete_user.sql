@@ -14,6 +14,7 @@ BEGIN
   DELETE FROM public.consultations WHERE user_id = uid;
   DELETE FROM public.consultation_sessions WHERE user_id = uid;
   DELETE FROM public.pattern_analyses WHERE user_id = uid;
+  DELETE FROM public.user_trial_log WHERE user_id = uid;
   DELETE FROM public.query_credits WHERE user_id = uid;
   DELETE FROM public.users WHERE id = uid;
   DELETE FROM auth.users WHERE id = uid;
