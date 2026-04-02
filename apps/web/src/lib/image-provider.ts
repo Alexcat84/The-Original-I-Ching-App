@@ -91,8 +91,12 @@ function buildOracleBonesSymbolOverlaySvgDataUrl(params: {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
+/** Mock / fallback oracle-bones art: fixed 16:9 canvas (historical); tier-based sizes apply only to remote generation. */
+const ORACLE_BONES_MOCK_WIDTH = 1344;
+const ORACLE_BONES_MOCK_HEIGHT = 768;
+
 /**
- * Symbolic plastron / bone plate + verdict glyph only (no captions). Dimensions match `resolveTierSize(tier)`.
+ * Symbolic plastron / bone plate + verdict glyph only (no captions).
  * Rasterized to PNG with embedded CJK so `<img>` shows glyphs (isolated SVG does not use page fonts).
  */
 function buildOracleBonesMockSvgString(params: {
@@ -564,8 +568,8 @@ export async function buildOracleBonesImageAsset(params: {
     verdict: params.verdict,
     medium: params.medium,
     consultationId: params.consultationId,
-    width: tierWidth,
-    height: tierHeight,
+    width: ORACLE_BONES_MOCK_WIDTH,
+    height: ORACLE_BONES_MOCK_HEIGHT,
   });
 
   if (provider === "pollinations") {
