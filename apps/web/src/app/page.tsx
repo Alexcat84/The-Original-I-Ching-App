@@ -2205,6 +2205,20 @@ export default function HomePage() {
         // Fallback refresh for cases where response omits balance.
         window.dispatchEvent(new Event("iching:account-refresh"));
       }
+      // Hard refresh from /api/account/me to guarantee UI/DB sync after consume_token.
+      if (accessToken) {
+        void fetch("/api/account/me", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          cache: "no-store",
+        })
+          .then((r) => (r.ok ? r.json() : null))
+          .then((me: { tokens_available?: number } | null) => {
+            if (typeof me?.tokens_available === "number" && Number.isFinite(me.tokens_available)) {
+              setTokenBalance(me.tokens_available);
+            }
+          })
+          .catch(() => {});
+      }
       const today = new Date().toISOString().slice(0, 10);
       setDailyCount((prev) => {
         const next = prev + 1;
