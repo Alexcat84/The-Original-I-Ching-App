@@ -922,8 +922,6 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [creditsNotice, setCreditsNotice] = useState<{
     tier: BillingTier;
-    limit: number;
-    cycleEndsAt: string | null;
     reason: CreditsNoticeReason;
   } | null>(null);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
@@ -2184,7 +2182,6 @@ export default function HomePage() {
         message?: string;
         tier?: string;
         creditsLimit?: number;
-        cycleEndsAt?: string | null;
         creditsReason?: string | null;
       };
       try {
@@ -2218,8 +2215,6 @@ export default function HomePage() {
           setTokenBalance(0);
           setCreditsNotice({
             tier: "free",
-            limit: 0,
-            cycleEndsAt: null,
             reason: "credits_depleted",
           });
           setError(
@@ -2322,7 +2317,7 @@ export default function HomePage() {
   }
 
   const creditsExhaustedCopy = creditsNotice
-    ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.limit, creditsNotice.cycleEndsAt, creditsNotice.reason)
+    ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.reason)
     : null;
 
   const localeSelector = (

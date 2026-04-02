@@ -20,12 +20,7 @@ export function tierToBillingTierCopy(tier: string): BillingTier {
   return "free";
 }
 
-export function creditsExhaustedBlock(
-  tier: BillingTier,
-  _limit: number,
-  _cycleEndsAt: string | null,
-  reason: CreditsNoticeReason,
-): CreditsNoticeCopy {
+export function creditsExhaustedBlock(tier: BillingTier, reason: CreditsNoticeReason): CreditsNoticeCopy {
   if (reason === "billing_unavailable") {
     return {
       title: "No pudimos validar tu saldo de tokens",
