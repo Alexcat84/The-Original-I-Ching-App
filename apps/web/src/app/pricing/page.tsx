@@ -3,11 +3,21 @@
 import { TOKEN_PACKS } from "@/lib/token-packs";
 import { buildPlansCheckoutUrl, resolveBasePlansUrl } from "@/lib/plans-checkout";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
+import { useAppLocale } from "@/lib/use-app-locale";
+import {
+  formatPerThreadCap,
+  formatPricingBalance,
+  getPricingUiMessages,
+  packMarketingLocale,
+} from "@iching-oracle/i18n";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function PricingPage() {
   const router = useRouter();
+  const locale = useAppLocale();
+  const p = useMemo(() => getPricingUiMessages(locale), [locale]);
+  const mkt = packMarketingLocale(locale);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
@@ -39,7 +49,7 @@ export default function PricingPage() {
       appUserId = data.session?.user?.id?.trim() ?? null;
     }
     if (!appUserId) {
-      setMessage("Para comprar tokens necesitas iniciar sesión.");
+      setMessage(p.loginRequired);
       setBusy(false);
       router.push("/login");
       return;
@@ -49,9 +59,7 @@ export default function PricingPage() {
       requireAppUserId: true,
     });
     if (!built.ok) {
-      setMessage(
-        "No se pudo preparar el enlace de compra. Revisa la URL de planes en variables de entorno.",
-      );
+      setMessage(p.errorCheckout);
       setBusy(false);
       return;
     }
@@ -71,13 +79,13 @@ export default function PricingPage() {
           color: "#d8edf5",
         }}
       >
-        <h1 style={{ margin: 0, fontSize: 22 }}>Packs de tokens</h1>
+        <h1 style={{ margin: 0, fontSize: 22 }}>{p.title}</h1>
         <p style={{ marginTop: 8, opacity: 0.95 }}>
-          {typeof balance === "number" ? `Tienes ${balance} tokens disponibles` : "Inicia sesión para ver tu saldo"}
+          {typeof balance === "number" ? formatPricingBalance(p, balance) : p.balanceUnknown}
         </p>
-        <p style={{ marginTop: 8, opacity: 0.85 }}>
-          El modelo activo es 100% por packs de tokens consumibles.
-        </p>
+        <p style={{ marginTop: 8, opacity: 0.85 }}>{p.modelLine}</p>
+        <p style={{ marginTop: 10, opacity: 0.88, lineHeight: 1.55, maxWidth: "52rem" }}>{p.tokensAccumulate}</p>
+        <p style={{ marginTop: 8, opacity: 0.88, lineHeight: 1.55, maxWidth: "52rem" }}>{p.threadLimitDepends}</p>
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", marginTop: 14 }}>
           {Object.entries(TOKEN_PACKS).map(([packId, pack]) => (
             <article
@@ -90,13 +98,15 @@ export default function PricingPage() {
               }}
             >
               <h2 style={{ margin: 0, fontSize: 17 }}>{pack.label}</h2>
-              <p style={{ marginTop: 8, marginBottom: 0, fontSize: 26, fontWeight: 700 }}>{pack.tokens} tokens</p>
+              <p style={{ marginTop: 8, marginBottom: 0, fontSize: 26, fontWeight: 700 }}>
+                {pack.tokens} {p.tokensWord}
+              </p>
               <p style={{ marginTop: 6, marginBottom: 0, opacity: 0.95 }}>${pack.price.toFixed(2)} USD</p>
               <p style={{ marginTop: 6, marginBottom: 0, opacity: 0.8 }}>
-                Hasta {pack.sessionLimit} preguntas por hilo
+                {formatPerThreadCap(p, pack.sessionLimit)}
               </p>
               <p style={{ marginTop: 8, marginBottom: 12, opacity: 0.78, fontSize: 13, lineHeight: 1.45 }}>
-                {pack.marketingDetail.es}
+                {pack.marketingDetail[mkt]}
               </p>
               <button
                 type="button"
@@ -112,12 +122,12 @@ export default function PricingPage() {
                   width: "100%",
                 }}
               >
-                {busy ? "Abriendo..." : "Comprar tokens"}
+                {busy ? p.opening : p.buyTokens}
               </button>
             </article>
           ))}
         </div>
-        {balance === 0 ? <p style={{ marginTop: 12 }}>Has usado todos tus tokens. Compra un nuevo paquete para continuar.</p> : null}
+        {balance === 0 ? <p style={{ marginTop: 12 }}>{p.depleted}</p> : null}
         {message ? <p style={{ marginTop: 10 }}>{message}</p> : null}
       </section>
     </main>

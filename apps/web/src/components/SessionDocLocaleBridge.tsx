@@ -1,11 +1,10 @@
 "use client";
 
-import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
+import { SUPPORTED_LOCALES, UI_LOCALE_STORAGE_KEY, type AppLocale } from "@iching-oracle/i18n";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import { SESSION_PRESENT_COOKIE, UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 import { useEffect } from "react";
 
-const LOCALE_STORAGE_KEY = "iching_ui_locale_v1";
 const ONE_YEAR = 60 * 60 * 24 * 365;
 
 function setSessionPresentCookie(on: boolean) {
@@ -18,7 +17,7 @@ function setSessionPresentCookie(on: boolean) {
 
 function syncUiLocaleCookieFromStorage() {
   try {
-    const raw = localStorage.getItem(LOCALE_STORAGE_KEY);
+    const raw = localStorage.getItem(UI_LOCALE_STORAGE_KEY);
     if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
       document.cookie = `${UI_LOCALE_COOKIE}=${encodeURIComponent(raw)}; path=/; max-age=${ONE_YEAR}; samesite=lax`;
     }

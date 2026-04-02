@@ -1,7 +1,14 @@
 "use client";
 
 import { OracleShell } from "@iching-oracle/ui";
-import { commonStrings, DEFAULT_LOCALE, SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
+import {
+  commonStrings,
+  DEFAULT_LOCALE,
+  getTokenPanelUiMessages,
+  SUPPORTED_LOCALES,
+  UI_LOCALE_STORAGE_KEY,
+  type AppLocale,
+} from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
@@ -347,8 +354,6 @@ const DRAWER_TEXT: Record<
     deleteConversation: "대화 삭제",
   },
 };
-
-const LOCALE_STORAGE_KEY = "iching_ui_locale_v1";
 
 /** Maps `navigator.languages` to an app locale when the user has no saved preference. */
 function pickBrowserAppLocale(): AppLocale | null {
@@ -896,6 +901,7 @@ export default function HomePage() {
   const ui = UI_COPY[locale];
   const t = commonStrings[locale];
   const isSpanish = locale === "es";
+  const tokenPanel = useMemo(() => getTokenPanelUiMessages(locale), [locale]);
   const runtimeText = RUNTIME_TEXT[locale];
   const drawerText = DRAWER_TEXT[locale];
   const exportPdfLabel = isSpanish ? "Exportar chat PDF" : "Export chat PDF";
@@ -961,7 +967,7 @@ export default function HomePage() {
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(LOCALE_STORAGE_KEY);
+    const raw = window.localStorage.getItem(UI_LOCALE_STORAGE_KEY);
     if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
       setLocale(raw as AppLocale);
       return;
@@ -979,7 +985,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+    window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, locale);
     document.documentElement.lang = locale;
     document.cookie = `iching_ui_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
     window.dispatchEvent(new CustomEvent("iching:locale-changed", { detail: { locale } }));
@@ -2049,7 +2055,7 @@ export default function HomePage() {
 
   async function openTokenCenter() {
     if (!accessToken) {
-      setError(isSpanish ? "Inicia sesión para ver tu saldo." : "Sign in to view your balance.");
+      setError(tokenPanel.signInForBalance);
       return;
     }
     setTokenCenterOpen(true);
@@ -2071,11 +2077,7 @@ export default function HomePage() {
           }
         | null;
       if (!res.ok || !data) {
-        setTokenCenterError(
-          isSpanish
-            ? "No se pudo cargar el centro de tokens. Inténtalo de nuevo."
-            : "Could not load token center. Please try again.",
-        );
+        setTokenCenterError(tokenPanel.loadError);
         return;
       }
       if (typeof data.last_pack === "string") setTier(data.last_pack as Tier);
@@ -2083,25 +2085,13 @@ export default function HomePage() {
       if (typeof data.session_limit === "number") setAccountSessionLimit(data.session_limit);
       if (typeof data.tokens_available === "number" && data.tokens_available <= 0) {
         if (data.last_pack === "free") {
-          setTokenCenterMessage(
-            isSpanish
-              ? "Has agotado tus consultas gratuitas de por vida. Compra tokens en Planes y pagos para continuar."
-              : "You have used your lifetime free consultations. Buy tokens in Plans & payments to continue.",
-          );
+          setTokenCenterMessage(tokenPanel.messageFreeDepleted);
         } else {
-          setTokenCenterMessage(
-            isSpanish
-              ? "No hay una compra activa reciente. Puedes comprar más tokens en Planes y pagos."
-              : "There is no recent active purchase. You can buy more tokens in Plans & payments.",
-          );
+          setTokenCenterMessage(tokenPanel.messageNoActivePurchase);
         }
       }
     } catch {
-      setTokenCenterError(
-        isSpanish
-          ? "No se pudo cargar el centro de tokens. Inténtalo de nuevo."
-          : "Could not load token center. Please try again.",
-      );
+      setTokenCenterError(tokenPanel.loadError);
     } finally {
       setTokenCenterBusy(false);
     }
@@ -2236,11 +2226,7 @@ export default function HomePage() {
           return;
         }
         if (res.status === 429 && data.error === "session_limit") {
-          setError(
-            isSpanish
-              ? "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar."
-              : "You reached this thread limit. Start a new session to continue.",
-          );
+          setError(tokenPanel.consultThreadLimit);
           return;
         }
         if (res.status === 402 && data.error === "no_tokens") {
@@ -2249,11 +2235,7 @@ export default function HomePage() {
             tier: "free",
             reason: "credits_depleted",
           });
-          setError(
-            isSpanish
-              ? "Has usado todos tus tokens. Compra un nuevo paquete para continuar."
-              : "You used all your tokens. Buy a new pack to continue.",
-          );
+          setError(tokenPanel.noTokensDepleted);
           return;
         }
         if (res.status === 403 && (data.error === "two_factor_required" || data.action === "setup_2fa")) {
@@ -2987,13 +2969,13 @@ export default function HomePage() {
                       </>
                     ) : null}
                     <hr className="composer-panel-divider" aria-hidden />
-                    <div className="session-progress" role="group" aria-label="Gestión de tokens">
-                      <span>{isSpanish ? "Tokens" : "Tokens"}</span>
+                    <div className="session-progress" role="group" aria-label={tokenPanel.ariaTokenGroup}>
+                      <span>{tokenPanel.tokensHeading}</span>
                       <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Último pack:" : "Last pack:"}{" "}
+                        {tokenPanel.lastPack}{" "}
                         <strong>{tierLabelForDisplay(tier)}</strong>
                         {tokenBalance !== null
-                          ? ` · ${isSpanish ? "restantes" : "remaining"}: ${tokenBalance}`
+                          ? ` · ${tokenPanel.remaining}: ${tokenBalance}`
                           : ""}
                       </p>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
@@ -3003,13 +2985,7 @@ export default function HomePage() {
                           onClick={() => void openTokenCenter()}
                           disabled={tokenCenterBusy || !accessToken}
                         >
-                          {tokenCenterBusy
-                            ? isSpanish
-                              ? "Cargando..."
-                              : "Loading..."
-                            : isSpanish
-                              ? "Centro de tokens"
-                              : "Token center"}
+                          {tokenCenterBusy ? tokenPanel.loading : tokenPanel.tokenCenter}
                         </button>
                       </div>
                       {tokenCenterMessage ? (
@@ -3017,6 +2993,9 @@ export default function HomePage() {
                           {tokenCenterMessage}
                         </p>
                       ) : null}
+                      <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                        {tokenPanel.accumulation}
+                      </p>
                     </div>
                     <hr className="composer-panel-divider" aria-hidden />
                     <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
@@ -3523,10 +3502,9 @@ export default function HomePage() {
                       </button>
                     </div>
                     <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
-                      ⚠️{" "}
                       {isSpanish
-                        ? "Los packs de tokens no son acumulables. Si adquieres un nuevo pack antes de agotar el actual, perderás los tokens restantes. Termina tu pack actual antes de comprar uno nuevo."
-                        : "Token packs are not cumulative. If you buy a new pack before finishing the current one, you lose remaining tokens. Finish your current pack before buying another one."}
+                        ? "Tus tokens se acumulan: si compras un nuevo pack antes de agotar el actual, los tokens restantes se suman al nuevo pack."
+                        : "Your tokens accumulate: if you buy a new pack before running out, your remaining tokens carry over and add to the new pack."}
                     </p>
                     <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
                       <a href="/guia#planes" target="_blank" rel="noopener noreferrer">
