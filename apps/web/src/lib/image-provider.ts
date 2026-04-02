@@ -67,34 +67,37 @@ function escapeXmlOracleOverlay(s: string): string {
 /**
  * Transparent SVG overlay: verdict glyph(s) in simplified Chinese, same approach as sumi hexagram overlay
  * (Noto Serif SC stack; @font-face embedded at finalize via embedCjkFontInOverlaySvg).
+ *
+ * viewBox MUST match output width/height so resvg does not letterbox (e.g. 16:9 viewBox inside 1024×1024 → black side bars on composite).
  */
 function buildOracleBonesSymbolOverlaySvgDataUrl(params: {
   verdict: OracleBonesVerdict;
   outputWidth: number;
   outputHeight: number;
 }): string {
-  const W = 1344;
-  const H = 768;
+  const W = Math.max(1, Math.round(params.outputWidth));
+  const H = Math.max(1, Math.round(params.outputHeight));
   const cx = W / 2;
-  /** Baseline near visual center of shell in 16:9 frame */
-  const baselineY = 400;
+  /** Same relative position as legacy 1344×768 layout (y ≈ 52% of height). */
+  const baselineY = Math.round((400 / 768) * H);
   const idPrefix = `obov${params.verdict.replace(/_/g, "")}`;
   const gStyle = oracleBonesVerdictGlyphSvgStyle(params.verdict, idPrefix);
   const filterId = `${idPrefix}-glow`;
   const raw = oracleBonesVerdictChinese(params.verdict);
   const escaped = escapeXmlOracleOverlay(raw);
-  /** Larger dominant glyph on shell (~30% vs prior ~22% of frame height for single char). */
-  const fontSize = raw.length > 1 ? 176 : 300;
-  const letterSpacing = raw.length > 1 ? 22 : 0;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${params.outputWidth}" height="${params.outputHeight}" viewBox="0 0 ${W} ${H}">
+  const fontSize = raw.length > 1 ? Math.round((176 / 768) * H) : Math.round((300 / 768) * H);
+  const letterSpacing = raw.length > 1 ? Math.round((22 / 1344) * W) : 0;
+  const strokeW = Math.max(2, (gStyle.overlayStrokeWidth * W) / 1344);
+  const blur = Math.max(1.5, (4 * Math.min(W, H)) / 768);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
 <defs>
   ${gStyle.glyphGradientDefs}
   <filter id="${filterId}" x="-45%" y="-45%" width="190%" height="190%">
-    <feGaussianBlur stdDeviation="4" result="b"/>
+    <feGaussianBlur stdDeviation="${blur}" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
 </defs>
-<text x="${cx}" y="${baselineY}" text-anchor="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${gStyle.overlayStrokeWidth}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
+<text x="${cx}" y="${baselineY}" text-anchor="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${strokeW}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
 </svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
