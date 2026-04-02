@@ -1,6 +1,5 @@
 "use client";
 
-import { CONTEXT_LIMITS } from "@iching-oracle/context-engine";
 import { OracleShell } from "@iching-oracle/ui";
 import { commonStrings, DEFAULT_LOCALE, SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
@@ -13,7 +12,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
-import { tierLabelForDisplay, toContextTierKey, type Tier } from "@/lib/credits";
+import { tierLabelForDisplay, type Tier } from "@/lib/credits";
 import {
   creditsExhaustedBlock,
   type BillingTier,
@@ -64,6 +63,8 @@ type ConsultResponse = {
   sessionId: string | null;
   sessionPosition: number;
   canDeepen: boolean;
+  /** Max readings allowed in this thread (same as server `maxDepth`). */
+  sessionMaxDepth?: number;
   publicReadingId: string;
   publicSessionId: string;
   remainingCredits?: number;
@@ -71,7 +72,6 @@ type ConsultResponse = {
 };
 
 type ConsultationItem = ConsultResponse & { question: string };
-type CreditsType = "monthly" | "lifetime";
 type OracleMode = "iching" | "oracle_bones";
 
 const RUNTIME_TEXT: Record<
@@ -397,7 +397,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Huesos",
     iChingTagline: "Tres monedas · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Grietas 兆 (estilo Shang) · sí / no sobre cargos",
+    bonesTagline: "Grietas 兆 (estilo Shang) · sí / no",
     modeIChingHint: "Seis líneas y tres monedas por línea; mutación Zhu Xi.",
     modeBonesHint: "Pregunta sí / no con cargo afirmativo; lectura por grietas 兆.",
     emptyInviteMorning:
@@ -421,7 +421,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Bones",
     iChingTagline: "Three coins · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Cracks 兆 (Shang style) · yes / no by charge",
+    bonesTagline: "Cracks 兆 (Shang style) · yes / no",
     modeIChingHint: "Six lines and three coins per line; Zhu Xi mutation.",
     modeBonesHint: "Yes / no by affirmative charge; crack reading 兆.",
     emptyInviteMorning: "Good time to consult the oracle. What concern comes with this new day?",
@@ -443,7 +443,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Ossos",
     iChingTagline: "Três moedas · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Fissuras 兆 (estilo Shang) · sim / não por cargo",
+    bonesTagline: "Fissuras 兆 (estilo Shang) · sim / não",
     modeIChingHint: "Seis linhas e três moedas por linha; mutação Zhu Xi.",
     modeBonesHint: "Pergunta sim / não com cargo afirmativo; leitura por fissuras 兆.",
     emptyInviteMorning: "Bom momento para ouvir o oráculo. Que inquietação traz este novo dia?",
@@ -465,7 +465,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Os",
     iChingTagline: "Trois pièces · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Fissures 兆 (style Shang) · oui / non par charge",
+    bonesTagline: "Fissures 兆 (style Shang) · oui / non",
     modeIChingHint: "Six lignes et trois pièces par ligne ; mutation Zhu Xi.",
     modeBonesHint: "Question oui / non avec charge affirmative ; lecture des fissures 兆.",
     emptyInviteMorning: "Bon moment pour écouter l'oracle. Quelle préoccupation t'accompagne aujourd'hui ?",
@@ -487,7 +487,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Knochen",
     iChingTagline: "Drei Münzen · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Risse 兆 (Shang-Stil) · Ja / Nein nach Ladung",
+    bonesTagline: "Risse 兆 (Shang-Stil) · Ja / Nein",
     modeIChingHint: "Sechs Linien und drei Münzen pro Linie; Zhu-Xi-Mutation.",
     modeBonesHint: "Ja/Nein-Frage mit positiver Ladung; Risslesung 兆.",
     emptyInviteMorning: "Guter Zeitpunkt für das Orakel. Welche Frage bringt dieser Tag mit sich?",
@@ -509,7 +509,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Ossa",
     iChingTagline: "Tre monete · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Crepe 兆 (stile Shang) · sì / no per carica",
+    bonesTagline: "Crepe 兆 (stile Shang) · sì / no",
     modeIChingHint: "Sei linee e tre monete per linea; mutazione Zhu Xi.",
     modeBonesHint: "Domanda sì / no con carica affermativa; lettura delle crepe 兆.",
     emptyInviteMorning: "Momento ideale per l'oracolo. Quale inquietudine porta questo nuovo giorno?",
@@ -531,7 +531,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "骨占",
     iChingTagline: "三枚の硬貨 · 朱熹 · ヴィルヘルム/ベインズ",
-    bonesTagline: "亀裂 兆（殷様式）· 問いの肯否",
+    bonesTagline: "亀裂 兆（殷様式）· はい / いいえ",
     modeIChingHint: "六爻、各爻に三枚の硬貨。朱熹の変爻法。",
     modeBonesHint: "肯定電荷による Yes/No。亀裂 兆 の読解。",
     emptyInviteMorning: "いまは託宣に向いた時間。今日の不安を問いにしてみましょう。",
@@ -553,7 +553,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "甲骨",
     iChingTagline: "三枚铜钱 · 朱熹 · Wilhelm/Baynes",
-    bonesTagline: "裂纹 兆（商式）· 依命题判断是/否",
+    bonesTagline: "裂纹 兆（商式）· 是 / 否",
     modeIChingHint: "六爻，每爻三枚铜钱；朱熹变爻法。",
     modeBonesHint: "以肯定命题进行是/否占；裂纹 兆 解读。",
     emptyInviteMorning: "此刻适合聆听神谕。今天你带着什么问题而来？",
@@ -575,7 +575,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "골복",
     iChingTagline: "세 동전 · 주희 · Wilhelm/Baynes",
-    bonesTagline: "균열 兆 (상식) · 긍정 명제로 예/아니오",
+    bonesTagline: "균열 兆 (상식) · 예 / 아니오",
     modeIChingHint: "육효, 효마다 동전 3개; 주희 변효 규칙.",
     modeBonesHint: "긍정 명제로 예/아니오 질문; 균열 兆 해석.",
     emptyInviteMorning: "지금은 오라클에 귀 기울이기 좋은 시간입니다. 어떤 고민이 있나요?",
@@ -659,6 +659,8 @@ type ChatSessionState = {
   /** Last known public id for /s/… links (synced from API). */
   publicSessionId: string | null;
   thread: ConsultationItem[];
+  /** Max chained readings for this thread; from API / DB `max_consultations`. */
+  threadMaxDepth: number | null;
   messageCount: number;
   updatedAt: number;
   firstConsultationAt: number | null;
@@ -672,6 +674,7 @@ type ApiChatSession = {
   publicId: string;
   consultationIds: string[];
   createdAt: number;
+  maxConsultations?: number | null;
 };
 
 type ApiChatConsultation = {
@@ -739,10 +742,33 @@ function createLocalSession(title = "Nueva sesión"): ChatSessionState {
     sessionId: newClientUuid(),
     publicSessionId: null,
     thread: [],
+    threadMaxDepth: null,
     messageCount: 0,
     updatedAt: Date.now(),
     firstConsultationAt: null,
   };
+}
+
+function threadDepthStatusLine(isSpanish: boolean, canDeepen: boolean, cap: number, position: number): string {
+  const safeCap = Math.max(1, cap);
+  if (safeCap <= 1) {
+    return canDeepen
+      ? isSpanish
+        ? "Una sola lectura por hilo."
+        : "Single reading per thread."
+      : isSpanish
+        ? "Sin profundización: una sola lectura por hilo. Para otro tema, abre una nueva sesión."
+        : "No follow-ups in this thread: one reading only. For a new topic, start a new session.";
+  }
+  if (canDeepen) {
+    const remaining = safeCap - position;
+    return isSpanish
+      ? `Puedes añadir hasta ${remaining} lectura(s) más en este hilo.`
+      : `You can add up to ${remaining} more reading(s) in this thread.`;
+  }
+  return isSpanish
+    ? "Has alcanzado el límite de lecturas en este hilo."
+    : "You reached the reading limit for this thread.";
 }
 
 function InterpretationBody({ text }: { text: string }) {
@@ -769,7 +795,9 @@ function formatPrintFilename(consultationId: string): string {
 function mapApiConsultationToItem(
   c: ApiChatConsultation,
   sessionPublicId: string,
+  threadMaxDepth: number,
 ): ConsultationItem {
+  const cap = Math.max(1, threadMaxDepth);
   return {
     oracleType: c.oracleType,
     consultationId: c.consultationId,
@@ -790,7 +818,7 @@ function mapApiConsultationToItem(
     createdAt: c.createdAt,
     sessionId: c.sessionId,
     sessionPosition: c.sessionPosition,
-    canDeepen: true,
+    canDeepen: c.sessionPosition < cap,
     publicReadingId: c.publicId,
     publicSessionId: sessionPublicId,
     sharingPersisted: true,
@@ -855,8 +883,8 @@ export default function HomePage() {
   }, []);
   const knownInProgressTitles = useMemo(() => new Set<string>(["Consulta en progreso", "Consultation in progress"]), []);
   const [tier, setTier] = useState<Tier>("free");
-  const [monthlyCreditsLimit, setMonthlyCreditsLimit] = useState(2);
-  const [creditsType, setCreditsType] = useState<CreditsType>("lifetime");
+  /** Per-thread reading cap from `/api/account/me` `session_limit` (not monthly billing). */
+  const [monthlyCreditsLimit, setMonthlyCreditsLimit] = useState(1);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
@@ -963,6 +991,10 @@ export default function HomePage() {
   }, [sessions, activeSessionLocalId]);
   const activeThread = activeSession?.thread ?? [];
   const result = activeThread.at(-1) ?? null;
+  const threadDepthCap = useMemo(
+    () => Math.max(1, activeSession?.threadMaxDepth ?? monthlyCreditsLimit),
+    [activeSession?.threadMaxDepth, monthlyCreditsLimit],
+  );
   const threadLimitReached =
     activeThread.length > 0 && result !== null && !result.canDeepen;
   const preferredTwoFactorMethod: "totp" | "email" = twoFactorMethod === "email" ? "email" : "totp";
@@ -1269,7 +1301,14 @@ export default function HomePage() {
         if (!res.ok) return;
         const payload = (await res.json()) as AccountChatSessionResponse;
         if (!payload?.session) return;
-        const thread = payload.consultations.map((c) => mapApiConsultationToItem(c, payload.session.publicId));
+        const positions = payload.consultations.map((c) => c.sessionPosition);
+        const threadMax =
+          typeof payload.session.maxConsultations === "number" && payload.session.maxConsultations > 0
+            ? payload.session.maxConsultations
+            : Math.max(positions.length ? Math.max(...positions) : 1, 1);
+        const thread = payload.consultations.map((c) =>
+          mapApiConsultationToItem(c, payload.session.publicId, threadMax),
+        );
         setSessions((prev) =>
           prev.map((s) => {
             if (s.localId !== localId) return s;
@@ -1283,6 +1322,7 @@ export default function HomePage() {
                   : (thread[0]?.question.slice(0, 60) ?? (isSpanish ? "Consulta" : "Consultation")),
               sessionId: payload.session.sessionId,
               publicSessionId: payload.session.publicId,
+              threadMaxDepth: threadMax,
               thread,
               messageCount: Math.max(thread.length, s.messageCount),
               updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
@@ -1403,8 +1443,7 @@ export default function HomePage() {
   useEffect(() => {
     if (!accessToken) {
       setTier("free");
-      setMonthlyCreditsLimit(2);
-      setCreditsType("lifetime");
+      setMonthlyCreditsLimit(1);
       setTokenBalance(null);
       setTwoFactorEnabled(false);
       setTwoFactorMethod(null);
@@ -1435,7 +1474,6 @@ export default function HomePage() {
           if (typeof j.session_limit === "number" && Number.isFinite(j.session_limit)) {
             setMonthlyCreditsLimit(j.session_limit);
           }
-          setCreditsType("lifetime");
           setTokenBalance(typeof j.tokens_available === "number" ? j.tokens_available : null);
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
           setTwoFactorMethod(j.twoFactorMethod ?? null);
@@ -1503,7 +1541,12 @@ export default function HomePage() {
         if (stateRaw) {
           const state = JSON.parse(stateRaw) as { sessions?: ChatSessionState[]; activeSessionLocalId?: string | null };
           if (Array.isArray(state.sessions) && state.sessions.length > 0) {
-            setSessions(state.sessions);
+            setSessions(
+              state.sessions.map((s) => ({
+                ...s,
+                threadMaxDepth: s.threadMaxDepth ?? null,
+              })),
+            );
             setActiveSessionLocalId(state.activeSessionLocalId ?? state.sessions[0]?.localId ?? null);
           }
         }
@@ -1517,7 +1560,12 @@ export default function HomePage() {
         if (cachedRaw) {
           const cached = JSON.parse(cachedRaw) as ChatSessionState[];
           if (Array.isArray(cached) && cached.length > 0) {
-            setSessions(cached);
+            setSessions(
+              cached.map((s) => ({
+                ...s,
+                threadMaxDepth: s.threadMaxDepth ?? null,
+              })),
+            );
             setActiveSessionLocalId(cached[0]?.localId ?? null);
           }
         }
@@ -1554,6 +1602,7 @@ export default function HomePage() {
               sessionId: entry.session.sessionId,
               publicSessionId: entry.session.publicId,
               thread: [],
+              threadMaxDepth: null,
               messageCount: entry.messageCount,
               updatedAt: entry.updatedAt ?? entry.session.createdAt,
               firstConsultationAt: entry.firstConsultationAt ?? null,
@@ -1572,6 +1621,7 @@ export default function HomePage() {
                   ? existing.title
                   : next.title,
               thread: existing.thread,
+              threadMaxDepth: existing.threadMaxDepth ?? next.threadMaxDepth,
               messageCount: Math.max(next.messageCount, existing.messageCount),
               updatedAt: Math.max(next.updatedAt, existing.updatedAt),
               firstConsultationAt: next.firstConsultationAt ?? existing.firstConsultationAt,
@@ -2187,8 +2237,14 @@ export default function HomePage() {
             : questionForRequest,
         createdAt: Date.now(),
       };
-      updateActiveSession((current) => ({
+      updateActiveSession((current) => {
+        const nextThreadMax =
+          typeof data.sessionMaxDepth === "number" && Number.isFinite(data.sessionMaxDepth) && data.sessionMaxDepth > 0
+            ? data.sessionMaxDepth
+            : current.threadMaxDepth;
+        return {
         ...current,
+        threadMaxDepth: nextThreadMax ?? current.threadMaxDepth,
         thread: [...current.thread, item],
         messageCount: Math.max(current.messageCount, current.thread.length + 1),
         sessionId: data.sessionId,
@@ -2198,7 +2254,8 @@ export default function HomePage() {
           : current.title,
         updatedAt: item.createdAt ?? Date.now(),
         firstConsultationAt: current.firstConsultationAt ?? item.createdAt ?? Date.now(),
-      }));
+        };
+      });
       setPendingUserQuestion(null);
       if (typeof data.remainingCredits === "number" && Number.isFinite(data.remainingCredits)) {
         setTokenBalance(data.remainingCredits);
@@ -2904,6 +2961,49 @@ export default function HomePage() {
                         </p>
                       </div>
                     </div>
+                    {activeThread.length > 0 && result ? (
+                      <div
+                        className="session-progress session-progress--thread-depth"
+                        role="region"
+                        aria-label={isSpanish ? "Profundidad del hilo activo" : "Active thread depth"}
+                      >
+                        <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
+                        <p className="meta-line tier-hint-line">
+                          {isSpanish ? "Plan " : "Plan "}
+                          <strong>{tierLabelForDisplay(tier)}</strong>
+                          {isSpanish
+                            ? ` · este hilo admite hasta ${threadDepthCap} lectura(s) encadenada(s) (incluye la primera).`
+                            : ` · this thread allows up to ${threadDepthCap} chained reading(s) (including the first).`}
+                        </p>
+                        <div
+                          className="session-progress-bar session-progress-bar--prominent"
+                          role="progressbar"
+                          aria-valuemin={0}
+                          aria-valuemax={threadDepthCap}
+                          aria-valuenow={result.sessionPosition}
+                          aria-label={
+                            isSpanish
+                              ? `Lectura ${result.sessionPosition} de ${threadDepthCap}`
+                              : `Reading ${result.sessionPosition} of ${threadDepthCap}`
+                          }
+                        >
+                          <div
+                            className="session-progress-fill"
+                            style={{
+                              width: `${Math.min(100, (result.sessionPosition / threadDepthCap) * 100)}%`,
+                            }}
+                          />
+                        </div>
+                        <small>
+                          {threadDepthStatusLine(
+                            isSpanish,
+                            result.canDeepen,
+                            threadDepthCap,
+                            result.sessionPosition,
+                          )}
+                        </small>
+                      </div>
+                    ) : null}
                     <div className="session-progress" role="group" aria-label="Gestión de tokens">
                       <span>{isSpanish ? "Tokens" : "Tokens"}</span>
                       <p className="meta-line tier-hint-line">
@@ -2944,8 +3044,8 @@ export default function HomePage() {
                       </p>
                       <p className="meta-line tier-hint-line">
                         {isSpanish
-                          ? "Configura Authenticator y/o código por email en una ventana segura."
-                          : "Configure Authenticator and/or email code in a secure modal."}
+                          ? "Configura Authenticator y/o código por email."
+                          : "Configure Authenticator and/or email code."}
                       </p>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
                         <button
@@ -2982,48 +3082,7 @@ export default function HomePage() {
                         ) : null}
                       </div>
                     </div>
-                    {result ? (
-                      <div className="session-progress">
-                        <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
-                        <p className="meta-line tier-hint-line">
-                          {isSpanish ? "Plan " : "Plan "}
-                          <strong>{tierLabelForDisplay(tier)}</strong>: {monthlyCreditsLimit}{" "}
-                          {creditsType === "lifetime"
-                            ? isSpanish
-                              ? "consultas lifetime"
-                              : "lifetime consultations"
-                            : isSpanish
-                              ? "consultas por mes"
-                              : "consultations per month"}{" "}
-                          · {isSpanish ? "hasta" : "up to"}{" "}
-                          {CONTEXT_LIMITS[toContextTierKey(tier)].sessionDepth}{" "}
-                          {isSpanish ? "en este hilo." : "in this thread."}
-                        </p>
-                        <div className="session-progress-bar">
-                          <div
-                            className="session-progress-fill"
-                            style={{
-                              width: `${Math.min(
-                                100,
-                                ((result.sessionPosition ?? 1) /
-                                  Math.max(result.sessionPosition + (result.canDeepen ? 1 : 0), 1)) *
-                                  100,
-                              )}%`,
-                            }}
-                          />
-                        </div>
-                        <small>
-                          {result.canDeepen
-                            ? isSpanish
-                              ? "Puedes profundizar en este hilo."
-                              : "You can deepen this thread."
-                            : isSpanish
-                              ? "Límite de hilo alcanzado."
-                              : "Thread limit reached."}
-                        </small>
-                      </div>
-                    ) : null}
-                    {activeThread.length > 0 ? (
+                    {activeThread.length > 0 && result?.canDeepen ? (
                       <p className="meta-line composer-hint-line">
                         {isSpanish ? "Siguiente mensaje sigue en este hilo." : "Your next message continues in this thread."}
                       </p>
