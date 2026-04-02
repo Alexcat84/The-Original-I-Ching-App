@@ -1,4 +1,5 @@
 import type { ImageProviderDebug, ResolvedImageProvider } from "@/lib/image-provider";
+import { toContextTierKey } from "@/lib/credits";
 import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
 import { renderSvgToPng } from "@/lib/svg-to-png";
 import { applyReadingImageWatermark, injectSvgDataUrlWatermark } from "@/lib/watermark-image";
@@ -12,9 +13,10 @@ type ImageAsset = {
   debug?: ImageProviderDebug;
 };
 
-function targetSizeForTier(tier: string): { width: number; height: number } {
+function targetSizeForTier(lastPack: string): { width: number; height: number } {
+  const key = toContextTierKey(lastPack);
   const hi = new Set(["practitioner", "master"]);
-  if (hi.has(tier)) {
+  if (hi.has(key)) {
     return { width: 2688, height: 1536 };
   }
   return { width: 1344, height: 768 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { generatedImageResolutionSummary } from "@/lib/credits-ui-copy";
 import { TOKEN_PACKS } from "@/lib/token-packs";
 import { buildPlansCheckoutUrl, resolveBasePlansUrl } from "@/lib/plans-checkout";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
@@ -78,6 +79,7 @@ export default function PricingPage() {
         <p style={{ marginTop: 8, opacity: 0.85 }}>
           El modelo activo es 100% por packs de tokens consumibles.
         </p>
+        <p style={{ marginTop: 8, opacity: 0.88, lineHeight: 1.45 }}>{generatedImageResolutionSummary(true)}</p>
 
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", marginTop: 14 }}>
           {Object.entries(TOKEN_PACKS).map(([packId, pack]) => (

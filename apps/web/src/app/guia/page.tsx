@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
+import { generatedImageResolutionSummary } from "@/lib/credits-ui-copy";
 import { FREE_TOKENS, TOKEN_PACKS } from "@/lib/token-packs";
 
 function resolveLocale(raw: string | undefined): AppLocale {
@@ -125,6 +126,7 @@ export default async function GuiaRapidaPage() {
               : `$${TOKEN_PACKS.tokens_master_100.price} · ${TOKEN_PACKS.tokens_master_100.tokens} tokens`}
           </li>
         </ul>
+        <p>{generatedImageResolutionSummary(isEs)}</p>
         <p>
           ⚠️{" "}
           {isEs

@@ -16,6 +16,7 @@ import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
 import { tierLabelForDisplay, toContextTierKey, type Tier } from "@/lib/credits";
 import {
   creditsExhaustedBlock,
+  generatedImageResolutionSummary,
   type BillingTier,
   type CreditsNoticeReason,
 } from "@/lib/credits-ui-copy";
@@ -2925,6 +2926,9 @@ export default function HomePage() {
                           ? "No hay renovaciones automáticas: compras tokens consumibles."
                           : "No auto-renewal: you buy consumable token packs."}
                       </p>
+                      <p className="meta-line tier-hint-line" style={{ marginTop: 6 }}>
+                        {generatedImageResolutionSummary(isSpanish)}
+                      </p>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
                         <button
                           type="button"
@@ -3414,6 +3418,9 @@ export default function HomePage() {
                       {isSpanish
                         ? "Consulta tu saldo y abre la compra de tokens."
                         : "Check your balance and open token purchase."}
+                    </p>
+                    <p className="meta-line tier-hint-line token-center-message">
+                      {generatedImageResolutionSummary(isSpanish)}
                     </p>
 
                     <div className="token-center-grid">

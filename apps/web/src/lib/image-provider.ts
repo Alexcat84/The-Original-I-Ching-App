@@ -1,4 +1,5 @@
 import type { OracleBoneMedium, OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
+import { toContextTierKey } from "@/lib/credits";
 import {
   buildSumiHexagramSvgDataUrl,
   buildSumiHexagramOverlaySvgDataUrl,
@@ -197,12 +198,28 @@ function compactPrompt(prompt: string, maxLen: number): string {
     .slice(0, maxLen);
 }
 
-function resolveTierSize(tier?: string): { width: number; height: number } {
+function resolveTierSize(lastPack?: string): { width: number; height: number } {
+  const key = lastPack ? toContextTierKey(lastPack) : "free";
   const highRes = new Set(["practitioner", "master"]);
-  if (tier && highRes.has(tier)) {
+  if (highRes.has(key)) {
     return { width: 2688, height: 1536 };
   }
   return { width: 1344, height: 768 };
+}
+
+/** Together AI: dimensions must be multiples of 32 (1184≈1200, 1504≈1500). */
+function resolveTogetherImageSize(lastPack?: string): { width: number; height: number } {
+  const key = lastPack ? toContextTierKey(lastPack) : "free";
+  switch (key) {
+    case "free":
+      return { width: 1024, height: 768 };
+    case "seeker":
+      return { width: 1024, height: 1024 };
+    case "practitioner":
+      return { width: 1184, height: 1184 };
+    case "master":
+      return { width: 1504, height: 1504 };
+  }
 }
 
 async function generateWithFal(prompt: string, width: number, height: number): Promise<string | null> {
@@ -266,15 +283,12 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
       },
     };
   }
-  debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL });
+  debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
   const model =
     process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
-  // Together (FLUX.1-schnell) rechaza valores fuera de 1..12.
-  // Mantenemos un rango seguro para evitar fallback a svg-art.
+  // Together (FLUX.1-schnell) rechaza steps fuera de 1..12.
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "10");
   const steps = Math.min(12, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 10));
-  const w = Math.min(Math.max(512, width), 1024);
-  const h = Math.min(Math.max(512, height), 1024);
   const res = await fetch("https://api.together.xyz/v1/images/generations", {
     method: "POST",
     headers: {
@@ -284,8 +298,8 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
     body: JSON.stringify({
       model,
       prompt: prompt.slice(0, 1500),
-      width: w,
-      height: h,
+      width,
+      height,
       n: 1,
       steps,
       response_format: "url",
@@ -500,14 +514,14 @@ export async function buildImageAsset(params: {
   }
 
   if (provider === "together") {
-    const { url, debug: togetherDebug } = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
+    const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
+    const { url, debug: togetherDebug } = await generateWithTogether(promptForRemote, tw, th);
     debug.together = togetherDebug;
     if (url) {
       const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
         ...overlayBase,
-        // generateWithTogether clamps output size to 512..1024, so we mirror what it uses.
-        outputWidth: Math.min(Math.max(512, tierWidth), 1024),
-        outputHeight: Math.min(Math.max(512, tierHeight), 1024),
+        outputWidth: tw,
+        outputHeight: th,
       });
       return { provider, imageUrl: url, fallbackImageUrl, debug, overlaySvgDataUrl };
     }
@@ -587,12 +601,13 @@ export async function buildOracleBonesImageAsset(params: {
   }
 
   if (provider === "together") {
-    const { url } = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
+    const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
+    const { url } = await generateWithTogether(promptForRemote, tw, th);
     if (url) {
       const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
         patternId: params.patternId,
-        outputWidth: Math.min(Math.max(512, tierWidth), 1024),
-        outputHeight: Math.min(Math.max(512, tierHeight), 1024),
+        outputWidth: tw,
+        outputHeight: th,
       });
       return { provider, imageUrl: url, fallbackImageUrl, overlaySvgDataUrl };
     }
