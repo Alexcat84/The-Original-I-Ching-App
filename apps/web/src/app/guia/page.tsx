@@ -125,6 +125,12 @@ export default async function GuiaRapidaPage() {
               : `$${TOKEN_PACKS.tokens_master_100.price} · ${TOKEN_PACKS.tokens_master_100.tokens} tokens`}
           </li>
         </ul>
+        <p>
+          ⚠️{" "}
+          {isEs
+            ? "Los packs de tokens no son acumulables. Si adquieres un nuevo pack antes de agotar el actual, perderás los tokens restantes. Termina tu pack actual antes de comprar uno nuevo."
+            : "Token packs are not cumulative. If you buy a new pack before finishing the current one, you lose remaining tokens. Finish your current pack before buying another one."}
+        </p>
         <p>{isEs ? "Límites por hilo (control de contexto):" : "Per-thread limits (context control):"}</p>
         <ul>
           <li>

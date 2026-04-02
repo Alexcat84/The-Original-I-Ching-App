@@ -65,6 +65,7 @@ type ConsultResponse = {
   canDeepen: boolean;
   publicReadingId: string;
   publicSessionId: string;
+  remainingCredits?: number;
   sharingPersisted?: boolean;
 };
 
@@ -894,7 +895,6 @@ export default function HomePage() {
   const [tokenBalance, setTokenBalance] = useState<number | null>(null);
   const [pendingUserQuestion, setPendingUserQuestion] = useState<string | null>(null);
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
-  const [tokenStoreBusy, setTokenStoreBusy] = useState(false);
   const [tokenCenterMessage, setTokenCenterMessage] = useState<string | null>(null);
   const [tokenCenterOpen, setTokenCenterOpen] = useState(false);
   const [tokenCenterBusy, setTokenCenterBusy] = useState(false);
@@ -1944,49 +1944,6 @@ export default function HomePage() {
     return true;
   }
 
-  async function openTokenStore() {
-    if (!accessToken) {
-      setError(isSpanish ? "Inicia sesión para comprar tokens." : "Sign in to buy tokens.");
-      return;
-    }
-    setTokenStoreBusy(true);
-    setTokenCenterMessage(null);
-    try {
-      const res = await fetch("/api/account/create-portal-session", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      const data = (await res.json().catch(() => null)) as
-        | { ok?: boolean; url?: string; code?: string; message?: string }
-        | null;
-      if (!res.ok || !data?.ok || !data.url) {
-        if (res.status === 404 || data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
-          setTokenCenterMessage(
-            isSpanish
-              ? "No se pudo abrir la página de compra. Inténtalo de nuevo desde Planes y pagos."
-              : "Could not open purchase page. Try again from Plans and payments.",
-          );
-          return;
-        }
-        setTokenCenterMessage(
-          isSpanish
-            ? "No se pudo abrir el portal. Intenta de nuevo."
-            : "Could not open the portal. Please try again.",
-        );
-        return;
-      }
-      window.location.href = data.url;
-    } catch {
-      setTokenCenterMessage(
-        isSpanish
-          ? "No se pudo abrir el portal. Intenta de nuevo."
-          : "Could not open the portal. Please try again.",
-      );
-    } finally {
-      setTokenStoreBusy(false);
-    }
-  }
-
   async function openTokenCenter() {
     if (!accessToken) {
       setError(isSpanish ? "Inicia sesión para ver tu saldo." : "Sign in to view your balance.");
@@ -2185,6 +2142,7 @@ export default function HomePage() {
           return;
         }
         if (res.status === 402 && data.error === "no_tokens") {
+          setTokenBalance(0);
           setCreditsNotice({
             tier: "free",
             limit: 0,
@@ -2241,6 +2199,12 @@ export default function HomePage() {
         firstConsultationAt: current.firstConsultationAt ?? item.createdAt ?? Date.now(),
       }));
       setPendingUserQuestion(null);
+      if (typeof data.remainingCredits === "number" && Number.isFinite(data.remainingCredits)) {
+        setTokenBalance(data.remainingCredits);
+      } else {
+        // Fallback refresh for cases where response omits balance.
+        window.dispatchEvent(new Event("iching:account-refresh"));
+      }
       const today = new Date().toISOString().slice(0, 10);
       setDailyCount((prev) => {
         const next = prev + 1;
@@ -2952,7 +2916,7 @@ export default function HomePage() {
                           type="button"
                           className="composer-reading-pill"
                           onClick={() => void openTokenCenter()}
-                          disabled={(tokenStoreBusy || tokenCenterBusy) || !accessToken}
+                          disabled={tokenCenterBusy || !accessToken}
                         >
                           {tokenCenterBusy
                             ? isSpanish
@@ -3468,34 +3432,6 @@ export default function HomePage() {
                       <button
                         type="button"
                         className="composer-reading-pill is-active"
-                        onClick={() => void openTokenCenter()}
-                        disabled={tokenCenterBusy}
-                      >
-                        {tokenCenterBusy
-                          ? isSpanish
-                            ? "Actualizando..."
-                            : "Refreshing..."
-                          : isSpanish
-                            ? "Actualizar estado"
-                            : "Refresh status"}
-                      </button>
-                      <button
-                        type="button"
-                        className="composer-reading-pill"
-                        onClick={() => void openTokenStore()}
-                        disabled={tokenStoreBusy || tokenCenterBusy}
-                      >
-                        {tokenStoreBusy
-                          ? isSpanish
-                            ? "Abriendo portal..."
-                            : "Opening portal..."
-                          : isSpanish
-                            ? "Comprar tokens"
-                            : "Buy tokens"}
-                      </button>
-                      <button
-                        type="button"
-                        className="composer-reading-pill is-active"
                         onClick={() => {
                           void (async () => {
                             const ok = await openPlansCheckoutNewTab();
@@ -3514,6 +3450,12 @@ export default function HomePage() {
                         {isSpanish ? "Ver packs" : "View packs"}
                       </button>
                     </div>
+                    <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
+                      ⚠️{" "}
+                      {isSpanish
+                        ? "Los packs de tokens no son acumulables. Si adquieres un nuevo pack antes de agotar el actual, perderás los tokens restantes. Termina tu pack actual antes de comprar uno nuevo."
+                        : "Token packs are not cumulative. If you buy a new pack before finishing the current one, you lose remaining tokens. Finish your current pack before buying another one."}
+                    </p>
                     <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
                       <a href="/guia#planes" target="_blank" rel="noopener noreferrer">
                         {isSpanish
