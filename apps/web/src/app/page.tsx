@@ -2541,90 +2541,27 @@ export default function HomePage() {
           </div>
         ) : null}
         {authReady && !supabaseConfigError && accessToken && authEmail ? (
-          <div
-            className="auth-explore-strip auth-explore-strip--session"
-            style={{
-              display: "grid",
-              position: "relative",
-              gridTemplateColumns: "1fr",
-              alignItems: "center",
-              minHeight: "2.55rem",
-              paddingTop: "0.16rem",
-              paddingBottom: "0.24rem",
-              paddingInline: "1rem",
-              overflow: "hidden",
-            }}
-          >
-            <span
-              className="auth-explore-strip-tier"
-              aria-label={`${ui.plan} ${tierLabelForDisplay(tier)}`}
-              style={{
-                position: "absolute",
-                left: "0.72rem",
-                top: "50%",
-                transform: "translateY(-50%)",
-                height: "2.04rem",
-                display: "inline-flex",
-                alignItems: "center",
-                fontSize: "0.76rem",
-              }}
-            >
-              {ui.plan}: {tierLabelForDisplay(tier)}
-            </span>
-            <div
-              style={{
-                position: "absolute",
-                left: "7.2rem",
-                top: "50%",
-                transform: "translateY(-50%)",
-                display: "inline-flex",
-                alignItems: "center",
-              }}
-            >
+          <div className="auth-explore-strip auth-explore-strip--session">
+            <div className="auth-explore-strip-session__cluster">
+              <span
+                className="auth-explore-strip-tier"
+                aria-label={`${ui.plan} ${tierLabelForDisplay(tier)}`}
+                title={`${ui.plan}: ${tierLabelForDisplay(tier)}`}
+              >
+                {ui.plan}: {tierLabelForDisplay(tier)}
+              </span>
               {localeSelector}
             </div>
-            <span
-              className="auth-explore-strip-email"
-              title={authEmail}
-              style={{
-                height: "2.04rem",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: 700,
-                fontSize: "0.79rem",
-                width: "100%",
-                paddingInline: "12rem 5.6rem",
-              }}
-            >
+            <span className="auth-explore-strip-email" title={authEmail}>
               {authEmail}
             </span>
-            <button
-              type="button"
-              className="auth-explore-strip-signout"
-              onClick={() => void signOut()}
-              style={{
-                position: "absolute",
-                right: "0.72rem",
-                top: "calc(50% - 12px)",
-                transform: "translateY(-50%)",
-                height: "2.04rem",
-                display: "inline-flex",
-                alignItems: "center",
-                lineHeight: 1,
-                padding: "0 0.62rem",
-                fontSize: "0.76rem",
-              }}
-            >
+            <button type="button" className="auth-explore-strip-signout" onClick={() => void signOut()}>
               {ui.signOut}
             </button>
           </div>
         ) : null}
         <header className="chat-app-bar oracle-intro" style={{ marginBottom: 0, paddingBottom: 0 }}>
-          <div
-            className="chat-app-bar-row chat-app-bar-row--top"
-            style={{ minHeight: "2.45rem", paddingTop: "0.3rem", paddingBottom: "0.2rem" }}
-          >
+          <div className="chat-app-bar-row chat-app-bar-row--top">
             <div className="chat-bar-lead">
               <button
                 type="button"
@@ -2642,9 +2579,8 @@ export default function HomePage() {
                 src="/brand/logo.png"
                 alt="The Original I Ching App — 真正的易经"
                 className="chat-header-logo"
-                width={268}
-                height={78}
                 decoding="async"
+                fetchPriority="high"
               />
             </div>
             <div className="chat-bar-trail chat-bar-trail--top">
@@ -2660,7 +2596,7 @@ export default function HomePage() {
               paddingLeft: 0,
               paddingRight: 0,
               marginBottom: 0,
-              gap: "0.02rem",
+              gap: 0,
               background: "transparent",
               width: "100%",
               marginLeft: 0,
@@ -2681,6 +2617,8 @@ export default function HomePage() {
                   "linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, var(--secondary-bg)) 0%, color-mix(in srgb, var(--accent) 10%, var(--secondary-bg)) 100%)",
                 border: "1px solid color-mix(in srgb, var(--accent) 68%, var(--input-border))",
                 color: "var(--fg)",
+                paddingTop: "0.04rem",
+                paddingBottom: "0.04rem",
                 paddingLeft: "calc((100vw - 100%) / 2 + 0.6rem)",
                 paddingRight: "calc((100vw - 100%) / 2 + 0.6rem)",
                 boxSizing: "border-box",

@@ -333,6 +333,19 @@ body {
   border-bottom: none;
   box-shadow: none;
   z-index: 20;
+  padding: 0;
+  margin: 0;
+}
+
+/* Stack logo row + I CHING ribbon with zero vertical seam (no gap between flex children) */
+header.chat-app-bar.oracle-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  row-gap: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .chat-app-bar-row {
@@ -344,10 +357,39 @@ body {
   min-height: 2.9rem;
 }
 
-/* Top row: Chats + logo + theme; logo does not steal clicks from side controls */
+/* Top row: center controls vertically; header column gap:0 keeps I CHING ribbon flush below */
 .chat-app-bar-row--top {
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  min-height: 0;
+  padding-top: 0.12rem;
+  padding-bottom: 0;
+  padding-left: 0.65rem;
+  padding-right: 0.65rem;
+  flex-shrink: 0;
+}
+
+.chat-app-bar-row--top > .chat-bar-lead,
+.chat-app-bar-row--top > .chat-bar-trail {
+  flex: 0 0 auto;
+}
+
+.chat-app-bar-row--top > .chat-title-logo-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Shorter controls so a tall logo is not padded out by button line-boxes */
+.chat-app-bar-row--top .chat-icon-btn {
+  padding: 0.32rem 0.62rem;
+  line-height: 1.2;
+  font-size: 0.84rem;
 }
 
 .chat-bar-trail--top {
@@ -361,21 +403,22 @@ body {
   justify-content: center;
   align-items: center;
   min-width: 0;
-  justify-self: stretch;
-  max-width: 100%;
-  pointer-events: none;
-}
-
-.chat-app-bar-row--top .chat-title-logo-wrap {
   justify-self: center;
+  width: fit-content;
+  max-width: min(460px, 94vw);
+  height: fit-content;
+  line-height: 0;
+  pointer-events: none;
 }
 
 .chat-header-logo {
   display: block;
-  height: clamp(2.85rem, 11vw, 4.55rem);
+  height: clamp(3.15rem, 12.5vw, 5.1rem);
   width: auto;
-  max-width: min(400px, 92vw);
+  max-width: min(460px, 94vw);
+  max-height: clamp(3.15rem, 12.5vw, 5.1rem);
   object-fit: contain;
+  object-position: center center;
   pointer-events: none;
 }
 
@@ -441,13 +484,15 @@ html:not([data-theme]) .chat-title-display {
 }
 
 .chat-app-brand {
-  padding: 0.12rem 0.72rem 0;
+  margin: 0;
+  padding: 0;
   border-top: none;
   background: transparent;
   display: flex;
   flex-direction: column;
-  gap: 0.02rem;
+  gap: 0;
   border-radius: 0;
+  flex-shrink: 0;
 }
 
 .oracle-brand-line {
@@ -456,7 +501,8 @@ html:not([data-theme]) .chat-title-display {
   align-items: center;
   gap: 0.4rem 0.56rem;
   min-width: 0;
-  padding: 0.12rem 0.4rem;
+  padding: 0.08rem 0.4rem;
+  margin: 0;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--bar-border) 88%, var(--accent));
   background: linear-gradient(
@@ -918,6 +964,8 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  margin-top: 0;
+  padding-top: 0;
   background: var(--chat-pattern-bg);
   border-radius: 0;
   overflow: hidden;
@@ -932,6 +980,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
   padding: 0 0.85rem 0.5rem;
+  margin-top: 0;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
@@ -1925,6 +1974,26 @@ button:disabled {
 
 .reading-grid--bones-solo {
   grid-template-columns: 1fr;
+  margin-top: 0.08rem;
+  gap: 0.5rem;
+}
+
+/* Pull oracle-bones card + image up under the I CHING ribbon */
+.reading-grid--bones-solo .hexagram-card {
+  padding-top: 0.45rem;
+  padding-bottom: 0.65rem;
+}
+
+.reading-grid--bones-solo .hexagram-card h3 {
+  margin: 0 0 0.2rem;
+}
+
+.reading-grid--bones-solo .hexagram-card .meta-line {
+  margin: 0.15rem 0 0.3rem;
+}
+
+.reading-grid--bones-solo .bones-background-pane {
+  margin-top: 0;
 }
 
 .reading-grid--image-only {
@@ -3040,14 +3109,28 @@ html[data-theme="dark"] .locale-select option {
   color: #dff7f5;
 }
 
+/* Logged-in strip: flex (no fixed left offsets — long plan names must not overlap Idioma) */
 .auth-explore-strip--session {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center !important;
-  column-gap: 0.55rem;
-  min-height: 2.1rem;
-  padding-top: 0.08rem;
-  padding-bottom: 0.08rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.5rem;
+  row-gap: 0.35rem;
+  min-height: 0;
+  padding: 0.32rem 0.65rem;
+  overflow: visible;
+}
+
+.auth-explore-strip-session__cluster {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.5rem;
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .auth-explore-strip-tier {
@@ -3058,31 +3141,33 @@ html[data-theme="dark"] .locale-select option {
   color: var(--accent);
   font-size: 0.76rem;
   font-weight: 600;
-  line-height: 1;
-  height: 1.9rem;
-  padding: 0 0.62rem;
+  line-height: 1.15;
+  min-height: 1.9rem;
+  padding: 0.2rem 0.62rem;
   border-radius: 999px;
   white-space: nowrap;
-  justify-self: start;
-  align-self: center !important;
-  transform: translateY(0);
+  max-width: min(100%, 52vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .auth-explore-strip-email {
-  max-width: min(100%, 19rem);
+  flex: 1 1 12rem;
+  min-width: 0;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.79rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.15;
   color: var(--fg-muted);
   display: inline-flex;
   align-items: center;
-  height: 1.9rem;
-  justify-self: center;
+  justify-content: center;
+  min-height: 1.9rem;
   text-align: center;
-  align-self: center !important;
+  padding-inline: 0.25rem;
 }
 
 .auth-explore-strip-signout {
@@ -3093,14 +3178,27 @@ html[data-theme="dark"] .locale-select option {
   color: var(--accent);
   font-size: 0.76rem;
   font-weight: 600;
-  line-height: 1;
-  height: 1.9rem;
+  line-height: 1.15;
+  min-height: 1.9rem;
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  justify-self: end;
-  transform: translateY(0);
-  align-self: center !important;
+}
+
+@media (min-width: 640px) {
+  .auth-explore-strip--session {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  .auth-explore-strip-tier {
+    max-width: min(100%, 14rem);
+  }
+
+  .auth-explore-strip-email {
+    flex: 1 1 auto;
+    max-width: min(22rem, 36vw);
+  }
 }
 
 .auth-explore-strip-signout:hover {
