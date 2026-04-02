@@ -1318,6 +1318,12 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   box-shadow: none;
 }
 
+.composer-panel-divider {
+  margin: 0.75rem 0 0.65rem;
+  border: none;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
 .composer-doc-links {
   display: flex;
   flex-direction: column;

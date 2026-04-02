@@ -1018,12 +1018,11 @@ export default function HomePage() {
   }, [sessions, activeSessionLocalId]);
   const activeThread = activeSession?.thread ?? [];
   const result = activeThread.at(-1) ?? null;
-  const threadDepthCap = useMemo(
-    () => Math.max(1, activeSession?.threadMaxDepth ?? monthlyCreditsLimit),
-    [activeSession?.threadMaxDepth, monthlyCreditsLimit],
-  );
-  const threadLimitReached =
-    activeThread.length > 0 && result !== null && !result.canDeepen;
+  /** Per-thread cap from current plan (`/api/account/me` session_limit). API enforces this, not the DB session row. */
+  const planThreadLimit = Math.max(1, monthlyCreditsLimit);
+  const threadDepthCap = planThreadLimit;
+  const threadDepthCanDeepen = Boolean(result && result.sessionPosition < planThreadLimit);
+  const threadLimitReached = activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
   const preferredTwoFactorMethod: "totp" | "email" = twoFactorMethod === "email" ? "email" : "totp";
   const allowsTotpChallenge = twoFactorMethod !== "email";
   const allowsEmailChallenge = twoFactorMethod !== "totp";
@@ -1328,13 +1327,9 @@ export default function HomePage() {
         if (!res.ok) return;
         const payload = (await res.json()) as AccountChatSessionResponse;
         if (!payload?.session) return;
-        const positions = payload.consultations.map((c) => c.sessionPosition);
-        const threadMax =
-          typeof payload.session.maxConsultations === "number" && payload.session.maxConsultations > 0
-            ? payload.session.maxConsultations
-            : Math.max(positions.length ? Math.max(...positions) : 1, 1);
+        const planCap = Math.max(1, monthlyCreditsLimit);
         const thread = payload.consultations.map((c) =>
-          mapApiConsultationToItem(c, payload.session.publicId, threadMax),
+          mapApiConsultationToItem(c, payload.session.publicId, planCap),
         );
         setSessions((prev) =>
           prev.map((s) => {
@@ -1349,7 +1344,7 @@ export default function HomePage() {
                   : (thread[0]?.question.slice(0, 60) ?? (isSpanish ? "Consulta" : "Consultation")),
               sessionId: payload.session.sessionId,
               publicSessionId: payload.session.publicId,
-              threadMaxDepth: threadMax,
+              threadMaxDepth: planCap,
               thread,
               messageCount: Math.max(thread.length, s.messageCount),
               updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
@@ -1361,7 +1356,7 @@ export default function HomePage() {
         // ignore network errors
       }
     },
-    [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish],
+    [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish, monthlyCreditsLimit],
   );
   const removeSession = useCallback(
     async (session: ChatSessionState) => {
@@ -2989,48 +2984,52 @@ export default function HomePage() {
                       </div>
                     </div>
                     {activeThread.length > 0 && result ? (
-                      <div
-                        className="session-progress session-progress--thread-depth"
-                        role="region"
-                        aria-label={isSpanish ? "Profundidad del hilo activo" : "Active thread depth"}
-                      >
-                        <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
-                        <p className="meta-line tier-hint-line">
-                          {isSpanish ? "Plan " : "Plan "}
-                          <strong>{tierLabelForDisplay(tier)}</strong>
-                          {isSpanish
-                            ? ` · este hilo admite hasta ${threadDepthCap} lectura(s) encadenada(s) (incluye la primera).`
-                            : ` · this thread allows up to ${threadDepthCap} chained reading(s) (including the first).`}
-                        </p>
+                      <>
+                        <hr className="composer-panel-divider" aria-hidden />
                         <div
-                          className="session-progress-bar session-progress-bar--prominent"
-                          role="progressbar"
-                          aria-valuemin={0}
-                          aria-valuemax={threadDepthCap}
-                          aria-valuenow={result.sessionPosition}
-                          aria-label={
-                            isSpanish
-                              ? `Lectura ${result.sessionPosition} de ${threadDepthCap}`
-                              : `Reading ${result.sessionPosition} of ${threadDepthCap}`
-                          }
+                          className="session-progress session-progress--thread-depth"
+                          role="region"
+                          aria-label={isSpanish ? "Profundidad del hilo activo" : "Active thread depth"}
                         >
+                          <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
+                          <p className="meta-line tier-hint-line">
+                            {isSpanish ? "Plan " : "Plan "}
+                            <strong>{tierLabelForDisplay(tier)}</strong>
+                            {isSpanish
+                              ? ` · este hilo admite hasta ${threadDepthCap} lectura(s) encadenada(s) (incluye la primera).`
+                              : ` · this thread allows up to ${threadDepthCap} chained reading(s) (including the first).`}
+                          </p>
                           <div
-                            className="session-progress-fill"
-                            style={{
-                              width: `${Math.min(100, (result.sessionPosition / threadDepthCap) * 100)}%`,
-                            }}
-                          />
+                            className="session-progress-bar session-progress-bar--prominent"
+                            role="progressbar"
+                            aria-valuemin={0}
+                            aria-valuemax={threadDepthCap}
+                            aria-valuenow={result.sessionPosition}
+                            aria-label={
+                              isSpanish
+                                ? `Lectura ${result.sessionPosition} de ${threadDepthCap}`
+                                : `Reading ${result.sessionPosition} of ${threadDepthCap}`
+                            }
+                          >
+                            <div
+                              className="session-progress-fill"
+                              style={{
+                                width: `${Math.min(100, (result.sessionPosition / threadDepthCap) * 100)}%`,
+                              }}
+                            />
+                          </div>
+                          <small>
+                            {threadDepthStatusLine(
+                              isSpanish,
+                              threadDepthCanDeepen,
+                              threadDepthCap,
+                              result.sessionPosition,
+                            )}
+                          </small>
                         </div>
-                        <small>
-                          {threadDepthStatusLine(
-                            isSpanish,
-                            result.canDeepen,
-                            threadDepthCap,
-                            result.sessionPosition,
-                          )}
-                        </small>
-                      </div>
+                      </>
                     ) : null}
+                    <hr className="composer-panel-divider" aria-hidden />
                     <div className="session-progress" role="group" aria-label="Gestión de tokens">
                       <span>{isSpanish ? "Tokens" : "Tokens"}</span>
                       <p className="meta-line tier-hint-line">
@@ -3062,6 +3061,7 @@ export default function HomePage() {
                         </p>
                       ) : null}
                     </div>
+                    <hr className="composer-panel-divider" aria-hidden />
                     <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
                       <span>{isSpanish ? "Seguridad (2FA opcional)" : "Security (optional 2FA)"}</span>
                       <p className="meta-line tier-hint-line">
@@ -3109,7 +3109,7 @@ export default function HomePage() {
                         ) : null}
                       </div>
                     </div>
-                    {activeThread.length > 0 && result?.canDeepen ? (
+                    {activeThread.length > 0 && threadDepthCanDeepen ? (
                       <p className="meta-line composer-hint-line">
                         {isSpanish ? "Siguiente mensaje sigue en este hilo." : "Your next message continues in this thread."}
                       </p>
