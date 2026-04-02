@@ -372,9 +372,9 @@ body {
 
 .chat-header-logo {
   display: block;
-  height: clamp(2.45rem, 9.5vw, 3.95rem);
+  height: clamp(2.85rem, 11vw, 4.55rem);
   width: auto;
-  max-width: min(340px, 88vw);
+  max-width: min(400px, 92vw);
   object-fit: contain;
   pointer-events: none;
 }
