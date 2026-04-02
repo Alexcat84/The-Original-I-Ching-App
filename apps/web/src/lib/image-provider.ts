@@ -78,8 +78,7 @@ function buildOracleBonesSymbolOverlaySvgDataUrl(params: {
   const W = Math.max(1, Math.round(params.outputWidth));
   const H = Math.max(1, Math.round(params.outputHeight));
   const cx = W / 2;
-  /** Same relative position as legacy 1344×768 layout (y ≈ 52% of height). */
-  const baselineY = Math.round((400 / 768) * H);
+  const cy = H / 2;
   const idPrefix = `obov${params.verdict.replace(/_/g, "")}`;
   const gStyle = oracleBonesVerdictGlyphSvgStyle(params.verdict, idPrefix);
   const filterId = `${idPrefix}-glow`;
@@ -97,7 +96,7 @@ function buildOracleBonesSymbolOverlaySvgDataUrl(params: {
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
 </defs>
-<text x="${cx}" y="${baselineY}" text-anchor="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${strokeW}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
+<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${strokeW}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
 </svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
@@ -142,8 +141,8 @@ function buildOracleBonesMockSvgString(params: {
   const escaped = escapeXmlOracleOverlay(glyph);
   const fontSize = glyph.length > 1 ? Math.round(H * 0.175) : Math.round(Math.min(W, H) * 0.28);
   const letterSpacing = glyph.length > 1 ? Math.round(W * 0.014) : 0;
-  const tcx = bx + bw / 2;
-  const tcy = by + bh * 0.58;
+  const tcx = W / 2;
+  const tcy = H / 2;
   const swGrain = Math.max(1, W * 0.001);
   const swGrain2 = Math.max(0.8, W * 0.0007);
   const swStroke = Math.max(2, W * 0.002);
@@ -169,7 +168,7 @@ function buildOracleBonesMockSvgString(params: {
   <path fill="none" stroke="rgba(200,180,140,${grainA})" stroke-width="${swGrain}" stroke-linecap="round" d="M0 ${Math.round(H * (0.22 + rng() * 0.12))} Q${Math.round(W * 0.35)} ${Math.round(H * (0.38 + rng() * 0.06))} ${Math.round(W * 0.55)} ${Math.round(H * (0.32 + rng() * 0.08))} T${W} ${Math.round(H * (0.25 + rng() * 0.08))}"/>
   <path fill="none" stroke="rgba(160,140,110,${grainB})" stroke-width="${swGrain2}" stroke-linecap="round" d="M0 ${Math.round(H * (0.68 + rng() * 0.08))} Q${Math.round(W * 0.42)} ${Math.round(H * (0.75 + rng() * 0.04))} ${Math.round(W * 0.72)} ${Math.round(H * (0.7 + rng() * 0.06))} T${W} ${Math.round(H * (0.78 + rng() * 0.05))}"/>
   <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}" fill="url(#${gradId})" stroke="${stroke}" stroke-width="${swStroke}"/>
-  <text x="${tcx}" y="${tcy}" text-anchor="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${swTextStroke}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
+  <text x="${tcx}" y="${tcy}" text-anchor="middle" dominant-baseline="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${swTextStroke}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
 </svg>`;
 }
 
