@@ -904,8 +904,8 @@ export default function HomePage() {
   }, []);
   const knownInProgressTitles = useMemo(() => new Set<string>(["Consulta en progreso", "Consultation in progress"]), []);
   const [tier, setTier] = useState<Tier>("free");
-  /** Per-thread reading cap from `/api/account/me` `session_limit` (not monthly billing). */
-  const [monthlyCreditsLimit, setMonthlyCreditsLimit] = useState(1);
+  /** Per-thread reading cap from `/api/account/me` (`session_limit`, from pack / tier). */
+  const [accountSessionLimit, setAccountSessionLimit] = useState(1);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
@@ -1019,7 +1019,7 @@ export default function HomePage() {
   const activeThread = activeSession?.thread ?? [];
   const result = activeThread.at(-1) ?? null;
   /** Per-thread cap from current plan (`/api/account/me` session_limit). API enforces this, not the DB session row. */
-  const planThreadLimit = Math.max(1, monthlyCreditsLimit);
+  const planThreadLimit = Math.max(1, accountSessionLimit);
   const threadDepthCap = planThreadLimit;
   const threadDepthCanDeepen = Boolean(result && result.sessionPosition < planThreadLimit);
   const threadLimitReached = activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
@@ -1327,7 +1327,7 @@ export default function HomePage() {
         if (!res.ok) return;
         const payload = (await res.json()) as AccountChatSessionResponse;
         if (!payload?.session) return;
-        const planCap = Math.max(1, monthlyCreditsLimit);
+        const planCap = Math.max(1, accountSessionLimit);
         const thread = payload.consultations.map((c) =>
           mapApiConsultationToItem(c, payload.session.publicId, planCap),
         );
@@ -1356,7 +1356,7 @@ export default function HomePage() {
         // ignore network errors
       }
     },
-    [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish, monthlyCreditsLimit],
+    [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish, accountSessionLimit],
   );
   const removeSession = useCallback(
     async (session: ChatSessionState) => {
@@ -1465,7 +1465,7 @@ export default function HomePage() {
   useEffect(() => {
     if (!accessToken) {
       setTier("free");
-      setMonthlyCreditsLimit(1);
+      setAccountSessionLimit(1);
       setTokenBalance(null);
       setTwoFactorEnabled(false);
       setTwoFactorMethod(null);
@@ -1494,7 +1494,7 @@ export default function HomePage() {
           const lastPack = typeof j.last_pack === "string" ? j.last_pack : "free";
           setTier(lastPack as Tier);
           if (typeof j.session_limit === "number" && Number.isFinite(j.session_limit)) {
-            setMonthlyCreditsLimit(j.session_limit);
+            setAccountSessionLimit(j.session_limit);
           }
           setTokenBalance(typeof j.tokens_available === "number" ? j.tokens_available : null);
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
@@ -2050,7 +2050,7 @@ export default function HomePage() {
       }
       if (typeof data.last_pack === "string") setTier(data.last_pack as Tier);
       if (typeof data.tokens_available === "number") setTokenBalance(data.tokens_available);
-      if (typeof data.session_limit === "number") setMonthlyCreditsLimit(data.session_limit);
+      if (typeof data.session_limit === "number") setAccountSessionLimit(data.session_limit);
       if (typeof data.tokens_available === "number" && data.tokens_available <= 0) {
         if (data.last_pack === "free") {
           setTokenCenterMessage(
@@ -3530,7 +3530,7 @@ export default function HomePage() {
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
                         <span>{isSpanish ? "Límite por hilo:" : "Thread limit:"}</span>{" "}
-                        <strong>{monthlyCreditsLimit}</strong>
+                        <strong>{accountSessionLimit}</strong>
                       </p>
                     </div>
 
