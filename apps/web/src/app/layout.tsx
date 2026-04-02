@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
 import SessionDocLocaleBridge from "@/components/SessionDocLocaleBridge";
+import { ChatSessionProvider } from "@/providers/chat-session-provider";
 import { rootFontClassName } from "@/lib/google-fonts-root";
 import "@fontsource/noto-serif-sc/700.css";
 import "./globals.css";
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <RevenueCatSupabaseSync />
         <SessionDocLocaleBridge />
-        {children}
+        <ChatSessionProvider>{children}</ChatSessionProvider>
         <Analytics />
         <SpeedInsights />
       </body>

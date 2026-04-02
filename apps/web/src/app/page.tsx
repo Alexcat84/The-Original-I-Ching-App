@@ -30,6 +30,8 @@ import {
   type CreditsNoticeReason,
 } from "@/lib/credits-ui-copy";
 import { FREE_TIER_MARKETING, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
+import type { ChatSessionState } from "@/lib/chat-session-state";
+import { useChatSessionState } from "@/providers/chat-session-provider";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -682,19 +684,6 @@ function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
   };
   return mapByLocale[locale][v];
 }
-type ChatSessionState = {
-  localId: string;
-  title: string;
-  sessionId: string | null;
-  /** Last known public id for /s/… links (synced from API). */
-  publicSessionId: string | null;
-  thread: ConsultationItem[];
-  /** Max chained readings for this thread; from API / DB `max_consultations`. */
-  threadMaxDepth: number | null;
-  messageCount: number;
-  updatedAt: number;
-  firstConsultationAt: number | null;
-};
 
 type ApiChatSession = {
   sessionId: string;
@@ -765,7 +754,7 @@ function newClientUuid(): string {
   });
 }
 
-function createLocalSession(title = "Nueva sesión"): ChatSessionState {
+function createLocalSession(title = "Nueva sesión"): ChatSessionState<ConsultationItem> {
   return {
     localId: `sess-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
     title,
@@ -926,9 +915,16 @@ export default function HomePage() {
   const [phase, setPhase] = useState<"idle" | "coins" | "bones" | "reading">("idle");
   const [coinTick, setCoinTick] = useState(0);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
-  const [sessions, setSessions] = useState<ChatSessionState[]>([]);
-  const [activeSessionLocalId, setActiveSessionLocalId] = useState<string | null>(null);
-  const [sessionsHydrated, setSessionsHydrated] = useState(false);
+  const {
+    sessions,
+    setSessions,
+    activeSessionLocalId,
+    setActiveSessionLocalId,
+    sessionsHydrated,
+    setSessionsHydrated,
+    setPersistenceKeys,
+    hydrateFromStorage,
+  } = useChatSessionState<ConsultationItem>();
   const [error, setError] = useState<string | null>(null);
   const [creditsNotice, setCreditsNotice] = useState<{
     tier: BillingTier;
@@ -1037,6 +1033,10 @@ export default function HomePage() {
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
   const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;
   const chatStateCacheKey = authUserId ? `iching_chat_state_v1:${authUserId}` : null;
+
+  useEffect(() => {
+    setPersistenceKeys(summaryCacheKey, chatStateCacheKey);
+  }, [summaryCacheKey, chatStateCacheKey, setPersistenceKeys]);
 
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
@@ -1291,7 +1291,9 @@ export default function HomePage() {
     doc.save(`${fileBase}.pdf`);
   }
 
-  const updateActiveSession = (updater: (current: ChatSessionState) => ChatSessionState) => {
+  const updateActiveSession = (
+    updater: (current: ChatSessionState<ConsultationItem>) => ChatSessionState<ConsultationItem>,
+  ) => {
     setSessions((prev) =>
       prev.map((s) => {
         if (s.localId !== activeSession?.localId) return s;
@@ -1395,7 +1397,7 @@ export default function HomePage() {
     [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish, accountSessionLimit],
   );
   const removeSession = useCallback(
-    async (session: ChatSessionState) => {
+    async (session: ChatSessionState<ConsultationItem>) => {
       if (!accessToken || !session.sessionId) return;
       const ok = window.confirm(
         isSpanish
@@ -1576,61 +1578,44 @@ export default function HomePage() {
   }, [accessToken, authUserId, preferredTwoFactorMethod, twoFactorEnabled]);
 
   useEffect(() => {
+    if (sessionsHydrated) return;
+    if (sessions.length > 0) {
+      setSessionsHydrated(true);
+      return;
+    }
+    if (!authReady) return;
+    if (accessToken) {
+      setSessionsHydrated(true);
+      return;
+    }
     const fresh = createLocalSession(inProgressTitle);
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
     setSessionsHydrated(true);
-  }, [inProgressTitle]);
+  }, [
+    authReady,
+    accessToken,
+    inProgressTitle,
+    sessions.length,
+    sessionsHydrated,
+    setSessions,
+    setActiveSessionLocalId,
+    setSessionsHydrated,
+  ]);
 
   useEffect(() => {
     if (!authReady) return;
     if (accessToken) return;
+    if (sessions.length === 1 && sessions[0]?.messageCount === 0) return;
     const fresh = createLocalSession(inProgressTitle);
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
-  }, [authReady, accessToken, inProgressTitle]);
+  }, [authReady, accessToken, inProgressTitle, sessions, setSessions, setActiveSessionLocalId]);
 
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
     let cancelled = false;
-    if (chatStateCacheKey) {
-      try {
-        const stateRaw = sessionStorage.getItem(chatStateCacheKey);
-        if (stateRaw) {
-          const state = JSON.parse(stateRaw) as { sessions?: ChatSessionState[]; activeSessionLocalId?: string | null };
-          if (Array.isArray(state.sessions) && state.sessions.length > 0) {
-            setSessions(
-              state.sessions.map((s) => ({
-                ...s,
-                threadMaxDepth: s.threadMaxDepth ?? null,
-              })),
-            );
-            setActiveSessionLocalId(state.activeSessionLocalId ?? state.sessions[0]?.localId ?? null);
-          }
-        }
-      } catch {
-        // ignore chat state cache hydration errors
-      }
-    }
-    if (summaryCacheKey) {
-      try {
-        const cachedRaw = sessionStorage.getItem(summaryCacheKey);
-        if (cachedRaw) {
-          const cached = JSON.parse(cachedRaw) as ChatSessionState[];
-          if (Array.isArray(cached) && cached.length > 0) {
-            setSessions(
-              cached.map((s) => ({
-                ...s,
-                threadMaxDepth: s.threadMaxDepth ?? null,
-              })),
-            );
-            setActiveSessionLocalId(cached[0]?.localId ?? null);
-          }
-        }
-      } catch {
-        // ignore cache hydration errors
-      }
-    }
+    hydrateFromStorage(summaryCacheKey, chatStateCacheKey);
     void (async () => {
       try {
         const res = await fetch("/api/account/chats?summary=1", {
@@ -1650,7 +1635,7 @@ export default function HomePage() {
         const payload = (await res.json()) as AccountChatsSummaryResponse;
         if (cancelled || !payload) return;
         const hydrated = payload.sessions
-          .map((entry): ChatSessionState => {
+          .map((entry): ChatSessionState<ConsultationItem> => {
             return {
               localId: `db-${entry.session.sessionId}`,
               title:
@@ -1705,43 +1690,18 @@ export default function HomePage() {
     return () => {
       cancelled = true;
     };
-  }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish, loadSessionThread, summaryCacheKey, chatStateCacheKey]);
-
-  useEffect(() => {
-    if (!sessionsHydrated) return;
-    if (!summaryCacheKey) return;
-    const entries = sessions.filter((s) => s.messageCount > 0).map((s) => ({ ...s, thread: [] }));
-    try {
-      if (entries.length === 0) {
-        sessionStorage.removeItem(summaryCacheKey);
-      } else {
-        sessionStorage.setItem(summaryCacheKey, JSON.stringify(entries));
-      }
-    } catch {
-      // ignore cache persistence errors
-    }
-  }, [sessions, summaryCacheKey, sessionsHydrated]);
-
-  useEffect(() => {
-    if (!sessionsHydrated) return;
-    if (!chatStateCacheKey) return;
-    const entries = sessions.filter((s) => s.messageCount > 0);
-    try {
-      if (entries.length === 0) {
-        sessionStorage.removeItem(chatStateCacheKey);
-      } else {
-        sessionStorage.setItem(
-          chatStateCacheKey,
-          JSON.stringify({
-            sessions: entries,
-            activeSessionLocalId,
-          }),
-        );
-      }
-    } catch {
-      // ignore state cache persistence errors
-    }
-  }, [sessions, activeSessionLocalId, chatStateCacheKey, sessionsHydrated]);
+  }, [
+    authReady,
+    accessToken,
+    sessionsHydrated,
+    knownInProgressTitles,
+    knownNewSessionTitles,
+    isSpanish,
+    loadSessionThread,
+    summaryCacheKey,
+    chatStateCacheKey,
+    hydrateFromStorage,
+  ]);
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
