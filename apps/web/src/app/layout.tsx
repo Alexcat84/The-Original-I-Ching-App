@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
 import SessionDocLocaleBridge from "@/components/SessionDocLocaleBridge";
 import { rootFontClassName } from "@/lib/google-fonts-root";
+import "@fontsource/noto-serif-sc/700.css";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";

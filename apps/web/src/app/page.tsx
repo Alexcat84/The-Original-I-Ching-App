@@ -5,6 +5,7 @@ import { commonStrings, DEFAULT_LOCALE, SUPPORTED_LOCALES, type AppLocale } from
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
+import { OracleBonesVerdictOverlay } from "@/components/OracleBonesVerdictOverlay";
 import { OracleInterpretationMarkdown } from "@/components/OracleInterpretationMarkdown";
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
@@ -661,7 +662,7 @@ function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
       auspicious_moderate: "吉 — 中度吉",
       inauspicious_moderate: "凶 — 中度凶",
       inauspicious_clear: "凶 — 明确凶（负向命题）",
-      silent: "无明确答案 — 祖灵沉默",
+      silent: "沉默 — 无明确答案 — 祖灵沉默",
     },
     ko: {
       auspicious_clear: "吉 — 뚜렷한 길(긍정 전하)",
@@ -2746,12 +2747,7 @@ export default function HomePage() {
                             imageAlt={symbolicImageAlt}
                           />
                           {entry.imageUrl.startsWith("data:image/svg+xml") ? (
-                            <div className="bones-symbol-overlay" aria-hidden="true">
-                              <CrackPatternGraphic
-                                patternId={entry.oracleBones.patternId}
-                                variant="overlay"
-                              />
-                            </div>
+                            <OracleBonesVerdictOverlay verdict={entry.oracleBones.verdict} />
                           ) : null}
                         </div>
                         <div className="crack-visual-wrap crack-visual-wrap--summary">
