@@ -11,7 +11,11 @@ import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
-import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
+import {
+  buildCanvasReadingLines,
+  drawPdfContinuationChrome,
+  interpretationMarkdownToPdfBlocks,
+} from "@/lib/pdf-chat-export";
 import { tierLabelForDisplay, type Tier } from "@/lib/credits";
 import {
   creditsExhaustedBlock,
@@ -1115,11 +1119,12 @@ export default function HomePage() {
       const entry = activeThread[i]!;
       if (i > 0) doc.addPage();
 
-      const canvas = document.createElement("canvas");
+      let canvas = document.createElement("canvas");
       canvas.width = pageW;
       canvas.height = pageH;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) continue;
+      const ctxInit = canvas.getContext("2d");
+      if (!ctxInit) continue;
+      let ctx: CanvasRenderingContext2D = ctxInit;
 
       // Background and subtle bands.
       ctx.fillStyle = "#f6fbfd";
@@ -1220,34 +1225,61 @@ export default function HomePage() {
       ctx.fillStyle = accent;
       ctx.font = `700 24px ${cjkFont}`;
       ctx.fillText(isEsPdf ? "Lectura" : "Reading", 84, panelY + 44);
+
       const blocks = interpretationMarkdownToPdfBlocks(entry.interpretation);
-      const plain = blocks
-        .map((b) => b.text)
-        .join("\n\n")
-        .replace(/\s+\n/g, "\n")
-        .trim();
-      ctx.fillStyle = "#1f2a36";
-      let readingFontSize = 24;
-      let readingLineHeight = 34;
-      let maxReadingLines = Math.floor((panelH - 112) / readingLineHeight);
-      ctx.font = `500 ${readingFontSize}px ${cjkFont}`;
-      let readingLines = wrapText(ctx, plain, pageW - 168);
-      while (readingLines.length > maxReadingLines && readingFontSize > 16) {
-        readingFontSize -= 1;
-        readingLineHeight = Math.round(readingFontSize * 1.38);
-        maxReadingLines = Math.floor((panelH - 112) / readingLineHeight);
-        ctx.font = `500 ${readingFontSize}px ${cjkFont}`;
-        readingLines = wrapText(ctx, plain, pageW - 168);
-      }
-      readingLines.slice(0, maxReadingLines).forEach((line, index) => {
-        ctx.fillText(line, 84, panelY + 84 + index * readingLineHeight);
-      });
-      if (readingLines.length > maxReadingLines) {
-        ctx.fillText("…", 84, panelY + 84 + maxReadingLines * readingLineHeight);
+      const styledLines = buildCanvasReadingLines(
+        ctx,
+        blocks,
+        pageW - 168,
+        84,
+        cjkFont,
+        accent,
+      );
+
+      const flushCanvasToDoc = () => {
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
+        doc.addImage(dataUrl, "JPEG", 0, 0, 595.28, 841.89, undefined, "FAST");
+      };
+
+      let readingBottom = pageH - 58;
+      let y = panelY + 84;
+      let lineIdx = 0;
+
+      while (lineIdx < styledLines.length) {
+        const sl = styledLines[lineIdx]!;
+        if (y + sl.marginTop + sl.lineHeight > readingBottom) {
+          flushCanvasToDoc();
+          doc.addPage();
+          const nextCanvas = document.createElement("canvas");
+          nextCanvas.width = pageW;
+          nextCanvas.height = pageH;
+          const nctx = nextCanvas.getContext("2d");
+          if (!nctx) break;
+          canvas = nextCanvas;
+          ctx = nctx;
+          const cont = drawPdfContinuationChrome(
+            ctx,
+            pageW,
+            pageH,
+            isEsPdf,
+            i + 1,
+            accent,
+            cjkFont,
+            serifFont,
+          );
+          y = cont.textTopY;
+          readingBottom = cont.textBottomY;
+          continue;
+        }
+        y += sl.marginTop;
+        ctx.font = sl.font;
+        ctx.fillStyle = sl.fillStyle;
+        ctx.fillText(sl.text, sl.x, y);
+        y += sl.lineHeight;
+        lineIdx += 1;
       }
 
-      const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
-      doc.addImage(dataUrl, "JPEG", 0, 0, 595.28, 841.89, undefined, "FAST");
+      flushCanvasToDoc();
     }
 
     doc.save(`${fileBase}.pdf`);

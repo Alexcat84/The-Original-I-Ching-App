@@ -2,7 +2,7 @@ import type { jsPDF } from "jspdf";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 
 export type PdfReadingBlock =
-  | { type: "heading"; text: string }
+  | { type: "heading"; text: string; level: 1 | 2 | 3 }
   | { type: "paragraph"; text: string }
   | { type: "quote"; text: string }
   | { type: "list"; text: string };
@@ -47,14 +47,15 @@ export function interpretationMarkdownToPdfBlocks(markdown: string): PdfReadingB
     }
     flushQuote();
 
-    const h2 = trimmed.match(/^##\s+(.+)$/);
-    if (h2) {
-      blocks.push({ type: "heading", text: cleanInlineMarkdown(h2[1]!) });
-      continue;
-    }
-    const h3 = trimmed.match(/^###\s+(.+)$/);
-    if (h3) {
-      blocks.push({ type: "heading", text: cleanInlineMarkdown(h3[1]!) });
+    const hm = trimmed.match(/^(#{1,6})\s+(.+)$/);
+    if (hm) {
+      const n = hm[1]!.length;
+      const level: 1 | 2 | 3 = n <= 1 ? 1 : n === 2 ? 2 : 3;
+      blocks.push({
+        type: "heading",
+        level,
+        text: cleanInlineMarkdown(hm[2]!),
+      });
       continue;
     }
     if (/^[-*]\s+/.test(trimmed)) {
@@ -68,21 +69,193 @@ export function interpretationMarkdownToPdfBlocks(markdown: string): PdfReadingB
       });
       continue;
     }
-    if (trimmed.startsWith("#")) {
-      blocks.push({
-        type: "heading",
-        text: cleanInlineMarkdown(trimmed.replace(/^#+\s*/, "")),
-      });
-      continue;
-    }
     blocks.push({ type: "paragraph", text: cleanInlineMarkdown(trimmed) });
   }
   flushQuote();
   return blocks;
 }
 
+/** Wrapped lines for canvas PDF (uses ctx.measureText; set font before measuring each block). */
+function wrapCanvasText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+  const lines: string[] = [];
+  let line = "";
+  for (const ch of Array.from(text.replace(/\r/g, ""))) {
+    if (ch === "\n") {
+      lines.push(line);
+      line = "";
+      continue;
+    }
+    const test = line + ch;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line.trimEnd());
+      line = ch;
+    } else {
+      line = test;
+    }
+  }
+  if (line.trim().length > 0) lines.push(line.trimEnd());
+  return lines;
+}
+
+export type CanvasReadingLine = {
+  text: string;
+  x: number;
+  font: string;
+  fillStyle: string;
+  lineHeight: number;
+  marginTop: number;
+};
+
+/**
+ * Flatten reading blocks into positioned canvas lines (headings larger / colored vs body).
+ */
+export function buildCanvasReadingLines(
+  ctx: CanvasRenderingContext2D,
+  blocks: PdfReadingBlock[],
+  textMaxWidth: number,
+  baseX: number,
+  cjkFontStack: string,
+  accentHex: string,
+): CanvasReadingLine[] {
+  const out: CanvasReadingLine[] = [];
+  const bodyColor = "#1f2a36";
+  const quoteColor = "#4a5f6b";
+  const h3Color = "#155a66";
+  const quoteIndent = 22;
+
+  const pushLines = (lines: string[], style: Omit<CanvasReadingLine, "text" | "marginTop">, firstMarginTop: number) => {
+    lines.forEach((ln, i) => {
+      out.push({
+        text: ln,
+        ...style,
+        marginTop: i === 0 ? firstMarginTop : 0,
+      });
+    });
+  };
+
+  for (const b of blocks) {
+    if (b.type === "heading") {
+      const level = b.level;
+      const size = level === 1 ? 32 : level === 2 ? 30 : 26;
+      const lh = level === 1 ? 40 : level === 2 ? 38 : 34;
+      const color = level === 3 ? h3Color : accentHex;
+      ctx.font = `700 ${size}px ${cjkFontStack}`;
+      const lines = wrapCanvasText(ctx, b.text, textMaxWidth);
+      const gap =
+        out.length === 0 ? 0 : level === 1 ? 20 : level === 2 ? 18 : 14;
+      pushLines(
+        lines,
+        { x: baseX, font: ctx.font, fillStyle: color, lineHeight: lh },
+        gap,
+      );
+      continue;
+    }
+    if (b.type === "paragraph") {
+      ctx.font = `500 24px ${cjkFontStack}`;
+      const lines = wrapCanvasText(ctx, b.text, textMaxWidth);
+      pushLines(
+        lines,
+        { x: baseX, font: ctx.font, fillStyle: bodyColor, lineHeight: 34 },
+        out.length === 0 ? 0 : 10,
+      );
+      continue;
+    }
+    if (b.type === "quote") {
+      ctx.font = `italic 500 22px ${cjkFontStack}`;
+      const qW = textMaxWidth - quoteIndent;
+      const lines = wrapCanvasText(ctx, b.text, qW);
+      pushLines(
+        lines,
+        {
+          x: baseX + quoteIndent,
+          font: ctx.font,
+          fillStyle: quoteColor,
+          lineHeight: 30,
+        },
+        out.length === 0 ? 0 : 12,
+      );
+      continue;
+    }
+    if (b.type === "list") {
+      ctx.font = `500 24px ${cjkFontStack}`;
+      const bullet = "• ";
+      const bw = ctx.measureText(bullet).width;
+      const firstLines = wrapCanvasText(ctx, b.text, textMaxWidth - bw);
+      if (!firstLines.length) continue;
+      const firstMargin = out.length === 0 ? 0 : 8;
+      out.push({
+        text: `${bullet}${firstLines[0]}`,
+        x: baseX,
+        font: ctx.font,
+        fillStyle: bodyColor,
+        lineHeight: 34,
+        marginTop: firstMargin,
+      });
+      for (let i = 1; i < firstLines.length; i++) {
+        out.push({
+          text: firstLines[i]!,
+          x: baseX + bw,
+          font: ctx.font,
+          fillStyle: bodyColor,
+          lineHeight: 34,
+          marginTop: 0,
+        });
+      }
+    }
+  }
+
+  return out;
+}
+
+/** Continuation page chrome when the reading spans multiple PDF pages. Returns text vertical range. */
+export function drawPdfContinuationChrome(
+  ctx: CanvasRenderingContext2D,
+  pageW: number,
+  pageH: number,
+  isEs: boolean,
+  entryNum: number,
+  accent: string,
+  cjkFont: string,
+  serifFont: string,
+): { textTopY: number; textBottomY: number } {
+  ctx.fillStyle = "#f6fbfd";
+  ctx.fillRect(0, 0, pageW, pageH);
+  ctx.fillStyle = "rgba(30,131,148,0.07)";
+  ctx.fillRect(0, 0, pageW, 112);
+  ctx.fillStyle = "rgba(28,94,122,0.05)";
+  ctx.fillRect(0, 118, pageW, 6);
+
+  ctx.fillStyle = "#17212b";
+  ctx.font = `700 36px ${serifFont}`;
+  ctx.fillText(isEs ? "Consulta del Oráculo" : "Oracle Consultation", 64, 68);
+  ctx.font = `600 22px ${cjkFont}`;
+  ctx.fillStyle = "#36515d";
+  ctx.fillText(
+    isEs
+      ? `Entrada ${entryNum} · Lectura (continuación)`
+      : `Entry ${entryNum} · Reading (continued)`,
+    64,
+    102,
+  );
+
+  const panelTop = 128;
+  const panelBottom = pageH - 52;
+  ctx.fillStyle = "rgba(255,255,255,0.96)";
+  ctx.strokeStyle = "rgba(52,117,145,0.28)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(54, panelTop, pageW - 108, panelBottom - panelTop, 22);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = accent;
+  ctx.font = `700 22px ${cjkFont}`;
+  ctx.fillText(isEs ? "Lectura" : "Reading", 84, panelTop + 34);
+
+  return { textTopY: panelTop + 72, textBottomY: panelBottom - 16 };
+}
+
 const PT_LINE = 13;
-const PT_HEAD = 15;
 const PT_QUOTE = 11.5;
 const PT_LIST = 11.5;
 
@@ -154,12 +327,15 @@ export function drawPdfReadingBlocks(
 
   for (const b of blocks) {
     if (b.type === "heading") {
-      needSpace(PT_HEAD + 10);
+      const level = b.level;
+      const headSize = level === 1 ? 14 : level === 2 ? 12.5 : 11.5;
+      const headLead = level === 1 ? 16 : level === 2 ? 15 : 14;
+      needSpace(headLead + 10);
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(12);
+      doc.setFontSize(headSize);
       const lines = doc.splitTextToSize(b.text, maxW);
       doc.text(lines, margin, y);
-      y += lines.length * PT_HEAD + 6;
+      y += lines.length * headLead + 6;
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
       continue;
