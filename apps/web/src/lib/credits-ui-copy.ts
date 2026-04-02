@@ -1,12 +1,5 @@
 import { FREE_SESSION_LIMIT, getSessionLimit } from "@/lib/token-packs";
 
-/** Marketing line: generated image resolution scales with pack (Together / pipeline). */
-export function generatedImageResolutionSummary(isEs: boolean): string {
-  return isEs
-    ? "La resolución de las imágenes generadas sube con el pack: Free y Seeker — estándar; Practitioner — alta resolución; Master — máxima resolución."
-    : "Generated image resolution increases with your pack: Free and Seeker — standard; Practitioner — high resolution; Master — maximum resolution.";
-}
-
 export type BillingTier = "free" | "seeker" | "practitioner" | "master";
 export type CreditsNoticeReason = "credits_depleted" | "free_lifetime_depleted" | "billing_unavailable";
 

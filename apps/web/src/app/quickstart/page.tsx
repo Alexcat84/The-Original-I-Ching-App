@@ -18,7 +18,10 @@ export default async function QuickStartPage() {
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
         <Link href="/">{isEs ? "← Volver al oráculo" : "← Back to oracle"}</Link> ·{" "}
-        <Link href="/notes">{isEs ? "Notas de métodos" : "Method notes"}</Link>
+        <Link href="/guia">{isEs ? "Guía rápida" : "Quick guide"}</Link> ·{" "}
+        <Link href="/notes">{isEs ? "Notas de métodos" : "Method notes"}</Link> ·{" "}
+        <Link href="/privacy">{isEs ? "Privacidad" : "Privacy"}</Link> ·{" "}
+        <Link href="/terms">{isEs ? "Términos" : "Terms"}</Link>
       </nav>
       <article className="doc-article">
         <h1>{isEs ? "Quickstart: cómo usar la app" : "Quickstart: how to use the app"}</h1>
@@ -70,11 +73,15 @@ export default async function QuickStartPage() {
           <li>{isEs ? "Accedes a enlaces rápidos: notas, privacidad y términos." : "Access quick links: notes, privacy, and terms."}</li>
         </ul>
 
-        <h2>{isEs ? "4) Resultados y exportación" : "4) Results and export"}</h2>
+        <h2>{isEs ? "4) Resultados y copia local" : "4) Results and local copy"}</h2>
         <ul>
           <li>{isEs ? "Cada consulta puede traer interpretación + imagen." : "Each consultation can include interpretation + image."}</li>
-          <li>{isEs ? "Puedes descargar imagen y exportar el chat a PDF." : "You can download images and export chat to PDF."}</li>
-          <li>{isEs ? "Puedes eliminar chats desde el historial." : "You can delete chats from history."}</li>
+          <li>
+            {isEs
+              ? "Si quieres conservar un registro fuera de la app, en Opciones puedes descargar la imagen y exportar el hilo actual a PDF; es opcional y el archivo se guarda en tu dispositivo bajo tu criterio."
+              : "If you want a record outside the app, Options lets you download the image and export the current thread to PDF; this is optional and the file is saved on your device at your discretion."}
+          </li>
+          <li>{isEs ? "Puedes eliminar chats desde el historial (Chats)." : "You can delete chats from history (Chats)."}</li>
         </ul>
       </article>
     </div>

@@ -28,6 +28,9 @@ export default async function TermsPage() {
             ? "Estos términos regulan el acceso y uso de The Original I Ching App. Al usar el servicio, aceptas estos términos."
             : "These terms govern access to and use of The Original I Ching App. By using the service, you accept these terms."}
         </p>
+        <p className="doc-meta" style={{ opacity: 0.85, fontSize: "0.95rem" }}>
+          {isEs ? "Última actualización: 1 de abril de 2026." : "Last updated: April 1, 2026."}
+        </p>
 
         <h2>{isEs ? "1) Naturaleza del servicio" : "1) Service nature"}</h2>
         <p>
@@ -63,6 +66,11 @@ export default async function TermsPage() {
             ? "Mantienes titularidad sobre tus preguntas y contenido. Nos concedes una licencia limitada para procesarlo y almacenarlo exclusivamente para operar, mejorar y asegurar el servicio."
             : "You retain ownership of your questions and content. You grant us a limited license to process and store it solely to operate, improve, and secure the service."}
         </p>
+        <p>
+          {isEs
+            ? "Si utilizas la exportación a PDF o la descarga de imagen, lo haces por tu cuenta y bajo tu propia discreción; esos archivos se generan en tu dispositivo y su custodia es responsabilidad tuya."
+            : "If you use PDF export or image download, you do so on your own initiative and at your sole discretion; those files are generated on your device and you are responsible for safeguarding them."}
+        </p>
 
         <h2>{isEs ? "6) Disponibilidad y cambios" : "6) Availability and changes"}</h2>
         <p>
@@ -95,8 +103,10 @@ export default async function TermsPage() {
         <h2>{isEs ? "10) Contacto" : "10) Contact"}</h2>
         <p>
           {isEs
-            ? "Para dudas sobre estos términos o sobre privacidad, utiliza los canales oficiales publicados en el sitio."
-            : "For questions about these terms or privacy, use the official contact channels published on the site."}
+            ? "Para dudas sobre estos términos o sobre privacidad, utiliza los canales oficiales indicados en el sitio. El tratamiento de datos personales se describe en la "
+            : "For questions about these terms or privacy, use the official contact channels indicated on the site. Personal data processing is described in the "}
+          <Link href="/privacy">{isEs ? "Política de Privacidad" : "Privacy Policy"}</Link>
+          {isEs ? "." : "."}
         </p>
       </article>
     </div>

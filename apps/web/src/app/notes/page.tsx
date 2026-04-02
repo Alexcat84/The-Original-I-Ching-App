@@ -18,7 +18,10 @@ export default async function NotesPage() {
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
         <Link href="/">{isEs ? "← Volver al oráculo" : "← Back to oracle"}</Link> ·{" "}
-        <Link href="/quickstart">{isEs ? "Quickstart" : "Quickstart"}</Link>
+        <Link href="/guia">{isEs ? "Guía rápida" : "Quick guide"}</Link> ·{" "}
+        <Link href="/quickstart">{isEs ? "Quickstart" : "Quickstart"}</Link> ·{" "}
+        <Link href="/privacy">{isEs ? "Privacidad" : "Privacy"}</Link> ·{" "}
+        <Link href="/terms">{isEs ? "Términos" : "Terms"}</Link>
       </nav>
       <article className="doc-article">
         <h1>{isEs ? "Notas y origen de los métodos" : "Method notes and origins"}</h1>
@@ -52,17 +55,17 @@ export default async function NotesPage() {
         <h2>{isEs ? "Fuentes externas para profundizar" : "External references for deeper study"}</h2>
         <ul>
           <li>
-            <a href="https://en.wikipedia.org/wiki/I_Ching" target="_blank" rel="noreferrer">
+            <a href="https://en.wikipedia.org/wiki/I_Ching" target="_blank" rel="noopener noreferrer">
               I Ching (Zhouyi 周易)
             </a>
           </li>
           <li>
-            <a href="https://en.wikipedia.org/wiki/Oracle_bone_script" target="_blank" rel="noreferrer">
+            <a href="https://en.wikipedia.org/wiki/Oracle_bone_script" target="_blank" rel="noopener noreferrer">
               Oracle bone script (甲骨文)
             </a>
           </li>
           <li>
-            <a href="https://en.wikipedia.org/wiki/Chinese_pyromancy" target="_blank" rel="noreferrer">
+            <a href="https://en.wikipedia.org/wiki/Chinese_pyromancy" target="_blank" rel="noopener noreferrer">
               Chinese pyromancy
             </a>
           </li>

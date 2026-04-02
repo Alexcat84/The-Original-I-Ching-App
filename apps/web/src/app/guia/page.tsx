@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
-import { generatedImageResolutionSummary } from "@/lib/credits-ui-copy";
-import { FREE_TOKENS, TOKEN_PACKS } from "@/lib/token-packs";
+import { FREE_TIER_MARKETING, FREE_TOKENS, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
 
 function resolveLocale(raw: string | undefined): AppLocale {
   if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
@@ -21,7 +20,9 @@ export default async function GuiaRapidaPage() {
       <nav className="doc-nav">
         <Link href="/">{isEs ? "← Volver al oráculo" : "← Back to oracle"}</Link> ·{" "}
         <Link href="/quickstart">{isEs ? "Quickstart" : "Quickstart"}</Link> ·{" "}
-        <Link href="/notes">{isEs ? "Notas de métodos" : "Method notes"}</Link>
+        <Link href="/notes">{isEs ? "Notas de métodos" : "Method notes"}</Link> ·{" "}
+        <Link href="/privacy">{isEs ? "Privacidad" : "Privacy"}</Link> ·{" "}
+        <Link href="/terms">{isEs ? "Términos" : "Terms"}</Link>
       </nav>
       <article className="doc-article">
         <h1>{isEs ? "Guía rápida de uso" : "Quick usage guide"}</h1>
@@ -41,9 +42,17 @@ export default async function GuiaRapidaPage() {
 
         <h2>{isEs ? "Privacidad" : "Privacy"}</h2>
         <ul>
-          <li>{isEs ? "Tus chats e imágenes son privados de tu cuenta." : "Your chats and images are private to your account."}</li>
-          <li>{isEs ? "No existe publicación ni compartido viral de lecturas." : "There is no public/viral sharing for readings."}</li>
-          <li>{isEs ? "La salida externa permitida es descarga de imagen y exportación PDF." : "The only outbound options are image download and PDF export."}</li>
+          <li>{isEs ? "Tus chats e imágenes quedan asociados a tu cuenta y solo son accesibles con tu sesión iniciada." : "Your chats and images are tied to your account and are only accessible while you are signed in."}</li>
+          <li>
+            {isEs
+              ? "El servicio no expone tu historial ni tus temas de consulta fuera de tu propio acceso autenticado."
+              : "The service does not expose your history or consultation topics outside your own authenticated access."}
+          </li>
+          <li>
+            {isEs
+              ? "Si quieres conservar un registro en tu dispositivo, bajo tu propia discreción puedes descargar la imagen de una lectura y exportar el hilo actual a PDF desde Opciones; esos archivos se generan localmente y su custodia es tuya."
+              : "If you want a record on your device, you may—at your sole discretion—download a reading image and export the current thread to PDF from Options; those files are generated locally on your device and you are responsible for keeping them."}
+          </li>
         </ul>
 
         <h2>{isEs ? "Chats y sesiones" : "Chats and sessions"}</h2>
@@ -56,7 +65,11 @@ export default async function GuiaRapidaPage() {
             {isEs ? "inicia un chat nuevo para cambiar de tema o empezar desde cero." : "starts a fresh thread for a new topic."}
           </li>
           <li>{isEs ? "No hay un número fijo de chats: puedes crear nuevos chats cuando quieras." : "There is no fixed chat count: create as many threads as you need."}</li>
-          <li>{isEs ? "Lo que sí cambia por plan es cuántas consultas puedes hacer al mes y cuántas caben en un mismo chat." : "What changes by plan is monthly consultations and max depth per thread."}</li>
+          <li>
+            {isEs
+              ? "Lo que cambia según tu pack es el saldo de tokens disponible y cuántas consultas encadenadas caben en un mismo hilo (límite por hilo)."
+              : "What changes with your pack is your available token balance and how many follow-up consultations fit in one thread (per-thread limit)."}
+          </li>
         </ul>
 
         <h2>{isEs ? "Opciones (barra inferior)" : "Options (bottom panel)"}</h2>
@@ -94,8 +107,22 @@ export default async function GuiaRapidaPage() {
         <h2>{isEs ? "Exportar y guardar" : "Export and save"}</h2>
         <p>
           {isEs
-            ? "Puedes descargar la imagen de la lectura y exportar el chat actual a PDF."
-            : "You can download the reading image and export the current thread to PDF."}
+            ? "Desde el panel Opciones puedes, cuando lo decidas, descargar la imagen de la lectura y generar un PDF del chat activo. Es opcional: sirve para guardar una copia en tu propio equipo o dispositivo. El archivo PDF se crea en el navegador; no sustituye el historial en la app ni obliga a conservar copias fuera del servicio."
+            : "From the Options panel you may, whenever you choose, download the reading image and generate a PDF of the active chat. This is optional: it is for keeping a copy on your own computer or device. The PDF is built in your browser; it does not replace in-app history and you are not required to keep copies outside the service."}
+        </p>
+
+        <p className="doc-meta" style={{ opacity: 0.9, marginTop: "0.75rem" }}>
+          {isEs ? (
+            <>
+              Texto legal vinculante: consulta la <Link href="/privacy">Política de Privacidad</Link> y los{" "}
+              <Link href="/terms">Términos del Servicio</Link>.
+            </>
+          ) : (
+            <>
+              Binding legal text: see the <Link href="/privacy">Privacy Policy</Link> and{" "}
+              <Link href="/terms">Terms of Service</Link>.
+            </>
+          )}
         </p>
 
         <h2 id="planes">{isEs ? "Packs y pagos" : "Packs and pricing"}</h2>
@@ -126,46 +153,29 @@ export default async function GuiaRapidaPage() {
               : `$${TOKEN_PACKS.tokens_master_100.price} · ${TOKEN_PACKS.tokens_master_100.tokens} tokens`}
           </li>
         </ul>
-        <p>{generatedImageResolutionSummary(isEs)}</p>
         <p>
           ⚠️{" "}
           {isEs
             ? "Los packs de tokens no son acumulables. Si adquieres un nuevo pack antes de agotar el actual, perderás los tokens restantes. Termina tu pack actual antes de comprar uno nuevo."
             : "Token packs are not cumulative. If you buy a new pack before finishing the current one, you lose remaining tokens. Finish your current pack before buying another one."}
         </p>
-        <p>{isEs ? "Límites por hilo (control de contexto):" : "Per-thread limits (context control):"}</p>
-        <ul>
-          <li>
-            <strong>Free:</strong>{" "}
-            {isEs
-              ? `${FREE_TOKENS} tokens de por vida · 1 pregunta por hilo`
-              : `${FREE_TOKENS} lifetime tokens · 1 question per thread`}
-          </li>
-          <li>
-            <strong>{TOKEN_PACKS.tokens_seeker_20.label}:</strong>{" "}
-            {isEs
-              ? `${TOKEN_PACKS.tokens_seeker_20.tokens} tokens por compra · hasta ${TOKEN_PACKS.tokens_seeker_20.sessionLimit} preguntas por hilo`
-              : `${TOKEN_PACKS.tokens_seeker_20.tokens} tokens per purchase · up to ${TOKEN_PACKS.tokens_seeker_20.sessionLimit} questions per thread`}
-          </li>
-          <li>
-            <strong>{TOKEN_PACKS.tokens_practitioner_40.label}:</strong>{" "}
-            {isEs
-              ? `${TOKEN_PACKS.tokens_practitioner_40.tokens} tokens por compra · hasta ${TOKEN_PACKS.tokens_practitioner_40.sessionLimit} preguntas por hilo`
-              : `${TOKEN_PACKS.tokens_practitioner_40.tokens} tokens per purchase · up to ${TOKEN_PACKS.tokens_practitioner_40.sessionLimit} questions per thread`}
-          </li>
-          <li>
-            <strong>{TOKEN_PACKS.tokens_master_100.label}:</strong>{" "}
-            {isEs
-              ? `${TOKEN_PACKS.tokens_master_100.tokens} tokens por compra · hasta ${TOKEN_PACKS.tokens_master_100.sessionLimit} preguntas por hilo`
-              : `${TOKEN_PACKS.tokens_master_100.tokens} tokens per purchase · up to ${TOKEN_PACKS.tokens_master_100.sessionLimit} questions per thread`}
-          </li>
-        </ul>
-
         <p>
           {isEs
-            ? "En resumen: no hay renovaciones automáticas. Gastas tokens por consulta y puedes comprar más cuando quieras."
-            : "In short: there is no recurring billing. You spend one token per consultation and can buy more anytime."}
+            ? "Detalle por plan (límites por hilo, consumibles y resolución de imágenes):"
+            : "Per-plan details (per-thread limits, consumable packs, and image resolution):"}
         </p>
+        <ul>
+          <li>
+            <strong>{isEs ? "Gratuito:" : "Free:"}</strong>{" "}
+            {isEs ? FREE_TIER_MARKETING.es : FREE_TIER_MARKETING.en}
+          </li>
+          {PACK_IDS_ORDERED.map((id) => (
+            <li key={id}>
+              <strong>{TOKEN_PACKS[id].label}:</strong>{" "}
+              {isEs ? TOKEN_PACKS[id].marketingDetail.es : TOKEN_PACKS[id].marketingDetail.en}
+            </li>
+          ))}
+        </ul>
 
         <p className="doc-footer-links">
           <Link href="/documentacion/iching">{isEs ? "Documentación sobre el I Ching" : "I Ching documentation"}</Link> ·{" "}

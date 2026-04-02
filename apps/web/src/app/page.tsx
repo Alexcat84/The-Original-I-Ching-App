@@ -16,10 +16,10 @@ import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
 import { tierLabelForDisplay, toContextTierKey, type Tier } from "@/lib/credits";
 import {
   creditsExhaustedBlock,
-  generatedImageResolutionSummary,
   type BillingTier,
   type CreditsNoticeReason,
 } from "@/lib/credits-ui-copy";
+import { FREE_TIER_MARKETING, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -2904,14 +2904,6 @@ export default function HomePage() {
                         </p>
                       </div>
                     </div>
-                    <div className="composer-doc-links">
-                      <Link href="/quickstart">{isSpanish ? "Quickstart (uso)" : "Quickstart (usage)"}</Link>
-                      <Link href="/notes">
-                        {isSpanish ? "Notas y origen de los métodos (I Ching y Huesos)" : "Method notes and origins (I Ching and Bones)"}
-                      </Link>
-                      <Link href="/privacy">{isSpanish ? "Política de Privacidad" : "Privacy Policy"}</Link>
-                      <Link href="/terms">{isSpanish ? "Términos del Servicio" : "Terms of Service"}</Link>
-                    </div>
                     <div className="session-progress" role="group" aria-label="Gestión de tokens">
                       <span>{isSpanish ? "Tokens" : "Tokens"}</span>
                       <p className="meta-line tier-hint-line">
@@ -2920,14 +2912,6 @@ export default function HomePage() {
                         {tokenBalance !== null
                           ? ` · ${isSpanish ? "restantes" : "remaining"}: ${tokenBalance}`
                           : ""}
-                      </p>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish
-                          ? "No hay renovaciones automáticas: compras tokens consumibles."
-                          : "No auto-renewal: you buy consumable token packs."}
-                      </p>
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 6 }}>
-                        {generatedImageResolutionSummary(isSpanish)}
                       </p>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
                         <button
@@ -3044,6 +3028,14 @@ export default function HomePage() {
                         {isSpanish ? "Siguiente mensaje sigue en este hilo." : "Your next message continues in this thread."}
                       </p>
                     ) : null}
+                    <div className="composer-doc-links" aria-label={isSpanish ? "Documentación y legal" : "Documentation and legal"}>
+                      <Link href="/quickstart">{isSpanish ? "Quickstart (uso)" : "Quickstart (usage)"}</Link>
+                      <Link href="/notes">
+                        {isSpanish ? "Notas y origen de los métodos (I Ching y Huesos)" : "Method notes and origins (I Ching and Bones)"}
+                      </Link>
+                      <Link href="/privacy">{isSpanish ? "Política de Privacidad" : "Privacy Policy"}</Link>
+                      <Link href="/terms">{isSpanish ? "Términos del Servicio" : "Terms of Service"}</Link>
+                    </div>
                   </section>
                 </div>
               </div>
@@ -3419,9 +3411,27 @@ export default function HomePage() {
                         ? "Consulta tu saldo y abre la compra de tokens."
                         : "Check your balance and open token purchase."}
                     </p>
-                    <p className="meta-line tier-hint-line token-center-message">
-                      {generatedImageResolutionSummary(isSpanish)}
-                    </p>
+
+                    <details className="token-center-pack-details" style={{ marginTop: 10 }}>
+                      <summary className="meta-line tier-hint-line" style={{ cursor: "pointer" }}>
+                        {isSpanish ? "Descripción por plan / pack" : "Description by plan / pack"}
+                      </summary>
+                      <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
+                        <p className="meta-line tier-hint-line token-center-message" style={{ margin: 0 }}>
+                          <strong>{isSpanish ? "Gratuito:" : "Free:"}</strong>{" "}
+                          {isSpanish ? FREE_TIER_MARKETING.es : FREE_TIER_MARKETING.en}
+                        </p>
+                        {PACK_IDS_ORDERED.map((packId) => {
+                          const pack = TOKEN_PACKS[packId];
+                          return (
+                            <p key={packId} className="meta-line tier-hint-line token-center-message" style={{ margin: 0 }}>
+                              <strong>{pack.label}:</strong>{" "}
+                              {isSpanish ? pack.marketingDetail.es : pack.marketingDetail.en}
+                            </p>
+                          );
+                        })}
+                      </div>
+                    </details>
 
                     <div className="token-center-grid">
                       <p className="meta-line tier-hint-line token-center-row">

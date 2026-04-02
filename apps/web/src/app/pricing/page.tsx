@@ -1,6 +1,5 @@
 "use client";
 
-import { generatedImageResolutionSummary } from "@/lib/credits-ui-copy";
 import { TOKEN_PACKS } from "@/lib/token-packs";
 import { buildPlansCheckoutUrl, resolveBasePlansUrl } from "@/lib/plans-checkout";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
@@ -79,8 +78,6 @@ export default function PricingPage() {
         <p style={{ marginTop: 8, opacity: 0.85 }}>
           El modelo activo es 100% por packs de tokens consumibles.
         </p>
-        <p style={{ marginTop: 8, opacity: 0.88, lineHeight: 1.45 }}>{generatedImageResolutionSummary(true)}</p>
-
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", marginTop: 14 }}>
           {Object.entries(TOKEN_PACKS).map(([packId, pack]) => (
             <article
@@ -95,8 +92,11 @@ export default function PricingPage() {
               <h2 style={{ margin: 0, fontSize: 17 }}>{pack.label}</h2>
               <p style={{ marginTop: 8, marginBottom: 0, fontSize: 26, fontWeight: 700 }}>{pack.tokens} tokens</p>
               <p style={{ marginTop: 6, marginBottom: 0, opacity: 0.95 }}>${pack.price.toFixed(2)} USD</p>
-              <p style={{ marginTop: 6, marginBottom: 12, opacity: 0.8 }}>
+              <p style={{ marginTop: 6, marginBottom: 0, opacity: 0.8 }}>
                 Hasta {pack.sessionLimit} preguntas por hilo
+              </p>
+              <p style={{ marginTop: 8, marginBottom: 12, opacity: 0.78, fontSize: 13, lineHeight: 1.45 }}>
+                {pack.marketingDetail.es}
               </p>
               <button
                 type="button"
