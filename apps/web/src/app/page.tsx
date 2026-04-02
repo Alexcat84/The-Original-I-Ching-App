@@ -5,7 +5,6 @@ import { commonStrings, DEFAULT_LOCALE, SUPPORTED_LOCALES, type AppLocale } from
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
-import { OracleBonesVerdictOverlay } from "@/components/OracleBonesVerdictOverlay";
 import { OracleInterpretationMarkdown } from "@/components/OracleInterpretationMarkdown";
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
@@ -2746,9 +2745,6 @@ export default function HomePage() {
                             openLabel={openImageLabel}
                             imageAlt={symbolicImageAlt}
                           />
-                          {entry.imageUrl.startsWith("data:image/svg+xml") ? (
-                            <OracleBonesVerdictOverlay verdict={entry.oracleBones.verdict} />
-                          ) : null}
                         </div>
                         <div className="crack-visual-wrap crack-visual-wrap--summary">
                           <span

@@ -1,6 +1,8 @@
 import type { OracleBoneMedium, OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { toContextTierKey } from "@/lib/credits";
+import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
 import { oracleBonesVerdictChinese } from "@/lib/oracle-bones-verdict-glyph";
+import { renderSvgToPng } from "@/lib/svg-to-png";
 import {
   buildSumiHexagramSvgDataUrl,
   buildSumiHexagramOverlaySvgDataUrl,
@@ -89,57 +91,87 @@ function buildOracleBonesSymbolOverlaySvgDataUrl(params: {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-function oracleBonesVerdictLabelEs(verdict: OracleBonesVerdict): string {
-  const m: Record<OracleBonesVerdict, string> = {
-    auspicious_clear: "吉 — favorable claro",
-    auspicious_moderate: "吉 — favorable moderado",
-    inauspicious_moderate: "凶 — desfavorable moderado",
-    inauspicious_clear: "凶 — desfavorable claro",
-    silent: "Silencio / sin respuesta clara",
-  };
-  return m[verdict];
-}
-
-function buildOracleBonesMockDataUrl(params: {
-  patternId: number;
+/**
+ * Symbolic plastron / bone plate + verdict glyph only (no captions). Dimensions match `resolveTierSize(tier)`.
+ * Rasterized to PNG with embedded CJK so `<img>` shows glyphs (isolated SVG does not use page fonts).
+ */
+function buildOracleBonesMockSvgString(params: {
   verdict: OracleBonesVerdict;
   medium: OracleBoneMedium;
   consultationId?: string;
+  width: number;
+  height: number;
 }): string {
-  const bone = params.medium === "turtle" ? "Plastrón" : "Escápula";
+  const W = params.width;
+  const H = params.height;
   const seedStr =
-    params.consultationId ?? `oracle-bones|${params.patternId}|${params.verdict}|${params.medium}`;
+    params.consultationId ?? `oracle-bones|${params.verdict}|${params.medium}|${W}x${H}`;
   const rng = mulberry32(fnv1a32(seedStr));
+  const uid = (fnv1a32(seedStr) >>> 0).toString(16).slice(0, 8);
   const bg = shiftHexForOracle("#1a1510", rng, 18);
   const boneTop = shiftHexForOracle("#e8dcc8", rng, 20);
   const boneBot = shiftHexForOracle("#c4b29a", rng, 20);
   const stroke = shiftHexForOracle("#5c4a3a", rng, 16);
-  const accent = shiftHexForOracle("#c9a227", rng, 22);
-  const sub = shiftHexForOracle("#8a7a68", rng, 18);
   const grainA = (0.04 + rng() * 0.06).toFixed(3);
   const grainB = (0.03 + rng() * 0.05).toFixed(3);
-  const bx = Math.round(400 + rng() * 80);
-  const by = Math.round(108 + rng() * 36);
-  const bw = Math.round(480 + rng() * 60);
-  const bh = Math.round(500 + rng() * 56);
-  const br = Math.round(40 + rng() * 16);
-  const cx = bx + bw / 2;
-  const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="1344" height="768" viewBox="0 0 1344 768">
+  const cx = W * 0.5;
+  const bw = W * (0.38 + rng() * 0.06);
+  const bh = H * (0.58 + rng() * 0.06);
+  const bx = cx - bw / 2;
+  const by = H * (0.14 + rng() * 0.04);
+  const br = Math.round(W * (0.025 + rng() * 0.008));
+  const gradId = `obm-bone-${uid}`;
+  const filterId = `obm-text-${uid}`;
+  const glyph = oracleBonesVerdictChinese(params.verdict);
+  const escaped = escapeXmlOracleOverlay(glyph);
+  const fontSize = glyph.length > 1 ? Math.round(H * 0.13) : Math.round(Math.min(W, H) * 0.2);
+  const letterSpacing = glyph.length > 1 ? Math.round(W * 0.012) : 0;
+  const tcx = bx + bw / 2;
+  const tcy = by + bh * 0.58;
+  const swGrain = Math.max(1, W * 0.001);
+  const swGrain2 = Math.max(0.8, W * 0.0007);
+  const swStroke = Math.max(2, W * 0.002);
+  const swTextStroke = Math.max(3, W * 0.004);
+  const blur = Math.max(2, Math.min(W, H) * 0.003);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
-    <linearGradient id="bone" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="${boneTop}" />
       <stop offset="100%" stop-color="${boneBot}" />
     </linearGradient>
+    <filter id="${filterId}" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="${blur}" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
-  <rect width="1344" height="768" fill="${bg}" />
-  <path fill="none" stroke="rgba(200,180,140,${grainA})" stroke-width="1.2" d="M0 ${Math.round(180 + rng() * 120)} Q400 ${Math.round(320 + rng() * 80)} 800 ${Math.round(260 + rng() * 100)} T1344 ${Math.round(200 + rng() * 90)}"/>
-  <path fill="none" stroke="rgba(160,140,110,${grainB})" stroke-width="0.9" d="M0 ${Math.round(520 + rng() * 60)} Q500 ${Math.round(580 + rng() * 50)} 1000 ${Math.round(540 + rng() * 70)} T1344 ${Math.round(600 + rng() * 40)}"/>
-  <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}" fill="url(#bone)" stroke="${stroke}" stroke-width="3"/>
-  <text x="${cx}" y="90" text-anchor="middle" fill="${accent}" font-size="36" font-family="Segoe UI, Arial">甲骨文 · ${bone} · patrón ${params.patternId}</text>
-  <text x="${cx}" y="690" text-anchor="middle" fill="${sub}" font-size="24" font-family="Segoe UI, Arial">Vista simbólica (respaldo) · ${oracleBonesVerdictLabelEs(params.verdict)}</text>
-</svg>`.trim();
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  <rect width="${W}" height="${H}" fill="${bg}" />
+  <path fill="none" stroke="rgba(200,180,140,${grainA})" stroke-width="${swGrain}" stroke-linecap="round" d="M0 ${Math.round(H * (0.22 + rng() * 0.12))} Q${Math.round(W * 0.35)} ${Math.round(H * (0.38 + rng() * 0.06))} ${Math.round(W * 0.55)} ${Math.round(H * (0.32 + rng() * 0.08))} T${W} ${Math.round(H * (0.25 + rng() * 0.08))}"/>
+  <path fill="none" stroke="rgba(160,140,110,${grainB})" stroke-width="${swGrain2}" stroke-linecap="round" d="M0 ${Math.round(H * (0.68 + rng() * 0.08))} Q${Math.round(W * 0.42)} ${Math.round(H * (0.75 + rng() * 0.04))} ${Math.round(W * 0.72)} ${Math.round(H * (0.7 + rng() * 0.06))} T${W} ${Math.round(H * (0.78 + rng() * 0.05))}"/>
+  <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}" fill="url(#${gradId})" stroke="${stroke}" stroke-width="${swStroke}"/>
+  <text x="${tcx}" y="${tcy}" text-anchor="middle" fill="#1c1410" stroke="rgba(255,248,240,0.94)" stroke-width="${swTextStroke}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
+</svg>`;
+}
+
+async function rasterizeOracleBonesMockSvgToPng(svg: string): Promise<string> {
+  const embedded = await embedCjkFontInOverlaySvg(svg);
+  const wMatch =
+    embedded.match(/viewBox="0\s+0\s+(\d+)\s+(\d+)"/) ??
+    embedded.match(/width="(\d+)"[^>]*height="(\d+)"/);
+  const width = wMatch ? Number(wMatch[1]) : 1344;
+  const buf = await renderSvgToPng(embedded, width);
+  return `data:image/png;base64,${buf.toString("base64")}`;
+}
+
+async function buildOracleBonesMockPngDataUrl(params: {
+  verdict: OracleBonesVerdict;
+  medium: OracleBoneMedium;
+  consultationId?: string;
+  width: number;
+  height: number;
+}): Promise<string> {
+  const svg = buildOracleBonesMockSvgString(params);
+  return rasterizeOracleBonesMockSvgToPng(svg);
 }
 
 function resolveProvider(override?: ImageProvider): ResolvedImageProvider {
@@ -528,11 +560,12 @@ export async function buildOracleBonesImageAsset(params: {
   const provider = resolveProvider(params.providerOverride);
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
   const promptForRemote = compactPrompt(params.prompt, 900);
-  const fallbackImageUrl = buildOracleBonesMockDataUrl({
-    patternId: params.patternId,
+  const fallbackImageUrl = await buildOracleBonesMockPngDataUrl({
     verdict: params.verdict,
     medium: params.medium,
     consultationId: params.consultationId,
+    width: tierWidth,
+    height: tierHeight,
   });
 
   if (provider === "pollinations") {
@@ -591,3 +624,4 @@ export async function buildOracleBonesImageAsset(params: {
 
   return { provider: "mock", imageUrl: fallbackImageUrl, fallbackImageUrl };
 }
+
