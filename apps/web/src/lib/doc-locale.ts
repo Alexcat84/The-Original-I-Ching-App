@@ -1,11 +1,8 @@
 import { cookies } from "next/headers";
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
+import { SESSION_PRESENT_COOKIE, UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 
-/** Set client-side when Supabase reports a session; server uses it to pick doc language. */
-export const SESSION_PRESENT_COOKIE = "iching_session_present";
-
-/** Mirrors app UI locale (same as home `document.cookie` for `iching_ui_locale`). */
-export const UI_LOCALE_COOKIE = "iching_ui_locale";
+export { SESSION_PRESENT_COOKIE, UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 
 function isAppLocale(raw: string | undefined): raw is AppLocale {
   return Boolean(raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw));

@@ -2,7 +2,7 @@
 
 import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
-import { SESSION_PRESENT_COOKIE, UI_LOCALE_COOKIE } from "@/lib/doc-locale";
+import { SESSION_PRESENT_COOKIE, UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 import { useEffect } from "react";
 
 const LOCALE_STORAGE_KEY = "iching_ui_locale_v1";
