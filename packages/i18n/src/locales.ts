@@ -1,7 +1,7 @@
 export const SUPPORTED_LOCALES = ["es", "en", "pt", "fr", "de", "it", "ja", "zh", "ko"] as const;
 export type AppLocale = (typeof SUPPORTED_LOCALES)[number];
 
-export const DEFAULT_LOCALE: AppLocale = "es";
+export const DEFAULT_LOCALE: AppLocale = "en";
 
 export const commonStrings: Record<AppLocale, { appTitle: string; consult: string; deepen: string; newSession: string }> = {
   es: {

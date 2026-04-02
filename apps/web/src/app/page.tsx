@@ -346,6 +346,27 @@ const DRAWER_TEXT: Record<
 
 const LOCALE_STORAGE_KEY = "iching_ui_locale_v1";
 
+/** Maps `navigator.languages` to an app locale when the user has no saved preference. */
+function pickBrowserAppLocale(): AppLocale | null {
+  if (typeof navigator === "undefined") return null;
+  const list =
+    navigator.languages && navigator.languages.length > 0 ? [...navigator.languages] : [navigator.language];
+  const tags = list.map((s) => String(s).trim().toLowerCase()).filter(Boolean);
+  const supported = SUPPORTED_LOCALES as readonly string[];
+  for (const tag of tags) {
+    if (supported.includes(tag)) return tag as AppLocale;
+    const primary = (tag.split("-")[0] ?? "").toLowerCase();
+    if (primary && supported.includes(primary)) return primary as AppLocale;
+  }
+  return null;
+}
+
+/** English first in the UI selector (default app language). */
+const LOCALE_SELECT_ORDER: AppLocale[] = [
+  "en",
+  ...SUPPORTED_LOCALES.filter((code): code is AppLocale => code !== "en"),
+];
+
 const LANGUAGE_LABELS: Record<AppLocale, string> = {
   es: "Español",
   en: "English",
@@ -947,6 +968,11 @@ export default function HomePage() {
     const cookieLocale = cookieMatch ? decodeURIComponent(cookieMatch[1] ?? "") : "";
     if ((SUPPORTED_LOCALES as readonly string[]).includes(cookieLocale)) {
       setLocale(cookieLocale as AppLocale);
+      return;
+    }
+    const fromBrowser = pickBrowserAppLocale();
+    if (fromBrowser) {
+      setLocale(fromBrowser);
     }
   }, []);
 
@@ -954,6 +980,7 @@ export default function HomePage() {
     window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
     document.documentElement.lang = locale;
     document.cookie = `iching_ui_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
+    window.dispatchEvent(new CustomEvent("iching:locale-changed", { detail: { locale } }));
   }, [locale]);
 
   const shuffledCoins = useMemo(
@@ -2312,7 +2339,7 @@ export default function HomePage() {
         value={locale}
         onChange={(e) => setLocale(e.target.value as AppLocale)}
       >
-        {SUPPORTED_LOCALES.map((code) => (
+        {LOCALE_SELECT_ORDER.map((code) => (
           <option key={code} value={code}>
             {LANGUAGE_LABELS[code]}
           </option>
@@ -3525,15 +3552,13 @@ export default function HomePage() {
                         onClick={() => {
                           void (async () => {
                             const ok = await openPlansCheckoutNewTab();
-                            setTokenCenterMessage(
-                              ok
-                                ? isSpanish
-                                  ? "Se abrió la página de compra en una nueva pestaña."
-                                  : "Purchase page opened in a new tab."
-                                : isSpanish
+                            if (!ok) {
+                              setTokenCenterMessage(
+                                isSpanish
                                   ? "No hay enlace de pago o apunta a la página principal. Revisa la variable de planes en el despliegue (URL completa de la tienda)."
                                   : "Missing payment link or it points at the homepage. Check the plans URL env var (full store URL).",
-                            );
+                              );
+                            }
                           })();
                         }}
                       >

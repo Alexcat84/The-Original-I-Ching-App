@@ -1,18 +1,9 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
+import { resolveDocLocale } from "@/lib/doc-locale";
 import { FREE_TIER_MARKETING, FREE_TOKENS, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
 
-function resolveLocale(raw: string | undefined): AppLocale {
-  if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
-    return raw as AppLocale;
-  }
-  return "es";
-}
-
 export default async function GuiaRapidaPage() {
-  const cookieStore = await cookies();
-  const locale = resolveLocale(cookieStore.get("iching_ui_locale")?.value);
+  const locale = await resolveDocLocale();
   const isEs = locale === "es";
 
   return (
@@ -75,8 +66,8 @@ export default async function GuiaRapidaPage() {
         <h2>{isEs ? "Opciones (barra inferior)" : "Options (bottom panel)"}</h2>
         <p>
           {isEs
-            ? "En Opciones eliges el tipo de consulta y la forma de respuesta."
-            : "In Options you choose consultation type and response style."}
+            ? "En Opciones eliges el tipo de consulta (I Ching o Huesos), ves la profundidad permitida en el hilo activo, gestionas tokens y 2FA, y al final tienes enlaces a documentación y legal."
+            : "In Options you pick the consultation type (I Ching or Bones), see allowed depth for the active thread, manage tokens and 2FA, and find documentation and legal links at the bottom."}
         </p>
         <ul>
           <li>
@@ -86,21 +77,10 @@ export default async function GuiaRapidaPage() {
             <strong>{isEs ? "Huesos" : "Bones"}</strong> —{" "}
             {isEs ? "formato sí/no con lectura simbólica de grietas." : "yes/no format with symbolic crack reading."}
           </li>
-        </ul>
-
-        <h2 id="modos-lectura">{isEs ? "Modos de lectura" : "Reading modes"}</h2>
-        <ul>
           <li>
-            <strong>{isEs ? "Directo" : "Direct"}</strong> —{" "}
-            {isEs ? "respuesta breve y clara." : "short and clear answer."}
-          </li>
-          <li>
-            <strong>{isEs ? "Ritual" : "Ritual"}</strong> —{" "}
-            {isEs ? "respuesta más desarrollada y ceremonial." : "more elaborate ceremonial response."}
-          </li>
-          <li>
-            <strong>{isEs ? "Profundizar" : "Deepen"}</strong> —{" "}
-            {isEs ? "seguimiento de lo que ya venías preguntando en ese mismo chat." : "follow-up continuity in the same thread."}
+            {isEs
+              ? "Profundidad del hilo: cuántas lecturas encadenadas caben en el mismo chat según tu pack (el plan gratuito no permite seguir preguntando en el mismo hilo tras la primera lectura)."
+              : "Thread depth: how many chained readings fit in one chat for your pack (the free plan does not allow follow-up readings in the same thread after the first one)."}
           </li>
         </ul>
 

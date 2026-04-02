@@ -46,6 +46,8 @@ export interface StoredSession {
   publicId: string;
   consultationIds: string[];
   createdAt: number;
+  /** Max chained readings per thread when the session was created (from `max_consultations`). */
+  maxConsultations?: number | null;
 }
 
 export interface UserSessionWithConsultations {
@@ -315,7 +317,7 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
   if (!supabase) return [];
   const { data: sessionRows, error: sessionsError } = await supabase
     .from("consultation_sessions")
-    .select("id, title, theme_category, language, public_sharing_id, created_at")
+    .select("id, title, theme_category, language, public_sharing_id, created_at, max_consultations")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
   if (sessionsError || !sessionRows?.length) return [];
@@ -363,6 +365,15 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
 
   return sessionRows.map((s) => {
     const rows = bySession.get(s.id) ?? [];
+    const maxFromDb =
+      typeof (s as { max_consultations?: number | null }).max_consultations === "number"
+        ? (s as { max_consultations: number }).max_consultations
+        : (s as { max_consultations?: number | null }).max_consultations === null
+          ? null
+          : undefined;
+    const maxConsultations =
+      maxFromDb ??
+      (rows.length ? Math.max(...rows.map((r) => r.sessionPosition), 1) : 1);
     return {
       session: {
         sessionId: s.id,
@@ -372,6 +383,7 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
         publicId: s.public_sharing_id,
         consultationIds: rows.map((r) => r.consultationId),
         createdAt: new Date(s.created_at).getTime(),
+        maxConsultations,
       },
       consultations: rows.sort((a, b) => a.sessionPosition - b.sessionPosition),
     };
@@ -454,7 +466,7 @@ export async function getUserSessionWithConsultations(
 
   const { data: sessionRow, error: sessionError } = await supabase
     .from("consultation_sessions")
-    .select("id, title, theme_category, language, public_sharing_id, created_at")
+    .select("id, title, theme_category, language, public_sharing_id, created_at, max_consultations")
     .eq("id", sessionId)
     .eq("user_id", userId)
     .maybeSingle();
@@ -492,6 +504,15 @@ export async function getUserSessionWithConsultations(
   if (consultError) return null;
 
   const consultations = (consultRows ?? []).map((row) => consultationFromDbRow(row as never));
+  const sorted = consultations.sort((a, b) => a.sessionPosition - b.sessionPosition);
+  const maxFromDb =
+    typeof (sessionRow as { max_consultations?: number | null }).max_consultations === "number"
+      ? (sessionRow as { max_consultations: number }).max_consultations
+      : (sessionRow as { max_consultations?: number | null }).max_consultations === null
+        ? null
+        : undefined;
+  const maxConsultations =
+    maxFromDb ?? (sorted.length ? Math.max(...sorted.map((r) => r.sessionPosition), 1) : 1);
   return {
     session: {
       sessionId: sessionRow.id,
@@ -499,10 +520,11 @@ export async function getUserSessionWithConsultations(
       themeCategory: sessionRow.theme_category,
       language: sessionRow.language,
       publicId: sessionRow.public_sharing_id,
-      consultationIds: consultations.map((r) => r.consultationId),
+      consultationIds: sorted.map((r) => r.consultationId),
       createdAt: new Date(sessionRow.created_at).getTime(),
+      maxConsultations,
     },
-    consultations: consultations.sort((a, b) => a.sessionPosition - b.sessionPosition),
+    consultations: sorted,
   };
 }
 

@@ -1,17 +1,8 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
-
-function resolveLocale(raw: string | undefined): AppLocale {
-  if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
-    return raw as AppLocale;
-  }
-  return "es";
-}
+import { resolveDocLocale } from "@/lib/doc-locale";
 
 export default async function QuickStartPage() {
-  const cookieStore = await cookies();
-  const locale = resolveLocale(cookieStore.get("iching_ui_locale")?.value);
+  const locale = await resolveDocLocale();
   const isEs = locale === "es";
 
   return (
@@ -47,33 +38,20 @@ export default async function QuickStartPage() {
           </li>
         </ul>
 
-        <h2>{isEs ? "2) Elige modo de lectura" : "2) Choose reading style"}</h2>
-        <ul>
-          <li>
-            <strong>{isEs ? "Directo" : "Direct"}</strong> —{" "}
-            {isEs ? "respuesta corta y clara." : "short and clear response."}
-          </li>
-          <li>
-            <strong>{isEs ? "Ritual" : "Ritual"}</strong> —{" "}
-            {isEs ? "respuesta más extensa y ceremonial." : "longer and more ceremonial response."}
-          </li>
-          <li>
-            <strong>{isEs ? "Profundizar" : "Deepen"}</strong> —{" "}
-            {isEs
-              ? "continúa sobre el mismo tema dentro del chat actual."
-              : "continues on the same topic inside the current chat thread."}
-          </li>
-        </ul>
-
-        <h2>{isEs ? "3) Usa el panel Options" : "3) Use the Options panel"}</h2>
+        <h2>{isEs ? "2) Usa el panel Opciones" : "2) Use the Options panel"}</h2>
         <ul>
           <li>{isEs ? "Cambias entre I Ching y Huesos." : "Switch between I Ching and Bones."}</li>
-          <li>{isEs ? "Cambias el estilo de lectura (Directo/Ritual/Profundizar)." : "Switch reading style (Direct/Ritual/Deepen)."}</li>
+          <li>
+            {isEs
+              ? "Ves el estado de profundidad del hilo activo (cuántas lecturas encadenadas permite tu plan en ese chat)."
+              : "See active thread depth status (how many chained readings your plan allows in that chat)."}
+          </li>
+          <li>{isEs ? "Gestionas tokens y compra de packs." : "Manage tokens and pack purchases."}</li>
           <li>{isEs ? "Gestionas seguridad 2FA opcional." : "Manage optional 2FA security."}</li>
-          <li>{isEs ? "Accedes a enlaces rápidos: notas, privacidad y términos." : "Access quick links: notes, privacy, and terms."}</li>
+          <li>{isEs ? "Accedes a documentación y textos legales al final del panel." : "Documentation and legal links are at the bottom of the panel."}</li>
         </ul>
 
-        <h2>{isEs ? "4) Resultados y copia local" : "4) Results and local copy"}</h2>
+        <h2>{isEs ? "3) Resultados y copia local" : "3) Results and local copy"}</h2>
         <ul>
           <li>{isEs ? "Cada consulta puede traer interpretación + imagen." : "Each consultation can include interpretation + image."}</li>
           <li>

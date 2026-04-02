@@ -1,17 +1,8 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
-
-function resolveLocale(raw: string | undefined): AppLocale {
-  if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
-    return raw as AppLocale;
-  }
-  return "es";
-}
+import { resolveDocLocale } from "@/lib/doc-locale";
 
 export default async function NotesPage() {
-  const cookieStore = await cookies();
-  const locale = resolveLocale(cookieStore.get("iching_ui_locale")?.value);
+  const locale = await resolveDocLocale();
   const isEs = locale === "es";
 
   return (

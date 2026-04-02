@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
+import SessionDocLocaleBridge from "@/components/SessionDocLocaleBridge";
 import { rootFontClassName } from "@/lib/google-fonts-root";
 import "./globals.css";
 
@@ -18,7 +19,7 @@ const themeInitScript = `(function(){try{var k="iching_theme",t=localStorage.get
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang="es"
+      lang="en"
       suppressHydrationWarning
       className={rootFontClassName}
     >
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
         <RevenueCatSupabaseSync />
+        <SessionDocLocaleBridge />
         {children}
         <Analytics />
         <SpeedInsights />
