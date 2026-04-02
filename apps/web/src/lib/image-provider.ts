@@ -1,7 +1,10 @@
 import type { OracleBoneMedium, OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { toContextTierKey } from "@/lib/credits";
 import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
-import { oracleBonesVerdictChinese } from "@/lib/oracle-bones-verdict-glyph";
+import {
+  oracleBonesVerdictChinese,
+  oracleBonesVerdictGlyphSvgStyle,
+} from "@/lib/oracle-bones-verdict-glyph";
 import { renderSvgToPng } from "@/lib/svg-to-png";
 import {
   buildSumiHexagramSvgDataUrl,
@@ -75,18 +78,23 @@ function buildOracleBonesSymbolOverlaySvgDataUrl(params: {
   const cx = W / 2;
   /** Baseline near visual center of shell in 16:9 frame */
   const baselineY = 400;
+  const idPrefix = `obov${params.verdict.replace(/_/g, "")}`;
+  const gStyle = oracleBonesVerdictGlyphSvgStyle(params.verdict, idPrefix);
+  const filterId = `${idPrefix}-glow`;
   const raw = oracleBonesVerdictChinese(params.verdict);
   const escaped = escapeXmlOracleOverlay(raw);
-  const fontSize = raw.length > 1 ? 132 : 224;
-  const letterSpacing = raw.length > 1 ? 18 : 0;
+  /** Larger dominant glyph on shell (~30% vs prior ~22% of frame height for single char). */
+  const fontSize = raw.length > 1 ? 176 : 300;
+  const letterSpacing = raw.length > 1 ? 22 : 0;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${params.outputWidth}" height="${params.outputHeight}" viewBox="0 0 ${W} ${H}">
 <defs>
-  <filter id="ob-verdict-glow" x="-45%" y="-45%" width="190%" height="190%">
-    <feGaussianBlur stdDeviation="3.5" result="b"/>
+  ${gStyle.glyphGradientDefs}
+  <filter id="${filterId}" x="-45%" y="-45%" width="190%" height="190%">
+    <feGaussianBlur stdDeviation="4" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
 </defs>
-<text x="${cx}" y="${baselineY}" text-anchor="middle" fill="#1c1410" stroke="rgba(255,248,240,0.94)" stroke-width="5" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#ob-verdict-glow)">${escaped}</text>
+<text x="${cx}" y="${baselineY}" text-anchor="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${gStyle.overlayStrokeWidth}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
 </svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
@@ -126,20 +134,25 @@ function buildOracleBonesMockSvgString(params: {
   const br = Math.round(W * (0.025 + rng() * 0.008));
   const gradId = `obm-bone-${uid}`;
   const filterId = `obm-text-${uid}`;
+  const gStyle = oracleBonesVerdictGlyphSvgStyle(params.verdict, `obm${uid}`);
   const glyph = oracleBonesVerdictChinese(params.verdict);
   const escaped = escapeXmlOracleOverlay(glyph);
-  const fontSize = glyph.length > 1 ? Math.round(H * 0.13) : Math.round(Math.min(W, H) * 0.2);
-  const letterSpacing = glyph.length > 1 ? Math.round(W * 0.012) : 0;
+  const fontSize = glyph.length > 1 ? Math.round(H * 0.175) : Math.round(Math.min(W, H) * 0.28);
+  const letterSpacing = glyph.length > 1 ? Math.round(W * 0.014) : 0;
   const tcx = bx + bw / 2;
   const tcy = by + bh * 0.58;
   const swGrain = Math.max(1, W * 0.001);
   const swGrain2 = Math.max(0.8, W * 0.0007);
   const swStroke = Math.max(2, W * 0.002);
-  const swTextStroke = Math.max(3, W * 0.004);
+  const swTextStroke = Math.max(
+    3,
+    Math.round(gStyle.overlayStrokeWidth * (W / 1344)),
+  );
   const blur = Math.max(2, Math.min(W, H) * 0.003);
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
+    ${gStyle.glyphGradientDefs}
     <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="${boneTop}" />
       <stop offset="100%" stop-color="${boneBot}" />
@@ -153,7 +166,7 @@ function buildOracleBonesMockSvgString(params: {
   <path fill="none" stroke="rgba(200,180,140,${grainA})" stroke-width="${swGrain}" stroke-linecap="round" d="M0 ${Math.round(H * (0.22 + rng() * 0.12))} Q${Math.round(W * 0.35)} ${Math.round(H * (0.38 + rng() * 0.06))} ${Math.round(W * 0.55)} ${Math.round(H * (0.32 + rng() * 0.08))} T${W} ${Math.round(H * (0.25 + rng() * 0.08))}"/>
   <path fill="none" stroke="rgba(160,140,110,${grainB})" stroke-width="${swGrain2}" stroke-linecap="round" d="M0 ${Math.round(H * (0.68 + rng() * 0.08))} Q${Math.round(W * 0.42)} ${Math.round(H * (0.75 + rng() * 0.04))} ${Math.round(W * 0.72)} ${Math.round(H * (0.7 + rng() * 0.06))} T${W} ${Math.round(H * (0.78 + rng() * 0.05))}"/>
   <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}" fill="url(#${gradId})" stroke="${stroke}" stroke-width="${swStroke}"/>
-  <text x="${tcx}" y="${tcy}" text-anchor="middle" fill="#1c1410" stroke="rgba(255,248,240,0.94)" stroke-width="${swTextStroke}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
+  <text x="${tcx}" y="${tcy}" text-anchor="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${swTextStroke}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
 </svg>`;
 }
 
