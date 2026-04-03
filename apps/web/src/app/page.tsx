@@ -12,7 +12,8 @@ import {
 } from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
-import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
+import dynamic from "next/dynamic";
+import type { BoneOracleResult } from "@/components/BoneRitualAnimation";
 import { OracleInterpretationMarkdown } from "@/components/OracleInterpretationMarkdown";
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
@@ -38,6 +39,11 @@ import { useChatSessionState } from "@/providers/chat-session-provider";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+const BoneRitualAnimation = dynamic(() => import("@/components/BoneRitualAnimation"), {
+  ssr: false,
+  loading: () => <div className="bone-ritual-viewport bone-ritual-viewport--pending" aria-hidden />,
+});
 
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";

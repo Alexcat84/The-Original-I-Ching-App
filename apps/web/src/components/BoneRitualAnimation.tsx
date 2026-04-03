@@ -1,6 +1,5 @@
 "use client";
 
-import { AdaptiveDpr } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -433,7 +432,6 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
     <div className={`bone-ritual-viewport ${viewportVariant}`} role="presentation" aria-hidden>
       {hasWebgl ? (
         <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0.5, 3.05], fov: 40 }}>
-          <AdaptiveDpr pixelated />
           <BoneAndFire stage={stage} crackProgress={crackProgress} oracleResult={oracleResult} />
         </Canvas>
       ) : (
