@@ -1374,8 +1374,8 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
 }
 
 /*
- * Options + token modal: compact pills. Centered row nudged left vs full panel width via
- * asymmetric horizontal padding (more space on the right).
+ * Options panel: compact pills nudged left (asymmetric padding).
+ * Token center modal: same pill look; row stays centered on the modal width.
  */
 .composer-panel-actions,
 .token-center-actions {
@@ -1386,12 +1386,18 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   gap: 0.45rem;
   width: 100%;
   box-sizing: border-box;
-  padding-left: clamp(0rem, 1%, 0.35rem);
-  padding-right: clamp(2.75rem, 58%, 18rem);
 }
 
 .composer-panel-actions {
   margin-top: 0.5rem;
+  padding-left: clamp(0rem, 1%, 0.35rem);
+  padding-right: clamp(2.75rem, 58%, 18rem);
+}
+
+.token-center-actions {
+  margin-top: 0.75rem;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .composer-panel-actions .composer-reading-pill,
@@ -2131,10 +2137,6 @@ button:disabled {
 
 .token-center-message {
   margin-top: 0.65rem;
-}
-
-.token-center-actions {
-  margin-top: 0.75rem;
 }
 
 .hexagram-card,
