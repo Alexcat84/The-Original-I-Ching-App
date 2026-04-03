@@ -27,6 +27,7 @@ import {
 import { tierLabelForDisplay, type Tier } from "@/lib/credits";
 import {
   creditsExhaustedBlock,
+  tierToBillingTierCopy,
   type BillingTier,
   type CreditsNoticeReason,
 } from "@/lib/credits-ui-copy";
@@ -2391,7 +2392,7 @@ export default function HomePage() {
         if (res.status === 402 && data.error === "no_tokens") {
           setTokenBalance(0);
           setCreditsNotice({
-            tier: "free",
+            tier: tierToBillingTierCopy(tier),
             reason: "credits_depleted",
           });
           setError(tokenPanel.noTokensDepleted);

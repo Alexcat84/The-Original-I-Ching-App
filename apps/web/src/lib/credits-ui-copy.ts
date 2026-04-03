@@ -30,6 +30,23 @@ export function creditsExhaustedBlock(tier: BillingTier, reason: CreditsNoticeRe
     };
   }
 
+  if (reason === "credits_depleted") {
+    return {
+      title: "Has agotado todos tus tokens",
+      body: "Te invitamos a recargar para seguir disfrutando de los beneficios del oráculo.",
+      resetLine: `Límite por hilo actual: ${getSessionLimit(
+        tier === "master"
+          ? "tokens_master_100"
+          : tier === "practitioner"
+            ? "tokens_practitioner_40"
+            : tier === "seeker"
+              ? "tokens_seeker_20"
+              : "free",
+      )} ${tier === "free" ? "pregunta" : "preguntas"}.`,
+      primaryCta: { label: "Comprar tokens", action: "open_plans" },
+    };
+  }
+
   switch (tier) {
     case "free":
       return {
