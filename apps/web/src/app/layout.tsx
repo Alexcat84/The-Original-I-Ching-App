@@ -7,6 +7,7 @@ import SessionDocLocaleBridge from "@/components/SessionDocLocaleBridge";
 import { ChatSessionProvider } from "@/providers/chat-session-provider";
 import { rootFontClassName } from "@/lib/google-fonts-root";
 import "@fontsource/noto-serif-sc/700.css";
+import "@fontsource/noto-serif-tc/700.css";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";

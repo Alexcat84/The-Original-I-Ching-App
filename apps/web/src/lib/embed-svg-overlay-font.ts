@@ -15,7 +15,7 @@ import path from "node:path";
  */
 
 const FONT_FAMILY = "NotoSerifTCOverlay";
-const LOCAL_TC_FONT_SPEC = "@fontsource/noto-serif-tc/files/noto-serif-tc-chinese-traditional-700-normal.woff2";
+const LOCAL_TC_FONT_SPEC = "@fontsource/noto-serif-tc/files/noto-serif-tc-chinese-traditional-700-normal.woff";
 const requireForResolve = createRequire(import.meta.url);
 
 let cachedSubsetKey: string | null = null;
@@ -121,11 +121,19 @@ export async function embedCjkFontInOverlaySvg(svg: string): Promise<string> {
     if (!b64) return svg;
 
     const face = `<defs><style type="text/css"><![CDATA[
-@font-face{font-family:'${FONT_FAMILY}';font-style:normal;font-weight:700;src:url(data:font/woff2;base64,${b64}) format('woff2');font-display:swap;}
+@font-face{font-family:'${FONT_FAMILY}';font-style:normal;font-weight:700;src:url(data:font/woff;base64,${b64}) format('woff');font-display:swap;}
 ]]></style></defs>`;
 
     const withDefs = svg.replace(/<svg\s([^>]*)>/, `<svg $1>${face}`);
     return withDefs
+      .replaceAll(
+        "font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif'",
+        `font-family='${FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif'`,
+      )
+      .replaceAll(
+        'font-family="Noto Serif TC, Noto Serif SC, SimSun, STSong, serif"',
+        `font-family="${FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif"`,
+      )
       .replaceAll("font-family='Noto Serif SC, SimSun, STSong, serif'", `font-family='${FONT_FAMILY}, serif'`)
       .replaceAll('font-family="Noto Serif SC, SimSun, STSong, serif"', `font-family="${FONT_FAMILY}, serif"`)
       ;
