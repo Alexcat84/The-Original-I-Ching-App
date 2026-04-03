@@ -2940,7 +2940,7 @@ export default function HomePage() {
                           ? ` · ${tokenPanel.remaining}: ${tokenBalance}`
                           : ""}
                       </p>
-                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+                      <div className="composer-panel-actions">
                         <button
                           type="button"
                           className="composer-reading-pill"
@@ -2955,9 +2955,6 @@ export default function HomePage() {
                           {tokenCenterMessage}
                         </p>
                       ) : null}
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
-                        {tokenPanel.accumulation}
-                      </p>
                     </div>
                     <hr className="composer-panel-divider" aria-hidden />
                     <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
@@ -2972,7 +2969,7 @@ export default function HomePage() {
                           ? "Configura Authenticator y/o código por email."
                           : "Configure Authenticator and/or email code."}
                       </p>
-                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+                      <div className="composer-panel-actions">
                         <button
                           type="button"
                           className="composer-reading-pill is-active"
@@ -3007,11 +3004,6 @@ export default function HomePage() {
                         ) : null}
                       </div>
                     </div>
-                    {activeThread.length > 0 && threadDepthCanDeepen ? (
-                      <p className="meta-line composer-hint-line">
-                        {isSpanish ? "Siguiente mensaje sigue en este hilo." : "Your next message continues in this thread."}
-                      </p>
-                    ) : null}
                     <div className="composer-doc-links" aria-label={isSpanish ? "Documentación y legal" : "Documentation and legal"}>
                       <Link href="/guia#primeros-pasos">{docNav.userGuide}</Link>
                       <Link href="/notes">

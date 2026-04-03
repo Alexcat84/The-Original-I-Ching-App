@@ -1373,6 +1373,23 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   border-top: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
+/* Options panel: compact centered action pills (token center, 2FA) */
+.composer-panel-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+}
+
+.composer-panel-actions .composer-reading-pill {
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 0.38rem 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
 .composer-doc-links {
   display: flex;
   flex-direction: column;
