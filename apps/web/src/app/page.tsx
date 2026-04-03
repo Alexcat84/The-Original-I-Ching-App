@@ -3435,7 +3435,7 @@ export default function HomePage() {
                       </p>
                     ) : null}
 
-                    <div className="token-center-actions">
+                    <div className="token-center-actions composer-panel-actions">
                       <button
                         type="button"
                         className="composer-reading-pill is-active"
