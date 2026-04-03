@@ -3378,11 +3378,11 @@ export default function HomePage() {
               {tokenCenterOpen ? (
                 <div role="dialog" aria-modal="true" className="token-center-backdrop">
                   <div className="token-center-card">
-                    <div className="token-center-header">
-                      <strong className="token-center-title">{isSpanish ? "Centro de tokens" : "Token center"}</strong>
+                    <div className="composer-sheet-header">
+                      <p className="card-title">{isSpanish ? "Centro de tokens" : "Token center"}</p>
                       <button
                         type="button"
-                        className="composer-reading-pill"
+                        className="composer-panel-close"
                         aria-label={isSpanish ? "Cerrar centro de tokens" : "Close token center"}
                         title={isSpanish ? "Cerrar" : "Close"}
                         onClick={() => setTokenCenterOpen(false)}
@@ -3468,8 +3468,10 @@ export default function HomePage() {
                         ? "Tus tokens se acumulan: si compras un nuevo pack antes de agotar el actual, los tokens restantes se suman al nuevo pack."
                         : "Your tokens accumulate: if you buy a new pack before running out, your remaining tokens carry over and add to the new pack."}
                     </p>
-                    <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
-                      <Link href="/guia#planes">{tokenPanel.tokenCenterGuideLink}</Link>
+                    <p className="meta-line tier-hint-line token-center-message token-center-guide-wrap">
+                      <Link href="/guia#planes" className="token-center-guide-link">
+                        {tokenPanel.tokenCenterGuideLink}
+                      </Link>
                     </p>
 
                   </div>
