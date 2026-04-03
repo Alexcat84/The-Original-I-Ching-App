@@ -12,16 +12,16 @@ import {
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
-  const user = await getAuthenticatedUser(req);
-  if (!user) {
-    return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
-  }
   if (!isChatPersistenceConfigured()) {
     return apiError(503, {
       error: "chat_persistence_not_configured",
       code: "CHAT_PERSISTENCE_NOT_CONFIGURED",
       action: "check_config",
     });
+  }
+  const user = await getAuthenticatedUser(req);
+  if (!user) {
+    return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
   const url = new URL(req.url);
   const summary = url.searchParams.get("summary") === "1";
@@ -61,6 +61,13 @@ export async function GET(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  if (!isChatPersistenceConfigured()) {
+    return apiError(503, {
+      error: "chat_persistence_not_configured",
+      code: "CHAT_PERSISTENCE_NOT_CONFIGURED",
+      action: "check_config",
+    });
+  }
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });

@@ -744,6 +744,25 @@ type AccountChatSessionResponse = {
   consultations: ApiChatConsultation[];
 };
 
+const SESSION_IDLE_TIMEOUT_MS = 45 * 60 * 1000;
+const SESSION_IDLE_CHECK_INTERVAL_MS = 30 * 1000;
+
+type ApiErrorPayload = {
+  error?: string;
+  code?: string;
+  action?: string;
+  message?: string;
+};
+
+function parseApiErrorPayload(raw: string): ApiErrorPayload | null {
+  try {
+    if (!raw.trim()) return null;
+    return JSON.parse(raw) as ApiErrorPayload;
+  } catch {
+    return null;
+  }
+}
+
 function newClientUuid(): string {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
@@ -955,10 +974,13 @@ export default function HomePage() {
   const [tokenCenterOpen, setTokenCenterOpen] = useState(false);
   const [tokenCenterBusy, setTokenCenterBusy] = useState(false);
   const [tokenCenterError, setTokenCenterError] = useState<string | null>(null);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyLoadError, setHistoryLoadError] = useState<string | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
+  const idleSignOutRef = useRef(false);
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
@@ -1340,6 +1362,7 @@ export default function HomePage() {
         sessionStorage.removeItem(`iching_chat_summaries_v1:${uid}`);
         sessionStorage.removeItem(`iching_chat_state_v1:${uid}`);
         sessionStorage.removeItem(`iching_2fa_passed_v1:${uid}`);
+        localStorage.removeItem(`iching_last_activity_v1:${uid}`);
       } catch {
         // ignore cache clear errors
       }
@@ -1354,17 +1377,48 @@ export default function HomePage() {
     setTwoFactorError(null);
     setTokenCenterOpen(false);
     setTokenCenterError(null);
+    setHistoryLoading(false);
+    setHistoryLoadError(null);
+    idleSignOutRef.current = false;
   }, [authUserId]);
 
   const sessionsListed = useMemo(() => sessions.filter((s) => s.messageCount > 0), [sessions]);
   const loadSessionThread = useCallback(
     async (sessionId: string, localId: string) => {
       if (!accessToken) return;
+      setHistoryLoading(true);
+      setHistoryLoadError(null);
       try {
         const res = await fetch(`/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
+          cache: "no-store",
         });
-        if (!res.ok) return;
+        if (!res.ok) {
+          const err = parseApiErrorPayload(await res.text());
+          if (res.status === 401) {
+            const authError = isSpanish
+              ? "Tu sesión expiró al cargar este chat. Inicia sesión de nuevo."
+              : "Your session expired while loading this chat. Please sign in again.";
+            setHistoryLoadError(authError);
+            setError(authError);
+            void signOut();
+            return;
+          }
+          if (res.status === 404 || err?.code === "SESSION_NOT_FOUND") {
+            setHistoryLoadError(
+              isSpanish
+                ? "Este chat ya no existe o fue eliminado."
+                : "This chat no longer exists or was deleted.",
+            );
+            return;
+          }
+          setHistoryLoadError(
+            isSpanish
+              ? `No se pudo cargar este chat (${res.status}).`
+              : `Could not load this chat (${res.status}).`,
+          );
+          return;
+        }
         const payload = (await res.json()) as AccountChatSessionResponse;
         if (!payload?.session) return;
         const planCap = Math.max(1, accountSessionLimit);
@@ -1392,11 +1446,18 @@ export default function HomePage() {
             };
           }),
         );
+        setHistoryLoadError(null);
       } catch {
-        // ignore network errors
+        setHistoryLoadError(
+          isSpanish
+            ? "Error de red al cargar el chat. Revisa tu conexión e inténtalo de nuevo."
+            : "Network error while loading chat. Check your connection and try again.",
+        );
+      } finally {
+        setHistoryLoading(false);
       }
     },
-    [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish, accountSessionLimit],
+    [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish, accountSessionLimit, signOut],
   );
   const removeSession = useCallback(
     async (session: ChatSessionState<ConsultationItem>) => {
@@ -1580,6 +1641,76 @@ export default function HomePage() {
   }, [accessToken, authUserId, preferredTwoFactorMethod, twoFactorEnabled]);
 
   useEffect(() => {
+    if (!accessToken || !authUserId) {
+      idleSignOutRef.current = false;
+      return;
+    }
+    const activityStorageKey = `iching_last_activity_v1:${authUserId}`;
+    const readLastActivity = (): number => {
+      try {
+        const raw = localStorage.getItem(activityStorageKey);
+        const parsed = raw ? Number(raw) : NaN;
+        return Number.isFinite(parsed) ? parsed : Date.now();
+      } catch {
+        return Date.now();
+      }
+    };
+    const writeLastActivity = (timestamp: number) => {
+      try {
+        localStorage.setItem(activityStorageKey, String(timestamp));
+      } catch {
+        // ignore localStorage write errors
+      }
+    };
+    const expireIfNeeded = () => {
+      if (idleSignOutRef.current) return;
+      const idleMs = Date.now() - readLastActivity();
+      if (idleMs < SESSION_IDLE_TIMEOUT_MS) return;
+      idleSignOutRef.current = true;
+      setError(
+        isSpanish
+          ? "Sesión cerrada por inactividad. Inicia sesión para continuar."
+          : "Session signed out due to inactivity. Sign in to continue.",
+      );
+      void signOut();
+    };
+    const registerActivity = () => {
+      if (idleSignOutRef.current) return;
+      writeLastActivity(Date.now());
+    };
+
+    idleSignOutRef.current = false;
+    expireIfNeeded();
+    registerActivity();
+
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== activityStorageKey) return;
+      expireIfNeeded();
+    };
+    const onVisibility = () => {
+      if (document.visibilityState !== "visible") return;
+      expireIfNeeded();
+      registerActivity();
+    };
+    const activityEvents: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart", "mousemove", "scroll"];
+    for (const eventName of activityEvents) {
+      window.addEventListener(eventName, registerActivity, { passive: true });
+    }
+    window.addEventListener("storage", onStorage);
+    document.addEventListener("visibilitychange", onVisibility);
+    const timer = window.setInterval(expireIfNeeded, SESSION_IDLE_CHECK_INTERVAL_MS);
+
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("storage", onStorage);
+      document.removeEventListener("visibilitychange", onVisibility);
+      for (const eventName of activityEvents) {
+        window.removeEventListener(eventName, registerActivity);
+      }
+    };
+  }, [accessToken, authUserId, isSpanish, signOut]);
+
+  useEffect(() => {
     if (sessionsHydrated) return;
     if (sessions.length > 0) {
       setSessionsHydrated(true);
@@ -1617,21 +1748,50 @@ export default function HomePage() {
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
     let cancelled = false;
+    setHistoryLoading(true);
+    setHistoryLoadError(null);
     hydrateFromStorage(summaryCacheKey, chatStateCacheKey);
     void (async () => {
       try {
-        const res = await fetch("/api/account/chats?summary=1", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        if (!res.ok) {
-          const err = (await res.json().catch(() => null)) as { code?: string } | null;
-          if (err?.code === "CHAT_PERSISTENCE_NOT_CONFIGURED") {
-            setError(
-              isSpanish
-                ? "No se puede cargar el historial: falta configurar SUPABASE_SERVICE_ROLE_KEY en el servidor."
-                : "Could not load chat history: SUPABASE_SERVICE_ROLE_KEY is missing on the server.",
-            );
+        const fetchSummary = async () => {
+          const firstAttempt = await fetch("/api/account/chats?summary=1", {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            cache: "no-store",
+          });
+          if (firstAttempt.ok || firstAttempt.status < 500) {
+            return firstAttempt;
           }
+          await new Promise((resolve) => window.setTimeout(resolve, 350));
+          return fetch("/api/account/chats?summary=1", {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            cache: "no-store",
+          });
+        };
+        const res = await fetchSummary();
+        if (!res.ok) {
+          const err = parseApiErrorPayload(await res.text());
+          if (err?.code === "CHAT_PERSISTENCE_NOT_CONFIGURED") {
+            const msg = isSpanish
+              ? "No se puede cargar el historial: falta configurar SUPABASE_SERVICE_ROLE_KEY en el servidor."
+              : "Could not load chat history: SUPABASE_SERVICE_ROLE_KEY is missing on the server.";
+            setError(msg);
+            setHistoryLoadError(msg);
+            return;
+          }
+          if (res.status === 401) {
+            const msg = isSpanish
+              ? "Tu sesión expiró al cargar el historial. Inicia sesión de nuevo."
+              : "Your session expired while loading history. Please sign in again.";
+            setError(msg);
+            setHistoryLoadError(msg);
+            void signOut();
+            return;
+          }
+          const msg = isSpanish
+            ? `No se pudo cargar el historial (${res.status}).`
+            : `Could not load chat history (${res.status}).`;
+          setError(msg);
+          setHistoryLoadError(msg);
           return;
         }
         const payload = (await res.json()) as AccountChatsSummaryResponse;
@@ -1654,7 +1814,10 @@ export default function HomePage() {
             };
           })
           .filter((s) => s.messageCount > 0);
-        if (hydrated.length === 0) return;
+        if (hydrated.length === 0) {
+          setHistoryLoadError(null);
+          return;
+        }
         setSessions((prev) =>
           hydrated.map((next) => {
             const existing = prev.find((s) => s.sessionId === next.sessionId);
@@ -1680,13 +1843,26 @@ export default function HomePage() {
             // ignore cache save errors
           }
         }
-        const first = hydrated[0];
-        setActiveSessionLocalId(first?.localId ?? null);
-        if (first?.sessionId && first.thread.length === 0) {
-          void loadSessionThread(first.sessionId, first.localId);
+        const preferredLocalId =
+          activeSessionLocalId && hydrated.some((s) => s.localId === activeSessionLocalId)
+            ? activeSessionLocalId
+            : (hydrated[0]?.localId ?? null);
+        setActiveSessionLocalId(preferredLocalId);
+        const selected = hydrated.find((s) => s.localId === preferredLocalId) ?? hydrated[0];
+        if (selected?.sessionId && selected.thread.length === 0) {
+          void loadSessionThread(selected.sessionId, selected.localId);
         }
+        setHistoryLoadError(null);
       } catch {
-        // ignore network errors
+        setHistoryLoadError(
+          isSpanish
+            ? "Error de red al cargar el historial. Revisa tu conexión e inténtalo de nuevo."
+            : "Network error while loading history. Check your connection and try again.",
+        );
+      } finally {
+        if (!cancelled) {
+          setHistoryLoading(false);
+        }
       }
     })();
     return () => {
@@ -1703,6 +1879,8 @@ export default function HomePage() {
     summaryCacheKey,
     chatStateCacheKey,
     hydrateFromStorage,
+    activeSessionLocalId,
+    signOut,
   ]);
 
   async function startTwoFactorEnrollment() {
@@ -2392,8 +2570,10 @@ export default function HomePage() {
                 <span className="sidebar-stat-key">{drawerText.chatsWithMessages}</span>
               </div>
             </div>
-            {loading ? (
+            {loading || historyLoading ? (
               <p className="sidebar-stats-hint">{drawerText.loading}</p>
+            ) : historyLoadError ? (
+              <p className="sidebar-stats-hint">{historyLoadError}</p>
             ) : (
               <p className="sidebar-stats-hint">{drawerText.onlyThreads}</p>
             )}
