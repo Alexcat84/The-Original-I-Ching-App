@@ -1985,9 +1985,16 @@ export default function HomePage() {
       setSecondFactorVerified(true);
       setTwoFactorEnabled(true);
       setTwoFactorMethod("totp");
+      setTwoFactorSetupOpen(false);
+      setTwoFactorQrDataUrl(null);
       setTwoFactorRecoveryCodes(data.recoveryCodes);
       setTwoFactorCode("");
       setTwoFactorRecoveryAck(false);
+      setTwoFactorInfo(
+        isSpanish
+          ? "2FA activado. Guarda estos códigos de recuperación antes de cerrar."
+          : "2FA enabled. Save these recovery codes before closing.",
+      );
     } catch {
       setTwoFactorError("No se pudo verificar 2FA ahora. Inténtalo de nuevo.");
     } finally {
@@ -2091,10 +2098,17 @@ export default function HomePage() {
       setSecondFactorVerified(true);
       setTwoFactorEnabled(true);
       setTwoFactorMethod("email");
+      setTwoFactorSetupOpen(false);
+      setTwoFactorQrDataUrl(null);
       setTwoFactorRecoveryCodes(data.recoveryCodes);
       setTwoFactorEmailCode("");
       setTwoFactorEmailSent(false);
       setTwoFactorRecoveryAck(false);
+      setTwoFactorInfo(
+        isSpanish
+          ? "2FA activado. Guarda estos códigos de recuperación antes de cerrar."
+          : "2FA enabled. Save these recovery codes before closing.",
+      );
     } catch {
       setTwoFactorError("No se pudo verificar el código por email. Inténtalo de nuevo.");
     } finally {
@@ -3464,7 +3478,11 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {twoFactorModalMode === "manage" && twoFactorSetupMethod === "totp" && twoFactorSetupOpen && twoFactorQrDataUrl ? (
+                    {twoFactorModalMode === "manage" &&
+                    twoFactorSetupMethod === "totp" &&
+                    twoFactorSetupOpen &&
+                    twoFactorQrDataUrl &&
+                    twoFactorRecoveryCodes.length === 0 ? (
                       <div style={{ marginTop: 12 }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
