@@ -3373,7 +3373,10 @@ export default function HomePage() {
 
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
                       {twoFactorModalMode === "challenge" ? (
-                        <span className="composer-reading-pill is-active" style={{ flex: "0 1 auto", minWidth: 0 }}>
+                        <span
+                          className="composer-reading-pill is-active"
+                          style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
+                        >
                           {preferredTwoFactorMethod === "email"
                             ? isSpanish
                               ? "Código por email"
@@ -3448,7 +3451,7 @@ export default function HomePage() {
 
                     {twoFactorModalMode === "challenge" &&
                     twoFactorChallengeMethod === "totp" &&
-                    twoFactorRecoveryAssistMode !== "contact_support" ? (
+                    twoFactorRecoveryAssistMode === "hidden" ? (
                       <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                         <input
                           type="text"
@@ -3560,7 +3563,7 @@ export default function HomePage() {
                     {((twoFactorModalMode === "manage" && twoFactorSetupMethod === "email" && twoFactorEmailSent) ||
                       (twoFactorModalMode === "challenge" &&
                         twoFactorChallengeMethod === "email" &&
-                        twoFactorRecoveryAssistMode !== "contact_support")) ? (
+                        twoFactorRecoveryAssistMode === "hidden")) ? (
                       <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                         <input
                           type="text"
@@ -3691,6 +3694,7 @@ export default function HomePage() {
                             type="button"
                             className="composer-reading-pill is-active"
                             disabled={twoFactorBusy || !twoFactorRecoveryAck}
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
                             onClick={() => {
                               setTwoFactorModalOpen(false);
                               setTwoFactorRecoveryCodes([]);
@@ -3708,7 +3712,7 @@ export default function HomePage() {
 
                     {twoFactorModalMode === "challenge" ? (
                       <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        {twoFactorChallengeMethod === "email" && twoFactorRecoveryAssistMode !== "enter_code" ? (
+                        {twoFactorChallengeMethod === "email" && twoFactorRecoveryAssistMode === "hidden" ? (
                           <button
                             type="button"
                             className="composer-reading-pill"
@@ -3725,7 +3729,7 @@ export default function HomePage() {
                                 : "Send email code"}
                           </button>
                         ) : null}
-                        {twoFactorRecoveryAssistMode !== "contact_support" ? (
+                        {twoFactorRecoveryAssistMode === "hidden" || twoFactorRecoveryAssistMode === "enter_code" ? (
                           <button
                             type="button"
                             className="composer-reading-pill is-active"
@@ -3749,6 +3753,24 @@ export default function HomePage() {
                                 : "Continue with verification"}
                           </button>
                         ) : null}
+                      </div>
+                    ) : null}
+                    {twoFactorModalMode === "challenge" ? (
+                      <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                        {twoFactorRecoveryAssistMode === "hidden" && twoFactorChallengeFailures >= 2 ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            onClick={() => {
+                              setTwoFactorRecoveryAssistMode("options");
+                              setTwoFactorError(null);
+                            }}
+                            disabled={twoFactorBusy}
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                          >
+                            {isSpanish ? "¿No puedes verificarte?" : "Can't verify?"}
+                          </button>
+                        ) : null}
                         {twoFactorRecoveryAssistMode !== "hidden" ? (
                           <button
                             type="button"
@@ -3760,7 +3782,7 @@ export default function HomePage() {
                             }}
                             disabled={twoFactorBusy}
                           >
-                            {isSpanish ? "Intentar de nuevo con código" : "Try code again"}
+                            {isSpanish ? "Volver a intentar con código" : "Try code again"}
                           </button>
                         ) : null}
                         <button
