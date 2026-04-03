@@ -21,6 +21,7 @@ import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { isSharingPersistenceAvailable, upsertSessionAndConsultation } from "@/lib/session-store";
+import { canDeepenAfterNextConsult, normalizeSessionDepthLimit, shouldBlockDeepening } from "@/lib/thread-depth-policy";
 
 export const runtime = "nodejs";
 const LOG_TOKEN_BALANCE_DEBUG =
@@ -145,7 +146,7 @@ export async function POST(req: Request) {
   const policy = await resolveConsultPolicy({ authUser, tierResolved: lastPack });
   const { adminBypassAllowed, adminUnlimitedCredits, tierEffective, tierKey } = policy;
   const packSessionLimit = await getSessionLimit(authedUserId);
-  const maxDepth = Math.max(1, packSessionLimit || CONTEXT_LIMITS[tierKey].sessionDepth);
+  const maxDepth = normalizeSessionDepthLimit(packSessionLimit || CONTEXT_LIMITS[tierKey].sessionDepth);
 
   const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
   const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
@@ -179,7 +180,13 @@ export async function POST(req: Request) {
 
   const isDeepening = Boolean(body.isDeepening);
   const previousRows = mapHistoryToRows(body.history);
-  if (isDeepening && previousRows.length >= maxDepth) {
+  if (
+    shouldBlockDeepening({
+      isDeepening,
+      historyLength: previousRows.length,
+      sessionLimit: maxDepth,
+    })
+  ) {
     return NextResponse.json(
       {
         error: "session_limit",
@@ -282,7 +289,10 @@ export async function POST(req: Request) {
     };
 
     const nextPosition = previousRows.length + 1;
-    const canDeepen = nextPosition < maxDepth;
+    const canDeepen = canDeepenAfterNextConsult({
+      historyLength: previousRows.length,
+      sessionLimit: maxDepth,
+    });
     const sharing = await upsertSessionAndConsultation({
       userId: authedUserId,
       sessionId,
@@ -411,7 +421,10 @@ export async function POST(req: Request) {
   image = await finalizeReadingImages(image, tierEffective);
 
   const nextPosition = previousRows.length + 1;
-  const canDeepen = nextPosition < maxDepth;
+  const canDeepen = canDeepenAfterNextConsult({
+    historyLength: previousRows.length,
+    sessionLimit: maxDepth,
+  });
   const sharing = await upsertSessionAndConsultation({
     userId: authedUserId,
     sessionId,

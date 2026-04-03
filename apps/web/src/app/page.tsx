@@ -32,6 +32,7 @@ import {
 } from "@/lib/credits-ui-copy";
 import { FREE_TIER_MARKETING, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
 import type { ChatSessionState } from "@/lib/chat-session-state";
+import { mergeHydratedWithLocalDrafts, pickPreferredSessionLocalId } from "@/lib/chat-session-selection";
 import { useChatSessionState } from "@/providers/chat-session-provider";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
@@ -981,6 +982,8 @@ export default function HomePage() {
   const endRef = useRef<HTMLDivElement | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
+  const activeSessionLocalIdRef = useRef<string | null>(null);
+  const pinnedLocalSessionIdRef = useRef<string | null>(null);
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
@@ -1044,6 +1047,9 @@ export default function HomePage() {
     if (!activeSessionLocalId) return sessions[0] ?? null;
     return sessions.find((s) => s.localId === activeSessionLocalId) ?? sessions[0] ?? null;
   }, [sessions, activeSessionLocalId]);
+  useEffect(() => {
+    activeSessionLocalIdRef.current = activeSessionLocalId;
+  }, [activeSessionLocalId]);
   const activeThread = activeSession?.thread ?? [];
   const result = activeThread.at(-1) ?? null;
   /** Per-thread cap from current plan (`/api/account/me` session_limit). API enforces this, not the DB session row. */
@@ -1341,6 +1347,7 @@ export default function HomePage() {
 
   const startNewSession = useCallback(() => {
     const created = createLocalSession(ui.sessionNew);
+    pinnedLocalSessionIdRef.current = created.localId;
     setSessions((prev) => [created, ...prev.filter((s) => s.messageCount > 0)]);
     setActiveSessionLocalId(created.localId);
     setQuestion("");
@@ -1380,6 +1387,7 @@ export default function HomePage() {
     setHistoryLoading(false);
     setHistoryLoadError(null);
     idleSignOutRef.current = false;
+    pinnedLocalSessionIdRef.current = null;
   }, [authUserId]);
 
   const sessionsListed = useMemo(() => sessions.filter((s) => s.messageCount > 0), [sessions]);
@@ -1818,8 +1826,9 @@ export default function HomePage() {
           setHistoryLoadError(null);
           return;
         }
-        setSessions((prev) =>
-          hydrated.map((next) => {
+        let combinedSessions: ChatSessionState<ConsultationItem>[] = hydrated;
+        setSessions((prev) => {
+          const merged = hydrated.map((next) => {
             const existing = prev.find((s) => s.sessionId === next.sessionId);
             if (!existing) return next;
             return {
@@ -1834,8 +1843,13 @@ export default function HomePage() {
               updatedAt: Math.max(next.updatedAt, existing.updatedAt),
               firstConsultationAt: next.firstConsultationAt ?? existing.firstConsultationAt,
             };
-          }),
-        );
+          });
+          combinedSessions = mergeHydratedWithLocalDrafts({
+            previous: prev,
+            hydrated: merged,
+          });
+          return combinedSessions;
+        });
         if (summaryCacheKey) {
           try {
             sessionStorage.setItem(summaryCacheKey, JSON.stringify(hydrated));
@@ -1843,13 +1857,19 @@ export default function HomePage() {
             // ignore cache save errors
           }
         }
-        const preferredLocalId =
-          activeSessionLocalId && hydrated.some((s) => s.localId === activeSessionLocalId)
-            ? activeSessionLocalId
-            : (hydrated[0]?.localId ?? null);
+        const pinnedLocalId = pinnedLocalSessionIdRef.current;
+        if (pinnedLocalId && !combinedSessions.some((s) => s.localId === pinnedLocalId)) {
+          pinnedLocalSessionIdRef.current = null;
+        }
+        const activeLocalId = activeSessionLocalIdRef.current;
+        const preferredLocalId = pickPreferredSessionLocalId({
+          sessions: combinedSessions,
+          pinnedLocalId: pinnedLocalSessionIdRef.current,
+          activeLocalId,
+        });
         setActiveSessionLocalId(preferredLocalId);
-        const selected = hydrated.find((s) => s.localId === preferredLocalId) ?? hydrated[0];
-        if (selected?.sessionId && selected.thread.length === 0) {
+        const selected = combinedSessions.find((s) => s.localId === preferredLocalId) ?? combinedSessions[0];
+        if (selected?.sessionId && selected.messageCount > 0 && selected.thread.length === 0) {
           void loadSessionThread(selected.sessionId, selected.localId);
         }
         setHistoryLoadError(null);
@@ -1879,7 +1899,6 @@ export default function HomePage() {
     summaryCacheKey,
     chatStateCacheKey,
     hydrateFromStorage,
-    activeSessionLocalId,
     signOut,
   ]);
 
@@ -2593,6 +2612,7 @@ export default function HomePage() {
                     type="button"
                     className="chat-session-main-btn"
                     onClick={() => {
+                      pinnedLocalSessionIdRef.current = null;
                       setActiveSessionLocalId(session.localId);
                       setError(null);
                       setChatsOpen(false);
