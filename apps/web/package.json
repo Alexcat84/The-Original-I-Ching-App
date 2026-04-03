@@ -25,6 +25,8 @@
     "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
     "@iching-oracle/sharing": "file:../../packages/sharing",
     "@iching-oracle/ui": "file:../../packages/ui",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
     "@resvg/resvg-js": "^2.6.2",
     "@revenuecat/purchases-js": "^1.29.1",
     "@supabase/supabase-js": "^2.100.0",
@@ -38,7 +40,8 @@
     "react-dom": "18.2.0",
     "react-markdown": "^9.1.0",
     "sharp": "^0.33.5",
-    "styled-jsx": "^5.1.1"
+    "styled-jsx": "^5.1.1",
+    "three": "^0.183.2"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",

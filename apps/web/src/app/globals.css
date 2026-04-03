@@ -2643,6 +2643,244 @@ button.credits-notice-primary:hover {
   margin: 0.5rem 0;
 }
 
+.bone-ritual-viewport {
+  position: relative;
+  width: min(100%, 300px);
+  aspect-ratio: 5 / 4;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 72%, rgba(255, 122, 30, 0.18) 0%, rgba(255, 122, 30, 0.03) 45%, rgba(0, 0, 0, 0) 75%),
+    linear-gradient(180deg, color-mix(in srgb, var(--coins-bg) 92%, #120b07) 0%, color-mix(in srgb, var(--bg-deep) 90%, #1a0f08) 100%);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--coins-border));
+  box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.2);
+}
+
+.bone-ritual-viewport--pending {
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--coins-border));
+}
+
+.bone-ritual-viewport--auspicious-clear {
+  border-color: color-mix(in srgb, #d29a4c 52%, var(--coins-border));
+  box-shadow: inset 0 0 24px rgba(181, 128, 63, 0.22), 0 0 0 1px rgba(196, 144, 77, 0.24);
+}
+
+.bone-ritual-viewport--auspicious-moderate {
+  border-color: color-mix(in srgb, #bb8755 48%, var(--coins-border));
+  box-shadow: inset 0 0 20px rgba(150, 103, 58, 0.18), 0 0 0 1px rgba(181, 128, 83, 0.18);
+}
+
+.bone-ritual-viewport--inauspicious-moderate {
+  border-color: color-mix(in srgb, #8d4a40 50%, var(--coins-border));
+  box-shadow: inset 0 0 20px rgba(108, 52, 45, 0.2), 0 0 0 1px rgba(140, 74, 64, 0.18);
+}
+
+.bone-ritual-viewport--inauspicious-clear {
+  border-color: color-mix(in srgb, #a44d44 56%, var(--coins-border));
+  box-shadow: inset 0 0 24px rgba(113, 44, 38, 0.26), 0 0 0 1px rgba(164, 77, 68, 0.2);
+}
+
+.bone-ritual-viewport--silent {
+  border-color: color-mix(in srgb, #8b7e6b 46%, var(--coins-border));
+}
+
+.bone-ritual-viewport canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.bone-ritual-verdict {
+  position: absolute;
+  left: 50%;
+  bottom: 0.38rem;
+  transform: translateX(-50%);
+  max-width: calc(100% - 1rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.22rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: color-mix(in srgb, var(--bg-deep) 74%, #090909);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+}
+
+.bone-ritual-verdict-glyph {
+  font-family: var(--font-oracle-cn), "Noto Serif SC", "Songti SC", serif;
+  font-size: 0.82rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.bone-ritual-verdict-text {
+  font-size: 0.69rem;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--fg) 80%, #c7c7c7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bone-ritual-verdict--auspicious {
+  border-color: rgba(210, 154, 76, 0.45);
+}
+
+.bone-ritual-verdict--auspicious .bone-ritual-verdict-glyph {
+  color: #ddb168;
+}
+
+.bone-ritual-verdict--inauspicious {
+  border-color: rgba(164, 77, 68, 0.45);
+}
+
+.bone-ritual-verdict--inauspicious .bone-ritual-verdict-glyph {
+  color: #cb6e64;
+}
+
+.bone-ritual-verdict--silent {
+  border-color: rgba(139, 126, 107, 0.45);
+}
+
+.bone-ritual-verdict--silent .bone-ritual-verdict-glyph {
+  color: #a2927b;
+}
+
+.bone-ritual-fallback {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.bone-ritual-fallback-core {
+  width: 62%;
+  aspect-ratio: 1.16 / 1;
+  border-radius: 42% 48% 44% 46%;
+  background: radial-gradient(circle at 35% 28%, #efe2c9 0%, #dac8ab 58%, #bea586 100%);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.28),
+    inset 0 2px 8px rgba(255, 255, 255, 0.24);
+}
+
+.bone-ritual-fallback-flame {
+  position: absolute;
+  width: 52%;
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 153, 64, 0.48) 0%, rgba(255, 119, 34, 0.24) 46%, rgba(255, 119, 34, 0) 76%);
+  filter: blur(3px);
+  transform: translateY(18%);
+}
+
+.bone-ritual-fallback-cracks {
+  position: absolute;
+  width: 58%;
+  height: 56%;
+}
+
+.bone-ritual-fallback-cracks span {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  background: rgba(72, 44, 26, 0.88);
+  transform-origin: center;
+}
+
+.bone-ritual-fallback-cracks span:nth-child(1) {
+  top: 8%;
+  left: 48%;
+  width: 2px;
+  height: 72%;
+}
+
+.bone-ritual-fallback-cracks span:nth-child(2) {
+  top: 34%;
+  left: 52%;
+  width: 34%;
+  height: 2px;
+  transform: rotate(-26deg);
+}
+
+.bone-ritual-fallback-cracks span:nth-child(3) {
+  top: 46%;
+  left: 18%;
+  width: 36%;
+  height: 2px;
+  transform: rotate(19deg);
+}
+
+.bone-ritual-fallback-cracks span:nth-child(4) {
+  top: 56%;
+  left: 46%;
+  width: 30%;
+  height: 2px;
+  transform: rotate(42deg);
+}
+
+.bone-ritual-fallback-cracks span:nth-child(5) {
+  top: 62%;
+  left: 24%;
+  width: 24%;
+  height: 2px;
+  transform: rotate(-38deg);
+}
+
+.bone-ritual-fallback-cracks span:nth-child(6) {
+  top: 24%;
+  left: 34%;
+  width: 18%;
+  height: 2px;
+  transform: rotate(63deg);
+}
+
+.bone-ritual-fallback--pending .bone-ritual-fallback-cracks span:nth-child(n + 5) {
+  display: none;
+}
+
+.bone-ritual-fallback--auspicious-clear .bone-ritual-fallback-cracks span {
+  background: rgba(111, 69, 32, 0.9);
+}
+
+.bone-ritual-fallback--auspicious-clear .bone-ritual-fallback-cracks span:nth-child(3),
+.bone-ritual-fallback--auspicious-clear .bone-ritual-fallback-cracks span:nth-child(5),
+.bone-ritual-fallback--auspicious-clear .bone-ritual-fallback-cracks span:nth-child(6) {
+  display: none;
+}
+
+.bone-ritual-fallback--auspicious-moderate .bone-ritual-fallback-cracks span {
+  background: rgba(126, 78, 44, 0.9);
+}
+
+.bone-ritual-fallback--auspicious-moderate .bone-ritual-fallback-cracks span:nth-child(6) {
+  display: none;
+}
+
+.bone-ritual-fallback--inauspicious-moderate .bone-ritual-fallback-cracks span {
+  background: rgba(95, 40, 36, 0.9);
+}
+
+.bone-ritual-fallback--inauspicious-moderate .bone-ritual-fallback-cracks span:nth-child(6) {
+  display: none;
+}
+
+.bone-ritual-fallback--inauspicious-clear .bone-ritual-fallback-cracks span {
+  background: rgba(92, 29, 27, 0.93);
+}
+
+.bone-ritual-fallback--silent .bone-ritual-fallback-cracks span {
+  background: rgba(87, 71, 50, 0.84);
+}
+
+.bone-ritual-fallback--silent .bone-ritual-fallback-cracks span:nth-child(3),
+.bone-ritual-fallback--silent .bone-ritual-fallback-cracks span:nth-child(4),
+.bone-ritual-fallback--silent .bone-ritual-fallback-cracks span:nth-child(6) {
+  display: none;
+}
+
 .crack-visual-wrap--summary {
   margin-top: 0.25rem;
 }

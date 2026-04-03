@@ -12,7 +12,7 @@ import {
 } from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
-import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
+import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
 import { OracleInterpretationMarkdown } from "@/components/OracleInterpretationMarkdown";
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
@@ -936,6 +936,7 @@ export default function HomePage() {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState<"idle" | "coins" | "bones" | "reading">("idle");
+  const [boneRitualResult, setBoneRitualResult] = useState<BoneOracleResult | null>(null);
   const [coinTick, setCoinTick] = useState(0);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
   const {
@@ -2375,6 +2376,7 @@ export default function HomePage() {
     setError(null);
     setCreditsNotice(null);
     setPendingUserQuestion(questionForRequest || null);
+    setBoneRitualResult(null);
     setQuestion("");
     const showRitualAnimation = true;
     setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
@@ -2495,6 +2497,10 @@ export default function HomePage() {
         return;
       }
       await new Promise((r) => window.setTimeout(r, showRitualAnimation ? 900 : 0));
+      if (showRitualAnimation && oracleMode === "oracle_bones" && data.oracleBones) {
+        setBoneRitualResult(data.oracleBones.verdict);
+        await new Promise((r) => window.setTimeout(r, 1650));
+      }
       const item: ConsultationItem = {
         ...data,
         oracleType: data.oracleType ?? "iching",
@@ -2986,7 +2992,11 @@ export default function HomePage() {
                   {runtimeText.ritualBonesHint}
                 </p>
                 <div className="crack-visual-wrap">
-                  <CrackPatternGraphic patternId={((coinTick % 4) + 1) as number} />
+                  <BoneRitualAnimation
+                    isProcessing={loading}
+                    oracleResult={boneRitualResult}
+                    verdictText={boneRitualResult ? verdictLabel(boneRitualResult, locale) : null}
+                  />
                 </div>
               </section>
             ) : null}
