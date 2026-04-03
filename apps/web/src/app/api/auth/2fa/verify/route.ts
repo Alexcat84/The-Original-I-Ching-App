@@ -89,7 +89,16 @@ export async function POST(req: Request) {
   let verifiedTotpStep: number | null = null;
   const normalizedToken = typeof body.token === "string" ? normalizeCode(body.token) : "";
   if (normalizedToken.length === 6) {
-    const decrypted = decryptTotpSecret(user.totp_secret, encryptionKey);
+    let decrypted: string;
+    try {
+      decrypted = decryptTotpSecret(user.totp_secret, encryptionKey);
+    } catch {
+      return apiError(500, {
+        error: "two_factor_secret_decrypt_failed",
+        code: "TWO_FACTOR_SECRET_DECRYPT_FAILED",
+        action: "check_config",
+      });
+    }
     const totpResult = verifyTotpTokenWithReplayGuard(decrypted, normalizedToken, {
       lastUsedStep: user.totp_last_used_step as number | null | undefined,
     });

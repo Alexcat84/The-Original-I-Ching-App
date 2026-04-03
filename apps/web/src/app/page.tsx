@@ -959,6 +959,7 @@ export default function HomePage() {
   const [twoFactorQrDataUrl, setTwoFactorQrDataUrl] = useState<string | null>(null);
   const [twoFactorCode, setTwoFactorCode] = useState("");
   const [twoFactorEmailCode, setTwoFactorEmailCode] = useState("");
+  const [twoFactorRecoveryCode, setTwoFactorRecoveryCode] = useState("");
   const [twoFactorEmailSent, setTwoFactorEmailSent] = useState(false);
   const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<string[]>([]);
   const [twoFactorModalOpen, setTwoFactorModalOpen] = useState(false);
@@ -1641,6 +1642,7 @@ export default function HomePage() {
     setTwoFactorRecoveryCodes([]);
     setTwoFactorCode("");
     setTwoFactorEmailCode("");
+    setTwoFactorRecoveryCode("");
     setTwoFactorEmailSent(false);
     setTwoFactorChallengeMethod(preferredTwoFactorMethod);
     setTwoFactorInfo(null);
@@ -1970,6 +1972,10 @@ export default function HomePage() {
           setTwoFactorError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
           return;
         }
+        if (data.code === "TWO_FACTOR_SECRET_DECRYPT_FAILED") {
+          setTwoFactorError("No se pudo desencriptar el secreto 2FA en servidor. Reconfigura 2FA.");
+          return;
+        }
         setTwoFactorError("Código 2FA inválido o expirado. Revisa tu app Authenticator e inténtalo de nuevo.");
         return;
       }
@@ -2132,8 +2138,15 @@ export default function HomePage() {
     if (twoFactorChallengeMethod === "email" && twoFactorEmailCode.trim().length >= 6) {
       payload.emailCode = twoFactorEmailCode.trim();
     }
-    if (!payload.token && !payload.emailCode) {
-      setTwoFactorError(isSpanish ? "Ingresa un código válido de 6 dígitos." : "Enter a valid 6-digit code.");
+    if (twoFactorRecoveryCode.trim().length >= 8) {
+      payload.recoveryCode = twoFactorRecoveryCode.trim();
+    }
+    if (!payload.token && !payload.emailCode && !payload.recoveryCode) {
+      setTwoFactorError(
+        isSpanish
+          ? "Ingresa un código válido de 6 dígitos o un código de recuperación."
+          : "Enter a valid 6-digit code or a recovery code.",
+      );
       return;
     }
     setTwoFactorBusy(true);
@@ -2183,6 +2196,14 @@ export default function HomePage() {
           );
           return;
         }
+        if (data?.code === "TWO_FACTOR_SECRET_DECRYPT_FAILED") {
+          setTwoFactorError(
+            isSpanish
+              ? "No se pudo desencriptar el secreto 2FA en servidor. Reconfigura 2FA o revisa TOTP_ENCRYPTION_KEY."
+              : "Could not decrypt the 2FA secret on server. Reconfigure 2FA or check TOTP_ENCRYPTION_KEY.",
+          );
+          return;
+        }
         setTwoFactorError(isSpanish ? "Código 2FA inválido o expirado." : "Invalid or expired 2FA code.");
         return;
       }
@@ -2192,6 +2213,7 @@ export default function HomePage() {
       setSecondFactorVerified(true);
       setTwoFactorCode("");
       setTwoFactorEmailCode("");
+      setTwoFactorRecoveryCode("");
       setTwoFactorModalOpen(false);
       setTwoFactorModalMode("manage");
       setTwoFactorChallengeMethod("totp");
@@ -2286,6 +2308,7 @@ export default function HomePage() {
       setTwoFactorRecoveryCodes([]);
       setTwoFactorCode("");
       setTwoFactorEmailCode("");
+      setTwoFactorRecoveryCode("");
       setTwoFactorEmailSent(false);
       setTwoFactorChallengeMethod(preferredTwoFactorMethod);
       setTwoFactorInfo(null);
@@ -3183,6 +3206,7 @@ export default function HomePage() {
                             setTwoFactorRecoveryCodes([]);
                             setTwoFactorCode("");
                             setTwoFactorEmailCode("");
+                            setTwoFactorRecoveryCode("");
                             setTwoFactorEmailSent(false);
                             setTwoFactorRecoveryAck(false);
                             setTwoFactorInfo(null);
@@ -3328,6 +3352,7 @@ export default function HomePage() {
                               setTwoFactorInfo(null);
                               setTwoFactorError(null);
                               setTwoFactorEmailCode("");
+                              setTwoFactorRecoveryCode("");
                               setTwoFactorEmailSent(false);
                             }}
                             disabled={twoFactorBusy || !accessToken}
@@ -3370,6 +3395,7 @@ export default function HomePage() {
                             setTwoFactorQrDataUrl(null);
                             setTwoFactorCode("");
                             setTwoFactorEmailCode("");
+                            setTwoFactorRecoveryCode("");
                             setTwoFactorEmailSent(false);
                             setTwoFactorInfo(null);
                             setTwoFactorError(null);
@@ -3390,6 +3416,18 @@ export default function HomePage() {
                           placeholder={isSpanish ? "Código TOTP (6 dígitos)" : "TOTP code (6 digits)"}
                           className="composer-input"
                           style={{ maxWidth: 220 }}
+                        />
+                      </div>
+                    ) : null}
+                    {twoFactorModalMode === "challenge" ? (
+                      <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                        <input
+                          type="text"
+                          value={twoFactorRecoveryCode}
+                          onChange={(e) => setTwoFactorRecoveryCode(e.target.value)}
+                          placeholder={isSpanish ? "Código de recuperación (opcional)" : "Recovery code (optional)"}
+                          className="composer-input"
+                          style={{ maxWidth: 320 }}
                         />
                       </div>
                     ) : null}
@@ -3552,9 +3590,10 @@ export default function HomePage() {
                           onClick={() => void verifyTwoFactorChallenge()}
                           disabled={
                             twoFactorBusy ||
-                            (twoFactorChallengeMethod === "totp"
+                            ((twoFactorChallengeMethod === "totp"
                               ? twoFactorCode.trim().length < 6
-                              : twoFactorEmailCode.trim().length < 6)
+                              : twoFactorEmailCode.trim().length < 6) &&
+                              twoFactorRecoveryCode.trim().length < 8)
                           }
                         >
                           {isSpanish ? "Continuar con verificación" : "Continue with verification"}
