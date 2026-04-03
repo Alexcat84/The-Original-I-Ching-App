@@ -34,6 +34,8 @@ export async function POST(req: Request) {
     email: authUser.email,
     totp_secret: encrypted,
     two_factor_method: "totp",
+    // New secret must not inherit replay state from a prior TOTP lifecycle.
+    totp_last_used_step: null,
   });
   if (error) {
     return apiError(500, {

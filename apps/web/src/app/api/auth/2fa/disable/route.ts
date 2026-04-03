@@ -28,6 +28,7 @@ export async function POST(req: Request) {
       two_factor_method: null,
       totp_secret: null,
       totp_verified_at: null,
+      totp_last_used_step: null,
     })
     .eq("id", authUser.userId);
   if (userError) {
