@@ -28,7 +28,6 @@ export async function POST(req: Request) {
       two_factor_method: null,
       totp_secret: null,
       totp_verified_at: null,
-      totp_last_used_step: null,
     })
     .eq("id", authUser.userId);
   if (userError) {
@@ -38,6 +37,14 @@ export async function POST(req: Request) {
       action: "retry",
       details: process.env.NODE_ENV === "development" ? userError.message : undefined,
     });
+  }
+
+  const { error: clearReplayError } = await supabase
+    .from("users")
+    .update({ totp_last_used_step: null })
+    .eq("id", authUser.userId);
+  if (clearReplayError && process.env.NODE_ENV === "development") {
+    console.warn("[2fa/disable] totp_last_used_step reset failed:", clearReplayError.message);
   }
 
   await supabase.from("two_factor_recovery_codes").delete().eq("user_id", authUser.userId);
