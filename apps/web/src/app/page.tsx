@@ -2943,7 +2943,7 @@ export default function HomePage() {
                       <div className="composer-panel-actions">
                         <button
                           type="button"
-                          className="composer-reading-pill"
+                          className="composer-reading-pill is-active"
                           onClick={() => void openTokenCenter()}
                           disabled={tokenCenterBusy || !accessToken}
                         >
