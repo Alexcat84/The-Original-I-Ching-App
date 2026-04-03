@@ -1373,7 +1373,11 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   border-top: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
-/* Options + token modal: compact pills, centered on full panel width (aligns with text column) */
+/*
+ * Options + token modal: compact pills. `justify-content: center` runs in a *narrowed* row:
+ * asymmetric horizontal padding shifts the row’s geometric center left (~41% from the left edge),
+ * so pill midpoints line up with the visual mid-axis of left-aligned body copy (user reference line).
+ */
 .composer-panel-actions,
 .token-center-actions {
   display: flex;
@@ -1383,6 +1387,8 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   gap: 0.45rem;
   width: 100%;
   box-sizing: border-box;
+  padding-left: clamp(0.4rem, 11%, 2.25rem);
+  padding-right: clamp(1rem, 29%, 7rem);
 }
 
 .composer-panel-actions {
