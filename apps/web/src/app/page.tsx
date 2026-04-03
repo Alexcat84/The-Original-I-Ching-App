@@ -1979,6 +1979,10 @@ export default function HomePage() {
         setTwoFactorError("Código 2FA inválido o expirado. Revisa tu app Authenticator e inténtalo de nuevo.");
         return;
       }
+      if (authUserId) {
+        sessionStorage.setItem(`iching_2fa_passed_v1:${authUserId}`, "1");
+      }
+      setSecondFactorVerified(true);
       setTwoFactorEnabled(true);
       setTwoFactorMethod("totp");
       setTwoFactorRecoveryCodes(data.recoveryCodes);
@@ -2081,6 +2085,10 @@ export default function HomePage() {
         setTwoFactorError("Código por email inválido. Revisa tu bandeja e inténtalo de nuevo.");
         return;
       }
+      if (authUserId) {
+        sessionStorage.setItem(`iching_2fa_passed_v1:${authUserId}`, "1");
+      }
+      setSecondFactorVerified(true);
       setTwoFactorEnabled(true);
       setTwoFactorMethod("email");
       setTwoFactorRecoveryCodes(data.recoveryCodes);
