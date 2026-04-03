@@ -960,6 +960,10 @@ export default function HomePage() {
   const [twoFactorCode, setTwoFactorCode] = useState("");
   const [twoFactorEmailCode, setTwoFactorEmailCode] = useState("");
   const [twoFactorRecoveryCode, setTwoFactorRecoveryCode] = useState("");
+  const [twoFactorChallengeFailures, setTwoFactorChallengeFailures] = useState(0);
+  const [twoFactorRecoveryAssistMode, setTwoFactorRecoveryAssistMode] = useState<
+    "hidden" | "options" | "enter_code" | "contact_support"
+  >("hidden");
   const [twoFactorEmailSent, setTwoFactorEmailSent] = useState(false);
   const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<string[]>([]);
   const [twoFactorModalOpen, setTwoFactorModalOpen] = useState(false);
@@ -1059,9 +1063,12 @@ export default function HomePage() {
   const threadDepthCap = planThreadLimit;
   const threadDepthCanDeepen = Boolean(result && result.sessionPosition < planThreadLimit);
   const threadLimitReached = activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
+  const supportEmailFromEnv =
+    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_SUPPORT_EMAIL === "string"
+      ? process.env.NEXT_PUBLIC_SUPPORT_EMAIL.trim()
+      : "";
+  const twoFactorSupportEmail = supportEmailFromEnv || "soporte@the-original-i-ching.app";
   const preferredTwoFactorMethod: "totp" | "email" = twoFactorMethod === "email" ? "email" : "totp";
-  const allowsTotpChallenge = twoFactorMethod !== "email";
-  const allowsEmailChallenge = twoFactorMethod !== "totp";
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
   const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;
   const chatStateCacheKey = authUserId ? `iching_chat_state_v1:${authUserId}` : null;
@@ -1644,6 +1651,8 @@ export default function HomePage() {
     setTwoFactorEmailCode("");
     setTwoFactorRecoveryCode("");
     setTwoFactorEmailSent(false);
+    setTwoFactorChallengeFailures(0);
+    setTwoFactorRecoveryAssistMode("hidden");
     setTwoFactorChallengeMethod(preferredTwoFactorMethod);
     setTwoFactorInfo(null);
     setTwoFactorError(null);
@@ -2154,20 +2163,25 @@ export default function HomePage() {
   async function verifyTwoFactorChallenge() {
     if (!accessToken) return;
     const payload: { token?: string; emailCode?: string; recoveryCode?: string } = {};
-    if (twoFactorChallengeMethod === "totp" && twoFactorCode.trim().length >= 6) {
+    const usingRecoveryCode = twoFactorRecoveryAssistMode === "enter_code";
+    if (usingRecoveryCode && twoFactorRecoveryCode.trim().length >= 8) {
+      payload.recoveryCode = twoFactorRecoveryCode.trim();
+    }
+    if (!usingRecoveryCode && twoFactorChallengeMethod === "totp" && twoFactorCode.trim().length >= 6) {
       payload.token = twoFactorCode.trim();
     }
-    if (twoFactorChallengeMethod === "email" && twoFactorEmailCode.trim().length >= 6) {
+    if (!usingRecoveryCode && twoFactorChallengeMethod === "email" && twoFactorEmailCode.trim().length >= 6) {
       payload.emailCode = twoFactorEmailCode.trim();
-    }
-    if (twoFactorRecoveryCode.trim().length >= 8) {
-      payload.recoveryCode = twoFactorRecoveryCode.trim();
     }
     if (!payload.token && !payload.emailCode && !payload.recoveryCode) {
       setTwoFactorError(
-        isSpanish
-          ? "Ingresa un código válido de 6 dígitos o un código de recuperación."
-          : "Enter a valid 6-digit code or a recovery code.",
+        usingRecoveryCode
+          ? isSpanish
+            ? "Ingresa un código de recuperación válido."
+            : "Enter a valid recovery code."
+          : isSpanish
+            ? "Ingresa un código válido de 6 dígitos."
+            : "Enter a valid 6-digit code.",
       );
       return;
     }
@@ -2226,6 +2240,19 @@ export default function HomePage() {
           );
           return;
         }
+        if (data?.code === "TWO_FACTOR_INVALID_CODE") {
+          const nextFailures = twoFactorChallengeFailures + 1;
+          setTwoFactorChallengeFailures(nextFailures);
+          if (!usingRecoveryCode && nextFailures >= 2) {
+            setTwoFactorRecoveryAssistMode("options");
+            setTwoFactorError(
+              isSpanish
+                ? "No pudimos validar el código. Puedes usar un código de recuperación o iniciar el proceso de soporte."
+                : "We could not validate the code. You can use a recovery code or start support recovery.",
+            );
+            return;
+          }
+        }
         setTwoFactorError(isSpanish ? "Código 2FA inválido o expirado." : "Invalid or expired 2FA code.");
         return;
       }
@@ -2233,6 +2260,8 @@ export default function HomePage() {
         sessionStorage.setItem(`iching_2fa_passed_v1:${authUserId}`, "1");
       }
       setSecondFactorVerified(true);
+      setTwoFactorChallengeFailures(0);
+      setTwoFactorRecoveryAssistMode("hidden");
       setTwoFactorCode("");
       setTwoFactorEmailCode("");
       setTwoFactorRecoveryCode("");
@@ -2332,6 +2361,8 @@ export default function HomePage() {
       setTwoFactorEmailCode("");
       setTwoFactorRecoveryCode("");
       setTwoFactorEmailSent(false);
+      setTwoFactorChallengeFailures(0);
+      setTwoFactorRecoveryAssistMode("hidden");
       setTwoFactorChallengeMethod(preferredTwoFactorMethod);
       setTwoFactorInfo(null);
       setTwoFactorError(null);
@@ -3342,28 +3373,13 @@ export default function HomePage() {
 
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
                       {twoFactorModalMode === "challenge" ? (
-                        <>
-                          {allowsTotpChallenge ? (
-                            <button
-                              type="button"
-                              className={`composer-reading-pill ${twoFactorChallengeMethod === "totp" ? "is-active" : ""}`}
-                              onClick={() => setTwoFactorChallengeMethod("totp")}
-                              disabled={twoFactorBusy}
-                            >
-                              {isSpanish ? "Authenticator (TOTP)" : "Authenticator (TOTP)"}
-                            </button>
-                          ) : null}
-                          {allowsEmailChallenge ? (
-                            <button
-                              type="button"
-                              className={`composer-reading-pill ${twoFactorChallengeMethod === "email" ? "is-active" : ""}`}
-                              onClick={() => setTwoFactorChallengeMethod("email")}
-                              disabled={twoFactorBusy}
-                            >
-                              {isSpanish ? "Código por email" : "Email code"}
-                            </button>
-                          ) : null}
-                        </>
+                        <span className="composer-reading-pill is-active" style={{ flex: "0 1 auto", minWidth: 0 }}>
+                          {preferredTwoFactorMethod === "email"
+                            ? isSpanish
+                              ? "Código por email"
+                              : "Email code"
+                            : "Authenticator (TOTP)"}
+                        </span>
                       ) : twoFactorSetupMethod === "menu" ? (
                         <>
                           <button
@@ -3407,7 +3423,7 @@ export default function HomePage() {
                             </button>
                           ) : null}
                         </>
-                      ) : (
+                      ) : twoFactorRecoveryCodes.length === 0 ? (
                         <button
                           type="button"
                           className="composer-reading-pill"
@@ -3423,13 +3439,16 @@ export default function HomePage() {
                             setTwoFactorError(null);
                           }}
                           disabled={twoFactorBusy}
+                          style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.85rem" }}
                         >
                           {isSpanish ? "← Elegir otro método" : "← Choose another method"}
                         </button>
-                      )}
+                      ) : null}
                     </div>
 
-                    {twoFactorModalMode === "challenge" && twoFactorChallengeMethod === "totp" ? (
+                    {twoFactorModalMode === "challenge" &&
+                    twoFactorChallengeMethod === "totp" &&
+                    twoFactorRecoveryAssistMode !== "contact_support" ? (
                       <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                         <input
                           type="text"
@@ -3441,20 +3460,10 @@ export default function HomePage() {
                         />
                       </div>
                     ) : null}
-                    {twoFactorModalMode === "challenge" ? (
-                      <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                        <input
-                          type="text"
-                          value={twoFactorRecoveryCode}
-                          onChange={(e) => setTwoFactorRecoveryCode(e.target.value)}
-                          placeholder={isSpanish ? "Código de recuperación (opcional)" : "Recovery code (optional)"}
-                          className="composer-input"
-                          style={{ maxWidth: 320 }}
-                        />
-                      </div>
-                    ) : null}
-
-                    {twoFactorModalMode === "manage" && twoFactorSetupMethod === "totp" && !twoFactorSetupOpen ? (
+                    {twoFactorModalMode === "manage" &&
+                    twoFactorSetupMethod === "totp" &&
+                    !twoFactorSetupOpen &&
+                    twoFactorRecoveryCodes.length === 0 ? (
                       <div style={{ marginTop: 10 }}>
                         <p className="meta-line tier-hint-line">
                           {isSpanish
@@ -3521,7 +3530,10 @@ export default function HomePage() {
                       </p>
                     ) : null}
 
-                    {twoFactorModalMode === "manage" && twoFactorSetupMethod === "email" && !twoFactorEmailSent ? (
+                    {twoFactorModalMode === "manage" &&
+                    twoFactorSetupMethod === "email" &&
+                    !twoFactorEmailSent &&
+                    twoFactorRecoveryCodes.length === 0 ? (
                       <div style={{ marginTop: 10 }}>
                         <p className="meta-line tier-hint-line">
                           {isSpanish
@@ -3546,7 +3558,9 @@ export default function HomePage() {
                     ) : null}
 
                     {((twoFactorModalMode === "manage" && twoFactorSetupMethod === "email" && twoFactorEmailSent) ||
-                      (twoFactorModalMode === "challenge" && twoFactorChallengeMethod === "email")) ? (
+                      (twoFactorModalMode === "challenge" &&
+                        twoFactorChallengeMethod === "email" &&
+                        twoFactorRecoveryAssistMode !== "contact_support")) ? (
                       <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                         <input
                           type="text"
@@ -3566,6 +3580,89 @@ export default function HomePage() {
                             {isSpanish ? "Verificar email" : "Verify email"}
                           </button>
                         ) : null}
+                      </div>
+                    ) : null}
+
+                    {twoFactorModalMode === "challenge" && twoFactorRecoveryAssistMode === "options" ? (
+                      <div
+                        style={{
+                          marginTop: 10,
+                          border: "1px solid rgba(84,160,186,0.35)",
+                          borderRadius: 12,
+                          padding: "10px 12px",
+                        }}
+                      >
+                        <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
+                          {isSpanish
+                            ? "¿No puedes verificarte? Usa tus códigos de recuperación o inicia recuperación por soporte."
+                            : "Can't verify? Use your recovery codes or start support recovery."}
+                        </p>
+                        <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
+                            onClick={() => {
+                              setTwoFactorRecoveryAssistMode("enter_code");
+                              setTwoFactorError(null);
+                            }}
+                            disabled={twoFactorBusy}
+                          >
+                            {isSpanish ? "Tengo mis códigos de recuperación" : "I have my recovery codes"}
+                          </button>
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
+                            onClick={() => setTwoFactorRecoveryAssistMode("contact_support")}
+                            disabled={twoFactorBusy}
+                          >
+                            {isSpanish ? "No tengo mis códigos" : "I don't have my recovery codes"}
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {twoFactorModalMode === "challenge" && twoFactorRecoveryAssistMode === "enter_code" ? (
+                      <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                        <input
+                          type="text"
+                          value={twoFactorRecoveryCode}
+                          onChange={(e) => setTwoFactorRecoveryCode(e.target.value)}
+                          placeholder={isSpanish ? "Código de recuperación" : "Recovery code"}
+                          className="composer-input"
+                          style={{ maxWidth: 320 }}
+                        />
+                      </div>
+                    ) : null}
+
+                    {twoFactorModalMode === "challenge" && twoFactorRecoveryAssistMode === "contact_support" ? (
+                      <div
+                        style={{
+                          marginTop: 10,
+                          border: "1px solid rgba(84,160,186,0.35)",
+                          borderRadius: 12,
+                          padding: "10px 12px",
+                        }}
+                      >
+                        <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
+                          {isSpanish
+                            ? "Para recuperar el acceso, escribe a soporte desde tu email registrado. Te enviaremos pasos para verificar titularidad y restaurar acceso."
+                            : "To recover access, email support from your registered email. We'll send ownership verification steps and restore access."}
+                        </p>
+                        <a
+                          className="secondary-btn"
+                          style={{ marginTop: 8 }}
+                          href={`mailto:${twoFactorSupportEmail}?subject=${encodeURIComponent(
+                            isSpanish ? "Recuperación de acceso 2FA" : "2FA account recovery",
+                          )}&body=${encodeURIComponent(
+                            isSpanish
+                              ? `Hola soporte,%0A%0ANo tengo mis códigos de recuperación y necesito restaurar acceso a mi cuenta.%0AEmail de cuenta: ${authEmail ?? ""}%0A%0AGracias.`
+                              : `Hello support,%0A%0AI do not have my recovery codes and need to restore account access.%0AAccount email: ${authEmail ?? ""}%0A%0AThanks.`,
+                          )}`}
+                        >
+                          {isSpanish ? "Contactar soporte por email" : "Contact support by email"}
+                        </a>
                       </div>
                     ) : null}
 
@@ -3589,17 +3686,35 @@ export default function HomePage() {
                               : "I saved my recovery codes and understand they will not be shown again."}
                           </span>
                         </label>
+                        <div style={{ marginTop: 10, display: "flex", justifyContent: "flex-end" }}>
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            disabled={twoFactorBusy || !twoFactorRecoveryAck}
+                            onClick={() => {
+                              setTwoFactorModalOpen(false);
+                              setTwoFactorRecoveryCodes([]);
+                              setTwoFactorRecoveryAck(false);
+                              setTwoFactorInfo(
+                                isSpanish ? "2FA configurado correctamente." : "2FA configured successfully.",
+                              );
+                            }}
+                          >
+                            {isSpanish ? "Aceptar y cerrar" : "Accept and close"}
+                          </button>
+                        </div>
                       </div>
                     ) : null}
 
                     {twoFactorModalMode === "challenge" ? (
                       <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        {twoFactorChallengeMethod === "email" ? (
+                        {twoFactorChallengeMethod === "email" && twoFactorRecoveryAssistMode !== "enter_code" ? (
                           <button
                             type="button"
                             className="composer-reading-pill"
                             onClick={() => void sendEmailTwoFactorCode()}
                             disabled={twoFactorBusy || !accessToken}
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
                           >
                             {twoFactorBusy
                               ? isSpanish
@@ -3610,21 +3725,50 @@ export default function HomePage() {
                                 : "Send email code"}
                           </button>
                         ) : null}
+                        {twoFactorRecoveryAssistMode !== "contact_support" ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            onClick={() => void verifyTwoFactorChallenge()}
+                            disabled={
+                              twoFactorBusy ||
+                              (twoFactorRecoveryAssistMode === "enter_code"
+                                ? twoFactorRecoveryCode.trim().length < 8
+                                : twoFactorChallengeMethod === "totp"
+                                  ? twoFactorCode.trim().length < 6
+                                  : twoFactorEmailCode.trim().length < 6)
+                            }
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                          >
+                            {twoFactorRecoveryAssistMode === "enter_code"
+                              ? isSpanish
+                                ? "Validar código de recuperación"
+                                : "Validate recovery code"
+                              : isSpanish
+                                ? "Continuar con verificación"
+                                : "Continue with verification"}
+                          </button>
+                        ) : null}
+                        {twoFactorRecoveryAssistMode !== "hidden" ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                            onClick={() => {
+                              setTwoFactorRecoveryAssistMode("hidden");
+                              setTwoFactorError(null);
+                            }}
+                            disabled={twoFactorBusy}
+                          >
+                            {isSpanish ? "Intentar de nuevo con código" : "Try code again"}
+                          </button>
+                        ) : null}
                         <button
                           type="button"
-                          className="composer-reading-pill is-active"
-                          onClick={() => void verifyTwoFactorChallenge()}
-                          disabled={
-                            twoFactorBusy ||
-                            ((twoFactorChallengeMethod === "totp"
-                              ? twoFactorCode.trim().length < 6
-                              : twoFactorEmailCode.trim().length < 6) &&
-                              twoFactorRecoveryCode.trim().length < 8)
-                          }
+                          className="composer-reading-pill"
+                          onClick={() => void signOut()}
+                          style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
                         >
-                          {isSpanish ? "Continuar con verificación" : "Continue with verification"}
-                        </button>
-                        <button type="button" className="composer-reading-pill" onClick={() => void signOut()}>
                           {isSpanish ? "Cerrar sesión" : "Sign out"}
                         </button>
                       </div>
