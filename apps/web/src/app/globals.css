@@ -2053,6 +2053,102 @@ button:disabled {
   font-size: 0.8rem;
 }
 
+/* Status / emphasis for small helper copy (2FA, tokens, thread depth) — color + weight, not only bold spans */
+.meta-line.tier-hint-line--emphasis {
+  color: var(--ghost-link);
+  font-weight: 600;
+}
+
+.meta-line.tier-hint-line--success {
+  color: var(--quick-fg);
+  font-weight: 600;
+}
+
+.meta-line.tier-hint-line--error {
+  color: var(--error-fg);
+  font-weight: 600;
+}
+
+.cookie-consent-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  padding: 0.75rem 1rem;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--composer-bg) 94%, var(--bg-deep));
+  border-top: 1px solid var(--bar-border);
+  box-shadow: 0 -8px 28px color-mix(in srgb, #000 14%, transparent);
+}
+
+.cookie-consent-inner {
+  max-width: 56rem;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cookie-consent-text {
+  margin: 0;
+  flex: 1 1 16rem;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  line-height: 1.45;
+}
+
+.cookie-consent-text a {
+  color: var(--ghost-link);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cookie-consent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.cookie-consent-btn {
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1px solid var(--secondary-border);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.cookie-consent-btn--secondary {
+  background: var(--secondary-bg);
+  color: var(--secondary-fg);
+}
+
+.cookie-consent-btn--secondary:hover {
+  background: var(--secondary-hover);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--secondary-border));
+}
+
+.cookie-consent-btn--primary {
+  background: color-mix(in srgb, var(--accent) 22%, var(--secondary-bg));
+  color: var(--quick-fg);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--bar-border));
+}
+
+.cookie-consent-btn--primary:hover {
+  background: color-mix(in srgb, var(--accent) 32%, var(--secondary-bg));
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--bar-border));
+}
+
 .token-center-backdrop {
   position: fixed;
   inset: 0;

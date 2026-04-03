@@ -3170,7 +3170,7 @@ export default function HomePage() {
                           aria-label={isSpanish ? "Profundidad del hilo activo" : "Active thread depth"}
                         >
                           <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
-                          <p className="meta-line tier-hint-line">
+                          <p className="meta-line tier-hint-line tier-hint-line--emphasis">
                             {isSpanish ? "Plan " : "Plan "}
                             <strong>{tierLabelForDisplay(tier)}</strong>
                             {isSpanish
@@ -3210,7 +3210,7 @@ export default function HomePage() {
                     <hr className="composer-panel-divider" aria-hidden />
                     <div className="session-progress" role="group" aria-label={tokenPanel.ariaTokenGroup}>
                       <span>{tokenPanel.tokensHeading}</span>
-                      <p className="meta-line tier-hint-line">
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis">
                         {tokenPanel.lastPack}{" "}
                         <strong>{tierLabelForDisplay(tier)}</strong>
                         {tokenBalance !== null
@@ -3228,7 +3228,7 @@ export default function HomePage() {
                         </button>
                       </div>
                       {tokenCenterMessage ? (
-                        <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                        <p className="meta-line tier-hint-line tier-hint-line--emphasis" style={{ marginTop: 8 }}>
                           {tokenCenterMessage}
                         </p>
                       ) : null}
@@ -3236,12 +3236,12 @@ export default function HomePage() {
                     <hr className="composer-panel-divider" aria-hidden />
                     <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
                       <span>{isSpanish ? "Seguridad (2FA opcional)" : "Security (optional 2FA)"}</span>
-                      <p className="meta-line tier-hint-line">
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis">
                         {isSpanish ? "Estado:" : "Status:"}{" "}
                         <strong>{twoFactorEnabled ? (isSpanish ? "Activado" : "Enabled") : (isSpanish ? "Desactivado" : "Disabled")}</strong>
                         {twoFactorMethod ? `${isSpanish ? " · método " : " · method "}${twoFactorMethod.toUpperCase()}` : ""}
                       </p>
-                      <p className="meta-line tier-hint-line">
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis">
                         {isSpanish
                           ? "Configura Authenticator y/o código por email."
                           : "Configure Authenticator and/or email code."}
@@ -3343,7 +3343,7 @@ export default function HomePage() {
                         </button>
                       ) : null}
                     </div>
-                    <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                    <p className="meta-line tier-hint-line tier-hint-line--emphasis" style={{ marginTop: 8 }}>
                       {twoFactorModalMode === "challenge"
                         ? isSpanish
                           ? `Para continuar en esta sesión, verifica tu cuenta con ${preferredTwoFactorMethod === "email" ? "código por email" : "Authenticator (TOTP)"}.`
@@ -3361,12 +3361,12 @@ export default function HomePage() {
                               : "Email verification only. Use “Choose another method” if you prefer Authenticator."}
                     </p>
                     {twoFactorError ? (
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 6 }}>
+                      <p className="meta-line tier-hint-line tier-hint-line--error" style={{ marginTop: 6 }}>
                         {twoFactorError}
                       </p>
                     ) : null}
                     {twoFactorInfo ? (
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 6 }}>
+                      <p className="meta-line tier-hint-line tier-hint-line--success" style={{ marginTop: 6 }}>
                         {twoFactorInfo}
                       </p>
                     ) : null}
@@ -3468,7 +3468,7 @@ export default function HomePage() {
                     !twoFactorSetupOpen &&
                     twoFactorRecoveryCodes.length === 0 ? (
                       <div style={{ marginTop: 10 }}>
-                        <p className="meta-line tier-hint-line">
+                        <p className="meta-line tier-hint-line tier-hint-line--emphasis">
                           {isSpanish
                             ? "1) Pulsa «Generar QR»  2) Escanéalo con tu app Authenticator  3) Escribe el código de 6 dígitos."
                             : "1) Tap \"Generate QR\"  2) Scan it with your Authenticator app  3) Enter the 6-digit code."}
@@ -3526,7 +3526,7 @@ export default function HomePage() {
                     {twoFactorModalMode === "challenge" &&
                     twoFactorChallengeMethod === "email" &&
                     !twoFactorEmailSent ? (
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis" style={{ marginTop: 8 }}>
                         {isSpanish
                           ? "Pulsa «Enviar código por email» y revisa tu bandeja (y spam). Luego introduce los 6 dígitos."
                           : "Tap «Send email code» and check your inbox (and spam). Then enter the 6-digit code."}
@@ -3538,7 +3538,7 @@ export default function HomePage() {
                     !twoFactorEmailSent &&
                     twoFactorRecoveryCodes.length === 0 ? (
                       <div style={{ marginTop: 10 }}>
-                        <p className="meta-line tier-hint-line">
+                        <p className="meta-line tier-hint-line tier-hint-line--emphasis">
                           {isSpanish
                             ? "Pulsa «Enviar código por email», revisa tu bandeja y escribe el código de 6 dígitos."
                             : "Tap \"Send email code\", check your inbox, and enter the 6-digit code."}
@@ -3595,7 +3595,7 @@ export default function HomePage() {
                           padding: "10px 12px",
                         }}
                       >
-                        <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
+                        <p className="meta-line tier-hint-line tier-hint-line--emphasis" style={{ margin: 0 }}>
                           {isSpanish
                             ? "¿No puedes verificarte? Usa tus códigos de recuperación o inicia recuperación por soporte."
                             : "Can't verify? Use your recovery codes or start support recovery."}
@@ -3648,7 +3648,7 @@ export default function HomePage() {
                           padding: "10px 12px",
                         }}
                       >
-                        <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
+                        <p className="meta-line tier-hint-line tier-hint-line--emphasis" style={{ margin: 0 }}>
                           {isSpanish
                             ? "Para recuperar el acceso, escribe a soporte desde tu email registrado. Te enviaremos pasos para verificar titularidad y restaurar acceso."
                             : "To recover access, email support from your registered email. We'll send ownership verification steps and restore access."}
@@ -3671,13 +3671,16 @@ export default function HomePage() {
 
                     {twoFactorRecoveryCodes.length > 0 && twoFactorModalMode === "manage" ? (
                       <div style={{ marginTop: 10 }}>
-                        <p className="meta-line tier-hint-line">
+                        <p className="meta-line tier-hint-line tier-hint-line--emphasis">
                           {isSpanish
                             ? "Códigos de recuperación (se muestran una sola vez). Guárdalos en un lugar seguro:"
                             : "Recovery codes (shown only once). Save them in a safe place:"}{" "}
                           <code>{twoFactorRecoveryCodes.join(" · ")}</code>
                         </p>
-                        <label className="meta-line tier-hint-line" style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                        <label
+                          className="meta-line tier-hint-line tier-hint-line--emphasis"
+                          style={{ display: "flex", gap: 8, alignItems: "center" }}
+                        >
                           <input
                             type="checkbox"
                             checked={twoFactorRecoveryAck}
@@ -3814,25 +3817,32 @@ export default function HomePage() {
                         {isSpanish ? "Cerrar" : "Close"}
                       </button>
                     </div>
-                    <p className="meta-line tier-hint-line token-center-subtitle">
+                    <p className="meta-line tier-hint-line tier-hint-line--emphasis token-center-subtitle">
                       {isSpanish
                         ? "Consulta tu saldo y abre la compra de tokens."
                         : "Check your balance and open token purchase."}
                     </p>
 
                     <details className="token-center-pack-details" style={{ marginTop: 10 }}>
-                      <summary className="meta-line tier-hint-line" style={{ cursor: "pointer" }}>
+                      <summary className="meta-line tier-hint-line tier-hint-line--emphasis" style={{ cursor: "pointer" }}>
                         {isSpanish ? "Descripción por plan / pack" : "Description by plan / pack"}
                       </summary>
                       <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
-                        <p className="meta-line tier-hint-line token-center-message" style={{ margin: 0 }}>
+                        <p
+                          className="meta-line tier-hint-line tier-hint-line--emphasis token-center-message"
+                          style={{ margin: 0 }}
+                        >
                           <strong>{isSpanish ? "Gratuito:" : "Free:"}</strong>{" "}
                           {isSpanish ? FREE_TIER_MARKETING.es : FREE_TIER_MARKETING.en}
                         </p>
                         {PACK_IDS_ORDERED.map((packId) => {
                           const pack = TOKEN_PACKS[packId];
                           return (
-                            <p key={packId} className="meta-line tier-hint-line token-center-message" style={{ margin: 0 }}>
+                            <p
+                              key={packId}
+                              className="meta-line tier-hint-line tier-hint-line--emphasis token-center-message"
+                              style={{ margin: 0 }}
+                            >
                               <strong>{pack.label}:</strong>{" "}
                               {isSpanish ? pack.marketingDetail.es : pack.marketingDetail.en}
                             </p>
@@ -3842,27 +3852,27 @@ export default function HomePage() {
                     </details>
 
                     <div className="token-center-grid">
-                      <p className="meta-line tier-hint-line token-center-row">
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis token-center-row">
                         <span>{isSpanish ? "Último pack:" : "Last pack:"}</span>{" "}
                         <strong>{tierLabelForDisplay(tier)}</strong>
                       </p>
-                      <p className="meta-line tier-hint-line token-center-row">
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis token-center-row">
                         <span>{isSpanish ? "Tokens disponibles:" : "Available tokens:"}</span>{" "}
                         <strong>{tokenBalance ?? "—"}</strong>
                       </p>
-                      <p className="meta-line tier-hint-line token-center-row">
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis token-center-row">
                         <span>{isSpanish ? "Límite por hilo:" : "Thread limit:"}</span>{" "}
                         <strong>{accountSessionLimit}</strong>
                       </p>
                     </div>
 
                     {tokenCenterError ? (
-                      <p className="meta-line tier-hint-line token-center-message">
+                      <p className="meta-line tier-hint-line tier-hint-line--error token-center-message">
                         {tokenCenterError}
                       </p>
                     ) : null}
                     {tokenCenterMessage ? (
-                      <p className="meta-line tier-hint-line token-center-message">
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis token-center-message">
                         {tokenCenterMessage}
                       </p>
                     ) : null}
@@ -3887,12 +3897,18 @@ export default function HomePage() {
                         {isSpanish ? "Ver packs" : "View packs"}
                       </button>
                     </div>
-                    <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
+                    <p
+                      className="meta-line tier-hint-line tier-hint-line--emphasis token-center-message"
+                      style={{ marginTop: 8 }}
+                    >
                       {isSpanish
                         ? "Tus tokens se acumulan: si compras un nuevo pack antes de agotar el actual, los tokens restantes se suman al nuevo pack."
                         : "Your tokens accumulate: if you buy a new pack before running out, your remaining tokens carry over and add to the new pack."}
                     </p>
-                    <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
+                    <p
+                      className="meta-line tier-hint-line tier-hint-line--emphasis token-center-message"
+                      style={{ marginTop: 8 }}
+                    >
                       <Link href="/guia#planes">{tokenPanel.tokenCenterGuideLink}</Link>
                     </p>
 

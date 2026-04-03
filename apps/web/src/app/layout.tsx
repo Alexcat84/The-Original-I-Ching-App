@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import CookieConsentGate from "@/components/CookieConsentGate";
 import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
-import SessionDocLocaleBridge from "@/components/SessionDocLocaleBridge";
 import { ChatSessionProvider } from "@/providers/chat-session-provider";
 import { rootFontClassName } from "@/lib/google-fonts-root";
 import "@fontsource/noto-serif-sc/700.css";
@@ -33,10 +31,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
         <RevenueCatSupabaseSync />
-        <SessionDocLocaleBridge />
-        <ChatSessionProvider>{children}</ChatSessionProvider>
-        <Analytics />
-        <SpeedInsights />
+        <CookieConsentGate>
+          <ChatSessionProvider>{children}</ChatSessionProvider>
+        </CookieConsentGate>
       </body>
     </html>
   );
