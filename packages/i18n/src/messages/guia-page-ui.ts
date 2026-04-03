@@ -28,11 +28,12 @@ export type GuiaPageUiMessages = {
   legalMetaBeforePrivacy: string;
   legalMetaBetween: string;
   legalMetaAfterTerms: string;
+  gettingStartedHeading: string;
 };
 
 const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
   es: {
-    title: "Guía rápida de uso",
+    title: "Guía de uso",
     leadPart1: "Esta app te permite consultar en dos estilos: ",
     leadPart2: " y ",
     leadPart3:
@@ -66,9 +67,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBeforePrivacy: "Texto legal vinculante: consulta la ",
     legalMetaBetween: " y los ",
     legalMetaAfterTerms: ".",
+    gettingStartedHeading: "Primeros pasos",
   },
   en: {
-    title: "Quick usage guide",
+    title: "User guide",
     leadPart1: "This app offers two consultation styles: ",
     leadPart2: " and ",
     leadPart3:
@@ -101,9 +103,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBeforePrivacy: "Binding legal text: see the ",
     legalMetaBetween: " and ",
     legalMetaAfterTerms: ".",
+    gettingStartedHeading: "Getting started",
   },
   pt: {
-    title: "Guia rápido de utilização",
+    title: "Guia de utilização",
     leadPart1: "Esta app permite consultar em dois estilos: ",
     leadPart2: " e ",
     leadPart3:
@@ -137,9 +140,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBeforePrivacy: "Texto legal vinculativo: consulta a ",
     legalMetaBetween: " e os ",
     legalMetaAfterTerms: ".",
+    gettingStartedHeading: "Primeiros passos",
   },
   fr: {
-    title: "Guide d’utilisation rapide",
+    title: "Guide d’utilisation",
     leadPart1: "Cette app permet de consulter selon deux styles : ",
     leadPart2: " et ",
     leadPart3:
@@ -173,9 +177,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBeforePrivacy: "Texte juridique faisant foi : consultez la ",
     legalMetaBetween: " et les ",
     legalMetaAfterTerms: ".",
+    gettingStartedHeading: "Premiers pas",
   },
   de: {
-    title: "Kurze Nutzungsanleitung",
+    title: "Nutzungsanleitung",
     leadPart1: "Mit dieser App kannst du in zwei Stilen konsultieren: ",
     leadPart2: " und ",
     leadPart3:
@@ -209,9 +214,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBeforePrivacy: "Verbindlicher Rechtstext: siehe die ",
     legalMetaBetween: " und die ",
     legalMetaAfterTerms: ".",
+    gettingStartedHeading: "Erste Schritte",
   },
   it: {
-    title: "Guida rapida d’uso",
+    title: "Guida all’uso",
     leadPart1: "Questa app consente di consultare in due stili: ",
     leadPart2: " e ",
     leadPart3:
@@ -245,9 +251,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBeforePrivacy: "Testo legalmente vincolante: consulta ",
     legalMetaBetween: " e i ",
     legalMetaAfterTerms: ".",
+    gettingStartedHeading: "Primi passi",
   },
   ja: {
-    title: "クイック利用ガイド",
+    title: "利用ガイド",
     leadPart1: "このアプリでは次の2つのスタイルで占えます：",
     leadPart2: " と ",
     leadPart3:
@@ -279,9 +286,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBeforePrivacy: "法的に効力のある文書：",
     legalMetaBetween: "および",
     legalMetaAfterTerms: "をご確認ください。",
+    gettingStartedHeading: "はじめに",
   },
   zh: {
-    title: "快速使用指南",
+    title: "使用指南",
     leadPart1: "本应用支持两种咨询方式：",
     leadPart2: " 与 ",
     leadPart3:
@@ -313,9 +321,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBeforePrivacy: "具有法律效力的文本请参阅",
     legalMetaBetween: "以及",
     legalMetaAfterTerms: "。",
+    gettingStartedHeading: "快速入门",
   },
   ko: {
-    title: "빠른 사용 안내",
+    title: "사용 안내",
     leadPart1: "이 앱에서는 두 가지 방식으로 점칠 수 있습니다: ",
     leadPart2: " 및 ",
     leadPart3:
@@ -347,6 +356,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBeforePrivacy: "구속력 있는 법적 문서: ",
     legalMetaBetween: " 및 ",
     legalMetaAfterTerms: "을(를) 확인하세요.",
+    gettingStartedHeading: "시작하기",
   },
 };
 

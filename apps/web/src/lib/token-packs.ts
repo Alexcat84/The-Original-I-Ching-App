@@ -38,8 +38,8 @@ export const PACK_IDS_ORDERED: PackId[] = ["tokens_seeker_20", "tokens_practitio
 
 /** Free / trial tier copy (not a RevenueCat product id). */
 export const FREE_TIER_MARKETING = {
-  es: "Plan gratuito: 2 consultas de por vida, 1 pregunta por hilo. Sin renovación automática; los packs de pago son consumibles. Imágenes generadas en resolución estándar.",
-  en: "Free plan: 2 lifetime consultations, 1 question per thread. No auto-renewal; paid packs are consumable. Generated images use standard resolution.",
+  es: "Plan gratuito: 2 consultas de por vida, 1 pregunta por hilo. Sin renovación automática; los packs de pago son consumibles. Imágenes generadas en resolución básica.",
+  en: "Free plan: 2 lifetime consultations, 1 question per thread. No auto-renewal; paid packs are consumable. Generated images use basic resolution.",
 } as const;
 
 export const FREE_TOKENS = 2;

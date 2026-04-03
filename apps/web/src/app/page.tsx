@@ -4,6 +4,7 @@ import { OracleShell } from "@iching-oracle/ui";
 import {
   commonStrings,
   DEFAULT_LOCALE,
+  getDocNavUiMessages,
   getTokenPanelUiMessages,
   SUPPORTED_LOCALES,
   UI_LOCALE_STORAGE_KEY,
@@ -891,6 +892,7 @@ export default function HomePage() {
   const t = commonStrings[locale];
   const isSpanish = locale === "es";
   const tokenPanel = useMemo(() => getTokenPanelUiMessages(locale), [locale]);
+  const docNav = useMemo(() => getDocNavUiMessages(locale), [locale]);
   const runtimeText = RUNTIME_TEXT[locale];
   const drawerText = DRAWER_TEXT[locale];
   const exportPdfLabel = isSpanish ? "Exportar chat PDF" : "Export chat PDF";
@@ -3011,7 +3013,7 @@ export default function HomePage() {
                       </p>
                     ) : null}
                     <div className="composer-doc-links" aria-label={isSpanish ? "Documentación y legal" : "Documentation and legal"}>
-                      <Link href="/quickstart">{isSpanish ? "Quickstart (uso)" : "Quickstart (usage)"}</Link>
+                      <Link href="/guia#primeros-pasos">{docNav.userGuide}</Link>
                       <Link href="/notes">
                         {isSpanish ? "Notas y origen de los métodos (I Ching y Huesos)" : "Method notes and origins (I Ching and Bones)"}
                       </Link>
@@ -3468,9 +3470,7 @@ export default function HomePage() {
                     </p>
                     <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
                       <a href="/guia#planes" target="_blank" rel="noopener noreferrer">
-                        {isSpanish
-                          ? "Detalle de packs y límites en la guía (solo lectura)"
-                          : "Pack details and limits in the guide (read-only)"}
+                        {tokenPanel.tokenCenterGuideLink}
                       </a>
                     </p>
 

@@ -6,6 +6,7 @@ import {
   getGuiaPacksUiMessages,
   getGuiaPageUiMessages,
   getPricingUiMessages,
+  getQuickstartPageUiMessages,
   packMarketingLocale,
 } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
@@ -15,6 +16,7 @@ export default async function GuiaRapidaPage() {
   const locale = await resolveDocLocale();
   const nav = getDocNavUiMessages(locale);
   const g = getGuiaPageUiMessages(locale);
+  const q = getQuickstartPageUiMessages(locale);
   const packsUi = getGuiaPacksUiMessages(locale);
   const tokensWord = getPricingUiMessages(locale).tokensWord;
   const mkt = packMarketingLocale(locale);
@@ -22,9 +24,8 @@ export default async function GuiaRapidaPage() {
   return (
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/quickstart">{nav.quickstart}</Link> ·{" "}
-        <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
-        <Link href="/terms">{nav.termsShort}</Link>
+        <Link href="/">{nav.backToOracle}</Link> · <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
+        <Link href="/privacy">{nav.privacyShort}</Link> · <Link href="/terms">{nav.termsShort}</Link>
       </nav>
       <article className="doc-article">
         <h1>{g.title}</h1>
@@ -35,6 +36,35 @@ export default async function GuiaRapidaPage() {
           <strong>{g.bonesLabel}</strong>
           {g.leadPart3}
         </p>
+
+        <h2 id="primeros-pasos">{g.gettingStartedHeading}</h2>
+        <p className="doc-lead">{q.lead}</p>
+
+        <h3>{q.s1Heading}</h3>
+        <ul>
+          <li>
+            <strong>I Ching</strong> — {q.ichingLi}
+          </li>
+          <li>
+            <strong>{q.bonesLabel}</strong> — {q.bonesLi}
+          </li>
+        </ul>
+
+        <h3>{q.s2Heading}</h3>
+        <ul>
+          <li>{q.s2Li1}</li>
+          <li>{q.s2Li2}</li>
+          <li>{q.s2Li3}</li>
+          <li>{q.s2Li4}</li>
+          <li>{q.s2Li5}</li>
+        </ul>
+
+        <h3>{q.s3Heading}</h3>
+        <ul>
+          <li>{q.s3Li1}</li>
+          <li>{q.s3Li2}</li>
+          <li>{q.s3Li3}</li>
+        </ul>
 
         <h2>{g.privacyHeading}</h2>
         <ul>

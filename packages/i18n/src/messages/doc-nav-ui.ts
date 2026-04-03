@@ -4,8 +4,8 @@ import { DEFAULT_LOCALE } from "../locales.js";
 /** Shared doc shell navigation and common legal link labels. */
 export type DocNavUiMessages = {
   backToOracle: string;
-  quickGuide: string;
-  quickstart: string;
+  /** Single user-facing guide (/guia); replaces former “quick guide” + “Quickstart” split. */
+  userGuide: string;
   methodNotes: string;
   privacyShort: string;
   termsShort: string;
@@ -17,8 +17,7 @@ export type DocNavUiMessages = {
 const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   es: {
     backToOracle: "← Volver al oráculo",
-    quickGuide: "Guía rápida",
-    quickstart: "Quickstart",
+    userGuide: "Guía de uso",
     methodNotes: "Notas de métodos",
     privacyShort: "Privacidad",
     termsShort: "Términos",
@@ -28,8 +27,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   en: {
     backToOracle: "← Back to oracle",
-    quickGuide: "Quick guide",
-    quickstart: "Quickstart",
+    userGuide: "User guide",
     methodNotes: "Method notes",
     privacyShort: "Privacy",
     termsShort: "Terms",
@@ -39,8 +37,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   pt: {
     backToOracle: "← Voltar ao oráculo",
-    quickGuide: "Guia rápido",
-    quickstart: "Quickstart",
+    userGuide: "Guia de utilização",
     methodNotes: "Notas sobre métodos",
     privacyShort: "Privacidade",
     termsShort: "Termos",
@@ -50,8 +47,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   fr: {
     backToOracle: "← Retour à l’oracle",
-    quickGuide: "Guide rapide",
-    quickstart: "Quickstart",
+    userGuide: "Guide d’utilisation",
     methodNotes: "Notes sur les méthodes",
     privacyShort: "Confidentialité",
     termsShort: "Conditions",
@@ -61,8 +57,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   de: {
     backToOracle: "← Zurück zum Orakel",
-    quickGuide: "Kurzanleitung",
-    quickstart: "Quickstart",
+    userGuide: "Nutzungsanleitung",
     methodNotes: "Methodenhinweise",
     privacyShort: "Datenschutz",
     termsShort: "AGB",
@@ -72,8 +67,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   it: {
     backToOracle: "← Torna all’oracolo",
-    quickGuide: "Guida rapida",
-    quickstart: "Quickstart",
+    userGuide: "Guida all’uso",
     methodNotes: "Note sui metodi",
     privacyShort: "Privacy",
     termsShort: "Termini",
@@ -83,8 +77,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   ja: {
     backToOracle: "← オラクルに戻る",
-    quickGuide: "クイックガイド",
-    quickstart: "Quickstart",
+    userGuide: "利用ガイド",
     methodNotes: "方法の注記",
     privacyShort: "プライバシー",
     termsShort: "利用規約",
@@ -94,8 +87,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   zh: {
     backToOracle: "← 返回占卜",
-    quickGuide: "快速指南",
-    quickstart: "Quickstart",
+    userGuide: "使用指南",
     methodNotes: "方法说明",
     privacyShort: "隐私",
     termsShort: "条款",
@@ -105,8 +97,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   ko: {
     backToOracle: "← 오라클로 돌아가기",
-    quickGuide: "빠른 안내",
-    quickstart: "Quickstart",
+    userGuide: "사용 안내",
     methodNotes: "방법 노트",
     privacyShort: "개인정보",
     termsShort: "약관",

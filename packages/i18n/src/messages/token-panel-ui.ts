@@ -16,6 +16,8 @@ export type TokenPanelUiMessages = {
   consultThreadLimit: string;
   noTokensDepleted: string;
   signInForBalance: string;
+  /** Link label → `/guia#planes` from token center modal. */
+  tokenCenterGuideLink: string;
 };
 
 const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
@@ -36,6 +38,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     consultThreadLimit: "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar.",
     noTokensDepleted: "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
     signInForBalance: "Inicia sesión para ver tu saldo.",
+    tokenCenterGuideLink: "Packs y límites en la guía de uso (solo lectura)",
   },
   en: {
     ariaTokenGroup: "Token management",
@@ -54,6 +57,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     consultThreadLimit: "You reached this thread limit. Start a new session to continue.",
     noTokensDepleted: "You used all your tokens. Buy a new pack to continue.",
     signInForBalance: "Sign in to view your balance.",
+    tokenCenterGuideLink: "Packs and limits in the user guide (read-only)",
   },
   pt: {
     ariaTokenGroup: "Gestão de tokens",
@@ -72,6 +76,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     consultThreadLimit: "Atingiste o limite deste fio. Inicia uma nova sessão para continuar.",
     noTokensDepleted: "Usaste todos os tokens. Compra um novo pacote para continuar.",
     signInForBalance: "Inicia sessão para veres o teu saldo.",
+    tokenCenterGuideLink: "Packs e limites no guia de utilização (só leitura)",
   },
   fr: {
     ariaTokenGroup: "Gestion des jetons",
@@ -90,6 +95,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     consultThreadLimit: "Limite de ce fil atteinte. Démarrez une nouvelle session pour continuer.",
     noTokensDepleted: "Vous avez utilisé tous vos jetons. Achetez un nouveau pack pour continuer.",
     signInForBalance: "Connectez-vous pour voir votre solde.",
+    tokenCenterGuideLink: "Packs et limites dans le guide d’utilisation (lecture seule)",
   },
   de: {
     ariaTokenGroup: "Token-Verwaltung",
@@ -108,6 +114,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     consultThreadLimit: "Thread-Limit erreicht. Starte eine neue Sitzung, um fortzufahren.",
     noTokensDepleted: "Du hast alle Token aufgebraucht. Kaufe ein neues Paket, um fortzufahren.",
     signInForBalance: "Melde dich an, um dein Guthaben zu sehen.",
+    tokenCenterGuideLink: "Packs und Limits in der Nutzungsanleitung (nur lesen)",
   },
   it: {
     ariaTokenGroup: "Gestione token",
@@ -126,6 +133,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     consultThreadLimit: "Hai raggiunto il limite di questo thread. Avvia una nuova sessione per continuare.",
     noTokensDepleted: "Hai usato tutti i token. Acquista un nuovo pacchetto per continuare.",
     signInForBalance: "Accedi per vedere il saldo.",
+    tokenCenterGuideLink: "Pacchetti e limiti nella guida all’uso (sola lettura)",
   },
   ja: {
     ariaTokenGroup: "トークン管理",
@@ -144,6 +152,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     consultThreadLimit: "このスレッドの上限に達しました。新しいセッションを開始して続行してください。",
     noTokensDepleted: "トークンを使い切りました。続けるには新しいパックを購入してください。",
     signInForBalance: "サインインすると残高を表示できます。",
+    tokenCenterGuideLink: "利用ガイド内のパックと上限（閲覧のみ）",
   },
   zh: {
     ariaTokenGroup: "代币管理",
@@ -160,6 +169,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     consultThreadLimit: "已达到本会话上限。请开始新会话以继续。",
     noTokensDepleted: "您已用完所有代币。请购买新包以继续使用。",
     signInForBalance: "登录后可查看余额。",
+    tokenCenterGuideLink: "使用指南中的套餐与限制（只读）",
   },
   ko: {
     ariaTokenGroup: "토큰 관리",
@@ -178,6 +188,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     consultThreadLimit: "이 스레드 한도에 도달했습니다. 새 세션을 시작해 계속하세요.",
     noTokensDepleted: "토큰을 모두 사용했습니다. 계속하려면 새 팩을 구매하세요.",
     signInForBalance: "로그인하면 잔액을 확인할 수 있습니다.",
+    tokenCenterGuideLink: "사용 안내의 팩 및 한도(읽기 전용)",
   },
 };
 

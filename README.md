@@ -47,8 +47,8 @@ Package-specific scripts (e.g. `apps/web`: `next dev`, `next build`) are defined
 
 Static/guide pages live in `apps/web/src/app/`:
 
-- [`/guia`](./apps/web/src/app/guia/page.tsx) — Quick usage guide (ES/EN via cookie)
-- [`/quickstart`](./apps/web/src/app/quickstart/page.tsx) — Short tutorial-style steps
+- [`/guia`](./apps/web/src/app/guia/page.tsx) — User guide: getting started, privacy/chats/options, packs (`#planes`); locale via cookie
+- [`/quickstart`](./apps/web/src/app/quickstart/page.tsx) — Redirects to `/guia#primeros-pasos` (legacy URL)
 - [`/notes`](./apps/web/src/app/notes/page.tsx) — Method notes / context (explanation)
 - [`/privacy`](./apps/web/src/app/privacy/page.tsx) — Privacy policy
 - [`/terms`](./apps/web/src/app/terms/page.tsx) — Terms of service
@@ -62,7 +62,7 @@ Run migration files in `backend/db/migrations/` **in numeric order** on your Sup
 ## Contributing / standards
 
 - TypeScript **strict**; prefer matching existing patterns in touched packages.
-- After user-visible behavior changes, update the relevant routes under `apps/web/src/app/` (guía, privacidad, términos, quickstart) when copy or flows change.
+- After user-visible behavior changes, update the relevant routes under `apps/web/src/app/` (guía, privacidad, términos) and i18n copy when flows change.
 
 ## License
 

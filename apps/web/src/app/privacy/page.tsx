@@ -10,7 +10,7 @@ export default async function PrivacyPage() {
   return (
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.quickGuide}</Link> ·{" "}
+        <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
         <Link href="/terms">{nav.termsShort}</Link>
       </nav>
       <article className="doc-article">
