@@ -2349,6 +2349,11 @@ button:disabled {
   box-shadow: var(--shadow);
 }
 
+.coins-stage--bones {
+  max-width: min(100%, 48rem);
+  padding: 0.35rem;
+}
+
 .coins-title {
   margin: 0 0 0.65rem;
   color: var(--card-title);
@@ -2645,9 +2650,9 @@ button.credits-notice-primary:hover {
 
 .bone-ritual-viewport {
   position: relative;
-  width: min(100%, 300px);
-  aspect-ratio: 5 / 4;
-  border-radius: 18px;
+  width: 100%;
+  min-height: clamp(320px, 52vw, 460px);
+  border-radius: 16px;
   overflow: hidden;
   background:
     radial-gradient(circle at 50% 72%, rgba(255, 122, 30, 0.18) 0%, rgba(255, 122, 30, 0.03) 45%, rgba(0, 0, 0, 0) 75%),
@@ -2684,7 +2689,9 @@ button.credits-notice-primary:hover {
   border-color: color-mix(in srgb, #8b7e6b 46%, var(--coins-border));
 }
 
-.bone-ritual-viewport canvas {
+.bone-ritual-canvas {
+  position: absolute;
+  inset: 0;
   width: 100% !important;
   height: 100% !important;
   display: block;
@@ -2774,6 +2781,7 @@ button.credits-notice-primary:hover {
   background: radial-gradient(circle, rgba(255, 153, 64, 0.48) 0%, rgba(255, 119, 34, 0.24) 46%, rgba(255, 119, 34, 0) 76%);
   filter: blur(3px);
   transform: translateY(18%);
+  animation: boneRitualFallbackFlame 1.4s ease-in-out infinite alternate;
 }
 
 .bone-ritual-fallback-cracks {
@@ -2879,6 +2887,17 @@ button.credits-notice-primary:hover {
 .bone-ritual-fallback--silent .bone-ritual-fallback-cracks span:nth-child(4),
 .bone-ritual-fallback--silent .bone-ritual-fallback-cracks span:nth-child(6) {
   display: none;
+}
+
+@keyframes boneRitualFallbackFlame {
+  from {
+    transform: translateY(18%) scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(15%) scale(1.08);
+    opacity: 0.95;
+  }
 }
 
 .crack-visual-wrap--summary {

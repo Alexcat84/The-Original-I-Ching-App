@@ -2992,14 +2992,10 @@ export default function HomePage() {
             ) : null}
 
             {phase === "bones" ? (
-              <section className="coins-stage" data-testid="bone-ritual">
-                <p className="coins-title">{runtimeText.ritualBones}</p>
-                <p className="meta-line" style={{ textAlign: "center", maxWidth: "22rem", margin: "0 auto" }}>
-                  {runtimeText.ritualBonesHint}
-                </p>
+              <section className="coins-stage coins-stage--bones" data-testid="bone-ritual">
                 <div className="crack-visual-wrap">
                   <BoneRitualAnimation
-                    isProcessing={loading}
+                    isProcessing={loading && boneRitualResult === null}
                     oracleResult={boneRitualResult}
                     verdictText={boneRitualResult ? verdictLabel(boneRitualResult, locale) : null}
                   />
