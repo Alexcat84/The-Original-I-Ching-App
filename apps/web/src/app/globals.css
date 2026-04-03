@@ -1373,16 +1373,24 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   border-top: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
-/* Options panel: compact centered action pills (token center, 2FA) */
-.composer-panel-actions {
+/* Options + token modal: compact pills, centered on full panel width (aligns with text column) */
+.composer-panel-actions,
+.token-center-actions {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   gap: 0.45rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.composer-panel-actions {
   margin-top: 0.5rem;
 }
 
-.composer-panel-actions .composer-reading-pill {
+.composer-panel-actions .composer-reading-pill,
+.token-center-actions .composer-reading-pill {
   flex: 0 1 auto;
   min-width: 0;
   padding: 0.38rem 0.75rem;
@@ -2122,24 +2130,6 @@ button:disabled {
 
 .token-center-actions {
   margin-top: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  width: 100%;
-  gap: 0.5rem;
-}
-
-/* Primary CTA: full-width pill matching mint/teal Ver packs reference */
-.token-center-actions .composer-reading-pill.is-active {
-  width: 100%;
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.55rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
 }
 
 .hexagram-card,
