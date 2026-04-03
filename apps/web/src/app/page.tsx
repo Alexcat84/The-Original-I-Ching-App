@@ -3382,12 +3382,12 @@ export default function HomePage() {
                       <strong className="token-center-title">{isSpanish ? "Centro de tokens" : "Token center"}</strong>
                       <button
                         type="button"
-                        className="token-center-close"
+                        className="composer-reading-pill"
                         aria-label={isSpanish ? "Cerrar centro de tokens" : "Close token center"}
                         title={isSpanish ? "Cerrar" : "Close"}
                         onClick={() => setTokenCenterOpen(false)}
                       >
-                        ×
+                        {isSpanish ? "Cerrar" : "Close"}
                       </button>
                     </div>
                     <p className="meta-line tier-hint-line token-center-subtitle">
@@ -3469,9 +3469,7 @@ export default function HomePage() {
                         : "Your tokens accumulate: if you buy a new pack before running out, your remaining tokens carry over and add to the new pack."}
                     </p>
                     <p className="meta-line tier-hint-line token-center-message" style={{ marginTop: 8 }}>
-                      <a href="/guia#planes" target="_blank" rel="noopener noreferrer">
-                        {tokenPanel.tokenCenterGuideLink}
-                      </a>
+                      <Link href="/guia#planes">{tokenPanel.tokenCenterGuideLink}</Link>
                     </p>
 
                   </div>
