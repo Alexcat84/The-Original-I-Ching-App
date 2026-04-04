@@ -1100,12 +1100,25 @@ export default function HomePage() {
   const twoFactorSupportEmail = supportEmailFromEnv || "soporte@the-original-i-ching.app";
   const preferredTwoFactorMethod: "totp" | "email" = twoFactorMethod === "email" ? "email" : "totp";
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
+  const QUESTION_INPUT_MAX_HEIGHT_PX = 160;
+  const resizeQuestionInput = useCallback(() => {
+    const el = questionInputRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    const nextHeight = Math.min(QUESTION_INPUT_MAX_HEIGHT_PX, el.scrollHeight);
+    el.style.height = `${Math.max(44, nextHeight)}px`;
+    el.style.overflowY = el.scrollHeight > QUESTION_INPUT_MAX_HEIGHT_PX ? "auto" : "hidden";
+  }, []);
   const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;
   const chatStateCacheKey = authUserId ? `iching_chat_state_v1:${authUserId}` : null;
 
   useEffect(() => {
     setPersistenceKeys(summaryCacheKey, chatStateCacheKey);
   }, [summaryCacheKey, chatStateCacheKey, setPersistenceKeys]);
+
+  useEffect(() => {
+    resizeQuestionInput();
+  }, [question, resizeQuestionInput]);
 
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
@@ -2413,6 +2426,7 @@ export default function HomePage() {
     setRitualDebugFinalVector(null);
     setLastRitualDebugSnapshot(null);
     setQuestion("");
+    requestAnimationFrame(() => resizeQuestionInput());
     const showRitualAnimation = true;
     setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
     let ok = false;
@@ -4177,7 +4191,10 @@ export default function HomePage() {
                     ref={questionInputRef}
                     data-testid="question-input"
                     value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
+                    onChange={(e) => {
+                      setQuestion(e.target.value);
+                      resizeQuestionInput();
+                    }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();

@@ -51,15 +51,15 @@ function structuralVerdictLine(cast: OracleBonesCastResult, language: string): s
       return `Structural verdict: ${cast.verdict}. Ancestors are silent/indeterminate; no yes/no confirmation is available.`;
     }
     return cast.affirmsPositive
-      ? `Structural verdict: ${cast.verdict}, aligned with the positive charge. The positive proposition is confirmed by this cast.`
-      : `Structural verdict: ${cast.verdict}, aligned with the negative charge. The positive proposition is NOT confirmed by this cast.`;
+      ? `Structural verdict: ${cast.verdict}, aligned with the positive charge. In this cast, the positive proposition is confirmed.`
+      : `Structural verdict: ${cast.verdict}, aligned with the negative charge. In this cast, the positive proposition is NOT confirmed.`;
   }
   if (cast.affirmsPositive === null) {
     return `Veredicto estructural: ${cast.verdict}. Ancestros en silencio/indeterminación; no hay confirmación sí/no disponible.`;
   }
   return cast.affirmsPositive
-    ? `Veredicto estructural: ${cast.verdict}, alineado con el cargo positivo. La afirmación positiva sí queda confirmada por esta tirada.`
-    : `Veredicto estructural: ${cast.verdict}, alineado con el cargo negativo. La afirmación positiva NO queda confirmada por esta tirada.`;
+    ? `Veredicto estructural: ${cast.verdict}, alineado con el cargo positivo. En esta tirada, la afirmación positiva sí queda confirmada.`
+    : `Veredicto estructural: ${cast.verdict}, alineado con el cargo negativo. En esta tirada, la afirmación positiva NO queda confirmada.`;
 }
 
 function enforceOracleBonesConsistency(text: string, cast: OracleBonesCastResult, language: string): string {
@@ -109,6 +109,8 @@ INSTRUCTIONS:
   spiritual_inner, family_home, decision_path, conflict_challenge,
   travel_change, general
 - Do not invent a different crack shape or verdict.
+- Keep the verdict tone decisive and explicit. Do not dilute an auspicious_clear / inauspicious_clear outcome with hedging language.
+- Anchor certainty to this cast ("in this cast", "en esta tirada"), not to universal proof claims.
 - If affirmsPositive is false, do NOT assert opposite scenarios as true/probable; only state non-confirmation of the positive charge.
 - If affirmsPositive is null, do NOT force yes/no.
 - Length: ${targetWordCount} words

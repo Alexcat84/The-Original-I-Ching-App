@@ -195,15 +195,8 @@ async function rasterizeOracleBonesMockSvgToPng(svg: string): Promise<string> {
   return `data:image/png;base64,${buf.toString("base64")}`;
 }
 
-async function buildOracleBonesMockPngDataUrl(params: {
-  verdict: OracleBonesVerdict;
-  medium: OracleBoneMedium;
-  consultationId?: string;
-  width: number;
-  height: number;
-}): Promise<string> {
-  const svg = buildOracleBonesMockSvgString(params);
-  return rasterizeOracleBonesMockSvgToPng(svg);
+function svgStringToDataUrl(svg: string): string {
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
 function resolveProvider(override?: ImageProvider): ResolvedImageProvider {
@@ -594,13 +587,22 @@ export async function buildOracleBonesImageAsset(params: {
   const provider = resolveProvider(params.providerOverride);
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
   const promptForRemote = compactPrompt(params.prompt, 900);
-  const fallbackImageUrl = await buildOracleBonesMockPngDataUrl({
+  const fallbackSvg = buildOracleBonesMockSvgString({
     verdict: params.verdict,
     medium: params.medium,
     consultationId: params.consultationId,
     width: ORACLE_BONES_MOCK_WIDTH,
     height: ORACLE_BONES_MOCK_HEIGHT,
   });
+  const fallbackSvgDataUrl = svgStringToDataUrl(fallbackSvg);
+  let fallbackImageUrl = fallbackSvgDataUrl;
+  try {
+    fallbackImageUrl = await rasterizeOracleBonesMockSvgToPng(fallbackSvg);
+  } catch (error) {
+    console.warn("[image-provider] oracle bones fallback PNG rasterization failed, using SVG data URL", {
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
 
   if (provider === "pollinations") {
     const model = process.env.POLLINATIONS_MODEL ?? "flux";
