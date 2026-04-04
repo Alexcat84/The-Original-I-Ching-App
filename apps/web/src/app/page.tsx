@@ -38,6 +38,7 @@ import { mergeHydratedWithLocalDrafts, pickPreferredSessionLocalId } from "@/lib
 import { useChatSessionState } from "@/providers/chat-session-provider";
 import { stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
+import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
@@ -833,12 +834,21 @@ function threadDepthStatusLine(isSpanish: boolean, canDeepen: boolean, cap: numb
     : "You reached the reading limit for this thread.";
 }
 
-function InterpretationBody({ text }: { text: string }) {
+function InterpretationBody({
+  text,
+  reveal,
+  onRevealComplete,
+}: {
+  text: string;
+  reveal?: boolean;
+  onRevealComplete?: () => void;
+}) {
   const cleaned = useMemo(() => stripInterpretationFluff(text), [text]);
+  const displayed = useProgressiveRevealSubstring(cleaned, Boolean(reveal), onRevealComplete);
   if (!cleaned) return null;
   return (
     <div className="interpretation-text interpretation-text--body">
-      <OracleInterpretationMarkdown text={cleaned} />
+      <OracleInterpretationMarkdown text={displayed} />
     </div>
   );
 }
@@ -1013,12 +1023,15 @@ export default function HomePage() {
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const lastScrollWasRevealRef = useRef(false);
+  const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
   const activeSessionLocalIdRef = useRef<string | null>(null);
   const pinnedLocalSessionIdRef = useRef<string | null>(null);
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
+  const [revealConsultationId, setRevealConsultationId] = useState<string | null>(null);
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
 
@@ -1385,9 +1398,35 @@ export default function HomePage() {
     );
   };
 
+  const handleInterpretationRevealComplete = useCallback(() => {
+    setRevealConsultationId(null);
+  }, []);
+
   useEffect(() => {
+    setRevealConsultationId(null);
+  }, [activeSessionLocalId]);
+
+  useEffect(() => {
+    if (prevActiveSessionLocalIdForScrollRef.current !== activeSessionLocalId) {
+      prevActiveSessionLocalIdForScrollRef.current = activeSessionLocalId;
+      lastScrollWasRevealRef.current = false;
+    }
+    if (revealConsultationId) {
+      lastScrollWasRevealRef.current = true;
+      requestAnimationFrame(() => {
+        document.getElementById(`reading-sheet-${revealConsultationId}`)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+      return;
+    }
+    if (lastScrollWasRevealRef.current) {
+      lastScrollWasRevealRef.current = false;
+      return;
+    }
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [activeThread.length, phase, error, activeSession?.localId]);
+  }, [activeThread.length, phase, error, activeSessionLocalId, revealConsultationId]);
 
   useEffect(() => {
     if (!authContinueOpen) return;
@@ -2703,6 +2742,9 @@ export default function HomePage() {
         firstConsultationAt: current.firstConsultationAt ?? item.createdAt ?? Date.now(),
         };
       });
+      if (typeof item.consultationId === "string" && item.consultationId.length > 0) {
+        setRevealConsultationId(item.consultationId);
+      }
       setPendingUserQuestion(null);
       if (typeof data.remainingCredits === "number" && Number.isFinite(data.remainingCredits)) {
         setTokenBalance(data.remainingCredits);
@@ -3066,7 +3108,11 @@ export default function HomePage() {
                 </div>
                 <div className="chat-bubble chat-assistant">
                   <div className="interpretation-stack" data-testid="interpretation-text">
-                    <InterpretationBody text={entry.interpretation} />
+                    <InterpretationBody
+                      text={entry.interpretation}
+                      reveal={revealConsultationId === entry.consultationId}
+                      onRevealComplete={handleInterpretationRevealComplete}
+                    />
                   </div>
                   {entry.oracleType !== "oracle_bones" ? (
                     <div className="reading-record-visual-row">
