@@ -41,6 +41,68 @@ function getLanguageName(language: string): string {
   return map[language] ?? "Spanish";
 }
 
+function isLikelyWrongLanguage(text: string, language: string): boolean {
+  const lower = text.toLowerCase();
+  const englishSignals = (lower.match(/\b(the|and|with|was|were|is|are|this|that|what|why|then)\b/g) ?? []).length;
+  const spanishSignals = (lower.match(/\b(el|la|los|las|con|para|fue|son|esta|este|porque|entonces)\b/g) ?? []).length;
+  if (language === "es") return englishSignals >= 6 && englishSignals > spanishSignals * 2;
+  if (language === "en") return spanishSignals >= 6 && spanishSignals > englishSignals * 2;
+  return false;
+}
+
+function offlineFallbackText(castResult: CastResult, language: string, reason: "groq_error" | "no_model_api_key"): string {
+  if (language === "es") {
+    return `[Sin conexión / ${reason}] Lectura provisional para el hexagrama #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
+  }
+  if (language === "en") {
+    return `[Offline / ${reason}] Mock interpretation for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
+  }
+  return `[Offline / ${reason}] ${getLanguageName(language)} reading fallback for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
+}
+
+function spelledCountLabel(count: number, language: string): string {
+  if (language === "en") {
+    return ["zero", "one", "two", "three", "four", "five", "six"][count] ?? String(count);
+  }
+  return ["cero", "una", "dos", "tres", "cuatro", "cinco", "seis"][count] ?? String(count);
+}
+
+function claimedChangingCount(text: string): number | null {
+  const lower = text.toLowerCase();
+  if (
+    /sin l[ií]neas?\s+(en\s+)?(movimiento|mutaci[oó]n|mutantes?)/i.test(lower) ||
+    /no changing lines?/i.test(lower) ||
+    /without changing lines?/i.test(lower)
+  ) {
+    return 0;
+  }
+  if (/l[ií]nea\s+[uú]nica|[uú]nica\s+l[ií]nea|one changing line/i.test(lower)) return 1;
+  if (/dos\s+l[ií]neas|2\s+l[ií]neas|two changing lines?/i.test(lower)) return 2;
+  if (/tres\s+l[ií]neas|3\s+l[ií]neas|three changing lines?/i.test(lower)) return 3;
+  if (/cuatro\s+l[ií]neas|4\s+l[ií]neas|four changing lines?/i.test(lower)) return 4;
+  if (/cinco\s+l[ií]neas|5\s+l[ií]neas|five changing lines?/i.test(lower)) return 5;
+  if (/seis\s+l[ií]neas|6\s+l[ií]neas|six changing lines?/i.test(lower)) return 6;
+  return null;
+}
+
+function enforceIChingStructuralConsistency(text: string, cast: CastResult, language: string): string {
+  const expected = cast.changingLines.length;
+  const claimed = claimedChangingCount(text);
+  if (claimed === null || claimed === expected) return text;
+  const lineList = cast.changingLines.length > 0 ? cast.changingLines.join(", ") : language === "en" ? "none" : "ninguna";
+  const transformedLabel =
+    cast.transformedHexagram?.number !== undefined && cast.transformedHexagram !== null
+      ? `#${cast.transformedHexagram.number}`
+      : language === "en"
+        ? "none"
+        : "ninguno";
+  const correction =
+    language === "en"
+      ? `Structural correction: this cast has ${expected} changing line${expected === 1 ? "" : "s"} (${spelledCountLabel(expected, "en")}). Positions: ${lineList}. Transformed hexagram: ${transformedLabel}.`
+      : `Corrección estructural: esta tirada tiene ${expected} línea${expected === 1 ? "" : "s"} en mutación (${spelledCountLabel(expected, "es")}). Posiciones: ${lineList}. Hexagrama transformado: ${transformedLabel}.`;
+  return `${text}\n\n${correction}`;
+}
+
 function buildCurrentCastPrompt(
   cast: CastResult,
   _tier: string,
@@ -50,6 +112,14 @@ function buildCurrentCastPrompt(
 ): string {
   const { question, textsForClaude: t, primaryHexagram: p, transformedHexagram: tr, mutationRule } = cast;
   const targetWordCount = "700-900";
+  const rawLineVector = [...cast.lines]
+    .sort((a, b) => a.position - b.position)
+    .map((line) => line.value)
+    .join(",");
+  const transformedLineVector = [...cast.lines]
+    .sort((a, b) => a.position - b.position)
+    .map((line) => (line.value === 6 ? 7 : line.value === 9 ? 8 : line.value))
+    .join(",");
 
   const lineBlock =
     t.selectedLineTexts.length > 0
@@ -122,6 +192,13 @@ ${t.primaryImage ? `THE IMAGE: ${t.primaryImage}` : ""}
 
 ACTIVE RULE: ${mutationRule}
 ${t.ruleExplanation}
+STRUCTURAL FACTS (NON-NEGOTIABLE):
+- RAW_LINES_BOTTOM_TO_TOP: [${rawLineVector}]
+- TRANSFORMED_LINES_BOTTOM_TO_TOP: [${transformedLineVector}]
+- CHANGING_LINES_POSITIONS: [${cast.changingLines.join(",")}]
+- CHANGING_COUNT: ${cast.changingLines.length}
+- PRIMARY_HEXAGRAM_NUMBER: ${p.number}
+- TRANSFORMED_HEXAGRAM_NUMBER: ${tr?.number ?? "NONE"}
 ${lineBlock}
 ${t.specialYaoText ? `SPECIAL TEXT: ${t.specialYaoText}` : ""}
 
@@ -138,6 +215,7 @@ INSTRUCTIONS:
 - ${hasContext ? "Hay consultas previas en sesión: continuidad breve según bloque de contexto (no re-pegues interpretaciones largas)." : "Primera consulta de la sesión."}
 - Interpret ONLY with the texts given
 - In the first sentence, answer the user's question clearly and directly, but do not invent factual data.
+- STRUCTURAL CONSISTENCY IS MANDATORY: any mention of "changing lines" count or positions MUST match CHANGING_COUNT and CHANGING_LINES_POSITIONS exactly.
 - ${looksFactual ? "This question appears to request factual real-world data: explicitly state when that fact cannot be verified from the provided oracle texts." : "Do not claim certainty about external facts unless they are explicitly provided in the input."}
 - If the question is about another person's private feelings or intentions, avoid certainty language. Use probability language (e.g., "podría", "parece", "sugiere"), never "es un hecho".
 - ANTI-REPETITION: if you already stated an idea, do not restate it in other words in another section.
@@ -201,7 +279,14 @@ export async function generateInterpretation(
         fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
       );
       if (cleanText.trim().length > 0) {
-        return { text: cleanText, category };
+        if (isLikelyWrongLanguage(cleanText, language)) {
+          console.warn("[generateInterpretation] Anthropic returned likely wrong language; falling through", {
+            language,
+            primaryHexagram: castResult.primaryHexagram.number,
+          });
+        } else {
+        return { text: enforceIChingStructuralConsistency(cleanText, castResult, language), category };
+        }
       }
     } catch (err) {
       console.warn("[generateInterpretation] Anthropic failed, trying fallback chain", err);
@@ -235,16 +320,23 @@ export async function generateInterpretation(
       const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
       const cleanText = stripInterpretationFluff(fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim());
       if (cleanText.trim().length > 0) {
-        return { text: cleanText, category };
+        if (isLikelyWrongLanguage(cleanText, language)) {
+          console.warn("[generateInterpretation] Groq returned likely wrong language; using fallback", {
+            language,
+            primaryHexagram: castResult.primaryHexagram.number,
+          });
+        } else {
+          return { text: enforceIChingStructuralConsistency(cleanText, castResult, language), category };
+        }
       }
     }
 
     const cat: ConsultationCategory = "general";
-    const body = `[Offline / groq_error] Mock interpretation for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
-    return { text: body, category: cat };
+    const body = offlineFallbackText(castResult, language, "groq_error");
+    return { text: enforceIChingStructuralConsistency(body, castResult, language), category: cat };
   }
 
   const cat: ConsultationCategory = "general";
-  const body = `[Offline / no_model_api_key] Mock interpretation for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
-  return { text: body, category: cat };
+  const body = offlineFallbackText(castResult, language, "no_model_api_key");
+  return { text: enforceIChingStructuralConsistency(body, castResult, language), category: cat };
 }

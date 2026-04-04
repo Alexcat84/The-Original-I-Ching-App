@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk tsc:*)",
+      "Bash(rtk vitest:*)",
+      "Bash(npx vitest:*)",
+      "Bash(rtk git:*)",
+      "Bash(rtk npm:*)",
+      "Bash(npx tsc:*)",
+      "Bash(rtk npx:*)"
+    ]
+  }
+}

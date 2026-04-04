@@ -2375,6 +2375,13 @@ button:disabled {
   text-align: center;
   color: var(--fg-muted);
   font-size: 0.72rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.ritual-line span {
+  position: relative;
+  z-index: 1;
 }
 
 .ritual-line.active {
@@ -2386,6 +2393,12 @@ button:disabled {
 .ritual-line.done {
   border-color: var(--ritual-done-border);
   color: var(--ritual-done-fg);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ritual-done-border) 52%, transparent) 0%,
+      color-mix(in srgb, var(--ritual-done-border) 30%, transparent) 100%
+    );
 }
 
 html[data-theme="dark"] .ritual-line.active {
@@ -2401,122 +2414,204 @@ html[data-theme="dark"] .ritual-line.done {
   border-width: 1.5px;
 }
 
-.coins-grid {
+.ritual-lines-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 0.4rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.45rem;
+  max-width: 20rem;
+  margin: 0 auto;
 }
 
-.coin {
-  aspect-ratio: 1 / 1;
-  border-radius: 999px;
+.ritual-line-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1.4rem minmax(0, 1fr);
+  gap: 0.55rem;
+}
+
+.ritual-line-slot {
+  min-height: 1.55rem;
+  border-radius: 10px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--input-border);
-  animation: coinSpin 1.1s ease-in-out infinite;
-  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--input-border) 78%, transparent);
   position: relative;
-  --yy-light: #f7f7f7;
-  --yy-dark: #161616;
-  background: radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 52%);
+  background: transparent;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.coin-heads {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+.ritual-line-slot--transformed {
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--input-border));
 }
 
-.coin-tails {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+.ritual-line-slot.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--input-border));
+  background: color-mix(in srgb, var(--secondary-bg) 88%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent),
+    0 4px 14px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
-.coin-tone-1 {
-  --yy-light: #f8f1cc;
-  --yy-dark: #1e5b6a;
+.ritual-hex-line {
+  width: 86%;
+  height: 0.62rem;
+  border-radius: 999px;
+  background: #6a3d1f;
+  border: 1px solid rgba(255, 237, 208, 0.28);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 224, 186, 0.24),
+    0 0 8px rgba(182, 102, 46, 0.16);
 }
 
-.coin-tone-2 {
-  --yy-light: #ffe7d2;
-  --yy-dark: #2f446b;
+.ritual-line-slot.is-visible .ritual-hex-line {
+  animation: ritualLineReveal 0.24s ease-out;
 }
 
-.coin-tone-3 {
-  --yy-light: #e9f7e9;
-  --yy-dark: #224c3c;
+.ritual-hex-line--yin {
+  width: 82%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-.coin-tone-4 {
-  --yy-light: #f3e9ff;
-  --yy-dark: #473262;
+.ritual-hex-line--yin > span {
+  width: 44%;
+  height: 0.62rem;
+  border-radius: 999px;
+  background: #6a3d1f;
+  border: 1px solid rgba(255, 237, 208, 0.28);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 224, 186, 0.22),
+    0 0 8px rgba(182, 102, 46, 0.14);
 }
 
-.coin-tone-5 {
-  --yy-light: #ffe7ec;
-  --yy-dark: #5b2f43;
+.ritual-line-slot.is-changing .ritual-hex-line--yang,
+.ritual-line-slot.is-changing .ritual-hex-line--yin > span {
+  background: #b48c1a;
+  border-color: rgba(255, 248, 215, 0.9);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 0 10px rgba(228, 184, 56, 0.35);
 }
 
-.yin-yang {
-  width: 76%;
-  height: 76%;
-  border-radius: 50%;
-  position: relative;
-  background: linear-gradient(to right, var(--yy-dark) 50%, var(--yy-light) 50%);
-  transform: rotate(18deg);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+.ritual-lines-grid.is-finale .ritual-line-slot--source.is-visible {
+  opacity: 0.18;
+  transform: scale(0.94);
+  filter: blur(0.6px);
 }
 
-.yin-yang::before,
-.yin-yang::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50%;
-  height: 50%;
-  border-radius: 50%;
+.ritual-lines-grid.is-finale .ritual-line-slot--transformed.is-visible {
+  transform: scale(1.18);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 42%, transparent),
+    0 0 30px color-mix(in srgb, var(--accent) 34%, transparent);
+  z-index: 2;
 }
 
-.yin-yang::before {
-  top: 0;
-  background: var(--yy-dark);
+.ritual-arrow-slot {
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: translateX(-2px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
 }
 
-.yin-yang::after {
-  bottom: 0;
-  background: var(--yy-light);
+.ritual-arrow-slot.is-visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
-.yin-yang .dot {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 13%;
-  height: 13%;
-  border-radius: 50%;
-  z-index: 1;
+.ritual-arrow {
+  color: color-mix(in srgb, var(--accent) 78%, #fff);
+  font-weight: 800;
+  font-size: 1.02rem;
+  line-height: 1;
+  animation: ritualArrowPulse 0.9s ease-in-out infinite;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
-.yin-yang .dot-light {
-  top: 23%;
-  background: var(--yy-light);
+.ritual-arrow-slot.is-finale .ritual-arrow {
+  font-size: 1.16rem;
+  text-shadow:
+    0 0 14px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 0 22px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
-.yin-yang .dot-dark {
-  bottom: 23%;
-  background: var(--yy-dark);
+.ritual-debug-box {
+  margin-top: 0.65rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 48%, var(--input-border));
+  background: color-mix(in srgb, var(--secondary-bg) 92%, transparent);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: var(--fg-muted);
 }
 
-@keyframes coinSpin {
+.ritual-debug-box p {
+  margin: 0.12rem 0;
+}
+
+.ritual-debug-box code {
+  color: var(--fg);
+}
+
+.ritual-debug-box--persisted {
+  align-self: center;
+  width: min(100%, 36rem);
+}
+
+html[data-theme="dark"] .ritual-line-slot {
+  background: color-mix(in srgb, var(--hex-card-bg) 92%, transparent);
+}
+
+html[data-theme="dark"] .ritual-hex-line--yang,
+html[data-theme="dark"] .ritual-hex-line--yin > span {
+  background: #7a4a27;
+}
+
+html[data-theme="dark"] .ritual-line-slot.is-changing .ritual-hex-line--yang,
+html[data-theme="dark"] .ritual-line-slot.is-changing .ritual-hex-line--yin > span {
+  background: #c9a010;
+}
+
+@keyframes ritualLineReveal {
   0% {
-    transform: translateY(0) rotateY(0deg);
-  }
-  40% {
-    transform: translateY(-6px) rotateY(160deg);
-  }
-  80% {
-    transform: translateY(0) rotateY(320deg);
+    opacity: 0;
+    transform: scaleX(0.12);
+    filter: blur(0.5px);
   }
   100% {
-    transform: translateY(0) rotateY(360deg);
+    opacity: 1;
+    transform: scaleX(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes ritualArrowPulse {
+  0% {
+    transform: translateX(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(2px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0.7;
   }
 }
 
@@ -2697,6 +2792,19 @@ button.credits-notice-primary:hover {
   display: block;
 }
 
+.bone-ritual-fire-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 12;
+  pointer-events: none;
+  image-rendering: pixelated;
+  transition: opacity 240ms ease;
+  -webkit-mask-image: radial-gradient(92% 70% at 50% 88%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.96) 62%, rgba(0, 0, 0, 0) 100%);
+  mask-image: radial-gradient(92% 70% at 50% 88%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.96) 62%, rgba(0, 0, 0, 0) 100%);
+}
+
 .bone-ritual-verdict {
   position: absolute;
   left: 50%;
@@ -2763,6 +2871,14 @@ button.credits-notice-primary:hover {
   place-items: center;
 }
 
+.bone-ritual-fallback-fire-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
 .bone-ritual-fallback-core {
   width: 62%;
   aspect-ratio: 1.16 / 1;
@@ -2782,12 +2898,14 @@ button.credits-notice-primary:hover {
   filter: blur(3px);
   transform: translateY(18%);
   animation: boneRitualFallbackFlame 1.4s ease-in-out infinite alternate;
+  z-index: 1;
 }
 
 .bone-ritual-fallback-cracks {
   position: absolute;
   width: 58%;
   height: 56%;
+  z-index: 2;
 }
 
 .bone-ritual-fallback-cracks span {

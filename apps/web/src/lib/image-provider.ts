@@ -34,6 +34,19 @@ export type ImageProviderDebug = {
   together?: TogetherDebug;
 };
 
+function toTransformedHexagramLines(lines: SumiLineInput[], hasChanges: boolean): SumiLineInput[] {
+  if (!hasChanges) return lines;
+  return lines.map((line) => {
+    if (line.value === 6) {
+      return { ...line, value: 7, isChanging: false };
+    }
+    if (line.value === 9) {
+      return { ...line, value: 8, isChanging: false };
+    }
+    return { ...line, isChanging: false };
+  });
+}
+
 function isDebugImageProvider(): boolean {
   return process.env.DEBUG_IMAGE_PROVIDER === "1" || process.env.DEBUG_IMAGE_PROVIDER === "true";
 }
@@ -448,8 +461,10 @@ export async function buildImageAsset(params: {
   /** When present, the compositor will overlay deterministic bars/text on top of the remote background. */
   overlaySvgDataUrl?: string;
 }> {
+  const hasChanges = params.changingLines.length > 0;
+  const displayLines = toTransformedHexagramLines(params.lines, hasChanges);
   const sumiFallback = sumiUrlForIChing({
-    lines: params.lines,
+    lines: displayLines,
     primaryHexagram: params.primaryHexagram,
     primaryHexagramName: params.primaryHexagramName,
     primaryChinese: params.primaryChinese,
@@ -489,7 +504,7 @@ export async function buildImageAsset(params: {
   const fallbackImageUrl = sumiFallback;
 
   const overlayBase = {
-    lines: params.lines,
+    lines: displayLines,
     primaryNumber: params.primaryHexagram,
     primaryName: params.primaryHexagramName,
     primaryChinese: params.primaryChinese,

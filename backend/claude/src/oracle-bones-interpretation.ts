@@ -12,7 +12,11 @@ The crack pattern, verdict code, and yes/no alignment are FIXED by the system �
 Speak plainly about actions, timing, and risk; avoid I Ching hexagram poetry here.
 One or two short flowing paragraphs, no bullet lists.
 Write entirely in the user's requested language—no mixing Spanish and English (or other pairs) in the same response.
-Do not append generic legal or symbolic-vs-prediction disclaimers; the app handles compliance elsewhere.`;
+Do not append generic legal or symbolic-vs-prediction disclaimers; the app handles compliance elsewhere.
+CRITICAL LOGIC RULE:
+- If alignment is NEGATIVE, you may ONLY conclude that the POSITIVE charge is not confirmed.
+- Never assert the opposite scenario as true/probable from that alone.
+- Never chain certainty from prior negatives into a reconstructed story.`;
 
 /** Same token budget for all tiers. */
 const MAX_TOKENS = 4096;
@@ -30,6 +34,37 @@ function getLanguageName(language: string): string {
     ko: "Korean",
   };
   return map[language] ?? "Spanish";
+}
+
+function isLikelyWrongLanguage(text: string, language: string): boolean {
+  const lower = text.toLowerCase();
+  const englishSignals = (lower.match(/\b(the|and|with|was|were|is|are|this|that|what|why|then)\b/g) ?? []).length;
+  const spanishSignals = (lower.match(/\b(el|la|los|las|con|para|fue|son|esta|este|porque|entonces)\b/g) ?? []).length;
+  if (language === "es") return englishSignals >= 6 && englishSignals > spanishSignals * 2;
+  if (language === "en") return spanishSignals >= 6 && spanishSignals > englishSignals * 2;
+  return false;
+}
+
+function structuralVerdictLine(cast: OracleBonesCastResult, language: string): string {
+  if (language === "en") {
+    if (cast.affirmsPositive === null) {
+      return `Structural verdict: ${cast.verdict}. Ancestors are silent/indeterminate; no yes/no confirmation is available.`;
+    }
+    return cast.affirmsPositive
+      ? `Structural verdict: ${cast.verdict}, aligned with the positive charge. The positive proposition is confirmed by this cast.`
+      : `Structural verdict: ${cast.verdict}, aligned with the negative charge. The positive proposition is NOT confirmed by this cast.`;
+  }
+  if (cast.affirmsPositive === null) {
+    return `Veredicto estructural: ${cast.verdict}. Ancestros en silencio/indeterminación; no hay confirmación sí/no disponible.`;
+  }
+  return cast.affirmsPositive
+    ? `Veredicto estructural: ${cast.verdict}, alineado con el cargo positivo. La afirmación positiva sí queda confirmada por esta tirada.`
+    : `Veredicto estructural: ${cast.verdict}, alineado con el cargo negativo. La afirmación positiva NO queda confirmada por esta tirada.`;
+}
+
+function enforceOracleBonesConsistency(text: string, cast: OracleBonesCastResult, language: string): string {
+  const header = structuralVerdictLine(cast, language);
+  return `${header}\n\n${text}`.trim();
 }
 
 function buildOracleBonesUserContent(
@@ -74,6 +109,8 @@ INSTRUCTIONS:
   spiritual_inner, family_home, decision_path, conflict_challenge,
   travel_change, general
 - Do not invent a different crack shape or verdict.
+- If affirmsPositive is false, do NOT assert opposite scenarios as true/probable; only state non-confirmation of the positive charge.
+- If affirmsPositive is null, do NOT force yes/no.
 - Length: ${targetWordCount} words
 - Respond in ${getLanguageName(language)}
 `.trim();
@@ -130,7 +167,14 @@ export async function generateOracleBonesInterpretation(
         fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
       );
       if (cleanText.trim().length > 0) {
-        return { text: cleanText, category };
+        if (isLikelyWrongLanguage(cleanText, language)) {
+          console.warn("[generateOracleBonesInterpretation] Anthropic returned likely wrong language; falling through", {
+            language,
+            verdict: cast.verdict,
+          });
+        } else {
+          return { text: enforceOracleBonesConsistency(cleanText, cast, language), category };
+        }
       }
     } catch (err) {
       console.warn("[generateOracleBonesInterpretation] Anthropic failed, trying fallback chain", err);
@@ -162,7 +206,16 @@ export async function generateOracleBonesInterpretation(
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
       const cleanText = stripInterpretationFluff(fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim());
-      if (cleanText.trim().length > 0) return { text: cleanText, category };
+      if (cleanText.trim().length > 0) {
+        if (isLikelyWrongLanguage(cleanText, language)) {
+          console.warn("[generateOracleBonesInterpretation] Groq returned likely wrong language; using fallback", {
+            language,
+            verdict: cast.verdict,
+          });
+        } else {
+          return { text: enforceOracleBonesConsistency(cleanText, cast, language), category };
+        }
+      }
     }
   }
 
@@ -170,5 +223,5 @@ export async function generateOracleBonesInterpretation(
     language === "es"
       ? `El patrón de grieta (${cast.verdict}) ${cast.affirmsPositive === null ? "no ofrece un sí o no claro en este momento." : cast.affirmsPositive ? "inclina el peso hacia el cargo positivo." : "inclina el peso hacia la negación del cargo."}`
       : `The crack outcome (${cast.verdict}) ${cast.affirmsPositive === null ? "offers no clear yes/no at this time." : cast.affirmsPositive ? "leans toward the positive charge." : "leans toward the negative charge."}`;
-  return { text: fallback, category: "decision_path" };
+  return { text: enforceOracleBonesConsistency(fallback, cast, language), category: "decision_path" };
 }
