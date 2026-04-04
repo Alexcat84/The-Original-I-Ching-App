@@ -3279,8 +3279,9 @@ html[data-theme="dark"] .verdict-pill--silent {
 /* —— Oracle interpretation Markdown —— */
 .interpretation-stack {
   text-align: justify;
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  /* Avoid bogus syllable breaks (e.g. "ar-monía") — LLM text is not hyphenation-dictionary safe */
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 .oracle-md {
@@ -3288,8 +3289,9 @@ html[data-theme="dark"] .verdict-pill--silent {
   line-height: 1.42;
   color: var(--fg);
   text-align: justify;
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  hyphens: none;
+  -webkit-hyphens: none;
+  overflow-wrap: break-word;
 }
 
 .oracle-md-h2 {

@@ -14,7 +14,7 @@ import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { AmbientParticles } from "@/components/AmbientParticles";
 import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
-import { OracleInterpretationMarkdown } from "@/components/OracleInterpretationMarkdown";
+import { InterpretationMarkdownSafe } from "@/components/InterpretationMarkdownSafe";
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -36,7 +36,7 @@ import { FREE_TIER_MARKETING, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-
 import type { ChatSessionState } from "@/lib/chat-session-state";
 import { mergeHydratedWithLocalDrafts, pickPreferredSessionLocalId } from "@/lib/chat-session-selection";
 import { useChatSessionState } from "@/providers/chat-session-provider";
-import { stripInterpretationFluff } from "@/lib/response-clean";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -843,12 +843,15 @@ function InterpretationBody({
   reveal?: boolean;
   onRevealComplete?: () => void;
 }) {
-  const cleaned = useMemo(() => stripInterpretationFluff(text), [text]);
+  const cleaned = useMemo(
+    () => normalizeInterpretationPunctuation(stripInterpretationFluff(text)),
+    [text],
+  );
   const displayed = useProgressiveRevealSubstring(cleaned, Boolean(reveal), onRevealComplete);
   if (!cleaned) return null;
   return (
     <div className="interpretation-text interpretation-text--body">
-      <OracleInterpretationMarkdown text={displayed} />
+      <InterpretationMarkdownSafe partial={displayed} full={cleaned} />
     </div>
   );
 }

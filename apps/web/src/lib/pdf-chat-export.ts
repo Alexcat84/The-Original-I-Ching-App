@@ -1,5 +1,5 @@
 import type { jsPDF } from "jspdf";
-import { stripInterpretationFluff } from "@/lib/response-clean";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
 
 export type PdfReadingBlock =
   | { type: "heading"; text: string; level: 1 | 2 | 3 }
@@ -20,7 +20,7 @@ function cleanInlineMarkdown(s: string): string {
 
 /** Turn oracle Markdown into structured blocks for PDF (no raw ##, **, or > in output). */
 export function interpretationMarkdownToPdfBlocks(markdown: string): PdfReadingBlock[] {
-  let t = stripInterpretationFluff(markdown);
+  let t = normalizeInterpretationPunctuation(stripInterpretationFluff(markdown));
   t = t.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "");
   t = t.replace(/\r\n/g, "\n");
   const lines = t.split("\n");

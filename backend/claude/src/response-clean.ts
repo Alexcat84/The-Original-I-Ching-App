@@ -15,7 +15,8 @@ export function stripInterpretationFluff(text: string): string {
 
 /**
  * Keep prose natural by avoiding dash-heavy phrasing and bullet-like hyphen lines.
- * We keep semantics intact and only normalize punctuation style.
+ * Also fixes common LLM typography glitches (missing space after comma, ",.", etc.).
+ * Uses Unicode property escapes (\p{L}, \p{Ll}) — requires modern JS runtimes.
  */
 export function normalizeInterpretationPunctuation(text: string): string {
   let t = text.trim();
@@ -25,6 +26,17 @@ export function normalizeInterpretationPunctuation(text: string): string {
   t = t.replace(/\n{3,}/g, "\n\n");
   t = t.replace(/,\s*,+/g, ", ");
   t = t.replace(/\s+,/g, ",");
+  // Comma + period with no space (LLM glitch)
+  t = t.replace(/,\./g, ".");
+  // Letter immediately after comma / semicolon / colon (no space), e.g. ",según" ",Seguir"
+  // Skips decimals like 1,5 (digit after comma).
+  t = t.replace(/,(?!\s)(?=\p{L})/gu, ", ");
+  t = t.replace(/;(?!\s)(?=\p{L})/gu, "; ");
+  t = t.replace(/:(?!\s)(?=\p{L})/gu, ": ");
+  // Closing paren flush against a word
+  t = t.replace(/\)(?=\p{L})/gu, ") ");
   t = t.replace(/,\s+\./g, ".");
+  // After ": " begin with uppercase when the model left a lowercase sentence start
+  t = t.replace(/:\s+(\p{Ll})/gu, (_m, ch: string) => `: ${ch.toUpperCase()}`);
   return t.trim();
 }
