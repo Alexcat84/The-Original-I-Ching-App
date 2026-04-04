@@ -25,7 +25,7 @@ function buildParticlesConfig(theme: ParticleTheme) {
 
   return {
     particles: {
-      number: { value: 168, density: { enable: true, value_area: 900 } },
+      number: { value: 80, density: { enable: true, value_area: 800 } },
       color: { value: particleColor },
       shape: { type: "circle" },
       opacity: { value: isDark ? 0.62 : 0.62, random: true },
@@ -39,7 +39,7 @@ function buildParticlesConfig(theme: ParticleTheme) {
       },
       move: {
         enable: true,
-        speed: isDark ? 2.35 : 2.1,
+        speed: isDark ? 4.7 : 4.2,
         direction: "none",
         random: true,
         straight: false,
