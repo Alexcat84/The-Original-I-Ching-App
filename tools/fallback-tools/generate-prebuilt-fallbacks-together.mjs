@@ -41,6 +41,7 @@ const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "10");
 const steps = Math.min(12, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 10));
 const delayMs = Math.max(0, Number(process.env.TOGETHER_DELAY_MS ?? "1000"));
 const maxRetries = Math.max(0, Number(process.env.TOGETHER_MAX_RETRIES ?? "4"));
+const targetFilesRaw = (process.env.TARGET_FILES ?? "").trim();
 
 const tiers = [
   { tier: "free", width: 1024, height: 768 },
@@ -70,7 +71,10 @@ const BONES_PROMPTS = [
 function promptFor(kind, index) {
   const list = kind === "iching" ? ICHING_PROMPTS : BONES_PROMPTS;
   const base = list[index % list.length];
-  return `${base}. Variation ${index + 1}.`;
+  return [
+    base,
+    "Strict output constraints: no text, no letters, no words, no numbers, no logos, no signatures, no usernames, no watermarks, no captions, no typography.",
+  ].join(" ");
 }
 
 function sleep(ms) {
@@ -105,6 +109,8 @@ async function generateTogetherImage({ prompt, width, height }) {
       body: JSON.stringify({
         model,
         prompt: prompt.slice(0, 1500),
+        negative_prompt:
+          "text, letters, words, numbers, watermark, signature, username, logo, caption, typography, subtitle, handle, @",
         width,
         height,
         n: 1,
@@ -149,9 +155,50 @@ async function generateTogetherImage({ prompt, width, height }) {
   throw new Error("Unreachable");
 }
 
+function parseTargetFiles() {
+  if (!targetFilesRaw) return [];
+  return targetFilesRaw
+    .split(";")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((filePath) => path.resolve(filePath));
+}
+
+function inferKindFromPath(absPath) {
+  const normalized = absPath.replace(/\\/g, "/").toLowerCase();
+  if (normalized.includes("/fallbacks/prebuilt/iching/")) return "iching";
+  if (normalized.includes("/fallbacks/prebuilt/bones/")) return "bones";
+  return null;
+}
+
 async function main() {
   console.log(`[fallback-gen] outputRoot: ${outputRoot}`);
   console.log(`[fallback-gen] model: ${model}, steps: ${steps}, perBucket: ${perBucket}, delayMs: ${delayMs}, maxRetries: ${maxRetries}`);
+  const targetFiles = parseTargetFiles();
+  if (targetFiles.length > 0) {
+    console.log(`[fallback-gen] target mode: ${targetFiles.length} files`);
+    for (let i = 0; i < targetFiles.length; i += 1) {
+      const absPath = targetFiles[i];
+      const kind = inferKindFromPath(absPath);
+      if (!kind) {
+        console.warn(`[skip-target] cannot infer kind for: ${absPath}`);
+        continue;
+      }
+      const parent = path.dirname(absPath);
+      await ensureDir(parent);
+      const rel = absPath.replace(outputRoot, "").replace(/\\/g, "/");
+      console.log(`[regen] ${rel}`);
+      const prompt = promptFor(kind, i + 1);
+      const sizeMatch = absPath.match(/(\d+)x(\d+)/);
+      const width = sizeMatch ? Number(sizeMatch[1]) : 1024;
+      const height = sizeMatch ? Number(sizeMatch[2]) : 1024;
+      const buffer = await generateTogetherImage({ prompt, width, height });
+      await writeFile(absPath, buffer);
+      if (delayMs > 0) await sleep(delayMs);
+    }
+    console.log("[fallback-gen] done (target mode)");
+    return;
+  }
 
   for (const kind of kinds) {
     for (const tier of tiers) {

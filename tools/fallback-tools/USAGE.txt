@@ -35,8 +35,10 @@ Optional env
 - TOGETHER_MAX_RETRIES (default: 4)
 - FALLBACKS_PER_BUCKET (default: 10)
 - OVERWRITE=1 to regenerate existing files
+- TARGET_FILES (optional, ';' separated absolute paths to regenerate only specific assets)
 
 Notes
 - Script applies one request pacing (delay) per generated image.
 - Retries are automatic for 429 and 5xx responses.
 - Runtime fallback selector already routes by type+tier+resolution.
+- Prompts include hard constraints to avoid any text/signature/logo in generated images.
