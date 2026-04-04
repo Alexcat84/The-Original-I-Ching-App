@@ -5,7 +5,7 @@ import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { buildContextBlock, type ResponseMode } from "./interpretation-context.js";
 import { loadClaudeEnv } from "./env.js";
-import { stripInterpretationFluff } from "./response-clean.js";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "./response-clean.js";
 
 const ORACLE_BONES_SYSTEM = `You are the Royal Diviner (贞人 zhen ren) for a stylized Shang-era oracle bone session in a modern app.
 The crack pattern, verdict code, and yes/no alignment are FIXED by the system — you must not contradict them.
@@ -46,25 +46,63 @@ function isLikelyWrongLanguage(text: string, language: string): boolean {
 }
 
 function structuralVerdictLine(cast: OracleBonesCastResult, language: string): string {
+  const label = verdictNaturalLabel(cast.verdict, language);
   if (language === "en") {
     if (cast.affirmsPositive === null) {
-      return `Structural verdict: ${cast.verdict}. Ancestors are silent/indeterminate; no yes/no confirmation is available.`;
+      return `Structural verdict: ${label}. Ancestors are silent/indeterminate; no yes/no confirmation is available.`;
     }
     return cast.affirmsPositive
-      ? `Structural verdict: ${cast.verdict}, aligned with the positive charge. In this cast, the positive proposition is confirmed.`
-      : `Structural verdict: ${cast.verdict}, aligned with the negative charge. In this cast, the positive proposition is NOT confirmed.`;
+      ? `Structural verdict: ${label}, aligned with the positive charge. In this cast, the positive proposition is confirmed.`
+      : `Structural verdict: ${label}, aligned with the negative charge. In this cast, the positive proposition is NOT confirmed.`;
   }
   if (cast.affirmsPositive === null) {
-    return `Veredicto estructural: ${cast.verdict}. Ancestros en silencio/indeterminación; no hay confirmación sí/no disponible.`;
+    return `Veredicto estructural: ${label}. Ancestros en silencio/indeterminación; no hay confirmación sí/no disponible.`;
   }
   return cast.affirmsPositive
-    ? `Veredicto estructural: ${cast.verdict}, alineado con el cargo positivo. En esta tirada, la afirmación positiva sí queda confirmada.`
-    : `Veredicto estructural: ${cast.verdict}, alineado con el cargo negativo. En esta tirada, la afirmación positiva NO queda confirmada.`;
+    ? `Veredicto estructural: ${label}, alineado con el cargo positivo. En esta tirada, la afirmación positiva sí queda confirmada.`
+    : `Veredicto estructural: ${label}, alineado con el cargo negativo. En esta tirada, la afirmación positiva NO queda confirmada.`;
 }
 
 function enforceOracleBonesConsistency(text: string, cast: OracleBonesCastResult, language: string): string {
   const header = structuralVerdictLine(cast, language);
-  return `${header}\n\n${text}`.trim();
+  const merged = `${header}\n\n${replaceVerdictCodesWithNaturalLanguage(text, language)}`.trim();
+  return normalizeInterpretationPunctuation(merged);
+}
+
+function verdictNaturalLabel(verdict: OracleBonesCastResult["verdict"], language: string): string {
+  if (language === "en") {
+    const map: Record<OracleBonesCastResult["verdict"], string> = {
+      auspicious_clear: "clearly favorable",
+      auspicious_moderate: "moderately favorable",
+      inauspicious_moderate: "moderately unfavorable",
+      inauspicious_clear: "clearly unfavorable",
+      silent: "silent/indeterminate",
+    };
+    return map[verdict];
+  }
+  const map: Record<OracleBonesCastResult["verdict"], string> = {
+    auspicious_clear: "favorable claro",
+    auspicious_moderate: "favorable moderado",
+    inauspicious_moderate: "desfavorable moderado",
+    inauspicious_clear: "desfavorable claro",
+    silent: "silencio/indeterminado",
+  };
+  return map[verdict];
+}
+
+function replaceVerdictCodesWithNaturalLanguage(text: string, language: string): string {
+  const replacements: Array<[OracleBonesCastResult["verdict"], string]> = [
+    ["auspicious_clear", verdictNaturalLabel("auspicious_clear", language)],
+    ["auspicious_moderate", verdictNaturalLabel("auspicious_moderate", language)],
+    ["inauspicious_moderate", verdictNaturalLabel("inauspicious_moderate", language)],
+    ["inauspicious_clear", verdictNaturalLabel("inauspicious_clear", language)],
+    ["silent", verdictNaturalLabel("silent", language)],
+  ];
+  let out = text;
+  for (const [code, label] of replacements) {
+    out = out.replace(new RegExp(`\\b${code}\\b`, "gi"), label);
+  }
+  return out;
 }
 
 function buildOracleBonesUserContent(
@@ -100,6 +138,7 @@ Crack pattern id: ${cast.patternId}
 System verdict code: ${cast.verdict}
 Ambiguous rounds before result: ${cast.ambiguousPasses}
 Alignment: ${aff}
+Public verdict label for user-facing prose: ${verdictNaturalLabel(cast.verdict, language)}
 
 ${modeNote}
 
@@ -109,6 +148,7 @@ INSTRUCTIONS:
   spiritual_inner, family_home, decision_path, conflict_challenge,
   travel_change, general
 - Do not invent a different crack shape or verdict.
+- Never show raw internal code tokens to users (e.g. "auspicious_clear", "inauspicious_clear"). Use only natural-language labels.
 - Keep the verdict tone decisive and explicit. Do not dilute an auspicious_clear / inauspicious_clear outcome with hedging language.
 - Anchor certainty to this cast ("in this cast", "en esta tirada"), not to universal proof claims.
 - If affirmsPositive is false, do NOT assert opposite scenarios as true/probable; only state non-confirmation of the positive charge.
@@ -223,7 +263,7 @@ export async function generateOracleBonesInterpretation(
 
   const fallback =
     language === "es"
-      ? `El patrón de grieta (${cast.verdict}) ${cast.affirmsPositive === null ? "no ofrece un sí o no claro en este momento." : cast.affirmsPositive ? "inclina el peso hacia el cargo positivo." : "inclina el peso hacia la negación del cargo."}`
-      : `The crack outcome (${cast.verdict}) ${cast.affirmsPositive === null ? "offers no clear yes/no at this time." : cast.affirmsPositive ? "leans toward the positive charge." : "leans toward the negative charge."}`;
+      ? `El patrón de grieta (${verdictNaturalLabel(cast.verdict, "es")}) ${cast.affirmsPositive === null ? "no ofrece un sí o no claro en este momento." : cast.affirmsPositive ? "inclina el peso hacia el cargo positivo." : "inclina el peso hacia la negación del cargo."}`
+      : `The crack outcome (${verdictNaturalLabel(cast.verdict, "en")}) ${cast.affirmsPositive === null ? "offers no clear yes/no at this time." : cast.affirmsPositive ? "leans toward the positive charge." : "leans toward the negative charge."}`;
   return { text: enforceOracleBonesConsistency(fallback, cast, language), category: "decision_path" };
 }

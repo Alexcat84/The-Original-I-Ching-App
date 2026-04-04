@@ -5,7 +5,7 @@ import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { loadClaudeEnv } from "./env.js";
 import { buildContextBlock, type ResponseMode } from "./interpretation-context.js";
-import { stripInterpretationFluff } from "./response-clean.js";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "./response-clean.js";
 
 export type { ResponseMode } from "./interpretation-context.js";
 
@@ -285,7 +285,8 @@ export async function generateInterpretation(
             primaryHexagram: castResult.primaryHexagram.number,
           });
         } else {
-        return { text: enforceIChingStructuralConsistency(cleanText, castResult, language), category };
+          const hardened = enforceIChingStructuralConsistency(cleanText, castResult, language);
+          return { text: normalizeInterpretationPunctuation(hardened), category };
         }
       }
     } catch (err) {
@@ -326,17 +327,20 @@ export async function generateInterpretation(
             primaryHexagram: castResult.primaryHexagram.number,
           });
         } else {
-          return { text: enforceIChingStructuralConsistency(cleanText, castResult, language), category };
+          const hardened = enforceIChingStructuralConsistency(cleanText, castResult, language);
+          return { text: normalizeInterpretationPunctuation(hardened), category };
         }
       }
     }
 
     const cat: ConsultationCategory = "general";
     const body = offlineFallbackText(castResult, language, "groq_error");
-    return { text: enforceIChingStructuralConsistency(body, castResult, language), category: cat };
+    const hardened = enforceIChingStructuralConsistency(body, castResult, language);
+    return { text: normalizeInterpretationPunctuation(hardened), category: cat };
   }
 
   const cat: ConsultationCategory = "general";
   const body = offlineFallbackText(castResult, language, "no_model_api_key");
-  return { text: enforceIChingStructuralConsistency(body, castResult, language), category: cat };
+  const hardened = enforceIChingStructuralConsistency(body, castResult, language);
+  return { text: normalizeInterpretationPunctuation(hardened), category: cat };
 }

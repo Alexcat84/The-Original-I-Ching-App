@@ -1,4 +1,6 @@
 import type { OracleBoneMedium, OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
+import { access } from "node:fs/promises";
+import path from "node:path";
 import { toContextTierKey } from "@/lib/credits";
 import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
 import {
@@ -33,6 +35,11 @@ export type ImageProviderDebug = {
   sumiOnlyMode: boolean;
   together?: TogetherDebug;
 };
+
+type PrebuiltFallbackKind = "iching" | "bones";
+
+const PREBUILT_FALLBACKS_PER_BUCKET = 10;
+const prebuiltFallbackExistsCache = new Map<string, boolean>();
 
 function toTransformedHexagramLines(lines: SumiLineInput[], hasChanges: boolean): SumiLineInput[] {
   if (!hasChanges) return lines;
@@ -231,8 +238,81 @@ function compactPrompt(prompt: string, maxLen: number): string {
     .slice(0, maxLen);
 }
 
+function resolveTierKey(lastPack?: string): "free" | "seeker" | "practitioner" | "master" {
+  return lastPack ? toContextTierKey(lastPack) : "free";
+}
+
+function prebuiltFallbackRelativePath(params: {
+  kind: PrebuiltFallbackKind;
+  tier: "free" | "seeker" | "practitioner" | "master";
+  width: number;
+  height: number;
+  index: number;
+}): string {
+  const file = `${String(params.index).padStart(2, "0")}.png`;
+  return `/fallbacks/prebuilt/${params.kind}/${params.tier}/${params.width}x${params.height}/${file}`;
+}
+
+function candidatePublicAbsolutePaths(relativePath: string): string[] {
+  const noSlash = relativePath.replace(/^\//, "");
+  return [
+    path.join(process.cwd(), "public", noSlash),
+    path.join(process.cwd(), "apps", "web", "public", noSlash),
+  ];
+}
+
+async function prebuiltFallbackFileExists(relativePath: string): Promise<boolean> {
+  const cached = prebuiltFallbackExistsCache.get(relativePath);
+  if (cached !== undefined) return cached;
+  let exists = false;
+  const candidates = candidatePublicAbsolutePaths(relativePath);
+  for (const absPath of candidates) {
+    try {
+      await access(absPath);
+      exists = true;
+      break;
+    } catch {
+      // try next candidate
+    }
+  }
+  prebuiltFallbackExistsCache.set(relativePath, exists);
+  return exists;
+}
+
+function indexProbeOrder(seedIndex: number, count: number): number[] {
+  const list: number[] = [];
+  for (let i = 0; i < count; i += 1) {
+    const idx = ((seedIndex - 1 + i) % count) + 1;
+    list.push(idx);
+  }
+  return list;
+}
+
+async function pickPrebuiltFallbackImageUrl(params: {
+  kind: PrebuiltFallbackKind;
+  tier?: string;
+  width: number;
+  height: number;
+  seed?: string;
+}): Promise<string | null> {
+  const tier = resolveTierKey(params.tier);
+  const startIndex = params.seed ? (fnv1a32(params.seed) % PREBUILT_FALLBACKS_PER_BUCKET) + 1 : Math.floor(Math.random() * PREBUILT_FALLBACKS_PER_BUCKET) + 1;
+  const order = indexProbeOrder(startIndex, PREBUILT_FALLBACKS_PER_BUCKET);
+  for (const index of order) {
+    const rel = prebuiltFallbackRelativePath({
+      kind: params.kind,
+      tier,
+      width: params.width,
+      height: params.height,
+      index,
+    });
+    if (await prebuiltFallbackFileExists(rel)) return rel;
+  }
+  return null;
+}
+
 function resolveTierSize(lastPack?: string): { width: number; height: number } {
-  const key = lastPack ? toContextTierKey(lastPack) : "free";
+  const key = resolveTierKey(lastPack);
   const highRes = new Set(["practitioner", "master"]);
   if (highRes.has(key)) {
     return { width: 2688, height: 1536 };
@@ -242,7 +322,7 @@ function resolveTierSize(lastPack?: string): { width: number; height: number } {
 
 /** Together AI: dimensions must be multiples of 32 (1184≈1200, 1504≈1500). */
 function resolveTogetherImageSize(lastPack?: string): { width: number; height: number } {
-  const key = lastPack ? toContextTierKey(lastPack) : "free";
+  const key = resolveTierKey(lastPack);
   switch (key) {
     case "free":
       return { width: 1024, height: 768 };
@@ -493,8 +573,19 @@ export async function buildImageAsset(params: {
     sumiOnlyMode: sumiOnlyMode(),
   });
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
+  const { width: togetherFallbackW, height: togetherFallbackH } = resolveTogetherImageSize(params.tier);
   const promptForRemote = compactPrompt(params.prompt, provider === "pollinations" ? 900 : 1100);
-  const fallbackImageUrl = sumiFallback;
+  let fallbackImageUrl = sumiFallback;
+  if (provider === "together") {
+    const prebuilt = await pickPrebuiltFallbackImageUrl({
+      kind: "iching",
+      tier: params.tier,
+      width: togetherFallbackW,
+      height: togetherFallbackH,
+      seed: params.consultationId ?? `${params.primaryHexagram}-${params.transformedHexagram?.number ?? "none"}`,
+    });
+    if (prebuilt) fallbackImageUrl = prebuilt;
+  }
 
   const overlayBase = {
     lines: displayLines,
@@ -586,7 +677,18 @@ export async function buildOracleBonesImageAsset(params: {
 }> {
   const provider = resolveProvider(params.providerOverride);
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
+  const { width: togetherFallbackW, height: togetherFallbackH } = resolveTogetherImageSize(params.tier);
   const promptForRemote = compactPrompt(params.prompt, 900);
+  const prebuiltTogetherFallback =
+    provider === "together"
+      ? await pickPrebuiltFallbackImageUrl({
+          kind: "bones",
+          tier: params.tier,
+          width: togetherFallbackW,
+          height: togetherFallbackH,
+          seed: params.consultationId ?? `${params.patternId}-${params.verdict}`,
+        })
+      : null;
   const fallbackSvg = buildOracleBonesMockSvgString({
     verdict: params.verdict,
     medium: params.medium,
@@ -595,13 +697,15 @@ export async function buildOracleBonesImageAsset(params: {
     height: ORACLE_BONES_MOCK_HEIGHT,
   });
   const fallbackSvgDataUrl = svgStringToDataUrl(fallbackSvg);
-  let fallbackImageUrl = fallbackSvgDataUrl;
-  try {
-    fallbackImageUrl = await rasterizeOracleBonesMockSvgToPng(fallbackSvg);
-  } catch (error) {
-    console.warn("[image-provider] oracle bones fallback PNG rasterization failed, using SVG data URL", {
-      error: error instanceof Error ? error.message : String(error),
-    });
+  let fallbackImageUrl = prebuiltTogetherFallback ?? fallbackSvgDataUrl;
+  if (!prebuiltTogetherFallback) {
+    try {
+      fallbackImageUrl = await rasterizeOracleBonesMockSvgToPng(fallbackSvg);
+    } catch (error) {
+      console.warn("[image-provider] oracle bones fallback PNG rasterization failed, using SVG data URL", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   }
 
   if (provider === "pollinations") {

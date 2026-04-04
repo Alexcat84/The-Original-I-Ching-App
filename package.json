@@ -14,7 +14,8 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "generate:fallbacks:together": "node tools/fallback-tools/generate-prebuilt-fallbacks-together.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",

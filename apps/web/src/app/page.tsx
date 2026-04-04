@@ -12,6 +12,7 @@ import {
 } from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
+import { AmbientParticles } from "@/components/AmbientParticles";
 import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
 import { OracleInterpretationMarkdown } from "@/components/OracleInterpretationMarkdown";
 import Link from "next/link";
@@ -2769,6 +2770,7 @@ export default function HomePage() {
   return (
     <OracleShell title={t.appTitle} variant="chat">
       <div className="oracle-chat-app">
+        <AmbientParticles />
         {authContinueOpen ? (
           <div className="auth-soft-backdrop" role="presentation" onClick={() => setAuthContinueOpen(false)}>
             <div

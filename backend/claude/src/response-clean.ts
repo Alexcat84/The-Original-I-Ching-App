@@ -12,3 +12,19 @@ export function stripInterpretationFluff(text: string): string {
   for (const r of boiler) t = t.replace(r, "\n");
   return t.replace(/\n{3,}/g, "\n\n").trim();
 }
+
+/**
+ * Keep prose natural by avoiding dash-heavy phrasing and bullet-like hyphen lines.
+ * We keep semantics intact and only normalize punctuation style.
+ */
+export function normalizeInterpretationPunctuation(text: string): string {
+  let t = text.trim();
+  t = t.replace(/[—–]/g, ",");
+  t = t.replace(/(^|\n)\s*-\s+/g, "$1");
+  t = t.replace(/\s-\s/g, ", ");
+  t = t.replace(/\n{3,}/g, "\n\n");
+  t = t.replace(/,\s*,+/g, ", ");
+  t = t.replace(/\s+,/g, ",");
+  t = t.replace(/,\s+\./g, ".");
+  return t.trim();
+}

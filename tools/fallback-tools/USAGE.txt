@@ -1,0 +1,42 @@
+Fallback Tools: Together prebuilt image generator
+===============================================
+
+Tool file
+- tools/fallback-tools/generate-prebuilt-fallbacks-together.mjs
+
+Purpose
+- Generate prebuilt fallback image pools for runtime failures of Together API.
+- Output path:
+  apps/web/public/fallbacks/prebuilt/{iching|bones}/{tier}/{width}x{height}/01..10.png
+
+Default generation matrix
+- I Ching: 4 tiers x 10 images = 40
+- Bones: 4 tiers x 10 images = 40
+- Total: 80 images
+
+Tiers and resolutions
+- free: 1024x768
+- seeker: 1024x1024
+- practitioner: 1184x1184
+- master: 1504x1504
+
+Run commands
+- npm run generate:fallbacks:together
+- or explicitly with env file:
+  node --env-file="apps/web/.env.local" tools/fallback-tools/generate-prebuilt-fallbacks-together.mjs
+
+Required env
+- TOGETHER_API_KEY
+
+Optional env
+- TOGETHER_IMAGE_MODEL (default: black-forest-labs/FLUX.1-schnell)
+- TOGETHER_IMAGE_STEPS (default: 10, clamped to 1..12)
+- TOGETHER_DELAY_MS (default: 1000)
+- TOGETHER_MAX_RETRIES (default: 4)
+- FALLBACKS_PER_BUCKET (default: 10)
+- OVERWRITE=1 to regenerate existing files
+
+Notes
+- Script applies one request pacing (delay) per generated image.
+- Retries are automatic for 429 and 5xx responses.
+- Runtime fallback selector already routes by type+tier+resolution.
