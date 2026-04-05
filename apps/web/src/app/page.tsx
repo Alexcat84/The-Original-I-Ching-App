@@ -3376,18 +3376,21 @@ export default function HomePage() {
                   {!ritualFinale ? (
                     <div className={`ritual-lines-grid ${ritualLines === null ? "is-awaiting-cast" : ""}`}>
                       {ritualRenderOrder.map((lineNum, i) => {
+                        const isAwaitingCast = ritualLines === null;
                         const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
-                        const tick = ritualLines !== null ? ritualRevealTick : ritualAwaitingTick;
-                        const sourceVisible = ritualLines !== null && tick >= lineNum * 2 - 1;
-                        const transformedVisible = ritualLines !== null && tick >= lineNum * 2;
+                        const tick = isAwaitingCast ? ritualAwaitingTick : ritualRevealTick;
+                        const sourceVisible = tick >= lineNum * 2 - 1;
+                        const transformedVisible = tick >= lineNum * 2;
                         const sourceYang = lineData ? lineData.value === 7 || lineData.value === 9 : lineNum % 2 === 0;
                         const transformedValue =
                           lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;
                         const transformedYang = transformedValue ? transformedValue === 7 : lineNum % 2 !== 0;
-                        const isChanging = Boolean(lineData?.isChanging);
+                        const isChanging = !isAwaitingCast && Boolean(lineData?.isChanging);
                         return (
                           <div key={lineNum} className="ritual-line-row" aria-hidden="true">
-                            <div className={`ritual-line-slot ritual-line-slot--source ${sourceVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""}`}>
+                            <div
+                              className={`ritual-line-slot ritual-line-slot--source ${sourceVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""} ${isAwaitingCast ? "is-placeholder" : ""}`}
+                            >
                               {sourceVisible ? (sourceYang ? (
                                 <span className="ritual-hex-line ritual-hex-line--yang" />
                               ) : (
@@ -3401,7 +3404,7 @@ export default function HomePage() {
                               <span className="ritual-arrow">→</span>
                             </div>
                             <div
-                              className={`ritual-line-slot ritual-line-slot--transformed ${transformedVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""}`}
+                              className={`ritual-line-slot ritual-line-slot--transformed ${transformedVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""} ${isAwaitingCast ? "is-placeholder" : ""}`}
                               style={{ transitionDelay: `${i * 60}ms` }}
                             >
                               {transformedVisible ? (transformedYang ? (
