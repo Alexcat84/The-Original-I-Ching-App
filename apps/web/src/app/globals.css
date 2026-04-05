@@ -932,6 +932,10 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   background: var(--session-active-bg);
 }
 
+.chat-session-item.is-deleting {
+  opacity: 0.72;
+}
+
 .chat-session-title {
   color: var(--fg);
   font-size: 0.88rem;
@@ -960,10 +964,35 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   flex: 1;
 }
 
+.chat-session-main-btn:disabled {
+  cursor: default;
+}
+
 .chat-session-time {
   color: color-mix(in srgb, var(--fg-muted) 85%, var(--accent));
   font-size: 0.7rem;
   line-height: 1.2;
+}
+
+.chat-session-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.chat-session-loading-spinner {
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--fg-muted) 45%, transparent);
+  border-top-color: color-mix(in srgb, var(--accent) 75%, var(--fg));
+  animation: chat-session-spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes chat-session-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .chat-session-delete {
@@ -983,6 +1012,11 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   flex-shrink: 0;
   margin-top: 0;
   padding: 0;
+}
+
+.chat-session-delete:disabled {
+  cursor: default;
+  opacity: 0.55;
 }
 
 .chat-session-delete:hover {
@@ -3978,6 +4012,30 @@ html[data-theme="dark"] .locale-select option {
   max-width: min(100%, 52vw);
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.plan-tier-skeleton {
+  display: inline-block;
+  width: 5.5rem;
+  height: 0.78rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 14%, var(--secondary-bg)) 0%,
+    color-mix(in srgb, var(--accent) 32%, var(--secondary-bg)) 40%,
+    color-mix(in srgb, var(--accent) 14%, var(--secondary-bg)) 100%
+  );
+  background-size: 200% 100%;
+  animation: plan-tier-skeleton-shimmer 1.25s ease-in-out infinite;
+}
+
+@keyframes plan-tier-skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
 }
 
 .auth-explore-strip-email {

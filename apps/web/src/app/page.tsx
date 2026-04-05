@@ -346,6 +346,7 @@ const DRAWER_TEXT: Record<
     noSaved: string;
     messages: string;
     deleteConversation: string;
+    deletingConversation: string;
   }
 > = {
   es: {
@@ -359,6 +360,7 @@ const DRAWER_TEXT: Record<
     noSaved: "Aún no hay conversaciones guardadas. Envía una consulta para verla aquí.",
     messages: "mensajes",
     deleteConversation: "Eliminar conversación",
+    deletingConversation: "Eliminando conversación…",
   },
   en: {
     activity: "Your activity",
@@ -371,6 +373,7 @@ const DRAWER_TEXT: Record<
     noSaved: "No saved conversations yet. Send a consultation to see it here.",
     messages: "messages",
     deleteConversation: "Delete conversation",
+    deletingConversation: "Deleting conversation…",
   },
   pt: {
     activity: "Sua atividade",
@@ -383,6 +386,7 @@ const DRAWER_TEXT: Record<
     noSaved: "Ainda não há conversas salvas. Envie uma consulta para vê-la aqui.",
     messages: "mensagens",
     deleteConversation: "Excluir conversa",
+    deletingConversation: "Excluindo conversa…",
   },
   fr: {
     activity: "Votre activité",
@@ -395,6 +399,7 @@ const DRAWER_TEXT: Record<
     noSaved: "Aucune conversation enregistrée pour le moment.",
     messages: "messages",
     deleteConversation: "Supprimer la conversation",
+    deletingConversation: "Suppression de la conversation…",
   },
   de: {
     activity: "Deine Aktivität",
@@ -407,6 +412,7 @@ const DRAWER_TEXT: Record<
     noSaved: "Noch keine gespeicherten Konversationen.",
     messages: "Nachrichten",
     deleteConversation: "Konversation löschen",
+    deletingConversation: "Konversation wird gelöscht…",
   },
   it: {
     activity: "La tua attività",
@@ -419,6 +425,7 @@ const DRAWER_TEXT: Record<
     noSaved: "Nessuna conversazione salvata al momento.",
     messages: "messaggi",
     deleteConversation: "Elimina conversazione",
+    deletingConversation: "Eliminazione conversazione…",
   },
   ja: {
     activity: "あなたの履歴",
@@ -431,6 +438,7 @@ const DRAWER_TEXT: Record<
     noSaved: "保存された会話はまだありません。",
     messages: "件のメッセージ",
     deleteConversation: "会話を削除",
+    deletingConversation: "会話を削除中…",
   },
   zh: {
     activity: "你的活动",
@@ -443,6 +451,7 @@ const DRAWER_TEXT: Record<
     noSaved: "暂时没有已保存的对话。",
     messages: "条消息",
     deleteConversation: "删除对话",
+    deletingConversation: "正在删除对话…",
   },
   ko: {
     activity: "활동 내역",
@@ -455,6 +464,7 @@ const DRAWER_TEXT: Record<
     noSaved: "저장된 대화가 아직 없습니다.",
     messages: "개의 메시지",
     deleteConversation: "대화 삭제",
+    deletingConversation: "대화 삭제 중…",
   },
 };
 
@@ -1036,6 +1046,7 @@ export default function HomePage() {
   }, []);
   const knownInProgressTitles = useMemo(() => new Set<string>(["Consulta en progreso", "Consultation in progress"]), []);
   const [tier, setTier] = useState<Tier>("free");
+  const [tierReady, setTierReady] = useState(false);
   /** Per-thread reading cap from `/api/account/me` (`session_limit`, from pack / tier). */
   const [accountSessionLimit, setAccountSessionLimit] = useState(1);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -1104,6 +1115,7 @@ export default function HomePage() {
   const [tokenCenterError, setTokenCenterError] = useState<string | null>(null);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [loadingSessionLocalId, setLoadingSessionLocalId] = useState<string | null>(null);
+  const [pendingDeletedSessionLocalIds, setPendingDeletedSessionLocalIds] = useState<string[]>([]);
   const [historyLoadError, setHistoryLoadError] = useState<string | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
@@ -1349,6 +1361,16 @@ export default function HomePage() {
   const threadDepthCap = planThreadLimit;
   const threadDepthCanDeepen = Boolean(result && result.sessionPosition < planThreadLimit);
   const threadLimitReached = activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
+  const tierDisplayLabel = tierReady
+    ? tierLabelForDisplay(tier)
+    : isSpanish
+      ? "cargando plan"
+      : "loading plan";
+  const tierDisplayNode = tierReady ? (
+    tierLabelForDisplay(tier)
+  ) : (
+    <span className="plan-tier-skeleton" aria-hidden="true" />
+  );
   const supportEmailFromEnv =
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_SUPPORT_EMAIL === "string"
       ? process.env.NEXT_PUBLIC_SUPPORT_EMAIL.trim()
@@ -1720,12 +1742,17 @@ export default function HomePage() {
     setTokenCenterError(null);
     setHistoryLoading(false);
     setLoadingSessionLocalId(null);
+    setPendingDeletedSessionLocalIds([]);
     setHistoryLoadError(null);
     idleSignOutRef.current = false;
     pinnedLocalSessionIdRef.current = null;
   }, [authUserId]);
 
   const sessionsListed = useMemo(() => sessions.filter((s) => s.messageCount > 0), [sessions]);
+  const visibleSessionsListed = useMemo(
+    () => sessionsListed.filter((s) => !pendingDeletedSessionLocalIds.includes(s.localId)),
+    [sessionsListed, pendingDeletedSessionLocalIds],
+  );
   const loadSessionThread = useCallback(
     async (sessionId: string, localId: string) => {
       if (!accessToken) return;
@@ -1807,18 +1834,21 @@ export default function HomePage() {
   const removeSession = useCallback(
     async (session: ChatSessionState<ConsultationItem>) => {
       if (!accessToken || !session.sessionId) return;
+      if (pendingDeletedSessionLocalIds.includes(session.localId)) return;
       const ok = window.confirm(
         isSpanish
           ? "¿Eliminar esta conversación de forma permanente?"
           : "Delete this conversation permanently?",
       );
       if (!ok) return;
+      setPendingDeletedSessionLocalIds((prev) => (prev.includes(session.localId) ? prev : [...prev, session.localId]));
       try {
         const res = await fetch(`/api/account/chats?sessionId=${encodeURIComponent(session.sessionId)}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         if (!res.ok) {
+          setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
           setError(isSpanish ? "No se pudo eliminar la conversación." : "Could not delete conversation.");
           return;
         }
@@ -1829,10 +1859,13 @@ export default function HomePage() {
           return next;
         });
       } catch {
+        setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
         setError(isSpanish ? "No se pudo eliminar la conversación." : "Could not delete conversation.");
+        return;
       }
+      setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
     },
-    [accessToken, isSpanish],
+    [accessToken, isSpanish, pendingDeletedSessionLocalIds],
   );
 
   useEffect(() => {
@@ -1909,8 +1942,10 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (!authReady) return;
     if (!accessToken) {
       setTier("free");
+      setTierReady(true);
       setAccountSessionLimit(1);
       setTokenBalance(null);
       setTwoFactorEnabled(false);
@@ -1921,9 +1956,11 @@ export default function HomePage() {
       setTwoFactorError(null);
       setTokenCenterOpen(false);
       setTokenCenterError(null);
+      setPendingDeletedSessionLocalIds([]);
       return;
     }
     let cancelled = false;
+    setTierReady(false);
     function loadAccountTier() {
       void fetch("/api/account/me", {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -1936,9 +1973,14 @@ export default function HomePage() {
           twoFactorEnabled?: boolean;
           twoFactorMethod?: string | null;
         } | null) => {
-          if (cancelled || !j) return;
+          if (cancelled) return;
+          if (!j) {
+            setTierReady(true);
+            return;
+          }
           const lastPack = typeof j.last_pack === "string" ? j.last_pack : "free";
           setTier(lastPack as Tier);
+          setTierReady(true);
           if (typeof j.session_limit === "number" && Number.isFinite(j.session_limit)) {
             setAccountSessionLimit(j.session_limit);
           }
@@ -1946,7 +1988,9 @@ export default function HomePage() {
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
           setTwoFactorMethod(j.twoFactorMethod ?? null);
         })
-        .catch(() => {});
+        .catch(() => {
+          if (!cancelled) setTierReady(true);
+        });
     }
     loadAccountTier();
     function onAccountRefresh() {
@@ -1957,7 +2001,7 @@ export default function HomePage() {
       cancelled = true;
       window.removeEventListener("iching:account-refresh", onAccountRefresh);
     };
-  }, [accessToken]);
+  }, [accessToken, authReady]);
 
   useEffect(() => {
     if (!accessToken || !authUserId) return;
@@ -3153,7 +3197,7 @@ export default function HomePage() {
                 <span className="sidebar-stat-key">{drawerText.consultationsToday}</span>
               </div>
               <div className="sidebar-stat-card">
-                <span className="sidebar-stat-value">{sessionsListed.length}</span>
+                <span className="sidebar-stat-value">{visibleSessionsListed.length}</span>
                 <span className="sidebar-stat-key">{drawerText.chatsWithMessages}</span>
               </div>
             </div>
@@ -3166,19 +3210,24 @@ export default function HomePage() {
             )}
           </div>
           <div className="chat-drawer-list">
-            {sessionsListed.length === 0 ? (
+            {visibleSessionsListed.length === 0 ? (
               <p className="chat-drawer-empty">{drawerText.noSaved}</p>
             ) : null}
-            {[...sessionsListed]
+            {[...visibleSessionsListed]
               .sort((a, b) => b.updatedAt - a.updatedAt)
-              .map((session) => (
+              .map((session) => {
+                const isDeleting = pendingDeletedSessionLocalIds.includes(session.localId);
+                return (
                 <div
                   key={session.localId}
-                  className={`chat-session-item ${session.localId === activeSession?.localId ? "active" : ""}`}
+                  className={`chat-session-item ${session.localId === activeSession?.localId ? "active" : ""} ${
+                    isDeleting ? "is-deleting" : ""
+                  }`}
                 >
                   <button
                     type="button"
                     className="chat-session-main-btn"
+                    disabled={isDeleting}
                     onClick={() => {
                       pinnedLocalSessionIdRef.current = null;
                       setActiveSessionLocalId(session.localId);
@@ -3191,10 +3240,22 @@ export default function HomePage() {
                   >
                     <span className="chat-session-title">{session.title}</span>
                     <span className="chat-session-meta">
+                      {isDeleting ? (
+                        <>
+                          <span>{drawerText.deletingConversation}</span>
+                        </>
+                      ) : null}
                       {loadingSessionLocalId === session.localId ? (
-                        <span>{drawerText.loadingConversation}</span>
+                        <>
+                          {isDeleting ? <span aria-hidden="true">·</span> : null}
+                          <span className="chat-session-loading">
+                            <span className="chat-session-loading-spinner" aria-hidden="true" />
+                            <span>{drawerText.loadingConversation}</span>
+                          </span>
+                        </>
                       ) : (
                         <>
+                          {isDeleting ? <span aria-hidden="true">·</span> : null}
                           <span>
                             {session.messageCount} {drawerText.messages}
                           </span>
@@ -3219,6 +3280,7 @@ export default function HomePage() {
                     className="chat-session-delete"
                     aria-label={drawerText.deleteConversation}
                     title={drawerText.deleteConversation}
+                    disabled={isDeleting}
                     onClick={() => void removeSession(session)}
                   >
                     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
@@ -3229,7 +3291,8 @@ export default function HomePage() {
                     </svg>
                   </button>
                 </div>
-              ))}
+              );
+              })}
           </div>
         </aside>
 
@@ -3263,10 +3326,10 @@ export default function HomePage() {
             <div className="auth-explore-strip-session__cluster">
               <span
                 className="auth-explore-strip-tier"
-                aria-label={`${ui.plan} ${tierLabelForDisplay(tier)}`}
-                title={`${ui.plan}: ${tierLabelForDisplay(tier)}`}
+                aria-label={`${ui.plan} ${tierDisplayLabel}`}
+                title={`${ui.plan}: ${tierDisplayLabel}`}
               >
-                {ui.plan}: {tierLabelForDisplay(tier)}
+                {ui.plan}: {tierDisplayNode}
               </span>
               {localeSelector}
             </div>
@@ -3800,7 +3863,7 @@ export default function HomePage() {
                           <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
                           <p className="meta-line tier-hint-line">
                             {isSpanish ? "Plan " : "Plan "}
-                            <strong>{tierLabelForDisplay(tier)}</strong>
+                            <strong>{tierDisplayNode}</strong>
                             {isSpanish
                               ? ` · este hilo admite hasta ${threadDepthCap} lectura(s) encadenada(s) (incluye la primera).`
                               : ` · this thread allows up to ${threadDepthCap} chained reading(s) (including the first).`}
@@ -3840,7 +3903,7 @@ export default function HomePage() {
                       <span>{tokenPanel.tokensHeading}</span>
                       <p className="meta-line tier-hint-line tier-hint-line--emphasis">
                         {tokenPanel.lastPack}{" "}
-                        <strong>{tierLabelForDisplay(tier)}</strong>
+                        <strong>{tierDisplayNode}</strong>
                         {tokenBalance !== null
                           ? ` · ${tokenPanel.remaining}: ${tokenBalance}`
                           : ""}
@@ -4482,7 +4545,7 @@ export default function HomePage() {
                     <div className="token-center-grid">
                       <p className="meta-line tier-hint-line token-center-row">
                         <span>{isSpanish ? "Último pack:" : "Last pack:"}</span>{" "}
-                        <strong>{tierLabelForDisplay(tier)}</strong>
+                        <strong>{tierDisplayNode}</strong>
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
                         <span>{isSpanish ? "Tokens disponibles:" : "Available tokens:"}</span>{" "}
