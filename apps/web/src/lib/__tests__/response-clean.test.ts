@@ -15,9 +15,9 @@ describe("normalizeInterpretationPunctuation", () => {
     expect(normalizeInterpretationPunctuation("externas,. Si ella")).toBe("externas. Si ella");
   });
 
-  it("inserts space after colon before letter and capitalizes following lowercase", () => {
-    expect(normalizeInterpretationPunctuation("tensión:el veredicto")).toBe("tensión: El veredicto");
-    expect(normalizeInterpretationPunctuation("revela: la Reunión")).toBe("revela: La Reunión");
+  it("inserts space after colon before letter without forcing uppercase", () => {
+    expect(normalizeInterpretationPunctuation("tensión:el veredicto")).toBe("tensión: el veredicto");
+    expect(normalizeInterpretationPunctuation("revela: la Reunión")).toBe("revela: la Reunión");
   });
 
   it("adds space before word after closing paren", () => {

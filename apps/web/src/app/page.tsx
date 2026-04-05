@@ -278,58 +278,58 @@ const RITUAL_STATUS_COPY: Record<
   }
 > = {
   es: {
-    question: "Tomando tu pregunta…",
-    consult: "Llevándola al oráculo…",
-    shape: "El oráculo está consultando…",
-    seal: "Sellando la lectura…",
+    question: "Tomando tu pregunta",
+    consult: "Llevándola al oráculo",
+    shape: "El oráculo está consultando",
+    seal: "Sellando la lectura",
   },
   en: {
-    question: "Holding your question…",
-    consult: "Carrying it to the oracle…",
-    shape: "The oracle is consulting…",
-    seal: "Sealing the reading…",
+    question: "Holding your question",
+    consult: "Carrying it to the oracle",
+    shape: "The oracle is consulting",
+    seal: "Sealing the reading",
   },
   pt: {
-    question: "Sustentando a tua pergunta…",
-    consult: "Levando-a ao oráculo…",
-    shape: "O oráculo está consultando…",
-    seal: "Selando a leitura…",
+    question: "Sustentando a tua pergunta",
+    consult: "Levando-a ao oráculo",
+    shape: "O oráculo está consultando",
+    seal: "Selando a leitura",
   },
   fr: {
-    question: "Accueillir votre question…",
-    consult: "La porter vers l'oracle…",
-    shape: "L'oracle consulte…",
-    seal: "Sceller la lecture…",
+    question: "Accueillir votre question",
+    consult: "La porter vers l'oracle",
+    shape: "L'oracle consulte",
+    seal: "Sceller la lecture",
   },
   de: {
-    question: "Deine Frage aufnehmen…",
-    consult: "Zum Orakel tragen…",
-    shape: "Das Orakel befragt…",
-    seal: "Die Deutung wird versiegelt…",
+    question: "Deine Frage aufnehmen",
+    consult: "Zum Orakel tragen",
+    shape: "Das Orakel befragt",
+    seal: "Die Deutung wird versiegelt",
   },
   it: {
-    question: "Accogliere la tua domanda…",
-    consult: "Portarla all'oracolo…",
-    shape: "L'oracolo sta consultando…",
-    seal: "Sigillando la lettura…",
+    question: "Accogliere la tua domanda",
+    consult: "Portarla all'oracolo",
+    shape: "L'oracolo sta consultando",
+    seal: "Sigillando la lettura",
   },
   ja: {
-    question: "問いを受け取っています…",
-    consult: "神託へ運んでいます…",
-    shape: "神託が照会しています…",
-    seal: "読みを封じています…",
+    question: "問いを受け取っています",
+    consult: "神託へ運んでいます",
+    shape: "神託が照会しています",
+    seal: "読みを封じています",
   },
   zh: {
-    question: "承接你的问题…",
-    consult: "将它带向神谕…",
-    shape: "神谕正在推演…",
-    seal: "正在封印此次解读…",
+    question: "承接你的问题",
+    consult: "将它带向神谕",
+    shape: "神谕正在推演",
+    seal: "正在封印此次解读",
   },
   ko: {
-    question: "질문을 받아들이는 중…",
-    consult: "신탁으로 옮기는 중…",
-    shape: "신탁이 살피는 중…",
-    seal: "해석을 봉인하는 중…",
+    question: "질문을 받아들이는 중",
+    consult: "신탁으로 옮기는 중",
+    shape: "신탁이 살피는 중",
+    seal: "해석을 봉인하는 중",
   },
 };
 
@@ -1157,11 +1157,11 @@ export default function HomePage() {
 
   useEffect(() => {
     setRitualParticles(
-      Array.from({ length: 56 }, (_, i) => {
+      Array.from({ length: 90 }, (_, i) => {
         const left = `${Math.floor(Math.random() * 100)}%`;
         const top = `${Math.floor(Math.random() * 100)}%`;
-        const size = `${1.6 + Math.random() * 2.8}px`;
-        const duration = `${16 + Math.random() * 18}s`;
+        const size = `${1.7 + Math.random() * 3.1}px`;
+        const duration = `${14 + Math.random() * 18}s`;
         const delay = `${Math.random() * 10}s`;
         return { id: i, left, top, size, duration, delay };
       }),
@@ -3365,14 +3365,21 @@ export default function HomePage() {
                   ))}
                 </div>
                 <div className="ritual-stage-content">
-                  <p className="coins-title ritual-status-line">{ritualStatusLine}</p>
+                  <p className="coins-title ritual-status-line">
+                    <span>{ritualStatusLine}</span>
+                    <span className="ritual-loading-dots" aria-hidden="true">
+                      <span />
+                      <span />
+                      <span />
+                    </span>
+                  </p>
                   {!ritualFinale ? (
-                    <div className="ritual-lines-grid">
+                    <div className={`ritual-lines-grid ${ritualLines === null ? "is-awaiting-cast" : ""}`}>
                       {ritualRenderOrder.map((lineNum, i) => {
                         const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
                         const tick = ritualLines !== null ? ritualRevealTick : ritualAwaitingTick;
-                        const sourceVisible = tick >= lineNum * 2 - 1;
-                        const transformedVisible = tick >= lineNum * 2;
+                        const sourceVisible = ritualLines !== null && tick >= lineNum * 2 - 1;
+                        const transformedVisible = ritualLines !== null && tick >= lineNum * 2;
                         const sourceYang = lineData ? lineData.value === 7 || lineData.value === 9 : lineNum % 2 === 0;
                         const transformedValue =
                           lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;
