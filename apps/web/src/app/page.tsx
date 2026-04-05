@@ -3511,9 +3511,9 @@ export default function HomePage() {
                       {ritualRenderOrder.map((lineNum, i) => {
                         const isAwaitingCast = ritualLines === null;
                         const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
-                        const tick = isAwaitingCast ? ritualAwaitingTick : ritualRevealTick;
-                        const sourceVisible = tick >= lineNum * 2 - 1;
-                        const transformedVisible = tick >= lineNum * 2;
+                        const tick = ritualRevealTick;
+                        const sourceVisible = !isAwaitingCast && tick >= lineNum * 2 - 1;
+                        const transformedVisible = !isAwaitingCast && tick >= lineNum * 2;
                         const sourceYang = lineData ? lineData.value === 7 || lineData.value === 9 : lineNum % 2 === 0;
                         const transformedValue =
                           lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;

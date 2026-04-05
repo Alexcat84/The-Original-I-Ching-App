@@ -653,6 +653,21 @@ export async function buildImageAsset(params: {
     }
   }
 
+  const preferPrebuiltFallback =
+    provider === "together" && fallbackImageUrl.startsWith("/fallbacks/prebuilt/");
+  if (preferPrebuiltFallback) {
+    debugLog("buildImageAsset: together failed, using prebuilt fallback as primary", {
+      fallbackImageUrl,
+      togetherDebug: debug.together,
+    });
+    return {
+      provider: "mock",
+      imageUrl: fallbackImageUrl,
+      fallbackImageUrl,
+      debug: { ...debug, together: debug.together ?? undefined },
+    };
+  }
+
   return {
     provider: "svg-art",
     imageUrl: sumiFallback,

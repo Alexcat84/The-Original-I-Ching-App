@@ -9,7 +9,7 @@ export const ICHING_RITUAL_TARGET_MS = (() => {
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS)
       : Number.NaN;
-  return Number.isFinite(raw) && raw >= 8000 ? raw : 28_000;
+  return Number.isFinite(raw) && raw >= 8000 ? raw : 36_000;
 })();
 
 /** Finale glow after the last line tick (matches page.tsx sequence). */
@@ -21,5 +21,5 @@ export const ICHING_RITUAL_TICKS = 12;
 export function ichingRitualTickDelayMs(): number {
   const budget = Math.max(6000, ICHING_RITUAL_TARGET_MS) - ICHING_RITUAL_POST_LINE_MS;
   const raw = Math.floor(budget / ICHING_RITUAL_TICKS);
-  return Math.max(380, Math.min(4200, raw));
+  return Math.max(520, Math.min(4600, raw));
 }

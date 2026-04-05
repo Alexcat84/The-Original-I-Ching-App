@@ -2392,9 +2392,10 @@ button:disabled {
 }
 
 .ritual-coins-stage {
-  position: sticky;
-  bottom: 4.85rem;
-  z-index: 20;
+  position: relative;
+  z-index: 2;
+  min-height: 16rem;
+  padding-bottom: 1.2rem;
   overflow: hidden;
 }
 
