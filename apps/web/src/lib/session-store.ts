@@ -545,14 +545,6 @@ export async function deleteUserSession(userId: string, sessionId: string): Prom
     return true;
   }
 
-  const { data: existing, error: existingError } = await supabase
-    .from("consultation_sessions")
-    .select("id")
-    .eq("id", sessionId)
-    .eq("user_id", userId)
-    .maybeSingle();
-  if (existingError || !existing) return false;
-
   const { error: consultDeleteError } = await supabase
     .from("consultations")
     .delete()
@@ -562,15 +554,16 @@ export async function deleteUserSession(userId: string, sessionId: string): Prom
     throw new Error(`consultations_delete_failed:${consultDeleteError.message}`);
   }
 
-  const { error: sessionDeleteError } = await supabase
+  const { data: deletedSessions, error: sessionDeleteError } = await supabase
     .from("consultation_sessions")
     .delete()
     .eq("id", sessionId)
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .select("id");
   if (sessionDeleteError) {
     throw new Error(`consultation_session_delete_failed:${sessionDeleteError.message}`);
   }
 
-  return true;
+  return Array.isArray(deletedSessions) && deletedSessions.length > 0;
 }
 
