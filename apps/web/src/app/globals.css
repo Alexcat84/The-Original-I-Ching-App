@@ -666,6 +666,10 @@ html[data-theme="dark"] .oracle-tagline {
   color: var(--fg-muted);
 }
 
+.chat-empty-line--loading {
+  color: color-mix(in srgb, var(--fg-muted) 76%, var(--accent));
+}
+
 .inline-doc-link {
   color: var(--ghost-link);
   text-decoration: underline;

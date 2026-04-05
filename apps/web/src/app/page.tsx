@@ -340,7 +340,8 @@ const DRAWER_TEXT: Record<
     streak: string;
     consultationsToday: string;
     chatsWithMessages: string;
-    loading: string;
+    loadingChats: string;
+    loadingConversation: string;
     onlyThreads: string;
     noSaved: string;
     messages: string;
@@ -352,7 +353,8 @@ const DRAWER_TEXT: Record<
     streak: "Racha (días)",
     consultationsToday: "Consultas hoy",
     chatsWithMessages: "Chats con mensajes",
-    loading: "Canalizando consulta…",
+    loadingChats: "Cargando chats…",
+    loadingConversation: "Cargando conversación…",
     onlyThreads: "Solo se listan hilos con al menos una lectura.",
     noSaved: "Aún no hay conversaciones guardadas. Envía una consulta para verla aquí.",
     messages: "mensajes",
@@ -363,7 +365,8 @@ const DRAWER_TEXT: Record<
     streak: "Streak (days)",
     consultationsToday: "Consultations today",
     chatsWithMessages: "Chats with messages",
-    loading: "Channeling consultation…",
+    loadingChats: "Loading chats…",
+    loadingConversation: "Loading conversation…",
     onlyThreads: "Only threads with at least one reading are listed.",
     noSaved: "No saved conversations yet. Send a consultation to see it here.",
     messages: "messages",
@@ -374,7 +377,8 @@ const DRAWER_TEXT: Record<
     streak: "Sequência (dias)",
     consultationsToday: "Consultas hoje",
     chatsWithMessages: "Chats com mensagens",
-    loading: "Canalizando consulta…",
+    loadingChats: "Carregando chats…",
+    loadingConversation: "Carregando conversa…",
     onlyThreads: "Somente fios com ao menos uma leitura são listados.",
     noSaved: "Ainda não há conversas salvas. Envie uma consulta para vê-la aqui.",
     messages: "mensagens",
@@ -385,7 +389,8 @@ const DRAWER_TEXT: Record<
     streak: "Série (jours)",
     consultationsToday: "Consultations aujourd'hui",
     chatsWithMessages: "Chats avec messages",
-    loading: "Canalisation en cours…",
+    loadingChats: "Chargement des chats…",
+    loadingConversation: "Chargement de la conversation…",
     onlyThreads: "Seuls les fils avec au moins une lecture sont listés.",
     noSaved: "Aucune conversation enregistrée pour le moment.",
     messages: "messages",
@@ -396,7 +401,8 @@ const DRAWER_TEXT: Record<
     streak: "Serie (Tage)",
     consultationsToday: "Heutige Konsultationen",
     chatsWithMessages: "Chats mit Nachrichten",
-    loading: "Konsultation wird kanalisiert…",
+    loadingChats: "Chats werden geladen…",
+    loadingConversation: "Konversation wird geladen…",
     onlyThreads: "Nur Threads mit mindestens einer Lesung werden gelistet.",
     noSaved: "Noch keine gespeicherten Konversationen.",
     messages: "Nachrichten",
@@ -407,7 +413,8 @@ const DRAWER_TEXT: Record<
     streak: "Serie (giorni)",
     consultationsToday: "Consultazioni oggi",
     chatsWithMessages: "Chat con messaggi",
-    loading: "Canalizzazione in corso…",
+    loadingChats: "Caricamento chat…",
+    loadingConversation: "Caricamento conversazione…",
     onlyThreads: "Sono elencati solo i thread con almeno una lettura.",
     noSaved: "Nessuna conversazione salvata al momento.",
     messages: "messaggi",
@@ -418,7 +425,8 @@ const DRAWER_TEXT: Record<
     streak: "連続日数",
     consultationsToday: "本日の相談",
     chatsWithMessages: "メッセージ付きチャット",
-    loading: "相談を生成中…",
+    loadingChats: "チャットを読み込み中…",
+    loadingConversation: "会話を読み込み中…",
     onlyThreads: "少なくとも1件の読みがあるスレッドのみ表示されます。",
     noSaved: "保存された会話はまだありません。",
     messages: "件のメッセージ",
@@ -429,7 +437,8 @@ const DRAWER_TEXT: Record<
     streak: "连续天数",
     consultationsToday: "今日咨询",
     chatsWithMessages: "有消息的聊天",
-    loading: "正在生成咨询…",
+    loadingChats: "正在加载聊天…",
+    loadingConversation: "正在加载会话…",
     onlyThreads: "仅显示至少含1次解读的线程。",
     noSaved: "暂时没有已保存的对话。",
     messages: "条消息",
@@ -440,7 +449,8 @@ const DRAWER_TEXT: Record<
     streak: "연속 일수",
     consultationsToday: "오늘의 상담",
     chatsWithMessages: "메시지가 있는 채팅",
-    loading: "상담 생성 중…",
+    loadingChats: "채팅 불러오는 중…",
+    loadingConversation: "대화 불러오는 중…",
     onlyThreads: "최소 한 번의 리딩이 있는 스레드만 표시됩니다.",
     noSaved: "저장된 대화가 아직 없습니다.",
     messages: "개의 메시지",
@@ -1093,6 +1103,7 @@ export default function HomePage() {
   const [tokenCenterBusy, setTokenCenterBusy] = useState(false);
   const [tokenCenterError, setTokenCenterError] = useState<string | null>(null);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [loadingSessionLocalId, setLoadingSessionLocalId] = useState<string | null>(null);
   const [historyLoadError, setHistoryLoadError] = useState<string | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
@@ -1708,6 +1719,7 @@ export default function HomePage() {
     setTokenCenterOpen(false);
     setTokenCenterError(null);
     setHistoryLoading(false);
+    setLoadingSessionLocalId(null);
     setHistoryLoadError(null);
     idleSignOutRef.current = false;
     pinnedLocalSessionIdRef.current = null;
@@ -1718,6 +1730,7 @@ export default function HomePage() {
     async (sessionId: string, localId: string) => {
       if (!accessToken) return;
       setHistoryLoading(true);
+      setLoadingSessionLocalId(localId);
       setHistoryLoadError(null);
       try {
         const res = await fetch(`/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`, {
@@ -1786,6 +1799,7 @@ export default function HomePage() {
         );
       } finally {
         setHistoryLoading(false);
+        setLoadingSessionLocalId((current) => (current === localId ? null : current));
       }
     },
     [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish, accountSessionLimit, signOut],
@@ -3144,7 +3158,7 @@ export default function HomePage() {
               </div>
             </div>
             {loading || historyLoading ? (
-              <p className="sidebar-stats-hint">{drawerText.loading}</p>
+              <p className="sidebar-stats-hint">{drawerText.loadingChats}</p>
             ) : historyLoadError ? (
               <p className="sidebar-stats-hint">{historyLoadError}</p>
             ) : (
@@ -3177,21 +3191,27 @@ export default function HomePage() {
                   >
                     <span className="chat-session-title">{session.title}</span>
                     <span className="chat-session-meta">
-                      <span>
-                        {session.messageCount} {drawerText.messages}
-                      </span>
-                      <span aria-hidden="true">·</span>
-                      <span className="chat-session-time">
-                      {session.firstConsultationAt
-                        ? new Date(session.firstConsultationAt).toLocaleString(locale, {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : ""}
-                    </span>
+                      {loadingSessionLocalId === session.localId ? (
+                        <span>{drawerText.loadingConversation}</span>
+                      ) : (
+                        <>
+                          <span>
+                            {session.messageCount} {drawerText.messages}
+                          </span>
+                          <span aria-hidden="true">·</span>
+                          <span className="chat-session-time">
+                            {session.firstConsultationAt
+                              ? new Date(session.firstConsultationAt).toLocaleString(locale, {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })
+                              : ""}
+                          </span>
+                        </>
+                      )}
                     </span>
                   </button>
                   <button
@@ -3350,7 +3370,9 @@ export default function HomePage() {
         <div className="chat-room">
           <section className="chat-history" ref={historyRef} style={{ paddingTop: 0, marginTop: 0 }}>
             {activeThread.length === 0 ? (
-              <p className="chat-empty-line">{emptyThreadInvite}</p>
+              <p className={`chat-empty-line ${historyLoading ? "chat-empty-line--loading" : ""}`}>
+                {historyLoading ? drawerText.loadingConversation : emptyThreadInvite}
+              </p>
             ) : null}
             {activeThread.map((entry) => (
               <div

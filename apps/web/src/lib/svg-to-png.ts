@@ -8,7 +8,9 @@
  *
  * FONT SOURCES:
  * - @fontsource/noto-serif-tc/.../noto-serif-tc-chinese-traditional-700-normal.woff
- *   (preferred, broad glyph coverage)
+ *   (preferred for Traditional Chinese glyphs)
+ * - @fontsource/noto-sans-symbols-2/.../noto-sans-symbols-2-symbols-400-normal.woff
+ *   (Yi Jing / symbol coverage)
  * - apps/web/fonts/noto-serif-tc-700-subset.ttf (fallback, traced in Next config)
  */
 
@@ -19,6 +21,8 @@ import path from "node:path";
 
 const FONT_FILENAME = "noto-serif-tc-700-subset.ttf";
 const ROOT_TC_WOFF_SPEC = "@fontsource/noto-serif-tc/files/noto-serif-tc-chinese-traditional-700-normal.woff";
+const ROOT_SYMBOL_WOFF_SPEC =
+  "@fontsource/noto-sans-symbols-2/files/noto-sans-symbols-2-symbols-400-normal.woff";
 const requireForResolve = createRequire(import.meta.url);
 
 let resolvedFontPaths: string[] | undefined;
@@ -33,6 +37,14 @@ async function findFontFiles(): Promise<string[]> {
     const resolvedWoff = requireForResolve.resolve(ROOT_TC_WOFF_SPEC);
     await access(resolvedWoff);
     files.push(resolvedWoff);
+  } catch {
+    // best effort
+  }
+  // Add symbol coverage (e.g. Yi Jing hexagram symbols).
+  try {
+    const resolvedSymbolsWoff = requireForResolve.resolve(ROOT_SYMBOL_WOFF_SPEC);
+    await access(resolvedSymbolsWoff);
+    files.push(resolvedSymbolsWoff);
   } catch {
     // best effort
   }

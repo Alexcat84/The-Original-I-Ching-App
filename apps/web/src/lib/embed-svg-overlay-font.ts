@@ -15,19 +15,27 @@ import path from "node:path";
  */
 
 const FONT_FAMILY = "NotoSerifTCOverlay";
+const SYMBOL_FONT_FAMILY = "NotoSymbols2Overlay";
 const LOCAL_TC_FONT_SPEC = "@fontsource/noto-serif-tc/files/noto-serif-tc-chinese-traditional-700-normal.woff";
+const LOCAL_SYMBOL_FONT_SPEC = "@fontsource/noto-sans-symbols-2/files/noto-sans-symbols-2-symbols-400-normal.woff";
 const requireForResolve = createRequire(import.meta.url);
 
 let cachedSubsetKey: string | null = null;
 let cachedWoff2Base64: string | null = null;
 let cachedLocalWoff2Base64: string | null | undefined;
+let cachedLocalSymbolWoff2Base64: string | null | undefined;
 
-/** CJK + common punctuation used in overlay titles (e.g. arrow between hexagram names). */
+/** CJK + Yi symbols + common punctuation used in overlay titles. */
 export function collectOverlaySubsetChars(svg: string): string {
   const set = new Set<string>();
   for (const ch of svg) {
     const cp = ch.codePointAt(0) ?? 0;
     if ((cp >= 0x4e00 && cp <= 0x9fff) || (cp >= 0x3400 && cp <= 0x4dbf)) {
+      set.add(ch);
+      continue;
+    }
+    // Yi Jing Hexagram Symbols block (U+4DC0–U+4DFF).
+    if (cp >= 0x4dc0 && cp <= 0x4dff) {
       set.add(ch);
       continue;
     }
@@ -108,6 +116,33 @@ async function loadLocalWoff2Base64(): Promise<string | null> {
   }
 }
 
+async function loadLocalSymbolWoff2Base64(): Promise<string | null> {
+  if (cachedLocalSymbolWoff2Base64 !== undefined) return cachedLocalSymbolWoff2Base64;
+  try {
+    const resolved = requireForResolve.resolve(LOCAL_SYMBOL_FONT_SPEC);
+    const buf = await readFile(resolved);
+    cachedLocalSymbolWoff2Base64 = buf.toString("base64");
+    return cachedLocalSymbolWoff2Base64;
+  } catch {
+    try {
+      const localPath = path.join(
+        process.cwd(),
+        "node_modules",
+        "@fontsource",
+        "noto-sans-symbols-2",
+        "files",
+        "noto-sans-symbols-2-symbols-400-normal.woff2",
+      );
+      const buf = await readFile(localPath);
+      cachedLocalSymbolWoff2Base64 = buf.toString("base64");
+      return cachedLocalSymbolWoff2Base64;
+    } catch {
+      cachedLocalSymbolWoff2Base64 = null;
+      return null;
+    }
+  }
+}
+
 /**
  * Injects a WOFF2 @font-face and rewrites font-family so librsvg can render Chinese overlay text.
  */
@@ -119,23 +154,28 @@ export async function embedCjkFontInOverlaySvg(svg: string): Promise<string> {
   try {
     const b64 = (await loadLocalWoff2Base64()) ?? (await fetchSubsetWoff2Base64(subset));
     if (!b64) return svg;
+    const symbolB64 = await loadLocalSymbolWoff2Base64();
 
     const face = `<defs><style type="text/css"><![CDATA[
 @font-face{font-family:'${FONT_FAMILY}';font-style:normal;font-weight:700;src:url(data:font/woff;base64,${b64}) format('woff');font-display:swap;}
+${symbolB64 ? `@font-face{font-family:'${SYMBOL_FONT_FAMILY}';font-style:normal;font-weight:400;src:url(data:font/woff;base64,${symbolB64}) format('woff');font-display:swap;}` : ""}
 ]]></style></defs>`;
 
     const withDefs = svg.replace(/<svg\s([^>]*)>/, `<svg $1>${face}`);
+    const overlayFamily = symbolB64
+      ? `${SYMBOL_FONT_FAMILY}, ${FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif`
+      : `${FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif`;
     return withDefs
       .replaceAll(
         "font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif'",
-        `font-family='${FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif'`,
+        `font-family='${overlayFamily}'`,
       )
       .replaceAll(
         'font-family="Noto Serif TC, Noto Serif SC, SimSun, STSong, serif"',
-        `font-family="${FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif"`,
+        `font-family="${overlayFamily}"`,
       )
-      .replaceAll("font-family='Noto Serif SC, SimSun, STSong, serif'", `font-family='${FONT_FAMILY}, serif'`)
-      .replaceAll('font-family="Noto Serif SC, SimSun, STSong, serif"', `font-family="${FONT_FAMILY}, serif"`)
+      .replaceAll("font-family='Noto Serif SC, SimSun, STSong, serif'", `font-family='${overlayFamily}'`)
+      .replaceAll('font-family="Noto Serif SC, SimSun, STSong, serif"', `font-family="${overlayFamily}"`)
       ;
   } catch {
     return svg;
