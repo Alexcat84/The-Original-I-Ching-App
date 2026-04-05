@@ -21,3 +21,4 @@ apps/mobile/dist
 packages/iching-data/src/generated
 
 .vercel
+.env*.local
