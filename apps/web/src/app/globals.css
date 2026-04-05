@@ -1008,7 +1008,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
-  padding: 0 0.85rem 0.5rem;
+  padding: 0 0.85rem 6.1rem;
   margin-top: 0;
   display: flex;
   flex-direction: column;
@@ -2391,6 +2391,152 @@ button:disabled {
   font-weight: 700;
 }
 
+.ritual-coins-stage {
+  position: sticky;
+  bottom: 4.85rem;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.ritual-stage-content {
+  position: relative;
+  z-index: 2;
+}
+
+.ritual-stage-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.ritual-stage-particle {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(245, 211, 157, 0.9) 0%, rgba(245, 211, 157, 0.25) 60%, transparent 100%);
+  filter: blur(0.15px);
+  opacity: 0.34;
+  box-shadow: 0 0 8px rgba(244, 198, 132, 0.34);
+  animation-name: ritualPreviewParticleFloat;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.ritual-status-line {
+  animation: ritualStatusPulse 1.15s ease-in-out infinite;
+}
+
+.ritual-coins-stage .ritual-status-line {
+  text-align: center;
+  color: #e4c89b;
+  letter-spacing: 0.02em;
+  text-shadow:
+    0 0 10px rgba(187, 129, 61, 0.24),
+    0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.ritual-preview-shell {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(1100px 640px at 50% -5%, rgba(195, 140, 65, 0.16), transparent 62%),
+    radial-gradient(1200px 900px at 50% 112%, rgba(111, 54, 27, 0.34), transparent 72%),
+    linear-gradient(180deg, #140f0c 0%, #0f0a08 52%, #080605 100%);
+}
+
+.ritual-preview-stage {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  border-color: color-mix(in srgb, #c6904b 40%, var(--coins-border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, #18120e 92%, var(--coins-bg)) 0%,
+    color-mix(in srgb, #110c09 96%, var(--coins-bg)) 100%
+  );
+}
+
+.ritual-preview-content {
+  position: relative;
+  z-index: 2;
+}
+
+.ritual-preview-status {
+  text-align: center;
+  color: #e4c89b;
+  letter-spacing: 0.025em;
+  font-weight: 600;
+  text-shadow:
+    0 0 14px rgba(187, 129, 61, 0.28),
+    0 1px 0 rgba(0, 0, 0, 0.45);
+}
+
+.ritual-preview-cta {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: center;
+}
+
+.ritual-preview-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ritual-preview-particle {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(245, 211, 157, 0.85) 0%, rgba(245, 211, 157, 0.24) 58%, transparent 100%);
+  filter: blur(0.15px);
+  opacity: 0.48;
+  box-shadow: 0 0 8px rgba(244, 198, 132, 0.4);
+  animation-name: ritualPreviewParticleFloat;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.ritual-final-focus {
+  width: min(100%, 15rem);
+  margin: 0.15rem auto 0;
+  padding: 0.65rem 0.8rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, #d39b58 44%, var(--input-border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, #221811 88%, transparent) 0%,
+    color-mix(in srgb, #150f0b 92%, transparent) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(214, 153, 79, 0.24),
+    0 0 30px rgba(213, 148, 74, 0.22);
+  animation: ritualFinalBloom 520ms ease-out both;
+}
+
+.ritual-final-line {
+  min-height: 1.5rem;
+  display: grid;
+  place-items: center;
+  animation: ritualFinalLineIn 420ms ease both;
+}
+
+.ritual-final-line.is-changing .ritual-hex-line--yang,
+.ritual-final-line.is-changing .ritual-hex-line--yin > span {
+  background: #d2a539;
+  border-color: rgba(255, 245, 214, 0.9);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 0 14px rgba(229, 180, 56, 0.42);
+}
+
 .ritual-progress {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -2642,6 +2788,79 @@ html[data-theme="dark"] .ritual-line-slot.is-changing .ritual-hex-line--yin > sp
   100% {
     transform: translateX(0);
     opacity: 0.7;
+  }
+}
+
+@keyframes ritualStatusPulse {
+  0% {
+    opacity: 0.72;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+  100% {
+    opacity: 0.72;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ritualPreviewParticlesDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.26;
+  }
+  50% {
+    transform: translate3d(8px, -10px, 0);
+    opacity: 0.42;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.26;
+  }
+}
+
+@keyframes ritualPreviewParticleFloat {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.08;
+  }
+  35% {
+    transform: translate3d(20px, -28px, 0);
+    opacity: 0.34;
+  }
+  65% {
+    transform: translate3d(-18px, -56px, 0);
+    opacity: 0.22;
+  }
+  100% {
+    transform: translate3d(10px, -82px, 0);
+    opacity: 0.06;
+  }
+}
+
+@keyframes ritualFinalBloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.93);
+    filter: blur(0.8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes ritualFinalLineIn {
+  0% {
+    opacity: 0;
+    transform: translateY(5px) scaleX(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scaleX(1);
   }
 }
 
@@ -3282,6 +3501,7 @@ html[data-theme="dark"] .verdict-pill--silent {
   /* Avoid bogus syllable breaks (e.g. "ar-monía") — LLM text is not hyphenation-dictionary safe */
   hyphens: none;
   -webkit-hyphens: none;
+  overflow-wrap: break-word;
 }
 
 .oracle-md {

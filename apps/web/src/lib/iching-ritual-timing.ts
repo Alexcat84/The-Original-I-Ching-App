@@ -1,0 +1,25 @@
+/**
+ * Spread I Ching line materialization across typical /api/consult duration so
+ * the ritual feels aligned with server work (lines still arrive in one payload).
+ *
+ * Override with NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS (milliseconds, min 8000).
+ */
+export const ICHING_RITUAL_TARGET_MS = (() => {
+  const raw =
+    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS === "string"
+      ? Number(process.env.NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS)
+      : Number.NaN;
+  return Number.isFinite(raw) && raw >= 8000 ? raw : 22_000;
+})();
+
+/** Finale glow after the last line tick (matches page.tsx sequence). */
+export const ICHING_RITUAL_POST_LINE_MS = 900 + 1100;
+
+/** One source bar, then one transformed bar per line (6 lines x 2). */
+export const ICHING_RITUAL_TICKS = 12;
+
+export function ichingRitualTickDelayMs(): number {
+  const budget = Math.max(6000, ICHING_RITUAL_TARGET_MS) - ICHING_RITUAL_POST_LINE_MS;
+  const raw = Math.floor(budget / ICHING_RITUAL_TICKS);
+  return Math.max(320, Math.min(3800, raw));
+}

@@ -39,6 +39,7 @@ import { useChatSessionState } from "@/providers/chat-session-provider";
 import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
+import { ichingRitualTickDelayMs } from "@/lib/iching-ritual-timing";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
@@ -264,6 +265,71 @@ const RUNTIME_TEXT: Record<
     chargeMinus: "명제 −",
     leansPositive: "긍정 명제 쪽으로 기웁니다.",
     leansNegative: "명제 부정 쪽으로 기웁니다.",
+  },
+};
+
+const RITUAL_STATUS_COPY: Record<
+  AppLocale,
+  {
+    question: string;
+    consult: string;
+    shape: string;
+    seal: string;
+  }
+> = {
+  es: {
+    question: "Tomando tu pregunta…",
+    consult: "Llevándola al oráculo…",
+    shape: "El oráculo está consultando…",
+    seal: "Sellando la lectura…",
+  },
+  en: {
+    question: "Holding your question…",
+    consult: "Carrying it to the oracle…",
+    shape: "The oracle is consulting…",
+    seal: "Sealing the reading…",
+  },
+  pt: {
+    question: "Sustentando a tua pergunta…",
+    consult: "Levando-a ao oráculo…",
+    shape: "O oráculo está consultando…",
+    seal: "Selando a leitura…",
+  },
+  fr: {
+    question: "Accueillir votre question…",
+    consult: "La porter vers l'oracle…",
+    shape: "L'oracle consulte…",
+    seal: "Sceller la lecture…",
+  },
+  de: {
+    question: "Deine Frage aufnehmen…",
+    consult: "Zum Orakel tragen…",
+    shape: "Das Orakel befragt…",
+    seal: "Die Deutung wird versiegelt…",
+  },
+  it: {
+    question: "Accogliere la tua domanda…",
+    consult: "Portarla all'oracolo…",
+    shape: "L'oracolo sta consultando…",
+    seal: "Sigillando la lettura…",
+  },
+  ja: {
+    question: "問いを受け取っています…",
+    consult: "神託へ運んでいます…",
+    shape: "神託が照会しています…",
+    seal: "読みを封じています…",
+  },
+  zh: {
+    question: "承接你的问题…",
+    consult: "将它带向神谕…",
+    shape: "神谕正在推演…",
+    seal: "正在封印此次解读…",
+  },
+  ko: {
+    question: "질문을 받아들이는 중…",
+    consult: "신탁으로 옮기는 중…",
+    shape: "신탁이 살피는 중…",
+    seal: "해석을 봉인하는 중…",
   },
 };
 
@@ -972,7 +1038,12 @@ export default function HomePage() {
   const [phase, setPhase] = useState<"idle" | "coins" | "bones" | "reading">("idle");
   const [boneRitualResult, setBoneRitualResult] = useState<BoneOracleResult | null>(null);
   const [ritualLines, setRitualLines] = useState<ApiLine[] | null>(null);
-  const [ritualRevealCount, setRitualRevealCount] = useState(0);
+  const [ritualRevealTick, setRitualRevealTick] = useState(0);
+  const [ritualAwaitingTick, setRitualAwaitingTick] = useState(0);
+  const [ritualStatusPhase, setRitualStatusPhase] = useState<"question" | "consult" | "shape" | "seal">("question");
+  const [ritualParticles, setRitualParticles] = useState<
+    Array<{ id: number; left: string; top: string; size: string; duration: string; delay: string }>
+  >([]);
   const [ritualFinale, setRitualFinale] = useState(false);
   const [ritualDebugCastVector, setRitualDebugCastVector] = useState<Array<6 | 7 | 8 | 9> | null>(null);
   const [ritualDebugFinalVector, setRitualDebugFinalVector] = useState<Array<6 | 7 | 8 | 9> | null>(null);
@@ -1063,8 +1134,57 @@ export default function HomePage() {
     window.dispatchEvent(new CustomEvent("iching:locale-changed", { detail: { locale } }));
   }, [locale]);
 
+  useEffect(() => {
+    if (phase !== "coins" || !loading || ritualLines !== null) {
+      setRitualAwaitingTick(0);
+      return;
+    }
+    setRitualStatusPhase("consult");
+    const tickTimer = window.setInterval(() => {
+      setRitualAwaitingTick((prev) => (prev >= 12 ? 1 : prev + 1));
+    }, 380);
+    const phases: Array<"question" | "consult" | "shape"> = ["question", "consult", "shape"];
+    let idx = 0;
+    const statusTimer = window.setInterval(() => {
+      idx = (idx + 1) % phases.length;
+      setRitualStatusPhase(phases[idx]!);
+    }, 1400);
+    return () => {
+      window.clearInterval(tickTimer);
+      window.clearInterval(statusTimer);
+    };
+  }, [phase, loading, ritualLines]);
+
+  useEffect(() => {
+    setRitualParticles(
+      Array.from({ length: 56 }, (_, i) => {
+        const left = `${Math.floor(Math.random() * 100)}%`;
+        const top = `${Math.floor(Math.random() * 100)}%`;
+        const size = `${1.6 + Math.random() * 2.8}px`;
+        const duration = `${16 + Math.random() * 18}s`;
+        const delay = `${Math.random() * 10}s`;
+        return { id: i, left, top, size, duration, delay };
+      }),
+    );
+  }, []);
+
   const ritualRenderOrder: Array<ApiLine["position"]> = [6, 5, 4, 3, 2, 1];
-  const ritualDebugEnabled = process.env.NODE_ENV !== "production";
+  const ritualDebugEnabled =
+    process.env.NEXT_PUBLIC_ICHING_RITUAL_DEBUG === "1" ||
+    process.env.NEXT_PUBLIC_ICHING_RITUAL_DEBUG === "true";
+  const ritualStatusLine = useMemo(() => {
+    const status = RITUAL_STATUS_COPY[locale] ?? RITUAL_STATUS_COPY.es;
+    switch (ritualStatusPhase) {
+      case "question":
+        return status.question;
+      case "consult":
+        return status.consult;
+      case "shape":
+        return status.shape;
+      case "seal":
+        return status.seal;
+    }
+  }, [locale, ritualStatusPhase]);
   const ritualDebugCastTransformed = useMemo(
     () => (ritualDebugCastVector ? transformLineVector(ritualDebugCastVector) : null),
     [ritualDebugCastVector],
@@ -2463,7 +2583,9 @@ export default function HomePage() {
     setPendingUserQuestion(questionForRequest || null);
     setBoneRitualResult(null);
     setRitualLines(null);
-    setRitualRevealCount(0);
+    setRitualRevealTick(0);
+    setRitualAwaitingTick(0);
+    setRitualStatusPhase("question");
     setRitualFinale(false);
     setRitualDebugCastVector(null);
     setRitualDebugFinalVector(null);
@@ -2536,17 +2658,20 @@ export default function HomePage() {
       const contentType = (res.headers.get("content-type") ?? "").toLowerCase();
       const runIChingRitualReveal = async (linesPayload: ApiLine[]) => {
         const ordered = [...linesPayload].sort((a, b) => a.position - b.position);
+        const tickDelayMs = ichingRitualTickDelayMs();
         setRitualLines(ordered);
-        setRitualRevealCount(0);
+        setRitualRevealTick(0);
+        setRitualAwaitingTick(0);
+        setRitualStatusPhase("shape");
         setRitualFinale(false);
-        for (let i = 1; i <= ordered.length; i += 1) {
-          setRitualRevealCount(i);
-          await new Promise((r) => window.setTimeout(r, 430));
+        for (let t = 1; t <= 12; t += 1) {
+          setRitualRevealTick(t);
+          await new Promise((r) => window.setTimeout(r, tickDelayMs));
         }
+        setRitualStatusPhase("seal");
         setRitualFinale(true);
         await new Promise((r) => window.setTimeout(r, 900));
         await new Promise((r) => window.setTimeout(r, 1100));
-        setRitualFinale(false);
       };
       if (contentType.includes("text/event-stream")) {
         if (!res.body) {
@@ -2784,6 +2909,7 @@ export default function HomePage() {
     } finally {
       setLoading(false);
       if (!ok) {
+        setRitualStatusPhase("question");
         setPhase("idle");
         setPendingUserQuestion(null);
       }
@@ -3221,72 +3347,118 @@ export default function HomePage() {
             ) : null}
 
             {phase === "coins" ? (
-              <section className="coins-stage" data-testid="coin-throw">
-                <p className="coins-title">{runtimeText.ritualCoins}</p>
-                <div className={`ritual-lines-grid ${ritualFinale ? "is-finale" : ""}`}>
-                  {ritualRenderOrder.map((lineNum, i) => {
-                    const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
-                    const sourceVisible = ritualLines !== null && lineNum <= ritualRevealCount;
-                    const transformedVisible = ritualLines !== null && lineNum <= ritualRevealCount;
-                    const sourceYang = lineData ? lineData.value === 7 || lineData.value === 9 : true;
-                    const transformedValue =
-                      lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;
-                    const transformedYang = transformedValue ? transformedValue === 7 : true;
-                    const isChanging = Boolean(lineData?.isChanging);
-                    return (
-                      <div key={lineNum} className="ritual-line-row" aria-hidden="true">
-                        <div className={`ritual-line-slot ritual-line-slot--source ${sourceVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""}`}>
-                          {sourceVisible ? (sourceYang ? (
-                            <span className="ritual-hex-line ritual-hex-line--yang" />
-                          ) : (
-                            <span className="ritual-hex-line ritual-hex-line--yin">
-                              <span />
-                              <span />
-                            </span>
-                          )) : null}
-                        </div>
-                        <div className={`ritual-arrow-slot ${transformedVisible ? "is-visible" : ""} ${ritualFinale ? "is-finale" : ""}`}>
-                          <span className="ritual-arrow">→</span>
-                        </div>
-                        <div
-                          className={`ritual-line-slot ritual-line-slot--transformed ${transformedVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""}`}
-                          style={{ transitionDelay: `${i * 60}ms` }}
-                        >
-                          {transformedVisible ? (transformedYang ? (
-                            <span className="ritual-hex-line ritual-hex-line--yang" />
-                          ) : (
-                            <span className="ritual-hex-line ritual-hex-line--yin">
-                              <span />
-                              <span />
-                            </span>
-                          )) : null}
-                        </div>
-                      </div>
-                    );
-                  })}
+              <section className="coins-stage ritual-coins-stage" data-testid="coin-throw">
+                <div className="ritual-stage-particles" aria-hidden="true">
+                  {ritualParticles.map((particle) => (
+                    <span
+                      key={particle.id}
+                      className="ritual-stage-particle"
+                      style={{
+                        left: particle.left,
+                        top: particle.top,
+                        width: particle.size,
+                        height: particle.size,
+                        animationDuration: particle.duration,
+                        animationDelay: `-${particle.delay}`,
+                      }}
+                    />
+                  ))}
                 </div>
-                {ritualDebugEnabled ? (
-                  <div className="ritual-debug-box">
-                    <p>
-                      cast base: <code>{ritualDebugCastVector ? ritualDebugCastVector.join(",") : "pending"}</code>
-                    </p>
-                    <p>
-                      cast transformed:{" "}
-                      <code>{ritualDebugCastTransformed ? ritualDebugCastTransformed.join(",") : "pending"}</code>
-                    </p>
-                    <p>
-                      final base: <code>{ritualDebugFinalVector ? ritualDebugFinalVector.join(",") : "pending"}</code>
-                    </p>
-                    <p>
-                      final transformed:{" "}
-                      <code>{ritualDebugFinalTransformed ? ritualDebugFinalTransformed.join(",") : "pending"}</code>
-                    </p>
-                    <p>
-                      match ritual/final transformed:{" "}
-                      <strong>{ritualDebugMatch === null ? "pending" : ritualDebugMatch ? "YES" : "NO"}</strong>
-                    </p>
+                <div className="ritual-stage-content">
+                  <p className="coins-title ritual-status-line">{ritualStatusLine}</p>
+                  {!ritualFinale ? (
+                    <div className="ritual-lines-grid">
+                      {ritualRenderOrder.map((lineNum, i) => {
+                        const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
+                        const tick = ritualLines !== null ? ritualRevealTick : ritualAwaitingTick;
+                        const sourceVisible = tick >= lineNum * 2 - 1;
+                        const transformedVisible = tick >= lineNum * 2;
+                        const sourceYang = lineData ? lineData.value === 7 || lineData.value === 9 : lineNum % 2 === 0;
+                        const transformedValue =
+                          lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;
+                        const transformedYang = transformedValue ? transformedValue === 7 : lineNum % 2 !== 0;
+                        const isChanging = Boolean(lineData?.isChanging);
+                        return (
+                          <div key={lineNum} className="ritual-line-row" aria-hidden="true">
+                            <div className={`ritual-line-slot ritual-line-slot--source ${sourceVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""}`}>
+                              {sourceVisible ? (sourceYang ? (
+                                <span className="ritual-hex-line ritual-hex-line--yang" />
+                              ) : (
+                                <span className="ritual-hex-line ritual-hex-line--yin">
+                                  <span />
+                                  <span />
+                                </span>
+                              )) : null}
+                            </div>
+                            <div className={`ritual-arrow-slot ${sourceVisible ? "is-visible" : ""}`}>
+                              <span className="ritual-arrow">→</span>
+                            </div>
+                            <div
+                              className={`ritual-line-slot ritual-line-slot--transformed ${transformedVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""}`}
+                              style={{ transitionDelay: `${i * 60}ms` }}
+                            >
+                              {transformedVisible ? (transformedYang ? (
+                                <span className="ritual-hex-line ritual-hex-line--yang" />
+                              ) : (
+                                <span className="ritual-hex-line ritual-hex-line--yin">
+                                  <span />
+                                  <span />
+                                </span>
+                              )) : null}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="ritual-final-focus" aria-hidden="true">
+                      {ritualRenderOrder.map((lineNum, i) => {
+                        const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
+                        const transformedValue = lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;
+                        const transformedYang = transformedValue ? transformedValue === 7 : true;
+                        const isChanging = Boolean(lineData?.isChanging);
+                        return (
+                          <div
+                            key={`final-${lineNum}`}
+                            className={`ritual-final-line ${isChanging ? "is-changing" : ""}`}
+                            style={{ animationDelay: `${i * 70}ms` }}
+                          >
+                            {transformedYang ? (
+                              <span className="ritual-hex-line ritual-hex-line--yang" />
+                            ) : (
+                              <span className="ritual-hex-line ritual-hex-line--yin">
+                                <span />
+                                <span />
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  {ritualDebugEnabled ? (
+                    <div className="ritual-debug-box">
+                      <p>
+                        cast base: <code>{ritualDebugCastVector ? ritualDebugCastVector.join(",") : "pending"}</code>
+                      </p>
+                      <p>
+                        cast transformed:{" "}
+                        <code>{ritualDebugCastTransformed ? ritualDebugCastTransformed.join(",") : "pending"}</code>
+                      </p>
+                      <p>
+                        final base: <code>{ritualDebugFinalVector ? ritualDebugFinalVector.join(",") : "pending"}</code>
+                      </p>
+                      <p>
+                        final transformed:{" "}
+                        <code>{ritualDebugFinalTransformed ? ritualDebugFinalTransformed.join(",") : "pending"}</code>
+                      </p>
+                      <p>
+                        match ritual/final transformed:{" "}
+                        <strong>{ritualDebugMatch === null ? "pending" : ritualDebugMatch ? "YES" : "NO"}</strong>
+                      </p>
+                    </div>
+                  ) : null}
                   </div>
-                ) : null}
               </section>
             ) : null}
             {ritualDebugEnabled && phase !== "coins" && lastRitualDebugSnapshot ? (
