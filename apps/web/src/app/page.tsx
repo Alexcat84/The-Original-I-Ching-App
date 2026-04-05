@@ -1097,6 +1097,9 @@ export default function HomePage() {
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const ritualCoinsStageRef = useRef<HTMLElement | null>(null);
+  const ritualLinesGridRef = useRef<HTMLDivElement | null>(null);
+  const ritualDebugStartMsRef = useRef<number | null>(null);
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
@@ -1154,6 +1157,111 @@ export default function HomePage() {
       window.clearInterval(statusTimer);
     };
   }, [phase, loading, ritualLines]);
+
+  const ritualTraceEnabled = process.env.NODE_ENV !== "production";
+  const logRitualTrace = useCallback(
+    (label: string, payload?: Record<string, unknown>) => {
+      if (!ritualTraceEnabled) return;
+      const start = ritualDebugStartMsRef.current;
+      const elapsedMs = typeof start === "number" ? Date.now() - start : -1;
+      if (payload) {
+        console.info(`[ritual][+${elapsedMs}ms] ${label}`, payload);
+      } else {
+        console.info(`[ritual][+${elapsedMs}ms] ${label}`);
+      }
+      void fetch("/api/ritual-debug", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ label, elapsedMs, payload }),
+        keepalive: true,
+      }).catch(() => {});
+    },
+    [ritualTraceEnabled],
+  );
+
+  useEffect(() => {
+    if (!ritualTraceEnabled) return;
+    logRitualTrace("state", {
+      phase,
+      loading,
+      ritualStatusPhase,
+      ritualRevealTick,
+      ritualAwaitingTick,
+      ritualFinale,
+      hasRitualLines: ritualLines !== null,
+    });
+  }, [
+    phase,
+    loading,
+    ritualStatusPhase,
+    ritualRevealTick,
+    ritualAwaitingTick,
+    ritualFinale,
+    ritualLines,
+    ritualTraceEnabled,
+    logRitualTrace,
+  ]);
+
+  useEffect(() => {
+    if (!ritualTraceEnabled || phase !== "coins") return;
+    const measure = () => {
+      const stageEl = ritualCoinsStageRef.current;
+      const gridEl = ritualLinesGridRef.current;
+      const stageRect = stageEl?.getBoundingClientRect();
+      const gridRect = gridEl?.getBoundingClientRect();
+      const stageFromQueryEl = document.querySelector<HTMLElement>('[data-testid="coin-throw"]');
+      const stageFromQuery = stageFromQueryEl?.getBoundingClientRect();
+      logRitualTrace("layout", {
+        stageRect: stageRect
+          ? {
+              width: Math.round(stageRect.width),
+              height: Math.round(stageRect.height),
+              top: Math.round(stageRect.top),
+              bottom: Math.round(stageRect.bottom),
+            }
+          : null,
+        stageRectQuery: stageFromQuery
+          ? {
+              width: Math.round(stageFromQuery.width),
+              height: Math.round(stageFromQuery.height),
+              top: Math.round(stageFromQuery.top),
+              bottom: Math.round(stageFromQuery.bottom),
+            }
+          : null,
+        stageContainsGrid: Boolean(stageEl && gridEl ? stageEl.contains(gridEl) : false),
+        stageParentClass: stageEl?.parentElement?.className ?? null,
+        gridParentClass: gridEl?.parentElement?.className ?? null,
+        stageComputed: stageEl
+          ? {
+              display: window.getComputedStyle(stageEl).display,
+              position: window.getComputedStyle(stageEl).position,
+              overflow: window.getComputedStyle(stageEl).overflow,
+            }
+          : null,
+        gridComputed: gridEl
+          ? {
+              display: window.getComputedStyle(gridEl).display,
+              position: window.getComputedStyle(gridEl).position,
+            }
+          : null,
+        gridRect: gridRect
+          ? {
+              width: Math.round(gridRect.width),
+              height: Math.round(gridRect.height),
+              top: Math.round(gridRect.top),
+              bottom: Math.round(gridRect.bottom),
+            }
+          : null,
+      });
+    };
+    measure();
+    const timer = window.setInterval(measure, 1000);
+    window.addEventListener("resize", measure);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("resize", measure);
+    };
+  }, [phase, ritualTraceEnabled, logRitualTrace]);
 
   useEffect(() => {
     setRitualParticles(
@@ -2592,6 +2700,11 @@ export default function HomePage() {
     setLastRitualDebugSnapshot(null);
     setQuestion("");
     requestAnimationFrame(() => resizeQuestionInput());
+    ritualDebugStartMsRef.current = Date.now();
+    logRitualTrace("submit:start", {
+      oracleMode,
+      questionLength: questionForRequest.length,
+    });
     const showRitualAnimation = true;
     setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
     let ok = false;
@@ -2656,9 +2769,14 @@ export default function HomePage() {
         creditsReason?: string | null;
       };
       const contentType = (res.headers.get("content-type") ?? "").toLowerCase();
+      logRitualTrace("response:headers", { contentType, status: res.status });
       const runIChingRitualReveal = async (linesPayload: ApiLine[]) => {
         const ordered = [...linesPayload].sort((a, b) => a.position - b.position);
         const tickDelayMs = ichingRitualTickDelayMs();
+        logRitualTrace("reveal:start", {
+          orderedPositions: ordered.map((line) => line.position),
+          tickDelayMs,
+        });
         setRitualLines(ordered);
         setRitualRevealTick(0);
         setRitualAwaitingTick(0);
@@ -2666,12 +2784,15 @@ export default function HomePage() {
         setRitualFinale(false);
         for (let t = 1; t <= 12; t += 1) {
           setRitualRevealTick(t);
+          logRitualTrace("reveal:tick", { tick: t });
           await new Promise((r) => window.setTimeout(r, tickDelayMs));
         }
         setRitualStatusPhase("seal");
         setRitualFinale(true);
+        logRitualTrace("reveal:finale");
         await new Promise((r) => window.setTimeout(r, 900));
         await new Promise((r) => window.setTimeout(r, 1100));
+        logRitualTrace("reveal:end");
       };
       if (contentType.includes("text/event-stream")) {
         if (!res.body) {
@@ -2723,13 +2844,16 @@ export default function HomePage() {
               continue;
             }
             if (eventName === "cast_ready") {
+              logRitualTrace("sse:event", { eventName });
               const castPayload = payload as { lines?: ApiLine[] };
               if (Array.isArray(castPayload.lines) && castPayload.lines.length === 6) {
                 startLineReveal(castPayload.lines);
               }
             } else if (eventName === "final_ready") {
+              logRitualTrace("sse:event", { eventName });
               finalPayload = payload as ConsultResponse & { error?: string; message?: string };
             } else if (eventName === "error") {
+              logRitualTrace("sse:event", { eventName });
               streamErrored = true;
               const err = payload as { message?: string };
               setError(err.message || "No se pudo completar la consulta.");
@@ -2901,9 +3025,11 @@ export default function HomePage() {
         return next;
       });
       setPhase("reading");
+      logRitualTrace("submit:complete");
       setConsultPanelOpen(false);
       ok = true;
     } catch (e) {
+      logRitualTrace("submit:error", { error: e instanceof Error ? e.message : String(e) });
       setError(e instanceof Error ? e.message : "Error");
       setPendingUserQuestion(null);
     } finally {
@@ -3347,7 +3473,11 @@ export default function HomePage() {
             ) : null}
 
             {phase === "coins" ? (
-              <section className="coins-stage ritual-coins-stage" data-testid="coin-throw">
+              <section
+                ref={ritualCoinsStageRef}
+                className="coins-stage ritual-coins-stage"
+                data-testid="coin-throw"
+              >
                 <div className="ritual-stage-particles" aria-hidden="true">
                   {ritualParticles.map((particle) => (
                     <span
@@ -3374,7 +3504,10 @@ export default function HomePage() {
                     </span>
                   </p>
                   {!ritualFinale ? (
-                    <div className={`ritual-lines-grid ${ritualLines === null ? "is-awaiting-cast" : ""}`}>
+                    <div
+                      ref={ritualLinesGridRef}
+                      className={`ritual-lines-grid ${ritualLines === null ? "is-awaiting-cast" : ""}`}
+                    >
                       {ritualRenderOrder.map((lineNum, i) => {
                         const isAwaitingCast = ritualLines === null;
                         const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;

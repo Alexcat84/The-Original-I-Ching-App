@@ -26,6 +26,10 @@ import { canDeepenAfterNextConsult, normalizeSessionDepthLimit, shouldBlockDeepe
 export const runtime = "nodejs";
 const LOG_TOKEN_BALANCE_DEBUG =
   process.env.LOG_TOKEN_BALANCE_DEBUG === "1" || process.env.LOG_TOKEN_BALANCE_DEBUG === "true";
+const LOG_RITUAL_STREAM_DEBUG =
+  process.env.LOG_RITUAL_STREAM_DEBUG === "1" ||
+  process.env.LOG_RITUAL_STREAM_DEBUG === "true" ||
+  process.env.NODE_ENV === "development";
 
 function shortUserId(userId: string): string {
   return userId.slice(0, 8);
@@ -425,6 +429,23 @@ export async function POST(req: Request) {
   });
 
   if (responseMode === "stream_ritual") {
+    const ritualTraceId = randomUUID().slice(0, 8);
+    const ritualStartedAt = Date.now();
+    const ritualLog = (label: string, extra?: Record<string, unknown>) => {
+      if (!LOG_RITUAL_STREAM_DEBUG) return;
+      const elapsedMs = Date.now() - ritualStartedAt;
+      if (extra) {
+        console.log(`[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`, extra);
+      } else {
+        console.log(`[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`);
+      }
+    };
+    ritualLog("start", {
+      user: shortUserId(authedUserId),
+      sessionId,
+      questionLength: trimmedQuestion.length,
+      oracleMode,
+    });
     const encoder = new TextEncoder();
     const stream = new ReadableStream<Uint8Array>({
       start(controller) {
@@ -442,6 +463,10 @@ export async function POST(req: Request) {
               mutationRule: castResult.mutationRule,
               lines: castResult.lines,
               changingLines: castResult.changingLines,
+            });
+            ritualLog("event:cast_ready", {
+              primaryHexagram: castResult.primaryHexagram.number,
+              changedLines: castResult.changingLines.length,
             });
 
             const { text: interpretation, category } = await generateInterpretation(
@@ -485,6 +510,10 @@ export async function POST(req: Request) {
               consultationId: castResult.id,
             });
             image = await finalizeReadingImages(image, tierEffective);
+            ritualLog("assets_ready", {
+              category,
+              imageProvider: image.provider,
+            });
 
             const nextPosition = previousRows.length + 1;
             const canDeepen = canDeepenAfterNextConsult({
@@ -558,8 +587,14 @@ export async function POST(req: Request) {
               publicReadingId: sharing.publicReadingId,
               publicSessionId: sharing.publicSessionId,
             });
+            ritualLog("event:final_ready", {
+              transformedHexagram: castResult.transformedHexagram?.number ?? null,
+            });
           } catch (streamError) {
             console.error("[api/consult][stream_ritual]", streamError);
+            ritualLog("event:error", {
+              message: streamError instanceof Error ? streamError.message : "unknown",
+            });
             writeEvent("error", {
               error: "consult_failed",
               code: "CONSULT_FAILED",
@@ -570,6 +605,7 @@ export async function POST(req: Request) {
                   : undefined,
             });
           } finally {
+            ritualLog("close");
             controller.close();
           }
         })();
