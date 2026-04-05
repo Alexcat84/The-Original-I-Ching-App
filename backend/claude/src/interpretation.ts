@@ -22,7 +22,7 @@ ABSOLUTE RULES:
 8. Never add generic legal or "simbólica vs predicción" disclaimer paragraphs (e.g. "Es importante tener en cuenta…"). Never end with an asterisk-wrapped footnote; compliance copy lives outside the reading in the app.
 9. ANTI-REPETITION: Each concrete point (a line's counsel, a judgment phrase, a practical recommendation) appears at most once in the entire answer. Do not restate the same advice across sections with different wording.
 10. GROUNDING: Every interpretive claim must tether to the supplied judgment, Image, or line text—paraphrase or quote in blockquote, then bridge to the question. Avoid vague uplift that could apply to any hexagram.
-11. TYPOGRAPHY: Always put a space after commas, semicolons, and colons before the next word (e.g. ", según" not ",según"; ": El" not ":el"). Never output ",." together. After ":" that begins a new sentence or clause, start the following word with a capital letter in Spanish and English when it is a full sentence continuation.`;
+11. TYPOGRAPHY: enforce clean punctuation and spacing in the response language: one space after commas/semicolons/colons, no ",." or double punctuation, no glued tokens after punctuation, and no unintended uppercase after commas.`;
 
 /** Same token budget for all tiers. */
 const MAX_TOKENS = 4096;

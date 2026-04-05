@@ -26,17 +26,11 @@ export function normalizeInterpretationPunctuation(text: string): string {
   t = t.replace(/\n{3,}/g, "\n\n");
   t = t.replace(/,\s*,+/g, ", ");
   t = t.replace(/\s+,/g, ",");
-  // Comma + period with no space (LLM glitch)
-  t = t.replace(/,\./g, ".");
-  // Letter immediately after comma / semicolon / colon (no space), e.g. ",según" ",Seguir"
-  // Skips decimals like 1,5 (digit after comma).
-  t = t.replace(/,(?!\s)(?=\p{L})/gu, ", ");
-  t = t.replace(/;(?!\s)(?=\p{L})/gu, "; ");
-  t = t.replace(/:(?!\s)(?=\p{L})/gu, ": ");
-  // Closing paren flush against a word
+  t = t.replace(/,\s*\./g, ".");
+  t = t.replace(/\.\s*,/g, ".");
+  t = t.replace(/\s+([,.;:!?])/g, "$1");
+  t = t.replace(/([,;:])(?=\p{L})/gu, "$1 ");
   t = t.replace(/\)(?=\p{L})/gu, ") ");
-  t = t.replace(/,\s+\./g, ".");
-  // After ": " begin with uppercase when the model left a lowercase sentence start
-  t = t.replace(/:\s+(\p{Ll})/gu, (_m, ch: string) => `: ${ch.toUpperCase()}`);
+  t = t.replace(/ {2,}/g, " ");
   return t.trim();
 }
