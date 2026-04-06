@@ -259,6 +259,77 @@ const PT_LINE = 13;
 const PT_QUOTE = 11.5;
 const PT_LIST = 11.5;
 
+function hyphenateTokenToWidth(doc: jsPDF, token: string, maxW: number): string[] {
+  if (!token) return [];
+  if (doc.getTextWidth(token) <= maxW) return [token];
+
+  const chars = Array.from(token);
+  const out: string[] = [];
+  let i = 0;
+  while (i < chars.length) {
+    let chunk = "";
+    let j = i;
+    while (j < chars.length) {
+      const next = chunk + chars[j]!;
+      const hasMore = j < chars.length - 1;
+      const probe = hasMore ? `${next}-` : next;
+      if (doc.getTextWidth(probe) > maxW && chunk.length > 0) break;
+      chunk = next;
+      j++;
+      if (doc.getTextWidth(probe) > maxW) break;
+    }
+    const hasTail = j < chars.length;
+    out.push(hasTail ? `${chunk}-` : chunk);
+    i = j;
+  }
+  return out;
+}
+
+function wrapPdfTextWithHyphenation(doc: jsPDF, text: string, maxW: number): string[] {
+  const normalized = text.replace(/\r/g, "");
+  const lines: string[] = [];
+  const paragraphs = normalized.split("\n");
+
+  for (const paragraph of paragraphs) {
+    const words = paragraph.trim().split(/\s+/).filter(Boolean);
+    if (!words.length) {
+      lines.push("");
+      continue;
+    }
+
+    let line = "";
+    for (const word of words) {
+      const candidate = line ? `${line} ${word}` : word;
+      if (doc.getTextWidth(candidate) <= maxW) {
+        line = candidate;
+        continue;
+      }
+
+      if (line) {
+        lines.push(line);
+        line = "";
+      }
+
+      if (doc.getTextWidth(word) <= maxW) {
+        line = word;
+        continue;
+      }
+
+      const chunks = hyphenateTokenToWidth(doc, word, maxW);
+      if (!chunks.length) continue;
+      for (let i = 0; i < chunks.length - 1; i++) {
+        lines.push(chunks[i]!);
+      }
+      line = chunks[chunks.length - 1] ?? "";
+    }
+
+    if (line) lines.push(line);
+  }
+
+  while (lines.length > 0 && lines[lines.length - 1] === "") lines.pop();
+  return lines;
+}
+
 function drawJustifiedParagraph(
   doc: jsPDF,
   text: string,
@@ -267,7 +338,7 @@ function drawJustifiedParagraph(
   maxW: number,
   lineHeight: number,
 ): number {
-  const lines = doc.splitTextToSize(text, maxW) as string[];
+  const lines = wrapPdfTextWithHyphenation(doc, text, maxW);
   if (!lines.length) return y;
 
   for (let i = 0; i < lines.length; i++) {
@@ -333,7 +404,7 @@ export function drawPdfReadingBlocks(
       needSpace(headLead + 10);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(headSize);
-      const lines = doc.splitTextToSize(b.text, maxW);
+      const lines = wrapPdfTextWithHyphenation(doc, b.text, maxW);
       doc.text(lines, margin, y);
       y += lines.length * headLead + 6;
       doc.setFont("helvetica", "normal");
@@ -348,7 +419,7 @@ export function drawPdfReadingBlocks(
       const qW = maxW - 14;
       doc.setDrawColor(160, 140, 120);
       doc.setLineWidth(0.6);
-      const qLines = doc.splitTextToSize(b.text, qW) as string[];
+      const qLines = wrapPdfTextWithHyphenation(doc, b.text, qW);
       doc.line(margin + 4, y - 2, margin + 4, y + Math.max(qLines.length * PT_QUOTE, PT_QUOTE) - 2);
       y = drawJustifiedParagraph(doc, b.text, indent, y, qW, PT_QUOTE);
       y += 10;
@@ -361,14 +432,14 @@ export function drawPdfReadingBlocks(
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
       const bullet = "• ";
-      const lines = doc.splitTextToSize(bullet + b.text, maxW);
+      const lines = wrapPdfTextWithHyphenation(doc, `${bullet}${b.text}`, maxW);
       doc.text(lines, margin, y);
       y += lines.length * PT_LIST + 4;
       continue;
     }
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
-    const pLines = doc.splitTextToSize(b.text, maxW) as string[];
+    const pLines = wrapPdfTextWithHyphenation(doc, b.text, maxW);
     needSpace(pLines.length * PT_LINE + 6);
     y = drawJustifiedParagraph(doc, b.text, margin, y, maxW, PT_LINE);
     y += 6;
