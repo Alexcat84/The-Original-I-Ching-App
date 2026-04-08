@@ -1,9 +1,17 @@
 "use client";
 
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
+import { useAppLocale } from "@/lib/use-app-locale";
+import { TOKEN_PACKS, type PackId } from "@/lib/token-packs";
+import {
+  formatCheckoutSuccessTitle,
+  getCheckoutSuccessUiMessages,
+  getGuiaPacksUiMessages,
+  getTokenPackLabel,
+} from "@iching-oracle/i18n";
+import type { AppLocale, TokenPackMarketingId } from "@iching-oracle/i18n";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { getPackConfig } from "@/lib/token-packs";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const POLL_INTERVAL_MS = 3000;
 const POLL_MAX_MS = 30_000;
@@ -15,9 +23,12 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function packWelcomeLabel(lastPack: string): string {
-  if (lastPack === "free") return "Free";
-  return getPackConfig(lastPack)?.label ?? "Pack";
+function packDisplayForCheckout(lastPack: string, locale: AppLocale): string {
+  if (lastPack === "free") return getGuiaPacksUiMessages(locale).freeProductName;
+  if (lastPack in TOKEN_PACKS) {
+    return getTokenPackLabel(lastPack as TokenPackMarketingId, locale);
+  }
+  return TOKEN_PACKS[lastPack as PackId]?.label ?? lastPack;
 }
 
 async function getAccessToken(): Promise<string | null> {
@@ -50,7 +61,11 @@ function hasPurchasedTokens(lastPack: string, tokensAvailable: number): boolean 
 
 export default function CheckoutSuccessPage() {
   const router = useRouter();
+  const locale = useAppLocale();
+  const ui = useMemo(() => getCheckoutSuccessUiMessages(locale), [locale]);
   const ranRef = useRef(false);
+  const localeRef = useRef(locale);
+  localeRef.current = locale;
   const [phase, setPhase] = useState<Phase>("processing");
   const [paidTierLabel, setPaidTierLabel] = useState<string>("");
 
@@ -90,7 +105,7 @@ export default function CheckoutSuccessPage() {
         return;
       }
       if (me.ok && hasPurchasedTokens(me.lastPack, me.tokensAvailable)) {
-        setPaidTierLabel(packWelcomeLabel(me.lastPack));
+        setPaidTierLabel(packDisplayForCheckout(me.lastPack, localeRef.current));
         setPhase("success");
         return;
       }
@@ -109,7 +124,7 @@ export default function CheckoutSuccessPage() {
           return;
         }
         if (me.ok && hasPurchasedTokens(me.lastPack, me.tokensAvailable)) {
-          setPaidTierLabel(packWelcomeLabel(me.lastPack));
+          setPaidTierLabel(packDisplayForCheckout(me.lastPack, localeRef.current));
           setPhase("success");
           return;
         }
@@ -124,39 +139,37 @@ export default function CheckoutSuccessPage() {
       <div className="checkout-success-card">
         {phase === "session-wait" ? (
           <>
-            <h1 className="checkout-success-title">Redirigiendo…</h1>
+            <h1 className="checkout-success-title">{ui.sessionWaitTitle}</h1>
             <div className="checkout-success-spinner" aria-hidden />
-            <p className="checkout-success-sub">Estamos recuperando tu sesión.</p>
+            <p className="checkout-success-sub">{ui.sessionWaitSub}</p>
           </>
         ) : phase === "processing" ? (
           <>
-            <h1 className="checkout-success-title">Procesando tu compra de tokens…</h1>
+            <h1 className="checkout-success-title">{ui.processingTitle}</h1>
             <div className="checkout-success-spinner" aria-hidden />
           </>
         ) : phase === "success" ? (
           <>
-            <h1 className="checkout-success-title">¡Bienvenido a {paidTierLabel}!</h1>
-            <p className="checkout-success-sub">Tus consultas están listas.</p>
+            <h1 className="checkout-success-title">{formatCheckoutSuccessTitle(ui, paidTierLabel)}</h1>
+            <p className="checkout-success-sub">{ui.successSub}</p>
             <button
               type="button"
               className="composer-reading-pill is-active checkout-success-cta"
               onClick={() => router.replace("/")}
             >
-              Ir al oráculo
+              {ui.ctaOracle}
             </button>
           </>
         ) : phase === "pending" ? (
           <>
-            <h1 className="checkout-success-title">Tu pago está siendo procesado.</h1>
-            <p className="checkout-success-sub">
-              En unos minutos verás tus tokens acreditados. Puedes seguir usando la app.
-            </p>
+            <h1 className="checkout-success-title">{ui.pendingTitle}</h1>
+            <p className="checkout-success-sub">{ui.pendingSub}</p>
             <button
               type="button"
               className="composer-reading-pill is-active checkout-success-cta"
               onClick={() => router.replace("/")}
             >
-              Ir al oráculo
+              {ui.ctaOracle}
             </button>
           </>
         ) : null}

@@ -1,6 +1,11 @@
 "use client";
 
-import { SUPPORTED_LOCALES, UI_LOCALE_STORAGE_KEY, type AppLocale } from "@iching-oracle/i18n";
+import {
+  htmlLangFromAppLocale,
+  SUPPORTED_LOCALES,
+  UI_LOCALE_STORAGE_KEY,
+  type AppLocale,
+} from "@iching-oracle/i18n";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import { SESSION_PRESENT_COOKIE, UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 import { useEffect } from "react";
@@ -15,14 +20,31 @@ function setSessionPresentCookie(on: boolean) {
   }
 }
 
-function syncUiLocaleCookieFromStorage() {
+function readUiLocaleFromStorage(): AppLocale | null {
   try {
     const raw = localStorage.getItem(UI_LOCALE_STORAGE_KEY);
     if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
-      document.cookie = `${UI_LOCALE_COOKIE}=${encodeURIComponent(raw)}; path=/; max-age=${ONE_YEAR}; samesite=lax`;
+      return raw as AppLocale;
     }
   } catch {
     /* private mode */
+  }
+  return null;
+}
+
+function applyDocumentLang(locale: AppLocale) {
+  document.documentElement.lang = htmlLangFromAppLocale(locale);
+}
+
+function syncUiLocaleCookieFromStorage() {
+  const loc = readUiLocaleFromStorage();
+  if (loc) {
+    try {
+      document.cookie = `${UI_LOCALE_COOKIE}=${encodeURIComponent(loc)}; path=/; max-age=${ONE_YEAR}; samesite=lax`;
+    } catch {
+      /* */
+    }
+    applyDocumentLang(loc);
   }
 }
 
@@ -65,8 +87,12 @@ export default function SessionDocLocaleBridge() {
       const loc = detail?.locale;
       if (loc && (SUPPORTED_LOCALES as readonly string[]).includes(loc)) {
         applyLocaleCookie(loc as AppLocale);
+        applyDocumentLang(loc as AppLocale);
       }
     }
+
+    const initial = readUiLocaleFromStorage();
+    if (initial) applyDocumentLang(initial);
 
     window.addEventListener("iching:locale-changed", onLocaleSynced);
 

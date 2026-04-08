@@ -3,14 +3,17 @@ import {
   formatGuiaFreeLine,
   formatGuiaPackPrice,
   getDocNavUiMessages,
+  getFreeTierMarketing,
   getGuiaPacksUiMessages,
   getGuiaPageUiMessages,
+  getPackMarketingLine,
   getPricingUiMessages,
   getQuickstartPageUiMessages,
-  packMarketingLocale,
+  getTokenPackLabel,
 } from "@iching-oracle/i18n";
+import type { TokenPackMarketingId } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
-import { FREE_TIER_MARKETING, FREE_TOKENS, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
+import { FREE_TOKENS, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
 
 export default async function GuiaRapidaPage() {
   const locale = await resolveDocLocale();
@@ -19,7 +22,6 @@ export default async function GuiaRapidaPage() {
   const q = getQuickstartPageUiMessages(locale);
   const packsUi = getGuiaPacksUiMessages(locale);
   const tokensWord = getPricingUiMessages(locale).tokensWord;
-  const mkt = packMarketingLocale(locale);
 
   return (
     <div className="oracle-shell doc-page">
@@ -115,11 +117,11 @@ export default async function GuiaRapidaPage() {
             <strong>{packsUi.freeProductName}:</strong> {formatGuiaFreeLine(packsUi, FREE_TOKENS)}
           </li>
           <li>
-            <strong>{TOKEN_PACKS.tokens_seeker_20.label}:</strong>{" "}
+            <strong>{getTokenPackLabel("tokens_seeker_20", locale)}:</strong>{" "}
             {formatGuiaPackPrice(packsUi, TOKEN_PACKS.tokens_seeker_20.price, TOKEN_PACKS.tokens_seeker_20.tokens, tokensWord)}
           </li>
           <li>
-            <strong>{TOKEN_PACKS.tokens_practitioner_40.label}:</strong>{" "}
+            <strong>{getTokenPackLabel("tokens_practitioner_40", locale)}:</strong>{" "}
             {formatGuiaPackPrice(
               packsUi,
               TOKEN_PACKS.tokens_practitioner_40.price,
@@ -128,7 +130,7 @@ export default async function GuiaRapidaPage() {
             )}
           </li>
           <li>
-            <strong>{TOKEN_PACKS.tokens_master_100.label}:</strong>{" "}
+            <strong>{getTokenPackLabel("tokens_master_100", locale)}:</strong>{" "}
             {formatGuiaPackPrice(packsUi, TOKEN_PACKS.tokens_master_100.price, TOKEN_PACKS.tokens_master_100.tokens, tokensWord)}
           </li>
         </ul>
@@ -136,11 +138,12 @@ export default async function GuiaRapidaPage() {
         <p>{packsUi.perPlanDetailHeading}</p>
         <ul>
           <li>
-            <strong>{packsUi.freeTierLabel}</strong> {FREE_TIER_MARKETING[mkt]}
+            <strong>{packsUi.freeTierLabel}</strong> {getFreeTierMarketing(locale)}
           </li>
           {PACK_IDS_ORDERED.map((id) => (
             <li key={id}>
-              <strong>{TOKEN_PACKS[id].label}:</strong> {TOKEN_PACKS[id].marketingDetail[mkt]}
+              <strong>{getTokenPackLabel(id as TokenPackMarketingId, locale)}:</strong>{" "}
+              {getPackMarketingLine(id as TokenPackMarketingId, locale)}
             </li>
           ))}
         </ul>

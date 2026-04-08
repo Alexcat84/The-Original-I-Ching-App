@@ -1,10 +1,12 @@
 "use client";
 
-import { UI_LOCALE_STORAGE_KEY } from "@iching-oracle/i18n";
+import { getCookieConsentUiMessages } from "@iching-oracle/i18n";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Link from "next/link";
+import DocumentLangSync from "@/components/DocumentLangSync";
 import SessionDocLocaleBridge from "@/components/SessionDocLocaleBridge";
+import { useAppLocale } from "@/lib/use-app-locale";
 import {
   COOKIE_CONSENT_STORAGE_KEY,
   type CookieConsentValue,
@@ -31,16 +33,8 @@ export function useCookieConsent(): CookieConsentContextValue | null {
 }
 
 function CookieConsentBanner({ onChoice }: { onChoice: (v: CookieConsentValue) => void }) {
-  const [isSpanish, setIsSpanish] = useState(false);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(UI_LOCALE_STORAGE_KEY);
-      setIsSpanish(raw === "es");
-    } catch {
-      setIsSpanish(false);
-    }
-  }, []);
+  const locale = useAppLocale();
+  const c = getCookieConsentUiMessages(locale);
 
   return (
     <div
@@ -52,19 +46,9 @@ function CookieConsentBanner({ onChoice }: { onChoice: (v: CookieConsentValue) =
     >
       <div className="cookie-consent-inner">
         <p id="cookie-consent-title" className="cookie-consent-text">
-          {isSpanish ? (
-            <>
-              Usamos cookies necesarias para la sesión y el idioma en las páginas legales; si aceptas, también
-              analítica para mejorar el servicio. Más detalle en{" "}
-              <Link href="/privacy">privacidad</Link>.
-            </>
-          ) : (
-            <>
-              We use necessary cookies for session and language on legal pages; if you accept, we also use
-              analytics to improve the service. See{" "}
-              <Link href="/privacy">privacy</Link>.
-            </>
-          )}
+          {c.bannerIntroBeforePrivacy}
+          <Link href="/privacy">{c.bannerPrivacyLink}</Link>
+          {c.bannerIntroAfterPrivacy}
         </p>
         <div className="cookie-consent-actions">
           <button
@@ -72,14 +56,14 @@ function CookieConsentBanner({ onChoice }: { onChoice: (v: CookieConsentValue) =
             className="cookie-consent-btn cookie-consent-btn--secondary"
             onClick={() => onChoice("essential")}
           >
-            {isSpanish ? "Solo necesarias" : "Necessary only"}
+            {c.necessaryOnly}
           </button>
           <button
             type="button"
             className="cookie-consent-btn cookie-consent-btn--primary"
             onClick={() => onChoice("all")}
           >
-            {isSpanish ? "Aceptar todas" : "Accept all"}
+            {c.acceptAll}
           </button>
         </div>
       </div>
@@ -114,6 +98,7 @@ export default function CookieConsentGate({ children }: { children: ReactNode })
 
   return (
     <CookieConsentContext.Provider value={{ consent, setConsent }}>
+      {hydrated ? <DocumentLangSync /> : null}
       {children}
       {hydrated && consent !== null ? <SessionDocLocaleBridge /> : null}
       {hydrated && consent === "all" ? (

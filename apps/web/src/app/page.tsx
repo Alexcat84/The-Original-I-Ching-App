@@ -2,10 +2,23 @@
 
 import { OracleShell } from "@iching-oracle/ui";
 import {
+  allConsultationInProgressTitles,
   commonStrings,
   DEFAULT_LOCALE,
+  formatChatLoadFailedStatus,
+  formatConsultFailedMessage,
+  formatHistoryLoadFailedStatus,
+  formatThreadDepthStatusLine,
+  formatTwoFactorSupportMailBody,
   getDocNavUiMessages,
+  getFreeTierMarketing,
+  getHomeChromeUiMessages,
+  getHomeSessionUiMessages,
+  getPackMarketingLine,
+  getPricingUiMessages,
   getTokenPanelUiMessages,
+  getTwoFactorUiMessages,
+  interpolate,
   SUPPORTED_LOCALES,
   UI_LOCALE_STORAGE_KEY,
   type AppLocale,
@@ -32,7 +45,7 @@ import {
   type BillingTier,
   type CreditsNoticeReason,
 } from "@/lib/credits-ui-copy";
-import { FREE_TIER_MARKETING, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
+import { PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
 import type { ChatSessionState } from "@/lib/chat-session-state";
 import { mergeHydratedWithLocalDrafts, pickPreferredSessionLocalId } from "@/lib/chat-session-selection";
 import { useChatSessionState } from "@/providers/chat-session-provider";
@@ -898,28 +911,6 @@ function createLocalSession(title = "Nueva sesión"): ChatSessionState<Consultat
   };
 }
 
-function threadDepthStatusLine(isSpanish: boolean, canDeepen: boolean, cap: number, position: number): string {
-  const safeCap = Math.max(1, cap);
-  if (safeCap <= 1) {
-    return canDeepen
-      ? isSpanish
-        ? "Una sola lectura por hilo."
-        : "Single reading per thread."
-      : isSpanish
-        ? "Sin profundización: una sola lectura por hilo. Para otro tema, abre una nueva sesión."
-        : "No follow-ups in this thread: one reading only. For a new topic, start a new session.";
-  }
-  if (canDeepen) {
-    const remaining = safeCap - position;
-    return isSpanish
-      ? `Puedes añadir hasta ${remaining} lectura(s) más en este hilo.`
-      : `You can add up to ${remaining} more reading(s) in this thread.`;
-  }
-  return isSpanish
-    ? "Has alcanzado el límite de lecturas en este hilo."
-    : "You reached the reading limit for this thread.";
-}
-
 function InterpretationBody({
   text,
   reveal,
@@ -1031,20 +1022,23 @@ export default function HomePage() {
   const [locale, setLocale] = useState<AppLocale>(DEFAULT_LOCALE);
   const ui = UI_COPY[locale];
   const t = commonStrings[locale];
-  const isSpanish = locale === "es";
   const tokenPanel = useMemo(() => getTokenPanelUiMessages(locale), [locale]);
   const docNav = useMemo(() => getDocNavUiMessages(locale), [locale]);
+  const chrome = useMemo(() => getHomeChromeUiMessages(locale), [locale]);
+  const sessionUi = useMemo(() => getHomeSessionUiMessages(locale), [locale]);
+  const tf = useMemo(() => getTwoFactorUiMessages(locale), [locale]);
+  const pricingUi = useMemo(() => getPricingUiMessages(locale), [locale]);
   const runtimeText = RUNTIME_TEXT[locale];
   const drawerText = DRAWER_TEXT[locale];
-  const exportPdfLabel = isSpanish ? "Exportar chat PDF" : "Export chat PDF";
-  const downloadImageLabel = isSpanish ? "Descargar imagen" : "Download image";
-  const openImageLabel = isSpanish ? "Abrir imagen en tamaño completo" : "Open full-size image";
-  const symbolicImageAlt = isSpanish ? "Representación simbólica del trazado" : "Symbolic reading image";
-  const inProgressTitle = locale === "es" ? "Consulta en progreso" : "Consultation in progress";
+  const exportPdfLabel = chrome.exportChatPdf;
+  const downloadImageLabel = chrome.downloadImage;
+  const openImageLabel = chrome.openFullImage;
+  const symbolicImageAlt = chrome.symbolicImageAlt;
+  const inProgressTitle = chrome.consultationInProgress;
   const knownNewSessionTitles = useMemo(() => {
     return new Set<string>(SUPPORTED_LOCALES.map((code) => UI_COPY[code].sessionNew));
   }, []);
-  const knownInProgressTitles = useMemo(() => new Set<string>(["Consulta en progreso", "Consultation in progress"]), []);
+  const knownInProgressTitles = useMemo(() => new Set<string>(allConsultationInProgressTitles()), []);
   const [tier, setTier] = useState<Tier>("free");
   const [tierReady, setTierReady] = useState(false);
   /** Per-thread reading cap from `/api/account/me` (`session_limit`, from pack / tier). */
@@ -1361,11 +1355,7 @@ export default function HomePage() {
   const threadDepthCap = planThreadLimit;
   const threadDepthCanDeepen = Boolean(result && result.sessionPosition < planThreadLimit);
   const threadLimitReached = activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
-  const tierDisplayLabel = tierReady
-    ? tierLabelForDisplay(tier)
-    : isSpanish
-      ? "cargando plan"
-      : "loading plan";
+  const tierDisplayLabel = tierReady ? tierLabelForDisplay(tier) : chrome.loadingPlan;
   const tierDisplayNode = tierReady ? (
     tierLabelForDisplay(tier)
   ) : (
@@ -1767,27 +1757,17 @@ export default function HomePage() {
         if (!res.ok) {
           const err = parseApiErrorPayload(await res.text());
           if (res.status === 401) {
-            const authError = isSpanish
-              ? "Tu sesión expiró al cargar este chat. Inicia sesión de nuevo."
-              : "Your session expired while loading this chat. Please sign in again.";
+            const authError = sessionUi.chatLoadSessionExpired;
             setHistoryLoadError(authError);
             setError(authError);
             void signOut();
             return;
           }
           if (res.status === 404 || err?.code === "SESSION_NOT_FOUND") {
-            setHistoryLoadError(
-              isSpanish
-                ? "Este chat ya no existe o fue eliminado."
-                : "This chat no longer exists or was deleted.",
-            );
+            setHistoryLoadError(sessionUi.chatNoLongerExists);
             return;
           }
-          setHistoryLoadError(
-            isSpanish
-              ? `No se pudo cargar este chat (${res.status}).`
-              : `Could not load this chat (${res.status}).`,
-          );
+          setHistoryLoadError(formatChatLoadFailedStatus(sessionUi, res.status));
           return;
         }
         const payload = (await res.json()) as AccountChatSessionResponse;
@@ -1806,7 +1786,7 @@ export default function HomePage() {
                 !knownNewSessionTitles.has(payload.session.title) &&
                 !knownInProgressTitles.has(payload.session.title)
                   ? payload.session.title
-                  : (thread[0]?.question.slice(0, 60) ?? (isSpanish ? "Consulta" : "Consultation")),
+                  : (thread[0]?.question.slice(0, 60) ?? sessionUi.defaultSessionTitle),
               sessionId: payload.session.sessionId,
               publicSessionId: payload.session.publicId,
               threadMaxDepth: planCap,
@@ -1819,27 +1799,19 @@ export default function HomePage() {
         );
         setHistoryLoadError(null);
       } catch {
-        setHistoryLoadError(
-          isSpanish
-            ? "Error de red al cargar el chat. Revisa tu conexión e inténtalo de nuevo."
-            : "Network error while loading chat. Check your connection and try again.",
-        );
+        setHistoryLoadError(sessionUi.chatLoadNetworkError);
       } finally {
         setHistoryLoading(false);
         setLoadingSessionLocalId((current) => (current === localId ? null : current));
       }
     },
-    [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish, accountSessionLimit, signOut],
+    [accessToken, knownInProgressTitles, knownNewSessionTitles, sessionUi, accountSessionLimit, signOut],
   );
   const removeSession = useCallback(
     async (session: ChatSessionState<ConsultationItem>) => {
       if (!accessToken || !session.sessionId) return;
       if (pendingDeletedSessionLocalIds.includes(session.localId)) return;
-      const ok = window.confirm(
-        isSpanish
-          ? "¿Eliminar esta conversación de forma permanente?"
-          : "Delete this conversation permanently?",
-      );
+      const ok = window.confirm(sessionUi.deleteConfirm);
       if (!ok) return;
       setPendingDeletedSessionLocalIds((prev) => (prev.includes(session.localId) ? prev : [...prev, session.localId]));
       try {
@@ -1849,7 +1821,7 @@ export default function HomePage() {
         });
         if (!res.ok) {
           setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
-          setError(isSpanish ? "No se pudo eliminar la conversación." : "Could not delete conversation.");
+          setError(sessionUi.couldNotDeleteConversation);
           return;
         }
         setSessions((prev) => {
@@ -1860,12 +1832,12 @@ export default function HomePage() {
         });
       } catch {
         setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
-        setError(isSpanish ? "No se pudo eliminar la conversación." : "Could not delete conversation.");
+        setError(sessionUi.couldNotDeleteConversation);
         return;
       }
       setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
     },
-    [accessToken, isSpanish, pendingDeletedSessionLocalIds],
+    [accessToken, sessionUi, pendingDeletedSessionLocalIds],
   );
 
   useEffect(() => {
@@ -2059,11 +2031,7 @@ export default function HomePage() {
       const idleMs = Date.now() - readLastActivity();
       if (idleMs < SESSION_IDLE_TIMEOUT_MS) return;
       idleSignOutRef.current = true;
-      setError(
-        isSpanish
-          ? "Sesión cerrada por inactividad. Inicia sesión para continuar."
-          : "Session signed out due to inactivity. Sign in to continue.",
-      );
+      setError(sessionUi.idleSignedOut);
       void signOut();
     };
     const registerActivity = () => {
@@ -2100,7 +2068,7 @@ export default function HomePage() {
         window.removeEventListener(eventName, registerActivity);
       }
     };
-  }, [accessToken, authUserId, isSpanish, signOut]);
+  }, [accessToken, authUserId, sessionUi, signOut]);
 
   useEffect(() => {
     if (sessionsHydrated) return;
@@ -2163,25 +2131,19 @@ export default function HomePage() {
         if (!res.ok) {
           const err = parseApiErrorPayload(await res.text());
           if (err?.code === "CHAT_PERSISTENCE_NOT_CONFIGURED") {
-            const msg = isSpanish
-              ? "No se puede cargar el historial: falta configurar SUPABASE_SERVICE_ROLE_KEY en el servidor."
-              : "Could not load chat history: SUPABASE_SERVICE_ROLE_KEY is missing on the server.";
+            const msg = sessionUi.historySupabaseMissing;
             setError(msg);
             setHistoryLoadError(msg);
             return;
           }
           if (res.status === 401) {
-            const msg = isSpanish
-              ? "Tu sesión expiró al cargar el historial. Inicia sesión de nuevo."
-              : "Your session expired while loading history. Please sign in again.";
+            const msg = sessionUi.historySessionExpired;
             setError(msg);
             setHistoryLoadError(msg);
             void signOut();
             return;
           }
-          const msg = isSpanish
-            ? `No se pudo cargar el historial (${res.status}).`
-            : `Could not load chat history (${res.status}).`;
+          const msg = formatHistoryLoadFailedStatus(sessionUi, res.status);
           setError(msg);
           setHistoryLoadError(msg);
           return;
@@ -2195,7 +2157,7 @@ export default function HomePage() {
               title:
                 entry.session.title && !knownNewSessionTitles.has(entry.session.title) && !knownInProgressTitles.has(entry.session.title)
                   ? entry.session.title
-                  : (entry.firstQuestion?.trim().slice(0, 80) || (isSpanish ? "Consulta" : "Consultation")),
+                  : (entry.firstQuestion?.trim().slice(0, 80) || sessionUi.defaultSessionTitle),
               sessionId: entry.session.sessionId,
               publicSessionId: entry.session.publicId,
               thread: [],
@@ -2258,11 +2220,7 @@ export default function HomePage() {
         }
         setHistoryLoadError(null);
       } catch {
-        setHistoryLoadError(
-          isSpanish
-            ? "Error de red al cargar el historial. Revisa tu conexión e inténtalo de nuevo."
-            : "Network error while loading history. Check your connection and try again.",
-        );
+        setHistoryLoadError(sessionUi.historyNetworkError);
       } finally {
         if (!cancelled) {
           setHistoryLoading(false);
@@ -2278,7 +2236,7 @@ export default function HomePage() {
     sessionsHydrated,
     knownInProgressTitles,
     knownNewSessionTitles,
-    isSpanish,
+    sessionUi,
     loadSessionThread,
     summaryCacheKey,
     chatStateCacheKey,
@@ -2288,7 +2246,7 @@ export default function HomePage() {
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
-      setTwoFactorError("Inicia sesión para configurar la verificación en dos pasos.");
+      setTwoFactorError(tf.signInFor2fa);
       return;
     }
     setTwoFactorBusy(true);
@@ -2308,14 +2266,14 @@ export default function HomePage() {
       };
       if (!res.ok || !data.qrDataUrl) {
         if (data.code === "TWO_FACTOR_ENCRYPTION_KEY_MISSING") {
-          setTwoFactorError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
+          setTwoFactorError(tf.enrollEncryptionKeyMissing);
           return;
         }
         if (data.code === "AUTH_PROVIDER_NOT_CONFIGURED") {
-          setTwoFactorError("2FA no disponible: falta configuración de Supabase en servidor.");
+          setTwoFactorError(tf.enrollAuthProviderMissing);
           return;
         }
-        setTwoFactorError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
+        setTwoFactorError(tf.enrollTryLater);
         return;
       }
       setTwoFactorQrDataUrl(data.qrDataUrl);
@@ -2323,7 +2281,7 @@ export default function HomePage() {
       setTwoFactorRecoveryCodes([]);
       setTwoFactorRecoveryAck(false);
     } catch {
-      setTwoFactorError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
+      setTwoFactorError(tf.enrollTryLater);
     } finally {
       setTwoFactorBusy(false);
     }
@@ -2346,18 +2304,18 @@ export default function HomePage() {
       const data = (await res.json()) as { recoveryCodes?: string[]; error?: string; code?: string };
       if (!res.ok || !Array.isArray(data.recoveryCodes)) {
         if (data.code === "TWO_FACTOR_NOT_ENROLLED") {
-          setTwoFactorError("Primero activa 2FA con Authenticator para generar el QR.");
+          setTwoFactorError(tf.confirmNotEnrolled);
           return;
         }
         if (data.code === "TWO_FACTOR_ENCRYPTION_KEY_MISSING") {
-          setTwoFactorError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
+          setTwoFactorError(tf.confirmEncryptionKeyMissing);
           return;
         }
         if (data.code === "TWO_FACTOR_SECRET_DECRYPT_FAILED") {
-          setTwoFactorError("No se pudo desencriptar el secreto 2FA en servidor. Reconfigura 2FA.");
+          setTwoFactorError(tf.confirmDecryptFailed);
           return;
         }
-        setTwoFactorError("Código 2FA inválido o expirado. Revisa tu app Authenticator e inténtalo de nuevo.");
+        setTwoFactorError(tf.confirmTotpInvalid);
         return;
       }
       if (authUserId) {
@@ -2371,13 +2329,9 @@ export default function HomePage() {
       setTwoFactorRecoveryCodes(data.recoveryCodes);
       setTwoFactorCode("");
       setTwoFactorRecoveryAck(false);
-      setTwoFactorInfo(
-        isSpanish
-          ? "2FA activado. Guarda estos códigos de recuperación antes de cerrar."
-          : "2FA enabled. Save these recovery codes before closing.",
-      );
+      setTwoFactorInfo(tf.infoTwoFaEnabledSaveCodes);
     } catch {
-      setTwoFactorError("No se pudo verificar 2FA ahora. Inténtalo de nuevo.");
+      setTwoFactorError(tf.confirmTryLater);
     } finally {
       setTwoFactorBusy(false);
     }
@@ -2385,7 +2339,7 @@ export default function HomePage() {
 
   async function sendEmailTwoFactorCode() {
     if (!accessToken) {
-      setTwoFactorError("Inicia sesión para configurar la verificación en dos pasos.");
+      setTwoFactorError(tf.signInFor2fa);
       return;
     }
     setTwoFactorBusy(true);
@@ -2401,21 +2355,15 @@ export default function HomePage() {
       const data = (await res.json().catch(() => null)) as { ok?: boolean; code?: string; message?: string } | null;
       if (!res.ok || !data?.ok) {
         if (data?.code === "AUTH_REQUIRED") {
-          setTwoFactorError(isSpanish ? "Tu sesión expiró. Inicia sesión de nuevo." : "Your session expired. Please sign in again.");
+          setTwoFactorError(tf.sendSessionExpired);
           return;
         }
         if (data?.code === "TWO_FACTOR_LOCKED") {
-          setTwoFactorError(
-            isSpanish
-              ? "2FA bloqueado temporalmente por intentos fallidos. Espera 15 minutos e intenta de nuevo."
-              : "2FA is temporarily locked after failed attempts. Wait 15 minutes and try again.",
-          );
+          setTwoFactorError(tf.sendLocked);
           return;
         }
         if (data?.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
-          setTwoFactorError(
-            "2FA por email no está habilitado en servidor. Revisa RESEND_API_KEY, TWO_FACTOR_EMAIL_FROM y TWO_FACTOR_EMAIL_CODE_SECRET.",
-          );
+          setTwoFactorError(tf.sendEmailNotConfiguredServer);
           return;
         }
         if (data?.code === "TWO_FACTOR_EMAIL_DELIVERY_FAILED") {
@@ -2425,22 +2373,18 @@ export default function HomePage() {
               : null;
           setTwoFactorError(
             deliveryMessage
-              ? `No se pudo enviar el código por email: ${deliveryMessage}`
-              : "No se pudo enviar el código por email. Verifica que TWO_FACTOR_EMAIL_FROM esté validado en Resend y que la API key sea correcta.",
+              ? interpolate(tf.emailDeliveryFailedReason, { reason: deliveryMessage })
+              : tf.emailDeliveryFailedResendHint,
           );
           return;
         }
-        setTwoFactorError("No se pudo enviar el código por email. Inténtalo de nuevo.");
+        setTwoFactorError(tf.sendTryLater);
         return;
       }
       setTwoFactorEmailSent(true);
-      setTwoFactorInfo(
-        isSpanish
-          ? "Código enviado por email. Revisa bandeja principal y spam."
-          : "Code sent by email. Check inbox and spam folder.",
-      );
+      setTwoFactorInfo(tf.infoCodeSent);
     } catch {
-      setTwoFactorError("No se pudo enviar el código por email. Inténtalo de nuevo.");
+      setTwoFactorError(tf.sendTryLater);
     } finally {
       setTwoFactorBusy(false);
     }
@@ -2463,14 +2407,14 @@ export default function HomePage() {
       const data = (await res.json()) as { recoveryCodes?: string[]; code?: string };
       if (!res.ok || !Array.isArray(data.recoveryCodes)) {
         if (data.code === "TWO_FACTOR_EMAIL_CODE_EXPIRED") {
-          setTwoFactorError("El código por email expiró. Solicita uno nuevo.");
+          setTwoFactorError(tf.verifyEmailExpired);
           return;
         }
         if (data.code === "TWO_FACTOR_EMAIL_CODE_MISSING") {
-          setTwoFactorError("Primero solicita el código por email.");
+          setTwoFactorError(tf.verifyEmailRequestFirst);
           return;
         }
-        setTwoFactorError("Código por email inválido. Revisa tu bandeja e inténtalo de nuevo.");
+        setTwoFactorError(tf.verifyEmailInvalid);
         return;
       }
       if (authUserId) {
@@ -2485,13 +2429,9 @@ export default function HomePage() {
       setTwoFactorEmailCode("");
       setTwoFactorEmailSent(false);
       setTwoFactorRecoveryAck(false);
-      setTwoFactorInfo(
-        isSpanish
-          ? "2FA activado. Guarda estos códigos de recuperación antes de cerrar."
-          : "2FA enabled. Save these recovery codes before closing.",
-      );
+      setTwoFactorInfo(tf.infoTwoFaEnabledSaveCodes);
     } catch {
-      setTwoFactorError("No se pudo verificar el código por email. Inténtalo de nuevo.");
+      setTwoFactorError(tf.verifyEmailTryLater);
     } finally {
       setTwoFactorBusy(false);
     }
@@ -2508,7 +2448,7 @@ export default function HomePage() {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (!res.ok) {
-        setTwoFactorError(isSpanish ? "No se pudo desactivar 2FA." : "Could not disable 2FA.");
+        setTwoFactorError(tf.disableFailed);
         return;
       }
       setTwoFactorEnabled(false);
@@ -2524,9 +2464,9 @@ export default function HomePage() {
       }
       setSecondFactorVerified(false);
       setTwoFactorModalOpen(false);
-      setTwoFactorInfo(isSpanish ? "2FA desactivado." : "2FA disabled.");
+      setTwoFactorInfo(tf.disabledOk);
     } catch {
-      setTwoFactorError(isSpanish ? "No se pudo desactivar 2FA." : "Could not disable 2FA.");
+      setTwoFactorError(tf.disableFailed);
     } finally {
       setTwoFactorBusy(false);
     }
@@ -2546,15 +2486,7 @@ export default function HomePage() {
       payload.emailCode = twoFactorEmailCode.trim();
     }
     if (!payload.token && !payload.emailCode && !payload.recoveryCode) {
-      setTwoFactorError(
-        usingRecoveryCode
-          ? isSpanish
-            ? "Ingresa un código de recuperación válido."
-            : "Enter a valid recovery code."
-          : isSpanish
-            ? "Ingresa un código válido de 6 dígitos."
-            : "Enter a valid 6-digit code.",
-      );
+      setTwoFactorError(usingRecoveryCode ? tf.challengeNeedRecovery : tf.challengeNeedSixDigit);
       return;
     }
     setTwoFactorBusy(true);
@@ -2569,47 +2501,31 @@ export default function HomePage() {
       if (!res.ok) {
         const data = (await res.json().catch(() => null)) as { code?: string } | null;
         if (data?.code === "AUTH_REQUIRED") {
-          setTwoFactorError(isSpanish ? "Tu sesión expiró. Inicia sesión de nuevo." : "Your session expired. Please sign in again.");
+          setTwoFactorError(tf.challengeSessionExpired);
           return;
         }
         if (data?.code === "TWO_FACTOR_LOCKED") {
-          setTwoFactorError(
-            isSpanish
-              ? "2FA bloqueado temporalmente por intentos fallidos. Espera 15 minutos e intenta de nuevo."
-              : "2FA is temporarily locked after failed attempts. Wait 15 minutes and try again.",
-          );
+          setTwoFactorError(tf.challengeLocked);
           return;
         }
         if (data?.code === "TWO_FACTOR_EMAIL_CODE_MISSING") {
-          setTwoFactorError(isSpanish ? "Primero envía el código por email." : "Send an email code first.");
+          setTwoFactorError(tf.challengeEmailMissing);
           return;
         }
         if (data?.code === "TWO_FACTOR_EMAIL_CODE_EXPIRED") {
-          setTwoFactorError(isSpanish ? "El código por email expiró. Solicita uno nuevo." : "Email code expired. Request a new one.");
+          setTwoFactorError(tf.challengeEmailExpired);
           return;
         }
         if (data?.code === "TWO_FACTOR_NOT_ENROLLED") {
-          setTwoFactorError(
-            isSpanish
-              ? "Este método no está vinculado a tu cuenta."
-              : "This method is not linked to your account.",
-          );
+          setTwoFactorError(tf.challengeMethodNotLinked);
           return;
         }
         if (data?.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
-          setTwoFactorError(
-            isSpanish
-              ? "2FA por email no está configurado en servidor. Falta revisar Resend/variables."
-              : "Email 2FA is not configured on server. Check Resend/environment variables.",
-          );
+          setTwoFactorError(tf.challengeEmailServerMisconfig);
           return;
         }
         if (data?.code === "TWO_FACTOR_SECRET_DECRYPT_FAILED") {
-          setTwoFactorError(
-            isSpanish
-              ? "No se pudo desencriptar el secreto 2FA en servidor. Reconfigura 2FA o revisa TOTP_ENCRYPTION_KEY."
-              : "Could not decrypt the 2FA secret on server. Reconfigure 2FA or check TOTP_ENCRYPTION_KEY.",
-          );
+          setTwoFactorError(tf.challengeDecryptFailed);
           return;
         }
         if (data?.code === "TWO_FACTOR_INVALID_CODE") {
@@ -2617,15 +2533,11 @@ export default function HomePage() {
           setTwoFactorChallengeFailures(nextFailures);
           if (!usingRecoveryCode && nextFailures >= 2) {
             setTwoFactorRecoveryAssistMode("options");
-            setTwoFactorError(
-              isSpanish
-                ? "No pudimos validar el código. Puedes usar un código de recuperación o iniciar el proceso de soporte."
-                : "We could not validate the code. You can use a recovery code or start support recovery.",
-            );
+            setTwoFactorError(tf.challengeInvalidWithRecovery);
             return;
           }
         }
-        setTwoFactorError(isSpanish ? "Código 2FA inválido o expirado." : "Invalid or expired 2FA code.");
+        setTwoFactorError(tf.challengeInvalidCode);
         return;
       }
       if (authUserId) {
@@ -2641,7 +2553,7 @@ export default function HomePage() {
       setTwoFactorModalMode("manage");
       setTwoFactorChallengeMethod("totp");
     } catch {
-      setTwoFactorError(isSpanish ? "No se pudo verificar 2FA." : "Could not verify 2FA.");
+      setTwoFactorError(tf.challengeVerifyFailed);
     } finally {
       setTwoFactorBusy(false);
     }
@@ -2740,7 +2652,7 @@ export default function HomePage() {
       setTwoFactorError(null);
       setTwoFactorModalMode("challenge");
       setTwoFactorModalOpen(true);
-      setError(isSpanish ? "Verifica 2FA para continuar." : "Verify 2FA to continue.");
+      setError(tf.verify2faToContinue);
       return;
     }
     setLoading(true);
@@ -2979,22 +2891,17 @@ export default function HomePage() {
         }
         if (res.status === 403 && (data.error === "two_factor_required" || data.action === "setup_2fa")) {
           setConsultPanelOpen(true);
-          setError(
-            isSpanish
-              ? "Tu cuenta tiene 2FA obligatorio en este entorno. Actívalo en Opciones > Seguridad."
-              : "Your account requires 2FA in this environment. Enable it in Options > Security.",
-          );
+          setError(tf.twoFaRequiredByPolicy);
           return;
         }
-        const detail =
-          typeof data.message === "string" && data.message
-            ? ` ${data.message}`
-            : "";
-        setError(
-          data.error === "consult_failed"
-            ? `No se pudo completar la consulta.${detail || " Si persiste, revisa la configuración del servidor."}`
-            : (data.error ?? `Solicitud fallida (${res.status})`) + detail,
-        );
+        const serverMsg =
+          typeof data.message === "string" && data.message.trim() ? data.message.trim() : undefined;
+        const suffix = serverMsg ? ` ${serverMsg}` : "";
+        if (data.error === "consult_failed") {
+          setError(formatConsultFailedMessage(sessionUi, serverMsg));
+          return;
+        }
+        setError(`${data.error ?? interpolate(sessionUi.requestFailedStatus, { status: res.status })}${suffix}`);
         return;
       }
       await new Promise((r) => window.setTimeout(r, showRitualAnimation ? 900 : 0));
@@ -3300,8 +3207,8 @@ export default function HomePage() {
         {authReady && supabaseConfigError ? (
           <div className="auth-config-banner" role="alert">
             <span>
-              {isSpanish ? "Falta configuración del cliente:" : "Missing client configuration:"}{" "}
-              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> {isSpanish ? "y" : "and"}{" "}
+              {sessionUi.missingClientConfig}{" "}
+              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> {sessionUi.missingClientConfigAnd}{" "}
               <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
             </span>
           </div>
@@ -3484,7 +3391,7 @@ export default function HomePage() {
                         <p className="meta-line">
                           {runtimeText.medium}: {entry.oracleBones.medium === "turtle" ? runtimeText.turtle : runtimeText.ox}
                           {entry.oracleBones.ambiguousPasses > 0
-                            ? ` · ${isSpanish ? "Lecturas ambiguas previas" : "Previous ambiguous readings"}: ${entry.oracleBones.ambiguousPasses}`
+                            ? ` · ${chrome.ambiguousReadingsLabel}: ${entry.oracleBones.ambiguousPasses}`
                             : ""}
                         </p>
                         <p className="meta-line">
@@ -3735,11 +3642,7 @@ export default function HomePage() {
                           setCreditsNotice(null);
                           return;
                         }
-                        setError(
-                          isSpanish
-                            ? "No hay enlace de pago configurado o apunta solo a esta web. Revisa la URL de planes en el despliegue (debe ser el enlace completo de la tienda, no la página de inicio)."
-                            : "Payment link is missing or points at this site only. Check the plans URL in your deploy (it must be the full store link, not the homepage).",
-                        );
+                        setError(pricingUi.errorCheckout);
                       })();
                     }}
                   >
@@ -3761,7 +3664,7 @@ export default function HomePage() {
                     </button>
                   ) : null}
                   <button type="button" className="credits-notice-dismiss" onClick={() => setCreditsNotice(null)}>
-                    Cerrar
+                    {ui.drawerClose}
                   </button>
                 </div>
               </div>
@@ -3774,7 +3677,7 @@ export default function HomePage() {
             <button
               type="button"
               className="composer-backdrop"
-              aria-label="Cerrar panel de consulta"
+              aria-label={chrome.closeConsultBackdropAria}
               onClick={() => setConsultPanelOpen(false)}
             />
           ) : null}
@@ -3794,17 +3697,17 @@ export default function HomePage() {
                         type="button"
                         className="composer-panel-close"
                         onClick={() => setConsultPanelOpen(false)}
-                        aria-label="Cerrar panel de consulta"
+                        aria-label={chrome.closeConsultPanelAria}
                       >
-                        Cerrar
+                        {ui.drawerClose}
                       </button>
                     </div>
-                    <div className="composer-oracle-switch" role="group" aria-label="Tipo de consulta">
+                    <div className="composer-oracle-switch" role="group" aria-label={chrome.consultOracleTypeGroupAria}>
                       <div className="composer-oracle-switch-row">
                         <div
                           className="composer-switch-track composer-switch-track--visual"
                           role="tablist"
-                          aria-label="I Ching o huesos de oráculo"
+                          aria-label={chrome.oracleModeTablistAria}
                         >
                           <button
                             type="button"
@@ -3858,15 +3761,13 @@ export default function HomePage() {
                         <div
                           className="session-progress session-progress--thread-depth"
                           role="region"
-                          aria-label={isSpanish ? "Profundidad del hilo activo" : "Active thread depth"}
+                          aria-label={chrome.threadDepthRegionAria}
                         >
-                          <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
+                          <span>{chrome.threadDepthHeading}</span>
                           <p className="meta-line tier-hint-line">
-                            {isSpanish ? "Plan " : "Plan "}
+                            {ui.plan}{" "}
                             <strong>{tierDisplayNode}</strong>
-                            {isSpanish
-                              ? ` · este hilo admite hasta ${threadDepthCap} lectura(s) encadenada(s) (incluye la primera).`
-                              : ` · this thread allows up to ${threadDepthCap} chained reading(s) (including the first).`}
+                            {interpolate(chrome.threadDepthPlanSuffix, { cap: threadDepthCap })}
                           </p>
                           <div
                             className="session-progress-bar session-progress-bar--prominent"
@@ -3874,11 +3775,10 @@ export default function HomePage() {
                             aria-valuemin={0}
                             aria-valuemax={threadDepthCap}
                             aria-valuenow={result.sessionPosition}
-                            aria-label={
-                              isSpanish
-                                ? `Lectura ${result.sessionPosition} de ${threadDepthCap}`
-                                : `Reading ${result.sessionPosition} of ${threadDepthCap}`
-                            }
+                            aria-label={interpolate(chrome.threadDepthReadingProgressAria, {
+                              pos: result.sessionPosition,
+                              cap: threadDepthCap,
+                            })}
                           >
                             <div
                               className="session-progress-fill"
@@ -3888,8 +3788,8 @@ export default function HomePage() {
                             />
                           </div>
                           <small>
-                            {threadDepthStatusLine(
-                              isSpanish,
+                            {formatThreadDepthStatusLine(
+                              chrome,
                               threadDepthCanDeepen,
                               threadDepthCap,
                               result.sessionPosition,
@@ -3925,18 +3825,16 @@ export default function HomePage() {
                       ) : null}
                     </div>
                     <hr className="composer-panel-divider" aria-hidden />
-                    <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
-                      <span>{isSpanish ? "Seguridad (2FA opcional)" : "Security (optional 2FA)"}</span>
+                    <div className="session-progress" role="group" aria-label={chrome.securityGroupAria}>
+                      <span>{chrome.securityHeading}</span>
                       <p className="meta-line tier-hint-line tier-hint-line--emphasis">
-                        {isSpanish ? "Estado:" : "Status:"}{" "}
-                        <strong>{twoFactorEnabled ? (isSpanish ? "Activado" : "Enabled") : (isSpanish ? "Desactivado" : "Disabled")}</strong>
-                        {twoFactorMethod ? `${isSpanish ? " · método " : " · method "}${twoFactorMethod.toUpperCase()}` : ""}
+                        {chrome.statusLabel}{" "}
+                        <strong>
+                          {twoFactorEnabled ? chrome.enabled : chrome.disabled}
+                        </strong>
+                        {twoFactorMethod ? `${chrome.methodPrefix}${twoFactorMethod.toUpperCase()}` : ""}
                       </p>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish
-                          ? "Configura Authenticator y/o código por email."
-                          : "Configure Authenticator and/or email code."}
-                      </p>
+                      <p className="meta-line tier-hint-line">{chrome.securityConfigureHint}</p>
                       <div className="composer-panel-actions">
                         <button
                           type="button"
@@ -3959,7 +3857,7 @@ export default function HomePage() {
                           }}
                           disabled={twoFactorBusy || !accessToken}
                         >
-                          {isSpanish ? "Configurar 2FA" : "Configure 2FA"}
+                          {chrome.configure2fa}
                         </button>
                         {twoFactorEnabled ? (
                           <button
@@ -3968,18 +3866,16 @@ export default function HomePage() {
                             onClick={() => void disableTwoFactor()}
                             disabled={twoFactorBusy || !accessToken}
                           >
-                            {isSpanish ? "Desactivar 2FA" : "Disable 2FA"}
+                            {chrome.disable2fa}
                           </button>
                         ) : null}
                       </div>
                     </div>
-                    <div className="composer-doc-links" aria-label={isSpanish ? "Documentación y legal" : "Documentation and legal"}>
+                    <div className="composer-doc-links" aria-label={chrome.docLinksAria}>
                       <Link href="/guia#primeros-pasos">{docNav.userGuide}</Link>
-                      <Link href="/notes">
-                        {isSpanish ? "Notas y origen de los métodos (I Ching y Huesos)" : "Method notes and origins (I Ching and Bones)"}
-                      </Link>
-                      <Link href="/privacy">{isSpanish ? "Política de Privacidad" : "Privacy Policy"}</Link>
-                      <Link href="/terms">{isSpanish ? "Términos del Servicio" : "Terms of Service"}</Link>
+                      <Link href="/notes">{docNav.methodNotesLong}</Link>
+                      <Link href="/privacy">{docNav.privacyPolicy}</Link>
+                      <Link href="/terms">{docNav.termsOfService}</Link>
                     </div>
                   </section>
                 </div>
@@ -4013,20 +3909,14 @@ export default function HomePage() {
                   >
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
                       <strong style={{ color: "#d8edf5" }}>
-                        {twoFactorModalMode === "challenge"
-                          ? isSpanish
-                            ? "Verificación 2FA requerida"
-                            : "2FA verification required"
-                          : isSpanish
-                            ? "Configuración de seguridad 2FA"
-                            : "2FA security setup"}
+                        {twoFactorModalMode === "challenge" ? tf.challengeTitle : tf.manageTitle}
                       </strong>
                       {twoFactorModalMode === "manage" ? (
                         <button
                           type="button"
                           className="modal-close-x"
-                          aria-label={isSpanish ? "Cerrar ventana 2FA" : "Close 2FA dialog"}
-                          title={isSpanish ? "Cerrar" : "Close"}
+                          aria-label={tf.closeDialogAria}
+                          title={ui.drawerClose}
                           onClick={() => setTwoFactorModalOpen(false)}
                           disabled={twoFactorBusy || (twoFactorRecoveryCodes.length > 0 && !twoFactorRecoveryAck)}
                         >
@@ -4036,20 +3926,14 @@ export default function HomePage() {
                     </div>
                     <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
                       {twoFactorModalMode === "challenge"
-                        ? isSpanish
-                          ? `Para continuar en esta sesión, verifica tu cuenta con ${preferredTwoFactorMethod === "email" ? "código por email" : "Authenticator (TOTP)"}.`
-                          : `To continue in this session, verify your account with ${preferredTwoFactorMethod === "email" ? "email code" : "Authenticator (TOTP)"}.`
+                        ? preferredTwoFactorMethod === "email"
+                          ? tf.challengeIntroEmail
+                          : tf.challengeIntroTotp
                         : twoFactorSetupMethod === "menu"
-                          ? isSpanish
-                            ? "Elige un solo método para configurarlo paso a paso."
-                            : "Choose one method and configure it step by step."
+                          ? tf.setupMenuHint
                           : twoFactorSetupMethod === "totp"
-                            ? isSpanish
-                              ? "Solo Authenticator (TOTP). Usa «Elegir otro método» si prefieres el correo."
-                              : "Authenticator (TOTP) only. Use “Choose another method” if you prefer email."
-                            : isSpanish
-                              ? "Solo verificación por email. Usa «Elegir otro método» si prefieres Authenticator."
-                              : "Email verification only. Use “Choose another method” if you prefer Authenticator."}
+                            ? tf.setupTotpOnlyHint
+                            : tf.setupEmailOnlyHint}
                     </p>
                     {twoFactorError ? (
                       <p className="meta-line tier-hint-line tier-hint-line--error" style={{ marginTop: 6 }}>
@@ -4068,11 +3952,7 @@ export default function HomePage() {
                           className="composer-reading-pill is-active"
                           style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
                         >
-                          {preferredTwoFactorMethod === "email"
-                            ? isSpanish
-                              ? "Código por email"
-                              : "Email code"
-                            : "Authenticator (TOTP)"}
+                          {preferredTwoFactorMethod === "email" ? tf.badgeEmailCode : tf.badgeTotp}
                         </span>
                       ) : twoFactorSetupMethod === "menu" ? (
                         <>
@@ -4089,7 +3969,7 @@ export default function HomePage() {
                             }}
                             disabled={twoFactorBusy || !accessToken}
                           >
-                            {isSpanish ? "Authenticator (TOTP)" : "Authenticator (TOTP)"}
+                            {tf.authenticatorTotp}
                           </button>
                           <button
                             type="button"
@@ -4104,7 +3984,7 @@ export default function HomePage() {
                             }}
                             disabled={twoFactorBusy || !accessToken}
                           >
-                            {isSpanish ? "Código por email" : "Email code"}
+                            {tf.emailCode}
                           </button>
                           {twoFactorEnabled ? (
                             <button
@@ -4113,7 +3993,7 @@ export default function HomePage() {
                               onClick={() => void disableTwoFactor()}
                               disabled={twoFactorBusy}
                             >
-                              {isSpanish ? "Desactivar 2FA" : "Disable 2FA"}
+                              {chrome.disable2fa}
                             </button>
                           ) : null}
                         </>
@@ -4135,7 +4015,7 @@ export default function HomePage() {
                           disabled={twoFactorBusy}
                           style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.85rem" }}
                         >
-                          {isSpanish ? "← Elegir otro método" : "← Choose another method"}
+                          {tf.chooseAnotherMethod}
                         </button>
                       ) : null}
                     </div>
@@ -4148,7 +4028,7 @@ export default function HomePage() {
                           type="text"
                           value={twoFactorCode}
                           onChange={(e) => setTwoFactorCode(e.target.value)}
-                          placeholder={isSpanish ? "Código TOTP (6 dígitos)" : "TOTP code (6 digits)"}
+                          placeholder={tf.totpPlaceholderShort}
                           className="composer-input"
                           style={{ maxWidth: 220 }}
                         />
@@ -4159,24 +4039,14 @@ export default function HomePage() {
                     !twoFactorSetupOpen &&
                     twoFactorRecoveryCodes.length === 0 ? (
                       <div style={{ marginTop: 10 }}>
-                        <p className="meta-line tier-hint-line">
-                          {isSpanish
-                            ? "1) Pulsa «Generar QR»  2) Escanéalo con tu app Authenticator  3) Escribe el código de 6 dígitos."
-                            : "1) Tap \"Generate QR\"  2) Scan it with your Authenticator app  3) Enter the 6-digit code."}
-                        </p>
+                        <p className="meta-line tier-hint-line">{tf.totpSetupSteps}</p>
                         <button
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() => void startTwoFactorEnrollment()}
                           disabled={twoFactorBusy || !accessToken}
                         >
-                          {twoFactorBusy
-                            ? isSpanish
-                              ? "Preparando..."
-                              : "Preparing..."
-                            : isSpanish
-                              ? "Generar QR"
-                              : "Generate QR"}
+                          {twoFactorBusy ? tf.preparing : tf.generateQr}
                         </button>
                       </div>
                     ) : null}
@@ -4190,7 +4060,7 @@ export default function HomePage() {
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={twoFactorQrDataUrl}
-                          alt="Authenticator QR"
+                          alt={chrome.authenticatorQrAlt}
                           style={{ width: 160, height: 160, borderRadius: 8, background: "#fff" }}
                         />
                         <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
@@ -4198,7 +4068,7 @@ export default function HomePage() {
                             type="text"
                             value={twoFactorCode}
                             onChange={(e) => setTwoFactorCode(e.target.value)}
-                            placeholder={isSpanish ? "Código TOTP de 6 dígitos" : "6-digit TOTP code"}
+                            placeholder={tf.totpPlaceholderLong}
                             className="composer-input"
                             style={{ maxWidth: 220 }}
                           />
@@ -4208,7 +4078,7 @@ export default function HomePage() {
                             onClick={() => void confirmTwoFactorEnrollment()}
                             disabled={twoFactorBusy || twoFactorCode.trim().length < 6}
                           >
-                            {isSpanish ? "Verificar" : "Verify"}
+                            {tf.verify}
                           </button>
                         </div>
                       </div>
@@ -4218,9 +4088,7 @@ export default function HomePage() {
                     twoFactorChallengeMethod === "email" &&
                     !twoFactorEmailSent ? (
                       <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
-                        {isSpanish
-                          ? "Pulsa «Enviar código por email» y revisa tu bandeja (y spam). Luego introduce los 6 dígitos."
-                          : "Tap «Send email code» and check your inbox (and spam). Then enter the 6-digit code."}
+                        {tf.challengeEmailBeforeSend}
                       </p>
                     ) : null}
 
@@ -4229,24 +4097,14 @@ export default function HomePage() {
                     !twoFactorEmailSent &&
                     twoFactorRecoveryCodes.length === 0 ? (
                       <div style={{ marginTop: 10 }}>
-                        <p className="meta-line tier-hint-line">
-                          {isSpanish
-                            ? "Pulsa «Enviar código por email», revisa tu bandeja y escribe el código de 6 dígitos."
-                            : "Tap \"Send email code\", check your inbox, and enter the 6-digit code."}
-                        </p>
+                        <p className="meta-line tier-hint-line">{tf.sendEmailHintManage}</p>
                         <button
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() => void sendEmailTwoFactorCode()}
                           disabled={twoFactorBusy || !accessToken}
                         >
-                          {twoFactorBusy
-                            ? isSpanish
-                              ? "Enviando..."
-                              : "Sending..."
-                            : isSpanish
-                              ? "Enviar código por email"
-                              : "Send email code"}
+                          {twoFactorBusy ? tf.sending : tf.sendEmailCode}
                         </button>
                       </div>
                     ) : null}
@@ -4260,7 +4118,7 @@ export default function HomePage() {
                           type="text"
                           value={twoFactorEmailCode}
                           onChange={(e) => setTwoFactorEmailCode(e.target.value)}
-                          placeholder={isSpanish ? "Código email (6 dígitos)" : "Email code (6 digits)"}
+                          placeholder={tf.emailCodePlaceholder}
                           className="composer-input"
                           style={{ maxWidth: 220 }}
                         />
@@ -4271,7 +4129,7 @@ export default function HomePage() {
                             onClick={() => void verifyEmailTwoFactorCode()}
                             disabled={twoFactorBusy || twoFactorEmailCode.trim().length < 6}
                           >
-                            {isSpanish ? "Verificar email" : "Verify email"}
+                            {tf.verifyEmail}
                           </button>
                         ) : null}
                       </div>
@@ -4287,9 +4145,7 @@ export default function HomePage() {
                         }}
                       >
                         <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
-                          {isSpanish
-                            ? "¿No puedes verificarte? Usa tus códigos de recuperación o inicia recuperación por soporte."
-                            : "Can't verify? Use your recovery codes or start support recovery."}
+                          {tf.recoveryOptionsIntro}
                         </p>
                         <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap" }}>
                           <button
@@ -4302,7 +4158,7 @@ export default function HomePage() {
                             }}
                             disabled={twoFactorBusy}
                           >
-                            {isSpanish ? "Tengo mis códigos de recuperación" : "I have my recovery codes"}
+                            {tf.iHaveRecoveryCodes}
                           </button>
                           <button
                             type="button"
@@ -4311,7 +4167,7 @@ export default function HomePage() {
                             onClick={() => setTwoFactorRecoveryAssistMode("contact_support")}
                             disabled={twoFactorBusy}
                           >
-                            {isSpanish ? "No tengo mis códigos" : "I don't have my recovery codes"}
+                            {tf.iDontHaveRecoveryCodes}
                           </button>
                         </div>
                       </div>
@@ -4323,7 +4179,7 @@ export default function HomePage() {
                           type="text"
                           value={twoFactorRecoveryCode}
                           onChange={(e) => setTwoFactorRecoveryCode(e.target.value)}
-                          placeholder={isSpanish ? "Código de recuperación" : "Recovery code"}
+                          placeholder={tf.recoveryCodePlaceholder}
                           className="composer-input"
                           style={{ maxWidth: 320 }}
                         />
@@ -4340,22 +4196,18 @@ export default function HomePage() {
                         }}
                       >
                         <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
-                          {isSpanish
-                            ? "Para recuperar el acceso, escribe a soporte desde tu email registrado. Te enviaremos pasos para verificar titularidad y restaurar acceso."
-                            : "To recover access, email support from your registered email. We'll send ownership verification steps and restore access."}
+                          {tf.supportRecoveryBody}
                         </p>
                         <a
                           className="secondary-btn"
                           style={{ marginTop: 8 }}
                           href={`mailto:${twoFactorSupportEmail}?subject=${encodeURIComponent(
-                            isSpanish ? "Recuperación de acceso 2FA" : "2FA account recovery",
+                            tf.supportRecoverySubject,
                           )}&body=${encodeURIComponent(
-                            isSpanish
-                              ? `Hola soporte,%0A%0ANo tengo mis códigos de recuperación y necesito restaurar acceso a mi cuenta.%0AEmail de cuenta: ${authEmail ?? ""}%0A%0AGracias.`
-                              : `Hello support,%0A%0AI do not have my recovery codes and need to restore account access.%0AAccount email: ${authEmail ?? ""}%0A%0AThanks.`,
+                            formatTwoFactorSupportMailBody(tf, authEmail ?? ""),
                           )}`}
                         >
-                          {isSpanish ? "Contactar soporte por email" : "Contact support by email"}
+                          {tf.contactSupportEmail}
                         </a>
                       </div>
                     ) : null}
@@ -4363,9 +4215,7 @@ export default function HomePage() {
                     {twoFactorRecoveryCodes.length > 0 && twoFactorModalMode === "manage" ? (
                       <div style={{ marginTop: 10 }}>
                         <p className="meta-line tier-hint-line">
-                          {isSpanish
-                            ? "Códigos de recuperación (se muestran una sola vez). Guárdalos en un lugar seguro:"
-                            : "Recovery codes (shown only once). Save them in a safe place:"}{" "}
+                          {tf.recoveryCodesShownOnce}{" "}
                           <code>{twoFactorRecoveryCodes.join(" · ")}</code>
                         </p>
                         <label
@@ -4377,11 +4227,7 @@ export default function HomePage() {
                             checked={twoFactorRecoveryAck}
                             onChange={(e) => setTwoFactorRecoveryAck(e.target.checked)}
                           />
-                          <span>
-                            {isSpanish
-                              ? "He guardado mis códigos de recuperación y entiendo que no se volverán a mostrar."
-                              : "I saved my recovery codes and understand they will not be shown again."}
-                          </span>
+                          <span>{tf.recoveryAckCheckbox}</span>
                         </label>
                         <div style={{ marginTop: 10, display: "flex", justifyContent: "flex-end" }}>
                           <button
@@ -4393,12 +4239,10 @@ export default function HomePage() {
                               setTwoFactorModalOpen(false);
                               setTwoFactorRecoveryCodes([]);
                               setTwoFactorRecoveryAck(false);
-                              setTwoFactorInfo(
-                                isSpanish ? "2FA configurado correctamente." : "2FA configured successfully.",
-                              );
+                              setTwoFactorInfo(tf.modalAfterSaveCodes);
                             }}
                           >
-                            {isSpanish ? "Aceptar y cerrar" : "Accept and close"}
+                            {tf.acceptAndClose}
                           </button>
                         </div>
                       </div>
@@ -4414,13 +4258,7 @@ export default function HomePage() {
                             disabled={twoFactorBusy || !accessToken}
                             style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
                           >
-                            {twoFactorBusy
-                              ? isSpanish
-                                ? "Enviando..."
-                                : "Sending..."
-                              : isSpanish
-                                ? "Enviar código por email"
-                                : "Send email code"}
+                            {twoFactorBusy ? tf.sending : tf.sendEmailCode}
                           </button>
                         ) : null}
                         {twoFactorRecoveryAssistMode === "hidden" || twoFactorRecoveryAssistMode === "enter_code" ? (
@@ -4439,12 +4277,8 @@ export default function HomePage() {
                             style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
                           >
                             {twoFactorRecoveryAssistMode === "enter_code"
-                              ? isSpanish
-                                ? "Validar código de recuperación"
-                                : "Validate recovery code"
-                              : isSpanish
-                                ? "Continuar con verificación"
-                                : "Continue with verification"}
+                              ? tf.validateRecoveryCode
+                              : tf.continueWithVerification}
                           </button>
                         ) : null}
                       </div>
@@ -4462,7 +4296,7 @@ export default function HomePage() {
                             disabled={twoFactorBusy}
                             style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
                           >
-                            {isSpanish ? "¿No puedes verificarte?" : "Can't verify?"}
+                            {tf.cannotVerifyLink}
                           </button>
                         ) : null}
                         {twoFactorRecoveryAssistMode !== "hidden" ? (
@@ -4476,7 +4310,7 @@ export default function HomePage() {
                             }}
                             disabled={twoFactorBusy}
                           >
-                            {isSpanish ? "Volver a intentar con código" : "Try code again"}
+                            {tf.tryCodeAgain}
                           </button>
                         ) : null}
                         <button
@@ -4485,7 +4319,7 @@ export default function HomePage() {
                           onClick={() => void signOut()}
                           style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
                         >
-                          {isSpanish ? "Cerrar sesión" : "Sign out"}
+                          {ui.signOut}
                         </button>
                       </div>
                     ) : null}
@@ -4497,34 +4331,31 @@ export default function HomePage() {
                 <div role="dialog" aria-modal="true" className="token-center-backdrop">
                   <div className="token-center-card">
                     <div className="token-center-header">
-                      <strong className="token-center-title">{isSpanish ? "Centro de tokens" : "Token center"}</strong>
+                      <strong className="token-center-title">{tokenPanel.tokenCenter}</strong>
                       <button
                         type="button"
                         className="composer-panel-close"
-                        aria-label={isSpanish ? "Cerrar centro de tokens" : "Close token center"}
-                        title={isSpanish ? "Cerrar" : "Close"}
+                        aria-label={chrome.tokenCenterCloseAria}
+                        title={ui.drawerClose}
                         onClick={() => setTokenCenterOpen(false)}
                       >
-                        {isSpanish ? "Cerrar" : "Close"}
+                        {ui.drawerClose}
                       </button>
                     </div>
                     <p className="meta-line tier-hint-line token-center-subtitle">
-                      {isSpanish
-                        ? "Consulta tu saldo y abre la compra de tokens."
-                        : "Check your balance and open token purchase."}
+                      {chrome.tokenCenterSubtitle}
                     </p>
 
                     <details className="token-center-pack-details" style={{ marginTop: 10 }}>
                       <summary className="meta-line tier-hint-line" style={{ cursor: "pointer" }}>
-                        {isSpanish ? "Descripción por plan / pack" : "Description by plan / pack"}
+                        {chrome.tokenCenterPackDetailsSummary}
                       </summary>
                       <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
                         <p
                           className="meta-line tier-hint-line token-center-message"
                           style={{ margin: 0 }}
                         >
-                          <strong>{isSpanish ? "Gratuito:" : "Free:"}</strong>{" "}
-                          {isSpanish ? FREE_TIER_MARKETING.es : FREE_TIER_MARKETING.en}
+                          <strong>{chrome.freePlanLabel}</strong> {getFreeTierMarketing(locale)}
                         </p>
                         {PACK_IDS_ORDERED.map((packId) => {
                           const pack = TOKEN_PACKS[packId];
@@ -4534,8 +4365,7 @@ export default function HomePage() {
                               className="meta-line tier-hint-line token-center-message"
                               style={{ margin: 0 }}
                             >
-                              <strong>{pack.label}:</strong>{" "}
-                              {isSpanish ? pack.marketingDetail.es : pack.marketingDetail.en}
+                              <strong>{pack.label}:</strong> {getPackMarketingLine(packId, locale)}
                             </p>
                           );
                         })}
@@ -4544,16 +4374,13 @@ export default function HomePage() {
 
                     <div className="token-center-grid">
                       <p className="meta-line tier-hint-line token-center-row">
-                        <span>{isSpanish ? "Último pack:" : "Last pack:"}</span>{" "}
-                        <strong>{tierDisplayNode}</strong>
+                        <span>{tokenPanel.lastPack}</span> <strong>{tierDisplayNode}</strong>
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
-                        <span>{isSpanish ? "Tokens disponibles:" : "Available tokens:"}</span>{" "}
-                        <strong>{tokenBalance ?? "—"}</strong>
+                        <span>{tokenPanel.availableBalance}</span> <strong>{tokenBalance ?? "—"}</strong>
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
-                        <span>{isSpanish ? "Límite por hilo:" : "Thread limit:"}</span>{" "}
-                        <strong>{accountSessionLimit}</strong>
+                        <span>{tokenPanel.threadCapShort}</span> <strong>{accountSessionLimit}</strong>
                       </p>
                     </div>
 
@@ -4576,25 +4403,19 @@ export default function HomePage() {
                           void (async () => {
                             const ok = await openPlansCheckoutNewTab();
                             if (!ok) {
-                              setTokenCenterMessage(
-                                isSpanish
-                                  ? "No hay enlace de pago o apunta a la página principal. Revisa la variable de planes en el despliegue (URL completa de la tienda)."
-                                  : "Missing payment link or it points at the homepage. Check the plans URL env var (full store URL).",
-                              );
+                              setTokenCenterMessage(pricingUi.errorCheckout);
                             }
                           })();
                         }}
                       >
-                        {isSpanish ? "Ver packs" : "View packs"}
+                        {chrome.viewTokenPacks}
                       </button>
                     </div>
                     <p
                       className="meta-line tier-hint-line token-center-message"
                       style={{ marginTop: 8 }}
                     >
-                      {isSpanish
-                        ? "Tus tokens se acumulan: si compras un nuevo pack antes de agotar el actual, los tokens restantes se suman al nuevo pack."
-                        : "Your tokens accumulate: if you buy a new pack before running out, your remaining tokens carry over and add to the new pack."}
+                      {tokenPanel.accumulation}
                     </p>
                     <p
                       className="meta-line tier-hint-line token-center-message"
@@ -4609,9 +4430,7 @@ export default function HomePage() {
 
               {threadLimitReached ? (
                 <div className="composer-session-limit-float" role="status" aria-live="polite">
-                  <p className="composer-session-limit-text">
-                    Has alcanzado el límite de este hilo. Abre una sesión nueva para continuar.
-                  </p>
+                  <p className="composer-session-limit-text">{tokenPanel.consultThreadLimit}</p>
                   <button
                     type="button"
                     className="composer-session-limit-btn"
@@ -4630,7 +4449,7 @@ export default function HomePage() {
                   className="composer-options-btn"
                   aria-expanded={consultPanelOpen}
                   aria-controls="consult-panel"
-                  aria-label={consultPanelOpen ? "Cerrar opciones de consulta" : "Abrir opciones de consulta"}
+                  aria-label={consultPanelOpen ? chrome.closeConsultOptionsAria : chrome.openConsultOptionsAria}
                   disabled={loading}
                   onClick={() => setConsultPanelOpen((o) => !o)}
                 >
@@ -4659,7 +4478,7 @@ export default function HomePage() {
                           ? ui.positiveCharge
                           : ui.writeConsultation
                     }
-                    aria-label="Question"
+                    aria-label={chrome.questionInputAria}
                     rows={1}
                     readOnly={threadLimitReached}
                     aria-disabled={threadLimitReached}
@@ -4669,7 +4488,7 @@ export default function HomePage() {
                     data-testid="consult-btn"
                     disabled={loading || threadLimitReached}
                     onClick={() => void onConsult()}
-                    aria-label={loading ? "Enviando" : "Enviar"}
+                    aria-label={loading ? chrome.sendAriaSending : chrome.sendAriaSend}
                   >
                     {loading ? "…" : "➤"}
                   </button>

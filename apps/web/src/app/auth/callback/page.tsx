@@ -1,11 +1,15 @@
 "use client";
 
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
+import { useAppLocale } from "@/lib/use-app-locale";
+import { getAuthCallbackUiMessages } from "@iching-oracle/i18n";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
+  const locale = useAppLocale();
+  const m = useMemo(() => getAuthCallbackUiMessages(locale), [locale]);
 
   useEffect(() => {
     if (!isSupabaseBrowserConfigured()) {
@@ -32,7 +36,7 @@ export default function AuthCallbackPage() {
 
   return (
     <div className="auth-callback-wrap">
-      <p>Verificando acceso… si venís de correo, estamos finalizando la confirmación o el restablecimiento.</p>
+      <p>{m.verifying}</p>
     </div>
   );
 }

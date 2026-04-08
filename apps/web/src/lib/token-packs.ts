@@ -36,12 +36,6 @@ export type PackId = keyof typeof TOKEN_PACKS;
 /** Stable order for UI lists (token center, etc.). */
 export const PACK_IDS_ORDERED: PackId[] = ["tokens_seeker_20", "tokens_practitioner_40", "tokens_master_100"];
 
-/** Free / trial tier copy (not a RevenueCat product id). */
-export const FREE_TIER_MARKETING = {
-  es: "Plan gratuito: 2 consultas de por vida, 1 pregunta por hilo. Sin renovación automática; los packs de pago son consumibles. Imágenes generadas en resolución básica.",
-  en: "Free plan: 2 lifetime consultations, 1 question per thread. No auto-renewal; paid packs are consumable. Generated images use basic resolution.",
-} as const;
-
 export const FREE_TOKENS = 2;
 export const FREE_SESSION_LIMIT = 1;
 

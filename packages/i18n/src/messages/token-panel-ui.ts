@@ -18,6 +18,9 @@ export type TokenPanelUiMessages = {
   signInForBalance: string;
   /** Link label → `/guia#planes` from token center modal. */
   tokenCenterGuideLink: string;
+  /** Token center summary row (not the same as `remaining` mid-sentence). */
+  availableBalance: string;
+  threadCapShort: string;
 };
 
 const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
@@ -39,6 +42,8 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     noTokensDepleted: "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
     signInForBalance: "Inicia sesión para ver tu saldo.",
     tokenCenterGuideLink: "Guía de uso",
+    availableBalance: "Tokens disponibles:",
+    threadCapShort: "Límite por hilo:",
   },
   en: {
     ariaTokenGroup: "Token management",
@@ -58,6 +63,8 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     noTokensDepleted: "You used all your tokens. Buy a new pack to continue.",
     signInForBalance: "Sign in to view your balance.",
     tokenCenterGuideLink: "User guide",
+    availableBalance: "Available tokens:",
+    threadCapShort: "Thread limit:",
   },
   pt: {
     ariaTokenGroup: "Gestão de tokens",
@@ -77,6 +84,8 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     noTokensDepleted: "Usaste todos os tokens. Compra um novo pacote para continuar.",
     signInForBalance: "Inicia sessão para veres o teu saldo.",
     tokenCenterGuideLink: "Guia de utilização",
+    availableBalance: "Tokens disponíveis:",
+    threadCapShort: "Limite por fio:",
   },
   fr: {
     ariaTokenGroup: "Gestion des jetons",
@@ -96,6 +105,8 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     noTokensDepleted: "Vous avez utilisé tous vos jetons. Achetez un nouveau pack pour continuer.",
     signInForBalance: "Connectez-vous pour voir votre solde.",
     tokenCenterGuideLink: "Guide d’utilisation",
+    availableBalance: "Jetons disponibles :",
+    threadCapShort: "Limite par fil :",
   },
   de: {
     ariaTokenGroup: "Token-Verwaltung",
@@ -115,6 +126,8 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     noTokensDepleted: "Du hast alle Token aufgebraucht. Kaufe ein neues Paket, um fortzufahren.",
     signInForBalance: "Melde dich an, um dein Guthaben zu sehen.",
     tokenCenterGuideLink: "Nutzungsanleitung",
+    availableBalance: "Verfügbare Token:",
+    threadCapShort: "Limit pro Thread:",
   },
   it: {
     ariaTokenGroup: "Gestione token",
@@ -134,6 +147,8 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     noTokensDepleted: "Hai usato tutti i token. Acquista un nuovo pacchetto per continuare.",
     signInForBalance: "Accedi per vedere il saldo.",
     tokenCenterGuideLink: "Guida all’uso",
+    availableBalance: "Token disponibili:",
+    threadCapShort: "Limite per thread:",
   },
   ja: {
     ariaTokenGroup: "トークン管理",
@@ -153,6 +168,8 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     noTokensDepleted: "トークンを使い切りました。続けるには新しいパックを購入してください。",
     signInForBalance: "サインインすると残高を表示できます。",
     tokenCenterGuideLink: "利用ガイド",
+    availableBalance: "利用可能トークン:",
+    threadCapShort: "スレッド上限:",
   },
   zh: {
     ariaTokenGroup: "代币管理",
@@ -170,6 +187,8 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     noTokensDepleted: "您已用完所有代币。请购买新包以继续使用。",
     signInForBalance: "登录后可查看余额。",
     tokenCenterGuideLink: "使用指南",
+    availableBalance: "可用代币：",
+    threadCapShort: "每线程上限：",
   },
   ko: {
     ariaTokenGroup: "토큰 관리",
@@ -189,6 +208,8 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     noTokensDepleted: "토큰을 모두 사용했습니다. 계속하려면 새 팩을 구매하세요.",
     signInForBalance: "로그인하면 잔액을 확인할 수 있습니다.",
     tokenCenterGuideLink: "사용 안내",
+    availableBalance: "사용 가능 토큰:",
+    threadCapShort: "스레드당 한도:",
   },
 };
 

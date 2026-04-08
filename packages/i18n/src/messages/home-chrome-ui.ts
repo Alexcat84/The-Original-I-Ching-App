@@ -1,0 +1,465 @@
+import type { AppLocale } from "../locales.js";
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from "../locales.js";
+import { interpolate } from "./interpolate.js";
+
+export type HomeChromeUiMessages = {
+  exportChatPdf: string;
+  downloadImage: string;
+  openFullImage: string;
+  symbolicImageAlt: string;
+  consultationInProgress: string;
+  loadingPlan: string;
+  closeConsultBackdropAria: string;
+  closeConsultPanelAria: string;
+  openConsultOptionsAria: string;
+  closeConsultOptionsAria: string;
+  consultOracleTypeGroupAria: string;
+  oracleModeTablistAria: string;
+  threadDepthRegionAria: string;
+  threadDepthHeading: string;
+  /** After plan name: ` · ... up to {{cap}} chained readings (including the first).` */
+  threadDepthPlanSuffix: string;
+  threadDepthReadingProgressAria: string;
+  tdSingleOk: string;
+  tdSingleBlocked: string;
+  tdCanAddMore: string;
+  tdLimitHit: string;
+  securityGroupAria: string;
+  securityHeading: string;
+  statusLabel: string;
+  enabled: string;
+  disabled: string;
+  methodPrefix: string;
+  securityConfigureHint: string;
+  configure2fa: string;
+  disable2fa: string;
+  docLinksAria: string;
+  ambiguousReadingsLabel: string;
+  tokenCenterCloseAria: string;
+  tokenCenterSubtitle: string;
+  tokenCenterPackDetailsSummary: string;
+  freePlanLabel: string;
+  viewTokenPacks: string;
+  authenticatorQrAlt: string;
+  questionInputAria: string;
+  sendAriaSending: string;
+  sendAriaSend: string;
+};
+
+const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
+  es: {
+    exportChatPdf: "Exportar chat PDF",
+    downloadImage: "Descargar imagen",
+    openFullImage: "Abrir imagen en tamaño completo",
+    symbolicImageAlt: "Representación simbólica del trazado",
+    consultationInProgress: "Consulta en progreso",
+    loadingPlan: "cargando plan",
+    closeConsultBackdropAria: "Cerrar panel de consulta",
+    closeConsultPanelAria: "Cerrar panel de consulta",
+    openConsultOptionsAria: "Abrir opciones de consulta",
+    closeConsultOptionsAria: "Cerrar opciones de consulta",
+    consultOracleTypeGroupAria: "Tipo de consulta",
+    oracleModeTablistAria: "I Ching o huesos de oráculo",
+    threadDepthRegionAria: "Profundidad del hilo activo",
+    threadDepthHeading: "Profundidad del hilo",
+    threadDepthPlanSuffix:
+      " · este hilo admite hasta {{cap}} lectura(s) encadenada(s) (incluye la primera).",
+    threadDepthReadingProgressAria: "Lectura {{pos}} de {{cap}}",
+    tdSingleOk: "Una sola lectura por hilo.",
+    tdSingleBlocked:
+      "Sin profundización: una sola lectura por hilo. Para otro tema, abre una nueva sesión.",
+    tdCanAddMore: "Puedes añadir hasta {{remaining}} lectura(s) más en este hilo.",
+    tdLimitHit: "Has alcanzado el límite de lecturas en este hilo.",
+    securityGroupAria: "Seguridad de cuenta",
+    securityHeading: "Seguridad (2FA opcional)",
+    statusLabel: "Estado:",
+    enabled: "Activado",
+    disabled: "Desactivado",
+    methodPrefix: " · método ",
+    securityConfigureHint: "Configura Authenticator y/o código por email.",
+    configure2fa: "Configurar 2FA",
+    disable2fa: "Desactivar 2FA",
+    docLinksAria: "Documentación y legal",
+    ambiguousReadingsLabel: "Lecturas ambiguas previas",
+    tokenCenterCloseAria: "Cerrar centro de tokens",
+    tokenCenterSubtitle: "Consulta tu saldo y abre la compra de tokens.",
+    tokenCenterPackDetailsSummary: "Descripción por plan / pack",
+    freePlanLabel: "Gratuito:",
+    viewTokenPacks: "Ver packs",
+    authenticatorQrAlt: "Código QR de Authenticator",
+    questionInputAria: "Pregunta",
+    sendAriaSending: "Enviando",
+    sendAriaSend: "Enviar",
+  },
+  en: {
+    exportChatPdf: "Export chat PDF",
+    downloadImage: "Download image",
+    openFullImage: "Open full-size image",
+    symbolicImageAlt: "Symbolic reading image",
+    consultationInProgress: "Consultation in progress",
+    loadingPlan: "loading plan",
+    closeConsultBackdropAria: "Close consultation options panel",
+    closeConsultPanelAria: "Close consultation options panel",
+    openConsultOptionsAria: "Open consultation options",
+    closeConsultOptionsAria: "Close consultation options",
+    consultOracleTypeGroupAria: "Consultation type",
+    oracleModeTablistAria: "I Ching or oracle bones",
+    threadDepthRegionAria: "Active thread depth",
+    threadDepthHeading: "Thread depth",
+    threadDepthPlanSuffix: " · this thread allows up to {{cap}} chained reading(s) (including the first).",
+    threadDepthReadingProgressAria: "Reading {{pos}} of {{cap}}",
+    tdSingleOk: "Single reading per thread.",
+    tdSingleBlocked:
+      "No follow-ups in this thread: one reading only. For a new topic, start a new session.",
+    tdCanAddMore: "You can add up to {{remaining}} more reading(s) in this thread.",
+    tdLimitHit: "You reached the reading limit for this thread.",
+    securityGroupAria: "Account security",
+    securityHeading: "Security (optional 2FA)",
+    statusLabel: "Status:",
+    enabled: "Enabled",
+    disabled: "Disabled",
+    methodPrefix: " · method ",
+    securityConfigureHint: "Configure Authenticator and/or email code.",
+    configure2fa: "Configure 2FA",
+    disable2fa: "Disable 2FA",
+    docLinksAria: "Documentation and legal",
+    ambiguousReadingsLabel: "Previous ambiguous readings",
+    tokenCenterCloseAria: "Close token center",
+    tokenCenterSubtitle: "Check your balance and open token purchase.",
+    tokenCenterPackDetailsSummary: "Description by plan / pack",
+    freePlanLabel: "Free:",
+    viewTokenPacks: "View packs",
+    authenticatorQrAlt: "Authenticator QR code",
+    questionInputAria: "Question",
+    sendAriaSending: "Sending",
+    sendAriaSend: "Send",
+  },
+  pt: {
+    exportChatPdf: "Exportar chat PDF",
+    downloadImage: "Descarregar imagem",
+    openFullImage: "Abrir imagem em tamanho completo",
+    symbolicImageAlt: "Imagem simbólica da leitura",
+    consultationInProgress: "Consulta em curso",
+    loadingPlan: "a carregar plano",
+    closeConsultBackdropAria: "Fechar painel de consulta",
+    closeConsultPanelAria: "Fechar painel de consulta",
+    openConsultOptionsAria: "Abrir opções de consulta",
+    closeConsultOptionsAria: "Fechar opções de consulta",
+    consultOracleTypeGroupAria: "Tipo de consulta",
+    oracleModeTablistAria: "I Ching ou ossos do oráculo",
+    threadDepthRegionAria: "Profundidade do fio ativo",
+    threadDepthHeading: "Profundidade do fio",
+    threadDepthPlanSuffix:
+      " · este fio permite até {{cap}} leitura(s) encadeada(s) (incluindo a primeira).",
+    threadDepthReadingProgressAria: "Leitura {{pos}} de {{cap}}",
+    tdSingleOk: "Uma única leitura por fio.",
+    tdSingleBlocked:
+      "Sem aprofundamentos neste fio: apenas uma leitura. Para outro tema, inicia uma nova sessão.",
+    tdCanAddMore: "Podes adicionar até mais {{remaining}} leitura(s) neste fio.",
+    tdLimitHit: "Atingiste o limite de leituras neste fio.",
+    securityGroupAria: "Segurança da conta",
+    securityHeading: "Segurança (2FA opcional)",
+    statusLabel: "Estado:",
+    enabled: "Ativado",
+    disabled: "Desativado",
+    methodPrefix: " · método ",
+    securityConfigureHint: "Configura Authenticator e/ou código por email.",
+    configure2fa: "Configurar 2FA",
+    disable2fa: "Desativar 2FA",
+    docLinksAria: "Documentação e legal",
+    ambiguousReadingsLabel: "Leituras ambíguas anteriores",
+    tokenCenterCloseAria: "Fechar centro de tokens",
+    tokenCenterSubtitle: "Consulta o teu saldo e abre a compra de tokens.",
+    tokenCenterPackDetailsSummary: "Descrição por plano / pack",
+    freePlanLabel: "Gratuito:",
+    viewTokenPacks: "Ver packs",
+    authenticatorQrAlt: "QR do Authenticator",
+    questionInputAria: "Pergunta",
+    sendAriaSending: "A enviar",
+    sendAriaSend: "Enviar",
+  },
+  fr: {
+    exportChatPdf: "Exporter le chat en PDF",
+    downloadImage: "Télécharger l’image",
+    openFullImage: "Ouvrir l’image en plein écran",
+    symbolicImageAlt: "Image symbolique de la lecture",
+    consultationInProgress: "Consultation en cours",
+    loadingPlan: "chargement du forfait",
+    closeConsultBackdropAria: "Fermer le panneau d’options de consultation",
+    closeConsultPanelAria: "Fermer le panneau d’options de consultation",
+    openConsultOptionsAria: "Ouvrir les options de consultation",
+    closeConsultOptionsAria: "Fermer les options de consultation",
+    consultOracleTypeGroupAria: "Type de consultation",
+    oracleModeTablistAria: "I Ching ou osselets",
+    threadDepthRegionAria: "Profondeur du fil actif",
+    threadDepthHeading: "Profondeur du fil",
+    threadDepthPlanSuffix:
+      " · ce fil autorise jusqu’à {{cap}} lecture(s) enchaînée(s) (y compris la première).",
+    threadDepthReadingProgressAria: "Lecture {{pos}} sur {{cap}}",
+    tdSingleOk: "Une seule lecture par fil.",
+    tdSingleBlocked:
+      "Pas de prolongation dans ce fil : une seule lecture. Pour un autre sujet, démarrez une nouvelle session.",
+    tdCanAddMore: "Vous pouvez ajouter jusqu’à {{remaining}} lecture(s) de plus dans ce fil.",
+    tdLimitHit: "Vous avez atteint la limite de lectures pour ce fil.",
+    securityGroupAria: "Sécurité du compte",
+    securityHeading: "Sécurité (2FA optionnel)",
+    statusLabel: "État :",
+    enabled: "Activé",
+    disabled: "Désactivé",
+    methodPrefix: " · méthode ",
+    securityConfigureHint: "Configurez Authenticator et/ou le code par e-mail.",
+    configure2fa: "Configurer la 2FA",
+    disable2fa: "Désactiver la 2FA",
+    docLinksAria: "Documentation et mentions légales",
+    ambiguousReadingsLabel: "Lectures ambiguës précédentes",
+    tokenCenterCloseAria: "Fermer le centre jetons",
+    tokenCenterSubtitle: "Consultez votre solde et ouvrez l’achat de jetons.",
+    tokenCenterPackDetailsSummary: "Description par forfait / pack",
+    freePlanLabel: "Gratuit :",
+    viewTokenPacks: "Voir les packs",
+    authenticatorQrAlt: "QR Authenticator",
+    questionInputAria: "Question",
+    sendAriaSending: "Envoi",
+    sendAriaSend: "Envoyer",
+  },
+  de: {
+    exportChatPdf: "Chat als PDF exportieren",
+    downloadImage: "Bild herunterladen",
+    openFullImage: "Bild in voller Größe öffnen",
+    symbolicImageAlt: "Symbolisches Bild der Lesung",
+    consultationInProgress: "Konsultation läuft",
+    loadingPlan: "Plan wird geladen",
+    closeConsultBackdropAria: "Beratungsoptionen schließen",
+    closeConsultPanelAria: "Beratungsoptionen schließen",
+    openConsultOptionsAria: "Beratungsoptionen öffnen",
+    closeConsultOptionsAria: "Beratungsoptionen schließen",
+    consultOracleTypeGroupAria: "Art der Konsultation",
+    oracleModeTablistAria: "I Ging oder Orakelknochen",
+    threadDepthRegionAria: "Aktive Thread-Tiefe",
+    threadDepthHeading: "Thread-Tiefe",
+    threadDepthPlanSuffix:
+      " · dieser Thread erlaubt bis zu {{cap}} verkettete Lesung(en) (einschließlich der ersten).",
+    threadDepthReadingProgressAria: "Lesung {{pos}} von {{cap}}",
+    tdSingleOk: "Nur eine Lesung pro Thread.",
+    tdSingleBlocked:
+      "Keine Vertiefung in diesem Thread: nur eine Lesung. Für ein neues Thema starte eine neue Sitzung.",
+    tdCanAddMore: "Du kannst in diesem Thread noch bis zu {{remaining}} weitere Lesung(en) hinzufügen.",
+    tdLimitHit: "Du hast das Lesungslimit für diesen Thread erreicht.",
+    securityGroupAria: "Kontosicherheit",
+    securityHeading: "Sicherheit (optionale 2FA)",
+    statusLabel: "Status:",
+    enabled: "Aktiv",
+    disabled: "Deaktiviert",
+    methodPrefix: " · Methode ",
+    securityConfigureHint: "Authenticator und/oder E-Mail-Code einrichten.",
+    configure2fa: "2FA einrichten",
+    disable2fa: "2FA deaktivieren",
+    docLinksAria: "Dokumentation und Rechtliches",
+    ambiguousReadingsLabel: "Frühere mehrdeutige Lesungen",
+    tokenCenterCloseAria: "Token-Center schließen",
+    tokenCenterSubtitle: "Saldo prüfen und Token-Kauf öffnen.",
+    tokenCenterPackDetailsSummary: "Beschreibung nach Plan / Paket",
+    freePlanLabel: "Kostenlos:",
+    viewTokenPacks: "Pakete ansehen",
+    authenticatorQrAlt: "Authenticator-QR-Code",
+    questionInputAria: "Frage",
+    sendAriaSending: "Wird gesendet",
+    sendAriaSend: "Senden",
+  },
+  it: {
+    exportChatPdf: "Esporta chat PDF",
+    downloadImage: "Scarica immagine",
+    openFullImage: "Apri immagine a dimensione intera",
+    symbolicImageAlt: "Immagine simbolica della lettura",
+    consultationInProgress: "Consultazione in corso",
+    loadingPlan: "caricamento piano",
+    closeConsultBackdropAria: "Chiudi pannello opzioni consultazione",
+    closeConsultPanelAria: "Chiudi pannello opzioni consultazione",
+    openConsultOptionsAria: "Apri opzioni consultazione",
+    closeConsultOptionsAria: "Chiudi opzioni consultazione",
+    consultOracleTypeGroupAria: "Tipo di consultazione",
+    oracleModeTablistAria: "I Ching o ossa oracolari",
+    threadDepthRegionAria: "Profondità thread attivo",
+    threadDepthHeading: "Profondità thread",
+    threadDepthPlanSuffix:
+      " · questo thread consente fino a {{cap}} lettura/e concatenate (inclusa la prima).",
+    threadDepthReadingProgressAria: "Lettura {{pos}} di {{cap}}",
+    tdSingleOk: "Una sola lettura per thread.",
+    tdSingleBlocked:
+      "Nessun approfondimento in questo thread: una sola lettura. Per un altro argomento, avvia una nuova sessione.",
+    tdCanAddMore: "Puoi aggiungere fino a {{remaining}} lettura/e in più in questo thread.",
+    tdLimitHit: "Hai raggiunto il limite di letture per questo thread.",
+    securityGroupAria: "Sicurezza account",
+    securityHeading: "Sicurezza (2FA opzionale)",
+    statusLabel: "Stato:",
+    enabled: "Attivo",
+    disabled: "Disattivato",
+    methodPrefix: " · metodo ",
+    securityConfigureHint: "Configura Authenticator e/o codice email.",
+    configure2fa: "Configura 2FA",
+    disable2fa: "Disattiva 2FA",
+    docLinksAria: "Documentazione e note legali",
+    ambiguousReadingsLabel: "Letture ambigue precedenti",
+    tokenCenterCloseAria: "Chiudi centro token",
+    tokenCenterSubtitle: "Controlla il saldo e apri l’acquisto token.",
+    tokenCenterPackDetailsSummary: "Descrizione per piano / pacchetto",
+    freePlanLabel: "Gratuito:",
+    viewTokenPacks: "Vedi pacchetti",
+    authenticatorQrAlt: "QR Authenticator",
+    questionInputAria: "Domanda",
+    sendAriaSending: "Invio",
+    sendAriaSend: "Invia",
+  },
+  ja: {
+    exportChatPdf: "チャットをPDFで書き出す",
+    downloadImage: "画像をダウンロード",
+    openFullImage: "画像をフルサイズで開く",
+    symbolicImageAlt: "占いの象徴画像",
+    consultationInProgress: "相談進行中",
+    loadingPlan: "プランを読み込み中",
+    closeConsultBackdropAria: "相談オプションを閉じる",
+    closeConsultPanelAria: "相談オプションを閉じる",
+    openConsultOptionsAria: "相談オプションを開く",
+    closeConsultOptionsAria: "相談オプションを閉じる",
+    consultOracleTypeGroupAria: "相談タイプ",
+    oracleModeTablistAria: "易経（I Ching）または甲骨占い",
+    threadDepthRegionAria: "アクティブスレッドの深さ",
+    threadDepthHeading: "スレッドの深さ",
+    threadDepthPlanSuffix: " · このスレッドでは最大{{cap}}件の連続リーディング（最初を含む）が可能です。",
+    threadDepthReadingProgressAria: "リーディング {{pos}} / {{cap}}",
+    tdSingleOk: "スレッドあたり1回のリーディングです。",
+    tdSingleBlocked: "このスレッドでは追加の深掘りはできません。別のテーマは新しいセッションを開始してください。",
+    tdCanAddMore: "このスレッドにあと最大{{remaining}}件のリーディングを追加できます。",
+    tdLimitHit: "このスレッドのリーディング上限に達しました。",
+    securityGroupAria: "アカウントのセキュリティ",
+    securityHeading: "セキュリティ（任意の2FA）",
+    statusLabel: "状態:",
+    enabled: "有効",
+    disabled: "無効",
+    methodPrefix: " · 方式 ",
+    securityConfigureHint: "Authenticator と/またはメールコードを設定してください。",
+    configure2fa: "2FAを設定",
+    disable2fa: "2FAを無効化",
+    docLinksAria: "ドキュメントと法的情報",
+    ambiguousReadingsLabel: "これまでのあいまいなリーディング",
+    tokenCenterCloseAria: "トークンセンターを閉じる",
+    tokenCenterSubtitle: "残高を確認し、トークン購入を開きます。",
+    tokenCenterPackDetailsSummary: "プラン／パックごとの説明",
+    freePlanLabel: "無料:",
+    viewTokenPacks: "パックを見る",
+    authenticatorQrAlt: "Authenticator用QRコード",
+    questionInputAria: "質問",
+    sendAriaSending: "送信中",
+    sendAriaSend: "送信",
+  },
+  zh: {
+    exportChatPdf: "导出聊天 PDF",
+    downloadImage: "下载图片",
+    openFullImage: "以完整尺寸打开图片",
+    symbolicImageAlt: "解读的象征图像",
+    consultationInProgress: "咨询进行中",
+    loadingPlan: "正在加载方案",
+    closeConsultBackdropAria: "关闭咨询选项面板",
+    closeConsultPanelAria: "关闭咨询选项面板",
+    openConsultOptionsAria: "打开咨询选项",
+    closeConsultOptionsAria: "关闭咨询选项",
+    consultOracleTypeGroupAria: "咨询类型",
+    oracleModeTablistAria: "易经或甲骨占卜",
+    threadDepthRegionAria: "当前线程深度",
+    threadDepthHeading: "线程深度",
+    threadDepthPlanSuffix: " · 本线程最多可进行 {{cap}} 次连续解读（含首次）。",
+    threadDepthReadingProgressAria: "解读 {{pos}} / {{cap}}",
+    tdSingleOk: "每个线程仅一次解读。",
+    tdSingleBlocked: "本线程无法继续深入：仅一次解读。新主题请开始新会话。",
+    tdCanAddMore: "本线程还可增加最多 {{remaining}} 次解读。",
+    tdLimitHit: "已达到本线程的解读上限。",
+    securityGroupAria: "账户安全",
+    securityHeading: "安全（可选双重验证）",
+    statusLabel: "状态：",
+    enabled: "已启用",
+    disabled: "已关闭",
+    methodPrefix: " · 方式 ",
+    securityConfigureHint: "配置身份验证器应用和/或邮件验证码。",
+    configure2fa: "设置双重验证",
+    disable2fa: "关闭双重验证",
+    docLinksAria: "文档与法律信息",
+    ambiguousReadingsLabel: "此前模糊解读次数",
+    tokenCenterCloseAria: "关闭代币中心",
+    tokenCenterSubtitle: "查看余额并打开代币购买。",
+    tokenCenterPackDetailsSummary: "各方案/包的说明",
+    freePlanLabel: "免费：",
+    viewTokenPacks: "查看套餐",
+    authenticatorQrAlt: "身份验证器二维码",
+    questionInputAria: "问题",
+    sendAriaSending: "发送中",
+    sendAriaSend: "发送",
+  },
+  ko: {
+    exportChatPdf: "채팅 PDF보내기",
+    downloadImage: "이미지 다운로드",
+    openFullImage: "이미지 전체 크기로 열기",
+    symbolicImageAlt: "점의 상징 이미지",
+    consultationInProgress: "상담 진행 중",
+    loadingPlan: "플랜 불러오는 중",
+    closeConsultBackdropAria: "상담 옵션 패널 닫기",
+    closeConsultPanelAria: "상담 옵션 패널 닫기",
+    openConsultOptionsAria: "상담 옵션 열기",
+    closeConsultOptionsAria: "상담 옵션 닫기",
+    consultOracleTypeGroupAria: "상담 유형",
+    oracleModeTablistAria: "역경(I Ching) 또는 뼈 점",
+    threadDepthRegionAria: "활성 스레드 깊이",
+    threadDepthHeading: "스레드 깊이",
+    threadDepthPlanSuffix: " · 이 스레드에서는 최대 {{cap}}번의 연속 리딩(첫 리딩 포함)이 가능합니다.",
+    threadDepthReadingProgressAria: "리딩 {{pos}} / {{cap}}",
+    tdSingleOk: "스레드당 한 번의 리딩만 가능합니다.",
+    tdSingleBlocked: "이 스레드에서는 추가 심화가 없습니다. 다른 주제는 새 세션을 시작하세요.",
+    tdCanAddMore: "이 스레드에 최대 {{remaining}}번 더 리딩을 추가할 수 있습니다.",
+    tdLimitHit: "이 스레드의 리딩 한도에 도달했습니다.",
+    securityGroupAria: "계정 보안",
+    securityHeading: "보안(선택 2FA)",
+    statusLabel: "상태:",
+    enabled: "켜짐",
+    disabled: "꺼짐",
+    methodPrefix: " · 방식 ",
+    securityConfigureHint: "인증 앱(Authenticator) 및/또는 이메일 코드를 설정하세요.",
+    configure2fa: "2FA 설정",
+    disable2fa: "2FA 끄기",
+    docLinksAria: "문서 및 법적 고지",
+    ambiguousReadingsLabel: "이전 모호한 리딩",
+    tokenCenterCloseAria: "토큰 센터 닫기",
+    tokenCenterSubtitle: "잔액을 확인하고 토큰 구매를 엽니다.",
+    tokenCenterPackDetailsSummary: "플랜/팩별 설명",
+    freePlanLabel: "무료:",
+    viewTokenPacks: "팩 보기",
+    authenticatorQrAlt: "Authenticator QR 코드",
+    questionInputAria: "질문",
+    sendAriaSending: "보내는 중",
+    sendAriaSend: "보내기",
+  },
+};
+
+export function getHomeChromeUiMessages(locale: AppLocale): HomeChromeUiMessages {
+  return HOME_CHROME_UI[locale] ?? HOME_CHROME_UI[DEFAULT_LOCALE];
+}
+
+/** Titles used server-side for in-progress sessions; must match all localized `consultationInProgress` strings. */
+export function allConsultationInProgressTitles(): string[] {
+  return SUPPORTED_LOCALES.map((code) => HOME_CHROME_UI[code].consultationInProgress);
+}
+
+export function formatThreadDepthStatusLine(
+  m: Pick<HomeChromeUiMessages, "tdSingleOk" | "tdSingleBlocked" | "tdCanAddMore" | "tdLimitHit">,
+  canDeepen: boolean,
+  cap: number,
+  position: number,
+): string {
+  const safeCap = Math.max(1, cap);
+  if (safeCap <= 1) {
+    return canDeepen ? m.tdSingleOk : m.tdSingleBlocked;
+  }
+  if (canDeepen) {
+    const remaining = safeCap - position;
+    return interpolate(m.tdCanAddMore, { remaining });
+  }
+  return m.tdLimitHit;
+}

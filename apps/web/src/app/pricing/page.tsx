@@ -7,9 +7,11 @@ import { useAppLocale } from "@/lib/use-app-locale";
 import {
   formatPerThreadCap,
   formatPricingBalance,
+  getPackMarketingLine,
   getPricingUiMessages,
-  packMarketingLocale,
+  getTokenPackLabel,
 } from "@iching-oracle/i18n";
+import type { TokenPackMarketingId } from "@iching-oracle/i18n";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -17,7 +19,6 @@ export default function PricingPage() {
   const router = useRouter();
   const locale = useAppLocale();
   const p = useMemo(() => getPricingUiMessages(locale), [locale]);
-  const mkt = packMarketingLocale(locale);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
@@ -97,7 +98,9 @@ export default function PricingPage() {
                 background: "rgba(10, 20, 31, 0.72)",
               }}
             >
-              <h2 style={{ margin: 0, fontSize: 17 }}>{pack.label}</h2>
+              <h2 style={{ margin: 0, fontSize: 17 }}>
+                {getTokenPackLabel(packId as TokenPackMarketingId, locale)}
+              </h2>
               <p style={{ marginTop: 8, marginBottom: 0, fontSize: 26, fontWeight: 700 }}>
                 {pack.tokens} {p.tokensWord}
               </p>
@@ -106,7 +109,7 @@ export default function PricingPage() {
                 {formatPerThreadCap(p, pack.sessionLimit)}
               </p>
               <p style={{ marginTop: 8, marginBottom: 12, opacity: 0.78, fontSize: 13, lineHeight: 1.45 }}>
-                {pack.marketingDetail[mkt]}
+                {getPackMarketingLine(packId as TokenPackMarketingId, locale)}
               </p>
               <button
                 type="button"

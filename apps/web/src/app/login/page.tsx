@@ -1,10 +1,16 @@
 "use client";
 
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
+import { useAppLocale } from "@/lib/use-app-locale";
+import {
+  formatLoginConfigErrorBody,
+  formatLoginRegisterApiError,
+  getLoginPageUiMessages,
+} from "@iching-oracle/i18n";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -45,36 +51,6 @@ function GoogleGlyph() {
   );
 }
 
-function registerErrorMessage(data: {
-  error?: string;
-  reason?: string;
-  message?: string;
-}): string {
-  switch (data.error) {
-    case "invalid_payload":
-      return "Revisa el correo y la contraseña (mínimos requeridos).";
-    case "rate_limited":
-      return "Demasiados intentos desde esta red. Espera un poco e inténtalo de nuevo.";
-    case "turnstile_failed":
-      return "Verificación anti‑bots fallida. Recarga la página e inténtalo de nuevo.";
-    case "email_rejected":
-      return data.reason === "disposable"
-        ? "No se aceptan correos temporales o desechables."
-        : "El correo no pasó la validación (dominio o MX).";
-    case "sign_up_failed":
-      return data.message ?? "No se pudo crear la cuenta (¿correo ya registrado?).";
-    case "email_exists":
-      return (
-        data.message ??
-        "Ese correo ya está registrado. Inicia sesión, reenvía confirmación o restablece contraseña."
-      );
-    case "supabase_not_configured":
-      return "El servidor no tiene Supabase configurado.";
-    default:
-      return data.message ?? "No se pudo registrar. Inténtalo de nuevo.";
-  }
-}
-
 function isEmailNotConfirmedError(message: string): boolean {
   const lower = message.toLowerCase();
   return lower.includes("email not confirmed") || lower.includes("email_not_confirmed");
@@ -83,6 +59,8 @@ function isEmailNotConfirmedError(message: string): boolean {
 export default function LoginPage() {
   type RegisterModalKind = "verify" | "exists";
   const router = useRouter();
+  const locale = useAppLocale();
+  const L = useMemo(() => getLoginPageUiMessages(locale), [locale]);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -185,7 +163,7 @@ export default function LoginPage() {
       const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password });
       if (error) {
         if (isEmailNotConfirmedError(error.message)) {
-          setErr("Tu correo aún no está confirmado. Revisa tu bandeja y usa «Reenviar confirmación» si no lo recibiste.");
+          setErr(L.errEmailNotConfirmed);
           return;
         }
         setErr(error.message);
@@ -242,7 +220,7 @@ export default function LoginPage() {
           switchMode("signin");
           return;
         }
-        setErr(registerErrorMessage(data));
+        setErr(formatLoginRegisterApiError(L, data));
         return;
       }
       const normalizedEmail = email.trim();
@@ -252,7 +230,7 @@ export default function LoginPage() {
       setErr(null);
       switchMode("signin");
     } catch {
-      setErr("Error de red. Inténtalo de nuevo.");
+      setErr(L.errNetwork);
     } finally {
       setLoading(false);
     }
@@ -269,7 +247,7 @@ export default function LoginPage() {
     if (!isSupabaseBrowserConfigured()) return;
     const normalizedEmail = email.trim().toLowerCase();
     if (!normalizedEmail) {
-      setErr("Escribe tu correo para reenviar la confirmación.");
+      setErr(L.errResendNeedEmail);
       return;
     }
     setLoading(true);
@@ -285,7 +263,7 @@ export default function LoginPage() {
         setErr(error.message);
         return;
       }
-      setMsg("Reenviamos el correo de confirmación. Revisa también tu carpeta de spam/no deseado.");
+      setMsg(L.msgResendOk);
     } finally {
       setLoading(false);
     }
@@ -297,7 +275,7 @@ export default function LoginPage() {
     if (!isSupabaseBrowserConfigured()) return;
     const normalizedEmail = email.trim().toLowerCase();
     if (!normalizedEmail) {
-      setErr("Escribe tu correo para enviarte las instrucciones de restablecimiento.");
+      setErr(L.errResetNeedEmail);
       return;
     }
     setLoading(true);
@@ -311,7 +289,7 @@ export default function LoginPage() {
         setErr(error.message);
         return;
       }
-      setMsg("Te enviamos instrucciones para restablecer tu contraseña. Revisa tu bandeja y spam/no deseado.");
+      setMsg(L.msgResetOk);
     } finally {
       setLoading(false);
     }
@@ -322,12 +300,10 @@ export default function LoginPage() {
       <div className="auth-pro-shell">
         <div className="auth-pro-form-panel auth-pro-form-panel--solo">
           <div className="auth-pro-card">
-            <h1 className="auth-pro-heading">Acceso no disponible</h1>
-            <p className="auth-pro-lead auth-pro-err">
-              Faltan <code>NEXT_PUBLIC_SUPABASE_URL</code> o <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> en el cliente.
-            </p>
+            <h1 className="auth-pro-heading">{L.configErrorTitle}</h1>
+            <p className="auth-pro-lead auth-pro-err">{formatLoginConfigErrorBody(L)}</p>
             <Link href="/" className="auth-pro-text-link">
-              ← Volver al oráculo
+              {L.backToOracle}
             </Link>
           </div>
         </div>
@@ -343,15 +319,13 @@ export default function LoginPage() {
             周易
           </p>
           <h1 className="auth-pro-brand-title">The Original I Ching</h1>
-          <p className="auth-pro-brand-text">
-            Lectura clásica con Zhu Xi y Wilhelm/Baynes.
-          </p>
+          <p className="auth-pro-brand-text">{L.brandSubtitle}</p>
         </div>
       </aside>
 
       <div className="auth-pro-form-panel">
         <div className="auth-pro-card">
-          <div className="auth-pro-tabs" role="tablist" aria-label="Acceso">
+          <div className="auth-pro-tabs" role="tablist" aria-label={L.tablistAria}>
             <button
               type="button"
               role="tab"
@@ -361,7 +335,7 @@ export default function LoginPage() {
                 switchMode("signin");
               }}
             >
-              Iniciar sesión
+              {L.signInTab}
             </button>
             <button
               type="button"
@@ -372,34 +346,34 @@ export default function LoginPage() {
                 switchMode("signup");
               }}
             >
-              Crear cuenta
+              {L.signUpTab}
             </button>
           </div>
 
           {mode === "signin" ? (
             <form onSubmit={onSignIn} className="auth-pro-form">
-              <p className="auth-pro-lead">Entra con el correo con el que te registraste (tras confirmar el enlace).</p>
+              <p className="auth-pro-lead">{L.signInLead}</p>
               <div className="auth-pro-field">
-                <label htmlFor="auth-email">Correo electrónico</label>
+                <label htmlFor="auth-email">{L.emailLabel}</label>
                 <input
                   id="auth-email"
                   type="email"
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="tu@correo.com"
+                  placeholder={L.emailPlaceholder}
                   required
                 />
               </div>
               <div className="auth-pro-field">
-                <label htmlFor="auth-password">Contraseña</label>
+                <label htmlFor="auth-password">{L.passwordLabel}</label>
                 <input
                   id="auth-password"
                   type="password"
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder={L.passwordPlaceholderSignin}
                   required
                 />
               </div>
@@ -410,7 +384,7 @@ export default function LoginPage() {
                   onClick={() => void onForgotPassword()}
                   disabled={loading}
                 >
-                  Olvidé mi contraseña
+                  {L.forgotPassword}
                 </button>
                 <button
                   type="button"
@@ -418,37 +392,37 @@ export default function LoginPage() {
                   onClick={() => void onResendConfirmation()}
                   disabled={loading}
                 >
-                  Reenviar confirmación
+                  {L.resendConfirmation}
                 </button>
               </div>
               <button type="submit" className="auth-pro-btn auth-pro-btn-primary" disabled={loading}>
-                {loading ? "Entrando…" : "Entrar"}
+                {loading ? L.signingIn : L.signInSubmit}
               </button>
             </form>
           ) : (
             <form onSubmit={onRegister} className="auth-pro-form">
-              <p className="auth-pro-lead">Registro con validación de correo. Te pedimos una contraseña segura (mín. 8 caracteres).</p>
+              <p className="auth-pro-lead">{L.signUpLead}</p>
               <div className="auth-pro-field">
-                <label htmlFor="auth-email-su">Correo electrónico</label>
+                <label htmlFor="auth-email-su">{L.emailLabel}</label>
                 <input
                   id="auth-email-su"
                   type="email"
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="tu@correo.com"
+                  placeholder={L.emailPlaceholder}
                   required
                 />
               </div>
               <div className="auth-pro-field">
-                <label htmlFor="auth-password-su">Contraseña</label>
+                <label htmlFor="auth-password-su">{L.passwordLabel}</label>
                 <input
                   id="auth-password-su"
                   type="password"
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Mínimo 8 caracteres"
+                  placeholder={L.passwordPlaceholderSignup}
                   required
                   minLength={8}
                 />
@@ -460,25 +434,25 @@ export default function LoginPage() {
                 aria-hidden={!turnstileSiteKey}
               />
               <button type="submit" className="auth-pro-btn auth-pro-btn-primary" disabled={loading}>
-                {loading ? "Enviando…" : "Registrarme"}
+                {loading ? L.sending : L.registerSubmit}
               </button>
             </form>
           )}
 
           <div className="auth-pro-divider">
-            <span>o</span>
+            <span>{L.dividerOr}</span>
           </div>
 
           <button type="button" className="auth-pro-btn auth-pro-btn-google" disabled={loading} onClick={() => void onGoogle()}>
             <GoogleGlyph />
-            Continuar con Google
+            {L.continueGoogle}
           </button>
 
           {err ? <p className="auth-pro-err">{err}</p> : null}
           {msg ? <p className="auth-pro-msg">{msg}</p> : null}
 
           <Link href="/" className="auth-pro-text-link auth-pro-back">
-            ← Volver al oráculo
+            {L.backToOracle}
           </Link>
         </div>
       </div>
@@ -509,31 +483,28 @@ export default function LoginPage() {
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
               <strong style={{ color: "#d8edf5" }}>
-                {registerModalKind === "verify" ? "Verifica tu cuenta por correo" : "Correo ya registrado"}
+                {registerModalKind === "verify" ? L.modalVerifyTitle : L.modalExistsTitle}
               </strong>
-              <button type="button" className="modal-close-x" aria-label="Cerrar" onClick={closeRegisterModal}>
+              <button type="button" className="modal-close-x" aria-label={L.closeModalAria} onClick={closeRegisterModal}>
                 ×
               </button>
             </div>
             <p className="auth-pro-msg" style={{ marginTop: 10 }}>
               {registerModalKind === "verify" ? (
                 <>
-                  Te enviamos un enlace de verificación a <strong>{pendingVerificationEmail}</strong>.
+                  {L.modalVerifyLine1} <strong>{pendingVerificationEmail}</strong>.
                   <br />
-                  Abre tu correo, busca el mensaje (revisa spam/no deseado) y haz clic en el enlace para activar tu
-                  cuenta.
+                  {L.modalVerifyLine2}
                 </>
               ) : (
                 <>
-                  El correo <strong>{pendingVerificationEmail}</strong> ya está registrado.
-                  <br />
-                  Inicia sesión con ese correo.
+                  {L.modalExistsLine1} <strong>{pendingVerificationEmail}</strong> {L.modalExistsLine2}
                 </>
               )}
             </p>
             <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
               <button type="button" className="auth-pro-btn auth-pro-btn-primary" onClick={closeRegisterModal}>
-                Entendido
+                {L.modalOk}
               </button>
             </div>
           </div>

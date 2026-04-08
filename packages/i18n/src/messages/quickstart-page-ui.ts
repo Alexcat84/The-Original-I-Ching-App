@@ -18,6 +18,8 @@ export type QuickstartPageUiMessages = {
   s3Li1: string;
   s3Li2: string;
   s3Li3: string;
+  /** Legacy `/quickstart` route flashes this while redirecting to `/guia`. */
+  legacyRedirectNotice: string;
 };
 
 const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
@@ -42,6 +44,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "Si quieres conservar un registro fuera de la app, en Opciones puedes descargar la imagen y exportar el hilo actual a PDF; es opcional y el archivo se guarda en tu dispositivo bajo tu criterio.",
     s3Li3: "Puedes eliminar chats desde el historial (Chats).",
+    legacyRedirectNotice: "Redirigiendo a la guía de uso…",
   },
   en: {
     title: "Quickstart: how to use the app",
@@ -63,6 +66,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "If you want a record outside the app, Options lets you download the image and export the current thread to PDF; this is optional and the file is saved on your device at your discretion.",
     s3Li3: "You can delete chats from history (Chats).",
+    legacyRedirectNotice: "Redirecting to the user guide…",
   },
   pt: {
     title: "Quickstart: como usar a app",
@@ -85,6 +89,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "Se quiseres um registo fora da app, em Opções podes descarregar a imagem e exportar o fio atual para PDF; é opcional e o ficheiro fica no teu dispositivo à tua discrição.",
     s3Li3: "Podes eliminar chats a partir do histórico (Chats).",
+    legacyRedirectNotice: "A redirecionar para o guia de utilização…",
   },
   fr: {
     title: "Quickstart : utiliser l’app",
@@ -107,6 +112,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "Pour un enregistrement hors app, Options permet de télécharger l’image et d’exporter le fil en PDF ; facultatif, fichier sur votre appareil à votre discrétion.",
     s3Li3: "Vous pouvez supprimer des chats depuis l’historique (Chats).",
+    legacyRedirectNotice: "Redirection vers le guide d’utilisation…",
   },
   de: {
     title: "Quickstart: App nutzen",
@@ -129,6 +135,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "Für eine Kopie außerhalb der App kannst du in Optionen Bild herunterladen und Thread als PDF exportieren; optional, Datei liegt auf deinem Gerät.",
     s3Li3: "Chats kannst du über den Verlauf (Chats) löschen.",
+    legacyRedirectNotice: "Weiterleitung zur Nutzungsanleitung…",
   },
   it: {
     title: "Quickstart: come usare l’app",
@@ -151,6 +158,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "Per un archivio fuori dall’app, Opzioni consente di scaricare l’immagine ed esportare il thread in PDF; facoltativo, file sul dispositivo a tua discrezione.",
     s3Li3: "Puoi eliminare chat dalla cronologia (Chat).",
+    legacyRedirectNotice: "利用ガイドへリダイレクトしています…",
   },
   ja: {
     title: "クイックスタート：アプリの使い方",
@@ -170,6 +178,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "アプリ外に記録を残す場合、オプションから画像のダウンロードや現行スレッドのPDF出力が可能です。任意で、ファイルは端末に保存されます。",
     s3Li3: "履歴（チャット）からチャットを削除できます。",
+    legacyRedirectNotice: "利用ガイドへ移動しています…",
   },
   zh: {
     title: "快速上手：如何使用本应用",
@@ -189,6 +198,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "若要在应用外留存记录，可在选项中下载图像并将当前会话导出为 PDF；此为可选，文件保存在您的设备上。",
     s3Li3: "可在历史（聊天）中删除聊天。",
+    legacyRedirectNotice: "正在跳转到使用指南…",
   },
   ko: {
     title: "퀵스타트: 앱 사용법",
@@ -208,6 +218,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "앱 밖 기록이 필요하면 옵션에서 이미지를 내려받고 현재 스레드를 PDF로보낼 수 있습니다. 선택 사항이며 파일은 기기에 저장됩니다.",
     s3Li3: "기록(채팅)에서 채팅을 삭제할 수 있습니다.",
+    legacyRedirectNotice: "사용 안내로 이동하는 중…",
   },
 };
 
