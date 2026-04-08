@@ -1,5 +1,7 @@
 node_modules
+# Editor / agent local rules — never commit
 .cursor
+.claude
 mcps
 .turbo
 dist
