@@ -33,7 +33,9 @@ const BASE_URL =
 // Supabase project — needed to construct the Google OAuth URL from native side.
 // IMPORTANT: Add "theoriginaliching://auth/callback" to your Supabase project's
 // Auth > URL Configuration > Redirect URLs for Google OAuth deep-link to work.
-const SUPABASE_URL = "https://idirklxzohzthdgsuqzb.supabase.co";
+const SUPABASE_URL =
+  process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() ||
+  "https://idirklxzohzthdgsuqzb.supabase.co";
 
 const SECURE_TOKEN_KEY = "supabase_access_token";
 const LOCALE_STORAGE_KEY = "iching_native_locale";
@@ -230,21 +232,7 @@ const INJECTED_JS = `
     _handleDownload(el.href, el.download || 'download');
   }, true);
 
-  /* 4 ── Patch Google OAuth buttons ───────────────────────────────────── */
-  function _patchGoogle() {
-    document.querySelectorAll('.auth-pro-btn-google:not([data-rn])').forEach(function (btn) {
-      btn.setAttribute('data-rn', '1');
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-          JSON.stringify({ type: 'open_google_auth' })
-        );
-      }, true);
-    });
-  }
-  _patchGoogle();
-  new MutationObserver(_patchGoogle).observe(document.documentElement, { childList: true, subtree: true });
+  /* 4 ── Google OAuth uses onShouldStartLoadWithRequest interception ───── */
 
   /* 5 ── Relay Supabase access token + email (P1 — fast retries) ──────── */
   function _sendToken() {
@@ -287,15 +275,20 @@ const INJECTED_JS = `
 
   // Re-check when localStorage changes (sign-in / sign-out events)
   // When a Supabase auth key is cleared, notify native immediately (P1 fix)
+  var _pendingSignoutTimer = null;
   window.addEventListener('storage', function(e) {
     var k = e.key || '';
     var isAuthKey = k.indexOf('auth-token') !== -1 || k.indexOf('supabase') !== -1 || k.startsWith('sb-');
     if (!isAuthKey) return;
-    if (!_sendToken()) {
-      window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: 'auth_signout' })
-      );
-    }
+    if (_pendingSignoutTimer) clearTimeout(_pendingSignoutTimer);
+    _pendingSignoutTimer = setTimeout(function() {
+      if (!_sendToken()) {
+        window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+          JSON.stringify({ type: 'auth_signout' })
+        );
+      }
+      _pendingSignoutTimer = null;
+    }, 1200);
   });
   // Re-check when returning via back-forward cache (P1)
   window.addEventListener('pageshow', function (e) { if (e.persisted) _sendToken(); });
@@ -709,20 +702,24 @@ export default function WebViewScreen() {
   const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
 
   const validateStoredToken = useCallback(
-    async (token: string): Promise<{ valid: boolean; email: string | null }> => {
+    async (
+      token: string
+    ): Promise<{ status: "valid" | "invalid" | "unknown"; email: string | null }> => {
       try {
         const res = await fetch(`${BASE_URL}/api/account/me`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (!res.ok) return { valid: false, email: null };
+        if (res.status === 401 || res.status === 403) return { status: "invalid", email: null };
+        if (!res.ok) return { status: "unknown", email: null };
         const data = (await res.json().catch(() => null)) as
           | { user?: { email?: string | null } }
           | null;
         const email = typeof data?.user?.email === "string" ? data.user.email : null;
-        return { valid: true, email };
+        return { status: "valid", email };
       } catch {
-        return { valid: false, email: null };
+        // Network hiccups must not force local sign-out.
+        return { status: "unknown", email: null };
       }
     },
     []
@@ -732,12 +729,13 @@ export default function WebViewScreen() {
   useEffect(() => {
     SecureStore.getItemAsync(SECURE_TOKEN_KEY).then(async (tok) => {
       if (!tok) return;
+      // Optimistic restore for instant UX; validation runs in background.
+      accessTokenRef.current = tok;
+      setIsAuthenticated(true);
       const check = await validateStoredToken(tok);
-      if (check.valid) {
-        accessTokenRef.current = tok;
-        setIsAuthenticated(true);
+      if (check.status === "valid") {
         setUserEmail(check.email);
-      } else {
+      } else if (check.status === "invalid") {
         accessTokenRef.current = null;
         setIsAuthenticated(false);
         setUserEmail(null);
@@ -932,9 +930,6 @@ export default function WebViewScreen() {
             setIsAuthenticated(false);
             setUserEmail(null);
             SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
-            webViewRef.current?.injectJavaScript(
-              `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
-            );
             break;
 
           case "open_google_auth": {
