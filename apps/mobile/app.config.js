@@ -19,7 +19,11 @@ module.exports = ({ config }) => ({
   android: {
     package: "com.theoriginaliching.app",
     versionCode: 1,
+    // Prevent restoring stale auth/webview state after reinstall from Android backup.
+    allowBackup: false,
     backgroundColor: "#0c0f14",
+    // P7: Required by Google Play Store listing
+    privacyPolicyUrl: "https://theoriginaliching.com/privacy",
     adaptiveIcon: {
       backgroundColor: "#0c0f14",
     },
