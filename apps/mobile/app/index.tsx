@@ -233,13 +233,49 @@ const INJECTED_JS = `
   }, true);
 
   /* 4 ── Google OAuth uses onShouldStartLoadWithRequest interception ───── */
+  function _detectSupabaseRef() {
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (!key) continue;
+      var m = key.match(/^sb-([a-z0-9]+)-auth-token$/i);
+      if (!m) continue;
+      return m[1];
+    }
+    return null;
+  }
+  function _postSupabaseRef() {
+    var ref = _detectSupabaseRef();
+    if (!ref) return;
+    window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+      JSON.stringify({ type: 'supabase_ref', ref: ref })
+    );
+  }
+  function _patchGoogle() {
+    document.querySelectorAll('.auth-pro-btn-google:not([data-rn])').forEach(function (btn) {
+      btn.setAttribute('data-rn', '1');
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var ref = _detectSupabaseRef();
+        window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+          JSON.stringify({ type: 'open_google_auth', ref: ref || undefined })
+        );
+      }, true);
+    });
+  }
+  _postSupabaseRef();
+  _patchGoogle();
+  new MutationObserver(function() {
+    _postSupabaseRef();
+    _patchGoogle();
+  }).observe(document.documentElement, { childList: true, subtree: true });
 
   /* 5 ── Relay Supabase access token + email (P1 — fast retries) ──────── */
   function _sendToken() {
     for (var i = 0; i < localStorage.length; i++) {
       var key = localStorage.key(i);
       if (!key) continue;
-      if (key.indexOf('auth-token') === -1 && key.indexOf('supabase.auth.token') === -1) continue;
+      if (key.indexOf('auth-token') === -1 && key.indexOf('supabase.auth.token') === -1 && !key.startsWith('sb-')) continue;
       try {
         var d = JSON.parse(localStorage.getItem(key) || 'null');
         if (!d) continue;
@@ -517,7 +553,8 @@ true;
 type RNMessage =
   | { type: "auth_token"; token: string; email?: string | null }
   | { type: "auth_signout" }
-  | { type: "open_google_auth" }
+  | { type: "open_google_auth"; ref?: string }
+  | { type: "supabase_ref"; ref: string }
   | { type: "download_file"; filename: string; dataUrl: string }
   | { type: "download_file_start"; transferId: string; filename: string; mimeType?: string }
   | { type: "download_file_chunk"; transferId: string; chunk: string }
@@ -677,6 +714,7 @@ export default function WebViewScreen() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const accessTokenRef = useRef<string | null>(null);
+  const supabaseRefRef = useRef<string | null>(null);
   const downloadTransfersRef = useRef<
     Record<
       string,
@@ -932,10 +970,20 @@ export default function WebViewScreen() {
             SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
             break;
 
+          case "supabase_ref":
+            if (msg.ref) {
+              supabaseRefRef.current = msg.ref;
+            }
+            break;
+
           case "open_google_auth": {
             const redirectTo = encodeURIComponent("theoriginaliching://auth/callback");
+            const runtimeRef = msg.ref || supabaseRefRef.current;
+            const runtimeSupabaseUrl = runtimeRef
+              ? `https://${runtimeRef}.supabase.co`
+              : SUPABASE_URL;
             Linking.openURL(
-              `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}`
+              `${runtimeSupabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}`
             );
             break;
           }
