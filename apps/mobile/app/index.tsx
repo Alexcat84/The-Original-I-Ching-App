@@ -35,7 +35,7 @@ const BASE_URL =
 // Auth > URL Configuration > Redirect URLs for Google OAuth deep-link to work.
 const SUPABASE_URL =
   process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() ||
-  "https://idirklxzohzthdgsuqzb.supabase.co";
+  "https://pjbjpdpgpzwgrellvsor.supabase.co";
 
 const SECURE_TOKEN_KEY = "supabase_access_token";
 const LOCALE_STORAGE_KEY = "iching_native_locale";
@@ -308,6 +308,8 @@ const INJECTED_JS = `
       }
     }, 150);
   }
+  // Same-tab localStorage updates do not emit 'storage'; keep native auth in sync.
+  setInterval(function () { _sendToken(); _postSupabaseRef(); }, 1200);
 
   // Re-check when localStorage changes (sign-in / sign-out events)
   // When a Supabase auth key is cleared, notify native immediately (P1 fix)
