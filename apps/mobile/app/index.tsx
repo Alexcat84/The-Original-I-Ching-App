@@ -58,7 +58,8 @@ const LOCALES: { code: AppLocale; label: string; name: string }[] = [
 function deepLinkToWebUrl(deepLink: string): string | null {
   try {
     const parsed = Linking.parse(deepLink);
-    if (parsed.hostname === "auth" && parsed.path?.startsWith("/callback")) {
+    const normalizedPath = (parsed.path ?? "").replace(/^\/+/, "");
+    if (parsed.hostname === "auth" && normalizedPath.startsWith("callback")) {
       const params = new URLSearchParams(
         Object.entries(parsed.queryParams ?? {}).map(([k, v]) => [k, String(v)])
       );
@@ -292,6 +293,25 @@ const INJECTED_JS = `
     }
     return false;
   }
+  var _lastAuthState = 'unknown';
+  var _authMisses = 0;
+  function _emitSignoutIfNeeded() {
+    if (_lastAuthState === 'out') return;
+    _lastAuthState = 'out';
+    window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+      JSON.stringify({ type: 'auth_signout' })
+    );
+  }
+  function _syncAuthState() {
+    var hasToken = _sendToken();
+    if (hasToken) {
+      _authMisses = 0;
+      _lastAuthState = 'in';
+      return;
+    }
+    _authMisses += 1;
+    if (_authMisses >= 3) _emitSignoutIfNeeded();
+  }
 
   // Try immediately; retry quickly for delayed Supabase hydration.
   // Do NOT auto-signout on startup misses: that creates false auth churn in WebView.
@@ -309,7 +329,7 @@ const INJECTED_JS = `
     }, 150);
   }
   // Same-tab localStorage updates do not emit 'storage'; keep native auth in sync.
-  setInterval(function () { _sendToken(); _postSupabaseRef(); }, 1200);
+  setInterval(function () { _syncAuthState(); _postSupabaseRef(); }, 1200);
 
   // Re-check when localStorage changes (sign-in / sign-out events)
   // When a Supabase auth key is cleared, notify native immediately (P1 fix)
@@ -321,9 +341,7 @@ const INJECTED_JS = `
     if (_pendingSignoutTimer) clearTimeout(_pendingSignoutTimer);
     _pendingSignoutTimer = setTimeout(function() {
       if (!_sendToken()) {
-        window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-          JSON.stringify({ type: 'auth_signout' })
-        );
+        _emitSignoutIfNeeded();
       }
       _pendingSignoutTimer = null;
     }, 1200);
