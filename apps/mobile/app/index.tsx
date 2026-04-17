@@ -99,6 +99,11 @@ const INJECTED_JS = `
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
   var __rnSupabaseProjectRef = ${JSON.stringify(SUPABASE_PROJECT_REF)};
+  function _bridgeLog(event, payload) {
+    window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+      JSON.stringify({ type: 'bridge_log', event: event, payload: payload || null })
+    );
+  }
 
   /* 1 ── Hide web top bar ─────────────────────────────────────────────── */
   var _st = document.createElement('style');
@@ -246,6 +251,7 @@ const INJECTED_JS = `
   function _postSupabaseRef() {
     var ref = __rnSupabaseProjectRef;
     if (!ref) return;
+    _bridgeLog('supabase_ref', { ref: ref });
     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
       JSON.stringify({ type: 'supabase_ref', ref: ref })
     );
@@ -256,6 +262,7 @@ const INJECTED_JS = `
       btn.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
+        _bridgeLog('google_click_intercept', { ref: __rnSupabaseProjectRef || null });
         window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
           JSON.stringify({ type: 'open_google_auth', ref: __rnSupabaseProjectRef || undefined })
         );
@@ -280,11 +287,13 @@ const INJECTED_JS = `
   function _pruneForeignSupabaseKeys() {
     if (!__rnSupabaseProjectRef) return;
     var keep = 'sb-' + __rnSupabaseProjectRef + '-auth-token';
+    var removed = 0;
     for (var i = localStorage.length - 1; i >= 0; i--) {
       var key = localStorage.key(i);
       if (!key || !key.startsWith('sb-') || key === keep) continue;
-      if (key.endsWith('-auth-token')) localStorage.removeItem(key);
+      if (key.endsWith('-auth-token')) { localStorage.removeItem(key); removed += 1; }
     }
+    if (removed > 0) _bridgeLog('prune_foreign_auth_keys', { removed: removed });
   }
   _pruneForeignSupabaseKeys();
   function _sendToken() {
@@ -299,6 +308,7 @@ const INJECTED_JS = `
         var tok = session.access_token || d.access_token;
         var email = (session.user && session.user.email) || (d.user && d.user.email) || null;
         if (tok) {
+          _bridgeLog('auth_token_found', { key: key, hasEmail: Boolean(email) });
           window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
             JSON.stringify({ type: 'auth_token', token: tok, email: email })
           );
@@ -313,6 +323,7 @@ const INJECTED_JS = `
   function _emitSignoutIfNeeded() {
     if (_lastAuthState === 'out') return;
     _lastAuthState = 'out';
+    _bridgeLog('auth_signout_emit', { misses: _authMisses });
     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
       JSON.stringify({ type: 'auth_signout' })
     );
@@ -588,6 +599,7 @@ true;
 type RNMessage =
   | { type: "auth_token"; token: string; email?: string | null }
   | { type: "auth_signout" }
+  | { type: "bridge_log"; event: string; payload?: unknown }
   | { type: "open_google_auth"; ref?: string }
   | { type: "supabase_ref"; ref: string }
   | { type: "download_file"; filename: string; dataUrl: string }
@@ -768,6 +780,10 @@ export default function WebViewScreen() {
 
   /* ── Image zoom state (P4) ── */
   const [zoomImageUrl, setZoomImageUrl] = useState<string | null>(null);
+  const logBridge = useCallback((event: string, payload?: unknown) => {
+    // Read with: adb logcat | rg "ICHING_MOBILE"
+    console.log(`[ICHING_MOBILE] ${event}`, payload ?? "");
+  }, []);
 
   /* ── Safe area insets (status bar height on Android) ── */
   const insets = useSafeAreaInsets();
@@ -832,11 +848,12 @@ export default function WebViewScreen() {
 
   const onLoadEnd = useCallback(() => {
     webReadyRef.current = true;
+    logBridge("webview_load_end", { url: currentUrl, locale });
     webViewRef.current?.injectJavaScript(
       `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(locale)}); window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
     );
     hideSplash();
-  }, [hideSplash, locale]);
+  }, [hideSplash, locale, logBridge, currentUrl]);
 
   /* ── Deep link handler (auth callback) ── */
   useEffect(() => {
@@ -883,6 +900,7 @@ export default function WebViewScreen() {
 
   /* ── P3: Sign out from native bar ── */
   const handleSignOut = useCallback(() => {
+    logBridge("native_signout_start");
     accessTokenRef.current = null;
     setIsAuthenticated(false);
     setUserEmail(null);
@@ -893,7 +911,7 @@ export default function WebViewScreen() {
     );
     setCurrentUrl(`${BASE_URL}/login?native_signout=${Date.now()}`);
     setWebViewEpoch((v) => v + 1);
-  }, []);
+  }, [logBridge]);
 
   /* ── Handle file download (P5) ── */
   const handleFileDownload = useCallback(
@@ -999,7 +1017,12 @@ export default function WebViewScreen() {
       try {
         const msg = JSON.parse(event.nativeEvent.data) as RNMessage;
         switch (msg.type) {
+          case "bridge_log":
+            logBridge(`web:${msg.event}`, msg.payload);
+            break;
+
           case "auth_token":
+            logBridge("auth_token", { hasEmail: Boolean(msg.email) });
             accessTokenRef.current = msg.token;
             setIsAuthenticated(true);
             if (msg.email) setUserEmail(msg.email);
@@ -1010,6 +1033,7 @@ export default function WebViewScreen() {
             break;
 
           case "auth_signout":
+            logBridge("auth_signout");
             accessTokenRef.current = null;
             setIsAuthenticated(false);
             setUserEmail(null);
@@ -1017,6 +1041,7 @@ export default function WebViewScreen() {
             break;
 
           case "supabase_ref":
+            logBridge("supabase_ref", { ref: msg.ref });
             if (msg.ref) {
               supabaseRefRef.current = msg.ref;
             }
@@ -1026,6 +1051,7 @@ export default function WebViewScreen() {
             const redirectTo = encodeURIComponent("theoriginaliching://auth/callback");
             const runtimeRef = msg.ref || supabaseRefRef.current || SUPABASE_PROJECT_REF;
             const runtimeSupabaseUrl = runtimeRef ? `https://${runtimeRef}.supabase.co` : SUPABASE_URL;
+            logBridge("open_google_auth", { runtimeSupabaseUrl });
             Linking.openURL(
               `${runtimeSupabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}`
             );
@@ -1074,7 +1100,7 @@ export default function WebViewScreen() {
         // Ignore non-JSON bridge noise
       }
     },
-    [handleFileDownload, handleDeleteChat]
+    [handleFileDownload, handleDeleteChat, logBridge]
   );
 
   /* ── Intercept Google OAuth + internal doc navigation ── */
@@ -1088,8 +1114,10 @@ export default function WebViewScreen() {
           const parsed = new URL(url);
           parsed.searchParams.set("redirect_to", "theoriginaliching://auth/callback");
           const oauthUrl = parsed.toString();
+          logBridge("intercept_google_authorize", { oauthUrl });
           setTimeout(() => Linking.openURL(oauthUrl), 50);
         } catch {
+          logBridge("intercept_google_authorize_fallback", { url });
           setTimeout(() => Linking.openURL(url), 50);
         }
         return false;
@@ -1104,6 +1132,7 @@ export default function WebViewScreen() {
           path.startsWith("/auth/callback?") ||
           path.startsWith("/auth/callback#");
         if (!isAuthCallbackPath) {
+          logBridge("spa_navigate", { path });
           webViewRef.current?.injectJavaScript(
             `window.__rnNavigateTo && window.__rnNavigateTo(${JSON.stringify(path)}); true;`
           );
@@ -1113,7 +1142,7 @@ export default function WebViewScreen() {
 
       return true;
     },
-    []
+    [logBridge]
   );
 
   const onNavigationStateChange = (state: WebViewNavigation) => {
