@@ -36,6 +36,13 @@ const BASE_URL =
 const SUPABASE_URL =
   process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() ||
   "https://pjbjpdpgpzwgrellvsor.supabase.co";
+const SUPABASE_PROJECT_REF = (() => {
+  try {
+    return new URL(SUPABASE_URL).hostname.split(".")[0] ?? null;
+  } catch {
+    return null;
+  }
+})();
 
 const SECURE_TOKEN_KEY = "supabase_access_token";
 const LOCALE_STORAGE_KEY = "iching_native_locale";
@@ -91,6 +98,7 @@ const INJECTED_JS = `
 (function () {
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
+  var __rnSupabaseProjectRef = ${JSON.stringify(SUPABASE_PROJECT_REF)};
 
   /* 1 ── Hide web top bar ─────────────────────────────────────────────── */
   var _st = document.createElement('style');
@@ -234,18 +242,9 @@ const INJECTED_JS = `
   }, true);
 
   /* 4 ── Google OAuth uses onShouldStartLoadWithRequest interception ───── */
-  function _detectSupabaseRef() {
-    for (var i = 0; i < localStorage.length; i++) {
-      var key = localStorage.key(i);
-      if (!key) continue;
-      var m = key.match(/^sb-([a-z0-9]+)-auth-token$/i);
-      if (!m) continue;
-      return m[1];
-    }
-    return null;
-  }
+  function _detectSupabaseRef() { return __rnSupabaseProjectRef || null; }
   function _postSupabaseRef() {
-    var ref = _detectSupabaseRef();
+    var ref = __rnSupabaseProjectRef;
     if (!ref) return;
     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
       JSON.stringify({ type: 'supabase_ref', ref: ref })
@@ -257,9 +256,8 @@ const INJECTED_JS = `
       btn.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        var ref = _detectSupabaseRef();
         window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-          JSON.stringify({ type: 'open_google_auth', ref: ref || undefined })
+          JSON.stringify({ type: 'open_google_auth', ref: __rnSupabaseProjectRef || undefined })
         );
       }, true);
     });
@@ -272,11 +270,28 @@ const INJECTED_JS = `
   }).observe(document.documentElement, { childList: true, subtree: true });
 
   /* 5 ── Relay Supabase access token + email (P1 — fast retries) ──────── */
+  function _isTargetAuthKey(key) {
+    if (!key) return false;
+    if (key.indexOf('supabase.auth.token') !== -1) return true;
+    if (key.indexOf('auth-token') !== -1 && !key.startsWith('sb-')) return true;
+    if (__rnSupabaseProjectRef && key === ('sb-' + __rnSupabaseProjectRef + '-auth-token')) return true;
+    return false;
+  }
+  function _pruneForeignSupabaseKeys() {
+    if (!__rnSupabaseProjectRef) return;
+    var keep = 'sb-' + __rnSupabaseProjectRef + '-auth-token';
+    for (var i = localStorage.length - 1; i >= 0; i--) {
+      var key = localStorage.key(i);
+      if (!key || !key.startsWith('sb-') || key === keep) continue;
+      if (key.endsWith('-auth-token')) localStorage.removeItem(key);
+    }
+  }
+  _pruneForeignSupabaseKeys();
   function _sendToken() {
     for (var i = 0; i < localStorage.length; i++) {
       var key = localStorage.key(i);
       if (!key) continue;
-      if (key.indexOf('auth-token') === -1 && key.indexOf('supabase.auth.token') === -1 && !key.startsWith('sb-')) continue;
+      if (!_isTargetAuthKey(key)) continue;
       try {
         var d = JSON.parse(localStorage.getItem(key) || 'null');
         if (!d) continue;
@@ -998,10 +1013,8 @@ export default function WebViewScreen() {
 
           case "open_google_auth": {
             const redirectTo = encodeURIComponent("theoriginaliching://auth/callback");
-            const runtimeRef = msg.ref || supabaseRefRef.current;
-            const runtimeSupabaseUrl = runtimeRef
-              ? `https://${runtimeRef}.supabase.co`
-              : SUPABASE_URL;
+            const runtimeRef = msg.ref || supabaseRefRef.current || SUPABASE_PROJECT_REF;
+            const runtimeSupabaseUrl = runtimeRef ? `https://${runtimeRef}.supabase.co` : SUPABASE_URL;
             Linking.openURL(
               `${runtimeSupabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}`
             );
