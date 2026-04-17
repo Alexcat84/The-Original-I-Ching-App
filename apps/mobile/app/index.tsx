@@ -741,6 +741,7 @@ const zoomStyles = StyleSheet.create({
 export default function WebViewScreen() {
   const webViewRef = useRef<WebView>(null);
   const [currentUrl, setCurrentUrl] = useState(BASE_URL);
+  const [webViewEpoch, setWebViewEpoch] = useState(0);
   const [canGoBack, setCanGoBack] = useState(false);
   const splashHidden = useRef(false);
   const webReadyRef = useRef(false);
@@ -832,10 +833,10 @@ export default function WebViewScreen() {
   const onLoadEnd = useCallback(() => {
     webReadyRef.current = true;
     webViewRef.current?.injectJavaScript(
-      `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+      `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(locale)}); window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
     );
     hideSplash();
-  }, [hideSplash]);
+  }, [hideSplash, locale]);
 
   /* ── Deep link handler (auth callback) ── */
   useEffect(() => {
@@ -851,6 +852,13 @@ export default function WebViewScreen() {
     });
     return () => sub.remove();
   }, []);
+
+  useEffect(() => {
+    if (!webReadyRef.current) return;
+    webViewRef.current?.injectJavaScript(
+      `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(locale)}); true;`
+    );
+  }, [locale]);
 
   /* ── Android hardware back ── */
   useEffect(() => {
@@ -879,9 +887,12 @@ export default function WebViewScreen() {
     setIsAuthenticated(false);
     setUserEmail(null);
     SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
+    webReadyRef.current = false;
     webViewRef.current?.injectJavaScript(
       `window.__rnSignOut && window.__rnSignOut(); true;`
     );
+    setCurrentUrl(`${BASE_URL}/login?native_signout=${Date.now()}`);
+    setWebViewEpoch((v) => v + 1);
   }, []);
 
   /* ── Handle file download (P5) ── */
@@ -1209,6 +1220,7 @@ export default function WebViewScreen() {
 
       {/* ── WebView ────────────────────────────────────────────────────────── */}
       <WebView
+        key={`web-${webViewEpoch}`}
         ref={webViewRef}
         source={{ uri: currentUrl }}
         style={styles.webview}
