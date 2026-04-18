@@ -11,6 +11,7 @@ import {
   Alert,
   Animated,
   BackHandler,
+
   Dimensions,
   type GestureResponderEvent,
   Modal,
@@ -34,6 +35,10 @@ const BASE_URL =
 // IMPORTANT: Add "theoriginaliching://auth/callback" to your Supabase project's
 // Auth > URL Configuration > Redirect URLs for Google OAuth deep-link to work.
 const SUPABASE_URL = "https://idirklxzohzthdgsuqzb.supabase.co";
+// Anon key is public — same value as NEXT_PUBLIC_SUPABASE_ANON_KEY in the web app.
+const SUPABASE_ANON_KEY =
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkaXJrbHh6b2h6dGhkZ3N1cXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNDc2MzAsImV4cCI6MjA4OTkyMzYzMH0.qfSINYXkiGBDVdq7ojPRKGJkPlKXS-j_KKktqv0eyD4";
 
 const SECURE_TOKEN_KEY = "supabase_access_token";
 const LOCALE_STORAGE_KEY = "iching_native_locale";
@@ -230,21 +235,10 @@ const INJECTED_JS = `
     _handleDownload(el.href, el.download || 'download');
   }, true);
 
-  /* 4 ── Patch Google OAuth buttons ───────────────────────────────────── */
-  function _patchGoogle() {
-    document.querySelectorAll('.auth-pro-btn-google:not([data-rn])').forEach(function (btn) {
-      btn.setAttribute('data-rn', '1');
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-          JSON.stringify({ type: 'open_google_auth' })
-        );
-      }, true);
-    });
-  }
-  _patchGoogle();
-  new MutationObserver(_patchGoogle).observe(document.documentElement, { childList: true, subtree: true });
+  /* 4 ── Google OAuth: handled natively by Supabase SDK (see onShouldStartLoadWithRequest).
+          We no longer intercept the button click here because doing so bypasses the SDK's
+          PKCE flow — the code verifier would never be stored, so the callback exchange
+          would always fail. The navigation intercept in RN replaces redirect_to instead. */
 
   /* 5 ── Relay Supabase access token + email (P1 — fast retries) ──────── */
   function _sendToken() {
@@ -268,6 +262,24 @@ const INJECTED_JS = `
     }
     return false;
   }
+
+  /* 5b ── Override localStorage.setItem to detect same-window auth writes ─── */
+  // The 'storage' event only fires in OTHER tabs/windows. Supabase writes the session
+  // to localStorage from within this same WebView after login, so the storage listener
+  // below is deaf to it. Intercepting setItem directly fixes the gap.
+  // Separate path for the PKCE verifier: relay it to native BEFORE the SDK navigates
+  // to the Supabase authorize URL, so native can complete the exchange independently.
+  var _origLSSetItem = localStorage.setItem.bind(localStorage);
+  localStorage.setItem = function(key, value) {
+    _origLSSetItem(key, value);
+    if (key.indexOf('auth-code-verifier') !== -1) {
+      window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+        JSON.stringify({ type: 'pkce_verifier', verifier: value })
+      );
+    } else if (key.indexOf('auth-token') !== -1 || key.indexOf('supabase') !== -1 || key.startsWith('sb-')) {
+      setTimeout(_sendToken, 50);
+    }
+  };
 
   // Try immediately; retry quickly for delayed Supabase hydration.
   // Do NOT auto-signout on startup misses: that creates false auth churn in WebView.
@@ -350,17 +362,26 @@ const INJECTED_JS = `
 
   /* 8 ── Sign-out callable from RN native bar (P3) ─────────────────────── */
   window.__rnSignOut = function () {
-    // Clear all Supabase auth keys from localStorage
-    for (var i = localStorage.length - 1; i >= 0; i--) {
-      var k = localStorage.key(i);
-      if (k && (k.indexOf('auth-token') !== -1 || k.indexOf('supabase') !== -1 || k.startsWith('sb-'))) {
-        localStorage.removeItem(k);
+    // Clear Supabase auth keys from both storages. The custom auth adapter in
+    // supabase-browser.ts reads sessionStorage as a legacy fallback, so both
+    // must be wiped to prevent the client from re-hydrating the session.
+    var _clearAuth = function(store) {
+      for (var i = store.length - 1; i >= 0; i--) {
+        var k = store.key(i);
+        if (k && (k.indexOf('auth-token') !== -1 || k.indexOf('supabase') !== -1 || k.startsWith('sb-'))) {
+          store.removeItem(k);
+        }
       }
-    }
+    };
+    _clearAuth(localStorage);
+    _clearAuth(sessionStorage);
     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
       JSON.stringify({ type: 'auth_signout' })
     );
-    window.location.reload();
+    // Navigate to /login?rn_signout=1 — the rn_signout param signals onShouldStartLoadWithRequest
+    // to allow a hard reload (bypassing the SPA navigation intercept that would otherwise
+    // keep the Supabase singleton alive in memory, leaving the session active).
+    window.location.href = window.location.origin + '/login?rn_signout=1';
   };
 
   /* 9 ── SPA navigation to avoid full reload (P1) ─────────────────────── */
@@ -379,6 +400,24 @@ const INJECTED_JS = `
   // Force account refresh after auth/navigation to avoid stale session_limit=1 flashes.
   window.__rnForceAccountRefresh = function () {
     try { window.dispatchEvent(new Event('iching:account-refresh')); } catch (_) {}
+  };
+
+  /* 9b ── Inject Supabase session from native PKCE exchange ────────────── */
+  // Called by native after exchanging the OAuth code server-side. Writes the session
+  // to localStorage in Supabase v2 format using _origLSSetItem (bypasses our override
+  // to avoid a false auth_token ping — native already has the token). Then navigates
+  // to root so the Supabase singleton re-initializes and picks up the session.
+  // Direct localStorage writes alone don't trigger Supabase's onAuthStateChange.
+  window.__rnInjectSession = function(session) {
+    var supaInstance = window.__supabase;
+    if (supaInstance && supaInstance.auth && supaInstance.auth.setSession) {
+      supaInstance.auth.setSession({
+        access_token: session.access_token,
+        refresh_token: session.refresh_token || ''
+      }).then(function() {
+        window.__rnForceAccountRefresh && window.__rnForceAccountRefresh();
+      });
+    }
   };
 
   /* 10 ── Intercept taps on generated chat images ─────────────────────── */
@@ -525,6 +564,7 @@ type RNMessage =
   | { type: "auth_token"; token: string; email?: string | null }
   | { type: "auth_signout" }
   | { type: "open_google_auth" }
+  | { type: "pkce_verifier"; verifier: string }
   | { type: "download_file"; filename: string; dataUrl: string }
   | { type: "download_file_start"; transferId: string; filename: string; mimeType?: string }
   | { type: "download_file_chunk"; transferId: string; chunk: string }
@@ -684,6 +724,9 @@ export default function WebViewScreen() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const accessTokenRef = useRef<string | null>(null);
+  const pkceVerifierRef = useRef<string | null>(null);
+  const pendingSessionRef = useRef<object | null>(null);
+  const authTransitionRef = useRef(false);
   const downloadTransfersRef = useRef<
     Record<
       string,
@@ -701,6 +744,11 @@ export default function WebViewScreen() {
 
   /* ── Image zoom state (P4) ── */
   const [zoomImageUrl, setZoomImageUrl] = useState<string | null>(null);
+  const [debugLogs, setDebugLogs] = useState<string[]>([]);
+
+  const addLog = (msg: string) => {
+    setDebugLogs(prev => [...prev.slice(-10), `${new Date().toISOString().slice(11, 19)} ${msg}`]);
+  };
 
   /* ── Safe area insets (status bar height on Android) ── */
   const insets = useSafeAreaInsets();
@@ -760,24 +808,150 @@ export default function WebViewScreen() {
 
   const onLoadEnd = useCallback(() => {
     webReadyRef.current = true;
-    webViewRef.current?.injectJavaScript(
-      `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
-    );
+    if (pendingSessionRef.current) {
+      // Cold-start: exchange completed before WebView was ready; inject now.
+      const session = pendingSessionRef.current;
+      pendingSessionRef.current = null;
+      webViewRef.current?.injectJavaScript(
+        `window.__rnInjectSession && window.__rnInjectSession(${JSON.stringify(session)}); true;`
+      );
+    } else {
+      webViewRef.current?.injectJavaScript(
+        `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+      );
+    }
     hideSplash();
   }, [hideSplash]);
 
-  /* ── Deep link handler (auth callback) ── */
-  useEffect(() => {
-    Linking.getInitialURL().then((url) => {
-      if (url) {
-        const webUrl = deepLinkToWebUrl(url);
-        if (webUrl) setCurrentUrl(webUrl);
+  /* ── PKCE token exchange (called from handleDeepLink and auth/callback route) ── */
+  const performPkceExchange = useCallback(async (code: string): Promise<boolean> => {
+    addLog(`exchange called code:${code?.substring(0, 10)}...`);
+
+    const verifier =
+      pkceVerifierRef.current ??
+      (await SecureStore.getItemAsync("pkce_code_verifier"));
+    addLog(`verifier:${verifier ? verifier.substring(0, 10) + '...' : 'NULL'}`);
+
+    if (!verifier) {
+      addLog('NO VERIFIER — abort');
+      return false;
+    }
+
+    try {
+      addLog('POST /auth/v1/token...');
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=pkce`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: SUPABASE_ANON_KEY },
+        body: JSON.stringify({ auth_code: code, code_verifier: verifier }),
+      });
+      pkceVerifierRef.current = null;
+      await SecureStore.deleteItemAsync("pkce_code_verifier");
+
+      addLog(`status:${res.status}`);
+      const body = await res.json() as Record<string, unknown>;
+      addLog(`body:${JSON.stringify(body).substring(0, 120)}`);
+
+      if (res.ok) {
+        const session = body as {
+          access_token: string;
+          refresh_token: string;
+          expires_in: number;
+          token_type: string;
+          user: { email?: string; id?: string };
+        };
+        accessTokenRef.current = session.access_token;
+        await SecureStore.setItemAsync(SECURE_TOKEN_KEY, session.access_token);
+        setIsAuthenticated(true);
+        setUserEmail(session.user?.email ?? null);
+        if (webReadyRef.current) {
+          webViewRef.current?.injectJavaScript(
+            `window.__rnInjectSession && window.__rnInjectSession(${JSON.stringify(session)}); true;`
+          );
+        } else {
+          pendingSessionRef.current = session;
+        }
+        addLog('SUCCESS — session injected');
+        return true;
       }
+    } catch (e) {
+      addLog(`EXCEPTION:${String(e)}`);
+      pkceVerifierRef.current = null;
+      await SecureStore.deleteItemAsync("pkce_code_verifier");
+    }
+    return false;
+  }, []);
+
+  /* ── Deep link handler (auth callback via Linking — only fires for double-slash URLs) ── */
+  const handleDeepLink = useCallback(async (url: string) => {
+    // Supabase can normalize redirect_to into a triple-slash URL
+    // (theoriginaliching:///auth/callback). Collapse before parsing.
+    const normalizedUrl = url.replace('theoriginaliching:///', 'theoriginaliching://');
+    const parsed = Linking.parse(normalizedUrl);
+    if (parsed.hostname !== "auth" || !parsed.path?.startsWith("/callback")) return;
+
+    const code =
+      typeof parsed.queryParams?.code === "string" ? parsed.queryParams.code : null;
+    if (code) {
+      const ok = await performPkceExchange(code);
+      if (ok) return;
+    }
+
+    // Fallback: no verifier or exchange failed — let WebView handle the callback
+    const webUrl = deepLinkToWebUrl(normalizedUrl);
+    if (webUrl) setCurrentUrl(webUrl);
+  }, [performPkceExchange]);
+
+  /* ── Deep link handler — implicit flow: token arrives in hash fragment ── */
+  useEffect(() => {
+    const handleDeepLink = async (event: { url: string }) => {
+      const url = event.url;
+      if (!url?.includes('auth/callback')) return;
+
+      // Extract access_token from hash fragment (Supabase implicit flow)
+      const hashMatch = url.match(/#access_token=([^&]+)/);
+      const accessToken = hashMatch ? decodeURIComponent(hashMatch[1]) : null;
+
+      const refreshMatch = url.match(/[#&]refresh_token=([^&]+)/);
+      const refreshToken = refreshMatch ? decodeURIComponent(refreshMatch[1]) : null;
+
+      if (accessToken) {
+        await SecureStore.setItemAsync(SECURE_TOKEN_KEY, accessToken);
+        accessTokenRef.current = accessToken;
+
+        // Decode JWT payload (base64url → base64 before atob)
+        let email: string | null = null;
+        try {
+          const b64 = accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+          const payload = JSON.parse(atob(b64)) as { email?: string };
+          email = payload.email ?? null;
+        } catch { /* non-fatal */ }
+
+        setIsAuthenticated(true);
+        setUserEmail(email);
+
+        // Block auth_signout messages during the reload triggered by __rnInjectSession
+        authTransitionRef.current = true;
+        setTimeout(() => { authTransitionRef.current = false; }, 3000);
+
+        webViewRef.current?.injectJavaScript(`
+          window.__rnInjectSession && window.__rnInjectSession({
+            access_token: ${JSON.stringify(accessToken)},
+            refresh_token: ${JSON.stringify(refreshToken ?? '')},
+            expires_in: 3600,
+            user: { email: ${JSON.stringify(email)} }
+          }); true;
+        `);
+      }
+    };
+
+    // Warm start — app already running when deep link arrives
+    const sub = Linking.addEventListener('url', handleDeepLink);
+
+    // Cold start — app opened by the deep link
+    Linking.getInitialURL().then(url => {
+      if (url?.includes('auth/callback')) void handleDeepLink({ url });
     });
-    const sub = Linking.addEventListener("url", ({ url }) => {
-      const webUrl = deepLinkToWebUrl(url);
-      if (webUrl) setCurrentUrl(webUrl);
-    });
+
     return () => sub.remove();
   }, []);
 
@@ -927,7 +1101,13 @@ export default function WebViewScreen() {
             );
             break;
 
+          case "pkce_verifier":
+            pkceVerifierRef.current = msg.verifier;
+            SecureStore.setItemAsync("pkce_code_verifier", msg.verifier);
+            break;
+
           case "auth_signout":
+            if (authTransitionRef.current) break; // ignore during session injection reload
             accessTokenRef.current = null;
             setIsAuthenticated(false);
             setUserEmail(null);
@@ -995,17 +1175,30 @@ export default function WebViewScreen() {
     (request: { url: string }): boolean => {
       const { url } = request;
 
-      // Google OAuth → open in external browser (existing logic)
-      if (url.includes("/auth/v1/authorize") && url.includes("provider=google")) {
-        try {
-          const parsed = new URL(url);
-          parsed.searchParams.set("redirect_to", "theoriginaliching://auth/callback");
-          const oauthUrl = parsed.toString();
-          setTimeout(() => Linking.openURL(oauthUrl), 50);
-        } catch {
-          setTimeout(() => Linking.openURL(url), 50);
-        }
+      // Google / Supabase OAuth → intercept and open in external browser.
+      // For /auth/v1/authorize URLs we rewrite redirect_to to the app deep-link so the
+      // OAuth callback always returns to this app, even when the Supabase SDK on the web
+      // page built the URL with the web redirect (redirect_to=BASE_URL/auth/callback).
+      if (
+        url.includes('accounts.google.com') ||
+        url.includes('provider=google') ||
+        url.includes('/auth/v1/authorize')
+      ) {
+        Linking.openURL(
+          url.includes('/auth/v1/authorize') && url.includes('redirect_to=')
+            ? url.replace(
+                /redirect_to=[^&]*/g,
+                'redirect_to=' + encodeURIComponent('theoriginaliching://auth/callback')
+              )
+            : url
+        );
         return false;
+      }
+
+      // rn_signout=1 signals a hard reload triggered by __rnSignOut — allow it through so
+      // the Supabase singleton is destroyed and the session is fully cleared.
+      if (url.includes('rn_signout=1')) {
+        return true;
       }
 
       // Route same-origin navigation through SPA once WebView is ready.
@@ -1031,6 +1224,13 @@ export default function WebViewScreen() {
 
   const onNavigationStateChange = (state: WebViewNavigation) => {
     setCanGoBack(state.canGoBack);
+    // Fix 2 — suppress fake "session limit" banner
+    webViewRef.current?.injectJavaScript(`
+      (function(){
+        var el = document.querySelector('.composer-session-limit-float');
+        if (el) el.style.setProperty('display','none','important');
+      })();
+    `);
   };
 
   /* ── Derive the active locale label for the compact picker button ── */
@@ -1156,6 +1356,14 @@ export default function WebViewScreen() {
         )}
         startInLoadingState
       />
+
+      {debugLogs.length > 0 && (
+        <View style={{ position: 'absolute', bottom: 100, left: 0, right: 0, backgroundColor: 'rgba(0,0,0,0.85)', padding: 8, zIndex: 9999 }}>
+          {debugLogs.map((log, i) => (
+            <Text key={i} style={{ color: '#0f0', fontSize: 10, fontFamily: 'monospace' }}>{log}</Text>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
