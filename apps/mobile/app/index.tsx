@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Purchases from "react-native-purchases";
 import * as FileSystem from "expo-file-system";
 import * as Linking from "expo-linking";
 import * as MediaLibrary from "expo-media-library";
@@ -11,6 +12,7 @@ import {
   Alert,
   Animated,
   BackHandler,
+  DeviceEventEmitter,
 
   Dimensions,
   type GestureResponderEvent,
@@ -778,6 +780,18 @@ export default function WebViewScreen() {
 
   /* ── Restore token + locale from storage on cold start ── */
   useEffect(() => {
+    const RC_API_KEY = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ?? 'rcb_mEebmVMpfZYlBttOZNnKGUlmOzOd';
+    Purchases.configure({ apiKey: RC_API_KEY });
+
+    const purchaseSub = DeviceEventEmitter.addListener('rnPurchaseSuccess', () => {
+      webViewRef.current?.injectJavaScript(
+        `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+      );
+    });
+    return () => { purchaseSub.remove(); };
+  }, []);
+
+  useEffect(() => {
     SecureStore.getItemAsync(SECURE_TOKEN_KEY).then(async (tok) => {
       if (!tok) return;
       const check = await validateStoredToken(tok);
@@ -901,10 +915,36 @@ export default function WebViewScreen() {
     if (webUrl) setCurrentUrl(webUrl);
   }, [performPkceExchange]);
 
-  /* ── Deep link handler — implicit flow: token arrives in hash fragment ── */
+  /* ── Deep link handler — OAuth callback + RevenueCat redemption ── */
   useEffect(() => {
     const handleDeepLink = async (event: { url: string }) => {
       const url = event.url;
+      if (!url?.includes('auth/callback') && !url?.includes('rc-340e77bf41')) return;
+
+      // RevenueCat web purchase redemption link
+      try {
+        const redemption = await Purchases.parseAsWebPurchaseRedemption(url);
+        if (redemption) {
+          Alert.alert('REVENUECAT', 'Redemption link detectado, procesando...');
+          const result = await Purchases.redeemWebPurchase(redemption);
+          Alert.alert('RC RESULT', JSON.stringify(result).substring(0, 100));
+          webViewRef.current?.injectJavaScript(
+            `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+          );
+          return;
+        }
+      } catch {
+        // Not a redemption link — continue to auth flow
+      }
+
+      // RevenueCat post-purchase redirect back to the app
+      if (url.includes('purchase-success') || url === 'theoriginaliching://') {
+        webViewRef.current?.injectJavaScript(
+          `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+        );
+        return;
+      }
+
       if (!url?.includes('auth/callback')) return;
 
       // Extract access_token from hash fragment (Supabase implicit flow)
@@ -949,7 +989,7 @@ export default function WebViewScreen() {
 
     // Cold start — app opened by the deep link
     Linking.getInitialURL().then(url => {
-      if (url?.includes('auth/callback')) void handleDeepLink({ url });
+      if (url?.includes('auth/callback') || url?.includes('rc-340e77bf41')) void handleDeepLink({ url });
     });
 
     return () => sub.remove();

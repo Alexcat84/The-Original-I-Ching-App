@@ -12,6 +12,11 @@ module.exports = ({ config }) => ({
   platforms: ["android"],
   userInterfaceStyle: "dark",
   backgroundColor: "#0c0f14",
+  androidStatusBar: {
+    barStyle: "light-content",
+    backgroundColor: "#0c0f14",
+    translucent: false,
+  },
   splash: {
     backgroundColor: "#0c0f14",
     resizeMode: "contain",
@@ -36,12 +41,22 @@ module.exports = ({ config }) => ({
     intentFilters: [
       {
         action: "VIEW",
-        autoVerify: true,
+        autoVerify: false,
         data: [
           {
             scheme: "theoriginaliching",
             host: "auth",
             pathPrefix: "/callback",
+          },
+        ],
+        category: ["BROWSABLE", "DEFAULT"],
+      },
+      {
+        action: "VIEW",
+        autoVerify: false,
+        data: [
+          {
+            scheme: "rc-340e77bf41",
           },
         ],
         category: ["BROWSABLE", "DEFAULT"],

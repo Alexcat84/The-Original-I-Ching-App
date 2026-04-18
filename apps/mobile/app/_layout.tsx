@@ -16,6 +16,12 @@ export default function Layout() {
     return () => clearTimeout(timeout);
   }, []);
 
+  useEffect(() => {
+    if (__DEV__ && typeof window !== 'undefined') {
+      import('eruda').then(m => m.default.init());
+    }
+  }, []);
+
   return (
     <SafeAreaProvider>
       <StatusBar style="light" backgroundColor="#0c0f14" translucent={false} />
