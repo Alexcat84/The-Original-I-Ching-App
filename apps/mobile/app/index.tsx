@@ -33,16 +33,7 @@ const BASE_URL =
 // Supabase project — needed to construct the Google OAuth URL from native side.
 // IMPORTANT: Add "theoriginaliching://auth/callback" to your Supabase project's
 // Auth > URL Configuration > Redirect URLs for Google OAuth deep-link to work.
-const SUPABASE_URL =
-  process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() ||
-  "https://pjbjpdpgpzwgrellvsor.supabase.co";
-const SUPABASE_PROJECT_REF = (() => {
-  try {
-    return new URL(SUPABASE_URL).hostname.split(".")[0] ?? null;
-  } catch {
-    return null;
-  }
-})();
+const SUPABASE_URL = "https://idirklxzohzthdgsuqzb.supabase.co";
 
 const SECURE_TOKEN_KEY = "supabase_access_token";
 const LOCALE_STORAGE_KEY = "iching_native_locale";
@@ -65,8 +56,7 @@ const LOCALES: { code: AppLocale; label: string; name: string }[] = [
 function deepLinkToWebUrl(deepLink: string): string | null {
   try {
     const parsed = Linking.parse(deepLink);
-    const normalizedPath = (parsed.path ?? "").replace(/^\/+/, "");
-    if (parsed.hostname === "auth" && normalizedPath.startsWith("callback")) {
+    if (parsed.hostname === "auth" && parsed.path?.startsWith("/callback")) {
       const params = new URLSearchParams(
         Object.entries(parsed.queryParams ?? {}).map(([k, v]) => [k, String(v)])
       );
@@ -98,12 +88,6 @@ const INJECTED_JS = `
 (function () {
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
-  var __rnSupabaseProjectRef = ${JSON.stringify(SUPABASE_PROJECT_REF)};
-  function _bridgeLog(event, payload) {
-    window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: 'bridge_log', event: event, payload: payload || null })
-    );
-  }
 
   /* 1 ── Hide web top bar ─────────────────────────────────────────────── */
   var _st = document.createElement('style');
@@ -246,61 +230,28 @@ const INJECTED_JS = `
     _handleDownload(el.href, el.download || 'download');
   }, true);
 
-  /* 4 ── Google OAuth uses onShouldStartLoadWithRequest interception ───── */
-  function _detectSupabaseRef() { return __rnSupabaseProjectRef || null; }
-  function _postSupabaseRef() {
-    var ref = __rnSupabaseProjectRef;
-    if (!ref) return;
-    _bridgeLog('supabase_ref', { ref: ref });
-    window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: 'supabase_ref', ref: ref })
-    );
-  }
+  /* 4 ── Patch Google OAuth buttons ───────────────────────────────────── */
   function _patchGoogle() {
     document.querySelectorAll('.auth-pro-btn-google:not([data-rn])').forEach(function (btn) {
       btn.setAttribute('data-rn', '1');
       btn.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        _bridgeLog('google_click_intercept', { ref: __rnSupabaseProjectRef || null });
         window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-          JSON.stringify({ type: 'open_google_auth', ref: __rnSupabaseProjectRef || undefined })
+          JSON.stringify({ type: 'open_google_auth' })
         );
       }, true);
     });
   }
-  _postSupabaseRef();
   _patchGoogle();
-  new MutationObserver(function() {
-    _postSupabaseRef();
-    _patchGoogle();
-  }).observe(document.documentElement, { childList: true, subtree: true });
+  new MutationObserver(_patchGoogle).observe(document.documentElement, { childList: true, subtree: true });
 
   /* 5 ── Relay Supabase access token + email (P1 — fast retries) ──────── */
-  function _isTargetAuthKey(key) {
-    if (!key) return false;
-    if (key.indexOf('supabase.auth.token') !== -1) return true;
-    if (key.indexOf('auth-token') !== -1 && !key.startsWith('sb-')) return true;
-    if (__rnSupabaseProjectRef && key === ('sb-' + __rnSupabaseProjectRef + '-auth-token')) return true;
-    return false;
-  }
-  function _pruneForeignSupabaseKeys() {
-    if (!__rnSupabaseProjectRef) return;
-    var keep = 'sb-' + __rnSupabaseProjectRef + '-auth-token';
-    var removed = 0;
-    for (var i = localStorage.length - 1; i >= 0; i--) {
-      var key = localStorage.key(i);
-      if (!key || !key.startsWith('sb-') || key === keep) continue;
-      if (key.endsWith('-auth-token')) { localStorage.removeItem(key); removed += 1; }
-    }
-    if (removed > 0) _bridgeLog('prune_foreign_auth_keys', { removed: removed });
-  }
-  _pruneForeignSupabaseKeys();
   function _sendToken() {
     for (var i = 0; i < localStorage.length; i++) {
       var key = localStorage.key(i);
       if (!key) continue;
-      if (!_isTargetAuthKey(key)) continue;
+      if (key.indexOf('auth-token') === -1 && key.indexOf('supabase.auth.token') === -1) continue;
       try {
         var d = JSON.parse(localStorage.getItem(key) || 'null');
         if (!d) continue;
@@ -308,7 +259,6 @@ const INJECTED_JS = `
         var tok = session.access_token || d.access_token;
         var email = (session.user && session.user.email) || (d.user && d.user.email) || null;
         if (tok) {
-          _bridgeLog('auth_token_found', { key: key, hasEmail: Boolean(email) });
           window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
             JSON.stringify({ type: 'auth_token', token: tok, email: email })
           );
@@ -317,26 +267,6 @@ const INJECTED_JS = `
       } catch (_) {}
     }
     return false;
-  }
-  var _lastAuthState = 'unknown';
-  var _authMisses = 0;
-  function _emitSignoutIfNeeded() {
-    if (_lastAuthState === 'out') return;
-    _lastAuthState = 'out';
-    _bridgeLog('auth_signout_emit', { misses: _authMisses });
-    window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: 'auth_signout' })
-    );
-  }
-  function _syncAuthState() {
-    var hasToken = _sendToken();
-    if (hasToken) {
-      _authMisses = 0;
-      _lastAuthState = 'in';
-      return;
-    }
-    _authMisses += 1;
-    if (_authMisses >= 3) _emitSignoutIfNeeded();
   }
 
   // Try immediately; retry quickly for delayed Supabase hydration.
@@ -354,23 +284,18 @@ const INJECTED_JS = `
       }
     }, 150);
   }
-  // Same-tab localStorage updates do not emit 'storage'; keep native auth in sync.
-  setInterval(function () { _syncAuthState(); _postSupabaseRef(); }, 1200);
 
   // Re-check when localStorage changes (sign-in / sign-out events)
   // When a Supabase auth key is cleared, notify native immediately (P1 fix)
-  var _pendingSignoutTimer = null;
   window.addEventListener('storage', function(e) {
     var k = e.key || '';
     var isAuthKey = k.indexOf('auth-token') !== -1 || k.indexOf('supabase') !== -1 || k.startsWith('sb-');
     if (!isAuthKey) return;
-    if (_pendingSignoutTimer) clearTimeout(_pendingSignoutTimer);
-    _pendingSignoutTimer = setTimeout(function() {
-      if (!_sendToken()) {
-        _emitSignoutIfNeeded();
-      }
-      _pendingSignoutTimer = null;
-    }, 1200);
+    if (!_sendToken()) {
+      window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+        JSON.stringify({ type: 'auth_signout' })
+      );
+    }
   });
   // Re-check when returning via back-forward cache (P1)
   window.addEventListener('pageshow', function (e) { if (e.persisted) _sendToken(); });
@@ -599,9 +524,7 @@ true;
 type RNMessage =
   | { type: "auth_token"; token: string; email?: string | null }
   | { type: "auth_signout" }
-  | { type: "bridge_log"; event: string; payload?: unknown }
-  | { type: "open_google_auth"; ref?: string }
-  | { type: "supabase_ref"; ref: string }
+  | { type: "open_google_auth" }
   | { type: "download_file"; filename: string; dataUrl: string }
   | { type: "download_file_start"; transferId: string; filename: string; mimeType?: string }
   | { type: "download_file_chunk"; transferId: string; chunk: string }
@@ -753,7 +676,6 @@ const zoomStyles = StyleSheet.create({
 export default function WebViewScreen() {
   const webViewRef = useRef<WebView>(null);
   const [currentUrl, setCurrentUrl] = useState(BASE_URL);
-  const [webViewEpoch, setWebViewEpoch] = useState(0);
   const [canGoBack, setCanGoBack] = useState(false);
   const splashHidden = useRef(false);
   const webReadyRef = useRef(false);
@@ -762,7 +684,6 @@ export default function WebViewScreen() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const accessTokenRef = useRef<string | null>(null);
-  const supabaseRefRef = useRef<string | null>(null);
   const downloadTransfersRef = useRef<
     Record<
       string,
@@ -780,10 +701,6 @@ export default function WebViewScreen() {
 
   /* ── Image zoom state (P4) ── */
   const [zoomImageUrl, setZoomImageUrl] = useState<string | null>(null);
-  const logBridge = useCallback((event: string, payload?: unknown) => {
-    // Read with: adb logcat | rg "ICHING_MOBILE"
-    console.log(`[ICHING_MOBILE] ${event}`, payload ?? "");
-  }, []);
 
   /* ── Safe area insets (status bar height on Android) ── */
   const insets = useSafeAreaInsets();
@@ -792,24 +709,20 @@ export default function WebViewScreen() {
   const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
 
   const validateStoredToken = useCallback(
-    async (
-      token: string
-    ): Promise<{ status: "valid" | "invalid" | "unknown"; email: string | null }> => {
+    async (token: string): Promise<{ valid: boolean; email: string | null }> => {
       try {
         const res = await fetch(`${BASE_URL}/api/account/me`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (res.status === 401 || res.status === 403) return { status: "invalid", email: null };
-        if (!res.ok) return { status: "unknown", email: null };
+        if (!res.ok) return { valid: false, email: null };
         const data = (await res.json().catch(() => null)) as
           | { user?: { email?: string | null } }
           | null;
         const email = typeof data?.user?.email === "string" ? data.user.email : null;
-        return { status: "valid", email };
+        return { valid: true, email };
       } catch {
-        // Network hiccups must not force local sign-out.
-        return { status: "unknown", email: null };
+        return { valid: false, email: null };
       }
     },
     []
@@ -819,13 +732,12 @@ export default function WebViewScreen() {
   useEffect(() => {
     SecureStore.getItemAsync(SECURE_TOKEN_KEY).then(async (tok) => {
       if (!tok) return;
-      // Optimistic restore for instant UX; validation runs in background.
-      accessTokenRef.current = tok;
-      setIsAuthenticated(true);
       const check = await validateStoredToken(tok);
-      if (check.status === "valid") {
+      if (check.valid) {
+        accessTokenRef.current = tok;
+        setIsAuthenticated(true);
         setUserEmail(check.email);
-      } else if (check.status === "invalid") {
+      } else {
         accessTokenRef.current = null;
         setIsAuthenticated(false);
         setUserEmail(null);
@@ -848,12 +760,11 @@ export default function WebViewScreen() {
 
   const onLoadEnd = useCallback(() => {
     webReadyRef.current = true;
-    logBridge("webview_load_end", { url: currentUrl, locale });
     webViewRef.current?.injectJavaScript(
-      `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(locale)}); window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+      `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
     );
     hideSplash();
-  }, [hideSplash, locale, logBridge, currentUrl]);
+  }, [hideSplash]);
 
   /* ── Deep link handler (auth callback) ── */
   useEffect(() => {
@@ -869,13 +780,6 @@ export default function WebViewScreen() {
     });
     return () => sub.remove();
   }, []);
-
-  useEffect(() => {
-    if (!webReadyRef.current) return;
-    webViewRef.current?.injectJavaScript(
-      `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(locale)}); true;`
-    );
-  }, [locale]);
 
   /* ── Android hardware back ── */
   useEffect(() => {
@@ -900,18 +804,14 @@ export default function WebViewScreen() {
 
   /* ── P3: Sign out from native bar ── */
   const handleSignOut = useCallback(() => {
-    logBridge("native_signout_start");
     accessTokenRef.current = null;
     setIsAuthenticated(false);
     setUserEmail(null);
     SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
-    webReadyRef.current = false;
     webViewRef.current?.injectJavaScript(
       `window.__rnSignOut && window.__rnSignOut(); true;`
     );
-    setCurrentUrl(`${BASE_URL}/login?native_signout=${Date.now()}`);
-    setWebViewEpoch((v) => v + 1);
-  }, [logBridge]);
+  }, []);
 
   /* ── Handle file download (P5) ── */
   const handleFileDownload = useCallback(
@@ -1017,12 +917,7 @@ export default function WebViewScreen() {
       try {
         const msg = JSON.parse(event.nativeEvent.data) as RNMessage;
         switch (msg.type) {
-          case "bridge_log":
-            logBridge(`web:${msg.event}`, msg.payload);
-            break;
-
           case "auth_token":
-            logBridge("auth_token", { hasEmail: Boolean(msg.email) });
             accessTokenRef.current = msg.token;
             setIsAuthenticated(true);
             if (msg.email) setUserEmail(msg.email);
@@ -1033,27 +928,19 @@ export default function WebViewScreen() {
             break;
 
           case "auth_signout":
-            logBridge("auth_signout");
             accessTokenRef.current = null;
             setIsAuthenticated(false);
             setUserEmail(null);
             SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
-            break;
-
-          case "supabase_ref":
-            logBridge("supabase_ref", { ref: msg.ref });
-            if (msg.ref) {
-              supabaseRefRef.current = msg.ref;
-            }
+            webViewRef.current?.injectJavaScript(
+              `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
+            );
             break;
 
           case "open_google_auth": {
             const redirectTo = encodeURIComponent("theoriginaliching://auth/callback");
-            const runtimeRef = msg.ref || supabaseRefRef.current || SUPABASE_PROJECT_REF;
-            const runtimeSupabaseUrl = runtimeRef ? `https://${runtimeRef}.supabase.co` : SUPABASE_URL;
-            logBridge("open_google_auth", { runtimeSupabaseUrl });
             Linking.openURL(
-              `${runtimeSupabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}`
+              `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}`
             );
             break;
           }
@@ -1100,7 +987,7 @@ export default function WebViewScreen() {
         // Ignore non-JSON bridge noise
       }
     },
-    [handleFileDownload, handleDeleteChat, logBridge]
+    [handleFileDownload, handleDeleteChat]
   );
 
   /* ── Intercept Google OAuth + internal doc navigation ── */
@@ -1114,10 +1001,8 @@ export default function WebViewScreen() {
           const parsed = new URL(url);
           parsed.searchParams.set("redirect_to", "theoriginaliching://auth/callback");
           const oauthUrl = parsed.toString();
-          logBridge("intercept_google_authorize", { oauthUrl });
           setTimeout(() => Linking.openURL(oauthUrl), 50);
         } catch {
-          logBridge("intercept_google_authorize_fallback", { url });
           setTimeout(() => Linking.openURL(url), 50);
         }
         return false;
@@ -1132,7 +1017,6 @@ export default function WebViewScreen() {
           path.startsWith("/auth/callback?") ||
           path.startsWith("/auth/callback#");
         if (!isAuthCallbackPath) {
-          logBridge("spa_navigate", { path });
           webViewRef.current?.injectJavaScript(
             `window.__rnNavigateTo && window.__rnNavigateTo(${JSON.stringify(path)}); true;`
           );
@@ -1142,7 +1026,7 @@ export default function WebViewScreen() {
 
       return true;
     },
-    [logBridge]
+    []
   );
 
   const onNavigationStateChange = (state: WebViewNavigation) => {
@@ -1249,7 +1133,6 @@ export default function WebViewScreen() {
 
       {/* ── WebView ────────────────────────────────────────────────────────── */}
       <WebView
-        key={`web-${webViewEpoch}`}
         ref={webViewRef}
         source={{ uri: currentUrl }}
         style={styles.webview}

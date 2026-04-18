@@ -67,6 +67,9 @@ export function getSupabaseBrowser(): SupabaseClient {
       storage: createBrowserAuthStorage(),
     },
   });
+  if (typeof window !== "undefined") {
+    (window as any).__supabase = browserClient; // APK WebView access
+  }
   return browserClient;
 }
 
