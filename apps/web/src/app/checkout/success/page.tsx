@@ -70,6 +70,11 @@ export default function CheckoutSuccessPage() {
   const [paidTierLabel, setPaidTierLabel] = useState<string>("");
 
   useEffect(() => {
+    if (/android/i.test(navigator.userAgent)) {
+      window.location.href = "theoriginaliching://purchase-success";
+      return; // let the APK handle it; page stays visible as fallback
+    }
+
     if (ranRef.current) return;
     ranRef.current = true;
 
