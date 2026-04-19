@@ -39,11 +39,6 @@ function shouldAllowAdminTwoFactorBypass(): boolean {
   return raw === "1" || raw === "true";
 }
 
-function shouldAllowAdminUnlimitedCredits(): boolean {
-  const raw = (process.env.ALLOW_ADMIN_UNLIMITED_CREDITS ?? "").trim().toLowerCase();
-  if (!raw) return true;
-  return raw === "1" || raw === "true";
-}
 
 function resolveTierKey(tier: string): TierKey {
   return toContextTierKey(tier);
