@@ -236,7 +236,7 @@ export async function generateInterpretation(
   mode: ResponseMode = "ritual",
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<{ text: string; category: ConsultationCategory }> {
-  const { ANTHROPIC_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
+  const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const language = castResult.language;
   const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
@@ -292,6 +292,47 @@ export async function generateInterpretation(
       }
     } catch (err) {
       console.warn("[generateInterpretation] Anthropic failed, trying fallback chain", err);
+    }
+  }
+
+  if (OPENROUTER_API_KEY) {
+    try {
+      const openRouterClient = new Anthropic({
+        apiKey: OPENROUTER_API_KEY,
+        baseURL: "https://openrouter.ai/api/v1",
+        defaultHeaders: {
+          "HTTP-Referer": "https://theoriginaliching.com",
+          "X-Title": "The Original I Ching App",
+        },
+      });
+      const response = await openRouterClient.messages.create({
+        model,
+        max_tokens: maxTokens,
+        system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
+        messages: [{ role: "user", content: userContent }],
+      });
+      const fullText = response.content
+        .filter((b) => b.type === "text")
+        .map((b) => (b as { text: string }).text)
+        .join("");
+      if (response.stop_reason === "max_tokens") {
+        console.warn("[generateInterpretation] OpenRouter hit max_tokens", { tier, maxTokens });
+      }
+      const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
+      const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
+      const cleanText = stripInterpretationFluff(
+        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+      );
+      if (cleanText.trim().length > 0) {
+        if (isLikelyWrongLanguage(cleanText, language)) {
+          console.warn("[generateInterpretation] OpenRouter returned likely wrong language; falling through", { language });
+        } else {
+          const hardened = enforceIChingStructuralConsistency(cleanText, castResult, language);
+          return { text: normalizeInterpretationPunctuation(hardened), category };
+        }
+      }
+    } catch (err) {
+      console.warn("[generateInterpretation] OpenRouter failed, trying Groq fallback", err);
     }
   }
 
