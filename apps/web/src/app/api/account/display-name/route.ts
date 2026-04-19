@@ -14,21 +14,21 @@ export async function PUT(req: Request) {
   try {
     body = (await req.json()) as { display_name?: unknown };
   } catch {
-    return apiError(400, { error: "invalid_json", code: "REQUEST_INVALID_JSON" });
+    return apiError(400, { error: "invalid_json", code: "REQUEST_INVALID_JSON", action: "fix_input" });
   }
 
   const rawName = typeof body.display_name === "string" ? body.display_name.trim() : "";
   if (!rawName) {
-    return apiError(400, { error: "display_name_required", code: "DISPLAY_NAME_REQUIRED" });
+    return apiError(400, { error: "display_name_required", code: "DISPLAY_NAME_REQUIRED", action: "fix_input" });
   }
   if (rawName.length > 60) {
-    return apiError(400, { error: "display_name_too_long", code: "DISPLAY_NAME_TOO_LONG" });
+    return apiError(400, { error: "display_name_too_long", code: "DISPLAY_NAME_TOO_LONG", action: "fix_input" });
   }
 
   const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
   const supabase = getSupabaseAdmin();
   if (!supabase) {
-    return apiError(500, { error: "db_unavailable", code: "DB_UNAVAILABLE" });
+    return apiError(500, { error: "db_unavailable", code: "DB_UNAVAILABLE", action: "retry" });
   }
 
   const { error } = await supabase
@@ -38,7 +38,7 @@ export async function PUT(req: Request) {
 
   if (error) {
     console.error("[account/display-name] update failed", error);
-    return apiError(500, { error: "update_failed", code: "UPDATE_FAILED" });
+    return apiError(500, { error: "update_failed", code: "UPDATE_FAILED", action: "retry" });
   }
 
   return NextResponse.json({ ok: true, display_name: rawName });
