@@ -1102,6 +1102,7 @@ export default function HomePage() {
   const [twoFactorError, setTwoFactorError] = useState<string | null>(null);
   const [secondFactorVerified, setSecondFactorVerified] = useState(false);
   const [tokenBalance, setTokenBalance] = useState<number | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [displayName, setDisplayName] = useState<string | null | undefined>(undefined);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState<"enter" | "confirm">("enter");
@@ -1361,9 +1362,9 @@ export default function HomePage() {
   const threadDepthCap = planThreadLimit;
   const threadDepthCanDeepen = Boolean(result && result.sessionPosition < planThreadLimit);
   const threadLimitReached = activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
-  const tierDisplayLabel = tierReady ? tierLabelForDisplay(tier) : chrome.loadingPlan;
+  const tierDisplayLabel = tierReady ? (isAdmin ? "admin" : tierLabelForDisplay(tier)) : chrome.loadingPlan;
   const tierDisplayNode = tierReady ? (
-    tierLabelForDisplay(tier)
+    isAdmin ? "admin" : tierLabelForDisplay(tier)
   ) : (
     <span className="plan-tier-skeleton" aria-hidden="true" />
   );
@@ -1935,6 +1936,7 @@ export default function HomePage() {
       setTokenCenterOpen(false);
       setTokenCenterError(null);
       setPendingDeletedSessionLocalIds([]);
+      setIsAdmin(false);
       setDisplayName(undefined);
       setOnboardingOpen(false);
       return;
@@ -1953,6 +1955,7 @@ export default function HomePage() {
           twoFactorEnabled?: boolean;
           twoFactorMethod?: string | null;
           display_name?: string | null;
+          is_admin?: boolean;
         } | null) => {
           if (cancelled) return;
           if (!j) {
@@ -1962,6 +1965,7 @@ export default function HomePage() {
           const lastPack = typeof j.last_pack === "string" ? j.last_pack : "free";
           setTier(lastPack as Tier);
           setTierReady(true);
+          setIsAdmin(j.is_admin === true);
           if (typeof j.session_limit === "number" && Number.isFinite(j.session_limit)) {
             setAccountSessionLimit(j.session_limit);
           }
