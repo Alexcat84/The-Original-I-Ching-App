@@ -166,6 +166,7 @@ export async function generateOracleBonesInterpretation(
   mode: ResponseMode,
   language: string,
   env: NodeJS.ProcessEnv = process.env,
+  displayName?: string,
 ): Promise<{ text: string; category: ConsultationCategory }> {
   if (cast.verdict === "silent") {
     const text =
@@ -183,7 +184,11 @@ export async function generateOracleBonesInterpretation(
     ? `${buildContextBlock(context, language, mode)}\n\n${buildOracleBonesUserContent(cast, tier, language, true, mode)}`
     : buildOracleBonesUserContent(cast, tier, language, false, mode);
 
-  const systemPrompt = `${ORACLE_BONES_SYSTEM}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+  const nameNote =
+    displayName?.trim()
+      ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
+      : "";
+  const systemPrompt = `${ORACLE_BONES_SYSTEM}${nameNote}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
 
   if (ANTHROPIC_API_KEY) {
     try {

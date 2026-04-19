@@ -18,6 +18,7 @@ import {
   getPricingUiMessages,
   getTokenPanelUiMessages,
   getTwoFactorUiMessages,
+  getOnboardingUiMessages,
   interpolate,
   SUPPORTED_LOCALES,
   UI_LOCALE_STORAGE_KEY,
@@ -1101,6 +1102,11 @@ export default function HomePage() {
   const [twoFactorError, setTwoFactorError] = useState<string | null>(null);
   const [secondFactorVerified, setSecondFactorVerified] = useState(false);
   const [tokenBalance, setTokenBalance] = useState<number | null>(null);
+  const [displayName, setDisplayName] = useState<string | null | undefined>(undefined);
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState<"enter" | "confirm">("enter");
+  const [onboardingInput, setOnboardingInput] = useState("");
+  const [onboardingSaving, setOnboardingSaving] = useState(false);
   const [pendingUserQuestion, setPendingUserQuestion] = useState<string | null>(null);
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
   const [tokenCenterMessage, setTokenCenterMessage] = useState<string | null>(null);
@@ -1929,6 +1935,8 @@ export default function HomePage() {
       setTokenCenterOpen(false);
       setTokenCenterError(null);
       setPendingDeletedSessionLocalIds([]);
+      setDisplayName(undefined);
+      setOnboardingOpen(false);
       return;
     }
     let cancelled = false;
@@ -1944,6 +1952,7 @@ export default function HomePage() {
           session_limit?: number;
           twoFactorEnabled?: boolean;
           twoFactorMethod?: string | null;
+          display_name?: string | null;
         } | null) => {
           if (cancelled) return;
           if (!j) {
@@ -1959,6 +1968,13 @@ export default function HomePage() {
           setTokenBalance(typeof j.tokens_available === "number" ? j.tokens_available : null);
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
           setTwoFactorMethod(j.twoFactorMethod ?? null);
+          const dn = typeof j.display_name === "string" ? j.display_name : null;
+          setDisplayName(dn);
+          if (dn === null) {
+            setOnboardingStep("enter");
+            setOnboardingInput("");
+            setOnboardingOpen(true);
+          }
         })
         .catch(() => {
           if (!cancelled) setTierReady(true);
@@ -2698,6 +2714,7 @@ export default function HomePage() {
           sessionTitle: activeSession.title,
           isDeepening: activeThread.length > 0,
           oracleMode,
+          displayName: displayName ?? undefined,
           oracleBones:
             oracleMode === "oracle_bones"
               ? {
@@ -3011,6 +3028,27 @@ export default function HomePage() {
     ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.reason)
     : null;
 
+  const onboardingUi = getOnboardingUiMessages(locale);
+  const onboardingNameValid = onboardingInput.trim().length > 0;
+
+  async function saveDisplayName() {
+    if (!onboardingNameValid || !accessToken) return;
+    setOnboardingSaving(true);
+    try {
+      const res = await fetch("/api/account/display-name", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ display_name: onboardingInput.trim() }),
+      });
+      if (res.ok) {
+        setDisplayName(onboardingInput.trim());
+        setOnboardingOpen(false);
+      }
+    } finally {
+      setOnboardingSaving(false);
+    }
+  }
+
   const localeSelector = (
     <label className="locale-control" htmlFor="ui-locale-select">
       <span>{ui.language}</span>
@@ -3033,6 +3071,62 @@ export default function HomePage() {
     <OracleShell title={t.appTitle} variant="chat">
       <div className="oracle-chat-app">
         <AmbientParticles />
+        {onboardingOpen && (
+          <div className="onboarding-backdrop" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+            <div className="onboarding-card" onClick={(e) => e.stopPropagation()}>
+              {onboardingStep === "enter" ? (
+                <>
+                  <h2 id="onboarding-title" className="onboarding-title">{onboardingUi.title}</h2>
+                  <p className="onboarding-subtitle">{onboardingUi.subtitle}</p>
+                  <input
+                    className="onboarding-input"
+                    type="text"
+                    placeholder={onboardingUi.placeholder}
+                    value={onboardingInput}
+                    maxLength={60}
+                    autoFocus
+                    onChange={(e) => setOnboardingInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && onboardingNameValid) setOnboardingStep("confirm");
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className={`composer-reading-pill${onboardingNameValid ? " is-active" : ""} onboarding-btn`}
+                    disabled={!onboardingNameValid}
+                    onClick={() => { if (onboardingNameValid) setOnboardingStep("confirm"); }}
+                  >
+                    {onboardingUi.button}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h2 id="onboarding-title" className="onboarding-title">{onboardingUi.confirmTitle}</h2>
+                  <p className="onboarding-name-display">{onboardingInput.trim()}</p>
+                  <p className="onboarding-subtitle">{onboardingUi.confirmSubtitle}</p>
+                  <div className="onboarding-confirm-actions">
+                    <button
+                      type="button"
+                      className="composer-reading-pill is-active onboarding-btn"
+                      disabled={onboardingSaving}
+                      onClick={() => void saveDisplayName()}
+                    >
+                      {onboardingUi.confirmYes}
+                    </button>
+                    <button
+                      type="button"
+                      className="onboarding-edit-btn"
+                      disabled={onboardingSaving}
+                      onClick={() => setOnboardingStep("enter")}
+                    >
+                      {onboardingUi.confirmEdit}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
         {authContinueOpen ? (
           <div className="auth-soft-backdrop" role="presentation" onClick={() => setAuthContinueOpen(false)}>
             <div

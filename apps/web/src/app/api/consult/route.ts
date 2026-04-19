@@ -156,6 +156,7 @@ export async function POST(req: Request) {
       medium?: "turtle" | "ox";
     };
     history?: HistoryEntry[];
+    displayName?: string;
   };
   try {
     body = (await req.json()) as typeof body;
@@ -169,6 +170,8 @@ export async function POST(req: Request) {
   try {
   const question = typeof body.question === "string" ? body.question : "";
   const trimmedQuestion = question.trim();
+  const displayName =
+    typeof body.displayName === "string" && body.displayName.trim() ? body.displayName.trim() : undefined;
   const rawLanguage = typeof body.language === "string" ? body.language : "es";
   const selectedLanguage: AppLocale =
     (SUPPORTED_LOCALES as readonly string[]).includes(rawLanguage) ? (rawLanguage as AppLocale) : "es";
@@ -310,6 +313,8 @@ export async function POST(req: Request) {
       context,
       "ritual",
       oracleLanguage,
+      process.env,
+      displayName,
     );
 
     const imagePrompt = buildOracleBonesImagePrompt({
@@ -474,6 +479,8 @@ export async function POST(req: Request) {
               tierEffective,
               context,
               "ritual",
+              process.env,
+              displayName,
             );
 
             const imagePrompt = buildImagePrompt(
@@ -627,6 +634,8 @@ export async function POST(req: Request) {
     tierEffective,
     context,
     "ritual",
+    process.env,
+    displayName,
   );
 
   const imagePrompt = buildImagePrompt(

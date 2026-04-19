@@ -742,7 +742,18 @@ export default function WebViewScreen() {
 
   /* ── Locale state (P2) ── */
   const [locale, setLocaleState] = useState<AppLocale>("es");
+  const localeRef = useRef<AppLocale>("es");
   const [showLocalePicker, setShowLocalePicker] = useState(false);
+
+  /* ── Keep localeRef in sync with locale state; re-inject when it changes post-load ── */
+  useEffect(() => {
+    localeRef.current = locale;
+    if (webReadyRef.current) {
+      webViewRef.current?.injectJavaScript(
+        `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(locale)}); true;`
+      );
+    }
+  }, [locale]);
 
   /* ── Image zoom state (P4) ── */
   const [zoomImageUrl, setZoomImageUrl] = useState<string | null>(null);
@@ -834,6 +845,11 @@ export default function WebViewScreen() {
         `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
       );
     }
+    // Always inject the saved locale so the web app reflects the native picker on every load.
+    const currentLocale = localeRef.current;
+    webViewRef.current?.injectJavaScript(
+      `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(currentLocale)}); true;`
+    );
     hideSplash();
   }, [hideSplash]);
 
@@ -1271,6 +1287,11 @@ export default function WebViewScreen() {
         if (el) el.style.setProperty('display','none','important');
       })();
     `);
+    // Re-apply saved locale after every navigation (SPA pages may reset locale state).
+    const currentLocale = localeRef.current;
+    webViewRef.current?.injectJavaScript(
+      `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(currentLocale)}); true;`
+    );
   };
 
   /* ── Derive the active locale label for the compact picker button ── */

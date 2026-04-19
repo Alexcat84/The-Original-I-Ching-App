@@ -14,18 +14,19 @@ export async function GET(req: Request) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
   const billing = await getAccountBillingSnapshot(user.userId);
-  const twoFactor = await (async () => {
+  const userProfile = await (async () => {
     const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
     const supabase = getSupabaseAdmin();
-    if (!supabase) return { enabled: false, method: null as string | null };
+    if (!supabase) return { enabled: false, method: null as string | null, displayName: null as string | null };
     const { data } = await supabase
       .from("users")
-      .select("two_factor_enabled, two_factor_method")
+      .select("two_factor_enabled, two_factor_method, display_name")
       .eq("id", user.userId)
       .maybeSingle();
     return {
       enabled: Boolean(data?.two_factor_enabled),
       method: (data?.two_factor_method as string | null) ?? null,
+      displayName: (data?.display_name as string | null) ?? null,
     };
   })();
   if (LOG_TOKEN_BALANCE_DEBUG) {
@@ -45,7 +46,8 @@ export async function GET(req: Request) {
     tokens_purchased_lifetime: billing.tokensPurchasedLifetime,
     session_limit: getSessionLimitFromPack(billing.lastPack),
     last_pack: billing.lastPack,
-    twoFactorEnabled: twoFactor.enabled,
-    twoFactorMethod: twoFactor.method,
+    twoFactorEnabled: userProfile.enabled,
+    twoFactorMethod: userProfile.method,
+    display_name: userProfile.displayName,
   });
 }

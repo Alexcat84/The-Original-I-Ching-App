@@ -71,3 +71,4 @@ export {
 export { getQuickstartPageUiMessages, type QuickstartPageUiMessages } from "./messages/quickstart-page-ui.js";
 export { getTermsPageMessages, type TermsPageMessages } from "./messages/terms-page-ui.js";
 export { getTokenPanelUiMessages, type TokenPanelUiMessages } from "./messages/token-panel-ui.js";
+export { getOnboardingUiMessages, type OnboardingUiMessages } from "./messages/onboarding-ui.js";

@@ -235,6 +235,7 @@ export async function generateInterpretation(
   context: SessionContext | null,
   mode: ResponseMode = "ritual",
   env: NodeJS.ProcessEnv = process.env,
+  displayName?: string,
 ): Promise<{ text: string; category: ConsultationCategory }> {
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const language = castResult.language;
@@ -246,7 +247,11 @@ export async function generateInterpretation(
     ? `${buildContextBlock(context, language, mode)}\n\n${buildCurrentCastPrompt(castResult, tier, language, true, mode)}`
     : buildCurrentCastPrompt(castResult, tier, language, false, mode);
 
-  const systemPrompt = `${SYSTEM_PROMPT}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+  const nameNote =
+    displayName?.trim()
+      ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
+      : "";
+  const systemPrompt = `${SYSTEM_PROMPT}${nameNote}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
 
   if (ANTHROPIC_API_KEY) {
     try {
