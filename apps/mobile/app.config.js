@@ -89,7 +89,7 @@ module.exports = ({ config }) => ({
   extra: {
     apiUrl: APP_URL,
     eas: {
-      projectId: process.env.EAS_PROJECT_ID || "0d7699fd-9b1d-4bc0-a6f3-4b79df9d4de6",
+      projectId: process.env.EAS_PROJECT_ID || "864cb513-7d48-44eb-b89f-01cc9ce00043",
     },
   },
 });
