@@ -1971,9 +1971,35 @@ export default function HomePage() {
           const dn = typeof j.display_name === "string" ? j.display_name : null;
           setDisplayName(dn);
           if (dn === null) {
-            setOnboardingStep("enter");
-            setOnboardingInput("");
-            setOnboardingOpen(true);
+            // Check provider to decide: auto-fill from Google or show modal for email
+            void (async () => {
+              const sb = getSupabaseBrowser();
+              const { data: { session } } = await sb.auth.getSession();
+              const provider = session?.user?.app_metadata?.provider;
+              const fullName =
+                typeof session?.user?.user_metadata?.full_name === "string"
+                  ? session.user.user_metadata.full_name.trim()
+                  : "";
+              const firstName = fullName.split(" ")[0]?.trim() ?? "";
+              if (provider === "google" && firstName) {
+                // Silently save the first name — no modal shown
+                try {
+                  const res = await fetch("/api/account/display-name", {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${accessToken}`,
+                    },
+                    body: JSON.stringify({ display_name: firstName }),
+                  });
+                  if (res.ok) setDisplayName(firstName);
+                } catch { /* non-fatal */ }
+              } else {
+                setOnboardingStep("enter");
+                setOnboardingInput("");
+                setOnboardingOpen(true);
+              }
+            })();
           }
         })
         .catch(() => {
