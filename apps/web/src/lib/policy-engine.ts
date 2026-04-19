@@ -65,9 +65,22 @@ async function getTwoFactorEnabled(userId: string): Promise<boolean> {
   return Boolean(user?.two_factor_enabled);
 }
 
+async function getIsAdmin(userId: string): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return false;
+  const { data: user } = await supabase
+    .from("users")
+    .select("is_admin")
+    .eq("id", userId)
+    .maybeSingle();
+  return user?.is_admin === true;
+}
+
 export async function resolveConsultPolicy(input: ConsultPolicyInput): Promise<ConsultPolicyDecision> {
   const allowlist = parseEmailAllowlist(process.env.ADMIN_EMAIL_ALLOWLIST);
-  const adminBypassAllowed = allowlist.has(input.authUser.email.trim().toLowerCase());
+  const adminByAllowlist = allowlist.has(input.authUser.email.trim().toLowerCase());
+  const adminByDB = await getIsAdmin(input.authUser.userId);
+  const adminBypassAllowed = adminByAllowlist || adminByDB;
   const adminUnlimitedCredits = adminBypassAllowed && shouldAllowAdminUnlimitedCredits();
   // For allowlisted admin sessions, unlock max in-thread depth/features.
   const tierEffective = adminUnlimitedCredits ? "tokens_master_100" : input.tierResolved;

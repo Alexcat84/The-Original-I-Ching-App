@@ -20,13 +20,14 @@ export async function GET(req: Request) {
     if (!supabase) return { enabled: false, method: null as string | null, displayName: null as string | null };
     const { data } = await supabase
       .from("users")
-      .select("two_factor_enabled, two_factor_method, display_name")
+      .select("two_factor_enabled, two_factor_method, display_name, is_admin")
       .eq("id", user.userId)
       .maybeSingle();
     return {
       enabled: Boolean(data?.two_factor_enabled),
       method: (data?.two_factor_method as string | null) ?? null,
       displayName: (data?.display_name as string | null) ?? null,
+      isAdmin: data?.is_admin === true,
     };
   })();
   if (LOG_TOKEN_BALANCE_DEBUG) {
@@ -49,5 +50,6 @@ export async function GET(req: Request) {
     twoFactorEnabled: userProfile.enabled,
     twoFactorMethod: userProfile.method,
     display_name: userProfile.displayName,
+    is_admin: userProfile.isAdmin,
   });
 }
