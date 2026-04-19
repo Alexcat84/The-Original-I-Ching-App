@@ -1360,8 +1360,8 @@ export default function HomePage() {
   /** Per-thread cap from current plan (`/api/account/me` session_limit). API enforces this, not the DB session row. */
   const planThreadLimit = Math.max(1, accountSessionLimit);
   const threadDepthCap = planThreadLimit;
-  const threadDepthCanDeepen = Boolean(result && result.sessionPosition < planThreadLimit);
-  const threadLimitReached = activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
+  const threadDepthCanDeepen = isAdmin || Boolean(result && result.sessionPosition < planThreadLimit);
+  const threadLimitReached = !isAdmin && activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
   const tierDisplayLabel = tierReady ? (isAdmin ? "admin" : tierLabelForDisplay(tier)) : chrome.loadingPlan;
   const tierDisplayNode = tierReady ? (
     isAdmin ? "admin" : tierLabelForDisplay(tier)
@@ -3891,7 +3891,7 @@ export default function HomePage() {
                           <p className="meta-line tier-hint-line">
                             {ui.plan}{" "}
                             <strong>{tierDisplayNode}</strong>
-                            {interpolate(chrome.threadDepthPlanSuffix, { cap: threadDepthCap })}
+                            {interpolate(chrome.threadDepthPlanSuffix, { cap: isAdmin ? "∞" : threadDepthCap })}
                           </p>
                           <div
                             className="session-progress-bar session-progress-bar--prominent"
