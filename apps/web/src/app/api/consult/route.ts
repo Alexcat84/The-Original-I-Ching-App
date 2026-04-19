@@ -197,7 +197,9 @@ export async function POST(req: Request) {
   const policy = await resolveConsultPolicy({ authUser, tierResolved: lastPack });
   const { adminBypassAllowed, adminUnlimitedCredits, tierEffective, tierKey } = policy;
   const packSessionLimit = await getSessionLimit(authedUserId);
-  const maxDepth = normalizeSessionDepthLimit(packSessionLimit || CONTEXT_LIMITS[tierKey].sessionDepth);
+  const maxDepth = adminBypassAllowed
+    ? 999_999
+    : normalizeSessionDepthLimit(packSessionLimit || CONTEXT_LIMITS[tierKey].sessionDepth);
 
   const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
   const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
