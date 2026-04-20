@@ -23,7 +23,7 @@ module.exports = ({ config }) => ({
   },
   android: {
     package: "com.theoriginaliching.mobile",
-    versionCode: 1,
+    versionCode: 2,
     compileSdkVersion: 35,
     targetSdkVersion: 35,
     buildToolsVersion: "35.0.0",
