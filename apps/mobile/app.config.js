@@ -22,7 +22,7 @@ module.exports = ({ config }) => ({
     resizeMode: "contain",
   },
   android: {
-    package: "com.theoriginaliching.app",
+    package: "com.theoriginaliching.mobile",
     versionCode: 1,
     // Prevent restoring stale auth/webview state after reinstall from Android backup.
     allowBackup: false,

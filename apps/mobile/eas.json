@@ -18,7 +18,20 @@
     },
     "production": {
       "android": {
-        "buildType": "app-bundle"
+        "buildType": "app-bundle",
+        "credentialsSource": "remote"
+      }
+    },
+    "apk": {
+      "android": {
+        "buildType": "apk",
+        "credentialsSource": "remote"
+      }
+    },
+    "verification": {
+      "android": {
+        "buildType": "apk",
+        "credentialsSource": "remote"
       }
     }
   },
