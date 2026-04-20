@@ -74,7 +74,7 @@ function deepLinkToWebUrl(deepLink: string): string | null {
 }
 
 /**
- * JavaScript injected into every WebView page.
+ * JavaScript injected into every WebView page AFTER content loads.
  *
  * Responsibilities:
  *  1. Hide the web top bar (.auth-explore-strip) — replaced by native bar
@@ -94,10 +94,61 @@ const INJECTED_JS = `
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
 
-  /* 1 ── Hide web top bar ─────────────────────────────────────────────── */
-  var _st = document.createElement('style');
-  _st.textContent = '.auth-explore-strip{display:none!important}';
-  (document.head || document.documentElement).appendChild(_st);
+  /* 1 ── Hide web headers and normalize WebView paddings ──────────────── */
+  var _st = document.getElementById('rn-hide-web-shell');
+  if (!_st) {
+    _st = document.createElement('style');
+    _st.id = 'rn-hide-web-shell';
+    (document.head || document.documentElement).appendChild(_st);
+  }
+  var _css = [
+    '.auth-explore-strip{display:none!important}',
+    '.locale-control{display:none!important}',
+    '.locale-select{display:none!important}',
+    '.auth-pro-actions-row{display:none!important}',
+    '.auth-soft-header{display:none!important}',
+    '.chat-app-bar{display:none!important}',
+    '.chat-app-brand{display:none!important}',
+    '.chat-surface>header{display:none!important}',
+    '.oracle-brand-line{display:none!important}',
+    '.iching-oracle-shell--chat{padding:0.4rem 0.45rem 0.45rem 0.45rem!important}',
+    '.composer-dock{padding-bottom:0!important}',
+    '.composer-inner-wrapper{padding-bottom:0.55rem!important}'
+  ].join('\\n');
+  _st.textContent = _css;
+  new MutationObserver(function () {
+    var s = document.getElementById('rn-hide-web-shell');
+    if (!s) {
+      s = document.createElement('style');
+      s.id = 'rn-hide-web-shell';
+      (document.head || document.documentElement).appendChild(s);
+    }
+    if (s.textContent !== _css) s.textContent = _css;
+  }).observe(document.documentElement, { childList: true, subtree: true });
+
+  function _hideDuplicateWebHeader() {
+    var selectors = [
+      '.chat-app-bar',
+      '.chat-app-brand',
+      '.chat-surface > header',
+      '.auth-explore-strip',
+      '.auth-soft-header'
+    ];
+    for (var i = 0; i < selectors.length; i++) {
+      var nodes = document.querySelectorAll(selectors[i]);
+      for (var j = 0; j < nodes.length; j++) {
+        var node = nodes[j];
+        if (!node || !node.style) continue;
+        node.style.setProperty('display', 'none', 'important');
+        node.setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+  _hideDuplicateWebHeader();
+  new MutationObserver(_hideDuplicateWebHeader).observe(
+    document.documentElement,
+    { childList: true, subtree: true }
+  );
 
   /* 2 ── Lock viewport zoom and keep it locked (P3) ──────────────────── */
   function _lockZoom() {
@@ -587,7 +638,6 @@ const INJECTED_JS = `
       }
     }).observe(document.body || document.documentElement, { childList: true, subtree: true });
   })();
-
 })();
 true;
 `;

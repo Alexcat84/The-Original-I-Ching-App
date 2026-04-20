@@ -14,8 +14,12 @@ module.exports = ({ config }) => ({
   backgroundColor: "#0c0f14",
   androidStatusBar: {
     barStyle: "light-content",
-    backgroundColor: "#00000000",
-    translucent: true,
+    backgroundColor: "#0c0f14",
+    translucent: false,
+  },
+  androidNavigationBar: {
+    backgroundColor: "#0c0f14",
+    barStyle: "light-content",
   },
   splash: {
     backgroundColor: "#0c0f14",
