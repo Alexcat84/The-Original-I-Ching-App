@@ -24,6 +24,9 @@ module.exports = ({ config }) => ({
   android: {
     package: "com.theoriginaliching.app",
     versionCode: 1,
+    compileSdkVersion: 35,
+    targetSdkVersion: 35,
+    buildToolsVersion: "35.0.0",
     // Prevent restoring stale auth/webview state after reinstall from Android backup.
     allowBackup: false,
     backgroundColor: "#0c0f14",
@@ -66,6 +69,16 @@ module.exports = ({ config }) => ({
   plugins: [
     "expo-router",
     [
+      "expo-build-properties",
+      {
+        android: {
+          compileSdkVersion: 35,
+          targetSdkVersion: 35,
+          buildToolsVersion: "35.0.0",
+        },
+      },
+    ],
+    [
       "expo-splash-screen",
       {
         backgroundColor: "#0c0f14",
@@ -89,7 +102,7 @@ module.exports = ({ config }) => ({
   extra: {
     apiUrl: APP_URL,
     eas: {
-      projectId: process.env.EAS_PROJECT_ID || "0d7699fd-9b1d-4bc0-a6f3-4b79df9d4de6",
+      projectId: "e9cf7fbc-a1a1-4246-a62d-e1fff08d095f",
     },
   },
 });
