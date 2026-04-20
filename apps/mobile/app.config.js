@@ -1,6 +1,7 @@
 const APP_URL =
   process.env.EXPO_PUBLIC_API_URL ||
   "https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app";
+const ADI_REGISTRATION_TOKEN = process.env.ADI_REGISTRATION_TOKEN || "";
 
 module.exports = ({ config }) => ({
   ...config,
@@ -76,6 +77,12 @@ module.exports = ({ config }) => ({
           targetSdkVersion: 35,
           buildToolsVersion: "35.0.0",
         },
+      },
+    ],
+    [
+      "./plugins/withAdiRegistrationFile",
+      {
+        token: ADI_REGISTRATION_TOKEN,
       },
     ],
     [
