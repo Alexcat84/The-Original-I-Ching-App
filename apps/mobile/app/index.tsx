@@ -9,9 +9,11 @@ import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Animated,
   BackHandler,
   DeviceEventEmitter,
+
   Dimensions,
   type GestureResponderEvent,
   Modal,
@@ -74,7 +76,7 @@ function deepLinkToWebUrl(deepLink: string): string | null {
 }
 
 /**
- * JavaScript injected into every WebView page AFTER content loads.
+ * JavaScript injected into every WebView page.
  *
  * Responsibilities:
  *  1. Hide the web top bar (.auth-explore-strip) — replaced by native bar
@@ -94,61 +96,10 @@ const INJECTED_JS = `
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
 
-  /* 1 ── Hide web headers and normalize WebView paddings ──────────────── */
-  var _st = document.getElementById('rn-hide-web-shell');
-  if (!_st) {
-    _st = document.createElement('style');
-    _st.id = 'rn-hide-web-shell';
-    (document.head || document.documentElement).appendChild(_st);
-  }
-  var _css = [
-    '.auth-explore-strip{display:none!important}',
-    '.locale-control{display:none!important}',
-    '.locale-select{display:none!important}',
-    '.auth-pro-actions-row{display:none!important}',
-    '.auth-soft-header{display:none!important}',
-    '.chat-app-bar{display:none!important}',
-    '.chat-app-brand{display:none!important}',
-    '.chat-surface>header{display:none!important}',
-    '.oracle-brand-line{display:none!important}',
-    '.iching-oracle-shell--chat{padding:0.4rem 0.45rem 0.45rem 0.45rem!important}',
-    '.composer-dock{padding-bottom:0!important}',
-    '.composer-inner-wrapper{padding-bottom:0.55rem!important}'
-  ].join('\\n');
-  _st.textContent = _css;
-  new MutationObserver(function () {
-    var s = document.getElementById('rn-hide-web-shell');
-    if (!s) {
-      s = document.createElement('style');
-      s.id = 'rn-hide-web-shell';
-      (document.head || document.documentElement).appendChild(s);
-    }
-    if (s.textContent !== _css) s.textContent = _css;
-  }).observe(document.documentElement, { childList: true, subtree: true });
-
-  function _hideDuplicateWebHeader() {
-    var selectors = [
-      '.chat-app-bar',
-      '.chat-app-brand',
-      '.chat-surface > header',
-      '.auth-explore-strip',
-      '.auth-soft-header'
-    ];
-    for (var i = 0; i < selectors.length; i++) {
-      var nodes = document.querySelectorAll(selectors[i]);
-      for (var j = 0; j < nodes.length; j++) {
-        var node = nodes[j];
-        if (!node || !node.style) continue;
-        node.style.setProperty('display', 'none', 'important');
-        node.setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
-  _hideDuplicateWebHeader();
-  new MutationObserver(_hideDuplicateWebHeader).observe(
-    document.documentElement,
-    { childList: true, subtree: true }
-  );
+  /* 1 ── Hide web top bar ─────────────────────────────────────────────── */
+  var _st = document.createElement('style');
+  _st.textContent = '.auth-explore-strip{display:none!important}';
+  (document.head || document.documentElement).appendChild(_st);
 
   /* 2 ── Lock viewport zoom and keep it locked (P3) ──────────────────── */
   function _lockZoom() {
@@ -503,38 +454,6 @@ const INJECTED_JS = `
   _patchImages();
   new MutationObserver(_patchImages).observe(document.documentElement, { childList: true, subtree: true });
 
-  /* 12 ── Intercept window.alert / confirm / prompt ───────────────────── */
-  var _origAlert = window.alert;
-  window.alert = function(msg) {
-    if (window.ReactNativeWebView) {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: 'web_alert', message: String(msg === undefined ? '' : msg) })
-      );
-    } else {
-      _origAlert && _origAlert.call(window, msg);
-    }
-  };
-  var _origConfirm = window.confirm;
-  window.confirm = function(msg) {
-    if (window.ReactNativeWebView) {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: 'web_confirm', message: String(msg === undefined ? '' : msg) })
-      );
-      return true;
-    }
-    return _origConfirm ? _origConfirm.call(window, msg) : true;
-  };
-  var _origPrompt = window.prompt;
-  window.prompt = function(msg, defaultVal) {
-    if (window.ReactNativeWebView) {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: 'web_prompt', message: String(msg === undefined ? '' : msg), defaultValue: String(defaultVal === undefined ? '' : defaultVal) })
-      );
-      return null;
-    }
-    return _origPrompt ? _origPrompt.call(window, msg, defaultVal) : null;
-  };
-
   /* 10b ── Intercept "Abrir imagen" button (.reading-visual-zoom-link) ── */
   // Belt-and-suspenders: also intercept the wrapper button around oracle images.
   // This fires when the user taps the button area outside the img itself.
@@ -638,6 +557,7 @@ const INJECTED_JS = `
       }
     }).observe(document.body || document.documentElement, { childList: true, subtree: true });
   })();
+
 })();
 true;
 `;
@@ -652,16 +572,7 @@ type RNMessage =
   | { type: "download_file_chunk"; transferId: string; chunk: string }
   | { type: "download_file_end"; transferId: string }
   | { type: "delete_chat"; url: string; reqId: string }
-  | { type: "open_image"; url: string }
-  | { type: "web_alert"; message: string }
-  | { type: "web_confirm"; message: string }
-  | { type: "web_prompt"; message: string; defaultValue?: string };
-
-type NativeDialogConfig = {
-  title?: string;
-  message: string;
-  buttons: Array<{ text: string; style?: "default" | "cancel"; onPress?: () => void }>;
-};
+  | { type: "open_image"; url: string };
 
 // ── P4: Native pinch-to-zoom modal for chat images ───────────────────────────
 interface ImageZoomModalProps {
@@ -803,121 +714,6 @@ const zoomStyles = StyleSheet.create({
   },
 });
 
-// ── Native alert modal (replaces Android system dialogs) ─────────────────────
-function NativeAlertModal({
-  config,
-  onClose,
-}: {
-  config: NativeDialogConfig | null;
-  onClose: () => void;
-}) {
-  if (!config) return null;
-  return (
-    <Modal
-      visible
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-      statusBarTranslucent
-    >
-      <View style={dialogStyles.backdrop}>
-        <View style={dialogStyles.card}>
-          {config.title ? (
-            <Text style={dialogStyles.title}>{config.title}</Text>
-          ) : null}
-          <Text style={dialogStyles.message}>{config.message}</Text>
-          <View style={dialogStyles.buttons}>
-            {config.buttons.map((btn, i) => (
-              <TouchableOpacity
-                key={i}
-                style={[
-                  dialogStyles.btn,
-                  btn.style === "cancel" && dialogStyles.btnCancel,
-                ]}
-                onPress={() => {
-                  btn.onPress?.();
-                  onClose();
-                }}
-                activeOpacity={0.75}
-              >
-                <Text
-                  style={[
-                    dialogStyles.btnText,
-                    btn.style === "cancel" && dialogStyles.btnTextCancel,
-                  ]}
-                >
-                  {btn.text}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      </View>
-    </Modal>
-  );
-}
-
-const dialogStyles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.65)",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 32,
-  },
-  card: {
-    backgroundColor: "#161a22",
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "rgba(201,162,39,0.22)",
-    paddingVertical: 24,
-    paddingHorizontal: 24,
-    width: "100%",
-    maxWidth: 340,
-  },
-  title: {
-    color: "#e8d5a3",
-    fontSize: 17,
-    fontWeight: "700",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  message: {
-    color: "rgba(255,255,255,0.78)",
-    fontSize: 14,
-    lineHeight: 20,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 10,
-  },
-  btn: {
-    flex: 1,
-    backgroundColor: "rgba(201,162,39,0.14)",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "rgba(201,162,39,0.35)",
-    paddingVertical: 11,
-    alignItems: "center",
-  },
-  btnCancel: {
-    backgroundColor: "transparent",
-    borderColor: "rgba(255,255,255,0.1)",
-  },
-  btnText: {
-    color: "#c9a227",
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  btnTextCancel: {
-    color: "rgba(255,255,255,0.4)",
-    fontWeight: "400",
-  },
-});
-
 // ── Main screen ───────────────────────────────────────────────────────────────
 export default function WebViewScreen() {
   const webViewRef = useRef<WebView>(null);
@@ -961,10 +757,6 @@ export default function WebViewScreen() {
 
   /* ── Image zoom state (P4) ── */
   const [zoomImageUrl, setZoomImageUrl] = useState<string | null>(null);
-
-  /* ── Native dialog state (replaces Alert.alert + web window.alert) ── */
-  const [nativeDialog, setNativeDialog] = useState<NativeDialogConfig | null>(null);
-  const showNativeDialog = useCallback((config: NativeDialogConfig) => setNativeDialog(config), []);
   const [debugLogs, setDebugLogs] = useState<string[]>([]);
 
   const addLog = (msg: string) => {
@@ -1149,9 +941,9 @@ export default function WebViewScreen() {
       try {
         const redemption = await Purchases.parseAsWebPurchaseRedemption(url);
         if (redemption) {
-          showNativeDialog({ title: 'RevenueCat', message: 'Redemption link detectado, procesando...', buttons: [{ text: 'OK' }] });
+          Alert.alert('REVENUECAT', 'Redemption link detectado, procesando...');
           const result = await Purchases.redeemWebPurchase(redemption);
-          showNativeDialog({ title: 'RC Result', message: JSON.stringify(result).substring(0, 100), buttons: [{ text: 'OK' }] });
+          Alert.alert('RC RESULT', JSON.stringify(result).substring(0, 100));
           webViewRef.current?.injectJavaScript(
             `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
           );
@@ -1217,7 +1009,7 @@ export default function WebViewScreen() {
     });
 
     return () => sub.remove();
-  }, [showNativeDialog]);
+  }, []);
 
   /* ── Android hardware back ── */
   useEffect(() => {
@@ -1302,29 +1094,20 @@ export default function WebViewScreen() {
             granted = result.granted;
           }
           if (!granted) {
-            showNativeDialog({
-              title: "Permiso denegado",
-              message: "Necesitamos acceso a tu galería para guardar imágenes.",
-              buttons: [{ text: "OK" }],
-            });
+            Alert.alert(
+              "Permiso denegado",
+              "Necesitamos acceso a tu galería para guardar imágenes."
+            );
             return;
           }
           await MediaLibrary.saveToLibraryAsync(fileUri);
-          showNativeDialog({
-            title: "Imagen guardada",
-            message: "Se guardó en tu galería.",
-            buttons: [{ text: "OK" }],
-          });
+          Alert.alert("Imagen guardada", "Se guardó en tu galería.");
         }
       } catch {
-        showNativeDialog({
-          title: "Error",
-          message: "No se pudo guardar el archivo.",
-          buttons: [{ text: "OK" }],
-        });
+        Alert.alert("Error", "No se pudo guardar el archivo.");
       }
     },
-    [mediaPermission, requestMediaPermission, showNativeDialog]
+    [mediaPermission, requestMediaPermission]
   );
 
   /* ── P6: Execute DELETE from RN with stored token ── */
@@ -1435,36 +1218,12 @@ export default function WebViewScreen() {
           case "open_image":
             setZoomImageUrl(msg.url);
             break;
-
-          case "web_alert":
-            showNativeDialog({
-              message: msg.message,
-              buttons: [{ text: "OK" }],
-            });
-            break;
-
-          case "web_confirm":
-            showNativeDialog({
-              message: msg.message,
-              buttons: [
-                { text: "Cancelar", style: "cancel" },
-                { text: "OK" },
-              ],
-            });
-            break;
-
-          case "web_prompt":
-            showNativeDialog({
-              message: msg.message,
-              buttons: [{ text: "OK" }],
-            });
-            break;
         }
       } catch {
         // Ignore non-JSON bridge noise
       }
     },
-    [handleFileDownload, handleDeleteChat, showNativeDialog]
+    [handleFileDownload, handleDeleteChat]
   );
 
   /* ── Intercept Google OAuth + internal doc navigation ── */
@@ -1631,12 +1390,6 @@ export default function WebViewScreen() {
       <ImageZoomModal
         uri={zoomImageUrl}
         onClose={() => setZoomImageUrl(null)}
-      />
-
-      {/* ── Native alert modal (replaces Android system dialogs) ─────────── */}
-      <NativeAlertModal
-        config={nativeDialog}
-        onClose={() => setNativeDialog(null)}
       />
 
       {/* ── WebView ────────────────────────────────────────────────────────── */}

@@ -17,20 +17,13 @@ module.exports = ({ config }) => ({
     backgroundColor: "#0c0f14",
     translucent: false,
   },
-  androidNavigationBar: {
-    backgroundColor: "#0c0f14",
-    barStyle: "light-content",
-  },
   splash: {
     backgroundColor: "#0c0f14",
     resizeMode: "contain",
   },
   android: {
-    package: "com.theoriginaliching.mobile",
-    versionCode: 4,
-    compileSdkVersion: 35,
-    targetSdkVersion: 35,
-    buildToolsVersion: "35.0.0",
+    package: "com.theoriginaliching.app",
+    versionCode: 1,
     // Prevent restoring stale auth/webview state after reinstall from Android backup.
     allowBackup: false,
     backgroundColor: "#0c0f14",
@@ -96,7 +89,7 @@ module.exports = ({ config }) => ({
   extra: {
     apiUrl: APP_URL,
     eas: {
-      projectId: process.env.EAS_PROJECT_ID || "864cb513-7d48-44eb-b89f-01cc9ce00043",
+      projectId: process.env.EAS_PROJECT_ID || "0d7699fd-9b1d-4bc0-a6f3-4b79df9d4de6",
     },
   },
 });
