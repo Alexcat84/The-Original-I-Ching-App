@@ -7,7 +7,7 @@ module.exports = ({ config }) => ({
   ...config,
   name: "The Original I Ching",
   slug: "the-original-i-ching",
-  version: "1.0.0",
+  version: "2.0.0",
   scheme: "theoriginaliching",
   orientation: "portrait",
   platforms: ["android"],
@@ -24,7 +24,7 @@ module.exports = ({ config }) => ({
   },
   android: {
     package: "com.theoriginaliching.app",
-    versionCode: 1,
+    versionCode: 2,
     compileSdkVersion: 35,
     targetSdkVersion: 35,
     buildToolsVersion: "35.0.0",
@@ -76,6 +76,8 @@ module.exports = ({ config }) => ({
           compileSdkVersion: 35,
           targetSdkVersion: 35,
           buildToolsVersion: "35.0.0",
+          // R8 minify/obfuscate release; generates mapping.txt for Play deobfuscation uploads.
+          enableProguardInReleaseBuilds: true,
         },
       },
     ],
