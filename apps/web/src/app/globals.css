@@ -209,6 +209,16 @@ html[data-theme="dark"] {
   box-sizing: border-box;
 }
 
+/* Full-bleed chat shell (incl. Android WebView): percentage height needs a definite chain from html */
+html:has(.iching-oracle-shell--chat) {
+  height: 100%;
+}
+
+html:has(.iching-oracle-shell--chat) body {
+  height: 100%;
+  min-height: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -229,9 +239,18 @@ body {
 }
 
 .iching-oracle-shell--chat {
+  /*
+   * Do not cap the shell to 100dvh only: embedded Android WebView often reports dvh smaller than the
+   * actual view height → persistent letterboxing above/below the chat. Prefer vh/lvh + 100% fallbacks.
+   */
+  min-height: 100vh;
+  min-height: 100lvh;
   min-height: 100dvh;
+  height: 100vh;
+  height: 100lvh;
   height: 100dvh;
-  max-height: 100dvh;
+  height: 100%;
+  max-height: none;
   display: flex;
   flex-direction: column;
   overflow: hidden;

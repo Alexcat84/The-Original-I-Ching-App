@@ -94,24 +94,44 @@ const INJECTED_JS = `
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
 
-  /* 1 ── Hide web top bar + neutralize vertical gaps (P5 — SDK35 gap fix v3) */
+  /* 1 ── Hide web top bar + neutralize vertical gaps (P7 — DEBUG + v4 fix) */
   var _st = document.createElement('style');
   _st.textContent = [
     '.auth-explore-strip{display:none!important}',
-    // Lock the full document chain to exactly viewport height — no expansion, no scroll.
-    'html,body{height:100%!important;min-height:100%!important;max-height:100%!important;margin:0!important;padding:0!important;overflow:hidden!important}',
-    // Shell: zero padding, exact viewport fill.
-    '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:100%!important;overflow:hidden!important;padding:0!important;margin:0!important}',
-    // Direct child of shell: ensure it fills 100% with zero spacing.
-    '.iching-oracle-shell--chat>.oracle-chat-app{flex:1!important;min-height:0!important;margin:0!important;padding:0!important}',
-    // Card: zero padding/margin so children touch the border.
-    '.chat-surface{margin-top:0!important;margin-bottom:0!important;padding:0!important}',
-    // Kill the 6.1rem padding-bottom that leaves dead space above the composer.
+    'html,body{height:100%!important;min-height:100%!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden!important}',
+    '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:none!important;overflow:hidden!important;padding:0!important;margin:0!important;background:transparent!important}',
+    '.chat-surface{margin-top:0!important;margin-bottom:0!important;padding:0!important;border-radius:0!important;border:none!important;box-shadow:none!important}',
     '.chat-history{padding-bottom:0!important}',
     '.composer-dock{padding-bottom:0!important}',
     '.composer-minibar{padding:0.5rem 0.65rem 0.55rem!important}'
   ].join(';');
   (document.head || document.documentElement).appendChild(_st);
+  // Debug: confirm injection worked
+  setTimeout(function(){if(window.ReactNativeWebView){var s=_st.textContent.replace(/!/g,'I');window.ReactNativeWebView.postMessage('CSS_INJECTED_OK|'+s.slice(0,200));}},1500);
+
+  /* 1b ── Android WebView: 100dvh/CSS vh can be shorter than the real view → letterboxing.
+          Pin html/body/shell to visual viewport height (also tracks keyboard resize). */
+  function _rnSyncShellToViewport() {
+    try {
+      var vv = window.visualViewport;
+      var h = (vv && vv.height) ? vv.height : window.innerHeight;
+      if (!h || h < 200) return;
+      document.documentElement.style.height = h + 'px';
+      document.body.style.minHeight = h + 'px';
+      var shell = document.querySelector('.iching-oracle-shell--chat');
+      if (shell) {
+        shell.style.minHeight = h + 'px';
+        shell.style.height = h + 'px';
+        shell.style.maxHeight = 'none';
+      }
+    } catch (_) {}
+  }
+  _rnSyncShellToViewport();
+  window.addEventListener('resize', _rnSyncShellToViewport);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', _rnSyncShellToViewport);
+    window.visualViewport.addEventListener('scroll', _rnSyncShellToViewport);
+  }
 
   /* 2 ── Lock viewport zoom and keep it locked (P3) ──────────────────── */
   function _lockZoom() {
@@ -121,7 +141,7 @@ const INJECTED_JS = `
       vp.setAttribute('name', 'viewport');
       (document.head || document.documentElement).appendChild(vp);
     }
-    var locked = 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1';
+    var locked = 'width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1';
     if (vp.getAttribute('content') !== locked) vp.setAttribute('content', locked);
   }
   function _watchZoom() {
