@@ -94,16 +94,19 @@ const INJECTED_JS = `
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
 
-  /* 1 ── Hide web top bar + neutralize vertical gaps (P3 — SDK35 gap fix) */
+  /* 1 ── Hide web top bar + neutralize vertical gaps (P5 — SDK35 gap fix v3) */
   var _st = document.createElement('style');
   _st.textContent = [
     '.auth-explore-strip{display:none!important}',
-    // Android SDK35 + WebView can report safe-area insets that are correct for fullscreen pages
-    // but wrong for this embedded container. Normalize layout to container-relative sizing.
-    'html,body,#__next{height:100%!important;min-height:100%!important;max-height:100%!important}',
-    // Zero top/bottom padding on shell — native top bar covers the top, no safe-area needed.
-    '.iching-oracle-shell--chat{min-height:100%!important;height:100%!important;max-height:100%!important;padding:0 0.45rem 0 0.45rem!important}',
-    // Kill the 6.1rem bottom padding from globals.css that leaves dead space above composer dock.
+    // Lock the full document chain to exactly viewport height — no expansion, no scroll.
+    'html,body{height:100%!important;min-height:100%!important;max-height:100%!important;margin:0!important;padding:0!important;overflow:hidden!important}',
+    // Shell: zero padding, exact viewport fill.
+    '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:100%!important;overflow:hidden!important;padding:0!important;margin:0!important}',
+    // Direct child of shell: ensure it fills 100% with zero spacing.
+    '.iching-oracle-shell--chat>.oracle-chat-app{flex:1!important;min-height:0!important;margin:0!important;padding:0!important}',
+    // Card: zero padding/margin so children touch the border.
+    '.chat-surface{margin-top:0!important;margin-bottom:0!important;padding:0!important}',
+    // Kill the 6.1rem padding-bottom that leaves dead space above the composer.
     '.chat-history{padding-bottom:0!important}',
     '.composer-dock{padding-bottom:0!important}',
     '.composer-minibar{padding:0.5rem 0.65rem 0.55rem!important}'
