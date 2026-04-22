@@ -109,12 +109,14 @@ const INJECTED_JS = `
   // Debug: confirm injection worked
   setTimeout(function(){if(window.ReactNativeWebView){var s=_st.textContent.replace(/!/g,'I');window.ReactNativeWebView.postMessage('CSS_INJECTED_OK|'+s.slice(0,200));}},1500);
 
-  /* 1b ── Android WebView: 100dvh/CSS vh can be shorter than the real view → letterboxing.
-          Pin html/body/shell to visual viewport height (also tracks keyboard resize). */
+  /* 1b ── Android WebView / API 35: dvh/vh and visualViewport can disagree → letterboxing.
+          Use max(innerHeight, visualViewport.height), re-sync after shell mounts (SPA/hydration). */
   function _rnSyncShellToViewport() {
     try {
       var vv = window.visualViewport;
-      var h = (vv && vv.height) ? vv.height : window.innerHeight;
+      var inner = typeof window.innerHeight === 'number' ? window.innerHeight : 0;
+      var vvH = vv && typeof vv.height === 'number' ? vv.height : 0;
+      var h = Math.max(inner, vvH);
       if (!h || h < 200) return;
       document.documentElement.style.height = h + 'px';
       document.body.style.minHeight = h + 'px';
@@ -126,12 +128,34 @@ const INJECTED_JS = `
       }
     } catch (_) {}
   }
-  _rnSyncShellToViewport();
-  window.addEventListener('resize', _rnSyncShellToViewport);
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', _rnSyncShellToViewport);
-    window.visualViewport.addEventListener('scroll', _rnSyncShellToViewport);
+  var _rnVpRaf = null;
+  function _rnScheduleViewportSync() {
+    if (_rnVpRaf != null) return;
+    _rnVpRaf = requestAnimationFrame(function () {
+      _rnVpRaf = null;
+      _rnSyncShellToViewport();
+    });
   }
+  _rnScheduleViewportSync();
+  window.addEventListener('resize', _rnScheduleViewportSync);
+  window.addEventListener('orientationchange', _rnScheduleViewportSync);
+  window.addEventListener('popstate', _rnScheduleViewportSync);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', _rnScheduleViewportSync);
+    window.visualViewport.addEventListener('scroll', _rnScheduleViewportSync);
+  }
+  if (!window.__rnShellViewportMo) {
+    window.__rnShellViewportMo = new MutationObserver(function () {
+      _rnScheduleViewportSync();
+    });
+    window.__rnShellViewportMo.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+  }
+  [0, 100, 300, 800, 2000].forEach(function (ms) {
+    setTimeout(_rnScheduleViewportSync, ms);
+  });
 
   /* 2 ── Lock viewport zoom and keep it locked (P3) ──────────────────── */
   function _lockZoom() {
