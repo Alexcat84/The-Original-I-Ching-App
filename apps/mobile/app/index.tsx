@@ -94,14 +94,17 @@ const INJECTED_JS = `
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
 
-  /* 1 ── Hide web top bar ─────────────────────────────────────────────── */
+  /* 1 ── Hide web top bar + neutralize vertical gaps (P3 — SDK35 gap fix) */
   var _st = document.createElement('style');
   _st.textContent = [
     '.auth-explore-strip{display:none!important}',
     // Android SDK35 + WebView can report safe-area insets that are correct for fullscreen pages
     // but wrong for this embedded container. Normalize layout to container-relative sizing.
     'html,body,#__next{height:100%!important;min-height:100%!important;max-height:100%!important}',
-    '.iching-oracle-shell--chat{min-height:100%!important;height:100%!important;max-height:100%!important;padding:0.4rem 0.45rem 0.45rem 0.45rem!important}',
+    // Zero top/bottom padding on shell — native top bar covers the top, no safe-area needed.
+    '.iching-oracle-shell--chat{min-height:100%!important;height:100%!important;max-height:100%!important;padding:0 0.45rem 0 0.45rem!important}',
+    // Kill the 6.1rem bottom padding from globals.css that leaves dead space above composer dock.
+    '.chat-history{padding-bottom:0!important}',
     '.composer-dock{padding-bottom:0!important}',
     '.composer-minibar{padding:0.5rem 0.65rem 0.55rem!important}'
   ].join(';');
