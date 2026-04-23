@@ -8,8 +8,9 @@
     "android": "expo run:android",
     "lint": "node -e \"process.exit(0)\"",
     "postinstall": "node ./scripts/fix-expo-modules-core-sdk35.js",
-    "build:preview": "eas build --platform android --profile preview",
-    "build:prod": "eas build --platform android --profile production",
+    "android:prebuild": "expo prebuild --platform android",
+    "android:apk:release": "node ./scripts/assemble-android-release.js",
+    "android:run:release": "expo run:android --variant release --no-bundler",
     "ios": "expo run:ios"
   },
   "dependencies": {

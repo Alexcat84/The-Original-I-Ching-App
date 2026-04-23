@@ -1387,13 +1387,8 @@ export default function HomePage() {
     el.style.height = `${Math.max(minOneLinePx, nextHeight)}px`;
     el.style.overflowY = el.scrollHeight > QUESTION_INPUT_MAX_HEIGHT_PX ? "auto" : "hidden";
   }, []);
-  const [isRnWebView] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return Boolean((window as Window & { ReactNativeWebView?: unknown }).ReactNativeWebView);
-  });
-  /** Web: rounded top on auth strip only. RN uses a native top bar; card shaping for RN is in globals + mobile shell. */
+  /** Browser + RN WebView: rounded top cap on auth strip when guest or signed-in strip is shown. */
   const showAuthExploreCap =
-    !isRnWebView &&
     authReady &&
     !supabaseConfigError &&
     (!accessToken || Boolean(accessToken && authEmail));
@@ -3093,11 +3088,11 @@ export default function HomePage() {
   }
 
   const localeSelector = (
-    <label className="locale-control" htmlFor="ui-locale-select">
-      <span>{ui.language}</span>
+    <div className="locale-control">
       <select
         id="ui-locale-select"
         className="locale-select"
+        aria-label={ui.language}
         value={locale}
         onChange={(e) => setLocale(e.target.value as AppLocale)}
       >
@@ -3107,7 +3102,7 @@ export default function HomePage() {
           </option>
         ))}
       </select>
-    </label>
+    </div>
   );
 
   return (

@@ -7,6 +7,7 @@ import * as SecureStore from "expo-secure-store";
 import * as Sharing from "expo-sharing";
 import * as Localization from "expo-localization";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -17,6 +18,8 @@ import {
   Dimensions,
   type GestureResponderEvent,
   Modal,
+  Platform,
+  StatusBar as RNStatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -31,7 +34,6 @@ import {
 import {
   DEFAULT_LOCALE,
   UI_LOCALE_STORAGE_KEY,
-  getLoginPageUiMessages,
   getMobileNativeUiMessages,
   type AppLocale,
 } from "@iching-oracle/i18n";
@@ -125,7 +127,7 @@ function deepLinkToWebUrl(deepLink: string): string | null {
  * JavaScript injected into every WebView page.
  *
  * Responsibilities:
- *  1. Hide the web top bar (.auth-explore-strip) — replaced by native bar
+ *  1. Web auth/locale strip (.auth-explore-strip) is visible in the WebView (no native duplicate bar)
  *  2. Lock viewport zoom (zoom on chat images is handled natively)
  *  3. Intercept <a download> clicks AND native click events (images & PDFs)
  *  4. Patch Google OAuth button → postMessage to RN (opens in external browser)
@@ -133,7 +135,7 @@ function deepLinkToWebUrl(deepLink: string): string | null {
  *     (fast retries to avoid brief "limit reached" flash on navigation — P1)
  *  6. Intercept DELETE /api/account/chats → RN executes with stored token
  *  7. Expose __rnSetLocale() so RN can change the web app locale
- *  8. Expose __rnSignOut() so RN native sign-out button works
+ *  8. Expose __rnSignOut() for the web session strip (native bar removed)
  *  9. Expose __rnNavigateTo() for SPA navigation without full reload
  * 10. Intercept taps on generated chat images → postMessage to open native zoom modal
  */
@@ -143,16 +145,26 @@ const INJECTED_JS = `
   window.__rnBridgeInstalled = true;
   document.documentElement.classList.add('iching-rn-webview');
 
-  /* 1 ── Hide web top bar + neutralize vertical gaps (P7 — DEBUG + v4 fix) */
+  /* 1 ── Layout parity + neutralize vertical gaps (P7 — DEBUG + v4 fix) */
   var _st = document.createElement('style');
   _st.textContent = [
-    '.auth-explore-strip{display:none!important}',
     'html,body{height:100%!important;min-height:100%!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden!important}',
     '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:none!important;overflow:hidden!important;padding:0!important;margin:0!important;background:transparent!important}',
     /* Layout parity with latest globals.css — APK must not depend on stale CDN/CSS deploy */
     '.iching-oracle-shell--chat > *:only-child{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;max-width:none!important;padding:0!important}',
     '.oracle-chat-app{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;position:relative!important;isolation:isolate!important}',
-    '.chat-surface{margin-top:0!important;margin-bottom:calc(0.25rem + clamp(18px,env(safe-area-inset-bottom,0px),52px))!important;padding:0!important;flex:1 1 0%!important;align-self:stretch!important;min-width:0!important;min-height:0!important;border-top-left-radius:0!important;border-top-right-radius:0!important;border-radius:0 0 clamp(26px,5.5vw,38px) clamp(26px,5.5vw,38px)!important}',
+    /* .chat-surface: base layout; do NOT force square top when .chat-surface--explore-cap (auth strip rounds like former native card) */
+    '.chat-surface{margin-top:0!important;margin-bottom:calc(0.25rem + clamp(18px,env(safe-area-inset-bottom,0px),52px))!important;padding:0!important;flex:1 1 0%!important;align-self:stretch!important;min-width:0!important;min-height:0!important;border-radius:0 0 clamp(26px,5.5vw,38px) clamp(26px,5.5vw,38px)!important}',
+    'html.iching-rn-webview .chat-surface.chat-surface--explore-cap{border-radius:clamp(26px,5.5vw,38px)!important}',
+    'html.iching-rn-webview .chat-surface--explore-cap>.auth-explore-strip:first-child{border-top-left-radius:clamp(26px,5.5vw,38px)!important;border-top-right-radius:clamp(26px,5.5vw,38px)!important}',
+    /* Stale web deploy: hide legacy "Language" label; restyle strip like native chrome */
+    'html.iching-rn-webview .locale-control>span{display:none!important}',
+    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip{background:#080808!important;border-bottom:1px solid rgba(201,162,39,.22)!important;color:rgba(255,255,255,.72)!important}',
+    'html.iching-rn-webview[data-theme=light] .auth-explore-strip{background:#d4ebf5!important;border-bottom:1px solid rgba(15,23,42,.1)!important;color:rgba(15,23,42,.62)!important}',
+    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip .locale-select{min-width:5.5rem!important;height:2rem!important;padding:0 .65rem!important;border-radius:14px!important;border:1px solid rgba(201,162,39,.4)!important;background:rgba(201,162,39,.06)!important;color:#c9a227!important;font-size:.8125rem!important;font-weight:700!important}',
+    'html.iching-rn-webview[data-theme=light] .auth-explore-strip .locale-select{min-width:5.5rem!important;height:2rem!important;padding:0 .65rem!important;border-radius:14px!important;border:1px solid rgba(13,148,136,.45)!important;background:rgba(255,255,255,.75)!important;color:#0f766e!important;font-size:.8125rem!important;font-weight:700!important}',
+    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip a.auth-explore-strip-cta{padding:.32rem .85rem!important;border-radius:14px!important;border:1px solid rgba(201,162,39,.35)!important;background:rgba(201,162,39,.08)!important;color:#c9a227!important;font-size:.75rem!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
+    'html.iching-rn-webview[data-theme=light] .auth-explore-strip a.auth-explore-strip-cta{padding:.32rem .85rem!important;border-radius:14px!important;border:1px solid rgba(13,148,136,.4)!important;background:rgba(13,148,136,.1)!important;color:#0f766e!important;font-size:.75rem!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
     '.chat-room{flex:1 1 0%!important;min-height:0!important}',
     '.chat-history{flex:1 1 0%!important;min-height:0!important;padding-bottom:0!important}',
     '.chat-app-bar-row--top{padding-top:0!important;padding-bottom:0!important}',
@@ -1159,12 +1171,9 @@ export default function WebViewScreen() {
   /* ── Locale state (P2) ── */
   const [locale, setLocaleState] = useState<AppLocale>(DEFAULT_LOCALE);
   const localeRef = useRef<AppLocale>(DEFAULT_LOCALE);
-  const [showLocalePicker, setShowLocalePicker] = useState(false);
-
-  /** Matches web `html[data-theme]` so the native chrome tracks Claro/Oscuro. */
+  /** Matches web `html[data-theme]` for native modals / WebView chrome padding. */
   const [shellTheme, setShellTheme] = useState<ShellChromeTheme>("dark");
 
-  const loginUi = useMemo(() => getLoginPageUiMessages(locale), [locale]);
   const nativeUi = useMemo(() => getMobileNativeUiMessages(locale), [locale]);
 
   /* ── Keep localeRef in sync with locale state; re-inject when it changes post-load ── */
@@ -1191,6 +1200,16 @@ export default function WebViewScreen() {
 
   /* ── Safe area insets (status bar height on Android) ── */
   const insets = useSafeAreaInsets();
+
+  /* Android: icon + background must follow shell theme (Expo StatusBar alone is not always enough on API 35). */
+  useEffect(() => {
+    const light = shellTheme === "light";
+    RNStatusBar.setBarStyle(light ? "dark-content" : "light-content", true);
+    if (Platform.OS === "android") {
+      RNStatusBar.setBackgroundColor(light ? "#e8f2f9" : "#0c0f14", true);
+      RNStatusBar.setTranslucent(false);
+    }
+  }, [shellTheme]);
 
   /* ── Media permission ── */
   const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
@@ -1461,17 +1480,6 @@ export default function WebViewScreen() {
     AsyncStorage.setItem(LOCALE_STORAGE_KEY, newLocale);
     webViewRef.current?.injectJavaScript(
       `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(newLocale)}); true;`
-    );
-  }, []);
-
-  /* ── P3: Sign out from native bar ── */
-  const handleSignOut = useCallback(() => {
-    accessTokenRef.current = null;
-    setIsAuthenticated(false);
-    setUserEmail(null);
-    SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
-    webViewRef.current?.injectJavaScript(
-      `window.__rnSignOut && window.__rnSignOut(); true;`
     );
   }, []);
 
@@ -1765,201 +1773,20 @@ export default function WebViewScreen() {
     );
   };
 
-  /* ── Derive the active locale label for the compact picker button ── */
-  const activeLocaleLabel =
-    LOCALES.find((l) => l.code === locale)?.label ?? locale.toUpperCase();
-
-  const statusBarFillBg = shellTheme === "light" ? "#e8eef4" : "#0c0f14";
-  /** Match web `.iching-oracle-shell--chat` horizontal padding: `max(0.45rem, safe-area)` (not a fixed 12px). */
-  const shellHPx = Math.max(0.45 * 16, insets.left, insets.right);
-  /** Status spacer + square shell strip + rounded auth card (for locale modal anchor). */
-  const topChromeStackHeight = insets.top + 52;
-
   return (
     <View style={[styles.container, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeRoot]}>
-      {/* Status bar / cutout zone only — same bg as shell so we do not paint chrome under the system bar */}
-      <View style={{ height: insets.top, backgroundColor: statusBarFillBg }} />
-      {/* Square full-bleed shell under status; rounded corners only on the inset auth card below */}
+      <StatusBar style={shellTheme === "light" ? "dark" : "light"} />
+      {/* ── WebView (safe-area top padding — web shows locale/sign-in strip) ─ */}
       <View
         style={[
-          styles.topBarOuterSquare,
-          shellTheme === "light" ? styles.topBarOuterLight : styles.topBarOuterDark,
-          { paddingHorizontal: shellHPx },
-          DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeTopBar,
+          styles.webviewShell,
+          DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeWebViewWrap,
+          {
+            paddingTop: insets.top,
+            backgroundColor: shellTheme === "light" ? "#e8f2f9" : "#0c0f14",
+          },
         ]}
       >
-        <View
-          style={[
-            styles.nativeAuthChromeCard,
-            shellTheme === "light" ? styles.nativeAuthChromeLight : styles.nativeAuthChromeDark,
-          ]}
-        >
-        {/* Compact locale picker button */}
-        <TouchableOpacity
-          style={[
-            styles.localePicker,
-            shellTheme === "light" && styles.localePickerLight,
-          ]}
-          onPress={() => setShowLocalePicker(true)}
-          activeOpacity={0.7}
-        >
-          <Text
-            style={[
-              styles.localePickerText,
-              shellTheme === "light" && styles.localePickerTextLight,
-            ]}
-          >
-            {activeLocaleLabel}
-          </Text>
-          <Text
-            style={[
-              styles.localePickerArrow,
-              shellTheme === "light" && styles.localePickerArrowLight,
-            ]}
-          >
-            ▾
-          </Text>
-        </TouchableOpacity>
-
-        {/* User info or sign-in */}
-        {isAuthenticated ? (
-          <View style={styles.userRow}>
-            {userEmail ? (
-              <Text
-                style={[
-                  styles.userEmail,
-                  shellTheme === "light" && styles.userEmailLight,
-                ]}
-                numberOfLines={1}
-                ellipsizeMode="middle"
-              >
-                {userEmail}
-              </Text>
-            ) : null}
-            <TouchableOpacity
-              style={[
-                styles.signOutBtn,
-                shellTheme === "light" && styles.signOutBtnLight,
-              ]}
-              onPress={handleSignOut}
-              activeOpacity={0.7}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <Text
-                style={[
-                  styles.signOutText,
-                  shellTheme === "light" && styles.signOutTextLight,
-                ]}
-              >
-                ✕
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <TouchableOpacity
-            style={[
-              styles.signInBtn,
-              shellTheme === "light" && styles.signInBtnLight,
-            ]}
-            onPress={() => {
-              // Force navigation via JS injection — handles the edge case where
-              // currentUrl is already the login URL (React state won't change,
-              // so source.uri won't trigger a WebView reload without this).
-              webViewRef.current?.injectJavaScript(
-                `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
-              );
-              setCurrentUrl(`${BASE_URL}/login`);
-            }}
-            activeOpacity={0.7}
-          >
-            <Text
-              style={[
-                styles.signInText,
-                shellTheme === "light" && styles.signInTextLight,
-              ]}
-            >
-              {loginUi.signInTab}
-            </Text>
-          </TouchableOpacity>
-        )}
-        </View>
-      </View>
-
-      {/* ── P2: Locale picker dropdown modal ─────────────────────────────── */}
-      <Modal
-        visible={showLocalePicker}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setShowLocalePicker(false)}
-      >
-        <TouchableOpacity
-          style={styles.pickerOverlay}
-          activeOpacity={1}
-          onPress={() => setShowLocalePicker(false)}
-        >
-          <View
-            style={[
-              styles.pickerDropdown,
-              shellTheme === "light" && styles.pickerDropdownLight,
-              { marginTop: topChromeStackHeight, left: shellHPx + 2 },
-            ]}
-          >
-            {LOCALES.map(({ code, label, name }) => (
-              <TouchableOpacity
-                key={code}
-                style={[
-                  styles.pickerItem,
-                  shellTheme === "light" && styles.pickerItemLight,
-                  locale === code && styles.pickerItemActive,
-                  shellTheme === "light" && locale === code && styles.pickerItemActiveLight,
-                ]}
-                onPress={() => {
-                  changeLocale(code);
-                  setShowLocalePicker(false);
-                }}
-                activeOpacity={0.7}
-              >
-                <Text
-                  style={[
-                    styles.pickerItemCode,
-                    shellTheme === "light" && styles.pickerItemCodeLight,
-                  ]}
-                >
-                  {label}
-                </Text>
-                <Text
-                  style={[
-                    styles.pickerItemName,
-                    shellTheme === "light" && styles.pickerItemNameLight,
-                    locale === code && styles.pickerItemNameActive,
-                    shellTheme === "light" &&
-                      locale === code &&
-                      styles.pickerItemNameActiveLight,
-                  ]}
-                >
-                  {name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </TouchableOpacity>
-      </Modal>
-
-      {/* ── P4: Native image zoom modal ───────────────────────────────────── */}
-      <ImageZoomModal
-        uri={zoomImageUrl}
-        onClose={() => setZoomImageUrl(null)}
-      />
-
-      {/* ── Native alert modal (replaces Android system dialogs) ─────────── */}
-      <NativeAlertModal
-        config={nativeDialog}
-        onClose={() => setNativeDialog(null)}
-        appearance={shellTheme}
-      />
-
-      {/* ── WebView ────────────────────────────────────────────────────────── */}
-      <View style={[styles.webviewShell, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeWebViewWrap]}>
         <WebView
         ref={webViewRef}
         source={{ uri: currentUrl }}
@@ -1987,6 +1814,16 @@ export default function WebViewScreen() {
         />
       </View>
 
+      {/* ── P4: Native image zoom modal ───────────────────────────────────── */}
+      <ImageZoomModal uri={zoomImageUrl} onClose={() => setZoomImageUrl(null)} />
+
+      {/* ── Native alert modal (replaces Android system dialogs) ─────────── */}
+      <NativeAlertModal
+        config={nativeDialog}
+        onClose={() => setNativeDialog(null)}
+        appearance={shellTheme}
+      />
+
       {debugLogs.length > 0 && (
         <View style={{ position: 'absolute', bottom: 100, left: 0, right: 0, backgroundColor: 'rgba(0,0,0,0.85)', padding: 8, zIndex: 9999 }}>
           {debugLogs.map((log, i) => (
@@ -2008,11 +1845,6 @@ const styles = StyleSheet.create({
     borderColor: "#c026d3",
     backgroundColor: "rgba(192, 38, 211, 0.07)",
   },
-  debugNativeTopBar: {
-    borderBottomWidth: 4,
-    borderBottomColor: "#0ea5e9",
-    backgroundColor: "rgba(14, 165, 233, 0.12)",
-  },
   webviewShell: {
     flex: 1,
     minHeight: 0,
@@ -2021,191 +1853,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "#ca8a04",
     backgroundColor: "rgba(234, 179, 8, 0.07)",
-  },
-  /* ── Native shell: square under status; rounded chrome lives on nativeAuthChromeCard ── */
-  topBarOuterSquare: {
-    flexDirection: "column",
-    alignItems: "stretch",
-  },
-  topBarOuterDark: {
-    /* Match dark chat chrome band (--chat-bar-start) so gutters do not flash a different shade */
-    backgroundColor: "#080808",
-  },
-  topBarOuterLight: {
-    /* Same band as web `--chat-bar-start` so no seam above the inset card */
-    backgroundColor: "#d4ebf5",
-  },
-  nativeAuthChromeCard: {
-    alignSelf: "stretch",
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-    overflow: "hidden",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 14,
-    paddingTop: 4,
-    paddingBottom: 4,
-    minHeight: 44,
-  },
-  nativeAuthChromeDark: {
-    /* Web `html[data-theme=dark]` --chat-bar-start */
-    backgroundColor: "#080808",
-  },
-  nativeAuthChromeLight: {
-    /* Web light --chat-bar-start (first stop of chat-app-bar gradient) */
-    backgroundColor: "#d4ebf5",
-  },
-  /* P2: Compact locale picker button */
-  localePicker: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: "rgba(201,162,39,0.4)",
-    backgroundColor: "rgba(201,162,39,0.06)",
-  },
-  localePickerLight: {
-    borderColor: "rgba(13,148,136,0.45)",
-    backgroundColor: "rgba(255,255,255,0.75)",
-  },
-  localePickerText: {
-    color: "#c9a227",
-    fontSize: 13,
-    fontWeight: "700",
-    letterSpacing: 0.5,
-  },
-  localePickerTextLight: {
-    color: "#0f766e",
-  },
-  localePickerArrow: {
-    color: "rgba(201,162,39,0.6)",
-    fontSize: 10,
-  },
-  localePickerArrowLight: {
-    color: "rgba(15,118,110,0.65)",
-  },
-  /* P2: Locale dropdown */
-  pickerOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.55)",
-  },
-  pickerDropdown: {
-    position: "absolute",
-    left: 14,
-    backgroundColor: "#161a22",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "rgba(201,162,39,0.25)",
-    overflow: "hidden",
-    minWidth: 160,
-    elevation: 8,
-  },
-  pickerDropdownLight: {
-    backgroundColor: "#f8fafc",
-    borderColor: "rgba(15,23,42,0.12)",
-  },
-  pickerItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    paddingHorizontal: 16,
-    paddingVertical: 11,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "rgba(201,162,39,0.1)",
-  },
-  pickerItemLight: {
-    borderBottomColor: "rgba(15,23,42,0.08)",
-  },
-  pickerItemActive: {
-    backgroundColor: "rgba(201,162,39,0.08)",
-  },
-  pickerItemActiveLight: {
-    backgroundColor: "rgba(13,148,136,0.1)",
-  },
-  pickerItemCode: {
-    color: "#c9a227",
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 0.5,
-    width: 24,
-  },
-  pickerItemCodeLight: {
-    color: "#0f766e",
-  },
-  pickerItemName: {
-    color: "rgba(255,255,255,0.55)",
-    fontSize: 13,
-  },
-  pickerItemNameLight: {
-    color: "rgba(15,23,42,0.55)",
-  },
-  pickerItemNameActive: {
-    color: "rgba(255,255,255,0.9)",
-    fontWeight: "600",
-  },
-  pickerItemNameActiveLight: {
-    color: "rgba(15,23,42,0.92)",
-  },
-  /* P3: User info row */
-  userRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    flexShrink: 1,
-    maxWidth: "70%",
-  },
-  userEmail: {
-    color: "rgba(201,162,39,0.75)",
-    fontSize: 11,
-    flexShrink: 1,
-  },
-  userEmailLight: {
-    color: "rgba(15,23,42,0.55)",
-  },
-  signOutBtn: {
-    paddingHorizontal: 7,
-    paddingVertical: 4,
-    borderRadius: 10,
-    backgroundColor: "rgba(201,162,39,0.08)",
-    borderWidth: 1,
-    borderColor: "rgba(201,162,39,0.25)",
-  },
-  signOutBtnLight: {
-    backgroundColor: "rgba(255,255,255,0.6)",
-    borderColor: "rgba(15,23,42,0.12)",
-  },
-  signOutText: {
-    color: "rgba(201,162,39,0.6)",
-    fontSize: 11,
-    fontWeight: "700",
-  },
-  signOutTextLight: {
-    color: "rgba(15,23,42,0.5)",
-  },
-  /* Sign-in button */
-  signInBtn: {
-    paddingHorizontal: 13,
-    paddingVertical: 5,
-    borderRadius: 14,
-    backgroundColor: "rgba(201,162,39,0.08)",
-    borderWidth: 1,
-    borderColor: "rgba(201,162,39,0.35)",
-  },
-  signInBtnLight: {
-    backgroundColor: "rgba(13,148,136,0.1)",
-    borderColor: "rgba(13,148,136,0.4)",
-  },
-  signInText: {
-    color: "#c9a227",
-    fontSize: 12,
-    fontWeight: "600",
-  },
-  signInTextLight: {
-    color: "#0f766e",
   },
   /* ── WebView ── */
   webview: {

@@ -271,9 +271,16 @@ html.iching-rn-webview {
   --rn-chat-bottom-offset: calc(0.25rem + clamp(18px, env(safe-area-inset-bottom, 0px), 52px));
 }
 
-/* RN: native shell owns the rounded “cap”; WebView card is square on top, flush under the native bar */
+/* RN: full card radius when auth/locale strip is shown (strip carries top curve like former native card) */
 html.iching-rn-webview .chat-surface {
   margin-bottom: var(--rn-chat-bottom-offset);
+}
+
+html.iching-rn-webview .chat-surface.chat-surface--explore-cap {
+  border-radius: var(--chat-surface-radius);
+}
+
+html.iching-rn-webview .chat-surface:not(.chat-surface--explore-cap) {
   border-radius: 0 0 var(--chat-surface-radius) var(--chat-surface-radius);
 }
 
@@ -295,6 +302,93 @@ html.iching-rn-webview .composer-dock {
 /* Inset lives on .chat-surface margin — keep composer visually balanced */
 html.iching-rn-webview .composer-minibar {
   padding-bottom: 0.42rem !important;
+}
+
+/* RN WebView: auth strip band + controls (visual parity with former native chrome) */
+html.iching-rn-webview[data-theme="dark"] .auth-explore-strip {
+  background: #080808;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.22);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+html.iching-rn-webview[data-theme="light"] .auth-explore-strip {
+  background: #d4ebf5;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+  color: rgba(15, 23, 42, 0.62);
+}
+
+html.iching-rn-webview[data-theme="dark"] .auth-explore-strip .locale-select {
+  min-width: 5.5rem;
+  height: 2rem;
+  padding: 0 0.65rem;
+  border-radius: 14px;
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  background: rgba(201, 162, 39, 0.06);
+  color: #c9a227;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+html.iching-rn-webview[data-theme="dark"] .auth-explore-strip .locale-select option {
+  background: #161a22;
+  color: #f5f0e6;
+}
+
+html.iching-rn-webview[data-theme="light"] .auth-explore-strip .locale-select {
+  min-width: 5.5rem;
+  height: 2rem;
+  padding: 0 0.65rem;
+  border-radius: 14px;
+  border: 1px solid rgba(13, 148, 136, 0.45);
+  background: rgba(255, 255, 255, 0.75);
+  color: #0f766e;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+html.iching-rn-webview[data-theme="light"] .auth-explore-strip .locale-select option {
+  background: #f8fafc;
+  color: #0f3d38;
+}
+
+html.iching-rn-webview[data-theme="dark"] .auth-explore-strip a.auth-explore-strip-cta {
+  padding: 0.32rem 0.85rem;
+  border-radius: 14px;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: rgba(201, 162, 39, 0.08);
+  color: #c9a227;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: none;
+  background-image: none;
+}
+
+html.iching-rn-webview[data-theme="light"] .auth-explore-strip a.auth-explore-strip-cta {
+  padding: 0.32rem 0.85rem;
+  border-radius: 14px;
+  border: 1px solid rgba(13, 148, 136, 0.4);
+  background: rgba(13, 148, 136, 0.1);
+  color: #0f766e;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: none;
+  background-image: none;
+}
+
+html.iching-rn-webview[data-theme="dark"] .auth-explore-strip a.auth-explore-strip-cta:hover {
+  background: rgba(201, 162, 39, 0.14);
+  transform: none;
+  box-shadow: none;
+}
+
+html.iching-rn-webview[data-theme="light"] .auth-explore-strip a.auth-explore-strip-cta:hover {
+  background: rgba(13, 148, 136, 0.16);
+  transform: none;
+  box-shadow: none;
 }
 
 /* Footer is a direct flex child of .chat-surface so it sits flush under .chat-room */
@@ -405,8 +499,8 @@ html.iching-rn-webview .composer-minibar {
 }
 
 /*
- * Web (not RN): rounded top only on the auth/locale strip; chat app bar meets it with square corners.
- * Class from page.tsx when the explore strip is shown (browser only — APK uses native chrome + rules above).
+ * Rounded top on the auth/locale strip when shown; chat app bar meets it with square corners.
+ * In RN WebView, html.iching-rn-webview .chat-surface.chat-surface--explore-cap restores full card radius.
  */
 .chat-surface--explore-cap {
   border-top: none;
