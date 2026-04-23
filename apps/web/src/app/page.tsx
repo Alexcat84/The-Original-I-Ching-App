@@ -1387,11 +1387,11 @@ export default function HomePage() {
     el.style.height = `${Math.max(minOneLinePx, nextHeight)}px`;
     el.style.overflowY = el.scrollHeight > QUESTION_INPUT_MAX_HEIGHT_PX ? "auto" : "hidden";
   }, []);
-  /** RN WebView hides the auth strip in CSS — do not split the card top or the header loses its curve. */
   const [isRnWebView] = useState(() => {
     if (typeof window === "undefined") return false;
     return Boolean((window as Window & { ReactNativeWebView?: unknown }).ReactNativeWebView);
   });
+  /** Web: rounded top on auth strip only. RN uses a native top bar; card shaping for RN is in globals + mobile shell. */
   const showAuthExploreCap =
     !isRnWebView &&
     authReady &&

@@ -271,8 +271,10 @@ html.iching-rn-webview {
   --rn-chat-bottom-offset: calc(0.25rem + clamp(18px, env(safe-area-inset-bottom, 0px), 52px));
 }
 
+/* RN: native shell owns the rounded “cap”; WebView card is square on top, flush under the native bar */
 html.iching-rn-webview .chat-surface {
   margin-bottom: var(--rn-chat-bottom-offset);
+  border-radius: 0 0 var(--chat-surface-radius) var(--chat-surface-radius);
 }
 
 /* RN WebView: env() can be 0 while content still draws edge-to-edge over gesture nav — floor + cap */
@@ -398,7 +400,7 @@ html.iching-rn-webview .composer-minibar {
 
 /*
  * Web (not RN): rounded top only on the auth/locale strip; chat app bar meets it with square corners.
- * Class is toggled from page.tsx when the explore strip is shown and not inside React Native WebView.
+ * Class from page.tsx when the explore strip is shown (browser only — APK uses native chrome + rules above).
  */
 .chat-surface--explore-cap {
   border-top: none;

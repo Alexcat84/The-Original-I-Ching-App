@@ -152,7 +152,7 @@ const INJECTED_JS = `
     /* Layout parity with latest globals.css — APK must not depend on stale CDN/CSS deploy */
     '.iching-oracle-shell--chat > *:only-child{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;max-width:none!important;padding:0!important}',
     '.oracle-chat-app{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;position:relative!important;isolation:isolate!important}',
-    '.chat-surface{margin-top:0!important;margin-bottom:calc(0.25rem + clamp(18px,env(safe-area-inset-bottom,0px),52px))!important;padding:0!important;flex:1 1 0%!important;align-self:stretch!important;min-width:0!important;min-height:0!important}',
+    '.chat-surface{margin-top:0!important;margin-bottom:calc(0.25rem + clamp(18px,env(safe-area-inset-bottom,0px),52px))!important;padding:0!important;flex:1 1 0%!important;align-self:stretch!important;min-width:0!important;min-height:0!important;border-top-left-radius:0!important;border-top-right-radius:0!important;border-radius:0 0 clamp(26px,5.5vw,38px) clamp(26px,5.5vw,38px)!important}',
     '.chat-room{flex:1 1 0%!important;min-height:0!important}',
     '.chat-history{flex:1 1 0%!important;min-height:0!important;padding-bottom:0!important}',
     '.chat-app-bar-row--top{padding-top:0!important;padding-bottom:0!important}',
@@ -2016,6 +2016,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingBottom: 4,
     minHeight: 44,
+    /* Align with web --chat-surface-radius (~26–38px): reads as one app shell above the WebView card */
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    overflow: "hidden",
   },
   topBarDark: {
     backgroundColor: "#0c0f14",
