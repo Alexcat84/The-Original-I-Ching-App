@@ -1186,6 +1186,24 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   z-index: 60;
 }
 
+/* Narrow: composer chrome aligns with .chat-history horizontal inset (0.85rem); no extra minibar side padding */
+@media (max-width: 520px) {
+  footer.chat-composer-wa {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+  .composer-minibar {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .composer-floating-suggestions {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .composer-backdrop {
   position: fixed;
   inset: 0;
