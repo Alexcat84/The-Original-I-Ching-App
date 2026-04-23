@@ -69,6 +69,7 @@ module.exports = ({ config }) => ({
   },
   plugins: [
     "expo-router",
+    "expo-localization",
     [
       "expo-build-properties",
       {

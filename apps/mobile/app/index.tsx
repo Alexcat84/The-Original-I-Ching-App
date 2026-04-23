@@ -5,6 +5,7 @@ import * as Linking from "expo-linking";
 import * as MediaLibrary from "expo-media-library";
 import * as SecureStore from "expo-secure-store";
 import * as Sharing from "expo-sharing";
+import * as Localization from "expo-localization";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -27,6 +28,7 @@ import {
   type WebViewNavigation,
 } from "react-native-webview";
 import {
+  DEFAULT_LOCALE,
   UI_LOCALE_STORAGE_KEY,
   getLoginPageUiMessages,
   getMobileNativeUiMessages,
@@ -60,6 +62,21 @@ const LOCALES: { code: AppLocale; label: string; name: string }[] = [
   { code: "zh", label: "ZH", name: "中文" },
   { code: "ko", label: "KO", name: "한국어" },
 ];
+
+/** First supported language from the device locale list, or null if none match. */
+function pickSupportedDeviceLocale(): AppLocale | null {
+  try {
+    for (const loc of Localization.getLocales()) {
+      const code = loc.languageCode?.toLowerCase();
+      if (code && LOCALES.some((l) => l.code === code)) {
+        return code as AppLocale;
+      }
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
 
 /** Converts an incoming deep link back to the web URL so the WebView can complete auth. */
 function deepLinkToWebUrl(deepLink: string): string | null {
@@ -1065,8 +1082,8 @@ export default function WebViewScreen() {
   >({});
 
   /* ── Locale state (P2) ── */
-  const [locale, setLocaleState] = useState<AppLocale>("es");
-  const localeRef = useRef<AppLocale>("es");
+  const [locale, setLocaleState] = useState<AppLocale>(DEFAULT_LOCALE);
+  const localeRef = useRef<AppLocale>(DEFAULT_LOCALE);
   const [showLocalePicker, setShowLocalePicker] = useState(false);
 
   /** Matches web `html[data-theme]` so the native chrome tracks Claro/Oscuro. */
@@ -1152,9 +1169,15 @@ export default function WebViewScreen() {
       }
     });
     AsyncStorage.getItem(LOCALE_STORAGE_KEY).then((saved) => {
-      if (saved && LOCALES.some((l) => l.code === saved)) {
+      const storedOk = saved && LOCALES.some((l) => l.code === saved);
+      if (storedOk) {
         setLocaleState(saved as AppLocale);
+        return;
       }
+      const fromDevice = pickSupportedDeviceLocale();
+      const next = fromDevice ?? DEFAULT_LOCALE;
+      setLocaleState(next);
+      void AsyncStorage.setItem(LOCALE_STORAGE_KEY, next);
     });
   }, [validateStoredToken]);
 
