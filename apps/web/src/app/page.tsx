@@ -3808,8 +3808,9 @@ export default function HomePage() {
               onClick={() => setConsultPanelOpen(false)}
             />
           ) : null}
+        </div>
 
-          <footer className={`chat-composer-wa${consultPanelOpen ? " is-expanded" : ""}`}>
+        <footer className={`chat-composer-wa${consultPanelOpen ? " is-expanded" : ""}`}>
             <div className="composer-dock">
               <div
                 id="consult-panel"
@@ -4622,8 +4623,7 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </footer>
-        </div>
+        </footer>
         </div>
       </div>
     </OracleShell>
