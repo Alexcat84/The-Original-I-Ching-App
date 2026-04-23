@@ -378,7 +378,8 @@ html.iching-rn-webview .composer-minibar {
   border-radius: var(--chat-surface-radius);
   overflow: hidden;
   box-shadow: var(--shadow);
-  border: 1px solid color-mix(in srgb, var(--bar-border) 65%, transparent);
+  --chat-surface-outer-border: color-mix(in srgb, var(--bar-border) 65%, transparent);
+  border: 1px solid var(--chat-surface-outer-border);
   position: relative;
   z-index: 2;
 }
@@ -393,6 +394,44 @@ html.iching-rn-webview .composer-minibar {
   .chat-surface {
     max-width: min(42rem, 100%);
   }
+}
+
+/*
+ * Web (not RN): rounded top only on the auth/locale strip; chat app bar meets it with square corners.
+ * Class is toggled from page.tsx when the explore strip is shown and not inside React Native WebView.
+ */
+.chat-surface--explore-cap {
+  border-top: none;
+  border-radius: 0 0 var(--chat-surface-radius) var(--chat-surface-radius);
+}
+
+.chat-surface--explore-cap > .auth-config-banner:first-child {
+  border-top-left-radius: var(--chat-surface-radius);
+  border-top-right-radius: var(--chat-surface-radius);
+  border-top: 1px solid var(--chat-surface-outer-border);
+  border-left: 1px solid var(--chat-surface-outer-border);
+  border-right: 1px solid var(--chat-surface-outer-border);
+}
+
+.chat-surface--explore-cap > .auth-explore-strip:first-child {
+  border-top-left-radius: var(--chat-surface-radius);
+  border-top-right-radius: var(--chat-surface-radius);
+  border-top: 1px solid var(--chat-surface-outer-border);
+  border-left: 1px solid var(--chat-surface-outer-border);
+  border-right: 1px solid var(--chat-surface-outer-border);
+}
+
+.chat-surface--explore-cap > .auth-config-banner:first-child + .auth-explore-strip {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.chat-surface--explore-cap header.chat-app-bar.oracle-intro {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .chat-bar-lead {

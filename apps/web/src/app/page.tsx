@@ -1387,6 +1387,16 @@ export default function HomePage() {
     el.style.height = `${Math.max(minOneLinePx, nextHeight)}px`;
     el.style.overflowY = el.scrollHeight > QUESTION_INPUT_MAX_HEIGHT_PX ? "auto" : "hidden";
   }, []);
+  /** RN WebView hides the auth strip in CSS — do not split the card top or the header loses its curve. */
+  const [isRnWebView] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return Boolean((window as Window & { ReactNativeWebView?: unknown }).ReactNativeWebView);
+  });
+  const showAuthExploreCap =
+    !isRnWebView &&
+    authReady &&
+    !supabaseConfigError &&
+    (!accessToken || Boolean(accessToken && authEmail));
   const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;
   const chatStateCacheKey = authUserId ? `iching_chat_state_v1:${authUserId}` : null;
 
@@ -3330,7 +3340,7 @@ export default function HomePage() {
           </div>
         </aside>
 
-        <div className="chat-surface">
+        <div className={`chat-surface${showAuthExploreCap ? " chat-surface--explore-cap" : ""}`}>
         {authReady && supabaseConfigError ? (
           <div className="auth-config-banner" role="alert">
             <span>
