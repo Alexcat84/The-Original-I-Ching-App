@@ -1770,8 +1770,8 @@ export default function WebViewScreen() {
     LOCALES.find((l) => l.code === locale)?.label ?? locale.toUpperCase();
 
   const statusBarFillBg = shellTheme === "light" ? "#e8eef4" : "#0c0f14";
-  /** Horizontal inset so the rounded auth card lines up with the centered WebView `.chat-surface` gutter. */
-  const chromePad = Math.max(12, insets.left, insets.right);
+  /** Match web `.iching-oracle-shell--chat` horizontal padding: `max(0.45rem, safe-area)` (not a fixed 12px). */
+  const shellHPx = Math.max(0.45 * 16, insets.left, insets.right);
   /** Status spacer + square shell strip + rounded auth card (for locale modal anchor). */
   const topChromeStackHeight = insets.top + 52;
 
@@ -1784,7 +1784,7 @@ export default function WebViewScreen() {
         style={[
           styles.topBarOuterSquare,
           shellTheme === "light" ? styles.topBarOuterLight : styles.topBarOuterDark,
-          { paddingHorizontal: chromePad },
+          { paddingHorizontal: shellHPx },
           DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeTopBar,
         ]}
       >
@@ -1901,7 +1901,7 @@ export default function WebViewScreen() {
             style={[
               styles.pickerDropdown,
               shellTheme === "light" && styles.pickerDropdownLight,
-              { marginTop: topChromeStackHeight, left: chromePad + 2 },
+              { marginTop: topChromeStackHeight, left: shellHPx + 2 },
             ]}
           >
             {LOCALES.map(({ code, label, name }) => (
@@ -2028,10 +2028,12 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
   },
   topBarOuterDark: {
-    backgroundColor: "#0c0f14",
+    /* Match dark chat chrome band (--chat-bar-start) so gutters do not flash a different shade */
+    backgroundColor: "#080808",
   },
   topBarOuterLight: {
-    backgroundColor: "#e8eef4",
+    /* Same band as web `--chat-bar-start` so no seam above the inset card */
+    backgroundColor: "#d4ebf5",
   },
   nativeAuthChromeCard: {
     alignSelf: "stretch",
@@ -2045,15 +2047,14 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     paddingBottom: 4,
     minHeight: 44,
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   nativeAuthChromeDark: {
-    backgroundColor: "#12161f",
-    borderBottomColor: "rgba(201,162,39,0.22)",
+    /* Web `html[data-theme=dark]` --chat-bar-start */
+    backgroundColor: "#080808",
   },
   nativeAuthChromeLight: {
-    backgroundColor: "#ffffff",
-    borderBottomColor: "rgba(15,23,42,0.12)",
+    /* Web light --chat-bar-start (first stop of chat-app-bar gradient) */
+    backgroundColor: "#d4ebf5",
   },
   /* P2: Compact locale picker button */
   localePicker: {
