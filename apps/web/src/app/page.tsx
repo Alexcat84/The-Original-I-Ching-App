@@ -1381,7 +1381,10 @@ export default function HomePage() {
     if (!el) return;
     el.style.height = "auto";
     const nextHeight = Math.min(QUESTION_INPUT_MAX_HEIGHT_PX, el.scrollHeight);
-    el.style.height = `${Math.max(44, nextHeight)}px`;
+    const narrow =
+      typeof window !== "undefined" && window.matchMedia?.("(max-width: 520px)")?.matches;
+    const minOneLinePx = narrow ? 38 : 44;
+    el.style.height = `${Math.max(minOneLinePx, nextHeight)}px`;
     el.style.overflowY = el.scrollHeight > QUESTION_INPUT_MAX_HEIGHT_PX ? "auto" : "hidden";
   }, []);
   const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;

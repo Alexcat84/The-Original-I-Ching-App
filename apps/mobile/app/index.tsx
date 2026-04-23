@@ -158,10 +158,9 @@ const INJECTED_JS = `
     '.chat-app-bar-row--top{padding-top:0!important;padding-bottom:0!important}',
     'header.oracle-intro{margin-top:0!important;padding-top:0!important}',
     '.composer-dock{position:relative!important;padding-bottom:0!important}',
-    '@media (max-width:520px){footer.chat-composer-wa{padding-left:0.85rem!important;padding-right:0.85rem!important}.composer-minibar{padding-left:0!important;padding-right:0!important}.composer-floating-suggestions{padding-left:0!important;padding-right:0!important}}',
     '.composer-sheet{position:absolute!important;left:0!important;right:0!important;bottom:100%!important;z-index:58!important;max-height:0!important;min-height:0!important;overflow:hidden!important;pointer-events:none!important;transition:max-height 0.28s ease!important;border-bottom:1px solid transparent!important}',
     '.composer-sheet.is-open{max-height:min(52vh,26rem)!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important;background:var(--composer-bg)!important;border-top-left-radius:calc(var(--radius) * 0.55)!important;border-top-right-radius:calc(var(--radius) * 0.55)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--fg) 6%,transparent)!important}',
-    '.composer-minibar{padding:0.5rem 0.65rem 0.55rem!important}'
+    '@media (max-width:520px){.composer-minibar{padding:0.32rem 0.55rem!important;padding-bottom:calc(0.36rem + env(safe-area-inset-bottom,0px))!important;gap:0.35rem!important;align-items:center!important}.composer-minibar .composer-input-row{gap:0.35rem!important;margin-top:0!important}.composer-minibar .composer-input-row textarea{min-height:2.08rem!important;padding:0.42rem 0.72rem!important;font-size:0.92rem!important}.composer-minibar .composer-input-row>button{width:2.42rem!important;height:2.42rem!important;font-size:1rem!important}.composer-options-btn{min-width:2.7rem!important;padding:0.24rem 0.26rem!important;border-radius:18px!important}}'
   ].join(';');
   (document.head || document.documentElement).appendChild(_st);
   // Debug: confirm injection worked

@@ -1186,21 +1186,35 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   z-index: 60;
 }
 
-/* Narrow: composer chrome aligns with .chat-history horizontal inset (0.85rem); no extra minibar side padding */
+/* Narrow: shorter composer strip (full width of chat surface — no horizontal footer inset) */
 @media (max-width: 520px) {
-  footer.chat-composer-wa {
-    padding-left: 0.85rem;
-    padding-right: 0.85rem;
-  }
-
   .composer-minibar {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0.32rem 0.55rem calc(0.36rem + env(safe-area-inset-bottom, 0px));
+    gap: 0.35rem;
+    align-items: center;
   }
 
-  .composer-floating-suggestions {
-    padding-left: 0;
-    padding-right: 0;
+  .composer-minibar .composer-input-row {
+    gap: 0.35rem;
+    margin-top: 0;
+  }
+
+  .composer-minibar .composer-input-row textarea {
+    min-height: 2.08rem;
+    padding: 0.42rem 0.72rem;
+    font-size: 0.92rem;
+  }
+
+  .composer-minibar .composer-input-row > button {
+    width: 2.42rem;
+    height: 2.42rem;
+    font-size: 1rem;
+  }
+
+  .composer-options-btn {
+    min-width: 2.7rem;
+    padding: 0.24rem 0.26rem;
+    border-radius: 18px;
   }
 }
 
@@ -1561,8 +1575,8 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
 .composer-minibar {
   display: flex;
   align-items: flex-end;
-  gap: 0.45rem;
-  padding: 0.5rem 0.65rem calc(0.55rem + env(safe-area-inset-bottom, 0));
+  gap: 0.4rem;
+  padding: 0.42rem 0.65rem calc(0.5rem + env(safe-area-inset-bottom, 0));
 }
 
 .composer-options-btn {
@@ -1610,7 +1624,7 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
 }
 
 .composer-minibar .composer-input-row textarea {
-  min-height: 2.5rem;
+  min-height: 2.35rem;
   max-height: 6.5rem;
 }
 
