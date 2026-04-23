@@ -7,6 +7,7 @@ import * as SecureStore from "expo-secure-store";
 import * as Sharing from "expo-sharing";
 import * as Localization from "expo-localization";
 import * as SplashScreen from "expo-splash-screen";
+import Constants from "expo-constants";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -35,9 +36,23 @@ import {
   type AppLocale,
 } from "@iching-oracle/i18n";
 
-const BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL ||
+const STAGING_WEB_FALLBACK =
   "https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app";
+
+/** Same URL as app.config.js `extra.apiUrl` (set at native build). Prefer this over Metro-inlined env to avoid .env vs APK mismatch. */
+function resolveWebBaseUrl(): string {
+  const extra = (Constants.expoConfig?.extra as { apiUrl?: string } | undefined)?.apiUrl;
+  const fromExtra = typeof extra === "string" ? extra.trim().replace(/\/$/, "") : "";
+  if (fromExtra.length > 0) return fromExtra;
+  const fromEnv =
+    typeof process.env.EXPO_PUBLIC_API_URL === "string"
+      ? process.env.EXPO_PUBLIC_API_URL.trim().replace(/\/$/, "")
+      : "";
+  if (fromEnv.length > 0) return fromEnv;
+  return STAGING_WEB_FALLBACK;
+}
+
+const BASE_URL = resolveWebBaseUrl();
 
 // Supabase project — needed to construct the Google OAuth URL from native side.
 // IMPORTANT: Add "theoriginaliching://auth/callback" to your Supabase project's

@@ -109,6 +109,7 @@ module.exports = ({ config }) => ({
     ],
     "expo-secure-store",
   ],
+  /* Consumed at runtime via expo-constants in app/index.tsx (WebView BASE_URL). */
   extra: {
     apiUrl: APP_URL,
     eas: {
