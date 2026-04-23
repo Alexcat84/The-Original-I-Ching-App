@@ -277,6 +277,12 @@ html.iching-rn-webview .chat-surface {
   border-radius: 0 0 var(--chat-surface-radius) var(--chat-surface-radius);
 }
 
+/* RN: chat header row meets the native auth card with a straight top edge (no double curve) */
+html.iching-rn-webview header.chat-app-bar.oracle-intro {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 /* RN WebView: env() can be 0 while content still draws edge-to-edge over gesture nav — floor + cap */
 html.iching-rn-webview footer.chat-composer-wa {
   padding-bottom: 0;

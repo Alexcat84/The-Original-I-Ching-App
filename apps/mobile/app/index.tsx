@@ -1770,21 +1770,30 @@ export default function WebViewScreen() {
     LOCALES.find((l) => l.code === locale)?.label ?? locale.toUpperCase();
 
   const statusBarFillBg = shellTheme === "light" ? "#e8eef4" : "#0c0f14";
-  /** Height of the chrome row below the status-bar inset (matches minHeight + paddingBottom). */
-  const topBarRowHeight = 48;
+  /** Horizontal inset so the rounded auth card lines up with the centered WebView `.chat-surface` gutter. */
+  const chromePad = Math.max(12, insets.left, insets.right);
+  /** Status spacer + square shell strip + rounded auth card (for locale modal anchor). */
+  const topChromeStackHeight = insets.top + 52;
 
   return (
     <View style={[styles.container, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeRoot]}>
       {/* Status bar / cutout zone only — same bg as shell so we do not paint chrome under the system bar */}
       <View style={{ height: insets.top, backgroundColor: statusBarFillBg }} />
-      {/* ── P2 + P3: Native top bar — compact locale picker + user info (starts where Android inset ends) ─── */}
+      {/* Square full-bleed shell under status; rounded corners only on the inset auth card below */}
       <View
         style={[
-          styles.topBarBase,
-          shellTheme === "light" ? styles.topBarLight : styles.topBarDark,
+          styles.topBarOuterSquare,
+          shellTheme === "light" ? styles.topBarOuterLight : styles.topBarOuterDark,
+          { paddingHorizontal: chromePad },
           DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeTopBar,
         ]}
       >
+        <View
+          style={[
+            styles.nativeAuthChromeCard,
+            shellTheme === "light" ? styles.nativeAuthChromeLight : styles.nativeAuthChromeDark,
+          ]}
+        >
         {/* Compact locale picker button */}
         <TouchableOpacity
           style={[
@@ -1873,6 +1882,7 @@ export default function WebViewScreen() {
             </Text>
           </TouchableOpacity>
         )}
+        </View>
       </View>
 
       {/* ── P2: Locale picker dropdown modal ─────────────────────────────── */}
@@ -1891,7 +1901,7 @@ export default function WebViewScreen() {
             style={[
               styles.pickerDropdown,
               shellTheme === "light" && styles.pickerDropdownLight,
-              { marginTop: insets.top + topBarRowHeight },
+              { marginTop: topChromeStackHeight, left: chromePad + 2 },
             ]}
           >
             {LOCALES.map(({ code, label, name }) => (
@@ -2012,27 +2022,38 @@ const styles = StyleSheet.create({
     borderColor: "#ca8a04",
     backgroundColor: "rgba(234, 179, 8, 0.07)",
   },
-  /* ── Native top bar (tracks web data-theme) ── */
-  topBarBase: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
+  /* ── Native shell: square under status; rounded chrome lives on nativeAuthChromeCard ── */
+  topBarOuterSquare: {
+    flexDirection: "column",
+    alignItems: "stretch",
+  },
+  topBarOuterDark: {
+    backgroundColor: "#0c0f14",
+  },
+  topBarOuterLight: {
+    backgroundColor: "#e8eef4",
+  },
+  nativeAuthChromeCard: {
+    alignSelf: "stretch",
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    overflow: "hidden",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 14,
+    paddingTop: 4,
     paddingBottom: 4,
     minHeight: 44,
-    /* Align with web --chat-surface-radius (~26–38px): reads as one app shell above the WebView card */
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-    overflow: "hidden",
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  topBarDark: {
-    backgroundColor: "#0c0f14",
-    borderBottomColor: "rgba(201,162,39,0.2)",
+  nativeAuthChromeDark: {
+    backgroundColor: "#12161f",
+    borderBottomColor: "rgba(201,162,39,0.22)",
   },
-  topBarLight: {
-    backgroundColor: "#e8eef4",
-    borderBottomColor: "rgba(15,23,42,0.1)",
+  nativeAuthChromeLight: {
+    backgroundColor: "#ffffff",
+    borderBottomColor: "rgba(15,23,42,0.12)",
   },
   /* P2: Compact locale picker button */
   localePicker: {
