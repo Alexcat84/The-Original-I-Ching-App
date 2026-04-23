@@ -52,6 +52,7 @@ export {
   getLoginPageUiMessages,
   type LoginPageUiMessages,
 } from "./messages/login-page-ui.js";
+export { getMobileNativeUiMessages, type MobileNativeUiMessages } from "./messages/mobile-native-ui.js";
 export {
   formatGuiaFreeLine,
   formatGuiaPackPrice,

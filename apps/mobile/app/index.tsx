@@ -6,7 +6,7 @@ import * as MediaLibrary from "expo-media-library";
 import * as SecureStore from "expo-secure-store";
 import * as Sharing from "expo-sharing";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Animated,
@@ -26,6 +26,12 @@ import {
   type WebViewMessageEvent,
   type WebViewNavigation,
 } from "react-native-webview";
+import {
+  UI_LOCALE_STORAGE_KEY,
+  getLoginPageUiMessages,
+  getMobileNativeUiMessages,
+  type AppLocale,
+} from "@iching-oracle/i18n";
 
 const BASE_URL =
   process.env.EXPO_PUBLIC_API_URL ||
@@ -42,8 +48,6 @@ const SUPABASE_ANON_KEY =
 
 const SECURE_TOKEN_KEY = "supabase_access_token";
 const LOCALE_STORAGE_KEY = "iching_native_locale";
-
-type AppLocale = "es" | "en" | "pt" | "fr" | "de" | "it" | "ja" | "zh" | "ko";
 
 const LOCALES: { code: AppLocale; label: string; name: string }[] = [
   { code: "es", label: "ES", name: "Español" },
@@ -409,14 +413,50 @@ const INJECTED_JS = `
     return _origFetch.apply(this, arguments);
   };
 
-  /* 7 ── Locale setter callable from RN ───────────────────────────────── */
+  /* 7 ── Locale setter callable from RN (home + /login + any useAppLocale page) */
   window.__rnSetLocale = function (locale) {
-    var sel = document.getElementById('ui-locale-select');
-    if (sel) {
-      sel.value = locale;
-      sel.dispatchEvent(new Event('change', { bubbles: true }));
-    }
+    try {
+      var storageKey = ${JSON.stringify(UI_LOCALE_STORAGE_KEY)};
+      localStorage.setItem(storageKey, locale);
+      if (document.documentElement) document.documentElement.lang = locale;
+      document.cookie =
+        'iching_ui_locale=' +
+        encodeURIComponent(locale) +
+        '; path=/; max-age=31536000; samesite=lax';
+      window.dispatchEvent(
+        new CustomEvent('iching:locale-changed', { detail: { locale: locale } })
+      );
+      var sel = document.getElementById('ui-locale-select');
+      if (sel) {
+        sel.value = locale;
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } catch (e) {}
   };
+
+  /* 7b ── Report data-theme to native chrome (light/dark) ───────────────── */
+  function _rnReadShellTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'dark'
+      ? 'dark'
+      : 'light';
+  }
+  function _rnPostShellTheme() {
+    try {
+      var t = _rnReadShellTheme();
+      window.ReactNativeWebView &&
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({ type: 'shell_theme', theme: t })
+        );
+    } catch (e) {}
+  }
+  _rnPostShellTheme();
+  if (!window.__rnShellThemeMo) {
+    window.__rnShellThemeMo = new MutationObserver(_rnPostShellTheme);
+    window.__rnShellThemeMo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  }
 
   /* 8 ── Sign-out callable from RN native bar (P3) ─────────────────────── */
   window.__rnSignOut = function () {
@@ -663,7 +703,8 @@ type RNMessage =
   | { type: "open_image"; url: string }
   | { type: "web_alert"; message: string }
   | { type: "web_confirm"; message: string }
-  | { type: "web_prompt"; message: string; defaultValue?: string };
+  | { type: "web_prompt"; message: string; defaultValue?: string }
+  | { type: "shell_theme"; theme: "light" | "dark" };
 
 type NativeDialogConfig = {
   title?: string;
@@ -811,15 +852,20 @@ const zoomStyles = StyleSheet.create({
   },
 });
 
+type ShellChromeTheme = "light" | "dark";
+
 // ── Native alert modal (replaces Android system dialogs) ─────────────────────
 function NativeAlertModal({
   config,
   onClose,
+  appearance = "dark",
 }: {
   config: NativeDialogConfig | null;
   onClose: () => void;
+  appearance?: ShellChromeTheme;
 }) {
   if (!config) return null;
+  const d = appearance === "light" ? dialogStylesLight : dialogStylesDark;
   return (
     <Modal
       visible
@@ -828,19 +874,19 @@ function NativeAlertModal({
       onRequestClose={onClose}
       statusBarTranslucent
     >
-      <View style={dialogStyles.backdrop}>
-        <View style={dialogStyles.card}>
+      <View style={d.backdrop}>
+        <View style={d.card}>
           {config.title ? (
-            <Text style={dialogStyles.title}>{config.title}</Text>
+            <Text style={d.title}>{config.title}</Text>
           ) : null}
-          <Text style={dialogStyles.message}>{config.message}</Text>
-          <View style={dialogStyles.buttons}>
+          <Text style={d.message}>{config.message}</Text>
+          <View style={d.buttons}>
             {config.buttons.map((btn, i) => (
               <TouchableOpacity
                 key={i}
                 style={[
-                  dialogStyles.btn,
-                  btn.style === "cancel" && dialogStyles.btnCancel,
+                  d.btn,
+                  btn.style === "cancel" && d.btnCancel,
                 ]}
                 onPress={() => {
                   btn.onPress?.();
@@ -850,8 +896,8 @@ function NativeAlertModal({
               >
                 <Text
                   style={[
-                    dialogStyles.btnText,
-                    btn.style === "cancel" && dialogStyles.btnTextCancel,
+                    d.btnText,
+                    btn.style === "cancel" && d.btnTextCancel,
                   ]}
                 >
                   {btn.text}
@@ -865,7 +911,7 @@ function NativeAlertModal({
   );
 }
 
-const dialogStyles = StyleSheet.create({
+const dialogStylesDark = StyleSheet.create({
   backdrop: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.65)",
@@ -926,6 +972,72 @@ const dialogStyles = StyleSheet.create({
   },
 });
 
+const dialogStylesLight = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    backgroundColor: "rgba(15,23,42,0.35)",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 32,
+  },
+  card: {
+    backgroundColor: "#f8fafc",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(15,23,42,0.12)",
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    width: "100%",
+    maxWidth: 340,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  title: {
+    color: "#0f172a",
+    fontSize: 17,
+    fontWeight: "700",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  message: {
+    color: "rgba(15,23,42,0.75)",
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 10,
+  },
+  btn: {
+    flex: 1,
+    backgroundColor: "rgba(13,148,136,0.12)",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "rgba(13,148,136,0.35)",
+    paddingVertical: 11,
+    alignItems: "center",
+  },
+  btnCancel: {
+    backgroundColor: "transparent",
+    borderColor: "rgba(15,23,42,0.15)",
+  },
+  btnText: {
+    color: "#0d9488",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  btnTextCancel: {
+    color: "rgba(15,23,42,0.45)",
+    fontWeight: "400",
+  },
+});
+
 // ── Main screen ───────────────────────────────────────────────────────────────
 export default function WebViewScreen() {
   const webViewRef = useRef<WebView>(null);
@@ -956,6 +1068,12 @@ export default function WebViewScreen() {
   const [locale, setLocaleState] = useState<AppLocale>("es");
   const localeRef = useRef<AppLocale>("es");
   const [showLocalePicker, setShowLocalePicker] = useState(false);
+
+  /** Matches web `html[data-theme]` so the native chrome tracks Claro/Oscuro. */
+  const [shellTheme, setShellTheme] = useState<ShellChromeTheme>("dark");
+
+  const loginUi = useMemo(() => getLoginPageUiMessages(locale), [locale]);
+  const nativeUi = useMemo(() => getMobileNativeUiMessages(locale), [locale]);
 
   /* ── Keep localeRef in sync with locale state; re-inject when it changes post-load ── */
   useEffect(() => {
@@ -1301,7 +1419,7 @@ export default function WebViewScreen() {
           }
           await Sharing.shareAsync(fileUri, {
             mimeType: "application/pdf",
-            dialogTitle: "Compartir PDF",
+            dialogTitle: nativeUi.sharePdfTitle,
           });
         } else {
           let granted = mediaPermission?.granted ?? false;
@@ -1311,28 +1429,28 @@ export default function WebViewScreen() {
           }
           if (!granted) {
             showNativeDialog({
-              title: "Permiso denegado",
-              message: "Necesitamos acceso a tu galería para guardar imágenes.",
-              buttons: [{ text: "OK" }],
+              title: nativeUi.permissionDeniedTitle,
+              message: nativeUi.permissionDeniedBody,
+              buttons: [{ text: nativeUi.ok }],
             });
             return;
           }
           await MediaLibrary.saveToLibraryAsync(fileUri);
           showNativeDialog({
-            title: "Imagen guardada",
-            message: "Se guardó en tu galería.",
-            buttons: [{ text: "OK" }],
+            title: nativeUi.imageSavedTitle,
+            message: nativeUi.imageSavedBody,
+            buttons: [{ text: nativeUi.ok }],
           });
         }
       } catch {
         showNativeDialog({
-          title: "Error",
-          message: "No se pudo guardar el archivo.",
-          buttons: [{ text: "OK" }],
+          title: nativeUi.fileSaveErrorTitle,
+          message: nativeUi.fileSaveErrorBody,
+          buttons: [{ text: nativeUi.ok }],
         });
       }
     },
-    [mediaPermission, requestMediaPermission, showNativeDialog]
+    [mediaPermission, nativeUi, requestMediaPermission, showNativeDialog]
   );
 
   /* ── P6: Execute DELETE from RN with stored token ── */
@@ -1444,10 +1562,16 @@ export default function WebViewScreen() {
             setZoomImageUrl(msg.url);
             break;
 
+          case "shell_theme":
+            if (msg.theme === "light" || msg.theme === "dark") {
+              setShellTheme(msg.theme);
+            }
+            break;
+
           case "web_alert":
             showNativeDialog({
               message: msg.message,
-              buttons: [{ text: "OK" }],
+              buttons: [{ text: nativeUi.ok }],
             });
             break;
 
@@ -1455,8 +1579,8 @@ export default function WebViewScreen() {
             showNativeDialog({
               message: msg.message,
               buttons: [
-                { text: "Cancelar", style: "cancel" },
-                { text: "OK" },
+                { text: nativeUi.cancel, style: "cancel" },
+                { text: nativeUi.ok },
               ],
             });
             break;
@@ -1464,7 +1588,7 @@ export default function WebViewScreen() {
           case "web_prompt":
             showNativeDialog({
               message: msg.message,
-              buttons: [{ text: "OK" }],
+              buttons: [{ text: nativeUi.ok }],
             });
             break;
         }
@@ -1472,7 +1596,7 @@ export default function WebViewScreen() {
         // Ignore non-JSON bridge noise
       }
     },
-    [handleFileDownload, handleDeleteChat, showNativeDialog]
+    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog]
   );
 
   /* ── Intercept Google OAuth + internal doc navigation ── */
@@ -1550,37 +1674,80 @@ export default function WebViewScreen() {
   return (
     <View style={styles.container}>
       {/* ── P2 + P3: Native top bar — compact locale picker + user info ─── */}
-      <View style={[styles.topBar, { paddingTop: insets.top }]}>
+      <View
+        style={[
+          styles.topBarBase,
+          shellTheme === "light" ? styles.topBarLight : styles.topBarDark,
+          { paddingTop: insets.top },
+        ]}
+      >
         {/* Compact locale picker button */}
         <TouchableOpacity
-          style={styles.localePicker}
+          style={[
+            styles.localePicker,
+            shellTheme === "light" && styles.localePickerLight,
+          ]}
           onPress={() => setShowLocalePicker(true)}
           activeOpacity={0.7}
         >
-          <Text style={styles.localePickerText}>{activeLocaleLabel}</Text>
-          <Text style={styles.localePickerArrow}>▾</Text>
+          <Text
+            style={[
+              styles.localePickerText,
+              shellTheme === "light" && styles.localePickerTextLight,
+            ]}
+          >
+            {activeLocaleLabel}
+          </Text>
+          <Text
+            style={[
+              styles.localePickerArrow,
+              shellTheme === "light" && styles.localePickerArrowLight,
+            ]}
+          >
+            ▾
+          </Text>
         </TouchableOpacity>
 
         {/* User info or sign-in */}
         {isAuthenticated ? (
           <View style={styles.userRow}>
             {userEmail ? (
-              <Text style={styles.userEmail} numberOfLines={1} ellipsizeMode="middle">
+              <Text
+                style={[
+                  styles.userEmail,
+                  shellTheme === "light" && styles.userEmailLight,
+                ]}
+                numberOfLines={1}
+                ellipsizeMode="middle"
+              >
                 {userEmail}
               </Text>
             ) : null}
             <TouchableOpacity
-              style={styles.signOutBtn}
+              style={[
+                styles.signOutBtn,
+                shellTheme === "light" && styles.signOutBtnLight,
+              ]}
               onPress={handleSignOut}
               activeOpacity={0.7}
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
-              <Text style={styles.signOutText}>✕</Text>
+              <Text
+                style={[
+                  styles.signOutText,
+                  shellTheme === "light" && styles.signOutTextLight,
+                ]}
+              >
+                ✕
+              </Text>
             </TouchableOpacity>
           </View>
         ) : (
           <TouchableOpacity
-            style={styles.signInBtn}
+            style={[
+              styles.signInBtn,
+              shellTheme === "light" && styles.signInBtnLight,
+            ]}
             onPress={() => {
               // Force navigation via JS injection — handles the edge case where
               // currentUrl is already the login URL (React state won't change,
@@ -1592,7 +1759,14 @@ export default function WebViewScreen() {
             }}
             activeOpacity={0.7}
           >
-            <Text style={styles.signInText}>Iniciar sesión</Text>
+            <Text
+              style={[
+                styles.signInText,
+                shellTheme === "light" && styles.signInTextLight,
+              ]}
+            >
+              {loginUi.signInTab}
+            </Text>
           </TouchableOpacity>
         )}
       </View>
@@ -1609,22 +1783,44 @@ export default function WebViewScreen() {
           activeOpacity={1}
           onPress={() => setShowLocalePicker(false)}
         >
-          <View style={[styles.pickerDropdown, { marginTop: insets.top + 44 }]}>
+          <View
+            style={[
+              styles.pickerDropdown,
+              shellTheme === "light" && styles.pickerDropdownLight,
+              { marginTop: insets.top + 44 },
+            ]}
+          >
             {LOCALES.map(({ code, label, name }) => (
               <TouchableOpacity
                 key={code}
-                style={[styles.pickerItem, locale === code && styles.pickerItemActive]}
+                style={[
+                  styles.pickerItem,
+                  shellTheme === "light" && styles.pickerItemLight,
+                  locale === code && styles.pickerItemActive,
+                  shellTheme === "light" && locale === code && styles.pickerItemActiveLight,
+                ]}
                 onPress={() => {
                   changeLocale(code);
                   setShowLocalePicker(false);
                 }}
                 activeOpacity={0.7}
               >
-                <Text style={styles.pickerItemCode}>{label}</Text>
+                <Text
+                  style={[
+                    styles.pickerItemCode,
+                    shellTheme === "light" && styles.pickerItemCodeLight,
+                  ]}
+                >
+                  {label}
+                </Text>
                 <Text
                   style={[
                     styles.pickerItemName,
+                    shellTheme === "light" && styles.pickerItemNameLight,
                     locale === code && styles.pickerItemNameActive,
+                    shellTheme === "light" &&
+                      locale === code &&
+                      styles.pickerItemNameActiveLight,
                   ]}
                 >
                   {name}
@@ -1645,6 +1841,7 @@ export default function WebViewScreen() {
       <NativeAlertModal
         config={nativeDialog}
         onClose={() => setNativeDialog(null)}
+        appearance={shellTheme}
       />
 
       {/* ── WebView ────────────────────────────────────────────────────────── */}
@@ -1689,17 +1886,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#0c0f14",
   },
-  /* ── Native top bar ── */
-  topBar: {
-    backgroundColor: "#0c0f14",
+  /* ── Native top bar (tracks web data-theme) ── */
+  topBarBase: {
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "rgba(201,162,39,0.2)",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 14,
     paddingBottom: 8,
     minHeight: 44,
+  },
+  topBarDark: {
+    backgroundColor: "#0c0f14",
+    borderBottomColor: "rgba(201,162,39,0.2)",
+  },
+  topBarLight: {
+    backgroundColor: "#e8eef4",
+    borderBottomColor: "rgba(15,23,42,0.1)",
   },
   /* P2: Compact locale picker button */
   localePicker: {
@@ -1713,15 +1916,25 @@ const styles = StyleSheet.create({
     borderColor: "rgba(201,162,39,0.4)",
     backgroundColor: "rgba(201,162,39,0.06)",
   },
+  localePickerLight: {
+    borderColor: "rgba(13,148,136,0.45)",
+    backgroundColor: "rgba(255,255,255,0.75)",
+  },
   localePickerText: {
     color: "#c9a227",
     fontSize: 13,
     fontWeight: "700",
     letterSpacing: 0.5,
   },
+  localePickerTextLight: {
+    color: "#0f766e",
+  },
   localePickerArrow: {
     color: "rgba(201,162,39,0.6)",
     fontSize: 10,
+  },
+  localePickerArrowLight: {
+    color: "rgba(15,118,110,0.65)",
   },
   /* P2: Locale dropdown */
   pickerOverlay: {
@@ -1739,6 +1952,10 @@ const styles = StyleSheet.create({
     minWidth: 160,
     elevation: 8,
   },
+  pickerDropdownLight: {
+    backgroundColor: "#f8fafc",
+    borderColor: "rgba(15,23,42,0.12)",
+  },
   pickerItem: {
     flexDirection: "row",
     alignItems: "center",
@@ -1748,8 +1965,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: "rgba(201,162,39,0.1)",
   },
+  pickerItemLight: {
+    borderBottomColor: "rgba(15,23,42,0.08)",
+  },
   pickerItemActive: {
     backgroundColor: "rgba(201,162,39,0.08)",
+  },
+  pickerItemActiveLight: {
+    backgroundColor: "rgba(13,148,136,0.1)",
   },
   pickerItemCode: {
     color: "#c9a227",
@@ -1758,13 +1981,22 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     width: 24,
   },
+  pickerItemCodeLight: {
+    color: "#0f766e",
+  },
   pickerItemName: {
     color: "rgba(255,255,255,0.55)",
     fontSize: 13,
   },
+  pickerItemNameLight: {
+    color: "rgba(15,23,42,0.55)",
+  },
   pickerItemNameActive: {
     color: "rgba(255,255,255,0.9)",
     fontWeight: "600",
+  },
+  pickerItemNameActiveLight: {
+    color: "rgba(15,23,42,0.92)",
   },
   /* P3: User info row */
   userRow: {
@@ -1779,6 +2011,9 @@ const styles = StyleSheet.create({
     fontSize: 11,
     flexShrink: 1,
   },
+  userEmailLight: {
+    color: "rgba(15,23,42,0.55)",
+  },
   signOutBtn: {
     paddingHorizontal: 7,
     paddingVertical: 4,
@@ -1787,10 +2022,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(201,162,39,0.25)",
   },
+  signOutBtnLight: {
+    backgroundColor: "rgba(255,255,255,0.6)",
+    borderColor: "rgba(15,23,42,0.12)",
+  },
   signOutText: {
     color: "rgba(201,162,39,0.6)",
     fontSize: 11,
     fontWeight: "700",
+  },
+  signOutTextLight: {
+    color: "rgba(15,23,42,0.5)",
   },
   /* Sign-in button */
   signInBtn: {
@@ -1801,10 +2043,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(201,162,39,0.35)",
   },
+  signInBtnLight: {
+    backgroundColor: "rgba(13,148,136,0.1)",
+    borderColor: "rgba(13,148,136,0.4)",
+  },
   signInText: {
     color: "#c9a227",
     fontSize: 12,
     fontWeight: "600",
+  },
+  signInTextLight: {
+    color: "#0f766e",
   },
   /* ── WebView ── */
   webview: {
