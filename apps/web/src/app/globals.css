@@ -338,6 +338,37 @@ html.iching-rn-webview .composer-minibar {
   padding-bottom: 0.42rem !important;
 }
 
+/*
+ * RN WebView: /guia, /notes, /privacy, etc. have no .iching-oracle-shell — chat.
+ * Injected CSS used to set html,body overflow:hidden everywhere, which blocked scroll
+ * and could hide the doc nav under the status bar. Allow body scroll + sticky nav.
+ */
+html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) {
+  height: auto;
+  min-height: 100%;
+}
+
+html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) body {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: max(0.35rem, env(safe-area-inset-top, 0px));
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+
+html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) .oracle-shell.doc-page .doc-nav {
+  position: sticky;
+  z-index: 8;
+  top: max(0px, env(safe-area-inset-top, 0px));
+  padding: 0.35rem 0 0.55rem;
+  margin: 0 0 0.85rem;
+  background: color-mix(in srgb, var(--bg) 90%, var(--shell-header-bg));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
+}
+
 /* RN WebView: auth strip band + controls (visual parity with former native chrome) */
 html.iching-rn-webview[data-theme="dark"] .auth-explore-strip {
   background: #080808;

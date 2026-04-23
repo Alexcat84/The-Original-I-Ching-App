@@ -162,7 +162,11 @@ const INJECTED_JS = `
   /* 1 ── Layout parity + neutralize vertical gaps (P7 — DEBUG + v4 fix) */
   var _st = document.createElement('style');
   _st.textContent = [
-    'html,body{height:100%!important;min-height:100%!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden!important}',
+    /* Chat-only: locking overflow on html/body breaks /guia, /notes, etc. (no .iching-oracle-shell--chat). */
+    'html.iching-rn-webview:has(.iching-oracle-shell--chat){height:100%!important;min-height:100%!important;overflow:hidden!important}',
+    'html.iching-rn-webview:has(.iching-oracle-shell--chat) body{height:100%!important;min-height:100%!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden!important}',
+    'html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)){height:auto!important;min-height:100%!important}',
+    'html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;margin:0!important;padding:0!important;padding-bottom:max(0.75rem,env(safe-area-inset-bottom,0px))!important}',
     '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:none!important;overflow:hidden!important;padding:0!important;margin:0!important;background:transparent!important}',
     /* Layout parity with latest globals.css — APK must not depend on stale CDN/CSS deploy */
     '.iching-oracle-shell--chat > *:only-child{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;max-width:none!important;padding:0!important}',
@@ -214,6 +218,14 @@ const INJECTED_JS = `
           Use max(innerHeight, visualViewport.height), re-sync after shell mounts (SPA/hydration). */
   function _rnSyncShellToViewport() {
     try {
+      var shell = document.querySelector('.iching-oracle-shell--chat');
+      if (!shell) {
+        document.documentElement.style.height = '';
+        document.documentElement.style.minHeight = '';
+        document.body.style.minHeight = '';
+        document.body.style.height = '';
+        return;
+      }
       var vv = window.visualViewport;
       var inner = typeof window.innerHeight === 'number' ? window.innerHeight : 0;
       var vvH = vv && typeof vv.height === 'number' ? vv.height : 0;
@@ -221,12 +233,9 @@ const INJECTED_JS = `
       if (!h || h < 200) return;
       document.documentElement.style.height = h + 'px';
       document.body.style.minHeight = h + 'px';
-      var shell = document.querySelector('.iching-oracle-shell--chat');
-      if (shell) {
-        shell.style.minHeight = h + 'px';
-        shell.style.height = h + 'px';
-        shell.style.maxHeight = 'none';
-      }
+      shell.style.minHeight = h + 'px';
+      shell.style.height = h + 'px';
+      shell.style.maxHeight = 'none';
     } catch (_) {}
   }
   var _rnVpRaf = null;
@@ -531,6 +540,36 @@ const INJECTED_JS = `
     } catch (e) {}
   };
 
+  var _rnSupportedLocaleCodes = ${SUPPORTED_LOCALE_CODES_JSON};
+  function _rnNormalizeLocale(locale) {
+    return typeof locale === 'string' ? locale.toLowerCase() : '';
+  }
+  function _rnIsSupportedLocale(locale) {
+    return _rnSupportedLocaleCodes.indexOf(locale) !== -1;
+  }
+  // Bridge web locale updates back to RN.
+  window.__rnReportLocale = function (locale) {
+    try {
+      var normalized = _rnNormalizeLocale(locale);
+      if (!_rnIsSupportedLocale(normalized)) return;
+      window.ReactNativeWebView &&
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({ type: 'locale_changed', locale: normalized })
+        );
+    } catch (e) {}
+  };
+  if (!window.__rnLocaleBridgeInstalled) {
+    window.__rnLocaleBridgeInstalled = true;
+    window.addEventListener('iching:locale-changed', function (event) {
+      var nextLocale = event && event.detail ? event.detail.locale : null;
+      window.__rnReportLocale && window.__rnReportLocale(nextLocale);
+    });
+  }
+  try {
+    var _rnInitialLocale = localStorage.getItem(${JSON.stringify(UI_LOCALE_STORAGE_KEY)});
+    window.__rnReportLocale && window.__rnReportLocale(_rnInitialLocale);
+  } catch (e) {}
+
   /* 7b ── Report data-theme to native chrome (light/dark) ───────────────── */
   function _rnReadShellTheme() {
     return document.documentElement.getAttribute('data-theme') === 'dark'
@@ -827,6 +866,7 @@ const COMBINED_INJECTED_JS = DEBUG_WEBVIEW_CHAT_DOM_OUTLINES
 type RNMessage =
   | { type: "auth_token"; token: string; email?: string | null }
   | { type: "auth_signout" }
+  | { type: "locale_changed"; locale: AppLocale }
   | { type: "open_google_auth" }
   | { type: "pkce_verifier"; verifier: string }
   | { type: "download_file"; filename: string; dataUrl: string }
@@ -1646,6 +1686,14 @@ export default function WebViewScreen() {
             webViewRef.current?.injectJavaScript(
               `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
             );
+            break;
+
+          case "locale_changed":
+            if (!LOCALES.some((l) => l.code === msg.locale)) break;
+            AsyncStorage.setItem(LOCALE_STORAGE_KEY, msg.locale);
+            if (localeRef.current !== msg.locale) {
+              setLocaleState(msg.locale);
+            }
             break;
 
           case "open_google_auth": {
