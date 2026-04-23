@@ -157,12 +157,10 @@ const INJECTED_JS = `
     '.chat-history{flex:1 1 0%!important;min-height:0!important;padding-bottom:0!important}',
     '.chat-app-bar-row--top{padding-top:0!important;padding-bottom:0!important}',
     'header.oracle-intro{margin-top:0!important;padding-top:0!important}',
-    '.composer-dock{position:relative!important;padding-bottom:0!important;background:transparent!important;box-shadow:none!important;border-top:none!important}',
-    '.composer-dock::before{display:none!important}',
-    '.composer-floating-suggestions{margin-left:0.5rem!important;margin-right:0.5rem!important;border-radius:0.85rem 0.85rem 0 0!important;border:1px solid color-mix(in srgb,var(--bar-border) 55%,transparent)!important;border-bottom:none!important}',
-    '.composer-minibar{background:var(--composer-bg)!important;margin:0 0.5rem 0.35rem!important;border-radius:1.05rem!important;box-shadow:var(--composer-shadow)!important;border:1px solid color-mix(in srgb,var(--bar-border) 58%,transparent)!important;padding:0.45rem 0.55rem!important;padding-bottom:calc(0.5rem + env(safe-area-inset-bottom,0px))!important}',
+    '.composer-dock{position:relative!important;padding-bottom:0!important}',
     '.composer-sheet{position:absolute!important;left:0!important;right:0!important;bottom:100%!important;z-index:58!important;max-height:0!important;min-height:0!important;overflow:hidden!important;pointer-events:none!important;transition:max-height 0.28s ease!important;border-bottom:1px solid transparent!important}',
-    '.composer-sheet.is-open{max-height:min(52vh,26rem)!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important;background:var(--composer-bg)!important;border-top-left-radius:calc(var(--radius) * 0.55)!important;border-top-right-radius:calc(var(--radius) * 0.55)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--fg) 6%,transparent)!important}'
+    '.composer-sheet.is-open{max-height:min(52vh,26rem)!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important;background:var(--composer-bg)!important;border-top-left-radius:calc(var(--radius) * 0.55)!important;border-top-right-radius:calc(var(--radius) * 0.55)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--fg) 6%,transparent)!important}',
+    '.composer-minibar{padding:0.5rem 0.65rem 0.55rem!important}'
   ].join(';');
   (document.head || document.documentElement).appendChild(_st);
   // Debug: confirm injection worked
