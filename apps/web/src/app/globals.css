@@ -266,7 +266,7 @@ html.iching-rn-webview .iching-oracle-shell--chat {
   padding-bottom: 0 !important;
 }
 
-/* RN: system nav is outside the WebView — cap inset so composer row sits near the physical edge */
+/* RN WebView: env() can be 0 while content still draws edge-to-edge over gesture nav — floor + cap */
 html.iching-rn-webview footer.chat-composer-wa {
   padding-bottom: 0;
 }
@@ -276,7 +276,7 @@ html.iching-rn-webview .composer-dock {
 }
 
 html.iching-rn-webview .composer-minibar {
-  padding-bottom: calc(2px + min(18px, env(safe-area-inset-bottom, 0px))) !important;
+  padding-bottom: calc(0.3rem + clamp(18px, env(safe-area-inset-bottom, 0px), 52px)) !important;
 }
 
 /* Footer is a direct flex child of .chat-surface so it sits flush under .chat-room */
@@ -1211,7 +1211,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
     padding-top: 0.28rem;
     padding-left: 0.55rem;
     padding-right: 0.55rem;
-    padding-bottom: calc(0.1rem + min(22px, env(safe-area-inset-bottom, 0px)));
+    padding-bottom: calc(0.25rem + clamp(14px, env(safe-area-inset-bottom, 0px), 52px));
     gap: 0.35rem;
     align-items: center;
   }
