@@ -266,6 +266,15 @@ html.iching-rn-webview .iching-oracle-shell--chat {
   padding-bottom: 0 !important;
 }
 
+/* RN WebView: lift the bordered .chat-surface so bottom radius clears gesture nav (env often 0 here) */
+html.iching-rn-webview {
+  --rn-chat-bottom-offset: calc(0.25rem + clamp(18px, env(safe-area-inset-bottom, 0px), 52px));
+}
+
+html.iching-rn-webview .chat-surface {
+  margin-bottom: var(--rn-chat-bottom-offset);
+}
+
 /* RN WebView: env() can be 0 while content still draws edge-to-edge over gesture nav — floor + cap */
 html.iching-rn-webview footer.chat-composer-wa {
   padding-bottom: 0;
@@ -275,8 +284,9 @@ html.iching-rn-webview .composer-dock {
   padding-bottom: 0 !important;
 }
 
+/* Inset lives on .chat-surface margin — keep composer visually balanced */
 html.iching-rn-webview .composer-minibar {
-  padding-bottom: calc(0.3rem + clamp(18px, env(safe-area-inset-bottom, 0px), 52px)) !important;
+  padding-bottom: 0.42rem !important;
 }
 
 /* Footer is a direct flex child of .chat-surface so it sits flush under .chat-room */
