@@ -183,7 +183,14 @@ const INJECTED_JS = `
     '.composer-sheet.is-open{max-height:min(52vh,26rem)!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important;background:var(--composer-bg)!important;border-top-left-radius:calc(var(--radius) * 0.55)!important;border-top-right-radius:calc(var(--radius) * 0.55)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--fg) 6%,transparent)!important}',
     '@media (max-width:520px){.composer-minibar{padding-top:0.28rem!important;padding-left:0.55rem!important;padding-right:0.55rem!important;padding-bottom:calc(0.25rem + clamp(14px,env(safe-area-inset-bottom,0px),52px))!important;gap:0.35rem!important;align-items:center!important}.composer-minibar .composer-input-row{gap:0.35rem!important;margin-top:0!important}.composer-minibar .composer-input-row textarea{min-height:2.08rem!important;padding:0.42rem 0.72rem!important;font-size:0.92rem!important}.composer-minibar .composer-input-row>button{width:2.42rem!important;height:2.42rem!important;font-size:1rem!important}.composer-options-btn{min-width:2.7rem!important;padding:0.24rem 0.26rem!important;border-radius:18px!important}}',
     'html.iching-rn-webview footer.chat-composer-wa{padding-bottom:0!important}',
-    'html.iching-rn-webview .composer-minibar{padding-bottom:0.42rem!important}'
+    'html.iching-rn-webview .composer-minibar{padding-bottom:0.42rem!important}',
+    /* Match globals: RN chat width was still capped by 34–40rem bubbles + 40–48rem surface (wide side margins). */
+    'html.iching-rn-webview .chat-surface{max-width:min(120rem,calc(100vw - 0.35rem))!important}',
+    '@media (min-width:480px){html.iching-rn-webview .chat-surface{max-width:min(120rem,calc(100vw - 0.55rem))!important}}',
+    '@media (min-width:768px){html.iching-rn-webview .chat-surface{max-width:min(120rem,calc(100vw - 0.75rem))!important}}',
+    'html.iching-rn-webview .chat-history{padding-left:0.42rem!important;padding-right:0.42rem!important}',
+    'html.iching-rn-webview .chat-bubble,html.iching-rn-webview .chat-bubble.chat-user,html.iching-rn-webview .chat-bubble.chat-assistant{max-width:100%!important}',
+    'html.iching-rn-webview .chat-empty-hint,html.iching-rn-webview .credits-notice-card,html.iching-rn-webview .chat-error-bubble{max-width:min(100%,calc(100vw - 1.1rem))!important}'
   ].join(';');
   (document.head || document.documentElement).appendChild(_st);
   // Debug: confirm injection worked

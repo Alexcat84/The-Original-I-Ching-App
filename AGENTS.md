@@ -15,4 +15,6 @@
 - El proyecto usa pruebas de QA visual frecuentes con capturas para validar regresiones en UI y render de imágenes.
 - El cliente Android (`apps/mobile`) carga la experiencia web en un `WebView` contra la URL definida en build; la UI y el login visibles dependen del despliegue remoto, no solo del binario nativo.
 - La URL del WebView debe alinearse entre `app.config.js` (`extra.apiUrl`, embebido en release) y `EXPO_PUBLIC_*` / Metro en desarrollo; si difieren, el dispositivo puede cargar otro host (p. ej. staging vs producción).
+- El JavaScript inyectado en el WebView (`INJECTED_JS` en `apps/mobile`) puede aplicar CSS con `!important` que sobrescribe estilos del sitio remoto; si la UI no refleja un deploy nuevo, conviene revisar esas reglas además de la URL y la caché del WebView.
+- Los requisitos de Google Play (p. ej. subir `targetSdkVersion`) pueden introducir regresiones de UI o de pantalla completa solo en Android aunque la web desplegada se vea y funcione bien.
 <!-- Si se usara EAS, conviene que el perfil empaquetado coincida con esas mismas variables; no es el flujo habitual del repo. -->

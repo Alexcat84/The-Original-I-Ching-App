@@ -47,23 +47,37 @@ export function AuthLocalePicker({ locale, onChange, order, labels, ariaLabel }:
 
   useEffect(() => {
     if (!open) return;
-    const close = (e: MouseEvent | TouchEvent) => {
-      const t = e.target as Node;
-      if (rootRef.current?.contains(t)) return;
-      if (menuRef.current?.contains(t)) return;
+    const isInsidePicker = (node: Node | null) => {
+      if (!node) return false;
+      if (rootRef.current?.contains(node)) return true;
+      if (menuRef.current?.contains(node)) return true;
+      return false;
+    };
+    /** Desktop: dismiss on press outside (before click). */
+    const onMouseDown = (e: MouseEvent) => {
+      if (isInsidePicker(e.target as Node)) return;
+      setOpen(false);
+    };
+    /** Touch / mouse: dismiss on full click outside; avoids closing while scrolling the menu. */
+    const onClickCapture = (e: MouseEvent) => {
+      if (isInsidePicker(e.target as Node)) return;
       setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
-    const onScroll = () => setOpen(false);
-    document.addEventListener("mousedown", close);
-    document.addEventListener("touchstart", close, { passive: true });
+    const onScroll = (e: Event) => {
+      const t = e.target;
+      if (t instanceof Node && menuRef.current?.contains(t)) return;
+      setOpen(false);
+    };
+    document.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("click", onClickCapture, true);
     document.addEventListener("keydown", onKey);
     window.addEventListener("scroll", onScroll, true);
     return () => {
-      document.removeEventListener("mousedown", close);
-      document.removeEventListener("touchstart", close);
+      document.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("click", onClickCapture, true);
       document.removeEventListener("keydown", onKey);
       window.removeEventListener("scroll", onScroll, true);
     };

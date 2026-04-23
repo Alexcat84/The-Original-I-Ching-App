@@ -276,20 +276,38 @@ html.iching-rn-webview {
 /* RN: full card radius when auth/locale strip is shown (strip carries top curve like former native card) */
 html.iching-rn-webview .chat-surface {
   margin-bottom: var(--rn-chat-bottom-offset);
-  /* Wider chat column on phone WebView (more room for Q&A + images) */
-  max-width: min(40rem, calc(100vw - 0.35rem));
+  /* Use almost full viewport; rem caps (40–48rem) left large side margins on common phone/tablet widths. */
+  max-width: min(120rem, calc(100vw - 0.35rem));
 }
 
 @media (min-width: 480px) {
   html.iching-rn-webview .chat-surface {
-    max-width: min(46rem, calc(100vw - 0.75rem));
+    max-width: min(120rem, calc(100vw - 0.55rem));
   }
 }
 
 @media (min-width: 768px) {
   html.iching-rn-webview .chat-surface {
-    max-width: min(48rem, calc(100vw - 1rem));
+    max-width: min(120rem, calc(100vw - 0.75rem));
   }
+}
+
+/* RN: bubbles still inherited desktop 34–40rem caps — stretch to the padded history track. */
+html.iching-rn-webview .chat-history {
+  padding-left: 0.42rem;
+  padding-right: 0.42rem;
+}
+
+html.iching-rn-webview .chat-bubble,
+html.iching-rn-webview .chat-bubble.chat-user,
+html.iching-rn-webview .chat-bubble.chat-assistant {
+  max-width: 100%;
+}
+
+html.iching-rn-webview .chat-empty-hint,
+html.iching-rn-webview .credits-notice-card,
+html.iching-rn-webview .chat-error-bubble {
+  max-width: min(100%, calc(100vw - 1.1rem));
 }
 
 html.iching-rn-webview .chat-surface.chat-surface--explore-cap {
@@ -412,13 +430,18 @@ html.iching-rn-webview[data-theme="light"] .locale-picker-trigger__chevron {
 .locale-picker-menu {
   z-index: 260;
   min-width: 11.5rem;
-  max-height: min(70vh, 22rem);
+  max-height: min(72vh, 26rem);
   overflow-y: auto;
+  overflow-x: hidden;
   margin: 0;
   padding: 0.2rem 0;
   list-style: none;
   border-radius: 12px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  touch-action: pan-y;
 }
 
 .locale-picker-menu--portal {
@@ -455,6 +478,8 @@ html.iching-rn-webview[data-theme="light"] .locale-picker-menu {
   text-align: left;
   font-family: inherit;
   border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+  /* Let vertical drags scroll the list instead of trapping the gesture (esp. WebView). */
+  touch-action: pan-y;
 }
 
 html[data-theme="light"] .locale-picker-menu__row,
@@ -690,6 +715,16 @@ html.iching-rn-webview[data-theme="light"] .auth-explore-strip--session .auth-ex
   border: 1px solid var(--chat-surface-outer-border);
   position: relative;
   z-index: 2;
+}
+
+/* Dark: shell and chat bg are both near-black — make the card edge readable. */
+html[data-theme="dark"] .chat-surface,
+html.iching-rn-webview[data-theme="dark"] .chat-surface {
+  --chat-surface-outer-border: color-mix(in srgb, rgba(201, 162, 39, 0.55) 50%, rgba(78, 205, 196, 0.35));
+  box-shadow:
+    var(--shadow),
+    0 0 0 1px rgba(201, 162, 39, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 @media (min-width: 480px) {
