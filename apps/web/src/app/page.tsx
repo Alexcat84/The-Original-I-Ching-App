@@ -55,7 +55,7 @@ import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import { ichingRitualTickDelayMs } from "@/lib/iching-ritual-timing";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
@@ -1137,7 +1137,12 @@ export default function HomePage() {
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
 
-  useEffect(() => {
+  /**
+   * Hydrate locale from storage/cookie **before** passive effects run.
+   * Otherwise the `[locale]` persist effect (defaults to `en`) runs in the same commit and
+   * overwrites `localStorage` / cookie before this read applies — e.g. Korean lost after /guia → /.
+   */
+  useLayoutEffect(() => {
     const raw = window.localStorage.getItem(UI_LOCALE_STORAGE_KEY);
     if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
       setLocale(raw as AppLocale);
