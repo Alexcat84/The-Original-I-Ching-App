@@ -1769,14 +1769,19 @@ export default function WebViewScreen() {
   const activeLocaleLabel =
     LOCALES.find((l) => l.code === locale)?.label ?? locale.toUpperCase();
 
+  const statusBarFillBg = shellTheme === "light" ? "#e8eef4" : "#0c0f14";
+  /** Height of the chrome row below the status-bar inset (matches minHeight + paddingBottom). */
+  const topBarRowHeight = 48;
+
   return (
     <View style={[styles.container, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeRoot]}>
-      {/* ── P2 + P3: Native top bar — compact locale picker + user info ─── */}
+      {/* Status bar / cutout zone only — same bg as shell so we do not paint chrome under the system bar */}
+      <View style={{ height: insets.top, backgroundColor: statusBarFillBg }} />
+      {/* ── P2 + P3: Native top bar — compact locale picker + user info (starts where Android inset ends) ─── */}
       <View
         style={[
           styles.topBarBase,
           shellTheme === "light" ? styles.topBarLight : styles.topBarDark,
-          { paddingTop: insets.top },
           DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeTopBar,
         ]}
       >
@@ -1886,7 +1891,7 @@ export default function WebViewScreen() {
             style={[
               styles.pickerDropdown,
               shellTheme === "light" && styles.pickerDropdownLight,
-              { marginTop: insets.top + 44 },
+              { marginTop: insets.top + topBarRowHeight },
             ]}
           >
             {LOCALES.map(({ code, label, name }) => (
