@@ -130,9 +130,16 @@ const INJECTED_JS = `
     '.auth-explore-strip{display:none!important}',
     'html,body{height:100%!important;min-height:100%!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden!important}',
     '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:none!important;overflow:hidden!important;padding:0!important;margin:0!important;background:transparent!important}',
-    '.chat-surface{margin-top:0!important;margin-bottom:0!important;padding:0!important}',
-    '.chat-history{padding-bottom:0!important}',
-    '.composer-dock{padding-bottom:0!important}',
+    /* Layout parity with latest globals.css — APK must not depend on stale CDN/CSS deploy */
+    '.iching-oracle-shell--chat > *:only-child{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;max-width:none!important;padding:0!important}',
+    '.oracle-chat-app{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;position:relative!important;isolation:isolate!important}',
+    '.chat-surface{margin-top:0!important;margin-bottom:0!important;padding:0!important;flex:1 1 0%!important;align-self:stretch!important;min-width:0!important;min-height:0!important}',
+    '.chat-room{flex:1 1 0%!important;min-height:0!important}',
+    '.chat-history{flex:1 1 0%!important;min-height:0!important;padding-bottom:0!important}',
+    '.chat-app-bar-row--top{padding-top:0!important;padding-bottom:0!important}',
+    '.composer-dock{position:relative!important;padding-bottom:0!important}',
+    '.composer-sheet{position:absolute!important;left:0!important;right:0!important;bottom:100%!important;z-index:58!important;max-height:0!important;min-height:0!important;overflow:hidden!important;pointer-events:none!important;transition:max-height 0.28s ease!important;border-bottom:1px solid transparent!important}',
+    '.composer-sheet.is-open{max-height:min(52vh,26rem)!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important;background:var(--composer-bg)!important;border-top-left-radius:calc(var(--radius) * 0.55)!important;border-top-right-radius:calc(var(--radius) * 0.55)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--fg) 6%,transparent)!important}',
     '.composer-minibar{padding:0.5rem 0.65rem 0.55rem!important}'
   ].join(';');
   (document.head || document.documentElement).appendChild(_st);
