@@ -260,6 +260,11 @@ body {
   box-sizing: border-box;
 }
 
+/* RN WebView: class set from apps/mobile before first paint — native bar already owns top safe area */
+html.iching-rn-webview .iching-oracle-shell--chat {
+  padding-top: 0 !important;
+}
+
 @media (min-width: 480px) {
   .iching-oracle-shell--chat {
     padding-left: max(0.65rem, env(safe-area-inset-left, 0px));
@@ -1540,6 +1545,37 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   align-items: flex-end;
   gap: 0.45rem;
   padding: 0.5rem 0.65rem calc(0.55rem + env(safe-area-inset-bottom, 0));
+}
+
+/* Narrow viewports: dock is transparent; only the input row is a pill (not full-bleed footer bar) */
+@media (max-width: 520px) {
+  .composer-dock {
+    background: transparent;
+    box-shadow: none;
+    border-top: none;
+  }
+
+  .composer-dock::before {
+    display: none;
+  }
+
+  .composer-floating-suggestions {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 0.85rem 0.85rem 0 0;
+    border: 1px solid color-mix(in srgb, var(--bar-border) 55%, transparent);
+    border-bottom: none;
+  }
+
+  .composer-minibar {
+    margin: 0 0.5rem 0.35rem;
+    padding: 0.45rem 0.55rem;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    background: var(--composer-bg);
+    border-radius: calc(var(--radius) * 0.95);
+    box-shadow: var(--composer-shadow);
+    border: 1px solid color-mix(in srgb, var(--bar-border) 58%, transparent);
+  }
 }
 
 .composer-options-btn {

@@ -79,13 +79,16 @@ const LOCALES: { code: AppLocale; label: string; name: string }[] = [
 ];
 
 /**
- * TEMP layout debug — APK only. Does not change anything under apps/web.
+ * Layout debug — APK only; does not touch apps/web source.
  * - Native: colored borders on root / top bar / WebView wrapper.
- * - WebView: optional injected stylesheet (runtime) with outlines on main chat DOM selectors.
- * Set both to false (or delete this block) before release.
+ * - WebView: extra injected stylesheet with outlines on main chat DOM selectors.
+ *
+ * `assembleRelease` → __DEV__ is false → no outlines (Play-ready).
+ * `assembleDebug` → __DEV__ is true → outlines on so you can verify layers without editing flags.
+ * For a one-off diagnostic *release* APK, temporarily set both to `true` and rebuild release.
  */
-const DEBUG_NATIVE_CHAT_SHELL_RECTS = false;
-const DEBUG_WEBVIEW_CHAT_DOM_OUTLINES = false;
+const DEBUG_NATIVE_CHAT_SHELL_RECTS = __DEV__;
+const DEBUG_WEBVIEW_CHAT_DOM_OUTLINES = __DEV__;
 
 /** First supported language from the device locale list, or null if none match. */
 function pickSupportedDeviceLocale(): AppLocale | null {
@@ -138,6 +141,7 @@ const INJECTED_JS = `
 (function () {
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
+  document.documentElement.classList.add('iching-rn-webview');
 
   /* 1 ── Hide web top bar + neutralize vertical gaps (P7 — DEBUG + v4 fix) */
   var _st = document.createElement('style');
@@ -152,10 +156,13 @@ const INJECTED_JS = `
     '.chat-room{flex:1 1 0%!important;min-height:0!important}',
     '.chat-history{flex:1 1 0%!important;min-height:0!important;padding-bottom:0!important}',
     '.chat-app-bar-row--top{padding-top:0!important;padding-bottom:0!important}',
-    '.composer-dock{position:relative!important;padding-bottom:0!important}',
+    'header.oracle-intro{margin-top:0!important;padding-top:0!important}',
+    '.composer-dock{position:relative!important;padding-bottom:0!important;background:transparent!important;box-shadow:none!important;border-top:none!important}',
+    '.composer-dock::before{display:none!important}',
+    '.composer-floating-suggestions{margin-left:0.5rem!important;margin-right:0.5rem!important;border-radius:0.85rem 0.85rem 0 0!important;border:1px solid color-mix(in srgb,var(--bar-border) 55%,transparent)!important;border-bottom:none!important}',
+    '.composer-minibar{background:var(--composer-bg)!important;margin:0 0.5rem 0.35rem!important;border-radius:1.05rem!important;box-shadow:var(--composer-shadow)!important;border:1px solid color-mix(in srgb,var(--bar-border) 58%,transparent)!important;padding:0.45rem 0.55rem!important;padding-bottom:calc(0.5rem + env(safe-area-inset-bottom,0px))!important}',
     '.composer-sheet{position:absolute!important;left:0!important;right:0!important;bottom:100%!important;z-index:58!important;max-height:0!important;min-height:0!important;overflow:hidden!important;pointer-events:none!important;transition:max-height 0.28s ease!important;border-bottom:1px solid transparent!important}',
-    '.composer-sheet.is-open{max-height:min(52vh,26rem)!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important;background:var(--composer-bg)!important;border-top-left-radius:calc(var(--radius) * 0.55)!important;border-top-right-radius:calc(var(--radius) * 0.55)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--fg) 6%,transparent)!important}',
-    '.composer-minibar{padding:0.5rem 0.65rem 0.55rem!important}'
+    '.composer-sheet.is-open{max-height:min(52vh,26rem)!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important;background:var(--composer-bg)!important;border-top-left-radius:calc(var(--radius) * 0.55)!important;border-top-right-radius:calc(var(--radius) * 0.55)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--fg) 6%,transparent)!important}'
   ].join(';');
   (document.head || document.documentElement).appendChild(_st);
   // Debug: confirm injection worked
@@ -1946,6 +1953,7 @@ export default function WebViewScreen() {
         onNavigationStateChange={onNavigationStateChange}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onMessage={onMessage}
+        injectedJavaScriptBeforeContentLoaded="document.documentElement.classList.add('iching-rn-webview');true;"
         injectedJavaScript={COMBINED_INJECTED_JS}
         javaScriptEnabled
         domStorageEnabled
@@ -2006,7 +2014,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 14,
-    paddingBottom: 8,
+    paddingBottom: 4,
     minHeight: 44,
   },
   topBarDark: {
