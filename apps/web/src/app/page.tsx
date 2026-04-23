@@ -515,6 +515,11 @@ const LANGUAGE_LABELS: Record<AppLocale, string> = {
   ko: "한국어",
 };
 
+/** Two-letter (or short) code shown in the closed control — matches former native locale pill. */
+function localeCodeForSelect(code: AppLocale): string {
+  return code.toUpperCase();
+}
+
 type UiCopy = {
   language: string;
   chats: string;
@@ -1362,7 +1367,6 @@ export default function HomePage() {
   const threadDepthCap = planThreadLimit;
   const threadDepthCanDeepen = isAdmin || Boolean(result && result.sessionPosition < planThreadLimit);
   const threadLimitReached = !isAdmin && activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
-  const tierDisplayLabel = tierReady ? (isAdmin ? "admin" : tierLabelForDisplay(tier)) : chrome.loadingPlan;
   const tierDisplayNode = tierReady ? (
     isAdmin ? "admin" : tierLabelForDisplay(tier)
   ) : (
@@ -3097,8 +3101,8 @@ export default function HomePage() {
         onChange={(e) => setLocale(e.target.value as AppLocale)}
       >
         {LOCALE_SELECT_ORDER.map((code) => (
-          <option key={code} value={code}>
-            {LANGUAGE_LABELS[code]}
+          <option key={code} value={code} title={LANGUAGE_LABELS[code]}>
+            {localeCodeForSelect(code)}
           </option>
         ))}
       </select>
@@ -3362,16 +3366,7 @@ export default function HomePage() {
         ) : null}
         {authReady && !supabaseConfigError && accessToken && authEmail ? (
           <div className="auth-explore-strip auth-explore-strip--session">
-            <div className="auth-explore-strip-session__cluster">
-              <span
-                className="auth-explore-strip-tier"
-                aria-label={`${ui.plan} ${tierDisplayLabel}`}
-                title={`${ui.plan}: ${tierDisplayLabel}`}
-              >
-                {ui.plan}: {tierDisplayNode}
-              </span>
-              {localeSelector}
-            </div>
+            <div className="auth-explore-strip-session__lead">{localeSelector}</div>
             <span className="auth-explore-strip-email" title={authEmail}>
               {authEmail}
             </span>

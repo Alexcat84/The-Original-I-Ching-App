@@ -161,10 +161,18 @@ const INJECTED_JS = `
     'html.iching-rn-webview .locale-control>span{display:none!important}',
     'html.iching-rn-webview[data-theme=dark] .auth-explore-strip{background:#080808!important;border-bottom:1px solid rgba(201,162,39,.22)!important;color:rgba(255,255,255,.72)!important}',
     'html.iching-rn-webview[data-theme=light] .auth-explore-strip{background:#d4ebf5!important;border-bottom:1px solid rgba(15,23,42,.1)!important;color:rgba(15,23,42,.62)!important}',
-    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip .locale-select{min-width:5.5rem!important;height:2rem!important;padding:0 .65rem!important;border-radius:14px!important;border:1px solid rgba(201,162,39,.4)!important;background:rgba(201,162,39,.06)!important;color:#c9a227!important;font-size:.8125rem!important;font-weight:700!important}',
-    'html.iching-rn-webview[data-theme=light] .auth-explore-strip .locale-select{min-width:5.5rem!important;height:2rem!important;padding:0 .65rem!important;border-radius:14px!important;border:1px solid rgba(13,148,136,.45)!important;background:rgba(255,255,255,.75)!important;color:#0f766e!important;font-size:.8125rem!important;font-weight:700!important}',
-    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip a.auth-explore-strip-cta{padding:.32rem .85rem!important;border-radius:14px!important;border:1px solid rgba(201,162,39,.35)!important;background:rgba(201,162,39,.08)!important;color:#c9a227!important;font-size:.75rem!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
-    'html.iching-rn-webview[data-theme=light] .auth-explore-strip a.auth-explore-strip-cta{padding:.32rem .85rem!important;border-radius:14px!important;border:1px solid rgba(13,148,136,.4)!important;background:rgba(13,148,136,.1)!important;color:#0f766e!important;font-size:.75rem!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
+    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip .locale-select{min-width:4.25rem!important;min-height:28px!important;padding:5px 26px 5px 12px!important;border-radius:14px!important;border:1px solid rgba(201,162,39,.4)!important;font-size:13px!important;font-weight:700!important;letter-spacing:.5px!important;-webkit-appearance:none!important;appearance:none!important;color:#c9a227!important;background:url(data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0h10L5 6z%22 fill=%22%23c9a227%22 fill-opacity=%220.55%22/%3E%3C/svg%3E) no-repeat right 10px center/10px 6px,rgba(201,162,39,.06)!important}',
+    'html.iching-rn-webview[data-theme=light] .auth-explore-strip .locale-select{min-width:4.25rem!important;min-height:28px!important;padding:5px 26px 5px 12px!important;border-radius:14px!important;border:1px solid rgba(13,148,136,.45)!important;font-size:13px!important;font-weight:700!important;letter-spacing:.5px!important;-webkit-appearance:none!important;appearance:none!important;color:#0f766e!important;background:url(data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0h10L5 6z%22 fill=%22%230f766e%22 fill-opacity=%220.6%22/%3E%3C/svg%3E) no-repeat right 10px center/10px 6px,rgba(255,255,255,.75)!important}',
+    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip .locale-select option{background:#161a22!important;color:rgba(245,240,230,.95)!important;font-size:13px!important;font-weight:600!important}',
+    'html.iching-rn-webview[data-theme=light] .auth-explore-strip .locale-select option{background:#f8fafc!important;color:#134e4a!important;font-size:13px!important;font-weight:600!important}',
+    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip a.auth-explore-strip-cta{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:5px 13px!important;border-radius:14px!important;border:1px solid rgba(201,162,39,.35)!important;background:rgba(201,162,39,.08)!important;color:#c9a227!important;font-size:12px!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
+    'html.iching-rn-webview[data-theme=light] .auth-explore-strip a.auth-explore-strip-cta{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:5px 13px!important;border-radius:14px!important;border:1px solid rgba(13,148,136,.4)!important;background:rgba(13,148,136,.1)!important;color:#0f766e!important;font-size:12px!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
+    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip--session .auth-explore-strip-signout{border-radius:10px!important;padding:4px 7px!important;font-size:11px!important;font-weight:700!important;border:1px solid rgba(201,162,39,.25)!important;background:rgba(201,162,39,.08)!important;color:rgba(201,162,39,.6)!important;min-height:auto!important}',
+    'html.iching-rn-webview[data-theme=light] .auth-explore-strip--session .auth-explore-strip-signout{border-radius:10px!important;padding:4px 7px!important;font-size:11px!important;font-weight:700!important;border:1px solid rgba(15,23,42,.12)!important;background:rgba(255,255,255,.6)!important;color:rgba(15,23,42,.5)!important;min-height:auto!important}',
+    'html.iching-rn-webview .auth-explore-strip-tier{display:none!important}',
+    'html.iching-rn-webview .auth-explore-strip--session{display:flex!important;flex-wrap:nowrap!important;justify-content:space-between!important;align-items:center!important;min-height:2.65rem!important;overflow:hidden!important}',
+    'html.iching-rn-webview .auth-explore-strip-session__lead{flex:0 0 auto!important;display:flex!important;align-items:center!important;min-width:0!important}',
+    'html.iching-rn-webview .auth-explore-strip--session .auth-explore-strip-email{flex:1 1 0!important;min-width:0!important;max-width:none!important}',
     '.chat-room{flex:1 1 0%!important;min-height:0!important}',
     '.chat-history{flex:1 1 0%!important;min-height:0!important;padding-bottom:0!important}',
     '.chat-app-bar-row--top{padding-top:0!important;padding-bottom:0!important}',
@@ -1201,15 +1209,14 @@ export default function WebViewScreen() {
   /* ── Safe area insets (status bar height on Android) ── */
   const insets = useSafeAreaInsets();
 
-  /* Android: icon + background must follow shell theme (Expo StatusBar alone is not always enough on API 35). */
+  /* Android: status bar + band under it stay dark so system icons stay readable (product: always black chrome). */
   useEffect(() => {
-    const light = shellTheme === "light";
-    RNStatusBar.setBarStyle(light ? "dark-content" : "light-content", true);
+    RNStatusBar.setBarStyle("light-content", true);
     if (Platform.OS === "android") {
-      RNStatusBar.setBackgroundColor(light ? "#e8f2f9" : "#0c0f14", true);
+      RNStatusBar.setBackgroundColor("#080808", true);
       RNStatusBar.setTranslucent(false);
     }
-  }, [shellTheme]);
+  }, []);
 
   /* ── Media permission ── */
   const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
@@ -1775,15 +1782,15 @@ export default function WebViewScreen() {
 
   return (
     <View style={[styles.container, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeRoot]}>
-      <StatusBar style={shellTheme === "light" ? "dark" : "light"} />
-      {/* ── WebView (safe-area top padding — web shows locale/sign-in strip) ─ */}
+      <StatusBar style="light" />
+      {/* ── WebView (safe-area top padding; black band under system status bar for contrast) ─ */}
       <View
         style={[
           styles.webviewShell,
           DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeWebViewWrap,
           {
             paddingTop: insets.top,
-            backgroundColor: shellTheme === "light" ? "#e8f2f9" : "#0c0f14",
+            backgroundColor: "#080808",
           },
         ]}
       >

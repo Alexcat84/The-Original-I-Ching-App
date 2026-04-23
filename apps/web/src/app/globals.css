@@ -317,78 +317,146 @@ html.iching-rn-webview[data-theme="light"] .auth-explore-strip {
   color: rgba(15, 23, 42, 0.62);
 }
 
+/*
+ * Auth strip locale + sign-in — pixel-anchored to former native StyleSheet (apps/mobile):
+ * locale: pad 5×12, radius 14, border rgba(201,162,39,.4) / light teal, font 13/700, letter-spacing .5px
+ * sign-in: pad 5×13, radius 14, font 12/600
+ */
+html[data-theme="dark"] .auth-explore-strip .locale-select,
 html.iching-rn-webview[data-theme="dark"] .auth-explore-strip .locale-select {
-  min-width: 5.5rem;
-  height: 2rem;
-  padding: 0 0.65rem;
+  min-width: 4.25rem;
+  min-height: 28px;
+  height: auto;
+  padding: 5px 26px 5px 12px;
   border-radius: 14px;
   border: 1px solid rgba(201, 162, 39, 0.4);
-  background: rgba(201, 162, 39, 0.06);
-  color: #c9a227;
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  color: #c9a227;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%23c9a227' fill-opacity='0.55'/%3E%3C/svg%3E")
+      no-repeat right 10px center / 10px 6px,
+    rgba(201, 162, 39, 0.06);
 }
 
+html[data-theme="dark"] .auth-explore-strip .locale-select option,
 html.iching-rn-webview[data-theme="dark"] .auth-explore-strip .locale-select option {
   background: #161a22;
-  color: #f5f0e6;
+  color: rgba(245, 240, 230, 0.95);
+  font-size: 13px;
+  font-weight: 600;
 }
 
+html[data-theme="light"] .auth-explore-strip .locale-select,
 html.iching-rn-webview[data-theme="light"] .auth-explore-strip .locale-select {
-  min-width: 5.5rem;
-  height: 2rem;
-  padding: 0 0.65rem;
+  min-width: 4.25rem;
+  min-height: 28px;
+  height: auto;
+  padding: 5px 26px 5px 12px;
   border-radius: 14px;
   border: 1px solid rgba(13, 148, 136, 0.45);
-  background: rgba(255, 255, 255, 0.75);
-  color: #0f766e;
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  color: #0f766e;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%230f766e' fill-opacity='0.6'/%3E%3C/svg%3E")
+      no-repeat right 10px center / 10px 6px,
+    rgba(255, 255, 255, 0.75);
 }
 
+html[data-theme="light"] .auth-explore-strip .locale-select option,
 html.iching-rn-webview[data-theme="light"] .auth-explore-strip .locale-select option {
   background: #f8fafc;
-  color: #0f3d38;
+  color: #134e4a;
+  font-size: 13px;
+  font-weight: 600;
 }
 
+html[data-theme="dark"] .auth-explore-strip a.auth-explore-strip-cta,
 html.iching-rn-webview[data-theme="dark"] .auth-explore-strip a.auth-explore-strip-cta {
-  padding: 0.32rem 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 13px;
   border-radius: 14px;
   border: 1px solid rgba(201, 162, 39, 0.35);
   background: rgba(201, 162, 39, 0.08);
   color: #c9a227;
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
+  line-height: 1.2;
   box-shadow: none;
   background-image: none;
 }
 
+html[data-theme="light"] .auth-explore-strip a.auth-explore-strip-cta,
 html.iching-rn-webview[data-theme="light"] .auth-explore-strip a.auth-explore-strip-cta {
-  padding: 0.32rem 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 13px;
   border-radius: 14px;
   border: 1px solid rgba(13, 148, 136, 0.4);
   background: rgba(13, 148, 136, 0.1);
   color: #0f766e;
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
+  line-height: 1.2;
   box-shadow: none;
   background-image: none;
 }
 
+html[data-theme="dark"] .auth-explore-strip a.auth-explore-strip-cta:hover,
 html.iching-rn-webview[data-theme="dark"] .auth-explore-strip a.auth-explore-strip-cta:hover {
   background: rgba(201, 162, 39, 0.14);
   transform: none;
   box-shadow: none;
 }
 
+html[data-theme="light"] .auth-explore-strip a.auth-explore-strip-cta:hover,
 html.iching-rn-webview[data-theme="light"] .auth-explore-strip a.auth-explore-strip-cta:hover {
   background: rgba(13, 148, 136, 0.16);
   transform: none;
   box-shadow: none;
+}
+
+/* Session sign-out — former native `signOutBtn` / `signOutBtnLight` */
+html[data-theme="dark"] .auth-explore-strip--session .auth-explore-strip-signout,
+html.iching-rn-webview[data-theme="dark"] .auth-explore-strip--session .auth-explore-strip-signout {
+  border-radius: 10px;
+  padding: 4px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  min-height: auto;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  background: rgba(201, 162, 39, 0.08);
+  color: rgba(201, 162, 39, 0.6);
+}
+
+html[data-theme="light"] .auth-explore-strip--session .auth-explore-strip-signout,
+html.iching-rn-webview[data-theme="light"] .auth-explore-strip--session .auth-explore-strip-signout {
+  border-radius: 10px;
+  padding: 4px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  min-height: auto;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.6);
+  color: rgba(15, 23, 42, 0.5);
 }
 
 /* Footer is a direct flex child of .chat-surface so it sits flush under .chat-room */
@@ -4183,63 +4251,33 @@ html[data-theme="dark"] .auth-config-banner {
   white-space: nowrap;
 }
 
+/* Base locale control (only used on chat auth strip — theme + chrome live on .auth-explore-strip .locale-select) */
 .locale-select {
-  min-width: 6.25rem;
-  height: 1.85rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--accent) 36%, var(--input-border));
-  background: color-mix(in srgb, var(--secondary-bg) 82%, var(--bar));
-  color: var(--fg);
-  font-size: 0.74rem;
-  font-weight: 600;
-  padding: 0 0.6rem;
   outline: none;
   color-scheme: light dark;
-  -webkit-appearance: none;
-  appearance: none;
 }
 
 .locale-select:focus-visible {
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
-.locale-select option {
-  background: #f2fbfb;
-  color: #103646;
-}
-
-html[data-theme="dark"] .locale-select {
-  background: #11252d;
-  color: #dff7f5;
-  border-color: color-mix(in srgb, var(--accent) 58%, #45616b);
-}
-
-html[data-theme="dark"] .locale-select option {
-  background: #11252d;
-  color: #dff7f5;
-}
-
-/* Logged-in strip: flex (no fixed left offsets — long plan names must not overlap Idioma) */
+/* Logged-in strip: single row — locale | email (center) | sign out (plan lives in Options) */
 .auth-explore-strip--session {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  justify-content: center;
-  column-gap: 0.5rem;
-  row-gap: 0.35rem;
-  min-height: 0;
-  padding: 0.32rem 0.65rem;
-  overflow: visible;
+  justify-content: space-between;
+  column-gap: 0.45rem;
+  min-height: 2.65rem;
+  padding: 0.28rem 0.65rem;
+  overflow: hidden;
 }
 
-.auth-explore-strip-session__cluster {
+.auth-explore-strip-session__lead {
+  flex: 0 0 auto;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.4rem 0.5rem;
-  flex: 0 1 auto;
   min-width: 0;
 }
 
@@ -4286,7 +4324,7 @@ html[data-theme="dark"] .locale-select option {
 }
 
 .auth-explore-strip-email {
-  flex: 1 1 12rem;
+  flex: 1 1 auto;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
@@ -4301,7 +4339,12 @@ html[data-theme="dark"] .locale-select option {
   justify-content: center;
   min-height: 1.9rem;
   text-align: center;
-  padding-inline: 0.25rem;
+  padding-inline: 0.35rem;
+}
+
+.auth-explore-strip--session .auth-explore-strip-email {
+  flex: 1 1 0;
+  justify-content: center;
 }
 
 .auth-explore-strip-signout {
@@ -4320,18 +4363,8 @@ html[data-theme="dark"] .locale-select option {
 }
 
 @media (min-width: 640px) {
-  .auth-explore-strip--session {
-    flex-wrap: nowrap;
-    justify-content: space-between;
-  }
-
   .auth-explore-strip-tier {
     max-width: min(100%, 14rem);
-  }
-
-  .auth-explore-strip-email {
-    flex: 1 1 auto;
-    max-width: min(22rem, 36vw);
   }
 }
 
@@ -4346,32 +4379,8 @@ html[data-theme="dark"] .locale-select option {
 
 a.auth-explore-strip-cta {
   flex-shrink: 0;
-  font-weight: 700;
-  font-size: 0.8rem;
-  color: color-mix(in srgb, #ffffff 92%, var(--fg) 8%);
   text-decoration: none;
-  padding: 0.34rem 0.72rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--accent) 78%, var(--input-border));
-  background: linear-gradient(
-    165deg,
-    color-mix(in srgb, var(--accent) 86%, #2a9d8f) 0%,
-    color-mix(in srgb, var(--accent) 72%, #1f7f73) 100%
-  );
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent), var(--shadow);
-  line-height: 1;
-  letter-spacing: 0.01em;
-  transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-a.auth-explore-strip-cta:hover {
-  background: linear-gradient(
-    165deg,
-    color-mix(in srgb, var(--accent) 92%, #31b3a2) 0%,
-    color-mix(in srgb, var(--accent) 78%, #238f82) 100%
-  );
-  transform: translateY(-1px);
-  box-shadow: 0 8px 16px color-mix(in srgb, var(--accent) 26%, transparent);
+  transition: background 0.15s ease;
 }
 
 a.auth-explore-strip-cta:focus-visible {
