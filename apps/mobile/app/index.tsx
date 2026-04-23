@@ -80,6 +80,20 @@ const LOCALES: { code: AppLocale; label: string; name: string }[] = [
   { code: "ko", label: "KO", name: "한국어" },
 ];
 
+const SUPPORTED_LOCALE_CODES_JSON = JSON.stringify(LOCALES.map((l) => l.code));
+
+/**
+ * After SPA navigation / load, do not blindly push native `localeRef` into the WebView:
+ * the user may have chosen a language only in the web UI (`UI_LOCALE_STORAGE_KEY`), while
+ * native state can still be default `en` until AsyncStorage resolves — that was overwriting
+ * Korean/Chinese/etc. on every `onNavigationStateChange`.
+ */
+function buildSyncLocaleFromWebOrNativeScript(nativeFallback: AppLocale): string {
+  const storageKey = JSON.stringify(UI_LOCALE_STORAGE_KEY);
+  const fallback = JSON.stringify(nativeFallback);
+  return `(function(){try{var k=${storageKey};var w=localStorage.getItem(k);var codes=${SUPPORTED_LOCALE_CODES_JSON};if(w&&codes.indexOf(w)!==-1){window.__rnSetLocale&&window.__rnSetLocale(w);return;}}catch(_){}window.__rnSetLocale&&window.__rnSetLocale(${fallback});})();true;`;
+}
+
 /**
  * Layout debug — APK only; does not touch apps/web source.
  * - Native: colored borders on root / top bar / WebView wrapper.
@@ -1311,11 +1325,8 @@ export default function WebViewScreen() {
         `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
       );
     }
-    // Always inject the saved locale so the web app reflects the native picker on every load.
-    const currentLocale = localeRef.current;
-    webViewRef.current?.injectJavaScript(
-      `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(currentLocale)}); true;`
-    );
+    // Prefer web `localStorage` (in-app picker) over native default when re-syncing after load.
+    webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
     hideSplash();
   }, [hideSplash]);
 
@@ -1781,11 +1792,8 @@ export default function WebViewScreen() {
         if (el) el.style.setProperty('display','none','important');
       })();
     `);
-    // Re-apply saved locale after every navigation (SPA pages may reset locale state).
-    const currentLocale = localeRef.current;
-    webViewRef.current?.injectJavaScript(
-      `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(currentLocale)}); true;`
-    );
+    // Re-sync locale after navigation without clobbering the in-WebView picker choice.
+    webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
   };
 
   return (
