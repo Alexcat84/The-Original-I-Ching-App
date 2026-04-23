@@ -25,6 +25,7 @@ import {
   type AppLocale,
 } from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
+import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { AmbientParticles } from "@/components/AmbientParticles";
 import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
@@ -514,11 +515,6 @@ const LANGUAGE_LABELS: Record<AppLocale, string> = {
   zh: "中文",
   ko: "한국어",
 };
-
-/** Two-letter (or short) code shown in the closed control — matches former native locale pill. */
-function localeCodeForSelect(code: AppLocale): string {
-  return code.toUpperCase();
-}
 
 type UiCopy = {
   language: string;
@@ -1157,6 +1153,18 @@ export default function HomePage() {
     if (fromBrowser) {
       setLocale(fromBrowser);
     }
+  }, []);
+
+  /* RN `__rnSetLocale` + storage sync from other tabs — keep React state aligned */
+  useEffect(() => {
+    const onLocaleBridge = (e: Event) => {
+      const raw = (e as CustomEvent<{ locale?: string }>).detail?.locale;
+      if (!raw || !(SUPPORTED_LOCALES as readonly string[]).includes(raw)) return;
+      const next = raw as AppLocale;
+      setLocale((prev) => (prev === next ? prev : next));
+    };
+    window.addEventListener("iching:locale-changed", onLocaleBridge);
+    return () => window.removeEventListener("iching:locale-changed", onLocaleBridge);
   }, []);
 
   useEffect(() => {
@@ -3093,19 +3101,13 @@ export default function HomePage() {
 
   const localeSelector = (
     <div className="locale-control">
-      <select
-        id="ui-locale-select"
-        className="locale-select"
-        aria-label={ui.language}
-        value={locale}
-        onChange={(e) => setLocale(e.target.value as AppLocale)}
-      >
-        {LOCALE_SELECT_ORDER.map((code) => (
-          <option key={code} value={code} title={LANGUAGE_LABELS[code]}>
-            {localeCodeForSelect(code)}
-          </option>
-        ))}
-      </select>
+      <AuthLocalePicker
+        locale={locale}
+        onChange={setLocale}
+        order={LOCALE_SELECT_ORDER}
+        labels={LANGUAGE_LABELS}
+        ariaLabel={ui.language}
+      />
     </div>
   );
 

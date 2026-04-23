@@ -264,6 +264,8 @@ body {
 html.iching-rn-webview .iching-oracle-shell--chat {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+  padding-left: max(0.2rem, env(safe-area-inset-left, 0px)) !important;
+  padding-right: max(0.2rem, env(safe-area-inset-right, 0px)) !important;
 }
 
 /* RN WebView: lift the bordered .chat-surface so bottom radius clears gesture nav (env often 0 here) */
@@ -274,6 +276,20 @@ html.iching-rn-webview {
 /* RN: full card radius when auth/locale strip is shown (strip carries top curve like former native card) */
 html.iching-rn-webview .chat-surface {
   margin-bottom: var(--rn-chat-bottom-offset);
+  /* Wider chat column on phone WebView (more room for Q&A + images) */
+  max-width: min(40rem, calc(100vw - 0.35rem));
+}
+
+@media (min-width: 480px) {
+  html.iching-rn-webview .chat-surface {
+    max-width: min(46rem, calc(100vw - 0.75rem));
+  }
+}
+
+@media (min-width: 768px) {
+  html.iching-rn-webview .chat-surface {
+    max-width: min(48rem, calc(100vw - 1rem));
+  }
 }
 
 html.iching-rn-webview .chat-surface.chat-surface--explore-cap {
@@ -318,68 +334,190 @@ html.iching-rn-webview[data-theme="light"] .auth-explore-strip {
 }
 
 /*
- * Auth strip locale + sign-in — pixel-anchored to former native StyleSheet (apps/mobile):
- * locale: pad 5×12, radius 14, border rgba(201,162,39,.4) / light teal, font 13/700, letter-spacing .5px
- * sign-in: pad 5×13, radius 14, font 12/600
+ * Auth strip locale trigger + custom menu — former native StyleSheet (apps/mobile):
+ * trigger: pad 5×12, radius 14, code + chevron; menu: code column + name (picker rows)
  */
-html[data-theme="dark"] .auth-explore-strip .locale-select,
-html.iching-rn-webview[data-theme="dark"] .auth-explore-strip .locale-select {
+html[data-theme="dark"] .auth-explore-strip .locale-picker-trigger,
+html.iching-rn-webview[data-theme="dark"] .auth-explore-strip .locale-picker-trigger {
   min-width: 4.25rem;
   min-height: 28px;
   height: auto;
-  padding: 5px 26px 5px 12px;
+  padding: 5px 10px 5px 12px;
   border-radius: 14px;
   border: 1px solid rgba(201, 162, 39, 0.4);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.5px;
   line-height: 1.2;
-  -webkit-appearance: none;
-  appearance: none;
   cursor: pointer;
   color: #c9a227;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%23c9a227' fill-opacity='0.55'/%3E%3C/svg%3E")
-      no-repeat right 10px center / 10px 6px,
-    rgba(201, 162, 39, 0.06);
+  background: rgba(201, 162, 39, 0.06);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
-html[data-theme="dark"] .auth-explore-strip .locale-select option,
-html.iching-rn-webview[data-theme="dark"] .auth-explore-strip .locale-select option {
-  background: #161a22;
-  color: rgba(245, 240, 230, 0.95);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-html[data-theme="light"] .auth-explore-strip .locale-select,
-html.iching-rn-webview[data-theme="light"] .auth-explore-strip .locale-select {
+html[data-theme="light"] .auth-explore-strip .locale-picker-trigger,
+html.iching-rn-webview[data-theme="light"] .auth-explore-strip .locale-picker-trigger {
   min-width: 4.25rem;
   min-height: 28px;
   height: auto;
-  padding: 5px 26px 5px 12px;
+  padding: 5px 10px 5px 12px;
   border-radius: 14px;
   border: 1px solid rgba(13, 148, 136, 0.45);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.5px;
   line-height: 1.2;
-  -webkit-appearance: none;
-  appearance: none;
   cursor: pointer;
   color: #0f766e;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%230f766e' fill-opacity='0.6'/%3E%3C/svg%3E")
-      no-repeat right 10px center / 10px 6px,
-    rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.75);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
-html[data-theme="light"] .auth-explore-strip .locale-select option,
-html.iching-rn-webview[data-theme="light"] .auth-explore-strip .locale-select option {
+html[data-theme="dark"] .locale-picker-trigger__chevron,
+html.iching-rn-webview[data-theme="dark"] .locale-picker-trigger__chevron {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid rgba(201, 162, 39, 0.55);
+}
+
+html[data-theme="light"] .locale-picker-trigger__chevron,
+html.iching-rn-webview[data-theme="light"] .locale-picker-trigger__chevron {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid rgba(15, 118, 110, 0.6);
+}
+
+.locale-picker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.locale-picker-menu {
+  z-index: 260;
+  min-width: 11.5rem;
+  max-height: min(70vh, 22rem);
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.2rem 0;
+  list-style: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.locale-picker-menu--portal {
+  box-sizing: border-box;
+}
+
+html[data-theme="dark"] .locale-picker-menu,
+html.iching-rn-webview[data-theme="dark"] .locale-picker-menu {
+  background: #161a22;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+}
+
+html[data-theme="light"] .locale-picker-menu,
+html.iching-rn-webview[data-theme="light"] .locale-picker-menu {
   background: #f8fafc;
-  color: #134e4a;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+.locale-picker-menu li {
+  margin: 0;
+  padding: 0;
+}
+
+.locale-picker-menu__row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 1rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+}
+
+html[data-theme="light"] .locale-picker-menu__row,
+html.iching-rn-webview[data-theme="light"] .locale-picker-menu__row {
+  border-bottom-color: rgba(15, 23, 42, 0.08);
+}
+
+.locale-picker-menu li:last-child .locale-picker-menu__row {
+  border-bottom: none;
+}
+
+html[data-theme="dark"] .locale-picker-menu__row:hover,
+html.iching-rn-webview[data-theme="dark"] .locale-picker-menu__row:hover {
+  background: rgba(201, 162, 39, 0.1);
+}
+
+html[data-theme="light"] .locale-picker-menu__row:hover,
+html.iching-rn-webview[data-theme="light"] .locale-picker-menu__row:hover {
+  background: rgba(13, 148, 136, 0.08);
+}
+
+html[data-theme="dark"] .locale-picker-menu__row.is-active,
+html.iching-rn-webview[data-theme="dark"] .locale-picker-menu__row.is-active {
+  background: rgba(201, 162, 39, 0.14);
+}
+
+html[data-theme="light"] .locale-picker-menu__row.is-active,
+html.iching-rn-webview[data-theme="light"] .locale-picker-menu__row.is-active {
+  background: rgba(13, 148, 136, 0.12);
+}
+
+.locale-picker-menu__code {
+  flex: 0 0 2.1rem;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+html[data-theme="dark"] .locale-picker-menu__code,
+html.iching-rn-webview[data-theme="dark"] .locale-picker-menu__code {
+  color: #c9a227;
+}
+
+html[data-theme="light"] .locale-picker-menu__code,
+html.iching-rn-webview[data-theme="light"] .locale-picker-menu__code {
+  color: #0f766e;
+}
+
+.locale-picker-menu__name {
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: 13px;
   font-weight: 600;
+}
+
+html[data-theme="dark"] .locale-picker-menu__name,
+html.iching-rn-webview[data-theme="dark"] .locale-picker-menu__name {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+html[data-theme="light"] .locale-picker-menu__name,
+html.iching-rn-webview[data-theme="light"] .locale-picker-menu__name {
+  color: rgba(15, 23, 42, 0.55);
 }
 
 html[data-theme="dark"] .auth-explore-strip a.auth-explore-strip-cta,
@@ -4251,14 +4389,14 @@ html[data-theme="dark"] .auth-config-banner {
   white-space: nowrap;
 }
 
-/* Base locale control (only used on chat auth strip — theme + chrome live on .auth-explore-strip .locale-select) */
-.locale-select {
-  outline: none;
-  color-scheme: light dark;
+.auth-explore-strip .locale-picker-trigger:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  outline-offset: 2px;
 }
 
-.locale-select:focus-visible {
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
+.locale-picker-menu__row:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  outline-offset: -2px;
 }
 
 /* Logged-in strip: single row — locale | email (center) | sign out (plan lives in Options) */
@@ -4271,7 +4409,7 @@ html[data-theme="dark"] .auth-config-banner {
   column-gap: 0.45rem;
   min-height: 2.65rem;
   padding: 0.28rem 0.65rem;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .auth-explore-strip-session__lead {
