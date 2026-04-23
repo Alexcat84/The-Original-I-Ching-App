@@ -254,7 +254,8 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: max(0.4rem, env(safe-area-inset-top, 0px)) max(0.45rem, env(safe-area-inset-right, 0px))
+  /* Top: safe-area only (native shell already clears inset on APK). Avoid extra min padding — it gaps aqua from shell. */
+  padding: env(safe-area-inset-top, 0px) max(0.45rem, env(safe-area-inset-right, 0px))
     max(0.45rem, env(safe-area-inset-bottom, 0px)) max(0.45rem, env(safe-area-inset-left, 0px));
   box-sizing: border-box;
 }
@@ -281,23 +282,25 @@ body {
 
 .iching-oracle-shell--chat main,
 .iching-oracle-shell--chat > *:only-child {
-  flex: 1;
+  flex: 1 1 0%;
   display: flex;
   flex-direction: column;
   min-height: 0;
   max-width: none;
   padding: 0;
+  align-self: stretch;
 }
 
 /* —— Full chat app —— */
 .oracle-chat-app {
-  flex: 1;
+  flex: 1 1 0%;
   display: flex;
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
   position: relative;
   isolation: isolate;
+  align-self: stretch;
 }
 
 .ambient-particles-layer {
@@ -331,10 +334,13 @@ body {
   max-width: min(34rem, 100%);
   margin-left: auto;
   margin-right: auto;
-  flex: 1;
+  margin-top: 0;
+  flex: 1 1 0%;
+  align-self: stretch;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  min-width: 0;
   border-radius: var(--chat-surface-radius);
   overflow: hidden;
   box-shadow: var(--shadow);
@@ -414,7 +420,7 @@ header.chat-app-bar.oracle-intro {
   justify-content: space-between;
   gap: 0.4rem;
   min-height: 0;
-  padding-top: 0.12rem;
+  padding-top: 0;
   padding-bottom: 0;
   padding-left: 0.65rem;
   padding-right: 0.65rem;
@@ -1046,7 +1052,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
 
 /* —— Chat room (WhatsApp-like) —— */
 .chat-room {
-  flex: 1;
+  flex: 1 1 0%;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -1058,7 +1064,7 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
 }
 
 .chat-history {
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1220,11 +1226,19 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   z-index: 60;
 }
 
+/* Sheet sits above the dock in paint order but does not grow the footer's layout height */
 .composer-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  z-index: 58;
   max-height: 0;
+  min-height: 0;
   overflow: hidden;
   transition: max-height 0.28s ease;
   border-bottom: 1px solid transparent;
+  pointer-events: none;
 }
 
 .composer-sheet.is-open {
@@ -1234,6 +1248,10 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   overscroll-behavior: contain;
   border-bottom-color: transparent;
   box-shadow: 0 10px 28px color-mix(in srgb, var(--fg) 6%, transparent);
+  pointer-events: auto;
+  background: var(--composer-bg);
+  border-top-left-radius: calc(var(--radius) * 0.55);
+  border-top-right-radius: calc(var(--radius) * 0.55);
 }
 
 .composer-sheet-inner {

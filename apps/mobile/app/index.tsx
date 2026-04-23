@@ -63,6 +63,15 @@ const LOCALES: { code: AppLocale; label: string; name: string }[] = [
   { code: "ko", label: "KO", name: "한국어" },
 ];
 
+/**
+ * TEMP layout debug — APK only. Does not change anything under apps/web.
+ * - Native: colored borders on root / top bar / WebView wrapper.
+ * - WebView: optional injected stylesheet (runtime) with outlines on main chat DOM selectors.
+ * Set both to false (or delete this block) before release.
+ */
+const DEBUG_NATIVE_CHAT_SHELL_RECTS = false;
+const DEBUG_WEBVIEW_CHAT_DOM_OUTLINES = false;
+
 /** First supported language from the device locale list, or null if none match. */
 function pickSupportedDeviceLocale(): AppLocale | null {
   try {
@@ -121,7 +130,7 @@ const INJECTED_JS = `
     '.auth-explore-strip{display:none!important}',
     'html,body{height:100%!important;min-height:100%!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden!important}',
     '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:none!important;overflow:hidden!important;padding:0!important;margin:0!important;background:transparent!important}',
-    '.chat-surface{margin-top:0!important;margin-bottom:0!important;padding:0!important;border-radius:0!important;border:none!important;box-shadow:none!important}',
+    '.chat-surface{margin-top:0!important;margin-bottom:0!important;padding:0!important}',
     '.chat-history{padding-bottom:0!important}',
     '.composer-dock{padding-bottom:0!important}',
     '.composer-minibar{padding:0.5rem 0.65rem 0.55rem!important}'
@@ -706,6 +715,43 @@ const INJECTED_JS = `
 })();
 true;
 `;
+
+/** Appended to INJECTED_JS when DEBUG_WEBVIEW_CHAT_DOM_OUTLINES is true (mobile file only). */
+const WEBVIEW_DOM_LAYOUT_DEBUG_JS = `
+(function(){
+  if (window.__rnDomLayoutDebug) return;
+  window.__rnDomLayoutDebug = true;
+  function inject(){
+    if (document.getElementById('rn-dom-layout-debug')) return;
+    var st = document.createElement('style');
+    st.id = 'rn-dom-layout-debug';
+    st.setAttribute('data-rn-temp','layout-debug');
+    st.textContent = [
+      'html{outline:2px solid #7c3aed!important;outline-offset:-2px}',
+      'body{outline:2px solid #a78bfa!important;outline-offset:-2px}',
+      '.iching-oracle-shell--chat{outline:3px solid #e11d48!important;outline-offset:-3px}',
+      '.oracle-chat-app{outline:3px solid #0891b2!important;outline-offset:-3px}',
+      '.ambient-particles-layer{outline:3px dashed #65a30d!important;outline-offset:-3px}',
+      '.chat-surface{outline:3px solid #ea580c!important;outline-offset:-3px}',
+      'header.chat-app-bar,header.oracle-intro{outline:3px solid #2563eb!important;outline-offset:-3px}',
+      '.chat-room{outline:3px solid #16a34a!important;outline-offset:-3px}',
+      '.chat-history{outline:3px solid #ca8a04!important;outline-offset:-3px}',
+      '.chat-composer-wa{outline:3px solid #4f46e5!important;outline-offset:-3px}',
+      '.composer-dock{outline:3px solid #9333ea!important;outline-offset:-3px}',
+      '.composer-sheet{outline:2px solid #db2777!important;outline-offset:-2px}'
+    ].join('');
+    (document.head||document.documentElement).appendChild(st);
+  }
+  inject();
+  document.addEventListener('readystatechange', inject);
+  [0,500,2000].forEach(function(ms){ setTimeout(inject, ms); });
+})();
+true;
+`;
+
+const COMBINED_INJECTED_JS = DEBUG_WEBVIEW_CHAT_DOM_OUTLINES
+  ? `${INJECTED_JS}\n${WEBVIEW_DOM_LAYOUT_DEBUG_JS}`
+  : INJECTED_JS;
 
 type RNMessage =
   | { type: "auth_token"; token: string; email?: string | null }
@@ -1695,13 +1741,14 @@ export default function WebViewScreen() {
     LOCALES.find((l) => l.code === locale)?.label ?? locale.toUpperCase();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeRoot]}>
       {/* ── P2 + P3: Native top bar — compact locale picker + user info ─── */}
       <View
         style={[
           styles.topBarBase,
           shellTheme === "light" ? styles.topBarLight : styles.topBarDark,
           { paddingTop: insets.top },
+          DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeTopBar,
         ]}
       >
         {/* Compact locale picker button */}
@@ -1868,7 +1915,8 @@ export default function WebViewScreen() {
       />
 
       {/* ── WebView ────────────────────────────────────────────────────────── */}
-      <WebView
+      <View style={[styles.webviewShell, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeWebViewWrap]}>
+        <WebView
         ref={webViewRef}
         source={{ uri: currentUrl }}
         style={styles.webview}
@@ -1876,7 +1924,7 @@ export default function WebViewScreen() {
         onNavigationStateChange={onNavigationStateChange}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onMessage={onMessage}
-        injectedJavaScript={INJECTED_JS}
+        injectedJavaScript={COMBINED_INJECTED_JS}
         javaScriptEnabled
         domStorageEnabled
         allowsInlineMediaPlayback
@@ -1891,7 +1939,8 @@ export default function WebViewScreen() {
           </View>
         )}
         startInLoadingState
-      />
+        />
+      </View>
 
       {debugLogs.length > 0 && (
         <View style={{ position: 'absolute', bottom: 100, left: 0, right: 0, backgroundColor: 'rgba(0,0,0,0.85)', padding: 8, zIndex: 9999 }}>
@@ -1908,6 +1957,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0c0f14",
+  },
+  debugNativeRoot: {
+    borderWidth: 3,
+    borderColor: "#c026d3",
+    backgroundColor: "rgba(192, 38, 211, 0.07)",
+  },
+  debugNativeTopBar: {
+    borderBottomWidth: 4,
+    borderBottomColor: "#0ea5e9",
+    backgroundColor: "rgba(14, 165, 233, 0.12)",
+  },
+  webviewShell: {
+    flex: 1,
+    minHeight: 0,
+  },
+  debugNativeWebViewWrap: {
+    borderWidth: 3,
+    borderColor: "#ca8a04",
+    backgroundColor: "rgba(234, 179, 8, 0.07)",
   },
   /* ── Native top bar (tracks web data-theme) ── */
   topBarBase: {
