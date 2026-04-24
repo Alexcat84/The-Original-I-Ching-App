@@ -5,7 +5,6 @@ import * as Linking from "expo-linking";
 import * as MediaLibrary from "expo-media-library";
 import * as SecureStore from "expo-secure-store";
 import * as Sharing from "expo-sharing";
-import * as Localization from "expo-localization";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
@@ -105,21 +104,6 @@ function buildSyncLocaleFromWebOrNativeScript(nativeFallback: AppLocale): string
  */
 const DEBUG_NATIVE_CHAT_SHELL_RECTS = __DEV__;
 const DEBUG_WEBVIEW_CHAT_DOM_OUTLINES = __DEV__;
-
-/** First supported language from the device locale list, or null if none match. */
-function pickSupportedDeviceLocale(): AppLocale | null {
-  try {
-    for (const loc of Localization.getLocales()) {
-      const code = loc.languageCode?.toLowerCase();
-      if (code && LOCALES.some((l) => l.code === code)) {
-        return code as AppLocale;
-      }
-    }
-  } catch {
-    return null;
-  }
-  return null;
-}
 
 /** Converts an incoming deep link back to the web URL so the WebView can complete auth. */
 function deepLinkToWebUrl(deepLink: string): string | null {
@@ -1337,9 +1321,8 @@ export default function WebViewScreen() {
       if (storedOk) {
         resolved = saved as AppLocale;
       } else {
-        const fromDevice = pickSupportedDeviceLocale();
-        resolved = fromDevice ?? DEFAULT_LOCALE;
-        void AsyncStorage.setItem(LOCALE_STORAGE_KEY, resolved);
+        /* Manual-first: do not persist device locale — avoids native `en` fighting web LS after docs. */
+        resolved = DEFAULT_LOCALE;
       }
       localeRef.current = resolved;
       setLocaleState(resolved);

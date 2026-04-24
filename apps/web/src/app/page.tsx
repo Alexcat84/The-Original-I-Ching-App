@@ -483,21 +483,6 @@ const DRAWER_TEXT: Record<
   },
 };
 
-/** Maps `navigator.languages` to an app locale when the user has no saved preference. */
-function pickBrowserAppLocale(): AppLocale | null {
-  if (typeof navigator === "undefined") return null;
-  const list =
-    navigator.languages && navigator.languages.length > 0 ? [...navigator.languages] : [navigator.language];
-  const tags = list.map((s) => String(s).trim().toLowerCase()).filter(Boolean);
-  const supported = SUPPORTED_LOCALES as readonly string[];
-  for (const tag of tags) {
-    if (supported.includes(tag)) return tag as AppLocale;
-    const primary = (tag.split("-")[0] ?? "").toLowerCase();
-    if (primary && supported.includes(primary)) return primary as AppLocale;
-  }
-  return null;
-}
-
 /** English first in the UI selector (default app language). */
 const LOCALE_SELECT_ORDER: AppLocale[] = [
   "en",
@@ -1141,6 +1126,7 @@ export default function HomePage() {
    * Hydrate locale from storage/cookie **before** passive effects run.
    * Otherwise the `[locale]` persist effect (defaults to `en`) runs in the same commit and
    * overwrites `localStorage` / cookie before this read applies — e.g. Korean lost after /guia → /.
+   * Manual-only: do not infer from `navigator` (would fight the picker after docs → home).
    */
   useLayoutEffect(() => {
     const raw = window.localStorage.getItem(UI_LOCALE_STORAGE_KEY);
@@ -1152,11 +1138,6 @@ export default function HomePage() {
     const cookieLocale = cookieMatch ? decodeURIComponent(cookieMatch[1] ?? "") : "";
     if ((SUPPORTED_LOCALES as readonly string[]).includes(cookieLocale)) {
       setLocale(cookieLocale as AppLocale);
-      return;
-    }
-    const fromBrowser = pickBrowserAppLocale();
-    if (fromBrowser) {
-      setLocale(fromBrowser);
     }
   }, []);
 

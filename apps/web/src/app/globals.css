@@ -340,8 +340,8 @@ html.iching-rn-webview .composer-minibar {
 
 /*
  * RN WebView: /guia, /notes, /privacy, etc. have no .iching-oracle-shell — chat.
- * Injected CSS used to set html,body overflow:hidden everywhere, which blocked scroll
- * and could hide the doc nav under the status bar. Allow body scroll + sticky nav.
+ * Injected CSS used to set html,body overflow:hidden everywhere, which blocked scroll.
+ * Allow body scroll; doc nav scrolls with the page (no sticky bar).
  */
 html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) {
   height: auto;
@@ -356,19 +356,6 @@ html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) body {
   -webkit-overflow-scrolling: touch;
   padding-top: max(0.35rem, env(safe-area-inset-top, 0px));
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
-}
-
-html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) .oracle-shell.doc-page .doc-nav {
-  position: sticky;
-  z-index: 20;
-  top: max(0px, env(safe-area-inset-top, 0px));
-  padding: 0.35rem 0 0.55rem;
-  margin: 0 0 0.85rem;
-  /* Opaque bar so article text does not show through when scrolling under sticky nav */
-  background: var(--bg);
-  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
-  box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--fg) 12%, transparent);
-  isolation: isolate;
 }
 
 /* RN WebView: auth strip band + controls (visual parity with former native chrome) */
