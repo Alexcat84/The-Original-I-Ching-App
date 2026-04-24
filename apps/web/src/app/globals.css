@@ -750,14 +750,29 @@ html.iching-rn-webview[data-theme="light"] .auth-explore-strip--session .auth-ex
   z-index: 2;
 }
 
-/* Dark: shell and chat bg are both near-black — make the card edge readable. */
-html[data-theme="dark"] .chat-surface,
+/*
+ * Dark + RN WebView: gold/teal card edge (paridad con shell nativo).
+ * Browser website: omit — outer ring reads as stray “contour” on desktop and phone web.
+ */
 html.iching-rn-webview[data-theme="dark"] .chat-surface {
   --chat-surface-outer-border: color-mix(in srgb, rgba(201, 162, 39, 0.55) 50%, rgba(78, 205, 196, 0.35));
   box-shadow:
     var(--shadow),
     0 0 0 1px rgba(201, 162, 39, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Browser website: flat card — no outer contour, no strip border seams at rounded top */
+html:not(.iching-rn-webview) .chat-surface {
+  border-color: transparent;
+  box-shadow: var(--shadow);
+}
+
+html:not(.iching-rn-webview) .chat-surface--explore-cap > .auth-config-banner:first-child,
+html:not(.iching-rn-webview) .chat-surface--explore-cap > .auth-explore-strip:first-child {
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
 }
 
 @media (min-width: 480px) {
@@ -1530,6 +1545,11 @@ html[data-theme="dark"] .oracle-badge--mode-strong {
   background-image:
     radial-gradient(circle at 1px 1px, var(--chat-pattern-dot) 1px, transparent 0);
   background-size: 22px 22px;
+}
+
+/* Dot grid is for in-app / immersive view; hide on public website */
+html:not(.iching-rn-webview) .chat-history {
+  background-image: none;
 }
 
 .chat-history::-webkit-scrollbar {
