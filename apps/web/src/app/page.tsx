@@ -10,6 +10,7 @@ import {
   formatHistoryLoadFailedStatus,
   formatThreadDepthStatusLine,
   formatTwoFactorSupportMailBody,
+  getAppTraceabilityUiMessages,
   getDocNavUiMessages,
   getFreeTierMarketing,
   getHomeChromeUiMessages,
@@ -1050,6 +1051,7 @@ export default function HomePage() {
   const t = commonStrings[locale];
   const tokenPanel = useMemo(() => getTokenPanelUiMessages(locale), [locale]);
   const docNav = useMemo(() => getDocNavUiMessages(locale), [locale]);
+  const traceUi = useMemo(() => getAppTraceabilityUiMessages(locale), [locale]);
   const presentation = useMemo(() => getOraclePresentationUiMessages(locale), [locale]);
   /** Official listing URL when published; empty shows “coming soon” on the Play card. */
   const playStoreUrl = (process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "").trim();
@@ -4083,6 +4085,8 @@ export default function HomePage() {
                       <Link href="/notes">{docNav.methodNotesLong}</Link>
                       <Link href="/privacy">{docNav.privacyPolicy}</Link>
                       <Link href="/terms">{docNav.termsOfService}</Link>
+                      <Link href="/guia#faqs">{docNav.faqs}</Link>
+                      <Link href="/guia#rn-app-trace-root">{traceUi.aboutHeading}</Link>
                     </div>
                   </section>
                 </div>

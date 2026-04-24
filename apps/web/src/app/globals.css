@@ -1733,7 +1733,8 @@ html:not(.iching-rn-webview) .chat-history {
 }
 
 .composer-sheet.is-open {
-  max-height: min(52vh, 26rem);
+  /* Room for tokens + 2FA + doc links (incl. FAQs / About) without clipping */
+  max-height: min(68vh, 36rem);
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -2011,6 +2012,7 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   margin-top: 0.85rem;
   margin-bottom: 0;
   padding-top: 0.75rem;
+  padding-bottom: 0.45rem;
   border-top: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
@@ -5415,11 +5417,16 @@ a.oracle-play-card__cta:hover {
   opacity: 0.55;
 }
 
+/* “About” is public on /guia for web and APK; version rows are WebView-only (filled by native shell). */
 .apk-traceability-section {
+  display: block;
+}
+
+.apk-trace-native-metrics {
   display: none;
 }
 
-html.iching-rn-webview .apk-traceability-section {
+html.iching-rn-webview .apk-trace-native-metrics {
   display: block;
 }
 

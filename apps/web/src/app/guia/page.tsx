@@ -170,13 +170,15 @@ export default async function GuiaRapidaPage() {
               <dt>{trace.appNameLabel}</dt>
               <dd>{trace.appNameValue}</dd>
             </div>
-            <div className="apk-trace-row">
-              <dt>{trace.versionLabel}</dt>
-              <dd id="rn-trace-version">—</dd>
-            </div>
-            <div className="apk-trace-row">
-              <dt>{trace.androidVersionCodeLabel}</dt>
-              <dd id="rn-trace-code">—</dd>
+            <div className="apk-trace-native-metrics">
+              <div className="apk-trace-row">
+                <dt>{trace.versionLabel}</dt>
+                <dd id="rn-trace-version">—</dd>
+              </div>
+              <div className="apk-trace-row">
+                <dt>{trace.androidVersionCodeLabel}</dt>
+                <dd id="rn-trace-code">—</dd>
+              </div>
             </div>
           </dl>
           <p className="apk-trace-rights">{trace.rightsLine}</p>
