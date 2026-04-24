@@ -61,6 +61,43 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
 
+const ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX = "iching_account_session_limit_v1:";
+
+function readCachedAccountSessionLimit(userId: string): number | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(`${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`);
+    if (raw == null || raw === "") return null;
+    const n = Number(raw);
+    if (!Number.isFinite(n) || n < 1) return null;
+    return Math.floor(n);
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedAccountSessionLimit(userId: string, limit: number): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (!Number.isFinite(limit) || limit < 1) return;
+    window.sessionStorage.setItem(
+      `${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`,
+      String(Math.floor(limit)),
+    );
+  } catch {
+    /* quota / private mode */
+  }
+}
+
+function clearCachedAccountSessionLimit(userId: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.removeItem(`${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`);
+  } catch {
+    /* ignore */
+  }
+}
+
 type ApiLine = {
   position: 1 | 2 | 3 | 4 | 5 | 6;
   value: 6 | 7 | 8 | 9;
@@ -1035,6 +1072,8 @@ export default function HomePage() {
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
   const [authUserId, setAuthUserId] = useState<string | null>(null);
+  /** Last known Supabase user id (for clearing per-user sessionStorage on sign-out). */
+  const lastSignedInUserIdForStorageRef = useRef<string | null>(null);
   const [supabaseConfigError, setSupabaseConfigError] = useState(false);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
@@ -1383,6 +1422,8 @@ export default function HomePage() {
   const threadDepthCap = planThreadLimit;
   const threadDepthCanDeepen = isAdmin || Boolean(result && result.sessionPosition < planThreadLimit);
   const threadLimitReached = !isAdmin && activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
+  /** Until `/api/account/me` hydrates `accountSessionLimit`, default `1` would falsely flag paid threads — never show limit UI until `tierReady`. */
+  const threadLimitReachedUi = tierReady && threadLimitReached;
   const tierDisplayNode = tierReady ? (
     isAdmin ? "admin" : tierLabelForDisplay(tier)
   ) : (
@@ -1949,8 +1990,15 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (authUserId) lastSignedInUserIdForStorageRef.current = authUserId;
+  }, [authUserId]);
+
+  useEffect(() => {
     if (!authReady) return;
     if (!accessToken) {
+      const uid = lastSignedInUserIdForStorageRef.current;
+      if (uid) clearCachedAccountSessionLimit(uid);
+      lastSignedInUserIdForStorageRef.current = null;
       setTier("free");
       setTierReady(true);
       setAccountSessionLimit(1);
@@ -1970,6 +2018,10 @@ export default function HomePage() {
       return;
     }
     let cancelled = false;
+    if (authUserId) {
+      const cached = readCachedAccountSessionLimit(authUserId);
+      if (cached !== null) setAccountSessionLimit(cached);
+    }
     setTierReady(false);
     function loadAccountTier() {
       void fetch("/api/account/me", {
@@ -1987,6 +2039,10 @@ export default function HomePage() {
         } | null) => {
           if (cancelled) return;
           if (!j) {
+            if (authUserId) {
+              const cached = readCachedAccountSessionLimit(authUserId);
+              if (cached !== null) setAccountSessionLimit(cached);
+            }
             setTierReady(true);
             return;
           }
@@ -1996,6 +2052,7 @@ export default function HomePage() {
           setIsAdmin(j.is_admin === true);
           if (typeof j.session_limit === "number" && Number.isFinite(j.session_limit)) {
             setAccountSessionLimit(j.session_limit);
+            if (authUserId) writeCachedAccountSessionLimit(authUserId, j.session_limit);
           }
           setTokenBalance(typeof j.tokens_available === "number" ? j.tokens_available : null);
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
@@ -2035,7 +2092,12 @@ export default function HomePage() {
           }
         })
         .catch(() => {
-          if (!cancelled) setTierReady(true);
+          if (cancelled) return;
+          if (authUserId) {
+            const cached = readCachedAccountSessionLimit(authUserId);
+            if (cached !== null) setAccountSessionLimit(cached);
+          }
+          setTierReady(true);
         });
     }
     loadAccountTier();
@@ -2047,7 +2109,7 @@ export default function HomePage() {
       cancelled = true;
       window.removeEventListener("iching:account-refresh", onAccountRefresh);
     };
-  }, [accessToken, authReady]);
+  }, [accessToken, authReady, authUserId]);
 
   useEffect(() => {
     if (!accessToken || !authUserId) return;
@@ -2673,7 +2735,10 @@ export default function HomePage() {
       }
       if (typeof data.last_pack === "string") setTier(data.last_pack as Tier);
       if (typeof data.tokens_available === "number") setTokenBalance(data.tokens_available);
-      if (typeof data.session_limit === "number") setAccountSessionLimit(data.session_limit);
+      if (typeof data.session_limit === "number") {
+        setAccountSessionLimit(data.session_limit);
+        if (authUserId) writeCachedAccountSessionLimit(authUserId, data.session_limit);
+      }
       if (typeof data.tokens_available === "number" && data.tokens_available <= 0) {
         if (data.last_pack === "free") {
           setTokenCenterMessage(tokenPanel.messageFreeDepleted);
@@ -2695,7 +2760,7 @@ export default function HomePage() {
       setActiveSessionLocalId(created.localId);
       return;
     }
-    if (threadLimitReached) {
+    if (threadLimitReachedUi) {
       return;
     }
     const questionForRequest = question.trim();
@@ -4566,7 +4631,7 @@ export default function HomePage() {
                 </div>
               ) : null}
 
-              {threadLimitReached ? (
+              {threadLimitReachedUi ? (
                 <div className="composer-session-limit-float" role="status" aria-live="polite">
                   <p className="composer-session-limit-text">{tokenPanel.consultThreadLimit}</p>
                   <button
@@ -4606,11 +4671,11 @@ export default function HomePage() {
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
-                        if (!loading && !threadLimitReached) void onConsult();
+                        if (!loading && !threadLimitReachedUi) void onConsult();
                       }
                     }}
                     placeholder={
-                      threadLimitReached
+                      threadLimitReachedUi
                         ? ui.threadLimitReached
                         : oracleMode === "oracle_bones"
                           ? ui.positiveCharge
@@ -4618,13 +4683,13 @@ export default function HomePage() {
                     }
                     aria-label={chrome.questionInputAria}
                     rows={1}
-                    readOnly={threadLimitReached}
-                    aria-disabled={threadLimitReached}
+                    readOnly={threadLimitReachedUi}
+                    aria-disabled={threadLimitReachedUi}
                   />
                   <button
                     type="button"
                     data-testid="consult-btn"
-                    disabled={loading || threadLimitReached}
+                      disabled={loading || threadLimitReachedUi}
                     onClick={() => void onConsult()}
                     aria-label={loading ? chrome.sendAriaSending : chrome.sendAriaSend}
                   >
