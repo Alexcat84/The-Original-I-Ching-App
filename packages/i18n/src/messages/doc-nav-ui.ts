@@ -6,7 +6,7 @@ export type DocNavUiMessages = {
   backToOracle: string;
   /** Short label for “home oracle” links (e.g. FAQs), without arrow prefix. */
   oracleHome: string;
-  /** Web FAQ hub (/faqs). */
+  /** FAQs anchor on the guide page (#faqs). */
   faqs: string;
   /** Anchor to /guia#planes (packs & pricing copy in the guide). */
   guidePlansSection: string;

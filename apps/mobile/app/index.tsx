@@ -136,9 +136,19 @@ function deepLinkToWebUrl(deepLink: string): string | null {
  *  8. Expose __rnSignOut() for the web session strip (native bar removed)
  *  9. Expose __rnNavigateTo() for SPA navigation without full reload
  * 10. Intercept taps on generated chat images → postMessage to open native zoom modal
+ * 11. Expose __RN_APP_INFO and fill /guia traceability cells (#rn-trace-*) from the native shell
  */
+const RN_APP_INFO_FOR_WEB = JSON.stringify({
+  version: String(Constants.expoConfig?.version ?? ""),
+  androidVersionCode:
+    (Constants.expoConfig?.android as { versionCode?: number } | undefined)?.versionCode ?? null,
+});
+
 const INJECTED_JS = `
 (function () {
+  try {
+    window.__RN_APP_INFO = ${RN_APP_INFO_FOR_WEB};
+  } catch (_) {}
   if (window.__rnBridgeInstalled) return;
   window.__rnBridgeInstalled = true;
   document.documentElement.classList.add('iching-rn-webview');
@@ -805,6 +815,28 @@ const INJECTED_JS = `
       }
     }).observe(document.body || document.documentElement, { childList: true, subtree: true });
   })();
+
+  /* 13 ── APK traceability (/guia): fill version and Android versionCode from native shell */
+  function _fillRnAppTrace() {
+    try {
+      var info = window.__RN_APP_INFO;
+      if (!info) return;
+      function _set(id, v) {
+        if (v === null || v === undefined || v === '') return;
+        var el = document.getElementById(id);
+        if (el) el.textContent = String(v);
+      }
+      _set('rn-trace-version', info.version);
+      _set('rn-trace-code', info.androidVersionCode);
+    } catch (_) {}
+  }
+  _fillRnAppTrace();
+  if (!window.__rnTraceMo) {
+    window.__rnTraceMo = new MutationObserver(function () {
+      if (document.getElementById('rn-trace-version')) _fillRnAppTrace();
+    });
+    window.__rnTraceMo.observe(document.documentElement, { childList: true, subtree: true });
+  }
 
 })();
 true;

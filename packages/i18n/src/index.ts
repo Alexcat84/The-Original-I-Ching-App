@@ -16,6 +16,10 @@ export {
   type OraclePresentationUiMessages,
 } from "./messages/oracle-presentation-ui.js";
 export {
+  getAppTraceabilityUiMessages,
+  type AppTraceabilityUiMessages,
+} from "./messages/app-traceability-ui.js";
+export {
   allConsultationInProgressTitles,
   formatThreadDepthStatusLine,
   getHomeChromeUiMessages,

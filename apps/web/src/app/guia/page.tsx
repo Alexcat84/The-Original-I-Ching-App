@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   formatGuiaFreeLine,
   formatGuiaPackPrice,
+  getAppTraceabilityUiMessages,
   getDocNavUiMessages,
   getFreeTierMarketing,
   getGuiaPacksUiMessages,
@@ -12,6 +13,7 @@ import {
   getTokenPackLabel,
 } from "@iching-oracle/i18n";
 import type { TokenPackMarketingId } from "@iching-oracle/i18n";
+import { FaqAccordion } from "@/components/FaqAccordion";
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { FREE_TOKENS, PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
 
@@ -22,11 +24,12 @@ export default async function GuiaRapidaPage() {
   const q = getQuickstartPageUiMessages(locale);
   const packsUi = getGuiaPacksUiMessages(locale);
   const tokensWord = getPricingUiMessages(locale).tokensWord;
+  const trace = getAppTraceabilityUiMessages(locale);
 
   return (
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
+        <Link href="/">{nav.backToOracle}</Link> · <Link href="#faqs">{nav.faqs}</Link> ·{" "}
         <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
         <Link href="/terms">{nav.termsShort}</Link>
       </nav>
@@ -153,6 +156,31 @@ export default async function GuiaRapidaPage() {
           <Link href="/documentacion/iching">{nav.ichingDocLink}</Link> · <Link href="/privacy">{nav.privacyPolicy}</Link> ·{" "}
           <Link href="/terms">{nav.termsOfService}</Link>
         </p>
+
+        <hr className="doc-major-divider" aria-hidden />
+
+        <h2 id="faqs">{nav.faqs}</h2>
+        <FaqAccordion locale={locale} nav={nav} />
+
+        <section id="rn-app-trace-root" className="apk-traceability-section" aria-labelledby="apk-trace-heading">
+          <hr className="doc-major-divider doc-major-divider--subtle" aria-hidden />
+          <h2 id="apk-trace-heading">{trace.aboutHeading}</h2>
+          <dl className="apk-trace-dl">
+            <div className="apk-trace-row">
+              <dt>{trace.appNameLabel}</dt>
+              <dd>{trace.appNameValue}</dd>
+            </div>
+            <div className="apk-trace-row">
+              <dt>{trace.versionLabel}</dt>
+              <dd id="rn-trace-version">—</dd>
+            </div>
+            <div className="apk-trace-row">
+              <dt>{trace.androidVersionCodeLabel}</dt>
+              <dd id="rn-trace-code">—</dd>
+            </div>
+          </dl>
+          <p className="apk-trace-rights">{trace.rightsLine}</p>
+        </section>
       </article>
     </div>
   );
