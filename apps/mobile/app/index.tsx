@@ -55,6 +55,26 @@ function resolveWebBaseUrl(): string {
 
 const BASE_URL = resolveWebBaseUrl();
 
+/**
+ * Paths where the WebView should perform a normal navigation (not SPA-injected).
+ * Next.js App Router does not reliably handle `history.pushState` + synthetic `popstate`
+ * for these routes; cancelling the request (`return false`) + `__rnNavigateTo` left the
+ * shell stuck when opening /guia#faqs, /guia#rn-app-trace-root, etc. from the composer.
+ */
+function isPublicDocInternalPath(path: string): boolean {
+  const pathOnly = (path.split("#")[0] ?? "").split("?")[0] ?? "";
+  const n = pathOnly.startsWith("/") ? pathOnly : `/${pathOnly}`;
+  return (
+    n === "/guia" ||
+    n.startsWith("/guia/") ||
+    n === "/notes" ||
+    n.startsWith("/notes/") ||
+    n === "/privacy" ||
+    n === "/terms" ||
+    n.startsWith("/documentacion")
+  );
+}
+
 // Supabase project — needed to construct the Google OAuth URL from native side.
 // IMPORTANT: Add "theoriginaliching://auth/callback" to your Supabase project's
 // Auth > URL Configuration > Redirect URLs for Google OAuth deep-link to work.
@@ -1842,6 +1862,9 @@ export default function WebViewScreen() {
           path.startsWith("/auth/callback?") ||
           path.startsWith("/auth/callback#");
         if (!isAuthCallbackPath) {
+          if (isPublicDocInternalPath(path)) {
+            return true;
+          }
           webViewRef.current?.injectJavaScript(
             `window.__rnNavigateTo && window.__rnNavigateTo(${JSON.stringify(path)}); true;`
           );
