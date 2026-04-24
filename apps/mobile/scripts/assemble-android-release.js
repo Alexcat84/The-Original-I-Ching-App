@@ -1,6 +1,12 @@
 /**
- * Local release APK: expo prebuild (if needed) + Gradle assembleRelease.
+ * Local release APK:
+ * 1. `expo prebuild --platform android` — aplica `app.config.js` a `android/` (versionName, versionCode,
+ *    plugins, manifiesto embebido) para que coincida con lo que verá `Constants.expoConfig` en el JS.
+ * 2. Gradle `assembleRelease`.
+ *
  * Output: apps/mobile/android/app/build/outputs/apk/release/
+ *
+ * `--no-install`: no reinstala node_modules ni CocoaPods (el monorepo ya tiene deps).
  */
 const { spawnSync } = require("child_process");
 const fs = require("fs");
@@ -25,9 +31,12 @@ function run(command, args, options = {}) {
   }
 }
 
+console.log("[android] expo prebuild — sync app.config.js → android/ (embedded config + Gradle)…");
+run("npx", ["expo", "prebuild", "--platform", "android", "--no-install"]);
+
 if (!fs.existsSync(androidDir)) {
-  console.log("[android] No android/ folder — running expo prebuild…");
-  run("npx", ["expo", "prebuild", "--platform", "android"]);
+  console.error("[android] android/ missing after prebuild — abort.");
+  process.exit(1);
 }
 
 const gradleWrapper = process.platform === "win32" ? "gradlew.bat" : "./gradlew";
