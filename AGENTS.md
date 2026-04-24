@@ -5,6 +5,7 @@
 - Valora respuestas y UX homogéneas en el idioma del usuario, evitando mezcla ES/EN.
 - Prioriza una experiencia visual cuidada y de alta calidad por encima de entregas mínimas funcionales.
 - Prefiere implementaciones reales sobre mocks cuando ya existen credenciales y presupuesto para proveedores.
+- Cuando se sustituye WebView por UI nativa, exige paridad funcional completa (auth, 2FA, chats, docs, compras, etc.) y rechaza entregas a medias.
 <!-- Suele validar móvil con APK local (Gradle) y evita EAS salvo petición explícita; si en algún momento se usa Play/AAB, suele probar antes con assembleDebug. -->
 
 ## Learned Workspace Facts
@@ -16,5 +17,6 @@
 - El cliente Android (`apps/mobile`) carga la experiencia web en un `WebView` contra la URL definida en build; la UI y el login visibles dependen del despliegue remoto, no solo del binario nativo.
 - La URL del WebView debe alinearse entre `app.config.js` (`extra.apiUrl`, embebido en release) y `EXPO_PUBLIC_*` / Metro en desarrollo; si difieren, el dispositivo puede cargar otro host (p. ej. staging vs producción).
 - El JavaScript inyectado en el WebView (`INJECTED_JS` en `apps/mobile`) puede aplicar CSS con `!important` que sobrescribe estilos del sitio remoto; si la UI no refleja un deploy nuevo, conviene revisar esas reglas además de la URL y la caché del WebView.
+- Si un APK recién compilada sigue mostrando cabeceras duplicadas u offsets raros tras desinstalar versiones anteriores, el front remoto puede haber cambiado nombres de clase o estructura DOM; hay que alinear los selectores del JS inyectado con el DOM desplegado, no asumir solo caché o binario viejo.
 - Los requisitos de Google Play (p. ej. subir `targetSdkVersion`) pueden introducir regresiones de UI o de pantalla completa solo en Android aunque la web desplegada se vea y funcione bien.
 <!-- Si se usara EAS, conviene que el perfil empaquetado coincida con esas mismas variables; no es el flujo habitual del repo. -->

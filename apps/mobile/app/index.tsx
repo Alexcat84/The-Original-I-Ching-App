@@ -1241,19 +1241,19 @@ export default function WebViewScreen() {
   /* ── Locale state (P2) ── */
   const [locale, setLocaleState] = useState<AppLocale>(DEFAULT_LOCALE);
   const localeRef = useRef<AppLocale>(DEFAULT_LOCALE);
+  /** False until AsyncStorage locale is read — avoids injecting default `en` over web `localStorage`. */
+  const localeStorageHydratedRef = useRef(false);
   /** Matches web `html[data-theme]` for native modals / WebView chrome padding. */
   const [shellTheme, setShellTheme] = useState<ShellChromeTheme>("dark");
 
   const nativeUi = useMemo(() => getMobileNativeUiMessages(locale), [locale]);
 
-  /* ── Keep localeRef in sync with locale state; re-inject when it changes post-load ── */
+  /* ── Keep localeRef in sync; push locale only after native storage hydrated (see AsyncStorage effect). ── */
   useEffect(() => {
     localeRef.current = locale;
-    if (webReadyRef.current) {
-      webViewRef.current?.injectJavaScript(
-        `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(locale)}); true;`
-      );
-    }
+    if (!webReadyRef.current || !localeStorageHydratedRef.current) return;
+    // Prefer web `localStorage` so a web-only picker choice is never clobbered by native default `en`.
+    webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(locale));
   }, [locale]);
 
   /* ── Image zoom state (P4) ── */
@@ -1333,14 +1333,20 @@ export default function WebViewScreen() {
     });
     AsyncStorage.getItem(LOCALE_STORAGE_KEY).then((saved) => {
       const storedOk = saved && LOCALES.some((l) => l.code === saved);
+      let resolved: AppLocale;
       if (storedOk) {
-        setLocaleState(saved as AppLocale);
-        return;
+        resolved = saved as AppLocale;
+      } else {
+        const fromDevice = pickSupportedDeviceLocale();
+        resolved = fromDevice ?? DEFAULT_LOCALE;
+        void AsyncStorage.setItem(LOCALE_STORAGE_KEY, resolved);
       }
-      const fromDevice = pickSupportedDeviceLocale();
-      const next = fromDevice ?? DEFAULT_LOCALE;
-      setLocaleState(next);
-      void AsyncStorage.setItem(LOCALE_STORAGE_KEY, next);
+      localeRef.current = resolved;
+      setLocaleState(resolved);
+      localeStorageHydratedRef.current = true;
+      if (webReadyRef.current) {
+        webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
+      }
     });
   }, [validateStoredToken]);
 
@@ -1365,8 +1371,10 @@ export default function WebViewScreen() {
         `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
       );
     }
-    // Prefer web `localStorage` (in-app picker) over native default when re-syncing after load.
-    webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
+    // After native locale is known, prefer web `localStorage` over stale native default.
+    if (localeStorageHydratedRef.current) {
+      webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
+    }
     hideSplash();
   }, [hideSplash]);
 
@@ -1840,8 +1848,9 @@ export default function WebViewScreen() {
         if (el) el.style.setProperty('display','none','important');
       })();
     `);
-    // Re-sync locale after navigation without clobbering the in-WebView picker choice.
-    webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
+    if (localeStorageHydratedRef.current) {
+      webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
+    }
   };
 
   return (

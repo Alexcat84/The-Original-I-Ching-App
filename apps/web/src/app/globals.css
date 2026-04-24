@@ -360,13 +360,15 @@ html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) body {
 
 html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) .oracle-shell.doc-page .doc-nav {
   position: sticky;
-  z-index: 8;
+  z-index: 20;
   top: max(0px, env(safe-area-inset-top, 0px));
   padding: 0.35rem 0 0.55rem;
   margin: 0 0 0.85rem;
-  background: color-mix(in srgb, var(--bg) 90%, var(--shell-header-bg));
-  backdrop-filter: blur(10px);
+  /* Opaque bar so article text does not show through when scrolling under sticky nav */
+  background: var(--bg);
   border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
+  box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--fg) 12%, transparent);
+  isolation: isolate;
 }
 
 /* RN WebView: auth strip band + controls (visual parity with former native chrome) */
