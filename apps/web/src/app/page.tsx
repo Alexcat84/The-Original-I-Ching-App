@@ -19,6 +19,7 @@ import {
   getTokenPanelUiMessages,
   getTwoFactorUiMessages,
   getOnboardingUiMessages,
+  htmlLangFromAppLocale,
   interpolate,
   SUPPORTED_LOCALES,
   UI_LOCALE_STORAGE_KEY,
@@ -1121,23 +1122,36 @@ export default function HomePage() {
   const [revealConsultationId, setRevealConsultationId] = useState<string | null>(null);
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
+  /**
+   * Prevents the first `useEffect` pass from persisting the default `en` before `useLayoutEffect`
+   * hydrates from `localStorage` (same bug on web and APK WebView after /docs → /).
+   */
+  const skipInitialLocalePersistenceRef = useRef(true);
 
   /**
    * Hydrate locale from storage/cookie **before** passive effects run.
-   * Otherwise the `[locale]` persist effect (defaults to `en`) runs in the same commit and
-   * overwrites `localStorage` / cookie before this read applies — e.g. Korean lost after /guia → /.
    * Manual-only: do not infer from `navigator` (would fight the picker after docs → home).
    */
   useLayoutEffect(() => {
+    let next: AppLocale | null = null;
     const raw = window.localStorage.getItem(UI_LOCALE_STORAGE_KEY);
     if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
-      setLocale(raw as AppLocale);
-      return;
+      next = raw as AppLocale;
+    } else {
+      const cookieMatch = document.cookie.match(/(?:^|;\s*)iching_ui_locale=([^;]+)/);
+      const cookieLocale = cookieMatch ? decodeURIComponent(cookieMatch[1] ?? "") : "";
+      if ((SUPPORTED_LOCALES as readonly string[]).includes(cookieLocale)) {
+        next = cookieLocale as AppLocale;
+      }
     }
-    const cookieMatch = document.cookie.match(/(?:^|;\s*)iching_ui_locale=([^;]+)/);
-    const cookieLocale = cookieMatch ? decodeURIComponent(cookieMatch[1] ?? "") : "";
-    if ((SUPPORTED_LOCALES as readonly string[]).includes(cookieLocale)) {
-      setLocale(cookieLocale as AppLocale);
+    if (!next) return;
+    setLocale(next);
+    try {
+      window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, next);
+      document.documentElement.lang = htmlLangFromAppLocale(next);
+      document.cookie = `iching_ui_locale=${encodeURIComponent(next)}; path=/; max-age=31536000; samesite=lax`;
+    } catch {
+      /* private mode / cookies blocked */
     }
   }, []);
 
@@ -1154,9 +1168,17 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, locale);
-    document.documentElement.lang = locale;
-    document.cookie = `iching_ui_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
+    if (skipInitialLocalePersistenceRef.current) {
+      skipInitialLocalePersistenceRef.current = false;
+      return;
+    }
+    try {
+      window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, locale);
+      document.documentElement.lang = htmlLangFromAppLocale(locale);
+      document.cookie = `iching_ui_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
+    } catch {
+      /* private mode */
+    }
     window.dispatchEvent(new CustomEvent("iching:locale-changed", { detail: { locale } }));
   }, [locale]);
 
