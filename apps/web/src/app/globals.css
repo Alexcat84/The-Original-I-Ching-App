@@ -5417,11 +5417,7 @@ a.oracle-play-card__cta:hover {
   opacity: 0.55;
 }
 
-/* “About” is public on /guia for web and APK; version rows are WebView-only (filled by native shell). */
-.apk-traceability-section {
-  display: block;
-}
-
+/* About page (/about): version rows are WebView-only (filled by native shell). */
 .apk-trace-native-metrics {
   display: none;
 }

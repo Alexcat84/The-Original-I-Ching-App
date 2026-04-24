@@ -6,8 +6,10 @@ export type DocNavUiMessages = {
   backToOracle: string;
   /** Short label for “home oracle” links (e.g. FAQs), without arrow prefix. */
   oracleHome: string;
-  /** FAQs anchor on the guide page (#faqs). */
+  /** FAQ page (/faqs). */
   faqs: string;
+  /** About / build info page (/about), short nav label. */
+  aboutShort: string;
   /** Anchor to /guia#planes (packs & pricing copy in the guide). */
   guidePlansSection: string;
   /** Anchor to /guia#primeros-pasos. */
@@ -29,6 +31,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Volver al oráculo",
     oracleHome: "Oráculo",
     faqs: "Preguntas frecuentes",
+    aboutShort: "Sobre la app",
     guidePlansSection: "Planes y tokens (guía)",
     guideFirstSteps: "Primeros pasos (guía)",
     userGuide: "Guía de uso",
@@ -44,6 +47,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Back to oracle",
     oracleHome: "Oracle",
     faqs: "FAQ",
+    aboutShort: "About",
     guidePlansSection: "Plans & tokens (guide)",
     guideFirstSteps: "Getting started (guide)",
     userGuide: "User guide",
@@ -59,6 +63,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Voltar ao oráculo",
     oracleHome: "Oráculo",
     faqs: "Perguntas frequentes",
+    aboutShort: "Sobre a app",
     guidePlansSection: "Planos e tokens (guia)",
     guideFirstSteps: "Primeiros passos (guia)",
     userGuide: "Guia de utilização",
@@ -74,6 +79,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Retour à l’oracle",
     oracleHome: "Oracle",
     faqs: "FAQ",
+    aboutShort: "À propos",
     guidePlansSection: "Forfaits et jetons (guide)",
     guideFirstSteps: "Premiers pas (guide)",
     userGuide: "Guide d’utilisation",
@@ -89,6 +95,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Zurück zum Orakel",
     oracleHome: "Orakel",
     faqs: "FAQ",
+    aboutShort: "Über die App",
     guidePlansSection: "Pläne & Token (Leitfaden)",
     guideFirstSteps: "Erste Schritte (Leitfaden)",
     userGuide: "Nutzungsanleitung",
@@ -104,6 +111,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Torna all’oracolo",
     oracleHome: "Oracolo",
     faqs: "FAQ",
+    aboutShort: "Informazioni",
     guidePlansSection: "Piani e token (guida)",
     guideFirstSteps: "Primi passi (guida)",
     userGuide: "Guida all’uso",
@@ -119,6 +127,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← オラクルに戻る",
     oracleHome: "オラクル",
     faqs: "よくある質問",
+    aboutShort: "アプリについて",
     guidePlansSection: "プランとトークン（ガイド）",
     guideFirstSteps: "はじめに（ガイド）",
     userGuide: "利用ガイド",
@@ -134,6 +143,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← 返回占卜",
     oracleHome: "占卜首页",
     faqs: "常见问题",
+    aboutShort: "关于应用",
     guidePlansSection: "套餐与代币（指南）",
     guideFirstSteps: "入门（指南）",
     userGuide: "使用指南",
@@ -149,6 +159,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← 오라클로 돌아가기",
     oracleHome: "오라클",
     faqs: "자주 묻는 질문",
+    aboutShort: "앱 정보",
     guidePlansSection: "플랜 및 토큰(안내)",
     guideFirstSteps: "시작하기(안내)",
     userGuide: "사용 안내",

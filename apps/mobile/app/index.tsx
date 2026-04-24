@@ -65,6 +65,8 @@ function isPublicDocInternalPath(path: string): boolean {
   const pathOnly = (path.split("#")[0] ?? "").split("?")[0] ?? "";
   const n = pathOnly.startsWith("/") ? pathOnly : `/${pathOnly}`;
   return (
+    n === "/faqs" ||
+    n === "/about" ||
     n === "/guia" ||
     n.startsWith("/guia/") ||
     n === "/notes" ||
@@ -156,7 +158,7 @@ function deepLinkToWebUrl(deepLink: string): string | null {
  *  8. Expose __rnSignOut() for the web session strip (native bar removed)
  *  9. Expose __rnNavigateTo() for SPA navigation without full reload
  * 10. Intercept taps on generated chat images → postMessage to open native zoom modal
- * 11. Expose __RN_APP_INFO and fill /guia traceability cells (#rn-trace-*) from the native shell
+ * 11. Expose __RN_APP_INFO and fill /about trace cells (#rn-trace-*) from the native shell
  */
 const RN_APP_INFO_FOR_WEB = JSON.stringify({
   version: String(Constants.expoConfig?.version ?? ""),
@@ -836,7 +838,7 @@ const INJECTED_JS = `
     }).observe(document.body || document.documentElement, { childList: true, subtree: true });
   })();
 
-  /* 13 ── APK traceability (/guia): fill version and Android versionCode from native shell */
+  /* 13 ── APK traceability (/about): fill version and Android versionCode from native shell */
   function _fillRnAppTrace() {
     try {
       var info = window.__RN_APP_INFO;
