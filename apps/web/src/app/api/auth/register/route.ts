@@ -5,6 +5,9 @@ import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { initFreeUser } from "@/lib/credits";
+import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
+import { recordUserLegalAcceptance } from "@/lib/legal-consent-server";
+import { z } from "zod";
 
 export const runtime = "nodejs";
 
@@ -27,13 +30,38 @@ function safeAuthRedirectOrigin(req: Request): string {
   return configured;
 }
 
+const registerRequestSchema = z.object({
+  email: z.string().optional(),
+  password: z.string().optional(),
+  turnstileToken: z.string().optional(),
+  hcaptchaToken: z.string().optional(),
+  legalConsent: z.object({
+    accepted: z.literal(true),
+    termsVersion: z.literal(CURRENT_TERMS_VERSION),
+    privacyVersion: z.literal(CURRENT_PRIVACY_VERSION),
+    acceptedAt: z.string().datetime(),
+    source: z.literal("email_signup"),
+  }),
+});
+
 export async function POST(req: Request) {
-  let body: { email?: string; password?: string; turnstileToken?: string; hcaptchaToken?: string };
+  let rawBody: unknown;
   try {
-    body = (await req.json()) as typeof body;
+    rawBody = await req.json();
   } catch {
     return apiError(400, { error: "invalid_json", code: "REQUEST_INVALID_JSON", action: "fix_input" });
   }
+  const bodyResult = registerRequestSchema.safeParse(rawBody);
+  if (!bodyResult.success) {
+    const missingLegalConsent = bodyResult.error.issues.some((issue) => issue.path[0] === "legalConsent");
+    return apiError(400, {
+      error: missingLegalConsent ? "legal_consent_required" : "invalid_payload",
+      code: missingLegalConsent ? "LEGAL_CONSENT_REQUIRED" : "REGISTER_INVALID_PAYLOAD",
+      action: "fix_input",
+      details: bodyResult.error.flatten(),
+    });
+  }
+  const body = bodyResult.data;
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
   const rl = await rateLimitByKey({ key: `register:${ip}`, limit: 5, windowSeconds: 3600 });
   if (!rl.ok) {
@@ -152,6 +180,16 @@ export async function POST(req: Request) {
       { onConflict: "id" },
     );
     await initFreeUser(uid);
+    try {
+      await recordUserLegalAcceptance(uid, body.legalConsent);
+    } catch (error) {
+      console.error("[auth/register] legal consent insert failed", error);
+      return apiError(500, {
+        error: "legal_consent_store_failed",
+        code: "LEGAL_CONSENT_STORE_FAILED",
+        action: "apply_db_migration",
+      });
+    }
   }
   return Response.json({ ok: true, userId: uid ?? null });
 }

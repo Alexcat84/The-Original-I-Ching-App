@@ -5,8 +5,18 @@ import { useAppLocale } from "@/lib/use-app-locale";
 import {
   formatLoginConfigErrorBody,
   formatLoginRegisterApiError,
+  getDocNavUiMessages,
   getLoginPageUiMessages,
+  getPrivacyPageMessages,
+  getTermsPageMessages,
 } from "@iching-oracle/i18n";
+import { LegalConsentModal } from "@/components/LegalConsentModal";
+import {
+  createLegalConsentPayload,
+  isCurrentLegalConsentPayload,
+  LEGAL_CONSENT_PENDING_STORAGE_KEY,
+  type LegalConsentPayload,
+} from "@/lib/legal-consent";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
@@ -58,15 +68,21 @@ function isEmailNotConfirmedError(message: string): boolean {
 
 export default function LoginPage() {
   type RegisterModalKind = "verify" | "exists";
+  type PendingLegalAction = "email_signup" | "google_oauth";
   const router = useRouter();
   const locale = useAppLocale();
   const L = useMemo(() => getLoginPageUiMessages(locale), [locale]);
+  const nav = useMemo(() => getDocNavUiMessages(locale), [locale]);
+  const privacy = useMemo(() => getPrivacyPageMessages(locale), [locale]);
+  const terms = useMemo(() => getTermsPageMessages(locale), [locale]);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [registerModalKind, setRegisterModalKind] = useState<RegisterModalKind | null>(null);
+  const [legalConsent, setLegalConsent] = useState<LegalConsentPayload | null>(null);
+  const [pendingLegalAction, setPendingLegalAction] = useState<PendingLegalAction | null>(null);
   const [pendingVerificationEmail, setPendingVerificationEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [configError, setConfigError] = useState(false);
@@ -178,9 +194,24 @@ export default function LoginPage() {
   async function onGoogle() {
     setErr(null);
     setMsg(null);
+    if (!isCurrentLegalConsentPayload(legalConsent)) {
+      setPendingLegalAction("google_oauth");
+      return;
+    }
+    await startGoogleOAuth(createLegalConsentPayload("google_oauth"));
+  }
+
+  async function startGoogleOAuth(consent: LegalConsentPayload) {
     if (!isSupabaseBrowserConfigured()) return;
     setLoading(true);
     try {
+      try {
+        sessionStorage.setItem(LEGAL_CONSENT_PENDING_STORAGE_KEY, JSON.stringify(consent));
+      } catch {
+        // If storage is blocked, callback cannot persist consent; fail before OAuth.
+        setErr(L.errNetwork);
+        return;
+      }
       const sb = getSupabaseBrowser();
       const origin = window.location.origin;
       const { error } = await sb.auth.signInWithOAuth({
@@ -197,6 +228,14 @@ export default function LoginPage() {
     e.preventDefault();
     setErr(null);
     setMsg(null);
+    if (!isCurrentLegalConsentPayload(legalConsent)) {
+      setPendingLegalAction("email_signup");
+      return;
+    }
+    await registerWithEmail(createLegalConsentPayload("email_signup"));
+  }
+
+  async function registerWithEmail(consent: LegalConsentPayload) {
     setLoading(true);
     try {
       const res = await fetch("/api/auth/register", {
@@ -206,6 +245,7 @@ export default function LoginPage() {
           email: email.trim(),
           password,
           turnstileToken: turnstileTokenRef.current,
+          legalConsent: consent,
         }),
       });
       const data = (await res.json()) as {
@@ -234,6 +274,26 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function acceptLegalConsentAndContinue() {
+    if (!pendingLegalAction) return;
+    const action = pendingLegalAction;
+    const consent = createLegalConsentPayload(action);
+    setLegalConsent(consent);
+    setPendingLegalAction(null);
+    setErr(null);
+    setMsg(null);
+    if (action === "google_oauth") {
+      await startGoogleOAuth(consent);
+    } else {
+      await registerWithEmail(consent);
+    }
+  }
+
+  function cancelLegalConsent() {
+    setPendingLegalAction(null);
+    setErr(L.legalConsentRequired);
   }
 
   function closeRegisterModal() {
@@ -456,6 +516,18 @@ export default function LoginPage() {
           </Link>
         </div>
       </div>
+
+      {pendingLegalAction ? (
+        <LegalConsentModal
+          login={L}
+          nav={nav}
+          privacy={privacy}
+          terms={terms}
+          busy={loading}
+          onAccept={() => void acceptLegalConsentAndContinue()}
+          onCancel={cancelLegalConsent}
+        />
+      ) : null}
 
       {registerModalKind ? (
         <div

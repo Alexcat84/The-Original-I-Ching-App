@@ -4735,6 +4735,33 @@ a.auth-explore-strip-cta:focus-visible {
   color: rgba(255, 255, 255, 0.78);
 }
 
+@media (max-width: 899px) {
+  .auth-pro-brand {
+    padding: 0.75rem 1rem 0.8rem;
+  }
+
+  .auth-pro-brand-inner {
+    max-width: 20rem;
+    text-align: center;
+  }
+
+  .auth-pro-brand-eyebrow {
+    margin-bottom: 0.25rem;
+    font-size: 1.65rem;
+  }
+
+  .auth-pro-brand-title {
+    margin-bottom: 0.35rem;
+    font-size: clamp(1.25rem, 6vw, 1.55rem);
+    line-height: 1.12;
+  }
+
+  .auth-pro-brand-text {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+}
+
 .auth-pro-form-panel {
   flex: 1;
   display: flex;
@@ -4980,6 +5007,171 @@ html[data-theme="dark"] .auth-pro-err {
 
 .auth-pro-back {
   margin-top: 1.35rem;
+}
+
+.legal-consent-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: grid;
+  place-items: center;
+  padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+    max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  background: rgba(5, 8, 14, 0.78);
+  backdrop-filter: blur(5px);
+}
+
+.legal-consent-modal {
+  width: min(720px, 96vw);
+  max-height: min(86vh, 720px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: calc(var(--radius) * 0.75);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--secondary-border));
+  background: var(--secondary-bg);
+  color: var(--fg);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+}
+
+.legal-consent-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--secondary-border) 72%, transparent);
+}
+
+.legal-consent-title {
+  margin: 0;
+  font-family: var(--font-oracle-display), ui-serif, Georgia, serif;
+  font-size: 1.12rem;
+  color: var(--card-title);
+  line-height: 1.25;
+}
+
+.legal-consent-intro {
+  margin: 0.35rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--fg-muted);
+}
+
+.legal-consent-close {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--fg-muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.legal-consent-close:hover {
+  background: color-mix(in srgb, var(--fg) 8%, transparent);
+  color: var(--fg);
+}
+
+.legal-consent-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 1.1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--secondary-border) 55%, transparent);
+}
+
+.legal-consent-links a {
+  color: var(--ghost-link);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legal-consent-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1rem 1.1rem 1.15rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.legal-consent-scroll .doc-article {
+  max-width: none;
+  padding: 0;
+}
+
+.legal-consent-scroll .doc-article + .doc-article {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--secondary-border) 68%, transparent);
+}
+
+.legal-consent-scroll .doc-article h1 {
+  font-size: 1.1rem;
+}
+
+.legal-consent-scroll .doc-article h2 {
+  font-size: 0.98rem;
+}
+
+.legal-consent-scroll .doc-article p,
+.legal-consent-scroll .doc-article li {
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.legal-consent-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1.1rem 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--secondary-border) 72%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 92%, var(--bg));
+}
+
+.legal-consent-status {
+  margin: 0;
+  flex: 1 1 13rem;
+  color: var(--fg-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.legal-consent-accept {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 10rem;
+}
+
+@media (max-width: 520px) {
+  .legal-consent-backdrop {
+    padding: 0.75rem;
+  }
+
+  .legal-consent-modal {
+    width: 100%;
+    max-height: 88vh;
+  }
+
+  .legal-consent-header,
+  .legal-consent-links,
+  .legal-consent-scroll,
+  .legal-consent-footer {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+  .legal-consent-accept {
+    width: 100%;
+  }
 }
 
 .auth-callback-wrap {

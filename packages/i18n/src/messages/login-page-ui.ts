@@ -24,6 +24,13 @@ export type LoginPageUiMessages = {
   registerSubmit: string;
   dividerOr: string;
   continueGoogle: string;
+  legalConsentTitle: string;
+  legalConsentIntro: string;
+  legalConsentPendingScroll: string;
+  legalConsentReady: string;
+  legalConsentAccept: string;
+  legalConsentCloseAria: string;
+  legalConsentRequired: string;
   backToOracle: string;
   closeModalAria: string;
   modalVerifyTitle: string;
@@ -74,6 +81,14 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Registrarme",
     dividerOr: "o",
     continueGoogle: "Continuar con Google",
+    legalConsentTitle: "Aceptación legal",
+    legalConsentIntro:
+      "Para crear tu cuenta debes leer y aceptar la Política de Privacidad y los Términos del Servicio.",
+    legalConsentPendingScroll: "Desplázate hasta el final para habilitar la aceptación.",
+    legalConsentReady: "Ya puedes aceptar y continuar.",
+    legalConsentAccept: "Aceptar y continuar",
+    legalConsentCloseAria: "Cerrar aceptación legal",
+    legalConsentRequired: "Debes aceptar la Política de Privacidad y los Términos del Servicio para crear tu cuenta.",
     backToOracle: "← Volver al oráculo",
     closeModalAria: "Cerrar",
     modalVerifyTitle: "Verifica tu cuenta por correo",
@@ -124,6 +139,14 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Register",
     dividerOr: "or",
     continueGoogle: "Continue with Google",
+    legalConsentTitle: "Legal acceptance",
+    legalConsentIntro:
+      "To create your account, you must read and accept the Privacy Policy and Terms of Service.",
+    legalConsentPendingScroll: "Scroll to the end to enable acceptance.",
+    legalConsentReady: "You can now accept and continue.",
+    legalConsentAccept: "Accept and continue",
+    legalConsentCloseAria: "Close legal acceptance",
+    legalConsentRequired: "You must accept the Privacy Policy and Terms of Service to create your account.",
     backToOracle: "← Back to oracle",
     closeModalAria: "Close",
     modalVerifyTitle: "Verify your email",
@@ -172,6 +195,14 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Registar-me",
     dividerOr: "ou",
     continueGoogle: "Continuar com Google",
+    legalConsentTitle: "Aceitação legal",
+    legalConsentIntro:
+      "Para criares a tua conta, deves ler e aceitar a Política de Privacidade e os Termos de Serviço.",
+    legalConsentPendingScroll: "Desce até ao final para ativar a aceitação.",
+    legalConsentReady: "Já podes aceitar e continuar.",
+    legalConsentAccept: "Aceitar e continuar",
+    legalConsentCloseAria: "Fechar aceitação legal",
+    legalConsentRequired: "Deves aceitar a Política de Privacidade e os Termos de Serviço para criar a conta.",
     backToOracle: "← Voltar ao oráculo",
     closeModalAria: "Fechar",
     modalVerifyTitle: "Verifica a tua conta por email",
@@ -220,6 +251,15 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "M’inscrire",
     dividerOr: "ou",
     continueGoogle: "Continuer avec Google",
+    legalConsentTitle: "Acceptation légale",
+    legalConsentIntro:
+      "Pour créer votre compte, vous devez lire et accepter la Politique de confidentialité et les Conditions d'utilisation.",
+    legalConsentPendingScroll: "Faites défiler jusqu'à la fin pour activer l'acceptation.",
+    legalConsentReady: "Vous pouvez maintenant accepter et continuer.",
+    legalConsentAccept: "Accepter et continuer",
+    legalConsentCloseAria: "Fermer l'acceptation légale",
+    legalConsentRequired:
+      "Vous devez accepter la Politique de confidentialité et les Conditions d'utilisation pour créer votre compte.",
     backToOracle: "← Retour à l’oracle",
     closeModalAria: "Fermer",
     modalVerifyTitle: "Vérifiez votre e-mail",
@@ -268,6 +308,15 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Registrieren",
     dividerOr: "oder",
     continueGoogle: "Mit Google fortfahren",
+    legalConsentTitle: "Rechtliche Zustimmung",
+    legalConsentIntro:
+      "Um Ihr Konto zu erstellen, müssen Sie die Datenschutzerklärung und die Nutzungsbedingungen lesen und akzeptieren.",
+    legalConsentPendingScroll: "Scrollen Sie bis zum Ende, um die Zustimmung zu aktivieren.",
+    legalConsentReady: "Sie können jetzt akzeptieren und fortfahren.",
+    legalConsentAccept: "Akzeptieren und fortfahren",
+    legalConsentCloseAria: "Rechtliche Zustimmung schließen",
+    legalConsentRequired:
+      "Sie müssen Datenschutzerklärung und Nutzungsbedingungen akzeptieren, um Ihr Konto zu erstellen.",
     backToOracle: "← Zum Orakel",
     closeModalAria: "Schließen",
     modalVerifyTitle: "E-Mail bestätigen",
@@ -316,6 +365,14 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Registrati",
     dividerOr: "oppure",
     continueGoogle: "Continua con Google",
+    legalConsentTitle: "Accettazione legale",
+    legalConsentIntro:
+      "Per creare il tuo account devi leggere e accettare l'Informativa sulla privacy e i Termini di servizio.",
+    legalConsentPendingScroll: "Scorri fino alla fine per abilitare l'accettazione.",
+    legalConsentReady: "Ora puoi accettare e continuare.",
+    legalConsentAccept: "Accetta e continua",
+    legalConsentCloseAria: "Chiudi accettazione legale",
+    legalConsentRequired: "Devi accettare l'Informativa sulla privacy e i Termini di servizio per creare l'account.",
     backToOracle: "← Torna all’oracolo",
     closeModalAria: "Chiudi",
     modalVerifyTitle: "Verifica la tua email",
@@ -364,6 +421,13 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "登録する",
     dividerOr: "または",
     continueGoogle: "Googleで続行",
+    legalConsentTitle: "法的同意",
+    legalConsentIntro: "アカウントを作成するには、プライバシーポリシーと利用規約を読んで同意する必要があります。",
+    legalConsentPendingScroll: "最後までスクロールすると同意できます。",
+    legalConsentReady: "同意して続行できます。",
+    legalConsentAccept: "同意して続行",
+    legalConsentCloseAria: "法的同意を閉じる",
+    legalConsentRequired: "アカウント作成にはプライバシーポリシーと利用規約への同意が必要です。",
     backToOracle: "← オラクルに戻る",
     closeModalAria: "閉じる",
     modalVerifyTitle: "メールでアカウントを確認",
@@ -411,6 +475,13 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "注册",
     dividerOr: "或",
     continueGoogle: "使用 Google 继续",
+    legalConsentTitle: "法律确认",
+    legalConsentIntro: "创建账户前，你必须阅读并接受隐私政策和服务条款。",
+    legalConsentPendingScroll: "请滚动到底部以启用接受按钮。",
+    legalConsentReady: "现在可以接受并继续。",
+    legalConsentAccept: "接受并继续",
+    legalConsentCloseAria: "关闭法律确认",
+    legalConsentRequired: "创建账户前必须接受隐私政策和服务条款。",
     backToOracle: "← 返回占卜",
     closeModalAria: "关闭",
     modalVerifyTitle: "请验证邮箱",
@@ -458,6 +529,13 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "가입하기",
     dividerOr: "또는",
     continueGoogle: "Google로 계속",
+    legalConsentTitle: "법적 동의",
+    legalConsentIntro: "계정을 만들려면 개인정보 처리방침과 서비스 약관을 읽고 동의해야 합니다.",
+    legalConsentPendingScroll: "끝까지 스크롤하면 동의할 수 있습니다.",
+    legalConsentReady: "이제 동의하고 계속할 수 있습니다.",
+    legalConsentAccept: "동의하고 계속",
+    legalConsentCloseAria: "법적 동의 닫기",
+    legalConsentRequired: "계정을 만들려면 개인정보 처리방침과 서비스 약관에 동의해야 합니다.",
     backToOracle: "← 오라클로 돌아가기",
     closeModalAria: "닫기",
     modalVerifyTitle: "이메일로 계정 확인",
@@ -507,6 +585,8 @@ export function formatLoginRegisterApiError(
       return m.errRateLimited;
     case "turnstile_failed":
       return m.errTurnstileFailed;
+    case "legal_consent_required":
+      return m.legalConsentRequired;
     case "email_rejected":
       return data.reason === "disposable" ? m.errDisposableEmail : m.errEmailValidation;
     case "sign_up_failed":

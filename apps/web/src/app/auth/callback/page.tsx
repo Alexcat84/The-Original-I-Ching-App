@@ -2,6 +2,7 @@
 
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import { useAppLocale } from "@/lib/use-app-locale";
+import { isCurrentLegalConsentPayload, LEGAL_CONSENT_PENDING_STORAGE_KEY } from "@/lib/legal-consent";
 import { getAuthCallbackUiMessages } from "@iching-oracle/i18n";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
@@ -27,7 +28,30 @@ export default function AuthCallbackPage() {
             console.warn("[auth/callback] exchangeCodeForSession:", error.message);
           }
         }
-        await sb.auth.getSession();
+        const {
+          data: { session },
+        } = await sb.auth.getSession();
+        const rawConsent = sessionStorage.getItem(LEGAL_CONSENT_PENDING_STORAGE_KEY);
+        if (session?.access_token && rawConsent) {
+          try {
+            const consent = JSON.parse(rawConsent) as unknown;
+            if (isCurrentLegalConsentPayload(consent) && consent.source === "google_oauth") {
+              const res = await fetch("/api/auth/legal-consent", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${session.access_token}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(consent),
+              });
+              if (res.ok) {
+                sessionStorage.removeItem(LEGAL_CONSENT_PENDING_STORAGE_KEY);
+              }
+            }
+          } catch (error) {
+            console.warn("[auth/callback] legal consent sync failed:", error);
+          }
+        }
       } finally {
         router.replace("/");
       }
