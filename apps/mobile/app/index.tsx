@@ -838,7 +838,9 @@ const INJECTED_JS = `
     }).observe(document.body || document.documentElement, { childList: true, subtree: true });
   })();
 
-  /* 13 ── APK traceability (/about): fill version and Android versionCode from native shell */
+  /* 13 ── APK traceability (/about): fill version and Android versionCode from native shell
+     Guard: writing textContent on #rn-trace-* mutates the subtree; a document-level
+     MutationObserver that always re-fills can recurse synchronously on Android → freeze. */
   function _fillRnAppTrace() {
     try {
       var info = window.__RN_APP_INFO;
@@ -846,7 +848,10 @@ const INJECTED_JS = `
       function _set(id, v) {
         if (v === null || v === undefined || v === '') return;
         var el = document.getElementById(id);
-        if (el) el.textContent = String(v);
+        if (!el) return;
+        var s = String(v);
+        if (el.textContent === s) return;
+        el.textContent = s;
       }
       _set('rn-trace-version', info.version);
       _set('rn-trace-code', info.androidVersionCode);
@@ -854,8 +859,14 @@ const INJECTED_JS = `
   }
   _fillRnAppTrace();
   if (!window.__rnTraceMo) {
+    var _rnTraceObsRaf = 0;
     window.__rnTraceMo = new MutationObserver(function () {
-      if (document.getElementById('rn-trace-version')) _fillRnAppTrace();
+      if (!document.getElementById('rn-trace-version')) return;
+      if (_rnTraceObsRaf) return;
+      _rnTraceObsRaf = requestAnimationFrame(function () {
+        _rnTraceObsRaf = 0;
+        _fillRnAppTrace();
+      });
     });
     window.__rnTraceMo.observe(document.documentElement, { childList: true, subtree: true });
   }
