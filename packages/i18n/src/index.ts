@@ -4,6 +4,18 @@ export { isAppLocale, parseAppLocale } from "./locale-resolve.js";
 export { interpolate } from "./messages/interpolate.js";
 export { getDocNavUiMessages, type DocNavUiMessages } from "./messages/doc-nav-ui.js";
 export {
+  getFaqPageUiMessages,
+  resolveFaqRelatedHref,
+  resolveFaqRelatedLabel,
+  type FaqItem,
+  type FaqPageUi,
+  type FaqRelatedSlug,
+} from "./messages/faq-page-ui.js";
+export {
+  getOraclePresentationUiMessages,
+  type OraclePresentationUiMessages,
+} from "./messages/oracle-presentation-ui.js";
+export {
   allConsultationInProgressTitles,
   formatThreadDepthStatusLine,
   getHomeChromeUiMessages,

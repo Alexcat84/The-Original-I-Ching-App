@@ -5165,3 +5165,253 @@ html[data-theme="dark"] .auth-pro-err {
 .onboarding-edit-btn:hover {
   color: var(--fg);
 }
+
+/* —— FAQs (web doc) —— */
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.faq-item {
+  border-radius: calc(var(--radius) * 0.75);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 92%, transparent);
+  overflow: hidden;
+}
+
+.faq-summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: var(--card-title);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.faq-summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-summary::after {
+  content: "";
+  margin-left: auto;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  opacity: 0.85;
+}
+
+.faq-item[open] .faq-summary::after {
+  transform: rotate(-135deg);
+}
+
+.faq-body {
+  padding: 0 1rem 0.9rem;
+  border-top: 1px solid color-mix(in srgb, var(--bar-border) 55%, transparent);
+}
+
+.faq-body > p {
+  margin: 0.75rem 0 0;
+  color: var(--fg);
+  line-height: 1.55;
+}
+
+.faq-related {
+  margin-top: 0.85rem;
+}
+
+.faq-related-heading {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-muted);
+}
+
+.faq-related-list {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.faq-related-list a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.faq-related-list a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* —— Web presentation dock: Play + copyright (outside chat card; hidden in RN WebView) —— */
+.oracle-presentation-dock {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.55rem;
+  padding: 0.5rem max(0.55rem, env(safe-area-inset-right)) calc(0.45rem + env(safe-area-inset-bottom, 0px))
+    max(0.55rem, env(safe-area-inset-left));
+  pointer-events: none;
+  z-index: 4;
+}
+
+html.iching-rn-webview .oracle-presentation-dock {
+  display: none !important;
+}
+
+.oracle-presentation-dock > * {
+  pointer-events: auto;
+}
+
+.oracle-play-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  padding: 0.65rem 0.85rem 0.7rem;
+  max-width: min(15.5rem, 88vw);
+  border-radius: 0.95rem;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--accent) 18%, var(--secondary-bg)) 0%,
+    color-mix(in srgb, var(--secondary-bg) 94%, #000) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--input-border));
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 color-mix(in srgb, #fff 8%, transparent);
+}
+
+.oracle-play-card__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.oracle-play-card__glyph {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 0.55rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  background: linear-gradient(160deg, #00d4aa 0%, #00a896 55%, #067a6a 100%);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.oracle-play-card__glyph svg {
+  display: block;
+}
+
+.oracle-play-card__titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  min-width: 0;
+}
+
+.oracle-play-card__title {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--card-title);
+}
+
+.oracle-play-card__subtitle {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+}
+
+.oracle-play-card__badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.oracle-play-card__play-logo {
+  height: 1.55rem;
+  width: auto;
+  display: block;
+}
+
+.oracle-play-card__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.38rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--secondary-bg));
+  color: var(--fg);
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+a.oracle-play-card__cta:hover {
+  background: color-mix(in srgb, var(--accent) 32%, var(--secondary-bg));
+  transform: translateY(-1px);
+}
+
+.oracle-play-card__cta--soon {
+  cursor: default;
+  opacity: 0.88;
+  border-style: dashed;
+}
+
+.oracle-copyright-line {
+  margin: 0;
+  max-width: min(19rem, 92vw);
+  text-align: right;
+  font-size: 0.68rem;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--fg-muted) 92%, transparent);
+}
+
+.oracle-copyright-line a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.oracle-copyright-line a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (min-width: 900px) {
+  .oracle-presentation-dock {
+    position: fixed;
+    right: max(0.65rem, env(safe-area-inset-right));
+    bottom: max(0.55rem, env(safe-area-inset-bottom));
+    padding-bottom: 0.35rem;
+    width: auto;
+    align-items: flex-end;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--bg) 55%, transparent) 45%,
+      color-mix(in srgb, var(--bg) 78%, transparent) 100%
+    );
+    border-radius: 0.5rem;
+  }
+}

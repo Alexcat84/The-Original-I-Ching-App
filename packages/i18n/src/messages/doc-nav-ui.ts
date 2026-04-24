@@ -4,6 +4,14 @@ import { DEFAULT_LOCALE } from "../locales.js";
 /** Shared doc shell navigation and common legal link labels. */
 export type DocNavUiMessages = {
   backToOracle: string;
+  /** Short label for “home oracle” links (e.g. FAQs), without arrow prefix. */
+  oracleHome: string;
+  /** Web FAQ hub (/faqs). */
+  faqs: string;
+  /** Anchor to /guia#planes (packs & pricing copy in the guide). */
+  guidePlansSection: string;
+  /** Anchor to /guia#primeros-pasos. */
+  guideFirstSteps: string;
   /** Single user-facing guide (/guia); replaces former “quick guide” + “Quickstart” split. */
   userGuide: string;
   methodNotes: string;
@@ -19,6 +27,10 @@ export type DocNavUiMessages = {
 const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   es: {
     backToOracle: "← Volver al oráculo",
+    oracleHome: "Oráculo",
+    faqs: "Preguntas frecuentes",
+    guidePlansSection: "Planes y tokens (guía)",
+    guideFirstSteps: "Primeros pasos (guía)",
     userGuide: "Guía de uso",
     methodNotes: "Notas de métodos",
     methodNotesLong: "Notas y origen de los métodos (I Ching y Huesos)",
@@ -30,6 +42,10 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   en: {
     backToOracle: "← Back to oracle",
+    oracleHome: "Oracle",
+    faqs: "FAQ",
+    guidePlansSection: "Plans & tokens (guide)",
+    guideFirstSteps: "Getting started (guide)",
     userGuide: "User guide",
     methodNotes: "Method notes",
     methodNotesLong: "Method notes and origins (I Ching and Bones)",
@@ -41,6 +57,10 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   pt: {
     backToOracle: "← Voltar ao oráculo",
+    oracleHome: "Oráculo",
+    faqs: "Perguntas frequentes",
+    guidePlansSection: "Planos e tokens (guia)",
+    guideFirstSteps: "Primeiros passos (guia)",
     userGuide: "Guia de utilização",
     methodNotes: "Notas sobre métodos",
     methodNotesLong: "Notas e origem dos métodos (I Ching e Ossos)",
@@ -52,6 +72,10 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   fr: {
     backToOracle: "← Retour à l’oracle",
+    oracleHome: "Oracle",
+    faqs: "FAQ",
+    guidePlansSection: "Forfaits et jetons (guide)",
+    guideFirstSteps: "Premiers pas (guide)",
     userGuide: "Guide d’utilisation",
     methodNotes: "Notes sur les méthodes",
     methodNotesLong: "Notes et origines des méthodes (I Ching et Os)",
@@ -63,6 +87,10 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   de: {
     backToOracle: "← Zurück zum Orakel",
+    oracleHome: "Orakel",
+    faqs: "FAQ",
+    guidePlansSection: "Pläne & Token (Leitfaden)",
+    guideFirstSteps: "Erste Schritte (Leitfaden)",
     userGuide: "Nutzungsanleitung",
     methodNotes: "Methodenhinweise",
     methodNotesLong: "Methodennotizen und Ursprünge (I Ging und Knochen)",
@@ -74,6 +102,10 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   it: {
     backToOracle: "← Torna all’oracolo",
+    oracleHome: "Oracolo",
+    faqs: "FAQ",
+    guidePlansSection: "Piani e token (guida)",
+    guideFirstSteps: "Primi passi (guida)",
     userGuide: "Guida all’uso",
     methodNotes: "Note sui metodi",
     methodNotesLong: "Note e origini dei metodi (I Ching e Ossa)",
@@ -85,6 +117,10 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   ja: {
     backToOracle: "← オラクルに戻る",
+    oracleHome: "オラクル",
+    faqs: "よくある質問",
+    guidePlansSection: "プランとトークン（ガイド）",
+    guideFirstSteps: "はじめに（ガイド）",
     userGuide: "利用ガイド",
     methodNotes: "方法の注記",
     methodNotesLong: "方法の注記と由来（易経と甲骨占い）",
@@ -96,6 +132,10 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   zh: {
     backToOracle: "← 返回占卜",
+    oracleHome: "占卜首页",
+    faqs: "常见问题",
+    guidePlansSection: "套餐与代币（指南）",
+    guideFirstSteps: "入门（指南）",
     userGuide: "使用指南",
     methodNotes: "方法说明",
     methodNotesLong: "方法说明与渊源（易经与甲骨）",
@@ -107,6 +147,10 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
   },
   ko: {
     backToOracle: "← 오라클로 돌아가기",
+    oracleHome: "오라클",
+    faqs: "자주 묻는 질문",
+    guidePlansSection: "플랜 및 토큰(안내)",
+    guideFirstSteps: "시작하기(안내)",
     userGuide: "사용 안내",
     methodNotes: "방법 노트",
     methodNotesLong: "방법 설명과 유래 (역경과 뼈 점)",

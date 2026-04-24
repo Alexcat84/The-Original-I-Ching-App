@@ -19,6 +19,7 @@ import {
   getTokenPanelUiMessages,
   getTwoFactorUiMessages,
   getOnboardingUiMessages,
+  getOraclePresentationUiMessages,
   htmlLangFromAppLocale,
   interpolate,
   SUPPORTED_LOCALES,
@@ -1049,6 +1050,9 @@ export default function HomePage() {
   const t = commonStrings[locale];
   const tokenPanel = useMemo(() => getTokenPanelUiMessages(locale), [locale]);
   const docNav = useMemo(() => getDocNavUiMessages(locale), [locale]);
+  const presentation = useMemo(() => getOraclePresentationUiMessages(locale), [locale]);
+  /** Official listing URL when published; empty shows “coming soon” on the Play card. */
+  const playStoreUrl = (process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "").trim();
   const chrome = useMemo(() => getHomeChromeUiMessages(locale), [locale]);
   const sessionUi = useMemo(() => getHomeSessionUiMessages(locale), [locale]);
   const tf = useMemo(() => getTwoFactorUiMessages(locale), [locale]);
@@ -4076,6 +4080,7 @@ export default function HomePage() {
                     </div>
                     <div className="composer-doc-links" aria-label={chrome.docLinksAria}>
                       <Link href="/guia#primeros-pasos">{docNav.userGuide}</Link>
+                      <Link href="/faqs">{docNav.faqs}</Link>
                       <Link href="/notes">{docNav.methodNotesLong}</Link>
                       <Link href="/privacy">{docNav.privacyPolicy}</Link>
                       <Link href="/terms">{docNav.termsOfService}</Link>
@@ -4699,6 +4704,55 @@ export default function HomePage() {
               </div>
             </div>
         </footer>
+        </div>
+        <div className="oracle-presentation-dock" aria-label={presentation.regionAria}>
+          <div className="oracle-play-card">
+            <div className="oracle-play-card__brand">
+              <span className="oracle-play-card__glyph" aria-hidden>
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" focusable="false">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+              <div className="oracle-play-card__titles">
+                <p className="oracle-play-card__title">{presentation.playBadgeTitle}</p>
+                <p className="oracle-play-card__subtitle">{presentation.playBadgeSubtitle}</p>
+              </div>
+            </div>
+            <div className="oracle-play-card__badge-row">
+              <img
+                className="oracle-play-card__play-logo"
+                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                alt=""
+                width={135}
+                height={40}
+                loading="lazy"
+                decoding="async"
+              />
+              {playStoreUrl ? (
+                <a
+                  className="oracle-play-card__cta"
+                  href={playStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={presentation.playCtaAria}
+                >
+                  {presentation.playInstall}
+                </a>
+              ) : (
+                <span className="oracle-play-card__cta oracle-play-card__cta--soon" role="status">
+                  {presentation.playSoon}
+                </span>
+              )}
+            </div>
+          </div>
+          <p className="oracle-copyright-line">
+            © {presentation.copyrightYear}{" "}
+            <a href="https://theoriginaliching.com" target="_blank" rel="noopener noreferrer">
+              {presentation.siteDomain}
+            </a>
+            {" · "}
+            {presentation.copyrightRights}
+          </p>
         </div>
       </div>
     </OracleShell>
