@@ -2,11 +2,11 @@
 - Prefiere que el agente continúe desde el estado actual del proyecto sin reanalizar desde cero cuando hay contexto previo.
 - Suele pedir ejecución directa ("procede", "hazlo") en lugar de planes extensos.
 - Solicita con frecuencia `commit` y `push` tras cerrar un bloque funcional para validarlo en despliegue.
-- Valora respuestas y UX homogéneas en el idioma del usuario, evitando mezcla ES/EN.
+- Suele validar móvil con APK local (Gradle, p. ej. assembleDebug) y reserva EAS o subidas a Play para cuando lo pide expresamente.
+- Valora respuestas y UX homogéneas en el idioma del usuario, evitando mezcla ES/EN; vigila regresiones donde la UI vuelve a inglés en paralelo en APK/WebView y en el chat web.
 - Prioriza una experiencia visual cuidada y de alta calidad por encima de entregas mínimas funcionales.
 - Prefiere implementaciones reales sobre mocks cuando ya existen credenciales y presupuesto para proveedores.
 - Cuando se sustituye WebView por UI nativa, exige paridad funcional completa (auth, 2FA, chats, docs, compras, etc.) y rechaza entregas a medias.
-<!-- Suele validar móvil con APK local (Gradle) y evita EAS salvo petición explícita; si en algún momento se usa Play/AAB, suele probar antes con assembleDebug. -->
 
 ## Learned Workspace Facts
 - El workspace corresponde a `The Original I Ching App` y el producto combina consultas de I Ching con generación de imágenes.
@@ -19,4 +19,4 @@
 - El JavaScript inyectado en el WebView (`INJECTED_JS` en `apps/mobile`) puede aplicar CSS con `!important` que sobrescribe estilos del sitio remoto; si la UI no refleja un deploy nuevo, conviene revisar esas reglas además de la URL y la caché del WebView.
 - Si un APK recién compilada sigue mostrando cabeceras duplicadas u offsets raros tras desinstalar versiones anteriores, el front remoto puede haber cambiado nombres de clase o estructura DOM; hay que alinear los selectores del JS inyectado con el DOM desplegado, no asumir solo caché o binario viejo.
 - Los requisitos de Google Play (p. ej. subir `targetSdkVersion`) pueden introducir regresiones de UI o de pantalla completa solo en Android aunque la web desplegada se vea y funcione bien.
-<!-- Si se usara EAS, conviene que el perfil empaquetado coincida con esas mismas variables; no es el flujo habitual del repo. -->
+- Las regresiones de idioma o locale pueden reproducirse a la vez en el chat web y en la shell móvil (WebView); conviene validar ambas superficies antes de atribuir el fallo solo al APK o al binario.

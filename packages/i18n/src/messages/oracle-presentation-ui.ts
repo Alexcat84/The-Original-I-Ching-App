@@ -1,7 +1,7 @@
 import type { AppLocale } from "../locales.js";
 import { DEFAULT_LOCALE } from "../locales.js";
 
-/** Web-only chrome: Play badge + copyright outside the chat card. */
+/** Web-only: compact Play promo strip (top of chat app; hidden in RN WebView). */
 export type OraclePresentationUiMessages = {
   regionAria: string;
   playBadgeTitle: string;
@@ -10,112 +10,91 @@ export type OraclePresentationUiMessages = {
   /** Visible label when the listing URL is configured. */
   playInstall: string;
   playCtaAria: string;
-  copyrightRights: string;
-  /** Visible year in copyright line. */
-  copyrightYear: string;
-  /** Domain label (no scheme) for the public site link. */
-  siteDomain: string;
+  /** aria-label for dismissing the Play promo strip. */
+  playStripDismissAria: string;
 };
 
 const ORACLE_PRESENTATION_UI: Record<AppLocale, OraclePresentationUiMessages> = {
   es: {
-    regionAria: "Descarga en Google Play y aviso legal",
+    regionAria: "Descargar la app en Google Play",
     playBadgeTitle: "Llévala contigo",
     playBadgeSubtitle: "Google Play",
     playSoon: "Enlace próximamente",
     playInstall: "Instalar",
     playCtaAria: "Abrir en Google Play",
-    copyrightRights: "Todos los derechos reservados",
-    copyrightYear: "2026",
-    siteDomain: "theoriginaliching.com",
+    playStripDismissAria: "Cerrar aviso de Google Play",
   },
   en: {
-    regionAria: "Google Play download and legal",
+    regionAria: "Download the app on Google Play",
     playBadgeTitle: "Take it with you",
     playBadgeSubtitle: "Google Play",
     playSoon: "Link coming soon",
     playInstall: "Install",
     playCtaAria: "Open on Google Play",
-    copyrightRights: "All rights reserved",
-    copyrightYear: "2026",
-    siteDomain: "theoriginaliching.com",
+    playStripDismissAria: "Dismiss Google Play notice",
   },
   pt: {
-    regionAria: "Google Play e aviso legal",
+    regionAria: "Baixar o app na Google Play",
     playBadgeTitle: "Leve com você",
     playBadgeSubtitle: "Google Play",
     playSoon: "Link em breve",
     playInstall: "Instalar",
     playCtaAria: "Abrir na Google Play",
-    copyrightRights: "Todos os direitos reservados",
-    copyrightYear: "2026",
-    siteDomain: "theoriginaliching.com",
+    playStripDismissAria: "Fechar aviso da Google Play",
   },
   fr: {
-    regionAria: "Téléchargement Google Play et mentions",
+    regionAria: "Télécharger l’app sur Google Play",
     playBadgeTitle: "Emportez l’oracle",
     playBadgeSubtitle: "Google Play",
     playSoon: "Lien bientôt disponible",
     playInstall: "Installer",
     playCtaAria: "Ouvrir sur Google Play",
-    copyrightRights: "Tous droits réservés",
-    copyrightYear: "2026",
-    siteDomain: "theoriginaliching.com",
+    playStripDismissAria: "Fermer l’avis Google Play",
   },
   de: {
-    regionAria: "Google Play und rechtlicher Hinweis",
+    regionAria: "App bei Google Play herunterladen",
     playBadgeTitle: "Immer dabei",
     playBadgeSubtitle: "Google Play",
     playSoon: "Link folgt in Kürze",
     playInstall: "Installieren",
     playCtaAria: "In Google Play öffnen",
-    copyrightRights: "Alle Rechte vorbehalten",
-    copyrightYear: "2026",
-    siteDomain: "theoriginaliching.com",
+    playStripDismissAria: "Google Play-Hinweis schließen",
   },
   it: {
-    regionAria: "Google Play e note legali",
+    regionAria: "Scarica l’app su Google Play",
     playBadgeTitle: "Portala con te",
     playBadgeSubtitle: "Google Play",
     playSoon: "Link disponibile a breve",
     playInstall: "Installa",
     playCtaAria: "Apri su Google Play",
-    copyrightRights: "Tutti i diritti riservati",
-    copyrightYear: "2026",
-    siteDomain: "theoriginaliching.com",
+    playStripDismissAria: "Chiudi avviso Google Play",
   },
   ja: {
-    regionAria: "Google Play と著作権表示",
+    regionAria: "Google Play でアプリを入手",
     playBadgeTitle: "いつでも手元に",
     playBadgeSubtitle: "Google Play",
     playSoon: "リンクは近日公開",
     playInstall: "インストール",
     playCtaAria: "Google Play で開く",
-    copyrightRights: "無断複写・転載を禁じます",
-    copyrightYear: "2026",
-    siteDomain: "theoriginaliching.com",
+    playStripDismissAria: "Google Play の案内を閉じる",
   },
   zh: {
-    regionAria: "Google Play 与版权信息",
+    regionAria: "在 Google Play 下载应用",
     playBadgeTitle: "随身携带",
     playBadgeSubtitle: "Google Play",
     playSoon: "链接即将上线",
     playInstall: "安装",
     playCtaAria: "在 Google Play 打开",
-    copyrightRights: "保留所有权利",
-    copyrightYear: "2026",
-    siteDomain: "theoriginaliching.com",
+    playStripDismissAria: "关闭 Google Play 提示",
   },
   ko: {
-    regionAria: "Google Play 및 법적 고지",
+    regionAria: "Google Play에서 앱 받기",
     playBadgeTitle: "언제 어디서나",
     playBadgeSubtitle: "Google Play",
     playSoon: "링크 준비 중",
     playInstall: "설치",
     playCtaAria: "Google Play에서 열기",
-    copyrightRights: "판권 소유",
-    copyrightYear: "2026",
-    siteDomain: "theoriginaliching.com",
+    playStripDismissAria: "Google Play 안내 닫기",
   },
 };
 

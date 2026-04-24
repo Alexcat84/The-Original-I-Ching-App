@@ -14,6 +14,8 @@ export type TokenPanelUiMessages = {
   messageFreeDepleted: string;
   messageNoActivePurchase: string;
   consultThreadLimit: string;
+  /** Short one-line hint above the composer (full detail in `consultThreadLimit` for title/aria). */
+  consultThreadLimitStrip: string;
   noTokensDepleted: string;
   signInForBalance: string;
   /** Link label → `/guia#planes` from token center modal. */
@@ -39,6 +41,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     messageNoActivePurchase:
       "No hay una compra activa reciente. Puedes comprar más tokens en Planes y pagos.",
     consultThreadLimit: "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar.",
+    consultThreadLimitStrip: "Este hilo alcanzó su límite de lecturas.",
     noTokensDepleted: "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
     signInForBalance: "Inicia sesión para ver tu saldo.",
     tokenCenterGuideLink: "Guía de uso",
@@ -60,6 +63,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     messageNoActivePurchase:
       "There is no recent active purchase. You can buy more tokens in Plans & payments.",
     consultThreadLimit: "You reached this thread limit. Start a new session to continue.",
+    consultThreadLimitStrip: "This thread reached its reading limit.",
     noTokensDepleted: "You used all your tokens. Buy a new pack to continue.",
     signInForBalance: "Sign in to view your balance.",
     tokenCenterGuideLink: "User guide",
@@ -81,6 +85,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     messageNoActivePurchase:
       "Não há uma compra ativa recente. Podes comprar mais tokens em Planos e pagamentos.",
     consultThreadLimit: "Atingiste o limite deste fio. Inicia uma nova sessão para continuar.",
+    consultThreadLimitStrip: "Este fio atingiu o limite de leituras.",
     noTokensDepleted: "Usaste todos os tokens. Compra um novo pacote para continuar.",
     signInForBalance: "Inicia sessão para veres o teu saldo.",
     tokenCenterGuideLink: "Guia de utilização",
@@ -102,6 +107,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     messageNoActivePurchase:
       "Aucun achat actif récent. Vous pouvez acheter plus de jetons dans Plans et paiements.",
     consultThreadLimit: "Limite de ce fil atteinte. Démarrez une nouvelle session pour continuer.",
+    consultThreadLimitStrip: "Ce fil a atteint sa limite de lectures.",
     noTokensDepleted: "Vous avez utilisé tous vos jetons. Achetez un nouveau pack pour continuer.",
     signInForBalance: "Connectez-vous pour voir votre solde.",
     tokenCenterGuideLink: "Guide d’utilisation",
@@ -123,6 +129,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     messageNoActivePurchase:
       "Kein aktueller aktiver Kauf. Du kannst unter Pläne & Zahlungen weitere Token kaufen.",
     consultThreadLimit: "Thread-Limit erreicht. Starte eine neue Sitzung, um fortzufahren.",
+    consultThreadLimitStrip: "Dieser Thread hat sein Leselimit erreicht.",
     noTokensDepleted: "Du hast alle Token aufgebraucht. Kaufe ein neues Paket, um fortzufahren.",
     signInForBalance: "Melde dich an, um dein Guthaben zu sehen.",
     tokenCenterGuideLink: "Nutzungsanleitung",
@@ -144,6 +151,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     messageNoActivePurchase:
       "Nessun acquisto attivo recente. Puoi acquistare altri token in Piani e pagamenti.",
     consultThreadLimit: "Hai raggiunto il limite di questo thread. Avvia una nuova sessione per continuare.",
+    consultThreadLimitStrip: "Questo thread ha raggiunto il limite di letture.",
     noTokensDepleted: "Hai usato tutti i token. Acquista un nuovo pacchetto per continuare.",
     signInForBalance: "Accedi per vedere il saldo.",
     tokenCenterGuideLink: "Guida all’uso",
@@ -165,6 +173,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     messageNoActivePurchase:
       "最近のアクティブな購入はありません。プランとお支払いでさらにトークンを購入できます。",
     consultThreadLimit: "このスレッドの上限に達しました。新しいセッションを開始して続行してください。",
+    consultThreadLimitStrip: "このスレッドは読み取り上限に達しました。",
     noTokensDepleted: "トークンを使い切りました。続けるには新しいパックを購入してください。",
     signInForBalance: "サインインすると残高を表示できます。",
     tokenCenterGuideLink: "利用ガイド",
@@ -184,6 +193,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     messageFreeDepleted: "您已用完终身免费咨询次数。请在「套餐与付款」购买代币以继续使用。",
     messageNoActivePurchase: "没有最近的生效购买。您可以在「套餐与付款」购买更多代币。",
     consultThreadLimit: "已达到本会话上限。请开始新会话以继续。",
+    consultThreadLimitStrip: "本会话已达阅读次数上限。",
     noTokensDepleted: "您已用完所有代币。请购买新包以继续使用。",
     signInForBalance: "登录后可查看余额。",
     tokenCenterGuideLink: "使用指南",
@@ -205,6 +215,7 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     messageNoActivePurchase:
       "최근 활성 구매가 없습니다. 요금제 및 결제에서 토큰을 더 구매할 수 있습니다.",
     consultThreadLimit: "이 스레드 한도에 도달했습니다. 새 세션을 시작해 계속하세요.",
+    consultThreadLimitStrip: "이 스레드는 읽기 한도에 도달했습니다.",
     noTokensDepleted: "토큰을 모두 사용했습니다. 계속하려면 새 팩을 구매하세요.",
     signInForBalance: "로그인하면 잔액을 확인할 수 있습니다.",
     tokenCenterGuideLink: "사용 안내",

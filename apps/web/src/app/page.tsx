@@ -63,6 +63,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
 
 const ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX = "iching_account_session_limit_v1:";
+const PLAY_PROMO_STRIP_DISMISSED_KEY = "iching_play_promo_strip_dismissed_v1";
 
 function readCachedAccountSessionLimit(userId: string): number | null {
   if (typeof window === "undefined") return null;
@@ -550,6 +551,8 @@ type UiCopy = {
   writeConsultation: string;
   positiveCharge: string;
   threadLimitReached: string;
+  /** aria-label for dismissing the thread-limit strip only; composer stays blocked. */
+  dismissThreadLimitBannerAria: string;
   sessionNew: string;
   drawerClose: string;
   iChing: string;
@@ -574,6 +577,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     writeConsultation: "Escribe tu consulta…",
     positiveCharge: "Cargo positivo (afirmación)…",
     threadLimitReached: "Límite de hilo alcanzado — usa «Nueva sesión» arriba",
+    dismissThreadLimitBannerAria: "Ocultar aviso del límite de hilo",
     sessionNew: "Nueva sesión",
     drawerClose: "Cerrar",
     iChing: "I Ching",
@@ -598,6 +602,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     writeConsultation: "Type your consultation…",
     positiveCharge: "Positive charge (affirmation)…",
     threadLimitReached: "Thread limit reached — use \"New session\" above",
+    dismissThreadLimitBannerAria: "Dismiss thread limit notice",
     sessionNew: "New session",
     drawerClose: "Close",
     iChing: "I Ching",
@@ -620,6 +625,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     writeConsultation: "Escreva sua consulta…",
     positiveCharge: "Cargo positivo (afirmação)…",
     threadLimitReached: "Limite do fio atingido — use «Nova sessão» acima",
+    dismissThreadLimitBannerAria: "Ocultar aviso do limite do fio",
     sessionNew: "Nova sessão",
     drawerClose: "Fechar",
     iChing: "I Ching",
@@ -642,6 +648,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     writeConsultation: "Écris ta consultation…",
     positiveCharge: "Charge positive (affirmation)…",
     threadLimitReached: "Limite du fil atteinte — utilisez « Nouvelle session »",
+    dismissThreadLimitBannerAria: "Masquer l'avis de limite de fil",
     sessionNew: "Nouvelle session",
     drawerClose: "Fermer",
     iChing: "I Ching",
@@ -664,6 +671,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     writeConsultation: "Schreibe deine Frage…",
     positiveCharge: "Positive Ladung (Bejahung)…",
     threadLimitReached: "Thread-Limit erreicht — oben «Neue Sitzung» verwenden",
+    dismissThreadLimitBannerAria: "Hinweis zum Thread-Limit ausblenden",
     sessionNew: "Neue Sitzung",
     drawerClose: "Schließen",
     iChing: "I Ching",
@@ -686,6 +694,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     writeConsultation: "Scrivi la tua consultazione…",
     positiveCharge: "Carica positiva (affermazione)…",
     threadLimitReached: "Limite del thread raggiunto — usa «Nuova sessione»",
+    dismissThreadLimitBannerAria: "Nascondi avviso limite thread",
     sessionNew: "Nuova sessione",
     drawerClose: "Chiudi",
     iChing: "I Ching",
@@ -708,6 +717,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     writeConsultation: "相談内容を入力…",
     positiveCharge: "肯定の問い（肯定電荷）…",
     threadLimitReached: "スレッド上限です — 上の「新しいセッション」を使用",
+    dismissThreadLimitBannerAria: "スレッド上限の通知を閉じる",
     sessionNew: "新しいセッション",
     drawerClose: "閉じる",
     iChing: "I Ching",
@@ -730,6 +740,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     writeConsultation: "输入你的咨询…",
     positiveCharge: "正向命题（肯定）…",
     threadLimitReached: "线程已达上限 — 请使用“新会话”",
+    dismissThreadLimitBannerAria: "关闭线程上限提示",
     sessionNew: "新会话",
     drawerClose: "关闭",
     iChing: "I Ching",
@@ -752,6 +763,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     writeConsultation: "질문을 입력하세요…",
     positiveCharge: "긍정 명제(affirmation)…",
     threadLimitReached: "스레드 한도 도달 — 위의 «새 세션» 사용",
+    dismissThreadLimitBannerAria: "스레드 한도 알림 숨기기",
     sessionNew: "새 세션",
     drawerClose: "닫기",
     iChing: "I Ching",
@@ -1162,6 +1174,9 @@ export default function HomePage() {
   const pinnedLocalSessionIdRef = useRef<string | null>(null);
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
+  /** Hides only the thread-limit strip; composer stays read-only until a new session or another chat. */
+  const [threadLimitBannerDismissed, setThreadLimitBannerDismissed] = useState(false);
+  const [playPromoDismissed, setPlayPromoDismissed] = useState(false);
   const [revealConsultationId, setRevealConsultationId] = useState<string | null>(null);
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
@@ -1428,6 +1443,30 @@ export default function HomePage() {
   const threadLimitReached = !isAdmin && activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
   /** Until `/api/account/me` hydrates `accountSessionLimit`, default `1` would falsely flag paid threads — never show limit UI until `tierReady`. */
   const threadLimitReachedUi = tierReady && threadLimitReached;
+  const showThreadLimitBanner = threadLimitReachedUi && !threadLimitBannerDismissed;
+  useEffect(() => {
+    setThreadLimitBannerDismissed(false);
+  }, [activeSessionLocalId]);
+  useEffect(() => {
+    if (!threadLimitReached) setThreadLimitBannerDismissed(false);
+  }, [threadLimitReached]);
+  useLayoutEffect(() => {
+    try {
+      if (sessionStorage.getItem(PLAY_PROMO_STRIP_DISMISSED_KEY) === "1") {
+        setPlayPromoDismissed(true);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+  const dismissPlayPromoStrip = useCallback(() => {
+    try {
+      sessionStorage.setItem(PLAY_PROMO_STRIP_DISMISSED_KEY, "1");
+    } catch {
+      // ignore
+    }
+    setPlayPromoDismissed(true);
+  }, []);
   const tierDisplayNode = tierReady ? (
     isAdmin ? "admin" : tierLabelForDisplay(tier)
   ) : (
@@ -2765,6 +2804,9 @@ export default function HomePage() {
       return;
     }
     if (threadLimitReachedUi) {
+      if (threadLimitBannerDismissed) {
+        setError(tokenPanel.consultThreadLimit);
+      }
       return;
     }
     const questionForRequest = question.trim();
@@ -3192,6 +3234,62 @@ export default function HomePage() {
     <OracleShell title={t.appTitle} variant="chat">
       <div className="oracle-chat-app">
         <AmbientParticles />
+        {!playPromoDismissed ? (
+          <div className="oracle-play-promo-strip" role="region" aria-label={presentation.regionAria}>
+            <div className="oracle-play-promo-strip__inner">
+              {playStoreUrl ? (
+                <a
+                  className="oracle-play-promo-strip__main"
+                  href={playStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={presentation.playCtaAria}
+                >
+                  <span className="oracle-play-promo-strip__glyph" aria-hidden>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" focusable="false">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                  <span className="oracle-play-promo-strip__titles">
+                    <span className="oracle-play-promo-strip__title">{presentation.playBadgeTitle}</span>
+                    <span className="oracle-play-promo-strip__subtitle">{presentation.playBadgeSubtitle}</span>
+                  </span>
+                  <img
+                    className="oracle-play-promo-strip__badge"
+                    src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                    alt=""
+                    width={135}
+                    height={40}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="oracle-play-promo-strip__cta-label">{presentation.playInstall}</span>
+                </a>
+              ) : (
+                <div className="oracle-play-promo-strip__main oracle-play-promo-strip__main--soon" role="status">
+                  <span className="oracle-play-promo-strip__glyph" aria-hidden>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" focusable="false">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                  <span className="oracle-play-promo-strip__titles">
+                    <span className="oracle-play-promo-strip__title">{presentation.playBadgeTitle}</span>
+                    <span className="oracle-play-promo-strip__subtitle">{presentation.playSoon}</span>
+                  </span>
+                </div>
+              )}
+              <button
+                type="button"
+                className="oracle-play-promo-strip__dismiss"
+                aria-label={presentation.playStripDismissAria}
+                data-testid="play-promo-strip-dismiss"
+                onClick={dismissPlayPromoStrip}
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+          </div>
+        ) : null}
         {onboardingOpen && (
           <div className="onboarding-backdrop" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
             <div className="onboarding-card" onClick={(e) => e.stopPropagation()}>
@@ -4637,18 +4735,35 @@ export default function HomePage() {
                 </div>
               ) : null}
 
-              {threadLimitReachedUi ? (
-                <div className="composer-session-limit-float" role="status" aria-live="polite">
-                  <p className="composer-session-limit-text">{tokenPanel.consultThreadLimit}</p>
-                  <button
-                    type="button"
-                    className="composer-session-limit-btn"
-                    data-testid="new-session-float-btn"
-                    onClick={() => startNewSession()}
-                    disabled={loading}
-                  >
-                    {ui.sessionNew}
-                  </button>
+              {showThreadLimitBanner ? (
+                <div
+                  className="composer-session-limit-float"
+                  role="status"
+                  aria-live="polite"
+                  aria-label={tokenPanel.consultThreadLimit}
+                  title={tokenPanel.consultThreadLimit}
+                >
+                  <p className="composer-session-limit-text">{tokenPanel.consultThreadLimitStrip}</p>
+                  <div className="composer-session-limit-actions">
+                    <button
+                      type="button"
+                      className="composer-session-limit-btn"
+                      data-testid="new-session-float-btn"
+                      onClick={() => startNewSession()}
+                      disabled={loading}
+                    >
+                      {ui.sessionNew}
+                    </button>
+                    <button
+                      type="button"
+                      className="composer-session-limit-dismiss"
+                      data-testid="thread-limit-banner-dismiss"
+                      aria-label={ui.dismissThreadLimitBannerAria}
+                      onClick={() => setThreadLimitBannerDismissed(true)}
+                    >
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
                 </div>
               ) : null}
 
@@ -4677,7 +4792,14 @@ export default function HomePage() {
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
-                        if (!loading && !threadLimitReachedUi) void onConsult();
+                        if (loading) return;
+                        if (threadLimitReachedUi) {
+                          if (threadLimitBannerDismissed) {
+                            setError(tokenPanel.consultThreadLimit);
+                          }
+                          return;
+                        }
+                        void onConsult();
                       }
                     }}
                     placeholder={
@@ -4705,55 +4827,6 @@ export default function HomePage() {
               </div>
             </div>
         </footer>
-        </div>
-        <div className="oracle-presentation-dock" aria-label={presentation.regionAria}>
-          <div className="oracle-play-card">
-            <div className="oracle-play-card__brand">
-              <span className="oracle-play-card__glyph" aria-hidden>
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" focusable="false">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </span>
-              <div className="oracle-play-card__titles">
-                <p className="oracle-play-card__title">{presentation.playBadgeTitle}</p>
-                <p className="oracle-play-card__subtitle">{presentation.playBadgeSubtitle}</p>
-              </div>
-            </div>
-            <div className="oracle-play-card__badge-row">
-              <img
-                className="oracle-play-card__play-logo"
-                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                alt=""
-                width={176}
-                height={52}
-                loading="lazy"
-                decoding="async"
-              />
-              {playStoreUrl ? (
-                <a
-                  className="oracle-play-card__cta"
-                  href={playStoreUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={presentation.playCtaAria}
-                >
-                  {presentation.playInstall}
-                </a>
-              ) : (
-                <span className="oracle-play-card__cta oracle-play-card__cta--soon" role="status">
-                  {presentation.playSoon}
-                </span>
-              )}
-            </div>
-          </div>
-          <p className="oracle-copyright-line">
-            © {presentation.copyrightYear}{" "}
-            <a href="https://theoriginaliching.com" target="_blank" rel="noopener noreferrer">
-              {presentation.siteDomain}
-            </a>
-            {" · "}
-            {presentation.copyrightRights}
-          </p>
         </div>
       </div>
     </OracleShell>
