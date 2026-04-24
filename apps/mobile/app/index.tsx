@@ -8,6 +8,7 @@ import * as Sharing from "expo-sharing";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
+import * as Application from "expo-application";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -160,11 +161,25 @@ function deepLinkToWebUrl(deepLink: string): string | null {
  * 10. Intercept taps on generated chat images → postMessage to open native zoom modal
  * 11. Expose __RN_APP_INFO and fill /about trace cells (#rn-trace-*) from the native shell
  */
-const RN_APP_INFO_FOR_WEB = JSON.stringify({
-  version: String(Constants.expoConfig?.version ?? ""),
-  androidVersionCode:
-    (Constants.expoConfig?.android as { versionCode?: number } | undefined)?.versionCode ?? null,
-});
+/** Prefer manifest/Gradle values — `expoConfig` embedded in the JS bundle can stay stale after only editing build.gradle. */
+function resolveRnAppInfoForWeb(): { version: string; androidVersionCode: number | null } {
+  const nativeVer = Application.nativeApplicationVersion?.trim();
+  if (nativeVer && nativeVer.length > 0) {
+    const buildStr = Application.nativeBuildVersion?.trim();
+    const parsed = buildStr && buildStr.length > 0 ? parseInt(buildStr, 10) : NaN;
+    return {
+      version: nativeVer,
+      androidVersionCode: Number.isFinite(parsed) ? parsed : null,
+    };
+  }
+  return {
+    version: String(Constants.expoConfig?.version ?? ""),
+    androidVersionCode:
+      (Constants.expoConfig?.android as { versionCode?: number } | undefined)?.versionCode ?? null,
+  };
+}
+
+const RN_APP_INFO_FOR_WEB = JSON.stringify(resolveRnAppInfoForWeb());
 
 const INJECTED_JS = `
 (function () {
