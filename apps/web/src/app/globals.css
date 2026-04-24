@@ -2831,6 +2831,25 @@ button:disabled {
   margin-top: 0.65rem;
 }
 
+/* Token center (web + WebView): marketing / packs / resumen */
+.token-center-card .token-center-subtitle,
+.token-center-card .token-center-pack-details summary,
+.token-center-card .token-center-pack-details p,
+.token-center-card p.meta-line.tier-hint-line.token-center-message {
+  text-align: justify;
+  text-wrap: pretty;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.token-center-card p.meta-line.tier-hint-line.token-center-row {
+  display: block;
+  text-align: justify;
+  text-wrap: pretty;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
 .hexagram-card,
 .image-card {
   margin: 0;
@@ -4040,7 +4059,22 @@ html[data-theme="dark"] .verdict-pill--silent {
   text-decoration: underline;
 }
 
+/*
+ * Docs (navegador web y WebView): texto justificado.
+ * Prefijo .oracle-shell.doc-page evita choques con otros .doc-article y refuerza alcance en la web.
+ */
+.oracle-shell.doc-page .doc-article p,
+.oracle-shell.doc-page .doc-article .doc-lead,
+.oracle-shell.doc-page .doc-article li,
+.oracle-shell.doc-page .doc-lead {
+  text-align: justify;
+  text-wrap: pretty;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
 .doc-article h1 {
+  text-align: start;
   font-family: var(--font-oracle-display), Cinzel, Georgia, serif;
   font-size: 1.55rem;
   margin: 0 0 0.75rem;
@@ -4048,8 +4082,17 @@ html[data-theme="dark"] .verdict-pill--silent {
 }
 
 .doc-article h2 {
+  text-align: start;
   font-size: 1.05rem;
   margin: 1.35rem 0 0.45rem;
+  color: var(--title-chat);
+}
+
+.doc-article h3 {
+  text-align: start;
+  font-size: 0.98rem;
+  font-weight: 600;
+  margin: 1.05rem 0 0.4rem;
   color: var(--title-chat);
 }
 
@@ -4065,7 +4108,7 @@ html[data-theme="dark"] .verdict-pill--silent {
   line-height: 1.5;
 }
 
-.doc-article li {
+.oracle-shell.doc-page .doc-article li {
   margin-bottom: 0.35rem;
 }
 
