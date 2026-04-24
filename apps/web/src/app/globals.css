@@ -5280,7 +5280,7 @@ html.iching-rn-webview .oracle-presentation-dock {
   align-items: stretch;
   gap: 0.35rem;
   padding: 0.65rem 0.85rem 0.7rem;
-  max-width: min(15.5rem, 88vw);
+  max-width: min(17.5rem, 92vw);
   border-radius: 0.95rem;
   background: linear-gradient(
     145deg,
@@ -5345,8 +5345,9 @@ html.iching-rn-webview .oracle-presentation-dock {
 }
 
 .oracle-play-card__play-logo {
-  height: 1.55rem;
+  height: 2.15rem;
   width: auto;
+  max-height: 52px;
   display: block;
 }
 

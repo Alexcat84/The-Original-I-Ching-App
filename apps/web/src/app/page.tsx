@@ -4724,8 +4724,8 @@ export default function HomePage() {
                 className="oracle-play-card__play-logo"
                 src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
                 alt=""
-                width={135}
-                height={40}
+                width={176}
+                height={52}
                 loading="lazy"
                 decoding="async"
               />
