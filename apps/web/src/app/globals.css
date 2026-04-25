@@ -84,11 +84,11 @@ html:not([data-theme]) {
   --image-border: rgba(30, 74, 92, 0.1);
   --coins-bg: rgba(255, 255, 255, 0.92);
   --coins-border: rgba(30, 74, 92, 0.1);
-  --ritual-border: rgba(30, 74, 92, 0.12);
-  --ritual-active-bg: rgba(200, 235, 212, 0.4);
-  --ritual-active-fg: #1a5568;
-  --ritual-done-border: rgba(42, 157, 143, 0.45);
-  --ritual-done-fg: #2d6a5d;
+  --ritual-border: rgba(30, 74, 92, 0.2);
+  --ritual-active-bg: rgba(180, 228, 205, 0.55);
+  --ritual-active-fg: #0f3d4a;
+  --ritual-done-border: rgba(28, 120, 105, 0.55);
+  --ritual-done-fg: #145a4f;
   --progress-track: rgba(30, 74, 92, 0.1);
   --empty-hint-bg: rgba(255, 255, 255, 0.75);
   --empty-hint-border: rgba(30, 74, 92, 0.1);
@@ -2383,6 +2383,15 @@ html[data-theme="dark"] .composer-session-limit-float {
   resize: none;
   overflow-y: hidden;
   box-shadow: inset 0 1px 2px var(--input-inset);
+}
+
+html[data-theme="light"] .composer-input-row textarea,
+html:not([data-theme]) .composer-input-row textarea {
+  color-scheme: light;
+}
+
+html[data-theme="dark"] .composer-input-row textarea {
+  color-scheme: dark;
 }
 
 .composer-input-row button[type="button"]:not(.secondary-btn) {
@@ -5124,6 +5133,8 @@ html[data-theme="dark"] .auth-pro-err {
 .legal-consent-scroll .doc-article li {
   font-size: 0.84rem;
   line-height: 1.5;
+  text-align: justify;
+  text-wrap: pretty;
 }
 
 .legal-consent-footer {
@@ -5687,5 +5698,6 @@ html.iching-rn-webview .apk-trace-native-metrics {
   font-size: 0.82rem;
   color: var(--fg-muted);
   line-height: 1.45;
+  text-align: start;
 }
 

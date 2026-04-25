@@ -7,7 +7,18 @@ import {
   UI_LOCALE_STORAGE_KEY,
   type AppLocale,
 } from "@iching-oracle/i18n";
+import { UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 import { useEffect } from "react";
+
+const ONE_YEAR = 60 * 60 * 24 * 365;
+
+function writeUiLocaleCookie(locale: AppLocale) {
+  try {
+    document.cookie = `${UI_LOCALE_COOKIE}=${encodeURIComponent(locale)}; path=/; max-age=${ONE_YEAR}; samesite=lax`;
+  } catch {
+    /* */
+  }
+}
 
 function readLocale(): AppLocale {
   if (typeof window === "undefined") return DEFAULT_LOCALE;
@@ -26,7 +37,9 @@ function readLocale(): AppLocale {
 export default function DocumentLangSync() {
   useEffect(() => {
     const apply = () => {
-      document.documentElement.lang = htmlLangFromAppLocale(readLocale());
+      const loc = readLocale();
+      document.documentElement.lang = htmlLangFromAppLocale(loc);
+      writeUiLocaleCookie(loc);
     };
     apply();
     window.addEventListener("iching:locale-changed", apply);

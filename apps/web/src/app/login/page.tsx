@@ -194,23 +194,35 @@ export default function LoginPage() {
   async function onGoogle() {
     setErr(null);
     setMsg(null);
-    if (!isCurrentLegalConsentPayload(legalConsent)) {
-      setPendingLegalAction("google_oauth");
+    if (mode === "signup") {
+      if (!isCurrentLegalConsentPayload(legalConsent)) {
+        setPendingLegalAction("google_oauth");
+        return;
+      }
+      await startGoogleOAuth(createLegalConsentPayload("google_oauth"));
       return;
     }
-    await startGoogleOAuth(createLegalConsentPayload("google_oauth"));
+    await startGoogleOAuth(null);
   }
 
-  async function startGoogleOAuth(consent: LegalConsentPayload) {
+  async function startGoogleOAuth(consent: LegalConsentPayload | null) {
     if (!isSupabaseBrowserConfigured()) return;
     setLoading(true);
     try {
-      try {
-        sessionStorage.setItem(LEGAL_CONSENT_PENDING_STORAGE_KEY, JSON.stringify(consent));
-      } catch {
-        // If storage is blocked, callback cannot persist consent; fail before OAuth.
-        setErr(L.errNetwork);
-        return;
+      if (consent) {
+        try {
+          sessionStorage.setItem(LEGAL_CONSENT_PENDING_STORAGE_KEY, JSON.stringify(consent));
+        } catch {
+          // If storage is blocked, callback cannot persist consent; fail before OAuth.
+          setErr(L.errNetwork);
+          return;
+        }
+      } else {
+        try {
+          sessionStorage.removeItem(LEGAL_CONSENT_PENDING_STORAGE_KEY);
+        } catch {
+          // ignore
+        }
       }
       const sb = getSupabaseBrowser();
       const origin = window.location.origin;

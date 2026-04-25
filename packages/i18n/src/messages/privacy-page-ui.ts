@@ -59,7 +59,7 @@ const PRIVACY_EN: PrivacyPageMessages = {
     "Process purchase status and token balance.",
   ],
   s3LegalBasis:
-    "In general terms, processing relies on: the contractual or pre-contractual relationship to run your account, store consultations, and apply tokens; legitimate interests, where applicable law allows, to protect the service, prevent abuse, and maintain security; compliance with legal obligations where required; and consent when a specific processing requires it under the law of your jurisdiction.",
+    "In general terms, processing relies on: the contractual or pre-contractual relationship to run your account, store consultations, and apply tokens; legitimate interests, where allowed, to protect the service, prevent abuse, and maintain security; compliance with applicable requirements when required; and consent when a specific processing requires it.",
   s4Title: "4) Chat and image privacy",
   s4Intro:
     "Your conversations and images are tied exclusively to your account and are only accessible when you use the app while signed in. The service is designed so your history and consultation topics are not exposed outside your own authenticated access.",
@@ -76,7 +76,7 @@ const PRIVACY_EN: PrivacyPageMessages = {
   s5p1:
     "To operate the service, we use technical providers (for example, authentication, database, transactional email, AI, and payments). We only send those providers the data strictly necessary to run each function.",
   s5p2:
-    "Some providers may process data in other countries. Where applicable law (for example, in the European Economic Area or the United Kingdom) requires safeguards for international transfers, we use recognized mechanisms (such as standard contractual clauses or other valid tools at the time), unless another legal basis applies.",
+    "Some providers may process data in other countries. When safeguards are required for international transfers, we use recognized mechanisms (such as standard contractual clauses or other valid tools at the time), unless another basis applies.",
   s6Title: "6) Payments and tokens",
   s6Body:
     "Payments are handled by specialized providers. We do not store full card numbers on our servers. Purchase status is synced to enable token balance and thread limits.",
@@ -94,10 +94,10 @@ const PRIVACY_EN: PrivacyPageMessages = {
     "Deleting a chat in the app is irreversible in our system: confirm the action only if you want that history removed for good. Backups or technical logs managed solely by our infrastructure provider (hosting/database) may be subject to their own retention policies and do not constitute a user-accessible archive inside the application.",
   s9Title: "9) Your rights",
   s9Body:
-    "Depending on your jurisdiction, you may have rights of access, rectification, erasure (“right to be forgotten”), restriction of processing, objection, and data portability. We will handle reasonable requests under applicable law through the channels indicated on the site.",
+    "You may request access, correction, deletion, export, or other account-related privacy requests through the official channels indicated on the site. We will respond to reasonable requests in line with how the service operates.",
   s10Title: "10) Policy updates",
   s10BeforeLink:
-    "We may update this policy to reflect product improvements, legal changes, or operational updates. The current version is the one shown on this page. Use of the service is also governed by the ",
+    "We may update this policy to reflect product improvements, regulatory or operational updates. The current version is the one shown on this page. Use of the service is also governed by the ",
   s10AfterLink: ".",
 };
 
@@ -123,7 +123,7 @@ const PRIVACY_ES: PrivacyPageMessages = {
     "Procesar estado de compras y saldo de tokens.",
   ],
   s3LegalBasis:
-    "En términos generales, el tratamiento se apoya en: la relación contractual o precontractual para operar tu cuenta, guardar consultas y aplicar tokens; el interés legítimo, cuando aplique la normativa, para proteger el servicio, prevenir abuso y mantener la seguridad; el cumplimiento de obligaciones legales cuando corresponda; y el consentimiento cuando un tratamiento concreto lo exija según la ley de tu jurisdicción.",
+    "En términos generales, el tratamiento se apoya en: la relación contractual o precontractual para operar tu cuenta, guardar consultas y aplicar tokens; el interés legítimo, cuando proceda, para proteger el servicio, prevenir abuso y mantener la seguridad; el cumplimiento de requisitos aplicables cuando corresponda; y el consentimiento cuando un tratamiento concreto lo exija.",
   s4Title: "4) Privacidad de chats e imágenes",
   s4Intro:
     "Tus conversaciones e imágenes quedan asociadas exclusivamente a tu cuenta y solo son accesibles cuando utilizas la aplicación con tu sesión iniciada. El diseño del servicio no expone tu historial ni tus temas de consulta fuera de tu propio acceso autenticado.",
@@ -140,7 +140,7 @@ const PRIVACY_ES: PrivacyPageMessages = {
   s5p1:
     "Para operar el servicio usamos proveedores técnicos (por ejemplo, autenticación, base de datos, email transaccional, IA y pagos). Solo enviamos a esos proveedores los datos estrictamente necesarios para ejecutar cada función.",
   s5p2:
-    "Algunos proveedores pueden tratar datos en otros países. Cuando la normativa aplicable (por ejemplo, en el Espacio Económico Europeo o el Reino Unido) exija garantías para transferencias internacionales, utilizamos mecanismos reconocidos (como cláusulas contractuales tipo u otras herramientas válidas en su momento), salvo que exista otra base legal aplicable.",
+    "Algunos proveedores pueden tratar datos en otros países. Cuando se requieran garantías para transferencias internacionales, utilizamos mecanismos reconocidos (como cláusulas contractuales tipo u otras herramientas válidas en su momento), salvo que exista otra base aplicable.",
   s6Title: "6) Pagos y tokens",
   s6Body:
     "Los pagos son gestionados por proveedores especializados. No almacenamos números completos de tarjeta en nuestros servidores. El estado de compra se sincroniza para habilitar saldo de tokens y límites por hilo.",
@@ -158,10 +158,10 @@ const PRIVACY_ES: PrivacyPageMessages = {
     "La eliminación de un chat desde la app es irreversible en nuestro sistema: confirma la acción solo si deseas borrar de forma definitiva ese historial. Las copias de seguridad o registros técnicos que gestione exclusivamente nuestro proveedor de infraestructura (hosting/base de datos) pueden estar sujetos a sus propias políticas de retención y no constituyen un archivo consultable por el usuario dentro de la aplicación.",
   s9Title: "9) Tus derechos",
   s9Body:
-    "Según tu jurisdicción, puedes tener derechos de acceso, rectificación, supresión («derecho al olvido»), limitación del tratamiento, oposición y portabilidad de los datos. Atenderemos solicitudes razonables conforme a la normativa aplicable, a través de los canales indicados en el sitio.",
+    "Puedes solicitar acceso, rectificación, supresión, exportación u otras peticiones relacionadas con la privacidad de tu cuenta a través de los canales oficiales indicados en el sitio. Atenderemos solicitudes razonables de acuerdo con el funcionamiento del servicio.",
   s10Title: "10) Cambios en esta política",
   s10BeforeLink:
-    "Podemos actualizar esta política para reflejar mejoras del producto, cambios legales o ajustes operativos. La versión vigente es la que se muestra en esta página. El uso del servicio también se rige por los ",
+    "Podemos actualizar esta política para reflejar mejoras del producto, cambios normativos u operativos. La versión vigente es la que se muestra en esta página. El uso del servicio también se rige por los ",
   s10AfterLink: ".",
 };
 
@@ -191,7 +191,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Processar estado de compras e saldo de tokens.",
     ],
     s3LegalBasis:
-      "Em termos gerais, o tratamento baseia-se na relação contratual ou pré-contratual para operar a tua conta, guardar consultas e aplicar tokens; no interesse legítimo, quando a lei o permitir, para proteger o serviço, prevenir abuso e manter a segurança; no cumprimento de obrigações legais quando aplicável; e no consentimento quando um tratamento específico o exija segundo a lei da tua jurisdição.",
+      "Em termos gerais, o tratamento baseia-se na relação contratual ou pré-contratual para operar a tua conta, guardar consultas e aplicar tokens; no interesse legítimo, quando adequado, para proteger o serviço, prevenir abuso e manter a segurança; no cumprimento de requisitos aplicáveis quando necessário; e no consentimento quando um tratamento específico o exija.",
     s4Title: "4) Privacidade de chats e imagens",
     s4Intro:
       "As tuas conversas e imagens ficam associadas exclusivamente à tua conta e só são acessíveis quando usas a app com sessão iniciada. O serviço não expõe o teu histórico nem os teus temas de consulta fora do teu acesso autenticado.",
@@ -208,7 +208,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s5p1:
       "Para operar o serviço usamos fornecedores técnicos (por exemplo autenticação, base de dados, email transacional, IA e pagamentos). Só enviamos os dados estritamente necessários para cada função.",
     s5p2:
-      "Alguns fornecedores podem tratar dados noutros países. Quando a lei aplicável (por exemplo no EEE ou Reino Unido) exigir salvaguardas para transferências internacionais, usamos mecanismos reconhecidos (como cláusulas contratuais-tipo), salvo outra base legal.",
+      "Alguns fornecedores podem tratar dados noutros países. Quando forem necessárias salvaguardas para transferências internacionais, usamos mecanismos reconhecidos (como cláusulas contratuais-tipo), salvo outra base aplicável.",
     s6Title: "6) Pagamentos e tokens",
     s6Body:
       "Os pagamentos são geridos por fornecedores especializados. Não armazenamos números completos de cartão nos nossos servidores. O estado de compra sincroniza-se para ativar saldo de tokens e limites por fio.",
@@ -226,10 +226,10 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Eliminar um chat na app é irreversível no nosso sistema: confirma só se quiseres apagar esse histórico definitivamente. Cópias de segurança ou registos técnicos geridos apenas pelo fornecedor de infraestrutura podem ter políticas próprias de retenção.",
     s9Title: "9) Os teus direitos",
     s9Body:
-      "Conforme a tua jurisdição, podes ter direitos de acesso, retificação, apagamento, limitação, oposição e portabilidade. Trataremos pedidos razoáveis segundo a lei aplicável pelos canais indicados no site.",
+      "Podes pedir acesso, retificação, apagamento, exportação ou outras solicitações relacionadas com a privacidade da conta pelos canais oficiais do site. Trataremos pedidos razoáveis de acordo com o funcionamento do serviço.",
     s10Title: "10) Alterações a esta política",
     s10BeforeLink:
-      "Podemos atualizar esta política para refletir melhorias do produto, alterações legais ou operacionais. A versão em vigor é a mostrada nesta página. A utilização do serviço rege-se também pelos ",
+      "Podemos atualizar esta política para refletir melhorias do produto, alterações normativas ou operacionais. A versão em vigor é a mostrada nesta página. A utilização do serviço rege-se também pelos ",
     s10AfterLink: ".",
   },
   fr: {
@@ -255,7 +255,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Traiter l’état des achats et le solde de jetons.",
     ],
     s3LegalBasis:
-      "En général, le traitement repose sur : la relation contractuelle ou précontractuelle pour exploiter votre compte, stocker les consultations et appliquer les jetons ; l’intérêt légitime, lorsque la loi l’autorise, pour protéger le service, prévenir les abus et maintenir la sécurité ; le respect des obligations légales ; et le consentement lorsqu’un traitement spécifique l’exige selon votre juridiction.",
+      "En général, le traitement repose sur : la relation contractuelle ou précontractuelle pour exploiter votre compte, stocker les consultations et appliquer les jetons ; l’intérêt légitime, lorsque c’est pertinent, pour protéger le service, prévenir les abus et maintenir la sécurité ; le respect d’exigences applicables ; et le consentement lorsqu’un traitement spécifique l’exige.",
     s4Title: "4) Confidentialité des chats et images",
     s4Intro:
       "Vos conversations et images sont liées exclusivement à votre compte et ne sont accessibles que lorsque vous utilisez l’app connecté. Le service est conçu pour ne pas exposer votre historique ni vos sujets de consultation en dehors de votre accès authentifié.",
@@ -272,7 +272,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s5p1:
       "Nous utilisons des prestataires techniques (authentification, base de données, e-mail transactionnel, IA, paiements). Nous ne leur transmettons que les données strictement nécessaires.",
     s5p2:
-      "Certains prestataires peuvent traiter des données dans d’autres pays. Lorsque la loi applicable (EEE, Royaume-Uni, etc.) exige des garanties pour les transferts internationaux, nous utilisons des mécanismes reconnus (clauses contractuelles types, etc.), sauf autre base légale.",
+      "Certains prestataires peuvent traiter des données dans d’autres pays. Lorsque des garanties sont nécessaires pour les transferts internationaux, nous utilisons des mécanismes reconnus (clauses contractuelles types, etc.), sauf autre base applicable.",
     s6Title: "6) Paiements et jetons",
     s6Body:
       "Les paiements sont gérés par des prestataires spécialisés. Nous ne stockons pas les numéros de carte complets sur nos serveurs. L’état d’achat est synchronisé pour activer le solde de jetons et les limites par fil.",
@@ -290,10 +290,10 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Supprimer un chat dans l’app est irréversible : confirmez seulement si vous voulez effacer définitivement cet historique. Les sauvegardes ou journaux gérés uniquement par l’hébergeur peuvent avoir leurs propres politiques de conservation.",
     s9Title: "9) Vos droits",
     s9Body:
-      "Selon votre juridiction, vous pouvez disposer de droits d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité. Nous traiterons les demandes raisonnables conformément à la loi applicable via les canaux du site.",
+      "Vous pouvez demander l’accès, la rectification, la suppression, l’export ou d’autres demandes liées à la confidentialité du compte via les canaux officiels du site. Nous répondrons aux demandes raisonnables dans le cadre du fonctionnement du service.",
     s10Title: "10) Mises à jour de cette politique",
     s10BeforeLink:
-      "Nous pouvons mettre à jour cette politique pour refléter des évolutions du produit, légales ou opérationnelles. La version en vigueur est celle affichée sur cette page. L’utilisation du service est aussi régie par les ",
+      "Nous pouvons mettre à jour cette politique pour refléter des évolutions du produit, réglementaires ou opérationnelles. La version en vigueur est celle affichée sur cette page. L’utilisation du service est aussi régie par les ",
     s10AfterLink: ".",
   },
   de: {
@@ -319,7 +319,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Verarbeitung des Kaufstatus und des Token-Saldos.",
     ],
     s3LegalBasis:
-      "Die Verarbeitung stützt sich im Allgemeinen auf: das Vertrags- oder vorvertragliche Verhältnis für Konto, Beratungen und Token; berechtigte Interessen, soweit das Recht es erlaubt, zum Schutz des Dienstes und der Sicherheit; gesetzliche Pflichten; und Einwilligung, wenn ein konkreter Vorgang dies in Ihrer Rechtsordnung erfordert.",
+      "Die Verarbeitung stützt sich im Allgemeinen auf: das Vertrags- oder vorvertragliche Verhältnis für Konto, Beratungen und Token; berechtigte Interessen, soweit zulässig, zum Schutz des Dienstes und der Sicherheit; Einhaltung anwendbarer Anforderungen; und Einwilligung, wenn ein konkreter Vorgang dies erfordert.",
     s4Title: "4) Datenschutz von Chats und Bildern",
     s4Intro:
       "Ihre Gespräche und Bilder sind ausschließlich mit Ihrem Konto verknüpft und nur zugänglich, wenn Sie angemeldet sind. Der Dienst ist so gestaltet, dass Verlauf und Themen außerhalb Ihres authentifizierten Zugriffs nicht offengelegt werden.",
@@ -336,7 +336,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s5p1:
       "Wir nutzen technische Anbieter (z. B. Authentifizierung, Datenbank, Transaktions-E-Mail, KI, Zahlungen). Es werden nur die jeweils nötigen Daten übermittelt.",
     s5p2:
-      "Manche Anbieter verarbeiten in anderen Ländern. Wo geltendes Recht (z. B. EWR, UK) Schutzmaßnahmen für internationale Übermittlungen verlangt, nutzen wir anerkannte Instrumente (z. B. Standardvertragsklauseln), sofern keine andere Rechtsgrundlage greift.",
+      "Manche Anbieter verarbeiten in anderen Ländern. Wenn Schutzmaßnahmen für internationale Übermittlungen nötig sind, nutzen wir anerkannte Instrumente (z. B. Standardvertragsklauseln), sofern keine andere Grundlage greift.",
     s6Title: "6) Zahlungen und Token",
     s6Body:
       "Zahlungen erfolgen über spezialisierte Anbieter. Wir speichern keine vollständigen Kartennummern auf unseren Servern. Der Kaufstatus wird synchronisiert für Token-Saldo und Thread-Limits.",
@@ -354,10 +354,10 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Das Löschen eines Chats in der App ist in unserem System unwiderruflich. Sicherungen oder technische Logs allein beim Infrastrukturanbieter können eigenen Aufbewahrungsregeln unterliegen.",
     s9Title: "9) Ihre Rechte",
     s9Body:
-      "Je nach Rechtsordnung können Sie Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und Datenportabilität haben. Wir bearbeiten angemessene Anfragen nach geltendem Recht über die angegebenen Kanäle.",
+      "Sie können Auskunft, Berichtigung, Löschung, Export oder andere datenschutzbezogene Anfragen zu Ihrem Konto über die auf der Website angegebenen Kanäle stellen. Wir bearbeiten angemessene Anfragen im Rahmen des Servicebetriebs.",
     s10Title: "10) Änderungen dieser Erklärung",
     s10BeforeLink:
-      "Wir können diese Erklärung anpassen (Produkt, Recht, Betrieb). Die gültige Fassung ist auf dieser Seite. Die Nutzung unterliegt auch den ",
+      "Wir können diese Erklärung anpassen (Produkt, regulatorische oder betriebliche Änderungen). Die gültige Fassung ist auf dieser Seite. Die Nutzung unterliegt auch den ",
     s10AfterLink: ".",
   },
   it: {
@@ -383,7 +383,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Elaborare stato acquisti e saldo token.",
     ],
     s3LegalBasis:
-      "In generale il trattamento si basa sul rapporto contrattuale o precontrattuale per il conto, le consultazioni e i token; sull’interesse legittimo, ove consentito, per proteggere il servizio e la sicurezza; sul rispetto di obblighi di legge; e sul consenso quando richiesto dalla legge applicabile.",
+      "In generale il trattamento si basa sul rapporto contrattuale o precontrattuale per il conto, le consultazioni e i token; sull’interesse legittimo, ove pertinente, per proteggere il servizio e la sicurezza; sul rispetto di requisiti applicabili; e sul consenso quando richiesto per un trattamento specifico.",
     s4Title: "4) Privacy di chat e immagini",
     s4Intro:
       "Le conversazioni e le immagini sono associate esclusivamente al tuo account e accessibili solo con sessione avviata. Il servizio non espone cronologia o argomenti fuori dal tuo accesso autenticato.",
@@ -400,7 +400,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s5p1:
       "Usiamo fornitori tecnici (autenticazione, database, email transazionale, IA, pagamenti). Trasmettiamo solo i dati strettamente necessari.",
     s5p2:
-      "Alcuni fornitori possono trattare dati in altri Paesi. Ove la legge applicabile (es. SEE, UK) richieda garanzie per trasferimenti internazionali, usiamo meccanismi riconosciuti (es. clausole contrattuali standard), salvo altra base legale.",
+      "Alcuni fornitori possono trattare dati in altri Paesi. Quando servono garanzie per trasferimenti internazionali, usiamo meccanismi riconosciuti (es. clausole contrattuali standard), salvo altra base applicabile.",
     s6Title: "6) Pagamenti e token",
     s6Body:
       "I pagamenti sono gestiti da fornitori specializzati. Non memorizziamo numeri di carta completi sui nostri server. Lo stato di acquisto si sincronizza per saldo token e limiti per thread.",
@@ -418,10 +418,10 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Eliminare un chat nell’app è irreversibile nel nostro sistema. Backup o log tecnici gestiti solo dall’hosting possono avere policy di conservazione proprie.",
     s9Title: "9) I tuoi diritti",
     s9Body:
-      "Secondo la tua giurisdizione potresti avere diritti di accesso, rettifica, cancellazione, limitazione, opposizione e portabilità. Evaderemo richieste ragionevoli secondo la legge applicabile tramite i canali del sito.",
+      "Puoi richiedere accesso, rettifica, cancellazione, export o altre richieste sulla privacy del conto tramite i canali ufficiali del sito. Evaderemo richieste ragionevoli in linea con il funzionamento del servizio.",
     s10Title: "10) Aggiornamenti dell’informativa",
     s10BeforeLink:
-      "Possiamo aggiornare questa informativa per riflettere miglioramenti del prodotto, cambiamenti legali o operativi. La versione vigente è quella mostrata in questa pagina. L’uso del servizio è regolato anche dai ",
+      "Possiamo aggiornare questa informativa per riflettere miglioramenti del prodotto, aggiornamenti normativi o operativi. La versione vigente è quella mostrata in questa pagina. L’uso del servizio è regolato anche dai ",
     s10AfterLink: ".",
   },
   ja: {
@@ -447,7 +447,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "購入状態とトークン残高の処理。",
     ],
     s3LegalBasis:
-      "一般的に、処理の根拠は次のとおりです。アカウント運用、相談の保存、トークン適用に関する契約上または契約前の関係。該当する法域で認められる場合、サービス保護・不正防止・セキュリティ維持の正当な利益。法的義務の遵守。お住まいの法域の法律で特定の処理に同意が必要な場合の同意。",
+      "一般的に、処理の根拠は次のとおりです。アカウント運用、相談の保存、トークン適用に関する契約上または契約前の関係。サービス保護・不正防止・セキュリティ維持のための正当な利益（許容される範囲で）。適用される要件の遵守。特定の処理に同意が必要な場合の同意。",
     s4Title: "4) チャットと画像のプライバシー",
     s4Intro:
       "会話と画像はアカウントにのみ紐づき、サインインしてアプリを利用している間にのみアクセス可能です。設計上、履歴や相談内容は認証されたご本人以外には公開されません。",
@@ -464,7 +464,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s5p1:
       "認証、データベース、トランザクションメール、AI、決済などの技術プロバイダを利用します。各機能に必要なデータのみを送信します。",
     s5p2:
-      "一部のプロバイダは他国でデータを処理する場合があります。適用法（例：欧州経済領域、英国）が国際移転の保護措置を求める場合、当該時点で有効な標準契約条項など認められた手段を用います（別の法的根拠がある場合を除く）。",
+      "一部のプロバイダは他国でデータを処理する場合があります。国際移転に保護措置が必要な場合、当該時点で有効な標準契約条項など認められた手段を用います（別の根拠がある場合を除く）。",
     s6Title: "6) 決済とトークン",
     s6Body:
       "決済は専門プロバイダが処理します。当社サーバーに完全なカード番号を保存することはありません。購入状態はトークン残高とスレッド上限の有効化のために同期されます。",
@@ -482,10 +482,10 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "アプリ内でチャットを削除すると、当社システム上では元に戻せません。インフラプロバイダのみが管理するバックアップや技術ログは、同社の保持方針の対象となり、アプリ内でユーザーが参照できるアーカイブではありません。",
     s9Title: "9) お客様の権利",
     s9Body:
-      "法域により、アクセス、訂正、消去（忘れられる権利）、処理の制限、異議、データポータビリティなどの権利がある場合があります。サイトに示す窓口を通じ、適用法に従い合理的な請求に対応します。",
+      "アクセス、訂正、消去、エクスポートなど、アカウントに関するプライバシー請求は、サイトに記載の公式窓口から行えます。サービスの運営に沿って合理的な請求に対応します。",
     s10Title: "10) 本ポリシーの変更",
     s10BeforeLink:
-      "製品の改善、法令または運用上の変更を反映するため、本ポリシーを更新することがあります。有効な版は本ページに表示されているものです。サービスの利用は ",
+      "製品の改善、規制上または運用上の変更を反映するため、本ポリシーを更新することがあります。有効な版は本ページに表示されているものです。サービスの利用は ",
     s10AfterLink: " によっても規律されます。",
   },
   zh: {
@@ -511,7 +511,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "处理购买状态与代币余额。",
     ],
     s3LegalBasis:
-      "总体而言，处理依据包括：为运行账户、保存咨询并适用代币的合同或准合同关系；在适用法律允许的情况下，为保护服务、防止滥用并维护安全的正当利益；法律合规义务；以及您所在司法辖区法律要求时特定处理所需的同意。",
+      "总体而言，处理依据包括：为运行账户、保存咨询并适用代币的合同或准合同关系；在允许范围内为保护服务、防止滥用并维护安全的正当利益；对适用要求的遵守；以及特定处理所需的同意。",
     s4Title: "4) 聊天与图像隐私",
     s4Intro:
       "您的会话与图像仅与您的账户关联，且仅在您登录使用应用时可访问。服务设计确保您的历史与咨询主题不会在您本人认证访问之外被暴露。",
@@ -528,7 +528,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s5p1:
       "我们使用技术提供方（例如认证、数据库、事务邮件、AI、支付）。仅向其发送执行各功能所必需的数据。",
     s5p2:
-      "部分提供方可能在其他国家处理数据。若适用法律（例如欧洲经济区或英国）要求为国际传输提供保障，我们使用公认机制（如标准合同条款），除非另有法律依据。",
+      "部分提供方可能在其他国家处理数据。若国际传输需要保障措施，我们使用公认机制（如标准合同条款），除非另有适用依据。",
     s6Title: "6) 支付与代币",
     s6Body:
       "支付由专门提供方处理。我们不在服务器上存储完整卡号。购买状态会同步以启用代币余额与每会话上限。",
@@ -546,10 +546,10 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "在应用中删除会话在我们的系统内不可逆：请仅在希望永久清除该历史时确认。仅由基础设施提供方管理的备份或技术日志可能受其自身保留政策约束，且不构成应用内用户可访问的档案。",
     s9Title: "9) 您的权利",
     s9Body:
-      "根据您所在司法辖区，您可能享有访问、更正、删除（被遗忘权）、限制处理、反对及数据可携带等权利。我们将通过网站所示渠道，依据适用法律处理合理请求。",
+      "您可通过网站所示官方渠道提出访问、更正、删除、导出或与账户隐私相关的其他请求。我们将在服务运营范围内回应合理请求。",
     s10Title: "10) 政策更新",
     s10BeforeLink:
-      "我们可能更新本政策以反映产品改进、法律或运营变化。当前版本即本页所示版本。服务使用同时受 ",
+      "我们可能更新本政策以反映产品改进、监管或运营变化。当前版本即本页所示版本。服务使用同时受 ",
     s10AfterLink: " 约束。",
   },
   ko: {
@@ -575,7 +575,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "구매 상태 및 토큰 잔액 처리.",
     ],
     s3LegalBasis:
-      "일반적으로 처리는 다음에 근거합니다: 계정 운영, 상담 저장, 토큰 적용을 위한 계약 또는 계약 전 관계. 해당 법률이 허용하는 경우 서비스 보호·남용 방지·보안 유지를 위한 정당한 이익. 법적 의무 준수. 관할 법률이 요구하는 경우 특정 처리에 대한 동의.",
+      "일반적으로 처리는 다음에 근거합니다: 계정 운영, 상담 저장, 토큰 적용을 위한 계약 또는 계약 전 관계. 허용되는 범위에서 서비스 보호·남용 방지·보안 유지를 위한 정당한 이익. 적용 요건 준수. 특정 처리에 동의가 필요한 경우의 동의.",
     s4Title: "4) 채팅 및 이미지 프라이버시",
     s4Intro:
       "대화와 이미지는 계정에만 연결되며 로그인하여 앱을 사용할 때만 접근 가능합니다. 설계상 기록과 상담 주제는 본인의 인증된 접근 밖으로 노출되지 않습니다.",
@@ -592,7 +592,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s5p1:
       "인증, 데이터베이스, 트랜잭션 이메일, AI, 결제 등 기술 제공업체를 사용합니다. 각 기능에 필요한 데이터만 전송합니다.",
     s5p2:
-      "일부 제공업체는 다른 국가에서 데이터를 처리할 수 있습니다. 적용 법률(예: EEA, UK)이 국제 이전에 보호 조치를 요구하는 경우, 당시 유효한 표준계약조항 등 인정된 수단을 사용합니다(다른 법적 근거가 있는 경우 제외).",
+      "일부 제공업체는 다른 국가에서 데이터를 처리할 수 있습니다. 국제 이전에 보호 조치가 필요한 경우, 당시 유효한 표준계약조항 등 인정된 수단을 사용합니다(다른 근거가 있는 경우 제외).",
     s6Title: "6) 결제 및 토큰",
     s6Body:
       "결제는 전문 제공업체가 처리합니다. 당사 서버에 전체 카드 번호를 저장하지 않습니다. 구매 상태는 토큰 잔액과 스레드 한도 활성화를 위해 동기화됩니다.",
@@ -610,10 +610,10 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "앱에서 채팅을 삭제하면 당사 시스템에서 되돌릴 수 없습니다. 인프라 제공업체만 관리하는 백업 또는 기술 로그는 해당사의 보관 정책을 따를 수 있으며 앱 내 사용자 접근 가능 아카이브가 아닙니다.",
     s9Title: "9) 귀하의 권리",
     s9Body:
-      "관할에 따라 접근, 정정, 삭제(잊힐 권리), 처리 제한, 이의, 데이터 이동성 등의 권리가 있을 수 있습니다. 사이트에 안내된 채널을 통해 적용 법률에 따라 합리적인 요청에 응합니다.",
+      "접근·정정·삭제·보내기 등 계정과 관련된 개인정보 요청은 사이트에 안내된 공식 채널로 제출할 수 있습니다. 서비스 운영 범위에서 합리적인 요청에 응합니다.",
     s10Title: "10) 본 방침의 변경",
     s10BeforeLink:
-      "제품 개선, 법적·운영 변경을 반영하기 위해 본 방침을 업데이트할 수 있습니다. 유효한 버전은 본 페이지에 게시된 것입니다. 서비스 이용은 ",
+      "제품 개선, 규제·운영 변경을 반영하기 위해 본 방침을 업데이트할 수 있습니다. 유효한 버전은 본 페이지에 게시된 것입니다. 서비스 이용은 ",
     s10AfterLink: "의 적용을 받습니다.",
   },
 };

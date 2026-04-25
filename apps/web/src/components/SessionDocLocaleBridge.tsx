@@ -53,11 +53,14 @@ function applyLocaleCookie(locale: AppLocale) {
 }
 
 /**
- * Keeps cookies in sync so server-rendered doc/legal pages can apply the same rules as the SPA:
- * session flag + UI locale (from storage or in-app changes).
+ * Keeps cookies in sync so server-rendered documentation pages can apply the same rules as the SPA:
+ * session flag + UI locale (from storage or in-app changes). Locale cookie is written whenever
+ * storage holds a locale, even without a session, so doc routes match the selector.
  */
 export default function SessionDocLocaleBridge() {
   useEffect(() => {
+    syncUiLocaleCookieFromStorage();
+
     if (!isSupabaseBrowserConfigured()) {
       setSessionPresentCookie(false);
       return;
@@ -67,9 +70,7 @@ export default function SessionDocLocaleBridge() {
     const syncSession = () => {
       void sb.auth.getSession().then(({ data: { session } }) => {
         setSessionPresentCookie(Boolean(session));
-        if (session) {
-          syncUiLocaleCookieFromStorage();
-        }
+        syncUiLocaleCookieFromStorage();
       });
     };
 
@@ -77,9 +78,7 @@ export default function SessionDocLocaleBridge() {
 
     const { data: sub } = sb.auth.onAuthStateChange((_event, session) => {
       setSessionPresentCookie(Boolean(session));
-      if (session) {
-        syncUiLocaleCookieFromStorage();
-      }
+      syncUiLocaleCookieFromStorage();
     });
 
     function onLocaleSynced(e: Event) {

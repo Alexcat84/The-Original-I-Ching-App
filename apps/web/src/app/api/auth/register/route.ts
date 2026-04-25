@@ -5,8 +5,12 @@ import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { initFreeUser } from "@/lib/credits";
-import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
-import { recordUserLegalAcceptance } from "@/lib/legal-consent-server";
+import {
+  CURRENT_PRIVACY_VERSION,
+  CURRENT_TERMS_VERSION,
+  PENDING_EMAIL_LEGAL_METADATA_KEY,
+} from "@/lib/legal-consent";
+import { clearPendingEmailLegalConsentMetadata, recordUserLegalAcceptance } from "@/lib/legal-consent-server";
 import { z } from "zod";
 
 export const runtime = "nodejs";
@@ -145,13 +149,22 @@ export async function POST(req: Request) {
     password: parsed.data.password,
     options: {
       emailRedirectTo: `${origin.replace(/\/$/, "")}/auth/callback`,
+      data: {
+        [PENDING_EMAIL_LEGAL_METADATA_KEY]: JSON.stringify(body.legalConsent),
+      },
     },
   });
   if (signUp.error) {
+    const errCode = "code" in signUp.error ? String((signUp.error as { code?: string }).code ?? "") : "";
     const lower = signUp.error.message.toLowerCase();
     if (
+      errCode === "user_already_exists" ||
       lower.includes("user already registered") ||
       lower.includes("already registered") ||
+      lower.includes("email already") ||
+      lower.includes("already been registered") ||
+      lower.includes("already exists") ||
+      lower.includes("duplicate") ||
       lower.includes("database error creating new user")
     ) {
       return apiError(409, {
@@ -182,6 +195,7 @@ export async function POST(req: Request) {
     await initFreeUser(uid);
     try {
       await recordUserLegalAcceptance(uid, body.legalConsent);
+      await clearPendingEmailLegalConsentMetadata(uid);
     } catch (error) {
       console.error("[auth/register] legal consent insert failed", error);
       return apiError(500, {

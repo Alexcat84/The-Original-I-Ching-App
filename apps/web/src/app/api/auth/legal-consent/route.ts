@@ -3,7 +3,7 @@ import { z } from "zod";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
-import { recordUserLegalAcceptance } from "@/lib/legal-consent-server";
+import { clearPendingEmailLegalConsentMetadata, recordUserLegalAcceptance } from "@/lib/legal-consent-server";
 
 export const runtime = "nodejs";
 
@@ -12,7 +12,7 @@ const legalConsentSchema = z.object({
   termsVersion: z.literal(CURRENT_TERMS_VERSION),
   privacyVersion: z.literal(CURRENT_PRIVACY_VERSION),
   acceptedAt: z.string().datetime(),
-  source: z.enum(["google_oauth", "post_login"]),
+  source: z.enum(["google_oauth", "post_login", "email_signup"]),
 });
 
 export async function POST(req: Request) {
@@ -40,6 +40,9 @@ export async function POST(req: Request) {
 
   try {
     await recordUserLegalAcceptance(user.userId, parsed.data);
+    if (parsed.data.source === "email_signup") {
+      await clearPendingEmailLegalConsentMetadata(user.userId);
+    }
   } catch (error) {
     console.error("[auth/legal-consent] insert failed", error);
     return apiError(500, {

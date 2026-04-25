@@ -121,9 +121,9 @@ const FAQ_ITEMS_EN: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "Where are refunds, billing, and legal terms?",
+    question: "Where are refunds, billing, and service terms?",
     answer:
-      "Commercial terms, acceptable use, and related legal points are in the Terms of Service. Token packs and checkout flows are summarized in the guide and pricing pages.",
+      "Commercial terms and acceptable use are in the Terms of Service. Token packs and checkout flows are summarized in the guide and pricing pages.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
@@ -137,7 +137,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "not-advice",
     question: "Is this professional advice?",
     answer:
-      "No. Interpretations are cultural and reflective tools, not medical, legal, or financial advice. See the method notes for context and the terms for disclaimers.",
+      "No. Interpretations are cultural and reflective tools, not medical, financial, or other professional advice. See the method notes for context and the terms for disclaimers.",
     related: ["methodNotes", "termsOfService"],
   },
 ];
@@ -187,9 +187,9 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "¿Dónde están reembolsos, facturación y condiciones legales?",
+    question: "¿Dónde están reembolsos, facturación y las condiciones del servicio?",
     answer:
-      "Condiciones comerciales, uso aceptable y puntos legales están en los Términos del servicio. Los packs de tokens y el flujo de compra se resumen en la guía y en la página de precios.",
+      "Las condiciones comerciales y el uso aceptable están en los Términos del servicio. Los packs de tokens y el flujo de compra se resumen en la guía y en la página de precios.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
@@ -203,7 +203,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "not-advice",
     question: "¿Esto es asesoramiento profesional?",
     answer:
-      "No. Las interpretaciones son ayuda cultural y reflexiva, no consejo médico, legal ni financiero. Las notas de métodos dan contexto; los términos incluyen descargos de responsabilidad.",
+      "No. Las interpretaciones son ayuda cultural y reflexiva, no consejo médico, financiero ni otro asesoramiento profesional. Las notas de métodos dan contexto; los términos incluyen descargos de responsabilidad.",
     related: ["methodNotes", "termsOfService"],
   },
 ];

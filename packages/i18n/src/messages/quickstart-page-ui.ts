@@ -38,7 +38,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "Ves el estado de profundidad del hilo activo (cuántas lecturas encadenadas permite tu plan en ese chat).",
     s2Li3: "Gestionas tokens y compra de packs.",
     s2Li4: "Gestionas seguridad 2FA opcional.",
-    s2Li5: "Accedes a documentación y textos legales al final del panel.",
+    s2Li5: "Al final del panel tienes enlaces a documentación, privacidad y términos.",
     s3Heading: "3) Resultados y copia local",
     s3Li1: "Cada consulta puede traer interpretación + imagen.",
     s3Li2:
@@ -60,7 +60,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "See active thread depth status (how many chained readings your plan allows in that chat).",
     s2Li3: "Manage tokens and pack purchases.",
     s2Li4: "Manage optional 2FA security.",
-    s2Li5: "Documentation and legal links are at the bottom of the panel.",
+    s2Li5: "Documentation, privacy, and terms links are at the bottom of the panel.",
     s3Heading: "3) Results and local copy",
     s3Li1: "Each consultation can include interpretation + image.",
     s3Li2:
@@ -83,7 +83,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "Vês o estado de profundidade do fio ativo (quantas leituras encadeadas o teu plano permite nesse chat).",
     s2Li3: "Geres tokens e compra de packs.",
     s2Li4: "Geres segurança 2FA opcional.",
-    s2Li5: "No final do painel tens documentação e textos legais.",
+    s2Li5: "No final do painel tens ligações a documentação, privacidade e termos.",
     s3Heading: "3) Resultados e cópia local",
     s3Li1: "Cada consulta pode incluir interpretação + imagem.",
     s3Li2:
@@ -106,7 +106,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "Voir la profondeur du fil actif (combien de lectures enchaînées votre offre autorise dans ce chat).",
     s2Li3: "Gérer les jetons et l’achat de packs.",
     s2Li4: "Gérer la 2FA optionnelle.",
-    s2Li5: "Documentation et mentions légales en bas du panneau.",
+    s2Li5: "En bas du panneau : liens vers la documentation, la confidentialité et les conditions.",
     s3Heading: "3) Résultats et copie locale",
     s3Li1: "Chaque consultation peut inclure interprétation + image.",
     s3Li2:
@@ -129,7 +129,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "Aktive Thread-Tiefe sehen (wie viele verkettete Lesungen dein Plan in diesem Chat erlaubt).",
     s2Li3: "Token und Pack-Käufe verwalten.",
     s2Li4: "Optionale 2FA-Sicherheit verwalten.",
-    s2Li5: "Dokumentation und Rechtliches stehen unten im Panel.",
+    s2Li5: "Unten im Panel: Links zu Dokumentation, Datenschutz und Nutzungsbedingungen.",
     s3Heading: "3) Ergebnisse und lokale Kopie",
     s3Li1: "Jede Beratung kann Deutung + Bild enthalten.",
     s3Li2:
@@ -152,13 +152,13 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "Vedi la profondità del thread attivo (quante letture concatenate consente il tuo piano in quella chat).",
     s2Li3: "Gestisci token e acquisto di pacchetti.",
     s2Li4: "Gestisci 2FA opzionale.",
-    s2Li5: "Documentazione e testi legali in fondo al pannello.",
+    s2Li5: "In fondo al pannello: link a documentazione, privacy e termini.",
     s3Heading: "3) Risultati e copia locale",
     s3Li1: "Ogni consulto può includere interpretazione + immagine.",
     s3Li2:
       "Per un archivio fuori dall’app, Opzioni consente di scaricare l’immagine ed esportare il thread in PDF; facoltativo, file sul dispositivo a tua discrezione.",
     s3Li3: "Puoi eliminare chat dalla cronologia (Chat).",
-    legacyRedirectNotice: "利用ガイドへリダイレクトしています…",
+    legacyRedirectNotice: "Reindirizzamento alla guida d’uso…",
   },
   ja: {
     title: "クイックスタート：アプリの使い方",
@@ -172,7 +172,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s2Li2: "アクティブスレッドの深さ（プランがそのチャットで許容する連続読み取り回数）を確認します。",
     s2Li3: "トークンとパック購入を管理します。",
     s2Li4: "任意の2要素認証を管理します。",
-    s2Li5: "パネル下部にドキュメントと法務リンクがあります。",
+    s2Li5: "パネル下部にドキュメント・プライバシー・利用規約へのリンクがあります。",
     s3Heading: "3) 結果とローカル保存",
     s3Li1: "各相談に解釈＋画像が含まれる場合があります。",
     s3Li2:
@@ -192,7 +192,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s2Li2: "查看当前会话深度状态（您的方案在该聊天中允许的连续解读次数）。",
     s2Li3: "管理代币与套餐购买。",
     s2Li4: "管理可选双因素认证。",
-    s2Li5: "面板底部有文档与法律链接。",
+    s2Li5: "面板底部有文档、隐私政策与服务条款链接。",
     s3Heading: "3) 结果与本地副本",
     s3Li1: "每次咨询可包含解读与图像。",
     s3Li2:
@@ -212,7 +212,7 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s2Li2: "활성 스레드 깊이(플랜이 해당 채팅에서 허용하는 연속 해석 횟수)를 확인합니다.",
     s2Li3: "토큰과 팩 구매를 관리합니다.",
     s2Li4: "선택적 2단계 인증을 관리합니다.",
-    s2Li5: "패널 하단에 문서·법적 링크가 있습니다.",
+    s2Li5: "패널 하단에 문서·개인정보 처리방침·서비스 약관 링크가 있습니다.",
     s3Heading: "3) 결과와 로컬 사본",
     s3Li1: "상담마다 해석+이미지가 포함될 수 있습니다.",
     s3Li2:

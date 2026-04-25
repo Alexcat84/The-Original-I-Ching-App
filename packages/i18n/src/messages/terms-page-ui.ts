@@ -71,9 +71,9 @@ const TERMS_EN: TermsPageMessages = {
   s8Title: "8) Termination",
   s8Body:
     "You may stop using the service at any time. We may suspend or terminate access for violations, security risk, or legal requirements.",
-  s9Title: "9) Governing law",
+  s9Title: "9) Partner and product notices",
   s9Body:
-    "These terms are interpreted under applicable law according to your jurisdiction and agreements with payment/platform providers.",
+    "Readings are symbolic only. Token packs, pricing, and checkout steps are summarized in the in-app guide and pricing area; partners and product details may change over time.",
   s10Title: "10) Contact",
   s10BeforeLink:
     "For questions about these terms or privacy, use the official contact channels indicated on the site. Personal data processing is described in the ",
@@ -122,9 +122,9 @@ const TERMS_ES: TermsPageMessages = {
   s8Title: "8) Terminación",
   s8Body:
     "Puedes dejar de usar el servicio en cualquier momento. Podemos suspender o terminar acceso por incumplimientos, riesgo de seguridad o requerimiento legal.",
-  s9Title: "9) Ley aplicable",
+  s9Title: "9) Avisos sobre el producto y socios",
   s9Body:
-    "Estos términos se interpretan conforme a la ley aplicable según tu jurisdicción y los acuerdos con proveedores de pago y plataforma.",
+    "Las lecturas son solo simbólicas. Packs de tokens, precios y pasos de compra se resumen en la guía y en la zona de precios; los detalles del producto y los socios pueden cambiar con el tiempo.",
   s10Title: "10) Contacto",
   s10BeforeLink:
     "Para dudas sobre estos términos o sobre privacidad, utiliza los canales oficiales indicados en el sitio. El tratamiento de datos personales se describe en la ",
@@ -177,9 +177,9 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     s8Title: "8) Rescisão",
     s8Body:
       "Podes deixar de usar o serviço a qualquer momento. Podemos suspender ou encerrar o acesso por violações, risco de segurança ou exigências legais.",
-    s9Title: "9) Lei aplicável",
+    s9Title: "9) Avisos sobre o produto e parceiros",
     s9Body:
-      "Estes termos interpretam-se segundo a lei aplicável na tua jurisdição e acordos com fornecedores de pagamento e plataforma.",
+      "As leituras são apenas simbólicas. Pacotes de tokens, preços e passos de compra resumem-se na guia e na área de preços; detalhes do produto e parceiros podem mudar ao longo do tempo.",
     s10Title: "10) Contacto",
     s10BeforeLink:
       "Para questões sobre estes termos ou privacidade, usa os canais oficiais indicados no site. O tratamento de dados pessoais está descrito na ",
@@ -228,9 +228,9 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     s8Title: "8) Résiliation",
     s8Body:
       "Vous pouvez cesser d’utiliser le service à tout moment. Nous pouvons suspendre ou résilier l’accès en cas de violation, risque de sécurité ou obligation légale.",
-    s9Title: "9) Droit applicable",
+    s9Title: "9) Avis sur le produit et les partenaires",
     s9Body:
-      "Ces conditions s’interprètent selon le droit applicable à votre juridiction et les accords avec les prestataires de paiement et de plateforme.",
+      "Les lectures sont uniquement symboliques. Packs de jetons, tarifs et étapes d’achat sont résumés dans le guide et la zone tarifs ; les détails produit et partenaires peuvent évoluer.",
     s10Title: "10) Contact",
     s10BeforeLink:
       "Pour toute question sur ces conditions ou la confidentialité, utilisez les canaux officiels du site. Le traitement des données personnelles est décrit dans la ",
@@ -279,9 +279,9 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     s8Title: "8) Beendigung",
     s8Body:
       "Sie können die Nutzung jederzeit beenden. Wir können den Zugang bei Verstößen, Sicherheitsrisiko oder gesetzlichen Anforderungen aussetzen oder beenden.",
-    s9Title: "9) Anwendbares Recht",
+    s9Title: "9) Hinweise zu Produkt und Partnern",
     s9Body:
-      "Diese Bedingungen richten sich nach anwendbarem Recht Ihrer Rechtsordnung und Vereinbarungen mit Zahlungs- und Plattformanbietern.",
+      "Die Lesungen sind rein symbolisch. Token-Pakete, Preise und Checkout-Schritte sind in der Anleitung und im Preisbereich zusammengefasst; Produkt- und Partnerdetails können sich ändern.",
     s10Title: "10) Kontakt",
     s10BeforeLink:
       "Fragen zu diesen Bedingungen oder zum Datenschutz richten Sie bitte an die offiziellen Kanäle auf der Website. Die Verarbeitung personenbezogener Daten ist in der ",
@@ -330,9 +330,9 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     s8Title: "8) Risoluzione",
     s8Body:
       "Puoi smettere di usare il servizio in qualsiasi momento. Possiamo sospendere o terminare l’accesso per violazioni, rischio per la sicurezza o obblighi di legge.",
-    s9Title: "9) Legge applicabile",
+    s9Title: "9) Avvisi su prodotto e partner",
     s9Body:
-      "Questi termini si interpretano secondo la legge applicabile nella tua giurisdizione e gli accordi con fornitori di pagamento e piattaforma.",
+      "Le letture sono solo simboliche. Pacchetti token, prezzi e passaggi di acquisto sono riassunti nella guida e nell’area prezzi; dettagli di prodotto e partner possono cambiare nel tempo.",
     s10Title: "10) Contatto",
     s10BeforeLink:
       "Per domande su questi termini o sulla privacy usa i canali ufficiali sul sito. Il trattamento dei dati personali è descritto nella ",
@@ -381,9 +381,9 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     s8Title: "8) 終了",
     s8Body:
       "いつでもサービス利用を停止できます。違反、セキュリティ上のリスク、法的要件に基づきアクセスを停止または終了することがあります。",
-    s9Title: "9) 準拠法",
+    s9Title: "9) 製品・パートナーに関する注意",
     s9Body:
-      "本規約は、お客様の法域の適用法および決済・プラットフォーム提供者との契約に従って解釈されます。",
+      "読み取りは象徴的なものに限られます。トークンパック、料金、購入手順はアプリ内ガイドと料金エリアに要約されています。製品詳細や提携先は変更される場合があります。",
     s10Title: "10) お問い合わせ",
     s10BeforeLink:
       "本規約またはプライバシーに関するご質問は、サイトに記載の公式連絡先へ。個人データの取り扱いは ",
@@ -432,9 +432,9 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     s8Title: "8) 终止",
     s8Body:
       "您可随时停止使用服务。我们可因违规、安全风险或法律要求暂停或终止访问。",
-    s9Title: "9) 适用法律",
+    s9Title: "9) 产品与合作伙伴说明",
     s9Body:
-      "本条款根据您所在司法辖区的适用法律以及与支付、平台提供方的协议进行解释。",
+      "解读仅为象征性内容。代币包、价格与购买步骤见应用内指南与价格区；产品及合作方信息可能随时间更新。",
     s10Title: "10) 联系",
     s10BeforeLink:
       "有关本条款或隐私的疑问，请使用网站所示官方渠道。个人数据处理说明见",
@@ -483,9 +483,9 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     s8Title: "8) 종료",
     s8Body:
       "언제든 서비스 이용을 중단할 수 있습니다. 위반, 보안 위험 또는 법적 요구에 따라 접근을 정지하거나 종료할 수 있습니다.",
-    s9Title: "9) 준거법",
+    s9Title: "9) 제품 및 제휴 안내",
     s9Body:
-      "본 약관은 귀하 관할의 적용 법률 및 결제·플랫폼 제공업체와의 계약에 따라 해석됩니다.",
+      "해석은 상징적 목적에 한합니다. 토큰 팩, 가격, 결제 단계는 앱 내 가이드와 가격 안내에 요약되어 있으며, 제품·제휴 세부는 시간에 따라 바뀔 수 있습니다.",
     s10Title: "10) 문의",
     s10BeforeLink:
       "본 약관 또는 개인정보 관련 문의는 사이트에 안내된 공식 채널을 이용하세요. 개인정보 처리는 ",
