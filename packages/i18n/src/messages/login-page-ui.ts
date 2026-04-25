@@ -56,6 +56,8 @@ export type LoginPageUiMessages = {
   errSupabaseNotConfigured: string;
   errRegisterDefault: string;
   errWeakPassword: string;
+  errSignupDisabled: string;
+  errSignupConfirmationFailed: string;
 };
 
 const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
@@ -119,6 +121,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errRegisterDefault: "No se pudo registrar. Inténtalo de nuevo.",
     errWeakPassword:
       "La contraseña no cumple las reglas (mín. 8 caracteres, una mayúscula y un número). Si Supabase la rechaza por ser débil, elige otra más larga o distinta.",
+    errSignupDisabled:
+      "El registro por correo está deshabilitado en el servidor. Prueba «Continuar con Google» o contacta soporte.",
+    errSignupConfirmationFailed:
+      "No pudimos enviar el correo de confirmación (SMTP o límites del proveedor). Reintenta más tarde o usa «Continuar con Google» si ya registraste ese correo.",
   },
   en: {
     configErrorTitle: "Sign-in unavailable",
@@ -177,6 +183,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errRegisterDefault: "Could not register. Please try again.",
     errWeakPassword:
       "Password does not meet the rules (min. 8 characters, one uppercase letter, one digit). If it is rejected as weak, choose a longer or different password.",
+    errSignupDisabled:
+      "Email sign-up is disabled on the server. Try “Continue with Google” or contact support.",
+    errSignupConfirmationFailed:
+      "We could not send the confirmation email (SMTP or provider limits). Try again later, or use “Continue with Google” if you already used this address.",
   },
   pt: {
     configErrorTitle: "Acesso indisponível",
@@ -235,6 +245,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errRegisterDefault: "Não foi possível registar. Tenta novamente.",
     errWeakPassword:
       "A palavra-passe não cumpre as regras (mín. 8 caracteres, uma maiúscula e um dígito). Se for rejeitada por ser fraca, escolhe outra mais longa.",
+    errSignupDisabled:
+      "O registo por e-mail está desativado no servidor. Tenta «Continuar com Google» ou contacta o suporte.",
+    errSignupConfirmationFailed:
+      "Não foi possível enviar o e-mail de confirmação (SMTP ou limites do fornecedor). Tenta mais tarde ou usa «Continuar com Google» se já usaste este e-mail.",
   },
   fr: {
     configErrorTitle: "Connexion indisponible",
@@ -294,6 +308,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errRegisterDefault: "Inscription impossible. Réessayez.",
     errWeakPassword:
       "Le mot de passe ne respecte pas les règles (min. 8 caractères, une majuscule et un chiffre). S’il est rejeté comme trop faible, choisissez-en un autre plus long.",
+    errSignupDisabled:
+      "L’inscription par e-mail est désactivée sur le serveur. Essayez « Continuer avec Google » ou contactez le support.",
+    errSignupConfirmationFailed:
+      "Impossible d’envoyer l’e-mail de confirmation (SMTP ou limites du fournisseur). Réessayez plus tard ou utilisez « Continuer avec Google » si cette adresse est déjà utilisée.",
   },
   de: {
     configErrorTitle: "Anmeldung nicht verfügbar",
@@ -353,6 +371,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errRegisterDefault: "Registrierung fehlgeschlagen. Bitte erneut versuchen.",
     errWeakPassword:
       "Das Passwort erfüllt die Regeln nicht (mind. 8 Zeichen, ein Großbuchstabe, eine Ziffer). Wenn es als zu schwach abgelehnt wird, wählen Sie ein längeres.",
+    errSignupDisabled:
+      "Die E-Mail-Registrierung ist auf dem Server deaktiviert. Versuchen Sie „Mit Google fortfahren“ oder kontaktieren Sie den Support.",
+    errSignupConfirmationFailed:
+      "Bestätigungs-E-Mail konnte nicht gesendet werden (SMTP oder Anbieterlimits). Später erneut versuchen oder „Mit Google fortfahren“, falls diese Adresse schon genutzt wurde.",
   },
   it: {
     configErrorTitle: "Accesso non disponibile",
@@ -411,6 +433,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errRegisterDefault: "Registrazione non riuscita. Riprova.",
     errWeakPassword:
       "La password non rispetta le regole (min. 8 caratteri, una maiuscola e una cifra). Se viene rifiutata come debole, scegline un’altra più lunga.",
+    errSignupDisabled:
+      "La registrazione via email è disabilitata sul server. Prova «Continua con Google» o contatta il supporto.",
+    errSignupConfirmationFailed:
+      "Impossibile inviare l’email di conferma (SMTP o limiti del provider). Riprova più tardi o usa «Continua con Google» se hai già usato questo indirizzo.",
   },
   ja: {
     configErrorTitle: "サインインできません",
@@ -467,6 +493,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errRegisterDefault: "登録できませんでした。もう一度お試しください。",
     errWeakPassword:
       "パスワードが要件を満たしていません（8文字以上・大文字1文字・数字1文字）。脆弱と判定された場合は、より長く別のパスワードを選んでください。",
+    errSignupDisabled:
+      "メールでの新規登録はサーバー側で無効です。「Googleで続行」を試すかサポートへ連絡してください。",
+    errSignupConfirmationFailed:
+      "確認メールを送信できませんでした（SMTPまたは送信制限）。しばらくして再試行するか、同じアドレスで「Googleで続行」をお試しください。",
   },
   zh: {
     configErrorTitle: "无法登录",
@@ -523,6 +553,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errRegisterDefault: "注册失败，请重试。",
     errWeakPassword:
       "密码不符合规则（至少 8 位、含一个大写字母和一个数字）。若因密码过弱被拒，请换用更长或不同的密码。",
+    errSignupDisabled:
+      "服务器已禁用邮箱注册。请尝试「使用 Google 继续」或联系支持。",
+    errSignupConfirmationFailed:
+      "无法发送确认邮件（SMTP 或服务商限制）。请稍后再试；若该邮箱已用于 Google，请用「使用 Google 继续」。",
   },
   ko: {
     configErrorTitle: "로그인을 사용할 수 없음",
@@ -579,6 +613,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errRegisterDefault: "가입하지 못했습니다. 다시 시도하세요.",
     errWeakPassword:
       "비밀번호가 규칙을 충족하지 않습니다(최소 8자, 대문자 1개, 숫자 1개). 약한 비밀번호로 거절되면 더 길거나 다른 비밀번호를 선택하세요.",
+    errSignupDisabled:
+      "서버에서 이메일 가입이 비활성화되어 있습니다. «Google로 계속»을 시도하거나 지원팀에 문의하세요.",
+    errSignupConfirmationFailed:
+      "확인 메일을 보낼 수 없습니다(SMTP 또는 발송 제한). 잠시 후 다시 시도하거나, 해당 주소로 이미 가입했다면 «Google로 계속»을 사용하세요.",
   },
 };
 
@@ -595,7 +633,7 @@ export function formatLoginConfigErrorBody(m: LoginPageUiMessages): string {
 
 export function formatLoginRegisterApiError(
   m: LoginPageUiMessages,
-  data: { error?: string; reason?: string; message?: string },
+  data: { error?: string; reason?: string; message?: string; authCode?: string },
 ): string {
   switch (data.error) {
     case "invalid_payload":
@@ -610,6 +648,10 @@ export function formatLoginRegisterApiError(
       return m.legalConsentRequired;
     case "email_rejected":
       return data.reason === "disposable" ? m.errDisposableEmail : m.errEmailValidation;
+    case "signup_disabled":
+      return m.errSignupDisabled;
+    case "signup_confirmation_failed":
+      return m.errSignupConfirmationFailed;
     case "sign_up_failed":
       return data.message ?? m.errSignUpFailedDefault;
     case "email_exists":

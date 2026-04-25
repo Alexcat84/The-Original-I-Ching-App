@@ -15,6 +15,8 @@ type ApiErrorPayload = {
   code: string;
   action: ApiErrorAction;
   message?: string;
+  /** Supabase Auth `code` when mapped to a generic register failure (for logs / support). */
+  authCode?: string;
   details?: unknown;
 };
 

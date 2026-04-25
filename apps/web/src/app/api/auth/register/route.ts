@@ -15,6 +15,20 @@ import { z } from "zod";
 
 export const runtime = "nodejs";
 
+function readSupabaseAuthErrorFields(err: unknown): { code: string; message: string; status: number | undefined } {
+  if (!err || typeof err !== "object") return { code: "", message: "", status: undefined };
+  const o = err as Record<string, unknown>;
+  const code =
+    typeof o.code === "string"
+      ? o.code
+      : typeof o.error_code === "string"
+        ? o.error_code
+        : "";
+  const message = typeof o.message === "string" ? o.message : "";
+  const status = typeof o.status === "number" ? o.status : undefined;
+  return { code, message, status };
+}
+
 function normalizeOrigin(raw: string | null | undefined): string | null {
   if (!raw) return null;
   try {
@@ -155,13 +169,44 @@ export async function POST(req: Request) {
     },
   });
   if (signUp.error) {
-    const errCode = "code" in signUp.error ? String((signUp.error as { code?: string }).code ?? "") : "";
-    const lower = signUp.error.message.toLowerCase();
+    const { code: errCode, message: errMessage, status: errStatus } = readSupabaseAuthErrorFields(signUp.error);
+    const lower = errMessage.toLowerCase();
     console.error("[auth/register] signUp failed", {
       code: errCode,
-      message: signUp.error.message,
+      status: errStatus,
+      message: errMessage,
       email: normalizedEmail,
     });
+
+    if (errCode === "over_email_send_rate_limit" || errCode === "email_rate_limit_exceeded") {
+      return apiError(429, { error: "rate_limited", code: "REGISTER_EMAIL_SEND_RATE_LIMIT", action: "wait_and_retry" });
+    }
+
+    if (errCode === "signup_disabled") {
+      return apiError(403, {
+        error: "signup_disabled",
+        code: "REGISTER_SIGNUP_DISABLED",
+        action: "check_config",
+      });
+    }
+
+    const looksLikeConfirmationOrMailFailure =
+      lower.includes("error sending") ||
+      lower.includes("sending confirmation") ||
+      lower.includes("confirmation email") ||
+      lower.includes("unable to send") ||
+      lower.includes("mailer") ||
+      lower.includes("smtp") ||
+      lower.includes("535 ") ||
+      lower.includes("554 ");
+
+    if (looksLikeConfirmationOrMailFailure) {
+      return apiError(503, {
+        error: "signup_confirmation_failed",
+        code: "REGISTER_CONFIRMATION_EMAIL_FAILED",
+        action: "wait_and_retry",
+      });
+    }
 
     const looksLikeDuplicateOrDbEmailConflict =
       errCode === "user_already_exists" ||
@@ -169,11 +214,14 @@ export async function POST(req: Request) {
       lower.includes("already registered") ||
       lower.includes("email already") ||
       lower.includes("already been registered") ||
+      lower.includes("this email address has already been registered") ||
       lower.includes("already exists") ||
       lower.includes("duplicate") ||
       lower.includes("unique constraint") ||
       lower.includes("violates unique constraint") ||
       lower.includes("23505") ||
+      lower.includes("saving new user") ||
+      lower.includes("creating new user") ||
       // Supabase surfaces trigger/constraint failures as (note: "saving", not "creating"):
       lower.includes("database error saving new user") ||
       lower.includes("database error creating new user") ||
@@ -194,7 +242,8 @@ export async function POST(req: Request) {
       errCode === "weak_password" ||
       lower.includes("weak_password") ||
       lower.includes("password is known to be weak") ||
-      lower.includes("password should be");
+      lower.includes("password should be") ||
+      (errStatus === 422 && (lower.includes("password") || lower.includes("weak")));
 
     if (looksLikeWeakPassword) {
       return apiError(400, {
@@ -204,18 +253,32 @@ export async function POST(req: Request) {
       });
     }
 
+    // Do not send a localized `message` here: it overrides client i18n for sign_up_failed.
     return apiError(400, {
       error: "sign_up_failed",
       code: "REGISTER_CREATE_USER_FAILED",
       action: "retry",
-      message:
-        process.env.NODE_ENV === "development"
-          ? signUp.error.message
-          : "No se pudo crear la cuenta en este momento. Intenta de nuevo.",
+      ...(process.env.NODE_ENV === "development" ? { message: errMessage } : {}),
+      ...(errCode ? { authCode: errCode } : {}),
     });
   }
 
-  const uid = signUp.data.user?.id;
+  const user = signUp.data.user;
+  const identities = user?.identities;
+  if (user && (!identities || identities.length === 0)) {
+    console.warn("[auth/register] signUp returned user with no identities (treat as existing email)", {
+      email: normalizedEmail,
+    });
+    return apiError(409, {
+      error: "email_exists",
+      code: "REGISTER_EMAIL_EXISTS",
+      action: "login",
+      message:
+        "Este correo ya está asociado a una cuenta (p. ej. Google). Inicia sesión con ese método o usa otro correo.",
+    });
+  }
+
+  const uid = user?.id;
   if (uid) {
     await supabase.from("users").upsert(
       { id: uid, email: normalizedEmail },

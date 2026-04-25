@@ -35,6 +35,7 @@ declare global {
         },
       ) => string;
       reset: (widgetId: string) => void;
+      remove?: (widgetId: string) => void;
     };
   }
 }
@@ -118,10 +119,15 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!turnstileSiteKey || mode !== "signup") {
+      turnstileTokenRef.current = "";
       const id = turnstileWidgetIdRef.current;
       if (id && window.turnstile) {
         try {
-          window.turnstile.reset(id);
+          if (typeof window.turnstile.remove === "function") {
+            window.turnstile.remove(id);
+          } else {
+            window.turnstile.reset(id);
+          }
         } catch {
           // ignore
         }
@@ -163,10 +169,15 @@ export default function LoginPage() {
 
     return () => {
       cancelled = true;
+      turnstileTokenRef.current = "";
       const id = turnstileWidgetIdRef.current;
       if (id && window.turnstile) {
         try {
-          window.turnstile.reset(id);
+          if (typeof window.turnstile.remove === "function") {
+            window.turnstile.remove(id);
+          } else {
+            window.turnstile.reset(id);
+          }
         } catch {
           // ignore
         }
@@ -283,8 +294,10 @@ export default function LoginPage() {
         error?: string;
         reason?: string;
         message?: string;
+        authCode?: string;
       };
       if (!res.ok) {
+        console.warn("[login/register] POST /api/auth/register failed", res.status, data);
         if (data.error === "email_exists") {
           setPendingVerificationEmail(email.trim());
           setRegisterModalKind("exists");
