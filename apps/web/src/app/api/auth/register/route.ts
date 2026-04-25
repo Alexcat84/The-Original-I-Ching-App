@@ -190,18 +190,29 @@ export async function POST(req: Request) {
       });
     }
 
+    // Narrow match: avoid generic "error sending …" strings from non-mail flows.
     const looksLikeConfirmationOrMailFailure =
-      lower.includes("error sending") ||
       lower.includes("sending confirmation") ||
       lower.includes("confirmation email") ||
-      lower.includes("unable to send") ||
       lower.includes("mailer") ||
       lower.includes("smtp") ||
       lower.includes("535 ") ||
-      lower.includes("554 ");
+      lower.includes("554 ") ||
+      (lower.includes("error sending") &&
+        (lower.includes("confirm") ||
+          lower.includes("magic") ||
+          lower.includes("mail") ||
+          lower.includes("email"))) ||
+      (lower.includes("unable to send") && (lower.includes("email") || lower.includes("mail")));
 
     if (looksLikeConfirmationOrMailFailure) {
-      return apiError(503, {
+      console.error("[auth/register] treating signUp error as confirmation/mail delivery failure", {
+        email: normalizedEmail,
+        authCode: errCode,
+        message: errMessage,
+      });
+      // 502 = upstream (Auth/mailer) issue; avoids some platforms mishandling 503 on serverless.
+      return apiError(502, {
         error: "signup_confirmation_failed",
         code: "REGISTER_CONFIRMATION_EMAIL_FAILED",
         action: "wait_and_retry",

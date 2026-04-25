@@ -58,6 +58,7 @@ export type LoginPageUiMessages = {
   errWeakPassword: string;
   errSignupDisabled: string;
   errSignupConfirmationFailed: string;
+  errLegalConsentStoreFailed: string;
 };
 
 const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
@@ -125,6 +126,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "El registro por correo está deshabilitado en el servidor. Prueba «Continuar con Google» o contacta soporte.",
     errSignupConfirmationFailed:
       "No pudimos enviar el correo de confirmación (SMTP o límites del proveedor). Reintenta más tarde o usa «Continuar con Google» si ya registraste ese correo.",
+    errLegalConsentStoreFailed:
+      "La cuenta se creó pero no pudimos guardar la aceptación legal en la base de datos. Contacta soporte; puede hacer falta una migración o permisos en Supabase.",
   },
   en: {
     configErrorTitle: "Sign-in unavailable",
@@ -187,6 +190,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Email sign-up is disabled on the server. Try “Continue with Google” or contact support.",
     errSignupConfirmationFailed:
       "We could not send the confirmation email (SMTP or provider limits). Try again later, or use “Continue with Google” if you already used this address.",
+    errLegalConsentStoreFailed:
+      "Your account was created but we could not store legal acceptance in the database. Contact support; a migration or Supabase permissions may be required.",
   },
   pt: {
     configErrorTitle: "Acesso indisponível",
@@ -249,6 +254,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "O registo por e-mail está desativado no servidor. Tenta «Continuar com Google» ou contacta o suporte.",
     errSignupConfirmationFailed:
       "Não foi possível enviar o e-mail de confirmação (SMTP ou limites do fornecedor). Tenta mais tarde ou usa «Continuar com Google» se já usaste este e-mail.",
+    errLegalConsentStoreFailed:
+      "A conta foi criada mas não foi possível guardar a aceitação legal na base de dados. Contacta o suporte; pode ser necessária uma migração ou permissões no Supabase.",
   },
   fr: {
     configErrorTitle: "Connexion indisponible",
@@ -312,6 +319,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "L’inscription par e-mail est désactivée sur le serveur. Essayez « Continuer avec Google » ou contactez le support.",
     errSignupConfirmationFailed:
       "Impossible d’envoyer l’e-mail de confirmation (SMTP ou limites du fournisseur). Réessayez plus tard ou utilisez « Continuer avec Google » si cette adresse est déjà utilisée.",
+    errLegalConsentStoreFailed:
+      "Le compte a été créé mais l’acceptation légale n’a pas pu être enregistrée. Contactez le support ; une migration ou des droits Supabase peuvent être nécessaires.",
   },
   de: {
     configErrorTitle: "Anmeldung nicht verfügbar",
@@ -375,6 +384,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Die E-Mail-Registrierung ist auf dem Server deaktiviert. Versuchen Sie „Mit Google fortfahren“ oder kontaktieren Sie den Support.",
     errSignupConfirmationFailed:
       "Bestätigungs-E-Mail konnte nicht gesendet werden (SMTP oder Anbieterlimits). Später erneut versuchen oder „Mit Google fortfahren“, falls diese Adresse schon genutzt wurde.",
+    errLegalConsentStoreFailed:
+      "Das Konto wurde erstellt, aber die rechtliche Zustimmung konnte nicht in der Datenbank gespeichert werden. Bitte Support kontaktieren (Migration oder Supabase-Berechtigungen).",
   },
   it: {
     configErrorTitle: "Accesso non disponibile",
@@ -437,6 +448,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "La registrazione via email è disabilitata sul server. Prova «Continua con Google» o contatta il supporto.",
     errSignupConfirmationFailed:
       "Impossibile inviare l’email di conferma (SMTP o limiti del provider). Riprova più tardi o usa «Continua con Google» se hai già usato questo indirizzo.",
+    errLegalConsentStoreFailed:
+      "L’account è stato creato ma non è stato possibile salvare l’accettazione legale nel database. Contatta il supporto (migrazione o permessi su Supabase).",
   },
   ja: {
     configErrorTitle: "サインインできません",
@@ -497,6 +510,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "メールでの新規登録はサーバー側で無効です。「Googleで続行」を試すかサポートへ連絡してください。",
     errSignupConfirmationFailed:
       "確認メールを送信できませんでした（SMTPまたは送信制限）。しばらくして再試行するか、同じアドレスで「Googleで続行」をお試しください。",
+    errLegalConsentStoreFailed:
+      "アカウントは作成されましたが、法的同意をデータベースに保存できませんでした。サポートに連絡してください（マイグレーションまたは Supabase の権限が必要な場合があります）。",
   },
   zh: {
     configErrorTitle: "无法登录",
@@ -557,6 +572,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "服务器已禁用邮箱注册。请尝试「使用 Google 继续」或联系支持。",
     errSignupConfirmationFailed:
       "无法发送确认邮件（SMTP 或服务商限制）。请稍后再试；若该邮箱已用于 Google，请用「使用 Google 继续」。",
+    errLegalConsentStoreFailed:
+      "账户已创建，但未能将法律同意保存到数据库。请联系支持（可能需要迁移或调整 Supabase 权限）。",
   },
   ko: {
     configErrorTitle: "로그인을 사용할 수 없음",
@@ -617,6 +634,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "서버에서 이메일 가입이 비활성화되어 있습니다. «Google로 계속»을 시도하거나 지원팀에 문의하세요.",
     errSignupConfirmationFailed:
       "확인 메일을 보낼 수 없습니다(SMTP 또는 발송 제한). 잠시 후 다시 시도하거나, 해당 주소로 이미 가입했다면 «Google로 계속»을 사용하세요.",
+    errLegalConsentStoreFailed:
+      "계정은 생성되었으나 법적 동의를 데이터베이스에 저장하지 못했습니다. 지원팀에 문의하세요(마이그레이션 또는 Supabase 권한이 필요할 수 있습니다).",
   },
 };
 
@@ -652,6 +671,10 @@ export function formatLoginRegisterApiError(
       return m.errSignupDisabled;
     case "signup_confirmation_failed":
       return m.errSignupConfirmationFailed;
+    case "legal_consent_store_failed":
+      return m.errLegalConsentStoreFailed;
+    case "register_precheck_failed":
+      return m.errRegisterDefault;
     case "sign_up_failed":
       return data.message ?? m.errSignUpFailedDefault;
     case "email_exists":
