@@ -1,10 +1,13 @@
 -- =============================================================================
 -- PURGE: remove all auth + app data except two accounts (Supabase SQL Editor)
 -- =============================================================================
--- KEEP (do not edit unless you change the accounts to preserve):
---   oalabi353@gmail.com      -> 4c64ca26-37ad-41b6-b9c6-8a96ad2dd6f9
---   alexcatbaster@gmail.com  -> 9aa235ee-7950-496b-a5c7-a6817845b746
---      (Confirm UUID in Auth > Users; if your row differs, edit both INSERT lines.)
+-- KEEP (only these two remain active; confirmed against auth.users):
+--   oalabi353@gmail.com       | 4c64ca26-37ad-41b6-b9c6-8a96ad2dd6f9
+--   alexcatbaster@gmail.com   | 9aa235ee-7950-496b-a5c7-a6817845b746
+--
+-- REMOVED by this script (example rows from same table snapshot):
+--   alexgar150@hotmail.com, camarasipcasa30@gmail.com, alexcat84@yahoo.es,
+--   contactosgdsacajutla@gmail.com, alexcatmba@gmail.com, theoriginaliching@gmail.com
 --
 -- This script:
 --   1) Deletes RevenueCat ledger rows tied to users you are removing (no FK).
