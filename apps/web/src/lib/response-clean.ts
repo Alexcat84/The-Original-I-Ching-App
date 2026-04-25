@@ -4,6 +4,17 @@
  */
 export function stripInterpretationFluff(text: string): string {
   let t = text.trim();
+  // Internal taxonomy line (theme_category); never show in UI/PDF even if DB has legacy rows.
+  while (true) {
+    const next = t.replace(
+      /^\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*[\w-]+(?:\s*\([^)]*\))?\s*(?:\r?\n|$)/i,
+      "",
+    );
+    if (next === t) break;
+    t = next.trim();
+    t = t.replace(/^\s*\n+/m, "");
+  }
+  t = t.trim();
   t = t.replace(/\n*\*[^*\n][\s\S]*?\*\s*$/, "").trim();
   const boiler: RegExp[] = [
     /(?:^|\n)(?:Es importante tener en cuenta|Debes tener presente|Cabe recordar|Ten en cuenta que|Es crucial entender|Recuerda que|No olvides que)[^\n]*\n?/gi,

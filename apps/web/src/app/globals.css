@@ -4329,6 +4329,14 @@ html[data-theme="dark"] .verdict-pill--silent {
   text-align: justify;
 }
 
+/* Copyright / reserved-rights one-liner (often last paragraph from the model); keep left-aligned. */
+.oracle-md-p.oracle-md-p--rights-line {
+  text-align: start;
+  text-justify: auto;
+  hyphens: none;
+  -webkit-hyphens: none;
+}
+
 .oracle-md-hr {
   border: none;
   border-top: 1px solid var(--bar-border);
@@ -5733,5 +5741,13 @@ html.iching-rn-webview .apk-trace-native-metrics {
   color: var(--fg-muted);
   line-height: 1.45;
   text-align: start;
+}
+
+/* Beat .oracle-shell.doc-page .doc-article p { text-align: justify } (higher specificity). */
+.oracle-shell.doc-page .doc-article p.apk-trace-rights {
+  text-align: start;
+  text-justify: auto;
+  hyphens: manual;
+  -webkit-hyphens: manual;
 }
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeInterpretationPunctuation } from "@/lib/response-clean";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
 
 describe("normalizeInterpretationPunctuation", () => {
   it("inserts space after comma before a letter", () => {
@@ -22,5 +22,20 @@ describe("normalizeInterpretationPunctuation", () => {
 
   it("adds space before word after closing paren", () => {
     expect(normalizeInterpretationPunctuation("(45)Siguiente")).toBe("(45) Siguiente");
+  });
+});
+
+describe("stripInterpretationFluff", () => {
+  it("removes leading CATEGORY line with newline", () => {
+    const raw = "CATEGORY: love_relationship\n\n## ENCUADRE\n\nBody";
+    expect(stripInterpretationFluff(raw)).toContain("## ENCUADRE");
+    expect(stripInterpretationFluff(raw)).not.toMatch(/CATEGORY/i);
+  });
+
+  it("removes leading CATEGORÍA line when slug is on its own line", () => {
+    const raw = "CATEGORÍA: general\r\n## Título";
+    const out = stripInterpretationFluff(raw);
+    expect(out).not.toMatch(/CATEGOR/i);
+    expect(out).toContain("## Título");
   });
 });
