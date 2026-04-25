@@ -5,11 +5,7 @@ import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { initFreeUser } from "@/lib/credits";
-import {
-  CURRENT_PRIVACY_VERSION,
-  CURRENT_TERMS_VERSION,
-  PENDING_EMAIL_LEGAL_METADATA_KEY,
-} from "@/lib/legal-consent";
+import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
 import { clearPendingEmailLegalConsentMetadata, recordUserLegalAcceptance } from "@/lib/legal-consent-server";
 import { z } from "zod";
 
@@ -182,22 +178,15 @@ export async function POST(req: Request) {
     });
   }
   const origin = safeAuthRedirectOrigin(req);
+  // Do not pass options.data / user_metadata here. Google OAuth creates auth.users without
+  // our custom keys; extra metadata on email signUp has correlated with GoTrue unexpected_failure.
+  // Legal consent is validated above and persisted after signup via recordUserLegalAcceptance
+  // (same insert as POST /api/auth/legal-consent). Callback still syncs legacy pending metadata.
   const signUp = await authClient.auth.signUp({
     email: normalizedEmail,
     password: parsed.data.password,
     options: {
       emailRedirectTo: `${origin.replace(/\/$/, "")}/auth/callback`,
-      // Store as a plain JSON object (not JSON.stringify). Some GoTrue versions choke on
-      // stringified JSON inside user_metadata during signup, surfacing unexpected_failure.
-      data: {
-        [PENDING_EMAIL_LEGAL_METADATA_KEY]: {
-          accepted: body.legalConsent.accepted,
-          termsVersion: body.legalConsent.termsVersion,
-          privacyVersion: body.legalConsent.privacyVersion,
-          acceptedAt: body.legalConsent.acceptedAt,
-          source: body.legalConsent.source,
-        },
-      },
     },
   });
   if (signUp.error) {
