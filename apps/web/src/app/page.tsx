@@ -1172,6 +1172,7 @@ export default function HomePage() {
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
+  const isSigningOutRef = useRef(false);
   const activeSessionLocalIdRef = useRef<string | null>(null);
   const pinnedLocalSessionIdRef = useRef<string | null>(null);
   const [chatsOpen, setChatsOpen] = useState(false);
@@ -1825,6 +1826,7 @@ export default function HomePage() {
 
   const signOut = useCallback(async () => {
     if (!isSupabaseBrowserConfigured()) return;
+    isSigningOutRef.current = true;
     const uid = authUserId;
     try {
       await getSupabaseBrowser().auth.signOut();
@@ -2060,6 +2062,7 @@ export default function HomePage() {
       setIsAdmin(false);
       setDisplayName(undefined);
       setOnboardingOpen(false);
+      isSigningOutRef.current = false;
       return;
     }
     let cancelled = false;
@@ -2069,6 +2072,7 @@ export default function HomePage() {
     }
     setTierReady(false);
     function loadAccountTier() {
+      if (isSigningOutRef.current) return;
       void fetch("/api/account/me", {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
