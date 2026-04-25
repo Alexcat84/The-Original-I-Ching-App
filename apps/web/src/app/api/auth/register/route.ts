@@ -17,7 +17,7 @@ function parseRegisterRateLimit(): { limit: number; windowSeconds: number } {
   const limitParsed = rawLimit ? Number.parseInt(rawLimit, 10) : Number.NaN;
   const windowParsed = rawWindow ? Number.parseInt(rawWindow, 10) : Number.NaN;
   const limit =
-    Number.isFinite(limitParsed) && limitParsed >= 1 ? Math.min(limitParsed, 120) : 15;
+    Number.isFinite(limitParsed) && limitParsed >= 1 ? Math.min(limitParsed, 120) : 5;
   const windowSeconds =
     Number.isFinite(windowParsed) && windowParsed >= 60 ? Math.min(windowParsed, 86_400) : 3600;
   return { limit, windowSeconds };
@@ -84,10 +84,13 @@ export async function POST(req: Request) {
       error: missingLegalConsent ? "legal_consent_required" : "invalid_payload",
       code: missingLegalConsent ? "LEGAL_CONSENT_REQUIRED" : "REGISTER_INVALID_PAYLOAD",
       action: "fix_input",
-      details: bodyResult.error.flatten(),
     });
   }
   const body = bodyResult.data;
+  const consentAge = Date.now() - new Date(body.legalConsent.acceptedAt).getTime();
+  if (consentAge > 10 * 60 * 1000) {
+    return apiError(400, { error: "legal_consent_expired", code: "LEGAL_CONSENT_EXPIRED", action: "fix_input" });
+  }
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
   const { limit: registerRlLimit, windowSeconds: registerRlWindow } = parseRegisterRateLimit();
   // Key prefix version: bump when raising defaults or after incidents so Redis counters reset
@@ -112,7 +115,6 @@ export async function POST(req: Request) {
       error: "invalid_payload",
       code: "REGISTER_INVALID_PAYLOAD",
       action: "fix_input",
-      details: parsed.error.flatten(),
     });
   }
 

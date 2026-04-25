@@ -77,7 +77,7 @@ export async function POST(req: Request) {
     return apiError(400, { error: "totp_not_enrolled", code: "TWO_FACTOR_NOT_ENROLLED", action: "setup_2fa" });
   }
   const encryptionKey = process.env.TOTP_ENCRYPTION_KEY;
-  if (!encryptionKey) {
+  if (!encryptionKey || encryptionKey.length < 32) {
     return apiError(503, {
       error: "missing_totp_encryption_key",
       code: "TWO_FACTOR_ENCRYPTION_KEY_MISSING",
