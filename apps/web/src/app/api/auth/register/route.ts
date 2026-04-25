@@ -137,11 +137,13 @@ export async function POST(req: Request) {
     auth: { persistSession: false, autoRefreshToken: false },
   });
   const normalizedEmail = parsed.data.email.toLowerCase();
-  const { data: existingUser, error: existingUserError } = await supabase
+  // Case-insensitive: duplicate logical emails must block signup before Auth insert;
+  // otherwise handle_new_auth_user() can hit UNIQUE(email) on public.users and GoTrue returns unexpected_failure.
+  const { data: existingRows, error: existingUserError } = await supabase
     .from("users")
     .select("id")
-    .eq("email", normalizedEmail)
-    .maybeSingle();
+    .ilike("email", normalizedEmail)
+    .limit(1);
   if (existingUserError) {
     return apiError(500, {
       error: "register_precheck_failed",
@@ -149,6 +151,7 @@ export async function POST(req: Request) {
       action: "retry",
     });
   }
+  const existingUser = existingRows?.[0];
   if (existingUser?.id) {
     return apiError(409, {
       error: "email_exists",
@@ -261,6 +264,18 @@ export async function POST(req: Request) {
         error: "weak_password",
         code: "REGISTER_WEAK_PASSWORD",
         action: "fix_input",
+      });
+    }
+
+    if (errCode === "unexpected_failure" || lower.includes("unexpected_failure")) {
+      console.error(
+        "[auth/register] Supabase Auth unexpected_failure — often a DB trigger on auth.users (e.g. public.handle_new_auth_user / init_free_user). Check Supabase Postgres logs.",
+        { email: normalizedEmail, message: errMessage },
+      );
+      return apiError(503, {
+        error: "signup_auth_internal_error",
+        code: "REGISTER_AUTH_UNEXPECTED_FAILURE",
+        action: "check_config",
       });
     }
 

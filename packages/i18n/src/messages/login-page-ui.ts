@@ -59,6 +59,7 @@ export type LoginPageUiMessages = {
   errSignupDisabled: string;
   errSignupConfirmationFailed: string;
   errLegalConsentStoreFailed: string;
+  errSignupAuthInternalError: string;
 };
 
 const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
@@ -128,6 +129,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "No pudimos enviar el correo de confirmación (SMTP o límites del proveedor). Reintenta más tarde o usa «Continuar con Google» si ya registraste ese correo.",
     errLegalConsentStoreFailed:
       "La cuenta se creó pero no pudimos guardar la aceptación legal en la base de datos. Contacta soporte; puede hacer falta una migración o permisos en Supabase.",
+    errSignupAuthInternalError:
+      "Supabase Auth devolvió un fallo interno (unexpected_failure). Suele ser un trigger en la base al crear el usuario (p. ej. public.users o tokens). En el panel: Logs → Postgres; revisa errores al insertar en auth.users. Si ya usaste este correo con Google, inicia sesión con Google.",
   },
   en: {
     configErrorTitle: "Sign-in unavailable",
@@ -192,6 +195,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "We could not send the confirmation email (SMTP or provider limits). Try again later, or use “Continue with Google” if you already used this address.",
     errLegalConsentStoreFailed:
       "Your account was created but we could not store legal acceptance in the database. Contact support; a migration or Supabase permissions may be required.",
+    errSignupAuthInternalError:
+      "Supabase Auth returned an internal error (unexpected_failure). This is often a database trigger when creating the user (e.g. public.users or credits). In the dashboard: Logs → Postgres; look for errors on auth.users inserts. If you already use this email with Google, sign in with Google.",
   },
   pt: {
     configErrorTitle: "Acesso indisponível",
@@ -256,6 +261,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Não foi possível enviar o e-mail de confirmação (SMTP ou limites do fornecedor). Tenta mais tarde ou usa «Continuar com Google» se já usaste este e-mail.",
     errLegalConsentStoreFailed:
       "A conta foi criada mas não foi possível guardar a aceitação legal na base de dados. Contacta o suporte; pode ser necessária uma migração ou permissões no Supabase.",
+    errSignupAuthInternalError:
+      "O Supabase Auth devolveu um erro interno (unexpected_failure). Muitas vezes é um trigger na base ao criar o utilizador. No painel: Logs → Postgres. Se já usaste este e-mail com o Google, inicia sessão com o Google.",
   },
   fr: {
     configErrorTitle: "Connexion indisponible",
@@ -321,6 +328,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Impossible d’envoyer l’e-mail de confirmation (SMTP ou limites du fournisseur). Réessayez plus tard ou utilisez « Continuer avec Google » si cette adresse est déjà utilisée.",
     errLegalConsentStoreFailed:
       "Le compte a été créé mais l’acceptation légale n’a pas pu être enregistrée. Contactez le support ; une migration ou des droits Supabase peuvent être nécessaires.",
+    errSignupAuthInternalError:
+      "Supabase Auth a renvoyé une erreur interne (unexpected_failure), souvent due à un trigger lors de la création d’utilisateur. Tableau de bord : Logs → Postgres. Si vous utilisez déjà cet e-mail avec Google, connectez-vous avec Google.",
   },
   de: {
     configErrorTitle: "Anmeldung nicht verfügbar",
@@ -386,6 +395,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Bestätigungs-E-Mail konnte nicht gesendet werden (SMTP oder Anbieterlimits). Später erneut versuchen oder „Mit Google fortfahren“, falls diese Adresse schon genutzt wurde.",
     errLegalConsentStoreFailed:
       "Das Konto wurde erstellt, aber die rechtliche Zustimmung konnte nicht in der Datenbank gespeichert werden. Bitte Support kontaktieren (Migration oder Supabase-Berechtigungen).",
+    errSignupAuthInternalError:
+      "Supabase Auth meldete einen internen Fehler (unexpected_failure), oft durch einen DB-Trigger bei der Nutzeranlage. Im Dashboard: Logs → Postgres. Wenn Sie diese E-Mail schon mit Google nutzen, mit Google anmelden.",
   },
   it: {
     configErrorTitle: "Accesso non disponibile",
@@ -450,6 +461,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Impossibile inviare l’email di conferma (SMTP o limiti del provider). Riprova più tardi o usa «Continua con Google» se hai già usato questo indirizzo.",
     errLegalConsentStoreFailed:
       "L’account è stato creato ma non è stato possibile salvare l’accettazione legale nel database. Contatta il supporto (migrazione o permessi su Supabase).",
+    errSignupAuthInternalError:
+      "Supabase Auth ha restituito un errore interno (unexpected_failure), spesso per un trigger sul DB alla creazione utente. Dashboard: Logs → Postgres. Se usi già questa email con Google, accedi con Google.",
   },
   ja: {
     configErrorTitle: "サインインできません",
@@ -512,6 +525,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "確認メールを送信できませんでした（SMTPまたは送信制限）。しばらくして再試行するか、同じアドレスで「Googleで続行」をお試しください。",
     errLegalConsentStoreFailed:
       "アカウントは作成されましたが、法的同意をデータベースに保存できませんでした。サポートに連絡してください（マイグレーションまたは Supabase の権限が必要な場合があります）。",
+    errSignupAuthInternalError:
+      "Supabase Auth が内部エラー（unexpected_failure）を返しました。多くの場合、ユーザー作成時の DB トリガーが原因です。ダッシュボードの Logs → Postgres を確認してください。同じメールで Google を使っている場合は Google でログインしてください。",
   },
   zh: {
     configErrorTitle: "无法登录",
@@ -574,6 +589,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "无法发送确认邮件（SMTP 或服务商限制）。请稍后再试；若该邮箱已用于 Google，请用「使用 Google 继续」。",
     errLegalConsentStoreFailed:
       "账户已创建，但未能将法律同意保存到数据库。请联系支持（可能需要迁移或调整 Supabase 权限）。",
+    errSignupAuthInternalError:
+      "Supabase Auth 返回内部错误（unexpected_failure），常见原因是创建用户时的数据库触发器。请在控制台查看 Logs → Postgres。若该邮箱已用于 Google，请用 Google 登录。",
   },
   ko: {
     configErrorTitle: "로그인을 사용할 수 없음",
@@ -636,6 +653,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "확인 메일을 보낼 수 없습니다(SMTP 또는 발송 제한). 잠시 후 다시 시도하거나, 해당 주소로 이미 가입했다면 «Google로 계속»을 사용하세요.",
     errLegalConsentStoreFailed:
       "계정은 생성되었으나 법적 동의를 데이터베이스에 저장하지 못했습니다. 지원팀에 문의하세요(마이그레이션 또는 Supabase 권한이 필요할 수 있습니다).",
+    errSignupAuthInternalError:
+      "Supabase Auth가 내부 오류(unexpected_failure)를 반환했습니다. 사용자 생성 시 DB 트리거 문제인 경우가 많습니다. 대시보드에서 Logs → Postgres를 확인하세요. 같은 이메일로 Google을 썼다면 Google로 로그인하세요.",
   },
 };
 
@@ -673,6 +692,8 @@ export function formatLoginRegisterApiError(
       return m.errSignupConfirmationFailed;
     case "legal_consent_store_failed":
       return m.errLegalConsentStoreFailed;
+    case "signup_auth_internal_error":
+      return m.errSignupAuthInternalError;
     case "register_precheck_failed":
       return m.errRegisterDefault;
     case "sign_up_failed":
