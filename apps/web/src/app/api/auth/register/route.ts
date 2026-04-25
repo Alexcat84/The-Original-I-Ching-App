@@ -15,6 +15,18 @@ import { z } from "zod";
 
 export const runtime = "nodejs";
 
+function parseRegisterRateLimit(): { limit: number; windowSeconds: number } {
+  const rawLimit = process.env.REGISTER_RATE_LIMIT_PER_HOUR;
+  const rawWindow = process.env.REGISTER_RATE_WINDOW_SECONDS;
+  const limitParsed = rawLimit ? Number.parseInt(rawLimit, 10) : Number.NaN;
+  const windowParsed = rawWindow ? Number.parseInt(rawWindow, 10) : Number.NaN;
+  const limit =
+    Number.isFinite(limitParsed) && limitParsed >= 1 ? Math.min(limitParsed, 120) : 5;
+  const windowSeconds =
+    Number.isFinite(windowParsed) && windowParsed >= 60 ? Math.min(windowParsed, 86_400) : 3600;
+  return { limit, windowSeconds };
+}
+
 function readSupabaseAuthErrorFields(err: unknown): { code: string; message: string; status: number | undefined } {
   if (!err || typeof err !== "object") return { code: "", message: "", status: undefined };
   const o = err as Record<string, unknown>;
@@ -81,9 +93,16 @@ export async function POST(req: Request) {
   }
   const body = bodyResult.data;
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
-  const rl = await rateLimitByKey({ key: `register:${ip}`, limit: 5, windowSeconds: 3600 });
+  const { limit: registerRlLimit, windowSeconds: registerRlWindow } = parseRegisterRateLimit();
+  const rl = await rateLimitByKey({
+    key: `register:${ip}`,
+    limit: registerRlLimit,
+    windowSeconds: registerRlWindow,
+  });
   if (!rl.ok) {
-    return apiError(429, { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" });
+    const res = apiError(429, { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" });
+    res.headers.set("Retry-After", String(registerRlWindow));
+    return res;
   }
 
   const parsed = registerStep1Schema.safeParse({
