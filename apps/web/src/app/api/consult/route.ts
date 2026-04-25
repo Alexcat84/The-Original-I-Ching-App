@@ -20,6 +20,7 @@ import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { isPersistableUuid } from "@/lib/session-ids";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isSharingPersistenceAvailable, upsertSessionAndConsultation } from "@/lib/session-store";
 import { canDeepenAfterNextConsult, normalizeSessionDepthLimit, shouldBlockDeepening } from "@/lib/thread-depth-policy";
 
@@ -233,10 +234,29 @@ export async function POST(req: Request) {
 
   const isDeepening = Boolean(body.isDeepening);
   const previousRows = mapHistoryToRows(body.history);
+
+  // When deepening, validate depth against the DB record — not the client-supplied history,
+  // which could be manipulated to bypass session limits.
+  let authorizedDepth = previousRows.length;
+  if (isDeepening && isPersistableUuid(sessionId)) {
+    const supabaseAdmin = getSupabaseAdmin();
+    if (supabaseAdmin) {
+      const { data: sessionRow } = await supabaseAdmin
+        .from("consultation_sessions")
+        .select("consultation_count")
+        .eq("id", sessionId)
+        .eq("user_id", authedUserId)
+        .maybeSingle();
+      if (sessionRow) {
+        authorizedDepth = sessionRow.consultation_count ?? previousRows.length;
+      }
+    }
+  }
+
   if (
     shouldBlockDeepening({
       isDeepening,
-      historyLength: previousRows.length,
+      historyLength: authorizedDepth,
       sessionLimit: maxDepth,
     })
   ) {

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { getPackConfig } from "@/lib/token-packs";
 import { revenueCatWebhookAuthorized } from "@/lib/revenuecat-webhook-auth";
@@ -17,9 +18,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  let rawBody: string;
+  try {
+    rawBody = await req.text();
+  } catch {
+    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+  }
+  const eventHash = createHash("sha256").update(rawBody).digest("hex");
+
   let body: Record<string, unknown>;
   try {
-    body = (await req.json()) as Record<string, unknown>;
+    body = JSON.parse(rawBody) as Record<string, unknown>;
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
@@ -48,6 +57,22 @@ export async function POST(req: NextRequest) {
   if (!supabase) {
     return NextResponse.json({ error: "db_not_configured" }, { status: 503 });
   }
+
+  // Idempotency: reject duplicate events (RC retries on timeout).
+  // UNIQUE constraint on event_hash — insert fails with 23505 if already processed.
+  const { error: dedupError } = await supabase.from("revenuecat_webhook_events").insert({
+    event_hash: eventHash,
+    event_type: eventType,
+    app_user_id: userId || null,
+  });
+  if (dedupError) {
+    if (dedupError.code === "23505") {
+      return NextResponse.json({ skipped: "already_processed" });
+    }
+    // Log but continue — prefer a duplicate grant over a lost purchase.
+    console.error("[RC webhook] idempotency insert failed:", dedupError.message);
+  }
+
   const { error } = await supabase.rpc("grant_tokens", {
     p_user_id: userId,
     p_tokens: pack.tokens,

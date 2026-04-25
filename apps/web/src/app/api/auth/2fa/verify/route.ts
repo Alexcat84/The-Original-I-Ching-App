@@ -197,17 +197,11 @@ export async function POST(req: Request) {
 
   const recoveryCodes = generateRecoveryCodes(8);
   const hashed = await hashRecoveryCodes(recoveryCodes);
-  await supabase
-    .from("two_factor_recovery_codes")
-    .delete()
-    .eq("user_id", userId)
-    .is("used_at", null);
-  const { error: recoveryInsertError } = await supabase.from("two_factor_recovery_codes").insert(
-    hashed.map((hash) => ({
-      user_id: userId,
-      code_hash: hash,
-    })),
-  );
+  // Atomic delete+insert via stored procedure (migration 030).
+  const { error: recoveryInsertError } = await supabase.rpc("reset_2fa_recovery_codes", {
+    p_user_id: userId,
+    p_hashed_codes: hashed,
+  });
   if (recoveryInsertError) {
     return apiError(500, {
       error: "two_factor_recovery_insert_failed",
