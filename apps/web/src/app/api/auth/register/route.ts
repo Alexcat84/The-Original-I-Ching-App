@@ -177,6 +177,27 @@ export async function POST(req: Request) {
       message: "Ese correo ya está registrado. Inicia sesión.",
     });
   }
+
+  // If this email already exists in auth.users (e.g. Google OAuth), anon signUp often fails with
+  // unexpected_failure instead of a clear error. RPC requires migration 028 on the Supabase project.
+  const { data: authEmailTaken, error: authEmailRpcError } = await supabase.rpc("auth_email_registered", {
+    p_email: normalizedEmail,
+  });
+  if (authEmailRpcError) {
+    console.warn("[auth/register] auth_email_registered RPC skipped or failed (run migration 028?)", {
+      message: authEmailRpcError.message,
+      code: authEmailRpcError.code,
+    });
+  } else if (authEmailTaken === true) {
+    return apiError(409, {
+      error: "email_exists",
+      code: "REGISTER_EMAIL_EXISTS",
+      action: "login",
+      message:
+        "Este correo ya tiene cuenta (por ejemplo con Google). Inicia sesión con ese método o usa otro correo para registro con contraseña.",
+    });
+  }
+
   const origin = safeAuthRedirectOrigin(req);
   // Do not pass options.data / user_metadata here. Google OAuth creates auth.users without
   // our custom keys; extra metadata on email signUp has correlated with GoTrue unexpected_failure.

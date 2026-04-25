@@ -23,3 +23,17 @@ FROM public.users u
 LEFT JOIN auth.users a ON a.id = u.id
 WHERE a.id IS NULL
 LIMIT 50;
+
+-- 5) Same logical email on multiple public.users rows (UNIQUE is case-sensitive; rare but blocks signup)
+SELECT lower(trim(email)) AS email_norm, count(*)::int AS n, array_agg(id::text) AS ids
+FROM public.users
+GROUP BY 1
+HAVING count(*) > 1;
+
+-- 6) Orphan public row (no auth for p.id) whose email matches some auth user — blocks new signup on that email
+SELECT p.id AS orphan_public_id, p.email, a.id AS auth_id_for_same_email
+FROM public.users p
+JOIN auth.users a ON lower(trim(a.email)) = lower(trim(p.email))
+WHERE p.id IS DISTINCT FROM a.id
+  AND NOT EXISTS (SELECT 1 FROM auth.users a2 WHERE a2.id = p.id)
+LIMIT 50;
