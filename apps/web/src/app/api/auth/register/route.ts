@@ -21,7 +21,7 @@ function parseRegisterRateLimit(): { limit: number; windowSeconds: number } {
   const limitParsed = rawLimit ? Number.parseInt(rawLimit, 10) : Number.NaN;
   const windowParsed = rawWindow ? Number.parseInt(rawWindow, 10) : Number.NaN;
   const limit =
-    Number.isFinite(limitParsed) && limitParsed >= 1 ? Math.min(limitParsed, 120) : 5;
+    Number.isFinite(limitParsed) && limitParsed >= 1 ? Math.min(limitParsed, 120) : 15;
   const windowSeconds =
     Number.isFinite(windowParsed) && windowParsed >= 60 ? Math.min(windowParsed, 86_400) : 3600;
   return { limit, windowSeconds };
@@ -94,8 +94,10 @@ export async function POST(req: Request) {
   const body = bodyResult.data;
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
   const { limit: registerRlLimit, windowSeconds: registerRlWindow } = parseRegisterRateLimit();
+  // Key prefix version: bump when raising defaults or after incidents so Redis counters reset
+  // without waiting for TTL (Upstash keeps rl:register:v2:… separate from legacy rl:register:…).
   const rl = await rateLimitByKey({
-    key: `register:${ip}`,
+    key: `register:v2:${ip}`,
     limit: registerRlLimit,
     windowSeconds: registerRlWindow,
   });
