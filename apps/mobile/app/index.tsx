@@ -81,11 +81,14 @@ function isPublicDocInternalPath(path: string): boolean {
 // Supabase project — needed to construct the Google OAuth URL from native side.
 // IMPORTANT: Add "theoriginaliching://auth/callback" to your Supabase project's
 // Auth > URL Configuration > Redirect URLs for Google OAuth deep-link to work.
-const SUPABASE_URL = "https://idirklxzohzthdgsuqzb.supabase.co";
-// Anon key is public — same value as NEXT_PUBLIC_SUPABASE_ANON_KEY in the web app.
-const SUPABASE_ANON_KEY =
-  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkaXJrbHh6b2h6dGhkZ3N1cXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNDc2MzAsImV4cCI6MjA4OTkyMzYzMH0.qfSINYXkiGBDVdq7ojPRKGJkPlKXS-j_KKktqv0eyD4";
+// Both EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY must be set in apps/mobile/.env.
+const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  throw new Error(
+    "EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY must be set in apps/mobile/.env",
+  );
+}
 
 const SECURE_TOKEN_KEY = "supabase_access_token";
 const LOCALE_STORAGE_KEY = "iching_native_locale";

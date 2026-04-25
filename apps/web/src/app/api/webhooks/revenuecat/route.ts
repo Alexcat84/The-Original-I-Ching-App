@@ -8,8 +8,12 @@ export const runtime = "nodejs";
 const PURCHASE_EVENTS = new Set(["NON_RENEWING_PURCHASE", "TEST"]);
 
 export async function POST(req: NextRequest) {
-  const secret = process.env.REVENUECAT_WEBHOOK_SECRET ?? "";
-  if (secret && !revenueCatWebhookAuthorized(req, secret)) {
+  const secret = process.env.REVENUECAT_WEBHOOK_SECRET?.trim();
+  if (!secret) {
+    console.error("[RC webhook] REVENUECAT_WEBHOOK_SECRET not configured — rejecting request");
+    return NextResponse.json({ error: "webhook_not_configured" }, { status: 503 });
+  }
+  if (!revenueCatWebhookAuthorized(req, secret)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -25,10 +29,7 @@ export async function POST(req: NextRequest) {
   const userId = (event?.app_user_id as string) ?? "";
   const productId = (event?.product_id as string) ?? "";
 
-  console.log(`[RC webhook] type=${eventType} user=${userId} product=${productId}`);
-
   if (!PURCHASE_EVENTS.has(eventType)) {
-    console.log(`[RC webhook] ignored: ${eventType}`);
     return NextResponse.json({ skipped: eventType });
   }
 
@@ -54,10 +55,9 @@ export async function POST(req: NextRequest) {
   });
 
   if (error) {
-    console.error("[RC webhook] grant_tokens failed:", error);
+    console.error("[RC webhook] grant_tokens failed:", error.message);
     return NextResponse.json({ error: "db_error" }, { status: 500 });
   }
 
-  console.log(`[RC webhook] granted ${pack.tokens} tokens -> ${userId} (${productId})`);
   return NextResponse.json({ granted: pack.tokens, pack: productId });
 }
