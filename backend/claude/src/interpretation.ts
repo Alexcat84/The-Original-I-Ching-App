@@ -5,6 +5,10 @@ import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { loadClaudeEnv } from "./env.js";
 import { buildContextBlock, type ResponseMode } from "./interpretation-context.js";
+import {
+  changingLinePositionsLabel,
+  ichingStructuralCorrectionAppendix,
+} from "./interpretation-structural-i18n.js";
 import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "./response-clean.js";
 
 export type { ResponseMode } from "./interpretation-context.js";
@@ -39,7 +43,7 @@ function getLanguageName(language: string): string {
     zh: "Chinese",
     ko: "Korean",
   };
-  return map[language] ?? "Spanish";
+  return map[language] ?? "English";
 }
 
 function isLikelyWrongLanguage(text: string, language: string): boolean {
@@ -59,13 +63,6 @@ function offlineFallbackText(castResult: CastResult, language: string, reason: "
     return `[Offline / ${reason}] Mock interpretation for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
   }
   return `[Offline / ${reason}] ${getLanguageName(language)} reading fallback for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
-}
-
-function spelledCountLabel(count: number, language: string): string {
-  if (language === "en") {
-    return ["zero", "one", "two", "three", "four", "five", "six"][count] ?? String(count);
-  }
-  return ["cero", "una", "dos", "tres", "cuatro", "cinco", "seis"][count] ?? String(count);
 }
 
 function claimedChangingCount(text: string): number | null {
@@ -90,17 +87,8 @@ function enforceIChingStructuralConsistency(text: string, cast: CastResult, lang
   const expected = cast.changingLines.length;
   const claimed = claimedChangingCount(text);
   if (claimed === null || claimed === expected) return text;
-  const lineList = cast.changingLines.length > 0 ? cast.changingLines.join(", ") : language === "en" ? "none" : "ninguna";
-  const transformedLabel =
-    cast.transformedHexagram?.number !== undefined && cast.transformedHexagram !== null
-      ? `#${cast.transformedHexagram.number}`
-      : language === "en"
-        ? "none"
-        : "ninguno";
-  const correction =
-    language === "en"
-      ? `Structural correction: this cast has ${expected} changing line${expected === 1 ? "" : "s"} (${spelledCountLabel(expected, "en")}). Positions: ${lineList}. Transformed hexagram: ${transformedLabel}.`
-      : `Corrección estructural: esta tirada tiene ${expected} línea${expected === 1 ? "" : "s"} en mutación (${spelledCountLabel(expected, "es")}). Posiciones: ${lineList}. Hexagrama transformado: ${transformedLabel}.`;
+  const lineList = changingLinePositionsLabel(cast, language);
+  const correction = ichingStructuralCorrectionAppendix(cast, language, expected, lineList);
   return `${text}\n\n${correction}`;
 }
 
