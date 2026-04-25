@@ -77,6 +77,17 @@ export async function POST(req: Request) {
   } catch {
     return apiError(400, { error: "invalid_json", code: "REQUEST_INVALID_JSON", action: "fix_input" });
   }
+  // Check acceptedAt recency before full schema validation so a stale timestamp
+  // returns LEGAL_CONSENT_EXPIRED rather than LEGAL_CONSENT_REQUIRED (Zod fails on
+  // version literals before reaching the post-parse check).
+  const rawConsent = (rawBody as Record<string, unknown>)?.legalConsent as Record<string, unknown> | undefined;
+  const rawAcceptedAt = typeof rawConsent?.acceptedAt === "string" ? rawConsent.acceptedAt : null;
+  if (rawAcceptedAt) {
+    const ts = new Date(rawAcceptedAt).getTime();
+    if (!Number.isNaN(ts) && Date.now() - ts > 10 * 60 * 1000) {
+      return apiError(400, { error: "legal_consent_expired", code: "LEGAL_CONSENT_EXPIRED", action: "fix_input" });
+    }
+  }
   const bodyResult = registerRequestSchema.safeParse(rawBody);
   if (!bodyResult.success) {
     const missingLegalConsent = bodyResult.error.issues.some((issue) => issue.path[0] === "legalConsent");
@@ -87,10 +98,6 @@ export async function POST(req: Request) {
     });
   }
   const body = bodyResult.data;
-  const consentAge = Date.now() - new Date(body.legalConsent.acceptedAt).getTime();
-  if (consentAge > 10 * 60 * 1000) {
-    return apiError(400, { error: "legal_consent_expired", code: "LEGAL_CONSENT_EXPIRED", action: "fix_input" });
-  }
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
   const { limit: registerRlLimit, windowSeconds: registerRlWindow } = parseRegisterRateLimit();
   // Key prefix version: bump when raising defaults or after incidents so Redis counters reset
