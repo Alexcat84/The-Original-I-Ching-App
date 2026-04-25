@@ -3398,7 +3398,7 @@ export default function HomePage() {
 
         <aside
           className={`chat-drawer ${chatsOpen ? "open" : ""}`}
-          aria-hidden={!chatsOpen}
+          inert={!chatsOpen ? "" : undefined}
           id="chat-drawer"
         >
           <div className="chat-drawer-header">
@@ -4003,7 +4003,7 @@ export default function HomePage() {
               <div
                 id="consult-panel"
                 className={`composer-sheet ${consultPanelOpen ? "is-open" : ""}`}
-                aria-hidden={!consultPanelOpen}
+                inert={!consultPanelOpen ? "" : undefined}
               >
                 <div className="composer-sheet-inner">
                   <section className="oracle-card composer-card">

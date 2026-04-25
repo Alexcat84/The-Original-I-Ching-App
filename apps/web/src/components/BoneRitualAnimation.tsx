@@ -864,7 +864,7 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
     resizeObserver.observe(containerRef.current);
 
     setWebglActive(true);
-    const clock = new THREE.Clock();
+    const clock = new THREE.Timer();
 
     const animate = () => {
       if (disposed) return;
