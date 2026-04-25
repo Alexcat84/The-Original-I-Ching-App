@@ -36,3 +36,18 @@ export function isCurrentLegalConsentPayload(value: unknown): value is LegalCons
     (payload.source === "email_signup" || payload.source === "google_oauth" || payload.source === "post_login")
   );
 }
+
+/** Pending consent in user_metadata may be a JSON object (preferred) or legacy JSON string. */
+export function parsePendingEmailLegalConsentFromUserMetadata(raw: unknown): LegalConsentPayload | null {
+  let value: unknown = raw;
+  if (typeof raw === "string") {
+    try {
+      value = JSON.parse(raw) as unknown;
+    } catch {
+      return null;
+    }
+  }
+  if (!isCurrentLegalConsentPayload(value)) return null;
+  if (value.source !== "email_signup") return null;
+  return value;
+}

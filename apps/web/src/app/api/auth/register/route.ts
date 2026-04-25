@@ -187,8 +187,16 @@ export async function POST(req: Request) {
     password: parsed.data.password,
     options: {
       emailRedirectTo: `${origin.replace(/\/$/, "")}/auth/callback`,
+      // Store as a plain JSON object (not JSON.stringify). Some GoTrue versions choke on
+      // stringified JSON inside user_metadata during signup, surfacing unexpected_failure.
       data: {
-        [PENDING_EMAIL_LEGAL_METADATA_KEY]: JSON.stringify(body.legalConsent),
+        [PENDING_EMAIL_LEGAL_METADATA_KEY]: {
+          accepted: body.legalConsent.accepted,
+          termsVersion: body.legalConsent.termsVersion,
+          privacyVersion: body.legalConsent.privacyVersion,
+          acceptedAt: body.legalConsent.acceptedAt,
+          source: body.legalConsent.source,
+        },
       },
     },
   });

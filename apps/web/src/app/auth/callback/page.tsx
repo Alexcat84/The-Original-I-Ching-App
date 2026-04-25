@@ -5,6 +5,7 @@ import { useAppLocale } from "@/lib/use-app-locale";
 import {
   isCurrentLegalConsentPayload,
   LEGAL_CONSENT_PENDING_STORAGE_KEY,
+  parsePendingEmailLegalConsentFromUserMetadata,
   PENDING_EMAIL_LEGAL_METADATA_KEY,
 } from "@/lib/legal-consent";
 import type { PostAuthClientRoute } from "@/lib/post-auth-legal";
@@ -66,25 +67,19 @@ export default function AuthCallbackPage() {
             }
           }
 
-          const pendingMeta = session.user?.user_metadata?.[PENDING_EMAIL_LEGAL_METADATA_KEY];
-          if (typeof pendingMeta === "string") {
-            try {
-              const consent = JSON.parse(pendingMeta) as unknown;
-              if (isCurrentLegalConsentPayload(consent) && consent.source === "email_signup") {
-                const res = await fetch("/api/auth/legal-consent", {
-                  method: "POST",
-                  headers: {
-                    Authorization: `Bearer ${session.access_token}`,
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(consent),
-                });
-                if (!res.ok) {
-                  console.warn("[auth/callback] email signup legal consent:", await res.text());
-                }
-              }
-            } catch (error) {
-              console.warn("[auth/callback] email signup legal consent parse failed:", error);
+          const pendingRaw = session.user?.user_metadata?.[PENDING_EMAIL_LEGAL_METADATA_KEY];
+          const emailSignupConsent = parsePendingEmailLegalConsentFromUserMetadata(pendingRaw);
+          if (emailSignupConsent) {
+            const res = await fetch("/api/auth/legal-consent", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${session.access_token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(emailSignupConsent),
+            });
+            if (!res.ok) {
+              console.warn("[auth/callback] email signup legal consent:", await res.text());
             }
           }
 
