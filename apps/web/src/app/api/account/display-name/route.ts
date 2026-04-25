@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
+import { rateLimitByKey } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -8,6 +9,11 @@ export async function PUT(req: Request) {
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
+  }
+
+  const rl = await rateLimitByKey({ key: `display-name:${user.userId}`, limit: 5, windowSeconds: 3600 });
+  if (!rl.ok) {
+    return apiError(429, { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" });
   }
 
   let body: { display_name?: unknown };

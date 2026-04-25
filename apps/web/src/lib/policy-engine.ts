@@ -3,7 +3,7 @@ import type { TierKey } from "@iching-oracle/context-engine";
 import type { AuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
-const EMAIL_EXACT_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_EXACT_PATTERN = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
 type ConsultPolicyInput = {
   authUser: AuthenticatedUser;

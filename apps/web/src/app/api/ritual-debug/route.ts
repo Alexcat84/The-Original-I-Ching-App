@@ -15,14 +15,10 @@ export async function POST(req: Request) {
 
   try {
     const body = (await req.json()) as RitualDebugPayload;
-    const label = typeof body.label === "string" ? body.label : "unknown";
+    const label = typeof body.label === "string" ? body.label.slice(0, 120) : "unknown";
     const elapsedMs = typeof body.elapsedMs === "number" ? body.elapsedMs : -1;
-    const payload = body.payload && typeof body.payload === "object" ? body.payload : undefined;
-    if (payload) {
-      console.log(`[ritual/client][+${elapsedMs}ms] ${label}`, payload);
-    } else {
-      console.log(`[ritual/client][+${elapsedMs}ms] ${label}`);
-    }
+    // payload intentionally not logged — user-controlled data must not reach server logs
+    console.log(`[ritual/client][+${elapsedMs}ms] ${label}`);
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ ok: false }, { status: 400 });
