@@ -24,6 +24,11 @@ function trigramName(obj) {
   return String(obj.symbolic ?? obj.chinese ?? "").replace(/,$/, "").trim();
 }
 
+// Per-hexagram chineseName overrides for font-subset compatibility.
+// 遯 (U+9073/U+906F) is absent from noto-serif-tc-700-subset.ttf; 遁 (U+9041)
+// is the standard alternative form (same pronunciation: dùn, same meaning).
+const CHINESE_NAME_OVERRIDES = { 33: "\u9041" };
+
 /** @type {Record<string, unknown>[]} */
 const list = [];
 for (let n = 1; n <= 64; n++) {
@@ -53,7 +58,7 @@ for (let n = 1; n <= 64; n++) {
   const entry = {
     number: n,
     name: String(h.english ?? "").trim(),
-    chineseName: String(h.trad_chinese ?? "").trim(),
+    chineseName: CHINESE_NAME_OVERRIDES[n] ?? String(h.trad_chinese ?? "").trim(),
     pinyin: String(h.pinyin ?? "").trim(),
     upperTrigram: above,
     lowerTrigram: below,

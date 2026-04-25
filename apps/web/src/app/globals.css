@@ -2388,10 +2388,12 @@ html[data-theme="dark"] .composer-session-limit-float {
 html[data-theme="light"] .composer-input-row textarea,
 html:not([data-theme]) .composer-input-row textarea {
   color-scheme: light;
+  -webkit-text-fill-color: var(--fg);
 }
 
 html[data-theme="dark"] .composer-input-row textarea {
   color-scheme: dark;
+  -webkit-text-fill-color: var(--fg);
 }
 
 .composer-input-row button[type="button"]:not(.secondary-btn) {

@@ -1014,7 +1014,7 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
       disposed = true;
       if (rafId) window.cancelAnimationFrame(rafId);
       resizeObserver?.disconnect();
-      setWebglActive(false);
+      scene.clear();
       renderer.dispose();
       boneGeo.dispose();
       boneMat.dispose();
@@ -1028,7 +1028,6 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
       flameMat.dispose();
       flameTexture?.dispose();
       crackMaskTexture.dispose();
-      scene.clear();
     };
   }, []);
 
