@@ -3002,6 +3002,33 @@ button:disabled {
   box-shadow: var(--shadow);
 }
 
+/*
+ * Light theme: I Ching coin ritual panel matches dark-theme colors so the
+ * animation (lines, borders, panel) stays consistent; chat stays light.
+ */
+html[data-theme="light"] .coins-stage.ritual-coins-stage {
+  background: rgba(26, 34, 42, 0.96);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+  --ritual-border: rgba(255, 255, 255, 0.1);
+  --ritual-active-bg: rgba(78, 205, 196, 0.12);
+  --ritual-active-fg: #b8ebe4;
+  --ritual-done-border: rgba(78, 205, 196, 0.4);
+  --ritual-done-fg: #8fd4c8;
+  --hex-card-bg: rgba(26, 34, 44, 0.92);
+  --hex-card-border: rgba(255, 255, 255, 0.08);
+  --hex-heading: #8fd4e8;
+  --hex-line: #7dccb0;
+  --hex-changing: #a8e8d8;
+  --hex-shape: #5ab4a9;
+  --hex-shape-changing: #4ecdc4;
+  /* Tokens used by ritual slots / arrows (normally light-theme on white) */
+  --accent: #4ecdc4;
+  --input-border: rgba(255, 255, 255, 0.12);
+  --secondary-bg: rgba(255, 255, 255, 0.08);
+  --fg-muted: #8ca5b3;
+}
+
 .coins-stage--bones {
   max-width: min(100%, 48rem);
   padding: 0.35rem;
@@ -3228,14 +3255,16 @@ button:disabled {
     );
 }
 
-html[data-theme="dark"] .ritual-line.active {
+html[data-theme="dark"] .ritual-line.active,
+html[data-theme="light"] .coins-stage.ritual-coins-stage .ritual-line.active {
   border-width: 2px;
   color: #ecfeff;
   background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 32%, var(--hex-card-bg)) 0%, var(--hex-card-bg) 100%);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent), 0 0 18px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
-html[data-theme="dark"] .ritual-line.done {
+html[data-theme="dark"] .ritual-line.done,
+html[data-theme="light"] .coins-stage.ritual-coins-stage .ritual-line.done {
   color: #d1fae5;
   background: color-mix(in srgb, var(--ritual-done-border) 15%, var(--hex-card-bg));
   border-width: 1.5px;
@@ -3420,17 +3449,22 @@ html[data-theme="dark"] .ritual-line.done {
   width: min(100%, 36rem);
 }
 
-html[data-theme="dark"] .ritual-line-slot {
+html[data-theme="dark"] .ritual-line-slot,
+html[data-theme="light"] .coins-stage.ritual-coins-stage .ritual-line-slot {
   background: color-mix(in srgb, var(--hex-card-bg) 92%, transparent);
 }
 
 html[data-theme="dark"] .ritual-hex-line--yang,
-html[data-theme="dark"] .ritual-hex-line--yin > span {
+html[data-theme="dark"] .ritual-hex-line--yin > span,
+html[data-theme="light"] .coins-stage.ritual-coins-stage .ritual-hex-line--yang,
+html[data-theme="light"] .coins-stage.ritual-coins-stage .ritual-hex-line--yin > span {
   background: #7a4a27;
 }
 
 html[data-theme="dark"] .ritual-line-slot.is-changing .ritual-hex-line--yang,
-html[data-theme="dark"] .ritual-line-slot.is-changing .ritual-hex-line--yin > span {
+html[data-theme="dark"] .ritual-line-slot.is-changing .ritual-hex-line--yin > span,
+html[data-theme="light"] .coins-stage.ritual-coins-stage .ritual-line-slot.is-changing .ritual-hex-line--yang,
+html[data-theme="light"] .coins-stage.ritual-coins-stage .ritual-line-slot.is-changing .ritual-hex-line--yin > span {
   background: #c9a010;
 }
 

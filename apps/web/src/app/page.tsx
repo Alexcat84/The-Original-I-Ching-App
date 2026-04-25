@@ -57,6 +57,7 @@ import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import { ichingRitualTickDelayMs } from "@/lib/iching-ritual-timing";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
@@ -1057,6 +1058,7 @@ function detectInputLanguage(question: string, fallbackLocale: AppLocale): AppLo
 }
 
 export default function HomePage() {
+  const router = useRouter();
   const [locale, setLocale] = useState<AppLocale>(DEFAULT_LOCALE);
   const ui = UI_COPY[locale];
   const t = commonStrings[locale];
@@ -2079,6 +2081,7 @@ export default function HomePage() {
           twoFactorMethod?: string | null;
           display_name?: string | null;
           is_admin?: boolean;
+          legal_acceptance_current?: boolean;
         } | null) => {
           if (cancelled) return;
           if (!j) {
@@ -2087,6 +2090,10 @@ export default function HomePage() {
               if (cached !== null) setAccountSessionLimit(cached);
             }
             setTierReady(true);
+            return;
+          }
+          if (j.legal_acceptance_current === false) {
+            router.replace("/auth/complete-legal");
             return;
           }
           const lastPack = typeof j.last_pack === "string" ? j.last_pack : "free";
@@ -2152,7 +2159,7 @@ export default function HomePage() {
       cancelled = true;
       window.removeEventListener("iching:account-refresh", onAccountRefresh);
     };
-  }, [accessToken, authReady, authUserId]);
+  }, [accessToken, authReady, authUserId, router]);
 
   useEffect(() => {
     if (!accessToken || !authUserId) return;

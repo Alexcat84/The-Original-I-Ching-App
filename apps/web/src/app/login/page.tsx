@@ -17,6 +17,7 @@ import {
   LEGAL_CONSENT_PENDING_STORAGE_KEY,
   type LegalConsentPayload,
 } from "@/lib/legal-consent";
+import { resolvePostAuthClientRoute } from "@/lib/post-auth-legal";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
@@ -104,8 +105,14 @@ export default function LoginPage() {
       return;
     }
     const sb = getSupabaseBrowser();
-    void sb.auth.getSession().then(({ data: { session } }) => {
-      if (session?.access_token) router.replace("/");
+    void sb.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session?.access_token) return;
+      try {
+        const dest = await resolvePostAuthClientRoute(session.access_token);
+        router.replace(dest);
+      } catch {
+        router.replace("/auth/complete-legal");
+      }
     });
   }, [router]);
 
@@ -185,7 +192,19 @@ export default function LoginPage() {
         setErr(error.message);
         return;
       }
-      router.replace("/");
+      const {
+        data: { session: afterSession },
+      } = await sb.auth.getSession();
+      if (!afterSession?.access_token) {
+        setErr(L.errNetwork);
+        return;
+      }
+      try {
+        const dest = await resolvePostAuthClientRoute(afterSession.access_token);
+        router.replace(dest);
+      } catch {
+        router.replace("/auth/complete-legal");
+      }
     } finally {
       setLoading(false);
     }
