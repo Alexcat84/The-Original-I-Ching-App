@@ -866,10 +866,11 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
     setWebglActive(true);
     const clock = new THREE.Timer();
 
-    const animate = () => {
+    const animate = (timestamp: number) => {
       if (disposed) return;
+      clock.update(timestamp);
       const dt = Math.min(0.05, clock.getDelta());
-      const t = clock.getElapsedTime();
+      const t = clock.getElapsed();
       const activeStage = stageRef.current;
       const progress = progressRef.current;
       const activeResult = resultRef.current;
