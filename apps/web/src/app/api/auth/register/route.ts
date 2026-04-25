@@ -214,6 +214,19 @@ export async function POST(req: Request) {
       });
     }
 
+    // Must run before mail heuristics: GoTrue often puts "email" in generic unexpected_failure bodies.
+    if (errCode === "unexpected_failure" || lower.includes("unexpected_failure")) {
+      console.error(
+        "[auth/register] Supabase Auth unexpected_failure — often a DB trigger on auth.users (e.g. public.handle_new_auth_user / init_free_user). Check Supabase Postgres logs.",
+        { email: normalizedEmail, message: errMessage },
+      );
+      return apiError(503, {
+        error: "signup_auth_internal_error",
+        code: "REGISTER_AUTH_UNEXPECTED_FAILURE",
+        action: "check_config",
+      });
+    }
+
     // Narrow match: avoid generic "error sending …" strings from non-mail flows.
     const looksLikeConfirmationOrMailFailure =
       lower.includes("sending confirmation") ||
@@ -285,18 +298,6 @@ export async function POST(req: Request) {
         error: "weak_password",
         code: "REGISTER_WEAK_PASSWORD",
         action: "fix_input",
-      });
-    }
-
-    if (errCode === "unexpected_failure" || lower.includes("unexpected_failure")) {
-      console.error(
-        "[auth/register] Supabase Auth unexpected_failure — often a DB trigger on auth.users (e.g. public.handle_new_auth_user / init_free_user). Check Supabase Postgres logs.",
-        { email: normalizedEmail, message: errMessage },
-      );
-      return apiError(503, {
-        error: "signup_auth_internal_error",
-        code: "REGISTER_AUTH_UNEXPECTED_FAILURE",
-        action: "check_config",
       });
     }
 
