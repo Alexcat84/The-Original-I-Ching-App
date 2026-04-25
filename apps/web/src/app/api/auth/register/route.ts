@@ -71,6 +71,21 @@ const registerRequestSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
+  const { limit: registerRlLimit, windowSeconds: registerRlWindow } = parseRegisterRateLimit();
+  // Rate limit before any body parsing so every attempt from the same IP is counted,
+  // regardless of payload validity.
+  const rl = await rateLimitByKey({
+    key: `register:v2:${ip}`,
+    limit: registerRlLimit,
+    windowSeconds: registerRlWindow,
+  });
+  if (!rl.ok) {
+    const res = apiError(429, { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" });
+    res.headers.set("Retry-After", String(registerRlWindow));
+    return res;
+  }
+
   let rawBody: unknown;
   try {
     rawBody = await req.json();
@@ -98,20 +113,6 @@ export async function POST(req: Request) {
     });
   }
   const body = bodyResult.data;
-  const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
-  const { limit: registerRlLimit, windowSeconds: registerRlWindow } = parseRegisterRateLimit();
-  // Key prefix version: bump when raising defaults or after incidents so Redis counters reset
-  // without waiting for TTL (Upstash keeps rl:register:v2:… separate from legacy rl:register:…).
-  const rl = await rateLimitByKey({
-    key: `register:v2:${ip}`,
-    limit: registerRlLimit,
-    windowSeconds: registerRlWindow,
-  });
-  if (!rl.ok) {
-    const res = apiError(429, { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" });
-    res.headers.set("Retry-After", String(registerRlWindow));
-    return res;
-  }
 
   const parsed = registerStep1Schema.safeParse({
     email: body.email,
