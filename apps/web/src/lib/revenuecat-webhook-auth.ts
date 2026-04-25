@@ -11,6 +11,8 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 export function revenueCatWebhookAuthorized(req: Request, secret: string): boolean {
-  const h = req.headers.get("authorization")?.trim() ?? "";
-  return safeEqual(h, secret) || safeEqual(h, `Bearer ${secret}`);
+  const raw = req.headers.get("authorization")?.trim() ?? "";
+  // Normalize optional Bearer prefix so only one constant-time comparison is made.
+  const token = raw.startsWith("Bearer ") ? raw.slice(7).trim() : raw;
+  return safeEqual(token, secret);
 }
