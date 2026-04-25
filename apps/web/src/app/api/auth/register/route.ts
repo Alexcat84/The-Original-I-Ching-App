@@ -157,7 +157,13 @@ export async function POST(req: Request) {
   if (signUp.error) {
     const errCode = "code" in signUp.error ? String((signUp.error as { code?: string }).code ?? "") : "";
     const lower = signUp.error.message.toLowerCase();
-    if (
+    console.error("[auth/register] signUp failed", {
+      code: errCode,
+      message: signUp.error.message,
+      email: normalizedEmail,
+    });
+
+    const looksLikeDuplicateOrDbEmailConflict =
       errCode === "user_already_exists" ||
       lower.includes("user already registered") ||
       lower.includes("already registered") ||
@@ -165,8 +171,16 @@ export async function POST(req: Request) {
       lower.includes("already been registered") ||
       lower.includes("already exists") ||
       lower.includes("duplicate") ||
-      lower.includes("database error creating new user")
-    ) {
+      lower.includes("unique constraint") ||
+      lower.includes("violates unique constraint") ||
+      lower.includes("23505") ||
+      // Supabase surfaces trigger/constraint failures as (note: "saving", not "creating"):
+      lower.includes("database error saving new user") ||
+      lower.includes("database error creating new user") ||
+      lower.includes("database error saving") ||
+      lower.includes("database error creating");
+
+    if (looksLikeDuplicateOrDbEmailConflict) {
       return apiError(409, {
         error: "email_exists",
         code: "REGISTER_EMAIL_EXISTS",
@@ -175,6 +189,21 @@ export async function POST(req: Request) {
           "Este correo ya existe o quedó con registro previo. Intenta iniciar sesión o usar «Reenviar confirmación».",
       });
     }
+
+    const looksLikeWeakPassword =
+      errCode === "weak_password" ||
+      lower.includes("weak_password") ||
+      lower.includes("password is known to be weak") ||
+      lower.includes("password should be");
+
+    if (looksLikeWeakPassword) {
+      return apiError(400, {
+        error: "weak_password",
+        code: "REGISTER_WEAK_PASSWORD",
+        action: "fix_input",
+      });
+    }
+
     return apiError(400, {
       error: "sign_up_failed",
       code: "REGISTER_CREATE_USER_FAILED",

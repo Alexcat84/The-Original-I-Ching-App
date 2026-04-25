@@ -55,6 +55,7 @@ export type LoginPageUiMessages = {
   errEmailExistsDefault: string;
   errSupabaseNotConfigured: string;
   errRegisterDefault: string;
+  errWeakPassword: string;
 };
 
 const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
@@ -116,6 +117,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Ese correo ya está registrado. Inicia sesión, reenvía confirmación o restablece contraseña.",
     errSupabaseNotConfigured: "El servidor no tiene Supabase configurado.",
     errRegisterDefault: "No se pudo registrar. Inténtalo de nuevo.",
+    errWeakPassword:
+      "La contraseña no cumple las reglas (mín. 8 caracteres, una mayúscula y un número). Si Supabase la rechaza por ser débil, elige otra más larga o distinta.",
   },
   en: {
     configErrorTitle: "Sign-in unavailable",
@@ -172,6 +175,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errEmailExistsDefault: "That email is already registered. Sign in, resend confirmation, or reset password.",
     errSupabaseNotConfigured: "Supabase is not configured on the server.",
     errRegisterDefault: "Could not register. Please try again.",
+    errWeakPassword:
+      "Password does not meet the rules (min. 8 characters, one uppercase letter, one digit). If it is rejected as weak, choose a longer or different password.",
   },
   pt: {
     configErrorTitle: "Acesso indisponível",
@@ -228,6 +233,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errEmailExistsDefault: "Esse email já está registado. Inicia sessão ou repõe a palavra-passe.",
     errSupabaseNotConfigured: "O servidor não tem Supabase configurado.",
     errRegisterDefault: "Não foi possível registar. Tenta novamente.",
+    errWeakPassword:
+      "A palavra-passe não cumpre as regras (mín. 8 caracteres, uma maiúscula e um dígito). Se for rejeitada por ser fraca, escolhe outra mais longa.",
   },
   fr: {
     configErrorTitle: "Connexion indisponible",
@@ -285,6 +292,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errEmailExistsDefault: "Cet e-mail est déjà enregistré. Connectez-vous ou réinitialisez le mot de passe.",
     errSupabaseNotConfigured: "Supabase n’est pas configuré sur le serveur.",
     errRegisterDefault: "Inscription impossible. Réessayez.",
+    errWeakPassword:
+      "Le mot de passe ne respecte pas les règles (min. 8 caractères, une majuscule et un chiffre). S’il est rejeté comme trop faible, choisissez-en un autre plus long.",
   },
   de: {
     configErrorTitle: "Anmeldung nicht verfügbar",
@@ -342,6 +351,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errEmailExistsDefault: "Diese E-Mail ist bereits registriert. Anmelden oder Passwort zurücksetzen.",
     errSupabaseNotConfigured: "Supabase ist auf dem Server nicht konfiguriert.",
     errRegisterDefault: "Registrierung fehlgeschlagen. Bitte erneut versuchen.",
+    errWeakPassword:
+      "Das Passwort erfüllt die Regeln nicht (mind. 8 Zeichen, ein Großbuchstabe, eine Ziffer). Wenn es als zu schwach abgelehnt wird, wählen Sie ein längeres.",
   },
   it: {
     configErrorTitle: "Accesso non disponibile",
@@ -398,6 +409,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errEmailExistsDefault: "Questa email è già registrata. Accedi o reimposta la password.",
     errSupabaseNotConfigured: "Supabase non è configurato sul server.",
     errRegisterDefault: "Registrazione non riuscita. Riprova.",
+    errWeakPassword:
+      "La password non rispetta le regole (min. 8 caratteri, una maiuscola e una cifra). Se viene rifiutata come debole, scegline un’altra più lunga.",
   },
   ja: {
     configErrorTitle: "サインインできません",
@@ -452,6 +465,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errEmailExistsDefault: "このメールは既に登録されています。ログインするかパスワードを再設定してください。",
     errSupabaseNotConfigured: "サーバーに Supabase が設定されていません。",
     errRegisterDefault: "登録できませんでした。もう一度お試しください。",
+    errWeakPassword:
+      "パスワードが要件を満たしていません（8文字以上・大文字1文字・数字1文字）。脆弱と判定された場合は、より長く別のパスワードを選んでください。",
   },
   zh: {
     configErrorTitle: "无法登录",
@@ -506,6 +521,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errEmailExistsDefault: "该邮箱已注册。请登录或重置密码。",
     errSupabaseNotConfigured: "服务器未配置 Supabase。",
     errRegisterDefault: "注册失败，请重试。",
+    errWeakPassword:
+      "密码不符合规则（至少 8 位、含一个大写字母和一个数字）。若因密码过弱被拒，请换用更长或不同的密码。",
   },
   ko: {
     configErrorTitle: "로그인을 사용할 수 없음",
@@ -560,6 +577,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errEmailExistsDefault: "이 이메일은 이미 등록되어 있습니다. 로그인하거나 비밀번호를 재설정하세요.",
     errSupabaseNotConfigured: "서버에 Supabase가 구성되어 있지 않습니다.",
     errRegisterDefault: "가입하지 못했습니다. 다시 시도하세요.",
+    errWeakPassword:
+      "비밀번호가 규칙을 충족하지 않습니다(최소 8자, 대문자 1개, 숫자 1개). 약한 비밀번호로 거절되면 더 길거나 다른 비밀번호를 선택하세요.",
   },
 };
 
@@ -585,6 +604,8 @@ export function formatLoginRegisterApiError(
       return m.errRateLimited;
     case "turnstile_failed":
       return m.errTurnstileFailed;
+    case "weak_password":
+      return m.errWeakPassword;
     case "legal_consent_required":
       return m.legalConsentRequired;
     case "email_rejected":
