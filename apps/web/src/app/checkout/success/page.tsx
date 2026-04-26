@@ -51,7 +51,6 @@ async function fetchAccountMe(
   const body = (await res.json()) as { last_pack?: string; tokens_available?: number };
   const lastPack = typeof body.last_pack === "string" ? body.last_pack : "free";
   const tokensAvailable = typeof body.tokens_available === "number" ? body.tokens_available : 0;
-  console.log("[checkout/success] /api/account/me →", { lastPack, tokensAvailable, raw: body });
   return { ok: true, lastPack, tokensAvailable };
 }
 

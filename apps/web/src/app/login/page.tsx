@@ -145,8 +145,10 @@ export default function LoginPage() {
       if (cancelled || !turnstileHostRef.current || !window.turnstile) return;
       const el = turnstileHostRef.current;
       el.replaceChildren();
+      const cspNonce = document.querySelector('meta[name="csp-nonce"]')?.getAttribute("content") ?? undefined;
       turnstileWidgetIdRef.current = window.turnstile.render(el, {
         sitekey: turnstileSiteKey,
+        ...(cspNonce ? { cspNonce } : {}),
         callback: (token: string) => {
           turnstileTokenRef.current = token;
         },

@@ -11,7 +11,9 @@ function generateNonce(): string {
 function buildCsp(nonce: string): string {
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' https://challenges.cloudflare.com https://js.stripe.com https://vercel.live`,
+    // 'unsafe-eval' required by Cloudflare Turnstile — its challenge mechanism uses dynamic
+    // code execution. See https://developers.cloudflare.com/turnstile/reference/csp/
+    `script-src 'self' 'nonce-${nonce}' 'unsafe-eval' https://challenges.cloudflare.com https://js.stripe.com https://vercel.live`,
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self' data:",
     "img-src 'self' data: blob: https:",
