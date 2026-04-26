@@ -1,5 +1,6 @@
 import { getSiteMetaUiMessages, htmlLangFromAppLocale } from "@iching-oracle/i18n";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Script from "next/script";
 import CookieConsentGate from "@/components/CookieConsentGate";
 import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
@@ -26,6 +27,7 @@ const themeInitScript = `(function(){try{var k="iching_theme",t=localStorage.get
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await resolveDocLocale();
   const htmlLang = htmlLangFromAppLocale(locale);
+  const nonce = (await headers()).get("x-nonce") ?? "";
 
   return (
     <html
@@ -37,6 +39,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Script
           id="iching-theme-init"
           strategy="beforeInteractive"
+          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
         <RevenueCatSupabaseSync />
