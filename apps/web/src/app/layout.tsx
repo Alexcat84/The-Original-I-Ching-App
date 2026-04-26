@@ -1,6 +1,6 @@
 import { getSiteMetaUiMessages, htmlLangFromAppLocale } from "@iching-oracle/i18n";
 import type { Metadata } from "next";
-import Script from "next/script";
+import { headers } from "next/headers";
 import CookieConsentGate from "@/components/CookieConsentGate";
 import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
 import { resolveDocLocale } from "@/lib/doc-locale";
@@ -26,6 +26,7 @@ const themeInitScript = `(function(){try{var k="iching_theme",t=localStorage.get
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await resolveDocLocale();
   const htmlLang = htmlLangFromAppLocale(locale);
+  const nonce = (await headers()).get("x-nonce") ?? "";
 
   return (
     <html
@@ -33,12 +34,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
       className={rootFontClassName}
     >
+      <head>
+        {/* Raw <script> required for nonce in App Router — <Script strategy="beforeInteractive"> does not reliably propagate nonce on inline scripts */}
+        <script nonce={nonce} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
-        <Script
-          id="iching-theme-init"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: themeInitScript }}
-        />
         <RevenueCatSupabaseSync />
         <CookieConsentGate>
           <ChatSessionProvider>{children}</ChatSessionProvider>
