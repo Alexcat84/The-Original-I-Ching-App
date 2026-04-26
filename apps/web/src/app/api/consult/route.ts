@@ -25,8 +25,6 @@ import { isSharingPersistenceAvailable, upsertSessionAndConsultation } from "@/l
 import { canDeepenAfterNextConsult, normalizeSessionDepthLimit, shouldBlockDeepening } from "@/lib/thread-depth-policy";
 
 export const runtime = "nodejs";
-const LOG_TOKEN_BALANCE_DEBUG =
-  process.env.LOG_TOKEN_BALANCE_DEBUG === "1" || process.env.LOG_TOKEN_BALANCE_DEBUG === "true";
 const LOG_RITUAL_STREAM_DEBUG =
   process.env.LOG_RITUAL_STREAM_DEBUG === "1" ||
   process.env.LOG_RITUAL_STREAM_DEBUG === "true" ||
@@ -270,23 +268,7 @@ export async function POST(req: Request) {
     );
   }
 
-  if (LOG_TOKEN_BALANCE_DEBUG) {
-    console.log("[token-debug][consult] before consume", {
-      user: shortUserId(authedUserId),
-      oracleMode,
-      maxDepth,
-      isDeepening,
-      historyLen: previousRows.length,
-    });
-  }
   const remainingAfterConsume = adminUnlimitedCredits ? 999_999 : await consumeToken(authedUserId);
-  if (LOG_TOKEN_BALANCE_DEBUG) {
-    console.log("[token-debug][consult] after consume", {
-      user: shortUserId(authedUserId),
-      remainingAfterConsume,
-      adminUnlimitedCredits,
-    });
-  }
   if (remainingAfterConsume === -1) {
     return NextResponse.json(
       {
@@ -401,12 +383,6 @@ export async function POST(req: Request) {
       },
     });
 
-    if (LOG_TOKEN_BALANCE_DEBUG) {
-      console.log("[token-debug][consult] response oracle_bones", {
-        user: shortUserId(authedUserId),
-        remainingCredits: remainingAfterConsume,
-      });
-    }
     return NextResponse.json({
       sharingPersisted: isSharingPersistenceAvailable(),
       oracleType: "oracle_bones" as const,
@@ -580,14 +556,6 @@ export async function POST(req: Request) {
               },
             });
 
-            if (LOG_TOKEN_BALANCE_DEBUG) {
-              console.log("[token-debug][consult] response iching", {
-                user: shortUserId(authedUserId),
-                remainingCredits: remainingAfterConsume,
-                mode: "stream_ritual",
-              });
-            }
-
             writeEvent("final_ready", {
               sharingPersisted: isSharingPersistenceAvailable(),
               oracleType: "iching" as const,
@@ -731,12 +699,6 @@ export async function POST(req: Request) {
     },
   });
 
-  if (LOG_TOKEN_BALANCE_DEBUG) {
-    console.log("[token-debug][consult] response iching", {
-      user: shortUserId(authedUserId),
-      remainingCredits: remainingAfterConsume,
-    });
-  }
   return NextResponse.json({
     sharingPersisted: isSharingPersistenceAvailable(),
     oracleType: "iching" as const,
