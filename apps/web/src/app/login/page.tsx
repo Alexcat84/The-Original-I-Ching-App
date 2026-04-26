@@ -144,7 +144,7 @@ export default function LoginPage() {
     const mountWidget = () => {
       if (cancelled || !turnstileHostRef.current || !window.turnstile) return;
       const el = turnstileHostRef.current;
-      el.innerHTML = "";
+      el.replaceChildren();
       turnstileWidgetIdRef.current = window.turnstile.render(el, {
         sitekey: turnstileSiteKey,
         callback: (token: string) => {

@@ -81,7 +81,7 @@ function destroyParticlesByContainerId(containerId: string): void {
   w.pJSDom = domEntries;
   (globalThis as { pJSDom?: ParticlesDomEntry[] }).pJSDom = domEntries;
   const host = document.getElementById(containerId);
-  if (host) host.innerHTML = "";
+  if (host) host.replaceChildren();
 }
 
 function ensureParticlesGlobals(w: ParticlesWindow): void {

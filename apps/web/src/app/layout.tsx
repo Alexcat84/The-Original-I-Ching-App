@@ -1,7 +1,6 @@
 import { getSiteMetaUiMessages, htmlLangFromAppLocale } from "@iching-oracle/i18n";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import Script from "next/script";
 import CookieConsentGate from "@/components/CookieConsentGate";
 import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
 import { resolveDocLocale } from "@/lib/doc-locale";
@@ -35,13 +34,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
       className={rootFontClassName}
     >
+      <head>
+        {/* Raw <script> required for nonce in App Router — <Script strategy="beforeInteractive"> does not reliably propagate nonce on inline scripts */}
+        <script nonce={nonce} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
-        <Script
-          id="iching-theme-init"
-          strategy="beforeInteractive"
-          nonce={nonce}
-          dangerouslySetInnerHTML={{ __html: themeInitScript }}
-        />
         <RevenueCatSupabaseSync />
         <CookieConsentGate>
           <ChatSessionProvider>{children}</ChatSessionProvider>
