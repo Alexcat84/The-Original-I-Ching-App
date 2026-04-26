@@ -11,9 +11,7 @@ function generateNonce(): string {
 function buildCsp(nonce: string): string {
   return [
     "default-src 'self'",
-    // 'unsafe-inline' kept during Etapa 1-2 while nonce wiring is validated.
-    // Removed in Etapa 3 once layout nonce propagation is confirmed.
-    `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' https://challenges.cloudflare.com https://js.stripe.com https://vercel.live`,
+    `script-src 'self' 'nonce-${nonce}' https://challenges.cloudflare.com https://js.stripe.com https://vercel.live`,
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self' data:",
     "img-src 'self' data: blob: https:",
