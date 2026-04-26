@@ -9,11 +9,9 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
-  {
-    key: "Content-Security-Policy",
-    value:
-      "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://js.stripe.com https://vercel.live; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https:; connect-src 'self' data: https://*.supabase.co https://*.supabase.in https://api.revenuecat.com https://*.revenuecat.com https://*.revenue.cat https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com https://js.stripe.com https://vercel.live; worker-src 'self';",
-  },
+  // CSP is set dynamically per-request in src/middleware.ts (nonce-based).
+  // Do not add a static CSP here — next.config.js headers() run after middleware
+  // and would overwrite the nonce header, defeating the purpose.
   {
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=()",
