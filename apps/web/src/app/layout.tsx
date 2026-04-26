@@ -37,6 +37,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         {/* Raw <script> required for nonce in App Router — <Script strategy="beforeInteractive"> does not reliably propagate nonce on inline scripts */}
         <script nonce={nonce} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* Exposed for client-side use (e.g. turnstile.render cspNonce). Nonce is per-request random — reading it from the DOM is no weaker than reading it from an existing <script nonce> attribute. */}
+        <meta name="csp-nonce" content={nonce} suppressHydrationWarning />
       </head>
       <body>
         <RevenueCatSupabaseSync />
