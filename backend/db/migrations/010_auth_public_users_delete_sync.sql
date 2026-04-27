@@ -1,29 +1,9 @@
 -- Keep public.users synchronized when accounts are deleted from auth.users.
--- Also cleans up historical orphan rows that can block re-registration by email.
+-- NOTE: handle_deleted_auth_user() and on_auth_user_deleted trigger (BEFORE DELETE)
+-- are defined in their final form by 012_auth_delete_public_users_before.sql.
 
-CREATE OR REPLACE FUNCTION public.handle_deleted_auth_user()
-RETURNS TRIGGER
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-BEGIN
-  DELETE FROM public.users
-  WHERE id = OLD.id;
-  RETURN OLD;
-END;
-$$;
-
-DROP TRIGGER IF EXISTS on_auth_user_deleted ON auth.users;
-CREATE TRIGGER on_auth_user_deleted
-  AFTER DELETE ON auth.users
-  FOR EACH ROW
-  EXECUTE FUNCTION public.handle_deleted_auth_user();
-
--- One-time cleanup for rows that were left in public.users without auth.users.
+-- One-time cleanup for rows left in public.users without a matching auth.users row.
 DELETE FROM public.users p
 WHERE NOT EXISTS (
-  SELECT 1
-  FROM auth.users a
-  WHERE a.id = p.id
+  SELECT 1 FROM auth.users a WHERE a.id = p.id
 );
