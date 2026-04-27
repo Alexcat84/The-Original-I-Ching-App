@@ -1,4 +1,13 @@
 import type { OracleBoneMedium, OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
+import { access } from "node:fs/promises";
+import path from "node:path";
+import { toContextTierKey } from "@/lib/credits";
+import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
+import {
+  oracleBonesVerdictChinese,
+  oracleBonesVerdictGlyphSvgStyle,
+} from "@/lib/oracle-bones-verdict-glyph";
+import { renderSvgToPng } from "@/lib/svg-to-png";
 import {
   buildSumiHexagramSvgDataUrl,
   buildSumiHexagramOverlaySvgDataUrl,
@@ -27,6 +36,24 @@ export type ImageProviderDebug = {
   together?: TogetherDebug;
 };
 
+type PrebuiltFallbackKind = "iching" | "bones";
+
+const PREBUILT_FALLBACKS_PER_BUCKET = 10;
+const prebuiltFallbackExistsCache = new Map<string, boolean>();
+
+function toTransformedHexagramLines(lines: SumiLineInput[], hasChanges: boolean): SumiLineInput[] {
+  if (!hasChanges) return lines;
+  return lines.map((line) => {
+    if (line.value === 6) {
+      return { ...line, value: 7, isChanging: false };
+    }
+    if (line.value === 9) {
+      return { ...line, value: 8, isChanging: false };
+    }
+    return { ...line, isChanging: false };
+  });
+}
+
 function isDebugImageProvider(): boolean {
   return process.env.DEBUG_IMAGE_PROVIDER === "1" || process.env.DEBUG_IMAGE_PROVIDER === "true";
 }
@@ -48,120 +75,134 @@ function shiftHexForOracle(hex: string, rng: () => number, spread: number): stri
     .join("")}`;
 }
 
+function escapeXmlOracleOverlay(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+/**
+ * Transparent SVG overlay: verdict glyph(s) in simplified Chinese, same approach as sumi hexagram overlay
+ * (Noto Serif SC stack; @font-face embedded at finalize via embedCjkFontInOverlaySvg).
+ *
+ * viewBox MUST match output width/height so resvg does not letterbox (e.g. 16:9 viewBox inside 1024×1024 → black side bars on composite).
+ */
 function buildOracleBonesSymbolOverlaySvgDataUrl(params: {
-  patternId: number;
+  verdict: OracleBonesVerdict;
   outputWidth: number;
   outputHeight: number;
 }): string {
-  const W = 1344;
-  const H = 768;
-  const sx = params.outputWidth / W;
-  const sy = params.outputHeight / H;
-  const s = Math.min(sx, sy);
-  const cx = params.outputWidth / 2;
-  const cy = params.outputHeight / 2;
-  /** Dominant foreground symbol; clamped so the 200×240 motif stays inside the frame. */
-  const maxBoostW = (params.outputWidth * 0.92) / (200 * s);
-  const maxBoostH = (params.outputHeight * 0.88) / (240 * s);
-  const symBoost = Math.min(2.72, maxBoostW, maxBoostH);
-  const effS = s * symBoost;
-  const tx = cx - 100 * effS;
-  const ty = cy - 120 * effS;
-  const pid = params.patternId >= 1 && params.patternId <= 5 ? params.patternId : 5;
-
-  const drillsByPattern: Record<number, string> = {
-    1: `<g><circle cx="100" cy="188" r="8.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="100" cy="188" r="7" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="100" cy="188" r="3.15" fill="rgba(139,115,85,0.35)"/></g>`,
-    2: `<g><circle cx="100" cy="192" r="7.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="100" cy="192" r="6" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="100" cy="192" r="2.7" fill="rgba(139,115,85,0.35)"/></g>`,
-    3: `<g><circle cx="72" cy="175" r="6.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="72" cy="175" r="5" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="72" cy="175" r="2.25" fill="rgba(139,115,85,0.35)"/><circle cx="132" cy="168" r="6.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="132" cy="168" r="5" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="132" cy="168" r="2.25" fill="rgba(139,115,85,0.35)"/></g>`,
-    4: `<g><circle cx="100" cy="188" r="8.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="100" cy="188" r="7" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="100" cy="188" r="3.15" fill="rgba(139,115,85,0.35)"/></g>`,
-    5: `<g><circle cx="58" cy="178" r="5.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="58" cy="178" r="4" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="58" cy="178" r="1.8" fill="rgba(139,115,85,0.35)"/><circle cx="100" cy="190" r="5.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="100" cy="190" r="4" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="100" cy="190" r="1.8" fill="rgba(139,115,85,0.35)"/><circle cx="142" cy="172" r="5.5" fill="none" stroke="rgba(196,90,40,0.22)" stroke-width="2"/><circle cx="142" cy="172" r="4" fill="rgba(201,184,154,0.15)" stroke="#3d2818" stroke-width="1.2"/><circle cx="142" cy="172" r="1.8" fill="rgba(139,115,85,0.35)"/></g>`,
-  };
-
-  /** Wide light under-painting so cracks read on busy 3D shells / photos. */
-  const halosByPattern: Record<number, string> = {
-    1: `<path d="M100 181 L100 42" stroke="rgba(255,248,240,0.97)" stroke-width="12"/><path d="M100 110 L148 110" stroke="rgba(255,248,240,0.97)" stroke-width="11"/><path d="M100 72 L88 58 M100 72 L112 58" stroke="rgba(255,252,248,0.9)" stroke-width="6.5"/>`,
-    2: `<path d="M100 185 Q98 120 102 38" stroke="rgba(255,248,240,0.97)" stroke-width="11"/><path d="M102 95 Q118 88 132 82" stroke="rgba(255,252,248,0.88)" stroke-width="6"/>`,
-    3: `<path d="M72 168 L132 72" stroke="rgba(255,248,240,0.97)" stroke-width="10"/><path d="M132 161 L68 78" stroke="rgba(255,248,240,0.97)" stroke-width="10"/><circle cx="100" cy="118" r="5.5" fill="none" stroke="rgba(255,250,245,0.85)" stroke-width="4"/>`,
-    4: `<path d="M100 181 L100 52" stroke="rgba(255,248,240,0.97)" stroke-width="11"/><path d="M100 118 L62 198" stroke="rgba(255,248,240,0.97)" stroke-width="9.5"/><path d="M100 118 L142 192" stroke="rgba(255,248,240,0.97)" stroke-width="9.5"/><path d="M100 78 L92 64 M100 78 L108 64" stroke="rgba(255,252,248,0.88)" stroke-width="5.5"/>`,
-    5: `<path d="M58 171 Q65 130 78 95" stroke="rgba(255,248,240,0.92)" stroke-width="8"/><path d="M100 183 L108 120 L95 70" stroke="rgba(255,248,240,0.92)" stroke-width="7.5"/><path d="M142 165 Q130 130 118 88" stroke="rgba(255,248,240,0.92)" stroke-width="8"/><path d="M75 200 Q100 175 128 205" stroke="rgba(255,252,248,0.75)" stroke-width="5.5"/><path d="M44 92 L156 58" stroke="rgba(255,252,248,0.55)" stroke-width="4.5"/>`,
-  };
-
-  const cracksByPattern: Record<number, string> = {
-    1: `<path d="M100 181 L100 42" stroke="#5c3010" stroke-width="3.6"/><path d="M100 110 L148 110" stroke="#5c3010" stroke-width="3.2"/><path d="M100 72 L88 58 M100 72 L112 58" stroke="#7a4a28" stroke-width="1.7" opacity="0.9"/>`,
-    2: `<path d="M100 185 Q98 120 102 38" stroke="#5c3010" stroke-width="3.4"/><path d="M102 95 Q118 88 132 82" stroke="#7a4a28" stroke-width="1.8" opacity="0.85"/>`,
-    3: `<path d="M72 168 L132 72" stroke="#5c3010" stroke-width="3.2"/><path d="M132 161 L68 78" stroke="#5c3010" stroke-width="3.2"/><circle cx="100" cy="118" r="4" fill="none" stroke="#7a4a28" stroke-width="1.4" opacity="0.78"/>`,
-    4: `<path d="M100 181 L100 52" stroke="#5c3010" stroke-width="3.4"/><path d="M100 118 L62 198" stroke="#5c3010" stroke-width="3"/><path d="M100 118 L142 192" stroke="#5c3010" stroke-width="3"/><path d="M100 78 L92 64 M100 78 L108 64" stroke="#7a4a28" stroke-width="1.5"/>`,
-    5: `<path d="M58 171 Q65 130 78 95" stroke="#5c3010" stroke-width="2.4" opacity="0.92"/><path d="M100 183 L108 120 L95 70" stroke="#5c3010" stroke-width="2.2" opacity="0.88"/><path d="M142 165 Q130 130 118 88" stroke="#5c3010" stroke-width="2.4" opacity="0.9"/><path d="M75 200 Q100 175 128 205" stroke="#7a4a28" stroke-width="1.6" opacity="0.62"/><path d="M44 92 L156 58" stroke="#7a4a28" stroke-width="1.4" opacity="0.42"/>`,
-  };
-
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${params.outputWidth}" height="${params.outputHeight}" viewBox="0 0 ${params.outputWidth} ${params.outputHeight}">
+  const W = Math.max(1, Math.round(params.outputWidth));
+  const H = Math.max(1, Math.round(params.outputHeight));
+  const cx = W / 2;
+  const cy = H / 2;
+  const idPrefix = `obov${params.verdict.replace(/_/g, "")}`;
+  const gStyle = oracleBonesVerdictGlyphSvgStyle(params.verdict, idPrefix);
+  const filterId = `${idPrefix}-glow`;
+  const raw = oracleBonesVerdictChinese(params.verdict);
+  const escaped = escapeXmlOracleOverlay(raw);
+  const fontSize = raw.length > 1 ? Math.round((176 / 768) * H) : Math.round((300 / 768) * H);
+  const letterSpacing = raw.length > 1 ? Math.round((22 / 1344) * W) : 0;
+  const strokeW = Math.max(2, (gStyle.overlayStrokeWidth * W) / 1344);
+  const blur = Math.max(1.5, (4 * Math.min(W, H)) / 768);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
 <defs>
-  <filter id="crack-glow" x="-20%" y="-20%" width="140%" height="140%">
-    <feGaussianBlur stdDeviation="${1.85 * effS}" result="b"/>
+  ${gStyle.glyphGradientDefs}
+  <filter id="${filterId}" x="-45%" y="-45%" width="190%" height="190%">
+    <feGaussianBlur stdDeviation="${blur}" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
 </defs>
-<g transform="translate(${tx} ${ty}) scale(${effS})" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  ${halosByPattern[pid]}
-  <g filter="url(#crack-glow)">
-    ${drillsByPattern[pid]}
-    ${cracksByPattern[pid]}
-  </g>
-</g>
+<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${strokeW}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
 </svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-function oracleBonesVerdictLabelEs(verdict: OracleBonesVerdict): string {
-  const m: Record<OracleBonesVerdict, string> = {
-    auspicious_clear: "吉 — favorable claro",
-    auspicious_moderate: "吉 — favorable moderado",
-    inauspicious_moderate: "凶 — desfavorable moderado",
-    inauspicious_clear: "凶 — desfavorable claro",
-    silent: "Silencio / sin respuesta clara",
-  };
-  return m[verdict];
-}
+/** Mock / fallback oracle-bones art: fixed 16:9 canvas (historical); tier-based sizes apply only to remote generation. */
+const ORACLE_BONES_MOCK_WIDTH = 1344;
+const ORACLE_BONES_MOCK_HEIGHT = 768;
 
-function buildOracleBonesMockDataUrl(params: {
-  patternId: number;
+/**
+ * Symbolic plastron / bone plate + verdict glyph only (no captions).
+ * Rasterized to PNG with embedded CJK so `<img>` shows glyphs (isolated SVG does not use page fonts).
+ */
+function buildOracleBonesMockSvgString(params: {
   verdict: OracleBonesVerdict;
   medium: OracleBoneMedium;
   consultationId?: string;
+  width: number;
+  height: number;
 }): string {
-  const bone = params.medium === "turtle" ? "Plastrón" : "Escápula";
+  const W = params.width;
+  const H = params.height;
   const seedStr =
-    params.consultationId ?? `oracle-bones|${params.patternId}|${params.verdict}|${params.medium}`;
+    params.consultationId ?? `oracle-bones|${params.verdict}|${params.medium}|${W}x${H}`;
   const rng = mulberry32(fnv1a32(seedStr));
+  const uid = (fnv1a32(seedStr) >>> 0).toString(16).slice(0, 8);
   const bg = shiftHexForOracle("#1a1510", rng, 18);
   const boneTop = shiftHexForOracle("#e8dcc8", rng, 20);
   const boneBot = shiftHexForOracle("#c4b29a", rng, 20);
   const stroke = shiftHexForOracle("#5c4a3a", rng, 16);
-  const accent = shiftHexForOracle("#c9a227", rng, 22);
-  const sub = shiftHexForOracle("#8a7a68", rng, 18);
   const grainA = (0.04 + rng() * 0.06).toFixed(3);
   const grainB = (0.03 + rng() * 0.05).toFixed(3);
-  const bx = Math.round(400 + rng() * 80);
-  const by = Math.round(108 + rng() * 36);
-  const bw = Math.round(480 + rng() * 60);
-  const bh = Math.round(500 + rng() * 56);
-  const br = Math.round(40 + rng() * 16);
-  const cx = bx + bw / 2;
-  const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="1344" height="768" viewBox="0 0 1344 768">
+  const cx = W * 0.5;
+  const bw = W * (0.38 + rng() * 0.06);
+  const bh = H * (0.58 + rng() * 0.06);
+  const bx = cx - bw / 2;
+  const by = H * (0.14 + rng() * 0.04);
+  const br = Math.round(W * (0.025 + rng() * 0.008));
+  const gradId = `obm-bone-${uid}`;
+  const filterId = `obm-text-${uid}`;
+  const gStyle = oracleBonesVerdictGlyphSvgStyle(params.verdict, `obm${uid}`);
+  const glyph = oracleBonesVerdictChinese(params.verdict);
+  const escaped = escapeXmlOracleOverlay(glyph);
+  const fontSize = glyph.length > 1 ? Math.round(H * 0.175) : Math.round(Math.min(W, H) * 0.28);
+  const letterSpacing = glyph.length > 1 ? Math.round(W * 0.014) : 0;
+  const tcx = W / 2;
+  const tcy = H / 2;
+  const swGrain = Math.max(1, W * 0.001);
+  const swGrain2 = Math.max(0.8, W * 0.0007);
+  const swStroke = Math.max(2, W * 0.002);
+  const swTextStroke = Math.max(
+    3,
+    Math.round(gStyle.overlayStrokeWidth * (W / 1344)),
+  );
+  const blur = Math.max(2, Math.min(W, H) * 0.003);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
-    <linearGradient id="bone" x1="0" y1="0" x2="0" y2="1">
+    ${gStyle.glyphGradientDefs}
+    <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="${boneTop}" />
       <stop offset="100%" stop-color="${boneBot}" />
     </linearGradient>
+    <filter id="${filterId}" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="${blur}" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
-  <rect width="1344" height="768" fill="${bg}" />
-  <path fill="none" stroke="rgba(200,180,140,${grainA})" stroke-width="1.2" d="M0 ${Math.round(180 + rng() * 120)} Q400 ${Math.round(320 + rng() * 80)} 800 ${Math.round(260 + rng() * 100)} T1344 ${Math.round(200 + rng() * 90)}"/>
-  <path fill="none" stroke="rgba(160,140,110,${grainB})" stroke-width="0.9" d="M0 ${Math.round(520 + rng() * 60)} Q500 ${Math.round(580 + rng() * 50)} 1000 ${Math.round(540 + rng() * 70)} T1344 ${Math.round(600 + rng() * 40)}"/>
-  <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}" fill="url(#bone)" stroke="${stroke}" stroke-width="3"/>
-  <text x="${cx}" y="90" text-anchor="middle" fill="${accent}" font-size="36" font-family="Segoe UI, Arial">甲骨文 · ${bone} · patrón ${params.patternId}</text>
-  <text x="${cx}" y="690" text-anchor="middle" fill="${sub}" font-size="24" font-family="Segoe UI, Arial">Vista simbólica (respaldo) · ${oracleBonesVerdictLabelEs(params.verdict)}</text>
-</svg>`.trim();
+  <rect width="${W}" height="${H}" fill="${bg}" />
+  <path fill="none" stroke="rgba(200,180,140,${grainA})" stroke-width="${swGrain}" stroke-linecap="round" d="M0 ${Math.round(H * (0.22 + rng() * 0.12))} Q${Math.round(W * 0.35)} ${Math.round(H * (0.38 + rng() * 0.06))} ${Math.round(W * 0.55)} ${Math.round(H * (0.32 + rng() * 0.08))} T${W} ${Math.round(H * (0.25 + rng() * 0.08))}"/>
+  <path fill="none" stroke="rgba(160,140,110,${grainB})" stroke-width="${swGrain2}" stroke-linecap="round" d="M0 ${Math.round(H * (0.68 + rng() * 0.08))} Q${Math.round(W * 0.42)} ${Math.round(H * (0.75 + rng() * 0.04))} ${Math.round(W * 0.72)} ${Math.round(H * (0.7 + rng() * 0.06))} T${W} ${Math.round(H * (0.78 + rng() * 0.05))}"/>
+  <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}" fill="url(#${gradId})" stroke="${stroke}" stroke-width="${swStroke}"/>
+  <text x="${tcx}" y="${tcy}" text-anchor="middle" dominant-baseline="middle" fill="${gStyle.glyphFill}" stroke="${gStyle.glyphStroke}" stroke-width="${swTextStroke}" paint-order="stroke fill" font-size="${fontSize}" letter-spacing="${letterSpacing}" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700" filter="url(#${filterId})">${escaped}</text>
+</svg>`;
+}
+
+async function rasterizeOracleBonesMockSvgToPng(svg: string): Promise<string> {
+  const embedded = await embedCjkFontInOverlaySvg(svg);
+  const wMatch =
+    embedded.match(/viewBox="0\s+0\s+(\d+)\s+(\d+)"/) ??
+    embedded.match(/width="(\d+)"[^>]*height="(\d+)"/);
+  const width = wMatch ? Number(wMatch[1]) : 1344;
+  const buf = await renderSvgToPng(embedded, width);
+  return `data:image/png;base64,${buf.toString("base64")}`;
+}
+
+function svgStringToDataUrl(svg: string): string {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
@@ -197,12 +238,101 @@ function compactPrompt(prompt: string, maxLen: number): string {
     .slice(0, maxLen);
 }
 
-function resolveTierSize(tier?: string): { width: number; height: number } {
-  const highRes = new Set(["practitioner", "master", "oracle"]);
-  if (tier && highRes.has(tier)) {
+function resolveTierKey(lastPack?: string): "free" | "seeker" | "practitioner" | "master" {
+  return lastPack ? toContextTierKey(lastPack) : "free";
+}
+
+function prebuiltFallbackRelativePath(params: {
+  kind: PrebuiltFallbackKind;
+  tier: "free" | "seeker" | "practitioner" | "master";
+  width: number;
+  height: number;
+  index: number;
+}): string {
+  const file = `${String(params.index).padStart(2, "0")}.png`;
+  return `/fallbacks/prebuilt/${params.kind}/${params.tier}/${params.width}x${params.height}/${file}`;
+}
+
+function candidatePublicAbsolutePaths(relativePath: string): string[] {
+  const noSlash = relativePath.replace(/^\//, "");
+  return [
+    path.join(process.cwd(), "public", noSlash),
+    path.join(process.cwd(), "apps", "web", "public", noSlash),
+  ];
+}
+
+async function prebuiltFallbackFileExists(relativePath: string): Promise<boolean> {
+  const cached = prebuiltFallbackExistsCache.get(relativePath);
+  if (cached !== undefined) return cached;
+  let exists = false;
+  const candidates = candidatePublicAbsolutePaths(relativePath);
+  for (const absPath of candidates) {
+    try {
+      await access(absPath);
+      exists = true;
+      break;
+    } catch {
+      // try next candidate
+    }
+  }
+  prebuiltFallbackExistsCache.set(relativePath, exists);
+  return exists;
+}
+
+function indexProbeOrder(seedIndex: number, count: number): number[] {
+  const list: number[] = [];
+  for (let i = 0; i < count; i += 1) {
+    const idx = ((seedIndex - 1 + i) % count) + 1;
+    list.push(idx);
+  }
+  return list;
+}
+
+async function pickPrebuiltFallbackImageUrl(params: {
+  kind: PrebuiltFallbackKind;
+  tier?: string;
+  width: number;
+  height: number;
+  seed?: string;
+}): Promise<string | null> {
+  const tier = resolveTierKey(params.tier);
+  const startIndex = params.seed ? (fnv1a32(params.seed) % PREBUILT_FALLBACKS_PER_BUCKET) + 1 : Math.floor(Math.random() * PREBUILT_FALLBACKS_PER_BUCKET) + 1;
+  const order = indexProbeOrder(startIndex, PREBUILT_FALLBACKS_PER_BUCKET);
+  for (const index of order) {
+    const rel = prebuiltFallbackRelativePath({
+      kind: params.kind,
+      tier,
+      width: params.width,
+      height: params.height,
+      index,
+    });
+    if (await prebuiltFallbackFileExists(rel)) return rel;
+  }
+  return null;
+}
+
+function resolveTierSize(lastPack?: string): { width: number; height: number } {
+  const key = resolveTierKey(lastPack);
+  const highRes = new Set(["practitioner", "master"]);
+  if (highRes.has(key)) {
     return { width: 2688, height: 1536 };
   }
   return { width: 1344, height: 768 };
+}
+
+/** Together AI: dimensions must be multiples of 32 (1184≈1200, 1504≈1500). */
+function resolveTogetherImageSize(lastPack?: string): { width: number; height: number } {
+  const key = resolveTierKey(lastPack);
+  switch (key) {
+    case "free":
+      return { width: 1024, height: 768 };
+    case "seeker":
+      return { width: 1024, height: 1024 };
+    case "practitioner":
+      return { width: 1184, height: 1184 };
+    case "master":
+      return { width: 1504, height: 1504 };
+  }
 }
 
 async function generateWithFal(prompt: string, width: number, height: number): Promise<string | null> {
@@ -266,15 +396,12 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
       },
     };
   }
-  debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL });
+  debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
   const model =
     process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
-  // Together (FLUX.1-schnell) rechaza valores fuera de 1..12.
-  // Mantenemos un rango seguro para evitar fallback a svg-art.
+  // Together (FLUX.1-schnell) rechaza steps fuera de 1..12.
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "10");
   const steps = Math.min(12, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 10));
-  const w = Math.min(Math.max(512, width), 1024);
-  const h = Math.min(Math.max(512, height), 1024);
   const res = await fetch("https://api.together.xyz/v1/images/generations", {
     method: "POST",
     headers: {
@@ -284,8 +411,8 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
     body: JSON.stringify({
       model,
       prompt: prompt.slice(0, 1500),
-      width: w,
-      height: h,
+      width,
+      height,
       n: 1,
       steps,
       response_format: "url",
@@ -407,8 +534,10 @@ export async function buildImageAsset(params: {
   /** When present, the compositor will overlay deterministic bars/text on top of the remote background. */
   overlaySvgDataUrl?: string;
 }> {
+  const hasChanges = params.changingLines.length > 0;
+  const displayLines = toTransformedHexagramLines(params.lines, hasChanges);
   const sumiFallback = sumiUrlForIChing({
-    lines: params.lines,
+    lines: displayLines,
     primaryHexagram: params.primaryHexagram,
     primaryHexagramName: params.primaryHexagramName,
     primaryChinese: params.primaryChinese,
@@ -444,11 +573,22 @@ export async function buildImageAsset(params: {
     sumiOnlyMode: sumiOnlyMode(),
   });
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
+  const { width: togetherFallbackW, height: togetherFallbackH } = resolveTogetherImageSize(params.tier);
   const promptForRemote = compactPrompt(params.prompt, provider === "pollinations" ? 900 : 1100);
-  const fallbackImageUrl = sumiFallback;
+  let fallbackImageUrl = sumiFallback;
+  if (provider === "together") {
+    const prebuilt = await pickPrebuiltFallbackImageUrl({
+      kind: "iching",
+      tier: params.tier,
+      width: togetherFallbackW,
+      height: togetherFallbackH,
+      seed: params.consultationId ?? `${params.primaryHexagram}-${params.transformedHexagram?.number ?? "none"}`,
+    });
+    if (prebuilt) fallbackImageUrl = prebuilt;
+  }
 
   const overlayBase = {
-    lines: params.lines,
+    lines: displayLines,
     primaryNumber: params.primaryHexagram,
     primaryName: params.primaryHexagramName,
     primaryChinese: params.primaryChinese,
@@ -500,17 +640,32 @@ export async function buildImageAsset(params: {
   }
 
   if (provider === "together") {
-    const { url, debug: togetherDebug } = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
+    const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
+    const { url, debug: togetherDebug } = await generateWithTogether(promptForRemote, tw, th);
     debug.together = togetherDebug;
     if (url) {
       const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
         ...overlayBase,
-        // generateWithTogether clamps output size to 512..1024, so we mirror what it uses.
-        outputWidth: Math.min(Math.max(512, tierWidth), 1024),
-        outputHeight: Math.min(Math.max(512, tierHeight), 1024),
+        outputWidth: tw,
+        outputHeight: th,
       });
       return { provider, imageUrl: url, fallbackImageUrl, debug, overlaySvgDataUrl };
     }
+  }
+
+  const preferPrebuiltFallback =
+    provider === "together" && fallbackImageUrl.startsWith("/fallbacks/prebuilt/");
+  if (preferPrebuiltFallback) {
+    debugLog("buildImageAsset: together failed, using prebuilt fallback as primary", {
+      fallbackImageUrl,
+      togetherDebug: debug.together,
+    });
+    return {
+      provider: "mock",
+      imageUrl: fallbackImageUrl,
+      fallbackImageUrl,
+      debug: { ...debug, together: debug.together ?? undefined },
+    };
   }
 
   return {
@@ -537,13 +692,36 @@ export async function buildOracleBonesImageAsset(params: {
 }> {
   const provider = resolveProvider(params.providerOverride);
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
+  const { width: togetherFallbackW, height: togetherFallbackH } = resolveTogetherImageSize(params.tier);
   const promptForRemote = compactPrompt(params.prompt, 900);
-  const fallbackImageUrl = buildOracleBonesMockDataUrl({
-    patternId: params.patternId,
+  const prebuiltTogetherFallback =
+    provider === "together"
+      ? await pickPrebuiltFallbackImageUrl({
+          kind: "bones",
+          tier: params.tier,
+          width: togetherFallbackW,
+          height: togetherFallbackH,
+          seed: params.consultationId ?? `${params.patternId}-${params.verdict}`,
+        })
+      : null;
+  const fallbackSvg = buildOracleBonesMockSvgString({
     verdict: params.verdict,
     medium: params.medium,
     consultationId: params.consultationId,
+    width: ORACLE_BONES_MOCK_WIDTH,
+    height: ORACLE_BONES_MOCK_HEIGHT,
   });
+  const fallbackSvgDataUrl = svgStringToDataUrl(fallbackSvg);
+  let fallbackImageUrl = prebuiltTogetherFallback ?? fallbackSvgDataUrl;
+  if (!prebuiltTogetherFallback) {
+    try {
+      fallbackImageUrl = await rasterizeOracleBonesMockSvgToPng(fallbackSvg);
+    } catch (error) {
+      console.warn("[image-provider] oracle bones fallback PNG rasterization failed, using SVG data URL", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
 
   if (provider === "pollinations") {
     const model = process.env.POLLINATIONS_MODEL ?? "flux";
@@ -555,7 +733,7 @@ export async function buildOracleBonesImageAsset(params: {
       `https://image.pollinations.ai/prompt/${encoded}` +
       `?model=${encodeURIComponent(model)}&width=${width}&height=${height}&seed=${seed}&nologo=true`;
     const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
-      patternId: params.patternId,
+      verdict: params.verdict,
       outputWidth: width,
       outputHeight: height,
     });
@@ -566,7 +744,7 @@ export async function buildOracleBonesImageAsset(params: {
     const falImage = await generateWithFal(promptForRemote, tierWidth, tierHeight);
     if (falImage) {
       const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
-        patternId: params.patternId,
+        verdict: params.verdict,
         outputWidth: tierWidth,
         outputHeight: tierHeight,
       });
@@ -578,7 +756,7 @@ export async function buildOracleBonesImageAsset(params: {
     const gptImage = await generateWithGptImage(promptForRemote, tierWidth, tierHeight);
     if (gptImage) {
       const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
-        patternId: params.patternId,
+        verdict: params.verdict,
         outputWidth: tierWidth,
         outputHeight: tierHeight,
       });
@@ -587,12 +765,13 @@ export async function buildOracleBonesImageAsset(params: {
   }
 
   if (provider === "together") {
-    const { url } = await generateWithTogether(promptForRemote, tierWidth, tierHeight);
+    const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
+    const { url } = await generateWithTogether(promptForRemote, tw, th);
     if (url) {
       const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
-        patternId: params.patternId,
-        outputWidth: Math.min(Math.max(512, tierWidth), 1024),
-        outputHeight: Math.min(Math.max(512, tierHeight), 1024),
+        verdict: params.verdict,
+        outputWidth: tw,
+        outputHeight: th,
       });
       return { provider, imageUrl: url, fallbackImageUrl, overlaySvgDataUrl };
     }
@@ -600,3 +779,4 @@ export async function buildOracleBonesImageAsset(params: {
 
   return { provider: "mock", imageUrl: fallbackImageUrl, fallbackImageUrl };
 }
+

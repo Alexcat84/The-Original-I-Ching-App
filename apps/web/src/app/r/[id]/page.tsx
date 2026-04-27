@@ -1,13 +1,15 @@
+import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import type { Metadata } from "next";
-import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
 import { getConsultationByPublicId } from "@/lib/session-store";
+import { oracleBonesVerdictChinese } from "@/lib/oracle-bones-verdict-glyph";
 
 interface ReadingPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: ReadingPageProps): Promise<Metadata> {
-  const row = await getConsultationByPublicId(params.id);
+  const { id } = await params;
+  const row = await getConsultationByPublicId(id);
   if (!row) {
     return { title: "Lectura no encontrada" };
   }
@@ -34,7 +36,8 @@ export async function generateMetadata({ params }: ReadingPageProps): Promise<Me
 }
 
 export default async function ReadingPage({ params }: ReadingPageProps) {
-  const row = await getConsultationByPublicId(params.id);
+  const { id } = await params;
+  const row = await getConsultationByPublicId(id);
   if (!row) {
     return <main className="oracle-shell"><p>Lectura no encontrada.</p></main>;
   }
@@ -48,7 +51,9 @@ export default async function ReadingPage({ params }: ReadingPageProps) {
         <p>{row.primaryHexagramChinese}</p>
         {row.oracleType === "oracle_bones" && row.oracleBones ? (
           <div className="crack-visual-wrap">
-            <CrackPatternGraphic patternId={row.oracleBones.pattern_id} />
+            <p className="bones-archived-verdict-glyph" aria-hidden="true">
+              {oracleBonesVerdictChinese(row.oracleBones.verdict as OracleBonesVerdict)}
+            </p>
             <p className="meta-line">Patrón {row.oracleBones.pattern_id} · {row.oracleBones.verdict}</p>
           </div>
         ) : null}

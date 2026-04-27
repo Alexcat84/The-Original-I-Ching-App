@@ -94,7 +94,8 @@ export async function POST(req: Request) {
   }
 
   const expectedHash = hashEmailCode(code, codeSecret);
-  if (!secureEqualHex(expectedHash, row.code_hash)) {
+  const storedHash = String(row.code_hash).trim().toLowerCase();
+  if (!secureEqualHex(expectedHash.toLowerCase(), storedHash)) {
     await supabase.from("two_factor_attempts").insert({
       user_id: authUser.userId,
       ip_address: (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown",
@@ -122,20 +123,24 @@ export async function POST(req: Request) {
     });
   }
 
-  const { error: userUpdateError } = await supabase
+  // This route completes email-based 2FA enrollment. Always persist method "email".
+  // Previously we preferred "totp" whenever totp_secret existed (e.g. user opened QR flow
+  // but never verified TOTP), which broke login: challenge/verify expected TOTP while the user used email.
+  const { error: applyUserUpdateError } = await supabase
     .from("users")
     .update({
       two_factor_enabled: true,
       two_factor_method: "email",
       totp_verified_at: nowIso,
+      totp_secret: null,
     })
     .eq("id", authUser.userId);
-  if (userUpdateError) {
+  if (applyUserUpdateError) {
     return apiError(500, {
       error: "two_factor_user_update_failed",
       code: "TWO_FACTOR_USER_UPDATE_FAILED",
       action: "retry",
-      details: process.env.NODE_ENV === "development" ? userUpdateError.message : undefined,
+      details: process.env.NODE_ENV === "development" ? applyUserUpdateError.message : undefined,
     });
   }
 

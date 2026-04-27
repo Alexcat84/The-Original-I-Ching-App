@@ -43,6 +43,16 @@ export async function POST(req: Request) {
       details: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
+
+  // Clear replay counter for the new secret. Done in a separate update so a schema/cache
+  // mismatch on this column cannot break enrollment (QR generation).
+  const { error: clearReplayError } = await supabase
+    .from("users")
+    .update({ totp_last_used_step: null })
+    .eq("id", authUser.userId);
+  if (clearReplayError && process.env.NODE_ENV === "development") {
+    console.warn("[2fa/enroll] totp_last_used_step reset failed:", clearReplayError.message);
+  }
   return NextResponse.json({
     ok: true,
     otpauthUrl: enrollment.otpauthUrl,

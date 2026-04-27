@@ -9,13 +9,13 @@ function unauthorized() {
 }
 
 export async function GET() {
-  const token = getAdminSessionTokenFromCookies();
+  const token = await getAdminSessionTokenFromCookies();
   if (!isValidAdminSession(token)) return unauthorized();
-  return NextResponse.json({ ok: true, config: getAdminConfig() });
+  return NextResponse.json({ ok: true, config: await getAdminConfig() });
 }
 
 export async function POST(req: Request) {
-  const token = getAdminSessionTokenFromCookies();
+  const token = await getAdminSessionTokenFromCookies();
   if (!isValidAdminSession(token)) return unauthorized();
   let body: Partial<AdminConfig>;
   try {
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   } catch {
     return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
   }
-  const next = updateAdminConfig(body);
+  const next = await updateAdminConfig(body);
   return NextResponse.json({ ok: true, config: next });
 }
 

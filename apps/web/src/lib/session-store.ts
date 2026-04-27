@@ -1,6 +1,7 @@
 import type { OracleBonesHistorySnapshot, OracleType } from "@iching-oracle/context-engine";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isPersistableUuid } from "@/lib/session-ids";
+import { randomBytes } from "node:crypto";
 
 /** Shared /r and /s links resolve across isolates only with Supabase and/or Upstash KV. */
 export function isSharingPersistenceAvailable(): boolean {
@@ -45,6 +46,8 @@ export interface StoredSession {
   publicId: string;
   consultationIds: string[];
   createdAt: number;
+  /** Max chained readings per thread when the session was created (from `max_consultations`). */
+  maxConsultations?: number | null;
 }
 
 export interface UserSessionWithConsultations {
@@ -57,6 +60,7 @@ export interface UserSessionSummary {
   messageCount: number;
   firstConsultationAt: number | null;
   updatedAt: number;
+  firstQuestion: string | null;
 }
 
 
@@ -131,7 +135,8 @@ function imageProviderFromUrl(url: string | null | undefined): StoredConsultatio
 }
 
 function randomPublicId(length = 8): string {
-  return Math.random().toString(36).slice(2, 2 + length);
+  const bytesNeeded = Math.max(6, Math.ceil((length * 3) / 4));
+  return randomBytes(bytesNeeded).toString("base64url").slice(0, length);
 }
 
 export function ensureSession(params: {
@@ -312,7 +317,7 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
   if (!supabase) return [];
   const { data: sessionRows, error: sessionsError } = await supabase
     .from("consultation_sessions")
-    .select("id, title, theme_category, language, public_sharing_id, created_at")
+    .select("id, title, theme_category, language, public_sharing_id, created_at, max_consultations")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
   if (sessionsError || !sessionRows?.length) return [];
@@ -360,6 +365,15 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
 
   return sessionRows.map((s) => {
     const rows = bySession.get(s.id) ?? [];
+    const maxFromDb =
+      typeof (s as { max_consultations?: number | null }).max_consultations === "number"
+        ? (s as { max_consultations: number }).max_consultations
+        : (s as { max_consultations?: number | null }).max_consultations === null
+          ? null
+          : undefined;
+    const maxConsultations =
+      maxFromDb ??
+      (rows.length ? Math.max(...rows.map((r) => r.sessionPosition), 1) : 1);
     return {
       session: {
         sessionId: s.id,
@@ -369,6 +383,7 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
         publicId: s.public_sharing_id,
         consultationIds: rows.map((r) => r.consultationId),
         createdAt: new Date(s.created_at).getTime(),
+        maxConsultations,
       },
       consultations: rows.sort((a, b) => a.sessionPosition - b.sessionPosition),
     };
@@ -389,25 +404,35 @@ export async function getUserSessionSummaries(userId: string): Promise<UserSessi
   const sessionIds = sessionRows.map((s) => s.id);
   const { data: consultRows, error: consultError } = await supabase
     .from("consultations")
-    .select("session_id, created_at")
+    .select("session_id, created_at, question, session_position")
     .eq("user_id", userId)
     .in("session_id", sessionIds)
-    .order("created_at", { ascending: true });
+    .order("session_position", { ascending: true });
   if (consultError) return [];
 
-  const bySession = new Map<string, { count: number; firstAt: number | null; lastAt: number | null }>();
+  const bySession = new Map<
+    string,
+    { count: number; firstAt: number | null; lastAt: number | null; firstQuestion: string | null }
+  >();
   for (const row of consultRows ?? []) {
     const sessionId = String((row as { session_id: string }).session_id);
     const createdAt = new Date((row as { created_at: string }).created_at).getTime();
+    const question = String((row as { question?: string }).question ?? "").trim();
     const current = bySession.get(sessionId);
     if (!current) {
-      bySession.set(sessionId, { count: 1, firstAt: createdAt, lastAt: createdAt });
+      bySession.set(sessionId, {
+        count: 1,
+        firstAt: createdAt,
+        lastAt: createdAt,
+        firstQuestion: question || null,
+      });
       continue;
     }
     bySession.set(sessionId, {
       count: current.count + 1,
       firstAt: current.firstAt ?? createdAt,
       lastAt: createdAt,
+      firstQuestion: current.firstQuestion ?? (question || null),
     });
   }
 
@@ -427,6 +452,7 @@ export async function getUserSessionSummaries(userId: string): Promise<UserSessi
       messageCount: agg?.count ?? 0,
       firstConsultationAt: agg?.firstAt ?? null,
       updatedAt: agg?.lastAt ?? createdAt,
+      firstQuestion: agg?.firstQuestion ?? null,
     };
   });
 }
@@ -440,7 +466,7 @@ export async function getUserSessionWithConsultations(
 
   const { data: sessionRow, error: sessionError } = await supabase
     .from("consultation_sessions")
-    .select("id, title, theme_category, language, public_sharing_id, created_at")
+    .select("id, title, theme_category, language, public_sharing_id, created_at, max_consultations")
     .eq("id", sessionId)
     .eq("user_id", userId)
     .maybeSingle();
@@ -478,6 +504,15 @@ export async function getUserSessionWithConsultations(
   if (consultError) return null;
 
   const consultations = (consultRows ?? []).map((row) => consultationFromDbRow(row as never));
+  const sorted = consultations.sort((a, b) => a.sessionPosition - b.sessionPosition);
+  const maxFromDb =
+    typeof (sessionRow as { max_consultations?: number | null }).max_consultations === "number"
+      ? (sessionRow as { max_consultations: number }).max_consultations
+      : (sessionRow as { max_consultations?: number | null }).max_consultations === null
+        ? null
+        : undefined;
+  const maxConsultations =
+    maxFromDb ?? (sorted.length ? Math.max(...sorted.map((r) => r.sessionPosition), 1) : 1);
   return {
     session: {
       sessionId: sessionRow.id,
@@ -485,10 +520,11 @@ export async function getUserSessionWithConsultations(
       themeCategory: sessionRow.theme_category,
       language: sessionRow.language,
       publicId: sessionRow.public_sharing_id,
-      consultationIds: consultations.map((r) => r.consultationId),
+      consultationIds: sorted.map((r) => r.consultationId),
       createdAt: new Date(sessionRow.created_at).getTime(),
+      maxConsultations,
     },
-    consultations: consultations.sort((a, b) => a.sessionPosition - b.sessionPosition),
+    consultations: sorted,
   };
 }
 
@@ -509,14 +545,6 @@ export async function deleteUserSession(userId: string, sessionId: string): Prom
     return true;
   }
 
-  const { data: existing, error: existingError } = await supabase
-    .from("consultation_sessions")
-    .select("id")
-    .eq("id", sessionId)
-    .eq("user_id", userId)
-    .maybeSingle();
-  if (existingError || !existing) return false;
-
   const { error: consultDeleteError } = await supabase
     .from("consultations")
     .delete()
@@ -526,15 +554,16 @@ export async function deleteUserSession(userId: string, sessionId: string): Prom
     throw new Error(`consultations_delete_failed:${consultDeleteError.message}`);
   }
 
-  const { error: sessionDeleteError } = await supabase
+  const { data: deletedSessions, error: sessionDeleteError } = await supabase
     .from("consultation_sessions")
     .delete()
     .eq("id", sessionId)
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .select("id");
   if (sessionDeleteError) {
     throw new Error(`consultation_session_delete_failed:${sessionDeleteError.message}`);
   }
 
-  return true;
+  return Array.isArray(deletedSessions) && deletedSessions.length > 0;
 }
 

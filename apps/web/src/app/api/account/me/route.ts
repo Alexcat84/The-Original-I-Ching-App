@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
-import { CREDITS_PER_MONTH, getUserBillingTier, TIER_CONFIG } from "@/lib/credits";
-import { CONTEXT_LIMITS, type TierKey } from "@iching-oracle/context-engine";
+import { getAccountBillingSnapshot } from "@/lib/credits";
+import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
+import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
 
 export const runtime = "nodejs";
 
@@ -11,29 +12,56 @@ export async function GET(req: Request) {
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
-  const tier = await getUserBillingTier(user.userId);
-  const tierKey = (tier in CONTEXT_LIMITS ? tier : "free") as TierKey;
-  const twoFactor = await (async () => {
+  const billing = await getAccountBillingSnapshot(user.userId);
+  const userProfile = await (async () => {
     const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
     const supabase = getSupabaseAdmin();
-    if (!supabase) return { enabled: false, method: null as string | null };
+    if (!supabase) {
+      return {
+        enabled: false,
+        method: null as string | null,
+        displayName: null as string | null,
+        isAdmin: false,
+        legalAccepted: false,
+      };
+    }
     const { data } = await supabase
       .from("users")
-      .select("two_factor_enabled, two_factor_method")
+      .select("two_factor_enabled, two_factor_method, display_name, is_admin")
       .eq("id", user.userId)
       .maybeSingle();
+    const { data: legalAcceptance, error: legalAcceptanceError } = await supabase
+      .from("user_legal_acceptances")
+      .select("id")
+      .eq("user_id", user.userId)
+      .eq("terms_version", CURRENT_TERMS_VERSION)
+      .eq("privacy_version", CURRENT_PRIVACY_VERSION)
+      .maybeSingle();
+    if (legalAcceptanceError) {
+      console.warn("[account/me] legal acceptance lookup failed", legalAcceptanceError.message);
+    }
     return {
       enabled: Boolean(data?.two_factor_enabled),
       method: (data?.two_factor_method as string | null) ?? null,
+      displayName: (data?.display_name as string | null) ?? null,
+      isAdmin: data?.is_admin === true,
+      legalAccepted: Boolean(legalAcceptance?.id),
     };
   })();
   return NextResponse.json({
+    id: user.userId,
     email: user.email,
-    tier: tierKey,
-    creditsLimit: CREDITS_PER_MONTH[tierKey],
-    creditsType: TIER_CONFIG[tierKey].creditsType,
-    sessionDepthLimit: CONTEXT_LIMITS[tierKey].sessionDepth,
-    twoFactorEnabled: twoFactor.enabled,
-    twoFactorMethod: twoFactor.method,
+    tokens_available: billing.creditsRemaining,
+    tokens_used_lifetime: billing.creditsUsed,
+    tokens_purchased_lifetime: billing.tokensPurchasedLifetime,
+    session_limit: getSessionLimitFromPack(billing.lastPack),
+    last_pack: billing.lastPack,
+    twoFactorEnabled: userProfile.enabled,
+    twoFactorMethod: userProfile.method,
+    display_name: userProfile.displayName,
+    is_admin: userProfile.isAdmin,
+    legal_terms_version: CURRENT_TERMS_VERSION,
+    legal_privacy_version: CURRENT_PRIVACY_VERSION,
+    legal_acceptance_current: userProfile.legalAccepted,
   });
 }

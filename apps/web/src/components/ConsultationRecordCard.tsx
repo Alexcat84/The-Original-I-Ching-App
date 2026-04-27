@@ -1,6 +1,6 @@
 "use client";
 
-import type { MutationRule } from "@iching-oracle/iching-engine";
+import { getIchingMutationRuleLabel, parseAppLocale } from "@iching-oracle/i18n";
 
 type Props = {
   consultationId: string;
@@ -18,35 +18,6 @@ function formatConsultRef(id: string): string {
   const compact = id.replace(/-/g, "");
   const core = compact.slice(0, 10).toUpperCase();
   return core.length >= 8 ? `${core.slice(0, 4)}·${core.slice(4, 8)}` : id.slice(0, 8);
-}
-
-function mutationRuleLabel(rule: string, isSpanish: boolean): string {
-  const mapEs: Record<MutationRule, string> = {
-    NO_CHANGING: "Sin líneas mutantes",
-    ONE_CHANGING: "Una línea en mutación",
-    TWO_YIN_YANG: "Dos líneas: yin y yang en cambio",
-    TWO_SAME_LOWER: "Dos líneas mutantes (trigrama inferior)",
-    THREE_MIDDLE: "Tres líneas centrales en juego",
-    FOUR_LOWEST_STABLE: "Cuatro líneas: la inferior estable",
-    FIVE_ONLY_STABLE: "Cinco mutando; una estable",
-    SIX_ALL_CHANGING: "Las seis líneas mutan",
-    QIAN_ALL_NINE: "Qian — nueve al novenario",
-    KUN_ALL_SIX: "Kun — seis al senario",
-  };
-  const mapEn: Record<MutationRule, string> = {
-    NO_CHANGING: "No changing lines",
-    ONE_CHANGING: "One changing line",
-    TWO_YIN_YANG: "Two lines: yin and yang changing",
-    TWO_SAME_LOWER: "Two changing lines (lower trigram)",
-    THREE_MIDDLE: "Three middle lines in play",
-    FOUR_LOWEST_STABLE: "Four lines: lowest remains stable",
-    FIVE_ONLY_STABLE: "Five changing; one stable",
-    SIX_ALL_CHANGING: "All six lines change",
-    QIAN_ALL_NINE: "Qian — all nines",
-    KUN_ALL_SIX: "Kun — all sixes",
-  };
-  const map = isSpanish ? mapEs : mapEn;
-  return map[rule as MutationRule] ?? rule;
 }
 
 export function ConsultationRecordCard({
@@ -155,6 +126,8 @@ export function ConsultationRecordCard({
     },
   }[(localeKey in { es:1,en:1,pt:1,fr:1,de:1,it:1,ja:1,zh:1,ko:1 } ? localeKey : "en") as "es" | "en" | "pt" | "fr" | "de" | "it" | "ja" | "zh" | "ko"];
 
+  const ruleLocale = parseAppLocale(localeKey);
+
   const dateStr = new Date().toLocaleDateString(labels.dateLocale, {
     year: "numeric",
     month: "short",
@@ -180,7 +153,9 @@ export function ConsultationRecordCard({
         </p>
         <p className="consultation-record-row">
           <span className="consultation-record-key">{labels.rule}</span>
-          <span className="consultation-record-value">{mutationRuleLabel(mutationRule, labels.dateLocale === "es")}</span>
+          <span className="consultation-record-value">
+            {getIchingMutationRuleLabel(ruleLocale, mutationRule)}
+          </span>
         </p>
         <p className="consultation-record-row">
           <span className="consultation-record-key">{labels.thread}</span>

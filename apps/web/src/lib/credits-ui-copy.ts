@@ -1,59 +1,80 @@
-/** User-facing copy when monthly consultation credits are exhausted (marketing tone, Spanish). */
+import { FREE_SESSION_LIMIT, getSessionLimit } from "@/lib/token-packs";
 
-export type BillingTier = "free" | "seeker" | "practitioner" | "master" | "oracle";
+export type BillingTier = "free" | "seeker" | "practitioner" | "master";
+export type CreditsNoticeReason = "credits_depleted" | "free_lifetime_depleted" | "billing_unavailable";
 
-function formatResetDate(iso: string | null): string | null {
-  if (!iso) return null;
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return null;
-  return d.toLocaleDateString("es", { day: "numeric", month: "long", year: "numeric" });
+export type CreditsNoticeAction = "open_plans" | "sync-billing" | "mailto";
+export type CreditsNoticeCta = { label: string; action: CreditsNoticeAction; href?: string };
+export type CreditsNoticeCopy = {
+  title: string;
+  body: string;
+  resetLine: string;
+  primaryCta: CreditsNoticeCta;
+  secondaryCta?: CreditsNoticeCta;
+};
+
+export function tierToBillingTierCopy(tier: string): BillingTier {
+  if (tier === "tokens_seeker_20" || tier === "seeker") return "seeker";
+  if (tier === "tokens_practitioner_40" || tier === "practitioner") return "practitioner";
+  if (tier === "tokens_master_100" || tier === "master") return "master";
+  return "free";
 }
 
-export function creditsExhaustedBlock(
-  tier: BillingTier,
-  limit: number,
-  cycleEndsAt: string | null,
-): { title: string; body: string; resetLine: string; primaryCta: string } {
-  const reset = formatResetDate(cycleEndsAt);
-  const resetLine = reset
-    ? `Tu ciclo actual termina el ${reset}. Entonces vuelven a cargarse tus consultas del mes.`
-    : "Cada mes se renueva tu cupo de consultas según tu plan.";
+export function creditsExhaustedBlock(tier: BillingTier, reason: CreditsNoticeReason): CreditsNoticeCopy {
+  if (reason === "billing_unavailable") {
+    return {
+      title: "No pudimos validar tu saldo de tokens",
+      body: "Hubo un problema temporal al sincronizar tu estado de cuenta.",
+      resetLine: "Actualiza estado y vuelve a intentar en unos segundos.",
+      primaryCta: { label: "Actualizar estado", action: "sync-billing" },
+    };
+  }
+
+  if (reason === "credits_depleted") {
+    return {
+      title: "Has agotado todos tus tokens",
+      body: "Te invitamos a recargar para seguir disfrutando de los beneficios del oráculo.",
+      resetLine: `Límite por hilo actual: ${getSessionLimit(
+        tier === "master"
+          ? "tokens_master_100"
+          : tier === "practitioner"
+            ? "tokens_practitioner_40"
+            : tier === "seeker"
+              ? "tokens_seeker_20"
+              : "free",
+      )} ${tier === "free" ? "pregunta" : "preguntas"}.`,
+      primaryCta: { label: "Comprar tokens", action: "open_plans" },
+    };
+  }
 
   switch (tier) {
     case "free":
       return {
-        title: "Llegaste al límite del plan gratuito",
-        body: `Ya usaste tus ${limit} consultas de prueba (lifetime). Para seguir consultando, debes activar un plan premium.`,
-        resetLine: "El plan Free no se reinicia por ciclo: las consultas de prueba son únicas.",
-        primaryCta: "Ver planes y ampliar",
+        title: "Has usado tus consultas gratuitas",
+        body: "Tus 2 consultas gratuitas de por vida ya fueron usadas.",
+        resetLine: `Límite por hilo en free: ${FREE_SESSION_LIMIT} pregunta.`,
+        primaryCta: { label: "Comprar tokens", action: "open_plans" },
       };
     case "seeker":
       return {
-        title: "Consultas del mes agotadas",
-        body: `Has usado las ${limit} consultas de tu plan Seeker. Puedes subir de plan para más cupo o esperar a que se renueve el ciclo.`,
-        resetLine,
-        primaryCta: "Explorar planes superiores",
+        title: "Has usado tus tokens disponibles",
+        body: "Tu saldo actual no alcanza para otra consulta.",
+        resetLine: `Límite por hilo con Seeker Pack: ${getSessionLimit("tokens_seeker_20")} preguntas.`,
+        primaryCta: { label: "Comprar más tokens", action: "open_plans" },
       };
     case "practitioner":
       return {
-        title: "Cupo mensual completado",
-        body: `Tu plan Practitioner ya alcanzó las ${limit} consultas de este ciclo. Un plan superior te da más margen si lo necesitas ahora.`,
-        resetLine,
-        primaryCta: "Ver opciones de upgrade",
+        title: "Has usado tus tokens disponibles",
+        body: "Tu saldo actual no alcanza para otra consulta.",
+        resetLine: `Límite por hilo con Practitioner Pack: ${getSessionLimit("tokens_practitioner_40")} preguntas.`,
+        primaryCta: { label: "Comprar más tokens", action: "open_plans" },
       };
     case "master":
       return {
-        title: "Límite mensual alcanzado",
-        body: `En este ciclo usaste las ${limit} consultas del plan Master. Si quieres aún más volumen, revisa el plan Oracle.`,
-        resetLine,
-        primaryCta: "Conocer plan Oracle",
-      };
-    case "oracle":
-      return {
-        title: "Consultas del período agotadas",
-        body: `Has utilizado las ${limit} consultas de tu plan en este ciclo. Si necesitas ampliar el cupo, contacta soporte o revisa opciones comerciales.`,
-        resetLine,
-        primaryCta: "Más información",
+        title: "Has usado tus tokens disponibles",
+        body: "Tu saldo actual no alcanza para otra consulta.",
+        resetLine: `Límite por hilo con Master Pack: ${getSessionLimit("tokens_master_100")} preguntas.`,
+        primaryCta: { label: "Comprar más tokens", action: "open_plans" },
       };
   }
 }

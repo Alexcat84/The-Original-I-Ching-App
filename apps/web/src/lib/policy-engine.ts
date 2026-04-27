@@ -1,6 +1,9 @@
-import { type TierKey, CONTEXT_LIMITS } from "@iching-oracle/context-engine";
+import { toContextTierKey } from "@/lib/credits";
+import type { TierKey } from "@iching-oracle/context-engine";
 import type { AuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+
+const EMAIL_EXACT_PATTERN = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
 type ConsultPolicyInput = {
   authUser: AuthenticatedUser;
@@ -21,7 +24,7 @@ function parseEmailAllowlist(raw: string | undefined | null): Set<string> {
     raw
       .split(/[,\n;]/g)
       .map((value) => value.trim().toLowerCase())
-      .filter(Boolean),
+      .filter((value) => value.length > 3 && value.length <= 254 && EMAIL_EXACT_PATTERN.test(value)),
   );
 }
 
@@ -36,17 +39,9 @@ function shouldAllowAdminTwoFactorBypass(): boolean {
   return raw === "1" || raw === "true";
 }
 
-function shouldAllowAdminUnlimitedCredits(): boolean {
-  const raw = (process.env.ALLOW_ADMIN_UNLIMITED_CREDITS ?? "").trim().toLowerCase();
-  if (!raw) return true;
-  return raw === "1" || raw === "true";
-}
 
 function resolveTierKey(tier: string): TierKey {
-  if (tier in CONTEXT_LIMITS) {
-    return tier as TierKey;
-  }
-  return "free";
+  return toContextTierKey(tier);
 }
 
 function tierRequiresTwoFactor(tierKey: TierKey): boolean {
@@ -65,12 +60,24 @@ async function getTwoFactorEnabled(userId: string): Promise<boolean> {
   return Boolean(user?.two_factor_enabled);
 }
 
+async function getIsAdmin(userId: string): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return false;
+  const { data: user } = await supabase
+    .from("users")
+    .select("is_admin")
+    .eq("id", userId)
+    .maybeSingle();
+  return user?.is_admin === true;
+}
+
 export async function resolveConsultPolicy(input: ConsultPolicyInput): Promise<ConsultPolicyDecision> {
   const allowlist = parseEmailAllowlist(process.env.ADMIN_EMAIL_ALLOWLIST);
-  const adminBypassAllowed = allowlist.has(input.authUser.email.trim().toLowerCase());
-  const adminUnlimitedCredits = adminBypassAllowed && shouldAllowAdminUnlimitedCredits();
-  // For allowlisted admin sessions, unlock full in-thread depth/features.
-  const tierEffective = adminUnlimitedCredits ? "oracle" : input.tierResolved;
+  const adminByAllowlist = allowlist.has(input.authUser.email.trim().toLowerCase());
+  const adminByDB = await getIsAdmin(input.authUser.userId);
+  const adminBypassAllowed = adminByAllowlist || adminByDB;
+  const adminUnlimitedCredits = adminBypassAllowed;
+  const tierEffective = adminBypassAllowed ? "tokens_master_100" : input.tierResolved;
   const tierKey = resolveTierKey(tierEffective);
   const twoFactorRequiredByTier = shouldEnforceTierTwoFactor() && tierRequiresTwoFactor(tierKey);
   const twoFactorEnabled = twoFactorRequiredByTier ? await getTwoFactorEnabled(input.authUser.userId) : true;

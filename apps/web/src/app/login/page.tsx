@@ -1,10 +1,27 @@
 "use client";
 
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
+import { useAppLocale } from "@/lib/use-app-locale";
+import {
+  formatLoginConfigErrorBody,
+  formatLoginRegisterApiError,
+  getDocNavUiMessages,
+  getLoginPageUiMessages,
+  getPrivacyPageMessages,
+  getTermsPageMessages,
+} from "@iching-oracle/i18n";
+import { LegalConsentModal } from "@/components/LegalConsentModal";
+import {
+  createLegalConsentPayload,
+  isCurrentLegalConsentPayload,
+  LEGAL_CONSENT_PENDING_STORAGE_KEY,
+  type LegalConsentPayload,
+} from "@/lib/legal-consent";
+import { resolvePostAuthClientRoute } from "@/lib/post-auth-legal";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -18,6 +35,7 @@ declare global {
         },
       ) => string;
       reset: (widgetId: string) => void;
+      remove?: (widgetId: string) => void;
     };
   }
 }
@@ -45,38 +63,29 @@ function GoogleGlyph() {
   );
 }
 
-function registerErrorMessage(data: {
-  error?: string;
-  reason?: string;
-  message?: string;
-}): string {
-  switch (data.error) {
-    case "invalid_payload":
-      return "Revisa el correo y la contraseña (mínimos requeridos).";
-    case "rate_limited":
-      return "Demasiados intentos desde esta red. Espera un poco e inténtalo de nuevo.";
-    case "turnstile_failed":
-      return "Verificación anti‑bots fallida. Recarga la página e inténtalo de nuevo.";
-    case "email_rejected":
-      return data.reason === "disposable"
-        ? "No se aceptan correos temporales o desechables."
-        : "El correo no pasó la validación (dominio o MX).";
-    case "create_user_failed":
-      return data.message ?? "No se pudo crear la cuenta (¿correo ya registrado?).";
-    case "supabase_not_configured":
-      return "El servidor no tiene Supabase configurado.";
-    default:
-      return data.message ?? "No se pudo registrar. Inténtalo de nuevo.";
-  }
+function isEmailNotConfirmedError(message: string): boolean {
+  const lower = message.toLowerCase();
+  return lower.includes("email not confirmed") || lower.includes("email_not_confirmed");
 }
 
 export default function LoginPage() {
+  type RegisterModalKind = "verify" | "exists";
+  type PendingLegalAction = "email_signup" | "google_oauth";
   const router = useRouter();
+  const locale = useAppLocale();
+  const L = useMemo(() => getLoginPageUiMessages(locale), [locale]);
+  const nav = useMemo(() => getDocNavUiMessages(locale), [locale]);
+  const privacy = useMemo(() => getPrivacyPageMessages(locale), [locale]);
+  const terms = useMemo(() => getTermsPageMessages(locale), [locale]);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [registerModalKind, setRegisterModalKind] = useState<RegisterModalKind | null>(null);
+  const [legalConsent, setLegalConsent] = useState<LegalConsentPayload | null>(null);
+  const [pendingLegalAction, setPendingLegalAction] = useState<PendingLegalAction | null>(null);
+  const [pendingVerificationEmail, setPendingVerificationEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [configError, setConfigError] = useState(false);
   const turnstileTokenRef = useRef("");
@@ -84,23 +93,41 @@ export default function LoginPage() {
   const turnstileHostRef = useRef<HTMLDivElement | null>(null);
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
+  function switchMode(nextMode: "signin" | "signup") {
+    setMode(nextMode);
+    setPassword("");
+    setErr(null);
+    setMsg(null);
+  }
+
   useEffect(() => {
     if (!isSupabaseBrowserConfigured()) {
       setConfigError(true);
       return;
     }
     const sb = getSupabaseBrowser();
-    void sb.auth.getSession().then(({ data: { session } }) => {
-      if (session?.access_token) router.replace("/");
+    void sb.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session?.access_token) return;
+      try {
+        const dest = await resolvePostAuthClientRoute(session.access_token);
+        router.replace(dest);
+      } catch {
+        router.replace("/auth/complete-legal");
+      }
     });
   }, [router]);
 
   useEffect(() => {
     if (!turnstileSiteKey || mode !== "signup") {
+      turnstileTokenRef.current = "";
       const id = turnstileWidgetIdRef.current;
       if (id && window.turnstile) {
         try {
-          window.turnstile.reset(id);
+          if (typeof window.turnstile.remove === "function") {
+            window.turnstile.remove(id);
+          } else {
+            window.turnstile.reset(id);
+          }
         } catch {
           // ignore
         }
@@ -117,9 +144,11 @@ export default function LoginPage() {
     const mountWidget = () => {
       if (cancelled || !turnstileHostRef.current || !window.turnstile) return;
       const el = turnstileHostRef.current;
-      el.innerHTML = "";
+      el.replaceChildren();
+      const cspNonce = document.querySelector('meta[name="csp-nonce"]')?.getAttribute("content") ?? undefined;
       turnstileWidgetIdRef.current = window.turnstile.render(el, {
         sitekey: turnstileSiteKey,
+        ...(cspNonce ? { cspNonce } : {}),
         callback: (token: string) => {
           turnstileTokenRef.current = token;
         },
@@ -142,10 +171,15 @@ export default function LoginPage() {
 
     return () => {
       cancelled = true;
+      turnstileTokenRef.current = "";
       const id = turnstileWidgetIdRef.current;
       if (id && window.turnstile) {
         try {
-          window.turnstile.reset(id);
+          if (typeof window.turnstile.remove === "function") {
+            window.turnstile.remove(id);
+          } else {
+            window.turnstile.reset(id);
+          }
         } catch {
           // ignore
         }
@@ -164,10 +198,26 @@ export default function LoginPage() {
       const sb = getSupabaseBrowser();
       const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password });
       if (error) {
+        if (isEmailNotConfirmedError(error.message)) {
+          setErr(L.errEmailNotConfirmed);
+          return;
+        }
         setErr(error.message);
         return;
       }
-      router.replace("/");
+      const {
+        data: { session: afterSession },
+      } = await sb.auth.getSession();
+      if (!afterSession?.access_token) {
+        setErr(L.errNetwork);
+        return;
+      }
+      try {
+        const dest = await resolvePostAuthClientRoute(afterSession.access_token);
+        router.replace(dest);
+      } catch {
+        router.replace("/auth/complete-legal");
+      }
     } finally {
       setLoading(false);
     }
@@ -176,9 +226,36 @@ export default function LoginPage() {
   async function onGoogle() {
     setErr(null);
     setMsg(null);
+    if (mode === "signup") {
+      if (!isCurrentLegalConsentPayload(legalConsent)) {
+        setPendingLegalAction("google_oauth");
+        return;
+      }
+      await startGoogleOAuth(createLegalConsentPayload("google_oauth"));
+      return;
+    }
+    await startGoogleOAuth(null);
+  }
+
+  async function startGoogleOAuth(consent: LegalConsentPayload | null) {
     if (!isSupabaseBrowserConfigured()) return;
     setLoading(true);
     try {
+      if (consent) {
+        try {
+          sessionStorage.setItem(LEGAL_CONSENT_PENDING_STORAGE_KEY, JSON.stringify(consent));
+        } catch {
+          // If storage is blocked, callback cannot persist consent; fail before OAuth.
+          setErr(L.errNetwork);
+          return;
+        }
+      } else {
+        try {
+          sessionStorage.removeItem(LEGAL_CONSENT_PENDING_STORAGE_KEY);
+        } catch {
+          // ignore
+        }
+      }
       const sb = getSupabaseBrowser();
       const origin = window.location.origin;
       const { error } = await sb.auth.signInWithOAuth({
@@ -195,6 +272,14 @@ export default function LoginPage() {
     e.preventDefault();
     setErr(null);
     setMsg(null);
+    if (!isCurrentLegalConsentPayload(legalConsent)) {
+      setPendingLegalAction("email_signup");
+      return;
+    }
+    await registerWithEmail(createLegalConsentPayload("email_signup"));
+  }
+
+  async function registerWithEmail(consent: LegalConsentPayload) {
     setLoading(true);
     try {
       const res = await fetch("/api/auth/register", {
@@ -204,21 +289,113 @@ export default function LoginPage() {
           email: email.trim(),
           password,
           turnstileToken: turnstileTokenRef.current,
+          legalConsent: consent,
         }),
       });
       const data = (await res.json()) as {
         error?: string;
         reason?: string;
         message?: string;
+        authCode?: string;
       };
       if (!res.ok) {
-        setErr(registerErrorMessage(data));
+        console.warn("[login/register] POST /api/auth/register failed", res.status, data);
+        if (data.error === "email_exists") {
+          setPendingVerificationEmail(email.trim());
+          setRegisterModalKind("exists");
+          switchMode("signin");
+          return;
+        }
+        setErr(formatLoginRegisterApiError(L, data));
         return;
       }
-      setMsg("Te enviamos un enlace de confirmación. Ábrelo y luego vuelve aquí a iniciar sesión.");
-      setMode("signin");
+      const normalizedEmail = email.trim();
+      setPendingVerificationEmail(normalizedEmail);
+      setRegisterModalKind("verify");
+      setMsg(null);
+      setErr(null);
+      switchMode("signin");
     } catch {
-      setErr("Error de red. Inténtalo de nuevo.");
+      setErr(L.errNetwork);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function acceptLegalConsentAndContinue() {
+    if (!pendingLegalAction) return;
+    const action = pendingLegalAction;
+    const consent = createLegalConsentPayload(action);
+    setLegalConsent(consent);
+    setPendingLegalAction(null);
+    setErr(null);
+    setMsg(null);
+    if (action === "google_oauth") {
+      await startGoogleOAuth(consent);
+    } else {
+      await registerWithEmail(consent);
+    }
+  }
+
+  function cancelLegalConsent() {
+    setPendingLegalAction(null);
+    setErr(L.legalConsentRequired);
+  }
+
+  function closeRegisterModal() {
+    setRegisterModalKind(null);
+    setMode("signin");
+  }
+
+  async function onResendConfirmation() {
+    setErr(null);
+    setMsg(null);
+    if (!isSupabaseBrowserConfigured()) return;
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
+      setErr(L.errResendNeedEmail);
+      return;
+    }
+    setLoading(true);
+    try {
+      const sb = getSupabaseBrowser();
+      const origin = window.location.origin;
+      const { error } = await sb.auth.resend({
+        type: "signup",
+        email: normalizedEmail,
+        options: { emailRedirectTo: `${origin}/auth/callback` },
+      });
+      if (error) {
+        setErr(error.message);
+        return;
+      }
+      setMsg(L.msgResendOk);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function onForgotPassword() {
+    setErr(null);
+    setMsg(null);
+    if (!isSupabaseBrowserConfigured()) return;
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
+      setErr(L.errResetNeedEmail);
+      return;
+    }
+    setLoading(true);
+    try {
+      const sb = getSupabaseBrowser();
+      const origin = window.location.origin;
+      const { error } = await sb.auth.resetPasswordForEmail(normalizedEmail, {
+        redirectTo: `${origin}/auth/callback`,
+      });
+      if (error) {
+        setErr(error.message);
+        return;
+      }
+      setMsg(L.msgResetOk);
     } finally {
       setLoading(false);
     }
@@ -229,12 +406,10 @@ export default function LoginPage() {
       <div className="auth-pro-shell">
         <div className="auth-pro-form-panel auth-pro-form-panel--solo">
           <div className="auth-pro-card">
-            <h1 className="auth-pro-heading">Acceso no disponible</h1>
-            <p className="auth-pro-lead auth-pro-err">
-              Faltan <code>NEXT_PUBLIC_SUPABASE_URL</code> o <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> en el cliente.
-            </p>
+            <h1 className="auth-pro-heading">{L.configErrorTitle}</h1>
+            <p className="auth-pro-lead auth-pro-err">{formatLoginConfigErrorBody(L)}</p>
             <Link href="/" className="auth-pro-text-link">
-              ← Volver al oráculo
+              {L.backToOracle}
             </Link>
           </div>
         </div>
@@ -250,27 +425,23 @@ export default function LoginPage() {
             周易
           </p>
           <h1 className="auth-pro-brand-title">The Original I Ching</h1>
-          <p className="auth-pro-brand-text">
-            Lectura clásica con Zhu Xi y Wilhelm/Baynes.
-          </p>
+          <p className="auth-pro-brand-text">{L.brandSubtitle}</p>
         </div>
       </aside>
 
       <div className="auth-pro-form-panel">
         <div className="auth-pro-card">
-          <div className="auth-pro-tabs" role="tablist" aria-label="Acceso">
+          <div className="auth-pro-tabs" role="tablist" aria-label={L.tablistAria}>
             <button
               type="button"
               role="tab"
               aria-selected={mode === "signin"}
               className={`auth-pro-tab ${mode === "signin" ? "active" : ""}`}
               onClick={() => {
-                setMode("signin");
-                setErr(null);
-                setMsg(null);
+                switchMode("signin");
               }}
             >
-              Iniciar sesión
+              {L.signInTab}
             </button>
             <button
               type="button"
@@ -278,70 +449,86 @@ export default function LoginPage() {
               aria-selected={mode === "signup"}
               className={`auth-pro-tab ${mode === "signup" ? "active" : ""}`}
               onClick={() => {
-                setMode("signup");
-                setErr(null);
-                setMsg(null);
+                switchMode("signup");
               }}
             >
-              Crear cuenta
+              {L.signUpTab}
             </button>
           </div>
 
           {mode === "signin" ? (
             <form onSubmit={onSignIn} className="auth-pro-form">
-              <p className="auth-pro-lead">Entra con el correo con el que te registraste (tras confirmar el enlace).</p>
+              <p className="auth-pro-lead">{L.signInLead}</p>
               <div className="auth-pro-field">
-                <label htmlFor="auth-email">Correo electrónico</label>
+                <label htmlFor="auth-email">{L.emailLabel}</label>
                 <input
                   id="auth-email"
                   type="email"
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="tu@correo.com"
+                  placeholder={L.emailPlaceholder}
                   required
                 />
               </div>
               <div className="auth-pro-field">
-                <label htmlFor="auth-password">Contraseña</label>
+                <label htmlFor="auth-password">{L.passwordLabel}</label>
                 <input
                   id="auth-password"
                   type="password"
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder={L.passwordPlaceholderSignin}
                   required
                 />
               </div>
+              <div className="auth-pro-actions-row">
+                <button
+                  type="button"
+                  className="auth-pro-inline-btn"
+                  onClick={() => void onForgotPassword()}
+                  disabled={loading}
+                >
+                  {L.forgotPassword}
+                </button>
+                <button
+                  type="button"
+                  className="auth-pro-inline-btn"
+                  onClick={() => void onResendConfirmation()}
+                  disabled={loading}
+                >
+                  {L.resendConfirmation}
+                </button>
+              </div>
               <button type="submit" className="auth-pro-btn auth-pro-btn-primary" disabled={loading}>
-                {loading ? "Entrando…" : "Entrar"}
+                {loading ? L.signingIn : L.signInSubmit}
               </button>
             </form>
           ) : (
             <form onSubmit={onRegister} className="auth-pro-form">
-              <p className="auth-pro-lead">Registro con validación de correo. Te pedimos una contraseña segura (mín. 8 caracteres).</p>
+              <p className="auth-pro-lead">{L.signUpLead}</p>
               <div className="auth-pro-field">
-                <label htmlFor="auth-email-su">Correo electrónico</label>
+                <label htmlFor="auth-email-su">{L.emailLabel}</label>
                 <input
                   id="auth-email-su"
                   type="email"
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="tu@correo.com"
+                  placeholder={L.emailPlaceholder}
                   required
                 />
               </div>
               <div className="auth-pro-field">
-                <label htmlFor="auth-password-su">Contraseña</label>
+                <label htmlFor="auth-password-su">{L.passwordLabel}</label>
                 <input
                   id="auth-password-su"
                   type="password"
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Mínimo 8 caracteres"
+                  placeholder={L.passwordPlaceholderSignup}
                   required
                   minLength={8}
                 />
@@ -353,28 +540,94 @@ export default function LoginPage() {
                 aria-hidden={!turnstileSiteKey}
               />
               <button type="submit" className="auth-pro-btn auth-pro-btn-primary" disabled={loading}>
-                {loading ? "Enviando…" : "Registrarme"}
+                {loading ? L.sending : L.registerSubmit}
               </button>
             </form>
           )}
 
           <div className="auth-pro-divider">
-            <span>o</span>
+            <span>{L.dividerOr}</span>
           </div>
 
           <button type="button" className="auth-pro-btn auth-pro-btn-google" disabled={loading} onClick={() => void onGoogle()}>
             <GoogleGlyph />
-            Continuar con Google
+            {L.continueGoogle}
           </button>
 
           {err ? <p className="auth-pro-err">{err}</p> : null}
           {msg ? <p className="auth-pro-msg">{msg}</p> : null}
 
           <Link href="/" className="auth-pro-text-link auth-pro-back">
-            ← Volver al oráculo
+            {L.backToOracle}
           </Link>
         </div>
       </div>
+
+      {pendingLegalAction ? (
+        <LegalConsentModal
+          login={L}
+          nav={nav}
+          privacy={privacy}
+          terms={terms}
+          busy={loading}
+          onAccept={() => void acceptLegalConsentAndContinue()}
+          onCancel={cancelLegalConsent}
+        />
+      ) : null}
+
+      {registerModalKind ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1200,
+            background: "rgba(5, 8, 14, 0.78)",
+            display: "grid",
+            placeItems: "center",
+            padding: 16,
+          }}
+        >
+          <div
+            style={{
+              width: "min(460px, 94vw)",
+              borderRadius: 14,
+              border: "1px solid rgba(84,160,186,0.35)",
+              background: "linear-gradient(180deg, rgba(16,31,45,0.98), rgba(9,20,31,0.98))",
+              boxShadow: "0 18px 48px rgba(0,0,0,0.45)",
+              padding: 14,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+              <strong style={{ color: "#d8edf5" }}>
+                {registerModalKind === "verify" ? L.modalVerifyTitle : L.modalExistsTitle}
+              </strong>
+              <button type="button" className="modal-close-x" aria-label={L.closeModalAria} onClick={closeRegisterModal}>
+                ×
+              </button>
+            </div>
+            <p className="auth-pro-msg" style={{ marginTop: 10 }}>
+              {registerModalKind === "verify" ? (
+                <>
+                  {L.modalVerifyLine1} <strong>{pendingVerificationEmail}</strong>.
+                  <br />
+                  {L.modalVerifyLine2}
+                </>
+              ) : (
+                <>
+                  {L.modalExistsLine1} <strong>{pendingVerificationEmail}</strong> {L.modalExistsLine2}
+                </>
+              )}
+            </p>
+            <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <button type="button" className="auth-pro-btn auth-pro-btn-primary" onClick={closeRegisterModal}>
+                {L.modalOk}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -1,9 +1,10 @@
 import {
   consumeRecoveryCode,
   decryptTotpSecret,
+  generateRecoveryCodes,
   hashRecoveryCodes,
   shouldLockTwoFactor,
-  verifyTotpToken,
+  verifyTotpTokenWithReplayGuard,
 } from "@iching-oracle/auth-backend";
 import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-error";
@@ -11,6 +12,10 @@ import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
+
+function normalizeCode(raw: string): string {
+  return raw.replace(/\D/g, "").slice(0, 6);
+}
 
 export async function POST(req: Request) {
   const authUser = await getAuthenticatedUser(req);
@@ -57,7 +62,7 @@ export async function POST(req: Request) {
   }
   const { data: user, error: userError } = await supabase
     .from("users")
-    .select("totp_secret")
+    .select("totp_secret, totp_last_used_step")
     .eq("id", userId)
     .maybeSingle();
   if (userError) {
@@ -72,7 +77,7 @@ export async function POST(req: Request) {
     return apiError(400, { error: "totp_not_enrolled", code: "TWO_FACTOR_NOT_ENROLLED", action: "setup_2fa" });
   }
   const encryptionKey = process.env.TOTP_ENCRYPTION_KEY;
-  if (!encryptionKey) {
+  if (!encryptionKey || encryptionKey.length < 32) {
     return apiError(503, {
       error: "missing_totp_encryption_key",
       code: "TWO_FACTOR_ENCRYPTION_KEY_MISSING",
@@ -81,9 +86,31 @@ export async function POST(req: Request) {
   }
 
   let verified = false;
-  if (body.token) {
-    const decrypted = decryptTotpSecret(user.totp_secret, encryptionKey);
-    verified = verifyTotpToken(decrypted, body.token);
+  let verifiedTotpStep: number | null = null;
+  const normalizedToken = typeof body.token === "string" ? normalizeCode(body.token) : "";
+  if (normalizedToken.length === 6) {
+    let decrypted: string;
+    try {
+      decrypted = decryptTotpSecret(user.totp_secret, encryptionKey);
+    } catch {
+      return apiError(500, {
+        error: "two_factor_secret_decrypt_failed",
+        code: "TWO_FACTOR_SECRET_DECRYPT_FAILED",
+        action: "check_config",
+      });
+    }
+    const totpResult = verifyTotpTokenWithReplayGuard(decrypted, normalizedToken, {
+      lastUsedStep: user.totp_last_used_step as number | null | undefined,
+    });
+    verified = totpResult.verified;
+    verifiedTotpStep = totpResult.usedStep;
+    if (totpResult.replayed) {
+      return apiError(401, {
+        error: "invalid_2fa_code",
+        code: "TWO_FACTOR_INVALID_CODE",
+        action: "retry",
+      });
+    }
   }
 
   if (!verified && body.recoveryCode) {
@@ -156,6 +183,7 @@ export async function POST(req: Request) {
     .update({
       two_factor_enabled: true,
       totp_verified_at: new Date().toISOString(),
+      ...(verifiedTotpStep !== null ? { totp_last_used_step: verifiedTotpStep } : {}),
     })
     .eq("id", userId);
   if (userUpdateError) {
@@ -167,28 +195,13 @@ export async function POST(req: Request) {
     });
   }
 
-  const recoveryCodes = [
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-    crypto.randomUUID().slice(0, 8).toUpperCase(),
-  ];
+  const recoveryCodes = generateRecoveryCodes(8);
   const hashed = await hashRecoveryCodes(recoveryCodes);
-  await supabase
-    .from("two_factor_recovery_codes")
-    .delete()
-    .eq("user_id", userId)
-    .is("used_at", null);
-  const { error: recoveryInsertError } = await supabase.from("two_factor_recovery_codes").insert(
-    hashed.map((hash) => ({
-      user_id: userId,
-      code_hash: hash,
-    })),
-  );
+  // Atomic delete+insert via stored procedure (migration 030).
+  const { error: recoveryInsertError } = await supabase.rpc("reset_2fa_recovery_codes", {
+    p_user_id: userId,
+    p_hashed_codes: hashed,
+  });
   if (recoveryInsertError) {
     return apiError(500, {
       error: "two_factor_recovery_insert_failed",

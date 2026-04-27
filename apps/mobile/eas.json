@@ -1,0 +1,49 @@
+{
+  "cli": {
+    "version": ">= 12.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=8192",
+        "METRO_MAX_WORKERS": "2"
+      },
+      "buildArtifactPaths": [
+        "android/app/build/outputs/mapping/**/mapping.txt"
+      ],
+      "android": {
+        "buildType": "app-bundle",
+        "credentialsSource": "remote"
+      }
+    },
+    "apk": {
+      "android": {
+        "buildType": "apk",
+        "credentialsSource": "remote"
+      }
+    },
+    "verification": {
+      "android": {
+        "buildType": "apk",
+        "credentialsSource": "remote"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

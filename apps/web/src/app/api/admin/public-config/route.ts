@@ -4,7 +4,7 @@ import { getAdminConfig } from "@/lib/admin-config";
 export const runtime = "nodejs";
 
 export async function GET() {
-  const config = getAdminConfig();
+  const config = await getAdminConfig();
   return NextResponse.json({
     ok: true,
     config: {

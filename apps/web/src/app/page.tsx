@@ -1,26 +1,105 @@
 "use client";
 
-import { CONTEXT_LIMITS } from "@iching-oracle/context-engine";
 import { OracleShell } from "@iching-oracle/ui";
-import { commonStrings, DEFAULT_LOCALE, SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
+import {
+  allConsultationInProgressTitles,
+  commonStrings,
+  DEFAULT_LOCALE,
+  formatChatLoadFailedStatus,
+  formatConsultFailedMessage,
+  formatHistoryLoadFailedStatus,
+  formatThreadDepthStatusLine,
+  formatTwoFactorSupportMailBody,
+  getDocNavUiMessages,
+  getFreeTierMarketing,
+  getHomeChromeUiMessages,
+  getHomeSessionUiMessages,
+  getPackMarketingLine,
+  getPricingUiMessages,
+  getTokenPanelUiMessages,
+  getTwoFactorUiMessages,
+  getOnboardingUiMessages,
+  getOraclePresentationUiMessages,
+  htmlLangFromAppLocale,
+  interpolate,
+  SUPPORTED_LOCALES,
+  UI_LOCALE_STORAGE_KEY,
+  type AppLocale,
+} from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
+import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
-import { CrackPatternGraphic } from "@/components/CrackPatternGraphic";
-import { OracleInterpretationMarkdown } from "@/components/OracleInterpretationMarkdown";
+import { AmbientParticles } from "@/components/AmbientParticles";
+import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
+import { InterpretationMarkdownSafe } from "@/components/InterpretationMarkdownSafe";
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
-import { interpretationMarkdownToPdfBlocks } from "@/lib/pdf-chat-export";
-import { creditsExhaustedBlock, type BillingTier } from "@/lib/credits-ui-copy";
-import { stripInterpretationFluff } from "@/lib/response-clean";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
-const PLANS_HREF = "/pricing";
+import {
+  buildCanvasReadingLines,
+  drawPdfContinuationChrome,
+  interpretationMarkdownToPdfBlocks,
+} from "@/lib/pdf-chat-export";
+import { tierLabelForDisplay, type Tier } from "@/lib/credits";
+import {
+  creditsExhaustedBlock,
+  tierToBillingTierCopy,
+  type BillingTier,
+  type CreditsNoticeReason,
+} from "@/lib/credits-ui-copy";
+import { PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
+import type { ChatSessionState } from "@/lib/chat-session-state";
+import { mergeHydratedWithLocalDrafts, pickPreferredSessionLocalId } from "@/lib/chat-session-selection";
+import { useChatSessionState } from "@/providers/chat-session-provider";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
+import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
+import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
+import { ichingRitualTickDelayMs } from "@/lib/iching-ritual-timing";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
+
+const ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX = "iching_account_session_limit_v1:";
+const PLAY_PROMO_STRIP_DISMISSED_KEY = "iching_play_promo_strip_dismissed_v1";
+
+function readCachedAccountSessionLimit(userId: string): number | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(`${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`);
+    if (raw == null || raw === "") return null;
+    const n = Number(raw);
+    if (!Number.isFinite(n) || n < 1) return null;
+    return Math.floor(n);
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedAccountSessionLimit(userId: string, limit: number): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (!Number.isFinite(limit) || limit < 1) return;
+    window.sessionStorage.setItem(
+      `${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`,
+      String(Math.floor(limit)),
+    );
+  } catch {
+    /* quota / private mode */
+  }
+}
+
+function clearCachedAccountSessionLimit(userId: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.removeItem(`${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`);
+  } catch {
+    /* ignore */
+  }
+}
 
 type ApiLine = {
   position: 1 | 2 | 3 | 4 | 5 | 6;
@@ -59,16 +138,36 @@ type ConsultResponse = {
   sessionId: string | null;
   sessionPosition: number;
   canDeepen: boolean;
+  /** Max readings allowed in this thread (same as server `maxDepth`). */
+  sessionMaxDepth?: number;
   publicReadingId: string;
   publicSessionId: string;
+  remainingCredits?: number;
   sharingPersisted?: boolean;
 };
 
 type ConsultationItem = ConsultResponse & { question: string };
-type Tier = "free" | "seeker" | "practitioner" | "master" | "oracle";
-type CreditsType = "monthly" | "lifetime";
-type ResponseMode = "directo" | "ritual" | "profundizar";
 type OracleMode = "iching" | "oracle_bones";
+
+function apiLinesToVector(lines: ApiLine[]): Array<6 | 7 | 8 | 9> {
+  return [...lines]
+    .sort((a, b) => a.position - b.position)
+    .map((line) => line.value);
+}
+
+function transformLineVector(values: Array<6 | 7 | 8 | 9>): Array<7 | 8> {
+  return values.map((value) => (value === 6 ? 7 : value === 9 ? 8 : value)) as Array<7 | 8>;
+}
+
+type RitualDebugSnapshot = {
+  castBase: Array<6 | 7 | 8 | 9>;
+  finalBase: Array<6 | 7 | 8 | 9>;
+  castTransformed: Array<7 | 8>;
+  finalTransformed: Array<7 | 8>;
+  match: boolean;
+  mutationRule?: string;
+  transformedHexagram?: number | null;
+};
 
 const RUNTIME_TEXT: Record<
   AppLocale,
@@ -225,6 +324,71 @@ const RUNTIME_TEXT: Record<
   },
 };
 
+const RITUAL_STATUS_COPY: Record<
+  AppLocale,
+  {
+    question: string;
+    consult: string;
+    shape: string;
+    seal: string;
+  }
+> = {
+  es: {
+    question: "Tomando tu pregunta",
+    consult: "Llevándola al oráculo",
+    shape: "El oráculo está consultando",
+    seal: "Sellando la lectura",
+  },
+  en: {
+    question: "Holding your question",
+    consult: "Carrying it to the oracle",
+    shape: "The oracle is consulting",
+    seal: "Sealing the reading",
+  },
+  pt: {
+    question: "Sustentando a tua pergunta",
+    consult: "Levando-a ao oráculo",
+    shape: "O oráculo está consultando",
+    seal: "Selando a leitura",
+  },
+  fr: {
+    question: "Accueillir votre question",
+    consult: "La porter vers l'oracle",
+    shape: "L'oracle consulte",
+    seal: "Sceller la lecture",
+  },
+  de: {
+    question: "Deine Frage aufnehmen",
+    consult: "Zum Orakel tragen",
+    shape: "Das Orakel befragt",
+    seal: "Die Deutung wird versiegelt",
+  },
+  it: {
+    question: "Accogliere la tua domanda",
+    consult: "Portarla all'oracolo",
+    shape: "L'oracolo sta consultando",
+    seal: "Sigillando la lettura",
+  },
+  ja: {
+    question: "問いを受け取っています",
+    consult: "神託へ運んでいます",
+    shape: "神託が照会しています",
+    seal: "読みを封じています",
+  },
+  zh: {
+    question: "承接你的问题",
+    consult: "将它带向神谕",
+    shape: "神谕正在推演",
+    seal: "正在封印此次解读",
+  },
+  ko: {
+    question: "질문을 받아들이는 중",
+    consult: "신탁으로 옮기는 중",
+    shape: "신탁이 살피는 중",
+    seal: "해석을 봉인하는 중",
+  },
+};
+
 const DRAWER_TEXT: Record<
   AppLocale,
   {
@@ -232,11 +396,13 @@ const DRAWER_TEXT: Record<
     streak: string;
     consultationsToday: string;
     chatsWithMessages: string;
-    loading: string;
+    loadingChats: string;
+    loadingConversation: string;
     onlyThreads: string;
     noSaved: string;
     messages: string;
     deleteConversation: string;
+    deletingConversation: string;
   }
 > = {
   es: {
@@ -244,103 +410,125 @@ const DRAWER_TEXT: Record<
     streak: "Racha (días)",
     consultationsToday: "Consultas hoy",
     chatsWithMessages: "Chats con mensajes",
-    loading: "Canalizando consulta…",
+    loadingChats: "Cargando chats…",
+    loadingConversation: "Cargando conversación…",
     onlyThreads: "Solo se listan hilos con al menos una lectura.",
     noSaved: "Aún no hay conversaciones guardadas. Envía una consulta para verla aquí.",
     messages: "mensajes",
     deleteConversation: "Eliminar conversación",
+    deletingConversation: "Eliminando conversación…",
   },
   en: {
     activity: "Your activity",
     streak: "Streak (days)",
     consultationsToday: "Consultations today",
     chatsWithMessages: "Chats with messages",
-    loading: "Channeling consultation…",
+    loadingChats: "Loading chats…",
+    loadingConversation: "Loading conversation…",
     onlyThreads: "Only threads with at least one reading are listed.",
     noSaved: "No saved conversations yet. Send a consultation to see it here.",
     messages: "messages",
     deleteConversation: "Delete conversation",
+    deletingConversation: "Deleting conversation…",
   },
   pt: {
     activity: "Sua atividade",
     streak: "Sequência (dias)",
     consultationsToday: "Consultas hoje",
     chatsWithMessages: "Chats com mensagens",
-    loading: "Canalizando consulta…",
+    loadingChats: "Carregando chats…",
+    loadingConversation: "Carregando conversa…",
     onlyThreads: "Somente fios com ao menos uma leitura são listados.",
     noSaved: "Ainda não há conversas salvas. Envie uma consulta para vê-la aqui.",
     messages: "mensagens",
     deleteConversation: "Excluir conversa",
+    deletingConversation: "Excluindo conversa…",
   },
   fr: {
     activity: "Votre activité",
     streak: "Série (jours)",
     consultationsToday: "Consultations aujourd'hui",
     chatsWithMessages: "Chats avec messages",
-    loading: "Canalisation en cours…",
+    loadingChats: "Chargement des chats…",
+    loadingConversation: "Chargement de la conversation…",
     onlyThreads: "Seuls les fils avec au moins une lecture sont listés.",
     noSaved: "Aucune conversation enregistrée pour le moment.",
     messages: "messages",
     deleteConversation: "Supprimer la conversation",
+    deletingConversation: "Suppression de la conversation…",
   },
   de: {
     activity: "Deine Aktivität",
     streak: "Serie (Tage)",
     consultationsToday: "Heutige Konsultationen",
     chatsWithMessages: "Chats mit Nachrichten",
-    loading: "Konsultation wird kanalisiert…",
+    loadingChats: "Chats werden geladen…",
+    loadingConversation: "Konversation wird geladen…",
     onlyThreads: "Nur Threads mit mindestens einer Lesung werden gelistet.",
     noSaved: "Noch keine gespeicherten Konversationen.",
     messages: "Nachrichten",
     deleteConversation: "Konversation löschen",
+    deletingConversation: "Konversation wird gelöscht…",
   },
   it: {
     activity: "La tua attività",
     streak: "Serie (giorni)",
     consultationsToday: "Consultazioni oggi",
     chatsWithMessages: "Chat con messaggi",
-    loading: "Canalizzazione in corso…",
+    loadingChats: "Caricamento chat…",
+    loadingConversation: "Caricamento conversazione…",
     onlyThreads: "Sono elencati solo i thread con almeno una lettura.",
     noSaved: "Nessuna conversazione salvata al momento.",
     messages: "messaggi",
     deleteConversation: "Elimina conversazione",
+    deletingConversation: "Eliminazione conversazione…",
   },
   ja: {
     activity: "あなたの履歴",
     streak: "連続日数",
     consultationsToday: "本日の相談",
     chatsWithMessages: "メッセージ付きチャット",
-    loading: "相談を生成中…",
+    loadingChats: "チャットを読み込み中…",
+    loadingConversation: "会話を読み込み中…",
     onlyThreads: "少なくとも1件の読みがあるスレッドのみ表示されます。",
     noSaved: "保存された会話はまだありません。",
     messages: "件のメッセージ",
     deleteConversation: "会話を削除",
+    deletingConversation: "会話を削除中…",
   },
   zh: {
     activity: "你的活动",
     streak: "连续天数",
     consultationsToday: "今日咨询",
     chatsWithMessages: "有消息的聊天",
-    loading: "正在生成咨询…",
+    loadingChats: "正在加载聊天…",
+    loadingConversation: "正在加载会话…",
     onlyThreads: "仅显示至少含1次解读的线程。",
     noSaved: "暂时没有已保存的对话。",
     messages: "条消息",
     deleteConversation: "删除对话",
+    deletingConversation: "正在删除对话…",
   },
   ko: {
     activity: "활동 내역",
     streak: "연속 일수",
     consultationsToday: "오늘의 상담",
     chatsWithMessages: "메시지가 있는 채팅",
-    loading: "상담 생성 중…",
+    loadingChats: "채팅 불러오는 중…",
+    loadingConversation: "대화 불러오는 중…",
     onlyThreads: "최소 한 번의 리딩이 있는 스레드만 표시됩니다.",
     noSaved: "저장된 대화가 아직 없습니다.",
     messages: "개의 메시지",
     deleteConversation: "대화 삭제",
+    deletingConversation: "대화 삭제 중…",
   },
 };
 
-const LOCALE_STORAGE_KEY = "iching_ui_locale_v1";
+/** English first in the UI selector (default app language). */
+const LOCALE_SELECT_ORDER: AppLocale[] = [
+  "en",
+  ...SUPPORTED_LOCALES.filter((code): code is AppLocale => code !== "en"),
+];
 
 const LANGUAGE_LABELS: Record<AppLocale, string> = {
   es: "Español",
@@ -361,11 +549,11 @@ type UiCopy = {
   signOut: string;
   plan: string;
   options: string;
-  mode: string;
-  readMode: string;
   writeConsultation: string;
   positiveCharge: string;
   threadLimitReached: string;
+  /** aria-label for dismissing the thread-limit strip only; composer stays blocked. */
+  dismissThreadLimitBannerAria: string;
   sessionNew: string;
   drawerClose: string;
   iChing: string;
@@ -387,17 +575,16 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Cerrar sesión",
     plan: "Plan",
     options: "Opciones",
-    mode: "Modo",
-    readMode: "Modo lectura",
     writeConsultation: "Escribe tu consulta…",
     positiveCharge: "Cargo positivo (afirmación)…",
     threadLimitReached: "Límite de hilo alcanzado — usa «Nueva sesión» arriba",
+    dismissThreadLimitBannerAria: "Ocultar aviso del límite de hilo",
     sessionNew: "Nueva sesión",
     drawerClose: "Cerrar",
     iChing: "I Ching",
     bones: "Huesos",
     iChingTagline: "Tres monedas · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Grietas 兆 (estilo Shang) · sí / no sobre cargos",
+    bonesTagline: "Grietas 兆 (estilo Shang) · sí / no",
     modeIChingHint: "Seis líneas y tres monedas por línea; mutación Zhu Xi.",
     modeBonesHint: "Pregunta sí / no con cargo afirmativo; lectura por grietas 兆.",
     emptyInviteMorning:
@@ -413,17 +600,16 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Sign out",
     plan: "Plan",
     options: "Options",
-    mode: "Mode",
-    readMode: "Reading mode",
     writeConsultation: "Type your consultation…",
     positiveCharge: "Positive charge (affirmation)…",
     threadLimitReached: "Thread limit reached — use \"New session\" above",
+    dismissThreadLimitBannerAria: "Dismiss thread limit notice",
     sessionNew: "New session",
     drawerClose: "Close",
     iChing: "I Ching",
     bones: "Bones",
     iChingTagline: "Three coins · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Cracks 兆 (Shang style) · yes / no by charge",
+    bonesTagline: "Cracks 兆 (Shang style) · yes / no",
     modeIChingHint: "Six lines and three coins per line; Zhu Xi mutation.",
     modeBonesHint: "Yes / no by affirmative charge; crack reading 兆.",
     emptyInviteMorning: "Good time to consult the oracle. What concern comes with this new day?",
@@ -437,17 +623,16 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Sair",
     plan: "Plano",
     options: "Opções",
-    mode: "Modo",
-    readMode: "Modo de leitura",
     writeConsultation: "Escreva sua consulta…",
     positiveCharge: "Cargo positivo (afirmação)…",
     threadLimitReached: "Limite do fio atingido — use «Nova sessão» acima",
+    dismissThreadLimitBannerAria: "Ocultar aviso do limite do fio",
     sessionNew: "Nova sessão",
     drawerClose: "Fechar",
     iChing: "I Ching",
     bones: "Ossos",
     iChingTagline: "Três moedas · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Fissuras 兆 (estilo Shang) · sim / não por cargo",
+    bonesTagline: "Fissuras 兆 (estilo Shang) · sim / não",
     modeIChingHint: "Seis linhas e três moedas por linha; mutação Zhu Xi.",
     modeBonesHint: "Pergunta sim / não com cargo afirmativo; leitura por fissuras 兆.",
     emptyInviteMorning: "Bom momento para ouvir o oráculo. Que inquietação traz este novo dia?",
@@ -461,17 +646,16 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Se déconnecter",
     plan: "Forfait",
     options: "Options",
-    mode: "Mode",
-    readMode: "Mode de lecture",
     writeConsultation: "Écris ta consultation…",
     positiveCharge: "Charge positive (affirmation)…",
     threadLimitReached: "Limite du fil atteinte — utilisez « Nouvelle session »",
+    dismissThreadLimitBannerAria: "Masquer l'avis de limite de fil",
     sessionNew: "Nouvelle session",
     drawerClose: "Fermer",
     iChing: "I Ching",
     bones: "Os",
     iChingTagline: "Trois pièces · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Fissures 兆 (style Shang) · oui / non par charge",
+    bonesTagline: "Fissures 兆 (style Shang) · oui / non",
     modeIChingHint: "Six lignes et trois pièces par ligne ; mutation Zhu Xi.",
     modeBonesHint: "Question oui / non avec charge affirmative ; lecture des fissures 兆.",
     emptyInviteMorning: "Bon moment pour écouter l'oracle. Quelle préoccupation t'accompagne aujourd'hui ?",
@@ -485,17 +669,16 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Abmelden",
     plan: "Plan",
     options: "Optionen",
-    mode: "Modus",
-    readMode: "Lesemodus",
     writeConsultation: "Schreibe deine Frage…",
     positiveCharge: "Positive Ladung (Bejahung)…",
     threadLimitReached: "Thread-Limit erreicht — oben «Neue Sitzung» verwenden",
+    dismissThreadLimitBannerAria: "Hinweis zum Thread-Limit ausblenden",
     sessionNew: "Neue Sitzung",
     drawerClose: "Schließen",
     iChing: "I Ching",
     bones: "Knochen",
     iChingTagline: "Drei Münzen · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Risse 兆 (Shang-Stil) · Ja / Nein nach Ladung",
+    bonesTagline: "Risse 兆 (Shang-Stil) · Ja / Nein",
     modeIChingHint: "Sechs Linien und drei Münzen pro Linie; Zhu-Xi-Mutation.",
     modeBonesHint: "Ja/Nein-Frage mit positiver Ladung; Risslesung 兆.",
     emptyInviteMorning: "Guter Zeitpunkt für das Orakel. Welche Frage bringt dieser Tag mit sich?",
@@ -509,17 +692,16 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Esci",
     plan: "Piano",
     options: "Opzioni",
-    mode: "Modalità",
-    readMode: "Modalità lettura",
     writeConsultation: "Scrivi la tua consultazione…",
     positiveCharge: "Carica positiva (affermazione)…",
     threadLimitReached: "Limite del thread raggiunto — usa «Nuova sessione»",
+    dismissThreadLimitBannerAria: "Nascondi avviso limite thread",
     sessionNew: "Nuova sessione",
     drawerClose: "Chiudi",
     iChing: "I Ching",
     bones: "Ossa",
     iChingTagline: "Tre monete · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Crepe 兆 (stile Shang) · sì / no per carica",
+    bonesTagline: "Crepe 兆 (stile Shang) · sì / no",
     modeIChingHint: "Sei linee e tre monete per linea; mutazione Zhu Xi.",
     modeBonesHint: "Domanda sì / no con carica affermativa; lettura delle crepe 兆.",
     emptyInviteMorning: "Momento ideale per l'oracolo. Quale inquietudine porta questo nuovo giorno?",
@@ -533,17 +715,16 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "ログアウト",
     plan: "プラン",
     options: "オプション",
-    mode: "モード",
-    readMode: "読解モード",
     writeConsultation: "相談内容を入力…",
     positiveCharge: "肯定の問い（肯定電荷）…",
     threadLimitReached: "スレッド上限です — 上の「新しいセッション」を使用",
+    dismissThreadLimitBannerAria: "スレッド上限の通知を閉じる",
     sessionNew: "新しいセッション",
     drawerClose: "閉じる",
     iChing: "I Ching",
     bones: "骨占",
     iChingTagline: "三枚の硬貨 · 朱熹 · ヴィルヘルム/ベインズ",
-    bonesTagline: "亀裂 兆（殷様式）· 問いの肯否",
+    bonesTagline: "亀裂 兆（殷様式）· はい / いいえ",
     modeIChingHint: "六爻、各爻に三枚の硬貨。朱熹の変爻法。",
     modeBonesHint: "肯定電荷による Yes/No。亀裂 兆 の読解。",
     emptyInviteMorning: "いまは託宣に向いた時間。今日の不安を問いにしてみましょう。",
@@ -557,17 +738,16 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "退出登录",
     plan: "方案",
     options: "选项",
-    mode: "模式",
-    readMode: "解读模式",
     writeConsultation: "输入你的咨询…",
     positiveCharge: "正向命题（肯定）…",
     threadLimitReached: "线程已达上限 — 请使用“新会话”",
+    dismissThreadLimitBannerAria: "关闭线程上限提示",
     sessionNew: "新会话",
     drawerClose: "关闭",
     iChing: "I Ching",
     bones: "甲骨",
     iChingTagline: "三枚铜钱 · 朱熹 · Wilhelm/Baynes",
-    bonesTagline: "裂纹 兆（商式）· 依命题判断是/否",
+    bonesTagline: "裂纹 兆（商式）· 是 / 否",
     modeIChingHint: "六爻，每爻三枚铜钱；朱熹变爻法。",
     modeBonesHint: "以肯定命题进行是/否占；裂纹 兆 解读。",
     emptyInviteMorning: "此刻适合聆听神谕。今天你带着什么问题而来？",
@@ -581,17 +761,16 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "로그아웃",
     plan: "플랜",
     options: "옵션",
-    mode: "모드",
-    readMode: "해석 모드",
     writeConsultation: "질문을 입력하세요…",
     positiveCharge: "긍정 명제(affirmation)…",
     threadLimitReached: "스레드 한도 도달 — 위의 «새 세션» 사용",
+    dismissThreadLimitBannerAria: "스레드 한도 알림 숨기기",
     sessionNew: "새 세션",
     drawerClose: "닫기",
     iChing: "I Ching",
     bones: "골복",
     iChingTagline: "세 동전 · 주희 · Wilhelm/Baynes",
-    bonesTagline: "균열 兆 (상식) · 긍정 명제로 예/아니오",
+    bonesTagline: "균열 兆 (상식) · 예 / 아니오",
     modeIChingHint: "육효, 효마다 동전 3개; 주희 변효 규칙.",
     modeBonesHint: "긍정 명제로 예/아니오 질문; 균열 兆 해석.",
     emptyInviteMorning: "지금은 오라클에 귀 기울이기 좋은 시간입니다. 어떤 고민이 있나요?",
@@ -599,21 +778,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     emptyInviteNight: "밤도 질문합니다. 삶의 어떤 영역을 탐색하고 싶나요?",
   },
 };
-
-function responseModeLabel(mode: ResponseMode, locale: AppLocale): string {
-  const byLocale: Record<AppLocale, Record<ResponseMode, string>> = {
-    es: { directo: "Directo", ritual: "Ritual", profundizar: "Profundizar" },
-    en: { directo: "Direct", ritual: "Ritual", profundizar: "Deepen" },
-    pt: { directo: "Direto", ritual: "Ritual", profundizar: "Aprofundar" },
-    fr: { directo: "Direct", ritual: "Rituel", profundizar: "Approfondir" },
-    de: { directo: "Direkt", ritual: "Ritual", profundizar: "Vertiefen" },
-    it: { directo: "Diretto", ritual: "Rituale", profundizar: "Approfondire" },
-    ja: { directo: "直截", ritual: "儀礼", profundizar: "深化" },
-    zh: { directo: "直接", ritual: "仪式", profundizar: "深入" },
-    ko: { directo: "직접", ritual: "의식", profundizar: "심화" },
-  };
-  return byLocale[locale][mode];
-}
 
 function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
   const mapByLocale: Record<AppLocale, Record<OracleBonesVerdict, string>> = {
@@ -671,7 +835,7 @@ function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
       auspicious_moderate: "吉 — 中度吉",
       inauspicious_moderate: "凶 — 中度凶",
       inauspicious_clear: "凶 — 明确凶（负向命题）",
-      silent: "无明确答案 — 祖灵沉默",
+      silent: "沉默 — 无明确答案 — 祖灵沉默",
     },
     ko: {
       auspicious_clear: "吉 — 뚜렷한 길(긍정 전하)",
@@ -683,17 +847,6 @@ function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
   };
   return mapByLocale[locale][v];
 }
-type ChatSessionState = {
-  localId: string;
-  title: string;
-  sessionId: string | null;
-  /** Last known public id for /s/… links (synced from API). */
-  publicSessionId: string | null;
-  thread: ConsultationItem[];
-  messageCount: number;
-  updatedAt: number;
-  firstConsultationAt: number | null;
-};
 
 type ApiChatSession = {
   sessionId: string;
@@ -703,6 +856,7 @@ type ApiChatSession = {
   publicId: string;
   consultationIds: string[];
   createdAt: number;
+  maxConsultations?: number | null;
 };
 
 type ApiChatConsultation = {
@@ -743,6 +897,7 @@ type AccountChatsSummaryResponse = {
     messageCount: number;
     firstConsultationAt: number | null;
     updatedAt: number;
+    firstQuestion?: string | null;
   }>;
 };
 
@@ -750,6 +905,25 @@ type AccountChatSessionResponse = {
   session: ApiChatSession;
   consultations: ApiChatConsultation[];
 };
+
+const SESSION_IDLE_TIMEOUT_MS = 45 * 60 * 1000;
+const SESSION_IDLE_CHECK_INTERVAL_MS = 30 * 1000;
+
+type ApiErrorPayload = {
+  error?: string;
+  code?: string;
+  action?: string;
+  message?: string;
+};
+
+function parseApiErrorPayload(raw: string): ApiErrorPayload | null {
+  try {
+    if (!raw.trim()) return null;
+    return JSON.parse(raw) as ApiErrorPayload;
+  } catch {
+    return null;
+  }
+}
 
 function newClientUuid(): string {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
@@ -762,25 +936,38 @@ function newClientUuid(): string {
   });
 }
 
-function createLocalSession(title = "Nueva sesión"): ChatSessionState {
+function createLocalSession(title = "Nueva sesión"): ChatSessionState<ConsultationItem> {
   return {
     localId: `sess-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
     title,
     sessionId: newClientUuid(),
     publicSessionId: null,
     thread: [],
+    threadMaxDepth: null,
     messageCount: 0,
     updatedAt: Date.now(),
     firstConsultationAt: null,
   };
 }
 
-function InterpretationBody({ text }: { text: string }) {
-  const cleaned = useMemo(() => stripInterpretationFluff(text), [text]);
+function InterpretationBody({
+  text,
+  reveal,
+  onRevealComplete,
+}: {
+  text: string;
+  reveal?: boolean;
+  onRevealComplete?: () => void;
+}) {
+  const cleaned = useMemo(
+    () => normalizeInterpretationPunctuation(stripInterpretationFluff(text)),
+    [text],
+  );
+  const displayed = useProgressiveRevealSubstring(cleaned, Boolean(reveal), onRevealComplete);
   if (!cleaned) return null;
   return (
     <div className="interpretation-text interpretation-text--body">
-      <OracleInterpretationMarkdown text={cleaned} />
+      <InterpretationMarkdownSafe partial={displayed} full={cleaned} />
     </div>
   );
 }
@@ -799,7 +986,9 @@ function formatPrintFilename(consultationId: string): string {
 function mapApiConsultationToItem(
   c: ApiChatConsultation,
   sessionPublicId: string,
+  threadMaxDepth: number,
 ): ConsultationItem {
+  const cap = Math.max(1, threadMaxDepth);
   return {
     oracleType: c.oracleType,
     consultationId: c.consultationId,
@@ -820,7 +1009,7 @@ function mapApiConsultationToItem(
     createdAt: c.createdAt,
     sessionId: c.sessionId,
     sessionPosition: c.sessionPosition,
-    canDeepen: true,
+    canDeepen: c.sessionPosition < cap,
     publicReadingId: c.publicId,
     publicSessionId: sessionPublicId,
     sharingPersisted: true,
@@ -846,19 +1035,20 @@ function detectInputLanguage(question: string, fallbackLocale: AppLocale): AppLo
   if (/[ぁ-ゖァ-ヺ]/.test(text)) return "ja";
   if (/[一-鿿]/.test(text)) return "zh";
 
-  const ptHits = (text.match(/\b(não|você|porque|está|ção|ções|pra|queria)\b/g) ?? []).length;
+  const ptHits = (text.match(/\b(não|você|está|ção|ções|pra|queria)\b/g) ?? []).length;
   const frHits = (text.match(/\b(être|avec|pourquoi|où|ça|merci|vous)\b/g) ?? []).length;
   const deHits = (text.match(/\b(und|nicht|ich|dass|über|möchte|fragen)\b/g) ?? []).length;
   const itHits = (text.match(/\b(perché|con|sono|voglio|grazie|quindi|domanda)\b/g) ?? []).length;
-  if (ptHits >= 2) return "pt";
-  if (frHits >= 2) return "fr";
-  if (deHits >= 2) return "de";
-  if (itHits >= 2) return "it";
 
   const esHits =
     (text.match(/\b(el|la|los|las|de|que|para|con|por|como|qué|dónde|cuál|mensaje|consulta|camino|relación)\b/g) ?? [])
       .length +
     (text.match(/[áéíóúñ¿¡]/g) ?? []).length;
+  if (fallbackLocale === "es" && esHits > 0) return "es";
+  if (ptHits >= 3 && ptHits > esHits + 1) return "pt";
+  if (frHits >= 2) return "fr";
+  if (deHits >= 2) return "de";
+  if (itHits >= 2) return "it";
   const enHits =
     (text.match(/\b(the|and|what|where|when|why|how|message|relationship|question|path|oracle|reading)\b/g) ?? [])
       .length;
@@ -868,43 +1058,71 @@ function detectInputLanguage(question: string, fallbackLocale: AppLocale): AppLo
 }
 
 export default function HomePage() {
+  const router = useRouter();
   const [locale, setLocale] = useState<AppLocale>(DEFAULT_LOCALE);
   const ui = UI_COPY[locale];
   const t = commonStrings[locale];
-  const isSpanish = locale === "es";
+  const tokenPanel = useMemo(() => getTokenPanelUiMessages(locale), [locale]);
+  const docNav = useMemo(() => getDocNavUiMessages(locale), [locale]);
+  const presentation = useMemo(() => getOraclePresentationUiMessages(locale), [locale]);
+  /** Official listing URL when published; empty shows “coming soon” on the Play card. */
+  const playStoreUrl = (process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "").trim();
+  const chrome = useMemo(() => getHomeChromeUiMessages(locale), [locale]);
+  const sessionUi = useMemo(() => getHomeSessionUiMessages(locale), [locale]);
+  const tf = useMemo(() => getTwoFactorUiMessages(locale), [locale]);
+  const pricingUi = useMemo(() => getPricingUiMessages(locale), [locale]);
   const runtimeText = RUNTIME_TEXT[locale];
   const drawerText = DRAWER_TEXT[locale];
-  const exportPdfLabel = isSpanish ? "Exportar chat PDF" : "Export chat PDF";
-  const downloadImageLabel = isSpanish ? "Descargar imagen" : "Download image";
-  const openImageLabel = isSpanish ? "Abrir imagen en tamaño completo" : "Open full-size image";
-  const symbolicImageAlt = isSpanish ? "Representación simbólica del trazado" : "Symbolic reading image";
-  const inProgressTitle = locale === "es" ? "Consulta en progreso" : "Consultation in progress";
+  const exportPdfLabel = chrome.exportChatPdf;
+  const downloadImageLabel = chrome.downloadImage;
+  const openImageLabel = chrome.openFullImage;
+  const symbolicImageAlt = chrome.symbolicImageAlt;
+  const inProgressTitle = chrome.consultationInProgress;
   const knownNewSessionTitles = useMemo(() => {
     return new Set<string>(SUPPORTED_LOCALES.map((code) => UI_COPY[code].sessionNew));
   }, []);
-  const knownInProgressTitles = useMemo(() => new Set<string>(["Consulta en progreso", "Consultation in progress"]), []);
+  const knownInProgressTitles = useMemo(() => new Set<string>(allConsultationInProgressTitles()), []);
   const [tier, setTier] = useState<Tier>("free");
-  const [monthlyCreditsLimit, setMonthlyCreditsLimit] = useState(2);
-  const [creditsType, setCreditsType] = useState<CreditsType>("lifetime");
+  const [tierReady, setTierReady] = useState(false);
+  /** Per-thread reading cap from `/api/account/me` (`session_limit`, from pack / tier). */
+  const [accountSessionLimit, setAccountSessionLimit] = useState(1);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
   const [authUserId, setAuthUserId] = useState<string | null>(null);
+  /** Last known Supabase user id (for clearing per-user sessionStorage on sign-out). */
+  const lastSignedInUserIdForStorageRef = useRef<string | null>(null);
   const [supabaseConfigError, setSupabaseConfigError] = useState(false);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState<"idle" | "coins" | "bones" | "reading">("idle");
-  const [coinTick, setCoinTick] = useState(0);
+  const [boneRitualResult, setBoneRitualResult] = useState<BoneOracleResult | null>(null);
+  const [ritualLines, setRitualLines] = useState<ApiLine[] | null>(null);
+  const [ritualRevealTick, setRitualRevealTick] = useState(0);
+  const [ritualAwaitingTick, setRitualAwaitingTick] = useState(0);
+  const [ritualStatusPhase, setRitualStatusPhase] = useState<"question" | "consult" | "shape" | "seal">("question");
+  const [ritualParticles, setRitualParticles] = useState<
+    Array<{ id: number; left: string; top: string; size: string; duration: string; delay: string }>
+  >([]);
+  const [ritualFinale, setRitualFinale] = useState(false);
+  const [ritualDebugCastVector, setRitualDebugCastVector] = useState<Array<6 | 7 | 8 | 9> | null>(null);
+  const [ritualDebugFinalVector, setRitualDebugFinalVector] = useState<Array<6 | 7 | 8 | 9> | null>(null);
+  const [lastRitualDebugSnapshot, setLastRitualDebugSnapshot] = useState<RitualDebugSnapshot | null>(null);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
-  const [sessions, setSessions] = useState<ChatSessionState[]>([]);
-  const [activeSessionLocalId, setActiveSessionLocalId] = useState<string | null>(null);
-  const [sessionsHydrated, setSessionsHydrated] = useState(false);
-  const [responseMode, setResponseMode] = useState<ResponseMode>("ritual");
+  const {
+    sessions,
+    setSessions,
+    activeSessionLocalId,
+    setActiveSessionLocalId,
+    sessionsHydrated,
+    setSessionsHydrated,
+    setPersistenceKeys,
+    hydrateFromStorage,
+  } = useChatSessionState<ConsultationItem>();
   const [error, setError] = useState<string | null>(null);
   const [creditsNotice, setCreditsNotice] = useState<{
     tier: BillingTier;
-    limit: number;
-    cycleEndsAt: string | null;
+    reason: CreditsNoticeReason;
   } | null>(null);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [twoFactorMethod, setTwoFactorMethod] = useState<string | null>(null);
@@ -912,50 +1130,287 @@ export default function HomePage() {
   const [twoFactorQrDataUrl, setTwoFactorQrDataUrl] = useState<string | null>(null);
   const [twoFactorCode, setTwoFactorCode] = useState("");
   const [twoFactorEmailCode, setTwoFactorEmailCode] = useState("");
+  const [twoFactorRecoveryCode, setTwoFactorRecoveryCode] = useState("");
+  const [twoFactorChallengeFailures, setTwoFactorChallengeFailures] = useState(0);
+  const [twoFactorRecoveryAssistMode, setTwoFactorRecoveryAssistMode] = useState<
+    "hidden" | "options" | "enter_code" | "contact_support"
+  >("hidden");
   const [twoFactorEmailSent, setTwoFactorEmailSent] = useState(false);
   const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<string[]>([]);
+  const [twoFactorModalOpen, setTwoFactorModalOpen] = useState(false);
+  const [twoFactorModalMode, setTwoFactorModalMode] = useState<"manage" | "challenge">("manage");
+  const [twoFactorSetupMethod, setTwoFactorSetupMethod] = useState<"menu" | "totp" | "email">("menu");
+  const [twoFactorChallengeMethod, setTwoFactorChallengeMethod] = useState<"totp" | "email">("totp");
+  const [twoFactorRecoveryAck, setTwoFactorRecoveryAck] = useState(false);
+  const [twoFactorInfo, setTwoFactorInfo] = useState<string | null>(null);
+  const [twoFactorError, setTwoFactorError] = useState<string | null>(null);
+  const [secondFactorVerified, setSecondFactorVerified] = useState(false);
+  const [tokenBalance, setTokenBalance] = useState<number | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [displayName, setDisplayName] = useState<string | null | undefined>(undefined);
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState<"enter" | "confirm">("enter");
+  const [onboardingInput, setOnboardingInput] = useState("");
+  const [onboardingSaving, setOnboardingSaving] = useState(false);
   const [pendingUserQuestion, setPendingUserQuestion] = useState<string | null>(null);
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
-  const [manageSubBusy, setManageSubBusy] = useState(false);
-  const [manageSubMessage, setManageSubMessage] = useState<string | null>(null);
+  const [tokenCenterMessage, setTokenCenterMessage] = useState<string | null>(null);
+  const [tokenCenterOpen, setTokenCenterOpen] = useState(false);
+  const [tokenCenterBusy, setTokenCenterBusy] = useState(false);
+  const [tokenCenterError, setTokenCenterError] = useState<string | null>(null);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [loadingSessionLocalId, setLoadingSessionLocalId] = useState<string | null>(null);
+  const [pendingDeletedSessionLocalIds, setPendingDeletedSessionLocalIds] = useState<string[]>([]);
+  const [historyLoadError, setHistoryLoadError] = useState<string | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const ritualCoinsStageRef = useRef<HTMLElement | null>(null);
+  const ritualLinesGridRef = useRef<HTMLDivElement | null>(null);
+  const ritualDebugStartMsRef = useRef<number | null>(null);
+  const lastScrollWasRevealRef = useRef(false);
+  const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
+  const idleSignOutRef = useRef(false);
+  const isSigningOutRef = useRef(false);
+  const activeSessionLocalIdRef = useRef<string | null>(null);
+  const pinnedLocalSessionIdRef = useRef<string | null>(null);
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
+  /** Hides only the thread-limit strip; composer stays read-only until a new session or another chat. */
+  const [threadLimitBannerDismissed, setThreadLimitBannerDismissed] = useState(false);
+  const [playPromoDismissed, setPlayPromoDismissed] = useState(false);
+  const [revealConsultationId, setRevealConsultationId] = useState<string | null>(null);
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
+  /**
+   * Prevents the first `useEffect` pass from persisting the default `en` before `useLayoutEffect`
+   * hydrates from `localStorage` (same bug on web and APK WebView after /docs → /).
+   */
+  const skipInitialLocalePersistenceRef = useRef(true);
 
-  useEffect(() => {
-    const raw = window.localStorage.getItem(LOCALE_STORAGE_KEY);
+  /**
+   * Hydrate locale from storage/cookie **before** passive effects run.
+   * Manual-only: do not infer from `navigator` (would fight the picker after docs → home).
+   */
+  useLayoutEffect(() => {
+    let next: AppLocale | null = null;
+    const raw = window.localStorage.getItem(UI_LOCALE_STORAGE_KEY);
     if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
-      setLocale(raw as AppLocale);
-      return;
+      next = raw as AppLocale;
+    } else {
+      const cookieMatch = document.cookie.match(/(?:^|;\s*)iching_ui_locale=([^;]+)/);
+      const cookieLocale = cookieMatch ? decodeURIComponent(cookieMatch[1] ?? "") : "";
+      if ((SUPPORTED_LOCALES as readonly string[]).includes(cookieLocale)) {
+        next = cookieLocale as AppLocale;
+      }
     }
-    const cookieMatch = document.cookie.match(/(?:^|;\s*)iching_ui_locale=([^;]+)/);
-    const cookieLocale = cookieMatch ? decodeURIComponent(cookieMatch[1] ?? "") : "";
-    if ((SUPPORTED_LOCALES as readonly string[]).includes(cookieLocale)) {
-      setLocale(cookieLocale as AppLocale);
+    if (!next) return;
+    setLocale(next);
+    try {
+      window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, next);
+      document.documentElement.lang = htmlLangFromAppLocale(next);
+      document.cookie = `iching_ui_locale=${encodeURIComponent(next)}; path=/; max-age=31536000; samesite=lax`;
+    } catch {
+      /* private mode / cookies blocked */
     }
   }, []);
 
+  /* RN `__rnSetLocale` + storage sync from other tabs — keep React state aligned */
   useEffect(() => {
-    window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
-    document.documentElement.lang = locale;
-    document.cookie = `iching_ui_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
+    const onLocaleBridge = (e: Event) => {
+      const raw = (e as CustomEvent<{ locale?: string }>).detail?.locale;
+      if (!raw || !(SUPPORTED_LOCALES as readonly string[]).includes(raw)) return;
+      const next = raw as AppLocale;
+      setLocale((prev) => (prev === next ? prev : next));
+    };
+    window.addEventListener("iching:locale-changed", onLocaleBridge);
+    return () => window.removeEventListener("iching:locale-changed", onLocaleBridge);
+  }, []);
+
+  useEffect(() => {
+    if (skipInitialLocalePersistenceRef.current) {
+      skipInitialLocalePersistenceRef.current = false;
+      return;
+    }
+    try {
+      window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, locale);
+      document.documentElement.lang = htmlLangFromAppLocale(locale);
+      document.cookie = `iching_ui_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
+    } catch {
+      /* private mode */
+    }
+    window.dispatchEvent(new CustomEvent("iching:locale-changed", { detail: { locale } }));
   }, [locale]);
 
-  const shuffledCoins = useMemo(
-    () =>
-      Array.from({ length: 6 }, (_, i) => ({
-        id: i + 1,
-        flip: (coinTick + i) % 2 === 0,
-        delay: i * 80,
-      })),
-    [coinTick],
+  useEffect(() => {
+    if (phase !== "coins" || !loading || ritualLines !== null) {
+      setRitualAwaitingTick(0);
+      return;
+    }
+    setRitualStatusPhase("consult");
+    const tickTimer = window.setInterval(() => {
+      setRitualAwaitingTick((prev) => (prev >= 12 ? 1 : prev + 1));
+    }, 380);
+    const phases: Array<"question" | "consult" | "shape"> = ["question", "consult", "shape"];
+    let idx = 0;
+    const statusTimer = window.setInterval(() => {
+      idx = (idx + 1) % phases.length;
+      setRitualStatusPhase(phases[idx]!);
+    }, 1400);
+    return () => {
+      window.clearInterval(tickTimer);
+      window.clearInterval(statusTimer);
+    };
+  }, [phase, loading, ritualLines]);
+
+  const ritualTraceEnabled = process.env.NODE_ENV !== "production";
+  const logRitualTrace = useCallback(
+    (label: string, payload?: Record<string, unknown>) => {
+      if (!ritualTraceEnabled) return;
+      const start = ritualDebugStartMsRef.current;
+      const elapsedMs = typeof start === "number" ? Date.now() - start : -1;
+      if (payload) {
+        console.info(`[ritual][+${elapsedMs}ms] ${label}`, payload);
+      } else {
+        console.info(`[ritual][+${elapsedMs}ms] ${label}`);
+      }
+      void fetch("/api/ritual-debug", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ label, elapsedMs, payload }),
+        keepalive: true,
+      }).catch(() => {});
+    },
+    [ritualTraceEnabled],
   );
-  const activeRitualLine = (coinTick % 6) + 1;
+
+  useEffect(() => {
+    if (!ritualTraceEnabled) return;
+    logRitualTrace("state", {
+      phase,
+      loading,
+      ritualStatusPhase,
+      ritualRevealTick,
+      ritualAwaitingTick,
+      ritualFinale,
+      hasRitualLines: ritualLines !== null,
+    });
+  }, [
+    phase,
+    loading,
+    ritualStatusPhase,
+    ritualRevealTick,
+    ritualAwaitingTick,
+    ritualFinale,
+    ritualLines,
+    ritualTraceEnabled,
+    logRitualTrace,
+  ]);
+
+  useEffect(() => {
+    if (!ritualTraceEnabled || phase !== "coins") return;
+    const measure = () => {
+      const stageEl = ritualCoinsStageRef.current;
+      const gridEl = ritualLinesGridRef.current;
+      const stageRect = stageEl?.getBoundingClientRect();
+      const gridRect = gridEl?.getBoundingClientRect();
+      const stageFromQueryEl = document.querySelector<HTMLElement>('[data-testid="coin-throw"]');
+      const stageFromQuery = stageFromQueryEl?.getBoundingClientRect();
+      logRitualTrace("layout", {
+        stageRect: stageRect
+          ? {
+              width: Math.round(stageRect.width),
+              height: Math.round(stageRect.height),
+              top: Math.round(stageRect.top),
+              bottom: Math.round(stageRect.bottom),
+            }
+          : null,
+        stageRectQuery: stageFromQuery
+          ? {
+              width: Math.round(stageFromQuery.width),
+              height: Math.round(stageFromQuery.height),
+              top: Math.round(stageFromQuery.top),
+              bottom: Math.round(stageFromQuery.bottom),
+            }
+          : null,
+        stageContainsGrid: Boolean(stageEl && gridEl ? stageEl.contains(gridEl) : false),
+        stageParentClass: stageEl?.parentElement?.className ?? null,
+        gridParentClass: gridEl?.parentElement?.className ?? null,
+        stageComputed: stageEl
+          ? {
+              display: window.getComputedStyle(stageEl).display,
+              position: window.getComputedStyle(stageEl).position,
+              overflow: window.getComputedStyle(stageEl).overflow,
+            }
+          : null,
+        gridComputed: gridEl
+          ? {
+              display: window.getComputedStyle(gridEl).display,
+              position: window.getComputedStyle(gridEl).position,
+            }
+          : null,
+        gridRect: gridRect
+          ? {
+              width: Math.round(gridRect.width),
+              height: Math.round(gridRect.height),
+              top: Math.round(gridRect.top),
+              bottom: Math.round(gridRect.bottom),
+            }
+          : null,
+      });
+    };
+    measure();
+    const timer = window.setInterval(measure, 1000);
+    window.addEventListener("resize", measure);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("resize", measure);
+    };
+  }, [phase, ritualTraceEnabled, logRitualTrace]);
+
+  useEffect(() => {
+    setRitualParticles(
+      Array.from({ length: 90 }, (_, i) => {
+        const left = `${Math.floor(Math.random() * 100)}%`;
+        const top = `${Math.floor(Math.random() * 100)}%`;
+        const size = `${1.7 + Math.random() * 3.1}px`;
+        const duration = `${14 + Math.random() * 18}s`;
+        const delay = `${Math.random() * 10}s`;
+        return { id: i, left, top, size, duration, delay };
+      }),
+    );
+  }, []);
+
+  const ritualRenderOrder: Array<ApiLine["position"]> = [6, 5, 4, 3, 2, 1];
+  const ritualDebugEnabled =
+    process.env.NEXT_PUBLIC_ICHING_RITUAL_DEBUG === "1" ||
+    process.env.NEXT_PUBLIC_ICHING_RITUAL_DEBUG === "true";
+  const ritualStatusLine = useMemo(() => {
+    const status = RITUAL_STATUS_COPY[locale] ?? RITUAL_STATUS_COPY.es;
+    switch (ritualStatusPhase) {
+      case "question":
+        return status.question;
+      case "consult":
+        return status.consult;
+      case "shape":
+        return status.shape;
+      case "seal":
+        return status.seal;
+    }
+  }, [locale, ritualStatusPhase]);
+  const ritualDebugCastTransformed = useMemo(
+    () => (ritualDebugCastVector ? transformLineVector(ritualDebugCastVector) : null),
+    [ritualDebugCastVector],
+  );
+  const ritualDebugFinalTransformed = useMemo(
+    () => (ritualDebugFinalVector ? transformLineVector(ritualDebugFinalVector) : null),
+    [ritualDebugFinalVector],
+  );
+  const ritualDebugMatch = useMemo(() => {
+    if (!ritualDebugCastTransformed || !ritualDebugFinalTransformed) return null;
+    return ritualDebugCastTransformed.join(",") === ritualDebugFinalTransformed.join(",");
+  }, [ritualDebugCastTransformed, ritualDebugFinalTransformed]);
   const [emptyThreadInvite, setEmptyThreadInvite] = useState(ui.emptyInviteMorning);
   const userStorageScope = authUserId ?? "anon";
   const streakDayStorageKey = `iching_last_day_${userStorageScope}`;
@@ -979,11 +1434,81 @@ export default function HomePage() {
     if (!activeSessionLocalId) return sessions[0] ?? null;
     return sessions.find((s) => s.localId === activeSessionLocalId) ?? sessions[0] ?? null;
   }, [sessions, activeSessionLocalId]);
+  useEffect(() => {
+    activeSessionLocalIdRef.current = activeSessionLocalId;
+  }, [activeSessionLocalId]);
   const activeThread = activeSession?.thread ?? [];
   const result = activeThread.at(-1) ?? null;
-  const threadLimitReached =
-    activeThread.length > 0 && result !== null && !result.canDeepen;
+  /** Per-thread cap from current plan (`/api/account/me` session_limit). API enforces this, not the DB session row. */
+  const planThreadLimit = Math.max(1, accountSessionLimit);
+  const threadDepthCap = planThreadLimit;
+  const threadDepthCanDeepen = isAdmin || Boolean(result && result.sessionPosition < planThreadLimit);
+  const threadLimitReached = !isAdmin && activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
+  /** Until `/api/account/me` hydrates `accountSessionLimit`, default `1` would falsely flag paid threads — never show limit UI until `tierReady`. */
+  const threadLimitReachedUi = tierReady && threadLimitReached;
+  const showThreadLimitBanner = threadLimitReachedUi && !threadLimitBannerDismissed;
+  useEffect(() => {
+    setThreadLimitBannerDismissed(false);
+  }, [activeSessionLocalId]);
+  useEffect(() => {
+    if (!threadLimitReached) setThreadLimitBannerDismissed(false);
+  }, [threadLimitReached]);
+  useLayoutEffect(() => {
+    try {
+      if (sessionStorage.getItem(PLAY_PROMO_STRIP_DISMISSED_KEY) === "1") {
+        setPlayPromoDismissed(true);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+  const dismissPlayPromoStrip = useCallback(() => {
+    try {
+      sessionStorage.setItem(PLAY_PROMO_STRIP_DISMISSED_KEY, "1");
+    } catch {
+      // ignore
+    }
+    setPlayPromoDismissed(true);
+  }, []);
+  const tierDisplayNode = tierReady ? (
+    isAdmin ? "admin" : tierLabelForDisplay(tier)
+  ) : (
+    <span className="plan-tier-skeleton" aria-hidden="true" />
+  );
+  const supportEmailFromEnv =
+    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_SUPPORT_EMAIL === "string"
+      ? process.env.NEXT_PUBLIC_SUPPORT_EMAIL.trim()
+      : "";
+  const twoFactorSupportEmail = supportEmailFromEnv || "soporte@the-original-i-ching.app";
+  const preferredTwoFactorMethod: "totp" | "email" = twoFactorMethod === "email" ? "email" : "totp";
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
+  const QUESTION_INPUT_MAX_HEIGHT_PX = 160;
+  const resizeQuestionInput = useCallback(() => {
+    const el = questionInputRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    const nextHeight = Math.min(QUESTION_INPUT_MAX_HEIGHT_PX, el.scrollHeight);
+    const narrow =
+      typeof window !== "undefined" && window.matchMedia?.("(max-width: 520px)")?.matches;
+    const minOneLinePx = narrow ? 38 : 44;
+    el.style.height = `${Math.max(minOneLinePx, nextHeight)}px`;
+    el.style.overflowY = el.scrollHeight > QUESTION_INPUT_MAX_HEIGHT_PX ? "auto" : "hidden";
+  }, []);
+  /** Browser + RN WebView: rounded top cap on auth strip when guest or signed-in strip is shown. */
+  const showAuthExploreCap =
+    authReady &&
+    !supabaseConfigError &&
+    (!accessToken || Boolean(accessToken && authEmail));
+  const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;
+  const chatStateCacheKey = authUserId ? `iching_chat_state_v1:${authUserId}` : null;
+
+  useEffect(() => {
+    setPersistenceKeys(summaryCacheKey, chatStateCacheKey);
+  }, [summaryCacheKey, chatStateCacheKey, setPersistenceKeys]);
+
+  useEffect(() => {
+    resizeQuestionInput();
+  }, [question, resizeQuestionInput]);
 
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
@@ -1072,11 +1597,12 @@ export default function HomePage() {
       const entry = activeThread[i]!;
       if (i > 0) doc.addPage();
 
-      const canvas = document.createElement("canvas");
+      let canvas = document.createElement("canvas");
       canvas.width = pageW;
       canvas.height = pageH;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) continue;
+      const ctxInit = canvas.getContext("2d");
+      if (!ctxInit) continue;
+      let ctx: CanvasRenderingContext2D = ctxInit;
 
       // Background and subtle bands.
       ctx.fillStyle = "#f6fbfd";
@@ -1177,40 +1703,69 @@ export default function HomePage() {
       ctx.fillStyle = accent;
       ctx.font = `700 24px ${cjkFont}`;
       ctx.fillText(isEsPdf ? "Lectura" : "Reading", 84, panelY + 44);
+
       const blocks = interpretationMarkdownToPdfBlocks(entry.interpretation);
-      const plain = blocks
-        .map((b) => b.text)
-        .join("\n\n")
-        .replace(/\s+\n/g, "\n")
-        .trim();
-      ctx.fillStyle = "#1f2a36";
-      let readingFontSize = 24;
-      let readingLineHeight = 34;
-      let maxReadingLines = Math.floor((panelH - 112) / readingLineHeight);
-      ctx.font = `500 ${readingFontSize}px ${cjkFont}`;
-      let readingLines = wrapText(ctx, plain, pageW - 168);
-      while (readingLines.length > maxReadingLines && readingFontSize > 16) {
-        readingFontSize -= 1;
-        readingLineHeight = Math.round(readingFontSize * 1.38);
-        maxReadingLines = Math.floor((panelH - 112) / readingLineHeight);
-        ctx.font = `500 ${readingFontSize}px ${cjkFont}`;
-        readingLines = wrapText(ctx, plain, pageW - 168);
-      }
-      readingLines.slice(0, maxReadingLines).forEach((line, index) => {
-        ctx.fillText(line, 84, panelY + 84 + index * readingLineHeight);
-      });
-      if (readingLines.length > maxReadingLines) {
-        ctx.fillText("…", 84, panelY + 84 + maxReadingLines * readingLineHeight);
+      const styledLines = buildCanvasReadingLines(
+        ctx,
+        blocks,
+        pageW - 168,
+        84,
+        cjkFont,
+        accent,
+      );
+
+      const flushCanvasToDoc = () => {
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
+        doc.addImage(dataUrl, "JPEG", 0, 0, 595.28, 841.89, undefined, "FAST");
+      };
+
+      let readingBottom = pageH - 58;
+      let y = panelY + 84;
+      let lineIdx = 0;
+
+      while (lineIdx < styledLines.length) {
+        const sl = styledLines[lineIdx]!;
+        if (y + sl.marginTop + sl.lineHeight > readingBottom) {
+          flushCanvasToDoc();
+          doc.addPage();
+          const nextCanvas = document.createElement("canvas");
+          nextCanvas.width = pageW;
+          nextCanvas.height = pageH;
+          const nctx = nextCanvas.getContext("2d");
+          if (!nctx) break;
+          canvas = nextCanvas;
+          ctx = nctx;
+          const cont = drawPdfContinuationChrome(
+            ctx,
+            pageW,
+            pageH,
+            isEsPdf,
+            i + 1,
+            accent,
+            cjkFont,
+            serifFont,
+          );
+          y = cont.textTopY;
+          readingBottom = cont.textBottomY;
+          continue;
+        }
+        y += sl.marginTop;
+        ctx.font = sl.font;
+        ctx.fillStyle = sl.fillStyle;
+        ctx.fillText(sl.text, sl.x, y);
+        y += sl.lineHeight;
+        lineIdx += 1;
       }
 
-      const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
-      doc.addImage(dataUrl, "JPEG", 0, 0, 595.28, 841.89, undefined, "FAST");
+      flushCanvasToDoc();
     }
 
     doc.save(`${fileBase}.pdf`);
   }
 
-  const updateActiveSession = (updater: (current: ChatSessionState) => ChatSessionState) => {
+  const updateActiveSession = (
+    updater: (current: ChatSessionState<ConsultationItem>) => ChatSessionState<ConsultationItem>,
+  ) => {
     setSessions((prev) =>
       prev.map((s) => {
         if (s.localId !== activeSession?.localId) return s;
@@ -1219,9 +1774,35 @@ export default function HomePage() {
     );
   };
 
+  const handleInterpretationRevealComplete = useCallback(() => {
+    setRevealConsultationId(null);
+  }, []);
+
   useEffect(() => {
+    setRevealConsultationId(null);
+  }, [activeSessionLocalId]);
+
+  useEffect(() => {
+    if (prevActiveSessionLocalIdForScrollRef.current !== activeSessionLocalId) {
+      prevActiveSessionLocalIdForScrollRef.current = activeSessionLocalId;
+      lastScrollWasRevealRef.current = false;
+    }
+    if (revealConsultationId) {
+      lastScrollWasRevealRef.current = true;
+      requestAnimationFrame(() => {
+        document.getElementById(`reading-sheet-${revealConsultationId}`)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+      return;
+    }
+    if (lastScrollWasRevealRef.current) {
+      lastScrollWasRevealRef.current = false;
+      return;
+    }
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [activeThread.length, phase, error, activeSession?.localId]);
+  }, [activeThread.length, phase, error, activeSessionLocalId, revealConsultationId]);
 
   useEffect(() => {
     if (!authContinueOpen) return;
@@ -1234,6 +1815,7 @@ export default function HomePage() {
 
   const startNewSession = useCallback(() => {
     const created = createLocalSession(ui.sessionNew);
+    pinnedLocalSessionIdRef.current = created.localId;
     setSessions((prev) => [created, ...prev.filter((s) => s.messageCount > 0)]);
     setActiveSessionLocalId(created.localId);
     setQuestion("");
@@ -1244,27 +1826,79 @@ export default function HomePage() {
 
   const signOut = useCallback(async () => {
     if (!isSupabaseBrowserConfigured()) return;
+    isSigningOutRef.current = true;
+    const uid = authUserId;
     try {
       await getSupabaseBrowser().auth.signOut();
     } catch {
       // ignore
     }
+    if (uid) {
+      try {
+        sessionStorage.removeItem(`iching_chat_summaries_v1:${uid}`);
+        sessionStorage.removeItem(`iching_chat_state_v1:${uid}`);
+        sessionStorage.removeItem(`iching_2fa_passed_v1:${uid}`);
+        localStorage.removeItem(`iching_last_activity_v1:${uid}`);
+      } catch {
+        // ignore cache clear errors
+      }
+    }
     setAccessToken(null);
     setAuthEmail(null);
-  }, []);
+    setAuthUserId(null);
+    setSecondFactorVerified(false);
+    setTwoFactorModalOpen(false);
+    setTwoFactorChallengeMethod("totp");
+    setTwoFactorInfo(null);
+    setTwoFactorError(null);
+    setTokenCenterOpen(false);
+    setTokenCenterError(null);
+    setHistoryLoading(false);
+    setLoadingSessionLocalId(null);
+    setPendingDeletedSessionLocalIds([]);
+    setHistoryLoadError(null);
+    idleSignOutRef.current = false;
+    pinnedLocalSessionIdRef.current = null;
+  }, [authUserId]);
 
   const sessionsListed = useMemo(() => sessions.filter((s) => s.messageCount > 0), [sessions]);
+  const visibleSessionsListed = useMemo(
+    () => sessionsListed.filter((s) => !pendingDeletedSessionLocalIds.includes(s.localId)),
+    [sessionsListed, pendingDeletedSessionLocalIds],
+  );
   const loadSessionThread = useCallback(
     async (sessionId: string, localId: string) => {
       if (!accessToken) return;
+      setHistoryLoading(true);
+      setLoadingSessionLocalId(localId);
+      setHistoryLoadError(null);
       try {
         const res = await fetch(`/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
+          cache: "no-store",
         });
-        if (!res.ok) return;
+        if (!res.ok) {
+          const err = parseApiErrorPayload(await res.text());
+          if (res.status === 401) {
+            const authError = sessionUi.chatLoadSessionExpired;
+            setHistoryLoadError(authError);
+            setError(authError);
+            void signOut();
+            return;
+          }
+          if (res.status === 404 || err?.code === "SESSION_NOT_FOUND") {
+            setHistoryLoadError(sessionUi.chatNoLongerExists);
+            return;
+          }
+          setHistoryLoadError(formatChatLoadFailedStatus(sessionUi, res.status));
+          return;
+        }
         const payload = (await res.json()) as AccountChatSessionResponse;
         if (!payload?.session) return;
-        const thread = payload.consultations.map((c) => mapApiConsultationToItem(c, payload.session.publicId));
+        const planCap = Math.max(1, accountSessionLimit);
+        const thread = payload.consultations.map((c) =>
+          mapApiConsultationToItem(c, payload.session.publicId, planCap),
+        );
         setSessions((prev) =>
           prev.map((s) => {
             if (s.localId !== localId) return s;
@@ -1275,9 +1909,10 @@ export default function HomePage() {
                 !knownNewSessionTitles.has(payload.session.title) &&
                 !knownInProgressTitles.has(payload.session.title)
                   ? payload.session.title
-                  : (thread[0]?.question.slice(0, 60) ?? (isSpanish ? "Consulta" : "Consultation")),
+                  : (thread[0]?.question.slice(0, 60) ?? sessionUi.defaultSessionTitle),
               sessionId: payload.session.sessionId,
               publicSessionId: payload.session.publicId,
+              threadMaxDepth: planCap,
               thread,
               messageCount: Math.max(thread.length, s.messageCount),
               updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
@@ -1285,28 +1920,31 @@ export default function HomePage() {
             };
           }),
         );
+        setHistoryLoadError(null);
       } catch {
-        // ignore network errors
+        setHistoryLoadError(sessionUi.chatLoadNetworkError);
+      } finally {
+        setHistoryLoading(false);
+        setLoadingSessionLocalId((current) => (current === localId ? null : current));
       }
     },
-    [accessToken, knownInProgressTitles, knownNewSessionTitles, isSpanish],
+    [accessToken, knownInProgressTitles, knownNewSessionTitles, sessionUi, accountSessionLimit, signOut],
   );
   const removeSession = useCallback(
-    async (session: ChatSessionState) => {
+    async (session: ChatSessionState<ConsultationItem>) => {
       if (!accessToken || !session.sessionId) return;
-      const ok = window.confirm(
-        isSpanish
-          ? "¿Eliminar esta conversación de forma permanente?"
-          : "Delete this conversation permanently?",
-      );
+      if (pendingDeletedSessionLocalIds.includes(session.localId)) return;
+      const ok = window.confirm(sessionUi.deleteConfirm);
       if (!ok) return;
+      setPendingDeletedSessionLocalIds((prev) => (prev.includes(session.localId) ? prev : [...prev, session.localId]));
       try {
         const res = await fetch(`/api/account/chats?sessionId=${encodeURIComponent(session.sessionId)}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         if (!res.ok) {
-          setError(isSpanish ? "No se pudo eliminar la conversación." : "Could not delete conversation.");
+          setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
+          setError(sessionUi.couldNotDeleteConversation);
           return;
         }
         setSessions((prev) => {
@@ -1316,10 +1954,13 @@ export default function HomePage() {
           return next;
         });
       } catch {
-        setError(isSpanish ? "No se pudo eliminar la conversación." : "Could not delete conversation.");
+        setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
+        setError(sessionUi.couldNotDeleteConversation);
+        return;
       }
+      setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
     },
-    [accessToken, isSpanish],
+    [accessToken, sessionUi, pendingDeletedSessionLocalIds],
   );
 
   useEffect(() => {
@@ -1396,37 +2037,122 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (authUserId) lastSignedInUserIdForStorageRef.current = authUserId;
+  }, [authUserId]);
+
+  useEffect(() => {
+    if (!authReady) return;
     if (!accessToken) {
+      const uid = lastSignedInUserIdForStorageRef.current;
+      if (uid) clearCachedAccountSessionLimit(uid);
+      lastSignedInUserIdForStorageRef.current = null;
       setTier("free");
-      setMonthlyCreditsLimit(2);
-      setCreditsType("lifetime");
+      setTierReady(true);
+      setAccountSessionLimit(1);
+      setTokenBalance(null);
       setTwoFactorEnabled(false);
       setTwoFactorMethod(null);
+      setSecondFactorVerified(false);
+      setTwoFactorModalOpen(false);
+      setTwoFactorInfo(null);
+      setTwoFactorError(null);
+      setTokenCenterOpen(false);
+      setTokenCenterError(null);
+      setPendingDeletedSessionLocalIds([]);
+      setIsAdmin(false);
+      setDisplayName(undefined);
+      setOnboardingOpen(false);
+      isSigningOutRef.current = false;
       return;
     }
     let cancelled = false;
+    if (authUserId) {
+      const cached = readCachedAccountSessionLimit(authUserId);
+      if (cached !== null) setAccountSessionLimit(cached);
+    }
+    setTierReady(false);
     function loadAccountTier() {
+      if (isSigningOutRef.current) return;
       void fetch("/api/account/me", {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
         .then((r) => (r.ok ? r.json() : null))
         .then((j: {
-          tier?: Tier;
-          creditsLimit?: number;
-          creditsType?: CreditsType;
+          last_pack?: string;
+          tokens_available?: number;
+          session_limit?: number;
           twoFactorEnabled?: boolean;
           twoFactorMethod?: string | null;
+          display_name?: string | null;
+          is_admin?: boolean;
+          legal_acceptance_current?: boolean;
         } | null) => {
-          if (cancelled || !j?.tier) return;
-          setTier(j.tier);
-          if (typeof j.creditsLimit === "number" && Number.isFinite(j.creditsLimit)) {
-            setMonthlyCreditsLimit(j.creditsLimit);
+          if (cancelled) return;
+          if (!j) {
+            if (authUserId) {
+              const cached = readCachedAccountSessionLimit(authUserId);
+              if (cached !== null) setAccountSessionLimit(cached);
+            }
+            setTierReady(true);
+            return;
           }
-          setCreditsType(j.creditsType === "monthly" ? "monthly" : "lifetime");
+          if (j.legal_acceptance_current === false) {
+            router.replace("/auth/complete-legal");
+            return;
+          }
+          const lastPack = typeof j.last_pack === "string" ? j.last_pack : "free";
+          setTier(lastPack as Tier);
+          setTierReady(true);
+          setIsAdmin(j.is_admin === true);
+          if (typeof j.session_limit === "number" && Number.isFinite(j.session_limit)) {
+            setAccountSessionLimit(j.session_limit);
+            if (authUserId) writeCachedAccountSessionLimit(authUserId, j.session_limit);
+          }
+          setTokenBalance(typeof j.tokens_available === "number" ? j.tokens_available : null);
           setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
           setTwoFactorMethod(j.twoFactorMethod ?? null);
+          const dn = typeof j.display_name === "string" ? j.display_name : null;
+          setDisplayName(dn);
+          if (dn === null) {
+            // Check provider to decide: auto-fill from Google or show modal for email
+            void (async () => {
+              const sb = getSupabaseBrowser();
+              const { data: { session } } = await sb.auth.getSession();
+              const provider = session?.user?.app_metadata?.provider;
+              const fullName =
+                typeof session?.user?.user_metadata?.full_name === "string"
+                  ? session.user.user_metadata.full_name.trim()
+                  : "";
+              const firstName = fullName.split(" ")[0]?.trim() ?? "";
+              if (provider === "google" && firstName) {
+                // Silently save the first name — no modal shown
+                try {
+                  const res = await fetch("/api/account/display-name", {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${accessToken}`,
+                    },
+                    body: JSON.stringify({ display_name: firstName }),
+                  });
+                  if (res.ok) setDisplayName(firstName);
+                } catch { /* non-fatal */ }
+              } else {
+                setOnboardingStep("enter");
+                setOnboardingInput("");
+                setOnboardingOpen(true);
+              }
+            })();
+          }
         })
-        .catch(() => {});
+        .catch(() => {
+          if (cancelled) return;
+          if (authUserId) {
+            const cached = readCachedAccountSessionLimit(authUserId);
+            if (cached !== null) setAccountSessionLimit(cached);
+          }
+          setTierReady(true);
+        });
     }
     loadAccountTier();
     function onAccountRefresh() {
@@ -1437,103 +2163,285 @@ export default function HomePage() {
       cancelled = true;
       window.removeEventListener("iching:account-refresh", onAccountRefresh);
     };
-  }, [accessToken]);
+  }, [accessToken, authReady, authUserId, router]);
 
   useEffect(() => {
-    async function loadPublicConfig() {
-      try {
-        const res = await fetch("/api/admin/public-config", { method: "GET" });
-        const data = (await res.json()) as {
-          ok: boolean;
-          config?: {
-            responseModeDefault?: ResponseMode;
-          };
-        };
-        if (!res.ok || !data.ok || !data.config) return;
-        if (data.config.responseModeDefault) setResponseMode(data.config.responseModeDefault);
-      } catch {
-        // ignore config load errors
-      }
+    if (!accessToken || !authUserId) return;
+    if (!twoFactorEnabled) {
+      setSecondFactorVerified(true);
+      return;
     }
-    void loadPublicConfig();
-  }, []);
+    const key = `iching_2fa_passed_v1:${authUserId}`;
+    const alreadyPassed = sessionStorage.getItem(key) === "1";
+    if (alreadyPassed) {
+      setSecondFactorVerified(true);
+      return;
+    }
+    setSecondFactorVerified(false);
+    setTwoFactorSetupOpen(false);
+    setTwoFactorQrDataUrl(null);
+    setTwoFactorRecoveryCodes([]);
+    setTwoFactorCode("");
+    setTwoFactorEmailCode("");
+    setTwoFactorRecoveryCode("");
+    setTwoFactorEmailSent(false);
+    setTwoFactorChallengeFailures(0);
+    setTwoFactorRecoveryAssistMode("hidden");
+    setTwoFactorChallengeMethod(preferredTwoFactorMethod);
+    setTwoFactorInfo(null);
+    setTwoFactorError(null);
+    setTwoFactorModalMode("challenge");
+    setTwoFactorModalOpen(true);
+  }, [accessToken, authUserId, preferredTwoFactorMethod, twoFactorEnabled]);
 
   useEffect(() => {
+    if (!accessToken || !authUserId) {
+      idleSignOutRef.current = false;
+      return;
+    }
+    const activityStorageKey = `iching_last_activity_v1:${authUserId}`;
+    const readLastActivity = (): number => {
+      try {
+        const raw = localStorage.getItem(activityStorageKey);
+        const parsed = raw ? Number(raw) : NaN;
+        return Number.isFinite(parsed) ? parsed : Date.now();
+      } catch {
+        return Date.now();
+      }
+    };
+    const writeLastActivity = (timestamp: number) => {
+      try {
+        localStorage.setItem(activityStorageKey, String(timestamp));
+      } catch {
+        // ignore localStorage write errors
+      }
+    };
+    const expireIfNeeded = () => {
+      if (idleSignOutRef.current) return;
+      const idleMs = Date.now() - readLastActivity();
+      if (idleMs < SESSION_IDLE_TIMEOUT_MS) return;
+      idleSignOutRef.current = true;
+      setError(sessionUi.idleSignedOut);
+      void signOut();
+    };
+    const registerActivity = () => {
+      if (idleSignOutRef.current) return;
+      writeLastActivity(Date.now());
+    };
+
+    idleSignOutRef.current = false;
+    expireIfNeeded();
+    registerActivity();
+
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== activityStorageKey) return;
+      expireIfNeeded();
+    };
+    const onVisibility = () => {
+      if (document.visibilityState !== "visible") return;
+      expireIfNeeded();
+      registerActivity();
+    };
+    const activityEvents: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart", "mousemove", "scroll"];
+    for (const eventName of activityEvents) {
+      window.addEventListener(eventName, registerActivity, { passive: true });
+    }
+    window.addEventListener("storage", onStorage);
+    document.addEventListener("visibilitychange", onVisibility);
+    const timer = window.setInterval(expireIfNeeded, SESSION_IDLE_CHECK_INTERVAL_MS);
+
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("storage", onStorage);
+      document.removeEventListener("visibilitychange", onVisibility);
+      for (const eventName of activityEvents) {
+        window.removeEventListener(eventName, registerActivity);
+      }
+    };
+  }, [accessToken, authUserId, sessionUi, signOut]);
+
+  useEffect(() => {
+    if (sessionsHydrated) return;
+    if (sessions.length > 0) {
+      setSessionsHydrated(true);
+      return;
+    }
+    if (!authReady) return;
+    if (accessToken) {
+      setSessionsHydrated(true);
+      return;
+    }
     const fresh = createLocalSession(inProgressTitle);
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
     setSessionsHydrated(true);
-  }, []);
+  }, [
+    authReady,
+    accessToken,
+    inProgressTitle,
+    sessions.length,
+    sessionsHydrated,
+    setSessions,
+    setActiveSessionLocalId,
+    setSessionsHydrated,
+  ]);
 
   useEffect(() => {
     if (!authReady) return;
     if (accessToken) return;
+    if (sessions.length === 1 && sessions[0]?.messageCount === 0) return;
     const fresh = createLocalSession(inProgressTitle);
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
-  }, [authReady, accessToken]);
+  }, [authReady, accessToken, inProgressTitle, sessions, setSessions, setActiveSessionLocalId]);
 
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
     let cancelled = false;
+    setHistoryLoading(true);
+    setHistoryLoadError(null);
+    hydrateFromStorage(summaryCacheKey, chatStateCacheKey);
     void (async () => {
       try {
-        const res = await fetch("/api/account/chats?summary=1", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        if (!res.ok) {
-          const err = (await res.json().catch(() => null)) as { code?: string } | null;
-          if (err?.code === "CHAT_PERSISTENCE_NOT_CONFIGURED") {
-            setError(
-              isSpanish
-                ? "No se puede cargar el historial: falta configurar SUPABASE_SERVICE_ROLE_KEY en el servidor."
-                : "Could not load chat history: SUPABASE_SERVICE_ROLE_KEY is missing on the server.",
-            );
+        const fetchSummary = async () => {
+          const firstAttempt = await fetch("/api/account/chats?summary=1", {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            cache: "no-store",
+          });
+          if (firstAttempt.ok || firstAttempt.status < 500) {
+            return firstAttempt;
           }
+          await new Promise((resolve) => window.setTimeout(resolve, 350));
+          return fetch("/api/account/chats?summary=1", {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            cache: "no-store",
+          });
+        };
+        const res = await fetchSummary();
+        if (!res.ok) {
+          const err = parseApiErrorPayload(await res.text());
+          if (err?.code === "CHAT_PERSISTENCE_NOT_CONFIGURED") {
+            const msg = sessionUi.historySupabaseMissing;
+            setError(msg);
+            setHistoryLoadError(msg);
+            return;
+          }
+          if (res.status === 401) {
+            const msg = sessionUi.historySessionExpired;
+            setError(msg);
+            setHistoryLoadError(msg);
+            void signOut();
+            return;
+          }
+          const msg = formatHistoryLoadFailedStatus(sessionUi, res.status);
+          setError(msg);
+          setHistoryLoadError(msg);
           return;
         }
         const payload = (await res.json()) as AccountChatsSummaryResponse;
         if (cancelled || !payload) return;
         const hydrated = payload.sessions
-          .map((entry): ChatSessionState => {
+          .map((entry): ChatSessionState<ConsultationItem> => {
             return {
               localId: `db-${entry.session.sessionId}`,
               title:
                 entry.session.title && !knownNewSessionTitles.has(entry.session.title) && !knownInProgressTitles.has(entry.session.title)
                   ? entry.session.title
-                  : (isSpanish ? "Consulta" : "Consultation"),
+                  : (entry.firstQuestion?.trim().slice(0, 80) || sessionUi.defaultSessionTitle),
               sessionId: entry.session.sessionId,
               publicSessionId: entry.session.publicId,
               thread: [],
+              threadMaxDepth: null,
               messageCount: entry.messageCount,
               updatedAt: entry.updatedAt ?? entry.session.createdAt,
               firstConsultationAt: entry.firstConsultationAt ?? null,
             };
           })
           .filter((s) => s.messageCount > 0);
-        if (hydrated.length === 0) return;
-        setSessions(hydrated);
-        const first = hydrated[0];
-        setActiveSessionLocalId(first?.localId ?? null);
-        if (first?.sessionId) {
-          void loadSessionThread(first.sessionId, first.localId);
+        if (hydrated.length === 0) {
+          setHistoryLoadError(null);
+          return;
         }
+        let combinedSessions: ChatSessionState<ConsultationItem>[] = hydrated;
+        setSessions((prev) => {
+          const merged = hydrated.map((next) => {
+            const existing = prev.find((s) => s.sessionId === next.sessionId);
+            if (!existing) return next;
+            return {
+              ...next,
+              title:
+                existing.title && !knownNewSessionTitles.has(existing.title) && !knownInProgressTitles.has(existing.title)
+                  ? existing.title
+                  : next.title,
+              thread: existing.thread,
+              threadMaxDepth: existing.threadMaxDepth ?? next.threadMaxDepth,
+              messageCount: Math.max(next.messageCount, existing.messageCount),
+              updatedAt: Math.max(next.updatedAt, existing.updatedAt),
+              firstConsultationAt: next.firstConsultationAt ?? existing.firstConsultationAt,
+            };
+          });
+          combinedSessions = mergeHydratedWithLocalDrafts({
+            previous: prev,
+            hydrated: merged,
+          });
+          return combinedSessions;
+        });
+        if (summaryCacheKey) {
+          try {
+            sessionStorage.setItem(summaryCacheKey, JSON.stringify(hydrated));
+          } catch {
+            // ignore cache save errors
+          }
+        }
+        const pinnedLocalId = pinnedLocalSessionIdRef.current;
+        if (pinnedLocalId && !combinedSessions.some((s) => s.localId === pinnedLocalId)) {
+          pinnedLocalSessionIdRef.current = null;
+        }
+        const activeLocalId = activeSessionLocalIdRef.current;
+        const preferredLocalId = pickPreferredSessionLocalId({
+          sessions: combinedSessions,
+          pinnedLocalId: pinnedLocalSessionIdRef.current,
+          activeLocalId,
+        });
+        setActiveSessionLocalId(preferredLocalId);
+        const selected = combinedSessions.find((s) => s.localId === preferredLocalId) ?? combinedSessions[0];
+        if (selected?.sessionId && selected.messageCount > 0 && selected.thread.length === 0) {
+          void loadSessionThread(selected.sessionId, selected.localId);
+        }
+        setHistoryLoadError(null);
       } catch {
-        // ignore network errors
+        setHistoryLoadError(sessionUi.historyNetworkError);
+      } finally {
+        if (!cancelled) {
+          setHistoryLoading(false);
+        }
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [authReady, accessToken, sessionsHydrated, knownInProgressTitles, knownNewSessionTitles, isSpanish, loadSessionThread]);
+  }, [
+    authReady,
+    accessToken,
+    sessionsHydrated,
+    knownInProgressTitles,
+    knownNewSessionTitles,
+    sessionUi,
+    loadSessionThread,
+    summaryCacheKey,
+    chatStateCacheKey,
+    hydrateFromStorage,
+    signOut,
+  ]);
 
   async function startTwoFactorEnrollment() {
     if (!accessToken) {
-      setError("Inicia sesión para configurar la verificación en dos pasos.");
+      setTwoFactorError(tf.signInFor2fa);
       return;
     }
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/enroll", {
         method: "POST",
@@ -1548,21 +2456,22 @@ export default function HomePage() {
       };
       if (!res.ok || !data.qrDataUrl) {
         if (data.code === "TWO_FACTOR_ENCRYPTION_KEY_MISSING") {
-          setError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
+          setTwoFactorError(tf.enrollEncryptionKeyMissing);
           return;
         }
         if (data.code === "AUTH_PROVIDER_NOT_CONFIGURED") {
-          setError("2FA no disponible: falta configuración de Supabase en servidor.");
+          setTwoFactorError(tf.enrollAuthProviderMissing);
           return;
         }
-        setError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
+        setTwoFactorError(tf.enrollTryLater);
         return;
       }
       setTwoFactorQrDataUrl(data.qrDataUrl);
       setTwoFactorSetupOpen(true);
       setTwoFactorRecoveryCodes([]);
+      setTwoFactorRecoveryAck(false);
     } catch {
-      setError("No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.");
+      setTwoFactorError(tf.enrollTryLater);
     } finally {
       setTwoFactorBusy(false);
     }
@@ -1571,7 +2480,8 @@ export default function HomePage() {
   async function confirmTwoFactorEnrollment() {
     if (!accessToken || !twoFactorCode.trim()) return;
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/verify", {
         method: "POST",
@@ -1584,22 +2494,34 @@ export default function HomePage() {
       const data = (await res.json()) as { recoveryCodes?: string[]; error?: string; code?: string };
       if (!res.ok || !Array.isArray(data.recoveryCodes)) {
         if (data.code === "TWO_FACTOR_NOT_ENROLLED") {
-          setError("Primero activa 2FA con Authenticator para generar el QR.");
+          setTwoFactorError(tf.confirmNotEnrolled);
           return;
         }
         if (data.code === "TWO_FACTOR_ENCRYPTION_KEY_MISSING") {
-          setError("2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.");
+          setTwoFactorError(tf.confirmEncryptionKeyMissing);
           return;
         }
-        setError("Código 2FA inválido o expirado. Revisa tu app Authenticator e inténtalo de nuevo.");
+        if (data.code === "TWO_FACTOR_SECRET_DECRYPT_FAILED") {
+          setTwoFactorError(tf.confirmDecryptFailed);
+          return;
+        }
+        setTwoFactorError(tf.confirmTotpInvalid);
         return;
       }
+      if (authUserId) {
+        sessionStorage.setItem(`iching_2fa_passed_v1:${authUserId}`, "1");
+      }
+      setSecondFactorVerified(true);
       setTwoFactorEnabled(true);
       setTwoFactorMethod("totp");
+      setTwoFactorSetupOpen(false);
+      setTwoFactorQrDataUrl(null);
       setTwoFactorRecoveryCodes(data.recoveryCodes);
       setTwoFactorCode("");
+      setTwoFactorRecoveryAck(false);
+      setTwoFactorInfo(tf.infoTwoFaEnabledSaveCodes);
     } catch {
-      setError("No se pudo verificar 2FA ahora. Inténtalo de nuevo.");
+      setTwoFactorError(tf.confirmTryLater);
     } finally {
       setTwoFactorBusy(false);
     }
@@ -1607,11 +2529,12 @@ export default function HomePage() {
 
   async function sendEmailTwoFactorCode() {
     if (!accessToken) {
-      setError("Inicia sesión para configurar la verificación en dos pasos.");
+      setTwoFactorError(tf.signInFor2fa);
       return;
     }
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/email/send", {
         method: "POST",
@@ -1619,18 +2542,39 @@ export default function HomePage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const data = (await res.json()) as { ok?: boolean; code?: string };
-      if (!res.ok || !data.ok) {
-        if (data.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
-          setError("2FA por email no está habilitado en servidor (faltan variables de entorno).");
+      const data = (await res.json().catch(() => null)) as { ok?: boolean; code?: string; message?: string } | null;
+      if (!res.ok || !data?.ok) {
+        if (data?.code === "AUTH_REQUIRED") {
+          setTwoFactorError(tf.sendSessionExpired);
           return;
         }
-        setError("No se pudo enviar el código por email. Inténtalo de nuevo.");
+        if (data?.code === "TWO_FACTOR_LOCKED") {
+          setTwoFactorError(tf.sendLocked);
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
+          setTwoFactorError(tf.sendEmailNotConfiguredServer);
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_EMAIL_DELIVERY_FAILED") {
+          const deliveryMessage =
+            typeof data?.message === "string"
+              ? data.message
+              : null;
+          setTwoFactorError(
+            deliveryMessage
+              ? interpolate(tf.emailDeliveryFailedReason, { reason: deliveryMessage })
+              : tf.emailDeliveryFailedResendHint,
+          );
+          return;
+        }
+        setTwoFactorError(tf.sendTryLater);
         return;
       }
       setTwoFactorEmailSent(true);
+      setTwoFactorInfo(tf.infoCodeSent);
     } catch {
-      setError("No se pudo enviar el código por email. Inténtalo de nuevo.");
+      setTwoFactorError(tf.sendTryLater);
     } finally {
       setTwoFactorBusy(false);
     }
@@ -1639,7 +2583,8 @@ export default function HomePage() {
   async function verifyEmailTwoFactorCode() {
     if (!accessToken || !twoFactorEmailCode.trim()) return;
     setTwoFactorBusy(true);
-    setError(null);
+    setTwoFactorError(null);
+    setTwoFactorInfo(null);
     try {
       const res = await fetch("/api/auth/2fa/email/verify", {
         method: "POST",
@@ -1652,80 +2597,213 @@ export default function HomePage() {
       const data = (await res.json()) as { recoveryCodes?: string[]; code?: string };
       if (!res.ok || !Array.isArray(data.recoveryCodes)) {
         if (data.code === "TWO_FACTOR_EMAIL_CODE_EXPIRED") {
-          setError("El código por email expiró. Solicita uno nuevo.");
+          setTwoFactorError(tf.verifyEmailExpired);
           return;
         }
         if (data.code === "TWO_FACTOR_EMAIL_CODE_MISSING") {
-          setError("Primero solicita el código por email.");
+          setTwoFactorError(tf.verifyEmailRequestFirst);
           return;
         }
-        setError("Código por email inválido. Revisa tu bandeja e inténtalo de nuevo.");
+        setTwoFactorError(tf.verifyEmailInvalid);
         return;
       }
+      if (authUserId) {
+        sessionStorage.setItem(`iching_2fa_passed_v1:${authUserId}`, "1");
+      }
+      setSecondFactorVerified(true);
       setTwoFactorEnabled(true);
       setTwoFactorMethod("email");
+      setTwoFactorSetupOpen(false);
+      setTwoFactorQrDataUrl(null);
       setTwoFactorRecoveryCodes(data.recoveryCodes);
       setTwoFactorEmailCode("");
       setTwoFactorEmailSent(false);
+      setTwoFactorRecoveryAck(false);
+      setTwoFactorInfo(tf.infoTwoFaEnabledSaveCodes);
     } catch {
-      setError("No se pudo verificar el código por email. Inténtalo de nuevo.");
+      setTwoFactorError(tf.verifyEmailTryLater);
     } finally {
       setTwoFactorBusy(false);
     }
   }
 
-  async function openSubscriptionManagement() {
-    if (!accessToken) {
-      setError(isSpanish ? "Inicia sesión para gestionar tu suscripción." : "Sign in to manage your subscription.");
-      return;
-    }
-    setManageSubBusy(true);
-    setManageSubMessage(null);
+  async function disableTwoFactor() {
+    if (!accessToken) return;
+    setTwoFactorBusy(true);
+    setTwoFactorError(null);
+    setTwoFactorInfo(null);
     try {
-      const res = await fetch("/api/account/subscription/manage", {
+      const res = await fetch("/api/auth/2fa/disable", {
         method: "POST",
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      const data = (await res.json().catch(() => null)) as
-        | { ok?: boolean; managementUrl?: string; code?: string; message?: string }
-        | null;
-      if (!res.ok || !data?.ok || !data.managementUrl) {
-        const fallback = isSpanish
-          ? "No se pudo abrir la gestión de suscripción. Inténtalo de nuevo en unos minutos."
-          : "Could not open subscription management. Please try again in a few minutes.";
-        if (data?.code === "BILLING_NOT_CONFIGURED") {
-          setManageSubMessage(
-            isSpanish
-              ? "Falta configuración de billing (RevenueCat) en servidor."
-              : "Billing (RevenueCat) is not fully configured on server.",
-          );
-        } else if (data?.code === "BILLING_NO_ACTIVE_SUBSCRIPTION") {
-          setManageSubMessage(
-            isSpanish
-              ? "Tu cuenta no tiene una suscripción activa para gestionar."
-              : "Your account has no active subscription to manage.",
-          );
-        } else if (data?.code === "BILLING_SYNC_FAILED") {
-          setManageSubMessage(fallback);
-        } else {
-          setManageSubMessage(fallback);
-        }
+      if (!res.ok) {
+        setTwoFactorError(tf.disableFailed);
         return;
       }
-      window.open(data.managementUrl, "_blank", "noopener,noreferrer");
-      setManageSubMessage(
-        isSpanish
-          ? "Se abrió el portal de suscripción en una nueva pestaña."
-          : "Subscription portal opened in a new tab.",
-      );
+      setTwoFactorEnabled(false);
+      setTwoFactorMethod(null);
+      setTwoFactorSetupOpen(false);
+      setTwoFactorQrDataUrl(null);
+      setTwoFactorCode("");
+      setTwoFactorEmailCode("");
+      setTwoFactorEmailSent(false);
+      setTwoFactorRecoveryCodes([]);
+      if (authUserId) {
+        sessionStorage.removeItem(`iching_2fa_passed_v1:${authUserId}`);
+      }
+      setSecondFactorVerified(false);
+      setTwoFactorModalOpen(false);
+      setTwoFactorInfo(tf.disabledOk);
     } catch {
-      setManageSubMessage(
-        isSpanish
-          ? "No se pudo abrir la gestión de suscripción. Inténtalo de nuevo."
-          : "Could not open subscription management. Please try again.",
-      );
+      setTwoFactorError(tf.disableFailed);
     } finally {
-      setManageSubBusy(false);
+      setTwoFactorBusy(false);
+    }
+  }
+
+  async function verifyTwoFactorChallenge() {
+    if (!accessToken) return;
+    const payload: { token?: string; emailCode?: string; recoveryCode?: string } = {};
+    const usingRecoveryCode = twoFactorRecoveryAssistMode === "enter_code";
+    if (usingRecoveryCode && twoFactorRecoveryCode.trim().length >= 8) {
+      payload.recoveryCode = twoFactorRecoveryCode.trim();
+    }
+    if (!usingRecoveryCode && twoFactorChallengeMethod === "totp" && twoFactorCode.trim().length >= 6) {
+      payload.token = twoFactorCode.trim();
+    }
+    if (!usingRecoveryCode && twoFactorChallengeMethod === "email" && twoFactorEmailCode.trim().length >= 6) {
+      payload.emailCode = twoFactorEmailCode.trim();
+    }
+    if (!payload.token && !payload.emailCode && !payload.recoveryCode) {
+      setTwoFactorError(usingRecoveryCode ? tf.challengeNeedRecovery : tf.challengeNeedSixDigit);
+      return;
+    }
+    setTwoFactorBusy(true);
+    setTwoFactorError(null);
+    setTwoFactorInfo(null);
+    try {
+      const res = await fetch("/api/auth/2fa/challenge/verify", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as { code?: string } | null;
+        if (data?.code === "AUTH_REQUIRED") {
+          setTwoFactorError(tf.challengeSessionExpired);
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_LOCKED") {
+          setTwoFactorError(tf.challengeLocked);
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_EMAIL_CODE_MISSING") {
+          setTwoFactorError(tf.challengeEmailMissing);
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_EMAIL_CODE_EXPIRED") {
+          setTwoFactorError(tf.challengeEmailExpired);
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_NOT_ENROLLED") {
+          setTwoFactorError(tf.challengeMethodNotLinked);
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_EMAIL_NOT_CONFIGURED") {
+          setTwoFactorError(tf.challengeEmailServerMisconfig);
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_SECRET_DECRYPT_FAILED") {
+          setTwoFactorError(tf.challengeDecryptFailed);
+          return;
+        }
+        if (data?.code === "TWO_FACTOR_INVALID_CODE") {
+          const nextFailures = twoFactorChallengeFailures + 1;
+          setTwoFactorChallengeFailures(nextFailures);
+          if (!usingRecoveryCode && nextFailures >= 2) {
+            setTwoFactorRecoveryAssistMode("options");
+            setTwoFactorError(tf.challengeInvalidWithRecovery);
+            return;
+          }
+        }
+        setTwoFactorError(tf.challengeInvalidCode);
+        return;
+      }
+      if (authUserId) {
+        sessionStorage.setItem(`iching_2fa_passed_v1:${authUserId}`, "1");
+      }
+      setSecondFactorVerified(true);
+      setTwoFactorChallengeFailures(0);
+      setTwoFactorRecoveryAssistMode("hidden");
+      setTwoFactorCode("");
+      setTwoFactorEmailCode("");
+      setTwoFactorRecoveryCode("");
+      setTwoFactorModalOpen(false);
+      setTwoFactorModalMode("manage");
+      setTwoFactorChallengeMethod("totp");
+    } catch {
+      setTwoFactorError(tf.challengeVerifyFailed);
+    } finally {
+      setTwoFactorBusy(false);
+    }
+  }
+
+  async function openPlansCheckoutNewTab(): Promise<boolean> {
+    const built = await buildPlansCheckoutUrl(process.env.NEXT_PUBLIC_PLANS_URL, {
+      appUserId: authUserId,
+      /** Authenticated CTAs must send app_user_id; fail the open if we cannot resolve it. */
+      requireAppUserId: Boolean(accessToken),
+    });
+    if (!built.ok) return false;
+    window.open(built.url, "_blank", "noopener,noreferrer");
+    return true;
+  }
+
+  async function openTokenCenter() {
+    if (!accessToken) {
+      setError(tokenPanel.signInForBalance);
+      return;
+    }
+    setTokenCenterOpen(true);
+    setTokenCenterBusy(true);
+    setTokenCenterError(null);
+    setTokenCenterMessage(null);
+    try {
+      const res = await fetch("/api/account/me", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${accessToken}` },
+        cache: "no-store",
+      });
+      const data = (await res.json().catch(() => null)) as
+        | {
+            id?: string;
+            last_pack?: string;
+            tokens_available?: number;
+            session_limit?: number;
+          }
+        | null;
+      if (!res.ok || !data) {
+        setTokenCenterError(tokenPanel.loadError);
+        return;
+      }
+      if (typeof data.last_pack === "string") setTier(data.last_pack as Tier);
+      if (typeof data.tokens_available === "number") setTokenBalance(data.tokens_available);
+      if (typeof data.session_limit === "number") {
+        setAccountSessionLimit(data.session_limit);
+        if (authUserId) writeCachedAccountSessionLimit(authUserId, data.session_limit);
+      }
+      if (typeof data.tokens_available === "number" && data.tokens_available <= 0) {
+        if (data.last_pack === "free") {
+          setTokenCenterMessage(tokenPanel.messageFreeDepleted);
+        } else {
+          setTokenCenterMessage(tokenPanel.messageNoActivePurchase);
+        }
+      }
+    } catch {
+      setTokenCenterError(tokenPanel.loadError);
+    } finally {
+      setTokenCenterBusy(false);
     }
   }
 
@@ -1736,31 +2814,66 @@ export default function HomePage() {
       setActiveSessionLocalId(created.localId);
       return;
     }
-    if (threadLimitReached) {
+    if (threadLimitReachedUi) {
+      if (threadLimitBannerDismissed) {
+        setError(tokenPanel.consultThreadLimit);
+      }
       return;
     }
     const questionForRequest = question.trim();
-    if (oracleMode === "oracle_bones" && !questionForRequest) {
-      setError("Escribe el cargo positivo (una afirmación clara) para consultar los huesos.");
+    if (!questionForRequest) {
+      setError(
+        oracleMode === "oracle_bones"
+          ? "Escribe el cargo positivo (una afirmación clara) para consultar los huesos."
+          : "Escribe una consulta antes de enviar.",
+      );
       return;
     }
     if (!accessToken) {
       setAuthContinueOpen(true);
       return;
     }
+    if (twoFactorEnabled && !secondFactorVerified) {
+      setTwoFactorSetupOpen(false);
+      setTwoFactorQrDataUrl(null);
+      setTwoFactorRecoveryCodes([]);
+      setTwoFactorCode("");
+      setTwoFactorEmailCode("");
+      setTwoFactorRecoveryCode("");
+      setTwoFactorEmailSent(false);
+      setTwoFactorChallengeFailures(0);
+      setTwoFactorRecoveryAssistMode("hidden");
+      setTwoFactorChallengeMethod(preferredTwoFactorMethod);
+      setTwoFactorInfo(null);
+      setTwoFactorError(null);
+      setTwoFactorModalMode("challenge");
+      setTwoFactorModalOpen(true);
+      setError(tf.verify2faToContinue);
+      return;
+    }
     setLoading(true);
     setError(null);
     setCreditsNotice(null);
     setPendingUserQuestion(questionForRequest || null);
+    setBoneRitualResult(null);
+    setRitualLines(null);
+    setRitualRevealTick(0);
+    setRitualAwaitingTick(0);
+    setRitualStatusPhase("question");
+    setRitualFinale(false);
+    setRitualDebugCastVector(null);
+    setRitualDebugFinalVector(null);
+    setLastRitualDebugSnapshot(null);
     setQuestion("");
-    const showRitualAnimation =
-      (oracleMode === "iching" && responseMode !== "directo") ||
-      (oracleMode === "oracle_bones" && responseMode !== "directo");
+    requestAnimationFrame(() => resizeQuestionInput());
+    ritualDebugStartMsRef.current = Date.now();
+    logRitualTrace("submit:start", {
+      oracleMode,
+      questionLength: questionForRequest.length,
+    });
+    const showRitualAnimation = true;
     setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
     let ok = false;
-    const ticker = showRitualAnimation
-      ? window.setInterval(() => setCoinTick((t0) => t0 + 1), 140)
-      : null;
     try {
       let sessionIdForRequest = activeSession.sessionId;
       if (!isPersistableUuid(sessionIdForRequest)) {
@@ -1774,13 +2887,14 @@ export default function HomePage() {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          question: questionForRequest || "Silent consultation",
+          question: questionForRequest,
           language: detectInputLanguage(questionForRequest, locale),
+          responseMode: showRitualAnimation && oracleMode === "iching" ? "stream_ritual" : "ritual",
           sessionId: sessionIdForRequest,
           sessionTitle: activeSession.title,
           isDeepening: activeThread.length > 0,
-          responseMode,
           oracleMode,
+          displayName: displayName ?? undefined,
           oracleBones:
             oracleMode === "oracle_bones"
               ? {
@@ -1812,7 +2926,6 @@ export default function HomePage() {
           })),
         }),
       });
-      const rawText = await res.text();
       let data: ConsultResponse & {
         error?: string;
         code?: string;
@@ -1820,20 +2933,139 @@ export default function HomePage() {
         message?: string;
         tier?: string;
         creditsLimit?: number;
-        cycleEndsAt?: string | null;
+        creditsReason?: string | null;
       };
-      try {
-        if (!rawText.trim()) {
-          throw new SyntaxError("empty body");
+      const contentType = (res.headers.get("content-type") ?? "").toLowerCase();
+      logRitualTrace("response:headers", { contentType, status: res.status });
+      const runIChingRitualReveal = async (linesPayload: ApiLine[]) => {
+        const ordered = [...linesPayload].sort((a, b) => a.position - b.position);
+        const tickDelayMs = ichingRitualTickDelayMs();
+        logRitualTrace("reveal:start", {
+          orderedPositions: ordered.map((line) => line.position),
+          tickDelayMs,
+        });
+        setRitualLines(ordered);
+        setRitualRevealTick(0);
+        setRitualAwaitingTick(0);
+        setRitualStatusPhase("shape");
+        setRitualFinale(false);
+        for (let t = 1; t <= 12; t += 1) {
+          setRitualRevealTick(t);
+          logRitualTrace("reveal:tick", { tick: t });
+          await new Promise((r) => window.setTimeout(r, tickDelayMs));
         }
-        data = JSON.parse(rawText) as ConsultResponse & { error?: string; message?: string };
-      } catch {
-        setError(
-          res.ok
-            ? "Respuesta del servidor inválida."
-            : `Error del servidor (${res.status}). Inténtalo de nuevo en unos minutos.`,
-        );
-        return;
+        setRitualStatusPhase("seal");
+        setRitualFinale(true);
+        logRitualTrace("reveal:finale");
+        await new Promise((r) => window.setTimeout(r, 900));
+        await new Promise((r) => window.setTimeout(r, 1100));
+        logRitualTrace("reveal:end");
+      };
+      if (contentType.includes("text/event-stream")) {
+        if (!res.body) {
+          setError("Respuesta del servidor inválida.");
+          return;
+        }
+        const decoder = new TextDecoder();
+        const reader = res.body.getReader();
+        let buffer = "";
+        let finalPayload: (ConsultResponse & { error?: string; message?: string }) | null = null;
+        let streamErrored = false;
+        let revealStarted = false;
+        let revealPromise: Promise<void> | null = null;
+        let castVectorFromStream: Array<6 | 7 | 8 | 9> | null = null;
+
+        const startLineReveal = (linesPayload: ApiLine[]) => {
+          if (revealStarted) return;
+          revealStarted = true;
+          castVectorFromStream = apiLinesToVector(linesPayload);
+          setRitualDebugCastVector(castVectorFromStream);
+          revealPromise = runIChingRitualReveal(linesPayload);
+        };
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const chunks = buffer.split("\n\n");
+          buffer = chunks.pop() ?? "";
+          for (const chunk of chunks) {
+            const lines = chunk
+              .split("\n")
+              .map((line) => line.trimEnd())
+              .filter(Boolean);
+            let eventName = "message";
+            const dataLines: string[] = [];
+            for (const line of lines) {
+              if (line.startsWith("event:")) {
+                eventName = line.slice("event:".length).trim();
+              } else if (line.startsWith("data:")) {
+                dataLines.push(line.slice("data:".length).trimStart());
+              }
+            }
+            if (!dataLines.length) continue;
+            let payload: unknown;
+            try {
+              payload = JSON.parse(dataLines.join("\n"));
+            } catch {
+              continue;
+            }
+            if (eventName === "cast_ready") {
+              logRitualTrace("sse:event", { eventName });
+              const castPayload = payload as { lines?: ApiLine[] };
+              if (Array.isArray(castPayload.lines) && castPayload.lines.length === 6) {
+                startLineReveal(castPayload.lines);
+              }
+            } else if (eventName === "final_ready") {
+              logRitualTrace("sse:event", { eventName });
+              finalPayload = payload as ConsultResponse & { error?: string; message?: string };
+            } else if (eventName === "error") {
+              logRitualTrace("sse:event", { eventName });
+              streamErrored = true;
+              const err = payload as { message?: string };
+              setError(err.message || "No se pudo completar la consulta.");
+            }
+          }
+        }
+        if (streamErrored || !finalPayload) {
+          if (!streamErrored) setError("Respuesta del servidor inválida.");
+          return;
+        }
+        if (revealPromise) {
+          await revealPromise;
+        }
+        data = finalPayload;
+        if (Array.isArray(finalPayload.lines) && finalPayload.lines.length === 6) {
+          const finalVec = apiLinesToVector(finalPayload.lines);
+          setRitualDebugFinalVector(finalVec);
+          const castBaseForSnapshot = castVectorFromStream ?? ritualDebugCastVector ?? finalVec;
+          const castTransformed = transformLineVector(castBaseForSnapshot);
+          const finalTransformed = transformLineVector(finalVec);
+          setLastRitualDebugSnapshot({
+            castBase: castBaseForSnapshot,
+            finalBase: finalVec,
+            castTransformed,
+            finalTransformed,
+            match: castTransformed.join(",") === finalTransformed.join(","),
+            mutationRule: finalPayload.mutationRule,
+            transformedHexagram: finalPayload.transformedHexagram ?? null,
+          });
+        }
+      } else {
+        const rawText = await res.text();
+        try {
+          if (!rawText.trim()) {
+            throw new SyntaxError("empty body");
+          }
+          data = JSON.parse(rawText) as ConsultResponse & { error?: string; message?: string };
+        } catch {
+          setError(
+            res.ok
+              ? "Respuesta del servidor inválida."
+              : `Error del servidor (${res.status}). Inténtalo de nuevo en unos minutos.`,
+          );
+          return;
+        }
       }
       if (!res.ok) {
         if (res.status === 401) {
@@ -1841,49 +3073,78 @@ export default function HomePage() {
           void signOut();
           return;
         }
-        if (res.status === 402 && data.error === "credits_exhausted") {
-          const tiers: BillingTier[] = ["free", "seeker", "practitioner", "master", "oracle"];
-          const t = tiers.includes(data.tier as BillingTier) ? (data.tier as BillingTier) : "free";
-          const lim = typeof data.creditsLimit === "number" ? data.creditsLimit : 2;
+        if (res.status === 429 && data.error === "session_limit") {
+          setError(tokenPanel.consultThreadLimit);
+          return;
+        }
+        if (res.status === 402 && data.error === "no_tokens") {
+          setTokenBalance(0);
           setCreditsNotice({
-            tier: t,
-            limit: lim,
-            cycleEndsAt: typeof data.cycleEndsAt === "string" ? data.cycleEndsAt : null,
+            tier: tierToBillingTierCopy(tier),
+            reason: "credits_depleted",
           });
+          setError(tokenPanel.noTokensDepleted);
           return;
         }
         if (res.status === 403 && (data.error === "two_factor_required" || data.action === "setup_2fa")) {
           setConsultPanelOpen(true);
-          setError(
-            isSpanish
-              ? "Tu cuenta tiene 2FA obligatorio en este entorno. Actívalo en Opciones > Seguridad."
-              : "Your account requires 2FA in this environment. Enable it in Options > Security.",
-          );
+          setError(tf.twoFaRequiredByPolicy);
           return;
         }
-        const detail =
-          typeof data.message === "string" && data.message
-            ? ` ${data.message}`
-            : "";
-        setError(
-          data.error === "consult_failed"
-            ? `No se pudo completar la consulta.${detail || " Si persiste, revisa la configuración del servidor."}`
-            : (data.error ?? `Solicitud fallida (${res.status})`) + detail,
-        );
+        const serverMsg =
+          typeof data.message === "string" && data.message.trim() ? data.message.trim() : undefined;
+        const suffix = serverMsg ? ` ${serverMsg}` : "";
+        if (data.error === "consult_failed") {
+          setError(formatConsultFailedMessage(sessionUi, serverMsg));
+          return;
+        }
+        setError(`${data.error ?? interpolate(sessionUi.requestFailedStatus, { status: res.status })}${suffix}`);
         return;
       }
       await new Promise((r) => window.setTimeout(r, showRitualAnimation ? 900 : 0));
+      if (showRitualAnimation && oracleMode === "oracle_bones" && data.oracleBones) {
+        setBoneRitualResult(data.oracleBones.verdict);
+        await new Promise((r) => window.setTimeout(r, 4050));
+      }
+      if (
+        showRitualAnimation &&
+        oracleMode === "iching" &&
+        !contentType.includes("text/event-stream") &&
+        Array.isArray(data.lines) &&
+        data.lines.length === 6
+      ) {
+        const vec = apiLinesToVector(data.lines);
+        setRitualDebugCastVector(vec);
+        setRitualDebugFinalVector(vec);
+        const transformed = transformLineVector(vec);
+        setLastRitualDebugSnapshot({
+          castBase: vec,
+          finalBase: vec,
+          castTransformed: transformed,
+          finalTransformed: transformed,
+          match: true,
+          mutationRule: data.mutationRule,
+          transformedHexagram: data.transformedHexagram ?? null,
+        });
+        await runIChingRitualReveal(data.lines);
+      }
       const item: ConsultationItem = {
         ...data,
         oracleType: data.oracleType ?? "iching",
         question:
           data.oracleType === "oracle_bones" && data.oracleBones?.positiveCharge
             ? data.oracleBones.positiveCharge
-            : questionForRequest || "Silent consultation",
+            : questionForRequest,
         createdAt: Date.now(),
       };
-      updateActiveSession((current) => ({
+      updateActiveSession((current) => {
+        const nextThreadMax =
+          typeof data.sessionMaxDepth === "number" && Number.isFinite(data.sessionMaxDepth) && data.sessionMaxDepth > 0
+            ? data.sessionMaxDepth
+            : current.threadMaxDepth;
+        return {
         ...current,
+        threadMaxDepth: nextThreadMax ?? current.threadMaxDepth,
         thread: [...current.thread, item],
         messageCount: Math.max(current.messageCount, current.thread.length + 1),
         sessionId: data.sessionId,
@@ -1893,8 +3154,32 @@ export default function HomePage() {
           : current.title,
         updatedAt: item.createdAt ?? Date.now(),
         firstConsultationAt: current.firstConsultationAt ?? item.createdAt ?? Date.now(),
-      }));
+        };
+      });
+      if (typeof item.consultationId === "string" && item.consultationId.length > 0) {
+        setRevealConsultationId(item.consultationId);
+      }
       setPendingUserQuestion(null);
+      if (typeof data.remainingCredits === "number" && Number.isFinite(data.remainingCredits)) {
+        setTokenBalance(data.remainingCredits);
+      } else {
+        // Fallback refresh for cases where response omits balance.
+        window.dispatchEvent(new Event("iching:account-refresh"));
+      }
+      // Hard refresh from /api/account/me to guarantee UI/DB sync after consume_token.
+      if (accessToken) {
+        void fetch("/api/account/me", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          cache: "no-store",
+        })
+          .then((r) => (r.ok ? r.json() : null))
+          .then((me: { tokens_available?: number } | null) => {
+            if (typeof me?.tokens_available === "number" && Number.isFinite(me.tokens_available)) {
+              setTokenBalance(me.tokens_available);
+            }
+          })
+          .catch(() => {});
+      }
       const today = new Date().toISOString().slice(0, 10);
       setDailyCount((prev) => {
         const next = prev + 1;
@@ -1902,15 +3187,17 @@ export default function HomePage() {
         return next;
       });
       setPhase("reading");
+      logRitualTrace("submit:complete");
       setConsultPanelOpen(false);
       ok = true;
     } catch (e) {
+      logRitualTrace("submit:error", { error: e instanceof Error ? e.message : String(e) });
       setError(e instanceof Error ? e.message : "Error");
       setPendingUserQuestion(null);
     } finally {
-      if (ticker !== null) window.clearInterval(ticker);
       setLoading(false);
       if (!ok) {
+        setRitualStatusPhase("question");
         setPhase("idle");
         setPendingUserQuestion(null);
       }
@@ -1918,30 +3205,158 @@ export default function HomePage() {
   }
 
   const creditsExhaustedCopy = creditsNotice
-    ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.limit, creditsNotice.cycleEndsAt)
+    ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.reason)
     : null;
 
+  const onboardingUi = getOnboardingUiMessages(locale);
+  const onboardingNameValid = onboardingInput.trim().length > 0;
+
+  async function saveDisplayName() {
+    if (!onboardingNameValid || !accessToken) return;
+    setOnboardingSaving(true);
+    try {
+      const res = await fetch("/api/account/display-name", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ display_name: onboardingInput.trim() }),
+      });
+      if (res.ok) {
+        setDisplayName(onboardingInput.trim());
+        setOnboardingOpen(false);
+      }
+    } finally {
+      setOnboardingSaving(false);
+    }
+  }
+
   const localeSelector = (
-    <label className="locale-control" htmlFor="ui-locale-select">
-      <span>{ui.language}</span>
-      <select
-        id="ui-locale-select"
-        className="locale-select"
-        value={locale}
-        onChange={(e) => setLocale(e.target.value as AppLocale)}
-      >
-        {SUPPORTED_LOCALES.map((code) => (
-          <option key={code} value={code}>
-            {LANGUAGE_LABELS[code]}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div className="locale-control">
+      <AuthLocalePicker
+        locale={locale}
+        onChange={setLocale}
+        order={LOCALE_SELECT_ORDER}
+        labels={LANGUAGE_LABELS}
+        ariaLabel={ui.language}
+      />
+    </div>
   );
 
   return (
     <OracleShell title={t.appTitle} variant="chat">
       <div className="oracle-chat-app">
+        <AmbientParticles />
+        {!playPromoDismissed ? (
+          <div className="oracle-play-promo-strip" role="region" aria-label={presentation.regionAria}>
+            <div className="oracle-play-promo-strip__inner">
+              {playStoreUrl ? (
+                <a
+                  className="oracle-play-promo-strip__main"
+                  href={playStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={presentation.playCtaAria}
+                >
+                  <span className="oracle-play-promo-strip__glyph" aria-hidden>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" focusable="false">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                  <span className="oracle-play-promo-strip__titles">
+                    <span className="oracle-play-promo-strip__title">{presentation.playBadgeTitle}</span>
+                    <span className="oracle-play-promo-strip__subtitle">{presentation.playBadgeSubtitle}</span>
+                  </span>
+                  <img
+                    className="oracle-play-promo-strip__badge"
+                    src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                    alt=""
+                    width={135}
+                    height={40}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="oracle-play-promo-strip__cta-label">{presentation.playInstall}</span>
+                </a>
+              ) : (
+                <div className="oracle-play-promo-strip__main oracle-play-promo-strip__main--soon" role="status">
+                  <span className="oracle-play-promo-strip__glyph" aria-hidden>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" focusable="false">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                  <span className="oracle-play-promo-strip__titles">
+                    <span className="oracle-play-promo-strip__title">{presentation.playBadgeTitle}</span>
+                    <span className="oracle-play-promo-strip__subtitle">{presentation.playSoon}</span>
+                  </span>
+                </div>
+              )}
+              <button
+                type="button"
+                className="oracle-play-promo-strip__dismiss"
+                aria-label={presentation.playStripDismissAria}
+                data-testid="play-promo-strip-dismiss"
+                onClick={dismissPlayPromoStrip}
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+          </div>
+        ) : null}
+        {onboardingOpen && (
+          <div className="onboarding-backdrop" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+            <div className="onboarding-card" onClick={(e) => e.stopPropagation()}>
+              {onboardingStep === "enter" ? (
+                <>
+                  <h2 id="onboarding-title" className="onboarding-title">{onboardingUi.title}</h2>
+                  <p className="onboarding-subtitle">{onboardingUi.subtitle}</p>
+                  <input
+                    className="onboarding-input"
+                    type="text"
+                    placeholder={onboardingUi.placeholder}
+                    value={onboardingInput}
+                    maxLength={60}
+                    autoFocus
+                    onChange={(e) => setOnboardingInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && onboardingNameValid) setOnboardingStep("confirm");
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className={`composer-reading-pill${onboardingNameValid ? " is-active" : ""} onboarding-btn`}
+                    disabled={!onboardingNameValid}
+                    onClick={() => { if (onboardingNameValid) setOnboardingStep("confirm"); }}
+                  >
+                    {onboardingUi.button}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h2 id="onboarding-title" className="onboarding-title">{onboardingUi.confirmTitle}</h2>
+                  <p className="onboarding-name-display">{onboardingInput.trim()}</p>
+                  <p className="onboarding-subtitle">{onboardingUi.confirmSubtitle}</p>
+                  <div className="onboarding-confirm-actions">
+                    <button
+                      type="button"
+                      className="composer-reading-pill is-active onboarding-btn"
+                      disabled={onboardingSaving}
+                      onClick={() => void saveDisplayName()}
+                    >
+                      {onboardingUi.confirmYes}
+                    </button>
+                    <button
+                      type="button"
+                      className="onboarding-edit-btn"
+                      disabled={onboardingSaving}
+                      onClick={() => setOnboardingStep("enter")}
+                    >
+                      {onboardingUi.confirmEdit}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
         {authContinueOpen ? (
           <div className="auth-soft-backdrop" role="presentation" onClick={() => setAuthContinueOpen(false)}>
             <div
@@ -1983,7 +3398,7 @@ export default function HomePage() {
 
         <aside
           className={`chat-drawer ${chatsOpen ? "open" : ""}`}
-          aria-hidden={!chatsOpen}
+          inert={!chatsOpen}
           id="chat-drawer"
         >
           <div className="chat-drawer-header">
@@ -2013,31 +3428,39 @@ export default function HomePage() {
                 <span className="sidebar-stat-key">{drawerText.consultationsToday}</span>
               </div>
               <div className="sidebar-stat-card">
-                <span className="sidebar-stat-value">{sessionsListed.length}</span>
+                <span className="sidebar-stat-value">{visibleSessionsListed.length}</span>
                 <span className="sidebar-stat-key">{drawerText.chatsWithMessages}</span>
               </div>
             </div>
-            {loading ? (
-              <p className="sidebar-stats-hint">{drawerText.loading}</p>
+            {loading || historyLoading ? (
+              <p className="sidebar-stats-hint">{drawerText.loadingChats}</p>
+            ) : historyLoadError ? (
+              <p className="sidebar-stats-hint">{historyLoadError}</p>
             ) : (
               <p className="sidebar-stats-hint">{drawerText.onlyThreads}</p>
             )}
           </div>
           <div className="chat-drawer-list">
-            {sessionsListed.length === 0 ? (
+            {visibleSessionsListed.length === 0 ? (
               <p className="chat-drawer-empty">{drawerText.noSaved}</p>
             ) : null}
-            {[...sessionsListed]
+            {[...visibleSessionsListed]
               .sort((a, b) => b.updatedAt - a.updatedAt)
-              .map((session) => (
+              .map((session) => {
+                const isDeleting = pendingDeletedSessionLocalIds.includes(session.localId);
+                return (
                 <div
                   key={session.localId}
-                  className={`chat-session-item ${session.localId === activeSession?.localId ? "active" : ""}`}
+                  className={`chat-session-item ${session.localId === activeSession?.localId ? "active" : ""} ${
+                    isDeleting ? "is-deleting" : ""
+                  }`}
                 >
                   <button
                     type="button"
                     className="chat-session-main-btn"
+                    disabled={isDeleting}
                     onClick={() => {
+                      pinnedLocalSessionIdRef.current = null;
                       setActiveSessionLocalId(session.localId);
                       setError(null);
                       setChatsOpen(false);
@@ -2048,21 +3471,39 @@ export default function HomePage() {
                   >
                     <span className="chat-session-title">{session.title}</span>
                     <span className="chat-session-meta">
-                      <span>
-                        {session.messageCount} {drawerText.messages}
-                      </span>
-                      <span aria-hidden="true">·</span>
-                      <span className="chat-session-time">
-                      {session.firstConsultationAt
-                        ? new Date(session.firstConsultationAt).toLocaleString(locale, {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : ""}
-                    </span>
+                      {isDeleting ? (
+                        <>
+                          <span>{drawerText.deletingConversation}</span>
+                        </>
+                      ) : null}
+                      {loadingSessionLocalId === session.localId ? (
+                        <>
+                          {isDeleting ? <span aria-hidden="true">·</span> : null}
+                          <span className="chat-session-loading">
+                            <span className="chat-session-loading-spinner" aria-hidden="true" />
+                            <span>{drawerText.loadingConversation}</span>
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          {isDeleting ? <span aria-hidden="true">·</span> : null}
+                          <span>
+                            {session.messageCount} {drawerText.messages}
+                          </span>
+                          <span aria-hidden="true">·</span>
+                          <span className="chat-session-time">
+                            {session.firstConsultationAt
+                              ? new Date(session.firstConsultationAt).toLocaleString(locale, {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })
+                              : ""}
+                          </span>
+                        </>
+                      )}
                     </span>
                   </button>
                   <button
@@ -2070,6 +3511,7 @@ export default function HomePage() {
                     className="chat-session-delete"
                     aria-label={drawerText.deleteConversation}
                     title={drawerText.deleteConversation}
+                    disabled={isDeleting}
                     onClick={() => void removeSession(session)}
                   >
                     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
@@ -2080,16 +3522,17 @@ export default function HomePage() {
                     </svg>
                   </button>
                 </div>
-              ))}
+              );
+              })}
           </div>
         </aside>
 
-        <div className="chat-surface">
+        <div className={`chat-surface${showAuthExploreCap ? " chat-surface--explore-cap" : ""}`}>
         {authReady && supabaseConfigError ? (
           <div className="auth-config-banner" role="alert">
             <span>
-              {isSpanish ? "Falta configuración del cliente:" : "Missing client configuration:"}{" "}
-              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> {isSpanish ? "y" : "and"}{" "}
+              {sessionUi.missingClientConfig}{" "}
+              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> {sessionUi.missingClientConfigAnd}{" "}
               <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
             </span>
           </div>
@@ -2110,90 +3553,18 @@ export default function HomePage() {
           </div>
         ) : null}
         {authReady && !supabaseConfigError && accessToken && authEmail ? (
-          <div
-            className="auth-explore-strip auth-explore-strip--session"
-            style={{
-              display: "grid",
-              position: "relative",
-              gridTemplateColumns: "1fr",
-              alignItems: "center",
-              minHeight: "2.55rem",
-              paddingTop: "0.16rem",
-              paddingBottom: "0.24rem",
-              paddingInline: "1rem",
-              overflow: "hidden",
-            }}
-          >
-            <span
-              className="auth-explore-strip-tier"
-              aria-label={`${ui.plan} ${tier}`}
-              style={{
-                position: "absolute",
-                left: "0.72rem",
-                top: "50%",
-                transform: "translateY(-50%)",
-                height: "2.04rem",
-                display: "inline-flex",
-                alignItems: "center",
-                fontSize: "0.76rem",
-              }}
-            >
-              {ui.plan}: {tier}
-            </span>
-            <div
-              style={{
-                position: "absolute",
-                left: "7.2rem",
-                top: "50%",
-                transform: "translateY(-50%)",
-                display: "inline-flex",
-                alignItems: "center",
-              }}
-            >
-              {localeSelector}
-            </div>
-            <span
-              className="auth-explore-strip-email"
-              title={authEmail}
-              style={{
-                height: "2.04rem",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: 700,
-                fontSize: "0.79rem",
-                width: "100%",
-                paddingInline: "12rem 5.6rem",
-              }}
-            >
+          <div className="auth-explore-strip auth-explore-strip--session">
+            <div className="auth-explore-strip-session__lead">{localeSelector}</div>
+            <span className="auth-explore-strip-email" title={authEmail}>
               {authEmail}
             </span>
-            <button
-              type="button"
-              className="auth-explore-strip-signout"
-              onClick={() => void signOut()}
-              style={{
-                position: "absolute",
-                right: "0.72rem",
-                top: "calc(50% - 12px)",
-                transform: "translateY(-50%)",
-                height: "2.04rem",
-                display: "inline-flex",
-                alignItems: "center",
-                lineHeight: 1,
-                padding: "0 0.62rem",
-                fontSize: "0.76rem",
-              }}
-            >
+            <button type="button" className="auth-explore-strip-signout" onClick={() => void signOut()}>
               {ui.signOut}
             </button>
           </div>
         ) : null}
         <header className="chat-app-bar oracle-intro" style={{ marginBottom: 0, paddingBottom: 0 }}>
-          <div
-            className="chat-app-bar-row chat-app-bar-row--top"
-            style={{ minHeight: "2.45rem", paddingTop: "0.3rem", paddingBottom: "0.2rem" }}
-          >
+          <div className="chat-app-bar-row chat-app-bar-row--top">
             <div className="chat-bar-lead">
               <button
                 type="button"
@@ -2211,9 +3582,8 @@ export default function HomePage() {
                 src="/brand/logo.png"
                 alt="The Original I Ching App — 真正的易经"
                 className="chat-header-logo"
-                width={268}
-                height={78}
                 decoding="async"
+                fetchPriority="high"
               />
             </div>
             <div className="chat-bar-trail chat-bar-trail--top">
@@ -2229,7 +3599,7 @@ export default function HomePage() {
               paddingLeft: 0,
               paddingRight: 0,
               marginBottom: 0,
-              gap: "0.02rem",
+              gap: 0,
               background: "transparent",
               width: "100%",
               marginLeft: 0,
@@ -2250,6 +3620,8 @@ export default function HomePage() {
                   "linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, var(--secondary-bg)) 0%, color-mix(in srgb, var(--accent) 10%, var(--secondary-bg)) 100%)",
                 border: "1px solid color-mix(in srgb, var(--accent) 68%, var(--input-border))",
                 color: "var(--fg)",
+                paddingTop: "0.04rem",
+                paddingBottom: "0.04rem",
                 paddingLeft: "calc((100vw - 100%) / 2 + 0.6rem)",
                 paddingRight: "calc((100vw - 100%) / 2 + 0.6rem)",
                 boxSizing: "border-box",
@@ -2276,9 +3648,6 @@ export default function HomePage() {
                   ? ui.iChingTagline
                   : ui.bonesTagline}
               </p>
-              <span className="oracle-reading-pill" aria-label={`${ui.readMode} ${responseModeLabel(responseMode, locale)}`}>
-                {ui.mode}: {responseModeLabel(responseMode, locale)}
-              </span>
             </div>
           </div>
         </header>
@@ -2286,7 +3655,9 @@ export default function HomePage() {
         <div className="chat-room">
           <section className="chat-history" ref={historyRef} style={{ paddingTop: 0, marginTop: 0 }}>
             {activeThread.length === 0 ? (
-              <p className="chat-empty-line">{emptyThreadInvite}</p>
+              <p className={`chat-empty-line ${historyLoading ? "chat-empty-line--loading" : ""}`}>
+                {historyLoading ? drawerText.loadingConversation : emptyThreadInvite}
+              </p>
             ) : null}
             {activeThread.map((entry) => (
               <div
@@ -2299,7 +3670,11 @@ export default function HomePage() {
                 </div>
                 <div className="chat-bubble chat-assistant">
                   <div className="interpretation-stack" data-testid="interpretation-text">
-                    <InterpretationBody text={entry.interpretation} />
+                    <InterpretationBody
+                      text={entry.interpretation}
+                      reveal={revealConsultationId === entry.consultationId}
+                      onRevealComplete={handleInterpretationRevealComplete}
+                    />
                   </div>
                   {entry.oracleType !== "oracle_bones" ? (
                     <div className="reading-record-visual-row">
@@ -2331,7 +3706,7 @@ export default function HomePage() {
                         <p className="meta-line">
                           {runtimeText.medium}: {entry.oracleBones.medium === "turtle" ? runtimeText.turtle : runtimeText.ox}
                           {entry.oracleBones.ambiguousPasses > 0
-                            ? ` · ${isSpanish ? "Lecturas ambiguas previas" : "Previous ambiguous readings"}: ${entry.oracleBones.ambiguousPasses}`
+                            ? ` · ${chrome.ambiguousReadingsLabel}: ${entry.oracleBones.ambiguousPasses}`
                             : ""}
                         </p>
                         <p className="meta-line">
@@ -2349,14 +3724,6 @@ export default function HomePage() {
                             openLabel={openImageLabel}
                             imageAlt={symbolicImageAlt}
                           />
-                          {entry.imageUrl.startsWith("data:image/svg+xml") ? (
-                            <div className="bones-symbol-overlay" aria-hidden="true">
-                              <CrackPatternGraphic
-                                patternId={entry.oracleBones.patternId}
-                                variant="overlay"
-                              />
-                            </div>
-                          ) : null}
                         </div>
                         <div className="crack-visual-wrap crack-visual-wrap--summary">
                           <span
@@ -2401,47 +3768,172 @@ export default function HomePage() {
             ) : null}
 
             {phase === "bones" ? (
-              <section className="coins-stage" data-testid="bone-ritual">
-                <p className="coins-title">{runtimeText.ritualBones}</p>
-                <p className="meta-line" style={{ textAlign: "center", maxWidth: "22rem", margin: "0 auto" }}>
-                  {runtimeText.ritualBonesHint}
-                </p>
+              <section className="coins-stage coins-stage--bones" data-testid="bone-ritual">
                 <div className="crack-visual-wrap">
-                  <CrackPatternGraphic patternId={((coinTick % 4) + 1) as number} />
+                  <BoneRitualAnimation
+                    isProcessing={loading && boneRitualResult === null}
+                    oracleResult={boneRitualResult}
+                    verdictText={boneRitualResult ? verdictLabel(boneRitualResult, locale) : null}
+                  />
                 </div>
               </section>
             ) : null}
 
             {phase === "coins" ? (
-              <section className="coins-stage" data-testid="coin-throw">
-                <p className="coins-title">{runtimeText.ritualCoins}</p>
-                <div className="ritual-progress">
-                  {Array.from({ length: 6 }, (_, i) => {
-                    const line = i + 1;
-                    const active = line === activeRitualLine;
-                    const done = line < activeRitualLine;
-                    return (
-                      <div key={line} className={`ritual-line ${active ? "active" : ""} ${done ? "done" : ""}`}>
-                        <span>{runtimeText.line} {line}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="coins-grid">
-                  {shuffledCoins.map((coin) => (
-                    <div
-                      key={coin.id}
-                      className={`coin ${coin.flip ? "coin-heads" : "coin-tails"} coin-tone-${((coin.id - 1) % 5) + 1}`}
-                      style={{ animationDelay: `${coin.delay}ms` }}
-                    >
-                      <span className="yin-yang" aria-hidden="true">
-                        <span className="dot dot-light" />
-                        <span className="dot dot-dark" />
-                      </span>
-                    </div>
+              <section
+                ref={ritualCoinsStageRef}
+                className="coins-stage ritual-coins-stage"
+                data-testid="coin-throw"
+              >
+                <div className="ritual-stage-particles" aria-hidden="true">
+                  {ritualParticles.map((particle) => (
+                    <span
+                      key={particle.id}
+                      className="ritual-stage-particle"
+                      style={{
+                        left: particle.left,
+                        top: particle.top,
+                        width: particle.size,
+                        height: particle.size,
+                        animationDuration: particle.duration,
+                        animationDelay: `-${particle.delay}`,
+                      }}
+                    />
                   ))}
                 </div>
+                <div className="ritual-stage-content">
+                  <p className="coins-title ritual-status-line">
+                    <span>{ritualStatusLine}</span>
+                    <span className="ritual-loading-dots" aria-hidden="true">
+                      <span />
+                      <span />
+                      <span />
+                    </span>
+                  </p>
+                  {!ritualFinale ? (
+                    <div
+                      ref={ritualLinesGridRef}
+                      className={`ritual-lines-grid ${ritualLines === null ? "is-awaiting-cast" : ""}`}
+                    >
+                      {ritualRenderOrder.map((lineNum, i) => {
+                        const isAwaitingCast = ritualLines === null;
+                        const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
+                        const tick = ritualRevealTick;
+                        const sourceVisible = !isAwaitingCast && tick >= lineNum * 2 - 1;
+                        const transformedVisible = !isAwaitingCast && tick >= lineNum * 2;
+                        const sourceYang = lineData ? lineData.value === 7 || lineData.value === 9 : lineNum % 2 === 0;
+                        const transformedValue =
+                          lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;
+                        const transformedYang = transformedValue ? transformedValue === 7 : lineNum % 2 !== 0;
+                        const isChanging = !isAwaitingCast && Boolean(lineData?.isChanging);
+                        return (
+                          <div key={lineNum} className="ritual-line-row" aria-hidden="true">
+                            <div
+                              className={`ritual-line-slot ritual-line-slot--source ${sourceVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""} ${isAwaitingCast ? "is-placeholder" : ""}`}
+                            >
+                              {sourceVisible ? (sourceYang ? (
+                                <span className="ritual-hex-line ritual-hex-line--yang" />
+                              ) : (
+                                <span className="ritual-hex-line ritual-hex-line--yin">
+                                  <span />
+                                  <span />
+                                </span>
+                              )) : null}
+                            </div>
+                            <div className={`ritual-arrow-slot ${sourceVisible ? "is-visible" : ""}`}>
+                              <span className="ritual-arrow">→</span>
+                            </div>
+                            <div
+                              className={`ritual-line-slot ritual-line-slot--transformed ${transformedVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""} ${isAwaitingCast ? "is-placeholder" : ""}`}
+                              style={{ transitionDelay: `${i * 60}ms` }}
+                            >
+                              {transformedVisible ? (transformedYang ? (
+                                <span className="ritual-hex-line ritual-hex-line--yang" />
+                              ) : (
+                                <span className="ritual-hex-line ritual-hex-line--yin">
+                                  <span />
+                                  <span />
+                                </span>
+                              )) : null}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="ritual-final-focus" aria-hidden="true">
+                      {ritualRenderOrder.map((lineNum, i) => {
+                        const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
+                        const transformedValue = lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;
+                        const transformedYang = transformedValue ? transformedValue === 7 : true;
+                        const isChanging = Boolean(lineData?.isChanging);
+                        return (
+                          <div
+                            key={`final-${lineNum}`}
+                            className={`ritual-final-line ${isChanging ? "is-changing" : ""}`}
+                            style={{ animationDelay: `${i * 70}ms` }}
+                          >
+                            {transformedYang ? (
+                              <span className="ritual-hex-line ritual-hex-line--yang" />
+                            ) : (
+                              <span className="ritual-hex-line ritual-hex-line--yin">
+                                <span />
+                                <span />
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  {ritualDebugEnabled ? (
+                    <div className="ritual-debug-box">
+                      <p>
+                        cast base: <code>{ritualDebugCastVector ? ritualDebugCastVector.join(",") : "pending"}</code>
+                      </p>
+                      <p>
+                        cast transformed:{" "}
+                        <code>{ritualDebugCastTransformed ? ritualDebugCastTransformed.join(",") : "pending"}</code>
+                      </p>
+                      <p>
+                        final base: <code>{ritualDebugFinalVector ? ritualDebugFinalVector.join(",") : "pending"}</code>
+                      </p>
+                      <p>
+                        final transformed:{" "}
+                        <code>{ritualDebugFinalTransformed ? ritualDebugFinalTransformed.join(",") : "pending"}</code>
+                      </p>
+                      <p>
+                        match ritual/final transformed:{" "}
+                        <strong>{ritualDebugMatch === null ? "pending" : ritualDebugMatch ? "YES" : "NO"}</strong>
+                      </p>
+                    </div>
+                  ) : null}
+                  </div>
               </section>
+            ) : null}
+            {ritualDebugEnabled && phase !== "coins" && lastRitualDebugSnapshot ? (
+              <div className="ritual-debug-box ritual-debug-box--persisted">
+                <p><strong>Ritual debug (persisted)</strong></p>
+                <p>
+                  mutationRule: <code>{lastRitualDebugSnapshot.mutationRule ?? "n/a"}</code> · transformedHex:{" "}
+                  <code>{lastRitualDebugSnapshot.transformedHexagram ?? "n/a"}</code>
+                </p>
+                <p>
+                  cast base: <code>{lastRitualDebugSnapshot.castBase.join(",")}</code>
+                </p>
+                <p>
+                  cast transformed: <code>{lastRitualDebugSnapshot.castTransformed.join(",")}</code>
+                </p>
+                <p>
+                  final base: <code>{lastRitualDebugSnapshot.finalBase.join(",")}</code>
+                </p>
+                <p>
+                  final transformed: <code>{lastRitualDebugSnapshot.finalTransformed.join(",")}</code>
+                </p>
+                <p>
+                  match ritual/final transformed: <strong>{lastRitualDebugSnapshot.match ? "YES" : "NO"}</strong>
+                </p>
+              </div>
             ) : null}
 
             {creditsExhaustedCopy ? (
@@ -2450,11 +3942,44 @@ export default function HomePage() {
                 <p className="credits-notice-body">{creditsExhaustedCopy.body}</p>
                 <p className="credits-notice-reset">{creditsExhaustedCopy.resetLine}</p>
                 <div className="credits-notice-actions">
-                  <Link href={PLANS_HREF} className="credits-notice-primary">
-                    {creditsExhaustedCopy.primaryCta}
-                  </Link>
+                  <button
+                    type="button"
+                    className="credits-notice-primary"
+                    onClick={() => {
+                      if (creditsExhaustedCopy.primaryCta.action === "sync-billing") {
+                        void openTokenCenter();
+                        setCreditsNotice(null);
+                        return;
+                      }
+                      void (async () => {
+                        const ok = await openPlansCheckoutNewTab();
+                        if (ok) {
+                          setCreditsNotice(null);
+                          return;
+                        }
+                        setError(pricingUi.errorCheckout);
+                      })();
+                    }}
+                  >
+                    {creditsExhaustedCopy.primaryCta.label}
+                  </button>
+                  {creditsExhaustedCopy.secondaryCta ? (
+                    <button
+                      type="button"
+                      className="credits-notice-dismiss"
+                      onClick={() => {
+                        if (creditsExhaustedCopy.secondaryCta?.action === "mailto" && creditsExhaustedCopy.secondaryCta.href) {
+                          window.open(creditsExhaustedCopy.secondaryCta.href, "_blank", "noopener,noreferrer");
+                          return;
+                        }
+                        setCreditsNotice(null);
+                      }}
+                    >
+                      {creditsExhaustedCopy.secondaryCta.label}
+                    </button>
+                  ) : null}
                   <button type="button" className="credits-notice-dismiss" onClick={() => setCreditsNotice(null)}>
-                    Cerrar
+                    {ui.drawerClose}
                   </button>
                 </div>
               </div>
@@ -2467,17 +3992,18 @@ export default function HomePage() {
             <button
               type="button"
               className="composer-backdrop"
-              aria-label="Cerrar panel de consulta"
+              aria-label={chrome.closeConsultBackdropAria}
               onClick={() => setConsultPanelOpen(false)}
             />
           ) : null}
+        </div>
 
-          <footer className={`chat-composer-wa${consultPanelOpen ? " is-expanded" : ""}`}>
+        <footer className={`chat-composer-wa${consultPanelOpen ? " is-expanded" : ""}`}>
             <div className="composer-dock">
               <div
                 id="consult-panel"
                 className={`composer-sheet ${consultPanelOpen ? "is-open" : ""}`}
-                aria-hidden={!consultPanelOpen}
+                inert={!consultPanelOpen}
               >
                 <div className="composer-sheet-inner">
                   <section className="oracle-card composer-card">
@@ -2487,17 +4013,17 @@ export default function HomePage() {
                         type="button"
                         className="composer-panel-close"
                         onClick={() => setConsultPanelOpen(false)}
-                        aria-label="Cerrar panel de consulta"
+                        aria-label={chrome.closeConsultPanelAria}
                       >
-                        Cerrar
+                        {ui.drawerClose}
                       </button>
                     </div>
-                    <div className="composer-oracle-switch" role="group" aria-label="Tipo de consulta">
+                    <div className="composer-oracle-switch" role="group" aria-label={chrome.consultOracleTypeGroupAria}>
                       <div className="composer-oracle-switch-row">
                         <div
                           className="composer-switch-track composer-switch-track--visual"
                           role="tablist"
-                          aria-label="I Ching o huesos de oráculo"
+                          aria-label={chrome.oracleModeTablistAria}
                         >
                           <button
                             type="button"
@@ -2545,207 +4071,710 @@ export default function HomePage() {
                         </p>
                       </div>
                     </div>
-                    <div className="composer-reading-row" role="group" aria-label="Modo de lectura">
-                      <span className="composer-reading-label">{ui.readMode}</span>
-                      <div className="composer-reading-segmented">
-                        {(["directo", "ritual", "profundizar"] as const).map((m) => (
-                          <button
-                            key={m}
-                            type="button"
-                            className={`composer-reading-pill ${responseMode === m ? "is-active" : ""}`}
-                            onClick={() => setResponseMode(m)}
-                            disabled={loading}
+                    {activeThread.length > 0 && result ? (
+                      <>
+                        <hr className="composer-panel-divider" aria-hidden />
+                        <div
+                          className="session-progress session-progress--thread-depth"
+                          role="region"
+                          aria-label={chrome.threadDepthRegionAria}
+                        >
+                          <span>{chrome.threadDepthHeading}</span>
+                          <p className="meta-line tier-hint-line">
+                            {ui.plan}{" "}
+                            <strong>{tierDisplayNode}</strong>
+                            {interpolate(chrome.threadDepthPlanSuffix, { cap: isAdmin ? "∞" : threadDepthCap })}
+                          </p>
+                          <div
+                            className="session-progress-bar session-progress-bar--prominent"
+                            role="progressbar"
+                            aria-valuemin={0}
+                            aria-valuemax={threadDepthCap}
+                            aria-valuenow={result.sessionPosition}
+                            aria-label={interpolate(chrome.threadDepthReadingProgressAria, {
+                              pos: result.sessionPosition,
+                              cap: threadDepthCap,
+                            })}
                           >
-                            {responseModeLabel(m, locale)}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="composer-doc-links">
-                      <Link href="/quickstart">{isSpanish ? "Quickstart (uso)" : "Quickstart (usage)"}</Link>
-                      <Link href="/notes">
-                        {isSpanish ? "Notas y origen de los métodos (I Ching y Huesos)" : "Method notes and origins (I Ching and Bones)"}
-                      </Link>
-                      <Link href="/privacy">{isSpanish ? "Política de Privacidad" : "Privacy Policy"}</Link>
-                      <Link href="/terms">{isSpanish ? "Términos del Servicio" : "Terms of Service"}</Link>
-                    </div>
-                    <div className="session-progress" role="group" aria-label="Gestión de suscripción">
-                      <span>{isSpanish ? "Suscripción" : "Subscription"}</span>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish
-                          ? "Auto-renovación y cancelación se gestionan desde tu portal de suscripción."
-                          : "Auto-renewal and cancellation are managed from your subscription portal."}
+                            <div
+                              className="session-progress-fill"
+                              style={{
+                                width: `${Math.min(100, (result.sessionPosition / threadDepthCap) * 100)}%`,
+                              }}
+                            />
+                          </div>
+                          <small>
+                            {formatThreadDepthStatusLine(
+                              chrome,
+                              threadDepthCanDeepen,
+                              threadDepthCap,
+                              result.sessionPosition,
+                            )}
+                          </small>
+                        </div>
+                      </>
+                    ) : null}
+                    <hr className="composer-panel-divider" aria-hidden />
+                    <div className="session-progress" role="group" aria-label={tokenPanel.ariaTokenGroup}>
+                      <span>{tokenPanel.tokensHeading}</span>
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis">
+                        {tokenPanel.lastPack}{" "}
+                        <strong>{tierDisplayNode}</strong>
+                        {tokenBalance !== null
+                          ? ` · ${tokenPanel.remaining}: ${tokenBalance}`
+                          : ""}
                       </p>
-                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+                      <div className="composer-panel-actions">
                         <button
                           type="button"
-                          className="composer-reading-pill"
-                          onClick={() => void openSubscriptionManagement()}
-                          disabled={manageSubBusy || !accessToken}
+                          className="composer-reading-pill is-active"
+                          onClick={() => void openTokenCenter()}
+                          disabled={tokenCenterBusy || !accessToken}
                         >
-                          {manageSubBusy
-                            ? isSpanish
-                              ? "Abriendo..."
-                              : "Opening..."
-                            : isSpanish
-                              ? "Gestionar suscripción"
-                              : "Manage subscription"}
+                          {tokenCenterBusy ? tokenPanel.loading : tokenPanel.tokenCenter}
                         </button>
                       </div>
-                      {manageSubMessage ? (
-                        <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
-                          {manageSubMessage}
+                      {tokenCenterMessage ? (
+                        <p className="meta-line tier-hint-line tier-hint-line--emphasis" style={{ marginTop: 8 }}>
+                          {tokenCenterMessage}
                         </p>
                       ) : null}
                     </div>
-                    <div className="session-progress" role="group" aria-label="Seguridad de cuenta">
-                      <span>{isSpanish ? "Seguridad (2FA opcional)" : "Security (optional 2FA)"}</span>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Estado:" : "Status:"}{" "}
-                        <strong>{twoFactorEnabled ? (isSpanish ? "Activado" : "Enabled") : (isSpanish ? "Desactivado" : "Disabled")}</strong>
-                        {twoFactorMethod ? `${isSpanish ? " · método " : " · method "}${twoFactorMethod.toUpperCase()}` : ""}
+                    <hr className="composer-panel-divider" aria-hidden />
+                    <div className="session-progress" role="group" aria-label={chrome.securityGroupAria}>
+                      <span>{chrome.securityHeading}</span>
+                      <p className="meta-line tier-hint-line tier-hint-line--emphasis">
+                        {chrome.statusLabel}{" "}
+                        <strong>
+                          {twoFactorEnabled ? chrome.enabled : chrome.disabled}
+                        </strong>
+                        {twoFactorMethod ? `${chrome.methodPrefix}${twoFactorMethod.toUpperCase()}` : ""}
                       </p>
-                      <p className="meta-line tier-hint-line">
-                        {isSpanish ? "Puedes activar verificación con " : "You can enable verification with "}
-                        <strong>Authenticator (TOTP)</strong> {isSpanish ? "o con" : "or with"}{" "}
-                        <strong>{isSpanish ? "código por email" : "email code"}</strong>.
+                      <p className="meta-line tier-hint-line">{chrome.securityConfigureHint}</p>
+                      <div className="composer-panel-actions">
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => {
+                            setTwoFactorModalMode("manage");
+                            setTwoFactorSetupMethod("menu");
+                            setTwoFactorChallengeMethod("totp");
+                            setTwoFactorSetupOpen(false);
+                            setTwoFactorQrDataUrl(null);
+                            setTwoFactorRecoveryCodes([]);
+                            setTwoFactorCode("");
+                            setTwoFactorEmailCode("");
+                            setTwoFactorRecoveryCode("");
+                            setTwoFactorEmailSent(false);
+                            setTwoFactorRecoveryAck(false);
+                            setTwoFactorInfo(null);
+                            setTwoFactorError(null);
+                            setTwoFactorModalOpen(true);
+                          }}
+                          disabled={twoFactorBusy || !accessToken}
+                        >
+                          {chrome.configure2fa}
+                        </button>
+                        {twoFactorEnabled ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            onClick={() => void disableTwoFactor()}
+                            disabled={twoFactorBusy || !accessToken}
+                          >
+                            {chrome.disable2fa}
+                          </button>
+                        ) : null}
+                      </div>
+                    </div>
+                    <div className="composer-doc-links" aria-label={chrome.docLinksAria}>
+                      <Link href="/guia#primeros-pasos">{docNav.userGuide}</Link>
+                      <Link href="/notes">{docNav.methodNotesLong}</Link>
+                      <Link href="/privacy">{docNav.privacyPolicy}</Link>
+                      <Link href="/terms">{docNav.termsOfService}</Link>
+                      <Link href="/faqs">{docNav.faqs}</Link>
+                      <Link href="/about">{docNav.aboutShort}</Link>
+                    </div>
+                  </section>
+                </div>
+              </div>
+
+              {twoFactorModalOpen ? (
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  style={{
+                    position: "fixed",
+                    inset: 0,
+                    zIndex: 1200,
+                    background: "rgba(5, 8, 14, 0.78)",
+                    display: "grid",
+                    placeItems: "center",
+                    padding: 16,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "min(560px, 96vw)",
+                      borderRadius: 16,
+                      border: "1px solid rgba(84,160,186,0.35)",
+                      background: "linear-gradient(180deg, rgba(16,31,45,0.98), rgba(9,20,31,0.98))",
+                      boxShadow: "0 18px 48px rgba(0,0,0,0.45)",
+                      padding: 14,
+                      maxHeight: "82vh",
+                      overflowY: "auto",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                      <strong style={{ color: "#d8edf5" }}>
+                        {twoFactorModalMode === "challenge" ? tf.challengeTitle : tf.manageTitle}
+                      </strong>
+                      {twoFactorModalMode === "manage" ? (
+                        <button
+                          type="button"
+                          className="modal-close-x"
+                          aria-label={tf.closeDialogAria}
+                          title={ui.drawerClose}
+                          onClick={() => setTwoFactorModalOpen(false)}
+                          disabled={twoFactorBusy || (twoFactorRecoveryCodes.length > 0 && !twoFactorRecoveryAck)}
+                        >
+                          ×
+                        </button>
+                      ) : null}
+                    </div>
+                    <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                      {twoFactorModalMode === "challenge"
+                        ? preferredTwoFactorMethod === "email"
+                          ? tf.challengeIntroEmail
+                          : tf.challengeIntroTotp
+                        : twoFactorSetupMethod === "menu"
+                          ? tf.setupMenuHint
+                          : twoFactorSetupMethod === "totp"
+                            ? tf.setupTotpOnlyHint
+                            : tf.setupEmailOnlyHint}
+                    </p>
+                    {twoFactorError ? (
+                      <p className="meta-line tier-hint-line tier-hint-line--error" style={{ marginTop: 6 }}>
+                        {twoFactorError}
                       </p>
-                      {!twoFactorEnabled ? (
-                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+                    ) : null}
+                    {twoFactorInfo ? (
+                      <p className="meta-line tier-hint-line tier-hint-line--success" style={{ marginTop: 6 }}>
+                        {twoFactorInfo}
+                      </p>
+                    ) : null}
+
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
+                      {twoFactorModalMode === "challenge" ? (
+                        <span
+                          className="composer-reading-pill is-active"
+                          style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
+                        >
+                          {preferredTwoFactorMethod === "email" ? tf.badgeEmailCode : tf.badgeTotp}
+                        </span>
+                      ) : twoFactorSetupMethod === "menu" ? (
+                        <>
                           <button
                             type="button"
                             className="composer-reading-pill is-active"
-                            onClick={() => void startTwoFactorEnrollment()}
+                            onClick={() => {
+                              setTwoFactorSetupMethod("totp");
+                              setTwoFactorInfo(null);
+                              setTwoFactorError(null);
+                              setTwoFactorEmailCode("");
+                              setTwoFactorRecoveryCode("");
+                              setTwoFactorEmailSent(false);
+                            }}
                             disabled={twoFactorBusy || !accessToken}
                           >
-                            {twoFactorBusy ? (isSpanish ? "Preparando..." : "Preparing...") : isSpanish ? "Activar con Authenticator" : "Enable with Authenticator"}
+                            {tf.authenticatorTotp}
                           </button>
                           <button
                             type="button"
                             className="composer-reading-pill"
-                            onClick={() => void sendEmailTwoFactorCode()}
+                            onClick={() => {
+                              setTwoFactorSetupMethod("email");
+                              setTwoFactorInfo(null);
+                              setTwoFactorError(null);
+                              setTwoFactorCode("");
+                              setTwoFactorSetupOpen(false);
+                              setTwoFactorQrDataUrl(null);
+                            }}
                             disabled={twoFactorBusy || !accessToken}
                           >
-                            {twoFactorBusy ? (isSpanish ? "Enviando..." : "Sending...") : isSpanish ? "Enviar código por email" : "Send code by email"}
+                            {tf.emailCode}
                           </button>
-                        </div>
-                      ) : null}
-                      {twoFactorSetupOpen && twoFactorQrDataUrl ? (
-                        <div style={{ marginTop: 10 }}>
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={twoFactorQrDataUrl}
-                            alt="Código QR para app Authenticator"
-                            style={{ width: 180, height: 180, borderRadius: 8, background: "#fff" }}
-                          />
-                          <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center" }}>
-                            <input
-                              type="text"
-                              value={twoFactorCode}
-                              onChange={(e) => setTwoFactorCode(e.target.value)}
-                              placeholder={isSpanish ? "Código de 6 dígitos" : "6-digit code"}
-                              className="composer-input"
-                              style={{ maxWidth: 180 }}
-                            />
+                          {twoFactorEnabled ? (
                             <button
                               type="button"
-                              className="composer-reading-pill is-active"
-                              onClick={() => void confirmTwoFactorEnrollment()}
-                              disabled={twoFactorBusy || twoFactorCode.trim().length < 6}
+                              className="composer-reading-pill"
+                              onClick={() => void disableTwoFactor()}
+                              disabled={twoFactorBusy}
                             >
-                              {isSpanish ? "Verificar" : "Verify"}
+                              {chrome.disable2fa}
                             </button>
-                          </div>
-                        </div>
+                          ) : null}
+                        </>
+                      ) : twoFactorRecoveryCodes.length === 0 ? (
+                        <button
+                          type="button"
+                          className="composer-reading-pill"
+                          onClick={() => {
+                            setTwoFactorSetupMethod("menu");
+                            setTwoFactorSetupOpen(false);
+                            setTwoFactorQrDataUrl(null);
+                            setTwoFactorCode("");
+                            setTwoFactorEmailCode("");
+                            setTwoFactorRecoveryCode("");
+                            setTwoFactorEmailSent(false);
+                            setTwoFactorInfo(null);
+                            setTwoFactorError(null);
+                          }}
+                          disabled={twoFactorBusy}
+                          style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.85rem" }}
+                        >
+                          {tf.chooseAnotherMethod}
+                        </button>
                       ) : null}
-                      {!twoFactorEnabled && twoFactorEmailSent ? (
+                    </div>
+
+                    {twoFactorModalMode === "challenge" &&
+                    twoFactorChallengeMethod === "totp" &&
+                    twoFactorRecoveryAssistMode === "hidden" ? (
+                      <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                        <input
+                          type="text"
+                          value={twoFactorCode}
+                          onChange={(e) => setTwoFactorCode(e.target.value)}
+                          placeholder={tf.totpPlaceholderShort}
+                          className="composer-input"
+                          style={{ maxWidth: 220 }}
+                        />
+                      </div>
+                    ) : null}
+                    {twoFactorModalMode === "manage" &&
+                    twoFactorSetupMethod === "totp" &&
+                    !twoFactorSetupOpen &&
+                    twoFactorRecoveryCodes.length === 0 ? (
+                      <div style={{ marginTop: 10 }}>
+                        <p className="meta-line tier-hint-line">{tf.totpSetupSteps}</p>
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => void startTwoFactorEnrollment()}
+                          disabled={twoFactorBusy || !accessToken}
+                        >
+                          {twoFactorBusy ? tf.preparing : tf.generateQr}
+                        </button>
+                      </div>
+                    ) : null}
+
+                    {twoFactorModalMode === "manage" &&
+                    twoFactorSetupMethod === "totp" &&
+                    twoFactorSetupOpen &&
+                    twoFactorQrDataUrl &&
+                    twoFactorRecoveryCodes.length === 0 ? (
+                      <div style={{ marginTop: 12 }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={twoFactorQrDataUrl}
+                          alt={chrome.authenticatorQrAlt}
+                          style={{ width: 160, height: 160, borderRadius: 8, background: "#fff" }}
+                        />
                         <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                           <input
                             type="text"
-                            value={twoFactorEmailCode}
-                            onChange={(e) => setTwoFactorEmailCode(e.target.value)}
-                              placeholder={isSpanish ? "Código por email (6 dígitos)" : "Email code (6 digits)"}
+                            value={twoFactorCode}
+                            onChange={(e) => setTwoFactorCode(e.target.value)}
+                            placeholder={tf.totpPlaceholderLong}
                             className="composer-input"
                             style={{ maxWidth: 220 }}
                           />
                           <button
                             type="button"
                             className="composer-reading-pill is-active"
+                            onClick={() => void confirmTwoFactorEnrollment()}
+                            disabled={twoFactorBusy || twoFactorCode.trim().length < 6}
+                          >
+                            {tf.verify}
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {twoFactorModalMode === "challenge" &&
+                    twoFactorChallengeMethod === "email" &&
+                    !twoFactorEmailSent ? (
+                      <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                        {tf.challengeEmailBeforeSend}
+                      </p>
+                    ) : null}
+
+                    {twoFactorModalMode === "manage" &&
+                    twoFactorSetupMethod === "email" &&
+                    !twoFactorEmailSent &&
+                    twoFactorRecoveryCodes.length === 0 ? (
+                      <div style={{ marginTop: 10 }}>
+                        <p className="meta-line tier-hint-line">{tf.sendEmailHintManage}</p>
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => void sendEmailTwoFactorCode()}
+                          disabled={twoFactorBusy || !accessToken}
+                        >
+                          {twoFactorBusy ? tf.sending : tf.sendEmailCode}
+                        </button>
+                      </div>
+                    ) : null}
+
+                    {((twoFactorModalMode === "manage" && twoFactorSetupMethod === "email" && twoFactorEmailSent) ||
+                      (twoFactorModalMode === "challenge" &&
+                        twoFactorChallengeMethod === "email" &&
+                        twoFactorRecoveryAssistMode === "hidden")) ? (
+                      <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                        <input
+                          type="text"
+                          value={twoFactorEmailCode}
+                          onChange={(e) => setTwoFactorEmailCode(e.target.value)}
+                          placeholder={tf.emailCodePlaceholder}
+                          className="composer-input"
+                          style={{ maxWidth: 220 }}
+                        />
+                        {twoFactorModalMode === "manage" ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
                             onClick={() => void verifyEmailTwoFactorCode()}
                             disabled={twoFactorBusy || twoFactorEmailCode.trim().length < 6}
                           >
-                            {isSpanish ? "Verificar email" : "Verify email"}
+                            {tf.verifyEmail}
                           </button>
-                        </div>
-                      ) : null}
-                      {twoFactorRecoveryCodes.length > 0 ? (
-                        <p className="meta-line tier-hint-line">
-                          {isSpanish ? "Códigos de recuperación:" : "Recovery codes:"} <code>{twoFactorRecoveryCodes.join(" · ")}</code>
-                        </p>
-                      ) : null}
-                    </div>
-                    {result ? (
-                      <div className="session-progress">
-                        <span>{isSpanish ? "Profundidad del hilo" : "Thread depth"}</span>
-                        <p className="meta-line tier-hint-line">
-                          {isSpanish ? "Plan " : "Plan "}<strong>{tier}</strong>: {monthlyCreditsLimit}{" "}
-                          {creditsType === "lifetime"
-                            ? isSpanish
-                              ? "consultas lifetime"
-                              : "lifetime consultations"
-                            : isSpanish
-                              ? "consultas por mes"
-                              : "consultations per month"}{" "}
-                          · {isSpanish ? "hasta" : "up to"}{" "}
-                          {CONTEXT_LIMITS[tier].sessionDepth} {isSpanish ? "en este hilo." : "in this thread."}
-                        </p>
-                        <div className="session-progress-bar">
-                          <div
-                            className="session-progress-fill"
-                            style={{
-                              width: `${Math.min(
-                                100,
-                                ((result.sessionPosition ?? 1) /
-                                  Math.max(result.sessionPosition + (result.canDeepen ? 1 : 0), 1)) *
-                                  100,
-                              )}%`,
-                            }}
-                          />
-                        </div>
-                        <small>
-                          {result.canDeepen
-                            ? isSpanish
-                              ? "Puedes profundizar en este hilo."
-                              : "You can deepen this thread."
-                            : isSpanish
-                              ? "Límite de hilo alcanzado."
-                              : "Thread limit reached."}
-                        </small>
+                        ) : null}
                       </div>
                     ) : null}
-                    {activeThread.length > 0 ? (
-                      <p className="meta-line composer-hint-line">
-                        {isSpanish ? "Siguiente mensaje sigue en este hilo." : "Your next message continues in this thread."}
+
+                    {twoFactorModalMode === "challenge" && twoFactorRecoveryAssistMode === "options" ? (
+                      <div
+                        style={{
+                          marginTop: 10,
+                          border: "1px solid rgba(84,160,186,0.35)",
+                          borderRadius: 12,
+                          padding: "10px 12px",
+                        }}
+                      >
+                        <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
+                          {tf.recoveryOptionsIntro}
+                        </p>
+                        <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
+                            onClick={() => {
+                              setTwoFactorRecoveryAssistMode("enter_code");
+                              setTwoFactorError(null);
+                            }}
+                            disabled={twoFactorBusy}
+                          >
+                            {tf.iHaveRecoveryCodes}
+                          </button>
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
+                            onClick={() => setTwoFactorRecoveryAssistMode("contact_support")}
+                            disabled={twoFactorBusy}
+                          >
+                            {tf.iDontHaveRecoveryCodes}
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {twoFactorModalMode === "challenge" && twoFactorRecoveryAssistMode === "enter_code" ? (
+                      <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                        <input
+                          type="text"
+                          value={twoFactorRecoveryCode}
+                          onChange={(e) => setTwoFactorRecoveryCode(e.target.value)}
+                          placeholder={tf.recoveryCodePlaceholder}
+                          className="composer-input"
+                          style={{ maxWidth: 320 }}
+                        />
+                      </div>
+                    ) : null}
+
+                    {twoFactorModalMode === "challenge" && twoFactorRecoveryAssistMode === "contact_support" ? (
+                      <div
+                        style={{
+                          marginTop: 10,
+                          border: "1px solid rgba(84,160,186,0.35)",
+                          borderRadius: 12,
+                          padding: "10px 12px",
+                        }}
+                      >
+                        <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
+                          {tf.supportRecoveryBody}
+                        </p>
+                        <a
+                          className="secondary-btn"
+                          style={{ marginTop: 8 }}
+                          href={`mailto:${twoFactorSupportEmail}?subject=${encodeURIComponent(
+                            tf.supportRecoverySubject,
+                          )}&body=${encodeURIComponent(
+                            formatTwoFactorSupportMailBody(tf, authEmail ?? ""),
+                          )}`}
+                        >
+                          {tf.contactSupportEmail}
+                        </a>
+                      </div>
+                    ) : null}
+
+                    {twoFactorRecoveryCodes.length > 0 && twoFactorModalMode === "manage" ? (
+                      <div style={{ marginTop: 10 }}>
+                        <p className="meta-line tier-hint-line">
+                          {tf.recoveryCodesShownOnce}{" "}
+                          <code>{twoFactorRecoveryCodes.join(" · ")}</code>
+                        </p>
+                        <label
+                          className="meta-line tier-hint-line"
+                          style={{ display: "flex", gap: 8, alignItems: "center" }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={twoFactorRecoveryAck}
+                            onChange={(e) => setTwoFactorRecoveryAck(e.target.checked)}
+                          />
+                          <span>{tf.recoveryAckCheckbox}</span>
+                        </label>
+                        <div style={{ marginTop: 10, display: "flex", justifyContent: "flex-end" }}>
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            disabled={twoFactorBusy || !twoFactorRecoveryAck}
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                            onClick={() => {
+                              setTwoFactorModalOpen(false);
+                              setTwoFactorRecoveryCodes([]);
+                              setTwoFactorRecoveryAck(false);
+                              setTwoFactorInfo(tf.modalAfterSaveCodes);
+                            }}
+                          >
+                            {tf.acceptAndClose}
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {twoFactorModalMode === "challenge" ? (
+                      <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        {twoFactorChallengeMethod === "email" && twoFactorRecoveryAssistMode === "hidden" ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            onClick={() => void sendEmailTwoFactorCode()}
+                            disabled={twoFactorBusy || !accessToken}
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                          >
+                            {twoFactorBusy ? tf.sending : tf.sendEmailCode}
+                          </button>
+                        ) : null}
+                        {twoFactorRecoveryAssistMode === "hidden" || twoFactorRecoveryAssistMode === "enter_code" ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill is-active"
+                            onClick={() => void verifyTwoFactorChallenge()}
+                            disabled={
+                              twoFactorBusy ||
+                              (twoFactorRecoveryAssistMode === "enter_code"
+                                ? twoFactorRecoveryCode.trim().length < 8
+                                : twoFactorChallengeMethod === "totp"
+                                  ? twoFactorCode.trim().length < 6
+                                  : twoFactorEmailCode.trim().length < 6)
+                            }
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                          >
+                            {twoFactorRecoveryAssistMode === "enter_code"
+                              ? tf.validateRecoveryCode
+                              : tf.continueWithVerification}
+                          </button>
+                        ) : null}
+                      </div>
+                    ) : null}
+                    {twoFactorModalMode === "challenge" ? (
+                      <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                        {twoFactorRecoveryAssistMode === "hidden" && twoFactorChallengeFailures >= 2 ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            onClick={() => {
+                              setTwoFactorRecoveryAssistMode("options");
+                              setTwoFactorError(null);
+                            }}
+                            disabled={twoFactorBusy}
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                          >
+                            {tf.cannotVerifyLink}
+                          </button>
+                        ) : null}
+                        {twoFactorRecoveryAssistMode !== "hidden" ? (
+                          <button
+                            type="button"
+                            className="composer-reading-pill"
+                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                            onClick={() => {
+                              setTwoFactorRecoveryAssistMode("hidden");
+                              setTwoFactorError(null);
+                            }}
+                            disabled={twoFactorBusy}
+                          >
+                            {tf.tryCodeAgain}
+                          </button>
+                        ) : null}
+                        <button
+                          type="button"
+                          className="composer-reading-pill"
+                          onClick={() => void signOut()}
+                          style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                        >
+                          {ui.signOut}
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+
+              {tokenCenterOpen ? (
+                <div role="dialog" aria-modal="true" className="token-center-backdrop">
+                  <div className="token-center-card">
+                    <div className="token-center-header">
+                      <strong className="token-center-title">{tokenPanel.tokenCenter}</strong>
+                      <button
+                        type="button"
+                        className="composer-panel-close"
+                        aria-label={chrome.tokenCenterCloseAria}
+                        title={ui.drawerClose}
+                        onClick={() => setTokenCenterOpen(false)}
+                      >
+                        {ui.drawerClose}
+                      </button>
+                    </div>
+                    <p className="meta-line tier-hint-line token-center-subtitle">
+                      {chrome.tokenCenterSubtitle}
+                    </p>
+
+                    <details className="token-center-pack-details" style={{ marginTop: 10 }}>
+                      <summary className="meta-line tier-hint-line" style={{ cursor: "pointer" }}>
+                        {chrome.tokenCenterPackDetailsSummary}
+                      </summary>
+                      <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
+                        <p
+                          className="meta-line tier-hint-line token-center-message"
+                          style={{ margin: 0 }}
+                        >
+                          <strong>{chrome.freePlanLabel}</strong> {getFreeTierMarketing(locale)}
+                        </p>
+                        {PACK_IDS_ORDERED.map((packId) => {
+                          const pack = TOKEN_PACKS[packId];
+                          return (
+                            <p
+                              key={packId}
+                              className="meta-line tier-hint-line token-center-message"
+                              style={{ margin: 0 }}
+                            >
+                              <strong>{pack.label}:</strong> {getPackMarketingLine(packId, locale)}
+                            </p>
+                          );
+                        })}
+                      </div>
+                    </details>
+
+                    <div className="token-center-grid">
+                      <p className="meta-line tier-hint-line token-center-row">
+                        <span>{tokenPanel.lastPack}</span> <strong>{tierDisplayNode}</strong>
+                      </p>
+                      <p className="meta-line tier-hint-line token-center-row">
+                        <span>{tokenPanel.availableBalance}</span> <strong>{tokenBalance ?? "—"}</strong>
+                      </p>
+                      <p className="meta-line tier-hint-line token-center-row">
+                        <span>{tokenPanel.threadCapShort}</span> <strong>{accountSessionLimit}</strong>
+                      </p>
+                    </div>
+
+                    {tokenCenterError ? (
+                      <p className="meta-line tier-hint-line tier-hint-line--error token-center-message">
+                        {tokenCenterError}
                       </p>
                     ) : null}
-                  </section>
-                </div>
-              </div>
+                    {tokenCenterMessage ? (
+                      <p className="meta-line tier-hint-line token-center-message">
+                        {tokenCenterMessage}
+                      </p>
+                    ) : null}
 
-              {threadLimitReached ? (
-                <div className="composer-session-limit-float" role="status" aria-live="polite">
-                  <p className="composer-session-limit-text">
-                    Este hilo ya no admite más consultas en tu plan. Para seguir, abre una sesión nueva.
-                  </p>
-                  <button
-                    type="button"
-                    className="composer-session-limit-btn"
-                    data-testid="new-session-float-btn"
-                    onClick={() => startNewSession()}
-                    disabled={loading}
-                  >
-                    {ui.sessionNew}
-                  </button>
+                    <div className="token-center-actions">
+                      <button
+                        type="button"
+                        className="composer-reading-pill is-active"
+                        onClick={() => {
+                          void (async () => {
+                            const ok = await openPlansCheckoutNewTab();
+                            if (!ok) {
+                              setTokenCenterMessage(pricingUi.errorCheckout);
+                            }
+                          })();
+                        }}
+                      >
+                        {chrome.viewTokenPacks}
+                      </button>
+                    </div>
+                    <p
+                      className="meta-line tier-hint-line token-center-message"
+                      style={{ marginTop: 8 }}
+                    >
+                      {tokenPanel.accumulation}
+                    </p>
+                    <p
+                      className="meta-line tier-hint-line token-center-message"
+                      style={{ marginTop: 8 }}
+                    >
+                      <Link href="/guia#planes">{tokenPanel.tokenCenterGuideLink}</Link>
+                    </p>
+
+                  </div>
+                </div>
+              ) : null}
+
+              {showThreadLimitBanner ? (
+                <div
+                  className="composer-session-limit-float"
+                  role="status"
+                  aria-live="polite"
+                  aria-label={tokenPanel.consultThreadLimit}
+                  title={tokenPanel.consultThreadLimit}
+                >
+                  <p className="composer-session-limit-text">{tokenPanel.consultThreadLimitStrip}</p>
+                  <div className="composer-session-limit-actions">
+                    <button
+                      type="button"
+                      className="composer-session-limit-btn"
+                      data-testid="new-session-float-btn"
+                      onClick={() => startNewSession()}
+                      disabled={loading}
+                    >
+                      {ui.sessionNew}
+                    </button>
+                    <button
+                      type="button"
+                      className="composer-session-limit-dismiss"
+                      data-testid="thread-limit-banner-dismiss"
+                      aria-label={ui.dismissThreadLimitBannerAria}
+                      onClick={() => setThreadLimitBannerDismissed(true)}
+                    >
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
                 </div>
               ) : null}
 
@@ -2755,7 +4784,7 @@ export default function HomePage() {
                   className="composer-options-btn"
                   aria-expanded={consultPanelOpen}
                   aria-controls="consult-panel"
-                  aria-label={consultPanelOpen ? "Cerrar opciones de consulta" : "Abrir opciones de consulta"}
+                  aria-label={consultPanelOpen ? chrome.closeConsultOptionsAria : chrome.openConsultOptionsAria}
                   disabled={loading}
                   onClick={() => setConsultPanelOpen((o) => !o)}
                 >
@@ -2767,39 +4796,48 @@ export default function HomePage() {
                     ref={questionInputRef}
                     data-testid="question-input"
                     value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
+                    onChange={(e) => {
+                      setQuestion(e.target.value);
+                      resizeQuestionInput();
+                    }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
-                        if (!loading && !threadLimitReached) void onConsult();
+                        if (loading) return;
+                        if (threadLimitReachedUi) {
+                          if (threadLimitBannerDismissed) {
+                            setError(tokenPanel.consultThreadLimit);
+                          }
+                          return;
+                        }
+                        void onConsult();
                       }
                     }}
                     placeholder={
-                      threadLimitReached
+                      threadLimitReachedUi
                         ? ui.threadLimitReached
                         : oracleMode === "oracle_bones"
                           ? ui.positiveCharge
                           : ui.writeConsultation
                     }
-                    aria-label="Question"
+                    aria-label={chrome.questionInputAria}
                     rows={1}
-                    readOnly={threadLimitReached}
-                    aria-disabled={threadLimitReached}
+                    readOnly={threadLimitReachedUi}
+                    aria-disabled={threadLimitReachedUi}
                   />
                   <button
                     type="button"
                     data-testid="consult-btn"
-                    disabled={loading || threadLimitReached}
+                      disabled={loading || threadLimitReachedUi}
                     onClick={() => void onConsult()}
-                    aria-label={loading ? "Enviando" : "Enviar"}
+                    aria-label={loading ? chrome.sendAriaSending : chrome.sendAriaSend}
                   >
                     {loading ? "…" : "➤"}
                   </button>
                 </div>
               </div>
             </div>
-          </footer>
-        </div>
+        </footer>
         </div>
       </div>
     </OracleShell>

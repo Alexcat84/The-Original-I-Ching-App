@@ -5,7 +5,11 @@ import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { loadClaudeEnv } from "./env.js";
 import { buildContextBlock, type ResponseMode } from "./interpretation-context.js";
-import { stripInterpretationFluff } from "./response-clean.js";
+import {
+  changingLinePositionsLabel,
+  ichingStructuralCorrectionAppendix,
+} from "./interpretation-structural-i18n.js";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "./response-clean.js";
 
 export type { ResponseMode } from "./interpretation-context.js";
 
@@ -21,7 +25,8 @@ ABSOLUTE RULES:
 7. If the user asks for factual external data that cannot be verified from the provided I Ching texts, explicitly say you cannot verify that fact and then continue with symbolic interpretation.
 8. Never add generic legal or "simbólica vs predicción" disclaimer paragraphs (e.g. "Es importante tener en cuenta…"). Never end with an asterisk-wrapped footnote; compliance copy lives outside the reading in the app.
 9. ANTI-REPETITION: Each concrete point (a line's counsel, a judgment phrase, a practical recommendation) appears at most once in the entire answer. Do not restate the same advice across sections with different wording.
-10. GROUNDING: Every interpretive claim must tether to the supplied judgment, Image, or line text—paraphrase or quote in blockquote, then bridge to the question. Avoid vague uplift that could apply to any hexagram.`;
+10. GROUNDING: Every interpretive claim must tether to the supplied judgment, Image, or line text—paraphrase or quote in blockquote, then bridge to the question. Avoid vague uplift that could apply to any hexagram.
+11. TYPOGRAPHY: enforce clean punctuation and spacing in the response language: one space after commas/semicolons/colons, no ",." or double punctuation, no glued tokens after punctuation, and no unintended uppercase after commas.`;
 
 /** Same token budget for all tiers. */
 const MAX_TOKENS = 4096;
@@ -38,7 +43,53 @@ function getLanguageName(language: string): string {
     zh: "Chinese",
     ko: "Korean",
   };
-  return map[language] ?? "Spanish";
+  return map[language] ?? "English";
+}
+
+function isLikelyWrongLanguage(text: string, language: string): boolean {
+  const lower = text.toLowerCase();
+  const englishSignals = (lower.match(/\b(the|and|with|was|were|is|are|this|that|what|why|then)\b/g) ?? []).length;
+  const spanishSignals = (lower.match(/\b(el|la|los|las|con|para|fue|son|esta|este|porque|entonces)\b/g) ?? []).length;
+  if (language === "es") return englishSignals >= 6 && englishSignals > spanishSignals * 2;
+  if (language === "en") return spanishSignals >= 6 && spanishSignals > englishSignals * 2;
+  return false;
+}
+
+function offlineFallbackText(castResult: CastResult, language: string, reason: "groq_error" | "no_model_api_key"): string {
+  if (language === "es") {
+    return `[Sin conexión / ${reason}] Lectura provisional para el hexagrama #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
+  }
+  if (language === "en") {
+    return `[Offline / ${reason}] Mock interpretation for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
+  }
+  return `[Offline / ${reason}] ${getLanguageName(language)} reading fallback for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
+}
+
+function claimedChangingCount(text: string): number | null {
+  const lower = text.toLowerCase();
+  if (
+    /sin l[ií]neas?\s+(en\s+)?(movimiento|mutaci[oó]n|mutantes?)/i.test(lower) ||
+    /no changing lines?/i.test(lower) ||
+    /without changing lines?/i.test(lower)
+  ) {
+    return 0;
+  }
+  if (/l[ií]nea\s+[uú]nica|[uú]nica\s+l[ií]nea|one changing line/i.test(lower)) return 1;
+  if (/dos\s+l[ií]neas|2\s+l[ií]neas|two changing lines?/i.test(lower)) return 2;
+  if (/tres\s+l[ií]neas|3\s+l[ií]neas|three changing lines?/i.test(lower)) return 3;
+  if (/cuatro\s+l[ií]neas|4\s+l[ií]neas|four changing lines?/i.test(lower)) return 4;
+  if (/cinco\s+l[ií]neas|5\s+l[ií]neas|five changing lines?/i.test(lower)) return 5;
+  if (/seis\s+l[ií]neas|6\s+l[ií]neas|six changing lines?/i.test(lower)) return 6;
+  return null;
+}
+
+function enforceIChingStructuralConsistency(text: string, cast: CastResult, language: string): string {
+  const expected = cast.changingLines.length;
+  const claimed = claimedChangingCount(text);
+  if (claimed === null || claimed === expected) return text;
+  const lineList = changingLinePositionsLabel(cast, language);
+  const correction = ichingStructuralCorrectionAppendix(cast, language, expected, lineList);
+  return `${text}\n\n${correction}`;
 }
 
 function buildCurrentCastPrompt(
@@ -50,6 +101,14 @@ function buildCurrentCastPrompt(
 ): string {
   const { question, textsForClaude: t, primaryHexagram: p, transformedHexagram: tr, mutationRule } = cast;
   const targetWordCount = "700-900";
+  const rawLineVector = [...cast.lines]
+    .sort((a, b) => a.position - b.position)
+    .map((line) => line.value)
+    .join(",");
+  const transformedLineVector = [...cast.lines]
+    .sort((a, b) => a.position - b.position)
+    .map((line) => (line.value === 6 ? 7 : line.value === 9 ? 8 : line.value))
+    .join(",");
 
   const lineBlock =
     t.selectedLineTexts.length > 0
@@ -122,6 +181,13 @@ ${t.primaryImage ? `THE IMAGE: ${t.primaryImage}` : ""}
 
 ACTIVE RULE: ${mutationRule}
 ${t.ruleExplanation}
+STRUCTURAL FACTS (NON-NEGOTIABLE):
+- RAW_LINES_BOTTOM_TO_TOP: [${rawLineVector}]
+- TRANSFORMED_LINES_BOTTOM_TO_TOP: [${transformedLineVector}]
+- CHANGING_LINES_POSITIONS: [${cast.changingLines.join(",")}]
+- CHANGING_COUNT: ${cast.changingLines.length}
+- PRIMARY_HEXAGRAM_NUMBER: ${p.number}
+- TRANSFORMED_HEXAGRAM_NUMBER: ${tr?.number ?? "NONE"}
 ${lineBlock}
 ${t.specialYaoText ? `SPECIAL TEXT: ${t.specialYaoText}` : ""}
 
@@ -138,6 +204,7 @@ INSTRUCTIONS:
 - ${hasContext ? "Hay consultas previas en sesión: continuidad breve según bloque de contexto (no re-pegues interpretaciones largas)." : "Primera consulta de la sesión."}
 - Interpret ONLY with the texts given
 - In the first sentence, answer the user's question clearly and directly, but do not invent factual data.
+- STRUCTURAL CONSISTENCY IS MANDATORY: any mention of "changing lines" count or positions MUST match CHANGING_COUNT and CHANGING_LINES_POSITIONS exactly.
 - ${looksFactual ? "This question appears to request factual real-world data: explicitly state when that fact cannot be verified from the provided oracle texts." : "Do not claim certainty about external facts unless they are explicitly provided in the input."}
 - If the question is about another person's private feelings or intentions, avoid certainty language. Use probability language (e.g., "podría", "parece", "sugiere"), never "es un hecho".
 - ANTI-REPETITION: if you already stated an idea, do not restate it in other words in another section.
@@ -156,8 +223,9 @@ export async function generateInterpretation(
   context: SessionContext | null,
   mode: ResponseMode = "ritual",
   env: NodeJS.ProcessEnv = process.env,
+  displayName?: string,
 ): Promise<{ text: string; category: ConsultationCategory }> {
-  const { ANTHROPIC_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
+  const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const language = castResult.language;
   const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
@@ -167,7 +235,11 @@ export async function generateInterpretation(
     ? `${buildContextBlock(context, language, mode)}\n\n${buildCurrentCastPrompt(castResult, tier, language, true, mode)}`
     : buildCurrentCastPrompt(castResult, tier, language, false, mode);
 
-  const systemPrompt = `${SYSTEM_PROMPT}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+  const nameNote =
+    displayName?.trim()
+      ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
+      : "";
+  const systemPrompt = `${SYSTEM_PROMPT}${nameNote}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
 
   if (ANTHROPIC_API_KEY) {
     try {
@@ -201,10 +273,59 @@ export async function generateInterpretation(
         fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
       );
       if (cleanText.trim().length > 0) {
-        return { text: cleanText, category };
+        if (isLikelyWrongLanguage(cleanText, language)) {
+          console.warn("[generateInterpretation] Anthropic returned likely wrong language; falling through", {
+            language,
+            primaryHexagram: castResult.primaryHexagram.number,
+          });
+        } else {
+          const hardened = enforceIChingStructuralConsistency(cleanText, castResult, language);
+          return { text: normalizeInterpretationPunctuation(hardened), category };
+        }
       }
     } catch (err) {
       console.warn("[generateInterpretation] Anthropic failed, trying fallback chain", err);
+    }
+  }
+
+  if (OPENROUTER_API_KEY) {
+    try {
+      const openRouterClient = new Anthropic({
+        apiKey: OPENROUTER_API_KEY,
+        baseURL: "https://openrouter.ai/api/v1",
+        defaultHeaders: {
+          "HTTP-Referer": "https://theoriginaliching.com",
+          "X-Title": "The Original I Ching App",
+        },
+      });
+      const response = await openRouterClient.messages.create({
+        model,
+        max_tokens: maxTokens,
+        system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
+        messages: [{ role: "user", content: userContent }],
+      });
+      const fullText = response.content
+        .filter((b) => b.type === "text")
+        .map((b) => (b as { text: string }).text)
+        .join("");
+      if (response.stop_reason === "max_tokens") {
+        console.warn("[generateInterpretation] OpenRouter hit max_tokens", { tier, maxTokens });
+      }
+      const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
+      const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
+      const cleanText = stripInterpretationFluff(
+        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+      );
+      if (cleanText.trim().length > 0) {
+        if (isLikelyWrongLanguage(cleanText, language)) {
+          console.warn("[generateInterpretation] OpenRouter returned likely wrong language; falling through", { language });
+        } else {
+          const hardened = enforceIChingStructuralConsistency(cleanText, castResult, language);
+          return { text: normalizeInterpretationPunctuation(hardened), category };
+        }
+      }
+    } catch (err) {
+      console.warn("[generateInterpretation] OpenRouter failed, trying Groq fallback", err);
     }
   }
 
@@ -235,16 +356,26 @@ export async function generateInterpretation(
       const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
       const cleanText = stripInterpretationFluff(fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim());
       if (cleanText.trim().length > 0) {
-        return { text: cleanText, category };
+        if (isLikelyWrongLanguage(cleanText, language)) {
+          console.warn("[generateInterpretation] Groq returned likely wrong language; using fallback", {
+            language,
+            primaryHexagram: castResult.primaryHexagram.number,
+          });
+        } else {
+          const hardened = enforceIChingStructuralConsistency(cleanText, castResult, language);
+          return { text: normalizeInterpretationPunctuation(hardened), category };
+        }
       }
     }
 
     const cat: ConsultationCategory = "general";
-    const body = `[Offline / groq_error] Mock interpretation for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
-    return { text: body, category: cat };
+    const body = offlineFallbackText(castResult, language, "groq_error");
+    const hardened = enforceIChingStructuralConsistency(body, castResult, language);
+    return { text: normalizeInterpretationPunctuation(hardened), category: cat };
   }
 
   const cat: ConsultationCategory = "general";
-  const body = `[Offline / no_model_api_key] Mock interpretation for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
-  return { text: body, category: cat };
+  const body = offlineFallbackText(castResult, language, "no_model_api_key");
+  const hardened = enforceIChingStructuralConsistency(body, castResult, language);
+  return { text: normalizeInterpretationPunctuation(hardened), category: cat };
 }

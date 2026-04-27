@@ -15,14 +15,24 @@ import { NextResponse } from "next/server";
 import { buildImageAsset, buildOracleBonesImageAsset, type ImageProvider } from "@/lib/image-provider";
 import { getAdminConfig } from "@/lib/admin-config";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
-import { consumeTierCredit, getUserBillingTier } from "@/lib/credits";
+import { consumeToken, getSessionLimit, getUserBillingTier } from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { isPersistableUuid } from "@/lib/session-ids";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isSharingPersistenceAvailable, upsertSessionAndConsultation } from "@/lib/session-store";
+import { canDeepenAfterNextConsult, normalizeSessionDepthLimit, shouldBlockDeepening } from "@/lib/thread-depth-policy";
 
 export const runtime = "nodejs";
+const LOG_RITUAL_STREAM_DEBUG =
+  process.env.LOG_RITUAL_STREAM_DEBUG === "1" ||
+  process.env.LOG_RITUAL_STREAM_DEBUG === "true" ||
+  process.env.NODE_ENV === "development";
+
+function shortUserId(userId: string): string {
+  return userId.slice(0, 8);
+}
 
 type HistoryEntry = {
   oracleType?: OracleType;
@@ -85,6 +95,48 @@ function verdictLabelForPrompt(verdict: OracleBonesHistorySnapshot["verdict"]): 
   return labels[verdict];
 }
 
+function countWordHits(text: string, words: readonly string[]): number {
+  let score = 0;
+  for (const word of words) {
+    const re = new RegExp(`\\b${word}\\b`, "gi");
+    const matches = text.match(re);
+    if (matches) score += matches.length;
+  }
+  return score;
+}
+
+function detectLanguageFromUserText(text: string): AppLocale | null {
+  const sample = text.trim();
+  if (!sample) return null;
+
+  if (/[\uac00-\ud7af]/.test(sample)) return "ko";
+  if (/[\u3040-\u309f\u30a0-\u30ff]/.test(sample)) return "ja";
+  if (/[\u4e00-\u9fff]/.test(sample)) return "zh";
+
+  const lower = sample.toLowerCase();
+  const langWords: Array<{ lang: AppLocale; words: readonly string[] }> = [
+    {
+      lang: "es",
+      words: ["el", "la", "los", "las", "que", "por", "para", "con", "fue", "entonces", "porque", "hija"],
+    },
+    { lang: "en", words: ["the", "and", "with", "was", "were", "is", "are", "why", "what", "then", "because"] },
+    { lang: "pt", words: ["que", "com", "para", "não", "foi", "então", "porque", "uma", "você"] },
+    { lang: "fr", words: ["le", "la", "les", "avec", "pour", "pas", "est", "sont", "pourquoi", "alors"] },
+    { lang: "de", words: ["der", "die", "das", "und", "mit", "nicht", "ist", "sind", "warum", "dann"] },
+    { lang: "it", words: ["il", "lo", "la", "gli", "con", "per", "non", "che", "perché", "allora"] },
+  ];
+
+  const scores = langWords
+    .map(({ lang, words }) => ({ lang, score: countWordHits(lower, words) }))
+    .sort((a, b) => b.score - a.score);
+
+  const best = scores[0];
+  const second = scores[1];
+  if (!best || best.score < 2) return null;
+  if (second && best.score - second.score < 1) return null;
+  return best.lang;
+}
+
 export async function POST(req: Request) {
   let body: {
     question?: string;
@@ -92,7 +144,7 @@ export async function POST(req: Request) {
     tier?: string;
     sessionId?: string | null;
     isDeepening?: boolean;
-    responseMode?: "directo" | "ritual" | "profundizar";
+    responseMode?: "ritual" | "stream_ritual";
     adminKey?: string;
     imageProviderOverride?: ImageProvider;
     sessionTitle?: string | null;
@@ -103,6 +155,7 @@ export async function POST(req: Request) {
       medium?: "turtle" | "ox";
     };
     history?: HistoryEntry[];
+    displayName?: string;
   };
   try {
     body = (await req.json()) as typeof body;
@@ -115,10 +168,15 @@ export async function POST(req: Request) {
 
   try {
   const question = typeof body.question === "string" ? body.question : "";
+  const trimmedQuestion = question.trim();
+  const displayName =
+    typeof body.displayName === "string" && body.displayName.trim() ? body.displayName.trim() : undefined;
   const rawLanguage = typeof body.language === "string" ? body.language : "es";
-  const language: AppLocale =
+  const selectedLanguage: AppLocale =
     (SUPPORTED_LOCALES as readonly string[]).includes(rawLanguage) ? (rawLanguage as AppLocale) : "es";
   const oracleMode: OracleType = body.oracleMode === "oracle_bones" ? "oracle_bones" : "iching";
+  const languageHint = detectLanguageFromUserText(trimmedQuestion);
+  const language: AppLocale = languageHint ?? selectedLanguage;
 
   const authUser = await getAuthenticatedUser(req);
   if (!authUser) {
@@ -134,9 +192,13 @@ export async function POST(req: Request) {
     );
   }
   const authedUserId = authUser.userId;
-  const tierResolved = await getUserBillingTier(authedUserId);
-  const policy = await resolveConsultPolicy({ authUser, tierResolved });
+  const lastPack = await getUserBillingTier(authedUserId);
+  const policy = await resolveConsultPolicy({ authUser, tierResolved: lastPack });
   const { adminBypassAllowed, adminUnlimitedCredits, tierEffective, tierKey } = policy;
+  const packSessionLimit = await getSessionLimit(authedUserId);
+  const maxDepth = adminBypassAllowed
+    ? 999_999
+    : normalizeSessionDepthLimit(packSessionLimit || CONTEXT_LIMITS[tierKey].sessionDepth);
 
   const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
   const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
@@ -157,45 +219,76 @@ export async function POST(req: Request) {
       { status: 403 },
     );
   }
+  if (oracleMode === "iching" && !trimmedQuestion) {
+    return NextResponse.json(
+      { error: "question_required", code: "CONSULT_QUESTION_REQUIRED", action: "fix_input" },
+      { status: 400 },
+    );
+  }
   const sessionId =
     typeof body.sessionId === "string" && isPersistableUuid(body.sessionId)
       ? body.sessionId
       : randomUUID();
 
-  const credit = adminUnlimitedCredits
-    ? { allowed: true, remaining: 999_999, limit: 999_999, cycleEndIso: null as string | null }
-    : await consumeTierCredit(authedUserId, tierResolved);
-  if (!credit.allowed) {
+  const isDeepening = Boolean(body.isDeepening);
+  const previousRows = mapHistoryToRows(body.history);
+
+  // When deepening, validate depth against the DB record — not the client-supplied history,
+  // which could be manipulated to bypass session limits.
+  let authorizedDepth = previousRows.length;
+  if (isDeepening && isPersistableUuid(sessionId)) {
+    const supabaseAdmin = getSupabaseAdmin();
+    if (supabaseAdmin) {
+      const { data: sessionRow } = await supabaseAdmin
+        .from("consultation_sessions")
+        .select("consultation_count")
+        .eq("id", sessionId)
+        .eq("user_id", authedUserId)
+        .maybeSingle();
+      if (sessionRow) {
+        authorizedDepth = sessionRow.consultation_count ?? previousRows.length;
+      }
+    }
+  }
+
+  if (
+    shouldBlockDeepening({
+      isDeepening,
+      historyLength: authorizedDepth,
+      sessionLimit: maxDepth,
+    })
+  ) {
     return NextResponse.json(
       {
-        error: "credits_exhausted",
-        code: "BILLING_CREDITS_EXHAUSTED",
-        action: "upgrade_plan",
-        tier: tierResolved,
-        creditsLimit: credit.limit,
-        cycleEndsAt: credit.cycleEndIso ?? null,
+        error: "session_limit",
+        message: "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar explorando.",
+        session_limit: maxDepth,
+      },
+      { status: 429 },
+    );
+  }
+
+  const remainingAfterConsume = adminUnlimitedCredits ? 999_999 : await consumeToken(authedUserId);
+  if (remainingAfterConsume === -1) {
+    return NextResponse.json(
+      {
+        error: "no_tokens",
+        message: "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
+        tokens_available: 0,
       },
       { status: 402 },
     );
   }
-  const isDeepening = Boolean(body.isDeepening);
-  const adminConfig = getAdminConfig();
+  const adminConfig = await getAdminConfig();
   const adminAllowed = adminBypassAllowed;
-  const responseMode =
-    body.responseMode === "directo" || body.responseMode === "ritual" || body.responseMode === "profundizar"
-      ? body.responseMode
-      : isDeepening
-        ? "profundizar"
-        : adminConfig.responseModeDefault;
+  const responseMode = body.responseMode === "stream_ritual" ? "stream_ritual" : "ritual";
   const imageProviderOverride =
     adminAllowed && body.imageProviderOverride ? body.imageProviderOverride : adminConfig.imageProviderDefault;
-  const previousRows = mapHistoryToRows(body.history);
-
   if (oracleMode === "oracle_bones") {
     const positive =
       typeof body.oracleBones?.positiveCharge === "string" && body.oracleBones.positiveCharge.trim()
         ? body.oracleBones.positiveCharge.trim()
-        : question.trim();
+        : trimmedQuestion;
     if (!positive) {
       return NextResponse.json(
         { error: "oracle_bones_charge_required", code: "ORACLE_BONES_CHARGE_REQUIRED", action: "fix_input" },
@@ -204,7 +297,9 @@ export async function POST(req: Request) {
     }
     const medium = body.oracleBones?.medium === "ox" ? "ox" : "turtle";
     const negativeRaw = typeof body.oracleBones?.negativeCharge === "string" ? body.oracleBones.negativeCharge.trim() : "";
-    const negative = negativeRaw || defaultNegativeCharge(positive, language);
+    const positiveLanguageHint = detectLanguageFromUserText(positive);
+    const oracleLanguage = positiveLanguageHint ?? language;
+    const negative = negativeRaw || defaultNegativeCharge(positive, oracleLanguage);
 
     const bonesCast = performOracleBonesCast(positive, negative, medium);
     const context = resolveSessionContext({
@@ -220,8 +315,10 @@ export async function POST(req: Request) {
       bonesCast,
       tierEffective,
       context,
-      responseMode,
-      language,
+      "ritual",
+      oracleLanguage,
+      process.env,
+      displayName,
     );
 
     const imagePrompt = buildOracleBonesImagePrompt({
@@ -251,13 +348,15 @@ export async function POST(req: Request) {
     };
 
     const nextPosition = previousRows.length + 1;
-    const maxDepth = Math.max(1, CONTEXT_LIMITS[tierKey].sessionDepth);
-    const canDeepen = nextPosition < maxDepth;
+    const canDeepen = canDeepenAfterNextConsult({
+      historyLength: previousRows.length,
+      sessionLimit: maxDepth,
+    });
     const sharing = await upsertSessionAndConsultation({
       userId: authedUserId,
       sessionId,
       sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
-      language,
+      language: oracleLanguage,
       category,
       maxConsultations: maxDepth,
       consultation: {
@@ -265,7 +364,7 @@ export async function POST(req: Request) {
         sessionId,
         sessionPosition: nextPosition,
         question: bonesCast.positiveCharge,
-        language,
+        language: oracleLanguage,
         primaryHexagram: 0,
         primaryHexagramName: "Oracle Bones",
         primaryHexagramChinese: "甲骨",
@@ -305,8 +404,9 @@ export async function POST(req: Request) {
       sessionId,
       sessionPosition: nextPosition,
       canDeepen,
-      remainingCredits: credit.remaining,
-      creditLimit: credit.limit,
+      sessionMaxDepth: maxDepth,
+      remainingCredits: remainingAfterConsume,
+      creditLimit: null,
       publicReadingId: sharing.publicReadingId,
       publicSessionId: sharing.publicSessionId,
       oracleBones: {
@@ -321,7 +421,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const castResult = performCast(question, language);
+  const castResult = performCast(trimmedQuestion, language);
   const context = resolveSessionContext({
     tier: tierKey,
     sessionId,
@@ -331,11 +431,201 @@ export async function POST(req: Request) {
     patternHints: null,
   });
 
+  if (responseMode === "stream_ritual") {
+    const ritualTraceId = randomUUID().slice(0, 8);
+    const ritualStartedAt = Date.now();
+    const ritualLog = (label: string, extra?: Record<string, unknown>) => {
+      if (!LOG_RITUAL_STREAM_DEBUG) return;
+      const elapsedMs = Date.now() - ritualStartedAt;
+      if (extra) {
+        console.log(`[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`, extra);
+      } else {
+        console.log(`[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`);
+      }
+    };
+    ritualLog("start", {
+      user: shortUserId(authedUserId),
+      sessionId,
+      questionLength: trimmedQuestion.length,
+      oracleMode,
+    });
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        const writeEvent = (event: "cast_ready" | "final_ready" | "error", payload: unknown) => {
+          controller.enqueue(encoder.encode(`event: ${event}\ndata: ${JSON.stringify(payload)}\n\n`));
+        };
+
+        void (async () => {
+          try {
+            writeEvent("cast_ready", {
+              oracleType: "iching" as const,
+              consultationId: castResult.id,
+              primaryHexagram: castResult.primaryHexagram.number,
+              transformedHexagram: castResult.transformedHexagram?.number ?? null,
+              mutationRule: castResult.mutationRule,
+              lines: castResult.lines,
+              changingLines: castResult.changingLines,
+            });
+            ritualLog("event:cast_ready", {
+              primaryHexagram: castResult.primaryHexagram.number,
+              changedLines: castResult.changingLines.length,
+            });
+
+            const { text: interpretation, category } = await generateInterpretation(
+              castResult,
+              tierEffective,
+              context,
+              "ritual",
+              process.env,
+              displayName,
+            );
+
+            const imagePrompt = buildImagePrompt(
+              castResult.primaryHexagram,
+              castResult.transformedHexagram,
+              category,
+              castResult.changingLines,
+              castResult.lines,
+              castResult.id,
+            );
+            let image = await buildImageAsset({
+              prompt: imagePrompt,
+              primaryHexagram: castResult.primaryHexagram.number,
+              primaryHexagramName: castResult.primaryHexagram.name,
+              primaryChinese: castResult.primaryHexagram.chineseName,
+              pinyin: castResult.primaryHexagram.pinyin,
+              transformedHexagram: castResult.transformedHexagram
+                ? {
+                    number: castResult.transformedHexagram.number,
+                    name: castResult.transformedHexagram.name,
+                    chineseName: castResult.transformedHexagram.chineseName,
+                  }
+                : null,
+              category,
+              mutationRule: castResult.mutationRule,
+              changingLines: castResult.changingLines,
+              lines: castResult.lines.map((l) => ({
+                position: l.position,
+                value: l.value,
+                isChanging: l.isChanging,
+              })),
+              tier: tierEffective,
+              providerOverride: imageProviderOverride,
+              consultationId: castResult.id,
+            });
+            image = await finalizeReadingImages(image, tierEffective);
+            ritualLog("assets_ready", {
+              category,
+              imageProvider: image.provider,
+            });
+
+            const nextPosition = previousRows.length + 1;
+            const canDeepen = canDeepenAfterNextConsult({
+              historyLength: previousRows.length,
+              sessionLimit: maxDepth,
+            });
+            const sharing = await upsertSessionAndConsultation({
+              userId: authedUserId,
+              sessionId,
+              sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
+              language,
+              category,
+              maxConsultations: maxDepth,
+              consultation: {
+                consultationId: castResult.id,
+                sessionId,
+                sessionPosition: nextPosition,
+                question: trimmedQuestion,
+                language,
+                primaryHexagram: castResult.primaryHexagram.number,
+                primaryHexagramName: castResult.primaryHexagram.name,
+                primaryHexagramChinese: castResult.primaryHexagram.chineseName,
+                transformedHexagram: castResult.transformedHexagram?.number ?? null,
+                transformedHexagramName: castResult.transformedHexagram?.name ?? null,
+                mutationRule: castResult.mutationRule,
+                lines: castResult.lines,
+                changingLines: castResult.changingLines,
+                interpretation,
+                category,
+                imageProvider: image.provider,
+                imageUrl: image.imageUrl,
+                imageFallbackUrl: image.fallbackImageUrl,
+                oracleType: "iching",
+                oracleBones: null,
+              },
+            });
+
+            writeEvent("final_ready", {
+              sharingPersisted: isSharingPersistenceAvailable(),
+              oracleType: "iching" as const,
+              consultationId: castResult.id,
+              primaryHexagram: castResult.primaryHexagram.number,
+              primaryHexagramName: castResult.primaryHexagram.name,
+              primaryHexagramChinese: castResult.primaryHexagram.chineseName,
+              transformedHexagram: castResult.transformedHexagram?.number ?? null,
+              transformedHexagramName: castResult.transformedHexagram?.name ?? null,
+              mutationRule: castResult.mutationRule,
+              lines: castResult.lines,
+              changingLines: castResult.changingLines,
+              interpretation,
+              category,
+              imagePrompt,
+              imageProvider: image.provider,
+              imageUrl: image.imageUrl,
+              imageFallbackUrl: image.fallbackImageUrl,
+              imageProviderDebug: image.debug ?? undefined,
+              sessionId,
+              sessionPosition: nextPosition,
+              canDeepen,
+              sessionMaxDepth: maxDepth,
+              remainingCredits: remainingAfterConsume,
+              creditLimit: null,
+              publicReadingId: sharing.publicReadingId,
+              publicSessionId: sharing.publicSessionId,
+            });
+            ritualLog("event:final_ready", {
+              transformedHexagram: castResult.transformedHexagram?.number ?? null,
+            });
+          } catch (streamError) {
+            console.error("[api/consult][stream_ritual]", streamError);
+            ritualLog("event:error", {
+              message: streamError instanceof Error ? streamError.message : "unknown",
+            });
+            writeEvent("error", {
+              error: "consult_failed",
+              code: "CONSULT_FAILED",
+              action: "retry",
+              message:
+                process.env.NODE_ENV === "development" && streamError instanceof Error
+                  ? streamError.message
+                  : undefined,
+            });
+          } finally {
+            ritualLog("close");
+            controller.close();
+          }
+        })();
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-cache, no-transform",
+        Connection: "keep-alive",
+        "X-Accel-Buffering": "no",
+      },
+    });
+  }
+
   const { text: interpretation, category } = await generateInterpretation(
     castResult,
     tierEffective,
     context,
-    responseMode,
+    "ritual",
+    process.env,
+    displayName,
   );
 
   const imagePrompt = buildImagePrompt(
@@ -374,8 +664,10 @@ export async function POST(req: Request) {
   image = await finalizeReadingImages(image, tierEffective);
 
   const nextPosition = previousRows.length + 1;
-  const maxDepth = Math.max(1, CONTEXT_LIMITS[tierKey].sessionDepth);
-  const canDeepen = nextPosition < maxDepth;
+  const canDeepen = canDeepenAfterNextConsult({
+    historyLength: previousRows.length,
+    sessionLimit: maxDepth,
+  });
   const sharing = await upsertSessionAndConsultation({
     userId: authedUserId,
     sessionId,
@@ -387,7 +679,7 @@ export async function POST(req: Request) {
       consultationId: castResult.id,
       sessionId,
       sessionPosition: nextPosition,
-      question,
+      question: trimmedQuestion,
       language,
       primaryHexagram: castResult.primaryHexagram.number,
       primaryHexagramName: castResult.primaryHexagram.name,
@@ -429,8 +721,9 @@ export async function POST(req: Request) {
     sessionId,
     sessionPosition: nextPosition,
     canDeepen,
-    remainingCredits: credit.remaining,
-    creditLimit: credit.limit,
+    sessionMaxDepth: maxDepth,
+    remainingCredits: remainingAfterConsume,
+    creditLimit: null,
     publicReadingId: sharing.publicReadingId,
     publicSessionId: sharing.publicSessionId,
   });

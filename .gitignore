@@ -1,5 +1,7 @@
 node_modules
+# Editor / agent local rules — never commit
 .cursor
+.claude
 mcps
 .turbo
 dist
@@ -7,11 +9,9 @@ dist
 out
 build
 *.tsbuildinfo
+# Never commit environment files or templates (including .env.example).
 .env
-.env.local
-.env.production.local
-.env.development.local
-.env.test.local
+.env.*
 *.log
 .DS_Store
 coverage
@@ -19,3 +19,5 @@ coverage
 apps/mobile/.expo
 apps/mobile/dist
 packages/iching-data/src/generated
+
+.vercel

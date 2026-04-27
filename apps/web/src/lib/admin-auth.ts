@@ -11,13 +11,22 @@ export function expectedAdminToken(secret: string): string {
   return sha256(`iching-admin:${secret}`);
 }
 
-export function isValidAdminSession(token: string | undefined | null): boolean {
-  const secret = process.env.ADMIN_PANEL_KEY;
-  if (!secret || !token) return false;
-  return token === expectedAdminToken(secret);
+function adminSessionSeed(): string | null {
+  const fromHash = process.env.ADMIN_PANEL_KEY_HASH?.trim();
+  if (fromHash) return fromHash;
+  const fromPlain = process.env.ADMIN_PANEL_KEY?.trim();
+  if (fromPlain) return fromPlain;
+  return null;
 }
 
-export function getAdminSessionTokenFromCookies(): string | undefined {
-  return cookies().get(ADMIN_COOKIE_NAME)?.value;
+export function isValidAdminSession(token: string | undefined | null): boolean {
+  const seed = adminSessionSeed();
+  if (!seed || !token) return false;
+  return token === expectedAdminToken(seed);
+}
+
+export async function getAdminSessionTokenFromCookies(): Promise<string | undefined> {
+  const cookieStore = await cookies();
+  return cookieStore.get(ADMIN_COOKIE_NAME)?.value;
 }
 

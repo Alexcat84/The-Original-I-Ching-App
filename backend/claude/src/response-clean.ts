@@ -1,6 +1,17 @@
 /** Remove model-added boilerplate and trailing asterisk disclaimers from oracle text. */
 export function stripInterpretationFluff(text: string): string {
   let t = text.trim();
+  // Internal taxonomy line (theme_category); never persist in interpretation text.
+  while (true) {
+    const next = t.replace(
+      /^\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*[\w-]+(?:\s*\([^)]*\))?\s*(?:\r?\n|$)/i,
+      "",
+    );
+    if (next === t) break;
+    t = next.trim();
+    t = t.replace(/^\s*\n+/m, "");
+  }
+  t = t.trim();
   t = t.replace(/\n*\*[^*\n][\s\S]*?\*\s*$/, "").trim();
   const boiler: RegExp[] = [
     /(?:^|\n)(?:Es importante tener en cuenta|Debes tener presente|Cabe recordar|Ten en cuenta que|Es crucial entender|Recuerda que|No olvides que)[^\n]*\n?/gi,
@@ -11,4 +22,26 @@ export function stripInterpretationFluff(text: string): string {
   ];
   for (const r of boiler) t = t.replace(r, "\n");
   return t.replace(/\n{3,}/g, "\n\n").trim();
+}
+
+/**
+ * Keep prose natural by avoiding dash-heavy phrasing and bullet-like hyphen lines.
+ * Also fixes common LLM typography glitches (missing space after comma, ",.", etc.).
+ * Uses Unicode property escapes (\p{L}, \p{Ll}) — requires modern JS runtimes.
+ */
+export function normalizeInterpretationPunctuation(text: string): string {
+  let t = text.trim();
+  t = t.replace(/[—–]/g, ",");
+  t = t.replace(/(^|\n)\s*-\s+/g, "$1");
+  t = t.replace(/\s-\s/g, ", ");
+  t = t.replace(/\n{3,}/g, "\n\n");
+  t = t.replace(/,\s*,+/g, ", ");
+  t = t.replace(/\s+,/g, ",");
+  t = t.replace(/,\s*\./g, ".");
+  t = t.replace(/\.\s*,/g, ".");
+  t = t.replace(/\s+([,.;:!?])/g, "$1");
+  t = t.replace(/([,;:])(?=\p{L})/gu, "$1 ");
+  t = t.replace(/\)(?=\p{L})/gu, ") ");
+  t = t.replace(/ {2,}/g, " ");
+  return t.trim();
 }

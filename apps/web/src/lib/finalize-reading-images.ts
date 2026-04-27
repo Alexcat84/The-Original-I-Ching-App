@@ -1,4 +1,5 @@
 import type { ImageProviderDebug, ResolvedImageProvider } from "@/lib/image-provider";
+import { toContextTierKey } from "@/lib/credits";
 import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
 import { renderSvgToPng } from "@/lib/svg-to-png";
 import { applyReadingImageWatermark, injectSvgDataUrlWatermark } from "@/lib/watermark-image";
@@ -12,7 +13,16 @@ type ImageAsset = {
   debug?: ImageProviderDebug;
 };
 
-async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undefined): Promise<string> {
+function targetSizeForTier(lastPack: string): { width: number; height: number } {
+  const key = toContextTierKey(lastPack);
+  const hi = new Set(["practitioner", "master"]);
+  if (hi.has(key)) {
+    return { width: 2688, height: 1536 };
+  }
+  return { width: 1344, height: 768 };
+}
+
+async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undefined, tier: string): Promise<string> {
   if (!overlayDataUrl?.startsWith("data:image/svg+xml")) return baseUrl;
   if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) return baseUrl;
   try {
@@ -30,10 +40,23 @@ async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undef
     // Render overlay SVG → PNG via resvg (supports @font-face / custom fonts)
     // so CJK glyphs render correctly on Vercel where librsvg has no CJK fonts.
     const overlayPng = await renderSvgToPng(overlayWithFont, width);
-    const out = await sharp(baseBuf)
+    let out = await sharp(baseBuf)
       .composite([{ input: overlayPng, top: 0, left: 0 }])
       .png({ compressionLevel: 9 })
       .toBuffer();
+    const { width: targetWidth, height: targetHeight } = targetSizeForTier(tier);
+    const ratio = width / Math.max(1, height);
+    const targetRatio = targetWidth / targetHeight;
+    const closeAspect = Math.abs(ratio - targetRatio) < 0.04;
+    if (closeAspect && (width < targetWidth || height < targetHeight)) {
+      out = await sharp(out)
+        .resize(targetWidth, targetHeight, {
+          fit: "fill",
+          kernel: "lanczos3",
+        })
+        .png({ compressionLevel: 9 })
+        .toBuffer();
+    }
     return `data:image/png;base64,${out.toString("base64")}`;
   } catch {
     return baseUrl;
@@ -41,7 +64,7 @@ async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undef
 }
 
 export async function finalizeReadingImages(asset: ImageAsset, tier: string): Promise<ImageAsset> {
-  const composedOrOriginal = await tryComposeOverlay(asset.imageUrl, asset.overlaySvgDataUrl);
+  const composedOrOriginal = await tryComposeOverlay(asset.imageUrl, asset.overlaySvgDataUrl, tier);
   let imageUrl = await applyReadingImageWatermark(composedOrOriginal, tier);
   let fallbackImageUrl = asset.fallbackImageUrl;
   if (fallbackImageUrl.startsWith("data:image/svg+xml")) {
