@@ -983,6 +983,108 @@ const TWO_FACTOR_UI: Record<AppLocale, TwoFactorUiMessages> = {
     challengeInvalidCode: "2FA 코드가 잘못되었거나 만료되었습니다.",
     challengeVerifyFailed: "2FA를 확인할 수 없습니다.",
   },
+  ar: {
+    manageTitle: "إعداد أمان المصادقة الثنائية (2FA)",
+    challengeTitle: "التحقق بخطوتين مطلوب",
+    closeDialogAria: "إغلاق نافذة 2FA",
+    challengeIntroTotp:
+      "لمتابعة هذه الجلسة، تحقق من حسابك باستخدام تطبيق Authenticator (TOTP).",
+    challengeIntroEmail: "لمتابعة هذه الجلسة، تحقق من حسابك برمز البريد الإلكتروني.",
+    setupMenuHint: "اختر طريقة واحدة وهيّئها خطوة بخطوة.",
+    setupTotpOnlyHint:
+      "Authenticator (TOTP) فقط. استخدم «اختر طريقة أخرى» إذا كنت تفضّل البريد الإلكتروني.",
+    setupEmailOnlyHint:
+      "التحقق عبر البريد الإلكتروني فقط. استخدم «اختر طريقة أخرى» إذا كنت تفضّل Authenticator.",
+    badgeEmailCode: "رمز البريد الإلكتروني",
+    badgeTotp: "Authenticator (TOTP)",
+    authenticatorTotp: "Authenticator (TOTP)",
+    emailCode: "رمز البريد الإلكتروني",
+    chooseAnotherMethod: "← اختر طريقة أخرى",
+    totpPlaceholderShort: "رمز TOTP (6 أرقام)",
+    totpSetupSteps:
+      "1) اضغط «إنشاء رمز QR»  2) امسحه بتطبيق Authenticator  3) أدخل الرمز المكوّن من 6 أرقام.",
+    preparing: "جارٍ التجهيز...",
+    generateQr: "إنشاء رمز QR",
+    totpPlaceholderLong: "رمز TOTP المكوّن من 6 أرقام",
+    verify: "تحقق",
+    challengeEmailBeforeSend:
+      "اضغط «إرسال رمز البريد» وتحقق من بريدك الوارد (والبريد العشوائي). ثم أدخل الأرقام الـ 6.",
+    sendEmailHintManage:
+      "اضغط «إرسال رمز البريد»، وتحقق من بريدك الوارد، وأدخل الرمز المكوّن من 6 أرقام.",
+    sending: "جارٍ الإرسال...",
+    sendEmailCode: "إرسال رمز البريد الإلكتروني",
+    emailCodePlaceholder: "رمز البريد (6 أرقام)",
+    verifyEmail: "التحقق من البريد الإلكتروني",
+    recoveryOptionsIntro:
+      "لا يمكنك التحقق؟ استخدم رموز الاسترداد أو ابدأ عملية استرداد الدعم.",
+    iHaveRecoveryCodes: "لديّ رموز الاسترداد",
+    iDontHaveRecoveryCodes: "ليس لديّ رموز الاسترداد",
+    recoveryCodePlaceholder: "رمز الاسترداد",
+    supportRecoveryBody:
+      "لاسترداد الوصول، راسل الدعم من بريدك الإلكتروني المسجّل. سنرسل خطوات للتحقق من الملكية واستعادة الوصول.",
+    supportRecoverySubject: "استرداد حساب 2FA",
+    supportMailBody:
+      "مرحبًا فريق الدعم،\n\nليس لديّ رموز الاسترداد وأحتاج إلى استعادة الوصول إلى حسابي.\nبريد الحساب: {{email}}\n\nشكرًا.",
+    contactSupportEmail: "التواصل مع الدعم عبر البريد الإلكتروني",
+    recoveryCodesShownOnce:
+      "رموز الاسترداد (تُعرض مرة واحدة فقط). احفظها في مكان آمن:",
+    recoveryAckCheckbox:
+      "لقد حفظت رموز الاسترداد وأدرك أنها لن تُعرض مجددًا.",
+    infoTwoFaEnabledSaveCodes: "تم تفعيل 2FA. احفظ رموز الاسترداد هذه قبل الإغلاق.",
+    acceptAndClose: "قبول وإغلاق",
+    modalAfterSaveCodes: "تم إعداد 2FA بنجاح.",
+    validateRecoveryCode: "التحقق من رمز الاسترداد",
+    continueWithVerification: "المتابعة بالتحقق",
+    cannotVerifyLink: "لا يمكنك التحقق؟",
+    tryCodeAgain: "حاول بالرمز مجددًا",
+    verify2faToContinue: "تحقق من 2FA للمتابعة.",
+    twoFaRequiredByPolicy:
+      "حسابك يستلزم 2FA في هذه البيئة. فعّله من الخيارات > الأمان.",
+    signInFor2fa: "سجّل الدخول لإعداد التحقق بخطوتين.",
+    enrollEncryptionKeyMissing:
+      "2FA غير مفعّل على الخادم: TOTP_ENCRYPTION_KEY مفقود.",
+    enrollAuthProviderMissing: "2FA غير متاح: Supabase غير مهيأ على الخادم.",
+    enrollTryLater: "تعذّر بدء 2FA الآن. أعد المحاولة بعد دقائق.",
+    confirmNotEnrolled: "فعّل 2FA بـ Authenticator أولًا لإنشاء رمز QR.",
+    confirmEncryptionKeyMissing:
+      "2FA غير مفعّل على الخادم: TOTP_ENCRYPTION_KEY مفقود.",
+    confirmDecryptFailed: "تعذّر فكّ تشفير سر 2FA على الخادم. أعد إعداد 2FA.",
+    confirmTotpInvalid:
+      "رمز 2FA غير صالح أو منتهي الصلاحية. تحقق من تطبيق Authenticator وأعد المحاولة.",
+    confirmTryLater: "تعذّر التحقق من 2FA الآن. أعد المحاولة.",
+    sendSessionExpired: "انتهت جلستك. سجّل الدخول مجددًا.",
+    sendLocked:
+      "تم تأمين 2FA مؤقتًا بسبب المحاولات الفاشلة. انتظر 15 دقيقة وأعد المحاولة.",
+    sendEmailNotConfiguredServer:
+      "2FA عبر البريد الإلكتروني غير مفعّل على الخادم. تحقق من RESEND_API_KEY وTWO_FACTOR_EMAIL_FROM وTWO_FACTOR_EMAIL_CODE_SECRET.",
+    emailDeliveryFailedReason: "تعذّر إرسال رمز البريد الإلكتروني: {{reason}}",
+    emailDeliveryFailedResendHint:
+      "تعذّر إرسال رمز البريد الإلكتروني. تحقق من أن TWO_FACTOR_EMAIL_FROM محقَّق في Resend ومن صحة مفتاح API.",
+    sendTryLater: "تعذّر إرسال رمز البريد الإلكتروني. أعد المحاولة.",
+    infoCodeSent: "تم إرسال الرمز عبر البريد الإلكتروني. تحقق من البريد الوارد والبريد العشوائي.",
+    verifyEmailExpired: "انتهت صلاحية رمز البريد الإلكتروني. اطلب رمزًا جديدًا.",
+    verifyEmailRequestFirst: "اطلب رمز البريد الإلكتروني أولًا.",
+    verifyEmailInvalid: "رمز البريد الإلكتروني غير صالح. تحقق من بريدك الوارد وأعد المحاولة.",
+    verifyEmailTryLater: "تعذّر التحقق من رمز البريد الإلكتروني. أعد المحاولة.",
+    disableFailed: "تعذّر تعطيل 2FA.",
+    disabledOk: "تم تعطيل 2FA.",
+    challengeNeedRecovery: "أدخل رمز استرداد صالحًا.",
+    challengeNeedSixDigit: "أدخل رمزًا صالحًا مكوّنًا من 6 أرقام.",
+    challengeSessionExpired: "انتهت جلستك. سجّل الدخول مجددًا.",
+    challengeLocked:
+      "تم تأمين 2FA مؤقتًا بسبب المحاولات الفاشلة. انتظر 15 دقيقة وأعد المحاولة.",
+    challengeEmailMissing: "أرسل رمز البريد الإلكتروني أولًا.",
+    challengeEmailExpired: "انتهت صلاحية رمز البريد الإلكتروني. اطلب رمزًا جديدًا.",
+    challengeMethodNotLinked: "هذه الطريقة غير مرتبطة بحسابك.",
+    challengeEmailServerMisconfig:
+      "2FA عبر البريد الإلكتروني غير مهيأ على الخادم. تحقق من Resend/متغيرات البيئة.",
+    challengeDecryptFailed:
+      "تعذّر فكّ تشفير سر 2FA على الخادم. أعد إعداد 2FA أو تحقق من TOTP_ENCRYPTION_KEY.",
+    challengeInvalidWithRecovery:
+      "تعذّر التحقق من الرمز. يمكنك استخدام رمز استرداد أو بدء عملية استرداد الدعم.",
+    challengeInvalidCode: "رمز 2FA غير صالح أو منتهي الصلاحية.",
+    challengeVerifyFailed: "تعذّر التحقق من 2FA.",
+  },
 };
 
 export function getTwoFactorUiMessages(locale: AppLocale): TwoFactorUiMessages {

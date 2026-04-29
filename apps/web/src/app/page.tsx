@@ -322,6 +322,21 @@ const RUNTIME_TEXT: Record<
     leansPositive: "긍정 명제 쪽으로 기웁니다.",
     leansNegative: "명제 부정 쪽으로 기웁니다.",
   },
+  ar: {
+    ritualCoins: "الطقس جارٍ · رمي العملات",
+    ritualBones: "الطقس جارٍ · الحرارة على العظم",
+    ritualBonesHint: "توصيف أسلوب شانغ: يُثبَّت نمط الشقوق عند اكتمال الاستشارة.",
+    line: "خط",
+    signReading: "قراءة العلامة:",
+    oracleBones: "عظام الأوراكل",
+    medium: "الوسيط",
+    turtle: "بطن السلحفاة",
+    ox: "لوح كتف الثور",
+    chargePlus: "الشحنة +",
+    chargeMinus: "الشحنة −",
+    leansPositive: "يميل نحو الشحنة الموجبة.",
+    leansNegative: "يميل نحو نفي الشحنة.",
+  },
 };
 
 const RITUAL_STATUS_COPY: Record<
@@ -386,6 +401,12 @@ const RITUAL_STATUS_COPY: Record<
     consult: "신탁으로 옮기는 중",
     shape: "신탁이 살피는 중",
     seal: "해석을 봉인하는 중",
+  },
+  ar: {
+    question: "استقبال سؤالك",
+    consult: "نقله إلى الأوراكل",
+    shape: "الأوراكل يتشاور",
+    seal: "ختم القراءة",
   },
 };
 
@@ -522,6 +543,19 @@ const DRAWER_TEXT: Record<
     deleteConversation: "대화 삭제",
     deletingConversation: "대화 삭제 중…",
   },
+  ar: {
+    activity: "نشاطك",
+    streak: "التسلسل (أيام)",
+    consultationsToday: "الاستشارات اليوم",
+    chatsWithMessages: "المحادثات برسائل",
+    loadingChats: "جارٍ تحميل المحادثات…",
+    loadingConversation: "جارٍ تحميل المحادثة…",
+    onlyThreads: "تُعرض فقط الخيوط ذات قراءة واحدة على الأقل.",
+    noSaved: "لا توجد محادثات محفوظة بعد. أرسل استشارة لرؤيتها هنا.",
+    messages: "رسائل",
+    deleteConversation: "حذف المحادثة",
+    deletingConversation: "جارٍ حذف المحادثة…",
+  },
 };
 
 /** English first in the UI selector (default app language). */
@@ -540,6 +574,7 @@ const LANGUAGE_LABELS: Record<AppLocale, string> = {
   ja: "日本語",
   zh: "中文",
   ko: "한국어",
+  ar: "العربية",
 };
 
 type UiCopy = {
@@ -777,6 +812,29 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     emptyInviteAfternoon: "변화는 계속 움직입니다. 오늘 무엇을 더 분명히 보고 싶나요?",
     emptyInviteNight: "밤도 질문합니다. 삶의 어떤 영역을 탐색하고 싶나요?",
   },
+  ar: {
+    language: "اللغة",
+    chats: "المحادثات",
+    signIn: "تسجيل الدخول",
+    signOut: "تسجيل الخروج",
+    plan: "الخطة",
+    options: "خيارات",
+    writeConsultation: "اكتب استشارتك…",
+    positiveCharge: "الشحنة الإيجابية (تأكيد)…",
+    threadLimitReached: "تم بلوغ حد الخيط — استخدم «جلسة جديدة» أعلاه",
+    dismissThreadLimitBannerAria: "إخفاء إشعار حد الخيط",
+    sessionNew: "جلسة جديدة",
+    drawerClose: "إغلاق",
+    iChing: "I Ching",
+    bones: "عظام الكهانة",
+    iChingTagline: "ثلاث عملات · تشو شي · فيلهلم/بينز",
+    bonesTagline: "الشقوق 兆 (أسلوب شانغ) · نعم / لا",
+    modeIChingHint: "ستة خطوط وثلاث عملات لكل خط؛ طريقة تحوّل تشو شي.",
+    modeBonesHint: "سؤال نعم / لا بالشحنة الإيجابية؛ قراءة الشقوق 兆.",
+    emptyInviteMorning: "وقت مناسب للتشاور مع الأوراكل. ما القلق الذي يحمله هذا اليوم الجديد؟ اكتب استشارتك بنية صادقة.",
+    emptyInviteAfternoon: "التغيير لا يتوقف. ما الذي تحتاج إلى رؤيته بوضوح أكبر اليوم؟",
+    emptyInviteNight: "الليل أيضاً يسأل. أي جانب من حياتك تريد استكشافه؟",
+  },
 };
 
 function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
@@ -843,6 +901,13 @@ function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
       inauspicious_moderate: "凶 — 보통의 흉",
       inauspicious_clear: "凶 — 뚜렷한 흉(부정 전하)",
       silent: "명확한 답 없음 — 조상의 침묵",
+    },
+    ar: {
+      auspicious_clear: "吉 — إيجابي واضح (شحنة موجبة)",
+      auspicious_moderate: "吉 — إيجابي معتدل",
+      inauspicious_moderate: "凶 — سلبي معتدل",
+      inauspicious_clear: "凶 — سلبي واضح (شحنة سالبة)",
+      silent: "لا إجابة واضحة — صمت الأجداد",
     },
   };
   return mapByLocale[locale][v];
@@ -1210,6 +1275,7 @@ export default function HomePage() {
     try {
       window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, next);
       document.documentElement.lang = htmlLangFromAppLocale(next);
+      document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
       document.cookie = `iching_ui_locale=${encodeURIComponent(next)}; path=/; max-age=31536000; samesite=lax`;
     } catch {
       /* private mode / cookies blocked */
@@ -1236,6 +1302,7 @@ export default function HomePage() {
     try {
       window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, locale);
       document.documentElement.lang = htmlLangFromAppLocale(locale);
+      document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
       document.cookie = `iching_ui_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
     } catch {
       /* private mode */

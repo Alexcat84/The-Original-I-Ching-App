@@ -263,6 +263,12 @@ const FAQ_PAGE_META: Record<AppLocale, Pick<FaqPageUi, "title" | "intro" | "seeA
       "사용 안내, 방법 노트, 개인정보 처리방침, 서비스 약관, 요금 페이지로 안내하는 짧은 답변입니다. 자세한 절차는 링크된 문서를 확인하세요.",
     seeAlsoHeading: "관련 문서",
   },
+  ar: {
+    title: "الأسئلة الشائعة",
+    intro:
+      "إجابات مختصرة مع إشارات إلى دليل المستخدم وملاحظات المنهج وسياسة الخصوصية والشروط والأسعار. افتح الوثائق المرتبطة للاطلاع على التفاصيل الكاملة خطوة بخطوة.",
+    seeAlsoHeading: "انظر أيضاً",
+  },
 };
 
 export function getFaqPageUiMessages(locale: AppLocale): FaqPageUi {

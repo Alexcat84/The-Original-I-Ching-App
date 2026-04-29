@@ -202,6 +202,25 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedPersistHint: " 계속되면 서버 설정을 확인하세요.",
     requestFailedStatus: "요청 실패 ({{status}})",
   },
+  ar: {
+    defaultSessionTitle: "استشارة",
+    deleteConfirm: "هل تريد حذف هذه المحادثة نهائيًا؟",
+    couldNotDeleteConversation: "تعذّر حذف المحادثة.",
+    chatLoadSessionExpired: "انتهت جلستك أثناء تحميل المحادثة. يرجى تسجيل الدخول مرة أخرى.",
+    chatNoLongerExists: "هذه المحادثة لم تعد موجودة أو تم حذفها.",
+    chatLoadFailedStatus: "تعذّر تحميل هذه المحادثة ({{status}}).",
+    chatLoadNetworkError: "خطأ في الشبكة أثناء تحميل المحادثة. تحقق من اتصالك وحاول مجددًا.",
+    historySupabaseMissing: "تعذّر تحميل السجل: SUPABASE_SERVICE_ROLE_KEY مفقود على الخادم.",
+    historySessionExpired: "انتهت جلستك أثناء تحميل السجل. يرجى تسجيل الدخول مرة أخرى.",
+    historyLoadFailedStatus: "تعذّر تحميل سجل المحادثات ({{status}}).",
+    historyNetworkError: "خطأ في الشبكة أثناء تحميل السجل. تحقق من اتصالك وحاول مجددًا.",
+    idleSignedOut: "تم تسجيل خروجك تلقائيًا بعد 45 دقيقة من الخمول.",
+    missingClientConfig: "مفاتيح Supabase مفقودة. يرجى التحقق من NEXT_PUBLIC_SUPABASE_URL",
+    missingClientConfigAnd: " و NEXT_PUBLIC_SUPABASE_ANON_KEY.",
+    consultFailedGeneric: "تعذّر إكمال الاستشارة.",
+    consultFailedPersistHint: " قد لا تكون الجلسة محفوظة.",
+    requestFailedStatus: "فشل الطلب ({{status}}).",
+  },
 };
 
 export function getHomeSessionUiMessages(locale: AppLocale): HomeSessionUiMessages {

@@ -82,6 +82,13 @@ const COOKIE_CONSENT_UI: Record<AppLocale, CookieConsentUiMessages> = {
     necessaryOnly: "필수만",
     acceptAll: "모두 허용",
   },
+  ar: {
+    bannerIntroBeforePrivacy: "نستخدم ملفات تعريف الارتباط الضرورية للجلسة واللغة في صفحات الوثائق. إذا وافقت، نستخدم أيضًا تحليلات لتحسين الخدمة. راجع ",
+    bannerPrivacyLink: "سياسة الخصوصية",
+    bannerIntroAfterPrivacy: " للمزيد من التفاصيل.",
+    necessaryOnly: "الضروري فقط",
+    acceptAll: "قبول الكل",
+  },
 };
 
 export function getCookieConsentUiMessages(locale: AppLocale): CookieConsentUiMessages {

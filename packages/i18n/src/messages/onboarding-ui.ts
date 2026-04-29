@@ -103,6 +103,16 @@ const ONBOARDING_UI: Record<AppLocale, OnboardingUiMessages> = {
     confirmYes: "네, 맞습니다",
     confirmEdit: "변경하고 싶습니다",
   },
+  ar: {
+    title: "ما اسمك؟",
+    subtitle: "سيرحّب بك الأوراكل باسمك",
+    placeholder: "اسمك",
+    button: "متابعة",
+    confirmTitle: "هل اسمك صحيح؟",
+    confirmSubtitle: "هكذا سيناديك الأوراكل",
+    confirmYes: "نعم، هذا صحيح",
+    confirmEdit: "أريد تغييره",
+  },
 };
 
 export function getOnboardingUiMessages(locale: AppLocale): OnboardingUiMessages {

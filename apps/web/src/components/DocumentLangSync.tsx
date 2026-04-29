@@ -33,12 +33,15 @@ function readLocale(): AppLocale {
   return DEFAULT_LOCALE;
 }
 
-/** Keeps `<html lang>` aligned with the in-app locale selector even before cookie consent / auth bridge run. */
+const RTL_LOCALES: ReadonlySet<AppLocale> = new Set<AppLocale>(["ar"]);
+
+/** Keeps `<html lang>` and `<html dir>` aligned with the in-app locale selector even before cookie consent / auth bridge run. */
 export default function DocumentLangSync() {
   useEffect(() => {
     const apply = () => {
       const loc = readLocale();
       document.documentElement.lang = htmlLangFromAppLocale(loc);
+      document.documentElement.dir = RTL_LOCALES.has(loc) ? "rtl" : "ltr";
       writeUiLocaleCookie(loc);
     };
     apply();

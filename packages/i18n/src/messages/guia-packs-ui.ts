@@ -121,6 +121,17 @@ const GUIA_PACKS_UI: Record<AppLocale, GuiaPacksUiMessages> = {
       "토큰은 누적됩니다. 현재 팩을 다 쓰기 전에 새 팩을 구매하면 남은 토큰이 새 팩에 더해집니다.",
     perPlanDetailHeading: "플랜별 상세(스레드 한도, 소비형 팩, 이미지 해상도):",
   },
+  ar: {
+    sectionTitle: "الحزم والمدفوعات",
+    currentPricing: "الأسعار الحالية:",
+    freeTierLabel: "مجاني:",
+    freeProductName: "مجاني",
+    freeLine: "$0 · {{count}} استشارات مجانية مدى الحياة",
+    packPriceTemplate: "${{price}} · {{tokens}} {{tokensWord}}",
+    tokensAccumulate:
+      "رموزك تتراكم: إذا اشتريت حزمة جديدة قبل نفاد رموزك، تنتقل الرموز المتبقية وتُضاف إلى الحزمة الجديدة.",
+    perPlanDetailHeading: "تفاصيل حسب الخطة (حدود الخيط، الحزم القابلة للاستهلاك، ودقة الصور):",
+  },
 };
 
 export function getGuiaPacksUiMessages(locale: AppLocale): GuiaPacksUiMessages {

@@ -101,6 +101,16 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
     master:
       "구매당 100토큰(소모형 팩, 자동 갱신 없음). 스레드당 최대 8개의 연속 질문. 생성 이미지는 최고 해상도.",
   },
+  ar: {
+    freeTier:
+      "الخطة المجانية: استشارتان مدى الحياة، سؤال واحد لكل محادثة. لا تجديد تلقائي؛ الباقات المدفوعة قابلة للاستهلاك. الصور المُنشأة بدقة أساسية.",
+    seeker:
+      "20 رمزًا لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 3 أسئلة متابعة لكل محادثة. الصور المُنشأة بدقة قياسية.",
+    practitioner:
+      "40 رمزًا لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 5 أسئلة متابعة لكل محادثة. الصور المُنشأة بدقة عالية.",
+    master:
+      "100 رمز لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 8 أسئلة متابعة لكل محادثة. الصور المُنشأة بأقصى دقة.",
+  },
 };
 
 const PACK_KEY: Record<TokenPackMarketingId, keyof TokenPackMarketingUiMessages> = {
@@ -155,6 +165,11 @@ const TOKEN_PACK_LABELS: Record<AppLocale, Record<TokenPackMarketingId, string>>
     tokens_seeker_20: "시커 팩",
     tokens_practitioner_40: "프랙티셔너 팩",
     tokens_master_100: "마스터 팩",
+  },
+  ar: {
+    tokens_seeker_20: "باقة Seeker",
+    tokens_practitioner_40: "باقة Practitioner",
+    tokens_master_100: "باقة Master",
   },
 };
 

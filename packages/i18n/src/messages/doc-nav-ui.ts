@@ -171,6 +171,22 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "서비스 약관",
     ichingDocLink: "역경(I Ching) 문서",
   },
+  ar: {
+    backToOracle: "← العودة إلى الأوراكل",
+    oracleHome: "الأوراكل",
+    faqs: "أسئلة شائعة",
+    aboutShort: "حول",
+    guidePlansSection: "الخطط والرموز (الدليل)",
+    guideFirstSteps: "البدء (الدليل)",
+    userGuide: "دليل المستخدم",
+    methodNotes: "ملاحظات المنهج",
+    methodNotesLong: "ملاحظات المنهج وأصوله (I Ching والعظام)",
+    privacyShort: "الخصوصية",
+    termsShort: "الشروط",
+    privacyPolicy: "سياسة الخصوصية",
+    termsOfService: "شروط الخدمة",
+    ichingDocLink: "وثائق I Ching",
+  },
 };
 
 export function getDocNavUiMessages(locale: AppLocale): DocNavUiMessages {

@@ -105,6 +105,16 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     pendingSub: "잠시 후 토큰이 적립됩니다. 앱을 계속 사용하실 수 있습니다.",
     ctaOracle: "오라클로 이동",
   },
+  ar: {
+    sessionWaitTitle: "جارٍ إعادة التوجيه…",
+    sessionWaitSub: "جارٍ استعادة جلستك.",
+    processingTitle: "جارٍ معالجة شراء الرموز…",
+    successTitle: "مرحبًا بك في {{label}}!",
+    successSub: "استشاراتك جاهزة.",
+    pendingTitle: "جارٍ معالجة دفعتك.",
+    pendingSub: "ستظهر رموزك خلال دقائق قليلة. يمكنك الاستمرار في استخدام التطبيق.",
+    ctaOracle: "الذهاب إلى الأوراكل",
+  },
 };
 
 export function getCheckoutSuccessUiMessages(locale: AppLocale): CheckoutSuccessUiMessages {

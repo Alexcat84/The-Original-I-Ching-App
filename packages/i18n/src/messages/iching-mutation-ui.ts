@@ -135,6 +135,19 @@ const KO: RuleMap = {
   KUN_ALL_SIX: "곤 — 육효 모두 육",
 };
 
+const AR: RuleMap = {
+  NO_CHANGING: "لا خطوط متغيرة",
+  ONE_CHANGING: "خط متغير واحد",
+  TWO_YIN_YANG: "خطان: ين ويانغ يتغيران",
+  TWO_SAME_LOWER: "خطان متغيران (المثلث السفلي)",
+  THREE_MIDDLE: "ثلاثة خطوط وسطى في اللعب",
+  FOUR_LOWEST_STABLE: "أربعة خطوط: الأدنى ثابت",
+  FIVE_ONLY_STABLE: "خمسة تتغير؛ واحد ثابت",
+  SIX_ALL_CHANGING: "كل الخطوط الستة تتغير",
+  QIAN_ALL_NINE: "Qian — كل التسعات",
+  KUN_ALL_SIX: "Kun — كل الستات",
+};
+
 const BY_LOCALE: Record<AppLocale, RuleMap> = {
   es: ES,
   en: EN,
@@ -145,6 +158,7 @@ const BY_LOCALE: Record<AppLocale, RuleMap> = {
   ja: JA,
   zh: ZH,
   ko: KO,
+  ar: AR,
 };
 
 export function getIchingMutationRuleLabel(locale: AppLocale, rule: string): string {

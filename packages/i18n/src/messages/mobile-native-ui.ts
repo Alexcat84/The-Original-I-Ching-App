@@ -114,6 +114,17 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "취소",
     sharePdfTitle: "PDF 공유",
   },
+  ar: {
+    imageSavedTitle: "تم حفظ الصورة",
+    imageSavedBody: "تم الحفظ في معرض الصور.",
+    permissionDeniedTitle: "الإذن مرفوض",
+    permissionDeniedBody: "نحتاج إلى الوصول إلى المعرض لحفظ الصور.",
+    fileSaveErrorTitle: "خطأ",
+    fileSaveErrorBody: "تعذّر حفظ الملف.",
+    ok: "حسنًا",
+    cancel: "إلغاء",
+    sharePdfTitle: "مشاركة PDF",
+  },
 };
 
 export function getMobileNativeUiMessages(locale: AppLocale): MobileNativeUiMessages {

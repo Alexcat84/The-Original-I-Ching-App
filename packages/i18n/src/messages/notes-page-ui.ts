@@ -149,6 +149,21 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretLi3: "개인 판단 및 해당 시 전문 조언을 보완하는 것으로서.",
     sourcesHeading: "더 깊이 공부할 외부 자료",
   },
+  ar: {
+    title: "ملاحظات حول المنهج وأصوله",
+    lead: "تشرح هذه الصفحة أسس المناهج المستخدمة في التطبيق. السياق تقني-ثقافي وليس دليل استخدام.",
+    ichingHeading: "I Ching (Zhouyi 周易)",
+    ichingBody:
+      "يستلهم وضع I Ching من تقليد الـ 64 هيكساغرام وقراءة الخطوط المتغيرة. يُقدَّم في التطبيق بأسلوب عصري للتفسير الرمزي والتأمل الشخصي.",
+    bonesHeading: "عظام الأوراكل (甲骨)",
+    bonesBody:
+      "يستند وضع العظام إلى العرافة بالشقوق ويكيّفها في تدفق رقمي للإجابة بنعم/لا.",
+    interpretHeading: "كيف تفسّر هذه القراءات",
+    interpretLi1: "بوصفها أداة رمزية للتركيز واتساع الأفق.",
+    interpretLi2: "لا بوصفها تنبؤًا حرفيًا مضمونًا.",
+    interpretLi3: "مكمّلةً للحكم الشخصي والمشورة المهنية حين تقتضي الحاجة.",
+    sourcesHeading: "مراجع خارجية للتعمق",
+  },
 };
 
 export function getNotesPageUiMessages(locale: AppLocale): NotesPageUiMessages {

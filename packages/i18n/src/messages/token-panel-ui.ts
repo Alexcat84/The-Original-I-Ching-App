@@ -222,6 +222,28 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     availableBalance: "사용 가능 토큰:",
     threadCapShort: "스레드당 한도:",
   },
+  ar: {
+    ariaTokenGroup: "إدارة الرموز",
+    tokensHeading: "الرموز",
+    lastPack: "آخر باقة:",
+    remaining: "متبقية",
+    loading: "جارٍ التحميل…",
+    tokenCenter: "مركز الرموز",
+    accumulation:
+      "رموزك تتراكم: إذا اشتريت باقة جديدة قبل نفاد الحالية، تنتقل الرموز المتبقية وتُضاف إلى الباقة الجديدة.",
+    loadError: "تعذّر تحميل مركز الرموز. يرجى المحاولة مجددًا.",
+    messageFreeDepleted:
+      "لقد استنفدت استشاراتك المجانية مدى الحياة. اشترِ رموزًا في الخطط والمدفوعات للمتابعة.",
+    messageNoActivePurchase:
+      "لا يوجد شراء نشط حديث. يمكنك شراء المزيد من الرموز في الخطط والمدفوعات.",
+    consultThreadLimit: "لقد وصلت إلى حد هذه المحادثة. ابدأ جلسة جديدة للمتابعة.",
+    consultThreadLimitStrip: "وصلت هذه المحادثة إلى حد القراءة.",
+    noTokensDepleted: "لقد استخدمت جميع رموزك. اشترِ باقة جديدة للمتابعة.",
+    signInForBalance: "سجّل الدخول لعرض رصيدك.",
+    tokenCenterGuideLink: "دليل المستخدم",
+    availableBalance: "الرموز المتاحة:",
+    threadCapShort: "حد المحادثة:",
+  },
 };
 
 export function getTokenPanelUiMessages(locale: AppLocale): TokenPanelUiMessages {

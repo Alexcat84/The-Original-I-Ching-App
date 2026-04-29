@@ -180,6 +180,23 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     depleted: "토큰을 모두 사용했습니다. 계속하려면 새 팩을 구매하세요.",
     tokensWord: "토큰",
   },
+  ar: {
+    title: "باقات الرموز",
+    balanceLoggedIn: "لديك {{count}} رمز متاح",
+    balanceUnknown: "سجّل الدخول لرؤية رصيدك",
+    modelLine: "النموذج النشط يعتمد 100% على باقات رموز قابلة للاستهلاك.",
+    tokensAccumulate:
+      "رموزك تتراكم: إذا اشتريت باقة جديدة قبل نفاد الحالية، تنتقل الرموز المتبقية وتُضاف إلى الباقة الجديدة.",
+    threadLimitDepends:
+      "الحد الأقصى للأسئلة المتسلسلة لكل محادثة لا يعتمد على إجمالي رصيدك من الرموز: بل يُحدَّد دائمًا بآخر باقة اشتريتها (مثلًا: Seeker حتى 3، Practitioner حتى 5، Master حتى 8 لكل محادثة). كل عملية شراء جديدة تحدّث هذا الحد وفق الباقة.",
+    perThreadCap: "حتى {{n}} سؤال لكل محادثة",
+    buyTokens: "شراء رموز",
+    opening: "جارٍ الفتح…",
+    loginRequired: "يجب تسجيل الدخول لشراء الرموز.",
+    errorCheckout: "تعذّر تجهيز رابط الدفع. تحقق من رابط الخطط في متغيرات البيئة.",
+    depleted: "لقد استنفدت جميع رموزك. اشترِ باقة جديدة للمتابعة.",
+    tokensWord: "رمز",
+  },
 };
 
 export function getPricingUiMessages(locale: AppLocale): PricingUiMessages {

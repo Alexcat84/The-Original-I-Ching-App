@@ -85,6 +85,14 @@ const APP_TRACEABILITY_UI: Record<AppLocale, AppTraceabilityUiMessages> = {
     androidVersionCodeLabel: "빌드(Android)",
     rightsLine: "© 2026 theoriginaliching.com · 판권 소유",
   },
+  ar: {
+    aboutHeading: "حول التطبيق",
+    appNameLabel: "الاسم",
+    appNameValue: "The Original I Ching",
+    versionLabel: "الإصدار",
+    androidVersionCodeLabel: "رقم البناء (Android)",
+    rightsLine: "© 2026 theoriginaliching.com · جميع الحقوق محفوظة",
+  },
 };
 
 export function getAppTraceabilityUiMessages(locale: AppLocale): AppTraceabilityUiMessages {
