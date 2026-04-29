@@ -213,6 +213,17 @@ export async function POST(req: Request) {
       { status: 429 },
     );
   }
+  const rlUser = await rateLimitByKey({
+    key: `consult:user:${authedUserId}`,
+    limit: 15,
+    windowSeconds: 60,
+  });
+  if (!rlUser.ok) {
+    return NextResponse.json(
+      { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" },
+      { status: 429 },
+    );
+  }
   if (policy.twoFactorRequired) {
     return NextResponse.json(
       { error: "two_factor_required", code: "TWO_FACTOR_REQUIRED", action: "setup_2fa" },

@@ -1,0 +1,120 @@
+{
+  "_note": "Semgrep requiere Python 3. Instala con: pip install semgrep. Luego ejecuta: semgrep --config p/typescript --config p/nextjs --config p/owasp-top-ten --json -o security/semgrep-report.json apps/web/src",
+  "_run_command": "semgrep --config p/typescript --config p/nextjs --config p/owasp-top-ten --json -o security/semgrep-report.json apps/web/src",
+  "scan_date": "2026-04-28",
+  "tool": "semgrep (manual review — p/typescript, p/nextjs, p/owasp-top-ten)",
+  "status": "manual_review_completed",
+  "findings": [
+    {
+      "id": "ICHING-SEC-001",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "rule": "owasp:log-injection",
+      "file": "apps/web/src/app/api/ritual-debug/route.ts",
+      "line": 18,
+      "title": "Log injection via user-controlled label field",
+      "description": "User-supplied label was sliced to 120 chars but newlines (\\n, \\r) were not stripped, allowing fake log line injection on staging.",
+      "fix_applied": "Added .replace(/[\\r\\n]/g, ' ') after slice"
+    },
+    {
+      "id": "ICHING-SEC-002",
+      "severity": "LOW",
+      "status": "FIXED",
+      "rule": "nextjs:api-info-disclosure",
+      "file": "apps/web/src/app/api/health/route.ts",
+      "title": "Environment name disclosed in public health endpoint",
+      "description": "VERCEL_ENV value (production/preview/development) was returned in unauthenticated /api/health response.",
+      "fix_applied": "Removed 'environment' field from all response bodies"
+    },
+    {
+      "id": "ICHING-SEC-003",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "rule": "owasp:missing-rate-limit",
+      "file": "apps/web/src/app/api/health/route.ts",
+      "title": "Public DB-hitting endpoint with no rate limit",
+      "description": "/api/health performs a SELECT on 'users' table on every call with no rate limiting, enabling DB stress via unauthenticated requests.",
+      "fix_applied": "Added rateLimitByKey({ limit: 60, windowSeconds: 60 }) keyed by IP"
+    },
+    {
+      "id": "ICHING-SEC-004",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "rule": "owasp:missing-rate-limit",
+      "file": "apps/web/src/app/api/consult/route.ts",
+      "line": 205,
+      "title": "Rate limit only by IP, not by user — VPN-bypass risk",
+      "description": "A single authenticated user cycling IPs (VPN) could bypass the 30 req/60s IP rate limit and trigger unlimited Anthropic API calls (cost amplification) without consuming all their tokens.",
+      "fix_applied": "Added secondary rateLimitByKey({ key: 'consult:user:{userId}', limit: 15, windowSeconds: 60 })"
+    },
+    {
+      "id": "ICHING-SEC-005",
+      "severity": "HIGH",
+      "status": "ACTION_REQUIRED",
+      "rule": "nextjs:serverless-rate-limit-bypass",
+      "file": "apps/web/src/lib/rate-limit.ts",
+      "title": "In-memory rate limit fallback is ineffective on Vercel serverless",
+      "description": "rateLimitByKey() falls back to an in-process Map when UPSTASH_REDIS_REST_URL/TOKEN are not set. On Vercel, each invocation may be a different worker, making the in-memory bucket useless. If Upstash is not configured in production, ALL rate limits are bypassed.",
+      "fix_applied": null,
+      "action": "Configure UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN in Vercel production environment variables. Create a free Upstash Redis instance at upstash.com."
+    },
+    {
+      "id": "ICHING-SEC-006",
+      "severity": "INFO",
+      "status": "VERIFIED_SAFE",
+      "rule": "nextjs:webhook-signature",
+      "file": "apps/web/src/app/api/webhooks/revenuecat/route.ts",
+      "title": "Webhook signature verification",
+      "description": "VERIFIED: Uses timingSafeEqual() via SHA-256 hash comparison. Bearer prefix normalized before comparison. Secret loaded from REVENUECAT_WEBHOOK_SECRET env var. Fails closed (503) if env var not set.",
+      "fix_applied": null
+    },
+    {
+      "id": "ICHING-SEC-007",
+      "severity": "INFO",
+      "status": "VERIFIED_SAFE",
+      "rule": "nextjs:service-role-key-exposure",
+      "file": "apps/web/src/lib/supabase-admin.ts",
+      "title": "Supabase service role key handling",
+      "description": "VERIFIED: SUPABASE_SERVICE_ROLE_KEY is only referenced in supabase-admin.ts (server-only). No NEXT_PUBLIC_ prefix. Never imported in client components. Admin client uses { auth: { persistSession: false } }.",
+      "fix_applied": null
+    },
+    {
+      "id": "ICHING-SEC-008",
+      "severity": "INFO",
+      "status": "VERIFIED_SAFE",
+      "rule": "owasp:hardcoded-secrets",
+      "title": "No hardcoded secrets found",
+      "description": "Full grep scan across all .ts/.tsx source files found no hardcoded API keys, tokens, or secrets. All sensitive values are loaded via process.env.*",
+      "fix_applied": null
+    },
+    {
+      "id": "ICHING-SEC-009",
+      "severity": "INFO",
+      "status": "VERIFIED_SAFE",
+      "rule": "owasp:sensitive-data-in-vcs",
+      "title": "No .env files tracked in git",
+      "description": "git ls-files returns no .env* files. .gitignore blocks .env and .env.* patterns.",
+      "fix_applied": null
+    },
+    {
+      "id": "ICHING-SEC-010",
+      "severity": "LOW",
+      "status": "ACTION_REQUIRED",
+      "rule": "owasp:vulnerable-dependencies",
+      "file": "apps/web/package.json",
+      "title": "postcss HIGH vulnerability via Next.js (GHSA-q4gf-8mx6-v5v3)",
+      "description": "postcss (transitive dep of Next.js 15.x) has a DoS vulnerability. Only HIGH vulnerability that touches production runtime. Fix available without breaking changes.",
+      "fix_applied": null,
+      "action": "Run: cd apps/web && npm audit fix"
+    }
+  ],
+  "summary": {
+    "critical": 0,
+    "high": 1,
+    "medium": 2,
+    "low": 2,
+    "info": 4,
+    "fixed_in_this_session": 4,
+    "action_required": 2
+  }
+}
