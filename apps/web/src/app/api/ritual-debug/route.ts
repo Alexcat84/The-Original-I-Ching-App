@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
   try {
     const body = (await req.json()) as RitualDebugPayload;
-    const label = typeof body.label === "string" ? body.label.slice(0, 120) : "unknown";
+    const label = (typeof body.label === "string" ? body.label.slice(0, 120) : "unknown").replace(/[\r\n]/g, " ");
     const elapsedMs = typeof body.elapsedMs === "number" ? body.elapsedMs : -1;
     // payload intentionally not logged — user-controlled data must not reach server logs
     console.log(`[ritual/client][+${elapsedMs}ms] ${label}`);

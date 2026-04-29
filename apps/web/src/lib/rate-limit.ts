@@ -1,12 +1,25 @@
 import { Redis } from "@upstash/redis";
 
 let redisClient: Redis | null | undefined;
+let _warnedOnce = false;
 
 function redis(): Redis | null {
   if (redisClient !== undefined) return redisClient;
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  redisClient = url && token ? new Redis({ url, token }) : null;
+  if (url && token) {
+    redisClient = new Redis({ url, token });
+  } else {
+    redisClient = null;
+    if (!_warnedOnce && process.env.NODE_ENV === "production") {
+      _warnedOnce = true;
+      console.warn(
+        "[rate-limit] UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN not set. " +
+          "Rate limiting is using an in-process Map which is NOT effective on serverless. " +
+          "Configure Upstash Redis in Vercel environment variables.",
+      );
+    }
+  }
   return redisClient;
 }
 
