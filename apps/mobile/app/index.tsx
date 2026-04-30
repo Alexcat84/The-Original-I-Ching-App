@@ -17,6 +17,7 @@ import {
   DeviceEventEmitter,
   Dimensions,
   type GestureResponderEvent,
+  I18nManager,
   Modal,
   Platform,
   StatusBar as RNStatusBar,
@@ -103,7 +104,11 @@ const LOCALES: { code: AppLocale; label: string; name: string }[] = [
   { code: "ja", label: "JA", name: "日本語" },
   { code: "zh", label: "ZH", name: "中文" },
   { code: "ko", label: "KO", name: "한국어" },
+  { code: "ar", label: "AR", name: "العربية" },
+  { code: "hi", label: "HI", name: "हिन्दी" },
 ];
+
+const RTL_LOCALES = new Set<AppLocale>(["ar"]);
 
 const SUPPORTED_LOCALE_CODES_JSON = JSON.stringify(LOCALES.map((l) => l.code));
 
@@ -1624,6 +1629,10 @@ export default function WebViewScreen() {
   const changeLocale = useCallback((newLocale: AppLocale) => {
     setLocaleState(newLocale);
     AsyncStorage.setItem(LOCALE_STORAGE_KEY, newLocale);
+    const isRtl = RTL_LOCALES.has(newLocale);
+    if (I18nManager.isRTL !== isRtl) {
+      I18nManager.forceRTL(isRtl);
+    }
     webViewRef.current?.injectJavaScript(
       `window.__rnSetLocale && window.__rnSetLocale(${JSON.stringify(newLocale)}); true;`
     );

@@ -322,6 +322,36 @@ const RUNTIME_TEXT: Record<
     leansPositive: "긍정 명제 쪽으로 기웁니다.",
     leansNegative: "명제 부정 쪽으로 기웁니다.",
   },
+  ar: {
+    ritualCoins: "الطقس جارٍ · رمي العملات",
+    ritualBones: "الطقس جارٍ · الحرارة على العظم",
+    ritualBonesHint: "توصيف أسلوب شانغ: يُثبَّت نمط الشقوق عند اكتمال الاستشارة.",
+    line: "خط",
+    signReading: "قراءة العلامة:",
+    oracleBones: "عظام الأوراكل",
+    medium: "الوسيط",
+    turtle: "بطن السلحفاة",
+    ox: "لوح كتف الثور",
+    chargePlus: "الشحنة +",
+    chargeMinus: "الشحنة −",
+    leansPositive: "يميل نحو الشحنة الموجبة.",
+    leansNegative: "يميل نحو نفي الشحنة.",
+  },
+  hi: {
+    ritualCoins: "अनुष्ठान जारी है · सिक्के फेंके जा रहे हैं",
+    ritualBones: "अनुष्ठान जारी है · हड्डी पर ऊष्मा",
+    ritualBonesHint: "शांग प्रक्रिया का शैलीकृत रूप: परामर्श पूरा होने पर दरार-पैटर्न तय होता है।",
+    line: "रेखा",
+    signReading: "चिह्न-पठन:",
+    oracleBones: "अस्थि ओरेकल",
+    medium: "माध्यम",
+    turtle: "कछुए का प्लास्ट्रॉन",
+    ox: "बैल की स्कैपुला",
+    chargePlus: "प्रस्ताव +",
+    chargeMinus: "प्रस्ताव −",
+    leansPositive: "सकारात्मक प्रस्ताव की ओर झुकता है।",
+    leansNegative: "प्रस्ताव के निषेध की ओर झुकता है।",
+  },
 };
 
 const RITUAL_STATUS_COPY: Record<
@@ -386,6 +416,18 @@ const RITUAL_STATUS_COPY: Record<
     consult: "신탁으로 옮기는 중",
     shape: "신탁이 살피는 중",
     seal: "해석을 봉인하는 중",
+  },
+  ar: {
+    question: "استقبال سؤالك",
+    consult: "نقله إلى الأوراكل",
+    shape: "الأوراكل يتشاور",
+    seal: "ختم القراءة",
+  },
+  hi: {
+    question: "आपके प्रश्न को थामते हुए",
+    consult: "उसे ओरेकल तक ले जाते हुए",
+    shape: "ओरेकल परामर्श कर रहा है",
+    seal: "पठन को सील किया जा रहा है",
   },
 };
 
@@ -522,6 +564,32 @@ const DRAWER_TEXT: Record<
     deleteConversation: "대화 삭제",
     deletingConversation: "대화 삭제 중…",
   },
+  ar: {
+    activity: "نشاطك",
+    streak: "التسلسل (أيام)",
+    consultationsToday: "الاستشارات اليوم",
+    chatsWithMessages: "المحادثات برسائل",
+    loadingChats: "جارٍ تحميل المحادثات…",
+    loadingConversation: "جارٍ تحميل المحادثة…",
+    onlyThreads: "تُعرض فقط الخيوط ذات قراءة واحدة على الأقل.",
+    noSaved: "لا توجد محادثات محفوظة بعد. أرسل استشارة لرؤيتها هنا.",
+    messages: "رسائل",
+    deleteConversation: "حذف المحادثة",
+    deletingConversation: "جارٍ حذف المحادثة…",
+  },
+  hi: {
+    activity: "आपकी गतिविधि",
+    streak: "लगातार दिन (स्ट्रीक)",
+    consultationsToday: "आज की परामर्श",
+    chatsWithMessages: "संदेश वाली चैट",
+    loadingChats: "चैट लोड हो रही हैं…",
+    loadingConversation: "वार्ता लोड हो रही है…",
+    onlyThreads: "केवल वे थ्रेड दिखाए जाते हैं जिनमें कम से कम एक रीडिंग हो।",
+    noSaved: "अभी कोई सहेजी गई बातचीत नहीं है। यहाँ देखने के लिए एक परामर्श भेजें।",
+    messages: "संदेश",
+    deleteConversation: "बातचीत हटाएँ",
+    deletingConversation: "बातचीत हटाई जा रही है…",
+  },
 };
 
 /** English first in the UI selector (default app language). */
@@ -540,6 +608,8 @@ const LANGUAGE_LABELS: Record<AppLocale, string> = {
   ja: "日本語",
   zh: "中文",
   ko: "한국어",
+  ar: "العربية",
+  hi: "हिन्दी",
 };
 
 type UiCopy = {
@@ -777,6 +847,52 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     emptyInviteAfternoon: "변화는 계속 움직입니다. 오늘 무엇을 더 분명히 보고 싶나요?",
     emptyInviteNight: "밤도 질문합니다. 삶의 어떤 영역을 탐색하고 싶나요?",
   },
+  ar: {
+    language: "اللغة",
+    chats: "المحادثات",
+    signIn: "تسجيل الدخول",
+    signOut: "تسجيل الخروج",
+    plan: "الخطة",
+    options: "خيارات",
+    writeConsultation: "اكتب استشارتك…",
+    positiveCharge: "الشحنة الإيجابية (تأكيد)…",
+    threadLimitReached: "تم بلوغ حد الخيط — استخدم «جلسة جديدة» أعلاه",
+    dismissThreadLimitBannerAria: "إخفاء إشعار حد الخيط",
+    sessionNew: "جلسة جديدة",
+    drawerClose: "إغلاق",
+    iChing: "I Ching",
+    bones: "عظام الكهانة",
+    iChingTagline: "ثلاث عملات · تشو شي · فيلهلم/بينز",
+    bonesTagline: "الشقوق 兆 (أسلوب شانغ) · نعم / لا",
+    modeIChingHint: "ستة خطوط وثلاث عملات لكل خط؛ طريقة تحوّل تشو شي.",
+    modeBonesHint: "سؤال نعم / لا بالشحنة الإيجابية؛ قراءة الشقوق 兆.",
+    emptyInviteMorning: "وقت مناسب للتشاور مع الأوراكل. ما القلق الذي يحمله هذا اليوم الجديد؟ اكتب استشارتك بنية صادقة.",
+    emptyInviteAfternoon: "التغيير لا يتوقف. ما الذي تحتاج إلى رؤيته بوضوح أكبر اليوم؟",
+    emptyInviteNight: "الليل أيضاً يسأل. أي جانب من حياتك تريد استكشافه؟",
+  },
+  hi: {
+    language: "भाषा",
+    chats: "चैट",
+    signIn: "साइन इन",
+    signOut: "साइन आउट",
+    plan: "प्लान",
+    options: "विकल्प",
+    writeConsultation: "अपनी सलाह लिखें…",
+    positiveCharge: "सकारात्मक प्रस्ताव (पुष्टि)…",
+    threadLimitReached: "थ्रेड सीमा पूरी — ऊपर «नई सत्र» का उपयोग करें",
+    dismissThreadLimitBannerAria: "थ्रेड सीमा सूचना छिपाएँ",
+    sessionNew: "नई सत्र",
+    drawerClose: "बंद करें",
+    iChing: "I Ching",
+    bones: "अस्थि ओरेकल",
+    iChingTagline: "तीन सिक्के · झू शी · विल्हेल्म/बेयन्स",
+    bonesTagline: "दरारें 兆 (शांग शैली) · हाँ / नहीं",
+    modeIChingHint: "छह रेखाएँ और प्रत्येक रेखा पर तीन सिक्के; झू शी परिवर्तन नियम।",
+    modeBonesHint: "सकारात्मक प्रस्ताव के साथ हाँ / नहीं प्रश्न; दरार 兆 पठन।",
+    emptyInviteMorning: "ओरेकल से पूछने का अच्छा समय है। आज की आपकी मुख्य चिंता क्या है?",
+    emptyInviteAfternoon: "परिवर्तन चलता रहता है। आज आपको किस बात को और स्पष्ट देखना है?",
+    emptyInviteNight: "रात भी प्रश्न पूछती है। जीवन के किस हिस्से को आप समझना चाहते हैं?",
+  },
 };
 
 function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
@@ -843,6 +959,20 @@ function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
       inauspicious_moderate: "凶 — 보통의 흉",
       inauspicious_clear: "凶 — 뚜렷한 흉(부정 전하)",
       silent: "명확한 답 없음 — 조상의 침묵",
+    },
+    ar: {
+      auspicious_clear: "吉 — إيجابي واضح (شحنة موجبة)",
+      auspicious_moderate: "吉 — إيجابي معتدل",
+      inauspicious_moderate: "凶 — سلبي معتدل",
+      inauspicious_clear: "凶 — سلبي واضح (شحنة سالبة)",
+      silent: "لا إجابة واضحة — صمت الأجداد",
+    },
+    hi: {
+      auspicious_clear: "吉 — स्पष्ट शुभ (सकारात्मक प्रस्ताव)",
+      auspicious_moderate: "吉 — मध्यम शुभ",
+      inauspicious_moderate: "凶 — मध्यम अशुभ",
+      inauspicious_clear: "凶 — स्पष्ट अशुभ (नकारात्मक प्रस्ताव)",
+      silent: "कोई स्पष्ट उत्तर नहीं — पूर्वजों का मौन",
     },
   };
   return mapByLocale[locale][v];
@@ -1210,6 +1340,7 @@ export default function HomePage() {
     try {
       window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, next);
       document.documentElement.lang = htmlLangFromAppLocale(next);
+      document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
       document.cookie = `iching_ui_locale=${encodeURIComponent(next)}; path=/; max-age=31536000; samesite=lax`;
     } catch {
       /* private mode / cookies blocked */
@@ -1236,6 +1367,7 @@ export default function HomePage() {
     try {
       window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, locale);
       document.documentElement.lang = htmlLangFromAppLocale(locale);
+      document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
       document.cookie = `iching_ui_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
     } catch {
       /* private mode */

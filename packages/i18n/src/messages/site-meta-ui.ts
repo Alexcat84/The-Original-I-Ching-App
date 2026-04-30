@@ -43,6 +43,14 @@ const SITE_META_UI: Record<AppLocale, SiteMetaUiMessages> = {
     title: "역경 오라클",
     description: "주희 변효 규칙을 따른 고전 역경",
   },
+  ar: {
+    title: "أوراكل I Ching",
+    description: "I Ching الكلاسيكي وفق قواعد تحوّل Zhu Xi",
+  },
+  hi: {
+    title: "I Ching ओरेकल",
+    description: "ज़ू शी उत्परिवर्तन नियमों के साथ क्लासिकल I Ching",
+  },
 };
 
 export function getSiteMetaUiMessages(locale: AppLocale): SiteMetaUiMessages {

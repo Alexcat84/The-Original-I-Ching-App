@@ -1,4 +1,4 @@
-export const SUPPORTED_LOCALES = ["es", "en", "pt", "fr", "de", "it", "ja", "zh", "ko"] as const;
+export const SUPPORTED_LOCALES = ["es", "en", "pt", "fr", "de", "it", "ja", "zh", "ko", "ar", "hi"] as const;
 export type AppLocale = (typeof SUPPORTED_LOCALES)[number];
 
 export const DEFAULT_LOCALE: AppLocale = "en";
@@ -57,5 +57,17 @@ export const commonStrings: Record<AppLocale, { appTitle: string; consult: strin
     consult: "점치기",
     deepen: "심화",
     newSession: "새 세션",
+  },
+  ar: {
+    appTitle: "El autentico I ching app",
+    consult: "استشر",
+    deepen: "أعمق",
+    newSession: "جلسة جديدة",
+  },
+  hi: {
+    appTitle: "El autentico I ching app",
+    consult: "परामर्श करें",
+    deepen: "गहराएं",
+    newSession: "नया सत्र",
   },
 };

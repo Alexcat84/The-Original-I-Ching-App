@@ -1,7 +1,7 @@
 import type { OracleBonesCastResult } from "@iching-oracle/oracle-bones-engine";
 
 /** Must match `SUPPORTED_LOCALES` in apps/web; unknown → English. */
-const ORACLE_BONES_UI_LANGS = ["es", "en", "pt", "fr", "de", "it", "ja", "zh", "ko"] as const;
+const ORACLE_BONES_UI_LANGS = ["es", "en", "pt", "fr", "de", "it", "ja", "zh", "ko", "ar", "hi"] as const;
 export type OracleBonesUiLang = (typeof ORACLE_BONES_UI_LANGS)[number];
 
 export function normalizeOracleBonesUiLang(language: string): OracleBonesUiLang {
@@ -75,6 +75,20 @@ const VERDICT_LABELS: Record<OracleBonesUiLang, Record<Verdict, string>> = {
     inauspicious_clear: "명확히 흉함",
     silent: "침묵／미정",
   },
+  ar: {
+    auspicious_clear: "مبشّر بوضوح",
+    auspicious_moderate: "مبشّر بدرجة معتدلة",
+    inauspicious_moderate: "غير مبشّر بدرجة معتدلة",
+    inauspicious_clear: "غير مبشّر بوضوح",
+    silent: "صمت/غير محدد",
+  },
+  hi: {
+    auspicious_clear: "स्पष्ट रूप से शुभ",
+    auspicious_moderate: "मध्यम रूप से शुभ",
+    inauspicious_moderate: "मध्यम रूप से अशुभ",
+    inauspicious_clear: "स्पष्ट रूप से अशुभ",
+    silent: "मौन/अनिर्धारित",
+  },
 };
 
 export function verdictNaturalLabelLocalized(verdict: Verdict, language: string): string {
@@ -106,6 +120,10 @@ export function structuralVerdictLineLocalized(cast: OracleBonesCastResult, lang
         return `结构裁定：${label}。祖先之兆静默／未定；此占无法给出明确的是／否。`;
       case "ko":
         return `구조적 판정: ${label}. 조상의 계시는 침묵/미정이며, 이번 점에서 명확한 예/아니오 확인은 없습니다.`;
+      case "ar":
+        return `الحكم البنيوي: ${label}. إشارات الأسلاف في حالة صمت/لا تحديد؛ ولا تتوفر في هذه الرمية تأكيدات نعم/لا واضحة.`;
+      case "hi":
+        return `संरचनात्मक निर्णय: ${label}। पूर्वजों का संकेत मौन/अनिर्धारित है; इस कास्ट में स्पष्ट हाँ/नहीं पुष्टि उपलब्ध नहीं है।`;
     }
   }
 
@@ -129,6 +147,10 @@ export function structuralVerdictLineLocalized(cast: OracleBonesCastResult, lang
         return `结构裁定：${label}，与肯定之辞一致。在此占中，肯定命题得到确认。`;
       case "ko":
         return `구조적 판정: ${label}, 긍정적 문구와 맞닿습니다. 이번 점에서 긍정적 명제가 확인됩니다.`;
+      case "ar":
+        return `الحكم البنيوي: ${label}، ومتوافق مع الشحنة الإيجابية. في هذه الرمية، يتأكد الادعاء الإيجابي.`;
+      case "hi":
+        return `संरचनात्मक निर्णय: ${label}, यह सकारात्मक प्रस्ताव के अनुरूप है। इस कास्ट में सकारात्मक कथन की पुष्टि होती है।`;
     }
   }
 
@@ -151,6 +173,10 @@ export function structuralVerdictLineLocalized(cast: OracleBonesCastResult, lang
       return `结构裁定：${label}，与否定之辞一致。在此占中，肯定命题未获确认。`;
     case "ko":
       return `구조적 판정: ${label}, 부정적 문구와 맞닿습니다. 이번 점에서 긍정적 명제는 확인되지 않습니다.`;
+    case "ar":
+      return `الحكم البنيوي: ${label}، ومتوافق مع الشحنة السلبية. في هذه الرمية، لا يتم تأكيد الادعاء الإيجابي.`;
+    case "hi":
+      return `संरचनात्मक निर्णय: ${label}, यह नकारात्मक प्रस्ताव के अनुरूप है। इस कास्ट में सकारात्मक कथन की पुष्टि नहीं होती।`;
   }
 }
 
@@ -175,6 +201,10 @@ export function oracleBonesSilentVerdictMessage(language: string): string {
       return "若裂纹兆象连续三次不定，商代做法常是暂缓而非强求是或否。待情势更明朗时再重述所问。";
     case "ko":
       return "균열 패턴이 연속 세 번 불명확하면, 상(商) 시대 관례는 예/아니오를 억지로 내기보다 잠시 멈추는 경우가 많았습니다. 상황이 더 분명해지면 질문을 다시 정리해 보세요.";
+    case "ar":
+      return "إذا جاءت قراءة الشقوق غير حاسمة ثلاث مرات متتالية، فكان التقليد الشانغي يميل إلى التريّث بدل فرض إجابة نعم/لا. أعد صياغة سؤالك عندما تتضح الصورة أكثر.";
+    case "hi":
+      return "यदि दरार-पठन लगातार तीन बार अनिर्णीत आए, तो शांग परंपरा में अक्सर हाँ/नहीं को मजबूर करने के बजाय ठहरने की सलाह दी जाती थी। स्थिति स्पष्ट होने पर प्रश्न को फिर से रखें।";
   }
 }
 
@@ -201,6 +231,10 @@ export function oracleBonesFallbackProse(cast: OracleBonesCastResult, language: 
         return `此裂纹兆象（${label}）目前无法给出明确的是／否。`;
       case "ko":
         return `이 균열 패턴(${label})은 지금 명확한 예/아니오를 주지 않습니다.`;
+      case "ar":
+        return `نمط الشقوق (${label}) لا يقدّم في الوقت الحالي إجابة نعم/لا واضحة.`;
+      case "hi":
+        return `यह दरार-पैटर्न (${label}) इस समय स्पष्ट हाँ/नहीं नहीं देता।`;
     }
   }
   if (cast.affirmsPositive) {
@@ -223,6 +257,10 @@ export function oracleBonesFallbackProse(cast: OracleBonesCastResult, language: 
         return `此裂纹兆象（${label}）倾向肯定之辞。`;
       case "ko":
         return `균열 패턴(${label})은 긍정적 문구 쪽으로 기울어집니다.`;
+      case "ar":
+        return `نمط الشقوق (${label}) يميل نحو الشحنة الإيجابية.`;
+      case "hi":
+        return `यह दरार-पैटर्न (${label}) सकारात्मक प्रस्ताव की ओर झुकता है।`;
     }
   }
   switch (lang) {
@@ -244,5 +282,9 @@ export function oracleBonesFallbackProse(cast: OracleBonesCastResult, language: 
       return `此裂纹兆象（${label}）倾向否定肯定命题。`;
     case "ko":
       return `균열 패턴(${label})은 긍정적 명제가 확인되지 않는 쪽으로 기울어집니다.`;
+    case "ar":
+      return `نمط الشقوق (${label}) يميل نحو عدم تأكيد الادعاء الإيجابي.`;
+    case "hi":
+      return `यह दरार-पैटर्न (${label}) इस ओर झुकता है कि सकारात्मक कथन की पुष्टि नहीं होती।`;
   }
 }

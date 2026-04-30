@@ -96,6 +96,24 @@ const ORACLE_PRESENTATION_UI: Record<AppLocale, OraclePresentationUiMessages> = 
     playCtaAria: "Google Play에서 열기",
     playStripDismissAria: "Google Play 안내 닫기",
   },
+  ar: {
+    regionAria: "تحميل التطبيق على Google Play",
+    playBadgeTitle: "احمله معك",
+    playBadgeSubtitle: "Google Play",
+    playSoon: "الرابط قريبًا",
+    playInstall: "تثبيت",
+    playCtaAria: "فتح على Google Play",
+    playStripDismissAria: "إغلاق شريط إشعار Google Play",
+  },
+  hi: {
+    regionAria: "Google Play पर ऐप डाउनलोड करें",
+    playBadgeTitle: "इसे अपने साथ ले जाएं",
+    playBadgeSubtitle: "Google Play",
+    playSoon: "लिंक जल्द आएगा",
+    playInstall: "इंस्टॉल करें",
+    playCtaAria: "Google Play पर खोलें",
+    playStripDismissAria: "Google Play सूचना बंद करें",
+  },
 };
 
 export function getOraclePresentationUiMessages(locale: AppLocale): OraclePresentationUiMessages {

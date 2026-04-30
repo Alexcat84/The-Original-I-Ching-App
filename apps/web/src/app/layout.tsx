@@ -26,11 +26,13 @@ const themeInitScript = `(function(){try{var k="iching_theme",t=localStorage.get
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await resolveDocLocale();
   const htmlLang = htmlLangFromAppLocale(locale);
+  const htmlDir = locale === "ar" ? "rtl" : "ltr";
   const nonce = (await headers()).get("x-nonce") ?? "";
 
   return (
     <html
       lang={htmlLang}
+      dir={htmlDir}
       suppressHydrationWarning
       className={rootFontClassName}
     >

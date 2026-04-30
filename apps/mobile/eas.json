@@ -22,9 +22,6 @@
         "NODE_OPTIONS": "--max-old-space-size=8192",
         "METRO_MAX_WORKERS": "2"
       },
-      "buildArtifactPaths": [
-        "android/app/build/outputs/mapping/**/mapping.txt"
-      ],
       "android": {
         "buildType": "app-bundle",
         "credentialsSource": "remote"

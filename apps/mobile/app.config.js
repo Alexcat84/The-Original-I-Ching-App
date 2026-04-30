@@ -77,8 +77,9 @@ module.exports = ({ config }) => ({
           compileSdkVersion: 35,
           targetSdkVersion: 35,
           buildToolsVersion: "35.0.0",
-          // R8 minify/obfuscate release; generates mapping.txt for Play deobfuscation uploads.
-          enableProguardInReleaseBuilds: true,
+          // Keep release stable for Play: R8/proguard + Amazon SDK warnings were causing startup crashes.
+          // Re-enable only after adding explicit keep rules and validating on internal track devices.
+          enableProguardInReleaseBuilds: false,
         },
       },
     ],

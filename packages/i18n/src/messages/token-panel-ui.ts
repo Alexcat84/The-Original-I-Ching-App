@@ -25,7 +25,7 @@ export type TokenPanelUiMessages = {
   threadCapShort: string;
 };
 
-const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
+const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
   es: {
     ariaTokenGroup: "Gestión de tokens",
     tokensHeading: "Tokens",
@@ -222,8 +222,53 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
     availableBalance: "사용 가능 토큰:",
     threadCapShort: "스레드당 한도:",
   },
+  ar: {
+    ariaTokenGroup: "إدارة الرموز",
+    tokensHeading: "الرموز",
+    lastPack: "آخر باقة:",
+    remaining: "متبقية",
+    loading: "جارٍ التحميل…",
+    tokenCenter: "مركز الرموز",
+    accumulation:
+      "رموزك تتراكم: إذا اشتريت باقة جديدة قبل نفاد الحالية، تنتقل الرموز المتبقية وتُضاف إلى الباقة الجديدة.",
+    loadError: "تعذّر تحميل مركز الرموز. يرجى المحاولة مجددًا.",
+    messageFreeDepleted:
+      "لقد استنفدت استشاراتك المجانية مدى الحياة. اشترِ رموزًا في الخطط والمدفوعات للمتابعة.",
+    messageNoActivePurchase:
+      "لا يوجد شراء نشط حديث. يمكنك شراء المزيد من الرموز في الخطط والمدفوعات.",
+    consultThreadLimit: "لقد وصلت إلى حد هذه المحادثة. ابدأ جلسة جديدة للمتابعة.",
+    consultThreadLimitStrip: "وصلت هذه المحادثة إلى حد القراءة.",
+    noTokensDepleted: "لقد استخدمت جميع رموزك. اشترِ باقة جديدة للمتابعة.",
+    signInForBalance: "سجّل الدخول لعرض رصيدك.",
+    tokenCenterGuideLink: "دليل المستخدم",
+    availableBalance: "الرموز المتاحة:",
+    threadCapShort: "حد المحادثة:",
+  },
+};
+
+TOKEN_PANEL_UI.hi = {
+  ...(TOKEN_PANEL_UI.en ?? TOKEN_PANEL_UI[DEFAULT_LOCALE]!),
+  ariaTokenGroup: "टोकन प्रबंधन",
+  tokensHeading: "टोकन",
+  lastPack: "अंतिम पैक:",
+  remaining: "शेष",
+  loading: "लोड हो रहा है…",
+  tokenCenter: "टोकन केंद्र",
+  accumulation:
+    "आपके टोकन जुड़ते रहते हैं: यदि मौजूदा पैक खत्म होने से पहले नया पैक खरीदते हैं, तो बचे हुए टोकन नए पैक में जुड़ जाते हैं।",
+  loadError: "टोकन केंद्र लोड नहीं हो सका। कृपया फिर से प्रयास करें।",
+  messageFreeDepleted:
+    "आपकी आजीवन निःशुल्क परामर्श सीमा समाप्त हो चुकी है। जारी रखने के लिए योजनाएँ और भुगतान में टोकन खरीदें।",
+  messageNoActivePurchase: "हाल में कोई सक्रिय खरीद नहीं है। आप योजनाएँ और भुगतान में और टोकन खरीद सकते हैं।",
+  consultThreadLimit: "आप इस थ्रेड की सीमा तक पहुँच चुके हैं। जारी रखने के लिए नई सत्र शुरू करें।",
+  consultThreadLimitStrip: "इस थ्रेड की रीडिंग सीमा पूरी हो चुकी है।",
+  noTokensDepleted: "आपने सभी टोकन उपयोग कर लिए हैं। जारी रखने के लिए नया पैक खरीदें।",
+  signInForBalance: "अपना बैलेंस देखने के लिए साइन इन करें।",
+  tokenCenterGuideLink: "उपयोगकर्ता मार्गदर्शिका",
+  availableBalance: "उपलब्ध टोकन:",
+  threadCapShort: "प्रति थ्रेड सीमा:",
 };
 
 export function getTokenPanelUiMessages(locale: AppLocale): TokenPanelUiMessages {
-  return TOKEN_PANEL_UI[locale] ?? TOKEN_PANEL_UI[DEFAULT_LOCALE];
+  return TOKEN_PANEL_UI[locale] ?? TOKEN_PANEL_UI[DEFAULT_LOCALE]!;
 }

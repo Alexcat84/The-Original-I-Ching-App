@@ -124,7 +124,31 @@ export function ConsultationRecordCard({
       question: "연결된 질문",
       dateLocale: "ko",
     },
-  }[(localeKey in { es:1,en:1,pt:1,fr:1,de:1,it:1,ja:1,zh:1,ko:1 } ? localeKey : "en") as "es" | "en" | "pt" | "fr" | "de" | "it" | "ja" | "zh" | "ko"];
+    ar: {
+      panel: "معرّف القراءة",
+      summary: "ملخص القراءة",
+      trace: "الأثر المستلَم:",
+      rule: "قاعدة القراءة:",
+      thread: "في هذا الخيط:",
+      reading: "قراءة",
+      question: "السؤال المرتبط",
+      dateLocale: "ar",
+    },
+    hi: {
+      panel: "रीडिंग पहचानकर्ता",
+      summary: "रीडिंग सारांश",
+      trace: "प्राप्त ट्रेस:",
+      rule: "रीडिंग नियम:",
+      thread: "इस थ्रेड में:",
+      reading: "रीडिंग",
+      question: "संबंधित प्रश्न",
+      dateLocale: "hi",
+    },
+  }[
+    (localeKey in { es: 1, en: 1, pt: 1, fr: 1, de: 1, it: 1, ja: 1, zh: 1, ko: 1, ar: 1, hi: 1 }
+      ? localeKey
+      : "en") as "es" | "en" | "pt" | "fr" | "de" | "it" | "ja" | "zh" | "ko" | "ar" | "hi"
+  ];
 
   const ruleLocale = parseAppLocale(localeKey);
 

@@ -1,6 +1,6 @@
 import type { CastResult } from "@iching-oracle/iching-engine";
 
-const ICHING_UI_LANGS = ["es", "en", "pt", "fr", "de", "it", "ja", "zh", "ko"] as const;
+const ICHING_UI_LANGS = ["es", "en", "pt", "fr", "de", "it", "ja", "zh", "ko", "ar", "hi"] as const;
 export type IchingUiLang = (typeof ICHING_UI_LANGS)[number];
 
 export function normalizeIchingUiLang(language: string): IchingUiLang {
@@ -19,6 +19,8 @@ const COUNT_WORDS: Record<IchingUiLang, readonly [string, string, string, string
   ja: ["零", "一", "二", "三", "四", "五", "六"],
   zh: ["零", "一", "二", "三", "四", "五", "六"],
   ko: ["영", "하나", "둘", "셋", "넷", "다섯", "여섯"],
+  ar: ["صفر", "واحد", "اثنان", "ثلاثة", "أربعة", "خمسة", "ستة"],
+  hi: ["शून्य", "एक", "दो", "तीन", "चार", "पाँच", "छह"],
 };
 
 export function spelledChangingLineCountLabel(count: number, language: string): string {
@@ -37,6 +39,8 @@ const NONE_LINES: Record<IchingUiLang, string> = {
   ja: "なし",
   zh: "无",
   ko: "없음",
+  ar: "لا يوجد",
+  hi: "कोई नहीं",
 };
 
 const NONE_HEX: Record<IchingUiLang, string> = {
@@ -49,6 +53,8 @@ const NONE_HEX: Record<IchingUiLang, string> = {
   ja: "なし",
   zh: "无",
   ko: "없음",
+  ar: "لا يوجد",
+  hi: "कोई नहीं",
 };
 
 export function ichingStructuralCorrectionAppendix(
@@ -83,6 +89,10 @@ export function ichingStructuralCorrectionAppendix(
       return `结构更正：本卦有${expected}条变爻（${countLabel}）。位置：${lineList}。之卦：${transformedLabel}。`;
     case "ko":
       return `구조적 수정: 이번 점의 변효는 ${expected}개(${countLabel}). 위치: ${lineList}. 지괘: ${transformedLabel}.`;
+    case "ar":
+      return `تصحيح بنيوي: تحتوي هذه الرمية على ${expected} خط${expected === 1 ? "" : "وط"} متحوّل (${countLabel}). المواضع: ${lineList}. الهيكساغرام المتحوّل: ${transformedLabel}.`;
+    case "hi":
+      return `संरचनात्मक सुधार: इस कास्ट में ${expected} परिवर्तित रेखा${expected === 1 ? "" : "एँ"} हैं (${countLabel})। स्थितियाँ: ${lineList}। परिवर्तित हेक्साग्राम: ${transformedLabel}।`;
   }
 }
 
