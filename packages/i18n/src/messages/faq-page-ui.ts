@@ -208,6 +208,138 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   },
 ];
 
+const FAQ_ITEMS_AR: FaqItem[] = [
+  {
+    id: "tokens-packs",
+    question: "كيف تعمل الرموز والباقات والطبقة المجانية؟",
+    answer:
+      "تستهلك كل استشارة رموزًا وفق باقتك النشطة. يوضح الدليل رصيد التجربة المجانية، أحجام الباقات، وكيف يتراكم الرصيد مع حسابك. تخضع المشتريات والتجديدات لشروط الخدمة.",
+    related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "two-oracles",
+    question: "ما الفرق بين I Ching (العملات) وعظام الكهانة؟",
+    answer:
+      "يتبع I Ching طقس الخطوط الستة الكلاسيكي. أما عظام الكهانة فتستخدم مسارًا منفصلًا قائمًا على الشحنة الإيجابية/السلبية مستوحى من العرافة القديمة بالشروخ.",
+    related: ["methodNotes", "userGuideGettingStarted"],
+  },
+  {
+    id: "thread-depth",
+    question: "لماذا لا أستطيع أحيانًا «التعمّق» أكثر في نفس المحادثة؟",
+    answer:
+      "يسمح كل خيط بعدد محدود من القراءات المتسلسلة حسب خطتك. عند بلوغ الحد، ابدأ جلسة جديدة. يشرح الدليل المحادثات والجلسة الجديدة وحدود كل خطة.",
+    related: ["userGuide", "tokenPacks"],
+  },
+  {
+    id: "chats-drawer",
+    question: "أين أجد محادثاتي السابقة؟",
+    answer:
+      "افتح «المحادثات» من الترويسة لاستعراض الخيوط المحفوظة، والتنقل بينها، أو بدء جلسة جديدة. يرتبط السجل الموثّق بحسابك كما هو موضح في الدليل وسياسة الخصوصية.",
+    related: ["userGuide", "privacyPolicy"],
+  },
+  {
+    id: "export-pdf",
+    question: "هل يمكنني تصدير قراءة؟",
+    answer:
+      "نعم. بعد الاستشارة يمكنك تصدير الخيط إلى PDF من إجراءات بطاقة القراءة عندما تكون متاحة. التفاصيل في دليل المستخدم.",
+    related: ["userGuide"],
+  },
+  {
+    id: "privacy-data",
+    question: "ما البيانات التي تخزّنونها عني وعن قراءاتي؟",
+    answer:
+      "تشرح سياسة الخصوصية فئات البيانات وفترات الاحتفاظ وكيف تبقى القراءات والصور خاصة بحسابك. وهي مكمّلة لما يوضحه الدليل داخل التطبيق.",
+    related: ["privacyPolicy", "userGuide"],
+  },
+  {
+    id: "purchases-legal",
+    question: "أين أجد الاسترداد والفوترة وشروط الخدمة؟",
+    answer:
+      "الشروط التجارية والاستخدام المقبول موجودة في شروط الخدمة. كما تُلخّص صفحة الباقات والأسعار آلية الشراء والدفع.",
+    related: ["termsOfService", "tokenPacks", "pricing"],
+  },
+  {
+    id: "security-2fa",
+    question: "هل تتوفر المصادقة الثنائية (2FA)؟",
+    answer:
+      "نعم، بشكل اختياري. يمكنك تفعيل 2FA (تطبيق المصادقة و/أو رمز البريد الإلكتروني) من أمان الحساب داخل الأوراكل.",
+    related: ["userGuide"],
+  },
+  {
+    id: "not-advice",
+    question: "هل هذه نصيحة مهنية؟",
+    answer:
+      "لا. التفسيرات أدوات ثقافية وتأملية وليست نصيحة طبية أو مالية أو مهنية. راجع ملاحظات المنهج للسياق، وشروط الخدمة لإخلاءات المسؤولية.",
+    related: ["methodNotes", "termsOfService"],
+  },
+];
+
+const FAQ_ITEMS_HI: FaqItem[] = [
+  {
+    id: "tokens-packs",
+    question: "टोकन, पैक और फ्री टियर कैसे काम करते हैं?",
+    answer:
+      "हर परामर्श आपके सक्रिय पैक के अनुसार टोकन खर्च करता है। गाइड में फ्री ट्रायल बैलेंस, पैक साइज़ और बैलेंस कैसे जुड़ता है, यह समझाया गया है। खरीद और नवीनीकरण सेवा शर्तों के अधीन हैं।",
+    related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "two-oracles",
+    question: "I Ching (सिक्के) और Oracle Bones में क्या अंतर है?",
+    answer:
+      "I Ching क्लासिक छह-रेखा अनुष्ठान पर आधारित है। Oracle Bones एक अलग हाँ/नहीं प्रवाह उपयोग करता है जो प्राचीन दरार-आधारित दिव्यज्ञान से प्रेरित है।",
+    related: ["methodNotes", "userGuideGettingStarted"],
+  },
+  {
+    id: "thread-depth",
+    question: "कभी-कभी मैं उसी चैट में आगे “deepen” क्यों नहीं कर पाता/पाती?",
+    answer:
+      "आपकी योजना के अनुसार हर थ्रेड में सीमित संख्या में रीडिंग की श्रृंखला मिलती है। सीमा पूरी होने पर नई सेशन शुरू करें।",
+    related: ["userGuide", "tokenPacks"],
+  },
+  {
+    id: "chats-drawer",
+    question: "मेरी पिछली बातचीत कहाँ मिलती है?",
+    answer:
+      "हेडर में “Chats” खोलकर आप सेव किए गए थ्रेड देख सकते हैं, उनमें स्विच कर सकते हैं या नई सेशन शुरू कर सकते हैं। प्रमाणित इतिहास आपके खाते से जुड़ा रहता है।",
+    related: ["userGuide", "privacyPolicy"],
+  },
+  {
+    id: "export-pdf",
+    question: "क्या मैं रीडिंग एक्सपोर्ट कर सकता/सकती हूँ?",
+    answer:
+      "हाँ। परामर्श के बाद जहाँ उपलब्ध हो, रीडिंग कार्ड की क्रियाओं से थ्रेड को PDF में एक्सपोर्ट किया जा सकता है।",
+    related: ["userGuide"],
+  },
+  {
+    id: "privacy-data",
+    question: "मेरे और मेरी रीडिंग्स के बारे में आप कौन-सा डेटा रखते हैं?",
+    answer:
+      "गोपनीयता नीति डेटा श्रेणियाँ, संग्रह अवधि और यह बताती है कि रीडिंग्स व इमेजेस आपके खाते तक निजी रहती हैं।",
+    related: ["privacyPolicy", "userGuide"],
+  },
+  {
+    id: "purchases-legal",
+    question: "रिफंड, बिलिंग और सेवा शर्तें कहाँ हैं?",
+    answer:
+      "वाणिज्यिक शर्तें और स्वीकार्य उपयोग सेवा शर्तों में हैं। टोकन पैक और चेकआउट प्रवाह गाइड व प्राइसिंग पेज में सारांशित हैं।",
+    related: ["termsOfService", "tokenPacks", "pricing"],
+  },
+  {
+    id: "security-2fa",
+    question: "क्या दो-कारक प्रमाणीकरण (2FA) उपलब्ध है?",
+    answer:
+      "हाँ, वैकल्पिक रूप से। आप खाता सुरक्षा से 2FA (Authenticator और/या ईमेल कोड) सक्षम कर सकते हैं।",
+    related: ["userGuide"],
+  },
+  {
+    id: "not-advice",
+    question: "क्या यह पेशेवर सलाह है?",
+    answer:
+      "नहीं। ये व्याख्याएँ सांस्कृतिक और चिंतनात्मक सहायता हैं, न कि चिकित्सा, वित्तीय या अन्य पेशेवर सलाह।",
+    related: ["methodNotes", "termsOfService"],
+  },
+];
+
 const FAQ_PAGE_META: Record<AppLocale, Pick<FaqPageUi, "title" | "intro" | "seeAlsoHeading">> = {
   es: {
     title: "Preguntas frecuentes",
@@ -279,6 +411,13 @@ const FAQ_PAGE_META: Record<AppLocale, Pick<FaqPageUi, "title" | "intro" | "seeA
 
 export function getFaqPageUiMessages(locale: AppLocale): FaqPageUi {
   const meta = FAQ_PAGE_META[locale] ?? FAQ_PAGE_META[DEFAULT_LOCALE];
-  const items = locale === "es" ? FAQ_ITEMS_ES : FAQ_ITEMS_EN;
+  const items =
+    locale === "es"
+      ? FAQ_ITEMS_ES
+      : locale === "ar"
+        ? FAQ_ITEMS_AR
+        : locale === "hi"
+          ? FAQ_ITEMS_HI
+          : FAQ_ITEMS_EN;
   return { ...meta, items };
 }

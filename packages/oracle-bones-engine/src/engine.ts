@@ -94,5 +94,7 @@ export function defaultNegativeCharge(positiveCharge: string, language: string):
   if (language.startsWith("ja")) return `次の内容は確認されません：${core}。`;
   if (language.startsWith("zh")) return `未能确认以下命题：${core}。`;
   if (language.startsWith("ko")) return `다음 명제는 확인되지 않습니다: ${core}.`;
+  if (language.startsWith("ar")) return `لا يتأكد ما يلي: ${core}.`;
+  if (language.startsWith("hi")) return `यह पुष्टि नहीं होती कि: ${core}।`;
   return `It will not be the case that: ${core}.`;
 }

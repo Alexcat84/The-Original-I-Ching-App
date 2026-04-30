@@ -878,7 +878,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     plan: "प्लान",
     options: "विकल्प",
     writeConsultation: "अपनी सलाह लिखें…",
-    positiveCharge: "सकारात्मक प्रस्ताव (affirmation)…",
+    positiveCharge: "सकारात्मक प्रस्ताव (पुष्टि)…",
     threadLimitReached: "थ्रेड सीमा पूरी — ऊपर «नई सत्र» का उपयोग करें",
     dismissThreadLimitBannerAria: "थ्रेड सीमा सूचना छिपाएँ",
     sessionNew: "नई सत्र",
