@@ -132,6 +132,17 @@ const GUIA_PACKS_UI: Record<AppLocale, GuiaPacksUiMessages> = {
       "رموزك تتراكم: إذا اشتريت حزمة جديدة قبل نفاد رموزك، تنتقل الرموز المتبقية وتُضاف إلى الحزمة الجديدة.",
     perPlanDetailHeading: "تفاصيل حسب الخطة (حدود الخيط، الحزم القابلة للاستهلاك، ودقة الصور):",
   },
+  hi: {
+    sectionTitle: "पैक और भुगतान",
+    currentPricing: "वर्तमान मूल्य:",
+    freeTierLabel: "निःशुल्क:",
+    freeProductName: "निःशुल्क",
+    freeLine: "$0 · {{count}} जीवनकाल मुफ्त परामर्श",
+    packPriceTemplate: "${{price}} · {{tokens}} {{tokensWord}}",
+    tokensAccumulate:
+      "आपके टोकन जमा होते हैं: यदि आप टोकन समाप्त होने से पहले नया पैक खरीदते हैं, तो शेष टोकन नए पैक में जुड़ जाते हैं।",
+    perPlanDetailHeading: "प्रति योजना विवरण (प्रति थ्रेड सीमाएं, उपभोज्य पैक और छवि रिज़ॉल्यूशन):",
+  },
 };
 
 export function getGuiaPacksUiMessages(locale: AppLocale): GuiaPacksUiMessages {

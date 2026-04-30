@@ -113,6 +113,16 @@ const ONBOARDING_UI: Record<AppLocale, OnboardingUiMessages> = {
     confirmYes: "نعم، هذا صحيح",
     confirmEdit: "أريد تغييره",
   },
+  hi: {
+    title: "आप किस बारे में परामर्श करना चाहते हैं?",
+    subtitle: "अपना प्रश्न या विषय स्वतंत्र रूप से लिखें। ओरेकल सुन रहा है।",
+    placeholder: "आपका प्रश्न यहाँ…",
+    button: "ओरेकल से परामर्श करें",
+    confirmTitle: "परामर्श की पुष्टि",
+    confirmSubtitle: "क्या आप यही पूछना चाहते हैं?",
+    confirmYes: "हाँ, जारी रखें",
+    confirmEdit: "संपादित करें",
+  },
 };
 
 export function getOnboardingUiMessages(locale: AppLocale): OnboardingUiMessages {

@@ -84,7 +84,7 @@ export type TwoFactorUiMessages = {
   challengeVerifyFailed: string;
 };
 
-const TWO_FACTOR_UI: Record<AppLocale, TwoFactorUiMessages> = {
+const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
   es: {
     manageTitle: "Configuración de seguridad 2FA",
     challengeTitle: "Verificación 2FA requerida",
@@ -1087,8 +1087,16 @@ const TWO_FACTOR_UI: Record<AppLocale, TwoFactorUiMessages> = {
   },
 };
 
+TWO_FACTOR_UI.hi = {
+  ...(TWO_FACTOR_UI.en ?? TWO_FACTOR_UI[DEFAULT_LOCALE]!),
+  manageTitle: "2FA सुरक्षा सेटअप",
+  challengeTitle: "2FA सत्यापन आवश्यक",
+  closeDialogAria: "2FA विंडो बंद करें",
+  signInFor2fa: "दो-चरण सत्यापन सेटअप करने के लिए साइन इन करें।",
+};
+
 export function getTwoFactorUiMessages(locale: AppLocale): TwoFactorUiMessages {
-  return TWO_FACTOR_UI[locale] ?? TWO_FACTOR_UI[DEFAULT_LOCALE];
+  return TWO_FACTOR_UI[locale] ?? TWO_FACTOR_UI[DEFAULT_LOCALE]!;
 }
 
 export function formatTwoFactorSupportMailBody(m: TwoFactorUiMessages, email: string): string {

@@ -41,6 +41,10 @@ const AUTH_CALLBACK_UI: Record<AppLocale, AuthCallbackUiMessages> = {
   ar: {
     verifying: "جارٍ التحقق من الوصول… إذا أتيت من البريد الإلكتروني، نحن نُنهي التأكيد أو إعادة تعيين كلمة المرور.",
   },
+  hi: {
+    verifying:
+      "पहुँच सत्यापित हो रही है… यदि आप ईमेल से आए हैं, तो हम पुष्टि या पासवर्ड रीसेट पूरा कर रहे हैं।",
+  },
 };
 
 export function getAuthCallbackUiMessages(locale: AppLocale): AuthCallbackUiMessages {

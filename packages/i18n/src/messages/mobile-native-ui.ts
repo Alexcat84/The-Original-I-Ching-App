@@ -125,6 +125,17 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "إلغاء",
     sharePdfTitle: "مشاركة PDF",
   },
+  hi: {
+    imageSavedTitle: "छवि सहेजी गई",
+    imageSavedBody: "आपकी गैलरी में सहेजा गया।",
+    permissionDeniedTitle: "अनुमति अस्वीकृत",
+    permissionDeniedBody: "छवियाँ सहेजने के लिए गैलरी पहुँच आवश्यक है।",
+    fileSaveErrorTitle: "त्रुटि",
+    fileSaveErrorBody: "फ़ाइल सहेजी नहीं जा सकी।",
+    ok: "ठीक है",
+    cancel: "रद्द करें",
+    sharePdfTitle: "PDF साझा करें",
+  },
 };
 
 export function getMobileNativeUiMessages(locale: AppLocale): MobileNativeUiMessages {

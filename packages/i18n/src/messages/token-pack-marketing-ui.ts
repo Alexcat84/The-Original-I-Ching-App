@@ -111,6 +111,16 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
     master:
       "100 رمز لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 8 أسئلة متابعة لكل محادثة. الصور المُنشأة بأقصى دقة.",
   },
+  hi: {
+    freeTier:
+      "मुफ़्त योजना: जीवनभर 2 परामर्श, प्रति थ्रेड 1 प्रश्न। ऑटो-रिन्यू नहीं; पेड पैक उपभोज्य हैं। जनरेटेड इमेज बेसिक रिज़ॉल्यूशन में होती हैं।",
+    seeker:
+      "प्रति खरीद 20 टोकन (उपभोज्य पैक, ऑटो-रिन्यू नहीं)। प्रति थ्रेड 3 फॉलो-अप प्रश्न तक। इमेज स्टैंडर्ड रिज़ॉल्यूशन में।",
+    practitioner:
+      "प्रति खरीद 40 टोकन (उपभोज्य पैक, ऑटो-रिन्यू नहीं)। प्रति थ्रेड 5 फॉलो-अप प्रश्न तक। इमेज हाई रिज़ॉल्यूशन में।",
+    master:
+      "प्रति खरीद 100 टोकन (उपभोज्य पैक, ऑटो-रिन्यू नहीं)। प्रति थ्रेड 8 फॉलो-अप प्रश्न तक। इमेज अधिकतम रिज़ॉल्यूशन में।",
+  },
 };
 
 const PACK_KEY: Record<TokenPackMarketingId, keyof TokenPackMarketingUiMessages> = {
@@ -170,6 +180,11 @@ const TOKEN_PACK_LABELS: Record<AppLocale, Record<TokenPackMarketingId, string>>
     tokens_seeker_20: "باقة Seeker",
     tokens_practitioner_40: "باقة Practitioner",
     tokens_master_100: "باقة Master",
+  },
+  hi: {
+    tokens_seeker_20: "सीकर पैक",
+    tokens_practitioner_40: "प्रैक्टिशनर पैक",
+    tokens_master_100: "मास्टर पैक",
   },
 };
 

@@ -25,7 +25,7 @@ export type TokenPanelUiMessages = {
   threadCapShort: string;
 };
 
-const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
+const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
   es: {
     ariaTokenGroup: "Gestión de tokens",
     tokensHeading: "Tokens",
@@ -246,6 +246,14 @@ const TOKEN_PANEL_UI: Record<AppLocale, TokenPanelUiMessages> = {
   },
 };
 
+TOKEN_PANEL_UI.hi = {
+  ...(TOKEN_PANEL_UI.en ?? TOKEN_PANEL_UI[DEFAULT_LOCALE]!),
+  ariaTokenGroup: "टोकन प्रबंधन",
+  tokensHeading: "टोकन",
+  tokenCenter: "टोकन केंद्र",
+  signInForBalance: "अपना बैलेंस देखने के लिए साइन इन करें।",
+};
+
 export function getTokenPanelUiMessages(locale: AppLocale): TokenPanelUiMessages {
-  return TOKEN_PANEL_UI[locale] ?? TOKEN_PANEL_UI[DEFAULT_LOCALE];
+  return TOKEN_PANEL_UI[locale] ?? TOKEN_PANEL_UI[DEFAULT_LOCALE]!;
 }

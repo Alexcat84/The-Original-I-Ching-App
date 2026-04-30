@@ -187,6 +187,22 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "شروط الخدمة",
     ichingDocLink: "وثائق I Ching",
   },
+  hi: {
+    backToOracle: "← ओरेकल पर वापस",
+    oracleHome: "ओरेकल",
+    faqs: "अक्सर पूछे जाने वाले प्रश्न",
+    aboutShort: "परिचय",
+    guidePlansSection: "योजनाएँ और टोकन (मार्गदर्शिका)",
+    guideFirstSteps: "शुरुआत करना (मार्गदर्शिका)",
+    userGuide: "उपयोगकर्ता मार्गदर्शिका",
+    methodNotes: "पद्धति नोट्स",
+    methodNotesLong: "पद्धति नोट्स और उद्गम (I Ching और हड्डियाँ)",
+    privacyShort: "गोपनीयता",
+    termsShort: "शर्तें",
+    privacyPolicy: "गोपनीयता नीति",
+    termsOfService: "सेवा की शर्तें",
+    ichingDocLink: "I Ching दस्तावेज़ीकरण",
+  },
 };
 
 export function getDocNavUiMessages(locale: AppLocale): DocNavUiMessages {

@@ -39,6 +39,8 @@ function getLanguageName(language: string): string {
     ja: "Japanese",
     zh: "Chinese",
     ko: "Korean",
+    ar: "Arabic",
+    hi: "Hindi",
   };
   return map[language] ?? "English";
 }

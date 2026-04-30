@@ -89,6 +89,14 @@ const COOKIE_CONSENT_UI: Record<AppLocale, CookieConsentUiMessages> = {
     necessaryOnly: "الضروري فقط",
     acceptAll: "قبول الكل",
   },
+  hi: {
+    bannerIntroBeforePrivacy:
+      "हम दस्तावेज़ पृष्ठों पर सत्र और भाषा के लिए आवश्यक कुकीज़ का उपयोग करते हैं; यदि आप स्वीकार करते हैं, तो हम सेवा सुधारने के लिए विश्लेषण भी उपयोग करते हैं। अधिक जानकारी ",
+    bannerPrivacyLink: "गोपनीयता नीति",
+    bannerIntroAfterPrivacy: " में देखें।",
+    necessaryOnly: "केवल आवश्यक",
+    acceptAll: "सभी स्वीकार करें",
+  },
 };
 
 export function getCookieConsentUiMessages(locale: AppLocale): CookieConsentUiMessages {

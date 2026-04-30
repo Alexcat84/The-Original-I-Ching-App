@@ -221,6 +221,25 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedPersistHint: " قد لا تكون الجلسة محفوظة.",
     requestFailedStatus: "فشل الطلب ({{status}}).",
   },
+  hi: {
+    defaultSessionTitle: "परामर्श",
+    deleteConfirm: "क्या आप इस वार्तालाप को स्थायी रूप से हटाना चाहते हैं?",
+    couldNotDeleteConversation: "वार्तालाप हटाया नहीं जा सका।",
+    chatLoadSessionExpired: "चैट लोड करते समय आपका सत्र समाप्त हो गया। कृपया पुनः लॉग इन करें।",
+    chatNoLongerExists: "यह चैट अब मौजूद नहीं है या हटा दी गई है।",
+    chatLoadFailedStatus: "यह चैट लोड नहीं हो सकी ({{status}})।",
+    chatLoadNetworkError: "चैट लोड करते समय नेटवर्क त्रुटि। अपना कनेक्शन जाँचें और पुनः प्रयास करें।",
+    historySupabaseMissing: "चैट इतिहास लोड नहीं हो सका: सर्वर पर SUPABASE_SERVICE_ROLE_KEY अनुपस्थित है।",
+    historySessionExpired: "इतिहास लोड करते समय आपका सत्र समाप्त हो गया। कृपया पुनः लॉग इन करें।",
+    historyLoadFailedStatus: "चैट इतिहास लोड नहीं हो सका ({{status}})।",
+    historyNetworkError: "इतिहास लोड करते समय नेटवर्क त्रुटि। अपना कनेक्शन जाँचें और पुनः प्रयास करें।",
+    idleSignedOut: "45 मिनट की निष्क्रियता के बाद आपको स्वचालित रूप से लॉग आउट कर दिया गया।",
+    missingClientConfig: "Supabase कुंजियाँ अनुपस्थित हैं। NEXT_PUBLIC_SUPABASE_URL जाँचें",
+    missingClientConfigAnd: " और NEXT_PUBLIC_SUPABASE_ANON_KEY।",
+    consultFailedGeneric: "परामर्श पूरा नहीं हो सका।",
+    consultFailedPersistHint: " सत्र सहेजा नहीं गया हो सकता।",
+    requestFailedStatus: "अनुरोध विफल ({{status}})।",
+  },
 };
 
 export function getHomeSessionUiMessages(locale: AppLocale): HomeSessionUiMessages {

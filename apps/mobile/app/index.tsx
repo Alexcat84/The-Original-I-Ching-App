@@ -105,6 +105,7 @@ const LOCALES: { code: AppLocale; label: string; name: string }[] = [
   { code: "zh", label: "ZH", name: "中文" },
   { code: "ko", label: "KO", name: "한국어" },
   { code: "ar", label: "AR", name: "العربية" },
+  { code: "hi", label: "HI", name: "हिन्दी" },
 ];
 
 const RTL_LOCALES = new Set<AppLocale>(["ar"]);

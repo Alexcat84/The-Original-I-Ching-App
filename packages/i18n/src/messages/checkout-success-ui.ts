@@ -115,6 +115,16 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     pendingSub: "ستظهر رموزك خلال دقائق قليلة. يمكنك الاستمرار في استخدام التطبيق.",
     ctaOracle: "الذهاب إلى الأوراكل",
   },
+  hi: {
+    sessionWaitTitle: "पुनर्निर्देशित हो रहा है…",
+    sessionWaitSub: "आपका सत्र पुनः प्राप्त हो रहा है।",
+    processingTitle: "आपकी टोकन खरीद संसाधित हो रही है…",
+    successTitle: "{{label}} में आपका स्वागत है!",
+    successSub: "आपके परामर्श तैयार हैं।",
+    pendingTitle: "आपका भुगतान संसाधित हो रहा है।",
+    pendingSub: "कुछ मिनटों में आपके टोकन दिखाई देंगे। आप ऐप का उपयोग जारी रख सकते हैं।",
+    ctaOracle: "ओरेकल पर जाएं",
+  },
 };
 
 export function getCheckoutSuccessUiMessages(locale: AppLocale): CheckoutSuccessUiMessages {
