@@ -17,6 +17,7 @@
   "dependencies": {
     "@iching-oracle/i18n": "file:../../packages/i18n",
     "@react-native-async-storage/async-storage": "1.23.1",
+    "@sentry/react-native": "^5.36.0",
     "eruda": "^3.4.3",
     "expo": "~51.0.39",
     "expo-application": "~5.9.1",
