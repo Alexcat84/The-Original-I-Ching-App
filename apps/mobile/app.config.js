@@ -82,6 +82,7 @@ module.exports = ({ config }) => ({
         },
       },
     ],
+    "./plugins/withProguardRules",
     [
       "./plugins/withAdiRegistrationFile",
       {
