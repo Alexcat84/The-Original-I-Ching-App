@@ -103,80 +103,80 @@ export function structuralVerdictLineLocalized(cast: OracleBonesCastResult, lang
   if (cast.affirmsPositive === null) {
     switch (lang) {
       case "en":
-        return `Structural verdict: ${label}. Ancestors are silent/indeterminate; no yes/no confirmation is available.`;
+        return `**Structural verdict:** ${label}. Ancestors are silent/indeterminate; no yes/no confirmation is available.`;
       case "es":
-        return `Veredicto estructural: ${label}. Ancestros en silencio/indeterminación; no hay confirmación sí/no disponible.`;
+        return `**Veredicto estructural:** ${label}. Ancestros en silencio/indeterminación; no hay confirmación sí/no disponible.`;
       case "pt":
-        return `Veredito estrutural: ${label}. Os ancestrais permanecem em silêncio/indeterminação; não há confirmação sim/não disponível.`;
+        return `**Veredito estrutural:** ${label}. Os ancestrais permanecem em silêncio/indeterminação; não há confirmação sim/não disponível.`;
       case "fr":
-        return `Verdict structurel : ${label}. Les ancêtres demeurent dans le silence/l'indétermination ; aucune confirmation oui/non n'est disponible.`;
+        return `**Verdict structurel :** ${label}. Les ancêtres demeurent dans le silence/l'indétermination ; aucune confirmation oui/non n'est disponible.`;
       case "de":
-        return `Strukturelles Urteil: ${label}. Die Ahnen schweigen/sind unbestimmt; es gibt keine klare Ja/Nein-Bestätigung.`;
+        return `**Strukturelles Urteil:** ${label}. Die Ahnen schweigen/sind unbestimmt; es gibt keine klare Ja/Nein-Bestätigung.`;
       case "it":
-        return `Verdetto strutturale: ${label}. Gli antenati sono nel silenzio/nell'indeterminatezza; non è disponibile una conferma sì/no.`;
+        return `**Verdetto strutturale:** ${label}. Gli antenati sono nel silenzio/nell'indeterminatezza; non è disponibile una conferma sì/no.`;
       case "ja":
-        return `構造上の裁定：${label}。祖先の兆しは沈黙／不定であり、この占いで明確なイエス・ノーは示されません。`;
+        return `**構造上の裁定：**${label}。祖先の兆しは沈黙／不定であり、この占いで明確なイエス・ノーは示されません。`;
       case "zh":
-        return `结构裁定：${label}。祖先之兆静默／未定；此占无法给出明确的是／否。`;
+        return `**结构裁定：**${label}。祖先之兆静默／未定；此占无法给出明确的是／否。`;
       case "ko":
-        return `구조적 판정: ${label}. 조상의 계시는 침묵/미정이며, 이번 점에서 명확한 예/아니오 확인은 없습니다.`;
+        return `**구조적 판정:** ${label}. 조상의 계시는 침묵/미정이며, 이번 점에서 명확한 예/아니오 확인은 없습니다.`;
       case "ar":
-        return `الحكم البنيوي: ${label}. إشارات الأسلاف في حالة صمت/لا تحديد؛ ولا تتوفر في هذه الرمية تأكيدات نعم/لا واضحة.`;
+        return `**الحكم البنيوي:** ${label}. إشارات الأسلاف في حالة صمت/لا تحديد؛ ولا تتوفر في هذه الرمية تأكيدات نعم/لا واضحة.`;
       case "hi":
-        return `संरचनात्मक निर्णय: ${label}। पूर्वजों का संकेत मौन/अनिर्धारित है; इस कास्ट में स्पष्ट हाँ/नहीं पुष्टि उपलब्ध नहीं है।`;
+        return `**संरचनात्मक निर्णय:** ${label}। पूर्वजों का संकेत मौन/अनिर्धारित है; इस कास्ट में स्पष्ट हाँ/नहीं पुष्टि उपलब्ध नहीं है।`;
     }
   }
 
   if (cast.affirmsPositive) {
     switch (lang) {
       case "en":
-        return `Structural verdict: ${label}, aligned with the positive charge. In this cast, the positive proposition is confirmed.`;
+        return `**Structural verdict:** ${label}, aligned with the positive charge. In this cast, the positive proposition is confirmed.`;
       case "es":
-        return `Veredicto estructural: ${label}, alineado con el cargo positivo. En esta tirada, la afirmación positiva sí queda confirmada.`;
+        return `**Veredicto estructural:** ${label}, alineado con el cargo positivo. En esta tirada, la afirmación positiva sí queda confirmada.`;
       case "pt":
-        return `Veredito estrutural: ${label}, alinhado à carga positiva. Nesta tiragem, a afirmação positiva fica confirmada.`;
+        return `**Veredito estrutural:** ${label}, alinhado à carga positiva. Nesta tiragem, a afirmação positiva fica confirmada.`;
       case "fr":
-        return `Verdict structurel : ${label}, aligné sur la charge positive. Dans ce jet, la proposition positive est confirmée.`;
+        return `**Verdict structurel :** ${label}, aligné sur la charge positive. Dans ce jet, la proposition positive est confirmée.`;
       case "de":
-        return `Strukturelles Urteil: ${label}, ausgerichtet auf die positive Ladung. In diesem Wurf wird die positive Behauptung bestätigt.`;
+        return `**Strukturelles Urteil:** ${label}, ausgerichtet auf die positive Ladung. In diesem Wurf wird die positive Behauptung bestätigt.`;
       case "it":
-        return `Verdetto strutturale: ${label}, allineato al carico positivo. In questa lettura, l'affermazione positiva risulta confermata.`;
+        return `**Verdetto strutturale:** ${label}, allineato al carico positivo. In questa lettura, l'affermazione positiva risulta confermata.`;
       case "ja":
-        return `構造上の裁定：${label}、肯定の爻辞に沿います。この占いでは、肯定の命題が確認されます。`;
+        return `**構造上の裁定：**${label}、肯定の爻辞に沿います。この占いでは、肯定の命題が確認されます。`;
       case "zh":
-        return `结构裁定：${label}，与肯定之辞一致。在此占中，肯定命题得到确认。`;
+        return `**结构裁定：**${label}，与肯定之辞一致。在此占中，肯定命题得到确认。`;
       case "ko":
-        return `구조적 판정: ${label}, 긍정적 문구와 맞닿습니다. 이번 점에서 긍정적 명제가 확인됩니다.`;
+        return `**구조적 판정:** ${label}, 긍정적 문구와 맞닿습니다. 이번 점에서 긍정적 명제가 확인됩니다.`;
       case "ar":
-        return `الحكم البنيوي: ${label}، ومتوافق مع الشحنة الإيجابية. في هذه الرمية، يتأكد الادعاء الإيجابي.`;
+        return `**الحكم البنيوي:** ${label}، ومتوافق مع الشحنة الإيجابية. في هذه الرمية، يتأكد الادعاء الإيجابي.`;
       case "hi":
-        return `संरचनात्मक निर्णय: ${label}, यह सकारात्मक प्रस्ताव के अनुरूप है। इस कास्ट में सकारात्मक कथन की पुष्टि होती है।`;
+        return `**संरचनात्मक निर्णय:** ${label}, यह सकारात्मक प्रस्ताव के अनुरूप है। इस कास्ट में सकारात्मक कथन की पुष्टि होती है।`;
     }
   }
 
   switch (lang) {
     case "en":
-      return `Structural verdict: ${label}, aligned with the negative charge. In this cast, the positive proposition is NOT confirmed.`;
+      return `**Structural verdict:** ${label}, aligned with the negative charge. In this cast, the positive proposition is NOT confirmed.`;
     case "es":
-      return `Veredicto estructural: ${label}, alineado con el cargo negativo. En esta tirada, la afirmación positiva NO queda confirmada.`;
+      return `**Veredicto estructural:** ${label}, alineado con el cargo negativo. En esta tirada, la afirmación positiva NO queda confirmada.`;
     case "pt":
-      return `Veredito estrutural: ${label}, alinhado à carga negativa. Nesta tiragem, a afirmação positiva NÃO fica confirmada.`;
+      return `**Veredito estrutural:** ${label}, alinhado à carga negativa. Nesta tiragem, a afirmação positiva NÃO fica confirmada.`;
     case "fr":
-      return `Verdict structurel : ${label}, aligné sur la charge négative. Dans ce jet, la proposition positive n'est PAS confirmée.`;
+      return `**Verdict structurel :** ${label}, aligné sur la charge négative. Dans ce jet, la proposition positive n'est PAS confirmée.`;
     case "de":
-      return `Strukturelles Urteil: ${label}, ausgerichtet auf die negative Ladung. In diesem Wurf wird die positive Behauptung NICHT bestätigt.`;
+      return `**Strukturelles Urteil:** ${label}, ausgerichtet auf die negative Ladung. In diesem Wurf wird die positive Behauptung NICHT bestätigt.`;
     case "it":
-      return `Verdetto strutturale: ${label}, allineato al carico negativo. In questa lettura, l'affermazione positiva NON risulta confermata.`;
+      return `**Verdetto strutturale:** ${label}, allineato al carico negativo. In questa lettura, l'affermazione positiva NON risulta confermata.`;
     case "ja":
-      return `構造上の裁定：${label}、否定の爻辞に沿います。この占いでは、肯定の命題は確認されません。`;
+      return `**構造上の裁定：**${label}、否定の爻辞に沿います。この占いでは、肯定の命題は確認されません。`;
     case "zh":
-      return `结构裁定：${label}，与否定之辞一致。在此占中，肯定命题未获确认。`;
+      return `**结构裁定：**${label}，与否定之辞一致。在此占中，肯定命题未获确认。`;
     case "ko":
-      return `구조적 판정: ${label}, 부정적 문구와 맞닿습니다. 이번 점에서 긍정적 명제는 확인되지 않습니다.`;
+      return `**구조적 판정:** ${label}, 부정적 문구와 맞닿습니다. 이번 점에서 긍정적 명제는 확인되지 않습니다.`;
     case "ar":
-      return `الحكم البنيوي: ${label}، ومتوافق مع الشحنة السلبية. في هذه الرمية، لا يتم تأكيد الادعاء الإيجابي.`;
+      return `**الحكم البنيوي:** ${label}، ومتوافق مع الشحنة السلبية. في هذه الرمية، لا يتم تأكيد الادعاء الإيجابي.`;
     case "hi":
-      return `संरचनात्मक निर्णय: ${label}, यह नकारात्मक प्रस्ताव के अनुरूप है। इस कास्ट में सकारात्मक कथन की पुष्टि नहीं होती।`;
+      return `**संरचनात्मक निर्णय:** ${label}, यह नकारात्मक प्रस्ताव के अनुरूप है। इस कास्ट में सकारात्मक कथन की पुष्टि नहीं होती।`;
   }
 }
 
