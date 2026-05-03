@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "FAQs — The Original I Ching App",
+  description: "Frequently asked questions about The Original I Ching App: tokens, readings, payments, privacy, and technical support.",
+  openGraph: {
+    title: "FAQs — The Original I Ching App",
+    description: "Answers to common questions about the I Ching oracle app.",
+  },
+};
 import { getDocNavUiMessages, getFaqPageUiMessages } from "@iching-oracle/i18n";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { resolveDocLocale } from "@/lib/doc-locale";

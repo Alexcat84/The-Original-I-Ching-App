@@ -4972,6 +4972,15 @@ export default function HomePage() {
         </footer>
         </div>
       </div>
+      <section
+        aria-hidden="true"
+        style={{ position: "absolute", width: "1px", height: "1px", overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap" }}
+      >
+        <h2>The Original I Ching App — AI Oracle, Hexagram Readings and Bone Oracle</h2>
+        <p>Consult the I Ching or the Oracle Bones with AI-powered interpretations, ritual animation, hexagram image generation, and persistent chat history. Available in 11 languages. No subscriptions — consumable token packs only. Free trial included.</p>
+        <p>Divination methods: three-coin I Ching (Zhu Xi tradition, Wilhelm/Baynes), Oracle Bones (Shang-era crack reading), AI interpretation via Claude.</p>
+        <p>Features: image generation by tier, chat export to PDF, 45-minute idle timeout, Google OAuth, two-factor authentication, dark and light mode, Android APK.</p>
+      </section>
     </OracleShell>
   );
 }
