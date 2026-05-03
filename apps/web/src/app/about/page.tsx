@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getAppTraceabilityUiMessages, getDocNavUiMessages } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
+
+export const metadata: Metadata = {
+  title: "About — The Original I Ching App",
+  description: "App version, build traceability, and credits for The Original I Ching App.",
+  openGraph: {
+    title: "About — The Original I Ching App",
+    description: "App version, build traceability, and credits.",
+  },
+};
 
 export default async function AboutPage() {
   const locale = await resolveDocLocale();

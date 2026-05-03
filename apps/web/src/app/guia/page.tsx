@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "User Guide — The Original I Ching App",
+  description: "Learn how to consult the I Ching and Oracle Bones with AI: methods, token packs, image generation, and chat features.",
+  openGraph: {
+    title: "User Guide — The Original I Ching App",
+    description: "How to use the I Ching oracle app: methods, token packs, AI interpretation, and more.",
+  },
+};
 import {
   formatGuiaFreeLine,
   formatGuiaPackPrice,

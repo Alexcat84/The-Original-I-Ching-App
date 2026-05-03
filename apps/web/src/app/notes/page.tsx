@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Method Notes — The Original I Ching App",
+  description: "Technical notes on divination methods: three-coin I Ching (Zhu Xi), Oracle Bones (Shang-era), and AI interpretation via Claude.",
+  openGraph: {
+    title: "Method Notes — The Original I Ching App",
+    description: "How the three-coin I Ching, Oracle Bones, and AI interpretation methods work.",
+  },
+};
 import { getDocNavUiMessages, getNotesPageUiMessages } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
 

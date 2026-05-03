@@ -18,6 +18,23 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: m.title,
     description: m.description,
+    keywords: ["I Ching", "I Ching AI", "Book of Changes", "hexagram reading", "oracle app", "I Ching chat", "Bones oracle", "oráculo I Ching"],
+    openGraph: {
+      title: "The Original I Ching App",
+      description: "Ancient oracle. AI conversation. No subscriptions. 11 languages.",
+      url: "https://theoriginaliching.com",
+      siteName: "The Original I Ching App",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "The Original I Ching App",
+      description: "Ancient oracle. AI conversation. No subscriptions. 11 languages.",
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
