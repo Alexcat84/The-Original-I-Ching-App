@@ -29,12 +29,15 @@ import {
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
+import { ManualIChingCoinWizard } from "@/components/manual-iching/ManualIChingCoinWizard";
+import { getManualWizardMessages } from "@/components/manual-iching/manual-wizard-messages";
 import { AmbientParticles } from "@/components/AmbientParticles";
 import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
 import { InterpretationMarkdownSafe } from "@/components/InterpretationMarkdownSafe";
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import {
@@ -57,11 +60,14 @@ import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import { ichingRitualTickDelayMs } from "@/lib/iching-ritual-timing";
+import { previewCastFromLineValues } from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
+
+const ICHING_CAST_MODE_STORAGE_KEY = "iching_cast_mode_v1";
 
 const ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX = "iching_account_session_limit_v1:";
 const PLAY_PROMO_STRIP_DISMISSED_KEY = "iching_play_promo_strip_dismissed_v1";
@@ -1198,6 +1204,7 @@ export default function HomePage() {
   /** Official listing URL when published; empty shows “coming soon” on the Play card. */
   const playStoreUrl = (process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "").trim();
   const chrome = useMemo(() => getHomeChromeUiMessages(locale), [locale]);
+  const manualWizardChrome = useMemo(() => getManualWizardMessages(locale), [locale]);
   const sessionUi = useMemo(() => getHomeSessionUiMessages(locale), [locale]);
   const tf = useMemo(() => getTwoFactorUiMessages(locale), [locale]);
   const pricingUi = useMemo(() => getPricingUiMessages(locale), [locale]);
@@ -1239,6 +1246,30 @@ export default function HomePage() {
   const [ritualDebugFinalVector, setRitualDebugFinalVector] = useState<Array<6 | 7 | 8 | 9> | null>(null);
   const [lastRitualDebugSnapshot, setLastRitualDebugSnapshot] = useState<RitualDebugSnapshot | null>(null);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
+  type IchingCastMode = "auto" | "manual";
+  const [ichingCastMode, setIchingCastMode] = useState<IchingCastMode>(() => {
+    if (typeof window === "undefined") return "auto";
+    try {
+      return window.localStorage.getItem(ICHING_CAST_MODE_STORAGE_KEY) === "manual" ? "manual" : "auto";
+    } catch {
+      return "auto";
+    }
+  });
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(ICHING_CAST_MODE_STORAGE_KEY, ichingCastMode);
+    } catch {
+      /* ignore */
+    }
+  }, [ichingCastMode]);
+  const [manualWizardOpen, setManualWizardOpen] = useState(false);
+  const [manualWizardQuestionSnapshot, setManualWizardQuestionSnapshot] = useState<string | null>(null);
+  const [manualCastPreview, setManualCastPreview] = useState<{
+    primaryHexagram: number;
+    primaryHexagramChinese: string;
+    transformedHexagram: number | null;
+    mutationRule: string;
+  } | null>(null);
   const {
     sessions,
     setSessions,
@@ -2983,10 +3014,47 @@ export default function HomePage() {
       setError(tf.verify2faToContinue);
       return;
     }
+    if (oracleMode === "iching" && ichingCastMode === "manual") {
+      setManualWizardQuestionSnapshot(questionForRequest);
+      setManualWizardOpen(true);
+      return;
+    }
+    await executeConsultationRequest(questionForRequest);
+  }
+
+  async function executeConsultationRequest(
+    questionForRequest: string,
+    manualLineValues?: IchingManualLineTuple,
+  ) {
+    const isManualCast = Boolean(manualLineValues);
+    const showRitualAnimation = oracleMode === "iching" ? !isManualCast : true;
     setLoading(true);
     setError(null);
     setCreditsNotice(null);
     setPendingUserQuestion(questionForRequest || null);
+    if (manualLineValues) {
+      try {
+        const preview = previewCastFromLineValues(manualLineValues);
+        setManualCastPreview({
+          primaryHexagram: preview.primaryHexagram.number,
+          primaryHexagramChinese: preview.primaryHexagram.chineseName,
+          transformedHexagram: preview.transformedHexagram?.number ?? null,
+          mutationRule: preview.mutationRule,
+        });
+      } catch {
+        setManualCastPreview(null);
+      }
+    } else {
+      setManualCastPreview(null);
+    }
+    if (!activeSession) {
+      setLoading(false);
+      setManualCastPreview(null);
+      setPendingUserQuestion(null);
+      setError("No hay una conversación activa. Abre o crea una sesión.");
+      return;
+    }
+    const consultSession = activeSession;
     setBoneRitualResult(null);
     setRitualLines(null);
     setRitualRevealTick(0);
@@ -3003,11 +3071,10 @@ export default function HomePage() {
       oracleMode,
       questionLength: questionForRequest.length,
     });
-    const showRitualAnimation = true;
     setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
     let ok = false;
     try {
-      let sessionIdForRequest = activeSession.sessionId;
+      let sessionIdForRequest = consultSession.sessionId;
       if (!isPersistableUuid(sessionIdForRequest)) {
         sessionIdForRequest = newClientUuid();
         updateActiveSession((c) => ({ ...c, sessionId: sessionIdForRequest }));
@@ -3023,9 +3090,12 @@ export default function HomePage() {
           language: detectInputLanguage(questionForRequest, locale),
           responseMode: showRitualAnimation && oracleMode === "iching" ? "stream_ritual" : "ritual",
           sessionId: sessionIdForRequest,
-          sessionTitle: activeSession.title,
+          sessionTitle: consultSession.title,
           isDeepening: activeThread.length > 0,
           oracleMode,
+          ...(manualLineValues
+            ? { ichingCastMode: "manual" as const, ichingManualLineValues: [...manualLineValues] }
+            : {}),
           displayName: displayName ?? undefined,
           oracleBones:
             oracleMode === "oracle_bones"
@@ -3321,17 +3391,20 @@ export default function HomePage() {
       setPhase("reading");
       logRitualTrace("submit:complete");
       setConsultPanelOpen(false);
+      setManualCastPreview(null);
       ok = true;
     } catch (e) {
       logRitualTrace("submit:error", { error: e instanceof Error ? e.message : String(e) });
       setError(e instanceof Error ? e.message : "Error");
       setPendingUserQuestion(null);
+      setManualCastPreview(null);
     } finally {
       setLoading(false);
       if (!ok) {
         setRitualStatusPhase("question");
         setPhase("idle");
         setPendingUserQuestion(null);
+        setManualCastPreview(null);
       }
     }
   }
@@ -3899,6 +3972,27 @@ export default function HomePage() {
               </div>
             ) : null}
 
+            {manualCastPreview && loading && pendingUserQuestion ? (
+              <div className="thread-block chat-entry manual-cast-preview-entry" aria-busy="true">
+                <div className="chat-bubble chat-assistant manual-cast-preview-bubble">
+                  <p className="meta-line manual-cast-preview-status">{manualWizardChrome.previewLoading}</p>
+                  <div className="reading-record-visual-row">
+                    <ConsultationRecordCard
+                      consultationId="00000000-0000-4000-8000-000000000001"
+                      question={pendingUserQuestion}
+                      sessionPosition={activeThread.length + 1}
+                      primaryHexagram={manualCastPreview.primaryHexagram}
+                      primaryHexagramChinese={manualCastPreview.primaryHexagramChinese}
+                      transformedHexagram={manualCastPreview.transformedHexagram}
+                      mutationRule={manualCastPreview.mutationRule}
+                      oracleType="iching"
+                      locale={locale}
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
             {phase === "bones" ? (
               <section className="coins-stage coins-stage--bones" data-testid="bone-ritual">
                 <div className="crack-visual-wrap">
@@ -4203,6 +4297,42 @@ export default function HomePage() {
                         </p>
                       </div>
                     </div>
+                    {oracleMode === "iching" ? (
+                      <>
+                        <hr className="composer-panel-divider" aria-hidden />
+                        <div
+                          className="manual-cast-mode-block"
+                          role="radiogroup"
+                          aria-label={manualWizardChrome.castModeGroupAria}
+                        >
+                          <p className="manual-cast-mode-heading">{manualWizardChrome.castModeGroupAria}</p>
+                          <div className="manual-cast-mode-row">
+                            <label className="manual-cast-mode-option">
+                              <input
+                                type="radio"
+                                name="ichingCastMode"
+                                value="auto"
+                                checked={ichingCastMode === "auto"}
+                                onChange={() => setIchingCastMode("auto")}
+                                disabled={loading}
+                              />
+                              <span>{manualWizardChrome.castAutoLabel}</span>
+                            </label>
+                            <label className="manual-cast-mode-option">
+                              <input
+                                type="radio"
+                                name="ichingCastMode"
+                                value="manual"
+                                checked={ichingCastMode === "manual"}
+                                onChange={() => setIchingCastMode("manual")}
+                                disabled={loading}
+                              />
+                              <span>{manualWizardChrome.castManualLabel}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </>
+                    ) : null}
                     {activeThread.length > 0 && result ? (
                       <>
                         <hr className="composer-panel-divider" aria-hidden />
@@ -4972,6 +5102,21 @@ export default function HomePage() {
         </footer>
         </div>
       </div>
+      <ManualIChingCoinWizard
+        open={manualWizardOpen}
+        onClose={() => {
+          setManualWizardOpen(false);
+          setManualWizardQuestionSnapshot(null);
+        }}
+        onComplete={(lines) => {
+          setManualWizardOpen(false);
+          const q = manualWizardQuestionSnapshot?.trim() ?? question.trim();
+          setManualWizardQuestionSnapshot(null);
+          void executeConsultationRequest(q, lines);
+        }}
+        locale={locale}
+        questionPreview={manualWizardQuestionSnapshot ?? ""}
+      />
       <section
         aria-hidden="true"
         style={{ position: "absolute", width: "1px", height: "1px", overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap" }}

@@ -1,0 +1,136 @@
+"use client";
+
+import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
+import type { AppLocale } from "@iching-oracle/i18n";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { getManualWizardMessages } from "./manual-wizard-messages";
+
+type CoinFace = "H" | "T";
+
+function lineValueFromCoins(coins: CoinFace[]): 6 | 7 | 8 | 9 {
+  const sum = coins.reduce((s, c) => s + (c === "H" ? 3 : 2), 0);
+  return sum as 6 | 7 | 8 | 9;
+}
+
+type Props = {
+  open: boolean;
+  onClose: () => void;
+  onComplete: (values: IchingManualLineTuple) => void;
+  locale: AppLocale;
+  questionPreview: string;
+};
+
+export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, questionPreview }: Props) {
+  const m = useMemo(() => getManualWizardMessages(locale), [locale]);
+  const [recorded, setRecorded] = useState<Array<6 | 7 | 8 | 9>>([]);
+  const [coins, setCoins] = useState<CoinFace[]>(["H", "H", "H"]);
+
+  useEffect(() => {
+    if (!open) {
+      setRecorded([]);
+      setCoins(["H", "H", "H"]);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      const k = e.key;
+      if (k === "1" || k === "2" || k === "3") {
+        const idx = Number(k) - 1;
+        setCoins((prev) => {
+          const next = [...prev] as CoinFace[];
+          next[idx] = next[idx] === "H" ? "T" : "H";
+          return next;
+        });
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const currentValue = lineValueFromCoins(coins);
+  const caption =
+    currentValue === 6 ? m.caption6 : currentValue === 7 ? m.caption7 : currentValue === 8 ? m.caption8 : m.caption9;
+
+  const registerLine = useCallback(() => {
+    const v = lineValueFromCoins(coins);
+    const nextRecorded = [...recorded, v];
+    if (nextRecorded.length === 6) {
+      onComplete(nextRecorded as IchingManualLineTuple);
+      return;
+    }
+    setRecorded(nextRecorded);
+    setCoins(["H", "H", "H"]);
+  }, [coins, recorded, onComplete]);
+
+  const goBack = useCallback(() => {
+    setRecorded((prev) => (prev.length === 0 ? prev : prev.slice(0, -1)));
+    setCoins(["H", "H", "H"]);
+  }, []);
+
+  if (!open) return null;
+
+  const lineNumber = recorded.length + 1;
+  const lineStepLabel = m.lineStep.replace("{{n}}", String(lineNumber));
+
+  return (
+    <div className="manual-iching-wizard-backdrop" role="presentation">
+      <div
+        className="manual-iching-wizard-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="manual-iching-wizard-title"
+      >
+        <header className="manual-iching-wizard-header">
+          <h2 id="manual-iching-wizard-title" className="manual-iching-wizard-title">
+            {m.title}
+          </h2>
+          <button type="button" className="manual-iching-wizard-close" onClick={onClose} aria-label={m.closeAria}>
+            ×
+          </button>
+        </header>
+        <p className="manual-iching-wizard-question" dir="auto">
+          {questionPreview}
+        </p>
+        <p className="manual-iching-wizard-step">{lineStepLabel}</p>
+        <p className="manual-iching-wizard-hint">{m.coinHint}</p>
+        <div className="manual-iching-coins-row" dir="ltr">
+          {coins.map((side, i) => (
+            <button
+              key={i}
+              type="button"
+              className={`manual-iching-coin manual-iching-coin--${side === "H" ? "heads" : "tails"}`}
+              onClick={() =>
+                setCoins((prev) => {
+                  const next = [...prev] as CoinFace[];
+                  next[i] = next[i] === "H" ? "T" : "H";
+                  return next;
+                })
+              }
+              aria-label={`${m.headsAria.replace("{{i}}", String(i + 1))} / ${m.tailsAria.replace("{{i}}", String(i + 1))}`}
+            >
+              <span className="manual-iching-coin-face" aria-hidden>
+                {side === "H" ? "☉" : "☽"}
+              </span>
+            </button>
+          ))}
+        </div>
+        <div className="manual-iching-sum-card">
+          <p className="manual-iching-sum-label">{m.rollSumLabel}</p>
+          <p className="manual-iching-sum-value">{currentValue}</p>
+          <p className="manual-iching-sum-caption">{caption}</p>
+        </div>
+        <div className="manual-iching-wizard-actions">
+          <button type="button" className="secondary-btn" onClick={goBack} disabled={recorded.length === 0}>
+            {m.back}
+          </button>
+          <button type="button" className="primary-btn" onClick={registerLine}>
+            {recorded.length === 5 ? m.confirmConsult : m.registerLine}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

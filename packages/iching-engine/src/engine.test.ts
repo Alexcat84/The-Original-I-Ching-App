@@ -7,6 +7,8 @@ import {
   getHexagram,
   linesToBinaryTopFirst,
   performCast,
+  performCastFromLineValues,
+  previewCastFromLineValues,
   selectTextsForClaude,
   throwThreeCoins,
 } from "./engine.js";
@@ -141,6 +143,35 @@ describe("coin distribution (Monte Carlo)", () => {
     expect(p7).toBeLessThan(0.40);
     expect(p8).toBeGreaterThan(0.35);
     expect(p8).toBeLessThan(0.40);
+  });
+});
+
+describe("performCastFromLineValues", () => {
+  it("matches performCast output for the same six values", () => {
+    const rng = () => 0.4;
+    const auto = performCast("q", "en", { rng, id: "auto-id" });
+    const vec = auto.lines.map((l) => l.value) as [6 | 7 | 8 | 9, 6 | 7 | 8 | 9, 6 | 7 | 8 | 9, 6 | 7 | 8 | 9, 6 | 7 | 8 | 9, 6 | 7 | 8 | 9];
+    const manual = performCastFromLineValues("q", "en", vec, { id: "manual-id" });
+    expect(manual.lines.map((l) => l.value)).toEqual(vec);
+    expect(manual.primaryHexagram.number).toBe(auto.primaryHexagram.number);
+    expect(manual.transformedHexagram?.number ?? null).toBe(auto.transformedHexagram?.number ?? null);
+    expect(manual.changingLines).toEqual(auto.changingLines);
+    expect(manual.mutationRule).toBe(auto.mutationRule);
+  });
+
+  it("throws when not exactly six values", () => {
+    expect(() => performCastFromLineValues("q", "en", [7, 7, 7])).toThrow(RangeError);
+  });
+
+  it("previewCastFromLineValues matches manual cast fields", () => {
+    const vec: [6 | 7 | 8 | 9, 6 | 7 | 8 | 9, 6 | 7 | 8 | 9, 6 | 7 | 8 | 9, 6 | 7 | 8 | 9, 6 | 7 | 8 | 9] = [7, 7, 7, 8, 8, 8];
+    const full = performCastFromLineValues("q", "es", vec, { id: "x" });
+    const prev = previewCastFromLineValues(vec);
+    expect(prev.lines).toEqual(full.lines);
+    expect(prev.primaryHexagram.number).toBe(full.primaryHexagram.number);
+    expect(prev.transformedHexagram?.number ?? null).toBe(full.transformedHexagram?.number ?? null);
+    expect(prev.changingLines).toEqual(full.changingLines);
+    expect(prev.mutationRule).toBe(full.mutationRule);
   });
 });
 

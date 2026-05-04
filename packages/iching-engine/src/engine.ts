@@ -233,13 +233,12 @@ function newCastId(): string {
   return `cast-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 }
 
-export function performCast(
+function buildCastResultFromLines(
+  lines: Line[],
   question: string,
-  language = "es",
+  language: string,
   options?: PerformCastOptions,
 ): CastResult {
-  const rng = options?.rng ?? Math.random;
-  const lines = castSixLines(rng);
   const changing = lines.filter((l) => l.isChanging).map((l) => l.position);
   const primary = getHexagram(lines);
   const transformedLines = changing.length > 0 ? applyMutations(lines) : null;
@@ -258,4 +257,55 @@ export function performCast(
     textsForClaude: texts,
     timestamp: options?.now ?? new Date(),
   };
+}
+
+export type ManualCastPreview = Pick<
+  CastResult,
+  "lines" | "primaryHexagram" | "transformedHexagram" | "changingLines" | "mutationRule"
+>;
+
+/** Six line values, position 1 = bottom line. Throws if length !== 6 or any value invalid. */
+export function performCastFromLineValues(
+  question: string,
+  language: string,
+  lineValues: readonly LineValue[],
+  options?: PerformCastOptions,
+): CastResult {
+  if (lineValues.length !== 6) {
+    throw new RangeError("performCastFromLineValues requires exactly 6 line values");
+  }
+  const positions = [1, 2, 3, 4, 5, 6] as const;
+  const lines: Line[] = positions.map((pos, i) => {
+    const v = lineValues[i];
+    if (v !== 6 && v !== 7 && v !== 8 && v !== 9) {
+      throw new RangeError(`Invalid line value at index ${i}: ${String(v)}`);
+    }
+    return buildLine(v, pos);
+  });
+  return buildCastResultFromLines(lines, question, language, options);
+}
+
+/** Client-side preview of primary / transformed hexagram from six values (same geometry as performCastFromLineValues). */
+export function previewCastFromLineValues(lineValues: readonly LineValue[]): ManualCastPreview {
+  if (lineValues.length !== 6) {
+    throw new RangeError("previewCastFromLineValues requires exactly 6 line values");
+  }
+  const positions = [1, 2, 3, 4, 5, 6] as const;
+  const lines: Line[] = positions.map((pos, i) => buildLine(lineValues[i]!, pos));
+  const changing = lines.filter((l) => l.isChanging).map((l) => l.position);
+  const primary = getHexagram(lines);
+  const transformedLines = changing.length > 0 ? applyMutations(lines) : null;
+  const transformed = transformedLines ? getHexagram(transformedLines) : null;
+  const rule = determineMutationRule(primary, lines, changing);
+  return { lines, primaryHexagram: primary, transformedHexagram: transformed, changingLines: changing, mutationRule: rule };
+}
+
+export function performCast(
+  question: string,
+  language = "es",
+  options?: PerformCastOptions,
+): CastResult {
+  const rng = options?.rng ?? Math.random;
+  const lines = castSixLines(rng);
+  return buildCastResultFromLines(lines, question, language, options);
 }
