@@ -621,8 +621,7 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
   const viewportVariant = resultToViewportClass(oracleResult);
   const glyph = verdictGlyph(oracleResult);
   const showVerdictBadge = oracleResult !== null && stage !== "fire" && (glyph.length > 0 || Boolean(verdictText));
-  /** WebGL path only after successful renderer init; fallback 2D/CSS if context creation fails (sandbox, disabled GPU, etc.). */
-  const [ritualGraphics, setRitualGraphics] = useState<"initializing" | "webgl" | "fallback">("initializing");
+  const [webglActive, setWebglActive] = useState(false);
 
   const stageRef = useRef<RitualStage>(stage);
   const progressRef = useRef(crackProgress);
@@ -641,19 +640,12 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
     let disposed = false;
     let resizeObserver: ResizeObserver | null = null;
 
-    let renderer: THREE.WebGLRenderer;
-    try {
-      renderer = new THREE.WebGLRenderer({
-        canvas: canvasRef.current,
-        antialias: true,
-        alpha: false,
-        powerPreference: "high-performance",
-      });
-    } catch {
-      setRitualGraphics("fallback");
-      return;
-    }
-    // three.js throws if the context cannot be created; no need to call getContext() (redundant and can confuse some drivers).
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvasRef.current,
+      antialias: true,
+      alpha: false,
+      powerPreference: "high-performance",
+    });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ReinhardToneMapping;
     renderer.toneMappingExposure = 1.16;
@@ -871,46 +863,8 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
     resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(containerRef.current);
 
-    let gpuReleased = false;
-    function disposeGpuPipeline() {
-      if (gpuReleased) return;
-      gpuReleased = true;
-      disposed = true;
-      if (rafId) window.cancelAnimationFrame(rafId);
-      rafId = 0;
-      resizeObserver?.disconnect();
-      resizeObserver = null;
-      try {
-        renderer.domElement.removeEventListener("webglcontextlost", handleContextLost);
-        renderer.domElement.classList.remove("bone-ritual-canvas--ready");
-      } catch {
-        /* ignore */
-      }
-      scene.clear();
-      renderer.dispose();
-      boneGeo.dispose();
-      boneMat.dispose();
-      vesselGeo.dispose();
-      vesselMat.dispose();
-      vesselRimGeo.dispose();
-      vesselRimMat.dispose();
-      emberBedGeo.dispose();
-      emberBedMat.dispose();
-      flameGeo.dispose();
-      flameMat.dispose();
-      flameTexture?.dispose();
-      crackMaskTexture.dispose();
-    }
-
-    function handleContextLost(event: Event) {
-      event.preventDefault();
-      disposeGpuPipeline();
-      setRitualGraphics("fallback");
-    }
-    renderer.domElement.addEventListener("webglcontextlost", handleContextLost);
-
+    setWebglActive(true);
     const clock = new THREE.Timer();
-    let webglFirstPaintDone = false;
 
     const animate = (timestamp: number) => {
       if (disposed) return;
@@ -1052,24 +1006,35 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
       }
 
       renderer.render(scene, camera);
-      if (!webglFirstPaintDone) {
-        webglFirstPaintDone = true;
-        renderer.domElement.classList.add("bone-ritual-canvas--ready");
-        setRitualGraphics("webgl");
-      }
       rafId = window.requestAnimationFrame(animate);
     };
     rafId = window.requestAnimationFrame(animate);
 
     return () => {
-      disposeGpuPipeline();
+      disposed = true;
+      if (rafId) window.cancelAnimationFrame(rafId);
+      resizeObserver?.disconnect();
+      scene.clear();
+      renderer.dispose();
+      boneGeo.dispose();
+      boneMat.dispose();
+      vesselGeo.dispose();
+      vesselMat.dispose();
+      vesselRimGeo.dispose();
+      vesselRimMat.dispose();
+      emberBedGeo.dispose();
+      emberBedMat.dispose();
+      flameGeo.dispose();
+      flameMat.dispose();
+      flameTexture?.dispose();
+      crackMaskTexture.dispose();
     };
   }, []);
 
   return (
     <div ref={containerRef} className={`bone-ritual-viewport ${viewportVariant}`} role="presentation" aria-hidden>
-      {ritualGraphics !== "fallback" ? <canvas ref={canvasRef} className="bone-ritual-canvas" /> : null}
-      {ritualGraphics !== "webgl" ? (
+      <canvas ref={canvasRef} className="bone-ritual-canvas" />
+      {!webglActive ? (
         <BoneRitualFallback stage={stage} crackProgress={crackProgress} oracleResult={oracleResult} fireOnly={FIRE_ONLY_DEBUG} />
       ) : null}
       {showVerdictBadge && !FIRE_ONLY_DEBUG ? (
