@@ -110,6 +110,13 @@ export default async function GuiaRapidaPage() {
           <li>{g.threadDepthBullet}</li>
         </ul>
 
+        <h3>{g.ichingCastModeHeading}</h3>
+        <p>{g.ichingCastModeP1}</p>
+        <ul>
+          <li>{g.ichingCastAutoLi}</li>
+          <li>{g.ichingCastManualLi}</li>
+        </ul>
+
         <h2>{g.exportHeading}</h2>
         <p>{g.exportBody}</p>
 

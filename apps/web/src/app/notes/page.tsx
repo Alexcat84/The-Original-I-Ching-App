@@ -44,6 +44,9 @@ export default async function NotesPage() {
         <h3>{n.ichingMethodHeading}</h3>
         <p>{n.ichingMethodBody}</p>
 
+        <h3>{n.ichingAppCastHeading}</h3>
+        <p>{n.ichingAppCastBody}</p>
+
         <h3>{n.ichingWilhelmHeading}</h3>
         <p>{n.ichingWilhelmBody}</p>
 
