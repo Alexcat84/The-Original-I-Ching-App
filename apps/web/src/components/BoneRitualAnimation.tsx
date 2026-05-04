@@ -621,7 +621,8 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
   const viewportVariant = resultToViewportClass(oracleResult);
   const glyph = verdictGlyph(oracleResult);
   const showVerdictBadge = oracleResult !== null && stage !== "fire" && (glyph.length > 0 || Boolean(verdictText));
-  const [webglActive, setWebglActive] = useState(false);
+  /** WebGL path only after successful renderer init; fallback 2D/CSS if context creation fails (sandbox, disabled GPU, etc.). */
+  const [ritualGraphics, setRitualGraphics] = useState<"initializing" | "webgl" | "fallback">("initializing");
 
   const stageRef = useRef<RitualStage>(stage);
   const progressRef = useRef(crackProgress);
@@ -640,12 +641,23 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
     let disposed = false;
     let resizeObserver: ResizeObserver | null = null;
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      antialias: true,
-      alpha: false,
-      powerPreference: "high-performance",
-    });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvasRef.current,
+        antialias: true,
+        alpha: false,
+        powerPreference: "high-performance",
+      });
+    } catch {
+      setRitualGraphics("fallback");
+      return;
+    }
+    if (!renderer.getContext()) {
+      renderer.dispose();
+      setRitualGraphics("fallback");
+      return;
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ReinhardToneMapping;
     renderer.toneMappingExposure = 1.16;
@@ -863,7 +875,7 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
     resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(containerRef.current);
 
-    setWebglActive(true);
+    setRitualGraphics("webgl");
     const clock = new THREE.Timer();
 
     const animate = (timestamp: number) => {
@@ -1033,8 +1045,8 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
 
   return (
     <div ref={containerRef} className={`bone-ritual-viewport ${viewportVariant}`} role="presentation" aria-hidden>
-      <canvas ref={canvasRef} className="bone-ritual-canvas" />
-      {!webglActive ? (
+      {ritualGraphics !== "fallback" ? <canvas ref={canvasRef} className="bone-ritual-canvas" /> : null}
+      {ritualGraphics !== "webgl" ? (
         <BoneRitualFallback stage={stage} crackProgress={crackProgress} oracleResult={oracleResult} fireOnly={FIRE_ONLY_DEBUG} />
       ) : null}
       {showVerdictBadge && !FIRE_ONLY_DEBUG ? (
