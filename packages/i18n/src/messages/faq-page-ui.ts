@@ -92,6 +92,13 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
+    id: "iching-manual-auto-bones",
+    question: "What is automatic vs manual I Ching — and can I mix Oracle Bones in the same thread?",
+    answer:
+      "Automatic vs manual applies only to I Ching (three coins). In Options the cast-mode radios appear when I Ching is selected: automatic runs the animated coin ritual on the server; manual lets you enter the six line totals (6/7/8/9) from your own coins before the reading. Oracle Bones mode is always automatic — there is no manual bones flow; ritual and verdict come from the algorithm only. Within your plan’s per-thread depth cap (for example, eight follow-up readings on a Master thread), you may freely alternate I Ching and Oracle Bones and switch I Ching between automatic and manual from one consultation to the next; your cast-mode preference is remembered for the next time you use I Ching.",
+    related: ["userGuide", "methodNotes"],
+  },
+  {
     id: "thread-depth",
     question: "Why can I sometimes not “deepen” further in the same chat?",
     answer:
@@ -189,6 +196,13 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     answer:
       "El I Ching sigue el ritual clásico de seis líneas. Los huesos usan un flujo aparte basado en cargas positiva/negativa inspirado en la piromancia antigua. Las notas de métodos describen fuentes y enfoque de ambos.",
     related: ["methodNotes", "userGuideGettingStarted"],
+  },
+  {
+    id: "iching-manual-auto-bones",
+    question: "¿Qué es el I Ching automático frente al manual, y puedo mezclar Huesos en el mismo hilo?",
+    answer:
+      "Lo automático frente a manual solo aplica al I Ching (tres monedas). En Opciones el modo de tirada aparece cuando I Ching está seleccionado: automático ejecuta el ritual animado de monedas en el servidor; manual te permite introducir los seis totales de línea (6/7/8/9) de tus monedas antes de la lectura. El modo Huesos es siempre automático — no hay flujo manual de huesos; el ritual y el veredicto salen solo del algoritmo. Dentro del tope de profundidad por hilo de tu plan (por ejemplo, ocho profundizaciones en un hilo Master), puedes alternar libremente I Ching y Huesos y cambiar el I Ching entre automático y manual de una consulta a otra; la app guarda tu preferencia de modo para la próxima lectura en I Ching.",
+    related: ["userGuide", "methodNotes"],
   },
   {
     id: "thread-depth",
@@ -290,6 +304,13 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
+    id: "iching-manual-auto-bones",
+    question: "ما الفرق بين I Ching التلقائي واليدوي، وهل يمكن خلط العظام في نفس الخيط؟",
+    answer:
+      "التلقائي مقابل اليدوي ينطبق فقط على I Ching (ثلاث عملات). في الخيارات تظهر أزرار وضع القَسْم عند اختيار I Ching: التلقائي يشغّل طقس العملات المتحرك على الخادم؛ اليدوي يتيح لك إدخال مجموعات الأسطر الستة (6/7/8/9) من عملاتك قبل القراءة. وضع العظام دائمًا تلقائي — لا يوجد مسار يدوي للعظام؛ الطقس والحكم يأتيان من الخوارزمية فقط. ضمن حد عمق الخيط في خطتك (مثلاً ثماني قراءات متابعة في خيط Master)، يمكنك بالتناوب بحرية بين I Ching والعظام، وتبديل I Ching بين التلقائي واليدوي من استشارة إلى أخرى؛ يحفظ التطبيق تفضيل وضع القَسْم للمرة القادمة التي تستخدم فيها I Ching.",
+    related: ["userGuide", "methodNotes"],
+  },
+  {
     id: "thread-depth",
     question: "لماذا لا أستطيع أحيانًا «التعمّق» أكثر في نفس المحادثة؟",
     answer:
@@ -387,6 +408,13 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     answer:
       "I Ching क्लासिक छह-रेखा अनुष्ठान पर आधारित है। Oracle Bones एक अलग हाँ/नहीं प्रवाह उपयोग करता है जो प्राचीन दरार-आधारित दिव्यज्ञान से प्रेरित है।",
     related: ["methodNotes", "userGuideGettingStarted"],
+  },
+  {
+    id: "iching-manual-auto-bones",
+    question: "I Ching में स्वचालित बनाम मैन्युअल क्या है, और क्या मैं एक ही थ्रेड में Oracle Bones मिला सकता/सकती हूँ?",
+    answer:
+      "स्वचालित बनाम मैन्युअल केवल I Ching (तीन सिक्के) पर लागू होता है। विकल्पों में कास्ट-मोड रेडियो तभी दिखते हैं जब I Ching चुना हो: स्वचालित सर्वर पर एनिमेटेड सिक्का अनुष्ठान चलाता है; मैन्युअल आपको पढ़ने से पहले अपने सिक्कों से छह पंक्ति योग (6/7/8/9) दर्ज करने देता है। Oracle Bones मोड हमेशा स्वचालित है — कोई मैन्युअल हड्डी प्रवाह नहीं; अनुष्ठान और निर्णय केवल एल्गोरिदम से आते हैं। आपकी योजना की प्रति-थ्रेड गहराई सीमा (उदाहरण के लिए Master थ्रेड पर आठ अनुवर्ती पठन) के भीतर, आप I Ching और Oracle Bones को स्वतंत्र रूप से बदल सकते हैं और एक परामर्श से दूसरे में I Ching को स्वचालित और मैन्युअल के बीच स्विच कर सकते हैं; अगली I Ching पठन के लिए आपकी कास्ट-मोड पसंद याद रखी जाती है।",
+    related: ["userGuide", "methodNotes"],
   },
   {
     id: "thread-depth",
@@ -488,6 +516,13 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
+    id: "iching-manual-auto-bones",
+    question: "易経の自動と手動の違いは？ 同じスレッドで卜骨と混ぜられますか？",
+    answer:
+      "自動と手動は易経（三枚の銭）にのみ適用されます。オプションでは易経を選んだときだけ起卦方式のラジオが表示されます。自動はサーバー上でアニメーションの銭の儀式を実行し、手動は読みの前にご自身の銭の合計6・7・8・9を六爻分入力します。卜骨モードは常に自動で、手動の卜骨フローはありません。儀式と判定はアルゴリズムのみから行われます。プランのスレッド深度上限（例：Masterでスレッドあたり8回の深掘り）の範囲内で、易経と卜骨を自由に行き来でき、相談ごとに易経の自動／手動を切り替えられます。起卦方式の選択は次回の易経相談まで記憶されます。",
+    related: ["userGuide", "methodNotes"],
+  },
+  {
     id: "thread-depth",
     question: "なぜ同じチャットで「深める」ことができないことがありますか？",
     answer:
@@ -585,6 +620,13 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     answer:
       "I Ching遵循经典的六爻仪式。甲骨文采用基于正负电荷的独立流程，灵感来自古代火焰占卜。两种方法的来源和意图均在方法说明中有所描述。",
     related: ["methodNotes", "userGuideGettingStarted"],
+  },
+  {
+    id: "iching-manual-auto-bones",
+    question: "易经的自动与手动有什么区别？同一对话里能混用甲骨文吗？",
+    answer:
+      "自动与手动仅适用于易经（三枚铜钱）。在选项中，只有选中易经时才会显示起卦方式：自动由服务器运行动画铜钱仪式；手动则在解读前由您自行输入六爻各爻的6/7/8/9合计。甲骨文模式始终为自动，没有手动甲骨流程；仪式与兆判完全由算法产生。在您套餐的单线程深度上限内（例如 Master 每线程八次后续解读），您可以自由交替易经与甲骨文，并在每次咨询之间切换易经的自动与手动；应用会记住您下次使用易经时的起卦偏好。",
+    related: ["userGuide", "methodNotes"],
   },
   {
     id: "thread-depth",
@@ -686,6 +728,13 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
+    id: "iching-manual-auto-bones",
+    question: "역경 자동과 수동의 차이는 무엇이며, 같은 스레드에서 갑골과 섞을 수 있나요?",
+    answer:
+      "자동과 수동은 역경(동전 세 개)에만 적용됩니다. 옵션에서 역경을 선택했을 때만 점 방식 라디오가 보입니다. 자동은 서버에서 애니메이션 동전 의식을 실행하고, 수동은 해석 전에 본인의 동전으로 나온 각 효의 합계 6/7/8/9를 여섯 번 입력합니다. 갑골 모드는 항상 자동이며 수동 갑골 흐름은 없습니다. 의식과 판정은 알고리즘에서만 나옵니다. 요금제의 스레드 깊이 한도(예: Master 스레드당 후속 해석 8회) 안에서는 역경과 갑골을 자유롭게 번갈아 할 수 있고, 상담마다 역경의 자동/수동을 바꿀 수 있습니다. 다음 역경 상담을 위해 점 방식 선택은 기억됩니다.",
+    related: ["userGuide", "methodNotes"],
+  },
+  {
     id: "thread-depth",
     question: "왜 때때로 같은 채팅에서 더 이상 '심화'할 수 없나요?",
     answer:
@@ -783,6 +832,13 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     answer:
       "O I Ching segue o ritual clássico de seis linhas. Os Ossos usam um fluxo separado baseado em cargas positiva/negativa, inspirado na piromancia antiga. As notas de métodos descrevem fontes e intenção de ambos.",
     related: ["methodNotes", "userGuideGettingStarted"],
+  },
+  {
+    id: "iching-manual-auto-bones",
+    question: "O que é I Ching automático vs manual — e posso misturar Ossos no mesmo fio?",
+    answer:
+      "Automático vs manual aplica-se apenas ao I Ching (três moedas). Em Opções os rádios do modo de tiragem aparecem com o I Ching selecionado: automático corre o ritual animado das moedas no servidor; manual permite introduzir os seis totais de linha (6/7/8/9) das suas moedas antes da leitura. O modo Ossos é sempre automático — não existe fluxo manual de ossos; ritual e veredicto vêm só do algoritmo. Dentro do limite de profundidade por fio do seu plano (por exemplo, oito aprofundamentos num fio Master), pode alternar livremente I Ching e Ossos e mudar o I Ching entre automático e manual de uma consulta para a seguinte; a app memoriza a preferência de modo para a próxima leitura em I Ching.",
+    related: ["userGuide", "methodNotes"],
   },
   {
     id: "thread-depth",
@@ -884,6 +940,13 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
+    id: "iching-manual-auto-bones",
+    question: "Was bedeutet automatisch vs. manuell beim I Ching — und kann ich Orakelknochen im selben Thread mischen?",
+    answer:
+      "Automatisch vs. manuell gilt nur für das I Ching (drei Münzen). In den Optionen erscheinen die Wurfmodus-Radios nur bei ausgewähltem I Ching: automatisch führt das animierte Münzritual auf dem Server aus; manuell tragen Sie vor der Lesung die sechs Liniensummen (6/7/8/9) Ihrer eigenen Münzen ein. Der Orakelknochen-Modus ist immer automatisch — es gibt keinen manuellen Knochenablauf; Ritual und Urteil kommen ausschließlich vom Algorithmus. Innerhalb des Thread-Tiefenlimits Ihres Tarifs (z. B. acht Vertiefungen pro Master-Thread) können Sie frei zwischen I Ching und Orakelknochen wechseln und das I Ching von einer Beratung zur nächsten zwischen automatisch und manuell umschalten; Ihre Wurfmodus-Präferenz wird für die nächste I-Ching-Beratung gespeichert.",
+    related: ["userGuide", "methodNotes"],
+  },
+  {
     id: "thread-depth",
     question: "Warum kann ich manchmal im selben Chat nicht weiter «vertiefen»?",
     answer:
@@ -983,6 +1046,13 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
+    id: "iching-manual-auto-bones",
+    question: "Che cos'è I Ching automatico vs manuale — e posso mescolare le Ossa nello stesso filo?",
+    answer:
+      "Automatico vs manuale vale solo per l'I Ching (tre monete). In Opzioni i radio del modo di lancio compaiono con l'I Ching selezionato: automatico esegue il rituale animato delle monete sul server; manuale consente di inserire i sei totali di linea (6/7/8/9) delle proprie monete prima della lettura. La modalità Ossa è sempre automatica — non esiste un flusso manuale per le ossa; rituale e verdetto provengono solo dall'algoritmo. Entro il limite di profondità per filo del tuo piano (ad esempio otto approfondimenti in un filo Master), puoi alternare liberamente I Ching e Ossa e passare l'I Ching da automatico a manuale da una consultazione all'altra; l'app memorizza la preferenza di modo per la prossima lettura in I Ching.",
+    related: ["userGuide", "methodNotes"],
+  },
+  {
     id: "thread-depth",
     question: "Perché a volte non riesco ad «approfondire» ulteriormente nella stessa chat?",
     answer:
@@ -1080,6 +1150,13 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     answer:
       "Le I Ching suit le rituel classique des six lignes. Les Os utilisent un flux séparé basé sur des charges positive/négative inspiré de la pyromantie ancienne. Les notes de méthodes décrivent les sources et l'intention des deux.",
     related: ["methodNotes", "userGuideGettingStarted"],
+  },
+  {
+    id: "iching-manual-auto-bones",
+    question: "Qu'est-ce que le I Ching automatique vs manuel — et puis-je mélanger les Os dans le même fil ?",
+    answer:
+      "Automatique vs manuel ne concerne que le I Ching (trois pièces). Dans Options, les boutons radio du mode de tirage apparaissent lorsque le I Ching est sélectionné : automatique lance le rituel animé des pièces sur le serveur ; manuel vous permet de saisir les six totaux de ligne (6/7/8/9) de vos vraies pièces avant la lecture. Le mode Os est toujours automatique — il n'existe pas de flux manuel pour les os ; le rituel et le verdict viennent uniquement de l'algorithme. Dans la limite de profondeur par fil de votre forfait (par exemple huit approfondissements sur un fil Master), vous pouvez librement alterner I Ching et Os et passer le I Ching de automatique à manuel d'une consultation à l'autre ; l'application mémorise votre préférence de mode pour la prochaine lecture en I Ching.",
+    related: ["userGuide", "methodNotes"],
   },
   {
     id: "thread-depth",
