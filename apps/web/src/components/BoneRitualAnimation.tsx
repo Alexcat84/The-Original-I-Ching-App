@@ -653,11 +653,7 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
       setRitualGraphics("fallback");
       return;
     }
-    if (!renderer.getContext()) {
-      renderer.dispose();
-      setRitualGraphics("fallback");
-      return;
-    }
+    // three.js throws if the context cannot be created; no need to call getContext() (redundant and can confuse some drivers).
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ReinhardToneMapping;
     renderer.toneMappingExposure = 1.16;
@@ -875,8 +871,46 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
     resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(containerRef.current);
 
-    setRitualGraphics("webgl");
+    let gpuReleased = false;
+    function disposeGpuPipeline() {
+      if (gpuReleased) return;
+      gpuReleased = true;
+      disposed = true;
+      if (rafId) window.cancelAnimationFrame(rafId);
+      rafId = 0;
+      resizeObserver?.disconnect();
+      resizeObserver = null;
+      try {
+        renderer.domElement.removeEventListener("webglcontextlost", handleContextLost);
+        renderer.domElement.classList.remove("bone-ritual-canvas--ready");
+      } catch {
+        /* ignore */
+      }
+      scene.clear();
+      renderer.dispose();
+      boneGeo.dispose();
+      boneMat.dispose();
+      vesselGeo.dispose();
+      vesselMat.dispose();
+      vesselRimGeo.dispose();
+      vesselRimMat.dispose();
+      emberBedGeo.dispose();
+      emberBedMat.dispose();
+      flameGeo.dispose();
+      flameMat.dispose();
+      flameTexture?.dispose();
+      crackMaskTexture.dispose();
+    }
+
+    function handleContextLost(event: Event) {
+      event.preventDefault();
+      disposeGpuPipeline();
+      setRitualGraphics("fallback");
+    }
+    renderer.domElement.addEventListener("webglcontextlost", handleContextLost);
+
     const clock = new THREE.Timer();
+    let webglFirstPaintDone = false;
 
     const animate = (timestamp: number) => {
       if (disposed) return;
@@ -1018,28 +1052,17 @@ export default function BoneRitualAnimation({ isProcessing, oracleResult, verdic
       }
 
       renderer.render(scene, camera);
+      if (!webglFirstPaintDone) {
+        webglFirstPaintDone = true;
+        renderer.domElement.classList.add("bone-ritual-canvas--ready");
+        setRitualGraphics("webgl");
+      }
       rafId = window.requestAnimationFrame(animate);
     };
     rafId = window.requestAnimationFrame(animate);
 
     return () => {
-      disposed = true;
-      if (rafId) window.cancelAnimationFrame(rafId);
-      resizeObserver?.disconnect();
-      scene.clear();
-      renderer.dispose();
-      boneGeo.dispose();
-      boneMat.dispose();
-      vesselGeo.dispose();
-      vesselMat.dispose();
-      vesselRimGeo.dispose();
-      vesselRimMat.dispose();
-      emberBedGeo.dispose();
-      emberBedMat.dispose();
-      flameGeo.dispose();
-      flameMat.dispose();
-      flameTexture?.dispose();
-      crackMaskTexture.dispose();
+      disposeGpuPipeline();
     };
   }, []);
 
