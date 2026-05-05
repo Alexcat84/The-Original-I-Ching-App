@@ -715,10 +715,10 @@ html.iching-rn-webview[data-theme="light"] .auth-explore-strip--session .auth-ex
   }
 }
 
-/* Columna centrada: más ancha en desktop para lectura e imágenes */
+/* Centered chat column (browser layout; widths unchanged — tweak bubble rules for message line length) */
 .chat-surface {
   width: 100%;
-  max-width: min(42rem, calc(100vw - 1rem));
+  max-width: min(34rem, 100%);
   margin-left: auto;
   margin-right: auto;
   margin-top: 0;
@@ -764,13 +764,13 @@ html:not(.iching-rn-webview) .chat-surface--explore-cap > .auth-explore-strip:fi
 
 @media (min-width: 480px) {
   .chat-surface {
-    max-width: min(44rem, calc(100vw - 1.1rem));
+    max-width: min(36rem, 100%);
   }
 }
 
 @media (min-width: 768px) {
   .chat-surface {
-    max-width: min(50rem, calc(100vw - 1.25rem));
+    max-width: min(42rem, 100%);
   }
 }
 
@@ -1555,7 +1555,7 @@ html:not(.iching-rn-webview) .chat-history {
 }
 
 .chat-bubble {
-  max-width: 100%;
+  max-width: min(92%, 34rem);
   padding: 0.65rem 0.85rem;
   border-radius: var(--radius-bubble);
   box-shadow: var(--shadow);
@@ -1576,7 +1576,7 @@ html:not(.iching-rn-webview) .chat-history {
   border: 1px solid var(--bubble-assistant-border);
   border-bottom-left-radius: 20px;
   color: var(--fg);
-  max-width: 100%;
+  max-width: min(96%, 40rem);
   text-align: justify;
   text-justify: inter-word;
 }
