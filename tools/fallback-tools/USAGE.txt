@@ -20,7 +20,7 @@ Tiers and resolutions
 - practitioner: 1184x1184
 - master: 1504x1504
 
-Run commands
+Run commands (root package.json pins npm — use npm run, not pnpm run)
 - npm run generate:fallbacks:together
 - or explicitly with env file:
   node --env-file="apps/web/.env.local" tools/fallback-tools/generate-prebuilt-fallbacks-together.mjs
@@ -45,7 +45,8 @@ Prerequisite
 
 I Ching production prompt samples (hallucination QA)
 - npm run generate:together:iching-samples
-- Requires TOGETHER_API_KEY; outputs under tools/output/together-iching-samples/ (gitignored)
+- Requires TOGETHER_API_KEY — merged apps/web/.env.local → apps/web/.env → root .env.local → root .env (later overrides); root `.env` wins over stale apps/web copies; shell-exported non-empty vars win
+- Outputs under tools/output/together-iching-samples/ (gitignored)
 - See header in tools/fallback-tools/generate-together-iching-samples.mjs for SAMPLE_* env vars
 
 Notes

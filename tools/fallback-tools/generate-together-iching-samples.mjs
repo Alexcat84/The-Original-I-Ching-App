@@ -7,7 +7,14 @@
  *   npm run build -w @iching-oracle/image-engine
  *
  * Usage:
- *   node --env-file=apps/web/.env.local tools/fallback-tools/generate-together-iching-samples.mjs
+ *   npm run generate:together:iching-samples
+ *   (Este repo fija "packageManager": npm — usa npm, no pnpm, en la raíz.)
+ *
+ * Carga de variables: orden de fusión (las últimas rutas ganan sobre las anteriores):
+ *   apps/web/.env.local → apps/web/.env → .env.local (raíz) → .env (raíz)
+ * Así el `.env` en la raíz del repo puede sobrescribir copias viejas en apps/web/.
+ * Las variables que YA venían definidas no vacías en el proceso (export en la terminal antes
+ * de npm run) no se sobrescriben desde archivos.
  *
  * Env:
  *   TOGETHER_API_KEY (required)
@@ -36,6 +43,7 @@
  * - 429 / rate limit: usa SAMPLE_DELAY_MS aquí o SAMPLE_COUNT=1 entre intentos.
  */
 import { randomUUID } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -43,6 +51,65 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..", "..");
 const pkgDist = path.join(repoRoot, "packages", "image-engine", "dist", "index.js");
+
+/** Non-empty values already present before reading any repo .env (shell / OS wins). */
+function snapshotNonEmptyEnvKeys() {
+  /** @type {Record<string, string>} */
+  const out = {};
+  for (const key of Object.keys(process.env)) {
+    const v = process.env[key];
+    if (typeof v === "string" && v.length > 0) out[key] = v;
+  }
+  return out;
+}
+
+/** Simple .env line parser (KEY=VAL). Later calls override earlier file merges for same key. */
+function mergeEnvFile(filePath, lockedKeys) {
+  if (!existsSync(filePath)) return;
+  let raw = readFileSync(filePath, "utf8");
+  if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
+
+  for (const line of raw.split(/\r?\n/)) {
+    const t = line.trim();
+    if (!t || t.startsWith("#")) continue;
+    const eq = t.indexOf("=");
+    if (eq <= 0) continue;
+    const key = t.slice(0, eq).trim();
+    if (!key || key.startsWith("#")) continue;
+    if (Object.prototype.hasOwnProperty.call(lockedKeys, key)) continue;
+
+    let val = t.slice(eq + 1).trim();
+    if (
+      (val.startsWith('"') && val.endsWith('"')) ||
+      (val.startsWith("'") && val.endsWith("'"))
+    ) {
+      val = val.slice(1, -1);
+    }
+    val = val.trim();
+    process.env[key] = val;
+  }
+}
+
+function loadRepoEnvFiles(root) {
+  const lockedKeys = snapshotNonEmptyEnvKeys();
+  const chain = [
+    path.join(root, "apps", "web", ".env.local"),
+    path.join(root, "apps", "web", ".env"),
+    path.join(root, ".env.local"),
+    path.join(root, ".env"),
+  ];
+  for (const filePath of chain) {
+    mergeEnvFile(filePath, lockedKeys);
+  }
+}
+
+/** Masked hint for logs — DEBUG_ICHING_SAMPLES_ENV=1 */
+function debugEnvHint() {
+  if (process.env.DEBUG_ICHING_SAMPLES_ENV !== "1") return;
+  const k = process.env.TOGETHER_API_KEY;
+  const tail = typeof k === "string" && k.length >= 8 ? `${k.slice(0, 4)}…${k.slice(-4)}` : k ? "(short)" : "(missing)";
+  console.info("[samples] TOGETHER_API_KEY after file merge:", tail);
+}
 
 const API_URL = "https://api.together.xyz/v1/images/generations";
 
@@ -83,7 +150,12 @@ async function loadEngine() {
 
 async function generateTogetherRaster(engine, { prompt, negativePrompt, width, height }) {
   const key = process.env.TOGETHER_API_KEY;
-  if (!key) throw new Error("Missing TOGETHER_API_KEY");
+  if (!key) {
+    throw new Error(
+      "Missing TOGETHER_API_KEY. Add it to apps/web/.env.local (or .env) or export it in the shell. " +
+        "Searched (after load): apps/web/.env.local, apps/web/.env, .env.local, .env",
+    );
+  }
 
   const model = process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "10");
@@ -135,6 +207,9 @@ async function generateTogetherRaster(engine, { prompt, negativePrompt, width, h
 }
 
 async function main() {
+  loadRepoEnvFiles(repoRoot);
+  debugEnvHint();
+
   const engine = await loadEngine();
   const { buildImagePrompt, buildTogetherNegativePrompt } = engine;
 

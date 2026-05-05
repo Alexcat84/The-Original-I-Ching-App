@@ -18,7 +18,7 @@ const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
 
 export function buildTogetherNegativePrompt(): string {
   const keywordPrefix =
-    "typography, captions, watermark, logo, letters, numerals, chop stamp, red seal, vermilion blob, corner seal, margin stamp, top-left ornament, inset label rectangle, signature block, vertical band, pseudo-calligraphy, fake glyphs, album leaf frame, poster layout, blank parchment, stock zen wallpaper, symmetrical corner sun disk";
+    "typography, captions, watermark, logo, letters, numerals, chop stamp, red seal, vermilion blob, corner seal, margin stamp, top-left ornament, inset label rectangle, signature block, vertical band, pseudo-calligraphy, fake glyphs, album leaf frame, poster layout, blank parchment, stock zen wallpaper, symmetrical corner sun disk, photorealistic snapshot, DSLR photograph, smartphone camera photo, documentary wildlife photography, stock photo HDR crush, harsh flash, crushed black silhouette filling frame center, hyperreal skin texture on rocks";
   const scriptTail =
     "Hanzi-like tiles, Kanji-like tiles, Hangul, Cyrillic, Arabic script — forbid legible rendering";
   return [keywordPrefix, ...IMAGE_NEGATIVE_CONSTRAINT_LINES, scriptTail].join(" ");
@@ -61,26 +61,26 @@ const COMPOSITION_VARIANTS = [
 ] as const;
 
 const ATMOSPHERE_ROTATIONS = [
-  "Light: cool dawn sidelight, crisp air, pink-blue rim on distant snow.",
-  "Light: heavy overcast, soft silver reflections on wet stone and river.",
-  "Light: late afternoon gold, long shadows, warm dust or pollen haze.",
-  "Light: thin moon behind thin cloud veil — glow diffuse, no crisp disk stuck in a corner.",
-  "Light: clearing storm — dark cloud mass with sunbeam shafts hitting one ridge face.",
-  "Light: misty drizzle — lowered contrast, saturated greens and grays, soft silhouettes.",
-  "Light: starfield twilight — deep blue zenith fading to warm band at horizon.",
-  "Light: spring haze — pale lemon sky, buds on branches, gentle luminosity.",
+  "Light: cool dawn sidelight — ethereal pastel air, soft rim glow on distant snow, painterly not photographic.",
+  "Light: heavy overcast — soft silver diffuse reflections, illustration-friendly mid-tones, gentle contrast.",
+  "Light: romantic golden wash — long soft shadows in painted style, warm dust haze, emotional not harsh documentary sun.",
+  "Light: thin moon behind thin cloud veil — diffuse fairy-tale glow, no crisp spotlight disk in a corner.",
+  "Light: clearing storm — dramatic but illustrated sunbeams on one ridge, volumetric painted clouds.",
+  "Light: misty drizzle — lowered contrast, soft greens and grays, silhouettes gentle not crushed black.",
+  "Light: starfield twilight — deep blue zenith fading to warm horizon band, magical calm luminosity.",
+  "Light: spring haze — pale lemon sky, buds on branches, luminous illustrative atmosphere.",
 ] as const;
 
-/** Rotating openers — same geography-first rule, different wording so generations do not look cloned. */
+/** Rotating openers — fantasy-illustration forward (evocative shanshui), not documentary photography. */
 const OPENER_VARIANTS = [
-  "Vast East Asian wilderness landscape: monumental ridges, mist-filled valleys, rivers or lakes, atmospheric perspective — widescreen 16:9 immersive outdoor scene (real terrain scale, not empty parchment).",
-  "Grand mountain-and-water tableau: layered peaks, fog in hollows, reflective water or wetlands, cinematic depth — classic brush-painting mood rendered as rich natural scenery filling the frame.",
-  "Epic highland vista: granite spires, twisted pines on cliffs, sea of clouds between towers — painterly atmosphere without poster symmetry.",
-  "Deep river-canyon scene: carved cliffs, silver water thread, forested slopes, distant blue atmospheric fade.",
-  "Serene lakeshore panorama: broad calm water, distant mountain wall, soft sky gradation, foreground rocks or reeds.",
-  "Rolling tea-hill / terrace rhythm: contour-farming curves climbing into mist, rounded silhouettes, pastoral calm.",
-  "Dramatic storm-lit escarpment: turbulent sky breaks, wet rock catching spotlight, energetic clouds.",
-  "Quiet bamboo-stream hollow: filtered green light, wet boulders, gentle vapor among tall stalks — intimate vertical space.",
+  "Epic painted fantasy East Asian wilderness: monumental ridges, mist-filled valleys, rivers or lakes — widescreen 16:9 lush illustrated landscape, emotional poetic atmosphere, dreamlike depth (hand-painted epic, not a photo).",
+  "Grand mythic mountain-and-water tableau: layered peaks, fog in hollows, reflective water — classic ink-wash soul rendered as luminous fantasy illustration filling the frame.",
+  "High fantasy highland vista: granite spires, twisted pines, sea of clouds — golden-age landscape concept art mood, painterly awe without poster symmetry.",
+  "Dreamlike river-canyon illustration: carved cliffs, silver water thread, forested slopes — soft atmospheric fade, storybook emotion.",
+  "Serene enchanted lakeshore: calm water, distant mountain wall, gentle sky gradation — romantic illustrative panorama, not snapshot.",
+  "Rolling tea-hill fantasy rhythm: contours climbing into mist — pastoral illustration calm, rounded poetic silhouettes.",
+  "Dramatic illustrated storm escarpment: turbulent painted sky, wet cliffs catching light — energetic fantasy clouds, not HDR photo.",
+  "Quiet bamboo-stream fairy tale: filtered emerald light, wet boulders, vapor among stalks — intimate vertical illustration space.",
 ] as const;
 
 /** Extra focal diversity — reduces identical “hero moon top-right” compositions. */
@@ -96,14 +96,14 @@ const FOCAL_DIVERSITY_HINTS = [
 ] as const;
 
 const STYLE_MOOD_TAGS = [
-  "Illustrative scenic concept art — lush readable geography.",
-  "Traditional ink-wash color mood remapped onto volumetric landscape painting.",
-  "Travel-documentary vista clarity — crisp depth cues, varied silhouettes.",
-  "Romantic pastoral grandeur — soft poetic atmosphere without decorative framing devices.",
-  "Highland expedition vista — crisp air, geological variety.",
-  "Braided river through meadows — gravel bars, willow tangles, no buildings or bridges with signage.",
-  "Seasonal diversity emphasis — distinct foliage or weather story.",
-  "Heritage landscape through terrain only — nature carries cultural mood, zero built structures or totems.",
+  "Fantasy landscape concept art — lush emotional geography, storybook lighting, painterly readable forms.",
+  "Traditional ink-wash soul remapped onto soft volumetric illustration — poetic not photographic.",
+  "Luminous mythic vista — gentle depth cues and varied silhouettes in illustrated epic style.",
+  "Romantic pastoral grandeur — bittersweet poetic mood, soft glow, no decorative framing devices.",
+  "Painterly highland dreamscape — airy atmosphere, geological variety as painted fantasy not expedition photo.",
+  "Braided river through meadows — illustration softness, willow tangles, no buildings or bridges with signage.",
+  "Seasonal fairy-tale emphasis — foliage and weather as emotional metaphor in painted color.",
+  "Heritage mood through terrain alone — cultural feeling via mist, rock, and trees — zero built structures or totems.",
 ] as const;
 
 export function buildImagePrompt(
@@ -133,13 +133,15 @@ export function buildImagePrompt(
     COMPOSITION_VARIANTS[compIdx],
     FOCAL_DIVERSITY_HINTS[focalIdx],
     STYLE_MOOD_TAGS[styleIdx],
-    "Ground the image in specific landforms and weather — avoid empty beige voids, single-wash posters, or stock wallpaper symmetry.",
+    "Ground the scene in illustrated landforms and mood weather — avoid empty beige voids or flat posters; also avoid harsh snapshot realism.",
   ].join(" ");
 
   return [
     OPENER_VARIANTS[openerIdx],
     settingBlock,
-    "Visual priority: distinct terrain, varied silhouettes, and clear depth — not the same mist-mountain-sun-in-corner template every time.",
+    "Art direction: emotionally resonant fantasy landscape illustration — poetic, dreamlike, luminous — never a photograph, smartphone snapshot, or documentary realism.",
+    "Preserve gentle luminous lift across the middle band (mist, moon-glow, soft gradients, pastel haze) so the scene stays airy — avoid heavy opaque shadow or near-black foliage dominating the central third.",
+    "Visual priority: distinct illustrated terrain and depth variety — not the same mist-mountain-sun-in-corner stock shot every time.",
     "Leave center softly open (mist, sky, or distant haze) for overlay — no symbols, stamps, faux-writing, bars, or decorative portals.",
     "Corners and frame edges: seamless landscape only — never inset seals, red boxes, marginal stamps, or signature ornaments.",
     "Foreground only if subtle: natural rocks, pine branches, shoreline, or mist — no inscribed coins, no talismans, no objects resembling lettering.",
