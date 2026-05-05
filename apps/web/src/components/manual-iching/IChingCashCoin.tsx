@@ -24,8 +24,8 @@ function usePrefersReducedMotion(): boolean {
 }
 
 /**
- * Traditional cash-style disc (康熙通寶 / Manchu reverse) for manual I Ching casting.
- * Decorative faces are aria-hidden; the parent control must expose the accessible name.
+ * Traditional cash-style disc: Han face 康熙通寶 (four glyphs around the hole);
+ * Manchu reverse (two lines). Decorative only — parent button carries a11y name.
  */
 export function IChingCashCoin({ face, className = "" }: Props) {
   const reduceMotion = usePrefersReducedMotion();
@@ -43,33 +43,92 @@ export function IChingCashCoin({ face, className = "" }: Props) {
         }}
       >
         <span className="iching-cash-coin__face iching-cash-coin__face--front" aria-hidden>
-          <svg viewBox="0 0 240 240" className="iching-cash-coin__svg" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="120" cy="120" r="108" fill="#e8b923" stroke="#9b6f1f" strokeWidth="22" />
-            <circle cx="120" cy="120" r="92" fill="none" stroke="#c18f2e" strokeWidth="10" />
-            <rect x="88" y="88" width="64" height="64" rx="4" fill="#1c1c1c" />
-            <text x="120" y="68" className="iching-cash-coin__han" textAnchor="middle" dominantBaseline="middle">
+          <svg
+            viewBox="0 0 200 200"
+            className="iching-cash-coin__svg"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden
+          >
+            <circle cx="100" cy="100" r="90" fill="#e8b923" stroke="#8b6914" strokeWidth="14" />
+            <circle cx="100" cy="100" r="76" fill="none" stroke="#b8892e" strokeWidth="6" />
+            <rect x="74" y="74" width="52" height="52" rx="3" fill="#1a1a1a" />
+            {/* Clockwise from top: 康熙通寶 */}
+            <text
+              x="100"
+              y="44"
+              className="iching-cash-coin__han"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="34"
+              fontWeight={700}
+            >
               康
             </text>
-            <text x="120" y="95" className="iching-cash-coin__han" textAnchor="middle" dominantBaseline="middle">
+            <text
+              x="156"
+              y="104"
+              className="iching-cash-coin__han"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="34"
+              fontWeight={700}
+            >
               熙
             </text>
-            <text x="120" y="145" className="iching-cash-coin__han" textAnchor="middle" dominantBaseline="middle">
+            <text
+              x="100"
+              y="164"
+              className="iching-cash-coin__han"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="34"
+              fontWeight={700}
+            >
               通
             </text>
-            <text x="120" y="172" className="iching-cash-coin__han" textAnchor="middle" dominantBaseline="middle">
+            <text
+              x="44"
+              y="104"
+              className="iching-cash-coin__han"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="34"
+              fontWeight={700}
+            >
               寶
             </text>
           </svg>
         </span>
         <span className="iching-cash-coin__face iching-cash-coin__face--back" aria-hidden>
-          <svg viewBox="0 0 240 240" className="iching-cash-coin__svg" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="120" cy="120" r="108" fill="#e8b923" stroke="#9b6f1f" strokeWidth="22" />
-            <circle cx="120" cy="120" r="92" fill="none" stroke="#c18f2e" strokeWidth="10" />
-            <rect x="88" y="88" width="64" height="64" rx="4" fill="#1c1c1c" />
-            <text x="120" y="85" className="iching-cash-coin__manchu" textAnchor="middle" dominantBaseline="middle">
+          <svg
+            viewBox="0 0 200 200"
+            className="iching-cash-coin__svg"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden
+          >
+            <circle cx="100" cy="100" r="90" fill="#e8b923" stroke="#8b6914" strokeWidth="14" />
+            <circle cx="100" cy="100" r="76" fill="none" stroke="#b8892e" strokeWidth="6" />
+            <rect x="74" y="74" width="52" height="52" rx="3" fill="#1a1a1a" />
+            <text
+              x="100"
+              y="72"
+              className="iching-cash-coin__manchu"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="30"
+              fontWeight={700}
+            >
               ᠪᠣᠣ
             </text>
-            <text x="120" y="125" className="iching-cash-coin__manchu" textAnchor="middle" dominantBaseline="middle">
+            <text
+              x="100"
+              y="136"
+              className="iching-cash-coin__manchu"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="26"
+              fontWeight={700}
+            >
               ᠴᡳᠣᠸᠠᠨ
             </text>
           </svg>

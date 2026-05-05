@@ -5888,9 +5888,8 @@ html.iching-rn-webview .apk-trace-native-metrics {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   box-shadow:
-    0 10px 22px rgba(0, 0, 0, 0.35),
-    inset 0 6px 12px rgba(255, 255, 255, 0.35),
-    inset 0 -6px 12px rgba(0, 0, 0, 0.28);
+    inset 0 5px 10px rgba(255, 255, 255, 0.32),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.22);
 }
 
 .iching-cash-coin__face--front {
@@ -5914,9 +5913,8 @@ html.iching-rn-webview .apk-trace-native-metrics {
     "Songti SC",
     SimSun,
     serif;
-  font-size: 26px;
   font-weight: 700;
-  fill: #1c1c1c;
+  fill: #141414;
 }
 
 .iching-cash-coin__manchu {
@@ -5924,28 +5922,25 @@ html.iching-rn-webview .apk-trace-native-metrics {
     "Mongolian Baiti",
     "Noto Sans Mongolian",
     sans-serif;
-  font-size: 28px;
   font-weight: 700;
-  fill: #1c1c1c;
+  fill: #141414;
 }
 
 .manual-iching-coin {
   width: clamp(4.5rem, 18vw, 5.75rem);
   height: clamp(4.5rem, 18vw, 5.75rem);
   border-radius: 50%;
-  border: 3px solid color-mix(in srgb, var(--accent) 45%, var(--bar-border));
+  /* Bronze rim only — no theme accent ring (avoids “floating in a blue halo”) */
+  border: 2px solid color-mix(in srgb, #6b4e1a 78%, #3d2d10);
   cursor: pointer;
   display: grid;
   place-items: center;
   padding: 0;
   line-height: 0;
   overflow: hidden;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.12), transparent 52%);
+  transition: transform 0.18s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  background: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.14), transparent 55%);
 }
 
 .manual-iching-coin:active {
@@ -5953,16 +5948,13 @@ html.iching-rn-webview .apk-trace-native-metrics {
 }
 
 .manual-iching-coin:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline: 2px solid color-mix(in srgb, var(--accent) 70%, #6b4e1a);
+  outline-offset: 2px;
 }
 
-.manual-iching-coin--heads {
-  border-color: color-mix(in srgb, #d97706 55%, var(--bar-border));
-}
-
+.manual-iching-coin--heads,
 .manual-iching-coin--tails {
-  border-color: color-mix(in srgb, #64748b 55%, var(--bar-border));
+  border-color: color-mix(in srgb, #6b4e1a 85%, #4a3612);
 }
 
 .manual-iching-sum-card {
