@@ -49,7 +49,9 @@ export function IChingCashCoin({ face, className = "" }: Props) {
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden
           >
-            <circle cx="100" cy="100" r="90" fill="#e8b923" stroke="#b8892e" strokeWidth="2.5" />
+            {/* Raised bronze rim + inner highlight — lives inside SVG so it rotates with the flip */}
+            <circle cx="100" cy="100" r="87" fill="#e8b923" stroke="#5c4020" strokeWidth="6" />
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#f2dea3" strokeWidth="2" opacity="0.55" />
             <rect x="74" y="74" width="52" height="52" rx="3" fill="#1a1a1a" />
             {/* Clockwise from top: 康熙通寶 */}
             <text
@@ -105,7 +107,8 @@ export function IChingCashCoin({ face, className = "" }: Props) {
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden
           >
-            <circle cx="100" cy="100" r="90" fill="#e8b923" stroke="#b8892e" strokeWidth="2.5" />
+            <circle cx="100" cy="100" r="87" fill="#e8b923" stroke="#5c4020" strokeWidth="6" />
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#f2dea3" strokeWidth="2" opacity="0.55" />
             <rect x="74" y="74" width="52" height="52" rx="3" fill="#1a1a1a" />
             <text
               x="100"

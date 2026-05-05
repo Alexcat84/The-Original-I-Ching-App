@@ -2,12 +2,19 @@ import type { Hexagram, Line } from "@iching-oracle/iching-engine";
 import type { ConsultationCategory } from "./categories.js";
 import { VISUAL_THEMES } from "./categories.js";
 
-/** Shared no-text / no-CJK rules for main prompt and Together `negative_prompt`. */
+/**
+ * Shared no-text / no-CJK rules for main prompt and Together `negative_prompt`.
+ * Includes the same hard sentences as `origin/main` tail — those were dropped when negatives
+ * moved to the front; keeping them here restores corner/seal suppression after truncation.
+ */
 const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
   "Do not draw any Chinese characters, seal script, vertical inscription columns, poem scrolls, or corner calligraphy bands.",
   "No red chops, stamps, seals, signatures, logos, watermarks, pinyin, roman words, or numbers anywhere.",
   "No decorative glyphs in margins — especially no vertical text columns on left or right edges.",
-  "Center area must stay visually empty of lettering; no hexagram bars or line graphics in the raster (those are added in post).",
+  "Center MUST be a large blank, uncluttered misty space with NO calligraphy characters, NO seal-script glyphs, and NO hexagram bars/lines.",
+  "Hard rule: do not draw any Chinese characters, pinyin, roman text, numbers, symbols, or seal chops anywhere in the image.",
+  "Absolutely forbidden: red stamps, signature seals, poem columns, vertical black calligraphy, logos, watermarks, decorative corner glyphs, hanko, or any textual mark in any corner.",
+  "No hexagram bars or line graphics in the raster — those are composited in post; keep center visually empty for overlay.",
 ] as const;
 
 /**
@@ -16,7 +23,7 @@ const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
  */
 export function buildTogetherNegativePrompt(): string {
   const keywordPrefix =
-    "Chinese characters, Hanzi, Kanji, Hangul, Hiragana, Katakana, Cyrillic, Arabic script, seal script, calligraphy, vertical inscription, poem scroll, carved stone text, subtitles, captions, typography, watermark, chop, stamp, seal, logo, letters, numerals, pinyin";
+    "Chinese characters, Hanzi, Kanji, Hangul, Hiragana, Katakana, Cyrillic, Arabic script, seal script, calligraphy, vertical inscription, poem scroll, carved stone text, subtitles, captions, typography, watermark, chop, stamp, seal, hanko, red corner seal, corner decoration, logo, letters, numerals, pinyin";
   return [keywordPrefix, ...IMAGE_NEGATIVE_CONSTRAINT_LINES].join(" ");
 }
 
@@ -94,7 +101,6 @@ export function buildImagePrompt(
     negativeBlock,
     "Elegant ancient Chinese ink wash painting (sumi-e) on textured handmade xuan paper, widescreen 16:9, museum quality, scholarly Zhouyi consultation.",
     settingBlock,
-    "Center SHOULD remain a large blank, uncluttered misty space suitable for a later overlay.",
     "Foreground: weathered wooden scholar table with bronze incense burner (thin smoke trail), scattered round copper cash coins with square holes.",
     `Emotional register for consultation theme (${category}): ${theme.mood}.`,
   ]

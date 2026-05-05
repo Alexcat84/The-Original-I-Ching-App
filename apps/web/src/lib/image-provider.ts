@@ -577,7 +577,11 @@ export async function buildImageAsset(params: {
   });
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
   const { width: togetherFallbackW, height: togetherFallbackH } = resolveTogetherImageSize(params.tier);
-  const promptForRemote = compactPrompt(params.prompt, provider === "pollinations" ? 900 : 1100);
+  // Together caps at 1500; larger slice keeps the expanded negative block + setting intact (FLUX still ignores some corners — prose bulk matters).
+  const promptForRemote = compactPrompt(
+    params.prompt,
+    provider === "pollinations" ? 900 : provider === "together" ? 1500 : 1100,
+  );
   let fallbackImageUrl = sumiFallback;
   if (provider === "together") {
     const prebuilt = await pickPrebuiltFallbackImageUrl({
