@@ -60,7 +60,7 @@ import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import { ichingRitualTickDelayMs } from "@/lib/iching-ritual-timing";
-import { previewCastFromLineValues } from "@iching-oracle/iching-engine";
+import { previewCastFromLineValues, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
@@ -159,6 +159,15 @@ function apiLinesToVector(lines: ApiLine[]): Array<6 | 7 | 8 | 9> {
   return [...lines]
     .sort((a, b) => a.position - b.position)
     .map((line) => line.value);
+}
+
+function engineLinesToApiLines(lines: Line[]): ApiLine[] {
+  return lines.map((l) => ({
+    position: l.position,
+    value: l.value,
+    isChanging: l.isChanging,
+    symbol: l.symbol,
+  }));
 }
 
 function transformLineVector(values: Array<6 | 7 | 8 | 9>): Array<7 | 8> {
@@ -3027,21 +3036,23 @@ export default function HomePage() {
     manualLineValues?: IchingManualLineTuple,
   ) {
     const isManualCast = Boolean(manualLineValues);
-    const showRitualAnimation = oracleMode === "iching" ? !isManualCast : true;
+    const showRitualAnimation = oracleMode === "oracle_bones" || oracleMode === "iching";
+    let manualCastPreviewEngine: ManualCastPreview | null = null;
     setLoading(true);
     setError(null);
     setCreditsNotice(null);
     setPendingUserQuestion(questionForRequest || null);
     if (manualLineValues) {
       try {
-        const preview = previewCastFromLineValues(manualLineValues);
+        manualCastPreviewEngine = previewCastFromLineValues(manualLineValues);
         setManualCastPreview({
-          primaryHexagram: preview.primaryHexagram.number,
-          primaryHexagramChinese: preview.primaryHexagram.chineseName,
-          transformedHexagram: preview.transformedHexagram?.number ?? null,
-          mutationRule: preview.mutationRule,
+          primaryHexagram: manualCastPreviewEngine.primaryHexagram.number,
+          primaryHexagramChinese: manualCastPreviewEngine.primaryHexagram.chineseName,
+          transformedHexagram: manualCastPreviewEngine.transformedHexagram?.number ?? null,
+          mutationRule: manualCastPreviewEngine.mutationRule,
         });
       } catch {
+        manualCastPreviewEngine = null;
         setManualCastPreview(null);
       }
     } else {
@@ -3071,6 +3082,31 @@ export default function HomePage() {
       oracleMode,
       questionLength: questionForRequest.length,
     });
+    if (manualCastPreviewEngine && oracleMode === "iching") {
+      try {
+        const ordered = [...engineLinesToApiLines(manualCastPreviewEngine.lines)].sort(
+          (a, b) => a.position - b.position,
+        );
+        setRitualLines(ordered);
+        setRitualRevealTick(12);
+        setRitualStatusPhase("consult");
+        const vec = apiLinesToVector(ordered);
+        setRitualDebugCastVector(vec);
+        setRitualDebugFinalVector(vec);
+        const transformed = transformLineVector(vec);
+        setLastRitualDebugSnapshot({
+          castBase: vec,
+          finalBase: vec,
+          castTransformed: transformed,
+          finalTransformed: transformed,
+          match: true,
+          mutationRule: String(manualCastPreviewEngine.mutationRule),
+          transformedHexagram: manualCastPreviewEngine.transformedHexagram?.number ?? null,
+        });
+      } catch {
+        /* leave ritual slots empty */
+      }
+    }
     setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
     let ok = false;
     try {
@@ -3088,7 +3124,7 @@ export default function HomePage() {
         body: JSON.stringify({
           question: questionForRequest,
           language: detectInputLanguage(questionForRequest, locale),
-          responseMode: showRitualAnimation && oracleMode === "iching" ? "stream_ritual" : "ritual",
+          responseMode: oracleMode === "iching" && !isManualCast ? "stream_ritual" : "ritual",
           sessionId: sessionIdForRequest,
           sessionTitle: consultSession.title,
           isDeepening: activeThread.length > 0,
@@ -3315,20 +3351,41 @@ export default function HomePage() {
         Array.isArray(data.lines) &&
         data.lines.length === 6
       ) {
-        const vec = apiLinesToVector(data.lines);
-        setRitualDebugCastVector(vec);
-        setRitualDebugFinalVector(vec);
-        const transformed = transformLineVector(vec);
-        setLastRitualDebugSnapshot({
-          castBase: vec,
-          finalBase: vec,
-          castTransformed: transformed,
-          finalTransformed: transformed,
-          match: true,
-          mutationRule: data.mutationRule,
-          transformedHexagram: data.transformedHexagram ?? null,
-        });
-        await runIChingRitualReveal(data.lines);
+        const orderedLines = [...data.lines].sort((a, b) => a.position - b.position);
+        if (isManualCast) {
+          const finalVec = apiLinesToVector(orderedLines);
+          const castBaseForSnapshot = ritualDebugCastVector ?? finalVec;
+          setRitualDebugFinalVector(finalVec);
+          const castTransformed = transformLineVector(castBaseForSnapshot);
+          const finalTransformed = transformLineVector(finalVec);
+          setLastRitualDebugSnapshot({
+            castBase: castBaseForSnapshot,
+            finalBase: finalVec,
+            castTransformed,
+            finalTransformed,
+            match: castTransformed.join(",") === finalTransformed.join(","),
+            mutationRule: data.mutationRule,
+            transformedHexagram: data.transformedHexagram ?? null,
+          });
+          setRitualLines(orderedLines);
+          setRitualRevealTick(12);
+          await new Promise((r) => window.setTimeout(r, 420));
+        } else {
+          const vec = apiLinesToVector(orderedLines);
+          setRitualDebugCastVector(vec);
+          setRitualDebugFinalVector(vec);
+          const transformed = transformLineVector(vec);
+          setLastRitualDebugSnapshot({
+            castBase: vec,
+            finalBase: vec,
+            castTransformed: transformed,
+            finalTransformed: transformed,
+            match: true,
+            mutationRule: data.mutationRule,
+            transformedHexagram: data.transformedHexagram ?? null,
+          });
+          await runIChingRitualReveal(orderedLines);
+        }
       }
       const item: ConsultationItem = {
         ...data,
@@ -3972,7 +4029,7 @@ export default function HomePage() {
               </div>
             ) : null}
 
-            {manualCastPreview && loading && pendingUserQuestion ? (
+            {manualCastPreview && loading && pendingUserQuestion && phase !== "coins" ? (
               <div className="thread-block chat-entry manual-cast-preview-entry" aria-busy="true">
                 <div className="chat-bubble chat-assistant manual-cast-preview-bubble">
                   <p className="meta-line manual-cast-preview-status">{manualWizardChrome.previewLoading}</p>

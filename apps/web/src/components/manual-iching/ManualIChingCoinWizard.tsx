@@ -3,6 +3,7 @@
 import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
 import type { AppLocale } from "@iching-oracle/i18n";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { IChingCashCoin } from "./IChingCashCoin";
 import { getManualWizardMessages } from "./manual-wizard-messages";
 
 type CoinFace = "H" | "T";
@@ -111,9 +112,7 @@ export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, ques
               }
               aria-label={`${m.headsAria.replace("{{i}}", String(i + 1))} / ${m.tailsAria.replace("{{i}}", String(i + 1))}`}
             >
-              <span className="manual-iching-coin-face" aria-hidden>
-                {side === "H" ? "☉" : "☽"}
-              </span>
+              <IChingCashCoin face={side === "H" ? "yang" : "yin"} />
             </button>
           ))}
         </div>
