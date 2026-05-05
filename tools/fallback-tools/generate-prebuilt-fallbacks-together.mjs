@@ -28,9 +28,20 @@
  * - TOGETHER_MAX_RETRIES (default: 4)  // retries on 429/5xx / transient failures
  * - FALLBACKS_PER_BUCKET (default: 10)
  * - OVERWRITE=1 to regenerate existing images
+ * - TOGETHER_GUIDANCE_SCALE, TOGETHER_IMAGE_SEED, TOGETHER_OUTPUT_FORMAT (optional; same semantics as production API)
+ *
+ * Requires built image-engine package:
+ *   npm run build -w @iching-oracle/image-engine
  */
 import { mkdir, writeFile, access } from "node:fs/promises";
 import path from "node:path";
+
+import {
+  buildTogetherNegativePrompt,
+  compactTogetherFluxPromptSegment,
+  TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
+  TOGETHER_FLUX_PROMPT_MAX_CHARS,
+} from "../../packages/image-engine/dist/index.js";
 
 const API_URL = "https://api.together.xyz/v1/images/generations";
 const outputRoot = path.resolve(process.cwd(), "apps", "web", "public", "fallbacks", "prebuilt");
@@ -81,6 +92,23 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function togetherOptionalFields() {
+  const fields = {};
+  const gs = process.env.TOGETHER_GUIDANCE_SCALE?.trim();
+  if (gs) {
+    const n = Number(gs);
+    if (Number.isFinite(n) && n > 0) fields.guidance_scale = n;
+  }
+  const seedRaw = process.env.TOGETHER_IMAGE_SEED?.trim();
+  if (seedRaw) {
+    const s = Number(seedRaw);
+    if (Number.isFinite(s)) fields.seed = Math.trunc(s);
+  }
+  const fmt = process.env.TOGETHER_OUTPUT_FORMAT?.trim().toLowerCase();
+  if (fmt === "jpeg" || fmt === "png") fields.output_format = fmt;
+  return fields;
+}
+
 async function ensureDir(dir) {
   await mkdir(dir, { recursive: true });
 }
@@ -108,14 +136,17 @@ async function generateTogetherImage({ prompt, width, height }) {
       },
       body: JSON.stringify({
         model,
-        prompt: prompt.slice(0, 1500),
-        negative_prompt:
-          "text, letters, words, numbers, watermark, signature, username, logo, caption, typography, subtitle, handle, @",
+        prompt: compactTogetherFluxPromptSegment(prompt, TOGETHER_FLUX_PROMPT_MAX_CHARS),
+        negative_prompt: compactTogetherFluxPromptSegment(
+          buildTogetherNegativePrompt(),
+          TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
+        ),
         width,
         height,
         n: 1,
         steps,
         response_format: "url",
+        ...togetherOptionalFields(),
       }),
     });
     if (!response.ok) {

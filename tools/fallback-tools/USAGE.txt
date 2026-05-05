@@ -31,14 +31,26 @@ Required env
 Optional env
 - TOGETHER_IMAGE_MODEL (default: black-forest-labs/FLUX.1-schnell)
 - TOGETHER_IMAGE_STEPS (default: 10, clamped to 1..12)
+- TOGETHER_GUIDANCE_SCALE (Together API; omit for provider default ~3.5; try 7–9 to tighten prompt adherence)
+- TOGETHER_IMAGE_SEED (integer; reproducible generations)
+- TOGETHER_OUTPUT_FORMAT (jpeg | png)
 - TOGETHER_DELAY_MS (default: 1000)
 - TOGETHER_MAX_RETRIES (default: 4)
 - FALLBACKS_PER_BUCKET (default: 10)
 - OVERWRITE=1 to regenerate existing files
 - TARGET_FILES (optional, ';' separated absolute paths to regenerate only specific assets)
 
+Prerequisite
+- npm run build -w @iching-oracle/image-engine  (fallback script imports dist for prompt compaction + production negative prompt)
+
+I Ching production prompt samples (hallucination QA)
+- npm run generate:together:iching-samples
+- Requires TOGETHER_API_KEY; outputs under tools/output/together-iching-samples/ (gitignored)
+- See header in tools/fallback-tools/generate-together-iching-samples.mjs for SAMPLE_* env vars
+
 Notes
 - Script applies one request pacing (delay) per generated image.
 - Retries are automatic for 429 and 5xx responses.
 - Runtime fallback selector already routes by type+tier+resolution.
-- Prompts include hard constraints to avoid any text/signature/logo in generated images.
+- Production prompts: positive landscape-first variants in `buildImagePrompt`; anti-glyph/seal lines only in `buildTogetherNegativePrompt` (Together API). Product watermark is applied later by the compositor, not by FLUX.
+- The iching-samples script may save multiple files per run (SAMPLE_COUNT); the live app still requests one image per consultation (`n: 1`).

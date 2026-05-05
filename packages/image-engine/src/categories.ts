@@ -76,10 +76,10 @@ export const VISUAL_THEMES: Record<
     timeOfDay: "midday open sky",
   },
   general: {
-    environment: "classic Chinese ink wash landscape, mountains and water",
+    environment: "layered mountain ridges, river or lake, mist between peaks, dramatic sky",
     mood: "timeless, balanced, mysterious",
-    elements: "mountains, mist, water, ancient pine, moon",
-    colorPalette: "black ink, white space, touches of gold",
+    elements: "distant peaks, foreground pine or rocks, reflective water, soft clouds or moon glow",
+    colorPalette: "deep ink shadows, cool mist grays, blue-gray distance, subtle warm light on horizon — avoid flat blank ivory filling most of the frame",
     timeOfDay: "timeless",
   },
 };

@@ -3,29 +3,25 @@ import type { ConsultationCategory } from "./categories.js";
 import { VISUAL_THEMES } from "./categories.js";
 
 /**
- * Full anti-text / anti-seal lines for Together `negative_prompt` only.
- * Do not prepend to buildImagePrompt — that steals compactPrompt budget from PRIMARY SETTING.
+ * Anti-text / seal lines for Together `negative_prompt` only (never prepend to positive prompt).
+ * Avoid repeating “Chinese/calligraphy” — describe stamps and margins visually instead.
  */
 const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
-  "Hard negative rules: no text, no letters, no numbers, no Chinese characters, no calligraphy, no logos, no watermark, no UI elements.",
-  "Do not draw any Chinese characters, seal script, vertical inscription columns, poem scrolls, or corner calligraphy bands.",
-  "No red chops, stamps, seals, signatures, logos, watermarks, pinyin, roman words, or numbers anywhere.",
-  "No decorative glyphs in margins — especially no vertical text columns on left or right edges.",
-  "Center MUST be a large blank, uncluttered misty space with NO calligraphy characters, NO seal-script glyphs, and NO hexagram bars/lines.",
-  "Hard rule: do not draw any Chinese characters, pinyin, roman text, numbers, symbols, or seal chops anywhere in the image.",
-  "Absolutely forbidden: red stamps, signature seals, poem columns, vertical black calligraphy, logos, watermarks, decorative corner glyphs, hanko, or any textual mark in any corner.",
-  "No hexagram bars or line graphics in the raster — those are composited in post; keep center visually empty for overlay.",
-  "No ornate picture frame, no repeating geometric fret border, no carved wooden lattice mat, no decorative orange or red mount — image must be full-bleed edge-to-edge.",
+  "No readable text, numerals, logos, subtitles, watermark, UI chrome.",
+  "No chop stamps, hanko, artist seals — forbid red or vermilion rectangles tucked into top-left, top-right, bottom corners, or margin strips.",
+  "No museum accession stamp, gallery chop, documentary corner logo, or faux signature tile.",
+  "No vertical inscription bands, poem strips, carved lettering, marginal glyph columns.",
+  "Center stays mist or sky — no faux-glyphs, lattice portals, stacked bars.",
+  "No hexagram graphics in raster.",
+  "Natural landscape fill — reject parchment poster look or ivory blank dominating the frame.",
 ] as const;
 
-/**
- * Dense keyword + prose negatives for Together FLUX `negative_prompt`.
- * Main prompt stays landscape-first (sumi-e + themes); this field carries seal/text suppression.
- */
 export function buildTogetherNegativePrompt(): string {
   const keywordPrefix =
-    "Chinese characters, Hanzi, Kanji, Hangul, Hiragana, Katakana, Cyrillic, Arabic script, seal script, calligraphy, vertical inscription, poem scroll, carved stone text, subtitles, captions, typography, watermark, chop, stamp, seal, hanko, red corner seal, corner decoration, logo, letters, numerals, pinyin, hanging scroll, album leaf, decorative picture frame, patterned border, fretwork mat";
-  return [keywordPrefix, ...IMAGE_NEGATIVE_CONSTRAINT_LINES].join(" ");
+    "typography, captions, watermark, logo, letters, numerals, chop stamp, red seal, vermilion blob, corner seal, margin stamp, top-left ornament, inset label rectangle, signature block, vertical band, pseudo-calligraphy, fake glyphs, album leaf frame, poster layout, blank parchment, stock zen wallpaper, symmetrical corner sun disk";
+  const scriptTail =
+    "Hanzi-like tiles, Kanji-like tiles, Hangul, Cyrillic, Arabic script — forbid legible rendering";
+  return [keywordPrefix, ...IMAGE_NEGATIVE_CONSTRAINT_LINES, scriptTail].join(" ");
 }
 
 /** Bottom-to-top line stack for image models (position 1 = lowest line in the hexagram). */
@@ -52,19 +48,62 @@ function hashToUint(seed: string): number {
   return h >>> 0;
 }
 
-/** Same variants as origin/main — rich shanshui framing; hexagram bars come from overlay only. */
+/** Landscape-only framing — varied layouts so FLUX does not converge on one mist-mountain-moon stock shot. */
 const COMPOSITION_VARIANTS = [
-  "Composition: hexagram and scholar table in lower-left third; expansive ink-wash sky, distant ridges, and mist filling upper-right — strong diagonal depth.",
-  "Composition: centered vertical axis — hexagram dominant; layered mountains recede behind a middle-ground river band; cranes or geese as small silhouettes.",
-  "Composition: wide foreground — weathered stone terrace with table; hexagram slightly above center; deep atmospheric perspective into valley fog.",
-  "Composition: intimate courtyard garden view — moon gate or lattice shadow; table near viewer; hexagram as focal vertical stack against soft bokeh foliage.",
+  "Composition: panoramic — wide water or valley band low, stacked ridges climbing into haze, sky or mist dominant aloft.",
+  "Composition: diagonal thrust — foreground cliff or pine at one lower corner, fog river drawing the eye toward distant peaks.",
+  "Composition: river bend — near shore with rocks and trees, water guiding toward far silhouettes under layered clouds.",
+  "Composition: aerial breadth — rolling summits emerging from cloud ocean, sense of vast horizontal span.",
+  "Composition: gorge slice — steep opposing cliffs with narrow sky strip and silver thread of river far below.",
+  "Composition: forest threshold — dark canopy frame opening to bright ridge gap or distant glacier silhouette.",
+  "Composition: lake foreground — calm reflective surface occupying lower half, mountains mirrored softly.",
+  "Composition: terraced slope — contour lines of fields or meadows stepping up into mist and peaks.",
 ] as const;
 
 const ATMOSPHERE_ROTATIONS = [
-  "Light: cool dawn sidelight with warm rim on incense smoke.",
-  "Light: overcast diffusion, soft silver reflections on water or wet stone.",
-  "Light: late afternoon gold, long shadows, amber haze.",
-  "Light: moonlit high contrast, blue-gray shadows, paper lanterns as tiny warm points.",
+  "Light: cool dawn sidelight, crisp air, pink-blue rim on distant snow.",
+  "Light: heavy overcast, soft silver reflections on wet stone and river.",
+  "Light: late afternoon gold, long shadows, warm dust or pollen haze.",
+  "Light: thin moon behind thin cloud veil — glow diffuse, no crisp disk stuck in a corner.",
+  "Light: clearing storm — dark cloud mass with sunbeam shafts hitting one ridge face.",
+  "Light: misty drizzle — lowered contrast, saturated greens and grays, soft silhouettes.",
+  "Light: starfield twilight — deep blue zenith fading to warm band at horizon.",
+  "Light: spring haze — pale lemon sky, buds on branches, gentle luminosity.",
+] as const;
+
+/** Rotating openers — same geography-first rule, different wording so generations do not look cloned. */
+const OPENER_VARIANTS = [
+  "Vast East Asian wilderness landscape: monumental ridges, mist-filled valleys, rivers or lakes, atmospheric perspective — widescreen 16:9 immersive outdoor scene (real terrain scale, not empty parchment).",
+  "Grand mountain-and-water tableau: layered peaks, fog in hollows, reflective water or wetlands, cinematic depth — classic brush-painting mood rendered as rich natural scenery filling the frame.",
+  "Epic highland vista: granite spires, twisted pines on cliffs, sea of clouds between towers — painterly atmosphere without poster symmetry.",
+  "Deep river-canyon scene: carved cliffs, silver water thread, forested slopes, distant blue atmospheric fade.",
+  "Serene lakeshore panorama: broad calm water, distant mountain wall, soft sky gradation, foreground rocks or reeds.",
+  "Rolling tea-hill / terrace rhythm: contour-farming curves climbing into mist, rounded silhouettes, pastoral calm.",
+  "Dramatic storm-lit escarpment: turbulent sky breaks, wet rock catching spotlight, energetic clouds.",
+  "Quiet bamboo-stream hollow: filtered green light, wet boulders, gentle vapor among tall stalks — intimate vertical space.",
+] as const;
+
+/** Extra focal diversity — reduces identical “hero moon top-right” compositions. */
+const FOCAL_DIVERSITY_HINTS = [
+  "Focal balance: weight interest toward lower-left foreground mass; sky stays calm.",
+  "Focal balance: center-weighted luminous mist — no decorative corner ornaments.",
+  "Focal balance: strong right-side cliff vs left open sky — asymmetric, natural.",
+  "Focal balance: distant horizon band emphasized — tiny figures or structures forbidden.",
+  "Focal balance: foreground tree group silhouette anchoring one third — celestial light diffuse, not a pasted disk.",
+  "Focal balance: wide reflective water plane anchoring bottom half.",
+  "Focal balance: zigzag river draws eye mid-frame toward notch in ridge line.",
+  "Focal balance: layered horizontal strata of ridges — rhythm across the width.",
+] as const;
+
+const STYLE_MOOD_TAGS = [
+  "Illustrative scenic concept art — lush readable geography.",
+  "Traditional ink-wash color mood remapped onto volumetric landscape painting.",
+  "Travel-documentary vista clarity — crisp depth cues, varied silhouettes.",
+  "Romantic pastoral grandeur — soft poetic atmosphere without decorative framing devices.",
+  "Highland expedition vista — crisp air, geological variety.",
+  "Braided river through meadows — gravel bars, willow tangles, no buildings or bridges with signage.",
+  "Seasonal diversity emphasis — distinct foliage or weather story.",
+  "Heritage landscape through terrain only — nature carries cultural mood, zero built structures or totems.",
 ] as const;
 
 export function buildImagePrompt(
@@ -79,8 +118,11 @@ export function buildImagePrompt(
 
   const seed = `${consultationId ?? "na"}:${primary.number}:${category}`;
   const h = hashToUint(seed);
-  const compIdx = h % COMPOSITION_VARIANTS.length;
-  const lightIdx = (h >>> 8) % ATMOSPHERE_ROTATIONS.length;
+  const openerIdx = h % OPENER_VARIANTS.length;
+  const compIdx = (h >>> 7) % COMPOSITION_VARIANTS.length;
+  const lightIdx = (h >>> 14) % ATMOSPHERE_ROTATIONS.length;
+  const focalIdx = (h >>> 21) % FOCAL_DIVERSITY_HINTS.length;
+  const styleIdx = (h >>> 3) % STYLE_MOOD_TAGS.length;
 
   const settingBlock = [
     `PRIMARY SETTING (must dominate the image — do not use a flat blank gradient): ${theme.environment}.`,
@@ -89,20 +131,18 @@ export function buildImagePrompt(
     `Motifs to weave into mid-ground or background (choose what fits): ${theme.elements}.`,
     ATMOSPHERE_ROTATIONS[lightIdx],
     COMPOSITION_VARIANTS[compIdx],
-    "Avoid generic stock void backgrounds, plain single-color fills, or unrelated Western scenery. The scene must read as classical Chinese ink painting atmosphere tied to this setting.",
+    FOCAL_DIVERSITY_HINTS[focalIdx],
+    STYLE_MOOD_TAGS[styleIdx],
+    "Ground the image in specific landforms and weather — avoid empty beige voids, single-wash posters, or stock wallpaper symmetry.",
   ].join(" ");
 
-  /**
-   * Landscape-first order (matches origin/main): compactPrompt keeps the start, so PRIMARY SETTING
-   * and themes reach Together/FAL. Anti-text duplicates live in buildTogetherNegativePrompt only.
-   */
   return [
-    "Elegant ancient Chinese ink wash painting (sumi-e) on textured handmade xuan paper, widescreen 16:9, museum quality, scholarly Zhouyi consultation.",
+    OPENER_VARIANTS[openerIdx],
     settingBlock,
-    "Center MUST be a large blank, uncluttered misty space with NO calligraphy characters, NO seal-script glyphs, and NO hexagram bars/lines.",
-    "Hard rule: do not draw any Chinese characters, pinyin, roman text, numbers, symbols, or seal chops anywhere in the image.",
-    "Absolutely forbidden: red stamps, signature seals, poem columns, vertical black calligraphy, logos, watermarks, decorative corner glyphs, or any textual mark in any corner.",
-    "Foreground: weathered wooden scholar table with bronze incense burner (thin smoke trail), scattered round copper cash coins with square holes.",
+    "Visual priority: distinct terrain, varied silhouettes, and clear depth — not the same mist-mountain-sun-in-corner template every time.",
+    "Leave center softly open (mist, sky, or distant haze) for overlay — no symbols, stamps, faux-writing, bars, or decorative portals.",
+    "Corners and frame edges: seamless landscape only — never inset seals, red boxes, marginal stamps, or signature ornaments.",
+    "Foreground only if subtle: natural rocks, pine branches, shoreline, or mist — no inscribed coins, no talismans, no objects resembling lettering.",
     `Emotional register for consultation theme (${category}): ${theme.mood}.`,
   ]
     .filter(Boolean)
