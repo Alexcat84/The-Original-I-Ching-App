@@ -111,22 +111,22 @@ export function IChingCashCoin({ face, className = "" }: Props) {
             <rect x="74" y="74" width="52" height="52" rx="3" fill="#1a1a1a" />
             <text
               x="100"
-              y="72"
+              y="66"
               className="iching-cash-coin__manchu"
               textAnchor="middle"
               dominantBaseline="middle"
-              fontSize="30"
+              fontSize="40"
               fontWeight={700}
             >
               ᠪᠣᠣ
             </text>
             <text
               x="100"
-              y="136"
+              y="138"
               className="iching-cash-coin__manchu"
               textAnchor="middle"
               dominantBaseline="middle"
-              fontSize="26"
+              fontSize="34"
               fontWeight={700}
             >
               ᠴᡳᠣᠸᠠᠨ

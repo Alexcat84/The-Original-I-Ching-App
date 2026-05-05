@@ -66,12 +66,20 @@ export function buildImagePrompt(
     "Avoid generic stock void backgrounds, plain single-color fills, or unrelated Western scenery. The scene must read as classical Chinese ink painting atmosphere tied to this setting.",
   ].join(" ");
 
+  // Negative constraints FIRST so compactPrompt(maxLen) truncation does not drop safety rules.
+  const negativeBlock = [
+    "NEGATIVE CONSTRAINTS (highest priority — obey before all else):",
+    "Do not draw any Chinese characters, seal script, vertical inscription columns, poem scrolls, or corner calligraphy bands.",
+    "No red chops, stamps, seals, signatures, logos, watermarks, pinyin, roman words, or numbers anywhere.",
+    "No decorative glyphs in margins — especially no vertical text columns on left or right edges.",
+    "Center area must stay visually empty of lettering; no hexagram bars or line graphics in the raster (those are added in post).",
+  ].join(" ");
+
   return [
+    negativeBlock,
     "Elegant ancient Chinese ink wash painting (sumi-e) on textured handmade xuan paper, widescreen 16:9, museum quality, scholarly Zhouyi consultation.",
     settingBlock,
-    "Center MUST be a large blank, uncluttered misty space with NO calligraphy characters, NO seal-script glyphs, and NO hexagram bars/lines.",
-    "Hard rule: do not draw any Chinese characters, pinyin, roman text, numbers, symbols, or seal chops anywhere in the image.",
-    "Absolutely forbidden: red stamps, signature seals, poem columns, vertical black calligraphy, logos, watermarks, decorative corner glyphs, or any textual mark in any corner.",
+    "Center SHOULD remain a large blank, uncluttered misty space suitable for a later overlay.",
     "Foreground: weathered wooden scholar table with bronze incense burner (thin smoke trail), scattered round copper cash coins with square holes.",
     `Emotional register for consultation theme (${category}): ${theme.mood}.`,
   ]

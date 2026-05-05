@@ -718,7 +718,7 @@ html.iching-rn-webview[data-theme="light"] .auth-explore-strip--session .auth-ex
 /* Columna centrada: más ancha en desktop para lectura e imágenes */
 .chat-surface {
   width: 100%;
-  max-width: min(34rem, 100%);
+  max-width: min(42rem, calc(100vw - 1rem));
   margin-left: auto;
   margin-right: auto;
   margin-top: 0;
@@ -764,13 +764,13 @@ html:not(.iching-rn-webview) .chat-surface--explore-cap > .auth-explore-strip:fi
 
 @media (min-width: 480px) {
   .chat-surface {
-    max-width: min(36rem, 100%);
+    max-width: min(44rem, calc(100vw - 1.1rem));
   }
 }
 
 @media (min-width: 768px) {
   .chat-surface {
-    max-width: min(42rem, 100%);
+    max-width: min(50rem, calc(100vw - 1.25rem));
   }
 }
 
@@ -1555,7 +1555,7 @@ html:not(.iching-rn-webview) .chat-history {
 }
 
 .chat-bubble {
-  max-width: min(92%, 34rem);
+  max-width: 100%;
   padding: 0.65rem 0.85rem;
   border-radius: var(--radius-bubble);
   box-shadow: var(--shadow);
@@ -1576,7 +1576,7 @@ html:not(.iching-rn-webview) .chat-history {
   border: 1px solid var(--bubble-assistant-border);
   border-bottom-left-radius: 20px;
   color: var(--fg);
-  max-width: min(96%, 40rem);
+  max-width: 100%;
   text-align: justify;
   text-justify: inter-word;
 }
@@ -5856,6 +5856,69 @@ html.iching-rn-webview .apk-trace-native-metrics {
   line-height: 1.45;
 }
 
+.manual-iching-wizard-roll-progress {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.manual-iching-wizard-progress-hint {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  line-height: 1.4;
+}
+
+.manual-iching-wizard-progress-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0 0 0.65rem;
+}
+
+.manual-iching-wizard-step-pill {
+  min-width: 2.15rem;
+  height: 2.15rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--bar-border);
+  background: color-mix(in srgb, var(--composer-bg) 88%, transparent);
+  color: var(--fg-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.manual-iching-wizard-step-pill--done {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--bar-border));
+  color: var(--fg);
+  background: color-mix(in srgb, var(--accent) 14%, var(--composer-bg));
+}
+
+.manual-iching-wizard-step-pill--current {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.manual-iching-wizard-step-pill--future {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.manual-iching-wizard-step-pill:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.manual-iching-wizard-step-pill--done:not(:disabled):hover {
+  background: color-mix(in srgb, var(--accent) 22%, var(--composer-bg));
+}
+
 .manual-iching-coins-row {
   display: flex;
   justify-content: center;
@@ -5887,9 +5950,8 @@ html.iching-rn-webview .apk-trace-native-metrics {
   place-items: center;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  box-shadow:
-    inset 0 5px 10px rgba(255, 255, 255, 0.32),
-    inset 0 -5px 10px rgba(0, 0, 0, 0.22);
+  /* Light inset only — heavy shadows read as a dark ring behind the disc */
+  box-shadow: inset 0 3px 8px rgba(255, 255, 255, 0.28);
 }
 
 .iching-cash-coin__face--front {
@@ -5939,8 +6001,7 @@ html.iching-rn-webview .apk-trace-native-metrics {
   line-height: 0;
   overflow: hidden;
   transition: transform 0.18s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-  background: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.14), transparent 55%);
+  background: transparent;
 }
 
 .manual-iching-coin:active {

@@ -3369,7 +3369,12 @@ export default function HomePage() {
           });
           setRitualLines(orderedLines);
           setRitualRevealTick(12);
-          await new Promise((r) => window.setTimeout(r, 420));
+          setRitualStatusPhase("seal");
+          await new Promise((r) => window.setTimeout(r, 900));
+          setRitualFinale(true);
+          logRitualTrace("reveal:finale-manual");
+          await new Promise((r) => window.setTimeout(r, 900));
+          await new Promise((r) => window.setTimeout(r, 1100));
         } else {
           const vec = apiLinesToVector(orderedLines);
           setRitualDebugCastVector(vec);

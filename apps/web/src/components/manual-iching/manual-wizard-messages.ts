@@ -20,6 +20,10 @@ export type ManualWizardMessages = {
   castAutoLabel: string;
   castManualLabel: string;
   previewLoading: string;
+  /** e.g. "3/6" for current line being built */
+  rollProgress: string;
+  /** Short hint for the step strip */
+  progressNavHint: string;
 };
 
 const M: Record<AppLocale, ManualWizardMessages> = {
@@ -43,6 +47,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "Automática",
     castManualLabel: "Manual (tú registras)",
     previewLoading: "Generando interpretación…",
+    rollProgress: "Tirada {{current}}/{{total}}",
+    progressNavHint: "Toca un paso ya registrado para volver a editar desde esa línea.",
   },
   en: {
     title: "Manual cast — three coins",
@@ -64,6 +70,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "Automatic",
     castManualLabel: "Manual (you record)",
     previewLoading: "Generating interpretation…",
+    rollProgress: "Cast {{current}}/{{total}}",
+    progressNavHint: "Tap a completed step to go back and re-enter throws from that line.",
   },
   pt: {
     title: "Tiragem manual — três moedas",
@@ -85,6 +93,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "Automática",
     castManualLabel: "Manual (você registra)",
     previewLoading: "Gerando interpretação…",
+    rollProgress: "Tiragem {{current}}/{{total}}",
+    progressNavHint: "Toque num passo já registrado para voltar e corrigir a partir dessa linha.",
   },
   fr: {
     title: "Tirage manuel — trois pièces",
@@ -106,6 +116,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "Automatique",
     castManualLabel: "Manuel (vous enregistrez)",
     previewLoading: "Génération de l’interprétation…",
+    rollProgress: "Tirage {{current}}/{{total}}",
+    progressNavHint: "Touchez une étape déjà enregistrée pour revenir modifier à partir de cette ligne.",
   },
   de: {
     title: "Manueller Wurf — drei Münzen",
@@ -127,6 +139,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "Automatisch",
     castManualLabel: "Manuell (du trägst ein)",
     previewLoading: "Interpretation wird erstellt…",
+    rollProgress: "Wurf {{current}}/{{total}}",
+    progressNavHint: "Tippe auf einen fertigen Schritt, um ab dieser Linie neu einzugeben.",
   },
   it: {
     title: "Lancio manuale — tre monete",
@@ -148,6 +162,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "Automatico",
     castManualLabel: "Manuale (registri tu)",
     previewLoading: "Generazione interpretazione…",
+    rollProgress: "Lancio {{current}}/{{total}}",
+    progressNavHint: "Tocca un passo già registrato per tornare indietro e correggere da quella linea.",
   },
   ja: {
     title: "手動占い — 三銭",
@@ -169,6 +185,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "自動",
     castManualLabel: "手動（自分で記録）",
     previewLoading: "解釈を生成中…",
+    rollProgress: "{{current}}/{{total}} 投",
+    progressNavHint: "記録済みの段をタップすると、その爻からやり直せます。",
   },
   zh: {
     title: "手动起卦 — 三钱",
@@ -190,6 +208,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "自动",
     castManualLabel: "手动（自行录入）",
     previewLoading: "正在生成解读…",
+    rollProgress: "第 {{current}}/{{total}} 掷",
+    progressNavHint: "点击已记录的步骤可回到该爻重新投掷。",
   },
   ko: {
     title: "수동 점 — 동전 세枚",
@@ -211,6 +231,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "자동",
     castManualLabel: "수동(직접 기록)",
     previewLoading: "해석 생성 중…",
+    rollProgress: "{{current}}/{{total}} 차례",
+    progressNavHint: "기록된 단계를 누르면 해당 효부터 다시 입력할 수 있습니다.",
   },
   ar: {
     title: "قَسْم يدوي — ثلاث عملات",
@@ -232,6 +254,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "تلقائي",
     castManualLabel: "يدوي (تسجّل أنت)",
     previewLoading: "جارٍ إنشاء التفسير…",
+    rollProgress: "رمية {{current}}/{{total}}",
+    progressNavHint: "المس خطوة مكتملة للعودة وتعديل الرمي من ذلك الخط.",
   },
   hi: {
     title: "मैन्युअल कास्ट — तीन सिक्के",
@@ -253,6 +277,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castAutoLabel: "स्वचालित",
     castManualLabel: "मैन्युअल (आप दर्ज करें)",
     previewLoading: "व्याख्या बन रही है…",
+    rollProgress: "कास्ट {{current}}/{{total}}",
+    progressNavHint: "पूर्ण चरण पर टैप करके उस रेखा से फिर से दर्ज करें।",
   },
 };
 
