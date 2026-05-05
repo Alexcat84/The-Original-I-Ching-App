@@ -2,6 +2,24 @@ import type { Hexagram, Line } from "@iching-oracle/iching-engine";
 import type { ConsultationCategory } from "./categories.js";
 import { VISUAL_THEMES } from "./categories.js";
 
+/** Shared no-text / no-CJK rules for main prompt and Together `negative_prompt`. */
+const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
+  "Do not draw any Chinese characters, seal script, vertical inscription columns, poem scrolls, or corner calligraphy bands.",
+  "No red chops, stamps, seals, signatures, logos, watermarks, pinyin, roman words, or numbers anywhere.",
+  "No decorative glyphs in margins — especially no vertical text columns on left or right edges.",
+  "Center area must stay visually empty of lettering; no hexagram bars or line graphics in the raster (those are added in post).",
+] as const;
+
+/**
+ * Dense keyword negative for APIs that support a separate field (e.g. Together FLUX).
+ * Complements the main prompt; does not replace the prose block at the start of buildImagePrompt.
+ */
+export function buildTogetherNegativePrompt(): string {
+  const keywordPrefix =
+    "Chinese characters, Hanzi, Kanji, Hangul, Hiragana, Katakana, Cyrillic, Arabic script, seal script, calligraphy, vertical inscription, poem scroll, carved stone text, subtitles, captions, typography, watermark, chop, stamp, seal, logo, letters, numerals, pinyin";
+  return [keywordPrefix, ...IMAGE_NEGATIVE_CONSTRAINT_LINES].join(" ");
+}
+
 /** Bottom-to-top line stack for image models (position 1 = lowest line in the hexagram). */
 export function describeHexagramLinesForImage(lines: Line[]): string {
   const sorted = [...lines].sort((a, b) => a.position - b.position);
@@ -69,10 +87,7 @@ export function buildImagePrompt(
   // Negative constraints FIRST so compactPrompt(maxLen) truncation does not drop safety rules.
   const negativeBlock = [
     "NEGATIVE CONSTRAINTS (highest priority — obey before all else):",
-    "Do not draw any Chinese characters, seal script, vertical inscription columns, poem scrolls, or corner calligraphy bands.",
-    "No red chops, stamps, seals, signatures, logos, watermarks, pinyin, roman words, or numbers anywhere.",
-    "No decorative glyphs in margins — especially no vertical text columns on left or right edges.",
-    "Center area must stay visually empty of lettering; no hexagram bars or line graphics in the raster (those are added in post).",
+    ...IMAGE_NEGATIVE_CONSTRAINT_LINES,
   ].join(" ");
 
   return [

@@ -8,6 +8,7 @@ import {
   oracleBonesVerdictGlyphSvgStyle,
 } from "@/lib/oracle-bones-verdict-glyph";
 import { renderSvgToPng } from "@/lib/svg-to-png";
+import { buildTogetherNegativePrompt } from "@iching-oracle/image-engine";
 import {
   buildSumiHexagramSvgDataUrl,
   buildSumiHexagramOverlaySvgDataUrl,
@@ -402,6 +403,7 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
   // Together (FLUX.1-schnell) rechaza steps fuera de 1..12.
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "10");
   const steps = Math.min(12, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 10));
+  const negativePrompt = compactPrompt(buildTogetherNegativePrompt(), 1200);
   const res = await fetch("https://api.together.xyz/v1/images/generations", {
     method: "POST",
     headers: {
@@ -411,6 +413,7 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
     body: JSON.stringify({
       model,
       prompt: prompt.slice(0, 1500),
+      negative_prompt: negativePrompt,
       width,
       height,
       n: 1,

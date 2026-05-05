@@ -49,8 +49,7 @@ export function IChingCashCoin({ face, className = "" }: Props) {
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden
           >
-            <circle cx="100" cy="100" r="90" fill="#e8b923" stroke="#8b6914" strokeWidth="14" />
-            <circle cx="100" cy="100" r="76" fill="none" stroke="#b8892e" strokeWidth="6" />
+            <circle cx="100" cy="100" r="90" fill="#e8b923" stroke="#b8892e" strokeWidth="2.5" />
             <rect x="74" y="74" width="52" height="52" rx="3" fill="#1a1a1a" />
             {/* Clockwise from top: 康熙通寶 */}
             <text
@@ -106,27 +105,26 @@ export function IChingCashCoin({ face, className = "" }: Props) {
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden
           >
-            <circle cx="100" cy="100" r="90" fill="#e8b923" stroke="#8b6914" strokeWidth="14" />
-            <circle cx="100" cy="100" r="76" fill="none" stroke="#b8892e" strokeWidth="6" />
+            <circle cx="100" cy="100" r="90" fill="#e8b923" stroke="#b8892e" strokeWidth="2.5" />
             <rect x="74" y="74" width="52" height="52" rx="3" fill="#1a1a1a" />
             <text
               x="100"
-              y="66"
+              y="52"
               className="iching-cash-coin__manchu"
               textAnchor="middle"
               dominantBaseline="middle"
-              fontSize="40"
+              fontSize="52"
               fontWeight={700}
             >
               ᠪᠣᠣ
             </text>
             <text
               x="100"
-              y="138"
+              y="150"
               className="iching-cash-coin__manchu"
               textAnchor="middle"
               dominantBaseline="middle"
-              fontSize="34"
+              fontSize="44"
               fontWeight={700}
             >
               ᠴᡳᠣᠸᠠᠨ

@@ -5992,8 +5992,7 @@ html.iching-rn-webview .apk-trace-native-metrics {
   width: clamp(4.5rem, 18vw, 5.75rem);
   height: clamp(4.5rem, 18vw, 5.75rem);
   border-radius: 50%;
-  /* Bronze rim only — no theme accent ring (avoids “floating in a blue halo”) */
-  border: 2px solid color-mix(in srgb, #6b4e1a 78%, #3d2d10);
+  border: none;
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -6015,7 +6014,7 @@ html.iching-rn-webview .apk-trace-native-metrics {
 
 .manual-iching-coin--heads,
 .manual-iching-coin--tails {
-  border-color: color-mix(in srgb, #6b4e1a 85%, #4a3612);
+  border: none;
 }
 
 .manual-iching-sum-card {

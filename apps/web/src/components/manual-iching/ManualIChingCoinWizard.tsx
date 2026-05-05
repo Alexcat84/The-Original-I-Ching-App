@@ -73,8 +73,10 @@ export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, ques
 
   const jumpToStep = useCallback((step: number) => {
     if (step < 1 || step > 6) return;
-    if (step > recorded.length) return;
-    setRecorded((prev) => prev.slice(0, step - 1));
+    setRecorded((prev) => {
+      if (step > prev.length) return prev;
+      return prev.slice(0, step - 1);
+    });
     setCoins(["H", "H", "H"]);
   }, []);
 
