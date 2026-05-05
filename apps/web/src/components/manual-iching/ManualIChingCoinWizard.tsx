@@ -94,86 +94,85 @@ export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, ques
         aria-modal="true"
         aria-labelledby="manual-iching-wizard-title"
       >
-        <header className="manual-iching-wizard-header">
-          <h2 id="manual-iching-wizard-title" className="manual-iching-wizard-title">
-            {m.title}
-          </h2>
-          <button type="button" className="manual-iching-wizard-close" onClick={onClose} aria-label={m.closeAria}>
-            ×
-          </button>
-        </header>
-        <p className="manual-iching-wizard-question" dir="auto">
-          {questionPreview}
-        </p>
-        <div className="manual-iching-wizard-progress-panel">
-          <p className="manual-iching-wizard-roll-progress" aria-live="polite">
-            {rollProgressLabel}
-          </p>
-          <p className="manual-iching-wizard-step">{lineStepLabel}</p>
-          <div
-            className="manual-iching-wizard-progress-row"
-            role="group"
-            aria-label={m.progressNavHint}
-          >
-          {Array.from({ length: 6 }, (_, i) => {
-            const step = i + 1;
-            const value = recorded[i];
-            const isDone = step <= recorded.length;
-            const isCurrent = step === lineNumber;
-            const isFuture = step > recorded.length + 1;
-            return (
-              <button
-                key={step}
-                type="button"
-                className={`manual-iching-wizard-step-pill ${
-                  isCurrent ? "manual-iching-wizard-step-pill--current" : ""
-                } ${isDone ? "manual-iching-wizard-step-pill--done" : ""} ${
-                  isFuture ? "manual-iching-wizard-step-pill--future" : ""
-                }`}
-                disabled={isFuture || (isCurrent && !isDone)}
-                onClick={() => jumpToStep(step)}
-                aria-current={isCurrent ? "step" : undefined}
-                aria-label={
-                  isDone
-                    ? `${m.rollProgress.replace("{{current}}", String(step)).replace("{{total}}", "6")}: ${value}`
-                    : isCurrent
-                      ? m.rollProgress.replace("{{current}}", String(step)).replace("{{total}}", "6")
-                      : `${step}/6`
-                }
-              >
-                {isDone ? String(value) : isCurrent ? "·" : String(step)}
-              </button>
-            );
-          })}
-          </div>
-          <p className="manual-iching-wizard-progress-hint">{m.progressNavHint}</p>
-        </div>
-        <div className="manual-iching-wizard-coin-instructions">
-          <p className="manual-iching-wizard-hint">{m.coinHint}</p>
-        </div>
-        <div className="manual-iching-coins-row" dir="ltr">
-          {coins.map((side, i) => (
-            <button
-              key={i}
-              type="button"
-              className={`manual-iching-coin manual-iching-coin--${side === "H" ? "heads" : "tails"}`}
-              onClick={() =>
-                setCoins((prev) => {
-                  const next = [...prev] as CoinFace[];
-                  next[i] = next[i] === "H" ? "T" : "H";
-                  return next;
-                })
-              }
-              aria-label={`${m.headsAria.replace("{{i}}", String(i + 1))} / ${m.tailsAria.replace("{{i}}", String(i + 1))}`}
-            >
-              <IChingCashCoin face={side === "H" ? "yang" : "yin"} />
+        <div className="manual-iching-wizard-scroll">
+          <header className="manual-iching-wizard-header">
+            <div className="manual-iching-wizard-header-text">
+              <h2 id="manual-iching-wizard-title" className="manual-iching-wizard-title">
+                {m.title}
+              </h2>
+              <p className="manual-iching-wizard-question" dir="auto">
+                {questionPreview}
+              </p>
+            </div>
+            <button type="button" className="manual-iching-wizard-close" onClick={onClose} aria-label={m.closeAria}>
+              ×
             </button>
-          ))}
-        </div>
-        <div className="manual-iching-sum-card">
-          <p className="manual-iching-sum-label">{m.rollSumLabel}</p>
-          <p className="manual-iching-sum-value">{currentValue}</p>
-          <p className="manual-iching-sum-caption">{caption}</p>
+          </header>
+          <div className="manual-iching-wizard-progress-panel">
+            <div className="manual-iching-wizard-progress-head" aria-live="polite">
+              <span className="manual-iching-wizard-roll-progress">{rollProgressLabel}</span>
+              <span className="manual-iching-wizard-step">{lineStepLabel}</span>
+            </div>
+            <div className="manual-iching-wizard-progress-row" role="group" aria-label={m.progressNavHint}>
+              {Array.from({ length: 6 }, (_, i) => {
+                const step = i + 1;
+                const value = recorded[i];
+                const isDone = step <= recorded.length;
+                const isCurrent = step === lineNumber;
+                const isFuture = step > recorded.length + 1;
+                return (
+                  <button
+                    key={step}
+                    type="button"
+                    className={`manual-iching-wizard-step-pill ${
+                      isCurrent ? "manual-iching-wizard-step-pill--current" : ""
+                    } ${isDone ? "manual-iching-wizard-step-pill--done" : ""} ${
+                      isFuture ? "manual-iching-wizard-step-pill--future" : ""
+                    }`}
+                    disabled={isFuture || (isCurrent && !isDone)}
+                    onClick={() => jumpToStep(step)}
+                    aria-current={isCurrent ? "step" : undefined}
+                    aria-label={
+                      isDone
+                        ? `${m.rollProgress.replace("{{current}}", String(step)).replace("{{total}}", "6")}: ${value}`
+                        : isCurrent
+                          ? m.rollProgress.replace("{{current}}", String(step)).replace("{{total}}", "6")
+                          : `${step}/6`
+                    }
+                  >
+                    {isDone ? String(value) : isCurrent ? "·" : String(step)}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <p className="manual-iching-wizard-hint manual-iching-wizard-hint--inline">{m.coinHint}</p>
+          <div className="manual-iching-coins-row" dir="ltr">
+            {coins.map((side, i) => (
+              <button
+                key={i}
+                type="button"
+                className={`manual-iching-coin manual-iching-coin--${side === "H" ? "heads" : "tails"}`}
+                onClick={() =>
+                  setCoins((prev) => {
+                    const next = [...prev] as CoinFace[];
+                    next[i] = next[i] === "H" ? "T" : "H";
+                    return next;
+                  })
+                }
+                aria-label={`${m.headsAria.replace("{{i}}", String(i + 1))} / ${m.tailsAria.replace("{{i}}", String(i + 1))}`}
+              >
+                <IChingCashCoin face={side === "H" ? "yang" : "yin"} />
+              </button>
+            ))}
+          </div>
+          <div className="manual-iching-sum-card">
+            <div className="manual-iching-sum-main">
+              <p className="manual-iching-sum-label">{m.rollSumLabel}</p>
+              <p className="manual-iching-sum-value">{currentValue}</p>
+            </div>
+            <p className="manual-iching-sum-caption">{caption}</p>
+          </div>
         </div>
         <div className="manual-iching-wizard-actions">
           <button type="button" className="secondary-btn" onClick={goBack} disabled={recorded.length === 0}>
