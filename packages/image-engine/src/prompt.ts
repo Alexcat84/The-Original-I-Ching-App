@@ -8,6 +8,8 @@ import { VISUAL_THEMES } from "./categories.js";
  * moved to the front; keeping them here restores corner/seal suppression after truncation.
  */
 const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
+  // Same ultra-short hard line as oracle-bones prompt — FLUX follows this reliably.
+  "Hard negative rules: no text, no letters, no numbers, no Chinese characters, no calligraphy, no logos, no watermark, no UI elements.",
   "Do not draw any Chinese characters, seal script, vertical inscription columns, poem scrolls, or corner calligraphy bands.",
   "No red chops, stamps, seals, signatures, logos, watermarks, pinyin, roman words, or numbers anywhere.",
   "No decorative glyphs in margins — especially no vertical text columns on left or right edges.",
@@ -15,6 +17,7 @@ const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
   "Hard rule: do not draw any Chinese characters, pinyin, roman text, numbers, symbols, or seal chops anywhere in the image.",
   "Absolutely forbidden: red stamps, signature seals, poem columns, vertical black calligraphy, logos, watermarks, decorative corner glyphs, hanko, or any textual mark in any corner.",
   "No hexagram bars or line graphics in the raster — those are composited in post; keep center visually empty for overlay.",
+  "No ornate picture frame, no repeating geometric fret border, no carved wooden lattice mat, no decorative orange or red mount — image must be full-bleed edge-to-edge.",
 ] as const;
 
 /**
@@ -23,7 +26,7 @@ const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
  */
 export function buildTogetherNegativePrompt(): string {
   const keywordPrefix =
-    "Chinese characters, Hanzi, Kanji, Hangul, Hiragana, Katakana, Cyrillic, Arabic script, seal script, calligraphy, vertical inscription, poem scroll, carved stone text, subtitles, captions, typography, watermark, chop, stamp, seal, hanko, red corner seal, corner decoration, logo, letters, numerals, pinyin";
+    "Chinese characters, Hanzi, Kanji, Hangul, Hiragana, Katakana, Cyrillic, Arabic script, seal script, calligraphy, vertical inscription, poem scroll, carved stone text, subtitles, captions, typography, watermark, chop, stamp, seal, hanko, red corner seal, corner decoration, logo, letters, numerals, pinyin, hanging scroll, album leaf, decorative picture frame, patterned border, fretwork mat";
   return [keywordPrefix, ...IMAGE_NEGATIVE_CONSTRAINT_LINES].join(" ");
 }
 
@@ -51,12 +54,15 @@ function hashToUint(seed: string): number {
   return h >>> 0;
 }
 
-/** Compositional framing so backgrounds are not identical across readings. */
+/**
+ * Landscape-only framing (no “hexagram” wording — that primed FLUX to paint bars + seals).
+ * Overlay draws the real hexagram in post.
+ */
 const COMPOSITION_VARIANTS = [
-  "Composition: hexagram and scholar table in lower-left third; expansive ink-wash sky, distant ridges, and mist filling upper-right — strong diagonal depth.",
-  "Composition: centered vertical axis — hexagram dominant; layered mountains recede behind a middle-ground river band; cranes or geese as small silhouettes.",
-  "Composition: wide foreground — weathered stone terrace with table; hexagram slightly above center; deep atmospheric perspective into valley fog.",
-  "Composition: intimate courtyard garden view — moon gate or lattice shadow; table near viewer; hexagram as focal vertical stack against soft bokeh foliage.",
+  "Composition: cinematic landscape — lower-left foreground river terrace; expansive sky and layered ridges upper-right; strong diagonal mist (photographic depth).",
+  "Composition: wide horizon — distant mountains behind a calm river band; tiny bird silhouettes; generous empty center for overlay.",
+  "Composition: deep valley fog — stone embankment foreground; atmospheric perspective; soft neutral center.",
+  "Composition: intimate riverside — blurred trees and moon gate silhouette; calm open middle ground; no focal manuscript or scroll.",
 ] as const;
 
 const ATMOSPHERE_ROTATIONS = [
@@ -88,7 +94,7 @@ export function buildImagePrompt(
     `Motifs to weave into mid-ground or background (choose what fits): ${theme.elements}.`,
     ATMOSPHERE_ROTATIONS[lightIdx],
     COMPOSITION_VARIANTS[compIdx],
-    "Avoid generic stock void backgrounds, plain single-color fills, or unrelated Western scenery. The scene must read as classical Chinese ink painting atmosphere tied to this setting.",
+    "Avoid generic stock void backgrounds, plain single-color fills, or unrelated Western scenery. Natural outdoor Chinese shanshui scenery (mist, mountains, water) — photorealistic cinematic look, not an illustrated scroll or album painting.",
   ].join(" ");
 
   // Negative constraints FIRST so compactPrompt(maxLen) truncation does not drop safety rules.
@@ -99,9 +105,9 @@ export function buildImagePrompt(
 
   return [
     negativeBlock,
-    "Elegant ancient Chinese ink wash painting (sumi-e) on textured handmade xuan paper, widescreen 16:9, museum quality, scholarly Zhouyi consultation.",
+    "Cinematic photorealistic landscape, full-bleed 16:9, edge-to-edge — high-end nature documentary still. Classical Chinese mountains-and-water atmosphere. NOT sumi-e on xuan paper, NOT hanging scroll, NOT manuscript or album leaf (those styles trigger corner seals and vertical text in generative models).",
     settingBlock,
-    "Foreground: weathered wooden scholar table with bronze incense burner (thin smoke trail), scattered round copper cash coins with square holes.",
+    "Foreground props (subtle, photorealistic): weathered wooden scholar table edge, bronze incense smoke wisps, a few round copper cash coins — keep props low-contrast so they do not dominate.",
     `Emotional register for consultation theme (${category}): ${theme.mood}.`,
   ]
     .filter(Boolean)

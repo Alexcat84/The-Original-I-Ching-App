@@ -105,15 +105,16 @@ export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, ques
         <p className="manual-iching-wizard-question" dir="auto">
           {questionPreview}
         </p>
-        <p className="manual-iching-wizard-roll-progress" aria-live="polite">
-          {rollProgressLabel}
-        </p>
-        <p className="manual-iching-wizard-step">{lineStepLabel}</p>
-        <div
-          className="manual-iching-wizard-progress-row"
-          role="group"
-          aria-label={m.progressNavHint}
-        >
+        <div className="manual-iching-wizard-progress-panel">
+          <p className="manual-iching-wizard-roll-progress" aria-live="polite">
+            {rollProgressLabel}
+          </p>
+          <p className="manual-iching-wizard-step">{lineStepLabel}</p>
+          <div
+            className="manual-iching-wizard-progress-row"
+            role="group"
+            aria-label={m.progressNavHint}
+          >
           {Array.from({ length: 6 }, (_, i) => {
             const step = i + 1;
             const value = recorded[i];
@@ -144,9 +145,12 @@ export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, ques
               </button>
             );
           })}
+          </div>
+          <p className="manual-iching-wizard-progress-hint">{m.progressNavHint}</p>
         </div>
-        <p className="manual-iching-wizard-progress-hint">{m.progressNavHint}</p>
-        <p className="manual-iching-wizard-hint">{m.coinHint}</p>
+        <div className="manual-iching-wizard-coin-instructions">
+          <p className="manual-iching-wizard-hint">{m.coinHint}</p>
+        </div>
         <div className="manual-iching-coins-row" dir="ltr">
           {coins.map((side, i) => (
             <button
