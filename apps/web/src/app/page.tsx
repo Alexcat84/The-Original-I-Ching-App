@@ -59,7 +59,11 @@ import { useChatSessionState } from "@/providers/chat-session-provider";
 import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
-import { ichingRitualTickDelayMs } from "@/lib/iching-ritual-timing";
+import {
+  ICHING_MANUAL_POST_HTTP_BEAT_MS,
+  ichingManualRitualHalfMs,
+  ichingRitualTickDelayMs,
+} from "@/lib/iching-ritual-timing";
 import { previewCastFromLineValues, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -3339,7 +3343,13 @@ export default function HomePage() {
         setError(`${data.error ?? interpolate(sessionUi.requestFailedStatus, { status: res.status })}${suffix}`);
         return;
       }
-      await new Promise((r) => window.setTimeout(r, showRitualAnimation ? 900 : 0));
+      const initialPauseAfterOkMs =
+        !showRitualAnimation
+          ? 0
+          : isManualCast && oracleMode === "iching"
+            ? ICHING_MANUAL_POST_HTTP_BEAT_MS
+            : 900;
+      await new Promise((r) => window.setTimeout(r, initialPauseAfterOkMs));
       if (showRitualAnimation && oracleMode === "oracle_bones" && data.oracleBones) {
         setBoneRitualResult(data.oracleBones.verdict);
         await new Promise((r) => window.setTimeout(r, 4050));
@@ -3370,11 +3380,12 @@ export default function HomePage() {
           setRitualLines(orderedLines);
           setRitualRevealTick(12);
           setRitualStatusPhase("seal");
-          await new Promise((r) => window.setTimeout(r, 900));
+          const halfMs = ichingManualRitualHalfMs();
+          const sealGridRemainderMs = Math.max(0, halfMs - ICHING_MANUAL_POST_HTTP_BEAT_MS);
+          await new Promise((r) => window.setTimeout(r, sealGridRemainderMs));
           setRitualFinale(true);
-          logRitualTrace("reveal:finale-manual");
-          await new Promise((r) => window.setTimeout(r, 900));
-          await new Promise((r) => window.setTimeout(r, 1100));
+          logRitualTrace("reveal:finale-manual", { halfMs, sealGridRemainderMs });
+          await new Promise((r) => window.setTimeout(r, halfMs));
         } else {
           const vec = apiLinesToVector(orderedLines);
           setRitualDebugCastVector(vec);

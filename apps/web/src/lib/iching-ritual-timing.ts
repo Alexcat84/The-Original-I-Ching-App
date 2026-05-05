@@ -23,3 +23,26 @@ export function ichingRitualTickDelayMs(): number {
   const raw = Math.floor(budget / ICHING_RITUAL_TICKS);
   return Math.max(520, Math.min(4600, raw));
 }
+
+/**
+ * Manual three-coin cast only: after `/api/consult` returns (JSON ritual), total dwell before
+ * navigating to the reading thread. Split 50/50 — seal/full grid (finale off) vs finale hex focus.
+ *
+ * Override with `NEXT_PUBLIC_ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS` (milliseconds, min 4000).
+ */
+export const ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS = (() => {
+  const raw =
+    typeof process !== "undefined" &&
+    typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS === "string"
+      ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS)
+      : Number.NaN;
+  return Number.isFinite(raw) && raw >= 4000 ? raw : 10_000;
+})();
+
+/** First beat after HTTP (lets layout paint); counted inside the first half. */
+export const ICHING_MANUAL_POST_HTTP_BEAT_MS = 220;
+
+/** Half of {@link ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS} — first act (grid+seal) and second act (finale) use the same duration. */
+export function ichingManualRitualHalfMs(): number {
+  return Math.floor(ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS / 2);
+}
