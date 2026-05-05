@@ -3,12 +3,10 @@ import type { ConsultationCategory } from "./categories.js";
 import { VISUAL_THEMES } from "./categories.js";
 
 /**
- * Shared no-text / no-CJK rules for main prompt and Together `negative_prompt`.
- * Includes the same hard sentences as `origin/main` tail — those were dropped when negatives
- * moved to the front; keeping them here restores corner/seal suppression after truncation.
+ * Full anti-text / anti-seal lines for Together `negative_prompt` only.
+ * Do not prepend to buildImagePrompt — that steals compactPrompt budget from PRIMARY SETTING.
  */
 const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
-  // Same ultra-short hard line as oracle-bones prompt — FLUX follows this reliably.
   "Hard negative rules: no text, no letters, no numbers, no Chinese characters, no calligraphy, no logos, no watermark, no UI elements.",
   "Do not draw any Chinese characters, seal script, vertical inscription columns, poem scrolls, or corner calligraphy bands.",
   "No red chops, stamps, seals, signatures, logos, watermarks, pinyin, roman words, or numbers anywhere.",
@@ -21,8 +19,8 @@ const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
 ] as const;
 
 /**
- * Dense keyword negative for APIs that support a separate field (e.g. Together FLUX).
- * Complements the main prompt; does not replace the prose block at the start of buildImagePrompt.
+ * Dense keyword + prose negatives for Together FLUX `negative_prompt`.
+ * Main prompt stays landscape-first (sumi-e + themes); this field carries seal/text suppression.
  */
 export function buildTogetherNegativePrompt(): string {
   const keywordPrefix =
@@ -54,15 +52,12 @@ function hashToUint(seed: string): number {
   return h >>> 0;
 }
 
-/**
- * Landscape-only framing (no “hexagram” wording — that primed FLUX to paint bars + seals).
- * Overlay draws the real hexagram in post.
- */
+/** Same variants as origin/main — rich shanshui framing; hexagram bars come from overlay only. */
 const COMPOSITION_VARIANTS = [
-  "Composition: cinematic landscape — lower-left foreground river terrace; expansive sky and layered ridges upper-right; strong diagonal mist (photographic depth).",
-  "Composition: wide horizon — distant mountains behind a calm river band; tiny bird silhouettes; generous empty center for overlay.",
-  "Composition: deep valley fog — stone embankment foreground; atmospheric perspective; soft neutral center.",
-  "Composition: intimate riverside — blurred trees and moon gate silhouette; calm open middle ground; no focal manuscript or scroll.",
+  "Composition: hexagram and scholar table in lower-left third; expansive ink-wash sky, distant ridges, and mist filling upper-right — strong diagonal depth.",
+  "Composition: centered vertical axis — hexagram dominant; layered mountains recede behind a middle-ground river band; cranes or geese as small silhouettes.",
+  "Composition: wide foreground — weathered stone terrace with table; hexagram slightly above center; deep atmospheric perspective into valley fog.",
+  "Composition: intimate courtyard garden view — moon gate or lattice shadow; table near viewer; hexagram as focal vertical stack against soft bokeh foliage.",
 ] as const;
 
 const ATMOSPHERE_ROTATIONS = [
@@ -94,20 +89,20 @@ export function buildImagePrompt(
     `Motifs to weave into mid-ground or background (choose what fits): ${theme.elements}.`,
     ATMOSPHERE_ROTATIONS[lightIdx],
     COMPOSITION_VARIANTS[compIdx],
-    "Avoid generic stock void backgrounds, plain single-color fills, or unrelated Western scenery. Natural outdoor Chinese shanshui scenery (mist, mountains, water) — photorealistic cinematic look, not an illustrated scroll or album painting.",
+    "Avoid generic stock void backgrounds, plain single-color fills, or unrelated Western scenery. The scene must read as classical Chinese ink painting atmosphere tied to this setting.",
   ].join(" ");
 
-  // Negative constraints FIRST so compactPrompt(maxLen) truncation does not drop safety rules.
-  const negativeBlock = [
-    "NEGATIVE CONSTRAINTS (highest priority — obey before all else):",
-    ...IMAGE_NEGATIVE_CONSTRAINT_LINES,
-  ].join(" ");
-
+  /**
+   * Landscape-first order (matches origin/main): compactPrompt keeps the start, so PRIMARY SETTING
+   * and themes reach Together/FAL. Anti-text duplicates live in buildTogetherNegativePrompt only.
+   */
   return [
-    negativeBlock,
-    "Cinematic photorealistic landscape, full-bleed 16:9, edge-to-edge — high-end nature documentary still. Classical Chinese mountains-and-water atmosphere. NOT sumi-e on xuan paper, NOT hanging scroll, NOT manuscript or album leaf (those styles trigger corner seals and vertical text in generative models).",
+    "Elegant ancient Chinese ink wash painting (sumi-e) on textured handmade xuan paper, widescreen 16:9, museum quality, scholarly Zhouyi consultation.",
     settingBlock,
-    "Foreground props (subtle, photorealistic): weathered wooden scholar table edge, bronze incense smoke wisps, a few round copper cash coins — keep props low-contrast so they do not dominate.",
+    "Center MUST be a large blank, uncluttered misty space with NO calligraphy characters, NO seal-script glyphs, and NO hexagram bars/lines.",
+    "Hard rule: do not draw any Chinese characters, pinyin, roman text, numbers, symbols, or seal chops anywhere in the image.",
+    "Absolutely forbidden: red stamps, signature seals, poem columns, vertical black calligraphy, logos, watermarks, decorative corner glyphs, or any textual mark in any corner.",
+    "Foreground: weathered wooden scholar table with bronze incense burner (thin smoke trail), scattered round copper cash coins with square holes.",
     `Emotional register for consultation theme (${category}): ${theme.mood}.`,
   ]
     .filter(Boolean)

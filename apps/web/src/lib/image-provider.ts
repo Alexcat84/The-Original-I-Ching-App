@@ -321,6 +321,13 @@ function resolveTierSize(lastPack?: string): { width: number; height: number } {
   return { width: 1344, height: 768 };
 }
 
+/**
+ * Together FLUX image API character budgets — keep `compactPrompt(..., N)` for the iching path
+ * and `generateWithTogether` in sync (same N). Slightly below typical provider caps for safety margin.
+ */
+const TOGETHER_FLUX_PROMPT_MAX_CHARS = 2000;
+const TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS = 1200;
+
 /** Together AI: dimensions must be multiples of 32 (1184≈1200, 1504≈1500). */
 function resolveTogetherImageSize(lastPack?: string): { width: number; height: number } {
   const key = resolveTierKey(lastPack);
@@ -403,7 +410,19 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
   // Together (FLUX.1-schnell) rechaza steps fuera de 1..12.
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "10");
   const steps = Math.min(12, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 10));
-  const negativePrompt = compactPrompt(buildTogetherNegativePrompt(), 1200);
+  const promptForApi = compactPrompt(prompt, TOGETHER_FLUX_PROMPT_MAX_CHARS);
+  const negativePrompt = compactPrompt(
+    buildTogetherNegativePrompt(),
+    TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
+  );
+  debugLog("together: prompt lens", {
+    incomingPromptChars: prompt.length,
+    outgoingPromptChars: promptForApi.length,
+    negativePromptChars: negativePrompt.length,
+    includesPrimarySetting: promptForApi.includes("PRIMARY SETTING"),
+    budgetPrompt: TOGETHER_FLUX_PROMPT_MAX_CHARS,
+    budgetNegative: TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
+  });
   const res = await fetch("https://api.together.xyz/v1/images/generations", {
     method: "POST",
     headers: {
@@ -412,7 +431,7 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
     },
     body: JSON.stringify({
       model,
-      prompt: prompt.slice(0, 1500),
+      prompt: promptForApi,
       negative_prompt: negativePrompt,
       width,
       height,
@@ -577,10 +596,9 @@ export async function buildImageAsset(params: {
   });
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
   const { width: togetherFallbackW, height: togetherFallbackH } = resolveTogetherImageSize(params.tier);
-  // Together caps at 1500; larger slice keeps the expanded negative block + setting intact (FLUX still ignores some corners — prose bulk matters).
   const promptForRemote = compactPrompt(
     params.prompt,
-    provider === "pollinations" ? 900 : provider === "together" ? 1500 : 1100,
+    provider === "pollinations" ? 900 : provider === "together" ? TOGETHER_FLUX_PROMPT_MAX_CHARS : 1100,
   );
   let fallbackImageUrl = sumiFallback;
   if (provider === "together") {
