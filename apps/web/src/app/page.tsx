@@ -1346,6 +1346,10 @@ export default function HomePage() {
   const ichingConsultWallClockStartedAtRef = useRef<number | null>(null);
   /** Clamp-stored duration from last successful I Ching consult; feeds next auto ritual timing. */
   const lastIchingConsultWallMsRef = useRef<number | null>(null);
+  /** Manual cast: timer that flips from phase-1 grid to phase-2 final focus. */
+  const manualRitualPhaseSwitchTimerRef = useRef<number | null>(null);
+  /** Manual cast: tracks whether phase-2 is already visible. */
+  const manualRitualFinaleShownRef = useRef(false);
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
@@ -3043,6 +3047,11 @@ export default function HomePage() {
     questionForRequest: string,
     manualLineValues?: IchingManualLineTuple,
   ) {
+    if (manualRitualPhaseSwitchTimerRef.current != null) {
+      window.clearTimeout(manualRitualPhaseSwitchTimerRef.current);
+      manualRitualPhaseSwitchTimerRef.current = null;
+    }
+    manualRitualFinaleShownRef.current = false;
     const isManualCast = Boolean(manualLineValues);
     const showRitualAnimation = oracleMode === "oracle_bones" || oracleMode === "iching";
     let manualCastPreviewEngine: ManualCastPreview | null = null;
@@ -3111,6 +3120,18 @@ export default function HomePage() {
           mutationRule: String(manualCastPreviewEngine.mutationRule),
           transformedHexagram: manualCastPreviewEngine.transformedHexagram?.number ?? null,
         });
+        if (ichingCastMode === "manual") {
+          const budgetMs = ichingRitualProcessingBudgetMs(lastIchingConsultWallMsRef.current);
+          const timing = ichingRitualRevealTimingFromBudget(budgetMs);
+          const phaseOneMs = Math.max(1200, timing.tickDelayMs * 12);
+          logRitualTrace("manual:phase-switch-scheduled", { budgetMs, phaseOneMs });
+          manualRitualPhaseSwitchTimerRef.current = window.setTimeout(() => {
+            manualRitualFinaleShownRef.current = true;
+            setRitualStatusPhase("seal");
+            setRitualFinale(true);
+            logRitualTrace("manual:phase-switch-fired");
+          }, phaseOneMs);
+        }
       } catch {
         /* leave ritual slots empty */
       }
@@ -3411,10 +3432,15 @@ export default function HomePage() {
           });
           setRitualLines(orderedLines);
           setRitualRevealTick(12);
-          setRitualStatusPhase("seal");
-          setRitualFinale(true);
-          logRitualTrace("reveal:manual-lines-sync", { fetchMs });
-          await waitForRitualPaint();
+          if (!manualRitualFinaleShownRef.current) {
+            manualRitualFinaleShownRef.current = true;
+            setRitualStatusPhase("seal");
+            setRitualFinale(true);
+            logRitualTrace("reveal:manual-lines-sync", { fetchMs, forcedOnResponse: true });
+            await waitForRitualPaint();
+          } else {
+            logRitualTrace("reveal:manual-lines-sync", { fetchMs, forcedOnResponse: false });
+          }
         } else {
           const vec = apiLinesToVector(orderedLines);
           setRitualDebugCastVector(vec);
@@ -3518,6 +3544,11 @@ export default function HomePage() {
       setManualCastPreview(null);
     } finally {
       ichingConsultWallClockStartedAtRef.current = null;
+      if (manualRitualPhaseSwitchTimerRef.current != null) {
+        window.clearTimeout(manualRitualPhaseSwitchTimerRef.current);
+        manualRitualPhaseSwitchTimerRef.current = null;
+      }
+      manualRitualFinaleShownRef.current = false;
       setLoading(false);
       if (!ok) {
         setRitualStatusPhase("question");
