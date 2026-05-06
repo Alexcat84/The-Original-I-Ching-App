@@ -12,7 +12,7 @@
  * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): fallback processing budget when no prior I Ching consult duration is stored. **Default: 36_000**.
  * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick. **Default: 3000**.
  * - `NEXT_PUBLIC_ICHING_RITUAL_PHASE1_WEIGHT`, `NEXT_PUBLIC_ICHING_RITUAL_PHASE2_WEIGHT`: positive integers used as a
- *   ratio to derive the intended share for phase 1 ticks from total wall-clock budget. Defaults **62 / 38** (62% / 38%).
+ *   ratio to derive the intended share for phase 1 ticks from total wall-clock budget. Defaults **70 / 30** (70% / 30%).
  *   Phase 2 is **not time-gated** in UI; it persists until response rendering clears the ritual stage.
  * - `NEXT_PUBLIC_ICHING_RITUAL_BUDGET_MIN_MS` / `MAX_MS`: clamp measured `/api/consult` duration when driving the next ritual (defaults **8000** / **120_000**).
  * - `NEXT_PUBLIC_ICHING_MANUAL_*`: legacy tuning constants; manual JSON cast no longer **blocks** the UI on seal/finale
@@ -59,16 +59,16 @@ function parsePositiveIntEnv(raw: string | undefined, fallback: number, max = 10
   return Math.min(max, i);
 }
 
-/** Relative weight for the 12 line ticks (phase 1). Default 62 → 62% of budget with phase2=38. */
+/** Relative weight for the 12 line ticks (phase 1). Default 70 → 70% of budget with phase2=30. */
 export const ICHING_RITUAL_PHASE1_WEIGHT = parsePositiveIntEnv(
   typeof process !== "undefined" ? process.env.NEXT_PUBLIC_ICHING_RITUAL_PHASE1_WEIGHT : undefined,
-  62,
+  70,
 );
 
-/** Relative counterpart used only to compute phase-1 share from total budget. Default 38. */
+/** Relative counterpart used only to compute phase-1 share from total budget. Default 30. */
 export const ICHING_RITUAL_PHASE2_WEIGHT = parsePositiveIntEnv(
   typeof process !== "undefined" ? process.env.NEXT_PUBLIC_ICHING_RITUAL_PHASE2_WEIGHT : undefined,
-  38,
+  30,
 );
 
 export const ICHING_RITUAL_BUDGET_MIN_MS = (() => {
