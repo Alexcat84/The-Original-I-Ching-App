@@ -53,16 +53,19 @@ export function ichingRitualTickDelayMs(): number {
   return Math.max(520, Math.min(ICHING_RITUAL_TICK_DELAY_MAX_MS, raw));
 }
 
-/** Tiny beat after HTTP OK so React can paint updated lines before finale (not extra “first half”). */
+/** Tiny beat after HTTP OK so React can paint updated lines before finale (not extra “first half”). Manual I Ching JSON path only. */
 export const ICHING_MANUAL_POST_HTTP_BEAT_MS = 220;
 
-/** Short beat with seal grid visible (finale off) before shifting to finale hex — not part of the 50/50 budget. */
+/**
+ * Beat with seal grid visible (finale off) before shifting to finale hex — **manual I Ching JSON path only** (not auto SSE).
+ * Env allows QA/experiments up to 120s (was capped at 800ms, which blocked long test values).
+ */
 export const ICHING_MANUAL_SEAL_HOLD_MS = (() => {
   const raw =
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS)
       : Number.NaN;
-  return Number.isFinite(raw) && raw >= 0 && raw <= 800 ? raw : 140;
+  return Number.isFinite(raw) && raw >= 0 && raw <= 120_000 ? raw : 22_000;
 })();
 
 /**
@@ -72,12 +75,13 @@ export const ICHING_MANUAL_SEAL_HOLD_MS = (() => {
  *
  * We clamp so ultra-fast networks still get a readable finale, and slow servers do not stall forever.
  */
+/** QA experiment round 1: default min 44s — swap with seal default (22s) next round to see which dominates. */
 export const ICHING_MANUAL_FINALE_MIN_MS = (() => {
   const raw =
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MIN_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MIN_MS)
       : Number.NaN;
-  return Number.isFinite(raw) && raw >= 400 ? raw : 1600;
+  return Number.isFinite(raw) && raw >= 400 ? raw : 44_000;
 })();
 
 export const ICHING_MANUAL_FINALE_MAX_MS = (() => {
@@ -85,8 +89,8 @@ export const ICHING_MANUAL_FINALE_MAX_MS = (() => {
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MAX_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MAX_MS)
       : Number.NaN;
-  const max = Number.isFinite(raw) && raw >= ICHING_MANUAL_FINALE_MIN_MS ? raw : 18_000;
-  return max;
+  const fallback = Math.max(18_000, ICHING_MANUAL_FINALE_MIN_MS);
+  return Number.isFinite(raw) && raw >= ICHING_MANUAL_FINALE_MIN_MS ? raw : fallback;
 })();
 
 /** Finale dwell ≈ fetch round-trip (grid phase); clamped to min/max. */
