@@ -61,7 +61,8 @@ import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import {
   ICHING_MANUAL_POST_HTTP_BEAT_MS,
-  ichingManualRitualHalfMs,
+  ICHING_MANUAL_SEAL_HOLD_MS,
+  ichingManualFinaleMsFromFetchDuration,
   ichingRitualTickDelayMs,
 } from "@/lib/iching-ritual-timing";
 import { previewCastFromLineValues, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
@@ -1342,6 +1343,8 @@ export default function HomePage() {
   const ritualCoinsStageRef = useRef<HTMLElement | null>(null);
   const ritualLinesGridRef = useRef<HTMLDivElement | null>(null);
   const ritualDebugStartMsRef = useRef<number | null>(null);
+  /** Start of `/api/consult` fetch for manual I Ching — drives finale duration ≈ server round-trip. */
+  const manualIchingFetchStartedAtRef = useRef<number | null>(null);
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
@@ -3119,6 +3122,8 @@ export default function HomePage() {
         sessionIdForRequest = newClientUuid();
         updateActiveSession((c) => ({ ...c, sessionId: sessionIdForRequest }));
       }
+      manualIchingFetchStartedAtRef.current =
+        isManualCast && oracleMode === "iching" ? Date.now() : null;
       const res = await fetch("/api/consult", {
         method: "POST",
         headers: {
@@ -3363,6 +3368,10 @@ export default function HomePage() {
       ) {
         const orderedLines = [...data.lines].sort((a, b) => a.position - b.position);
         if (isManualCast) {
+          const fetchStartedAt = manualIchingFetchStartedAtRef.current;
+          const fetchMs =
+            fetchStartedAt != null ? Math.max(0, Date.now() - fetchStartedAt) : 0;
+          const finaleMs = ichingManualFinaleMsFromFetchDuration(fetchMs);
           const finalVec = apiLinesToVector(orderedLines);
           const castBaseForSnapshot = ritualDebugCastVector ?? finalVec;
           setRitualDebugFinalVector(finalVec);
@@ -3380,12 +3389,11 @@ export default function HomePage() {
           setRitualLines(orderedLines);
           setRitualRevealTick(12);
           setRitualStatusPhase("seal");
-          const halfMs = ichingManualRitualHalfMs();
-          const sealGridRemainderMs = Math.max(0, halfMs - ICHING_MANUAL_POST_HTTP_BEAT_MS);
-          await new Promise((r) => window.setTimeout(r, sealGridRemainderMs));
+          setRitualFinale(false);
+          await new Promise((r) => window.setTimeout(r, ICHING_MANUAL_SEAL_HOLD_MS));
           setRitualFinale(true);
-          logRitualTrace("reveal:finale-manual", { halfMs, sealGridRemainderMs });
-          await new Promise((r) => window.setTimeout(r, halfMs));
+          logRitualTrace("reveal:finale-manual", { fetchMs, finaleMs });
+          await new Promise((r) => window.setTimeout(r, finaleMs));
         } else {
           const vec = apiLinesToVector(orderedLines);
           setRitualDebugCastVector(vec);
@@ -3472,6 +3480,7 @@ export default function HomePage() {
       setPendingUserQuestion(null);
       setManualCastPreview(null);
     } finally {
+      manualIchingFetchStartedAtRef.current = null;
       setLoading(false);
       if (!ok) {
         setRitualStatusPhase("question");

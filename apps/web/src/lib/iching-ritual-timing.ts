@@ -24,25 +24,47 @@ export function ichingRitualTickDelayMs(): number {
   return Math.max(520, Math.min(4600, raw));
 }
 
-/**
- * Manual three-coin cast only: after `/api/consult` returns (JSON ritual), total dwell before
- * navigating to the reading thread. Split 50/50 — seal/full grid (finale off) vs finale hex focus.
- *
- * Override with `NEXT_PUBLIC_ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS` (milliseconds, min 4000).
- */
-export const ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS = (() => {
-  const raw =
-    typeof process !== "undefined" &&
-    typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS === "string"
-      ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS)
-      : Number.NaN;
-  return Number.isFinite(raw) && raw >= 4000 ? raw : 10_000;
-})();
-
-/** First beat after HTTP (lets layout paint); counted inside the first half. */
+/** Tiny beat after HTTP OK so React can paint updated lines before finale (not extra “first half”). */
 export const ICHING_MANUAL_POST_HTTP_BEAT_MS = 220;
 
-/** Half of {@link ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS} — first act (grid+seal) and second act (finale) use the same duration. */
-export function ichingManualRitualHalfMs(): number {
-  return Math.floor(ICHING_MANUAL_RITUAL_POST_RESPONSE_TOTAL_MS / 2);
+/** Short beat with seal grid visible (finale off) before shifting to finale hex — not part of the 50/50 budget. */
+export const ICHING_MANUAL_SEAL_HOLD_MS = (() => {
+  const raw =
+    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS === "string"
+      ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS)
+      : Number.NaN;
+  return Number.isFinite(raw) && raw >= 0 && raw <= 800 ? raw : 140;
+})();
+
+/**
+ * Manual three-coin cast: the first “half” of the ritual is time already spent watching the
+ * full grid while `/api/consult` runs. The finale should mirror that duration — not add a fixed
+ * block on top (which made the flow tedious).
+ *
+ * We clamp so ultra-fast networks still get a readable finale, and slow servers do not stall forever.
+ */
+export const ICHING_MANUAL_FINALE_MIN_MS = (() => {
+  const raw =
+    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MIN_MS === "string"
+      ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MIN_MS)
+      : Number.NaN;
+  return Number.isFinite(raw) && raw >= 400 ? raw : 1600;
+})();
+
+export const ICHING_MANUAL_FINALE_MAX_MS = (() => {
+  const raw =
+    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MAX_MS === "string"
+      ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MAX_MS)
+      : Number.NaN;
+  const max = Number.isFinite(raw) && raw >= ICHING_MANUAL_FINALE_MIN_MS ? raw : 18_000;
+  return max;
+})();
+
+/** Finale dwell ≈ fetch round-trip (grid phase); clamped to min/max. */
+export function ichingManualFinaleMsFromFetchDuration(fetchDurationMs: number): number {
+  let v = Math.round(fetchDurationMs);
+  if (!Number.isFinite(v) || v < 0) v = 0;
+  if (v < ICHING_MANUAL_FINALE_MIN_MS) v = ICHING_MANUAL_FINALE_MIN_MS;
+  if (v > ICHING_MANUAL_FINALE_MAX_MS) v = ICHING_MANUAL_FINALE_MAX_MS;
+  return v;
 }
