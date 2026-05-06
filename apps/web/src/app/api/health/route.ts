@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { rateLimitByKey } from "@/lib/rate-limit";
+import { isUpstashConfigured, rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
@@ -10,11 +10,17 @@ export async function GET(req: NextRequest) {
   if (!rl.ok) {
     return NextResponse.json({ status: "rate_limited" }, { status: 429 });
   }
+  const rateLimitBackend = isUpstashConfigured() ? "upstash" : "in-memory-fallback";
 
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     return NextResponse.json(
-      { status: "degraded", timestamp: new Date().toISOString(), database: "not_configured" },
+      {
+        status: "degraded",
+        timestamp: new Date().toISOString(),
+        database: "not_configured",
+        rateLimitBackend,
+      },
       { status: 503 },
     );
   }
@@ -22,10 +28,15 @@ export async function GET(req: NextRequest) {
   const { error } = await supabase.from("users").select("id").limit(1);
   if (error) {
     return NextResponse.json(
-      { status: "degraded", timestamp: new Date().toISOString(), database: "unreachable" },
+      {
+        status: "degraded",
+        timestamp: new Date().toISOString(),
+        database: "unreachable",
+        rateLimitBackend,
+      },
       { status: 503 },
     );
   }
 
-  return NextResponse.json({ status: "ok", timestamp: new Date().toISOString() });
+  return NextResponse.json({ status: "ok", timestamp: new Date().toISOString(), rateLimitBackend });
 }
