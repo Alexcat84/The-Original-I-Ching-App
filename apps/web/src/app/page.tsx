@@ -3140,8 +3140,10 @@ export default function HomePage() {
           sessionTitle: consultSession.title,
           isDeepening: activeThread.length > 0,
           oracleMode,
-          ...(manualLineValues
-            ? { ichingCastMode: "manual" as const, ichingManualLineValues: [...manualLineValues] }
+          ...(oracleMode === "iching"
+            ? manualLineValues
+              ? { ichingCastMode: "manual" as const, ichingManualLineValues: [...manualLineValues] }
+              : { ichingCastMode }
             : {}),
           displayName: displayName ?? undefined,
           oracleBones:

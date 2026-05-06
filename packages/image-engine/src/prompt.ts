@@ -68,7 +68,7 @@ const ATMOSPHERE_ROTATIONS = [
   "Light: clearing storm — dramatic but illustrated sunbeams on one ridge, volumetric painted clouds.",
   "Light: misty drizzle — lowered contrast, soft greens and grays, silhouettes gentle not crushed black.",
   "Light: starfield twilight — deep blue zenith fading to warm horizon band, magical calm luminosity.",
-  "Light: spring haze — pale lemon sky, buds on branches, luminous illustrative atmosphere.",
+  "Light: spring haze — pale lemon sky, subtle fresh foliage suggestion without large foreground blooms as focal subject.",
 ] as const;
 
 /** Rotating openers — fantasy-illustration forward (evocative shanshui), not documentary photography. */
@@ -108,7 +108,7 @@ const STYLE_MOOD_TAGS = [
 
 export function buildImagePrompt(
   primary: Hexagram,
-  _transformed: Hexagram | null,
+  transformed: Hexagram | null,
   category: ConsultationCategory,
   _changingLines: number[],
   _castLines?: Line[],
@@ -116,7 +116,8 @@ export function buildImagePrompt(
 ): string {
   const theme = VISUAL_THEMES[category] ?? VISUAL_THEMES.general;
 
-  const seed = `${consultationId ?? "na"}:${primary.number}:${category}`;
+  /** Include transformed hexagram so changing readings diverge visually even when primary repeats. */
+  const seed = `${consultationId ?? "na"}:${primary.number}:t${transformed?.number ?? 0}:${category}`;
   const h = hashToUint(seed);
   const openerIdx = h % OPENER_VARIANTS.length;
   const compIdx = (h >>> 7) % COMPOSITION_VARIANTS.length;
@@ -140,7 +141,7 @@ export function buildImagePrompt(
     OPENER_VARIANTS[openerIdx],
     settingBlock,
     "Art direction: emotionally resonant fantasy landscape illustration — poetic, dreamlike, luminous — never a photograph, smartphone snapshot, or documentary realism.",
-    "Preserve gentle luminous lift across the middle band (mist, moon-glow, soft gradients, pastel haze) so the scene stays airy — avoid heavy opaque shadow or near-black foliage dominating the central third.",
+    "Preserve gentle luminous lift across the middle band (diffused light, mist, soft gradients, pastel haze) for overlay readability — avoid repeating the same celestial disk position every image; avoid heavy opaque shadow across the central third.",
     "Visual priority: distinct illustrated terrain and depth variety — not the same mist-mountain-sun-in-corner stock shot every time.",
     "Leave center softly open (mist, sky, or distant haze) for overlay — no symbols, stamps, faux-writing, bars, or decorative portals.",
     "Corners and frame edges: seamless landscape only — never inset seals, red boxes, marginal stamps, or signature ornaments.",
