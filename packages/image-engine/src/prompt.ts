@@ -11,7 +11,7 @@ const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
   "No chop stamps, hanko, artist seals — forbid red or vermilion rectangles tucked into top-left, top-right, bottom corners, or margin strips.",
   "No museum accession stamp, gallery chop, documentary corner logo, faux signature tile. No painter autograph, cursive signature flourish, gold name scribble, corner pen-tail.",
   "No vertical inscription bands, poem strips, carved lettering, marginal glyph columns.",
-  "Center stays mist or sky — no faux-glyphs, lattice portals, stacked bars.",
+  "Center softly open — sunlit haze, water shimmer, forest aisle, or pale sky — no faux-glyphs, lattice portals, stacked bars.",
   "No hexagram graphics in raster.",
   "Natural landscape fill — reject parchment poster look or ivory blank dominating the frame.",
 ] as const;
@@ -53,7 +53,7 @@ function hashToUint(seed: string): number {
  * Wide geographic spread reduces “same moon lake” convergence without naming script or stamps.
  */
 const COMPOSITION_VARIANTS = [
-  "Composition: panoramic — wide water or valley band low, stacked ridges climbing into haze, sky or mist dominant aloft.",
+  "Composition: panoramic — wide river, lake, or valley band low, stacked ridges; sunlit haze or soft clouds aloft.",
   "Composition: diagonal thrust — foreground cliff or pine at one lower corner, fog river drawing the eye toward distant peaks.",
   "Composition: river bend — near shore with rocks and trees, water guiding toward far silhouettes under layered clouds.",
   "Composition: aerial breadth — rolling summits emerging from cloud ocean, sense of vast horizontal span.",
@@ -69,6 +69,9 @@ const COMPOSITION_VARIANTS = [
   "Composition: flooded terrace reflections — curved water surfaces stepping uphill, mirror fragments, mist above.",
   "Composition: night-noir silhouette ridge — deep blue atmosphere, rim-lit cloud tops, minimal warm accents.",
   "Composition: dry grassland rise — golden tawny grasses, lone wind-bent tree, vast sky.",
+  "Composition: sunlit river ford — shallow rushing water over stones, forest banks, bright sky wedge overhead.",
+  "Composition: lagoon clarity — turquoise shallow basin or reed-lined pond, rim of jungle or pine, sun sparkle on water.",
+  "Composition: forest nave — tall trunks converging toward luminous clearing, stream or pool catching a sun shaft.",
 ] as const;
 
 const ATMOSPHERE_ROTATIONS = [
@@ -76,6 +79,10 @@ const ATMOSPHERE_ROTATIONS = [
   "Light: heavy overcast — soft silver diffuse reflections, illustration-friendly mid-tones, gentle contrast.",
   "Light: romantic golden wash — long soft shadows in painted style, warm dust haze, emotional not harsh documentary sun.",
   "Light: thin moon behind thin cloud veil — diffuse fairy-tale glow, no crisp spotlight disk in a corner.",
+  "Light: clear midday sun — turquoise river or lagoon sparkles, crisp painted shadows, saturated cheerful illustration.",
+  "Light: golden hour on water — long amber reflections on lake or lagoon, warm forest rim, gentle flame-toned sky.",
+  "Light: forest-floor sun shafts — dappled emerald light on moss and roots, stream gleam, intimate woodland depth.",
+  "Light: bright valley day — wide river braid, stacked cumulus, fresh greens and cerulean sky washes.",
   "Light: clearing storm — dramatic but illustrated sunbeams on one ridge, volumetric painted clouds.",
   "Light: misty drizzle — lowered contrast, soft greens and grays, silhouettes gentle not crushed black.",
   "Light: starfield twilight — deep blue zenith fading to warm horizon band, magical calm luminosity.",
@@ -98,18 +105,21 @@ const OPENER_VARIANTS = [
   "High-plateau windscape: ochre earth, distant violet peaks, sweeping cirrus — open-air epic scale.",
   "Coastal mist fantasy: fog horns implied only as mood, slate cliffs, pearl-gray surf glow below.",
   "Late autumn tapestry: ridge fires of color (trees only), moody sky — bittersweet illustrated season.",
+  "Sunlit river valley: braided sparkling water, forest banks, bold daytime sky — luminous illustrated epic.",
+  "Forest cathedral opening onto lake or lagoon: emerald canopy, mirrored shallows, vivid painterly color.",
 ] as const;
 
 /** Extra focal diversity — reduces identical “hero moon top-right” compositions. */
 const FOCAL_DIVERSITY_HINTS = [
-  "Focal balance: weight interest toward lower-left foreground mass; sky stays calm.",
-  "Focal balance: center-weighted luminous mist — no decorative corner ornaments.",
-  "Focal balance: strong right-side cliff vs left open sky — asymmetric, natural.",
+  "Focal balance: weight toward lower-left foreground mass — earth, trees, or shore as anchor.",
+  "Focal balance: center-weighted luminous air — mist, sun haze, or water shimmer; no decorative corner ornaments.",
+  "Focal balance: strong cliff vs open sky or bright water — asymmetric, natural.",
   "Focal balance: distant horizon band emphasized — tiny figures or structures forbidden.",
-  "Focal balance: foreground tree group silhouette anchoring one third — celestial light diffuse, not a pasted disk.",
-  "Focal balance: wide reflective water plane anchoring bottom half.",
+  "Focal balance: forest edge or tree group anchoring one third — light diffuse through canopy or off water, not a pasted disk.",
+  "Focal balance: wide reflective lake, lagoon, or river plane anchoring bottom half.",
   "Focal balance: zigzag river draws eye mid-frame toward notch in ridge line.",
   "Focal balance: layered horizontal strata of ridges — rhythm across the width.",
+  "Focal balance: sunlit water foreground — sparkles and shallow color leading toward forest or cliffs.",
 ] as const;
 
 const STYLE_MOOD_TAGS = [
@@ -120,7 +130,7 @@ const STYLE_MOOD_TAGS = [
   "Painterly highland dreamscape — airy atmosphere, geological variety as painted fantasy not expedition photo.",
   "Braided river through meadows — illustration softness, willow tangles, no buildings or bridges with signage.",
   "Seasonal fairy-tale emphasis — foliage and weather as emotional metaphor in painted color.",
-  "Heritage mood through terrain alone — cultural feeling via mist, rock, and trees — zero built structures or totems.",
+  "Heritage mood through terrain alone — rock, forest, rivers, lakes, light, and weather — zero built structures or totems.",
 ] as const;
 
 export function buildImagePrompt(
@@ -144,10 +154,10 @@ export function buildImagePrompt(
   const styleIdx = ((h >>> 3) ^ (h >>> 17)) % STYLE_MOOD_TAGS.length;
 
   const settingBlock = [
-    `PRIMARY SETTING (must dominate the image — do not use a flat blank gradient): ${theme.environment}.`,
+    `PRIMARY SETTING (dominate the frame — no flat blank gradient): ${theme.environment}.`,
     `Time and mood: ${theme.timeOfDay}; ${theme.mood}.`,
     `Palette: ${theme.colorPalette}.`,
-    `Motifs to weave into mid-ground or background (choose what fits): ${theme.elements}.`,
+    `Motifs (mid-ground or background): ${theme.elements}.`,
     ATMOSPHERE_ROTATIONS[lightIdx],
     COMPOSITION_VARIANTS[compIdx],
     FOCAL_DIVERSITY_HINTS[focalIdx],
@@ -156,16 +166,16 @@ export function buildImagePrompt(
   ].join(" ");
 
   return [
-    "Clean-plate raster: seamless illustrated landscape — unmarked sky/mist; no in-image text, labels, stamps, autographs, or lettering.",
+    "Clean-plate raster: seamless landscape — unmarked air, water, canopy, or pale sky; no in-image text, stamps, autographs, or lettering.",
     OPENER_VARIANTS[openerIdx],
     settingBlock,
     "Art direction: fantasy landscape illustration — poetic, luminous; never photograph or documentary snapshot.",
-    "Middle band: soft diffused light/mist/haze for overlay readability — vary glow placement; avoid opaque shadow in central third.",
-    "Terrain variety — avoid stock mist-mountain-sun-corner clichés.",
-    "Center open (mist, sky, distant haze) for overlay — no symbols, stamps, faux-writing, bars, portals.",
+    "Middle band: readable softness — mist, sun haze, forest glow, water shimmer — vary glow; avoid opaque shadow in central third.",
+    "Terrain variety — rivers, lakes, lagoons, forest, coast; avoid stock mist-mountain clichés.",
+    "Center open (water, forest aisle, mist, bright haze, or sky) for overlay — no symbols, stamps, faux-writing, bars, portals.",
     "Frame edges: seamless landscape — no inset seals, red boxes, marginal stamps, signatures.",
-    "Foreground only subtle rocks, pines, shore, mist — no coins, talismans, letter-like props.",
-    `Emotional register for consultation theme (${category}): ${theme.mood}.`,
+    "Foreground: subtle rocks, pines, shore, mist — no coins, talismans, letter-like props.",
+    `Emotional tone (${category}): ${theme.mood}.`,
   ]
     .filter(Boolean)
     .join(" ");

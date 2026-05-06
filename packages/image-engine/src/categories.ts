@@ -20,11 +20,11 @@ export const VISUAL_THEMES: Record<
   }
 > = {
   love_relationship: {
-    environment: "serene lake reflecting moonlight, misty mountains",
+    environment: "still lake or lagoon, soft mountains, reflective water",
     mood: "contemplative, tender, bittersweet",
-    elements: "lotus flower on still water, willow branches, two distant fireflies",
-    colorPalette: "silver moonlight, deep indigo, soft rose mist",
-    timeOfDay: "full moon night",
+    elements: "lotus or water lilies, willow branches, subtle firefly sparks",
+    colorPalette: "rose-gold dawn or silver dusk — moonlit calm optional — deep indigo accents",
+    timeOfDay: "dawn, dusk, or reflective calm (not only night)",
   },
   career_work: {
     environment: "imposing mountain peak above clouds, ascending stone path",
@@ -41,11 +41,11 @@ export const VISUAL_THEMES: Record<
     timeOfDay: "morning",
   },
   spiritual_inner: {
-    environment: "ancient mountain temple at summit, vast cosmic sky",
+    environment: "summit clarity — vast sky, forested slopes or quiet altitude air",
     mood: "transcendent, mysterious, profound",
-    elements: "incense smoke spiraling, stone lantern, full moon, stars",
-    colorPalette: "deep cosmic blue, gold starlight, white smoke",
-    timeOfDay: "deep night",
+    elements: "incense smoke, stone lantern, stars or bright zenith sun-shaft over ridges",
+    colorPalette: "deep cosmic blue, gold light, white smoke or sunlit mist",
+    timeOfDay: "deep night or clear high-altitude day",
   },
   family_home: {
     environment: "ancient courtyard garden, protected walls, old tree",
@@ -76,10 +76,10 @@ export const VISUAL_THEMES: Record<
     timeOfDay: "midday open sky",
   },
   general: {
-    environment: "layered mountain ridges, river or lake, mist between peaks, dramatic sky",
+    environment: "layered ridges, river braid or lake/lagoon, forest pockets, varied sky and weather",
     mood: "timeless, balanced, mysterious",
-    elements: "distant peaks, foreground pine or rocks, reflective water, soft clouds or moon glow",
-    colorPalette: "ink shadows, mist grays, blue-gray distance, warm horizon accent — no flat ivory void",
-    timeOfDay: "timeless",
+    elements: "distant peaks, pine or rocks, sun shafts over water, forest light, soft clouds or dusk glow",
+    colorPalette: "ink shadows, cool distance, warm sun accents — no flat ivory void",
+    timeOfDay: "timeless (day or twilight moods)",
   },
 };
