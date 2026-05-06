@@ -48,9 +48,9 @@ export const VISUAL_THEMES: Record<
     timeOfDay: "deep night or clear high-altitude day",
   },
   family_home: {
-    environment: "ancient courtyard garden, protected walls, old tree",
+    environment: "meadow hedgerow or riverside belt — warmth and shelter suggested by trees and distance, not a walled patio",
     mood: "rooted, warm, protective",
-    elements: "gnarled tree with spreading branches, chrysanthemums, stone bench",
+    elements: "wind-sculpted trees, wildflowers, field stones, distant smoke — no patio furniture clusters",
     colorPalette: "warm amber, deep earth, soft green",
     timeOfDay: "golden hour",
   },
@@ -80,6 +80,6 @@ export const VISUAL_THEMES: Record<
     mood: "timeless, balanced, mysterious",
     elements: "distant peaks, pine or rocks, sun shafts over water, forest light, soft clouds or dusk glow",
     colorPalette: "ink shadows, cool distance, warm sun accents — no flat ivory void",
-    timeOfDay: "timeless (day or twilight moods)",
+    timeOfDay: "day or twilight",
   },
 };

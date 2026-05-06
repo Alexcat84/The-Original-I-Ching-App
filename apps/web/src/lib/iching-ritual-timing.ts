@@ -9,8 +9,8 @@
  * and changing it requires redeploying (or using preview envs).
  *
  * ## Optional overrides (when unset, defaults in this file apply)
- * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): budget for the 12 tick delays + finale window. **Default: 24_000.**
- * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick. **Default: 2300.**
+ * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): budget for the 12 tick delays + finale window. **Default: 36_000** (~36s align with typical `/api/consult` stream).
+ * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick. **Default: 3000** (needed so a ~36s target is not clamped to ~30s).
  * - `NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS`, `FINALE_MIN_MS`, `FINALE_MAX_MS`: manual cast finale only.
  *
  * ## Stacking elsewhere (`page.tsx`, not here)
@@ -19,14 +19,14 @@
  * - `POST_LINE_MS` is subtracted when computing tick delay, then the same ms are applied again as sleeps after ticks
  *   (900 + 1100) — intentional: ticks fill `TARGET - POST_LINE`, finale adds POST_LINE.
  *
- * Default target ~24s line phase (when env unset): `24_000` ms → see `ichingRitualTickDelayMs()`.
+ * Default target ~36s tick+finale phase (when env unset): `36_000` ms → see `ichingRitualTickDelayMs()`.
  */
 export const ICHING_RITUAL_TARGET_MS = (() => {
   const raw =
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS)
       : Number.NaN;
-  return Number.isFinite(raw) && raw >= 8000 ? raw : 24_000;
+  return Number.isFinite(raw) && raw >= 8000 ? raw : 36_000;
 })();
 
 /**
@@ -38,7 +38,7 @@ export const ICHING_RITUAL_TICK_DELAY_MAX_MS = (() => {
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS)
       : Number.NaN;
-  return Number.isFinite(raw) && raw >= 900 && raw <= 4600 ? raw : 2300;
+  return Number.isFinite(raw) && raw >= 900 && raw <= 4600 ? raw : 3000;
 })();
 
 /** Finale glow after the last line tick (matches page.tsx sequence). */

@@ -203,6 +203,8 @@ INSTRUCTIONS:
   Categories: love_relationship, career_work, health_wellbeing,
   spiritual_inner, family_home, decision_path, conflict_challenge,
   travel_change, general
+- Use family_home ONLY when the question clearly concerns household, parents, children, partner dynamics at home, or domestic life;
+  for abstract or general life questions prefer general, spiritual_inner, decision_path, or career_work as appropriate.
 - ${hasContext ? "Hay consultas previas en sesión: continuidad breve según bloque de contexto (no re-pegues interpretaciones largas)." : "Primera consulta de la sesión."}
 - Interpret ONLY with the texts given
 - In the first sentence, answer the user's question clearly and directly, but do not invent factual data.

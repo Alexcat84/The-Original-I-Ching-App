@@ -18,7 +18,7 @@ const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
 
 export function buildTogetherNegativePrompt(): string {
   const keywordPrefix =
-    "typography, captions, watermark, logo, letters, numerals, chop stamp, red seal, vermilion blob, corner seal, margin stamp, top-left ornament, inset label rectangle, signature block, autograph scribble, vertical band, pseudo-calligraphy, fake glyphs, album leaf frame, poster layout, blank parchment, stock zen wallpaper, symmetrical corner sun disk, photorealistic snapshot, DSLR photograph, smartphone camera photo, documentary wildlife photography, stock photo HDR crush, harsh flash, crushed black silhouette filling frame center, hyperreal skin texture on rocks";
+    "typography, captions, watermark, logo, letters, numerals, chop stamp, red seal, vermilion blob, corner seal, margin stamp, top-left ornament, inset label rectangle, signature block, autograph scribble, vertical band, pseudo-calligraphy, fake glyphs, album leaf frame, poster layout, blank parchment, stock zen wallpaper, symmetrical corner sun disk, patio courtyard staging, bench rows, urn planters, outdoor seating slabs, photorealistic snapshot, DSLR photograph, smartphone snapshot, wildlife documentary vibe, HDR crush, harsh flash, crushed silhouette center fill";
   const scriptTail =
     "Hanzi-like tiles, Kanji-like tiles, Hangul, Cyrillic, Arabic script — forbid legible rendering";
   return [keywordPrefix, ...IMAGE_NEGATIVE_CONSTRAINT_LINES, scriptTail].join(" ");
@@ -66,7 +66,7 @@ const COMPOSITION_VARIANTS = [
   "Composition: autumn ridge slope — warm maple or oak color accents among rock, crisp angled sunlight, varied silhouette.",
   "Composition: ochre plateau — wide earthy foreground band, distant cooler peaks, open sky dominance.",
   "Composition: bamboo-lined gorge — tall stalks as vertical framing, narrow bright sky slot, stream gleam below.",
-  "Composition: flooded terrace reflections — curved water surfaces stepping uphill, mirror fragments, mist above.",
+  "Composition: stepped wet-field reflections — curved water surfaces stepping uphill, mirror fragments, mist above.",
   "Composition: night-noir silhouette ridge — deep blue atmosphere, rim-lit cloud tops, minimal warm accents.",
   "Composition: dry grassland rise — golden tawny grasses, lone wind-bent tree, vast sky.",
   "Composition: sunlit river ford — shallow rushing water over stones, forest banks, bright sky wedge overhead.",
@@ -171,7 +171,7 @@ export function buildImagePrompt(
     settingBlock,
     "Art direction: fantasy landscape illustration — poetic, luminous; never photograph or documentary snapshot.",
     "Middle band: readable softness — mist, sun haze, forest glow, water shimmer — vary glow; avoid opaque shadow in central third.",
-    "Terrain variety — rivers, lakes, lagoons, forest, coast; avoid stock mist-mountain clichés.",
+    "Terrain variety — rivers, lakes, forest, coast; ban patio-bench vignettes and mist-mountain clichés.",
     "Center open (water, forest aisle, mist, bright haze, or sky) for overlay — no symbols, stamps, faux-writing, bars, portals.",
     "Frame edges: seamless landscape — no inset seals, red boxes, marginal stamps, signatures.",
     "Foreground: subtle rocks, pines, shore, mist — no coins, talismans, letter-like props.",
