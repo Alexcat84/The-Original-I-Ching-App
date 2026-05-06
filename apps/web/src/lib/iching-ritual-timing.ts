@@ -11,8 +11,9 @@
  * ## Optional overrides (when unset, defaults in this file apply)
  * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): fallback processing budget when no prior I Ching consult duration is stored. **Default: 36_000**.
  * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick. **Default: 3000**.
- * - `NEXT_PUBLIC_ICHING_RITUAL_PHASE1_WEIGHT`, `NEXT_PUBLIC_ICHING_RITUAL_PHASE2_WEIGHT`: positive integers splitting **wall-clock budget**
- *   between (1) twelve line ticks and (2) finale dwell (two beats, 9:11 ratio inside phase 2). Defaults **25 / 15** (~62.5% / ~37.5%).
+ * - `NEXT_PUBLIC_ICHING_RITUAL_PHASE1_WEIGHT`, `NEXT_PUBLIC_ICHING_RITUAL_PHASE2_WEIGHT`: positive integers used as a
+ *   ratio to derive the intended share for phase 1 ticks from total wall-clock budget. Defaults **62 / 38** (62% / 38%).
+ *   Phase 2 is **not time-gated** in UI; it persists until response rendering clears the ritual stage.
  * - `NEXT_PUBLIC_ICHING_RITUAL_BUDGET_MIN_MS` / `MAX_MS`: clamp measured `/api/consult` duration when driving the next ritual (defaults **8000** / **120_000**).
  * - `NEXT_PUBLIC_ICHING_MANUAL_*`: legacy tuning constants; manual JSON cast no longer **blocks** the UI on seal/finale
  *   after `/api/consult` returns (interpretation shows as soon as the payload is ready).
@@ -58,16 +59,16 @@ function parsePositiveIntEnv(raw: string | undefined, fallback: number, max = 10
   return Math.min(max, i);
 }
 
-/** Relative weight for the 12 line ticks (phase 1). Default 25 → ~62.5% of budget with phase2=15. */
+/** Relative weight for the 12 line ticks (phase 1). Default 62 → 62% of budget with phase2=38. */
 export const ICHING_RITUAL_PHASE1_WEIGHT = parsePositiveIntEnv(
   typeof process !== "undefined" ? process.env.NEXT_PUBLIC_ICHING_RITUAL_PHASE1_WEIGHT : undefined,
-  25,
+  62,
 );
 
-/** Relative weight for finale dwell (phase 2). Default 15 → ~37.5% of budget with phase1=25. */
+/** Relative counterpart used only to compute phase-1 share from total budget. Default 38. */
 export const ICHING_RITUAL_PHASE2_WEIGHT = parsePositiveIntEnv(
   typeof process !== "undefined" ? process.env.NEXT_PUBLIC_ICHING_RITUAL_PHASE2_WEIGHT : undefined,
-  15,
+  38,
 );
 
 export const ICHING_RITUAL_BUDGET_MIN_MS = (() => {
@@ -108,12 +109,11 @@ export function ichingRitualProcessingBudgetMs(lastMeasuredMs: number | null): n
 
 export type IchingRitualRevealTiming = {
   tickDelayMs: number;
-  finaleMsA: number;
-  finaleMsB: number;
 };
 
 /**
- * Maps total processing budget into tick cadence + finale pair (9:11 of phase-2 share).
+ * Maps total processing budget into phase-1 tick cadence.
+ * Phase 2 (final hexagram focus) is intentionally untimed and ends when response rendering leaves ritual view.
  */
 export function ichingRitualRevealTimingFromBudget(processingBudgetMs: number): IchingRitualRevealTiming {
   const budget = ichingRitualProcessingBudgetMs(processingBudgetMs);
@@ -121,15 +121,11 @@ export function ichingRitualRevealTimingFromBudget(processingBudgetMs: number): 
   const w2 = ICHING_RITUAL_PHASE2_WEIGHT;
   const sum = w1 + w2;
   const phase1Ms = (budget * w1) / sum;
-  const phase2Ms = (budget * w2) / sum;
 
   const rawTickDelay = Math.floor(phase1Ms / ICHING_RITUAL_TICKS);
   const tickDelayMs = Math.max(520, Math.min(ICHING_RITUAL_TICK_DELAY_MAX_MS, rawTickDelay));
 
-  const finaleMsA = Math.max(240, Math.round((phase2Ms * 9) / 20));
-  const finaleMsB = Math.max(280, Math.round(phase2Ms - finaleMsA));
-
-  return { tickDelayMs, finaleMsA, finaleMsB };
+  return { tickDelayMs };
 }
 
 /** @deprecated Prefer `ichingRitualRevealTimingFromBudget`; kept for preview/tools. */
