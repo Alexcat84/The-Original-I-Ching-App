@@ -56,8 +56,99 @@ function isLikelyWrongLanguage(text: string, language: string): boolean {
 
 function enforceOracleBonesConsistency(text: string, cast: OracleBonesCastResult, language: string): string {
   const header = structuralVerdictLineLocalized(cast, language);
-  const merged = `${header}\n\n${replaceVerdictCodesWithNaturalLanguage(text, language)}`.trim();
+  const normalizedBody = sanitizeOracleBonesBody(
+    replaceVerdictCodesWithNaturalLanguage(text, language),
+    header,
+    language,
+  );
+  const merged = `${header}\n\n${normalizedBody}`.trim();
   return normalizeInterpretationPunctuation(merged);
+}
+
+const STRUCTURAL_DUPLICATE_MARKERS = [
+  "structural verdict",
+  "veredicto estructural",
+  "veredito estrutural",
+  "verdict structurel",
+  "strukturelles urteil",
+  "verdetto strutturale",
+  "構造上の裁定",
+  "结构裁定",
+  "구조적 판정",
+  "الحكم البنيوي",
+  "संरचनात्मक निर्णय",
+];
+
+function lineHasStructuralMarker(line: string): boolean {
+  const normalized = line.toLowerCase();
+  return STRUCTURAL_DUPLICATE_MARKERS.some((marker) => normalized.includes(marker));
+}
+
+function stripLeadingEmojiFromTitles(line: string): string {
+  // Remove decorative leading emoji from Markdown headings and bold title lines.
+  let out = line.replace(
+    /^(\s{0,3}#{1,6}\s+)(?:[\p{Extended_Pictographic}\uFE0F\u200D]+\s*)+/u,
+    "$1",
+  );
+  out = out.replace(
+    /^(\s{0,3}\*\*\s*)(?:[\p{Extended_Pictographic}\uFE0F\u200D]+\s*)+/u,
+    "$1",
+  );
+  return out;
+}
+
+function finalGuidanceHeadingLocalized(language: string): string {
+  const map: Record<string, string> = {
+    es: "Claridad para tus pasos",
+    en: "Clarity for your next steps",
+    pt: "Clareza para seus próximos passos",
+    fr: "Clarte pour vos prochains pas",
+    de: "Klarheit fuer deine naechsten Schritte",
+    it: "Chiarezza per i tuoi prossimi passi",
+    ja: "次の一歩への明晰さ",
+    zh: "给你下一步的清晰方向",
+    ko: "다음 걸음을 위한 명확함",
+    ar: "وضوح لخطواتك القادمة",
+    hi: "आपके अगले कदमों के लिए स्पष्टता",
+  };
+  const base = language.trim().toLowerCase().split("-")[0];
+  return map[base] ?? map.en;
+}
+
+function sanitizeOracleBonesBody(text: string, header: string, language: string): string {
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => stripLeadingEmojiFromTitles(line));
+
+  const headerLower = header.toLowerCase();
+  let seenStructuralLine = false;
+  const filtered = lines.filter((line) => {
+    if (!line.trim()) return true;
+    const lower = line.toLowerCase();
+    if (lower === headerLower) return false;
+    if (!lineHasStructuralMarker(line)) return true;
+    if (!seenStructuralLine) {
+      seenStructuralLine = true;
+      return false;
+    }
+    return false;
+  });
+
+  // If the model uses Markdown headings, normalize the last one to the requested product label.
+  const headingIndexes: number[] = [];
+  for (let i = 0; i < filtered.length; i += 1) {
+    if (/^\s{0,3}#{1,6}\s+\S/.test(filtered[i] ?? "")) headingIndexes.push(i);
+  }
+  if (headingIndexes.length > 0) {
+    const lastIdx = headingIndexes[headingIndexes.length - 1]!;
+    const line = filtered[lastIdx] ?? "";
+    const m = line.match(/^(\s{0,3}#{1,6}\s+).+$/);
+    if (m) {
+      filtered[lastIdx] = `${m[1]}${finalGuidanceHeadingLocalized(language)}`;
+    }
+  }
+
+  return filtered.join("\n").trim();
 }
 
 function replaceVerdictCodesWithNaturalLanguage(text: string, language: string): string {
@@ -120,6 +211,7 @@ INSTRUCTIONS:
 - Do not invent a different crack shape or verdict.
 - Never show raw internal code tokens to users (e.g. "auspicious_clear", "inauspicious_clear"). Use only natural-language labels.
 - Keep the verdict tone decisive and explicit. Do not dilute an auspicious_clear / inauspicious_clear outcome with hedging language.
+- If you use Markdown section headings, the LAST heading must be exactly "${finalGuidanceHeadingLocalized(language)}" (in ${getLanguageName(language)}).
 - Anchor certainty to this cast ("in this cast", "en esta tirada"), not to universal proof claims.
 - If affirmsPositive is false, do NOT assert opposite scenarios as true/probable; only state non-confirmation of the positive charge.
 - If affirmsPositive is null, do NOT force yes/no.
@@ -138,7 +230,10 @@ export async function generateOracleBonesInterpretation(
   displayName?: string,
 ): Promise<{ text: string; category: ConsultationCategory }> {
   if (cast.verdict === "silent") {
-    return { text: oracleBonesSilentVerdictMessage(language), category: "general" };
+    return {
+      text: enforceOracleBonesConsistency(oracleBonesSilentVerdictMessage(language), cast, language),
+      category: "general",
+    };
   }
 
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
