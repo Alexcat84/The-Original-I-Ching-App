@@ -87,8 +87,8 @@ const ATMOSPHERE_ROTATIONS = [
 
 /** Rotating openers — fantasy-illustration forward (evocative shanshui), not documentary photography. */
 const OPENER_VARIANTS = [
-  "Epic painted fantasy East Asian wilderness: monumental ridges, mist-filled valleys, rivers or lakes — widescreen 16:9 lush illustrated landscape, emotional poetic atmosphere, dreamlike depth (hand-painted epic, not a photo).",
-  "Grand mythic mountain-and-water tableau: layered peaks, fog in hollows, reflective water — classic ink-wash soul rendered as luminous fantasy illustration filling the frame.",
+  "Epic fantasy East Asian wilderness: monumental ridges, mist valleys, water — lush 16:9 illustrated landscape, poetic atmosphere, dreamlike depth, painted not photo.",
+  "Grand mythic mountain-and-water: layered peaks, fog, reflective water — ink-wash soul as luminous fantasy illustration, full frame.",
   "High fantasy highland vista: granite spires, twisted pines, sea of clouds — golden-age landscape concept art mood, painterly awe without poster symmetry.",
   "Dreamlike river-canyon illustration: carved cliffs, silver water thread, forested slopes — soft atmospheric fade, storybook emotion.",
   "Serene enchanted lakeshore: calm water, distant mountain wall, gentle sky gradation — romantic illustrative panorama, not snapshot.",
@@ -152,18 +152,19 @@ export function buildImagePrompt(
     COMPOSITION_VARIANTS[compIdx],
     FOCAL_DIVERSITY_HINTS[focalIdx],
     STYLE_MOOD_TAGS[styleIdx],
-    "Ground the scene in illustrated landforms and mood weather — avoid empty beige voids or flat posters; also avoid harsh snapshot realism.",
+    "Ground in illustrated landforms and weather — no beige voids, flat posters, or harsh snapshot realism.",
   ].join(" ");
 
   return [
+    "Clean-plate raster: seamless illustrated landscape — unmarked sky/mist; no in-image text, labels, stamps, autographs, or lettering.",
     OPENER_VARIANTS[openerIdx],
     settingBlock,
-    "Art direction: emotionally resonant fantasy landscape illustration — poetic, dreamlike, luminous — never a photograph, smartphone snapshot, or documentary realism.",
-    "Preserve gentle luminous lift across the middle band (diffused light, mist, soft gradients, pastel haze) for overlay readability — avoid repeating the same celestial disk position every image; avoid heavy opaque shadow across the central third.",
-    "Visual priority: distinct illustrated terrain and depth variety — not the same mist-mountain-sun-in-corner stock shot every time.",
-    "Leave center softly open (mist, sky, or distant haze) for overlay — no symbols, stamps, faux-writing, bars, or decorative portals.",
-    "Corners and frame edges: seamless landscape only — never inset seals, red boxes, marginal stamps, or signature ornaments.",
-    "Foreground only if subtle: natural rocks, pine branches, shoreline, or mist — no inscribed coins, no talismans, no objects resembling lettering.",
+    "Art direction: fantasy landscape illustration — poetic, luminous; never photograph or documentary snapshot.",
+    "Middle band: soft diffused light/mist/haze for overlay readability — vary glow placement; avoid opaque shadow in central third.",
+    "Terrain variety — avoid stock mist-mountain-sun-corner clichés.",
+    "Center open (mist, sky, distant haze) for overlay — no symbols, stamps, faux-writing, bars, portals.",
+    "Frame edges: seamless landscape — no inset seals, red boxes, marginal stamps, signatures.",
+    "Foreground only subtle rocks, pines, shore, mist — no coins, talismans, letter-like props.",
     `Emotional register for consultation theme (${category}): ${theme.mood}.`,
   ]
     .filter(Boolean)

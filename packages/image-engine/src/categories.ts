@@ -79,7 +79,7 @@ export const VISUAL_THEMES: Record<
     environment: "layered mountain ridges, river or lake, mist between peaks, dramatic sky",
     mood: "timeless, balanced, mysterious",
     elements: "distant peaks, foreground pine or rocks, reflective water, soft clouds or moon glow",
-    colorPalette: "deep ink shadows, cool mist grays, blue-gray distance, subtle warm light on horizon — avoid flat blank ivory filling most of the frame",
+    colorPalette: "ink shadows, mist grays, blue-gray distance, warm horizon accent — no flat ivory void",
     timeOfDay: "timeless",
   },
 };
