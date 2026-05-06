@@ -9,17 +9,19 @@
  * and changing it requires redeploying (or using preview envs).
  *
  * ## Optional overrides (when unset, defaults in this file apply)
- * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): budget for the 12 tick delays + finale window. **Default: 36_000** (~36s align with typical `/api/consult` stream).
- * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick. **Default: 3000** (needed so a ~36s target is not clamped to ~30s).
- * - `NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS`, `FINALE_MIN_MS`, `FINALE_MAX_MS`: manual cast finale only.
+ * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): fallback processing budget when no prior I Ching consult duration is stored. **Default: 36_000**.
+ * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick. **Default: 3000**.
+ * - `NEXT_PUBLIC_ICHING_RITUAL_PHASE1_WEIGHT`, `NEXT_PUBLIC_ICHING_RITUAL_PHASE2_WEIGHT`: positive integers splitting **wall-clock budget**
+ *   between (1) twelve line ticks and (2) finale dwell (two beats, 9:11 ratio inside phase 2). Defaults **25 / 15** (~62.5% / ~37.5%).
+ * - `NEXT_PUBLIC_ICHING_RITUAL_BUDGET_MIN_MS` / `MAX_MS`: clamp measured `/api/consult` duration when driving the next ritual (defaults **8000** / **120_000**).
+ * - `NEXT_PUBLIC_ICHING_MANUAL_*`: legacy tuning constants; manual JSON cast no longer **blocks** the UI on seal/finale
+ *   after `/api/consult` returns (interpretation shows as soon as the payload is ready).
  *
  * ## Stacking elsewhere (`page.tsx`, not here)
- * - After SSE closes: optional `initialPauseAfterOkMs` (900ms for JSON routes) — must **not** stack on `stream_ritual`
- *   after `runIChingRitualReveal` already ran.
- * - `POST_LINE_MS` is subtracted when computing tick delay, then the same ms are applied again as sleeps after ticks
- *   (900 + 1100) — intentional: ticks fill `TARGET - POST_LINE`, finale adds POST_LINE.
+ * - After SSE closes: optional `initialPauseAfterOkMs` (900ms for JSON routes) — must **not** stack on `stream_ritual`.
  *
- * Default target ~36s tick+finale phase (when env unset): `36_000` ms → see `ichingRitualTickDelayMs()`.
+ * **Measured wall time**: on each successful I Ching `/api/consult`, store clamped duration; the **next** auto ritual
+ * uses `ichingRitualRevealTimingFromBudget` so phase 1 (ticks) vs phase 2 (finale) scales with real processing time.
  */
 export const ICHING_RITUAL_TARGET_MS = (() => {
   const raw =
@@ -41,16 +43,98 @@ export const ICHING_RITUAL_TICK_DELAY_MAX_MS = (() => {
   return Number.isFinite(raw) && raw >= 900 && raw <= 4600 ? raw : 3000;
 })();
 
-/** Finale glow after the last line tick (matches page.tsx sequence). */
+/** Legacy split ratio for the two finale sleeps (900 ms : 1100 ms). */
 export const ICHING_RITUAL_POST_LINE_MS = 900 + 1100;
 
 /** One source bar, then one transformed bar per line (6 lines x 2). */
 export const ICHING_RITUAL_TICKS = 12;
 
+function parsePositiveIntEnv(raw: string | undefined, fallback: number, max = 10_000): number {
+  if (raw == null || raw === "") return fallback;
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return fallback;
+  const i = Math.floor(n);
+  if (i < 1) return fallback;
+  return Math.min(max, i);
+}
+
+/** Relative weight for the 12 line ticks (phase 1). Default 25 → ~62.5% of budget with phase2=15. */
+export const ICHING_RITUAL_PHASE1_WEIGHT = parsePositiveIntEnv(
+  typeof process !== "undefined" ? process.env.NEXT_PUBLIC_ICHING_RITUAL_PHASE1_WEIGHT : undefined,
+  25,
+);
+
+/** Relative weight for finale dwell (phase 2). Default 15 → ~37.5% of budget with phase1=25. */
+export const ICHING_RITUAL_PHASE2_WEIGHT = parsePositiveIntEnv(
+  typeof process !== "undefined" ? process.env.NEXT_PUBLIC_ICHING_RITUAL_PHASE2_WEIGHT : undefined,
+  15,
+);
+
+export const ICHING_RITUAL_BUDGET_MIN_MS = (() => {
+  const raw =
+    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_RITUAL_BUDGET_MIN_MS === "string"
+      ? Number(process.env.NEXT_PUBLIC_ICHING_RITUAL_BUDGET_MIN_MS)
+      : Number.NaN;
+  return Number.isFinite(raw) && raw >= 3000 ? Math.min(300_000, Math.floor(raw)) : 8000;
+})();
+
+export const ICHING_RITUAL_BUDGET_MAX_MS = (() => {
+  const raw =
+    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_RITUAL_BUDGET_MAX_MS === "string"
+      ? Number(process.env.NEXT_PUBLIC_ICHING_RITUAL_BUDGET_MAX_MS)
+      : Number.NaN;
+  return Number.isFinite(raw) && raw >= ICHING_RITUAL_BUDGET_MIN_MS
+    ? Math.min(600_000, Math.floor(raw))
+    : 120_000;
+})();
+
+/**
+ * Wall-clock budget used to spread ritual ticks + finale. Prefer last measured `/api/consult` duration;
+ * otherwise fall back to `ICHING_RITUAL_TARGET_MS`.
+ */
+export function ichingRitualProcessingBudgetMs(lastMeasuredMs: number | null): number {
+  const fallback = Math.min(
+    ICHING_RITUAL_BUDGET_MAX_MS,
+    Math.max(ICHING_RITUAL_BUDGET_MIN_MS, ICHING_RITUAL_TARGET_MS),
+  );
+  if (lastMeasuredMs != null && Number.isFinite(lastMeasuredMs) && lastMeasuredMs > 0) {
+    return Math.min(
+      ICHING_RITUAL_BUDGET_MAX_MS,
+      Math.max(ICHING_RITUAL_BUDGET_MIN_MS, Math.round(lastMeasuredMs)),
+    );
+  }
+  return fallback;
+}
+
+export type IchingRitualRevealTiming = {
+  tickDelayMs: number;
+  finaleMsA: number;
+  finaleMsB: number;
+};
+
+/**
+ * Maps total processing budget into tick cadence + finale pair (9:11 of phase-2 share).
+ */
+export function ichingRitualRevealTimingFromBudget(processingBudgetMs: number): IchingRitualRevealTiming {
+  const budget = ichingRitualProcessingBudgetMs(processingBudgetMs);
+  const w1 = ICHING_RITUAL_PHASE1_WEIGHT;
+  const w2 = ICHING_RITUAL_PHASE2_WEIGHT;
+  const sum = w1 + w2;
+  const phase1Ms = (budget * w1) / sum;
+  const phase2Ms = (budget * w2) / sum;
+
+  const rawTickDelay = Math.floor(phase1Ms / ICHING_RITUAL_TICKS);
+  const tickDelayMs = Math.max(520, Math.min(ICHING_RITUAL_TICK_DELAY_MAX_MS, rawTickDelay));
+
+  const finaleMsA = Math.max(240, Math.round((phase2Ms * 9) / 20));
+  const finaleMsB = Math.max(280, Math.round(phase2Ms - finaleMsA));
+
+  return { tickDelayMs, finaleMsA, finaleMsB };
+}
+
+/** @deprecated Prefer `ichingRitualRevealTimingFromBudget`; kept for preview/tools. */
 export function ichingRitualTickDelayMs(): number {
-  const budget = Math.max(6000, ICHING_RITUAL_TARGET_MS) - ICHING_RITUAL_POST_LINE_MS;
-  const raw = Math.floor(budget / ICHING_RITUAL_TICKS);
-  return Math.max(520, Math.min(ICHING_RITUAL_TICK_DELAY_MAX_MS, raw));
+  return ichingRitualRevealTimingFromBudget(ichingRitualProcessingBudgetMs(null)).tickDelayMs;
 }
 
 /** Tiny beat after HTTP OK so React can paint updated lines before finale (not extra “first half”). Manual I Ching JSON path only. */

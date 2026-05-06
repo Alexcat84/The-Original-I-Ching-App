@@ -60,10 +60,9 @@ import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import {
-  ICHING_MANUAL_POST_HTTP_BEAT_MS,
-  ICHING_MANUAL_SEAL_HOLD_MS,
-  ichingManualFinaleMsFromFetchDuration,
-  ichingRitualTickDelayMs,
+  ichingRitualProcessingBudgetMs,
+  ichingRitualRevealTimingFromBudget,
+  type IchingRitualRevealTiming,
 } from "@/lib/iching-ritual-timing";
 import { previewCastFromLineValues, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
@@ -1343,8 +1342,10 @@ export default function HomePage() {
   const ritualCoinsStageRef = useRef<HTMLElement | null>(null);
   const ritualLinesGridRef = useRef<HTMLDivElement | null>(null);
   const ritualDebugStartMsRef = useRef<number | null>(null);
-  /** Start of `/api/consult` fetch for manual I Ching — drives finale duration ≈ server round-trip. */
-  const manualIchingFetchStartedAtRef = useRef<number | null>(null);
+  /** Wall-clock start of `/api/consult` for I Ching (manual + auto SSE). */
+  const ichingConsultWallClockStartedAtRef = useRef<number | null>(null);
+  /** Clamp-stored duration from last successful I Ching consult; feeds next auto ritual timing. */
+  const lastIchingConsultWallMsRef = useRef<number | null>(null);
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
@@ -3122,8 +3123,7 @@ export default function HomePage() {
         sessionIdForRequest = newClientUuid();
         updateActiveSession((c) => ({ ...c, sessionId: sessionIdForRequest }));
       }
-      manualIchingFetchStartedAtRef.current =
-        oracleMode === "iching" && ichingCastMode === "manual" && isManualCast ? Date.now() : null;
+      ichingConsultWallClockStartedAtRef.current = oracleMode === "iching" ? Date.now() : null;
       const res = await fetch("/api/consult", {
         method: "POST",
         headers: {
@@ -3188,12 +3188,13 @@ export default function HomePage() {
       };
       const contentType = (res.headers.get("content-type") ?? "").toLowerCase();
       logRitualTrace("response:headers", { contentType, status: res.status });
-      const runIChingRitualReveal = async (linesPayload: ApiLine[]) => {
+      const runIChingRitualReveal = async (linesPayload: ApiLine[], timing: IchingRitualRevealTiming) => {
         const ordered = [...linesPayload].sort((a, b) => a.position - b.position);
-        const tickDelayMs = ichingRitualTickDelayMs();
         logRitualTrace("reveal:start", {
           orderedPositions: ordered.map((line) => line.position),
-          tickDelayMs,
+          tickDelayMs: timing.tickDelayMs,
+          finaleMsA: timing.finaleMsA,
+          finaleMsB: timing.finaleMsB,
         });
         setRitualLines(ordered);
         setRitualRevealTick(0);
@@ -3203,13 +3204,13 @@ export default function HomePage() {
         for (let t = 1; t <= 12; t += 1) {
           setRitualRevealTick(t);
           logRitualTrace("reveal:tick", { tick: t });
-          await new Promise((r) => window.setTimeout(r, tickDelayMs));
+          await new Promise((r) => window.setTimeout(r, timing.tickDelayMs));
         }
         setRitualStatusPhase("seal");
         setRitualFinale(true);
         logRitualTrace("reveal:finale");
-        await new Promise((r) => window.setTimeout(r, 900));
-        await new Promise((r) => window.setTimeout(r, 1100));
+        await new Promise((r) => window.setTimeout(r, timing.finaleMsA));
+        await new Promise((r) => window.setTimeout(r, timing.finaleMsB));
         logRitualTrace("reveal:end");
       };
       if (contentType.includes("text/event-stream")) {
@@ -3219,10 +3220,9 @@ export default function HomePage() {
         }
         /**
          * SSE ritual timing (auto I Ching):
-         * - `cast_ready` starts `runIChingRitualReveal` (12 × tickDelay + 900 + 1100 ms).
-         * - This `while` loop keeps reading until the stream closes after `final_ready` + DB work.
-         * - Wall time until `await revealPromise` resolves ≈ max(stream_close_time, reveal_finish_time).
-         * - Do not add the generic post-JSON `initialPauseAfterOkMs` (900ms) after this path — it stacks on top.
+         * - `cast_ready` starts `runIChingRitualReveal` with tick + finale delays derived from **last** consult wall time
+         *   (fallback `ICHING_RITUAL_TARGET_MS`), split phase1:phase2 via env weights (default 25:15).
+         * - Stream read runs in parallel; do **not** await reveal after close — reading shows when `final_ready` is processed.
          */
         const decoder = new TextDecoder();
         const reader = res.body.getReader();
@@ -3238,7 +3238,10 @@ export default function HomePage() {
           revealStarted = true;
           castVectorFromStream = apiLinesToVector(linesPayload);
           setRitualDebugCastVector(castVectorFromStream);
-          revealPromise = runIChingRitualReveal(linesPayload);
+          const processingBudget = ichingRitualProcessingBudgetMs(lastIchingConsultWallMsRef.current);
+          const timing = ichingRitualRevealTimingFromBudget(processingBudget);
+          logRitualTrace("reveal:budget", { processingBudgetMs: processingBudget });
+          revealPromise = runIChingRitualReveal(linesPayload, timing);
         };
 
         while (true) {
@@ -3290,7 +3293,7 @@ export default function HomePage() {
           return;
         }
         if (revealPromise) {
-          await revealPromise;
+          void revealPromise;
         }
         data = finalPayload;
         if (Array.isArray(finalPayload.lines) && finalPayload.lines.length === 6) {
@@ -3371,7 +3374,7 @@ export default function HomePage() {
           : sseIchingAutoRitualComplete
             ? 0
             : isManualCast && oracleMode === "iching"
-              ? ICHING_MANUAL_POST_HTTP_BEAT_MS
+              ? 0
               : 900;
       await new Promise((r) => window.setTimeout(r, initialPauseAfterOkMs));
       if (showRitualAnimation && oracleMode === "oracle_bones" && data.oracleBones) {
@@ -3387,10 +3390,9 @@ export default function HomePage() {
       ) {
         const orderedLines = [...data.lines].sort((a, b) => a.position - b.position);
         if (ichingCastMode === "manual" && isManualCast) {
-          const fetchStartedAt = manualIchingFetchStartedAtRef.current;
+          const fetchStartedAt = ichingConsultWallClockStartedAtRef.current;
           const fetchMs =
             fetchStartedAt != null ? Math.max(0, Date.now() - fetchStartedAt) : 0;
-          const finaleMs = ichingManualFinaleMsFromFetchDuration(fetchMs);
           const finalVec = apiLinesToVector(orderedLines);
           const castBaseForSnapshot = ritualDebugCastVector ?? finalVec;
           setRitualDebugFinalVector(finalVec);
@@ -3408,11 +3410,8 @@ export default function HomePage() {
           setRitualLines(orderedLines);
           setRitualRevealTick(12);
           setRitualStatusPhase("seal");
-          setRitualFinale(false);
-          await new Promise((r) => window.setTimeout(r, ICHING_MANUAL_SEAL_HOLD_MS));
           setRitualFinale(true);
-          logRitualTrace("reveal:finale-manual", { fetchMs, finaleMs });
-          await new Promise((r) => window.setTimeout(r, finaleMs));
+          logRitualTrace("reveal:manual-lines-sync", { fetchMs });
         } else {
           const vec = apiLinesToVector(orderedLines);
           setRitualDebugCastVector(vec);
@@ -3427,7 +3426,15 @@ export default function HomePage() {
             mutationRule: data.mutationRule,
             transformedHexagram: data.transformedHexagram ?? null,
           });
-          await runIChingRitualReveal(orderedLines);
+          const measuredThisJsonMs =
+            ichingConsultWallClockStartedAtRef.current != null
+              ? Math.max(0, Date.now() - ichingConsultWallClockStartedAtRef.current)
+              : null;
+          const jsonTimingBudget = ichingRitualProcessingBudgetMs(
+            measuredThisJsonMs ?? lastIchingConsultWallMsRef.current,
+          );
+          const jsonRevealTiming = ichingRitualRevealTimingFromBudget(jsonTimingBudget);
+          void runIChingRitualReveal(orderedLines, jsonRevealTiming);
         }
       }
       const item: ConsultationItem = {
@@ -3488,6 +3495,14 @@ export default function HomePage() {
         localStorage.setItem(dailyCountStorageKey(today), String(next));
         return next;
       });
+      if (oracleMode === "iching" && ichingConsultWallClockStartedAtRef.current != null) {
+        const rawWallMs = Date.now() - ichingConsultWallClockStartedAtRef.current;
+        lastIchingConsultWallMsRef.current = ichingRitualProcessingBudgetMs(rawWallMs);
+        logRitualTrace("iching:stored-wall-ms", {
+          rawWallMs,
+          storedBudgetMs: lastIchingConsultWallMsRef.current,
+        });
+      }
       setPhase("reading");
       logRitualTrace("submit:complete");
       setConsultPanelOpen(false);
@@ -3499,7 +3514,7 @@ export default function HomePage() {
       setPendingUserQuestion(null);
       setManualCastPreview(null);
     } finally {
-      manualIchingFetchStartedAtRef.current = null;
+      ichingConsultWallClockStartedAtRef.current = null;
       setLoading(false);
       if (!ok) {
         setRitualStatusPhase("question");
