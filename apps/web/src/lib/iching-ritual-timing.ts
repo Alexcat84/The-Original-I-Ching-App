@@ -65,7 +65,7 @@ export const ICHING_MANUAL_SEAL_HOLD_MS = (() => {
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS)
       : Number.NaN;
-  return Number.isFinite(raw) && raw >= 0 && raw <= 120_000 ? raw : 22_000;
+  return Number.isFinite(raw) && raw >= 0 && raw <= 120_000 ? raw : 140;
 })();
 
 /**
@@ -75,13 +75,12 @@ export const ICHING_MANUAL_SEAL_HOLD_MS = (() => {
  *
  * We clamp so ultra-fast networks still get a readable finale, and slow servers do not stall forever.
  */
-/** QA experiment round 1: default min 44s — swap with seal default (22s) next round to see which dominates. */
 export const ICHING_MANUAL_FINALE_MIN_MS = (() => {
   const raw =
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MIN_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_MANUAL_FINALE_MIN_MS)
       : Number.NaN;
-  return Number.isFinite(raw) && raw >= 400 ? raw : 44_000;
+  return Number.isFinite(raw) && raw >= 400 ? raw : 1600;
 })();
 
 export const ICHING_MANUAL_FINALE_MAX_MS = (() => {
