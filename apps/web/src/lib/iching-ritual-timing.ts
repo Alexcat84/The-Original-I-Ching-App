@@ -3,12 +3,14 @@
  * the ritual feels aligned with server work (lines still arrive in one payload).
  *
  * ## Build-time env (Next.js inlines `process.env.NEXT_PUBLIC_*` at compile time)
- * Changing defaults in this file does **not** override Vercel until the next deploy **unless**
- * the dashboard env var is removed or updated — verify production values if timings never change.
+ * If a variable is **not** set in the build environment (neither Vercel nor local `.env`), the literal
+ * defaults in this file are what ship — there is no hidden runtime override.
+ * If you **do** set a `NEXT_PUBLIC_*` on Vercel, that value is baked into the client bundle at deploy time
+ * and changing it requires redeploying (or using preview envs).
  *
- * ## Variables that affect client animation
- * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): budget for the 12 tick delays + finale window.
- * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick (prevents 55s+ line phase).
+ * ## Optional overrides (when unset, defaults in this file apply)
+ * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): budget for the 12 tick delays + finale window. **Default: 24_000.**
+ * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick. **Default: 2300.**
  * - `NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS`, `FINALE_MIN_MS`, `FINALE_MAX_MS`: manual cast finale only.
  *
  * ## Stacking elsewhere (`page.tsx`, not here)
@@ -17,8 +19,7 @@
  * - `POST_LINE_MS` is subtracted when computing tick delay, then the same ms are applied again as sleeps after ticks
  *   (900 + 1100) — intentional: ticks fill `TARGET - POST_LINE`, finale adds POST_LINE.
  *
- * Override with NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS (milliseconds, min 8000).
- * Default ~24s line phase so auto mode stays closer to manual pacing; production env can still tune.
+ * Default target ~24s line phase (when env unset): `24_000` ms → see `ichingRitualTickDelayMs()`.
  */
 export const ICHING_RITUAL_TARGET_MS = (() => {
   const raw =
