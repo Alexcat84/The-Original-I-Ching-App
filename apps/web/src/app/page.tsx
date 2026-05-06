@@ -3188,6 +3188,12 @@ export default function HomePage() {
       };
       const contentType = (res.headers.get("content-type") ?? "").toLowerCase();
       logRitualTrace("response:headers", { contentType, status: res.status });
+      const waitForRitualPaint = () =>
+        new Promise<void>((resolve) => {
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => resolve());
+          });
+        });
       const runIChingRitualReveal = async (linesPayload: ApiLine[], timing: IchingRitualRevealTiming) => {
         const ordered = [...linesPayload].sort((a, b) => a.position - b.position);
         logRitualTrace("reveal:start", {
@@ -3408,6 +3414,7 @@ export default function HomePage() {
           setRitualStatusPhase("seal");
           setRitualFinale(true);
           logRitualTrace("reveal:manual-lines-sync", { fetchMs });
+          await waitForRitualPaint();
         } else {
           const vec = apiLinesToVector(orderedLines);
           setRitualDebugCastVector(vec);
