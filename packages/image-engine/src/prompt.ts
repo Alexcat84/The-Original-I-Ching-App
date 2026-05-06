@@ -9,7 +9,7 @@ import { VISUAL_THEMES } from "./categories.js";
 const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
   "No readable text, numerals, logos, subtitles, watermark, UI chrome.",
   "No chop stamps, hanko, artist seals — forbid red or vermilion rectangles tucked into top-left, top-right, bottom corners, or margin strips.",
-  "No museum accession stamp, gallery chop, documentary corner logo, or faux signature tile.",
+  "No museum accession stamp, gallery chop, documentary corner logo, faux signature tile. No painter autograph, cursive signature flourish, gold name scribble, corner pen-tail.",
   "No vertical inscription bands, poem strips, carved lettering, marginal glyph columns.",
   "Center stays mist or sky — no faux-glyphs, lattice portals, stacked bars.",
   "No hexagram graphics in raster.",
@@ -18,7 +18,7 @@ const IMAGE_NEGATIVE_CONSTRAINT_LINES = [
 
 export function buildTogetherNegativePrompt(): string {
   const keywordPrefix =
-    "typography, captions, watermark, logo, letters, numerals, chop stamp, red seal, vermilion blob, corner seal, margin stamp, top-left ornament, inset label rectangle, signature block, vertical band, pseudo-calligraphy, fake glyphs, album leaf frame, poster layout, blank parchment, stock zen wallpaper, symmetrical corner sun disk, photorealistic snapshot, DSLR photograph, smartphone camera photo, documentary wildlife photography, stock photo HDR crush, harsh flash, crushed black silhouette filling frame center, hyperreal skin texture on rocks";
+    "typography, captions, watermark, logo, letters, numerals, chop stamp, red seal, vermilion blob, corner seal, margin stamp, top-left ornament, inset label rectangle, signature block, autograph scribble, vertical band, pseudo-calligraphy, fake glyphs, album leaf frame, poster layout, blank parchment, stock zen wallpaper, symmetrical corner sun disk, photorealistic snapshot, DSLR photograph, smartphone camera photo, documentary wildlife photography, stock photo HDR crush, harsh flash, crushed black silhouette filling frame center, hyperreal skin texture on rocks";
   const scriptTail =
     "Hanzi-like tiles, Kanji-like tiles, Hangul, Cyrillic, Arabic script — forbid legible rendering";
   return [keywordPrefix, ...IMAGE_NEGATIVE_CONSTRAINT_LINES, scriptTail].join(" ");

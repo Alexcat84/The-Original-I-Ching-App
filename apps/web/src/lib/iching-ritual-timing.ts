@@ -3,13 +3,26 @@
  * the ritual feels aligned with server work (lines still arrive in one payload).
  *
  * Override with NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS (milliseconds, min 8000).
+ * Default ~24s line phase so auto mode stays closer to manual pacing; production env can still tune.
  */
 export const ICHING_RITUAL_TARGET_MS = (() => {
   const raw =
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS)
       : Number.NaN;
-  return Number.isFinite(raw) && raw >= 8000 ? raw : 36_000;
+  return Number.isFinite(raw) && raw >= 8000 ? raw : 24_000;
+})();
+
+/**
+ * Prevents runaway duration when TARGET_MS is set very high: tick delay was capped at 4600ms,
+ * so 12 × 4600 ≈ 55s of line ticks alone (before finale). Keeps auto ritual bounded even if env overshoots.
+ */
+export const ICHING_RITUAL_TICK_DELAY_MAX_MS = (() => {
+  const raw =
+    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS === "string"
+      ? Number(process.env.NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS)
+      : Number.NaN;
+  return Number.isFinite(raw) && raw >= 900 && raw <= 4600 ? raw : 2300;
 })();
 
 /** Finale glow after the last line tick (matches page.tsx sequence). */
@@ -21,7 +34,7 @@ export const ICHING_RITUAL_TICKS = 12;
 export function ichingRitualTickDelayMs(): number {
   const budget = Math.max(6000, ICHING_RITUAL_TARGET_MS) - ICHING_RITUAL_POST_LINE_MS;
   const raw = Math.floor(budget / ICHING_RITUAL_TICKS);
-  return Math.max(520, Math.min(4600, raw));
+  return Math.max(520, Math.min(ICHING_RITUAL_TICK_DELAY_MAX_MS, raw));
 }
 
 /** Tiny beat after HTTP OK so React can paint updated lines before finale (not extra “first half”). */
