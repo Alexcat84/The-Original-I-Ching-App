@@ -3123,7 +3123,7 @@ export default function HomePage() {
         updateActiveSession((c) => ({ ...c, sessionId: sessionIdForRequest }));
       }
       manualIchingFetchStartedAtRef.current =
-        isManualCast && oracleMode === "iching" ? Date.now() : null;
+        oracleMode === "iching" && ichingCastMode === "manual" && isManualCast ? Date.now() : null;
       const res = await fetch("/api/consult", {
         method: "POST",
         headers: {
@@ -3133,7 +3133,9 @@ export default function HomePage() {
         body: JSON.stringify({
           question: questionForRequest,
           language: detectInputLanguage(questionForRequest, locale),
-          responseMode: oracleMode === "iching" && !isManualCast ? "stream_ritual" : "ritual",
+          /** Manual cast must never request SSE — long tick reveal only applies to automatic mode. */
+          responseMode:
+            oracleMode === "iching" && ichingCastMode === "auto" ? "stream_ritual" : "ritual",
           sessionId: sessionIdForRequest,
           sessionTitle: consultSession.title,
           isDeepening: activeThread.length > 0,
@@ -3367,7 +3369,7 @@ export default function HomePage() {
         data.lines.length === 6
       ) {
         const orderedLines = [...data.lines].sort((a, b) => a.position - b.position);
-        if (isManualCast) {
+        if (ichingCastMode === "manual" && isManualCast) {
           const fetchStartedAt = manualIchingFetchStartedAtRef.current;
           const fetchMs =
             fetchStartedAt != null ? Math.max(0, Date.now() - fetchStartedAt) : 0;
