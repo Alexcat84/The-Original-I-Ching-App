@@ -48,7 +48,10 @@ function hashToUint(seed: string): number {
   return h >>> 0;
 }
 
-/** Landscape-only framing — varied layouts so FLUX does not converge on one mist-mountain-moon stock shot. */
+/**
+ * Landscape-only framing (compare legacy `main`: scholar table / courtyard / coins primed seals — kept out).
+ * Wide geographic spread reduces “same moon lake” convergence without naming script or stamps.
+ */
 const COMPOSITION_VARIANTS = [
   "Composition: panoramic — wide water or valley band low, stacked ridges climbing into haze, sky or mist dominant aloft.",
   "Composition: diagonal thrust — foreground cliff or pine at one lower corner, fog river drawing the eye toward distant peaks.",
@@ -58,6 +61,14 @@ const COMPOSITION_VARIANTS = [
   "Composition: forest threshold — dark canopy frame opening to bright ridge gap or distant glacier silhouette.",
   "Composition: lake foreground — calm reflective surface occupying lower half, mountains mirrored softly.",
   "Composition: terraced slope — contour lines of fields or meadows stepping up into mist and peaks.",
+  "Composition: alpine snowfield — cold pale glacier hints, mineral shadows, wind-scoured ridges, sparse foreground.",
+  "Composition: coastal fog cliffs — sea mist swallowing rock bases, teal-gray atmosphere, layered headlands receding.",
+  "Composition: autumn ridge slope — warm maple or oak color accents among rock, crisp angled sunlight, varied silhouette.",
+  "Composition: ochre plateau — wide earthy foreground band, distant cooler peaks, open sky dominance.",
+  "Composition: bamboo-lined gorge — tall stalks as vertical framing, narrow bright sky slot, stream gleam below.",
+  "Composition: flooded terrace reflections — curved water surfaces stepping uphill, mirror fragments, mist above.",
+  "Composition: night-noir silhouette ridge — deep blue atmosphere, rim-lit cloud tops, minimal warm accents.",
+  "Composition: dry grassland rise — golden tawny grasses, lone wind-bent tree, vast sky.",
 ] as const;
 
 const ATMOSPHERE_ROTATIONS = [
@@ -69,6 +80,9 @@ const ATMOSPHERE_ROTATIONS = [
   "Light: misty drizzle — lowered contrast, soft greens and grays, silhouettes gentle not crushed black.",
   "Light: starfield twilight — deep blue zenith fading to warm horizon band, magical calm luminosity.",
   "Light: spring haze — pale lemon sky, subtle fresh foliage suggestion without large foreground blooms as focal subject.",
+  "Light: autumn clarity — low amber angle, long shadows, crisp dry air, copper-green foliage accents.",
+  "Light: winter high-key — pale sky, soft cyan shadows on snow or rock, restrained saturation.",
+  "Light: humid summer veil — hazed distance, lush greens muted by atmospheric blue, sultry calm.",
 ] as const;
 
 /** Rotating openers — fantasy-illustration forward (evocative shanshui), not documentary photography. */
@@ -81,6 +95,9 @@ const OPENER_VARIANTS = [
   "Rolling tea-hill fantasy rhythm: contours climbing into mist — pastoral illustration calm, rounded poetic silhouettes.",
   "Dramatic illustrated storm escarpment: turbulent painted sky, wet cliffs catching light — energetic fantasy clouds, not HDR photo.",
   "Quiet bamboo-stream fairy tale: filtered emerald light, wet boulders, vapor among stalks — intimate vertical illustration space.",
+  "High-plateau windscape: ochre earth, distant violet peaks, sweeping cirrus — open-air epic scale.",
+  "Coastal mist fantasy: fog horns implied only as mood, slate cliffs, pearl-gray surf glow below.",
+  "Late autumn tapestry: ridge fires of color (trees only), moody sky — bittersweet illustrated season.",
 ] as const;
 
 /** Extra focal diversity — reduces identical “hero moon top-right” compositions. */
@@ -119,11 +136,12 @@ export function buildImagePrompt(
   /** Include transformed hexagram so changing readings diverge visually even when primary repeats. */
   const seed = `${consultationId ?? "na"}:${primary.number}:t${transformed?.number ?? 0}:${category}`;
   const h = hashToUint(seed);
-  const openerIdx = h % OPENER_VARIANTS.length;
-  const compIdx = (h >>> 7) % COMPOSITION_VARIANTS.length;
-  const lightIdx = (h >>> 14) % ATMOSPHERE_ROTATIONS.length;
-  const focalIdx = (h >>> 21) % FOCAL_DIVERSITY_HINTS.length;
-  const styleIdx = (h >>> 3) % STYLE_MOOD_TAGS.length;
+  /** XOR-mix bits so opener vs composition vs light decorrelate (reduces synchronized repetition). */
+  const openerIdx = (h ^ (h >>> 11)) % OPENER_VARIANTS.length;
+  const compIdx = ((h >>> 7) ^ (h >>> 19)) % COMPOSITION_VARIANTS.length;
+  const lightIdx = ((h >>> 14) ^ (h >>> 5)) % ATMOSPHERE_ROTATIONS.length;
+  const focalIdx = ((h >>> 21) ^ (h >>> 9)) % FOCAL_DIVERSITY_HINTS.length;
+  const styleIdx = ((h >>> 3) ^ (h >>> 17)) % STYLE_MOOD_TAGS.length;
 
   const settingBlock = [
     `PRIMARY SETTING (must dominate the image — do not use a flat blank gradient): ${theme.environment}.`,
