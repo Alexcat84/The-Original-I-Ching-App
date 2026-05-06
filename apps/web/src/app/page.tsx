@@ -3193,8 +3193,7 @@ export default function HomePage() {
         logRitualTrace("reveal:start", {
           orderedPositions: ordered.map((line) => line.position),
           tickDelayMs: timing.tickDelayMs,
-          finaleMsA: timing.finaleMsA,
-          finaleMsB: timing.finaleMsB,
+          finaleHold: "until-response",
         });
         setRitualLines(ordered);
         setRitualRevealTick(0);
@@ -3208,10 +3207,7 @@ export default function HomePage() {
         }
         setRitualStatusPhase("seal");
         setRitualFinale(true);
-        logRitualTrace("reveal:finale");
-        await new Promise((r) => window.setTimeout(r, timing.finaleMsA));
-        await new Promise((r) => window.setTimeout(r, timing.finaleMsB));
-        logRitualTrace("reveal:end");
+        logRitualTrace("reveal:finale-hold-until-response");
       };
       if (contentType.includes("text/event-stream")) {
         if (!res.body) {
