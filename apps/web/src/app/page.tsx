@@ -3217,6 +3217,13 @@ export default function HomePage() {
           setError("Respuesta del servidor inválida.");
           return;
         }
+        /**
+         * SSE ritual timing (auto I Ching):
+         * - `cast_ready` starts `runIChingRitualReveal` (12 × tickDelay + 900 + 1100 ms).
+         * - This `while` loop keeps reading until the stream closes after `final_ready` + DB work.
+         * - Wall time until `await revealPromise` resolves ≈ max(stream_close_time, reveal_finish_time).
+         * - Do not add the generic post-JSON `initialPauseAfterOkMs` (900ms) after this path — it stacks on top.
+         */
         const decoder = new TextDecoder();
         const reader = res.body.getReader();
         let buffer = "";
@@ -3352,12 +3359,20 @@ export default function HomePage() {
         setError(`${data.error ?? interpolate(sessionUi.requestFailedStatus, { status: res.status })}${suffix}`);
         return;
       }
+      /** POST-HTTP beat: JSON ritual paints lines after one blob; SSE already ran `runIChingRitualReveal` during the stream. */
+      const sseIchingAutoRitualComplete =
+        showRitualAnimation &&
+        contentType.includes("text/event-stream") &&
+        oracleMode === "iching" &&
+        ichingCastMode === "auto";
       const initialPauseAfterOkMs =
         !showRitualAnimation
           ? 0
-          : isManualCast && oracleMode === "iching"
-            ? ICHING_MANUAL_POST_HTTP_BEAT_MS
-            : 900;
+          : sseIchingAutoRitualComplete
+            ? 0
+            : isManualCast && oracleMode === "iching"
+              ? ICHING_MANUAL_POST_HTTP_BEAT_MS
+              : 900;
       await new Promise((r) => window.setTimeout(r, initialPauseAfterOkMs));
       if (showRitualAnimation && oracleMode === "oracle_bones" && data.oracleBones) {
         setBoneRitualResult(data.oracleBones.verdict);

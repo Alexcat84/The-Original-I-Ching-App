@@ -2,6 +2,21 @@
  * Spread I Ching line materialization across typical /api/consult duration so
  * the ritual feels aligned with server work (lines still arrive in one payload).
  *
+ * ## Build-time env (Next.js inlines `process.env.NEXT_PUBLIC_*` at compile time)
+ * Changing defaults in this file does **not** override Vercel until the next deploy **unless**
+ * the dashboard env var is removed or updated — verify production values if timings never change.
+ *
+ * ## Variables that affect client animation
+ * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): budget for the 12 tick delays + finale window.
+ * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick (prevents 55s+ line phase).
+ * - `NEXT_PUBLIC_ICHING_MANUAL_SEAL_HOLD_MS`, `FINALE_MIN_MS`, `FINALE_MAX_MS`: manual cast finale only.
+ *
+ * ## Stacking elsewhere (`page.tsx`, not here)
+ * - After SSE closes: optional `initialPauseAfterOkMs` (900ms for JSON routes) — must **not** stack on `stream_ritual`
+ *   after `runIChingRitualReveal` already ran.
+ * - `POST_LINE_MS` is subtracted when computing tick delay, then the same ms are applied again as sleeps after ticks
+ *   (900 + 1100) — intentional: ticks fill `TARGET - POST_LINE`, finale adds POST_LINE.
+ *
  * Override with NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS (milliseconds, min 8000).
  * Default ~24s line phase so auto mode stays closer to manual pacing; production env can still tune.
  */
