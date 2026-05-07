@@ -21,15 +21,12 @@
   },
   "dependencies": {
     "expo-constants": "16.0.2",
-    "expo-linking": "6.3.1"
+    "expo-linking": "6.3.1",
+    "expo-modules-autolinking": "^1.11.3"
   },
   "optionalDependencies": {
     "@img/sharp-linux-x64": "0.33.5",
     "@resvg/resvg-js-linux-x64-gnu": "2.6.2"
-  },
-  "optionalDependencies": {
-    "@resvg/resvg-js-linux-x64-gnu": "2.6.2",
-    "@img/sharp-linux-x64": "0.33.5"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",
