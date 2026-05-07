@@ -27,6 +27,9 @@
     "@img/sharp-linux-x64": "0.33.5",
     "@resvg/resvg-js-linux-x64-gnu": "2.6.2"
   },
+  "optionalDependencies": {
+    "@resvg/resvg-js-linux-x64-gnu": "2.6.2"
+  },
   "devDependencies": {
     "@types/node": "^22.13.10",
     "glob": "10.5.0",
