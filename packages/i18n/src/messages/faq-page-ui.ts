@@ -93,9 +93,9 @@ const FAQ_ITEMS_EN: FaqItem[] = [
   },
   {
     id: "iching-manual-auto-bones",
-    question: "What is automatic vs manual I Ching — and can I mix Oracle Bones in the same thread?",
+    question: "What is automatic vs manual I Ching, and can I mix Oracle Bones in the same thread?",
     answer:
-      "Automatic vs manual applies only to I Ching (three coins). In Options the cast-mode radios appear when I Ching is selected: automatic runs the animated coin ritual on the server; manual lets you enter the six line totals (6/7/8/9) from your own coins before the reading. Oracle Bones mode is always automatic — there is no manual bones flow; ritual and verdict come from the algorithm only. Within your plan’s per-thread depth cap (for example, eight follow-up readings on a Master thread), you may freely alternate I Ching and Oracle Bones and switch I Ching between automatic and manual from one consultation to the next; your cast-mode preference is remembered for the next time you use I Ching.",
+      "Automatic vs manual applies only to I Ching (three coins). In Options the cast-mode radios appear when I Ching is selected: automatic runs the animated coin ritual on the server; manual lets you enter the six line totals (6/7/8/9) from your own coins before the reading. Oracle Bones mode is always automatic; there is no manual bones flow; ritual and verdict come from the algorithm only. Within your plan’s per-thread depth cap (for example, eight follow-up readings on a Master thread), you may freely alternate I Ching and Oracle Bones and switch I Ching between automatic and manual from one consultation to the next; your cast-mode preference is remembered for the next time you use I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -116,7 +116,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "export-pdf",
     question: "Can I export a reading?",
     answer:
-      "Yes — after a consultation you can export the thread as a PDF from the reading card actions where available. Details are in the user guide.",
+      "Yes, after a consultation you can export the thread as a PDF from the reading card actions where available. Details are in the user guide.",
     related: ["userGuide"],
   },
   {
@@ -128,7 +128,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "Where are refunds, billing, and service terms?",
+    question: "Where can I find billing information and service terms?",
     answer:
       "Commercial terms and acceptable use are in the Terms of Service. Token packs and checkout flows are summarized in the guide and pricing pages.",
     related: ["termsOfService", "tokenPacks", "pricing"],
@@ -149,7 +149,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "Who generates the hexagram or verdict — the AI or the algorithm?",
+    question: "Who generates the hexagram or verdict: the AI or the algorithm?",
     answer:
       "The mathematical algorithm, not the AI. In I Ching mode, the system casts three virtual coins six times, builds the hexagram line by line, and applies Zhu Xi's mutation rules to determine the governing line and the resulting hexagram. In Oracle Bones mode, the algorithm generates the crack pattern and determines the verdict. Artificial intelligence intervenes afterwards: it takes that already-calculated result and articulates it in natural language in your language, with the context of your question. The AI is the interpreter. The oracle is the method.",
   },
@@ -157,14 +157,14 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "authentic-texts",
     question: "Are the I Ching texts that appear in the reading authentic or AI-generated?",
     answer:
-      "They are authentic. The Judgment (卦辞), the lines in motion (爻辞), and the resulting hexagrams come entirely from the Wilhelm/Baynes translation — the most complete and respected version of the I Ching in the Western world, in the public domain since 2020. The AI cites and contextualises them with your question, but does not modify or replace them. You can compare any text with the original book.",
+      "They are authentic. The Judgment (卦辞), the lines in motion (爻辞), and the resulting hexagrams come entirely from the Wilhelm/Baynes translation, the most complete and respected version of the I Ching in the Western world, in the public domain since 2020. The AI cites and contextualises them with your question, but does not modify or replace them. You can compare any text with the original book.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "What does Silence mean in Oracle Bones mode?",
     answer:
-      "Silence (沉默) is the fifth possible verdict state in Oracle Bones mode, and it is faithful to the ancestral Shang method. In the original tradition, when the bone produced no legible cracks, it was not an error — it was an answer in itself: the ancestors do not speak because the moment is not ripe for that question, or because the answer transcends what can be said. This app respects that state and returns it when the pattern indicates. The five possible states are: clearly favourable (吉), moderately favourable, moderately unfavourable, clearly unfavourable (凶), and silence (沉默).",
+      "Silence (沉默) is the fifth possible verdict state in Oracle Bones mode, and it is faithful to the ancestral Shang method. In the original tradition, when the bone produced no legible cracks, it was not an error; it was an answer in itself: the ancestors do not speak because the moment is not ripe for that question, or because the answer transcends what can be said. This app respects that state and returns it when the pattern indicates. The five possible states are: clearly favourable (吉), moderately favourable, moderately unfavourable, clearly unfavourable (凶), and silence (沉默).",
     related: ["methodNotes"],
   },
   {
@@ -201,7 +201,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "iching-manual-auto-bones",
     question: "¿Qué es el I Ching automático frente al manual, y puedo mezclar Huesos en el mismo hilo?",
     answer:
-      "Lo automático frente a manual solo aplica al I Ching (tres monedas). En Opciones el modo de tirada aparece cuando I Ching está seleccionado: automático ejecuta el ritual animado de monedas en el servidor; manual te permite introducir los seis totales de línea (6/7/8/9) de tus monedas antes de la lectura. El modo Huesos es siempre automático — no hay flujo manual de huesos; el ritual y el veredicto salen solo del algoritmo. Dentro del tope de profundidad por hilo de tu plan (por ejemplo, ocho profundizaciones en un hilo Master), puedes alternar libremente I Ching y Huesos y cambiar el I Ching entre automático y manual de una consulta a otra; la app guarda tu preferencia de modo para la próxima lectura en I Ching.",
+      "Lo automático frente a manual solo aplica al I Ching (tres monedas). En Opciones el modo de tirada aparece cuando I Ching está seleccionado: automático ejecuta el ritual animado de monedas en el servidor; manual te permite introducir los seis totales de línea (6/7/8/9) de tus monedas antes de la lectura. El modo Huesos es siempre automático; no hay flujo manual de huesos; el ritual y el veredicto salen solo del algoritmo. Dentro del tope de profundidad por hilo de tu plan (por ejemplo, ocho profundizaciones en un hilo Master), puedes alternar libremente I Ching y Huesos y cambiar el I Ching entre automático y manual de una consulta a otra; la app guarda tu preferencia de modo para la próxima lectura en I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -234,7 +234,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "¿Dónde están reembolsos, facturación y las condiciones del servicio?",
+    question: "¿Dónde encuentro información sobre facturación y condiciones del servicio?",
     answer:
       "Las condiciones comerciales y el uso aceptable están en los Términos del servicio. Los packs de tokens y el flujo de compra se resumen en la guía y en la página de precios.",
     related: ["termsOfService", "tokenPacks", "pricing"],
@@ -255,7 +255,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "¿Quién genera el hexagrama o el veredicto — la IA o el algoritmo?",
+    question: "¿Quién genera el hexagrama o el veredicto: la IA o el algoritmo?",
     answer:
       "El algoritmo matemático, no la IA. En el modo I Ching, el sistema lanza tres monedas virtuales seis veces, construye el hexagrama línea por línea y aplica las reglas de mutación de Zhu Xi para determinar la línea regente y el hexagrama resultante. En el modo Huesos, el algoritmo genera el patrón de grietas y determina el veredicto. La inteligencia artificial interviene después: toma ese resultado ya calculado y lo articula en lenguaje natural en tu idioma, con el contexto de tu pregunta. La IA es el intérprete. El oráculo es el método.",
   },
@@ -263,14 +263,14 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "authentic-texts",
     question: "¿Los textos del I Ching que aparecen en la lectura son auténticos o generados por IA?",
     answer:
-      "Son auténticos. Los textos del Juicio (卦辞), las sentencias de las líneas en movimiento (爻辞) y los hexagramas resultantes provienen íntegramente de la traducción Wilhelm/Baynes — la versión más completa y respetada del I Ching en lengua occidental, en dominio público desde 2020. La IA los cita y los contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con el libro original.",
+      "Son auténticos. Los textos del Juicio (卦辞), las sentencias de las líneas en movimiento (爻辞) y los hexagramas resultantes provienen íntegramente de la traducción Wilhelm/Baynes, la versión más completa y respetada del I Ching en lengua occidental, en dominio público desde 2020. La IA los cita y los contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con el libro original.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "¿Qué significa el Silencio en el modo Huesos?",
     answer:
-      "El Silencio (沉默) es el quinto estado posible del veredicto en el modo Huesos, y es fiel al método ancestral Shang. En la tradición original, cuando el hueso no producía grietas legibles, no era un error — era una respuesta en sí misma: los ancestros no hablan porque el momento no está maduro para esa pregunta, o porque la respuesta trasciende lo que puede ser dicho. Esta app respeta ese estado y lo devuelve cuando el patrón lo indica. Los cinco estados posibles son: favorable claro (吉), favorable moderado, desfavorable moderado, desfavorable claro (凶), y silencio (沉默).",
+      "El Silencio (沉默) es el quinto estado posible del veredicto en el modo Huesos, y es fiel al método ancestral Shang. En la tradición original, cuando el hueso no producía grietas legibles, no era un error; era una respuesta en sí misma: los ancestros no hablan porque el momento no está maduro para esa pregunta, o porque la respuesta trasciende lo que puede ser dicho. Esta app respeta ese estado y lo devuelve cuando el patrón lo indica. Los cinco estados posibles son: favorable claro (吉), favorable moderado, desfavorable moderado, desfavorable claro (凶), y silencio (沉默).",
     related: ["methodNotes"],
   },
   {
@@ -307,7 +307,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "iching-manual-auto-bones",
     question: "ما الفرق بين I Ching التلقائي واليدوي، وهل يمكن خلط العظام في نفس الخيط؟",
     answer:
-      "التلقائي مقابل اليدوي ينطبق فقط على I Ching (ثلاث عملات). في الخيارات تظهر أزرار وضع القَسْم عند اختيار I Ching: التلقائي يشغّل طقس العملات المتحرك على الخادم؛ اليدوي يتيح لك إدخال مجموعات الأسطر الستة (6/7/8/9) من عملاتك قبل القراءة. وضع العظام دائمًا تلقائي — لا يوجد مسار يدوي للعظام؛ الطقس والحكم يأتيان من الخوارزمية فقط. ضمن حد عمق الخيط في خطتك (مثلاً ثماني قراءات متابعة في خيط Master)، يمكنك بالتناوب بحرية بين I Ching والعظام، وتبديل I Ching بين التلقائي واليدوي من استشارة إلى أخرى؛ يحفظ التطبيق تفضيل وضع القَسْم للمرة القادمة التي تستخدم فيها I Ching.",
+      "التلقائي مقابل اليدوي ينطبق فقط على I Ching (ثلاث عملات). في الخيارات تظهر أزرار وضع القَسْم عند اختيار I Ching: التلقائي يشغّل طقس العملات المتحرك على الخادم؛ اليدوي يتيح لك إدخال مجموعات الأسطر الستة (6/7/8/9) من عملاتك قبل القراءة. وضع العظام دائمًا تلقائي; لا يوجد مسار يدوي للعظام؛ الطقس والحكم يأتيان من الخوارزمية فقط. ضمن حد عمق الخيط في خطتك (مثلاً ثماني قراءات متابعة في خيط Master)، يمكنك بالتناوب بحرية بين I Ching والعظام، وتبديل I Ching بين التلقائي واليدوي من استشارة إلى أخرى؛ يحفظ التطبيق تفضيل وضع القَسْم للمرة القادمة التي تستخدم فيها I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -340,7 +340,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "أين أجد الاسترداد والفوترة وشروط الخدمة؟",
+    question: "أين أجد معلومات الفوترة وشروط الخدمة؟",
     answer:
       "الشروط التجارية والاستخدام المقبول موجودة في شروط الخدمة. كما تُلخّص صفحة الباقات والأسعار آلية الشراء والدفع.",
     related: ["termsOfService", "tokenPacks", "pricing"],
@@ -361,7 +361,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "من يولّد الهكساجرام أو الحكم — الذكاء الاصطناعي أم الخوارزمية؟",
+    question: "من يولّد الهكساجرام أو الحكم, الذكاء الاصطناعي أم الخوارزمية؟",
     answer:
       "الخوارزمية الرياضية، لا الذكاء الاصطناعي. في وضع I Ching، يقوم النظام برمي ثلاثة عملات افتراضية ست مرات، ويبني الهكساجرام سطرًا تلو الآخر، ويطبق قواعد طفرة Zhu Xi لتحديد السطر الحاكم والهكساجرام الناتج. في وضع العظام، تولّد الخوارزمية نمط الشقوق وتحدد الحكم. يتدخل الذكاء الاصطناعي بعد ذلك: يأخذ هذه النتيجة المحسوبة مسبقًا ويصوغها بلغة طبيعية بلغتك مع سياق سؤالك. الذكاء الاصطناعي هو المفسِّر، والتنبؤ هو المنهج.",
   },
@@ -369,14 +369,14 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "authentic-texts",
     question: "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
-      "إنها أصيلة. نصوص الحكم (卦辞)، وعبارات الخطوط المتحركة (爻辞)، والهكساجرامات الناتجة مستقاة كلها من ترجمة Wilhelm/Baynes — النسخة الأكثر اكتمالاً واحترامًا من I Ching في العالم الغربي، في الملك العام منذ عام 2020. يستشهد بها الذكاء الاصطناعي ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع الكتاب الأصلي.",
+      "إنها أصيلة. نصوص الحكم (卦辞)، وعبارات الخطوط المتحركة (爻辞)، والهكساجرامات الناتجة مستقاة كلها من ترجمة Wilhelm/Baynes، النسخة الأكثر اكتمالاً واحترامًا من I Ching في العالم الغربي، في الملك العام منذ عام 2020. يستشهد بها الذكاء الاصطناعي ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع الكتاب الأصلي.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "ماذا يعني الصمت في وضع عظام الكهانة؟",
     answer:
-      "الصمت (沉默) هو خامس حالة حكم ممكنة في وضع العظام، وهو وفي للمنهج الأسلافي الشانغي. في التقليد الأصلي، حين لا يُنتج العظم شقوقًا قابلة للقراءة، لم يكن ذلك خطأً — بل كان إجابةً في حد ذاتها: لا يتكلم الأسلاف لأن اللحظة لم تنضج بعد لهذا السؤال، أو لأن الإجابة تتجاوز ما يمكن قوله. يحترم هذا التطبيق تلك الحالة ويُعيدها حين يدل عليها النمط. الحالات الخمس الممكنة هي: مواتٍ بوضوح (吉)، مواتٍ معتدل، غير مواتٍ معتدل، غير مواتٍ بوضوح (凶)، وصمت (沉默).",
+      "الصمت (沉默) هو خامس حالة حكم ممكنة في وضع العظام، وهو وفي للمنهج الأسلافي الشانغي. في التقليد الأصلي، حين لا يُنتج العظم شقوقًا قابلة للقراءة، لم يكن ذلك خطأً؛ بل كان إجابةً في حد ذاتها: لا يتكلم الأسلاف لأن اللحظة لم تنضج بعد لهذا السؤال، أو لأن الإجابة تتجاوز ما يمكن قوله. يحترم هذا التطبيق تلك الحالة ويُعيدها حين يدل عليها النمط. الحالات الخمس الممكنة هي: مواتٍ بوضوح (吉)، مواتٍ معتدل، غير مواتٍ معتدل، غير مواتٍ بوضوح (凶)، وصمت (沉默).",
     related: ["methodNotes"],
   },
   {
@@ -413,7 +413,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "iching-manual-auto-bones",
     question: "I Ching में स्वचालित बनाम मैन्युअल क्या है, और क्या मैं एक ही थ्रेड में Oracle Bones मिला सकता/सकती हूँ?",
     answer:
-      "स्वचालित बनाम मैन्युअल केवल I Ching (तीन सिक्के) पर लागू होता है। विकल्पों में कास्ट-मोड रेडियो तभी दिखते हैं जब I Ching चुना हो: स्वचालित सर्वर पर एनिमेटेड सिक्का अनुष्ठान चलाता है; मैन्युअल आपको पढ़ने से पहले अपने सिक्कों से छह पंक्ति योग (6/7/8/9) दर्ज करने देता है। Oracle Bones मोड हमेशा स्वचालित है — कोई मैन्युअल हड्डी प्रवाह नहीं; अनुष्ठान और निर्णय केवल एल्गोरिदम से आते हैं। आपकी योजना की प्रति-थ्रेड गहराई सीमा (उदाहरण के लिए Master थ्रेड पर आठ अनुवर्ती पठन) के भीतर, आप I Ching और Oracle Bones को स्वतंत्र रूप से बदल सकते हैं और एक परामर्श से दूसरे में I Ching को स्वचालित और मैन्युअल के बीच स्विच कर सकते हैं; अगली I Ching पठन के लिए आपकी कास्ट-मोड पसंद याद रखी जाती है।",
+      "स्वचालित बनाम मैन्युअल केवल I Ching (तीन सिक्के) पर लागू होता है। विकल्पों में कास्ट-मोड रेडियो तभी दिखते हैं जब I Ching चुना हो: स्वचालित सर्वर पर एनिमेटेड सिक्का अनुष्ठान चलाता है; मैन्युअल आपको पढ़ने से पहले अपने सिक्कों से छह पंक्ति योग (6/7/8/9) दर्ज करने देता है। Oracle Bones मोड हमेशा स्वचालित है; कोई मैन्युअल हड्डी प्रवाह नहीं; अनुष्ठान और निर्णय केवल एल्गोरिदम से आते हैं। आपकी योजना की प्रति-थ्रेड गहराई सीमा (उदाहरण के लिए Master थ्रेड पर आठ अनुवर्ती पठन) के भीतर, आप I Ching और Oracle Bones को स्वतंत्र रूप से बदल सकते हैं और एक परामर्श से दूसरे में I Ching को स्वचालित और मैन्युअल के बीच स्विच कर सकते हैं; अगली I Ching पठन के लिए आपकी कास्ट-मोड पसंद याद रखी जाती है।",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -467,7 +467,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "हेक्साग्राम या निर्णय कौन उत्पन्न करता है — AI या एल्गोरिदम?",
+    question: "हेक्साग्राम या निर्णय कौन उत्पन्न करता है: AI या एल्गोरिदम?",
     answer:
       "गणितीय एल्गोरिदम, AI नहीं। I Ching मोड में, सिस्टम तीन आभासी सिक्के छह बार फेंकता है, रेखा दर रेखा हेक्साग्राम बनाता है, और शासक रेखा और परिणामी हेक्साग्राम निर्धारित करने के लिए Zhu Xi के उत्परिवर्तन नियमों को लागू करता है। हड्डियों के मोड में, एल्गोरिदम दरार पैटर्न उत्पन्न करता है और निर्णय देता है। कृत्रिम बुद्धिमत्ता बाद में हस्तक्षेप करती है: वह पहले से गणना किए गए उस परिणाम को लेती है और आपके प्रश्न के संदर्भ के साथ आपकी भाषा में स्वाभाविक भाषा में व्यक्त करती है। AI व्याख्याता है। ओरेकल विधि है।",
   },
@@ -475,14 +475,14 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "authentic-texts",
     question: "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
     answer:
-      "वे प्रामाणिक हैं। निर्णय (卦辞), चलती रेखाओं की उक्तियाँ (爻辞), और परिणामी हेक्साग्राम पूरी तरह Wilhelm/Baynes अनुवाद से आते हैं — पश्चिमी जगत में I Ching का सबसे संपूर्ण और सम्मानित संस्करण, जो 2020 से सार्वजनिक डोमेन में है। AI उन्हें आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल पुस्तक से तुलना कर सकते हैं।",
+      "वे प्रामाणिक हैं। निर्णय (卦辞), चलती रेखाओं की उक्तियाँ (爻辞), और परिणामी हेक्साग्राम पूरी तरह Wilhelm/Baynes अनुवाद से आते हैं, पश्चिमी जगत में I Ching का सबसे संपूर्ण और सम्मानित संस्करण, जो 2020 से सार्वजनिक डोमेन में है। AI उन्हें आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल पुस्तक से तुलना कर सकते हैं।",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "Oracle Bones मोड में मौन (Silence) का क्या अर्थ है?",
     answer:
-      "मौन (沉默) Oracle Bones मोड में पाँचवाँ संभावित निर्णय स्थिति है, और यह पूर्वज शांग पद्धति के प्रति सच्चा है। मूल परंपरा में, जब हड्डी पढ़ने योग्य दरारें नहीं देती थी, तो यह कोई त्रुटि नहीं थी — यह अपने आप में एक उत्तर था: पूर्वज नहीं बोलते क्योंकि उस प्रश्न के लिए समय अभी परिपक्व नहीं है, या क्योंकि उत्तर जो कहा जा सकता है उससे परे है। यह app उस स्थिति का सम्मान करती है और जब पैटर्न इंगित करता है तब इसे लौटाती है। पाँच संभावित स्थितियाँ हैं: स्पष्ट रूप से अनुकूल (吉), मध्यम रूप से अनुकूल, मध्यम रूप से प्रतिकूल, स्पष्ट रूप से प्रतिकूल (凶), और मौन (沉默)।",
+      "मौन (沉默) Oracle Bones मोड में पाँचवाँ संभावित निर्णय स्थिति है, और यह पूर्वज शांग पद्धति के प्रति सच्चा है। मूल परंपरा में, जब हड्डी पढ़ने योग्य दरारें नहीं देती थी, तो यह कोई त्रुटि नहीं थी; यह अपने आप में एक उत्तर था: पूर्वज नहीं बोलते क्योंकि उस प्रश्न के लिए समय अभी परिपक्व नहीं है, या क्योंकि उत्तर जो कहा जा सकता है उससे परे है। यह app उस स्थिति का सम्मान करती है और जब पैटर्न इंगित करता है तब इसे लौटाती है। पाँच संभावित स्थितियाँ हैं: स्पष्ट रूप से अनुकूल (吉), मध्यम रूप से अनुकूल, मध्यम रूप से प्रतिकूल, स्पष्ट रूप से प्रतिकूल (凶), और मौन (沉默)।",
     related: ["methodNotes"],
   },
   {
@@ -658,7 +658,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "退款、账单和服务条款在哪里？",
+    question: "账单信息和服务条款在哪里？",
     answer:
       "商业条款和可接受使用规定请见服务条款。代币套餐和结账流程在指南和定价页面中有所概述。",
     related: ["termsOfService", "tokenPacks", "pricing"],
@@ -687,14 +687,14 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "authentic-texts",
     question: "解读中出现的易经文本是真实的还是AI生成的？",
     answer:
-      "是真实的。卦辞、动爻（爻辞）和变卦的文本完全来自威廉/贝恩斯译本——这是西方世界最完整、最受尊重的易经版本，自2020年起已属公共领域。AI引用这些文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原著进行对照。",
+      "是真实的。卦辞、动爻（爻辞）和变卦的文本完全来自威廉/贝恩斯译本，这是西方世界最完整、最受尊重的易经版本，自2020年起已属公共领域。AI引用这些文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原著进行对照。",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "甲骨文模式中的「沉默」是什么意思？",
     answer:
-      "沉默是甲骨文模式中第五种可能的判断状态，忠实于商代祖先传统方法。在古代传统中，当骨头没有产生可读裂纹时，这不是错误——这本身就是一种答案：祖先不语，因为此问的时机尚未成熟，或因为答案超越了可以言说的范畴。本应用尊重这一状态，当图案显示时将其返回。五种可能的状态为：明显有利（吉）、中等有利、中等不利、明显不利（凶）和沉默（沉默）。",
+      "沉默是甲骨文模式中第五种可能的判断状态，忠实于商代祖先传统方法。在古代传统中，当骨头没有产生可读裂纹时，这不是错误，这本身就是一种答案：祖先不语，因为此问的时机尚未成熟，或因为答案超越了可以言说的范畴。本应用尊重这一状态，当图案显示时将其返回。五种可能的状态为：明显有利（吉）、中等有利、中等不利、明显不利（凶）和沉默（沉默）。",
     related: ["methodNotes"],
   },
   {
@@ -764,7 +764,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "환불, 청구, 서비스 약관은 어디에 있나요?",
+    question: "청구 정보와 서비스 약관은 어디에 있나요?",
     answer:
       "상업적 조건 및 허용 가능한 사용은 서비스 약관에 있습니다. 토큰 팩과 결제 흐름은 가이드와 가격 페이지에 요약되어 있습니다.",
     related: ["termsOfService", "tokenPacks", "pricing"],
@@ -800,7 +800,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "silence-state",
     question: "갑골 모드에서 '침묵'은 무엇을 의미하나요?",
     answer:
-      "침묵(沉默)은 갑골 모드의 다섯 번째 가능한 판정 상태이며, 상나라 조상 전통 방법에 충실합니다. 고대 전통에서 뼈에 읽을 수 있는 균열이 생기지 않았을 때, 이는 오류가 아니었습니다 — 그 자체가 하나의 답이었습니다. 조상들이 말하지 않는 것은 그 질문에 대한 때가 무르익지 않았거나, 답이 말로 할 수 있는 것을 초월하기 때문입니다. 이 앱은 그 상태를 존중하며 패턴이 그것을 나타낼 때 반환합니다. 다섯 가지 가능한 상태는 명확히 유리(吉), 중등도 유리, 중등도 불리, 명확히 불리(凶), 그리고 침묵(沉默)입니다.",
+      "침묵(沉默)은 갑골 모드의 다섯 번째 가능한 판정 상태이며, 상나라 조상 전통 방법에 충실합니다. 고대 전통에서 뼈에 읽을 수 있는 균열이 생기지 않았을 때, 이는 오류가 아니었습니다, 그 자체가 하나의 답이었습니다. 조상들이 말하지 않는 것은 그 질문에 대한 때가 무르익지 않았거나, 답이 말로 할 수 있는 것을 초월하기 때문입니다. 이 앱은 그 상태를 존중하며 패턴이 그것을 나타낼 때 반환합니다. 다섯 가지 가능한 상태는 명확히 유리(吉), 중등도 유리, 중등도 불리, 명확히 불리(凶), 그리고 침묵(沉默)입니다.",
     related: ["methodNotes"],
   },
   {
@@ -835,9 +835,9 @@ const FAQ_ITEMS_PT: FaqItem[] = [
   },
   {
     id: "iching-manual-auto-bones",
-    question: "O que é I Ching automático vs manual — e posso misturar Ossos no mesmo fio?",
+    question: "O que é I Ching automático vs manual, e posso misturar Ossos no mesmo fio?",
     answer:
-      "Automático vs manual aplica-se apenas ao I Ching (três moedas). Em Opções os rádios do modo de tiragem aparecem com o I Ching selecionado: automático corre o ritual animado das moedas no servidor; manual permite introduzir os seis totais de linha (6/7/8/9) das suas moedas antes da leitura. O modo Ossos é sempre automático — não existe fluxo manual de ossos; ritual e veredicto vêm só do algoritmo. Dentro do limite de profundidade por fio do seu plano (por exemplo, oito aprofundamentos num fio Master), pode alternar livremente I Ching e Ossos e mudar o I Ching entre automático e manual de uma consulta para a seguinte; a app memoriza a preferência de modo para a próxima leitura em I Ching.",
+      "Automático vs manual aplica-se apenas ao I Ching (três moedas). Em Opções os rádios do modo de tiragem aparecem com o I Ching selecionado: automático corre o ritual animado das moedas no servidor; manual permite introduzir os seis totais de linha (6/7/8/9) das suas moedas antes da leitura. O modo Ossos é sempre automático; não existe fluxo manual de ossos; ritual e veredicto vêm só do algoritmo. Dentro do limite de profundidade por fio do seu plano (por exemplo, oito aprofundamentos num fio Master), pode alternar livremente I Ching e Ossos e mudar o I Ching entre automático e manual de uma consulta para a seguinte; a app memoriza a preferência de modo para a próxima leitura em I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -858,7 +858,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "export-pdf",
     question: "Posso exportar uma leitura?",
     answer:
-      "Sim — após uma consulta pode exportar o fio em PDF nas ações do cartão de leitura, quando disponível. Detalhes no guia.",
+      "Sim, após uma consulta pode exportar o fio em PDF nas ações do cartão de leitura, quando disponível. Detalhes no guia.",
     related: ["userGuide"],
   },
   {
@@ -870,7 +870,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "Onde estão os reembolsos, faturação e termos de serviço?",
+    question: "Onde encontro informações de faturação e termos de serviço?",
     answer:
       "As condições comerciais e o uso aceitável estão nos Termos de Serviço. Os pacotes de tokens e o fluxo de compra estão resumidos no guia e na página de preços.",
     related: ["termsOfService", "tokenPacks", "pricing"],
@@ -891,7 +891,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "Quem gera o hexagrama ou o veredicto — a IA ou o algoritmo?",
+    question: "Quem gera o hexagrama ou o veredicto: a IA ou o algoritmo?",
     answer:
       "O algoritmo matemático, não a IA. No modo I Ching, o sistema lança três moedas virtuais seis vezes, constrói o hexagrama linha por linha e aplica as regras de mutação de Zhu Xi para determinar a linha regente e o hexagrama resultante. No modo Ossos, o algoritmo gera o padrão de fissuras e determina o veredicto. A inteligência artificial intervém depois: pega nesse resultado já calculado e articula-o em linguagem natural no seu idioma, com o contexto da sua pergunta. A IA é o intérprete. O oráculo é o método.",
   },
@@ -899,14 +899,14 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "authentic-texts",
     question: "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
-      "São autênticos. Os textos do Julgamento (卦辞), as sentenças das linhas em movimento (爻辞) e os hexagramas resultantes provêm inteiramente da tradução Wilhelm/Baynes — a versão mais completa e respeitada do I Ching no mundo ocidental, em domínio público desde 2020. A IA cita-os e contextualiza-os com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com o livro original.",
+      "São autênticos. Os textos do Julgamento (卦辞), as sentenças das linhas em movimento (爻辞) e os hexagramas resultantes provêm inteiramente da tradução Wilhelm/Baynes, a versão mais completa e respeitada do I Ching no mundo ocidental, em domínio público desde 2020. A IA cita-os e contextualiza-os com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com o livro original.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "O que significa o Silêncio no modo Ossos?",
     answer:
-      "O Silêncio (沉默) é o quinto estado possível do veredicto no modo Ossos, e é fiel ao método ancestral Shang. Na tradição original, quando o osso não produzia fissuras legíveis, não era um erro — era uma resposta em si mesma: os ancestrais não falam porque o momento não está maduro para essa pergunta, ou porque a resposta transcende o que pode ser dito. Esta app respeita esse estado e devolve-o quando o padrão o indica. Os cinco estados possíveis são: claramente favorável (吉), moderadamente favorável, moderadamente desfavorável, claramente desfavorável (凶) e silêncio (沉默).",
+      "O Silêncio (沉默) é o quinto estado possível do veredicto no modo Ossos, e é fiel ao método ancestral Shang. Na tradição original, quando o osso não produzia fissuras legíveis, não era um erro; era uma resposta em si mesma: os ancestrais não falam porque o momento não está maduro para essa pergunta, ou porque a resposta transcende o que pode ser dito. Esta app respeita esse estado e devolve-o quando o padrão o indica. Os cinco estados possíveis são: claramente favorável (吉), moderadamente favorável, moderadamente desfavorável, claramente desfavorável (凶) e silêncio (沉默).",
     related: ["methodNotes"],
   },
   {
@@ -941,9 +941,9 @@ const FAQ_ITEMS_DE: FaqItem[] = [
   },
   {
     id: "iching-manual-auto-bones",
-    question: "Was bedeutet automatisch vs. manuell beim I Ching — und kann ich Orakelknochen im selben Thread mischen?",
+    question: "Was bedeutet automatisch vs. manuell beim I Ching, und kann ich Orakelknochen im selben Thread mischen?",
     answer:
-      "Automatisch vs. manuell gilt nur für das I Ching (drei Münzen). In den Optionen erscheinen die Wurfmodus-Radios nur bei ausgewähltem I Ching: automatisch führt das animierte Münzritual auf dem Server aus; manuell tragen Sie vor der Lesung die sechs Liniensummen (6/7/8/9) Ihrer eigenen Münzen ein. Der Orakelknochen-Modus ist immer automatisch — es gibt keinen manuellen Knochenablauf; Ritual und Urteil kommen ausschließlich vom Algorithmus. Innerhalb des Thread-Tiefenlimits Ihres Tarifs (z. B. acht Vertiefungen pro Master-Thread) können Sie frei zwischen I Ching und Orakelknochen wechseln und das I Ching von einer Beratung zur nächsten zwischen automatisch und manuell umschalten; Ihre Wurfmodus-Präferenz wird für die nächste I-Ching-Beratung gespeichert.",
+      "Automatisch vs. manuell gilt nur für das I Ching (drei Münzen). In den Optionen erscheinen die Wurfmodus-Radios nur bei ausgewähltem I Ching: automatisch führt das animierte Münzritual auf dem Server aus; manuell tragen Sie vor der Lesung die sechs Liniensummen (6/7/8/9) Ihrer eigenen Münzen ein. Der Orakelknochen-Modus ist immer automatisch; es gibt keinen manuellen Knochenablauf; Ritual und Urteil kommen ausschließlich vom Algorithmus. Innerhalb des Thread-Tiefenlimits Ihres Tarifs (z. B. acht Vertiefungen pro Master-Thread) können Sie frei zwischen I Ching und Orakelknochen wechseln und das I Ching von einer Beratung zur nächsten zwischen automatisch und manuell umschalten; Ihre Wurfmodus-Präferenz wird für die nächste I-Ching-Beratung gespeichert.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -964,7 +964,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "export-pdf",
     question: "Kann ich eine Lesung exportieren?",
     answer:
-      "Ja — nach einer Beratung können Sie den Thread als PDF aus den Aktionen der Lesekarte exportieren, sofern verfügbar. Details im Leitfaden.",
+      "Ja, nach einer Beratung können Sie den Thread als PDF aus den Aktionen der Lesekarte exportieren, sofern verfügbar. Details im Leitfaden.",
     related: ["userGuide"],
   },
   {
@@ -976,7 +976,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "Wo finde ich Rückerstattungen, Abrechnung und Nutzungsbedingungen?",
+    question: "Wo finde ich Abrechnungsinformationen und Nutzungsbedingungen?",
     answer:
       "Kommerzielle Bedingungen und zulässige Nutzung finden sich in den Nutzungsbedingungen. Token-Packs und Kaufabläufe sind im Leitfaden und auf der Preisseite zusammengefasst.",
     related: ["termsOfService", "tokenPacks", "pricing"],
@@ -997,7 +997,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "Wer generiert das Hexagramm oder das Urteil — die KI oder der Algorithmus?",
+    question: "Wer generiert das Hexagramm oder das Urteil: die KI oder der Algorithmus?",
     answer:
       "Der mathematische Algorithmus, nicht die KI. Im I-Ching-Modus wirft das System dreimal sechs virtuelle Münzen, baut das Hexagramm Linie für Linie auf und wendet Zhu Xis Mutationsregeln an, um die leitende Linie und das resultierende Hexagramm zu bestimmen. Im Knochenmodus generiert der Algorithmus das Rissmuster und bestimmt das Urteil. Die künstliche Intelligenz greift danach ein: Sie nimmt dieses bereits berechnete Ergebnis und formuliert es in natürlicher Sprache in Ihrer Sprache, mit dem Kontext Ihrer Frage. Die KI ist der Interpret. Das Orakel ist die Methode.",
   },
@@ -1005,21 +1005,21 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "authentic-texts",
     question: "Sind die I-Ching-Texte in der Lesung authentisch oder KI-generiert?",
     answer:
-      "Sie sind authentisch. Die Texte des Urteils (卦辞), die Aussagen der sich bewegenden Linien (爻辞) und die resultierenden Hexagramme stammen vollständig aus der Wilhelm/Baynes-Übersetzung — der vollständigsten und angesehensten Version des I Ching in der westlichen Welt, seit 2020 gemeinfrei. Die KI zitiert und kontextualisiert sie mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit dem Originalbuch vergleichen.",
+      "Sie sind authentisch. Die Texte des Urteils (卦辞), die Aussagen der sich bewegenden Linien (爻辞) und die resultierenden Hexagramme stammen vollständig aus der Wilhelm/Baynes-Übersetzung, der vollständigsten und angesehensten Version des I Ching in der westlichen Welt, seit 2020 gemeinfrei. Die KI zitiert und kontextualisiert sie mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit dem Originalbuch vergleichen.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "Was bedeutet das Schweigen im Orakelknochen-Modus?",
     answer:
-      "Das Schweigen (沉默) ist der fünfte mögliche Urteilszustand im Orakelknochen-Modus und ist der Shang-Ahnenüberlieferung treu. In der ursprünglichen Tradition war es kein Fehler, wenn der Knochen keine lesbaren Risse produzierte — es war eine Antwort für sich: Die Ahnen sprechen nicht, weil der Moment für diese Frage noch nicht reif ist oder weil die Antwort das Sagbare übersteigt. Diese App respektiert diesen Zustand und gibt ihn zurück, wenn das Muster es anzeigt. Die fünf möglichen Zustände sind: klar günstig (吉), mäßig günstig, mäßig ungünstig, klar ungünstig (凶) und Schweigen (沉默).",
+      "Das Schweigen (沉默) ist der fünfte mögliche Urteilszustand im Orakelknochen-Modus und ist der Shang-Ahnenüberlieferung treu. In der ursprünglichen Tradition war es kein Fehler, wenn der Knochen keine lesbaren Risse produzierte; es war eine Antwort für sich: Die Ahnen sprechen nicht, weil der Moment für diese Frage noch nicht reif ist oder weil die Antwort das Sagbare übersteigt. Diese App respektiert diesen Zustand und gibt ihn zurück, wenn das Muster es anzeigt. Die fünf möglichen Zustände sind: klar günstig (吉), mäßig günstig, mäßig ungünstig, klar ungünstig (凶) und Schweigen (沉默).",
     related: ["methodNotes"],
   },
   {
     id: "language-support",
     question: "Funktioniert die App in meiner Sprache?",
     answer:
-      "Ja. Die App ist in 11 Sprachen verfügbar: Spanisch, Englisch, Portugiesisch, Französisch, Deutsch, Italienisch, Japanisch, Chinesisch, Koreanisch, Arabisch und Hindi. Die KI antwortet in der Sprache, in der Sie Ihre Frage stellen — ohne jede Konfiguration. Wenn Sie auf Französisch fragen, antwortet das Orakel auf Französisch. Wenn Sie auf Arabisch fragen, antwortet es auf Arabisch.",
+      "Ja. Die App ist in 11 Sprachen verfügbar: Spanisch, Englisch, Portugiesisch, Französisch, Deutsch, Italienisch, Japanisch, Chinesisch, Koreanisch, Arabisch und Hindi. Die KI antwortet in der Sprache, in der Sie Ihre Frage stellen, ohne jede Konfiguration. Wenn Sie auf Französisch fragen, antwortet das Orakel auf Französisch. Wenn Sie auf Arabisch fragen, antwortet es auf Arabisch.",
   },
   {
     id: "privacy-consultations",
@@ -1047,9 +1047,9 @@ const FAQ_ITEMS_IT: FaqItem[] = [
   },
   {
     id: "iching-manual-auto-bones",
-    question: "Che cos'è I Ching automatico vs manuale — e posso mescolare le Ossa nello stesso filo?",
+    question: "Che cos'è I Ching automatico vs manuale, e posso mescolare le Ossa nello stesso filo?",
     answer:
-      "Automatico vs manuale vale solo per l'I Ching (tre monete). In Opzioni i radio del modo di lancio compaiono con l'I Ching selezionato: automatico esegue il rituale animato delle monete sul server; manuale consente di inserire i sei totali di linea (6/7/8/9) delle proprie monete prima della lettura. La modalità Ossa è sempre automatica — non esiste un flusso manuale per le ossa; rituale e verdetto provengono solo dall'algoritmo. Entro il limite di profondità per filo del tuo piano (ad esempio otto approfondimenti in un filo Master), puoi alternare liberamente I Ching e Ossa e passare l'I Ching da automatico a manuale da una consultazione all'altra; l'app memorizza la preferenza di modo per la prossima lettura in I Ching.",
+      "Automatico vs manuale vale solo per l'I Ching (tre monete). In Opzioni i radio del modo di lancio compaiono con l'I Ching selezionato: automatico esegue il rituale animato delle monete sul server; manuale consente di inserire i sei totali di linea (6/7/8/9) delle proprie monete prima della lettura. La modalità Ossa è sempre automatica; non esiste un flusso manuale per le ossa; rituale e verdetto provengono solo dall'algoritmo. Entro il limite di profondità per filo del tuo piano (ad esempio otto approfondimenti in un filo Master), puoi alternare liberamente I Ching e Ossa e passare l'I Ching da automatico a manuale da una consultazione all'altra; l'app memorizza la preferenza di modo per la prossima lettura in I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -1070,7 +1070,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "export-pdf",
     question: "Posso esportare una lettura?",
     answer:
-      "Sì — dopo una consultazione puoi esportare il filo come PDF dalle azioni della scheda di lettura dove disponibile. I dettagli sono nella guida.",
+      "Sì, dopo una consultazione puoi esportare il filo come PDF dalle azioni della scheda di lettura dove disponibile. I dettagli sono nella guida.",
     related: ["userGuide"],
   },
   {
@@ -1082,7 +1082,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "Dove trovo rimborsi, fatturazione e condizioni del servizio?",
+    question: "Dove trovo informazioni sulla fatturazione e sulle condizioni del servizio?",
     answer:
       "Le condizioni commerciali e l'uso accettabile si trovano nei Termini di Servizio. I pacchetti di token e i flussi di acquisto sono riassunti nella guida e nella pagina dei prezzi.",
     related: ["termsOfService", "tokenPacks", "pricing"],
@@ -1103,7 +1103,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "Chi genera l'esagramma o il verdetto — l'IA o l'algoritmo?",
+    question: "Chi genera l'esagramma o il verdetto: l'IA o l'algoritmo?",
     answer:
       "L'algoritmo matematico, non l'IA. In modalità I Ching, il sistema lancia tre monete virtuali sei volte, costruisce l'esagramma linea per linea e applica le regole di mutazione di Zhu Xi per determinare la linea dominante e l'esagramma risultante. In modalità Ossa, l'algoritmo genera il motivo delle fessure e determina il verdetto. L'intelligenza artificiale interviene dopo: prende quel risultato già calcolato e lo articola in linguaggio naturale nella tua lingua, con il contesto della tua domanda. L'IA è l'interprete. L'oracolo è il metodo.",
   },
@@ -1111,14 +1111,14 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "authentic-texts",
     question: "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
-      "Sono autentici. I testi del Giudizio (卦辞), le sentenze delle linee in movimento (爻辞) e gli esagrammi risultanti provengono interamente dalla traduzione Wilhelm/Baynes — la versione più completa e rispettata dell'I Ching in Occidente, di pubblico dominio dal 2020. L'IA li cita e li contestualizza con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con il libro originale.",
+      "Sono autentici. I testi del Giudizio (卦辞), le sentenze delle linee in movimento (爻辞) e gli esagrammi risultanti provengono interamente dalla traduzione Wilhelm/Baynes, la versione più completa e rispettata dell'I Ching in Occidente, di pubblico dominio dal 2020. L'IA li cita e li contestualizza con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con il libro originale.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "Cosa significa il Silenzio nella modalità Ossa dell'Oracolo?",
     answer:
-      "Il Silenzio (沉默) è il quinto stato di verdetto possibile nella modalità Ossa, ed è fedele all'antico metodo Shang. Nella tradizione originale, quando l'osso non produceva crepe leggibili, non era un errore — era una risposta in sé: gli antenati non parlano perché il momento non è maturo per quella domanda, o perché la risposta trascende ciò che può essere detto. Questa app rispetta quello stato e lo restituisce quando il modello lo indica. I cinque stati possibili sono: chiaramente favorevole (吉), moderatamente favorevole, moderatamente sfavorevole, chiaramente sfavorevole (凶) e silenzio (沉默).",
+      "Il Silenzio (沉默) è il quinto stato di verdetto possibile nella modalità Ossa, ed è fedele all'antico metodo Shang. Nella tradizione originale, quando l'osso non produceva crepe leggibili, non era un errore; era una risposta in sé: gli antenati non parlano perché il momento non è maturo per quella domanda, o perché la risposta trascende ciò che può essere detto. Questa app rispetta quello stato e lo restituisce quando il modello lo indica. I cinque stati possibili sono: chiaramente favorevole (吉), moderatamente favorevole, moderatamente sfavorevole, chiaramente sfavorevole (凶) e silenzio (沉默).",
     related: ["methodNotes"],
   },
   {
@@ -1153,9 +1153,9 @@ const FAQ_ITEMS_FR: FaqItem[] = [
   },
   {
     id: "iching-manual-auto-bones",
-    question: "Qu'est-ce que le I Ching automatique vs manuel — et puis-je mélanger les Os dans le même fil ?",
+    question: "Qu'est-ce que le I Ching automatique vs manuel, et puis-je mélanger les Os dans le même fil ?",
     answer:
-      "Automatique vs manuel ne concerne que le I Ching (trois pièces). Dans Options, les boutons radio du mode de tirage apparaissent lorsque le I Ching est sélectionné : automatique lance le rituel animé des pièces sur le serveur ; manuel vous permet de saisir les six totaux de ligne (6/7/8/9) de vos vraies pièces avant la lecture. Le mode Os est toujours automatique — il n'existe pas de flux manuel pour les os ; le rituel et le verdict viennent uniquement de l'algorithme. Dans la limite de profondeur par fil de votre forfait (par exemple huit approfondissements sur un fil Master), vous pouvez librement alterner I Ching et Os et passer le I Ching de automatique à manuel d'une consultation à l'autre ; l'application mémorise votre préférence de mode pour la prochaine lecture en I Ching.",
+      "Automatique vs manuel ne concerne que le I Ching (trois pièces). Dans Options, les boutons radio du mode de tirage apparaissent lorsque le I Ching est sélectionné : automatique lance le rituel animé des pièces sur le serveur ; manuel vous permet de saisir les six totaux de ligne (6/7/8/9) de vos vraies pièces avant la lecture. Le mode Os est toujours automatique; il n'existe pas de flux manuel pour les os ; le rituel et le verdict viennent uniquement de l'algorithme. Dans la limite de profondeur par fil de votre forfait (par exemple huit approfondissements sur un fil Master), vous pouvez librement alterner I Ching et Os et passer le I Ching de automatique à manuel d'une consultation à l'autre ; l'application mémorise votre préférence de mode pour la prochaine lecture en I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -1176,7 +1176,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "export-pdf",
     question: "Puis-je exporter une lecture ?",
     answer:
-      "Oui — après une consultation, vous pouvez exporter le fil en PDF depuis les actions de la carte de lecture lorsqu'elles sont disponibles. Détails dans le guide.",
+      "Oui, après une consultation, vous pouvez exporter le fil en PDF depuis les actions de la carte de lecture lorsqu'elles sont disponibles. Détails dans le guide.",
     related: ["userGuide"],
   },
   {
@@ -1188,7 +1188,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "Où trouver les remboursements, la facturation et les conditions de service ?",
+    question: "Où trouver les informations de facturation et les conditions de service ?",
     answer:
       "Les conditions commerciales et l'utilisation acceptable sont dans les Conditions de Service. Les packs de tokens et les flux de paiement sont résumés dans le guide et la page des tarifs.",
     related: ["termsOfService", "tokenPacks", "pricing"],
@@ -1209,7 +1209,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "Qui génère l'hexagramme ou le verdict — l'IA ou l'algorithme ?",
+    question: "Qui génère l'hexagramme ou le verdict: l'IA ou l'algorithme ?",
     answer:
       "L'algorithme mathématique, pas l'IA. En mode I Ching, le système lance trois pièces virtuelles six fois, construit l'hexagramme ligne par ligne et applique les règles de mutation de Zhu Xi pour déterminer la ligne directrice et l'hexagramme résultant. En mode Os, l'algorithme génère le motif de fissures et détermine le verdict. L'intelligence artificielle intervient ensuite : elle prend ce résultat déjà calculé et l'articule en langage naturel dans votre langue, avec le contexte de votre question. L'IA est l'interprète. L'oracle est la méthode.",
   },
@@ -1217,14 +1217,14 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "authentic-texts",
     question: "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
-      "Ils sont authentiques. Les textes du Jugement (卦辞), les sentences des lignes en mouvement (爻辞) et les hexagrammes résultants proviennent intégralement de la traduction Wilhelm/Baynes — la version la plus complète et respectée du I Ching en Occident, dans le domaine public depuis 2020. L'IA les cite et les contextualise avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec le livre original.",
+      "Ils sont authentiques. Les textes du Jugement (卦辞), les sentences des lignes en mouvement (爻辞) et les hexagrammes résultants proviennent intégralement de la traduction Wilhelm/Baynes, la version la plus complète et respectée du I Ching en Occident, dans le domaine public depuis 2020. L'IA les cite et les contextualise avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec le livre original.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "Que signifie le Silence en mode Os de l'Oracle ?",
     answer:
-      "Le Silence (沉默) est le cinquième état de verdict possible en mode Os, et il est fidèle à la méthode ancestrale Shang. Dans la tradition originale, lorsque l'os ne produisait pas de fissures lisibles, ce n'était pas une erreur — c'était une réponse en soi : les ancêtres ne parlent pas car le moment n'est pas mûr pour cette question, ou parce que la réponse transcende ce qui peut être dit. Cette app respecte cet état et le renvoie lorsque le motif l'indique. Les cinq états possibles sont : clairement favorable (吉), modérément favorable, modérément défavorable, clairement défavorable (凶) et silence (沉默).",
+      "Le Silence (沉默) est le cinquième état de verdict possible en mode Os, et il est fidèle à la méthode ancestrale Shang. Dans la tradition originale, lorsque l'os ne produisait pas de fissures lisibles, ce n'était pas une erreur; c'était une réponse en soi : les ancêtres ne parlent pas car le moment n'est pas mûr pour cette question, ou parce que la réponse transcende ce qui peut être dit. Cette app respecte cet état et le renvoie lorsque le motif l'indique. Les cinq états possibles sont : clairement favorable (吉), modérément favorable, modérément défavorable, clairement défavorable (凶) et silence (沉默).",
     related: ["methodNotes"],
   },
   {

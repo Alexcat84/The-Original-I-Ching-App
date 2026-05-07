@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "User Guide — The Original I Ching App",
+  title: "User Guide | The Original I Ching App",
   description: "Learn how to consult the I Ching and Oracle Bones with AI: methods, token packs, image generation, and chat features.",
   openGraph: {
-    title: "User Guide — The Original I Ching App",
+    title: "User Guide | The Original I Ching App",
     description: "How to use the I Ching oracle app: methods, token packs, AI interpretation, and more.",
   },
 };
@@ -56,10 +56,10 @@ export default async function GuiaRapidaPage() {
         <h3>{q.s1Heading}</h3>
         <ul>
           <li>
-            <strong>I Ching</strong> — {q.ichingLi}
+            <strong>I Ching</strong>: {q.ichingLi}
           </li>
           <li>
-            <strong>{q.bonesLabel}</strong> — {q.bonesLi}
+            <strong>{q.bonesLabel}</strong>: {q.bonesLi}
           </li>
         </ul>
 
@@ -102,10 +102,10 @@ export default async function GuiaRapidaPage() {
         <p>{g.optionsIntro}</p>
         <ul>
           <li>
-            <strong>I Ching</strong> — {g.ichingBullet}
+            <strong>I Ching</strong>: {g.ichingBullet}
           </li>
           <li>
-            <strong>{g.bonesLabel}</strong> — {g.bonesBulletSuffix}
+            <strong>{g.bonesLabel}</strong>: {g.bonesBulletSuffix}
           </li>
           <li>{g.threadDepthBullet}</li>
         </ul>

@@ -28,7 +28,7 @@ export type ManualWizardMessages = {
 
 const M: Record<AppLocale, ManualWizardMessages> = {
   es: {
-    title: "Tirada manual — tres monedas",
+    title: "Tirada manual: tres monedas",
     closeAria: "Cerrar asistente de tirada",
     coinHint:
       "Toca una moneda para cambiar Han ↔ manchú. Por moneda: Han suma 3, manchú suma 2. Total de tres monedas = 6, 7, 8 u 9.",
@@ -51,7 +51,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "Líneas completadas: toca para volver a editar desde esa línea.",
   },
   en: {
-    title: "Manual cast — three coins",
+    title: "Manual cast: three coins",
     closeAria: "Close cast assistant",
     coinHint:
       "Tap a coin to toggle Han ↔ Manchu. Per coin: Han adds 3, Manchu adds 2. Sum of three coins = 6, 7, 8, or 9.",
@@ -74,7 +74,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "Completed steps: tap to re-edit throws from that line.",
   },
   pt: {
-    title: "Tiragem manual — três moedas",
+    title: "Tiragem manual: três moedas",
     closeAria: "Fechar assistente de tiragem",
     coinHint:
       "Toque para alternar Han ↔ manchu. Por moeda: Han soma 3, manchu soma 2. Soma das três = 6, 7, 8 ou 9.",
@@ -97,7 +97,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "Passos concluídos: toque para voltar a editar a partir dessa linha.",
   },
   fr: {
-    title: "Tirage manuel — trois pièces",
+    title: "Tirage manuel: trois pièces",
     closeAria: "Fermer l’assistant de tirage",
     coinHint:
       "Touchez pour basculer Han ↔ mandchou. Par pièce : Han +3, mandchou +2. Somme des trois = 6, 7, 8 ou 9.",
@@ -120,7 +120,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "Étapes terminées : touchez pour reprendre l’édition depuis cette ligne.",
   },
   de: {
-    title: "Manueller Wurf — drei Münzen",
+    title: "Manueller Wurf: drei Münzen",
     closeAria: "Wurf-Assistent schließen",
     coinHint:
       "Tippen zum Wechsel Han ↔ mandschurisch. Pro Münze: Han +3, mandschurisch +2. Summe dreier Münzen = 6, 7, 8 oder 9.",
@@ -143,7 +143,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "Fertige Schritte: tippen, um ab dieser Linie neu einzugeben.",
   },
   it: {
-    title: "Lancio manuale — tre monete",
+    title: "Lancio manuale: tre monete",
     closeAria: "Chiudi assistente di lancio",
     coinHint:
       "Tocca per alternare Han ↔ manciù. Per moneta: Han +3, manciù +2. Somma delle tre = 6, 7, 8 o 9.",
@@ -166,7 +166,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "Passi completati: tocca per modificare da quella linea.",
   },
   ja: {
-    title: "手動占い — 三銭",
+    title: "手動占い: 三銭",
     closeAria: "占い補助を閉じる",
     coinHint:
       "タップで漢字表↔満州裏。各銭は漢字=3・満州=2。三銭の合計は6・7・8・9のいずれか。",
@@ -189,7 +189,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "記録済みの段をタップしてその爻からやり直す。",
   },
   zh: {
-    title: "手动起卦 — 三钱",
+    title: "手动起卦: 三钱",
     closeAria: "关闭起卦助手",
     coinHint:
       "点击切换汉字面↔满文面。每枚：汉字=3，满文=2。三枚相加得 6、7、8 或 9。",
@@ -212,7 +212,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "已记录的步骤：点击可从该爻重掷。",
   },
   ko: {
-    title: "수동 점 — 동전 세枚",
+    title: "수동 점: 동전 세枚",
     closeAria: "점 보조 닫기",
     coinHint:
       "탭으로 한자 앞면↔만주 뒷면. 매 동전 한자=3, 만주=2. 세 동전 합은 6·7·8·9.",
@@ -235,7 +235,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "완료된 단계: 탭하면 해당 효부터 다시 입력.",
   },
   ar: {
-    title: "قَسْم يدوي — ثلاث عملات",
+    title: "قَسْم يدوي: ثلاث عملات",
     closeAria: "إغلاق مساعد القَسْم",
     coinHint:
       "المس للتبديل هان ↔ مانشوري. لكل عملة: هان = ٣، مانشوري = ٢. مجموع الثلاث = ٦ أو ٧ أو ٨ أو ٩.",
@@ -258,7 +258,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     progressNavHint: "خطوات مكتملة: المس للتعديل بدءًا من ذلك الخط.",
   },
   hi: {
-    title: "मैन्युअल कास्ट — तीन सिक्के",
+    title: "मैन्युअल कास्ट: तीन सिक्के",
     closeAria: "कास्ट सहायक बंद करें",
     coinHint:
       "टैप से हान ↔ मन्चू बदलें। प्रति सिक्का: हान=3, मन्चू=2। तीनों का योग 6, 7, 8 या 9।",

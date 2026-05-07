@@ -666,7 +666,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "Opciones",
     writeConsultation: "Escribe tu consulta…",
     positiveCharge: "Cargo positivo (afirmación)…",
-    threadLimitReached: "Límite de hilo alcanzado — usa «Nueva sesión» arriba",
+    threadLimitReached: "Límite de hilo alcanzado. Usa «Nueva sesión» arriba.",
     dismissThreadLimitBannerAria: "Ocultar aviso del límite de hilo",
     sessionNew: "Nueva sesión",
     drawerClose: "Cerrar",
@@ -691,7 +691,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "Options",
     writeConsultation: "Type your consultation…",
     positiveCharge: "Positive charge (affirmation)…",
-    threadLimitReached: "Thread limit reached — use \"New session\" above",
+    threadLimitReached: "Thread limit reached. Use \"New session\" above.",
     dismissThreadLimitBannerAria: "Dismiss thread limit notice",
     sessionNew: "New session",
     drawerClose: "Close",
@@ -714,7 +714,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "Opções",
     writeConsultation: "Escreva sua consulta…",
     positiveCharge: "Cargo positivo (afirmação)…",
-    threadLimitReached: "Limite do fio atingido — use «Nova sessão» acima",
+    threadLimitReached: "Limite do fio atingido. Use «Nova sessão» acima.",
     dismissThreadLimitBannerAria: "Ocultar aviso do limite do fio",
     sessionNew: "Nova sessão",
     drawerClose: "Fechar",
@@ -737,7 +737,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "Options",
     writeConsultation: "Écris ta consultation…",
     positiveCharge: "Charge positive (affirmation)…",
-    threadLimitReached: "Limite du fil atteinte — utilisez « Nouvelle session »",
+    threadLimitReached: "Limite du fil atteinte. Utilisez « Nouvelle session ».",
     dismissThreadLimitBannerAria: "Masquer l'avis de limite de fil",
     sessionNew: "Nouvelle session",
     drawerClose: "Fermer",
@@ -760,7 +760,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "Optionen",
     writeConsultation: "Schreibe deine Frage…",
     positiveCharge: "Positive Ladung (Bejahung)…",
-    threadLimitReached: "Thread-Limit erreicht — oben «Neue Sitzung» verwenden",
+    threadLimitReached: "Thread-Limit erreicht. Oben «Neue Sitzung» verwenden.",
     dismissThreadLimitBannerAria: "Hinweis zum Thread-Limit ausblenden",
     sessionNew: "Neue Sitzung",
     drawerClose: "Schließen",
@@ -783,7 +783,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "Opzioni",
     writeConsultation: "Scrivi la tua consultazione…",
     positiveCharge: "Carica positiva (affermazione)…",
-    threadLimitReached: "Limite del thread raggiunto — usa «Nuova sessione»",
+    threadLimitReached: "Limite del thread raggiunto. Usa «Nuova sessione».",
     dismissThreadLimitBannerAria: "Nascondi avviso limite thread",
     sessionNew: "Nuova sessione",
     drawerClose: "Chiudi",
@@ -806,7 +806,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "オプション",
     writeConsultation: "相談内容を入力…",
     positiveCharge: "肯定の問い（肯定電荷）…",
-    threadLimitReached: "スレッド上限です — 上の「新しいセッション」を使用",
+    threadLimitReached: "スレッド上限です。上の「新しいセッション」を使用。",
     dismissThreadLimitBannerAria: "スレッド上限の通知を閉じる",
     sessionNew: "新しいセッション",
     drawerClose: "閉じる",
@@ -829,7 +829,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "选项",
     writeConsultation: "输入你的咨询…",
     positiveCharge: "正向命题（肯定）…",
-    threadLimitReached: "线程已达上限 — 请使用“新会话”",
+    threadLimitReached: "线程已达上限，请使用“新会话”。",
     dismissThreadLimitBannerAria: "关闭线程上限提示",
     sessionNew: "新会话",
     drawerClose: "关闭",
@@ -852,7 +852,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "옵션",
     writeConsultation: "질문을 입력하세요…",
     positiveCharge: "긍정 명제(affirmation)…",
-    threadLimitReached: "스레드 한도 도달 — 위의 «새 세션» 사용",
+    threadLimitReached: "스레드 한도 도달. 위의 «새 세션» 사용.",
     dismissThreadLimitBannerAria: "스레드 한도 알림 숨기기",
     sessionNew: "새 세션",
     drawerClose: "닫기",
@@ -875,7 +875,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "خيارات",
     writeConsultation: "اكتب استشارتك…",
     positiveCharge: "الشحنة الإيجابية (تأكيد)…",
-    threadLimitReached: "تم بلوغ حد الخيط — استخدم «جلسة جديدة» أعلاه",
+    threadLimitReached: "تم بلوغ حد الخيط. استخدم «جلسة جديدة» أعلاه.",
     dismissThreadLimitBannerAria: "إخفاء إشعار حد الخيط",
     sessionNew: "جلسة جديدة",
     drawerClose: "إغلاق",
@@ -898,7 +898,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "विकल्प",
     writeConsultation: "अपनी सलाह लिखें…",
     positiveCharge: "सकारात्मक प्रस्ताव (पुष्टि)…",
-    threadLimitReached: "थ्रेड सीमा पूरी — ऊपर «नई सत्र» का उपयोग करें",
+    threadLimitReached: "थ्रेड सीमा पूरी। ऊपर «नई सत्र» का उपयोग करें।",
     dismissThreadLimitBannerAria: "थ्रेड सीमा सूचना छिपाएँ",
     sessionNew: "नई सत्र",
     drawerClose: "बंद करें",
@@ -917,81 +917,81 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
 function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
   const mapByLocale: Record<AppLocale, Record<OracleBonesVerdict, string>> = {
     es: {
-      auspicious_clear: "吉 — favorable claro (carga positiva)",
-      auspicious_moderate: "吉 — favorable moderado",
-      inauspicious_moderate: "凶 — desfavorable moderado",
-      inauspicious_clear: "凶 — desfavorable claro (carga negativa)",
-      silent: "Sin respuesta clara — silencio ancestral",
+      auspicious_clear: "吉: favorable claro (carga positiva)",
+      auspicious_moderate: "吉: favorable moderado",
+      inauspicious_moderate: "凶: desfavorable moderado",
+      inauspicious_clear: "凶: desfavorable claro (carga negativa)",
+      silent: "Sin respuesta clara. Silencio ancestral.",
     },
     en: {
-      auspicious_clear: "吉 — clear favorable (positive charge)",
-      auspicious_moderate: "吉 — moderate favorable",
-      inauspicious_moderate: "凶 — moderate unfavorable",
-      inauspicious_clear: "凶 — clear unfavorable (negative charge)",
-      silent: "No clear answer — ancestral silence",
+      auspicious_clear: "吉: clear favorable (positive charge)",
+      auspicious_moderate: "吉: moderate favorable",
+      inauspicious_moderate: "凶: moderate unfavorable",
+      inauspicious_clear: "凶: clear unfavorable (negative charge)",
+      silent: "No clear answer. Ancestral silence.",
     },
     pt: {
-      auspicious_clear: "吉 — favorável claro (carga positiva)",
-      auspicious_moderate: "吉 — favorável moderado",
-      inauspicious_moderate: "凶 — desfavorável moderado",
-      inauspicious_clear: "凶 — desfavorável claro (carga negativa)",
-      silent: "Sem resposta clara — silêncio ancestral",
+      auspicious_clear: "吉: favorável claro (carga positiva)",
+      auspicious_moderate: "吉: favorável moderado",
+      inauspicious_moderate: "凶: desfavorável moderado",
+      inauspicious_clear: "凶: desfavorável claro (carga negativa)",
+      silent: "Sem resposta clara. Silêncio ancestral.",
     },
     fr: {
-      auspicious_clear: "吉 — favorable net (charge positive)",
-      auspicious_moderate: "吉 — favorable modéré",
-      inauspicious_moderate: "凶 — défavorable modéré",
-      inauspicious_clear: "凶 — défavorable net (charge négative)",
-      silent: "Pas de réponse claire — silence ancestral",
+      auspicious_clear: "吉: favorable net (charge positive)",
+      auspicious_moderate: "吉: favorable modéré",
+      inauspicious_moderate: "凶: défavorable modéré",
+      inauspicious_clear: "凶: défavorable net (charge négative)",
+      silent: "Pas de réponse claire. Silence ancestral.",
     },
     de: {
-      auspicious_clear: "吉 — klar günstig (positive Ladung)",
-      auspicious_moderate: "吉 — mäßig günstig",
-      inauspicious_moderate: "凶 — mäßig ungünstig",
-      inauspicious_clear: "凶 — klar ungünstig (negative Ladung)",
-      silent: "Keine klare Antwort — Ahnenstille",
+      auspicious_clear: "吉: klar günstig (positive Ladung)",
+      auspicious_moderate: "吉: mäßig günstig",
+      inauspicious_moderate: "凶: mäßig ungünstig",
+      inauspicious_clear: "凶: klar ungünstig (negative Ladung)",
+      silent: "Keine klare Antwort. Ahnenstille.",
     },
     it: {
-      auspicious_clear: "吉 — favorevole chiaro (carica positiva)",
-      auspicious_moderate: "吉 — favorevole moderato",
-      inauspicious_moderate: "凶 — sfavorevole moderato",
-      inauspicious_clear: "凶 — sfavorevole chiaro (carica negativa)",
-      silent: "Nessuna risposta chiara — silenzio ancestrale",
+      auspicious_clear: "吉: favorevole chiaro (carica positiva)",
+      auspicious_moderate: "吉: favorevole moderato",
+      inauspicious_moderate: "凶: sfavorevole moderato",
+      inauspicious_clear: "凶: sfavorevole chiaro (carica negativa)",
+      silent: "Nessuna risposta chiara. Silenzio ancestrale.",
     },
     ja: {
-      auspicious_clear: "吉 — 明確に吉（正の荷）",
-      auspicious_moderate: "吉 — 中庸の吉",
-      inauspicious_moderate: "凶 — 中庸の凶",
-      inauspicious_clear: "凶 — 明確に凶（負の荷）",
-      silent: "明確な答えなし — 祖の沈黙",
+      auspicious_clear: "吉：明確に吉（正の荷）",
+      auspicious_moderate: "吉：中庸の吉",
+      inauspicious_moderate: "凶：中庸の凶",
+      inauspicious_clear: "凶：明確に凶（負の荷）",
+      silent: "明確な答えなし。祖の沈黙。",
     },
     zh: {
-      auspicious_clear: "吉 — 明确吉（正向命题）",
-      auspicious_moderate: "吉 — 中度吉",
-      inauspicious_moderate: "凶 — 中度凶",
-      inauspicious_clear: "凶 — 明确凶（负向命题）",
-      silent: "沉默 — 无明确答案 — 祖灵沉默",
+      auspicious_clear: "吉：明确吉（正向命题）",
+      auspicious_moderate: "吉：中度吉",
+      inauspicious_moderate: "凶：中度凶",
+      inauspicious_clear: "凶：明确凶（负向命题）",
+      silent: "沉默：无明确答案，祖灵沉默。",
     },
     ko: {
-      auspicious_clear: "吉 — 뚜렷한 길(긍정 전하)",
-      auspicious_moderate: "吉 — 보통의 길",
-      inauspicious_moderate: "凶 — 보통의 흉",
-      inauspicious_clear: "凶 — 뚜렷한 흉(부정 전하)",
-      silent: "명확한 답 없음 — 조상의 침묵",
+      auspicious_clear: "吉: 뚜렷한 길(긍정 전하)",
+      auspicious_moderate: "吉: 보통의 길",
+      inauspicious_moderate: "凶: 보통의 흉",
+      inauspicious_clear: "凶: 뚜렷한 흉(부정 전하)",
+      silent: "명확한 답 없음. 조상의 침묵.",
     },
     ar: {
-      auspicious_clear: "吉 — إيجابي واضح (شحنة موجبة)",
-      auspicious_moderate: "吉 — إيجابي معتدل",
-      inauspicious_moderate: "凶 — سلبي معتدل",
-      inauspicious_clear: "凶 — سلبي واضح (شحنة سالبة)",
-      silent: "لا إجابة واضحة — صمت الأجداد",
+      auspicious_clear: "吉: إيجابي واضح (شحنة موجبة)",
+      auspicious_moderate: "吉: إيجابي معتدل",
+      inauspicious_moderate: "凶: سلبي معتدل",
+      inauspicious_clear: "凶: سلبي واضح (شحنة سالبة)",
+      silent: "لا إجابة واضحة. صمت الأجداد.",
     },
     hi: {
-      auspicious_clear: "吉 — स्पष्ट शुभ (सकारात्मक प्रस्ताव)",
-      auspicious_moderate: "吉 — मध्यम शुभ",
-      inauspicious_moderate: "凶 — मध्यम अशुभ",
-      inauspicious_clear: "凶 — स्पष्ट अशुभ (नकारात्मक प्रस्ताव)",
-      silent: "कोई स्पष्ट उत्तर नहीं — पूर्वजों का मौन",
+      auspicious_clear: "吉: स्पष्ट शुभ (सकारात्मक प्रस्ताव)",
+      auspicious_moderate: "吉: मध्यम शुभ",
+      inauspicious_moderate: "凶: मध्यम अशुभ",
+      inauspicious_clear: "凶: स्पष्ट अशुभ (नकारात्मक प्रस्ताव)",
+      silent: "कोई स्पष्ट उत्तर नहीं। पूर्वजों का मौन।",
     },
   };
   return mapByLocale[locale][v];
@@ -3935,7 +3935,7 @@ export default function HomePage() {
               {/* eslint-disable-next-line @next/next/no-img-element -- local brand asset, responsive CSS sizing */}
               <img
                 src="/brand/logo.png"
-                alt="The Original I Ching App — 真正的易经"
+                alt="The Original I Ching App: 真正的易经"
                 className="chat-header-logo"
                 decoding="async"
                 fetchPriority="high"
@@ -5107,7 +5107,7 @@ export default function HomePage() {
                         <span>{tokenPanel.lastPack}</span> <strong>{tierDisplayNode}</strong>
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
-                        <span>{tokenPanel.availableBalance}</span> <strong>{tokenBalance ?? "—"}</strong>
+                        <span>{tokenPanel.availableBalance}</span> <strong>{tokenBalance ?? "…"}</strong>
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
                         <span>{tokenPanel.threadCapShort}</span> <strong>{accountSessionLimit}</strong>
@@ -5271,8 +5271,8 @@ export default function HomePage() {
         aria-hidden="true"
         style={{ position: "absolute", width: "1px", height: "1px", overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap" }}
       >
-        <h2>The Original I Ching App — AI Oracle, Hexagram Readings and Bone Oracle</h2>
-        <p>Consult the I Ching or the Oracle Bones with AI-powered interpretations, ritual animation, hexagram image generation, and persistent chat history. Available in 11 languages. No subscriptions — consumable token packs only. Free trial included.</p>
+        <h2>The Original I Ching App: AI Oracle, Hexagram Readings and Bone Oracle</h2>
+        <p>Consult the I Ching or the Oracle Bones with AI-powered interpretations, ritual animation, hexagram image generation, and persistent chat history. Available in 11 languages. No subscriptions. Consumable token packs only. Free trial included.</p>
         <p>Divination methods: three-coin I Ching (Zhu Xi tradition, Wilhelm/Baynes), Oracle Bones (Shang-era crack reading), AI interpretation via Claude.</p>
         <p>Features: image generation by tier, chat export to PDF, 45-minute idle timeout, Google OAuth, two-factor authentication, dark and light mode, Android APK.</p>
       </section>

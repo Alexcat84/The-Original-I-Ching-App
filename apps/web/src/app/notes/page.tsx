@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Origen e Historia de los Métodos — The Original I Ching App",
+  title: "Origen e Historia de los Métodos | The Original I Ching App",
   description:
     "Historia académica del I Ching (Zhouyi) y los Huesos de Oráculo Shang. Métodos auténticos, fuentes originales, sin invención.",
   openGraph: {
-    title: "Origen e Historia de los Métodos — The Original I Ching App",
+    title: "Origen e Historia de los Métodos | The Original I Ching App",
     description:
       "Historia académica del I Ching (Zhouyi) y los Huesos de Oráculo Shang. Métodos auténticos, fuentes originales, sin invención.",
   },
@@ -83,32 +83,32 @@ export default async function NotesPage() {
         <ul>
           <li>
             <a href="https://en.wikipedia.org/wiki/I_Ching" target="_blank" rel="noopener noreferrer">
-              I Ching (Zhouyi 周易) — Wikipedia
+              I Ching (Zhouyi 周易) on Wikipedia
             </a>
           </li>
           <li>
             <a href="https://en.wikipedia.org/wiki/Oracle_bone_script" target="_blank" rel="noopener noreferrer">
-              Oracle bone script (甲骨文) — Wikipedia
+              Oracle bone script (甲骨文) on Wikipedia
             </a>
           </li>
           <li>
             <a href="https://en.wikipedia.org/wiki/Chinese_pyromancy" target="_blank" rel="noopener noreferrer">
-              Chinese pyromancy — Wikipedia
+              Chinese pyromancy on Wikipedia
             </a>
           </li>
           <li>
             <a href="https://en.wikipedia.org/wiki/Zhu_Xi" target="_blank" rel="noopener noreferrer">
-              Zhu Xi (朱熹) — Wikipedia
+              Zhu Xi (朱熹) on Wikipedia
             </a>
           </li>
           <li>
             <a href="https://en.wikipedia.org/wiki/Richard_Wilhelm_(sinologist)" target="_blank" rel="noopener noreferrer">
-              Richard Wilhelm — Wikipedia
+              Richard Wilhelm on Wikipedia
             </a>
           </li>
           <li>
             <a href="https://en.wikipedia.org/wiki/Shang_dynasty" target="_blank" rel="noopener noreferrer">
-              Shang dynasty (商朝) — Wikipedia
+              Shang dynasty (商朝) on Wikipedia
             </a>
           </li>
         </ul>
