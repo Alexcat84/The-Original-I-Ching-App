@@ -39,6 +39,14 @@
     "react-native-screens": "3.37.0",
     "react-native-webview": "13.8.6"
   },
+  "expo": {
+    "install": {
+      "exclude": [
+        "react-native-screens",
+        "@sentry/react-native"
+      ]
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@types/react": "~18.2.79",
