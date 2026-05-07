@@ -164,6 +164,18 @@ users
 - Practitioner: 1184×1184 ($0.0039/img)
 - Master: 1504×1504 ($0.0061/img)
 
+### Mitigación de glifos / sellos rojos (alucinaciones FLUX)
+FLUX a veces añadía “chops” o marcas tipo caligrafía en márgenes al asociar paisaje chino con pintura de album. **No afecta** al watermark de producto (overlay posterior). La mitigación es solo de **prompting**:
+
+| Pieza | Ubicación | Rol |
+|-------|-----------|-----|
+| Prompt positivo | `packages/image-engine/src/prompt.ts` → `buildImagePrompt` | Paisaje y atmósfera primero; variantes de composición/luz/foco rotadas por hash (`consultationId` + hexagrama + categoría) para evitar el mismo encuadre y refuerzo explícito de bordes sin sellos. |
+| Prompt negativo | Mismo archivo → `buildTogetherNegativePrompt` | Restricciones anti-texto, sellos, bandas verticales, esquinas tipo museo; **solo** se envía como `negative_prompt` a Together, no se antepone al positivo (evita repetir palabras disparadoras). |
+| Límites API | `packages/image-engine/src/together-flux-limits.ts` | Tope de caracteres FLUX; compactación antes de la petición. |
+| Runtime | `apps/web/src/lib/image-provider.ts` → `generateWithTogether` | Una imagen por consulta (`n: 1`); ancho/alto siguen `resolveTogetherImageSize(tier)` — **las resoluciones por tier no cambian**. |
+
+Herramientas locales de QA (no producción): `pnpm run generate:together:iching-samples` puede generar varias imágenes según `SAMPLE_COUNT`; la app solo dispara **una** generación por consulta.
+
 ## Historial de Cambios Importantes
 
 ### Migraciones DB (022 total)
@@ -177,6 +189,7 @@ users
 4. **Bug carga historial** — eliminado reset incondicional `setSessions([fresh])`, ahora condicional
 5. **Free trial doble** — `user_trial_log` + `ON CONFLICT DO NOTHING` previene re-otorgamiento
 6. **Auth egress Supabase** — debounce en refresh de token evita refetch innecesario
+7. **Sellos/glifos en imágenes FLUX** — prompt positivo variado + `negative_prompt` dedicado y compactación (`image-engine`); ver tabla “Mitigación de glifos” arriba
 
 ### Decisiones de Producto
 - Tokens ACUMULABLES (no se pierden al comprar nuevo pack)

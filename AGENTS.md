@@ -13,6 +13,7 @@
 - La privacidad es requisito central: chats e imágenes deben ser privados por usuario autenticado y no exponerse públicamente.
 - La persistencia de chats e imágenes debe ser server-side/DB; no debe depender de almacenamiento local efímero para datos de usuario.
 - El flujo de imágenes incluye overlays de texto chino y marca de agua; cambios de tipografía/render pueden romper la salida visual.
+- Los prompts enviados al proveedor de imagen pasan por compactación/recorte de longitud (`compactPrompt` en web); las restricciones que no puedan perderse (p. ej. negativas / sin caligrafía decorativa) deben ir al inicio de lo que construye `buildImagePrompt`, no solo al final del string.
 - El proyecto usa pruebas de QA visual frecuentes con capturas para validar regresiones en UI y render de imágenes.
 - El cliente Android (`apps/mobile`) carga la experiencia web en un `WebView` contra la URL definida en build; la UI y el login visibles dependen del despliegue remoto, no solo del binario nativo.
 - La URL del WebView debe alinearse entre `app.config.js` (`extra.apiUrl`, embebido en release) y `EXPO_PUBLIC_*` / Metro en desarrollo; si difieren, el dispositivo puede cargar otro host (p. ej. staging vs producción).

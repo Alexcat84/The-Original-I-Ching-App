@@ -8,7 +8,7 @@ export type {
   MutationRule,
   TextsForClaude,
 } from "./types.js";
-export type { PerformCastOptions, Rng } from "./engine.js";
+export type { ManualCastPreview, PerformCastOptions, Rng } from "./engine.js";
 export {
   applyMutations,
   buildLine,
@@ -17,6 +17,8 @@ export {
   getHexagram,
   linesToBinaryTopFirst,
   performCast,
+  performCastFromLineValues,
+  previewCastFromLineValues,
   selectTextsForClaude,
   throwThreeCoins,
 } from "./engine.js";

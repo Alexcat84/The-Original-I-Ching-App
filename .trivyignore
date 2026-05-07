@@ -1,0 +1,25 @@
+# Trivy ignore rules — build-tool dependencies not present in runtime artifacts
+#
+# These CVEs affect tar@6.2.1, a transitive dependency of @expo/cli@0.18.31
+# (Expo SDK 51 toolchain). tar is used exclusively during local builds and CI
+# (expo prebuild, expo install). It is NOT bundled into:
+#   - The Android APK delivered to users
+#   - The Vercel web bundle
+#   - Any production runtime
+#
+# Exploitation requires either:
+#   (a) A supply-chain compromise of the Expo CDN or npm registry
+#   (b) The developer machine already being compromised
+#
+# Risk accepted as: build-tool only, no runtime exposure, no public exploit.
+# Re-evaluate if Expo SDK 51 is upgraded or if a runtime tar dependency is introduced.
+#
+# Reviewed: 2026-05-06 | Branch: fix/security-expo-cli-tar-chain
+
+# tar@6.2.1 via @expo/cli@0.18.31 (Expo SDK 51 build toolchain)
+CVE-2026-23745
+CVE-2026-23950
+CVE-2026-24842
+CVE-2026-26960
+CVE-2026-29786
+CVE-2026-31802

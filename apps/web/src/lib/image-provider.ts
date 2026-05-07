@@ -9,6 +9,12 @@ import {
 } from "@/lib/oracle-bones-verdict-glyph";
 import { renderSvgToPng } from "@/lib/svg-to-png";
 import {
+  buildTogetherNegativePrompt,
+  compactTogetherFluxPromptSegment,
+  TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
+  TOGETHER_FLUX_PROMPT_MAX_CHARS,
+} from "@iching-oracle/image-engine";
+import {
   buildSumiHexagramSvgDataUrl,
   buildSumiHexagramOverlaySvgDataUrl,
   fnv1a32,
@@ -385,6 +391,31 @@ async function generateWithGptImage(prompt: string, width: number, height: numbe
   return null;
 }
 
+function togetherImageGenerationOptionalFields(): {
+  guidance_scale?: number;
+  seed?: number;
+  output_format?: "jpeg" | "png";
+} {
+  const fields: {
+    guidance_scale?: number;
+    seed?: number;
+    output_format?: "jpeg" | "png";
+  } = {};
+  const gs = process.env.TOGETHER_GUIDANCE_SCALE?.trim();
+  if (gs) {
+    const n = Number(gs);
+    if (Number.isFinite(n) && n > 0) fields.guidance_scale = n;
+  }
+  const seedRaw = process.env.TOGETHER_IMAGE_SEED?.trim();
+  if (seedRaw) {
+    const s = Number(seedRaw);
+    if (Number.isFinite(s)) fields.seed = Math.trunc(s);
+  }
+  const fmt = process.env.TOGETHER_OUTPUT_FORMAT?.trim().toLowerCase();
+  if (fmt === "jpeg" || fmt === "png") fields.output_format = fmt;
+  return fields;
+}
+
 async function generateWithTogether(prompt: string, width: number, height: number): Promise<{ url: string | null; debug: TogetherDebug }> {
   const key = process.env.TOGETHER_API_KEY;
   if (!key) {
@@ -402,6 +433,21 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
   // Together (FLUX.1-schnell) rechaza steps fuera de 1..12.
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "10");
   const steps = Math.min(12, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 10));
+  const promptForApi = compactTogetherFluxPromptSegment(prompt, TOGETHER_FLUX_PROMPT_MAX_CHARS);
+  const negativePrompt = compactTogetherFluxPromptSegment(
+    buildTogetherNegativePrompt(),
+    TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
+  );
+  const optionalApi = togetherImageGenerationOptionalFields();
+  debugLog("together: prompt lens", {
+    incomingPromptChars: prompt.length,
+    outgoingPromptChars: promptForApi.length,
+    negativePromptChars: negativePrompt.length,
+    includesPrimarySetting: promptForApi.includes("PRIMARY SETTING"),
+    budgetPrompt: TOGETHER_FLUX_PROMPT_MAX_CHARS,
+    budgetNegative: TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
+    apiOptional: optionalApi,
+  });
   const res = await fetch("https://api.together.xyz/v1/images/generations", {
     method: "POST",
     headers: {
@@ -410,12 +456,14 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
     },
     body: JSON.stringify({
       model,
-      prompt: prompt.slice(0, 1500),
+      prompt: promptForApi,
+      negative_prompt: negativePrompt,
       width,
       height,
       n: 1,
       steps,
       response_format: "url",
+      ...optionalApi,
     }),
   });
   if (!res.ok) {
@@ -574,7 +622,10 @@ export async function buildImageAsset(params: {
   });
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
   const { width: togetherFallbackW, height: togetherFallbackH } = resolveTogetherImageSize(params.tier);
-  const promptForRemote = compactPrompt(params.prompt, provider === "pollinations" ? 900 : 1100);
+  const promptForRemote = compactPrompt(
+    params.prompt,
+    provider === "pollinations" ? 900 : provider === "together" ? TOGETHER_FLUX_PROMPT_MAX_CHARS : 1100,
+  );
   let fallbackImageUrl = sumiFallback;
   if (provider === "together") {
     const prebuilt = await pickPrebuiltFallbackImageUrl({

@@ -3,11 +3,15 @@ import { Redis } from "@upstash/redis";
 let redisClient: Redis | null | undefined;
 let _warnedOnce = false;
 
+export function isUpstashConfigured(): boolean {
+  return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+}
+
 function redis(): Redis | null {
   if (redisClient !== undefined) return redisClient;
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (url && token) {
+  if (isUpstashConfigured() && url && token) {
     redisClient = new Redis({ url, token });
   } else {
     redisClient = null;

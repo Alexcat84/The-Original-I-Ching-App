@@ -715,7 +715,7 @@ html.iching-rn-webview[data-theme="light"] .auth-explore-strip--session .auth-ex
   }
 }
 
-/* Columna centrada: más ancha en desktop para lectura e imágenes */
+/* Centered chat column (browser layout; widths unchanged — tweak bubble rules for message line length) */
 .chat-surface {
   width: 100%;
   max-width: min(34rem, 100%);
@@ -5751,5 +5751,420 @@ html.iching-rn-webview .apk-trace-native-metrics {
   text-justify: auto;
   hyphens: manual;
   -webkit-hyphens: manual;
+}
+
+/* Manual I Ching coin wizard + cast mode (composer panel) */
+.manual-cast-mode-block {
+  margin-top: 0.35rem;
+}
+
+.manual-cast-mode-heading {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+
+.manual-cast-mode-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+.manual-cast-mode-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.manual-cast-mode-option input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent);
+}
+
+.manual-iching-wizard-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: grid;
+  place-items: center;
+  padding: 0.5rem;
+  background: rgba(5, 10, 18, 0.72);
+}
+
+.manual-iching-wizard-dialog {
+  width: min(32rem, 100%);
+  max-height: min(92vh, 40rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--composer-bg);
+  border: 1px solid var(--bar-border);
+  box-shadow: var(--shadow);
+  padding: 0;
+}
+
+.manual-iching-wizard-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.65rem 0.85rem 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.manual-iching-wizard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.manual-iching-wizard-header-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.manual-iching-wizard-title {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--title-chat);
+  line-height: 1.25;
+}
+
+.manual-iching-wizard-close {
+  border: 0;
+  background: transparent;
+  color: var(--fg-muted);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.manual-iching-wizard-close:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--fg);
+}
+
+.manual-iching-wizard-question {
+  margin: 0.28rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--fg-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.manual-iching-wizard-progress-panel {
+  margin: 0 0 0.45rem;
+  padding: 0.45rem 0.55rem 0.55rem;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--bar-border));
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--accent) 11%, var(--composer-bg)) 0%,
+    color-mix(in srgb, var(--composer-bg) 96%, transparent) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.manual-iching-wizard-progress-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+}
+
+.manual-iching-wizard-step {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--fg);
+  line-height: 1.3;
+  text-align: end;
+}
+
+.manual-iching-wizard-hint {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--fg-muted);
+  line-height: 1.55;
+  text-align: justify;
+  text-align-last: start;
+}
+
+.manual-iching-wizard-hint--inline {
+  margin: 0 0 0.35rem;
+  font-size: 0.76rem;
+  line-height: 1.38;
+  text-align: start;
+  padding: 0.35rem 0.45rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--secondary-bg) 88%, var(--composer-bg));
+  border: 1px solid color-mix(in srgb, var(--bar-border) 85%, transparent);
+}
+
+.manual-iching-wizard-roll-progress {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.manual-iching-wizard-progress-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 0.32rem;
+  margin: 0.4rem 0 0;
+}
+
+.manual-iching-wizard-step-pill {
+  min-width: 1.95rem;
+  height: 1.95rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  border: 1px solid var(--bar-border);
+  background: color-mix(in srgb, var(--composer-bg) 88%, transparent);
+  color: var(--fg-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+  transition:
+    transform 0.38s cubic-bezier(0.34, 1.45, 0.64, 1),
+    box-shadow 0.35s ease,
+    border-color 0.28s ease,
+    background 0.25s ease;
+}
+
+.manual-iching-wizard-step-pill--done {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--bar-border));
+  color: var(--fg);
+  background: color-mix(in srgb, var(--accent) 14%, var(--composer-bg));
+}
+
+.manual-iching-wizard-step-pill--current {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 6px 18px color-mix(in srgb, var(--accent) 22%, transparent);
+  animation: manual-iching-step-pop 0.72s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes manual-iching-step-pop {
+  0% {
+    transform: scale(0.82);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  55% {
+    transform: scale(1.09);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .manual-iching-wizard-step-pill {
+    transition: none;
+  }
+
+  .manual-iching-wizard-step-pill--current {
+    animation: none;
+  }
+}
+
+.manual-iching-wizard-step-pill--future {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.manual-iching-wizard-step-pill:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.manual-iching-wizard-step-pill--done:not(:disabled):hover {
+  background: color-mix(in srgb, var(--accent) 22%, var(--composer-bg));
+}
+
+.manual-iching-coins-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.65rem, 3.5vw, 1.35rem);
+  margin: 0.25rem 0 0.55rem;
+}
+
+/* Kangxi cash coin (3D flip); Han / Manchu glyphs */
+.iching-cash-coin {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  perspective: 560px;
+}
+
+.iching-cash-coin__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.iching-cash-coin__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Light inset only — heavy shadows read as a dark ring behind the disc */
+  box-shadow: inset 0 3px 8px rgba(255, 255, 255, 0.28);
+}
+
+.iching-cash-coin__face--front {
+  transform: rotateY(0deg);
+}
+
+.iching-cash-coin__face--back {
+  transform: rotateY(180deg);
+}
+
+.iching-cash-coin__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.iching-cash-coin__han {
+  font-family:
+    "Noto Serif SC",
+    "Source Han Serif SC",
+    "Songti SC",
+    SimSun,
+    serif;
+  font-weight: 700;
+  fill: #141414;
+}
+
+.iching-cash-coin__manchu {
+  font-family:
+    "Mongolian Baiti",
+    "Noto Sans Mongolian",
+    sans-serif;
+  font-weight: 700;
+  fill: #141414;
+}
+
+.manual-iching-coin {
+  width: clamp(4.5rem, 18vw, 5.75rem);
+  height: clamp(4.5rem, 18vw, 5.75rem);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  line-height: 0;
+  overflow: hidden;
+  transition: transform 0.18s ease;
+  background: transparent;
+}
+
+.manual-iching-coin:active {
+  transform: scale(0.94);
+}
+
+.manual-iching-coin:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 70%, #6b4e1a);
+  outline-offset: 2px;
+}
+
+.manual-iching-coin--heads,
+.manual-iching-coin--tails {
+  border: none;
+}
+
+.manual-iching-sum-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.85rem;
+  text-align: start;
+  padding: 0.45rem 0.65rem;
+  border-radius: calc(var(--radius) - 8px);
+  background: var(--bubble-assistant);
+  border: 1px solid var(--bubble-assistant-border);
+  margin-bottom: 0.35rem;
+}
+
+.manual-iching-sum-main {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.manual-iching-sum-label {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.manual-iching-sum-value {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.manual-iching-sum-caption {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex: 1 1 auto;
+  min-width: 8rem;
+  text-align: end;
+}
+
+.manual-iching-wizard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  padding: 0.55rem 0.85rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid color-mix(in srgb, var(--bar-border) 90%, transparent);
+  background: color-mix(in srgb, var(--composer-bg) 97%, var(--secondary-bg));
+}
+
+.manual-cast-preview-entry .manual-cast-preview-bubble {
+  border-style: dashed;
+}
+
+.manual-cast-preview-status {
+  margin-bottom: 0.65rem;
 }
 

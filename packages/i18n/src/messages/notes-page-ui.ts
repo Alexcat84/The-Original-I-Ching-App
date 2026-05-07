@@ -12,6 +12,8 @@ export type NotesPageUiMessages = {
   ichingHexBody: string;
   ichingMethodHeading: string;
   ichingMethodBody: string;
+  ichingAppCastHeading: string;
+  ichingAppCastBody: string;
   ichingWilhelmHeading: string;
   ichingWilhelmBody: string;
   ichingChainHeading: string;
@@ -50,6 +52,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "El método de las tres monedas y las reglas de Zhu Xi",
     ichingMethodBody:
       "El método clásico usa tres monedas lanzadas seis veces para construir el hexagrama línea por línea. Cuando múltiples líneas cambian, la escuela de Zhu Xi (neoconfucianismo, siglo XII d.C.) establece reglas precisas para determinar qué línea gobierna la lectura, eliminando la ambigüedad interpretativa. Esta app implementa exactamente esas reglas sin modificación.",
+    ichingAppCastHeading: "Cómo encaja esto en la app (automático vs manual)",
+    ichingAppCastBody:
+      "En la interfaz puedes dejar que el servidor simule las seis tiradas de tres monedas (modo automático, con ritual animado) o registrar tú mismo cada total 6/7/8/9 según tus monedas reales (modo manual). En ambos casos el motor aplica la misma suma Zhu Xi por línea y las mismas reglas de Zhu Xi para mutaciones y lectura; la diferencia es solo la fuente de los seis valores. En manual, la app muestra una vista previa del hexagrama mientras se genera la interpretación; la correspondencia con tu ritual físico es tu responsabilidad.",
     ichingWilhelmHeading: "La traducción Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm, sinólogo alemán, vivió en China durante décadas y produjo en 1924 la traducción más completa y respetada del I Ching en lengua occidental, incluyendo los Juicios, las líneas y los Comentarios de las Diez Alas. Cary Baynes la tradujo al inglés en 1950. Esta obra entró al dominio público en 2020 y es el texto base de esta app — sin modificaciones ni simplificaciones.",
@@ -93,6 +98,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "The Three-Coin Method and Zhu Xi's Rules",
     ichingMethodBody:
       "The classic method uses three coins cast six times to build the hexagram line by line. When multiple lines change, the Zhu Xi school (Neo-Confucianism, 12th century CE) establishes precise rules to determine which line governs the reading, eliminating interpretive ambiguity. This app implements those rules exactly without modification.",
+    ichingAppCastHeading: "How this maps to the app (automatic vs manual)",
+    ichingAppCastBody:
+      "In the UI you can let the server simulate all six three-coin throws (automatic mode, with the animated ritual) or enter each line’s 6/7/8/9 total from your own coins (manual mode). Either way the engine applies the same Zhu Xi sum per line and the same Zhu Xi mutation rules; only the source of the six values changes. In manual mode the app shows a hexagram preview while the interpretation is generated; matching your physical ritual is your responsibility.",
     ichingWilhelmHeading: "The Wilhelm/Baynes Translation",
     ichingWilhelmBody:
       "Richard Wilhelm, a German sinologist, lived in China for decades and produced in 1924 the most complete and respected translation of the I Ching in Western languages, including the Judgments, lines, and Ten Wings Commentaries. Cary Baynes translated it into English in 1950. This work entered the public domain in 2020 and is the base text of this app — without modifications or simplifications.",
@@ -136,6 +144,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "O método das três moedas e as regras de Zhu Xi",
     ichingMethodBody:
       "O método clássico usa três moedas lançadas seis vezes para construir o hexagrama linha a linha. Quando múltiplas linhas mudam, a escola de Zhu Xi (neo-confucionismo, século XII d.C.) estabelece regras precisas para determinar qual linha governa a leitura, eliminando a ambiguidade interpretativa. Esta app implementa exatamente essas regras sem modificação.",
+    ichingAppCastHeading: "Como isto se encaixa na app (automático vs manual)",
+    ichingAppCastBody:
+      "Na interface pode deixar o servidor simular os seis lançamentos de três moedas (modo automático, com ritual animado) ou registar você mesmo cada total 6/7/8/9 segundo as suas moedas reais (modo manual). Em ambos os casos o motor aplica a mesma soma Zhu Xi por linha e as mesmas regras de Zhu Xi para mutações e leitura; a diferença é apenas a fonte dos seis valores. No manual, a app mostra uma pré-visualização do hexagrama enquanto a interpretação é gerada; a correspondência com o seu ritual físico é da sua responsabilidade.",
     ichingWilhelmHeading: "A tradução Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm, sinólogo alemão, viveu na China durante décadas e produziu em 1924 a tradução mais completa e respeitada do I Ching em língua ocidental, incluindo os Juízos, as linhas e os Comentários das Dez Asas. Cary Baynes traduziu-a para inglês em 1950. Esta obra entrou no domínio público em 2020 e é o texto base desta app — sem modificações nem simplificações.",
@@ -179,6 +190,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "La méthode des trois pièces et les règles de Zhu Xi",
     ichingMethodBody:
       "La méthode classique utilise trois pièces lancées six fois pour construire l'hexagramme trait par trait. Lorsque plusieurs traits changent, l'école de Zhu Xi (néoconfucianisme, XIIe siècle ap. J.-C.) établit des règles précises pour déterminer quel trait gouverne la lecture, éliminant toute ambiguïté interprétative. Cette app implémente exactement ces règles sans modification.",
+    ichingAppCastHeading: "Comment cela correspond à l'app (automatique vs manuel)",
+    ichingAppCastBody:
+      "Dans l'interface, vous pouvez laisser le serveur simuler les six lancers de trois pièces (mode automatique, avec rituel animé) ou saisir vous-même chaque total 6/7/8/9 selon vos vraies pièces (mode manuel). Dans les deux cas, le moteur applique la même somme Zhu Xi par trait et les mêmes règles de Zhu Xi pour les mutations et la lecture ; seule la source des six valeurs change. En mode manuel, l'app affiche un aperçu de l'hexagramme pendant la génération de l'interprétation ; l'adéquation avec votre rituel physique est votre responsabilité.",
     ichingWilhelmHeading: "La traduction Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm, sinologue allemand, vécut en Chine pendant des décennies et produisit en 1924 la traduction la plus complète et la plus respectée du I Ching en langue occidentale, incluant les Jugements, les traits et les Commentaires des Dix Ailes. Cary Baynes la traduisit en anglais en 1950. Cette œuvre est entrée dans le domaine public en 2020 et constitue le texte de base de cette app — sans modifications ni simplifications.",
@@ -222,6 +236,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "Die Drei-Münzen-Methode und Zhu Xis Regeln",
     ichingMethodBody:
       "Die klassische Methode verwendet drei Münzen, die sechsmal geworfen werden, um das Hexagramm Linie für Linie aufzubauen. Wenn mehrere Linien wechseln, legt die Schule von Zhu Xi (Neokonfuzianismus, 12. Jh. n. Chr.) genaue Regeln fest, um zu bestimmen, welche Linie die Lesung regiert, wodurch interpretative Mehrdeutigkeit beseitigt wird. Diese App implementiert genau diese Regeln ohne Änderung.",
+    ichingAppCastHeading: "So ordnet sich das in der App ein (automatisch vs manuell)",
+    ichingAppCastBody:
+      "In der Oberfläche kann der Server alle sechs Drei-Münzen-Würfe simulieren (automatischer Modus mit animiertem Ritual) oder Sie geben jede Zeilen-Summe 6/7/8/9 von Ihren eigenen Münzen ein (manueller Modus). In beiden Fällen wendet die Engine dieselbe Zhu-Xi-Summe pro Linie und dieselben Zhu-Xi-Regeln für Mutationen und Lesung an; nur die Quelle der sechs Werte ändert sich. Im manuellen Modus zeigt die App eine Hexagramm-Vorschau während die Interpretation erzeugt wird; die Übereinstimmung mit Ihrem physischen Ritual liegt in Ihrer Verantwortung.",
     ichingWilhelmHeading: "Die Übersetzung Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm, ein deutscher Sinologe, lebte jahrzehntelang in China und erstellte 1924 die vollständigste und angesehenste Übersetzung des I Ching in westlicher Sprache, einschließlich der Urteile, Linien und Kommentare der Zehn Flügel. Cary Baynes übersetzte sie 1950 ins Englische. Dieses Werk ist 2020 gemeinfrei geworden und ist der Grundtext dieser App — ohne Modifikationen oder Vereinfachungen.",
@@ -265,6 +282,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "Il metodo delle tre monete e le regole di Zhu Xi",
     ichingMethodBody:
       "Il metodo classico usa tre monete lanciate sei volte per costruire l'esagramma linea per linea. Quando più linee cambiano, la scuola di Zhu Xi (neo-confucianesimo, XII secolo d.C.) stabilisce regole precise per determinare quale linea governa la lettura, eliminando l'ambiguità interpretativa. Questa app implementa esattamente quelle regole senza modifiche.",
+    ichingAppCastHeading: "Come si traduce nell'app (automatico vs manuale)",
+    ichingAppCastBody:
+      "Nell'interfaccia puoi lasciare che il server simuli i sei lanci di tre monete (modalità automatica, con rituale animato) oppure inserire tu stesso ogni totale 6/7/8/9 dalle tue monete reali (modalità manuale). In entrambi i casi il motore applica la stessa somma Zhu Xi per linea e le stesse regole Zhu Xi per mutazioni e lettura; cambia solo la fonte dei sei valori. In manuale, l'app mostra un'anteprima dell'esagramma mentre si genera l'interpretazione; l'allineamento al tuo rituale fisico è responsabilità tua.",
     ichingWilhelmHeading: "La traduzione Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm, sinologo tedesco, visse in Cina per decenni e produsse nel 1924 la traduzione più completa e rispettata dello I Ching in lingua occidentale, inclusi i Giudizi, le linee e i Commentari delle Dieci Ali. Cary Baynes la tradusse in inglese nel 1950. Quest'opera è entrata nel dominio pubblico nel 2020 ed è il testo base di questa app — senza modifiche né semplificazioni.",
@@ -308,6 +328,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "三枚銭法と朱熹の規則",
     ichingMethodBody:
       "古典的な方法は、三枚の銭を六回投じて卦を一爻ずつ構築します。複数の爻が変化する場合、朱熹の学派（新儒学、12世紀）は、どの爻が占いを支配するかを決定する精確な規則を設けており、解釈上の曖昧さを排除しています。このアプリはその規則を改変なく正確に実装しています。",
+    ichingAppCastHeading: "アプリでの対応（自動と手動）",
+    ichingAppCastBody:
+      "画面上では、サーバーに三銭六次の投擲をすべてシミュレートさせる（アニメーションの儀式つき自動モード）か、実際の銭による各爻の合計6・7・8・9を自分で入力する（手動モード）かを選べます。どちらもエンジンは爻ごとに同じ朱熹の合計と、変爻・読み解きについて同じ朱熹の規則を適用し、六つの値の入手元だけが異なります。手動では解釈生成中に卦のプレビューが表示されます。自宅の儀式との一致は利用者の責任です。",
     ichingWilhelmHeading: "ヴィルヘルム/バインズ訳",
     ichingWilhelmBody:
       "ドイツ人中国学者リヒャルト・ヴィルヘルムは数十年間中国に住み、1924年に西洋語として最も完全で尊重される易経の翻訳を出版しました。卦辞、爻辞、十翼の彖伝を含んでいます。キャリー・バインズが1950年に英語に翻訳しました。この著作は2020年にパブリックドメインに入り、このアプリのベーステキストです — 改変も簡略化もなく。",
@@ -351,6 +374,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "三枚铜钱法与朱熹规则",
     ichingMethodBody:
       "经典方法以三枚铜钱掷六次，逐爻构建卦象。当多爻变动时，朱熹学派（新儒家，公元12世纪）制定了精确的规则，以确定哪一爻主导解读，从而消除解释上的歧义。本应用严格按照这些规则实施，未作任何修改。",
+    ichingAppCastHeading: "在本应用中的对应关系（自动与手动）",
+    ichingAppCastBody:
+      "在界面中，您可以让服务器模拟全部六次三枚铜钱投掷（自动模式，带动画仪式），或根据自己真实的铜钱结果逐爻输入6/7/8/9的总和（手动模式）。两种情况下引擎对每一爻应用相同的朱熹合计及相同的朱熹变爻与解读规则；唯一区别是六个数值的来源。手动模式下，应用会在生成解读时显示卦象预览；与您实体仪式的对应由您自行负责。",
     ichingWilhelmHeading: "卫礼贤／贝恩斯译本",
     ichingWilhelmBody:
       "德国汉学家卫礼贤（Richard Wilhelm）在中国生活数十年，于1924年出版了西方语言中最完整、最受推崇的易经译本，包括卦辞、爻辞及十翼注解。贝恩斯（Cary Baynes）于1950年将其译为英文。该著作于2020年进入公有领域，是本应用的基础文本——未作任何修改或简化。",
@@ -394,6 +420,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "삼전법과 주희의 규칙",
     ichingMethodBody:
       "고전적 방법은 동전 세 개를 여섯 번 던져 효를 하나씩 구성합니다. 여러 효가 변할 때, 주희 학파（신유학, 12세기）는 어떤 효가 독해를 지배하는지를 결정하는 정확한 규칙을 확립하여 해석상의 모호성을 제거합니다. 이 앱은 수정 없이 해당 규칙을 정확히 구현합니다.",
+    ichingAppCastHeading: "앱에서의 대응(자동과 수동)",
+    ichingAppCastBody:
+      "화면에서는 서버가 세 개 동전 여섯 번 던지기를 모두 시뮬레이션하게 할 수 있고(애니메이션 의식이 있는 자동 모드), 실제 동전으로 나온 각 효의 합계 6/7/8/9를 직접 입력할 수도 있습니다(수동 모드). 어느 쪽이든 엔진은 효마다 같은 주희 합과 변화·독해에 대한 같은 주희 규칙을 적용하며, 여섯 값의 출처만 달라집니다. 수동 모드에서는 해석이 생성되는 동안 괘 미리보기가 표시되며, 실제 의식과의 일치는 사용자 책임입니다.",
     ichingWilhelmHeading: "빌헬름/베인스 번역",
     ichingWilhelmBody:
       "독일 중국학자 리하르트 빌헬름은 수십 년간 중국에 살며 1924년 서양 언어로 된 가장 완전하고 권위 있는 주역 번역서를 출간했습니다. 괘사, 효사, 십익 전통을 모두 포함합니다. 케리 베인스가 1950년 영어로 번역했습니다. 이 저작은 2020년에 공공 도메인에 진입하였으며, 이 앱의 기본 텍스트입니다 — 수정이나 단순화 없이.",
@@ -437,6 +466,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "طريقة العملات الثلاث وقواعد Zhu Xi",
     ichingMethodBody:
       "تستخدم الطريقة الكلاسيكية ثلاث عملات تُقذف ست مرات لبناء الغرض خطاً بخط. عندما تتغير خطوط متعددة، تضع مدرسة Zhu Xi (الكونفوشيانية الجديدة، القرن الثاني عشر الميلادي) قواعد دقيقة لتحديد أي خط يحكم القراءة، مما يزيل الغموض التفسيري. ينفذ هذا التطبيق تلك القواعد بدقة دون أي تعديل.",
+    ichingAppCastHeading: "كيف ينعكس ذلك في التطبيق (تلقائي مقابل يدوي)",
+    ichingAppCastBody:
+      "في الواجهة يمكنك أن يحاكي الخادم جميع رميات العملات الثلاث ست مرات (الوضع التلقائي مع الطقوس المتحركة)، أو أن تُدخل بنفسك مجموع كل سطر 6/7/8/9 من عملاتك الحقيقية (الوضع اليدوي). في الحالتين تطبق المحركة نفس مجموع Zhu Xi لكل خط ونفس قواعد Zhu Xi للتحولات والقراءة؛ ويختلف فقط مصدر القيم الست. في الوضع اليدوي يعرض التطبيق معاينة للغرض أثناء توليد التفسير؛ تقع مسؤولية التطابق مع طقوسك المادية عليك.",
     ichingWilhelmHeading: "ترجمة Wilhelm/Baynes",
     ichingWilhelmBody:
       "ريتشارد فيلهلم، المستشرق الألماني، عاش في الصين عقوداً وأنتج عام 1924 الترجمة الأكثر اكتمالاً واحتراماً للـ I Ching في اللغات الغربية، بما فيها الأحكام والخطوط وتعليقات «الأجنحة العشرة». ترجمتها كاري بينز إلى الإنجليزية عام 1950. دخل هذا العمل النطاق العام عام 2020 وهو النص الأساسي لهذا التطبيق — دون تعديلات أو تبسيطات.",
@@ -480,6 +512,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "तीन सिक्कों की विधि और Zhu Xi के नियम",
     ichingMethodBody:
       "शास्त्रीय विधि तीन सिक्कों का उपयोग करती है जिन्हें छह बार फेंका जाता है ताकि हेक्साग्राम एक-एक रेखा बनाया जा सके। जब कई रेखाएं बदलती हैं, तो Zhu Xi स्कूल (नव-कन्फ्यूशीवाद, 12वीं सदी ई.) सटीक नियम स्थापित करता है जो यह निर्धारित करते हैं कि कौन सी रेखा पाठन को नियंत्रित करती है, व्याख्यात्मक अस्पष्टता को समाप्त करते हुए। यह ऐप बिना किसी संशोधन के उन नियमों को सटीक रूप से लागू करता है।",
+    ichingAppCastHeading: "ऐप में यह कैसे मैप होता है (स्वचालित बनाम मैन्युअल)",
+    ichingAppCastBody:
+      "इंटरफ़ेस में आप सर्वर को छह बार तीन सिक्कों के सभी फेंक सिम्युलेट करने दे सकते हैं (एनिमेटेड अनुष्ठान के साथ स्वचालित मोड), या अपने वास्तविक सिक्कों से प्रत्येक पंक्ति का 6/7/8/9 योग स्वयं दर्ज कर सकते हैं (मैन्युअल मोड)। दोनों स्थितियों में इंजन प्रति पंक्ति समान Zhu Xi योग और उत्परिवर्तन व पाठन के लिए समान Zhu Xi नियम लागू करता है; केवल छह मानों का स्रोत बदलता है। मैन्युअल मोड में व्याख्या उत्पन्न होते समय ऐप हेक्साग्राम पूर्वावलोकन दिखाता है; आपके भौतिक अनुष्ठान से मेल आपकी जिम्मेदारी है।",
     ichingWilhelmHeading: "Wilhelm/Baynes अनुवाद",
     ichingWilhelmBody:
       "जर्मन चीनी विद्वान रिचर्ड विल्हेम दशकों तक चीन में रहे और 1924 में पश्चिमी भाषाओं में I Ching का सबसे पूर्ण और सम्मानित अनुवाद प्रस्तुत किया, जिसमें निर्णय, रेखाएं और दस पंखों की टिप्पणियां शामिल हैं। Cary Baynes ने इसे 1950 में अंग्रेजी में अनुवाद किया। यह कार्य 2020 में सार्वजनिक डोमेन में आ गया और इस ऐप का आधार पाठ है — बिना किसी संशोधन या सरलीकरण के।",

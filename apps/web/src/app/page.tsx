@@ -29,12 +29,15 @@ import {
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
+import { ManualIChingCoinWizard } from "@/components/manual-iching/ManualIChingCoinWizard";
+import { getManualWizardMessages } from "@/components/manual-iching/manual-wizard-messages";
 import { AmbientParticles } from "@/components/AmbientParticles";
 import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
 import { InterpretationMarkdownSafe } from "@/components/InterpretationMarkdownSafe";
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import {
@@ -56,12 +59,19 @@ import { useChatSessionState } from "@/providers/chat-session-provider";
 import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
-import { ichingRitualTickDelayMs } from "@/lib/iching-ritual-timing";
+import {
+  ichingRitualProcessingBudgetMs,
+  ichingRitualRevealTimingFromBudget,
+  type IchingRitualRevealTiming,
+} from "@/lib/iching-ritual-timing";
+import { previewCastFromLineValues, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
+
+const ICHING_CAST_MODE_STORAGE_KEY = "iching_cast_mode_v1";
 
 const ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX = "iching_account_session_limit_v1:";
 const PLAY_PROMO_STRIP_DISMISSED_KEY = "iching_play_promo_strip_dismissed_v1";
@@ -153,6 +163,15 @@ function apiLinesToVector(lines: ApiLine[]): Array<6 | 7 | 8 | 9> {
   return [...lines]
     .sort((a, b) => a.position - b.position)
     .map((line) => line.value);
+}
+
+function engineLinesToApiLines(lines: Line[]): ApiLine[] {
+  return lines.map((l) => ({
+    position: l.position,
+    value: l.value,
+    isChanging: l.isChanging,
+    symbol: l.symbol,
+  }));
 }
 
 function transformLineVector(values: Array<6 | 7 | 8 | 9>): Array<7 | 8> {
@@ -1198,6 +1217,7 @@ export default function HomePage() {
   /** Official listing URL when published; empty shows “coming soon” on the Play card. */
   const playStoreUrl = (process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "").trim();
   const chrome = useMemo(() => getHomeChromeUiMessages(locale), [locale]);
+  const manualWizardChrome = useMemo(() => getManualWizardMessages(locale), [locale]);
   const sessionUi = useMemo(() => getHomeSessionUiMessages(locale), [locale]);
   const tf = useMemo(() => getTwoFactorUiMessages(locale), [locale]);
   const pricingUi = useMemo(() => getPricingUiMessages(locale), [locale]);
@@ -1239,6 +1259,30 @@ export default function HomePage() {
   const [ritualDebugFinalVector, setRitualDebugFinalVector] = useState<Array<6 | 7 | 8 | 9> | null>(null);
   const [lastRitualDebugSnapshot, setLastRitualDebugSnapshot] = useState<RitualDebugSnapshot | null>(null);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
+  type IchingCastMode = "auto" | "manual";
+  const [ichingCastMode, setIchingCastMode] = useState<IchingCastMode>(() => {
+    if (typeof window === "undefined") return "auto";
+    try {
+      return window.localStorage.getItem(ICHING_CAST_MODE_STORAGE_KEY) === "manual" ? "manual" : "auto";
+    } catch {
+      return "auto";
+    }
+  });
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(ICHING_CAST_MODE_STORAGE_KEY, ichingCastMode);
+    } catch {
+      /* ignore */
+    }
+  }, [ichingCastMode]);
+  const [manualWizardOpen, setManualWizardOpen] = useState(false);
+  const [manualWizardQuestionSnapshot, setManualWizardQuestionSnapshot] = useState<string | null>(null);
+  const [manualCastPreview, setManualCastPreview] = useState<{
+    primaryHexagram: number;
+    primaryHexagramChinese: string;
+    transformedHexagram: number | null;
+    mutationRule: string;
+  } | null>(null);
   const {
     sessions,
     setSessions,
@@ -1298,6 +1342,14 @@ export default function HomePage() {
   const ritualCoinsStageRef = useRef<HTMLElement | null>(null);
   const ritualLinesGridRef = useRef<HTMLDivElement | null>(null);
   const ritualDebugStartMsRef = useRef<number | null>(null);
+  /** Wall-clock start of `/api/consult` for I Ching (manual + auto SSE). */
+  const ichingConsultWallClockStartedAtRef = useRef<number | null>(null);
+  /** Clamp-stored duration from last successful I Ching consult; feeds next auto ritual timing. */
+  const lastIchingConsultWallMsRef = useRef<number | null>(null);
+  /** Manual cast: timer that flips from phase-1 grid to phase-2 final focus. */
+  const manualRitualPhaseSwitchTimerRef = useRef<number | null>(null);
+  /** Manual cast: tracks whether phase-2 is already visible. */
+  const manualRitualFinaleShownRef = useRef(false);
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
@@ -2983,10 +3035,54 @@ export default function HomePage() {
       setError(tf.verify2faToContinue);
       return;
     }
+    if (oracleMode === "iching" && ichingCastMode === "manual") {
+      setManualWizardQuestionSnapshot(questionForRequest);
+      setManualWizardOpen(true);
+      return;
+    }
+    await executeConsultationRequest(questionForRequest);
+  }
+
+  async function executeConsultationRequest(
+    questionForRequest: string,
+    manualLineValues?: IchingManualLineTuple,
+  ) {
+    if (manualRitualPhaseSwitchTimerRef.current != null) {
+      window.clearTimeout(manualRitualPhaseSwitchTimerRef.current);
+      manualRitualPhaseSwitchTimerRef.current = null;
+    }
+    manualRitualFinaleShownRef.current = false;
+    const isManualCast = Boolean(manualLineValues);
+    const showRitualAnimation = oracleMode === "oracle_bones" || oracleMode === "iching";
+    let manualCastPreviewEngine: ManualCastPreview | null = null;
     setLoading(true);
     setError(null);
     setCreditsNotice(null);
     setPendingUserQuestion(questionForRequest || null);
+    if (manualLineValues) {
+      try {
+        manualCastPreviewEngine = previewCastFromLineValues(manualLineValues);
+        setManualCastPreview({
+          primaryHexagram: manualCastPreviewEngine.primaryHexagram.number,
+          primaryHexagramChinese: manualCastPreviewEngine.primaryHexagram.chineseName,
+          transformedHexagram: manualCastPreviewEngine.transformedHexagram?.number ?? null,
+          mutationRule: manualCastPreviewEngine.mutationRule,
+        });
+      } catch {
+        manualCastPreviewEngine = null;
+        setManualCastPreview(null);
+      }
+    } else {
+      setManualCastPreview(null);
+    }
+    if (!activeSession) {
+      setLoading(false);
+      setManualCastPreview(null);
+      setPendingUserQuestion(null);
+      setError("No hay una conversación activa. Abre o crea una sesión.");
+      return;
+    }
+    const consultSession = activeSession;
     setBoneRitualResult(null);
     setRitualLines(null);
     setRitualRevealTick(0);
@@ -3003,15 +3099,52 @@ export default function HomePage() {
       oracleMode,
       questionLength: questionForRequest.length,
     });
-    const showRitualAnimation = true;
+    if (manualCastPreviewEngine && oracleMode === "iching") {
+      try {
+        const ordered = [...engineLinesToApiLines(manualCastPreviewEngine.lines)].sort(
+          (a, b) => a.position - b.position,
+        );
+        setRitualLines(ordered);
+        setRitualRevealTick(12);
+        setRitualStatusPhase("consult");
+        const vec = apiLinesToVector(ordered);
+        setRitualDebugCastVector(vec);
+        setRitualDebugFinalVector(vec);
+        const transformed = transformLineVector(vec);
+        setLastRitualDebugSnapshot({
+          castBase: vec,
+          finalBase: vec,
+          castTransformed: transformed,
+          finalTransformed: transformed,
+          match: true,
+          mutationRule: String(manualCastPreviewEngine.mutationRule),
+          transformedHexagram: manualCastPreviewEngine.transformedHexagram?.number ?? null,
+        });
+        if (ichingCastMode === "manual") {
+          const budgetMs = ichingRitualProcessingBudgetMs(lastIchingConsultWallMsRef.current);
+          const timing = ichingRitualRevealTimingFromBudget(budgetMs);
+          const phaseOneMs = Math.max(1200, timing.tickDelayMs * 12);
+          logRitualTrace("manual:phase-switch-scheduled", { budgetMs, phaseOneMs });
+          manualRitualPhaseSwitchTimerRef.current = window.setTimeout(() => {
+            manualRitualFinaleShownRef.current = true;
+            setRitualStatusPhase("seal");
+            setRitualFinale(true);
+            logRitualTrace("manual:phase-switch-fired");
+          }, phaseOneMs);
+        }
+      } catch {
+        /* leave ritual slots empty */
+      }
+    }
     setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
     let ok = false;
     try {
-      let sessionIdForRequest = activeSession.sessionId;
+      let sessionIdForRequest = consultSession.sessionId;
       if (!isPersistableUuid(sessionIdForRequest)) {
         sessionIdForRequest = newClientUuid();
         updateActiveSession((c) => ({ ...c, sessionId: sessionIdForRequest }));
       }
+      ichingConsultWallClockStartedAtRef.current = oracleMode === "iching" ? Date.now() : null;
       const res = await fetch("/api/consult", {
         method: "POST",
         headers: {
@@ -3021,11 +3154,18 @@ export default function HomePage() {
         body: JSON.stringify({
           question: questionForRequest,
           language: detectInputLanguage(questionForRequest, locale),
-          responseMode: showRitualAnimation && oracleMode === "iching" ? "stream_ritual" : "ritual",
+          /** Manual cast must never request SSE — long tick reveal only applies to automatic mode. */
+          responseMode:
+            oracleMode === "iching" && ichingCastMode === "auto" ? "stream_ritual" : "ritual",
           sessionId: sessionIdForRequest,
-          sessionTitle: activeSession.title,
+          sessionTitle: consultSession.title,
           isDeepening: activeThread.length > 0,
           oracleMode,
+          ...(oracleMode === "iching"
+            ? manualLineValues
+              ? { ichingCastMode: "manual" as const, ichingManualLineValues: [...manualLineValues] }
+              : { ichingCastMode }
+            : {}),
           displayName: displayName ?? undefined,
           oracleBones:
             oracleMode === "oracle_bones"
@@ -3069,12 +3209,18 @@ export default function HomePage() {
       };
       const contentType = (res.headers.get("content-type") ?? "").toLowerCase();
       logRitualTrace("response:headers", { contentType, status: res.status });
-      const runIChingRitualReveal = async (linesPayload: ApiLine[]) => {
+      const waitForRitualPaint = () =>
+        new Promise<void>((resolve) => {
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => resolve());
+          });
+        });
+      const runIChingRitualReveal = async (linesPayload: ApiLine[], timing: IchingRitualRevealTiming) => {
         const ordered = [...linesPayload].sort((a, b) => a.position - b.position);
-        const tickDelayMs = ichingRitualTickDelayMs();
         logRitualTrace("reveal:start", {
           orderedPositions: ordered.map((line) => line.position),
-          tickDelayMs,
+          tickDelayMs: timing.tickDelayMs,
+          finaleHold: "until-response",
         });
         setRitualLines(ordered);
         setRitualRevealTick(0);
@@ -3084,20 +3230,23 @@ export default function HomePage() {
         for (let t = 1; t <= 12; t += 1) {
           setRitualRevealTick(t);
           logRitualTrace("reveal:tick", { tick: t });
-          await new Promise((r) => window.setTimeout(r, tickDelayMs));
+          await new Promise((r) => window.setTimeout(r, timing.tickDelayMs));
         }
         setRitualStatusPhase("seal");
         setRitualFinale(true);
-        logRitualTrace("reveal:finale");
-        await new Promise((r) => window.setTimeout(r, 900));
-        await new Promise((r) => window.setTimeout(r, 1100));
-        logRitualTrace("reveal:end");
+        logRitualTrace("reveal:finale-hold-until-response");
       };
       if (contentType.includes("text/event-stream")) {
         if (!res.body) {
           setError("Respuesta del servidor inválida.");
           return;
         }
+        /**
+         * SSE ritual timing (auto I Ching):
+         * - `cast_ready` starts `runIChingRitualReveal` with tick + finale delays derived from **last** consult wall time
+         *   (fallback `ICHING_RITUAL_TARGET_MS`), split phase1:phase2 via env weights (default 25:15).
+         * - Stream read runs in parallel; do **not** await reveal after close — reading shows when `final_ready` is processed.
+         */
         const decoder = new TextDecoder();
         const reader = res.body.getReader();
         let buffer = "";
@@ -3112,7 +3261,10 @@ export default function HomePage() {
           revealStarted = true;
           castVectorFromStream = apiLinesToVector(linesPayload);
           setRitualDebugCastVector(castVectorFromStream);
-          revealPromise = runIChingRitualReveal(linesPayload);
+          const processingBudget = ichingRitualProcessingBudgetMs(lastIchingConsultWallMsRef.current);
+          const timing = ichingRitualRevealTimingFromBudget(processingBudget);
+          logRitualTrace("reveal:budget", { processingBudgetMs: processingBudget });
+          revealPromise = runIChingRitualReveal(linesPayload, timing);
         };
 
         while (true) {
@@ -3164,7 +3316,7 @@ export default function HomePage() {
           return;
         }
         if (revealPromise) {
-          await revealPromise;
+          void revealPromise;
         }
         data = finalPayload;
         if (Array.isArray(finalPayload.lines) && finalPayload.lines.length === 6) {
@@ -3233,7 +3385,21 @@ export default function HomePage() {
         setError(`${data.error ?? interpolate(sessionUi.requestFailedStatus, { status: res.status })}${suffix}`);
         return;
       }
-      await new Promise((r) => window.setTimeout(r, showRitualAnimation ? 900 : 0));
+      /** POST-HTTP beat: JSON ritual paints lines after one blob; SSE already ran `runIChingRitualReveal` during the stream. */
+      const sseIchingAutoRitualComplete =
+        showRitualAnimation &&
+        contentType.includes("text/event-stream") &&
+        oracleMode === "iching" &&
+        ichingCastMode === "auto";
+      const initialPauseAfterOkMs =
+        !showRitualAnimation
+          ? 0
+          : sseIchingAutoRitualComplete
+            ? 0
+            : isManualCast && oracleMode === "iching"
+              ? 0
+              : 900;
+      await new Promise((r) => window.setTimeout(r, initialPauseAfterOkMs));
       if (showRitualAnimation && oracleMode === "oracle_bones" && data.oracleBones) {
         setBoneRitualResult(data.oracleBones.verdict);
         await new Promise((r) => window.setTimeout(r, 4050));
@@ -3245,20 +3411,60 @@ export default function HomePage() {
         Array.isArray(data.lines) &&
         data.lines.length === 6
       ) {
-        const vec = apiLinesToVector(data.lines);
-        setRitualDebugCastVector(vec);
-        setRitualDebugFinalVector(vec);
-        const transformed = transformLineVector(vec);
-        setLastRitualDebugSnapshot({
-          castBase: vec,
-          finalBase: vec,
-          castTransformed: transformed,
-          finalTransformed: transformed,
-          match: true,
-          mutationRule: data.mutationRule,
-          transformedHexagram: data.transformedHexagram ?? null,
-        });
-        await runIChingRitualReveal(data.lines);
+        const orderedLines = [...data.lines].sort((a, b) => a.position - b.position);
+        if (ichingCastMode === "manual" && isManualCast) {
+          const fetchStartedAt = ichingConsultWallClockStartedAtRef.current;
+          const fetchMs =
+            fetchStartedAt != null ? Math.max(0, Date.now() - fetchStartedAt) : 0;
+          const finalVec = apiLinesToVector(orderedLines);
+          const castBaseForSnapshot = ritualDebugCastVector ?? finalVec;
+          setRitualDebugFinalVector(finalVec);
+          const castTransformed = transformLineVector(castBaseForSnapshot);
+          const finalTransformed = transformLineVector(finalVec);
+          setLastRitualDebugSnapshot({
+            castBase: castBaseForSnapshot,
+            finalBase: finalVec,
+            castTransformed,
+            finalTransformed,
+            match: castTransformed.join(",") === finalTransformed.join(","),
+            mutationRule: data.mutationRule,
+            transformedHexagram: data.transformedHexagram ?? null,
+          });
+          setRitualLines(orderedLines);
+          setRitualRevealTick(12);
+          if (!manualRitualFinaleShownRef.current) {
+            manualRitualFinaleShownRef.current = true;
+            setRitualStatusPhase("seal");
+            setRitualFinale(true);
+            logRitualTrace("reveal:manual-lines-sync", { fetchMs, forcedOnResponse: true });
+            await waitForRitualPaint();
+          } else {
+            logRitualTrace("reveal:manual-lines-sync", { fetchMs, forcedOnResponse: false });
+          }
+        } else {
+          const vec = apiLinesToVector(orderedLines);
+          setRitualDebugCastVector(vec);
+          setRitualDebugFinalVector(vec);
+          const transformed = transformLineVector(vec);
+          setLastRitualDebugSnapshot({
+            castBase: vec,
+            finalBase: vec,
+            castTransformed: transformed,
+            finalTransformed: transformed,
+            match: true,
+            mutationRule: data.mutationRule,
+            transformedHexagram: data.transformedHexagram ?? null,
+          });
+          const measuredThisJsonMs =
+            ichingConsultWallClockStartedAtRef.current != null
+              ? Math.max(0, Date.now() - ichingConsultWallClockStartedAtRef.current)
+              : null;
+          const jsonTimingBudget = ichingRitualProcessingBudgetMs(
+            measuredThisJsonMs ?? lastIchingConsultWallMsRef.current,
+          );
+          const jsonRevealTiming = ichingRitualRevealTimingFromBudget(jsonTimingBudget);
+          void runIChingRitualReveal(orderedLines, jsonRevealTiming);
+        }
       }
       const item: ConsultationItem = {
         ...data,
@@ -3318,20 +3524,37 @@ export default function HomePage() {
         localStorage.setItem(dailyCountStorageKey(today), String(next));
         return next;
       });
+      if (oracleMode === "iching" && ichingConsultWallClockStartedAtRef.current != null) {
+        const rawWallMs = Date.now() - ichingConsultWallClockStartedAtRef.current;
+        lastIchingConsultWallMsRef.current = ichingRitualProcessingBudgetMs(rawWallMs);
+        logRitualTrace("iching:stored-wall-ms", {
+          rawWallMs,
+          storedBudgetMs: lastIchingConsultWallMsRef.current,
+        });
+      }
       setPhase("reading");
       logRitualTrace("submit:complete");
       setConsultPanelOpen(false);
+      setManualCastPreview(null);
       ok = true;
     } catch (e) {
       logRitualTrace("submit:error", { error: e instanceof Error ? e.message : String(e) });
       setError(e instanceof Error ? e.message : "Error");
       setPendingUserQuestion(null);
+      setManualCastPreview(null);
     } finally {
+      ichingConsultWallClockStartedAtRef.current = null;
+      if (manualRitualPhaseSwitchTimerRef.current != null) {
+        window.clearTimeout(manualRitualPhaseSwitchTimerRef.current);
+        manualRitualPhaseSwitchTimerRef.current = null;
+      }
+      manualRitualFinaleShownRef.current = false;
       setLoading(false);
       if (!ok) {
         setRitualStatusPhase("question");
         setPhase("idle");
         setPendingUserQuestion(null);
+        setManualCastPreview(null);
       }
     }
   }
@@ -3899,6 +4122,27 @@ export default function HomePage() {
               </div>
             ) : null}
 
+            {manualCastPreview && loading && pendingUserQuestion && phase !== "coins" ? (
+              <div className="thread-block chat-entry manual-cast-preview-entry" aria-busy="true">
+                <div className="chat-bubble chat-assistant manual-cast-preview-bubble">
+                  <p className="meta-line manual-cast-preview-status">{manualWizardChrome.previewLoading}</p>
+                  <div className="reading-record-visual-row">
+                    <ConsultationRecordCard
+                      consultationId="00000000-0000-4000-8000-000000000001"
+                      question={pendingUserQuestion}
+                      sessionPosition={activeThread.length + 1}
+                      primaryHexagram={manualCastPreview.primaryHexagram}
+                      primaryHexagramChinese={manualCastPreview.primaryHexagramChinese}
+                      transformedHexagram={manualCastPreview.transformedHexagram}
+                      mutationRule={manualCastPreview.mutationRule}
+                      oracleType="iching"
+                      locale={locale}
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
             {phase === "bones" ? (
               <section className="coins-stage coins-stage--bones" data-testid="bone-ritual">
                 <div className="crack-visual-wrap">
@@ -4203,6 +4447,42 @@ export default function HomePage() {
                         </p>
                       </div>
                     </div>
+                    {oracleMode === "iching" ? (
+                      <>
+                        <hr className="composer-panel-divider" aria-hidden />
+                        <div
+                          className="manual-cast-mode-block"
+                          role="radiogroup"
+                          aria-label={manualWizardChrome.castModeGroupAria}
+                        >
+                          <p className="manual-cast-mode-heading">{manualWizardChrome.castModeGroupAria}</p>
+                          <div className="manual-cast-mode-row">
+                            <label className="manual-cast-mode-option">
+                              <input
+                                type="radio"
+                                name="ichingCastMode"
+                                value="auto"
+                                checked={ichingCastMode === "auto"}
+                                onChange={() => setIchingCastMode("auto")}
+                                disabled={loading}
+                              />
+                              <span>{manualWizardChrome.castAutoLabel}</span>
+                            </label>
+                            <label className="manual-cast-mode-option">
+                              <input
+                                type="radio"
+                                name="ichingCastMode"
+                                value="manual"
+                                checked={ichingCastMode === "manual"}
+                                onChange={() => setIchingCastMode("manual")}
+                                disabled={loading}
+                              />
+                              <span>{manualWizardChrome.castManualLabel}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </>
+                    ) : null}
                     {activeThread.length > 0 && result ? (
                       <>
                         <hr className="composer-panel-divider" aria-hidden />
@@ -4972,6 +5252,21 @@ export default function HomePage() {
         </footer>
         </div>
       </div>
+      <ManualIChingCoinWizard
+        open={manualWizardOpen}
+        onClose={() => {
+          setManualWizardOpen(false);
+          setManualWizardQuestionSnapshot(null);
+        }}
+        onComplete={(lines) => {
+          setManualWizardOpen(false);
+          const q = manualWizardQuestionSnapshot?.trim() ?? question.trim();
+          setManualWizardQuestionSnapshot(null);
+          void executeConsultationRequest(q, lines);
+        }}
+        locale={locale}
+        questionPreview={manualWizardQuestionSnapshot ?? ""}
+      />
       <section
         aria-hidden="true"
         style={{ position: "absolute", width: "1px", height: "1px", overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap" }}

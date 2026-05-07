@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ichingRitualTickDelayMs } from "@/lib/iching-ritual-timing";
+import {
+  ichingRitualProcessingBudgetMs,
+  ichingRitualRevealTimingFromBudget,
+} from "@/lib/iching-ritual-timing";
 
 type RitualLine = {
   position: 1 | 2 | 3 | 4 | 5 | 6;
@@ -37,7 +40,11 @@ export default function IChingRitualPreviewPage() {
   const [statusPhase, setStatusPhase] = useState<RitualPhase>("question");
   const [running, setRunning] = useState(false);
 
-  const tickDelayMs = useMemo(() => ichingRitualTickDelayMs(), []);
+  const revealTiming = useMemo(
+    () =>
+      ichingRitualRevealTimingFromBudget(ichingRitualProcessingBudgetMs(null)),
+    [],
+  );
   const orderedLines = useMemo(() => [...DEMO_LINES].sort((a, b) => a.position - b.position), []);
   const [previewParticles, setPreviewParticles] = useState<
     Array<{ id: number; left: string; top: string; size: string; duration: string; delay: string }>
@@ -69,12 +76,12 @@ export default function IChingRitualPreviewPage() {
 
     for (let t = 1; t <= 12; t += 1) {
       setRitualRevealTick(t);
-      await sleep(tickDelayMs);
+      await sleep(revealTiming.tickDelayMs);
     }
 
     setStatusPhase("seal");
-    await sleep(800);
     setRitualFinale(true);
+    await sleep(1200);
     setRunning(false);
   };
 

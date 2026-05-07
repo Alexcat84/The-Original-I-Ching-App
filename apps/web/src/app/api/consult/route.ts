@@ -6,7 +6,7 @@ import {
   type OracleType,
   type PreviousConsultationRow,
 } from "@iching-oracle/context-engine";
-import { performCast } from "@iching-oracle/iching-engine";
+import { performCast, performCastFromLineValues } from "@iching-oracle/iching-engine";
 import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
 import { buildImagePrompt, buildOracleBonesImagePrompt } from "@iching-oracle/image-engine";
 import { defaultNegativeCharge, performOracleBonesCast } from "@iching-oracle/oracle-bones-engine";
@@ -22,6 +22,7 @@ import { rateLimitByKey } from "@/lib/rate-limit";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isSharingPersistenceAvailable, upsertSessionAndConsultation } from "@/lib/session-store";
+import { parseIchingManualPayload } from "@/lib/manual-iching-consult";
 import { canDeepenAfterNextConsult, normalizeSessionDepthLimit, shouldBlockDeepening } from "@/lib/thread-depth-policy";
 
 export const runtime = "nodejs";
@@ -156,6 +157,8 @@ export async function POST(req: Request) {
     };
     history?: HistoryEntry[];
     displayName?: string;
+    ichingCastMode?: "auto" | "manual";
+    ichingManualLineValues?: unknown;
   };
   try {
     body = (await req.json()) as typeof body;
@@ -236,6 +239,18 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
+
+  const ichingManualPayload = parseIchingManualPayload(
+    {
+      ichingCastMode: body.ichingCastMode,
+      ichingManualLineValues: body.ichingManualLineValues,
+    },
+    oracleMode,
+  );
+  if (!ichingManualPayload.ok) {
+    return NextResponse.json(ichingManualPayload.body, { status: ichingManualPayload.status });
+  }
+
   const sessionId =
     typeof body.sessionId === "string" && isPersistableUuid(body.sessionId)
       ? body.sessionId
@@ -292,7 +307,11 @@ export async function POST(req: Request) {
   }
   const adminConfig = await getAdminConfig();
   const adminAllowed = adminBypassAllowed;
-  const responseMode = body.responseMode === "stream_ritual" ? "stream_ritual" : "ritual";
+  let responseMode: "ritual" | "stream_ritual" =
+    body.responseMode === "stream_ritual" ? "stream_ritual" : "ritual";
+  if (oracleMode === "iching" && ichingManualPayload.mode === "manual") {
+    responseMode = "ritual";
+  }
   const imageProviderOverride =
     adminAllowed && body.imageProviderOverride ? body.imageProviderOverride : adminConfig.imageProviderDefault;
   if (oracleMode === "oracle_bones") {
@@ -432,7 +451,10 @@ export async function POST(req: Request) {
     });
   }
 
-  const castResult = performCast(trimmedQuestion, language);
+  const castResult =
+    ichingManualPayload.mode === "manual"
+      ? performCastFromLineValues(trimmedQuestion, language, ichingManualPayload.lineValues)
+      : performCast(trimmedQuestion, language);
   const context = resolveSessionContext({
     tier: tierKey,
     sessionId,

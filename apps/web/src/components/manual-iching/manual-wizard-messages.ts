@@ -1,0 +1,287 @@
+import type { AppLocale } from "@iching-oracle/i18n";
+import { DEFAULT_LOCALE } from "@iching-oracle/i18n";
+
+export type ManualWizardMessages = {
+  title: string;
+  closeAria: string;
+  coinHint: string;
+  lineStep: string;
+  registerLine: string;
+  back: string;
+  confirmConsult: string;
+  rollSumLabel: string;
+  headsAria: string;
+  tailsAria: string;
+  caption6: string;
+  caption7: string;
+  caption8: string;
+  caption9: string;
+  castModeGroupAria: string;
+  castAutoLabel: string;
+  castManualLabel: string;
+  previewLoading: string;
+  /** e.g. "3/6" for current line being built */
+  rollProgress: string;
+  /** Short hint for the step strip */
+  progressNavHint: string;
+};
+
+const M: Record<AppLocale, ManualWizardMessages> = {
+  es: {
+    title: "Tirada manual — tres monedas",
+    closeAria: "Cerrar asistente de tirada",
+    coinHint:
+      "Toca una moneda para cambiar Han ↔ manchú. Por moneda: Han suma 3, manchú suma 2. Total de tres monedas = 6, 7, 8 u 9.",
+    lineStep: "Línea {{n}} de 6 (de abajo arriba)",
+    registerLine: "Registrar línea",
+    back: "Atrás",
+    confirmConsult: "Enviar consulta",
+    rollSumLabel: "Total de esta tirada",
+    headsAria: "Moneda {{i}}: cara Han (康熙通寶)",
+    tailsAria: "Moneda {{i}}: reverso manchú",
+    caption6: "Yin móvil (6)",
+    caption7: "Yang estable (7)",
+    caption8: "Yin estable (8)",
+    caption9: "Yang móvil (9)",
+    castModeGroupAria: "Modo de tirada I Ching",
+    castAutoLabel: "Automática",
+    castManualLabel: "Manual (tú registras)",
+    previewLoading: "Preparando la lectura…",
+    rollProgress: "Tirada {{current}}/{{total}}",
+    progressNavHint: "Líneas completadas: toca para volver a editar desde esa línea.",
+  },
+  en: {
+    title: "Manual cast — three coins",
+    closeAria: "Close cast assistant",
+    coinHint:
+      "Tap a coin to toggle Han ↔ Manchu. Per coin: Han adds 3, Manchu adds 2. Sum of three coins = 6, 7, 8, or 9.",
+    lineStep: "Line {{n}} of 6 (bottom to top)",
+    registerLine: "Record line",
+    back: "Back",
+    confirmConsult: "Send reading",
+    rollSumLabel: "Throw total",
+    headsAria: "Coin {{i}}: Han face (康熙通寶)",
+    tailsAria: "Coin {{i}}: Manchu reverse",
+    caption6: "Old Yin (6)",
+    caption7: "Young Yang (7)",
+    caption8: "Young Yin (8)",
+    caption9: "Old Yang (9)",
+    castModeGroupAria: "I Ching cast mode",
+    castAutoLabel: "Automatic",
+    castManualLabel: "Manual (you record)",
+    previewLoading: "Preparing your reading…",
+    rollProgress: "Cast {{current}}/{{total}}",
+    progressNavHint: "Completed steps: tap to re-edit throws from that line.",
+  },
+  pt: {
+    title: "Tiragem manual — três moedas",
+    closeAria: "Fechar assistente de tiragem",
+    coinHint:
+      "Toque para alternar Han ↔ manchu. Por moeda: Han soma 3, manchu soma 2. Soma das três = 6, 7, 8 ou 9.",
+    lineStep: "Linha {{n}} de 6 (de baixo para cima)",
+    registerLine: "Registrar linha",
+    back: "Voltar",
+    confirmConsult: "Enviar consulta",
+    rollSumLabel: "Total desta tiragem",
+    headsAria: "Moeda {{i}}: face Han (康熙通寶)",
+    tailsAria: "Moeda {{i}}: reverso manchu",
+    caption6: "Yin móvel (6)",
+    caption7: "Yang estável (7)",
+    caption8: "Yin estável (8)",
+    caption9: "Yang móvel (9)",
+    castModeGroupAria: "Modo de tiragem I Ching",
+    castAutoLabel: "Automática",
+    castManualLabel: "Manual (você registra)",
+    previewLoading: "A preparar a leitura…",
+    rollProgress: "Tiragem {{current}}/{{total}}",
+    progressNavHint: "Passos concluídos: toque para voltar a editar a partir dessa linha.",
+  },
+  fr: {
+    title: "Tirage manuel — trois pièces",
+    closeAria: "Fermer l’assistant de tirage",
+    coinHint:
+      "Touchez pour basculer Han ↔ mandchou. Par pièce : Han +3, mandchou +2. Somme des trois = 6, 7, 8 ou 9.",
+    lineStep: "Trait {{n}} sur 6 (du bas vers le haut)",
+    registerLine: "Enregistrer le trait",
+    back: "Retour",
+    confirmConsult: "Envoyer la lecture",
+    rollSumLabel: "Total du lancer",
+    headsAria: "Pièce {{i}} : face Han (康熙通寶)",
+    tailsAria: "Pièce {{i}} : revers mandchou",
+    caption6: "Yin mobile (6)",
+    caption7: "Yang stable (7)",
+    caption8: "Yin stable (8)",
+    caption9: "Yang mobile (9)",
+    castModeGroupAria: "Mode de tirage I Ching",
+    castAutoLabel: "Automatique",
+    castManualLabel: "Manuel (vous enregistrez)",
+    previewLoading: "Préparation de la lecture…",
+    rollProgress: "Tirage {{current}}/{{total}}",
+    progressNavHint: "Étapes terminées : touchez pour reprendre l’édition depuis cette ligne.",
+  },
+  de: {
+    title: "Manueller Wurf — drei Münzen",
+    closeAria: "Wurf-Assistent schließen",
+    coinHint:
+      "Tippen zum Wechsel Han ↔ mandschurisch. Pro Münze: Han +3, mandschurisch +2. Summe dreier Münzen = 6, 7, 8 oder 9.",
+    lineStep: "Linie {{n}} von 6 (unten nach oben)",
+    registerLine: "Linie speichern",
+    back: "Zurück",
+    confirmConsult: "Lesung senden",
+    rollSumLabel: "Summe dieses Wurfs",
+    headsAria: "Münze {{i}}: Han-Vorderseite (康熙通寶)",
+    tailsAria: "Münze {{i}}: mandschurische Rückseite",
+    caption6: "Altes Yin (6)",
+    caption7: "Junges Yang (7)",
+    caption8: "Junges Yin (8)",
+    caption9: "Altes Yang (9)",
+    castModeGroupAria: "I-Ching-Wurfmodus",
+    castAutoLabel: "Automatisch",
+    castManualLabel: "Manuell (du trägst ein)",
+    previewLoading: "Lesung wird vorbereitet…",
+    rollProgress: "Wurf {{current}}/{{total}}",
+    progressNavHint: "Fertige Schritte: tippen, um ab dieser Linie neu einzugeben.",
+  },
+  it: {
+    title: "Lancio manuale — tre monete",
+    closeAria: "Chiudi assistente di lancio",
+    coinHint:
+      "Tocca per alternare Han ↔ manciù. Per moneta: Han +3, manciù +2. Somma delle tre = 6, 7, 8 o 9.",
+    lineStep: "Linea {{n}} di 6 (dal basso)",
+    registerLine: "Registra linea",
+    back: "Indietro",
+    confirmConsult: "Invia lettura",
+    rollSumLabel: "Totale del lancio",
+    headsAria: "Moneta {{i}}: faccia Han (康熙通寶)",
+    tailsAria: "Moneta {{i}}: retro manciù",
+    caption6: "Yin mutabile (6)",
+    caption7: "Yang stabile (7)",
+    caption8: "Yin stabile (8)",
+    caption9: "Yang mutabile (9)",
+    castModeGroupAria: "Modalità di lancio I Ching",
+    castAutoLabel: "Automatico",
+    castManualLabel: "Manuale (registri tu)",
+    previewLoading: "Preparazione della lettura…",
+    rollProgress: "Lancio {{current}}/{{total}}",
+    progressNavHint: "Passi completati: tocca per modificare da quella linea.",
+  },
+  ja: {
+    title: "手動占い — 三銭",
+    closeAria: "占い補助を閉じる",
+    coinHint:
+      "タップで漢字表↔満州裏。各銭は漢字=3・満州=2。三銭の合計は6・7・8・9のいずれか。",
+    lineStep: "{{n}} 爻目 / 全6爻（下から上）",
+    registerLine: "この爻を記録",
+    back: "戻る",
+    confirmConsult: "占いを送信",
+    rollSumLabel: "この投げの合計",
+    headsAria: "銭{{i}}：漢字表（康熙通寶）",
+    tailsAria: "銭{{i}}：満州文裏",
+    caption6: "老陰（6）",
+    caption7: "少陽（7）",
+    caption8: "少陰（8）",
+    caption9: "老陽（9）",
+    castModeGroupAria: "易の占い方",
+    castAutoLabel: "自動",
+    castManualLabel: "手動（自分で記録）",
+    previewLoading: "読み結果を準備中…",
+    rollProgress: "{{current}}/{{total}} 投",
+    progressNavHint: "記録済みの段をタップしてその爻からやり直す。",
+  },
+  zh: {
+    title: "手动起卦 — 三钱",
+    closeAria: "关闭起卦助手",
+    coinHint:
+      "点击切换汉字面↔满文面。每枚：汉字=3，满文=2。三枚相加得 6、7、8 或 9。",
+    lineStep: "第 {{n}} 爻 / 共六爻（由下而上）",
+    registerLine: "记录此爻",
+    back: "返回",
+    confirmConsult: "发送占问",
+    rollSumLabel: "本次掷得",
+    headsAria: "第{{i}}枚：汉字面（康熙通寶）",
+    tailsAria: "第{{i}}枚：满文背面",
+    caption6: "老阴（六）",
+    caption7: "少阳（七）",
+    caption8: "少阴（八）",
+    caption9: "老阳（九）",
+    castModeGroupAria: "易经起卦方式",
+    castAutoLabel: "自动",
+    castManualLabel: "手动（自行录入）",
+    previewLoading: "正在准备卦象…",
+    rollProgress: "第 {{current}}/{{total}} 掷",
+    progressNavHint: "已记录的步骤：点击可从该爻重掷。",
+  },
+  ko: {
+    title: "수동 점 — 동전 세枚",
+    closeAria: "점 보조 닫기",
+    coinHint:
+      "탭으로 한자 앞면↔만주 뒷면. 매 동전 한자=3, 만주=2. 세 동전 합은 6·7·8·9.",
+    lineStep: "{{n}}번째 효 / 총 6효 (아래에서 위로)",
+    registerLine: "이 효 기록",
+    back: "뒤로",
+    confirmConsult: "점 보내기",
+    rollSumLabel: "이번 합계",
+    headsAria: "동전 {{i}}: 한자 앞면(康熙通寶)",
+    tailsAria: "동전 {{i}}: 만주 뒷면",
+    caption6: "노음(6)",
+    caption7: "소양(7)",
+    caption8: "소음(8)",
+    caption9: "노양(9)",
+    castModeGroupAria: "역경 점 방식",
+    castAutoLabel: "자동",
+    castManualLabel: "수동(직접 기록)",
+    previewLoading: "해석 준비 중…",
+    rollProgress: "{{current}}/{{total}} 차례",
+    progressNavHint: "완료된 단계: 탭하면 해당 효부터 다시 입력.",
+  },
+  ar: {
+    title: "قَسْم يدوي — ثلاث عملات",
+    closeAria: "إغلاق مساعد القَسْم",
+    coinHint:
+      "المس للتبديل هان ↔ مانشوري. لكل عملة: هان = ٣، مانشوري = ٢. مجموع الثلاث = ٦ أو ٧ أو ٨ أو ٩.",
+    lineStep: "الخط {{n}} من 6 (من الأسفل إلى الأعلى)",
+    registerLine: "تسجيل الخط",
+    back: "رجوع",
+    confirmConsult: "إرسال القراءة",
+    rollSumLabel: "مجموع هذه الرمية",
+    headsAria: "العملة {{i}}: وجه هان (康熙通寶)",
+    tailsAria: "العملة {{i}}: ظهر مانشوري",
+    caption6: "ين متحرك (6)",
+    caption7: "يانغ ثابت (7)",
+    caption8: "ين ثابت (8)",
+    caption9: "يانغ متحرك (9)",
+    castModeGroupAria: "وضع قَسْم I Ching",
+    castAutoLabel: "تلقائي",
+    castManualLabel: "يدوي (تسجّل أنت)",
+    previewLoading: "جارٍ تجهيز القراءة…",
+    rollProgress: "رمية {{current}}/{{total}}",
+    progressNavHint: "خطوات مكتملة: المس للتعديل بدءًا من ذلك الخط.",
+  },
+  hi: {
+    title: "मैन्युअल कास्ट — तीन सिक्के",
+    closeAria: "कास्ट सहायक बंद करें",
+    coinHint:
+      "टैप से हान ↔ मन्चू बदलें। प्रति सिक्का: हान=3, मन्चू=2। तीनों का योग 6, 7, 8 या 9।",
+    lineStep: "रेखा {{n}} / 6 (नीचे से ऊपर)",
+    registerLine: "रेखा दर्ज करें",
+    back: "पीछे",
+    confirmConsult: "पठन भेजें",
+    rollSumLabel: "इस फेंक का योग",
+    headsAria: "सिक्का {{i}}: हान अक्षर-पक्ष (康熙通寶)",
+    tailsAria: "सिक्का {{i}}: मन्चू उलटा",
+    caption6: "वृद्ध यिन (6)",
+    caption7: "युवा यांग (7)",
+    caption8: "युवा यिन (8)",
+    caption9: "वृद्ध यांग (9)",
+    castModeGroupAria: "I Ching कास्ट मोड",
+    castAutoLabel: "स्वचालित",
+    castManualLabel: "मैन्युअल (आप दर्ज करें)",
+    previewLoading: "पठन तैयार हो रहा है…",
+    rollProgress: "कास्ट {{current}}/{{total}}",
+    progressNavHint: "पूर्ण चरण: उस रेखा से फिर से दर्ज करने के लिए टैप करें।",
+  },
+};
+
+export function getManualWizardMessages(locale: AppLocale): ManualWizardMessages {
+  return M[locale] ?? M[DEFAULT_LOCALE];
+}
