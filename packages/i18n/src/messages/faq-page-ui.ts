@@ -151,20 +151,20 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "Who generates the hexagram or verdict: the AI or the algorithm?",
     answer:
-      "The mathematical algorithm, not the AI. In I Ching mode, the system casts three virtual coins six times, builds the hexagram line by line, and applies Zhu Xi's mutation rules to determine the governing line and the resulting hexagram. In Oracle Bones mode, the algorithm generates the crack pattern and determines the verdict. Artificial intelligence intervenes afterwards: it takes that already-calculated result and articulates it in natural language in your language, with the context of your question. The AI is the interpreter. The oracle is the method.",
+      "The mathematical algorithm, not the AI. In I Ching mode, the algorithm builds the hexagram and determines the governing line. In Oracle Bones mode, it generates the crack pattern and verdict. Artificial intelligence intervenes afterwards: it takes that already-calculated result and articulates it in natural language in your language, with the context of your question. The AI is the interpreter. The oracle is the method.",
   },
   {
     id: "authentic-texts",
     question: "Are the I Ching texts that appear in the reading authentic or AI-generated?",
     answer:
-      "They are authentic. The Judgment (卦辞), the lines in motion (爻辞), and the resulting hexagrams come entirely from the Wilhelm/Baynes translation, the most complete and respected version of the I Ching in the Western world, in the public domain since 2020. The AI cites and contextualises them with your question, but does not modify or replace them. You can compare any text with the original book.",
+      "They are authentic. The Judgment (卦辞), the lines in motion (爻辞), and the resulting hexagrams come entirely from the Wilhelm/Baynes translation (public domain since 2020). The AI cites and contextualises them with your question, but does not modify or replace them. You can compare any text with the original book.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "What does Silence mean in Oracle Bones mode?",
     answer:
-      "Silence (沉默) is the fifth possible verdict state in Oracle Bones mode, and it is faithful to the ancestral Shang method. In the original tradition, when the bone produced no legible cracks, it was not an error; it was an answer in itself: the ancestors do not speak because the moment is not ripe for that question, or because the answer transcends what can be said. This app respects that state and returns it when the pattern indicates. The five possible states are: clearly favourable (吉), moderately favourable, moderately unfavourable, clearly unfavourable (凶), and silence (沉默).",
+      "Silence (沉默) is the fifth possible verdict state in Oracle Bones mode, and it is faithful to the ancestral Shang method. In the original tradition, when the bone produced no legible cracks, it was not an error; it was an answer in itself: the ancestors do not speak because the moment is not ripe for that question, or because the answer transcends what can be said. This app respects that state and returns it when the pattern indicates.",
     related: ["methodNotes"],
   },
   {
@@ -257,20 +257,20 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "¿Quién genera el hexagrama o el veredicto: la IA o el algoritmo?",
     answer:
-      "El algoritmo matemático, no la IA. En el modo I Ching, el sistema lanza tres monedas virtuales seis veces, construye el hexagrama línea por línea y aplica las reglas de mutación de Zhu Xi para determinar la línea regente y el hexagrama resultante. En el modo Huesos, el algoritmo genera el patrón de grietas y determina el veredicto. La inteligencia artificial interviene después: toma ese resultado ya calculado y lo articula en lenguaje natural en tu idioma, con el contexto de tu pregunta. La IA es el intérprete. El oráculo es el método.",
+      "El algoritmo matemático, no la IA. En el modo I Ching, el algoritmo construye el hexagrama línea por línea y determina la línea regente. En el modo Huesos, genera el patrón de grietas y el veredicto. La inteligencia artificial interviene después: toma ese resultado ya calculado y lo articula en lenguaje natural en tu idioma, con el contexto de tu pregunta. La IA es el intérprete. El oráculo es el método.",
   },
   {
     id: "authentic-texts",
     question: "¿Los textos del I Ching que aparecen en la lectura son auténticos o generados por IA?",
     answer:
-      "Son auténticos. Los textos del Juicio (卦辞), las sentencias de las líneas en movimiento (爻辞) y los hexagramas resultantes provienen íntegramente de la traducción Wilhelm/Baynes, la versión más completa y respetada del I Ching en lengua occidental, en dominio público desde 2020. La IA los cita y los contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con el libro original.",
+      "Son auténticos. Los textos del Juicio (卦辞), las sentencias de las líneas en movimiento (爻辞) y los hexagramas resultantes provienen íntegramente de la traducción Wilhelm/Baynes (dominio público desde 2020). La IA los cita y los contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con el libro original.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "¿Qué significa el Silencio en el modo Huesos?",
     answer:
-      "El Silencio (沉默) es el quinto estado posible del veredicto en el modo Huesos, y es fiel al método ancestral Shang. En la tradición original, cuando el hueso no producía grietas legibles, no era un error; era una respuesta en sí misma: los ancestros no hablan porque el momento no está maduro para esa pregunta, o porque la respuesta trasciende lo que puede ser dicho. Esta app respeta ese estado y lo devuelve cuando el patrón lo indica. Los cinco estados posibles son: favorable claro (吉), favorable moderado, desfavorable moderado, desfavorable claro (凶), y silencio (沉默).",
+      "El Silencio (沉默) es el quinto estado posible del veredicto en el modo Huesos, y es fiel al método ancestral Shang. En la tradición original, cuando el hueso no producía grietas legibles, no era un error; era una respuesta en sí misma: los ancestros no hablan porque el momento no está maduro para esa pregunta, o porque la respuesta trasciende lo que puede ser dicho. Esta app respeta ese estado y lo devuelve cuando el patrón lo indica.",
     related: ["methodNotes"],
   },
   {
@@ -363,20 +363,20 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "من يولّد الهكساجرام أو الحكم, الذكاء الاصطناعي أم الخوارزمية؟",
     answer:
-      "الخوارزمية الرياضية، لا الذكاء الاصطناعي. في وضع I Ching، يقوم النظام برمي ثلاثة عملات افتراضية ست مرات، ويبني الهكساجرام سطرًا تلو الآخر، ويطبق قواعد طفرة Zhu Xi لتحديد السطر الحاكم والهكساجرام الناتج. في وضع العظام، تولّد الخوارزمية نمط الشقوق وتحدد الحكم. يتدخل الذكاء الاصطناعي بعد ذلك: يأخذ هذه النتيجة المحسوبة مسبقًا ويصوغها بلغة طبيعية بلغتك مع سياق سؤالك. الذكاء الاصطناعي هو المفسِّر، والتنبؤ هو المنهج.",
+      "الخوارزمية الرياضية، لا الذكاء الاصطناعي. في وضع I Ching، تبني الخوارزمية الهكساجرام وتحدد السطر الحاكم. في وضع العظام، تولّد نمط الشقوق وتحدد الحكم. يتدخل الذكاء الاصطناعي بعد ذلك: يأخذ هذه النتيجة المحسوبة مسبقًا ويصوغها بلغة طبيعية بلغتك مع سياق سؤالك. الذكاء الاصطناعي هو المفسِّر، والتنبؤ هو المنهج.",
   },
   {
     id: "authentic-texts",
     question: "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
-      "إنها أصيلة. نصوص الحكم (卦辞)، وعبارات الخطوط المتحركة (爻辞)، والهكساجرامات الناتجة مستقاة كلها من ترجمة Wilhelm/Baynes، النسخة الأكثر اكتمالاً واحترامًا من I Ching في العالم الغربي، في الملك العام منذ عام 2020. يستشهد بها الذكاء الاصطناعي ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع الكتاب الأصلي.",
+      "إنها أصيلة. نصوص الحكم (卦辞)، وعبارات الخطوط المتحركة (爻辞)، والهكساجرامات الناتجة مستقاة كلها من ترجمة Wilhelm/Baynes (في الملك العام منذ عام 2020). يستشهد بها الذكاء الاصطناعي ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع الكتاب الأصلي.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "ماذا يعني الصمت في وضع عظام الكهانة؟",
     answer:
-      "الصمت (沉默) هو خامس حالة حكم ممكنة في وضع العظام، وهو وفي للمنهج الأسلافي الشانغي. في التقليد الأصلي، حين لا يُنتج العظم شقوقًا قابلة للقراءة، لم يكن ذلك خطأً؛ بل كان إجابةً في حد ذاتها: لا يتكلم الأسلاف لأن اللحظة لم تنضج بعد لهذا السؤال، أو لأن الإجابة تتجاوز ما يمكن قوله. يحترم هذا التطبيق تلك الحالة ويُعيدها حين يدل عليها النمط. الحالات الخمس الممكنة هي: مواتٍ بوضوح (吉)، مواتٍ معتدل، غير مواتٍ معتدل، غير مواتٍ بوضوح (凶)، وصمت (沉默).",
+      "الصمت (沉默) هو خامس حالة حكم ممكنة في وضع العظام، وهو وفي للمنهج الأسلافي الشانغي. في التقليد الأصلي، حين لا يُنتج العظم شقوقًا قابلة للقراءة، لم يكن ذلك خطأً؛ بل كان إجابةً في حد ذاتها: لا يتكلم الأسلاف لأن اللحظة لم تنضج بعد لهذا السؤال، أو لأن الإجابة تتجاوز ما يمكن قوله. يحترم هذا التطبيق تلك الحالة ويُعيدها حين يدل عليها النمط.",
     related: ["methodNotes"],
   },
   {
@@ -469,20 +469,20 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "हेक्साग्राम या निर्णय कौन उत्पन्न करता है: AI या एल्गोरिदम?",
     answer:
-      "गणितीय एल्गोरिदम, AI नहीं। I Ching मोड में, सिस्टम तीन आभासी सिक्के छह बार फेंकता है, रेखा दर रेखा हेक्साग्राम बनाता है, और शासक रेखा और परिणामी हेक्साग्राम निर्धारित करने के लिए Zhu Xi के उत्परिवर्तन नियमों को लागू करता है। हड्डियों के मोड में, एल्गोरिदम दरार पैटर्न उत्पन्न करता है और निर्णय देता है। कृत्रिम बुद्धिमत्ता बाद में हस्तक्षेप करती है: वह पहले से गणना किए गए उस परिणाम को लेती है और आपके प्रश्न के संदर्भ के साथ आपकी भाषा में स्वाभाविक भाषा में व्यक्त करती है। AI व्याख्याता है। ओरेकल विधि है।",
+      "गणितीय एल्गोरिदम, AI नहीं। I Ching मोड में, एल्गोरिदम हेक्साग्राम बनाता है और शासक रेखा निर्धारित करता है। Oracle Bones मोड में, दरार पैटर्न उत्पन्न करता है और निर्णय देता है। कृत्रिम बुद्धिमत्ता बाद में हस्तक्षेप करती है: वह पहले से गणना किए गए उस परिणाम को लेती है और आपके प्रश्न के संदर्भ के साथ आपकी भाषा में स्वाभाविक भाषा में व्यक्त करती है। AI व्याख्याता है। ओरेकल विधि है।",
   },
   {
     id: "authentic-texts",
     question: "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
     answer:
-      "वे प्रामाणिक हैं। निर्णय (卦辞), चलती रेखाओं की उक्तियाँ (爻辞), और परिणामी हेक्साग्राम पूरी तरह Wilhelm/Baynes अनुवाद से आते हैं, पश्चिमी जगत में I Ching का सबसे संपूर्ण और सम्मानित संस्करण, जो 2020 से सार्वजनिक डोमेन में है। AI उन्हें आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल पुस्तक से तुलना कर सकते हैं।",
+      "वे प्रामाणिक हैं। निर्णय (卦辞), चलती रेखाओं की उक्तियाँ (爻辞), और परिणामी हेक्साग्राम पूरी तरह Wilhelm/Baynes अनुवाद (2020 से सार्वजनिक डोमेन) से आते हैं। AI उन्हें आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल पुस्तक से तुलना कर सकते हैं।",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "Oracle Bones मोड में मौन (Silence) का क्या अर्थ है?",
     answer:
-      "मौन (沉默) Oracle Bones मोड में पाँचवाँ संभावित निर्णय स्थिति है, और यह पूर्वज शांग पद्धति के प्रति सच्चा है। मूल परंपरा में, जब हड्डी पढ़ने योग्य दरारें नहीं देती थी, तो यह कोई त्रुटि नहीं थी; यह अपने आप में एक उत्तर था: पूर्वज नहीं बोलते क्योंकि उस प्रश्न के लिए समय अभी परिपक्व नहीं है, या क्योंकि उत्तर जो कहा जा सकता है उससे परे है। यह app उस स्थिति का सम्मान करती है और जब पैटर्न इंगित करता है तब इसे लौटाती है। पाँच संभावित स्थितियाँ हैं: स्पष्ट रूप से अनुकूल (吉), मध्यम रूप से अनुकूल, मध्यम रूप से प्रतिकूल, स्पष्ट रूप से प्रतिकूल (凶), और मौन (沉默)।",
+      "मौन (沉默) Oracle Bones मोड में पाँचवाँ संभावित निर्णय स्थिति है, और यह पूर्वज शांग पद्धति के प्रति सच्चा है। मूल परंपरा में, जब हड्डी पढ़ने योग्य दरारें नहीं देती थी, तो यह कोई त्रुटि नहीं थी; यह अपने आप में एक उत्तर था: पूर्वज नहीं बोलते क्योंकि उस प्रश्न के लिए समय अभी परिपक्व नहीं है, या क्योंकि उत्तर जो कहा जा सकता है उससे परे है। यह app उस स्थिति का सम्मान करती है और जब पैटर्न इंगित करता है तब इसे लौटाती है।",
     related: ["methodNotes"],
   },
   {
@@ -575,20 +575,20 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "六十四卦や判定を生成するのは、AIですか、それともアルゴリズムですか？",
     answer:
-      "数学的アルゴリズムであり、AIではありません。I Chinモードでは、システムが仮想の硬貨を6回投げ、一爻ずつ卦を構築し、朱熹の変爻ルールを適用して主爻と変卦を決定します。卜骨モードでは、アルゴリズムが亀裂パターンを生成して判定を下します。人工知能はその後に介入します。すでに計算されたその結果を受け取り、あなたの質問の文脈を踏まえて、あなたの言語で自然な言葉として表現します。AIは解釈者であり、オラクルはその方法です。",
+      "数学的アルゴリズムであり、AIではありません。I Chingモードでは、アルゴリズムが卦を構築して主爻と変卦を決定します。卜骨モードでは、亀裂パターンを生成して判定を下します。人工知能はその後に介入します。すでに計算されたその結果を受け取り、あなたの質問の文脈を踏まえて、あなたの言語で自然な言葉として表現します。AIは解釈者であり、オラクルはその方法です。",
   },
   {
     id: "authentic-texts",
     question: "解釈に表示されるI Chingのテキストは本物ですか、それともAIが生成したものですか？",
     answer:
-      "本物です。卦辞、動爻（爻辞）、変卦のテキストはすべて、ヴィルヘルム/バインズ訳から引用されています。これは西洋で最も包括的で権威ある易経の翻訳であり、2020年よりパブリックドメインとなっています。AIはあなたの質問に合わせてそれらを引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原著と照合することができます。",
+      "本物です。卦辞、動爻（爻辞）、変卦のテキストはすべて、ヴィルヘルム/バインズ訳（2020年よりパブリックドメイン）から引用されています。AIはあなたの質問に合わせてそれらを引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原著と照合することができます。",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "卜骨モードにおける「沉默」とはどういう意味ですか？",
     answer:
-      "沉默（沈黙）は卜骨モードの5番目の可能な判定状態であり、殷の祖先に忠実な方法です。古来の伝統では、骨に読み取れる亀裂が生じなかった場合、それは誤りではありませんでした。それ自体が一つの答えでした。つまり、その問いに対してまだ時が熟していないか、あるいは答えが言葉を超えているため、祖先は語らないのです。このアプリはその状態を尊重し、パターンがそれを示すときに返します。5つの可能な状態は、明確に吉（吉）、中程度に吉、中程度に凶、明確に凶（凶）、そして沉默（沈黙）です。",
+      "沉默（沈黙）は卜骨モードの5番目の可能な判定状態であり、殷の祖先に忠実な方法です。古来の伝統では、骨に読み取れる亀裂が生じなかった場合、それは誤りではありませんでした。それ自体が一つの答えでした。つまり、その問いに対してまだ時が熟していないか、あるいは答えが言葉を超えているため、祖先は語らないのです。このアプリはその状態を尊重し、パターンがそれを示すときに返します。",
     related: ["methodNotes"],
   },
   {
@@ -681,20 +681,20 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "生成卦象或判断的是AI还是算法？",
     answer:
-      "是数学算法，而不是AI。在易经模式下，系统将三枚虚拟硬币投掷六次，逐爻构建卦象，并应用朱熹的变爻规则来确定主爻和变卦。在甲骨文模式下，算法生成裂纹图案并确定判断。人工智能随后介入：它获取已计算好的结果，结合您的问题语境，以您的语言用自然语言表达出来。AI是解释者，神谕是方法。",
+      "是数学算法，而不是AI。在易经模式下，算法逐爻构建卦象，确定主爻和变卦。在甲骨文模式下，生成裂纹图案并确定判断。人工智能随后介入：它获取已计算好的结果，结合您的问题语境，以您的语言用自然语言表达出来。AI是解释者，神谕是方法。",
   },
   {
     id: "authentic-texts",
     question: "解读中出现的易经文本是真实的还是AI生成的？",
     answer:
-      "是真实的。卦辞、动爻（爻辞）和变卦的文本完全来自威廉/贝恩斯译本，这是西方世界最完整、最受尊重的易经版本，自2020年起已属公共领域。AI引用这些文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原著进行对照。",
+      "是真实的。卦辞、动爻（爻辞）和变卦的文本完全来自威廉/贝恩斯译本（2020年起属公共领域）。AI引用这些文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原著进行对照。",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "甲骨文模式中的「沉默」是什么意思？",
     answer:
-      "沉默是甲骨文模式中第五种可能的判断状态，忠实于商代祖先传统方法。在古代传统中，当骨头没有产生可读裂纹时，这不是错误，这本身就是一种答案：祖先不语，因为此问的时机尚未成熟，或因为答案超越了可以言说的范畴。本应用尊重这一状态，当图案显示时将其返回。五种可能的状态为：明显有利（吉）、中等有利、中等不利、明显不利（凶）和沉默（沉默）。",
+      "沉默是甲骨文模式中第五种可能的判断状态，忠实于商代祖先传统方法。在古代传统中，当骨头没有产生可读裂纹时，这不是错误，这本身就是一种答案：祖先不语，因为此问的时机尚未成熟，或因为答案超越了可以言说的范畴。本应用尊重这一状态，当图案显示时将其返回。",
     related: ["methodNotes"],
   },
   {
@@ -787,20 +787,20 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "괘나 판정을 생성하는 것은 AI인가요, 알고리즘인가요?",
     answer:
-      "수학적 알고리즘이며, AI가 아닙니다. 주역 모드에서 시스템은 가상 동전을 여섯 번 던져 효 하나씩 괘를 구성하고, 주희의 변효 규칙을 적용하여 주효와 변괘를 결정합니다. 갑골 모드에서는 알고리즘이 균열 패턴을 생성하고 판정을 내립니다. 인공지능은 그 이후에 개입합니다. 이미 계산된 결과를 받아 귀하의 질문 맥락과 함께 귀하의 언어로 자연스럽게 표현합니다. AI는 해석자입니다. 오라클은 방법입니다.",
+      "수학적 알고리즘이며, AI가 아닙니다. 주역 모드에서 알고리즘은 괘를 구성하고 주효와 변괘를 결정합니다. 갑골 모드에서는 균열 패턴을 생성하고 판정을 내립니다. 인공지능은 그 이후에 개입합니다. 이미 계산된 결과를 받아 귀하의 질문 맥락과 함께 귀하의 언어로 자연스럽게 표현합니다. AI는 해석자입니다. 오라클은 방법입니다.",
   },
   {
     id: "authentic-texts",
     question: "해석에 나타나는 주역 텍스트는 진본인가요, AI가 생성한 것인가요?",
     answer:
-      "진본입니다. 괘사(卦辞), 동효의 효사(爻辞), 변괘 텍스트는 모두 빌헬름/베인스 번역본에서 인용되었습니다. 이는 서양에서 가장 완전하고 권위 있는 주역 번역본으로, 2020년부터 공공 도메인에 해당합니다. AI는 귀하의 질문에 맞게 이를 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원저와 텍스트를 비교해 볼 수 있습니다.",
+      "진본입니다. 괘사(卦辞), 동효의 효사(爻辞), 변괘 텍스트는 모두 빌헬름/베인스 번역본(2020년부터 공공 도메인)에서 인용되었습니다. AI는 귀하의 질문에 맞게 이를 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원저와 텍스트를 비교해 볼 수 있습니다.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "갑골 모드에서 '침묵'은 무엇을 의미하나요?",
     answer:
-      "침묵(沉默)은 갑골 모드의 다섯 번째 가능한 판정 상태이며, 상나라 조상 전통 방법에 충실합니다. 고대 전통에서 뼈에 읽을 수 있는 균열이 생기지 않았을 때, 이는 오류가 아니었습니다, 그 자체가 하나의 답이었습니다. 조상들이 말하지 않는 것은 그 질문에 대한 때가 무르익지 않았거나, 답이 말로 할 수 있는 것을 초월하기 때문입니다. 이 앱은 그 상태를 존중하며 패턴이 그것을 나타낼 때 반환합니다. 다섯 가지 가능한 상태는 명확히 유리(吉), 중등도 유리, 중등도 불리, 명확히 불리(凶), 그리고 침묵(沉默)입니다.",
+      "침묵(沉默)은 갑골 모드의 다섯 번째 가능한 판정 상태이며, 상나라 조상 전통 방법에 충실합니다. 고대 전통에서 뼈에 읽을 수 있는 균열이 생기지 않았을 때, 이는 오류가 아니었습니다, 그 자체가 하나의 답이었습니다. 조상들이 말하지 않는 것은 그 질문에 대한 때가 무르익지 않았거나, 답이 말로 할 수 있는 것을 초월하기 때문입니다. 이 앱은 그 상태를 존중하며 패턴이 그것을 나타낼 때 반환합니다.",
     related: ["methodNotes"],
   },
   {
@@ -893,20 +893,20 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "Quem gera o hexagrama ou o veredicto: a IA ou o algoritmo?",
     answer:
-      "O algoritmo matemático, não a IA. No modo I Ching, o sistema lança três moedas virtuais seis vezes, constrói o hexagrama linha por linha e aplica as regras de mutação de Zhu Xi para determinar a linha regente e o hexagrama resultante. No modo Ossos, o algoritmo gera o padrão de fissuras e determina o veredicto. A inteligência artificial intervém depois: pega nesse resultado já calculado e articula-o em linguagem natural no seu idioma, com o contexto da sua pergunta. A IA é o intérprete. O oráculo é o método.",
+      "O algoritmo matemático, não a IA. No modo I Ching, o algoritmo constrói o hexagrama linha por linha e determina a linha regente. No modo Ossos, gera o padrão de fissuras e o veredicto. A inteligência artificial intervém depois: pega nesse resultado já calculado e articula-o em linguagem natural no seu idioma, com o contexto da sua pergunta. A IA é o intérprete. O oráculo é o método.",
   },
   {
     id: "authentic-texts",
     question: "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
-      "São autênticos. Os textos do Julgamento (卦辞), as sentenças das linhas em movimento (爻辞) e os hexagramas resultantes provêm inteiramente da tradução Wilhelm/Baynes, a versão mais completa e respeitada do I Ching no mundo ocidental, em domínio público desde 2020. A IA cita-os e contextualiza-os com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com o livro original.",
+      "São autênticos. Os textos do Julgamento (卦辞), as sentenças das linhas em movimento (爻辞) e os hexagramas resultantes provêm inteiramente da tradução Wilhelm/Baynes (domínio público desde 2020). A IA cita-os e contextualiza-os com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com o livro original.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "O que significa o Silêncio no modo Ossos?",
     answer:
-      "O Silêncio (沉默) é o quinto estado possível do veredicto no modo Ossos, e é fiel ao método ancestral Shang. Na tradição original, quando o osso não produzia fissuras legíveis, não era um erro; era uma resposta em si mesma: os ancestrais não falam porque o momento não está maduro para essa pergunta, ou porque a resposta transcende o que pode ser dito. Esta app respeita esse estado e devolve-o quando o padrão o indica. Os cinco estados possíveis são: claramente favorável (吉), moderadamente favorável, moderadamente desfavorável, claramente desfavorável (凶) e silêncio (沉默).",
+      "O Silêncio (沉默) é o quinto estado possível do veredicto no modo Ossos, e é fiel ao método ancestral Shang. Na tradição original, quando o osso não produzia fissuras legíveis, não era um erro; era uma resposta em si mesma: os ancestrais não falam porque o momento não está maduro para essa pergunta, ou porque a resposta transcende o que pode ser dito. Esta app respeita esse estado e devolve-o quando o padrão o indica.",
     related: ["methodNotes"],
   },
   {
@@ -999,20 +999,20 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "Wer generiert das Hexagramm oder das Urteil: die KI oder der Algorithmus?",
     answer:
-      "Der mathematische Algorithmus, nicht die KI. Im I-Ching-Modus wirft das System dreimal sechs virtuelle Münzen, baut das Hexagramm Linie für Linie auf und wendet Zhu Xis Mutationsregeln an, um die leitende Linie und das resultierende Hexagramm zu bestimmen. Im Knochenmodus generiert der Algorithmus das Rissmuster und bestimmt das Urteil. Die künstliche Intelligenz greift danach ein: Sie nimmt dieses bereits berechnete Ergebnis und formuliert es in natürlicher Sprache in Ihrer Sprache, mit dem Kontext Ihrer Frage. Die KI ist der Interpret. Das Orakel ist die Methode.",
+      "Der mathematische Algorithmus, nicht die KI. Im I-Ching-Modus baut der Algorithmus das Hexagramm Linie für Linie auf und bestimmt die leitende Linie und das resultierende Hexagramm. Im Knochenmodus generiert er das Rissmuster und das Urteil. Die künstliche Intelligenz greift danach ein: Sie nimmt dieses bereits berechnete Ergebnis und formuliert es in natürlicher Sprache in Ihrer Sprache, mit dem Kontext Ihrer Frage. Die KI ist der Interpret. Das Orakel ist die Methode.",
   },
   {
     id: "authentic-texts",
     question: "Sind die I-Ching-Texte in der Lesung authentisch oder KI-generiert?",
     answer:
-      "Sie sind authentisch. Die Texte des Urteils (卦辞), die Aussagen der sich bewegenden Linien (爻辞) und die resultierenden Hexagramme stammen vollständig aus der Wilhelm/Baynes-Übersetzung, der vollständigsten und angesehensten Version des I Ching in der westlichen Welt, seit 2020 gemeinfrei. Die KI zitiert und kontextualisiert sie mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit dem Originalbuch vergleichen.",
+      "Sie sind authentisch. Die Texte des Urteils (卦辞), die Aussagen der sich bewegenden Linien (爻辞) und die resultierenden Hexagramme stammen vollständig aus der Wilhelm/Baynes-Übersetzung (seit 2020 gemeinfrei). Die KI zitiert und kontextualisiert sie mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit dem Originalbuch vergleichen.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "Was bedeutet das Schweigen im Orakelknochen-Modus?",
     answer:
-      "Das Schweigen (沉默) ist der fünfte mögliche Urteilszustand im Orakelknochen-Modus und ist der Shang-Ahnenüberlieferung treu. In der ursprünglichen Tradition war es kein Fehler, wenn der Knochen keine lesbaren Risse produzierte; es war eine Antwort für sich: Die Ahnen sprechen nicht, weil der Moment für diese Frage noch nicht reif ist oder weil die Antwort das Sagbare übersteigt. Diese App respektiert diesen Zustand und gibt ihn zurück, wenn das Muster es anzeigt. Die fünf möglichen Zustände sind: klar günstig (吉), mäßig günstig, mäßig ungünstig, klar ungünstig (凶) und Schweigen (沉默).",
+      "Das Schweigen (沉默) ist der fünfte mögliche Urteilszustand im Orakelknochen-Modus und ist der Shang-Ahnenüberlieferung treu. In der ursprünglichen Tradition war es kein Fehler, wenn der Knochen keine lesbaren Risse produzierte; es war eine Antwort für sich: Die Ahnen sprechen nicht, weil der Moment für diese Frage noch nicht reif ist oder weil die Antwort das Sagbare übersteigt. Diese App respektiert diesen Zustand und gibt ihn zurück, wenn das Muster es anzeigt.",
     related: ["methodNotes"],
   },
   {
@@ -1105,20 +1105,20 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "Chi genera l'esagramma o il verdetto: l'IA o l'algoritmo?",
     answer:
-      "L'algoritmo matematico, non l'IA. In modalità I Ching, il sistema lancia tre monete virtuali sei volte, costruisce l'esagramma linea per linea e applica le regole di mutazione di Zhu Xi per determinare la linea dominante e l'esagramma risultante. In modalità Ossa, l'algoritmo genera il motivo delle fessure e determina il verdetto. L'intelligenza artificiale interviene dopo: prende quel risultato già calcolato e lo articola in linguaggio naturale nella tua lingua, con il contesto della tua domanda. L'IA è l'interprete. L'oracolo è il metodo.",
+      "L'algoritmo matematico, non l'IA. In modalità I Ching, l'algoritmo costruisce l'esagramma linea per linea e determina la linea dominante. In modalità Ossa, genera il motivo delle fessure e il verdetto. L'intelligenza artificiale interviene dopo: prende quel risultato già calcolato e lo articola in linguaggio naturale nella tua lingua, con il contesto della tua domanda. L'IA è l'interprete. L'oracolo è il metodo.",
   },
   {
     id: "authentic-texts",
     question: "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
-      "Sono autentici. I testi del Giudizio (卦辞), le sentenze delle linee in movimento (爻辞) e gli esagrammi risultanti provengono interamente dalla traduzione Wilhelm/Baynes, la versione più completa e rispettata dell'I Ching in Occidente, di pubblico dominio dal 2020. L'IA li cita e li contestualizza con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con il libro originale.",
+      "Sono autentici. I testi del Giudizio (卦辞), le sentenze delle linee in movimento (爻辞) e gli esagrammi risultanti provengono interamente dalla traduzione Wilhelm/Baynes (di pubblico dominio dal 2020). L'IA li cita e li contestualizza con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con il libro originale.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "Cosa significa il Silenzio nella modalità Ossa dell'Oracolo?",
     answer:
-      "Il Silenzio (沉默) è il quinto stato di verdetto possibile nella modalità Ossa, ed è fedele all'antico metodo Shang. Nella tradizione originale, quando l'osso non produceva crepe leggibili, non era un errore; era una risposta in sé: gli antenati non parlano perché il momento non è maturo per quella domanda, o perché la risposta trascende ciò che può essere detto. Questa app rispetta quello stato e lo restituisce quando il modello lo indica. I cinque stati possibili sono: chiaramente favorevole (吉), moderatamente favorevole, moderatamente sfavorevole, chiaramente sfavorevole (凶) e silenzio (沉默).",
+      "Il Silenzio (沉默) è il quinto stato di verdetto possibile nella modalità Ossa, ed è fedele all'antico metodo Shang. Nella tradizione originale, quando l'osso non produceva crepe leggibili, non era un errore; era una risposta in sé: gli antenati non parlano perché il momento non è maturo per quella domanda, o perché la risposta trascende ciò che può essere detto. Questa app rispetta quello stato e lo restituisce quando il modello lo indica.",
     related: ["methodNotes"],
   },
   {
@@ -1211,20 +1211,20 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "ai-vs-algorithm",
     question: "Qui génère l'hexagramme ou le verdict: l'IA ou l'algorithme ?",
     answer:
-      "L'algorithme mathématique, pas l'IA. En mode I Ching, le système lance trois pièces virtuelles six fois, construit l'hexagramme ligne par ligne et applique les règles de mutation de Zhu Xi pour déterminer la ligne directrice et l'hexagramme résultant. En mode Os, l'algorithme génère le motif de fissures et détermine le verdict. L'intelligence artificielle intervient ensuite : elle prend ce résultat déjà calculé et l'articule en langage naturel dans votre langue, avec le contexte de votre question. L'IA est l'interprète. L'oracle est la méthode.",
+      "L'algorithme mathématique, pas l'IA. En mode I Ching, l'algorithme construit l'hexagramme ligne par ligne et détermine la ligne directrice. En mode Os, il génère le motif de fissures et le verdict. L'intelligence artificielle intervient ensuite : elle prend ce résultat déjà calculé et l'articule en langage naturel dans votre langue, avec le contexte de votre question. L'IA est l'interprète. L'oracle est la méthode.",
   },
   {
     id: "authentic-texts",
     question: "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
-      "Ils sont authentiques. Les textes du Jugement (卦辞), les sentences des lignes en mouvement (爻辞) et les hexagrammes résultants proviennent intégralement de la traduction Wilhelm/Baynes, la version la plus complète et respectée du I Ching en Occident, dans le domaine public depuis 2020. L'IA les cite et les contextualise avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec le livre original.",
+      "Ils sont authentiques. Les textes du Jugement (卦辞), les sentences des lignes en mouvement (爻辞) et les hexagrammes résultants proviennent intégralement de la traduction Wilhelm/Baynes (dans le domaine public depuis 2020). L'IA les cite et les contextualise avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec le livre original.",
     related: ["methodNotes"],
   },
   {
     id: "silence-state",
     question: "Que signifie le Silence en mode Os de l'Oracle ?",
     answer:
-      "Le Silence (沉默) est le cinquième état de verdict possible en mode Os, et il est fidèle à la méthode ancestrale Shang. Dans la tradition originale, lorsque l'os ne produisait pas de fissures lisibles, ce n'était pas une erreur; c'était une réponse en soi : les ancêtres ne parlent pas car le moment n'est pas mûr pour cette question, ou parce que la réponse transcende ce qui peut être dit. Cette app respecte cet état et le renvoie lorsque le motif l'indique. Les cinq états possibles sont : clairement favorable (吉), modérément favorable, modérément défavorable, clairement défavorable (凶) et silence (沉默).",
+      "Le Silence (沉默) est le cinquième état de verdict possible en mode Os, et il est fidèle à la méthode ancestrale Shang. Dans la tradition originale, lorsque l'os ne produisait pas de fissures lisibles, ce n'était pas une erreur; c'était une réponse en soi : les ancêtres ne parlent pas car le moment n'est pas mûr pour cette question, ou parce que la réponse transcende ce qui peut être dit. Cette app respecte cet état et le renvoie lorsque le motif l'indique.",
     related: ["methodNotes"],
   },
   {
