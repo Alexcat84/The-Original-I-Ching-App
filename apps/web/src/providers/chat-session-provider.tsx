@@ -21,6 +21,8 @@ type ChatSessionContextValue = {
   setActiveSessionLocalId: Dispatch<SetStateAction<string | null>>;
   sessionsHydrated: boolean;
   setSessionsHydrated: Dispatch<SetStateAction<boolean>>;
+  sessionsServerHydrated: boolean;
+  setSessionsServerHydrated: Dispatch<SetStateAction<boolean>>;
   setPersistenceKeys: (summaryCacheKey: string | null, chatStateCacheKey: string | null) => void;
   hydrateFromStorage: (summaryCacheKey: string | null, chatStateCacheKey: string | null) => void;
 };
@@ -31,6 +33,7 @@ export function ChatSessionProvider({ children }: { children: unknown }) {
   const [sessions, setSessions] = useState<GenericChatSession[]>([]);
   const [activeSessionLocalId, setActiveSessionLocalId] = useState<string | null>(null);
   const [sessionsHydrated, setSessionsHydrated] = useState(false);
+  const [sessionsServerHydrated, setSessionsServerHydrated] = useState(false);
   const [summaryCacheKey, setSummaryCacheKey] = useState<string | null>(null);
   const [chatStateCacheKey, setChatStateCacheKey] = useState<string | null>(null);
 
@@ -132,6 +135,8 @@ export function ChatSessionProvider({ children }: { children: unknown }) {
       setActiveSessionLocalId,
       sessionsHydrated,
       setSessionsHydrated,
+      sessionsServerHydrated,
+      setSessionsServerHydrated,
       setPersistenceKeys,
       hydrateFromStorage,
     }),
@@ -139,6 +144,7 @@ export function ChatSessionProvider({ children }: { children: unknown }) {
       sessions,
       activeSessionLocalId,
       sessionsHydrated,
+      sessionsServerHydrated,
       setPersistenceKeys,
       hydrateFromStorage,
     ],
@@ -159,6 +165,8 @@ export function useChatSessionState<TThread = unknown>() {
     setActiveSessionLocalId: Dispatch<SetStateAction<string | null>>;
     sessionsHydrated: boolean;
     setSessionsHydrated: Dispatch<SetStateAction<boolean>>;
+    sessionsServerHydrated: boolean;
+    setSessionsServerHydrated: Dispatch<SetStateAction<boolean>>;
     setPersistenceKeys: (summaryCacheKey: string | null, chatStateCacheKey: string | null) => void;
     hydrateFromStorage: (summaryCacheKey: string | null, chatStateCacheKey: string | null) => void;
   };
