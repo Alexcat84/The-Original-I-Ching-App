@@ -88,7 +88,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "yarrow-vs-coins",
     question: "What are the two I Ching casting methods: Three Coins and Yarrow Stalks?",
     answer:
-      "Both methods produce the same 64 hexagrams and apply the same Zhu Xi mutation rules. Three Coins: three coins are cast six times; the distribution is symmetric — each moving-line type (old yang, old yin) has 12.5% probability per line. Yarrow Stalks: the classical Zhou-dynasty method; the distribution is asymmetric — old yang (9) has 18.75% probability, old yin (6) has 6.25%. Moving yang is three times more likely than moving yin, producing fewer changing lines on average. For most users: Three Coins is faster and equally valid. For those seeking the original historical method: Yarrow Stalks.",
+      "Both methods produce the same 64 hexagrams and use the same I Ching texts and Zhu Xi rules. Three Coins is quick and accessible: you cast three coins six times to build the six lines. Yarrow Stalks is the older ritual method: you work with counted stalks or similar objects through a slower, more contemplative procedure. The choice changes the ritual experience, not the authority of the reading. Use Three Coins for speed; use Yarrow Stalks when you want the traditional rhythm.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -97,6 +97,13 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     answer:
       "Automatic vs manual applies only to I Ching (Three Coins or Yarrow Stalks). In Options the cast-mode controls appear when I Ching is selected: choose Three Coins or Yarrow Stalks, then choose automatic (the cast runs on the server) or manual (you enter the six line totals 6/7/8/9 from your own coins or stalks). Oracle Bones is always automatic; there is no manual bones flow; ritual and verdict come from the algorithm only. Within your plan’s per-thread depth cap, you may freely alternate I Ching and Oracle Bones and switch methods and modes between consultations; your preferences are remembered for the next I Ching reading.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "What is the Oracle Bones method?",
+    answer:
+      "Oracle Bones is a Shang-era divination method inspired by crack reading on turtle plastrons and ox scapulae. In the app it is separate from I Ching: it does not create hexagrams or changing lines. The system forms a crack pattern and verdict first, then the AI interprets that already formed result in your language. It is useful for concise, ancestral-style answers; I Ching is better for layered change over time.",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -194,7 +201,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "yarrow-vs-coins",
     question: "¿En qué se diferencian los dos métodos del I Ching: Tres Monedas y Varillas?",
     answer:
-      "Ambos métodos producen los mismos 64 hexagramas y aplican las mismas reglas de mutación de Zhu Xi. Tres Monedas: se lanzan tres monedas seis veces; la distribución es simétrica — cada tipo de línea móvil (yang viejo, yin viejo) tiene un 12,5 % de probabilidad por línea. Varillas de Milenrama: el método clásico de la dinastía Zhou; la distribución es asimétrica — yang viejo (9) tiene 18,75 % de probabilidad, yin viejo (6) tiene 6,25 %. El yang móvil es tres veces más probable que el yin móvil, lo que produce menos líneas cambiantes en promedio. Para la mayoría de usuarios: Tres Monedas es más rápido e igualmente válido. Para quienes buscan la experiencia históricamente original: Varillas.",
+      "Ambos métodos producen los mismos 64 hexagramas y usan los mismos textos del I Ching y las reglas de Zhu Xi. Tres Monedas es rápido y accesible: lanzas tres monedas seis veces para formar las seis líneas. Varillas de Milenrama es el método ritual más antiguo: trabajas con varillas u objetos similares mediante un procedimiento más lento y contemplativo. La elección cambia la experiencia ritual, no la autoridad de la lectura. Usa Tres Monedas para rapidez; usa Varillas cuando quieras el ritmo tradicional.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -203,6 +210,13 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     answer:
       "Lo automático frente a manual solo aplica al I Ching (Tres Monedas o Varillas de Milenrama). En Opciones los controles de modo de tirada aparecen cuando I Ching está seleccionado: elige Tres Monedas o Varillas de Milenrama, luego automático (la tirada se ejecuta en el servidor) o manual (introduces los seis totales de línea 6/7/8/9 con tus propias monedas o varillas). El modo Huesos es siempre automático; no hay flujo manual de huesos; el ritual y el veredicto salen solo del algoritmo. Dentro del tope de profundidad por hilo de tu plan, puedes alternar libremente I Ching y Huesos y cambiar métodos y modos entre consultas; la app guarda tus preferencias para la próxima lectura en I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "¿Qué es el método de Huesos de Oráculo?",
+    answer:
+      "Huesos de Oráculo es un método de adivinación de la era Shang inspirado en la lectura de grietas sobre plastrones de tortuga y escápulas de buey. En la app está separado del I Ching: no crea hexagramas ni líneas cambiantes. El sistema forma primero un patrón de grietas y un veredicto; después la IA interpreta ese resultado ya formado en tu idioma. Es útil para respuestas concisas, de tono ancestral; el I Ching es mejor para cambios por capas a lo largo del tiempo.",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -298,9 +312,9 @@ const FAQ_ITEMS_AR: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "ما الفرق بين طريقتَي I Ching: الأسكة الثلاث وعيدان الزنبق؟",
+    question: "ما الفرق بين طريقتي الآي تشينغ: العملات الثلاث وسيقان اليارو؟",
     answer:
-      "كلتا الطريقتين تنتجان نفس الـ 64 هيكسغرام وتطبقان قواعد تحول Zhu Xi ذاتها. الأسكة الثلاث: تُرمى ثلاث عملات ست مرات؛ التوزيع متماثل — لكل نوع من الخطوط المتحركة (يانغ قديم، يين قديم) احتمال 12.5% لكل خط. عيدان الزنبق: الطريقة الكلاسيكية لأسرة جو؛ التوزيع غير متماثل — اليانغ القديم (9) احتماله 18.75%، واليين القديم (6) احتماله 6.25%. اليانغ المتحرك أكثر احتمالًا ثلاث مرات من اليين المتحرك، مما يُنتج خطوطًا متغيرة أقل في المتوسط. لمعظم المستخدمين: الأسكة الثلاث أسرع وصالحة بالقدر ذاته. لمن يسعى إلى الطريقة الأصلية: عيدان الزنبق.",
+      "كلتا الطريقتين تنتجان السداسيات الأربع والستين نفسها وتستخدمان نصوص الآي تشينغ نفسها وقواعد تشو شي. العملات الثلاث طريقة سريعة ومباشرة: ترمي ثلاث عملات ست مرات لبناء الخطوط الستة. سيقان اليارو هي الطقس الأقدم: تعمل بسيقان أو أشياء مشابهة عبر إجراء أبطأ وأكثر تأملا. الاختيار يغير التجربة الطقسية، لا سلطة القراءة. استخدم العملات الثلاث للسرعة، واستخدم سيقان اليارو عندما تريد الإيقاع التقليدي.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -309,6 +323,13 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     answer:
       "التلقائي مقابل اليدوي ينطبق فقط على I Ching (الأسكة الثلاث أو عيدان الزنبق). في الخيارات تظهر أدوات وضع القَسْم عند اختيار I Ching: اختر الأسكة الثلاث أو عيدان الزنبق، ثم تلقائي (تُنفَّذ القرعة على الخادم) أو يدوي (تُدخل مجموع الخطوط الستة 6/7/8/9 من عملاتك أو عيدانك). وضع العظام دائمًا تلقائي؛ لا يوجد مسار يدوي للعظام؛ الطقس والحكم يأتيان من الخوارزمية فقط. ضمن حد عمق الخيط في خطتك، يمكنك التناوب بحرية بين I Ching والعظام وتبديل الطرق والأوضاع بين الاستشارات؛ يحفظ التطبيق تفضيلاتك للقراءة التالية في I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "ما هي طريقة عظام العرافة؟",
+    answer:
+      "عظام العرافة طريقة من عصر شانغ مستوحاة من قراءة الشقوق على دروع السلاحف وكتف الثور. في التطبيق هي منفصلة عن الآي تشينغ: لا تنشئ سداسيات ولا خطوطا متغيرة. يكوّن النظام أولا نمط الشقوق والحكم، ثم تفسر الذكاء الاصطناعي النتيجة الموجودة بالفعل بلغتك. إنها مناسبة للإجابات المختصرة ذات الطابع الأسلافي؛ أما الآي تشينغ فهو أفضل لفهم التحول المتدرج عبر الزمن.",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -404,9 +425,9 @@ const FAQ_ITEMS_HI: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "I Ching की दो विधियों में क्या अंतर है: तीन सिक्के और यारो की छड़ें?",
+    question: "I Ching की दो विधियों, तीन सिक्के और यारो डंठल, में क्या अंतर है?",
     answer:
-      "दोनों विधियाँ एक ही 64 हेक्साग्राम उत्पन्न करती हैं और Zhu Xi के उत्परिवर्तन नियम लागू करती हैं। तीन सिक्के: तीन सिक्के छह बार फेंके जाते हैं; वितरण सममित है — प्रत्येक चलती रेखा प्रकार (पुराना यांग, पुराना यिन) की प्रति रेखा 12.5% संभावना है। यारो की छड़ें: झोउ राजवंश की क्लासिक विधि; वितरण असममित है — पुराना यांग (9) की संभावना 18.75% है, पुराना यिन (6) की 6.25%। चलती यांग चलती यिन से तीन गुना अधिक संभावित है, जिससे औसतन कम बदलती रेखाएँ बनती हैं। अधिकतर उपयोगकर्ताओं के लिए: तीन सिक्के तेज़ और समान रूप से वैध हैं। ऐतिहासिक मूल विधि चाहने वालों के लिए: यारो की छड़ें।",
+      "दोनों विधियाँ वही 64 हेक्साग्राम बनाती हैं और I Ching के वही पाठ तथा Zhu Xi के नियम उपयोग करती हैं। तीन सिक्के तेज और सरल है: छह रेखाएँ बनाने के लिए तीन सिक्के छह बार फेंके जाते हैं। यारो डंठल पुरानी अनुष्ठानिक विधि है: गिने हुए डंठलों या समान वस्तुओं के साथ धीमी और अधिक ध्यानपूर्ण प्रक्रिया की जाती है। चुनाव पढ़ाई की प्रामाणिकता नहीं, बल्कि अनुष्ठान का अनुभव बदलता है। गति चाहिए तो तीन सिक्के; पारंपरिक लय चाहिए तो यारो डंठल।",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -415,6 +436,13 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     answer:
       "स्वचालित बनाम मैन्युअल केवल I Ching (तीन सिक्के या यारो की छड़ें) पर लागू होता है। विकल्पों में कास्ट-मोड नियंत्रण तभी दिखते हैं जब I Ching चुना हो: तीन सिक्के या यारो की छड़ें चुनें, फिर स्वचालित (सर्वर पर कास्ट होता है) या मैन्युअल (अपने सिक्कों या छड़ों से छह पंक्ति योग 6/7/8/9 दर्ज करें)। Oracle Bones मोड हमेशा स्वचालित है; कोई मैन्युअल हड्डी प्रवाह नहीं; अनुष्ठान और निर्णय केवल एल्गोरिदम से आते हैं। आपकी योजना की प्रति-थ्रेड गहराई सीमा के भीतर, आप I Ching और Oracle Bones को स्वतंत्र रूप से बदल सकते हैं और परामर्शों के बीच विधियाँ और मोड स्विच कर सकते हैं; आपकी पसंद अगली I Ching पठन के लिए याद रखी जाती है।",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "Oracle Bones विधि क्या है?",
+    answer:
+      "Oracle Bones शांग युग की दिव्य विधि है, जो कछुए के कवच और बैल की कंधे की हड्डी पर दरारें पढ़ने से प्रेरित है। ऐप में यह I Ching से अलग है: यह हेक्साग्राम या बदलती रेखाएँ नहीं बनाती। प्रणाली पहले दरारों का पैटर्न और निर्णय बनाती है; फिर AI उस पहले से बने परिणाम की आपकी भाषा में व्याख्या करता है। यह संक्षिप्त, पूर्वजों जैसी शैली के उत्तरों के लिए उपयोगी है; समय के साथ परतदार बदलाव समझने के लिए I Ching बेहतर है।",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -510,9 +538,9 @@ const FAQ_ITEMS_JA: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "易経の2つの占い方法の違いは？三硬貨と蓍草",
+    question: "易経の二つの方法、三枚硬貨と筮竹はどう違いますか？",
     answer:
-      "どちらの方法も同じ64卦を生成し、同じ朱熹の変爻ルールを適用します。三硬貨法：3枚の硬貨を6回投げます。分布は対称的で、各変爻タイプ（老陽、老陰）の確率は1本あたり12.5%です。蓍草法：周王朝の古典的な方法。分布は非対称で、老陽（9）の確率は18.75%、老陰（6）は6.25%です。動く陽は動く陰より3倍多く、平均的に変爻が少なくなります。多くのユーザーには三硬貨法が速く同様に有効です。歴史的に本来の方法を求める方には蓍草法をお勧めします。",
+      "どちらの方法も同じ64卦を生み、同じ易経本文と朱熹の規則を用います。三枚硬貨は速く扱いやすい方法で、三枚の硬貨を六回投げて六爻を作ります。筮竹はより古い儀礼的な方法で、筮竹または同様の物を数えながら、よりゆっくりと思索的に進めます。違いは占いの権威ではなく、儀礼体験にあります。速さを求めるなら三枚硬貨、伝統的なリズムを求めるなら筮竹です。",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -521,6 +549,13 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     answer:
       "自動と手動は易経（三硬貨または蓍草）にのみ適用されます。オプションでは易経を選んだときだけ起卦方式のコントロールが表示されます。三硬貨または蓍草を選んでから、自動（サーバーで起卦を実行）か手動（自分の銭または蓍草から六爻分の合計6/7/8/9を入力）を選びます。卜骨モードは常に自動で、手動の卜骨フローはありません。儀式と判定はアルゴリズムのみから行われます。プランのスレッド深度上限の範囲内で、易経と卜骨を自由に行き来でき、相談ごとに方法とモードを切り替えられます。次回の易経相談のために設定は記憶されます。",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "甲骨の方法とは何ですか？",
+    answer:
+      "甲骨は、亀甲や牛の肩甲骨に現れる亀裂を読む殷代の占いに着想を得た方法です。アプリでは易経とは別の方法であり、卦や変爻を作りません。まずシステムが亀裂のパターンと判定を形成し、その後AIがその結果をあなたの言語で解釈します。祖先的で簡潔な答えに向いており、時間の中で重層的に変化を読む場合は易経が適しています。",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -616,9 +651,9 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "易经两种占卜方法有何区别：三枚铜钱与蓍草？",
+    question: "《易经》的两种方法，三枚铜钱和蓍草，有什么区别？",
     answer:
-      "两种方法均可得出相同的64卦，并应用相同的朱熹变爻规则。三枚铜钱法：将三枚硬币投掷六次，分布对称，每种变爻类型（老阳、老阴）每爻的概率均为12.5%。蓍草法：周朝经典方法，分布不对称，老阳（9）概率为18.75%，老阴（6）为6.25%。动爻中阳爻的概率是阴爻的三倍，平均变爻数量较少。对多数用户而言，三枚铜钱法更快捷，同样有效。寻求历史原始方法的用户可选择蓍草法。",
+      "两种方法都会得到同样的六十四卦，并使用同样的《易经》文本与朱熹规则。三枚铜钱更快捷易用：把三枚钱币掷六次，形成六爻。蓍草是更古老的礼仪方法：用蓍草或类似物件逐步计数，过程更慢，也更具沉思感。选择改变的是仪式体验，而不是解读的权威性。想要快速可用，选三枚铜钱；想要传统节奏，选蓍草。",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -627,6 +662,13 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     answer:
       "自动与手动仅适用于易经（三枚铜钱或蓍草）。在选项中，只有选中易经时才会显示起卦方式控制：选择三枚铜钱或蓍草，再选自动（服务器执行起卦）或手动（在解读前自行输入六爻的6/7/8/9合计）。甲骨文模式始终为自动，没有手动甲骨流程；仪式与兆判完全由算法产生。在您套餐的单线程深度上限内，您可以自由交替易经与甲骨文，并在咨询之间切换方法与模式；应用会记住您的偏好，供下次易经解读使用。",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "什么是甲骨方法？",
+    answer:
+      "甲骨方法源自商代占卜，灵感来自龟甲和牛肩胛骨裂纹的解读。在应用中，它与《易经》分开：不会生成卦象，也不会生成变爻。系统先形成裂纹图案和判定，然后由 AI 用你的语言解释这个已经形成的结果。它适合简洁、祖先式的回答；若要观察随时间展开的层次变化，《易经》更合适。",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -722,9 +764,9 @@ const FAQ_ITEMS_KO: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "역경의 두 가지 점술 방법의 차이는 무엇인가요: 동전 세 개와 시초?",
+    question: "주역의 두 방법, 세 동전과 시초는 무엇이 다른가요?",
     answer:
-      "두 방법 모두 같은 64괘를 생성하고 같은 주희의 변효 규칙을 적용합니다. 동전 세 개: 동전 세 개를 여섯 번 던집니다. 분포는 대칭적이며 각 변효 유형(노양, 노음)의 효당 확률은 12.5%입니다. 시초법: 주나라 시대의 고전 방법. 분포는 비대칭으로 노양(9)의 확률은 18.75%, 노음(6)은 6.25%입니다. 움직이는 양이 움직이는 음보다 세 배 더 가능성이 높아 평균적으로 변효가 적게 나옵니다. 대부분의 사용자에게는 동전 세 개 방법이 더 빠르고 동등하게 유효합니다. 역사적으로 원래의 방법을 원하는 분께는 시초법을 권장합니다.",
+      "두 방법 모두 같은 64괘를 만들고 같은 주역 원문과 주희의 규칙을 사용합니다. 세 동전은 빠르고 접근하기 쉽습니다. 동전 세 개를 여섯 번 던져 여섯 효를 만듭니다. 시초는 더 오래된 의례적 방법입니다. 시초나 비슷한 물건을 세며 더 느리고 사색적인 절차로 진행합니다. 선택은 해석의 권위가 아니라 의례 경험을 바꿉니다. 빠르게 보고 싶다면 세 동전, 전통적 리듬을 원한다면 시초를 사용하세요.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -733,6 +775,13 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     answer:
       "자동과 수동은 역경(동전 세 개 또는 시초)에만 적용됩니다. 옵션에서 역경을 선택했을 때만 점 방식 컨트롤이 보입니다. 동전 세 개 또는 시초를 선택한 후 자동(서버에서 점괘 실행) 또는 수동(본인의 동전이나 시초로 나온 여섯 효의 합계 6/7/8/9를 입력)을 선택합니다. 갑골 모드는 항상 자동이며 수동 갑골 흐름은 없습니다. 의식과 판정은 알고리즘에서만 나옵니다. 요금제의 스레드 깊이 한도 안에서는 역경과 갑골을 자유롭게 번갈아 할 수 있고, 상담 간 방법과 모드를 바꿀 수 있습니다. 다음 역경 상담을 위해 설정은 기억됩니다.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "갑골 방법이란 무엇인가요?",
+    answer:
+      "갑골은 거북 배딱지와 소 견갑골의 균열을 읽던 상나라 시대 점복에서 영감을 받은 방법입니다. 앱에서는 주역과 별개의 방식입니다. 괘나 변효를 만들지 않습니다. 시스템이 먼저 균열 패턴과 판정을 형성하고, 그다음 AI가 이미 형성된 결과를 사용자의 언어로 해석합니다. 간결하고 조상적 어조의 답에 적합하며, 시간 속에서 층층이 변하는 흐름은 주역이 더 적합합니다.",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -828,9 +877,9 @@ const FAQ_ITEMS_PT: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "Qual é a diferença entre os dois métodos do I Ching: Três Moedas e Varetas?",
+    question: "Em que diferem os dois métodos do I Ching: Três Moedas e Varetas?",
     answer:
-      "Ambos os métodos produzem os mesmos 64 hexagramas e aplicam as mesmas regras de mutação de Zhu Xi. Três Moedas: três moedas são lançadas seis vezes; a distribuição é simétrica — cada tipo de linha móvel (yang velho, yin velho) tem 12,5% de probabilidade por linha. Varetas de Milefólio: o método clássico da dinastia Zhou; a distribuição é assimétrica — yang velho (9) tem 18,75% de probabilidade, yin velho (6) tem 6,25%. O yang móvel é três vezes mais provável que o yin móvel, produzindo em média menos linhas mutantes. Para a maioria dos utilizadores: Três Moedas é mais rápido e igualmente válido. Para quem busca o método histórico original: Varetas.",
+      "Ambos os métodos produzem os mesmos 64 hexagramas e usam os mesmos textos do I Ching e as regras de Zhu Xi. Três Moedas é rápido e acessível: lanças três moedas seis vezes para formar as seis linhas. Varetas de Milefólio é o método ritual mais antigo: trabalhas com varetas ou objetos semelhantes através de um procedimento mais lento e contemplativo. A escolha muda a experiência ritual, não a autoridade da leitura. Usa Três Moedas para rapidez; usa Varetas quando quiseres o ritmo tradicional.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -839,6 +888,13 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     answer:
       "Automático vs manual aplica-se apenas ao I Ching (Três Moedas ou Varetas de Milefólio). Em Opções os controlos do modo de tiragem aparecem com o I Ching selecionado: escolha Três Moedas ou Varetas, depois automático (a tiragem corre no servidor) ou manual (introduza os seis totais de linha 6/7/8/9 das suas moedas ou varetas). O modo Ossos é sempre automático; não existe fluxo manual de ossos; ritual e veredicto vêm só do algoritmo. Dentro do limite de profundidade por fio do seu plano, pode alternar livremente I Ching e Ossos e mudar métodos e modos entre consultas; a app memoriza as suas preferências para a próxima leitura em I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "O que é o método dos Ossos Oraculares?",
+    answer:
+      "Ossos Oraculares é um método de adivinhação da era Shang inspirado na leitura de fissuras em plastrões de tartaruga e escápulas de boi. Na app, é separado do I Ching: não cria hexagramas nem linhas mutantes. O sistema forma primeiro um padrão de fissuras e um veredicto; depois a IA interpreta esse resultado já formado no teu idioma. É útil para respostas concisas, de tom ancestral; o I Ching é melhor para mudanças em camadas ao longo do tempo.",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -934,9 +990,9 @@ const FAQ_ITEMS_DE: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "Was ist der Unterschied zwischen den zwei I-Ching-Methoden: Drei Münzen und Schafgarbenstäbe?",
+    question: "Worin unterscheiden sich die zwei I Ging Methoden: Drei Münzen und Schafgarbenstäbe?",
     answer:
-      "Beide Methoden erzeugen dieselben 64 Hexagramme und wenden dieselben Mutationsregeln von Zhu Xi an. Drei Münzen: Drei Münzen werden sechsmal geworfen. Die Verteilung ist symmetrisch — jeder Typ der wandelnden Linie (altes Yang, altes Yin) hat eine Wahrscheinlichkeit von 12,5 % pro Linie. Schafgarbenstäbe: die klassische Methode der Zhou-Dynastie. Die Verteilung ist asymmetrisch — altes Yang (9) hat 18,75 % Wahrscheinlichkeit, altes Yin (6) hat 6,25 %. Wandelndes Yang ist dreimal wahrscheinlicher als wandelndes Yin, was im Durchschnitt weniger wechselnde Linien ergibt. Für die meisten Nutzer: Drei Münzen ist schneller und gleichermaßen gültig. Für jene, die die historisch ursprüngliche Methode suchen: Schafgarbenstäbe.",
+      "Beide Methoden erzeugen dieselben 64 Hexagramme und verwenden dieselben I Ging Texte sowie die Regeln Zhu Xis. Drei Münzen ist schnell und leicht zugänglich: drei Münzen werden sechsmal geworfen, um die sechs Linien zu bilden. Schafgarbenstäbe ist die ältere rituelle Methode: Man arbeitet mit gezählten Stäben oder ähnlichen Gegenständen in einem langsameren, kontemplativeren Ablauf. Die Wahl verändert das rituelle Erleben, nicht die Gültigkeit der Lesung. Nutze Drei Münzen für Schnelligkeit; nutze Schafgarbenstäbe für den traditionellen Rhythmus.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -945,6 +1001,13 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     answer:
       "Automatisch vs. manuell gilt nur für das I Ching (Drei Münzen oder Schafgarbenstäbe). In den Optionen erscheinen die Wurfmodus-Steuerelemente nur bei ausgewähltem I Ching: Wählen Sie Drei Münzen oder Schafgarbenstäbe, dann automatisch (der Wurf erfolgt auf dem Server) oder manuell (Sie tragen die sechs Liniensummen 6/7/8/9 Ihrer eigenen Münzen oder Stäbe ein). Der Orakelknochen-Modus ist immer automatisch; es gibt keinen manuellen Knochenablauf; Ritual und Urteil kommen ausschließlich vom Algorithmus. Innerhalb des Thread-Tiefenlimits Ihres Tarifs können Sie frei zwischen I Ching und Orakelknochen wechseln und Methoden und Modi zwischen Beratungen umschalten; Ihre Einstellungen werden für die nächste I-Ching-Beratung gespeichert.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "Was ist die Methode der Orakelknochen?",
+    answer:
+      "Orakelknochen ist eine Wahrsagemethode aus der Shang Zeit, inspiriert vom Lesen von Rissen auf Schildkrötenpanzern und Ochsenschulterblättern. In der App ist sie vom I Ging getrennt: Sie erzeugt keine Hexagramme und keine wandelnden Linien. Das System bildet zuerst ein Rissmuster und ein Urteil; danach interpretiert die KI dieses bereits gebildete Ergebnis in deiner Sprache. Sie eignet sich für knappe Antworten im Ahnenstil; das I Ging eignet sich besser für vielschichtigen Wandel über die Zeit.",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -1040,9 +1103,9 @@ const FAQ_ITEMS_IT: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "Qual è la differenza tra i due metodi dell'I Ching: Tre Monete e Steli di Achillea?",
+    question: "In cosa differiscono i due metodi dell'I Ching: Tre Monete e Steli di Achillea?",
     answer:
-      "Entrambi i metodi producono gli stessi 64 esagrammi e applicano le stesse regole di mutazione di Zhu Xi. Tre Monete: tre monete vengono lanciate sei volte; la distribuzione è simmetrica — ogni tipo di linea mobile (yang vecchio, yin vecchio) ha una probabilità del 12,5% per linea. Steli di Achillea: il metodo classico della dinastia Zhou; la distribuzione è asimmetrica — yang vecchio (9) ha il 18,75% di probabilità, yin vecchio (6) ha il 6,25%. Lo yang mobile è tre volte più probabile dello yin mobile, producendo in media meno linee mutanti. Per la maggior parte degli utenti: Tre Monete è più veloce e ugualmente valido. Per chi cerca il metodo storicamente originale: Steli di Achillea.",
+      "Entrambi i metodi producono gli stessi 64 esagrammi e usano gli stessi testi dell'I Ching e le regole di Zhu Xi. Tre Monete è rapido e accessibile: si lanciano tre monete sei volte per formare le sei linee. Steli di Achillea è il metodo rituale più antico: si lavora con steli o oggetti simili attraverso una procedura più lenta e contemplativa. La scelta cambia l'esperienza rituale, non l'autorità della lettura. Usa Tre Monete per la rapidità; usa Steli di Achillea quando desideri il ritmo tradizionale.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -1051,6 +1114,13 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     answer:
       "Automatico vs manuale vale solo per l'I Ching (Tre Monete o Steli di Achillea). In Opzioni i controlli del modo di lancio compaiono con l'I Ching selezionato: scegli Tre Monete o Steli di Achillea, poi automatico (il lancio avviene sul server) o manuale (inserisci i sei totali di linea 6/7/8/9 delle tue monete o steli). La modalità Ossa è sempre automatica; non esiste un flusso manuale per le ossa; rituale e verdetto provengono solo dall'algoritmo. Entro il limite di profondità per filo del tuo piano, puoi alternare liberamente I Ching e Ossa e cambiare metodi e modalità tra consultazioni; l'app memorizza le tue preferenze per la prossima lettura in I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "Che cos'è il metodo degli Ossi Oracolari?",
+    answer:
+      "Gli Ossi Oracolari sono un metodo divinatorio dell'epoca Shang ispirato alla lettura delle crepe su piastroni di tartaruga e scapole di bue. Nell'app è separato dall'I Ching: non crea esagrammi né linee mutanti. Il sistema forma prima un pattern di crepe e un verdetto; poi l'IA interpreta quel risultato già formato nella tua lingua. È utile per risposte concise, dal tono ancestrale; l'I Ching è più adatto ai cambiamenti stratificati nel tempo.",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",
@@ -1146,9 +1216,9 @@ const FAQ_ITEMS_FR: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "Quelle est la différence entre les deux méthodes du I Ching : Trois Pièces et Tiges d'Achillée ?",
+    question: "Quelle est la différence entre les deux méthodes du I Ching: Trois Pièces et Tiges d'Achillée ?",
     answer:
-      "Les deux méthodes produisent les mêmes 64 hexagrammes et appliquent les mêmes règles de mutation de Zhu Xi. Trois Pièces : trois pièces sont lancées six fois ; la distribution est symétrique — chaque type de ligne mobile (vieux yang, vieux yin) a une probabilité de 12,5 % par ligne. Tiges d'Achillée : la méthode classique de la dynastie Zhou ; la distribution est asymétrique — vieux yang (9) a une probabilité de 18,75 %, vieux yin (6) a 6,25 %. Le yang mobile est trois fois plus probable que le yin mobile, produisant en moyenne moins de lignes changeantes. Pour la plupart des utilisateurs : Trois Pièces est plus rapide et tout aussi valide. Pour ceux qui recherchent la méthode historiquement originale : Tiges d'Achillée.",
+      "Les deux méthodes produisent les mêmes 64 hexagrammes et utilisent les mêmes textes du I Ching ainsi que les règles de Zhu Xi. Trois Pièces est rapide et accessible: on lance trois pièces six fois pour former les six traits. Tiges d'Achillée est la méthode rituelle plus ancienne: on travaille avec des tiges ou des objets semblables selon un procédé plus lent et plus contemplatif. Le choix modifie l'expérience rituelle, non l'autorité de la lecture. Utilise Trois Pièces pour la rapidité; utilise les Tiges d'Achillée pour le rythme traditionnel.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -1157,6 +1227,13 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     answer:
       "Automatique vs manuel ne concerne que le I Ching (Trois Pièces ou Tiges d'Achillée). Dans Options, les contrôles du mode de tirage apparaissent lorsque le I Ching est sélectionné : choisissez Trois Pièces ou Tiges d'Achillée, puis automatique (le tirage s'effectue sur le serveur) ou manuel (vous saisissez les six totaux de ligne 6/7/8/9 de vos pièces ou tiges). Le mode Os est toujours automatique ; il n'existe pas de flux manuel pour les os ; le rituel et le verdict viennent uniquement de l'algorithme. Dans la limite de profondeur par fil de votre forfait, vous pouvez librement alterner I Ching et Os et changer de méthode et de mode entre consultations ; l'application mémorise vos préférences pour la prochaine lecture en I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "Qu'est-ce que la méthode des Os de l'Oracle ?",
+    answer:
+      "Les Os de l'Oracle sont une méthode divinatoire de l'époque Shang inspirée de la lecture des fissures sur des plastrons de tortue et des omoplates de bœuf. Dans l'app, elle est distincte du I Ching: elle ne crée pas d'hexagrammes ni de traits changeants. Le système forme d'abord un motif de fissures et un verdict; puis l'IA interprète ce résultat déjà formé dans ta langue. Elle convient aux réponses concises, au ton ancestral; le I Ching convient mieux aux changements stratifiés dans le temps.",
+    related: ["methodNotes"],
   },
   {
     id: "thread-depth",

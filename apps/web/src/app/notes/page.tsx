@@ -32,7 +32,7 @@ export default async function NotesPage() {
         <p className="doc-lead">{n.lead}</p>
         <p className="doc-auth-notice">{n.authNotice}</p>
 
-        {/* ── I Ching ── */}
+        {/* I Ching */}
         <h2>{n.ichingHeading}</h2>
 
         <h3>{n.ichingOriginHeading}</h3>
@@ -45,13 +45,24 @@ export default async function NotesPage() {
         <p>{n.ichingMethodBody}</p>
         <p><Link href="/guia">{nav.userGuide}</Link></p>
 
+        <h3>{n.yarrowHeading}</h3>
+
+        <h4>{n.yarrowOriginHeading}</h4>
+        <p>{n.yarrowOriginBody}</p>
+
+        <h4>{n.yarrowProcedureHeading}</h4>
+        <p>{n.yarrowProcedureBody}</p>
+
+        <h4>{n.yarrowProbHeading}</h4>
+        <p>{n.yarrowProbBody}</p>
+
         <h3>{n.ichingWilhelmHeading}</h3>
         <p>{n.ichingWilhelmBody}</p>
 
         <h3>{n.ichingChainHeading}</h3>
         <p>{n.ichingChain}</p>
 
-        {/* ── Oracle Bones ── */}
+        {/* Oracle Bones */}
         <h2>{n.bonesHeading}</h2>
 
         <h3>{n.bonesOriginHeading}</h3>
@@ -72,23 +83,11 @@ export default async function NotesPage() {
         <h3>{n.bonesAuthHeading}</h3>
         <p>{n.bonesAuthBody}</p>
 
-        {/* ── Yarrow Stalks ── */}
-        <h2>{n.yarrowHeading}</h2>
-
-        <h3>{n.yarrowOriginHeading}</h3>
-        <p>{n.yarrowOriginBody}</p>
-
-        <h3>{n.yarrowProcedureHeading}</h3>
-        <p>{n.yarrowProcedureBody}</p>
-
-        <h3>{n.yarrowProbHeading}</h3>
-        <p>{n.yarrowProbBody}</p>
-
-        {/* ── Interpretation ── */}
+        {/* Interpretation */}
         <h2>{n.interpretHeading}</h2>
         <p>{n.interpretBody}</p>
 
-        {/* ── Sources ── */}
+        {/* Sources */}
         <h2>{n.sourcesHeading}</h2>
         <ul>
           <li>
