@@ -27,6 +27,10 @@ export type GuiaPageUiMessages = {
   ichingCastModeP1: string;
   ichingCastAutoLi: string;
   ichingCastManualLi: string;
+  yarrowHeading: string;
+  yarrowP1: string;
+  yarrowMethodBullet: string;
+  yarrowDistBullet: string;
   exportHeading: string;
   exportBody: string;
   legalMetaBeforePrivacy: string;
@@ -71,7 +75,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "Automática: al enviar la consulta, el ritual anima el trazado y las seis líneas se obtienen en el servidor (tres monedas simuladas por línea).",
     ichingCastManualLi:
-      "Manual: se abre un asistente para registrar, de abajo arriba, el resultado de tres monedas por línea (cara/cruz → totales 6, 7, 8 o 9). Tras completar las seis líneas verás una vista previa del hexagrama en el hilo hasta que llegue la lectura; la responsabilidad de reflejar bien tu tirada física es tuya.",
+      "Manual: se abre un asistente para registrar las seis líneas de abajo arriba. Con Tres Monedas introduces cara/cruz por línea (totales 6, 7, 8 o 9); con Varillas introduces los tres residuos de fase por línea. Tras completar las seis líneas verás una vista previa del hexagrama; la responsabilidad de reflejar bien tu tirada o recuento es tuya.",
+    yarrowHeading: "Varillas de milenrama (蓍草)",
+    yarrowP1:
+      "Las varillas de milenrama son el método de adivinación clásico de la dinastía Zhou, el más antiguo y preciso históricamente. La app las ofrece en el modo manual como alternativa a las Tres Monedas.",
+    yarrowMethodBullet:
+      "Tres fases por línea: cada una de las seis líneas se determina mediante tres divisiones sucesivas de 49 varillas. Se aparta una y se registra cada residuo (fase 1: 5 o 9; fases 2–3: 4 u 8).",
+    yarrowDistBullet:
+      "Distribución Zhou auténtica: el Yang móvil (9) es tres veces más probable que el Yin móvil (6). Las lecturas tendrán naturalmente menos líneas en movimiento que con Tres Monedas.",
     exportHeading: "Exportar y guardar",
     exportBody:
       "Desde el panel Opciones puedes, cuando lo decidas, descargar la imagen de la lectura y generar un PDF del chat activo. Es opcional: sirve para guardar una copia en tu propio equipo o dispositivo. El archivo PDF se crea en el navegador; no sustituye el historial en la app ni obliga a conservar copias fuera del servicio.",
@@ -114,7 +125,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "Automatic: when you send the consultation, the ritual animates the pattern and the six lines are generated on the server (three simulated coins per line).",
     ichingCastManualLi:
-      "Manual: an assistant opens so you can record, bottom to top, three coins per line (heads/tails → totals 6, 7, 8, or 9). After all six lines you will see a hexagram preview in the thread until the reading arrives; you are responsible for accurately reflecting your physical throw.",
+      "Manual: an assistant opens for you to record the six lines bottom to top. With Three Coins, enter heads/tails per line (totals 6, 7, 8, or 9); with Yarrow Stalks, enter the three phase residues per line. After all six lines you will see a hexagram preview; you are responsible for accurately reflecting your physical throw or count.",
+    yarrowHeading: "Yarrow Stalks (蓍草)",
+    yarrowP1:
+      "Yarrow Stalks is the classical Zhou-dynasty divination method, the oldest and most historically accurate way to cast the I Ching. The app offers it in manual mode as an alternative to Three Coins.",
+    yarrowMethodBullet:
+      "Three phases per line: each of the six lines is determined by three successive divisions of 49 stalks. One stalk is set aside and each remainder is recorded (phase 1: 5 or 9; phases 2–3: 4 or 8).",
+    yarrowDistBullet:
+      "Authentic Zhou distribution: Old Yang (9) is three times more likely than Old Yin (6). Readings will naturally have fewer moving lines than with Three Coins.",
     exportHeading: "Export and save",
     exportBody:
       "From the Options panel you may, whenever you choose, download the reading image and generate a PDF of the active chat. This is optional: it is for keeping a copy on your own computer or device. The PDF is built in your browser; it does not replace in-app history and you are not required to keep copies outside the service.",
@@ -158,7 +176,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "Automática: ao enviar a consulta, o ritual anima o traçado e as seis linhas são obtidas no servidor (três moedas simuladas por linha).",
     ichingCastManualLi:
-      "Manual: abre-se um assistente para registares, de baixo para cima, o resultado de três moedas por linha (cara/coroa → totais 6, 7, 8 ou 9). Depois das seis linhas vês uma pré-visualização do hexagrama no fio até chegar a leitura; a responsabilidade de refletir corretamente a tua tiragem física é tua.",
+      "Manual: abre-se um assistente para registares as seis linhas de baixo para cima. Com Três Moedas introduzes cara/coroa por linha (totais 6, 7, 8 ou 9); com Varetas introduzes os três resíduos de fase por linha. Depois das seis linhas vês uma pré-visualização do hexagrama; a responsabilidade de refletir corretamente a tua tiragem ou contagem é tua.",
+    yarrowHeading: "Varetas de Aquilégia (蓍草)",
+    yarrowP1:
+      "As varetas de aquilégia são o método clássico de adivinhação da dinastia Zhou, o mais antigo e historicamente preciso para lançar o I Ching. A app oferece-o no modo manual como alternativa às Três Moedas.",
+    yarrowMethodBullet:
+      "Três fases por linha: cada uma das seis linhas é determinada por três divisões sucessivas de 49 varetas. Separa-se uma e regista-se cada resto (fase 1: 5 ou 9; fases 2–3: 4 ou 8).",
+    yarrowDistBullet:
+      "Distribuição Zhou autêntica: Yang Móvel (9) é três vezes mais provável que Yin Móvel (6). As leituras têm naturalmente menos linhas em movimento do que com Três Moedas.",
     exportHeading: "Exportar e guardar",
     exportBody:
       "No painel Opções podes, quando quiseres, descarregar a imagem da leitura e gerar um PDF do chat ativo. É opcional: serve para guardar uma cópia no teu dispositivo. O PDF é criado no navegador; não substitui o histórico na app nem obriga a cópias fora do serviço.",
@@ -202,7 +227,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "Automatique : à l’envoi, le rituel anime le tracé et les six traits sont générés côté serveur (trois pièces simulées par trait).",
     ichingCastManualLi:
-      "Manuel : un assistant permet d’enregistrer, du bas vers le haut, trois pièces par trait (pile/face → totaux 6, 7, 8 ou 9). Après les six traits, un aperçu d’hexagramme s’affiche dans le fil jusqu’à l’interprétation ; vous êtes responsable de refléter fidèlement votre jet physique.",
+      "Manuel : un assistant permet d’enregistrer les six traits du bas vers le haut. Avec Trois Pièces, entrez pile/face par trait (totaux 6, 7, 8 ou 9) ; avec les Tiges, entrez les trois résidus de phase par trait. Après six traits, un aperçu d’hexagramme s’affiche ; vous êtes responsable de refléter fidèlement votre jet ou décompte physique.",
+    yarrowHeading: "Tiges d’Achillée (蓍草)",
+    yarrowP1:
+      "Les tiges d’achillée sont la méthode de divination classique de la dynastie Zhou, la plus ancienne et la plus précise historiquement pour tirer le I Ching. L’app la propose en mode manuel comme alternative aux Trois Pièces.",
+    yarrowMethodBullet:
+      "Trois phases par trait : chacun des six traits est déterminé par trois divisions successives de 49 tiges. Une est mise de côté et chaque reste est noté (phase 1 : 5 ou 9 ; phases 2–3 : 4 ou 8).",
+    yarrowDistBullet:
+      "Distribution Zhou authentique : le Yang mobile (9) est trois fois plus probable que le Yin mobile (6). Les lectures comptent naturellement moins de traits mobiles qu’avec les Trois Pièces.",
     exportHeading: "Exporter et enregistrer",
     exportBody:
       "Depuis le panneau Options, vous pouvez quand vous le souhaitez télécharger l’image de la lecture et générer un PDF du chat actif. C’est facultatif : cela sert à garder une copie sur votre appareil. Le PDF est créé dans le navigateur ; il ne remplace pas l’historique dans l’app et n’oblige pas à conserver des copies hors service.",
@@ -246,7 +278,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "Automatisch: Beim Senden animiert das Ritual das Muster, die sechs Striche entstehen auf dem Server (drei simulierte Münzen pro Strich).",
     ichingCastManualLi:
-      "Manuell: Ein Assistent öffnet; du trägst von unten nach oben pro Strich drei Münzen ein (Kopf/Zahl → Summen 6, 7, 8 oder 9). Nach sechs Strichen erscheint eine Hexagramm-Vorschau im Thread bis zur Lesung; du bist dafür verantwortlich, deinen physischen Wurf korrekt abzubilden.",
+      "Manuell: Ein Assistent öffnet, damit du die sechs Striche von unten nach oben eingibst. Mit Drei Münzen trägst du Kopf/Zahl pro Strich ein (Summen 6, 7, 8 oder 9); mit Stäben die drei Phasen-Residuen pro Strich. Nach sechs Strichen erscheint eine Hexagramm-Vorschau; die korrekte Eingabe deines physischen Wurfs oder Zählergebnisses liegt in deiner Verantwortung.",
+    yarrowHeading: "Schafgarbenstäbe (蓍草)",
+    yarrowP1:
+      "Die Schafgarbenstäbe sind die klassische Divinationsmethode der Zhou-Dynastie, die älteste und historisch genaueste Methode für eine I-Ging-Legung. Die App bietet sie im manuellen Modus als Alternative zu Drei Münzen an.",
+    yarrowMethodBullet:
+      "Drei Phasen pro Strich: Jeder der sechs Striche wird durch drei aufeinanderfolgende Teilungen von 49 Stäben bestimmt. Ein Stab wird beiseitgelegt und jedes Residuum notiert (Phase 1: 5 oder 9; Phasen 2–3: 4 oder 8).",
+    yarrowDistBullet:
+      "Authentische Zhou-Verteilung: Altes Yang (9) ist dreimal wahrscheinlicher als Altes Yin (6). Lesungen haben von Natur aus weniger bewegende Striche als mit Drei Münzen.",
     exportHeading: "Exportieren und speichern",
     exportBody:
       "Im Optionen-Bereich kannst du bei Bedarf das Lesebild herunterladen und den aktiven Chat als PDF erzeugen. Das ist optional und dient dazu, eine Kopie auf deinem Gerät zu behalten. Das PDF entsteht im Browser; es ersetzt nicht den App-Verlauf und verpflichtet nicht zu Kopien außerhalb des Dienstes.",
@@ -290,7 +329,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "Automatico: all’invio il rituale anima il tracciato e le sei linee sono generate sul server (tre monete simulate per linea).",
     ichingCastManualLi:
-      "Manuale: si apre un assistente per registrare dal basso tre monete per linea (testa/croce → totali 6, 7, 8 o 9). Dopo le sei linee compare un’anteprima dell’esagramma nel thread fino alla lettura; sei responsabile di riflettere fedelmente il tuo lancio fisico.",
+      "Manuale: si apre un assistente per registrare le sei linee dal basso. Con Tre Monete inserisci testa/croce per linea (totali 6, 7, 8 o 9); con Stecche i tre residui di fase per linea. Dopo le sei linee compare un’anteprima dell’esagramma; sei responsabile di riflettere fedelmente il tuo lancio o conteggio fisico.",
+    yarrowHeading: "Stecche di Achillea (蓍草)",
+    yarrowP1:
+      "Le stecche di achillea sono il metodo divinatorio classico della dinastia Zhou, il più antico e storicamente accurato per il lancio dell’I Ching. L’app lo offre in modalità manuale come alternativa alle Tre Monete.",
+    yarrowMethodBullet:
+      "Tre fasi per linea: ognuna delle sei linee è determinata da tre divisioni successive di 49 stecche. Una viene messa da parte e ogni resto annotato (fase 1: 5 o 9; fasi 2–3: 4 o 8).",
+    yarrowDistBullet:
+      "Distribuzione Zhou autentica: Yang Mutabile (9) è tre volte più probabile dello Yin Mutabile (6). Le letture hanno naturalmente meno linee in movimento rispetto alle Tre Monete.",
     exportHeading: "Esportare e salvare",
     exportBody:
       "Dal pannello Opzioni puoi, quando vuoi, scaricare l’immagine della lettura e generare un PDF della chat attiva. È facoltativo: serve a tenere una copia sul tuo dispositivo. Il PDF viene creato nel browser; non sostituisce la cronologia nell’app e non obbliga a copie fuori dal servizio.",
@@ -332,7 +378,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "自動：送信すると儀式が卦の展開をアニメーションし、六爻はサーバーで得られます（各爻に三銭をシミュレート）。",
     ichingCastManualLi:
-      "手動：アシスタントで下から各爻ごとに三銭の結果（表裏→6・7・8・9）を記録します。六爻が揃うと解釈が届くまでスレッドに卦のプレビューが表示されます。実際の投げ結果を正確に入力する責任は利用者にあります。",
+      "手動：補助が開き、下から各爻を入力します。三銭の場合は表裏（6・7・8・9）、蓍草の場合は各爻の三段階の余りを入力します。六爻が揃うと解釈が届くまでプレビューが表示されます。投げ結果または数え結果を正確に入力する責任はご自身にあります。",
+    yarrowHeading: "蓍草（やろう）",
+    yarrowP1:
+      "蓍草は周朝の古典的な占術で、易経を立てる最も歴史的に正確な方法です。このアプリでは手動モードで三銭の代替として使用できます。",
+    yarrowMethodBullet:
+      "1爻につき三段階：49本を三度続けて分割し各爻を決定します。1本を脇に置き、各余り（第1段階：5または9；第2・3段階：4または8）を記録します。",
+    yarrowDistBullet:
+      "周朝本来の確率分布：老陽（9）は老陰（6）の3倍の確率です。三銭と比べて自然に変爻が少なくなります。",
     exportHeading: "エクスポートと保存",
     exportBody:
       "オプションパネルから、必要に応じて読み取り画像のダウンロードやアクティブチャットのPDF生成ができます。任意です。ブラウザ内でPDFが作成され、アプリ内の履歴を置き換えたり、サービス外への保存を義務付けたりはしません。",
@@ -374,7 +427,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "自动：发送咨询后会有仪式动画，六爻由服务器生成（每爻模拟三钱）。",
     ichingCastManualLi:
-      "手动：打开助手自下而上逐爻记录三钱结果（字/背→6、7、8、9）。六爻完成后会话中会显示卦象预览，直至解读返回；请确保输入与您实际投掷一致。",
+      "手动：打开助手自下而上逐爻输入。三钱法时输入字/背（6、7、8、9）；蓍草时输入每爻三阶段余数。六爻完成后显示卦象预览直至解读返回；请确保输入与您实际投掷或计数一致。",
+    yarrowHeading: "蓍草（筮法）",
+    yarrowP1:
+      "蓍草是周朝的古典占卜方法，是起卦最古老、历史上最精确的方式。本应用在手动模式下将其作为三钱法的替代选项。",
+    yarrowMethodBullet:
+      "每爻三阶段：将49根蓍草连续三次分策，确定六爻中的每一爻。搁置一根，逐一记录余数（第一阶段：5或9；第二、三阶段：4或8）。",
+    yarrowDistBullet:
+      "周代本真概率分布：老阳（九）的概率是老阴（六）的三倍。与三钱法相比，变爻自然会较少出现。",
     exportHeading: "导出与保存",
     exportBody:
       "在选项面板中，您可随时下载解读图并生成当前聊天的 PDF。此为可选操作，用于在自有设备上保存副本。PDF 在浏览器中生成，不替代应用内历史，也不要求在服务外保留副本。",
@@ -416,7 +476,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "자동: 전송하면 의식 애니메이션이 재생되고 여섯 효는 서버에서 생성됩니다(효마다 동전 세 개 시뮬레이션).",
     ichingCastManualLi:
-      "수동: 도우미에서 아래에서 위로 효마다 동전 세 개 결과(앞/뒤→6·7·8·9)를 기록합니다. 여섯 효가 끝나면 해석이 올 때까지 스레드에 괘 미리보기가 표시됩니다. 실제 던진 결과를 정확히 반영할 책임은 사용자에게 있습니다.",
+      "수동: 도우미에서 아래에서 위로 효를 입력합니다. 동전 세 개를 쓸 때는 앞/뒤(6·7·8·9)를, 시초를 쓸 때는 효마다 세 단계 나머지를 입력합니다. 여섯 효가 끝나면 해석이 올 때까지 괘 미리보기가 표시됩니다. 실제 던진 결과나 수를 정확히 반영할 책임은 사용자에게 있습니다.",
+    yarrowHeading: "시초 점 (蓍草)",
+    yarrowP1:
+      "시초는 주나라 왕조의 고전 점법으로, 역경을 세우는 가장 오래되고 역사적으로 정확한 방법입니다. 앱에서는 수동 모드에서 동전 세 개의 대안으로 제공됩니다.",
+    yarrowMethodBullet:
+      "효마다 세 단계: 49개 시초를 세 번 연속으로 나눠 여섯 효 각각을 결정합니다. 1개를 따로 놓고 각 나머지(1단계: 5 또는 9; 2·3단계: 4 또는 8)를 기록합니다.",
+    yarrowDistBullet:
+      "주 왕조 본래 분포: 노양(9)은 노음(6)보다 3배 더 확률이 높습니다. 동전 세 개에 비해 자연스럽게 동효가 적게 나옵니다.",
     exportHeading: "보내기 및 저장",
     exportBody:
       "옵션 패널에서 해석 이미지를 내려받고 활성 채팅을 PDF로 만들 수 있습니다. 선택 사항이며 기기에 사본을 보관하기 위함입니다. PDF는 브라우저에서 생성되며 앱 내 기록을 대체하지 않고 서비스 밖 보관을 강제하지 않습니다.",
@@ -458,7 +525,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "تلقائي: عند الإرسال يعرض الطقس الحركة وتُولَّد الخطوط الستة على الخادم (ثلاث عملات محاكاة لكل خط).",
     ichingCastManualLi:
-      "يدوي: يفتح مساعد لتسجيل ثلاث عملات لكل خط من الأسفل إلى الأعلى (وجه/كتابة → المجاميع 6 أو 7 أو 8 أو 9). بعد اكتمال الخطوط الستة يظهر معاينة للهكساغرام في الخيط حتى تصل القراءة؛ مسؤوليتك أن تعكس رميتك الفعلية بدقة.",
+      "يدوي: يفتح مساعد لتسجيل الخطوط الستة من الأسفل إلى الأعلى. مع ثلاث عملات أدخل الوجه/الكتابة لكل خط (المجاميع 6 أو 7 أو 8 أو 9)؛ مع العيدان أدخل بقايا المراحل الثلاث لكل خط. بعد اكتمال الخطوط الستة يظهر معاينة للهكساغرام حتى تصل القراءة؛ أنت مسؤول عن عكس رميتك أو عدّك الفعلي بدقة.",
+    yarrowHeading: "عيدان الزنبق (蓍草)",
+    yarrowP1:
+      "عيدان الزنبق هي أسلوب العَرَافة الكلاسيكي لأسرة تشو، وأقدم طريقة وأدقها تاريخيًا لإجراء قَسْم I Ching. يوفرها التطبيق في الوضع اليدوي بديلاً عن ثلاث عملات.",
+    yarrowMethodBullet:
+      "ثلاث مراحل لكل خط: يُحدَّد كل خط من الستة بثلاثة تقسيمات متتالية لـ 49 عودًا. يُعزل عود واحد ويُسجَّل كل باقٍ (المرحلة 1: 5 أو 9؛ المرحلتان 2–3: 4 أو 8).",
+    yarrowDistBullet:
+      "توزيع تشو الأصيل: يانغ القديم (9) أكثر احتمالاً ثلاثة أضعاف من يين القديمة (6). ستحوي القراءات بطبيعتها خطوطًا متحركة أقل مما هو عليه في طريقة ثلاث عملات.",
     exportHeading: "التصدير والحفظ",
     exportBody:
       "من لوحة الخيارات يمكنك متى شئت تنزيل صورة القراءة وإنشاء PDF للمحادثة النشطة. هذا اختياري ويُستخدم للاحتفاظ بنسخة على جهازك. يُنشأ PDF في المتصفح ولا يحل محل السجل داخل التطبيق.",
@@ -502,7 +576,14 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastAutoLi:
       "स्वचालित: भेजने पर अनुष्ठान चित्रण चलाता है और छह रेखाएँ सर्वर पर बनती हैं (प्रति रेखा तीन सिम्युलेटेड सिक्के)।",
     ichingCastManualLi:
-      "मैन्युअल: सहायक खुलता है ताकि नीचे से ऊपर प्रति रेखा तीन सिक्के दर्ज कर सकें (चित/पट → योग 6, 7, 8 या 9)। छह रेखाओं के बाद पठन आने तक थ्रेड में हेक्साग्राम पूर्वावलोकन दिखता है; अपने भौतिक फेंक को सटीक दर्शाना आपकी जिम्मेदारी है।",
+      "मैन्युअल: सहायक खुलता है ताकि नीचे से ऊपर रेखाएँ दर्ज कर सकें। तीन सिक्कों के साथ प्रति रेखा चित/पट (योग 6, 7, 8 या 9) दर्ज करें; यारो छड़ों के साथ प्रति रेखा तीन चरणों के शेष दर्ज करें। छह रेखाओं के बाद पठन आने तक हेक्साग्राम पूर्वावलोकन दिखता है; अपने भौतिक फेंक या गणना को सटीक दर्शाना आपकी जिम्मेदारी है।",
+    yarrowHeading: "यारो की छड़ें (蓍草)",
+    yarrowP1:
+      "यारो की छड़ें झोउ राजवंश की शास्त्रीय भविष्यवाणी पद्धति है, जो I Ching डालने का सबसे पुराना और ऐतिहासिक रूप से सटीक तरीका है। ऐप में इसे मैन्युअल मोड में तीन सिक्कों के विकल्प के रूप में प्रदान किया गया है।",
+    yarrowMethodBullet:
+      "प्रति रेखा तीन चरण: 49 छड़ों को तीन बार क्रमिक रूप से विभाजित करके छह रेखाओं में से प्रत्येक को निर्धारित किया जाता है। एक छड़ अलग रखी जाती है और प्रत्येक शेष दर्ज किया जाता है (चरण 1: 5 या 9; चरण 2–3: 4 या 8)।",
+    yarrowDistBullet:
+      "प्रामाणिक झोउ वितरण: वृद्ध यांग (9) वृद्ध यिन (6) से तीन गुना अधिक संभावित है। पठन में तीन सिक्कों की तुलना में स्वाभाविक रूप से कम गतिशील रेखाएँ होंगी।",
     exportHeading: "निर्यात और सहेजना",
     exportBody:
       "विकल्प पैनल से आप जब चाहें पठन छवि डाउनलोड कर सकते हैं और सक्रिय चैट का PDF बना सकते हैं। यह वैकल्पिक है और अपने डिवाइस पर प्रति रखने के लिए है। PDF ब्राउज़र में बनता है; यह ऐप इतिहास को प्रतिस्थापित नहीं करता।",

@@ -117,6 +117,13 @@ export default async function GuiaRapidaPage() {
           <li>{g.ichingCastManualLi}</li>
         </ul>
 
+        <h3>{g.yarrowHeading}</h3>
+        <p>{g.yarrowP1}</p>
+        <ul>
+          <li>{g.yarrowMethodBullet}</li>
+          <li>{g.yarrowDistBullet}</li>
+        </ul>
+
         <h2>{g.exportHeading}</h2>
         <p>{g.exportBody}</p>
 
