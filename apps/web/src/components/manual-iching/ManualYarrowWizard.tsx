@@ -19,6 +19,8 @@ type Props = {
 
 export function ManualYarrowWizard({ open, onClose, onComplete, locale, questionPreview }: Props) {
   const m = useMemo(() => getYarrowWizardMessages(locale), [locale]);
+  const [showIntro, setShowIntro] = useState(true);
+  const [currentPhase, setCurrentPhase] = useState<1 | 2 | 3>(1);
   const [recorded, setRecorded] = useState<Array<6 | 7 | 8 | 9>>([]);
   const [phase1, setPhase1] = useState<Phase1Value | null>(null);
   const [phase2, setPhase2] = useState<Phase23Value | null>(null);
@@ -26,6 +28,8 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
 
   useEffect(() => {
     if (!open) {
+      setShowIntro(true);
+      setCurrentPhase(1);
       setRecorded([]);
       setPhase1(null);
       setPhase2(null);
@@ -38,11 +42,22 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
       ? yarrowSumToLine(phase1, phase2, phase3)
       : null;
 
-  const resetPhases = useCallback(() => {
-    setPhase1(null);
-    setPhase2(null);
-    setPhase3(null);
-  }, []);
+  const currentPhaseValue =
+    currentPhase === 1 ? phase1 : currentPhase === 2 ? phase2 : phase3;
+
+  const handlePhaseValue = useCallback(
+    (v: number) => {
+      if (currentPhase === 1) setPhase1(v as Phase1Value);
+      else if (currentPhase === 2) setPhase2(v as Phase23Value);
+      else setPhase3(v as Phase23Value);
+    },
+    [currentPhase],
+  );
+
+  const advancePhase = useCallback(() => {
+    if (currentPhase === 1) setCurrentPhase(2);
+    else if (currentPhase === 2) setCurrentPhase(3);
+  }, [currentPhase]);
 
   const registerLine = useCallback(() => {
     if (currentValue === null) return;
@@ -52,17 +67,34 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
       return;
     }
     setRecorded(nextRecorded);
-    resetPhases();
-  }, [currentValue, recorded, onComplete, resetPhases]);
+    setPhase1(null);
+    setPhase2(null);
+    setPhase3(null);
+    setCurrentPhase(1);
+  }, [currentValue, recorded, onComplete]);
 
   const goBack = useCallback(() => {
-    if (phase1 !== null || phase2 !== null || phase3 !== null) {
-      resetPhases();
-    } else {
-      setRecorded((prev) => (prev.length === 0 ? prev : prev.slice(0, -1)));
-      resetPhases();
+    if (currentPhase === 3) {
+      setPhase3(null);
+      setCurrentPhase(2);
+      return;
     }
-  }, [phase1, phase2, phase3, resetPhases]);
+    if (currentPhase === 2) {
+      setPhase2(null);
+      setPhase3(null);
+      setCurrentPhase(1);
+      return;
+    }
+    // currentPhase === 1
+    if (recorded.length > 0) {
+      setRecorded((prev) => prev.slice(0, -1));
+      setPhase1(null);
+      setPhase2(null);
+      setPhase3(null);
+    } else {
+      setShowIntro(true);
+    }
+  }, [currentPhase, recorded]);
 
   const jumpToStep = useCallback(
     (step: number) => {
@@ -71,9 +103,12 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
         if (step > prev.length) return prev;
         return prev.slice(0, step - 1);
       });
-      resetPhases();
+      setPhase1(null);
+      setPhase2(null);
+      setPhase3(null);
+      setCurrentPhase(1);
     },
-    [resetPhases],
+    [],
   );
 
   if (!open) return null;
@@ -95,9 +130,65 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
             ? m.caption9
             : null;
 
-  const canRegister = currentValue !== null;
-  const canGoBack = recorded.length > 0 || phase1 !== null || phase2 !== null || phase3 !== null;
+  const isLastPhase = currentPhase === 3;
+  const showLineSymbol = isLastPhase && currentValue !== null;
+  const phaseButtons = currentPhase === 1 ? ([5, 9] as const) : ([4, 8] as const);
+  const phaseLabel =
+    currentPhase === 1 ? m.phase1Label : currentPhase === 2 ? m.phase2Label : m.phase3Label;
+  const phaseHint =
+    currentPhase === 1 ? m.phase1Hint : currentPhase === 2 ? m.phase2Hint : m.phase3Hint;
+  const phaseAria =
+    currentPhase === 1 ? m.phase1Aria : currentPhase === 2 ? m.phase2Aria : m.phase3Aria;
 
+  const canGoBack = !showIntro;
+
+  // Intro screen
+  if (showIntro) {
+    return (
+      <div className="manual-iching-wizard-backdrop" role="presentation">
+        <div
+          className="manual-iching-wizard-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="manual-yarrow-wizard-title"
+        >
+          <div className="manual-iching-wizard-scroll">
+            <header className="manual-iching-wizard-header">
+              <div className="manual-iching-wizard-header-text">
+                <h2 id="manual-yarrow-wizard-title" className="manual-iching-wizard-title">
+                  {m.title}
+                </h2>
+                <p className="manual-iching-wizard-question" dir="auto">
+                  {questionPreview}
+                </p>
+              </div>
+              <button
+                type="button"
+                className="manual-iching-wizard-close"
+                onClick={onClose}
+                aria-label={m.closeAria}
+              >
+                ×
+              </button>
+            </header>
+
+            <div className="manual-yarrow-intro">
+              <p className="manual-yarrow-intro-warning">{m.physicalWarning}</p>
+              <button
+                type="button"
+                className="primary-btn manual-yarrow-start-btn"
+                onClick={() => setShowIntro(false)}
+              >
+                {m.startButton}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Main wizard screen
   return (
     <div className="manual-iching-wizard-backdrop" role="presentation">
       <div
@@ -126,7 +217,7 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
             </button>
           </header>
 
-          {/* Progress strip — same pattern as coin wizard */}
+          {/* Line progress strip */}
           <div className="manual-iching-wizard-progress-panel">
             <div className="manual-iching-wizard-progress-head" aria-live="polite">
               <span className="manual-iching-wizard-roll-progress">{rollProgressLabel}</span>
@@ -168,105 +259,64 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
             </div>
           </div>
 
-          {/* Physical-objects warning — shown before the first line is recorded */}
-          {recorded.length === 0 && phase1 === null && (
-            <p className="manual-yarrow-physical-warning">{m.physicalWarning}</p>
+          {/* Phase pip indicator */}
+          <div className="manual-yarrow-phase-indicator" aria-hidden="true">
+            {([1, 2, 3] as const).map((p) => (
+              <span
+                key={p}
+                className={`manual-yarrow-phase-pip${currentPhase >= p ? " manual-yarrow-phase-pip--active" : ""}`}
+              />
+            ))}
+          </div>
+
+          {/* Single-phase input body */}
+          <div className="manual-yarrow-phase-body">
+            <p className="manual-yarrow-phase-label">{phaseLabel}</p>
+            <p className="manual-yarrow-phase-hint">{phaseHint}</p>
+            <div className="manual-yarrow-phase-buttons manual-yarrow-phase-buttons--large">
+              {phaseButtons.map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  className={`manual-yarrow-residue-btn manual-yarrow-residue-btn--large${currentPhaseValue === v ? " manual-yarrow-residue-btn--selected" : ""}`}
+                  onClick={() => handlePhaseValue(v)}
+                  aria-pressed={currentPhaseValue === v}
+                  aria-label={phaseAria.replace("{{v}}", String(v))}
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* G3: line symbol after phase 3 value set */}
+          {showLineSymbol && (
+            <div
+              className="yarrow-line-symbol-wrap"
+              key={`yl-${lineNumber}-${phase3}`}
+              aria-hidden="true"
+            >
+              <div className="yarrow-line-symbol">
+                <span
+                  className={`yarrow-line-glyph ${currentValue === 7 || currentValue === 9 ? "yarrow-line-yang" : "yarrow-line-yin"}`}
+                >
+                  {currentValue === 7 || currentValue === 9 ? "⚊" : "⚋"}
+                </span>
+                {currentValue === 9 && (
+                  <span className="yarrow-line-marker yarrow-line-marker--yang">✕</span>
+                )}
+                {currentValue === 6 && (
+                  <span className="yarrow-line-marker yarrow-line-marker--yin">○</span>
+                )}
+              </div>
+              <p className="yarrow-line-caption">{caption}</p>
+            </div>
           )}
 
-          {/* Stalks dividing animation — remounts on each new line to replay */}
-          <div className="yarrow-divide-anim-wrap" key={`yd-${lineNumber}`} aria-hidden="true">
-            <svg className="yarrow-divide-anim" viewBox="0 0 200 40" fill="none">
-              <g className="yarrow-stalk-left">
-                <line x1="30" y1="7" x2="30" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                <line x1="40" y1="5" x2="40" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                <line x1="50" y1="8" x2="50" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                <line x1="60" y1="6" x2="60" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                <line x1="70" y1="7" x2="70" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-              </g>
-              <g className="yarrow-stalk-right">
-                <line x1="90" y1="6" x2="90" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                <line x1="100" y1="8" x2="100" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                <line x1="110" y1="5" x2="110" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                <line x1="120" y1="7" x2="120" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                <line x1="130" y1="6" x2="130" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-              </g>
-              <line className="yarrow-stalk-aside" x1="165" y1="5" x2="165" y2="33" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="4 3"/>
-            </svg>
-          </div>
-
-          {/* Three-phase input */}
-          <div className="manual-yarrow-phases">
-            {/* Phase 1: residue 5 or 9 */}
-            <div className="manual-yarrow-phase">
-              <p className="manual-yarrow-phase-label">{m.phase1Label}</p>
-              <p className="manual-yarrow-phase-hint" title={m.phase1Hint}>{m.phase1Hint}</p>
-              <div className="manual-yarrow-phase-buttons">
-                {([5, 9] as const).map((v) => (
-                  <button
-                    key={v}
-                    type="button"
-                    className={`manual-yarrow-residue-btn${phase1 === v ? " manual-yarrow-residue-btn--selected" : ""}`}
-                    onClick={() => setPhase1(v)}
-                    aria-pressed={phase1 === v}
-                    aria-label={m.phase1Aria.replace("{{v}}", String(v))}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Phase 2: residue 4 or 8 */}
-            <div className="manual-yarrow-phase">
-              <p className="manual-yarrow-phase-label">{m.phase2Label}</p>
-              <p className="manual-yarrow-phase-hint" title={m.phase2Hint}>{m.phase2Hint}</p>
-              <div className="manual-yarrow-phase-buttons">
-                {([4, 8] as const).map((v) => (
-                  <button
-                    key={v}
-                    type="button"
-                    className={`manual-yarrow-residue-btn${phase2 === v ? " manual-yarrow-residue-btn--selected" : ""}`}
-                    onClick={() => setPhase2(v)}
-                    aria-pressed={phase2 === v}
-                    aria-label={m.phase2Aria.replace("{{v}}", String(v))}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Phase 3: residue 4 or 8 */}
-            <div className="manual-yarrow-phase">
-              <p className="manual-yarrow-phase-label">{m.phase3Label}</p>
-              <p className="manual-yarrow-phase-hint" title={m.phase3Hint}>{m.phase3Hint}</p>
-              <div className="manual-yarrow-phase-buttons">
-                {([4, 8] as const).map((v) => (
-                  <button
-                    key={v}
-                    type="button"
-                    className={`manual-yarrow-residue-btn${phase3 === v ? " manual-yarrow-residue-btn--selected" : ""}`}
-                    onClick={() => setPhase3(v)}
-                    aria-pressed={phase3 === v}
-                    aria-label={m.phase3Aria.replace("{{v}}", String(v))}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Result card — same pattern as coin wizard sum card */}
-          <div className="manual-iching-sum-card">
-            <div className="manual-iching-sum-main">
-              <p className="manual-iching-sum-label">{m.resultLabel}</p>
-              <p className="manual-iching-sum-value">{currentValue !== null ? currentValue : "—"}</p>
-            </div>
-            <p className="manual-iching-sum-caption">
-              {caption ?? m.awaitingResult}
-            </p>
-          </div>
+          {/* Awaiting text on phase 3 before value selected */}
+          {isLastPhase && !showLineSymbol && (
+            <p className="manual-yarrow-awaiting">{m.awaitingResult}</p>
+          )}
         </div>
 
         <div className="manual-iching-wizard-actions">
@@ -278,14 +328,25 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
           >
             {m.back}
           </button>
-          <button
-            type="button"
-            className="primary-btn"
-            onClick={registerLine}
-            disabled={!canRegister}
-          >
-            {recorded.length === 5 ? m.confirmConsult : m.registerLine}
-          </button>
+          {isLastPhase ? (
+            <button
+              type="button"
+              className="primary-btn"
+              onClick={registerLine}
+              disabled={currentValue === null}
+            >
+              {recorded.length === 5 ? m.confirmConsult : m.registerLine}
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="primary-btn"
+              onClick={advancePhase}
+              disabled={currentPhaseValue === null}
+            >
+              {m.nextPhase}
+            </button>
+          )}
         </div>
       </div>
     </div>
