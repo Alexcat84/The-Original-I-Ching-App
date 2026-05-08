@@ -20,6 +20,9 @@ jobs:
       - name: Disable corepack (prevents yarn/npm interception during build)
         run: corepack disable
 
+      - name: Install yarn without packageManager startup check
+        run: npm install -g yarn@1.22.19
+
       - name: Upgrade npm to match lockfile generator
         run: npm install -g npm@11.5.1
 
