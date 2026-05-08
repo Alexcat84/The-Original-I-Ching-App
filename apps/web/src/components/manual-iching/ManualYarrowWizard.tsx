@@ -168,12 +168,33 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
             </div>
           </div>
 
+          {/* Stalks dividing animation — remounts on each new line to replay */}
+          <div className="yarrow-divide-anim-wrap" key={`yd-${lineNumber}`} aria-hidden="true">
+            <svg className="yarrow-divide-anim" viewBox="0 0 200 40" fill="none">
+              <g className="yarrow-stalk-left">
+                <line x1="30" y1="7" x2="30" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                <line x1="40" y1="5" x2="40" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                <line x1="50" y1="8" x2="50" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                <line x1="60" y1="6" x2="60" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                <line x1="70" y1="7" x2="70" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+              </g>
+              <g className="yarrow-stalk-right">
+                <line x1="90" y1="6" x2="90" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                <line x1="100" y1="8" x2="100" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                <line x1="110" y1="5" x2="110" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                <line x1="120" y1="7" x2="120" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                <line x1="130" y1="6" x2="130" y2="33" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+              </g>
+              <line className="yarrow-stalk-aside" x1="165" y1="5" x2="165" y2="33" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="4 3"/>
+            </svg>
+          </div>
+
           {/* Three-phase input */}
           <div className="manual-yarrow-phases">
             {/* Phase 1: residue 5 or 9 */}
             <div className="manual-yarrow-phase">
               <p className="manual-yarrow-phase-label">{m.phase1Label}</p>
-              <p className="manual-yarrow-phase-hint">{m.phase1Hint}</p>
+              <p className="manual-yarrow-phase-hint" title={m.phase1Hint}>{m.phase1Hint}</p>
               <div className="manual-yarrow-phase-buttons">
                 {([5, 9] as const).map((v) => (
                   <button
@@ -193,7 +214,7 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
             {/* Phase 2: residue 4 or 8 */}
             <div className="manual-yarrow-phase">
               <p className="manual-yarrow-phase-label">{m.phase2Label}</p>
-              <p className="manual-yarrow-phase-hint">{m.phase2Hint}</p>
+              <p className="manual-yarrow-phase-hint" title={m.phase2Hint}>{m.phase2Hint}</p>
               <div className="manual-yarrow-phase-buttons">
                 {([4, 8] as const).map((v) => (
                   <button
@@ -213,7 +234,7 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
             {/* Phase 3: residue 4 or 8 */}
             <div className="manual-yarrow-phase">
               <p className="manual-yarrow-phase-label">{m.phase3Label}</p>
-              <p className="manual-yarrow-phase-hint">{m.phase3Hint}</p>
+              <p className="manual-yarrow-phase-hint" title={m.phase3Hint}>{m.phase3Hint}</p>
               <div className="manual-yarrow-phase-buttons">
                 {([4, 8] as const).map((v) => (
                   <button

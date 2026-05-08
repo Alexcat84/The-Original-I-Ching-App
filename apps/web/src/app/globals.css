@@ -6457,49 +6457,107 @@ html.iching-rn-webview .apk-trace-native-metrics {
   line-height: 1.4;
 }
 
-/* Yarrow Stalks wizard — three-phase residue input */
+/* Yarrow Stalks wizard — dividing animation (C2) */
+.yarrow-divide-anim-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.1rem 0 0.25rem;
+  overflow: hidden;
+  color: var(--fg-muted);
+}
+
+.yarrow-divide-anim {
+  height: 40px;
+  width: 200px;
+  max-width: 100%;
+  display: block;
+}
+
+.yarrow-stalk-left {
+  animation: yarrow-split-left 420ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.yarrow-stalk-right {
+  animation: yarrow-split-right 420ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.yarrow-stalk-aside {
+  animation: yarrow-aside-appear 380ms ease 180ms both;
+}
+
+@keyframes yarrow-split-left {
+  0%   { transform: translateX(18px); opacity: 0.25; }
+  30%  { opacity: 1; }
+  100% { transform: translateX(0); opacity: 0.8; }
+}
+
+@keyframes yarrow-split-right {
+  0%   { transform: translateX(-18px); opacity: 0.25; }
+  30%  { opacity: 1; }
+  100% { transform: translateX(0); opacity: 0.8; }
+}
+
+@keyframes yarrow-aside-appear {
+  0%   { opacity: 0; transform: translateX(6px); }
+  100% { opacity: 0.5; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yarrow-stalk-left,
+  .yarrow-stalk-right,
+  .yarrow-stalk-aside {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* Yarrow Stalks wizard — three-phase residue input (C1: compact) */
 .manual-yarrow-phases {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
+  gap: 0.45rem;
+  margin-bottom: 0.35rem;
 }
 
 .manual-yarrow-phase {
-  padding: 0.55rem 0.65rem;
+  padding: 0.38rem 0.55rem;
   border-radius: 0.5rem;
   background: color-mix(in srgb, var(--accent) 6%, var(--composer-bg));
   border: 1px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
 }
 
 .manual-yarrow-phase-label {
-  margin: 0 0 0.2rem;
-  font-size: 0.8rem;
+  margin: 0 0 0.1rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: var(--fg);
 }
 
 .manual-yarrow-phase-hint {
-  margin: 0 0 0.5rem;
-  font-size: 0.72rem;
+  margin: 0 0 0.28rem;
+  font-size: 0.67rem;
   color: var(--fg-muted);
-  line-height: 1.45;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .manual-yarrow-phase-buttons {
   display: flex;
-  gap: 0.55rem;
+  gap: 0.5rem;
 }
 
 .manual-yarrow-residue-btn {
-  min-width: 3rem;
-  height: 2.6rem;
-  padding: 0 0.75rem;
+  min-width: 2.75rem;
+  height: 2.35rem;
+  padding: 0 0.65rem;
   border-radius: 0.42rem;
   border: 2px solid var(--bar-border);
   background: var(--composer-bg);
   color: var(--fg);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
   transition: border-color 0.12s, background 0.12s, color 0.12s;
