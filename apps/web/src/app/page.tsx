@@ -4515,75 +4515,79 @@ export default function HomePage() {
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
                           <span className="cast-selector-label">{manualWizardChrome.castMethodGroupAria}</span>
-                          <div
-                            className="composer-reading-segmented"
-                            role="group"
-                            aria-label={manualWizardChrome.castMethodGroupAria}
-                          >
-                            <button
-                              type="button"
-                              className={`composer-reading-pill${ichingCastingMethod === "three-coins" ? " is-active" : ""}`}
-                              onClick={() => setIchingCastingMethod("three-coins")}
+                          <label className="oracle-toggle-wrap">
+                            <input
+                              type="checkbox"
+                              className="oracle-toggle-input"
+                              checked={ichingCastingMethod === "yarrow-stalks"}
+                              onChange={() =>
+                                setIchingCastingMethod(
+                                  ichingCastingMethod === "yarrow-stalks" ? "three-coins" : "yarrow-stalks",
+                                )
+                              }
                               disabled={loading}
-                              aria-pressed={ichingCastingMethod === "three-coins"}
-                            >
-                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
-                                <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5"/>
-                                <rect x="5.5" y="5.5" width="3" height="3" stroke="currentColor" strokeWidth="1"/>
-                              </svg>
-                              {manualWizardChrome.castMethodCoinsLabel}
-                            </button>
-                            <button
-                              type="button"
-                              className={`composer-reading-pill${ichingCastingMethod === "yarrow-stalks" ? " is-active" : ""}`}
-                              onClick={() => setIchingCastingMethod("yarrow-stalks")}
-                              disabled={loading}
-                              aria-pressed={ichingCastingMethod === "yarrow-stalks"}
-                            >
-                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
-                                <line x1="2.5" y1="2" x2="2.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                                <line x1="5.5" y1="1" x2="5.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                                <line x1="8.5" y1="2" x2="8.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                                <line x1="11.5" y1="1" x2="11.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                              </svg>
-                              {manualWizardChrome.castMethodYarrowLabel}
-                            </button>
-                          </div>
+                              aria-label={`${manualWizardChrome.castMethodCoinsLabel} / ${manualWizardChrome.castMethodYarrowLabel}`}
+                            />
+                            <div className="oracle-toggle-track">
+                              <div className="oracle-toggle-glow" />
+                              <div className="oracle-toggle-track-line" />
+                              <div className="oracle-toggle-thumb">
+                                <div className="oracle-thumb-sweep" />
+                              </div>
+                              <div className="oracle-toggle-option oracle-toggle-option--left" aria-hidden="true">
+                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                  <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5"/>
+                                  <rect x="5.5" y="5.5" width="3" height="3" stroke="currentColor" strokeWidth="1"/>
+                                </svg>
+                                <span>{manualWizardChrome.castMethodCoinsLabel.split(" (")[0]}</span>
+                              </div>
+                              <div className="oracle-toggle-option oracle-toggle-option--right" aria-hidden="true">
+                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                  <line x1="2.5" y1="2" x2="2.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                  <line x1="5.5" y1="1" x2="5.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                  <line x1="8.5" y1="2" x2="8.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                  <line x1="11.5" y1="1" x2="11.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                </svg>
+                                <span>{manualWizardChrome.castMethodYarrowLabel.split(" (")[0]}</span>
+                              </div>
+                            </div>
+                          </label>
                         </div>
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
                           <span className="cast-selector-label">{manualWizardChrome.castModeGroupAria}</span>
-                          <div
-                            className="composer-reading-segmented"
-                            role="group"
-                            aria-label={manualWizardChrome.castModeGroupAria}
-                          >
-                            <button
-                              type="button"
-                              className={`composer-reading-pill${ichingCastMode === "auto" ? " is-active" : ""}`}
-                              onClick={() => setIchingCastMode("auto")}
+                          <label className="oracle-toggle-wrap">
+                            <input
+                              type="checkbox"
+                              className="oracle-toggle-input"
+                              checked={ichingCastMode === "manual"}
+                              onChange={() =>
+                                setIchingCastMode(ichingCastMode === "manual" ? "auto" : "manual")
+                              }
                               disabled={loading}
-                              aria-pressed={ichingCastMode === "auto"}
-                            >
-                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
-                                <path d="M8 1.5L3.5 7.5H7L5.5 12.5L11 6H7.5L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" strokeLinecap="round"/>
-                              </svg>
-                              {manualWizardChrome.castAutoLabel}
-                            </button>
-                            <button
-                              type="button"
-                              className={`composer-reading-pill${ichingCastMode === "manual" ? " is-active" : ""}`}
-                              onClick={() => setIchingCastMode("manual")}
-                              disabled={loading}
-                              aria-pressed={ichingCastMode === "manual"}
-                            >
-                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
-                                <path d="M2 10.5V12H3.5L9.5 6L8 4.5L2 10.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
-                                <path d="M9.5 3L11 4.5L10 5.5L8.5 4L9.5 3Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
-                              </svg>
-                              {manualWizardChrome.castManualLabel}
-                            </button>
-                          </div>
+                              aria-label={`${manualWizardChrome.castAutoLabel} / ${manualWizardChrome.castManualLabel}`}
+                            />
+                            <div className="oracle-toggle-track">
+                              <div className="oracle-toggle-glow" />
+                              <div className="oracle-toggle-track-line" />
+                              <div className="oracle-toggle-thumb">
+                                <div className="oracle-thumb-sweep" />
+                              </div>
+                              <div className="oracle-toggle-option oracle-toggle-option--left" aria-hidden="true">
+                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                  <path d="M8 1.5L3.5 7.5H7L5.5 12.5L11 6H7.5L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" strokeLinecap="round"/>
+                                </svg>
+                                <span>{manualWizardChrome.castAutoLabel}</span>
+                              </div>
+                              <div className="oracle-toggle-option oracle-toggle-option--right" aria-hidden="true">
+                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                  <path d="M2 10.5V12H3.5L9.5 6L8 4.5L2 10.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                                  <path d="M9.5 3L11 4.5L10 5.5L8.5 4L9.5 3Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                                </svg>
+                                <span>{manualWizardChrome.castManualLabel.split(" (")[0].split("（")[0].trim()}</span>
+                              </div>
+                            </div>
+                          </label>
                         </div>
                       </>
                     ) : null}
