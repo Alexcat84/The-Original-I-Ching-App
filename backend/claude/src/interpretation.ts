@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { SessionContext } from "@iching-oracle/context-engine";
-import type { CastResult } from "@iching-oracle/iching-engine";
+import type { CastingMethod, CastResult } from "@iching-oracle/iching-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { loadClaudeEnv } from "./env.js";
@@ -94,12 +94,20 @@ function enforceIChingStructuralConsistency(text: string, cast: CastResult, lang
   return `${text}\n\n${correction}`;
 }
 
+function castingMethodNote(method: CastingMethod | undefined): string {
+  if (method === "yarrow-stalks") {
+    return "DIVINATION METHOD: Yarrow Stalks (authentic Zhou distribution — old yang 3× more likely than old yin; the transformed hexagram carries additional interpretive weight when it appears)";
+  }
+  return "DIVINATION METHOD: Three Coins (symmetric probability — equal weight for both types of moving lines)";
+}
+
 function buildCurrentCastPrompt(
   cast: CastResult,
   _tier: string,
   language: string,
   hasContext: boolean,
   mode: ResponseMode,
+  castingMethod?: CastingMethod,
 ): string {
   const { question, textsForClaude: t, primaryHexagram: p, transformedHexagram: tr, mutationRule } = cast;
   const targetWordCount = "700-900";
@@ -217,6 +225,7 @@ INSTRUCTIONS:
 - Length: ${targetWordCount} words
 - If source excerpts arrive in a different language (often English), TRANSLATE them into the response language before quoting. Do not leave mixed-language fragments.
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
+- ${castingMethodNote(castingMethod)}
 - Respond in ${getLanguageName(language)}
 `.trim();
 }
@@ -228,6 +237,7 @@ export async function generateInterpretation(
   mode: ResponseMode = "ritual",
   env: NodeJS.ProcessEnv = process.env,
   displayName?: string,
+  castingMethod?: CastingMethod,
 ): Promise<{ text: string; category: ConsultationCategory }> {
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const language = castResult.language;
@@ -235,9 +245,10 @@ export async function generateInterpretation(
   const model = getAnthropicModelId(env);
 
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
+  const resolvedCastingMethod = castingMethod ?? castResult.castingMethod;
   const userContent = hasContext && context
-    ? `${buildContextBlock(context, language, mode)}\n\n${buildCurrentCastPrompt(castResult, tier, language, true, mode)}`
-    : buildCurrentCastPrompt(castResult, tier, language, false, mode);
+    ? `${buildContextBlock(context, language, mode)}\n\n${buildCurrentCastPrompt(castResult, tier, language, true, mode, resolvedCastingMethod)}`
+    : buildCurrentCastPrompt(castResult, tier, language, false, mode, resolvedCastingMethod);
 
   const nameNote =
     displayName?.trim()

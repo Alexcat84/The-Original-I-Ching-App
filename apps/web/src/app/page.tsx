@@ -30,6 +30,7 @@ import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { ManualIChingCoinWizard } from "@/components/manual-iching/ManualIChingCoinWizard";
+import { ManualYarrowWizard } from "@/components/manual-iching/ManualYarrowWizard";
 import { getManualWizardMessages } from "@/components/manual-iching/manual-wizard-messages";
 import { AmbientParticles } from "@/components/AmbientParticles";
 import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
@@ -64,7 +65,7 @@ import {
   ichingRitualRevealTimingFromBudget,
   type IchingRitualRevealTiming,
 } from "@/lib/iching-ritual-timing";
-import { previewCastFromLineValues, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
+import { previewCastFromLineValues, type CastingMethod, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
@@ -72,6 +73,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
 
 const ICHING_CAST_MODE_STORAGE_KEY = "iching_cast_mode_v1";
+const ICHING_CASTING_METHOD_STORAGE_KEY = "iching_casting_method_v1";
 
 const ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX = "iching_account_session_limit_v1:";
 const PLAY_PROMO_STRIP_DISMISSED_KEY = "iching_play_promo_strip_dismissed_v1";
@@ -1275,8 +1277,27 @@ export default function HomePage() {
       /* ignore */
     }
   }, [ichingCastMode]);
+  const [ichingCastingMethod, setIchingCastingMethod] = useState<CastingMethod>(() => {
+    if (typeof window === "undefined") return "three-coins";
+    try {
+      return window.localStorage.getItem(ICHING_CASTING_METHOD_STORAGE_KEY) === "yarrow-stalks"
+        ? "yarrow-stalks"
+        : "three-coins";
+    } catch {
+      return "three-coins";
+    }
+  });
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(ICHING_CASTING_METHOD_STORAGE_KEY, ichingCastingMethod);
+    } catch {
+      /* ignore */
+    }
+  }, [ichingCastingMethod]);
   const [manualWizardOpen, setManualWizardOpen] = useState(false);
   const [manualWizardQuestionSnapshot, setManualWizardQuestionSnapshot] = useState<string | null>(null);
+  const [manualYarrowWizardOpen, setManualYarrowWizardOpen] = useState(false);
+  const [manualYarrowQuestionSnapshot, setManualYarrowQuestionSnapshot] = useState<string | null>(null);
   const [manualCastPreview, setManualCastPreview] = useState<{
     primaryHexagram: number;
     primaryHexagramChinese: string;
@@ -3059,8 +3080,13 @@ export default function HomePage() {
       return;
     }
     if (oracleMode === "iching" && ichingCastMode === "manual") {
-      setManualWizardQuestionSnapshot(questionForRequest);
-      setManualWizardOpen(true);
+      if (ichingCastingMethod === "yarrow-stalks") {
+        setManualYarrowQuestionSnapshot(questionForRequest);
+        setManualYarrowWizardOpen(true);
+      } else {
+        setManualWizardQuestionSnapshot(questionForRequest);
+        setManualWizardOpen(true);
+      }
       return;
     }
     await executeConsultationRequest(questionForRequest);
@@ -3186,8 +3212,8 @@ export default function HomePage() {
           oracleMode,
           ...(oracleMode === "iching"
             ? manualLineValues
-              ? { ichingCastMode: "manual" as const, ichingManualLineValues: [...manualLineValues] }
-              : { ichingCastMode }
+              ? { ichingCastMode: "manual" as const, ichingCastingMethod, ichingManualLineValues: [...manualLineValues] }
+              : { ichingCastMode, ichingCastingMethod }
             : {}),
           displayName: displayName ?? undefined,
           oracleBones:
@@ -4023,7 +4049,9 @@ export default function HomePage() {
                 style={{ color: "var(--fg)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
               >
                 {oracleMode === "iching"
-                  ? ui.iChingTagline
+                  ? ichingCastingMethod === "yarrow-stalks"
+                    ? manualWizardChrome.castMethodYarrowTagline
+                    : ui.iChingTagline
                   : ui.bonesTagline}
               </p>
             </div>
@@ -4472,6 +4500,41 @@ export default function HomePage() {
                     </div>
                     {oracleMode === "iching" ? (
                       <>
+                        <hr className="composer-panel-divider" aria-hidden />
+                        <div
+                          className="manual-cast-mode-block"
+                          role="radiogroup"
+                          aria-label={manualWizardChrome.castMethodGroupAria}
+                        >
+                          <p className="manual-cast-mode-heading">{manualWizardChrome.castMethodGroupAria}</p>
+                          <div className="manual-cast-mode-row">
+                            <label className="manual-cast-mode-option">
+                              <input
+                                type="radio"
+                                name="ichingCastingMethod"
+                                value="three-coins"
+                                checked={ichingCastingMethod === "three-coins"}
+                                onChange={() => setIchingCastingMethod("three-coins")}
+                                disabled={loading}
+                              />
+                              <span>{manualWizardChrome.castMethodCoinsLabel}</span>
+                            </label>
+                            <label className="manual-cast-mode-option">
+                              <input
+                                type="radio"
+                                name="ichingCastingMethod"
+                                value="yarrow-stalks"
+                                checked={ichingCastingMethod === "yarrow-stalks"}
+                                onChange={() => setIchingCastingMethod("yarrow-stalks")}
+                                disabled={loading}
+                              />
+                              <span>{manualWizardChrome.castMethodYarrowLabel}</span>
+                            </label>
+                          </div>
+                          {ichingCastingMethod === "yarrow-stalks" && (
+                            <p className="manual-cast-method-hint">{manualWizardChrome.castMethodYarrowHint}</p>
+                          )}
+                        </div>
                         <hr className="composer-panel-divider" aria-hidden />
                         <div
                           className="manual-cast-mode-block"
@@ -5289,6 +5352,21 @@ export default function HomePage() {
         }}
         locale={locale}
         questionPreview={manualWizardQuestionSnapshot ?? ""}
+      />
+      <ManualYarrowWizard
+        open={manualYarrowWizardOpen}
+        onClose={() => {
+          setManualYarrowWizardOpen(false);
+          setManualYarrowQuestionSnapshot(null);
+        }}
+        onComplete={(lines) => {
+          setManualYarrowWizardOpen(false);
+          const q = manualYarrowQuestionSnapshot?.trim() ?? question.trim();
+          setManualYarrowQuestionSnapshot(null);
+          void executeConsultationRequest(q, lines);
+        }}
+        locale={locale}
+        questionPreview={manualYarrowQuestionSnapshot ?? ""}
       />
       <section
         aria-hidden="true"

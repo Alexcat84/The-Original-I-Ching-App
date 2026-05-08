@@ -1,4 +1,6 @@
 export type {
+  CastingMethod,
+  CastingMode,
   CastResult,
   Hexagram,
   HexagramLine,
@@ -13,12 +15,16 @@ export {
   applyMutations,
   buildLine,
   castSixLines,
+  castYarrowSixLines,
   determineMutationRule,
   getHexagram,
   linesToBinaryTopFirst,
   performCast,
   performCastFromLineValues,
+  performYarrowCast,
   previewCastFromLineValues,
   selectTextsForClaude,
   throwThreeCoins,
+  throwYarrowStalks,
+  yarrowSumToLine,
 } from "./engine.js";

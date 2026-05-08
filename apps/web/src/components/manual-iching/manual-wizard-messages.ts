@@ -24,6 +24,12 @@ export type ManualWizardMessages = {
   rollProgress: string;
   /** Short hint for the step strip */
   progressNavHint: string;
+  /** Method selector — shown in composer panel */
+  castMethodGroupAria: string;
+  castMethodCoinsLabel: string;
+  castMethodYarrowLabel: string;
+  castMethodYarrowHint: string;
+  castMethodYarrowTagline: string;
 };
 
 const M: Record<AppLocale, ManualWizardMessages> = {
@@ -49,6 +55,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "Preparando la lectura…",
     rollProgress: "Tirada {{current}}/{{total}}",
     progressNavHint: "Líneas completadas: toca para volver a editar desde esa línea.",
+    castMethodGroupAria: "Método de lanzamiento",
+    castMethodCoinsLabel: "Tres Monedas",
+    castMethodYarrowLabel: "Varillas (Yarrow)",
+    castMethodYarrowHint: "Distribución auténtica Zhou — yang móvil 3× más frecuente que yin móvil",
+    castMethodYarrowTagline: "Varillas · Zhu Xi · Wilhelm/Baynes",
   },
   en: {
     title: "Manual cast: three coins",
@@ -72,6 +83,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "Preparing your reading…",
     rollProgress: "Cast {{current}}/{{total}}",
     progressNavHint: "Completed steps: tap to re-edit throws from that line.",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   pt: {
     title: "Tiragem manual: três moedas",
@@ -95,6 +111,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "A preparar a leitura…",
     rollProgress: "Tiragem {{current}}/{{total}}",
     progressNavHint: "Passos concluídos: toque para voltar a editar a partir dessa linha.",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   fr: {
     title: "Tirage manuel: trois pièces",
@@ -118,6 +139,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "Préparation de la lecture…",
     rollProgress: "Tirage {{current}}/{{total}}",
     progressNavHint: "Étapes terminées : touchez pour reprendre l’édition depuis cette ligne.",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   de: {
     title: "Manueller Wurf: drei Münzen",
@@ -141,6 +167,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "Lesung wird vorbereitet…",
     rollProgress: "Wurf {{current}}/{{total}}",
     progressNavHint: "Fertige Schritte: tippen, um ab dieser Linie neu einzugeben.",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   it: {
     title: "Lancio manuale: tre monete",
@@ -164,6 +195,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "Preparazione della lettura…",
     rollProgress: "Lancio {{current}}/{{total}}",
     progressNavHint: "Passi completati: tocca per modificare da quella linea.",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   ja: {
     title: "手動占い: 三銭",
@@ -187,6 +223,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "読み結果を準備中…",
     rollProgress: "{{current}}/{{total}} 投",
     progressNavHint: "記録済みの段をタップしてその爻からやり直す。",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   zh: {
     title: "手动起卦: 三钱",
@@ -210,6 +251,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "正在准备卦象…",
     rollProgress: "第 {{current}}/{{total}} 掷",
     progressNavHint: "已记录的步骤：点击可从该爻重掷。",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   ko: {
     title: "수동 점: 동전 세枚",
@@ -233,6 +279,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "해석 준비 중…",
     rollProgress: "{{current}}/{{total}} 차례",
     progressNavHint: "완료된 단계: 탭하면 해당 효부터 다시 입력.",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   ar: {
     title: "قَسْم يدوي: ثلاث عملات",
@@ -256,6 +307,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "جارٍ تجهيز القراءة…",
     rollProgress: "رمية {{current}}/{{total}}",
     progressNavHint: "خطوات مكتملة: المس للتعديل بدءًا من ذلك الخط.",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   hi: {
     title: "मैन्युअल कास्ट: तीन सिक्के",
@@ -279,6 +335,11 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     previewLoading: "पठन तैयार हो रहा है…",
     rollProgress: "कास्ट {{current}}/{{total}}",
     progressNavHint: "पूर्ण चरण: उस रेखा से फिर से दर्ज करने के लिए टैप करें।",
+    castMethodGroupAria: "Casting method",
+    castMethodCoinsLabel: "Three Coins",
+    castMethodYarrowLabel: "Yarrow Stalks",
+    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
 };
 

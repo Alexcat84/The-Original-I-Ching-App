@@ -2,6 +2,10 @@ export type LineValue = 6 | 7 | 8 | 9;
 
 export type LineType = "yin_old" | "yang_young" | "yin_young" | "yang_old";
 
+export type CastingMethod = "three-coins" | "yarrow-stalks";
+
+export type CastingMode = "auto" | "manual";
+
 export type MutationRule =
   | "NO_CHANGING"
   | "ONE_CHANGING"
@@ -67,4 +71,5 @@ export interface CastResult {
   mutationRule: MutationRule;
   textsForClaude: TextsForClaude;
   timestamp: Date;
+  castingMethod?: CastingMethod;
 }

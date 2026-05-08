@@ -6168,3 +6168,86 @@ html.iching-rn-webview .apk-trace-native-metrics {
   margin-bottom: 0.65rem;
 }
 
+/* Method selector hint line */
+.manual-cast-method-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.74rem;
+  color: var(--fg-muted);
+  line-height: 1.4;
+}
+
+/* Yarrow Stalks wizard — three-phase residue input */
+.manual-yarrow-phases {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.manual-yarrow-phase {
+  padding: 0.55rem 0.65rem;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--accent) 6%, var(--composer-bg));
+  border: 1px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
+}
+
+.manual-yarrow-phase-label {
+  margin: 0 0 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.manual-yarrow-phase-hint {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+  line-height: 1.45;
+}
+
+.manual-yarrow-phase-buttons {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.manual-yarrow-residue-btn {
+  min-width: 3rem;
+  height: 2.6rem;
+  padding: 0 0.75rem;
+  border-radius: 0.42rem;
+  border: 2px solid var(--bar-border);
+  background: var(--composer-bg);
+  color: var(--fg);
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s, color 0.12s;
+  line-height: 1;
+}
+
+.manual-yarrow-residue-btn:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--bar-border));
+  background: color-mix(in srgb, var(--accent) 10%, var(--composer-bg));
+}
+
+.manual-yarrow-residue-btn--selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--composer-bg));
+  color: var(--accent);
+}
+
+.manual-yarrow-residue-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.manual-yarrow-residue-btn:active {
+  transform: scale(0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .manual-yarrow-residue-btn {
+    transition: none;
+  }
+}
+
