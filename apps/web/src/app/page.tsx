@@ -1290,9 +1290,13 @@ export default function HomePage() {
     setActiveSessionLocalId,
     sessionsHydrated,
     setSessionsHydrated,
+    sessionsServerHydrated,
+    setSessionsServerHydrated,
     setPersistenceKeys,
     hydrateFromStorage,
   } = useChatSessionState<ConsultationItem>();
+  const serverHydratedRef = useRef(sessionsServerHydrated);
+  serverHydratedRef.current = sessionsServerHydrated;
   const [error, setError] = useState<string | null>(null);
   const [creditsNotice, setCreditsNotice] = useState<{
     tier: BillingTier;
@@ -1352,6 +1356,7 @@ export default function HomePage() {
   const manualRitualFinaleShownRef = useRef(false);
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
+  const mountScrollDoneRef = useRef(false);
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
   const isSigningOutRef = useRef(false);
@@ -1970,6 +1975,7 @@ export default function HomePage() {
     if (prevActiveSessionLocalIdForScrollRef.current !== activeSessionLocalId) {
       prevActiveSessionLocalIdForScrollRef.current = activeSessionLocalId;
       lastScrollWasRevealRef.current = false;
+      mountScrollDoneRef.current = false;
     }
     if (revealConsultationId) {
       lastScrollWasRevealRef.current = true;
@@ -1985,7 +1991,10 @@ export default function HomePage() {
       lastScrollWasRevealRef.current = false;
       return;
     }
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    // First render after mount/remount or session change: jump instantly to avoid visual slide
+    const behavior = mountScrollDoneRef.current ? "smooth" : "instant";
+    mountScrollDoneRef.current = true;
+    endRef.current?.scrollIntoView({ behavior, block: "end" });
   }, [activeThread.length, phase, error, activeSessionLocalId, revealConsultationId]);
 
   useEffect(() => {
@@ -2445,6 +2454,12 @@ export default function HomePage() {
   }, [accessToken, authUserId, sessionUi, signOut]);
 
   useEffect(() => {
+    if (!accessToken) {
+      setSessionsServerHydrated(false);
+    }
+  }, [accessToken, setSessionsServerHydrated]);
+
+  useEffect(() => {
     if (sessionsHydrated) return;
     if (sessions.length > 0) {
       setSessionsHydrated(true);
@@ -2482,7 +2497,11 @@ export default function HomePage() {
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
     let cancelled = false;
-    setHistoryLoading(true);
+    // Skip the loading spinner if sessions were already fetched from the server
+    // (stale-while-revalidate: show existing data instantly, refresh silently in background)
+    if (!serverHydratedRef.current) {
+      setHistoryLoading(true);
+    }
     setHistoryLoadError(null);
     hydrateFromStorage(summaryCacheKey, chatStateCacheKey);
     void (async () => {
@@ -2592,6 +2611,9 @@ export default function HomePage() {
         if (selected?.sessionId && selected.messageCount > 0 && selected.thread.length === 0) {
           void loadSessionThread(selected.sessionId, selected.localId);
         }
+        if (!cancelled) {
+          setSessionsServerHydrated(true);
+        }
         setHistoryLoadError(null);
       } catch {
         setHistoryLoadError(sessionUi.historyNetworkError);
@@ -2616,6 +2638,7 @@ export default function HomePage() {
     chatStateCacheKey,
     hydrateFromStorage,
     signOut,
+    setSessionsServerHydrated,
   ]);
 
   async function startTwoFactorEnrollment() {
