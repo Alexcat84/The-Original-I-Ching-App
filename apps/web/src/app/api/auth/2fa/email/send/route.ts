@@ -42,7 +42,7 @@ async function sendEmail2faCode(params: {
     body: JSON.stringify({
       from: params.from,
       to: [params.to],
-      subject: "Tu código de verificación (2FA) — The Original I Ching App",
+      subject: "Tu código de verificación (2FA) | The Original I Ching App",
       text: `Tu código de verificación es: ${params.code}. Expira en ${params.ttlMinutes} minutos.`,
       html: `<p>Tu código de verificación es:</p><p style="font-size:24px;font-weight:700;letter-spacing:3px">${params.code}</p><p>Expira en ${params.ttlMinutes} minutos.</p>`,
     }),

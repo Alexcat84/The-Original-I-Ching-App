@@ -203,7 +203,7 @@ export function selectTextsForClaude(
         selectedLineTexts: [],
         specialYaoText:
           primary.yongJiu ??
-          'Todos los Nueves (用九): "Rebaño de dragones sin cabeza — ventura."',
+          'Todos los Nueves (用九): "Rebaño de dragones sin cabeza; ventura."',
         ruleExplanation: "Qian (1) con todos Yang Viejos. Séptimo Yao 用九.",
       };
 

@@ -4,13 +4,13 @@ import { FREE_SESSION_LIMIT, FREE_TOKENS, getPackConfig, getSessionLimit } from 
 describe("getPackConfig", () => {
   it("returns correct config for each pack", () => {
     expect(getPackConfig("tokens_seeker_20")).toMatchObject({
-      tokens: 20,
+      tokens: 25,
       price: 6.99,
       label: "Seeker Pack",
       sessionLimit: 3,
     });
     expect(getPackConfig("tokens_practitioner_40")).toMatchObject({
-      tokens: 40,
+      tokens: 50,
       price: 11.99,
       label: "Practitioner Pack",
       sessionLimit: 5,

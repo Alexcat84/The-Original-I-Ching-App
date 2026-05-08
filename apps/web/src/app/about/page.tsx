@@ -4,10 +4,10 @@ import { getAppTraceabilityUiMessages, getDocNavUiMessages } from "@iching-oracl
 import { resolveDocLocale } from "@/lib/doc-locale";
 
 export const metadata: Metadata = {
-  title: "About — The Original I Ching App",
+  title: "About | The Original I Ching App",
   description: "App version, build traceability, and credits for The Original I Ching App.",
   openGraph: {
-    title: "About — The Original I Ching App",
+    title: "About | The Original I Ching App",
     description: "App version, build traceability, and credits.",
   },
 };
@@ -35,11 +35,11 @@ export default async function AboutPage() {
             <div className="apk-trace-native-metrics">
               <div className="apk-trace-row">
                 <dt>{trace.versionLabel}</dt>
-                <dd id="rn-trace-version">—</dd>
+                <dd id="rn-trace-version">…</dd>
               </div>
               <div className="apk-trace-row">
                 <dt>{trace.androidVersionCodeLabel}</dt>
-                <dd id="rn-trace-code">—</dd>
+                <dd id="rn-trace-code">…</dd>
               </div>
             </div>
           </dl>

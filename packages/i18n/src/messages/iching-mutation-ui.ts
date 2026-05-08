@@ -27,8 +27,8 @@ const ES: RuleMap = {
   FOUR_LOWEST_STABLE: "Cuatro líneas: la inferior estable",
   FIVE_ONLY_STABLE: "Cinco mutando; una estable",
   SIX_ALL_CHANGING: "Las seis líneas mutan",
-  QIAN_ALL_NINE: "Qian — nueve al novenario",
-  KUN_ALL_SIX: "Kun — seis al senario",
+  QIAN_ALL_NINE: "Qian: nueve al novenario",
+  KUN_ALL_SIX: "Kun: seis al senario",
 };
 
 const EN: RuleMap = {
@@ -40,8 +40,8 @@ const EN: RuleMap = {
   FOUR_LOWEST_STABLE: "Four lines: lowest remains stable",
   FIVE_ONLY_STABLE: "Five changing; one stable",
   SIX_ALL_CHANGING: "All six lines change",
-  QIAN_ALL_NINE: "Qian — all nines",
-  KUN_ALL_SIX: "Kun — all sixes",
+  QIAN_ALL_NINE: "Qian: all nines",
+  KUN_ALL_SIX: "Kun: all sixes",
 };
 
 const PT: RuleMap = {
@@ -53,8 +53,8 @@ const PT: RuleMap = {
   FOUR_LOWEST_STABLE: "Quatro linhas: a inferior estável",
   FIVE_ONLY_STABLE: "Cinco a mutar; uma estável",
   SIX_ALL_CHANGING: "As seis linhas mudam",
-  QIAN_ALL_NINE: "Qian — todos noves",
-  KUN_ALL_SIX: "Kun — todos seis",
+  QIAN_ALL_NINE: "Qian: todos noves",
+  KUN_ALL_SIX: "Kun: todos seis",
 };
 
 const FR: RuleMap = {
@@ -66,8 +66,8 @@ const FR: RuleMap = {
   FOUR_LOWEST_STABLE: "Quatre lignes : la plus basse stable",
   FIVE_ONLY_STABLE: "Cinq mobiles ; une stable",
   SIX_ALL_CHANGING: "Les six lignes changent",
-  QIAN_ALL_NINE: "Qian — tous les neuf",
-  KUN_ALL_SIX: "Kun — tous les six",
+  QIAN_ALL_NINE: "Qian: tous les neuf",
+  KUN_ALL_SIX: "Kun: tous les six",
 };
 
 const DE: RuleMap = {
@@ -79,8 +79,8 @@ const DE: RuleMap = {
   FOUR_LOWEST_STABLE: "Vier Linien: die unterste bleibt stabil",
   FIVE_ONLY_STABLE: "Fünf wandelnd; eine stabil",
   SIX_ALL_CHANGING: "Alle sechs Linien wandeln",
-  QIAN_ALL_NINE: "Qian — alle Neun",
-  KUN_ALL_SIX: "Kun — alle Sechs",
+  QIAN_ALL_NINE: "Qian: alle Neun",
+  KUN_ALL_SIX: "Kun: alle Sechs",
 };
 
 const IT: RuleMap = {
@@ -92,8 +92,8 @@ const IT: RuleMap = {
   FOUR_LOWEST_STABLE: "Quattro linee: la inferiore stabile",
   FIVE_ONLY_STABLE: "Cinque mutanti; una stabile",
   SIX_ALL_CHANGING: "Tutte e sei le linee mutano",
-  QIAN_ALL_NINE: "Qian — tutti nove",
-  KUN_ALL_SIX: "Kun — tutti sei",
+  QIAN_ALL_NINE: "Qian: tutti nove",
+  KUN_ALL_SIX: "Kun: tutti sei",
 };
 
 const JA: RuleMap = {
@@ -105,8 +105,8 @@ const JA: RuleMap = {
   FOUR_LOWEST_STABLE: "4本：最下爻は安定",
   FIVE_ONLY_STABLE: "5本が変化、1本は安定",
   SIX_ALL_CHANGING: "6本すべて変化",
-  QIAN_ALL_NINE: "乾 — 九が六爻すべて",
-  KUN_ALL_SIX: "坤 — 六が六爻すべて",
+  QIAN_ALL_NINE: "乾: 九が六爻すべて",
+  KUN_ALL_SIX: "坤: 六が六爻すべて",
 };
 
 const ZH: RuleMap = {
@@ -118,8 +118,8 @@ const ZH: RuleMap = {
   FOUR_LOWEST_STABLE: "四爻：初爻不变",
   FIVE_ONLY_STABLE: "五爻变，一爻不变",
   SIX_ALL_CHANGING: "六爻皆变",
-  QIAN_ALL_NINE: "乾 — 六爻皆九",
-  KUN_ALL_SIX: "坤 — 六爻皆六",
+  QIAN_ALL_NINE: "乾: 六爻皆九",
+  KUN_ALL_SIX: "坤: 六爻皆六",
 };
 
 const KO: RuleMap = {
@@ -131,8 +131,8 @@ const KO: RuleMap = {
   FOUR_LOWEST_STABLE: "4획: 초획은 안정",
   FIVE_ONLY_STABLE: "5획 변함, 1획 안정",
   SIX_ALL_CHANGING: "6획 모두 변함",
-  QIAN_ALL_NINE: "건 — 육효 모두 구",
-  KUN_ALL_SIX: "곤 — 육효 모두 육",
+  QIAN_ALL_NINE: "건: 육효 모두 구",
+  KUN_ALL_SIX: "곤: 육효 모두 육",
 };
 
 const AR: RuleMap = {
@@ -144,8 +144,8 @@ const AR: RuleMap = {
   FOUR_LOWEST_STABLE: "أربعة خطوط: الأدنى ثابت",
   FIVE_ONLY_STABLE: "خمسة تتغير؛ واحد ثابت",
   SIX_ALL_CHANGING: "كل الخطوط الستة تتغير",
-  QIAN_ALL_NINE: "Qian — كل التسعات",
-  KUN_ALL_SIX: "Kun — كل الستات",
+  QIAN_ALL_NINE: "Qian: كل التسعات",
+  KUN_ALL_SIX: "Kun: كل الستات",
 };
 
 const HI: RuleMap = {
@@ -157,8 +157,8 @@ const HI: RuleMap = {
   FOUR_LOWEST_STABLE: "चार रेखाएं: सबसे निचली स्थिर",
   FIVE_ONLY_STABLE: "पांच परिवर्तनशील; एक स्थिर",
   SIX_ALL_CHANGING: "सभी छह रेखाएं बदलती हैं",
-  QIAN_ALL_NINE: "Qian — सभी नौ",
-  KUN_ALL_SIX: "Kun — सभी छह",
+  QIAN_ALL_NINE: "Qian: सभी नौ",
+  KUN_ALL_SIX: "Kun: सभी छह",
 };
 
 const BY_LOCALE: Record<AppLocale, RuleMap> = {

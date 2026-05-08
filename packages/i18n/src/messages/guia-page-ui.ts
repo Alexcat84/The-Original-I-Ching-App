@@ -92,7 +92,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     privacyLi2:
       "The service does not expose your history or consultation topics outside your own authenticated access.",
     privacyLi3:
-      "If you want a record on your device, you may—at your sole discretion—download a reading image and export the current thread to PDF from Options; those files are generated locally on your device and you are responsible for keeping them.",
+      "If you want a record on your device, you may, at your sole discretion, download a reading image and export the current thread to PDF from Options; those files are generated locally on your device and you are responsible for keeping them.",
     chatsHeading: "Chats and sessions",
     chatsLabel: "Chats",
     chatsOpensHistory: "opens your history.",

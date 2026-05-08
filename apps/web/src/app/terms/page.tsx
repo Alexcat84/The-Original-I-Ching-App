@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — The Original I Ching App",
+  title: "Terms of Service | The Original I Ching App",
   description: "Terms of service for The Original I Ching App at theoriginaliching.com.",
   robots: { index: false, follow: false },
 };

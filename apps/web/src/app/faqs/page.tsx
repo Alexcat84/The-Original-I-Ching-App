@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQs — The Original I Ching App",
+  title: "FAQs | The Original I Ching App",
   description: "Frequently asked questions about The Original I Ching App: tokens, readings, payments, privacy, and technical support.",
   openGraph: {
-    title: "FAQs — The Original I Ching App",
+    title: "FAQs | The Original I Ching App",
     description: "Answers to common questions about the I Ching oracle app.",
   },
 };
