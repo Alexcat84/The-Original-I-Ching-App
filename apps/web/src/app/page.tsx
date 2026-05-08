@@ -1356,6 +1356,7 @@ export default function HomePage() {
   const manualRitualFinaleShownRef = useRef(false);
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
+  const mountScrollDoneRef = useRef(false);
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
   const isSigningOutRef = useRef(false);
@@ -1974,6 +1975,7 @@ export default function HomePage() {
     if (prevActiveSessionLocalIdForScrollRef.current !== activeSessionLocalId) {
       prevActiveSessionLocalIdForScrollRef.current = activeSessionLocalId;
       lastScrollWasRevealRef.current = false;
+      mountScrollDoneRef.current = false;
     }
     if (revealConsultationId) {
       lastScrollWasRevealRef.current = true;
@@ -1989,7 +1991,10 @@ export default function HomePage() {
       lastScrollWasRevealRef.current = false;
       return;
     }
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    // First render after mount/remount or session change: jump instantly to avoid visual slide
+    const behavior = mountScrollDoneRef.current ? "smooth" : "instant";
+    mountScrollDoneRef.current = true;
+    endRef.current?.scrollIntoView({ behavior, block: "end" });
   }, [activeThread.length, phase, error, activeSessionLocalId, revealConsultationId]);
 
   useEffect(() => {
