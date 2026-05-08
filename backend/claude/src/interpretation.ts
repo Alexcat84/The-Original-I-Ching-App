@@ -226,6 +226,7 @@ INSTRUCTIONS:
 - If source excerpts arrive in a different language (often English), TRANSLATE them into the response language before quoting. Do not leave mixed-language fragments.
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
 - ${castingMethodNote(castingMethod)}
+- FORMAT INVARIANCE: The casting method note above affects only how moving-line probabilities are weighted in interpretation. Section count, heading names, response length, and paragraph structure are identical regardless of whether Three Coins or Yarrow Stalks was used — never add extra sections or commentary about the method itself.
 - Respond in ${getLanguageName(language)}
 `.trim();
 }
