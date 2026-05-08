@@ -1,22 +1,22 @@
 export const TOKEN_PACKS = {
   tokens_seeker_20: {
-    tokens: 20,
+    tokens: 25,
     price: 6.99,
     label: "Seeker Pack",
     sessionLimit: 3,
     marketingDetail: {
-      es: "20 tokens por compra (pack consumible, sin renovación automática). Hasta 3 preguntas encadenadas por hilo. Imágenes generadas en resolución estándar.",
-      en: "20 tokens per purchase (consumable pack, no auto-renewal). Up to 3 follow-up questions per thread. Generated images use standard resolution.",
+      es: "25 tokens por compra (pack consumible, sin renovación automática). Hasta 3 preguntas encadenadas por hilo. Imágenes generadas en resolución estándar.",
+      en: "25 tokens per purchase (consumable pack, no auto-renewal). Up to 3 follow-up questions per thread. Generated images use standard resolution.",
     },
   },
   tokens_practitioner_40: {
-    tokens: 40,
+    tokens: 50,
     price: 11.99,
     label: "Practitioner Pack",
     sessionLimit: 5,
     marketingDetail: {
-      es: "40 tokens por compra (pack consumible, sin renovación automática). Hasta 5 preguntas encadenadas por hilo. Imágenes generadas en alta resolución.",
-      en: "40 tokens per purchase (consumable pack, no auto-renewal). Up to 5 follow-up questions per thread. Generated images use high resolution.",
+      es: "50 tokens por compra (pack consumible, sin renovación automática). Hasta 5 preguntas encadenadas por hilo. Imágenes generadas en alta resolución.",
+      en: "50 tokens per purchase (consumable pack, no auto-renewal). Up to 5 follow-up questions per thread. Generated images use high resolution.",
     },
   },
   tokens_master_100: {
