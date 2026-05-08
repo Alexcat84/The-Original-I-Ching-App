@@ -50,6 +50,7 @@ export default async function GuiaRapidaPage() {
           {g.leadPart3}
         </p>
 
+        {/* 1) Primeros pasos — preserves the legacy `/guia#primeros-pasos` anchor */}
         <h2 id="primeros-pasos">{g.gettingStartedHeading}</h2>
         <p className="doc-lead">{q.lead}</p>
 
@@ -63,15 +64,6 @@ export default async function GuiaRapidaPage() {
           </li>
         </ul>
 
-        <h3>{q.s2Heading}</h3>
-        <ul>
-          <li>{q.s2Li1}</li>
-          <li>{q.s2Li2}</li>
-          <li>{q.s2Li3}</li>
-          <li>{q.s2Li4}</li>
-          <li>{q.s2Li5}</li>
-        </ul>
-
         <h3>{q.s3Heading}</h3>
         <ul>
           <li>{q.s3Li1}</li>
@@ -79,26 +71,11 @@ export default async function GuiaRapidaPage() {
           <li>{q.s3Li3}</li>
         </ul>
 
-        <h2>{g.privacyHeading}</h2>
-        <ul>
-          <li>{g.privacyLi1}</li>
-          <li>{g.privacyLi2}</li>
-          <li>{g.privacyLi3}</li>
-        </ul>
+        {/* 2) Uso de la app y opciones disponibles */}
+        <h2>{g.appUseHeading}</h2>
+        <p>{g.appUseIntro}</p>
 
-        <h2>{g.chatsHeading}</h2>
-        <ul>
-          <li>
-            <strong>{g.chatsLabel}</strong> {g.chatsOpensHistory}
-          </li>
-          <li>
-            <strong>{g.newSessionLabel}</strong> {g.newSessionDesc}
-          </li>
-          <li>{g.chatsUnlimited}</li>
-          <li>{g.packChangesLine}</li>
-        </ul>
-
-        <h2>{g.optionsHeading}</h2>
+        <h3>{g.optionsHeading}</h3>
         <p>{g.optionsIntro}</p>
         <ul>
           <li>
@@ -110,6 +87,34 @@ export default async function GuiaRapidaPage() {
           <li>{g.threadDepthBullet}</li>
         </ul>
 
+        <h3>{g.chatsHeading}</h3>
+        <ul>
+          <li>
+            <strong>{g.chatsLabel}</strong> {g.chatsOpensHistory}
+          </li>
+          <li>
+            <strong>{g.newSessionLabel}</strong> {g.newSessionDesc}
+          </li>
+          <li>{g.chatsUnlimited}</li>
+          <li>{g.packChangesLine}</li>
+        </ul>
+
+        <h3>{g.exportHeading}</h3>
+        <p>{g.exportBody}</p>
+
+        {/* 3) Cómo usar los métodos */}
+        <h2>{g.methodsHeading}</h2>
+        <p>{g.methodsIntro}</p>
+
+        <h3>{g.ichingPracticalHeading}</h3>
+        <p>{g.ichingPracticalBody}</p>
+
+        <h3>{g.coinsPracticalHeading}</h3>
+        <p>{g.coinsPracticalBody}</p>
+
+        <h3>{g.yarrowPracticalHeading}</h3>
+        <p>{g.yarrowPracticalBody}</p>
+
         <h3>{g.ichingCastModeHeading}</h3>
         <p>{g.ichingCastModeP1}</p>
         <ul>
@@ -117,23 +122,12 @@ export default async function GuiaRapidaPage() {
           <li>{g.ichingCastManualLi}</li>
         </ul>
 
-        <h3>{g.yarrowHeading}</h3>
-        <p>{g.yarrowP1}</p>
-        <ul>
-          <li>{g.yarrowMethodBullet}</li>
-          <li>{g.yarrowDistBullet}</li>
-        </ul>
+        <h3>{g.bonesPracticalHeading}</h3>
+        <p>{g.bonesPracticalBody}</p>
 
-        <h2>{g.exportHeading}</h2>
-        <p>{g.exportBody}</p>
-
-        <p className="doc-meta" style={{ opacity: 0.9, marginTop: "0.75rem" }}>
-          {g.legalMetaBeforePrivacy}
-          <Link href="/privacy">{nav.privacyPolicy}</Link>
-          {g.legalMetaBetween}
-          <Link href="/terms">{nav.termsOfService}</Link>
-          {g.legalMetaAfterTerms}
-        </p>
+        {/* 4) Tokens, límites y packs — preserves the legacy `/guia#planes` anchor */}
+        <h2>{g.tokensHeading}</h2>
+        <p>{g.tokensIntro}</p>
 
         <h2 id="planes">{packsUi.sectionTitle}</h2>
         <p>{packsUi.currentPricing}</p>
@@ -172,6 +166,22 @@ export default async function GuiaRapidaPage() {
             </li>
           ))}
         </ul>
+
+        {/* 5) Privacidad y documentos relacionados */}
+        <h2>{g.privacyDocsHeading}</h2>
+        <p>{g.privacyDocsIntro}</p>
+        <ul>
+          <li>{g.privacyLi1}</li>
+          <li>{g.privacyLi2}</li>
+          <li>{g.privacyLi3}</li>
+        </ul>
+        <p className="doc-meta" style={{ opacity: 0.9, marginTop: "0.75rem" }}>
+          {g.legalMetaBeforePrivacy}
+          <Link href="/privacy">{nav.privacyPolicy}</Link>
+          {g.legalMetaBetween}
+          <Link href="/terms">{nav.termsOfService}</Link>
+          {g.legalMetaAfterTerms}
+        </p>
 
         <p className="doc-footer-links">
           <Link href="/documentacion/iching">{nav.ichingDocLink}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}

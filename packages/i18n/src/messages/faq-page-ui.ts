@@ -19,11 +19,127 @@ export type FaqItem = {
   related?: FaqRelatedSlug[];
 };
 
+export type FaqCategoryId =
+  | "app-usage"
+  | "oracle-methods"
+  | "ai-texts"
+  | "tokens-payments"
+  | "privacy-account";
+
+export type FaqCategory = {
+  id: FaqCategoryId;
+  title: string;
+  items: FaqItem[];
+};
+
 export type FaqPageUi = {
   title: string;
   intro: string;
   seeAlsoHeading: string;
+  categories: FaqCategory[];
+  /** Flat list kept for backward compatibility; derived from categories. */
   items: FaqItem[];
+};
+
+const FAQ_CATEGORY_ORDER: FaqCategoryId[] = [
+  "app-usage",
+  "oracle-methods",
+  "ai-texts",
+  "tokens-payments",
+  "privacy-account",
+];
+
+const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
+  "app-usage": ["language-support", "chats-drawer", "thread-depth", "export-pdf"],
+  "oracle-methods": [
+    "yarrow-vs-coins",
+    "iching-manual-auto-bones",
+    "oracle-bones-method",
+    "silence-state",
+  ],
+  "ai-texts": ["ai-vs-algorithm", "authentic-texts", "not-advice"],
+  "tokens-payments": ["tokens-packs", "purchases-legal"],
+  "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa"],
+};
+
+const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
+  es: {
+    "app-usage": "Uso de la app",
+    "oracle-methods": "Métodos del oráculo",
+    "ai-texts": "Textos, IA y autenticidad",
+    "tokens-payments": "Tokens, packs y pagos",
+    "privacy-account": "Privacidad y cuenta",
+  },
+  en: {
+    "app-usage": "Using the app",
+    "oracle-methods": "Oracle methods",
+    "ai-texts": "Texts, AI and authenticity",
+    "tokens-payments": "Tokens, packs and payments",
+    "privacy-account": "Privacy and account",
+  },
+  pt: {
+    "app-usage": "Uso da app",
+    "oracle-methods": "Métodos do oráculo",
+    "ai-texts": "Textos, IA e autenticidade",
+    "tokens-payments": "Tokens, packs e pagamentos",
+    "privacy-account": "Privacidade e conta",
+  },
+  fr: {
+    "app-usage": "Utilisation de l’app",
+    "oracle-methods": "Méthodes de l’oracle",
+    "ai-texts": "Textes, IA et authenticité",
+    "tokens-payments": "Jetons, packs et paiements",
+    "privacy-account": "Confidentialité et compte",
+  },
+  de: {
+    "app-usage": "App-Nutzung",
+    "oracle-methods": "Orakel-Methoden",
+    "ai-texts": "Texte, KI und Echtheit",
+    "tokens-payments": "Tokens, Packs und Zahlungen",
+    "privacy-account": "Datenschutz und Konto",
+  },
+  it: {
+    "app-usage": "Uso dell’app",
+    "oracle-methods": "Metodi dell’oracolo",
+    "ai-texts": "Testi, IA e autenticità",
+    "tokens-payments": "Token, pack e pagamenti",
+    "privacy-account": "Privacy e account",
+  },
+  ja: {
+    "app-usage": "アプリの使い方",
+    "oracle-methods": "占いの方式",
+    "ai-texts": "テキスト・AI・原典性",
+    "tokens-payments": "トークン・パック・支払い",
+    "privacy-account": "プライバシーとアカウント",
+  },
+  zh: {
+    "app-usage": "应用使用",
+    "oracle-methods": "占卜方法",
+    "ai-texts": "文本、AI 与真实性",
+    "tokens-payments": "代币、套餐与付款",
+    "privacy-account": "隐私与账户",
+  },
+  ko: {
+    "app-usage": "앱 사용",
+    "oracle-methods": "점법",
+    "ai-texts": "원문·AI·진본성",
+    "tokens-payments": "토큰·팩·결제",
+    "privacy-account": "개인정보와 계정",
+  },
+  ar: {
+    "app-usage": "استخدام التطبيق",
+    "oracle-methods": "طرق العرافة",
+    "ai-texts": "النصوص والذكاء الاصطناعي والأصالة",
+    "tokens-payments": "الرموز والحزم والدفع",
+    "privacy-account": "الخصوصية والحساب",
+  },
+  hi: {
+    "app-usage": "ऐप का उपयोग",
+    "oracle-methods": "ओरेकल विधियाँ",
+    "ai-texts": "मूल पाठ, एआई और प्रामाणिकता",
+    "tokens-payments": "टोकन, पैक और भुगतान",
+    "privacy-account": "गोपनीयता और खाता",
+  },
 };
 
 export function resolveFaqRelatedHref(slug: FaqRelatedSlug): string {
@@ -1403,6 +1519,48 @@ export function getFaqPageUiMessages(locale: AppLocale): FaqPageUi {
     ar: FAQ_ITEMS_AR,
     hi: FAQ_ITEMS_HI,
   };
-  const items = itemsMap[locale] ?? FAQ_ITEMS_EN;
-  return { ...meta, items };
+  const localeItems = itemsMap[locale] ?? FAQ_ITEMS_EN;
+  const titles = FAQ_CATEGORY_TITLES[locale] ?? FAQ_CATEGORY_TITLES[DEFAULT_LOCALE];
+
+  const itemById = new Map<string, FaqItem>();
+  for (const item of localeItems) {
+    itemById.set(item.id, item);
+  }
+
+  const categories: FaqCategory[] = [];
+  const usedIds = new Set<string>();
+  for (const categoryId of FAQ_CATEGORY_ORDER) {
+    const orderedIds = FAQ_ITEMS_BY_CATEGORY[categoryId];
+    const categoryItems: FaqItem[] = [];
+    for (const id of orderedIds) {
+      const item = itemById.get(id);
+      if (item) {
+        categoryItems.push(item);
+        usedIds.add(id);
+      }
+    }
+    if (categoryItems.length > 0) {
+      categories.push({
+        id: categoryId,
+        title: titles[categoryId],
+        items: categoryItems,
+      });
+    }
+  }
+
+  // Any item not assigned to a category falls back into the last group so we
+  // never silently drop translations during refactors.
+  const orphans = localeItems.filter((item) => !usedIds.has(item.id));
+  if (orphans.length > 0) {
+    const fallbackTitle = titles["app-usage"];
+    const existing = categories.find((cat) => cat.id === "app-usage");
+    if (existing) {
+      existing.items = [...existing.items, ...orphans];
+    } else {
+      categories.unshift({ id: "app-usage", title: fallbackTitle, items: orphans });
+    }
+  }
+
+  const items = categories.flatMap((category) => category.items);
+  return { ...meta, categories, items };
 }
