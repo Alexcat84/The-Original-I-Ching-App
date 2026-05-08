@@ -17,6 +17,9 @@ jobs:
           node-version: "22"
           cache: "npm"
 
+      - name: Disable corepack (prevents yarn/npm interception during build)
+        run: corepack disable
+
       - name: Upgrade npm to match lockfile generator
         run: npm install -g npm@11.5.1
 
