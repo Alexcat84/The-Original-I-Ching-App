@@ -231,7 +231,18 @@ vercel env pull .env.staging
 - Play Console: https://play.google.com/console/u/0/developers/7735925863707716505
 
 ## Pendiente para Lanzamiento
-- [ ] Merge staging → main (después del 25 abril cuando resetea egress)
+
+### ⚠️ DEADLINE CRÍTICO — CI GitHub Actions (antes del 2 junio 2026)
+Las actions `actions/checkout@v4` y `actions/setup-node@v4` usan Node.js 20 internamente.
+GitHub forzará Node.js 24 el **2 junio 2026** — si no se actualizan, el CI fallará.
+**Qué hacer:** Cuando existan v5+, actualizar `.github/workflows/ci.yml` líneas:
+```
+uses: actions/checkout@v4  →  @v5
+uses: actions/setup-node@v4  →  @v5
+```
+Verificar en: https://github.com/actions/checkout/releases y https://github.com/actions/setup-node/releases
+
+- [x] Merge staging → main (hecho — 7 mayo 2026)
 - [ ] Upgrade Supabase a Pro ($25/mes) al tener usuarios reales
 - [ ] Verificación de identidad Google Play Console (1-3 días hábiles)
 - [ ] Assets para Play Store: icon 512×512, feature graphic 1024×500, screenshots
