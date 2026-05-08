@@ -52,6 +52,7 @@ const FAQ_CATEGORY_ORDER: FaqCategoryId[] = [
 const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
   "app-usage": ["language-support", "chats-drawer", "thread-depth", "export-pdf"],
   "oracle-methods": [
+    "iching-how-answers",
     "yarrow-vs-coins",
     "iching-manual-auto-bones",
     "oracle-bones-method",
@@ -218,8 +219,15 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "oracle-bones-method",
     question: "What is the Oracle Bones method?",
     answer:
-      "Oracle Bones is a Shang-era divination method inspired by crack reading on turtle plastrons and ox scapulae. In the app it is separate from I Ching: it does not create hexagrams or changing lines. The system forms a crack pattern and verdict first, then the AI interprets that already formed result in your language. It is useful for concise, ancestral-style answers; I Ching is better for layered change over time.",
+      "Oracle Bones is a Shang-era divination method inspired by crack reading on turtle plastrons and ox scapulae. In the app it is separate from I Ching: it does not create hexagrams or changing lines. The system forms a crack pattern and verdict first, then the AI interprets that already formed result in your language. The verdict always falls into one of five possible states, faithful to the original Shang tradition: 1) 吉 — clearly favorable, the pattern confirms the positive charge without ambiguity; 2) 吉 moderate — moderately favorable, confirmation with nuances or conditions; 3) 凶 moderate — moderately unfavorable, the pattern leans toward negation with reservations; 4) 凶 — clearly unfavorable, the pattern negates the positive charge without ambiguity; 5) 沉默 — Silence, the pattern produces no readable cracks and silence itself is the answer. It is useful for concise, ancestral-style answers; I Ching is better for layered change over time.",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "How does the I Ching actually work and produce its answers?",
+    answer:
+      "The I Ching works through 64 hexagrams that form an ancient catalog of patterns of change in nature and human life. Each hexagram is a structured figure with classical meaning preserved in the Wilhelm/Baynes texts. Each consultation begins from your specific question. The mathematical algorithm casts the lines under the rules of Zhu Xi to determine the present hexagram, any moving lines, and the resulting future hexagram. The AI then articulates that already-formed result in your language, applying the classical meaning of those hexagrams to your particular context. That is why every reading is unique and personal: the same hexagrams can appear for different people, but the answer is never the same, because it depends on the specific question, the moment in life, and the personal context of the seeker. There is no universal interpretation that applies to more than one person at the same time.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -331,8 +339,15 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "oracle-bones-method",
     question: "¿Qué es el método de Huesos de Oráculo?",
     answer:
-      "Huesos de Oráculo es un método de adivinación de la era Shang inspirado en la lectura de grietas sobre plastrones de tortuga y escápulas de buey. En la app está separado del I Ching: no crea hexagramas ni líneas cambiantes. El sistema forma primero un patrón de grietas y un veredicto; después la IA interpreta ese resultado ya formado en tu idioma. Es útil para respuestas concisas, de tono ancestral; el I Ching es mejor para cambios por capas a lo largo del tiempo.",
+      "Huesos de Oráculo es un método de adivinación de la era Shang inspirado en la lectura de grietas sobre plastrones de tortuga y escápulas de buey. En la app está separado del I Ching: no crea hexagramas ni líneas cambiantes. El sistema forma primero un patrón de grietas y un veredicto; después la IA interpreta ese resultado ya formado en tu idioma. El veredicto cae siempre en uno de cinco estados posibles, fieles al método ancestral Shang: 1) 吉, favorable claro: el patrón confirma la carga positiva sin ambigüedad; 2) 吉 moderado, favorable moderado: hay confirmación pero con matices o condiciones; 3) 凶 moderado, desfavorable moderado: el patrón se inclina a la negación con reservas; 4) 凶, desfavorable claro: el patrón niega la carga positiva sin ambigüedad; 5) 沉默, el Silencio: el patrón no produce grietas legibles y el propio silencio es la respuesta. Es útil para respuestas concisas, de tono ancestral; el I Ching es mejor para cambios por capas a lo largo del tiempo.",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "¿Cómo opera el I Ching y de dónde salen sus respuestas?",
+    answer:
+      "El I Ching opera a través de 64 hexagramas que forman un catálogo milenario de patrones de cambio en la naturaleza y en la vida humana. Cada hexagrama es una figura estructurada con un significado clásico preservado en los textos Wilhelm/Baynes. Cada consulta parte de tu pregunta concreta. El algoritmo matemático lanza las líneas bajo las reglas de Zhu Xi para determinar el hexagrama presente, las líneas en movimiento si las hay y el hexagrama futuro resultante. Después la IA articula ese resultado ya formado en tu idioma, aplicando el significado clásico de esos hexagramas a tu contexto particular. Por eso cada lectura es única y personal: los mismos hexagramas pueden aparecer para distintas personas, pero la respuesta no es la misma, porque depende de la pregunta concreta, del momento vital y del contexto personal del consultante. No existe una interpretación universal aplicable a más de una persona a la vez.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -444,8 +459,15 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "oracle-bones-method",
     question: "ما هي طريقة عظام العرافة؟",
     answer:
-      "عظام العرافة طريقة من عصر شانغ مستوحاة من قراءة الشقوق على دروع السلاحف وكتف الثور. في التطبيق هي منفصلة عن الآي تشينغ: لا تنشئ سداسيات ولا خطوطا متغيرة. يكوّن النظام أولا نمط الشقوق والحكم، ثم تفسر الذكاء الاصطناعي النتيجة الموجودة بالفعل بلغتك. إنها مناسبة للإجابات المختصرة ذات الطابع الأسلافي؛ أما الآي تشينغ فهو أفضل لفهم التحول المتدرج عبر الزمن.",
+      "عظام العرافة طريقة من عصر شانغ مستوحاة من قراءة الشقوق على دروع السلاحف وكتف الثور. في التطبيق هي منفصلة عن الآي تشينغ: لا تنشئ سداسيات ولا خطوطا متغيرة. يكوّن النظام أولا نمط الشقوق والحكم، ثم تفسر الذكاء الاصطناعي النتيجة الموجودة بالفعل بلغتك. يندرج الحكم دائما في إحدى خمس حالات ممكنة، وفية للمنهج الشانغي الأصيل: 1) 吉، مؤاتٍ واضح: يؤكد النمط الشحنة الإيجابية دون لبس؛ 2) 吉 معتدل، مؤاتٍ نسبي: ثمة تأكيد ولكن مع تحفظات أو شروط؛ 3) 凶 معتدل، غير مؤاتٍ نسبي: يميل النمط إلى النفي مع تحفظات؛ 4) 凶، غير مؤاتٍ واضح: ينفي النمط الشحنة الإيجابية دون لبس؛ 5) 沉默، الصمت: لا يُنتج النمط شقوقا قابلة للقراءة، والصمت ذاته هو الإجابة. إنها مناسبة للإجابات المختصرة ذات الطابع الأسلافي؛ أما الآي تشينغ فهو أفضل لفهم التحول المتدرج عبر الزمن.",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "كيف يعمل الآي تشينغ ومن أين تأتي إجاباته؟",
+    answer:
+      "يعمل الآي تشينغ عبر 64 سداسيا تشكّل فهرسا قديما لأنماط التغيّر في الطبيعة وفي حياة الإنسان. كل سداسي شكل منظم له معنى كلاسيكي محفوظ في نصوص Wilhelm/Baynes. تنطلق كل استشارة من سؤالك الملموس. تطبّق الخوارزمية الرياضية قواعد Zhu Xi على رميات الخطوط لتحديد السداسي الحالي، والخطوط المتحركة إن وُجدت، والسداسي المقبل الناتج. ثم يقوم الذكاء الاصطناعي بصياغة هذه النتيجة الموجودة بالفعل في لغتك، تاركًا للمعنى الكلاسيكي لتلك السداسيات أن يُسقط على سياقك الشخصي. لهذا تكون كل قراءة فريدة وشخصية: قد تظهر السداسيات نفسها لأشخاص مختلفين، ومع ذلك لن تكون الإجابة نفسها، لأنها تتعلق بالسؤال المحدد، وبلحظة الحياة، وبالسياق الشخصي للمستشير. لا توجد قراءة واحدة قابلة للتطبيق على أكثر من شخص في الوقت نفسه.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -557,8 +579,15 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "oracle-bones-method",
     question: "Oracle Bones विधि क्या है?",
     answer:
-      "Oracle Bones शांग युग की दिव्य विधि है, जो कछुए के कवच और बैल की कंधे की हड्डी पर दरारें पढ़ने से प्रेरित है। ऐप में यह I Ching से अलग है: यह हेक्साग्राम या बदलती रेखाएँ नहीं बनाती। प्रणाली पहले दरारों का पैटर्न और निर्णय बनाती है; फिर AI उस पहले से बने परिणाम की आपकी भाषा में व्याख्या करता है। यह संक्षिप्त, पूर्वजों जैसी शैली के उत्तरों के लिए उपयोगी है; समय के साथ परतदार बदलाव समझने के लिए I Ching बेहतर है।",
+      "Oracle Bones शांग युग की दिव्य विधि है, जो कछुए के कवच और बैल की कंधे की हड्डी पर दरारें पढ़ने से प्रेरित है। ऐप में यह I Ching से अलग है: यह हेक्साग्राम या बदलती रेखाएँ नहीं बनाती। प्रणाली पहले दरारों का पैटर्न और निर्णय बनाती है; फिर AI उस पहले से बने परिणाम की आपकी भाषा में व्याख्या करता है। निर्णय हमेशा शांग पूर्वज परंपरा के अनुरूप पाँच संभावित अवस्थाओं में से एक में आता है: 1) 吉 — स्पष्ट रूप से शुभ: पैटर्न बिना संदेह सकारात्मक प्रस्ताव की पुष्टि करता है; 2) 吉 मध्यम — मध्यम रूप से शुभ: पुष्टि होती है पर बारीकियों या शर्तों के साथ; 3) 凶 मध्यम — मध्यम रूप से अशुभ: पैटर्न आरक्षणों के साथ नकार की ओर झुकता है; 4) 凶 — स्पष्ट रूप से अशुभ: पैटर्न बिना संदेह सकारात्मक प्रस्ताव को नकारता है; 5) 沉默 — मौन: पैटर्न पठनीय दरारें नहीं देता और मौन स्वयं उत्तर है। यह संक्षिप्त, पूर्वजों जैसी शैली के उत्तरों के लिए उपयोगी है; समय के साथ परतदार बदलाव समझने के लिए I Ching बेहतर है।",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "I Ching वास्तव में कैसे काम करता है और उत्तर कैसे देता है?",
+    answer:
+      "I Ching 64 हेक्साग्रामों के माध्यम से कार्य करता है, जो प्रकृति और मानव जीवन में परिवर्तन के पैटर्नों का प्राचीन सूचीपत्र हैं। हर हेक्साग्राम एक संरचित आकृति है, जिसका शास्त्रीय अर्थ Wilhelm/Baynes ग्रंथों में सुरक्षित है। हर परामर्श आपके विशिष्ट प्रश्न से शुरू होता है। गणितीय एल्गोरिदम Zhu Xi के नियमों के तहत रेखाएँ डालकर वर्तमान हेक्साग्राम, यदि कोई हो तो गतिशील रेखाएँ और परिणामी भविष्य हेक्साग्राम तय करता है। इसके बाद AI उस पहले से बने परिणाम को आपकी भाषा में अभिव्यक्त करता है, उन हेक्साग्रामों के शास्त्रीय अर्थ को आपके विशिष्ट संदर्भ पर लागू करते हुए। इसीलिए हर पठन अद्वितीय और व्यक्तिगत होता है: वही हेक्साग्राम अलग-अलग लोगों के लिए आ सकते हैं, फिर भी उत्तर एक जैसा कभी नहीं होता, क्योंकि यह विशिष्ट प्रश्न, जीवन के क्षण और परामर्शक के व्यक्तिगत संदर्भ पर निर्भर करता है। एक से अधिक व्यक्ति पर एक साथ लागू होने वाली कोई सार्वभौमिक व्याख्या नहीं होती।",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -670,8 +699,15 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "oracle-bones-method",
     question: "甲骨の方法とは何ですか？",
     answer:
-      "甲骨は、亀甲や牛の肩甲骨に現れる亀裂を読む殷代の占いに着想を得た方法です。アプリでは易経とは別の方法であり、卦や変爻を作りません。まずシステムが亀裂のパターンと判定を形成し、その後AIがその結果をあなたの言語で解釈します。祖先的で簡潔な答えに向いており、時間の中で重層的に変化を読む場合は易経が適しています。",
+      "甲骨は、亀甲や牛の肩甲骨に現れる亀裂を読む殷代の占いに着想を得た方法です。アプリでは易経とは別の方法であり、卦や変爻を作りません。まずシステムが亀裂のパターンと判定を形成し、その後AIがその結果をあなたの言語で解釈します。判定は常に、殷代の祖先的方法に忠実な五つの可能な状態のいずれかに収まります：1) 吉 — はっきりと吉：パターンが肯定命題を曖昧さなく確認します；2) 吉 中程度 — やや吉：確認はあるが、含みや条件を伴います；3) 凶 中程度 — やや凶：パターンは留保付きで否定に傾きます；4) 凶 — はっきりと凶：パターンが肯定命題を曖昧さなく否定します；5) 沉默 — 沈黙：パターンが読み取れる亀裂を生じさせず、沈黙そのものが答えとなります。祖先的で簡潔な答えに向いており、時間の中で重層的に変化を読む場合は易経が適しています。",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "易経はどのように働き、答えはどこから出てくるのですか？",
+    answer:
+      "易経は、自然と人間の生活における変化の型を集めた64卦からなる古代の総覧として働きます。各卦は構造化された図形であり、その古典的意味はWilhelm/Baynesの本文に保存されています。各相談はあなたの具体的な問いから始まります。数学的アルゴリズムが朱熹の規則に従って爻を立て、現在の卦、変爻があればその位置、そして結果として生じる未来の卦を確定します。続いてAIが、すでに形成されたその結果をあなたの言語で表現し、卦の古典的意味をあなた個人の文脈に適用します。だからこそ、ひとつひとつの読みは固有で個人的なものになります。同じ卦が別々の人に現れることはあっても、答えが同じになることは決してありません。問いの内容、人生のその時、相談者の個人的文脈に依存するからです。同時に複数の人に当てはまる普遍的な解釈は存在しません。",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -783,8 +819,15 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "oracle-bones-method",
     question: "什么是甲骨方法？",
     answer:
-      "甲骨方法源自商代占卜，灵感来自龟甲和牛肩胛骨裂纹的解读。在应用中，它与《易经》分开：不会生成卦象，也不会生成变爻。系统先形成裂纹图案和判定，然后由 AI 用你的语言解释这个已经形成的结果。它适合简洁、祖先式的回答；若要观察随时间展开的层次变化，《易经》更合适。",
+      "甲骨方法源自商代占卜，灵感来自龟甲和牛肩胛骨裂纹的解读。在应用中，它与《易经》分开：不会生成卦象，也不会生成变爻。系统先形成裂纹图案和判定，然后由 AI 用你的语言解释这个已经形成的结果。判定始终落入五种可能状态之一，忠实于商代祖先方法：1）吉，明显为吉：图案明确确认正面命题，无歧义；2）偏吉，偏吉：有所确认，但带条件或细微差别；3）偏凶，偏凶：图案带保留地倾向于否定；4）凶，明显为凶：图案明确否定正面命题，无歧义；5）沉默：图案不产生可读裂纹，沉默本身即为答复。它适合简洁、祖先式的回答；若要观察随时间展开的层次变化，《易经》更合适。",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "《易经》到底如何运作？答案从何而来？",
+    answer:
+      "《易经》通过六十四卦运作，这是一部关于自然与人世变化模式的古老总览。每一卦都是结构化的图形，其经典含义保存于卫礼贤／贝恩斯译本中。每一次咨询都从你具体的问题出发。数学算法按照朱熹规则逐爻立卦，确定本卦、若有则定动爻、并由动爻得到之卦。随后 AI 用你的语言表述这个已经形成的结果，将那些卦象的经典含义投射到你独特的处境之中。因此，每一次解读都是独一无二、属于个人的：相同的卦象可能为不同的人出现，但答案永不相同，因为它取决于具体的问题、所处的时机以及问卜者的个人处境。世上不存在可以同时适用于多人的普遍解读。",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -896,8 +939,15 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "oracle-bones-method",
     question: "갑골 방법이란 무엇인가요?",
     answer:
-      "갑골은 거북 배딱지와 소 견갑골의 균열을 읽던 상나라 시대 점복에서 영감을 받은 방법입니다. 앱에서는 주역과 별개의 방식입니다. 괘나 변효를 만들지 않습니다. 시스템이 먼저 균열 패턴과 판정을 형성하고, 그다음 AI가 이미 형성된 결과를 사용자의 언어로 해석합니다. 간결하고 조상적 어조의 답에 적합하며, 시간 속에서 층층이 변하는 흐름은 주역이 더 적합합니다.",
+      "갑골은 거북 배딱지와 소 견갑골의 균열을 읽던 상나라 시대 점복에서 영감을 받은 방법입니다. 앱에서는 주역과 별개의 방식입니다. 괘나 변효를 만들지 않습니다. 시스템이 먼저 균열 패턴과 판정을 형성하고, 그다음 AI가 이미 형성된 결과를 사용자의 언어로 해석합니다. 판정은 언제나 상나라 조상 전통에 충실한 다섯 가지 가능한 상태 중 하나로 떨어집니다: 1) 吉 — 명확히 길함: 패턴이 모호함 없이 긍정 명제를 확인합니다; 2) 吉 중간 — 다소 길함: 확인은 있지만 뉘앙스나 조건이 따릅니다; 3) 凶 중간 — 다소 흉함: 패턴이 유보적으로 부정 쪽으로 기웁니다; 4) 凶 — 명확히 흉함: 패턴이 모호함 없이 긍정 명제를 부정합니다; 5) 沉默 — 침묵: 패턴이 읽을 수 있는 균열을 만들지 못하며, 침묵 자체가 답입니다. 간결하고 조상적 어조의 답에 적합하며, 시간 속에서 층층이 변하는 흐름은 주역이 더 적합합니다.",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "주역은 실제로 어떻게 작동하며, 그 답은 어디에서 오나요?",
+    answer:
+      "주역은 자연과 인간 삶의 변화 양상을 모은 고대 도록인 64괘를 통해 작동합니다. 각 괘는 구조화된 도형으로, 그 고전적 의미는 빌헬름/베인스 텍스트에 보존되어 있습니다. 각 상담은 당신의 구체적인 질문에서 시작됩니다. 수학 알고리즘은 주희의 규칙에 따라 효를 던져 현재 괘, 변효(있다면)와 그로 인한 미래 괘를 확정합니다. 이어서 AI는 이미 형성된 그 결과를 당신의 언어로 표현하며, 해당 괘들의 고전적 의미를 당신만의 맥락에 적용합니다. 그래서 각 해석은 고유하고 개인적입니다. 같은 괘들이 서로 다른 사람에게 나올 수 있지만, 답이 같을 수는 없습니다. 답은 구체적인 질문, 삶의 시점, 그리고 상담자의 개인적 맥락에 달려 있기 때문입니다. 동시에 둘 이상에게 적용되는 보편 해석은 존재하지 않습니다.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -1009,8 +1059,15 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "oracle-bones-method",
     question: "O que é o método dos Ossos Oraculares?",
     answer:
-      "Ossos Oraculares é um método de adivinhação da era Shang inspirado na leitura de fissuras em plastrões de tartaruga e escápulas de boi. Na app, é separado do I Ching: não cria hexagramas nem linhas mutantes. O sistema forma primeiro um padrão de fissuras e um veredicto; depois a IA interpreta esse resultado já formado no teu idioma. É útil para respostas concisas, de tom ancestral; o I Ching é melhor para mudanças em camadas ao longo do tempo.",
+      "Ossos Oraculares é um método de adivinhação da era Shang inspirado na leitura de fissuras em plastrões de tartaruga e escápulas de boi. Na app, é separado do I Ching: não cria hexagramas nem linhas mutantes. O sistema forma primeiro um padrão de fissuras e um veredicto; depois a IA interpreta esse resultado já formado no teu idioma. O veredicto cai sempre num de cinco estados possíveis, fiéis ao método ancestral Shang: 1) 吉 — favorável claro: o padrão confirma a carga positiva sem ambiguidade; 2) 吉 moderado — favorável moderado: há confirmação, mas com nuances ou condições; 3) 凶 moderado — desfavorável moderado: o padrão inclina-se para a negação com reservas; 4) 凶 — desfavorável claro: o padrão nega a carga positiva sem ambiguidade; 5) 沉默 — Silêncio: o padrão não produz fissuras legíveis e o próprio silêncio é a resposta. É útil para respostas concisas, de tom ancestral; o I Ching é melhor para mudanças em camadas ao longo do tempo.",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "Como é que o I Ching funciona e de onde vêm as suas respostas?",
+    answer:
+      "O I Ching opera através de 64 hexagramas, um catálogo milenar dos padrões de mudança na natureza e na vida humana. Cada hexagrama é uma figura estruturada, com um significado clássico preservado nos textos Wilhelm/Baynes. Cada consulta parte da tua pergunta concreta. O algoritmo matemático lança as linhas segundo as regras de Zhu Xi para determinar o hexagrama presente, as linhas em movimento (caso existam) e o hexagrama futuro resultante. Em seguida a IA articula esse resultado já formado no teu idioma, aplicando o significado clássico desses hexagramas ao teu contexto particular. Por isso cada leitura é única e pessoal: os mesmos hexagramas podem aparecer para pessoas diferentes, mas a resposta nunca é a mesma, porque depende da pergunta concreta, do momento de vida e do contexto pessoal do consultante. Não existe uma interpretação universal aplicável a mais de uma pessoa em simultâneo.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -1122,8 +1179,15 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "oracle-bones-method",
     question: "Was ist die Methode der Orakelknochen?",
     answer:
-      "Orakelknochen ist eine Wahrsagemethode aus der Shang Zeit, inspiriert vom Lesen von Rissen auf Schildkrötenpanzern und Ochsenschulterblättern. In der App ist sie vom I Ging getrennt: Sie erzeugt keine Hexagramme und keine wandelnden Linien. Das System bildet zuerst ein Rissmuster und ein Urteil; danach interpretiert die KI dieses bereits gebildete Ergebnis in deiner Sprache. Sie eignet sich für knappe Antworten im Ahnenstil; das I Ging eignet sich besser für vielschichtigen Wandel über die Zeit.",
+      "Orakelknochen ist eine Wahrsagemethode aus der Shang Zeit, inspiriert vom Lesen von Rissen auf Schildkrötenpanzern und Ochsenschulterblättern. In der App ist sie vom I Ging getrennt: Sie erzeugt keine Hexagramme und keine wandelnden Linien. Das System bildet zuerst ein Rissmuster und ein Urteil; danach interpretiert die KI dieses bereits gebildete Ergebnis in deiner Sprache. Das Urteil fällt stets in einen von fünf möglichen Zuständen, die der ursprünglichen Shang-Tradition treu sind: 1) 吉 — eindeutig günstig: das Muster bestätigt die positive Ladung ohne Mehrdeutigkeit; 2) 吉 mäßig — mäßig günstig: Bestätigung mit Nuancen oder Bedingungen; 3) 凶 mäßig — mäßig ungünstig: das Muster neigt mit Vorbehalten zur Verneinung; 4) 凶 — eindeutig ungünstig: das Muster verneint die positive Ladung ohne Mehrdeutigkeit; 5) 沉默 — Schweigen: das Muster erzeugt keine lesbaren Risse, und das Schweigen selbst ist die Antwort. Sie eignet sich für knappe Antworten im Ahnenstil; das I Ging eignet sich besser für vielschichtigen Wandel über die Zeit.",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "Wie funktioniert das I Ging tatsächlich, und woher kommen seine Antworten?",
+    answer:
+      "Das I Ging arbeitet über 64 Hexagramme, einen jahrtausendealten Katalog von Wandlungsmustern in Natur und menschlichem Leben. Jedes Hexagramm ist eine strukturierte Figur, deren klassische Bedeutung in den Wilhelm/Baynes-Texten bewahrt ist. Jede Beratung beginnt mit Ihrer konkreten Frage. Der mathematische Algorithmus wirft die Linien nach den Regeln Zhu Xis und bestimmt das gegenwärtige Hexagramm, die wandelnden Linien (falls vorhanden) und das daraus resultierende zukünftige Hexagramm. Anschließend formuliert die KI dieses bereits gebildete Ergebnis in Ihrer Sprache und überträgt die klassische Bedeutung dieser Hexagramme auf Ihren persönlichen Kontext. Genau deshalb ist jede Lesung einzigartig und persönlich: Dieselben Hexagramme können bei verschiedenen Menschen auftreten, doch die Antwort ist nie dieselbe — sie hängt von der konkreten Frage, dem Lebensmoment und dem persönlichen Kontext des Ratsuchenden ab. Es gibt keine allgemeingültige Deutung, die zugleich für mehrere Personen gilt.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -1235,8 +1299,15 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "oracle-bones-method",
     question: "Che cos'è il metodo degli Ossi Oracolari?",
     answer:
-      "Gli Ossi Oracolari sono un metodo divinatorio dell'epoca Shang ispirato alla lettura delle crepe su piastroni di tartaruga e scapole di bue. Nell'app è separato dall'I Ching: non crea esagrammi né linee mutanti. Il sistema forma prima un pattern di crepe e un verdetto; poi l'IA interpreta quel risultato già formato nella tua lingua. È utile per risposte concise, dal tono ancestrale; l'I Ching è più adatto ai cambiamenti stratificati nel tempo.",
+      "Gli Ossi Oracolari sono un metodo divinatorio dell'epoca Shang ispirato alla lettura delle crepe su piastroni di tartaruga e scapole di bue. Nell'app è separato dall'I Ching: non crea esagrammi né linee mutanti. Il sistema forma prima un pattern di crepe e un verdetto; poi l'IA interpreta quel risultato già formato nella tua lingua. Il verdetto rientra sempre in uno dei cinque stati possibili, fedeli al metodo ancestrale Shang: 1) 吉 — chiaramente favorevole: il motivo conferma la carica positiva senza ambiguità; 2) 吉 moderato — moderatamente favorevole: c'è conferma ma con sfumature o condizioni; 3) 凶 moderato — moderatamente sfavorevole: il motivo pende verso la negazione con riserve; 4) 凶 — chiaramente sfavorevole: il motivo nega la carica positiva senza ambiguità; 5) 沉默 — Silenzio: il motivo non produce crepe leggibili e il silenzio stesso è la risposta. È utile per risposte concise, dal tono ancestrale; l'I Ching è più adatto ai cambiamenti stratificati nel tempo.",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "Come funziona davvero l'I Ching e da dove arrivano le sue risposte?",
+    answer:
+      "L'I Ching opera attraverso 64 esagrammi, un catalogo millenario dei pattern di cambiamento nella natura e nella vita umana. Ogni esagramma è una figura strutturata con un significato classico preservato nei testi Wilhelm/Baynes. Ogni consultazione parte dalla tua domanda concreta. L'algoritmo matematico lancia le linee secondo le regole di Zhu Xi per determinare l'esagramma presente, le eventuali linee in movimento e l'esagramma futuro risultante. L'IA articola poi quel risultato già formato nella tua lingua, applicando il significato classico di quegli esagrammi al tuo contesto particolare. Per questo ogni lettura è unica e personale: gli stessi esagrammi possono comparire per persone diverse, ma la risposta non è mai la stessa, perché dipende dalla domanda specifica, dal momento di vita e dal contesto personale di chi consulta. Non esiste un'interpretazione universale applicabile a più di una persona contemporaneamente.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -1348,8 +1419,15 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "oracle-bones-method",
     question: "Qu'est-ce que la méthode des Os de l'Oracle ?",
     answer:
-      "Les Os de l'Oracle sont une méthode divinatoire de l'époque Shang inspirée de la lecture des fissures sur des plastrons de tortue et des omoplates de bœuf. Dans l'app, elle est distincte du I Ching: elle ne crée pas d'hexagrammes ni de traits changeants. Le système forme d'abord un motif de fissures et un verdict; puis l'IA interprète ce résultat déjà formé dans ta langue. Elle convient aux réponses concises, au ton ancestral; le I Ching convient mieux aux changements stratifiés dans le temps.",
+      "Les Os de l'Oracle sont une méthode divinatoire de l'époque Shang inspirée de la lecture des fissures sur des plastrons de tortue et des omoplates de bœuf. Dans l'app, elle est distincte du I Ching: elle ne crée pas d'hexagrammes ni de traits changeants. Le système forme d'abord un motif de fissures et un verdict; puis l'IA interprète ce résultat déjà formé dans ta langue. Le verdict tombe toujours dans l'un des cinq états possibles, fidèles à la méthode ancestrale Shang : 1) 吉 — clairement favorable : le motif confirme la charge positive sans ambiguïté ; 2) 吉 modéré — modérément favorable : la confirmation est présente, mais nuancée ou conditionnée ; 3) 凶 modéré — modérément défavorable : le motif penche vers la négation avec des réserves ; 4) 凶 — clairement défavorable : le motif nie la charge positive sans ambiguïté ; 5) 沉默 — Silence : le motif ne produit pas de fissures lisibles et le silence lui-même est la réponse. Elle convient aux réponses concises, au ton ancestral ; le I Ching convient mieux aux changements stratifiés dans le temps.",
     related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "Comment le I Ching fonctionne-t-il réellement, et d'où viennent ses réponses ?",
+    answer:
+      "Le I Ching fonctionne grâce à 64 hexagrammes, un catalogue millénaire des motifs de changement dans la nature et la vie humaine. Chaque hexagramme est une figure structurée dont le sens classique est conservé dans les textes Wilhelm/Baynes. Chaque consultation part de votre question concrète. L'algorithme mathématique lance les traits selon les règles de Zhu Xi pour déterminer l'hexagramme présent, les éventuels traits en mouvement et l'hexagramme futur qui en résulte. L'IA articule ensuite ce résultat déjà formé dans votre langue, en appliquant le sens classique de ces hexagrammes à votre contexte particulier. C'est pourquoi chaque lecture est unique et personnelle : les mêmes hexagrammes peuvent apparaître pour des personnes différentes, mais la réponse n'est jamais la même, car elle dépend de la question concrète, du moment de vie et du contexte personnel du consultant. Il n'existe pas d'interprétation universelle applicable à plusieurs personnes en même temps.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",

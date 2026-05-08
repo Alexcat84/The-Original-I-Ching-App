@@ -10,6 +10,10 @@ export type NotesPageUiMessages = {
   ichingOriginBody: string;
   ichingHexHeading: string;
   ichingHexBody: string;
+  /** Caption shown above the grid that lists every King Wen hexagram. */
+  ichingHexListHeading: string;
+  ichingHexListIntro: string;
+  ichingHexListAriaLabel: string;
   ichingMethodHeading: string;
   ichingMethodBody: string;
   ichingWilhelmHeading: string;
@@ -54,6 +58,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "El sistema de los 64 hexagramas",
     ichingHexBody:
       "Cada hexagrama es una figura de seis líneas, cada una yin (rota, receptiva) o yang (entera, activa). Las 64 combinaciones posibles describen los patrones fundamentales del cambio en la naturaleza y en la vida humana. Las líneas en movimiento indican transformación: el hexagrama presente muta hacia uno futuro, y esa transición es el corazón de la lectura.",
+    ichingHexListHeading: "Los 64 hexagramas en orden King Wen",
+    ichingHexListIntro:
+      "Listado completo de los 64 hexagramas con su número, su glifo y su nombre clásico en chino y pinyin. Aquí no se incluye su significado: cada hexagrama solo cobra sentido en una consulta concreta, donde la pregunta y el contexto del consultante determinan la lectura.",
+    ichingHexListAriaLabel: "Listado de los 64 hexagramas",
     ichingMethodHeading: "El método de las tres monedas y las reglas de Zhu Xi",
     ichingMethodBody:
       "El método clásico usa tres monedas lanzadas seis veces para construir el hexagrama línea por línea. Cuando múltiples líneas cambian, la escuela de Zhu Xi (neoconfucianismo, siglo XII d.C.) establece reglas precisas para determinar qué línea gobierna la lectura, eliminando la ambigüedad interpretativa. Esta app implementa exactamente esas reglas sin modificación.",
@@ -107,6 +115,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "The 64-Hexagram System",
     ichingHexBody:
       "Each hexagram is a figure of six lines, each either yin (broken, receptive) or yang (solid, active). The 64 possible combinations describe the fundamental patterns of change in nature and human life. Moving lines indicate transformation: the present hexagram mutates into a future one, and that transition is the heart of the reading.",
+    ichingHexListHeading: "The 64 hexagrams in King Wen order",
+    ichingHexListIntro:
+      "Complete list of the 64 hexagrams with their number, glyph, and classical name in Chinese and pinyin. Their meaning is not included here: each hexagram only takes shape inside a specific consultation, where the question and the seeker's context determine the reading.",
+    ichingHexListAriaLabel: "List of the 64 hexagrams",
     ichingMethodHeading: "The Three-Coin Method and Zhu Xi's Rules",
     ichingMethodBody:
       "The classic method uses three coins cast six times to build the hexagram line by line. When multiple lines change, the Zhu Xi school (Neo-Confucianism, 12th century CE) establishes precise rules to determine which line governs the reading, eliminating interpretive ambiguity. This app implements those rules exactly without modification.",
@@ -160,6 +172,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "O sistema dos 64 hexagramas",
     ichingHexBody:
       "Cada hexagrama é uma figura de seis linhas, cada uma yin (partida, receptiva) ou yang (inteira, ativa). As 64 combinações possíveis descrevem os padrões fundamentais da mudança na natureza e na vida humana. As linhas em movimento indicam transformação: o hexagrama presente muta para um futuro, e essa transição é o coração da leitura.",
+    ichingHexListHeading: "Os 64 hexagramas em ordem King Wen",
+    ichingHexListIntro:
+      "Listagem completa dos 64 hexagramas com o seu número, glifo e nome clássico em chinês e pinyin. O significado não é apresentado aqui: cada hexagrama só ganha sentido numa consulta concreta, onde a pergunta e o contexto do consultante determinam a leitura.",
+    ichingHexListAriaLabel: "Listagem dos 64 hexagramas",
     ichingMethodHeading: "O método das três moedas e as regras de Zhu Xi",
     ichingMethodBody:
       "O método clássico usa três moedas lançadas seis vezes para construir o hexagrama linha a linha. Quando múltiplas linhas mudam, a escola de Zhu Xi (neo-confucionismo, século XII d.C.) estabelece regras precisas para determinar qual linha governa a leitura, eliminando a ambiguidade interpretativa. Esta app implementa exatamente essas regras sem modificação.",
@@ -213,6 +229,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "Le système des 64 hexagrammes",
     ichingHexBody:
       "Chaque hexagramme est une figure de six traits, chacun yin (brisé, réceptif) ou yang (plein, actif). Les 64 combinaisons possibles décrivent les modèles fondamentaux du changement dans la nature et la vie humaine. Les traits en mouvement indiquent une transformation : l'hexagramme présent mute en un futur, et cette transition est au cœur de la lecture.",
+    ichingHexListHeading: "Les 64 hexagrammes selon l'ordre du Roi Wen",
+    ichingHexListIntro:
+      "Liste complète des 64 hexagrammes avec leur numéro, leur glyphe et leur nom classique en chinois et pinyin. Leur signification n'est pas indiquée ici : chaque hexagramme ne prend forme qu'au sein d'une consultation précise, où la question et le contexte du consultant déterminent la lecture.",
+    ichingHexListAriaLabel: "Liste des 64 hexagrammes",
     ichingMethodHeading: "La méthode des trois pièces et les règles de Zhu Xi",
     ichingMethodBody:
       "La méthode classique utilise trois pièces lancées six fois pour construire l'hexagramme trait par trait. Lorsque plusieurs traits changent, l'école de Zhu Xi (néoconfucianisme, XIIe siècle ap. J.-C.) établit des règles précises pour déterminer quel trait gouverne la lecture, éliminant toute ambiguïté interprétative. Cette app implémente exactement ces règles sans modification.",
@@ -266,6 +286,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "Das System der 64 Hexagramme",
     ichingHexBody:
       "Jedes Hexagramm ist eine Figur aus sechs Linien, jede entweder yin (gebrochen, empfänglich) oder yang (ganz, aktiv). Die 64 möglichen Kombinationen beschreiben die grundlegenden Muster des Wandels in der Natur und im menschlichen Leben. Bewegende Linien zeigen Transformation an: das gegenwärtige Hexagramm wandelt sich in ein zukünftiges, und dieser Übergang ist das Herzstück der Lesung.",
+    ichingHexListHeading: "Die 64 Hexagramme in der Reihenfolge nach König Wen",
+    ichingHexListIntro:
+      "Vollständige Liste der 64 Hexagramme mit Nummer, Schriftzeichen und klassischem Namen in Chinesisch und Pinyin. Ihre Bedeutung wird hier nicht aufgeführt: Jedes Hexagramm gewinnt erst innerhalb einer konkreten Beratung Gestalt, in der Frage und Kontext der ratsuchenden Person die Lesung bestimmen.",
+    ichingHexListAriaLabel: "Liste der 64 Hexagramme",
     ichingMethodHeading: "Die Drei-Münzen-Methode und Zhu Xis Regeln",
     ichingMethodBody:
       "Die klassische Methode verwendet drei Münzen, die sechsmal geworfen werden, um das Hexagramm Linie für Linie aufzubauen. Wenn mehrere Linien wechseln, legt die Schule von Zhu Xi (Neokonfuzianismus, 12. Jh. n. Chr.) genaue Regeln fest, um zu bestimmen, welche Linie die Lesung regiert, wodurch interpretative Mehrdeutigkeit beseitigt wird. Diese App implementiert genau diese Regeln ohne Änderung.",
@@ -319,6 +343,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "Il sistema dei 64 esagrammi",
     ichingHexBody:
       "Ogni esagramma è una figura di sei linee, ciascuna yin (spezzata, ricettiva) o yang (intera, attiva). Le 64 combinazioni possibili descrivono i modelli fondamentali del cambiamento nella natura e nella vita umana. Le linee in movimento indicano trasformazione: l'esagramma presente muta in uno futuro, e quella transizione è il cuore della lettura.",
+    ichingHexListHeading: "I 64 esagrammi nell'ordine di Re Wen",
+    ichingHexListIntro:
+      "Elenco completo dei 64 esagrammi con numero, glifo e nome classico in cinese e pinyin. Il significato non è riportato qui: ogni esagramma prende forma solo all'interno di una consultazione precisa, dove la domanda e il contesto di chi consulta determinano la lettura.",
+    ichingHexListAriaLabel: "Elenco dei 64 esagrammi",
     ichingMethodHeading: "Il metodo delle tre monete e le regole di Zhu Xi",
     ichingMethodBody:
       "Il metodo classico usa tre monete lanciate sei volte per costruire l'esagramma linea per linea. Quando più linee cambiano, la scuola di Zhu Xi (neo-confucianesimo, XII secolo d.C.) stabilisce regole precise per determinare quale linea governa la lettura, eliminando l'ambiguità interpretativa. Questa app implementa esattamente quelle regole senza modifiche.",
@@ -372,6 +400,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "64卦のシステム",
     ichingHexBody:
       "各卦は6本の爻から成る図形で、それぞれが陰（切れた、受容的）または陽（連続した、能動的）です。64の可能な組み合わせは、自然と人間の生活における変化の根本的なパターンを描写しています。動爻は変容を示します：現在の卦は未来の卦へと変化し、その移行が占いの核心です。",
+    ichingHexListHeading: "周文王の順序による64卦の一覧",
+    ichingHexListIntro:
+      "64卦の番号、卦象、漢字名と拼音をすべて掲載した一覧です。意味はここでは扱いません。各卦は具体的な相談のなかではじめて形を持ち、問いと相談者の文脈が読みを決めます。",
+    ichingHexListAriaLabel: "64卦の一覧",
     ichingMethodHeading: "三枚銭法と朱熹の規則",
     ichingMethodBody:
       "古典的な方法は、三枚の銭を六回投じて卦を一爻ずつ構築します。複数の爻が変化する場合、朱熹の学派（新儒学、12世紀）は、どの爻が占いを支配するかを決定する精確な規則を設けており、解釈上の曖昧さを排除しています。このアプリはその規則を改変なく正確に実装しています。",
@@ -425,6 +457,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "六十四卦系统",
     ichingHexBody:
       "每一卦由六爻组成，每爻为阴（断裂，柔顺）或阳（连续，刚健）。六十四种可能的组合描述了自然与人类生活中变化的根本规律。动爻指示转变：当下之卦变化为未来之卦，这一转变正是占卜的核心所在。",
+    ichingHexListHeading: "周文王序列下的六十四卦总览",
+    ichingHexListIntro:
+      "完整列出六十四卦的卦序、卦象、汉字名称与拼音。此处不附释义：每一卦的意涵都只有在具体咨询中才会成形，由问题与问卜者的处境共同决定解读。",
+    ichingHexListAriaLabel: "六十四卦列表",
     ichingMethodHeading: "三枚铜钱法与朱熹规则",
     ichingMethodBody:
       "经典方法以三枚铜钱掷六次，逐爻构建卦象。当多爻变动时，朱熹学派（新儒家，公元12世纪）制定了精确的规则，以确定哪一爻主导解读，从而消除解释上的歧义。本应用严格按照这些规则实施，未作任何修改。",
@@ -478,6 +514,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "64괘 체계",
     ichingHexBody:
       "각 괘는 여섯 효로 이루어진 도형으로, 각 효는 음（끊긴 선, 수용적）또는 양（이어진 선, 능동적）입니다. 64가지 가능한 조합은 자연과 인간의 삶에서 변화의 근본적인 패턴을 묘사합니다. 변하는 효는 변환을 나타냅니다: 현재의 괘는 미래의 괘로 변하며, 그 전환이 독해의 핵심입니다.",
+    ichingHexListHeading: "주문왕 순서로 본 64괘 일람",
+    ichingHexListIntro:
+      "64괘의 번호, 괘상, 한자 이름과 병음을 모두 정리한 목록입니다. 의미는 여기에 싣지 않습니다. 각 괘는 구체적인 상담 안에서만 형태를 갖추며, 질문과 상담자의 맥락이 풀이를 결정합니다.",
+    ichingHexListAriaLabel: "64괘 목록",
     ichingMethodHeading: "삼전법과 주희의 규칙",
     ichingMethodBody:
       "고전적 방법은 동전 세 개를 여섯 번 던져 효를 하나씩 구성합니다. 여러 효가 변할 때, 주희 학파（신유학, 12세기）는 어떤 효가 독해를 지배하는지를 결정하는 정확한 규칙을 확립하여 해석상의 모호성을 제거합니다. 이 앱은 수정 없이 해당 규칙을 정확히 구현합니다.",
@@ -531,6 +571,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "نظام الأغراض الأربعة والستين",
     ichingHexBody:
       "كل غرض هو شكل من ستة خطوط، كل منها إما يين (مكسور، متقبّل) أو يانغ (مستمر، نشط). تصف الـ 64 تركيبة الممكنة الأنماط الأساسية للتغيير في الطبيعة والحياة البشرية. تشير الخطوط المتحركة إلى التحول: الغرض الحاضر يتحول إلى غرض مستقبلي، وهذا الانتقال هو جوهر القراءة.",
+    ichingHexListHeading: "الأغراض الأربعة والستون وفق ترتيب الملك Wen",
+    ichingHexListIntro:
+      "قائمة كاملة بالأغراض الأربعة والستين مع رقم كل غرض ورمزه واسمه الكلاسيكي بالصينية والبينين. لا يُذكر هنا معناها: لا يكتمل أي غرض إلا داخل استشارة محددة، حيث يحدد سؤال المستشير وسياقه الشخصي القراءة.",
+    ichingHexListAriaLabel: "قائمة الأغراض الأربعة والستين",
     ichingMethodHeading: "طريقة العملات الثلاث وقواعد Zhu Xi",
     ichingMethodBody:
       "تستخدم الطريقة الكلاسيكية ثلاث عملات تُقذف ست مرات لبناء الغرض خطاً بخط. عندما تتغير خطوط متعددة، تضع مدرسة Zhu Xi (الكونفوشيانية الجديدة، القرن الثاني عشر الميلادي) قواعد دقيقة لتحديد أي خط يحكم القراءة، مما يزيل الغموض التفسيري. ينفذ هذا التطبيق تلك القواعد بدقة دون أي تعديل.",
@@ -584,6 +628,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "64 हेक्साग्राम प्रणाली",
     ichingHexBody:
       "प्रत्येक हेक्साग्राम छह रेखाओं की एक आकृति है, प्रत्येक यिन (टूटी हुई, ग्रहणशील) या यांग (अखंड, सक्रिय)। 64 संभावित संयोजन प्रकृति और मानव जीवन में परिवर्तन के मौलिक पैटर्न का वर्णन करते हैं। गतिशील रेखाएं परिवर्तन का संकेत देती हैं: वर्तमान हेक्साग्राम एक भविष्य के हेक्साग्राम में बदल जाता है, और वह संक्रमण पाठन का केंद्र है।",
+    ichingHexListHeading: "राजा वेन के क्रम में 64 हेक्साग्राम",
+    ichingHexListIntro:
+      "सभी 64 हेक्साग्रामों की पूरी सूची, उनके क्रमांक, चिह्न और चीनी तथा पिनयिन में पारंपरिक नाम के साथ। उनका अर्थ यहां नहीं दिया गया है: प्रत्येक हेक्साग्राम केवल किसी ठोस परामर्श के भीतर ही रूप लेता है, जहां प्रश्न और परामर्शक का संदर्भ पठन तय करते हैं।",
+    ichingHexListAriaLabel: "64 हेक्साग्रामों की सूची",
     ichingMethodHeading: "तीन सिक्कों की विधि और Zhu Xi के नियम",
     ichingMethodBody:
       "शास्त्रीय विधि तीन सिक्कों का उपयोग करती है जिन्हें छह बार फेंका जाता है ताकि हेक्साग्राम एक-एक रेखा बनाया जा सके। जब कई रेखाएं बदलती हैं, तो Zhu Xi स्कूल (नव-कन्फ्यूशीवाद, 12वीं सदी ई.) सटीक नियम स्थापित करता है जो यह निर्धारित करते हैं कि कौन सी रेखा पाठन को नियंत्रित करती है, व्याख्यात्मक अस्पष्टता को समाप्त करते हुए। यह ऐप बिना किसी संशोधन के उन नियमों को सटीक रूप से लागू करता है।",
