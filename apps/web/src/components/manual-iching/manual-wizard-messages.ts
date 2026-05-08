@@ -58,7 +58,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Método de lanzamiento",
     castMethodCoinsLabel: "Tres Monedas",
     castMethodYarrowLabel: "Varillas (Yarrow)",
-    castMethodYarrowHint: "Distribución auténtica Zhou — yang móvil 3× más frecuente que yin móvil",
+    castMethodYarrowHint: "Distribución auténtica Zhou; yang móvil 3× más frecuente que yin móvil",
     castMethodYarrowTagline: "Varillas · Zhu Xi · Wilhelm/Baynes",
   },
   en: {
@@ -86,7 +86,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   pt: {
@@ -114,7 +114,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   fr: {
@@ -142,7 +142,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   de: {
@@ -170,7 +170,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   it: {
@@ -198,7 +198,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   ja: {
@@ -226,7 +226,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   zh: {
@@ -254,7 +254,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   ko: {
@@ -282,7 +282,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   ar: {
@@ -310,7 +310,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
   hi: {
@@ -338,7 +338,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodGroupAria: "Casting method",
     castMethodCoinsLabel: "Three Coins",
     castMethodYarrowLabel: "Yarrow Stalks",
-    castMethodYarrowHint: "Authentic Zhou distribution — moving yang 3× more likely than moving yin",
+    castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
   },
 };

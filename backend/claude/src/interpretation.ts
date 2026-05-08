@@ -96,9 +96,9 @@ function enforceIChingStructuralConsistency(text: string, cast: CastResult, lang
 
 function castingMethodNote(method: CastingMethod | undefined): string {
   if (method === "yarrow-stalks") {
-    return "DIVINATION METHOD: Yarrow Stalks (authentic Zhou distribution — old yang 3× more likely than old yin; the transformed hexagram carries additional interpretive weight when it appears)";
+    return "DIVINATION METHOD: Yarrow Stalks (authentic Zhou distribution; old yang 3× more likely than old yin; the transformed hexagram carries additional interpretive weight when it appears)";
   }
-  return "DIVINATION METHOD: Three Coins (symmetric probability — equal weight for both types of moving lines)";
+  return "DIVINATION METHOD: Three Coins (symmetric probability; equal weight for both types of moving lines)";
 }
 
 function buildCurrentCastPrompt(
