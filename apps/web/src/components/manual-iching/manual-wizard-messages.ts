@@ -30,6 +30,8 @@ export type ManualWizardMessages = {
   castMethodYarrowLabel: string;
   castMethodYarrowHint: string;
   castMethodYarrowTagline: string;
+  physicalWarning: string;
+  startButton: string;
 };
 
 const M: Record<AppLocale, ManualWizardMessages> = {
@@ -60,6 +62,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Varillas (Yarrow)",
     castMethodYarrowHint: "Distribución auténtica Zhou; yang móvil 3× más frecuente que yin móvil",
     castMethodYarrowTagline: "Varillas · Zhu Xi · Wilhelm/Baynes",
+    physicalWarning: "Este método requiere 3 monedas físicas. Cualquier tres monedas similares funcionan igual de bien.",
+    startButton: "Comenzar",
   },
   en: {
     title: "Manual cast: three coins",
@@ -88,6 +92,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Yarrow Stalks",
     castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
+    physicalWarning: "This method requires 3 physical coins. Any three similar coins work equally well.",
+    startButton: "Start",
   },
   pt: {
     title: "Tiragem manual: três moedas",
@@ -116,6 +122,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Varetas (Yarrow)",
     castMethodYarrowHint: "Distribuição Zhou autêntica; yang móvel 3× mais provável que yin móvel",
     castMethodYarrowTagline: "Varetas · Zhu Xi · Wilhelm/Baynes",
+    physicalWarning: "Este método requer 3 moedas físicas. Quaisquer três moedas similares funcionam igualmente bem.",
+    startButton: "Iniciar",
   },
   fr: {
     title: "Tirage manuel: trois pièces",
@@ -144,6 +152,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Tiges d’Achillée",
     castMethodYarrowHint: "Distribution Zhou authentique; yang mobile 3× plus probable que yin mobile",
     castMethodYarrowTagline: "Tiges d’Achillée · Zhu Xi · Wilhelm/Baynes",
+    physicalWarning: "Cette méthode nécessite 3 pièces de monnaie physiques. Trois pièces quelconques fonctionnent tout aussi bien.",
+    startButton: "Commencer",
   },
   de: {
     title: "Manueller Wurf: drei Münzen",
@@ -172,6 +182,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Schafgarbenstäbe",
     castMethodYarrowHint: "Authentische Zhou-Verteilung; bewegendes Yang 3× wahrscheinlicher als bewegendes Yin",
     castMethodYarrowTagline: "Schafgarbenstäbe · Zhu Xi · Wilhelm/Baynes",
+    physicalWarning: "Diese Methode erfordert 3 physische Münzen. Drei beliebige ähnliche Münzen funktionieren ebenso gut.",
+    startButton: "Starten",
   },
   it: {
     title: "Lancio manuale: tre monete",
@@ -200,6 +212,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Stecche di Achillea",
     castMethodYarrowHint: "Distribuzione Zhou autentica; yang mutabile 3× più probabile dello yin mutabile",
     castMethodYarrowTagline: "Stecche di Achillea · Zhu Xi · Wilhelm/Baynes",
+    physicalWarning: "Questo metodo richiede 3 monete fisiche. Qualsiasi tre monete simili funzionano ugualmente bene.",
+    startButton: "Inizia",
   },
   ja: {
     title: "手動占い: 三銭",
@@ -228,6 +242,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "蓍草",
     castMethodYarrowHint: "周朝本来の分布；動爻の陽は陰の3倍",
     castMethodYarrowTagline: "蓍草 · 朱熹 · Wilhelm/Baynes",
+    physicalWarning: "この方法には3枚の実際のコインが必要です。同様の3枚のコインならどれでも同様に機能します。",
+    startButton: "開始",
   },
   zh: {
     title: "手动起卦: 三钱",
@@ -256,6 +272,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "蓍草",
     castMethodYarrowHint: "周代本真分布；动爻中阳爻概率是阴爻三倍",
     castMethodYarrowTagline: "蓍草 · 朱熹 · Wilhelm/Baynes",
+    physicalWarning: "此方法需要3枚实物硬币。任意三枚类似的硬币均可使用。",
+    startButton: "开始",
   },
   ko: {
     title: "수동 점: 동전 세枚",
@@ -284,6 +302,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "시초",
     castMethodYarrowHint: "주 왕조 본래 분포; 동효 양은 음보다 3배 많음",
     castMethodYarrowTagline: "시초 · 주희 · Wilhelm/Baynes",
+    physicalWarning: "이 방법은 실제 동전 3개가 필요합니다. 유사한 동전 3개라면 어떤 것이든 동일하게 작동합니다.",
+    startButton: "시작",
   },
   ar: {
     title: "قَسْم يدوي: ثلاث عملات",
@@ -312,6 +332,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "عيدان الزنبق",
     castMethodYarrowHint: "توزيع تشو الأصيل؛ يانغ متحرك أكثر من ين متحرك بثلاثة أضعاف",
     castMethodYarrowTagline: "عيدان الزنبق · تشو شي · Wilhelm/Baynes",
+    physicalWarning: "تتطلب هذه الطريقة 3 عملات حقيقية. أي ثلاث عملات مشابهة تؤدي الغرض ذاته.",
+    startButton: "ابدأ",
   },
   hi: {
     title: "मैन्युअल कास्ट: तीन सिक्के",
@@ -340,6 +362,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "यारो की छड़ें",
     castMethodYarrowHint: "प्रामाणिक झोउ वितरण; गतिशील यांग, गतिशील यिन से 3 गुना अधिक संभावित",
     castMethodYarrowTagline: "यारो · झू शी · Wilhelm/Baynes",
+    physicalWarning: "इस विधि के लिए 3 भौतिक सिक्कों की आवश्यकता है। कोई भी तीन समान सिक्के समान रूप से काम करते हैं।",
+    startButton: "शुरू करें",
   },
 };
 
