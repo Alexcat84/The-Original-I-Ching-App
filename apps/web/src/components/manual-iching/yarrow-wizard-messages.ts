@@ -26,6 +26,7 @@ export type YarrowWizardMessages = {
   rollProgress: string;
   progressNavHint: string;
   previewLoading: string;
+  physicalWarning: string;
 };
 
 const EN: YarrowWizardMessages = {
@@ -53,6 +54,7 @@ const EN: YarrowWizardMessages = {
   rollProgress: "Cast {{current}}/{{total}}",
   progressNavHint: "Completed lines: tap to re-edit from that line.",
   previewLoading: "Preparing your reading…",
+  physicalWarning: "This method requires 49 physical objects. Yarrow stems are traditional, but toothpicks, matchsticks, or any 49 similar objects work equally well.",
 };
 
 const ES: YarrowWizardMessages = {
@@ -80,6 +82,7 @@ const ES: YarrowWizardMessages = {
   rollProgress: "Tirada {{current}}/{{total}}",
   progressNavHint: "Líneas completadas: toca para volver a editar desde esa línea.",
   previewLoading: "Preparando la lectura…",
+  physicalWarning: "Este método requiere 49 objetos físicos. El tallo de milenrama es el material tradicional, pero palillos, cerillas o cualquier otro objeto similar funcionan igual.",
 };
 
 const PT: YarrowWizardMessages = {
@@ -107,6 +110,7 @@ const PT: YarrowWizardMessages = {
   rollProgress: "Tiragem {{current}}/{{total}}",
   progressNavHint: "Linhas concluídas: toque para voltar a editar a partir dessa linha.",
   previewLoading: "A preparar a leitura…",
+  physicalWarning: "Este método requer 49 objetos físicos. Os talos de milefólio são o material tradicional, mas palitos, fósforos ou quaisquer 49 objetos similares funcionam igualmente bem.",
 };
 
 const FR: YarrowWizardMessages = {
@@ -134,6 +138,7 @@ const FR: YarrowWizardMessages = {
   rollProgress: "Tirage {{current}}/{{total}}",
   progressNavHint: "Traits terminés : touchez pour reprendre l'édition depuis ce trait.",
   previewLoading: "Préparation de la lecture…",
+  physicalWarning: "Cette méthode nécessite 49 objets physiques. Les tiges d'achillée sont le matériau traditionnel, mais des cure-dents, allumettes ou tout autre objet similaire fonctionnent tout aussi bien.",
 };
 
 const DE: YarrowWizardMessages = {
@@ -161,6 +166,7 @@ const DE: YarrowWizardMessages = {
   rollProgress: "Wurf {{current}}/{{total}}",
   progressNavHint: "Fertige Linien: tippen, um ab dieser Linie neu einzugeben.",
   previewLoading: "Lesung wird vorbereitet…",
+  physicalWarning: "Diese Methode erfordert 49 physische Objekte. Schafgarbenstiele sind das traditionelle Material, aber Zahnstocher, Streichhölzer oder ähnliche Gegenstände funktionieren ebenso gut.",
 };
 
 const IT: YarrowWizardMessages = {
@@ -188,6 +194,7 @@ const IT: YarrowWizardMessages = {
   rollProgress: "Lancio {{current}}/{{total}}",
   progressNavHint: "Linee completate: tocca per modificare da quella linea.",
   previewLoading: "Preparazione della lettura…",
+  physicalWarning: "Questo metodo richiede 49 oggetti fisici. Gli steli di achillea sono il materiale tradizionale, ma stuzzicadenti, fiammiferi o oggetti simili funzionano ugualmente bene.",
 };
 
 const JA: YarrowWizardMessages = {
@@ -215,6 +222,7 @@ const JA: YarrowWizardMessages = {
   rollProgress: "{{current}}/{{total}} 投",
   progressNavHint: "記録済みの爻：タップしてその爻からやり直す。",
   previewLoading: "読み結果を準備中…",
+  physicalWarning: "この方法には49本の物理的な蓍草が必要です。伝統的な蓍草が最適ですが、爪楊枝、マッチ棒、または同様の49本の物体でも同様に機能します。",
 };
 
 const ZH: YarrowWizardMessages = {
@@ -242,6 +250,7 @@ const ZH: YarrowWizardMessages = {
   rollProgress: "第 {{current}}/{{total}} 掷",
   progressNavHint: "已记录的爻：点击可从该爻重掷。",
   previewLoading: "正在准备卦象…",
+  physicalWarning: "此方法需要49根实物蓍草。蓍草茎是传统材料，但牙签、火柴棍或任意49根类似物品同样有效。",
 };
 
 const KO: YarrowWizardMessages = {
@@ -269,6 +278,7 @@ const KO: YarrowWizardMessages = {
   rollProgress: "{{current}}/{{total}} 차례",
   progressNavHint: "완료된 효: 탭하면 해당 효부터 다시 입력.",
   previewLoading: "해석 준비 중…",
+  physicalWarning: "이 방법은 49개의 실제 물체가 필요합니다. 전통적인 시초가 적합하지만 이쑤시개, 성냥개비 또는 유사한 49개의 물체도 동일하게 작동합니다.",
 };
 
 const AR: YarrowWizardMessages = {
@@ -296,6 +306,7 @@ const AR: YarrowWizardMessages = {
   rollProgress: "رمية {{current}}/{{total}}",
   progressNavHint: "خطوط مكتملة: المس للتعديل بدءًا من ذلك الخط.",
   previewLoading: "جارٍ تجهيز القراءة…",
+  physicalWarning: "تتطلب هذه الطريقة 49 عودًا حقيقيًا. عيدان الزنبق هي المادة التقليدية، لكن أعواد الأسنان أو أعواد الثقاب أو أي 49 جسمًا مشابهًا تؤدي الغرض ذاته.",
 };
 
 const HI: YarrowWizardMessages = {
@@ -323,6 +334,7 @@ const HI: YarrowWizardMessages = {
   rollProgress: "कास्ट {{current}}/{{total}}",
   progressNavHint: "पूर्ण रेखाएँ: उस रेखा से फिर से दर्ज करने के लिए टैप करें।",
   previewLoading: "पठन तैयार हो रहा है…",
+  physicalWarning: "इस विधि के लिए 49 भौतिक वस्तुओं की आवश्यकता है। यारो के तने पारंपरिक सामग्री हैं, लेकिन टूथपिक, माचिस की तीलियाँ या कोई भी 49 समान वस्तुएं समान रूप से काम करती हैं।",
 };
 
 const M: Partial<Record<AppLocale, YarrowWizardMessages>> = {

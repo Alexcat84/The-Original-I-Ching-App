@@ -168,6 +168,11 @@ export function ManualYarrowWizard({ open, onClose, onComplete, locale, question
             </div>
           </div>
 
+          {/* Physical-objects warning — shown before the first line is recorded */}
+          {recorded.length === 0 && phase1 === null && (
+            <p className="manual-yarrow-physical-warning">{m.physicalWarning}</p>
+          )}
+
           {/* Stalks dividing animation — remounts on each new line to replay */}
           <div className="yarrow-divide-anim-wrap" key={`yd-${lineNumber}`} aria-hidden="true">
             <svg className="yarrow-divide-anim" viewBox="0 0 200 40" fill="none">

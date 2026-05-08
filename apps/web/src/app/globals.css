@@ -6457,6 +6457,18 @@ html.iching-rn-webview .apk-trace-native-metrics {
   line-height: 1.4;
 }
 
+/* Yarrow Stalks wizard — physical warning notice (F3) */
+.manual-yarrow-physical-warning {
+  margin: 0.5rem 0.75rem 0.25rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--oracle-accent, #c8a96e) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--oracle-accent, #c8a96e) 35%, transparent);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  opacity: 0.9;
+}
+
 /* Yarrow Stalks wizard — dividing animation (C2) */
 .yarrow-divide-anim-wrap {
   display: flex;

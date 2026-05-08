@@ -72,6 +72,18 @@ export default async function NotesPage() {
         <h3>{n.bonesAuthHeading}</h3>
         <p>{n.bonesAuthBody}</p>
 
+        {/* ── Yarrow Stalks ── */}
+        <h2>{n.yarrowHeading}</h2>
+
+        <h3>{n.yarrowOriginHeading}</h3>
+        <p>{n.yarrowOriginBody}</p>
+
+        <h3>{n.yarrowProcedureHeading}</h3>
+        <p>{n.yarrowProcedureBody}</p>
+
+        <h3>{n.yarrowProbHeading}</h3>
+        <p>{n.yarrowProbBody}</p>
+
         {/* ── Interpretation ── */}
         <h2>{n.interpretHeading}</h2>
         <p>{n.interpretBody}</p>
@@ -107,6 +119,21 @@ export default async function NotesPage() {
           <li>
             <a href="https://en.wikipedia.org/wiki/Shang_dynasty" target="_blank" rel="noopener noreferrer">
               Shang dynasty (商朝) on Wikipedia
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/I_Ching_divination" target="_blank" rel="noopener noreferrer">
+              I Ching divination (yarrow stalk method) on Wikipedia
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Ten_Wings" target="_blank" rel="noopener noreferrer">
+              Ten Wings (十翼, Great Commentary / Dàzhuàn) on Wikipedia
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Edward_Shaughnessy" target="_blank" rel="noopener noreferrer">
+              Edward L. Shaughnessy (Sources of Western Zhou History, 1993) on Wikipedia
             </a>
           </li>
         </ul>

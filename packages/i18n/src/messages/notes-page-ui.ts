@@ -29,6 +29,13 @@ export type NotesPageUiMessages = {
   bonesVerdictSilence: string;
   bonesAuthHeading: string;
   bonesAuthBody: string;
+  yarrowHeading: string;
+  yarrowOriginHeading: string;
+  yarrowOriginBody: string;
+  yarrowProcedureHeading: string;
+  yarrowProcedureBody: string;
+  yarrowProbHeading: string;
+  yarrowProbBody: string;
   interpretHeading: string;
   interpretBody: string;
   sourcesHeading: string;
@@ -73,6 +80,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Autenticidad del método",
     bonesAuthBody:
       "Más de 150.000 fragmentos de huesos oraculares han sido excavados y estudiados desde el siglo XIX. Son patrimonio reconocido internacionalmente y se conservan en museos de China, Taiwán, Japón y Europa. El método implementado en esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa, veredicto por patrón, incluyendo el silencio como estado legítimo.",
+    yarrowHeading: "Varillas de Milenrama (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Origen histórico (~1000 a.C.)",
+    yarrowOriginBody:
+      "El método de las varillas de milenrama es el procedimiento de adivinación descrito en el propio I Ching. El Gran Comentario (大传, Dàzhuàn), una de las Diez Alas, precisa: «El número de la Gran Expansión es 50, de los que se usan 49». En los Anales, Confucio declaró que deseaba estudiar los Cambios durante cincuenta años; los estudiosos clásicos entienden esa referencia al número 50 como alusión directa al procedimiento de las varillas. El método es anterior al de tres monedas en más de un milenio. Richard Wilhelm y Cary Baynes documentaron el procedimiento completo en el Apéndice de su traducción (Princeton, 1950).",
+    yarrowProcedureHeading: "El procedimiento físico",
+    yarrowProcedureBody:
+      "El método requiere 50 varillas físicas (el milenrama tradicional es el material clásico, pero palillos u objetos similares funcionan igual). Una varilla se aparta permanentemente; se usan las 49 restantes. Por cada una de las seis líneas se realizan tres fases de recuento: en cada fase se dividen aleatoriamente las varillas, se extrae un residuo contando en grupos de cuatro y ese residuo se reserva. La fase 1 produce un residuo de 5 o 9; las fases 2 y 3 producen 4 u 8. La suma de los tres residuos se resta de 49 y el resultado se divide por 4: 36/4 = 9 (yang viejo), 32/4 = 8 (yin joven), 28/4 = 7 (yang joven), 24/4 = 6 (yin viejo).",
+    yarrowProbHeading: "Distribución de probabilidad",
+    yarrowProbBody:
+      "Las ocho combinaciones de residuos no son equiprobables, lo que produce una distribución asimétrica: yang viejo (9) ocurre 3 de cada 16 tiradas (18,75 %), yang joven (7) ocurre 5 de cada 16 (31,25 %), yin joven (8) ocurre 7 de cada 16 (43,75 %), yin viejo (6) ocurre 1 de cada 16 (6,25 %). El yang móvil es tres veces más probable que el yin móvil. Esta asimetría es estructural: el procedimiento de conteo la genera directamente. El método de tres monedas, introducido más tarde, da probabilidades simétricas (12,5 % para cada tipo de línea móvil).",
     interpretHeading: "Por qué la IA no inventa",
     interpretBody:
       "La inteligencia artificial en esta app tiene una función específica y acotada: tomar el resultado del algoritmo (hexagrama, líneas en movimiento, veredicto de grietas) y articularlo en lenguaje natural en el idioma del usuario, con el contexto de su pregunta. La IA no genera hexagramas, no decide veredictos, no modifica los textos de Wilhelm ni los patrones del método Shang. El algoritmo matemático hace eso, fielmente, antes de que la IA intervenga. La IA es el intérprete. El oráculo es el método.",
@@ -116,6 +133,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Authenticity of the Method",
     bonesAuthBody:
       "More than 150,000 oracle bone fragments have been excavated and studied since the 19th century. They are internationally recognized heritage and are preserved in museums in China, Taiwan, Japan, and Europe. The method implemented in this app respects the structural logic of the Shang system: positive charge, negative charge, verdict by pattern, including silence as a legitimate state.",
+    yarrowHeading: "Yarrow Stalks (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Historical Origins (~1000 BCE)",
+    yarrowOriginBody:
+      "The yarrow stalk method is the divination procedure documented in the I Ching itself. The Great Commentary (大传, Dàzhuàn), one of the Ten Wings, states: 'The number of the Great Expansion is 50, of which 49 are used.' Confucius is recorded in the Analects as wishing to study the Changes for fifty years; classical scholars read that reference to the number 50 as a direct allusion to the stalk procedure. The method predates the three-coin method by more than a millennium. Richard Wilhelm and Cary Baynes documented the complete procedure in the Appendix of their translation (Princeton University Press, 1950). Edward Shaughnessy's Sources of Western Zhou History (1993) provides additional philological context.",
+    yarrowProcedureHeading: "Physical Procedure",
+    yarrowProcedureBody:
+      "The method requires 50 physical stalks (traditional yarrow is the classical material, but toothpicks or similar objects work equally well). One stalk is set aside permanently; 49 are used. For each of the six lines, three successive counting phases are performed: in each phase the stalks are divided randomly, a remainder is extracted by counting in groups of four, and that remainder is set aside. Phase 1 produces a remainder of 5 or 9; Phases 2 and 3 each produce 4 or 8. The sum of the three remainders is subtracted from 49 and the result divided by 4: 36/4 = 9 (old yang), 32/4 = 8 (young yin), 28/4 = 7 (young yang), 24/4 = 6 (old yin).",
+    yarrowProbHeading: "Probability Distribution",
+    yarrowProbBody:
+      "The eight possible remainder combinations are not equally likely, producing an asymmetric distribution: old yang (9) occurs in 3 of 16 casts (18.75%), young yang (7) in 5 of 16 (31.25%), young yin (8) in 7 of 16 (43.75%), old yin (6) in 1 of 16 (6.25%). Moving yang is three times more likely than moving yin. This asymmetry is structural: the counting procedure produces it directly. The three-coin method, introduced later, gives symmetric odds (12.5% for each moving-line type), which changes the character of the readings.",
     interpretHeading: "Why AI Does Not Invent",
     interpretBody:
       "The artificial intelligence in this app has a specific and bounded function: to take the algorithm's result (hexagram, moving lines, crack verdict) and articulate it in natural language in the user's language, with the context of their question. The AI does not generate hexagrams, does not decide verdicts, does not modify Wilhelm's texts or the Shang method's patterns. The mathematical algorithm does that, faithfully, before the AI intervenes. The AI is the interpreter. The oracle is the method.",
@@ -159,6 +186,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Autenticidade do método",
     bonesAuthBody:
       "Mais de 150.000 fragmentos de ossos oraculares foram escavados e estudados desde o século XIX. São património reconhecido internacionalmente e conservam-se em museus da China, Taiwan, Japão e Europa. O método implementado nesta app respeita a lógica estrutural do sistema Shang: carga positiva, carga negativa, veredicto por padrão, incluindo o silêncio como estado legítimo.",
+    yarrowHeading: "Varetas de Milenrama (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Origem histórica (~1000 a.C.)",
+    yarrowOriginBody:
+      "O método das varetas de milenrama é o procedimento de adivinhação documentado no próprio I Ching. O Grande Comentário (大传, Dàzhuàn), uma das Dez Asas, afirma: «O número da Grande Expansão é 50, dos quais 49 são usados». Confúcio declarou nos Analetos que desejava estudar as Mutações durante cinquenta anos; os estudiosos clássicos entendem essa referência ao número 50 como uma alusão direta ao procedimento das varetas. O método é anterior ao das três moedas em mais de um milénio. Richard Wilhelm e Cary Baynes documentaram o procedimento completo no Apêndice da sua tradução (Princeton University Press, 1950).",
+    yarrowProcedureHeading: "Procedimento físico",
+    yarrowProcedureBody:
+      "O método requer 50 varetas físicas (o milenrama tradicional é o material clássico, mas palitos ou objetos similares funcionam igualmente bem). Uma vareta é posta de lado permanentemente; as 49 restantes são usadas. Para cada uma das seis linhas, realizam-se três fases de contagem sucessivas: em cada fase as varetas são divididas aleatoriamente, extrai-se um resto contando em grupos de quatro e esse resto é reservado. A fase 1 produz um resto de 5 ou 9; as fases 2 e 3 produzem 4 ou 8. A soma dos três restos é subtraída de 49 e o resultado dividido por 4: 36/4 = 9 (yang velho), 32/4 = 8 (yin jovem), 28/4 = 7 (yang jovem), 24/4 = 6 (yin velho).",
+    yarrowProbHeading: "Distribuição de probabilidade",
+    yarrowProbBody:
+      "As oito combinações possíveis de restos não são igualmente prováveis, produzindo uma distribuição assimétrica: yang velho (9) ocorre em 3 de cada 16 lances (18,75%), yang jovem (7) em 5 de cada 16 (31,25%), yin jovem (8) em 7 de cada 16 (43,75%), yin velho (6) em 1 de cada 16 (6,25%). O yang móvel é três vezes mais provável que o yin móvel. Esta assimetria é estrutural: o procedimento de contagem produz-na diretamente. O método das três moedas, introduzido mais tarde, dá probabilidades simétricas (12,5% para cada tipo de linha móvel).",
     interpretHeading: "Por que a IA não inventa",
     interpretBody:
       "A inteligência artificial nesta app tem uma função específica e delimitada: tomar o resultado do algoritmo (hexagrama, linhas em movimento, veredicto de fissuras) e articulá-lo em linguagem natural no idioma do utilizador, com o contexto da sua pergunta. A IA não gera hexagramas, não decide veredictos, não modifica os textos de Wilhelm nem os padrões do método Shang. O algoritmo matemático faz isso, fielmente, antes de a IA intervir. A IA é o intérprete. O oráculo é o método.",
@@ -202,6 +239,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Authenticité de la méthode",
     bonesAuthBody:
       "Plus de 150 000 fragments d'os oraculaires ont été excavés et étudiés depuis le XIXe siècle. Ils constituent un patrimoine reconnu internationalement et sont conservés dans des musées en Chine, à Taïwan, au Japon et en Europe. La méthode implémentée dans cette app respecte la logique structurelle du système Shang : charge positive, charge négative, verdict par motif, incluant le silence comme état légitime.",
+    yarrowHeading: "Tiges d'Achillée (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Origines historiques (~1000 av. J.-C.)",
+    yarrowOriginBody:
+      "La méthode des tiges d'achillée est le procédé de divination documenté dans le I Ching lui-même. Le Grand Commentaire (大传, Dàzhuàn), l'une des Dix Ailes, précise : « Le nombre de la Grande Expansion est 50, dont 49 sont utilisés. » Confucius déclare dans les Entretiens vouloir étudier les Mutations pendant cinquante ans ; les spécialistes classiques voient dans cette référence au chiffre 50 une allusion directe au procédé des tiges. La méthode est antérieure de plus d'un millénaire à celle des trois pièces. Richard Wilhelm et Cary Baynes ont documenté le procédé complet dans l'Appendice de leur traduction (Princeton University Press, 1950).",
+    yarrowProcedureHeading: "Procédure physique",
+    yarrowProcedureBody:
+      "La méthode nécessite 50 tiges physiques (l'achillée traditionnelle est le matériau classique, mais des cure-dents ou objets similaires fonctionnent tout aussi bien). Une tige est mise de côté définitivement ; les 49 restantes sont utilisées. Pour chacune des six lignes, trois phases de comptage successives sont effectuées : à chaque phase, les tiges sont divisées aléatoirement, un reste est extrait en comptant par groupes de quatre et ce reste est mis de côté. La phase 1 produit un reste de 5 ou 9 ; les phases 2 et 3 produisent chacune 4 ou 8. La somme des trois restes est soustraite de 49 et le résultat divisé par 4 : 36/4 = 9 (vieux yang), 32/4 = 8 (jeune yin), 28/4 = 7 (jeune yang), 24/4 = 6 (vieux yin).",
+    yarrowProbHeading: "Distribution des probabilités",
+    yarrowProbBody:
+      "Les huit combinaisons possibles de restes ne sont pas équiprobables, produisant une distribution asymétrique : vieux yang (9) apparaît 3 fois sur 16 lancers (18,75 %), jeune yang (7) 5 fois sur 16 (31,25 %), jeune yin (8) 7 fois sur 16 (43,75 %), vieux yin (6) 1 fois sur 16 (6,25 %). Le yang mobile est trois fois plus probable que le yin mobile. Cette asymétrie est structurelle : le procédé de comptage la produit directement. La méthode des trois pièces, introduite plus tard, donne des probabilités symétriques (12,5 % pour chaque type de ligne mobile).",
     interpretHeading: "Pourquoi l'IA n'invente pas",
     interpretBody:
       "L'intelligence artificielle dans cette app a une fonction spécifique et délimitée : prendre le résultat de l'algorithme (hexagramme, traits en mouvement, verdict de fissures) et l'articuler en langage naturel dans la langue de l'utilisateur, avec le contexte de sa question. L'IA ne génère pas d'hexagrammes, ne décide pas des verdicts, ne modifie pas les textes de Wilhelm ni les motifs de la méthode Shang. L'algorithme mathématique fait cela, fidèlement, avant que l'IA intervienne. L'IA est l'interprète. L'oracle est la méthode.",
@@ -245,6 +292,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Authentizität der Methode",
     bonesAuthBody:
       "Mehr als 150.000 Orakelknochenfragmente wurden seit dem 19. Jahrhundert ausgegraben und untersucht. Sie sind international anerkanntes Kulturerbe und werden in Museen in China, Taiwan, Japan und Europa aufbewahrt. Die in dieser App implementierte Methode respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung, Befund nach Muster, einschließlich des Schweigens als legitimen Zustand.",
+    yarrowHeading: "Schafgarbenstäbe (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Historische Ursprünge (~1000 v. Chr.)",
+    yarrowOriginBody:
+      "Die Schafgarbenstab-Methode ist das Weissagungsverfahren, das im I Ching selbst dokumentiert ist. Der Große Kommentar (大传, Dàzhuàn), einer der Zehn Flügel, hält fest: «Die Zahl der Großen Expansion ist 50, von denen 49 verwendet werden.» Konfuzius erklärte in den Analekten, er wünsche sich, die Wandlungen fünfzig Jahre lang zu studieren; klassische Gelehrte verstehen diesen Hinweis auf die Zahl 50 als direkte Anspielung auf das Stabverfahren. Die Methode ist mehr als ein Jahrtausend älter als die Drei-Münzen-Methode. Richard Wilhelm und Cary Baynes dokumentierten das vollständige Verfahren im Anhang ihrer Übersetzung (Princeton University Press, 1950).",
+    yarrowProcedureHeading: "Das physische Verfahren",
+    yarrowProcedureBody:
+      "Die Methode erfordert 50 physische Stäbe (traditionelle Schafgarbe ist das klassische Material, aber Zahnstocher oder ähnliche Gegenstände funktionieren ebenso gut). Ein Stab wird dauerhaft beiseitegelegt; 49 werden verwendet. Für jede der sechs Linien werden drei aufeinanderfolgende Zählphasen durchgeführt: In jeder Phase werden die Stäbe zufällig geteilt, ein Rest wird durch Abzählen in Vierergruppen ermittelt und beiseitegelegt. Phase 1 ergibt einen Rest von 5 oder 9; die Phasen 2 und 3 ergeben jeweils 4 oder 8. Die Summe der drei Reste wird von 49 subtrahiert und das Ergebnis durch 4 dividiert: 36/4 = 9 (altes Yang), 32/4 = 8 (junges Yin), 28/4 = 7 (junges Yang), 24/4 = 6 (altes Yin).",
+    yarrowProbHeading: "Wahrscheinlichkeitsverteilung",
+    yarrowProbBody:
+      "Die acht möglichen Restkombinationen sind nicht gleichwahrscheinlich, was eine asymmetrische Verteilung erzeugt: altes Yang (9) tritt in 3 von 16 Würfen auf (18,75 %), junges Yang (7) in 5 von 16 (31,25 %), junges Yin (8) in 7 von 16 (43,75 %), altes Yin (6) in 1 von 16 (6,25 %). Wandelndes Yang ist dreimal wahrscheinlicher als wandelndes Yin. Diese Asymmetrie ist strukturell: das Zählverfahren erzeugt sie direkt. Die Drei-Münzen-Methode, die später eingeführt wurde, gibt symmetrische Wahrscheinlichkeiten (12,5 % für jeden Typ wandelnder Linien).",
     interpretHeading: "Warum die KI nicht erfindet",
     interpretBody:
       "Die künstliche Intelligenz in dieser App hat eine spezifische und begrenzte Funktion: das Ergebnis des Algorithmus (Hexagramm, bewegende Linien, Riss-Befund) zu nehmen und es in natürlicher Sprache in der Sprache des Nutzers zu artikulieren, mit dem Kontext seiner Frage. Die KI generiert keine Hexagramme, entscheidet keine Befunde, modifiziert weder Wilhelms Texte noch die Muster der Shang-Methode. Der mathematische Algorithmus tut das, getreu, bevor die KI eingreift. Die KI ist der Interpret. Das Orakel ist die Methode.",
@@ -288,6 +345,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Autenticità del metodo",
     bonesAuthBody:
       "Più di 150.000 frammenti di ossa oracolari sono stati scavati e studiati dal XIX secolo. Sono patrimonio riconosciuto internazionalmente e conservati in musei in Cina, Taiwan, Giappone ed Europa. Il metodo implementato in questa app rispetta la logica strutturale del sistema Shang: carica positiva, carica negativa, verdetto per motivo, includendo il silenzio come stato legittimo.",
+    yarrowHeading: "Steli di Achillea (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Origini storiche (~1000 a.C.)",
+    yarrowOriginBody:
+      "Il metodo degli steli di achillea è il procedimento di divinazione documentato nell'I Ching stesso. Il Grande Commentario (大传, Dàzhuàn), una delle Dieci Ali, precisa: «Il numero della Grande Espansione è 50, dei quali 49 vengono usati». Confucio dichiara nei Dialoghi di voler studiare le Mutazioni per cinquant'anni; gli studiosi classici leggono in quel riferimento al numero 50 un'allusione diretta al procedimento degli steli. Il metodo è anteriore di oltre un millennio a quello delle tre monete. Richard Wilhelm e Cary Baynes documentarono il procedimento completo nell'Appendice della loro traduzione (Princeton University Press, 1950).",
+    yarrowProcedureHeading: "Procedura fisica",
+    yarrowProcedureBody:
+      "Il metodo richiede 50 steli fisici (l'achillea tradizionale è il materiale classico, ma stuzzicadenti o oggetti simili funzionano ugualmente bene). Uno stelo viene messo da parte definitivamente; si usano i 49 restanti. Per ognuna delle sei linee si eseguono tre fasi di conteggio successive: in ogni fase gli steli vengono divisi casualmente, si estrae un resto contando in gruppi di quattro e quel resto viene accantonato. La fase 1 produce un resto di 5 o 9; le fasi 2 e 3 producono ciascuna 4 o 8. La somma dei tre resti viene sottratta da 49 e il risultato diviso per 4: 36/4 = 9 (yang vecchio), 32/4 = 8 (yin giovane), 28/4 = 7 (yang giovane), 24/4 = 6 (yin vecchio).",
+    yarrowProbHeading: "Distribuzione di probabilità",
+    yarrowProbBody:
+      "Le otto possibili combinazioni di resti non sono equiprobabili, producendo una distribuzione asimmetrica: yang vecchio (9) compare in 3 lanci su 16 (18,75%), yang giovane (7) in 5 su 16 (31,25%), yin giovane (8) in 7 su 16 (43,75%), yin vecchio (6) in 1 su 16 (6,25%). Lo yang mobile è tre volte più probabile dello yin mobile. Questa asimmetria è strutturale: il procedimento di conteggio la produce direttamente. Il metodo delle tre monete, introdotto in seguito, dà probabilità simmetriche (12,5% per ogni tipo di linea mobile).",
     interpretHeading: "Perché l'IA non inventa",
     interpretBody:
       "L'intelligenza artificiale in questa app ha una funzione specifica e delimitata: prendere il risultato dell'algoritmo, esagramma, linee in movimento, verdetto delle crepe, e articolarlo in linguaggio naturale nella lingua dell'utente, con il contesto della sua domanda. L'IA non genera esagrammi, non decide verdetti, non modifica i testi di Wilhelm né i motivi del metodo Shang. L'algoritmo matematico fa questo, fedelmente, prima che l'IA intervenga. L'IA è l'interprete. L'oracolo è il metodo.",
@@ -331,6 +398,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "手法の正統性",
     bonesAuthBody:
       "19世紀以降、15万点を超える甲骨の断片が発掘・研究されてきました。それらは国際的に認められた文化遺産であり、中国・台湾・日本・ヨーロッパの博物館に保存されています。このアプリで実装された手法は、商システムの構造的論理を尊重しています：肯定命題、否定命題、パターンによる神託、沈黙を正当な状態として含めて。",
+    yarrowHeading: "蓍草による占い (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "歴史的起源（紀元前約1000年）",
+    yarrowOriginBody:
+      "蓍草による占いの方法は、易経そのものに記録されている卜占手順です。十翼のひとつである大伝（大传, Dàzhuàn）には「大衍之数五十、其用四十有九（大いなる展開の数は50、そのうち49を使う）」と明記されています。論語では孔子が易を学ぶために五十年欲しいと述べており、古典学者たちはその「50」という数への言及を蓍草の手順への直接的な示唆と理解しています。この方法は三枚硬貨法よりも千年以上古いものです。リヒャルト・ヴィルヘルムとケーリー・ベインズは1950年の翻訳の付録（プリンストン大学出版）に完全な手順を記録しています。",
+    yarrowProcedureHeading: "物理的な手順",
+    yarrowProcedureBody:
+      "この方法には50本の物理的な蓍草（伝統的な蓍草が古典的な素材ですが、爪楊枝などでも同様に機能します）が必要です。1本は永久に脇に置かれ、残り49本を使用します。六爻のそれぞれについて、3段階の数え直しが行われます：各段階で蓍草をランダムに分け、4本ずつ数えて余りを出し、その余りを脇に置きます。第1段階の余りは5または9、第2・第3段階はそれぞれ4または8となります。3つの余りの合計を49から引き、4で割ると爻の値が求まります：36÷4=9（老陽）、32÷4=8（少陰）、28÷4=7（少陽）、24÷4=6（老陰）。",
+    yarrowProbHeading: "確率分布",
+    yarrowProbBody:
+      "8通りの余りの組み合わせは等確率ではなく、非対称な分布を生み出します：老陽（9）は16回中3回（18.75%）、少陽（7）は16回中5回（31.25%）、少陰（8）は16回中7回（43.75%）、老陰（6）は16回中1回（6.25%）。動く陽爻は動く陰爻の3倍の確率です。この非対称性は構造的なもので、数え直しの手順そのものが生み出します。後に普及した三硬貨法では、各変爻タイプの確率が12.5%ずつの対称分布になります。",
     interpretHeading: "AIが発明しない理由",
     interpretBody:
       "このアプリの人工知能には特定かつ限定的な機能があります：アルゴリズムの結果（卦、動爻、亀裂の神託）を受け取り、ユーザーの質問のコンテキストと共に、ユーザーの言語で自然言語として表現することです。AIは卦を生成せず、神託を決定せず、ヴィルヘルムのテキストも商の手法のパターンも改変しません。数学的アルゴリズムがそれを忠実に行い、その後AIが介入します。AIは解釈者です。神託は手法です。",
@@ -374,6 +451,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "方法的真实性",
     bonesAuthBody:
       "自19世纪以来，已出土并研究了逾15万件甲骨碎片。它们是国际公认的文化遗产，保存于中国、台湾、日本及欧洲的博物馆中。本应用所实施的方法忠实于商代系统的结构逻辑：正面命题、负面命题、依纹样作兆辞，并将沉默视为合法状态。",
+    yarrowHeading: "蓍草占法 (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "历史渊源（约公元前1000年）",
+    yarrowOriginBody:
+      "蓍草占法是易经本身所记载的占卜程序。十翼之一的大传（大传, Dàzhuàn）明确指出：「大衍之数五十，其用四十有九。」孔子在《论语》中表示希望花五十年研习《周易》；古典学者将这一「五十」的引用理解为对蓍草程序的直接暗示。该方法比三枚铜钱法早一千余年。卫礼贤与贝恩斯在其1950年译本的附录（普林斯顿大学出版社）中记录了完整的操作步骤。",
+    yarrowProcedureHeading: "实物操作步骤",
+    yarrowProcedureBody:
+      "此方法需要50根实物蓍草（传统蓍草是经典材料，但牙签等类似物品同样适用）。永久取出一根备用；使用剩余49根。对于六爻的每一爻，依次进行三次计数：每次随机将蓍草分成两堆，以四根为一组清点，取出余数并放置一旁。第一阶段余数为5或9，第二、三阶段各为4或8。将三次余数之和从49中减去，再除以4即得爻值：36÷4=9（老阳），32÷4=8（少阴），28÷4=7（少阳），24÷4=6（老阴）。",
+    yarrowProbHeading: "概率分布",
+    yarrowProbBody:
+      "八种余数组合出现的概率并不相等，因而产生非对称分布：老阳（9）在16次中出现3次（18.75%），少阳（7）出现5次（31.25%），少阴（8）出现7次（43.75%），老阴（6）出现1次（6.25%）。动爻中阳爻的概率是阴爻的三倍。这种不对称性是结构性的，由计数程序本身直接产生。后来出现的三枚铜钱法则给出对称概率（每种动爻类型各占12.5%）。",
     interpretHeading: "为何人工智能不自创内容",
     interpretBody:
       "本应用中的人工智能具有特定且有限的功能：获取算法结果（卦象、动爻、裂纹兆辞）并结合用户问题的语境，以用户的语言将其表述为自然语言。人工智能不生成卦象，不裁定兆辞，不修改卫礼贤的文本，也不改变商代方法的纹样。数学算法在人工智能介入之前，已忠实地完成了这一切。人工智能是解读者，神谕是方法本身。",
@@ -417,6 +504,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "방법의 정통성",
     bonesAuthBody:
       "19세기 이래 15만 점 이상의 갑골 파편이 발굴되어 연구되었습니다. 이는 국제적으로 인정받는 문화유산으로 중국, 대만, 일본, 유럽의 박물관에 보존되어 있습니다. 이 앱에서 구현된 방법은 상 체계의 구조적 논리를 존중합니다: 긍정 명제, 부정 명제, 패턴에 의한 신탁, 침묵을 합법적 상태로 포함하여.",
+    yarrowHeading: "시초점법 (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "역사적 기원 (기원전 약 1000년)",
+    yarrowOriginBody:
+      "시초 방법은 역경 자체에 기록된 점술 절차입니다. 십익 중 하나인 대전(大传, Dàzhuàn)은 구체적으로 기술합니다: '대연지수오십, 기용사십유구(대연의 수는 50이며 그 중 49를 사용한다).' 공자는 논어에서 역을 오십 년간 공부하고 싶다고 밝혔으며, 고전학자들은 이 50이라는 숫자를 시초 절차에 대한 직접적인 암시로 해석합니다. 이 방법은 삼전법보다 천 년 이상 앞섭니다. 리하르트 빌헬름과 캐리 베인스는 1950년 번역본 부록(프린스턴 대학 출판부)에 전체 절차를 기록했습니다.",
+    yarrowProcedureHeading: "실물 절차",
+    yarrowProcedureBody:
+      "이 방법은 50개의 실제 시초(전통 시초가 고전적인 재료이지만 이쑤시개 등 유사 물체도 동일하게 작동합니다)가 필요합니다. 1개를 영구적으로 따로 두고 나머지 49개를 사용합니다. 여섯 효 각각에 대해 세 번의 연속 계산 단계를 수행합니다: 각 단계에서 시초를 무작위로 나누고, 4개씩 헤아려 나머지를 추출하여 따로 둡니다. 1단계는 5 또는 9의 나머지를, 2단계와 3단계는 각각 4 또는 8의 나머지를 냅니다. 세 나머지의 합을 49에서 빼고 4로 나누면 효 값이 나옵니다: 36÷4=9(노양), 32÷4=8(소음), 28÷4=7(소양), 24÷4=6(노음).",
+    yarrowProbHeading: "확률 분포",
+    yarrowProbBody:
+      "여덟 가지 나머지 조합의 확률이 동일하지 않아 비대칭 분포가 생깁니다: 노양(9)은 16번 중 3번(18.75%), 소양(7)은 5번(31.25%), 소음(8)은 7번(43.75%), 노음(6)은 1번(6.25%) 나타납니다. 움직이는 양효는 움직이는 음효보다 세 배 더 자주 나타납니다. 이 비대칭성은 구조적인 것으로, 계산 절차 자체가 직접 만들어냅니다. 이후에 도입된 삼전법은 각 변효 유형에 12.5%씩 대칭적인 확률을 부여합니다.",
     interpretHeading: "인공지능이 창작하지 않는 이유",
     interpretBody:
       "이 앱의 인공지능은 특정하고 한정된 기능을 수행합니다: 알고리즘의 결과, 괘, 변효, 균열 신탁, 를 받아 사용자의 질문 맥락과 함께 사용자의 언어로 자연어로 표현하는 것입니다. AI는 괘를 생성하지 않고, 신탁을 결정하지 않으며, 빌헬름의 텍스트나 상 방법의 패턴을 수정하지 않습니다. 수학적 알고리즘이 AI가 개입하기 전에 충실히 그 역할을 합니다. AI는 해석자입니다. 신탁은 방법 그 자체입니다.",
@@ -460,6 +557,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "أصالة الطريقة",
     bonesAuthBody:
       "تم استخراج ودراسة أكثر من 150,000 شظية من عظام العرافة منذ القرن التاسع عشر. هي تراث معترف به دولياً وتُحفظ في متاحف في الصين وتايوان واليابان وأوروبا. تحترم الطريقة المُنفَّذة في هذا التطبيق المنطق الهيكلي لنظام Shang: الشحنة الإيجابية، الشحنة السلبية، الحكم بالنمط، بما في ذلك الصمت كحالة مشروعة.",
+    yarrowHeading: "عيدان الزنبق (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "الأصول التاريخية (~1000 قبل الميلاد)",
+    yarrowOriginBody:
+      "طريقة عيدان الزنبق هي إجراء العرافة الموثق في I Ching نفسه. يُحدد التعليق الكبير (大传، Dàzhuàn)، أحد العشر أجنحة: «عدد التوسع الكبير هو خمسون، يُستخدم منها تسعة وأربعون». ويُروى في الأناليكت أن كونفوشيوس قال إنه يتمنى دراسة التحولات خمسين سنة؛ يفهم العلماء الكلاسيكيون هذه الإشارة إلى عدد 50 تلميحاً مباشراً إلى إجراء العيدان. الطريقة أقدم من طريقة الأسكة الثلاث بأكثر من ألف سنة. وثّق ريتشارد فيلهلم وكاري بيانز الإجراء كاملاً في ملحق ترجمتهما (مطبعة جامعة برينستون، 1950).",
+    yarrowProcedureHeading: "الإجراء الفيزيائي",
+    yarrowProcedureBody:
+      "تتطلب الطريقة 50 عيدانًا حقيقية (الزنبق التقليدي هو المادة الكلاسيكية، لكن أعواد الأسنان أو ما شابهها تؤدي الغرض ذاته). تُفرز عيدانٌ واحدةٌ بشكل دائم؛ تُستخدم الـ 49 المتبقية. لكل خط من الخطوط الستة، تُجرى ثلاث مراحل عدٍّ متتالية: في كل مرحلة تُقسَّم العيدان عشوائياً، ويُستخرج باقٍ بالعدّ على مجموعات من أربعة ثم يُعزل. تُنتج المرحلة الأولى باقياً 5 أو 9؛ المرحلتان الثانية والثالثة تُنتجان 4 أو 8 كلٌّ منهما. تُطرح مجموع الثلاثة بواقٍ من 49 ويُقسَّم الناتج على 4: 36÷4=9 (يانغ قديم)، 32÷4=8 (يين شاب)، 28÷4=7 (يانغ شاب)، 24÷4=6 (يين قديم).",
+    yarrowProbHeading: "التوزيع الاحتمالي",
+    yarrowProbBody:
+      "التوزيع على قيم الخطوط الأربعة ليس متماثلاً: اليانغ القديم (9) يظهر 3 مرات من 16 (18.75%)، اليانغ الشاب (7) يظهر 5 مرات (31.25%)، اليين الشاب (8) يظهر 7 مرات (43.75%)، اليين القديم (6) يظهر مرة واحدة من 16 (6.25%). اليانغ المتحرك أكثر احتمالاً ثلاث مرات من اليين المتحرك. هذا التفاوت بنيوي: إجراء العدّ نفسه يُولّده مباشرة. طريقة الأسكة الثلاث التي أُدخلت لاحقاً تُعطي احتمالات متماثلة (12.5% لكل نوع من الخطوط المتحركة).",
     interpretHeading: "لماذا الذكاء الاصطناعي لا يخترع",
     interpretBody:
       "للذكاء الاصطناعي في هذا التطبيق وظيفة محددة ومحدودة: أخذ نتيجة الخوارزمية, الغرض، الخطوط المتحركة، حكم الشقوق, وصياغتها بلغة طبيعية في لغة المستخدم، مع سياق سؤاله. لا يُولّد الذكاء الاصطناعي أغراضاً، ولا يقرر أحكاماً، ولا يعدّل نصوص Wilhelm أو أنماط طريقة Shang. الخوارزمية الرياضية تفعل ذلك بأمانة قبل أن يتدخل الذكاء الاصطناعي. الذكاء الاصطناعي هو المفسر. العرافة هي الطريقة.",
@@ -503,6 +610,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "विधि की प्रामाणिकता",
     bonesAuthBody:
       "19वीं सदी से 1,50,000 से अधिक दैवज्ञ हड्डी के टुकड़ों की खुदाई और अध्ययन किया गया है। वे अंतरराष्ट्रीय स्तर पर मान्यता प्राप्त विरासत हैं और चीन, ताइवान, जापान और यूरोप के संग्रहालयों में संरक्षित हैं। इस ऐप में लागू विधि शांग प्रणाली के संरचनात्मक तर्क का सम्मान करती है: सकारात्मक प्रस्ताव, नकारात्मक प्रस्ताव, पैटर्न द्वारा निर्णय, मौन को वैध अवस्था के रूप में शामिल करते हुए।",
+    yarrowHeading: "यारो की छड़ें (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "ऐतिहासिक उत्पत्ति (~1000 ईसा पूर्व)",
+    yarrowOriginBody:
+      "यारो की छड़ों की विधि वह दिव्यज्ञान प्रक्रिया है जो स्वयं I Ching में प्रलेखित है। दस पंखों में से एक, महान टीका (大传, Dàzhuàn), स्पष्ट रूप से कहता है: 'महान विस्तार की संख्या 50 है, जिनमें से 49 उपयोग में लाई जाती हैं।' कन्फ्यूशियस ने एनालेक्ट्स में कहा कि वे पचास वर्षों तक परिवर्तनों का अध्ययन करना चाहते थे; शास्त्रीय विद्वान 50 की इस संदर्भ को छड़ों की प्रक्रिया की ओर प्रत्यक्ष संकेत के रूप में समझते हैं। यह विधि तीन सिक्कों की विधि से एक सहस्राब्दी से अधिक पुरानी है। रिचर्ड विल्हेम और कैरी बेनिस ने 1950 के अपने अनुवाद के परिशिष्ट (प्रिंसटन यूनिवर्सिटी प्रेस) में पूर्ण प्रक्रिया प्रलेखित की।",
+    yarrowProcedureHeading: "भौतिक प्रक्रिया",
+    yarrowProcedureBody:
+      "इस विधि में 50 भौतिक छड़ें चाहिए (पारंपरिक यारो क्लासिक सामग्री है, लेकिन टूथपिक जैसी वस्तुएं भी समान रूप से काम करती हैं)। एक छड़ स्थायी रूप से अलग रखी जाती है; शेष 49 का उपयोग होता है। छह रेखाओं में से प्रत्येक के लिए, तीन क्रमिक गिनती चरण किए जाते हैं: प्रत्येक चरण में छड़ें यादृच्छिक रूप से विभाजित की जाती हैं, चार-चार की गिनती से एक शेषफल निकाला जाता है और उसे अलग रख दिया जाता है। पहले चरण में 5 या 9 का शेषफल; चरण 2 और 3 में 4 या 8। तीन शेषफलों का योग 49 में से घटाकर 4 से भाग दिया जाता है: 36÷4=9 (पुराना यांग), 32÷4=8 (युवा यिन), 28÷4=7 (युवा यांग), 24÷4=6 (पुराना यिन)।",
+    yarrowProbHeading: "संभाव्यता वितरण",
+    yarrowProbBody:
+      "आठ संभावित शेषफल संयोजन समान रूप से संभावित नहीं हैं, जो एक असममित वितरण उत्पन्न करते हैं: पुराना यांग (9) 16 में से 3 बार (18.75%), युवा यांग (7) 5 बार (31.25%), युवा यिन (8) 7 बार (43.75%), पुराना यिन (6) 16 में से 1 बार (6.25%)। चलती यांग चलती यिन से तीन गुना अधिक संभावित है। यह असमानता संरचनात्मक है: गिनती की प्रक्रिया सीधे इसे उत्पन्न करती है। बाद में पेश की गई तीन सिक्कों की विधि सममित संभावनाएं देती है (प्रत्येक चलती रेखा प्रकार के लिए 12.5%)।",
     interpretHeading: "AI क्यों नहीं बनाता",
     interpretBody:
       "इस ऐप में कृत्रिम बुद्धिमत्ता की एक विशिष्ट और सीमित कार्य है: एल्गोरिदम का परिणाम, हेक्साग्राम, गतिशील रेखाएं, दरार निर्णय, लेना और उसे उपयोगकर्ता के प्रश्न के संदर्भ के साथ उपयोगकर्ता की भाषा में प्राकृतिक भाषा में व्यक्त करना। AI हेक्साग्राम उत्पन्न नहीं करता, निर्णय तय नहीं करता, Wilhelm के ग्रंथों या शांग विधि के पैटर्न को संशोधित नहीं करता। गणितीय एल्गोरिदम AI के हस्तक्षेप से पहले यह सब विश्वासपूर्वक करता है। AI दुभाषिया है। दैवज्ञ विधि है।",
