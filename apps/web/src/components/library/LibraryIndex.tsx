@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import type { LibraryPageUiMessages } from "@iching-oracle/i18n";
+import type { LibraryPageUiSerialized } from "@iching-oracle/i18n";
 import {
   formatTrigramLabel,
   isTrigramId,
@@ -19,11 +19,6 @@ function parseFilter(raw: string): FilterValue {
   return "all";
 }
 
-/**
- * Light-weight matcher: number, English name, Chinese name (incl. multi-char
- * variants like "小畜"), or pinyin. Pinyin is matched both with and without
- * tone marks so the user can search for "tai" and find "Tài".
- */
 function stripDiacritics(input: string): string {
   return input.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
@@ -54,10 +49,11 @@ function matchesTrigrams(
 
 interface Props {
   readonly summaries: ReadonlyArray<LibrarySummary>;
-  readonly messages: LibraryPageUiMessages;
+  readonly messages: LibraryPageUiSerialized;
+  readonly resultsCountText: string;
 }
 
-export function LibraryIndex({ summaries, messages }: Props) {
+export function LibraryIndex({ summaries, messages, resultsCountText }: Props) {
   const [query, setQuery] = useState("");
   const [upper, setUpper] = useState<FilterValue>("all");
   const [lower, setLower] = useState<FilterValue>("all");
@@ -143,7 +139,7 @@ export function LibraryIndex({ summaries, messages }: Props) {
       </div>
 
       <p className="library-results-count" aria-live="polite">
-        {messages.resultsCount(filtered.length)}
+        {resultsCountText}
       </p>
 
       {filtered.length === 0 ? (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { LibraryPageUiMessages } from "@iching-oracle/i18n";
+import type { LibraryPageUiSerialized } from "@iching-oracle/i18n";
 import type {
   HexagramRecord,
   TranslatorId,
@@ -15,13 +15,27 @@ interface SourceMeta {
   readonly sourceUrl: string;
 }
 
+/**
+ * Pre-resolved line labels (one string per position 1..6) so we never
+ * pass a function across the server→client boundary.
+ */
+interface ResolvedLineLabels {
+  readonly line1: string;
+  readonly line2: string;
+  readonly line3: string;
+  readonly line4: string;
+  readonly line5: string;
+  readonly line6: string;
+}
+
 interface Props {
   readonly records: LibraryDetailRecords;
   readonly sources: Record<TranslatorId, SourceMeta>;
-  readonly messages: LibraryPageUiMessages;
+  readonly messages: LibraryPageUiSerialized;
+  readonly lineLabels: ResolvedLineLabels;
 }
 
-function tabLabel(messages: LibraryPageUiMessages, id: TranslatorId): string {
+function tabLabel(messages: LibraryPageUiSerialized, id: TranslatorId): string {
   switch (id) {
     case "wilhelm":
       return messages.tabWilhelm;
@@ -40,10 +54,23 @@ interface TabPanelProps {
   readonly id: TranslatorId;
   readonly record: HexagramRecord;
   readonly source: SourceMeta;
-  readonly messages: LibraryPageUiMessages;
+  readonly messages: LibraryPageUiSerialized;
+  readonly lineLabels: ResolvedLineLabels;
 }
 
-function TabPanel({ id, record, source, messages }: TabPanelProps) {
+function lineLabelByPosition(labels: ResolvedLineLabels, pos: number): string {
+  switch (pos) {
+    case 1: return labels.line1;
+    case 2: return labels.line2;
+    case 3: return labels.line3;
+    case 4: return labels.line4;
+    case 5: return labels.line5;
+    case 6: return labels.line6;
+    default: return String(pos);
+  }
+}
+
+function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
   const langAttr = isClassicalChinese(id) ? "zh-Hant" : "en";
   const orderedLines = useMemo(
     () => [...record.lines].sort((a, b) => a.position - b.position),
@@ -81,7 +108,7 @@ function TabPanel({ id, record, source, messages }: TabPanelProps) {
           {orderedLines.map((line) => (
             <li key={line.position} className={`library-line library-line--${line.type}`}>
               <span className="library-line__label">
-                {messages.lineLabel(line.position)}
+                {lineLabelByPosition(lineLabels, line.position)}
               </span>
               <span className="library-line__type" aria-hidden="true">
                 {line.type === "yang" ? "—" : "— —"}
@@ -120,7 +147,7 @@ function TabPanel({ id, record, source, messages }: TabPanelProps) {
   );
 }
 
-export function HexagramTabs({ records, sources, messages }: Props) {
+export function HexagramTabs({ records, sources, messages, lineLabels }: Props) {
   const [active, setActive] = useState<TranslatorId>("wilhelm");
 
   return (
@@ -150,7 +177,10 @@ export function HexagramTabs({ records, sources, messages }: Props) {
         record={records[active]}
         source={sources[active]}
         messages={messages}
+        lineLabels={lineLabels}
       />
     </div>
   );
 }
+
+export type { ResolvedLineLabels };

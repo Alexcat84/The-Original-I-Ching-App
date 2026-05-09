@@ -5,8 +5,9 @@ import { notFound } from "next/navigation";
 import {
   getDocNavUiMessages,
   getLibraryPageUiMessages,
+  type LibraryPageUiSerialized,
 } from "@iching-oracle/i18n";
-import { HexagramTabs } from "@/components/library/HexagramTabs";
+import { HexagramTabs, type ResolvedLineLabels } from "@/components/library/HexagramTabs";
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { getLibraryDetail, getLibrarySummaries } from "@/lib/library/library-data";
 import { formatTrigramLabel, getTrigramById } from "@/lib/library/trigram-meta";
@@ -66,6 +67,30 @@ export default async function LibraryDetailPage({ params }: DetailPageProps) {
   const upperMeta = getTrigramById(summary.upperTrigram);
   const lowerMeta = getTrigramById(summary.lowerTrigram);
 
+  // Pre-resolve function fields for the client component boundary.
+  const lineLabels: ResolvedLineLabels = {
+    line1: messages.lineLabel(1),
+    line2: messages.lineLabel(2),
+    line3: messages.lineLabel(3),
+    line4: messages.lineLabel(4),
+    line5: messages.lineLabel(5),
+    line6: messages.lineLabel(6),
+  };
+
+  // Build serializable mutation labels (already plain strings from the server).
+  const resolvedMutations = mutations.map((m) => ({
+    ...m,
+    label: messages.mutationLine(m.fromNumber, m.toNumber, m.position),
+  }));
+
+  const serializable: LibraryPageUiSerialized = {
+    ...messages,
+    resultsCount: "",
+    lineLabel: "",
+    mutationLine: "",
+    detailMetaTitle: "",
+  };
+
   return (
     <div className="oracle-shell doc-page library-page library-detail">
       <nav className="doc-nav">
@@ -107,13 +132,13 @@ export default async function LibraryDetailPage({ params }: DetailPageProps) {
         </header>
 
         <h2 className="library-translations-heading">{messages.translationsHeading}</h2>
-        <HexagramTabs records={records} sources={sources} messages={messages} />
+        <HexagramTabs records={records} sources={sources} messages={serializable} lineLabels={lineLabels} />
 
         <section className="library-mutations">
           <h2>{messages.mutationsHeading}</h2>
           <p className="library-mutations-intro">{messages.mutationsIntro}</p>
           <ul className="library-mutations-list">
-            {mutations.map((m) => (
+            {resolvedMutations.map((m) => (
               <li key={m.position} className="library-mutation">
                 <Link href={`/library/${m.toNumber}`} className="library-mutation__link">
                   <span className="library-mutation__glyph" aria-hidden="true">
@@ -121,7 +146,7 @@ export default async function LibraryDetailPage({ params }: DetailPageProps) {
                   </span>
                   <span className="library-mutation__body">
                     <span className="library-mutation__line">
-                      {messages.mutationLine(m.fromNumber, m.toNumber, m.position)}
+                      {m.label}
                     </span>
                     <span className="library-mutation__name" lang="zh-Hant">
                       {m.toNumber}. {m.toChineseName} · {m.toPinyin}

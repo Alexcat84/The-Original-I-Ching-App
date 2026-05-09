@@ -79,7 +79,7 @@ export {
 } from "./messages/guia-packs-ui.js";
 export { getGuiaPageUiMessages, type GuiaPageUiMessages } from "./messages/guia-page-ui.js";
 export { getNotesPageUiMessages, type NotesPageUiMessages } from "./messages/notes-page-ui.js";
-export { getLibraryPageUiMessages, type LibraryPageUiMessages } from "./messages/library-page-ui.js";
+export { getLibraryPageUiMessages, type LibraryPageUiMessages, type LibraryPageUiSerialized } from "./messages/library-page-ui.js";
 export { getPrivacyPageMessages, type PrivacyPageMessages } from "./messages/privacy-page-ui.js";
 export {
   formatPerThreadCap,

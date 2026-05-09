@@ -62,6 +62,15 @@ export type LibraryPageUiMessages = {
   detailMetaTitle: (label: string) => string;
 };
 
+/**
+ * JSON-serializable variant of LibraryPageUiMessages suitable for passing
+ * from Server Components to Client Components. Function fields are replaced
+ * by pre-computed string values — callers must resolve them before rendering.
+ */
+export type LibraryPageUiSerialized = {
+  readonly [K in keyof LibraryPageUiMessages]: LibraryPageUiMessages[K] extends (...args: never[]) => string ? string : LibraryPageUiMessages[K];
+};
+
 const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
   es: {
     title: "Biblioteca de hexagramas",
