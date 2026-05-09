@@ -222,7 +222,12 @@ html:has(.iching-oracle-shell--chat) body {
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Segoe UI", Inter, system-ui, sans-serif;
+  /* `--font-oracle-sans` is Inter loaded via next/font/google with Latin
+     Extended-A/B coverage. Putting it first guarantees pinyin tone marks
+     (ā ē ī ō ū / ǎ ǐ ǒ ǔ ǚ) render via the loaded webfont on every device,
+     instead of relying on the WebView's serif/sans-serif fallback (which on
+     Samsung Android renders missing glyphs as U+FFFD / `�`). */
+  font-family: var(--font-oracle-sans), "Segoe UI", Inter, system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   background: linear-gradient(165deg, var(--bg) 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
@@ -1780,6 +1785,7 @@ html[data-theme="dark"] .composer-switch-track--visual {
 }
 
 .composer-switch-seg--visual {
+  position: relative;
   flex: 1 1 50%;
   margin: 0;
   min-width: 0;
@@ -1795,6 +1801,7 @@ html[data-theme="dark"] .composer-switch-track--visual {
   gap: 0.35rem;
   cursor: pointer;
   text-align: center;
+  overflow: hidden;
   transition:
     background 0.18s ease,
     color 0.18s ease,
@@ -1840,7 +1847,48 @@ html[data-theme="dark"] .composer-switch-seg--visual.is-active {
   transform: none;
 }
 
+/* Sweeping light bar across the active segment (top → bottom).
+   Mirrors the `.oracle-thumb-sweep` effect used in the Method/Execution
+   toggles, but uses percent-based keyframes so the sweep adapts to the
+   taller I Ching/Bones button. Only the active segment animates. */
+.composer-switch-seg--visual.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 55%, transparent) 25%,
+    rgba(255, 255, 255, 0.55) 50%,
+    color-mix(in srgb, var(--accent) 55%, transparent) 75%,
+    transparent 100%
+  );
+  filter: blur(0.5px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  animation: composer-switch-sweep 2.2s linear infinite;
+}
+
+@keyframes composer-switch-sweep {
+  0%   { top: -4px; opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .composer-switch-seg--visual.is-active::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 .composer-switch-asset {
+  position: relative;
+  z-index: 2;
   width: 2.65rem;
   height: 2.65rem;
   object-fit: contain;
@@ -1858,6 +1906,8 @@ html[data-theme="dark"] .composer-switch-asset--bones {
 }
 
 .composer-switch-label {
+  position: relative;
+  z-index: 2;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -1980,10 +2030,9 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
 }
 
 .cast-selector-label {
-  font-size: 0.58rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
   color: var(--fg-muted);
   padding-left: 0.1rem;
 }
@@ -2013,17 +2062,41 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
 .oracle-toggle-track {
   position: relative;
   width: 100%;
-  height: 44px;
+  /* Track grew 2px in height to compensate for the new 2px border so the
+     padding-box (where the thumb is positioned) matches the previous 42px.
+     This keeps the thumb visually centered without touching its rules. */
+  height: 46px;
   background: color-mix(in srgb, var(--bar-border) 32%, var(--input-bg));
-  border-radius: 22px;
+  border-radius: 23px;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--bar-border));
+  /* Border thickened to 2px to match the I Ching/Bones switch
+     (.composer-switch-track--visual). */
+  border: 2px solid color-mix(in srgb, var(--accent) 22%, var(--bar-border));
   box-shadow:
     0 0 10px color-mix(in srgb, var(--accent) 10%, transparent),
     inset 0 0 8px rgba(0, 0, 0, 0.22);
   transition:
     border-color 0.5s ease,
     box-shadow 0.5s ease;
+}
+
+/* Light theme: stronger border + outer accent ring so the toggle clearly
+   reads as an interactive switch (default 22% mix with --bar-border was
+   too faint against the light panel background). */
+html[data-theme="light"] .oracle-toggle-track {
+  border: 2px solid color-mix(in srgb, var(--accent) 48%, var(--bar-border));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 0 12px color-mix(in srgb, var(--accent) 18%, transparent),
+    inset 0 0 6px rgba(0, 0, 0, 0.10);
+}
+
+html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
+  border-color: color-mix(in srgb, var(--accent) 65%, var(--bar-border));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 0 16px color-mix(in srgb, var(--accent) 24%, transparent),
+    inset 0 0 6px rgba(0, 0, 0, 0.10);
 }
 
 /* Top gloss bead */
@@ -2039,7 +2112,7 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
     color-mix(in srgb, var(--fg) 14%, transparent) 0%,
     transparent 100%
   );
-  border-radius: 22px 22px 0 0;
+  border-radius: 23px 23px 0 0;
   opacity: 0.55;
   z-index: 4;
   pointer-events: none;
@@ -2097,8 +2170,11 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
 /* Sliding thumb pill */
 .oracle-toggle-thumb {
   position: absolute;
-  left: 3px;
-  top: 3px;
+  /* Track padding-box is 42 × (W-4) px. With width = 50%-4 and height = 38,
+     a uniform 2 px gap on all four sides keeps the pill perfectly inset
+     from the 2 px border (4 px total visual offset from the outer edge). */
+  left: 2px;
+  top: 2px;
   width: calc(50% - 4px);
   height: 38px;
   border-radius: 19px;
@@ -2118,9 +2194,9 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   will-change: left;
 }
 
-/* Thumb moves right when checked */
+/* Thumb moves right when checked — mirrors the 2 px gap on the right side. */
 .oracle-toggle-input:checked + .oracle-toggle-track .oracle-toggle-thumb {
-  left: calc(50% + 1px);
+  left: calc(50% + 2px);
 }
 
 /* Sweeping light bar that travels thumb top→bottom */
@@ -2383,6 +2459,7 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
 
 .composer-sheet-header .card-title {
   margin: 0;
+  font-weight: 800;
 }
 
 .composer-panel-close {
@@ -2703,7 +2780,7 @@ html[data-theme="dark"] .composer-input-row textarea {
 .session-progress span {
   color: var(--fg-muted);
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .session-progress-bar {
