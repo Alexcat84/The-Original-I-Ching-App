@@ -10,6 +10,10 @@ export type NotesPageUiMessages = {
   ichingOriginBody: string;
   ichingHexHeading: string;
   ichingHexBody: string;
+  /** Caption shown above the grid that lists every King Wen hexagram. */
+  ichingHexListHeading: string;
+  ichingHexListIntro: string;
+  ichingHexListAriaLabel: string;
   ichingMethodHeading: string;
   ichingMethodBody: string;
   ichingWilhelmHeading: string;
@@ -29,6 +33,13 @@ export type NotesPageUiMessages = {
   bonesVerdictSilence: string;
   bonesAuthHeading: string;
   bonesAuthBody: string;
+  yarrowHeading: string;
+  yarrowOriginHeading: string;
+  yarrowOriginBody: string;
+  yarrowProcedureHeading: string;
+  yarrowProcedureBody: string;
+  yarrowProbHeading: string;
+  yarrowProbBody: string;
   interpretHeading: string;
   interpretBody: string;
   sourcesHeading: string;
@@ -47,6 +58,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "El sistema de los 64 hexagramas",
     ichingHexBody:
       "Cada hexagrama es una figura de seis líneas, cada una yin (rota, receptiva) o yang (entera, activa). Las 64 combinaciones posibles describen los patrones fundamentales del cambio en la naturaleza y en la vida humana. Las líneas en movimiento indican transformación: el hexagrama presente muta hacia uno futuro, y esa transición es el corazón de la lectura.",
+    ichingHexListHeading: "Los 64 hexagramas en orden King Wen",
+    ichingHexListIntro:
+      "Listado completo de los 64 hexagramas con su número, su glifo y su nombre clásico en chino y pinyin. Aquí no se incluye su significado: cada hexagrama solo cobra sentido en una consulta concreta, donde la pregunta y el contexto del consultante determinan la lectura.",
+    ichingHexListAriaLabel: "Listado de los 64 hexagramas",
     ichingMethodHeading: "El método de las tres monedas y las reglas de Zhu Xi",
     ichingMethodBody:
       "El método clásico usa tres monedas lanzadas seis veces para construir el hexagrama línea por línea. Cuando múltiples líneas cambian, la escuela de Zhu Xi (neoconfucianismo, siglo XII d.C.) establece reglas precisas para determinar qué línea gobierna la lectura, eliminando la ambigüedad interpretativa. Esta app implementa exactamente esas reglas sin modificación.",
@@ -73,6 +88,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Autenticidad del método",
     bonesAuthBody:
       "Más de 150.000 fragmentos de huesos oraculares han sido excavados y estudiados desde el siglo XIX. Son patrimonio reconocido internacionalmente y se conservan en museos de China, Taiwán, Japón y Europa. El método implementado en esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa, veredicto por patrón, incluyendo el silencio como estado legítimo.",
+    yarrowHeading: "Varillas de Milenrama (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Origen histórico (~1000 a.C.)",
+    yarrowOriginBody:
+      "El método de las varillas de milenrama es el procedimiento de adivinación descrito en el propio I Ching. El Gran Comentario (大传, Dàzhuàn), una de las Diez Alas, precisa: «El número de la Gran Expansión es 50, de los que se usan 49». En los Anales, Confucio declaró que deseaba estudiar los Cambios durante cincuenta años; los estudiosos clásicos entienden esa referencia al número 50 como alusión directa al procedimiento de las varillas. El método es anterior al de tres monedas en más de un milenio. Richard Wilhelm y Cary Baynes documentaron el procedimiento completo en el Apéndice de su traducción (Princeton, 1950).",
+    yarrowProcedureHeading: "El procedimiento físico",
+    yarrowProcedureBody:
+      "El método usa un conjunto de varillas físicas u objetos similares. Una se aparta y las demás se dividen y cuentan mediante una secuencia ritual repetida hasta formar cada una de las seis líneas. Lo importante para el usuario es el ritmo: exige atención, tacto y paciencia, y hace que la consulta se sienta más ceremonial que el método de tres monedas.",
+    yarrowProbHeading: "Carácter del método",
+    yarrowProbBody:
+      "El método de varillas conserva un ritmo ritual más lento que el de tres monedas. En esta app su valor no se presenta como una tabla técnica, sino como una forma distinta de entrar en la misma tradición del I Ching: más táctil, más deliberada y más cercana al procedimiento clásico documentado por Wilhelm/Baynes. El método de tres monedas sigue siendo igualmente válido para una consulta más rápida.",
     interpretHeading: "Por qué la IA no inventa",
     interpretBody:
       "La inteligencia artificial en esta app tiene una función específica y acotada: tomar el resultado del algoritmo (hexagrama, líneas en movimiento, veredicto de grietas) y articularlo en lenguaje natural en el idioma del usuario, con el contexto de su pregunta. La IA no genera hexagramas, no decide veredictos, no modifica los textos de Wilhelm ni los patrones del método Shang. El algoritmo matemático hace eso, fielmente, antes de que la IA intervenga. La IA es el intérprete. El oráculo es el método.",
@@ -90,6 +115,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "The 64-Hexagram System",
     ichingHexBody:
       "Each hexagram is a figure of six lines, each either yin (broken, receptive) or yang (solid, active). The 64 possible combinations describe the fundamental patterns of change in nature and human life. Moving lines indicate transformation: the present hexagram mutates into a future one, and that transition is the heart of the reading.",
+    ichingHexListHeading: "The 64 hexagrams in King Wen order",
+    ichingHexListIntro:
+      "Complete list of the 64 hexagrams with their number, glyph, and classical name in Chinese and pinyin. Their meaning is not included here: each hexagram only takes shape inside a specific consultation, where the question and the seeker's context determine the reading.",
+    ichingHexListAriaLabel: "List of the 64 hexagrams",
     ichingMethodHeading: "The Three-Coin Method and Zhu Xi's Rules",
     ichingMethodBody:
       "The classic method uses three coins cast six times to build the hexagram line by line. When multiple lines change, the Zhu Xi school (Neo-Confucianism, 12th century CE) establishes precise rules to determine which line governs the reading, eliminating interpretive ambiguity. This app implements those rules exactly without modification.",
@@ -116,6 +145,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Authenticity of the Method",
     bonesAuthBody:
       "More than 150,000 oracle bone fragments have been excavated and studied since the 19th century. They are internationally recognized heritage and are preserved in museums in China, Taiwan, Japan, and Europe. The method implemented in this app respects the structural logic of the Shang system: positive charge, negative charge, verdict by pattern, including silence as a legitimate state.",
+    yarrowHeading: "Yarrow Stalks (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Historical Origins (~1000 BCE)",
+    yarrowOriginBody:
+      "The yarrow stalk method is the divination procedure documented in the I Ching itself. The Great Commentary (大传, Dàzhuàn), one of the Ten Wings, states: 'The number of the Great Expansion is 50, of which 49 are used.' Confucius is recorded in the Analects as wishing to study the Changes for fifty years; classical scholars read that reference to the number 50 as a direct allusion to the stalk procedure. The method predates the three-coin method by more than a millennium. Richard Wilhelm and Cary Baynes documented the complete procedure in the Appendix of their translation (Princeton University Press, 1950). Edward Shaughnessy's Sources of Western Zhou History (1993) provides additional philological context.",
+    yarrowProcedureHeading: "Physical Procedure",
+    yarrowProcedureBody:
+      "The method uses a set of physical stalks or similar objects. One is set aside, and the rest are divided and counted through a repeated ritual sequence until each of the six lines is formed. The important point for users is the pace: it asks for attention, touch, and patience, making the consultation feel more ceremonial than the three-coin method.",
+    yarrowProbHeading: "Character of the method",
+    yarrowProbBody:
+      "The stalk method preserves a slower ritual tempo than the three-coin method. Its value in this app is not presented as a technical table, but as a different way of entering the same I Ching tradition: more tactile, more deliberate, and closer to the classical procedure documented by Wilhelm/Baynes. The three-coin method remains equally valid for a faster consultation.",
     interpretHeading: "Why AI Does Not Invent",
     interpretBody:
       "The artificial intelligence in this app has a specific and bounded function: to take the algorithm's result (hexagram, moving lines, crack verdict) and articulate it in natural language in the user's language, with the context of their question. The AI does not generate hexagrams, does not decide verdicts, does not modify Wilhelm's texts or the Shang method's patterns. The mathematical algorithm does that, faithfully, before the AI intervenes. The AI is the interpreter. The oracle is the method.",
@@ -133,6 +172,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "O sistema dos 64 hexagramas",
     ichingHexBody:
       "Cada hexagrama é uma figura de seis linhas, cada uma yin (partida, receptiva) ou yang (inteira, ativa). As 64 combinações possíveis descrevem os padrões fundamentais da mudança na natureza e na vida humana. As linhas em movimento indicam transformação: o hexagrama presente muta para um futuro, e essa transição é o coração da leitura.",
+    ichingHexListHeading: "Os 64 hexagramas em ordem King Wen",
+    ichingHexListIntro:
+      "Listagem completa dos 64 hexagramas com o seu número, glifo e nome clássico em chinês e pinyin. O significado não é apresentado aqui: cada hexagrama só ganha sentido numa consulta concreta, onde a pergunta e o contexto do consultante determinam a leitura.",
+    ichingHexListAriaLabel: "Listagem dos 64 hexagramas",
     ichingMethodHeading: "O método das três moedas e as regras de Zhu Xi",
     ichingMethodBody:
       "O método clássico usa três moedas lançadas seis vezes para construir o hexagrama linha a linha. Quando múltiplas linhas mudam, a escola de Zhu Xi (neo-confucionismo, século XII d.C.) estabelece regras precisas para determinar qual linha governa a leitura, eliminando a ambiguidade interpretativa. Esta app implementa exatamente essas regras sem modificação.",
@@ -159,6 +202,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Autenticidade do método",
     bonesAuthBody:
       "Mais de 150.000 fragmentos de ossos oraculares foram escavados e estudados desde o século XIX. São património reconhecido internacionalmente e conservam-se em museus da China, Taiwan, Japão e Europa. O método implementado nesta app respeita a lógica estrutural do sistema Shang: carga positiva, carga negativa, veredicto por padrão, incluindo o silêncio como estado legítimo.",
+    yarrowHeading: "Varetas de Milenrama (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Origem histórica (~1000 a.C.)",
+    yarrowOriginBody:
+      "O método das varetas de milenrama é o procedimento de adivinhação documentado no próprio I Ching. O Grande Comentário (大传, Dàzhuàn), uma das Dez Asas, afirma: «O número da Grande Expansão é 50, dos quais 49 são usados». Confúcio declarou nos Analetos que desejava estudar as Mutações durante cinquenta anos; os estudiosos clássicos entendem essa referência ao número 50 como uma alusão direta ao procedimento das varetas. O método é anterior ao das três moedas em mais de um milénio. Richard Wilhelm e Cary Baynes documentaram o procedimento completo no Apêndice da sua tradução (Princeton University Press, 1950).",
+    yarrowProcedureHeading: "Procedimento físico",
+    yarrowProcedureBody:
+      "O método usa um conjunto de varetas físicas ou objetos semelhantes. Uma é posta de lado e as restantes são divididas e contadas através de uma sequência ritual repetida até formar cada uma das seis linhas. O ponto importante para o utilizador é o ritmo: pede atenção, toque e paciência, fazendo a consulta parecer mais cerimonial do que o método das três moedas.",
+    yarrowProbHeading: "Caráter do método",
+    yarrowProbBody:
+      "O método das varetas preserva um ritmo ritual mais lento do que o das três moedas. Nesta app, o seu valor não é apresentado como uma tabela técnica, mas como uma forma diferente de entrar na mesma tradição do I Ching: mais tátil, mais deliberada e mais próxima do procedimento clássico documentado por Wilhelm/Baynes. O método das três moedas continua igualmente válido para uma consulta mais rápida.",
     interpretHeading: "Por que a IA não inventa",
     interpretBody:
       "A inteligência artificial nesta app tem uma função específica e delimitada: tomar o resultado do algoritmo (hexagrama, linhas em movimento, veredicto de fissuras) e articulá-lo em linguagem natural no idioma do utilizador, com o contexto da sua pergunta. A IA não gera hexagramas, não decide veredictos, não modifica os textos de Wilhelm nem os padrões do método Shang. O algoritmo matemático faz isso, fielmente, antes de a IA intervir. A IA é o intérprete. O oráculo é o método.",
@@ -176,6 +229,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "Le système des 64 hexagrammes",
     ichingHexBody:
       "Chaque hexagramme est une figure de six traits, chacun yin (brisé, réceptif) ou yang (plein, actif). Les 64 combinaisons possibles décrivent les modèles fondamentaux du changement dans la nature et la vie humaine. Les traits en mouvement indiquent une transformation : l'hexagramme présent mute en un futur, et cette transition est au cœur de la lecture.",
+    ichingHexListHeading: "Les 64 hexagrammes selon l'ordre du Roi Wen",
+    ichingHexListIntro:
+      "Liste complète des 64 hexagrammes avec leur numéro, leur glyphe et leur nom classique en chinois et pinyin. Leur signification n'est pas indiquée ici : chaque hexagramme ne prend forme qu'au sein d'une consultation précise, où la question et le contexte du consultant déterminent la lecture.",
+    ichingHexListAriaLabel: "Liste des 64 hexagrammes",
     ichingMethodHeading: "La méthode des trois pièces et les règles de Zhu Xi",
     ichingMethodBody:
       "La méthode classique utilise trois pièces lancées six fois pour construire l'hexagramme trait par trait. Lorsque plusieurs traits changent, l'école de Zhu Xi (néoconfucianisme, XIIe siècle ap. J.-C.) établit des règles précises pour déterminer quel trait gouverne la lecture, éliminant toute ambiguïté interprétative. Cette app implémente exactement ces règles sans modification.",
@@ -202,6 +259,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Authenticité de la méthode",
     bonesAuthBody:
       "Plus de 150 000 fragments d'os oraculaires ont été excavés et étudiés depuis le XIXe siècle. Ils constituent un patrimoine reconnu internationalement et sont conservés dans des musées en Chine, à Taïwan, au Japon et en Europe. La méthode implémentée dans cette app respecte la logique structurelle du système Shang : charge positive, charge négative, verdict par motif, incluant le silence comme état légitime.",
+    yarrowHeading: "Tiges d'Achillée (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Origines historiques (~1000 av. J.-C.)",
+    yarrowOriginBody:
+      "La méthode des tiges d'achillée est le procédé de divination documenté dans le I Ching lui-même. Le Grand Commentaire (大传, Dàzhuàn), l'une des Dix Ailes, précise : « Le nombre de la Grande Expansion est 50, dont 49 sont utilisés. » Confucius déclare dans les Entretiens vouloir étudier les Mutations pendant cinquante ans ; les spécialistes classiques voient dans cette référence au chiffre 50 une allusion directe au procédé des tiges. La méthode est antérieure de plus d'un millénaire à celle des trois pièces. Richard Wilhelm et Cary Baynes ont documenté le procédé complet dans l'Appendice de leur traduction (Princeton University Press, 1950).",
+    yarrowProcedureHeading: "Procédure physique",
+    yarrowProcedureBody:
+      "La méthode utilise un ensemble de tiges physiques ou d'objets semblables. Une tige est mise de côté, puis les autres sont divisées et comptées selon une séquence rituelle répétée jusqu'à former chacun des six traits. Pour l'utilisateur, l'essentiel est le rythme: elle demande attention, contact et patience, ce qui rend la consultation plus cérémonielle que la méthode des trois pièces.",
+    yarrowProbHeading: "Caractère de la méthode",
+    yarrowProbBody:
+      "La méthode des tiges conserve un rythme rituel plus lent que celle des trois pièces. Dans cette app, sa valeur n'est pas présentée comme un tableau technique, mais comme une autre façon d'entrer dans la même tradition du I Ching: plus tactile, plus délibérée et plus proche du procédé classique documenté par Wilhelm/Baynes. La méthode des trois pièces reste tout aussi valide pour une consultation plus rapide.",
     interpretHeading: "Pourquoi l'IA n'invente pas",
     interpretBody:
       "L'intelligence artificielle dans cette app a une fonction spécifique et délimitée : prendre le résultat de l'algorithme (hexagramme, traits en mouvement, verdict de fissures) et l'articuler en langage naturel dans la langue de l'utilisateur, avec le contexte de sa question. L'IA ne génère pas d'hexagrammes, ne décide pas des verdicts, ne modifie pas les textes de Wilhelm ni les motifs de la méthode Shang. L'algorithme mathématique fait cela, fidèlement, avant que l'IA intervienne. L'IA est l'interprète. L'oracle est la méthode.",
@@ -219,6 +286,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "Das System der 64 Hexagramme",
     ichingHexBody:
       "Jedes Hexagramm ist eine Figur aus sechs Linien, jede entweder yin (gebrochen, empfänglich) oder yang (ganz, aktiv). Die 64 möglichen Kombinationen beschreiben die grundlegenden Muster des Wandels in der Natur und im menschlichen Leben. Bewegende Linien zeigen Transformation an: das gegenwärtige Hexagramm wandelt sich in ein zukünftiges, und dieser Übergang ist das Herzstück der Lesung.",
+    ichingHexListHeading: "Die 64 Hexagramme in der Reihenfolge nach König Wen",
+    ichingHexListIntro:
+      "Vollständige Liste der 64 Hexagramme mit Nummer, Schriftzeichen und klassischem Namen in Chinesisch und Pinyin. Ihre Bedeutung wird hier nicht aufgeführt: Jedes Hexagramm gewinnt erst innerhalb einer konkreten Beratung Gestalt, in der Frage und Kontext der ratsuchenden Person die Lesung bestimmen.",
+    ichingHexListAriaLabel: "Liste der 64 Hexagramme",
     ichingMethodHeading: "Die Drei-Münzen-Methode und Zhu Xis Regeln",
     ichingMethodBody:
       "Die klassische Methode verwendet drei Münzen, die sechsmal geworfen werden, um das Hexagramm Linie für Linie aufzubauen. Wenn mehrere Linien wechseln, legt die Schule von Zhu Xi (Neokonfuzianismus, 12. Jh. n. Chr.) genaue Regeln fest, um zu bestimmen, welche Linie die Lesung regiert, wodurch interpretative Mehrdeutigkeit beseitigt wird. Diese App implementiert genau diese Regeln ohne Änderung.",
@@ -245,6 +316,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Authentizität der Methode",
     bonesAuthBody:
       "Mehr als 150.000 Orakelknochenfragmente wurden seit dem 19. Jahrhundert ausgegraben und untersucht. Sie sind international anerkanntes Kulturerbe und werden in Museen in China, Taiwan, Japan und Europa aufbewahrt. Die in dieser App implementierte Methode respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung, Befund nach Muster, einschließlich des Schweigens als legitimen Zustand.",
+    yarrowHeading: "Schafgarbenstäbe (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Historische Ursprünge (~1000 v. Chr.)",
+    yarrowOriginBody:
+      "Die Schafgarbenstab-Methode ist das Weissagungsverfahren, das im I Ching selbst dokumentiert ist. Der Große Kommentar (大传, Dàzhuàn), einer der Zehn Flügel, hält fest: «Die Zahl der Großen Expansion ist 50, von denen 49 verwendet werden.» Konfuzius erklärte in den Analekten, er wünsche sich, die Wandlungen fünfzig Jahre lang zu studieren; klassische Gelehrte verstehen diesen Hinweis auf die Zahl 50 als direkte Anspielung auf das Stabverfahren. Die Methode ist mehr als ein Jahrtausend älter als die Drei-Münzen-Methode. Richard Wilhelm und Cary Baynes dokumentierten das vollständige Verfahren im Anhang ihrer Übersetzung (Princeton University Press, 1950).",
+    yarrowProcedureHeading: "Das physische Verfahren",
+    yarrowProcedureBody:
+      "Die Methode verwendet eine Gruppe physischer Stäbe oder ähnlicher Gegenstände. Einer wird beiseitegelegt, die übrigen werden in einer wiederholten rituellen Abfolge geteilt und gezählt, bis jede der sechs Linien entsteht. Für Nutzer ist vor allem das Tempo wichtig: Es verlangt Aufmerksamkeit, Berührung und Geduld und wirkt dadurch zeremonieller als die Drei Münzen Methode.",
+    yarrowProbHeading: "Charakter der Methode",
+    yarrowProbBody:
+      "Die Stäbchenmethode bewahrt ein langsameres rituelles Tempo als die Drei Münzen Methode. Ihr Wert wird in dieser App nicht als technische Tabelle dargestellt, sondern als andere Art, in dieselbe I Ging Tradition einzutreten: taktiler, bewusster und näher am klassischen Verfahren, das Wilhelm/Baynes dokumentiert haben. Für eine schnellere Befragung bleibt die Drei Münzen Methode ebenso gültig.",
     interpretHeading: "Warum die KI nicht erfindet",
     interpretBody:
       "Die künstliche Intelligenz in dieser App hat eine spezifische und begrenzte Funktion: das Ergebnis des Algorithmus (Hexagramm, bewegende Linien, Riss-Befund) zu nehmen und es in natürlicher Sprache in der Sprache des Nutzers zu artikulieren, mit dem Kontext seiner Frage. Die KI generiert keine Hexagramme, entscheidet keine Befunde, modifiziert weder Wilhelms Texte noch die Muster der Shang-Methode. Der mathematische Algorithmus tut das, getreu, bevor die KI eingreift. Die KI ist der Interpret. Das Orakel ist die Methode.",
@@ -262,6 +343,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "Il sistema dei 64 esagrammi",
     ichingHexBody:
       "Ogni esagramma è una figura di sei linee, ciascuna yin (spezzata, ricettiva) o yang (intera, attiva). Le 64 combinazioni possibili descrivono i modelli fondamentali del cambiamento nella natura e nella vita umana. Le linee in movimento indicano trasformazione: l'esagramma presente muta in uno futuro, e quella transizione è il cuore della lettura.",
+    ichingHexListHeading: "I 64 esagrammi nell'ordine di Re Wen",
+    ichingHexListIntro:
+      "Elenco completo dei 64 esagrammi con numero, glifo e nome classico in cinese e pinyin. Il significato non è riportato qui: ogni esagramma prende forma solo all'interno di una consultazione precisa, dove la domanda e il contesto di chi consulta determinano la lettura.",
+    ichingHexListAriaLabel: "Elenco dei 64 esagrammi",
     ichingMethodHeading: "Il metodo delle tre monete e le regole di Zhu Xi",
     ichingMethodBody:
       "Il metodo classico usa tre monete lanciate sei volte per costruire l'esagramma linea per linea. Quando più linee cambiano, la scuola di Zhu Xi (neo-confucianesimo, XII secolo d.C.) stabilisce regole precise per determinare quale linea governa la lettura, eliminando l'ambiguità interpretativa. Questa app implementa esattamente quelle regole senza modifiche.",
@@ -288,6 +373,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "Autenticità del metodo",
     bonesAuthBody:
       "Più di 150.000 frammenti di ossa oracolari sono stati scavati e studiati dal XIX secolo. Sono patrimonio riconosciuto internazionalmente e conservati in musei in Cina, Taiwan, Giappone ed Europa. Il metodo implementato in questa app rispetta la logica strutturale del sistema Shang: carica positiva, carica negativa, verdetto per motivo, includendo il silenzio come stato legittimo.",
+    yarrowHeading: "Steli di Achillea (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "Origini storiche (~1000 a.C.)",
+    yarrowOriginBody:
+      "Il metodo degli steli di achillea è il procedimento di divinazione documentato nell'I Ching stesso. Il Grande Commentario (大传, Dàzhuàn), una delle Dieci Ali, precisa: «Il numero della Grande Espansione è 50, dei quali 49 vengono usati». Confucio dichiara nei Dialoghi di voler studiare le Mutazioni per cinquant'anni; gli studiosi classici leggono in quel riferimento al numero 50 un'allusione diretta al procedimento degli steli. Il metodo è anteriore di oltre un millennio a quello delle tre monete. Richard Wilhelm e Cary Baynes documentarono il procedimento completo nell'Appendice della loro traduzione (Princeton University Press, 1950).",
+    yarrowProcedureHeading: "Procedura fisica",
+    yarrowProcedureBody:
+      "Il metodo usa un insieme di steli fisici o oggetti simili. Uno viene messo da parte e gli altri vengono divisi e contati attraverso una sequenza rituale ripetuta fino a formare ciascuna delle sei linee. Per l'utente il punto centrale è il ritmo: richiede attenzione, tatto e pazienza, rendendo la consultazione più cerimoniale rispetto alle tre monete.",
+    yarrowProbHeading: "Carattere del metodo",
+    yarrowProbBody:
+      "Il metodo degli steli conserva un ritmo rituale più lento rispetto alle tre monete. In questa app il suo valore non viene presentato come una tabella tecnica, ma come un modo diverso di entrare nella stessa tradizione dell'I Ching: più tattile, più deliberato e più vicino alla procedura classica documentata da Wilhelm/Baynes. Il metodo delle tre monete rimane ugualmente valido per una consultazione più rapida.",
     interpretHeading: "Perché l'IA non inventa",
     interpretBody:
       "L'intelligenza artificiale in questa app ha una funzione specifica e delimitata: prendere il risultato dell'algoritmo, esagramma, linee in movimento, verdetto delle crepe, e articolarlo in linguaggio naturale nella lingua dell'utente, con il contesto della sua domanda. L'IA non genera esagrammi, non decide verdetti, non modifica i testi di Wilhelm né i motivi del metodo Shang. L'algoritmo matematico fa questo, fedelmente, prima che l'IA intervenga. L'IA è l'interprete. L'oracolo è il metodo.",
@@ -305,6 +400,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "64卦のシステム",
     ichingHexBody:
       "各卦は6本の爻から成る図形で、それぞれが陰（切れた、受容的）または陽（連続した、能動的）です。64の可能な組み合わせは、自然と人間の生活における変化の根本的なパターンを描写しています。動爻は変容を示します：現在の卦は未来の卦へと変化し、その移行が占いの核心です。",
+    ichingHexListHeading: "周文王の順序による64卦の一覧",
+    ichingHexListIntro:
+      "64卦の番号、卦象、漢字名と拼音をすべて掲載した一覧です。意味はここでは扱いません。各卦は具体的な相談のなかではじめて形を持ち、問いと相談者の文脈が読みを決めます。",
+    ichingHexListAriaLabel: "64卦の一覧",
     ichingMethodHeading: "三枚銭法と朱熹の規則",
     ichingMethodBody:
       "古典的な方法は、三枚の銭を六回投じて卦を一爻ずつ構築します。複数の爻が変化する場合、朱熹の学派（新儒学、12世紀）は、どの爻が占いを支配するかを決定する精確な規則を設けており、解釈上の曖昧さを排除しています。このアプリはその規則を改変なく正確に実装しています。",
@@ -331,6 +430,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "手法の正統性",
     bonesAuthBody:
       "19世紀以降、15万点を超える甲骨の断片が発掘・研究されてきました。それらは国際的に認められた文化遺産であり、中国・台湾・日本・ヨーロッパの博物館に保存されています。このアプリで実装された手法は、商システムの構造的論理を尊重しています：肯定命題、否定命題、パターンによる神託、沈黙を正当な状態として含めて。",
+    yarrowHeading: "蓍草による占い (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "歴史的起源（紀元前約1000年）",
+    yarrowOriginBody:
+      "蓍草による占いの方法は、易経そのものに記録されている卜占手順です。十翼のひとつである大伝（大传, Dàzhuàn）には「大衍之数五十、其用四十有九（大いなる展開の数は50、そのうち49を使う）」と明記されています。論語では孔子が易を学ぶために五十年欲しいと述べており、古典学者たちはその「50」という数への言及を蓍草の手順への直接的な示唆と理解しています。この方法は三枚硬貨法よりも千年以上古いものです。リヒャルト・ヴィルヘルムとケーリー・ベインズは1950年の翻訳の付録（プリンストン大学出版）に完全な手順を記録しています。",
+    yarrowProcedureHeading: "物理的な手順",
+    yarrowProcedureBody:
+      "この方法では、物理的な筮竹または同様の物を用います。一つを取り分け、残りを儀礼的な順序で分けて数え、六つの爻を形成していきます。利用者にとって大切なのはそのリズムです。注意、触覚、忍耐を求めるため、三枚硬貨よりも儀礼的な相談として感じられます。",
+    yarrowProbHeading: "方法の性格",
+    yarrowProbBody:
+      "筮竹の方法は、三枚硬貨よりもゆっくりした儀礼的なリズムを保ちます。このアプリでは、その価値を技術的な表としてではなく、同じ易経伝統に入る別の方法として示しています。より触覚的で、より意識的で、Wilhelm/Baynes が記録した古典的手順に近いものです。より速い占いには三枚硬貨の方法も同じく有効です。",
     interpretHeading: "AIが発明しない理由",
     interpretBody:
       "このアプリの人工知能には特定かつ限定的な機能があります：アルゴリズムの結果（卦、動爻、亀裂の神託）を受け取り、ユーザーの質問のコンテキストと共に、ユーザーの言語で自然言語として表現することです。AIは卦を生成せず、神託を決定せず、ヴィルヘルムのテキストも商の手法のパターンも改変しません。数学的アルゴリズムがそれを忠実に行い、その後AIが介入します。AIは解釈者です。神託は手法です。",
@@ -348,6 +457,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "六十四卦系统",
     ichingHexBody:
       "每一卦由六爻组成，每爻为阴（断裂，柔顺）或阳（连续，刚健）。六十四种可能的组合描述了自然与人类生活中变化的根本规律。动爻指示转变：当下之卦变化为未来之卦，这一转变正是占卜的核心所在。",
+    ichingHexListHeading: "周文王序列下的六十四卦总览",
+    ichingHexListIntro:
+      "完整列出六十四卦的卦序、卦象、汉字名称与拼音。此处不附释义：每一卦的意涵都只有在具体咨询中才会成形，由问题与问卜者的处境共同决定解读。",
+    ichingHexListAriaLabel: "六十四卦列表",
     ichingMethodHeading: "三枚铜钱法与朱熹规则",
     ichingMethodBody:
       "经典方法以三枚铜钱掷六次，逐爻构建卦象。当多爻变动时，朱熹学派（新儒家，公元12世纪）制定了精确的规则，以确定哪一爻主导解读，从而消除解释上的歧义。本应用严格按照这些规则实施，未作任何修改。",
@@ -374,6 +487,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "方法的真实性",
     bonesAuthBody:
       "自19世纪以来，已出土并研究了逾15万件甲骨碎片。它们是国际公认的文化遗产，保存于中国、台湾、日本及欧洲的博物馆中。本应用所实施的方法忠实于商代系统的结构逻辑：正面命题、负面命题、依纹样作兆辞，并将沉默视为合法状态。",
+    yarrowHeading: "蓍草占法 (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "历史渊源（约公元前1000年）",
+    yarrowOriginBody:
+      "蓍草占法是易经本身所记载的占卜程序。十翼之一的大传（大传, Dàzhuàn）明确指出：「大衍之数五十，其用四十有九。」孔子在《论语》中表示希望花五十年研习《周易》；古典学者将这一「五十」的引用理解为对蓍草程序的直接暗示。该方法比三枚铜钱法早一千余年。卫礼贤与贝恩斯在其1950年译本的附录（普林斯顿大学出版社）中记录了完整的操作步骤。",
+    yarrowProcedureHeading: "实物操作步骤",
+    yarrowProcedureBody:
+      "这种方法使用一组实体蓍草或类似物件。先取出一根，其余部分通过反复的仪式顺序来分合与计数，直到形成六爻。对用户来说，关键在于节奏：它需要注意力、触感和耐心，因此比三枚铜钱方法更具仪式感。",
+    yarrowProbHeading: "方法的气质",
+    yarrowProbBody:
+      "蓍草方法保留了比三枚铜钱更慢的仪式节奏。在本应用中，它的价值不以技术表格呈现，而是作为进入同一《易经》传统的另一种方式：更具触感，更审慎，也更接近 Wilhelm/Baynes 所记录的经典程序。若需要更快速的咨询，三枚铜钱方法同样有效。",
     interpretHeading: "为何人工智能不自创内容",
     interpretBody:
       "本应用中的人工智能具有特定且有限的功能：获取算法结果（卦象、动爻、裂纹兆辞）并结合用户问题的语境，以用户的语言将其表述为自然语言。人工智能不生成卦象，不裁定兆辞，不修改卫礼贤的文本，也不改变商代方法的纹样。数学算法在人工智能介入之前，已忠实地完成了这一切。人工智能是解读者，神谕是方法本身。",
@@ -391,6 +514,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "64괘 체계",
     ichingHexBody:
       "각 괘는 여섯 효로 이루어진 도형으로, 각 효는 음（끊긴 선, 수용적）또는 양（이어진 선, 능동적）입니다. 64가지 가능한 조합은 자연과 인간의 삶에서 변화의 근본적인 패턴을 묘사합니다. 변하는 효는 변환을 나타냅니다: 현재의 괘는 미래의 괘로 변하며, 그 전환이 독해의 핵심입니다.",
+    ichingHexListHeading: "주문왕 순서로 본 64괘 일람",
+    ichingHexListIntro:
+      "64괘의 번호, 괘상, 한자 이름과 병음을 모두 정리한 목록입니다. 의미는 여기에 싣지 않습니다. 각 괘는 구체적인 상담 안에서만 형태를 갖추며, 질문과 상담자의 맥락이 풀이를 결정합니다.",
+    ichingHexListAriaLabel: "64괘 목록",
     ichingMethodHeading: "삼전법과 주희의 규칙",
     ichingMethodBody:
       "고전적 방법은 동전 세 개를 여섯 번 던져 효를 하나씩 구성합니다. 여러 효가 변할 때, 주희 학파（신유학, 12세기）는 어떤 효가 독해를 지배하는지를 결정하는 정확한 규칙을 확립하여 해석상의 모호성을 제거합니다. 이 앱은 수정 없이 해당 규칙을 정확히 구현합니다.",
@@ -417,6 +544,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "방법의 정통성",
     bonesAuthBody:
       "19세기 이래 15만 점 이상의 갑골 파편이 발굴되어 연구되었습니다. 이는 국제적으로 인정받는 문화유산으로 중국, 대만, 일본, 유럽의 박물관에 보존되어 있습니다. 이 앱에서 구현된 방법은 상 체계의 구조적 논리를 존중합니다: 긍정 명제, 부정 명제, 패턴에 의한 신탁, 침묵을 합법적 상태로 포함하여.",
+    yarrowHeading: "시초점법 (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "역사적 기원 (기원전 약 1000년)",
+    yarrowOriginBody:
+      "시초 방법은 역경 자체에 기록된 점술 절차입니다. 십익 중 하나인 대전(大传, Dàzhuàn)은 구체적으로 기술합니다: '대연지수오십, 기용사십유구(대연의 수는 50이며 그 중 49를 사용한다).' 공자는 논어에서 역을 오십 년간 공부하고 싶다고 밝혔으며, 고전학자들은 이 50이라는 숫자를 시초 절차에 대한 직접적인 암시로 해석합니다. 이 방법은 삼전법보다 천 년 이상 앞섭니다. 리하르트 빌헬름과 캐리 베인스는 1950년 번역본 부록(프린스턴 대학 출판부)에 전체 절차를 기록했습니다.",
+    yarrowProcedureHeading: "실물 절차",
+    yarrowProcedureBody:
+      "이 방법은 실제 시초나 비슷한 물건의 묶음을 사용합니다. 하나를 따로 두고 나머지를 반복되는 의례적 순서에 따라 나누고 세어 여섯 효를 형성합니다. 사용자에게 중요한 것은 그 리듬입니다. 주의, 촉감, 인내를 요구하기 때문에 세 동전 방법보다 더 의례적인 상담처럼 느껴집니다.",
+    yarrowProbHeading: "방법의 성격",
+    yarrowProbBody:
+      "시초 방법은 세 동전 방법보다 더 느린 의례적 리듬을 보존합니다. 이 앱에서 그 가치는 기술적인 표가 아니라 같은 주역 전통에 들어가는 다른 방식으로 제시됩니다. 더 촉각적이고, 더 신중하며, Wilhelm/Baynes가 기록한 고전적 절차에 더 가깝습니다. 빠른 상담에는 세 동전 방법도 똑같이 유효합니다.",
     interpretHeading: "인공지능이 창작하지 않는 이유",
     interpretBody:
       "이 앱의 인공지능은 특정하고 한정된 기능을 수행합니다: 알고리즘의 결과, 괘, 변효, 균열 신탁, 를 받아 사용자의 질문 맥락과 함께 사용자의 언어로 자연어로 표현하는 것입니다. AI는 괘를 생성하지 않고, 신탁을 결정하지 않으며, 빌헬름의 텍스트나 상 방법의 패턴을 수정하지 않습니다. 수학적 알고리즘이 AI가 개입하기 전에 충실히 그 역할을 합니다. AI는 해석자입니다. 신탁은 방법 그 자체입니다.",
@@ -434,6 +571,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "نظام الأغراض الأربعة والستين",
     ichingHexBody:
       "كل غرض هو شكل من ستة خطوط، كل منها إما يين (مكسور، متقبّل) أو يانغ (مستمر، نشط). تصف الـ 64 تركيبة الممكنة الأنماط الأساسية للتغيير في الطبيعة والحياة البشرية. تشير الخطوط المتحركة إلى التحول: الغرض الحاضر يتحول إلى غرض مستقبلي، وهذا الانتقال هو جوهر القراءة.",
+    ichingHexListHeading: "الأغراض الأربعة والستون وفق ترتيب الملك Wen",
+    ichingHexListIntro:
+      "قائمة كاملة بالأغراض الأربعة والستين مع رقم كل غرض ورمزه واسمه الكلاسيكي بالصينية والبينين. لا يُذكر هنا معناها: لا يكتمل أي غرض إلا داخل استشارة محددة، حيث يحدد سؤال المستشير وسياقه الشخصي القراءة.",
+    ichingHexListAriaLabel: "قائمة الأغراض الأربعة والستين",
     ichingMethodHeading: "طريقة العملات الثلاث وقواعد Zhu Xi",
     ichingMethodBody:
       "تستخدم الطريقة الكلاسيكية ثلاث عملات تُقذف ست مرات لبناء الغرض خطاً بخط. عندما تتغير خطوط متعددة، تضع مدرسة Zhu Xi (الكونفوشيانية الجديدة، القرن الثاني عشر الميلادي) قواعد دقيقة لتحديد أي خط يحكم القراءة، مما يزيل الغموض التفسيري. ينفذ هذا التطبيق تلك القواعد بدقة دون أي تعديل.",
@@ -460,6 +601,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "أصالة الطريقة",
     bonesAuthBody:
       "تم استخراج ودراسة أكثر من 150,000 شظية من عظام العرافة منذ القرن التاسع عشر. هي تراث معترف به دولياً وتُحفظ في متاحف في الصين وتايوان واليابان وأوروبا. تحترم الطريقة المُنفَّذة في هذا التطبيق المنطق الهيكلي لنظام Shang: الشحنة الإيجابية، الشحنة السلبية، الحكم بالنمط، بما في ذلك الصمت كحالة مشروعة.",
+    yarrowHeading: "عيدان الزنبق (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "الأصول التاريخية (~1000 قبل الميلاد)",
+    yarrowOriginBody:
+      "طريقة عيدان الزنبق هي إجراء العرافة الموثق في I Ching نفسه. يُحدد التعليق الكبير (大传، Dàzhuàn)، أحد العشر أجنحة: «عدد التوسع الكبير هو خمسون، يُستخدم منها تسعة وأربعون». ويُروى في الأناليكت أن كونفوشيوس قال إنه يتمنى دراسة التحولات خمسين سنة؛ يفهم العلماء الكلاسيكيون هذه الإشارة إلى عدد 50 تلميحاً مباشراً إلى إجراء العيدان. الطريقة أقدم من طريقة الأسكة الثلاث بأكثر من ألف سنة. وثّق ريتشارد فيلهلم وكاري بيانز الإجراء كاملاً في ملحق ترجمتهما (مطبعة جامعة برينستون، 1950).",
+    yarrowProcedureHeading: "الإجراء الفيزيائي",
+    yarrowProcedureBody:
+      "تستخدم الطريقة مجموعة من السيقان المادية أو أشياء مشابهة. يوضع أحدها جانبا، وتُقسّم البقية وتُعد عبر تسلسل طقسي متكرر حتى تتكوّن الخطوط الستة. المهم للمستخدم هو الإيقاع: فهي تطلب الانتباه واللمس والصبر، وتجعل الاستشارة أكثر طقسية من طريقة العملات الثلاث.",
+    yarrowProbHeading: "طابع الطريقة",
+    yarrowProbBody:
+      "تحافظ طريقة السيقان على إيقاع طقسي أبطأ من طريقة العملات الثلاث. في هذا التطبيق لا تعرض قيمتها كجدول تقني، بل كطريقة مختلفة للدخول في تقليد الآي تشينغ نفسه: أكثر لمسا، وأكثر تعمدا، وأقرب إلى الإجراء الكلاسيكي الذي وثقه ويلهلم/باينز. وتظل طريقة العملات الثلاث صالحة بالقدر نفسه للاستشارة الأسرع.",
     interpretHeading: "لماذا الذكاء الاصطناعي لا يخترع",
     interpretBody:
       "للذكاء الاصطناعي في هذا التطبيق وظيفة محددة ومحدودة: أخذ نتيجة الخوارزمية, الغرض، الخطوط المتحركة، حكم الشقوق, وصياغتها بلغة طبيعية في لغة المستخدم، مع سياق سؤاله. لا يُولّد الذكاء الاصطناعي أغراضاً، ولا يقرر أحكاماً، ولا يعدّل نصوص Wilhelm أو أنماط طريقة Shang. الخوارزمية الرياضية تفعل ذلك بأمانة قبل أن يتدخل الذكاء الاصطناعي. الذكاء الاصطناعي هو المفسر. العرافة هي الطريقة.",
@@ -477,6 +628,10 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "64 हेक्साग्राम प्रणाली",
     ichingHexBody:
       "प्रत्येक हेक्साग्राम छह रेखाओं की एक आकृति है, प्रत्येक यिन (टूटी हुई, ग्रहणशील) या यांग (अखंड, सक्रिय)। 64 संभावित संयोजन प्रकृति और मानव जीवन में परिवर्तन के मौलिक पैटर्न का वर्णन करते हैं। गतिशील रेखाएं परिवर्तन का संकेत देती हैं: वर्तमान हेक्साग्राम एक भविष्य के हेक्साग्राम में बदल जाता है, और वह संक्रमण पाठन का केंद्र है।",
+    ichingHexListHeading: "राजा वेन के क्रम में 64 हेक्साग्राम",
+    ichingHexListIntro:
+      "सभी 64 हेक्साग्रामों की पूरी सूची, उनके क्रमांक, चिह्न और चीनी तथा पिनयिन में पारंपरिक नाम के साथ। उनका अर्थ यहां नहीं दिया गया है: प्रत्येक हेक्साग्राम केवल किसी ठोस परामर्श के भीतर ही रूप लेता है, जहां प्रश्न और परामर्शक का संदर्भ पठन तय करते हैं।",
+    ichingHexListAriaLabel: "64 हेक्साग्रामों की सूची",
     ichingMethodHeading: "तीन सिक्कों की विधि और Zhu Xi के नियम",
     ichingMethodBody:
       "शास्त्रीय विधि तीन सिक्कों का उपयोग करती है जिन्हें छह बार फेंका जाता है ताकि हेक्साग्राम एक-एक रेखा बनाया जा सके। जब कई रेखाएं बदलती हैं, तो Zhu Xi स्कूल (नव-कन्फ्यूशीवाद, 12वीं सदी ई.) सटीक नियम स्थापित करता है जो यह निर्धारित करते हैं कि कौन सी रेखा पाठन को नियंत्रित करती है, व्याख्यात्मक अस्पष्टता को समाप्त करते हुए। यह ऐप बिना किसी संशोधन के उन नियमों को सटीक रूप से लागू करता है।",
@@ -503,6 +658,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesAuthHeading: "विधि की प्रामाणिकता",
     bonesAuthBody:
       "19वीं सदी से 1,50,000 से अधिक दैवज्ञ हड्डी के टुकड़ों की खुदाई और अध्ययन किया गया है। वे अंतरराष्ट्रीय स्तर पर मान्यता प्राप्त विरासत हैं और चीन, ताइवान, जापान और यूरोप के संग्रहालयों में संरक्षित हैं। इस ऐप में लागू विधि शांग प्रणाली के संरचनात्मक तर्क का सम्मान करती है: सकारात्मक प्रस्ताव, नकारात्मक प्रस्ताव, पैटर्न द्वारा निर्णय, मौन को वैध अवस्था के रूप में शामिल करते हुए।",
+    yarrowHeading: "यारो की छड़ें (蓍草 · Shīcǎo)",
+    yarrowOriginHeading: "ऐतिहासिक उत्पत्ति (~1000 ईसा पूर्व)",
+    yarrowOriginBody:
+      "यारो की छड़ों की विधि वह दिव्यज्ञान प्रक्रिया है जो स्वयं I Ching में प्रलेखित है। दस पंखों में से एक, महान टीका (大传, Dàzhuàn), स्पष्ट रूप से कहता है: 'महान विस्तार की संख्या 50 है, जिनमें से 49 उपयोग में लाई जाती हैं।' कन्फ्यूशियस ने एनालेक्ट्स में कहा कि वे पचास वर्षों तक परिवर्तनों का अध्ययन करना चाहते थे; शास्त्रीय विद्वान 50 की इस संदर्भ को छड़ों की प्रक्रिया की ओर प्रत्यक्ष संकेत के रूप में समझते हैं। यह विधि तीन सिक्कों की विधि से एक सहस्राब्दी से अधिक पुरानी है। रिचर्ड विल्हेम और कैरी बेनिस ने 1950 के अपने अनुवाद के परिशिष्ट (प्रिंसटन यूनिवर्सिटी प्रेस) में पूर्ण प्रक्रिया प्रलेखित की।",
+    yarrowProcedureHeading: "भौतिक प्रक्रिया",
+    yarrowProcedureBody:
+      "यह विधि भौतिक डंठलों या समान वस्तुओं के समूह का उपयोग करती है। एक को अलग रखा जाता है और बाकी को दोहराई जाने वाली अनुष्ठानिक क्रम में बाँटा और गिना जाता है, जब तक छह रेखाएँ बन न जाएँ। उपयोगकर्ता के लिए मुख्य बात इसकी लय है: यह ध्यान, स्पर्श और धैर्य मांगती है, जिससे परामर्श तीन सिक्कों की विधि की तुलना में अधिक अनुष्ठानिक लगता है।",
+    yarrowProbHeading: "विधि का स्वभाव",
+    yarrowProbBody:
+      "डंठल विधि तीन सिक्कों की विधि की तुलना में धीमी अनुष्ठानिक लय रखती है। इस ऐप में इसका मूल्य किसी तकनीकी तालिका के रूप में नहीं, बल्कि उसी I Ching परंपरा में प्रवेश करने के दूसरे तरीके के रूप में प्रस्तुत है: अधिक स्पर्शनीय, अधिक सजग और Wilhelm/Baynes द्वारा दर्ज शास्त्रीय प्रक्रिया के निकट। तेज परामर्श के लिए तीन सिक्कों की विधि उतनी ही वैध रहती है।",
     interpretHeading: "AI क्यों नहीं बनाता",
     interpretBody:
       "इस ऐप में कृत्रिम बुद्धिमत्ता की एक विशिष्ट और सीमित कार्य है: एल्गोरिदम का परिणाम, हेक्साग्राम, गतिशील रेखाएं, दरार निर्णय, लेना और उसे उपयोगकर्ता के प्रश्न के संदर्भ के साथ उपयोगकर्ता की भाषा में प्राकृतिक भाषा में व्यक्त करना। AI हेक्साग्राम उत्पन्न नहीं करता, निर्णय तय नहीं करता, Wilhelm के ग्रंथों या शांग विधि के पैटर्न को संशोधित नहीं करता। गणितीय एल्गोरिदम AI के हस्तक्षेप से पहले यह सब विश्वासपूर्वक करता है। AI दुभाषिया है। दैवज्ञ विधि है।",

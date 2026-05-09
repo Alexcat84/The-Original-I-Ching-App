@@ -11,6 +11,8 @@ import {
   previewCastFromLineValues,
   selectTextsForClaude,
   throwThreeCoins,
+  throwYarrowStalks,
+  yarrowSumToLine,
 } from "./engine.js";
 import type { Line } from "./types.js";
 
@@ -172,6 +174,47 @@ describe("performCastFromLineValues", () => {
     expect(prev.transformedHexagram?.number ?? null).toBe(full.transformedHexagram?.number ?? null);
     expect(prev.changingLines).toEqual(full.changingLines);
     expect(prev.mutationRule).toBe(full.mutationRule);
+  });
+});
+
+describe("yarrowSumToLine", () => {
+  it("covers all 8 valid phase combinations", () => {
+    // (49 - sum) / 4 where sum = phase1 + phase2 + phase3
+    expect(yarrowSumToLine(5, 4, 4)).toBe(9); // 49 - 13 = 36 → 9 (old yang)
+    expect(yarrowSumToLine(5, 4, 8)).toBe(8); // 49 - 17 = 32 → 8 (young yin)
+    expect(yarrowSumToLine(5, 8, 4)).toBe(8);
+    expect(yarrowSumToLine(5, 8, 8)).toBe(7); // 49 - 21 = 28 → 7 (young yang)
+    expect(yarrowSumToLine(9, 4, 4)).toBe(8);
+    expect(yarrowSumToLine(9, 4, 8)).toBe(7);
+    expect(yarrowSumToLine(9, 8, 4)).toBe(7);
+    expect(yarrowSumToLine(9, 8, 8)).toBe(6); // 49 - 25 = 24 → 6 (old yin)
+  });
+});
+
+describe("yarrow distribution (Monte Carlo)", () => {
+  it("approximates Zhou distribution: 6=1/16, 7=5/16, 8=7/16, 9=3/16", () => {
+    const n = 16_000;
+    const counts = { 6: 0, 7: 0, 8: 0, 9: 0 };
+    for (let k = 0; k < n; k++) {
+      const v = throwYarrowStalks(Math.random);
+      counts[v]++;
+    }
+    const p6 = counts[6] / n;
+    const p7 = counts[7] / n;
+    const p8 = counts[8] / n;
+    const p9 = counts[9] / n;
+    // 6 = 1/16 ≈ 6.25%
+    expect(p6).toBeGreaterThan(0.050);
+    expect(p6).toBeLessThan(0.080);
+    // 7 = 5/16 ≈ 31.25%
+    expect(p7).toBeGreaterThan(0.290);
+    expect(p7).toBeLessThan(0.335);
+    // 8 = 7/16 ≈ 43.75%
+    expect(p8).toBeGreaterThan(0.415);
+    expect(p8).toBeLessThan(0.460);
+    // 9 = 3/16 ≈ 18.75% — moving yang is 3× more likely than moving yin
+    expect(p9).toBeGreaterThan(0.165);
+    expect(p9).toBeLessThan(0.210);
   });
 });
 

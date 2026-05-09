@@ -6,7 +6,7 @@ import {
   type OracleType,
   type PreviousConsultationRow,
 } from "@iching-oracle/context-engine";
-import { performCast, performCastFromLineValues } from "@iching-oracle/iching-engine";
+import { performCast, performCastFromLineValues, performYarrowCast } from "@iching-oracle/iching-engine";
 import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
 import { buildImagePrompt, buildOracleBonesImagePrompt } from "@iching-oracle/image-engine";
 import { defaultNegativeCharge, performOracleBonesCast } from "@iching-oracle/oracle-bones-engine";
@@ -158,6 +158,7 @@ export async function POST(req: Request) {
     history?: HistoryEntry[];
     displayName?: string;
     ichingCastMode?: "auto" | "manual";
+    ichingCastingMethod?: "three-coins" | "yarrow-stalks";
     ichingManualLineValues?: unknown;
   };
   try {
@@ -243,6 +244,7 @@ export async function POST(req: Request) {
   const ichingManualPayload = parseIchingManualPayload(
     {
       ichingCastMode: body.ichingCastMode,
+      ichingCastingMethod: body.ichingCastingMethod,
       ichingManualLineValues: body.ichingManualLineValues,
     },
     oracleMode,
@@ -453,8 +455,12 @@ export async function POST(req: Request) {
 
   const castResult =
     ichingManualPayload.mode === "manual"
-      ? performCastFromLineValues(trimmedQuestion, language, ichingManualPayload.lineValues)
-      : performCast(trimmedQuestion, language);
+      ? performCastFromLineValues(trimmedQuestion, language, ichingManualPayload.lineValues, {
+          castingMethod: ichingManualPayload.castingMethod,
+        })
+      : ichingManualPayload.castingMethod === "yarrow-stalks"
+        ? performYarrowCast(trimmedQuestion, language)
+        : performCast(trimmedQuestion, language);
   const context = resolveSessionContext({
     tier: tierKey,
     sessionId,
@@ -512,6 +518,7 @@ export async function POST(req: Request) {
               "ritual",
               process.env,
               displayName,
+              castResult.castingMethod,
             );
 
             const imagePrompt = buildImagePrompt(
@@ -659,6 +666,7 @@ export async function POST(req: Request) {
     "ritual",
     process.env,
     displayName,
+    castResult.castingMethod,
   );
 
   const imagePrompt = buildImagePrompt(

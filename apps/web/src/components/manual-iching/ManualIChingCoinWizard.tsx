@@ -23,11 +23,13 @@ type Props = {
 
 export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, questionPreview }: Props) {
   const m = useMemo(() => getManualWizardMessages(locale), [locale]);
+  const [showIntro, setShowIntro] = useState(true);
   const [recorded, setRecorded] = useState<Array<6 | 7 | 8 | 9>>([]);
   const [coins, setCoins] = useState<CoinFace[]>(["H", "H", "H"]);
 
   useEffect(() => {
     if (!open) {
+      setShowIntro(true);
       setRecorded([]);
       setCoins(["H", "H", "H"]);
     }
@@ -81,6 +83,46 @@ export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, ques
   }, []);
 
   if (!open) return null;
+
+  // Intro screen — shown before the first line is cast
+  if (showIntro) {
+    return (
+      <div className="manual-iching-wizard-backdrop" role="presentation">
+        <div
+          className="manual-iching-wizard-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="manual-iching-wizard-title"
+        >
+          <div className="manual-iching-wizard-scroll">
+            <header className="manual-iching-wizard-header">
+              <div className="manual-iching-wizard-header-text">
+                <h2 id="manual-iching-wizard-title" className="manual-iching-wizard-title">
+                  {m.title}
+                </h2>
+                <p className="manual-iching-wizard-question" dir="auto">
+                  {questionPreview}
+                </p>
+              </div>
+              <button type="button" className="manual-iching-wizard-close" onClick={onClose} aria-label={m.closeAria}>
+                ×
+              </button>
+            </header>
+            <div className="manual-yarrow-intro">
+              <p className="manual-yarrow-intro-warning">{m.physicalWarning}</p>
+              <button
+                type="button"
+                className="primary-btn manual-yarrow-start-btn"
+                onClick={() => setShowIntro(false)}
+              >
+                {m.startButton}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const lineNumber = recorded.length + 1;
   const lineStepLabel = m.lineStep.replace("{{n}}", String(lineNumber));

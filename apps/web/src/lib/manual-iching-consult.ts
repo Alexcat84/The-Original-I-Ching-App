@@ -1,3 +1,4 @@
+import type { CastingMethod } from "@iching-oracle/iching-engine";
 import type { OracleType } from "@iching-oracle/context-engine";
 import { z } from "zod";
 
@@ -15,16 +16,21 @@ export const ichingManualLineValuesSchema = z.tuple([
 export type IchingManualLineTuple = z.infer<typeof ichingManualLineValuesSchema>;
 
 export type IchingManualParseResult =
-  | { ok: true; mode: "auto" }
-  | { ok: true; mode: "manual"; lineValues: IchingManualLineTuple }
+  | { ok: true; mode: "auto"; castingMethod: CastingMethod }
+  | { ok: true; mode: "manual"; lineValues: IchingManualLineTuple; castingMethod: CastingMethod }
   | { ok: false; status: 400; body: Record<string, unknown> };
 
+function resolveMethod(raw: unknown): CastingMethod {
+  return raw === "yarrow-stalks" ? "yarrow-stalks" : "three-coins";
+}
+
 export function parseIchingManualPayload(
-  raw: { ichingCastMode?: unknown; ichingManualLineValues?: unknown },
+  raw: { ichingCastMode?: unknown; ichingManualLineValues?: unknown; ichingCastingMethod?: unknown },
   oracleMode: OracleType,
 ): IchingManualParseResult {
   const wantsManual = raw.ichingCastMode === "manual";
   const hasLineArray = Array.isArray(raw.ichingManualLineValues);
+  const castingMethod = resolveMethod(raw.ichingCastingMethod);
 
   if (oracleMode !== "iching") {
     if (wantsManual) {
@@ -49,7 +55,7 @@ export function parseIchingManualPayload(
         },
       };
     }
-    return { ok: true, mode: "auto" };
+    return { ok: true, mode: "auto", castingMethod };
   }
 
   if (!wantsManual) {
@@ -64,7 +70,7 @@ export function parseIchingManualPayload(
         },
       };
     }
-    return { ok: true, mode: "auto" };
+    return { ok: true, mode: "auto", castingMethod };
   }
 
   const parsed = ichingManualLineValuesSchema.safeParse(raw.ichingManualLineValues);
@@ -79,5 +85,5 @@ export function parseIchingManualPayload(
       },
     };
   }
-  return { ok: true, mode: "manual", lineValues: parsed.data };
+  return { ok: true, mode: "manual", lineValues: parsed.data, castingMethod };
 }

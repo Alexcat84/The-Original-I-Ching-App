@@ -19,11 +19,128 @@ export type FaqItem = {
   related?: FaqRelatedSlug[];
 };
 
+export type FaqCategoryId =
+  | "app-usage"
+  | "oracle-methods"
+  | "ai-texts"
+  | "tokens-payments"
+  | "privacy-account";
+
+export type FaqCategory = {
+  id: FaqCategoryId;
+  title: string;
+  items: FaqItem[];
+};
+
 export type FaqPageUi = {
   title: string;
   intro: string;
   seeAlsoHeading: string;
+  categories: FaqCategory[];
+  /** Flat list kept for backward compatibility; derived from categories. */
   items: FaqItem[];
+};
+
+const FAQ_CATEGORY_ORDER: FaqCategoryId[] = [
+  "app-usage",
+  "oracle-methods",
+  "ai-texts",
+  "tokens-payments",
+  "privacy-account",
+];
+
+const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
+  "app-usage": ["language-support", "chats-drawer", "thread-depth", "export-pdf"],
+  "oracle-methods": [
+    "iching-how-answers",
+    "yarrow-vs-coins",
+    "iching-manual-auto-bones",
+    "oracle-bones-method",
+    "silence-state",
+  ],
+  "ai-texts": ["ai-vs-algorithm", "authentic-texts", "not-advice"],
+  "tokens-payments": ["tokens-packs", "purchases-legal"],
+  "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa"],
+};
+
+const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
+  es: {
+    "app-usage": "Uso de la app",
+    "oracle-methods": "Métodos del oráculo",
+    "ai-texts": "Textos, IA y autenticidad",
+    "tokens-payments": "Tokens, packs y pagos",
+    "privacy-account": "Privacidad y cuenta",
+  },
+  en: {
+    "app-usage": "Using the app",
+    "oracle-methods": "Oracle methods",
+    "ai-texts": "Texts, AI and authenticity",
+    "tokens-payments": "Tokens, packs and payments",
+    "privacy-account": "Privacy and account",
+  },
+  pt: {
+    "app-usage": "Uso da app",
+    "oracle-methods": "Métodos do oráculo",
+    "ai-texts": "Textos, IA e autenticidade",
+    "tokens-payments": "Tokens, packs e pagamentos",
+    "privacy-account": "Privacidade e conta",
+  },
+  fr: {
+    "app-usage": "Utilisation de l’app",
+    "oracle-methods": "Méthodes de l’oracle",
+    "ai-texts": "Textes, IA et authenticité",
+    "tokens-payments": "Jetons, packs et paiements",
+    "privacy-account": "Confidentialité et compte",
+  },
+  de: {
+    "app-usage": "App-Nutzung",
+    "oracle-methods": "Orakel-Methoden",
+    "ai-texts": "Texte, KI und Echtheit",
+    "tokens-payments": "Tokens, Packs und Zahlungen",
+    "privacy-account": "Datenschutz und Konto",
+  },
+  it: {
+    "app-usage": "Uso dell’app",
+    "oracle-methods": "Metodi dell’oracolo",
+    "ai-texts": "Testi, IA e autenticità",
+    "tokens-payments": "Token, pack e pagamenti",
+    "privacy-account": "Privacy e account",
+  },
+  ja: {
+    "app-usage": "アプリの使い方",
+    "oracle-methods": "占いの方式",
+    "ai-texts": "テキスト・AI・原典性",
+    "tokens-payments": "トークン・パック・支払い",
+    "privacy-account": "プライバシーとアカウント",
+  },
+  zh: {
+    "app-usage": "应用使用",
+    "oracle-methods": "占卜方法",
+    "ai-texts": "文本、AI 与真实性",
+    "tokens-payments": "代币、套餐与付款",
+    "privacy-account": "隐私与账户",
+  },
+  ko: {
+    "app-usage": "앱 사용",
+    "oracle-methods": "점법",
+    "ai-texts": "원문·AI·진본성",
+    "tokens-payments": "토큰·팩·결제",
+    "privacy-account": "개인정보와 계정",
+  },
+  ar: {
+    "app-usage": "استخدام التطبيق",
+    "oracle-methods": "طرق العرافة",
+    "ai-texts": "النصوص والذكاء الاصطناعي والأصالة",
+    "tokens-payments": "الرموز والحزم والدفع",
+    "privacy-account": "الخصوصية والحساب",
+  },
+  hi: {
+    "app-usage": "ऐप का उपयोग",
+    "oracle-methods": "ओरेकल विधियाँ",
+    "ai-texts": "मूल पाठ, एआई और प्रामाणिकता",
+    "tokens-payments": "टोकन, पैक और भुगतान",
+    "privacy-account": "गोपनीयता और खाता",
+  },
 };
 
 export function resolveFaqRelatedHref(slug: FaqRelatedSlug): string {
@@ -85,18 +202,32 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "What is the difference between I Ching (coins) and Oracle bones?",
+    id: "yarrow-vs-coins",
+    question: "What are the two I Ching casting methods: Three Coins and Yarrow Stalks?",
     answer:
-      "I Ching follows the classical six-line casting flow you see in the ritual. Oracle bones use a separate charge-based flow inspired by ancient pyromancy. Method notes describe sources and intent for both.",
+      "Both methods produce the same 64 hexagrams and use the same I Ching texts and Zhu Xi rules. Three Coins is quick and accessible: you cast three coins six times to build the six lines. Yarrow Stalks is the older ritual method: you work with counted stalks or similar objects through a slower, more contemplative procedure. The choice changes the ritual experience, not the authority of the reading. Use Three Coins for speed; use Yarrow Stalks when you want the traditional rhythm.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "What is automatic vs manual I Ching, and can I mix Oracle Bones in the same thread?",
     answer:
-      "Automatic vs manual applies only to I Ching (three coins). In Options the cast-mode radios appear when I Ching is selected: automatic runs the animated coin ritual on the server; manual lets you enter the six line totals (6/7/8/9) from your own coins before the reading. Oracle Bones mode is always automatic; there is no manual bones flow; ritual and verdict come from the algorithm only. Within your plan’s per-thread depth cap (for example, eight follow-up readings on a Master thread), you may freely alternate I Ching and Oracle Bones and switch I Ching between automatic and manual from one consultation to the next; your cast-mode preference is remembered for the next time you use I Ching.",
+      "Automatic vs manual applies only to I Ching (Three Coins or Yarrow Stalks). In Options the cast-mode controls appear when I Ching is selected: choose Three Coins or Yarrow Stalks, then choose automatic (the cast runs on the server) or manual (you enter the six line totals 6/7/8/9 from your own coins or stalks). Oracle Bones is always automatic; there is no manual bones flow; ritual and verdict come from the algorithm only. Within your plan’s per-thread depth cap, you may freely alternate I Ching and Oracle Bones and switch methods and modes between consultations; your preferences are remembered for the next I Ching reading.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "What is the Oracle Bones method?",
+    answer:
+      "Oracle Bones is a Shang-era divination method inspired by crack reading on turtle plastrons and ox scapulae. In the app it is separate from I Ching: it does not create hexagrams or changing lines. The system forms a crack pattern and verdict first, then the AI interprets that already formed result in your language. The verdict always falls into one of five possible states, faithful to the original Shang tradition: 1) 吉: clearly favorable, the pattern confirms the positive charge without ambiguity; 2) 吉 moderate: moderately favorable, confirmation with nuances or conditions; 3) 凶 moderate: moderately unfavorable, the pattern leans toward negation with reservations; 4) 凶: clearly unfavorable, the pattern negates the positive charge without ambiguity; 5) 沉默: Silence, the pattern produces no readable cracks and silence itself is the answer. It is useful for concise, ancestral-style answers; I Ching is better for layered change over time.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "How does the I Ching actually work and produce its answers?",
+    answer:
+      "The I Ching works through 64 hexagrams that form an ancient catalog of patterns of change in nature and human life. Each hexagram is a structured figure with classical meaning preserved in the Wilhelm/Baynes texts. Each consultation begins from your specific question. The mathematical algorithm casts the lines under the rules of Zhu Xi to determine the present hexagram, any moving lines, and the resulting future hexagram. The AI then articulates that already-formed result in your language, applying the classical meaning of those hexagrams to your particular context. That is why every reading is unique and personal: the same hexagrams can appear for different people, but the answer is never the same, because it depends on the specific question, the moment in life, and the personal context of the seeker. There is no universal interpretation that applies to more than one person at the same time.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -191,18 +322,32 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "¿En qué se diferencian el I Ching (tres monedas) y los huesos de oráculo?",
+    id: "yarrow-vs-coins",
+    question: "¿En qué se diferencian los dos métodos del I Ching: Tres Monedas y Varillas?",
     answer:
-      "El I Ching sigue el ritual clásico de seis líneas. Los huesos usan un flujo aparte basado en cargas positiva/negativa inspirado en la piromancia antigua. Las notas de métodos describen fuentes y enfoque de ambos.",
+      "Ambos métodos producen los mismos 64 hexagramas y usan los mismos textos del I Ching y las reglas de Zhu Xi. Tres Monedas es rápido y accesible: lanzas tres monedas seis veces para formar las seis líneas. Varillas de Milenrama es el método ritual más antiguo: trabajas con varillas u objetos similares mediante un procedimiento más lento y contemplativo. La elección cambia la experiencia ritual, no la autoridad de la lectura. Usa Tres Monedas para rapidez; usa Varillas cuando quieras el ritmo tradicional.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "¿Qué es el I Ching automático frente al manual, y puedo mezclar Huesos en el mismo hilo?",
     answer:
-      "Lo automático frente a manual solo aplica al I Ching (tres monedas). En Opciones el modo de tirada aparece cuando I Ching está seleccionado: automático ejecuta el ritual animado de monedas en el servidor; manual te permite introducir los seis totales de línea (6/7/8/9) de tus monedas antes de la lectura. El modo Huesos es siempre automático; no hay flujo manual de huesos; el ritual y el veredicto salen solo del algoritmo. Dentro del tope de profundidad por hilo de tu plan (por ejemplo, ocho profundizaciones en un hilo Master), puedes alternar libremente I Ching y Huesos y cambiar el I Ching entre automático y manual de una consulta a otra; la app guarda tu preferencia de modo para la próxima lectura en I Ching.",
+      "Lo automático frente a manual solo aplica al I Ching (Tres Monedas o Varillas de Milenrama). En Opciones los controles de modo de tirada aparecen cuando I Ching está seleccionado: elige Tres Monedas o Varillas de Milenrama, luego automático (la tirada se ejecuta en el servidor) o manual (introduces los seis totales de línea 6/7/8/9 con tus propias monedas o varillas). El modo Huesos es siempre automático; no hay flujo manual de huesos; el ritual y el veredicto salen solo del algoritmo. Dentro del tope de profundidad por hilo de tu plan, puedes alternar libremente I Ching y Huesos y cambiar métodos y modos entre consultas; la app guarda tus preferencias para la próxima lectura en I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "¿Qué es el método de Huesos de Oráculo?",
+    answer:
+      "Huesos de Oráculo es un método de adivinación de la era Shang inspirado en la lectura de grietas sobre plastrones de tortuga y escápulas de buey. En la app está separado del I Ching: no crea hexagramas ni líneas cambiantes. El sistema forma primero un patrón de grietas y un veredicto; después la IA interpreta ese resultado ya formado en tu idioma. El veredicto cae siempre en uno de cinco estados posibles, fieles al método ancestral Shang: 1) 吉, favorable claro: el patrón confirma la carga positiva sin ambigüedad; 2) 吉 moderado, favorable moderado: hay confirmación pero con matices o condiciones; 3) 凶 moderado, desfavorable moderado: el patrón se inclina a la negación con reservas; 4) 凶, desfavorable claro: el patrón niega la carga positiva sin ambigüedad; 5) 沉默, el Silencio: el patrón no produce grietas legibles y el propio silencio es la respuesta. Es útil para respuestas concisas, de tono ancestral; el I Ching es mejor para cambios por capas a lo largo del tiempo.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "¿Cómo opera el I Ching y de dónde salen sus respuestas?",
+    answer:
+      "El I Ching opera a través de 64 hexagramas que forman un catálogo milenario de patrones de cambio en la naturaleza y en la vida humana. Cada hexagrama es una figura estructurada con un significado clásico preservado en los textos Wilhelm/Baynes. Cada consulta parte de tu pregunta concreta. El algoritmo matemático lanza las líneas bajo las reglas de Zhu Xi para determinar el hexagrama presente, las líneas en movimiento si las hay y el hexagrama futuro resultante. Después la IA articula ese resultado ya formado en tu idioma, aplicando el significado clásico de esos hexagramas a tu contexto particular. Por eso cada lectura es única y personal: los mismos hexagramas pueden aparecer para distintas personas, pero la respuesta no es la misma, porque depende de la pregunta concreta, del momento vital y del contexto personal del consultante. No existe una interpretación universal aplicable a más de una persona a la vez.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -297,18 +442,32 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "ما الفرق بين I Ching (العملات) وعظام الكهانة؟",
+    id: "yarrow-vs-coins",
+    question: "ما الفرق بين طريقتي الآي تشينغ: العملات الثلاث وسيقان اليارو؟",
     answer:
-      "يتبع I Ching طقس الخطوط الستة الكلاسيكي. أما عظام الكهانة فتستخدم مسارًا منفصلًا قائمًا على الشحنة الإيجابية/السلبية مستوحى من العرافة القديمة بالشروخ.",
+      "كلتا الطريقتين تنتجان السداسيات الأربع والستين نفسها وتستخدمان نصوص الآي تشينغ نفسها وقواعد تشو شي. العملات الثلاث طريقة سريعة ومباشرة: ترمي ثلاث عملات ست مرات لبناء الخطوط الستة. سيقان اليارو هي الطقس الأقدم: تعمل بسيقان أو أشياء مشابهة عبر إجراء أبطأ وأكثر تأملا. الاختيار يغير التجربة الطقسية، لا سلطة القراءة. استخدم العملات الثلاث للسرعة، واستخدم سيقان اليارو عندما تريد الإيقاع التقليدي.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "ما الفرق بين I Ching التلقائي واليدوي، وهل يمكن خلط العظام في نفس الخيط؟",
     answer:
-      "التلقائي مقابل اليدوي ينطبق فقط على I Ching (ثلاث عملات). في الخيارات تظهر أزرار وضع القَسْم عند اختيار I Ching: التلقائي يشغّل طقس العملات المتحرك على الخادم؛ اليدوي يتيح لك إدخال مجموعات الأسطر الستة (6/7/8/9) من عملاتك قبل القراءة. وضع العظام دائمًا تلقائي; لا يوجد مسار يدوي للعظام؛ الطقس والحكم يأتيان من الخوارزمية فقط. ضمن حد عمق الخيط في خطتك (مثلاً ثماني قراءات متابعة في خيط Master)، يمكنك بالتناوب بحرية بين I Ching والعظام، وتبديل I Ching بين التلقائي واليدوي من استشارة إلى أخرى؛ يحفظ التطبيق تفضيل وضع القَسْم للمرة القادمة التي تستخدم فيها I Ching.",
+      "التلقائي مقابل اليدوي ينطبق فقط على I Ching (الأسكة الثلاث أو عيدان الزنبق). في الخيارات تظهر أدوات وضع القَسْم عند اختيار I Ching: اختر الأسكة الثلاث أو عيدان الزنبق، ثم تلقائي (تُنفَّذ القرعة على الخادم) أو يدوي (تُدخل مجموع الخطوط الستة 6/7/8/9 من عملاتك أو عيدانك). وضع العظام دائمًا تلقائي؛ لا يوجد مسار يدوي للعظام؛ الطقس والحكم يأتيان من الخوارزمية فقط. ضمن حد عمق الخيط في خطتك، يمكنك التناوب بحرية بين I Ching والعظام وتبديل الطرق والأوضاع بين الاستشارات؛ يحفظ التطبيق تفضيلاتك للقراءة التالية في I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "ما هي طريقة عظام العرافة؟",
+    answer:
+      "عظام العرافة طريقة من عصر شانغ مستوحاة من قراءة الشقوق على دروع السلاحف وكتف الثور. في التطبيق هي منفصلة عن الآي تشينغ: لا تنشئ سداسيات ولا خطوطا متغيرة. يكوّن النظام أولا نمط الشقوق والحكم، ثم تفسر الذكاء الاصطناعي النتيجة الموجودة بالفعل بلغتك. يندرج الحكم دائما في إحدى خمس حالات ممكنة، وفية للمنهج الشانغي الأصيل: 1) 吉، مؤاتٍ واضح: يؤكد النمط الشحنة الإيجابية دون لبس؛ 2) 吉 معتدل، مؤاتٍ نسبي: ثمة تأكيد ولكن مع تحفظات أو شروط؛ 3) 凶 معتدل، غير مؤاتٍ نسبي: يميل النمط إلى النفي مع تحفظات؛ 4) 凶، غير مؤاتٍ واضح: ينفي النمط الشحنة الإيجابية دون لبس؛ 5) 沉默، الصمت: لا يُنتج النمط شقوقا قابلة للقراءة، والصمت ذاته هو الإجابة. إنها مناسبة للإجابات المختصرة ذات الطابع الأسلافي؛ أما الآي تشينغ فهو أفضل لفهم التحول المتدرج عبر الزمن.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "كيف يعمل الآي تشينغ ومن أين تأتي إجاباته؟",
+    answer:
+      "يعمل الآي تشينغ عبر 64 سداسيا تشكّل فهرسا قديما لأنماط التغيّر في الطبيعة وفي حياة الإنسان. كل سداسي شكل منظم له معنى كلاسيكي محفوظ في نصوص Wilhelm/Baynes. تنطلق كل استشارة من سؤالك الملموس. تطبّق الخوارزمية الرياضية قواعد Zhu Xi على رميات الخطوط لتحديد السداسي الحالي، والخطوط المتحركة إن وُجدت، والسداسي المقبل الناتج. ثم يقوم الذكاء الاصطناعي بصياغة هذه النتيجة الموجودة بالفعل في لغتك، تاركًا للمعنى الكلاسيكي لتلك السداسيات أن يُسقط على سياقك الشخصي. لهذا تكون كل قراءة فريدة وشخصية: قد تظهر السداسيات نفسها لأشخاص مختلفين، ومع ذلك لن تكون الإجابة نفسها، لأنها تتعلق بالسؤال المحدد، وبلحظة الحياة، وبالسياق الشخصي للمستشير. لا توجد قراءة واحدة قابلة للتطبيق على أكثر من شخص في الوقت نفسه.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -403,18 +562,32 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "I Ching (सिक्के) और Oracle Bones में क्या अंतर है?",
+    id: "yarrow-vs-coins",
+    question: "I Ching की दो विधियों, तीन सिक्के और यारो डंठल, में क्या अंतर है?",
     answer:
-      "I Ching क्लासिक छह-रेखा अनुष्ठान पर आधारित है। Oracle Bones एक अलग हाँ/नहीं प्रवाह उपयोग करता है जो प्राचीन दरार-आधारित दिव्यज्ञान से प्रेरित है।",
+      "दोनों विधियाँ वही 64 हेक्साग्राम बनाती हैं और I Ching के वही पाठ तथा Zhu Xi के नियम उपयोग करती हैं। तीन सिक्के तेज और सरल है: छह रेखाएँ बनाने के लिए तीन सिक्के छह बार फेंके जाते हैं। यारो डंठल पुरानी अनुष्ठानिक विधि है: गिने हुए डंठलों या समान वस्तुओं के साथ धीमी और अधिक ध्यानपूर्ण प्रक्रिया की जाती है। चुनाव पढ़ाई की प्रामाणिकता नहीं, बल्कि अनुष्ठान का अनुभव बदलता है। गति चाहिए तो तीन सिक्के; पारंपरिक लय चाहिए तो यारो डंठल।",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "I Ching में स्वचालित बनाम मैन्युअल क्या है, और क्या मैं एक ही थ्रेड में Oracle Bones मिला सकता/सकती हूँ?",
     answer:
-      "स्वचालित बनाम मैन्युअल केवल I Ching (तीन सिक्के) पर लागू होता है। विकल्पों में कास्ट-मोड रेडियो तभी दिखते हैं जब I Ching चुना हो: स्वचालित सर्वर पर एनिमेटेड सिक्का अनुष्ठान चलाता है; मैन्युअल आपको पढ़ने से पहले अपने सिक्कों से छह पंक्ति योग (6/7/8/9) दर्ज करने देता है। Oracle Bones मोड हमेशा स्वचालित है; कोई मैन्युअल हड्डी प्रवाह नहीं; अनुष्ठान और निर्णय केवल एल्गोरिदम से आते हैं। आपकी योजना की प्रति-थ्रेड गहराई सीमा (उदाहरण के लिए Master थ्रेड पर आठ अनुवर्ती पठन) के भीतर, आप I Ching और Oracle Bones को स्वतंत्र रूप से बदल सकते हैं और एक परामर्श से दूसरे में I Ching को स्वचालित और मैन्युअल के बीच स्विच कर सकते हैं; अगली I Ching पठन के लिए आपकी कास्ट-मोड पसंद याद रखी जाती है।",
+      "स्वचालित बनाम मैन्युअल केवल I Ching (तीन सिक्के या यारो की छड़ें) पर लागू होता है। विकल्पों में कास्ट-मोड नियंत्रण तभी दिखते हैं जब I Ching चुना हो: तीन सिक्के या यारो की छड़ें चुनें, फिर स्वचालित (सर्वर पर कास्ट होता है) या मैन्युअल (अपने सिक्कों या छड़ों से छह पंक्ति योग 6/7/8/9 दर्ज करें)। Oracle Bones मोड हमेशा स्वचालित है; कोई मैन्युअल हड्डी प्रवाह नहीं; अनुष्ठान और निर्णय केवल एल्गोरिदम से आते हैं। आपकी योजना की प्रति-थ्रेड गहराई सीमा के भीतर, आप I Ching और Oracle Bones को स्वतंत्र रूप से बदल सकते हैं और परामर्शों के बीच विधियाँ और मोड स्विच कर सकते हैं; आपकी पसंद अगली I Ching पठन के लिए याद रखी जाती है।",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "Oracle Bones विधि क्या है?",
+    answer:
+      "Oracle Bones शांग युग की दिव्य विधि है, जो कछुए के कवच और बैल की कंधे की हड्डी पर दरारें पढ़ने से प्रेरित है। ऐप में यह I Ching से अलग है: यह हेक्साग्राम या बदलती रेखाएँ नहीं बनाती। प्रणाली पहले दरारों का पैटर्न और निर्णय बनाती है; फिर AI उस पहले से बने परिणाम की आपकी भाषा में व्याख्या करता है। निर्णय हमेशा शांग पूर्वज परंपरा के अनुरूप पाँच संभावित अवस्थाओं में से एक में आता है: 1) 吉: स्पष्ट रूप से शुभ: पैटर्न बिना संदेह सकारात्मक प्रस्ताव की पुष्टि करता है; 2) 吉 मध्यम: मध्यम रूप से शुभ: पुष्टि होती है पर बारीकियों या शर्तों के साथ; 3) 凶 मध्यम: मध्यम रूप से अशुभ: पैटर्न आरक्षणों के साथ नकार की ओर झुकता है; 4) 凶: स्पष्ट रूप से अशुभ: पैटर्न बिना संदेह सकारात्मक प्रस्ताव को नकारता है; 5) 沉默: मौन: पैटर्न पठनीय दरारें नहीं देता और मौन स्वयं उत्तर है। यह संक्षिप्त, पूर्वजों जैसी शैली के उत्तरों के लिए उपयोगी है; समय के साथ परतदार बदलाव समझने के लिए I Ching बेहतर है।",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "I Ching वास्तव में कैसे काम करता है और उत्तर कैसे देता है?",
+    answer:
+      "I Ching 64 हेक्साग्रामों के माध्यम से कार्य करता है, जो प्रकृति और मानव जीवन में परिवर्तन के पैटर्नों का प्राचीन सूचीपत्र हैं। हर हेक्साग्राम एक संरचित आकृति है, जिसका शास्त्रीय अर्थ Wilhelm/Baynes ग्रंथों में सुरक्षित है। हर परामर्श आपके विशिष्ट प्रश्न से शुरू होता है। गणितीय एल्गोरिदम Zhu Xi के नियमों के तहत रेखाएँ डालकर वर्तमान हेक्साग्राम, यदि कोई हो तो गतिशील रेखाएँ और परिणामी भविष्य हेक्साग्राम तय करता है। इसके बाद AI उस पहले से बने परिणाम को आपकी भाषा में अभिव्यक्त करता है, उन हेक्साग्रामों के शास्त्रीय अर्थ को आपके विशिष्ट संदर्भ पर लागू करते हुए। इसीलिए हर पठन अद्वितीय और व्यक्तिगत होता है: वही हेक्साग्राम अलग-अलग लोगों के लिए आ सकते हैं, फिर भी उत्तर एक जैसा कभी नहीं होता, क्योंकि यह विशिष्ट प्रश्न, जीवन के क्षण और परामर्शक के व्यक्तिगत संदर्भ पर निर्भर करता है। एक से अधिक व्यक्ति पर एक साथ लागू होने वाली कोई सार्वभौमिक व्याख्या नहीं होती।",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -509,18 +682,32 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "I Ching（硬貨）と卜骨の違いは何ですか？",
+    id: "yarrow-vs-coins",
+    question: "易経の二つの方法、三枚硬貨と筮竹はどう違いますか？",
     answer:
-      "I Chinは古典的な六爻の儀式に従います。卜骨は古代の亀裂占いに着想を得た正電荷・負電荷に基づく別のフローを使用します。両方の出典と意図はメソッドノートに記載されています。",
+      "どちらの方法も同じ64卦を生み、同じ易経本文と朱熹の規則を用います。三枚硬貨は速く扱いやすい方法で、三枚の硬貨を六回投げて六爻を作ります。筮竹はより古い儀礼的な方法で、筮竹または同様の物を数えながら、よりゆっくりと思索的に進めます。違いは占いの権威ではなく、儀礼体験にあります。速さを求めるなら三枚硬貨、伝統的なリズムを求めるなら筮竹です。",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "易経の自動と手動の違いは？ 同じスレッドで卜骨と混ぜられますか？",
     answer:
-      "自動と手動は易経（三枚の銭）にのみ適用されます。オプションでは易経を選んだときだけ起卦方式のラジオが表示されます。自動はサーバー上でアニメーションの銭の儀式を実行し、手動は読みの前にご自身の銭の合計6・7・8・9を六爻分入力します。卜骨モードは常に自動で、手動の卜骨フローはありません。儀式と判定はアルゴリズムのみから行われます。プランのスレッド深度上限（例：Masterでスレッドあたり8回の深掘り）の範囲内で、易経と卜骨を自由に行き来でき、相談ごとに易経の自動／手動を切り替えられます。起卦方式の選択は次回の易経相談まで記憶されます。",
+      "自動と手動は易経（三硬貨または蓍草）にのみ適用されます。オプションでは易経を選んだときだけ起卦方式のコントロールが表示されます。三硬貨または蓍草を選んでから、自動（サーバーで起卦を実行）か手動（自分の銭または蓍草から六爻分の合計6/7/8/9を入力）を選びます。卜骨モードは常に自動で、手動の卜骨フローはありません。儀式と判定はアルゴリズムのみから行われます。プランのスレッド深度上限の範囲内で、易経と卜骨を自由に行き来でき、相談ごとに方法とモードを切り替えられます。次回の易経相談のために設定は記憶されます。",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "甲骨の方法とは何ですか？",
+    answer:
+      "甲骨は、亀甲や牛の肩甲骨に現れる亀裂を読む殷代の占いに着想を得た方法です。アプリでは易経とは別の方法であり、卦や変爻を作りません。まずシステムが亀裂のパターンと判定を形成し、その後AIがその結果をあなたの言語で解釈します。判定は常に、殷代の祖先的方法に忠実な五つの可能な状態のいずれかに収まります：1) 吉: はっきりと吉：パターンが肯定命題を曖昧さなく確認します；2) 吉 中程度: やや吉：確認はあるが、含みや条件を伴います；3) 凶 中程度: やや凶：パターンは留保付きで否定に傾きます；4) 凶: はっきりと凶：パターンが肯定命題を曖昧さなく否定します；5) 沉默: 沈黙：パターンが読み取れる亀裂を生じさせず、沈黙そのものが答えとなります。祖先的で簡潔な答えに向いており、時間の中で重層的に変化を読む場合は易経が適しています。",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "易経はどのように働き、答えはどこから出てくるのですか？",
+    answer:
+      "易経は、自然と人間の生活における変化の型を集めた64卦からなる古代の総覧として働きます。各卦は構造化された図形であり、その古典的意味はWilhelm/Baynesの本文に保存されています。各相談はあなたの具体的な問いから始まります。数学的アルゴリズムが朱熹の規則に従って爻を立て、現在の卦、変爻があればその位置、そして結果として生じる未来の卦を確定します。続いてAIが、すでに形成されたその結果をあなたの言語で表現し、卦の古典的意味をあなた個人の文脈に適用します。だからこそ、ひとつひとつの読みは固有で個人的なものになります。同じ卦が別々の人に現れることはあっても、答えが同じになることは決してありません。問いの内容、人生のその時、相談者の個人的文脈に依存するからです。同時に複数の人に当てはまる普遍的な解釈は存在しません。",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -615,18 +802,32 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "I Ching（铜钱）与甲骨文有什么区别？",
+    id: "yarrow-vs-coins",
+    question: "《易经》的两种方法，三枚铜钱和蓍草，有什么区别？",
     answer:
-      "I Ching遵循经典的六爻仪式。甲骨文采用基于正负电荷的独立流程，灵感来自古代火焰占卜。两种方法的来源和意图均在方法说明中有所描述。",
+      "两种方法都会得到同样的六十四卦，并使用同样的《易经》文本与朱熹规则。三枚铜钱更快捷易用：把三枚钱币掷六次，形成六爻。蓍草是更古老的礼仪方法：用蓍草或类似物件逐步计数，过程更慢，也更具沉思感。选择改变的是仪式体验，而不是解读的权威性。想要快速可用，选三枚铜钱；想要传统节奏，选蓍草。",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "易经的自动与手动有什么区别？同一对话里能混用甲骨文吗？",
     answer:
-      "自动与手动仅适用于易经（三枚铜钱）。在选项中，只有选中易经时才会显示起卦方式：自动由服务器运行动画铜钱仪式；手动则在解读前由您自行输入六爻各爻的6/7/8/9合计。甲骨文模式始终为自动，没有手动甲骨流程；仪式与兆判完全由算法产生。在您套餐的单线程深度上限内（例如 Master 每线程八次后续解读），您可以自由交替易经与甲骨文，并在每次咨询之间切换易经的自动与手动；应用会记住您下次使用易经时的起卦偏好。",
+      "自动与手动仅适用于易经（三枚铜钱或蓍草）。在选项中，只有选中易经时才会显示起卦方式控制：选择三枚铜钱或蓍草，再选自动（服务器执行起卦）或手动（在解读前自行输入六爻的6/7/8/9合计）。甲骨文模式始终为自动，没有手动甲骨流程；仪式与兆判完全由算法产生。在您套餐的单线程深度上限内，您可以自由交替易经与甲骨文，并在咨询之间切换方法与模式；应用会记住您的偏好，供下次易经解读使用。",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "什么是甲骨方法？",
+    answer:
+      "甲骨方法源自商代占卜，灵感来自龟甲和牛肩胛骨裂纹的解读。在应用中，它与《易经》分开：不会生成卦象，也不会生成变爻。系统先形成裂纹图案和判定，然后由 AI 用你的语言解释这个已经形成的结果。判定始终落入五种可能状态之一，忠实于商代祖先方法：1）吉，明显为吉：图案明确确认正面命题，无歧义；2）偏吉，偏吉：有所确认，但带条件或细微差别；3）偏凶，偏凶：图案带保留地倾向于否定；4）凶，明显为凶：图案明确否定正面命题，无歧义；5）沉默：图案不产生可读裂纹，沉默本身即为答复。它适合简洁、祖先式的回答；若要观察随时间展开的层次变化，《易经》更合适。",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "《易经》到底如何运作？答案从何而来？",
+    answer:
+      "《易经》通过六十四卦运作，这是一部关于自然与人世变化模式的古老总览。每一卦都是结构化的图形，其经典含义保存于卫礼贤／贝恩斯译本中。每一次咨询都从你具体的问题出发。数学算法按照朱熹规则逐爻立卦，确定本卦、若有则定动爻、并由动爻得到之卦。随后 AI 用你的语言表述这个已经形成的结果，将那些卦象的经典含义投射到你独特的处境之中。因此，每一次解读都是独一无二、属于个人的：相同的卦象可能为不同的人出现，但答案永不相同，因为它取决于具体的问题、所处的时机以及问卜者的个人处境。世上不存在可以同时适用于多人的普遍解读。",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -721,18 +922,32 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "I Ching(동전)과 오라클 뼈의 차이는 무엇인가요?",
+    id: "yarrow-vs-coins",
+    question: "주역의 두 방법, 세 동전과 시초는 무엇이 다른가요?",
     answer:
-      "I Ching은 고전적인 6효 의식을 따릅니다. 오라클 뼈는 고대 화염 점술에서 영감을 받은 양/음 기반의 별도 흐름을 사용합니다. 방법 메모에서 두 방법의 출처와 의도를 설명합니다.",
+      "두 방법 모두 같은 64괘를 만들고 같은 주역 원문과 주희의 규칙을 사용합니다. 세 동전은 빠르고 접근하기 쉽습니다. 동전 세 개를 여섯 번 던져 여섯 효를 만듭니다. 시초는 더 오래된 의례적 방법입니다. 시초나 비슷한 물건을 세며 더 느리고 사색적인 절차로 진행합니다. 선택은 해석의 권위가 아니라 의례 경험을 바꿉니다. 빠르게 보고 싶다면 세 동전, 전통적 리듬을 원한다면 시초를 사용하세요.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "역경 자동과 수동의 차이는 무엇이며, 같은 스레드에서 갑골과 섞을 수 있나요?",
     answer:
-      "자동과 수동은 역경(동전 세 개)에만 적용됩니다. 옵션에서 역경을 선택했을 때만 점 방식 라디오가 보입니다. 자동은 서버에서 애니메이션 동전 의식을 실행하고, 수동은 해석 전에 본인의 동전으로 나온 각 효의 합계 6/7/8/9를 여섯 번 입력합니다. 갑골 모드는 항상 자동이며 수동 갑골 흐름은 없습니다. 의식과 판정은 알고리즘에서만 나옵니다. 요금제의 스레드 깊이 한도(예: Master 스레드당 후속 해석 8회) 안에서는 역경과 갑골을 자유롭게 번갈아 할 수 있고, 상담마다 역경의 자동/수동을 바꿀 수 있습니다. 다음 역경 상담을 위해 점 방식 선택은 기억됩니다.",
+      "자동과 수동은 역경(동전 세 개 또는 시초)에만 적용됩니다. 옵션에서 역경을 선택했을 때만 점 방식 컨트롤이 보입니다. 동전 세 개 또는 시초를 선택한 후 자동(서버에서 점괘 실행) 또는 수동(본인의 동전이나 시초로 나온 여섯 효의 합계 6/7/8/9를 입력)을 선택합니다. 갑골 모드는 항상 자동이며 수동 갑골 흐름은 없습니다. 의식과 판정은 알고리즘에서만 나옵니다. 요금제의 스레드 깊이 한도 안에서는 역경과 갑골을 자유롭게 번갈아 할 수 있고, 상담 간 방법과 모드를 바꿀 수 있습니다. 다음 역경 상담을 위해 설정은 기억됩니다.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "갑골 방법이란 무엇인가요?",
+    answer:
+      "갑골은 거북 배딱지와 소 견갑골의 균열을 읽던 상나라 시대 점복에서 영감을 받은 방법입니다. 앱에서는 주역과 별개의 방식입니다. 괘나 변효를 만들지 않습니다. 시스템이 먼저 균열 패턴과 판정을 형성하고, 그다음 AI가 이미 형성된 결과를 사용자의 언어로 해석합니다. 판정은 언제나 상나라 조상 전통에 충실한 다섯 가지 가능한 상태 중 하나로 떨어집니다: 1) 吉: 명확히 길함: 패턴이 모호함 없이 긍정 명제를 확인합니다; 2) 吉 중간: 다소 길함: 확인은 있지만 뉘앙스나 조건이 따릅니다; 3) 凶 중간: 다소 흉함: 패턴이 유보적으로 부정 쪽으로 기웁니다; 4) 凶: 명확히 흉함: 패턴이 모호함 없이 긍정 명제를 부정합니다; 5) 沉默: 침묵: 패턴이 읽을 수 있는 균열을 만들지 못하며, 침묵 자체가 답입니다. 간결하고 조상적 어조의 답에 적합하며, 시간 속에서 층층이 변하는 흐름은 주역이 더 적합합니다.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "주역은 실제로 어떻게 작동하며, 그 답은 어디에서 오나요?",
+    answer:
+      "주역은 자연과 인간 삶의 변화 양상을 모은 고대 도록인 64괘를 통해 작동합니다. 각 괘는 구조화된 도형으로, 그 고전적 의미는 빌헬름/베인스 텍스트에 보존되어 있습니다. 각 상담은 당신의 구체적인 질문에서 시작됩니다. 수학 알고리즘은 주희의 규칙에 따라 효를 던져 현재 괘, 변효(있다면)와 그로 인한 미래 괘를 확정합니다. 이어서 AI는 이미 형성된 그 결과를 당신의 언어로 표현하며, 해당 괘들의 고전적 의미를 당신만의 맥락에 적용합니다. 그래서 각 해석은 고유하고 개인적입니다. 같은 괘들이 서로 다른 사람에게 나올 수 있지만, 답이 같을 수는 없습니다. 답은 구체적인 질문, 삶의 시점, 그리고 상담자의 개인적 맥락에 달려 있기 때문입니다. 동시에 둘 이상에게 적용되는 보편 해석은 존재하지 않습니다.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -827,18 +1042,32 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "Qual é a diferença entre o I Ching (moedas) e os Ossos do Oráculo?",
+    id: "yarrow-vs-coins",
+    question: "Em que diferem os dois métodos do I Ching: Três Moedas e Varetas?",
     answer:
-      "O I Ching segue o ritual clássico de seis linhas. Os Ossos usam um fluxo separado baseado em cargas positiva/negativa, inspirado na piromancia antiga. As notas de métodos descrevem fontes e intenção de ambos.",
+      "Ambos os métodos produzem os mesmos 64 hexagramas e usam os mesmos textos do I Ching e as regras de Zhu Xi. Três Moedas é rápido e acessível: lanças três moedas seis vezes para formar as seis linhas. Varetas de Milefólio é o método ritual mais antigo: trabalhas com varetas ou objetos semelhantes através de um procedimento mais lento e contemplativo. A escolha muda a experiência ritual, não a autoridade da leitura. Usa Três Moedas para rapidez; usa Varetas quando quiseres o ritmo tradicional.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "O que é I Ching automático vs manual, e posso misturar Ossos no mesmo fio?",
     answer:
-      "Automático vs manual aplica-se apenas ao I Ching (três moedas). Em Opções os rádios do modo de tiragem aparecem com o I Ching selecionado: automático corre o ritual animado das moedas no servidor; manual permite introduzir os seis totais de linha (6/7/8/9) das suas moedas antes da leitura. O modo Ossos é sempre automático; não existe fluxo manual de ossos; ritual e veredicto vêm só do algoritmo. Dentro do limite de profundidade por fio do seu plano (por exemplo, oito aprofundamentos num fio Master), pode alternar livremente I Ching e Ossos e mudar o I Ching entre automático e manual de uma consulta para a seguinte; a app memoriza a preferência de modo para a próxima leitura em I Ching.",
+      "Automático vs manual aplica-se apenas ao I Ching (Três Moedas ou Varetas de Milefólio). Em Opções os controlos do modo de tiragem aparecem com o I Ching selecionado: escolha Três Moedas ou Varetas, depois automático (a tiragem corre no servidor) ou manual (introduza os seis totais de linha 6/7/8/9 das suas moedas ou varetas). O modo Ossos é sempre automático; não existe fluxo manual de ossos; ritual e veredicto vêm só do algoritmo. Dentro do limite de profundidade por fio do seu plano, pode alternar livremente I Ching e Ossos e mudar métodos e modos entre consultas; a app memoriza as suas preferências para a próxima leitura em I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "O que é o método dos Ossos Oraculares?",
+    answer:
+      "Ossos Oraculares é um método de adivinhação da era Shang inspirado na leitura de fissuras em plastrões de tartaruga e escápulas de boi. Na app, é separado do I Ching: não cria hexagramas nem linhas mutantes. O sistema forma primeiro um padrão de fissuras e um veredicto; depois a IA interpreta esse resultado já formado no teu idioma. O veredicto cai sempre num de cinco estados possíveis, fiéis ao método ancestral Shang: 1) 吉: favorável claro: o padrão confirma a carga positiva sem ambiguidade; 2) 吉 moderado: favorável moderado: há confirmação, mas com nuances ou condições; 3) 凶 moderado: desfavorável moderado: o padrão inclina-se para a negação com reservas; 4) 凶: desfavorável claro: o padrão nega a carga positiva sem ambiguidade; 5) 沉默: Silêncio: o padrão não produz fissuras legíveis e o próprio silêncio é a resposta. É útil para respostas concisas, de tom ancestral; o I Ching é melhor para mudanças em camadas ao longo do tempo.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "Como é que o I Ching funciona e de onde vêm as suas respostas?",
+    answer:
+      "O I Ching opera através de 64 hexagramas, um catálogo milenar dos padrões de mudança na natureza e na vida humana. Cada hexagrama é uma figura estruturada, com um significado clássico preservado nos textos Wilhelm/Baynes. Cada consulta parte da tua pergunta concreta. O algoritmo matemático lança as linhas segundo as regras de Zhu Xi para determinar o hexagrama presente, as linhas em movimento (caso existam) e o hexagrama futuro resultante. Em seguida a IA articula esse resultado já formado no teu idioma, aplicando o significado clássico desses hexagramas ao teu contexto particular. Por isso cada leitura é única e pessoal: os mesmos hexagramas podem aparecer para pessoas diferentes, mas a resposta nunca é a mesma, porque depende da pergunta concreta, do momento de vida e do contexto pessoal do consultante. Não existe uma interpretação universal aplicável a mais de uma pessoa em simultâneo.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -933,18 +1162,32 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "Was ist der Unterschied zwischen I Ching (Münzen) und Orakelknochen?",
+    id: "yarrow-vs-coins",
+    question: "Worin unterscheiden sich die zwei I Ging Methoden: Drei Münzen und Schafgarbenstäbe?",
     answer:
-      "I Ching folgt dem klassischen Sechs-Linien-Ritual. Orakelknochen verwenden einen separaten Fluss, der auf positiver/negativer Ladung basiert und von antiker Pyromantie inspiriert ist. Die Methodennotizen beschreiben Quellen und Absicht beider.",
+      "Beide Methoden erzeugen dieselben 64 Hexagramme und verwenden dieselben I Ging Texte sowie die Regeln Zhu Xis. Drei Münzen ist schnell und leicht zugänglich: drei Münzen werden sechsmal geworfen, um die sechs Linien zu bilden. Schafgarbenstäbe ist die ältere rituelle Methode: Man arbeitet mit gezählten Stäben oder ähnlichen Gegenständen in einem langsameren, kontemplativeren Ablauf. Die Wahl verändert das rituelle Erleben, nicht die Gültigkeit der Lesung. Nutze Drei Münzen für Schnelligkeit; nutze Schafgarbenstäbe für den traditionellen Rhythmus.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "Was bedeutet automatisch vs. manuell beim I Ching, und kann ich Orakelknochen im selben Thread mischen?",
     answer:
-      "Automatisch vs. manuell gilt nur für das I Ching (drei Münzen). In den Optionen erscheinen die Wurfmodus-Radios nur bei ausgewähltem I Ching: automatisch führt das animierte Münzritual auf dem Server aus; manuell tragen Sie vor der Lesung die sechs Liniensummen (6/7/8/9) Ihrer eigenen Münzen ein. Der Orakelknochen-Modus ist immer automatisch; es gibt keinen manuellen Knochenablauf; Ritual und Urteil kommen ausschließlich vom Algorithmus. Innerhalb des Thread-Tiefenlimits Ihres Tarifs (z. B. acht Vertiefungen pro Master-Thread) können Sie frei zwischen I Ching und Orakelknochen wechseln und das I Ching von einer Beratung zur nächsten zwischen automatisch und manuell umschalten; Ihre Wurfmodus-Präferenz wird für die nächste I-Ching-Beratung gespeichert.",
+      "Automatisch vs. manuell gilt nur für das I Ching (Drei Münzen oder Schafgarbenstäbe). In den Optionen erscheinen die Wurfmodus-Steuerelemente nur bei ausgewähltem I Ching: Wählen Sie Drei Münzen oder Schafgarbenstäbe, dann automatisch (der Wurf erfolgt auf dem Server) oder manuell (Sie tragen die sechs Liniensummen 6/7/8/9 Ihrer eigenen Münzen oder Stäbe ein). Der Orakelknochen-Modus ist immer automatisch; es gibt keinen manuellen Knochenablauf; Ritual und Urteil kommen ausschließlich vom Algorithmus. Innerhalb des Thread-Tiefenlimits Ihres Tarifs können Sie frei zwischen I Ching und Orakelknochen wechseln und Methoden und Modi zwischen Beratungen umschalten; Ihre Einstellungen werden für die nächste I-Ching-Beratung gespeichert.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "Was ist die Methode der Orakelknochen?",
+    answer:
+      "Orakelknochen ist eine Wahrsagemethode aus der Shang Zeit, inspiriert vom Lesen von Rissen auf Schildkrötenpanzern und Ochsenschulterblättern. In der App ist sie vom I Ging getrennt: Sie erzeugt keine Hexagramme und keine wandelnden Linien. Das System bildet zuerst ein Rissmuster und ein Urteil; danach interpretiert die KI dieses bereits gebildete Ergebnis in deiner Sprache. Das Urteil fällt stets in einen von fünf möglichen Zuständen, die der ursprünglichen Shang-Tradition treu sind: 1) 吉: eindeutig günstig: das Muster bestätigt die positive Ladung ohne Mehrdeutigkeit; 2) 吉 mäßig: mäßig günstig: Bestätigung mit Nuancen oder Bedingungen; 3) 凶 mäßig: mäßig ungünstig: das Muster neigt mit Vorbehalten zur Verneinung; 4) 凶: eindeutig ungünstig: das Muster verneint die positive Ladung ohne Mehrdeutigkeit; 5) 沉默: Schweigen: das Muster erzeugt keine lesbaren Risse, und das Schweigen selbst ist die Antwort. Sie eignet sich für knappe Antworten im Ahnenstil; das I Ging eignet sich besser für vielschichtigen Wandel über die Zeit.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "Wie funktioniert das I Ging tatsächlich, und woher kommen seine Antworten?",
+    answer:
+      "Das I Ging arbeitet über 64 Hexagramme, einen jahrtausendealten Katalog von Wandlungsmustern in Natur und menschlichem Leben. Jedes Hexagramm ist eine strukturierte Figur, deren klassische Bedeutung in den Wilhelm/Baynes-Texten bewahrt ist. Jede Beratung beginnt mit Ihrer konkreten Frage. Der mathematische Algorithmus wirft die Linien nach den Regeln Zhu Xis und bestimmt das gegenwärtige Hexagramm, die wandelnden Linien (falls vorhanden) und das daraus resultierende zukünftige Hexagramm. Anschließend formuliert die KI dieses bereits gebildete Ergebnis in Ihrer Sprache und überträgt die klassische Bedeutung dieser Hexagramme auf Ihren persönlichen Kontext. Genau deshalb ist jede Lesung einzigartig und persönlich: Dieselben Hexagramme können bei verschiedenen Menschen auftreten, doch die Antwort ist nie dieselbe, sie hängt von der konkreten Frage, dem Lebensmoment und dem persönlichen Kontext des Ratsuchenden ab. Es gibt keine allgemeingültige Deutung, die zugleich für mehrere Personen gilt.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -1039,18 +1282,32 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "Qual è la differenza tra I Ching (monete) e le Ossa dell'Oracolo?",
+    id: "yarrow-vs-coins",
+    question: "In cosa differiscono i due metodi dell'I Ching: Tre Monete e Steli di Achillea?",
     answer:
-      "L'I Ching segue il classico rituale delle sei linee. Le Ossa utilizzano un flusso separato basato su cariche positive/negative ispirato all'antica piromanza. Le note sui metodi descrivono fonti e finalità di entrambi.",
+      "Entrambi i metodi producono gli stessi 64 esagrammi e usano gli stessi testi dell'I Ching e le regole di Zhu Xi. Tre Monete è rapido e accessibile: si lanciano tre monete sei volte per formare le sei linee. Steli di Achillea è il metodo rituale più antico: si lavora con steli o oggetti simili attraverso una procedura più lenta e contemplativa. La scelta cambia l'esperienza rituale, non l'autorità della lettura. Usa Tre Monete per la rapidità; usa Steli di Achillea quando desideri il ritmo tradizionale.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "Che cos'è I Ching automatico vs manuale, e posso mescolare le Ossa nello stesso filo?",
     answer:
-      "Automatico vs manuale vale solo per l'I Ching (tre monete). In Opzioni i radio del modo di lancio compaiono con l'I Ching selezionato: automatico esegue il rituale animato delle monete sul server; manuale consente di inserire i sei totali di linea (6/7/8/9) delle proprie monete prima della lettura. La modalità Ossa è sempre automatica; non esiste un flusso manuale per le ossa; rituale e verdetto provengono solo dall'algoritmo. Entro il limite di profondità per filo del tuo piano (ad esempio otto approfondimenti in un filo Master), puoi alternare liberamente I Ching e Ossa e passare l'I Ching da automatico a manuale da una consultazione all'altra; l'app memorizza la preferenza di modo per la prossima lettura in I Ching.",
+      "Automatico vs manuale vale solo per l'I Ching (Tre Monete o Steli di Achillea). In Opzioni i controlli del modo di lancio compaiono con l'I Ching selezionato: scegli Tre Monete o Steli di Achillea, poi automatico (il lancio avviene sul server) o manuale (inserisci i sei totali di linea 6/7/8/9 delle tue monete o steli). La modalità Ossa è sempre automatica; non esiste un flusso manuale per le ossa; rituale e verdetto provengono solo dall'algoritmo. Entro il limite di profondità per filo del tuo piano, puoi alternare liberamente I Ching e Ossa e cambiare metodi e modalità tra consultazioni; l'app memorizza le tue preferenze per la prossima lettura in I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "Che cos'è il metodo degli Ossi Oracolari?",
+    answer:
+      "Gli Ossi Oracolari sono un metodo divinatorio dell'epoca Shang ispirato alla lettura delle crepe su piastroni di tartaruga e scapole di bue. Nell'app è separato dall'I Ching: non crea esagrammi né linee mutanti. Il sistema forma prima un pattern di crepe e un verdetto; poi l'IA interpreta quel risultato già formato nella tua lingua. Il verdetto rientra sempre in uno dei cinque stati possibili, fedeli al metodo ancestrale Shang: 1) 吉: chiaramente favorevole: il motivo conferma la carica positiva senza ambiguità; 2) 吉 moderato: moderatamente favorevole: c'è conferma ma con sfumature o condizioni; 3) 凶 moderato: moderatamente sfavorevole: il motivo pende verso la negazione con riserve; 4) 凶: chiaramente sfavorevole: il motivo nega la carica positiva senza ambiguità; 5) 沉默: Silenzio: il motivo non produce crepe leggibili e il silenzio stesso è la risposta. È utile per risposte concise, dal tono ancestrale; l'I Ching è più adatto ai cambiamenti stratificati nel tempo.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "Come funziona davvero l'I Ching e da dove arrivano le sue risposte?",
+    answer:
+      "L'I Ching opera attraverso 64 esagrammi, un catalogo millenario dei pattern di cambiamento nella natura e nella vita umana. Ogni esagramma è una figura strutturata con un significato classico preservato nei testi Wilhelm/Baynes. Ogni consultazione parte dalla tua domanda concreta. L'algoritmo matematico lancia le linee secondo le regole di Zhu Xi per determinare l'esagramma presente, le eventuali linee in movimento e l'esagramma futuro risultante. L'IA articola poi quel risultato già formato nella tua lingua, applicando il significato classico di quegli esagrammi al tuo contesto particolare. Per questo ogni lettura è unica e personale: gli stessi esagrammi possono comparire per persone diverse, ma la risposta non è mai la stessa, perché dipende dalla domanda specifica, dal momento di vita e dal contesto personale di chi consulta. Non esiste un'interpretazione universale applicabile a più di una persona contemporaneamente.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -1145,18 +1402,32 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
-    id: "two-oracles",
-    question: "Quelle est la différence entre le I Ching (pièces) et les Os de l'Oracle ?",
+    id: "yarrow-vs-coins",
+    question: "Quelle est la différence entre les deux méthodes du I Ching: Trois Pièces et Tiges d'Achillée ?",
     answer:
-      "Le I Ching suit le rituel classique des six lignes. Les Os utilisent un flux séparé basé sur des charges positive/négative inspiré de la pyromantie ancienne. Les notes de méthodes décrivent les sources et l'intention des deux.",
+      "Les deux méthodes produisent les mêmes 64 hexagrammes et utilisent les mêmes textes du I Ching ainsi que les règles de Zhu Xi. Trois Pièces est rapide et accessible: on lance trois pièces six fois pour former les six traits. Tiges d'Achillée est la méthode rituelle plus ancienne: on travaille avec des tiges ou des objets semblables selon un procédé plus lent et plus contemplatif. Le choix modifie l'expérience rituelle, non l'autorité de la lecture. Utilise Trois Pièces pour la rapidité; utilise les Tiges d'Achillée pour le rythme traditionnel.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
     question: "Qu'est-ce que le I Ching automatique vs manuel, et puis-je mélanger les Os dans le même fil ?",
     answer:
-      "Automatique vs manuel ne concerne que le I Ching (trois pièces). Dans Options, les boutons radio du mode de tirage apparaissent lorsque le I Ching est sélectionné : automatique lance le rituel animé des pièces sur le serveur ; manuel vous permet de saisir les six totaux de ligne (6/7/8/9) de vos vraies pièces avant la lecture. Le mode Os est toujours automatique; il n'existe pas de flux manuel pour les os ; le rituel et le verdict viennent uniquement de l'algorithme. Dans la limite de profondeur par fil de votre forfait (par exemple huit approfondissements sur un fil Master), vous pouvez librement alterner I Ching et Os et passer le I Ching de automatique à manuel d'une consultation à l'autre ; l'application mémorise votre préférence de mode pour la prochaine lecture en I Ching.",
+      "Automatique vs manuel ne concerne que le I Ching (Trois Pièces ou Tiges d'Achillée). Dans Options, les contrôles du mode de tirage apparaissent lorsque le I Ching est sélectionné : choisissez Trois Pièces ou Tiges d'Achillée, puis automatique (le tirage s'effectue sur le serveur) ou manuel (vous saisissez les six totaux de ligne 6/7/8/9 de vos pièces ou tiges). Le mode Os est toujours automatique ; il n'existe pas de flux manuel pour les os ; le rituel et le verdict viennent uniquement de l'algorithme. Dans la limite de profondeur par fil de votre forfait, vous pouvez librement alterner I Ching et Os et changer de méthode et de mode entre consultations ; l'application mémorise vos préférences pour la prochaine lecture en I Ching.",
     related: ["userGuide", "methodNotes"],
+  },
+  {
+    id: "oracle-bones-method",
+    question: "Qu'est-ce que la méthode des Os de l'Oracle ?",
+    answer:
+      "Les Os de l'Oracle sont une méthode divinatoire de l'époque Shang inspirée de la lecture des fissures sur des plastrons de tortue et des omoplates de bœuf. Dans l'app, elle est distincte du I Ching: elle ne crée pas d'hexagrammes ni de traits changeants. Le système forme d'abord un motif de fissures et un verdict; puis l'IA interprète ce résultat déjà formé dans ta langue. Le verdict tombe toujours dans l'un des cinq états possibles, fidèles à la méthode ancestrale Shang : 1) 吉: clairement favorable : le motif confirme la charge positive sans ambiguïté ; 2) 吉 modéré: modérément favorable : la confirmation est présente, mais nuancée ou conditionnée ; 3) 凶 modéré: modérément défavorable : le motif penche vers la négation avec des réserves ; 4) 凶: clairement défavorable : le motif nie la charge positive sans ambiguïté ; 5) 沉默: Silence : le motif ne produit pas de fissures lisibles et le silence lui-même est la réponse. Elle convient aux réponses concises, au ton ancestral ; le I Ching convient mieux aux changements stratifiés dans le temps.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "iching-how-answers",
+    question: "Comment le I Ching fonctionne-t-il réellement, et d'où viennent ses réponses ?",
+    answer:
+      "Le I Ching fonctionne grâce à 64 hexagrammes, un catalogue millénaire des motifs de changement dans la nature et la vie humaine. Chaque hexagramme est une figure structurée dont le sens classique est conservé dans les textes Wilhelm/Baynes. Chaque consultation part de votre question concrète. L'algorithme mathématique lance les traits selon les règles de Zhu Xi pour déterminer l'hexagramme présent, les éventuels traits en mouvement et l'hexagramme futur qui en résulte. L'IA articule ensuite ce résultat déjà formé dans votre langue, en appliquant le sens classique de ces hexagrammes à votre contexte particulier. C'est pourquoi chaque lecture est unique et personnelle : les mêmes hexagrammes peuvent apparaître pour des personnes différentes, mais la réponse n'est jamais la même, car elle dépend de la question concrète, du moment de vie et du contexte personnel du consultant. Il n'existe pas d'interprétation universelle applicable à plusieurs personnes en même temps.",
+    related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
@@ -1326,6 +1597,48 @@ export function getFaqPageUiMessages(locale: AppLocale): FaqPageUi {
     ar: FAQ_ITEMS_AR,
     hi: FAQ_ITEMS_HI,
   };
-  const items = itemsMap[locale] ?? FAQ_ITEMS_EN;
-  return { ...meta, items };
+  const localeItems = itemsMap[locale] ?? FAQ_ITEMS_EN;
+  const titles = FAQ_CATEGORY_TITLES[locale] ?? FAQ_CATEGORY_TITLES[DEFAULT_LOCALE];
+
+  const itemById = new Map<string, FaqItem>();
+  for (const item of localeItems) {
+    itemById.set(item.id, item);
+  }
+
+  const categories: FaqCategory[] = [];
+  const usedIds = new Set<string>();
+  for (const categoryId of FAQ_CATEGORY_ORDER) {
+    const orderedIds = FAQ_ITEMS_BY_CATEGORY[categoryId];
+    const categoryItems: FaqItem[] = [];
+    for (const id of orderedIds) {
+      const item = itemById.get(id);
+      if (item) {
+        categoryItems.push(item);
+        usedIds.add(id);
+      }
+    }
+    if (categoryItems.length > 0) {
+      categories.push({
+        id: categoryId,
+        title: titles[categoryId],
+        items: categoryItems,
+      });
+    }
+  }
+
+  // Any item not assigned to a category falls back into the last group so we
+  // never silently drop translations during refactors.
+  const orphans = localeItems.filter((item) => !usedIds.has(item.id));
+  if (orphans.length > 0) {
+    const fallbackTitle = titles["app-usage"];
+    const existing = categories.find((cat) => cat.id === "app-usage");
+    if (existing) {
+      existing.items = [...existing.items, ...orphans];
+    } else {
+      categories.unshift({ id: "app-usage", title: fallbackTitle, items: orphans });
+    }
+  }
+
+  const items = categories.flatMap((category) => category.items);
+  return { ...meta, categories, items };
 }
