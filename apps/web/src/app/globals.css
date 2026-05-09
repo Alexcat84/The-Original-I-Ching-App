@@ -1785,6 +1785,7 @@ html[data-theme="dark"] .composer-switch-track--visual {
 }
 
 .composer-switch-seg--visual {
+  position: relative;
   flex: 1 1 50%;
   margin: 0;
   min-width: 0;
@@ -1800,6 +1801,7 @@ html[data-theme="dark"] .composer-switch-track--visual {
   gap: 0.35rem;
   cursor: pointer;
   text-align: center;
+  overflow: hidden;
   transition:
     background 0.18s ease,
     color 0.18s ease,
@@ -1845,7 +1847,48 @@ html[data-theme="dark"] .composer-switch-seg--visual.is-active {
   transform: none;
 }
 
+/* Sweeping light bar across the active segment (top → bottom).
+   Mirrors the `.oracle-thumb-sweep` effect used in the Method/Execution
+   toggles, but uses percent-based keyframes so the sweep adapts to the
+   taller I Ching/Bones button. Only the active segment animates. */
+.composer-switch-seg--visual.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 55%, transparent) 25%,
+    rgba(255, 255, 255, 0.55) 50%,
+    color-mix(in srgb, var(--accent) 55%, transparent) 75%,
+    transparent 100%
+  );
+  filter: blur(0.5px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  animation: composer-switch-sweep 2.2s linear infinite;
+}
+
+@keyframes composer-switch-sweep {
+  0%   { top: -4px; opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .composer-switch-seg--visual.is-active::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 .composer-switch-asset {
+  position: relative;
+  z-index: 2;
   width: 2.65rem;
   height: 2.65rem;
   object-fit: contain;
@@ -1863,6 +1906,8 @@ html[data-theme="dark"] .composer-switch-asset--bones {
 }
 
 .composer-switch-label {
+  position: relative;
+  z-index: 2;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -2029,6 +2074,25 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   transition:
     border-color 0.5s ease,
     box-shadow 0.5s ease;
+}
+
+/* Light theme: stronger border + outer accent ring so the toggle clearly
+   reads as an interactive switch (default 22% mix with --bar-border was
+   too faint against the light panel background). */
+html[data-theme="light"] .oracle-toggle-track {
+  border: 1.5px solid color-mix(in srgb, var(--accent) 48%, var(--bar-border));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 0 12px color-mix(in srgb, var(--accent) 18%, transparent),
+    inset 0 0 6px rgba(0, 0, 0, 0.10);
+}
+
+html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
+  border-color: color-mix(in srgb, var(--accent) 65%, var(--bar-border));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 0 16px color-mix(in srgb, var(--accent) 24%, transparent),
+    inset 0 0 6px rgba(0, 0, 0, 0.10);
 }
 
 /* Top gloss bead */
