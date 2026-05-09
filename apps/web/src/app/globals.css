@@ -2063,11 +2063,16 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
 .oracle-toggle-track {
   position: relative;
   width: 100%;
-  height: 44px;
+  /* Track grew 2px in height to compensate for the new 2px border so the
+     padding-box (where the thumb is positioned) matches the previous 42px.
+     This keeps the thumb visually centered without touching its rules. */
+  height: 46px;
   background: color-mix(in srgb, var(--bar-border) 32%, var(--input-bg));
-  border-radius: 22px;
+  border-radius: 23px;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--bar-border));
+  /* Border thickened to 2px to match the I Ching/Bones switch
+     (.composer-switch-track--visual). */
+  border: 2px solid color-mix(in srgb, var(--accent) 22%, var(--bar-border));
   box-shadow:
     0 0 10px color-mix(in srgb, var(--accent) 10%, transparent),
     inset 0 0 8px rgba(0, 0, 0, 0.22);
@@ -2080,7 +2085,7 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
    reads as an interactive switch (default 22% mix with --bar-border was
    too faint against the light panel background). */
 html[data-theme="light"] .oracle-toggle-track {
-  border: 1.5px solid color-mix(in srgb, var(--accent) 48%, var(--bar-border));
+  border: 2px solid color-mix(in srgb, var(--accent) 48%, var(--bar-border));
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent),
     0 0 12px color-mix(in srgb, var(--accent) 18%, transparent),
@@ -2108,7 +2113,7 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
     color-mix(in srgb, var(--fg) 14%, transparent) 0%,
     transparent 100%
   );
-  border-radius: 22px 22px 0 0;
+  border-radius: 23px 23px 0 0;
   opacity: 0.55;
   z-index: 4;
   pointer-events: none;
