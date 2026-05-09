@@ -4709,6 +4709,7 @@ export default function HomePage() {
                     </div>
                     <div className="composer-doc-links" aria-label={chrome.docLinksAria}>
                       <Link href="/guia#primeros-pasos">{docNav.userGuide}</Link>
+                      <Link href="/library">{docNav.library}</Link>
                       <Link href="/notes">{docNav.methodNotesLong}</Link>
                       <Link href="/privacy">{docNav.privacyPolicy}</Link>
                       <Link href="/terms">{docNav.termsOfService}</Link>

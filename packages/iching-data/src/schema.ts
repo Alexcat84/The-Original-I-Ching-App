@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+export const TRANSLATOR_IDS = ["wilhelm", "legge", "zhouyi"] as const;
+export type TranslatorId = (typeof TRANSLATOR_IDS)[number];
+
 export const hexagramLineSchema = z.object({
   position: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5), z.literal(6)]),
   text: z.string(),
@@ -34,4 +37,14 @@ export const hexagramRecordSchema = z
 
 export const hexagramsFileSchema = z.array(hexagramRecordSchema).length(64);
 
+export const hexagramsBundleSchema = z.object({
+  translator: z.enum(TRANSLATOR_IDS),
+  edition: z.string(),
+  sourceUrl: z.string().url(),
+  licenseNote: z.string(),
+  generatedAt: z.string(),
+  hexagrams: hexagramsFileSchema,
+});
+
 export type HexagramRecord = z.infer<typeof hexagramRecordSchema>;
+export type HexagramsBundle = z.infer<typeof hexagramsBundleSchema>;

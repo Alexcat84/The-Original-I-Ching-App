@@ -46,6 +46,15 @@ export interface HexagramLine {
   type: "yin" | "yang";
 }
 
+/**
+ * Interpretation mode for the AI oracle. PR1 ships only "wilhelm" wired to the
+ * Claude prompt; the other modes are reserved for PR2 and currently rejected
+ * by `assertSupportedInterpretationMode`.
+ */
+export type InterpretationMode = "wilhelm" | "legge" | "zhouyi" | "synthetic";
+
+export const DEFAULT_INTERPRETATION_MODE: InterpretationMode = "wilhelm";
+
 export interface TextsForClaude {
   primaryJudgment: string;
   primaryImage: string;
@@ -58,6 +67,17 @@ export interface TextsForClaude {
   transformedImage: string | null;
   specialYaoText: string | null;
   ruleExplanation: string;
+  /**
+   * Reserved for PR2 (Legge mode). Engine does NOT populate this in PR1; the
+   * field exists so backend/claude can be extended without another type churn.
+   */
+  leggeJudgment?: string;
+  /** Reserved for PR2 (Legge mode). Inert in PR1. */
+  leggeImage?: string;
+  /** Reserved for PR2 (Zhou Yi mode). Inert in PR1. */
+  zhouyiJudgment?: string;
+  /** Reserved for PR2 (Zhou Yi mode). Inert in PR1. */
+  zhouyiImage?: string;
 }
 
 export interface CastResult {

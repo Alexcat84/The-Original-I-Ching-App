@@ -19,6 +19,8 @@ export type DocNavUiMessages = {
   methodNotes: string;
   /** Long link label in the home composer footer (I Ching + Bones). */
   methodNotesLong: string;
+  /** Short nav label for the new /library encyclopedia (Wilhelm + Legge + Zhou Yi). */
+  library: string;
   privacyShort: string;
   termsShort: string;
   privacyPolicy: string;
@@ -37,6 +39,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "Guía de uso",
     methodNotes: "Notas de métodos",
     methodNotesLong: "Notas y origen de los métodos (I Ching y Huesos)",
+    library: "Biblioteca",
     privacyShort: "Privacidad",
     termsShort: "Términos",
     privacyPolicy: "Política de Privacidad",
@@ -53,6 +56,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "User guide",
     methodNotes: "Method notes",
     methodNotesLong: "Method notes and origins (I Ching and Bones)",
+    library: "Library",
     privacyShort: "Privacy",
     termsShort: "Terms",
     privacyPolicy: "Privacy Policy",
@@ -69,6 +73,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "Guia de utilização",
     methodNotes: "Notas sobre métodos",
     methodNotesLong: "Notas e origem dos métodos (I Ching e Ossos)",
+    library: "Biblioteca",
     privacyShort: "Privacidade",
     termsShort: "Termos",
     privacyPolicy: "Política de Privacidade",
@@ -85,6 +90,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "Guide d’utilisation",
     methodNotes: "Notes sur les méthodes",
     methodNotesLong: "Notes et origines des méthodes (I Ching et Os)",
+    library: "Bibliothèque",
     privacyShort: "Confidentialité",
     termsShort: "Conditions",
     privacyPolicy: "Politique de confidentialité",
@@ -101,6 +107,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "Nutzungsanleitung",
     methodNotes: "Methodenhinweise",
     methodNotesLong: "Methodennotizen und Ursprünge (I Ging und Knochen)",
+    library: "Bibliothek",
     privacyShort: "Datenschutz",
     termsShort: "AGB",
     privacyPolicy: "Datenschutzerklärung",
@@ -117,6 +124,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "Guida all’uso",
     methodNotes: "Note sui metodi",
     methodNotesLong: "Note e origini dei metodi (I Ching e Ossa)",
+    library: "Biblioteca",
     privacyShort: "Privacy",
     termsShort: "Termini",
     privacyPolicy: "Informativa sulla privacy",
@@ -133,6 +141,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "利用ガイド",
     methodNotes: "方法の注記",
     methodNotesLong: "方法の注記と由来（易経と甲骨占い）",
+    library: "ライブラリ",
     privacyShort: "プライバシー",
     termsShort: "利用規約",
     privacyPolicy: "プライバシーポリシー",
@@ -149,6 +158,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "使用指南",
     methodNotes: "方法说明",
     methodNotesLong: "方法说明与渊源（易经与甲骨）",
+    library: "卦象图书馆",
     privacyShort: "隐私",
     termsShort: "条款",
     privacyPolicy: "隐私政策",
@@ -165,6 +175,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "사용 안내",
     methodNotes: "방법 노트",
     methodNotesLong: "방법 설명과 유래 (역경과 뼈 점)",
+    library: "라이브러리",
     privacyShort: "개인정보",
     termsShort: "약관",
     privacyPolicy: "개인정보 처리방침",
@@ -181,6 +192,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "دليل المستخدم",
     methodNotes: "ملاحظات المنهج",
     methodNotesLong: "ملاحظات المنهج وأصوله (I Ching والعظام)",
+    library: "المكتبة",
     privacyShort: "الخصوصية",
     termsShort: "الشروط",
     privacyPolicy: "سياسة الخصوصية",
@@ -197,6 +209,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     userGuide: "उपयोगकर्ता मार्गदर्शिका",
     methodNotes: "पद्धति नोट्स",
     methodNotesLong: "पद्धति नोट्स और उद्गम (I Ching और हड्डियाँ)",
+    library: "पुस्तकालय",
     privacyShort: "गोपनीयता",
     termsShort: "शर्तें",
     privacyPolicy: "गोपनीयता नीति",

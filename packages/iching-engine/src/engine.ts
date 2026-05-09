@@ -1,14 +1,33 @@
 import { getHexagramRecordByBinaryTopFirst, type HexagramRecord } from "@iching-oracle/iching-data";
-import type {
-  CastingMethod,
-  CastResult,
-  Hexagram,
-  Line,
-  LineType,
-  LineValue,
-  MutationRule,
-  TextsForClaude,
+import {
+  DEFAULT_INTERPRETATION_MODE,
+  type CastingMethod,
+  type CastResult,
+  type Hexagram,
+  type InterpretationMode,
+  type Line,
+  type LineType,
+  type LineValue,
+  type MutationRule,
+  type TextsForClaude,
 } from "./types.js";
+
+/**
+ * Guards against unsupported interpretation modes. PR1 wires only "wilhelm"
+ * end-to-end; "legge", "zhouyi", and "synthetic" are reserved data slots that
+ * must not reach the Claude prompt yet. Throwing here is intentional: it
+ * surfaces accidental mode wiring loud and early during PR1 stabilization.
+ */
+export function assertSupportedInterpretationMode(
+  mode: InterpretationMode = DEFAULT_INTERPRETATION_MODE,
+): asserts mode is "wilhelm" {
+  if (mode !== "wilhelm") {
+    throw new Error(
+      `Interpretation mode "${mode}" is not yet supported. Only "wilhelm" is wired in PR1; ` +
+        "the Legge / Zhou Yi / synthetic modes ship in PR2 (feature/interpretation-modes).",
+    );
+  }
+}
 
 export type Rng = () => number;
 

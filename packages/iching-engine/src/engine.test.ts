@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyMutations,
+  assertSupportedInterpretationMode,
   buildLine,
   castSixLines,
   determineMutationRule,
@@ -14,7 +15,7 @@ import {
   throwYarrowStalks,
   yarrowSumToLine,
 } from "./engine.js";
-import type { Line } from "./types.js";
+import { DEFAULT_INTERPRETATION_MODE, type InterpretationMode, type Line } from "./types.js";
 
 function linesFromValues(values: number[]): Line[] {
   return values.map((v, i) => buildLine(v as 6 | 7 | 8 | 9, (i + 1) as Line["position"]));
@@ -215,6 +216,22 @@ describe("yarrow distribution (Monte Carlo)", () => {
     // 9 = 3/16 ≈ 18.75% — moving yang is 3× more likely than moving yin
     expect(p9).toBeGreaterThan(0.165);
     expect(p9).toBeLessThan(0.210);
+  });
+});
+
+describe("assertSupportedInterpretationMode", () => {
+  it("accepts wilhelm and the default", () => {
+    expect(DEFAULT_INTERPRETATION_MODE).toBe("wilhelm");
+    expect(() => assertSupportedInterpretationMode("wilhelm")).not.toThrow();
+    expect(() => assertSupportedInterpretationMode()).not.toThrow();
+  });
+
+  it("rejects every PR2 mode with a clear error", () => {
+    const reserved: InterpretationMode[] = ["legge", "zhouyi", "synthetic"];
+    for (const mode of reserved) {
+      expect(() => assertSupportedInterpretationMode(mode)).toThrow(/not yet supported/);
+      expect(() => assertSupportedInterpretationMode(mode)).toThrow(/PR2/);
+    }
   });
 });
 

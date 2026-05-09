@@ -37,8 +37,9 @@ export default async function GuiaRapidaPage() {
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-        <Link href="/about">{nav.aboutShort}</Link> · <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
-        <Link href="/privacy">{nav.privacyShort}</Link> · <Link href="/terms">{nav.termsShort}</Link>
+        <Link href="/library">{nav.library}</Link> · <Link href="/about">{nav.aboutShort}</Link> ·{" "}
+        <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
+        <Link href="/terms">{nav.termsShort}</Link>
       </nav>
       <article className="doc-article">
         <h1>{g.title}</h1>

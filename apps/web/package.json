@@ -21,6 +21,7 @@
     "@iching-oracle/claude": "file:../../backend/claude",
     "@iching-oracle/context-engine": "file:../../packages/context-engine",
     "@iching-oracle/i18n": "file:../../packages/i18n",
+    "@iching-oracle/iching-data": "file:../../packages/iching-data",
     "@iching-oracle/iching-engine": "file:../../packages/iching-engine",
     "@iching-oracle/image-engine": "file:../../packages/image-engine",
     "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
