@@ -5029,13 +5029,13 @@ html[data-theme="dark"] .verdict-pill--silent {
 }
 
 .library-lines-table__symbol {
-  width: 3.5rem;
+  width: 5rem;
   padding: 0.65rem 0.3rem;
   font-family: var(--font-oracle-cjk), "Noto Serif TC", serif;
-  font-size: 0.95rem;
-  letter-spacing: -0.15em;
+  font-size: 1rem;
+  letter-spacing: normal;
   text-align: center;
-  white-space: nowrap;
+  white-space: pre;
   color: var(--fg-muted);
   border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
   vertical-align: top;

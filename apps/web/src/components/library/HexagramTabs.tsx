@@ -59,12 +59,14 @@ function lineLabelByPosition(labels: ResolvedLineLabels, pos: number): string {
 }
 
 function lineSymbol(type: "yin" | "yang"): string {
-  return type === "yang" ? "━━━" : "━ ━";
+  // Yang: solid line ━━━━━
+  // Yin: broken line ━━ ━━ (visible gap in the middle)
+  return type === "yang" ? "━━━━━━" : "━━  ━━";
 }
 
 function yongSymbol(hasYongJiu: boolean, hasYongLiu: boolean): string {
-  if (hasYongJiu) return "━━━";
-  if (hasYongLiu) return "━ ━";
+  if (hasYongJiu) return "━━━━━━";
+  if (hasYongLiu) return "━━  ━━";
   return "";
 }
 
