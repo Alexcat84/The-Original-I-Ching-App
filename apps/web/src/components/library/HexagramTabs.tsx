@@ -12,11 +12,10 @@ const TRANSLATOR_ORDER: ReadonlyArray<TranslatorId> = ["wilhelm", "legge", "zhou
 
 /** Unicode box-drawing heavy horizontal U+2501 */
 const BAR = "\u2501";
-/** Both yang and yin span 8 bar-characters width so they align perfectly.
- *  Yang: 8 consecutive bars (solid line).
- *  Yin:  4 bars + 2 spaces + 2 bars (broken line, same outer span). */
-const YANG_SYMBOL = BAR + BAR + BAR + BAR + BAR + BAR + BAR + BAR;
-const YIN_SYMBOL  = BAR + BAR + BAR + BAR + "  " + BAR + BAR;
+/** Yang: 4 consecutive bars (solid line).
+ *  Yin:  2 bars + 2 spaces + 2 bars (broken line, equal halves). */
+const YANG_SYMBOL = BAR + BAR + BAR + BAR;
+const YIN_SYMBOL  = BAR + BAR + "  " + BAR + BAR;
 
 interface SourceMeta {
   readonly edition: string;
