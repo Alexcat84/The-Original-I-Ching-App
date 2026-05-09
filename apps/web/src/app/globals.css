@@ -2171,8 +2171,11 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
 /* Sliding thumb pill */
 .oracle-toggle-thumb {
   position: absolute;
-  left: 3px;
-  top: 3px;
+  /* Track padding-box is 42 × (W-4) px. With width = 50%-4 and height = 38,
+     a uniform 2 px gap on all four sides keeps the pill perfectly inset
+     from the 2 px border (4 px total visual offset from the outer edge). */
+  left: 2px;
+  top: 2px;
   width: calc(50% - 4px);
   height: 38px;
   border-radius: 19px;
@@ -2192,9 +2195,9 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   will-change: left;
 }
 
-/* Thumb moves right when checked */
+/* Thumb moves right when checked — mirrors the 2 px gap on the right side. */
 .oracle-toggle-input:checked + .oracle-toggle-track .oracle-toggle-thumb {
-  left: calc(50% + 1px);
+  left: calc(50% + 2px);
 }
 
 /* Sweeping light bar that travels thumb top→bottom */
