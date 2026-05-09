@@ -5030,18 +5030,51 @@ html[data-theme="dark"] .verdict-pill--silent {
 
 .library-lines-table__symbol {
   width: 4rem;
-  padding: 0.65rem 0.2rem;
-  font-family: var(--font-oracle-cjk), "Noto Serif TC", serif;
-  font-size: 1.15rem;
-  font-weight: 900;
-  letter-spacing: normal;
-  text-align: center;
-  white-space: pre;
-  color: var(--fg-muted);
+  padding: 0.65rem 0.15rem;
   border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
   vertical-align: top;
   user-select: none;
-  line-height: 1;
+}
+
+/* ── CSS-drawn hexagram line glyphs ──
+   Both yang and yin share the same total width.
+   yang: one solid bar
+   yin:  two equal halves with a centered gap                    */
+.line-glyph {
+  display: flex;
+  align-items: center;
+  height: 6px;
+  width: 100%;
+  border-radius: 1px;
+}
+
+.line-glyph--yang {
+  background: var(--card-title);
+}
+
+.line-glyph--yin {
+  background: none;
+}
+
+.line-glyph--yin .line-glyph__half {
+  flex: 1;
+  height: 100%;
+  background: var(--ghost-link, #2a7a94);
+  border-radius: 1px;
+}
+
+.line-glyph--yin .line-glyph__gap {
+  flex: 0 0 5px;
+  height: 100%;
+}
+
+/* Yong lines use title-shell color */
+.library-lines-row--yong .line-glyph--yang {
+  background: var(--title-shell);
+}
+
+.library-lines-row--yong .line-glyph--yin .line-glyph__half {
+  background: var(--title-shell);
 }
 
 .library-lines-table__text {
@@ -5053,16 +5086,7 @@ html[data-theme="dark"] .verdict-pill--silent {
   border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
 }
 
-.library-lines-row--yang .library-lines-table__symbol {
-  color: var(--card-title);
-}
-
-.library-lines-row--yin .library-lines-table__symbol {
-  color: var(--ghost-link, #2a7a94);
-}
-
-.library-lines-row--yong .library-lines-table__pos,
-.library-lines-row--yong .library-lines-table__symbol {
+.library-lines-row--yong .library-lines-table__pos {
   color: var(--title-shell);
   font-style: italic;
 }

@@ -10,13 +10,6 @@ import type { LibraryDetailRecords } from "@/lib/library/library-data";
 
 const TRANSLATOR_ORDER: ReadonlyArray<TranslatorId> = ["wilhelm", "legge", "zhouyi"];
 
-/** Unicode box-drawing heavy horizontal U+2501 */
-const BAR = "\u2501";
-/** Yang: 4 consecutive bars (solid line).
- *  Yin:  2 bars + 2 spaces + 2 bars (broken line, equal halves). */
-const YANG_SYMBOL = BAR + BAR + BAR + BAR;
-const YIN_SYMBOL  = BAR + BAR + "  " + BAR + BAR;
-
 interface SourceMeta {
   readonly edition: string;
   readonly sourceUrl: string;
@@ -65,14 +58,29 @@ function lineLabelByPosition(labels: ResolvedLineLabels, pos: number): string {
   }
 }
 
-function lineSymbol(type: "yin" | "yang"): string {
-  return type === "yang" ? YANG_SYMBOL : YIN_SYMBOL;
+/**
+ * CSS-drawn hexagram line: pixel-perfect alignment between yang (solid)
+ * and yin (broken). Both span the same total width; yin has a centered gap.
+ * yang: |████████████████|  (one solid bar)
+ * yin:  |████████  ████████| (two equal halves with gap)
+ */
+function LineGlyph({ type }: { readonly type: "yin" | "yang" | "yong-yang" | "yong-yin" }) {
+  if (type === "yang" || type === "yong-yang") {
+    return <div className="line-glyph line-glyph--yang" aria-hidden="true" />;
+  }
+  return (
+    <div className="line-glyph line-glyph--yin" aria-hidden="true">
+      <span className="line-glyph__half" />
+      <span className="line-glyph__gap" />
+      <span className="line-glyph__half" />
+    </div>
+  );
 }
 
-function yongSymbol(hasYongJiu: boolean, hasYongLiu: boolean): string {
-  if (hasYongJiu) return YANG_SYMBOL;
-  if (hasYongLiu) return YIN_SYMBOL;
-  return "";
+function yongType(hasYongJiu: boolean, hasYongLiu: boolean): "yong-yang" | "yong-yin" | null {
+  if (hasYongJiu) return "yong-yang";
+  if (hasYongLiu) return "yong-yin";
+  return null;
 }
 
 interface TabPanelProps {
@@ -90,7 +98,7 @@ function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
     [record.lines],
   );
 
-  const hasYong = record.yongJiu || record.yongLiu;
+  const yong = yongType(!!record.yongJiu, !!record.yongLiu);
 
   return (
     <div
@@ -135,20 +143,20 @@ function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
                     {lineLabelByPosition(lineLabels, line.position)}
                   </td>
                   <td className="library-lines-table__symbol" aria-hidden="true">
-                    {lineSymbol(line.type)}
+                    <LineGlyph type={line.type} />
                   </td>
                   <td lang={langAttr} className="library-lines-table__text">
                     {line.text}
                   </td>
                 </tr>
               ))}
-              {hasYong ? (
+              {yong ? (
                 <tr className="library-lines-row library-lines-row--yong">
                   <td className="library-lines-table__pos">
                     {record.yongJiu ? messages.yongJiuLabel : messages.yongLiuLabel}
                   </td>
                   <td className="library-lines-table__symbol" aria-hidden="true">
-                    {yongSymbol(!!record.yongJiu, !!record.yongLiu)}
+                    <LineGlyph type={yong} />
                   </td>
                   <td lang={langAttr} className="library-lines-table__text">
                     {record.yongJiu ?? record.yongLiu ?? ""}
