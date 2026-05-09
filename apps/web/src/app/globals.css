@@ -5025,14 +5025,14 @@ html[data-theme="dark"] .verdict-pill--silent {
   white-space: nowrap;
   text-align: start;
   border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .library-lines-table__symbol {
   width: 4rem;
   padding: 0.65rem 0.15rem;
   border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
-  vertical-align: top;
+  vertical-align: middle;
   user-select: none;
 }
 
@@ -5084,6 +5084,7 @@ html[data-theme="dark"] .verdict-pill--silent {
   hyphens: auto;
   -webkit-hyphens: auto;
   border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  vertical-align: middle;
 }
 
 .library-lines-row--yong .library-lines-table__pos {
