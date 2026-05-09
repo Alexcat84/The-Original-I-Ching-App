@@ -5029,10 +5029,11 @@ html[data-theme="dark"] .verdict-pill--silent {
 }
 
 .library-lines-table__symbol {
-  width: 5rem;
-  padding: 0.65rem 0.3rem;
+  width: 5.5rem;
+  padding: 0.65rem 0.2rem;
   font-family: var(--font-oracle-cjk), "Noto Serif TC", serif;
-  font-size: 1rem;
+  font-size: 1.35rem;
+  font-weight: 900;
   letter-spacing: normal;
   text-align: center;
   white-space: pre;
@@ -5040,6 +5041,7 @@ html[data-theme="dark"] .verdict-pill--silent {
   border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
   vertical-align: top;
   user-select: none;
+  line-height: 1;
 }
 
 .library-lines-table__text {

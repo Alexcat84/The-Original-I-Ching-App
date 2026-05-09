@@ -10,6 +10,14 @@ import type { LibraryDetailRecords } from "@/lib/library/library-data";
 
 const TRANSLATOR_ORDER: ReadonlyArray<TranslatorId> = ["wilhelm", "legge", "zhouyi"];
 
+/** Unicode box-drawing heavy horizontal U+2501 */
+const BAR = "\u2501";
+/** Both yang and yin span 8 bar-characters width so they align perfectly.
+ *  Yang: 8 consecutive bars (solid line).
+ *  Yin:  4 bars + 2 spaces + 2 bars (broken line, same outer span). */
+const YANG_SYMBOL = BAR + BAR + BAR + BAR + BAR + BAR + BAR + BAR;
+const YIN_SYMBOL  = BAR + BAR + BAR + BAR + "  " + BAR + BAR;
+
 interface SourceMeta {
   readonly edition: string;
   readonly sourceUrl: string;
@@ -59,14 +67,12 @@ function lineLabelByPosition(labels: ResolvedLineLabels, pos: number): string {
 }
 
 function lineSymbol(type: "yin" | "yang"): string {
-  // Yang: solid line ━━━━━
-  // Yin: broken line ━━ ━━ (visible gap in the middle)
-  return type === "yang" ? "━━━━━━" : "━━  ━━";
+  return type === "yang" ? YANG_SYMBOL : YIN_SYMBOL;
 }
 
 function yongSymbol(hasYongJiu: boolean, hasYongLiu: boolean): string {
-  if (hasYongJiu) return "━━━━━━";
-  if (hasYongLiu) return "━━  ━━";
+  if (hasYongJiu) return YANG_SYMBOL;
+  if (hasYongLiu) return YIN_SYMBOL;
   return "";
 }
 
