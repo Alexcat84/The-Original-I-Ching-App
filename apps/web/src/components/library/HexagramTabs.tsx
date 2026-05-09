@@ -15,10 +15,6 @@ interface SourceMeta {
   readonly sourceUrl: string;
 }
 
-/**
- * Pre-resolved line labels (one string per position 1..6) so we never
- * pass a function across the server→client boundary.
- */
 interface ResolvedLineLabels {
   readonly line1: string;
   readonly line2: string;
@@ -50,14 +46,6 @@ function isClassicalChinese(id: TranslatorId): boolean {
   return id === "zhouyi";
 }
 
-interface TabPanelProps {
-  readonly id: TranslatorId;
-  readonly record: HexagramRecord;
-  readonly source: SourceMeta;
-  readonly messages: LibraryPageUiSerialized;
-  readonly lineLabels: ResolvedLineLabels;
-}
-
 function lineLabelByPosition(labels: ResolvedLineLabels, pos: number): string {
   switch (pos) {
     case 1: return labels.line1;
@@ -70,12 +58,32 @@ function lineLabelByPosition(labels: ResolvedLineLabels, pos: number): string {
   }
 }
 
+function lineSymbol(type: "yin" | "yang"): string {
+  return type === "yang" ? "━━━" : "━ ━";
+}
+
+function yongSymbol(hasYongJiu: boolean, hasYongLiu: boolean): string {
+  if (hasYongJiu) return "━━━";
+  if (hasYongLiu) return "━ ━";
+  return "";
+}
+
+interface TabPanelProps {
+  readonly id: TranslatorId;
+  readonly record: HexagramRecord;
+  readonly source: SourceMeta;
+  readonly messages: LibraryPageUiSerialized;
+  readonly lineLabels: ResolvedLineLabels;
+}
+
 function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
   const langAttr = isClassicalChinese(id) ? "zh-Hant" : "en";
   const orderedLines = useMemo(
     () => [...record.lines].sort((a, b) => a.position - b.position),
     [record.lines],
   );
+
+  const hasYong = record.yongJiu || record.yongLiu;
 
   return (
     <div
@@ -104,37 +112,45 @@ function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
 
       <section className="library-section">
         <h3>{messages.linesHeading}</h3>
-        <ol className="library-lines">
-          {orderedLines.map((line) => (
-            <li key={line.position} className={`library-line library-line--${line.type}`}>
-              <span className="library-line__label">
-                {lineLabelByPosition(lineLabels, line.position)}
-              </span>
-              <span className="library-line__type" aria-hidden="true">
-                {line.type === "yang" ? "—" : "— —"}
-              </span>
-              <p lang={langAttr} className="library-line__text">
-                {line.text}
-              </p>
-            </li>
-          ))}
-          {record.yongJiu ? (
-            <li className="library-line library-line--yong">
-              <span className="library-line__label">{messages.yongJiuLabel}</span>
-              <p lang={langAttr} className="library-line__text">
-                {record.yongJiu}
-              </p>
-            </li>
-          ) : null}
-          {record.yongLiu ? (
-            <li className="library-line library-line--yong">
-              <span className="library-line__label">{messages.yongLiuLabel}</span>
-              <p lang={langAttr} className="library-line__text">
-                {record.yongLiu}
-              </p>
-            </li>
-          ) : null}
-        </ol>
+        <div className="library-lines-table-wrap">
+          <table className="library-lines-table">
+            <thead>
+              <tr>
+                <th className="library-lines-table__pos">{messages.linesHeading}</th>
+                <th className="library-lines-table__symbol" aria-hidden="true" />
+                <th className="library-lines-table__text" />
+              </tr>
+            </thead>
+            <tbody>
+              {orderedLines.map((line) => (
+                <tr key={line.position} className={`library-lines-row library-lines-row--${line.type}`}>
+                  <td className="library-lines-table__pos">
+                    {lineLabelByPosition(lineLabels, line.position)}
+                  </td>
+                  <td className="library-lines-table__symbol" aria-hidden="true">
+                    {lineSymbol(line.type)}
+                  </td>
+                  <td lang={langAttr} className="library-lines-table__text">
+                    {line.text}
+                  </td>
+                </tr>
+              ))}
+              {hasYong ? (
+                <tr className="library-lines-row library-lines-row--yong">
+                  <td className="library-lines-table__pos">
+                    {record.yongJiu ? messages.yongJiuLabel : messages.yongLiuLabel}
+                  </td>
+                  <td className="library-lines-table__symbol" aria-hidden="true">
+                    {yongSymbol(!!record.yongJiu, !!record.yongLiu)}
+                  </td>
+                  <td lang={langAttr} className="library-lines-table__text">
+                    {record.yongJiu ?? record.yongLiu ?? ""}
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <p className="library-source">

@@ -4993,55 +4993,76 @@ html[data-theme="dark"] .verdict-pill--silent {
   color: color-mix(in srgb, var(--fg) 86%, transparent);
 }
 
-.oracle-shell.doc-page .doc-article ol.library-lines {
-  list-style: none;
+.oracle-shell.doc-page .doc-article .library-lines-table-wrap {
   margin: 0.25rem 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.library-line {
-  display: grid;
-  grid-template-columns: minmax(5.5rem, auto) auto 1fr;
-  gap: 0.45rem 0.7rem;
-  align-items: baseline;
-  padding: 0.45rem 0.6rem;
-  border-radius: calc(var(--radius) * 0.5);
-  background: color-mix(in srgb, var(--secondary-bg) 68%, transparent);
-  border-left: 3px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
+.oracle-shell.doc-page .doc-article table.library-lines-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
 }
 
-.library-line--yang {
-  border-left-color: color-mix(in srgb, var(--card-title) 65%, transparent);
+.oracle-shell.doc-page .doc-article table.library-lines-table thead th {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  text-align: start;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
 }
 
-.library-line--yin {
-  border-left-color: color-mix(in srgb, var(--ghost-link, #2a7a94) 60%, transparent);
-}
-
-.library-line--yong {
-  border-left-color: color-mix(in srgb, var(--title-shell) 75%, transparent);
-}
-
-.library-line__label {
+.library-lines-table__pos {
+  width: 5.5rem;
+  padding: 0.5rem 0.6rem;
   font-weight: 600;
   font-size: 0.85rem;
   color: var(--card-title);
   white-space: nowrap;
+  text-align: start;
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  vertical-align: top;
 }
 
-.library-line__type {
+.library-lines-table__symbol {
+  width: 3.5rem;
+  padding: 0.5rem 0.3rem;
   font-family: var(--font-oracle-cjk), "Noto Serif TC", serif;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  letter-spacing: -0.15em;
+  text-align: center;
+  white-space: nowrap;
   color: var(--fg-muted);
-  letter-spacing: -0.05em;
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  vertical-align: top;
+  user-select: none;
 }
 
-.oracle-shell.doc-page .doc-article .library-line__text {
-  margin: 0;
+.library-lines-table__text {
+  padding: 0.5rem 0.6rem;
   line-height: 1.5;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+}
+
+.library-lines-row--yang .library-lines-table__symbol {
+  color: var(--card-title);
+}
+
+.library-lines-row--yin .library-lines-table__symbol {
+  color: var(--ghost-link, #2a7a94);
+}
+
+.library-lines-row--yong .library-lines-table__pos,
+.library-lines-row--yong .library-lines-table__symbol {
+  color: var(--title-shell);
+  font-style: italic;
 }
 
 .library-source {

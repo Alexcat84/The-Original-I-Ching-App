@@ -23,18 +23,65 @@ function stripDiacritics(input: string): string {
   return input.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-function matchesQuery(item: LibrarySummary, normalizedQuery: string): boolean {
-  if (normalizedQuery.length === 0) return true;
+/**
+ * Scoring system for search relevance:
+ *  - Exact number → highest priority
+ *  - Starts-with on pinyin / english name / chinese name → high
+ *  - Word-boundary token match → medium
+ *  - Substring match → low
+ *  - No match → -1 (excluded)
+ *
+ * This ensures that searching "4" returns hex 4 at the top,
+ * and searching "meng" returns hex 4 (蒙, Méng) ahead of partial matches.
+ */
+function matchScore(item: LibrarySummary, normalizedQuery: string): number {
+  if (normalizedQuery.length === 0) return 0;
+
+  const q = normalizedQuery;
+
+  // Exact number match
+  if (String(item.number) === q) return 1000;
+
+  // Number prefix match (e.g. "1" matches 1, 10, 11, …12…)
+  if (String(item.number).startsWith(q)) return 500;
+
+  const pinyinBase = stripDiacritics(item.pinyin).toLowerCase();
+  const pinyinToned = item.pinyin.toLowerCase();
+  const englishLower = item.englishName.toLowerCase();
+  const chineseLower = item.chineseName;
+
+  // Exact full pinyin match (with or without tones)
+  if (pinyinBase === q || pinyinToned === q) return 400;
+
+  // Exact Chinese name match
+  if (chineseLower === q) return 400;
+
+  // Exact English name match
+  if (englishLower === q) return 350;
+
+  // Starts-with on any name field
+  if (pinyinBase.startsWith(q) || pinyinToned.startsWith(q)) return 300;
+  if (englishLower.startsWith(q)) return 250;
+  if (chineseLower.startsWith(q)) return 250;
+
+  // Token boundary match: split pinyin and english on spaces,
+  // check if any token starts with the query
+  const pinyinTokens = pinyinBase.split(/\s+/);
+  const englishTokens = englishLower.split(/\s+/);
+
+  if (pinyinTokens.some((t) => t.startsWith(q))) return 200;
+  if (englishTokens.some((t) => t.startsWith(q))) return 150;
+
+  // Substring match on combined haystack
   const haystack = [
-    String(item.number),
-    item.englishName,
-    item.chineseName,
-    item.pinyin,
-    stripDiacritics(item.pinyin),
-  ]
-    .join(" ")
-    .toLowerCase();
-  return haystack.includes(normalizedQuery);
+    pinyinBase,
+    pinyinToned,
+    englishLower,
+    chineseLower,
+  ].join(" ");
+  if (haystack.includes(q)) return 100;
+
+  return -1;
 }
 
 function matchesTrigrams(
@@ -50,10 +97,13 @@ function matchesTrigrams(
 interface Props {
   readonly summaries: ReadonlyArray<LibrarySummary>;
   readonly messages: LibraryPageUiSerialized;
-  readonly resultsCountText: string;
 }
 
-export function LibraryIndex({ summaries, messages, resultsCountText }: Props) {
+function formatResultsCount(template: string, count: number): string {
+  return template.replace("{count}", String(count));
+}
+
+export function LibraryIndex({ summaries, messages }: Props) {
   const [query, setQuery] = useState("");
   const [upper, setUpper] = useState<FilterValue>("all");
   const [lower, setLower] = useState<FilterValue>("all");
@@ -65,14 +115,15 @@ export function LibraryIndex({ summaries, messages, resultsCountText }: Props) {
     [query],
   );
 
-  const filtered = useMemo(
-    () =>
-      summaries.filter(
-        (item) =>
-          matchesQuery(item, normalizedQuery) && matchesTrigrams(item, upper, lower),
-      ),
-    [summaries, normalizedQuery, upper, lower],
-  );
+  const filtered = useMemo(() => {
+    const scored = summaries
+      .map((item) => ({ item, score: matchScore(item, normalizedQuery) }))
+      .filter(({ score }) => normalizedQuery.length === 0 || score >= 0)
+      .filter(({ item }) => matchesTrigrams(item, upper, lower))
+      .sort((a, b) => b.score - a.score)
+      .map(({ item }) => item);
+    return scored;
+  }, [summaries, normalizedQuery, upper, lower]);
 
   const hasFilters = query.length > 0 || upper !== "all" || lower !== "all";
 
@@ -139,7 +190,7 @@ export function LibraryIndex({ summaries, messages, resultsCountText }: Props) {
       </div>
 
       <p className="library-results-count" aria-live="polite">
-        {resultsCountText}
+        {formatResultsCount(messages.resultsCount, filtered.length)}
       </p>
 
       {filtered.length === 0 ? (

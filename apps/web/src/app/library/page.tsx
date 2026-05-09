@@ -28,11 +28,13 @@ export default async function LibraryIndexPage() {
 
   // Pre-resolve function fields so the client component only receives
   // JSON-serializable strings (Next.js RSC boundary constraint).
-  const resultsCountText = messages.resultsCount(summaries.length);
+  const resultsCountInitial = messages.resultsCount(summaries.length);
+  // Derive a template: "64 hexagrams" → "{count} hexagrams"
+  const resultsCountTemplate = resultsCountInitial.replace(/\d+/, "{count}");
 
   const serializable: LibraryPageUiSerialized = {
     ...messages,
-    resultsCount: resultsCountText,
+    resultsCount: resultsCountTemplate,
     lineLabel: "",
     mutationLine: "",
     detailMetaTitle: "",
@@ -49,7 +51,7 @@ export default async function LibraryIndexPage() {
       <article className="doc-article">
         <h1>{messages.title}</h1>
         <p className="doc-lead">{messages.subtitle}</p>
-        <LibraryIndex summaries={summaries} messages={serializable} resultsCountText={resultsCountText} />
+        <LibraryIndex summaries={summaries} messages={serializable} />
       </article>
     </div>
   );
