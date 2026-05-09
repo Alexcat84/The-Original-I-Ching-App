@@ -5018,7 +5018,7 @@ html[data-theme="dark"] .verdict-pill--silent {
 
 .library-lines-table__pos {
   width: 5.5rem;
-  padding: 0.5rem 0.6rem;
+  padding: 0.65rem 0.6rem;
   font-weight: 600;
   font-size: 0.85rem;
   color: var(--card-title);
@@ -5030,7 +5030,7 @@ html[data-theme="dark"] .verdict-pill--silent {
 
 .library-lines-table__symbol {
   width: 3.5rem;
-  padding: 0.5rem 0.3rem;
+  padding: 0.65rem 0.3rem;
   font-family: var(--font-oracle-cjk), "Noto Serif TC", serif;
   font-size: 0.95rem;
   letter-spacing: -0.15em;
@@ -5043,8 +5043,8 @@ html[data-theme="dark"] .verdict-pill--silent {
 }
 
 .library-lines-table__text {
-  padding: 0.5rem 0.6rem;
-  line-height: 1.5;
+  padding: 0.65rem 0.6rem;
+  line-height: 1.55;
   text-align: justify;
   hyphens: auto;
   -webkit-hyphens: auto;
@@ -5063,6 +5063,16 @@ html[data-theme="dark"] .verdict-pill--silent {
 .library-lines-row--yong .library-lines-table__symbol {
   color: var(--title-shell);
   font-style: italic;
+}
+
+/* Alternating row tint for readability */
+.oracle-shell.doc-page .doc-article table.library-lines-table tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--secondary-bg) 55%, transparent);
+}
+
+/* Last row: no bottom border to avoid double-border with table edge */
+.oracle-shell.doc-page .doc-article table.library-lines-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .library-source {

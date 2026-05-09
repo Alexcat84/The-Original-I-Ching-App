@@ -24,64 +24,64 @@ function stripDiacritics(input: string): string {
 }
 
 /**
- * Scoring system for search relevance:
- *  - Exact number → highest priority
- *  - Starts-with on pinyin / english name / chinese name → high
- *  - Word-boundary token match → medium
- *  - Substring match → low
- *  - No match → -1 (excluded)
+ * Search with strict number matching and token-based name matching.
  *
- * This ensures that searching "4" returns hex 4 at the top,
- * and searching "meng" returns hex 4 (蒙, Méng) ahead of partial matches.
+ * Rules:
+ *  - Pure-numeric query → exact number match ONLY (e.g. "6" → hex 6, not 60/64)
+ *  - Text query → match against pinyin, Chinese name, English name
+ *    with scoring: exact > starts-with > token-boundary > substring
+ *  - Mixed (e.g. "6 meng") → numeric part matches exact number,
+ *    text part matches names (AND logic)
  */
 function matchScore(item: LibrarySummary, normalizedQuery: string): number {
   if (normalizedQuery.length === 0) return 0;
 
-  const q = normalizedQuery;
+  const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
+  let totalScore = 0;
 
-  // Exact number match
-  if (String(item.number) === q) return 1000;
+  for (const token of tokens) {
+    const isNumeric = /^\d+$/.test(token);
+    let best = -1;
 
-  // Number prefix match (e.g. "1" matches 1, 10, 11, …12…)
-  if (String(item.number).startsWith(q)) return 500;
+    if (isNumeric) {
+      // Numeric token: exact number match only
+      if (String(item.number) === token) {
+        best = 1000;
+      }
+    } else {
+      // Text token: match against name fields
+      const pinyinBase = stripDiacritics(item.pinyin).toLowerCase();
+      const pinyinToned = item.pinyin.toLowerCase();
+      const englishLower = item.englishName.toLowerCase();
+      const chineseLower = item.chineseName;
 
-  const pinyinBase = stripDiacritics(item.pinyin).toLowerCase();
-  const pinyinToned = item.pinyin.toLowerCase();
-  const englishLower = item.englishName.toLowerCase();
-  const chineseLower = item.chineseName;
+      // Exact full match
+      if (pinyinBase === token || pinyinToned === token) best = Math.max(best, 400);
+      if (chineseLower === token) best = Math.max(best, 400);
+      if (englishLower === token) best = Math.max(best, 350);
 
-  // Exact full pinyin match (with or without tones)
-  if (pinyinBase === q || pinyinToned === q) return 400;
+      // Starts-with
+      if (pinyinBase.startsWith(token) || pinyinToned.startsWith(token)) best = Math.max(best, 300);
+      if (englishLower.startsWith(token)) best = Math.max(best, 250);
+      if (chineseLower.startsWith(token)) best = Math.max(best, 250);
 
-  // Exact Chinese name match
-  if (chineseLower === q) return 400;
+      // Token boundary match on pinyin / english words
+      const pinyinTokens = pinyinBase.split(/\s+/);
+      const englishTokens = englishLower.split(/\s+/);
+      if (pinyinTokens.some((t) => t.startsWith(token))) best = Math.max(best, 200);
+      if (englishTokens.some((t) => t.startsWith(token))) best = Math.max(best, 150);
 
-  // Exact English name match
-  if (englishLower === q) return 350;
+      // Substring fallback on name fields only
+      const nameHaystack = [pinyinBase, pinyinToned, englishLower, chineseLower].join(" ");
+      if (nameHaystack.includes(token)) best = Math.max(best, 100);
+    }
 
-  // Starts-with on any name field
-  if (pinyinBase.startsWith(q) || pinyinToned.startsWith(q)) return 300;
-  if (englishLower.startsWith(q)) return 250;
-  if (chineseLower.startsWith(q)) return 250;
+    // Any token that doesn't match at all → entire result excluded
+    if (best < 0) return -1;
+    totalScore += best;
+  }
 
-  // Token boundary match: split pinyin and english on spaces,
-  // check if any token starts with the query
-  const pinyinTokens = pinyinBase.split(/\s+/);
-  const englishTokens = englishLower.split(/\s+/);
-
-  if (pinyinTokens.some((t) => t.startsWith(q))) return 200;
-  if (englishTokens.some((t) => t.startsWith(q))) return 150;
-
-  // Substring match on combined haystack
-  const haystack = [
-    pinyinBase,
-    pinyinToned,
-    englishLower,
-    chineseLower,
-  ].join(" ");
-  if (haystack.includes(q)) return 100;
-
-  return -1;
+  return totalScore;
 }
 
 function matchesTrigrams(
