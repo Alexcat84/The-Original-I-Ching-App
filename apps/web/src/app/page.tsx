@@ -30,6 +30,7 @@ import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { ManualIChingCoinWizard } from "@/components/manual-iching/ManualIChingCoinWizard";
+import { ManualYarrowWizard } from "@/components/manual-iching/ManualYarrowWizard";
 import { getManualWizardMessages } from "@/components/manual-iching/manual-wizard-messages";
 import { AmbientParticles } from "@/components/AmbientParticles";
 import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
@@ -64,7 +65,7 @@ import {
   ichingRitualRevealTimingFromBudget,
   type IchingRitualRevealTiming,
 } from "@/lib/iching-ritual-timing";
-import { previewCastFromLineValues, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
+import { previewCastFromLineValues, type CastingMethod, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
@@ -72,6 +73,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
 
 const ICHING_CAST_MODE_STORAGE_KEY = "iching_cast_mode_v1";
+const ICHING_CASTING_METHOD_STORAGE_KEY = "iching_casting_method_v1";
 
 const ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX = "iching_account_session_limit_v1:";
 const PLAY_PROMO_STRIP_DISMISSED_KEY = "iching_play_promo_strip_dismissed_v1";
@@ -650,6 +652,7 @@ type UiCopy = {
   iChingTagline: string;
   bonesTagline: string;
   modeIChingHint: string;
+  modeIChingYarrowHint: string;
   modeBonesHint: string;
   emptyInviteMorning: string;
   emptyInviteAfternoon: string;
@@ -673,8 +676,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Huesos",
     iChingTagline: "Tres monedas · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Grietas 兆 (estilo Shang) · sí / no",
-    modeIChingHint: "Seis líneas y tres monedas por línea; mutación Zhu Xi.",
+    bonesTagline: "Huesos de Oráculo · Grietas 兆 · estilo Shang",
+    modeIChingHint: "Seis líneas, tres monedas por línea, mutación Zhu Xi",
+    modeIChingYarrowHint: "Seis líneas, tres fases por línea, distribución Zhou auténtica",
     modeBonesHint: "Pregunta sí / no con cargo afirmativo; lectura por grietas 兆.",
     emptyInviteMorning:
       "Buen momento para escuchar al oráculo. ¿Qué inquietud trae este nuevo día? Escribe tu consulta con intención.",
@@ -698,8 +702,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Bones",
     iChingTagline: "Three coins · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Cracks 兆 (Shang style) · yes / no",
-    modeIChingHint: "Six lines and three coins per line; Zhu Xi mutation.",
+    bonesTagline: "Oracle Bones · Cracks 兆 · Shang style",
+    modeIChingHint: "Six lines, three coins per line, Zhu Xi mutation",
+    modeIChingYarrowHint: "Six lines, three phases per line, authentic Zhou distribution",
     modeBonesHint: "Yes / no by affirmative charge; crack reading 兆.",
     emptyInviteMorning: "Good time to consult the oracle. What concern comes with this new day?",
     emptyInviteAfternoon: "Change keeps moving. What do you need to see more clearly today?",
@@ -721,8 +726,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Ossos",
     iChingTagline: "Três moedas · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Fissuras 兆 (estilo Shang) · sim / não",
-    modeIChingHint: "Seis linhas e três moedas por linha; mutação Zhu Xi.",
+    bonesTagline: "Ossos de Oráculo · Fissuras 兆 · estilo Shang",
+    modeIChingHint: "Seis linhas, três moedas por linha, mutação Zhu Xi",
+    modeIChingYarrowHint: "Seis linhas, três fases por linha, distribuição Zhou autêntica",
     modeBonesHint: "Pergunta sim / não com cargo afirmativo; leitura por fissuras 兆.",
     emptyInviteMorning: "Bom momento para ouvir o oráculo. Que inquietação traz este novo dia?",
     emptyInviteAfternoon: "A mudança continua. O que você precisa ver com mais clareza hoje?",
@@ -744,8 +750,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Os",
     iChingTagline: "Trois pièces · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Fissures 兆 (style Shang) · oui / non",
-    modeIChingHint: "Six lignes et trois pièces par ligne ; mutation Zhu Xi.",
+    bonesTagline: "Os Oracle · Fissures 兆 · style Shang",
+    modeIChingHint: "Six lignes, trois pièces par ligne, mutation Zhu Xi",
+    modeIChingYarrowHint: "Six lignes, trois phases par ligne, distribution Zhou authentique",
     modeBonesHint: "Question oui / non avec charge affirmative ; lecture des fissures 兆.",
     emptyInviteMorning: "Bon moment pour écouter l'oracle. Quelle préoccupation t'accompagne aujourd'hui ?",
     emptyInviteAfternoon: "Le changement continue. Que dois-tu voir plus clairement aujourd'hui ?",
@@ -767,8 +774,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Knochen",
     iChingTagline: "Drei Münzen · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Risse 兆 (Shang-Stil) · Ja / Nein",
-    modeIChingHint: "Sechs Linien und drei Münzen pro Linie; Zhu-Xi-Mutation.",
+    bonesTagline: "Orakelknochen · Risse 兆 · Shang-Stil",
+    modeIChingHint: "Sechs Linien, drei Münzen pro Linie, Zhu-Xi-Mutation",
+    modeIChingYarrowHint: "Sechs Linien, drei Phasen pro Linie, authentische Zhou-Verteilung",
     modeBonesHint: "Ja/Nein-Frage mit positiver Ladung; Risslesung 兆.",
     emptyInviteMorning: "Guter Zeitpunkt für das Orakel. Welche Frage bringt dieser Tag mit sich?",
     emptyInviteAfternoon: "Der Wandel geht weiter. Was musst du heute klarer sehen?",
@@ -790,8 +798,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "Ossa",
     iChingTagline: "Tre monete · Zhu Xi · Wilhelm/Baynes",
-    bonesTagline: "Crepe 兆 (stile Shang) · sì / no",
-    modeIChingHint: "Sei linee e tre monete per linea; mutazione Zhu Xi.",
+    bonesTagline: "Ossa dell'Oracolo · Crepe 兆 · stile Shang",
+    modeIChingHint: "Sei linee, tre monete per linea, mutazione Zhu Xi",
+    modeIChingYarrowHint: "Sei linee, tre fasi per linea, distribuzione Zhou autentica",
     modeBonesHint: "Domanda sì / no con carica affermativa; lettura delle crepe 兆.",
     emptyInviteMorning: "Momento ideale per l'oracolo. Quale inquietudine porta questo nuovo giorno?",
     emptyInviteAfternoon: "Il cambiamento continua. Cosa devi vedere con più chiarezza oggi?",
@@ -813,8 +822,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "骨占",
     iChingTagline: "三枚の硬貨 · 朱熹 · ヴィルヘルム/ベインズ",
-    bonesTagline: "亀裂 兆（殷様式）· はい / いいえ",
-    modeIChingHint: "六爻、各爻に三枚の硬貨。朱熹の変爻法。",
+    bonesTagline: "甲骨占 · 亀裂 兆 · 殷様式",
+    modeIChingHint: "六爻、各爻に三枚の硬貨、朱熹変爻法",
+    modeIChingYarrowHint: "六爻、各爻に三つの段階、周朝本来の分布",
     modeBonesHint: "肯定電荷による Yes/No。亀裂 兆 の読解。",
     emptyInviteMorning: "いまは託宣に向いた時間。今日の不安を問いにしてみましょう。",
     emptyInviteAfternoon: "変化は動き続けています。今日、何をより明確に見たいですか。",
@@ -836,8 +846,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "甲骨",
     iChingTagline: "三枚铜钱 · 朱熹 · Wilhelm/Baynes",
-    bonesTagline: "裂纹 兆（商式）· 是 / 否",
-    modeIChingHint: "六爻，每爻三枚铜钱；朱熹变爻法。",
+    bonesTagline: "甲骨 · 裂纹 兆 · 商式",
+    modeIChingHint: "六爻，每爻三枚铜钱，朱熹变爻法",
+    modeIChingYarrowHint: "六爻，每爻三阶段，周代本真分布",
     modeBonesHint: "以肯定命题进行是/否占；裂纹 兆 解读。",
     emptyInviteMorning: "此刻适合聆听神谕。今天你带着什么问题而来？",
     emptyInviteAfternoon: "变化仍在流动。今天你需要看清什么？",
@@ -859,8 +870,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "골복",
     iChingTagline: "세 동전 · 주희 · Wilhelm/Baynes",
-    bonesTagline: "균열 兆 (상식) · 예 / 아니오",
-    modeIChingHint: "육효, 효마다 동전 3개; 주희 변효 규칙.",
+    bonesTagline: "골복 · 균열 兆 · 상나라 방식",
+    modeIChingHint: "육효, 효마다 동전 3개, 주희 변효 규칙",
+    modeIChingYarrowHint: "육효, 효마다 세 단계, 주 왕조 본래 분포",
     modeBonesHint: "긍정 명제로 예/아니오 질문; 균열 兆 해석.",
     emptyInviteMorning: "지금은 오라클에 귀 기울이기 좋은 시간입니다. 어떤 고민이 있나요?",
     emptyInviteAfternoon: "변화는 계속 움직입니다. 오늘 무엇을 더 분명히 보고 싶나요?",
@@ -882,8 +894,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "عظام الكهانة",
     iChingTagline: "ثلاث عملات · تشو شي · فيلهلم/بينز",
-    bonesTagline: "الشقوق 兆 (أسلوب شانغ) · نعم / لا",
-    modeIChingHint: "ستة خطوط وثلاث عملات لكل خط؛ طريقة تحوّل تشو شي.",
+    bonesTagline: "عظام الكهانة · الشقوق 兆 · أسلوب شانغ",
+    modeIChingHint: "ستة خطوط، ثلاث عملات لكل خط، طريقة تحوّل تشو شي",
+    modeIChingYarrowHint: "ستة خطوط، ثلاث مراحل لكل خط، التوزيع الأصيل لأسرة تشو",
     modeBonesHint: "سؤال نعم / لا بالشحنة الإيجابية؛ قراءة الشقوق 兆.",
     emptyInviteMorning: "وقت مناسب للتشاور مع الأوراكل. ما القلق الذي يحمله هذا اليوم الجديد؟ اكتب استشارتك بنية صادقة.",
     emptyInviteAfternoon: "التغيير لا يتوقف. ما الذي تحتاج إلى رؤيته بوضوح أكبر اليوم؟",
@@ -905,8 +918,9 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     iChing: "I Ching",
     bones: "अस्थि ओरेकल",
     iChingTagline: "तीन सिक्के · झू शी · विल्हेल्म/बेयन्स",
-    bonesTagline: "दरारें 兆 (शांग शैली) · हाँ / नहीं",
-    modeIChingHint: "छह रेखाएँ और प्रत्येक रेखा पर तीन सिक्के; झू शी परिवर्तन नियम।",
+    bonesTagline: "अस्थि ओरेकल · दरारें 兆 · शांग शैली",
+    modeIChingHint: "छह रेखाएँ, प्रत्येक रेखा पर तीन सिक्के, झू शी परिवर्तन नियम",
+    modeIChingYarrowHint: "छह रेखाएँ, प्रत्येक रेखा पर तीन चरण, प्रामाणिक झोउ वितरण",
     modeBonesHint: "सकारात्मक प्रस्ताव के साथ हाँ / नहीं प्रश्न; दरार 兆 पठन।",
     emptyInviteMorning: "ओरेकल से पूछने का अच्छा समय है। आज की आपकी मुख्य चिंता क्या है?",
     emptyInviteAfternoon: "परिवर्तन चलता रहता है। आज आपको किस बात को और स्पष्ट देखना है?",
@@ -1275,8 +1289,27 @@ export default function HomePage() {
       /* ignore */
     }
   }, [ichingCastMode]);
+  const [ichingCastingMethod, setIchingCastingMethod] = useState<CastingMethod>(() => {
+    if (typeof window === "undefined") return "three-coins";
+    try {
+      return window.localStorage.getItem(ICHING_CASTING_METHOD_STORAGE_KEY) === "yarrow-stalks"
+        ? "yarrow-stalks"
+        : "three-coins";
+    } catch {
+      return "three-coins";
+    }
+  });
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(ICHING_CASTING_METHOD_STORAGE_KEY, ichingCastingMethod);
+    } catch {
+      /* ignore */
+    }
+  }, [ichingCastingMethod]);
   const [manualWizardOpen, setManualWizardOpen] = useState(false);
   const [manualWizardQuestionSnapshot, setManualWizardQuestionSnapshot] = useState<string | null>(null);
+  const [manualYarrowWizardOpen, setManualYarrowWizardOpen] = useState(false);
+  const [manualYarrowQuestionSnapshot, setManualYarrowQuestionSnapshot] = useState<string | null>(null);
   const [manualCastPreview, setManualCastPreview] = useState<{
     primaryHexagram: number;
     primaryHexagramChinese: string;
@@ -3059,8 +3092,13 @@ export default function HomePage() {
       return;
     }
     if (oracleMode === "iching" && ichingCastMode === "manual") {
-      setManualWizardQuestionSnapshot(questionForRequest);
-      setManualWizardOpen(true);
+      if (ichingCastingMethod === "yarrow-stalks") {
+        setManualYarrowQuestionSnapshot(questionForRequest);
+        setManualYarrowWizardOpen(true);
+      } else {
+        setManualWizardQuestionSnapshot(questionForRequest);
+        setManualWizardOpen(true);
+      }
       return;
     }
     await executeConsultationRequest(questionForRequest);
@@ -3186,8 +3224,8 @@ export default function HomePage() {
           oracleMode,
           ...(oracleMode === "iching"
             ? manualLineValues
-              ? { ichingCastMode: "manual" as const, ichingManualLineValues: [...manualLineValues] }
-              : { ichingCastMode }
+              ? { ichingCastMode: "manual" as const, ichingCastingMethod, ichingManualLineValues: [...manualLineValues] }
+              : { ichingCastMode, ichingCastingMethod }
             : {}),
           displayName: displayName ?? undefined,
           oracleBones:
@@ -4023,7 +4061,9 @@ export default function HomePage() {
                 style={{ color: "var(--fg)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
               >
                 {oracleMode === "iching"
-                  ? ui.iChingTagline
+                  ? ichingCastingMethod === "yarrow-stalks"
+                    ? manualWizardChrome.castMethodYarrowTagline
+                    : ui.iChingTagline
                   : ui.bonesTagline}
               </p>
             </div>
@@ -4465,7 +4505,7 @@ export default function HomePage() {
                         </div>
                         <p className="composer-switch-caption">
                           {oracleMode === "iching"
-                            ? ui.modeIChingHint
+                            ? (ichingCastingMethod === "yarrow-stalks" ? ui.modeIChingYarrowHint : ui.modeIChingHint)
                             : ui.modeBonesHint}
                         </p>
                       </div>
@@ -4473,36 +4513,81 @@ export default function HomePage() {
                     {oracleMode === "iching" ? (
                       <>
                         <hr className="composer-panel-divider" aria-hidden />
-                        <div
-                          className="manual-cast-mode-block"
-                          role="radiogroup"
-                          aria-label={manualWizardChrome.castModeGroupAria}
-                        >
-                          <p className="manual-cast-mode-heading">{manualWizardChrome.castModeGroupAria}</p>
-                          <div className="manual-cast-mode-row">
-                            <label className="manual-cast-mode-option">
-                              <input
-                                type="radio"
-                                name="ichingCastMode"
-                                value="auto"
-                                checked={ichingCastMode === "auto"}
-                                onChange={() => setIchingCastMode("auto")}
-                                disabled={loading}
-                              />
-                              <span>{manualWizardChrome.castAutoLabel}</span>
-                            </label>
-                            <label className="manual-cast-mode-option">
-                              <input
-                                type="radio"
-                                name="ichingCastMode"
-                                value="manual"
-                                checked={ichingCastMode === "manual"}
-                                onChange={() => setIchingCastMode("manual")}
-                                disabled={loading}
-                              />
-                              <span>{manualWizardChrome.castManualLabel}</span>
-                            </label>
-                          </div>
+                        <div className="cast-selector-block">
+                          <span className="cast-selector-label">{manualWizardChrome.castMethodGroupAria}</span>
+                          <label className="oracle-toggle-wrap">
+                            <input
+                              type="checkbox"
+                              className="oracle-toggle-input"
+                              checked={ichingCastingMethod === "yarrow-stalks"}
+                              onChange={() =>
+                                setIchingCastingMethod(
+                                  ichingCastingMethod === "yarrow-stalks" ? "three-coins" : "yarrow-stalks",
+                                )
+                              }
+                              disabled={loading}
+                              aria-label={`${manualWizardChrome.castMethodCoinsLabel} / ${manualWizardChrome.castMethodYarrowLabel}`}
+                            />
+                            <div className="oracle-toggle-track">
+                              <div className="oracle-toggle-glow" />
+                              <div className="oracle-toggle-track-line" />
+                              <div className="oracle-toggle-thumb">
+                                <div className="oracle-thumb-sweep" />
+                              </div>
+                              <div className="oracle-toggle-option oracle-toggle-option--left" aria-hidden="true">
+                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                  <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5"/>
+                                  <rect x="5.5" y="5.5" width="3" height="3" stroke="currentColor" strokeWidth="1"/>
+                                </svg>
+                                <span>{manualWizardChrome.castMethodCoinsLabel.split(" (")[0]}</span>
+                              </div>
+                              <div className="oracle-toggle-option oracle-toggle-option--right" aria-hidden="true">
+                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                  <line x1="2.5" y1="2" x2="2.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                  <line x1="5.5" y1="1" x2="5.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                  <line x1="8.5" y1="2" x2="8.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                  <line x1="11.5" y1="1" x2="11.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                </svg>
+                                <span>{manualWizardChrome.castMethodYarrowLabel.split(" (")[0]}</span>
+                              </div>
+                            </div>
+                          </label>
+                        </div>
+                        <hr className="composer-panel-divider" aria-hidden />
+                        <div className="cast-selector-block">
+                          <span className="cast-selector-label">{manualWizardChrome.castModeGroupAria}</span>
+                          <label className="oracle-toggle-wrap">
+                            <input
+                              type="checkbox"
+                              className="oracle-toggle-input"
+                              checked={ichingCastMode === "manual"}
+                              onChange={() =>
+                                setIchingCastMode(ichingCastMode === "manual" ? "auto" : "manual")
+                              }
+                              disabled={loading}
+                              aria-label={`${manualWizardChrome.castAutoLabel} / ${manualWizardChrome.castManualLabel}`}
+                            />
+                            <div className="oracle-toggle-track">
+                              <div className="oracle-toggle-glow" />
+                              <div className="oracle-toggle-track-line" />
+                              <div className="oracle-toggle-thumb">
+                                <div className="oracle-thumb-sweep" />
+                              </div>
+                              <div className="oracle-toggle-option oracle-toggle-option--left" aria-hidden="true">
+                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                  <path d="M8 1.5L3.5 7.5H7L5.5 12.5L11 6H7.5L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" strokeLinecap="round"/>
+                                </svg>
+                                <span>{manualWizardChrome.castAutoLabel}</span>
+                              </div>
+                              <div className="oracle-toggle-option oracle-toggle-option--right" aria-hidden="true">
+                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                  <path d="M2 10.5V12H3.5L9.5 6L8 4.5L2 10.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                                  <path d="M9.5 3L11 4.5L10 5.5L8.5 4L9.5 3Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                                </svg>
+                                <span>{manualWizardChrome.castManualLabel.split(" (")[0].split("（")[0].trim()}</span>
+                              </div>
+                            </div>
+                          </label>
                         </div>
                       </>
                     ) : null}
@@ -5289,6 +5374,21 @@ export default function HomePage() {
         }}
         locale={locale}
         questionPreview={manualWizardQuestionSnapshot ?? ""}
+      />
+      <ManualYarrowWizard
+        open={manualYarrowWizardOpen}
+        onClose={() => {
+          setManualYarrowWizardOpen(false);
+          setManualYarrowQuestionSnapshot(null);
+        }}
+        onComplete={(lines) => {
+          setManualYarrowWizardOpen(false);
+          const q = manualYarrowQuestionSnapshot?.trim() ?? question.trim();
+          setManualYarrowQuestionSnapshot(null);
+          void executeConsultationRequest(q, lines);
+        }}
+        locale={locale}
+        questionPreview={manualYarrowQuestionSnapshot ?? ""}
       />
       <section
         aria-hidden="true"

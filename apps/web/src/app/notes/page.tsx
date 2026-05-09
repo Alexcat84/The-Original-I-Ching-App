@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 import { getDocNavUiMessages, getNotesPageUiMessages } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
+import { HEXAGRAM_LIST } from "./hexagram-list";
 
 export default async function NotesPage() {
   const locale = await resolveDocLocale();
@@ -32,7 +33,7 @@ export default async function NotesPage() {
         <p className="doc-lead">{n.lead}</p>
         <p className="doc-auth-notice">{n.authNotice}</p>
 
-        {/* ── I Ching ── */}
+        {/* I Ching */}
         <h2>{n.ichingHeading}</h2>
 
         <h3>{n.ichingOriginHeading}</h3>
@@ -41,9 +42,40 @@ export default async function NotesPage() {
         <h3>{n.ichingHexHeading}</h3>
         <p>{n.ichingHexBody}</p>
 
+        <h4>{n.ichingHexListHeading}</h4>
+        <p>{n.ichingHexListIntro}</p>
+        <ol className="hexagram-grid" aria-label={n.ichingHexListAriaLabel}>
+          {HEXAGRAM_LIST.map((hex) => (
+            <li key={hex.number} className="hexagram-grid__item">
+              <span className="hexagram-grid__number">{hex.number}</span>
+              <span className="hexagram-grid__body">
+                <span className="hexagram-grid__glyph" aria-hidden="true">
+                  {hex.glyph}
+                </span>
+                <span className="hexagram-grid__meta">
+                  <span className="hexagram-grid__name" lang="zh-Hant">
+                    {hex.chineseName}
+                  </span>
+                  <span className="hexagram-grid__pinyin">{hex.pinyin}</span>
+                </span>
+              </span>
+            </li>
+          ))}
+        </ol>
+
         <h3>{n.ichingMethodHeading}</h3>
         <p>{n.ichingMethodBody}</p>
-        <p><Link href="/guia">{nav.userGuide}</Link></p>
+
+        <h3>{n.yarrowHeading}</h3>
+
+        <h4>{n.yarrowOriginHeading}</h4>
+        <p>{n.yarrowOriginBody}</p>
+
+        <h4>{n.yarrowProcedureHeading}</h4>
+        <p>{n.yarrowProcedureBody}</p>
+
+        <h4>{n.yarrowProbHeading}</h4>
+        <p>{n.yarrowProbBody}</p>
 
         <h3>{n.ichingWilhelmHeading}</h3>
         <p>{n.ichingWilhelmBody}</p>
@@ -51,7 +83,7 @@ export default async function NotesPage() {
         <h3>{n.ichingChainHeading}</h3>
         <p>{n.ichingChain}</p>
 
-        {/* ── Oracle Bones ── */}
+        {/* Oracle Bones */}
         <h2>{n.bonesHeading}</h2>
 
         <h3>{n.bonesOriginHeading}</h3>
@@ -72,11 +104,11 @@ export default async function NotesPage() {
         <h3>{n.bonesAuthHeading}</h3>
         <p>{n.bonesAuthBody}</p>
 
-        {/* ── Interpretation ── */}
+        {/* Interpretation */}
         <h2>{n.interpretHeading}</h2>
         <p>{n.interpretBody}</p>
 
-        {/* ── Sources ── */}
+        {/* Sources */}
         <h2>{n.sourcesHeading}</h2>
         <ul>
           <li>
@@ -107,6 +139,21 @@ export default async function NotesPage() {
           <li>
             <a href="https://en.wikipedia.org/wiki/Shang_dynasty" target="_blank" rel="noopener noreferrer">
               Shang dynasty (商朝) on Wikipedia
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/I_Ching_divination" target="_blank" rel="noopener noreferrer">
+              I Ching divination (yarrow stalk method) on Wikipedia
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Ten_Wings" target="_blank" rel="noopener noreferrer">
+              Ten Wings (十翼, Great Commentary / Dàzhuàn) on Wikipedia
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Edward_Shaughnessy" target="_blank" rel="noopener noreferrer">
+              Edward L. Shaughnessy (Sources of Western Zhou History, 1993) on Wikipedia
             </a>
           </li>
         </ul>

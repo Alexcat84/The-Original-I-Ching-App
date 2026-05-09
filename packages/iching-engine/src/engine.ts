@@ -1,5 +1,6 @@
 import { getHexagramRecordByBinaryTopFirst, type HexagramRecord } from "@iching-oracle/iching-data";
 import type {
+  CastingMethod,
   CastResult,
   Hexagram,
   Line,
@@ -225,6 +226,7 @@ export interface PerformCastOptions {
   rng?: Rng;
   id?: string;
   now?: Date;
+  castingMethod?: CastingMethod;
 }
 
 function newCastId(): string {
@@ -256,6 +258,7 @@ function buildCastResultFromLines(
     mutationRule: rule,
     textsForClaude: texts,
     timestamp: options?.now ?? new Date(),
+    ...(options?.castingMethod !== undefined ? { castingMethod: options.castingMethod } : {}),
   };
 }
 
@@ -282,7 +285,10 @@ export function performCastFromLineValues(
     }
     return buildLine(v, pos);
   });
-  return buildCastResultFromLines(lines, question, language, options);
+  return buildCastResultFromLines(lines, question, language, {
+    ...options,
+    castingMethod: options?.castingMethod ?? "three-coins",
+  });
 }
 
 /** Client-side preview of primary / transformed hexagram from six values (same geometry as performCastFromLineValues). */
@@ -307,5 +313,45 @@ export function performCast(
 ): CastResult {
   const rng = options?.rng ?? Math.random;
   const lines = castSixLines(rng);
-  return buildCastResultFromLines(lines, question, language, options);
+  return buildCastResultFromLines(lines, question, language, {
+    ...options,
+    castingMethod: options?.castingMethod ?? "three-coins",
+  });
+}
+
+// ─── Yarrow Stalks ──────────────────────────────────────────────────────────
+
+/** Authentic Zhou-dynasty distribution: 6=1/16, 7=5/16, 8=7/16, 9=3/16 */
+export function throwYarrowStalks(rng: Rng = Math.random): LineValue {
+  const n = Math.floor(rng() * 16);
+  if (n < 1) return 6;
+  if (n < 6) return 7;
+  if (n < 13) return 8;
+  return 9;
+}
+
+export function castYarrowSixLines(rng: Rng = Math.random): Line[] {
+  return ([1, 2, 3, 4, 5, 6] as const).map((pos) => buildLine(throwYarrowStalks(rng), pos));
+}
+
+/**
+ * Convert the three phase residues from a manual yarrow-stalk count into a LineValue.
+ * Phase 1 residue: 5 or 9. Phases 2–3 residue: 4 or 8.
+ * Valid sums → values: 13→9, 17→8, 21→7, 25→6
+ */
+export function yarrowSumToLine(phase1: 5 | 9, phase2: 4 | 8, phase3: 4 | 8): LineValue {
+  return ((49 - (phase1 + phase2 + phase3)) / 4) as LineValue;
+}
+
+export function performYarrowCast(
+  question: string,
+  language = "es",
+  options?: PerformCastOptions,
+): CastResult {
+  const rng = options?.rng ?? Math.random;
+  const lines = castYarrowSixLines(rng);
+  return buildCastResultFromLines(lines, question, language, {
+    ...options,
+    castingMethod: "yarrow-stalks",
+  });
 }

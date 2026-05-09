@@ -7,6 +7,8 @@ export {
   getFaqPageUiMessages,
   resolveFaqRelatedHref,
   resolveFaqRelatedLabel,
+  type FaqCategory,
+  type FaqCategoryId,
   type FaqItem,
   type FaqPageUi,
   type FaqRelatedSlug,

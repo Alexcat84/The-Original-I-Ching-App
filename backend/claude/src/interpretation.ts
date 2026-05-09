@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { SessionContext } from "@iching-oracle/context-engine";
-import type { CastResult } from "@iching-oracle/iching-engine";
+import type { CastingMethod, CastResult } from "@iching-oracle/iching-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { loadClaudeEnv } from "./env.js";
@@ -20,7 +20,13 @@ ABSOLUTE RULES:
 2. If there are previous consultations in context, explicitly reference earlier hexagrams for continuity.
 3. Never invent meanings — only connect texts with the question.
 4. Poetic, profound language in the requested language.
-5. Use Markdown in the answer body: ## for section titles, **bold** for key terms, > blockquotes for classical judgment quotes, numbered lists (1. 2. …) for changing lines when applicable. MONOLINGUAL: the entire response in one language only (the user's). Headings and glosses in that language; classical Chinese only inside blockquotes with immediate translation in the same language—never mix e.g. English titles in a Spanish answer.
+5. MARKDOWN TYPOGRAPHY — identical rules for Three Coins and Yarrow Stalks:
+   • ## for section headings only (Markdown bold; never add italic to headings).
+   • *italic* for every hexagram text quoted inline — Judgment, Image, line texts from the supplied JSON. Italic only, NEVER bold (**), NEVER bold-italic (***). This is the single most important typography rule.
+   • **bold** for key interpretive terms in your own prose only — not for any quoted hexagram text.
+   • > blockquote when reproducing the full primary Judgment; for line texts inside numbered lists use *italic*, not blockquote.
+   • Numbered lists (1. 2. …) for changing lines: *italic* line text followed by a plain sentence of application.
+   • MONOLINGUAL: entire response in one language only (the user's). Headings and glosses in that language; classical Chinese only inside blockquotes with immediate translation — never mix e.g. English titles in a Spanish answer.
 6. Never present unverified real-world facts (numbers, identities, private or biographical details) as certain truth.
 7. If the user asks for factual external data that cannot be verified from the provided I Ching texts, explicitly say you cannot verify that fact and then continue with symbolic interpretation.
 8. Never add generic legal or "simbólica vs predicción" disclaimer paragraphs (e.g. "Es importante tener en cuenta…"). Never end with an asterisk-wrapped footnote; compliance copy lives outside the reading in the app.
@@ -94,12 +100,20 @@ function enforceIChingStructuralConsistency(text: string, cast: CastResult, lang
   return `${text}\n\n${correction}`;
 }
 
+function castingMethodNote(method: CastingMethod | undefined): string {
+  if (method === "yarrow-stalks") {
+    return "DIVINATION METHOD: Yarrow Stalks (authentic Zhou distribution; old yang 3× more likely than old yin; the transformed hexagram carries additional interpretive weight when it appears)";
+  }
+  return "DIVINATION METHOD: Three Coins (symmetric probability; equal weight for both types of moving lines)";
+}
+
 function buildCurrentCastPrompt(
   cast: CastResult,
   _tier: string,
   language: string,
   hasContext: boolean,
   mode: ResponseMode,
+  castingMethod?: CastingMethod,
 ): string {
   const { question, textsForClaude: t, primaryHexagram: p, transformedHexagram: tr, mutationRule } = cast;
   const targetWordCount = "700-900";
@@ -216,7 +230,10 @@ INSTRUCTIONS:
 - ${modeInstruction}
 - Length: ${targetWordCount} words
 - If source excerpts arrive in a different language (often English), TRANSLATE them into the response language before quoting. Do not leave mixed-language fragments.
+- TYPOGRAPHY ENFORCEMENT: Hexagram text quotes (Judgment, Image, line texts) must be *italic only* — never **bold**, never ***bold-italic***. Section headings are ## only. Interpretation prose uses **bold** for key terms. This rule is identical for three-coins and yarrow-stalks.
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
+- ${castingMethodNote(castingMethod)}
+- FORMAT INVARIANCE: The casting method note above affects only how moving-line probabilities are weighted in interpretation. Section count, heading names, response length, and paragraph structure are identical regardless of whether Three Coins or Yarrow Stalks was used — never add extra sections or commentary about the method itself.
 - Respond in ${getLanguageName(language)}
 `.trim();
 }
@@ -228,6 +245,7 @@ export async function generateInterpretation(
   mode: ResponseMode = "ritual",
   env: NodeJS.ProcessEnv = process.env,
   displayName?: string,
+  castingMethod?: CastingMethod,
 ): Promise<{ text: string; category: ConsultationCategory }> {
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const language = castResult.language;
@@ -235,9 +253,10 @@ export async function generateInterpretation(
   const model = getAnthropicModelId(env);
 
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
+  const resolvedCastingMethod = castingMethod ?? castResult.castingMethod;
   const userContent = hasContext && context
-    ? `${buildContextBlock(context, language, mode)}\n\n${buildCurrentCastPrompt(castResult, tier, language, true, mode)}`
-    : buildCurrentCastPrompt(castResult, tier, language, false, mode);
+    ? `${buildContextBlock(context, language, mode)}\n\n${buildCurrentCastPrompt(castResult, tier, language, true, mode, resolvedCastingMethod)}`
+    : buildCurrentCastPrompt(castResult, tier, language, false, mode, resolvedCastingMethod);
 
   const nameNote =
     displayName?.trim()
