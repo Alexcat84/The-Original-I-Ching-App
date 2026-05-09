@@ -222,7 +222,12 @@ html:has(.iching-oracle-shell--chat) body {
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Segoe UI", Inter, system-ui, sans-serif;
+  /* `--font-oracle-sans` is Inter loaded via next/font/google with Latin
+     Extended-A/B coverage. Putting it first guarantees pinyin tone marks
+     (ā ē ī ō ū / ǎ ǐ ǒ ǔ ǚ) render via the loaded webfont on every device,
+     instead of relying on the WebView's serif/sans-serif fallback (which on
+     Samsung Android renders missing glyphs as U+FFFD / `�`). */
+  font-family: var(--font-oracle-sans), "Segoe UI", Inter, system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   background: linear-gradient(165deg, var(--bg) 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
