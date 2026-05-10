@@ -46,7 +46,6 @@ export default async function AboutPage() {
           <p className="apk-trace-rights">{trace.rightsLine}</p>
         </section>
       </article>
-      </article>
     </div>
   );
 }
