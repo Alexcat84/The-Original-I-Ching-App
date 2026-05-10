@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { OracleShell } from "@iching-oracle/ui";
 import {
@@ -209,23 +209,23 @@ const RUNTIME_TEXT: Record<
   }
 > = {
   es: {
-    ritualCoins: "Ritual en curso Â· lanzando monedas",
-    ritualBones: "Ritual en curso Â· calor sobre el hueso",
-    ritualBonesHint: "EstilizaciÃ³n del procedimiento shang: el patrÃ³n de grieta se fija al completar la consulta.",
-    line: "LÃ­nea",
+    ritualCoins: "Ritual en curso · lanzando monedas",
+    ritualBones: "Ritual en curso · calor sobre el hueso",
+    ritualBonesHint: "Estilización del procedimiento shang: el patrón de grieta se fija al completar la consulta.",
+    line: "Línea",
     signReading: "Lectura del signo:",
-    oracleBones: "Huesos de orÃ¡culo",
+    oracleBones: "Huesos de oráculo",
     medium: "Medio",
-    turtle: "PlastrÃ³n de tortuga",
-    ox: "EscÃ¡pula de buey",
+    turtle: "Plastrón de tortuga",
+    ox: "Escápula de buey",
     chargePlus: "Cargo +",
-    chargeMinus: "Cargo âˆ’",
+    chargeMinus: "Cargo −",
     leansPositive: "Inclina hacia el cargo positivo.",
-    leansNegative: "Inclina hacia la negaciÃ³n del cargo.",
+    leansNegative: "Inclina hacia la negación del cargo.",
   },
   en: {
-    ritualCoins: "Ritual in progress Â· tossing coins",
-    ritualBones: "Ritual in progress Â· heat over bone",
+    ritualCoins: "Ritual in progress · tossing coins",
+    ritualBones: "Ritual in progress · heat over bone",
     ritualBonesHint: "Stylized Shang procedure: the crack pattern is fixed when the consultation completes.",
     line: "Line",
     signReading: "Sign reading:",
@@ -234,58 +234,58 @@ const RUNTIME_TEXT: Record<
     turtle: "Turtle plastron",
     ox: "Ox scapula",
     chargePlus: "Charge +",
-    chargeMinus: "Charge âˆ’",
+    chargeMinus: "Charge −",
     leansPositive: "Leans toward the positive charge.",
     leansNegative: "Leans toward negating the charge.",
   },
   pt: {
-    ritualCoins: "Ritual em curso Â· lanÃ§ando moedas",
-    ritualBones: "Ritual em curso Â· calor sobre o osso",
-    ritualBonesHint: "EstilizaÃ§Ã£o do procedimento Shang: o padrÃ£o da fissura Ã© fixado ao concluir a consulta.",
+    ritualCoins: "Ritual em curso · lançando moedas",
+    ritualBones: "Ritual em curso · calor sobre o osso",
+    ritualBonesHint: "Estilização do procedimento Shang: o padrão da fissura é fixado ao concluir a consulta.",
     line: "Linha",
     signReading: "Leitura do sinal:",
     oracleBones: "Ossos oraculares",
     medium: "Meio",
-    turtle: "PlastrÃ£o de tartaruga",
-    ox: "EscÃ¡pula de boi",
+    turtle: "Plastrão de tartaruga",
+    ox: "Escápula de boi",
     chargePlus: "Carga +",
-    chargeMinus: "Carga âˆ’",
+    chargeMinus: "Carga −",
     leansPositive: "Inclina-se para a carga positiva.",
     leansNegative: "Inclina-se para negar a carga.",
   },
   fr: {
-    ritualCoins: "Rituel en cours Â· lancer des piÃ¨ces",
-    ritualBones: "Rituel en cours Â· chaleur sur l'os",
-    ritualBonesHint: "Stylisation du procÃ©dÃ© Shang : le motif de fissure se fixe Ã  la fin de la consultation.",
+    ritualCoins: "Rituel en cours · lancer des pièces",
+    ritualBones: "Rituel en cours · chaleur sur l'os",
+    ritualBonesHint: "Stylisation du procédé Shang : le motif de fissure se fixe à la fin de la consultation.",
     line: "Ligne",
     signReading: "Lecture du signe :",
     oracleBones: "Os oraculaires",
     medium: "Support",
     turtle: "Plastron de tortue",
-    ox: "Omoplate de bÅ“uf",
+    ox: "Omoplate de bœuf",
     chargePlus: "Charge +",
-    chargeMinus: "Charge âˆ’",
+    chargeMinus: "Charge −",
     leansPositive: "Penche vers la charge positive.",
-    leansNegative: "Penche vers la nÃ©gation de la charge.",
+    leansNegative: "Penche vers la négation de la charge.",
   },
   de: {
-    ritualCoins: "Ritual lÃ¤uft Â· MÃ¼nzwurf",
-    ritualBones: "Ritual lÃ¤uft Â· Hitze auf dem Knochen",
+    ritualCoins: "Ritual läuft · Münzwurf",
+    ritualBones: "Ritual läuft · Hitze auf dem Knochen",
     ritualBonesHint: "Stilisierung des Shang-Verfahrens: Das Rissmuster wird nach Abschluss der Anfrage festgelegt.",
     line: "Linie",
     signReading: "Zeichenlesung:",
     oracleBones: "Orakelknochen",
     medium: "Medium",
-    turtle: "SchildkrÃ¶tenpanzer",
+    turtle: "Schildkrötenpanzer",
     ox: "Rinderschulterblatt",
     chargePlus: "Ladung +",
-    chargeMinus: "Ladung âˆ’",
+    chargeMinus: "Ladung −",
     leansPositive: "Neigt zur positiven Ladung.",
     leansNegative: "Neigt zur Verneinung der Ladung.",
   },
   it: {
-    ritualCoins: "Rituale in corso Â· lancio delle monete",
-    ritualBones: "Rituale in corso Â· calore sull'osso",
+    ritualCoins: "Rituale in corso · lancio delle monete",
+    ritualBones: "Rituale in corso · calore sull'osso",
     ritualBonesHint: "Stilizzazione del procedimento Shang: il pattern di crepa si fissa al termine della consultazione.",
     line: "Linea",
     signReading: "Lettura del segno:",
@@ -294,84 +294,84 @@ const RUNTIME_TEXT: Record<
     turtle: "Piastrone di tartaruga",
     ox: "Scapola di bue",
     chargePlus: "Carica +",
-    chargeMinus: "Carica âˆ’",
+    chargeMinus: "Carica −",
     leansPositive: "Inclina verso la carica positiva.",
     leansNegative: "Inclina verso la negazione della carica.",
   },
   ja: {
-    ritualCoins: "å„€å¼é€²è¡Œä¸­ãƒ»ã‚³ã‚¤ãƒ³ã‚’æŠ•ã’ã¦ã„ã¾ã™",
-    ritualBones: "å„€å¼é€²è¡Œä¸­ãƒ»éª¨ã«ç†±ã‚’åŠ ãˆã¦ã„ã¾ã™",
-    ritualBonesHint: "æ®·å¼æ‰‹é †ã®æ¼”å‡ºï¼šç›¸è«‡ãŒå®Œäº†ã™ã‚‹ã¨äº€è£‚ãƒ‘ã‚¿ãƒ¼ãƒ³ãŒç¢ºå®šã—ã¾ã™ã€‚",
-    line: "çˆ»",
-    signReading: "å¾´ã®èª­ã¿:",
-    oracleBones: "ç”²éª¨",
-    medium: "åª’ä½“",
-    turtle: "äº€ã®è…¹ç”²",
-    ox: "ç‰›ã®è‚©ç”²éª¨",
-    chargePlus: "å‘½é¡Œ +",
-    chargeMinus: "å‘½é¡Œ âˆ’",
-    leansPositive: "è‚¯å®šå‘½é¡Œã®å´ã«å‚¾ãã¾ã™ã€‚",
-    leansNegative: "å¦å®šå‘½é¡Œã®å´ã«å‚¾ãã¾ã™ã€‚",
+    ritualCoins: "儀式進行中・コインを投げています",
+    ritualBones: "儀式進行中・骨に熱を加えています",
+    ritualBonesHint: "殷式手順の演出：相談が完了すると亀裂パターンが確定します。",
+    line: "爻",
+    signReading: "徴の読み:",
+    oracleBones: "甲骨",
+    medium: "媒体",
+    turtle: "亀の腹甲",
+    ox: "牛の肩甲骨",
+    chargePlus: "命題 +",
+    chargeMinus: "命題 −",
+    leansPositive: "肯定命題の側に傾きます。",
+    leansNegative: "否定命題の側に傾きます。",
   },
   zh: {
-    ritualCoins: "ä»ªå¼è¿›è¡Œä¸­ Â· æ­£åœ¨æŽ·å¸",
-    ritualBones: "ä»ªå¼è¿›è¡Œä¸­ Â· éª¨ä¸ŠåŠ çƒ­",
-    ritualBonesHint: "å•†å¼æµç¨‹çš„é£Žæ ¼åŒ–å±•ç¤ºï¼šå’¨è¯¢å®ŒæˆåŽè£‚çº¹å›¾æ¡ˆä¼šå›ºå®šã€‚",
-    line: "çˆ»",
-    signReading: "å¾å…†è§£è¯»ï¼š",
-    oracleBones: "ç”²éª¨å ",
-    medium: "ä»‹è´¨",
-    turtle: "é¾Ÿç”²è…¹ç”²",
-    ox: "ç‰›è‚©èƒ›éª¨",
-    chargePlus: "å‘½é¢˜ +",
-    chargeMinus: "å‘½é¢˜ âˆ’",
-    leansPositive: "å€¾å‘äºŽè‚¯å®šå‘½é¢˜ã€‚",
-    leansNegative: "å€¾å‘äºŽå¦å®šå‘½é¢˜ã€‚",
+    ritualCoins: "仪式进行中 · 正在掷币",
+    ritualBones: "仪式进行中 · 骨上加热",
+    ritualBonesHint: "商式流程的风格化展示：咨询完成后裂纹图案会固定。",
+    line: "爻",
+    signReading: "征兆解读：",
+    oracleBones: "甲骨占",
+    medium: "介质",
+    turtle: "龟甲腹甲",
+    ox: "牛肩胛骨",
+    chargePlus: "命题 +",
+    chargeMinus: "命题 −",
+    leansPositive: "倾向于肯定命题。",
+    leansNegative: "倾向于否定命题。",
   },
   ko: {
-    ritualCoins: "ì˜ì‹ ì§„í–‰ ì¤‘ Â· ë™ì „ íˆ¬ì²™",
-    ritualBones: "ì˜ì‹ ì§„í–‰ ì¤‘ Â· ë¼ˆì— ì—´ ê°€í•˜ê¸°",
-    ritualBonesHint: "ìƒ(å•†)ì‹ ì ˆì°¨ì˜ ìŠ¤íƒ€ì¼í™”: ìƒë‹´ì´ ì™„ë£Œë˜ë©´ ê· ì—´ íŒ¨í„´ì´ í™•ì •ë©ë‹ˆë‹¤.",
-    line: "íš¨",
-    signReading: "ì§•í›„ í•´ì„:",
-    oracleBones: "ê°‘ê³¨ ì ë³µ",
-    medium: "ë§¤ì²´",
-    turtle: "ê±°ë¶ ë°°ë”±ì§€",
-    ox: "ì†Œ ê²¬ê°‘ê³¨",
-    chargePlus: "ëª…ì œ +",
-    chargeMinus: "ëª…ì œ âˆ’",
-    leansPositive: "ê¸ì • ëª…ì œ ìª½ìœ¼ë¡œ ê¸°ì›ë‹ˆë‹¤.",
-    leansNegative: "ëª…ì œ ë¶€ì • ìª½ìœ¼ë¡œ ê¸°ì›ë‹ˆë‹¤.",
+    ritualCoins: "의식 진행 중 · 동전 투척",
+    ritualBones: "의식 진행 중 · 뼈에 열 가하기",
+    ritualBonesHint: "상(商)식 절차의 스타일화: 상담이 완료되면 균열 패턴이 확정됩니다.",
+    line: "효",
+    signReading: "징후 해석:",
+    oracleBones: "갑골 점복",
+    medium: "매체",
+    turtle: "거북 배딱지",
+    ox: "소 견갑골",
+    chargePlus: "명제 +",
+    chargeMinus: "명제 −",
+    leansPositive: "긍정 명제 쪽으로 기웁니다.",
+    leansNegative: "명제 부정 쪽으로 기웁니다.",
   },
   ar: {
-    ritualCoins: "Ø§Ù„Ø·Ù‚Ø³ Ø¬Ø§Ø±Ù Â· Ø±Ù…ÙŠ Ø§Ù„Ø¹Ù…Ù„Ø§Øª",
-    ritualBones: "Ø§Ù„Ø·Ù‚Ø³ Ø¬Ø§Ø±Ù Â· Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø¹Ø¸Ù…",
-    ritualBonesHint: "ØªÙˆØµÙŠÙ Ø£Ø³Ù„ÙˆØ¨ Ø´Ø§Ù†Øº: ÙŠÙØ«Ø¨ÙŽÙ‘Øª Ù†Ù…Ø· Ø§Ù„Ø´Ù‚ÙˆÙ‚ Ø¹Ù†Ø¯ Ø§ÙƒØªÙ…Ø§Ù„ Ø§Ù„Ø§Ø³ØªØ´Ø§Ø±Ø©.",
-    line: "Ø®Ø·",
-    signReading: "Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ø¹Ù„Ø§Ù…Ø©:",
-    oracleBones: "Ø¹Ø¸Ø§Ù… Ø§Ù„Ø£ÙˆØ±Ø§ÙƒÙ„",
-    medium: "Ø§Ù„ÙˆØ³ÙŠØ·",
-    turtle: "Ø¨Ø·Ù† Ø§Ù„Ø³Ù„Ø­ÙØ§Ø©",
-    ox: "Ù„ÙˆØ­ ÙƒØªÙ Ø§Ù„Ø«ÙˆØ±",
-    chargePlus: "Ø§Ù„Ø´Ø­Ù†Ø© +",
-    chargeMinus: "Ø§Ù„Ø´Ø­Ù†Ø© âˆ’",
-    leansPositive: "ÙŠÙ…ÙŠÙ„ Ù†Ø­Ùˆ Ø§Ù„Ø´Ø­Ù†Ø© Ø§Ù„Ù…ÙˆØ¬Ø¨Ø©.",
-    leansNegative: "ÙŠÙ…ÙŠÙ„ Ù†Ø­Ùˆ Ù†ÙÙŠ Ø§Ù„Ø´Ø­Ù†Ø©.",
+    ritualCoins: "الطقس جارٍ · رمي العملات",
+    ritualBones: "الطقس جارٍ · الحرارة على العظم",
+    ritualBonesHint: "توصيف أسلوب شانغ: يُثبَّت نمط الشقوق عند اكتمال الاستشارة.",
+    line: "خط",
+    signReading: "قراءة العلامة:",
+    oracleBones: "عظام الأوراكل",
+    medium: "الوسيط",
+    turtle: "بطن السلحفاة",
+    ox: "لوح كتف الثور",
+    chargePlus: "الشحنة +",
+    chargeMinus: "الشحنة −",
+    leansPositive: "يميل نحو الشحنة الموجبة.",
+    leansNegative: "يميل نحو نفي الشحنة.",
   },
   hi: {
-    ritualCoins: "à¤…à¤¨à¥à¤·à¥à¤ à¤¾à¤¨ à¤œà¤¾à¤°à¥€ à¤¹à¥ˆ Â· à¤¸à¤¿à¤•à¥à¤•à¥‡ à¤«à¥‡à¤‚à¤•à¥‡ à¤œà¤¾ à¤°à¤¹à¥‡ à¤¹à¥ˆà¤‚",
-    ritualBones: "à¤…à¤¨à¥à¤·à¥à¤ à¤¾à¤¨ à¤œà¤¾à¤°à¥€ à¤¹à¥ˆ Â· à¤¹à¤¡à¥à¤¡à¥€ à¤ªà¤° à¤Šà¤·à¥à¤®à¤¾",
-    ritualBonesHint: "à¤¶à¤¾à¤‚à¤— à¤ªà¥à¤°à¤•à¥à¤°à¤¿à¤¯à¤¾ à¤•à¤¾ à¤¶à¥ˆà¤²à¥€à¤•à¥ƒà¤¤ à¤°à¥‚à¤ª: à¤ªà¤°à¤¾à¤®à¤°à¥à¤¶ à¤ªà¥‚à¤°à¤¾ à¤¹à¥‹à¤¨à¥‡ à¤ªà¤° à¤¦à¤°à¤¾à¤°-à¤ªà¥ˆà¤Ÿà¤°à¥à¤¨ à¤¤à¤¯ à¤¹à¥‹à¤¤à¤¾ à¤¹à¥ˆà¥¤",
-    line: "à¤°à¥‡à¤–à¤¾",
-    signReading: "à¤šà¤¿à¤¹à¥à¤¨-à¤ªà¤ à¤¨:",
-    oracleBones: "à¤…à¤¸à¥à¤¥à¤¿ à¤“à¤°à¥‡à¤•à¤²",
-    medium: "à¤®à¤¾à¤§à¥à¤¯à¤®",
-    turtle: "à¤•à¤›à¥à¤ à¤•à¤¾ à¤ªà¥à¤²à¤¾à¤¸à¥à¤Ÿà¥à¤°à¥‰à¤¨",
-    ox: "à¤¬à¥ˆà¤² à¤•à¥€ à¤¸à¥à¤•à¥ˆà¤ªà¥à¤²à¤¾",
-    chargePlus: "à¤ªà¥à¤°à¤¸à¥à¤¤à¤¾à¤µ +",
-    chargeMinus: "à¤ªà¥à¤°à¤¸à¥à¤¤à¤¾à¤µ âˆ’",
-    leansPositive: "à¤¸à¤•à¤¾à¤°à¤¾à¤¤à¥à¤®à¤• à¤ªà¥à¤°à¤¸à¥à¤¤à¤¾à¤µ à¤•à¥€ à¤“à¤° à¤à¥à¤•à¤¤à¤¾ à¤¹à¥ˆà¥¤",
-    leansNegative: "à¤ªà¥à¤°à¤¸à¥à¤¤à¤¾à¤µ à¤•à¥‡ à¤¨à¤¿à¤·à¥‡à¤§ à¤•à¥€ à¤“à¤° à¤à¥à¤•à¤¤à¤¾ à¤¹à¥ˆà¥¤",
+    ritualCoins: "अनुष्ठान जारी है · सिक्के फेंके जा रहे हैं",
+    ritualBones: "अनुष्ठान जारी है · हड्डी पर ऊष्मा",
+    ritualBonesHint: "शांग प्रक्रिया का शैलीकृत रूप: परामर्श पूरा होने पर दरार-पैटर्न तय होता है।",
+    line: "रेखा",
+    signReading: "चिह्न-पठन:",
+    oracleBones: "अस्थि ओरेकल",
+    medium: "माध्यम",
+    turtle: "कछुए का प्लास्ट्रॉन",
+    ox: "बैल की स्कैपुला",
+    chargePlus: "प्रस्ताव +",
+    chargeMinus: "प्रस्ताव −",
+    leansPositive: "सकारात्मक प्रस्ताव की ओर झुकता है।",
+    leansNegative: "प्रस्ताव के निषेध की ओर झुकता है।",
   },
 };
 
@@ -386,8 +386,8 @@ const RITUAL_STATUS_COPY: Record<
 > = {
   es: {
     question: "Tomando tu pregunta",
-    consult: "LlevÃ¡ndola al orÃ¡culo",
-    shape: "El orÃ¡culo estÃ¡ consultando",
+    consult: "Llevándola al oráculo",
+    shape: "El oráculo está consultando",
     seal: "Sellando la lectura",
   },
   en: {
@@ -398,8 +398,8 @@ const RITUAL_STATUS_COPY: Record<
   },
   pt: {
     question: "Sustentando a tua pergunta",
-    consult: "Levando-a ao orÃ¡culo",
-    shape: "O orÃ¡culo estÃ¡ consultando",
+    consult: "Levando-a ao oráculo",
+    shape: "O oráculo está consultando",
     seal: "Selando a leitura",
   },
   fr: {
@@ -421,34 +421,34 @@ const RITUAL_STATUS_COPY: Record<
     seal: "Sigillando la lettura",
   },
   ja: {
-    question: "å•ã„ã‚’å—ã‘å–ã£ã¦ã„ã¾ã™",
-    consult: "ç¥žè¨—ã¸é‹ã‚“ã§ã„ã¾ã™",
-    shape: "ç¥žè¨—ãŒç…§ä¼šã—ã¦ã„ã¾ã™",
-    seal: "èª­ã¿ã‚’å°ã˜ã¦ã„ã¾ã™",
+    question: "問いを受け取っています",
+    consult: "神託へ運んでいます",
+    shape: "神託が照会しています",
+    seal: "読みを封じています",
   },
   zh: {
-    question: "æ‰¿æŽ¥ä½ çš„é—®é¢˜",
-    consult: "å°†å®ƒå¸¦å‘ç¥žè°•",
-    shape: "ç¥žè°•æ­£åœ¨æŽ¨æ¼”",
-    seal: "æ­£åœ¨å°å°æ­¤æ¬¡è§£è¯»",
+    question: "承接你的问题",
+    consult: "将它带向神谕",
+    shape: "神谕正在推演",
+    seal: "正在封印此次解读",
   },
   ko: {
-    question: "ì§ˆë¬¸ì„ ë°›ì•„ë“¤ì´ëŠ” ì¤‘",
-    consult: "ì‹ íƒìœ¼ë¡œ ì˜®ê¸°ëŠ” ì¤‘",
-    shape: "ì‹ íƒì´ ì‚´í”¼ëŠ” ì¤‘",
-    seal: "í•´ì„ì„ ë´‰ì¸í•˜ëŠ” ì¤‘",
+    question: "질문을 받아들이는 중",
+    consult: "신탁으로 옮기는 중",
+    shape: "신탁이 살피는 중",
+    seal: "해석을 봉인하는 중",
   },
   ar: {
-    question: "Ø§Ø³ØªÙ‚Ø¨Ø§Ù„ Ø³Ø¤Ø§Ù„Ùƒ",
-    consult: "Ù†Ù‚Ù„Ù‡ Ø¥Ù„Ù‰ Ø§Ù„Ø£ÙˆØ±Ø§ÙƒÙ„",
-    shape: "Ø§Ù„Ø£ÙˆØ±Ø§ÙƒÙ„ ÙŠØªØ´Ø§ÙˆØ±",
-    seal: "Ø®ØªÙ… Ø§Ù„Ù‚Ø±Ø§Ø¡Ø©",
+    question: "استقبال سؤالك",
+    consult: "نقله إلى الأوراكل",
+    shape: "الأوراكل يتشاور",
+    seal: "ختم القراءة",
   },
   hi: {
-    question: "à¤†à¤ªà¤•à¥‡ à¤ªà¥à¤°à¤¶à¥à¤¨ à¤•à¥‹ à¤¥à¤¾à¤®à¤¤à¥‡ à¤¹à¥à¤",
-    consult: "à¤‰à¤¸à¥‡ à¤“à¤°à¥‡à¤•à¤² à¤¤à¤• à¤²à¥‡ à¤œà¤¾à¤¤à¥‡ à¤¹à¥à¤",
-    shape: "à¤“à¤°à¥‡à¤•à¤² à¤ªà¤°à¤¾à¤®à¤°à¥à¤¶ à¤•à¤° à¤°à¤¹à¤¾ à¤¹à¥ˆ",
-    seal: "à¤ªà¤ à¤¨ à¤•à¥‹ à¤¸à¥€à¤² à¤•à¤¿à¤¯à¤¾ à¤œà¤¾ à¤°à¤¹à¤¾ à¤¹à¥ˆ",
+    question: "आपके प्रश्न को थामते हुए",
+    consult: "उसे ओरेकल तक ले जाते हुए",
+    shape: "ओरेकल परामर्श कर रहा है",
+    seal: "पठन को सील किया जा रहा है",
   },
 };
 
@@ -470,146 +470,146 @@ const DRAWER_TEXT: Record<
 > = {
   es: {
     activity: "Tu actividad",
-    streak: "Racha (dÃ­as)",
+    streak: "Racha (días)",
     consultationsToday: "Consultas hoy",
     chatsWithMessages: "Chats con mensajes",
-    loadingChats: "Cargando chatsâ€¦",
-    loadingConversation: "Cargando conversaciÃ³nâ€¦",
+    loadingChats: "Cargando chats…",
+    loadingConversation: "Cargando conversación…",
     onlyThreads: "Solo se listan hilos con al menos una lectura.",
-    noSaved: "AÃºn no hay conversaciones guardadas. EnvÃ­a una consulta para verla aquÃ­.",
+    noSaved: "Aún no hay conversaciones guardadas. Envía una consulta para verla aquí.",
     messages: "mensajes",
-    deleteConversation: "Eliminar conversaciÃ³n",
-    deletingConversation: "Eliminando conversaciÃ³nâ€¦",
+    deleteConversation: "Eliminar conversación",
+    deletingConversation: "Eliminando conversación…",
   },
   en: {
     activity: "Your activity",
     streak: "Streak (days)",
     consultationsToday: "Consultations today",
     chatsWithMessages: "Chats with messages",
-    loadingChats: "Loading chatsâ€¦",
-    loadingConversation: "Loading conversationâ€¦",
+    loadingChats: "Loading chats…",
+    loadingConversation: "Loading conversation…",
     onlyThreads: "Only threads with at least one reading are listed.",
     noSaved: "No saved conversations yet. Send a consultation to see it here.",
     messages: "messages",
     deleteConversation: "Delete conversation",
-    deletingConversation: "Deleting conversationâ€¦",
+    deletingConversation: "Deleting conversation…",
   },
   pt: {
     activity: "Sua atividade",
-    streak: "SequÃªncia (dias)",
+    streak: "Sequência (dias)",
     consultationsToday: "Consultas hoje",
     chatsWithMessages: "Chats com mensagens",
-    loadingChats: "Carregando chatsâ€¦",
-    loadingConversation: "Carregando conversaâ€¦",
-    onlyThreads: "Somente fios com ao menos uma leitura sÃ£o listados.",
-    noSaved: "Ainda nÃ£o hÃ¡ conversas salvas. Envie uma consulta para vÃª-la aqui.",
+    loadingChats: "Carregando chats…",
+    loadingConversation: "Carregando conversa…",
+    onlyThreads: "Somente fios com ao menos uma leitura são listados.",
+    noSaved: "Ainda não há conversas salvas. Envie uma consulta para vê-la aqui.",
     messages: "mensagens",
     deleteConversation: "Excluir conversa",
-    deletingConversation: "Excluindo conversaâ€¦",
+    deletingConversation: "Excluindo conversa…",
   },
   fr: {
-    activity: "Votre activitÃ©",
-    streak: "SÃ©rie (jours)",
+    activity: "Votre activité",
+    streak: "Série (jours)",
     consultationsToday: "Consultations aujourd'hui",
     chatsWithMessages: "Chats avec messages",
-    loadingChats: "Chargement des chatsâ€¦",
-    loadingConversation: "Chargement de la conversationâ€¦",
-    onlyThreads: "Seuls les fils avec au moins une lecture sont listÃ©s.",
-    noSaved: "Aucune conversation enregistrÃ©e pour le moment.",
+    loadingChats: "Chargement des chats…",
+    loadingConversation: "Chargement de la conversation…",
+    onlyThreads: "Seuls les fils avec au moins une lecture sont listés.",
+    noSaved: "Aucune conversation enregistrée pour le moment.",
     messages: "messages",
     deleteConversation: "Supprimer la conversation",
-    deletingConversation: "Suppression de la conversationâ€¦",
+    deletingConversation: "Suppression de la conversation…",
   },
   de: {
-    activity: "Deine AktivitÃ¤t",
+    activity: "Deine Aktivität",
     streak: "Serie (Tage)",
     consultationsToday: "Heutige Konsultationen",
     chatsWithMessages: "Chats mit Nachrichten",
-    loadingChats: "Chats werden geladenâ€¦",
-    loadingConversation: "Konversation wird geladenâ€¦",
+    loadingChats: "Chats werden geladen…",
+    loadingConversation: "Konversation wird geladen…",
     onlyThreads: "Nur Threads mit mindestens einer Lesung werden gelistet.",
     noSaved: "Noch keine gespeicherten Konversationen.",
     messages: "Nachrichten",
-    deleteConversation: "Konversation lÃ¶schen",
-    deletingConversation: "Konversation wird gelÃ¶schtâ€¦",
+    deleteConversation: "Konversation löschen",
+    deletingConversation: "Konversation wird gelöscht…",
   },
   it: {
-    activity: "La tua attivitÃ ",
+    activity: "La tua attività",
     streak: "Serie (giorni)",
     consultationsToday: "Consultazioni oggi",
     chatsWithMessages: "Chat con messaggi",
-    loadingChats: "Caricamento chatâ€¦",
-    loadingConversation: "Caricamento conversazioneâ€¦",
+    loadingChats: "Caricamento chat…",
+    loadingConversation: "Caricamento conversazione…",
     onlyThreads: "Sono elencati solo i thread con almeno una lettura.",
     noSaved: "Nessuna conversazione salvata al momento.",
     messages: "messaggi",
     deleteConversation: "Elimina conversazione",
-    deletingConversation: "Eliminazione conversazioneâ€¦",
+    deletingConversation: "Eliminazione conversazione…",
   },
   ja: {
-    activity: "ã‚ãªãŸã®å±¥æ­´",
-    streak: "é€£ç¶šæ—¥æ•°",
-    consultationsToday: "æœ¬æ—¥ã®ç›¸è«‡",
-    chatsWithMessages: "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä»˜ããƒãƒ£ãƒƒãƒˆ",
-    loadingChats: "ãƒãƒ£ãƒƒãƒˆã‚’èª­ã¿è¾¼ã¿ä¸­â€¦",
-    loadingConversation: "ä¼šè©±ã‚’èª­ã¿è¾¼ã¿ä¸­â€¦",
-    onlyThreads: "å°‘ãªãã¨ã‚‚1ä»¶ã®èª­ã¿ãŒã‚ã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰ã®ã¿è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚",
-    noSaved: "ä¿å­˜ã•ã‚ŒãŸä¼šè©±ã¯ã¾ã ã‚ã‚Šã¾ã›ã‚“ã€‚",
-    messages: "ä»¶ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸",
-    deleteConversation: "ä¼šè©±ã‚’å‰Šé™¤",
-    deletingConversation: "ä¼šè©±ã‚’å‰Šé™¤ä¸­â€¦",
+    activity: "あなたの履歴",
+    streak: "連続日数",
+    consultationsToday: "本日の相談",
+    chatsWithMessages: "メッセージ付きチャット",
+    loadingChats: "チャットを読み込み中…",
+    loadingConversation: "会話を読み込み中…",
+    onlyThreads: "少なくとも1件の読みがあるスレッドのみ表示されます。",
+    noSaved: "保存された会話はまだありません。",
+    messages: "件のメッセージ",
+    deleteConversation: "会話を削除",
+    deletingConversation: "会話を削除中…",
   },
   zh: {
-    activity: "ä½ çš„æ´»åŠ¨",
-    streak: "è¿žç»­å¤©æ•°",
-    consultationsToday: "ä»Šæ—¥å’¨è¯¢",
-    chatsWithMessages: "æœ‰æ¶ˆæ¯çš„èŠå¤©",
-    loadingChats: "æ­£åœ¨åŠ è½½èŠå¤©â€¦",
-    loadingConversation: "æ­£åœ¨åŠ è½½ä¼šè¯â€¦",
-    onlyThreads: "ä»…æ˜¾ç¤ºè‡³å°‘å«1æ¬¡è§£è¯»çš„çº¿ç¨‹ã€‚",
-    noSaved: "æš‚æ—¶æ²¡æœ‰å·²ä¿å­˜çš„å¯¹è¯ã€‚",
-    messages: "æ¡æ¶ˆæ¯",
-    deleteConversation: "åˆ é™¤å¯¹è¯",
-    deletingConversation: "æ­£åœ¨åˆ é™¤å¯¹è¯â€¦",
+    activity: "你的活动",
+    streak: "连续天数",
+    consultationsToday: "今日咨询",
+    chatsWithMessages: "有消息的聊天",
+    loadingChats: "正在加载聊天…",
+    loadingConversation: "正在加载会话…",
+    onlyThreads: "仅显示至少含1次解读的线程。",
+    noSaved: "暂时没有已保存的对话。",
+    messages: "条消息",
+    deleteConversation: "删除对话",
+    deletingConversation: "正在删除对话…",
   },
   ko: {
-    activity: "í™œë™ ë‚´ì—­",
-    streak: "ì—°ì† ì¼ìˆ˜",
-    consultationsToday: "ì˜¤ëŠ˜ì˜ ìƒë‹´",
-    chatsWithMessages: "ë©”ì‹œì§€ê°€ ìžˆëŠ” ì±„íŒ…",
-    loadingChats: "ì±„íŒ… ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘â€¦",
-    loadingConversation: "ëŒ€í™” ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘â€¦",
-    onlyThreads: "ìµœì†Œ í•œ ë²ˆì˜ ë¦¬ë”©ì´ ìžˆëŠ” ìŠ¤ë ˆë“œë§Œ í‘œì‹œë©ë‹ˆë‹¤.",
-    noSaved: "ì €ìž¥ëœ ëŒ€í™”ê°€ ì•„ì§ ì—†ìŠµë‹ˆë‹¤.",
-    messages: "ê°œì˜ ë©”ì‹œì§€",
-    deleteConversation: "ëŒ€í™” ì‚­ì œ",
-    deletingConversation: "ëŒ€í™” ì‚­ì œ ì¤‘â€¦",
+    activity: "활동 내역",
+    streak: "연속 일수",
+    consultationsToday: "오늘의 상담",
+    chatsWithMessages: "메시지가 있는 채팅",
+    loadingChats: "채팅 불러오는 중…",
+    loadingConversation: "대화 불러오는 중…",
+    onlyThreads: "최소 한 번의 리딩이 있는 스레드만 표시됩니다.",
+    noSaved: "저장된 대화가 아직 없습니다.",
+    messages: "개의 메시지",
+    deleteConversation: "대화 삭제",
+    deletingConversation: "대화 삭제 중…",
   },
   ar: {
-    activity: "Ù†Ø´Ø§Ø·Ùƒ",
-    streak: "Ø§Ù„ØªØ³Ù„Ø³Ù„ (Ø£ÙŠØ§Ù…)",
-    consultationsToday: "Ø§Ù„Ø§Ø³ØªØ´Ø§Ø±Ø§Øª Ø§Ù„ÙŠÙˆÙ…",
-    chatsWithMessages: "Ø§Ù„Ù…Ø­Ø§Ø¯Ø«Ø§Øª Ø¨Ø±Ø³Ø§Ø¦Ù„",
-    loadingChats: "Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø­Ø§Ø¯Ø«Ø§Øªâ€¦",
-    loadingConversation: "Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø­Ø§Ø¯Ø«Ø©â€¦",
-    onlyThreads: "ØªÙØ¹Ø±Ø¶ ÙÙ‚Ø· Ø§Ù„Ø®ÙŠÙˆØ· Ø°Ø§Øª Ù‚Ø±Ø§Ø¡Ø© ÙˆØ§Ø­Ø¯Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„.",
-    noSaved: "Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ø­Ø§Ø¯Ø«Ø§Øª Ù…Ø­ÙÙˆØ¸Ø© Ø¨Ø¹Ø¯. Ø£Ø±Ø³Ù„ Ø§Ø³ØªØ´Ø§Ø±Ø© Ù„Ø±Ø¤ÙŠØªÙ‡Ø§ Ù‡Ù†Ø§.",
-    messages: "Ø±Ø³Ø§Ø¦Ù„",
-    deleteConversation: "Ø­Ø°Ù Ø§Ù„Ù…Ø­Ø§Ø¯Ø«Ø©",
-    deletingConversation: "Ø¬Ø§Ø±Ù Ø­Ø°Ù Ø§Ù„Ù…Ø­Ø§Ø¯Ø«Ø©â€¦",
+    activity: "نشاطك",
+    streak: "التسلسل (أيام)",
+    consultationsToday: "الاستشارات اليوم",
+    chatsWithMessages: "المحادثات برسائل",
+    loadingChats: "جارٍ تحميل المحادثات…",
+    loadingConversation: "جارٍ تحميل المحادثة…",
+    onlyThreads: "تُعرض فقط الخيوط ذات قراءة واحدة على الأقل.",
+    noSaved: "لا توجد محادثات محفوظة بعد. أرسل استشارة لرؤيتها هنا.",
+    messages: "رسائل",
+    deleteConversation: "حذف المحادثة",
+    deletingConversation: "جارٍ حذف المحادثة…",
   },
   hi: {
-    activity: "à¤†à¤ªà¤•à¥€ à¤—à¤¤à¤¿à¤µà¤¿à¤§à¤¿",
-    streak: "à¤²à¤—à¤¾à¤¤à¤¾à¤° à¤¦à¤¿à¤¨ (à¤¸à¥à¤Ÿà¥à¤°à¥€à¤•)",
-    consultationsToday: "à¤†à¤œ à¤•à¥€ à¤ªà¤°à¤¾à¤®à¤°à¥à¤¶",
-    chatsWithMessages: "à¤¸à¤‚à¤¦à¥‡à¤¶ à¤µà¤¾à¤²à¥€ à¤šà¥ˆà¤Ÿ",
-    loadingChats: "à¤šà¥ˆà¤Ÿ à¤²à¥‹à¤¡ à¤¹à¥‹ à¤°à¤¹à¥€ à¤¹à¥ˆà¤‚â€¦",
-    loadingConversation: "à¤µà¤¾à¤°à¥à¤¤à¤¾ à¤²à¥‹à¤¡ à¤¹à¥‹ à¤°à¤¹à¥€ à¤¹à¥ˆâ€¦",
-    onlyThreads: "à¤•à¥‡à¤µà¤² à¤µà¥‡ à¤¥à¥à¤°à¥‡à¤¡ à¤¦à¤¿à¤–à¤¾à¤ à¤œà¤¾à¤¤à¥‡ à¤¹à¥ˆà¤‚ à¤œà¤¿à¤¨à¤®à¥‡à¤‚ à¤•à¤® à¤¸à¥‡ à¤•à¤® à¤à¤• à¤°à¥€à¤¡à¤¿à¤‚à¤— à¤¹à¥‹à¥¤",
-    noSaved: "à¤…à¤­à¥€ à¤•à¥‹à¤ˆ à¤¸à¤¹à¥‡à¤œà¥€ à¤—à¤ˆ à¤¬à¤¾à¤¤à¤šà¥€à¤¤ à¤¨à¤¹à¥€à¤‚ à¤¹à¥ˆà¥¤ à¤¯à¤¹à¤¾à¤ à¤¦à¥‡à¤–à¤¨à¥‡ à¤•à¥‡ à¤²à¤¿à¤ à¤à¤• à¤ªà¤°à¤¾à¤®à¤°à¥à¤¶ à¤­à¥‡à¤œà¥‡à¤‚à¥¤",
-    messages: "à¤¸à¤‚à¤¦à¥‡à¤¶",
-    deleteConversation: "à¤¬à¤¾à¤¤à¤šà¥€à¤¤ à¤¹à¤Ÿà¤¾à¤à¤",
-    deletingConversation: "à¤¬à¤¾à¤¤à¤šà¥€à¤¤ à¤¹à¤Ÿà¤¾à¤ˆ à¤œà¤¾ à¤°à¤¹à¥€ à¤¹à¥ˆâ€¦",
+    activity: "आपकी गतिविधि",
+    streak: "लगातार दिन (स्ट्रीक)",
+    consultationsToday: "आज की परामर्श",
+    chatsWithMessages: "संदेश वाली चैट",
+    loadingChats: "चैट लोड हो रही हैं…",
+    loadingConversation: "वार्ता लोड हो रही है…",
+    onlyThreads: "केवल वे थ्रेड दिखाए जाते हैं जिनमें कम से कम एक रीडिंग हो।",
+    noSaved: "अभी कोई सहेजी गई बातचीत नहीं है। यहाँ देखने के लिए एक परामर्श भेजें।",
+    messages: "संदेश",
+    deleteConversation: "बातचीत हटाएँ",
+    deletingConversation: "बातचीत हटाई जा रही है…",
   },
 };
 
@@ -620,17 +620,17 @@ const LOCALE_SELECT_ORDER: AppLocale[] = [
 ];
 
 const LANGUAGE_LABELS: Record<AppLocale, string> = {
-  es: "EspaÃ±ol",
+  es: "Español",
   en: "English",
-  pt: "PortuguÃªs",
-  fr: "FranÃ§ais",
+  pt: "Português",
+  fr: "Français",
   de: "Deutsch",
   it: "Italiano",
-  ja: "æ—¥æœ¬èªž",
-  zh: "ä¸­æ–‡",
-  ko: "í•œêµ­ì–´",
-  ar: "Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©",
-  hi: "à¤¹à¤¿à¤¨à¥à¤¦à¥€",
+  ja: "日本語",
+  zh: "中文",
+  ko: "한국어",
+  ar: "العربية",
+  hi: "हिन्दी",
 };
 
 type UiCopy = {
@@ -651,6 +651,9 @@ type UiCopy = {
   bones: string;
   iChingTagline: string;
   bonesTagline: string;
+  modeIChingHint: string;
+  modeIChingYarrowHint: string;
+  modeBonesHint: string;
   emptyInviteMorning: string;
   emptyInviteAfternoon: string;
   emptyInviteNight: string;
@@ -660,25 +663,28 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
   es: {
     language: "Idioma",
     chats: "Chats",
-    signIn: "Iniciar sesiÃ³n",
-    signOut: "Cerrar sesiÃ³n",
+    signIn: "Iniciar sesión",
+    signOut: "Cerrar sesión",
     plan: "Plan",
     options: "Opciones",
-    writeConsultation: "Escribe tu consultaâ€¦",
-    positiveCharge: "Cargo positivo (afirmaciÃ³n)â€¦",
-    threadLimitReached: "LÃ­mite de hilo alcanzado. Usa Â«Nueva sesiÃ³nÂ» arriba.",
-    dismissThreadLimitBannerAria: "Ocultar aviso del lÃ­mite de hilo",
-    sessionNew: "Nueva sesiÃ³n",
+    writeConsultation: "Escribe tu consulta…",
+    positiveCharge: "Cargo positivo (afirmación)…",
+    threadLimitReached: "Límite de hilo alcanzado. Usa «Nueva sesión» arriba.",
+    dismissThreadLimitBannerAria: "Ocultar aviso del límite de hilo",
+    sessionNew: "Nueva sesión",
     drawerClose: "Cerrar",
     iChing: "I Ching",
     bones: "Huesos",
-    iChingTagline: "Tres monedas Â· Zhu Xi Â· Wilhelm/Baynes",
-    bonesTagline: "Huesos de OrÃ¡culo Â· Grietas å…† Â· estilo Shang",
+    iChingTagline: "Tres monedas · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Huesos de Oráculo · Grietas 兆 · estilo Shang",
+    modeIChingHint: "Seis líneas, tres monedas por línea, mutación Zhu Xi",
+    modeIChingYarrowHint: "Seis líneas, tres fases por línea, distribución Zhou auténtica",
+    modeBonesHint: "Pregunta sí / no con cargo afirmativo; lectura por grietas 兆.",
     emptyInviteMorning:
-      "Buen momento para escuchar al orÃ¡culo. Â¿QuÃ© inquietud trae este nuevo dÃ­a? Escribe tu consulta con intenciÃ³n.",
+      "Buen momento para escuchar al oráculo. ¿Qué inquietud trae este nuevo día? Escribe tu consulta con intención.",
     emptyInviteAfternoon:
-      "El cambio sigue moviÃ©ndose. Â¿QuÃ© necesitas ver con mÃ¡s claridad en el curso de hoy?",
-    emptyInviteNight: "La noche tambiÃ©n pregunta. Â¿QuÃ© frente de tu vida quieres explorar?",
+      "El cambio sigue moviéndose. ¿Qué necesitas ver con más claridad en el curso de hoy?",
+    emptyInviteNight: "La noche también pregunta. ¿Qué frente de tu vida quieres explorar?",
   },
   en: {
     language: "Language",
@@ -687,16 +693,19 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Sign out",
     plan: "Plan",
     options: "Options",
-    writeConsultation: "Type your consultationâ€¦",
-    positiveCharge: "Positive charge (affirmation)â€¦",
+    writeConsultation: "Type your consultation…",
+    positiveCharge: "Positive charge (affirmation)…",
     threadLimitReached: "Thread limit reached. Use \"New session\" above.",
     dismissThreadLimitBannerAria: "Dismiss thread limit notice",
     sessionNew: "New session",
     drawerClose: "Close",
     iChing: "I Ching",
     bones: "Bones",
-    iChingTagline: "Three coins Â· Zhu Xi Â· Wilhelm/Baynes",
-    bonesTagline: "Oracle Bones Â· Cracks å…† Â· Shang style",
+    iChingTagline: "Three coins · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Oracle Bones · Cracks 兆 · Shang style",
+    modeIChingHint: "Six lines, three coins per line, Zhu Xi mutation",
+    modeIChingYarrowHint: "Six lines, three phases per line, authentic Zhou distribution",
+    modeBonesHint: "Yes / no by affirmative charge; crack reading 兆.",
     emptyInviteMorning: "Good time to consult the oracle. What concern comes with this new day?",
     emptyInviteAfternoon: "Change keeps moving. What do you need to see more clearly today?",
     emptyInviteNight: "The night also asks. Which part of your life do you want to explore?",
@@ -707,39 +716,45 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signIn: "Entrar",
     signOut: "Sair",
     plan: "Plano",
-    options: "OpÃ§Ãµes",
-    writeConsultation: "Escreva sua consultaâ€¦",
-    positiveCharge: "Cargo positivo (afirmaÃ§Ã£o)â€¦",
-    threadLimitReached: "Limite do fio atingido. Use Â«Nova sessÃ£oÂ» acima.",
+    options: "Opções",
+    writeConsultation: "Escreva sua consulta…",
+    positiveCharge: "Cargo positivo (afirmação)…",
+    threadLimitReached: "Limite do fio atingido. Use «Nova sessão» acima.",
     dismissThreadLimitBannerAria: "Ocultar aviso do limite do fio",
-    sessionNew: "Nova sessÃ£o",
+    sessionNew: "Nova sessão",
     drawerClose: "Fechar",
     iChing: "I Ching",
     bones: "Ossos",
-    iChingTagline: "TrÃªs moedas Â· Zhu Xi Â· Wilhelm/Baynes",
-    bonesTagline: "Ossos de OrÃ¡culo Â· Fissuras å…† Â· estilo Shang",
-    emptyInviteMorning: "Bom momento para ouvir o orÃ¡culo. Que inquietaÃ§Ã£o traz este novo dia?",
-    emptyInviteAfternoon: "A mudanÃ§a continua. O que vocÃª precisa ver com mais clareza hoje?",
-    emptyInviteNight: "A noite tambÃ©m pergunta. Qual frente da sua vida vocÃª quer explorar?",
+    iChingTagline: "Três moedas · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Ossos de Oráculo · Fissuras 兆 · estilo Shang",
+    modeIChingHint: "Seis linhas, três moedas por linha, mutação Zhu Xi",
+    modeIChingYarrowHint: "Seis linhas, três fases por linha, distribuição Zhou autêntica",
+    modeBonesHint: "Pergunta sim / não com cargo afirmativo; leitura por fissuras 兆.",
+    emptyInviteMorning: "Bom momento para ouvir o oráculo. Que inquietação traz este novo dia?",
+    emptyInviteAfternoon: "A mudança continua. O que você precisa ver com mais clareza hoje?",
+    emptyInviteNight: "A noite também pergunta. Qual frente da sua vida você quer explorar?",
   },
   fr: {
     language: "Langue",
     chats: "Discussions",
     signIn: "Se connecter",
-    signOut: "Se dÃ©connecter",
+    signOut: "Se déconnecter",
     plan: "Forfait",
     options: "Options",
-    writeConsultation: "Ã‰cris ta consultationâ€¦",
-    positiveCharge: "Charge positive (affirmation)â€¦",
-    threadLimitReached: "Limite du fil atteinte. Utilisez Â« Nouvelle session Â».",
+    writeConsultation: "Écris ta consultation…",
+    positiveCharge: "Charge positive (affirmation)…",
+    threadLimitReached: "Limite du fil atteinte. Utilisez « Nouvelle session ».",
     dismissThreadLimitBannerAria: "Masquer l'avis de limite de fil",
     sessionNew: "Nouvelle session",
     drawerClose: "Fermer",
     iChing: "I Ching",
     bones: "Os",
-    iChingTagline: "Trois piÃ¨ces Â· Zhu Xi Â· Wilhelm/Baynes",
-    bonesTagline: "Os Oracle Â· Fissures å…† Â· style Shang",
-    emptyInviteMorning: "Bon moment pour Ã©couter l'oracle. Quelle prÃ©occupation t'accompagne aujourd'hui ?",
+    iChingTagline: "Trois pièces · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Os Oracle · Fissures 兆 · style Shang",
+    modeIChingHint: "Six lignes, trois pièces par ligne, mutation Zhu Xi",
+    modeIChingYarrowHint: "Six lignes, trois phases par ligne, distribution Zhou authentique",
+    modeBonesHint: "Question oui / non avec charge affirmative ; lecture des fissures 兆.",
+    emptyInviteMorning: "Bon moment pour écouter l'oracle. Quelle préoccupation t'accompagne aujourd'hui ?",
     emptyInviteAfternoon: "Le changement continue. Que dois-tu voir plus clairement aujourd'hui ?",
     emptyInviteNight: "La nuit pose aussi des questions. Quelle partie de ta vie veux-tu explorer ?",
   },
@@ -750,19 +765,22 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Abmelden",
     plan: "Plan",
     options: "Optionen",
-    writeConsultation: "Schreibe deine Frageâ€¦",
-    positiveCharge: "Positive Ladung (Bejahung)â€¦",
-    threadLimitReached: "Thread-Limit erreicht. Oben Â«Neue SitzungÂ» verwenden.",
+    writeConsultation: "Schreibe deine Frage…",
+    positiveCharge: "Positive Ladung (Bejahung)…",
+    threadLimitReached: "Thread-Limit erreicht. Oben «Neue Sitzung» verwenden.",
     dismissThreadLimitBannerAria: "Hinweis zum Thread-Limit ausblenden",
     sessionNew: "Neue Sitzung",
-    drawerClose: "SchlieÃŸen",
+    drawerClose: "Schließen",
     iChing: "I Ching",
     bones: "Knochen",
-    iChingTagline: "Drei MÃ¼nzen Â· Zhu Xi Â· Wilhelm/Baynes",
-    bonesTagline: "Orakelknochen Â· Risse å…† Â· Shang-Stil",
-    emptyInviteMorning: "Guter Zeitpunkt fÃ¼r das Orakel. Welche Frage bringt dieser Tag mit sich?",
+    iChingTagline: "Drei Münzen · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Orakelknochen · Risse 兆 · Shang-Stil",
+    modeIChingHint: "Sechs Linien, drei Münzen pro Linie, Zhu-Xi-Mutation",
+    modeIChingYarrowHint: "Sechs Linien, drei Phasen pro Linie, authentische Zhou-Verteilung",
+    modeBonesHint: "Ja/Nein-Frage mit positiver Ladung; Risslesung 兆.",
+    emptyInviteMorning: "Guter Zeitpunkt für das Orakel. Welche Frage bringt dieser Tag mit sich?",
     emptyInviteAfternoon: "Der Wandel geht weiter. Was musst du heute klarer sehen?",
-    emptyInviteNight: "Auch die Nacht fragt. Welchen Bereich deines Lebens mÃ¶chtest du erkunden?",
+    emptyInviteNight: "Auch die Nacht fragt. Welchen Bereich deines Lebens möchtest du erkunden?",
   },
   it: {
     language: "Lingua",
@@ -771,205 +789,223 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     signOut: "Esci",
     plan: "Piano",
     options: "Opzioni",
-    writeConsultation: "Scrivi la tua consultazioneâ€¦",
-    positiveCharge: "Carica positiva (affermazione)â€¦",
-    threadLimitReached: "Limite del thread raggiunto. Usa Â«Nuova sessioneÂ».",
+    writeConsultation: "Scrivi la tua consultazione…",
+    positiveCharge: "Carica positiva (affermazione)…",
+    threadLimitReached: "Limite del thread raggiunto. Usa «Nuova sessione».",
     dismissThreadLimitBannerAria: "Nascondi avviso limite thread",
     sessionNew: "Nuova sessione",
     drawerClose: "Chiudi",
     iChing: "I Ching",
     bones: "Ossa",
-    iChingTagline: "Tre monete Â· Zhu Xi Â· Wilhelm/Baynes",
-    bonesTagline: "Ossa dell'Oracolo Â· Crepe å…† Â· stile Shang",
+    iChingTagline: "Tre monete · Zhu Xi · Wilhelm/Baynes",
+    bonesTagline: "Ossa dell'Oracolo · Crepe 兆 · stile Shang",
+    modeIChingHint: "Sei linee, tre monete per linea, mutazione Zhu Xi",
+    modeIChingYarrowHint: "Sei linee, tre fasi per linea, distribuzione Zhou autentica",
+    modeBonesHint: "Domanda sì / no con carica affermativa; lettura delle crepe 兆.",
     emptyInviteMorning: "Momento ideale per l'oracolo. Quale inquietudine porta questo nuovo giorno?",
-    emptyInviteAfternoon: "Il cambiamento continua. Cosa devi vedere con piÃ¹ chiarezza oggi?",
+    emptyInviteAfternoon: "Il cambiamento continua. Cosa devi vedere con più chiarezza oggi?",
     emptyInviteNight: "Anche la notte fa domande. Quale fronte della tua vita vuoi esplorare?",
   },
   ja: {
-    language: "è¨€èªž",
-    chats: "ãƒãƒ£ãƒƒãƒˆ",
-    signIn: "ãƒ­ã‚°ã‚¤ãƒ³",
-    signOut: "ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ",
-    plan: "ãƒ—ãƒ©ãƒ³",
-    options: "ã‚ªãƒ—ã‚·ãƒ§ãƒ³",
-    writeConsultation: "ç›¸è«‡å†…å®¹ã‚’å…¥åŠ›â€¦",
-    positiveCharge: "è‚¯å®šã®å•ã„ï¼ˆè‚¯å®šé›»è·ï¼‰â€¦",
-    threadLimitReached: "ã‚¹ãƒ¬ãƒƒãƒ‰ä¸Šé™ã§ã™ã€‚ä¸Šã®ã€Œæ–°ã—ã„ã‚»ãƒƒã‚·ãƒ§ãƒ³ã€ã‚’ä½¿ç”¨ã€‚",
-    dismissThreadLimitBannerAria: "ã‚¹ãƒ¬ãƒƒãƒ‰ä¸Šé™ã®é€šçŸ¥ã‚’é–‰ã˜ã‚‹",
-    sessionNew: "æ–°ã—ã„ã‚»ãƒƒã‚·ãƒ§ãƒ³",
-    drawerClose: "é–‰ã˜ã‚‹",
+    language: "言語",
+    chats: "チャット",
+    signIn: "ログイン",
+    signOut: "ログアウト",
+    plan: "プラン",
+    options: "オプション",
+    writeConsultation: "相談内容を入力…",
+    positiveCharge: "肯定の問い（肯定電荷）…",
+    threadLimitReached: "スレッド上限です。上の「新しいセッション」を使用。",
+    dismissThreadLimitBannerAria: "スレッド上限の通知を閉じる",
+    sessionNew: "新しいセッション",
+    drawerClose: "閉じる",
     iChing: "I Ching",
-    bones: "éª¨å ",
-    iChingTagline: "ä¸‰æžšã®ç¡¬è²¨ Â· æœ±ç†¹ Â· ãƒ´ã‚£ãƒ«ãƒ˜ãƒ«ãƒ /ãƒ™ã‚¤ãƒ³ã‚º",
-    bonesTagline: "ç”²éª¨å  Â· äº€è£‚ å…† Â· æ®·æ§˜å¼",
-    emptyInviteMorning: "ã„ã¾ã¯è¨—å®£ã«å‘ã„ãŸæ™‚é–“ã€‚ä»Šæ—¥ã®ä¸å®‰ã‚’å•ã„ã«ã—ã¦ã¿ã¾ã—ã‚‡ã†ã€‚",
-    emptyInviteAfternoon: "å¤‰åŒ–ã¯å‹•ãç¶šã‘ã¦ã„ã¾ã™ã€‚ä»Šæ—¥ã€ä½•ã‚’ã‚ˆã‚Šæ˜Žç¢ºã«è¦‹ãŸã„ã§ã™ã‹ã€‚",
-    emptyInviteNight: "å¤œã‚‚ã¾ãŸå•ã„ã‚’ç”Ÿã¿ã¾ã™ã€‚äººç”Ÿã®ã©ã®é¢ã‚’æŽ¢ã‚Šã¾ã™ã‹ã€‚",
+    bones: "骨占",
+    iChingTagline: "三枚の硬貨 · 朱熹 · ヴィルヘルム/ベインズ",
+    bonesTagline: "甲骨占 · 亀裂 兆 · 殷様式",
+    modeIChingHint: "六爻、各爻に三枚の硬貨、朱熹変爻法",
+    modeIChingYarrowHint: "六爻、各爻に三つの段階、周朝本来の分布",
+    modeBonesHint: "肯定電荷による Yes/No。亀裂 兆 の読解。",
+    emptyInviteMorning: "いまは託宣に向いた時間。今日の不安を問いにしてみましょう。",
+    emptyInviteAfternoon: "変化は動き続けています。今日、何をより明確に見たいですか。",
+    emptyInviteNight: "夜もまた問いを生みます。人生のどの面を探りますか。",
   },
   zh: {
-    language: "è¯­è¨€",
-    chats: "èŠå¤©",
-    signIn: "ç™»å½•",
-    signOut: "é€€å‡ºç™»å½•",
-    plan: "æ–¹æ¡ˆ",
-    options: "é€‰é¡¹",
-    writeConsultation: "è¾“å…¥ä½ çš„å’¨è¯¢â€¦",
-    positiveCharge: "æ­£å‘å‘½é¢˜ï¼ˆè‚¯å®šï¼‰â€¦",
-    threadLimitReached: "çº¿ç¨‹å·²è¾¾ä¸Šé™ï¼Œè¯·ä½¿ç”¨â€œæ–°ä¼šè¯â€ã€‚",
-    dismissThreadLimitBannerAria: "å…³é—­çº¿ç¨‹ä¸Šé™æç¤º",
-    sessionNew: "æ–°ä¼šè¯",
-    drawerClose: "å…³é—­",
+    language: "语言",
+    chats: "聊天",
+    signIn: "登录",
+    signOut: "退出登录",
+    plan: "方案",
+    options: "选项",
+    writeConsultation: "输入你的咨询…",
+    positiveCharge: "正向命题（肯定）…",
+    threadLimitReached: "线程已达上限，请使用“新会话”。",
+    dismissThreadLimitBannerAria: "关闭线程上限提示",
+    sessionNew: "新会话",
+    drawerClose: "关闭",
     iChing: "I Ching",
-    bones: "ç”²éª¨",
-    iChingTagline: "ä¸‰æžšé“œé’± Â· æœ±ç†¹ Â· Wilhelm/Baynes",
-    bonesTagline: "ç”²éª¨ Â· è£‚çº¹ å…† Â· å•†å¼",
-    emptyInviteMorning: "æ­¤åˆ»é€‚åˆè†å¬ç¥žè°•ã€‚ä»Šå¤©ä½ å¸¦ç€ä»€ä¹ˆé—®é¢˜è€Œæ¥ï¼Ÿ",
-    emptyInviteAfternoon: "å˜åŒ–ä»åœ¨æµåŠ¨ã€‚ä»Šå¤©ä½ éœ€è¦çœ‹æ¸…ä»€ä¹ˆï¼Ÿ",
-    emptyInviteNight: "å¤œæ™šä¹Ÿä¼šå‘é—®ã€‚ä½ æƒ³æŽ¢ç´¢äººç”Ÿçš„å“ªä¸€é¢ï¼Ÿ",
+    bones: "甲骨",
+    iChingTagline: "三枚铜钱 · 朱熹 · Wilhelm/Baynes",
+    bonesTagline: "甲骨 · 裂纹 兆 · 商式",
+    modeIChingHint: "六爻，每爻三枚铜钱，朱熹变爻法",
+    modeIChingYarrowHint: "六爻，每爻三阶段，周代本真分布",
+    modeBonesHint: "以肯定命题进行是/否占；裂纹 兆 解读。",
+    emptyInviteMorning: "此刻适合聆听神谕。今天你带着什么问题而来？",
+    emptyInviteAfternoon: "变化仍在流动。今天你需要看清什么？",
+    emptyInviteNight: "夜晚也会发问。你想探索人生的哪一面？",
   },
   ko: {
-    language: "ì–¸ì–´",
-    chats: "ì±„íŒ…",
-    signIn: "ë¡œê·¸ì¸",
-    signOut: "ë¡œê·¸ì•„ì›ƒ",
-    plan: "í”Œëžœ",
-    options: "ì˜µì…˜",
-    writeConsultation: "ì§ˆë¬¸ì„ ìž…ë ¥í•˜ì„¸ìš”â€¦",
-    positiveCharge: "ê¸ì • ëª…ì œ(affirmation)â€¦",
-    threadLimitReached: "ìŠ¤ë ˆë“œ í•œë„ ë„ë‹¬. ìœ„ì˜ Â«ìƒˆ ì„¸ì…˜Â» ì‚¬ìš©.",
-    dismissThreadLimitBannerAria: "ìŠ¤ë ˆë“œ í•œë„ ì•Œë¦¼ ìˆ¨ê¸°ê¸°",
-    sessionNew: "ìƒˆ ì„¸ì…˜",
-    drawerClose: "ë‹«ê¸°",
+    language: "언어",
+    chats: "채팅",
+    signIn: "로그인",
+    signOut: "로그아웃",
+    plan: "플랜",
+    options: "옵션",
+    writeConsultation: "질문을 입력하세요…",
+    positiveCharge: "긍정 명제(affirmation)…",
+    threadLimitReached: "스레드 한도 도달. 위의 «새 세션» 사용.",
+    dismissThreadLimitBannerAria: "스레드 한도 알림 숨기기",
+    sessionNew: "새 세션",
+    drawerClose: "닫기",
     iChing: "I Ching",
-    bones: "ê³¨ë³µ",
-    iChingTagline: "ì„¸ ë™ì „ Â· ì£¼í¬ Â· Wilhelm/Baynes",
-    bonesTagline: "ê³¨ë³µ Â· ê· ì—´ å…† Â· ìƒë‚˜ë¼ ë°©ì‹",
-    emptyInviteMorning: "ì§€ê¸ˆì€ ì˜¤ë¼í´ì— ê·€ ê¸°ìš¸ì´ê¸° ì¢‹ì€ ì‹œê°„ìž…ë‹ˆë‹¤. ì–´ë–¤ ê³ ë¯¼ì´ ìžˆë‚˜ìš”?",
-    emptyInviteAfternoon: "ë³€í™”ëŠ” ê³„ì† ì›€ì§ìž…ë‹ˆë‹¤. ì˜¤ëŠ˜ ë¬´ì—‡ì„ ë” ë¶„ëª…ížˆ ë³´ê³  ì‹¶ë‚˜ìš”?",
-    emptyInviteNight: "ë°¤ë„ ì§ˆë¬¸í•©ë‹ˆë‹¤. ì‚¶ì˜ ì–´ë–¤ ì˜ì—­ì„ íƒìƒ‰í•˜ê³  ì‹¶ë‚˜ìš”?",
+    bones: "골복",
+    iChingTagline: "세 동전 · 주희 · Wilhelm/Baynes",
+    bonesTagline: "골복 · 균열 兆 · 상나라 방식",
+    modeIChingHint: "육효, 효마다 동전 3개, 주희 변효 규칙",
+    modeIChingYarrowHint: "육효, 효마다 세 단계, 주 왕조 본래 분포",
+    modeBonesHint: "긍정 명제로 예/아니오 질문; 균열 兆 해석.",
+    emptyInviteMorning: "지금은 오라클에 귀 기울이기 좋은 시간입니다. 어떤 고민이 있나요?",
+    emptyInviteAfternoon: "변화는 계속 움직입니다. 오늘 무엇을 더 분명히 보고 싶나요?",
+    emptyInviteNight: "밤도 질문합니다. 삶의 어떤 영역을 탐색하고 싶나요?",
   },
   ar: {
-    language: "Ø§Ù„Ù„ØºØ©",
-    chats: "Ø§Ù„Ù…Ø­Ø§Ø¯Ø«Ø§Øª",
-    signIn: "ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„",
-    signOut: "ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬",
-    plan: "Ø§Ù„Ø®Ø·Ø©",
-    options: "Ø®ÙŠØ§Ø±Ø§Øª",
-    writeConsultation: "Ø§ÙƒØªØ¨ Ø§Ø³ØªØ´Ø§Ø±ØªÙƒâ€¦",
-    positiveCharge: "Ø§Ù„Ø´Ø­Ù†Ø© Ø§Ù„Ø¥ÙŠØ¬Ø§Ø¨ÙŠØ© (ØªØ£ÙƒÙŠØ¯)â€¦",
-    threadLimitReached: "ØªÙ… Ø¨Ù„ÙˆØº Ø­Ø¯ Ø§Ù„Ø®ÙŠØ·. Ø§Ø³ØªØ®Ø¯Ù… Â«Ø¬Ù„Ø³Ø© Ø¬Ø¯ÙŠØ¯Ø©Â» Ø£Ø¹Ù„Ø§Ù‡.",
-    dismissThreadLimitBannerAria: "Ø¥Ø®ÙØ§Ø¡ Ø¥Ø´Ø¹Ø§Ø± Ø­Ø¯ Ø§Ù„Ø®ÙŠØ·",
-    sessionNew: "Ø¬Ù„Ø³Ø© Ø¬Ø¯ÙŠØ¯Ø©",
-    drawerClose: "Ø¥ØºÙ„Ø§Ù‚",
+    language: "اللغة",
+    chats: "المحادثات",
+    signIn: "تسجيل الدخول",
+    signOut: "تسجيل الخروج",
+    plan: "الخطة",
+    options: "خيارات",
+    writeConsultation: "اكتب استشارتك…",
+    positiveCharge: "الشحنة الإيجابية (تأكيد)…",
+    threadLimitReached: "تم بلوغ حد الخيط. استخدم «جلسة جديدة» أعلاه.",
+    dismissThreadLimitBannerAria: "إخفاء إشعار حد الخيط",
+    sessionNew: "جلسة جديدة",
+    drawerClose: "إغلاق",
     iChing: "I Ching",
-    bones: "Ø¹Ø¸Ø§Ù… Ø§Ù„ÙƒÙ‡Ø§Ù†Ø©",
-    iChingTagline: "Ø«Ù„Ø§Ø« Ø¹Ù…Ù„Ø§Øª Â· ØªØ´Ùˆ Ø´ÙŠ Â· ÙÙŠÙ„Ù‡Ù„Ù…/Ø¨ÙŠÙ†Ø²",
-    bonesTagline: "Ø¹Ø¸Ø§Ù… Ø§Ù„ÙƒÙ‡Ø§Ù†Ø© Â· Ø§Ù„Ø´Ù‚ÙˆÙ‚ å…† Â· Ø£Ø³Ù„ÙˆØ¨ Ø´Ø§Ù†Øº",
-    emptyInviteMorning: "ÙˆÙ‚Øª Ù…Ù†Ø§Ø³Ø¨ Ù„Ù„ØªØ´Ø§ÙˆØ± Ù…Ø¹ Ø§Ù„Ø£ÙˆØ±Ø§ÙƒÙ„. Ù…Ø§ Ø§Ù„Ù‚Ù„Ù‚ Ø§Ù„Ø°ÙŠ ÙŠØ­Ù…Ù„Ù‡ Ù‡Ø°Ø§ Ø§Ù„ÙŠÙˆÙ… Ø§Ù„Ø¬Ø¯ÙŠØ¯ØŸ Ø§ÙƒØªØ¨ Ø§Ø³ØªØ´Ø§Ø±ØªÙƒ Ø¨Ù†ÙŠØ© ØµØ§Ø¯Ù‚Ø©.",
-    emptyInviteAfternoon: "Ø§Ù„ØªØºÙŠÙŠØ± Ù„Ø§ ÙŠØªÙˆÙ‚Ù. Ù…Ø§ Ø§Ù„Ø°ÙŠ ØªØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ø±Ø¤ÙŠØªÙ‡ Ø¨ÙˆØ¶ÙˆØ­ Ø£ÙƒØ¨Ø± Ø§Ù„ÙŠÙˆÙ…ØŸ",
-    emptyInviteNight: "Ø§Ù„Ù„ÙŠÙ„ Ø£ÙŠØ¶Ø§Ù‹ ÙŠØ³Ø£Ù„. Ø£ÙŠ Ø¬Ø§Ù†Ø¨ Ù…Ù† Ø­ÙŠØ§ØªÙƒ ØªØ±ÙŠØ¯ Ø§Ø³ØªÙƒØ´Ø§ÙÙ‡ØŸ",
+    bones: "عظام الكهانة",
+    iChingTagline: "ثلاث عملات · تشو شي · فيلهلم/بينز",
+    bonesTagline: "عظام الكهانة · الشقوق 兆 · أسلوب شانغ",
+    modeIChingHint: "ستة خطوط، ثلاث عملات لكل خط، طريقة تحوّل تشو شي",
+    modeIChingYarrowHint: "ستة خطوط، ثلاث مراحل لكل خط، التوزيع الأصيل لأسرة تشو",
+    modeBonesHint: "سؤال نعم / لا بالشحنة الإيجابية؛ قراءة الشقوق 兆.",
+    emptyInviteMorning: "وقت مناسب للتشاور مع الأوراكل. ما القلق الذي يحمله هذا اليوم الجديد؟ اكتب استشارتك بنية صادقة.",
+    emptyInviteAfternoon: "التغيير لا يتوقف. ما الذي تحتاج إلى رؤيته بوضوح أكبر اليوم؟",
+    emptyInviteNight: "الليل أيضاً يسأل. أي جانب من حياتك تريد استكشافه؟",
   },
   hi: {
-    language: "à¤­à¤¾à¤·à¤¾",
-    chats: "à¤šà¥ˆà¤Ÿ",
-    signIn: "à¤¸à¤¾à¤‡à¤¨ à¤‡à¤¨",
-    signOut: "à¤¸à¤¾à¤‡à¤¨ à¤†à¤‰à¤Ÿ",
-    plan: "à¤ªà¥à¤²à¤¾à¤¨",
-    options: "à¤µà¤¿à¤•à¤²à¥à¤ª",
-    writeConsultation: "à¤…à¤ªà¤¨à¥€ à¤¸à¤²à¤¾à¤¹ à¤²à¤¿à¤–à¥‡à¤‚â€¦",
-    positiveCharge: "à¤¸à¤•à¤¾à¤°à¤¾à¤¤à¥à¤®à¤• à¤ªà¥à¤°à¤¸à¥à¤¤à¤¾à¤µ (à¤ªà¥à¤·à¥à¤Ÿà¤¿)â€¦",
-    threadLimitReached: "à¤¥à¥à¤°à¥‡à¤¡ à¤¸à¥€à¤®à¤¾ à¤ªà¥‚à¤°à¥€à¥¤ à¤Šà¤ªà¤° Â«à¤¨à¤ˆ à¤¸à¤¤à¥à¤°Â» à¤•à¤¾ à¤‰à¤ªà¤¯à¥‹à¤— à¤•à¤°à¥‡à¤‚à¥¤",
-    dismissThreadLimitBannerAria: "à¤¥à¥à¤°à¥‡à¤¡ à¤¸à¥€à¤®à¤¾ à¤¸à¥‚à¤šà¤¨à¤¾ à¤›à¤¿à¤ªà¤¾à¤à¤",
-    sessionNew: "à¤¨à¤ˆ à¤¸à¤¤à¥à¤°",
-    drawerClose: "à¤¬à¤‚à¤¦ à¤•à¤°à¥‡à¤‚",
+    language: "भाषा",
+    chats: "चैट",
+    signIn: "साइन इन",
+    signOut: "साइन आउट",
+    plan: "प्लान",
+    options: "विकल्प",
+    writeConsultation: "अपनी सलाह लिखें…",
+    positiveCharge: "सकारात्मक प्रस्ताव (पुष्टि)…",
+    threadLimitReached: "थ्रेड सीमा पूरी। ऊपर «नई सत्र» का उपयोग करें।",
+    dismissThreadLimitBannerAria: "थ्रेड सीमा सूचना छिपाएँ",
+    sessionNew: "नई सत्र",
+    drawerClose: "बंद करें",
     iChing: "I Ching",
-    bones: "à¤…à¤¸à¥à¤¥à¤¿ à¤“à¤°à¥‡à¤•à¤²",
-    iChingTagline: "à¤¤à¥€à¤¨ à¤¸à¤¿à¤•à¥à¤•à¥‡ Â· à¤à¥‚ à¤¶à¥€ Â· à¤µà¤¿à¤²à¥à¤¹à¥‡à¤²à¥à¤®/à¤¬à¥‡à¤¯à¤¨à¥à¤¸",
-    bonesTagline: "à¤…à¤¸à¥à¤¥à¤¿ à¤“à¤°à¥‡à¤•à¤² Â· à¤¦à¤°à¤¾à¤°à¥‡à¤‚ å…† Â· à¤¶à¤¾à¤‚à¤— à¤¶à¥ˆà¤²à¥€",
-    emptyInviteMorning: "à¤“à¤°à¥‡à¤•à¤² à¤¸à¥‡ à¤ªà¥‚à¤›à¤¨à¥‡ à¤•à¤¾ à¤…à¤šà¥à¤›à¤¾ à¤¸à¤®à¤¯ à¤¹à¥ˆà¥¤ à¤†à¤œ à¤•à¥€ à¤†à¤ªà¤•à¥€ à¤®à¥à¤–à¥à¤¯ à¤šà¤¿à¤‚à¤¤à¤¾ à¤•à¥à¤¯à¤¾ à¤¹à¥ˆ?",
-    emptyInviteAfternoon: "à¤ªà¤°à¤¿à¤µà¤°à¥à¤¤à¤¨ à¤šà¤²à¤¤à¤¾ à¤°à¤¹à¤¤à¤¾ à¤¹à¥ˆà¥¤ à¤†à¤œ à¤†à¤ªà¤•à¥‹ à¤•à¤¿à¤¸ à¤¬à¤¾à¤¤ à¤•à¥‹ à¤”à¤° à¤¸à¥à¤ªà¤·à¥à¤Ÿ à¤¦à¥‡à¤–à¤¨à¤¾ à¤¹à¥ˆ?",
-    emptyInviteNight: "à¤°à¤¾à¤¤ à¤­à¥€ à¤ªà¥à¤°à¤¶à¥à¤¨ à¤ªà¥‚à¤›à¤¤à¥€ à¤¹à¥ˆà¥¤ à¤œà¥€à¤µà¤¨ à¤•à¥‡ à¤•à¤¿à¤¸ à¤¹à¤¿à¤¸à¥à¤¸à¥‡ à¤•à¥‹ à¤†à¤ª à¤¸à¤®à¤à¤¨à¤¾ à¤šà¤¾à¤¹à¤¤à¥‡ à¤¹à¥ˆà¤‚?",
+    bones: "अस्थि ओरेकल",
+    iChingTagline: "तीन सिक्के · झू शी · विल्हेल्म/बेयन्स",
+    bonesTagline: "अस्थि ओरेकल · दरारें 兆 · शांग शैली",
+    modeIChingHint: "छह रेखाएँ, प्रत्येक रेखा पर तीन सिक्के, झू शी परिवर्तन नियम",
+    modeIChingYarrowHint: "छह रेखाएँ, प्रत्येक रेखा पर तीन चरण, प्रामाणिक झोउ वितरण",
+    modeBonesHint: "सकारात्मक प्रस्ताव के साथ हाँ / नहीं प्रश्न; दरार 兆 पठन।",
+    emptyInviteMorning: "ओरेकल से पूछने का अच्छा समय है। आज की आपकी मुख्य चिंता क्या है?",
+    emptyInviteAfternoon: "परिवर्तन चलता रहता है। आज आपको किस बात को और स्पष्ट देखना है?",
+    emptyInviteNight: "रात भी प्रश्न पूछती है। जीवन के किस हिस्से को आप समझना चाहते हैं?",
   },
 };
 
 function verdictLabel(v: OracleBonesVerdict, locale: AppLocale): string {
   const mapByLocale: Record<AppLocale, Record<OracleBonesVerdict, string>> = {
     es: {
-      auspicious_clear: "å‰: favorable claro (carga positiva)",
-      auspicious_moderate: "å‰: favorable moderado",
-      inauspicious_moderate: "å‡¶: desfavorable moderado",
-      inauspicious_clear: "å‡¶: desfavorable claro (carga negativa)",
+      auspicious_clear: "吉: favorable claro (carga positiva)",
+      auspicious_moderate: "吉: favorable moderado",
+      inauspicious_moderate: "凶: desfavorable moderado",
+      inauspicious_clear: "凶: desfavorable claro (carga negativa)",
       silent: "Sin respuesta clara. Silencio ancestral.",
     },
     en: {
-      auspicious_clear: "å‰: clear favorable (positive charge)",
-      auspicious_moderate: "å‰: moderate favorable",
-      inauspicious_moderate: "å‡¶: moderate unfavorable",
-      inauspicious_clear: "å‡¶: clear unfavorable (negative charge)",
+      auspicious_clear: "吉: clear favorable (positive charge)",
+      auspicious_moderate: "吉: moderate favorable",
+      inauspicious_moderate: "凶: moderate unfavorable",
+      inauspicious_clear: "凶: clear unfavorable (negative charge)",
       silent: "No clear answer. Ancestral silence.",
     },
     pt: {
-      auspicious_clear: "å‰: favorÃ¡vel claro (carga positiva)",
-      auspicious_moderate: "å‰: favorÃ¡vel moderado",
-      inauspicious_moderate: "å‡¶: desfavorÃ¡vel moderado",
-      inauspicious_clear: "å‡¶: desfavorÃ¡vel claro (carga negativa)",
-      silent: "Sem resposta clara. SilÃªncio ancestral.",
+      auspicious_clear: "吉: favorável claro (carga positiva)",
+      auspicious_moderate: "吉: favorável moderado",
+      inauspicious_moderate: "凶: desfavorável moderado",
+      inauspicious_clear: "凶: desfavorável claro (carga negativa)",
+      silent: "Sem resposta clara. Silêncio ancestral.",
     },
     fr: {
-      auspicious_clear: "å‰: favorable net (charge positive)",
-      auspicious_moderate: "å‰: favorable modÃ©rÃ©",
-      inauspicious_moderate: "å‡¶: dÃ©favorable modÃ©rÃ©",
-      inauspicious_clear: "å‡¶: dÃ©favorable net (charge nÃ©gative)",
-      silent: "Pas de rÃ©ponse claire. Silence ancestral.",
+      auspicious_clear: "吉: favorable net (charge positive)",
+      auspicious_moderate: "吉: favorable modéré",
+      inauspicious_moderate: "凶: défavorable modéré",
+      inauspicious_clear: "凶: défavorable net (charge négative)",
+      silent: "Pas de réponse claire. Silence ancestral.",
     },
     de: {
-      auspicious_clear: "å‰: klar gÃ¼nstig (positive Ladung)",
-      auspicious_moderate: "å‰: mÃ¤ÃŸig gÃ¼nstig",
-      inauspicious_moderate: "å‡¶: mÃ¤ÃŸig ungÃ¼nstig",
-      inauspicious_clear: "å‡¶: klar ungÃ¼nstig (negative Ladung)",
+      auspicious_clear: "吉: klar günstig (positive Ladung)",
+      auspicious_moderate: "吉: mäßig günstig",
+      inauspicious_moderate: "凶: mäßig ungünstig",
+      inauspicious_clear: "凶: klar ungünstig (negative Ladung)",
       silent: "Keine klare Antwort. Ahnenstille.",
     },
     it: {
-      auspicious_clear: "å‰: favorevole chiaro (carica positiva)",
-      auspicious_moderate: "å‰: favorevole moderato",
-      inauspicious_moderate: "å‡¶: sfavorevole moderato",
-      inauspicious_clear: "å‡¶: sfavorevole chiaro (carica negativa)",
+      auspicious_clear: "吉: favorevole chiaro (carica positiva)",
+      auspicious_moderate: "吉: favorevole moderato",
+      inauspicious_moderate: "凶: sfavorevole moderato",
+      inauspicious_clear: "凶: sfavorevole chiaro (carica negativa)",
       silent: "Nessuna risposta chiara. Silenzio ancestrale.",
     },
     ja: {
-      auspicious_clear: "å‰ï¼šæ˜Žç¢ºã«å‰ï¼ˆæ­£ã®è·ï¼‰",
-      auspicious_moderate: "å‰ï¼šä¸­åº¸ã®å‰",
-      inauspicious_moderate: "å‡¶ï¼šä¸­åº¸ã®å‡¶",
-      inauspicious_clear: "å‡¶ï¼šæ˜Žç¢ºã«å‡¶ï¼ˆè² ã®è·ï¼‰",
-      silent: "æ˜Žç¢ºãªç­”ãˆãªã—ã€‚ç¥–ã®æ²ˆé»™ã€‚",
+      auspicious_clear: "吉：明確に吉（正の荷）",
+      auspicious_moderate: "吉：中庸の吉",
+      inauspicious_moderate: "凶：中庸の凶",
+      inauspicious_clear: "凶：明確に凶（負の荷）",
+      silent: "明確な答えなし。祖の沈黙。",
     },
     zh: {
-      auspicious_clear: "å‰ï¼šæ˜Žç¡®å‰ï¼ˆæ­£å‘å‘½é¢˜ï¼‰",
-      auspicious_moderate: "å‰ï¼šä¸­åº¦å‰",
-      inauspicious_moderate: "å‡¶ï¼šä¸­åº¦å‡¶",
-      inauspicious_clear: "å‡¶ï¼šæ˜Žç¡®å‡¶ï¼ˆè´Ÿå‘å‘½é¢˜ï¼‰",
-      silent: "æ²‰é»˜ï¼šæ— æ˜Žç¡®ç­”æ¡ˆï¼Œç¥–çµæ²‰é»˜ã€‚",
+      auspicious_clear: "吉：明确吉（正向命题）",
+      auspicious_moderate: "吉：中度吉",
+      inauspicious_moderate: "凶：中度凶",
+      inauspicious_clear: "凶：明确凶（负向命题）",
+      silent: "沉默：无明确答案，祖灵沉默。",
     },
     ko: {
-      auspicious_clear: "å‰: ëšœë ·í•œ ê¸¸(ê¸ì • ì „í•˜)",
-      auspicious_moderate: "å‰: ë³´í†µì˜ ê¸¸",
-      inauspicious_moderate: "å‡¶: ë³´í†µì˜ í‰",
-      inauspicious_clear: "å‡¶: ëšœë ·í•œ í‰(ë¶€ì • ì „í•˜)",
-      silent: "ëª…í™•í•œ ë‹µ ì—†ìŒ. ì¡°ìƒì˜ ì¹¨ë¬µ.",
+      auspicious_clear: "吉: 뚜렷한 길(긍정 전하)",
+      auspicious_moderate: "吉: 보통의 길",
+      inauspicious_moderate: "凶: 보통의 흉",
+      inauspicious_clear: "凶: 뚜렷한 흉(부정 전하)",
+      silent: "명확한 답 없음. 조상의 침묵.",
     },
     ar: {
-      auspicious_clear: "å‰: Ø¥ÙŠØ¬Ø§Ø¨ÙŠ ÙˆØ§Ø¶Ø­ (Ø´Ø­Ù†Ø© Ù…ÙˆØ¬Ø¨Ø©)",
-      auspicious_moderate: "å‰: Ø¥ÙŠØ¬Ø§Ø¨ÙŠ Ù…Ø¹ØªØ¯Ù„",
-      inauspicious_moderate: "å‡¶: Ø³Ù„Ø¨ÙŠ Ù…Ø¹ØªØ¯Ù„",
-      inauspicious_clear: "å‡¶: Ø³Ù„Ø¨ÙŠ ÙˆØ§Ø¶Ø­ (Ø´Ø­Ù†Ø© Ø³Ø§Ù„Ø¨Ø©)",
-      silent: "Ù„Ø§ Ø¥Ø¬Ø§Ø¨Ø© ÙˆØ§Ø¶Ø­Ø©. ØµÙ…Øª Ø§Ù„Ø£Ø¬Ø¯Ø§Ø¯.",
+      auspicious_clear: "吉: إيجابي واضح (شحنة موجبة)",
+      auspicious_moderate: "吉: إيجابي معتدل",
+      inauspicious_moderate: "凶: سلبي معتدل",
+      inauspicious_clear: "凶: سلبي واضح (شحنة سالبة)",
+      silent: "لا إجابة واضحة. صمت الأجداد.",
     },
     hi: {
-      auspicious_clear: "å‰: à¤¸à¥à¤ªà¤·à¥à¤Ÿ à¤¶à¥à¤­ (à¤¸à¤•à¤¾à¤°à¤¾à¤¤à¥à¤®à¤• à¤ªà¥à¤°à¤¸à¥à¤¤à¤¾à¤µ)",
-      auspicious_moderate: "å‰: à¤®à¤§à¥à¤¯à¤® à¤¶à¥à¤­",
-      inauspicious_moderate: "å‡¶: à¤®à¤§à¥à¤¯à¤® à¤…à¤¶à¥à¤­",
-      inauspicious_clear: "å‡¶: à¤¸à¥à¤ªà¤·à¥à¤Ÿ à¤…à¤¶à¥à¤­ (à¤¨à¤•à¤¾à¤°à¤¾à¤¤à¥à¤®à¤• à¤ªà¥à¤°à¤¸à¥à¤¤à¤¾à¤µ)",
-      silent: "à¤•à¥‹à¤ˆ à¤¸à¥à¤ªà¤·à¥à¤Ÿ à¤‰à¤¤à¥à¤¤à¤° à¤¨à¤¹à¥€à¤‚à¥¤ à¤ªà¥‚à¤°à¥à¤µà¤œà¥‹à¤‚ à¤•à¤¾ à¤®à¥Œà¤¨à¥¤",
+      auspicious_clear: "吉: स्पष्ट शुभ (सकारात्मक प्रस्ताव)",
+      auspicious_moderate: "吉: मध्यम शुभ",
+      inauspicious_moderate: "凶: मध्यम अशुभ",
+      inauspicious_clear: "凶: स्पष्ट अशुभ (नकारात्मक प्रस्ताव)",
+      silent: "कोई स्पष्ट उत्तर नहीं। पूर्वजों का मौन।",
     },
   };
   return mapByLocale[locale][v];
@@ -1063,7 +1099,7 @@ function newClientUuid(): string {
   });
 }
 
-function createLocalSession(title = "Nueva sesiÃ³n"): ChatSessionState<ConsultationItem> {
+function createLocalSession(title = "Nueva sesión"): ChatSessionState<ConsultationItem> {
   return {
     localId: `sess-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
     title,
@@ -1158,19 +1194,19 @@ function mapApiConsultationToItem(
 function detectInputLanguage(question: string, fallbackLocale: AppLocale): AppLocale {
   const text = question.trim().toLowerCase();
   if (!text) return fallbackLocale;
-  if (/[ã„±-ã…Žã…-ã…£ê°€-íž£]/.test(text)) return "ko";
-  if (/[ã-ã‚–ã‚¡-ãƒº]/.test(text)) return "ja";
-  if (/[ä¸€-é¿¿]/.test(text)) return "zh";
+  if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(text)) return "ko";
+  if (/[ぁ-ゖァ-ヺ]/.test(text)) return "ja";
+  if (/[一-鿿]/.test(text)) return "zh";
 
-  const ptHits = (text.match(/\b(nÃ£o|vocÃª|estÃ¡|Ã§Ã£o|Ã§Ãµes|pra|queria)\b/g) ?? []).length;
-  const frHits = (text.match(/\b(Ãªtre|avec|pourquoi|oÃ¹|Ã§a|merci|vous)\b/g) ?? []).length;
-  const deHits = (text.match(/\b(und|nicht|ich|dass|Ã¼ber|mÃ¶chte|fragen)\b/g) ?? []).length;
-  const itHits = (text.match(/\b(perchÃ©|con|sono|voglio|grazie|quindi|domanda)\b/g) ?? []).length;
+  const ptHits = (text.match(/\b(não|você|está|ção|ções|pra|queria)\b/g) ?? []).length;
+  const frHits = (text.match(/\b(être|avec|pourquoi|où|ça|merci|vous)\b/g) ?? []).length;
+  const deHits = (text.match(/\b(und|nicht|ich|dass|über|möchte|fragen)\b/g) ?? []).length;
+  const itHits = (text.match(/\b(perché|con|sono|voglio|grazie|quindi|domanda)\b/g) ?? []).length;
 
   const esHits =
-    (text.match(/\b(el|la|los|las|de|que|para|con|por|como|quÃ©|dÃ³nde|cuÃ¡l|mensaje|consulta|camino|relaciÃ³n)\b/g) ?? [])
+    (text.match(/\b(el|la|los|las|de|que|para|con|por|como|qué|dónde|cuál|mensaje|consulta|camino|relación)\b/g) ?? [])
       .length +
-    (text.match(/[Ã¡Ã©Ã­Ã³ÃºÃ±Â¿Â¡]/g) ?? []).length;
+    (text.match(/[áéíóúñ¿¡]/g) ?? []).length;
   if (fallbackLocale === "es" && esHits > 0) return "es";
   if (ptHits >= 3 && ptHits > esHits + 1) return "pt";
   if (frHits >= 2) return "fr";
@@ -1192,7 +1228,7 @@ export default function HomePage() {
   const tokenPanel = useMemo(() => getTokenPanelUiMessages(locale), [locale]);
   const docNav = useMemo(() => getDocNavUiMessages(locale), [locale]);
   const presentation = useMemo(() => getOraclePresentationUiMessages(locale), [locale]);
-  /** Official listing URL when published; empty shows â€œcoming soonâ€ on the Play card. */
+  /** Official listing URL when published; empty shows “coming soon” on the Play card. */
   const playStoreUrl = (process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "").trim();
   const chrome = useMemo(() => getHomeChromeUiMessages(locale), [locale]);
   const manualWizardChrome = useMemo(() => getManualWizardMessages(locale), [locale]);
@@ -1369,13 +1405,13 @@ export default function HomePage() {
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
   /**
    * Prevents the first `useEffect` pass from persisting the default `en` before `useLayoutEffect`
-   * hydrates from `localStorage` (same bug on web and APK WebView after /docs â†’ /).
+   * hydrates from `localStorage` (same bug on web and APK WebView after /docs → /).
    */
   const skipInitialLocalePersistenceRef = useRef(true);
 
   /**
    * Hydrate locale from storage/cookie **before** passive effects run.
-   * Manual-only: do not infer from `navigator` (would fight the picker after docs â†’ home).
+   * Manual-only: do not infer from `navigator` (would fight the picker after docs → home).
    */
   useLayoutEffect(() => {
     let next: AppLocale | null = null;
@@ -1401,7 +1437,7 @@ export default function HomePage() {
     }
   }, []);
 
-  /* RN `__rnSetLocale` + storage sync from other tabs â€” keep React state aligned */
+  /* RN `__rnSetLocale` + storage sync from other tabs — keep React state aligned */
   useEffect(() => {
     const onLocaleBridge = (e: Event) => {
       const raw = (e as CustomEvent<{ locale?: string }>).detail?.locale;
@@ -1630,7 +1666,7 @@ export default function HomePage() {
   const threadDepthCap = planThreadLimit;
   const threadDepthCanDeepen = isAdmin || Boolean(result && result.sessionPosition < planThreadLimit);
   const threadLimitReached = !isAdmin && activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
-  /** Until `/api/account/me` hydrates `accountSessionLimit`, default `1` would falsely flag paid threads â€” never show limit UI until `tierReady`. */
+  /** Until `/api/account/me` hydrates `accountSessionLimit`, default `1` would falsely flag paid threads — never show limit UI until `tierReady`. */
   const threadLimitReachedUi = tierReady && threadLimitReached;
   const showThreadLimitBanner = threadLimitReachedUi && !threadLimitBannerDismissed;
   useEffect(() => {
@@ -1773,7 +1809,7 @@ export default function HomePage() {
         y += lineHeight;
       });
       if (typeof maxLines === "number" && lines.length > maxLines) {
-        ctx.fillText("â€¦", x, y);
+        ctx.fillText("…", x, y);
         y += lineHeight;
       }
       return y;
@@ -1803,10 +1839,10 @@ export default function HomePage() {
       // Header
       ctx.fillStyle = "#17212b";
       ctx.font = `700 42px ${serifFont}`;
-      ctx.fillText(isEsPdf ? "Consulta del OrÃ¡culo" : "Oracle Consultation", 64, 76);
+      ctx.fillText(isEsPdf ? "Consulta del Oráculo" : "Oracle Consultation", 64, 76);
       ctx.font = `500 23px ${cjkFont}`;
       ctx.fillStyle = "#36515d";
-      ctx.fillText(`${isEsPdf ? "Entrada" : "Entry"} ${i + 1} Â· ${new Date().toLocaleString(locale)}`, 64, 112);
+      ctx.fillText(`${isEsPdf ? "Entrada" : "Entry"} ${i + 1} · ${new Date().toLocaleString(locale)}`, 64, 112);
 
       // Question ribbon
       ctx.fillStyle = "rgba(255,255,255,0.92)";
@@ -2315,7 +2351,7 @@ export default function HomePage() {
                   : "";
               const firstName = fullName.split(" ")[0]?.trim() ?? "";
               if (provider === "google" && firstName) {
-                // Silently save the first name â€” no modal shown
+                // Silently save the first name — no modal shown
                 try {
                   const res = await fetch("/api/account/display-name", {
                     method: "PUT",
@@ -3028,7 +3064,7 @@ export default function HomePage() {
     if (!questionForRequest) {
       setError(
         oracleMode === "oracle_bones"
-          ? "Escribe el cargo positivo (una afirmaciÃ³n clara) para consultar los huesos."
+          ? "Escribe el cargo positivo (una afirmación clara) para consultar los huesos."
           : "Escribe una consulta antes de enviar.",
       );
       return;
@@ -3104,7 +3140,7 @@ export default function HomePage() {
       setLoading(false);
       setManualCastPreview(null);
       setPendingUserQuestion(null);
-      setError("No hay una conversaciÃ³n activa. Abre o crea una sesiÃ³n.");
+      setError("No hay una conversación activa. Abre o crea una sesión.");
       return;
     }
     const consultSession = activeSession;
@@ -3179,7 +3215,7 @@ export default function HomePage() {
         body: JSON.stringify({
           question: questionForRequest,
           language: detectInputLanguage(questionForRequest, locale),
-          /** Manual cast must never request SSE â€” long tick reveal only applies to automatic mode. */
+          /** Manual cast must never request SSE — long tick reveal only applies to automatic mode. */
           responseMode:
             oracleMode === "iching" && ichingCastMode === "auto" ? "stream_ritual" : "ritual",
           sessionId: sessionIdForRequest,
@@ -3263,14 +3299,14 @@ export default function HomePage() {
       };
       if (contentType.includes("text/event-stream")) {
         if (!res.body) {
-          setError("Respuesta del servidor invÃ¡lida.");
+          setError("Respuesta del servidor inválida.");
           return;
         }
         /**
          * SSE ritual timing (auto I Ching):
          * - `cast_ready` starts `runIChingRitualReveal` with tick + finale delays derived from **last** consult wall time
          *   (fallback `ICHING_RITUAL_TARGET_MS`), split phase1:phase2 via env weights (default 25:15).
-         * - Stream read runs in parallel; do **not** await reveal after close â€” reading shows when `final_ready` is processed.
+         * - Stream read runs in parallel; do **not** await reveal after close — reading shows when `final_ready` is processed.
          */
         const decoder = new TextDecoder();
         const reader = res.body.getReader();
@@ -3337,7 +3373,7 @@ export default function HomePage() {
           }
         }
         if (streamErrored || !finalPayload) {
-          if (!streamErrored) setError("Respuesta del servidor invÃ¡lida.");
+          if (!streamErrored) setError("Respuesta del servidor inválida.");
           return;
         }
         if (revealPromise) {
@@ -3370,15 +3406,15 @@ export default function HomePage() {
         } catch {
           setError(
             res.ok
-              ? "Respuesta del servidor invÃ¡lida."
-              : `Error del servidor (${res.status}). IntÃ©ntalo de nuevo en unos minutos.`,
+              ? "Respuesta del servidor inválida."
+              : `Error del servidor (${res.status}). Inténtalo de nuevo en unos minutos.`,
           );
           return;
         }
       }
       if (!res.ok) {
         if (res.status === 401) {
-          setError("SesiÃ³n caducada o no vÃ¡lida. Vuelve a iniciar sesiÃ³n.");
+          setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
           void signOut();
           return;
         }
@@ -3676,7 +3712,7 @@ export default function HomePage() {
                 data-testid="play-promo-strip-dismiss"
                 onClick={dismissPlayPromoStrip}
               >
-                <span aria-hidden="true">Ã—</span>
+                <span aria-hidden="true">×</span>
               </button>
             </div>
           </div>
@@ -3746,12 +3782,12 @@ export default function HomePage() {
               aria-labelledby="auth-soft-title"
               onClick={(e) => e.stopPropagation()}
             >
-              <p className="auth-soft-eyebrow">Un paso mÃ¡s</p>
+              <p className="auth-soft-eyebrow">Un paso más</p>
               <h2 id="auth-soft-title" className="auth-soft-title">
                 Para recibir tu lectura
               </h2>
               <p className="auth-soft-body">
-                Puedes explorar el ritual y escribir tu consulta con libertad. Cuando quieras el veredicto del orÃ¡culo,
+                Puedes explorar el ritual y escribir tu consulta con libertad. Cuando quieras el veredicto del oráculo,
                 crea una cuenta gratuita o entra con Google.
               </p>
               <ul className="auth-soft-list">
@@ -3783,7 +3819,7 @@ export default function HomePage() {
         >
           <div className="chat-drawer-header">
             <button type="button" className="chat-icon-btn" onClick={() => setChatsOpen(false)} aria-label={ui.drawerClose}>
-              âœ•
+              ✕
             </button>
             <h2>{ui.chats}</h2>
             <button
@@ -3796,7 +3832,7 @@ export default function HomePage() {
               {ui.sessionNew}
             </button>
           </div>
-          <div className="sidebar-stats" aria-label="EstadÃ­sticas de uso">
+          <div className="sidebar-stats" aria-label="Estadísticas de uso">
             <p className="sidebar-stats-label">{drawerText.activity}</p>
             <div className="sidebar-stats-grid">
               <div className="sidebar-stat-card">
@@ -3858,7 +3894,7 @@ export default function HomePage() {
                       ) : null}
                       {loadingSessionLocalId === session.localId ? (
                         <>
-                          {isDeleting ? <span aria-hidden="true">Â·</span> : null}
+                          {isDeleting ? <span aria-hidden="true">·</span> : null}
                           <span className="chat-session-loading">
                             <span className="chat-session-loading-spinner" aria-hidden="true" />
                             <span>{drawerText.loadingConversation}</span>
@@ -3866,11 +3902,11 @@ export default function HomePage() {
                         </>
                       ) : (
                         <>
-                          {isDeleting ? <span aria-hidden="true">Â·</span> : null}
+                          {isDeleting ? <span aria-hidden="true">·</span> : null}
                           <span>
                             {session.messageCount} {drawerText.messages}
                           </span>
-                          <span aria-hidden="true">Â·</span>
+                          <span aria-hidden="true">·</span>
                           <span className="chat-session-time">
                             {session.firstConsultationAt
                               ? new Date(session.firstConsultationAt).toLocaleString(locale, {
@@ -3960,7 +3996,7 @@ export default function HomePage() {
               {/* eslint-disable-next-line @next/next/no-img-element -- local brand asset, responsive CSS sizing */}
               <img
                 src="/brand/logo.png"
-                alt="The Original I Ching App: çœŸæ­£çš„æ˜“ç»"
+                alt="The Original I Ching App: 真正的易经"
                 className="chat-header-logo"
                 decoding="async"
                 fetchPriority="high"
@@ -4088,7 +4124,7 @@ export default function HomePage() {
                         <p className="meta-line">
                           {runtimeText.medium}: {entry.oracleBones.medium === "turtle" ? runtimeText.turtle : runtimeText.ox}
                           {entry.oracleBones.ambiguousPasses > 0
-                            ? ` Â· ${chrome.ambiguousReadingsLabel}: ${entry.oracleBones.ambiguousPasses}`
+                            ? ` · ${chrome.ambiguousReadingsLabel}: ${entry.oracleBones.ambiguousPasses}`
                             : ""}
                         </p>
                         <p className="meta-line">
@@ -4244,7 +4280,7 @@ export default function HomePage() {
                               )) : null}
                             </div>
                             <div className={`ritual-arrow-slot ${sourceVisible ? "is-visible" : ""}`}>
-                              <span className="ritual-arrow">â†’</span>
+                              <span className="ritual-arrow">→</span>
                             </div>
                             <div
                               className={`ritual-line-slot ritual-line-slot--transformed ${transformedVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""} ${isAwaitingCast ? "is-placeholder" : ""}`}
@@ -4318,7 +4354,7 @@ export default function HomePage() {
               <div className="ritual-debug-box ritual-debug-box--persisted">
                 <p><strong>Ritual debug (persisted)</strong></p>
                 <p>
-                  mutationRule: <code>{lastRitualDebugSnapshot.mutationRule ?? "n/a"}</code> Â· transformedHex:{" "}
+                  mutationRule: <code>{lastRitualDebugSnapshot.mutationRule ?? "n/a"}</code> · transformedHex:{" "}
                   <code>{lastRitualDebugSnapshot.transformedHexagram ?? "n/a"}</code>
                 </p>
                 <p>
@@ -4467,6 +4503,11 @@ export default function HomePage() {
                             <span className="composer-switch-label">{ui.bones}</span>
                           </button>
                         </div>
+                        <p className="composer-switch-caption">
+                          {oracleMode === "iching"
+                            ? (ichingCastingMethod === "yarrow-stalks" ? ui.modeIChingYarrowHint : ui.modeIChingHint)
+                            : ui.modeBonesHint}
+                        </p>
                       </div>
                     </div>
                     {oracleMode === "iching" ? (
@@ -4543,7 +4584,7 @@ export default function HomePage() {
                                   <path d="M2 10.5V12H3.5L9.5 6L8 4.5L2 10.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
                                   <path d="M9.5 3L11 4.5L10 5.5L8.5 4L9.5 3Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
                                 </svg>
-                                <span>{manualWizardChrome.castManualLabel.split(" (")[0].split("ï¼ˆ")[0].trim()}</span>
+                                <span>{manualWizardChrome.castManualLabel.split(" (")[0].split("（")[0].trim()}</span>
                               </div>
                             </div>
                           </label>
@@ -4562,7 +4603,7 @@ export default function HomePage() {
                           <p className="meta-line tier-hint-line">
                             {ui.plan}{" "}
                             <strong>{tierDisplayNode}</strong>
-                            {interpolate(chrome.threadDepthPlanSuffix, { cap: isAdmin ? "âˆž" : threadDepthCap })}
+                            {interpolate(chrome.threadDepthPlanSuffix, { cap: isAdmin ? "∞" : threadDepthCap })}
                           </p>
                           <div
                             className="session-progress-bar session-progress-bar--prominent"
@@ -4600,7 +4641,7 @@ export default function HomePage() {
                         {tokenPanel.lastPack}{" "}
                         <strong>{tierDisplayNode}</strong>
                         {tokenBalance !== null
-                          ? ` Â· ${tokenPanel.remaining}: ${tokenBalance}`
+                          ? ` · ${tokenPanel.remaining}: ${tokenBalance}`
                           : ""}
                       </p>
                       <div className="composer-panel-actions">
@@ -4732,7 +4773,7 @@ export default function HomePage() {
                           onClick={() => setTwoFactorModalOpen(false)}
                           disabled={twoFactorBusy || (twoFactorRecoveryCodes.length > 0 && !twoFactorRecoveryAck)}
                         >
-                          Ã—
+                          ×
                         </button>
                       ) : null}
                     </div>
@@ -5028,7 +5069,7 @@ export default function HomePage() {
                       <div style={{ marginTop: 10 }}>
                         <p className="meta-line tier-hint-line">
                           {tf.recoveryCodesShownOnce}{" "}
-                          <code>{twoFactorRecoveryCodes.join(" Â· ")}</code>
+                          <code>{twoFactorRecoveryCodes.join(" · ")}</code>
                         </p>
                         <label
                           className="meta-line tier-hint-line"
@@ -5189,7 +5230,7 @@ export default function HomePage() {
                         <span>{tokenPanel.lastPack}</span> <strong>{tierDisplayNode}</strong>
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
-                        <span>{tokenPanel.availableBalance}</span> <strong>{tokenBalance ?? "â€¦"}</strong>
+                        <span>{tokenPanel.availableBalance}</span> <strong>{tokenBalance ?? "…"}</strong>
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
                         <span>{tokenPanel.threadCapShort}</span> <strong>{accountSessionLimit}</strong>
@@ -5266,7 +5307,7 @@ export default function HomePage() {
                       aria-label={ui.dismissThreadLimitBannerAria}
                       onClick={() => setThreadLimitBannerDismissed(true)}
                     >
-                      <span aria-hidden="true">Ã—</span>
+                      <span aria-hidden="true">×</span>
                     </button>
                   </div>
                 </div>
@@ -5282,7 +5323,7 @@ export default function HomePage() {
                   disabled={loading}
                   onClick={() => setConsultPanelOpen((o) => !o)}
                 >
-                  <span aria-hidden>{consultPanelOpen ? "â–¾" : "â˜°"}</span>
+                  <span aria-hidden>{consultPanelOpen ? "▾" : "☰"}</span>
                   <span className="composer-mode-tag">{ui.options}</span>
                 </button>
               <div style={{ position: 'relative', width: '100%' }}>
@@ -5328,7 +5369,7 @@ export default function HomePage() {
                     onClick={() => void onConsult()}
                     aria-label={loading ? chrome.sendAriaSending : chrome.sendAriaSend}
                   >
-                    {loading ? "â€¦" : "âž¤"}
+                    {loading ? "…" : "➤"}
                   </button>
                 </div>
                 <div style={{ 
