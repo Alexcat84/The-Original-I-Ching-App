@@ -32,7 +32,7 @@ Every hexagram in this application has been verified to ensure that its binary r
 
 | Date | Version | Change Type | Description | Auditor |
 | :--- | :--- | :--- | :--- | :--- |
-| 2026-05-10 | 1.0.0 | **Critical Fix** | Correction of Hexagram 23 metadata (Lower Trigram Kūn). | Antigravity AI |
-| 2026-05-10 | 1.0.1 | **1:1 Audit** | Full cross-verification against University sources (Parma/Sacred-Texts). | Antigravity AI |
-| 2026-05-10 | 1.0.2 | **i18n Support** | Inclusion of reliability guarantee in FAQ for 11 languages. | Antigravity AI |
+| 2026-05-10 | 1.0.0 | **Critical Fix** | Correction of Hexagram 23 metadata (Lower Trigram Kūn). | theoriginaliching.com |
+| 2026-05-10 | 1.0.1 | **1:1 Audit** | Full cross-verification against University sources (Parma/Sacred-Texts). | theoriginaliching.com |
+| 2026-05-10 | 1.0.2 | **i18n Support** | Inclusion of reliability guarantee in FAQ for 11 languages. | theoriginaliching.com |
 
