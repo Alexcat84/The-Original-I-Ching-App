@@ -108,26 +108,33 @@ export default async function LibraryDetailPage({ params }: DetailPageProps) {
         </p>
 
         <header className="library-detail-header">
-          <span className="library-detail-glyph" aria-hidden="true">
-            {summary.glyph}
-          </span>
-          <div className="library-detail-titles">
-            <p className="library-detail-number">{summary.number}</p>
-            <h1 lang="zh-Hant" className="library-detail-chinese">
-              {summary.chineseName}
-            </h1>
-            <p className="library-detail-pinyin">{summary.pinyin}</p>
-            <p className="library-detail-english">{summary.englishName}</p>
-            <dl className="library-detail-trigrams">
-              <div>
-                <dt>{messages.filterUpperLabel}</dt>
-                <dd>{formatTrigramLabel(upperMeta)}</dd>
+          <div className="library-detail-glyph-container">
+            <span className="library-detail-glyph" aria-hidden="true">
+              {summary.glyph}
+            </span>
+          </div>
+          <div className="library-detail-content">
+            <div className="library-detail-main">
+              <span className="library-detail-number">#{summary.number}</span>
+              <h1 lang="zh-Hant" className="library-detail-chinese">
+                {summary.chineseName}
+              </h1>
+            </div>
+            <p className="library-detail-names">
+              <span className="library-detail-pinyin">{summary.pinyin}</span>
+              <span className="library-detail-dot">·</span>
+              <span className="library-detail-english">{summary.englishName}</span>
+            </p>
+            <div className="library-detail-info-grid">
+              <div className="library-info-item">
+                <span className="library-info-label">{messages.filterUpperLabel}</span>
+                <span className="library-info-value">{formatTrigramLabel(upperMeta)}</span>
               </div>
-              <div>
-                <dt>{messages.filterLowerLabel}</dt>
-                <dd>{formatTrigramLabel(lowerMeta)}</dd>
+              <div className="library-info-item">
+                <span className="library-info-label">{messages.filterLowerLabel}</span>
+                <span className="library-info-value">{formatTrigramLabel(lowerMeta)}</span>
               </div>
-            </dl>
+            </div>
           </div>
         </header>
 
