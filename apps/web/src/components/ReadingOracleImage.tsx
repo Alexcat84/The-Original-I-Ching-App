@@ -63,26 +63,9 @@ export function ReadingOracleImage({
         if (!res.ok) continue;
         const blob = await res.blob();
         const jpgDataUrl = await blobToJpgDataUrl(blob);
-        const filename = `${downloadBasename}.jpg`;
-
-        if (typeof navigator !== "undefined" && navigator.share && typeof File !== "undefined") {
-          try {
-            const file = new File([blob], filename, { type: "image/jpeg" });
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-              await navigator.share({
-                files: [file],
-                title: filename,
-              });
-              return;
-            }
-          } catch (e) {
-            // fallback
-          }
-        }
-
         const a = document.createElement("a");
         a.href = jpgDataUrl;
-        a.download = filename;
+        a.download = `${downloadBasename}.jpg`;
         a.click();
         return;
       } catch {
