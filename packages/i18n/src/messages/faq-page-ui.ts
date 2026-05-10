@@ -195,6 +195,10 @@ export function resolveFaqRelatedLabel(
 
 const FAQ_ITEMS_EN: FaqItem[] = [
   {
+    id: "tokens-packs",
+    question: "How do tokens, packs, and the free tier work?",
+    answer:
+      "Consultations consume tokens according to your active pack. The guide explains free trial allowances, pack sizes, and how balances work with your account. Purchases and renewals are governed by the Terms.",
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
@@ -478,6 +482,11 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
+    id: "data-reliability",
+    question: "ما مدى موثوقية نصوص الآي تشينغ في التطبيق؟",
+    answer: "النصوص موثوقة للغاية. لقد أجرينا تدقيقاً لسلامة البيانات بنسبة 1:1، مع التحقق من كل سداسي مقابل المصادر الأكاديمية مثل جامعة بارما (ترجمة فيلهلم)، وSacred-Texts.com (ليج)، ومشروع النصوص الصينية (تشو يي). تم تصحيح أي أخطاء في النسخ وجدت في مجموعات البيانات الأصلية يدوياً لضمان الدقة الرياضية والأدبية。",
+  },
+  {
     id: "yarrow-vs-coins",
     question: "ما الفرق بين طريقتي الآي تشينغ: العملات الثلاث وسيقان اليارو؟",
     answer:
@@ -610,6 +619,11 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     answer:
       "हर परामर्श आपके सक्रिय पैक के अनुसार टोकन खर्च करता है। गाइड में फ्री ट्रायल बैलेंस, पैक साइज़ और बैलेंस कैसे जुड़ता है, यह समझाया गया है। खरीद और नवीनीकरण सेवा शर्तों के अधीन हैं।",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "ऐप में दिए गए आई चिंग ग्रंथों की विश्वसनीयता क्या है?",
+    answer: "ग्रंथ अत्यंत विश्वसनीय हैं। हमने परमा विश्वविद्यालय (विल्हेम अनुवाद), Sacred-Texts.com (लेग), और चीनी पाठ परियोजना (झोउ यी) जैसे शैक्षणिक स्रोतों के साथ प्रत्येक हेक्साग्राम का मिलान करते हुए 1:1 डेटा अखंडता ऑडिट किया है। मूल स्रोत डेटासेट में मिली किसी भी प्रतिलेखन त्रुटि को गणितीय और साहित्यिक सटीकता सुनिश्चित करने के लिए मैन्युअल रूप से ठीक किया गया है।",
   },
   {
     id: "yarrow-vs-coins",
@@ -746,6 +760,11 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
+    id: "data-reliability",
+    question: "アプリで提供される易経のテキストの信頼性はどの程度ですか？",
+    answer: "テキストの信頼性は極めて高いです。パルマ大学（ヴィルヘルム訳）、Sacred-Texts.com（レッグ訳）、Chinese Text Project（周易）などの学術的ソースと1対1のデータ整合性監査を実施しました。元のソースデータセットに見つかった転記ミスはすべて手動で修正され、数学的および文学的な正確さが保証されています。",
+  },
+  {
     id: "yarrow-vs-coins",
     question: "易経の二つの方法、三枚硬貨と筮竹はどう違いますか？",
     answer:
@@ -878,6 +897,11 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     answer:
       "每次咨询根据您激活的套餐消耗代币。指南说明了试用余额、套餐大小以及余额如何累积。购买和续订受服务条款约束。",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "应用中提供的易经文本可靠性如何？",
+    answer: "这些文本非常可靠。我们进行了 1:1 的数据完整性审核，根据帕尔马大学（卫礼贤译本）、Sacred-Texts.com（理雅各译本）和中国哲学书电子化计划（周易）等学术资源验证了每个卦象。原始源数据集中发现의 任何转录错误均已手动更正，以确保数学和文学的准确性。",
   },
   {
     id: "yarrow-vs-coins",
@@ -1014,6 +1038,11 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
+    id: "data-reliability",
+    question: "앱에서 제공되는 주역 텍스트는 얼마나 신뢰할 수 있습니까?",
+    answer: "텍스트는 매우 신뢰할 수 있습니다. 파르마 대학교(빌헬름 번역), Sacred-Texts.com(레그 번역), Chinese Text Project(주역)와 같은 학술적 자료를 바탕으로 1:1 데이터 무결성 감사를 실시했습니다. 원본 소스 데이터셋에서 발견된 모든 오타는 수학적 및 문학적 정확성을 보장하기 위해 수동으로 수정되었습니다.",
+  },
+  {
     id: "yarrow-vs-coins",
     question: "주역의 두 방법, 세 동전과 시초는 무엇이 다른가요?",
     answer:
@@ -1146,6 +1175,11 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     answer:
       "Cada consulta consome tokens conforme o seu pacote ativo. O guia explica os créditos de teste, os tamanhos dos pacotes e como o saldo se acumula. Compras e renovações são regidas pelos Termos.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "Quão confiáveis são os textos do I Ching no aplicativo?",
+    answer: "Os textos são altamente confiáveis. Realizamos uma auditoria de integridade de dados 1:1, verificando cada hexagrama com fontes acadêmicas como a Universidade de Parma (versão Wilhelm), Sacred-Texts.com (Legge) e o Chinese Text Project (Zhou Yi). Quaisquer erros de transcrição encontrados nos conjuntos de dados originais foram corrigidos manualmente para garantir precisão matemática e literária.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1282,6 +1316,11 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
+    id: "data-reliability",
+    question: "Wie zuverlässig sind die I-Ging-Texte in der App?",
+    answer: "Die Texte sind äußerst zuverlässig. Wir haben ein 1:1-Datenintegritätsaudit durchgeführt und jedes Hexagramm mit akademischen Quellen wie der Universität Parma (Wilhelm-Übersetzung), Sacred-Texts.com (Legge) und dem Chinese Text Project (Zhou Yi) abgeglichen. Etwaige Transkriptionsfehler in den ursprünglichen Quelldatensätzen wurden manuell korrigiert, um mathematische und literarische Genauigkeit zu gewährleisten.",
+  },
+  {
     id: "yarrow-vs-coins",
     question: "Worin unterscheiden sich die zwei I Ging Methoden: Drei Münzen und Schafgarbenstäbe?",
     answer:
@@ -1416,6 +1455,11 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
+    id: "data-reliability",
+    question: "Quanto sono affidabili i testi dell'I Ching nell'app?",
+    answer: "I testi sono estremamente affidabili. Abbiamo condotto un audit di integrità dei dati 1:1, verificando ogni esagramma rispetto a fonti accademiche come l'Università di Parma (traduzione Wilhelm), Sacred-Texts.com (Legge) e il Chinese Text Project (Zhou Yi). Eventuali errori di trascrizione trovati nei dataset originali sono stati corretti manualmente per garantire la precisione matematica e letteraria.",
+  },
+  {
     id: "yarrow-vs-coins",
     question: "In cosa differiscono i due metodi dell'I Ching: Tre Monete e Steli di Achillea?",
     answer:
@@ -1548,6 +1592,11 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     answer:
       "Chaque consultation consomme des tokens selon votre pack actif. Le guide explique le solde d'essai, les tailles de pack et comment le solde s'accumule. Les achats et renouvellements sont régis par les Conditions.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
+    answer: "Les textes sont extrêmement fiables. Nous avons effectué un audit d'intégrité des données 1:1, en vérifiant chaque hexagramme par rapport à des sources académiques telles que l'Université de Parme (traduction Wilhelm), Sacred-Texts.com (Legge) et le Chinese Text Project (Zhou Yi). Toutes les erreurs de transcription détectées dans les ensembles de données sources originaux ont été corrigées manuellement pour garantir une exactitude mathématique et littéraire.",
   },
   {
     id: "yarrow-vs-coins",
