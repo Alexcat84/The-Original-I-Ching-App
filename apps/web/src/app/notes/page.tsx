@@ -169,7 +169,7 @@ export default async function NotesPage() {
         {n.sourcesHeading && (
           <>
             <h2>{n.sourcesHeading}</h2>
-            <ul>
+            <ul className="doc-sources-list">
               {n.sourcesList.map((source, index) => (
                 <li key={index}>{source}</li>
               ))}

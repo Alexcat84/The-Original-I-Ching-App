@@ -4556,6 +4556,24 @@ html[data-theme="dark"] .verdict-pill--silent {
   margin-bottom: 0.35rem;
 }
 
+.doc-sources-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 1.25rem 0;
+}
+
+.doc-sources-list li {
+  font-style: italic;
+  color: #3b82f6;
+  text-align: left !important;
+  margin-bottom: 0.85rem !important;
+  line-height: 1.5;
+}
+
+html[data-theme="dark"] .doc-sources-list li {
+  color: #60a5fa;
+}
+
 /* 64-hexagram listing on /notes — visual reference, no interpretive content */
 .doc-article .hexagram-grid {
   list-style: none;
