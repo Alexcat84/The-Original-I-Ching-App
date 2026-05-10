@@ -59,26 +59,23 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexHeading: "El sistema de los 64 hexagramas",
     ichingHexBody:
       "Cada hexagrama es una figura de seis líneas, cada una yin (rota) o yang (entera). Las 64 combinaciones posibles describen los patrones fundamentales del cambio. Las líneas en movimiento indican transformación: el hexagrama presente muta hacia uno futuro, y esa transición es el corazón de la lectura.",
-    ichingHexListHeading: "Los 64 hexagramas en orden King Wen",
-    ichingHexListIntro:
-      "Listado completo de los 64 hexagramas con su número, su glifo y su nombre clásico en chino y pinyin. Aquí no se incluye su significado: cada hexagrama solo cobra sentido en una consulta concreta, donde la pregunta y el contexto del consultante determinan la lectura.",
-    ichingHexListAriaLabel: "Listado de los 64 hexagramas",
+    ichingHexListHeading: "",
+    ichingHexListIntro: "",
+    ichingHexListAriaLabel: "",
     ichingMethodHeading: "El método de las tres monedas y las reglas de Zhu Xi",
     ichingMethodBody:
       "El método clásico usa tres monedas lanzadas seis veces. Cuando múltiples líneas cambian, la escuela de Zhu Xi (neoconfucianismo, siglo XII d.C.) establece reglas precisas para determinar qué línea gobierna la lectura, eliminando la ambigüedad interpretativa. Esta app implementa exactamente esas reglas sin modificación.",
     ichingWilhelmHeading: "La traducción Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm produjo en 1924 la traducción más completa y respetada del I Ching en lengua occidental. Cary Baynes la tradujo al inglés en 1950 (Princeton University Press). Esta obra es el texto base de esta app, sin modificaciones ni simplificaciones.",
-    ichingChainHeading: "La cadena de autenticidad",
-    ichingChain:
-      "Zhou Yi original (dinastía Zhou) → Comentarios de Confucio (s. V a.C.) → Reglas de Zhu Xi (s. XII d.C.) → Traducción Wilhelm alemán (1924) → Traducción Baynes inglés (1950) → Dominio público (2020) → Esta app.",
+    ichingChainHeading: "",
+    ichingChain: "",
     bonesHeading: "Huesos de Oráculo (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origen histórico (Dinastía Shang, ~1600–1046 a.C.)",
     bonesOriginBody:
       "La práctica oracular documentada más antigua de China. Los chamanes reales aplicaban calor a huesos o caparazones para leer las grietas resultantes. Esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa y veredicto por patrón.",
-    bonesRitualHeading: "El proceso ritual",
-    bonesRitualBody:
-      "El proceso era preciso y repetible: se formulaba una carga positiva y su negación. Se aplicaba bronce incandescente al hueso hasta producir grietas. La orientación, longitud y patrón de las grietas determinaba el veredicto. El resultado era grabado en el mismo hueso, constituyendo los primeros registros escritos de China.",
+    bonesRitualHeading: "",
+    bonesRitualBody: "",
     bonesVerdictsHeading: "Los cinco estados del veredicto:",
     bonesVerdictAuspClear: "吉. Favorable claro.",
     bonesVerdictAuspMod: "吉 moderado. Favorable con matices.",
@@ -86,22 +83,19 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesVerdictInauspClear: "凶. Desfavorable claro.",
     bonesVerdictSilence:
       "沉默 (El Silencio). El patrón no produce grietas legibles. En la tradición Shang, esto indicaba que el momento no era maduro para la pregunta. Esta app respeta ese estado cuando el algoritmo lo indica.",
-    bonesAuthHeading: "Autenticidad del método",
-    bonesAuthBody:
-      "Más de 150.000 fragmentos de huesos oraculares han sido excavados y estudiados desde el siglo XIX. Son patrimonio reconocido internacionalmente y se conservan en museos de China, Taiwán, Japón y Europa. El método implementado en esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa, veredicto por patrón, incluyendo el silencio como estado legítimo.",
+    bonesAuthHeading: "",
+    bonesAuthBody: "",
     yarrowHeading: "Varillas de Milenrama (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origen histórico (~1000 a.C.)",
     yarrowOriginBody:
       "Es el procedimiento descrito en el Gran Comentario (Dàzhuàn). El método precisa: «El número de la Gran Expansión es 50, de los que se usan 49». El método es anterior al de tres monedas en más de un milenio. Richard Wilhelm documentó el procedimiento completo en su obra de 1924, rescatando un ritmo ritual más lento, táctil y deliberado que el de las monedas.",
-    yarrowProcedureHeading: "El procedimiento físico",
-    yarrowProcedureBody:
-      "El método usa un conjunto de varillas físicas u objetos similares. Una se aparta y las demás se dividen y cuentan mediante una secuencia ritual repetida hasta formar cada una de las seis líneas. Lo importante para el usuario es el ritmo: exige atención, tacto y paciencia, y hace que la consulta se sienta más ceremonial que el método de tres monedas.",
-    yarrowProbHeading: "Carácter del método",
-    yarrowProbBody:
-      "El método de varillas conserva un ritmo ritual más lento que el de tres monedas. En esta app su valor no se presenta como una tabla técnica, sino como una forma distinta de entrar en la misma tradición del I Ching: más táctil, más deliberada y más cercana al procedimiento clásico documentado por Wilhelm/Baynes. El método de tres monedas sigue siendo igualmente válido para una consulta más rápida.",
+    yarrowProcedureHeading: "",
+    yarrowProcedureBody: "",
+    yarrowProbHeading: "",
+    yarrowProbBody: "",
     interpretHeading: "Por qué la IA no inventa",
     interpretBody:
-      "La inteligencia artificial en esta app tiene una función específica y acotada: tomar el resultado del algoritmo (hexagramas, líneas en movimiento o veredicto de grietas) y articularlo en lenguaje natural con el contexto de la pregunta del usuario. La IA no genera hexagramas, no decide veredictos, ni modifica los textos de Wilhelm. El algoritmo matemático realiza el proceso técnico-tradicional fielmente antes de que la IA intervenga. La IA es el intérprete; el oráculo es el método.",
+      "La inteligencia artificial en esta app tiene una función específica y acotada: tomar el resultado del algoritmo (hexagramas, líneas en movimiento o veredicto de grietas) y articularlo en lenguaje natural con el contexto de la pregunta del usuario.\n\nLa IA no genera hexagramas, no decide veredictos, ni modifica los textos de Wilhelm. El algoritmo matemático realiza el proceso técnico-tradicional fielmente antes de que la IA intervenga. La IA es el intérprete; el oráculo es el método.",
     sourcesHeading: "Fuentes y Referencias Académicas",
     sourcesList: [
       "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
