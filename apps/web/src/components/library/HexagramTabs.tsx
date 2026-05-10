@@ -111,31 +111,35 @@ function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
         <p className="library-zhouyi-notice">{messages.zhouyiClassicalNotice}</p>
       ) : null}
 
-      <section className="library-section">
-        <h3>{messages.judgmentHeading}</h3>
+    <section className="library-section">
+      <h3>{messages.judgmentHeading}</h3>
+      <div className="library-text-card">
         <p lang={langAttr} className="library-prose">
           {record.judgment}
         </p>
-      </section>
+      </div>
+    </section>
 
-      <section className="library-section">
-        <h3>{messages.imageHeading}</h3>
+    <section className="library-section">
+      <h3>{messages.imageHeading}</h3>
+      <div className="library-text-card">
         <p lang={langAttr} className="library-prose library-prose--image">
           {record.image}
         </p>
-      </section>
+      </div>
+    </section>
 
-      <section className="library-section">
-        <h3>{messages.linesHeading}</h3>
-        <div className="library-lines-table-wrap">
-          <table className="library-lines-table">
-            <thead>
-              <tr>
-                <th className="library-lines-table__pos">{messages.linesHeading}</th>
-                <th className="library-lines-table__symbol" aria-hidden="true" />
-                <th className="library-lines-table__text" />
-              </tr>
-            </thead>
+    <section className="library-section">
+      <h3>{messages.linesHeading}</h3>
+      <div className="library-lines-table-wrap">
+        <table className="library-lines-table">
+          <thead>
+            <tr>
+              <th className="library-lines-table__pos" />
+              <th className="library-lines-table__symbol" aria-hidden="true" />
+              <th className="library-lines-table__text" />
+            </tr>
+          </thead>
             <tbody>
               {orderedLines.map((line) => (
                 <tr key={line.position} className={`library-lines-row library-lines-row--${line.type}`}>

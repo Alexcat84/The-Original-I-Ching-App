@@ -4982,6 +4982,27 @@ html[data-theme="dark"] .verdict-pill--silent {
   letter-spacing: 0.02em;
 }
 
+/* ── Text cards for Judgment & Image ── */
+.library-text-card {
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--bar-border) 60%, transparent);
+  background: color-mix(in srgb, var(--card-bg, var(--bg)) 50%, transparent);
+  margin-bottom: 0.35rem;
+}
+
+.library-text-card .library-prose {
+  margin: 0;
+  white-space: pre-line;
+  line-height: 1.55;
+}
+
+.library-text-card .library-prose--image {
+  font-style: italic;
+  color: color-mix(in srgb, var(--fg) 86%, transparent);
+}
+
+/* Legacy selectors kept for any remaining usage */
 .library-prose {
   margin: 0;
   white-space: pre-line;
