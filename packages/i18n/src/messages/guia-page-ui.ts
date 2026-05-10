@@ -59,6 +59,7 @@ export type GuiaPageUiMessages = {
   legalMetaAfterTerms: string;
   /** Getting started anchor */
   gettingStartedHeading: string;
+  promptLengthHint: string;
 };
 
 const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
@@ -132,6 +133,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " y los ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Primeros pasos",
+    promptLengthHint: "Cada pregunta puede contener hasta un máximo de 1500 caracteres, permitiéndote proporcionar todo el contexto necesario para una respuesta profunda y personalizada.",
   },
   en: {
     title: "User guide",
@@ -202,6 +204,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " and ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Getting started",
+    promptLengthHint: "Each question can contain up to a maximum of 1500 characters, allowing you to provide all the necessary context for a deep and personalized response.",
   },
   pt: {
     title: "Guia de utilização",
@@ -273,6 +276,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " e os ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Primeiros passos",
+    promptLengthHint: "Cada pergunta pode conter até um máximo de 1500 caracteres, permitindo-lhe fornecer todo o contexto necessário para uma resposta profunda e personalizada.",
   },
   fr: {
     title: "Guide d’utilisation",
@@ -344,6 +348,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " et les ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Premiers pas",
+    promptLengthHint: "Chaque question peut contenir jusqu'à un maximum de 1500 caractères, vous permettant de fournir tout le contexte nécessaire pour une réponse profonde et personnalisée.",
   },
   de: {
     title: "Nutzungsanleitung",
@@ -415,6 +420,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " und die ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Erste Schritte",
+    promptLengthHint: "Jede Frage kann bis zu maximal 1500 Zeichen enthalten, sodass Sie den gesamten notwendigen Kontext für eine tiefe und personalisierte Antwort bereitstellen können.",
   },
   it: {
     title: "Guida all’uso",
@@ -486,6 +492,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " e i ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Primi passi",
+    promptLengthHint: "Ogni domanda può contenere fino a un massimo di 1500 caratteri, consentendoti di fornire tutto il contesto necessario per una risposta profonda e personalizzata.",
   },
   ja: {
     title: "利用ガイド",
@@ -555,6 +562,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: "および",
     legalMetaAfterTerms: "をご確認ください。",
     gettingStartedHeading: "はじめに",
+    promptLengthHint: "各質問は最大1500文字まで入力でき、深くパーソナライズされた回答に必要なすべてのコンテキストを提供できます。",
   },
   zh: {
     title: "使用指南",
@@ -624,6 +632,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: "以及",
     legalMetaAfterTerms: "。",
     gettingStartedHeading: "快速入门",
+    promptLengthHint: "每个问题最多可包含 1500 个字符，让您可以提供深入且个性化回答所需的所有背景信息。",
   },
   ko: {
     title: "사용 안내",
@@ -693,6 +702,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " 및 ",
     legalMetaAfterTerms: "을(를) 확인하세요.",
     gettingStartedHeading: "시작하기",
+    promptLengthHint: "각 질문은 최대 1500자까지 포함될 수 있으므로 깊고 개인화된 답변에 필요한 모든 맥락을 제공할 수 있습니다.",
   },
   ar: {
     title: "دليل المستخدم",
@@ -762,6 +772,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " و ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "البدء",
+    promptLengthHint: "يمكن أن يحتوي كل سؤال على ما يصل إلى 1500 حرف كحد أقصى، مما يتيح لك تقديم كل السياق اللازم لاستجابة عميقة وشخصية.",
   },
   hi: {
     title: "उपयोगकर्ता मार्गदर्शिका",
@@ -833,6 +844,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " और ",
     legalMetaAfterTerms: "।",
     gettingStartedHeading: "शुरुआत करना",
+    promptLengthHint: "प्रत्येक प्रश्न में अधिकतम 1500 वर्ण हो सकते हैं, जिससे आप एक गहरी और व्यक्तिगत प्रतिक्रिया के लिए सभी आवश्यक संदर्भ प्रदान कर सकते हैं।",
   },
 };
 

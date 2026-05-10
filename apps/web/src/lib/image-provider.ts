@@ -331,13 +331,13 @@ function resolveTogetherImageSize(lastPack?: string): { width: number; height: n
   const key = resolveTierKey(lastPack);
   switch (key) {
     case "free":
-      return { width: 1024, height: 768 };
-    case "seeker":
       return { width: 1024, height: 1024 };
+    case "seeker":
+      return { width: 1216, height: 1216 };
     case "practitioner":
-      return { width: 1184, height: 1184 };
-    case "master":
       return { width: 1504, height: 1504 };
+    case "master":
+      return { width: 1792, height: 1792 };
   }
 }
 
@@ -429,10 +429,10 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
   }
   debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
   const model =
-    process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
-  // Together (FLUX.1-schnell) rechaza steps fuera de 1..12.
-  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "10");
-  const steps = Math.min(12, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 10));
+    process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.2-dev";
+  // Together (FLUX.2-dev) permite más steps para mayor detalle.
+  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "28");
+  const steps = Math.min(50, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 28));
   const promptForApi = compactTogetherFluxPromptSegment(prompt, TOGETHER_FLUX_PROMPT_MAX_CHARS);
   const negativePrompt = compactTogetherFluxPromptSegment(
     buildTogetherNegativePrompt(),

@@ -2741,15 +2741,29 @@ html[data-theme="dark"] .composer-session-limit-float {
   resize: none;
   overflow-y: hidden;
   box-shadow: inset 0 1px 2px var(--input-inset);
+  /* Fix for black-on-black text in some Android WebViews during spellcheck/selection */
+  -webkit-text-fill-color: initial;
 }
 
-html[data-theme="light"] .composer-input-row textarea,
-html:not([data-theme]) .composer-input-row textarea {
+html[data-theme="light"] select,
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html:not([data-theme]) select,
+html:not([data-theme]) input,
+html:not([data-theme]) textarea {
   color-scheme: light;
 }
 
-html[data-theme="dark"] .composer-input-row textarea {
+html[data-theme="dark"] select,
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea {
   color-scheme: dark;
+}
+
+/* Fix for dark mode native select dropdowns */
+html[data-theme="dark"] select option {
+  background-color: #1a1a1a;
+  color: #ffffff;
 }
 
 .composer-input-row button[type="button"]:not(.secondary-btn) {

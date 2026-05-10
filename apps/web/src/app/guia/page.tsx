@@ -64,6 +64,9 @@ export default async function GuiaRapidaPage() {
             <strong>{q.bonesLabel}</strong>: {q.bonesLi}
           </li>
         </ul>
+        <p>
+          <em>💡 {g.promptLengthHint}</em>
+        </p>
 
         <h3>{q.s3Heading}</h3>
         <ul>

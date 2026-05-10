@@ -50,7 +50,7 @@ const FAQ_CATEGORY_ORDER: FaqCategoryId[] = [
 ];
 
 const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
-  "app-usage": ["language-support", "chats-drawer", "thread-depth", "export-pdf"],
+  "app-usage": ["language-support", "chats-drawer", "thread-depth", "export-pdf", "prompt-length"],
   "oracle-methods": [
     "iching-how-answers",
     "yarrow-vs-coins",
@@ -318,6 +318,13 @@ const FAQ_ITEMS_EN: FaqItem[] = [
       "Yes. Your questions and readings are yours. They are not shared with third parties, not used to train AI models, and are not visible to other users. Only you can see your chat history. You can delete any conversation at any time from the Chats section. If you enable two-factor authentication (2FA) available in Options, you add an extra layer of protection to your account.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "How long can my question to the oracle be?",
+    answer:
+      "Each consultation allows up to **1500 characters** (about 250-300 words). We recommend taking advantage of this space to describe your situation in detail; the more context you provide about your current moment and feelings, the deeper and more accurate the interpretation the system generates from the resulting hexagram will be.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_ES: FaqItem[] = [
@@ -444,6 +451,13 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     answer:
       "Sí. Tus preguntas y lecturas son tuyas. No se comparten con terceros, no se usan para entrenar modelos de IA, y no son visibles para otros usuarios. Solo tú puedes ver tu historial de chats. Puedes eliminar cualquier conversación en cualquier momento desde la sección Chats. Si activas la autenticación en dos pasos (2FA) disponible en Opciones, añades una capa adicional de protección a tu cuenta.",
     related: ["privacyPolicy", "userGuide"],
+  },
+  {
+    id: "prompt-length",
+    question: "¿Qué tan larga puede ser mi pregunta al oráculo?",
+    answer:
+      "Cada consulta permite hasta **1500 caracteres** (unas 250-300 palabras). Te recomendamos aprovechar este espacio para describir tu situación con detalle; cuanto más contexto proporciones sobre tu momento actual y tus sentimientos, más profunda y precisa será la interpretación que el sistema genere a partir del hexagrama obtenido.",
+    related: ["userGuide"],
   },
 ];
 
@@ -572,6 +586,13 @@ const FAQ_ITEMS_AR: FaqItem[] = [
       "نعم. أسئلتك وقراءاتك ملكك. لا تُشارَك مع أطراف ثالثة، ولا تُستخدم لتدريب نماذج الذكاء الاصطناعي، ولا يمكن للمستخدمين الآخرين رؤيتها. أنت وحدك من يستطيع الاطلاع على سجل محادثاتك. يمكنك حذف أي محادثة في أي وقت من قسم المحادثات. إذا فعّلت المصادقة الثنائية (2FA) المتوفرة في الخيارات، أضفت طبقة حماية إضافية لحسابك.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "ما مدى طول سؤالي للأوراكل؟",
+    answer:
+      "تسمح كل استشارة بما يصل إلى **1500 حرف** (حوالي 250-300 كلمة). نوصي بالاستفادة من هذه المساحة لوصف موقفك بالتفصيل؛ فكلما زاد السياق الذي تقدمه حول لحظتك الحالية ومشاعرك، كان التفسير الذي يولده النظام من السداسية الناتجة أعمق وأكثر دقة.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_HI: FaqItem[] = [
@@ -698,6 +719,13 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     answer:
       "हाँ। आपके प्रश्न और पठन आपके हैं। इन्हें तृतीय पक्षों के साथ साझा नहीं किया जाता, AI मॉडल प्रशिक्षण के लिए उपयोग नहीं किया जाता, और अन्य उपयोगकर्ताओं को दिखाई नहीं देते। केवल आप अपना चैट इतिहास देख सकते हैं। आप Chats अनुभाग से किसी भी समय कोई भी वार्तालाप हटा सकते हैं। यदि आप विकल्पों में उपलब्ध दो-कारक प्रमाणीकरण (2FA) सक्षम करते हैं, तो आप अपने खाते में सुरक्षा की एक अतिरिक्त परत जोड़ते हैं।",
     related: ["privacyPolicy", "userGuide"],
+  },
+  {
+    id: "prompt-length",
+    question: "ओरेकल से मेरा प्रश्न कितना लंबा हो सकता है?",
+    answer:
+      "प्रत्येक परामर्श **1500 वर्णों** (लगभग 250-300 शब्दों) तक की अनुमति देता है। हम आपकी स्थिति का विस्तार से वर्णन करने के लिए इस स्थान का लाभ उठाने की सलाह देते हैं; आप अपने वर्तमान क्षण और भावनाओं के बारे में जितना अधिक संदर्भ प्रदान करेंगे, प्राप्त हेक्사ग्राम से सिस्टम जो व्याख्या उत्पन्न करेगा वह उतनी ही गहरी और सटीक होगी।",
+    related: ["userGuide"],
   },
 ];
 
@@ -826,6 +854,13 @@ const FAQ_ITEMS_JA: FaqItem[] = [
       "はい。あなたの質問と解釈はあなただけのものです。第三者と共有されることはなく、AIモデルの学習に使用されることもなく、他のユーザーには見えません。チャット履歴を見ることができるのはあなただけです。Chatsセクションからいつでも任意の会話を削除できます。オプションで利用可能な二要素認証（2FA）を有効にすると、アカウントにさらなる保護の層を追加できます。",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "神託への質問はどのくらいの長さにできますか？",
+    answer:
+      "各相談には最大 **1500文字** (約250-300単語) まで入力できます。このスペースを活用して状況を詳しく説明することをお勧めします。現在の状況や感情についてより多くの文脈を提供すればするほど、得られた卦からシステムが生成する解釈はより深く正確になります。",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_ZH: FaqItem[] = [
@@ -952,6 +987,13 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     answer:
       "是的。您的问题和解读属于您自己。它们不会与第三方共享，不用于训练AI模型，其他用户也无法看到。只有您才能查看自己的聊天记录。您可以随时在聊天区删除任何对话。如果您在选项中启用双因素身份验证（2FA），将为您的账户增加一层额外保护。",
     related: ["privacyPolicy", "userGuide"],
+  },
+  {
+    id: "prompt-length",
+    question: "我可以向神谕提出多长的问题？",
+    answer:
+      "每次咨询最多允许输入 **1500 个字符** (约 250-300 个词)。我们建议您利用这个空间详细描述您的情况；您提供的关于当前时刻和感受的背景信息越多，系统根据所得卦象生成的解读就越深刻和准确。",
+    related: ["userGuide"],
   },
 ];
 
@@ -1080,6 +1122,13 @@ const FAQ_ITEMS_KO: FaqItem[] = [
       "네. 귀하의 질문과 해석은 귀하의 것입니다. 제3자와 공유되지 않으며, AI 모델 훈련에 사용되지 않고, 다른 사용자에게 보이지 않습니다. 채팅 기록은 귀하만 볼 수 있습니다. 채팅 섹션에서 언제든지 대화를 삭제할 수 있습니다. 옵션에서 이중 인증(2FA)을 활성화하면 계정에 추가적인 보호 층을 더할 수 있습니다.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "오라클에 대한 질문은 얼마나 길게 할 수 있나요?",
+    answer:
+      "각 상담은 최대 **1500자** (약 250-300 단어)까지 허용됩니다. 이 공간을 활용하여 상황을 자세히 설명하는 것이 좋습니다. 현재 상황과 감정에 대해 더 많은 맥락을 제공할수록 결과 괘에서 시스템이 생성하는 해석이 더 깊고 정확해집니다.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_PT: FaqItem[] = [
@@ -1206,6 +1255,13 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     answer:
       "Sim. As suas perguntas e leituras são suas. Não são partilhadas com terceiros, não são usadas para treinar modelos de IA e não são visíveis para outros utilizadores. Só você pode ver o seu histórico de chats. Pode eliminar qualquer conversa a qualquer momento na secção Chats. Se ativar a autenticação em dois fatores (2FA) disponível em Opções, adiciona uma camada extra de proteção à sua conta.",
     related: ["privacyPolicy", "userGuide"],
+  },
+  {
+    id: "prompt-length",
+    question: "Quão longa pode ser a minha pergunta ao oráculo?",
+    answer:
+      "Cada consulta permite até **1500 caracteres** (cerca de 250-300 palavras). Recomendamos aproveitar este espaço para descrever a sua situação com detalhes; quanto mais contexto fornecer sobre o seu momento actual e os seus sentimentos, mais profunda e precisa será a interpretação que o sistema gera a partir do hexagrama obtido.",
+    related: ["userGuide"],
   },
 ];
 
@@ -1334,6 +1390,13 @@ const FAQ_ITEMS_DE: FaqItem[] = [
       "Ja. Ihre Fragen und Lesungen gehören Ihnen. Sie werden nicht mit Dritten geteilt, nicht zur Schulung von KI-Modellen verwendet und sind für andere Benutzer nicht sichtbar. Nur Sie können Ihren Chat-Verlauf einsehen. Sie können jedes Gespräch jederzeit im Bereich Chats löschen. Wenn Sie die in den Optionen verfügbare Zwei-Faktor-Authentifizierung (2FA) aktivieren, fügen Sie Ihrem Konto eine zusätzliche Schutzebene hinzu.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "Wie lang darf meine Frage an das Orakel sein?",
+    answer:
+      "Jede Konsultation erlaubt bis zu **1500 Zeichen** (etwa 250-300 Wörter). Wir empfehlen, diesen Platz zu nutzen, um Ihre Situation detailliert zu beschreiben; je mehr Kontext Sie über Ihren aktuellen Moment und Ihre Gefühle angeben, desto tiefer und genauer wird die Interpretation sein, die das System aus dem erhaltenen Hexagramm generiert.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_IT: FaqItem[] = [
@@ -1461,6 +1524,13 @@ const FAQ_ITEMS_IT: FaqItem[] = [
       "Sì. Le tue domande e le tue letture sono tue. Non vengono condivise con terzi, non vengono utilizzate per addestrare modelli di IA e non sono visibili ad altri utenti. Solo tu puoi vedere la cronologia delle chat. Puoi eliminare qualsiasi conversazione in qualsiasi momento dalla sezione Chat. Se attivi l'autenticazione a due fattori (2FA) disponibile in Opzioni, aggiungi un ulteriore livello di protezione al tuo account.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "Quanto può essere lunga la mia domanda all'oracolo?",
+    answer:
+      "Ogni consultazione permette fino a **1500 caratteri** (circa 250-300 parole). Ti consigliamo di approfittare di questo spazio per descrivere la tua situazione in dettaglio; più contesto fornirai sul tuo momento attuale e sui tuoi sentimenti, più profonda e accurata sarà l'interpretazione che il sistema genererà dall'esagramma ottenuto.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_FR: FaqItem[] = [
@@ -1587,6 +1657,13 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     answer:
       "Oui. Vos questions et lectures vous appartiennent. Elles ne sont pas partagées avec des tiers, ne sont pas utilisées pour entraîner des modèles d'IA et ne sont pas visibles par d'autres utilisateurs. Vous seul pouvez voir votre historique de chat. Vous pouvez supprimer n'importe quelle conversation à tout moment depuis la section Chats. Si vous activez l'authentification à deux facteurs (2FA) disponible dans Options, vous ajoutez une couche supplémentaire de protection à votre compte.",
     related: ["privacyPolicy", "userGuide"],
+  },
+  {
+    id: "prompt-length",
+    question: "Quelle peut être la longueur de ma question à l'oracle ?",
+    answer:
+      "Chaque consultation permet jusqu'à **1500 caractères** (environ 250-300 mots). Nous vous recommandons de profiter de cet espace pour décrire votre situation en détail ; plus vous fournirez de contexte sur votre moment actuel et vos sentiments, plus l'interprétation générée par le système à partir du hexagramme obtenu sera profonde et précise.",
+    related: ["userGuide"],
   },
 ];
 
