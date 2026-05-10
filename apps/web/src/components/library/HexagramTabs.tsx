@@ -112,8 +112,11 @@ function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
         <h3>{messages.judgmentHeading}</h3>
         <div className="library-text-card">
           <div lang={langAttr} className="library-prose">
-            {record.judgment.split("\n").map((line, i) => (
-              <p key={i} className="library-prose-line">{line}</p>
+            {record.judgment.split("\n").filter(line => line.trim()).map((line, i) => (
+              <div key={i} className="library-stanza">
+                <span className="library-stanza-bullet">·</span>
+                <p className="library-prose-line">{line.trim()}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -123,8 +126,11 @@ function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
         <h3>{messages.imageHeading}</h3>
         <div className="library-text-card">
           <div lang={langAttr} className="library-prose library-prose--image">
-            {record.image.split("\n").map((line, i) => (
-              <p key={i} className="library-prose-line">{line}</p>
+            {record.image.split("\n").filter(line => line.trim()).map((line, i) => (
+              <div key={i} className="library-stanza">
+                <span className="library-stanza-bullet">·</span>
+                <p className="library-prose-line">{line.trim()}</p>
+              </div>
             ))}
           </div>
         </div>

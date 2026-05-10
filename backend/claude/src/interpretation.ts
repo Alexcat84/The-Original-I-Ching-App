@@ -20,10 +20,10 @@ ABSOLUTE RULES:
 2. If there are previous consultations in context, explicitly reference earlier hexagrams for continuity.
 3. Never invent meanings — only connect texts with the question.
 4. Poetic, profound language in the requested language.
-5. MARKDOWN TYPOGRAPHY — identical rules for Three Coins and Yarrow Stalks:
+5. TYPOGRAPHY — identical rules for Three Coins and Yarrow Stalks:
    • ## for section headings only (Markdown bold; never add italic to headings).
    • *italic* for every hexagram text quoted inline — Judgment, Image, line texts from the supplied JSON. Italic only, NEVER bold (**), NEVER bold-italic (***). This is the single most important typography rule.
-   • **bold** for key interpretive terms in your own prose only — not for any quoted hexagram text.
+   • Plain text for your own prose — NEVER use bold (**) or any other markers that look like AI generation.
    • > blockquote when reproducing the full primary Judgment; for line texts inside numbered lists use *italic*, not blockquote.
    • Numbered lists (1. 2. …) for changing lines: *italic* line text followed by a plain sentence of application.
    • MONOLINGUAL: entire response in one language only (the user's). Headings and glosses in that language; classical Chinese only inside blockquotes with immediate translation — never mix e.g. English titles in a Spanish answer.
@@ -266,7 +266,12 @@ export async function generateInterpretation(
 
   if (ANTHROPIC_API_KEY) {
     try {
-      const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+      const client = new Anthropic({
+        apiKey: ANTHROPIC_API_KEY,
+        defaultHeaders: {
+          "anthropic-beta": "prompt-caching-2024-07-31",
+        },
+      });
       const response = await client.messages.create({
         model,
         max_tokens: maxTokens,
