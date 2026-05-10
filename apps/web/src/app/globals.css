@@ -5363,6 +5363,7 @@ html[data-theme="dark"] .verdict-pill--silent {
 .oracle-md-p {
   margin: 0.08rem 0 0.18rem;
   text-align: start;
+}
 
 .oracle-md-strong {
   font-weight: 700;
