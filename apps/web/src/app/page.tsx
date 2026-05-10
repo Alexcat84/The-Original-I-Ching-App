@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { OracleShell } from "@iching-oracle/ui";
 import {
@@ -4559,11 +4559,6 @@ export default function HomePage() {
                           aria-label={chrome.threadDepthRegionAria}
                         >
                           <span>{chrome.threadDepthHeading}</span>
-                          <p className="meta-line tier-hint-line">
-                            {ui.plan}{" "}
-                            <strong>{tierDisplayNode}</strong>
-                            {interpolate(chrome.threadDepthPlanSuffix, { cap: isAdmin ? "âˆž" : threadDepthCap })}
-                          </p>
                           <div
                             className="session-progress-bar session-progress-bar--prominent"
                             role="progressbar"
