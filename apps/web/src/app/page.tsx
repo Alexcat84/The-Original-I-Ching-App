@@ -5369,6 +5369,7 @@ export default function HomePage() {
                     aria-label={loading ? chrome.sendAriaSending : chrome.sendAriaSend}
                   >
                     {loading ? "…" : "➤"}
+                  </button>
                 </div>
                 <div style={{ position: 'absolute', right: '12px', bottom: '-14px', opacity: 0.4, fontSize: '0.65rem', pointerEvents: 'none' }}>
                   {question.length} / 1500
