@@ -46,6 +46,11 @@ export default async function AboutPage() {
           <p className="apk-trace-rights">{trace.rightsLine}</p>
         </section>
       </article>
+      <nav className="doc-nav">
+        <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
+        <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
+        <Link href="/privacy">{nav.privacyShort}</Link> · <Link href="/terms">{nav.termsShort}</Link>
+      </nav>
     </div>
   );
 }

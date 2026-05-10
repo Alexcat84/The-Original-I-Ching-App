@@ -5357,6 +5357,7 @@ export default function HomePage() {
                     }
                     aria-label={chrome.questionInputAria}
                     rows={1}
+                    maxLength={1500}
                     readOnly={threadLimitReachedUi}
                     aria-disabled={threadLimitReachedUi}
                   />
