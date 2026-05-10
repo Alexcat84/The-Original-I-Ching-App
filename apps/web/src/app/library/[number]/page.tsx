@@ -95,7 +95,7 @@ export default async function LibraryDetailPage({ params }: DetailPageProps) {
     <div className="oracle-shell doc-page library-page library-detail">
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> ·{" "}
-        <Link href="/library">{messages.detailCrumb}</Link> · <Link href="/notes">{nav.methodNotes}</Link>
+        <Link href="/library">{messages.detailCrumb}</Link>
       </nav>
 
       <article className="doc-article">
