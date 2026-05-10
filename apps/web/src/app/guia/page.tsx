@@ -45,9 +45,9 @@ export default async function GuiaRapidaPage() {
         <h1>{g.title}</h1>
         <p className="doc-lead">
           {g.leadPart1}
-          <strong>I Ching</strong>
+          I Ching
           {g.leadPart2}
-          <strong>{g.bonesLabel}</strong>
+          {g.bonesLabel}
           {g.leadPart3}
         </p>
 
@@ -58,14 +58,14 @@ export default async function GuiaRapidaPage() {
         <h3>{q.s1Heading}</h3>
         <ul>
           <li>
-            <strong>I Ching</strong>: {q.ichingLi}
+            I Ching: {q.ichingLi}
           </li>
           <li>
-            <strong>{q.bonesLabel}</strong>: {q.bonesLi}
+            {q.bonesLabel}: {q.bonesLi}
           </li>
         </ul>
         <p>
-          <em>💡 {g.promptLengthHint}</em>
+          <em>{g.promptLengthHint}</em>
         </p>
 
         <h3>{q.s3Heading}</h3>

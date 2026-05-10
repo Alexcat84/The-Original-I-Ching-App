@@ -109,22 +109,26 @@ function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
 >
 
       <section className="library-section">
-      <h3>{messages.judgmentHeading}</h3>
-      <div className="library-text-card">
-        <p lang={langAttr} className="library-prose">
-          {record.judgment}
-        </p>
-      </div>
-    </section>
+        <h3>{messages.judgmentHeading}</h3>
+        <div className="library-text-card">
+          <div lang={langAttr} className="library-prose">
+            {record.judgment.split("\n").map((line, i) => (
+              <p key={i} className="library-prose-line">{line}</p>
+            ))}
+          </div>
+        </div>
+      </section>
 
-    <section className="library-section">
-      <h3>{messages.imageHeading}</h3>
-      <div className="library-text-card">
-        <p lang={langAttr} className="library-prose library-prose--image">
-          {record.image}
-        </p>
-      </div>
-    </section>
+      <section className="library-section">
+        <h3>{messages.imageHeading}</h3>
+        <div className="library-text-card">
+          <div lang={langAttr} className="library-prose library-prose--image">
+            {record.image.split("\n").map((line, i) => (
+              <p key={i} className="library-prose-line">{line}</p>
+            ))}
+          </div>
+        </div>
+      </section>
 
     <section className="library-section">
       <h3>{messages.linesHeading}</h3>

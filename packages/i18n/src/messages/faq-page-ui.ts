@@ -268,7 +268,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "library-unlock",
     question: "What is the Library and how do I unlock it?",
     answer:
-      "The Library is a section containing the consulted writings and sources of each work (texts by Zhu Xi, Wilhelm/Baynes, and oracle records), intended for personal study and to contrast your manual casts. These writings are in their original language, without translation, so as not to lose the fidelity of the texts. It is permanently unlocked by purchasing any paid token pack.",
+      "The Library is a premium section containing the complete collection of 64 hexagrams across three literary works: the classic Wilhelm/Baynes translation, the James Legge version, and the original Zhou Yi. It is designed for personal study and to compare your manual casts with authentic sources. It is permanently unlocked by purchasing any paid token pack.",
     related: ["tokenPacks"],
   },
   {
@@ -322,7 +322,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "prompt-length",
     question: "How long can my question to the oracle be?",
     answer:
-      "Each consultation allows up to **1500 characters** (about 250-300 words). We recommend taking advantage of this space to describe your situation in detail; the more context you provide about your current moment and feelings, the deeper and more accurate the interpretation the system generates from the resulting hexagram will be.",
+      "Each consultation allows up to 1500 characters (about 250-300 words). We recommend taking advantage of this space to describe your situation in detail; the more context you provide about your current moment and feelings, the deeper and more accurate the interpretation the system generates from the resulting hexagram will be.",
     related: ["userGuide"],
   },
 ];
@@ -402,7 +402,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "library-unlock",
     question: "¿Qué es la Biblioteca y cómo se desbloquea?",
     answer:
-      "La Biblioteca es una sección que contiene los escritos y fuentes consultadas de cada obra (textos de Zhu Xi, Wilhelm/Baynes y registros oraculares), pensada para el estudio personal y para contrastar tus tiradas manuales. Estos escritos están en el idioma original, sin traducción, para no perder la fidelidad de los textos. Se desbloquea de forma permanente al adquirir cualquier pack de tokens de pago.",
+      "La Biblioteca es una sección premium que contiene la colección completa de los 64 hexagramas en tres obras literarias: la traducción clásica de Wilhelm/Baynes, la versión de James Legge y el Zhou Yi original. Está diseñada para el estudio personal y para contrastar tus tiradas manuales con fuentes auténticas. Se desbloquea de forma permanente al adquirir cualquier pack de tokens de pago.",
     related: ["tokenPacks"],
   },
   {
@@ -456,7 +456,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "prompt-length",
     question: "¿Qué tan larga puede ser mi pregunta al oráculo?",
     answer:
-      "Cada consulta permite hasta **1500 caracteres** (unas 250-300 palabras). Te recomendamos aprovechar este espacio para describir tu situación con detalle; cuanto más contexto proporciones sobre tu momento actual y tus sentimientos, más profunda y precisa será la interpretación que el sistema genere a partir del hexagrama obtenido.",
+      "Cada consulta permite hasta 1500 caracteres (unas 250-300 palabras). Te recomendamos aprovechar este espacio para describir tu situación con detalle; cuanto más contexto proporciones sobre tu momento actual y tus sentimientos, más profunda y precisa será la interpretación que el sistema genere a partir del hexagrama obtenido.",
     related: ["userGuide"],
   },
 ];
@@ -536,7 +536,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "library-unlock",
     question: "ما هي المكتبة وكيف يمكنني فتحها؟",
     answer:
-      "المكتبة هي قسم يحتوي على الكتابات والمصادر المستشارة لكل عمل (نصوص تشو شي، فيلهلم/باينز، وسجلات الكهانة)، وهي مخصصة للدراسة الشخصية ومقارنتها بقراءاتك اليدوية. هذه الكتابات بلغتها الأصلية، بدون ترجمة، لكي لا تفقد دقة النصوص. يتم فتحها بشكل دائم عند شراء أي حزمة رموز مدفوعة.",
+      "المكتبة هي قسم متميز يحتوي على المجموعة الكاملة المكونة من 64 هكساغراماً عبر ثلاثة أعمال أدبية: ترجمة فيلهلم/باينズ الكلاسيكية، ونسخة جيمس ليغ، وجو يي الأصلي. تم تصميمها للدراسة الشخصية ولمقارنة قراءاتك اليدوية مع المصادر الموثوقة. يتم فتحها بشكل دائم عند شراء أي حزمة رموز مدفوعة.",
     related: ["tokenPacks"],
   },
   {
@@ -590,7 +590,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "prompt-length",
     question: "ما مدى طول سؤالي للأوراكل؟",
     answer:
-      "تسمح كل استشارة بما يصل إلى **1500 حرف** (حوالي 250-300 كلمة). نوصي بالاستفادة من هذه المساحة لوصف موقفك بالتفصيل؛ فكلما زاد السياق الذي تقدمه حول لحظتك الحالية ومشاعرك، كان التفسير الذي يولده النظام من السداسية الناتجة أعمق وأكثر دقة.",
+      "تسمح كل استشارة بما يصل إلى 1500 حرف (حوالي 250-300 كلمة). نوصي بالاستفادة من هذه المساحة لوصف موقفك بالتفصيل؛ فكلما زاد السياق الذي تقدمه حول لحظتك الحالية ومشاعرك، كان التفسير الذي يولده النظام من السداسية الناتجة أعمق وأكثر دقة.",
     related: ["userGuide"],
   },
 ];
@@ -670,7 +670,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "library-unlock",
     question: "पुस्तकालय क्या है और मैं इसे कैसे अनलॉक करूं?",
     answer:
-      "पुस्तकालय एक ऐसा खंड है जिसमें प्रत्येक कार्य (झू शी, विल्हेल्म/बेंस, और ओरेकल रिकॉर्ड्स के ग्रंथ) के परामर्श किए गए लेख और स्रोत शामिल हैं, जो व्यक्तिगत अध्ययन और आपके मैनुअल कास्ट की तुलना करने के लिए है। ये लेख अपनी मूल भाषा में हैं, बिना अनुवाद के, ताकि ग्रंथों की प्रामाणिकता बनी रहे। किसी भी सशुल्क टोकन पैक को खरीदने पर यह स्थायी रूप से अनलॉक हो जाता है।",
+      "पुस्तकालय एक प्रीमियम अनुभाग है जिसमें तीन साहित्यिक कृतियों: विल्हेल्म/बेंस का शास्त्रीय अनुवाद, जेम्स लेग संस्करण, और मूल झोउ यी में 64 हेक्साग्राम का पूरा संग्रह है। यह व्यक्तिगत अध्ययन और आपके मैन्युअल कास्ट की प्रामाणिक स्रोतों के साथ तुलना करने के लिए डिज़ाइन किया गया है। यह किसी भी सशुल्क टोकन पैक को खरीदने पर स्थायी रूप से अनलॉक हो जाता है।",
     related: ["tokenPacks"],
   },
   {
@@ -724,7 +724,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "prompt-length",
     question: "ओरेकल से मेरा प्रश्न कितना लंबा हो सकता है?",
     answer:
-      "प्रत्येक परामर्श **1500 वर्णों** (लगभग 250-300 शब्दों) तक की अनुमति देता है। हम आपकी स्थिति का विस्तार से वर्णन करने के लिए इस स्थान का लाभ उठाने की सलाह देते हैं; आप अपने वर्तमान क्षण और भावनाओं के बारे में जितना अधिक संदर्भ प्रदान करेंगे, प्राप्त हेक्사ग्राम से सिस्टम जो व्याख्या उत्पन्न करेगा वह उतनी ही गहरी और सटीक होगी।",
+      "प्रत्येक परामर्श 1500 वर्णों (लगभग 250-300 शब्दों) तक की अनुमति देता है। हम आपकी स्थिति का विस्तार से वर्णन करने के लिए इस स्थान का लाभ उठाने की सलाह देते हैं; आप अपने वर्तमान क्षण और भावनाओं के बारे में जितना अधिक संदर्भ प्रदान करेंगे, प्राप्त हेक्사ग्राम से सिस्टम जो व्याख्या उत्पन्न करेगा वह उतनी ही गहरी और सटीक होगी।",
     related: ["userGuide"],
   },
 ];
@@ -804,7 +804,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "library-unlock",
     question: "ライブラリとは何ですか？どうすればアンロックできますか？",
     answer:
-      "ライブラリは、各著作（朱熹、ヴィルヘルム/バインズ、甲骨文の記録）の参照された記述と情報源を含むセクションであり、個人の学習や手動の占い結果と照らし合わせるためのものです。これらの記述は、テキストの忠実性を失わないように、翻訳なしの元の言語で提供されます。有料のトークンパックを購入すると、永久にアンロックされます。",
+      "ライブラリは、ヴィルヘルム/バインズ訳、ジェームズ・レッグ版、そして原典の周易という3つの文学作品にわたる64卦の完全なコレクションを含むプレミアムセクションです。個人の学習や、手動での占い結果を本物の情報源と比較するために設計されています。有料のトークンパックを購入することで永久にアンロックされます。",
     related: ["tokenPacks"],
   },
   {
@@ -858,7 +858,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "prompt-length",
     question: "神託への質問はどのくらいの長さにできますか？",
     answer:
-      "各相談には最大 **1500文字** (約250-300単語) まで入力できます。このスペースを活用して状況を詳しく説明することをお勧めします。現在の状況や感情についてより多くの文脈を提供すればするほど、得られた卦からシステムが生成する解釈はより深く正確になります。",
+      "各相談には最大 1500文字 (約250-300単語) まで入力できます。このスペースを活用して状況を詳しく説明することをお勧めします。現在の状況や感情についてより多くの文脈を提供すればするほど、得られた卦からシステムが生成する解釈はより深く正確になります。",
     related: ["userGuide"],
   },
 ];
@@ -938,7 +938,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "library-unlock",
     question: "资料库是什么？如何解锁？",
     answer:
-      "资料库包含每部著作（朱熹文本、卫礼贤/贝恩斯译本、甲骨记录）的参考文章和来源，旨在供您个人研究和对比手动起卦结果。这些文章采用原文，没有翻译，以保持文本的忠实度。购买任何付费代币包即可永久解锁。",
+      "资料库是一个高级板块，包含三个文学版本中的 64 卦完整合集：经典的卫礼贤/贝恩斯译本、理雅各（James Legge）版本以及《周易》古经。它专为个人学习以及将您的手动起卦与原典进行对比而设计。购买任何付费代币包即可永久解锁。",
     related: ["tokenPacks"],
   },
   {
@@ -992,7 +992,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "prompt-length",
     question: "我可以向神谕提出多长的问题？",
     answer:
-      "每次咨询最多允许输入 **1500 个字符** (约 250-300 个词)。我们建议您利用这个空间详细描述您的情况；您提供的关于当前时刻和感受的背景信息越多，系统根据所得卦象生成的解读就越深刻和准确。",
+      "每次咨询最多允许输入 1500 个字符 (约 250-300 个词)。我们建议您利用这个空间详细描述您的情况；您提供的关于当前时刻和感受的背景信息越多，系统根据所得卦象生成的解读就越深刻和准确。",
     related: ["userGuide"],
   },
 ];
@@ -1072,7 +1072,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "library-unlock",
     question: "라이브러리란 무엇이며 어떻게 잠금 해제하나요?",
     answer:
-      "라이브러리는 각 문헌(주희, 빌헬름/베인즈, 갑골문 기록)의 참고된 글과 출처를 포함하는 섹션으로, 개인 학습이나 수동 점괘와의 대조를 위해 제공됩니다. 이 글들은 텍스트의 충실도를 잃지 않기 위해 번역 없이 원어로 제공됩니다. 유료 토큰 팩을 구매하면 영구적으로 잠금 해제됩니다.",
+      "라이브러리는 빌헬름/베인즈 번역, 제임스 레그 버전, 그리고 원전 주역 등 세 가지 문헌에 걸친 64괘 전체 컬렉션을 포함하는 프리미엄 섹션입니다. 개인적인 학습과 수동 점괘를 정통 출처와 대조하기 위해 설계되었습니다. 유료 토큰 팩을 구매하면 영구적으로 잠금 해제됩니다.",
     related: ["tokenPacks"],
   },
   {
@@ -1126,7 +1126,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "prompt-length",
     question: "오라클에 대한 질문은 얼마나 길게 할 수 있나요?",
     answer:
-      "각 상담은 최대 **1500자** (약 250-300 단어)까지 허용됩니다. 이 공간을 활용하여 상황을 자세히 설명하는 것이 좋습니다. 현재 상황과 감정에 대해 더 많은 맥락을 제공할수록 결과 괘에서 시스템이 생성하는 해석이 더 깊고 정확해집니다.",
+      "각 상담은 최대 1500자 (약 250-300 단어)까지 허용됩니다. 이 공간을 활용하여 상황을 자세히 설명하는 것이 좋습니다. 현재 상황과 감정에 대해 더 많은 맥락을 제공할수록 결과 괘에서 시스템이 생성하는 해석이 더 깊고 정확해집니다.",
     related: ["userGuide"],
   },
 ];
@@ -1206,7 +1206,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "library-unlock",
     question: "O que é a Biblioteca e como a desbloqueio?",
     answer:
-      "A Biblioteca é uma secção que contém os escritos e fontes consultadas de cada obra (textos de Zhu Xi, Wilhelm/Baynes e registos oraculares), destinada ao estudo pessoal e para contrastar as tuas tiragens manuais. Estes escritos estão no idioma original, sem tradução, para não perder a fidelidade dos textos. É desbloqueada permanentemente ao adquirir qualquer pacote de tokens pago.",
+      "A Biblioteca é uma secção premium que contém a coleção completa dos 64 hexagramas em três obras literarias: a tradução clássica de Wilhelm/Baynes, a versão de James Legge e o Zhou Yi original. Foi concebida para o estudo pessoal e para contrastar as suas tiragens manuais com fontes autênticas. É desbloqueada permanentemente ao adquirir qualquer pacote de tokens pago.",
     related: ["tokenPacks"],
   },
   {
@@ -1260,7 +1260,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "prompt-length",
     question: "Quão longa pode ser a minha pergunta ao oráculo?",
     answer:
-      "Cada consulta permite até **1500 caracteres** (cerca de 250-300 palavras). Recomendamos aproveitar este espaço para descrever a sua situação com detalhes; quanto mais contexto fornecer sobre o seu momento actual e os seus sentimentos, mais profunda e precisa será a interpretação que o sistema gera a partir do hexagrama obtido.",
+      "Cada consulta permite até 1500 caracteres (cerca de 250-300 palavras). Recomendamos aproveitar este espaço para descrever a sua situação com detalhes; quanto mais contexto fornecer sobre o seu momento actual e os seus sentimentos, mais profunda e precisa será a interpretação que o sistema gera a partir do hexagrama obtido.",
     related: ["userGuide"],
   },
 ];
@@ -1340,7 +1340,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "library-unlock",
     question: "Was ist die Bibliothek und wie entsperre ich sie?",
     answer:
-      "Die Bibliothek ist ein Bereich, der die konsultierten Schriften und Quellen jedes Werkes (Texte von Zhu Xi, Wilhelm/Baynes und Orakelaufzeichnungen) enthält, die für das persönliche Studium und zum Abgleichen manueller Würfe gedacht sind. Diese Schriften sind in ihrer Originalsprache, ohne Übersetzung, um die Treue der Texte nicht zu verlieren. Sie wird durch den Kauf eines kostenpflichtigen Token-Pakets dauerhaft freigeschaltet.",
+      "Die Bibliothek ist ein Premium-Bereich, der die vollständige Sammlung der 64 Hexagramme aus drei literarischen Werken enthält: der klassischen Wilhelm/Baynes-Übersetzung, der James-Legge-Version und dem originalen Zhou Yi. Sie ist für das persönliche Studium und den Abgleich Ihrer manuellen Würfe mit authentischen Quellen gedacht. Sie wird durch den Kauf eines beliebigen kostenpflichtigen Token-Pakets dauerhaft freigeschaltet.",
     related: ["tokenPacks"],
   },
   {
@@ -1394,7 +1394,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "prompt-length",
     question: "Wie lang darf meine Frage an das Orakel sein?",
     answer:
-      "Jede Konsultation erlaubt bis zu **1500 Zeichen** (etwa 250-300 Wörter). Wir empfehlen, diesen Platz zu nutzen, um Ihre Situation detailliert zu beschreiben; je mehr Kontext Sie über Ihren aktuellen Moment und Ihre Gefühle angeben, desto tiefer und genauer wird die Interpretation sein, die das System aus dem erhaltenen Hexagramm generiert.",
+      "Jede Konsultation erlaubt bis zu 1500 Zeichen (etwa 250-300 Wörter). Wir empfehlen, diesen Platz zu nutzen, um Ihre Situation detailliert zu beschreiben; je mehr Kontext Sie über Ihren aktuellen Moment und Ihre Gefühle angeben, desto tiefer und genauer wird die Interpretation sein, die das System aus dem erhaltenen Hexagramm generiert.",
     related: ["userGuide"],
   },
 ];
@@ -1474,7 +1474,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "library-unlock",
     question: "Cos'è la Biblioteca e come la sblocco?",
     answer:
-      "La Biblioteca è una sezione che contiene gli scritti e le fonti consultate di ogni opera (testi di Zhu Xi, Wilhelm/Baynes e registri oracolari), destinata allo studio personale e per confrontare i tuoi lanci manuali. Questi scritti sono nella lingua originale, senza traduzione, per non perdere la fedeltà dei testi. Si sblocca in modo permanente acquistando qualsiasi pacchetto di token a pagamento.",
+      "La Biblioteca è una sezione premium che contiene la collezione completa dei 64 esagrammi in tre opere letterarie: la traduzione classica di Wilhelm/Baynes, la versione di James Legge e il Zhou Yi originale. È pensata per lo studio personale e per confrontare i tuoi lanci manuali con fonti autentiche. Si sblocca in modo permanente acquistando qualsiasi pacchetto di token a pagamento.",
     related: ["tokenPacks"],
   },
   {
@@ -1528,7 +1528,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "prompt-length",
     question: "Quanto può essere lunga la mia domanda all'oracolo?",
     answer:
-      "Ogni consultazione permette fino a **1500 caratteri** (circa 250-300 parole). Ti consigliamo di approfittare di questo spazio per descrivere la tua situazione in dettaglio; più contesto fornirai sul tuo momento attuale e sui tuoi sentimenti, più profonda e accurata sarà l'interpretazione che il sistema genererà dall'esagramma ottenuto.",
+      "Ogni consultazione permette fino a 1500 caratteri (circa 250-300 parole). Ti consigliamo di approfittare di questo spazio per descrivere la tua situazione in dettaglio; più contesto fornirai sul tuo momento attuale e sui tuoi sentimenti, più profonda e accurata sarà l'interpretazione che il sistema genererà dall'esagramma ottenuto.",
     related: ["userGuide"],
   },
 ];
@@ -1608,7 +1608,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "library-unlock",
     question: "Qu'est-ce que la Bibliothèque et comment la débloquer ?",
     answer:
-      "La Bibliothèque est une section contenant les écrits et les sources consultées de chaque œuvre (textes de Zhu Xi, Wilhelm/Baynes et registres oraculaires), destinée à l'étude personnelle et pour comparer vos tirages manuels. Ces écrits sont dans leur langue d'origine, sans traduction, afin de ne pas perdre la fidélité des textes. Elle est débloquée de façon permanente à l'achat de tout pack de jetons payant.",
+      "La Bibliothèque est une section premium contenant la collection complète des 64 hexagrammes à travers trois œuvres littéraires : la traduction classique Wilhelm/Baynes, la version de James Legge et le Zhou Yi original. Elle est conçue pour l'étude personnelle et pour comparer vos tirages manuels avec des sources authentiques. Elle est débloquée de façon permanente à l'achat de tout pack de jetons payant.",
     related: ["tokenPacks"],
   },
   {
@@ -1662,7 +1662,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "prompt-length",
     question: "Quelle peut être la longueur de ma question à l'oracle ?",
     answer:
-      "Chaque consultation permet jusqu'à **1500 caractères** (environ 250-300 mots). Nous vous recommandons de profiter de cet espace pour décrire votre situation en détail ; plus vous fournirez de contexte sur votre moment actuel et vos sentiments, plus l'interprétation générée par le système à partir du hexagramme obtenu sera profonde et précise.",
+      "Chaque consultation permet jusqu'à 1500 caractères (environ 250-300 mots). Nous vous recommandons de profiter de cet espace pour décrire votre situation en détail ; plus vous fournirez de contexte sur votre moment actuel et vos sentiments, plus l'interprétation générée par le système à partir du hexagramme obtenu sera profonde et précise.",
     related: ["userGuide"],
   },
 ];
