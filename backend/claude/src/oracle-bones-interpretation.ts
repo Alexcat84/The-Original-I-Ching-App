@@ -263,7 +263,18 @@ export async function generateOracleBonesInterpretation(
             cache_control: { type: "ephemeral" },
           },
         ],
-        messages: [{ role: "user", content: userContent }],
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: userContent,
+                cache_control: { type: "ephemeral" },
+              },
+            ],
+          },
+        ],
       });
       const fullText = response.content
         .filter((b) => b.type === "text")
@@ -303,7 +314,18 @@ export async function generateOracleBonesInterpretation(
         model,
         max_tokens: maxTokens,
         system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
-        messages: [{ role: "user", content: userContent }],
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: userContent,
+                cache_control: { type: "ephemeral" },
+              },
+            ],
+          },
+        ],
       });
       const fullText = response.content
         .filter((b) => b.type === "text")

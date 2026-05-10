@@ -277,7 +277,18 @@ export async function generateInterpretation(
             cache_control: { type: "ephemeral" },
           },
         ],
-        messages: [{ role: "user", content: userContent }],
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: userContent,
+                cache_control: { type: "ephemeral" },
+              },
+            ],
+          },
+        ],
       });
 
       const fullText = response.content
@@ -325,7 +336,18 @@ export async function generateInterpretation(
         model,
         max_tokens: maxTokens,
         system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
-        messages: [{ role: "user", content: userContent }],
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: userContent,
+                cache_control: { type: "ephemeral" },
+              },
+            ],
+          },
+        ],
       });
       const fullText = response.content
         .filter((b) => b.type === "text")
