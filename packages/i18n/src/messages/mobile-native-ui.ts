@@ -1,4 +1,4 @@
-import type { AppLocale } from "../locales.js";
+﻿import type { AppLocale } from "../locales.js";
 import { DEFAULT_LOCALE } from "../locales.js";
 
 /** Strings shown only in the Expo / React Native shell (dialogs, sharing). */
@@ -9,6 +9,8 @@ export type MobileNativeUiMessages = {
   permissionDeniedBody: string;
   fileSaveErrorTitle: string;
   fileSaveErrorBody: string;
+  fileSavedTitle: string;
+  fileSavedBody: string;
   ok: string;
   cancel: string;
   sharePdfTitle: string;
@@ -22,6 +24,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedBody: "Necesitamos acceso a tu galería para guardar imágenes.",
     fileSaveErrorTitle: "Error",
     fileSaveErrorBody: "No se pudo guardar el archivo.",
+    fileSavedTitle: "Archivo guardado",
+    fileSavedBody: "El PDF se guardó en tu dispositivo.",
     ok: "OK",
     cancel: "Cancelar",
     sharePdfTitle: "Compartir PDF",
@@ -33,6 +37,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedBody: "We need gallery access to save images.",
     fileSaveErrorTitle: "Error",
     fileSaveErrorBody: "Could not save the file.",
+    fileSavedTitle: "File saved",
+    fileSavedBody: "The PDF was saved to your device.",
     ok: "OK",
     cancel: "Cancel",
     sharePdfTitle: "Share PDF",
@@ -43,7 +49,9 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedTitle: "Permissão negada",
     permissionDeniedBody: "Precisamos de acesso à galeria para guardar imagens.",
     fileSaveErrorTitle: "Erro",
-    fileSaveErrorBody: "Não foi possível guardar o ficheiro.",
+    fileSaveErrorBody: "No fue posible guardar o ficheiro.",
+    fileSavedTitle: "Ficheiro guardado",
+    fileSavedBody: "O PDF foi guardado no seu dispositivo.",
     ok: "OK",
     cancel: "Cancelar",
     sharePdfTitle: "Partilhar PDF",
@@ -55,6 +63,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedBody: "L’accès à la galerie est nécessaire pour enregistrer les images.",
     fileSaveErrorTitle: "Erreur",
     fileSaveErrorBody: "Impossible d’enregistrer le fichier.",
+    fileSavedTitle: "Fichier enregistré",
+    fileSavedBody: "Le PDF a été enregistré sur votre appareil.",
     ok: "OK",
     cancel: "Annuler",
     sharePdfTitle: "Partager le PDF",
@@ -66,6 +76,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedBody: "Für das Speichern von Bildern ist Galeriezugriff nötig.",
     fileSaveErrorTitle: "Fehler",
     fileSaveErrorBody: "Datei konnte nicht gespeichert werden.",
+    fileSavedTitle: "Datei gespeichert",
+    fileSavedBody: "Das PDF wurde auf Ihrem Gerät gespeichert.",
     ok: "OK",
     cancel: "Abbrechen",
     sharePdfTitle: "PDF teilen",
@@ -74,9 +86,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     imageSavedTitle: "Immagine salvata",
     imageSavedBody: "Salvata nella galleria.",
     permissionDeniedTitle: "Permesso negato",
-    permissionDeniedBody: "Serve l’accesso alla galleria per salvare le immagini.",
+    permissionDeniedBody: "Serve l’accesso alla galleria para salvare le immagini.",
     fileSaveErrorTitle: "Errore",
-    fileSaveErrorBody: "Impossibile salvare il file.",
+    fileSaveErrorBody: "Imposibile salvare il file.",
+    fileSavedTitle: "File salvato",
+    fileSavedBody: "Il PDF è stato salvato sul tuo dispositivo.",
     ok: "OK",
     cancel: "Annulla",
     sharePdfTitle: "Condividi PDF",
@@ -88,6 +102,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedBody: "画像を保存するにはギャラリーへのアクセスが必要です。",
     fileSaveErrorTitle: "エラー",
     fileSaveErrorBody: "ファイルを保存できませんでした。",
+    fileSavedTitle: "ファイルを保存しました",
+    fileSavedBody: "PDFをデバイスに保存しました。",
     ok: "OK",
     cancel: "キャンセル",
     sharePdfTitle: "PDFを共有",
@@ -99,6 +115,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedBody: "保存图片需要访问相册。",
     fileSaveErrorTitle: "错误",
     fileSaveErrorBody: "无法保存文件。",
+    fileSavedTitle: "文件已保存",
+    fileSavedBody: "PDF 已保存到您的设备。",
     ok: "确定",
     cancel: "取消",
     sharePdfTitle: "分享 PDF",
@@ -110,6 +128,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedBody: "이미지를 저장하려면 갤러리 접근이 필요합니다.",
     fileSaveErrorTitle: "오류",
     fileSaveErrorBody: "파일을 저장할 수 없습니다.",
+    fileSavedTitle: "파일 저장됨",
+    fileSavedBody: "PDF가 기기에 저장되었습니다.",
     ok: "확인",
     cancel: "취소",
     sharePdfTitle: "PDF 공유",
@@ -121,6 +141,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedBody: "نحتاج إلى الوصول إلى المعرض لحفظ الصور.",
     fileSaveErrorTitle: "خطأ",
     fileSaveErrorBody: "تعذّر حفظ الملف.",
+    fileSavedTitle: "تم حفظ الملف",
+    fileSavedBody: "تم حفظ ملف PDF على جهازك.",
     ok: "حسنًا",
     cancel: "إلغاء",
     sharePdfTitle: "مشاركة PDF",
@@ -132,6 +154,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     permissionDeniedBody: "छवियाँ सहेजने के लिए गैलरी पहुँच आवश्यक है।",
     fileSaveErrorTitle: "त्रुटि",
     fileSaveErrorBody: "फ़ाइल सहेजी नहीं जा सकी।",
+    fileSavedTitle: "फ़ाइल सहेजी गई",
+    fileSavedBody: "PDF आपके डिवाइस पर सहेजा गया था।",
     ok: "ठीक है",
     cancel: "रद्द करें",
     sharePdfTitle: "PDF साझा करें",
