@@ -4511,10 +4511,10 @@ html[data-theme="dark"] .verdict-pill--silent {
 .oracle-shell.doc-page .doc-article .doc-lead,
 .oracle-shell.doc-page .doc-article li,
 .oracle-shell.doc-page .doc-lead {
-  text-align: start;
+  text-align: justify;
   text-wrap: pretty;
-  hyphens: none;
-  -webkit-hyphens: none;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .doc-article h1 {
@@ -5078,13 +5078,14 @@ html[data-theme="dark"] .verdict-pill--silent {
 
 .library-prose {
   margin: 0;
-  text-align: start;
+  text-align: justify;
 }
 
 .library-stanza {
   display: flex;
   gap: 0.7rem;
   margin-bottom: 0.65rem;
+  text-align: start;
 }
 
 .library-stanza:last-child {
