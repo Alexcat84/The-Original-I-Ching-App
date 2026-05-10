@@ -4989,12 +4989,15 @@ html[data-theme="dark"] .verdict-pill--silent {
   flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  margin-bottom: 0.75rem;
-  background: color-mix(in srgb, var(--bar-border) 22%, var(--bg-mid));
-  border-radius: 12px;
-  border: 1px solid var(--bar-border);
+  gap: 0.15rem;
+  padding: 0 0.5rem;
+  margin-bottom: 0; /* Remove margin to connect with panel */
+  background: transparent;
+  border-bottom: 1px solid var(--bar-border);
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
   scrollbar-width: none;
 }
 
@@ -5004,51 +5007,55 @@ html[data-theme="dark"] .verdict-pill--silent {
 
 @media (min-width: 640px) {
   .library-tablist {
-    gap: 0.4rem;
-    padding: 0.35rem;
+    gap: 0.25rem;
+    padding: 0 1rem;
   }
 }
 
 .library-tab {
-  flex: 1 1 0;
+  flex: 0 0 auto;
   min-width: max-content;
-  padding: 0.45rem 0.6rem;
-  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px 10px 0 0;
   border: 1px solid transparent;
+  border-bottom: none;
   background: transparent;
   color: var(--fg-muted);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: -1px; /* Overlap the baseline */
+  transition: all 0.2s ease;
   white-space: nowrap;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 @media (min-width: 400px) {
   .library-tab {
     font-size: 0.85rem;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.25rem;
   }
 }
 
 .library-tab:hover:not(.library-tab--active) {
   color: var(--fg);
-  background: rgba(255, 255, 255, 0.4);
+  background: color-mix(in srgb, var(--bar-border) 15%, transparent);
 }
 
 .library-tab--active {
-  background: var(--session-active-bg, #ffffff);
+  background: var(--bg-mid, #f2f8fc);
   color: var(--accent);
   font-weight: 700;
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.08),
-    0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--bar-border);
+  border-bottom-color: var(--bg-mid, #f2f8fc) !important;
+  z-index: 2;
 }
 
 html[data-theme="dark"] .library-tab--active {
-  background: var(--secondary-bg, rgba(255, 255, 255, 0.08));
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  background: var(--bg-mid, #0a0a0a);
+  border-bottom-color: var(--bg-mid, #0a0a0a) !important;
 }
 
 .library-tab:focus-visible {
@@ -5057,7 +5064,8 @@ html[data-theme="dark"] .library-tab--active {
 }
 
 .library-tab-panel {
-  padding: 0.4rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: none; /* The tablist border-bottom serves as the top boundary */
 }
 
 
