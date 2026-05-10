@@ -1982,6 +1982,22 @@ export default function HomePage() {
       flushCanvasToDoc();
     }
 
+    if (typeof navigator !== "undefined" && navigator.share && typeof File !== "undefined") {
+      try {
+        const blob = doc.output("blob");
+        const file = new File([blob], `${fileBase}.pdf`, { type: "application/pdf" });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: isEsPdf ? "Exportar Consulta" : "Export Consultation",
+          });
+          return;
+        }
+      } catch (e) {
+        // Fallback to standard save on failure or cancellation
+      }
+    }
+
     doc.save(`${fileBase}.pdf`);
   }
 
