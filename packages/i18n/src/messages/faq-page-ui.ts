@@ -59,7 +59,7 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
     "silence-state",
   ],
   "ai-texts": ["ai-vs-algorithm", "authentic-texts", "not-advice"],
-  "tokens-payments": ["tokens-packs", "purchases-legal"],
+  "tokens-payments": ["tokens-packs", "purchases-legal", "library-unlock"],
   "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa"],
 };
 
@@ -265,6 +265,13 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "What is the Library and how do I unlock it?",
+    answer:
+      "The Library is a section containing the direct scriptures and original sources of each work (texts by Zhu Xi, Wilhelm/Baynes, and oracle records), intended for personal study and to contrast your manual casts. It is permanently unlocked by purchasing any paid token pack (it is not available on the free tier).",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "Is two-factor authentication available?",
     answer:
@@ -383,6 +390,13 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     answer:
       "Las condiciones comerciales y el uso aceptable están en los Términos del servicio. Los packs de tokens y el flujo de compra se resumen en la guía y en la página de precios.",
     related: ["termsOfService", "tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "¿Qué es la Biblioteca y cómo se desbloquea?",
+    answer:
+      "La Biblioteca es una sección que contiene las escrituras directas y fuentes originales de cada obra (textos de Zhu Xi, Wilhelm/Baynes y registros oraculares), pensada para el estudio personal y para contrastar tus tiradas manuales. Se desbloquea de forma permanente al adquirir cualquier pack de tokens de pago (no está disponible en el nivel gratuito).",
+    related: ["tokenPacks"],
   },
   {
     id: "security-2fa",
@@ -505,6 +519,13 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "ما هي المكتبة وكيف يمكنني فتحها؟",
+    answer:
+      "المكتبة هي قسم يحتوي على النصوص المباشرة والمصادر الأصلية لكل عمل (نصوص تشو شي، فيلهلم/باينز، وسجلات الكهانة)، وهي مخصصة للدراسة الشخصية ومقارنتها بقراءاتك اليدوية. يتم فتحها بشكل دائم عند شراء أي حزمة رموز مدفوعة (وهي غير متوفرة في المستوى المجاني).",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "هل تتوفر المصادقة الثنائية (2FA)؟",
     answer:
@@ -623,6 +644,13 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     answer:
       "वाणिज्यिक शर्तें और स्वीकार्य उपयोग सेवा शर्तों में हैं। टोकन पैक और चेकआउट प्रवाह गाइड व प्राइसिंग पेज में सारांशित हैं।",
     related: ["termsOfService", "tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "पुस्तकालय क्या है और मैं इसे कैसे अनलॉक करूं?",
+    answer:
+      "पुस्तकालय एक ऐसा खंड है जिसमें प्रत्येक कार्य (झू शी, विल्हेल्म/बेंस, और ओरेकल रिकॉर्ड्स के ग्रंथ) के प्रत्यक्ष लेख और मूल स्रोत शामिल हैं, जो व्यक्तिगत अध्ययन और आपके मैनुअल कास्ट की तुलना करने के लिए है। किसी भी सशुल्क टोकन पैक को खरीदने पर यह स्थायी रूप से अनलॉक हो जाता है (यह निःशुल्क स्तर पर उपलब्ध नहीं है)।",
+    related: ["tokenPacks"],
   },
   {
     id: "security-2fa",
@@ -745,6 +773,13 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "ライブラリとは何ですか？どうすればアンロックできますか？",
+    answer:
+      "ライブラリは、各著作（朱熹、ヴィルヘルム/バインズ、甲骨文の記録）の直接の記述と原典を含むセクションであり、個人の学習や手動の占い結果と照らし合わせるためのものです。有料のトークンパックを購入すると、永久にアンロックされます（無料ティアでは利用できません）。",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "二要素認証（2FA）は利用できますか？",
     answer:
@@ -863,6 +898,13 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     answer:
       "商业条款和可接受使用规定请见服务条款。代币套餐和结账流程在指南和定价页面中有所概述。",
     related: ["termsOfService", "tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "资料库是什么？如何解锁？",
+    answer:
+      "资料库包含每部著作（朱熹文本、卫礼贤/贝恩斯译本、甲骨记录）的直接经文和原始来源，旨在供您个人研究和对比手动起卦结果。购买任何付费代币包即可永久解锁（免费等级不可用）。",
+    related: ["tokenPacks"],
   },
   {
     id: "security-2fa",
@@ -985,6 +1027,13 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "라이브러리란 무엇이며 어떻게 잠금 해제하나요?",
+    answer:
+      "라이브러리는 각 문헌(주희, 빌헬름/베인즈, 갑골문 기록)의 원문과 출처를 직접 참고할 수 있는 섹션으로, 개인 학습이나 수동 점괘와의 대조를 위해 제공됩니다. 유료 토큰 팩을 구매하면 영구적으로 잠금 해제됩니다(무료 등급에서는 사용할 수 없습니다).",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "이중 인증(2FA)을 사용할 수 있나요?",
     answer:
@@ -1103,6 +1152,13 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     answer:
       "As condições comerciais e o uso aceitável estão nos Termos de Serviço. Os pacotes de tokens e o fluxo de compra estão resumidos no guia e na página de preços.",
     related: ["termsOfService", "tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "O que é a Biblioteca e como a desbloqueio?",
+    answer:
+      "A Biblioteca é uma secção que contém as escrituras diretas e fontes originais de cada obra (textos de Zhu Xi, Wilhelm/Baynes e registos oraculares), destinada ao estudo pessoal e para contrastar as tuas tiragens manuais. É desbloqueada permanentemente ao adquirir qualquer pacote de tokens pago (não está disponível no nível gratuito).",
+    related: ["tokenPacks"],
   },
   {
     id: "security-2fa",
@@ -1225,6 +1281,13 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "Was ist die Bibliothek und wie entsperre ich sie?",
+    answer:
+      "Die Bibliothek ist ein Bereich, der die direkten Schriften und Originalquellen jedes Werkes (Texte von Zhu Xi, Wilhelm/Baynes und Orakelaufzeichnungen) enthält, die für das persönliche Studium und zum Abgleichen manueller Würfe gedacht sind. Sie wird durch den Kauf eines kostenpflichtigen Token-Pakets dauerhaft freigeschaltet (in der kostenlosen Stufe nicht verfügbar).",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "Ist Zwei-Faktor-Authentifizierung (2FA) verfügbar?",
     answer:
@@ -1345,6 +1408,13 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "Cos'è la Biblioteca e come la sblocco?",
+    answer:
+      "La Biblioteca è una sezione che contiene le scritture dirette e le fonti originali di ogni opera (testi di Zhu Xi, Wilhelm/Baynes e registri oracolari), destinata allo studio personale e per confrontare i tuoi lanci manuali. Si sblocca in modo permanente acquistando qualsiasi pacchetto di token a pagamento (non è disponibile nel livello gratuito).",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "È disponibile l'autenticazione a due fattori (2FA)?",
     answer:
@@ -1463,6 +1533,13 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     answer:
       "Les conditions commerciales et l'utilisation acceptable sont dans les Conditions de Service. Les packs de tokens et les flux de paiement sont résumés dans le guide et la page des tarifs.",
     related: ["termsOfService", "tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "Qu'est-ce que la Bibliothèque et comment la débloquer ?",
+    answer:
+      "La Bibliothèque est une section contenant les écritures directes et les sources originales de chaque œuvre (textes de Zhu Xi, Wilhelm/Baynes et registres oraculaires), destinée à l'étude personnelle et pour comparer vos tirages manuels. Elle est débloquée de façon permanente à l'achat de tout pack de jetons payant (non disponible dans le niveau gratuit).",
+    related: ["tokenPacks"],
   },
   {
     id: "security-2fa",

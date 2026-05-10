@@ -26,6 +26,8 @@ export type GuiaPageUiMessages = {
   packChangesLine: string;
   optionsHeading: string;
   optionsIntro: string;
+  libraryFeatureHeading: string;
+  libraryFeatureBody: string;
   ichingBullet: string;
   bonesBulletSuffix: string;
   threadDepthBullet: string;
@@ -91,6 +93,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "Opciones (barra inferior)",
     optionsIntro:
       "En Opciones eliges el tipo de consulta (I Ching o Huesos); con I Ching también el modo de tirada (automática o manual), ves la profundidad permitida en el hilo activo, gestionas tokens y 2FA, y al final tienes enlaces a documentación, privacidad y términos.",
+    libraryFeatureHeading: "Biblioteca de Hexagramas y Obras (Opción Premium)",
+    libraryFeatureBody:
+      "Contamos con una biblioteca donde puedes realizar tus consultas utilizando las escrituras directas de cada obra (textos clásicos de Zhu Xi, traducción de Wilhelm/Baynes, y registros de 甲骨文) y de esta forma contrastar contra tus respuestas o tiradas manuales. Estas lecturas directas están diseñadas para el uso y estudio profundo de las fuentes originales y auténticas.",
     ichingBullet: "lectura por hexagrama y líneas.",
     bonesBulletSuffix: "formato sí/no con lectura simbólica de grietas.",
     threadDepthBullet:
@@ -158,6 +163,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "Options (bottom panel)",
     optionsIntro:
       "In Options you pick the consultation type (I Ching or Bones); with I Ching you also pick the cast mode (automatic or manual), see allowed depth for the active thread, manage tokens and 2FA, and find links to documentation, privacy, and terms at the bottom.",
+    libraryFeatureHeading: "Hexagram and Texts Library (Premium Option)",
+    libraryFeatureBody:
+      "We feature a library where you can consult the direct scriptures of each work (classic texts by Zhu Xi, Wilhelm/Baynes translation, and Oracle Bone records) and thus contrast them against your AI answers or manual casts. These direct readings are designed for the use and deep study of the original and authentic sources.",
     ichingBullet: "hexagram and line-based reading.",
     bonesBulletSuffix: "yes/no format with symbolic crack reading.",
     threadDepthBullet:
@@ -226,6 +234,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "Opções (barra inferior)",
     optionsIntro:
       "Em Opções escolhes o tipo de consulta (I Ching ou Ossos); com o I Ching também o modo de tiragem (automática ou manual), vês a profundidade permitida no fio ativo, geres tokens e 2FA, e no final tens ligações a documentação, privacidade e termos.",
+    libraryFeatureHeading: "Biblioteca de Hexagramas e Obras (Opção Premium)",
+    libraryFeatureBody:
+      "Temos uma biblioteca onde podes fazer as tuas consultas utilizando as escrituras diretas de cada obra (textos clássicos de Zhu Xi, tradução de Wilhelm/Baynes e registos de 甲骨文) e, dessa forma, contrastar com as tuas respostas ou tiragens manuais. Estas leituras diretas foram desenhadas para o uso e estudo profundo das fontes originais e autênticas.",
     ichingBullet: "leitura por hexagrama e linhas.",
     bonesBulletSuffix: "formato sim/não com leitura simbólica de fendas.",
     threadDepthBullet:
@@ -294,6 +305,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "Options (barre du bas)",
     optionsIntro:
       "Dans Options vous choisissez le type de consultation (I Ching ou Os) ; avec I Ching aussi le mode de tirage (automatique ou manuel), voyez la profondeur autorisée du fil actif, gérez les jetons et la 2FA, et trouvez en bas les liens vers la documentation, la confidentialité et les conditions.",
+    libraryFeatureHeading: "Bibliothèque des Hexagrammes et Œuvres (Option Premium)",
+    libraryFeatureBody:
+      "Nous proposons une bibliothèque où vous pouvez consulter les écritures directes de chaque œuvre (textes classiques de Zhu Xi, traduction de Wilhelm/Baynes et registres de 甲骨文) et ainsi les comparer avec vos réponses ou tirages manuels. Ces lectures directes sont conçues pour l'utilisation et l'étude approfondie des sources originales et authentiques.",
     ichingBullet: "lecture par hexagramme et traits.",
     bonesBulletSuffix: "format oui/non avec lecture symbolique des fissures.",
     threadDepthBullet:
@@ -362,6 +376,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "Optionen (untere Leiste)",
     optionsIntro:
       "In Optionen wählst du den Beratungstyp (I Ching oder Knochen); bei I Ging auch den Wurfmodus (automatisch oder manuell), siehst die erlaubte Tiefe im aktiven Thread, verwaltest Token und 2FA und findest unten Links zu Dokumentation, Datenschutz und Nutzungsbedingungen.",
+    libraryFeatureHeading: "Bibliothek der Hexagramme und Werke (Premium-Option)",
+    libraryFeatureBody:
+      "Wir bieten eine Bibliothek, in der du die direkten Schriften jedes Werkes (klassische Texte von Zhu Xi, Wilhelm/Baynes-Übersetzung und Orakelknochen-Aufzeichnungen) konsultieren und so mit deinen Antworten oder manuellen Würfen abgleichen kannst. Diese direkten Lesungen sind für die Nutzung und das tiefe Studium der ursprünglichen und authentischen Quellen gedacht.",
     ichingBullet: "Lesung nach Hexagramm und Strichen.",
     bonesBulletSuffix: "Ja/Nein-Format mit symbolischer Riss-Lesung.",
     threadDepthBullet:
@@ -430,6 +447,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "Opzioni (barra inferiore)",
     optionsIntro:
       "In Opzioni scegli il tipo di consulta (I Ching o Ossa); con I Ching anche la modalità di lancio (automatica o manuale), vedi la profondità consentita nel thread attivo, gestisci token e 2FA e in fondo trovi link a documentazione, privacy e termini.",
+    libraryFeatureHeading: "Biblioteca degli Esagrammi e delle Opere (Opzione Premium)",
+    libraryFeatureBody:
+      "Disponiamo di una biblioteca in cui puoi consultare le scritture dirette di ogni opera (testi classici di Zhu Xi, traduzione di Wilhelm/Baynes e registri di 甲骨文) e confrontarle con le tue risposte o lanci manuali. Queste letture dirette sono pensate per l'uso e lo studio approfondito delle fonti originali e autentiche.",
     ichingBullet: "lettura per esagramma e linee.",
     bonesBulletSuffix: "formato sì/no con lettura simbolica delle crepe.",
     threadDepthBullet:
@@ -496,6 +516,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "オプション（下部パネル）",
     optionsIntro:
       "オプションでは相談タイプ（I Ching または甲骨）を選び、I Ching では占い方（自動または手動）も選べます。アクティブスレッドの深さ、トークンと2FAの管理、下部のドキュメント・プライバシー・利用規約リンクもここです。",
+    libraryFeatureHeading: "六十四卦と原典ライブラリ（プレミアム機能）",
+    libraryFeatureBody:
+      "各著作（朱熹の古典的テキスト、ヴィルヘルム/バインズ訳、および甲骨文の記録）の直接の記述を参照できるライブラリを備えており、AIの回答や手動での占い結果と照らし合わせることができます。これらの直接のリーディングは、オリジナルで真正な情報源の使用と深い研究のために設計されています。",
     ichingBullet: "卦と爻による読み。",
     bonesBulletSuffix: "亀裂パターンによるイエス／ノー形式の象徴的読み。",
     threadDepthBullet:
@@ -562,6 +585,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "选项（底部栏）",
     optionsIntro:
       "在选项中选择咨询类型（I Ching 或甲骨）；选易经时还可选择起卦方式（自动或手动），查看当前会话允许的深度、管理代币与双因素认证，底部有文档、隐私政策与服务条款链接。",
+    libraryFeatureHeading: "卦象与著作资料库（高级功能）",
+    libraryFeatureBody:
+      "我们提供一个资料库，您可以查阅每部著作的直接经文（朱熹的经典文本、卫礼贤/贝恩斯的译本以及甲骨文记录），从而将其与您的解答或手动起卦进行对比。这些直接解读旨在供您使用并深入研究原始且真实的文献来源。",
     ichingBullet: "基于卦象与爻辞的解读。",
     bonesBulletSuffix: "以裂纹图案进行的是／否象征性解读。",
     threadDepthBullet:
@@ -628,6 +654,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "옵션(하단 패널)",
     optionsIntro:
       "옵션에서 상담 유형(I Ching 또는 갑골)을 고르고, I Ching일 때는 점 방식(자동 또는 수동)도 고릅니다. 활성 스레드 허용 깊이, 토큰 및 2FA 관리, 하단의 문서·개인정보·약관 링크도 여기 있습니다.",
+    libraryFeatureHeading: "헥사그램 및 문헌 라이브러리 (프리미엄 기능)",
+    libraryFeatureBody:
+      "저마다의 문헌(주희의 고전 텍스트, 빌헬름/베인즈 번역, 갑골문 기록)의 원문을 직접 참고할 수 있는 라이브러리를 제공하여, AI의 답변이나 수동 점괘와 대조할 수 있습니다. 이러한 직접적인 리딩은 원본이자 진본인 출처를 깊이 있게 연구하고 활용하기 위해 고안되었습니다.",
     ichingBullet: "괘와 효(爻)에 따른 해석.",
     bonesBulletSuffix: "균열 패턴을 사용한 예/아니오 형식의 상징적 해석.",
     threadDepthBullet:
@@ -694,6 +723,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "الخيارات (اللوحة السفلية)",
     optionsIntro:
       "في الخيارات تختار نوع الاستشارة (I Ching أو العظام)، ومع I Ching تختار أيضًا وضع القَسْم (تلقائي أو يدوي)، وترى العمق المسموح به في الخيط النشط، وتدير الرموز و2FA، وفي الأسفل روابط للوثائق والخصوصية والشروط.",
+    libraryFeatureHeading: "مكتبة الرسوم السداسية والمؤلفات (ميزة متميزة)",
+    libraryFeatureBody:
+      "لدينا مكتبة حيث يمكنك الاطلاع على النصوص المباشرة لكل عمل (نصوص تشو شي الكلاسيكية، ترجمة فيلهلم/باينز، وسجلات عظام الكهانة) وبالتالي مقارنتها مع إجاباتك أو قراءاتك اليدوية. صُممت هذه القراءات المباشرة لاستخدام ودراسة المصادر الأصلية والموثوقة بعمق.",
     ichingBullet: "قراءة بالهكساغرام والخطوط.",
     bonesBulletSuffix: "تنسيق نعم/لا مع قراءة رمزية للشقوق.",
     threadDepthBullet:
@@ -762,6 +794,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsHeading: "विकल्प (नीचे का पैनल)",
     optionsIntro:
       "विकल्प में आप परामर्श प्रकार (I Ching या हड्डियाँ) चुनते हैं; I Ching के साथ कास्ट मोड (स्वचालित या मैन्युअल) भी, सक्रिय थ्रेड की अनुमत गहराई, टोकन और 2FA प्रबंधित करते हैं, और नीचे दस्तावेज़ीकरण, गोपनीयता और शर्तों के लिंक होते हैं।",
+    libraryFeatureHeading: "हेक्साग्राम और ग्रंथ पुस्तकालय (प्रीमियम विकल्प)",
+    libraryFeatureBody:
+      "हमारे पास एक पुस्तकालय है जहाँ आप प्रत्येक कार्य (झू शी के क्लासिक ग्रंथ, विल्हेल्म/बेंस का अनुवाद, और ओरेकल बोन के रिकॉर्ड) के प्रत्यक्ष लेखों को देख सकते हैं और इस प्रकार उन्हें अपने उत्तरों या मैन्युअल कास्ट से जोड़ सकते हैं। ये प्रत्यक्ष पठन मूल और प्रामाणिक स्रोतों के उपयोग और गहन अध्ययन के लिए डिज़ाइन किए गए हैं।",
     ichingBullet: "हेक्साग्राम और रेखा-आधारित पठन।",
     bonesBulletSuffix: "प्रतीकात्मक दरार पठन के साथ हाँ/नहीं प्रारूप।",
     threadDepthBullet:

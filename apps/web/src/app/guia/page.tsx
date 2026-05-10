@@ -103,6 +103,9 @@ export default async function GuiaRapidaPage() {
         <h3>{g.exportHeading}</h3>
         <p>{g.exportBody}</p>
 
+        <h3>{g.libraryFeatureHeading}</h3>
+        <p>{g.libraryFeatureBody}</p>
+
         {/* 3) Cómo usar los métodos */}
         <h2>{g.methodsHeading}</h2>
         <p>{g.methodsIntro}</p>
@@ -155,6 +158,7 @@ export default async function GuiaRapidaPage() {
           </li>
         </ul>
         <p>{packsUi.tokensAccumulate}</p>
+        <p>{packsUi.libraryUnlockNote}</p>
         <p>{packsUi.perPlanDetailHeading}</p>
         <ul>
           <li>
