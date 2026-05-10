@@ -398,7 +398,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   },
   {
     id: "privacy-data",
-    question: "¿Qué datos guardáis sobre mí y mis lecturas?",
+    question: "¿Qué datos guardan sobre mí y mis lecturas?",
     answer:
       "La política de privacidad describe categorías de datos, conservación y cómo lecturas e imágenes permanecen privadas por usuario. Complementa la guía dentro de la app.",
     related: ["privacyPolicy", "userGuide"],
