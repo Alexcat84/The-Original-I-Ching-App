@@ -58,7 +58,7 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
     "oracle-bones-method",
     "silence-state",
   ],
-  "ai-texts": ["ai-vs-algorithm", "authentic-texts", "not-advice"],
+  "ai-texts": ["ai-vs-algorithm", "authentic-texts", "data-reliability", "not-advice"],
   "tokens-payments": ["tokens-packs", "purchases-legal", "library-unlock"],
   "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa"],
 };
@@ -195,11 +195,13 @@ export function resolveFaqRelatedLabel(
 
 const FAQ_ITEMS_EN: FaqItem[] = [
   {
-    id: "tokens-packs",
-    question: "How do tokens, packs, and the free tier work?",
-    answer:
-      "Consultations consume tokens according to your active pack. The guide explains free trial allowances, pack sizes, and how balances work with your account. Purchases and renewals are governed by the Terms.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "How reliable are the I Ching texts provided in the app?",
+    answer:
+      "The texts are extremely reliable. We conducted a 1:1 data integrity audit, verifying each hexagram against academic sources such as the University of Parma (Wilhelm translation), Sacred-Texts.com (Legge), and the Chinese Text Project (Zhou Yi). Any transcription errors found in the original source datasets have been manually corrected to ensure mathematical and literary accuracy.",
   },
   {
     id: "yarrow-vs-coins",
@@ -334,6 +336,12 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     answer:
       "Cada consulta consume tokens según tu pack activo. La guía explica el saldo de prueba, los tamaños de pack y cómo se acumula el saldo con tu cuenta. Las compras y renovaciones se rigen por los Términos del servicio.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "¿Qué tan fiables son los textos del I Ching en la aplicación?",
+    answer:
+      "Los textos son de máxima fiabilidad. Hemos realizado una auditoría de integridad de datos 1:1, contrastando cada hexagrama con fuentes académicas como la Universidad de Parma (versión Wilhelm), Sacred-Texts.com (Legge) y el Chinese Text Project (Zhou Yi). Cualquier error de transcripción detectado en los datasets fuente originales ha sido corregido manualmente para garantizar la exactitud matemática y literaria.",
   },
   {
     id: "yarrow-vs-coins",
