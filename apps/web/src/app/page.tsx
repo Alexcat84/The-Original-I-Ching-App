@@ -5369,11 +5369,9 @@ export default function HomePage() {
                     aria-label={loading ? chrome.sendAriaSending : chrome.sendAriaSend}
                   >
                     {loading ? "…" : "➤"}
-                  </button>
                 </div>
-                <div className="composer-hint-line" style={{ display: 'flex', justifyContent: 'space-between', opacity: 0.6, fontSize: '0.75rem', marginTop: '4px', padding: '0 4px' }}>
-                  <span>{sessionUi.charLimitHint}</span>
-                  <span>{question.length}/1500</span>
+                <div style={{ position: 'absolute', right: '12px', bottom: '-14px', opacity: 0.4, fontSize: '0.65rem', pointerEvents: 'none' }}>
+                  {question.length} / 1500
                 </div>
               </div>
             </div>
