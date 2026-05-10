@@ -44,6 +44,10 @@ export type HomeChromeUiMessages = {
   questionInputAria: string;
   sendAriaSending: string;
   sendAriaSend: string;
+  libraryGroupAria: string;
+  libraryHeading: string;
+  libraryDescription: string;
+  openLibrary: string;
 };
 
 const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
@@ -90,6 +94,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Pregunta",
     sendAriaSending: "Enviando",
     sendAriaSend: "Enviar",
+    libraryGroupAria: "Biblioteca de hexagramas",
+    libraryHeading: "Biblioteca",
+    libraryDescription: "Explora las tres versiones clásicas.",
+    openLibrary: "Ir a la biblioteca",
   },
   en: {
     exportChatPdf: "Export chat PDF",
@@ -133,6 +141,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Question",
     sendAriaSending: "Sending",
     sendAriaSend: "Send",
+    libraryGroupAria: "Hexagram library",
+    libraryHeading: "Library",
+    libraryDescription: "Explore the three classic versions.",
+    openLibrary: "Go to library",
   },
   pt: {
     exportChatPdf: "Exportar chat PDF",
@@ -177,6 +189,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Pergunta",
     sendAriaSending: "A enviar",
     sendAriaSend: "Enviar",
+    libraryGroupAria: "Biblioteca de hexagramas",
+    libraryHeading: "Biblioteca",
+    libraryDescription: "Explore as três versões clássicas.",
+    openLibrary: "Ir para a biblioteca",
   },
   fr: {
     exportChatPdf: "Exporter le chat en PDF",
@@ -219,8 +235,12 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     viewTokenPacks: "Voir les packs",
     authenticatorQrAlt: "QR Authenticator",
     questionInputAria: "Question",
-    sendAriaSending: "Envoi",
+    sendAriaSending: "Enviando",
     sendAriaSend: "Envoyer",
+    libraryGroupAria: "Bibliothèque des hexagrammes",
+    libraryHeading: "Bibliothèque",
+    libraryDescription: "Explorez les trois versions classiques.",
+    openLibrary: "Aller à la bibliothèque",
   },
   de: {
     exportChatPdf: "Chat als PDF exportieren",
@@ -265,6 +285,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Frage",
     sendAriaSending: "Wird gesendet",
     sendAriaSend: "Senden",
+    libraryGroupAria: "Hexagramm-Bibliothek",
+    libraryHeading: "Bibliothek",
+    libraryDescription: "Entdecken Sie die drei klassischen Versionen.",
+    openLibrary: "Zur Bibliothek gehen",
   },
   it: {
     exportChatPdf: "Esporta chat PDF",
@@ -309,6 +333,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Domanda",
     sendAriaSending: "Invio",
     sendAriaSend: "Invia",
+    libraryGroupAria: "Libreria degli esagrammi",
+    libraryHeading: "Biblioteca",
+    libraryDescription: "Esplora le tre versioni classiche.",
+    openLibrary: "Vai alla biblioteca",
   },
   ja: {
     exportChatPdf: "チャットをPDFで書き出す",
@@ -351,6 +379,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "質問",
     sendAriaSending: "送信中",
     sendAriaSend: "送信",
+    libraryGroupAria: "六十四卦ライブラリ",
+    libraryHeading: "ライブラリ",
+    libraryDescription: "3つの古典バージョンを探索する。",
+    openLibrary: "ライブラリへ",
   },
   zh: {
     exportChatPdf: "导出聊天 PDF",
@@ -393,6 +425,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "问题",
     sendAriaSending: "发送中",
     sendAriaSend: "发送",
+    libraryGroupAria: "卦象图书馆",
+    libraryHeading: "图书馆",
+    libraryDescription: "探索三个经典版本。",
+    openLibrary: "前往图书馆",
   },
   ko: {
     exportChatPdf: "채팅 PDF보내기",
@@ -435,6 +471,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "질문",
     sendAriaSending: "보내는 중",
     sendAriaSend: "보내기",
+    libraryGroupAria: "헥사그램 라이브러리",
+    libraryHeading: "라이브러리",
+    libraryDescription: "세 가지 클래식 버전을 탐색하세요.",
+    openLibrary: "라이브러리로 이동",
   },
   ar: {
     exportChatPdf: "تصدير المحادثة PDF",
@@ -477,6 +517,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "السؤال",
     sendAriaSending: "جارٍ الإرسال",
     sendAriaSend: "إرسال",
+    libraryGroupAria: "مكتبة الرسوم السداسية",
+    libraryHeading: "المكتبة",
+    libraryDescription: "استكشف الإصدارات الكلاسيكية الثلاثة.",
+    openLibrary: "الذهاب إلى المكتبة",
   },
   hi: {
     exportChatPdf: "चैट PDF निर्यात करें",
@@ -519,6 +563,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "प्रश्न",
     sendAriaSending: "भेजा जा रहा है",
     sendAriaSend: "भेजें",
+    libraryGroupAria: "हेक्साग्राम पुस्तकालय",
+    libraryHeading: "पुस्तकालय",
+    libraryDescription: "तीन क्लासिक संस्करणों का अन्वेषण करें।",
+    openLibrary: "पुस्तकालय जाएं",
   },
 };
 

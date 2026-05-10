@@ -4707,9 +4707,22 @@ export default function HomePage() {
                         ) : null}
                       </div>
                     </div>
+                    <hr className="composer-panel-divider" aria-hidden />
+                    <div className="session-progress" role="group" aria-label={chrome.libraryGroupAria}>
+                      <span>{chrome.libraryHeading}</span>
+                      <p className="meta-line tier-hint-line">{chrome.libraryDescription}</p>
+                      <div className="composer-panel-actions">
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => router.push("/library")}
+                        >
+                          {chrome.openLibrary}
+                        </button>
+                      </div>
+                    </div>
                     <div className="composer-doc-links" aria-label={chrome.docLinksAria}>
                       <Link href="/guia#primeros-pasos">{docNav.userGuide}</Link>
-                      <Link href="/library">{docNav.library}</Link>
                       <Link href="/notes">{docNav.methodNotesLong}</Link>
                       <Link href="/privacy">{docNav.privacyPolicy}</Link>
                       <Link href="/terms">{docNav.termsOfService}</Link>
