@@ -4962,15 +4962,7 @@ html[data-theme="dark"] .verdict-pill--silent {
   padding: 0.4rem 0 0;
 }
 
-.library-zhouyi-notice {
-  margin: 0 0 0.85rem;
-  padding: 0.5rem 0.7rem;
-  border-radius: calc(var(--radius) * 0.5);
-  background: color-mix(in srgb, var(--secondary-bg) 65%, transparent);
-  border: 1px dashed color-mix(in srgb, var(--bar-border) 90%, transparent);
-  font-size: 0.85rem;
-  color: var(--fg-muted);
-}
+
 
 .oracle-shell.doc-page .doc-article .library-section {
   margin: 0.6rem 0 0.9rem;

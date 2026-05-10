@@ -104,8 +104,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Línea ${position} cambia → del hexagrama ${from} al ${to}`,
     sourceLabel: "Fuente",
-  zhouyiClassicalNotice:
-    "El texto Zhou Yi se conserva en chino clásico (tradicional).",
+  zhouyiClassicalNotice: "",
     notFound:
       "No se encontró ese hexagrama. Vuelve a la biblioteca y prueba con un número entre 1 y 64.",
     metaDescription:
@@ -144,8 +143,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Line ${position} changes → from hexagram ${from} to ${to}`,
     sourceLabel: "Source",
-  zhouyiClassicalNotice:
-    "The Zhou Yi text is preserved in Classical Chinese (traditional script).",
+  zhouyiClassicalNotice: "",
     notFound:
       "That hexagram could not be found. Go back to the library and pick a number between 1 and 64.",
     metaDescription:
@@ -184,8 +182,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Linha ${position} muda → do hexagrama ${from} para ${to}`,
     sourceLabel: "Fonte",
-  zhouyiClassicalNotice:
-    "O texto Zhou Yi é preservado em chinês clássico (tradicional).",
+  zhouyiClassicalNotice: "",
     notFound:
       "Hexagrama não encontrado. Volte à biblioteca e tente um número entre 1 e 64.",
     metaDescription:
@@ -224,8 +221,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Trait ${position} change → de l’hexagramme ${from} vers ${to}`,
     sourceLabel: "Source",
-    zhouyiClassicalNotice:
-      "Le texte Zhou Yi est conservé en chinois classique (caractères traditionnels).",
+    zhouyiClassicalNotice: "",
     notFound:
       "Cet hexagramme est introuvable. Revenez à la bibliothèque et choisissez un numéro entre 1 et 64.",
     metaDescription:
@@ -264,8 +260,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Linie ${position} wechselt → von Hexagramm ${from} zu ${to}`,
     sourceLabel: "Quelle",
-    zhouyiClassicalNotice:
-      "Der Zhou-Yi-Text wird in klassischem Chinesisch (traditionelle Schrift) bewahrt.",
+    zhouyiClassicalNotice: "",
     notFound:
       "Dieses Hexagramm wurde nicht gefunden. Kehre zur Bibliothek zurück und wähle eine Zahl zwischen 1 und 64.",
     metaDescription:
@@ -304,8 +299,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Linea ${position} cambia → dall’esagramma ${from} a ${to}`,
     sourceLabel: "Fonte",
-    zhouyiClassicalNotice:
-      "Il testo Zhou Yi è conservato in cinese classico (caratteri tradizionali).",
+    zhouyiClassicalNotice: "",
     notFound:
       "Esagramma non trovato. Torna alla biblioteca e prova un numero tra 1 e 64.",
     metaDescription:
@@ -344,8 +338,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `第${position}爻が変化 → 第${from}卦から第${to}卦へ`,
     sourceLabel: "出典",
-    zhouyiClassicalNotice:
-      "Zhou Yi のテキストは漢文（繁体字）で保存されています。",
+    zhouyiClassicalNotice: "",
     notFound:
       "その卦は見つかりませんでした。ライブラリに戻り、1〜64 の番号を選んでください。",
     metaDescription:
@@ -384,8 +377,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `第${position}爻变化 → 由第 ${from} 卦至第 ${to} 卦`,
     sourceLabel: "出处",
-    zhouyiClassicalNotice:
-      "周易原文以文言文（繁体）保存。",
+    zhouyiClassicalNotice: "",
     notFound:
       "未找到该卦。请返回图书馆，并选择 1 至 64 之间的编号。",
     metaDescription:
@@ -424,8 +416,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `${position}번째 효 변화 → 제 ${from}괘에서 제 ${to}괘로`,
     sourceLabel: "출처",
-    zhouyiClassicalNotice:
-      "주역 원문은 한문(번체)으로 보존됩니다.",
+    zhouyiClassicalNotice: "",
     notFound:
       "해당 괘를 찾을 수 없습니다. 라이브러리로 돌아가 1부터 64 사이의 번호를 선택하세요.",
     metaDescription:
@@ -464,8 +455,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `السطر ${position} يتغير → من الغرض ${from} إلى ${to}`,
     sourceLabel: "المصدر",
-    zhouyiClassicalNotice:
-      "نص Zhou Yi محفوظ بالصينية الكلاسيكية (الحرف التقليدي).",
+    zhouyiClassicalNotice: "",
     notFound:
       "تعذر العثور على هذا الغرض. عُد إلى المكتبة واختر رقمًا بين 1 و 64.",
     metaDescription:
@@ -504,8 +494,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `रेखा ${position} बदलती है → हेक्साग्राम ${from} से ${to} तक`,
     sourceLabel: "स्रोत",
-    zhouyiClassicalNotice:
-      "Zhou Yi का पाठ शास्त्रीय चीनी (पारंपरिक) में संरक्षित है।",
+    zhouyiClassicalNotice: "",
     notFound:
       "वह हेक्साग्राम नहीं मिला। पुस्तकालय पर वापस जाएँ और 1 से 64 के बीच कोई संख्या चुनें।",
     metaDescription:

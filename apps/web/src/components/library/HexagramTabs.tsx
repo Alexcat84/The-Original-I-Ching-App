@@ -106,12 +106,9 @@ function TabPanel({ id, record, source, messages, lineLabels }: TabPanelProps) {
       role="tabpanel"
       id={`library-panel-${id}`}
       aria-labelledby={`library-tab-${id}`}
-    >
-      {isClassicalChinese(id) ? (
-        <p className="library-zhouyi-notice">{messages.zhouyiClassicalNotice}</p>
-      ) : null}
+>
 
-    <section className="library-section">
+      <section className="library-section">
       <h3>{messages.judgmentHeading}</h3>
       <div className="library-text-card">
         <p lang={langAttr} className="library-prose">
