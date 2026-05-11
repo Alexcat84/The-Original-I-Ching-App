@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { LibraryPageUiSerialized } from "@iching-oracle/i18n";
 import {
-  isTrigramId,
   listTrigrams,
   type TrigramId,
 } from "@/lib/library/trigram-meta";
