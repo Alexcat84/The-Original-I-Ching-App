@@ -40,9 +40,11 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
       "Has agotado tus consultas gratuitas de por vida. Compra tokens en Planes y pagos para continuar.",
     messageNoActivePurchase:
       "No hay una compra activa reciente. Puedes comprar más tokens en Planes y pagos.",
-    consultThreadLimit: "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar.",
+    consultThreadLimit:
+      "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar.",
     consultThreadLimitStrip: "Este hilo alcanzó su límite de lecturas.",
-    noTokensDepleted: "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
+    noTokensDepleted:
+      "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
     signInForBalance: "Inicia sesión para ver tu saldo.",
     tokenCenterGuideLink: "Guía de uso",
     availableBalance: "Tokens disponibles:",
@@ -62,7 +64,8 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
       "You have used your lifetime free consultations. Buy tokens in Plans & payments to continue.",
     messageNoActivePurchase:
       "There is no recent active purchase. You can buy more tokens in Plans & payments.",
-    consultThreadLimit: "You reached this thread limit. Start a new session to continue.",
+    consultThreadLimit:
+      "You reached this thread limit. Start a new session to continue.",
     consultThreadLimitStrip: "This thread reached its reading limit.",
     noTokensDepleted: "You used all your tokens. Buy a new pack to continue.",
     signInForBalance: "Sign in to view your balance.",
@@ -84,9 +87,11 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
       "Esgotaste as consultas gratuitas de vida. Compra tokens em Planos e pagamentos para continuar.",
     messageNoActivePurchase:
       "Não há uma compra ativa recente. Podes comprar mais tokens em Planos e pagamentos.",
-    consultThreadLimit: "Atingiste o limite deste fio. Inicia uma nova sessão para continuar.",
+    consultThreadLimit:
+      "Atingiste o limite deste fio. Inicia uma nova sessão para continuar.",
     consultThreadLimitStrip: "Este fio atingiu o limite de leituras.",
-    noTokensDepleted: "Usaste todos os tokens. Compra um novo pacote para continuar.",
+    noTokensDepleted:
+      "Usaste todos os tokens. Compra um novo pacote para continuar.",
     signInForBalance: "Inicia sessão para veres o teu saldo.",
     tokenCenterGuideLink: "Guia de utilização",
     availableBalance: "Tokens disponíveis:",
@@ -106,9 +111,11 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
       "Vous avez utilisé vos consultations gratuites à vie. Achetez des jetons dans Plans et paiements pour continuer.",
     messageNoActivePurchase:
       "Aucun achat actif récent. Vous pouvez acheter plus de jetons dans Plans et paiements.",
-    consultThreadLimit: "Limite de ce fil atteinte. Démarrez une nouvelle session pour continuer.",
+    consultThreadLimit:
+      "Limite de ce fil atteinte. Démarrez une nouvelle session pour continuer.",
     consultThreadLimitStrip: "Ce fil a atteint sa limite de lectures.",
-    noTokensDepleted: "Vous avez utilisé tous vos jetons. Achetez un nouveau pack pour continuer.",
+    noTokensDepleted:
+      "Vous avez utilisé tous vos jetons. Achetez un nouveau pack pour continuer.",
     signInForBalance: "Connectez-vous pour voir votre solde.",
     tokenCenterGuideLink: "Guide d’utilisation",
     availableBalance: "Jetons disponibles :",
@@ -123,14 +130,17 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
     tokenCenter: "Token-Center",
     accumulation:
       "Deine Token summieren sich: Wenn du ein neues Paket kaufst, bevor das aktuelle aufgebraucht ist, werden die restlichen Token zum neuen Paket addiert.",
-    loadError: "Token-Center konnte nicht geladen werden. Bitte erneut versuchen.",
+    loadError:
+      "Token-Center konnte nicht geladen werden. Bitte erneut versuchen.",
     messageFreeDepleted:
       "Du hast deine lebenslangen Gratis-Konsultationen aufgebraucht. Kaufe Token unter Pläne & Zahlungen, um fortzufahren.",
     messageNoActivePurchase:
       "Kein aktueller aktiver Kauf. Du kannst unter Pläne & Zahlungen weitere Token kaufen.",
-    consultThreadLimit: "Thread-Limit erreicht. Starte eine neue Sitzung, um fortzufahren.",
+    consultThreadLimit:
+      "Thread-Limit erreicht. Starte eine neue Sitzung, um fortzufahren.",
     consultThreadLimitStrip: "Dieser Thread hat sein Leselimit erreicht.",
-    noTokensDepleted: "Du hast alle Token aufgebraucht. Kaufe ein neues Paket, um fortzufahren.",
+    noTokensDepleted:
+      "Du hast alle Token aufgebraucht. Kaufe ein neues Paket, um fortzufahren.",
     signInForBalance: "Melde dich an, um dein Guthaben zu sehen.",
     tokenCenterGuideLink: "Nutzungsanleitung",
     availableBalance: "Verfügbare Token:",
@@ -150,9 +160,11 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
       "Hai esaurito le consultazioni gratuite a vita. Acquista token in Piani e pagamenti per continuare.",
     messageNoActivePurchase:
       "Nessun acquisto attivo recente. Puoi acquistare altri token in Piani e pagamenti.",
-    consultThreadLimit: "Hai raggiunto il limite di questo thread. Avvia una nuova sessione per continuare.",
+    consultThreadLimit:
+      "Hai raggiunto il limite di questo thread. Avvia una nuova sessione per continuare.",
     consultThreadLimitStrip: "Questo thread ha raggiunto il limite di letture.",
-    noTokensDepleted: "Hai usato tutti i token. Acquista un nuovo pacchetto per continuare.",
+    noTokensDepleted:
+      "Hai usato tutti i token. Acquista un nuovo pacchetto per continuare.",
     signInForBalance: "Accedi per vedere il saldo.",
     tokenCenterGuideLink: "Guida all’uso",
     availableBalance: "Token disponibili:",
@@ -167,14 +179,17 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
     tokenCenter: "トークンセンター",
     accumulation:
       "トークンは累積します。現在のパックを使い切る前に新しいパックを購入すると、残りのトークンは新しいパックに加算されます。",
-    loadError: "トークンセンターを読み込めませんでした。もう一度お試しください。",
+    loadError:
+      "トークンセンターを読み込めませんでした。もう一度お試しください。",
     messageFreeDepleted:
       "無料の生涯コンサル枠を使い切りました。プランとお支払いでトークンを購入して続行してください。",
     messageNoActivePurchase:
       "最近のアクティブな購入はありません。プランとお支払いでさらにトークンを購入できます。",
-    consultThreadLimit: "このスレッドの上限に達しました。新しいセッションを開始して続行してください。",
+    consultThreadLimit:
+      "このスレッドの上限に達しました。新しいセッションを開始して続行してください。",
     consultThreadLimitStrip: "このスレッドは読み取り上限に達しました。",
-    noTokensDepleted: "トークンを使い切りました。続けるには新しいパックを購入してください。",
+    noTokensDepleted:
+      "トークンを使い切りました。続けるには新しいパックを購入してください。",
     signInForBalance: "サインインすると残高を表示できます。",
     tokenCenterGuideLink: "利用ガイド",
     availableBalance: "利用可能トークン:",
@@ -187,11 +202,12 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
     remaining: "剩余",
     loading: "加载中…",
     tokenCenter: "代币中心",
-    accumulation:
-      "代币会累积：若在当前包用完前购买新包，剩余代币会并入新包。",
+    accumulation: "代币会累积：若在当前包用完前购买新包，剩余代币会并入新包。",
     loadError: "无法加载代币中心。请重试。",
-    messageFreeDepleted: "您已用完终身免费咨询次数。请在「套餐与付款」购买代币以继续使用。",
-    messageNoActivePurchase: "没有最近的生效购买。您可以在「套餐与付款」购买更多代币。",
+    messageFreeDepleted:
+      "您已用完终身免费咨询次数。请在「套餐与付款」购买代币以继续使用。",
+    messageNoActivePurchase:
+      "没有最近的生效购买。您可以在「套餐与付款」购买更多代币。",
     consultThreadLimit: "已达到本会话上限。请开始新会话以继续。",
     consultThreadLimitStrip: "本会话已达阅读次数上限。",
     noTokensDepleted: "您已用完所有代币。请购买新包以继续使用。",
@@ -214,9 +230,11 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
       "평생 무료 상담을 모두 사용했습니다. 요금제 및 결제에서 토큰을 구매해 계속하세요.",
     messageNoActivePurchase:
       "최근 활성 구매가 없습니다. 요금제 및 결제에서 토큰을 더 구매할 수 있습니다.",
-    consultThreadLimit: "이 스레드 한도에 도달했습니다. 새 세션을 시작해 계속하세요.",
+    consultThreadLimit:
+      "이 스레드 한도에 도달했습니다. 새 세션을 시작해 계속하세요.",
     consultThreadLimitStrip: "이 스레드는 읽기 한도에 도달했습니다.",
-    noTokensDepleted: "토큰을 모두 사용했습니다. 계속하려면 새 팩을 구매하세요.",
+    noTokensDepleted:
+      "토큰을 모두 사용했습니다. 계속하려면 새 팩을 구매하세요.",
     signInForBalance: "로그인하면 잔액을 확인할 수 있습니다.",
     tokenCenterGuideLink: "사용 안내",
     availableBalance: "사용 가능 토큰:",
@@ -236,7 +254,8 @@ const TOKEN_PANEL_UI: Partial<Record<AppLocale, TokenPanelUiMessages>> = {
       "لقد استنفدت استشاراتك المجانية مدى الحياة. اشترِ رموزًا في الخطط والمدفوعات للمتابعة.",
     messageNoActivePurchase:
       "لا يوجد شراء نشط حديث. يمكنك شراء المزيد من الرموز في الخطط والمدفوعات.",
-    consultThreadLimit: "لقد وصلت إلى حد هذه المحادثة. ابدأ جلسة جديدة للمتابعة.",
+    consultThreadLimit:
+      "لقد وصلت إلى حد هذه المحادثة. ابدأ جلسة جديدة للمتابعة.",
     consultThreadLimitStrip: "وصلت هذه المحادثة إلى حد القراءة.",
     noTokensDepleted: "لقد استخدمت جميع رموزك. اشترِ باقة جديدة للمتابعة.",
     signInForBalance: "سجّل الدخول لعرض رصيدك.",
@@ -259,16 +278,21 @@ TOKEN_PANEL_UI.hi = {
   loadError: "टोकन केंद्र लोड नहीं हो सका। कृपया फिर से प्रयास करें।",
   messageFreeDepleted:
     "आपकी आजीवन निःशुल्क परामर्श सीमा समाप्त हो चुकी है। जारी रखने के लिए योजनाएँ और भुगतान में टोकन खरीदें।",
-  messageNoActivePurchase: "हाल में कोई सक्रिय खरीद नहीं है। आप योजनाएँ और भुगतान में और टोकन खरीद सकते हैं।",
-  consultThreadLimit: "आप इस थ्रेड की सीमा तक पहुँच चुके हैं। जारी रखने के लिए नई सत्र शुरू करें।",
+  messageNoActivePurchase:
+    "हाल में कोई सक्रिय खरीद नहीं है। आप योजनाएँ और भुगतान में और टोकन खरीद सकते हैं।",
+  consultThreadLimit:
+    "आप इस थ्रेड की सीमा तक पहुँच चुके हैं। जारी रखने के लिए नई सत्र शुरू करें।",
   consultThreadLimitStrip: "इस थ्रेड की रीडिंग सीमा पूरी हो चुकी है।",
-  noTokensDepleted: "आपने सभी टोकन उपयोग कर लिए हैं। जारी रखने के लिए नया पैक खरीदें।",
+  noTokensDepleted:
+    "आपने सभी टोकन उपयोग कर लिए हैं। जारी रखने के लिए नया पैक खरीदें।",
   signInForBalance: "अपना बैलेंस देखने के लिए साइन इन करें।",
   tokenCenterGuideLink: "उपयोगकर्ता मार्गदर्शिका",
   availableBalance: "उपलब्ध टोकन:",
   threadCapShort: "प्रति थ्रेड सीमा:",
 };
 
-export function getTokenPanelUiMessages(locale: AppLocale): TokenPanelUiMessages {
+export function getTokenPanelUiMessages(
+  locale: AppLocale,
+): TokenPanelUiMessages {
   return TOKEN_PANEL_UI[locale] ?? TOKEN_PANEL_UI[DEFAULT_LOCALE]!;
 }

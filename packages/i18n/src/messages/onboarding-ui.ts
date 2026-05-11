@@ -125,6 +125,8 @@ const ONBOARDING_UI: Record<AppLocale, OnboardingUiMessages> = {
   },
 };
 
-export function getOnboardingUiMessages(locale: AppLocale): OnboardingUiMessages {
+export function getOnboardingUiMessages(
+  locale: AppLocale,
+): OnboardingUiMessages {
   return ONBOARDING_UI[locale] ?? ONBOARDING_UI[DEFAULT_LOCALE];
 }

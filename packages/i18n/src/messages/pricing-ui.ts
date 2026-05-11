@@ -37,7 +37,8 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     loginRequired: "Para comprar tokens necesitas iniciar sesión.",
     errorCheckout:
       "No se pudo preparar el enlace de compra. Revisa la URL de planes en variables de entorno.",
-    depleted: "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
+    depleted:
+      "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
     tokensWord: "tokens",
   },
   en: {
@@ -53,7 +54,8 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     buyTokens: "Buy tokens",
     opening: "Opening...",
     loginRequired: "You need to sign in to buy tokens.",
-    errorCheckout: "Could not prepare the checkout link. Check the plans URL in environment variables.",
+    errorCheckout:
+      "Could not prepare the checkout link. Check the plans URL in environment variables.",
     depleted: "You have used all your tokens. Buy a new pack to continue.",
     tokensWord: "tokens",
   },
@@ -61,7 +63,8 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     title: "Pacotes de tokens",
     balanceLoggedIn: "Tens {{count}} tokens disponíveis",
     balanceUnknown: "Inicia sessão para ver o teu saldo",
-    modelLine: "O modelo ativo é 100% baseado em pacotes de tokens consumíveis.",
+    modelLine:
+      "O modelo ativo é 100% baseado em pacotes de tokens consumíveis.",
     tokensAccumulate:
       "Os teus tokens acumulam-se: se comprares um novo pack antes de esgotar o atual, os tokens restantes somam-se ao novo pack.",
     threadLimitDepends:
@@ -79,7 +82,8 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     title: "Packs de jetons",
     balanceLoggedIn: "Vous avez {{count}} jetons disponibles",
     balanceUnknown: "Connectez-vous pour voir votre solde",
-    modelLine: "Le modèle actif repose à 100 % sur des packs de jetons consommables.",
+    modelLine:
+      "Le modèle actif repose à 100 % sur des packs de jetons consommables.",
     tokensAccumulate:
       "Vos jetons s’accumulent : si vous achetez un nouveau pack avant d’épuiser l’actuel, les jetons restants s’ajoutent au nouveau pack.",
     threadLimitDepends:
@@ -90,14 +94,16 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     loginRequired: "Vous devez être connecté pour acheter des jetons.",
     errorCheckout:
       "Impossible de préparer le lien de paiement. Vérifiez l’URL des plans dans les variables d’environnement.",
-    depleted: "Vous avez utilisé tous vos jetons. Achetez un nouveau pack pour continuer.",
+    depleted:
+      "Vous avez utilisé tous vos jetons. Achetez un nouveau pack pour continuer.",
     tokensWord: "jetons",
   },
   de: {
     title: "Token-Pakete",
     balanceLoggedIn: "Du hast {{count}} Token verfügbar",
     balanceUnknown: "Melde dich an, um dein Guthaben zu sehen",
-    modelLine: "Das aktive Modell basiert zu 100 % auf verbrauchbaren Token-Paketen.",
+    modelLine:
+      "Das aktive Modell basiert zu 100 % auf verbrauchbaren Token-Paketen.",
     tokensAccumulate:
       "Deine Token summieren sich: Wenn du ein neues Paket kaufst, bevor das aktuelle aufgebraucht ist, werden die restlichen Token zum neuen Paket addiert.",
     threadLimitDepends:
@@ -108,14 +114,16 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     loginRequired: "Du musst angemeldet sein, um Token zu kaufen.",
     errorCheckout:
       "Checkout-Link konnte nicht vorbereitet werden. Prüfe die Pläne-URL in den Umgebungsvariablen.",
-    depleted: "Du hast alle Token aufgebraucht. Kaufe ein neues Paket, um fortzufahren.",
+    depleted:
+      "Du hast alle Token aufgebraucht. Kaufe ein neues Paket, um fortzufahren.",
     tokensWord: "Token",
   },
   it: {
     title: "Pacchetti di token",
     balanceLoggedIn: "Hai {{count}} token disponibili",
     balanceUnknown: "Accedi per vedere il saldo",
-    modelLine: "Il modello attivo è al 100% basato su pacchetti di token consumabili.",
+    modelLine:
+      "Il modello attivo è al 100% basato su pacchetti di token consumabili.",
     tokensAccumulate:
       "I tuoi token si accumulano: se acquisti un nuovo pacchetto prima di esaurire quello attuale, i token rimanenti si sommano al nuovo pacchetto.",
     threadLimitDepends:
@@ -126,7 +134,8 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     loginRequired: "Devi accedere per acquistare token.",
     errorCheckout:
       "Impossibile preparare il link di acquisto. Controlla l’URL dei piani nelle variabili d’ambiente.",
-    depleted: "Hai usato tutti i token. Acquista un nuovo pacchetto per continuare.",
+    depleted:
+      "Hai usato tutti i token. Acquista un nuovo pacchetto per continuare.",
     tokensWord: "token",
   },
   ja: {
@@ -142,8 +151,10 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     buyTokens: "トークンを購入",
     opening: "開いています…",
     loginRequired: "トークンを購入するにはサインインが必要です。",
-    errorCheckout: "決済リンクを準備できませんでした。環境変数のプランURLを確認してください。",
-    depleted: "トークンを使い切りました。続けるには新しいパックを購入してください。",
+    errorCheckout:
+      "決済リンクを準備できませんでした。環境変数のプランURLを確認してください。",
+    depleted:
+      "トークンを使い切りました。続けるには新しいパックを購入してください。",
     tokensWord: "トークン",
   },
   zh: {
@@ -176,7 +187,8 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     buyTokens: "토큰 구매",
     opening: "여는 중…",
     loginRequired: "토큰을 구매하려면 로그인해야 합니다.",
-    errorCheckout: "결제 링크를 준비할 수 없습니다. 환경 변수의 플랜 URL을 확인하세요.",
+    errorCheckout:
+      "결제 링크를 준비할 수 없습니다. 환경 변수의 플랜 URL을 확인하세요.",
     depleted: "토큰을 모두 사용했습니다. 계속하려면 새 팩을 구매하세요.",
     tokensWord: "토큰",
   },
@@ -193,7 +205,8 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     buyTokens: "شراء رموز",
     opening: "جارٍ الفتح…",
     loginRequired: "يجب تسجيل الدخول لشراء الرموز.",
-    errorCheckout: "تعذّر تجهيز رابط الدفع. تحقق من رابط الخطط في متغيرات البيئة.",
+    errorCheckout:
+      "تعذّر تجهيز رابط الدفع. تحقق من رابط الخطط في متغيرات البيئة.",
     depleted: "لقد استنفدت جميع رموزك. اشترِ باقة جديدة للمتابعة.",
     tokensWord: "رمز",
   },
@@ -210,8 +223,10 @@ const PRICING_UI: Record<AppLocale, PricingUiMessages> = {
     buyTokens: "टोकन खरीदें",
     opening: "खुल रहा है…",
     loginRequired: "टोकन खरीदने के लिए लॉग इन करना होगा।",
-    errorCheckout: "चेकआउट लिंक तैयार नहीं हो सका। पर्यावरण चर में योजना URL जाँचें।",
-    depleted: "आपने सभी टोकन उपयोग कर लिए हैं। जारी रखने के लिए नया पैक खरीदें।",
+    errorCheckout:
+      "चेकआउट लिंक तैयार नहीं हो सका। पर्यावरण चर में योजना URL जाँचें।",
+    depleted:
+      "आपने सभी टोकन उपयोग कर लिए हैं। जारी रखने के लिए नया पैक खरीदें।",
     tokensWord: "टोकन",
   },
 };
@@ -220,7 +235,10 @@ export function getPricingUiMessages(locale: AppLocale): PricingUiMessages {
   return PRICING_UI[locale] ?? PRICING_UI[DEFAULT_LOCALE];
 }
 
-export function formatPricingBalance(msg: PricingUiMessages, count: number): string {
+export function formatPricingBalance(
+  msg: PricingUiMessages,
+  count: number,
+): string {
   return interpolate(msg.balanceLoggedIn, { count });
 }
 

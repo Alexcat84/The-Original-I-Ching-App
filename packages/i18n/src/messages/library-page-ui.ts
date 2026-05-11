@@ -68,7 +68,11 @@ export type LibraryPageUiMessages = {
  * by pre-computed string values — callers must resolve them before rendering.
  */
 export type LibraryPageUiSerialized = {
-  readonly [K in keyof LibraryPageUiMessages]: LibraryPageUiMessages[K] extends (...args: never[]) => string ? string : LibraryPageUiMessages[K];
+  readonly [K in keyof LibraryPageUiMessages]: LibraryPageUiMessages[K] extends (
+    ...args: never[]
+  ) => string
+    ? string
+    : LibraryPageUiMessages[K];
 };
 
 const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
@@ -104,12 +108,13 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Línea ${position} cambia → del hexagrama ${from} al ${to}`,
     sourceLabel: "Fuente",
-  zhouyiClassicalNotice: "",
+    zhouyiClassicalNotice: "",
     notFound:
       "No se encontró ese hexagrama. Vuelve a la biblioteca y prueba con un número entre 1 y 64.",
     metaDescription:
       "Biblioteca completa de los 64 hexagramas del I Ching con Wilhelm/Baynes, Legge y Zhou Yi original. Búsqueda y comparación lado a lado.",
-    detailMetaTitle: (label) => `${label} | Biblioteca | The Original I Ching App`,
+    detailMetaTitle: (label) =>
+      `${label} | Biblioteca | The Original I Ching App`,
   },
   en: {
     title: "Hexagram library",
@@ -143,7 +148,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Line ${position} changes → from hexagram ${from} to ${to}`,
     sourceLabel: "Source",
-  zhouyiClassicalNotice: "",
+    zhouyiClassicalNotice: "",
     notFound:
       "That hexagram could not be found. Go back to the library and pick a number between 1 and 64.",
     metaDescription:
@@ -182,12 +187,13 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Linha ${position} muda → do hexagrama ${from} para ${to}`,
     sourceLabel: "Fonte",
-  zhouyiClassicalNotice: "",
+    zhouyiClassicalNotice: "",
     notFound:
       "Hexagrama não encontrado. Volte à biblioteca e tente um número entre 1 e 64.",
     metaDescription:
       "Biblioteca completa dos 64 hexagramas do I Ching com Wilhelm/Baynes, Legge e Zhou Yi original. Pesquisa e comparação lado a lado.",
-    detailMetaTitle: (label) => `${label} | Biblioteca | The Original I Ching App`,
+    detailMetaTitle: (label) =>
+      `${label} | Biblioteca | The Original I Ching App`,
   },
   fr: {
     title: "Bibliothèque des hexagrammes",
@@ -226,7 +232,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
       "Cet hexagramme est introuvable. Revenez à la bibliothèque et choisissez un numéro entre 1 et 64.",
     metaDescription:
       "Bibliothèque complète des 64 hexagrammes du I Ching avec Wilhelm/Baynes, Legge et Zhou Yi original. Recherche et comparaison côte à côte.",
-    detailMetaTitle: (label) => `${label} | Bibliothèque | The Original I Ching App`,
+    detailMetaTitle: (label) =>
+      `${label} | Bibliothèque | The Original I Ching App`,
   },
   de: {
     title: "Hexagramm-Bibliothek",
@@ -265,7 +272,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
       "Dieses Hexagramm wurde nicht gefunden. Kehre zur Bibliothek zurück und wähle eine Zahl zwischen 1 und 64.",
     metaDescription:
       "Vollständige Bibliothek der 64 I-Ging-Hexagramme mit Wilhelm/Baynes, Legge und Original-Zhou Yi. Suche und Seite-an-Seite-Vergleich.",
-    detailMetaTitle: (label) => `${label} | Bibliothek | The Original I Ching App`,
+    detailMetaTitle: (label) =>
+      `${label} | Bibliothek | The Original I Ching App`,
   },
   it: {
     title: "Biblioteca degli esagrammi",
@@ -304,7 +312,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
       "Esagramma non trovato. Torna alla biblioteca e prova un numero tra 1 e 64.",
     metaDescription:
       "Biblioteca completa dei 64 esagrammi dell'I Ching con Wilhelm/Baynes, Legge e Zhou Yi originale. Ricerca e confronto fianco a fianco.",
-    detailMetaTitle: (label) => `${label} | Biblioteca | The Original I Ching App`,
+    detailMetaTitle: (label) =>
+      `${label} | Biblioteca | The Original I Ching App`,
   },
   ja: {
     title: "卦のライブラリ",
@@ -343,7 +352,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
       "その卦は見つかりませんでした。ライブラリに戻り、1〜64 の番号を選んでください。",
     metaDescription:
       "易経 64 卦の完全ライブラリ。Wilhelm/Baynes、Legge、原文 Zhou Yi を並べて検索・比較できます。",
-    detailMetaTitle: (label) => `${label} | ライブラリ | The Original I Ching App`,
+    detailMetaTitle: (label) =>
+      `${label} | ライブラリ | The Original I Ching App`,
   },
   zh: {
     title: "卦象图书馆",
@@ -378,8 +388,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
       `第${position}爻变化 → 由第 ${from} 卦至第 ${to} 卦`,
     sourceLabel: "出处",
     zhouyiClassicalNotice: "",
-    notFound:
-      "未找到该卦。请返回图书馆，并选择 1 至 64 之间的编号。",
+    notFound: "未找到该卦。请返回图书馆，并选择 1 至 64 之间的编号。",
     metaDescription:
       "易经 64 卦的完整图书馆，并列收录卫礼贤／贝恩斯、理雅各与原始周易，可搜索与对照。",
     detailMetaTitle: (label) => `${label} | 图书馆 | The Original I Ching App`,
@@ -421,7 +430,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
       "해당 괘를 찾을 수 없습니다. 라이브러리로 돌아가 1부터 64 사이의 번호를 선택하세요.",
     metaDescription:
       "역경 64괘 전체 라이브러리. 빌헬름/베인스, 레게, 원문 주역을 나란히 검색·비교합니다.",
-    detailMetaTitle: (label) => `${label} | 라이브러리 | The Original I Ching App`,
+    detailMetaTitle: (label) =>
+      `${label} | 라이브러리 | The Original I Ching App`,
   },
   ar: {
     title: "مكتبة الأغراض",
@@ -499,10 +509,13 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
       "वह हेक्साग्राम नहीं मिला। पुस्तकालय पर वापस जाएँ और 1 से 64 के बीच कोई संख्या चुनें।",
     metaDescription:
       "64 I Ching हेक्साग्रामों का पूरा पुस्तकालय Wilhelm/Baynes, Legge और मूल Zhou Yi के साथ। साथ-साथ खोज और तुलना।",
-    detailMetaTitle: (label) => `${label} | पुस्तकालय | The Original I Ching App`,
+    detailMetaTitle: (label) =>
+      `${label} | पुस्तकालय | The Original I Ching App`,
   },
 };
 
-export function getLibraryPageUiMessages(locale: AppLocale): LibraryPageUiMessages {
+export function getLibraryPageUiMessages(
+  locale: AppLocale,
+): LibraryPageUiMessages {
   return LIBRARY_PAGE_UI[locale] ?? LIBRARY_PAGE_UI[DEFAULT_LOCALE];
 }

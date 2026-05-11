@@ -175,7 +175,10 @@ const BY_LOCALE: Record<AppLocale, RuleMap> = {
   hi: HI,
 };
 
-export function getIchingMutationRuleLabel(locale: AppLocale, rule: string): string {
+export function getIchingMutationRuleLabel(
+  locale: AppLocale,
+  rule: string,
+): string {
   const map = BY_LOCALE[locale] ?? BY_LOCALE[DEFAULT_LOCALE];
   if (rule in map) return map[rule as IchingMutationRuleId];
   return rule;

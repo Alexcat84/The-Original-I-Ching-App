@@ -22,7 +22,8 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     successTitle: "¡Bienvenido a {{label}}!",
     successSub: "Tus consultas están listas.",
     pendingTitle: "Tu pago está siendo procesado.",
-    pendingSub: "En unos minutos verás tus tokens acreditados. Puedes seguir usando la app.",
+    pendingSub:
+      "En unos minutos verás tus tokens acreditados. Puedes seguir usando la app.",
     ctaOracle: "Ir al oráculo",
   },
   en: {
@@ -32,7 +33,8 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     successTitle: "Welcome to {{label}}!",
     successSub: "Your consultations are ready.",
     pendingTitle: "Your payment is being processed.",
-    pendingSub: "Your tokens will appear within a few minutes. You can keep using the app.",
+    pendingSub:
+      "Your tokens will appear within a few minutes. You can keep using the app.",
     ctaOracle: "Go to oracle",
   },
   pt: {
@@ -42,7 +44,8 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     successTitle: "Bem-vindo a {{label}}!",
     successSub: "As tuas consultas estão prontas.",
     pendingTitle: "O teu pagamento está a ser processado.",
-    pendingSub: "Em poucos minutos verás os tokens creditados. Podes continuar a usar a app.",
+    pendingSub:
+      "Em poucos minutos verás os tokens creditados. Podes continuar a usar a app.",
     ctaOracle: "Ir ao oráculo",
   },
   fr: {
@@ -52,7 +55,8 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     successTitle: "Bienvenue sur {{label}} !",
     successSub: "Vos consultations sont prêtes.",
     pendingTitle: "Votre paiement est en cours de traitement.",
-    pendingSub: "Vos jetons seront crédités dans quelques minutes. Vous pouvez continuer à utiliser l’app.",
+    pendingSub:
+      "Vos jetons seront crédités dans quelques minutes. Vous pouvez continuer à utiliser l’app.",
     ctaOracle: "Aller à l’oracle",
   },
   de: {
@@ -62,7 +66,8 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     successTitle: "Willkommen bei {{label}}!",
     successSub: "Ihre Konsultationen sind bereit.",
     pendingTitle: "Ihre Zahlung wird bearbeitet.",
-    pendingSub: "In wenigen Minuten werden Ihre Token gutgeschrieben. Sie können die App weiter nutzen.",
+    pendingSub:
+      "In wenigen Minuten werden Ihre Token gutgeschrieben. Sie können die App weiter nutzen.",
     ctaOracle: "Zum Orakel",
   },
   it: {
@@ -72,7 +77,8 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     successTitle: "Benvenuto in {{label}}!",
     successSub: "Le tue consultazioni sono pronte.",
     pendingTitle: "Il pagamento è in elaborazione.",
-    pendingSub: "Tra pochi minuti vedrai i token accreditati. Puoi continuare a usare l’app.",
+    pendingSub:
+      "Tra pochi minuti vedrai i token accreditati. Puoi continuare a usare l’app.",
     ctaOracle: "Vai all’oracolo",
   },
   ja: {
@@ -82,7 +88,8 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     successTitle: "{{label}}へようこそ！",
     successSub: "相談の準備ができました。",
     pendingTitle: "お支払いを処理しています。",
-    pendingSub: "数分以内にトークンが反映されます。そのままアプリをご利用いただけます。",
+    pendingSub:
+      "数分以内にトークンが反映されます。そのままアプリをご利用いただけます。",
     ctaOracle: "オラクルへ",
   },
   zh: {
@@ -112,7 +119,8 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     successTitle: "مرحبًا بك في {{label}}!",
     successSub: "استشاراتك جاهزة.",
     pendingTitle: "جارٍ معالجة دفعتك.",
-    pendingSub: "ستظهر رموزك خلال دقائق قليلة. يمكنك الاستمرار في استخدام التطبيق.",
+    pendingSub:
+      "ستظهر رموزك خلال دقائق قليلة. يمكنك الاستمرار في استخدام التطبيق.",
     ctaOracle: "الذهاب إلى الأوراكل",
   },
   hi: {
@@ -122,15 +130,21 @@ const CHECKOUT_SUCCESS_UI: Record<AppLocale, CheckoutSuccessUiMessages> = {
     successTitle: "{{label}} में आपका स्वागत है!",
     successSub: "आपके परामर्श तैयार हैं।",
     pendingTitle: "आपका भुगतान संसाधित हो रहा है।",
-    pendingSub: "कुछ मिनटों में आपके टोकन दिखाई देंगे। आप ऐप का उपयोग जारी रख सकते हैं।",
+    pendingSub:
+      "कुछ मिनटों में आपके टोकन दिखाई देंगे। आप ऐप का उपयोग जारी रख सकते हैं।",
     ctaOracle: "ओरेकल पर जाएं",
   },
 };
 
-export function getCheckoutSuccessUiMessages(locale: AppLocale): CheckoutSuccessUiMessages {
+export function getCheckoutSuccessUiMessages(
+  locale: AppLocale,
+): CheckoutSuccessUiMessages {
   return CHECKOUT_SUCCESS_UI[locale] ?? CHECKOUT_SUCCESS_UI[DEFAULT_LOCALE];
 }
 
-export function formatCheckoutSuccessTitle(m: CheckoutSuccessUiMessages, label: string): string {
+export function formatCheckoutSuccessTitle(
+  m: CheckoutSuccessUiMessages,
+  label: string,
+): string {
   return interpolate(m.successTitle, { label });
 }

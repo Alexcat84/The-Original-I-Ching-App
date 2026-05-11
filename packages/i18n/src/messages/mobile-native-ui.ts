@@ -21,7 +21,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     imageSavedTitle: "Imagen guardada",
     imageSavedBody: "Se guardó en tu galería.",
     permissionDeniedTitle: "Permiso denegado",
-    permissionDeniedBody: "Necesitamos acceso a tu galería para guardar imágenes.",
+    permissionDeniedBody:
+      "Necesitamos acceso a tu galería para guardar imágenes.",
     fileSaveErrorTitle: "Error",
     fileSaveErrorBody: "No se pudo guardar el archivo.",
     fileSavedTitle: "Archivo guardado",
@@ -47,7 +48,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     imageSavedTitle: "Imagem guardada",
     imageSavedBody: "Guardada na sua galeria.",
     permissionDeniedTitle: "Permissão negada",
-    permissionDeniedBody: "Precisamos de acesso à galeria para guardar imagens.",
+    permissionDeniedBody:
+      "Precisamos de acesso à galeria para guardar imagens.",
     fileSaveErrorTitle: "Erro",
     fileSaveErrorBody: "No fue posible guardar o ficheiro.",
     fileSavedTitle: "Ficheiro guardado",
@@ -60,7 +62,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     imageSavedTitle: "Image enregistrée",
     imageSavedBody: "Enregistrée dans votre galerie.",
     permissionDeniedTitle: "Autorisation refusée",
-    permissionDeniedBody: "L’accès à la galerie est nécessaire pour enregistrer les images.",
+    permissionDeniedBody:
+      "L’accès à la galerie est nécessaire pour enregistrer les images.",
     fileSaveErrorTitle: "Erreur",
     fileSaveErrorBody: "Impossible d’enregistrer le fichier.",
     fileSavedTitle: "Fichier enregistré",
@@ -73,7 +76,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     imageSavedTitle: "Bild gespeichert",
     imageSavedBody: "In Ihrer Galerie gespeichert.",
     permissionDeniedTitle: "Berechtigung verweigert",
-    permissionDeniedBody: "Für das Speichern von Bildern ist Galeriezugriff nötig.",
+    permissionDeniedBody:
+      "Für das Speichern von Bildern ist Galeriezugriff nötig.",
     fileSaveErrorTitle: "Fehler",
     fileSaveErrorBody: "Datei konnte nicht gespeichert werden.",
     fileSavedTitle: "Datei gespeichert",
@@ -86,7 +90,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     imageSavedTitle: "Immagine salvata",
     imageSavedBody: "Salvata nella galleria.",
     permissionDeniedTitle: "Permesso negato",
-    permissionDeniedBody: "Serve l’accesso alla galleria para salvare le immagini.",
+    permissionDeniedBody:
+      "Serve l’accesso alla galleria para salvare le immagini.",
     fileSaveErrorTitle: "Errore",
     fileSaveErrorBody: "Imposibile salvare il file.",
     fileSavedTitle: "File salvato",
@@ -99,7 +104,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     imageSavedTitle: "画像を保存しました",
     imageSavedBody: "ギャラリーに保存しました。",
     permissionDeniedTitle: "許可がありません",
-    permissionDeniedBody: "画像を保存するにはギャラリーへのアクセスが必要です。",
+    permissionDeniedBody:
+      "画像を保存するにはギャラリーへのアクセスが必要です。",
     fileSaveErrorTitle: "エラー",
     fileSaveErrorBody: "ファイルを保存できませんでした。",
     fileSavedTitle: "ファイルを保存しました",
@@ -162,6 +168,8 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
   },
 };
 
-export function getMobileNativeUiMessages(locale: AppLocale): MobileNativeUiMessages {
+export function getMobileNativeUiMessages(
+  locale: AppLocale,
+): MobileNativeUiMessages {
   return MOBILE_NATIVE_UI[locale] ?? MOBILE_NATIVE_UI[DEFAULT_LOCALE];
 }

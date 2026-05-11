@@ -11,7 +11,8 @@ const AUTH_CALLBACK_UI: Record<AppLocale, AuthCallbackUiMessages> = {
       "Verificando acceso… si vienes del correo, estamos finalizando la confirmación o el restablecimiento.",
   },
   en: {
-    verifying: "Verifying access… if you arrived from email, we are finishing confirmation or password reset.",
+    verifying:
+      "Verifying access… if you arrived from email, we are finishing confirmation or password reset.",
   },
   pt: {
     verifying:
@@ -30,16 +31,19 @@ const AUTH_CALLBACK_UI: Record<AppLocale, AuthCallbackUiMessages> = {
       "Verifica dell’accesso… se arrivi dall’email, stiamo completando la conferma o il ripristino della password.",
   },
   ja: {
-    verifying: "アクセスを確認しています… メールからの場合は確認またはパスワード再設定を完了しています。",
+    verifying:
+      "アクセスを確認しています… メールからの場合は確認またはパスワード再設定を完了しています。",
   },
   zh: {
     verifying: "正在验证访问… 若您从邮件进入，我们正在完成确认或密码重置。",
   },
   ko: {
-    verifying: "접속을 확인하는 중… 이메일에서 오셨다면 확인 또는 비밀번호 재설정을 마무리하고 있습니다.",
+    verifying:
+      "접속을 확인하는 중… 이메일에서 오셨다면 확인 또는 비밀번호 재설정을 마무리하고 있습니다.",
   },
   ar: {
-    verifying: "جارٍ التحقق من الوصول… إذا أتيت من البريد الإلكتروني، نحن نُنهي التأكيد أو إعادة تعيين كلمة المرور.",
+    verifying:
+      "جارٍ التحقق من الوصول… إذا أتيت من البريد الإلكتروني، نحن نُنهي التأكيد أو إعادة تعيين كلمة المرور.",
   },
   hi: {
     verifying:
@@ -47,6 +51,8 @@ const AUTH_CALLBACK_UI: Record<AppLocale, AuthCallbackUiMessages> = {
   },
 };
 
-export function getAuthCallbackUiMessages(locale: AppLocale): AuthCallbackUiMessages {
+export function getAuthCallbackUiMessages(
+  locale: AppLocale,
+): AuthCallbackUiMessages {
   return AUTH_CALLBACK_UI[locale] ?? AUTH_CALLBACK_UI[DEFAULT_LOCALE];
 }

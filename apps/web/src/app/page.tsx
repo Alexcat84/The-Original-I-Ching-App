@@ -33,14 +33,19 @@ import { ManualIChingCoinWizard } from "@/components/manual-iching/ManualIChingC
 import { ManualYarrowWizard } from "@/components/manual-iching/ManualYarrowWizard";
 import { getManualWizardMessages } from "@/components/manual-iching/manual-wizard-messages";
 import { AmbientParticles } from "@/components/AmbientParticles";
-import BoneRitualAnimation, { type BoneOracleResult } from "@/components/BoneRitualAnimation";
+import BoneRitualAnimation, {
+  type BoneOracleResult,
+} from "@/components/BoneRitualAnimation";
 import { InterpretationMarkdownSafe } from "@/components/InterpretationMarkdownSafe";
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
 import { isPersistableUuid } from "@/lib/session-ids";
-import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
+import {
+  getSupabaseBrowser,
+  isSupabaseBrowserConfigured,
+} from "@/lib/supabase-browser";
 import {
   buildCanvasReadingLines,
   drawPdfContinuationChrome,
@@ -55,9 +60,15 @@ import {
 } from "@/lib/credits-ui-copy";
 import { PACK_IDS_ORDERED, TOKEN_PACKS } from "@/lib/token-packs";
 import type { ChatSessionState } from "@/lib/chat-session-state";
-import { mergeHydratedWithLocalDrafts, pickPreferredSessionLocalId } from "@/lib/chat-session-selection";
+import {
+  mergeHydratedWithLocalDrafts,
+  pickPreferredSessionLocalId,
+} from "@/lib/chat-session-selection";
 import { useChatSessionState } from "@/providers/chat-session-provider";
-import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
+import {
+  normalizeInterpretationPunctuation,
+  stripInterpretationFluff,
+} from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import {
@@ -65,9 +76,21 @@ import {
   ichingRitualRevealTimingFromBudget,
   type IchingRitualRevealTiming,
 } from "@/lib/iching-ritual-timing";
-import { previewCastFromLineValues, type CastingMethod, type Line, type ManualCastPreview } from "@iching-oracle/iching-engine";
+import {
+  previewCastFromLineValues,
+  type CastingMethod,
+  type Line,
+  type ManualCastPreview,
+} from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 /** Default bone surface for API when UI no longer exposes the selector. */
 const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
@@ -81,7 +104,9 @@ const PLAY_PROMO_STRIP_DISMISSED_KEY = "iching_play_promo_strip_dismissed_v1";
 function readCachedAccountSessionLimit(userId: string): number | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = window.sessionStorage.getItem(`${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`);
+    const raw = window.sessionStorage.getItem(
+      `${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`,
+    );
     if (raw == null || raw === "") return null;
     const n = Number(raw);
     if (!Number.isFinite(n) || n < 1) return null;
@@ -107,7 +132,9 @@ function writeCachedAccountSessionLimit(userId: string, limit: number): void {
 function clearCachedAccountSessionLimit(userId: string): void {
   if (typeof window === "undefined") return;
   try {
-    window.sessionStorage.removeItem(`${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`);
+    window.sessionStorage.removeItem(
+      `${ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX}${userId}`,
+    );
   } catch {
     /* ignore */
   }
@@ -142,7 +169,14 @@ type ConsultResponse = {
   changingLines: number[];
   interpretation: string;
   category: string;
-  imageProvider?: "auto" | "mock" | "svg-art" | "pollinations" | "fal" | "gpt-image" | "together";
+  imageProvider?:
+    | "auto"
+    | "mock"
+    | "svg-art"
+    | "pollinations"
+    | "fal"
+    | "gpt-image"
+    | "together";
   imagePrompt: string;
   imageUrl: string;
   imageFallbackUrl: string;
@@ -177,7 +211,9 @@ function engineLinesToApiLines(lines: Line[]): ApiLine[] {
 }
 
 function transformLineVector(values: Array<6 | 7 | 8 | 9>): Array<7 | 8> {
-  return values.map((value) => (value === 6 ? 7 : value === 9 ? 8 : value)) as Array<7 | 8>;
+  return values.map((value) =>
+    value === 6 ? 7 : value === 9 ? 8 : value,
+  ) as Array<7 | 8>;
 }
 
 type RitualDebugSnapshot = {
@@ -211,7 +247,8 @@ const RUNTIME_TEXT: Record<
   es: {
     ritualCoins: "Ritual en curso · lanzando monedas",
     ritualBones: "Ritual en curso · calor sobre el hueso",
-    ritualBonesHint: "Estilización del procedimiento shang: el patrón de grieta se fija al completar la consulta.",
+    ritualBonesHint:
+      "Estilización del procedimiento shang: el patrón de grieta se fija al completar la consulta.",
     line: "Línea",
     signReading: "Lectura del signo:",
     oracleBones: "Huesos de oráculo",
@@ -226,7 +263,8 @@ const RUNTIME_TEXT: Record<
   en: {
     ritualCoins: "Ritual in progress · tossing coins",
     ritualBones: "Ritual in progress · heat over bone",
-    ritualBonesHint: "Stylized Shang procedure: the crack pattern is fixed when the consultation completes.",
+    ritualBonesHint:
+      "Stylized Shang procedure: the crack pattern is fixed when the consultation completes.",
     line: "Line",
     signReading: "Sign reading:",
     oracleBones: "Oracle bones",
@@ -241,7 +279,8 @@ const RUNTIME_TEXT: Record<
   pt: {
     ritualCoins: "Ritual em curso · lançando moedas",
     ritualBones: "Ritual em curso · calor sobre o osso",
-    ritualBonesHint: "Estilização do procedimento Shang: o padrão da fissura é fixado ao concluir a consulta.",
+    ritualBonesHint:
+      "Estilização do procedimento Shang: o padrão da fissura é fixado ao concluir a consulta.",
     line: "Linha",
     signReading: "Leitura do sinal:",
     oracleBones: "Ossos oraculares",
@@ -256,7 +295,8 @@ const RUNTIME_TEXT: Record<
   fr: {
     ritualCoins: "Rituel en cours · lancer des pièces",
     ritualBones: "Rituel en cours · chaleur sur l'os",
-    ritualBonesHint: "Stylisation du procédé Shang : le motif de fissure se fixe à la fin de la consultation.",
+    ritualBonesHint:
+      "Stylisation du procédé Shang : le motif de fissure se fixe à la fin de la consultation.",
     line: "Ligne",
     signReading: "Lecture du signe :",
     oracleBones: "Os oraculaires",
@@ -271,7 +311,8 @@ const RUNTIME_TEXT: Record<
   de: {
     ritualCoins: "Ritual läuft · Münzwurf",
     ritualBones: "Ritual läuft · Hitze auf dem Knochen",
-    ritualBonesHint: "Stilisierung des Shang-Verfahrens: Das Rissmuster wird nach Abschluss der Anfrage festgelegt.",
+    ritualBonesHint:
+      "Stilisierung des Shang-Verfahrens: Das Rissmuster wird nach Abschluss der Anfrage festgelegt.",
     line: "Linie",
     signReading: "Zeichenlesung:",
     oracleBones: "Orakelknochen",
@@ -286,7 +327,8 @@ const RUNTIME_TEXT: Record<
   it: {
     ritualCoins: "Rituale in corso · lancio delle monete",
     ritualBones: "Rituale in corso · calore sull'osso",
-    ritualBonesHint: "Stilizzazione del procedimento Shang: il pattern di crepa si fissa al termine della consultazione.",
+    ritualBonesHint:
+      "Stilizzazione del procedimento Shang: il pattern di crepa si fissa al termine della consultazione.",
     line: "Linea",
     signReading: "Lettura del segno:",
     oracleBones: "Ossa oracolari",
@@ -301,7 +343,8 @@ const RUNTIME_TEXT: Record<
   ja: {
     ritualCoins: "儀式進行中・コインを投げています",
     ritualBones: "儀式進行中・骨に熱を加えています",
-    ritualBonesHint: "殷式手順の演出：相談が完了すると亀裂パターンが確定します。",
+    ritualBonesHint:
+      "殷式手順の演出：相談が完了すると亀裂パターンが確定します。",
     line: "爻",
     signReading: "徴の読み:",
     oracleBones: "甲骨",
@@ -331,7 +374,8 @@ const RUNTIME_TEXT: Record<
   ko: {
     ritualCoins: "의식 진행 중 · 동전 투척",
     ritualBones: "의식 진행 중 · 뼈에 열 가하기",
-    ritualBonesHint: "상(商)식 절차의 스타일화: 상담이 완료되면 균열 패턴이 확정됩니다.",
+    ritualBonesHint:
+      "상(商)식 절차의 스타일화: 상담이 완료되면 균열 패턴이 확정됩니다.",
     line: "효",
     signReading: "징후 해석:",
     oracleBones: "갑골 점복",
@@ -346,7 +390,8 @@ const RUNTIME_TEXT: Record<
   ar: {
     ritualCoins: "الطقس جارٍ · رمي العملات",
     ritualBones: "الطقس جارٍ · الحرارة على العظم",
-    ritualBonesHint: "توصيف أسلوب شانغ: يُثبَّت نمط الشقوق عند اكتمال الاستشارة.",
+    ritualBonesHint:
+      "توصيف أسلوب شانغ: يُثبَّت نمط الشقوق عند اكتمال الاستشارة.",
     line: "خط",
     signReading: "قراءة العلامة:",
     oracleBones: "عظام الأوراكل",
@@ -361,7 +406,8 @@ const RUNTIME_TEXT: Record<
   hi: {
     ritualCoins: "अनुष्ठान जारी है · सिक्के फेंके जा रहे हैं",
     ritualBones: "अनुष्ठान जारी है · हड्डी पर ऊष्मा",
-    ritualBonesHint: "शांग प्रक्रिया का शैलीकृत रूप: परामर्श पूरा होने पर दरार-पैटर्न तय होता है।",
+    ritualBonesHint:
+      "शांग प्रक्रिया का शैलीकृत रूप: परामर्श पूरा होने पर दरार-पैटर्न तय होता है।",
     line: "रेखा",
     signReading: "चिह्न-पठन:",
     oracleBones: "अस्थि ओरेकल",
@@ -476,7 +522,8 @@ const DRAWER_TEXT: Record<
     loadingChats: "Cargando chats…",
     loadingConversation: "Cargando conversación…",
     onlyThreads: "Solo se listan hilos con al menos una lectura.",
-    noSaved: "Aún no hay conversaciones guardadas. Envía una consulta para verla aquí.",
+    noSaved:
+      "Aún no hay conversaciones guardadas. Envía una consulta para verla aquí.",
     messages: "mensajes",
     deleteConversation: "Eliminar conversación",
     deletingConversation: "Eliminando conversación…",
@@ -502,7 +549,8 @@ const DRAWER_TEXT: Record<
     loadingChats: "Carregando chats…",
     loadingConversation: "Carregando conversa…",
     onlyThreads: "Somente fios com ao menos uma leitura são listados.",
-    noSaved: "Ainda não há conversas salvas. Envie uma consulta para vê-la aqui.",
+    noSaved:
+      "Ainda não há conversas salvas. Envie uma consulta para vê-la aqui.",
     messages: "mensagens",
     deleteConversation: "Excluir conversa",
     deletingConversation: "Excluindo conversa…",
@@ -606,7 +654,8 @@ const DRAWER_TEXT: Record<
     loadingChats: "चैट लोड हो रही हैं…",
     loadingConversation: "वार्ता लोड हो रही है…",
     onlyThreads: "केवल वे थ्रेड दिखाए जाते हैं जिनमें कम से कम एक रीडिंग हो।",
-    noSaved: "अभी कोई सहेजी गई बातचीत नहीं है। यहाँ देखने के लिए एक परामर्श भेजें।",
+    noSaved:
+      "अभी कोई सहेजी गई बातचीत नहीं है। यहाँ देखने के लिए एक परामर्श भेजें।",
     messages: "संदेश",
     deleteConversation: "बातचीत हटाएँ",
     deletingConversation: "बातचीत हटाई जा रही है…",
@@ -676,7 +725,8 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
       "Buen momento para escuchar al oráculo. ¿Qué inquietud trae este nuevo día? Escribe tu consulta con intención.",
     emptyInviteAfternoon:
       "El cambio sigue moviéndose. ¿Qué necesitas ver con más claridad en el curso de hoy?",
-    emptyInviteNight: "La noche también pregunta. ¿Qué frente de tu vida quieres explorar?",
+    emptyInviteNight:
+      "La noche también pregunta. ¿Qué frente de tu vida quieres explorar?",
   },
   en: {
     language: "Language",
@@ -686,7 +736,7 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "Options",
     writeConsultation: "Type your consultation…",
     positiveCharge: "Positive charge (affirmation)…",
-    threadLimitReached: "Thread limit reached. Use \"New session\" above.",
+    threadLimitReached: 'Thread limit reached. Use "New session" above.',
     dismissThreadLimitBannerAria: "Dismiss thread limit notice",
     sessionNew: "New session",
     drawerClose: "Close",
@@ -694,9 +744,12 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Bones",
     iChingTagline: "Three coins · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Oracle Bones · Cracks 兆 · Shang style",
-    emptyInviteMorning: "Good time to consult the oracle. What concern comes with this new day?",
-    emptyInviteAfternoon: "Change keeps moving. What do you need to see more clearly today?",
-    emptyInviteNight: "The night also asks. Which part of your life do you want to explore?",
+    emptyInviteMorning:
+      "Good time to consult the oracle. What concern comes with this new day?",
+    emptyInviteAfternoon:
+      "Change keeps moving. What do you need to see more clearly today?",
+    emptyInviteNight:
+      "The night also asks. Which part of your life do you want to explore?",
   },
   pt: {
     language: "Idioma",
@@ -714,9 +767,12 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Ossos",
     iChingTagline: "Três moedas · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Ossos de Oráculo · Fissuras 兆 · estilo Shang",
-    emptyInviteMorning: "Bom momento para ouvir o oráculo. Que inquietação traz este novo dia?",
-    emptyInviteAfternoon: "A mudança continua. O que você precisa ver com mais clareza hoje?",
-    emptyInviteNight: "A noite também pergunta. Qual frente da sua vida você quer explorar?",
+    emptyInviteMorning:
+      "Bom momento para ouvir o oráculo. Que inquietação traz este novo dia?",
+    emptyInviteAfternoon:
+      "A mudança continua. O que você precisa ver com mais clareza hoje?",
+    emptyInviteNight:
+      "A noite também pergunta. Qual frente da sua vida você quer explorar?",
   },
   fr: {
     language: "Langue",
@@ -726,7 +782,8 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     options: "Options",
     writeConsultation: "Écris ta consultation…",
     positiveCharge: "Charge positive (affirmation)…",
-    threadLimitReached: "Limite du fil atteinte. Utilisez « Nouvelle session ».",
+    threadLimitReached:
+      "Limite du fil atteinte. Utilisez « Nouvelle session ».",
     dismissThreadLimitBannerAria: "Masquer l'avis de limite de fil",
     sessionNew: "Nouvelle session",
     drawerClose: "Fermer",
@@ -734,9 +791,12 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Os",
     iChingTagline: "Trois pièces · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Os Oracle · Fissures 兆 · style Shang",
-    emptyInviteMorning: "Bon moment pour écouter l'oracle. Quelle préoccupation t'accompagne aujourd'hui ?",
-    emptyInviteAfternoon: "Le changement continue. Que dois-tu voir plus clairement aujourd'hui ?",
-    emptyInviteNight: "La nuit pose aussi des questions. Quelle partie de ta vie veux-tu explorer ?",
+    emptyInviteMorning:
+      "Bon moment pour écouter l'oracle. Quelle préoccupation t'accompagne aujourd'hui ?",
+    emptyInviteAfternoon:
+      "Le changement continue. Que dois-tu voir plus clairement aujourd'hui ?",
+    emptyInviteNight:
+      "La nuit pose aussi des questions. Quelle partie de ta vie veux-tu explorer ?",
   },
   de: {
     language: "Sprache",
@@ -754,9 +814,12 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Knochen",
     iChingTagline: "Drei Münzen · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Orakelknochen · Risse 兆 · Shang-Stil",
-    emptyInviteMorning: "Guter Zeitpunkt für das Orakel. Welche Frage bringt dieser Tag mit sich?",
-    emptyInviteAfternoon: "Der Wandel geht weiter. Was musst du heute klarer sehen?",
-    emptyInviteNight: "Auch die Nacht fragt. Welchen Bereich deines Lebens möchtest du erkunden?",
+    emptyInviteMorning:
+      "Guter Zeitpunkt für das Orakel. Welche Frage bringt dieser Tag mit sich?",
+    emptyInviteAfternoon:
+      "Der Wandel geht weiter. Was musst du heute klarer sehen?",
+    emptyInviteNight:
+      "Auch die Nacht fragt. Welchen Bereich deines Lebens möchtest du erkunden?",
   },
   it: {
     language: "Lingua",
@@ -774,9 +837,12 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Ossa",
     iChingTagline: "Tre monete · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Ossa dell'Oracolo · Crepe 兆 · stile Shang",
-    emptyInviteMorning: "Momento ideale per l'oracolo. Quale inquietudine porta questo nuovo giorno?",
-    emptyInviteAfternoon: "Il cambiamento continua. Cosa devi vedere con più chiarezza oggi?",
-    emptyInviteNight: "Anche la notte fa domande. Quale fronte della tua vita vuoi esplorare?",
+    emptyInviteMorning:
+      "Momento ideale per l'oracolo. Quale inquietudine porta questo nuovo giorno?",
+    emptyInviteAfternoon:
+      "Il cambiamento continua. Cosa devi vedere con più chiarezza oggi?",
+    emptyInviteNight:
+      "Anche la notte fa domande. Quale fronte della tua vita vuoi esplorare?",
   },
   ja: {
     language: "言語",
@@ -794,8 +860,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "骨占",
     iChingTagline: "三枚の硬貨 · 朱熹 · ヴィルヘルム/ベインズ",
     bonesTagline: "甲骨占 · 亀裂 兆 · 殷様式",
-    emptyInviteMorning: "いまは託宣に向いた時間。今日の不安を問いにしてみましょう。",
-    emptyInviteAfternoon: "変化は動き続けています。今日、何をより明確に見たいですか。",
+    emptyInviteMorning:
+      "いまは託宣に向いた時間。今日の不安を問いにしてみましょう。",
+    emptyInviteAfternoon:
+      "変化は動き続けています。今日、何をより明確に見たいですか。",
     emptyInviteNight: "夜もまた問いを生みます。人生のどの面を探りますか。",
   },
   zh: {
@@ -834,8 +902,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "골복",
     iChingTagline: "세 동전 · 주희 · Wilhelm/Baynes",
     bonesTagline: "골복 · 균열 兆 · 상나라 방식",
-    emptyInviteMorning: "지금은 오라클에 귀 기울이기 좋은 시간입니다. 어떤 고민이 있나요?",
-    emptyInviteAfternoon: "변화는 계속 움직입니다. 오늘 무엇을 더 분명히 보고 싶나요?",
+    emptyInviteMorning:
+      "지금은 오라클에 귀 기울이기 좋은 시간입니다. 어떤 고민이 있나요?",
+    emptyInviteAfternoon:
+      "변화는 계속 움직입니다. 오늘 무엇을 더 분명히 보고 싶나요?",
     emptyInviteNight: "밤도 질문합니다. 삶의 어떤 영역을 탐색하고 싶나요?",
   },
   ar: {
@@ -854,8 +924,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "عظام الكهانة",
     iChingTagline: "ثلاث عملات · تشو شي · فيلهلم/بينز",
     bonesTagline: "عظام الكهانة · الشقوق 兆 · أسلوب شانغ",
-    emptyInviteMorning: "وقت مناسب للتشاور مع الأوراكل. ما القلق الذي يحمله هذا اليوم الجديد؟ اكتب استشارتك بنية صادقة.",
-    emptyInviteAfternoon: "التغيير لا يتوقف. ما الذي تحتاج إلى رؤيته بوضوح أكبر اليوم؟",
+    emptyInviteMorning:
+      "وقت مناسب للتشاور مع الأوراكل. ما القلق الذي يحمله هذا اليوم الجديد؟ اكتب استشارتك بنية صادقة.",
+    emptyInviteAfternoon:
+      "التغيير لا يتوقف. ما الذي تحتاج إلى رؤيته بوضوح أكبر اليوم؟",
     emptyInviteNight: "الليل أيضاً يسأل. أي جانب من حياتك تريد استكشافه؟",
   },
   hi: {
@@ -874,9 +946,12 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "अस्थि ओरेकल",
     iChingTagline: "तीन सिक्के · झू शी · विल्हेल्म/बेयन्स",
     bonesTagline: "अस्थि ओरेकल · दरारें 兆 · शांग शैली",
-    emptyInviteMorning: "ओरेकल से पूछने का अच्छा समय है। आज की आपकी मुख्य चिंता क्या है?",
-    emptyInviteAfternoon: "परिवर्तन चलता रहता है। आज आपको किस बात को और स्पष्ट देखना है?",
-    emptyInviteNight: "रात भी प्रश्न पूछती है। जीवन के किस हिस्से को आप समझना चाहते हैं?",
+    emptyInviteMorning:
+      "ओरेकल से पूछने का अच्छा समय है। आज की आपकी मुख्य चिंता क्या है?",
+    emptyInviteAfternoon:
+      "परिवर्तन चलता रहता है। आज आपको किस बात को और स्पष्ट देखना है?",
+    emptyInviteNight:
+      "रात भी प्रश्न पूछती है। जीवन के किस हिस्से को आप समझना चाहते हैं?",
   },
 };
 
@@ -1041,7 +1116,10 @@ function parseApiErrorPayload(raw: string): ApiErrorPayload | null {
 }
 
 function newClientUuid(): string {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
     return crypto.randomUUID();
   }
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
@@ -1051,7 +1129,9 @@ function newClientUuid(): string {
   });
 }
 
-function createLocalSession(title = "Nueva sesión"): ChatSessionState<ConsultationItem> {
+function createLocalSession(
+  title = "Nueva sesión",
+): ChatSessionState<ConsultationItem> {
   return {
     localId: `sess-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
     title,
@@ -1078,7 +1158,11 @@ function InterpretationBody({
     () => normalizeInterpretationPunctuation(stripInterpretationFluff(text)),
     [text],
   );
-  const displayed = useProgressiveRevealSubstring(cleaned, Boolean(reveal), onRevealComplete);
+  const displayed = useProgressiveRevealSubstring(
+    cleaned,
+    Boolean(reveal),
+    onRevealComplete,
+  );
   if (!cleaned) return null;
   return (
     <div className="interpretation-text interpretation-text--body">
@@ -1094,7 +1178,10 @@ function formatPrintFilename(consultationId: string): string {
   const d = String(now.getDate()).padStart(2, "0");
   const hh = String(now.getHours()).padStart(2, "0");
   const mm = String(now.getMinutes()).padStart(2, "0");
-  const id = consultationId.replace(/[^a-zA-Z0-9]/g, "").slice(0, 10).toUpperCase();
+  const id = consultationId
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .slice(0, 10)
+    .toUpperCase();
   return `${y}${m}${d}-${hh}${mm}-${id}`;
 }
 
@@ -1143,30 +1230,44 @@ function mapApiConsultationToItem(
   };
 }
 
-function detectInputLanguage(question: string, fallbackLocale: AppLocale): AppLocale {
+function detectInputLanguage(
+  question: string,
+  fallbackLocale: AppLocale,
+): AppLocale {
   const text = question.trim().toLowerCase();
   if (!text) return fallbackLocale;
   if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(text)) return "ko";
   if (/[ぁ-ゖァ-ヺ]/.test(text)) return "ja";
   if (/[一-鿿]/.test(text)) return "zh";
 
-  const ptHits = (text.match(/\b(não|você|está|ção|ções|pra|queria)\b/g) ?? []).length;
-  const frHits = (text.match(/\b(être|avec|pourquoi|où|ça|merci|vous)\b/g) ?? []).length;
-  const deHits = (text.match(/\b(und|nicht|ich|dass|über|möchte|fragen)\b/g) ?? []).length;
-  const itHits = (text.match(/\b(perché|con|sono|voglio|grazie|quindi|domanda)\b/g) ?? []).length;
+  const ptHits = (text.match(/\b(não|você|está|ção|ções|pra|queria)\b/g) ?? [])
+    .length;
+  const frHits = (
+    text.match(/\b(être|avec|pourquoi|où|ça|merci|vous)\b/g) ?? []
+  ).length;
+  const deHits = (
+    text.match(/\b(und|nicht|ich|dass|über|möchte|fragen)\b/g) ?? []
+  ).length;
+  const itHits = (
+    text.match(/\b(perché|con|sono|voglio|grazie|quindi|domanda)\b/g) ?? []
+  ).length;
 
   const esHits =
-    (text.match(/\b(el|la|los|las|de|que|para|con|por|como|qué|dónde|cuál|mensaje|consulta|camino|relación)\b/g) ?? [])
-      .length +
-    (text.match(/[áéíóúñ¿¡]/g) ?? []).length;
+    (
+      text.match(
+        /\b(el|la|los|las|de|que|para|con|por|como|qué|dónde|cuál|mensaje|consulta|camino|relación)\b/g,
+      ) ?? []
+    ).length + (text.match(/[áéíóúñ¿¡]/g) ?? []).length;
   if (fallbackLocale === "es" && esHits > 0) return "es";
   if (ptHits >= 3 && ptHits > esHits + 1) return "pt";
   if (frHits >= 2) return "fr";
   if (deHits >= 2) return "de";
   if (itHits >= 2) return "it";
-  const enHits =
-    (text.match(/\b(the|and|what|where|when|why|how|message|relationship|question|path|oracle|reading)\b/g) ?? [])
-      .length;
+  const enHits = (
+    text.match(
+      /\b(the|and|what|where|when|why|how|message|relationship|question|path|oracle|reading)\b/g,
+    ) ?? []
+  ).length;
   if (enHits > esHits) return "en";
   if (esHits > 0) return "es";
   return fallbackLocale;
@@ -1179,11 +1280,17 @@ export default function HomePage() {
   const t = commonStrings[locale];
   const tokenPanel = useMemo(() => getTokenPanelUiMessages(locale), [locale]);
   const docNav = useMemo(() => getDocNavUiMessages(locale), [locale]);
-  const presentation = useMemo(() => getOraclePresentationUiMessages(locale), [locale]);
+  const presentation = useMemo(
+    () => getOraclePresentationUiMessages(locale),
+    [locale],
+  );
   /** Official listing URL when published; empty shows “coming soon” on the Play card. */
   const playStoreUrl = (process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "").trim();
   const chrome = useMemo(() => getHomeChromeUiMessages(locale), [locale]);
-  const manualWizardChrome = useMemo(() => getManualWizardMessages(locale), [locale]);
+  const manualWizardChrome = useMemo(
+    () => getManualWizardMessages(locale),
+    [locale],
+  );
   const sessionUi = useMemo(() => getHomeSessionUiMessages(locale), [locale]);
   const tf = useMemo(() => getTwoFactorUiMessages(locale), [locale]);
   const pricingUi = useMemo(() => getPricingUiMessages(locale), [locale]);
@@ -1195,9 +1302,14 @@ export default function HomePage() {
   const symbolicImageAlt = chrome.symbolicImageAlt;
   const inProgressTitle = chrome.consultationInProgress;
   const knownNewSessionTitles = useMemo(() => {
-    return new Set<string>(SUPPORTED_LOCALES.map((code) => UI_COPY[code].sessionNew));
+    return new Set<string>(
+      SUPPORTED_LOCALES.map((code) => UI_COPY[code].sessionNew),
+    );
   }, []);
-  const knownInProgressTitles = useMemo(() => new Set<string>(allConsultationInProgressTitles()), []);
+  const knownInProgressTitles = useMemo(
+    () => new Set<string>(allConsultationInProgressTitles()),
+    [],
+  );
   const [tier, setTier] = useState<Tier>("free");
   const [tierReady, setTierReady] = useState(false);
   /** Per-thread reading cap from `/api/account/me` (`session_limit`, from pack / tier). */
@@ -1211,25 +1323,45 @@ export default function HomePage() {
   const [supabaseConfigError, setSupabaseConfigError] = useState(false);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
-  const [phase, setPhase] = useState<"idle" | "coins" | "bones" | "reading">("idle");
-  const [boneRitualResult, setBoneRitualResult] = useState<BoneOracleResult | null>(null);
+  const [phase, setPhase] = useState<"idle" | "coins" | "bones" | "reading">(
+    "idle",
+  );
+  const [boneRitualResult, setBoneRitualResult] =
+    useState<BoneOracleResult | null>(null);
   const [ritualLines, setRitualLines] = useState<ApiLine[] | null>(null);
   const [ritualRevealTick, setRitualRevealTick] = useState(0);
   const [ritualAwaitingTick, setRitualAwaitingTick] = useState(0);
-  const [ritualStatusPhase, setRitualStatusPhase] = useState<"question" | "consult" | "shape" | "seal">("question");
+  const [ritualStatusPhase, setRitualStatusPhase] = useState<
+    "question" | "consult" | "shape" | "seal"
+  >("question");
   const [ritualParticles, setRitualParticles] = useState<
-    Array<{ id: number; left: string; top: string; size: string; duration: string; delay: string }>
+    Array<{
+      id: number;
+      left: string;
+      top: string;
+      size: string;
+      duration: string;
+      delay: string;
+    }>
   >([]);
   const [ritualFinale, setRitualFinale] = useState(false);
-  const [ritualDebugCastVector, setRitualDebugCastVector] = useState<Array<6 | 7 | 8 | 9> | null>(null);
-  const [ritualDebugFinalVector, setRitualDebugFinalVector] = useState<Array<6 | 7 | 8 | 9> | null>(null);
-  const [lastRitualDebugSnapshot, setLastRitualDebugSnapshot] = useState<RitualDebugSnapshot | null>(null);
+  const [ritualDebugCastVector, setRitualDebugCastVector] = useState<Array<
+    6 | 7 | 8 | 9
+  > | null>(null);
+  const [ritualDebugFinalVector, setRitualDebugFinalVector] = useState<Array<
+    6 | 7 | 8 | 9
+  > | null>(null);
+  const [lastRitualDebugSnapshot, setLastRitualDebugSnapshot] =
+    useState<RitualDebugSnapshot | null>(null);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
   type IchingCastMode = "auto" | "manual";
   const [ichingCastMode, setIchingCastMode] = useState<IchingCastMode>(() => {
     if (typeof window === "undefined") return "auto";
     try {
-      return window.localStorage.getItem(ICHING_CAST_MODE_STORAGE_KEY) === "manual" ? "manual" : "auto";
+      return window.localStorage.getItem(ICHING_CAST_MODE_STORAGE_KEY) ===
+        "manual"
+        ? "manual"
+        : "auto";
     } catch {
       return "auto";
     }
@@ -1241,28 +1373,39 @@ export default function HomePage() {
       /* ignore */
     }
   }, [ichingCastMode]);
-  const [translatorId, setTranslatorId] = useState<"wilhelm" | "legge" | "zhouyi" | "master_combined">("wilhelm");
-  const [ichingCastingMethod, setIchingCastingMethod] = useState<CastingMethod>(() => {
-    if (typeof window === "undefined") return "three-coins";
-    try {
-      return window.localStorage.getItem(ICHING_CASTING_METHOD_STORAGE_KEY) === "yarrow-stalks"
-        ? "yarrow-stalks"
-        : "three-coins";
-    } catch {
-      return "three-coins";
-    }
-  });
+  const [translatorId, setTranslatorId] = useState<
+    "wilhelm" | "legge" | "zhouyi" | "master_combined"
+  >("wilhelm");
+  const [ichingCastingMethod, setIchingCastingMethod] = useState<CastingMethod>(
+    () => {
+      if (typeof window === "undefined") return "three-coins";
+      try {
+        return window.localStorage.getItem(
+          ICHING_CASTING_METHOD_STORAGE_KEY,
+        ) === "yarrow-stalks"
+          ? "yarrow-stalks"
+          : "three-coins";
+      } catch {
+        return "three-coins";
+      }
+    },
+  );
   useEffect(() => {
     try {
-      window.localStorage.setItem(ICHING_CASTING_METHOD_STORAGE_KEY, ichingCastingMethod);
+      window.localStorage.setItem(
+        ICHING_CASTING_METHOD_STORAGE_KEY,
+        ichingCastingMethod,
+      );
     } catch {
       /* ignore */
     }
   }, [ichingCastingMethod]);
   const [manualWizardOpen, setManualWizardOpen] = useState(false);
-  const [manualWizardQuestionSnapshot, setManualWizardQuestionSnapshot] = useState<string | null>(null);
+  const [manualWizardQuestionSnapshot, setManualWizardQuestionSnapshot] =
+    useState<string | null>(null);
   const [manualYarrowWizardOpen, setManualYarrowWizardOpen] = useState(false);
-  const [manualYarrowQuestionSnapshot, setManualYarrowQuestionSnapshot] = useState<string | null>(null);
+  const [manualYarrowQuestionSnapshot, setManualYarrowQuestionSnapshot] =
+    useState<string | null>(null);
   const [manualCastPreview, setManualCastPreview] = useState<{
     primaryHexagram: number;
     primaryHexagramChinese: string;
@@ -1291,40 +1434,61 @@ export default function HomePage() {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [twoFactorMethod, setTwoFactorMethod] = useState<string | null>(null);
   const [twoFactorSetupOpen, setTwoFactorSetupOpen] = useState(false);
-  const [twoFactorQrDataUrl, setTwoFactorQrDataUrl] = useState<string | null>(null);
+  const [twoFactorQrDataUrl, setTwoFactorQrDataUrl] = useState<string | null>(
+    null,
+  );
   const [twoFactorCode, setTwoFactorCode] = useState("");
   const [twoFactorEmailCode, setTwoFactorEmailCode] = useState("");
   const [twoFactorRecoveryCode, setTwoFactorRecoveryCode] = useState("");
-  const [twoFactorChallengeFailures, setTwoFactorChallengeFailures] = useState(0);
-  const [twoFactorRecoveryAssistMode, setTwoFactorRecoveryAssistMode] = useState<
-    "hidden" | "options" | "enter_code" | "contact_support"
-  >("hidden");
+  const [twoFactorChallengeFailures, setTwoFactorChallengeFailures] =
+    useState(0);
+  const [twoFactorRecoveryAssistMode, setTwoFactorRecoveryAssistMode] =
+    useState<"hidden" | "options" | "enter_code" | "contact_support">("hidden");
   const [twoFactorEmailSent, setTwoFactorEmailSent] = useState(false);
-  const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<string[]>([]);
+  const [twoFactorRecoveryCodes, setTwoFactorRecoveryCodes] = useState<
+    string[]
+  >([]);
   const [twoFactorModalOpen, setTwoFactorModalOpen] = useState(false);
-  const [twoFactorModalMode, setTwoFactorModalMode] = useState<"manage" | "challenge">("manage");
-  const [twoFactorSetupMethod, setTwoFactorSetupMethod] = useState<"menu" | "totp" | "email">("menu");
-  const [twoFactorChallengeMethod, setTwoFactorChallengeMethod] = useState<"totp" | "email">("totp");
+  const [twoFactorModalMode, setTwoFactorModalMode] = useState<
+    "manage" | "challenge"
+  >("manage");
+  const [twoFactorSetupMethod, setTwoFactorSetupMethod] = useState<
+    "menu" | "totp" | "email"
+  >("menu");
+  const [twoFactorChallengeMethod, setTwoFactorChallengeMethod] = useState<
+    "totp" | "email"
+  >("totp");
   const [twoFactorRecoveryAck, setTwoFactorRecoveryAck] = useState(false);
   const [twoFactorInfo, setTwoFactorInfo] = useState<string | null>(null);
   const [twoFactorError, setTwoFactorError] = useState<string | null>(null);
   const [secondFactorVerified, setSecondFactorVerified] = useState(false);
   const [tokenBalance, setTokenBalance] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [displayName, setDisplayName] = useState<string | null | undefined>(undefined);
+  const [displayName, setDisplayName] = useState<string | null | undefined>(
+    undefined,
+  );
   const [onboardingOpen, setOnboardingOpen] = useState(false);
-  const [onboardingStep, setOnboardingStep] = useState<"enter" | "confirm">("enter");
+  const [onboardingStep, setOnboardingStep] = useState<"enter" | "confirm">(
+    "enter",
+  );
   const [onboardingInput, setOnboardingInput] = useState("");
   const [onboardingSaving, setOnboardingSaving] = useState(false);
-  const [pendingUserQuestion, setPendingUserQuestion] = useState<string | null>(null);
+  const [pendingUserQuestion, setPendingUserQuestion] = useState<string | null>(
+    null,
+  );
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
-  const [tokenCenterMessage, setTokenCenterMessage] = useState<string | null>(null);
+  const [tokenCenterMessage, setTokenCenterMessage] = useState<string | null>(
+    null,
+  );
   const [tokenCenterOpen, setTokenCenterOpen] = useState(false);
   const [tokenCenterBusy, setTokenCenterBusy] = useState(false);
   const [tokenCenterError, setTokenCenterError] = useState<string | null>(null);
   const [historyLoading, setHistoryLoading] = useState(false);
-  const [loadingSessionLocalId, setLoadingSessionLocalId] = useState<string | null>(null);
-  const [pendingDeletedSessionLocalIds, setPendingDeletedSessionLocalIds] = useState<string[]>([]);
+  const [loadingSessionLocalId, setLoadingSessionLocalId] = useState<
+    string | null
+  >(null);
+  const [pendingDeletedSessionLocalIds, setPendingDeletedSessionLocalIds] =
+    useState<string[]>([]);
   const [historyLoadError, setHistoryLoadError] = useState<string | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
@@ -1351,9 +1515,12 @@ export default function HomePage() {
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
   /** Hides only the thread-limit strip; composer stays read-only until a new session or another chat. */
-  const [threadLimitBannerDismissed, setThreadLimitBannerDismissed] = useState(false);
+  const [threadLimitBannerDismissed, setThreadLimitBannerDismissed] =
+    useState(false);
   const [playPromoDismissed, setPlayPromoDismissed] = useState(false);
-  const [revealConsultationId, setRevealConsultationId] = useState<string | null>(null);
+  const [revealConsultationId, setRevealConsultationId] = useState<
+    string | null
+  >(null);
   /** Shown when user tries to consult without a session (gentle CTA, UI stays visible). */
   const [authContinueOpen, setAuthContinueOpen] = useState(false);
   /**
@@ -1372,8 +1539,12 @@ export default function HomePage() {
     if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
       next = raw as AppLocale;
     } else {
-      const cookieMatch = document.cookie.match(/(?:^|;\s*)iching_ui_locale=([^;]+)/);
-      const cookieLocale = cookieMatch ? decodeURIComponent(cookieMatch[1] ?? "") : "";
+      const cookieMatch = document.cookie.match(
+        /(?:^|;\s*)iching_ui_locale=([^;]+)/,
+      );
+      const cookieLocale = cookieMatch
+        ? decodeURIComponent(cookieMatch[1] ?? "")
+        : "";
       if ((SUPPORTED_LOCALES as readonly string[]).includes(cookieLocale)) {
         next = cookieLocale as AppLocale;
       }
@@ -1394,12 +1565,14 @@ export default function HomePage() {
   useEffect(() => {
     const onLocaleBridge = (e: Event) => {
       const raw = (e as CustomEvent<{ locale?: string }>).detail?.locale;
-      if (!raw || !(SUPPORTED_LOCALES as readonly string[]).includes(raw)) return;
+      if (!raw || !(SUPPORTED_LOCALES as readonly string[]).includes(raw))
+        return;
       const next = raw as AppLocale;
       setLocale((prev) => (prev === next ? prev : next));
     };
     window.addEventListener("iching:locale-changed", onLocaleBridge);
-    return () => window.removeEventListener("iching:locale-changed", onLocaleBridge);
+    return () =>
+      window.removeEventListener("iching:locale-changed", onLocaleBridge);
   }, []);
 
   useEffect(() => {
@@ -1415,7 +1588,9 @@ export default function HomePage() {
     } catch {
       /* private mode */
     }
-    window.dispatchEvent(new CustomEvent("iching:locale-changed", { detail: { locale } }));
+    window.dispatchEvent(
+      new CustomEvent("iching:locale-changed", { detail: { locale } }),
+    );
   }, [locale]);
 
   useEffect(() => {
@@ -1427,7 +1602,11 @@ export default function HomePage() {
     const tickTimer = window.setInterval(() => {
       setRitualAwaitingTick((prev) => (prev >= 12 ? 1 : prev + 1));
     }, 380);
-    const phases: Array<"question" | "consult" | "shape"> = ["question", "consult", "shape"];
+    const phases: Array<"question" | "consult" | "shape"> = [
+      "question",
+      "consult",
+      "shape",
+    ];
     let idx = 0;
     const statusTimer = window.setInterval(() => {
       idx = (idx + 1) % phases.length;
@@ -1490,7 +1669,9 @@ export default function HomePage() {
       const gridEl = ritualLinesGridRef.current;
       const stageRect = stageEl?.getBoundingClientRect();
       const gridRect = gridEl?.getBoundingClientRect();
-      const stageFromQueryEl = document.querySelector<HTMLElement>('[data-testid="coin-throw"]');
+      const stageFromQueryEl = document.querySelector<HTMLElement>(
+        '[data-testid="coin-throw"]',
+      );
       const stageFromQuery = stageFromQueryEl?.getBoundingClientRect();
       logRitualTrace("layout", {
         stageRect: stageRect
@@ -1509,7 +1690,9 @@ export default function HomePage() {
               bottom: Math.round(stageFromQuery.bottom),
             }
           : null,
-        stageContainsGrid: Boolean(stageEl && gridEl ? stageEl.contains(gridEl) : false),
+        stageContainsGrid: Boolean(
+          stageEl && gridEl ? stageEl.contains(gridEl) : false,
+        ),
         stageParentClass: stageEl?.parentElement?.className ?? null,
         gridParentClass: gridEl?.parentElement?.className ?? null,
         stageComputed: stageEl
@@ -1575,18 +1758,28 @@ export default function HomePage() {
     }
   }, [locale, ritualStatusPhase]);
   const ritualDebugCastTransformed = useMemo(
-    () => (ritualDebugCastVector ? transformLineVector(ritualDebugCastVector) : null),
+    () =>
+      ritualDebugCastVector ? transformLineVector(ritualDebugCastVector) : null,
     [ritualDebugCastVector],
   );
   const ritualDebugFinalTransformed = useMemo(
-    () => (ritualDebugFinalVector ? transformLineVector(ritualDebugFinalVector) : null),
+    () =>
+      ritualDebugFinalVector
+        ? transformLineVector(ritualDebugFinalVector)
+        : null,
     [ritualDebugFinalVector],
   );
   const ritualDebugMatch = useMemo(() => {
-    if (!ritualDebugCastTransformed || !ritualDebugFinalTransformed) return null;
-    return ritualDebugCastTransformed.join(",") === ritualDebugFinalTransformed.join(",");
+    if (!ritualDebugCastTransformed || !ritualDebugFinalTransformed)
+      return null;
+    return (
+      ritualDebugCastTransformed.join(",") ===
+      ritualDebugFinalTransformed.join(",")
+    );
   }, [ritualDebugCastTransformed, ritualDebugFinalTransformed]);
-  const [emptyThreadInvite, setEmptyThreadInvite] = useState(ui.emptyInviteMorning);
+  const [emptyThreadInvite, setEmptyThreadInvite] = useState(
+    ui.emptyInviteMorning,
+  );
   const userStorageScope = authUserId ?? "anon";
   const streakDayStorageKey = `iching_last_day_${userStorageScope}`;
   const streakDaysStorageKey = `iching_streak_days_${userStorageScope}`;
@@ -1607,7 +1800,11 @@ export default function HomePage() {
   const activeSession = useMemo(() => {
     if (!sessions.length) return null;
     if (!activeSessionLocalId) return sessions[0] ?? null;
-    return sessions.find((s) => s.localId === activeSessionLocalId) ?? sessions[0] ?? null;
+    return (
+      sessions.find((s) => s.localId === activeSessionLocalId) ??
+      sessions[0] ??
+      null
+    );
   }, [sessions, activeSessionLocalId]);
   useEffect(() => {
     activeSessionLocalIdRef.current = activeSessionLocalId;
@@ -1617,11 +1814,17 @@ export default function HomePage() {
   /** Per-thread cap from current plan (`/api/account/me` session_limit). API enforces this, not the DB session row. */
   const planThreadLimit = Math.max(1, accountSessionLimit);
   const threadDepthCap = planThreadLimit;
-  const threadDepthCanDeepen = isAdmin || Boolean(result && result.sessionPosition < planThreadLimit);
-  const threadLimitReached = !isAdmin && activeThread.length > 0 && result !== null && !threadDepthCanDeepen;
+  const threadDepthCanDeepen =
+    isAdmin || Boolean(result && result.sessionPosition < planThreadLimit);
+  const threadLimitReached =
+    !isAdmin &&
+    activeThread.length > 0 &&
+    result !== null &&
+    !threadDepthCanDeepen;
   /** Until `/api/account/me` hydrates `accountSessionLimit`, default `1` would falsely flag paid threads — never show limit UI until `tierReady`. */
   const threadLimitReachedUi = tierReady && threadLimitReached;
-  const showThreadLimitBanner = threadLimitReachedUi && !threadLimitBannerDismissed;
+  const showThreadLimitBanner =
+    threadLimitReachedUi && !threadLimitBannerDismissed;
   useEffect(() => {
     setThreadLimitBannerDismissed(false);
   }, [activeSessionLocalId]);
@@ -1646,16 +1849,23 @@ export default function HomePage() {
     setPlayPromoDismissed(true);
   }, []);
   const tierDisplayNode = tierReady ? (
-    isAdmin ? "admin" : tierLabelForDisplay(tier)
+    isAdmin ? (
+      "admin"
+    ) : (
+      tierLabelForDisplay(tier)
+    )
   ) : (
     <span className="plan-tier-skeleton" aria-hidden="true" />
   );
   const supportEmailFromEnv =
-    typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_SUPPORT_EMAIL === "string"
+    typeof process !== "undefined" &&
+    typeof process.env.NEXT_PUBLIC_SUPPORT_EMAIL === "string"
       ? process.env.NEXT_PUBLIC_SUPPORT_EMAIL.trim()
       : "";
-  const twoFactorSupportEmail = supportEmailFromEnv || "soporte@the-original-i-ching.app";
-  const preferredTwoFactorMethod: "totp" | "email" = twoFactorMethod === "email" ? "email" : "totp";
+  const twoFactorSupportEmail =
+    supportEmailFromEnv || "soporte@the-original-i-ching.app";
+  const preferredTwoFactorMethod: "totp" | "email" =
+    twoFactorMethod === "email" ? "email" : "totp";
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
   const QUESTION_INPUT_MAX_HEIGHT_PX = 160;
   const resizeQuestionInput = useCallback(() => {
@@ -1664,18 +1874,24 @@ export default function HomePage() {
     el.style.height = "auto";
     const nextHeight = Math.min(QUESTION_INPUT_MAX_HEIGHT_PX, el.scrollHeight);
     const narrow =
-      typeof window !== "undefined" && window.matchMedia?.("(max-width: 520px)")?.matches;
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(max-width: 520px)")?.matches;
     const minOneLinePx = narrow ? 38 : 44;
     el.style.height = `${Math.max(minOneLinePx, nextHeight)}px`;
-    el.style.overflowY = el.scrollHeight > QUESTION_INPUT_MAX_HEIGHT_PX ? "auto" : "hidden";
+    el.style.overflowY =
+      el.scrollHeight > QUESTION_INPUT_MAX_HEIGHT_PX ? "auto" : "hidden";
   }, []);
   /** Browser + RN WebView: rounded top cap on auth strip when guest or signed-in strip is shown. */
   const showAuthExploreCap =
     authReady &&
     !supabaseConfigError &&
     (!accessToken || Boolean(accessToken && authEmail));
-  const summaryCacheKey = authUserId ? `iching_chat_summaries_v1:${authUserId}` : null;
-  const chatStateCacheKey = authUserId ? `iching_chat_state_v1:${authUserId}` : null;
+  const summaryCacheKey = authUserId
+    ? `iching_chat_summaries_v1:${authUserId}`
+    : null;
+  const chatStateCacheKey = authUserId
+    ? `iching_chat_state_v1:${authUserId}`
+    : null;
 
   useEffect(() => {
     setPersistenceKeys(summaryCacheKey, chatStateCacheKey);
@@ -1688,11 +1904,16 @@ export default function HomePage() {
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
     const { jsPDF } = await import("jspdf");
-    const lang = detectInputLanguage(activeThread.at(-1)?.question ?? question, locale);
+    const lang = detectInputLanguage(
+      activeThread.at(-1)?.question ?? question,
+      locale,
+    );
     const isEsPdf = lang === "es";
     const doc = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
     const fileBase = formatPrintFilename(
-      activeThread.at(-1)?.consultationId ?? activeThread[0]?.consultationId ?? "CHAT",
+      activeThread.at(-1)?.consultationId ??
+        activeThread[0]?.consultationId ??
+        "CHAT",
     );
 
     const toDataUrl = (blob: Blob) =>
@@ -1722,10 +1943,14 @@ export default function HomePage() {
     const pageW = 1240;
     const pageH = 1754;
     const cjkFont =
-      "\"Noto Sans CJK JP\",\"Yu Gothic UI\",\"Meiryo\",\"Microsoft YaHei\",\"Malgun Gothic\",\"Segoe UI\",sans-serif";
-    const serifFont = "\"Noto Serif CJK JP\",\"Yu Mincho\",\"MS Mincho\",serif";
+      '"Noto Sans CJK JP","Yu Gothic UI","Meiryo","Microsoft YaHei","Malgun Gothic","Segoe UI",sans-serif';
+    const serifFont = '"Noto Serif CJK JP","Yu Mincho","MS Mincho",serif';
 
-    const wrapText = (ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] => {
+    const wrapText = (
+      ctx: CanvasRenderingContext2D,
+      text: string,
+      maxWidth: number,
+    ): string[] => {
       const lines: string[] = [];
       let line = "";
       for (const ch of Array.from(text.replace(/\r/g, ""))) {
@@ -1756,7 +1981,8 @@ export default function HomePage() {
       maxLines?: number,
     ): number => {
       const lines = wrapText(ctx, text, maxWidth);
-      const use = typeof maxLines === "number" ? lines.slice(0, maxLines) : lines;
+      const use =
+        typeof maxLines === "number" ? lines.slice(0, maxLines) : lines;
       use.forEach((l) => {
         ctx.fillText(l, x, y);
         y += lineHeight;
@@ -1787,15 +2013,24 @@ export default function HomePage() {
       ctx.fillStyle = "rgba(28,94,122,0.06)";
       ctx.fillRect(0, 146, pageW, 8);
 
-      const accent = entry.oracleType === "oracle_bones" ? "#2a857a" : "#1f6f8f";
+      const accent =
+        entry.oracleType === "oracle_bones" ? "#2a857a" : "#1f6f8f";
 
       // Header
       ctx.fillStyle = "#17212b";
       ctx.font = `700 42px ${serifFont}`;
-      ctx.fillText(isEsPdf ? "Consulta del Oráculo" : "Oracle Consultation", 64, 76);
+      ctx.fillText(
+        isEsPdf ? "Consulta del Oráculo" : "Oracle Consultation",
+        64,
+        76,
+      );
       ctx.font = `500 23px ${cjkFont}`;
       ctx.fillStyle = "#36515d";
-      ctx.fillText(`${isEsPdf ? "Entrada" : "Entry"} ${i + 1} · ${new Date().toLocaleString(locale)}`, 64, 112);
+      ctx.fillText(
+        `${isEsPdf ? "Entrada" : "Entry"} ${i + 1} · ${new Date().toLocaleString(locale)}`,
+        64,
+        112,
+      );
 
       // Question ribbon
       ctx.fillStyle = "rgba(255,255,255,0.92)";
@@ -1838,20 +2073,34 @@ export default function HomePage() {
       ctx.fillStyle = "#22313f";
       let sy = cardY + 92;
       const summaryLine = (label: string, value: string) => {
-        sy = drawWrapped(ctx, `${label} ${value}`, 84, sy, leftW - 60, 34, 2) + 6;
+        sy =
+          drawWrapped(ctx, `${label} ${value}`, 84, sy, leftW - 60, 34, 2) + 6;
       };
       if (entry.oracleType === "oracle_bones" && entry.oracleBones) {
         summaryLine(isEsPdf ? "Tipo:" : "Type:", isEsPdf ? "Huesos" : "Bones");
-        summaryLine(isEsPdf ? "Veredicto:" : "Verdict:", verdictLabel(entry.oracleBones.verdict, lang));
-        summaryLine(isEsPdf ? "Cargo +:" : "Charge +:", entry.oracleBones.positiveCharge);
+        summaryLine(
+          isEsPdf ? "Veredicto:" : "Verdict:",
+          verdictLabel(entry.oracleBones.verdict, lang),
+        );
+        summaryLine(
+          isEsPdf ? "Cargo +:" : "Charge +:",
+          entry.oracleBones.positiveCharge,
+        );
       } else {
-        summaryLine(isEsPdf ? "Hexagrama:" : "Hexagram:", `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`);
+        summaryLine(
+          isEsPdf ? "Hexagrama:" : "Hexagram:",
+          `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`,
+        );
         summaryLine(isEsPdf ? "Regla:" : "Rule:", entry.mutationRule);
-        summaryLine(isEsPdf ? "En hilo:" : "In thread:", `${entry.sessionPosition}`);
+        summaryLine(
+          isEsPdf ? "En hilo:" : "In thread:",
+          `${entry.sessionPosition}`,
+        );
       }
 
       const imgDataUrl =
-        (await fetchImageDataUrl(entry.imageUrl)) ?? (await fetchImageDataUrl(entry.imageFallbackUrl ?? ""));
+        (await fetchImageDataUrl(entry.imageUrl)) ??
+        (await fetchImageDataUrl(entry.imageFallbackUrl ?? ""));
       if (imgDataUrl) {
         try {
           const image = await loadImage(imgDataUrl);
@@ -1939,7 +2188,9 @@ export default function HomePage() {
   }
 
   const updateActiveSession = (
-    updater: (current: ChatSessionState<ConsultationItem>) => ChatSessionState<ConsultationItem>,
+    updater: (
+      current: ChatSessionState<ConsultationItem>,
+    ) => ChatSessionState<ConsultationItem>,
   ) => {
     setSessions((prev) =>
       prev.map((s) => {
@@ -1966,10 +2217,12 @@ export default function HomePage() {
     if (revealConsultationId) {
       lastScrollWasRevealRef.current = true;
       requestAnimationFrame(() => {
-        document.getElementById(`reading-sheet-${revealConsultationId}`)?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+        document
+          .getElementById(`reading-sheet-${revealConsultationId}`)
+          ?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
       });
       return;
     }
@@ -1981,7 +2234,13 @@ export default function HomePage() {
     const behavior = mountScrollDoneRef.current ? "smooth" : "instant";
     mountScrollDoneRef.current = true;
     endRef.current?.scrollIntoView({ behavior, block: "end" });
-  }, [activeThread.length, phase, error, activeSessionLocalId, revealConsultationId]);
+  }, [
+    activeThread.length,
+    phase,
+    error,
+    activeSessionLocalId,
+    revealConsultationId,
+  ]);
 
   useEffect(() => {
     if (!authContinueOpen) return;
@@ -2040,9 +2299,15 @@ export default function HomePage() {
     pinnedLocalSessionIdRef.current = null;
   }, [authUserId]);
 
-  const sessionsListed = useMemo(() => sessions.filter((s) => s.messageCount > 0), [sessions]);
+  const sessionsListed = useMemo(
+    () => sessions.filter((s) => s.messageCount > 0),
+    [sessions],
+  );
   const visibleSessionsListed = useMemo(
-    () => sessionsListed.filter((s) => !pendingDeletedSessionLocalIds.includes(s.localId)),
+    () =>
+      sessionsListed.filter(
+        (s) => !pendingDeletedSessionLocalIds.includes(s.localId),
+      ),
     [sessionsListed, pendingDeletedSessionLocalIds],
   );
   const loadSessionThread = useCallback(
@@ -2052,10 +2317,13 @@ export default function HomePage() {
       setLoadingSessionLocalId(localId);
       setHistoryLoadError(null);
       try {
-        const res = await fetch(`/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          cache: "no-store",
-        });
+        const res = await fetch(
+          `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            cache: "no-store",
+          },
+        );
         if (!res.ok) {
           const err = parseApiErrorPayload(await res.text());
           if (res.status === 401) {
@@ -2069,7 +2337,9 @@ export default function HomePage() {
             setHistoryLoadError(sessionUi.chatNoLongerExists);
             return;
           }
-          setHistoryLoadError(formatChatLoadFailedStatus(sessionUi, res.status));
+          setHistoryLoadError(
+            formatChatLoadFailedStatus(sessionUi, res.status),
+          );
           return;
         }
         const payload = (await res.json()) as AccountChatSessionResponse;
@@ -2088,14 +2358,16 @@ export default function HomePage() {
                 !knownNewSessionTitles.has(payload.session.title) &&
                 !knownInProgressTitles.has(payload.session.title)
                   ? payload.session.title
-                  : (thread[0]?.question.slice(0, 60) ?? sessionUi.defaultSessionTitle),
+                  : (thread[0]?.question.slice(0, 60) ??
+                    sessionUi.defaultSessionTitle),
               sessionId: payload.session.sessionId,
               publicSessionId: payload.session.publicId,
               threadMaxDepth: planCap,
               thread,
               messageCount: Math.max(thread.length, s.messageCount),
               updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
-              firstConsultationAt: thread[0]?.createdAt ?? s.firstConsultationAt,
+              firstConsultationAt:
+                thread[0]?.createdAt ?? s.firstConsultationAt,
             };
           }),
         );
@@ -2104,10 +2376,19 @@ export default function HomePage() {
         setHistoryLoadError(sessionUi.chatLoadNetworkError);
       } finally {
         setHistoryLoading(false);
-        setLoadingSessionLocalId((current) => (current === localId ? null : current));
+        setLoadingSessionLocalId((current) =>
+          current === localId ? null : current,
+        );
       }
     },
-    [accessToken, knownInProgressTitles, knownNewSessionTitles, sessionUi, accountSessionLimit, signOut],
+    [
+      accessToken,
+      knownInProgressTitles,
+      knownNewSessionTitles,
+      sessionUi,
+      accountSessionLimit,
+      signOut,
+    ],
   );
   const removeSession = useCallback(
     async (session: ChatSessionState<ConsultationItem>) => {
@@ -2115,29 +2396,42 @@ export default function HomePage() {
       if (pendingDeletedSessionLocalIds.includes(session.localId)) return;
       const ok = window.confirm(sessionUi.deleteConfirm);
       if (!ok) return;
-      setPendingDeletedSessionLocalIds((prev) => (prev.includes(session.localId) ? prev : [...prev, session.localId]));
+      setPendingDeletedSessionLocalIds((prev) =>
+        prev.includes(session.localId) ? prev : [...prev, session.localId],
+      );
       try {
-        const res = await fetch(`/api/account/chats?sessionId=${encodeURIComponent(session.sessionId)}`, {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        const res = await fetch(
+          `/api/account/chats?sessionId=${encodeURIComponent(session.sessionId)}`,
+          {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${accessToken}` },
+          },
+        );
         if (!res.ok) {
-          setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
+          setPendingDeletedSessionLocalIds((prev) =>
+            prev.filter((id) => id !== session.localId),
+          );
           setError(sessionUi.couldNotDeleteConversation);
           return;
         }
         setSessions((prev) => {
           const next = prev.filter((s) => s.localId !== session.localId);
           const nextActive = next[0]?.localId ?? null;
-          setActiveSessionLocalId((current) => (current === session.localId ? nextActive : current));
+          setActiveSessionLocalId((current) =>
+            current === session.localId ? nextActive : current,
+          );
           return next;
         });
       } catch {
-        setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
+        setPendingDeletedSessionLocalIds((prev) =>
+          prev.filter((id) => id !== session.localId),
+        );
         setError(sessionUi.couldNotDeleteConversation);
         return;
       }
-      setPendingDeletedSessionLocalIds((prev) => prev.filter((id) => id !== session.localId));
+      setPendingDeletedSessionLocalIds((prev) =>
+        prev.filter((id) => id !== session.localId),
+      );
     },
     [accessToken, sessionUi, pendingDeletedSessionLocalIds],
   );
@@ -2167,13 +2461,20 @@ export default function HomePage() {
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);
     const lastDay = localStorage.getItem(streakDayStorageKey);
-    const storedStreak = Number(localStorage.getItem(streakDaysStorageKey) ?? "0");
-    const storedDaily = Number(localStorage.getItem(dailyCountStorageKey(today)) ?? "0");
+    const storedStreak = Number(
+      localStorage.getItem(streakDaysStorageKey) ?? "0",
+    );
+    const storedDaily = Number(
+      localStorage.getItem(dailyCountStorageKey(today)) ?? "0",
+    );
     setDailyCount(storedDaily);
     if (!lastDay) {
       setStreakDays(Math.max(storedStreak, 1));
       localStorage.setItem(streakDayStorageKey, today);
-      localStorage.setItem(streakDaysStorageKey, String(Math.max(storedStreak, 1)));
+      localStorage.setItem(
+        streakDaysStorageKey,
+        String(Math.max(storedStreak, 1)),
+      );
       return;
     }
     if (lastDay === today) {
@@ -2182,7 +2483,9 @@ export default function HomePage() {
     }
     const last = new Date(`${lastDay}T00:00:00`);
     const curr = new Date(`${today}T00:00:00`);
-    const diffDays = Math.round((curr.getTime() - last.getTime()) / (24 * 60 * 60 * 1000));
+    const diffDays = Math.round(
+      (curr.getTime() - last.getTime()) / (24 * 60 * 60 * 1000),
+    );
     const nextStreak = diffDays === 1 ? Math.max(storedStreak, 1) + 1 : 1;
     setStreakDays(nextStreak);
     localStorage.setItem(streakDayStorageKey, today);
@@ -2256,74 +2559,92 @@ export default function HomePage() {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
         .then((r) => (r.ok ? r.json() : null))
-        .then((j: {
-          last_pack?: string;
-          tokens_available?: number;
-          session_limit?: number;
-          twoFactorEnabled?: boolean;
-          twoFactorMethod?: string | null;
-          display_name?: string | null;
-          is_admin?: boolean;
-          legal_acceptance_current?: boolean;
-        } | null) => {
-          if (cancelled) return;
-          if (!j) {
-            if (authUserId) {
-              const cached = readCachedAccountSessionLimit(authUserId);
-              if (cached !== null) setAccountSessionLimit(cached);
-            }
-            setTierReady(true);
-            return;
-          }
-          if (j.legal_acceptance_current === false) {
-            router.replace("/auth/complete-legal");
-            return;
-          }
-          const lastPack = typeof j.last_pack === "string" ? j.last_pack : "free";
-          setTier(lastPack as Tier);
-          setTierReady(true);
-          setIsAdmin(j.is_admin === true);
-          if (typeof j.session_limit === "number" && Number.isFinite(j.session_limit)) {
-            setAccountSessionLimit(j.session_limit);
-            if (authUserId) writeCachedAccountSessionLimit(authUserId, j.session_limit);
-          }
-          setTokenBalance(typeof j.tokens_available === "number" ? j.tokens_available : null);
-          setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
-          setTwoFactorMethod(j.twoFactorMethod ?? null);
-          const dn = typeof j.display_name === "string" ? j.display_name : null;
-          setDisplayName(dn);
-          if (dn === null) {
-            // Check provider to decide: auto-fill from Google or show modal for email
-            void (async () => {
-              const sb = getSupabaseBrowser();
-              const { data: { session } } = await sb.auth.getSession();
-              const provider = session?.user?.app_metadata?.provider;
-              const fullName =
-                typeof session?.user?.user_metadata?.full_name === "string"
-                  ? session.user.user_metadata.full_name.trim()
-                  : "";
-              const firstName = fullName.split(" ")[0]?.trim() ?? "";
-              if (provider === "google" && firstName) {
-                // Silently save the first name — no modal shown
-                try {
-                  const res = await fetch("/api/account/display-name", {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${accessToken}`,
-                    },
-                    body: JSON.stringify({ display_name: firstName }),
-                  });
-                  if (res.ok) setDisplayName(firstName);
-                } catch { /* non-fatal */ }
-              } else {
-                setOnboardingStep("enter");
-                setOnboardingInput("");
-                setOnboardingOpen(true);
+        .then(
+          (
+            j: {
+              last_pack?: string;
+              tokens_available?: number;
+              session_limit?: number;
+              twoFactorEnabled?: boolean;
+              twoFactorMethod?: string | null;
+              display_name?: string | null;
+              is_admin?: boolean;
+              legal_acceptance_current?: boolean;
+            } | null,
+          ) => {
+            if (cancelled) return;
+            if (!j) {
+              if (authUserId) {
+                const cached = readCachedAccountSessionLimit(authUserId);
+                if (cached !== null) setAccountSessionLimit(cached);
               }
-            })();
-          }
-        })
+              setTierReady(true);
+              return;
+            }
+            if (j.legal_acceptance_current === false) {
+              router.replace("/auth/complete-legal");
+              return;
+            }
+            const lastPack =
+              typeof j.last_pack === "string" ? j.last_pack : "free";
+            setTier(lastPack as Tier);
+            setTierReady(true);
+            setIsAdmin(j.is_admin === true);
+            if (
+              typeof j.session_limit === "number" &&
+              Number.isFinite(j.session_limit)
+            ) {
+              setAccountSessionLimit(j.session_limit);
+              if (authUserId)
+                writeCachedAccountSessionLimit(authUserId, j.session_limit);
+            }
+            setTokenBalance(
+              typeof j.tokens_available === "number"
+                ? j.tokens_available
+                : null,
+            );
+            setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
+            setTwoFactorMethod(j.twoFactorMethod ?? null);
+            const dn =
+              typeof j.display_name === "string" ? j.display_name : null;
+            setDisplayName(dn);
+            if (dn === null) {
+              // Check provider to decide: auto-fill from Google or show modal for email
+              void (async () => {
+                const sb = getSupabaseBrowser();
+                const {
+                  data: { session },
+                } = await sb.auth.getSession();
+                const provider = session?.user?.app_metadata?.provider;
+                const fullName =
+                  typeof session?.user?.user_metadata?.full_name === "string"
+                    ? session.user.user_metadata.full_name.trim()
+                    : "";
+                const firstName = fullName.split(" ")[0]?.trim() ?? "";
+                if (provider === "google" && firstName) {
+                  // Silently save the first name — no modal shown
+                  try {
+                    const res = await fetch("/api/account/display-name", {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${accessToken}`,
+                      },
+                      body: JSON.stringify({ display_name: firstName }),
+                    });
+                    if (res.ok) setDisplayName(firstName);
+                  } catch {
+                    /* non-fatal */
+                  }
+                } else {
+                  setOnboardingStep("enter");
+                  setOnboardingInput("");
+                  setOnboardingOpen(true);
+                }
+              })();
+            }
+          },
+        )
         .catch(() => {
           if (cancelled) return;
           if (authUserId) {
@@ -2421,13 +2742,22 @@ export default function HomePage() {
       expireIfNeeded();
       registerActivity();
     };
-    const activityEvents: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart", "mousemove", "scroll"];
+    const activityEvents: Array<keyof WindowEventMap> = [
+      "pointerdown",
+      "keydown",
+      "touchstart",
+      "mousemove",
+      "scroll",
+    ];
     for (const eventName of activityEvents) {
       window.addEventListener(eventName, registerActivity, { passive: true });
     }
     window.addEventListener("storage", onStorage);
     document.addEventListener("visibilitychange", onVisibility);
-    const timer = window.setInterval(expireIfNeeded, SESSION_IDLE_CHECK_INTERVAL_MS);
+    const timer = window.setInterval(
+      expireIfNeeded,
+      SESSION_IDLE_CHECK_INTERVAL_MS,
+    );
 
     return () => {
       window.clearInterval(timer);
@@ -2478,7 +2808,14 @@ export default function HomePage() {
     const fresh = createLocalSession(inProgressTitle);
     setSessions([fresh]);
     setActiveSessionLocalId(fresh.localId);
-  }, [authReady, accessToken, inProgressTitle, sessions, setSessions, setActiveSessionLocalId]);
+  }, [
+    authReady,
+    accessToken,
+    inProgressTitle,
+    sessions,
+    setSessions,
+    setActiveSessionLocalId,
+  ]);
 
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
@@ -2534,9 +2871,12 @@ export default function HomePage() {
             return {
               localId: `db-${entry.session.sessionId}`,
               title:
-                entry.session.title && !knownNewSessionTitles.has(entry.session.title) && !knownInProgressTitles.has(entry.session.title)
+                entry.session.title &&
+                !knownNewSessionTitles.has(entry.session.title) &&
+                !knownInProgressTitles.has(entry.session.title)
                   ? entry.session.title
-                  : (entry.firstQuestion?.trim().slice(0, 80) || sessionUi.defaultSessionTitle),
+                  : entry.firstQuestion?.trim().slice(0, 80) ||
+                    sessionUi.defaultSessionTitle,
               sessionId: entry.session.sessionId,
               publicSessionId: entry.session.publicId,
               thread: [],
@@ -2559,14 +2899,17 @@ export default function HomePage() {
             return {
               ...next,
               title:
-                existing.title && !knownNewSessionTitles.has(existing.title) && !knownInProgressTitles.has(existing.title)
+                existing.title &&
+                !knownNewSessionTitles.has(existing.title) &&
+                !knownInProgressTitles.has(existing.title)
                   ? existing.title
                   : next.title,
               thread: existing.thread,
               threadMaxDepth: existing.threadMaxDepth ?? next.threadMaxDepth,
               messageCount: Math.max(next.messageCount, existing.messageCount),
               updatedAt: Math.max(next.updatedAt, existing.updatedAt),
-              firstConsultationAt: next.firstConsultationAt ?? existing.firstConsultationAt,
+              firstConsultationAt:
+                next.firstConsultationAt ?? existing.firstConsultationAt,
             };
           });
           combinedSessions = mergeHydratedWithLocalDrafts({
@@ -2583,7 +2926,10 @@ export default function HomePage() {
           }
         }
         const pinnedLocalId = pinnedLocalSessionIdRef.current;
-        if (pinnedLocalId && !combinedSessions.some((s) => s.localId === pinnedLocalId)) {
+        if (
+          pinnedLocalId &&
+          !combinedSessions.some((s) => s.localId === pinnedLocalId)
+        ) {
           pinnedLocalSessionIdRef.current = null;
         }
         const activeLocalId = activeSessionLocalIdRef.current;
@@ -2593,8 +2939,14 @@ export default function HomePage() {
           activeLocalId,
         });
         setActiveSessionLocalId(preferredLocalId);
-        const selected = combinedSessions.find((s) => s.localId === preferredLocalId) ?? combinedSessions[0];
-        if (selected?.sessionId && selected.messageCount > 0 && selected.thread.length === 0) {
+        const selected =
+          combinedSessions.find((s) => s.localId === preferredLocalId) ??
+          combinedSessions[0];
+        if (
+          selected?.sessionId &&
+          selected.messageCount > 0 &&
+          selected.thread.length === 0
+        ) {
           void loadSessionThread(selected.sessionId, selected.localId);
         }
         if (!cancelled) {
@@ -2684,7 +3036,11 @@ export default function HomePage() {
         },
         body: JSON.stringify({ token: twoFactorCode.trim() }),
       });
-      const data = (await res.json()) as { recoveryCodes?: string[]; error?: string; code?: string };
+      const data = (await res.json()) as {
+        recoveryCodes?: string[];
+        error?: string;
+        code?: string;
+      };
       if (!res.ok || !Array.isArray(data.recoveryCodes)) {
         if (data.code === "TWO_FACTOR_NOT_ENROLLED") {
           setTwoFactorError(tf.confirmNotEnrolled);
@@ -2735,7 +3091,11 @@ export default function HomePage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const data = (await res.json().catch(() => null)) as { ok?: boolean; code?: string; message?: string } | null;
+      const data = (await res.json().catch(() => null)) as {
+        ok?: boolean;
+        code?: string;
+        message?: string;
+      } | null;
       if (!res.ok || !data?.ok) {
         if (data?.code === "AUTH_REQUIRED") {
           setTwoFactorError(tf.sendSessionExpired);
@@ -2751,12 +3111,12 @@ export default function HomePage() {
         }
         if (data?.code === "TWO_FACTOR_EMAIL_DELIVERY_FAILED") {
           const deliveryMessage =
-            typeof data?.message === "string"
-              ? data.message
-              : null;
+            typeof data?.message === "string" ? data.message : null;
           setTwoFactorError(
             deliveryMessage
-              ? interpolate(tf.emailDeliveryFailedReason, { reason: deliveryMessage })
+              ? interpolate(tf.emailDeliveryFailedReason, {
+                  reason: deliveryMessage,
+                })
               : tf.emailDeliveryFailedResendHint,
           );
           return;
@@ -2787,7 +3147,10 @@ export default function HomePage() {
         },
         body: JSON.stringify({ code: twoFactorEmailCode.trim() }),
       });
-      const data = (await res.json()) as { recoveryCodes?: string[]; code?: string };
+      const data = (await res.json()) as {
+        recoveryCodes?: string[];
+        code?: string;
+      };
       if (!res.ok || !Array.isArray(data.recoveryCodes)) {
         if (data.code === "TWO_FACTOR_EMAIL_CODE_EXPIRED") {
           setTwoFactorError(tf.verifyEmailExpired);
@@ -2857,19 +3220,33 @@ export default function HomePage() {
 
   async function verifyTwoFactorChallenge() {
     if (!accessToken) return;
-    const payload: { token?: string; emailCode?: string; recoveryCode?: string } = {};
+    const payload: {
+      token?: string;
+      emailCode?: string;
+      recoveryCode?: string;
+    } = {};
     const usingRecoveryCode = twoFactorRecoveryAssistMode === "enter_code";
     if (usingRecoveryCode && twoFactorRecoveryCode.trim().length >= 8) {
       payload.recoveryCode = twoFactorRecoveryCode.trim();
     }
-    if (!usingRecoveryCode && twoFactorChallengeMethod === "totp" && twoFactorCode.trim().length >= 6) {
+    if (
+      !usingRecoveryCode &&
+      twoFactorChallengeMethod === "totp" &&
+      twoFactorCode.trim().length >= 6
+    ) {
       payload.token = twoFactorCode.trim();
     }
-    if (!usingRecoveryCode && twoFactorChallengeMethod === "email" && twoFactorEmailCode.trim().length >= 6) {
+    if (
+      !usingRecoveryCode &&
+      twoFactorChallengeMethod === "email" &&
+      twoFactorEmailCode.trim().length >= 6
+    ) {
       payload.emailCode = twoFactorEmailCode.trim();
     }
     if (!payload.token && !payload.emailCode && !payload.recoveryCode) {
-      setTwoFactorError(usingRecoveryCode ? tf.challengeNeedRecovery : tf.challengeNeedSixDigit);
+      setTwoFactorError(
+        usingRecoveryCode ? tf.challengeNeedRecovery : tf.challengeNeedSixDigit,
+      );
       return;
     }
     setTwoFactorBusy(true);
@@ -2878,11 +3255,16 @@ export default function HomePage() {
     try {
       const res = await fetch("/api/auth/2fa/challenge/verify", {
         method: "POST",
-        headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        const data = (await res.json().catch(() => null)) as { code?: string } | null;
+        const data = (await res.json().catch(() => null)) as {
+          code?: string;
+        } | null;
         if (data?.code === "AUTH_REQUIRED") {
           setTwoFactorError(tf.challengeSessionExpired);
           return;
@@ -2943,11 +3325,14 @@ export default function HomePage() {
   }
 
   async function openPlansCheckoutNewTab(): Promise<boolean> {
-    const built = await buildPlansCheckoutUrl(process.env.NEXT_PUBLIC_PLANS_URL, {
-      appUserId: authUserId,
-      /** Authenticated CTAs must send app_user_id; fail the open if we cannot resolve it. */
-      requireAppUserId: Boolean(accessToken),
-    });
+    const built = await buildPlansCheckoutUrl(
+      process.env.NEXT_PUBLIC_PLANS_URL,
+      {
+        appUserId: authUserId,
+        /** Authenticated CTAs must send app_user_id; fail the open if we cannot resolve it. */
+        requireAppUserId: Boolean(accessToken),
+      },
+    );
     if (!built.ok) return false;
     window.open(built.url, "_blank", "noopener,noreferrer");
     return true;
@@ -2968,25 +3353,28 @@ export default function HomePage() {
         headers: { Authorization: `Bearer ${accessToken}` },
         cache: "no-store",
       });
-      const data = (await res.json().catch(() => null)) as
-        | {
-            id?: string;
-            last_pack?: string;
-            tokens_available?: number;
-            session_limit?: number;
-          }
-        | null;
+      const data = (await res.json().catch(() => null)) as {
+        id?: string;
+        last_pack?: string;
+        tokens_available?: number;
+        session_limit?: number;
+      } | null;
       if (!res.ok || !data) {
         setTokenCenterError(tokenPanel.loadError);
         return;
       }
       if (typeof data.last_pack === "string") setTier(data.last_pack as Tier);
-      if (typeof data.tokens_available === "number") setTokenBalance(data.tokens_available);
+      if (typeof data.tokens_available === "number")
+        setTokenBalance(data.tokens_available);
       if (typeof data.session_limit === "number") {
         setAccountSessionLimit(data.session_limit);
-        if (authUserId) writeCachedAccountSessionLimit(authUserId, data.session_limit);
+        if (authUserId)
+          writeCachedAccountSessionLimit(authUserId, data.session_limit);
       }
-      if (typeof data.tokens_available === "number" && data.tokens_available <= 0) {
+      if (
+        typeof data.tokens_available === "number" &&
+        data.tokens_available <= 0
+      ) {
         if (data.last_pack === "free") {
           setTokenCenterMessage(tokenPanel.messageFreeDepleted);
         } else {
@@ -3067,7 +3455,8 @@ export default function HomePage() {
     }
     manualRitualFinaleShownRef.current = false;
     const isManualCast = Boolean(manualLineValues);
-    const showRitualAnimation = oracleMode === "oracle_bones" || oracleMode === "iching";
+    const showRitualAnimation =
+      oracleMode === "oracle_bones" || oracleMode === "iching";
     let manualCastPreviewEngine: ManualCastPreview | null = null;
     setLoading(true);
     setError(null);
@@ -3078,8 +3467,10 @@ export default function HomePage() {
         manualCastPreviewEngine = previewCastFromLineValues(manualLineValues);
         setManualCastPreview({
           primaryHexagram: manualCastPreviewEngine.primaryHexagram.number,
-          primaryHexagramChinese: manualCastPreviewEngine.primaryHexagram.chineseName,
-          transformedHexagram: manualCastPreviewEngine.transformedHexagram?.number ?? null,
+          primaryHexagramChinese:
+            manualCastPreviewEngine.primaryHexagram.chineseName,
+          transformedHexagram:
+            manualCastPreviewEngine.transformedHexagram?.number ?? null,
           mutationRule: manualCastPreviewEngine.mutationRule,
         });
       } catch {
@@ -3115,9 +3506,9 @@ export default function HomePage() {
     });
     if (manualCastPreviewEngine && oracleMode === "iching") {
       try {
-        const ordered = [...engineLinesToApiLines(manualCastPreviewEngine.lines)].sort(
-          (a, b) => a.position - b.position,
-        );
+        const ordered = [
+          ...engineLinesToApiLines(manualCastPreviewEngine.lines),
+        ].sort((a, b) => a.position - b.position);
         setRitualLines(ordered);
         setRitualRevealTick(12);
         setRitualStatusPhase("consult");
@@ -3132,13 +3523,19 @@ export default function HomePage() {
           finalTransformed: transformed,
           match: true,
           mutationRule: String(manualCastPreviewEngine.mutationRule),
-          transformedHexagram: manualCastPreviewEngine.transformedHexagram?.number ?? null,
+          transformedHexagram:
+            manualCastPreviewEngine.transformedHexagram?.number ?? null,
         });
         if (ichingCastMode === "manual") {
-          const budgetMs = ichingRitualProcessingBudgetMs(lastIchingConsultWallMsRef.current);
+          const budgetMs = ichingRitualProcessingBudgetMs(
+            lastIchingConsultWallMsRef.current,
+          );
           const timing = ichingRitualRevealTimingFromBudget(budgetMs);
           const phaseOneMs = Math.max(1200, timing.tickDelayMs * 12);
-          logRitualTrace("manual:phase-switch-scheduled", { budgetMs, phaseOneMs });
+          logRitualTrace("manual:phase-switch-scheduled", {
+            budgetMs,
+            phaseOneMs,
+          });
           manualRitualPhaseSwitchTimerRef.current = window.setTimeout(() => {
             manualRitualFinaleShownRef.current = true;
             setRitualStatusPhase("seal");
@@ -3150,7 +3547,13 @@ export default function HomePage() {
         /* leave ritual slots empty */
       }
     }
-    setPhase(showRitualAnimation ? (oracleMode === "oracle_bones" ? "bones" : "coins") : "idle");
+    setPhase(
+      showRitualAnimation
+        ? oracleMode === "oracle_bones"
+          ? "bones"
+          : "coins"
+        : "idle",
+    );
     let ok = false;
     try {
       let sessionIdForRequest = consultSession.sessionId;
@@ -3158,7 +3561,8 @@ export default function HomePage() {
         sessionIdForRequest = newClientUuid();
         updateActiveSession((c) => ({ ...c, sessionId: sessionIdForRequest }));
       }
-      ichingConsultWallClockStartedAtRef.current = oracleMode === "iching" ? Date.now() : null;
+      ichingConsultWallClockStartedAtRef.current =
+        oracleMode === "iching" ? Date.now() : null;
       const res = await fetch("/api/consult", {
         method: "POST",
         headers: {
@@ -3170,18 +3574,24 @@ export default function HomePage() {
           language: detectInputLanguage(questionForRequest, locale),
           /** Manual cast must never request SSE — long tick reveal only applies to automatic mode. */
           responseMode:
-            oracleMode === "iching" && ichingCastMode === "auto" ? "stream_ritual" : "ritual",
+            oracleMode === "iching" && ichingCastMode === "auto"
+              ? "stream_ritual"
+              : "ritual",
           sessionId: sessionIdForRequest,
           sessionTitle: consultSession.title,
           isDeepening: activeThread.length > 0,
           oracleMode,
-            ...(oracleMode === "iching"
-              ? manualLineValues
-                ? { ichingCastMode: "manual" as const, ichingCastingMethod, ichingManualLineValues: [...manualLineValues] }
-                : { ichingCastMode, ichingCastingMethod }
-              : {}),
-            translatorId,
-            displayName: displayName ?? undefined,
+          ...(oracleMode === "iching"
+            ? manualLineValues
+              ? {
+                  ichingCastMode: "manual" as const,
+                  ichingCastingMethod,
+                  ichingManualLineValues: [...manualLineValues],
+                }
+              : { ichingCastMode, ichingCastingMethod }
+            : {}),
+          translatorId,
+          displayName: displayName ?? undefined,
           oracleBones:
             oracleMode === "oracle_bones"
               ? {
@@ -3230,8 +3640,13 @@ export default function HomePage() {
             window.requestAnimationFrame(() => resolve());
           });
         });
-      const runIChingRitualReveal = async (linesPayload: ApiLine[], timing: IchingRitualRevealTiming) => {
-        const ordered = [...linesPayload].sort((a, b) => a.position - b.position);
+      const runIChingRitualReveal = async (
+        linesPayload: ApiLine[],
+        timing: IchingRitualRevealTiming,
+      ) => {
+        const ordered = [...linesPayload].sort(
+          (a, b) => a.position - b.position,
+        );
         logRitualTrace("reveal:start", {
           orderedPositions: ordered.map((line) => line.position),
           tickDelayMs: timing.tickDelayMs,
@@ -3265,7 +3680,9 @@ export default function HomePage() {
         const decoder = new TextDecoder();
         const reader = res.body.getReader();
         let buffer = "";
-        let finalPayload: (ConsultResponse & { error?: string; message?: string }) | null = null;
+        let finalPayload:
+          | (ConsultResponse & { error?: string; message?: string })
+          | null = null;
         let streamErrored = false;
         let revealStarted = false;
         let revealPromise: Promise<void> | null = null;
@@ -3276,9 +3693,13 @@ export default function HomePage() {
           revealStarted = true;
           castVectorFromStream = apiLinesToVector(linesPayload);
           setRitualDebugCastVector(castVectorFromStream);
-          const processingBudget = ichingRitualProcessingBudgetMs(lastIchingConsultWallMsRef.current);
+          const processingBudget = ichingRitualProcessingBudgetMs(
+            lastIchingConsultWallMsRef.current,
+          );
           const timing = ichingRitualRevealTimingFromBudget(processingBudget);
-          logRitualTrace("reveal:budget", { processingBudgetMs: processingBudget });
+          logRitualTrace("reveal:budget", {
+            processingBudgetMs: processingBudget,
+          });
           revealPromise = runIChingRitualReveal(linesPayload, timing);
         };
 
@@ -3312,12 +3733,18 @@ export default function HomePage() {
             if (eventName === "cast_ready") {
               logRitualTrace("sse:event", { eventName });
               const castPayload = payload as { lines?: ApiLine[] };
-              if (Array.isArray(castPayload.lines) && castPayload.lines.length === 6) {
+              if (
+                Array.isArray(castPayload.lines) &&
+                castPayload.lines.length === 6
+              ) {
                 startLineReveal(castPayload.lines);
               }
             } else if (eventName === "final_ready") {
               logRitualTrace("sse:event", { eventName });
-              finalPayload = payload as ConsultResponse & { error?: string; message?: string };
+              finalPayload = payload as ConsultResponse & {
+                error?: string;
+                message?: string;
+              };
             } else if (eventName === "error") {
               logRitualTrace("sse:event", { eventName });
               streamErrored = true;
@@ -3334,10 +3761,14 @@ export default function HomePage() {
           void revealPromise;
         }
         data = finalPayload;
-        if (Array.isArray(finalPayload.lines) && finalPayload.lines.length === 6) {
+        if (
+          Array.isArray(finalPayload.lines) &&
+          finalPayload.lines.length === 6
+        ) {
           const finalVec = apiLinesToVector(finalPayload.lines);
           setRitualDebugFinalVector(finalVec);
-          const castBaseForSnapshot = castVectorFromStream ?? ritualDebugCastVector ?? finalVec;
+          const castBaseForSnapshot =
+            castVectorFromStream ?? ritualDebugCastVector ?? finalVec;
           const castTransformed = transformLineVector(castBaseForSnapshot);
           const finalTransformed = transformLineVector(finalVec);
           setLastRitualDebugSnapshot({
@@ -3356,7 +3787,10 @@ export default function HomePage() {
           if (!rawText.trim()) {
             throw new SyntaxError("empty body");
           }
-          data = JSON.parse(rawText) as ConsultResponse & { error?: string; message?: string };
+          data = JSON.parse(rawText) as ConsultResponse & {
+            error?: string;
+            message?: string;
+          };
         } catch {
           setError(
             res.ok
@@ -3385,19 +3819,26 @@ export default function HomePage() {
           setError(tokenPanel.noTokensDepleted);
           return;
         }
-        if (res.status === 403 && (data.error === "two_factor_required" || data.action === "setup_2fa")) {
+        if (
+          res.status === 403 &&
+          (data.error === "two_factor_required" || data.action === "setup_2fa")
+        ) {
           setConsultPanelOpen(true);
           setError(tf.twoFaRequiredByPolicy);
           return;
         }
         const serverMsg =
-          typeof data.message === "string" && data.message.trim() ? data.message.trim() : undefined;
+          typeof data.message === "string" && data.message.trim()
+            ? data.message.trim()
+            : undefined;
         const suffix = serverMsg ? ` ${serverMsg}` : "";
         if (data.error === "consult_failed") {
           setError(formatConsultFailedMessage(sessionUi, serverMsg));
           return;
         }
-        setError(`${data.error ?? interpolate(sessionUi.requestFailedStatus, { status: res.status })}${suffix}`);
+        setError(
+          `${data.error ?? interpolate(sessionUi.requestFailedStatus, { status: res.status })}${suffix}`,
+        );
         return;
       }
       /** POST-HTTP beat: JSON ritual paints lines after one blob; SSE already ran `runIChingRitualReveal` during the stream. */
@@ -3406,16 +3847,19 @@ export default function HomePage() {
         contentType.includes("text/event-stream") &&
         oracleMode === "iching" &&
         ichingCastMode === "auto";
-      const initialPauseAfterOkMs =
-        !showRitualAnimation
+      const initialPauseAfterOkMs = !showRitualAnimation
+        ? 0
+        : sseIchingAutoRitualComplete
           ? 0
-          : sseIchingAutoRitualComplete
+          : isManualCast && oracleMode === "iching"
             ? 0
-            : isManualCast && oracleMode === "iching"
-              ? 0
-              : 900;
+            : 900;
       await new Promise((r) => window.setTimeout(r, initialPauseAfterOkMs));
-      if (showRitualAnimation && oracleMode === "oracle_bones" && data.oracleBones) {
+      if (
+        showRitualAnimation &&
+        oracleMode === "oracle_bones" &&
+        data.oracleBones
+      ) {
         setBoneRitualResult(data.oracleBones.verdict);
         await new Promise((r) => window.setTimeout(r, 4050));
       }
@@ -3426,11 +3870,15 @@ export default function HomePage() {
         Array.isArray(data.lines) &&
         data.lines.length === 6
       ) {
-        const orderedLines = [...data.lines].sort((a, b) => a.position - b.position);
+        const orderedLines = [...data.lines].sort(
+          (a, b) => a.position - b.position,
+        );
         if (ichingCastMode === "manual" && isManualCast) {
           const fetchStartedAt = ichingConsultWallClockStartedAtRef.current;
           const fetchMs =
-            fetchStartedAt != null ? Math.max(0, Date.now() - fetchStartedAt) : 0;
+            fetchStartedAt != null
+              ? Math.max(0, Date.now() - fetchStartedAt)
+              : 0;
           const finalVec = apiLinesToVector(orderedLines);
           const castBaseForSnapshot = ritualDebugCastVector ?? finalVec;
           setRitualDebugFinalVector(finalVec);
@@ -3451,10 +3899,16 @@ export default function HomePage() {
             manualRitualFinaleShownRef.current = true;
             setRitualStatusPhase("seal");
             setRitualFinale(true);
-            logRitualTrace("reveal:manual-lines-sync", { fetchMs, forcedOnResponse: true });
+            logRitualTrace("reveal:manual-lines-sync", {
+              fetchMs,
+              forcedOnResponse: true,
+            });
             await waitForRitualPaint();
           } else {
-            logRitualTrace("reveal:manual-lines-sync", { fetchMs, forcedOnResponse: false });
+            logRitualTrace("reveal:manual-lines-sync", {
+              fetchMs,
+              forcedOnResponse: false,
+            });
           }
         } else {
           const vec = apiLinesToVector(orderedLines);
@@ -3472,12 +3926,16 @@ export default function HomePage() {
           });
           const measuredThisJsonMs =
             ichingConsultWallClockStartedAtRef.current != null
-              ? Math.max(0, Date.now() - ichingConsultWallClockStartedAtRef.current)
+              ? Math.max(
+                  0,
+                  Date.now() - ichingConsultWallClockStartedAtRef.current,
+                )
               : null;
           const jsonTimingBudget = ichingRitualProcessingBudgetMs(
             measuredThisJsonMs ?? lastIchingConsultWallMsRef.current,
           );
-          const jsonRevealTiming = ichingRitualRevealTimingFromBudget(jsonTimingBudget);
+          const jsonRevealTiming =
+            ichingRitualRevealTimingFromBudget(jsonTimingBudget);
           void runIChingRitualReveal(orderedLines, jsonRevealTiming);
         }
       }
@@ -3492,28 +3950,42 @@ export default function HomePage() {
       };
       updateActiveSession((current) => {
         const nextThreadMax =
-          typeof data.sessionMaxDepth === "number" && Number.isFinite(data.sessionMaxDepth) && data.sessionMaxDepth > 0
+          typeof data.sessionMaxDepth === "number" &&
+          Number.isFinite(data.sessionMaxDepth) &&
+          data.sessionMaxDepth > 0
             ? data.sessionMaxDepth
             : current.threadMaxDepth;
         return {
-        ...current,
-        threadMaxDepth: nextThreadMax ?? current.threadMaxDepth,
-        thread: [...current.thread, item],
-        messageCount: Math.max(current.messageCount, current.thread.length + 1),
-        sessionId: data.sessionId,
-        publicSessionId: data.publicSessionId ?? current.publicSessionId,
-        title: knownInProgressTitles.has(current.title) || knownNewSessionTitles.has(current.title)
-          ? item.question.slice(0, 60)
-          : current.title,
-        updatedAt: item.createdAt ?? Date.now(),
-        firstConsultationAt: current.firstConsultationAt ?? item.createdAt ?? Date.now(),
+          ...current,
+          threadMaxDepth: nextThreadMax ?? current.threadMaxDepth,
+          thread: [...current.thread, item],
+          messageCount: Math.max(
+            current.messageCount,
+            current.thread.length + 1,
+          ),
+          sessionId: data.sessionId,
+          publicSessionId: data.publicSessionId ?? current.publicSessionId,
+          title:
+            knownInProgressTitles.has(current.title) ||
+            knownNewSessionTitles.has(current.title)
+              ? item.question.slice(0, 60)
+              : current.title,
+          updatedAt: item.createdAt ?? Date.now(),
+          firstConsultationAt:
+            current.firstConsultationAt ?? item.createdAt ?? Date.now(),
         };
       });
-      if (typeof item.consultationId === "string" && item.consultationId.length > 0) {
+      if (
+        typeof item.consultationId === "string" &&
+        item.consultationId.length > 0
+      ) {
         setRevealConsultationId(item.consultationId);
       }
       setPendingUserQuestion(null);
-      if (typeof data.remainingCredits === "number" && Number.isFinite(data.remainingCredits)) {
+      if (
+        typeof data.remainingCredits === "number" &&
+        Number.isFinite(data.remainingCredits)
+      ) {
         setTokenBalance(data.remainingCredits);
       } else {
         // Fallback refresh for cases where response omits balance.
@@ -3527,7 +3999,10 @@ export default function HomePage() {
         })
           .then((r) => (r.ok ? r.json() : null))
           .then((me: { tokens_available?: number } | null) => {
-            if (typeof me?.tokens_available === "number" && Number.isFinite(me.tokens_available)) {
+            if (
+              typeof me?.tokens_available === "number" &&
+              Number.isFinite(me.tokens_available)
+            ) {
               setTokenBalance(me.tokens_available);
             }
           })
@@ -3539,9 +4014,14 @@ export default function HomePage() {
         localStorage.setItem(dailyCountStorageKey(today), String(next));
         return next;
       });
-      if (oracleMode === "iching" && ichingConsultWallClockStartedAtRef.current != null) {
-        const rawWallMs = Date.now() - ichingConsultWallClockStartedAtRef.current;
-        lastIchingConsultWallMsRef.current = ichingRitualProcessingBudgetMs(rawWallMs);
+      if (
+        oracleMode === "iching" &&
+        ichingConsultWallClockStartedAtRef.current != null
+      ) {
+        const rawWallMs =
+          Date.now() - ichingConsultWallClockStartedAtRef.current;
+        lastIchingConsultWallMsRef.current =
+          ichingRitualProcessingBudgetMs(rawWallMs);
         logRitualTrace("iching:stored-wall-ms", {
           rawWallMs,
           storedBudgetMs: lastIchingConsultWallMsRef.current,
@@ -3553,7 +4033,9 @@ export default function HomePage() {
       setManualCastPreview(null);
       ok = true;
     } catch (e) {
-      logRitualTrace("submit:error", { error: e instanceof Error ? e.message : String(e) });
+      logRitualTrace("submit:error", {
+        error: e instanceof Error ? e.message : String(e),
+      });
       setError(e instanceof Error ? e.message : "Error");
       setPendingUserQuestion(null);
       setManualCastPreview(null);
@@ -3587,7 +4069,10 @@ export default function HomePage() {
     try {
       const res = await fetch("/api/account/display-name", {
         method: "PUT",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({ display_name: onboardingInput.trim() }),
       });
       if (res.ok) {
@@ -3616,7 +4101,11 @@ export default function HomePage() {
       <div className="oracle-chat-app">
         <AmbientParticles />
         {!playPromoDismissed ? (
-          <div className="oracle-play-promo-strip" role="region" aria-label={presentation.regionAria}>
+          <div
+            className="oracle-play-promo-strip"
+            role="region"
+            aria-label={presentation.regionAria}
+          >
             <div className="oracle-play-promo-strip__inner">
               {playStoreUrl ? (
                 <a
@@ -3627,13 +4116,23 @@ export default function HomePage() {
                   aria-label={presentation.playCtaAria}
                 >
                   <span className="oracle-play-promo-strip__glyph" aria-hidden>
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" focusable="false">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      fill="currentColor"
+                      focusable="false"
+                    >
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   </span>
                   <span className="oracle-play-promo-strip__titles">
-                    <span className="oracle-play-promo-strip__title">{presentation.playBadgeTitle}</span>
-                    <span className="oracle-play-promo-strip__subtitle">{presentation.playBadgeSubtitle}</span>
+                    <span className="oracle-play-promo-strip__title">
+                      {presentation.playBadgeTitle}
+                    </span>
+                    <span className="oracle-play-promo-strip__subtitle">
+                      {presentation.playBadgeSubtitle}
+                    </span>
                   </span>
                   <img
                     className="oracle-play-promo-strip__badge"
@@ -3644,18 +4143,33 @@ export default function HomePage() {
                     loading="lazy"
                     decoding="async"
                   />
-                  <span className="oracle-play-promo-strip__cta-label">{presentation.playInstall}</span>
+                  <span className="oracle-play-promo-strip__cta-label">
+                    {presentation.playInstall}
+                  </span>
                 </a>
               ) : (
-                <div className="oracle-play-promo-strip__main oracle-play-promo-strip__main--soon" role="status">
+                <div
+                  className="oracle-play-promo-strip__main oracle-play-promo-strip__main--soon"
+                  role="status"
+                >
                   <span className="oracle-play-promo-strip__glyph" aria-hidden>
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" focusable="false">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      fill="currentColor"
+                      focusable="false"
+                    >
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   </span>
                   <span className="oracle-play-promo-strip__titles">
-                    <span className="oracle-play-promo-strip__title">{presentation.playBadgeTitle}</span>
-                    <span className="oracle-play-promo-strip__subtitle">{presentation.playSoon}</span>
+                    <span className="oracle-play-promo-strip__title">
+                      {presentation.playBadgeTitle}
+                    </span>
+                    <span className="oracle-play-promo-strip__subtitle">
+                      {presentation.playSoon}
+                    </span>
                   </span>
                 </div>
               )}
@@ -3672,11 +4186,21 @@ export default function HomePage() {
           </div>
         ) : null}
         {onboardingOpen && (
-          <div className="onboarding-backdrop" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
-            <div className="onboarding-card" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="onboarding-backdrop"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="onboarding-title"
+          >
+            <div
+              className="onboarding-card"
+              onClick={(e) => e.stopPropagation()}
+            >
               {onboardingStep === "enter" ? (
                 <>
-                  <h2 id="onboarding-title" className="onboarding-title">{onboardingUi.title}</h2>
+                  <h2 id="onboarding-title" className="onboarding-title">
+                    {onboardingUi.title}
+                  </h2>
                   <p className="onboarding-subtitle">{onboardingUi.subtitle}</p>
                   <input
                     className="onboarding-input"
@@ -3687,23 +4211,32 @@ export default function HomePage() {
                     autoFocus
                     onChange={(e) => setOnboardingInput(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter" && onboardingNameValid) setOnboardingStep("confirm");
+                      if (e.key === "Enter" && onboardingNameValid)
+                        setOnboardingStep("confirm");
                     }}
                   />
                   <button
                     type="button"
                     className={`composer-reading-pill${onboardingNameValid ? " is-active" : ""} onboarding-btn`}
                     disabled={!onboardingNameValid}
-                    onClick={() => { if (onboardingNameValid) setOnboardingStep("confirm"); }}
+                    onClick={() => {
+                      if (onboardingNameValid) setOnboardingStep("confirm");
+                    }}
                   >
                     {onboardingUi.button}
                   </button>
                 </>
               ) : (
                 <>
-                  <h2 id="onboarding-title" className="onboarding-title">{onboardingUi.confirmTitle}</h2>
-                  <p className="onboarding-name-display">{onboardingInput.trim()}</p>
-                  <p className="onboarding-subtitle">{onboardingUi.confirmSubtitle}</p>
+                  <h2 id="onboarding-title" className="onboarding-title">
+                    {onboardingUi.confirmTitle}
+                  </h2>
+                  <p className="onboarding-name-display">
+                    {onboardingInput.trim()}
+                  </p>
+                  <p className="onboarding-subtitle">
+                    {onboardingUi.confirmSubtitle}
+                  </p>
                   <div className="onboarding-confirm-actions">
                     <button
                       type="button"
@@ -3728,7 +4261,11 @@ export default function HomePage() {
           </div>
         )}
         {authContinueOpen ? (
-          <div className="auth-soft-backdrop" role="presentation" onClick={() => setAuthContinueOpen(false)}>
+          <div
+            className="auth-soft-backdrop"
+            role="presentation"
+            onClick={() => setAuthContinueOpen(false)}
+          >
             <div
               className="auth-soft-dialog"
               role="dialog"
@@ -3741,17 +4278,26 @@ export default function HomePage() {
                 Para recibir tu lectura
               </h2>
               <p className="auth-soft-body">
-                Puedes explorar el ritual y escribir tu consulta con libertad. Cuando quieras el veredicto del oráculo,
-                crea una cuenta gratuita o entra con Google.
+                Puedes explorar el ritual y escribir tu consulta con libertad.
+                Cuando quieras el veredicto del oráculo, crea una cuenta
+                gratuita o entra con Google.
               </p>
               <ul className="auth-soft-list">
                 <li>Plan gratuito: 2 consultas de prueba (lifetime)</li>
               </ul>
               <div className="auth-soft-actions">
-                <Link href="/login" className="auth-soft-primary" onClick={() => setAuthContinueOpen(false)}>
+                <Link
+                  href="/login"
+                  className="auth-soft-primary"
+                  onClick={() => setAuthContinueOpen(false)}
+                >
                   Crear cuenta o entrar
                 </Link>
-                <button type="button" className="auth-soft-secondary" onClick={() => setAuthContinueOpen(false)}>
+                <button
+                  type="button"
+                  className="auth-soft-secondary"
+                  onClick={() => setAuthContinueOpen(false)}
+                >
                   Seguir explorando
                 </button>
               </div>
@@ -3772,7 +4318,12 @@ export default function HomePage() {
           id="chat-drawer"
         >
           <div className="chat-drawer-header">
-            <button type="button" className="chat-icon-btn" onClick={() => setChatsOpen(false)} aria-label={ui.drawerClose}>
+            <button
+              type="button"
+              className="chat-icon-btn"
+              onClick={() => setChatsOpen(false)}
+              aria-label={ui.drawerClose}
+            >
               ✕
             </button>
             <h2>{ui.chats}</h2>
@@ -3795,11 +4346,17 @@ export default function HomePage() {
               </div>
               <div className="sidebar-stat-card">
                 <span className="sidebar-stat-value">{dailyCount}</span>
-                <span className="sidebar-stat-key">{drawerText.consultationsToday}</span>
+                <span className="sidebar-stat-key">
+                  {drawerText.consultationsToday}
+                </span>
               </div>
               <div className="sidebar-stat-card">
-                <span className="sidebar-stat-value">{visibleSessionsListed.length}</span>
-                <span className="sidebar-stat-key">{drawerText.chatsWithMessages}</span>
+                <span className="sidebar-stat-value">
+                  {visibleSessionsListed.length}
+                </span>
+                <span className="sidebar-stat-key">
+                  {drawerText.chatsWithMessages}
+                </span>
               </div>
             </div>
             {loading || historyLoading ? (
@@ -3817,583 +4374,770 @@ export default function HomePage() {
             {[...visibleSessionsListed]
               .sort((a, b) => b.updatedAt - a.updatedAt)
               .map((session) => {
-                const isDeleting = pendingDeletedSessionLocalIds.includes(session.localId);
+                const isDeleting = pendingDeletedSessionLocalIds.includes(
+                  session.localId,
+                );
                 return (
-                <div
-                  key={session.localId}
-                  className={`chat-session-item ${session.localId === activeSession?.localId ? "active" : ""} ${
-                    isDeleting ? "is-deleting" : ""
-                  }`}
-                >
-                  <button
-                    type="button"
-                    className="chat-session-main-btn"
-                    disabled={isDeleting}
-                    onClick={() => {
-                      pinnedLocalSessionIdRef.current = null;
-                      setActiveSessionLocalId(session.localId);
-                      setError(null);
-                      setChatsOpen(false);
-                      if (session.thread.length === 0 && session.sessionId) {
-                        void loadSessionThread(session.sessionId, session.localId);
-                      }
-                    }}
+                  <div
+                    key={session.localId}
+                    className={`chat-session-item ${session.localId === activeSession?.localId ? "active" : ""} ${
+                      isDeleting ? "is-deleting" : ""
+                    }`}
                   >
-                    <span className="chat-session-title">{session.title}</span>
-                    <span className="chat-session-meta">
-                      {isDeleting ? (
-                        <>
-                          <span>{drawerText.deletingConversation}</span>
-                        </>
-                      ) : null}
-                      {loadingSessionLocalId === session.localId ? (
-                        <>
-                          {isDeleting ? <span aria-hidden="true">·</span> : null}
-                          <span className="chat-session-loading">
-                            <span className="chat-session-loading-spinner" aria-hidden="true" />
-                            <span>{drawerText.loadingConversation}</span>
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          {isDeleting ? <span aria-hidden="true">·</span> : null}
-                          <span>
-                            {session.messageCount} {drawerText.messages}
-                          </span>
-                          <span aria-hidden="true">·</span>
-                          <span className="chat-session-time">
-                            {session.firstConsultationAt
-                              ? new Date(session.firstConsultationAt).toLocaleString(locale, {
-                                  year: "numeric",
-                                  month: "short",
-                                  day: "numeric",
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })
-                              : ""}
-                          </span>
-                        </>
-                      )}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    className="chat-session-delete"
-                    aria-label={drawerText.deleteConversation}
-                    title={drawerText.deleteConversation}
-                    disabled={isDeleting}
-                    onClick={() => void removeSession(session)}
-                  >
-                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-                      <path
-                        d="M6 7h12v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7Zm3 3v9h2v-9H9Zm4 0v9h2v-9h-2ZM9 2h6a2 2 0 0 1 2 2v1h4v2H3V5h4V4a2 2 0 0 1 2-2Zm0 3h6V4H9v1Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              );
+                    <button
+                      type="button"
+                      className="chat-session-main-btn"
+                      disabled={isDeleting}
+                      onClick={() => {
+                        pinnedLocalSessionIdRef.current = null;
+                        setActiveSessionLocalId(session.localId);
+                        setError(null);
+                        setChatsOpen(false);
+                        if (session.thread.length === 0 && session.sessionId) {
+                          void loadSessionThread(
+                            session.sessionId,
+                            session.localId,
+                          );
+                        }
+                      }}
+                    >
+                      <span className="chat-session-title">
+                        {session.title}
+                      </span>
+                      <span className="chat-session-meta">
+                        {isDeleting ? (
+                          <>
+                            <span>{drawerText.deletingConversation}</span>
+                          </>
+                        ) : null}
+                        {loadingSessionLocalId === session.localId ? (
+                          <>
+                            {isDeleting ? (
+                              <span aria-hidden="true">·</span>
+                            ) : null}
+                            <span className="chat-session-loading">
+                              <span
+                                className="chat-session-loading-spinner"
+                                aria-hidden="true"
+                              />
+                              <span>{drawerText.loadingConversation}</span>
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            {isDeleting ? (
+                              <span aria-hidden="true">·</span>
+                            ) : null}
+                            <span>
+                              {session.messageCount} {drawerText.messages}
+                            </span>
+                            <span aria-hidden="true">·</span>
+                            <span className="chat-session-time">
+                              {session.firstConsultationAt
+                                ? new Date(
+                                    session.firstConsultationAt,
+                                  ).toLocaleString(locale, {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })
+                                : ""}
+                            </span>
+                          </>
+                        )}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      className="chat-session-delete"
+                      aria-label={drawerText.deleteConversation}
+                      title={drawerText.deleteConversation}
+                      disabled={isDeleting}
+                      onClick={() => void removeSession(session)}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          d="M6 7h12v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7Zm3 3v9h2v-9H9Zm4 0v9h2v-9h-2ZM9 2h6a2 2 0 0 1 2 2v1h4v2H3V5h4V4a2 2 0 0 1 2-2Zm0 3h6V4H9v1Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                );
               })}
           </div>
         </aside>
 
-        <div className={`chat-surface${showAuthExploreCap ? " chat-surface--explore-cap" : ""}`}>
-        {authReady && supabaseConfigError ? (
-          <div className="auth-config-banner" role="alert">
-            <span>
-              {sessionUi.missingClientConfig}{" "}
-              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code> {sessionUi.missingClientConfigAnd}{" "}
-              <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
-            </span>
-          </div>
-        ) : null}
-        {authReady && !supabaseConfigError && !accessToken ? (
-          <div
-            className="auth-explore-strip"
-            style={{
-              minHeight: "2.2rem",
-              paddingTop: "0.4rem",
-              paddingBottom: "0.5rem",
-            }}
-          >
-            {localeSelector}
-            <Link href="/login" className="auth-explore-strip-cta">
-              {ui.signIn}
-            </Link>
-          </div>
-        ) : null}
-        {authReady && !supabaseConfigError && accessToken && authEmail ? (
-          <div className="auth-explore-strip auth-explore-strip--session">
-            <div className="auth-explore-strip-session__lead">{localeSelector}</div>
-            <span className="auth-explore-strip-email" title={authEmail}>
-              {authEmail}
-            </span>
-            <button type="button" className="auth-explore-strip-signout" onClick={() => void signOut()}>
-              {ui.signOut}
-            </button>
-          </div>
-        ) : null}
-        <header className="chat-app-bar oracle-intro" style={{ marginBottom: 0, paddingBottom: 0 }}>
-          <div className="chat-app-bar-row chat-app-bar-row--top">
-            <div className="chat-bar-lead">
-              <button
-                type="button"
-                className="chat-icon-btn"
-                onClick={() => setChatsOpen(true)}
-                aria-expanded={chatsOpen}
-                aria-controls="chat-drawer"
-              >
-                {ui.chats}
-              </button>
+        <div
+          className={`chat-surface${showAuthExploreCap ? " chat-surface--explore-cap" : ""}`}
+        >
+          {authReady && supabaseConfigError ? (
+            <div className="auth-config-banner" role="alert">
+              <span>
+                {sessionUi.missingClientConfig}{" "}
+                <code className="auth-gate-code">NEXT_PUBLIC_SUPABASE_URL</code>{" "}
+                {sessionUi.missingClientConfigAnd}{" "}
+                <code className="auth-gate-code">
+                  NEXT_PUBLIC_SUPABASE_ANON_KEY
+                </code>
+                .
+              </span>
             </div>
-            <div className="chat-title-logo-wrap">
-              {/* eslint-disable-next-line @next/next/no-img-element -- local brand asset, responsive CSS sizing */}
-              <img
-                src="/brand/logo.png"
-                alt="The Original I Ching App: 真正的易经"
-                className="chat-header-logo"
-                decoding="async"
-                fetchPriority="high"
-              />
-            </div>
-            <div className="chat-bar-trail chat-bar-trail--top">
-              <ThemeToggle />
-            </div>
-          </div>
-          <div
-            className="chat-app-brand"
-            style={{
-              paddingTop: 0,
-              paddingBottom: 0,
-              paddingInline: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              marginBottom: 0,
-              gap: 0,
-              background: "transparent",
-              width: "100%",
-              marginLeft: 0,
-              marginRight: 0,
-            }}
-          >
+          ) : null}
+          {authReady && !supabaseConfigError && !accessToken ? (
             <div
-              className="oracle-brand-line"
+              className="auth-explore-strip"
               style={{
-                width: "100vw",
-                maxWidth: "none",
-                marginBottom: 0,
-                marginLeft: "calc(50% - 50vw)",
-                marginRight: "calc(50% - 50vw)",
-                borderRadius: 0,
-                flexWrap: "nowrap",
-                background:
-                  "linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, var(--secondary-bg)) 0%, color-mix(in srgb, var(--accent) 10%, var(--secondary-bg)) 100%)",
-                border: "1px solid color-mix(in srgb, var(--accent) 68%, var(--input-border))",
-                color: "var(--fg)",
-                paddingTop: "0.04rem",
-                paddingBottom: "0.04rem",
-                paddingLeft: "calc((100vw - 100%) / 2 + 0.6rem)",
-                paddingRight: "calc((100vw - 100%) / 2 + 0.6rem)",
-                boxSizing: "border-box",
+                minHeight: "2.2rem",
+                paddingTop: "0.4rem",
+                paddingBottom: "0.5rem",
               }}
             >
-              <span
-                className="oracle-brand-mark-lat"
-                lang={oracleMode === "iching" ? "en" : "es"}
+              {localeSelector}
+              <Link href="/login" className="auth-explore-strip-cta">
+                {ui.signIn}
+              </Link>
+            </div>
+          ) : null}
+          {authReady && !supabaseConfigError && accessToken && authEmail ? (
+            <div className="auth-explore-strip auth-explore-strip--session">
+              <div className="auth-explore-strip-session__lead">
+                {localeSelector}
+              </div>
+              <span className="auth-explore-strip-email" title={authEmail}>
+                {authEmail}
+              </span>
+              <button
+                type="button"
+                className="auth-explore-strip-signout"
+                onClick={() => void signOut()}
+              >
+                {ui.signOut}
+              </button>
+            </div>
+          ) : null}
+          <header
+            className="chat-app-bar oracle-intro"
+            style={{ marginBottom: 0, paddingBottom: 0 }}
+          >
+            <div className="chat-app-bar-row chat-app-bar-row--top">
+              <div className="chat-bar-lead">
+                <button
+                  type="button"
+                  className="chat-icon-btn"
+                  onClick={() => setChatsOpen(true)}
+                  aria-expanded={chatsOpen}
+                  aria-controls="chat-drawer"
+                >
+                  {ui.chats}
+                </button>
+              </div>
+              <div className="chat-title-logo-wrap">
+                {/* eslint-disable-next-line @next/next/no-img-element -- local brand asset, responsive CSS sizing */}
+                <img
+                  src="/brand/logo.png"
+                  alt="The Original I Ching App: 真正的易经"
+                  className="chat-header-logo"
+                  decoding="async"
+                  fetchPriority="high"
+                />
+              </div>
+              <div className="chat-bar-trail chat-bar-trail--top">
+                <ThemeToggle />
+              </div>
+            </div>
+            <div
+              className="chat-app-brand"
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingInline: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                marginBottom: 0,
+                gap: 0,
+                background: "transparent",
+                width: "100%",
+                marginLeft: 0,
+                marginRight: 0,
+              }}
+            >
+              <div
+                className="oracle-brand-line"
                 style={{
-                  letterSpacing: "0.04em",
-                  textTransform: "none",
-                  fontSize: "clamp(1.05rem, 3.6vw, 1.45rem)",
-                  padding: "0.08rem 0",
+                  width: "100vw",
+                  maxWidth: "none",
+                  marginBottom: 0,
+                  marginLeft: "calc(50% - 50vw)",
+                  marginRight: "calc(50% - 50vw)",
+                  borderRadius: 0,
+                  flexWrap: "nowrap",
+                  background:
+                    "linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, var(--secondary-bg)) 0%, color-mix(in srgb, var(--accent) 10%, var(--secondary-bg)) 100%)",
+                  border:
+                    "1px solid color-mix(in srgb, var(--accent) 68%, var(--input-border))",
+                  color: "var(--fg)",
+                  paddingTop: "0.04rem",
+                  paddingBottom: "0.04rem",
+                  paddingLeft: "calc((100vw - 100%) / 2 + 0.6rem)",
+                  paddingRight: "calc((100vw - 100%) / 2 + 0.6rem)",
+                  boxSizing: "border-box",
                 }}
               >
-                {oracleMode === "iching" ? ui.iChing : ui.bones}
-              </span>
-              <span className="oracle-brand-rule" aria-hidden />
-              <p
-                className="oracle-tagline"
-                style={{ color: "var(--fg)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
-              >
-                {oracleMode === "iching"
-                  ? `${ichingCastingMethod === "yarrow-stalks" ? manualWizardChrome.castMethodYarrowLabel.split(" (")[0] : manualWizardChrome.castMethodCoinsLabel} · Zhu Xi · ${
-                      translatorId === "wilhelm" ? "Wilhelm/Baynes" :
-                      translatorId === "legge" ? "James Legge" :
-                      translatorId === "zhouyi" ? "Zhou Yi" : "Master Synthesis"
-                    }`
-                  : ui.bonesTagline}
-              </p>
+                <span
+                  className="oracle-brand-mark-lat"
+                  lang={oracleMode === "iching" ? "en" : "es"}
+                  style={{
+                    letterSpacing: "0.04em",
+                    textTransform: "none",
+                    fontSize: "clamp(1.05rem, 3.6vw, 1.45rem)",
+                    padding: "0.08rem 0",
+                  }}
+                >
+                  {oracleMode === "iching" ? ui.iChing : ui.bones}
+                </span>
+                <span className="oracle-brand-rule" aria-hidden />
+                <p
+                  className="oracle-tagline"
+                  style={{
+                    color: "var(--fg)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {oracleMode === "iching"
+                    ? `${ichingCastingMethod === "yarrow-stalks" ? manualWizardChrome.castMethodYarrowLabel.split(" (")[0] : manualWizardChrome.castMethodCoinsLabel} · Zhu Xi · ${
+                        translatorId === "wilhelm"
+                          ? "Wilhelm/Baynes"
+                          : translatorId === "legge"
+                            ? "James Legge"
+                            : translatorId === "zhouyi"
+                              ? "Zhou Yi"
+                              : "Master Synthesis"
+                      }`
+                    : ui.bonesTagline}
+                </p>
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
 
-        <div className="chat-room">
-          <section className="chat-history" ref={historyRef} style={{ paddingTop: 0, marginTop: 0 }}>
-            {activeThread.length === 0 ? (
-              <p className={`chat-empty-line ${historyLoading ? "chat-empty-line--loading" : ""}`}>
-                {historyLoading ? drawerText.loadingConversation : emptyThreadInvite}
-              </p>
-            ) : null}
-            {activeThread.map((entry) => (
-              <div
-                key={entry.consultationId}
-                id={`reading-sheet-${entry.consultationId}`}
-                className="thread-block chat-entry"
-              >
-                <div className="chat-bubble chat-user">
-                  <p className="question-chip">{entry.question}</p>
-                </div>
-                <div className="chat-bubble chat-assistant">
-                  <div className="interpretation-stack" data-testid="interpretation-text">
-                    <InterpretationBody
-                      text={entry.interpretation}
-                      reveal={revealConsultationId === entry.consultationId}
-                      onRevealComplete={handleInterpretationRevealComplete}
-                    />
+          <div className="chat-room">
+            <section
+              className="chat-history"
+              ref={historyRef}
+              style={{ paddingTop: 0, marginTop: 0 }}
+            >
+              {activeThread.length === 0 ? (
+                <p
+                  className={`chat-empty-line ${historyLoading ? "chat-empty-line--loading" : ""}`}
+                >
+                  {historyLoading
+                    ? drawerText.loadingConversation
+                    : emptyThreadInvite}
+                </p>
+              ) : null}
+              {activeThread.map((entry) => (
+                <div
+                  key={entry.consultationId}
+                  id={`reading-sheet-${entry.consultationId}`}
+                  className="thread-block chat-entry"
+                >
+                  <div className="chat-bubble chat-user">
+                    <p className="question-chip">{entry.question}</p>
                   </div>
-                  {entry.oracleType !== "oracle_bones" ? (
+                  <div className="chat-bubble chat-assistant">
+                    <div
+                      className="interpretation-stack"
+                      data-testid="interpretation-text"
+                    >
+                      <InterpretationBody
+                        text={entry.interpretation}
+                        reveal={revealConsultationId === entry.consultationId}
+                        onRevealComplete={handleInterpretationRevealComplete}
+                      />
+                    </div>
+                    {entry.oracleType !== "oracle_bones" ? (
+                      <div className="reading-record-visual-row">
+                        <ConsultationRecordCard
+                          consultationId={entry.consultationId}
+                          question={entry.question}
+                          sessionPosition={entry.sessionPosition}
+                          primaryHexagram={entry.primaryHexagram}
+                          primaryHexagramChinese={entry.primaryHexagramChinese}
+                          transformedHexagram={entry.transformedHexagram}
+                          mutationRule={entry.mutationRule}
+                          oracleType={entry.oracleType ?? "iching"}
+                          locale={locale}
+                        />
+                        <ReadingOracleImage
+                          imageUrl={entry.imageUrl}
+                          imageFallbackUrl={entry.imageFallbackUrl}
+                          downloadBasename={`iching-${entry.consultationId.replace(/-/g, "").slice(0, 12)}`}
+                          downloadLabel={downloadImageLabel}
+                          openLabel={openImageLabel}
+                          imageAlt={symbolicImageAlt}
+                        />
+                      </div>
+                    ) : null}
+                    {entry.oracleType === "oracle_bones" &&
+                    entry.oracleBones ? (
+                      <div className="reading-grid reading-grid--bones-solo">
+                        <section className="hexagram-card">
+                          <h3>{runtimeText.oracleBones}</h3>
+                          <p className="meta-line">
+                            {runtimeText.medium}:{" "}
+                            {entry.oracleBones.medium === "turtle"
+                              ? runtimeText.turtle
+                              : runtimeText.ox}
+                            {entry.oracleBones.ambiguousPasses > 0
+                              ? ` · ${chrome.ambiguousReadingsLabel}: ${entry.oracleBones.ambiguousPasses}`
+                              : ""}
+                          </p>
+                          <p className="meta-line">
+                            <strong>{runtimeText.chargePlus}:</strong>{" "}
+                            {entry.oracleBones.positiveCharge}
+                          </p>
+                          <p className="meta-line">
+                            <strong>{runtimeText.chargeMinus}:</strong>{" "}
+                            {entry.oracleBones.negativeCharge}
+                          </p>
+                          <div className="bones-background-pane">
+                            <ReadingOracleImage
+                              imageUrl={entry.imageUrl}
+                              imageFallbackUrl={entry.imageFallbackUrl}
+                              downloadBasename={`bones-${entry.consultationId.replace(/-/g, "").slice(0, 12)}`}
+                              downloadLabel={downloadImageLabel}
+                              openLabel={openImageLabel}
+                              imageAlt={symbolicImageAlt}
+                            />
+                          </div>
+                          <div className="crack-visual-wrap crack-visual-wrap--summary">
+                            <span
+                              className={`verdict-pill ${
+                                entry.oracleBones.verdict === "silent"
+                                  ? "verdict-pill--silent"
+                                  : entry.oracleBones.verdict.startsWith(
+                                        "auspicious",
+                                      )
+                                    ? "verdict-pill--ji"
+                                    : "verdict-pill--xiong"
+                              }`}
+                            >
+                              {verdictLabel(entry.oracleBones.verdict, locale)}
+                            </span>
+                            {entry.oracleBones.affirmsPositive !== null ? (
+                              <p className="meta-line">
+                                {runtimeText.signReading}{" "}
+                                <strong>
+                                  {entry.oracleBones.affirmsPositive
+                                    ? runtimeText.leansPositive
+                                    : runtimeText.leansNegative}
+                                </strong>
+                              </p>
+                            ) : null}
+                          </div>
+                        </section>
+                      </div>
+                    ) : null}
+                    <div className="session-actions">
+                      <button
+                        type="button"
+                        className="secondary-btn"
+                        onClick={() => void exportChatPdf()}
+                      >
+                        {exportPdfLabel}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {pendingUserQuestion ? (
+                <div className="thread-block chat-entry">
+                  <div className="chat-bubble chat-user">
+                    <p className="question-chip">{pendingUserQuestion}</p>
+                  </div>
+                </div>
+              ) : null}
+
+              {manualCastPreview &&
+              loading &&
+              pendingUserQuestion &&
+              phase !== "coins" ? (
+                <div
+                  className="thread-block chat-entry manual-cast-preview-entry"
+                  aria-busy="true"
+                >
+                  <div className="chat-bubble chat-assistant manual-cast-preview-bubble">
+                    <p className="meta-line manual-cast-preview-status">
+                      {manualWizardChrome.previewLoading}
+                    </p>
                     <div className="reading-record-visual-row">
                       <ConsultationRecordCard
-                        consultationId={entry.consultationId}
-                        question={entry.question}
-                        sessionPosition={entry.sessionPosition}
-                        primaryHexagram={entry.primaryHexagram}
-                        primaryHexagramChinese={entry.primaryHexagramChinese}
-                        transformedHexagram={entry.transformedHexagram}
-                        mutationRule={entry.mutationRule}
-                        oracleType={entry.oracleType ?? "iching"}
+                        consultationId="00000000-0000-4000-8000-000000000001"
+                        question={pendingUserQuestion}
+                        sessionPosition={activeThread.length + 1}
+                        primaryHexagram={manualCastPreview.primaryHexagram}
+                        primaryHexagramChinese={
+                          manualCastPreview.primaryHexagramChinese
+                        }
+                        transformedHexagram={
+                          manualCastPreview.transformedHexagram
+                        }
+                        mutationRule={manualCastPreview.mutationRule}
+                        oracleType="iching"
                         locale={locale}
                       />
-                      <ReadingOracleImage
-                        imageUrl={entry.imageUrl}
-                        imageFallbackUrl={entry.imageFallbackUrl}
-                        downloadBasename={`iching-${entry.consultationId.replace(/-/g, "").slice(0, 12)}`}
-                        downloadLabel={downloadImageLabel}
-                        openLabel={openImageLabel}
-                        imageAlt={symbolicImageAlt}
-                      />
                     </div>
-                  ) : null}
-                  {entry.oracleType === "oracle_bones" && entry.oracleBones ? (
-                    <div className="reading-grid reading-grid--bones-solo">
-                      <section className="hexagram-card">
-                        <h3>{runtimeText.oracleBones}</h3>
-                        <p className="meta-line">
-                          {runtimeText.medium}: {entry.oracleBones.medium === "turtle" ? runtimeText.turtle : runtimeText.ox}
-                          {entry.oracleBones.ambiguousPasses > 0
-                            ? ` · ${chrome.ambiguousReadingsLabel}: ${entry.oracleBones.ambiguousPasses}`
-                            : ""}
-                        </p>
-                        <p className="meta-line">
-                          <strong>{runtimeText.chargePlus}:</strong> {entry.oracleBones.positiveCharge}
-                        </p>
-                        <p className="meta-line">
-                          <strong>{runtimeText.chargeMinus}:</strong> {entry.oracleBones.negativeCharge}
-                        </p>
-                        <div className="bones-background-pane">
-                          <ReadingOracleImage
-                            imageUrl={entry.imageUrl}
-                            imageFallbackUrl={entry.imageFallbackUrl}
-                            downloadBasename={`bones-${entry.consultationId.replace(/-/g, "").slice(0, 12)}`}
-                            downloadLabel={downloadImageLabel}
-                            openLabel={openImageLabel}
-                            imageAlt={symbolicImageAlt}
-                          />
-                        </div>
-                        <div className="crack-visual-wrap crack-visual-wrap--summary">
-                          <span
-                            className={`verdict-pill ${
-                              entry.oracleBones.verdict === "silent"
-                                ? "verdict-pill--silent"
-                                : entry.oracleBones.verdict.startsWith("auspicious")
-                                  ? "verdict-pill--ji"
-                                  : "verdict-pill--xiong"
-                            }`}
-                          >
-                            {verdictLabel(entry.oracleBones.verdict, locale)}
-                          </span>
-                          {entry.oracleBones.affirmsPositive !== null ? (
-                            <p className="meta-line">
-                              {runtimeText.signReading}{" "}
-                              <strong>
-                                {entry.oracleBones.affirmsPositive
-                                  ? runtimeText.leansPositive
-                                  : runtimeText.leansNegative}
-                              </strong>
-                            </p>
-                          ) : null}
-                        </div>
-                      </section>
-                    </div>
-                  ) : null}
-                  <div className="session-actions">
-                    <button type="button" className="secondary-btn" onClick={() => void exportChatPdf()}>
-                      {exportPdfLabel}
-                    </button>
                   </div>
                 </div>
-              </div>
-            ))}
-            {pendingUserQuestion ? (
-              <div className="thread-block chat-entry">
-                <div className="chat-bubble chat-user">
-                  <p className="question-chip">{pendingUserQuestion}</p>
-                </div>
-              </div>
-            ) : null}
+              ) : null}
 
-            {manualCastPreview && loading && pendingUserQuestion && phase !== "coins" ? (
-              <div className="thread-block chat-entry manual-cast-preview-entry" aria-busy="true">
-                <div className="chat-bubble chat-assistant manual-cast-preview-bubble">
-                  <p className="meta-line manual-cast-preview-status">{manualWizardChrome.previewLoading}</p>
-                  <div className="reading-record-visual-row">
-                    <ConsultationRecordCard
-                      consultationId="00000000-0000-4000-8000-000000000001"
-                      question={pendingUserQuestion}
-                      sessionPosition={activeThread.length + 1}
-                      primaryHexagram={manualCastPreview.primaryHexagram}
-                      primaryHexagramChinese={manualCastPreview.primaryHexagramChinese}
-                      transformedHexagram={manualCastPreview.transformedHexagram}
-                      mutationRule={manualCastPreview.mutationRule}
-                      oracleType="iching"
-                      locale={locale}
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            {phase === "bones" ? (
-              <section className="coins-stage coins-stage--bones" data-testid="bone-ritual">
-                <div className="crack-visual-wrap">
-                  <BoneRitualAnimation
-                    isProcessing={loading && boneRitualResult === null}
-                    oracleResult={boneRitualResult}
-                    verdictText={boneRitualResult ? verdictLabel(boneRitualResult, locale) : null}
-                  />
-                </div>
-              </section>
-            ) : null}
-
-            {phase === "coins" ? (
-              <section
-                ref={ritualCoinsStageRef}
-                className="coins-stage ritual-coins-stage"
-                data-testid="coin-throw"
-              >
-                <div className="ritual-stage-particles" aria-hidden="true">
-                  {ritualParticles.map((particle) => (
-                    <span
-                      key={particle.id}
-                      className="ritual-stage-particle"
-                      style={{
-                        left: particle.left,
-                        top: particle.top,
-                        width: particle.size,
-                        height: particle.size,
-                        animationDuration: particle.duration,
-                        animationDelay: `-${particle.delay}`,
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className="ritual-stage-content">
-                  <p className="coins-title ritual-status-line">
-                    <span>{ritualStatusLine}</span>
-                    <span className="ritual-loading-dots" aria-hidden="true">
-                      <span />
-                      <span />
-                      <span />
-                    </span>
-                  </p>
-                  {!ritualFinale ? (
-                    <div
-                      ref={ritualLinesGridRef}
-                      className={`ritual-lines-grid ${ritualLines === null ? "is-awaiting-cast" : ""}`}
-                    >
-                      {ritualRenderOrder.map((lineNum, i) => {
-                        const isAwaitingCast = ritualLines === null;
-                        const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
-                        const tick = ritualRevealTick;
-                        const sourceVisible = !isAwaitingCast && tick >= lineNum * 2 - 1;
-                        const transformedVisible = !isAwaitingCast && tick >= lineNum * 2;
-                        const sourceYang = lineData ? lineData.value === 7 || lineData.value === 9 : lineNum % 2 === 0;
-                        const transformedValue =
-                          lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;
-                        const transformedYang = transformedValue ? transformedValue === 7 : lineNum % 2 !== 0;
-                        const isChanging = !isAwaitingCast && Boolean(lineData?.isChanging);
-                        return (
-                          <div key={lineNum} className="ritual-line-row" aria-hidden="true">
-                            <div
-                              className={`ritual-line-slot ritual-line-slot--source ${sourceVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""} ${isAwaitingCast ? "is-placeholder" : ""}`}
-                            >
-                              {sourceVisible ? (sourceYang ? (
-                                <span className="ritual-hex-line ritual-hex-line--yang" />
-                              ) : (
-                                <span className="ritual-hex-line ritual-hex-line--yin">
-                                  <span />
-                                  <span />
-                                </span>
-                              )) : null}
-                            </div>
-                            <div className={`ritual-arrow-slot ${sourceVisible ? "is-visible" : ""}`}>
-                              <span className="ritual-arrow">→</span>
-                            </div>
-                            <div
-                              className={`ritual-line-slot ritual-line-slot--transformed ${transformedVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""} ${isAwaitingCast ? "is-placeholder" : ""}`}
-                              style={{ transitionDelay: `${i * 60}ms` }}
-                            >
-                              {transformedVisible ? (transformedYang ? (
-                                <span className="ritual-hex-line ritual-hex-line--yang" />
-                              ) : (
-                                <span className="ritual-hex-line ritual-hex-line--yin">
-                                  <span />
-                                  <span />
-                                </span>
-                              )) : null}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="ritual-final-focus" aria-hidden="true">
-                      {ritualRenderOrder.map((lineNum, i) => {
-                        const lineData = ritualLines?.find((l) => l.position === lineNum) ?? null;
-                        const transformedValue = lineData?.value === 6 ? 7 : lineData?.value === 9 ? 8 : lineData?.value;
-                        const transformedYang = transformedValue ? transformedValue === 7 : true;
-                        const isChanging = Boolean(lineData?.isChanging);
-                        return (
-                          <div
-                            key={`final-${lineNum}`}
-                            className={`ritual-final-line ${isChanging ? "is-changing" : ""}`}
-                            style={{ animationDelay: `${i * 70}ms` }}
-                          >
-                            {transformedYang ? (
-                              <span className="ritual-hex-line ritual-hex-line--yang" />
-                            ) : (
-                              <span className="ritual-hex-line ritual-hex-line--yin">
-                                <span />
-                                <span />
-                              </span>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                  {ritualDebugEnabled ? (
-                    <div className="ritual-debug-box">
-                      <p>
-                        cast base: <code>{ritualDebugCastVector ? ritualDebugCastVector.join(",") : "pending"}</code>
-                      </p>
-                      <p>
-                        cast transformed:{" "}
-                        <code>{ritualDebugCastTransformed ? ritualDebugCastTransformed.join(",") : "pending"}</code>
-                      </p>
-                      <p>
-                        final base: <code>{ritualDebugFinalVector ? ritualDebugFinalVector.join(",") : "pending"}</code>
-                      </p>
-                      <p>
-                        final transformed:{" "}
-                        <code>{ritualDebugFinalTransformed ? ritualDebugFinalTransformed.join(",") : "pending"}</code>
-                      </p>
-                      <p>
-                        match ritual/final transformed:{" "}
-                        <strong>{ritualDebugMatch === null ? "pending" : ritualDebugMatch ? "YES" : "NO"}</strong>
-                      </p>
-                    </div>
-                  ) : null}
-                  </div>
-              </section>
-            ) : null}
-            {ritualDebugEnabled && phase !== "coins" && lastRitualDebugSnapshot ? (
-              <div className="ritual-debug-box ritual-debug-box--persisted">
-                <p><strong>Ritual debug (persisted)</strong></p>
-                <p>
-                  mutationRule: <code>{lastRitualDebugSnapshot.mutationRule ?? "n/a"}</code> · transformedHex:{" "}
-                  <code>{lastRitualDebugSnapshot.transformedHexagram ?? "n/a"}</code>
-                </p>
-                <p>
-                  cast base: <code>{lastRitualDebugSnapshot.castBase.join(",")}</code>
-                </p>
-                <p>
-                  cast transformed: <code>{lastRitualDebugSnapshot.castTransformed.join(",")}</code>
-                </p>
-                <p>
-                  final base: <code>{lastRitualDebugSnapshot.finalBase.join(",")}</code>
-                </p>
-                <p>
-                  final transformed: <code>{lastRitualDebugSnapshot.finalTransformed.join(",")}</code>
-                </p>
-                <p>
-                  match ritual/final transformed: <strong>{lastRitualDebugSnapshot.match ? "YES" : "NO"}</strong>
-                </p>
-              </div>
-            ) : null}
-
-            {creditsExhaustedCopy ? (
-              <div className="credits-notice-card" role="status">
-                <p className="credits-notice-title">{creditsExhaustedCopy.title}</p>
-                <p className="credits-notice-body">{creditsExhaustedCopy.body}</p>
-                <p className="credits-notice-reset">{creditsExhaustedCopy.resetLine}</p>
-                <div className="credits-notice-actions">
-                  <button
-                    type="button"
-                    className="credits-notice-primary"
-                    onClick={() => {
-                      if (creditsExhaustedCopy.primaryCta.action === "sync-billing") {
-                        void openTokenCenter();
-                        setCreditsNotice(null);
-                        return;
+              {phase === "bones" ? (
+                <section
+                  className="coins-stage coins-stage--bones"
+                  data-testid="bone-ritual"
+                >
+                  <div className="crack-visual-wrap">
+                    <BoneRitualAnimation
+                      isProcessing={loading && boneRitualResult === null}
+                      oracleResult={boneRitualResult}
+                      verdictText={
+                        boneRitualResult
+                          ? verdictLabel(boneRitualResult, locale)
+                          : null
                       }
-                      void (async () => {
-                        const ok = await openPlansCheckoutNewTab();
-                        if (ok) {
+                    />
+                  </div>
+                </section>
+              ) : null}
+
+              {phase === "coins" ? (
+                <section
+                  ref={ritualCoinsStageRef}
+                  className="coins-stage ritual-coins-stage"
+                  data-testid="coin-throw"
+                >
+                  <div className="ritual-stage-particles" aria-hidden="true">
+                    {ritualParticles.map((particle) => (
+                      <span
+                        key={particle.id}
+                        className="ritual-stage-particle"
+                        style={{
+                          left: particle.left,
+                          top: particle.top,
+                          width: particle.size,
+                          height: particle.size,
+                          animationDuration: particle.duration,
+                          animationDelay: `-${particle.delay}`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <div className="ritual-stage-content">
+                    <p className="coins-title ritual-status-line">
+                      <span>{ritualStatusLine}</span>
+                      <span className="ritual-loading-dots" aria-hidden="true">
+                        <span />
+                        <span />
+                        <span />
+                      </span>
+                    </p>
+                    {!ritualFinale ? (
+                      <div
+                        ref={ritualLinesGridRef}
+                        className={`ritual-lines-grid ${ritualLines === null ? "is-awaiting-cast" : ""}`}
+                      >
+                        {ritualRenderOrder.map((lineNum, i) => {
+                          const isAwaitingCast = ritualLines === null;
+                          const lineData =
+                            ritualLines?.find((l) => l.position === lineNum) ??
+                            null;
+                          const tick = ritualRevealTick;
+                          const sourceVisible =
+                            !isAwaitingCast && tick >= lineNum * 2 - 1;
+                          const transformedVisible =
+                            !isAwaitingCast && tick >= lineNum * 2;
+                          const sourceYang = lineData
+                            ? lineData.value === 7 || lineData.value === 9
+                            : lineNum % 2 === 0;
+                          const transformedValue =
+                            lineData?.value === 6
+                              ? 7
+                              : lineData?.value === 9
+                                ? 8
+                                : lineData?.value;
+                          const transformedYang = transformedValue
+                            ? transformedValue === 7
+                            : lineNum % 2 !== 0;
+                          const isChanging =
+                            !isAwaitingCast && Boolean(lineData?.isChanging);
+                          return (
+                            <div
+                              key={lineNum}
+                              className="ritual-line-row"
+                              aria-hidden="true"
+                            >
+                              <div
+                                className={`ritual-line-slot ritual-line-slot--source ${sourceVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""} ${isAwaitingCast ? "is-placeholder" : ""}`}
+                              >
+                                {sourceVisible ? (
+                                  sourceYang ? (
+                                    <span className="ritual-hex-line ritual-hex-line--yang" />
+                                  ) : (
+                                    <span className="ritual-hex-line ritual-hex-line--yin">
+                                      <span />
+                                      <span />
+                                    </span>
+                                  )
+                                ) : null}
+                              </div>
+                              <div
+                                className={`ritual-arrow-slot ${sourceVisible ? "is-visible" : ""}`}
+                              >
+                                <span className="ritual-arrow">→</span>
+                              </div>
+                              <div
+                                className={`ritual-line-slot ritual-line-slot--transformed ${transformedVisible ? "is-visible" : ""} ${isChanging ? "is-changing" : ""} ${isAwaitingCast ? "is-placeholder" : ""}`}
+                                style={{ transitionDelay: `${i * 60}ms` }}
+                              >
+                                {transformedVisible ? (
+                                  transformedYang ? (
+                                    <span className="ritual-hex-line ritual-hex-line--yang" />
+                                  ) : (
+                                    <span className="ritual-hex-line ritual-hex-line--yin">
+                                      <span />
+                                      <span />
+                                    </span>
+                                  )
+                                ) : null}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="ritual-final-focus" aria-hidden="true">
+                        {ritualRenderOrder.map((lineNum, i) => {
+                          const lineData =
+                            ritualLines?.find((l) => l.position === lineNum) ??
+                            null;
+                          const transformedValue =
+                            lineData?.value === 6
+                              ? 7
+                              : lineData?.value === 9
+                                ? 8
+                                : lineData?.value;
+                          const transformedYang = transformedValue
+                            ? transformedValue === 7
+                            : true;
+                          const isChanging = Boolean(lineData?.isChanging);
+                          return (
+                            <div
+                              key={`final-${lineNum}`}
+                              className={`ritual-final-line ${isChanging ? "is-changing" : ""}`}
+                              style={{ animationDelay: `${i * 70}ms` }}
+                            >
+                              {transformedYang ? (
+                                <span className="ritual-hex-line ritual-hex-line--yang" />
+                              ) : (
+                                <span className="ritual-hex-line ritual-hex-line--yin">
+                                  <span />
+                                  <span />
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {ritualDebugEnabled ? (
+                      <div className="ritual-debug-box">
+                        <p>
+                          cast base:{" "}
+                          <code>
+                            {ritualDebugCastVector
+                              ? ritualDebugCastVector.join(",")
+                              : "pending"}
+                          </code>
+                        </p>
+                        <p>
+                          cast transformed:{" "}
+                          <code>
+                            {ritualDebugCastTransformed
+                              ? ritualDebugCastTransformed.join(",")
+                              : "pending"}
+                          </code>
+                        </p>
+                        <p>
+                          final base:{" "}
+                          <code>
+                            {ritualDebugFinalVector
+                              ? ritualDebugFinalVector.join(",")
+                              : "pending"}
+                          </code>
+                        </p>
+                        <p>
+                          final transformed:{" "}
+                          <code>
+                            {ritualDebugFinalTransformed
+                              ? ritualDebugFinalTransformed.join(",")
+                              : "pending"}
+                          </code>
+                        </p>
+                        <p>
+                          match ritual/final transformed:{" "}
+                          <strong>
+                            {ritualDebugMatch === null
+                              ? "pending"
+                              : ritualDebugMatch
+                                ? "YES"
+                                : "NO"}
+                          </strong>
+                        </p>
+                      </div>
+                    ) : null}
+                  </div>
+                </section>
+              ) : null}
+              {ritualDebugEnabled &&
+              phase !== "coins" &&
+              lastRitualDebugSnapshot ? (
+                <div className="ritual-debug-box ritual-debug-box--persisted">
+                  <p>
+                    <strong>Ritual debug (persisted)</strong>
+                  </p>
+                  <p>
+                    mutationRule:{" "}
+                    <code>{lastRitualDebugSnapshot.mutationRule ?? "n/a"}</code>{" "}
+                    · transformedHex:{" "}
+                    <code>
+                      {lastRitualDebugSnapshot.transformedHexagram ?? "n/a"}
+                    </code>
+                  </p>
+                  <p>
+                    cast base:{" "}
+                    <code>{lastRitualDebugSnapshot.castBase.join(",")}</code>
+                  </p>
+                  <p>
+                    cast transformed:{" "}
+                    <code>
+                      {lastRitualDebugSnapshot.castTransformed.join(",")}
+                    </code>
+                  </p>
+                  <p>
+                    final base:{" "}
+                    <code>{lastRitualDebugSnapshot.finalBase.join(",")}</code>
+                  </p>
+                  <p>
+                    final transformed:{" "}
+                    <code>
+                      {lastRitualDebugSnapshot.finalTransformed.join(",")}
+                    </code>
+                  </p>
+                  <p>
+                    match ritual/final transformed:{" "}
+                    <strong>
+                      {lastRitualDebugSnapshot.match ? "YES" : "NO"}
+                    </strong>
+                  </p>
+                </div>
+              ) : null}
+
+              {creditsExhaustedCopy ? (
+                <div className="credits-notice-card" role="status">
+                  <p className="credits-notice-title">
+                    {creditsExhaustedCopy.title}
+                  </p>
+                  <p className="credits-notice-body">
+                    {creditsExhaustedCopy.body}
+                  </p>
+                  <p className="credits-notice-reset">
+                    {creditsExhaustedCopy.resetLine}
+                  </p>
+                  <div className="credits-notice-actions">
+                    <button
+                      type="button"
+                      className="credits-notice-primary"
+                      onClick={() => {
+                        if (
+                          creditsExhaustedCopy.primaryCta.action ===
+                          "sync-billing"
+                        ) {
+                          void openTokenCenter();
                           setCreditsNotice(null);
                           return;
                         }
-                        setError(pricingUi.errorCheckout);
-                      })();
-                    }}
-                  >
-                    {creditsExhaustedCopy.primaryCta.label}
-                  </button>
-                  {creditsExhaustedCopy.secondaryCta ? (
+                        void (async () => {
+                          const ok = await openPlansCheckoutNewTab();
+                          if (ok) {
+                            setCreditsNotice(null);
+                            return;
+                          }
+                          setError(pricingUi.errorCheckout);
+                        })();
+                      }}
+                    >
+                      {creditsExhaustedCopy.primaryCta.label}
+                    </button>
+                    {creditsExhaustedCopy.secondaryCta ? (
+                      <button
+                        type="button"
+                        className="credits-notice-dismiss"
+                        onClick={() => {
+                          if (
+                            creditsExhaustedCopy.secondaryCta?.action ===
+                              "mailto" &&
+                            creditsExhaustedCopy.secondaryCta.href
+                          ) {
+                            window.open(
+                              creditsExhaustedCopy.secondaryCta.href,
+                              "_blank",
+                              "noopener,noreferrer",
+                            );
+                            return;
+                          }
+                          setCreditsNotice(null);
+                        }}
+                      >
+                        {creditsExhaustedCopy.secondaryCta.label}
+                      </button>
+                    ) : null}
                     <button
                       type="button"
                       className="credits-notice-dismiss"
-                      onClick={() => {
-                        if (creditsExhaustedCopy.secondaryCta?.action === "mailto" && creditsExhaustedCopy.secondaryCta.href) {
-                          window.open(creditsExhaustedCopy.secondaryCta.href, "_blank", "noopener,noreferrer");
-                          return;
-                        }
-                        setCreditsNotice(null);
-                      }}
+                      onClick={() => setCreditsNotice(null)}
                     >
-                      {creditsExhaustedCopy.secondaryCta.label}
+                      {ui.drawerClose}
                     </button>
-                  ) : null}
-                  <button type="button" className="credits-notice-dismiss" onClick={() => setCreditsNotice(null)}>
-                    {ui.drawerClose}
-                  </button>
+                  </div>
                 </div>
-              </div>
+              ) : null}
+              {error ? <div className="chat-error-bubble">{error}</div> : null}
+              <div ref={endRef} />
+            </section>
+
+            {consultPanelOpen ? (
+              <button
+                type="button"
+                className="composer-backdrop"
+                aria-label={chrome.closeConsultBackdropAria}
+                onClick={() => setConsultPanelOpen(false)}
+              />
             ) : null}
-            {error ? <div className="chat-error-bubble">{error}</div> : null}
-            <div ref={endRef} />
-          </section>
+          </div>
 
-          {consultPanelOpen ? (
-            <button
-              type="button"
-              className="composer-backdrop"
-              aria-label={chrome.closeConsultBackdropAria}
-              onClick={() => setConsultPanelOpen(false)}
-            />
-          ) : null}
-        </div>
-
-        <footer className={`chat-composer-wa${consultPanelOpen ? " is-expanded" : ""}`}>
+          <footer
+            className={`chat-composer-wa${consultPanelOpen ? " is-expanded" : ""}`}
+          >
             <div className="composer-dock">
               <div
                 id="consult-panel"
@@ -4413,7 +5157,11 @@ export default function HomePage() {
                         {ui.drawerClose}
                       </button>
                     </div>
-                    <div className="composer-oracle-switch" role="group" aria-label={chrome.consultOracleTypeGroupAria}>
+                    <div
+                      className="composer-oracle-switch"
+                      role="group"
+                      aria-label={chrome.consultOracleTypeGroupAria}
+                    >
                       <div className="composer-oracle-switch-row">
                         <div
                           className="composer-switch-track composer-switch-track--visual"
@@ -4437,7 +5185,9 @@ export default function HomePage() {
                               height={44}
                               decoding="async"
                             />
-                            <span className="composer-switch-label">{ui.iChing}</span>
+                            <span className="composer-switch-label">
+                              {ui.iChing}
+                            </span>
                           </button>
                           <button
                             type="button"
@@ -4456,7 +5206,9 @@ export default function HomePage() {
                               height={44}
                               decoding="async"
                             />
-                            <span className="composer-switch-label">{ui.bones}</span>
+                            <span className="composer-switch-label">
+                              {ui.bones}
+                            </span>
                           </button>
                         </div>
                       </div>
@@ -4465,12 +5217,26 @@ export default function HomePage() {
                       <>
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
-                          <span className="cast-selector-label">Traductor</span>
-                          <div className="oracle-toggle-wrap oracle-toggle-wrap-4" role="group" aria-label="Fuente de Interpretación">
+                          <span className="cast-selector-label">{chrome.translatorLabel}</span>
+                          <div
+                            className="oracle-toggle-wrap oracle-toggle-wrap-4"
+                            role="group"
+                            aria-label="Fuente de Interpretación"
+                          >
                             <div className="oracle-toggle-track">
-                              <div className="oracle-toggle-glow" style={{ left: `${12.5 + ["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}%` }} />
+                              <div
+                                className="oracle-toggle-glow"
+                                style={{
+                                  left: `${12.5 + ["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}%`,
+                                }}
+                              />
                               <div className="oracle-toggle-track-line" />
-                              <div className="oracle-toggle-thumb" style={{ left: `calc(${["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}% + 2px)` }}>
+                              <div
+                                className="oracle-toggle-thumb"
+                                style={{
+                                  left: `calc(${["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}% + 2px)`,
+                                }}
+                              >
                                 <div className="oracle-thumb-sweep" />
                               </div>
                               <div className="oracle-toggle-options-row">
@@ -4501,10 +5267,14 @@ export default function HomePage() {
                                 <button
                                   type="button"
                                   className={`oracle-toggle-option ${translatorId === "master_combined" ? "is-active" : ""}`}
-                                  onClick={() => setTranslatorId("master_combined")}
+                                  onClick={() =>
+                                    setTranslatorId("master_combined")
+                                  }
                                   disabled={loading}
                                 >
-                                  <span className="oracle-toggle-master-label">Master (3)</span>
+                                  <span className="oracle-toggle-master-label">
+                                    {chrome.translatorMasterCombined}
+                                  </span>
                                 </button>
                               </div>
                             </div>
@@ -4512,7 +5282,9 @@ export default function HomePage() {
                         </div>
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
-                          <span className="cast-selector-label">{manualWizardChrome.castMethodGroupAria}</span>
+                          <span className="cast-selector-label">
+                            {manualWizardChrome.castMethodGroupAria}
+                          </span>
                           <label className="oracle-toggle-wrap">
                             <input
                               type="checkbox"
@@ -4520,7 +5292,9 @@ export default function HomePage() {
                               checked={ichingCastingMethod === "yarrow-stalks"}
                               onChange={() =>
                                 setIchingCastingMethod(
-                                  ichingCastingMethod === "yarrow-stalks" ? "three-coins" : "yarrow-stalks",
+                                  ichingCastingMethod === "yarrow-stalks"
+                                    ? "three-coins"
+                                    : "yarrow-stalks",
                                 )
                               }
                               disabled={loading}
@@ -4532,35 +5306,116 @@ export default function HomePage() {
                               <div className="oracle-toggle-thumb">
                                 <div className="oracle-thumb-sweep" />
                               </div>
-                              <div className="oracle-toggle-option oracle-toggle-option--left" aria-hidden="true">
-                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                                  <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5"/>
-                                  <rect x="5.5" y="5.5" width="3" height="3" stroke="currentColor" strokeWidth="1"/>
+                              <div
+                                className="oracle-toggle-option oracle-toggle-option--left"
+                                aria-hidden="true"
+                              >
+                                <svg
+                                  width="13"
+                                  height="13"
+                                  viewBox="0 0 14 14"
+                                  fill="none"
+                                  aria-hidden="true"
+                                >
+                                  <circle
+                                    cx="7"
+                                    cy="7"
+                                    r="5.5"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                  />
+                                  <rect
+                                    x="5.5"
+                                    y="5.5"
+                                    width="3"
+                                    height="3"
+                                    stroke="currentColor"
+                                    strokeWidth="1"
+                                  />
                                 </svg>
-                                <span>{manualWizardChrome.castMethodCoinsLabel.split(" (")[0]}</span>
+                                <span>
+                                  {
+                                    manualWizardChrome.castMethodCoinsLabel.split(
+                                      " (",
+                                    )[0]
+                                  }
+                                </span>
                               </div>
-                              <div className="oracle-toggle-option oracle-toggle-option--right" aria-hidden="true">
-                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                                  <line x1="2.5" y1="2" x2="2.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                                  <line x1="5.5" y1="1" x2="5.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                                  <line x1="8.5" y1="2" x2="8.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                                  <line x1="11.5" y1="1" x2="11.5" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                              <div
+                                className="oracle-toggle-option oracle-toggle-option--right"
+                                aria-hidden="true"
+                              >
+                                <svg
+                                  width="13"
+                                  height="13"
+                                  viewBox="0 0 14 14"
+                                  fill="none"
+                                  aria-hidden="true"
+                                >
+                                  <line
+                                    x1="2.5"
+                                    y1="2"
+                                    x2="2.5"
+                                    y2="12"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                  />
+                                  <line
+                                    x1="5.5"
+                                    y1="1"
+                                    x2="5.5"
+                                    y2="12"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                  />
+                                  <line
+                                    x1="8.5"
+                                    y1="2"
+                                    x2="8.5"
+                                    y2="12"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                  />
+                                  <line
+                                    x1="11.5"
+                                    y1="1"
+                                    x2="11.5"
+                                    y2="12"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                  />
                                 </svg>
-                                <span>{manualWizardChrome.castMethodYarrowLabel.split(" (")[0]}</span>
+                                <span>
+                                  {
+                                    manualWizardChrome.castMethodYarrowLabel.split(
+                                      " (",
+                                    )[0]
+                                  }
+                                </span>
                               </div>
                             </div>
                           </label>
                         </div>
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
-                          <span className="cast-selector-label">{manualWizardChrome.castModeGroupAria}</span>
+                          <span className="cast-selector-label">
+                            {manualWizardChrome.castModeGroupAria}
+                          </span>
                           <label className="oracle-toggle-wrap">
                             <input
                               type="checkbox"
                               className="oracle-toggle-input"
                               checked={ichingCastMode === "manual"}
                               onChange={() =>
-                                setIchingCastMode(ichingCastMode === "manual" ? "auto" : "manual")
+                                setIchingCastMode(
+                                  ichingCastMode === "manual"
+                                    ? "auto"
+                                    : "manual",
+                                )
                               }
                               disabled={loading}
                               aria-label={`${manualWizardChrome.castAutoLabel} / ${manualWizardChrome.castManualLabel}`}
@@ -4571,18 +5426,57 @@ export default function HomePage() {
                               <div className="oracle-toggle-thumb">
                                 <div className="oracle-thumb-sweep" />
                               </div>
-                              <div className="oracle-toggle-option oracle-toggle-option--left" aria-hidden="true">
-                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                                  <path d="M8 1.5L3.5 7.5H7L5.5 12.5L11 6H7.5L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" strokeLinecap="round"/>
+                              <div
+                                className="oracle-toggle-option oracle-toggle-option--left"
+                                aria-hidden="true"
+                              >
+                                <svg
+                                  width="13"
+                                  height="13"
+                                  viewBox="0 0 14 14"
+                                  fill="none"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    d="M8 1.5L3.5 7.5H7L5.5 12.5L11 6H7.5L8 1.5Z"
+                                    stroke="currentColor"
+                                    strokeWidth="1.2"
+                                    strokeLinejoin="round"
+                                    strokeLinecap="round"
+                                  />
                                 </svg>
                                 <span>{manualWizardChrome.castAutoLabel}</span>
                               </div>
-                              <div className="oracle-toggle-option oracle-toggle-option--right" aria-hidden="true">
-                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                                  <path d="M2 10.5V12H3.5L9.5 6L8 4.5L2 10.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
-                                  <path d="M9.5 3L11 4.5L10 5.5L8.5 4L9.5 3Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                              <div
+                                className="oracle-toggle-option oracle-toggle-option--right"
+                                aria-hidden="true"
+                              >
+                                <svg
+                                  width="13"
+                                  height="13"
+                                  viewBox="0 0 14 14"
+                                  fill="none"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    d="M2 10.5V12H3.5L9.5 6L8 4.5L2 10.5Z"
+                                    stroke="currentColor"
+                                    strokeWidth="1.2"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    d="M9.5 3L11 4.5L10 5.5L8.5 4L9.5 3Z"
+                                    stroke="currentColor"
+                                    strokeWidth="1.2"
+                                    strokeLinejoin="round"
+                                  />
                                 </svg>
-                                <span>{manualWizardChrome.castManualLabel.split(" (")[0].split("（")[0].trim()}</span>
+                                <span>
+                                  {manualWizardChrome.castManualLabel
+                                    .split(" (")[0]
+                                    .split("（")[0]
+                                    .trim()}
+                                </span>
                               </div>
                             </div>
                           </label>
@@ -4604,10 +5498,13 @@ export default function HomePage() {
                             aria-valuemin={0}
                             aria-valuemax={threadDepthCap}
                             aria-valuenow={result.sessionPosition}
-                            aria-label={interpolate(chrome.threadDepthReadingProgressAria, {
-                              pos: result.sessionPosition,
-                              cap: threadDepthCap,
-                            })}
+                            aria-label={interpolate(
+                              chrome.threadDepthReadingProgressAria,
+                              {
+                                pos: result.sessionPosition,
+                                cap: threadDepthCap,
+                              },
+                            )}
                           >
                             <div
                               className="session-progress-fill"
@@ -4628,11 +5525,14 @@ export default function HomePage() {
                       </>
                     ) : null}
                     <hr className="composer-panel-divider" aria-hidden />
-                    <div className="session-progress" role="group" aria-label={tokenPanel.ariaTokenGroup}>
+                    <div
+                      className="session-progress"
+                      role="group"
+                      aria-label={tokenPanel.ariaTokenGroup}
+                    >
                       <span>{tokenPanel.tokensHeading}</span>
                       <p className="meta-line tier-hint-line tier-hint-line--emphasis">
-                        {tokenPanel.lastPack}{" "}
-                        <strong>{tierDisplayNode}</strong>
+                        {tokenPanel.lastPack} <strong>{tierDisplayNode}</strong>
                         {tokenBalance !== null
                           ? ` · ${tokenPanel.remaining}: ${tokenBalance}`
                           : ""}
@@ -4644,26 +5544,39 @@ export default function HomePage() {
                           onClick={() => void openTokenCenter()}
                           disabled={tokenCenterBusy || !accessToken}
                         >
-                          {tokenCenterBusy ? tokenPanel.loading : tokenPanel.tokenCenter}
+                          {tokenCenterBusy
+                            ? tokenPanel.loading
+                            : tokenPanel.tokenCenter}
                         </button>
                       </div>
                       {tokenCenterMessage ? (
-                        <p className="meta-line tier-hint-line tier-hint-line--emphasis" style={{ marginTop: 8 }}>
+                        <p
+                          className="meta-line tier-hint-line tier-hint-line--emphasis"
+                          style={{ marginTop: 8 }}
+                        >
                           {tokenCenterMessage}
                         </p>
                       ) : null}
                     </div>
                     <hr className="composer-panel-divider" aria-hidden />
-                    <div className="session-progress" role="group" aria-label={chrome.securityGroupAria}>
+                    <div
+                      className="session-progress"
+                      role="group"
+                      aria-label={chrome.securityGroupAria}
+                    >
                       <span>{chrome.securityHeading}</span>
                       <p className="meta-line tier-hint-line tier-hint-line--emphasis">
                         {chrome.statusLabel}{" "}
                         <strong>
                           {twoFactorEnabled ? chrome.enabled : chrome.disabled}
                         </strong>
-                        {twoFactorMethod ? `${chrome.methodPrefix}${twoFactorMethod.toUpperCase()}` : ""}
+                        {twoFactorMethod
+                          ? `${chrome.methodPrefix}${twoFactorMethod.toUpperCase()}`
+                          : ""}
                       </p>
-                      <p className="meta-line tier-hint-line">{chrome.securityConfigureHint}</p>
+                      <p className="meta-line tier-hint-line">
+                        {chrome.securityConfigureHint}
+                      </p>
                       <div className="composer-panel-actions">
                         <button
                           type="button"
@@ -4701,9 +5614,15 @@ export default function HomePage() {
                       </div>
                     </div>
                     <hr className="composer-panel-divider" aria-hidden />
-                    <div className="session-progress" role="group" aria-label={chrome.libraryGroupAria}>
+                    <div
+                      className="session-progress"
+                      role="group"
+                      aria-label={chrome.libraryGroupAria}
+                    >
                       <span>{chrome.libraryHeading}</span>
-                      <p className="meta-line tier-hint-line">{chrome.libraryDescription}</p>
+                      <p className="meta-line tier-hint-line">
+                        {chrome.libraryDescription}
+                      </p>
                       <div className="composer-panel-actions">
                         <button
                           type="button"
@@ -4715,8 +5634,13 @@ export default function HomePage() {
                         </button>
                       </div>
                     </div>
-                    <div className="composer-doc-links" aria-label={chrome.docLinksAria}>
-                      <Link href="/guia#primeros-pasos">{docNav.userGuide}</Link>
+                    <div
+                      className="composer-doc-links"
+                      aria-label={chrome.docLinksAria}
+                    >
+                      <Link href="/guia#primeros-pasos">
+                        {docNav.userGuide}
+                      </Link>
                       <Link href="/notes">{docNav.methodNotesLong}</Link>
                       <Link href="/privacy">{docNav.privacyPolicy}</Link>
                       <Link href="/terms">{docNav.termsOfService}</Link>
@@ -4746,16 +5670,26 @@ export default function HomePage() {
                       width: "min(560px, 96vw)",
                       borderRadius: 16,
                       border: "1px solid rgba(84,160,186,0.35)",
-                      background: "linear-gradient(180deg, rgba(16,31,45,0.98), rgba(9,20,31,0.98))",
+                      background:
+                        "linear-gradient(180deg, rgba(16,31,45,0.98), rgba(9,20,31,0.98))",
                       boxShadow: "0 18px 48px rgba(0,0,0,0.45)",
                       padding: 14,
                       maxHeight: "82vh",
                       overflowY: "auto",
                     }}
                   >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        gap: 12,
+                      }}
+                    >
                       <strong style={{ color: "#d8edf5" }}>
-                        {twoFactorModalMode === "challenge" ? tf.challengeTitle : tf.manageTitle}
+                        {twoFactorModalMode === "challenge"
+                          ? tf.challengeTitle
+                          : tf.manageTitle}
                       </strong>
                       {twoFactorModalMode === "manage" ? (
                         <button
@@ -4764,13 +5698,20 @@ export default function HomePage() {
                           aria-label={tf.closeDialogAria}
                           title={ui.drawerClose}
                           onClick={() => setTwoFactorModalOpen(false)}
-                          disabled={twoFactorBusy || (twoFactorRecoveryCodes.length > 0 && !twoFactorRecoveryAck)}
+                          disabled={
+                            twoFactorBusy ||
+                            (twoFactorRecoveryCodes.length > 0 &&
+                              !twoFactorRecoveryAck)
+                          }
                         >
                           ×
                         </button>
                       ) : null}
                     </div>
-                    <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                    <p
+                      className="meta-line tier-hint-line"
+                      style={{ marginTop: 8 }}
+                    >
                       {twoFactorModalMode === "challenge"
                         ? preferredTwoFactorMethod === "email"
                           ? tf.challengeIntroEmail
@@ -4782,23 +5723,42 @@ export default function HomePage() {
                             : tf.setupEmailOnlyHint}
                     </p>
                     {twoFactorError ? (
-                      <p className="meta-line tier-hint-line tier-hint-line--error" style={{ marginTop: 6 }}>
+                      <p
+                        className="meta-line tier-hint-line tier-hint-line--error"
+                        style={{ marginTop: 6 }}
+                      >
                         {twoFactorError}
                       </p>
                     ) : null}
                     {twoFactorInfo ? (
-                      <p className="meta-line tier-hint-line tier-hint-line--success" style={{ marginTop: 6 }}>
+                      <p
+                        className="meta-line tier-hint-line tier-hint-line--success"
+                        style={{ marginTop: 6 }}
+                      >
                         {twoFactorInfo}
                       </p>
                     ) : null}
 
-                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 8,
+                        flexWrap: "wrap",
+                        marginTop: 10,
+                      }}
+                    >
                       {twoFactorModalMode === "challenge" ? (
                         <span
                           className="composer-reading-pill is-active"
-                          style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
+                          style={{
+                            flex: "0 1 auto",
+                            minWidth: 0,
+                            paddingInline: "0.9rem",
+                          }}
                         >
-                          {preferredTwoFactorMethod === "email" ? tf.badgeEmailCode : tf.badgeTotp}
+                          {preferredTwoFactorMethod === "email"
+                            ? tf.badgeEmailCode
+                            : tf.badgeTotp}
                         </span>
                       ) : twoFactorSetupMethod === "menu" ? (
                         <>
@@ -4859,7 +5819,11 @@ export default function HomePage() {
                             setTwoFactorError(null);
                           }}
                           disabled={twoFactorBusy}
-                          style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.85rem" }}
+                          style={{
+                            flex: "0 1 auto",
+                            minWidth: 0,
+                            paddingInline: "0.85rem",
+                          }}
                         >
                           {tf.chooseAnotherMethod}
                         </button>
@@ -4869,7 +5833,15 @@ export default function HomePage() {
                     {twoFactorModalMode === "challenge" &&
                     twoFactorChallengeMethod === "totp" &&
                     twoFactorRecoveryAssistMode === "hidden" ? (
-                      <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                      <div
+                        style={{
+                          marginTop: 10,
+                          display: "flex",
+                          gap: 8,
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }}
+                      >
                         <input
                           type="text"
                           value={twoFactorCode}
@@ -4885,7 +5857,9 @@ export default function HomePage() {
                     !twoFactorSetupOpen &&
                     twoFactorRecoveryCodes.length === 0 ? (
                       <div style={{ marginTop: 10 }}>
-                        <p className="meta-line tier-hint-line">{tf.totpSetupSteps}</p>
+                        <p className="meta-line tier-hint-line">
+                          {tf.totpSetupSteps}
+                        </p>
                         <button
                           type="button"
                           className="composer-reading-pill is-active"
@@ -4907,9 +5881,22 @@ export default function HomePage() {
                         <img
                           src={twoFactorQrDataUrl}
                           alt={chrome.authenticatorQrAlt}
-                          style={{ width: 160, height: 160, borderRadius: 8, background: "#fff" }}
+                          style={{
+                            width: 160,
+                            height: 160,
+                            borderRadius: 8,
+                            background: "#fff",
+                          }}
                         />
-                        <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                        <div
+                          style={{
+                            marginTop: 8,
+                            display: "flex",
+                            gap: 8,
+                            alignItems: "center",
+                            flexWrap: "wrap",
+                          }}
+                        >
                           <input
                             type="text"
                             value={twoFactorCode}
@@ -4922,7 +5909,9 @@ export default function HomePage() {
                             type="button"
                             className="composer-reading-pill is-active"
                             onClick={() => void confirmTwoFactorEnrollment()}
-                            disabled={twoFactorBusy || twoFactorCode.trim().length < 6}
+                            disabled={
+                              twoFactorBusy || twoFactorCode.trim().length < 6
+                            }
                           >
                             {tf.verify}
                           </button>
@@ -4933,7 +5922,10 @@ export default function HomePage() {
                     {twoFactorModalMode === "challenge" &&
                     twoFactorChallengeMethod === "email" &&
                     !twoFactorEmailSent ? (
-                      <p className="meta-line tier-hint-line" style={{ marginTop: 8 }}>
+                      <p
+                        className="meta-line tier-hint-line"
+                        style={{ marginTop: 8 }}
+                      >
                         {tf.challengeEmailBeforeSend}
                       </p>
                     ) : null}
@@ -4943,7 +5935,9 @@ export default function HomePage() {
                     !twoFactorEmailSent &&
                     twoFactorRecoveryCodes.length === 0 ? (
                       <div style={{ marginTop: 10 }}>
-                        <p className="meta-line tier-hint-line">{tf.sendEmailHintManage}</p>
+                        <p className="meta-line tier-hint-line">
+                          {tf.sendEmailHintManage}
+                        </p>
                         <button
                           type="button"
                           className="composer-reading-pill is-active"
@@ -4955,15 +5949,27 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {((twoFactorModalMode === "manage" && twoFactorSetupMethod === "email" && twoFactorEmailSent) ||
-                      (twoFactorModalMode === "challenge" &&
-                        twoFactorChallengeMethod === "email" &&
-                        twoFactorRecoveryAssistMode === "hidden")) ? (
-                      <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                    {(twoFactorModalMode === "manage" &&
+                      twoFactorSetupMethod === "email" &&
+                      twoFactorEmailSent) ||
+                    (twoFactorModalMode === "challenge" &&
+                      twoFactorChallengeMethod === "email" &&
+                      twoFactorRecoveryAssistMode === "hidden") ? (
+                      <div
+                        style={{
+                          marginTop: 10,
+                          display: "flex",
+                          gap: 8,
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }}
+                      >
                         <input
                           type="text"
                           value={twoFactorEmailCode}
-                          onChange={(e) => setTwoFactorEmailCode(e.target.value)}
+                          onChange={(e) =>
+                            setTwoFactorEmailCode(e.target.value)
+                          }
                           placeholder={tf.emailCodePlaceholder}
                           className="composer-input"
                           style={{ maxWidth: 220 }}
@@ -4973,7 +5979,10 @@ export default function HomePage() {
                             type="button"
                             className="composer-reading-pill is-active"
                             onClick={() => void verifyEmailTwoFactorCode()}
-                            disabled={twoFactorBusy || twoFactorEmailCode.trim().length < 6}
+                            disabled={
+                              twoFactorBusy ||
+                              twoFactorEmailCode.trim().length < 6
+                            }
                           >
                             {tf.verifyEmail}
                           </button>
@@ -4981,7 +5990,8 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {twoFactorModalMode === "challenge" && twoFactorRecoveryAssistMode === "options" ? (
+                    {twoFactorModalMode === "challenge" &&
+                    twoFactorRecoveryAssistMode === "options" ? (
                       <div
                         style={{
                           marginTop: 10,
@@ -4990,14 +6000,28 @@ export default function HomePage() {
                           padding: "10px 12px",
                         }}
                       >
-                        <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
+                        <p
+                          className="meta-line tier-hint-line"
+                          style={{ margin: 0 }}
+                        >
                           {tf.recoveryOptionsIntro}
                         </p>
-                        <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        <div
+                          style={{
+                            marginTop: 8,
+                            display: "flex",
+                            gap: 8,
+                            flexWrap: "wrap",
+                          }}
+                        >
                           <button
                             type="button"
                             className="composer-reading-pill is-active"
-                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
+                            style={{
+                              flex: "0 1 auto",
+                              minWidth: 0,
+                              paddingInline: "0.9rem",
+                            }}
                             onClick={() => {
                               setTwoFactorRecoveryAssistMode("enter_code");
                               setTwoFactorError(null);
@@ -5009,8 +6033,14 @@ export default function HomePage() {
                           <button
                             type="button"
                             className="composer-reading-pill"
-                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.9rem" }}
-                            onClick={() => setTwoFactorRecoveryAssistMode("contact_support")}
+                            style={{
+                              flex: "0 1 auto",
+                              minWidth: 0,
+                              paddingInline: "0.9rem",
+                            }}
+                            onClick={() =>
+                              setTwoFactorRecoveryAssistMode("contact_support")
+                            }
                             disabled={twoFactorBusy}
                           >
                             {tf.iDontHaveRecoveryCodes}
@@ -5019,12 +6049,23 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {twoFactorModalMode === "challenge" && twoFactorRecoveryAssistMode === "enter_code" ? (
-                      <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                    {twoFactorModalMode === "challenge" &&
+                    twoFactorRecoveryAssistMode === "enter_code" ? (
+                      <div
+                        style={{
+                          marginTop: 10,
+                          display: "flex",
+                          gap: 8,
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }}
+                      >
                         <input
                           type="text"
                           value={twoFactorRecoveryCode}
-                          onChange={(e) => setTwoFactorRecoveryCode(e.target.value)}
+                          onChange={(e) =>
+                            setTwoFactorRecoveryCode(e.target.value)
+                          }
                           placeholder={tf.recoveryCodePlaceholder}
                           className="composer-input"
                           style={{ maxWidth: 320 }}
@@ -5032,7 +6073,8 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {twoFactorModalMode === "challenge" && twoFactorRecoveryAssistMode === "contact_support" ? (
+                    {twoFactorModalMode === "challenge" &&
+                    twoFactorRecoveryAssistMode === "contact_support" ? (
                       <div
                         style={{
                           marginTop: 10,
@@ -5041,7 +6083,10 @@ export default function HomePage() {
                           padding: "10px 12px",
                         }}
                       >
-                        <p className="meta-line tier-hint-line" style={{ margin: 0 }}>
+                        <p
+                          className="meta-line tier-hint-line"
+                          style={{ margin: 0 }}
+                        >
                           {tf.supportRecoveryBody}
                         </p>
                         <a
@@ -5058,7 +6103,8 @@ export default function HomePage() {
                       </div>
                     ) : null}
 
-                    {twoFactorRecoveryCodes.length > 0 && twoFactorModalMode === "manage" ? (
+                    {twoFactorRecoveryCodes.length > 0 &&
+                    twoFactorModalMode === "manage" ? (
                       <div style={{ marginTop: 10 }}>
                         <p className="meta-line tier-hint-line">
                           {tf.recoveryCodesShownOnce}{" "}
@@ -5066,21 +6112,37 @@ export default function HomePage() {
                         </p>
                         <label
                           className="meta-line tier-hint-line"
-                          style={{ display: "flex", gap: 8, alignItems: "center" }}
+                          style={{
+                            display: "flex",
+                            gap: 8,
+                            alignItems: "center",
+                          }}
                         >
                           <input
                             type="checkbox"
                             checked={twoFactorRecoveryAck}
-                            onChange={(e) => setTwoFactorRecoveryAck(e.target.checked)}
+                            onChange={(e) =>
+                              setTwoFactorRecoveryAck(e.target.checked)
+                            }
                           />
                           <span>{tf.recoveryAckCheckbox}</span>
                         </label>
-                        <div style={{ marginTop: 10, display: "flex", justifyContent: "flex-end" }}>
+                        <div
+                          style={{
+                            marginTop: 10,
+                            display: "flex",
+                            justifyContent: "flex-end",
+                          }}
+                        >
                           <button
                             type="button"
                             className="composer-reading-pill is-active"
                             disabled={twoFactorBusy || !twoFactorRecoveryAck}
-                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                            style={{
+                              flex: "0 1 auto",
+                              minWidth: 0,
+                              paddingInline: "0.95rem",
+                            }}
                             onClick={() => {
                               setTwoFactorModalOpen(false);
                               setTwoFactorRecoveryCodes([]);
@@ -5095,19 +6157,32 @@ export default function HomePage() {
                     ) : null}
 
                     {twoFactorModalMode === "challenge" ? (
-                      <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        {twoFactorChallengeMethod === "email" && twoFactorRecoveryAssistMode === "hidden" ? (
+                      <div
+                        style={{
+                          marginTop: 12,
+                          display: "flex",
+                          gap: 8,
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        {twoFactorChallengeMethod === "email" &&
+                        twoFactorRecoveryAssistMode === "hidden" ? (
                           <button
                             type="button"
                             className="composer-reading-pill is-active"
                             onClick={() => void sendEmailTwoFactorCode()}
                             disabled={twoFactorBusy || !accessToken}
-                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                            style={{
+                              flex: "0 1 auto",
+                              minWidth: 0,
+                              paddingInline: "0.95rem",
+                            }}
                           >
                             {twoFactorBusy ? tf.sending : tf.sendEmailCode}
                           </button>
                         ) : null}
-                        {twoFactorRecoveryAssistMode === "hidden" || twoFactorRecoveryAssistMode === "enter_code" ? (
+                        {twoFactorRecoveryAssistMode === "hidden" ||
+                        twoFactorRecoveryAssistMode === "enter_code" ? (
                           <button
                             type="button"
                             className="composer-reading-pill is-active"
@@ -5120,7 +6195,11 @@ export default function HomePage() {
                                   ? twoFactorCode.trim().length < 6
                                   : twoFactorEmailCode.trim().length < 6)
                             }
-                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                            style={{
+                              flex: "0 1 auto",
+                              minWidth: 0,
+                              paddingInline: "0.95rem",
+                            }}
                           >
                             {twoFactorRecoveryAssistMode === "enter_code"
                               ? tf.validateRecoveryCode
@@ -5130,8 +6209,17 @@ export default function HomePage() {
                       </div>
                     ) : null}
                     {twoFactorModalMode === "challenge" ? (
-                      <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-                        {twoFactorRecoveryAssistMode === "hidden" && twoFactorChallengeFailures >= 2 ? (
+                      <div
+                        style={{
+                          marginTop: 8,
+                          display: "flex",
+                          gap: 8,
+                          flexWrap: "wrap",
+                          alignItems: "center",
+                        }}
+                      >
+                        {twoFactorRecoveryAssistMode === "hidden" &&
+                        twoFactorChallengeFailures >= 2 ? (
                           <button
                             type="button"
                             className="composer-reading-pill"
@@ -5140,7 +6228,11 @@ export default function HomePage() {
                               setTwoFactorError(null);
                             }}
                             disabled={twoFactorBusy}
-                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                            style={{
+                              flex: "0 1 auto",
+                              minWidth: 0,
+                              paddingInline: "0.95rem",
+                            }}
                           >
                             {tf.cannotVerifyLink}
                           </button>
@@ -5149,7 +6241,11 @@ export default function HomePage() {
                           <button
                             type="button"
                             className="composer-reading-pill"
-                            style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                            style={{
+                              flex: "0 1 auto",
+                              minWidth: 0,
+                              paddingInline: "0.95rem",
+                            }}
                             onClick={() => {
                               setTwoFactorRecoveryAssistMode("hidden");
                               setTwoFactorError(null);
@@ -5163,7 +6259,11 @@ export default function HomePage() {
                           type="button"
                           className="composer-reading-pill"
                           onClick={() => void signOut()}
-                          style={{ flex: "0 1 auto", minWidth: 0, paddingInline: "0.95rem" }}
+                          style={{
+                            flex: "0 1 auto",
+                            minWidth: 0,
+                            paddingInline: "0.95rem",
+                          }}
                         >
                           {ui.signOut}
                         </button>
@@ -5174,10 +6274,16 @@ export default function HomePage() {
               ) : null}
 
               {tokenCenterOpen ? (
-                <div role="dialog" aria-modal="true" className="token-center-backdrop">
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  className="token-center-backdrop"
+                >
                   <div className="token-center-card">
                     <div className="token-center-header">
-                      <strong className="token-center-title">{tokenPanel.tokenCenter}</strong>
+                      <strong className="token-center-title">
+                        {tokenPanel.tokenCenter}
+                      </strong>
                       <button
                         type="button"
                         className="composer-panel-close"
@@ -5192,16 +6298,30 @@ export default function HomePage() {
                       {chrome.tokenCenterSubtitle}
                     </p>
 
-                    <details className="token-center-pack-details" style={{ marginTop: 10 }}>
-                      <summary className="meta-line tier-hint-line" style={{ cursor: "pointer" }}>
+                    <details
+                      className="token-center-pack-details"
+                      style={{ marginTop: 10 }}
+                    >
+                      <summary
+                        className="meta-line tier-hint-line"
+                        style={{ cursor: "pointer" }}
+                      >
                         {chrome.tokenCenterPackDetailsSummary}
                       </summary>
-                      <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
+                      <div
+                        style={{
+                          marginTop: 10,
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 10,
+                        }}
+                      >
                         <p
                           className="meta-line tier-hint-line token-center-message"
                           style={{ margin: 0 }}
                         >
-                          <strong>{chrome.freePlanLabel}</strong> {getFreeTierMarketing(locale)}
+                          <strong>{chrome.freePlanLabel}</strong>{" "}
+                          {getFreeTierMarketing(locale)}
                         </p>
                         {PACK_IDS_ORDERED.map((packId) => {
                           const pack = TOKEN_PACKS[packId];
@@ -5211,7 +6331,8 @@ export default function HomePage() {
                               className="meta-line tier-hint-line token-center-message"
                               style={{ margin: 0 }}
                             >
-                              <strong>{pack.label}:</strong> {getPackMarketingLine(packId, locale)}
+                              <strong>{pack.label}:</strong>{" "}
+                              {getPackMarketingLine(packId, locale)}
                             </p>
                           );
                         })}
@@ -5220,13 +6341,16 @@ export default function HomePage() {
 
                     <div className="token-center-grid">
                       <p className="meta-line tier-hint-line token-center-row">
-                        <span>{tokenPanel.lastPack}</span> <strong>{tierDisplayNode}</strong>
+                        <span>{tokenPanel.lastPack}</span>{" "}
+                        <strong>{tierDisplayNode}</strong>
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
-                        <span>{tokenPanel.availableBalance}</span> <strong>{tokenBalance ?? "…"}</strong>
+                        <span>{tokenPanel.availableBalance}</span>{" "}
+                        <strong>{tokenBalance ?? "…"}</strong>
                       </p>
                       <p className="meta-line tier-hint-line token-center-row">
-                        <span>{tokenPanel.threadCapShort}</span> <strong>{accountSessionLimit}</strong>
+                        <span>{tokenPanel.threadCapShort}</span>{" "}
+                        <strong>{accountSessionLimit}</strong>
                       </p>
                     </div>
 
@@ -5267,9 +6391,10 @@ export default function HomePage() {
                       className="meta-line tier-hint-line token-center-message"
                       style={{ marginTop: 8 }}
                     >
-                      <Link href="/guia#planes">{tokenPanel.tokenCenterGuideLink}</Link>
+                      <Link href="/guia#planes">
+                        {tokenPanel.tokenCenterGuideLink}
+                      </Link>
                     </p>
-
                   </div>
                 </div>
               ) : null}
@@ -5282,7 +6407,9 @@ export default function HomePage() {
                   aria-label={tokenPanel.consultThreadLimit}
                   title={tokenPanel.consultThreadLimit}
                 >
-                  <p className="composer-session-limit-text">{tokenPanel.consultThreadLimitStrip}</p>
+                  <p className="composer-session-limit-text">
+                    {tokenPanel.consultThreadLimitStrip}
+                  </p>
                   <div className="composer-session-limit-actions">
                     <button
                       type="button"
@@ -5312,7 +6439,11 @@ export default function HomePage() {
                   className="composer-options-btn"
                   aria-expanded={consultPanelOpen}
                   aria-controls="consult-panel"
-                  aria-label={consultPanelOpen ? chrome.closeConsultOptionsAria : chrome.openConsultOptionsAria}
+                  aria-label={
+                    consultPanelOpen
+                      ? chrome.closeConsultOptionsAria
+                      : chrome.openConsultOptionsAria
+                  }
                   disabled={loading}
                   onClick={() => setConsultPanelOpen((o) => !o)}
                 >
@@ -5357,16 +6488,18 @@ export default function HomePage() {
                   <button
                     type="button"
                     data-testid="consult-btn"
-                      disabled={loading || threadLimitReachedUi}
+                    disabled={loading || threadLimitReachedUi}
                     onClick={() => void onConsult()}
-                    aria-label={loading ? chrome.sendAriaSending : chrome.sendAriaSend}
+                    aria-label={
+                      loading ? chrome.sendAriaSending : chrome.sendAriaSend
+                    }
                   >
                     {loading ? "…" : "➤"}
                   </button>
                 </div>
               </div>
             </div>
-        </footer>
+          </footer>
         </div>
       </div>
       <ManualIChingCoinWizard
@@ -5401,12 +6534,34 @@ export default function HomePage() {
       />
       <section
         aria-hidden="true"
-        style={{ position: "absolute", width: "1px", height: "1px", overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap" }}
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          whiteSpace: "nowrap",
+        }}
       >
-        <h2>The Original I Ching App: AI Oracle, Hexagram Readings and Bone Oracle</h2>
-        <p>Consult the I Ching or the Oracle Bones with AI-powered interpretations, ritual animation, hexagram image generation, and persistent chat history. Available in 11 languages. No subscriptions. Consumable token packs only. Free trial included.</p>
-        <p>Divination methods: three-coin I Ching (Zhu Xi tradition, Wilhelm/Baynes), Oracle Bones (Shang-era crack reading), AI interpretation via Claude.</p>
-        <p>Features: image generation by tier, chat export to PDF, 45-minute idle timeout, Google OAuth, two-factor authentication, dark and light mode, Android APK.</p>
+        <h2>
+          The Original I Ching App: AI Oracle, Hexagram Readings and Bone Oracle
+        </h2>
+        <p>
+          Consult the I Ching or the Oracle Bones with AI-powered
+          interpretations, ritual animation, hexagram image generation, and
+          persistent chat history. Available in 11 languages. No subscriptions.
+          Consumable token packs only. Free trial included.
+        </p>
+        <p>
+          Divination methods: three-coin I Ching (Zhu Xi tradition,
+          Wilhelm/Baynes), Oracle Bones (Shang-era crack reading), AI
+          interpretation via Claude.
+        </p>
+        <p>
+          Features: image generation by tier, chat export to PDF, 45-minute idle
+          timeout, Google OAuth, two-factor authentication, dark and light mode,
+          Android APK.
+        </p>
       </section>
     </OracleShell>
   );

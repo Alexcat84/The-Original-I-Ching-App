@@ -46,6 +46,8 @@ export type HomeChromeUiMessages = {
   libraryHeading: string;
   libraryDescription: string;
   openLibrary: string;
+  translatorLabel: string;
+  translatorMasterCombined: string;
 };
 
 const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
@@ -68,7 +70,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     tdSingleOk: "Una sola lectura por hilo.",
     tdSingleBlocked:
       "Sin profundización: una sola lectura por hilo. Para otro tema, abre una nueva sesión.",
-    tdCanAddMore: "Puedes añadir hasta {{remaining}} lectura(s) más en este hilo.",
+    tdCanAddMore:
+      "Puedes añadir hasta {{remaining}} lectura(s) más en este hilo.",
     tdLimitHit: "Has alcanzado el límite de lecturas en este hilo.",
     securityGroupAria: "Seguridad de cuenta",
     securityHeading: "Seguridad (2FA opcional)",
@@ -94,6 +97,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "Biblioteca (Opción Premium)",
     libraryDescription: "Explora las tres versiones clásicas.",
     openLibrary: "Ir a la biblioteca",
+    translatorLabel: "Traductor",
+    translatorMasterCombined: "Master (3)",
   },
   en: {
     exportChatPdf: "Export chat PDF",
@@ -114,7 +119,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     tdSingleOk: "Single reading per thread.",
     tdSingleBlocked:
       "No follow-ups in this thread: one reading only. For a new topic, start a new session.",
-    tdCanAddMore: "You can add up to {{remaining}} more reading(s) in this thread.",
+    tdCanAddMore:
+      "You can add up to {{remaining}} more reading(s) in this thread.",
     tdLimitHit: "You reached the reading limit for this thread.",
     securityGroupAria: "Account security",
     securityHeading: "Security (optional 2FA)",
@@ -140,6 +146,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "Library (Premium Option)",
     libraryDescription: "Explore the three classic versions.",
     openLibrary: "Go to library",
+    translatorLabel: "Translator",
+    translatorMasterCombined: "Master (3)",
   },
   pt: {
     exportChatPdf: "Exportar chat PDF",
@@ -160,7 +168,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     tdSingleOk: "Uma única leitura por fio.",
     tdSingleBlocked:
       "Sem aprofundamentos neste fio: apenas uma leitura. Para outro tema, inicia uma nova sessão.",
-    tdCanAddMore: "Podes adicionar até mais {{remaining}} leitura(s) neste fio.",
+    tdCanAddMore:
+      "Podes adicionar até mais {{remaining}} leitura(s) neste fio.",
     tdLimitHit: "Atingiste o limite de leituras neste fio.",
     securityGroupAria: "Segurança da conta",
     securityHeading: "Segurança (2FA opcional)",
@@ -186,6 +195,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "Biblioteca (Opção Premium)",
     libraryDescription: "Explore as três versões clássicas.",
     openLibrary: "Ir para a biblioteca",
+    translatorLabel: "Tradutor",
+    translatorMasterCombined: "Master (3)",
   },
   fr: {
     exportChatPdf: "Exporter le chat en PDF",
@@ -206,7 +217,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     tdSingleOk: "Une seule lecture par fil.",
     tdSingleBlocked:
       "Pas de prolongation dans ce fil : une seule lecture. Pour un autre sujet, démarrez une nouvelle session.",
-    tdCanAddMore: "Vous pouvez ajouter jusqu’à {{remaining}} lecture(s) de plus dans ce fil.",
+    tdCanAddMore:
+      "Vous pouvez ajouter jusqu’à {{remaining}} lecture(s) de plus dans ce fil.",
     tdLimitHit: "Vous avez atteint la limite de lectures pour ce fil.",
     securityGroupAria: "Sécurité du compte",
     securityHeading: "Sécurité (2FA optionnel)",
@@ -232,6 +244,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "Bibliothèque (Option Premium)",
     libraryDescription: "Explorez les trois versions classiques.",
     openLibrary: "Aller à la bibliothèque",
+    translatorLabel: "Traducteur",
+    translatorMasterCombined: "Master (3)",
   },
   de: {
     exportChatPdf: "Chat als PDF exportieren",
@@ -252,7 +266,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     tdSingleOk: "Nur eine Lesung pro Thread.",
     tdSingleBlocked:
       "Keine Vertiefung in diesem Thread: nur eine Lesung. Für ein neues Thema starte eine neue Sitzung.",
-    tdCanAddMore: "Du kannst in diesem Thread noch bis zu {{remaining}} weitere Lesung(en) hinzufügen.",
+    tdCanAddMore:
+      "Du kannst in diesem Thread noch bis zu {{remaining}} weitere Lesung(en) hinzufügen.",
     tdLimitHit: "Du hast das Lesungslimit für diesen Thread erreicht.",
     securityGroupAria: "Kontosicherheit",
     securityHeading: "Sicherheit (optionale 2FA)",
@@ -278,6 +293,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "Bibliothek (Premium-Option)",
     libraryDescription: "Entdecken Sie die drei klassischen Versionen.",
     openLibrary: "Zur Bibliothek gehen",
+    translatorLabel: "Übersetzer",
+    translatorMasterCombined: "Master (3)",
   },
   it: {
     exportChatPdf: "Esporta chat PDF",
@@ -298,7 +315,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     tdSingleOk: "Una sola lettura per thread.",
     tdSingleBlocked:
       "Nessun approfondimento in questo thread: una sola lettura. Per un altro argomento, avvia una nuova sessione.",
-    tdCanAddMore: "Puoi aggiungere fino a {{remaining}} lettura/e in più in questo thread.",
+    tdCanAddMore:
+      "Puoi aggiungere fino a {{remaining}} lettura/e in più in questo thread.",
     tdLimitHit: "Hai raggiunto il limite di letture per questo thread.",
     securityGroupAria: "Sicurezza account",
     securityHeading: "Sicurezza (2FA opzionale)",
@@ -324,6 +342,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "Biblioteca (Opzione Premium)",
     libraryDescription: "Esplora le tre versioni classiche.",
     openLibrary: "Vai alla biblioteca",
+    translatorLabel: "Traduttore",
+    translatorMasterCombined: "Master (3)",
   },
   ja: {
     exportChatPdf: "チャットをPDFで書き出す",
@@ -342,8 +362,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     threadDepthHeading: "スレッドの深さ",
     threadDepthReadingProgressAria: "リーディング {{pos}} / {{cap}}",
     tdSingleOk: "スレッドあたり1回のリーディングです。",
-    tdSingleBlocked: "このスレッドでは追加の深掘りはできません。別のテーマは新しいセッションを開始してください。",
-    tdCanAddMore: "このスレッドにあと最大{{remaining}}件のリーディングを追加できます。",
+    tdSingleBlocked:
+      "このスレッドでは追加の深掘りはできません。別のテーマは新しいセッションを開始してください。",
+    tdCanAddMore:
+      "このスレッドにあと最大{{remaining}}件のリーディングを追加できます。",
     tdLimitHit: "このスレッドのリーディング上限に達しました。",
     securityGroupAria: "アカウントのセキュリティ",
     securityHeading: "セキュリティ（任意の2FA）",
@@ -351,7 +373,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     enabled: "有効",
     disabled: "無効",
     methodPrefix: " · 方式 ",
-    securityConfigureHint: "Authenticator と/またはメールコードを設定してください。",
+    securityConfigureHint:
+      "Authenticator と/またはメールコードを設定してください。",
     configure2fa: "2FAを設定",
     disable2fa: "2FAを無効化",
     docLinksAria: "ドキュメント、プライバシー、利用規約",
@@ -369,6 +392,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "ライブラリ（プレミアム機能）",
     libraryDescription: "3つの古典バージョンを探索する。",
     openLibrary: "ライブラリへ",
+    translatorLabel: "翻訳者",
+    translatorMasterCombined: "マスター (3)",
   },
   zh: {
     exportChatPdf: "导出聊天 PDF",
@@ -414,6 +439,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "图书馆（高级功能）",
     libraryDescription: "探索三个经典版本。",
     openLibrary: "前往图书馆",
+    translatorLabel: "译本",
+    translatorMasterCombined: "大师 (3)",
   },
   ko: {
     exportChatPdf: "채팅 PDF보내기",
@@ -432,8 +459,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     threadDepthHeading: "스레드 깊이",
     threadDepthReadingProgressAria: "리딩 {{pos}} / {{cap}}",
     tdSingleOk: "스레드당 한 번의 리딩만 가능합니다.",
-    tdSingleBlocked: "이 스레드에서는 추가 심화가 없습니다. 다른 주제는 새 세션을 시작하세요.",
-    tdCanAddMore: "이 스레드에 최대 {{remaining}}번 더 리딩을 추가할 수 있습니다.",
+    tdSingleBlocked:
+      "이 스레드에서는 추가 심화가 없습니다. 다른 주제는 새 세션을 시작하세요.",
+    tdCanAddMore:
+      "이 스레드에 최대 {{remaining}}번 더 리딩을 추가할 수 있습니다.",
     tdLimitHit: "이 스레드의 리딩 한도에 도달했습니다.",
     securityGroupAria: "계정 보안",
     securityHeading: "보안(선택 2FA)",
@@ -441,7 +470,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     enabled: "켜짐",
     disabled: "꺼짐",
     methodPrefix: " · 방식 ",
-    securityConfigureHint: "인증 앱(Authenticator) 및/또는 이메일 코드를 설정하세요.",
+    securityConfigureHint:
+      "인증 앱(Authenticator) 및/또는 이메일 코드를 설정하세요.",
     configure2fa: "2FA 설정",
     disable2fa: "2FA 끄기",
     docLinksAria: "문서, 개인정보 및 약관",
@@ -459,6 +489,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "라이브러리 (프리미엄 기능)",
     libraryDescription: "세 가지 클래식 버전을 탐색하세요.",
     openLibrary: "라이브러리로 이동",
+    translatorLabel: "번역본",
+    translatorMasterCombined: "마스터 (3)",
   },
   ar: {
     exportChatPdf: "تصدير المحادثة PDF",
@@ -477,8 +509,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     threadDepthHeading: "عمق الخيط",
     threadDepthReadingProgressAria: "القراءة {{pos}} من {{cap}}",
     tdSingleOk: "قراءة واحدة لكل خيط.",
-    tdSingleBlocked: "لا متابعات في هذا الخيط: قراءة واحدة فقط. لموضوع جديد، ابدأ جلسة جديدة.",
-    tdCanAddMore: "يمكنك إضافة ما يصل إلى {{remaining}} قراءة (قراءات) أخرى في هذا الخيط.",
+    tdSingleBlocked:
+      "لا متابعات في هذا الخيط: قراءة واحدة فقط. لموضوع جديد، ابدأ جلسة جديدة.",
+    tdCanAddMore:
+      "يمكنك إضافة ما يصل إلى {{remaining}} قراءة (قراءات) أخرى في هذا الخيط.",
     tdLimitHit: "لقد بلغت حد القراءات لهذا الخيط.",
     securityGroupAria: "أمان الحساب",
     securityHeading: "الأمان (2FA اختياري)",
@@ -504,6 +538,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "المكتبة (ميزة متميزة)",
     libraryDescription: "استكشف الإصدارات الكلاسيكية الثلاثة.",
     openLibrary: "الذهاب إلى المكتبة",
+    translatorLabel: "المترجم",
+    translatorMasterCombined: "Master (3)",
   },
   hi: {
     exportChatPdf: "चैट PDF निर्यात करें",
@@ -522,7 +558,8 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     threadDepthHeading: "थ्रेड गहराई",
     threadDepthReadingProgressAria: "{{cap}} में से पठन {{pos}}",
     tdSingleOk: "प्रति थ्रेड एकल पठन।",
-    tdSingleBlocked: "इस थ्रेड में कोई अनुवर्ती नहीं: केवल एक पठन। नए विषय के लिए नया सत्र शुरू करें।",
+    tdSingleBlocked:
+      "इस थ्रेड में कोई अनुवर्ती नहीं: केवल एक पठन। नए विषय के लिए नया सत्र शुरू करें।",
     tdCanAddMore: "आप इस थ्रेड में {{remaining}} और पठन जोड़ सकते हैं।",
     tdLimitHit: "आप इस थ्रेड की पठन सीमा तक पहुँच गए हैं।",
     securityGroupAria: "खाता सुरक्षा",
@@ -549,20 +586,29 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     libraryHeading: "पुस्तकालय (प्रीमियम विकल्प)",
     libraryDescription: "तीन क्लासिक संस्करणों का अन्वेषण करें।",
     openLibrary: "पुस्तकालय जाएं",
+    translatorLabel: "अनुवादक",
+    translatorMasterCombined: "मास्टर (3)",
   },
 };
 
-export function getHomeChromeUiMessages(locale: AppLocale): HomeChromeUiMessages {
+export function getHomeChromeUiMessages(
+  locale: AppLocale,
+): HomeChromeUiMessages {
   return HOME_CHROME_UI[locale] ?? HOME_CHROME_UI[DEFAULT_LOCALE];
 }
 
 /** Titles used server-side for in-progress sessions; must match all localized `consultationInProgress` strings. */
 export function allConsultationInProgressTitles(): string[] {
-  return SUPPORTED_LOCALES.map((code) => HOME_CHROME_UI[code].consultationInProgress);
+  return SUPPORTED_LOCALES.map(
+    (code) => HOME_CHROME_UI[code].consultationInProgress,
+  );
 }
 
 export function formatThreadDepthStatusLine(
-  m: Pick<HomeChromeUiMessages, "tdSingleOk" | "tdSingleBlocked" | "tdCanAddMore" | "tdLimitHit">,
+  m: Pick<
+    HomeChromeUiMessages,
+    "tdSingleOk" | "tdSingleBlocked" | "tdCanAddMore" | "tdLimitHit"
+  >,
   canDeepen: boolean,
   cap: number,
   position: number,

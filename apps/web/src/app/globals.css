@@ -2370,10 +2370,10 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
 }
 
 .oracle-toggle-master-label {
-  color: #b08a38; /* A more elegant, subdued golden-bronze that works in light/dark */
+  color: #a855f7; /* Amethyst / premium purple for light mode */
 }
 [data-theme="dark"] .oracle-toggle-master-label {
-  color: #d4af37; /* Brighter gold for dark mode */
+  color: #c084fc; /* Brighter purple for dark mode */
 }
 .oracle-toggle-option.is-active .oracle-toggle-master-label {
   color: inherit;

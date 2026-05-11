@@ -65,14 +65,15 @@ export type LoginPageUiMessages = {
 const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   es: {
     configErrorTitle: "Acceso no disponible",
-    configErrorBody:
-      "Faltan {{urlKey}} o {{anonKey}} en el cliente.",
+    configErrorBody: "Faltan {{urlKey}} o {{anonKey}} en el cliente.",
     brandSubtitle: "Lectura clásica con Zhu Xi y Wilhelm/Baynes.",
     tablistAria: "Acceso",
     signInTab: "Iniciar sesión",
     signUpTab: "Crear cuenta",
-    signInLead: "Entra con el correo con el que te registraste (tras confirmar el enlace).",
-    signUpLead: "Registro con validación de correo. Te pedimos una contraseña segura (mín. 8 caracteres).",
+    signInLead:
+      "Entra con el correo con el que te registraste (tras confirmar el enlace).",
+    signUpLead:
+      "Registro con validación de correo. Te pedimos una contraseña segura (mín. 8 caracteres).",
     emailLabel: "Correo electrónico",
     passwordLabel: "Contraseña",
     emailPlaceholder: "tu@correo.com",
@@ -89,11 +90,13 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Antes de crear tu cuenta",
     legalConsentIntro:
       "Para crear tu cuenta debes leer y aceptar la Política de Privacidad y los Términos del Servicio.",
-    legalConsentPendingScroll: "Desplázate hasta el final para habilitar la aceptación.",
+    legalConsentPendingScroll:
+      "Desplázate hasta el final para habilitar la aceptación.",
     legalConsentReady: "Ya puedes aceptar y continuar.",
     legalConsentAccept: "Aceptar y continuar",
     legalConsentCloseAria: "Cerrar ventana de aceptación",
-    legalConsentRequired: "Debes aceptar la Política de Privacidad y los Términos del Servicio para crear tu cuenta.",
+    legalConsentRequired:
+      "Debes aceptar la Política de Privacidad y los Términos del Servicio para crear tu cuenta.",
     backToOracle: "← Volver al oráculo",
     closeModalAria: "Cerrar",
     modalVerifyTitle: "Verifica tu cuenta por correo",
@@ -107,16 +110,22 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errEmailNotConfirmed:
       "Tu correo aún no está confirmado. Revisa tu bandeja y usa «Reenviar confirmación» si no lo recibiste.",
     errResendNeedEmail: "Escribe tu correo para reenviar la confirmación.",
-    errResetNeedEmail: "Escribe tu correo para enviarte las instrucciones de restablecimiento.",
-    msgResendOk: "Reenviamos el correo de confirmación. Revisa también tu carpeta de spam/no deseado.",
-    msgResetOk: "Te enviamos instrucciones para restablecer tu contraseña. Revisa tu bandeja y spam/no deseado.",
+    errResetNeedEmail:
+      "Escribe tu correo para enviarte las instrucciones de restablecimiento.",
+    msgResendOk:
+      "Reenviamos el correo de confirmación. Revisa también tu carpeta de spam/no deseado.",
+    msgResetOk:
+      "Te enviamos instrucciones para restablecer tu contraseña. Revisa tu bandeja y spam/no deseado.",
     errNetwork: "Error de red. Inténtalo de nuevo.",
     errInvalidPayload: "Revisa el correo y la contraseña (mínimos requeridos).",
-    errRateLimited: "Demasiados intentos desde esta red. Espera un poco e inténtalo de nuevo.",
-    errTurnstileFailed: "Verificación anti‑bots fallida. Recarga la página e inténtalo de nuevo.",
+    errRateLimited:
+      "Demasiados intentos desde esta red. Espera un poco e inténtalo de nuevo.",
+    errTurnstileFailed:
+      "Verificación anti‑bots fallida. Recarga la página e inténtalo de nuevo.",
     errDisposableEmail: "No se aceptan correos temporales o desechables.",
     errEmailValidation: "El correo no pasó la validación (dominio o MX).",
-    errSignUpFailedDefault: "No se pudo crear la cuenta (¿correo ya registrado?).",
+    errSignUpFailedDefault:
+      "No se pudo crear la cuenta (¿correo ya registrado?).",
     errEmailExistsDefault:
       "Ese correo ya está registrado. Inicia sesión, reenvía confirmación o restablece contraseña.",
     errSupabaseNotConfigured: "El servidor no tiene Supabase configurado.",
@@ -139,8 +148,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     tablistAria: "Sign in",
     signInTab: "Sign in",
     signUpTab: "Create account",
-    signInLead: "Use the email you registered with (after confirming the link).",
-    signUpLead: "Email verification required. Choose a strong password (min. 8 characters).",
+    signInLead:
+      "Use the email you registered with (after confirming the link).",
+    signUpLead:
+      "Email verification required. Choose a strong password (min. 8 characters).",
     emailLabel: "Email",
     passwordLabel: "Password",
     emailPlaceholder: "you@example.com",
@@ -161,13 +172,15 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentReady: "You can now accept and continue.",
     legalConsentAccept: "Accept and continue",
     legalConsentCloseAria: "Close acceptance dialog",
-    legalConsentRequired: "You must accept the Privacy Policy and Terms of Service to create your account.",
+    legalConsentRequired:
+      "You must accept the Privacy Policy and Terms of Service to create your account.",
     backToOracle: "← Back to oracle",
     closeModalAria: "Close",
     modalVerifyTitle: "Verify your email",
     modalExistsTitle: "Email already registered",
     modalVerifyLine1: "We sent a verification link to",
-    modalVerifyLine2: "Open your inbox (check spam) and click the link to activate your account.",
+    modalVerifyLine2:
+      "Open your inbox (check spam) and click the link to activate your account.",
     modalExistsLine1: "The email",
     modalExistsLine2: "is already registered. Sign in with that email.",
     modalOk: "OK",
@@ -176,15 +189,20 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errResendNeedEmail: "Enter your email to resend confirmation.",
     errResetNeedEmail: "Enter your email to receive reset instructions.",
     msgResendOk: "We resent the confirmation email. Check spam/junk as well.",
-    msgResetOk: "We sent password reset instructions. Check your inbox and spam/junk.",
+    msgResetOk:
+      "We sent password reset instructions. Check your inbox and spam/junk.",
     errNetwork: "Network error. Please try again.",
     errInvalidPayload: "Check email and password (minimum requirements).",
-    errRateLimited: "Too many attempts from this network. Wait a bit and try again.",
+    errRateLimited:
+      "Too many attempts from this network. Wait a bit and try again.",
     errTurnstileFailed: "Bot check failed. Reload the page and try again.",
-    errDisposableEmail: "Disposable or temporary email addresses are not accepted.",
+    errDisposableEmail:
+      "Disposable or temporary email addresses are not accepted.",
     errEmailValidation: "Email did not pass validation (domain or MX).",
-    errSignUpFailedDefault: "Could not create account (email already registered?).",
-    errEmailExistsDefault: "That email is already registered. Sign in, resend confirmation, or reset password.",
+    errSignUpFailedDefault:
+      "Could not create account (email already registered?).",
+    errEmailExistsDefault:
+      "That email is already registered. Sign in, resend confirmation, or reset password.",
     errSupabaseNotConfigured: "Supabase is not configured on the server.",
     errRegisterDefault: "Could not register. Please try again.",
     errWeakPassword:
@@ -205,8 +223,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     tablistAria: "Acesso",
     signInTab: "Iniciar sessão",
     signUpTab: "Criar conta",
-    signInLead: "Entra com o email com que te registaste (após confirmar a ligação).",
-    signUpLead: "Registo com validação de email. Escolhe uma palavra-passe segura (mín. 8 caracteres).",
+    signInLead:
+      "Entra com o email com que te registaste (após confirmar a ligação).",
+    signUpLead:
+      "Registo com validação de email. Escolhe uma palavra-passe segura (mín. 8 caracteres).",
     emailLabel: "Email",
     passwordLabel: "Palavra-passe",
     emailPlaceholder: "tu@email.com",
@@ -227,30 +247,36 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentReady: "Já podes aceitar e continuar.",
     legalConsentAccept: "Aceitar e continuar",
     legalConsentCloseAria: "Fechar janela de aceitação",
-    legalConsentRequired: "Deves aceitar a Política de Privacidade e os Termos de Serviço para criar a conta.",
+    legalConsentRequired:
+      "Deves aceitar a Política de Privacidade e os Termos de Serviço para criar a conta.",
     backToOracle: "← Voltar ao oráculo",
     closeModalAria: "Fechar",
     modalVerifyTitle: "Verifica a tua conta por email",
     modalExistsTitle: "Email já registado",
     modalVerifyLine1: "Enviámos uma ligação de verificação para",
-    modalVerifyLine2: "Abre o email (verifica spam) e clica na ligação para ativar a conta.",
+    modalVerifyLine2:
+      "Abre o email (verifica spam) e clica na ligação para ativar a conta.",
     modalExistsLine1: "O email",
     modalExistsLine2: "já está registado. Inicia sessão com esse email.",
     modalOk: "Entendido",
     errEmailNotConfirmed:
       "O teu email ainda não foi confirmado. Verifica a caixa de entrada ou «Reenviar confirmação».",
     errResendNeedEmail: "Escreve o teu email para reenviar a confirmação.",
-    errResetNeedEmail: "Escreve o teu email para receberes instruções de reposição.",
+    errResetNeedEmail:
+      "Escreve o teu email para receberes instruções de reposição.",
     msgResendOk: "Reenviámos o email de confirmação. Verifica também spam.",
-    msgResetOk: "Enviámos instruções para repor a palavra-passe. Verifica inbox e spam.",
+    msgResetOk:
+      "Enviámos instruções para repor a palavra-passe. Verifica inbox e spam.",
     errNetwork: "Erro de rede. Tenta novamente.",
     errInvalidPayload: "Verifica email e palavra-passe (requisitos mínimos).",
     errRateLimited: "Demasiadas tentativas desta rede. Espera e tenta de novo.",
     errTurnstileFailed: "Verificação anti-bot falhou. Recarrega a página.",
     errDisposableEmail: "Emails descartáveis ou temporários não são aceites.",
     errEmailValidation: "O email não passou na validação (domínio ou MX).",
-    errSignUpFailedDefault: "Não foi possível criar a conta (email já registado?).",
-    errEmailExistsDefault: "Esse email já está registado. Inicia sessão ou repõe a palavra-passe.",
+    errSignUpFailedDefault:
+      "Não foi possível criar a conta (email já registado?).",
+    errEmailExistsDefault:
+      "Esse email já está registado. Inicia sessão ou repõe a palavra-passe.",
     errSupabaseNotConfigured: "O servidor não tem Supabase configurado.",
     errRegisterDefault: "Não foi possível registar. Tenta novamente.",
     errWeakPassword:
@@ -271,8 +297,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     tablistAria: "Connexion",
     signInTab: "Se connecter",
     signUpTab: "Créer un compte",
-    signInLead: "Utilisez l’e-mail avec lequel vous vous êtes inscrit (après confirmation).",
-    signUpLead: "Vérification par e-mail. Mot de passe sécurisé (min. 8 caractères).",
+    signInLead:
+      "Utilisez l’e-mail avec lequel vous vous êtes inscrit (après confirmation).",
+    signUpLead:
+      "Vérification par e-mail. Mot de passe sécurisé (min. 8 caractères).",
     emailLabel: "E-mail",
     passwordLabel: "Mot de passe",
     emailPlaceholder: "vous@exemple.com",
@@ -289,7 +317,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Avant de créer votre compte",
     legalConsentIntro:
       "Pour créer votre compte, vous devez lire et accepter la Politique de confidentialité et les Conditions d'utilisation.",
-    legalConsentPendingScroll: "Faites défiler jusqu'à la fin pour activer l'acceptation.",
+    legalConsentPendingScroll:
+      "Faites défiler jusqu'à la fin pour activer l'acceptation.",
     legalConsentReady: "Vous pouvez maintenant accepter et continuer.",
     legalConsentAccept: "Accepter et continuer",
     legalConsentCloseAria: "Fermer la fenêtre d'acceptation",
@@ -300,24 +329,30 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     modalVerifyTitle: "Vérifiez votre e-mail",
     modalExistsTitle: "E-mail déjà enregistré",
     modalVerifyLine1: "Nous avons envoyé un lien de vérification à",
-    modalVerifyLine2: "Ouvrez votre boîte (courrier indésirable inclus) et cliquez sur le lien.",
+    modalVerifyLine2:
+      "Ouvrez votre boîte (courrier indésirable inclus) et cliquez sur le lien.",
     modalExistsLine1: "L’e-mail",
     modalExistsLine2: "est déjà enregistré. Connectez-vous avec cet e-mail.",
     modalOk: "Compris",
     errEmailNotConfirmed:
       "Votre e-mail n’est pas encore confirmé. Vérifiez votre boîte ou renvoyez la confirmation.",
     errResendNeedEmail: "Saisissez votre e-mail pour renvoyer la confirmation.",
-    errResetNeedEmail: "Saisissez votre e-mail pour recevoir les instructions de réinitialisation.",
-    msgResendOk: "Nous avons renvoyé l’e-mail de confirmation. Vérifiez les spams.",
-    msgResetOk: "Nous avons envoyé les instructions de réinitialisation. Vérifiez inbox et spam.",
+    errResetNeedEmail:
+      "Saisissez votre e-mail pour recevoir les instructions de réinitialisation.",
+    msgResendOk:
+      "Nous avons renvoyé l’e-mail de confirmation. Vérifiez les spams.",
+    msgResetOk:
+      "Nous avons envoyé les instructions de réinitialisation. Vérifiez inbox et spam.",
     errNetwork: "Erreur réseau. Réessayez.",
     errInvalidPayload: "Vérifiez e-mail et mot de passe (exigences minimales).",
     errRateLimited: "Trop de tentatives. Patientez puis réessayez.",
     errTurnstileFailed: "Vérification anti-bot échouée. Rechargez la page.",
     errDisposableEmail: "Les e-mails jetables ne sont pas acceptés.",
     errEmailValidation: "L’e-mail n’a pas passé la validation (domaine ou MX).",
-    errSignUpFailedDefault: "Impossible de créer le compte (e-mail déjà utilisé ?).",
-    errEmailExistsDefault: "Cet e-mail est déjà enregistré. Connectez-vous ou réinitialisez le mot de passe.",
+    errSignUpFailedDefault:
+      "Impossible de créer le compte (e-mail déjà utilisé ?).",
+    errEmailExistsDefault:
+      "Cet e-mail est déjà enregistré. Connectez-vous ou réinitialisez le mot de passe.",
     errSupabaseNotConfigured: "Supabase n’est pas configuré sur le serveur.",
     errRegisterDefault: "Inscription impossible. Réessayez.",
     errWeakPassword:
@@ -338,8 +373,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     tablistAria: "Anmeldung",
     signInTab: "Anmelden",
     signUpTab: "Konto erstellen",
-    signInLead: "Mit der E-Mail anmelden, mit der Sie sich registriert haben (nach Bestätigung).",
-    signUpLead: "Registrierung mit E-Mail-Bestätigung. Sicheres Passwort (mind. 8 Zeichen).",
+    signInLead:
+      "Mit der E-Mail anmelden, mit der Sie sich registriert haben (nach Bestätigung).",
+    signUpLead:
+      "Registrierung mit E-Mail-Bestätigung. Sicheres Passwort (mind. 8 Zeichen).",
     emailLabel: "E-Mail",
     passwordLabel: "Passwort",
     emailPlaceholder: "sie@beispiel.de",
@@ -356,7 +393,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Bevor Sie Ihr Konto anlegen",
     legalConsentIntro:
       "Um Ihr Konto zu erstellen, müssen Sie die Datenschutzerklärung und die Nutzungsbedingungen lesen und akzeptieren.",
-    legalConsentPendingScroll: "Scrollen Sie bis zum Ende, um die Zustimmung zu aktivieren.",
+    legalConsentPendingScroll:
+      "Scrollen Sie bis zum Ende, um die Zustimmung zu aktivieren.",
     legalConsentReady: "Sie können jetzt akzeptieren und fortfahren.",
     legalConsentAccept: "Akzeptieren und fortfahren",
     legalConsentCloseAria: "Zustimmungsfenster schließen",
@@ -367,7 +405,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     modalVerifyTitle: "E-Mail bestätigen",
     modalExistsTitle: "E-Mail bereits registriert",
     modalVerifyLine1: "Wir haben einen Bestätigungslink gesendet an",
-    modalVerifyLine2: "Öffnen Sie Ihr Postfach (Spam prüfen) und klicken Sie auf den Link.",
+    modalVerifyLine2:
+      "Öffnen Sie Ihr Postfach (Spam prüfen) und klicken Sie auf den Link.",
     modalExistsLine1: "Die E-Mail",
     modalExistsLine2: "ist bereits registriert. Melden Sie sich damit an.",
     modalOk: "Verstanden",
@@ -376,15 +415,19 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errResendNeedEmail: "E-Mail eingeben, um die Bestätigung erneut zu senden.",
     errResetNeedEmail: "E-Mail eingeben für Anweisungen zum Zurücksetzen.",
     msgResendOk: "Bestätigungs-E-Mail erneut gesendet. Spam-Ordner prüfen.",
-    msgResetOk: "Anweisungen zum Zurücksetzen gesendet. Posteingang und Spam prüfen.",
+    msgResetOk:
+      "Anweisungen zum Zurücksetzen gesendet. Posteingang und Spam prüfen.",
     errNetwork: "Netzwerkfehler. Bitte erneut versuchen.",
     errInvalidPayload: "E-Mail und Passwort prüfen (Mindestanforderungen).",
     errRateLimited: "Zu viele Versuche. Kurz warten und erneut versuchen.",
     errTurnstileFailed: "Bot-Prüfung fehlgeschlagen. Seite neu laden.",
     errDisposableEmail: "Wegwerf-E-Mail-Adressen werden nicht akzeptiert.",
-    errEmailValidation: "E-Mail hat die Validierung nicht bestanden (Domain oder MX).",
-    errSignUpFailedDefault: "Konto konnte nicht erstellt werden (E-Mail schon registriert?).",
-    errEmailExistsDefault: "Diese E-Mail ist bereits registriert. Anmelden oder Passwort zurücksetzen.",
+    errEmailValidation:
+      "E-Mail hat die Validierung nicht bestanden (Domain oder MX).",
+    errSignUpFailedDefault:
+      "Konto konnte nicht erstellt werden (E-Mail schon registriert?).",
+    errEmailExistsDefault:
+      "Diese E-Mail ist bereits registriert. Anmelden oder Passwort zurücksetzen.",
     errSupabaseNotConfigured: "Supabase ist auf dem Server nicht konfiguriert.",
     errRegisterDefault: "Registrierung fehlgeschlagen. Bitte erneut versuchen.",
     errWeakPassword:
@@ -405,8 +448,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     tablistAria: "Accesso",
     signInTab: "Accedi",
     signUpTab: "Crea account",
-    signInLead: "Usa l’email con cui ti sei registrato (dopo aver confermato il link).",
-    signUpLead: "Registrazione con verifica email. Password sicura (min. 8 caratteri).",
+    signInLead:
+      "Usa l’email con cui ti sei registrato (dopo aver confermato il link).",
+    signUpLead:
+      "Registrazione con verifica email. Password sicura (min. 8 caratteri).",
     emailLabel: "Email",
     passwordLabel: "Password",
     emailPlaceholder: "tu@esempio.it",
@@ -423,17 +468,20 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Prima di creare il tuo account",
     legalConsentIntro:
       "Per creare il tuo account devi leggere e accettare l'Informativa sulla privacy e i Termini di servizio.",
-    legalConsentPendingScroll: "Scorri fino alla fine per abilitare l'accettazione.",
+    legalConsentPendingScroll:
+      "Scorri fino alla fine per abilitare l'accettazione.",
     legalConsentReady: "Ora puoi accettare e continuare.",
     legalConsentAccept: "Accetta e continua",
     legalConsentCloseAria: "Chiudi la finestra di accettazione",
-    legalConsentRequired: "Devi accettare l'Informativa sulla privacy e i Termini di servizio per creare l'account.",
+    legalConsentRequired:
+      "Devi accettare l'Informativa sulla privacy e i Termini di servizio per creare l'account.",
     backToOracle: "← Torna all’oracolo",
     closeModalAria: "Chiudi",
     modalVerifyTitle: "Verifica la tua email",
     modalExistsTitle: "Email già registrata",
     modalVerifyLine1: "Abbiamo inviato un link di verifica a",
-    modalVerifyLine2: "Apri la posta (controlla spam) e clicca sul link per attivare l’account.",
+    modalVerifyLine2:
+      "Apri la posta (controlla spam) e clicca sul link per attivare l’account.",
     modalExistsLine1: "L’email",
     modalExistsLine2: "è già registrata. Accedi con quell’email.",
     modalOk: "OK",
@@ -441,16 +489,21 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Email non ancora confermata. Controlla la posta o reinvia la conferma.",
     errResendNeedEmail: "Inserisci l’email per reinviare la conferma.",
     errResetNeedEmail: "Inserisci l’email per ricevere le istruzioni di reset.",
-    msgResendOk: "Abbiamo reinviato l’email di conferma. Controlla anche lo spam.",
-    msgResetOk: "Abbiamo inviato le istruzioni per reimpostare la password. Controlla inbox e spam.",
+    msgResendOk:
+      "Abbiamo reinviato l’email di conferma. Controlla anche lo spam.",
+    msgResetOk:
+      "Abbiamo inviato le istruzioni per reimpostare la password. Controlla inbox e spam.",
     errNetwork: "Errore di rete. Riprova.",
     errInvalidPayload: "Controlla email e password (requisiti minimi).",
     errRateLimited: "Troppi tentativi. Attendi e riprova.",
     errTurnstileFailed: "Verifica anti-bot non riuscita. Ricarica la pagina.",
     errDisposableEmail: "Email usa e getta non accettate.",
-    errEmailValidation: "L’email non ha superato la validazione (dominio o MX).",
-    errSignUpFailedDefault: "Impossibile creare l’account (email già registrata?).",
-    errEmailExistsDefault: "Questa email è già registrata. Accedi o reimposta la password.",
+    errEmailValidation:
+      "L’email non ha superato la validazione (dominio o MX).",
+    errSignUpFailedDefault:
+      "Impossibile creare l’account (email già registrata?).",
+    errEmailExistsDefault:
+      "Questa email è già registrata. Accedi o reimposta la password.",
     errSupabaseNotConfigured: "Supabase non è configurato sul server.",
     errRegisterDefault: "Registrazione non riuscita. Riprova.",
     errWeakPassword:
@@ -466,13 +519,16 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   },
   ja: {
     configErrorTitle: "サインインできません",
-    configErrorBody: "クライアントに {{urlKey}} または {{anonKey}} がありません。",
+    configErrorBody:
+      "クライアントに {{urlKey}} または {{anonKey}} がありません。",
     brandSubtitle: "朱熹とウィルヘルム／ベインズによる古典的読み。",
     tablistAria: "サインイン",
     signInTab: "ログイン",
     signUpTab: "アカウント作成",
-    signInLead: "登録したメールアドレスでログインしてください（確認リンク後）。",
-    signUpLead: "メール確認が必要です。安全なパスワード（8文字以上）を設定してください。",
+    signInLead:
+      "登録したメールアドレスでログインしてください（確認リンク後）。",
+    signUpLead:
+      "メール確認が必要です。安全なパスワード（8文字以上）を設定してください。",
     emailLabel: "メールアドレス",
     passwordLabel: "パスワード",
     emailPlaceholder: "you@example.com",
@@ -487,34 +543,47 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     dividerOr: "または",
     continueGoogle: "Googleで続行",
     legalConsentTitle: "アカウント作成前の確認",
-    legalConsentIntro: "アカウントを作成するには、プライバシーポリシーと利用規約を読んで同意する必要があります。",
+    legalConsentIntro:
+      "アカウントを作成するには、プライバシーポリシーと利用規約を読んで同意する必要があります。",
     legalConsentPendingScroll: "最後までスクロールすると同意できます。",
     legalConsentReady: "同意して続行できます。",
     legalConsentAccept: "同意して続行",
     legalConsentCloseAria: "同意画面を閉じる",
-    legalConsentRequired: "アカウント作成にはプライバシーポリシーと利用規約への同意が必要です。",
+    legalConsentRequired:
+      "アカウント作成にはプライバシーポリシーと利用規約への同意が必要です。",
     backToOracle: "← オラクルに戻る",
     closeModalAria: "閉じる",
     modalVerifyTitle: "メールでアカウントを確認",
     modalExistsTitle: "既に登録されたメール",
     modalVerifyLine1: "確認リンクを次に送信しました：",
-    modalVerifyLine2: "受信トレイ（迷惑メールも）を確認し、リンクをクリックして有効化してください。",
+    modalVerifyLine2:
+      "受信トレイ（迷惑メールも）を確認し、リンクをクリックして有効化してください。",
     modalExistsLine1: "メール",
-    modalExistsLine2: "は既に登録されています。そのメールでログインしてください。",
+    modalExistsLine2:
+      "は既に登録されています。そのメールでログインしてください。",
     modalOk: "了解",
-    errEmailNotConfirmed: "メールが未確認です。受信トレイを確認するか確認メールを再送してください。",
-    errResendNeedEmail: "確認メールを再送するにはメールアドレスを入力してください。",
-    errResetNeedEmail: "リセット手順を送るにはメールアドレスを入力してください。",
-    msgResendOk: "確認メールを再送しました。迷惑メールフォルダもご確認ください。",
-    msgResetOk: "パスワード再設定の手順を送信しました。受信トレイと迷惑メールをご確認ください。",
+    errEmailNotConfirmed:
+      "メールが未確認です。受信トレイを確認するか確認メールを再送してください。",
+    errResendNeedEmail:
+      "確認メールを再送するにはメールアドレスを入力してください。",
+    errResetNeedEmail:
+      "リセット手順を送るにはメールアドレスを入力してください。",
+    msgResendOk:
+      "確認メールを再送しました。迷惑メールフォルダもご確認ください。",
+    msgResetOk:
+      "パスワード再設定の手順を送信しました。受信トレイと迷惑メールをご確認ください。",
     errNetwork: "ネットワークエラー。もう一度お試しください。",
     errInvalidPayload: "メールとパスワード（最低要件）をご確認ください。",
-    errRateLimited: "試行回数が多すぎます。しばらくしてから再度お試しください。",
-    errTurnstileFailed: "ボット確認に失敗しました。ページを再読み込みしてください。",
+    errRateLimited:
+      "試行回数が多すぎます。しばらくしてから再度お試しください。",
+    errTurnstileFailed:
+      "ボット確認に失敗しました。ページを再読み込みしてください。",
     errDisposableEmail: "使い捨てメールは受け付けていません。",
     errEmailValidation: "メールが検証に通りませんでした（ドメインまたはMX）。",
-    errSignUpFailedDefault: "アカウントを作成できませんでした（既に登録済み？）。",
-    errEmailExistsDefault: "このメールは既に登録されています。ログインするかパスワードを再設定してください。",
+    errSignUpFailedDefault:
+      "アカウントを作成できませんでした（既に登録済み？）。",
+    errEmailExistsDefault:
+      "このメールは既に登録されています。ログインするかパスワードを再設定してください。",
     errSupabaseNotConfigured: "サーバーに Supabase が設定されていません。",
     errRegisterDefault: "登録できませんでした。もう一度お試しください。",
     errWeakPassword:
@@ -600,7 +669,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     signInTab: "로그인",
     signUpTab: "계정 만들기",
     signInLead: "가입할 때 사용한 이메일로 로그인하세요(확인 링크 완료 후).",
-    signUpLead: "이메일 인증이 필요합니다. 안전한 비밀번호(최소 8자)를 설정하세요.",
+    signUpLead:
+      "이메일 인증이 필요합니다. 안전한 비밀번호(최소 8자)를 설정하세요.",
     emailLabel: "이메일",
     passwordLabel: "비밀번호",
     emailPlaceholder: "you@example.com",
@@ -615,26 +685,32 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     dividerOr: "또는",
     continueGoogle: "Google로 계속",
     legalConsentTitle: "계정을 만들기 전에",
-    legalConsentIntro: "계정을 만들려면 개인정보 처리방침과 서비스 약관을 읽고 동의해야 합니다.",
+    legalConsentIntro:
+      "계정을 만들려면 개인정보 처리방침과 서비스 약관을 읽고 동의해야 합니다.",
     legalConsentPendingScroll: "끝까지 스크롤하면 동의할 수 있습니다.",
     legalConsentReady: "이제 동의하고 계속할 수 있습니다.",
     legalConsentAccept: "동의하고 계속",
     legalConsentCloseAria: "동의 창 닫기",
-    legalConsentRequired: "계정을 만들려면 개인정보 처리방침과 서비스 약관에 동의해야 합니다.",
+    legalConsentRequired:
+      "계정을 만들려면 개인정보 처리방침과 서비스 약관에 동의해야 합니다.",
     backToOracle: "← 오라클로 돌아가기",
     closeModalAria: "닫기",
     modalVerifyTitle: "이메일로 계정 확인",
     modalExistsTitle: "이미 등록된 이메일",
     modalVerifyLine1: "다음 주소로 확인 링크를 보냈습니다:",
-    modalVerifyLine2: "받은편지함(스팸 포함)을 확인하고 링크를 눌러 계정을 활성화하세요.",
+    modalVerifyLine2:
+      "받은편지함(스팸 포함)을 확인하고 링크를 눌러 계정을 활성화하세요.",
     modalExistsLine1: "이메일",
-    modalExistsLine2: "은(는) 이미 등록되어 있습니다. 해당 이메일로 로그인하세요.",
+    modalExistsLine2:
+      "은(는) 이미 등록되어 있습니다. 해당 이메일로 로그인하세요.",
     modalOk: "확인",
-    errEmailNotConfirmed: "이메일이 아직 확인되지 않았습니다. 받은편지함을 확인하거나 확인 메일을 다시 보내세요.",
+    errEmailNotConfirmed:
+      "이메일이 아직 확인되지 않았습니다. 받은편지함을 확인하거나 확인 메일을 다시 보내세요.",
     errResendNeedEmail: "확인 메일을 다시내려면 이메일을 입력하세요.",
     errResetNeedEmail: "재설정 안내를 받으려면 이메일을 입력하세요.",
     msgResendOk: "확인 메일을 다시 보냈습니다. 스팸함도 확인하세요.",
-    msgResetOk: "비밀번호 재설정 안내를 보냈습니다. 받은편지함과 스팸함을 확인하세요.",
+    msgResetOk:
+      "비밀번호 재설정 안내를 보냈습니다. 받은편지함과 스팸함을 확인하세요.",
     errNetwork: "네트워크 오류입니다. 다시 시도하세요.",
     errInvalidPayload: "이메일과 비밀번호(최소 요건)를 확인하세요.",
     errRateLimited: "시도가 너무 많습니다. 잠시 후 다시 시도하세요.",
@@ -642,7 +718,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errDisposableEmail: "일회용 이메일은 사용할 수 없습니다.",
     errEmailValidation: "이메일 검증에 실패했습니다(도메인 또는 MX).",
     errSignUpFailedDefault: "계정을 만들 수 없습니다(이미 등록된 이메일?).",
-    errEmailExistsDefault: "이 이메일은 이미 등록되어 있습니다. 로그인하거나 비밀번호를 재설정하세요.",
+    errEmailExistsDefault:
+      "이 이메일은 이미 등록되어 있습니다. 로그인하거나 비밀번호를 재설정하세요.",
     errSupabaseNotConfigured: "서버에 Supabase가 구성되어 있지 않습니다.",
     errRegisterDefault: "가입하지 못했습니다. 다시 시도하세요.",
     errWeakPassword:
@@ -664,7 +741,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     signInTab: "تسجيل الدخول",
     signUpTab: "إنشاء حساب",
     signInLead: "استخدم البريد الإلكتروني الذي سجّلت به (بعد تأكيد الرابط).",
-    signUpLead: "التحقق من البريد الإلكتروني مطلوب. اختر كلمة مرور قوية (8 أحرف على الأقل).",
+    signUpLead:
+      "التحقق من البريد الإلكتروني مطلوب. اختر كلمة مرور قوية (8 أحرف على الأقل).",
     emailLabel: "البريد الإلكتروني",
     passwordLabel: "كلمة المرور",
     emailPlaceholder: "you@example.com",
@@ -685,13 +763,15 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentReady: "يمكنك الآن القبول والمتابعة.",
     legalConsentAccept: "قبول والمتابعة",
     legalConsentCloseAria: "إغلاق نافذة القبول",
-    legalConsentRequired: "يجب عليك قبول سياسة الخصوصية وشروط الخدمة لإنشاء حسابك.",
+    legalConsentRequired:
+      "يجب عليك قبول سياسة الخصوصية وشروط الخدمة لإنشاء حسابك.",
     backToOracle: "← العودة إلى الأوراكل",
     closeModalAria: "إغلاق",
     modalVerifyTitle: "تحقق من بريدك الإلكتروني",
     modalExistsTitle: "البريد الإلكتروني مسجّل بالفعل",
     modalVerifyLine1: "أرسلنا رابط تحقق إلى",
-    modalVerifyLine2: "افتح بريدك الوارد (تحقق من البريد العشوائي) وانقر الرابط لتفعيل حسابك.",
+    modalVerifyLine2:
+      "افتح بريدك الوارد (تحقق من البريد العشوائي) وانقر الرابط لتفعيل حسابك.",
     modalExistsLine1: "البريد الإلكتروني",
     modalExistsLine2: "مسجّل بالفعل. سجّل الدخول بهذا البريد.",
     modalOk: "حسنًا",
@@ -700,15 +780,21 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errResendNeedEmail: "أدخل بريدك الإلكتروني لإعادة إرسال التأكيد.",
     errResetNeedEmail: "أدخل بريدك الإلكتروني لتلقي تعليمات إعادة التعيين.",
     msgResendOk: "أعدنا إرسال بريد التأكيد. تحقق من البريد العشوائي أيضًا.",
-    msgResetOk: "أرسلنا تعليمات إعادة تعيين كلمة المرور. تحقق من بريدك الوارد والبريد العشوائي.",
+    msgResetOk:
+      "أرسلنا تعليمات إعادة تعيين كلمة المرور. تحقق من بريدك الوارد والبريد العشوائي.",
     errNetwork: "خطأ في الشبكة. يرجى المحاولة مجددًا.",
-    errInvalidPayload: "تحقق من البريد الإلكتروني وكلمة المرور (الحد الأدنى المطلوب).",
+    errInvalidPayload:
+      "تحقق من البريد الإلكتروني وكلمة المرور (الحد الأدنى المطلوب).",
     errRateLimited: "محاولات كثيرة جدًا. انتظر قليلًا وحاول مرة أخرى.",
-    errTurnstileFailed: "فشل التحقق من الروبوتات. أعد تحميل الصفحة وحاول مرة أخرى.",
-    errDisposableEmail: "عناوين البريد الإلكتروني المؤقتة أو القابلة للإلقاء غير مقبولة.",
+    errTurnstileFailed:
+      "فشل التحقق من الروبوتات. أعد تحميل الصفحة وحاول مرة أخرى.",
+    errDisposableEmail:
+      "عناوين البريد الإلكتروني المؤقتة أو القابلة للإلقاء غير مقبولة.",
     errEmailValidation: "لم يجتز البريد الإلكتروني التحقق (النطاق أو MX).",
-    errSignUpFailedDefault: "تعذّر إنشاء الحساب (هل البريد الإلكتروني مسجّل بالفعل؟).",
-    errEmailExistsDefault: "هذا البريد الإلكتروني مسجّل بالفعل. سجّل الدخول أو أعد تعيين كلمة المرور.",
+    errSignUpFailedDefault:
+      "تعذّر إنشاء الحساب (هل البريد الإلكتروني مسجّل بالفعل؟).",
+    errEmailExistsDefault:
+      "هذا البريد الإلكتروني مسجّل بالفعل. سجّل الدخول أو أعد تعيين كلمة المرور.",
     errSupabaseNotConfigured: "Supabase غير مهيأ على الخادم.",
     errRegisterDefault: "تعذّر التسجيل. يرجى المحاولة مجددًا.",
     errWeakPassword:
@@ -724,7 +810,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   },
   hi: {
     configErrorTitle: "कॉन्फ़िगरेशन त्रुटि",
-    configErrorBody: "{{urlKey}} और {{anonKey}} कॉन्फ़िगर नहीं हैं। Vercel सेटिंग जाँचें।",
+    configErrorBody:
+      "{{urlKey}} और {{anonKey}} कॉन्फ़िगर नहीं हैं। Vercel सेटिंग जाँचें।",
     brandSubtitle: "प्रामाणिक I Ching ओरेकल",
     tablistAria: "लॉग इन या खाता बनाएँ",
     signInTab: "लॉग इन करें",
@@ -745,12 +832,14 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     dividerOr: "या",
     continueGoogle: "Google से जारी रखें",
     legalConsentTitle: "कानूनी सहमति",
-    legalConsentIntro: "खाता बनाने से पहले सेवा की शर्तें और गोपनीयता नीति पढ़ें और स्वीकार करें।",
+    legalConsentIntro:
+      "खाता बनाने से पहले सेवा की शर्तें और गोपनीयता नीति पढ़ें और स्वीकार करें।",
     legalConsentPendingScroll: "पूरी शर्तें देखने के लिए नीचे स्क्रॉल करें",
     legalConsentReady: "मैंने शर्तें पढ़ ली हैं",
     legalConsentAccept: "स्वीकार करें और खाता बनाएँ",
     legalConsentCloseAria: "कानूनी सहमति विंडो बंद करें",
-    legalConsentRequired: "जारी रखने से पहले शर्तें पढ़ना और स्वीकार करना अनिवार्य है।",
+    legalConsentRequired:
+      "जारी रखने से पहले शर्तें पढ़ना और स्वीकार करना अनिवार्य है।",
     backToOracle: "ओरेकल पर वापस",
     closeModalAria: "विंडो बंद करें",
     modalVerifyTitle: "अपना ईमेल सत्यापित करें",
@@ -760,7 +849,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     modalExistsLine1: "इस ईमेल से पहले से खाता है।",
     modalExistsLine2: "लॉग इन करें या «पासवर्ड भूल गए» का उपयोग करें।",
     modalOk: "ठीक है",
-    errEmailNotConfirmed: "आपका ईमेल अभी तक सत्यापित नहीं हुआ। इनबॉक्स जाँचें या पुष्टि ईमेल पुनः भेजें।",
+    errEmailNotConfirmed:
+      "आपका ईमेल अभी तक सत्यापित नहीं हुआ। इनबॉक्स जाँचें या पुष्टि ईमेल पुनः भेजें।",
     errResendNeedEmail: "पुनः भेजने के लिए अपना ईमेल दर्ज करें।",
     errResetNeedEmail: "पासवर्ड रीसेट के लिए अपना ईमेल दर्ज करें।",
     msgResendOk: "पुष्टि ईमेल भेजा गया। इनबॉक्स और स्पैम जाँचें।",
@@ -768,18 +858,25 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     errNetwork: "नेटवर्क त्रुटि। अपना कनेक्शन जाँचें और पुनः प्रयास करें।",
     errInvalidPayload: "अमान्य डेटा। इनपुट जाँचें और पुनः प्रयास करें।",
     errRateLimited: "बहुत अधिक अनुरोध। थोड़ी देर बाद पुनः प्रयास करें।",
-    errTurnstileFailed: "मानव सत्यापन विफल। पृष्ठ पुनः लोड करें और पुनः प्रयास करें।",
+    errTurnstileFailed:
+      "मानव सत्यापन विफल। पृष्ठ पुनः लोड करें और पुनः प्रयास करें।",
     errDisposableEmail: "अस्थायी ईमेल पते स्वीकार नहीं किए जाते।",
-    errEmailValidation: "यह ईमेल सत्यापित नहीं हो सका। पता जाँचें और पुनः प्रयास करें।",
+    errEmailValidation:
+      "यह ईमेल सत्यापित नहीं हो सका। पता जाँचें और पुनः प्रयास करें।",
     errSignUpFailedDefault: "खाता नहीं बन सका। पुनः प्रयास करें।",
     errEmailExistsDefault: "इस ईमेल से पहले से खाता है।",
-    errSupabaseNotConfigured: "Supabase कॉन्फ़िगर नहीं है। सर्वर सेटिंग जाँचें।",
+    errSupabaseNotConfigured:
+      "Supabase कॉन्फ़िगर नहीं है। सर्वर सेटिंग जाँचें।",
     errRegisterDefault: "पंजीकरण विफल। पुनः प्रयास करें।",
-    errWeakPassword: "पासवर्ड कमज़ोर है। अक्षरों और अंकों का मिश्रण उपयोग करें।",
+    errWeakPassword:
+      "पासवर्ड कमज़ोर है। अक्षरों और अंकों का मिश्रण उपयोग करें।",
     errSignupDisabled: "पंजीकरण वर्तमान में बंद है।",
-    errSignupConfirmationFailed: "पुष्टि ईमेल नहीं भेजा जा सका। पुनः प्रयास करें।",
-    errLegalConsentStoreFailed: "कानूनी सहमति सहेजी नहीं जा सकी। पुनः प्रयास करें।",
-    errSignupAuthInternalError: "प्रमाणीकरण में आंतरिक त्रुटि। पुनः प्रयास करें या सहायता से संपर्क करें।",
+    errSignupConfirmationFailed:
+      "पुष्टि ईमेल नहीं भेजा जा सका। पुनः प्रयास करें।",
+    errLegalConsentStoreFailed:
+      "कानूनी सहमति सहेजी नहीं जा सकी। पुनः प्रयास करें।",
+    errSignupAuthInternalError:
+      "प्रमाणीकरण में आंतरिक त्रुटि। पुनः प्रयास करें या सहायता से संपर्क करें।",
   },
 };
 
@@ -796,7 +893,12 @@ export function formatLoginConfigErrorBody(m: LoginPageUiMessages): string {
 
 export function formatLoginRegisterApiError(
   m: LoginPageUiMessages,
-  data: { error?: string; reason?: string; message?: string; authCode?: string },
+  data: {
+    error?: string;
+    reason?: string;
+    message?: string;
+    authCode?: string;
+  },
 ): string {
   switch (data.error) {
     case "invalid_payload":
@@ -810,7 +912,9 @@ export function formatLoginRegisterApiError(
     case "legal_consent_required":
       return m.legalConsentRequired;
     case "email_rejected":
-      return data.reason === "disposable" ? m.errDisposableEmail : m.errEmailValidation;
+      return data.reason === "disposable"
+        ? m.errDisposableEmail
+        : m.errEmailValidation;
     case "signup_disabled":
       return m.errSignupDisabled;
     case "signup_confirmation_failed":

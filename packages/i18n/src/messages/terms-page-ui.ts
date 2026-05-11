@@ -55,10 +55,8 @@ const TERMS_EN: TermsPageMessages = {
     "Do not automate abusive requests or evade technical or token limits.",
   ],
   s5Title: "5) User content",
-  s5p1:
-    "You retain ownership of your questions and content. You grant us a limited license to process and store it solely to operate, improve, and secure the service.",
-  s5p2:
-    "If you use PDF export or image download, you do so on your own initiative and at your sole discretion; those files are generated on your device and you are responsible for safeguarding them.",
+  s5p1: "You retain ownership of your questions and content. You grant us a limited license to process and store it solely to operate, improve, and secure the service.",
+  s5p2: "If you use PDF export or image download, you do so on your own initiative and at your sole discretion; those files are generated on your device and you are responsible for safeguarding them.",
   s6Title: "6) Availability and changes",
   s6Body:
     "We may update features, providers, or architecture to maintain quality, security, and performance. We do not guarantee uninterrupted availability.",
@@ -106,10 +104,8 @@ const TERMS_ES: TermsPageMessages = {
     "No automatizar abuso de consultas ni evadir límites técnicos o de tokens.",
   ],
   s5Title: "5) Contenido del usuario",
-  s5p1:
-    "Mantienes titularidad sobre tus preguntas y contenido. Nos concedes una licencia limitada para procesarlo y almacenarlo exclusivamente para operar, mejorar y asegurar el servicio.",
-  s5p2:
-    "Si utilizas la exportación a PDF o la descarga de imagen, lo haces por tu cuenta y bajo tu propia discreción; esos archivos se generan en tu dispositivo y su custodia es responsabilidad tuya.",
+  s5p1: "Mantienes titularidad sobre tus preguntas y contenido. Nos concedes una licencia limitada para procesarlo y almacenarlo exclusivamente para operar, mejorar y asegurar el servicio.",
+  s5p2: "Si utilizas la exportación a PDF o la descarga de imagen, lo haces por tu cuenta y bajo tu propia discreción; esos archivos se generan en tu dispositivo y su custodia es responsabilidad tuya.",
   s6Title: "6) Disponibilidad y cambios",
   s6Body:
     "Podemos actualizar funciones, proveedores o arquitectura para mantener calidad, seguridad y rendimiento. No garantizamos disponibilidad ininterrumpida.",
@@ -161,10 +157,8 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
       "Não automatizes pedidos abusivos nem contornes limites técnicos ou de tokens.",
     ],
     s5Title: "5) Conteúdo do utilizador",
-    s5p1:
-      "Manténs a titularidade das tuas perguntas e conteúdo. Concedes-nos uma licença limitada para o processar e armazenar apenas para operar, melhorar e proteger o serviço.",
-    s5p2:
-      "Se usares exportação PDF ou descarga de imagem, fá-lo por tua iniciativa e discricionariedade; os ficheiros são gerados no teu dispositivo e a sua custódia é tua responsabilidade.",
+    s5p1: "Manténs a titularidade das tuas perguntas e conteúdo. Concedes-nos uma licença limitada para o processar e armazenar apenas para operar, melhorar e proteger o serviço.",
+    s5p2: "Se usares exportação PDF ou descarga de imagem, fá-lo por tua iniciativa e discricionariedade; os ficheiros são gerados no teu dispositivo e a sua custódia é tua responsabilidade.",
     s6Title: "6) Disponibilidade e alterações",
     s6Body:
       "Podemos atualizar funcionalidades, fornecedores ou arquitetura para manter qualidade, segurança e desempenho. Não garantimos disponibilidade ininterrupta.",
@@ -212,10 +206,8 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
       "N’automatisez pas d’abus ni ne contournez les limites techniques ou de jetons.",
     ],
     s5Title: "5) Contenu utilisateur",
-    s5p1:
-      "Vous conservez la propriété de vos questions et contenus. Vous nous accordez une licence limitée pour les traiter et les stocker uniquement pour exploiter, améliorer et sécuriser le service.",
-    s5p2:
-      "Si vous exportez en PDF ou téléchargez une image, vous le faites à votre initiative et à votre discrétion ; les fichiers sont générés sur votre appareil et vous en êtes responsable.",
+    s5p1: "Vous conservez la propriété de vos questions et contenus. Vous nous accordez une licence limitée pour les traiter et les stocker uniquement pour exploiter, améliorer et sécuriser le service.",
+    s5p2: "Si vous exportez en PDF ou téléchargez une image, vous le faites à votre initiative et à votre discrétion ; les fichiers sont générés sur votre appareil et vous en êtes responsable.",
     s6Title: "6) Disponibilité et changements",
     s6Body:
       "Nous pouvons mettre à jour fonctionnalités, prestataires ou architecture pour la qualité, la sécurité et les performances. Nous ne garantissons pas une disponibilité ininterrompue.",
@@ -263,10 +255,8 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
       "Automatisieren Sie keinen Missbrauch und umgehen Sie keine technischen oder Token-Limits.",
     ],
     s5Title: "5) Nutzerinhalte",
-    s5p1:
-      "Sie behalten das Eigentum an Fragen und Inhalten. Sie gewähren uns eine beschränkte Lizenz zur Verarbeitung und Speicherung ausschließlich zum Betrieb, zur Verbesserung und Sicherung des Dienstes.",
-    s5p2:
-      "PDF-Export oder Bilddownload erfolgen auf eigene Initiative; Dateien entstehen auf Ihrem Gerät, Sie sind für deren Schutz verantwortlich.",
+    s5p1: "Sie behalten das Eigentum an Fragen und Inhalten. Sie gewähren uns eine beschränkte Lizenz zur Verarbeitung und Speicherung ausschließlich zum Betrieb, zur Verbesserung und Sicherung des Dienstes.",
+    s5p2: "PDF-Export oder Bilddownload erfolgen auf eigene Initiative; Dateien entstehen auf Ihrem Gerät, Sie sind für deren Schutz verantwortlich.",
     s6Title: "6) Verfügbarkeit und Änderungen",
     s6Body:
       "Wir können Funktionen, Anbieter oder Architektur für Qualität, Sicherheit und Leistung anpassen. Ununterbrochene Verfügbarkeit garantieren wir nicht.",
@@ -314,10 +304,8 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
       "Non automatizzare abusi né eludere limiti tecnici o di token.",
     ],
     s5Title: "5) Contenuti dell’utente",
-    s5p1:
-      "Conservi la titolarità di domande e contenuti. Ci concedi una licenza limitata per elaborarli e archiviarli solo per operare, migliorare e proteggere il servizio.",
-    s5p2:
-      "Se usi export PDF o download immagine, lo fai di tua iniziativa; i file sono generati sul tuo dispositivo e ne sei responsabile.",
+    s5p1: "Conservi la titolarità di domande e contenuti. Ci concedi una licenza limitata per elaborarli e archiviarli solo per operare, migliorare e proteggere il servizio.",
+    s5p2: "Se usi export PDF o download immagine, lo fai di tua iniziativa; i file sono generati sul tuo dispositivo e ne sei responsabile.",
     s6Title: "6) Disponibilità e modifiche",
     s6Body:
       "Possiamo aggiornare funzioni, fornitori o architettura per qualità, sicurezza e prestazioni. Non garantiamo disponibilità ininterrotta.",
@@ -365,10 +353,8 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
       "濫用リクエストの自動化や、技術的・トークン上の制限の回避を禁止します。",
     ],
     s5Title: "5) ユーザーコンテンツ",
-    s5p1:
-      "質問とコンテンツの所有権はユーザーに留まります。サービスの運営・改善・保護のためにのみ処理・保存する限定的ライセンスを当社に付与します。",
-    s5p2:
-      "PDF 出力や画像ダウンロードはご自身の判断で行い、ファイルは端末上で生成されます。保管はご自身の責任です。",
+    s5p1: "質問とコンテンツの所有権はユーザーに留まります。サービスの運営・改善・保護のためにのみ処理・保存する限定的ライセンスを当社に付与します。",
+    s5p2: "PDF 出力や画像ダウンロードはご自身の判断で行い、ファイルは端末上で生成されます。保管はご自身の責任です。",
     s6Title: "6) 可用性と変更",
     s6Body:
       "品質・セキュリティ・パフォーマンスのため、機能、プロバイダ、アーキテクチャを更新することがあります。中断のない可用性は保証しません。",
@@ -416,10 +402,8 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
       "不得自动化滥用请求或规避技术或代币限制。",
     ],
     s5Title: "5) 用户内容",
-    s5p1:
-      "您保留对问题与内容的所有权。您授予我们有限的许可，仅为运营、改进与保护服务而处理与存储。",
-    s5p2:
-      "若使用 PDF 导出或图像下载，由您自主决定；文件在您的设备上生成，由您负责保管。",
+    s5p1: "您保留对问题与内容的所有权。您授予我们有限的许可，仅为运营、改进与保护服务而处理与存储。",
+    s5p2: "若使用 PDF 导出或图像下载，由您自主决定；文件在您的设备上生成，由您负责保管。",
     s6Title: "6) 可用性与变更",
     s6Body:
       "我们可更新功能、提供方或架构以维护质量、安全与性能。不保证不间断可用。",
@@ -467,10 +451,8 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
       "لا تقم بأتمتة الطلبات التعسفية أو التحايل على الحدود التقنية أو حدود الرموز.",
     ],
     s5Title: "5) محتوى المستخدم",
-    s5p1:
-      "تحتفظ بملكية أسئلتك ومحتواك. تمنحنا ترخيصًا محدودًا لمعالجته وتخزينه فقط لتشغيل الخدمة وتحسينها وتأمينها.",
-    s5p2:
-      "إذا استخدمت تصدير PDF أو تنزيل الصورة، فإنك تفعل ذلك بمبادرتك الخاصة وبتقديرك وحدك؛ تُنشأ هذه الملفات على جهازك وأنت مسؤول عن حفاظها.",
+    s5p1: "تحتفظ بملكية أسئلتك ومحتواك. تمنحنا ترخيصًا محدودًا لمعالجته وتخزينه فقط لتشغيل الخدمة وتحسينها وتأمينها.",
+    s5p2: "إذا استخدمت تصدير PDF أو تنزيل الصورة، فإنك تفعل ذلك بمبادرتك الخاصة وبتقديرك وحدك؛ تُنشأ هذه الملفات على جهازك وأنت مسؤول عن حفاظها.",
     s6Title: "6) التوفر والتغييرات",
     s6Body:
       "قد نحدّث الميزات أو المزودين أو البنية التحتية للحفاظ على الجودة والأمان والأداء. لا نضمن التوفر المتواصل دون انقطاع.",
@@ -518,10 +500,8 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
       "दुरुपयोगपूर्ण अनुरोधों को स्वचालित न करें या तकनीकी या टोकन सीमाओं से बचने का प्रयास न करें।",
     ],
     s5Title: "5) उपयोगकर्ता सामग्री",
-    s5p1:
-      "आप अपने प्रश्नों और सामग्री के स्वामित्व को बनाए रखते हैं। आप हमें केवल सेवा को संचालित, सुधारने और सुरक्षित करने के लिए इसे प्रसंस्कृत और संग्रहीत करने का सीमित लाइसेंस देते हैं।",
-    s5p2:
-      "यदि आप PDF निर्यात या छवि डाउनलोड का उपयोग करते हैं, तो आप ऐसा अपनी पहल पर और अपने विवेक से करते हैं; वे फ़ाइलें आपके डिवाइस पर बनती हैं और उनकी सुरक्षा आपकी जिम्मेदारी है।",
+    s5p1: "आप अपने प्रश्नों और सामग्री के स्वामित्व को बनाए रखते हैं। आप हमें केवल सेवा को संचालित, सुधारने और सुरक्षित करने के लिए इसे प्रसंस्कृत और संग्रहीत करने का सीमित लाइसेंस देते हैं।",
+    s5p2: "यदि आप PDF निर्यात या छवि डाउनलोड का उपयोग करते हैं, तो आप ऐसा अपनी पहल पर और अपने विवेक से करते हैं; वे फ़ाइलें आपके डिवाइस पर बनती हैं और उनकी सुरक्षा आपकी जिम्मेदारी है।",
     s6Title: "6) उपलब्धता और परिवर्तन",
     s6Body:
       "हम गुणवत्ता, सुरक्षा और प्रदर्शन बनाए रखने के लिए सुविधाओं, प्रदाताओं या आर्किटेक्चर को अपडेट कर सकते हैं। हम निर्बाध उपलब्धता की गारंटी नहीं देते।",
@@ -569,10 +549,8 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
       "남용 요청을 자동화하거나 기술·토큰 한도를 우회하지 마십시오.",
     ],
     s5Title: "5) 사용자 콘텐츠",
-    s5p1:
-      "질문과 콘텐츠의 소유권은 귀하에게 있습니다. 운영·개선·보안을 위해서만 처리·저장할 수 있는 제한적 라이선스를 당사에 부여합니다.",
-    s5p2:
-      "PDF보내기나 이미지 다운로드는 본인 판단으로 수행하며, 파일은 기기에서 생성되며 보관 책임은 귀하에게 있습니다.",
+    s5p1: "질문과 콘텐츠의 소유권은 귀하에게 있습니다. 운영·개선·보안을 위해서만 처리·저장할 수 있는 제한적 라이선스를 당사에 부여합니다.",
+    s5p2: "PDF보내기나 이미지 다운로드는 본인 판단으로 수행하며, 파일은 기기에서 생성되며 보관 책임은 귀하에게 있습니다.",
     s6Title: "6) 가용성 및 변경",
     s6Body:
       "품질·보안·성능을 위해 기능, 제공업체, 아키텍처를 업데이트할 수 있습니다. 중단 없는 가용성은 보장하지 않습니다.",

@@ -3,10 +3,12 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "User Guide | The Original I Ching App",
-  description: "Learn how to consult the I Ching and Oracle Bones with AI: methods, token packs, image generation, and chat features.",
+  description:
+    "Learn how to consult the I Ching and Oracle Bones with AI: methods, token packs, image generation, and chat features.",
   openGraph: {
     title: "User Guide | The Original I Ching App",
-    description: "How to use the I Ching oracle app: methods, token packs, AI interpretation, and more.",
+    description:
+      "How to use the I Ching oracle app: methods, token packs, AI interpretation, and more.",
   },
 };
 import {
@@ -36,16 +38,17 @@ export default async function GuiaRapidaPage() {
   return (
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
+        <Link href="/">{nav.backToOracle}</Link> ·{" "}
+        <Link href="/faqs">{nav.faqs}</Link> ·{" "}
         <Link href="/about">{nav.aboutShort}</Link> ·{" "}
-        <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
+        <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
+        <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
         <Link href="/terms">{nav.termsShort}</Link>
       </nav>
       <article className="doc-article">
         <h1>{g.title}</h1>
         <p className="doc-lead">
-          {g.leadPart1}
-          I Ching
+          {g.leadPart1}I Ching
           {g.leadPart2}
           {g.bonesLabel}
           {g.leadPart3}
@@ -57,9 +60,7 @@ export default async function GuiaRapidaPage() {
 
         <h3>{q.s1Heading}</h3>
         <ul>
-          <li>
-            I Ching: {q.ichingLi}
-          </li>
+          <li>I Ching: {q.ichingLi}</li>
           <li>
             {q.bonesLabel}: {q.bonesLi}
           </li>
@@ -89,6 +90,7 @@ export default async function GuiaRapidaPage() {
             <strong>{g.bonesLabel}</strong>: {g.bonesBulletSuffix}
           </li>
           <li>{g.threadDepthBullet}</li>
+          <li>{g.translatorOptionsBullet}</li>
         </ul>
 
         <h3>{g.chatsHeading}</h3>
@@ -140,14 +142,22 @@ export default async function GuiaRapidaPage() {
         <p>{packsUi.currentPricing}</p>
         <ul>
           <li>
-            <strong>{packsUi.freeProductName}:</strong> {formatGuiaFreeLine(packsUi, FREE_TOKENS)}
+            <strong>{packsUi.freeProductName}:</strong>{" "}
+            {formatGuiaFreeLine(packsUi, FREE_TOKENS)}
           </li>
           <li>
             <strong>{getTokenPackLabel("tokens_seeker_20", locale)}:</strong>{" "}
-            {formatGuiaPackPrice(packsUi, TOKEN_PACKS.tokens_seeker_20.price, TOKEN_PACKS.tokens_seeker_20.tokens, tokensWord)}
+            {formatGuiaPackPrice(
+              packsUi,
+              TOKEN_PACKS.tokens_seeker_20.price,
+              TOKEN_PACKS.tokens_seeker_20.tokens,
+              tokensWord,
+            )}
           </li>
           <li>
-            <strong>{getTokenPackLabel("tokens_practitioner_40", locale)}:</strong>{" "}
+            <strong>
+              {getTokenPackLabel("tokens_practitioner_40", locale)}:
+            </strong>{" "}
             {formatGuiaPackPrice(
               packsUi,
               TOKEN_PACKS.tokens_practitioner_40.price,
@@ -157,7 +167,12 @@ export default async function GuiaRapidaPage() {
           </li>
           <li>
             <strong>{getTokenPackLabel("tokens_master_100", locale)}:</strong>{" "}
-            {formatGuiaPackPrice(packsUi, TOKEN_PACKS.tokens_master_100.price, TOKEN_PACKS.tokens_master_100.tokens, tokensWord)}
+            {formatGuiaPackPrice(
+              packsUi,
+              TOKEN_PACKS.tokens_master_100.price,
+              TOKEN_PACKS.tokens_master_100.tokens,
+              tokensWord,
+            )}
           </li>
         </ul>
         <p>{packsUi.tokensAccumulate}</p>
@@ -165,11 +180,14 @@ export default async function GuiaRapidaPage() {
         <p>{packsUi.perPlanDetailHeading}</p>
         <ul>
           <li>
-            <strong>{packsUi.freeTierLabel}</strong> {getFreeTierMarketing(locale)}
+            <strong>{packsUi.freeTierLabel}</strong>{" "}
+            {getFreeTierMarketing(locale)}
           </li>
           {PACK_IDS_ORDERED.map((id) => (
             <li key={id}>
-              <strong>{getTokenPackLabel(id as TokenPackMarketingId, locale)}:</strong>{" "}
+              <strong>
+                {getTokenPackLabel(id as TokenPackMarketingId, locale)}:
+              </strong>{" "}
               {getPackMarketingLine(id as TokenPackMarketingId, locale)}
             </li>
           ))}
@@ -191,9 +209,11 @@ export default async function GuiaRapidaPage() {
           {g.legalMetaAfterTerms}
         </p>
 
-      <nav className="doc-nav">
-          <Link href="/">{nav.backToOracle}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-          <Link href="/about">{nav.aboutShort}</Link> · <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
+        <nav className="doc-nav">
+          <Link href="/">{nav.backToOracle}</Link> ·{" "}
+          <Link href="/faqs">{nav.faqs}</Link> ·{" "}
+          <Link href="/about">{nav.aboutShort}</Link> ·{" "}
+          <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
           <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
           <Link href="/terms">{nav.termsShort}</Link>
         </nav>

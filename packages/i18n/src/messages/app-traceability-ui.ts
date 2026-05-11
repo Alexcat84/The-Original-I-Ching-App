@@ -103,6 +103,8 @@ const APP_TRACEABILITY_UI: Record<AppLocale, AppTraceabilityUiMessages> = {
   },
 };
 
-export function getAppTraceabilityUiMessages(locale: AppLocale): AppTraceabilityUiMessages {
+export function getAppTraceabilityUiMessages(
+  locale: AppLocale,
+): AppTraceabilityUiMessages {
   return APP_TRACEABILITY_UI[locale] ?? APP_TRACEABILITY_UI[DEFAULT_LOCALE];
 }

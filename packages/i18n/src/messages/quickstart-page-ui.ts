@@ -38,7 +38,8 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "Ves el estado de profundidad del hilo activo (cuántas lecturas encadenadas permite tu plan en ese chat).",
     s2Li3: "Gestionas tokens y compra de packs.",
     s2Li4: "Gestionas seguridad 2FA opcional.",
-    s2Li5: "Al final del panel tienes enlaces a documentación, privacidad y términos.",
+    s2Li5:
+      "Al final del panel tienes enlaces a documentación, privacidad y términos.",
     s3Heading: "3) Resultados y copia local",
     s3Li1: "Cada consulta puede traer interpretación + imagen.",
     s3Li2:
@@ -51,7 +52,8 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     lead: "This guide is practical: only how to use I Ching, Bones, and the options in the bottom panel.",
     bonesLabel: "Bones",
     s1Heading: "1) Choose consultation mode",
-    ichingLi: "hexagram-and-lines reading. Use it for open questions and broad reflection.",
+    ichingLi:
+      "hexagram-and-lines reading. Use it for open questions and broad reflection.",
     bonesLi:
       "yes/no crack-pattern reading. Use it to validate direction or a specific decision.",
     s2Heading: "2) Use the Options panel",
@@ -60,7 +62,8 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "See active thread depth status (how many chained readings your plan allows in that chat).",
     s2Li3: "Manage tokens and pack purchases.",
     s2Li4: "Manage optional 2FA security.",
-    s2Li5: "Documentation, privacy, and terms links are at the bottom of the panel.",
+    s2Li5:
+      "Documentation, privacy, and terms links are at the bottom of the panel.",
     s3Heading: "3) Results and local copy",
     s3Li1: "Each consultation can include interpretation + image.",
     s3Li2:
@@ -83,7 +86,8 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "Vês o estado de profundidade do fio ativo (quantas leituras encadeadas o teu plano permite nesse chat).",
     s2Li3: "Geres tokens e compra de packs.",
     s2Li4: "Geres segurança 2FA opcional.",
-    s2Li5: "No final do painel tens ligações a documentação, privacidade e termos.",
+    s2Li5:
+      "No final do painel tens ligações a documentação, privacidade e termos.",
     s3Heading: "3) Resultados e cópia local",
     s3Li1: "Cada consulta pode incluir interpretação + imagem.",
     s3Li2:
@@ -106,7 +110,8 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "Voir la profondeur du fil actif (combien de lectures enchaînées votre offre autorise dans ce chat).",
     s2Li3: "Gérer les jetons et l’achat de packs.",
     s2Li4: "Gérer la 2FA optionnelle.",
-    s2Li5: "En bas du panneau : liens vers la documentation, la confidentialité et les conditions.",
+    s2Li5:
+      "En bas du panneau : liens vers la documentation, la confidentialité et les conditions.",
     s3Heading: "3) Résultats et copie locale",
     s3Li1: "Chaque consultation peut inclure interprétation + image.",
     s3Li2:
@@ -129,7 +134,8 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
       "Aktive Thread-Tiefe sehen (wie viele verkettete Lesungen dein Plan in diesem Chat erlaubt).",
     s2Li3: "Token und Pack-Käufe verwalten.",
     s2Li4: "Optionale 2FA-Sicherheit verwalten.",
-    s2Li5: "Unten im Panel: Links zu Dokumentation, Datenschutz und Nutzungsbedingungen.",
+    s2Li5:
+      "Unten im Panel: Links zu Dokumentation, Datenschutz und Nutzungsbedingungen.",
     s3Heading: "3) Ergebnisse und lokale Kopie",
     s3Li1: "Jede Beratung kann Deutung + Bild enthalten.",
     s3Li2:
@@ -169,10 +175,12 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     bonesLi: "亀裂パターンによるイエス／ノー読み。方向や具体的判断の確認向け。",
     s2Heading: "2) オプションパネルを使う",
     s2Li1: "I Ching と甲骨を切り替えます。",
-    s2Li2: "アクティブスレッドの深さ（プランがそのチャットで許容する連続読み取り回数）を確認します。",
+    s2Li2:
+      "アクティブスレッドの深さ（プランがそのチャットで許容する連続読み取り回数）を確認します。",
     s2Li3: "トークンとパック購入を管理します。",
     s2Li4: "任意の2要素認証を管理します。",
-    s2Li5: "パネル下部にドキュメント・プライバシー・利用規約へのリンクがあります。",
+    s2Li5:
+      "パネル下部にドキュメント・プライバシー・利用規約へのリンクがあります。",
     s3Heading: "3) 結果とローカル保存",
     s3Li1: "各相談に解釈＋画像が含まれる場合があります。",
     s3Li2:
@@ -209,7 +217,8 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     bonesLi: "균열 패턴의 예/아니오 해석. 방향이나 구체적 결정 검증에 적합.",
     s2Heading: "2) 옵션 패널 사용",
     s2Li1: "I Ching과 갑골을 전환합니다.",
-    s2Li2: "활성 스레드 깊이(플랜이 해당 채팅에서 허용하는 연속 해석 횟수)를 확인합니다.",
+    s2Li2:
+      "활성 스레드 깊이(플랜이 해당 채팅에서 허용하는 연속 해석 횟수)를 확인합니다.",
     s2Li3: "토큰과 팩 구매를 관리합니다.",
     s2Li4: "선택적 2단계 인증을 관리합니다.",
     s2Li5: "패널 하단에 문서·개인정보 처리방침·서비스 약관 링크가 있습니다.",
@@ -225,9 +234,9 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     lead: "هذا الدليل عملي: فقط كيفية استخدام I Ching والعظام والخيارات في اللوحة السفلية.",
     bonesLabel: "العظام",
     s1Heading: "1) اختر وضع الاستشارة",
-    ichingLi: "قراءة الهيكساغرامات والخطوط. استخدمها للأسئلة المفتوحة والتأمل الواسع.",
-    bonesLi:
-      "قراءة نعم/لا بنمط الشقوق. استخدمها للتحقق من اتجاه أو قرار محدد.",
+    ichingLi:
+      "قراءة الهيكساغرامات والخطوط. استخدمها للأسئلة المفتوحة والتأمل الواسع.",
+    bonesLi: "قراءة نعم/لا بنمط الشقوق. استخدمها للتحقق من اتجاه أو قرار محدد.",
     s2Heading: "2) استخدم لوحة الخيارات",
     s2Li1: "التبديل بين I Ching والعظام.",
     s2Li2:
@@ -247,11 +256,14 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     lead: "यह मार्गदर्शिका व्यावहारिक है: केवल I Ching, हड्डियाँ और नीचे के पैनल के विकल्पों का उपयोग करने का तरीका।",
     bonesLabel: "हड्डियाँ",
     s1Heading: "१) परामर्श मोड चुनें",
-    ichingLi: "हेक्साग्राम-और-रेखाएँ पठन। खुले प्रश्नों और व्यापक चिंतन के लिए उपयोग करें।",
-    bonesLi: "हाँ/नहीं दरार-पैटर्न पठन। दिशा या किसी विशेष निर्णय को सत्यापित करने के लिए उपयोग करें।",
+    ichingLi:
+      "हेक्साग्राम-और-रेखाएँ पठन। खुले प्रश्नों और व्यापक चिंतन के लिए उपयोग करें।",
+    bonesLi:
+      "हाँ/नहीं दरार-पैटर्न पठन। दिशा या किसी विशेष निर्णय को सत्यापित करने के लिए उपयोग करें।",
     s2Heading: "२) विकल्प पैनल का उपयोग करें",
     s2Li1: "I Ching और हड्डियाँ के बीच स्विच करें।",
-    s2Li2: "सक्रिय थ्रेड गहराई स्थिति देखें (उस चैट में आपकी योजना कितने श्रृंखलाबद्ध पठन की अनुमति देती है)।",
+    s2Li2:
+      "सक्रिय थ्रेड गहराई स्थिति देखें (उस चैट में आपकी योजना कितने श्रृंखलाबद्ध पठन की अनुमति देती है)।",
     s2Li3: "टोकन और पैक खरीद प्रबंधित करें।",
     s2Li4: "वैकल्पिक 2FA सुरक्षा प्रबंधित करें।",
     s2Li5: "दस्तावेज़ीकरण, गोपनीयता और शर्तों के लिंक पैनल के नीचे हैं।",
@@ -260,10 +272,13 @@ const QUICKSTART_PAGE_UI: Record<AppLocale, QuickstartPageUiMessages> = {
     s3Li2:
       "यदि आप ऐप के बाहर रिकॉर्ड चाहते हैं, तो विकल्प आपको छवि डाउनलोड करने और वर्तमान थ्रेड को PDF में निर्यात करने देते हैं; यह वैकल्पिक है।",
     s3Li3: "आप इतिहास (चैट) से चैट हटा सकते हैं।",
-    legacyRedirectNotice: "उपयोगकर्ता मार्गदर्शिका पर पुनर्निर्देशित हो रहे हैं…",
+    legacyRedirectNotice:
+      "उपयोगकर्ता मार्गदर्शिका पर पुनर्निर्देशित हो रहे हैं…",
   },
 };
 
-export function getQuickstartPageUiMessages(locale: AppLocale): QuickstartPageUiMessages {
+export function getQuickstartPageUiMessages(
+  locale: AppLocale,
+): QuickstartPageUiMessages {
   return QUICKSTART_PAGE_UI[locale] ?? QUICKSTART_PAGE_UI[DEFAULT_LOCALE];
 }
