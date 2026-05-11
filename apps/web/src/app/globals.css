@@ -2340,19 +2340,43 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   align-items: center;
   justify-content: center;
   padding: 0;
+  margin: 0;
   pointer-events: auto;
   cursor: pointer;
   background: transparent;
   border: none;
   outline: none;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
   color: var(--fg-muted);
   opacity: 0.58;
+}
+
+.oracle-toggle-options-row .oracle-toggle-option span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  line-height: 1;
+  padding-bottom: 2px; /* Slight nudge for optical centering if needed, but let's test flat first */
 }
 
 .oracle-toggle-options-row .oracle-toggle-option.is-active {
   color: var(--fg);
   opacity: 1;
   text-shadow: 0 0 7px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.oracle-toggle-master-label {
+  color: #b08a38; /* A more elegant, subdued golden-bronze that works in light/dark */
+}
+[data-theme="dark"] .oracle-toggle-master-label {
+  color: #d4af37; /* Brighter gold for dark mode */
+}
+.oracle-toggle-option.is-active .oracle-toggle-master-label {
+  color: inherit;
 }
 
 /* ── prefers-reduced-motion: no keyframe animations, instant transitions ──── */

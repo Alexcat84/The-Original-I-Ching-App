@@ -4504,7 +4504,7 @@ export default function HomePage() {
                                   onClick={() => setTranslatorId("master_combined")}
                                   disabled={loading}
                                 >
-                                  <span style={{ color: translatorId === "master_combined" ? "inherit" : "var(--color-premium, #ffd700)" }}>Master (3)</span>
+                                  <span className="oracle-toggle-master-label">Master (3)</span>
                                 </button>
                               </div>
                             </div>
