@@ -2741,17 +2741,29 @@ html[data-theme="dark"] .composer-session-limit-float {
   resize: none;
   overflow-y: hidden;
   box-shadow: inset 0 1px 2px var(--input-inset);
+  /* Fix for black-on-black text in some Android WebViews during spellcheck/selection */
+  -webkit-text-fill-color: initial;
 }
 
-html[data-theme="light"] .composer-input-row textarea,
-html:not([data-theme]) .composer-input-row textarea {
+html[data-theme="light"] select,
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html:not([data-theme]) select,
+html:not([data-theme]) input,
+html:not([data-theme]) textarea {
   color-scheme: light;
-  -webkit-text-fill-color: var(--fg);
 }
 
-html[data-theme="dark"] .composer-input-row textarea {
+html[data-theme="dark"] select,
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea {
   color-scheme: dark;
-  -webkit-text-fill-color: var(--fg);
+}
+
+/* Fix for dark mode native select dropdowns */
+html[data-theme="dark"] select option {
+  background-color: #1a1a1a;
+  color: #ffffff;
 }
 
 .composer-input-row button[type="button"]:not(.secondary-btn) {
@@ -4544,6 +4556,24 @@ html[data-theme="dark"] .verdict-pill--silent {
   margin-bottom: 0.35rem;
 }
 
+.doc-sources-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 1.25rem 0;
+}
+
+.doc-sources-list li {
+  font-style: italic;
+  color: #3b82f6;
+  text-align: left !important;
+  margin-bottom: 0.85rem !important;
+  line-height: 1.5;
+}
+
+html[data-theme="dark"] .doc-sources-list li {
+  color: #60a5fa;
+}
+
 /* 64-hexagram listing on /notes — visual reference, no interpretive content */
 .doc-article .hexagram-grid {
   list-style: none;
@@ -4629,6 +4659,722 @@ html[data-theme="dark"] .verdict-pill--silent {
   font-size: 0.92rem;
 }
 
+/* ===== I Ching library (/library) — index + detail =================
+ * The library is a doc page (oracle-shell.doc-page) so it inherits
+ * typography, justification, and breakpoints from the .doc-article rules
+ * above. Library-specific surfaces (search, filters, tabs, mutations)
+ * live below.
+ * =================================================================== */
+.library-page {
+  max-width: 56rem;
+}
+
+.library-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0.6rem 0 0.85rem;
+}
+
+.library-search input {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border-radius: calc(var(--radius) * 0.55);
+  border: 1.5px solid color-mix(in srgb, var(--bar-border) 85%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 92%, transparent);
+  color: var(--fg);
+  font: inherit;
+}
+
+.library-search input:focus-visible {
+  outline: 2px solid var(--ghost-link, #2a7a94);
+  outline-offset: 2px;
+}
+
+.library-filters {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: end;
+}
+
+.library-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+
+.library-filter select {
+  padding: 0.45rem 0.6rem;
+  border-radius: calc(var(--radius) * 0.5);
+  border: 1.5px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 92%, transparent);
+  color: var(--fg);
+  font: inherit;
+  min-width: 11rem;
+}
+
+.library-filter-clear {
+  background: transparent;
+  border: 1.5px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
+  border-radius: calc(var(--radius) * 0.5);
+  color: var(--fg);
+  padding: 0.45rem 0.85rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.library-filter-clear:hover,
+.library-filter-clear:focus-visible {
+  background: color-mix(in srgb, var(--secondary-bg) 60%, transparent);
+}
+
+.library-results-count {
+  margin: 0.4rem 0 0.6rem;
+  font-size: 0.88rem;
+  color: var(--fg-muted);
+}
+
+.library-results-empty {
+  margin: 1rem 0 0;
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
+.oracle-shell.doc-page .doc-article .library-grid {
+  list-style: none;
+  margin: 0.4rem 0 1.2rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+@media (min-width: 480px) {
+  .oracle-shell.doc-page .doc-article .library-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 720px) {
+  .oracle-shell.doc-page .doc-article .library-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.oracle-shell.doc-page .doc-article .library-grid li.library-grid__item {
+  margin: 0;
+  padding: 0;
+}
+
+.library-grid__link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.55rem 0.7rem 0.7rem;
+  border-radius: calc(var(--radius) * 0.55);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 88%, transparent);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+}
+
+.library-grid__link:hover,
+.library-grid__link:focus-visible {
+  border-color: color-mix(in srgb, var(--ghost-link, #2a7a94) 70%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 96%, transparent);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.library-grid__number {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  text-align: center;
+  line-height: 1;
+}
+
+.library-grid__body {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.library-grid__glyph {
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--title-chat);
+  font-family: var(--font-oracle-cjk), "Noto Serif TC", "Noto Sans CJK TC", serif;
+  flex: 0 0 auto;
+}
+
+.library-grid__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+.library-grid__name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--card-title);
+  line-height: 1.2;
+}
+
+.library-grid__pinyin {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--fg-muted);
+  line-height: 1.2;
+}
+
+.library-grid__english {
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+/* —— Detail page —— */
+.library-breadcrumb {
+  margin: 0 0 0.8rem;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+
+.library-breadcrumb a {
+  color: var(--ghost-link, #2a7a94);
+  text-decoration: underline;
+}
+
+.library-detail-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.85rem;
+  margin: 0.5rem 0 1.25rem;
+  padding: 1.25rem 0.85rem;
+  background: color-mix(in srgb, var(--secondary-bg) 85%, transparent);
+  border-radius: var(--radius);
+  border: 1px solid var(--bar-border);
+}
+
+@media (min-width: 640px) {
+  .library-detail-header {
+    flex-direction: row;
+    align-items: center;
+    text-align: start;
+    gap: 2rem;
+    padding: 2rem;
+  }
+}
+
+.library-detail-glyph-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.library-detail-glyph {
+  font-size: 6.5rem;
+  line-height: 1;
+  color: var(--title-shell);
+  font-family: var(--font-oracle-cjk), "Noto Serif TC", serif;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.library-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.library-detail-main {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .library-detail-main {
+    justify-content: flex-start;
+  }
+}
+
+.library-detail-number {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.8;
+  font-family: var(--font-oracle-mono), monospace;
+}
+
+.oracle-shell.doc-page .doc-article h1.library-detail-chinese {
+  margin: 0;
+  font-family: var(--font-oracle-cjk), "Noto Serif TC", serif;
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--title-shell);
+}
+
+.library-detail-names {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--fg);
+}
+
+@media (min-width: 640px) {
+  .library-detail-names {
+    justify-content: flex-start;
+  }
+}
+
+.library-detail-pinyin {
+  font-style: italic;
+  color: var(--fg-muted);
+}
+
+.library-detail-dot {
+  color: var(--bar-border);
+  font-weight: bold;
+}
+
+.library-detail-english {
+  font-weight: 500;
+}
+
+.library-detail-info-grid {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: color-mix(in srgb, var(--card-bg, var(--bg)) 40%, transparent);
+  border-radius: 8px;
+  border: 1px solid var(--bar-border);
+}
+
+.library-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.library-info-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg-muted);
+  font-weight: 700;
+}
+
+.library-info-value {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.library-translations-heading {
+  margin-top: 1.4rem;
+}
+
+/* —— Tabs —— */
+.library-tabs {
+  margin: 0.6rem 0 1.2rem;
+}
+
+.library-tablist {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  gap: 0.15rem;
+  padding: 0 0.5rem;
+  margin-bottom: 0; /* Remove margin to connect with panel */
+  background: transparent;
+  border-bottom: 1px solid var(--bar-border);
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  scrollbar-width: none;
+}
+
+.library-tablist::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .library-tablist {
+    gap: 0.25rem;
+    padding: 0 1rem;
+  }
+}
+
+.library-tab {
+  flex: 0 0 auto;
+  min-width: max-content;
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: transparent;
+  color: var(--fg-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: -1px; /* Overlap the baseline */
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 400px) {
+  .library-tab {
+    font-size: 0.85rem;
+    padding: 0.6rem 1.25rem;
+  }
+}
+
+.library-tab:hover:not(.library-tab--active) {
+  color: var(--fg);
+  background: color-mix(in srgb, var(--bar-border) 15%, transparent);
+}
+
+.library-tab--active {
+  background: var(--bg-mid, #f2f8fc);
+  color: var(--accent);
+  font-weight: 700;
+  border: 1px solid var(--bar-border);
+  border-bottom-color: var(--bg-mid, #f2f8fc) !important;
+  z-index: 2;
+}
+
+html[data-theme="dark"] .library-tab--active {
+  background: var(--bg-mid, #0a0a0a);
+  border-bottom-color: var(--bg-mid, #0a0a0a) !important;
+}
+
+.library-tab:focus-visible {
+  outline: 2px solid var(--ghost-link, #2a7a94);
+  outline-offset: 2px;
+}
+
+.library-tab-panel {
+  padding: 1.25rem 0 0;
+  border-top: none; /* The tablist border-bottom serves as the top boundary */
+}
+
+
+
+.oracle-shell.doc-page .doc-article .library-section {
+  margin: 0.6rem 0 0.9rem;
+}
+
+.oracle-shell.doc-page .doc-article .library-section h3 {
+  margin: 0 0 0.3rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+/* ── Text cards for Judgment & Image ── */
+.library-text-card {
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--bar-border) 60%, transparent);
+  background: color-mix(in srgb, var(--card-bg, var(--bg)) 50%, transparent);
+  margin-bottom: 0.35rem;
+}
+
+.library-prose {
+  margin: 0;
+  text-align: justify;
+}
+
+.library-stanza {
+  display: flex;
+  gap: 0.7rem;
+  margin-bottom: 0.65rem;
+  text-align: start;
+}
+
+.library-stanza:last-child {
+  margin-bottom: 0;
+}
+
+.library-stanza-bullet {
+  flex-shrink: 0;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.45;
+  user-select: none;
+}
+
+.library-prose-line {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--fg);
+}
+
+.library-prose--image .library-prose-line {
+  font-style: italic;
+  color: color-mix(in srgb, var(--fg) 86%, transparent);
+}
+
+/* Legacy selectors kept for any remaining usage */
+.library-prose {
+  margin: 0;
+  white-space: pre-line;
+  line-height: 1.55;
+}
+
+.library-prose--image {
+  font-style: italic;
+  color: color-mix(in srgb, var(--fg) 86%, transparent);
+}
+
+.oracle-shell.doc-page .doc-article .library-lines-table-wrap {
+  margin: 0.25rem 0 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.oracle-shell.doc-page .doc-article table.library-lines-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.oracle-shell.doc-page .doc-article table.library-lines-table thead th {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  text-align: start;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
+}
+
+.library-lines-table__pos {
+  width: 5.5rem;
+  padding: 0.65rem 0.6rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--card-title);
+  white-space: nowrap;
+  text-align: start;
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  vertical-align: middle;
+}
+
+.library-lines-table__symbol {
+  width: 4rem;
+  padding: 0.65rem 0.15rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  vertical-align: middle;
+  user-select: none;
+}
+
+/* ── CSS-drawn hexagram line glyphs ──
+   Both yang and yin share the same total width.
+   yang: one solid bar
+   yin:  two equal halves with a centered gap                    */
+.line-glyph {
+  display: flex;
+  align-items: center;
+  height: 6px;
+  width: 100%;
+  border-radius: 1px;
+}
+
+.line-glyph--yang {
+  background: var(--card-title);
+}
+
+.line-glyph--yin {
+  background: none;
+}
+
+.line-glyph--yin .line-glyph__half {
+  flex: 1;
+  height: 100%;
+  background: var(--ghost-link, #2a7a94);
+  border-radius: 1px;
+}
+
+.line-glyph--yin .line-glyph__gap {
+  flex: 0 0 5px;
+  height: 100%;
+}
+
+/* Yong lines use title-shell color */
+.library-lines-row--yong .line-glyph--yang {
+  background: var(--title-shell);
+}
+
+.library-lines-row--yong .line-glyph--yin .line-glyph__half {
+  background: var(--title-shell);
+}
+
+.library-lines-table__text {
+  padding: 0.65rem 0.6rem;
+  line-height: 1.55;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  vertical-align: middle;
+}
+
+.library-lines-row--yong .library-lines-table__pos {
+  color: var(--title-shell);
+  font-style: italic;
+}
+
+/* Alternating row tint for readability */
+.oracle-shell.doc-page .doc-article table.library-lines-table tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--secondary-bg) 55%, transparent);
+}
+
+/* Last row: no bottom border to avoid double-border with table edge */
+.oracle-shell.doc-page .doc-article table.library-lines-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.library-source {
+  margin: 0.6rem 0 0;
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+}
+
+.library-source a {
+  color: var(--ghost-link, #2a7a94);
+  text-decoration: underline;
+}
+
+/* —— Mutations panel —— */
+.library-mutations {
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
+}
+
+.oracle-shell.doc-page .doc-article .library-mutations h2 {
+  margin: 0 0 0.45rem;
+}
+
+.library-mutations-intro {
+  margin: 0 0 0.7rem;
+  color: var(--fg);
+}
+
+.oracle-shell.doc-page .doc-article ul.library-mutations-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+@media (min-width: 720px) {
+  .oracle-shell.doc-page .doc-article ul.library-mutations-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.oracle-shell.doc-page .doc-article ul.library-mutations-list li.library-mutation {
+  margin: 0;
+}
+
+.library-mutation__link {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: calc(var(--radius) * 0.5);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 88%, transparent);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.library-mutation__link:hover,
+.library-mutation__link:focus-visible {
+  border-color: color-mix(in srgb, var(--ghost-link, #2a7a94) 70%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 96%, transparent);
+  outline: none;
+}
+
+.library-mutation__glyph {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--title-chat);
+  font-family: var(--font-oracle-cjk), "Noto Serif TC", serif;
+  flex: 0 0 auto;
+}
+
+.library-mutation__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+.library-mutation__line {
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  letter-spacing: 0.02em;
+}
+
+.library-mutation__name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--card-title);
+}
+
+.library-mutation__english {
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @media (min-width: 720px) {
   .reading-grid:not(.reading-grid--bones-solo) {
     grid-template-columns: 0.9fr 1.1fr;
@@ -4691,7 +5437,7 @@ html[data-theme="dark"] .verdict-pill--silent {
 
 /* —— Oracle interpretation Markdown —— */
 .interpretation-stack {
-  text-align: justify;
+  text-align: start;
   /* Avoid bogus syllable breaks (e.g. "ar-monía") — LLM text is not hyphenation-dictionary safe */
   hyphens: none;
   -webkit-hyphens: none;
@@ -4702,7 +5448,7 @@ html[data-theme="dark"] .verdict-pill--silent {
   font-size: 0.95rem;
   line-height: 1.42;
   color: var(--fg);
-  text-align: justify;
+  text-align: start;
   hyphens: none;
   -webkit-hyphens: none;
   overflow-wrap: break-word;

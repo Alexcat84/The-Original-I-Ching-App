@@ -37,16 +37,17 @@ export default async function GuiaRapidaPage() {
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-        <Link href="/about">{nav.aboutShort}</Link> · <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
-        <Link href="/privacy">{nav.privacyShort}</Link> · <Link href="/terms">{nav.termsShort}</Link>
+        <Link href="/about">{nav.aboutShort}</Link> ·{" "}
+        <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
+        <Link href="/terms">{nav.termsShort}</Link>
       </nav>
       <article className="doc-article">
         <h1>{g.title}</h1>
         <p className="doc-lead">
           {g.leadPart1}
-          <strong>I Ching</strong>
+          I Ching
           {g.leadPart2}
-          <strong>{g.bonesLabel}</strong>
+          {g.bonesLabel}
           {g.leadPart3}
         </p>
 
@@ -57,12 +58,15 @@ export default async function GuiaRapidaPage() {
         <h3>{q.s1Heading}</h3>
         <ul>
           <li>
-            <strong>I Ching</strong>: {q.ichingLi}
+            I Ching: {q.ichingLi}
           </li>
           <li>
-            <strong>{q.bonesLabel}</strong>: {q.bonesLi}
+            {q.bonesLabel}: {q.bonesLi}
           </li>
         </ul>
+        <p>
+          <em>{g.promptLengthHint}</em>
+        </p>
 
         <h3>{q.s3Heading}</h3>
         <ul>
@@ -101,6 +105,9 @@ export default async function GuiaRapidaPage() {
 
         <h3>{g.exportHeading}</h3>
         <p>{g.exportBody}</p>
+
+        <h3>{g.libraryFeatureHeading}</h3>
+        <p>{g.libraryFeatureBody}</p>
 
         {/* 3) Cómo usar los métodos */}
         <h2>{g.methodsHeading}</h2>
@@ -154,6 +161,7 @@ export default async function GuiaRapidaPage() {
           </li>
         </ul>
         <p>{packsUi.tokensAccumulate}</p>
+        <p>{packsUi.libraryUnlockNote}</p>
         <p>{packsUi.perPlanDetailHeading}</p>
         <ul>
           <li>
@@ -183,11 +191,12 @@ export default async function GuiaRapidaPage() {
           {g.legalMetaAfterTerms}
         </p>
 
-        <p className="doc-footer-links">
-          <Link href="/documentacion/iching">{nav.ichingDocLink}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-          <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyPolicy}</Link> ·{" "}
-          <Link href="/terms">{nav.termsOfService}</Link>
-        </p>
+      <nav className="doc-nav">
+          <Link href="/">{nav.backToOracle}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
+          <Link href="/about">{nav.aboutShort}</Link> · <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
+          <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
+          <Link href="/terms">{nav.termsShort}</Link>
+        </nav>
       </article>
     </div>
   );

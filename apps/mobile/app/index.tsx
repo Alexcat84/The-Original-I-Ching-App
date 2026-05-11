@@ -1674,6 +1674,30 @@ export default function WebViewScreen() {
         });
 
         if (isPdf) {
+          if (Platform.OS === "android") {
+            try {
+              const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+              if (permissions.granted) {
+                const uri = await FileSystem.StorageAccessFramework.createFileAsync(
+                  permissions.directoryUri,
+                  finalName,
+                  "application/pdf"
+                );
+                await FileSystem.writeAsStringAsync(uri, base64, {
+                  encoding: FileSystem.EncodingType.Base64,
+                });
+                showNativeDialog({
+                  title: nativeUi.fileSavedTitle,
+                  message: nativeUi.fileSavedBody,
+                  buttons: [{ text: nativeUi.ok }],
+                });
+                return;
+              }
+            } catch (e) {
+              // Fallback to standard share if SAF fails or is cancelled
+            }
+          }
+
           const sharingAvailable = await Sharing.isAvailableAsync();
           if (!sharingAvailable) {
             throw new Error("sharing_unavailable");

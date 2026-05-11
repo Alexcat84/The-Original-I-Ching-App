@@ -43,6 +43,7 @@ export type NotesPageUiMessages = {
   interpretHeading: string;
   interpretBody: string;
   sourcesHeading: string;
+  sourcesList: string[];
 };
 
 const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
@@ -50,162 +51,172 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     title: "Notas y Origen de los Métodos",
     lead: "Esta página es contexto técnico-cultural. No es una guía de uso.",
     authNotice:
-      "Todos los métodos usados en esta app provienen de tradiciones milenarias de la cultura china, documentadas históricamente y respetadas académicamente en todo el mundo. Esta app no inventa interpretaciones ni genera significados propios; aplica métodos auténticos asistidos por inteligencia artificial para hacerlos accesibles en el idioma del usuario. Cualquier lector puede contrastar los textos con las fuentes originales listadas al final de esta página.",
+      "Todos los métodos usados en esta app provienen de tradiciones milenarias de la cultura china, documentadas históricamente y respetadas académicamente en todo el mundo. Esta app no inventa interpretaciones ni genera significados propios; aplica métodos auténticos asistidos por tecnología de inteligencia artificial para hacerlos accesibles en el idioma del usuario. Cualquier lector puede contrastar los textos con las fuentes originales listadas al final de esta página.",
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Origen histórico (~1000 a.C.)",
     ichingOriginBody:
-      "El Zhouyi, «Los Cambios de Zhou», es uno de los textos más antiguos de la humanidad. Sus raíces se remontan a la dinastía Zhou (1046–256 a.C.), aunque su núcleo oracular es anterior. El texto se construyó en capas históricas distintas: el Rey Wen organizó los 64 hexagramas y escribió los Juicios (卦辞, guàcí) mientras estaba prisionero. Su hijo el Duque de Zhou añadió las sentencias de las seis líneas (爻辞, yáocí). Siglos después, Confucio y sus discípulos agregaron los Comentarios conocidos como las Diez Alas (十翼), el estrato filosófico más profundo del texto.",
+      "El Zhouyi, «Los Cambios de Zhou», es uno de los textos más antiguos de la humanidad. Sus raíces se remontan a la dinastía Zhou (1046–256 a.C.). El texto se construyó en capas históricas: el Rey Wen organizó los 64 hexagramas y escribió los Juicios (guàcí) mientras estaba prisionero. Su hijo, el Duque de Zhou, añadió las sentencias de las seis líneas (yáocí). Siglos después, Confucio y sus discípulos agregaron los Comentarios conocidos como las Diez Alas (十翼), el estrato filosófico más profundo del texto.",
     ichingHexHeading: "El sistema de los 64 hexagramas",
     ichingHexBody:
-      "Cada hexagrama es una figura de seis líneas, cada una yin (rota, receptiva) o yang (entera, activa). Las 64 combinaciones posibles describen los patrones fundamentales del cambio en la naturaleza y en la vida humana. Las líneas en movimiento indican transformación: el hexagrama presente muta hacia uno futuro, y esa transición es el corazón de la lectura.",
-    ichingHexListHeading: "Los 64 hexagramas en orden King Wen",
-    ichingHexListIntro:
-      "Listado completo de los 64 hexagramas con su número, su glifo y su nombre clásico en chino y pinyin. Aquí no se incluye su significado: cada hexagrama solo cobra sentido en una consulta concreta, donde la pregunta y el contexto del consultante determinan la lectura.",
-    ichingHexListAriaLabel: "Listado de los 64 hexagramas",
+      "Cada hexagrama es una figura de seis líneas, cada una yin (rota) o yang (entera). Las 64 combinaciones posibles describen los patrones fundamentales del cambio. Las líneas en movimiento indican transformación: el hexagrama presente muta hacia uno futuro, y esa transición es el corazón de la lectura.",
+    ichingHexListHeading: "",
+    ichingHexListIntro: "",
+    ichingHexListAriaLabel: "",
     ichingMethodHeading: "El método de las tres monedas y las reglas de Zhu Xi",
     ichingMethodBody:
-      "El método clásico usa tres monedas lanzadas seis veces para construir el hexagrama línea por línea. Cuando múltiples líneas cambian, la escuela de Zhu Xi (neoconfucianismo, siglo XII d.C.) establece reglas precisas para determinar qué línea gobierna la lectura, eliminando la ambigüedad interpretativa. Esta app implementa exactamente esas reglas sin modificación.",
+      "El método clásico usa tres monedas lanzadas seis veces. Cuando múltiples líneas cambian, la escuela de Zhu Xi (neoconfucianismo, siglo XII d.C.) establece reglas precisas para determinar qué línea gobierna la lectura, eliminando la ambigüedad interpretativa. Esta app implementa exactamente esas reglas sin modificación.",
     ichingWilhelmHeading: "La traducción Wilhelm/Baynes",
     ichingWilhelmBody:
-      "Richard Wilhelm, sinólogo alemán, vivió en China durante décadas y produjo en 1924 la traducción más completa y respetada del I Ching en lengua occidental, incluyendo los Juicios, las líneas y los Comentarios de las Diez Alas. Cary Baynes la tradujo al inglés en 1950. Esta obra entró al dominio público en 2020 y es el texto base de esta app, sin modificaciones ni simplificaciones.",
-    ichingChainHeading: "La cadena de autenticidad",
-    ichingChain:
-      "Zhou Yi original (dinastía Zhou) → Comentarios de Confucio (s. V a.C.) → Reglas de Zhu Xi (s. XII d.C.) → Traducción Wilhelm alemán (1924) → Traducción Baynes inglés (1950) → Dominio público (2020) → Esta app.",
+      "Richard Wilhelm produjo en 1924 la traducción más completa y respetada del I Ching en lengua occidental. Cary Baynes la tradujo al inglés en 1950 (Princeton University Press). Esta obra es el texto base de esta app, sin modificaciones ni simplificaciones.",
+    ichingChainHeading: "",
+    ichingChain: "",
     bonesHeading: "Huesos de Oráculo (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Origen histórico (dinastía Shang, ~1600–1046 a.C.)",
+    bonesOriginHeading: "Origen histórico (Dinastía Shang, ~1600–1046 a.C.)",
     bonesOriginBody:
-      "La adivinación por huesos oraculares es la práctica oracular documentada más antigua de China, anterior al I Ching en su forma escrita. Los chamanes reales de la dinastía Shang quemaban plastrón de tortuga o escápula de buey y leían las grietas resultantes para consultar a los ancestros sobre decisiones militares, agrícolas, climáticas y personales del rey.",
-    bonesRitualHeading: "El proceso ritual",
-    bonesRitualBody:
-      "El proceso era preciso y repetible: se formulaba una carga positiva y su negación. Se aplicaba bronce incandescente al hueso hasta producir grietas. La orientación, longitud y patrón de las grietas determinaba el veredicto. El resultado era grabado en el mismo hueso, constituyendo los primeros registros escritos de China.",
-    bonesVerdictsHeading: "Los cinco estados del veredicto",
-    bonesVerdictAuspClear: "吉. Favorable claro: el patrón confirma la carga positiva sin ambigüedad.",
-    bonesVerdictAuspMod: "吉 moderado. Favorable moderado: hay confirmación pero con matices o condiciones.",
-    bonesVerdictInauspMod: "凶 moderado. Desfavorable moderado: el patrón se inclina hacia la negación con reservas.",
-    bonesVerdictInauspClear: "凶. Desfavorable claro: el patrón niega la carga positiva sin ambigüedad.",
+      "La práctica oracular documentada más antigua de China. Los chamanes reales aplicaban calor a huesos o caparazones para leer las grietas resultantes. Esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa y veredicto por patrón.",
+    bonesRitualHeading: "",
+    bonesRitualBody: "",
+    bonesVerdictsHeading: "Los cinco estados del veredicto:",
+    bonesVerdictAuspClear: "吉. Favorable claro.",
+    bonesVerdictAuspMod: "吉 moderado. Favorable con matices.",
+    bonesVerdictInauspMod: "凶 moderado. Desfavorable con reservas.",
+    bonesVerdictInauspClear: "凶. Desfavorable claro.",
     bonesVerdictSilence:
-      "沉默. El Silencio: el patrón no produce grietas legibles. En la tradición Shang, el silencio del hueso no era un error, era en sí mismo una respuesta: los ancestros no hablan porque el momento no está maduro para esa pregunta, o porque la respuesta trasciende el marco de lo que puede ser dicho. Esta app respeta ese estado y lo devuelve cuando el patrón lo indica.",
-    bonesAuthHeading: "Autenticidad del método",
-    bonesAuthBody:
-      "Más de 150.000 fragmentos de huesos oraculares han sido excavados y estudiados desde el siglo XIX. Son patrimonio reconocido internacionalmente y se conservan en museos de China, Taiwán, Japón y Europa. El método implementado en esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa, veredicto por patrón, incluyendo el silencio como estado legítimo.",
+      "沉默 (El Silencio). El patrón no produce grietas legibles. En la tradición Shang, esto indicaba que el momento no era maduro para la pregunta. Esta app respeta ese estado cuando el algoritmo lo indica.",
+    bonesAuthHeading: "",
+    bonesAuthBody: "",
     yarrowHeading: "Varillas de Milenrama (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origen histórico (~1000 a.C.)",
     yarrowOriginBody:
-      "El método de las varillas de milenrama es el procedimiento de adivinación descrito en el propio I Ching. El Gran Comentario (大传, Dàzhuàn), una de las Diez Alas, precisa: «El número de la Gran Expansión es 50, de los que se usan 49». En los Anales, Confucio declaró que deseaba estudiar los Cambios durante cincuenta años; los estudiosos clásicos entienden esa referencia al número 50 como alusión directa al procedimiento de las varillas. El método es anterior al de tres monedas en más de un milenio. Richard Wilhelm y Cary Baynes documentaron el procedimiento completo en el Apéndice de su traducción (Princeton, 1950).",
-    yarrowProcedureHeading: "El procedimiento físico",
-    yarrowProcedureBody:
-      "El método usa un conjunto de varillas físicas u objetos similares. Una se aparta y las demás se dividen y cuentan mediante una secuencia ritual repetida hasta formar cada una de las seis líneas. Lo importante para el usuario es el ritmo: exige atención, tacto y paciencia, y hace que la consulta se sienta más ceremonial que el método de tres monedas.",
-    yarrowProbHeading: "Carácter del método",
-    yarrowProbBody:
-      "El método de varillas conserva un ritmo ritual más lento que el de tres monedas. En esta app su valor no se presenta como una tabla técnica, sino como una forma distinta de entrar en la misma tradición del I Ching: más táctil, más deliberada y más cercana al procedimiento clásico documentado por Wilhelm/Baynes. El método de tres monedas sigue siendo igualmente válido para una consulta más rápida.",
+      "Es el procedimiento descrito en el Gran Comentario (Dàzhuàn). El método precisa: «El número de la Gran Expansión es 50, de los que se usan 49». El método es anterior al de tres monedas en más de un milenio. Richard Wilhelm documentó el procedimiento completo en su obra de 1924, rescatando un ritmo ritual más lento, táctil y deliberado que el de las monedas.",
+    yarrowProcedureHeading: "",
+    yarrowProcedureBody: "",
+    yarrowProbHeading: "",
+    yarrowProbBody: "",
     interpretHeading: "Por qué la IA no inventa",
     interpretBody:
-      "La inteligencia artificial en esta app tiene una función específica y acotada: tomar el resultado del algoritmo (hexagrama, líneas en movimiento, veredicto de grietas) y articularlo en lenguaje natural en el idioma del usuario, con el contexto de su pregunta. La IA no genera hexagramas, no decide veredictos, no modifica los textos de Wilhelm ni los patrones del método Shang. El algoritmo matemático hace eso, fielmente, antes de que la IA intervenga. La IA es el intérprete. El oráculo es el método.",
-    sourcesHeading: "Fuentes y referencias",
+      "La inteligencia artificial en esta app tiene una función específica y acotada: tomar el resultado del algoritmo (hexagramas, líneas en movimiento o veredicto de grietas) y articularlo en lenguaje natural con el contexto de la pregunta del usuario.\n\nLa IA no genera hexagramas, no decide veredictos, ni modifica los textos de Wilhelm. El algoritmo matemático realiza el proceso técnico-tradicional fielmente antes de que la IA intervenga. La IA es el intérprete; el oráculo es el método.",
+    sourcesHeading: "Fuentes y Referencias Académicas",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   en: {
     title: "Method Notes and Origins",
-    lead: "This page is technical-cultural context. It is not a usage guide.",
+    lead: "This page provides technical and cultural context. It is not a usage guide.",
     authNotice:
-      "All methods used in this app come from millennial traditions of Chinese culture, historically documented and academically respected worldwide. This app does not invent interpretations or generate its own meanings; it applies authentic methods assisted by artificial intelligence to make them accessible in the user's language. Any reader can verify the texts against the original sources listed at the bottom of this page.",
+      "All methods used in this app stem from millennial traditions of Chinese culture, historically documented and academically respected worldwide. This app does not invent interpretations or generate its own meanings; it applies authentic methods assisted by artificial intelligence to make them accessible in the user's language. Readers may verify the texts against the original sources listed at the bottom of this page.",
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Historical Origins (~1000 BCE)",
     ichingOriginBody:
-      "The Zhouyi, 'Changes of Zhou', is one of the oldest texts in human history. Its roots trace back to the Zhou dynasty (1046–256 BCE), though its oracular core is older. The text was built in distinct historical layers: King Wen organized the 64 hexagrams and wrote the Judgments (卦辞, guàcí) while imprisoned. His son, the Duke of Zhou, added the line statements (爻辞, yáocí). Centuries later, Confucius and his disciples added the Commentaries known as the Ten Wings (十翼), the deepest philosophical stratum of the text.",
+      "The Zhouyi, 'The Changes of Zhou', is one of the oldest texts in human history. Its roots trace back to the Zhou dynasty (1046–256 BCE). The text was built in historical layers: King Wen organized the 64 hexagrams and wrote the Judgments (guàcí) while imprisoned. His son, the Duke of Zhou, added the statements for the six lines (yáocí). Centuries later, Confucius and his disciples added the Commentaries known as the Ten Wings (十翼), the deepest philosophical stratum of the text.",
     ichingHexHeading: "The 64-Hexagram System",
     ichingHexBody:
-      "Each hexagram is a figure of six lines, each either yin (broken, receptive) or yang (solid, active). The 64 possible combinations describe the fundamental patterns of change in nature and human life. Moving lines indicate transformation: the present hexagram mutates into a future one, and that transition is the heart of the reading.",
+      "Each hexagram is a figure composed of six lines, either yin (broken) or yang (solid). The 64 possible combinations describe the fundamental patterns of change. Moving lines indicate transformation: the present hexagram mutates into a future one, and this transition is the heart of the reading.",
     ichingHexListHeading: "The 64 hexagrams in King Wen order",
     ichingHexListIntro:
       "Complete list of the 64 hexagrams with their number, glyph, and classical name in Chinese and pinyin. Their meaning is not included here: each hexagram only takes shape inside a specific consultation, where the question and the seeker's context determine the reading.",
     ichingHexListAriaLabel: "List of the 64 hexagrams",
     ichingMethodHeading: "The Three-Coin Method and Zhu Xi's Rules",
     ichingMethodBody:
-      "The classic method uses three coins cast six times to build the hexagram line by line. When multiple lines change, the Zhu Xi school (Neo-Confucianism, 12th century CE) establishes precise rules to determine which line governs the reading, eliminating interpretive ambiguity. This app implements those rules exactly without modification.",
+      "The classic method uses three coins cast six times. When multiple lines change, the Zhu Xi school (Neo-Confucianism, 12th century CE) establishes precise rules to determine which line governs the reading, eliminating interpretive ambiguity. This app implements these rules exactly without modification.",
     ichingWilhelmHeading: "The Wilhelm/Baynes Translation",
     ichingWilhelmBody:
-      "Richard Wilhelm, a German sinologist, lived in China for decades and produced in 1924 the most complete and respected translation of the I Ching in Western languages, including the Judgments, lines, and Ten Wings Commentaries. Cary Baynes translated it into English in 1950. This work entered the public domain in 2020 and is the base text of this app, without modifications or simplifications.",
+      "Richard Wilhelm produced in 1924 the most complete and respected translation of the I Ching in Western languages. Cary Baynes translated it into English in 1950 (Princeton University Press). This work is the base text of this app, without modifications or simplifications.",
     ichingChainHeading: "The Chain of Authenticity",
     ichingChain:
       "Original Zhou Yi (Zhou dynasty) → Confucian Commentaries (5th c. BCE) → Zhu Xi's Rules (12th c. CE) → Wilhelm German translation (1924) → Baynes English translation (1950) → Public domain (2020) → This app.",
     bonesHeading: "Oracle Bones (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Historical Origins (Shang Dynasty, ~1600–1046 BCE)",
     bonesOriginBody:
-      "Oracle bone divination is the oldest documented oracular practice in China, predating the I Ching in its written form. Royal shamans of the Shang dynasty burned turtle plastrons or ox scapulae and read the resulting cracks to consult ancestors about the king's military, agricultural, climatic, and personal decisions.",
+      "The oldest documented oracular practice in China. Royal shamans applied heat to bones or shells to read the resulting cracks. This app respects the structural logic of the Shang system: positive charge, negative charge, and verdict by pattern.",
     bonesRitualHeading: "The Ritual Process",
     bonesRitualBody:
       "The process was precise and repeatable: a positive charge and its negation were formulated. Incandescent bronze was applied to the bone until cracks formed. The orientation, length, and pattern of the cracks determined the verdict. The result was inscribed on the bone itself, constituting China's earliest written records.",
-    bonesVerdictsHeading: "The Five Verdict States",
-    bonesVerdictAuspClear: "吉. Clearly favorable: the pattern confirms the positive charge without ambiguity.",
-    bonesVerdictAuspMod: "吉 moderate. Moderately favorable: confirmation is present but with nuance or conditions.",
-    bonesVerdictInauspMod: "凶 moderate. Moderately unfavorable: the pattern leans toward negation with reservations.",
-    bonesVerdictInauspClear: "凶. Clearly unfavorable: the pattern negates the positive charge without ambiguity.",
+    bonesVerdictsHeading: "The Five Verdict States:",
+    bonesVerdictAuspClear: "吉. Clearly favorable.",
+    bonesVerdictAuspMod: "吉 moderate. Favorable with nuance.",
+    bonesVerdictInauspMod: "凶 moderate. Unfavorable with reservations.",
+    bonesVerdictInauspClear: "凶. Clearly unfavorable.",
     bonesVerdictSilence:
-      "沉默. Silence: the pattern produces no readable cracks. In the Shang tradition, the bone's silence was not an error; it was itself an answer: the ancestors do not speak because the moment is not ripe for that question, or because the answer transcends what can be said. This app respects that state and returns it when the pattern indicates it.",
+      "沉默 (The Silence). The pattern produced no readable cracks. In the Shang tradition, this indicated that the moment was not ripe for the question. This app respects this state when the algorithm indicates it.",
     bonesAuthHeading: "Authenticity of the Method",
     bonesAuthBody:
       "More than 150,000 oracle bone fragments have been excavated and studied since the 19th century. They are internationally recognized heritage and are preserved in museums in China, Taiwan, Japan, and Europe. The method implemented in this app respects the structural logic of the Shang system: positive charge, negative charge, verdict by pattern, including silence as a legitimate state.",
     yarrowHeading: "Yarrow Stalks (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Historical Origins (~1000 BCE)",
     yarrowOriginBody:
-      "The yarrow stalk method is the divination procedure documented in the I Ching itself. The Great Commentary (大传, Dàzhuàn), one of the Ten Wings, states: 'The number of the Great Expansion is 50, of which 49 are used.' Confucius is recorded in the Analects as wishing to study the Changes for fifty years; classical scholars read that reference to the number 50 as a direct allusion to the stalk procedure. The method predates the three-coin method by more than a millennium. Richard Wilhelm and Cary Baynes documented the complete procedure in the Appendix of their translation (Princeton University Press, 1950). Edward Shaughnessy's Sources of Western Zhou History (1993) provides additional philological context.",
+      "This is the procedure described in the Great Commentary (Dàzhuàn). The method specifies: 'The number of the Great Expansion is 50, of which 49 are used.' This method predates the three-coin method by over a millennium. Richard Wilhelm documented the full procedure in his 1924 work, preserving a slower, more tactile, and deliberate ritual rhythm compared to coins.",
     yarrowProcedureHeading: "Physical Procedure",
     yarrowProcedureBody:
       "The method uses a set of physical stalks or similar objects. One is set aside, and the rest are divided and counted through a repeated ritual sequence until each of the six lines is formed. The important point for users is the pace: it asks for attention, touch, and patience, making the consultation feel more ceremonial than the three-coin method.",
     yarrowProbHeading: "Character of the method",
     yarrowProbBody:
-      "The stalk method preserves a slower ritual tempo than the three-coin method. Its value in this app is not presented as a technical table, but as a different way of entering the same I Ching tradition: more tactile, more deliberate, and closer to the classical procedure documented by Wilhelm/Baynes. The three-coin method remains equally valid for a faster consultation.",
+      "The stalk method preserves a slower ritual tempo than the three-coin method. In this app, its value is not presented as a technical table, but as a different way of entering the same I Ching tradition: more tactile, more deliberate, and closer to the classical procedure documented by Wilhelm/Baynes. The three-coin method remains equally valid for a faster consultation.",
     interpretHeading: "Why AI Does Not Invent",
     interpretBody:
-      "The artificial intelligence in this app has a specific and bounded function: to take the algorithm's result (hexagram, moving lines, crack verdict) and articulate it in natural language in the user's language, with the context of their question. The AI does not generate hexagrams, does not decide verdicts, does not modify Wilhelm's texts or the Shang method's patterns. The mathematical algorithm does that, faithfully, before the AI intervenes. The AI is the interpreter. The oracle is the method.",
-    sourcesHeading: "Sources and References",
+      "The artificial intelligence in this app has a specific and bounded function: to take the result of the algorithm (hexagrams, moving lines, or crack verdicts) and articulate it in natural language with the context of the user's question. The AI does not generate hexagrams, does not decide verdicts, and does not modify Wilhelm's texts. The mathematical algorithm performs the technical-traditional process faithfully before the AI intervenes. The AI is the interpreter; the oracle is the method.",
+    sourcesHeading: "Academic Sources and References",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   pt: {
     title: "Notas e Origem dos Métodos",
-    lead: "Esta página é contexto técnico-cultural. Não é um guia de uso.",
+    lead: "Esta página fornece contexto técnico e cultural. Não é um guia de uso.",
     authNotice:
-      "Todos os métodos usados nesta app provêm de tradições milenares da cultura chinesa, documentadas historicamente e respeitadas academicamente em todo o mundo. Esta app não inventa interpretações nem gera significados próprios; aplica métodos autênticos assistidos por inteligência artificial para os tornar acessíveis no idioma do utilizador. Qualquer leitor pode verificar os textos com as fontes originais listadas no final desta página.",
+      "Todos os métodos usados nesta app provêm de tradições milenares da cultura chinesa, documentadas historicamente e respeitadas academicamente em todo o mundo. Esta app não inventa interpretações nem gera significados próprios; aplica métodos auténticos assistidos por tecnologia de inteligência artificial para os tornar acessíveis no idioma do utilizador. Qualquer leitor pode verificar os textos com as fontes originais listadas no final desta página.",
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Origem histórica (~1000 a.C.)",
     ichingOriginBody:
-      "O Zhouyi, «As Mutações de Zhou», é um dos textos mais antigos da humanidade. As suas raízes remontam à dinastia Zhou (1046–256 a.C.), embora o seu núcleo oracular seja anterior. O texto foi construído em camadas históricas distintas: o Rei Wen organizou os 64 hexagramas e escreveu os Juízos (卦辞, guàcí) enquanto estava prisioneiro. O seu filho, o Duque de Zhou, acrescentou as sentenças das seis linhas (爻辞, yáocí). Séculos depois, Confúcio e os seus discípulos acrescentaram os Comentários conhecidos como as Dez Asas (十翼), o estrato filosófico mais profundo do texto.",
+      "O Zhouyi, «As Mutações de Zhou», é um dos textos mais antigos da humanidade. As suas raízes remontam à dinastia Zhou (1046–256 a.C.). O texto foi construído em camadas históricas: o Rei Wen organizou os 64 hexagramas e escreveu os Juízos (guàcí) enquanto estava prisioneiro. O seu filho, o Duque de Zhou, acrescentou as sentenças das seis linhas (yáocí). Séculos depois, Confúcio e os seus discípulos acrescentaram os Comentários conhecidos como as Dez Asas (十翼), o estrato filosófico mais profundo do texto.",
     ichingHexHeading: "O sistema dos 64 hexagramas",
     ichingHexBody:
-      "Cada hexagrama é uma figura de seis linhas, cada uma yin (partida, receptiva) ou yang (inteira, ativa). As 64 combinações possíveis descrevem os padrões fundamentais da mudança na natureza e na vida humana. As linhas em movimento indicam transformação: o hexagrama presente muta para um futuro, e essa transição é o coração da leitura.",
+      "Cada hexagrama é uma figura composta por seis linhas, cada uma yin (quebrada) ou yang (inteira). As 64 combinações possíveis descrevem os padrões fundamentais da mudança. As linhas em movimento indicam transformação: o hexagrama presente muta para um futuro, e essa transição é o coração da leitura.",
     ichingHexListHeading: "Os 64 hexagramas em ordem King Wen",
     ichingHexListIntro:
-      "Listagem completa dos 64 hexagramas com o seu número, glifo e nome clássico em chinês e pinyin. O significado não é apresentado aqui: cada hexagrama só ganha sentido numa consulta concreta, onde a pergunta e o contexto do consultante determinam a leitura.",
+      "Listagem completa dos 64 hexagramas com o seu número, glifo e nome clássico em chinês e pinyin. O significado não é apresentado aqui: cada hexagrama só ganha sentido numa consulta concreta, onde a pergunta e o contexto do consultante determinan a leitura.",
     ichingHexListAriaLabel: "Listagem dos 64 hexagramas",
     ichingMethodHeading: "O método das três moedas e as regras de Zhu Xi",
     ichingMethodBody:
-      "O método clássico usa três moedas lançadas seis vezes para construir o hexagrama linha a linha. Quando múltiplas linhas mudam, a escola de Zhu Xi (neo-confucionismo, século XII d.C.) estabelece regras precisas para determinar qual linha governa a leitura, eliminando a ambiguidade interpretativa. Esta app implementa exatamente essas regras sem modificação.",
+      "O método clássico usa três moedas lançadas seis vezes. Quando múltiplas linhas mudam, a escola de Zhu Xi (neo-confucionismo, século XII d.C.) estabelece regras precisas para determinar qual linha governa a leitura, eliminando a ambiguidade interpretativa. Esta app implementa exatamente essas regras sem modificação.",
     ichingWilhelmHeading: "A tradução Wilhelm/Baynes",
     ichingWilhelmBody:
-      "Richard Wilhelm, sinólogo alemão, viveu na China durante décadas e produziu em 1924 a tradução mais completa e respeitada do I Ching em língua ocidental, incluindo os Juízos, as linhas e os Comentários das Dez Asas. Cary Baynes traduziu-a para inglês em 1950. Esta obra entrou no domínio público em 2020 e é o texto base desta app, sem modificações nem simplificações.",
+      "Richard Wilhelm produziu em 1924 a tradução mais completa e respeitada do I Ching em língua ocidental. Cary Baynes traduziu-a para inglês em 1950 (Princeton University Press). Esta obra é o texto base desta app, sem modificações nem simplificações.",
     ichingChainHeading: "A cadeia de autenticidade",
     ichingChain:
-      "Zhou Yi original (dinastia Zhou) → Comentários de Confúcio (séc. V a.C.) → Regras de Zhu Xi (séc. XII d.C.) → Tradução Wilhelm alemão (1924) → Tradução Baynes inglês (1950) → Domínio público (2020) → Esta app.",
+      "Zhou Yi original (dinastía Zhou) → Comentários de Confúcio (séc. V a.C.) → Reglas de Zhu Xi (séc. XII d.C.) → Tradução Wilhelm alemão (1924) → Tradução Baynes inglês (1950) → Domínio público (2020) → Esta app.",
     bonesHeading: "Ossos Oraculares (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Origem histórica (dinastia Shang, ~1600–1046 a.C.)",
+    bonesOriginHeading: "Origem histórica (Dinastía Shang, ~1600–1046 a.C.)",
     bonesOriginBody:
-      "A adivinhação por ossos oraculares é a prática oracular documentada mais antiga da China, anterior ao I Ching na sua forma escrita. Os xamãs reais da dinastia Shang queimavam plastrão de tartaruga ou escápula de boi e liam as fissuras resultantes para consultar os ancestrais sobre decisões militares, agrícolas, climáticas e pessoais do rei.",
+      "A prática oracular documentada mais antiga da China. Os xamãs reais aplicavam calor a ossos ou carapaças para ler as fissuras resultantes. Esta app respeita a lógica estrutural do sistema Shang: carga positiva, carga negativa e veredicto por padrão.",
     bonesRitualHeading: "O processo ritual",
     bonesRitualBody:
       "O processo era preciso e repetível: formulava-se uma carga positiva e a sua negação. Aplicava-se bronze incandescente ao osso até produzir fissuras. A orientação, comprimento e padrão das fissuras determinava o veredicto. O resultado era gravado no próprio osso, constituindo os primeiros registos escritos da China.",
-    bonesVerdictsHeading: "Os cinco estados do veredicto",
-    bonesVerdictAuspClear: "吉. Favorável claro: o padrão confirma a carga positiva sem ambiguidade.",
-    bonesVerdictAuspMod: "吉 moderado. Favorável moderado: há confirmação mas com nuances ou condições.",
-    bonesVerdictInauspMod: "凶 moderado. Desfavorável moderado: o padrão inclina-se para a negação com reservas.",
-    bonesVerdictInauspClear: "凶. Desfavorável claro: o padrão nega a carga positiva sem ambiguidade.",
+    bonesVerdictsHeading: "Os cinco estados do veredicto:",
+    bonesVerdictAuspClear: "吉. Favorável claro.",
+    bonesVerdictAuspMod: "吉 moderado. Favorável com nuances.",
+    bonesVerdictInauspMod: "凶 moderado. Desfavorável com reservas.",
+    bonesVerdictInauspClear: "凶. Desfavorável claro.",
     bonesVerdictSilence:
-      "沉默. O Silêncio: o padrão não produz fissuras legíveis. Na tradição Shang, o silêncio do osso não era um erro, era em si mesmo uma resposta: os ancestrais não falam porque o momento não está maduro para essa pergunta, ou porque a resposta transcende o que pode ser dito. Esta app respeita esse estado e devolve-o quando o padrão o indica.",
+      "沉默 (O Silêncio). O padrão não produz fissuras legíveis. Na tradição Shang, isto indicava que o momento não estava maduro para a pergunta. Esta app respeita esse estado quando o algoritmo o indica.",
     bonesAuthHeading: "Autenticidade do método",
     bonesAuthBody:
       "Mais de 150.000 fragmentos de ossos oraculares foram escavados e estudados desde o século XIX. São património reconhecido internacionalmente e conservam-se em museus da China, Taiwan, Japão e Europa. O método implementado nesta app respeita a lógica estrutural do sistema Shang: carga positiva, carga negativa, veredicto por padrão, incluindo o silêncio como estado legítimo.",
     yarrowHeading: "Varetas de Milenrama (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origem histórica (~1000 a.C.)",
     yarrowOriginBody:
-      "O método das varetas de milenrama é o procedimento de adivinhação documentado no próprio I Ching. O Grande Comentário (大传, Dàzhuàn), uma das Dez Asas, afirma: «O número da Grande Expansão é 50, dos quais 49 são usados». Confúcio declarou nos Analetos que desejava estudar as Mutações durante cinquenta anos; os estudiosos clássicos entendem essa referência ao número 50 como uma alusão direta ao procedimento das varetas. O método é anterior ao das três moedas em mais de um milénio. Richard Wilhelm e Cary Baynes documentaram o procedimento completo no Apêndice da sua tradução (Princeton University Press, 1950).",
+      "É o procedimento descrito no Grande Comentário (Dàzhuàn). O método especifica: «O número da Grande Expansão é 50, dos quais 49 são usados». O método é anterior ao das três moedas em mais de um milénio. Richard Wilhelm documentou o procedimento completo na sua obra de 1924, resgatando um ritmo ritual mais lento, tátil e deliberado do que o das moedas.",
     yarrowProcedureHeading: "Procedimento físico",
     yarrowProcedureBody:
       "O método usa um conjunto de varetas físicas ou objetos semelhantes. Uma é posta de lado e as restantes são divididas e contadas através de uma sequência ritual repetida até formar cada uma das seis linhas. O ponto importante para o utilizador é o ritmo: pede atenção, toque e paciência, fazendo a consulta parecer mais cerimonial do que o método das três moedas.",
@@ -214,179 +225,211 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "O método das varetas preserva um ritmo ritual mais lento do que o das três moedas. Nesta app, o seu valor não é apresentado como uma tabela técnica, mas como uma forma diferente de entrar na mesma tradição do I Ching: mais tátil, mais deliberada e mais próxima do procedimento clássico documentado por Wilhelm/Baynes. O método das três moedas continua igualmente válido para uma consulta mais rápida.",
     interpretHeading: "Por que a IA não inventa",
     interpretBody:
-      "A inteligência artificial nesta app tem uma função específica e delimitada: tomar o resultado do algoritmo (hexagrama, linhas em movimento, veredicto de fissuras) e articulá-lo em linguagem natural no idioma do utilizador, com o contexto da sua pergunta. A IA não gera hexagramas, não decide veredictos, não modifica os textos de Wilhelm nem os padrões do método Shang. O algoritmo matemático faz isso, fielmente, antes de a IA intervir. A IA é o intérprete. O oráculo é o método.",
-    sourcesHeading: "Fontes e referências",
+      "A inteligência artificial nesta app tem uma função específica e delimitada: tomar o resultado do algoritmo (hexagramas, linhas em movimento ou veredicto de fissuras) e articulá-lo em linguagem natural com o contexto da pergunta do utilizador. A IA não gera hexagramas, não decide veredictos, nem modifica os textos de Wilhelm. O algoritmo matemático realiza o processo técnico-tradicional fielmente antes de a IA intervir. A IA é o intérprete; o oráculo é o método.",
+    sourcesHeading: "Fontes e Referências Acadêmicas",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   fr: {
     title: "Notes et origine des méthodes",
-    lead: "Cette page est un contexte technique et culturel. Ce n'est pas un guide d'utilisation.",
+    lead: "Cette page fournit un contexte technique et culturel. Ce n'est pas un guide d'utilisation.",
     authNotice:
-      "Toutes les méthodes utilisées dans cette app proviennent de traditions millénaires de la culture chinoise, documentées historiquement et respectées académiquement dans le monde entier. Cette app n'invente pas d'interprétations ni ne génère ses propres significations; elle applique des méthodes authentiques assistées par l'intelligence artificielle pour les rendre accessibles dans la langue de l'utilisateur. Tout lecteur peut vérifier les textes avec les sources originales listées en bas de cette page.",
+      "Toutes les méthodes utilisées dans cette app proviennent de traditions millénaires de la culture chinoise, historiquement documentées et académiquement respectées dans le monde entier. Cette app n'invente pas d'interprétations ni ne génère ses propres significations ; elle applique des méthodes authentiques assistées par la technologie de l'intelligence artificielle pour les rendre accessibles dans la langue de l'utilisateur. Tout lecteur peut vérifier les textes avec les sources originales listées à la fin de cette page.",
     ichingHeading: "I Ching (周易 · Zhouyi)",
-    ichingOriginHeading: "Origines historiques (~1000 av. J.-C.)",
+    ichingOriginHeading: "Origine historique (~1000 av. J.-C.)",
     ichingOriginBody:
-      "Le Zhouyi, « Les Mutations de Zhou », est l'un des textes les plus anciens de l'humanité. Ses racines remontent à la dynastie Zhou (1046–256 av. J.-C.), bien que son noyau oraculaire soit antérieur. Le texte a été construit en couches historiques distinctes : le roi Wen organisa les 64 hexagrammes et rédigea les Jugements (卦辞, guàcí) pendant son emprisonnement. Son fils, le duc de Zhou, ajouta les sentences des six traits (爻辞, yáocí). Des siècles plus tard, Confucius et ses disciples ajoutèrent les Commentaires connus sous le nom des Dix Ailes (十翼), la strate philosophique la plus profonde du texte.",
+      "Le Zhouyi, « Les Changements de Zhou », est l'un des textes plus anciens de l'humanité. Ses racines remontent à la dynastie Zhou (1046–256 av. J.-C.). Le texte a été construit en couches historiques : le Roi Wen a organisé les 64 hexagrammes et a écrit les Jugements (guàcí) pendant son emprisonnement. Son fils, le Duc de Zhou, a ajouté les sentences pour les six traits (yáocí). Des siècles plus tard, Confucius et ses disciples ont ajouté les Commentaires connus sous le nom des Dix Ailes (十翼), la strate philosophique la plus profonde du texte.",
     ichingHexHeading: "Le système des 64 hexagrammes",
     ichingHexBody:
-      "Chaque hexagramme est une figure de six traits, chacun yin (brisé, réceptif) ou yang (plein, actif). Les 64 combinaisons possibles décrivent les modèles fondamentaux du changement dans la nature et la vie humaine. Les traits en mouvement indiquent une transformation : l'hexagramme présent mute en un futur, et cette transition est au cœur de la lecture.",
+      "Chaque hexagramme est une figure composée de six traits, chacun yin (brisé) ou yang (plein). Les 64 combinaisons possibles décrivent les modèles fondamentaux du changement. Les traits en mouvement indiquent une transformation : l'hexagramme présent mute en un futur, et cette transition est au cœur de la lecture.",
     ichingHexListHeading: "Les 64 hexagrammes selon l'ordre du Roi Wen",
     ichingHexListIntro:
-      "Liste complète des 64 hexagrammes avec leur numéro, leur glyphe et leur nom classique en chinois et pinyin. Leur signification n'est pas indiquée ici : chaque hexagramme ne prend forme qu'au sein d'une consultation précise, où la question et le contexte du consultant déterminent la lecture.",
+      "Liste complète des 64 hexagrammes avec leur numéro, leur glyphe et leur nom classique en chinois et pinyin. Leur signification n'est pas incluse ici : chaque hexagramme ne prend sens que lors d'une consultation précise, où la question et le contexte du consultant déterminent la lecture.",
     ichingHexListAriaLabel: "Liste des 64 hexagrammes",
-    ichingMethodHeading: "La méthode des trois pièces et les règles de Zhu Xi",
+    ichingMethodHeading: "La méthode des trois pièces et les reglas de Zhu Xi",
     ichingMethodBody:
-      "La méthode classique utilise trois pièces lancées six fois pour construire l'hexagramme trait par trait. Lorsque plusieurs traits changent, l'école de Zhu Xi (néoconfucianisme, XIIe siècle ap. J.-C.) établit des règles précises pour déterminer quel trait gouverne la lecture, éliminant toute ambiguïté interprétative. Cette app implémente exactement ces règles sans modification.",
+      "La méthode classique utilise trois pièces lancées six fois. Lorsque plusieurs traits changent, l'école de Zhu Xi (néoconfucianisme, XIIe siècle ap. J.-C.) établit des règles précises pour déterminer quel trait gouverne la lecture, éliminant toute ambiguïté interprétative. Cette app implémente exactement ces règles sans modification.",
     ichingWilhelmHeading: "La traduction Wilhelm/Baynes",
     ichingWilhelmBody:
-      "Richard Wilhelm, sinologue allemand, vécut en Chine pendant des décennies et produisit en 1924 la traduction la plus complète et la plus respectée du I Ching en langue occidentale, incluant les Jugements, les traits et les Commentaires des Dix Ailes. Cary Baynes la traduisit en anglais en 1950. Cette œuvre est entrée dans le domaine public en 2020 et constitue le texte de base de cette app, sans modifications ni simplifications.",
+      "Richard Wilhelm a produit en 1924 la traduction la plus complète et la plus respectée du I Ching en langue occidentale. Cary Baynes l'a traduite en anglais en 1950 (Princeton University Press). Cette œuvre constitue le texte base de cette app, sans modifications ni simplifications.",
     ichingChainHeading: "La chaîne d'authenticité",
     ichingChain:
       "Zhou Yi original (dynastie Zhou) → Commentaires de Confucius (Ve s. av. J.-C.) → Règles de Zhu Xi (XIIe s. ap. J.-C.) → Traduction Wilhelm en allemand (1924) → Traduction Baynes en anglais (1950) → Domaine public (2020) → Cette app.",
     bonesHeading: "Os oraculaires (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Origines historiques (dynastie Shang, ~1600–1046 av. J.-C.)",
+    bonesOriginHeading: "Origine historique (Dynastie Shang, ~1600–1046 av. J.-C.)",
     bonesOriginBody:
-      "La divination par os oraculaires est la pratique oraculaire documentée la plus ancienne de Chine, antérieure au I Ching dans sa forme écrite. Les chamanes royaux de la dynastie Shang brûlaient des plastrons de tortue ou des omoplates de bœuf et lisaient les fissures résultantes pour consulter les ancêtres sur les décisions militaires, agricoles, climatiques et personnelles du roi.",
+      "La pratique oraculaire documentée la plus ancienne de Chine. Les chamanes royaux appliquaient de la chaleur sur des os ou des écailles pour lire les fissures résultantes. Cette app respecte la logique structurelle du système Shang : charge positive, charge négative et verdict par motif.",
     bonesRitualHeading: "Le processus rituel",
     bonesRitualBody:
       "Le processus était précis et reproductible : on formulait une charge positive et sa négation. On appliquait du bronze incandescent sur l'os jusqu'à produire des fissures. L'orientation, la longueur et le motif des fissures déterminaient le verdict. Le résultat était gravé sur l'os lui-même, constituant les premiers écrits de Chine.",
-    bonesVerdictsHeading: "Les cinq états du verdict",
-    bonesVerdictAuspClear: "吉. Clairement favorable : le motif confirme la charge positive sans ambiguïté.",
-    bonesVerdictAuspMod: "吉 modéré. Modérément favorable : la confirmation est présente mais avec des nuances ou des conditions.",
-    bonesVerdictInauspMod: "凶 modéré. Modérément défavorable : le motif penche vers la négation avec des réserves.",
-    bonesVerdictInauspClear: "凶. Clairement défavorable : le motif nie la charge positive sans ambiguïté.",
+    bonesVerdictsHeading: "Les cinq états du verdict :",
+    bonesVerdictAuspClear: "吉. Clairement favorable.",
+    bonesVerdictAuspMod: "吉 modéré. Favorable avec nuances.",
+    bonesVerdictInauspMod: "凶 modéré. Défavorable avec réserves.",
+    bonesVerdictInauspClear: "凶. Clairement défavorable.",
     bonesVerdictSilence:
-      "沉默. Le Silence : le motif ne produit pas de fissures lisibles. Dans la tradition Shang, le silence de l'os n'était pas une erreur; c'était en soi une réponse : les ancêtres ne parlent pas parce que le moment n'est pas mûr pour cette question, ou parce que la réponse transcende ce qui peut être dit. Cette app respecte cet état et le retourne lorsque le motif l'indique.",
+      "沉默 (Le Silence). Le motif ne produit pas de fissures lisibles. Dans la tradition Shang, cela indiquait que le moment n'était pas mûr pour la question. Cette app respecte cet état lorsque l'algorithme l'indique.",
     bonesAuthHeading: "Authenticité de la méthode",
     bonesAuthBody:
       "Plus de 150 000 fragments d'os oraculaires ont été excavés et étudiés depuis le XIXe siècle. Ils constituent un patrimoine reconnu internationalement et sont conservés dans des musées en Chine, à Taïwan, au Japon et en Europe. La méthode implémentée dans cette app respecte la logique structurelle du système Shang : charge positive, charge négative, verdict par motif, incluant le silence comme état légitime.",
     yarrowHeading: "Tiges d'Achillée (蓍草 · Shīcǎo)",
-    yarrowOriginHeading: "Origines historiques (~1000 av. J.-C.)",
+    yarrowOriginHeading: "Origine historique (~1000 av. J.-C.)",
     yarrowOriginBody:
-      "La méthode des tiges d'achillée est le procédé de divination documenté dans le I Ching lui-même. Le Grand Commentaire (大传, Dàzhuàn), l'une des Dix Ailes, précise : « Le nombre de la Grande Expansion est 50, dont 49 sont utilisés. » Confucius déclare dans les Entretiens vouloir étudier les Mutations pendant cinquante ans ; les spécialistes classiques voient dans cette référence au chiffre 50 une allusion directe au procédé des tiges. La méthode est antérieure de plus d'un millénaire à celle des trois pièces. Richard Wilhelm et Cary Baynes ont documenté le procédé complet dans l'Appendice de leur traduction (Princeton University Press, 1950).",
+      "C'est le procédé décrit dans le Grand Commentaire (Dàzhuàn). Le méthode précise : « Le nombre de la Grande Expansion est 50, dont 49 sont utilisés ». Cette méthode est antérieure à celle des trois pièces de plus d'un millénaire. Richard Wilhelm a documenté le procédé complet dans son œuvre de 1924, préservant un rythme rituel plus lent, tactile et délibéré que celui des pièces.",
     yarrowProcedureHeading: "Procédure physique",
     yarrowProcedureBody:
-      "La méthode utilise un ensemble de tiges physiques ou d'objets semblables. Une tige est mise de côté, puis les autres sont divisées et comptées selon une séquence rituelle répétée jusqu'à former chacun des six traits. Pour l'utilisateur, l'essentiel est le rythme: elle demande attention, contact et patience, ce qui rend la consultation plus cérémonielle que la méthode des trois pièces.",
+      "La méthode utilise un ensemble de tiges physiques ou d'objets semblables. Une tige est mise de côté, puis les autres sont divisées et comptées selon une séquence rituelle répétée jusqu'à former chacun des six traits. Pour l'utilisateur, l'essentiel est le rythme : elle demande attention, contact et patience, ce qui rend la consultation plus cérémonielle que la méthode des trois pièces.",
     yarrowProbHeading: "Caractère de la méthode",
-    yarrowProbBody:
-      "La méthode des tiges conserve un rythme rituel plus lent que celle des trois pièces. Dans cette app, sa valeur n'est pas présentée comme un tableau technique, mais comme une autre façon d'entrer dans la même tradition du I Ching: plus tactile, plus délibérée et plus proche du procédé classique documenté par Wilhelm/Baynes. La méthode des trois pièces reste tout aussi valide pour une consultation plus rapide.",
+yarrowProbBody:
+      "La méthode des tiges conserve un rythme rituel plus lent que celle des trois pièces. Dans cette app, sa valeur n'est pas présentée comme un tableau technique, mais comme une autre façon d'entrer dans la même tradition du I Ching : plus tactile, plus délibérée et plus proche du procédé classique documenté par Wilhelm/Baynes. La méthode des trois pièces reste tout aussi valide pour une consultation plus rapide.",
     interpretHeading: "Pourquoi l'IA n'invente pas",
     interpretBody:
-      "L'intelligence artificielle dans cette app a une fonction spécifique et délimitée : prendre le résultat de l'algorithme (hexagramme, traits en mouvement, verdict de fissures) et l'articuler en langage naturel dans la langue de l'utilisateur, avec le contexte de sa question. L'IA ne génère pas d'hexagrammes, ne décide pas des verdicts, ne modifie pas les textes de Wilhelm ni les motifs de la méthode Shang. L'algorithme mathématique fait cela, fidèlement, avant que l'IA intervienne. L'IA est l'interprète. L'oracle est la méthode.",
-    sourcesHeading: "Sources et références",
+      "L'intelligence artificielle dans cette app a une fonction spécifique et délimitée : prendre le résultat de l'algorithme (hexagrammes, traits en mouvement ou verdict de fissures) et l'articuler en langage naturel avec le contexte de la question de l'utilisateur. L'IA ne génère pas d'hexagrammes, ne décide pas des verdicts, et ne modifie pas les textes de Wilhelm. L'algorithme mathématique réalise le processus technico-traditionnel fidèlement avant que l'IA n'intervienne. L'IA est l'interprète ; l'oracle est la méthode.",
+    sourcesHeading: "Sources et références académiques",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   de: {
     title: "Methodennotizen und Ursprünge",
-    lead: "Diese Seite ist technisch-kultureller Kontext. Es ist keine Bedienungsanleitung.",
+    lead: "Diese Seite bietet technisch-kulturellen Kontext. Es ist keine Bedienungsanleitung.",
     authNotice:
       "Alle in dieser App verwendeten Methoden stammen aus jahrtausendealten Traditionen der chinesischen Kultur, historisch dokumentiert und weltweit akademisch anerkannt. Diese App erfindet keine Interpretationen und generiert keine eigenen Bedeutungen; sie wendet authentische Methoden an, die durch künstliche Intelligenz unterstützt werden, um sie in der Sprache des Nutzers zugänglich zu machen. Jeder Leser kann die Texte mit den am Ende dieser Seite aufgeführten Originalquellen vergleichen.",
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Historischer Ursprung (~1000 v. Chr.)",
     ichingOriginBody:
-      "Das Zhouyi, «Die Wandlungen von Zhou», ist einer der ältesten Texte der Menschheit. Seine Wurzeln reichen bis in die Zhou-Dynastie (1046–256 v. Chr.), obwohl sein orakelhafter Kern noch älter ist. Der Text wurde in verschiedenen historischen Schichten aufgebaut: König Wen ordnete die 64 Hexagramme und verfasste die Urteile (卦辞, guàcí) während seiner Gefangenschaft. Sein Sohn, der Herzog von Zhou, fügte die Liniensätze (爻辞, yáocí) hinzu. Jahrhunderte später fügten Konfuzius und seine Schüler die als Zehn Flügel (十翼) bekannten Kommentare hinzu, das tiefste philosophische Stratum des Textes.",
+      "Das Zhouyi, «Die Wandlungen von Zhou», ist einer der ältesten Texte der Menschheit. Seine Wurzeln reichen bis in die Zhou-Dynastie (1046–256 v. Chr.). Der Text wurde in historischen Schichten aufgebaut: König Wen ordnete die 64 Hexagramme und verfasste die Urteile (guàcí) während seiner Gefangenschaft. Sein Sohn, der Herzog von Zhou, fügte die Liniensätze (yáocí) hinzu. Jahrhunderte später fügten Konfuzius und seine Schüler die als Zehn Flügel (十翼) bekannten Kommentare hinzu, das tiefste philosophische Stratum des Textes.",
     ichingHexHeading: "Das System der 64 Hexagramme",
     ichingHexBody:
-      "Jedes Hexagramm ist eine Figur aus sechs Linien, jede entweder yin (gebrochen, empfänglich) oder yang (ganz, aktiv). Die 64 möglichen Kombinationen beschreiben die grundlegenden Muster des Wandels in der Natur und im menschlichen Leben. Bewegende Linien zeigen Transformation an: das gegenwärtige Hexagramm wandelt sich in ein zukünftiges, und dieser Übergang ist das Herzstück der Lesung.",
+      "Jedes Hexagramm ist eine Figur aus sechs Linien, jede entweder yin (gebrochen) oder yang (ganz). Die 64 möglichen Kombinationen beschreiben die grundlegenden Muster des Wandels. Bewegende Linien zeigen Transformation an: das gegenwärtige Hexagramm wandelt sich in ein zukünftiges, und dieser Übergang ist das Herzstück der Lesung.",
     ichingHexListHeading: "Die 64 Hexagramme in der Reihenfolge nach König Wen",
     ichingHexListIntro:
-      "Vollständige Liste der 64 Hexagramme mit Nummer, Schriftzeichen und klassischem Namen in Chinesisch und Pinyin. Ihre Bedeutung wird hier nicht aufgeführt: Jedes Hexagramm gewinnt erst innerhalb einer konkreten Beratung Gestalt, in der Frage und Kontext der ratsuchenden Person die Lesung bestimmen.",
+      "Vollständige Liste der 64 Hexagramme mit Nummer, Schriftzeichen und klassischem Namen in Chinesisch und Pinyin. Die Bedeutung wird hier nicht aufgeführt: Jedes Hexagramm gewinnt erst innerhalb einer konkreten Beratung Gestalt, in der Frage und Kontext der ratsuchenden Person die Lesung bestimmen.",
     ichingHexListAriaLabel: "Liste der 64 Hexagramme",
     ichingMethodHeading: "Die Drei-Münzen-Methode und Zhu Xis Regeln",
     ichingMethodBody:
-      "Die klassische Methode verwendet drei Münzen, die sechsmal geworfen werden, um das Hexagramm Linie für Linie aufzubauen. Wenn mehrere Linien wechseln, legt die Schule von Zhu Xi (Neokonfuzianismus, 12. Jh. n. Chr.) genaue Regeln fest, um zu bestimmen, welche Linie die Lesung regiert, wodurch interpretative Mehrdeutigkeit beseitigt wird. Diese App implementiert genau diese Regeln ohne Änderung.",
+      "Die klassische Methode verwendet drei Münzen, die sechsmal geworfen werden. Wenn mehrere Linien wechseln, legt die Schule von Zhu Xi (Neokonfuzianismus, 12. Jh. n. Chr.) genaue Regeln fest, um zu bestimmen, welche Linie die Lesung regiert, wodurch interpretative Mehrdeutigkeit beseitigt wird. Diese App implementiert genau diese Regeln ohne Änderung.",
     ichingWilhelmHeading: "Die Übersetzung Wilhelm/Baynes",
     ichingWilhelmBody:
-      "Richard Wilhelm, ein deutscher Sinologe, lebte jahrzehntelang in China und erstellte 1924 die vollständigste und angesehenste Übersetzung des I Ching in westlicher Sprache, einschließlich der Urteile, Linien und Kommentare der Zehn Flügel. Cary Baynes übersetzte sie 1950 ins Englische. Dieses Werk ist 2020 gemeinfrei geworden und ist der Grundtext dieser App, ohne Modifikationen oder Vereinfachungen.",
+      "Richard Wilhelm erstellte 1924 die vollständigste und angesehenste Übersetzung des I Ching in westlicher Sprache. Cary Baynes übersetzte sie 1950 ins Englische (Princeton University Press). Dieses Werk ist der Grundtext dieser App, ohne Modifikationen oder Vereinfachungen.",
     ichingChainHeading: "Die Authentizitätskette",
     ichingChain:
       "Ursprüngliches Zhou Yi (Zhou-Dynastie) → Konfuzius-Kommentare (5. Jh. v. Chr.) → Zhu Xis Regeln (12. Jh. n. Chr.) → Wilhelms deutsche Übersetzung (1924) → Baynes' englische Übersetzung (1950) → Gemeinfrei (2020) → Diese App.",
     bonesHeading: "Orakelknochen (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Historischer Ursprung (Shang-Dynastie, ~1600–1046 v. Chr.)",
     bonesOriginBody:
-      "Die Orakelknochen-Wahrsagerei ist die älteste dokumentierte Orakelpraktik Chinas, älter als das I Ching in seiner schriftlichen Form. Die königlichen Schamanen der Shang-Dynastie verbrannten Schildkrötenpanzer oder Rinderschulterblätter und lasen die entstandenen Risse, um die Ahnen zu den militärischen, landwirtschaftlichen, klimatischen und persönlichen Entscheidungen des Königs zu befragen.",
+      "Die älteste dokumentierte Orakelpraktik Chinas. Die königlichen Schamanen wendeten Hitze auf Knochen oder Panzer an, um die resultierenden Risse zu lesen. Diese App respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung und Befund nach Muster.",
     bonesRitualHeading: "Der rituelle Prozess",
     bonesRitualBody:
-      "Der Prozess war präzise und wiederholbar: Eine positive Ladung und ihre Verneinung wurden formuliert. Glühendes Bronze wurde auf den Knochen aufgetragen, bis Risse entstanden. Die Ausrichtung, Länge und das Muster der Risse bestimmten den Befund. Das Ergebnis wurde in den Knochen selbst eingraviert, dies bildet Chinas früheste Schriftaufzeichnungen.",
-    bonesVerdictsHeading: "Die fünf Befundzustände",
-    bonesVerdictAuspClear: "吉. Eindeutig günstig: das Muster bestätigt die positive Ladung ohne Mehrdeutigkeit.",
-    bonesVerdictAuspMod: "吉 mäßig. Mäßig günstig: Bestätigung ist vorhanden, aber mit Nuancen oder Bedingungen.",
-    bonesVerdictInauspMod: "凶 mäßig. Mäßig ungünstig: das Muster neigt sich mit Vorbehalten zur Verneinung.",
-    bonesVerdictInauspClear: "凶. Eindeutig ungünstig: das Muster verneint die positive Ladung ohne Mehrdeutigkeit.",
+      "Der Prozess war präzise und wiederholbar: Eine positive Ladung und ihre Verneinung wurden formuliert. Glühende Bronze wurde auf den Knochen aufgetragen, bis Risse entstanden. Die Ausrichtung, Länge und das Muster der Risse bestimmten den Befund. Das Ergebnis wurde in den Knochen selbst eingraviert, was Chinas früheste Schriftaufzeichnungen bildet.",
+    bonesVerdictsHeading: "Die five Befundzustände:",
+    bonesVerdictAuspClear: "吉. Eindeutig günstig.",
+    bonesVerdictAuspMod: "吉 mäßig. Günstig mit Nuancen.",
+    bonesVerdictInauspMod: "凶 mäßig. Ungünstig mit Vorbehalten.",
+    bonesVerdictInauspClear: "凶. Eindeutig ungünstig.",
     bonesVerdictSilence:
-      "沉默. Das Schweigen: das Muster erzeugt keine lesbaren Risse. In der Shang-Tradition war das Schweigen des Knochens kein Fehler; es war selbst eine Antwort: Die Ahnen sprechen nicht, weil der Moment für diese Frage noch nicht reif ist oder weil die Antwort den Rahmen dessen übersteigt, was gesagt werden kann. Diese App respektiert diesen Zustand und gibt ihn zurück, wenn das Muster es anzeigt.",
+      "沉默 (Das Schweigen). Das Muster erzeugt keine lesbaren Risse. In der Shang-Tradition war dies ein Hinweis darauf, dass der Moment für die Frage nicht reif war. Diese App respektiert diesen Zustand, wenn der Algorithmus ihn anzeigt.",
     bonesAuthHeading: "Authentizität der Methode",
     bonesAuthBody:
       "Mehr als 150.000 Orakelknochenfragmente wurden seit dem 19. Jahrhundert ausgegraben und untersucht. Sie sind international anerkanntes Kulturerbe und werden in Museen in China, Taiwan, Japan und Europa aufbewahrt. Die in dieser App implementierte Methode respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung, Befund nach Muster, einschließlich des Schweigens als legitimen Zustand.",
     yarrowHeading: "Schafgarbenstäbe (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Historische Ursprünge (~1000 v. Chr.)",
     yarrowOriginBody:
-      "Die Schafgarbenstab-Methode ist das Weissagungsverfahren, das im I Ching selbst dokumentiert ist. Der Große Kommentar (大传, Dàzhuàn), einer der Zehn Flügel, hält fest: «Die Zahl der Großen Expansion ist 50, von denen 49 verwendet werden.» Konfuzius erklärte in den Analekten, er wünsche sich, die Wandlungen fünfzig Jahre lang zu studieren; klassische Gelehrte verstehen diesen Hinweis auf die Zahl 50 als direkte Anspielung auf das Stabverfahren. Die Methode ist mehr als ein Jahrtausend älter als die Drei-Münzen-Methode. Richard Wilhelm und Cary Baynes dokumentierten das vollständige Verfahren im Anhang ihrer Übersetzung (Princeton University Press, 1950).",
-    yarrowProcedureHeading: "Das physische Verfahren",
+      "Dies ist das Verfahren, das im Großen Kommentar (Dàzhuàn) beschrieben wird. Die Methode präzisiert : «Die Zahl der Großen Expansion ist 50, von denen 49 verwendet werden». Die Methode ist mehr als ein Jahrtausend älter als die Drei-Münzen-Methode. Richard Wilhelm dokumentierte das vollständige Verfahren in seinem Werk von 1924 und bewahrte damit einen langsameren, taktilen und bewussteren rituellen Rhythmus im Vergleich zu Münzen.",
+    yarrowProcedureHeading: "Physisches Verfahren",
     yarrowProcedureBody:
-      "Die Methode verwendet eine Gruppe physischer Stäbe oder ähnlicher Gegenstände. Einer wird beiseitegelegt, die übrigen werden in einer wiederholten rituellen Abfolge geteilt und gezählt, bis jede der sechs Linien entsteht. Für Nutzer ist vor allem das Tempo wichtig: Es verlangt Aufmerksamkeit, Berührung und Geduld und wirkt dadurch zeremonieller als die Drei Münzen Methode.",
+      "Die Methode verwendet eine Gruppe physischer Stäbe oder ähnlicher Gegenstände. Einer wird beiseitegelegt, die übrigen werden in einer wiederholten rituellen Abfolge geteilt und gezählt, bis jede der sechs Linien entsteht. Für den Nutzer ist das Tempo wichtig: Es erfordert Aufmerksamkeit, Berührung und Geduld und macht die Beratung zeremonieller als die Drei-Münzen-Methode.",
     yarrowProbHeading: "Charakter der Methode",
     yarrowProbBody:
-      "Die Stäbchenmethode bewahrt ein langsameres rituelles Tempo als die Drei Münzen Methode. Ihr Wert wird in dieser App nicht als technische Tabelle dargestellt, sondern als andere Art, in dieselbe I Ging Tradition einzutreten: taktiler, bewusster und näher am klassischen Verfahren, das Wilhelm/Baynes dokumentiert haben. Für eine schnellere Befragung bleibt die Drei Münzen Methode ebenso gültig.",
+      "Die Stabmethode bewahrt einen langsameren rituellen Rhythmus als die Drei-Münzen-Methode. Ihr Wert wird in dieser App nicht als technische Tabelle dargestellt, sondern als ein anderer Weg, in dieselbe I Ching-Tradition einzutreten: taktiler, bewusster und näher am klassischen Verfahren, das von Wilhelm/Baynes dokumentiert wurde. Die Drei-Münzen-Methode bleibt für eine schnellere Beratung ebenso gültig.",
     interpretHeading: "Warum die KI nicht erfindet",
     interpretBody:
-      "Die künstliche Intelligenz in dieser App hat eine spezifische und begrenzte Funktion: das Ergebnis des Algorithmus (Hexagramm, bewegende Linien, Riss-Befund) zu nehmen und es in natürlicher Sprache in der Sprache des Nutzers zu artikulieren, mit dem Kontext seiner Frage. Die KI generiert keine Hexagramme, entscheidet keine Befunde, modifiziert weder Wilhelms Texte noch die Muster der Shang-Methode. Der mathematische Algorithmus tut das, getreu, bevor die KI eingreift. Die KI ist der Interpret. Das Orakel ist die Methode.",
-    sourcesHeading: "Quellen und Referenzen",
+      "Die künstliche Intelligenz in dieser App hat eine spezifische und begrenzte Funktion: das Ergebnis des Algorithmus (Hexagramm, bewegende Linien oder Riss-Befund) zu nehmen und es in natürlicher Sprache in den Kontext der Frage des Nutzers zu artikulieren. Die KI generiert keine Hexagramme, entscheidet nicht über Befunde und verändert Wilhelms Texte nicht. Der mathematische Algorithmus führt den technisch-traditionellen Prozess getreu aus, bevor die KI eingreift. Die KI ist der Interpret; das Orakel ist die Methode.",
+    sourcesHeading: "Akademische Quellen und Referenzen",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   it: {
-    title: "Note e origine dei metodi",
-    lead: "Questa pagina è un contesto tecnico-culturale. Non è una guida d'uso.",
+    title: "Note e Origine dei Metodi",
+    lead: "Questa pagina fornisce un contesto tecnico-culturale. Non è una guida all'uso.",
     authNotice:
-      "Tutti i metodi utilizzati in questa app provengono da tradizioni millenarie della cultura cinese, storicamente documentate e accademicamente rispettate in tutto il mondo. Questa app non inventa interpretazioni né genera significati propri, applica metodi autentici assistiti dall'intelligenza artificiale per renderli accessibili nella lingua dell'utente. Qualsiasi lettore può verificare i testi con le fonti originali elencate in fondo a questa pagina.",
+      "Tutti i metodi utilizzati in questa app provengono da tradizioni millenarie della cultura cinese, storicamente documentate e accademicamente rispettate in tutto il mondo. Questa app non inventa interpretazioni né genera significati propri; applica metodi autentici assistiti dalla tecnologia dell'intelligenza artificiale per renderli accessibili nella lingua dell'utente. Qualsiasi lettore può verificare i testi con le fonti originali elencate alla fine di questa pagina.",
     ichingHeading: "I Ching (周易 · Zhouyi)",
-    ichingOriginHeading: "Origini storiche (~1000 a.C.)",
+    ichingOriginHeading: "Origine storica (~1000 a.C.)",
     ichingOriginBody:
-      "Lo Zhouyi, «Le Mutazioni di Zhou», è uno dei testi più antichi dell'umanità. Le sue radici risalgono alla dinastia Zhou (1046–256 a.C.), sebbene il suo nucleo oracolare sia anteriore. Il testo fu costruito in strati storici distinti: il Re Wen organizzò i 64 esagrammi e scrisse i Giudizi (卦辞, guàcí) mentre era prigioniero. Suo figlio, il Duca di Zhou, aggiunse le sentenze delle sei linee (爻辞, yáocí). Secoli dopo, Confucio e i suoi discepoli aggiunsero i Commentari noti come le Dieci Ali (十翼), lo strato filosofico più profondo del testo.",
+      "Lo Zhouyi, «I Mutamenti di Zhou», è uno dei testi più antichi dell'umanità. Le sue radici risalgono alla dinastia Zhou (1046–256 a.C.). Il testo è stato costruito in strati storici : il Re Wen ha organizzato i 64 esagrammi e ha scritto i Giudizi (guàcí) mentre era prigioniero. Suo figlio, il Duca di Zhou, ha aggiunto le sentenze per le sei linee (yáocí). Secoli dopo, Confucio e i suoi discepoli hanno aggiunto i Commentari noti come le Dieci Ali (十翼), lo strato filosofico più profondo del testo.",
     ichingHexHeading: "Il sistema dei 64 esagrammi",
     ichingHexBody:
-      "Ogni esagramma è una figura di sei linee, ciascuna yin (spezzata, ricettiva) o yang (intera, attiva). Le 64 combinazioni possibili descrivono i modelli fondamentali del cambiamento nella natura e nella vita umana. Le linee in movimento indicano trasformazione: l'esagramma presente muta in uno futuro, e quella transizione è il cuore della lettura.",
+      "Ogni esagramma è una figura composta da sei linee, ciascuna yin (spezzata) o yang (intera). Le 64 combinazioni possibili descrivono i modelli fondamentali del cambiamento. Le linee in movimento indicano una trasformazione : l'esagramma presente muta in uno futuro, e quella transizione è il cuore della lettura.",
     ichingHexListHeading: "I 64 esagrammi nell'ordine di Re Wen",
     ichingHexListIntro:
-      "Elenco completo dei 64 esagrammi con numero, glifo e nome classico in cinese e pinyin. Il significato non è riportato qui: ogni esagramma prende forma solo all'interno di una consultazione precisa, dove la domanda e il contesto di chi consulta determinano la lettura.",
+      "Elenco completo dei 64 esagrammi con il loro numero, glifo e nome classico in cinese e pinyin. Il significato non è riportato qui : ogni esagramma prende forma solo all'interno di una consultazione precisa, dove la domanda e il contesto di chi consulta determinano la lettura.",
     ichingHexListAriaLabel: "Elenco dei 64 esagrammi",
     ichingMethodHeading: "Il metodo delle tre monete e le regole di Zhu Xi",
     ichingMethodBody:
-      "Il metodo classico usa tre monete lanciate sei volte per costruire l'esagramma linea per linea. Quando più linee cambiano, la scuola di Zhu Xi (neo-confucianesimo, XII secolo d.C.) stabilisce regole precise per determinare quale linea governa la lettura, eliminando l'ambiguità interpretativa. Questa app implementa esattamente quelle regole senza modifiche.",
+      "Il metodo classico usa tre monete lanciate sei volte. Quando più linee cambiano, la scuola di Zhu Xi (neo-confucianesimo, XII secolo d.C.) stabilisce regole precise per determinare quale linea governa la lettura, eliminando l'ambiguità interpretativa. Questa app implementa esattamente quelle regole senza modifiche.",
     ichingWilhelmHeading: "La traduzione Wilhelm/Baynes",
     ichingWilhelmBody:
-      "Richard Wilhelm, sinologo tedesco, visse in Cina per decenni e produsse nel 1924 la traduzione più completa e rispettata dello I Ching in lingua occidentale, inclusi i Giudizi, le linee e i Commentari delle Dieci Ali. Cary Baynes la tradusse in inglese nel 1950. Quest'opera è entrata nel dominio pubblico nel 2020 ed è il testo base di questa app, senza modifiche né semplificazioni.",
+      "Richard Wilhelm ha prodotto nel 1924 la traduzione più completa e rispettata dello I Ching in lingua occidentale. Cary Baynes l'ha tradotta in inglese nel 1950 (Princeton University Press). Quest'opera costituisce il testo base di questa app, senza modifiche né semplificazioni.",
     ichingChainHeading: "La catena di autenticità",
     ichingChain:
-      "Zhou Yi originale (dinastia Zhou) → Commentari di Confucio (V sec. a.C.) → Regole di Zhu Xi (XII sec. d.C.) → Traduzione Wilhelm tedesco (1924) → Traduzione Baynes inglese (1950) → Dominio pubblico (2020) → Questa app.",
-    bonesHeading: "Ossa oracolari (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Origini storiche (dinastia Shang, ~1600–1046 a.C.)",
+      "Zhou Yi original (dinastia Zhou) → Commentari di Confucio (V sec. a.C.) → Regole di Zhu Xi (XII sec. d.C.) → Traduzione Wilhelm tedesco (1924) → Traduzione Baynes inglese (1950) → Dominio pubblico (2020) → Questa app.",
+    bonesHeading: "Ossa Oracolari (甲骨 · Jiǎgǔ)",
+    bonesOriginHeading: "Origine storica (Dinastia Shang, ~1600–1046 a.C.)",
     bonesOriginBody:
-      "La divinazione con le ossa oracolari è la pratica oracolare documentata più antica della Cina, anteriore allo I Ching nella sua forma scritta. I chamani reali della dinastia Shang bruciavano piastrone di tartaruga o scapole di bue e leggevano le crepe risultanti per consultare gli antenati sulle decisioni militari, agricole, climatiche e personali del re.",
+      "La pratica oracolare documentata più antica della Cina. Gli sciamani reali applicavano calore a ossa o gusci per leggere le crepe risultanti. Questa app rispetta la logica strutturale del sistema Shang : carica positiva, carica negativa e verdetto per motivo.",
     bonesRitualHeading: "Il processo rituale",
     bonesRitualBody:
-      "Il processo era preciso e ripetibile: si formulava una carica positiva e la sua negazione. Si applicava bronzo incandescente all'osso finché non si formavano crepe. L'orientamento, la lunghezza e il motivo delle crepe determinavano il verdetto. Il risultato veniva inciso nell'osso stesso, costituendo i primi documenti scritti della Cina.",
-    bonesVerdictsHeading: "I cinque stati del verdetto",
-    bonesVerdictAuspClear: "吉. Chiaramente favorevole: il motivo conferma la carica positiva senza ambiguità.",
-    bonesVerdictAuspMod: "吉 moderato. Moderatamente favorevole: c'è conferma ma con sfumature o condizioni.",
-    bonesVerdictInauspMod: "凶 moderato. Moderatamente sfavorevole: il motivo pende verso la negazione con riserve.",
-    bonesVerdictInauspClear: "凶. Chiaramente sfavorevole: il motivo nega la carica positiva senza ambiguità.",
+      "Il processo era preciso e ripetibile : si formulava una carica positiva e la sua negazione. Si applicava bronzo incandescente all'osso finché non si formavano crepe. L'orientamento, la lunghezza e il motivo delle crepe determinavano il verdetto. Il risultato veniva inciso nell'osso stesso, costituendo i primi documenti scritti della Cina.",
+    bonesVerdictsHeading: "I cinque stati del verdetto :",
+    bonesVerdictAuspClear: "吉. Chiaramente favorevole.",
+    bonesVerdictAuspMod: "吉 moderato. Favorevole con sfumature.",
+    bonesVerdictInauspMod: "凶 moderato. Sfavorevole con riserve.",
+    bonesVerdictInauspClear: "凶. Chiaramente sfavorevole.",
     bonesVerdictSilence:
-      "沉默. Il Silenzio: il motivo non produce crepe leggibili. Nella tradizione Shang, il silenzio dell'osso non era un errore, era di per sé una risposta: gli antenati non parlano perché il momento non è maturo per quella domanda, o perché la risposta trascende ciò che può essere detto. Questa app rispetta quello stato e lo restituisce quando il motivo lo indica.",
+      "沉默 (Il Silenzio). Il motivo non produce crepe leggibili. Nella tradizione Shang, questo indicava che il momento non era maturo per la domanda. Questa app rispetta quello stato quando l'algoritmo lo indica.",
     bonesAuthHeading: "Autenticità del metodo",
     bonesAuthBody:
-      "Più di 150.000 frammenti di ossa oracolari sono stati scavati e studiati dal XIX secolo. Sono patrimonio riconosciuto internazionalmente e conservati in musei in Cina, Taiwan, Giappone ed Europa. Il metodo implementato in questa app rispetta la logica strutturale del sistema Shang: carica positiva, carica negativa, verdetto per motivo, includendo il silenzio come stato legittimo.",
+      "Più di 150.000 frammenti di ossa oracolari sono stati scavati e studiati dal XIX secolo. Sono patrimonio riconosciuto internazionalmente e conservati in musei in Cina, Taiwan, Giappone ed Europa. Il metodo implementato in questa app rispetta la logica strutturale del sistema Shang : carica positiva, carica negativa, verdetto per motivo, includendo il silenzio come stato legittimo.",
     yarrowHeading: "Steli di Achillea (蓍草 · Shīcǎo)",
-    yarrowOriginHeading: "Origini storiche (~1000 a.C.)",
+    yarrowOriginHeading: "Origine storica (~1000 a.C.)",
     yarrowOriginBody:
-      "Il metodo degli steli di achillea è il procedimento di divinazione documentato nell'I Ching stesso. Il Grande Commentario (大传, Dàzhuàn), una delle Dieci Ali, precisa: «Il numero della Grande Espansione è 50, dei quali 49 vengono usati». Confucio dichiara nei Dialoghi di voler studiare le Mutazioni per cinquant'anni; gli studiosi classici leggono in quel riferimento al numero 50 un'allusione diretta al procedimento degli steli. Il metodo è anteriore di oltre un millennio a quello delle tre monete. Richard Wilhelm e Cary Baynes documentarono il procedimento completo nell'Appendice della loro traduzione (Princeton University Press, 1950).",
+      "Questo è il procedimento descritto nel Grande Commento (Dàzhuàn). Il metodo precisa : «Il numero della Grande Espansione è 50, di cui 49 vengono usati». Questo metodo è anteriore a quello delle tre monete di oltre un millennio. Richard Wilhelm ha documentado il procedimento completo nella sua opera del 1924, preservando un ritmo rituale più lento, tattile e deliberato rispetto a quello delle monete.",
     yarrowProcedureHeading: "Procedura fisica",
     yarrowProcedureBody:
-      "Il metodo usa un insieme di steli fisici o oggetti simili. Uno viene messo da parte e gli altri vengono divisi e contati attraverso una sequenza rituale ripetuta fino a formare ciascuna delle sei linee. Per l'utente il punto centrale è il ritmo: richiede attenzione, tatto e pazienza, rendendo la consultazione più cerimoniale rispetto alle tre monete.",
+      "Il metodo usa un insieme di steli fisici o oggetti simili. Uno viene messo da parte e gli altri vengono divisi e contati attraverso una sequenza rituale ripetuta fino a formare ciascuna delle sei linee. Per l'utente il punto centrale è il ritmo : richiede attenzione, tatto e pazienza, rendendo la consultazione più cerimoniale rispetto alle tre monete.",
     yarrowProbHeading: "Carattere del metodo",
     yarrowProbBody:
-      "Il metodo degli steli conserva un ritmo rituale più lento rispetto alle tre monete. In questa app il suo valore non viene presentato come una tabella tecnica, ma come un modo diverso di entrare nella stessa tradizione dell'I Ching: più tattile, più deliberato e più vicino alla procedura classica documentata da Wilhelm/Baynes. Il metodo delle tre monete rimane ugualmente valido per una consultazione più rapida.",
+      "La procedura degli steli conserva un ritmo rituale più lento rispetto a quello delle monete. In questa app il suo valore non viene presentato come una tabella tecnica, ma come un modo diverso di entrare nella stessa tradizione dell'I Ching: più tattile, più deliberato e più vicino al procedimento classico documentato da Wilhelm/Baynes. Il metodo delle tre monete rimane altrettanto valido per una consultazione più rapida.",
     interpretHeading: "Perché l'IA non inventa",
     interpretBody:
-      "L'intelligenza artificiale in questa app ha una funzione specifica e delimitata: prendere il risultato dell'algoritmo, esagramma, linee in movimento, verdetto delle crepe, e articolarlo in linguaggio naturale nella lingua dell'utente, con il contesto della sua domanda. L'IA non genera esagrammi, non decide verdetti, non modifica i testi di Wilhelm né i motivi del metodo Shang. L'algoritmo matematico fa questo, fedelmente, prima che l'IA intervenga. L'IA è l'interprete. L'oracolo è il metodo.",
-    sourcesHeading: "Fonti e riferimenti",
+      "L'intelligenza artificiale in questa app ha una funzione specifica e delimitata: prendere il risultato dell'algoritmo (esagrammi, linee in movimento o verdetto di crepe) e articolarlo in linguaggio naturale con il contesto della domanda dell'utente. L'IA non genera esagrammi, non decide verdetti e non modifica i testi di Wilhelm. L'algoritmo matematico esegue fedelmente il processo tecnico-tradizionale prima che l'IA intervenga. L'IA è l'interprete ; l'oracolo è il metodo.",
+    sourcesHeading: "Fonti e Riferimenti Accademici",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   ja: {
     title: "手法の注記と起源",
@@ -444,6 +487,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "このアプリの人工知能には特定かつ限定的な機能があります：アルゴリズムの結果（卦、動爻、亀裂の神託）を受け取り、ユーザーの質問のコンテキストと共に、ユーザーの言語で自然言語として表現することです。AIは卦を生成せず、神託を決定せず、ヴィルヘルムのテキストも商の手法のパターンも改変しません。数学的アルゴリズムがそれを忠実に行い、その後AIが介入します。AIは解釈者です。神託は手法です。",
     sourcesHeading: "出典と参考文献",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   zh: {
     title: "方法注记与起源",
@@ -501,6 +552,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "本应用中的人工智能具有特定且有限的功能：获取算法结果（卦象、动爻、裂纹兆辞）并结合用户问题的语境，以用户的语言将其表述为自然语言。人工智能不生成卦象，不裁定兆辞，不修改卫礼贤的文本，也不改变商代方法的纹样。数学算法在人工智能介入之前，已忠实地完成了这一切。人工智能是解读者，神谕是方法本身。",
     sourcesHeading: "来源与参考文献",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   ko: {
     title: "방법 주석과 기원",
@@ -558,6 +617,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "이 앱의 인공지능은 특정하고 한정된 기능을 수행합니다: 알고리즘의 결과, 괘, 변효, 균열 신탁, 를 받아 사용자의 질문 맥락과 함께 사용자의 언어로 자연어로 표현하는 것입니다. AI는 괘를 생성하지 않고, 신탁을 결정하지 않으며, 빌헬름의 텍스트나 상 방법의 패턴을 수정하지 않습니다. 수학적 알고리즘이 AI가 개입하기 전에 충실히 그 역할을 합니다. AI는 해석자입니다. 신탁은 방법 그 자체입니다.",
     sourcesHeading: "출처 및 참고문헌",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   ar: {
     title: "ملاحظات وأصول الطرق",
@@ -615,6 +682,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "للذكاء الاصطناعي في هذا التطبيق وظيفة محددة ومحدودة: أخذ نتيجة الخوارزمية, الغرض، الخطوط المتحركة، حكم الشقوق, وصياغتها بلغة طبيعية في لغة المستخدم، مع سياق سؤاله. لا يُولّد الذكاء الاصطناعي أغراضاً، ولا يقرر أحكاماً، ولا يعدّل نصوص Wilhelm أو أنماط طريقة Shang. الخوارزمية الرياضية تفعل ذلك بأمانة قبل أن يتدخل الذكاء الاصطناعي. الذكاء الاصطناعي هو المفسر. العرافة هي الطريقة.",
     sourcesHeading: "المصادر والمراجع",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
   hi: {
     title: "विधि नोट्स और उत्पत्ति",
@@ -672,6 +747,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "इस ऐप में कृत्रिम बुद्धिमत्ता की एक विशिष्ट और सीमित कार्य है: एल्गोरिदम का परिणाम, हेक्साग्राम, गतिशील रेखाएं, दरार निर्णय, लेना और उसे उपयोगकर्ता के प्रश्न के संदर्भ के साथ उपयोगकर्ता की भाषा में प्राकृतिक भाषा में व्यक्त करना। AI हेक्साग्राम उत्पन्न नहीं करता, निर्णय तय नहीं करता, Wilhelm के ग्रंथों या शांग विधि के पैटर्न को संशोधित नहीं करता। गणितीय एल्गोरिदम AI के हस्तक्षेप से पहले यह सब विश्वासपूर्वक करता है। AI दुभाषिया है। दैवज्ञ विधि है।",
     sourcesHeading: "स्रोत और संदर्भ",
+    sourcesList: [
+      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
+      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
+      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
+      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
+      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
+      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
+    ],
   },
 };
 

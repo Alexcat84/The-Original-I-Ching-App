@@ -50,7 +50,7 @@ const FAQ_CATEGORY_ORDER: FaqCategoryId[] = [
 ];
 
 const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
-  "app-usage": ["language-support", "chats-drawer", "thread-depth", "export-pdf"],
+  "app-usage": ["language-support", "chats-drawer", "thread-depth", "export-pdf", "prompt-length"],
   "oracle-methods": [
     "iching-how-answers",
     "yarrow-vs-coins",
@@ -58,8 +58,8 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
     "oracle-bones-method",
     "silence-state",
   ],
-  "ai-texts": ["ai-vs-algorithm", "authentic-texts", "not-advice"],
-  "tokens-payments": ["tokens-packs", "purchases-legal"],
+  "ai-texts": ["ai-vs-algorithm", "authentic-texts", "data-reliability", "not-advice"],
+  "tokens-payments": ["tokens-packs", "purchases-legal", "library-unlock"],
   "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa"],
 };
 
@@ -202,6 +202,12 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
+    id: "data-reliability",
+    question: "How reliable are the I Ching texts provided in the app?",
+    answer:
+      "The texts are extremely reliable. We conducted a 1:1 data integrity audit, verifying each hexagram against academic sources such as the University of Parma (Wilhelm translation), Sacred-Texts.com (Legge), and the Chinese Text Project (Zhou Yi). Any transcription errors found in the original source datasets have been manually corrected to ensure mathematical and literary accuracy.",
+  },
+  {
     id: "yarrow-vs-coins",
     question: "What are the two I Ching casting methods: Three Coins and Yarrow Stalks?",
     answer:
@@ -265,6 +271,13 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "What is the Library and how do I unlock it?",
+    answer:
+      "The Library is a premium section containing the complete collection of 64 hexagrams across three literary works: the classic Wilhelm/Baynes translation, the James Legge version, and the original Zhou Yi. It is designed for personal study and to compare your manual casts with authentic sources. It is permanently unlocked by purchasing any paid token pack.",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "Is two-factor authentication available?",
     answer:
@@ -311,6 +324,13 @@ const FAQ_ITEMS_EN: FaqItem[] = [
       "Yes. Your questions and readings are yours. They are not shared with third parties, not used to train AI models, and are not visible to other users. Only you can see your chat history. You can delete any conversation at any time from the Chats section. If you enable two-factor authentication (2FA) available in Options, you add an extra layer of protection to your account.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "How long can my question to the oracle be?",
+    answer:
+      "Each consultation allows up to 1500 characters (about 250-300 words). We recommend taking advantage of this space to describe your situation in detail; the more context you provide about your current moment and feelings, the deeper and more accurate the interpretation the system generates from the resulting hexagram will be.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_ES: FaqItem[] = [
@@ -320,6 +340,12 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     answer:
       "Cada consulta consume tokens según tu pack activo. La guía explica el saldo de prueba, los tamaños de pack y cómo se acumula el saldo con tu cuenta. Las compras y renovaciones se rigen por los Términos del servicio.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "¿Qué tan fiables son los textos del I Ching en la aplicación?",
+    answer:
+      "Los textos son de máxima fiabilidad. Hemos realizado una auditoría de integridad de datos 1:1, contrastando cada hexagrama con fuentes académicas como la Universidad de Parma (versión Wilhelm), Sacred-Texts.com (Legge) y el Chinese Text Project (Zhou Yi). Cualquier error de transcripción detectado en los datasets fuente originales ha sido corregido manualmente para garantizar la exactitud matemática y literaria.",
   },
   {
     id: "yarrow-vs-coins",
@@ -372,7 +398,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   },
   {
     id: "privacy-data",
-    question: "¿Qué datos guardáis sobre mí y mis lecturas?",
+    question: "¿Qué datos guardan sobre mí y mis lecturas?",
     answer:
       "La política de privacidad describe categorías de datos, conservación y cómo lecturas e imágenes permanecen privadas por usuario. Complementa la guía dentro de la app.",
     related: ["privacyPolicy", "userGuide"],
@@ -383,6 +409,13 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     answer:
       "Las condiciones comerciales y el uso aceptable están en los Términos del servicio. Los packs de tokens y el flujo de compra se resumen en la guía y en la página de precios.",
     related: ["termsOfService", "tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "¿Qué es la Biblioteca y cómo se desbloquea?",
+    answer:
+      "La Biblioteca es una sección premium que contiene la colección completa de los 64 hexagramas en tres obras literarias: la traducción clásica de Wilhelm/Baynes, la versión de James Legge y el Zhou Yi original. Está diseñada para el estudio personal y para contrastar tus tiradas manuales con fuentes auténticas. Se desbloquea de forma permanente al adquirir cualquier pack de tokens de pago.",
+    related: ["tokenPacks"],
   },
   {
     id: "security-2fa",
@@ -431,6 +464,13 @@ const FAQ_ITEMS_ES: FaqItem[] = [
       "Sí. Tus preguntas y lecturas son tuyas. No se comparten con terceros, no se usan para entrenar modelos de IA, y no son visibles para otros usuarios. Solo tú puedes ver tu historial de chats. Puedes eliminar cualquier conversación en cualquier momento desde la sección Chats. Si activas la autenticación en dos pasos (2FA) disponible en Opciones, añades una capa adicional de protección a tu cuenta.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "¿Qué tan larga puede ser mi pregunta al oráculo?",
+    answer:
+      "Cada consulta permite hasta 1500 caracteres (unas 250-300 palabras). Te recomendamos aprovechar este espacio para describir tu situación con detalle; cuanto más contexto proporciones sobre tu momento actual y tus sentimientos, más profunda y precisa será la interpretación que el sistema genere a partir del hexagrama obtenido.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_AR: FaqItem[] = [
@@ -440,6 +480,11 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     answer:
       "تستهلك كل استشارة رموزًا وفق باقتك النشطة. يوضح الدليل رصيد التجربة المجانية، أحجام الباقات، وكيف يتراكم الرصيد مع حسابك. تخضع المشتريات والتجديدات لشروط الخدمة.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "ما مدى موثوقية نصوص الآي تشينغ في التطبيق؟",
+    answer: "النصوص موثوقة للغاية. لقد أجرينا تدقيقاً لسلامة البيانات بنسبة 1:1، مع التحقق من كل سداسي مقابل المصادر الأكاديمية مثل جامعة بارما (ترجمة فيلهلم)، وSacred-Texts.com (ليج)، ومشروع النصوص الصينية (تشو يي). تم تصحيح أي أخطاء في النسخ وجدت في مجموعات البيانات الأصلية يدوياً لضمان الدقة الرياضية والأدبية。",
   },
   {
     id: "yarrow-vs-coins",
@@ -505,6 +550,13 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "ما هي المكتبة وكيف يمكنني فتحها؟",
+    answer:
+      "المكتبة هي قسم متميز يحتوي على المجموعة الكاملة المكونة من 64 هكساغراماً عبر ثلاثة أعمال أدبية: ترجمة فيلهلم/باينズ الكلاسيكية، ونسخة جيمس ليغ، وجو يي الأصلي. تم تصميمها للدراسة الشخصية ولمقارنة قراءاتك اليدوية مع المصادر الموثوقة. يتم فتحها بشكل دائم عند شراء أي حزمة رموز مدفوعة.",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "هل تتوفر المصادقة الثنائية (2FA)؟",
     answer:
@@ -551,6 +603,13 @@ const FAQ_ITEMS_AR: FaqItem[] = [
       "نعم. أسئلتك وقراءاتك ملكك. لا تُشارَك مع أطراف ثالثة، ولا تُستخدم لتدريب نماذج الذكاء الاصطناعي، ولا يمكن للمستخدمين الآخرين رؤيتها. أنت وحدك من يستطيع الاطلاع على سجل محادثاتك. يمكنك حذف أي محادثة في أي وقت من قسم المحادثات. إذا فعّلت المصادقة الثنائية (2FA) المتوفرة في الخيارات، أضفت طبقة حماية إضافية لحسابك.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "ما مدى طول سؤالي للأوراكل؟",
+    answer:
+      "تسمح كل استشارة بما يصل إلى 1500 حرف (حوالي 250-300 كلمة). نوصي بالاستفادة من هذه المساحة لوصف موقفك بالتفصيل؛ فكلما زاد السياق الذي تقدمه حول لحظتك الحالية ومشاعرك، كان التفسير الذي يولده النظام من السداسية الناتجة أعمق وأكثر دقة.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_HI: FaqItem[] = [
@@ -560,6 +619,11 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     answer:
       "हर परामर्श आपके सक्रिय पैक के अनुसार टोकन खर्च करता है। गाइड में फ्री ट्रायल बैलेंस, पैक साइज़ और बैलेंस कैसे जुड़ता है, यह समझाया गया है। खरीद और नवीनीकरण सेवा शर्तों के अधीन हैं।",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "ऐप में दिए गए आई चिंग ग्रंथों की विश्वसनीयता क्या है?",
+    answer: "ग्रंथ अत्यंत विश्वसनीय हैं। हमने परमा विश्वविद्यालय (विल्हेम अनुवाद), Sacred-Texts.com (लेग), और चीनी पाठ परियोजना (झोउ यी) जैसे शैक्षणिक स्रोतों के साथ प्रत्येक हेक्साग्राम का मिलान करते हुए 1:1 डेटा अखंडता ऑडिट किया है। मूल स्रोत डेटासेट में मिली किसी भी प्रतिलेखन त्रुटि को गणितीय और साहित्यिक सटीकता सुनिश्चित करने के लिए मैन्युअल रूप से ठीक किया गया है।",
   },
   {
     id: "yarrow-vs-coins",
@@ -625,6 +689,13 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "पुस्तकालय क्या है और मैं इसे कैसे अनलॉक करूं?",
+    answer:
+      "पुस्तकालय एक प्रीमियम अनुभाग है जिसमें तीन साहित्यिक कृतियों: विल्हेल्म/बेंस का शास्त्रीय अनुवाद, जेम्स लेग संस्करण, और मूल झोउ यी में 64 हेक्साग्राम का पूरा संग्रह है। यह व्यक्तिगत अध्ययन और आपके मैन्युअल कास्ट की प्रामाणिक स्रोतों के साथ तुलना करने के लिए डिज़ाइन किया गया है। यह किसी भी सशुल्क टोकन पैक को खरीदने पर स्थायी रूप से अनलॉक हो जाता है।",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "क्या दो-कारक प्रमाणीकरण (2FA) उपलब्ध है?",
     answer:
@@ -671,6 +742,13 @@ const FAQ_ITEMS_HI: FaqItem[] = [
       "हाँ। आपके प्रश्न और पठन आपके हैं। इन्हें तृतीय पक्षों के साथ साझा नहीं किया जाता, AI मॉडल प्रशिक्षण के लिए उपयोग नहीं किया जाता, और अन्य उपयोगकर्ताओं को दिखाई नहीं देते। केवल आप अपना चैट इतिहास देख सकते हैं। आप Chats अनुभाग से किसी भी समय कोई भी वार्तालाप हटा सकते हैं। यदि आप विकल्पों में उपलब्ध दो-कारक प्रमाणीकरण (2FA) सक्षम करते हैं, तो आप अपने खाते में सुरक्षा की एक अतिरिक्त परत जोड़ते हैं।",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "ओरेकल से मेरा प्रश्न कितना लंबा हो सकता है?",
+    answer:
+      "प्रत्येक परामर्श 1500 वर्णों (लगभग 250-300 शब्दों) तक की अनुमति देता है। हम आपकी स्थिति का विस्तार से वर्णन करने के लिए इस स्थान का लाभ उठाने की सलाह देते हैं; आप अपने वर्तमान क्षण और भावनाओं के बारे में जितना अधिक संदर्भ प्रदान करेंगे, प्राप्त हेक्사ग्राम से सिस्टम जो व्याख्या उत्पन्न करेगा वह उतनी ही गहरी और सटीक होगी।",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_JA: FaqItem[] = [
@@ -680,6 +758,11 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     answer:
       "各相談はアクティブなパックに応じてトークンを消費します。ガイドでは無料トライアル残高、パックのサイズ、残高の積み重ね方を説明しています。購入と更新は利用規約に基づきます。",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "アプリで提供される易経のテキストの信頼性はどの程度ですか？",
+    answer: "テキストの信頼性は極めて高いです。パルマ大学（ヴィルヘルム訳）、Sacred-Texts.com（レッグ訳）、Chinese Text Project（周易）などの学術的ソースと1対1のデータ整合性監査を実施しました。元のソースデータセットに見つかった転記ミスはすべて手動で修正され、数学的および文学的な正確さが保証されています。",
   },
   {
     id: "yarrow-vs-coins",
@@ -745,6 +828,13 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "ライブラリとは何ですか？どうすればアンロックできますか？",
+    answer:
+      "ライブラリは、ヴィルヘルム/バインズ訳、ジェームズ・レッグ版、そして原典の周易という3つの文学作品にわたる64卦の完全なコレクションを含むプレミアムセクションです。個人の学習や、手動での占い結果を本物の情報源と比較するために設計されています。有料のトークンパックを購入することで永久にアンロックされます。",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "二要素認証（2FA）は利用できますか？",
     answer:
@@ -791,6 +881,13 @@ const FAQ_ITEMS_JA: FaqItem[] = [
       "はい。あなたの質問と解釈はあなただけのものです。第三者と共有されることはなく、AIモデルの学習に使用されることもなく、他のユーザーには見えません。チャット履歴を見ることができるのはあなただけです。Chatsセクションからいつでも任意の会話を削除できます。オプションで利用可能な二要素認証（2FA）を有効にすると、アカウントにさらなる保護の層を追加できます。",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "神託への質問はどのくらいの長さにできますか？",
+    answer:
+      "各相談には最大 1500文字 (約250-300単語) まで入力できます。このスペースを活用して状況を詳しく説明することをお勧めします。現在の状況や感情についてより多くの文脈を提供すればするほど、得られた卦からシステムが生成する解釈はより深く正確になります。",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_ZH: FaqItem[] = [
@@ -800,6 +897,11 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     answer:
       "每次咨询根据您激活的套餐消耗代币。指南说明了试用余额、套餐大小以及余额如何累积。购买和续订受服务条款约束。",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "应用中提供的易经文本可靠性如何？",
+    answer: "这些文本非常可靠。我们进行了 1:1 的数据完整性审核，根据帕尔马大学（卫礼贤译本）、Sacred-Texts.com（理雅各译本）和中国哲学书电子化计划（周易）等学术资源验证了每个卦象。原始源数据集中发现의 任何转录错误均已手动更正，以确保数学和文学的准确性。",
   },
   {
     id: "yarrow-vs-coins",
@@ -865,6 +967,13 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "资料库是什么？如何解锁？",
+    answer:
+      "资料库是一个高级板块，包含三个文学版本中的 64 卦完整合集：经典的卫礼贤/贝恩斯译本、理雅各（James Legge）版本以及《周易》古经。它专为个人学习以及将您的手动起卦与原典进行对比而设计。购买任何付费代币包即可永久解锁。",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "是否提供双因素身份验证（2FA）？",
     answer:
@@ -911,6 +1020,13 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
       "是的。您的问题和解读属于您自己。它们不会与第三方共享，不用于训练AI模型，其他用户也无法看到。只有您才能查看自己的聊天记录。您可以随时在聊天区删除任何对话。如果您在选项中启用双因素身份验证（2FA），将为您的账户增加一层额外保护。",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "我可以向神谕提出多长的问题？",
+    answer:
+      "每次咨询最多允许输入 1500 个字符 (约 250-300 个词)。我们建议您利用这个空间详细描述您的情况；您提供的关于当前时刻和感受的背景信息越多，系统根据所得卦象生成的解读就越深刻和准确。",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_KO: FaqItem[] = [
@@ -920,6 +1036,11 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     answer:
       "각 상담은 활성 팩에 따라 토큰을 소비합니다. 가이드에서는 무료 체험 잔액, 팩 크기, 잔액 적립 방식을 설명합니다. 구매 및 갱신은 서비스 약관의 적용을 받습니다.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "앱에서 제공되는 주역 텍스트는 얼마나 신뢰할 수 있습니까?",
+    answer: "텍스트는 매우 신뢰할 수 있습니다. 파르마 대학교(빌헬름 번역), Sacred-Texts.com(레그 번역), Chinese Text Project(주역)와 같은 학술적 자료를 바탕으로 1:1 데이터 무결성 감사를 실시했습니다. 원본 소스 데이터셋에서 발견된 모든 오타는 수학적 및 문학적 정확성을 보장하기 위해 수동으로 수정되었습니다.",
   },
   {
     id: "yarrow-vs-coins",
@@ -985,6 +1106,13 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "라이브러리란 무엇이며 어떻게 잠금 해제하나요?",
+    answer:
+      "라이브러리는 빌헬름/베인즈 번역, 제임스 레그 버전, 그리고 원전 주역 등 세 가지 문헌에 걸친 64괘 전체 컬렉션을 포함하는 프리미엄 섹션입니다. 개인적인 학습과 수동 점괘를 정통 출처와 대조하기 위해 설계되었습니다. 유료 토큰 팩을 구매하면 영구적으로 잠금 해제됩니다.",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "이중 인증(2FA)을 사용할 수 있나요?",
     answer:
@@ -1031,6 +1159,13 @@ const FAQ_ITEMS_KO: FaqItem[] = [
       "네. 귀하의 질문과 해석은 귀하의 것입니다. 제3자와 공유되지 않으며, AI 모델 훈련에 사용되지 않고, 다른 사용자에게 보이지 않습니다. 채팅 기록은 귀하만 볼 수 있습니다. 채팅 섹션에서 언제든지 대화를 삭제할 수 있습니다. 옵션에서 이중 인증(2FA)을 활성화하면 계정에 추가적인 보호 층을 더할 수 있습니다.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "오라클에 대한 질문은 얼마나 길게 할 수 있나요?",
+    answer:
+      "각 상담은 최대 1500자 (약 250-300 단어)까지 허용됩니다. 이 공간을 활용하여 상황을 자세히 설명하는 것이 좋습니다. 현재 상황과 감정에 대해 더 많은 맥락을 제공할수록 결과 괘에서 시스템이 생성하는 해석이 더 깊고 정확해집니다.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_PT: FaqItem[] = [
@@ -1040,6 +1175,11 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     answer:
       "Cada consulta consome tokens conforme o seu pacote ativo. O guia explica os créditos de teste, os tamanhos dos pacotes e como o saldo se acumula. Compras e renovações são regidas pelos Termos.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "Quão confiáveis são os textos do I Ching no aplicativo?",
+    answer: "Os textos são altamente confiáveis. Realizamos uma auditoria de integridade de dados 1:1, verificando cada hexagrama com fontes acadêmicas como a Universidade de Parma (versão Wilhelm), Sacred-Texts.com (Legge) e o Chinese Text Project (Zhou Yi). Quaisquer erros de transcrição encontrados nos conjuntos de dados originais foram corrigidos manualmente para garantir precisão matemática e literária.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1105,6 +1245,13 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "O que é a Biblioteca e como a desbloqueio?",
+    answer:
+      "A Biblioteca é uma secção premium que contém a coleção completa dos 64 hexagramas em três obras literarias: a tradução clássica de Wilhelm/Baynes, a versão de James Legge e o Zhou Yi original. Foi concebida para o estudo pessoal e para contrastar as suas tiragens manuais com fontes autênticas. É desbloqueada permanentemente ao adquirir qualquer pacote de tokens pago.",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "A autenticação em dois fatores (2FA) está disponível?",
     answer:
@@ -1151,6 +1298,13 @@ const FAQ_ITEMS_PT: FaqItem[] = [
       "Sim. As suas perguntas e leituras são suas. Não são partilhadas com terceiros, não são usadas para treinar modelos de IA e não são visíveis para outros utilizadores. Só você pode ver o seu histórico de chats. Pode eliminar qualquer conversa a qualquer momento na secção Chats. Se ativar a autenticação em dois fatores (2FA) disponível em Opções, adiciona uma camada extra de proteção à sua conta.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "Quão longa pode ser a minha pergunta ao oráculo?",
+    answer:
+      "Cada consulta permite até 1500 caracteres (cerca de 250-300 palavras). Recomendamos aproveitar este espaço para descrever a sua situação com detalhes; quanto mais contexto fornecer sobre o seu momento actual e os seus sentimentos, mais profunda e precisa será a interpretação que o sistema gera a partir do hexagrama obtido.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_DE: FaqItem[] = [
@@ -1160,6 +1314,11 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     answer:
       "Jede Beratung verbraucht Tokens gemäß Ihrem aktiven Pack. Der Leitfaden erklärt die Testguthaben, Pack-Größen und wie sich das Guthaben anhäuft. Käufe und Verlängerungen unterliegen den Nutzungsbedingungen.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "Wie zuverlässig sind die I-Ging-Texte in der App?",
+    answer: "Die Texte sind äußerst zuverlässig. Wir haben ein 1:1-Datenintegritätsaudit durchgeführt und jedes Hexagramm mit akademischen Quellen wie der Universität Parma (Wilhelm-Übersetzung), Sacred-Texts.com (Legge) und dem Chinese Text Project (Zhou Yi) abgeglichen. Etwaige Transkriptionsfehler in den ursprünglichen Quelldatensätzen wurden manuell korrigiert, um mathematische und literarische Genauigkeit zu gewährleisten.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1225,6 +1384,13 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "Was ist die Bibliothek und wie entsperre ich sie?",
+    answer:
+      "Die Bibliothek ist ein Premium-Bereich, der die vollständige Sammlung der 64 Hexagramme aus drei literarischen Werken enthält: der klassischen Wilhelm/Baynes-Übersetzung, der James-Legge-Version und dem originalen Zhou Yi. Sie ist für das persönliche Studium und den Abgleich Ihrer manuellen Würfe mit authentischen Quellen gedacht. Sie wird durch den Kauf eines beliebigen kostenpflichtigen Token-Pakets dauerhaft freigeschaltet.",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "Ist Zwei-Faktor-Authentifizierung (2FA) verfügbar?",
     answer:
@@ -1271,6 +1437,13 @@ const FAQ_ITEMS_DE: FaqItem[] = [
       "Ja. Ihre Fragen und Lesungen gehören Ihnen. Sie werden nicht mit Dritten geteilt, nicht zur Schulung von KI-Modellen verwendet und sind für andere Benutzer nicht sichtbar. Nur Sie können Ihren Chat-Verlauf einsehen. Sie können jedes Gespräch jederzeit im Bereich Chats löschen. Wenn Sie die in den Optionen verfügbare Zwei-Faktor-Authentifizierung (2FA) aktivieren, fügen Sie Ihrem Konto eine zusätzliche Schutzebene hinzu.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "Wie lang darf meine Frage an das Orakel sein?",
+    answer:
+      "Jede Konsultation erlaubt bis zu 1500 Zeichen (etwa 250-300 Wörter). Wir empfehlen, diesen Platz zu nutzen, um Ihre Situation detailliert zu beschreiben; je mehr Kontext Sie über Ihren aktuellen Moment und Ihre Gefühle angeben, desto tiefer und genauer wird die Interpretation sein, die das System aus dem erhaltenen Hexagramm generiert.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_IT: FaqItem[] = [
@@ -1280,6 +1453,11 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     answer:
       "Ogni consultazione consuma token in base al tuo pacchetto attivo. La guida spiega il credito di prova, le dimensioni dei pacchetti e come il saldo si accumula. Acquisti e rinnovi sono regolati dai Termini.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "Quanto sono affidabili i testi dell'I Ching nell'app?",
+    answer: "I testi sono estremamente affidabili. Abbiamo condotto un audit di integrità dei dati 1:1, verificando ogni esagramma rispetto a fonti accademiche come l'Università di Parma (traduzione Wilhelm), Sacred-Texts.com (Legge) e il Chinese Text Project (Zhou Yi). Eventuali errori di trascrizione trovati nei dataset originali sono stati corretti manualmente per garantire la precisione matematica e letteraria.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1345,6 +1523,13 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "Cos'è la Biblioteca e come la sblocco?",
+    answer:
+      "La Biblioteca è una sezione premium che contiene la collezione completa dei 64 esagrammi in tre opere letterarie: la traduzione classica di Wilhelm/Baynes, la versione di James Legge e il Zhou Yi originale. È pensata per lo studio personale e per confrontare i tuoi lanci manuali con fonti autentiche. Si sblocca in modo permanente acquistando qualsiasi pacchetto di token a pagamento.",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "È disponibile l'autenticazione a due fattori (2FA)?",
     answer:
@@ -1391,6 +1576,13 @@ const FAQ_ITEMS_IT: FaqItem[] = [
       "Sì. Le tue domande e le tue letture sono tue. Non vengono condivise con terzi, non vengono utilizzate per addestrare modelli di IA e non sono visibili ad altri utenti. Solo tu puoi vedere la cronologia delle chat. Puoi eliminare qualsiasi conversazione in qualsiasi momento dalla sezione Chat. Se attivi l'autenticazione a due fattori (2FA) disponibile in Opzioni, aggiungi un ulteriore livello di protezione al tuo account.",
     related: ["privacyPolicy", "userGuide"],
   },
+  {
+    id: "prompt-length",
+    question: "Quanto può essere lunga la mia domanda all'oracolo?",
+    answer:
+      "Ogni consultazione permette fino a 1500 caratteri (circa 250-300 parole). Ti consigliamo di approfittare di questo spazio per descrivere la tua situazione in dettaglio; più contesto fornirai sul tuo momento attuale e sui tuoi sentimenti, più profonda e accurata sarà l'interpretazione che il sistema genererà dall'esagramma ottenuto.",
+    related: ["userGuide"],
+  },
 ];
 
 const FAQ_ITEMS_FR: FaqItem[] = [
@@ -1400,6 +1592,11 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     answer:
       "Chaque consultation consomme des tokens selon votre pack actif. Le guide explique le solde d'essai, les tailles de pack et comment le solde s'accumule. Les achats et renouvellements sont régis par les Conditions.",
     related: ["tokenPacks", "pricing", "termsOfService"],
+  },
+  {
+    id: "data-reliability",
+    question: "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
+    answer: "Les textes sont extrêmement fiables. Nous avons effectué un audit d'intégrité des données 1:1, en vérifiant chaque hexagramme par rapport à des sources académiques telles que l'Université de Parme (traduction Wilhelm), Sacred-Texts.com (Legge) et le Chinese Text Project (Zhou Yi). Toutes les erreurs de transcription détectées dans les ensembles de données sources originaux ont été corrigées manuellement pour garantir une exactitude mathématique et littéraire.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1465,6 +1662,13 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
   {
+    id: "library-unlock",
+    question: "Qu'est-ce que la Bibliothèque et comment la débloquer ?",
+    answer:
+      "La Bibliothèque est une section premium contenant la collection complète des 64 hexagrammes à travers trois œuvres littéraires : la traduction classique Wilhelm/Baynes, la version de James Legge et le Zhou Yi original. Elle est conçue pour l'étude personnelle et pour comparer vos tirages manuels avec des sources authentiques. Elle est débloquée de façon permanente à l'achat de tout pack de jetons payant.",
+    related: ["tokenPacks"],
+  },
+  {
     id: "security-2fa",
     question: "L'authentification à deux facteurs (2FA) est-elle disponible ?",
     answer:
@@ -1510,6 +1714,13 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     answer:
       "Oui. Vos questions et lectures vous appartiennent. Elles ne sont pas partagées avec des tiers, ne sont pas utilisées pour entraîner des modèles d'IA et ne sont pas visibles par d'autres utilisateurs. Vous seul pouvez voir votre historique de chat. Vous pouvez supprimer n'importe quelle conversation à tout moment depuis la section Chats. Si vous activez l'authentification à deux facteurs (2FA) disponible dans Options, vous ajoutez une couche supplémentaire de protection à votre compte.",
     related: ["privacyPolicy", "userGuide"],
+  },
+  {
+    id: "prompt-length",
+    question: "Quelle peut être la longueur de ma question à l'oracle ?",
+    answer:
+      "Chaque consultation permet jusqu'à 1500 caractères (environ 250-300 mots). Nous vous recommandons de profiter de cet espace pour décrire votre situation en détail ; plus vous fournirez de contexte sur votre moment actuel et vos sentiments, plus l'interprétation générée par le système à partir du hexagramme obtenu sera profonde et précise.",
+    related: ["userGuide"],
   },
 ];
 

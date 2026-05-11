@@ -638,7 +638,6 @@ type UiCopy = {
   chats: string;
   signIn: string;
   signOut: string;
-  plan: string;
   options: string;
   writeConsultation: string;
   positiveCharge: string;
@@ -651,9 +650,6 @@ type UiCopy = {
   bones: string;
   iChingTagline: string;
   bonesTagline: string;
-  modeIChingHint: string;
-  modeIChingYarrowHint: string;
-  modeBonesHint: string;
   emptyInviteMorning: string;
   emptyInviteAfternoon: string;
   emptyInviteNight: string;
@@ -665,7 +661,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Chats",
     signIn: "Iniciar sesión",
     signOut: "Cerrar sesión",
-    plan: "Plan",
     options: "Opciones",
     writeConsultation: "Escribe tu consulta…",
     positiveCharge: "Cargo positivo (afirmación)…",
@@ -677,9 +672,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Huesos",
     iChingTagline: "Tres monedas · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Huesos de Oráculo · Grietas 兆 · estilo Shang",
-    modeIChingHint: "Seis líneas, tres monedas por línea, mutación Zhu Xi",
-    modeIChingYarrowHint: "Seis líneas, tres fases por línea, distribución Zhou auténtica",
-    modeBonesHint: "Pregunta sí / no con cargo afirmativo; lectura por grietas 兆.",
     emptyInviteMorning:
       "Buen momento para escuchar al oráculo. ¿Qué inquietud trae este nuevo día? Escribe tu consulta con intención.",
     emptyInviteAfternoon:
@@ -691,7 +683,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Chats",
     signIn: "Sign in",
     signOut: "Sign out",
-    plan: "Plan",
     options: "Options",
     writeConsultation: "Type your consultation…",
     positiveCharge: "Positive charge (affirmation)…",
@@ -703,9 +694,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Bones",
     iChingTagline: "Three coins · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Oracle Bones · Cracks 兆 · Shang style",
-    modeIChingHint: "Six lines, three coins per line, Zhu Xi mutation",
-    modeIChingYarrowHint: "Six lines, three phases per line, authentic Zhou distribution",
-    modeBonesHint: "Yes / no by affirmative charge; crack reading 兆.",
     emptyInviteMorning: "Good time to consult the oracle. What concern comes with this new day?",
     emptyInviteAfternoon: "Change keeps moving. What do you need to see more clearly today?",
     emptyInviteNight: "The night also asks. Which part of your life do you want to explore?",
@@ -715,7 +703,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Conversas",
     signIn: "Entrar",
     signOut: "Sair",
-    plan: "Plano",
     options: "Opções",
     writeConsultation: "Escreva sua consulta…",
     positiveCharge: "Cargo positivo (afirmação)…",
@@ -727,9 +714,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Ossos",
     iChingTagline: "Três moedas · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Ossos de Oráculo · Fissuras 兆 · estilo Shang",
-    modeIChingHint: "Seis linhas, três moedas por linha, mutação Zhu Xi",
-    modeIChingYarrowHint: "Seis linhas, três fases por linha, distribuição Zhou autêntica",
-    modeBonesHint: "Pergunta sim / não com cargo afirmativo; leitura por fissuras 兆.",
     emptyInviteMorning: "Bom momento para ouvir o oráculo. Que inquietação traz este novo dia?",
     emptyInviteAfternoon: "A mudança continua. O que você precisa ver com mais clareza hoje?",
     emptyInviteNight: "A noite também pergunta. Qual frente da sua vida você quer explorar?",
@@ -739,7 +723,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Discussions",
     signIn: "Se connecter",
     signOut: "Se déconnecter",
-    plan: "Forfait",
     options: "Options",
     writeConsultation: "Écris ta consultation…",
     positiveCharge: "Charge positive (affirmation)…",
@@ -751,9 +734,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Os",
     iChingTagline: "Trois pièces · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Os Oracle · Fissures 兆 · style Shang",
-    modeIChingHint: "Six lignes, trois pièces par ligne, mutation Zhu Xi",
-    modeIChingYarrowHint: "Six lignes, trois phases par ligne, distribution Zhou authentique",
-    modeBonesHint: "Question oui / non avec charge affirmative ; lecture des fissures 兆.",
     emptyInviteMorning: "Bon moment pour écouter l'oracle. Quelle préoccupation t'accompagne aujourd'hui ?",
     emptyInviteAfternoon: "Le changement continue. Que dois-tu voir plus clairement aujourd'hui ?",
     emptyInviteNight: "La nuit pose aussi des questions. Quelle partie de ta vie veux-tu explorer ?",
@@ -763,7 +743,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Chats",
     signIn: "Anmelden",
     signOut: "Abmelden",
-    plan: "Plan",
     options: "Optionen",
     writeConsultation: "Schreibe deine Frage…",
     positiveCharge: "Positive Ladung (Bejahung)…",
@@ -775,9 +754,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Knochen",
     iChingTagline: "Drei Münzen · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Orakelknochen · Risse 兆 · Shang-Stil",
-    modeIChingHint: "Sechs Linien, drei Münzen pro Linie, Zhu-Xi-Mutation",
-    modeIChingYarrowHint: "Sechs Linien, drei Phasen pro Linie, authentische Zhou-Verteilung",
-    modeBonesHint: "Ja/Nein-Frage mit positiver Ladung; Risslesung 兆.",
     emptyInviteMorning: "Guter Zeitpunkt für das Orakel. Welche Frage bringt dieser Tag mit sich?",
     emptyInviteAfternoon: "Der Wandel geht weiter. Was musst du heute klarer sehen?",
     emptyInviteNight: "Auch die Nacht fragt. Welchen Bereich deines Lebens möchtest du erkunden?",
@@ -787,7 +763,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Chat",
     signIn: "Accedi",
     signOut: "Esci",
-    plan: "Piano",
     options: "Opzioni",
     writeConsultation: "Scrivi la tua consultazione…",
     positiveCharge: "Carica positiva (affermazione)…",
@@ -799,9 +774,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "Ossa",
     iChingTagline: "Tre monete · Zhu Xi · Wilhelm/Baynes",
     bonesTagline: "Ossa dell'Oracolo · Crepe 兆 · stile Shang",
-    modeIChingHint: "Sei linee, tre monete per linea, mutazione Zhu Xi",
-    modeIChingYarrowHint: "Sei linee, tre fasi per linea, distribuzione Zhou autentica",
-    modeBonesHint: "Domanda sì / no con carica affermativa; lettura delle crepe 兆.",
     emptyInviteMorning: "Momento ideale per l'oracolo. Quale inquietudine porta questo nuovo giorno?",
     emptyInviteAfternoon: "Il cambiamento continua. Cosa devi vedere con più chiarezza oggi?",
     emptyInviteNight: "Anche la notte fa domande. Quale fronte della tua vita vuoi esplorare?",
@@ -811,7 +783,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "チャット",
     signIn: "ログイン",
     signOut: "ログアウト",
-    plan: "プラン",
     options: "オプション",
     writeConsultation: "相談内容を入力…",
     positiveCharge: "肯定の問い（肯定電荷）…",
@@ -823,9 +794,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "骨占",
     iChingTagline: "三枚の硬貨 · 朱熹 · ヴィルヘルム/ベインズ",
     bonesTagline: "甲骨占 · 亀裂 兆 · 殷様式",
-    modeIChingHint: "六爻、各爻に三枚の硬貨、朱熹変爻法",
-    modeIChingYarrowHint: "六爻、各爻に三つの段階、周朝本来の分布",
-    modeBonesHint: "肯定電荷による Yes/No。亀裂 兆 の読解。",
     emptyInviteMorning: "いまは託宣に向いた時間。今日の不安を問いにしてみましょう。",
     emptyInviteAfternoon: "変化は動き続けています。今日、何をより明確に見たいですか。",
     emptyInviteNight: "夜もまた問いを生みます。人生のどの面を探りますか。",
@@ -835,7 +803,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "聊天",
     signIn: "登录",
     signOut: "退出登录",
-    plan: "方案",
     options: "选项",
     writeConsultation: "输入你的咨询…",
     positiveCharge: "正向命题（肯定）…",
@@ -847,9 +814,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "甲骨",
     iChingTagline: "三枚铜钱 · 朱熹 · Wilhelm/Baynes",
     bonesTagline: "甲骨 · 裂纹 兆 · 商式",
-    modeIChingHint: "六爻，每爻三枚铜钱，朱熹变爻法",
-    modeIChingYarrowHint: "六爻，每爻三阶段，周代本真分布",
-    modeBonesHint: "以肯定命题进行是/否占；裂纹 兆 解读。",
     emptyInviteMorning: "此刻适合聆听神谕。今天你带着什么问题而来？",
     emptyInviteAfternoon: "变化仍在流动。今天你需要看清什么？",
     emptyInviteNight: "夜晚也会发问。你想探索人生的哪一面？",
@@ -859,7 +823,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "채팅",
     signIn: "로그인",
     signOut: "로그아웃",
-    plan: "플랜",
     options: "옵션",
     writeConsultation: "질문을 입력하세요…",
     positiveCharge: "긍정 명제(affirmation)…",
@@ -871,9 +834,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "골복",
     iChingTagline: "세 동전 · 주희 · Wilhelm/Baynes",
     bonesTagline: "골복 · 균열 兆 · 상나라 방식",
-    modeIChingHint: "육효, 효마다 동전 3개, 주희 변효 규칙",
-    modeIChingYarrowHint: "육효, 효마다 세 단계, 주 왕조 본래 분포",
-    modeBonesHint: "긍정 명제로 예/아니오 질문; 균열 兆 해석.",
     emptyInviteMorning: "지금은 오라클에 귀 기울이기 좋은 시간입니다. 어떤 고민이 있나요?",
     emptyInviteAfternoon: "변화는 계속 움직입니다. 오늘 무엇을 더 분명히 보고 싶나요?",
     emptyInviteNight: "밤도 질문합니다. 삶의 어떤 영역을 탐색하고 싶나요?",
@@ -883,7 +843,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "المحادثات",
     signIn: "تسجيل الدخول",
     signOut: "تسجيل الخروج",
-    plan: "الخطة",
     options: "خيارات",
     writeConsultation: "اكتب استشارتك…",
     positiveCharge: "الشحنة الإيجابية (تأكيد)…",
@@ -895,9 +854,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "عظام الكهانة",
     iChingTagline: "ثلاث عملات · تشو شي · فيلهلم/بينز",
     bonesTagline: "عظام الكهانة · الشقوق 兆 · أسلوب شانغ",
-    modeIChingHint: "ستة خطوط، ثلاث عملات لكل خط، طريقة تحوّل تشو شي",
-    modeIChingYarrowHint: "ستة خطوط، ثلاث مراحل لكل خط، التوزيع الأصيل لأسرة تشو",
-    modeBonesHint: "سؤال نعم / لا بالشحنة الإيجابية؛ قراءة الشقوق 兆.",
     emptyInviteMorning: "وقت مناسب للتشاور مع الأوراكل. ما القلق الذي يحمله هذا اليوم الجديد؟ اكتب استشارتك بنية صادقة.",
     emptyInviteAfternoon: "التغيير لا يتوقف. ما الذي تحتاج إلى رؤيته بوضوح أكبر اليوم؟",
     emptyInviteNight: "الليل أيضاً يسأل. أي جانب من حياتك تريد استكشافه؟",
@@ -907,7 +863,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "चैट",
     signIn: "साइन इन",
     signOut: "साइन आउट",
-    plan: "प्लान",
     options: "विकल्प",
     writeConsultation: "अपनी सलाह लिखें…",
     positiveCharge: "सकारात्मक प्रस्ताव (पुष्टि)…",
@@ -919,9 +874,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     bones: "अस्थि ओरेकल",
     iChingTagline: "तीन सिक्के · झू शी · विल्हेल्म/बेयन्स",
     bonesTagline: "अस्थि ओरेकल · दरारें 兆 · शांग शैली",
-    modeIChingHint: "छह रेखाएँ, प्रत्येक रेखा पर तीन सिक्के, झू शी परिवर्तन नियम",
-    modeIChingYarrowHint: "छह रेखाएँ, प्रत्येक रेखा पर तीन चरण, प्रामाणिक झोउ वितरण",
-    modeBonesHint: "सकारात्मक प्रस्ताव के साथ हाँ / नहीं प्रश्न; दरार 兆 पठन।",
     emptyInviteMorning: "ओरेकल से पूछने का अच्छा समय है। आज की आपकी मुख्य चिंता क्या है?",
     emptyInviteAfternoon: "परिवर्तन चलता रहता है। आज आपको किस बात को और स्पष्ट देखना है?",
     emptyInviteNight: "रात भी प्रश्न पूछती है। जीवन के किस हिस्से को आप समझना चाहते हैं?",
@@ -4503,11 +4455,6 @@ export default function HomePage() {
                             <span className="composer-switch-label">{ui.bones}</span>
                           </button>
                         </div>
-                        <p className="composer-switch-caption">
-                          {oracleMode === "iching"
-                            ? (ichingCastingMethod === "yarrow-stalks" ? ui.modeIChingYarrowHint : ui.modeIChingHint)
-                            : ui.modeBonesHint}
-                        </p>
                       </div>
                     </div>
                     {oracleMode === "iching" ? (
@@ -4600,11 +4547,6 @@ export default function HomePage() {
                           aria-label={chrome.threadDepthRegionAria}
                         >
                           <span>{chrome.threadDepthHeading}</span>
-                          <p className="meta-line tier-hint-line">
-                            {ui.plan}{" "}
-                            <strong>{tierDisplayNode}</strong>
-                            {interpolate(chrome.threadDepthPlanSuffix, { cap: isAdmin ? "∞" : threadDepthCap })}
-                          </p>
                           <div
                             className="session-progress-bar session-progress-bar--prominent"
                             role="progressbar"
@@ -4705,6 +4647,21 @@ export default function HomePage() {
                             {chrome.disable2fa}
                           </button>
                         ) : null}
+                      </div>
+                    </div>
+                    <hr className="composer-panel-divider" aria-hidden />
+                    <div className="session-progress" role="group" aria-label={chrome.libraryGroupAria}>
+                      <span>{chrome.libraryHeading}</span>
+                      <p className="meta-line tier-hint-line">{chrome.libraryDescription}</p>
+                      <div className="composer-panel-actions">
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => router.push("/library")}
+                          disabled={!accessToken || tier === "free"}
+                        >
+                          {chrome.openLibrary}
+                        </button>
                       </div>
                     </div>
                     <div className="composer-doc-links" aria-label={chrome.docLinksAria}>
@@ -5311,6 +5268,7 @@ export default function HomePage() {
                   <span aria-hidden>{consultPanelOpen ? "▾" : "☰"}</span>
                   <span className="composer-mode-tag">{ui.options}</span>
                 </button>
+              <div style={{ position: 'relative', width: '100%' }}>
                 <div className="composer-input-row">
                   <textarea
                     ref={questionInputRef}
@@ -5342,6 +5300,7 @@ export default function HomePage() {
                     }
                     aria-label={chrome.questionInputAria}
                     rows={1}
+                    maxLength={1500}
                     readOnly={threadLimitReachedUi}
                     aria-disabled={threadLimitReachedUi}
                   />
@@ -5355,6 +5314,18 @@ export default function HomePage() {
                     {loading ? "…" : "➤"}
                   </button>
                 </div>
+                <div style={{ 
+                  position: 'absolute', 
+                  right: '65px', 
+                  bottom: '10px', 
+                  opacity: 0.5, 
+                  fontSize: '0.65rem', 
+                  pointerEvents: 'none',
+                  fontWeight: 'bold'
+                }}>
+                  {question.length} / 1500
+                </div>
+              </div>
               </div>
             </div>
         </footer>

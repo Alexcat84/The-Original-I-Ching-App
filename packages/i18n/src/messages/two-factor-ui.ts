@@ -104,7 +104,7 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     chooseAnotherMethod: "← Elegir otro método",
     totpPlaceholderShort: "Código TOTP (6 dígitos)",
     totpSetupSteps:
-      "1) Pulsa «Generar QR»  2) Escaneálo con tu app Authenticator  3) Escribe el código de 6 dígitos.",
+      "1) Pulsa «Generar QR»  2) Escanéalo con tu app Authenticator  3) Escribe el código de 6 dígitos.",
     preparing: "Preparando...",
     generateQr: "Generar QR",
     totpPlaceholderLong: "Código TOTP de 6 dígitos",

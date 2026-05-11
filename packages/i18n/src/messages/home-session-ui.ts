@@ -22,6 +22,7 @@ export type HomeSessionUiMessages = {
   /** Appended when the server returns no extra message (leading space in ES/EN). */
   consultFailedPersistHint: string;
   requestFailedStatus: string;
+  charLimitHint: string;
 };
 
 const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
@@ -44,6 +45,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "No se pudo completar la consulta.",
     consultFailedPersistHint: " Si persiste, revisa la configuración del servidor.",
     requestFailedStatus: "Solicitud fallida ({{status}})",
+    charLimitHint: "Hasta 1500 caracteres.",
   },
   en: {
     defaultSessionTitle: "Consultation",
@@ -64,6 +66,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "Could not complete the consultation.",
     consultFailedPersistHint: " If it keeps happening, check the server configuration.",
     requestFailedStatus: "Request failed ({{status}})",
+    charLimitHint: "Up to 1500 characters.",
   },
   pt: {
     defaultSessionTitle: "Consulta",
@@ -84,6 +87,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "Não foi possível concluir a consulta.",
     consultFailedPersistHint: " Se continuar, verifica a configuração do servidor.",
     requestFailedStatus: "Pedido falhou ({{status}})",
+    charLimitHint: "Até 1500 caracteres.",
   },
   fr: {
     defaultSessionTitle: "Consultation",
@@ -104,6 +108,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "Impossible de terminer la consultation.",
     consultFailedPersistHint: " Si cela continue, vérifiez la configuration du serveur.",
     requestFailedStatus: "Échec de la requête ({{status}})",
+    charLimitHint: "Jusqu'à 1500 caractères.",
   },
   de: {
     defaultSessionTitle: "Konsultation",
@@ -124,6 +129,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "Konsultation konnte nicht abgeschlossen werden.",
     consultFailedPersistHint: " Wenn es weiterhin passiert, prüfen Sie die Serverkonfiguration.",
     requestFailedStatus: "Anfrage fehlgeschlagen ({{status}})",
+    charLimitHint: "Bis zu 1500 Zeichen.",
   },
   it: {
     defaultSessionTitle: "Consultazione",
@@ -144,6 +150,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "Impossibile completare la consultazione.",
     consultFailedPersistHint: " Se continua, controlla la configurazione del server.",
     requestFailedStatus: "Richiesta non riuscita ({{status}})",
+    charLimitHint: "Fino a 1500 caratteri.",
   },
   ja: {
     defaultSessionTitle: "相談",
@@ -163,6 +170,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "相談を完了できませんでした。",
     consultFailedPersistHint: " 繰り返す場合はサーバー設定を確認してください。",
     requestFailedStatus: "リクエストに失敗しました ({{status}})",
+    charLimitHint: "最大1500文字まで。",
   },
   zh: {
     defaultSessionTitle: "咨询",
@@ -182,6 +190,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "无法完成咨询。",
     consultFailedPersistHint: " 若持续出现，请检查服务器配置。",
     requestFailedStatus: "请求失败 ({{status}})",
+    charLimitHint: "最多1500个字符。",
   },
   ko: {
     defaultSessionTitle: "상담",
@@ -201,6 +210,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "상담을 완료할 수 없습니다.",
     consultFailedPersistHint: " 계속되면 서버 설정을 확인하세요.",
     requestFailedStatus: "요청 실패 ({{status}})",
+    charLimitHint: "최대 1500자까지.",
   },
   ar: {
     defaultSessionTitle: "استشارة",
@@ -220,6 +230,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "تعذّر إكمال الاستشارة.",
     consultFailedPersistHint: " قد لا تكون الجلسة محفوظة.",
     requestFailedStatus: "فشل الطلب ({{status}}).",
+    charLimitHint: "حتى 1500 حرف.",
   },
   hi: {
     defaultSessionTitle: "परामर्श",
@@ -239,6 +250,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedGeneric: "परामर्श पूरा नहीं हो सका।",
     consultFailedPersistHint: " सत्र सहेजा नहीं गया हो सकता।",
     requestFailedStatus: "अनुरोध विफल ({{status}})।",
+    charLimitHint: "1500 वर्णों तक।",
   },
 };
 

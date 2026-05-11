@@ -17,8 +17,6 @@ export type HomeChromeUiMessages = {
   oracleModeTablistAria: string;
   threadDepthRegionAria: string;
   threadDepthHeading: string;
-  /** After plan name: ` · ... up to {{cap}} chained readings (including the first).` */
-  threadDepthPlanSuffix: string;
   threadDepthReadingProgressAria: string;
   tdSingleOk: string;
   tdSingleBlocked: string;
@@ -44,6 +42,10 @@ export type HomeChromeUiMessages = {
   questionInputAria: string;
   sendAriaSending: string;
   sendAriaSend: string;
+  libraryGroupAria: string;
+  libraryHeading: string;
+  libraryDescription: string;
+  openLibrary: string;
 };
 
 const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
@@ -62,8 +64,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching o huesos de oráculo",
     threadDepthRegionAria: "Profundidad del hilo activo",
     threadDepthHeading: "Profundidad del hilo",
-    threadDepthPlanSuffix:
-      " · este hilo admite hasta {{cap}} lectura(s) encadenada(s) (incluye la primera).",
     threadDepthReadingProgressAria: "Lectura {{pos}} de {{cap}}",
     tdSingleOk: "Una sola lectura por hilo.",
     tdSingleBlocked:
@@ -90,6 +90,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Pregunta",
     sendAriaSending: "Enviando",
     sendAriaSend: "Enviar",
+    libraryGroupAria: "Biblioteca de hexagramas",
+    libraryHeading: "Biblioteca (Opción Premium)",
+    libraryDescription: "Explora las tres versiones clásicas.",
+    openLibrary: "Ir a la biblioteca",
   },
   en: {
     exportChatPdf: "Export chat PDF",
@@ -106,7 +110,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching or oracle bones",
     threadDepthRegionAria: "Active thread depth",
     threadDepthHeading: "Thread depth",
-    threadDepthPlanSuffix: " · this thread allows up to {{cap}} chained reading(s) (including the first).",
     threadDepthReadingProgressAria: "Reading {{pos}} of {{cap}}",
     tdSingleOk: "Single reading per thread.",
     tdSingleBlocked:
@@ -133,6 +136,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Question",
     sendAriaSending: "Sending",
     sendAriaSend: "Send",
+    libraryGroupAria: "Hexagram library",
+    libraryHeading: "Library (Premium Option)",
+    libraryDescription: "Explore the three classic versions.",
+    openLibrary: "Go to library",
   },
   pt: {
     exportChatPdf: "Exportar chat PDF",
@@ -149,8 +156,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching ou ossos do oráculo",
     threadDepthRegionAria: "Profundidade do fio ativo",
     threadDepthHeading: "Profundidade do fio",
-    threadDepthPlanSuffix:
-      " · este fio permite até {{cap}} leitura(s) encadeada(s) (incluindo a primeira).",
     threadDepthReadingProgressAria: "Leitura {{pos}} de {{cap}}",
     tdSingleOk: "Uma única leitura por fio.",
     tdSingleBlocked:
@@ -177,6 +182,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Pergunta",
     sendAriaSending: "A enviar",
     sendAriaSend: "Enviar",
+    libraryGroupAria: "Biblioteca de hexagramas",
+    libraryHeading: "Biblioteca (Opção Premium)",
+    libraryDescription: "Explore as três versões clássicas.",
+    openLibrary: "Ir para a biblioteca",
   },
   fr: {
     exportChatPdf: "Exporter le chat en PDF",
@@ -193,8 +202,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching ou osselets",
     threadDepthRegionAria: "Profondeur du fil actif",
     threadDepthHeading: "Profondeur du fil",
-    threadDepthPlanSuffix:
-      " · ce fil autorise jusqu’à {{cap}} lecture(s) enchaînée(s) (y compris la première).",
     threadDepthReadingProgressAria: "Lecture {{pos}} sur {{cap}}",
     tdSingleOk: "Une seule lecture par fil.",
     tdSingleBlocked:
@@ -219,8 +226,12 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     viewTokenPacks: "Voir les packs",
     authenticatorQrAlt: "QR Authenticator",
     questionInputAria: "Question",
-    sendAriaSending: "Envoi",
+    sendAriaSending: "Enviando",
     sendAriaSend: "Envoyer",
+    libraryGroupAria: "Bibliothèque des hexagrammes",
+    libraryHeading: "Bibliothèque (Option Premium)",
+    libraryDescription: "Explorez les trois versions classiques.",
+    openLibrary: "Aller à la bibliothèque",
   },
   de: {
     exportChatPdf: "Chat als PDF exportieren",
@@ -237,8 +248,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ging oder Orakelknochen",
     threadDepthRegionAria: "Aktive Thread-Tiefe",
     threadDepthHeading: "Thread-Tiefe",
-    threadDepthPlanSuffix:
-      " · dieser Thread erlaubt bis zu {{cap}} verkettete Lesung(en) (einschließlich der ersten).",
     threadDepthReadingProgressAria: "Lesung {{pos}} von {{cap}}",
     tdSingleOk: "Nur eine Lesung pro Thread.",
     tdSingleBlocked:
@@ -265,6 +274,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Frage",
     sendAriaSending: "Wird gesendet",
     sendAriaSend: "Senden",
+    libraryGroupAria: "Hexagramm-Bibliothek",
+    libraryHeading: "Bibliothek (Premium-Option)",
+    libraryDescription: "Entdecken Sie die drei klassischen Versionen.",
+    openLibrary: "Zur Bibliothek gehen",
   },
   it: {
     exportChatPdf: "Esporta chat PDF",
@@ -281,8 +294,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching o ossa oracolari",
     threadDepthRegionAria: "Profondità thread attivo",
     threadDepthHeading: "Profondità thread",
-    threadDepthPlanSuffix:
-      " · questo thread consente fino a {{cap}} lettura/e concatenate (inclusa la prima).",
     threadDepthReadingProgressAria: "Lettura {{pos}} di {{cap}}",
     tdSingleOk: "Una sola lettura per thread.",
     tdSingleBlocked:
@@ -309,6 +320,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "Domanda",
     sendAriaSending: "Invio",
     sendAriaSend: "Invia",
+    libraryGroupAria: "Libreria degli esagrammi",
+    libraryHeading: "Biblioteca (Opzione Premium)",
+    libraryDescription: "Esplora le tre versioni classiche.",
+    openLibrary: "Vai alla biblioteca",
   },
   ja: {
     exportChatPdf: "チャットをPDFで書き出す",
@@ -325,7 +340,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "易経（I Ching）または甲骨占い",
     threadDepthRegionAria: "アクティブスレッドの深さ",
     threadDepthHeading: "スレッドの深さ",
-    threadDepthPlanSuffix: " · このスレッドでは最大{{cap}}件の連続リーディング（最初を含む）が可能です。",
     threadDepthReadingProgressAria: "リーディング {{pos}} / {{cap}}",
     tdSingleOk: "スレッドあたり1回のリーディングです。",
     tdSingleBlocked: "このスレッドでは追加の深掘りはできません。別のテーマは新しいセッションを開始してください。",
@@ -351,6 +365,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "質問",
     sendAriaSending: "送信中",
     sendAriaSend: "送信",
+    libraryGroupAria: "六十四卦ライブラリ",
+    libraryHeading: "ライブラリ（プレミアム機能）",
+    libraryDescription: "3つの古典バージョンを探索する。",
+    openLibrary: "ライブラリへ",
   },
   zh: {
     exportChatPdf: "导出聊天 PDF",
@@ -367,7 +385,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "易经或甲骨占卜",
     threadDepthRegionAria: "当前线程深度",
     threadDepthHeading: "线程深度",
-    threadDepthPlanSuffix: " · 本线程最多可进行 {{cap}} 次连续解读（含首次）。",
     threadDepthReadingProgressAria: "解读 {{pos}} / {{cap}}",
     tdSingleOk: "每个线程仅一次解读。",
     tdSingleBlocked: "本线程无法继续深入：仅一次解读。新主题请开始新会话。",
@@ -393,6 +410,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "问题",
     sendAriaSending: "发送中",
     sendAriaSend: "发送",
+    libraryGroupAria: "卦象图书馆",
+    libraryHeading: "图书馆（高级功能）",
+    libraryDescription: "探索三个经典版本。",
+    openLibrary: "前往图书馆",
   },
   ko: {
     exportChatPdf: "채팅 PDF보내기",
@@ -409,7 +430,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "역경(I Ching) 또는 뼈 점",
     threadDepthRegionAria: "활성 스레드 깊이",
     threadDepthHeading: "스레드 깊이",
-    threadDepthPlanSuffix: " · 이 스레드에서는 최대 {{cap}}번의 연속 리딩(첫 리딩 포함)이 가능합니다.",
     threadDepthReadingProgressAria: "리딩 {{pos}} / {{cap}}",
     tdSingleOk: "스레드당 한 번의 리딩만 가능합니다.",
     tdSingleBlocked: "이 스레드에서는 추가 심화가 없습니다. 다른 주제는 새 세션을 시작하세요.",
@@ -435,6 +455,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "질문",
     sendAriaSending: "보내는 중",
     sendAriaSend: "보내기",
+    libraryGroupAria: "헥사그램 라이브러리",
+    libraryHeading: "라이브러리 (프리미엄 기능)",
+    libraryDescription: "세 가지 클래식 버전을 탐색하세요.",
+    openLibrary: "라이브러리로 이동",
   },
   ar: {
     exportChatPdf: "تصدير المحادثة PDF",
@@ -451,7 +475,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching أو عظام الكهانة",
     threadDepthRegionAria: "عمق الخيط النشط",
     threadDepthHeading: "عمق الخيط",
-    threadDepthPlanSuffix: " · يسمح هذا الخيط بما يصل إلى {{cap}} قراءة (قراءات) متسلسلة (بما فيها الأولى).",
     threadDepthReadingProgressAria: "القراءة {{pos}} من {{cap}}",
     tdSingleOk: "قراءة واحدة لكل خيط.",
     tdSingleBlocked: "لا متابعات في هذا الخيط: قراءة واحدة فقط. لموضوع جديد، ابدأ جلسة جديدة.",
@@ -477,6 +500,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "السؤال",
     sendAriaSending: "جارٍ الإرسال",
     sendAriaSend: "إرسال",
+    libraryGroupAria: "مكتبة الرسوم السداسية",
+    libraryHeading: "المكتبة (ميزة متميزة)",
+    libraryDescription: "استكشف الإصدارات الكلاسيكية الثلاثة.",
+    openLibrary: "الذهاب إلى المكتبة",
   },
   hi: {
     exportChatPdf: "चैट PDF निर्यात करें",
@@ -493,7 +520,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching या ओरेकल हड्डियाँ",
     threadDepthRegionAria: "सक्रिय थ्रेड गहराई",
     threadDepthHeading: "थ्रेड गहराई",
-    threadDepthPlanSuffix: " · यह थ्रेड {{cap}} श्रृंखलाबद्ध पठन तक की अनुमति देता है (पहले सहित)।",
     threadDepthReadingProgressAria: "{{cap}} में से पठन {{pos}}",
     tdSingleOk: "प्रति थ्रेड एकल पठन।",
     tdSingleBlocked: "इस थ्रेड में कोई अनुवर्ती नहीं: केवल एक पठन। नए विषय के लिए नया सत्र शुरू करें।",
@@ -519,6 +545,10 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     questionInputAria: "प्रश्न",
     sendAriaSending: "भेजा जा रहा है",
     sendAriaSend: "भेजें",
+    libraryGroupAria: "हेक्साग्राम पुस्तकालय",
+    libraryHeading: "पुस्तकालय (प्रीमियम विकल्प)",
+    libraryDescription: "तीन क्लासिक संस्करणों का अन्वेषण करें।",
+    openLibrary: "पुस्तकालय जाएं",
   },
 };
 

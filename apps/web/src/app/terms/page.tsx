@@ -25,6 +25,11 @@ export default async function TermsPage() {
       <article className="doc-article">
         <TermsArticleContent messages={t} nav={nav} />
       </article>
+      <nav className="doc-nav">
+        <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
+        <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
+        <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyShort}</Link>
+      </nav>
     </div>
   );
 }
