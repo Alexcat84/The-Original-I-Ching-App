@@ -1241,6 +1241,7 @@ export default function HomePage() {
       /* ignore */
     }
   }, [ichingCastMode]);
+  const [translatorId, setTranslatorId] = useState<"wilhelm" | "legge" | "zhouyi" | "master_combined">("wilhelm");
   const [ichingCastingMethod, setIchingCastingMethod] = useState<CastingMethod>(() => {
     if (typeof window === "undefined") return "three-coins";
     try {
@@ -3174,12 +3175,13 @@ export default function HomePage() {
           sessionTitle: consultSession.title,
           isDeepening: activeThread.length > 0,
           oracleMode,
-          ...(oracleMode === "iching"
-            ? manualLineValues
-              ? { ichingCastMode: "manual" as const, ichingCastingMethod, ichingManualLineValues: [...manualLineValues] }
-              : { ichingCastMode, ichingCastingMethod }
-            : {}),
-          displayName: displayName ?? undefined,
+            ...(oracleMode === "iching"
+              ? manualLineValues
+                ? { ichingCastMode: "manual" as const, ichingCastingMethod, ichingManualLineValues: [...manualLineValues] }
+                : { ichingCastMode, ichingCastingMethod }
+              : {}),
+            translatorId,
+            displayName: displayName ?? undefined,
           oracleBones:
             oracleMode === "oracle_bones"
               ? {
@@ -4459,6 +4461,58 @@ export default function HomePage() {
                     </div>
                     {oracleMode === "iching" ? (
                       <>
+                        <hr className="composer-panel-divider" aria-hidden />
+                        <div className="cast-selector-block">
+                          <span className="cast-selector-label">Traductor</span>
+                          <div className="composer-oracle-switch" role="group" aria-label="Fuente de Interpretación">
+                            <div className="composer-oracle-switch-row" style={{ overflowX: "auto", paddingBottom: "4px" }}>
+                              <div className="composer-switch-track" role="tablist">
+                                <button
+                                  type="button"
+                                  role="tab"
+                                  aria-selected={translatorId === "wilhelm"}
+                                  className={`composer-switch-seg ${translatorId === "wilhelm" ? "is-active" : ""}`}
+                                  onClick={() => setTranslatorId("wilhelm")}
+                                  disabled={loading}
+                                >
+                                  <span className="composer-switch-label">Wilhelm</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  role="tab"
+                                  aria-selected={translatorId === "zhouyi"}
+                                  className={`composer-switch-seg ${translatorId === "zhouyi" ? "is-active" : ""}`}
+                                  onClick={() => setTranslatorId("zhouyi")}
+                                  disabled={loading}
+                                >
+                                  <span className="composer-switch-label">Zhou Yi</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  role="tab"
+                                  aria-selected={translatorId === "legge"}
+                                  className={`composer-switch-seg ${translatorId === "legge" ? "is-active" : ""}`}
+                                  onClick={() => setTranslatorId("legge")}
+                                  disabled={loading}
+                                >
+                                  <span className="composer-switch-label">Legge</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  role="tab"
+                                  aria-selected={translatorId === "master_combined"}
+                                  className={`composer-switch-seg ${translatorId === "master_combined" ? "is-active" : ""}`}
+                                  onClick={() => setTranslatorId("master_combined")}
+                                  disabled={loading}
+                                >
+                                  <span className="composer-switch-label" style={{ color: "var(--color-premium, #ffd700)" }}>
+                                    Master (3)
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
                           <span className="cast-selector-label">{manualWizardChrome.castMethodGroupAria}</span>

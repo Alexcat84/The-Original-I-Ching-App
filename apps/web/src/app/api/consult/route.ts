@@ -160,6 +160,7 @@ export async function POST(req: Request) {
     ichingCastMode?: "auto" | "manual";
     ichingCastingMethod?: "three-coins" | "yarrow-stalks";
     ichingManualLineValues?: unknown;
+    translatorId?: string;
   };
   try {
     body = (await req.json()) as typeof body;
@@ -199,6 +200,18 @@ export async function POST(req: Request) {
   const lastPack = await getUserBillingTier(authedUserId);
   const policy = await resolveConsultPolicy({ authUser, tierResolved: lastPack });
   const { adminBypassAllowed, adminUnlimitedCredits, tierEffective, tierKey } = policy;
+  
+  let resolvedTranslator: "wilhelm" | "legge" | "zhouyi" | "master_combined" = "wilhelm";
+  if (body.translatorId === "legge") resolvedTranslator = "legge";
+  if (body.translatorId === "zhouyi") resolvedTranslator = "zhouyi";
+  if (body.translatorId === "master_combined") {
+    if (tierKey === "master" || tierKey === "oracle" || adminBypassAllowed) {
+      resolvedTranslator = "master_combined";
+    } else {
+      resolvedTranslator = "wilhelm"; // fallback si no tiene permiso
+    }
+  }
+
   const packSessionLimit = await getSessionLimit(authedUserId);
   const maxDepth = adminBypassAllowed
     ? 999_999
@@ -457,10 +470,11 @@ export async function POST(req: Request) {
     ichingManualPayload.mode === "manual"
       ? performCastFromLineValues(trimmedQuestion, language, ichingManualPayload.lineValues, {
           castingMethod: ichingManualPayload.castingMethod,
+          translator: resolvedTranslator,
         })
       : ichingManualPayload.castingMethod === "yarrow-stalks"
-        ? performYarrowCast(trimmedQuestion, language)
-        : performCast(trimmedQuestion, language);
+        ? performYarrowCast(trimmedQuestion, language, { translator: resolvedTranslator })
+        : performCast(trimmedQuestion, language, { translator: resolvedTranslator });
   const context = resolveSessionContext({
     tier: tierKey,
     sessionId,

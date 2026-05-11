@@ -1,6 +1,5 @@
 import { getHexagramRecordByBinaryTopFirst, type HexagramRecord } from "@iching-oracle/iching-data";
 import {
-  DEFAULT_INTERPRETATION_MODE,
   type CastingMethod,
   type CastResult,
   type Hexagram,
@@ -12,22 +11,6 @@ import {
   type TextsForClaude,
 } from "./types.js";
 
-/**
- * Guards against unsupported interpretation modes. PR1 wires only "wilhelm"
- * end-to-end; "legge", "zhouyi", and "synthetic" are reserved data slots that
- * must not reach the Claude prompt yet. Throwing here is intentional: it
- * surfaces accidental mode wiring loud and early during PR1 stabilization.
- */
-export function assertSupportedInterpretationMode(
-  mode: InterpretationMode = DEFAULT_INTERPRETATION_MODE,
-): asserts mode is "wilhelm" {
-  if (mode !== "wilhelm") {
-    throw new Error(
-      `Interpretation mode "${mode}" is not yet supported. Only "wilhelm" is wired in PR1; ` +
-        "the Legge / Zhou Yi / synthetic modes ship in PR2 (feature/interpretation-modes).",
-    );
-  }
-}
 
 export type Rng = () => number;
 
@@ -56,9 +39,10 @@ export function linesToBinaryTopFirst(lines: Line[]): string {
   return bottomFirst.split("").reverse().join("");
 }
 
-export function getHexagram(lines: Line[]): Hexagram {
+export function getHexagram(lines: Line[], translator: InterpretationMode = "wilhelm"): Hexagram {
   const key = linesToBinaryTopFirst(lines);
-  return recordToHexagram(getHexagramRecordByBinaryTopFirst(key));
+  const effectiveTranslator = translator === "master_combined" ? "wilhelm" : translator;
+  return recordToHexagram(getHexagramRecordByBinaryTopFirst(key, { translator: effectiveTranslator }));
 }
 
 export function throwThreeCoins(rng: Rng = Math.random): LineValue {
@@ -121,6 +105,7 @@ export function selectTextsForClaude(
   lines: Line[],
   changing: number[],
   rule: MutationRule,
+  translator: InterpretationMode = "wilhelm",
 ): TextsForClaude {
   const base: TextsForClaude = {
     primaryJudgment: primary.judgment,
@@ -237,8 +222,45 @@ export function selectTextsForClaude(
       };
 
     default:
-      return base;
+      break;
   }
+
+  if (translator === "master_combined") {
+    const keyP = linesToBinaryTopFirst(lines);
+    const keyT = transformed ? linesToBinaryTopFirst(applyMutations(lines)) : null;
+
+    const fetchExtra = (tId: "legge" | "zhouyi") => {
+      const pRec = getHexagramRecordByBinaryTopFirst(keyP, { translator: tId });
+      const tRec = keyT ? getHexagramRecordByBinaryTopFirst(keyT, { translator: tId }) : null;
+      
+      let linesArray: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }> = [];
+      if (base.selectedLineTexts && base.selectedLineTexts.length > 0) {
+        linesArray = base.selectedLineTexts.map((lt) => {
+          const rec = lt.fromHexagram === "primary" ? pRec : tRec;
+          const text = rec?.lines.find((l) => l.position === lt.position)?.text ?? "";
+          return { ...lt, text };
+        });
+      }
+      return {
+        judgment: pRec.judgment,
+        image: pRec.image,
+        lines: linesArray,
+      };
+    };
+
+    const leggeExtra = fetchExtra("legge");
+    const zhouyiExtra = fetchExtra("zhouyi");
+
+    base.leggeJudgment = leggeExtra.judgment;
+    base.leggeImage = leggeExtra.image;
+    base.leggeSelectedLineTexts = leggeExtra.lines;
+
+    base.zhouyiJudgment = zhouyiExtra.judgment;
+    base.zhouyiImage = zhouyiExtra.image;
+    base.zhouyiSelectedLineTexts = zhouyiExtra.lines;
+  }
+
+  return base;
 }
 
 export interface PerformCastOptions {
@@ -246,6 +268,7 @@ export interface PerformCastOptions {
   id?: string;
   now?: Date;
   castingMethod?: CastingMethod;
+  translator?: InterpretationMode;
 }
 
 function newCastId(): string {
@@ -260,12 +283,13 @@ function buildCastResultFromLines(
   language: string,
   options?: PerformCastOptions,
 ): CastResult {
+  const translator = options?.translator ?? "wilhelm";
   const changing = lines.filter((l) => l.isChanging).map((l) => l.position);
-  const primary = getHexagram(lines);
+  const primary = getHexagram(lines, translator);
   const transformedLines = changing.length > 0 ? applyMutations(lines) : null;
-  const transformed = transformedLines ? getHexagram(transformedLines) : null;
+  const transformed = transformedLines ? getHexagram(transformedLines, translator) : null;
   const rule = determineMutationRule(primary, lines, changing);
-  const texts = selectTextsForClaude(primary, transformed, lines, changing, rule);
+  const texts = selectTextsForClaude(primary, transformed, lines, changing, rule, translator);
   return {
     id: options?.id ?? newCastId(),
     question,

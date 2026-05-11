@@ -15,7 +15,6 @@ export { DEFAULT_INTERPRETATION_MODE } from "./types.js";
 export type { ManualCastPreview, PerformCastOptions, Rng } from "./engine.js";
 export {
   applyMutations,
-  assertSupportedInterpretationMode,
   buildLine,
   castSixLines,
   castYarrowSixLines,
