@@ -4015,9 +4015,11 @@ export default function HomePage() {
                 style={{ color: "var(--fg)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
               >
                 {oracleMode === "iching"
-                  ? ichingCastingMethod === "yarrow-stalks"
-                    ? manualWizardChrome.castMethodYarrowTagline
-                    : ui.iChingTagline
+                  ? `${ichingCastingMethod === "yarrow-stalks" ? manualWizardChrome.castMethodYarrowLabel.split(" (")[0] : manualWizardChrome.castMethodCoinsLabel} · Zhu Xi · ${
+                      translatorId === "wilhelm" ? "Wilhelm/Baynes" :
+                      translatorId === "legge" ? "James Legge" :
+                      translatorId === "zhouyi" ? "Zhou Yi" : "Master Synthesis"
+                    }`
                   : ui.bonesTagline}
               </p>
             </div>

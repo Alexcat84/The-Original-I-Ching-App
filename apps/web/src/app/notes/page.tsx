@@ -113,6 +113,20 @@ export default async function NotesPage() {
           </>
         )}
 
+        {n.ichingLeggeHeading && (
+          <>
+            <h3>{n.ichingLeggeHeading}</h3>
+            <p>{n.ichingLeggeBody}</p>
+          </>
+        )}
+
+        {n.ichingZhouyiHeading && (
+          <>
+            <h3>{n.ichingZhouyiHeading}</h3>
+            <p>{n.ichingZhouyiBody}</p>
+          </>
+        )}
+
         {n.ichingChainHeading && (
           <>
             <h3>{n.ichingChainHeading}</h3>
