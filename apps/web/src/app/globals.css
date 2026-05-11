@@ -4709,14 +4709,47 @@ html[data-theme="dark"] .doc-sources-list li {
   color: var(--fg-muted);
 }
 
-.library-filter select {
+.library-filter-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0.45rem 0.6rem;
   border-radius: calc(var(--radius) * 0.5);
   border: 1.5px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
   background: color-mix(in srgb, var(--secondary-bg) 92%, transparent);
   color: var(--fg);
   font: inherit;
-  min-width: 11rem;
+  min-width: 11.5rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.library-filter-trigger:hover,
+.library-filter-trigger:focus-visible {
+  border-color: color-mix(in srgb, var(--bar-border) 100%, var(--fg) 10%);
+  background: color-mix(in srgb, var(--secondary-bg) 100%, transparent);
+  outline: none;
+}
+
+.library-filter-trigger__chevron {
+  flex-shrink: 0;
+  width: 0;
+  height: 0;
+  margin-left: 0.8rem;
+  border-left: 4.5px solid transparent;
+  border-right: 4.5px solid transparent;
+  border-top: 5px solid currentColor;
+  opacity: 0.5;
+}
+
+.trigram-picker-menu__check {
+  margin-left: auto;
+  font-weight: bold;
+  color: var(--accent);
+  font-size: 1.05rem;
+  line-height: 1;
 }
 
 .library-filter-clear {

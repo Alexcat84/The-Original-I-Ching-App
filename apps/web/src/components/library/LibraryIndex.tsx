@@ -9,6 +9,7 @@ import {
   listTrigrams,
   type TrigramId,
 } from "@/lib/library/trigram-meta";
+import { TrigramPicker } from "./TrigramPicker";
 import type { LibrarySummary } from "@/lib/library/library-data";
 
 type FilterValue = "all" | TrigramId;
@@ -147,31 +148,23 @@ export function LibraryIndex({ summaries, messages }: Props) {
           <legend className="visually-hidden">{messages.filterHeading}</legend>
           <label className="library-filter">
             <span>{messages.filterUpperLabel}</span>
-            <select
+            <TrigramPicker
               value={upper}
-              onChange={(event) => setUpper(parseFilter(event.target.value))}
-            >
-              <option value="all">{messages.filterAllLabel}</option>
-              {trigrams.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {formatTrigramLabel(t)}
-                </option>
-              ))}
-            </select>
+              onChange={setUpper}
+              trigrams={trigrams}
+              allLabel={messages.filterAllLabel}
+              ariaLabel={messages.filterUpperLabel}
+            />
           </label>
           <label className="library-filter">
             <span>{messages.filterLowerLabel}</span>
-            <select
+            <TrigramPicker
               value={lower}
-              onChange={(event) => setLower(parseFilter(event.target.value))}
-            >
-              <option value="all">{messages.filterAllLabel}</option>
-              {trigrams.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {formatTrigramLabel(t)}
-                </option>
-              ))}
-            </select>
+              onChange={setLower}
+              trigrams={trigrams}
+              allLabel={messages.filterAllLabel}
+              ariaLabel={messages.filterLowerLabel}
+            />
           </label>
           {hasFilters ? (
             <button
