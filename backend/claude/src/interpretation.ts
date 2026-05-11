@@ -184,6 +184,46 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
 - "Horizonte y síntesis" / "Horizon and synthesis": single closing paragraph—one concrete behavioral or attitudinal step, same language, no new quotes.
 - ANTI-REPETITION across sections as in global rules.`;
 
+  const isMasterCombined = Boolean(t.leggeJudgment && t.zhouyiJudgment);
+
+  let textsBlock = "";
+  if (isMasterCombined) {
+    const leggeLines = t.leggeSelectedLineTexts?.map(l => `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`).join("\n") || "";
+    const zhouyiLines = t.zhouyiSelectedLineTexts?.map(l => `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`).join("\n") || "";
+
+    textsBlock = `
+--- TRADITION: ZHOU YI (Original Classical Chinese) ---
+JUDGMENT: ${t.zhouyiJudgment}
+${t.zhouyiImage ? `THE IMAGE: ${t.zhouyiImage}` : ""}
+${zhouyiLines ? `LINE TEXTS:\n${zhouyiLines}` : ""}
+
+--- TRADITION: WILHELM / BAYNES ---
+JUDGMENT: ${t.primaryJudgment}
+${t.primaryImage ? `THE IMAGE: ${t.primaryImage}` : ""}
+${lineBlock}
+
+--- TRADITION: JAMES LEGGE ---
+JUDGMENT: ${t.leggeJudgment}
+${t.leggeImage ? `THE IMAGE: ${t.leggeImage}` : ""}
+${leggeLines ? `LINE TEXTS:\n${leggeLines}` : ""}
+
+${t.specialYaoText ? `SPECIAL TEXT: ${t.specialYaoText}` : ""}
+${tr && t.transformedJudgment ? `
+TRANSFORMED HEXAGRAM (Reference): #${tr.number} — ${tr.name}
+JUDGMENT: ${t.transformedJudgment}` : ""}
+`.trim();
+  } else {
+    textsBlock = `
+JUDGMENT: ${t.primaryJudgment}
+${t.primaryImage ? `THE IMAGE: ${t.primaryImage}` : ""}
+${lineBlock}
+${t.specialYaoText ? `SPECIAL TEXT: ${t.specialYaoText}` : ""}
+${tr && t.transformedJudgment ? `
+TRANSFORMED HEXAGRAM: #${tr.number} — ${tr.name} (${tr.chineseName})
+JUDGMENT: ${t.transformedJudgment}` : ""}
+`.trim();
+  }
+
   return `
 NEW CONSULTATION${hasContext ? " (continues thematic session)" : ""}:
 "${question}"
@@ -192,11 +232,9 @@ NEW CONSULTATION${hasContext ? " (continues thematic session)" : ""}:
 PRIMARY HEXAGRAM: #${p.number} — ${p.name} (${p.chineseName} · ${p.pinyin})
 ${p.upperTrigram} over ${p.lowerTrigram}
 
-JUDGMENT: ${t.primaryJudgment}
-${t.primaryImage ? `THE IMAGE: ${t.primaryImage}` : ""}
-
 ACTIVE RULE: ${mutationRule}
 ${t.ruleExplanation}
+
 STRUCTURAL FACTS (NON-NEGOTIABLE):
 - RAW_LINES_BOTTOM_TO_TOP: [${rawLineVector}]
 - TRANSFORMED_LINES_BOTTOM_TO_TOP: [${transformedLineVector}]
@@ -204,12 +242,9 @@ STRUCTURAL FACTS (NON-NEGOTIABLE):
 - CHANGING_COUNT: ${cast.changingLines.length}
 - PRIMARY_HEXAGRAM_NUMBER: ${p.number}
 - TRANSFORMED_HEXAGRAM_NUMBER: ${tr?.number ?? "NONE"}
-${lineBlock}
-${t.specialYaoText ? `SPECIAL TEXT: ${t.specialYaoText}` : ""}
 
-${tr && t.transformedJudgment ? `
-TRANSFORMED HEXAGRAM: #${tr.number} — ${tr.name} (${tr.chineseName})
-JUDGMENT: ${t.transformedJudgment}` : ""}
+${textsBlock}
+
 
 ═══════════════════════════════════
 INSTRUCTIONS:
@@ -220,7 +255,7 @@ INSTRUCTIONS:
 - Use family_home ONLY when the question clearly concerns household, parents, children, partner dynamics at home, or domestic life;
   for abstract or general life questions prefer general, spiritual_inner, decision_path, or career_work as appropriate.
 - ${hasContext ? "Hay consultas previas en sesión: continuidad breve según bloque de contexto (no re-pegues interpretaciones largas)." : "Primera consulta de la sesión."}
-- Interpret ONLY with the texts given
+- Interpret ONLY with the texts given. ${isMasterCombined ? "Actúa como un erudito maestro: sintetiza orgánicamente la esencia de las 3 traducciones provistas (Zhou Yi, Wilhelm, Legge). No cites extensamente los tres textos por separado; encuentra su hilo conductor común y responde de forma unificada en " + getLanguageName(language) + ". Toma en cuenta que el Zhou Yi está en chino clásico, úsalo como raíz de significado." : ""}
 - In the first sentence, answer the user's question clearly and directly, but do not invent factual data.
 - STRUCTURAL CONSISTENCY IS MANDATORY: any mention of "changing lines" count or positions MUST match CHANGING_COUNT and CHANGING_LINES_POSITIONS exactly.
 - ${looksFactual ? "This question appears to request factual real-world data: explicitly state when that fact cannot be verified from the provided oracle texts." : "Do not claim certainty about external facts unless they are explicitly provided in the input."}
