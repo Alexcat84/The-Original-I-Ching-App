@@ -4464,50 +4464,45 @@ export default function HomePage() {
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
                           <span className="cast-selector-label">Traductor</span>
-                          <div className="composer-oracle-switch" role="group" aria-label="Fuente de Interpretación">
-                            <div className="composer-oracle-switch-row" style={{ overflowX: "auto", paddingBottom: "4px" }}>
-                              <div className="composer-switch-track" role="tablist">
+                          <div className="oracle-toggle-wrap oracle-toggle-wrap-4" role="group" aria-label="Fuente de Interpretación">
+                            <div className="oracle-toggle-track">
+                              <div className="oracle-toggle-glow" style={{ left: `${12.5 + ["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}%` }} />
+                              <div className="oracle-toggle-track-line" />
+                              <div className="oracle-toggle-thumb" style={{ left: `calc(${["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}% + 2px)` }}>
+                                <div className="oracle-thumb-sweep" />
+                              </div>
+                              <div className="oracle-toggle-options-row">
                                 <button
                                   type="button"
-                                  role="tab"
-                                  aria-selected={translatorId === "wilhelm"}
-                                  className={`composer-switch-seg ${translatorId === "wilhelm" ? "is-active" : ""}`}
+                                  className={`oracle-toggle-option ${translatorId === "wilhelm" ? "is-active" : ""}`}
                                   onClick={() => setTranslatorId("wilhelm")}
                                   disabled={loading}
                                 >
-                                  <span className="composer-switch-label">Wilhelm</span>
+                                  <span>Wilhelm</span>
                                 </button>
                                 <button
                                   type="button"
-                                  role="tab"
-                                  aria-selected={translatorId === "zhouyi"}
-                                  className={`composer-switch-seg ${translatorId === "zhouyi" ? "is-active" : ""}`}
+                                  className={`oracle-toggle-option ${translatorId === "zhouyi" ? "is-active" : ""}`}
                                   onClick={() => setTranslatorId("zhouyi")}
                                   disabled={loading}
                                 >
-                                  <span className="composer-switch-label">Zhou Yi</span>
+                                  <span>Zhou Yi</span>
                                 </button>
                                 <button
                                   type="button"
-                                  role="tab"
-                                  aria-selected={translatorId === "legge"}
-                                  className={`composer-switch-seg ${translatorId === "legge" ? "is-active" : ""}`}
+                                  className={`oracle-toggle-option ${translatorId === "legge" ? "is-active" : ""}`}
                                   onClick={() => setTranslatorId("legge")}
                                   disabled={loading}
                                 >
-                                  <span className="composer-switch-label">Legge</span>
+                                  <span>Legge</span>
                                 </button>
                                 <button
                                   type="button"
-                                  role="tab"
-                                  aria-selected={translatorId === "master_combined"}
-                                  className={`composer-switch-seg ${translatorId === "master_combined" ? "is-active" : ""}`}
+                                  className={`oracle-toggle-option ${translatorId === "master_combined" ? "is-active" : ""}`}
                                   onClick={() => setTranslatorId("master_combined")}
                                   disabled={loading}
                                 >
-                                  <span className="composer-switch-label" style={{ color: "var(--color-premium, #ffd700)" }}>
-                                    Master (3)
-                                  </span>
+                                  <span style={{ color: translatorId === "master_combined" ? "inherit" : "var(--color-premium, #ffd700)" }}>Master (3)</span>
                                 </button>
                               </div>
                             </div>

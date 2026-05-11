@@ -2306,6 +2306,50 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   cursor: not-allowed;
 }
 
+/* ─── Oracle 4-Way Toggle ────────────────────────────────────────────────────
+ * A 4-option variant of the binary toggle track. Controlled via inline styles.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.oracle-toggle-wrap-4 {
+  cursor: default;
+}
+
+.oracle-toggle-wrap-4 .oracle-toggle-thumb {
+  width: calc(25% - 4px);
+  /* left offset is injected inline */
+}
+
+.oracle-toggle-wrap-4 .oracle-toggle-glow {
+  width: 25%;
+  /* left center is injected inline */
+}
+
+.oracle-toggle-options-row {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 5;
+}
+
+.oracle-toggle-options-row .oracle-toggle-option {
+  position: relative;
+  flex: 1;
+  width: auto;
+  height: 100%;
+  pointer-events: auto;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  opacity: 0.58;
+}
+
+.oracle-toggle-options-row .oracle-toggle-option.is-active {
+  color: var(--fg);
+  opacity: 1;
+  text-shadow: 0 0 7px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
 /* ── prefers-reduced-motion: no keyframe animations, instant transitions ──── */
 @media (prefers-reduced-motion: reduce) {
   .oracle-toggle-track-line,
