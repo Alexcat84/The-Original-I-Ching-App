@@ -638,7 +638,6 @@ type UiCopy = {
   chats: string;
   signIn: string;
   signOut: string;
-  plan: string;
   options: string;
   writeConsultation: string;
   positiveCharge: string;
@@ -662,7 +661,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Chats",
     signIn: "Iniciar sesión",
     signOut: "Cerrar sesión",
-    plan: "Plan",
     options: "Opciones",
     writeConsultation: "Escribe tu consulta…",
     positiveCharge: "Cargo positivo (afirmación)…",
@@ -685,7 +683,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Chats",
     signIn: "Sign in",
     signOut: "Sign out",
-    plan: "Plan",
     options: "Options",
     writeConsultation: "Type your consultation…",
     positiveCharge: "Positive charge (affirmation)…",
@@ -706,7 +703,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Conversas",
     signIn: "Entrar",
     signOut: "Sair",
-    plan: "Plano",
     options: "Opções",
     writeConsultation: "Escreva sua consulta…",
     positiveCharge: "Cargo positivo (afirmação)…",
@@ -727,7 +723,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Discussions",
     signIn: "Se connecter",
     signOut: "Se déconnecter",
-    plan: "Forfait",
     options: "Options",
     writeConsultation: "Écris ta consultation…",
     positiveCharge: "Charge positive (affirmation)…",
@@ -748,7 +743,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Chats",
     signIn: "Anmelden",
     signOut: "Abmelden",
-    plan: "Plan",
     options: "Optionen",
     writeConsultation: "Schreibe deine Frage…",
     positiveCharge: "Positive Ladung (Bejahung)…",
@@ -769,7 +763,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "Chat",
     signIn: "Accedi",
     signOut: "Esci",
-    plan: "Piano",
     options: "Opzioni",
     writeConsultation: "Scrivi la tua consultazione…",
     positiveCharge: "Carica positiva (affermazione)…",
@@ -790,7 +783,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "チャット",
     signIn: "ログイン",
     signOut: "ログアウト",
-    plan: "プラン",
     options: "オプション",
     writeConsultation: "相談内容を入力…",
     positiveCharge: "肯定の問い（肯定電荷）…",
@@ -811,7 +803,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "聊天",
     signIn: "登录",
     signOut: "退出登录",
-    plan: "方案",
     options: "选项",
     writeConsultation: "输入你的咨询…",
     positiveCharge: "正向命题（肯定）…",
@@ -832,7 +823,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "채팅",
     signIn: "로그인",
     signOut: "로그아웃",
-    plan: "플랜",
     options: "옵션",
     writeConsultation: "질문을 입력하세요…",
     positiveCharge: "긍정 명제(affirmation)…",
@@ -853,7 +843,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "المحادثات",
     signIn: "تسجيل الدخول",
     signOut: "تسجيل الخروج",
-    plan: "الخطة",
     options: "خيارات",
     writeConsultation: "اكتب استشارتك…",
     positiveCharge: "الشحنة الإيجابية (تأكيد)…",
@@ -874,7 +863,6 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     chats: "चैट",
     signIn: "साइन इन",
     signOut: "साइन आउट",
-    plan: "प्लान",
     options: "विकल्प",
     writeConsultation: "अपनी सलाह लिखें…",
     positiveCharge: "सकारात्मक प्रस्ताव (पुष्टि)…",
@@ -4559,11 +4547,6 @@ export default function HomePage() {
                           aria-label={chrome.threadDepthRegionAria}
                         >
                           <span>{chrome.threadDepthHeading}</span>
-                          <p className="meta-line tier-hint-line">
-                            {ui.plan}{" "}
-                            <strong>{tierDisplayNode}</strong>
-                            {interpolate(chrome.threadDepthPlanSuffix, { cap: isAdmin ? "∞" : threadDepthCap })}
-                          </p>
                           <div
                             className="session-progress-bar session-progress-bar--prominent"
                             role="progressbar"

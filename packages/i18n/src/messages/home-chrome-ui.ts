@@ -17,8 +17,6 @@ export type HomeChromeUiMessages = {
   oracleModeTablistAria: string;
   threadDepthRegionAria: string;
   threadDepthHeading: string;
-  /** After plan name: ` · ... up to {{cap}} chained readings (including the first).` */
-  threadDepthPlanSuffix: string;
   threadDepthReadingProgressAria: string;
   tdSingleOk: string;
   tdSingleBlocked: string;
@@ -66,8 +64,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching o huesos de oráculo",
     threadDepthRegionAria: "Profundidad del hilo activo",
     threadDepthHeading: "Profundidad del hilo",
-    threadDepthPlanSuffix:
-      " · este hilo admite hasta {{cap}} lectura(s) encadenada(s) (incluye la primera).",
     threadDepthReadingProgressAria: "Lectura {{pos}} de {{cap}}",
     tdSingleOk: "Una sola lectura por hilo.",
     tdSingleBlocked:
@@ -114,7 +110,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching or oracle bones",
     threadDepthRegionAria: "Active thread depth",
     threadDepthHeading: "Thread depth",
-    threadDepthPlanSuffix: " · this thread allows up to {{cap}} chained reading(s) (including the first).",
     threadDepthReadingProgressAria: "Reading {{pos}} of {{cap}}",
     tdSingleOk: "Single reading per thread.",
     tdSingleBlocked:
@@ -161,8 +156,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching ou ossos do oráculo",
     threadDepthRegionAria: "Profundidade do fio ativo",
     threadDepthHeading: "Profundidade do fio",
-    threadDepthPlanSuffix:
-      " · este fio permite até {{cap}} leitura(s) encadeada(s) (incluindo a primeira).",
     threadDepthReadingProgressAria: "Leitura {{pos}} de {{cap}}",
     tdSingleOk: "Uma única leitura por fio.",
     tdSingleBlocked:
@@ -209,8 +202,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching ou osselets",
     threadDepthRegionAria: "Profondeur du fil actif",
     threadDepthHeading: "Profondeur du fil",
-    threadDepthPlanSuffix:
-      " · ce fil autorise jusqu’à {{cap}} lecture(s) enchaînée(s) (y compris la première).",
     threadDepthReadingProgressAria: "Lecture {{pos}} sur {{cap}}",
     tdSingleOk: "Une seule lecture par fil.",
     tdSingleBlocked:
@@ -257,8 +248,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ging oder Orakelknochen",
     threadDepthRegionAria: "Aktive Thread-Tiefe",
     threadDepthHeading: "Thread-Tiefe",
-    threadDepthPlanSuffix:
-      " · dieser Thread erlaubt bis zu {{cap}} verkettete Lesung(en) (einschließlich der ersten).",
     threadDepthReadingProgressAria: "Lesung {{pos}} von {{cap}}",
     tdSingleOk: "Nur eine Lesung pro Thread.",
     tdSingleBlocked:
@@ -305,8 +294,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching o ossa oracolari",
     threadDepthRegionAria: "Profondità thread attivo",
     threadDepthHeading: "Profondità thread",
-    threadDepthPlanSuffix:
-      " · questo thread consente fino a {{cap}} lettura/e concatenate (inclusa la prima).",
     threadDepthReadingProgressAria: "Lettura {{pos}} di {{cap}}",
     tdSingleOk: "Una sola lettura per thread.",
     tdSingleBlocked:
@@ -353,7 +340,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "易経（I Ching）または甲骨占い",
     threadDepthRegionAria: "アクティブスレッドの深さ",
     threadDepthHeading: "スレッドの深さ",
-    threadDepthPlanSuffix: " · このスレッドでは最大{{cap}}件の連続リーディング（最初を含む）が可能です。",
     threadDepthReadingProgressAria: "リーディング {{pos}} / {{cap}}",
     tdSingleOk: "スレッドあたり1回のリーディングです。",
     tdSingleBlocked: "このスレッドでは追加の深掘りはできません。別のテーマは新しいセッションを開始してください。",
@@ -399,7 +385,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "易经或甲骨占卜",
     threadDepthRegionAria: "当前线程深度",
     threadDepthHeading: "线程深度",
-    threadDepthPlanSuffix: " · 本线程最多可进行 {{cap}} 次连续解读（含首次）。",
     threadDepthReadingProgressAria: "解读 {{pos}} / {{cap}}",
     tdSingleOk: "每个线程仅一次解读。",
     tdSingleBlocked: "本线程无法继续深入：仅一次解读。新主题请开始新会话。",
@@ -445,7 +430,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "역경(I Ching) 또는 뼈 점",
     threadDepthRegionAria: "활성 스레드 깊이",
     threadDepthHeading: "스레드 깊이",
-    threadDepthPlanSuffix: " · 이 스레드에서는 최대 {{cap}}번의 연속 리딩(첫 리딩 포함)이 가능합니다.",
     threadDepthReadingProgressAria: "리딩 {{pos}} / {{cap}}",
     tdSingleOk: "스레드당 한 번의 리딩만 가능합니다.",
     tdSingleBlocked: "이 스레드에서는 추가 심화가 없습니다. 다른 주제는 새 세션을 시작하세요.",
@@ -491,7 +475,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching أو عظام الكهانة",
     threadDepthRegionAria: "عمق الخيط النشط",
     threadDepthHeading: "عمق الخيط",
-    threadDepthPlanSuffix: " · يسمح هذا الخيط بما يصل إلى {{cap}} قراءة (قراءات) متسلسلة (بما فيها الأولى).",
     threadDepthReadingProgressAria: "القراءة {{pos}} من {{cap}}",
     tdSingleOk: "قراءة واحدة لكل خيط.",
     tdSingleBlocked: "لا متابعات في هذا الخيط: قراءة واحدة فقط. لموضوع جديد، ابدأ جلسة جديدة.",
@@ -537,7 +520,6 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     oracleModeTablistAria: "I Ching या ओरेकल हड्डियाँ",
     threadDepthRegionAria: "सक्रिय थ्रेड गहराई",
     threadDepthHeading: "थ्रेड गहराई",
-    threadDepthPlanSuffix: " · यह थ्रेड {{cap}} श्रृंखलाबद्ध पठन तक की अनुमति देता है (पहले सहित)।",
     threadDepthReadingProgressAria: "{{cap}} में से पठन {{pos}}",
     tdSingleOk: "प्रति थ्रेड एकल पठन।",
     tdSingleBlocked: "इस थ्रेड में कोई अनुवर्ती नहीं: केवल एक पठन। नए विषय के लिए नया सत्र शुरू करें।",
