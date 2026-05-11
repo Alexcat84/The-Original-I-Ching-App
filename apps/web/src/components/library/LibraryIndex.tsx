@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { LibraryPageUiSerialized } from "@iching-oracle/i18n";
 import {
-  formatTrigramLabel,
   isTrigramId,
   listTrigrams,
   type TrigramId,
@@ -13,12 +12,6 @@ import { TrigramPicker } from "./TrigramPicker";
 import type { LibrarySummary } from "@/lib/library/library-data";
 
 type FilterValue = "all" | TrigramId;
-
-function parseFilter(raw: string): FilterValue {
-  if (raw === "all") return "all";
-  if (isTrigramId(raw)) return raw;
-  return "all";
-}
 
 function stripDiacritics(input: string): string {
   return input.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
