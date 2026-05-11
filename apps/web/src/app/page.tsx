@@ -5268,7 +5268,6 @@ export default function HomePage() {
                   <span aria-hidden>{consultPanelOpen ? "▾" : "☰"}</span>
                   <span className="composer-mode-tag">{ui.options}</span>
                 </button>
-              <div style={{ position: 'relative', width: '100%' }}>
                 <div className="composer-input-row">
                   <textarea
                     ref={questionInputRef}
@@ -5314,18 +5313,6 @@ export default function HomePage() {
                     {loading ? "…" : "➤"}
                   </button>
                 </div>
-                <div style={{ 
-                  position: 'absolute', 
-                  right: '65px', 
-                  bottom: '10px', 
-                  opacity: 0.5, 
-                  fontSize: '0.65rem', 
-                  pointerEvents: 'none',
-                  fontWeight: 'bold'
-                }}>
-                  {question.length} / 1500
-                </div>
-              </div>
               </div>
             </div>
         </footer>
