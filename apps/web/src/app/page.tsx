@@ -1374,8 +1374,31 @@ export default function HomePage() {
     }
   }, [ichingCastMode]);
   const [translatorId, setTranslatorId] = useState<
-    "wilhelm" | "legge" | "zhouyi" | "master_combined"
-  >("wilhelm");
+      "wilhelm" | "legge" | "zhouyi" | "master_combined"
+    >("wilhelm");
+
+  const handleTranslatorChange = (id: "wilhelm" | "legge" | "zhouyi" | "master_combined") => {
+    if (isAdmin) {
+      setError(null);
+      setTranslatorId(id);
+      return;
+    }
+    if (id === "legge" && tier === "free") {
+      setError("Este traductor requiere el pack Seeker. Visita la sección de Packs para desbloquearlo.");
+      return;
+    }
+    if (id === "zhouyi" && ["free", "seeker"].includes(tier)) {
+      setError("Este traductor requiere el pack Practitioner. Visita la sección de Packs para desbloquearlo.");
+      return;
+    }
+    if (id === "master_combined" && ["free", "seeker", "practitioner"].includes(tier)) {
+      setError("Este traductor requiere el pack Master. Visita la sección de Packs para desbloquearlo.");
+      return;
+    }
+    setError(null);
+    setTranslatorId(id);
+  };
+
   const [ichingCastingMethod, setIchingCastingMethod] = useState<CastingMethod>(
     () => {
       if (typeof window === "undefined") return "three-coins";
@@ -5245,38 +5268,34 @@ export default function HomePage() {
                                 <button
                                   type="button"
                                   className={`oracle-toggle-option ${translatorId === "wilhelm" ? "is-active" : ""}`}
-                                  onClick={() => setTranslatorId("wilhelm")}
+                                  onClick={() => handleTranslatorChange("wilhelm")}
                                   disabled={loading}
                                 >
                                   <span>Wilhelm</span>
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "zhouyi" ? "is-active" : ""}`}
-                                  onClick={() => setTranslatorId("zhouyi")}
+                                  className={`oracle-toggle-option ${translatorId === "zhouyi" ? "is-active" : ""} ${!isAdmin && ["free", "seeker"].includes(tier) ? "is-locked" : ""}`}
+                                  onClick={() => handleTranslatorChange("zhouyi")}
                                   disabled={loading}
                                 >
-                                  <span>Zhou Yi</span>
+                                  <span>Zhou Yi</span>{!isAdmin && ["free", "seeker"].includes(tier) && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "legge" ? "is-active" : ""}`}
-                                  onClick={() => setTranslatorId("legge")}
+                                  className={`oracle-toggle-option ${translatorId === "legge" ? "is-active" : ""} ${!isAdmin && tier === "free" ? "is-locked" : ""}`}
+                                  onClick={() => handleTranslatorChange("legge")}
                                   disabled={loading}
                                 >
-                                  <span>Legge</span>
+                                  <span>Legge</span>{!isAdmin && tier === "free" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "master_combined" ? "is-active" : ""}`}
-                                  onClick={() =>
-                                    setTranslatorId("master_combined")
-                                  }
+                                  className={`oracle-toggle-option ${translatorId === "master_combined" ? "is-active" : ""} ${!isAdmin && ["free", "seeker", "practitioner"].includes(tier) ? "is-locked" : ""}`}
+                                  onClick={() => handleTranslatorChange("master_combined")}
                                   disabled={loading}
                                 >
-                                  <span className="oracle-toggle-master-label">
-                                    {chrome.translatorMasterCombined}
-                                  </span>
+                                  <span className="oracle-toggle-master-label" style={{ display: "inline-flex", alignItems: "center" }}>{chrome.translatorMasterCombined}<span style={{ fontSize: "0.75em", opacity: 0.8, marginLeft: 4, fontWeight: "normal" }}>(2 tokens)</span></span>{!isAdmin && ["free", "seeker", "practitioner"].includes(tier) && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                               </div>
                             </div>
