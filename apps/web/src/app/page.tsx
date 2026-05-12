@@ -1383,15 +1383,24 @@ export default function HomePage() {
       setTranslatorId(id);
       return;
     }
-    if (id === "legge" && tier === "free") {
+    // Jerarquía ordinal: el índice del tier actual debe ser >= al requerido
+    const TIER_RANK: Record<string, number> = {
+      free: 0,
+      seeker: 1,
+      practitioner: 2,
+      master: 3,
+      oracle: 4,
+    };
+    const currentRank = TIER_RANK[tier] ?? 0;
+    if (id === "legge" && currentRank < TIER_RANK.seeker!) {
       setError("Este traductor requiere el pack Seeker. Visita la sección de Packs para desbloquearlo.");
       return;
     }
-    if (id === "zhouyi" && ["free", "seeker"].includes(tier)) {
+    if (id === "zhouyi" && currentRank < TIER_RANK.practitioner!) {
       setError("Este traductor requiere el pack Practitioner. Visita la sección de Packs para desbloquearlo.");
       return;
     }
-    if (id === "master_combined" && ["free", "seeker", "practitioner"].includes(tier)) {
+    if (id === "master_combined" && currentRank < TIER_RANK.master!) {
       setError("Este traductor requiere el pack Master. Visita la sección de Packs para desbloquearlo.");
       return;
     }
