@@ -351,7 +351,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   {
     id: "master-tokens-cost",
     question: "¿Por qué el modo Maestro consume 2 tokens?",
-    answer: "El modo Maestro activa un proceso de computación avanzada donde Claude 4.5 analiza y compara simultáneamente las tres traducciones originales. No es un resumen, sino una síntesis académica con una 'Respuesta Concreta' inicial y referencias cruzadas, lo que requiere un volumen de procesamiento significativamente mayor.",
+    answer: "La función Master (3) representa el nivel más alto de claridad oracular. No se limita a comparar textos; realiza una Síntesis Personalizada: triangula simultáneamente a Wilhelm, Legge y el Zhou Yi original para destilar un veredicto coherente. El resultado es un ensayo dialéctico que ofrece una 'Respuesta Concreta' inmediata seguida de un análisis comparativo profundo, elaborado de forma única para resonar con tu situación y adaptado con total fidelidad al contexto personal de tu consulta.",
     related: ["tokenPacks", "pricing"],
   },
   {

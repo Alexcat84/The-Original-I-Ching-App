@@ -93,6 +93,22 @@ export default async function GuiaRapidaPage() {
           <li>{g.translatorOptionsBullet}</li>
         </ul>
 
+        <h3>{g.translatorsHeading}</h3>
+        <ul>
+          <li>
+            <strong>Wilhelm/Baynes</strong>: {g.translatorsWilhelm}
+          </li>
+          <li>
+            <strong>James Legge</strong>: {g.translatorsLegge}
+          </li>
+          <li>
+            <strong>Zhou Yi (Original)</strong>: {g.translatorsZhouyi}
+          </li>
+          <li>
+            <strong>Master (3)</strong>: {g.translatorsMaster}
+          </li>
+        </ul>
+
         <h3>{g.chatsHeading}</h3>
         <ul>
           <li>

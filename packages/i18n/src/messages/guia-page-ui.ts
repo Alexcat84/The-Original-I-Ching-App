@@ -61,6 +61,11 @@ export type GuiaPageUiMessages = {
   gettingStartedHeading: string;
   promptLengthHint: string;
   translatorOptionsBullet: string;
+  translatorsHeading: string;
+  translatorsWilhelm: string;
+  translatorsLegge: string;
+  translatorsZhouyi: string;
+  translatorsMaster: string;
 };
 
 const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
@@ -106,7 +111,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Profundidad del hilo: cuántas lecturas encadenadas caben en el mismo chat según tu pack (el plan gratuito no permite seguir preguntando en el mismo hilo tras la primera lectura).",
     translatorOptionsBullet:
       "Elección de traductor: Puedes elegir entre Wilhelm/Baynes, Zhou Yi, James Legge o el modo Master (3) que combina todos en una única respuesta.",
-    methodsHeading: "Cómo usar los métodos",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "Cómo usar los métodos",
     methodsIntro:
       "El I Ching y los Huesos son métodos distintos. El I Ching trabaja por hexagrama y líneas, e incluye dos formas de tirada: Tres Monedas y Varillas de milenrama. Los Huesos siguen un esquema separado, sin hexagramas.",
     ichingPracticalHeading: "I Ching",
@@ -182,7 +192,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Thread depth: how many chained readings fit in one chat for your pack (the free plan does not allow follow-up readings in the same thread after the first one).",
     translatorOptionsBullet:
       "Translator choice: You can choose between Wilhelm/Baynes, Zhou Yi, James Legge, or the Master (3) mode which combines all into a single answer.",
-    methodsHeading: "How to use the methods",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "How to use the methods",
     methodsIntro:
       "I Ching and Bones are different methods. I Ching reads by hexagram and lines and offers two casting modes: Three Coins and Yarrow Stalks. Bones follow a separate scheme, without hexagrams.",
     ichingPracticalHeading: "I Ching",
@@ -259,7 +274,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Profundidade do fio: quantas leituras encadeadas cabem no mesmo chat conforme o teu pack (o plano gratuito não permite novas perguntas no mesmo fio após a primeira leitura).",
     translatorOptionsBullet:
       "Escolha de tradutor: Podes escolher entre Wilhelm/Baynes, Zhou Yi, James Legge ou o modo Master (3) que combina todos numa única resposta.",
-    methodsHeading: "Como usar os métodos",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "Como usar os métodos",
     methodsIntro:
       "O I Ching e os Ossos são métodos diferentes. O I Ching lê por hexagrama e linhas e oferece duas formas de tiragem: Três Moedas e Varetas de aquilégia. Os Ossos seguem um esquema próprio, sem hexagramas.",
     ichingPracticalHeading: "I Ching",
@@ -337,7 +357,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Profondeur du fil : combien de lectures enchaînées sont possibles dans le même chat selon votre pack (le plan gratuit ne permet pas de poursuivre dans le même fil après la première lecture).",
     translatorOptionsBullet:
       "Choix du traducteur : Vous pouvez choisir entre Wilhelm/Baynes, Zhou Yi, James Legge, ou le mode Master (3) qui combine le tout en une seule réponse.",
-    methodsHeading: "Comment utiliser les méthodes",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "Comment utiliser les méthodes",
     methodsIntro:
       "Le I Ching et les Os sont deux méthodes différentes. Le I Ching lit par hexagramme et traits et propose deux modes de tirage : Trois Pièces et Tiges d’achillée. Les Os suivent un schéma propre, sans hexagramme.",
     ichingPracticalHeading: "I Ching",
@@ -415,7 +440,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Thread-Tiefe: wie viele verkettete Lesungen in einem Chat je nach Pack möglich sind (der kostenlose Plan erlaubt nach der ersten Lesung keine Folgefragen im selben Thread).",
     translatorOptionsBullet:
       "Wahl des Übersetzers: Sie können zwischen Wilhelm/Baynes, Zhou Yi, James Legge oder dem Master (3)-Modus wählen, der alle in einer einzigen Antwort kombiniert.",
-    methodsHeading: "So nutzt du die Methoden",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "So nutzt du die Methoden",
     methodsIntro:
       "I Ging und Knochen sind unterschiedliche Methoden. I Ging liest nach Hexagramm und Strichen und bietet zwei Wurfarten: Drei Münzen und Schafgarbenstäbe. Die Knochen folgen einem eigenen Schema, ohne Hexagramm.",
     ichingPracticalHeading: "I Ging",
@@ -493,7 +523,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Profondità del thread: quante letture concatenate sono possibili nella stessa chat in base al pack (il piano gratuito non consente ulteriori domande nello stesso thread dopo la prima lettura).",
     translatorOptionsBullet:
       "Scelta del traduttore: Puoi scegliere tra Wilhelm/Baynes, Zhou Yi, James Legge o la modalità Master (3) che li combina in un'unica risposta.",
-    methodsHeading: "Come usare i metodi",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "Come usare i metodi",
     methodsIntro:
       "I Ching e Ossa sono metodi differenti. L’I Ching legge per esagramma e linee e offre due modi di lancio: Tre Monete e Stecche di achillea. Le Ossa seguono uno schema proprio, senza esagramma.",
     ichingPracticalHeading: "I Ching",
@@ -568,7 +603,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "スレッドの深さ：パックに応じて同一チャットで連続できる読み取り回数（無料プランは最初の読み取り後、同じスレッドでの追問は不可）。",
     translatorOptionsBullet:
       "翻訳者の選択: Wilhelm/Baynes、Zhou Yi、James Legge、またはすべてを組み合わせたマスター(3)モードから選択できます。",
-    methodsHeading: "占いの方式の使い分け",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "占いの方式の使い分け",
     methodsIntro:
       "易経と甲骨は別の方式です。易経は卦と爻で読み、占い方は二通り（三銭と蓍草）です。甲骨は卦を作らず、独自の流れで進みます。",
     ichingPracticalHeading: "易経",
@@ -641,7 +681,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "会话深度：根据套餐，同一聊天中可连续解读的次数（免费计划在首次解读后不允许在同一会话中继续追问）。",
     translatorOptionsBullet:
       "译本选择：您可以选择卫礼贤/贝恩斯、原始周易、理雅各，或将三者结合为单一回答的大师 (3) 模式。",
-    methodsHeading: "如何使用各方法",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "如何使用各方法",
     methodsIntro:
       "易经和甲骨是两种不同的方法。易经按卦象与爻辞解读，并有两种起卦方式：三钱与蓍草。甲骨自成体系，不形成卦象。",
     ichingPracticalHeading: "易经",
@@ -716,7 +761,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "스레드 깊이: 팩에 따라 같은 채팅에서 연속 해석 가능 횟수(무료 플랜은 첫 해석 후 같은 스레드에서 추가 질문 불가).",
     translatorOptionsBullet:
       "번역본 선택: 빌헬름/베인스, 원전 주역, 제임스 레게 중 하나를 선택하거나 모든 버전을 하나의 답변으로 결합하는 마스터(3) 모드를 선택할 수 있습니다.",
-    methodsHeading: "방법별 사용법",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "방법별 사용법",
     methodsIntro:
       "역경과 갑골은 서로 다른 방법입니다. 역경은 괘와 효로 풀이하며 점치는 방식이 두 가지(삼전과 시초)입니다. 갑골은 괘를 만들지 않고 독자적인 흐름을 따릅니다.",
     ichingPracticalHeading: "역경",
@@ -791,7 +841,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "عمق الخيط: عدد القراءات المتسلسلة الممكنة في نفس المحادثة حسب حزمتك (الخطة المجانية لا تتيح أسئلة متابعة في نفس الخيط بعد القراءة الأولى).",
     translatorOptionsBullet:
       "اختيار المترجم: يمكنك الاختيار بين Wilhelm/Baynes، أو Zhou Yi، أو James Legge، أو وضع Master (3) الذي يجمع الكل في إجابة واحدة.",
-    methodsHeading: "كيف تستخدم كل طريقة",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "كيف تستخدم كل طريقة",
     methodsIntro:
       "I Ching والعظام طريقتان مختلفتان. يقرأ I Ching وفق الهكساغرام والخطوط ويتيح أسلوبين للقَسْم: ثلاث عملات وعيدان الزنبق. تتبع العظام مخططها الخاص بدون هكساغرام.",
     ichingPracticalHeading: "I Ching",
@@ -867,7 +922,12 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "थ्रेड गहराई: आपके पैक के अनुसार एक चैट में कितने श्रृंखलाबद्ध पठन हो सकते हैं (निःशुल्क योजना पहले पठन के बाद उसी थ्रेड में अनुवर्ती प्रश्नों की अनुमति नहीं देती)।",
     translatorOptionsBullet:
       "अनुवादक का विकल्प: आप विल्हेम/बेन्स, झोउ यी, जेम्स लेग या मास्टर (3) मोड के बीच चयन कर सकते हैं जो सभी को एक उत्तर में जोड़ता है.",
-    methodsHeading: "विधियों का उपयोग कैसे करें",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+      translatorsWilhelm: "La interpretación psicológica y poética por excelencia. Ideal para profundizar en los movimientos del alma y la psique.",
+      translatorsLegge: "El enfoque estructural y social. Ofrece una visión clara de las leyes del cambio y el orden de las cosas.",
+      translatorsZhouyi: "La Fuente Raíz. El texto canónico en chino tradicional, sin filtros. Directo, puro y con la fuerza de la tradición milenaria.",
+      translatorsMaster: "El Gran Consenso. Una síntesis magistral que unifica los tres linajes anteriores en una sola visión. Diseñado para cuando necesitas una respuesta definitiva y personalizada que integre todos los matices de tu contexto actual.",
+      methodsHeading: "विधियों का उपयोग कैसे करें",
     methodsIntro:
       "I Ching और हड्डियाँ अलग विधियाँ हैं। I Ching हेक्साग्राम और रेखाओं के माध्यम से पढ़ता है और दो कास्टिंग मोड प्रदान करता है: तीन सिक्के और यारो छड़ें। हड्डियाँ अपनी अलग प्रणाली से चलती हैं, हेक्साग्राम के बिना।",
     ichingPracticalHeading: "I Ching",

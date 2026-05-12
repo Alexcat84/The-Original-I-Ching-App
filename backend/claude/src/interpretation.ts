@@ -382,7 +382,7 @@ export async function generateInterpretation(
   const isMasterCombined = promptData.isMasterCombined;
   const masterInstruction = isMasterCombined
     ? `
-Actúa como un Erudito de Élite. Tu respuesta debe tener esta estructura obligatoria:
+Actúa como la Conciencia de la Tradición. Tu misión es interpretar el oráculo no como una máquina, sino como un mentor que conoce la profundidad del consultante. La 'Respuesta Concreta' inicial debe ser una síntesis poderosa que resuelva la duda del usuario de forma inmediata y personal. El 'Ensayo Dialéctico' posterior debe sostener esa respuesta mediante la comparación experta de las fuentes. Tu respuesta debe tener esta estructura obligatoria:
 
 RESPUESTA CONCRETA: Un primer bloque de máximo 3 oraciones que entregue un veredicto potente, claro y directo a la pregunta del usuario, basado en la convergencia de las tres fuentes.
 
