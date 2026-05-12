@@ -1,4 +1,7 @@
-import { generateInterpretation, generateOracleBonesInterpretation } from "@iching-oracle/claude";
+import {
+  generateInterpretation,
+  generateOracleBonesInterpretation,
+} from "@iching-oracle/claude";
 import {
   CONTEXT_LIMITS,
   resolveSessionContext,
@@ -6,24 +9,50 @@ import {
   type OracleType,
   type PreviousConsultationRow,
 } from "@iching-oracle/context-engine";
-import { performCast, performCastFromLineValues, performYarrowCast } from "@iching-oracle/iching-engine";
+import {
+  performCast,
+  performCastFromLineValues,
+  performYarrowCast,
+} from "@iching-oracle/iching-engine";
 import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
-import { buildImagePrompt, buildOracleBonesImagePrompt } from "@iching-oracle/image-engine";
-import { defaultNegativeCharge, performOracleBonesCast } from "@iching-oracle/oracle-bones-engine";
+import {
+  buildImagePrompt,
+  buildOracleBonesImagePrompt,
+} from "@iching-oracle/image-engine";
+import {
+  defaultNegativeCharge,
+  performOracleBonesCast,
+} from "@iching-oracle/oracle-bones-engine";
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import { buildImageAsset, buildOracleBonesImageAsset, type ImageProvider } from "@/lib/image-provider";
+import {
+  buildImageAsset,
+  buildOracleBonesImageAsset,
+  type ImageProvider,
+} from "@/lib/image-provider";
 import { getAdminConfig } from "@/lib/admin-config";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
-import { consumeToken, getSessionLimit, getUserBillingTier } from "@/lib/credits";
+import {
+  consumeToken,
+  getSessionLimit,
+  getUserBillingTier,
+  getTokenBalance,
+} from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { isSharingPersistenceAvailable, upsertSessionAndConsultation } from "@/lib/session-store";
+import {
+  isSharingPersistenceAvailable,
+  upsertSessionAndConsultation,
+} from "@/lib/session-store";
 import { parseIchingManualPayload } from "@/lib/manual-iching-consult";
-import { canDeepenAfterNextConsult, normalizeSessionDepthLimit, shouldBlockDeepening } from "@/lib/thread-depth-policy";
+import {
+  canDeepenAfterNextConsult,
+  normalizeSessionDepthLimit,
+  shouldBlockDeepening,
+} from "@/lib/thread-depth-policy";
 
 export const runtime = "nodejs";
 const LOG_RITUAL_STREAM_DEBUG =
@@ -55,7 +84,9 @@ type HistoryEntry = {
   };
 };
 
-function mapHistoryToRows(history: HistoryEntry[] | undefined): PreviousConsultationRow[] {
+function mapHistoryToRows(
+  history: HistoryEntry[] | undefined,
+): PreviousConsultationRow[] {
   return (history ?? []).map((h, idx) => {
     const oracleType: OracleType = h.oracleType ?? "iching";
     const oracle_bones: OracleBonesHistorySnapshot | undefined =
@@ -85,7 +116,9 @@ function mapHistoryToRows(history: HistoryEntry[] | undefined): PreviousConsulta
   });
 }
 
-function verdictLabelForPrompt(verdict: OracleBonesHistorySnapshot["verdict"]): string {
+function verdictLabelForPrompt(
+  verdict: OracleBonesHistorySnapshot["verdict"],
+): string {
   const labels: Record<OracleBonesHistorySnapshot["verdict"], string> = {
     auspicious_clear: "clearly auspicious ji 吉",
     auspicious_moderate: "moderately auspicious ji 吉",
@@ -118,13 +151,96 @@ function detectLanguageFromUserText(text: string): AppLocale | null {
   const langWords: Array<{ lang: AppLocale; words: readonly string[] }> = [
     {
       lang: "es",
-      words: ["el", "la", "los", "las", "que", "por", "para", "con", "fue", "entonces", "porque", "hija"],
+      words: [
+        "el",
+        "la",
+        "los",
+        "las",
+        "que",
+        "por",
+        "para",
+        "con",
+        "fue",
+        "entonces",
+        "porque",
+        "hija",
+      ],
     },
-    { lang: "en", words: ["the", "and", "with", "was", "were", "is", "are", "why", "what", "then", "because"] },
-    { lang: "pt", words: ["que", "com", "para", "não", "foi", "então", "porque", "uma", "você"] },
-    { lang: "fr", words: ["le", "la", "les", "avec", "pour", "pas", "est", "sont", "pourquoi", "alors"] },
-    { lang: "de", words: ["der", "die", "das", "und", "mit", "nicht", "ist", "sind", "warum", "dann"] },
-    { lang: "it", words: ["il", "lo", "la", "gli", "con", "per", "non", "che", "perché", "allora"] },
+    {
+      lang: "en",
+      words: [
+        "the",
+        "and",
+        "with",
+        "was",
+        "were",
+        "is",
+        "are",
+        "why",
+        "what",
+        "then",
+        "because",
+      ],
+    },
+    {
+      lang: "pt",
+      words: [
+        "que",
+        "com",
+        "para",
+        "não",
+        "foi",
+        "então",
+        "porque",
+        "uma",
+        "você",
+      ],
+    },
+    {
+      lang: "fr",
+      words: [
+        "le",
+        "la",
+        "les",
+        "avec",
+        "pour",
+        "pas",
+        "est",
+        "sont",
+        "pourquoi",
+        "alors",
+      ],
+    },
+    {
+      lang: "de",
+      words: [
+        "der",
+        "die",
+        "das",
+        "und",
+        "mit",
+        "nicht",
+        "ist",
+        "sind",
+        "warum",
+        "dann",
+      ],
+    },
+    {
+      lang: "it",
+      words: [
+        "il",
+        "lo",
+        "la",
+        "gli",
+        "con",
+        "per",
+        "non",
+        "che",
+        "perché",
+        "allora",
+      ],
+    },
   ];
 
   const scores = langWords
@@ -172,244 +288,332 @@ export async function POST(req: Request) {
   }
 
   try {
-  const question = typeof body.question === "string" ? body.question : "";
-  const trimmedQuestion = question.trim();
-  const displayName =
-    typeof body.displayName === "string" && body.displayName.trim() ? body.displayName.trim() : undefined;
-  const rawLanguage = typeof body.language === "string" ? body.language : "es";
-  const selectedLanguage: AppLocale =
-    (SUPPORTED_LOCALES as readonly string[]).includes(rawLanguage) ? (rawLanguage as AppLocale) : "es";
-  const oracleMode: OracleType = body.oracleMode === "oracle_bones" ? "oracle_bones" : "iching";
-  const languageHint = detectLanguageFromUserText(trimmedQuestion);
-  const language: AppLocale = languageHint ?? selectedLanguage;
+    const question = typeof body.question === "string" ? body.question : "";
+    const trimmedQuestion = question.trim();
+    const displayName =
+      typeof body.displayName === "string" && body.displayName.trim()
+        ? body.displayName.trim()
+        : undefined;
+    const rawLanguage =
+      typeof body.language === "string" ? body.language : "es";
+    const selectedLanguage: AppLocale = (
+      SUPPORTED_LOCALES as readonly string[]
+    ).includes(rawLanguage)
+      ? (rawLanguage as AppLocale)
+      : "es";
+    const oracleMode: OracleType =
+      body.oracleMode === "oracle_bones" ? "oracle_bones" : "iching";
+    const languageHint = detectLanguageFromUserText(trimmedQuestion);
+    const language: AppLocale = languageHint ?? selectedLanguage;
 
-  const authUser = await getAuthenticatedUser(req);
-  if (!authUser) {
-    return NextResponse.json(
-      {
-        error: "auth_required",
-        code: "AUTH_REQUIRED",
-        action: "login",
-        message:
-          "Inicia sesión con un correo verificado o con Google. Crea cuenta en /login si aún no tienes una.",
-      },
-      { status: 401 },
-    );
-  }
-  const authedUserId = authUser.userId;
-  const lastPack = await getUserBillingTier(authedUserId);
-  const policy = await resolveConsultPolicy({ authUser, tierResolved: lastPack });
-  const { adminBypassAllowed, adminUnlimitedCredits, tierEffective, tierKey } = policy;
-  
-  let resolvedTranslator: "wilhelm" | "legge" | "zhouyi" | "master_combined" = "wilhelm";
-  if (body.translatorId === "legge") resolvedTranslator = "legge";
-  if (body.translatorId === "zhouyi") resolvedTranslator = "zhouyi";
-  if (body.translatorId === "master_combined") {
-    if (tierKey === "master" || tierKey === "oracle" || adminBypassAllowed) {
-      resolvedTranslator = "master_combined";
-    } else {
-      resolvedTranslator = "wilhelm"; // fallback si no tiene permiso
+    const authUser = await getAuthenticatedUser(req);
+    if (!authUser) {
+      return NextResponse.json(
+        {
+          error: "auth_required",
+          code: "AUTH_REQUIRED",
+          action: "login",
+          message:
+            "Inicia sesión con un correo verificado o con Google. Crea cuenta en /login si aún no tienes una.",
+        },
+        { status: 401 },
+      );
     }
-  }
+    const authedUserId = authUser.userId;
+    const lastPack = await getUserBillingTier(authedUserId);
+    const policy = await resolveConsultPolicy({
+      authUser,
+      tierResolved: lastPack,
+    });
+    const {
+      adminBypassAllowed,
+      adminUnlimitedCredits,
+      tierEffective,
+      tierKey,
+    } = policy;
 
-  const packSessionLimit = await getSessionLimit(authedUserId);
-  const maxDepth = adminBypassAllowed
-    ? 999_999
-    : normalizeSessionDepthLimit(packSessionLimit || CONTEXT_LIMITS[tierKey].sessionDepth);
-
-  const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
-  const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
-  const rl = await rateLimitByKey({
-    key: `consult:${ip}`,
-    limit: 30,
-    windowSeconds: 60,
-  });
-  if (!rl.ok) {
-    return NextResponse.json(
-      { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" },
-      { status: 429 },
-    );
-  }
-  const rlUser = await rateLimitByKey({
-    key: `consult:user:${authedUserId}`,
-    limit: 15,
-    windowSeconds: 60,
-  });
-  if (!rlUser.ok) {
-    return NextResponse.json(
-      { error: "rate_limited", code: "RATE_LIMITED", action: "wait_and_retry" },
-      { status: 429 },
-    );
-  }
-  if (policy.twoFactorRequired) {
-    return NextResponse.json(
-      { error: "two_factor_required", code: "TWO_FACTOR_REQUIRED", action: "setup_2fa" },
-      { status: 403 },
-    );
-  }
-  if (oracleMode === "iching" && !trimmedQuestion) {
-    return NextResponse.json(
-      { error: "question_required", code: "CONSULT_QUESTION_REQUIRED", action: "fix_input" },
-      { status: 400 },
-    );
-  }
-
-  const ichingManualPayload = parseIchingManualPayload(
-    {
-      ichingCastMode: body.ichingCastMode,
-      ichingCastingMethod: body.ichingCastingMethod,
-      ichingManualLineValues: body.ichingManualLineValues,
-    },
-    oracleMode,
-  );
-  if (!ichingManualPayload.ok) {
-    return NextResponse.json(ichingManualPayload.body, { status: ichingManualPayload.status });
-  }
-
-  const sessionId =
-    typeof body.sessionId === "string" && isPersistableUuid(body.sessionId)
-      ? body.sessionId
-      : randomUUID();
-
-  const isDeepening = Boolean(body.isDeepening);
-  const previousRows = mapHistoryToRows(body.history);
-
-  // When deepening, validate depth against the DB record — not the client-supplied history,
-  // which could be manipulated to bypass session limits.
-  let authorizedDepth = previousRows.length;
-  if (isDeepening && isPersistableUuid(sessionId)) {
-    const supabaseAdmin = getSupabaseAdmin();
-    if (supabaseAdmin) {
-      const { data: sessionRow } = await supabaseAdmin
-        .from("consultation_sessions")
-        .select("consultation_count")
-        .eq("id", sessionId)
-        .eq("user_id", authedUserId)
-        .maybeSingle();
-      if (sessionRow) {
-        authorizedDepth = sessionRow.consultation_count ?? previousRows.length;
+    let resolvedTranslator: "wilhelm" | "legge" | "zhouyi" | "master_combined" =
+      "wilhelm";
+    if (body.translatorId === "legge") resolvedTranslator = "legge";
+    if (body.translatorId === "zhouyi") resolvedTranslator = "zhouyi";
+    if (body.translatorId === "master_combined") {
+      if (tierKey === "master" || tierKey === "oracle" || adminBypassAllowed) {
+        resolvedTranslator = "master_combined";
+      } else {
+        resolvedTranslator = "wilhelm"; // fallback si no tiene permiso
       }
     }
-  }
 
-  if (
-    shouldBlockDeepening({
-      isDeepening,
-      historyLength: authorizedDepth,
-      sessionLimit: maxDepth,
-    })
-  ) {
-    return NextResponse.json(
-      {
-        error: "session_limit",
-        message: "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar explorando.",
-        session_limit: maxDepth,
-      },
-      { status: 429 },
-    );
-  }
+    const packSessionLimit = await getSessionLimit(authedUserId);
+    const maxDepth = adminBypassAllowed
+      ? 999_999
+      : normalizeSessionDepthLimit(
+          packSessionLimit || CONTEXT_LIMITS[tierKey].sessionDepth,
+        );
 
-  const remainingAfterConsume = adminUnlimitedCredits ? 999_999 : await consumeToken(authedUserId);
-  if (remainingAfterConsume === -1) {
-    return NextResponse.json(
-      {
-        error: "no_tokens",
-        message: "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
-        tokens_available: 0,
-      },
-      { status: 402 },
-    );
-  }
-  const adminConfig = await getAdminConfig();
-  const adminAllowed = adminBypassAllowed;
-  let responseMode: "ritual" | "stream_ritual" =
-    body.responseMode === "stream_ritual" ? "stream_ritual" : "ritual";
-  if (oracleMode === "iching" && ichingManualPayload.mode === "manual") {
-    responseMode = "ritual";
-  }
-  const imageProviderOverride =
-    adminAllowed && body.imageProviderOverride ? body.imageProviderOverride : adminConfig.imageProviderDefault;
-  if (oracleMode === "oracle_bones") {
-    const positive =
-      typeof body.oracleBones?.positiveCharge === "string" && body.oracleBones.positiveCharge.trim()
-        ? body.oracleBones.positiveCharge.trim()
-        : trimmedQuestion;
-    if (!positive) {
+    const forwardedFor = req.headers.get("x-forwarded-for") ?? "unknown-ip";
+    const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown-ip";
+    const rl = await rateLimitByKey({
+      key: `consult:${ip}`,
+      limit: 30,
+      windowSeconds: 60,
+    });
+    if (!rl.ok) {
       return NextResponse.json(
-        { error: "oracle_bones_charge_required", code: "ORACLE_BONES_CHARGE_REQUIRED", action: "fix_input" },
+        {
+          error: "rate_limited",
+          code: "RATE_LIMITED",
+          action: "wait_and_retry",
+        },
+        { status: 429 },
+      );
+    }
+    const rlUser = await rateLimitByKey({
+      key: `consult:user:${authedUserId}`,
+      limit: 15,
+      windowSeconds: 60,
+    });
+    if (!rlUser.ok) {
+      return NextResponse.json(
+        {
+          error: "rate_limited",
+          code: "RATE_LIMITED",
+          action: "wait_and_retry",
+        },
+        { status: 429 },
+      );
+    }
+    if (policy.twoFactorRequired) {
+      return NextResponse.json(
+        {
+          error: "two_factor_required",
+          code: "TWO_FACTOR_REQUIRED",
+          action: "setup_2fa",
+        },
+        { status: 403 },
+      );
+    }
+    if (oracleMode === "iching" && !trimmedQuestion) {
+      return NextResponse.json(
+        {
+          error: "question_required",
+          code: "CONSULT_QUESTION_REQUIRED",
+          action: "fix_input",
+        },
         { status: 400 },
       );
     }
-    const medium = body.oracleBones?.medium === "ox" ? "ox" : "turtle";
-    const negativeRaw = typeof body.oracleBones?.negativeCharge === "string" ? body.oracleBones.negativeCharge.trim() : "";
-    const positiveLanguageHint = detectLanguageFromUserText(positive);
-    const oracleLanguage = positiveLanguageHint ?? language;
-    const negative = negativeRaw || defaultNegativeCharge(positive, oracleLanguage);
 
-    const bonesCast = performOracleBonesCast(positive, negative, medium);
-    const context = resolveSessionContext({
-      tier: tierKey,
-      sessionId,
-      isDeepening,
-      sessionTitle: body.sessionTitle ?? null,
-      previousRows,
-      patternHints: null,
-    });
-
-    const { text: interpretation, category } = await generateOracleBonesInterpretation(
-      bonesCast,
-      tierEffective,
-      context,
-      "ritual",
-      oracleLanguage,
-      process.env,
-      displayName,
+    const ichingManualPayload = parseIchingManualPayload(
+      {
+        ichingCastMode: body.ichingCastMode,
+        ichingCastingMethod: body.ichingCastingMethod,
+        ichingManualLineValues: body.ichingManualLineValues,
+      },
+      oracleMode,
     );
+    if (!ichingManualPayload.ok) {
+      return NextResponse.json(ichingManualPayload.body, {
+        status: ichingManualPayload.status,
+      });
+    }
 
-    const imagePrompt = buildOracleBonesImagePrompt({
-      category,
-      medium: bonesCast.medium,
-      patternId: bonesCast.patternId,
-      verdictLabel: verdictLabelForPrompt(bonesCast.verdict),
-    });
-    let image = await buildOracleBonesImageAsset({
-      prompt: imagePrompt,
-      patternId: bonesCast.patternId,
-      verdict: bonesCast.verdict,
-      medium: bonesCast.medium,
-      tier: tierEffective,
-      providerOverride: imageProviderOverride,
-      consultationId: bonesCast.id,
-    });
-    image = await finalizeReadingImages(image, tierEffective);
+    const sessionId =
+      typeof body.sessionId === "string" && isPersistableUuid(body.sessionId)
+        ? body.sessionId
+        : randomUUID();
 
-    const oracleBonesSnapshot: OracleBonesHistorySnapshot = {
-      pattern_id: bonesCast.patternId,
-      verdict: bonesCast.verdict,
-      positive_charge: bonesCast.positiveCharge,
-      negative_charge: bonesCast.negativeCharge,
-      medium: bonesCast.medium,
-      ambiguous_passes: bonesCast.ambiguousPasses,
-    };
+    const isDeepening = Boolean(body.isDeepening);
+    const previousRows = mapHistoryToRows(body.history);
 
-    const nextPosition = previousRows.length + 1;
-    const canDeepen = canDeepenAfterNextConsult({
-      historyLength: previousRows.length,
-      sessionLimit: maxDepth,
-    });
-    const sharing = await upsertSessionAndConsultation({
-      userId: authedUserId,
-      sessionId,
-      sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
-      language: oracleLanguage,
-      category,
-      maxConsultations: maxDepth,
-      consultation: {
-        consultationId: bonesCast.id,
+    // When deepening, validate depth against the DB record — not the client-supplied history,
+    // which could be manipulated to bypass session limits.
+    let authorizedDepth = previousRows.length;
+    if (isDeepening && isPersistableUuid(sessionId)) {
+      const supabaseAdmin = getSupabaseAdmin();
+      if (supabaseAdmin) {
+        const { data: sessionRow } = await supabaseAdmin
+          .from("consultation_sessions")
+          .select("consultation_count")
+          .eq("id", sessionId)
+          .eq("user_id", authedUserId)
+          .maybeSingle();
+        if (sessionRow) {
+          authorizedDepth =
+            sessionRow.consultation_count ?? previousRows.length;
+        }
+      }
+    }
+
+    if (
+      shouldBlockDeepening({
+        isDeepening,
+        historyLength: authorizedDepth,
+        sessionLimit: maxDepth,
+      })
+    ) {
+      return NextResponse.json(
+        {
+          error: "session_limit",
+          message:
+            "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar explorando.",
+          session_limit: maxDepth,
+        },
+        { status: 429 },
+      );
+    }
+
+    const isMasterCombined = resolvedTranslator === "master_combined";
+    const tokensToConsume = isMasterCombined ? 2 : 1;
+
+    let currentBalance = adminUnlimitedCredits
+      ? 999_999
+      : await getTokenBalance(authedUserId);
+    if (currentBalance < tokensToConsume) {
+      return NextResponse.json(
+        {
+          error: "insufficient_credits",
+          message: isMasterCombined
+            ? "El Ensayo Maestro requiere 2 tokens. Compra un nuevo paquete para continuar."
+            : "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
+          tokens_available: currentBalance,
+        },
+        { status: 402 },
+      );
+    }
+
+    let remainingAfterConsume = currentBalance;
+    if (!adminUnlimitedCredits) {
+      for (let i = 0; i < tokensToConsume; i++) {
+        remainingAfterConsume = await consumeToken(authedUserId);
+      }
+    }
+    const adminConfig = await getAdminConfig();
+    const adminAllowed = adminBypassAllowed;
+    let responseMode: "ritual" | "stream_ritual" =
+      body.responseMode === "stream_ritual" ? "stream_ritual" : "ritual";
+    if (oracleMode === "iching" && ichingManualPayload.mode === "manual") {
+      responseMode = "ritual";
+    }
+    const imageProviderOverride =
+      adminAllowed && body.imageProviderOverride
+        ? body.imageProviderOverride
+        : adminConfig.imageProviderDefault;
+    if (oracleMode === "oracle_bones") {
+      const positive =
+        typeof body.oracleBones?.positiveCharge === "string" &&
+        body.oracleBones.positiveCharge.trim()
+          ? body.oracleBones.positiveCharge.trim()
+          : trimmedQuestion;
+      if (!positive) {
+        return NextResponse.json(
+          {
+            error: "oracle_bones_charge_required",
+            code: "ORACLE_BONES_CHARGE_REQUIRED",
+            action: "fix_input",
+          },
+          { status: 400 },
+        );
+      }
+      const medium = body.oracleBones?.medium === "ox" ? "ox" : "turtle";
+      const negativeRaw =
+        typeof body.oracleBones?.negativeCharge === "string"
+          ? body.oracleBones.negativeCharge.trim()
+          : "";
+      const positiveLanguageHint = detectLanguageFromUserText(positive);
+      const oracleLanguage = positiveLanguageHint ?? language;
+      const negative =
+        negativeRaw || defaultNegativeCharge(positive, oracleLanguage);
+
+      const bonesCast = performOracleBonesCast(positive, negative, medium);
+      const context = resolveSessionContext({
+        tier: tierKey,
         sessionId,
-        sessionPosition: nextPosition,
-        question: bonesCast.positiveCharge,
+        isDeepening,
+        sessionTitle: body.sessionTitle ?? null,
+        previousRows,
+        patternHints: null,
+      });
+
+      const { text: interpretation, category } =
+        await generateOracleBonesInterpretation(
+          bonesCast,
+          tierEffective,
+          context,
+          "ritual",
+          oracleLanguage,
+          process.env,
+          displayName,
+        );
+      const interpretationSummary = "";
+
+      const imagePrompt = buildOracleBonesImagePrompt({
+        category,
+        medium: bonesCast.medium,
+        patternId: bonesCast.patternId,
+        verdictLabel: verdictLabelForPrompt(bonesCast.verdict),
+      });
+      let image = await buildOracleBonesImageAsset({
+        prompt: imagePrompt,
+        patternId: bonesCast.patternId,
+        verdict: bonesCast.verdict,
+        medium: bonesCast.medium,
+        tier: tierEffective,
+        providerOverride: imageProviderOverride,
+        consultationId: bonesCast.id,
+      });
+      image = await finalizeReadingImages(image, tierEffective);
+
+      const oracleBonesSnapshot: OracleBonesHistorySnapshot = {
+        pattern_id: bonesCast.patternId,
+        verdict: bonesCast.verdict,
+        positive_charge: bonesCast.positiveCharge,
+        negative_charge: bonesCast.negativeCharge,
+        medium: bonesCast.medium,
+        ambiguous_passes: bonesCast.ambiguousPasses,
+      };
+
+      const nextPosition = previousRows.length + 1;
+      const canDeepen = canDeepenAfterNextConsult({
+        historyLength: previousRows.length,
+        sessionLimit: maxDepth,
+      });
+      const sharing = await upsertSessionAndConsultation({
+        userId: authedUserId,
+        sessionId,
+        sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
         language: oracleLanguage,
+        category,
+        maxConsultations: maxDepth,
+        consultation: {
+          consultationId: bonesCast.id,
+          sessionId,
+          sessionPosition: nextPosition,
+          question: bonesCast.positiveCharge,
+          language: oracleLanguage,
+          primaryHexagram: 0,
+          primaryHexagramName: "Oracle Bones",
+          primaryHexagramChinese: "甲骨",
+          transformedHexagram: null,
+          transformedHexagramName: null,
+          mutationRule: "ORACLE_BONES",
+          lines: [],
+          changingLines: [],
+          interpretation,
+          interpretationSummary,
+          category,
+          imageProvider: image.provider,
+          imageUrl: image.imageUrl,
+          imageFallbackUrl: image.fallbackImageUrl,
+          oracleType: "oracle_bones",
+          oracleBones: oracleBonesSnapshot,
+        },
+      });
+
+      return NextResponse.json({
+        sharingPersisted: isSharingPersistenceAvailable(),
+        oracleType: "oracle_bones" as const,
+        consultationId: bonesCast.id,
         primaryHexagram: 0,
         primaryHexagramName: "Oracle Bones",
         primaryHexagramChinese: "甲骨",
@@ -420,322 +624,364 @@ export async function POST(req: Request) {
         changingLines: [],
         interpretation,
         category,
+        imagePrompt,
         imageProvider: image.provider,
         imageUrl: image.imageUrl,
         imageFallbackUrl: image.fallbackImageUrl,
-        oracleType: "oracle_bones",
-        oracleBones: oracleBonesSnapshot,
-      },
-    });
+        sessionId,
+        sessionPosition: nextPosition,
+        canDeepen,
+        sessionMaxDepth: maxDepth,
+        remainingCredits: remainingAfterConsume,
+        creditLimit: null,
+        publicReadingId: sharing.publicReadingId,
+        publicSessionId: sharing.publicSessionId,
+        oracleBones: {
+          patternId: bonesCast.patternId,
+          verdict: bonesCast.verdict,
+          affirmsPositive: bonesCast.affirmsPositive,
+          ambiguousPasses: bonesCast.ambiguousPasses,
+          positiveCharge: bonesCast.positiveCharge,
+          negativeCharge: bonesCast.negativeCharge,
+          medium: bonesCast.medium,
+        },
+      });
+    }
 
-    return NextResponse.json({
-      sharingPersisted: isSharingPersistenceAvailable(),
-      oracleType: "oracle_bones" as const,
-      consultationId: bonesCast.id,
-      primaryHexagram: 0,
-      primaryHexagramName: "Oracle Bones",
-      primaryHexagramChinese: "甲骨",
-      transformedHexagram: null,
-      transformedHexagramName: null,
-      mutationRule: "ORACLE_BONES",
-      lines: [],
-      changingLines: [],
-      interpretation,
-      category,
-      imagePrompt,
-      imageProvider: image.provider,
-      imageUrl: image.imageUrl,
-      imageFallbackUrl: image.fallbackImageUrl,
+    const castResult =
+      ichingManualPayload.mode === "manual"
+        ? performCastFromLineValues(
+            trimmedQuestion,
+            language,
+            ichingManualPayload.lineValues,
+            {
+              castingMethod: ichingManualPayload.castingMethod,
+              translator: resolvedTranslator,
+            },
+          )
+        : ichingManualPayload.castingMethod === "yarrow-stalks"
+          ? performYarrowCast(trimmedQuestion, language, {
+              translator: resolvedTranslator,
+            })
+          : performCast(trimmedQuestion, language, {
+              translator: resolvedTranslator,
+            });
+    const context = resolveSessionContext({
+      tier: tierKey,
       sessionId,
-      sessionPosition: nextPosition,
-      canDeepen,
-      sessionMaxDepth: maxDepth,
-      remainingCredits: remainingAfterConsume,
-      creditLimit: null,
-      publicReadingId: sharing.publicReadingId,
-      publicSessionId: sharing.publicSessionId,
-      oracleBones: {
-        patternId: bonesCast.patternId,
-        verdict: bonesCast.verdict,
-        affirmsPositive: bonesCast.affirmsPositive,
-        ambiguousPasses: bonesCast.ambiguousPasses,
-        positiveCharge: bonesCast.positiveCharge,
-        negativeCharge: bonesCast.negativeCharge,
-        medium: bonesCast.medium,
-      },
+      isDeepening,
+      sessionTitle: body.sessionTitle ?? null,
+      previousRows,
+      patternHints: null,
     });
-  }
 
-  const castResult =
-    ichingManualPayload.mode === "manual"
-      ? performCastFromLineValues(trimmedQuestion, language, ichingManualPayload.lineValues, {
-          castingMethod: ichingManualPayload.castingMethod,
-          translator: resolvedTranslator,
-        })
-      : ichingManualPayload.castingMethod === "yarrow-stalks"
-        ? performYarrowCast(trimmedQuestion, language, { translator: resolvedTranslator })
-        : performCast(trimmedQuestion, language, { translator: resolvedTranslator });
-  const context = resolveSessionContext({
-    tier: tierKey,
-    sessionId,
-    isDeepening,
-    sessionTitle: body.sessionTitle ?? null,
-    previousRows,
-    patternHints: null,
-  });
-
-  if (responseMode === "stream_ritual") {
-    const ritualTraceId = randomUUID().slice(0, 8);
-    const ritualStartedAt = Date.now();
-    const ritualLog = (label: string, extra?: Record<string, unknown>) => {
-      if (!LOG_RITUAL_STREAM_DEBUG) return;
-      const elapsedMs = Date.now() - ritualStartedAt;
-      if (extra) {
-        console.log(`[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`, extra);
-      } else {
-        console.log(`[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`);
-      }
-    };
-    ritualLog("start", {
-      user: shortUserId(authedUserId),
-      sessionId,
-      questionLength: trimmedQuestion.length,
-      oracleMode,
-    });
-    const encoder = new TextEncoder();
-    const stream = new ReadableStream<Uint8Array>({
-      start(controller) {
-        const writeEvent = (event: "cast_ready" | "final_ready" | "error", payload: unknown) => {
-          controller.enqueue(encoder.encode(`event: ${event}\ndata: ${JSON.stringify(payload)}\n\n`));
-        };
-
-        void (async () => {
-          try {
-            writeEvent("cast_ready", {
-              oracleType: "iching" as const,
-              consultationId: castResult.id,
-              primaryHexagram: castResult.primaryHexagram.number,
-              transformedHexagram: castResult.transformedHexagram?.number ?? null,
-              mutationRule: castResult.mutationRule,
-              lines: castResult.lines,
-              changingLines: castResult.changingLines,
-            });
-            ritualLog("event:cast_ready", {
-              primaryHexagram: castResult.primaryHexagram.number,
-              changedLines: castResult.changingLines.length,
-            });
-
-            const { text: interpretation, category } = await generateInterpretation(
-              castResult,
-              tierEffective,
-              context,
-              "ritual",
-              process.env,
-              displayName,
-              castResult.castingMethod,
+    if (responseMode === "stream_ritual") {
+      const ritualTraceId = randomUUID().slice(0, 8);
+      const ritualStartedAt = Date.now();
+      const ritualLog = (label: string, extra?: Record<string, unknown>) => {
+        if (!LOG_RITUAL_STREAM_DEBUG) return;
+        const elapsedMs = Date.now() - ritualStartedAt;
+        if (extra) {
+          console.log(
+            `[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`,
+            extra,
+          );
+        } else {
+          console.log(
+            `[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`,
+          );
+        }
+      };
+      ritualLog("start", {
+        user: shortUserId(authedUserId),
+        sessionId,
+        questionLength: trimmedQuestion.length,
+        oracleMode,
+      });
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream<Uint8Array>({
+        start(controller) {
+          const writeEvent = (
+            event: "cast_ready" | "final_ready" | "error",
+            payload: unknown,
+          ) => {
+            controller.enqueue(
+              encoder.encode(
+                `event: ${event}\ndata: ${JSON.stringify(payload)}\n\n`,
+              ),
             );
+          };
 
-            const imagePrompt = buildImagePrompt(
-              castResult.primaryHexagram,
-              castResult.transformedHexagram,
-              category,
-              castResult.changingLines,
-              castResult.lines,
-              castResult.id,
-            );
-            let image = await buildImageAsset({
-              prompt: imagePrompt,
-              primaryHexagram: castResult.primaryHexagram.number,
-              primaryHexagramName: castResult.primaryHexagram.name,
-              primaryChinese: castResult.primaryHexagram.chineseName,
-              pinyin: castResult.primaryHexagram.pinyin,
-              transformedHexagram: castResult.transformedHexagram
-                ? {
-                    number: castResult.transformedHexagram.number,
-                    name: castResult.transformedHexagram.name,
-                    chineseName: castResult.transformedHexagram.chineseName,
-                  }
-                : null,
-              category,
-              mutationRule: castResult.mutationRule,
-              changingLines: castResult.changingLines,
-              lines: castResult.lines.map((l) => ({
-                position: l.position,
-                value: l.value,
-                isChanging: l.isChanging,
-              })),
-              tier: tierEffective,
-              providerOverride: imageProviderOverride,
-              consultationId: castResult.id,
-            });
-            image = await finalizeReadingImages(image, tierEffective);
-            ritualLog("assets_ready", {
-              category,
-              imageProvider: image.provider,
-            });
-
-            const nextPosition = previousRows.length + 1;
-            const canDeepen = canDeepenAfterNextConsult({
-              historyLength: previousRows.length,
-              sessionLimit: maxDepth,
-            });
-            const sharing = await upsertSessionAndConsultation({
-              userId: authedUserId,
-              sessionId,
-              sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
-              language,
-              category,
-              maxConsultations: maxDepth,
-              consultation: {
+          void (async () => {
+            try {
+              writeEvent("cast_ready", {
+                oracleType: "iching" as const,
                 consultationId: castResult.id,
+                primaryHexagram: castResult.primaryHexagram.number,
+                transformedHexagram:
+                  castResult.transformedHexagram?.number ?? null,
+                mutationRule: castResult.mutationRule,
+                lines: castResult.lines,
+                changingLines: castResult.changingLines,
+              });
+              ritualLog("event:cast_ready", {
+                primaryHexagram: castResult.primaryHexagram.number,
+                changedLines: castResult.changingLines.length,
+              });
+
+              const {
+                text: interpretation,
+                category,
+                interpretationSummary,
+              } = await generateInterpretation(
+                castResult,
+                tierEffective,
+                context,
+                "ritual",
+                process.env,
+                displayName,
+                castResult.castingMethod,
+              );
+
+              const imagePrompt = buildImagePrompt(
+                castResult.primaryHexagram,
+                castResult.transformedHexagram,
+                category,
+                castResult.changingLines,
+                castResult.lines,
+                castResult.id,
+              );
+              let image = await buildImageAsset({
+                prompt: imagePrompt,
+                primaryHexagram: castResult.primaryHexagram.number,
+                primaryHexagramName: castResult.primaryHexagram.name,
+                primaryChinese: castResult.primaryHexagram.chineseName,
+                pinyin: castResult.primaryHexagram.pinyin,
+                transformedHexagram: castResult.transformedHexagram
+                  ? {
+                      number: castResult.transformedHexagram.number,
+                      name: castResult.transformedHexagram.name,
+                      chineseName: castResult.transformedHexagram.chineseName,
+                    }
+                  : null,
+                category,
+                mutationRule: castResult.mutationRule,
+                changingLines: castResult.changingLines,
+                lines: castResult.lines.map((l) => ({
+                  position: l.position,
+                  value: l.value,
+                  isChanging: l.isChanging,
+                })),
+                tier: tierEffective,
+                providerOverride: imageProviderOverride,
+                consultationId: castResult.id,
+              });
+              image = await finalizeReadingImages(image, tierEffective);
+              ritualLog("assets_ready", {
+                category,
+                imageProvider: image.provider,
+              });
+
+              const nextPosition = previousRows.length + 1;
+              const canDeepen = canDeepenAfterNextConsult({
+                historyLength: previousRows.length,
+                sessionLimit: maxDepth,
+              });
+              const sharing = await upsertSessionAndConsultation({
+                userId: authedUserId,
                 sessionId,
-                sessionPosition: nextPosition,
-                question: trimmedQuestion,
+                sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
                 language,
+                category,
+                maxConsultations: maxDepth,
+                consultation: {
+                  consultationId: castResult.id,
+                  sessionId,
+                  sessionPosition: nextPosition,
+                  question: trimmedQuestion,
+                  language,
+                  primaryHexagram: castResult.primaryHexagram.number,
+                  primaryHexagramName: castResult.primaryHexagram.name,
+                  primaryHexagramChinese:
+                    castResult.primaryHexagram.chineseName,
+                  transformedHexagram:
+                    castResult.transformedHexagram?.number ?? null,
+                  transformedHexagramName:
+                    castResult.transformedHexagram?.name ?? null,
+                  mutationRule: castResult.mutationRule,
+                  lines: castResult.lines,
+                  changingLines: castResult.changingLines,
+                  interpretation,
+                  interpretationSummary,
+                  category,
+                  imageProvider: image.provider,
+                  imageUrl: image.imageUrl,
+                  imageFallbackUrl: image.fallbackImageUrl,
+                  oracleType: "iching",
+                  oracleBones: null,
+                },
+              });
+
+              writeEvent("final_ready", {
+                sharingPersisted: isSharingPersistenceAvailable(),
+                oracleType: "iching" as const,
+                consultationId: castResult.id,
                 primaryHexagram: castResult.primaryHexagram.number,
                 primaryHexagramName: castResult.primaryHexagram.name,
                 primaryHexagramChinese: castResult.primaryHexagram.chineseName,
-                transformedHexagram: castResult.transformedHexagram?.number ?? null,
-                transformedHexagramName: castResult.transformedHexagram?.name ?? null,
+                transformedHexagram:
+                  castResult.transformedHexagram?.number ?? null,
+                transformedHexagramName:
+                  castResult.transformedHexagram?.name ?? null,
                 mutationRule: castResult.mutationRule,
                 lines: castResult.lines,
                 changingLines: castResult.changingLines,
                 interpretation,
                 category,
+                imagePrompt,
                 imageProvider: image.provider,
                 imageUrl: image.imageUrl,
                 imageFallbackUrl: image.fallbackImageUrl,
-                oracleType: "iching",
-                oracleBones: null,
-              },
-            });
+                imageProviderDebug: image.debug ?? undefined,
+                sessionId,
+                sessionPosition: nextPosition,
+                canDeepen,
+                sessionMaxDepth: maxDepth,
+                remainingCredits: remainingAfterConsume,
+                creditLimit: null,
+                publicReadingId: sharing.publicReadingId,
+                publicSessionId: sharing.publicSessionId,
+              });
+              ritualLog("event:final_ready", {
+                transformedHexagram:
+                  castResult.transformedHexagram?.number ?? null,
+              });
+            } catch (streamError) {
+              console.error("[api/consult][stream_ritual]", streamError);
+              ritualLog("event:error", {
+                message:
+                  streamError instanceof Error
+                    ? streamError.message
+                    : "unknown",
+              });
+              writeEvent("error", {
+                error: "consult_failed",
+                code: "CONSULT_FAILED",
+                action: "retry",
+                message:
+                  process.env.NODE_ENV === "development" &&
+                  streamError instanceof Error
+                    ? streamError.message
+                    : undefined,
+              });
+            } finally {
+              ritualLog("close");
+              controller.close();
+            }
+          })();
+        },
+      });
 
-            writeEvent("final_ready", {
-              sharingPersisted: isSharingPersistenceAvailable(),
-              oracleType: "iching" as const,
-              consultationId: castResult.id,
-              primaryHexagram: castResult.primaryHexagram.number,
-              primaryHexagramName: castResult.primaryHexagram.name,
-              primaryHexagramChinese: castResult.primaryHexagram.chineseName,
-              transformedHexagram: castResult.transformedHexagram?.number ?? null,
-              transformedHexagramName: castResult.transformedHexagram?.name ?? null,
-              mutationRule: castResult.mutationRule,
-              lines: castResult.lines,
-              changingLines: castResult.changingLines,
-              interpretation,
-              category,
-              imagePrompt,
-              imageProvider: image.provider,
-              imageUrl: image.imageUrl,
-              imageFallbackUrl: image.fallbackImageUrl,
-              imageProviderDebug: image.debug ?? undefined,
-              sessionId,
-              sessionPosition: nextPosition,
-              canDeepen,
-              sessionMaxDepth: maxDepth,
-              remainingCredits: remainingAfterConsume,
-              creditLimit: null,
-              publicReadingId: sharing.publicReadingId,
-              publicSessionId: sharing.publicSessionId,
-            });
-            ritualLog("event:final_ready", {
-              transformedHexagram: castResult.transformedHexagram?.number ?? null,
-            });
-          } catch (streamError) {
-            console.error("[api/consult][stream_ritual]", streamError);
-            ritualLog("event:error", {
-              message: streamError instanceof Error ? streamError.message : "unknown",
-            });
-            writeEvent("error", {
-              error: "consult_failed",
-              code: "CONSULT_FAILED",
-              action: "retry",
-              message:
-                process.env.NODE_ENV === "development" && streamError instanceof Error
-                  ? streamError.message
-                  : undefined,
-            });
-          } finally {
-            ritualLog("close");
-            controller.close();
+      return new Response(stream, {
+        headers: {
+          "Content-Type": "text/event-stream; charset=utf-8",
+          "Cache-Control": "no-cache, no-transform",
+          Connection: "keep-alive",
+          "X-Accel-Buffering": "no",
+        },
+      });
+    }
+
+    const {
+      text: interpretation,
+      category,
+      interpretationSummary,
+    } = await generateInterpretation(
+      castResult,
+      tierEffective,
+      context,
+      "ritual",
+      process.env,
+      displayName,
+      castResult.castingMethod,
+    );
+
+    const imagePrompt = buildImagePrompt(
+      castResult.primaryHexagram,
+      castResult.transformedHexagram,
+      category,
+      castResult.changingLines,
+      castResult.lines,
+      castResult.id,
+    );
+    let image = await buildImageAsset({
+      prompt: imagePrompt,
+      primaryHexagram: castResult.primaryHexagram.number,
+      primaryHexagramName: castResult.primaryHexagram.name,
+      primaryChinese: castResult.primaryHexagram.chineseName,
+      pinyin: castResult.primaryHexagram.pinyin,
+      transformedHexagram: castResult.transformedHexagram
+        ? {
+            number: castResult.transformedHexagram.number,
+            name: castResult.transformedHexagram.name,
+            chineseName: castResult.transformedHexagram.chineseName,
           }
-        })();
-      },
-    });
-
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/event-stream; charset=utf-8",
-        "Cache-Control": "no-cache, no-transform",
-        Connection: "keep-alive",
-        "X-Accel-Buffering": "no",
-      },
-    });
-  }
-
-  const { text: interpretation, category } = await generateInterpretation(
-    castResult,
-    tierEffective,
-    context,
-    "ritual",
-    process.env,
-    displayName,
-    castResult.castingMethod,
-  );
-
-  const imagePrompt = buildImagePrompt(
-    castResult.primaryHexagram,
-    castResult.transformedHexagram,
-    category,
-    castResult.changingLines,
-    castResult.lines,
-    castResult.id,
-  );
-  let image = await buildImageAsset({
-    prompt: imagePrompt,
-    primaryHexagram: castResult.primaryHexagram.number,
-    primaryHexagramName: castResult.primaryHexagram.name,
-    primaryChinese: castResult.primaryHexagram.chineseName,
-    pinyin: castResult.primaryHexagram.pinyin,
-    transformedHexagram: castResult.transformedHexagram
-      ? {
-          number: castResult.transformedHexagram.number,
-          name: castResult.transformedHexagram.name,
-          chineseName: castResult.transformedHexagram.chineseName,
-        }
-      : null,
-    category,
-    mutationRule: castResult.mutationRule,
-    changingLines: castResult.changingLines,
-    lines: castResult.lines.map((l) => ({
-      position: l.position,
-      value: l.value,
-      isChanging: l.isChanging,
-    })),
-    tier: tierEffective,
-    providerOverride: imageProviderOverride,
-    consultationId: castResult.id,
-  });
-  image = await finalizeReadingImages(image, tierEffective);
-
-  const nextPosition = previousRows.length + 1;
-  const canDeepen = canDeepenAfterNextConsult({
-    historyLength: previousRows.length,
-    sessionLimit: maxDepth,
-  });
-  const sharing = await upsertSessionAndConsultation({
-    userId: authedUserId,
-    sessionId,
-    sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
-    language,
-    category,
-    maxConsultations: maxDepth,
-    consultation: {
+        : null,
+      category,
+      mutationRule: castResult.mutationRule,
+      changingLines: castResult.changingLines,
+      lines: castResult.lines.map((l) => ({
+        position: l.position,
+        value: l.value,
+        isChanging: l.isChanging,
+      })),
+      tier: tierEffective,
+      providerOverride: imageProviderOverride,
       consultationId: castResult.id,
+    });
+    image = await finalizeReadingImages(image, tierEffective);
+
+    const nextPosition = previousRows.length + 1;
+    const canDeepen = canDeepenAfterNextConsult({
+      historyLength: previousRows.length,
+      sessionLimit: maxDepth,
+    });
+    const sharing = await upsertSessionAndConsultation({
+      userId: authedUserId,
       sessionId,
-      sessionPosition: nextPosition,
-      question: trimmedQuestion,
+      sessionTitle: body.sessionTitle ?? "Consulta sin titulo",
       language,
+      category,
+      maxConsultations: maxDepth,
+      consultation: {
+        consultationId: castResult.id,
+        sessionId,
+        sessionPosition: nextPosition,
+        question: trimmedQuestion,
+        language,
+        primaryHexagram: castResult.primaryHexagram.number,
+        primaryHexagramName: castResult.primaryHexagram.name,
+        primaryHexagramChinese: castResult.primaryHexagram.chineseName,
+        transformedHexagram: castResult.transformedHexagram?.number ?? null,
+        transformedHexagramName: castResult.transformedHexagram?.name ?? null,
+        mutationRule: castResult.mutationRule,
+        lines: castResult.lines,
+        changingLines: castResult.changingLines,
+        interpretation,
+        interpretationSummary,
+        category,
+        imageProvider: image.provider,
+        imageUrl: image.imageUrl,
+        imageFallbackUrl: image.fallbackImageUrl,
+        oracleType: "iching",
+        oracleBones: null,
+      },
+    });
+
+    return NextResponse.json({
+      sharingPersisted: isSharingPersistenceAvailable(),
+      oracleType: "iching" as const,
+      consultationId: castResult.id,
       primaryHexagram: castResult.primaryHexagram.number,
       primaryHexagramName: castResult.primaryHexagram.name,
       primaryHexagramChinese: castResult.primaryHexagram.chineseName,
@@ -746,42 +992,20 @@ export async function POST(req: Request) {
       changingLines: castResult.changingLines,
       interpretation,
       category,
+      imagePrompt,
       imageProvider: image.provider,
       imageUrl: image.imageUrl,
       imageFallbackUrl: image.fallbackImageUrl,
-      oracleType: "iching",
-      oracleBones: null,
-    },
-  });
-
-  return NextResponse.json({
-    sharingPersisted: isSharingPersistenceAvailable(),
-    oracleType: "iching" as const,
-    consultationId: castResult.id,
-    primaryHexagram: castResult.primaryHexagram.number,
-    primaryHexagramName: castResult.primaryHexagram.name,
-    primaryHexagramChinese: castResult.primaryHexagram.chineseName,
-    transformedHexagram: castResult.transformedHexagram?.number ?? null,
-    transformedHexagramName: castResult.transformedHexagram?.name ?? null,
-    mutationRule: castResult.mutationRule,
-    lines: castResult.lines,
-    changingLines: castResult.changingLines,
-    interpretation,
-    category,
-    imagePrompt,
-    imageProvider: image.provider,
-    imageUrl: image.imageUrl,
-    imageFallbackUrl: image.fallbackImageUrl,
-    imageProviderDebug: image.debug ?? undefined,
-    sessionId,
-    sessionPosition: nextPosition,
-    canDeepen,
-    sessionMaxDepth: maxDepth,
-    remainingCredits: remainingAfterConsume,
-    creditLimit: null,
-    publicReadingId: sharing.publicReadingId,
-    publicSessionId: sharing.publicSessionId,
-  });
+      imageProviderDebug: image.debug ?? undefined,
+      sessionId,
+      sessionPosition: nextPosition,
+      canDeepen,
+      sessionMaxDepth: maxDepth,
+      remainingCredits: remainingAfterConsume,
+      creditLimit: null,
+      publicReadingId: sharing.publicReadingId,
+      publicSessionId: sharing.publicSessionId,
+    });
   } catch (e) {
     console.error("[api/consult]", e);
     const message = e instanceof Error ? e.message : String(e);

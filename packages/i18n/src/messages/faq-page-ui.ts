@@ -70,7 +70,7 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
     "data-reliability",
     "not-advice",
   ],
-  "tokens-payments": ["tokens-packs", "purchases-legal", "library-unlock"],
+  "tokens-payments": ["tokens-packs", "master-tokens-cost", "purchases-legal", "library-unlock"],
   "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa"],
 };
 
@@ -348,6 +348,12 @@ const FAQ_ITEMS_EN: FaqItem[] = [
 ];
 
 const FAQ_ITEMS_ES: FaqItem[] = [
+  {
+    id: "master-tokens-cost",
+    question: "¿Por qué el modo Maestro consume 2 tokens?",
+    answer: "El modo Maestro activa un proceso de computación avanzada donde Claude 4.5 analiza y compara simultáneamente las tres traducciones originales. No es un resumen, sino una síntesis académica con una 'Respuesta Concreta' inicial y referencias cruzadas, lo que requiere un volumen de procesamiento significativamente mayor.",
+    related: ["tokenPacks", "pricing"],
+  },
   {
     id: "tokens-packs",
     question: "¿Cómo funcionan los tokens, los packs y el plan gratuito?",

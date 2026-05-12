@@ -103,6 +103,7 @@ export interface PreviousConsultationRow {
   changing_lines: number[];
   mutation_rule: string;
   interpretation: string;
+    interpretation_summary?: string;
   oracle_type?: OracleType;
   oracle_bones?: OracleBonesHistorySnapshot;
 }
@@ -122,7 +123,7 @@ export function summarizePreviousConsultations(
     mutationRule: (c.oracle_type === "oracle_bones" ? "ORACLE_BONES" : c.mutation_rule) as
       | MutationRule
       | "ORACLE_BONES",
-    interpretationSummary: c.interpretation.slice(0, 200),
+    interpretationSummary: c.interpretation_summary || c.interpretation.slice(0, 200),
     oracleType: c.oracle_type ?? "iching",
     oracleBones: c.oracle_bones,
   }));

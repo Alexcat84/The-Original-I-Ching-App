@@ -19,11 +19,11 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "Plan gratuito: 2 consultas de por vida, 1 pregunta por hilo. Sin renovación automática; los packs de pago son consumibles. Imágenes generadas en resolución básica.",
       seeker:
-        "25 tokens por compra (pack consumible, sin renovación automática). Hasta 3 preguntas encadenadas por hilo. Imágenes generadas en resolución estándar. Acceso a los 3 traductores principales.",
+        "25 tokens por compra (pack consumible, sin renovación automática). Hasta 3 preguntas encadenadas por hilo. Imágenes generadas en resolución estándar. Acceso a Wilhelm y Legge.",
       practitioner:
-        "50 tokens por compra (pack consumible, sin renovación automática). Hasta 5 preguntas encadenadas por hilo. Imágenes generadas en alta resolución. Acceso a los 3 traductores principales.",
+        "50 tokens por compra (pack consumible, sin renovación automática). Hasta 5 preguntas encadenadas por hilo. Imágenes generadas en alta resolución. Acceso al Zhou Yi (Fuente Original), la versión más antigua y pura escrita en chino tradicional, junto a Wilhelm y Legge.",
       master:
-        "100 tokens por compra (pack consumible, sin renovación automática). Hasta 8 preguntas encadenadas por hilo. Imágenes generadas en máxima resolución. Acceso adicional al motor Master (3), que combina los 3 traductores.",
+        "100 tokens por compra (pack consumible, sin renovación automática). Hasta 8 preguntas encadenadas por hilo. Imágenes generadas en máxima resolución. Acceso total, incluyendo el Motor Maestro (3): un análisis superior que triangula las tres fuentes en un ensayo dialéctico. (Consume 2 tokens por consulta).",
     },
     en: {
       freeTier:

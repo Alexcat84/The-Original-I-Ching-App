@@ -5217,7 +5217,9 @@ export default function HomePage() {
                       <>
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
-                          <span className="cast-selector-label">{chrome.translatorLabel}</span>
+                          <span className="cast-selector-label">
+                            {chrome.translatorLabel}
+                          </span>
                           <div
                             className="oracle-toggle-wrap oracle-toggle-wrap-4"
                             role="group"

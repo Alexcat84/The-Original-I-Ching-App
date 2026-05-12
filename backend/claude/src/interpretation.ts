@@ -4,12 +4,18 @@ import type { CastingMethod, CastResult } from "@iching-oracle/iching-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { loadClaudeEnv } from "./env.js";
-import { buildContextBlock, type ResponseMode } from "./interpretation-context.js";
+import {
+  buildContextBlock,
+  type ResponseMode,
+} from "./interpretation-context.js";
 import {
   changingLinePositionsLabel,
   ichingStructuralCorrectionAppendix,
 } from "./interpretation-structural-i18n.js";
-import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "./response-clean.js";
+import {
+  normalizeInterpretationPunctuation,
+  stripInterpretationFluff,
+} from "./response-clean.js";
 
 export type { ResponseMode } from "./interpretation-context.js";
 
@@ -56,14 +62,28 @@ function getLanguageName(language: string): string {
 
 function isLikelyWrongLanguage(text: string, language: string): boolean {
   const lower = text.toLowerCase();
-  const englishSignals = (lower.match(/\b(the|and|with|was|were|is|are|this|that|what|why|then)\b/g) ?? []).length;
-  const spanishSignals = (lower.match(/\b(el|la|los|las|con|para|fue|son|esta|este|porque|entonces)\b/g) ?? []).length;
-  if (language === "es") return englishSignals >= 6 && englishSignals > spanishSignals * 2;
-  if (language === "en") return spanishSignals >= 6 && spanishSignals > englishSignals * 2;
+  const englishSignals = (
+    lower.match(
+      /\b(the|and|with|was|were|is|are|this|that|what|why|then)\b/g,
+    ) ?? []
+  ).length;
+  const spanishSignals = (
+    lower.match(
+      /\b(el|la|los|las|con|para|fue|son|esta|este|porque|entonces)\b/g,
+    ) ?? []
+  ).length;
+  if (language === "es")
+    return englishSignals >= 6 && englishSignals > spanishSignals * 2;
+  if (language === "en")
+    return spanishSignals >= 6 && spanishSignals > englishSignals * 2;
   return false;
 }
 
-function offlineFallbackText(castResult: CastResult, language: string, reason: "groq_error" | "no_model_api_key"): string {
+function offlineFallbackText(
+  castResult: CastResult,
+  language: string,
+  reason: "groq_error" | "no_model_api_key",
+): string {
   if (language === "es") {
     return `[Sin conexión / ${reason}] Lectura provisional para el hexagrama #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
   }
@@ -76,27 +96,44 @@ function offlineFallbackText(castResult: CastResult, language: string, reason: "
 function claimedChangingCount(text: string): number | null {
   const lower = text.toLowerCase();
   if (
-    /sin l[ií]neas?\s+(en\s+)?(movimiento|mutaci[oó]n|mutantes?)/i.test(lower) ||
+    /sin l[ií]neas?\s+(en\s+)?(movimiento|mutaci[oó]n|mutantes?)/i.test(
+      lower,
+    ) ||
     /no changing lines?/i.test(lower) ||
     /without changing lines?/i.test(lower)
   ) {
     return 0;
   }
-  if (/l[ií]nea\s+[uú]nica|[uú]nica\s+l[ií]nea|one changing line/i.test(lower)) return 1;
-  if (/dos\s+l[ií]neas|2\s+l[ií]neas|two changing lines?/i.test(lower)) return 2;
-  if (/tres\s+l[ií]neas|3\s+l[ií]neas|three changing lines?/i.test(lower)) return 3;
-  if (/cuatro\s+l[ií]neas|4\s+l[ií]neas|four changing lines?/i.test(lower)) return 4;
-  if (/cinco\s+l[ií]neas|5\s+l[ií]neas|five changing lines?/i.test(lower)) return 5;
-  if (/seis\s+l[ií]neas|6\s+l[ií]neas|six changing lines?/i.test(lower)) return 6;
+  if (/l[ií]nea\s+[uú]nica|[uú]nica\s+l[ií]nea|one changing line/i.test(lower))
+    return 1;
+  if (/dos\s+l[ií]neas|2\s+l[ií]neas|two changing lines?/i.test(lower))
+    return 2;
+  if (/tres\s+l[ií]neas|3\s+l[ií]neas|three changing lines?/i.test(lower))
+    return 3;
+  if (/cuatro\s+l[ií]neas|4\s+l[ií]neas|four changing lines?/i.test(lower))
+    return 4;
+  if (/cinco\s+l[ií]neas|5\s+l[ií]neas|five changing lines?/i.test(lower))
+    return 5;
+  if (/seis\s+l[ií]neas|6\s+l[ií]neas|six changing lines?/i.test(lower))
+    return 6;
   return null;
 }
 
-function enforceIChingStructuralConsistency(text: string, cast: CastResult, language: string): string {
+function enforceIChingStructuralConsistency(
+  text: string,
+  cast: CastResult,
+  language: string,
+): string {
   const expected = cast.changingLines.length;
   const claimed = claimedChangingCount(text);
   if (claimed === null || claimed === expected) return text;
   const lineList = changingLinePositionsLabel(cast, language);
-  const correction = ichingStructuralCorrectionAppendix(cast, language, expected, lineList);
+  const correction = ichingStructuralCorrectionAppendix(
+    cast,
+    language,
+    expected,
+    lineList,
+  );
   return `${text}\n\n${correction}`;
 }
 
@@ -107,15 +144,27 @@ function castingMethodNote(method: CastingMethod | undefined): string {
   return "DIVINATION METHOD: Three Coins (symmetric probability; equal weight for both types of moving lines)";
 }
 
-function buildCurrentCastPrompt(
+export interface PromptData {
+  textsBlock: string;
+  questionBlock: string;
+  isMasterCombined: boolean;
+  question: string;
+}
+function buildPromptData(
   cast: CastResult,
   _tier: string,
   language: string,
   hasContext: boolean,
   mode: ResponseMode,
   castingMethod?: CastingMethod,
-): string {
-  const { question, textsForClaude: t, primaryHexagram: p, transformedHexagram: tr, mutationRule } = cast;
+): PromptData {
+  const {
+    question,
+    textsForClaude: t,
+    primaryHexagram: p,
+    transformedHexagram: tr,
+    mutationRule,
+  } = cast;
   const targetWordCount = "700-900";
   const rawLineVector = [...cast.lines]
     .sort((a, b) => a.position - b.position)
@@ -138,9 +187,10 @@ ${t.selectedLineTexts
   .join("\n")}`
       : "";
 
-  const looksFactual = /\b(cuant[oa]s?|n[uú]mero exacto|edad|fecha|donde vive|where|how many|exact number|biography|biographical)\b/i.test(
-    question,
-  );
+  const looksFactual =
+    /\b(cuant[oa]s?|n[uú]mero exacto|edad|fecha|donde vive|where|how many|exact number|biography|biographical)\b/i.test(
+      question,
+    );
   const scrollHeadingsEs = `Use these exact ## headings in Spanish (Chinese labels 卦辞 / 之卦 only as shown):
 ## Encuadre de la pregunta
 ## El juicio (卦辞)
@@ -188,8 +238,20 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
 
   let textsBlock = "";
   if (isMasterCombined) {
-    const leggeLines = t.leggeSelectedLineTexts?.map(l => `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`).join("\n") || "";
-    const zhouyiLines = t.zhouyiSelectedLineTexts?.map(l => `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`).join("\n") || "";
+    const leggeLines =
+      t.leggeSelectedLineTexts
+        ?.map(
+          (l) =>
+            `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`,
+        )
+        .join("\n") || "";
+    const zhouyiLines =
+      t.zhouyiSelectedLineTexts
+        ?.map(
+          (l) =>
+            `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`,
+        )
+        .join("\n") || "";
 
     textsBlock = `
 --- TRADITION: ZHOU YI (Original Classical Chinese) ---
@@ -208,9 +270,13 @@ ${t.leggeImage ? `THE IMAGE: ${t.leggeImage}` : ""}
 ${leggeLines ? `LINE TEXTS:\n${leggeLines}` : ""}
 
 ${t.specialYaoText ? `SPECIAL TEXT: ${t.specialYaoText}` : ""}
-${tr && t.transformedJudgment ? `
+${
+  tr && t.transformedJudgment
+    ? `
 TRANSFORMED HEXAGRAM (Reference): #${tr.number} — ${tr.name}
-JUDGMENT: ${t.transformedJudgment}` : ""}
+JUDGMENT: ${t.transformedJudgment}`
+    : ""
+}
 `.trim();
   } else {
     textsBlock = `
@@ -218,13 +284,17 @@ JUDGMENT: ${t.primaryJudgment}
 ${t.primaryImage ? `THE IMAGE: ${t.primaryImage}` : ""}
 ${lineBlock}
 ${t.specialYaoText ? `SPECIAL TEXT: ${t.specialYaoText}` : ""}
-${tr && t.transformedJudgment ? `
+${
+  tr && t.transformedJudgment
+    ? `
 TRANSFORMED HEXAGRAM: #${tr.number} — ${tr.name} (${tr.chineseName})
-JUDGMENT: ${t.transformedJudgment}` : ""}
+JUDGMENT: ${t.transformedJudgment}`
+    : ""
+}
 `.trim();
   }
 
-  return `
+  const questionBlock = `
 NEW CONSULTATION${hasContext ? " (continues thematic session)" : ""}:
 "${question}"
 
@@ -271,6 +341,7 @@ INSTRUCTIONS:
 - FORMAT INVARIANCE: The casting method note above affects only how moving-line probabilities are weighted in interpretation. Section count, heading names, response length, and paragraph structure are identical regardless of whether Three Coins or Yarrow Stalks was used — never add extra sections or commentary about the method itself.
 - Respond in ${getLanguageName(language)}
 `.trim();
+  return { textsBlock, questionBlock, isMasterCombined, question };
 }
 
 export async function generateInterpretation(
@@ -281,23 +352,51 @@ export async function generateInterpretation(
   env: NodeJS.ProcessEnv = process.env,
   displayName?: string,
   castingMethod?: CastingMethod,
-): Promise<{ text: string; category: ConsultationCategory }> {
-  const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
+): Promise<{
+  text: string;
+  category: ConsultationCategory;
+  interpretationSummary: string;
+}> {
+  const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } =
+    loadClaudeEnv(env);
   const language = castResult.language;
   const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
 
-  const hasContext = Boolean(context && context.previousConsultations.length > 0);
+  const hasContext = Boolean(
+    context && context.previousConsultations.length > 0,
+  );
   const resolvedCastingMethod = castingMethod ?? castResult.castingMethod;
-  const userContent = hasContext && context
-    ? `${buildContextBlock(context, language, mode)}\n\n${buildCurrentCastPrompt(castResult, tier, language, true, mode, resolvedCastingMethod)}`
-    : buildCurrentCastPrompt(castResult, tier, language, false, mode, resolvedCastingMethod);
 
-  const nameNote =
-    displayName?.trim()
-      ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
-      : "";
-  const systemPrompt = `${SYSTEM_PROMPT}${nameNote}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+  const promptData = buildPromptData(
+    castResult,
+    tier,
+    language,
+    hasContext,
+    mode,
+    resolvedCastingMethod,
+  );
+  const userContextBlock =
+    hasContext && context ? buildContextBlock(context, language, mode) : "";
+
+  const isMasterCombined = promptData.isMasterCombined;
+  const masterInstruction = isMasterCombined
+    ? `
+Actúa como un Erudito de Élite. Tu respuesta debe tener esta estructura obligatoria:
+
+RESPUESTA CONCRETA: Un primer bloque de máximo 3 oraciones que entregue un veredicto potente, claro y directo a la pregunta del usuario, basado en la convergencia de las tres fuentes.
+
+ENSAYO DIALÉCTICO: Una compulsa académica que compare a Wilhelm (Tesis), Legge (Antítesis) y Zhou Yi (Autoridad Raíz). Usa referencias cruzadas (ej: 'Mientras Wilhelm sugiere X, el original chino enfatiza Y...').
+
+SNAPSHOT TÉCNICO: Al final, incluye el bloque [SNAPSHOT_START] y [SNAPSHOT_END] con el resumen de 100 palabras para el historial.`
+    : "";
+
+  const nameNote = displayName?.trim()
+    ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
+    : "";
+  const systemPrompt = `${SYSTEM_PROMPT}${nameNote}\n\n${masterInstruction}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+
+  const fallbackUserContent = `BIBLIOTECA DE TEXTOS ORIGINALES:\n${promptData.textsBlock}\n\n${userContextBlock ? userContextBlock + "\n\n" : ""}${promptData.questionBlock}`;
 
   if (ANTHROPIC_API_KEY) {
     try {
@@ -323,8 +422,14 @@ export async function generateInterpretation(
             content: [
               {
                 type: "text",
-                text: userContent,
+                text: `BIBLIOTECA DE TEXTOS ORIGINALES:\n${promptData.textsBlock}`,
                 cache_control: { type: "ephemeral" },
+              },
+              {
+                type: "text",
+                text: userContextBlock
+                  ? `${userContextBlock}\n\n${promptData.questionBlock}`
+                  : promptData.questionBlock,
               },
             ],
           },
@@ -336,29 +441,60 @@ export async function generateInterpretation(
         .map((b) => (b as { text: string }).text)
         .join("");
       if (response.stop_reason === "max_tokens") {
-        console.warn("[generateInterpretation] hit max_tokens (output may be truncated)", {
-          tier,
-          maxTokens,
-        });
+        console.warn(
+          "[generateInterpretation] hit max_tokens (output may be truncated)",
+          {
+            tier,
+            maxTokens,
+          },
+        );
       }
-      const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
+      const catMatch = fullText.match(
+        /^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im,
+      );
       const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
+      const snapshotMatch = fullText.match(
+        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+      );
+      const interpretationSummary = snapshotMatch
+        ? snapshotMatch[1].trim()
+        : fullText.slice(0, 200);
+      const rawInterpretation = fullText
+        .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+        .trim();
+
       const cleanText = stripInterpretationFluff(
-        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+        rawInterpretation
+          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .trim(),
       );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
-          console.warn("[generateInterpretation] Anthropic returned likely wrong language; falling through", {
-            language,
-            primaryHexagram: castResult.primaryHexagram.number,
-          });
+          console.warn(
+            "[generateInterpretation] Anthropic returned likely wrong language; falling through",
+            {
+              language,
+              primaryHexagram: castResult.primaryHexagram.number,
+            },
+          );
         } else {
-          const hardened = enforceIChingStructuralConsistency(cleanText, castResult, language);
-          return { text: normalizeInterpretationPunctuation(hardened), category };
+          const hardened = enforceIChingStructuralConsistency(
+            cleanText,
+            castResult,
+            language,
+          );
+          return {
+            text: normalizeInterpretationPunctuation(hardened),
+            category,
+            interpretationSummary,
+          };
         }
       }
     } catch (err) {
-      console.warn("[generateInterpretation] Anthropic failed, trying fallback chain", err);
+      console.warn(
+        "[generateInterpretation] Anthropic failed, trying fallback chain",
+        err,
+      );
     }
   }
 
@@ -375,14 +511,20 @@ export async function generateInterpretation(
       const response = await openRouterClient.messages.create({
         model,
         max_tokens: maxTokens,
-        system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
+        system: [
+          {
+            type: "text",
+            text: systemPrompt,
+            cache_control: { type: "ephemeral" },
+          },
+        ],
         messages: [
           {
             role: "user",
             content: [
               {
                 type: "text",
-                text: userContent,
+                text: fallbackUserContent,
                 cache_control: { type: "ephemeral" },
               },
             ],
@@ -394,73 +536,150 @@ export async function generateInterpretation(
         .map((b) => (b as { text: string }).text)
         .join("");
       if (response.stop_reason === "max_tokens") {
-        console.warn("[generateInterpretation] OpenRouter hit max_tokens", { tier, maxTokens });
+        console.warn("[generateInterpretation] OpenRouter hit max_tokens", {
+          tier,
+          maxTokens,
+        });
       }
-      const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
+      const catMatch = fullText.match(
+        /^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im,
+      );
       const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
+      const snapshotMatch = fullText.match(
+        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+      );
+      const interpretationSummary = snapshotMatch
+        ? snapshotMatch[1].trim()
+        : fullText.slice(0, 200);
+      const rawInterpretation = fullText
+        .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+        .trim();
+
       const cleanText = stripInterpretationFluff(
-        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+        rawInterpretation
+          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .trim(),
       );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
-          console.warn("[generateInterpretation] OpenRouter returned likely wrong language; falling through", { language });
+          console.warn(
+            "[generateInterpretation] OpenRouter returned likely wrong language; falling through",
+            { language },
+          );
         } else {
-          const hardened = enforceIChingStructuralConsistency(cleanText, castResult, language);
-          return { text: normalizeInterpretationPunctuation(hardened), category };
+          const hardened = enforceIChingStructuralConsistency(
+            cleanText,
+            castResult,
+            language,
+          );
+          return {
+            text: normalizeInterpretationPunctuation(hardened),
+            category,
+            interpretationSummary,
+          };
         }
       }
     } catch (err) {
-      console.warn("[generateInterpretation] OpenRouter failed, trying Groq fallback", err);
+      console.warn(
+        "[generateInterpretation] OpenRouter failed, trying Groq fallback",
+        err,
+      );
     }
   }
 
   if (GROQ_API_KEY) {
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${GROQ_API_KEY}`,
-        "Content-Type": "application/json",
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${GROQ_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL ?? "llama-3.3-70b-versatile",
+          temperature: 0.5,
+          max_tokens: maxTokens,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: fallbackUserContent },
+          ],
+        }),
       },
-      body: JSON.stringify({
-        model: GROQ_MODEL ?? "llama-3.3-70b-versatile",
-        temperature: 0.5,
-        max_tokens: maxTokens,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userContent },
-        ],
-      }),
-    });
+    );
 
     if (response.ok) {
       const data = (await response.json()) as {
         choices?: Array<{ message?: { content?: string } }>;
       };
       const fullText = data.choices?.[0]?.message?.content ?? "";
-      const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
+      const catMatch = fullText.match(
+        /^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im,
+      );
       const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
-      const cleanText = stripInterpretationFluff(fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim());
+      const snapshotMatch = fullText.match(
+        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+      );
+      const interpretationSummary = snapshotMatch
+        ? snapshotMatch[1].trim()
+        : fullText.slice(0, 200);
+      const rawInterpretation = fullText
+        .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+        .trim();
+
+      const cleanText = stripInterpretationFluff(
+        rawInterpretation
+          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .trim(),
+      );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
-          console.warn("[generateInterpretation] Groq returned likely wrong language; using fallback", {
-            language,
-            primaryHexagram: castResult.primaryHexagram.number,
-          });
+          console.warn(
+            "[generateInterpretation] Groq returned likely wrong language; using fallback",
+            {
+              language,
+              primaryHexagram: castResult.primaryHexagram.number,
+            },
+          );
         } else {
-          const hardened = enforceIChingStructuralConsistency(cleanText, castResult, language);
-          return { text: normalizeInterpretationPunctuation(hardened), category };
+          const hardened = enforceIChingStructuralConsistency(
+            cleanText,
+            castResult,
+            language,
+          );
+          return {
+            text: normalizeInterpretationPunctuation(hardened),
+            category,
+            interpretationSummary,
+          };
         }
       }
     }
 
     const cat: ConsultationCategory = "general";
     const body = offlineFallbackText(castResult, language, "groq_error");
-    const hardened = enforceIChingStructuralConsistency(body, castResult, language);
-    return { text: normalizeInterpretationPunctuation(hardened), category: cat };
+    const hardened = enforceIChingStructuralConsistency(
+      body,
+      castResult,
+      language,
+    );
+    return {
+      text: normalizeInterpretationPunctuation(hardened),
+      category: cat,
+      interpretationSummary: body.slice(0, 200),
+    };
   }
 
   const cat: ConsultationCategory = "general";
   const body = offlineFallbackText(castResult, language, "no_model_api_key");
-  const hardened = enforceIChingStructuralConsistency(body, castResult, language);
-  return { text: normalizeInterpretationPunctuation(hardened), category: cat };
+  const hardened = enforceIChingStructuralConsistency(
+    body,
+    castResult,
+    language,
+  );
+  return {
+    text: normalizeInterpretationPunctuation(hardened),
+    category: cat,
+    interpretationSummary: body.slice(0, 200),
+  };
 }
