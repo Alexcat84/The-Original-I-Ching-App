@@ -200,7 +200,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   en: {
@@ -307,7 +307,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   pt: {
@@ -415,7 +415,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   fr: {
@@ -524,7 +524,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   de: {
@@ -633,7 +633,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   it: {
@@ -742,7 +742,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   ja: {
@@ -848,7 +848,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   zh: {
@@ -951,7 +951,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   ko: {
@@ -1058,7 +1058,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   ar: {
@@ -1164,7 +1164,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
   hi: {
@@ -1271,7 +1271,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6LibraryTitle: "Biblioteca de Hexagramas",
     s6Library: "Consulta directa de los 64 hexagramas y obras.",
     s6DocsTitle: "Documentación",
-    s6Docs: "Acceso a las Notas del Método, Políticas de Privacidad y Términos de Servicio.",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
 
   },
 };
