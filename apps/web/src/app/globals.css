@@ -2068,7 +2068,7 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   height: 46px;
   background: color-mix(in srgb, var(--bar-border) 32%, var(--input-bg));
   border-radius: 23px;
-  overflow: hidden;
+  overflow: visible;
   /* Border thickened to 2px to match the I Ching/Bones switch
      (.composer-switch-track--visual). */
   border: 2px solid color-mix(in srgb, var(--accent) 22%, var(--bar-border));

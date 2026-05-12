@@ -1383,24 +1383,20 @@ export default function HomePage() {
       setTranslatorId(id);
       return;
     }
-    // Jerarquía ordinal: el índice del tier actual debe ser >= al requerido
-    const TIER_RANK: Record<string, number> = {
-      free: 0,
-      seeker: 1,
-      practitioner: 2,
-      master: 3,
-      oracle: 4,
-    };
-    const currentRank = TIER_RANK[tier] ?? 0;
-    if (id === "legge" && currentRank < TIER_RANK.seeker!) {
+    const userTier = (tier || "free").toLowerCase();
+    const tiers = ["free", "seeker", "practitioner", "master"];
+    // Si el tier no está en el array (ej: 'oracle'), Math.max(0, -1) = 0
+    // pero 'oracle' es superior a master, así que lo mapeamos explícitamente
+    const userIndex = userTier === "oracle" ? tiers.length : Math.max(0, tiers.indexOf(userTier));
+    if (id === "legge" && userIndex < 1) {
       setError("Este traductor requiere el pack Seeker. Visita la sección de Packs para desbloquearlo.");
       return;
     }
-    if (id === "zhouyi" && currentRank < TIER_RANK.practitioner!) {
+    if (id === "zhouyi" && userIndex < 2) {
       setError("Este traductor requiere el pack Practitioner. Visita la sección de Packs para desbloquearlo.");
       return;
     }
-    if (id === "master_combined" && currentRank < TIER_RANK.master!) {
+    if (id === "master_combined" && userIndex < 3) {
       setError("Este traductor requiere el pack Master. Visita la sección de Packs para desbloquearlo.");
       return;
     }
@@ -2290,6 +2286,7 @@ export default function HomePage() {
     setActiveSessionLocalId(created.localId);
     setQuestion("");
     setError(null);
+    setLoading(false); // purga cualquier estado de carga pendiente al iniciar nueva sesión
     setChatsOpen(false);
     setConsultPanelOpen(false);
   }, [ui.sessionNew]);
