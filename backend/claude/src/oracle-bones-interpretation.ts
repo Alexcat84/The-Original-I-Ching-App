@@ -27,6 +27,41 @@ CRITICAL LOGIC RULE:
 
 /** Same token budget for all tiers. */
 const MAX_TOKENS = 4096;
+const LOG_CLAUDE_CACHE_METRICS =
+  process.env.LOG_CLAUDE_CACHE_METRICS === "1" ||
+  process.env.LOG_CLAUDE_CACHE_METRICS === "true" ||
+  process.env.NODE_ENV === "development";
+
+function toUsageRecord(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== "object") return {};
+  return value as Record<string, unknown>;
+}
+
+function numberField(record: Record<string, unknown>, key: string): number | null {
+  const value = record[key];
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function logCacheUsage(source: "anthropic" | "openrouter", usageRaw: unknown): void {
+  if (!LOG_CLAUDE_CACHE_METRICS) return;
+  const usage = toUsageRecord(usageRaw);
+  const inputTokens = numberField(usage, "input_tokens");
+  const outputTokens = numberField(usage, "output_tokens");
+  const cacheReadTokens = numberField(usage, "cache_read_input_tokens");
+  const cacheCreationTokens = numberField(usage, "cache_creation_input_tokens");
+  const cacheReadRatio =
+    inputTokens && inputTokens > 0 && cacheReadTokens !== null
+      ? `${((cacheReadTokens / inputTokens) * 100).toFixed(2)}%`
+      : "n/a";
+  console.log("[generateOracleBonesInterpretation][cache_usage]", {
+    source,
+    inputTokens,
+    outputTokens,
+    cacheReadTokens,
+    cacheCreationTokens,
+    cacheReadRatio,
+  });
+}
 
 function getLanguageName(language: string): string {
   const map: Record<string, string> = {
@@ -240,9 +275,18 @@ export async function generateOracleBonesInterpretation(
   const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
-  const userContent = hasContext && context
-    ? `${buildContextBlock(context, language, mode)}\n\n${buildOracleBonesUserContent(cast, tier, language, true, mode)}`
-    : buildOracleBonesUserContent(cast, tier, language, false, mode);
+  const contextBlock =
+    hasContext && context ? buildContextBlock(context, language, mode) : "";
+  const consultBlock = buildOracleBonesUserContent(
+    cast,
+    tier,
+    language,
+    hasContext,
+    mode,
+  );
+  const userContent = contextBlock
+    ? `${contextBlock}\n\n${consultBlock}`
+    : consultBlock;
 
   const nameNote =
     displayName?.trim()
@@ -252,7 +296,12 @@ export async function generateOracleBonesInterpretation(
 
   if (ANTHROPIC_API_KEY) {
     try {
-      const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+      const client = new Anthropic({
+        apiKey: ANTHROPIC_API_KEY,
+        defaultHeaders: {
+          "anthropic-beta": "prompt-caching-2024-07-31",
+        },
+      });
       const response = await client.messages.create({
         model,
         max_tokens: maxTokens,
@@ -267,9 +316,18 @@ export async function generateOracleBonesInterpretation(
           {
             role: "user",
             content: [
+              ...(contextBlock
+                ? [
+                    {
+                      type: "text" as const,
+                      text: contextBlock,
+                      cache_control: { type: "ephemeral" as const },
+                    },
+                  ]
+                : []),
               {
                 type: "text",
-                text: userContent,
+                text: consultBlock,
                 cache_control: { type: "ephemeral" },
               },
             ],
@@ -280,6 +338,7 @@ export async function generateOracleBonesInterpretation(
         .filter((b) => b.type === "text")
         .map((b) => (b as { text: string }).text)
         .join("");
+      logCacheUsage("anthropic", response.usage);
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
       const cleanText = stripInterpretationFluff(
@@ -331,6 +390,7 @@ export async function generateOracleBonesInterpretation(
         .filter((b) => b.type === "text")
         .map((b) => (b as { text: string }).text)
         .join("");
+      logCacheUsage("openrouter", response.usage);
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
       const cleanText = stripInterpretationFluff(

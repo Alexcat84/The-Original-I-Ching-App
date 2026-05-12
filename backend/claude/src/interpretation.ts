@@ -42,6 +42,41 @@ ABSOLUTE RULES:
 
 /** Same token budget for all tiers. */
 const MAX_TOKENS = 4096;
+const LOG_CLAUDE_CACHE_METRICS =
+  process.env.LOG_CLAUDE_CACHE_METRICS === "1" ||
+  process.env.LOG_CLAUDE_CACHE_METRICS === "true" ||
+  process.env.NODE_ENV === "development";
+
+function toUsageRecord(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== "object") return {};
+  return value as Record<string, unknown>;
+}
+
+function numberField(record: Record<string, unknown>, key: string): number | null {
+  const value = record[key];
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function logCacheUsage(source: "anthropic" | "openrouter", usageRaw: unknown): void {
+  if (!LOG_CLAUDE_CACHE_METRICS) return;
+  const usage = toUsageRecord(usageRaw);
+  const inputTokens = numberField(usage, "input_tokens");
+  const outputTokens = numberField(usage, "output_tokens");
+  const cacheReadTokens = numberField(usage, "cache_read_input_tokens");
+  const cacheCreationTokens = numberField(usage, "cache_creation_input_tokens");
+  const cacheReadRatio =
+    inputTokens && inputTokens > 0 && cacheReadTokens !== null
+      ? `${((cacheReadTokens / inputTokens) * 100).toFixed(2)}%`
+      : "n/a";
+  console.log("[generateInterpretation][cache_usage]", {
+    source,
+    inputTokens,
+    outputTokens,
+    cacheReadTokens,
+    cacheCreationTokens,
+    cacheReadRatio,
+  });
+}
 
 function getLanguageName(language: string): string {
   const map: Record<string, string> = {
@@ -316,8 +351,6 @@ STRUCTURAL FACTS (NON-NEGOTIABLE):
 - TRANSFORMED_HEXAGRAM_NUMBER: ${tr?.number ?? "NONE"}
 
 ${textsBlock}
-
-
 ═══════════════════════════════════
 INSTRUCTIONS:
 - On the FIRST line write exactly: CATEGORY: [category]
@@ -344,6 +377,24 @@ INSTRUCTIONS:
 - Respond in ${getLanguageName(language)}
 `.trim();
   return { textsBlock, questionBlock, isMasterCombined, question };
+}
+
+function buildPromptBlocks(
+  systemPrompt: string,
+  promptData: PromptData,
+  userContextBlock: string,
+): {
+  stableSystemBlock: string;
+  stableLibraryBlock: string;
+  stableThreadContextBlock: string | null;
+  dynamicQuestionBlock: string;
+} {
+  return {
+    stableSystemBlock: systemPrompt,
+    stableLibraryBlock: `BIBLIOTECA DE TEXTOS ORIGINALES:\n${promptData.textsBlock}`,
+    stableThreadContextBlock: userContextBlock || null,
+    dynamicQuestionBlock: promptData.questionBlock,
+  };
 }
 
 export async function generateInterpretation(
@@ -397,8 +448,17 @@ SNAPSHOT TÉCNICO: Al final, incluye el bloque [SNAPSHOT_START] y [SNAPSHOT_END]
     ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
     : "";
   const systemPrompt = `${SYSTEM_PROMPT}${nameNote}\n\n${masterInstruction}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+  const promptBlocks = buildPromptBlocks(
+    systemPrompt,
+    promptData,
+    userContextBlock,
+  );
 
-  const fallbackUserContent = `BIBLIOTECA DE TEXTOS ORIGINALES:\n${promptData.textsBlock}\n\n${userContextBlock ? userContextBlock + "\n\n" : ""}${promptData.questionBlock}`;
+  const fallbackUserContent = `${promptBlocks.stableLibraryBlock}\n\n${
+    promptBlocks.stableThreadContextBlock
+      ? `${promptBlocks.stableThreadContextBlock}\n\n`
+      : ""
+  }${promptBlocks.dynamicQuestionBlock}`;
 
   if (ANTHROPIC_API_KEY) {
     try {
@@ -414,7 +474,7 @@ SNAPSHOT TÉCNICO: Al final, incluye el bloque [SNAPSHOT_START] y [SNAPSHOT_END]
         system: [
           {
             type: "text",
-            text: systemPrompt,
+            text: promptBlocks.stableSystemBlock,
             cache_control: { type: "ephemeral" },
           },
         ],
@@ -424,14 +484,21 @@ SNAPSHOT TÉCNICO: Al final, incluye el bloque [SNAPSHOT_START] y [SNAPSHOT_END]
             content: [
               {
                 type: "text",
-                text: `BIBLIOTECA DE TEXTOS ORIGINALES:\n${promptData.textsBlock}`,
+                text: promptBlocks.stableLibraryBlock,
                 cache_control: { type: "ephemeral" },
               },
+              ...(promptBlocks.stableThreadContextBlock
+                ? [
+                    {
+                      type: "text" as const,
+                      text: promptBlocks.stableThreadContextBlock,
+                      cache_control: { type: "ephemeral" as const },
+                    },
+                  ]
+                : []),
               {
                 type: "text",
-                text: userContextBlock
-                  ? `${userContextBlock}\n\n${promptData.questionBlock}`
-                  : promptData.questionBlock,
+                text: promptBlocks.dynamicQuestionBlock,
               },
             ],
           },
@@ -442,6 +509,7 @@ SNAPSHOT TÉCNICO: Al final, incluye el bloque [SNAPSHOT_START] y [SNAPSHOT_END]
         .filter((b) => b.type === "text")
         .map((b) => (b as { text: string }).text)
         .join("");
+      logCacheUsage("anthropic", response.usage);
       if (response.stop_reason === "max_tokens") {
         console.warn(
           "[generateInterpretation] hit max_tokens (output may be truncated)",
@@ -537,6 +605,7 @@ SNAPSHOT TÉCNICO: Al final, incluye el bloque [SNAPSHOT_START] y [SNAPSHOT_END]
         .filter((b) => b.type === "text")
         .map((b) => (b as { text: string }).text)
         .join("");
+      logCacheUsage("openrouter", response.usage);
       if (response.stop_reason === "max_tokens") {
         console.warn("[generateInterpretation] OpenRouter hit max_tokens", {
           tier,

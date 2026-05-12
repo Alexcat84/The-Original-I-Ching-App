@@ -3616,66 +3616,89 @@ export default function HomePage() {
       }
       ichingConsultWallClockStartedAtRef.current =
         oracleMode === "iching" ? Date.now() : null;
-      const res = await fetch("/api/consult", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          question: questionForRequest,
-          language: detectInputLanguage(questionForRequest, locale),
-          /** Manual cast must never request SSE — long tick reveal only applies to automatic mode. */
-          responseMode:
-            oracleMode === "iching" && ichingCastMode === "auto"
-              ? "stream_ritual"
-              : "ritual",
-          sessionId: sessionIdForRequest,
-          sessionTitle: consultSession.title,
-          isDeepening: activeThread.length > 0,
-          oracleMode,
-          ...(oracleMode === "iching"
-            ? manualLineValues
-              ? {
-                  ichingCastMode: "manual" as const,
-                  ichingCastingMethod,
-                  ichingManualLineValues: [...manualLineValues],
-                }
-              : { ichingCastMode, ichingCastingMethod }
-            : {}),
-          translatorId,
-          displayName: displayName ?? undefined,
-          oracleBones:
-            oracleMode === "oracle_bones"
-              ? {
-                  positiveCharge: questionForRequest,
-                  negativeCharge: undefined,
-                  medium: DEFAULT_BONES_MEDIUM,
-                }
-              : undefined,
-          history: activeThread.map((item) => ({
-            oracleType: item.oracleType ?? "iching",
-            question: item.question,
-            primaryHexagram: item.primaryHexagram,
-            primaryHexagramName: item.primaryHexagramName,
-            primaryHexagramChinese: item.primaryHexagramChinese,
-            transformedHexagramName: item.transformedHexagramName,
-            changingLines: item.changingLines,
-            mutationRule: item.mutationRule,
-            interpretation: item.interpretation,
-            oracleBones: item.oracleBones
-              ? {
-                  patternId: item.oracleBones.patternId,
-                  verdict: item.oracleBones.verdict,
-                  positiveCharge: item.oracleBones.positiveCharge,
-                  negativeCharge: item.oracleBones.negativeCharge,
-                  medium: item.oracleBones.medium,
-                  ambiguousPasses: item.oracleBones.ambiguousPasses,
-                }
-              : undefined,
-          })),
-        }),
-      });
+      const requestPayload = {
+        question: questionForRequest,
+        language: detectInputLanguage(questionForRequest, locale),
+        /** Manual cast must never request SSE — long tick reveal only applies to automatic mode. */
+        responseMode:
+          oracleMode === "iching" && ichingCastMode === "auto"
+            ? "stream_ritual"
+            : "ritual",
+        sessionId: sessionIdForRequest,
+        sessionTitle: consultSession.title,
+        isDeepening: activeThread.length > 0,
+        oracleMode,
+        ...(oracleMode === "iching"
+          ? manualLineValues
+            ? {
+                ichingCastMode: "manual" as const,
+                ichingCastingMethod,
+                ichingManualLineValues: [...manualLineValues],
+              }
+            : { ichingCastMode, ichingCastingMethod }
+          : {}),
+        translatorId,
+        displayName: displayName ?? undefined,
+        oracleBones:
+          oracleMode === "oracle_bones"
+            ? {
+                positiveCharge: questionForRequest,
+                negativeCharge: undefined,
+                medium: DEFAULT_BONES_MEDIUM,
+              }
+            : undefined,
+        history: activeThread.map((item) => ({
+          oracleType: item.oracleType ?? "iching",
+          question: item.question,
+          primaryHexagram: item.primaryHexagram,
+          primaryHexagramName: item.primaryHexagramName,
+          primaryHexagramChinese: item.primaryHexagramChinese,
+          transformedHexagramName: item.transformedHexagramName,
+          changingLines: item.changingLines,
+          mutationRule: item.mutationRule,
+          interpretation: item.interpretation,
+          oracleBones: item.oracleBones
+            ? {
+                patternId: item.oracleBones.patternId,
+                verdict: item.oracleBones.verdict,
+                positiveCharge: item.oracleBones.positiveCharge,
+                negativeCharge: item.oracleBones.negativeCharge,
+                medium: item.oracleBones.medium,
+                ambiguousPasses: item.oracleBones.ambiguousPasses,
+              }
+            : undefined,
+        })),
+      };
+
+      const sendConsultRequest = (bearerToken: string) =>
+        fetch("/api/consult", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bearerToken}`,
+          },
+          body: JSON.stringify(requestPayload),
+        });
+
+      if (!accessToken) {
+        setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
+        return;
+      }
+      let res = await sendConsultRequest(accessToken);
+      if (res.status === 401 && isSupabaseBrowserConfigured()) {
+        try {
+          const sb = getSupabaseBrowser();
+          const { data: refreshed, error: refreshError } =
+            await sb.auth.refreshSession();
+          const refreshedToken = refreshed.session?.access_token ?? null;
+          if (!refreshError && refreshedToken) {
+            setAccessToken(refreshedToken);
+            res = await sendConsultRequest(refreshedToken);
+          }
+        } catch {
+          // keep original 401 handling below
+        }
+      }
       let data: ConsultResponse & {
         error?: string;
         code?: string;
@@ -3801,13 +3824,27 @@ export default function HomePage() {
             } else if (eventName === "error") {
               logRitualTrace("sse:event", { eventName });
               streamErrored = true;
-              const err = payload as { message?: string };
-              setError(err.message || "No se pudo completar la consulta.");
+              const err = payload as {
+                message?: string;
+                code?: string;
+                action?: string;
+                error?: string;
+              };
+              if (err.code === "AUTH_REQUIRED" || err.action === "login") {
+                setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
+                void signOut();
+              } else {
+                setError(err.message || "No se pudo completar la consulta.");
+              }
             }
           }
         }
         if (streamErrored || !finalPayload) {
-          if (!streamErrored) setError("Respuesta del servidor inválida.");
+          if (!streamErrored) {
+            setError(
+              "La respuesta se interrumpió antes de completarse. Inténtalo de nuevo.",
+            );
+          }
           return;
         }
         if (revealPromise) {
@@ -5282,14 +5319,14 @@ export default function HomePage() {
                               <div
                                 className="oracle-toggle-glow"
                                 style={{
-                                  left: `${12.5 + ["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}%`,
+                                  left: `${12.5 + ["wilhelm", "legge", "zhouyi", "master_combined"].indexOf(translatorId) * 25}%`,
                                 }}
                               />
                               <div className="oracle-toggle-track-line" />
                               <div
                                 className="oracle-toggle-thumb"
                                 style={{
-                                  left: `calc(${["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}% + 2px)`,
+                                  left: `calc(${["wilhelm", "legge", "zhouyi", "master_combined"].indexOf(translatorId) * 25}% + 2px)`,
                                 }}
                               >
                                 <div className="oracle-thumb-sweep" />
@@ -5305,14 +5342,6 @@ export default function HomePage() {
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "zhouyi" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 2 ? "is-locked" : ""}`}
-                                  onClick={() => handleTranslatorChange("zhouyi")}
-                                  disabled={loading}
-                                >
-                                  <span>Zhou Yi</span>{!isAdmin && tierAccessIndex < 2 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
-                                </button>
-                                <button
-                                  type="button"
                                   className={`oracle-toggle-option ${translatorId === "legge" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 1 ? "is-locked" : ""}`}
                                   onClick={() => handleTranslatorChange("legge")}
                                   disabled={loading}
@@ -5321,11 +5350,54 @@ export default function HomePage() {
                                 </button>
                                 <button
                                   type="button"
+                                  className={`oracle-toggle-option ${translatorId === "zhouyi" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 2 ? "is-locked" : ""}`}
+                                  onClick={() => handleTranslatorChange("zhouyi")}
+                                  disabled={loading}
+                                >
+                                  <span>Zhou Yi</span>{!isAdmin && tierAccessIndex < 2 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
+                                </button>
+                                <button
+                                  type="button"
                                   className={`oracle-toggle-option ${translatorId === "master_combined" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 3 ? "is-locked" : ""}`}
                                   onClick={() => handleTranslatorChange("master_combined")}
                                   disabled={loading}
                                 >
-                                  <span className="oracle-toggle-master-label" style={{ display: "inline-flex", alignItems: "center" }}>{chrome.translatorMasterCombined}<span className="master-token-tooltip" tabIndex={0} role="img" aria-label="La función Master (3) consume 2 tokens" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 14, height: 14, borderRadius: "50%", background: "rgba(255,255,255,0.18)", fontSize: 9, fontWeight: "bold", marginLeft: 5, cursor: "help", flexShrink: 0, lineHeight: 1 }}>?<span className="master-token-tooltip-text">La función Master (3) consume 2 tokens</span></span></span>{!isAdmin && tierAccessIndex < 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
+                                  <span
+                                    className="oracle-toggle-master-label"
+                                    style={{ display: "inline-flex", alignItems: "center" }}
+                                  >
+                                    {chrome.translatorMasterCombined}
+                                    <span
+                                      className="master-token-tooltip"
+                                      tabIndex={0}
+                                      role="img"
+                                      aria-label="Costo: 2 tokens"
+                                      style={{
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        width: 14,
+                                        height: 14,
+                                        borderRadius: "50%",
+                                        background: "rgba(255,255,255,0.18)",
+                                        fontSize: 9,
+                                        fontWeight: "bold",
+                                        marginLeft: 5,
+                                        cursor: "help",
+                                        flexShrink: 0,
+                                        lineHeight: 1,
+                                      }}
+                                    >
+                                      ?
+                                      <span className="master-token-tooltip-text">
+                                        <span className="master-token-tooltip-line">Costo:</span>
+                                        <span className="master-token-tooltip-line">
+                                          2 tokens
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </span>
+                                  {!isAdmin && tierAccessIndex < 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                               </div>
                             </div>

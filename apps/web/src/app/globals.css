@@ -2370,13 +2370,16 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
 }
 
 .oracle-toggle-master-label {
-  color: #a855f7; /* Amethyst / premium purple for light mode */
+  color: #6d28d9; /* Deeper premium purple for light mode contrast */
 }
 [data-theme="dark"] .oracle-toggle-master-label {
-  color: #c084fc; /* Brighter purple for dark mode */
+  color: #d8b4fe; /* Brighter purple for dark mode */
 }
 .oracle-toggle-option.is-active .oracle-toggle-master-label {
-  color: inherit;
+  color: #6d28d9;
+}
+[data-theme="dark"] .oracle-toggle-option.is-active .oracle-toggle-master-label {
+  color: #d8b4fe;
 }
 
 /* ── prefers-reduced-motion: no keyframe animations, instant transitions ──── */
@@ -5215,9 +5218,18 @@ html[data-theme="dark"] .library-tab--active {
 .library-text-card {
   padding: 1rem 1.15rem;
   border-radius: 8px;
-  border: 1px solid color-mix(in srgb, var(--bar-border) 60%, transparent);
-  background: color-mix(in srgb, var(--card-bg, var(--bg)) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 78%, transparent);
+  background: color-mix(in srgb, var(--card-bg, var(--bg)) 74%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 8%, transparent);
   margin-bottom: 0.35rem;
+}
+
+html[data-theme="dark"] .library-text-card {
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--bar-border));
+  background: color-mix(in srgb, var(--secondary-bg) 86%, #0a0f16);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--accent) 10%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .library-prose {
@@ -5278,6 +5290,9 @@ html[data-theme="dark"] .library-tab--active {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.92rem;
+  border: 1px solid color-mix(in srgb, var(--bar-border) 78%, transparent);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .oracle-shell.doc-page .doc-article table.library-lines-table thead th {
@@ -5288,7 +5303,8 @@ html[data-theme="dark"] .library-tab--active {
   color: var(--fg-muted);
   text-align: start;
   padding: 0.35rem 0.5rem;
-  border-bottom: 1.5px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
+  border-bottom: 1.5px solid color-mix(in srgb, var(--bar-border) 90%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 72%, transparent);
 }
 
 .library-lines-table__pos {
@@ -5299,14 +5315,14 @@ html[data-theme="dark"] .library-tab--active {
   color: var(--card-title);
   white-space: nowrap;
   text-align: start;
-  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
   vertical-align: middle;
 }
 
 .library-lines-table__symbol {
   width: 4rem;
   padding: 0.65rem 0.15rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
   vertical-align: middle;
   user-select: none;
 }
@@ -5359,7 +5375,7 @@ html[data-theme="dark"] .library-tab--active {
   text-justify: inter-word;
   hyphens: auto;
   -webkit-hyphens: auto;
-  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
   vertical-align: middle;
 }
 
@@ -5370,7 +5386,17 @@ html[data-theme="dark"] .library-tab--active {
 
 /* Alternating row tint for readability */
 .oracle-shell.doc-page .doc-article table.library-lines-table tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--secondary-bg) 55%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 68%, transparent);
+}
+
+html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-table {
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--bar-border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-table thead th {
+  background: color-mix(in srgb, var(--secondary-bg) 88%, #090d14);
+  border-bottom-color: color-mix(in srgb, var(--accent) 32%, var(--bar-border));
 }
 
 /* Last row: no bottom border to avoid double-border with table edge */
@@ -5430,18 +5456,25 @@ html[data-theme="dark"] .library-tab--active {
   gap: 0.7rem;
   padding: 0.55rem 0.7rem;
   border-radius: calc(var(--radius) * 0.5);
-  border: 1px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
-  background: color-mix(in srgb, var(--secondary-bg) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 88%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 90%, transparent);
   color: inherit;
   text-decoration: none;
-  transition: border-color 120ms ease, background 120ms ease;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 8%, transparent);
+  transition: border-color 120ms ease, background 120ms ease, box-shadow 120ms ease;
 }
 
 .library-mutation__link:hover,
 .library-mutation__link:focus-visible {
   border-color: color-mix(in srgb, var(--ghost-link, #2a7a94) 70%, transparent);
-  background: color-mix(in srgb, var(--secondary-bg) 96%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 98%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ghost-link, #2a7a94) 28%, transparent);
   outline: none;
+}
+
+html[data-theme="dark"] .library-mutation__link {
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--bar-border));
+  background: color-mix(in srgb, var(--secondary-bg) 82%, #0b1018);
 }
 
 .library-mutation__glyph {
@@ -7824,12 +7857,13 @@ html.iching-rn-webview .apk-trace-native-metrics {
 .master-token-tooltip-text {
   visibility: hidden;
   opacity: 0;
-  width: 210px;
+  width: 116px;
+  max-width: 116px;
   background: var(--color-bg-elevated, #1a1a2e);
   color: var(--color-text-primary, #f0f0f0);
   text-align: center;
   border-radius: 8px;
-  padding: 8px 10px;
+  padding: 7px 8px;
   position: absolute;
   z-index: 9999;
   top: auto;
@@ -7838,12 +7872,12 @@ html.iching-rn-webview .apk-trace-native-metrics {
   transform: translateX(-50%);
   transition: opacity 0.22s ease, visibility 0.22s ease;
   font-size: 11.5px;
-  font-weight: 400;
-  line-height: 1.45;
+  font-weight: 600;
+  line-height: 1.3;
   box-shadow: 0 6px 20px rgba(0,0,0,0.55);
   border: 1px solid rgba(255,255,255,0.12);
   pointer-events: none;
-  white-space: normal;
+  white-space: nowrap;
 }
 .master-token-tooltip-text::after {
   content: "";
@@ -7860,6 +7894,21 @@ html.iching-rn-webview .apk-trace-native-metrics {
 .master-token-tooltip:active .master-token-tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+.master-token-tooltip-line {
+  display: block;
+}
+
+html[data-theme="light"] .master-token-tooltip-text {
+  background: #ffffff;
+  color: #0f2940;
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--bar-border));
+  box-shadow: none;
+}
+
+html[data-theme="light"] .master-token-tooltip-text::after {
+  border-color: #ffffff transparent transparent transparent;
 }
 
 .oracle-toggle-options-row .oracle-toggle-option {
