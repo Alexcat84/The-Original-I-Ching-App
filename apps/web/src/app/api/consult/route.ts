@@ -44,7 +44,9 @@ import { rateLimitByKey } from "@/lib/rate-limit";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import {
+  getUserSessionWithConsultations,
   isSharingPersistenceAvailable,
+  type StoredConsultation,
   upsertSessionAndConsultation,
 } from "@/lib/session-store";
 import { parseIchingManualPayload } from "@/lib/manual-iching-consult";
@@ -114,6 +116,25 @@ function mapHistoryToRows(
       oracle_bones: oracle_bones,
     };
   });
+}
+
+function mapStoredConsultationsToRows(
+  consultations: StoredConsultation[],
+): PreviousConsultationRow[] {
+  return (consultations ?? []).map((entry) => ({
+    session_position: entry.sessionPosition,
+    question: entry.question,
+    primary_hexagram_number: entry.primaryHexagram,
+    primary_hexagram_name: entry.primaryHexagramName,
+    primary_hexagram_chinese: entry.primaryHexagramChinese,
+    transformed_hexagram_name: entry.transformedHexagramName,
+    changing_lines: entry.changingLines,
+    mutation_rule: entry.mutationRule,
+    interpretation: entry.interpretation,
+    oracle_type: entry.oracleType ?? "iching",
+    oracle_bones:
+      entry.oracleType === "oracle_bones" ? (entry.oracleBones ?? undefined) : undefined,
+  }));
 }
 
 function verdictLabelForPrompt(
@@ -334,8 +355,31 @@ export async function POST(req: Request) {
 
     let resolvedTranslator: "wilhelm" | "legge" | "zhouyi" | "master_combined" =
       "wilhelm";
-    if (body.translatorId === "legge") resolvedTranslator = "legge";
-    if (body.translatorId === "zhouyi") resolvedTranslator = "zhouyi";
+    if (body.translatorId === "legge") {
+      if (
+        tierKey === "seeker" ||
+        tierKey === "practitioner" ||
+        tierKey === "master" ||
+        tierKey === "oracle" ||
+        adminBypassAllowed
+      ) {
+        resolvedTranslator = "legge";
+      } else {
+        resolvedTranslator = "wilhelm";
+      }
+    }
+    if (body.translatorId === "zhouyi") {
+      if (
+        tierKey === "practitioner" ||
+        tierKey === "master" ||
+        tierKey === "oracle" ||
+        adminBypassAllowed
+      ) {
+        resolvedTranslator = "zhouyi";
+      } else {
+        resolvedTranslator = "wilhelm";
+      }
+    }
     if (body.translatorId === "master_combined") {
       if (tierKey === "master" || tierKey === "oracle" || adminBypassAllowed) {
         resolvedTranslator = "master_combined";
@@ -424,24 +468,24 @@ export async function POST(req: Request) {
         : randomUUID();
 
     const isDeepening = Boolean(body.isDeepening);
-    const previousRows = mapHistoryToRows(body.history);
+    let previousRows = mapHistoryToRows(body.history);
 
-    // When deepening, validate depth against the DB record — not the client-supplied history,
-    // which could be manipulated to bypass session limits.
+    // For deepening, use DB rows bound to (user_id, session_id) as the source
+    // of truth for context. Client-provided history is never authoritative.
     let authorizedDepth = previousRows.length;
-    if (isDeepening && isPersistableUuid(sessionId)) {
-      const supabaseAdmin = getSupabaseAdmin();
-      if (supabaseAdmin) {
-        const { data: sessionRow } = await supabaseAdmin
-          .from("consultation_sessions")
-          .select("consultation_count")
-          .eq("id", sessionId)
-          .eq("user_id", authedUserId)
-          .maybeSingle();
-        if (sessionRow) {
-          authorizedDepth =
-            sessionRow.consultation_count ?? previousRows.length;
-        }
+    if (isDeepening && isPersistableUuid(sessionId) && getSupabaseAdmin()) {
+      const sessionWithConsultations = await getUserSessionWithConsultations(
+        authedUserId,
+        sessionId,
+      );
+      if (sessionWithConsultations) {
+        previousRows = mapStoredConsultationsToRows(
+          sessionWithConsultations.consultations,
+        );
+        authorizedDepth = previousRows.length;
+      } else {
+        previousRows = [];
+        authorizedDepth = 0;
       }
     }
 

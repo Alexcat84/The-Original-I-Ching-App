@@ -79,6 +79,7 @@ export interface CastResult {
   id: string;
   question: string;
   language: string;
+  interpretationMode: InterpretationMode;
   lines: Line[];
   primaryHexagram: Hexagram;
   transformedHexagram: Hexagram | null;

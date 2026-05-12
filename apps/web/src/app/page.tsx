@@ -51,7 +51,11 @@ import {
   drawPdfContinuationChrome,
   interpretationMarkdownToPdfBlocks,
 } from "@/lib/pdf-chat-export";
-import { tierLabelForDisplay, type Tier } from "@/lib/credits";
+import {
+  tierLabelForDisplay,
+  toContextTierKey,
+  type Tier,
+} from "@/lib/credits";
 import {
   creditsExhaustedBlock,
   tierToBillingTierCopy,
@@ -1377,26 +1381,43 @@ export default function HomePage() {
       "wilhelm" | "legge" | "zhouyi" | "master_combined"
     >("wilhelm");
 
+  const tierAccessKey = useMemo<
+    "free" | "seeker" | "practitioner" | "master" | "oracle"
+  >(() => {
+    const raw = (tier ?? "free").toLowerCase();
+    if (raw === "oracle") return "oracle";
+    if (
+      raw === "free" ||
+      raw === "seeker" ||
+      raw === "practitioner" ||
+      raw === "master"
+    ) {
+      return raw;
+    }
+    return toContextTierKey(raw);
+  }, [tier]);
+
+  const tierAccessIndex = useMemo(() => {
+    if (tierAccessKey === "oracle") return 4;
+    const tiers = ["free", "seeker", "practitioner", "master"] as const;
+    return tiers.indexOf(tierAccessKey);
+  }, [tierAccessKey]);
+
   const handleTranslatorChange = (id: "wilhelm" | "legge" | "zhouyi" | "master_combined") => {
     if (isAdmin) {
       setError(null);
       setTranslatorId(id);
       return;
     }
-    const userTier = (tier || "free").toLowerCase();
-    const tiers = ["free", "seeker", "practitioner", "master"];
-    // Si el tier no está en el array (ej: 'oracle'), Math.max(0, -1) = 0
-    // pero 'oracle' es superior a master, así que lo mapeamos explícitamente
-    const userIndex = userTier === "oracle" ? tiers.length : Math.max(0, tiers.indexOf(userTier));
-    if (id === "legge" && userIndex < 1) {
+    if (id === "legge" && tierAccessIndex < 1) {
       setError("Este traductor requiere el pack Seeker. Visita la sección de Packs para desbloquearlo.");
       return;
     }
-    if (id === "zhouyi" && userIndex < 2) {
+    if (id === "zhouyi" && tierAccessIndex < 2) {
       setError("Este traductor requiere el pack Practitioner. Visita la sección de Packs para desbloquearlo.");
       return;
     }
-    if (id === "master_combined" && userIndex < 3) {
+    if (id === "master_combined" && tierAccessIndex < 3) {
       setError("Este traductor requiere el pack Master. Visita la sección de Packs para desbloquearlo.");
       return;
     }
@@ -2284,9 +2305,12 @@ export default function HomePage() {
     pinnedLocalSessionIdRef.current = created.localId;
     setSessions((prev) => [created, ...prev.filter((s) => s.messageCount > 0)]);
     setActiveSessionLocalId(created.localId);
+    setRevealConsultationId(null);
+    setManualCastPreview(null);
     setQuestion("");
     setError(null);
     setLoading(false); // purga cualquier estado de carga pendiente al iniciar nueva sesión
+    setPhase("idle");
     setChatsOpen(false);
     setConsultPanelOpen(false);
   }, [ui.sessionNew]);
@@ -5281,27 +5305,27 @@ export default function HomePage() {
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "zhouyi" ? "is-active" : ""} ${!isAdmin && ["free", "seeker"].includes(tier) ? "is-locked" : ""}`}
+                                  className={`oracle-toggle-option ${translatorId === "zhouyi" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 2 ? "is-locked" : ""}`}
                                   onClick={() => handleTranslatorChange("zhouyi")}
                                   disabled={loading}
                                 >
-                                  <span>Zhou Yi</span>{!isAdmin && ["free", "seeker"].includes(tier) && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
+                                  <span>Zhou Yi</span>{!isAdmin && tierAccessIndex < 2 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "legge" ? "is-active" : ""} ${!isAdmin && tier === "free" ? "is-locked" : ""}`}
+                                  className={`oracle-toggle-option ${translatorId === "legge" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 1 ? "is-locked" : ""}`}
                                   onClick={() => handleTranslatorChange("legge")}
                                   disabled={loading}
                                 >
-                                  <span>Legge</span>{!isAdmin && tier === "free" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
+                                  <span>Legge</span>{!isAdmin && tierAccessIndex < 1 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "master_combined" ? "is-active" : ""} ${!isAdmin && ["free", "seeker", "practitioner"].includes(tier) ? "is-locked" : ""}`}
+                                  className={`oracle-toggle-option ${translatorId === "master_combined" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 3 ? "is-locked" : ""}`}
                                   onClick={() => handleTranslatorChange("master_combined")}
                                   disabled={loading}
                                 >
-                                  <span className="oracle-toggle-master-label" style={{ display: "inline-flex", alignItems: "center" }}>{chrome.translatorMasterCombined}<span className="master-token-tooltip" tabIndex={0} role="img" aria-label="La función Master (3) consume 2 tokens" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 14, height: 14, borderRadius: "50%", background: "rgba(255,255,255,0.18)", fontSize: 9, fontWeight: "bold", marginLeft: 5, cursor: "help", flexShrink: 0, lineHeight: 1 }}>?<span className="master-token-tooltip-text">La función Master (3) consume 2 tokens</span></span></span>{!isAdmin && ["free", "seeker", "practitioner"].includes(tier) && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
+                                  <span className="oracle-toggle-master-label" style={{ display: "inline-flex", alignItems: "center" }}>{chrome.translatorMasterCombined}<span className="master-token-tooltip" tabIndex={0} role="img" aria-label="La función Master (3) consume 2 tokens" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 14, height: 14, borderRadius: "50%", background: "rgba(255,255,255,0.18)", fontSize: 9, fontWeight: "bold", marginLeft: 5, cursor: "help", flexShrink: 0, lineHeight: 1 }}>?<span className="master-token-tooltip-text">La función Master (3) consume 2 tokens</span></span></span>{!isAdmin && tierAccessIndex < 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                               </div>
                             </div>
@@ -5655,7 +5679,7 @@ export default function HomePage() {
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() => router.push("/library")}
-                          disabled={!accessToken || tier === "free"}
+                          disabled={!accessToken || tierAccessKey === "free"}
                         >
                           {chrome.openLibrary}
                         </button>

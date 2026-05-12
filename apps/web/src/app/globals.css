@@ -7819,6 +7819,7 @@ html.iching-rn-webview .apk-trace-native-metrics {
 .master-token-tooltip {
   position: relative;
   vertical-align: middle;
+  overflow: visible;
 }
 .master-token-tooltip-text {
   visibility: hidden;
@@ -7831,8 +7832,8 @@ html.iching-rn-webview .apk-trace-native-metrics {
   padding: 8px 10px;
   position: absolute;
   z-index: 9999;
-  bottom: auto;
-  top: calc(100% + 8px);
+  top: auto;
+  bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
   transition: opacity 0.22s ease, visibility 0.22s ease;
@@ -7847,17 +7848,21 @@ html.iching-rn-webview .apk-trace-native-metrics {
 .master-token-tooltip-text::after {
   content: "";
   position: absolute;
-  bottom: 100%;
+  top: 100%;
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent var(--color-bg-elevated, #1a1a2e) transparent;
+  border-color: var(--color-bg-elevated, #1a1a2e) transparent transparent transparent;
 }
 .master-token-tooltip:hover .master-token-tooltip-text,
 .master-token-tooltip:focus .master-token-tooltip-text,
 .master-token-tooltip:active .master-token-tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+.oracle-toggle-options-row .oracle-toggle-option {
+  overflow: visible;
 }
 

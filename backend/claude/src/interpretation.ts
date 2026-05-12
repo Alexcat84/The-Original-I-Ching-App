@@ -234,7 +234,9 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
 - "Horizonte y síntesis" / "Horizon and synthesis": single closing paragraph—one concrete behavioral or attitudinal step, same language, no new quotes.
 - ANTI-REPETITION across sections as in global rules.`;
 
-  const isMasterCombined = Boolean(t.leggeJudgment && t.zhouyiJudgment);
+  const isMasterCombined =
+    cast.interpretationMode === "master_combined" ||
+    Boolean(t.leggeJudgment && t.zhouyiJudgment);
 
   let textsBlock = "";
   if (isMasterCombined) {
