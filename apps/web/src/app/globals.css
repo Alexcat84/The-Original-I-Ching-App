@@ -2246,7 +2246,7 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible !important;
 }
 
 .oracle-toggle-option svg {
@@ -2498,7 +2498,7 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   font-weight: 600;
   opacity: 0.85;
   max-width: 3.5rem;
-  overflow: hidden;
+  overflow: visible !important;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -7860,3 +7860,4 @@ html.iching-rn-webview .apk-trace-native-metrics {
   visibility: visible;
   opacity: 1;
 }
+
