@@ -7831,7 +7831,8 @@ html.iching-rn-webview .apk-trace-native-metrics {
   padding: 8px 10px;
   position: absolute;
   z-index: 9999;
-  bottom: calc(100% + 8px);
+  bottom: auto;
+  top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
   transition: opacity 0.22s ease, visibility 0.22s ease;
@@ -7846,12 +7847,12 @@ html.iching-rn-webview .apk-trace-native-metrics {
 .master-token-tooltip-text::after {
   content: "";
   position: absolute;
-  top: 100%;
+  bottom: 100%;
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: var(--color-bg-elevated, #1a1a2e) transparent transparent transparent;
+  border-color: transparent transparent var(--color-bg-elevated, #1a1a2e) transparent;
 }
 .master-token-tooltip:hover .master-token-tooltip-text,
 .master-token-tooltip:focus .master-token-tooltip-text,
