@@ -186,6 +186,21 @@ function sanitizeOracleBonesBody(text: string, header: string, language: string)
   return filtered.join("\n").trim();
 }
 
+function fallbackInterpretationSummary(text: string): string {
+  const clean = text
+    .replace(/\r?\n+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!clean) return "";
+  const clipped = clean.slice(0, 420);
+  const lastPunctuation = Math.max(
+    clipped.lastIndexOf(". "),
+    clipped.lastIndexOf("! "),
+    clipped.lastIndexOf("? "),
+  );
+  return (lastPunctuation > 180 ? clipped.slice(0, lastPunctuation + 1) : clipped).trim();
+}
+
 function replaceVerdictCodesWithNaturalLanguage(text: string, language: string): string {
   const replacements: Array<[OracleBonesCastResult["verdict"], string]> = [
     ["auspicious_clear", verdictNaturalLabelLocalized("auspicious_clear", language)],
@@ -259,6 +274,14 @@ INSTRUCTIONS:
 - Anchor certainty to this cast ("in this cast", "en esta tirada"), not to universal proof claims.
 - If affirmsPositive is false, do NOT assert opposite scenarios as true/probable; only state non-confirmation of the positive charge.
 - If affirmsPositive is null, do NOT force yes/no.
+- MEMORY SNAPSHOT (MANDATORY, end of response):
+  Append exactly this block at the end:
+  [SNAPSHOT_START]
+  THREAD_LINK: 2-3 sentences of personal continuity from prior thread, explicit and concrete (e.g., "en tus X consultas previas... y ahora vuelves con...").
+  ACTION_CORE: one concrete next-step action for the user in second person, directly tied to that continuity.
+  SYMBOLS_MIN: optional one short line only if strictly needed (max one oracle symbol/verdict mention); prioritize personal thread over technical labels.
+  [SNAPSHOT_END]
+- Snapshot must be concise (80-130 words total), high-signal, specific, and personal-first (no vague generic phrasing).
 - Length: ${targetWordCount} words
 - Respond in ${getLanguageName(language)}
 `.trim();
@@ -272,11 +295,21 @@ export async function generateOracleBonesInterpretation(
   language: string,
   env: NodeJS.ProcessEnv = process.env,
   displayName?: string,
-): Promise<{ text: string; category: ConsultationCategory }> {
+): Promise<{
+  text: string;
+  category: ConsultationCategory;
+  interpretationSummary: string;
+}> {
   if (cast.verdict === "silent") {
+    const text = enforceOracleBonesConsistency(
+      oracleBonesSilentVerdictMessage(language),
+      cast,
+      language,
+    );
     return {
-      text: enforceOracleBonesConsistency(oracleBonesSilentVerdictMessage(language), cast, language),
+      text,
       category: "general",
+      interpretationSummary: fallbackInterpretationSummary(text),
     };
   }
 
@@ -350,8 +383,17 @@ export async function generateOracleBonesInterpretation(
       logCacheUsage("anthropic", response.usage);
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
+      const snapshotMatch = fullText.match(
+        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+      );
+      const interpretationSummary = snapshotMatch
+        ? snapshotMatch[1].trim()
+        : fallbackInterpretationSummary(fullText);
       const cleanText = stripInterpretationFluff(
-        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+        fullText
+          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .trim(),
       );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
@@ -360,7 +402,11 @@ export async function generateOracleBonesInterpretation(
             verdict: cast.verdict,
           });
         } else {
-          return { text: enforceOracleBonesConsistency(cleanText, cast, language), category };
+          return {
+            text: enforceOracleBonesConsistency(cleanText, cast, language),
+            category,
+            interpretationSummary,
+          };
         }
       }
     } catch (err) {
@@ -402,14 +448,27 @@ export async function generateOracleBonesInterpretation(
       logCacheUsage("openrouter", response.usage);
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
+      const snapshotMatch = fullText.match(
+        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+      );
+      const interpretationSummary = snapshotMatch
+        ? snapshotMatch[1].trim()
+        : fallbackInterpretationSummary(fullText);
       const cleanText = stripInterpretationFluff(
-        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+        fullText
+          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .trim(),
       );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
           console.warn("[generateOracleBonesInterpretation] OpenRouter returned likely wrong language; falling through", { language });
         } else {
-          return { text: enforceOracleBonesConsistency(cleanText, cast, language), category };
+          return {
+            text: enforceOracleBonesConsistency(cleanText, cast, language),
+            category,
+            interpretationSummary,
+          };
         }
       }
     } catch (err) {
@@ -441,7 +500,18 @@ export async function generateOracleBonesInterpretation(
       const fullText = data.choices?.[0]?.message?.content ?? "";
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
-      const cleanText = stripInterpretationFluff(fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim());
+      const snapshotMatch = fullText.match(
+        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+      );
+      const interpretationSummary = snapshotMatch
+        ? snapshotMatch[1].trim()
+        : fallbackInterpretationSummary(fullText);
+      const cleanText = stripInterpretationFluff(
+        fullText
+          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .trim(),
+      );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
           console.warn("[generateOracleBonesInterpretation] Groq returned likely wrong language; using fallback", {
@@ -449,12 +519,21 @@ export async function generateOracleBonesInterpretation(
             verdict: cast.verdict,
           });
         } else {
-          return { text: enforceOracleBonesConsistency(cleanText, cast, language), category };
+          return {
+            text: enforceOracleBonesConsistency(cleanText, cast, language),
+            category,
+            interpretationSummary,
+          };
         }
       }
     }
   }
 
   const fallback = oracleBonesFallbackProse(cast, language);
-  return { text: enforceOracleBonesConsistency(fallback, cast, language), category: "decision_path" };
+  const text = enforceOracleBonesConsistency(fallback, cast, language);
+  return {
+    text,
+    category: "decision_path",
+    interpretationSummary: fallbackInterpretationSummary(text),
+  };
 }

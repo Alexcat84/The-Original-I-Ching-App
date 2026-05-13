@@ -619,17 +619,22 @@ export async function POST(req: Request) {
         patternHints: null,
       });
 
-      const { text: interpretation, category } =
-        await generateOracleBonesInterpretation(
-          bonesCast,
-          tierEffective,
-          context,
-          "ritual",
-          oracleLanguage,
-          process.env,
-          displayName,
-        );
-      const interpretationSummary = summarizeInterpretationForContext(interpretation);
+      const {
+        text: interpretation,
+        category,
+        interpretationSummary: rawInterpretationSummary,
+      } = await generateOracleBonesInterpretation(
+        bonesCast,
+        tierEffective,
+        context,
+        "ritual",
+        oracleLanguage,
+        process.env,
+        displayName,
+      );
+      const interpretationSummary =
+        rawInterpretationSummary?.trim() ||
+        summarizeInterpretationForContext(interpretation);
 
       const imagePrompt = buildOracleBonesImagePrompt({
         category,

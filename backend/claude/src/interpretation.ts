@@ -47,6 +47,21 @@ const LOG_CLAUDE_CACHE_METRICS =
   process.env.LOG_CLAUDE_CACHE_METRICS === "true" ||
   process.env.NODE_ENV === "development";
 
+function fallbackInterpretationSummary(text: string): string {
+  const clean = text
+    .replace(/\r?\n+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!clean) return "";
+  const clipped = clean.slice(0, 420);
+  const lastPunctuation = Math.max(
+    clipped.lastIndexOf(". "),
+    clipped.lastIndexOf("! "),
+    clipped.lastIndexOf("? "),
+  );
+  return (lastPunctuation > 180 ? clipped.slice(0, lastPunctuation + 1) : clipped).trim();
+}
+
 function toUsageRecord(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object") return {};
   return value as Record<string, unknown>;
@@ -349,7 +364,7 @@ JUDGMENT: ${t.transformedJudgment}`
     2) Legge (literal)
     3) Zhou Yi (literal)
   - Quotes must be complete literal excerpts from the provided texts for that section (do NOT reduce to micro-quotes, fragments, or single clauses).
-  - Format each quote as italic text under its source label.
+  - Each literal source quote MUST be rendered as Markdown blockquote lines (prefix every line with "> "), and the quote text itself must be italic inside that blockquote.
   - For "Lines in motion": for each changing line, show the full literal line text from each available source before synthesis.
   - If any source text is unavailable for a specific subsection, state it explicitly and continue with the other two sources.
 - In every section, bridge the three lenses into ONE integrated guidance for the querent.
@@ -402,6 +417,14 @@ INSTRUCTIONS:
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
 - ${castingMethodNote(castingMethod)}
 - FORMAT INVARIANCE: The casting method note above affects only how moving-line probabilities are weighted in interpretation. Section count, heading names, response length, and paragraph structure are identical regardless of whether Three Coins or Yarrow Stalks was used — never add extra sections or commentary about the method itself.
+- MEMORY SNAPSHOT (MANDATORY, end of response):
+  Append exactly this block at the end:
+  [SNAPSHOT_START]
+  THREAD_LINK: 2-3 sentences of personal continuity from prior thread, explicit and concrete (e.g., "en tus X preguntas anteriores... y ahora regresas con...").
+  ACTION_CORE: one concrete next-step action for the user in second person, directly tied to that continuity.
+  SYMBOLS_MIN: optional one short line only if strictly needed (max one symbol reference); prioritize personal thread over symbolism.
+  [SNAPSHOT_END]
+- Snapshot must be concise (80-140 words total), high-signal, specific, and personal-first (no vague generic phrasing).
 - Respond in ${getLanguageName(language)}
 `.trim();
   return { textsBlock, questionBlock, isMasterCombined, question };
@@ -544,7 +567,7 @@ export async function generateInterpretation(
       );
       const interpretationSummary = snapshotMatch
         ? snapshotMatch[1].trim()
-        : fullText.slice(0, 200);
+        : fallbackInterpretationSummary(fullText);
       const rawInterpretation = fullText
         .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
         .trim();
@@ -637,7 +660,7 @@ export async function generateInterpretation(
       );
       const interpretationSummary = snapshotMatch
         ? snapshotMatch[1].trim()
-        : fullText.slice(0, 200);
+        : fallbackInterpretationSummary(fullText);
       const rawInterpretation = fullText
         .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
         .trim();
@@ -709,7 +732,7 @@ export async function generateInterpretation(
       );
       const interpretationSummary = snapshotMatch
         ? snapshotMatch[1].trim()
-        : fullText.slice(0, 200);
+        : fallbackInterpretationSummary(fullText);
       const rawInterpretation = fullText
         .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
         .trim();
@@ -753,7 +776,7 @@ export async function generateInterpretation(
     return {
       text: normalizeInterpretationPunctuation(hardened),
       category: cat,
-      interpretationSummary: body.slice(0, 200),
+      interpretationSummary: fallbackInterpretationSummary(body),
     };
   }
 
@@ -767,6 +790,6 @@ export async function generateInterpretation(
   return {
     text: normalizeInterpretationPunctuation(hardened),
     category: cat,
-    interpretationSummary: body.slice(0, 200),
+    interpretationSummary: fallbackInterpretationSummary(body),
   };
 }
