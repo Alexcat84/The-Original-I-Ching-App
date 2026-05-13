@@ -15,6 +15,7 @@ import {
 import {
   normalizeInterpretationPunctuation,
   stripInterpretationFluff,
+  stripSnapshotLeaks,
 } from "./response-clean.js";
 
 export type { ResponseMode } from "./interpretation-context.js";
@@ -569,9 +570,11 @@ export async function generateInterpretation(
       const interpretationSummary = snapshotMatch
         ? snapshotMatch[1].trim()
         : fallbackInterpretationSummary(fullText);
-      const rawInterpretation = fullText
-        .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-        .trim();
+      const rawInterpretation = stripSnapshotLeaks(
+        fullText
+          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+          .trim(),
+      );
 
       const cleanText = stripInterpretationFluff(
         rawInterpretation
@@ -662,9 +665,11 @@ export async function generateInterpretation(
       const interpretationSummary = snapshotMatch
         ? snapshotMatch[1].trim()
         : fallbackInterpretationSummary(fullText);
-      const rawInterpretation = fullText
-        .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-        .trim();
+      const rawInterpretation = stripSnapshotLeaks(
+        fullText
+          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+          .trim(),
+      );
 
       const cleanText = stripInterpretationFluff(
         rawInterpretation
@@ -734,9 +739,11 @@ export async function generateInterpretation(
       const interpretationSummary = snapshotMatch
         ? snapshotMatch[1].trim()
         : fallbackInterpretationSummary(fullText);
-      const rawInterpretation = fullText
-        .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-        .trim();
+      const rawInterpretation = stripSnapshotLeaks(
+        fullText
+          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+          .trim(),
+      );
 
       const cleanText = stripInterpretationFluff(
         rawInterpretation

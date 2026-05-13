@@ -11,7 +11,7 @@ import {
   structuralVerdictLineLocalized,
   verdictNaturalLabelLocalized,
 } from "./oracle-bones-structural-i18n.js";
-import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "./response-clean.js";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff, stripSnapshotLeaks } from "./response-clean.js";
 
 const ORACLE_BONES_SYSTEM = `You are the Royal Diviner (贞人 zhen ren) for a stylized Shang-era oracle bone session in a modern app.
 The crack pattern, verdict code, and yes/no alignment are FIXED by the system — you must not contradict them.
@@ -390,10 +390,12 @@ export async function generateOracleBonesInterpretation(
         ? snapshotMatch[1].trim()
         : fallbackInterpretationSummary(fullText);
       const cleanText = stripInterpretationFluff(
-        fullText
-          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
-          .trim(),
+        stripSnapshotLeaks(
+          fullText
+            .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+            .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+            .trim(),
+        ),
       );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
@@ -455,10 +457,12 @@ export async function generateOracleBonesInterpretation(
         ? snapshotMatch[1].trim()
         : fallbackInterpretationSummary(fullText);
       const cleanText = stripInterpretationFluff(
-        fullText
-          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
-          .trim(),
+        stripSnapshotLeaks(
+          fullText
+            .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+            .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+            .trim(),
+        ),
       );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
@@ -507,10 +511,12 @@ export async function generateOracleBonesInterpretation(
         ? snapshotMatch[1].trim()
         : fallbackInterpretationSummary(fullText);
       const cleanText = stripInterpretationFluff(
-        fullText
-          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
-          .trim(),
+        stripSnapshotLeaks(
+          fullText
+            .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+            .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+            .trim(),
+        ),
       );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {

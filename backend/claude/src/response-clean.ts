@@ -1,3 +1,18 @@
+const SNAPSHOT_LEAK_DELIMITERS = ["[SNAPSHOT_START]", "THREAD_LINK:", "ACTION_CORE:"];
+
+/**
+ * Safety net for partial snapshots (missing [SNAPSHOT_END]) that the regex
+ * in interpretation.ts cannot strip.  Cut at the first leak delimiter.
+ */
+export function stripSnapshotLeaks(text: string): string {
+  let t = text;
+  for (const delimiter of SNAPSHOT_LEAK_DELIMITERS) {
+    const idx = t.indexOf(delimiter);
+    if (idx !== -1) t = t.slice(0, idx);
+  }
+  return t.trim();
+}
+
 /** Remove model-added boilerplate and trailing asterisk disclaimers from oracle text. */
 export function stripInterpretationFluff(text: string): string {
   let t = text.trim();

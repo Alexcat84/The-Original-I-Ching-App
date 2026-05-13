@@ -333,19 +333,19 @@ function resolveTogetherImageSize(lastPack?: string): { width: number; height: n
     case "free":
       return { width: 1024, height: 768 };
     case "seeker":
-      return { width: 1024, height: 832 };
-    case "practitioner":
-      return { width: 1024, height: 960 };
-    case "master":
       return { width: 1024, height: 1024 };
+    case "practitioner":
+      return { width: 1184, height: 1184 };
+    case "master":
+      return { width: 1504, height: 1504 };
   }
 }
 
 const TOGETHER_DIMENSION_MULTIPLE = 32;
 const TOGETHER_MIN_DIMENSION = 256;
 const TOGETHER_MAX_DIMENSION = 4096;
-// Cost-control cap: keep tiers at or below ~1 MP.
-const TOGETHER_MAX_PIXELS = 1_048_576; // 1 MP
+// Allow up to ~4 MP; tier pricing margins justify higher resolutions.
+const TOGETHER_MAX_PIXELS = 4_194_304; // 4 MP
 
 function normalizeTogetherDimension(value: number): number {
   const clamped = Math.max(
@@ -493,9 +493,12 @@ async function generateWithTogether(
   debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
   const model =
     process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.2-dev";
-  // Conservative defaults for FLUX.2-dev to reduce request rejections.
-  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "12");
-  const steps = Math.min(28, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 12));
+  // FLUX.1-schnell: 1–12 steps. FLUX.1-dev / FLUX.2-dev: up to 50.
+  const isSchnell = model.toLowerCase().includes("schnell");
+  const defaultSteps = isSchnell ? 10 : 30;
+  const maxSteps = isSchnell ? 12 : 50;
+  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? String(defaultSteps));
+  const steps = Math.min(maxSteps, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : defaultSteps));
   const normalizedSize = normalizeTogetherSize(width, height);
   const safeWidth = normalizedSize.width;
   const safeHeight = normalizedSize.height;
