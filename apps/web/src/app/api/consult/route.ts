@@ -139,6 +139,23 @@ function mapStoredConsultationsToRows(
   }));
 }
 
+function summarizeInterpretationForContext(raw: string): string {
+  const clean = raw
+    .replace(/\r?\n+/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/^\s*(?:##\s*)?/u, "")
+    .trim();
+  if (!clean) return "";
+  if (clean.length <= 420) return clean;
+  const clipped = clean.slice(0, 420);
+  const lastPunctuation = Math.max(
+    clipped.lastIndexOf(". "),
+    clipped.lastIndexOf("! "),
+    clipped.lastIndexOf("? "),
+  );
+  return (lastPunctuation > 180 ? clipped.slice(0, lastPunctuation + 1) : clipped).trim();
+}
+
 function filterRowsForOracleContext(
   rows: PreviousConsultationRow[],
   oracleMode: OracleType,
@@ -612,7 +629,7 @@ export async function POST(req: Request) {
           process.env,
           displayName,
         );
-      const interpretationSummary = "";
+      const interpretationSummary = summarizeInterpretationForContext(interpretation);
 
       const imagePrompt = buildOracleBonesImagePrompt({
         category,
@@ -799,7 +816,7 @@ export async function POST(req: Request) {
               const {
                 text: interpretation,
                 category,
-                interpretationSummary,
+                interpretationSummary: rawInterpretationSummary,
               } = await generateInterpretation(
                 castResult,
                 tierEffective,
@@ -809,6 +826,9 @@ export async function POST(req: Request) {
                 displayName,
                 castResult.castingMethod,
               );
+              const interpretationSummary =
+                rawInterpretationSummary?.trim() ||
+                summarizeInterpretationForContext(interpretation);
 
               const imagePrompt = buildImagePrompt(
                 castResult.primaryHexagram,
@@ -962,7 +982,7 @@ export async function POST(req: Request) {
     const {
       text: interpretation,
       category,
-      interpretationSummary,
+      interpretationSummary: rawInterpretationSummary,
     } = await generateInterpretation(
       castResult,
       tierEffective,
@@ -972,6 +992,9 @@ export async function POST(req: Request) {
       displayName,
       castResult.castingMethod,
     );
+    const interpretationSummary =
+      rawInterpretationSummary?.trim() ||
+      summarizeInterpretationForContext(interpretation);
 
     const imagePrompt = buildImagePrompt(
       castResult.primaryHexagram,

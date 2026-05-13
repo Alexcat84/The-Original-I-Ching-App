@@ -51,6 +51,7 @@ ${labels.session}: "${context.theme}"
 `;
     } else {
       block += `${labels.prior} #${c.position}:
+  Tema consultado (resumen): "${c.question.slice(0, 120)}"
   ${labels.hex}: #${c.primaryHexagramNumber} ${c.primaryHexagramName} (${c.primaryHexagramChinese})
   ${c.transformedHexagramName ? `${labels.mutated}: ${c.transformedHexagramName}` : labels.noTransform}
   ${labels.changingLines}: [${c.changingLines.join(", ")}]

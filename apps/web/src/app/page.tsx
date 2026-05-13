@@ -4139,6 +4139,8 @@ export default function HomePage() {
       manualRitualFinaleShownRef.current = false;
       setLoading(false);
       if (!ok) {
+        setQuestion(questionForRequest);
+        requestAnimationFrame(() => resizeQuestionInput());
         setRitualStatusPhase("question");
         setPhase("idle");
         setPendingUserQuestion(null);

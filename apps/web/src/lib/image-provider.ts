@@ -647,7 +647,7 @@ export async function buildImageAsset(params: {
       tier: params.tier,
       width: togetherFallbackW,
       height: togetherFallbackH,
-      seed: params.consultationId ?? `${params.primaryHexagram}-${params.transformedHexagram?.number ?? "none"}`,
+      seed: `${params.consultationId ?? `${params.primaryHexagram}-${params.transformedHexagram?.number ?? "none"}`}:${Date.now()}`,
     });
     if (prebuilt) fallbackImageUrl = prebuilt;
   }
@@ -772,7 +772,7 @@ export async function buildOracleBonesImageAsset(params: {
           tier: params.tier,
           width: togetherFallbackW,
           height: togetherFallbackH,
-          seed: params.consultationId ?? `${params.patternId}-${params.verdict}`,
+          seed: `${params.consultationId ?? `${params.patternId}-${params.verdict}`}:${Date.now()}`,
         })
       : null;
   const fallbackSvg = buildOracleBonesMockSvgString({

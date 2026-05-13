@@ -224,6 +224,14 @@ function buildOracleBonesUserContent(
       : language === "es"
         ? "Explica en lenguaje directo qué implica el veredicto para la decisión del consultante."
         : "Explain plainly what the verdict implies for the querent’s decision.";
+  const threadMemoryNote =
+    hasContext
+      ? language === "es"
+        ? "Incluye una memoria breve de hilo (1-2 frases) con la conexión personal detectada en consultas previas, solo si es relevante a esta pregunta."
+        : "Include a brief thread-memory note (1-2 sentences) with the personal continuity from prior consultations, only if relevant to this question."
+      : language === "es"
+        ? "Sin historial previo: no inventes continuidad."
+        : "No prior thread context: do not invent continuity.";
 
   return `
 NEW ORACLE BONES CONSULTATION${hasContext ? " (same thread as prior readings)" : ""}:
@@ -237,6 +245,7 @@ Alignment: ${aff}
 Public verdict label for user-facing prose: ${verdictNaturalLabelLocalized(cast.verdict, language)}
 
 ${modeNote}
+${threadMemoryNote}
 
 INSTRUCTIONS:
 - On the FIRST line write exactly: CATEGORY: [category]
