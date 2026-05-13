@@ -68,10 +68,14 @@ export interface TextsForClaude {
   /** Textos para la versión Legge (sólo si el modo es master_combined) */
   leggeJudgment?: string;
   leggeImage?: string;
+  leggeTransformedJudgment?: string | null;
+  leggeTransformedImage?: string | null;
   leggeSelectedLineTexts?: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }>;
   /** Textos para la versión Zhou Yi (sólo si el modo es master_combined) */
   zhouyiJudgment?: string;
   zhouyiImage?: string;
+  zhouyiTransformedJudgment?: string | null;
+  zhouyiTransformedImage?: string | null;
   zhouyiSelectedLineTexts?: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }>;
 }
 

@@ -310,8 +310,13 @@ ${t.specialYaoText ? `SPECIAL TEXT: ${t.specialYaoText}` : ""}
 ${
   tr && t.transformedJudgment
     ? `
-TRANSFORMED HEXAGRAM (Reference): #${tr.number} — ${tr.name}
-JUDGMENT: ${t.transformedJudgment}`
+TRANSFORMED HEXAGRAM (Reference): #${tr.number} — ${tr.name} (${tr.chineseName} · ${tr.pinyin})
+WILHELM JUDGMENT: ${t.transformedJudgment}
+${t.transformedImage ? `WILHELM IMAGE: ${t.transformedImage}` : ""}
+${t.leggeTransformedJudgment ? `LEGGE JUDGMENT: ${t.leggeTransformedJudgment}` : ""}
+${t.leggeTransformedImage ? `LEGGE IMAGE: ${t.leggeTransformedImage}` : ""}
+${t.zhouyiTransformedJudgment ? `ZHOU YI JUDGMENT: ${t.zhouyiTransformedJudgment}` : ""}
+${t.zhouyiTransformedImage ? `ZHOU YI IMAGE: ${t.zhouyiTransformedImage}` : ""}`
     : ""
 }
 `.trim();
@@ -330,6 +335,19 @@ JUDGMENT: ${t.transformedJudgment}`
 }
 `.trim();
   }
+
+  const masterSynthesisInstruction = isMasterCombined
+    ? `MASTER TRIANGULATION MODE (MANDATORY IN EVERY SECTION):
+- Keep the exact same section structure and elegant tone as base oracle mode.
+- For each section where classical text is used, triangulate explicitly with short attributions:
+  - Wilhelm says ... (psychological/archetypal lens)
+  - Legge says ... (literal/structural-historical lens)
+  - Zhou Yi says ... (root-classical lens)
+- In every section, bridge the three lenses into ONE integrated guidance for the querent.
+- Maximum one short quote per author per section; paraphrase the rest.
+- Address the user directly in second person in the response language. Do not narrate the user in third person.
+- In "Horizon and synthesis", provide one concrete cross-source action that emerges from the triangulation.`
+    : "Use the selected translator as the authoritative source while preserving structure and tone.";
 
   const questionBlock = `
 NEW CONSULTATION${hasContext ? " (continues thematic session)" : ""}:
@@ -360,7 +378,8 @@ INSTRUCTIONS:
 - Use family_home ONLY when the question clearly concerns household, parents, children, partner dynamics at home, or domestic life;
   for abstract or general life questions prefer general, spiritual_inner, decision_path, or career_work as appropriate.
 - ${hasContext ? "Hay consultas previas en sesión: continuidad breve según bloque de contexto (no re-pegues interpretaciones largas)." : "Primera consulta de la sesión."}
-- Interpret ONLY with the texts given. ${isMasterCombined ? "Actúa como un erudito maestro: sintetiza orgánicamente la esencia de las 3 traducciones provistas (Zhou Yi, Wilhelm, Legge). No cites extensamente los tres textos por separado; encuentra su hilo conductor común y responde de forma unificada en " + getLanguageName(language) + ". Toma en cuenta que el Zhou Yi está en chino clásico, úsalo como raíz de significado." : ""}
+- Interpret ONLY with the texts given.
+- ${masterSynthesisInstruction}
 - In the first sentence, answer the user's question clearly and directly, but do not invent factual data.
 - STRUCTURAL CONSISTENCY IS MANDATORY: any mention of "changing lines" count or positions MUST match CHANGING_COUNT and CHANGING_LINES_POSITIONS exactly.
 - ${looksFactual ? "This question appears to request factual real-world data: explicitly state when that fact cannot be verified from the provided oracle texts." : "Do not claim certainty about external facts unless they are explicitly provided in the input."}
@@ -432,22 +451,10 @@ export async function generateInterpretation(
   const userContextBlock =
     hasContext && context ? buildContextBlock(context, language, mode) : "";
 
-  const isMasterCombined = promptData.isMasterCombined;
-  const masterInstruction = isMasterCombined
-    ? `
-Actúa como la Voz de la Tradición. Tu misión es interpretar el oráculo no como una máquina, sino como un mentor que conoce la profundidad del consultante. Tu respuesta debe tener esta estructura obligatoria:
-
-RESPUESTA CONCRETA: La primera sección de tu mensaje. Redactada con autoridad, es una síntesis poderosa que resuelve la duda del usuario de forma inmediata, clara y personal, antes de cualquier ensayo. Máximo 3 oraciones.
-
-ENSAYO DIALÉCTICO: Una compulsa académica que compare a Wilhelm (Tesis), Legge (Antítesis) y Zhou Yi (Autoridad Raíz). Usa referencias cruzadas para sostener la respuesta inicial (ej: 'Mientras Wilhelm sugiere X, el original chino enfatiza Y...').
-
-SNAPSHOT TÉCNICO: Al final, incluye el bloque [SNAPSHOT_START] y [SNAPSHOT_END] con el resumen de 100 palabras para el historial.`
-    : "";
-
   const nameNote = displayName?.trim()
     ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
     : "";
-  const systemPrompt = `${SYSTEM_PROMPT}${nameNote}\n\n${masterInstruction}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+  const systemPrompt = `${SYSTEM_PROMPT}${nameNote}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
   const promptBlocks = buildPromptBlocks(
     systemPrompt,
     promptData,

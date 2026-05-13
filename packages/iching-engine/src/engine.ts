@@ -131,6 +131,8 @@ export function selectTextsForClaude(
       return {
         judgment: primaryRecord.judgment,
         image: primaryRecord.image,
+        transformedJudgment: transformedRecord?.judgment ?? null,
+        transformedImage: transformedRecord?.image ?? null,
         selectedLineTexts,
       };
     };
@@ -142,9 +144,13 @@ export function selectTextsForClaude(
       ...baseResult,
       leggeJudgment: legge.judgment,
       leggeImage: legge.image,
+      leggeTransformedJudgment: legge.transformedJudgment,
+      leggeTransformedImage: legge.transformedImage,
       leggeSelectedLineTexts: legge.selectedLineTexts,
       zhouyiJudgment: zhouyi.judgment,
       zhouyiImage: zhouyi.image,
+      zhouyiTransformedJudgment: zhouyi.transformedJudgment,
+      zhouyiTransformedImage: zhouyi.transformedImage,
       zhouyiSelectedLineTexts: zhouyi.selectedLineTexts,
     };
   };

@@ -48,6 +48,9 @@ export type HomeChromeUiMessages = {
   openLibrary: string;
   translatorLabel: string;
   translatorMasterCombined: string;
+  translatorMasterCostAria: string;
+  translatorMasterCostLabel: string;
+  translatorMasterCostValue: string;
 };
 
 const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
@@ -99,6 +102,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "Ir a la biblioteca",
     translatorLabel: "Traductor",
     translatorMasterCombined: "Master (3)",
+    translatorMasterCostAria: "Costo: 2 tokens",
+    translatorMasterCostLabel: "Costo:",
+    translatorMasterCostValue: "2 tokens",
   },
   en: {
     exportChatPdf: "Export chat PDF",
@@ -148,6 +154,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "Go to library",
     translatorLabel: "Translator",
     translatorMasterCombined: "Master (3)",
+    translatorMasterCostAria: "Cost: 2 tokens",
+    translatorMasterCostLabel: "Cost:",
+    translatorMasterCostValue: "2 tokens",
   },
   pt: {
     exportChatPdf: "Exportar chat PDF",
@@ -197,6 +206,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "Ir para a biblioteca",
     translatorLabel: "Tradutor",
     translatorMasterCombined: "Master (3)",
+    translatorMasterCostAria: "Custo: 2 tokens",
+    translatorMasterCostLabel: "Custo:",
+    translatorMasterCostValue: "2 tokens",
   },
   fr: {
     exportChatPdf: "Exporter le chat en PDF",
@@ -246,6 +258,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "Aller à la bibliothèque",
     translatorLabel: "Traducteur",
     translatorMasterCombined: "Master (3)",
+    translatorMasterCostAria: "Coût : 2 jetons",
+    translatorMasterCostLabel: "Coût :",
+    translatorMasterCostValue: "2 jetons",
   },
   de: {
     exportChatPdf: "Chat als PDF exportieren",
@@ -295,6 +310,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "Zur Bibliothek gehen",
     translatorLabel: "Übersetzer",
     translatorMasterCombined: "Master (3)",
+    translatorMasterCostAria: "Kosten: 2 Token",
+    translatorMasterCostLabel: "Kosten:",
+    translatorMasterCostValue: "2 Token",
   },
   it: {
     exportChatPdf: "Esporta chat PDF",
@@ -344,6 +362,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "Vai alla biblioteca",
     translatorLabel: "Traduttore",
     translatorMasterCombined: "Master (3)",
+    translatorMasterCostAria: "Costo: 2 token",
+    translatorMasterCostLabel: "Costo:",
+    translatorMasterCostValue: "2 token",
   },
   ja: {
     exportChatPdf: "チャットをPDFで書き出す",
@@ -394,6 +415,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "ライブラリへ",
     translatorLabel: "翻訳者",
     translatorMasterCombined: "マスター (3)",
+    translatorMasterCostAria: "コスト: 2トークン",
+    translatorMasterCostLabel: "コスト:",
+    translatorMasterCostValue: "2トークン",
   },
   zh: {
     exportChatPdf: "导出聊天 PDF",
@@ -441,6 +465,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "前往图书馆",
     translatorLabel: "译本",
     translatorMasterCombined: "大师 (3)",
+    translatorMasterCostAria: "消耗：2 代币",
+    translatorMasterCostLabel: "消耗：",
+    translatorMasterCostValue: "2 代币",
   },
   ko: {
     exportChatPdf: "채팅 PDF보내기",
@@ -491,6 +518,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "라이브러리로 이동",
     translatorLabel: "번역본",
     translatorMasterCombined: "마스터 (3)",
+    translatorMasterCostAria: "비용: 2 토큰",
+    translatorMasterCostLabel: "비용:",
+    translatorMasterCostValue: "2 토큰",
   },
   ar: {
     exportChatPdf: "تصدير المحادثة PDF",
@@ -540,6 +570,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "الذهاب إلى المكتبة",
     translatorLabel: "المترجم",
     translatorMasterCombined: "Master (3)",
+    translatorMasterCostAria: "التكلفة: 2 رمز",
+    translatorMasterCostLabel: "التكلفة:",
+    translatorMasterCostValue: "2 رمز",
   },
   hi: {
     exportChatPdf: "चैट PDF निर्यात करें",
@@ -588,6 +621,9 @@ const HOME_CHROME_UI: Record<AppLocale, HomeChromeUiMessages> = {
     openLibrary: "पुस्तकालय जाएं",
     translatorLabel: "अनुवादक",
     translatorMasterCombined: "मास्टर (3)",
+    translatorMasterCostAria: "लागत: 2 टोकन",
+    translatorMasterCostLabel: "लागत:",
+    translatorMasterCostValue: "2 टोकन",
   },
 };
 

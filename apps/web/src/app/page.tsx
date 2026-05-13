@@ -5372,7 +5372,7 @@ export default function HomePage() {
                                       className="master-token-tooltip"
                                       tabIndex={0}
                                       role="img"
-                                      aria-label="Costo: 2 tokens"
+                                      aria-label={chrome.translatorMasterCostAria}
                                       style={{
                                         display: "inline-flex",
                                         alignItems: "center",
@@ -5391,9 +5391,11 @@ export default function HomePage() {
                                     >
                                       ?
                                       <span className="master-token-tooltip-text">
-                                        <span className="master-token-tooltip-line">Costo:</span>
                                         <span className="master-token-tooltip-line">
-                                          2 tokens
+                                          {chrome.translatorMasterCostLabel}
+                                        </span>
+                                        <span className="master-token-tooltip-line">
+                                          {chrome.translatorMasterCostValue}
                                         </span>
                                       </span>
                                     </span>
