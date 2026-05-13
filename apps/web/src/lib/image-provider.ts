@@ -333,18 +333,61 @@ function resolveTogetherImageSize(lastPack?: string): { width: number; height: n
     case "free":
       return { width: 1024, height: 768 };
     case "seeker":
-      return { width: 1024, height: 1024 };
+      return { width: 1280, height: 960 };
     case "practitioner":
-      return { width: 1344, height: 1024 };
+      return { width: 1792, height: 1344 };
     case "master":
-      return { width: 1536, height: 1152 };
+      return { width: 2048, height: 2048 };
   }
 }
 
-/** Together docs baseline: keep width/height within 256..1920 and multiples of 8. */
+const TOGETHER_DIMENSION_MULTIPLE = 32;
+const TOGETHER_MIN_DIMENSION = 256;
+const TOGETHER_MAX_DIMENSION = 4096;
+const TOGETHER_MAX_PIXELS = 4_194_304; // 4 MP
+
 function normalizeTogetherDimension(value: number): number {
-  const clamped = Math.max(256, Math.min(1920, Math.trunc(value)));
-  return Math.max(256, clamped - (clamped % 8));
+  const clamped = Math.max(
+    TOGETHER_MIN_DIMENSION,
+    Math.min(TOGETHER_MAX_DIMENSION, Math.trunc(value)),
+  );
+  const rounded =
+    clamped - (clamped % TOGETHER_DIMENSION_MULTIPLE);
+  return Math.max(TOGETHER_MIN_DIMENSION, rounded);
+}
+
+function normalizeTogetherSize(width: number, height: number): { width: number; height: number } {
+  let safeWidth = normalizeTogetherDimension(width);
+  let safeHeight = normalizeTogetherDimension(height);
+
+  const pixels = safeWidth * safeHeight;
+  if (pixels <= TOGETHER_MAX_PIXELS) {
+    return { width: safeWidth, height: safeHeight };
+  }
+
+  const scale = Math.sqrt(TOGETHER_MAX_PIXELS / pixels);
+  safeWidth = normalizeTogetherDimension(Math.floor(safeWidth * scale));
+  safeHeight = normalizeTogetherDimension(Math.floor(safeHeight * scale));
+
+  while (safeWidth * safeHeight > TOGETHER_MAX_PIXELS) {
+    if (safeWidth >= safeHeight && safeWidth > TOGETHER_MIN_DIMENSION) {
+      safeWidth = Math.max(
+        TOGETHER_MIN_DIMENSION,
+        safeWidth - TOGETHER_DIMENSION_MULTIPLE,
+      );
+      continue;
+    }
+    if (safeHeight > TOGETHER_MIN_DIMENSION) {
+      safeHeight = Math.max(
+        TOGETHER_MIN_DIMENSION,
+        safeHeight - TOGETHER_DIMENSION_MULTIPLE,
+      );
+      continue;
+    }
+    break;
+  }
+
+  return { width: safeWidth, height: safeHeight };
 }
 
 async function generateWithFal(prompt: string, width: number, height: number): Promise<string | null> {
@@ -452,8 +495,9 @@ async function generateWithTogether(
   // Conservative defaults for FLUX.2-dev to reduce request rejections.
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "12");
   const steps = Math.min(28, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 12));
-  const safeWidth = normalizeTogetherDimension(width);
-  const safeHeight = normalizeTogetherDimension(height);
+  const normalizedSize = normalizeTogetherSize(width, height);
+  const safeWidth = normalizedSize.width;
+  const safeHeight = normalizedSize.height;
   const promptForApi = compactTogetherFluxPromptSegment(prompt, TOGETHER_FLUX_PROMPT_MAX_CHARS);
   const negativePrompt = compactTogetherFluxPromptSegment(
     buildTogetherNegativePrompt(),
