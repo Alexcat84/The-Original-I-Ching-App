@@ -1,36 +1,9 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+const fs = require('fs');
 
-export const metadata: Metadata = {
-  title: "User Guide | The Original I Ching App",
-  description:
-    "Learn how to consult the I Ching and Oracle Bones with AI: methods, token packs, image generation, and chat features.",
-  openGraph: {
-    title: "User Guide | The Original I Ching App",
-    description:
-      "How to use the I Ching oracle app: methods, token packs, AI interpretation, and more.",
-  },
-};
-import { getDocNavUiMessages, getGuiaPageUiMessages } from "@iching-oracle/i18n";
+let pageTsx = fs.readFileSync('apps/web/src/app/guia/page.tsx', 'utf8');
 
-import { resolveDocLocale } from "@/lib/doc-locale";
-
-
-export default async function GuiaRapidaPage() {
-  const locale = await resolveDocLocale();
-  const nav = getDocNavUiMessages(locale);
-  const g = getGuiaPageUiMessages(locale);
-  return (
-    <div className="oracle-shell doc-page">
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> ·{" "}
-        <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-        <Link href="/about">{nav.aboutShort}</Link> ·{" "}
-        <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
-        <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
-        <Link href="/terms">{nav.termsShort}</Link>
-      </nav>
-      <article className="doc-article">
+// Replace the article contents
+const newArticle = `<article className="doc-article">
         <h1>{g.title}</h1>
         <p className="doc-lead">
           {g.leadPart1}I Ching
@@ -122,7 +95,9 @@ export default async function GuiaRapidaPage() {
           <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
           <Link href="/terms">{nav.termsShort}</Link>
         </nav>
-      </article>
-    </div>
-  );
-}
+      </article>`;
+
+pageTsx = pageTsx.replace(/<article className="doc-article">[\s\S]*<\/article>/, newArticle);
+
+fs.writeFileSync('apps/web/src/app/guia/page.tsx', pageTsx);
+console.log("page.tsx actualizado!");

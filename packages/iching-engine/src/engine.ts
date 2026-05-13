@@ -107,6 +107,54 @@ export function selectTextsForClaude(
   rule: MutationRule,
   translator: InterpretationMode = "wilhelm",
 ): TextsForClaude {
+  const attachMasterTraditions = (baseResult: TextsForClaude): TextsForClaude => {
+    if (translator !== "master_combined") return baseResult;
+
+    const keyP = linesToBinaryTopFirst(lines);
+    const keyT = transformed ? linesToBinaryTopFirst(applyMutations(lines)) : null;
+
+    const fetchExtra = (translatorId: "legge" | "zhouyi") => {
+      const primaryRecord = getHexagramRecordByBinaryTopFirst(keyP, {
+        translator: translatorId,
+      });
+      const transformedRecord = keyT
+        ? getHexagramRecordByBinaryTopFirst(keyT, { translator: translatorId })
+        : null;
+      const selectedLineTexts = baseResult.selectedLineTexts.map((lineText) => {
+        const record =
+          lineText.fromHexagram === "primary" ? primaryRecord : transformedRecord;
+        const text =
+          record?.lines.find((line) => line.position === lineText.position)?.text ??
+          "";
+        return { ...lineText, text };
+      });
+      return {
+        judgment: primaryRecord.judgment,
+        image: primaryRecord.image,
+        transformedJudgment: transformedRecord?.judgment ?? null,
+        transformedImage: transformedRecord?.image ?? null,
+        selectedLineTexts,
+      };
+    };
+
+    const legge = fetchExtra("legge");
+    const zhouyi = fetchExtra("zhouyi");
+
+    return {
+      ...baseResult,
+      leggeJudgment: legge.judgment,
+      leggeImage: legge.image,
+      leggeTransformedJudgment: legge.transformedJudgment,
+      leggeTransformedImage: legge.transformedImage,
+      leggeSelectedLineTexts: legge.selectedLineTexts,
+      zhouyiJudgment: zhouyi.judgment,
+      zhouyiImage: zhouyi.image,
+      zhouyiTransformedJudgment: zhouyi.transformedJudgment,
+      zhouyiTransformedImage: zhouyi.transformedImage,
+      zhouyiSelectedLineTexts: zhouyi.selectedLineTexts,
+    };
+  };
+
   const base: TextsForClaude = {
     primaryJudgment: primary.judgment,
     primaryImage: primary.image,
@@ -120,147 +168,110 @@ export function selectTextsForClaude(
 
   switch (rule) {
     case "NO_CHANGING":
-      return {
+      return attachMasterTraditions({
         ...base,
         transformedJudgment: null,
         transformedImage: null,
         ruleExplanation: "Sin mutaciones. Solo Juicio e Imagen del hexagrama primario.",
-      };
+      });
 
     case "ONE_CHANGING": {
       const pos = changing[0]!;
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [{ position: pos, text: gl(primary, pos), fromHexagram: "primary" }],
         ruleExplanation: `Una mutación en línea ${pos}. Es el elemento más importante.`,
-      };
+      });
     }
 
     case "TWO_YIN_YANG": {
       const yin = lines.find((l) => changing.includes(l.position) && l.type === "yin_old")!;
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: yin.position, text: gl(primary, yin.position), fromHexagram: "primary" },
         ],
         ruleExplanation: `Dos mutaciones yin+yang. Solo se lee la línea Yin (pos ${yin.position}).`,
-      };
+      });
     }
 
     case "TWO_SAME_LOWER": {
       const low = Math.min(...changing);
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: low, text: gl(primary, low), fromHexagram: "primary" },
         ],
         ruleExplanation: `Dos mutaciones mismo tipo. Solo se lee la inferior (pos ${low}).`,
-      };
+      });
     }
 
     case "THREE_MIDDLE": {
       const mid = [...changing].sort((a, b) => a - b)[1]!;
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: mid, text: gl(primary, mid), fromHexagram: "primary" },
         ],
         ruleExplanation: `Tres mutaciones. Línea central (pos ${mid}). Ambos juicios igual peso.`,
-      };
+      });
     }
 
     case "FOUR_LOWEST_STABLE": {
-      if (!transformed) return base;
+      if (!transformed) return attachMasterTraditions(base);
       const stable = [1, 2, 3, 4, 5, 6].filter((p) => !changing.includes(p));
       const low = Math.min(...stable);
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: low, text: gl(transformed, low), fromHexagram: "transformed" },
         ],
         ruleExplanation: `Cuatro mutaciones. Línea estable más baja del TRANSFORMADO (pos ${low}).`,
-      };
+      });
     }
 
     case "FIVE_ONLY_STABLE": {
-      if (!transformed) return base;
+      if (!transformed) return attachMasterTraditions(base);
       const only = [1, 2, 3, 4, 5, 6].find((p) => !changing.includes(p))!;
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: only, text: gl(transformed, only), fromHexagram: "transformed" },
         ],
         ruleExplanation: `Cinco mutaciones. Único testigo estable del TRANSFORMADO (pos ${only}).`,
-      };
+      });
     }
 
     case "SIX_ALL_CHANGING":
-      return {
+      return attachMasterTraditions({
         ...base,
         primaryImage: "",
         selectedLineTexts: [],
         ruleExplanation: "Mutación total. Solo Juicio del hexagrama transformado.",
-      };
+      });
 
     case "QIAN_ALL_NINE":
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [],
         specialYaoText:
           primary.yongJiu ??
           'Todos los Nueves (用九): "Rebaño de dragones sin cabeza; ventura."',
         ruleExplanation: "Qian (1) con todos Yang Viejos. Séptimo Yao 用九.",
-      };
+      });
 
     case "KUN_ALL_SIX":
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [],
         specialYaoText:
           primary.yongLiu ?? 'Todos los Seises (用六): "Ventajoso la perseverancia duradera."',
         ruleExplanation: "Kun (2) con todos Yin Viejos. Séptimo Yao 用六.",
-      };
+      });
 
     default:
-      break;
+      return attachMasterTraditions(base);
   }
-
-  if (translator === "master_combined") {
-    const keyP = linesToBinaryTopFirst(lines);
-    const keyT = transformed ? linesToBinaryTopFirst(applyMutations(lines)) : null;
-
-    const fetchExtra = (tId: "legge" | "zhouyi") => {
-      const pRec = getHexagramRecordByBinaryTopFirst(keyP, { translator: tId });
-      const tRec = keyT ? getHexagramRecordByBinaryTopFirst(keyT, { translator: tId }) : null;
-      
-      let linesArray: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }> = [];
-      if (base.selectedLineTexts && base.selectedLineTexts.length > 0) {
-        linesArray = base.selectedLineTexts.map((lt) => {
-          const rec = lt.fromHexagram === "primary" ? pRec : tRec;
-          const text = rec?.lines.find((l) => l.position === lt.position)?.text ?? "";
-          return { ...lt, text };
-        });
-      }
-      return {
-        judgment: pRec.judgment,
-        image: pRec.image,
-        lines: linesArray,
-      };
-    };
-
-    const leggeExtra = fetchExtra("legge");
-    const zhouyiExtra = fetchExtra("zhouyi");
-
-    base.leggeJudgment = leggeExtra.judgment;
-    base.leggeImage = leggeExtra.image;
-    base.leggeSelectedLineTexts = leggeExtra.lines;
-
-    base.zhouyiJudgment = zhouyiExtra.judgment;
-    base.zhouyiImage = zhouyiExtra.image;
-    base.zhouyiSelectedLineTexts = zhouyiExtra.lines;
-  }
-
-  return base;
 }
 
 export interface PerformCastOptions {
@@ -294,6 +305,7 @@ function buildCastResultFromLines(
     id: options?.id ?? newCastId(),
     question,
     language,
+    interpretationMode: translator,
     lines,
     primaryHexagram: primary,
     transformedHexagram: transformed,

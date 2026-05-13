@@ -24,7 +24,8 @@ export type FaqCategoryId =
   | "oracle-methods"
   | "ai-texts"
   | "tokens-payments"
-  | "privacy-account";
+  | "privacy-account"
+  | "premium-features";
 
 export type FaqCategory = {
   id: FaqCategoryId;
@@ -70,7 +71,8 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
     "data-reliability",
     "not-advice",
   ],
-  "tokens-payments": ["tokens-packs", "purchases-legal", "library-unlock"],
+  "tokens-payments": ["tokens-packs", "purchases-legal"],
+  "premium-features": ["translators-tiers", "master-tokens-cost", "library-unlock"],
   "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa"],
 };
 
@@ -80,77 +82,98 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "Métodos del oráculo",
     "ai-texts": "Textos, IA y autenticidad",
     "tokens-payments": "Tokens, packs y pagos",
+      "premium-features": "Funcionalidades Premium",
     "privacy-account": "Privacidad y cuenta",
   },
   en: {
     "app-usage": "Using the app",
     "oracle-methods": "Oracle methods",
     "ai-texts": "Texts, AI and authenticity",
-    "tokens-payments": "Tokens, packs and payments",
-    "privacy-account": "Privacy and account",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Privacy and account",
   },
   pt: {
     "app-usage": "Uso da app",
     "oracle-methods": "Métodos do oráculo",
     "ai-texts": "Textos, IA e autenticidade",
-    "tokens-payments": "Tokens, packs e pagamentos",
-    "privacy-account": "Privacidade e conta",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Privacidade e conta",
   },
   fr: {
     "app-usage": "Utilisation de l’app",
     "oracle-methods": "Méthodes de l’oracle",
     "ai-texts": "Textes, IA et authenticité",
-    "tokens-payments": "Jetons, packs et paiements",
-    "privacy-account": "Confidentialité et compte",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Confidentialité et compte",
   },
   de: {
     "app-usage": "App-Nutzung",
     "oracle-methods": "Orakel-Methoden",
     "ai-texts": "Texte, KI und Echtheit",
-    "tokens-payments": "Tokens, Packs und Zahlungen",
-    "privacy-account": "Datenschutz und Konto",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Datenschutz und Konto",
   },
   it: {
     "app-usage": "Uso dell’app",
     "oracle-methods": "Metodi dell’oracolo",
     "ai-texts": "Testi, IA e autenticità",
-    "tokens-payments": "Token, pack e pagamenti",
-    "privacy-account": "Privacy e account",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Privacy e account",
   },
   ja: {
     "app-usage": "アプリの使い方",
     "oracle-methods": "占いの方式",
     "ai-texts": "テキスト・AI・原典性",
-    "tokens-payments": "トークン・パック・支払い",
-    "privacy-account": "プライバシーとアカウント",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "プライバシーとアカウント",
   },
   zh: {
     "app-usage": "应用使用",
     "oracle-methods": "占卜方法",
     "ai-texts": "文本、AI 与真实性",
-    "tokens-payments": "代币、套餐与付款",
-    "privacy-account": "隐私与账户",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "隐私与账户",
   },
   ko: {
     "app-usage": "앱 사용",
     "oracle-methods": "점법",
     "ai-texts": "원문·AI·진본성",
-    "tokens-payments": "토큰·팩·결제",
-    "privacy-account": "개인정보와 계정",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "개인정보와 계정",
   },
   ar: {
     "app-usage": "استخدام التطبيق",
     "oracle-methods": "طرق العرافة",
     "ai-texts": "النصوص والذكاء الاصطناعي والأصالة",
-    "tokens-payments": "الرموز والحزم والدفع",
-    "privacy-account": "الخصوصية والحساب",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "الخصوصية والحساب",
   },
   hi: {
     "app-usage": "ऐप का उपयोग",
     "oracle-methods": "ओरेकल विधियाँ",
     "ai-texts": "मूल पाठ, एआई और प्रामाणिकता",
-    "tokens-payments": "टोकन, पैक और भुगतान",
-    "privacy-account": "गोपनीयता और खाता",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "गोपनीयता और खाता",
   },
 };
 
@@ -283,13 +306,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
       "Commercial terms and acceptable use are in the Terms of Service. Token packs and checkout flows are summarized in the guide and pricing pages.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "What is the Library and how do I unlock it?",
-    answer:
-      "The Library is a premium section containing the complete collection of 64 hexagrams across three literary works: the classic Wilhelm/Baynes translation, the James Legge version, and the original Zhou Yi. It is designed for personal study and to compare your manual casts with authentic sources. It is permanently unlocked by purchasing any paid token pack.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "Is two-factor authentication available?",
@@ -348,6 +365,24 @@ const FAQ_ITEMS_EN: FaqItem[] = [
 ];
 
 const FAQ_ITEMS_ES: FaqItem[] = [
+  {
+    id: "translators-tiers",
+    question: "¿Cómo funcionan los diferentes niveles de traducción?",
+    answer: "La app ofrece diversos linajes de sabiduría para tu consulta. Mientras que el nivel inicial incluye la visión de Wilhelm, los packs superiores (Seeker y Practitioner) desbloquean a James Legge y el Zhou Yi original. El nivel Master ofrece acceso exclusivo a la función Master (3).",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "¿Cómo funciona la síntesis Master (3) y por qué es tan potente?",
+    answer: "La función Master (3) realiza una Síntesis Personalizada: triangula simultáneamente las tres fuentes raíz (Wilhelm, Legge y el Zhou Yi original) para destilar un veredicto coherente. El resultado es un análisis dialéctico que ofrece una 'Respuesta Concreta' potente e inmediata, seguida de un análisis comparativo profundo elaborado de forma única para tu situación y adaptado con total fidelidad al contexto personal de tu consulta.",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "¿Qué es la Biblioteca y cómo se accede?",
+    answer: "Es el compendio completo de los 64 hexagramas y las tres obras literarias íntegras. El acceso se desbloquea de forma permanente al adquirir cualquier pack de pago (Seeker en adelante).",
+  },
+
+  
   {
     id: "tokens-packs",
     question: "¿Cómo funcionan los tokens, los packs y el plan gratuito?",
@@ -427,13 +462,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
       "Las condiciones comerciales y el uso aceptable están en los Términos del servicio. Los packs de tokens y el flujo de compra se resumen en la guía y en la página de precios.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "¿Qué es la Biblioteca y cómo se desbloquea?",
-    answer:
-      "La Biblioteca es una sección premium que contiene la colección completa de los 64 hexagramas en tres obras literarias: la traducción clásica de Wilhelm/Baynes, la versión de James Legge y el Zhou Yi original. Está diseñada para el estudio personal y para contrastar tus tiradas manuales con fuentes auténticas. Se desbloquea de forma permanente al adquirir cualquier pack de tokens de pago.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "¿Hay autenticación en dos pasos (2FA)?",
@@ -570,13 +599,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
       "الشروط التجارية والاستخدام المقبول موجودة في شروط الخدمة. كما تُلخّص صفحة الباقات والأسعار آلية الشراء والدفع.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "ما هي المكتبة وكيف يمكنني فتحها؟",
-    answer:
-      "المكتبة هي قسم متميز يحتوي على المجموعة الكاملة المكونة من 64 هكساغراماً عبر ثلاثة أعمال أدبية: ترجمة فيلهلم/باينズ الكلاسيكية، ونسخة جيمس ليغ، وجو يي الأصلي. تم تصميمها للدراسة الشخصية ولمقارنة قراءاتك اليدوية مع المصادر الموثوقة. يتم فتحها بشكل دائم عند شراء أي حزمة رموز مدفوعة.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "هل تتوفر المصادقة الثنائية (2FA)؟",
@@ -713,13 +736,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
       "वाणिज्यिक शर्तें और स्वीकार्य उपयोग सेवा शर्तों में हैं। टोकन पैक और चेकआउट प्रवाह गाइड व प्राइसिंग पेज में सारांशित हैं।",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "पुस्तकालय क्या है और मैं इसे कैसे अनलॉक करूं?",
-    answer:
-      "पुस्तकालय एक प्रीमियम अनुभाग है जिसमें तीन साहित्यिक कृतियों: विल्हेल्म/बेंस का शास्त्रीय अनुवाद, जेम्स लेग संस्करण, और मूल झोउ यी में 64 हेक्साग्राम का पूरा संग्रह है। यह व्यक्तिगत अध्ययन और आपके मैन्युअल कास्ट की प्रामाणिक स्रोतों के साथ तुलना करने के लिए डिज़ाइन किया गया है। यह किसी भी सशुल्क टोकन पैक को खरीदने पर स्थायी रूप से अनलॉक हो जाता है।",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "क्या दो-कारक प्रमाणीकरण (2FA) उपलब्ध है?",
@@ -854,13 +871,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
       "商業条件と許容使用は利用規約に記載されています。トークンパックとチェックアウトの流れはガイドと料金ページにまとめられています。",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "ライブラリとは何ですか？どうすればアンロックできますか？",
-    answer:
-      "ライブラリは、ヴィルヘルム/バインズ訳、ジェームズ・レッグ版、そして原典の周易という3つの文学作品にわたる64卦の完全なコレクションを含むプレミアムセクションです。個人の学習や、手動での占い結果を本物の情報源と比較するために設計されています。有料のトークンパックを購入することで永久にアンロックされます。",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "二要素認証（2FA）は利用できますか？",
@@ -996,13 +1007,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
       "商业条款和可接受使用规定请见服务条款。代币套餐和结账流程在指南和定价页面中有所概述。",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "资料库是什么？如何解锁？",
-    answer:
-      "资料库是一个高级板块，包含三个文学版本中的 64 卦完整合集：经典的卫礼贤/贝恩斯译本、理雅各（James Legge）版本以及《周易》古经。它专为个人学习以及将您的手动起卦与原典进行对比而设计。购买任何付费代币包即可永久解锁。",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "是否提供双因素身份验证（2FA）？",
@@ -1137,13 +1142,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
       "상업적 조건 및 허용 가능한 사용은 서비스 약관에 있습니다. 토큰 팩과 결제 흐름은 가이드와 가격 페이지에 요약되어 있습니다.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "라이브러리란 무엇이며 어떻게 잠금 해제하나요?",
-    answer:
-      "라이브러리는 빌헬름/베인즈 번역, 제임스 레그 버전, 그리고 원전 주역 등 세 가지 문헌에 걸친 64괘 전체 컬렉션을 포함하는 프리미엄 섹션입니다. 개인적인 학습과 수동 점괘를 정통 출처와 대조하기 위해 설계되었습니다. 유료 토큰 팩을 구매하면 영구적으로 잠금 해제됩니다.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "이중 인증(2FA)을 사용할 수 있나요?",
@@ -1279,13 +1278,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
       "As condições comerciais e o uso aceitável estão nos Termos de Serviço. Os pacotes de tokens e o fluxo de compra estão resumidos no guia e na página de preços.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "O que é a Biblioteca e como a desbloqueio?",
-    answer:
-      "A Biblioteca é uma secção premium que contém a coleção completa dos 64 hexagramas em três obras literarias: a tradução clássica de Wilhelm/Baynes, a versão de James Legge e o Zhou Yi original. Foi concebida para o estudo pessoal e para contrastar as suas tiragens manuais com fontes autênticas. É desbloqueada permanentemente ao adquirir qualquer pacote de tokens pago.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "A autenticação em dois fatores (2FA) está disponível?",
@@ -1424,13 +1417,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
       "Kommerzielle Bedingungen und zulässige Nutzung finden sich in den Nutzungsbedingungen. Token-Packs und Kaufabläufe sind im Leitfaden und auf der Preisseite zusammengefasst.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "Was ist die Bibliothek und wie entsperre ich sie?",
-    answer:
-      "Die Bibliothek ist ein Premium-Bereich, der die vollständige Sammlung der 64 Hexagramme aus drei literarischen Werken enthält: der klassischen Wilhelm/Baynes-Übersetzung, der James-Legge-Version und dem originalen Zhou Yi. Sie ist für das persönliche Studium und den Abgleich Ihrer manuellen Würfe mit authentischen Quellen gedacht. Sie wird durch den Kauf eines beliebigen kostenpflichtigen Token-Pakets dauerhaft freigeschaltet.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "Ist Zwei-Faktor-Authentifizierung (2FA) verfügbar?",
@@ -1571,13 +1558,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
       "Le condizioni commerciali e l'uso accettabile si trovano nei Termini di Servizio. I pacchetti di token e i flussi di acquisto sono riassunti nella guida e nella pagina dei prezzi.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "Cos'è la Biblioteca e come la sblocco?",
-    answer:
-      "La Biblioteca è una sezione premium che contiene la collezione completa dei 64 esagrammi in tre opere letterarie: la traduzione classica di Wilhelm/Baynes, la versione di James Legge e il Zhou Yi originale. È pensata per lo studio personale e per confrontare i tuoi lanci manuali con fonti autentiche. Si sblocca in modo permanente acquistando qualsiasi pacchetto di token a pagamento.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "È disponibile l'autenticazione a due fattori (2FA)?",
@@ -1719,13 +1700,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
       "Les conditions commerciales et l'utilisation acceptable sont dans les Conditions de Service. Les packs de tokens et les flux de paiement sont résumés dans le guide et la page des tarifs.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "Qu'est-ce que la Bibliothèque et comment la débloquer ?",
-    answer:
-      "La Bibliothèque est une section premium contenant la collection complète des 64 hexagrammes à travers trois œuvres littéraires : la traduction classique Wilhelm/Baynes, la version de James Legge et le Zhou Yi original. Elle est conçue pour l'étude personnelle et pour comparer vos tirages manuels avec des sources authentiques. Elle est débloquée de façon permanente à l'achat de tout pack de jetons payant.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "L'authentification à deux facteurs (2FA) est-elle disponible ?",

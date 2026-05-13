@@ -27,6 +27,41 @@ CRITICAL LOGIC RULE:
 
 /** Same token budget for all tiers. */
 const MAX_TOKENS = 4096;
+const LOG_CLAUDE_CACHE_METRICS =
+  process.env.LOG_CLAUDE_CACHE_METRICS === "1" ||
+  process.env.LOG_CLAUDE_CACHE_METRICS === "true" ||
+  process.env.NODE_ENV === "development";
+
+function toUsageRecord(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== "object") return {};
+  return value as Record<string, unknown>;
+}
+
+function numberField(record: Record<string, unknown>, key: string): number | null {
+  const value = record[key];
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function logCacheUsage(source: "anthropic" | "openrouter", usageRaw: unknown): void {
+  if (!LOG_CLAUDE_CACHE_METRICS) return;
+  const usage = toUsageRecord(usageRaw);
+  const inputTokens = numberField(usage, "input_tokens");
+  const outputTokens = numberField(usage, "output_tokens");
+  const cacheReadTokens = numberField(usage, "cache_read_input_tokens");
+  const cacheCreationTokens = numberField(usage, "cache_creation_input_tokens");
+  const cacheReadRatio =
+    inputTokens && inputTokens > 0 && cacheReadTokens !== null
+      ? `${((cacheReadTokens / inputTokens) * 100).toFixed(2)}%`
+      : "n/a";
+  console.log("[generateOracleBonesInterpretation][cache_usage]", {
+    source,
+    inputTokens,
+    outputTokens,
+    cacheReadTokens,
+    cacheCreationTokens,
+    cacheReadRatio,
+  });
+}
 
 function getLanguageName(language: string): string {
   const map: Record<string, string> = {
@@ -151,6 +186,21 @@ function sanitizeOracleBonesBody(text: string, header: string, language: string)
   return filtered.join("\n").trim();
 }
 
+function fallbackInterpretationSummary(text: string): string {
+  const clean = text
+    .replace(/\r?\n+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!clean) return "";
+  const clipped = clean.slice(0, 420);
+  const lastPunctuation = Math.max(
+    clipped.lastIndexOf(". "),
+    clipped.lastIndexOf("! "),
+    clipped.lastIndexOf("? "),
+  );
+  return (lastPunctuation > 180 ? clipped.slice(0, lastPunctuation + 1) : clipped).trim();
+}
+
 function replaceVerdictCodesWithNaturalLanguage(text: string, language: string): string {
   const replacements: Array<[OracleBonesCastResult["verdict"], string]> = [
     ["auspicious_clear", verdictNaturalLabelLocalized("auspicious_clear", language)],
@@ -189,6 +239,14 @@ function buildOracleBonesUserContent(
       : language === "es"
         ? "Explica en lenguaje directo qué implica el veredicto para la decisión del consultante."
         : "Explain plainly what the verdict implies for the querent’s decision.";
+  const threadMemoryNote =
+    hasContext
+      ? language === "es"
+        ? "Incluye una memoria breve de hilo (1-2 frases) con la conexión personal detectada en consultas previas, solo si es relevante a esta pregunta."
+        : "Include a brief thread-memory note (1-2 sentences) with the personal continuity from prior consultations, only if relevant to this question."
+      : language === "es"
+        ? "Sin historial previo: no inventes continuidad."
+        : "No prior thread context: do not invent continuity.";
 
   return `
 NEW ORACLE BONES CONSULTATION${hasContext ? " (same thread as prior readings)" : ""}:
@@ -202,6 +260,7 @@ Alignment: ${aff}
 Public verdict label for user-facing prose: ${verdictNaturalLabelLocalized(cast.verdict, language)}
 
 ${modeNote}
+${threadMemoryNote}
 
 INSTRUCTIONS:
 - On the FIRST line write exactly: CATEGORY: [category]
@@ -215,6 +274,14 @@ INSTRUCTIONS:
 - Anchor certainty to this cast ("in this cast", "en esta tirada"), not to universal proof claims.
 - If affirmsPositive is false, do NOT assert opposite scenarios as true/probable; only state non-confirmation of the positive charge.
 - If affirmsPositive is null, do NOT force yes/no.
+- MEMORY SNAPSHOT (MANDATORY, end of response):
+  Append exactly this block at the end:
+  [SNAPSHOT_START]
+  THREAD_LINK: 2-3 sentences of personal continuity from prior thread, explicit and concrete (e.g., "en tus X consultas previas... y ahora vuelves con...").
+  ACTION_CORE: one concrete next-step action for the user in second person, directly tied to that continuity.
+  SYMBOLS_MIN: optional one short line only if strictly needed (max one oracle symbol/verdict mention); prioritize personal thread over technical labels.
+  [SNAPSHOT_END]
+- Snapshot must be concise (80-130 words total), high-signal, specific, and personal-first (no vague generic phrasing).
 - Length: ${targetWordCount} words
 - Respond in ${getLanguageName(language)}
 `.trim();
@@ -228,11 +295,21 @@ export async function generateOracleBonesInterpretation(
   language: string,
   env: NodeJS.ProcessEnv = process.env,
   displayName?: string,
-): Promise<{ text: string; category: ConsultationCategory }> {
+): Promise<{
+  text: string;
+  category: ConsultationCategory;
+  interpretationSummary: string;
+}> {
   if (cast.verdict === "silent") {
+    const text = enforceOracleBonesConsistency(
+      oracleBonesSilentVerdictMessage(language),
+      cast,
+      language,
+    );
     return {
-      text: enforceOracleBonesConsistency(oracleBonesSilentVerdictMessage(language), cast, language),
+      text,
       category: "general",
+      interpretationSummary: fallbackInterpretationSummary(text),
     };
   }
 
@@ -240,9 +317,18 @@ export async function generateOracleBonesInterpretation(
   const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
-  const userContent = hasContext && context
-    ? `${buildContextBlock(context, language, mode)}\n\n${buildOracleBonesUserContent(cast, tier, language, true, mode)}`
-    : buildOracleBonesUserContent(cast, tier, language, false, mode);
+  const contextBlock =
+    hasContext && context ? buildContextBlock(context, language, mode) : "";
+  const consultBlock = buildOracleBonesUserContent(
+    cast,
+    tier,
+    language,
+    hasContext,
+    mode,
+  );
+  const userContent = contextBlock
+    ? `${contextBlock}\n\n${consultBlock}`
+    : consultBlock;
 
   const nameNote =
     displayName?.trim()
@@ -252,7 +338,12 @@ export async function generateOracleBonesInterpretation(
 
   if (ANTHROPIC_API_KEY) {
     try {
-      const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+      const client = new Anthropic({
+        apiKey: ANTHROPIC_API_KEY,
+        defaultHeaders: {
+          "anthropic-beta": "prompt-caching-2024-07-31",
+        },
+      });
       const response = await client.messages.create({
         model,
         max_tokens: maxTokens,
@@ -267,9 +358,18 @@ export async function generateOracleBonesInterpretation(
           {
             role: "user",
             content: [
+              ...(contextBlock
+                ? [
+                    {
+                      type: "text" as const,
+                      text: contextBlock,
+                      cache_control: { type: "ephemeral" as const },
+                    },
+                  ]
+                : []),
               {
                 type: "text",
-                text: userContent,
+                text: consultBlock,
                 cache_control: { type: "ephemeral" },
               },
             ],
@@ -280,10 +380,20 @@ export async function generateOracleBonesInterpretation(
         .filter((b) => b.type === "text")
         .map((b) => (b as { text: string }).text)
         .join("");
+      logCacheUsage("anthropic", response.usage);
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
+      const snapshotMatch = fullText.match(
+        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+      );
+      const interpretationSummary = snapshotMatch
+        ? snapshotMatch[1].trim()
+        : fallbackInterpretationSummary(fullText);
       const cleanText = stripInterpretationFluff(
-        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+        fullText
+          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .trim(),
       );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
@@ -292,7 +402,11 @@ export async function generateOracleBonesInterpretation(
             verdict: cast.verdict,
           });
         } else {
-          return { text: enforceOracleBonesConsistency(cleanText, cast, language), category };
+          return {
+            text: enforceOracleBonesConsistency(cleanText, cast, language),
+            category,
+            interpretationSummary,
+          };
         }
       }
     } catch (err) {
@@ -331,16 +445,30 @@ export async function generateOracleBonesInterpretation(
         .filter((b) => b.type === "text")
         .map((b) => (b as { text: string }).text)
         .join("");
+      logCacheUsage("openrouter", response.usage);
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
+      const snapshotMatch = fullText.match(
+        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+      );
+      const interpretationSummary = snapshotMatch
+        ? snapshotMatch[1].trim()
+        : fallbackInterpretationSummary(fullText);
       const cleanText = stripInterpretationFluff(
-        fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim(),
+        fullText
+          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .trim(),
       );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
           console.warn("[generateOracleBonesInterpretation] OpenRouter returned likely wrong language; falling through", { language });
         } else {
-          return { text: enforceOracleBonesConsistency(cleanText, cast, language), category };
+          return {
+            text: enforceOracleBonesConsistency(cleanText, cast, language),
+            category,
+            interpretationSummary,
+          };
         }
       }
     } catch (err) {
@@ -372,7 +500,18 @@ export async function generateOracleBonesInterpretation(
       const fullText = data.choices?.[0]?.message?.content ?? "";
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
-      const cleanText = stripInterpretationFluff(fullText.replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "").trim());
+      const snapshotMatch = fullText.match(
+        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+      );
+      const interpretationSummary = snapshotMatch
+        ? snapshotMatch[1].trim()
+        : fallbackInterpretationSummary(fullText);
+      const cleanText = stripInterpretationFluff(
+        fullText
+          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .trim(),
+      );
       if (cleanText.trim().length > 0) {
         if (isLikelyWrongLanguage(cleanText, language)) {
           console.warn("[generateOracleBonesInterpretation] Groq returned likely wrong language; using fallback", {
@@ -380,12 +519,21 @@ export async function generateOracleBonesInterpretation(
             verdict: cast.verdict,
           });
         } else {
-          return { text: enforceOracleBonesConsistency(cleanText, cast, language), category };
+          return {
+            text: enforceOracleBonesConsistency(cleanText, cast, language),
+            category,
+            interpretationSummary,
+          };
         }
       }
     }
   }
 
   const fallback = oracleBonesFallbackProse(cast, language);
-  return { text: enforceOracleBonesConsistency(fallback, cast, language), category: "decision_path" };
+  const text = enforceOracleBonesConsistency(fallback, cast, language);
+  return {
+    text,
+    category: "decision_path",
+    interpretationSummary: fallbackInterpretationSummary(text),
+  };
 }

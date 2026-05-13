@@ -51,7 +51,11 @@ import {
   drawPdfContinuationChrome,
   interpretationMarkdownToPdfBlocks,
 } from "@/lib/pdf-chat-export";
-import { tierLabelForDisplay, type Tier } from "@/lib/credits";
+import {
+  tierLabelForDisplay,
+  toContextTierKey,
+  type Tier,
+} from "@/lib/credits";
 import {
   creditsExhaustedBlock,
   tierToBillingTierCopy,
@@ -1374,8 +1378,53 @@ export default function HomePage() {
     }
   }, [ichingCastMode]);
   const [translatorId, setTranslatorId] = useState<
-    "wilhelm" | "legge" | "zhouyi" | "master_combined"
-  >("wilhelm");
+      "wilhelm" | "legge" | "zhouyi" | "master_combined"
+    >("wilhelm");
+
+  const tierAccessKey = useMemo<
+    "free" | "seeker" | "practitioner" | "master" | "oracle"
+  >(() => {
+    const raw = (tier ?? "free").toLowerCase();
+    if (raw === "oracle") return "oracle";
+    if (
+      raw === "free" ||
+      raw === "seeker" ||
+      raw === "practitioner" ||
+      raw === "master"
+    ) {
+      return raw;
+    }
+    return toContextTierKey(raw);
+  }, [tier]);
+
+  const tierAccessIndex = useMemo(() => {
+    if (tierAccessKey === "oracle") return 4;
+    const tiers = ["free", "seeker", "practitioner", "master"] as const;
+    return tiers.indexOf(tierAccessKey);
+  }, [tierAccessKey]);
+
+  const handleTranslatorChange = (id: "wilhelm" | "legge" | "zhouyi" | "master_combined") => {
+    if (isAdmin) {
+      setError(null);
+      setTranslatorId(id);
+      return;
+    }
+    if (id === "legge" && tierAccessIndex < 1) {
+      setError("Este traductor requiere el pack Seeker. Visita la sección de Packs para desbloquearlo.");
+      return;
+    }
+    if (id === "zhouyi" && tierAccessIndex < 2) {
+      setError("Este traductor requiere el pack Practitioner. Visita la sección de Packs para desbloquearlo.");
+      return;
+    }
+    if (id === "master_combined" && tierAccessIndex < 3) {
+      setError("Este traductor requiere el pack Master. Visita la sección de Packs para desbloquearlo.");
+      return;
+    }
+    setError(null);
+    setTranslatorId(id);
+  };
+
   const [ichingCastingMethod, setIchingCastingMethod] = useState<CastingMethod>(
     () => {
       if (typeof window === "undefined") return "three-coins";
@@ -1868,6 +1917,7 @@ export default function HomePage() {
     twoFactorMethod === "email" ? "email" : "totp";
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
   const QUESTION_INPUT_MAX_HEIGHT_PX = 160;
+  const QUESTION_INPUT_MAX_CHARS = 4000;
   const resizeQuestionInput = useCallback(() => {
     const el = questionInputRef.current;
     if (!el) return;
@@ -2256,8 +2306,12 @@ export default function HomePage() {
     pinnedLocalSessionIdRef.current = created.localId;
     setSessions((prev) => [created, ...prev.filter((s) => s.messageCount > 0)]);
     setActiveSessionLocalId(created.localId);
+    setRevealConsultationId(null);
+    setManualCastPreview(null);
     setQuestion("");
     setError(null);
+    setLoading(false); // purga cualquier estado de carga pendiente al iniciar nueva sesión
+    setPhase("idle");
     setChatsOpen(false);
     setConsultPanelOpen(false);
   }, [ui.sessionNew]);
@@ -3563,66 +3617,89 @@ export default function HomePage() {
       }
       ichingConsultWallClockStartedAtRef.current =
         oracleMode === "iching" ? Date.now() : null;
-      const res = await fetch("/api/consult", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          question: questionForRequest,
-          language: detectInputLanguage(questionForRequest, locale),
-          /** Manual cast must never request SSE — long tick reveal only applies to automatic mode. */
-          responseMode:
-            oracleMode === "iching" && ichingCastMode === "auto"
-              ? "stream_ritual"
-              : "ritual",
-          sessionId: sessionIdForRequest,
-          sessionTitle: consultSession.title,
-          isDeepening: activeThread.length > 0,
-          oracleMode,
-          ...(oracleMode === "iching"
-            ? manualLineValues
-              ? {
-                  ichingCastMode: "manual" as const,
-                  ichingCastingMethod,
-                  ichingManualLineValues: [...manualLineValues],
-                }
-              : { ichingCastMode, ichingCastingMethod }
-            : {}),
-          translatorId,
-          displayName: displayName ?? undefined,
-          oracleBones:
-            oracleMode === "oracle_bones"
-              ? {
-                  positiveCharge: questionForRequest,
-                  negativeCharge: undefined,
-                  medium: DEFAULT_BONES_MEDIUM,
-                }
-              : undefined,
-          history: activeThread.map((item) => ({
-            oracleType: item.oracleType ?? "iching",
-            question: item.question,
-            primaryHexagram: item.primaryHexagram,
-            primaryHexagramName: item.primaryHexagramName,
-            primaryHexagramChinese: item.primaryHexagramChinese,
-            transformedHexagramName: item.transformedHexagramName,
-            changingLines: item.changingLines,
-            mutationRule: item.mutationRule,
-            interpretation: item.interpretation,
-            oracleBones: item.oracleBones
-              ? {
-                  patternId: item.oracleBones.patternId,
-                  verdict: item.oracleBones.verdict,
-                  positiveCharge: item.oracleBones.positiveCharge,
-                  negativeCharge: item.oracleBones.negativeCharge,
-                  medium: item.oracleBones.medium,
-                  ambiguousPasses: item.oracleBones.ambiguousPasses,
-                }
-              : undefined,
-          })),
-        }),
-      });
+      const requestPayload = {
+        question: questionForRequest,
+        language: detectInputLanguage(questionForRequest, locale),
+        /** Manual cast must never request SSE — long tick reveal only applies to automatic mode. */
+        responseMode:
+          oracleMode === "iching" && ichingCastMode === "auto"
+            ? "stream_ritual"
+            : "ritual",
+        sessionId: sessionIdForRequest,
+        sessionTitle: consultSession.title,
+        isDeepening: activeThread.length > 0,
+        oracleMode,
+        ...(oracleMode === "iching"
+          ? manualLineValues
+            ? {
+                ichingCastMode: "manual" as const,
+                ichingCastingMethod,
+                ichingManualLineValues: [...manualLineValues],
+              }
+            : { ichingCastMode, ichingCastingMethod }
+          : {}),
+        translatorId,
+        displayName: displayName ?? undefined,
+        oracleBones:
+          oracleMode === "oracle_bones"
+            ? {
+                positiveCharge: questionForRequest,
+                negativeCharge: undefined,
+                medium: DEFAULT_BONES_MEDIUM,
+              }
+            : undefined,
+        history: activeThread.map((item) => ({
+          oracleType: item.oracleType ?? "iching",
+          question: item.question,
+          primaryHexagram: item.primaryHexagram,
+          primaryHexagramName: item.primaryHexagramName,
+          primaryHexagramChinese: item.primaryHexagramChinese,
+          transformedHexagramName: item.transformedHexagramName,
+          changingLines: item.changingLines,
+          mutationRule: item.mutationRule,
+          interpretation: item.interpretation,
+          oracleBones: item.oracleBones
+            ? {
+                patternId: item.oracleBones.patternId,
+                verdict: item.oracleBones.verdict,
+                positiveCharge: item.oracleBones.positiveCharge,
+                negativeCharge: item.oracleBones.negativeCharge,
+                medium: item.oracleBones.medium,
+                ambiguousPasses: item.oracleBones.ambiguousPasses,
+              }
+            : undefined,
+        })),
+      };
+
+      const sendConsultRequest = (bearerToken: string) =>
+        fetch("/api/consult", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bearerToken}`,
+          },
+          body: JSON.stringify(requestPayload),
+        });
+
+      if (!accessToken) {
+        setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
+        return;
+      }
+      let res = await sendConsultRequest(accessToken);
+      if (res.status === 401 && isSupabaseBrowserConfigured()) {
+        try {
+          const sb = getSupabaseBrowser();
+          const { data: refreshed, error: refreshError } =
+            await sb.auth.refreshSession();
+          const refreshedToken = refreshed.session?.access_token ?? null;
+          if (!refreshError && refreshedToken) {
+            setAccessToken(refreshedToken);
+            res = await sendConsultRequest(refreshedToken);
+          }
+        } catch {
+          // keep original 401 handling below
+        }
+      }
       let data: ConsultResponse & {
         error?: string;
         code?: string;
@@ -3748,13 +3825,27 @@ export default function HomePage() {
             } else if (eventName === "error") {
               logRitualTrace("sse:event", { eventName });
               streamErrored = true;
-              const err = payload as { message?: string };
-              setError(err.message || "No se pudo completar la consulta.");
+              const err = payload as {
+                message?: string;
+                code?: string;
+                action?: string;
+                error?: string;
+              };
+              if (err.code === "AUTH_REQUIRED" || err.action === "login") {
+                setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
+                void signOut();
+              } else {
+                setError(err.message || "No se pudo completar la consulta.");
+              }
             }
           }
         }
         if (streamErrored || !finalPayload) {
-          if (!streamErrored) setError("Respuesta del servidor inválida.");
+          if (!streamErrored) {
+            setError(
+              "La respuesta se interrumpió antes de completarse. Inténtalo de nuevo.",
+            );
+          }
           return;
         }
         if (revealPromise) {
@@ -4048,6 +4139,8 @@ export default function HomePage() {
       manualRitualFinaleShownRef.current = false;
       setLoading(false);
       if (!ok) {
+        setQuestion(questionForRequest);
+        requestAnimationFrame(() => resizeQuestionInput());
         setRitualStatusPhase("question");
         setPhase("idle");
         setPendingUserQuestion(null);
@@ -5217,7 +5310,9 @@ export default function HomePage() {
                       <>
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
-                          <span className="cast-selector-label">{chrome.translatorLabel}</span>
+                          <span className="cast-selector-label">
+                            {chrome.translatorLabel}
+                          </span>
                           <div
                             className="oracle-toggle-wrap oracle-toggle-wrap-4"
                             role="group"
@@ -5227,14 +5322,14 @@ export default function HomePage() {
                               <div
                                 className="oracle-toggle-glow"
                                 style={{
-                                  left: `${12.5 + ["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}%`,
+                                  left: `${12.5 + ["wilhelm", "legge", "zhouyi", "master_combined"].indexOf(translatorId) * 25}%`,
                                 }}
                               />
                               <div className="oracle-toggle-track-line" />
                               <div
                                 className="oracle-toggle-thumb"
                                 style={{
-                                  left: `calc(${["wilhelm", "zhouyi", "legge", "master_combined"].indexOf(translatorId) * 25}% + 2px)`,
+                                  left: `calc(${["wilhelm", "legge", "zhouyi", "master_combined"].indexOf(translatorId) * 25}% + 2px)`,
                                 }}
                               >
                                 <div className="oracle-thumb-sweep" />
@@ -5243,38 +5338,71 @@ export default function HomePage() {
                                 <button
                                   type="button"
                                   className={`oracle-toggle-option ${translatorId === "wilhelm" ? "is-active" : ""}`}
-                                  onClick={() => setTranslatorId("wilhelm")}
+                                  onClick={() => handleTranslatorChange("wilhelm")}
                                   disabled={loading}
                                 >
                                   <span>Wilhelm</span>
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "zhouyi" ? "is-active" : ""}`}
-                                  onClick={() => setTranslatorId("zhouyi")}
+                                  className={`oracle-toggle-option ${translatorId === "legge" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 1 ? "is-locked" : ""}`}
+                                  onClick={() => handleTranslatorChange("legge")}
                                   disabled={loading}
                                 >
-                                  <span>Zhou Yi</span>
+                                  <span>Legge</span>{!isAdmin && tierAccessIndex < 1 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "legge" ? "is-active" : ""}`}
-                                  onClick={() => setTranslatorId("legge")}
+                                  className={`oracle-toggle-option ${translatorId === "zhouyi" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 2 ? "is-locked" : ""}`}
+                                  onClick={() => handleTranslatorChange("zhouyi")}
                                   disabled={loading}
                                 >
-                                  <span>Legge</span>
+                                  <span>Zhou Yi</span>{!isAdmin && tierAccessIndex < 2 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                                 <button
                                   type="button"
-                                  className={`oracle-toggle-option ${translatorId === "master_combined" ? "is-active" : ""}`}
-                                  onClick={() =>
-                                    setTranslatorId("master_combined")
-                                  }
+                                  className={`oracle-toggle-option ${translatorId === "master_combined" ? "is-active" : ""} ${!isAdmin && tierAccessIndex < 3 ? "is-locked" : ""}`}
+                                  onClick={() => handleTranslatorChange("master_combined")}
                                   disabled={loading}
                                 >
-                                  <span className="oracle-toggle-master-label">
+                                  <span
+                                    className="oracle-toggle-master-label"
+                                    style={{ display: "inline-flex", alignItems: "center" }}
+                                  >
                                     {chrome.translatorMasterCombined}
+                                    <span
+                                      className="master-token-tooltip"
+                                      tabIndex={0}
+                                      role="img"
+                                      aria-label={chrome.translatorMasterCostAria}
+                                      style={{
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        width: 14,
+                                        height: 14,
+                                        borderRadius: "50%",
+                                        background: "rgba(255,255,255,0.18)",
+                                        fontSize: 9,
+                                        fontWeight: "bold",
+                                        marginLeft: 5,
+                                        cursor: "help",
+                                        flexShrink: 0,
+                                        lineHeight: 1,
+                                      }}
+                                    >
+                                      ?
+                                      <span className="master-token-tooltip-text">
+                                        <span className="master-token-tooltip-line">
+                                          {chrome.translatorMasterCostLabel}
+                                        </span>
+                                        <span className="master-token-tooltip-line">
+                                          {chrome.translatorMasterCostValue}
+                                        </span>
+                                      </span>
+                                    </span>
                                   </span>
+                                  {!isAdmin && tierAccessIndex < 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                               </div>
                             </div>
@@ -5628,7 +5756,7 @@ export default function HomePage() {
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() => router.push("/library")}
-                          disabled={!accessToken || tier === "free"}
+                          disabled={!accessToken || tierAccessKey === "free"}
                         >
                           {chrome.openLibrary}
                         </button>
@@ -6481,7 +6609,7 @@ export default function HomePage() {
                     }
                     aria-label={chrome.questionInputAria}
                     rows={1}
-                    maxLength={1500}
+                    maxLength={QUESTION_INPUT_MAX_CHARS}
                     readOnly={threadLimitReachedUi}
                     aria-disabled={threadLimitReachedUi}
                   />
