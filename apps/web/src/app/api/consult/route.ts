@@ -139,6 +139,16 @@ function mapStoredConsultationsToRows(
   }));
 }
 
+function filterRowsForOracleContext(
+  rows: PreviousConsultationRow[],
+  oracleMode: OracleType,
+): PreviousConsultationRow[] {
+  return rows.filter((row) => {
+    const rowType: OracleType = row.oracle_type === "oracle_bones" ? "oracle_bones" : "iching";
+    return rowType === oracleMode;
+  });
+}
+
 function verdictLabelForPrompt(
   verdict: OracleBonesHistorySnapshot["verdict"],
 ): string {
@@ -588,7 +598,7 @@ export async function POST(req: Request) {
         sessionId,
         isDeepening,
         sessionTitle: body.sessionTitle ?? null,
-        previousRows,
+        previousRows: filterRowsForOracleContext(previousRows, oracleMode),
         patternHints: null,
       });
 
@@ -728,7 +738,7 @@ export async function POST(req: Request) {
       sessionId,
       isDeepening,
       sessionTitle: body.sessionTitle ?? null,
-      previousRows,
+      previousRows: filterRowsForOracleContext(previousRows, oracleMode),
       patternHints: null,
     });
 

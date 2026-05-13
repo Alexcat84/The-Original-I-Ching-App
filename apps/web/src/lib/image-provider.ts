@@ -409,7 +409,12 @@ function togetherImageGenerationOptionalFields(seedBase?: string): {
   const seedRaw = process.env.TOGETHER_IMAGE_SEED?.trim();
   if (seedRaw) {
     const s = Number(seedRaw);
-    if (Number.isFinite(s)) fields.seed = Math.trunc(s);
+    if (Number.isFinite(s)) {
+      // Keep reproducibility while still varying each consultation.
+      fields.seed = seedBase
+        ? fnv1a32(`${Math.trunc(s)}:${seedBase}`) % 2_147_483_647
+        : Math.trunc(s);
+    }
   } else if (seedBase) {
     // Deterministic per-consultation seed to increase scene diversity and reproducibility.
     fields.seed = fnv1a32(seedBase) % 2_147_483_647;

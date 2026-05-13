@@ -43,7 +43,7 @@ ${labels.session}: "${context.theme}"
       const obLabel =
         lang === "es" ? "Consulta previa (甲骨文 · huesos)" : "Previous consultation (oracle bones)";
       block += `${obLabel} #${c.position}:
-  Cargo positivo / pregunta: "${c.question}"
+  Tema consultado (resumen): "${c.question.slice(0, 120)}"
   Cargo negativo: "${ob.negative_charge}"
   Medio: ${ob.medium} · Patrón: ${ob.pattern_id} · Veredicto: ${ob.verdict}
   ${labels.summary}: "${c.interpretationSummary}..."
@@ -51,7 +51,6 @@ ${labels.session}: "${context.theme}"
 `;
     } else {
       block += `${labels.prior} #${c.position}:
-  ${labels.question}: "${c.question}"
   ${labels.hex}: #${c.primaryHexagramNumber} ${c.primaryHexagramName} (${c.primaryHexagramChinese})
   ${c.transformedHexagramName ? `${labels.mutated}: ${c.transformedHexagramName}` : labels.noTransform}
   ${labels.changingLines}: [${c.changingLines.join(", ")}]
@@ -78,9 +77,11 @@ ${labels.session}: "${context.theme}"
       : mode === "ritual"
         ? es
           ? `CONTINUIDAD (modo ritual):
-- Enlaza con consultas previas solo en la apertura o en "Encuadre de la pregunta"; no repitas el mismo enlace en otros bloques.`
+- Incluye una memoria breve de hilo (hexagramas previos y su dirección), sin arrastrar detalles incidentales que no aparezcan en la pregunta actual.
+- Si un dato previo no está explícitamente relacionado con la nueva pregunta, no lo uses para encuadrar el caso.`
           : `CONTINUITY (ritual mode):
-- Link to prior readings only in the opening or in "Framing the question"; do not repeat that link in other sections.`
+- Include a brief thread memory (prior hexagrams and trajectory), without carrying incidental details not present in the current question.
+- If a prior detail is not explicitly relevant to the new question, do not use it to frame the case.`
         : es
           ? `CONTINUIDAD: referencias breves a consultas previas (máximo 1–2 oraciones en toda la respuesta).`
           : `CONTINUITY: brief references to prior consultations (max 1–2 sentences total).`;

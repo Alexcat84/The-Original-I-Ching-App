@@ -200,7 +200,6 @@ function buildPromptData(
     transformedHexagram: tr,
     mutationRule,
   } = cast;
-  const targetWordCount = "700-900";
   const rawLineVector = [...cast.lines]
     .sort((a, b) => a.position - b.position)
     .map((line) => line.value)
@@ -272,6 +271,7 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
   const isMasterCombined =
     cast.interpretationMode === "master_combined" ||
     Boolean(t.leggeJudgment && t.zhouyiJudgment);
+  const targetWordCount = isMasterCombined ? "1200-1600" : "700-900";
 
   let textsBlock = "";
   if (isMasterCombined) {
@@ -339,12 +339,21 @@ JUDGMENT: ${t.transformedJudgment}`
   const masterSynthesisInstruction = isMasterCombined
     ? `MASTER TRIANGULATION MODE (MANDATORY IN EVERY SECTION):
 - Keep the exact same section structure and elegant tone as base oracle mode.
-- For each section where classical text is used, triangulate explicitly with short attributions:
+- For each section where classical text is used, triangulate explicitly with attributions:
   - Wilhelm says ... (psychological/archetypal lens)
   - Legge says ... (literal/structural-historical lens)
   - Zhou Yi says ... (root-classical lens)
+- SOURCE QUOTATION REQUIREMENT (NON-NEGOTIABLE):
+  - In "The judgment", "Lines in motion" (when there are changing lines), and "The turning pattern" (when transformed hexagram exists), include three labeled literal quote blocks in this exact order:
+    1) Wilhelm (literal)
+    2) Legge (literal)
+    3) Zhou Yi (literal)
+  - Quotes must be complete literal excerpts from the provided texts for that section (do NOT reduce to micro-quotes, fragments, or single clauses).
+  - Format each quote as italic text under its source label.
+  - For "Lines in motion": for each changing line, show the full literal line text from each available source before synthesis.
+  - If any source text is unavailable for a specific subsection, state it explicitly and continue with the other two sources.
 - In every section, bridge the three lenses into ONE integrated guidance for the querent.
-- Maximum one short quote per author per section; paraphrase the rest.
+- After literal source blocks, provide synthesis in your own words for that section.
 - Address the user directly in second person in the response language. Do not narrate the user in third person.
 - In "Horizon and synthesis", provide one concrete cross-source action that emerges from the triangulation.`
     : "Use the selected translator as the authoritative source while preserving structure and tone.";

@@ -4774,7 +4774,7 @@ html[data-theme="dark"] .doc-sources-list li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .library-filter {
