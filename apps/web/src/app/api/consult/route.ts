@@ -57,6 +57,8 @@ import {
 } from "@/lib/thread-depth-policy";
 
 export const runtime = "nodejs";
+export const maxDuration = 120;
+const MAX_CONSULT_QUESTION_CHARS = 4000;
 const LOG_RITUAL_STREAM_DEBUG =
   process.env.LOG_RITUAL_STREAM_DEBUG === "1" ||
   process.env.LOG_RITUAL_STREAM_DEBUG === "true" ||
@@ -311,6 +313,17 @@ export async function POST(req: Request) {
   try {
     const question = typeof body.question === "string" ? body.question : "";
     const trimmedQuestion = question.trim();
+    if (trimmedQuestion.length > MAX_CONSULT_QUESTION_CHARS) {
+      return NextResponse.json(
+        {
+          error: "question_too_long",
+          code: "CONSULT_QUESTION_TOO_LONG",
+          action: "fix_input",
+          max_chars: MAX_CONSULT_QUESTION_CHARS,
+        },
+        { status: 400 },
+      );
+    }
     const displayName =
       typeof body.displayName === "string" && body.displayName.trim()
         ? body.displayName.trim()

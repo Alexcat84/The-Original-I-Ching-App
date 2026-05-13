@@ -1917,6 +1917,7 @@ export default function HomePage() {
     twoFactorMethod === "email" ? "email" : "totp";
   const questionInputRef = useRef<HTMLTextAreaElement | null>(null);
   const QUESTION_INPUT_MAX_HEIGHT_PX = 160;
+  const QUESTION_INPUT_MAX_CHARS = 4000;
   const resizeQuestionInput = useCallback(() => {
     const el = questionInputRef.current;
     if (!el) return;
@@ -6604,7 +6605,7 @@ export default function HomePage() {
                     }
                     aria-label={chrome.questionInputAria}
                     rows={1}
-                    maxLength={1500}
+                    maxLength={QUESTION_INPUT_MAX_CHARS}
                     readOnly={threadLimitReachedUi}
                     aria-disabled={threadLimitReachedUi}
                   />
