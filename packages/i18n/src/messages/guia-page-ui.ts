@@ -60,6 +60,38 @@ export type GuiaPageUiMessages = {
   /** Getting started anchor */
   gettingStartedHeading: string;
   promptLengthHint: string;
+  translatorOptionsBullet: string;
+  translatorsHeading: string;
+  translatorsWilhelm: string;
+  translatorsLegge: string;
+  translatorsZhouyi: string;
+  translatorsMaster: string;
+
+  s1Heading: string;
+  s1Iching: string;
+  s1Bones: string;
+  s2Heading: string;
+  s2TranslatorsTitle: string;
+  s2Translators: string;
+  s2TokensTitle: string;
+  s2Tokens: string;
+  s2SecurityTitle: string;
+  s2Security: string;
+  s3Heading: string;
+  s3NewSessionTitle: string;
+  s3NewSession: string;
+  s3HistoryTitle: string;
+  s3History: string;
+  s5Heading: string;
+  s5AutoTitle: string;
+  s5Auto: string;
+  s5ManualTitle: string;
+  s5Manual: string;
+  s6Heading: string;
+  s6LibraryTitle: string;
+  s6Library: string;
+  s6DocsTitle: string;
+  s6Docs: string;
 };
 
 const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
@@ -87,8 +119,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     chatsLabel: "Chats",
     chatsOpensHistory: "abre tu historial.",
     newSessionLabel: "Nueva sesión",
-    newSessionDesc: "inicia un chat nuevo para cambiar de tema o empezar desde cero.",
-    chatsUnlimited: "No hay un número fijo de chats: puedes crear nuevos chats cuando quieras.",
+    newSessionDesc:
+      "inicia un chat nuevo para cambiar de tema o empezar desde cero.",
+    chatsUnlimited:
+      "No hay un número fijo de chats: puedes crear nuevos chats cuando quieras.",
     packChangesLine:
       "Lo que cambia según tu pack es el saldo de tokens disponible y cuántas consultas encadenadas caben en un mismo hilo (límite por hilo).",
     optionsHeading: "Opciones (barra inferior)",
@@ -101,6 +135,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     bonesBulletSuffix: "formato sí/no con lectura simbólica de grietas.",
     threadDepthBullet:
       "Profundidad del hilo: cuántas lecturas encadenadas caben en el mismo chat según tu pack (el plan gratuito no permite seguir preguntando en el mismo hilo tras la primera lectura).",
+    translatorOptionsBullet:
+      "Elección de traductor: Puedes elegir entre Wilhelm/Baynes, Zhou Yi, James Legge o el modo Master (3) que combina todos en una única respuesta.",
     methodsHeading: "Cómo usar los métodos",
     methodsIntro:
       "El I Ching y los Huesos son métodos distintos. El I Ching trabaja por hexagrama y líneas, e incluye dos formas de tirada: Tres Monedas y Varillas de milenrama. Los Huesos siguen un esquema separado, sin hexagramas.",
@@ -133,7 +169,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " y los ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Primeros pasos",
-    promptLengthHint: "Cada pregunta puede contener hasta un máximo de 1500 caracteres, permitiéndote proporcionar todo el contexto necesario para una respuesta profunda y personalizada.",
+    promptLengthHint:
+      "Cada pregunta puede contener hasta un máximo de 1500 caracteres, permitiéndote proporcionar todo el contexto necesario para una respuesta profunda y personalizada.",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   en: {
     title: "User guide",
@@ -146,7 +214,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     privacyDocsIntro:
       "This is a practical summary. For the binding details please read the privacy policy and the terms of service. If you want the historical background of the methods, see the method notes.",
     privacyHeading: "Privacy",
-    privacyLi1: "Your chats and images are tied to your account and are only accessible while you are signed in.",
+    privacyLi1:
+      "Your chats and images are tied to your account and are only accessible while you are signed in.",
     privacyLi2:
       "The service does not expose your history or consultation topics outside your own authenticated access.",
     privacyLi3:
@@ -159,7 +228,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     chatsOpensHistory: "opens your history.",
     newSessionLabel: "New session",
     newSessionDesc: "starts a fresh thread for a new topic.",
-    chatsUnlimited: "There is no fixed chat count: create as many threads as you need.",
+    chatsUnlimited:
+      "There is no fixed chat count: create as many threads as you need.",
     packChangesLine:
       "What changes with your pack is your available token balance and how many follow-up consultations fit in one thread (per-thread limit).",
     optionsHeading: "Options (bottom panel)",
@@ -172,6 +242,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     bonesBulletSuffix: "yes/no format with symbolic crack reading.",
     threadDepthBullet:
       "Thread depth: how many chained readings fit in one chat for your pack (the free plan does not allow follow-up readings in the same thread after the first one).",
+    translatorOptionsBullet:
+      "Translator choice: You can choose between Wilhelm/Baynes, Zhou Yi, James Legge, or the Master (3) mode which combines all into a single answer.",
     methodsHeading: "How to use the methods",
     methodsIntro:
       "I Ching and Bones are different methods. I Ching reads by hexagram and lines and offers two casting modes: Three Coins and Yarrow Stalks. Bones follow a separate scheme, without hexagrams.",
@@ -204,7 +276,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " and ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Getting started",
-    promptLengthHint: "Each question can contain up to a maximum of 1500 characters, allowing you to provide all the necessary context for a deep and personalized response.",
+    promptLengthHint:
+      "Each question can contain up to a maximum of 1500 characters, allowing you to provide all the necessary context for a deep and personalized response.",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   pt: {
     title: "Guia de utilização",
@@ -230,8 +334,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     chatsLabel: "Chats",
     chatsOpensHistory: "abre o teu histórico.",
     newSessionLabel: "Nova sessão",
-    newSessionDesc: "inicia um chat novo para mudar de tema ou começar de novo.",
-    chatsUnlimited: "Não há um número fixo de chats: podes criar novos quando quiseres.",
+    newSessionDesc:
+      "inicia um chat novo para mudar de tema ou começar de novo.",
+    chatsUnlimited:
+      "Não há um número fixo de chats: podes criar novos quando quiseres.",
     packChangesLine:
       "O que muda com o teu pack é o saldo de tokens disponível e quantas consultas encadeadas cabem no mesmo fio (limite por fio).",
     optionsHeading: "Opções (barra inferior)",
@@ -244,6 +350,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     bonesBulletSuffix: "formato sim/não com leitura simbólica de fendas.",
     threadDepthBullet:
       "Profundidade do fio: quantas leituras encadeadas cabem no mesmo chat conforme o teu pack (o plano gratuito não permite novas perguntas no mesmo fio após a primeira leitura).",
+    translatorOptionsBullet:
+      "Escolha de tradutor: Podes escolher entre Wilhelm/Baynes, Zhou Yi, James Legge ou o modo Master (3) que combina todos numa única resposta.",
     methodsHeading: "Como usar os métodos",
     methodsIntro:
       "O I Ching e os Ossos são métodos diferentes. O I Ching lê por hexagrama e linhas e oferece duas formas de tiragem: Três Moedas e Varetas de aquilégia. Os Ossos seguem um esquema próprio, sem hexagramas.",
@@ -276,7 +384,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " e os ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Primeiros passos",
-    promptLengthHint: "Cada pergunta pode conter até um máximo de 1500 caracteres, permitindo-lhe fornecer todo o contexto necessário para uma resposta profunda e personalizada.",
+    promptLengthHint:
+      "Cada pergunta pode conter até um máximo de 1500 caracteres, permitindo-lhe fornecer todo o contexto necessário para uma resposta profunda e personalizada.",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   fr: {
     title: "Guide d’utilisation",
@@ -302,20 +442,25 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     chatsLabel: "Chats",
     chatsOpensHistory: "ouvre votre historique.",
     newSessionLabel: "Nouvelle session",
-    newSessionDesc: "démarre un nouveau chat pour changer de sujet ou repartir de zéro.",
-    chatsUnlimited: "Il n’y a pas de nombre fixe de chats : créez-en autant que nécessaire.",
+    newSessionDesc:
+      "démarre un nouveau chat pour changer de sujet ou repartir de zéro.",
+    chatsUnlimited:
+      "Il n’y a pas de nombre fixe de chats : créez-en autant que nécessaire.",
     packChangesLine:
       "Ce qui change selon votre pack, c’est le solde de jetons disponible et le nombre de consultations enchaînées possibles dans un même fil (limite par fil).",
     optionsHeading: "Options (barre du bas)",
     optionsIntro:
       "Dans Options vous choisissez le type de consultation (I Ching ou Os) ; avec I Ching aussi le mode de tirage (automatique ou manuel), voyez la profondeur autorisée du fil actif, gérez les jetons et la 2FA, et trouvez en bas les liens vers la documentation, la confidentialité et les conditions.",
-    libraryFeatureHeading: "Bibliothèque des Hexagrammes et Œuvres (Option Premium)",
+    libraryFeatureHeading:
+      "Bibliothèque des Hexagrammes et Œuvres (Option Premium)",
     libraryFeatureBody:
       "Nous proposons une bibliothèque où vous pouvez effectuer des consultations approfondies en utilisant les trois sources principales de l'œuvre : la traduction classique de Wilhelm/Baynes, la version de James Legge et le texte original Zhou Yi. Cette section permet de confronter vos réponses ou tirages manuels aux écrits authentiques, conçus pour l'étude sérieuse du I Ching. Les textes sont présentés dans leur format d'origine afin de préserver la fidélité absolue des sources.",
     ichingBullet: "lecture par hexagramme et traits.",
     bonesBulletSuffix: "format oui/non avec lecture symbolique des fissures.",
     threadDepthBullet:
       "Profondeur du fil : combien de lectures enchaînées sont possibles dans le même chat selon votre pack (le plan gratuit ne permet pas de poursuivre dans le même fil après la première lecture).",
+    translatorOptionsBullet:
+      "Choix du traducteur : Vous pouvez choisir entre Wilhelm/Baynes, Zhou Yi, James Legge, ou le mode Master (3) qui combine le tout en une seule réponse.",
     methodsHeading: "Comment utiliser les méthodes",
     methodsIntro:
       "Le I Ching et les Os sont deux méthodes différentes. Le I Ching lit par hexagramme et traits et propose deux modes de tirage : Trois Pièces et Tiges d’achillée. Les Os suivent un schéma propre, sans hexagramme.",
@@ -348,7 +493,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " et les ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Premiers pas",
-    promptLengthHint: "Chaque question peut contenir jusqu'à un maximum de 1500 caractères, vous permettant de fournir tout le contexte nécessaire pour une réponse profonde et personnalisée.",
+    promptLengthHint:
+      "Chaque question peut contenir jusqu'à un maximum de 1500 caractères, vous permettant de fournir tout le contexte nécessaire pour une réponse profonde et personnalisée.",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   de: {
     title: "Nutzungsanleitung",
@@ -374,20 +551,25 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     chatsLabel: "Chats",
     chatsOpensHistory: "öffnet deinen Verlauf.",
     newSessionLabel: "Neue Sitzung",
-    newSessionDesc: "startet einen neuen Chat für ein neues Thema oder von vorn.",
-    chatsUnlimited: "Es gibt keine feste Chat-Anzahl: du kannst jederzeit neue Chats anlegen.",
+    newSessionDesc:
+      "startet einen neuen Chat für ein neues Thema oder von vorn.",
+    chatsUnlimited:
+      "Es gibt keine feste Chat-Anzahl: du kannst jederzeit neue Chats anlegen.",
     packChangesLine:
       "Je nach Pack ändern sich dein verfügbares Token-Guthaben und wie viele verkettete Beratungen in einem Thread möglich sind (Limit pro Thread).",
     optionsHeading: "Optionen (untere Leiste)",
     optionsIntro:
       "In Optionen wählst du den Beratungstyp (I Ching oder Knochen); bei I Ging auch den Wurfmodus (automatisch oder manuell), siehst die erlaubte Tiefe im aktiven Thread, verwaltest Token und 2FA und findest unten Links zu Dokumentation, Datenschutz und Nutzungsbedingungen.",
-    libraryFeatureHeading: "Bibliothek der Hexagramme und Werke (Premium-Option)",
+    libraryFeatureHeading:
+      "Bibliothek der Hexagramme und Werke (Premium-Option)",
     libraryFeatureBody:
       "Wir bieten eine Bibliothek, in der Sie tiefgehende Konsultationen unter Verwendung der drei Hauptquellen des Werks durchführen können: die klassische Wilhelm/Baynes-Übersetzung, die James-Legge-Version und den originalen Zhou-Yi-Text. Dieser Bereich ermöglicht es Ihnen, Ihre Antworten oder manuellen Würfe mit den authentischen Schriften abzugleichen, die für ein ernsthaftes Studium des I Ging konzipiert wurden. Die Texte werden in ihrem Originalformat präsentiert, um die absolute Treue der Quellen zu bewahren.",
     ichingBullet: "Lesung nach Hexagramm und Strichen.",
     bonesBulletSuffix: "Ja/Nein-Format mit symbolischer Riss-Lesung.",
     threadDepthBullet:
       "Thread-Tiefe: wie viele verkettete Lesungen in einem Chat je nach Pack möglich sind (der kostenlose Plan erlaubt nach der ersten Lesung keine Folgefragen im selben Thread).",
+    translatorOptionsBullet:
+      "Wahl des Übersetzers: Sie können zwischen Wilhelm/Baynes, Zhou Yi, James Legge oder dem Master (3)-Modus wählen, der alle in einer einzigen Antwort kombiniert.",
     methodsHeading: "So nutzt du die Methoden",
     methodsIntro:
       "I Ging und Knochen sind unterschiedliche Methoden. I Ging liest nach Hexagramm und Strichen und bietet zwei Wurfarten: Drei Münzen und Schafgarbenstäbe. Die Knochen folgen einem eigenen Schema, ohne Hexagramm.",
@@ -420,7 +602,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " und die ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Erste Schritte",
-    promptLengthHint: "Jede Frage kann bis zu maximal 1500 Zeichen enthalten, sodass Sie den gesamten notwendigen Kontext für eine tiefe und personalisierte Antwort bereitstellen können.",
+    promptLengthHint:
+      "Jede Frage kann bis zu maximal 1500 Zeichen enthalten, sodass Sie den gesamten notwendigen Kontext für eine tiefe und personalisierte Antwort bereitstellen können.",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   it: {
     title: "Guida all’uso",
@@ -446,20 +660,25 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     chatsLabel: "Chat",
     chatsOpensHistory: "apre la cronologia.",
     newSessionLabel: "Nuova sessione",
-    newSessionDesc: "avvia una nuova chat per cambiare argomento o ricominciare.",
-    chatsUnlimited: "Non c’è un numero fisso di chat: puoi crearne quante ne servono.",
+    newSessionDesc:
+      "avvia una nuova chat per cambiare argomento o ricominciare.",
+    chatsUnlimited:
+      "Non c’è un numero fisso di chat: puoi crearne quante ne servono.",
     packChangesLine:
       "Ciò che cambia in base al pack è il saldo token disponibile e quante consultazioni concatenate stanno in un thread (limite per thread).",
     optionsHeading: "Opzioni (barra inferiore)",
     optionsIntro:
       "In Opzioni scegli il tipo di consulta (I Ching o Ossa); con I Ching anche la modalità di lancio (automatica o manuale), vedi la profondità consentita nel thread attivo, gestisci token e 2FA e in fondo trovi link a documentazione, privacy e termini.",
-    libraryFeatureHeading: "Biblioteca degli Esagrammi e delle Opere (Opzione Premium)",
+    libraryFeatureHeading:
+      "Biblioteca degli Esagrammi e delle Opere (Opzione Premium)",
     libraryFeatureBody:
       "Disponiamo di una biblioteca in cui puoi effettuare consultazioni approfondite utilizzando le tre fonti principali dell'opera: la traduzione classica di Wilhelm/Baynes, la versione di James Legge e il testo originale Zhou Yi. Questa sezione ti permette di confrontare le tue risposte o i tuoi lanci manuali con gli scritti autentici, pensati per lo studio serio dell'I Ching. I testi sono presentati nel loro formato originale per preservare l'assoluta fedeltà delle fonti.",
     ichingBullet: "lettura per esagramma e linee.",
     bonesBulletSuffix: "formato sì/no con lettura simbolica delle crepe.",
     threadDepthBullet:
       "Profondità del thread: quante letture concatenate sono possibili nella stessa chat in base al pack (il piano gratuito non consente ulteriori domande nello stesso thread dopo la prima lettura).",
+    translatorOptionsBullet:
+      "Scelta del traduttore: Puoi scegliere tra Wilhelm/Baynes, Zhou Yi, James Legge o la modalità Master (3) che li combina in un'unica risposta.",
     methodsHeading: "Come usare i metodi",
     methodsIntro:
       "I Ching e Ossa sono metodi differenti. L’I Ching legge per esagramma e linee e offre due modi di lancio: Tre Monete e Stecche di achillea. Le Ossa seguono uno schema proprio, senza esagramma.",
@@ -492,7 +711,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " e i ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "Primi passi",
-    promptLengthHint: "Ogni domanda può contenere fino a un massimo di 1500 caratteri, consentendoti di fornire tutto il contesto necessario per una risposta profonda e personalizzata.",
+    promptLengthHint:
+      "Ogni domanda può contenere fino a un massimo di 1500 caratteri, consentendoti di fornire tutto il contesto necessario per una risposta profonda e personalizzata.",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   ja: {
     title: "利用ガイド",
@@ -505,8 +756,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     privacyDocsIntro:
       "これは実用的な要約です。拘束力のある詳細はプライバシーポリシーと利用規約をご参照ください。方式の歴史的背景は方式の注記をご覧ください。",
     privacyHeading: "プライバシー",
-    privacyLi1: "チャットと画像はアカウントに紐づき、サインイン中にのみアクセスできます。",
-    privacyLi2: "サービスは、認証されたご本人以外に履歴や相談内容を公開しません。",
+    privacyLi1:
+      "チャットと画像はアカウントに紐づき、サインイン中にのみアクセスできます。",
+    privacyLi2:
+      "サービスは、認証されたご本人以外に履歴や相談内容を公開しません。",
     privacyLi3:
       "端末に記録を残す場合は、ご自身の判断で読み取り画像のダウンロードや、オプションから現行スレッドのPDF出力が可能です。これらは端末上で生成され、保管はご自身の責任です。",
     appUseHeading: "アプリの使い方と利用できる機能",
@@ -530,6 +783,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     bonesBulletSuffix: "亀裂パターンによるイエス／ノー形式の象徴的読み。",
     threadDepthBullet:
       "スレッドの深さ：パックに応じて同一チャットで連続できる読み取り回数（無料プランは最初の読み取り後、同じスレッドでの追問は不可）。",
+    translatorOptionsBullet:
+      "翻訳者の選択: Wilhelm/Baynes、Zhou Yi、James Legge、またはすべてを組み合わせたマスター(3)モードから選択できます。",
     methodsHeading: "占いの方式の使い分け",
     methodsIntro:
       "易経と甲骨は別の方式です。易経は卦と爻で読み、占い方は二通り（三銭と蓍草）です。甲骨は卦を作らず、独自の流れで進みます。",
@@ -562,7 +817,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: "および",
     legalMetaAfterTerms: "をご確認ください。",
     gettingStartedHeading: "はじめに",
-    promptLengthHint: "各質問は最大1500文字まで入力でき、深くパーソナライズされた回答に必要なすべてのコンテキストを提供できます。",
+    promptLengthHint:
+      "各質問は最大1500文字まで入力でき、深くパーソナライズされた回答に必要なすべてのコンテキストを提供できます。",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   zh: {
     title: "使用指南",
@@ -600,6 +887,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     bonesBulletSuffix: "以裂纹图案进行的是／否象征性解读。",
     threadDepthBullet:
       "会话深度：根据套餐，同一聊天中可连续解读的次数（免费计划在首次解读后不允许在同一会话中继续追问）。",
+    translatorOptionsBullet:
+      "译本选择：您可以选择卫礼贤/贝恩斯、原始周易、理雅各，或将三者结合为单一回答的大师 (3) 模式。",
     methodsHeading: "如何使用各方法",
     methodsIntro:
       "易经和甲骨是两种不同的方法。易经按卦象与爻辞解读，并有两种起卦方式：三钱与蓍草。甲骨自成体系，不形成卦象。",
@@ -618,8 +907,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingCastModeHeading: "易经：自动起卦或手动起卦",
     ichingCastModeP1:
       "在选项中选择易经后，可选择起卦方式。两种方式服务器都应用相同的朱熹规则与同一套文本；差别仅在于六爻由谁确定。",
-    ichingCastAutoLi:
-      "自动：发送咨询后会有仪式动画，六爻由服务器生成。",
+    ichingCastAutoLi: "自动：发送咨询后会有仪式动画，六爻由服务器生成。",
     ichingCastManualLi:
       "手动：打开助手自下而上逐爻输入。三钱法时输入字/背；蓍草时按你的实际操作逐爻记录。六爻完成后显示卦象预览，直到解读返回。请确保输入与您实际操作一致。",
     tokensHeading: "代币、上限与套餐",
@@ -632,7 +920,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: "以及",
     legalMetaAfterTerms: "。",
     gettingStartedHeading: "快速入门",
-    promptLengthHint: "每个问题最多可包含 1500 个字符，让您可以提供深入且个性化回答所需的所有背景信息。",
+    promptLengthHint:
+      "每个问题最多可包含 1500 个字符，让您可以提供深入且个性化回答所需的所有背景信息。",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   ko: {
     title: "사용 안내",
@@ -645,8 +965,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     privacyDocsIntro:
       "실용적 요약입니다. 구속력 있는 자세한 내용은 개인정보 처리방침과 서비스 약관을 참조하세요. 각 방법의 역사적 배경이 궁금하다면 방법 노트를 확인하세요.",
     privacyHeading: "개인정보",
-    privacyLi1: "채팅과 이미지는 계정에 연결되며 로그인한 상태에서만 접근할 수 있습니다.",
-    privacyLi2: "서비스는 본인의 인증된 접근 밖에서 기록이나 상담 주제를 노출하지 않습니다.",
+    privacyLi1:
+      "채팅과 이미지는 계정에 연결되며 로그인한 상태에서만 접근할 수 있습니다.",
+    privacyLi2:
+      "서비스는 본인의 인증된 접근 밖에서 기록이나 상담 주제를 노출하지 않습니다.",
     privacyLi3:
       "기기에 기록을 남기려면, 본인 판단으로 해석 이미지를 내려받거나 옵션에서 현재 스레드를 PDF로보낼 수 있습니다. 해당 파일은 기기에서 생성되며 보관 책임은 사용자에게 있습니다.",
     appUseHeading: "앱 사용과 사용 가능한 옵션",
@@ -657,7 +979,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     chatsOpensHistory: "기록을 엽니다.",
     newSessionLabel: "새 세션",
     newSessionDesc: "새 주제를 위해 새 채팅을 시작합니다.",
-    chatsUnlimited: "채팅 개수에 고정 상한이 없으며 필요한 만큼 만들 수 있습니다.",
+    chatsUnlimited:
+      "채팅 개수에 고정 상한이 없으며 필요한 만큼 만들 수 있습니다.",
     packChangesLine:
       "팩에 따라 달라지는 것은 사용 가능한 토큰 잔액과 한 스레드에서 연속 상담 가능 횟수(스레드당 한도)입니다.",
     optionsHeading: "옵션(하단 패널)",
@@ -670,6 +993,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     bonesBulletSuffix: "균열 패턴을 사용한 예/아니오 형식의 상징적 해석.",
     threadDepthBullet:
       "스레드 깊이: 팩에 따라 같은 채팅에서 연속 해석 가능 횟수(무료 플랜은 첫 해석 후 같은 스레드에서 추가 질문 불가).",
+    translatorOptionsBullet:
+      "번역본 선택: 빌헬름/베인스, 원전 주역, 제임스 레게 중 하나를 선택하거나 모든 버전을 하나의 답변으로 결합하는 마스터(3) 모드를 선택할 수 있습니다.",
     methodsHeading: "방법별 사용법",
     methodsIntro:
       "역경과 갑골은 서로 다른 방법입니다. 역경은 괘와 효로 풀이하며 점치는 방식이 두 가지(삼전과 시초)입니다. 갑골은 괘를 만들지 않고 독자적인 흐름을 따릅니다.",
@@ -702,7 +1027,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " 및 ",
     legalMetaAfterTerms: "을(를) 확인하세요.",
     gettingStartedHeading: "시작하기",
-    promptLengthHint: "각 질문은 최대 1500자까지 포함될 수 있으므로 깊고 개인화된 답변에 필요한 모든 맥락을 제공할 수 있습니다.",
+    promptLengthHint:
+      "각 질문은 최대 1500자까지 포함될 수 있으므로 깊고 개인화된 답변에 필요한 모든 맥락을 제공할 수 있습니다.",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   ar: {
     title: "دليل المستخدم",
@@ -715,8 +1072,10 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     privacyDocsIntro:
       "هذا ملخص عملي. للتفاصيل الملزمة، راجع سياسة الخصوصية وشروط الخدمة. وللاطلاع على الخلفية التاريخية للطرق، انظر ملاحظات المنهج.",
     privacyHeading: "الخصوصية",
-    privacyLi1: "محادثاتك وصورك مرتبطة بحسابك ولا يمكن الوصول إليها إلا عند تسجيل الدخول.",
-    privacyLi2: "لا تكشف الخدمة عن سجلاتك أو موضوعات استشاراتك خارج نطاق وصولك المصادق عليه.",
+    privacyLi1:
+      "محادثاتك وصورك مرتبطة بحسابك ولا يمكن الوصول إليها إلا عند تسجيل الدخول.",
+    privacyLi2:
+      "لا تكشف الخدمة عن سجلاتك أو موضوعات استشاراتك خارج نطاق وصولك المصادق عليه.",
     privacyLi3:
       "إذا أردت الاحتفاظ بسجل على جهازك، يمكنك بمحض إرادتك تنزيل صورة القراءة وتصدير الخيط الحالي إلى PDF من خيارات الاستشارة؛ هذه الملفات تُنشأ محليًا وأنت مسؤول عن حفظها.",
     appUseHeading: "استخدام التطبيق والخيارات المتاحة",
@@ -740,6 +1099,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     bonesBulletSuffix: "تنسيق نعم/لا مع قراءة رمزية للشقوق.",
     threadDepthBullet:
       "عمق الخيط: عدد القراءات المتسلسلة الممكنة في نفس المحادثة حسب حزمتك (الخطة المجانية لا تتيح أسئلة متابعة في نفس الخيط بعد القراءة الأولى).",
+    translatorOptionsBullet:
+      "اختيار المترجم: يمكنك الاختيار بين Wilhelm/Baynes، أو Zhou Yi، أو James Legge، أو وضع Master (3) الذي يجمع الكل في إجابة واحدة.",
     methodsHeading: "كيف تستخدم كل طريقة",
     methodsIntro:
       "I Ching والعظام طريقتان مختلفتان. يقرأ I Ching وفق الهكساغرام والخطوط ويتيح أسلوبين للقَسْم: ثلاث عملات وعيدان الزنبق. تتبع العظام مخططها الخاص بدون هكساغرام.",
@@ -772,7 +1133,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " و ",
     legalMetaAfterTerms: ".",
     gettingStartedHeading: "البدء",
-    promptLengthHint: "يمكن أن يحتوي كل سؤال على ما يصل إلى 1500 حرف كحد أقصى، مما يتيح لك تقديم كل السياق اللازم لاستجابة عميقة وشخصية.",
+    promptLengthHint:
+      "يمكن أن يحتوي كل سؤال على ما يصل إلى 1500 حرف كحد أقصى، مما يتيح لك تقديم كل السياق اللازم لاستجابة عميقة وشخصية.",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
   hi: {
     title: "उपयोगकर्ता मार्गदर्शिका",
@@ -799,7 +1192,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     chatsOpensHistory: "आपका इतिहास खोलता है।",
     newSessionLabel: "नया सत्र",
     newSessionDesc: "नए विषय के लिए नई चैट शुरू करता है।",
-    chatsUnlimited: "चैट की कोई निश्चित संख्या नहीं है: जितनी जरूरत हो उतनी बनाएं।",
+    chatsUnlimited:
+      "चैट की कोई निश्चित संख्या नहीं है: जितनी जरूरत हो उतनी बनाएं।",
     packChangesLine:
       "आपके पैक के साथ जो बदलता है वह है उपलब्ध टोकन शेष और एक थ्रेड में कितने अनुवर्ती परामर्श हो सकते हैं (प्रति थ्रेड सीमा)।",
     optionsHeading: "विकल्प (नीचे का पैनल)",
@@ -812,6 +1206,8 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     bonesBulletSuffix: "प्रतीकात्मक दरार पठन के साथ हाँ/नहीं प्रारूप।",
     threadDepthBullet:
       "थ्रेड गहराई: आपके पैक के अनुसार एक चैट में कितने श्रृंखलाबद्ध पठन हो सकते हैं (निःशुल्क योजना पहले पठन के बाद उसी थ्रेड में अनुवर्ती प्रश्नों की अनुमति नहीं देती)।",
+    translatorOptionsBullet:
+      "अनुवादक का विकल्प: आप विल्हेम/बेन्स, झोउ यी, जेम्स लेग या मास्टर (3) मोड के बीच चयन कर सकते हैं जो सभी को एक उत्तर में जोड़ता है.",
     methodsHeading: "विधियों का उपयोग कैसे करें",
     methodsIntro:
       "I Ching और हड्डियाँ अलग विधियाँ हैं। I Ching हेक्साग्राम और रेखाओं के माध्यम से पढ़ता है और दो कास्टिंग मोड प्रदान करता है: तीन सिक्के और यारो छड़ें। हड्डियाँ अपनी अलग प्रणाली से चलती हैं, हेक्साग्राम के बिना।",
@@ -844,7 +1240,39 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     legalMetaBetween: " और ",
     legalMetaAfterTerms: "।",
     gettingStartedHeading: "शुरुआत करना",
-    promptLengthHint: "प्रत्येक प्रश्न में अधिकतम 1500 वर्ण हो सकते हैं, जिससे आप एक गहरी और व्यक्तिगत प्रतिक्रिया के लिए सभी आवश्यक संदर्भ प्रदान कर सकते हैं।",
+    promptLengthHint:
+      "प्रत्येक प्रश्न में अधिकतम 1500 वर्ण हो सकते हैं, जिससे आप एक गहरी और व्यक्तिगत प्रतिक्रिया के लिए सभी आवश्यक संदर्भ प्रदान कर सकते हैं।",
+    s1Heading: "Modos de Consulta (Selector Principal)",
+    s1Iching: "Lectura por hexagramas y líneas mutantes para reflexión profunda y preguntas abiertas.",
+    s1Bones: "Lectura de sí/no basada en patrones de grietas para validar decisiones y dirección inmediata.",
+    s2Heading: "El Panel de Opciones (Centro de Control)",
+    s2TranslatorsTitle: "Selector de Traductores",
+    s2Translators: "Tu herramienta para elegir el linaje de sabiduría de tu consulta. Los niveles se activan según tu pack actual.",
+    s2TokensTitle: "Centro de Tokens",
+    s2Tokens: "Gestión de tu saldo acumulable y acceso a la adquisición de nuevos niveles de maestría.",
+    s2SecurityTitle: "Seguridad (2FA)",
+    s2Security: "Configuración de autenticación de dos factores para proteger la privacidad de tu cuenta.",
+    s3Heading: "Sesiones y Mensajes (Gestión de Chats)",
+    s3NewSessionTitle: "Nueva Sesión",
+    s3NewSession: "Inicia un chat limpio con su propia continuidad temática.",
+    s3HistoryTitle: "Historial de Chats",
+    s3History: "Acceso a tus consultas previas, interpretaciones e imágenes. Permite revisar o eliminar hilos específicos.",
+    translatorsHeading: "Los Pilares de la Sabiduría (Traductores)",
+    translatorsWilhelm: "Interpretación psicológica y poética (Nivel Free/Seeker).",
+    translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
+    translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
+    translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    s5Heading: "Métodos de Lanzamiento",
+    s5AutoTitle: "Automático",
+    s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
+    s5ManualTitle: "Manual",
+    s5Manual: "Asistente interactivo para ingresar tus propias tiradas físicas (Monedas o Varillas).",
+    s6Heading: "Biblioteca y Documentación",
+    s6LibraryTitle: "Biblioteca de Hexagramas",
+    s6Library: "Consulta directa de los 64 hexagramas y obras.",
+    s6DocsTitle: "Documentación",
+    s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
+
   },
 };
 

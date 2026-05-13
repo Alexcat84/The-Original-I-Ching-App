@@ -24,7 +24,8 @@ export type FaqCategoryId =
   | "oracle-methods"
   | "ai-texts"
   | "tokens-payments"
-  | "privacy-account";
+  | "privacy-account"
+  | "premium-features";
 
 export type FaqCategory = {
   id: FaqCategoryId;
@@ -50,7 +51,13 @@ const FAQ_CATEGORY_ORDER: FaqCategoryId[] = [
 ];
 
 const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
-  "app-usage": ["language-support", "chats-drawer", "thread-depth", "export-pdf", "prompt-length"],
+  "app-usage": [
+    "language-support",
+    "chats-drawer",
+    "thread-depth",
+    "export-pdf",
+    "prompt-length",
+  ],
   "oracle-methods": [
     "iching-how-answers",
     "yarrow-vs-coins",
@@ -58,8 +65,14 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
     "oracle-bones-method",
     "silence-state",
   ],
-  "ai-texts": ["ai-vs-algorithm", "authentic-texts", "data-reliability", "not-advice"],
-  "tokens-payments": ["tokens-packs", "purchases-legal", "library-unlock"],
+  "ai-texts": [
+    "ai-vs-algorithm",
+    "authentic-texts",
+    "data-reliability",
+    "not-advice",
+  ],
+  "tokens-payments": ["tokens-packs", "purchases-legal"],
+  "premium-features": ["translators-tiers", "master-tokens-cost", "library-unlock"],
   "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa"],
 };
 
@@ -69,77 +82,98 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "Métodos del oráculo",
     "ai-texts": "Textos, IA y autenticidad",
     "tokens-payments": "Tokens, packs y pagos",
+      "premium-features": "Funcionalidades Premium",
     "privacy-account": "Privacidad y cuenta",
   },
   en: {
     "app-usage": "Using the app",
     "oracle-methods": "Oracle methods",
     "ai-texts": "Texts, AI and authenticity",
-    "tokens-payments": "Tokens, packs and payments",
-    "privacy-account": "Privacy and account",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Privacy and account",
   },
   pt: {
     "app-usage": "Uso da app",
     "oracle-methods": "Métodos do oráculo",
     "ai-texts": "Textos, IA e autenticidade",
-    "tokens-payments": "Tokens, packs e pagamentos",
-    "privacy-account": "Privacidade e conta",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Privacidade e conta",
   },
   fr: {
     "app-usage": "Utilisation de l’app",
     "oracle-methods": "Méthodes de l’oracle",
     "ai-texts": "Textes, IA et authenticité",
-    "tokens-payments": "Jetons, packs et paiements",
-    "privacy-account": "Confidentialité et compte",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Confidentialité et compte",
   },
   de: {
     "app-usage": "App-Nutzung",
     "oracle-methods": "Orakel-Methoden",
     "ai-texts": "Texte, KI und Echtheit",
-    "tokens-payments": "Tokens, Packs und Zahlungen",
-    "privacy-account": "Datenschutz und Konto",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Datenschutz und Konto",
   },
   it: {
     "app-usage": "Uso dell’app",
     "oracle-methods": "Metodi dell’oracolo",
     "ai-texts": "Testi, IA e autenticità",
-    "tokens-payments": "Token, pack e pagamenti",
-    "privacy-account": "Privacy e account",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "Privacy e account",
   },
   ja: {
     "app-usage": "アプリの使い方",
     "oracle-methods": "占いの方式",
     "ai-texts": "テキスト・AI・原典性",
-    "tokens-payments": "トークン・パック・支払い",
-    "privacy-account": "プライバシーとアカウント",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "プライバシーとアカウント",
   },
   zh: {
     "app-usage": "应用使用",
     "oracle-methods": "占卜方法",
     "ai-texts": "文本、AI 与真实性",
-    "tokens-payments": "代币、套餐与付款",
-    "privacy-account": "隐私与账户",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "隐私与账户",
   },
   ko: {
     "app-usage": "앱 사용",
     "oracle-methods": "점법",
     "ai-texts": "원문·AI·진본성",
-    "tokens-payments": "토큰·팩·결제",
-    "privacy-account": "개인정보와 계정",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "개인정보와 계정",
   },
   ar: {
     "app-usage": "استخدام التطبيق",
     "oracle-methods": "طرق العرافة",
     "ai-texts": "النصوص والذكاء الاصطناعي والأصالة",
-    "tokens-payments": "الرموز والحزم والدفع",
-    "privacy-account": "الخصوصية والحساب",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "الخصوصية والحساب",
   },
   hi: {
     "app-usage": "ऐप का उपयोग",
     "oracle-methods": "ओरेकल विधियाँ",
     "ai-texts": "मूल पाठ, एआई और प्रामाणिकता",
-    "tokens-payments": "टोकन, पैक और भुगतान",
-    "privacy-account": "गोपनीयता और खाता",
+    
+      "premium-features": "Funcionalidades Premium",
+      "tokens-payments": "Tokens, packs and payments",
+      "privacy-account": "गोपनीयता और खाता",
   },
 };
 
@@ -209,14 +243,16 @@ const FAQ_ITEMS_EN: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "What are the two I Ching casting methods: Three Coins and Yarrow Stalks?",
+    question:
+      "What are the two I Ching casting methods: Three Coins and Yarrow Stalks?",
     answer:
       "Both methods produce the same 64 hexagrams and use the same I Ching texts and Zhu Xi rules. Three Coins is quick and accessible: you cast three coins six times to build the six lines. Yarrow Stalks is the older ritual method: you work with counted stalks or similar objects through a slower, more contemplative procedure. The choice changes the ritual experience, not the authority of the reading. Use Three Coins for speed; use Yarrow Stalks when you want the traditional rhythm.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
-    question: "What is automatic vs manual I Ching, and can I mix Oracle Bones in the same thread?",
+    question:
+      "What is automatic vs manual I Ching, and can I mix Oracle Bones in the same thread?",
     answer:
       "Automatic vs manual applies only to I Ching (Three Coins or Yarrow Stalks). In Options the cast-mode controls appear when I Ching is selected: choose Three Coins or Yarrow Stalks, then choose automatic (the cast runs on the server) or manual (you enter the six line totals 6/7/8/9 from your own coins or stalks). Oracle Bones is always automatic; there is no manual bones flow; ritual and verdict come from the algorithm only. Within your plan’s per-thread depth cap, you may freely alternate I Ching and Oracle Bones and switch methods and modes between consultations; your preferences are remembered for the next I Ching reading.",
     related: ["userGuide", "methodNotes"],
@@ -232,7 +268,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "iching-how-answers",
     question: "How does the I Ching actually work and produce its answers?",
     answer:
-      "The I Ching works through 64 hexagrams that form an ancient catalog of patterns of change in nature and human life. Each hexagram is a structured figure with classical meaning preserved in the Wilhelm/Baynes texts. Each consultation begins from your specific question. The mathematical algorithm casts the lines under the rules of Zhu Xi to determine the present hexagram, any moving lines, and the resulting future hexagram. The AI then articulates that already-formed result in your language, applying the classical meaning of those hexagrams to your particular context. That is why every reading is unique and personal: the same hexagrams can appear for different people, but the answer is never the same, because it depends on the specific question, the moment in life, and the personal context of the seeker. There is no universal interpretation that applies to more than one person at the same time.",
+      "The I Ching works through 64 hexagrams that form an ancient catalog of patterns of change in nature and human life. Each hexagram is a structured figure with classical meaning preserved in the classical works of Wilhelm/Baynes, James Legge, or the original Zhou Yi text. Each consultation begins from your specific question. The mathematical algorithm casts the lines under the rules of Zhu Xi to determine the present hexagram, any moving lines, and the resulting future hexagram. The AI then articulates that already-formed result in your language, applying the classical meaning of those hexagrams to your particular context. That is why every reading is unique and personal: the same hexagrams can appear for different people, but the answer is never the same, because it depends on the specific question, the moment in life, and the personal context of the seeker. There is no universal interpretation that applies to more than one person at the same time.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -270,13 +306,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
       "Commercial terms and acceptable use are in the Terms of Service. Token packs and checkout flows are summarized in the guide and pricing pages.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "What is the Library and how do I unlock it?",
-    answer:
-      "The Library is a premium section containing the complete collection of 64 hexagrams across three literary works: the classic Wilhelm/Baynes translation, the James Legge version, and the original Zhou Yi. It is designed for personal study and to compare your manual casts with authentic sources. It is permanently unlocked by purchasing any paid token pack.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "Is two-factor authentication available?",
@@ -299,7 +329,8 @@ const FAQ_ITEMS_EN: FaqItem[] = [
   },
   {
     id: "authentic-texts",
-    question: "Are the I Ching texts that appear in the reading authentic or AI-generated?",
+    question:
+      "Are the I Ching texts that appear in the reading authentic or AI-generated?",
     answer:
       "They are authentic. The Judgment (卦辞), the lines in motion (爻辞), and the resulting hexagrams come entirely from the Wilhelm/Baynes translation (public domain since 2020). The AI cites and contextualises them with your question, but does not modify or replace them. You can compare any text with the original book.",
     related: ["methodNotes"],
@@ -335,6 +366,24 @@ const FAQ_ITEMS_EN: FaqItem[] = [
 
 const FAQ_ITEMS_ES: FaqItem[] = [
   {
+    id: "translators-tiers",
+    question: "¿Cómo funcionan los diferentes niveles de traducción?",
+    answer: "La app ofrece diversos linajes de sabiduría para tu consulta. Mientras que el nivel inicial incluye la visión de Wilhelm, los packs superiores (Seeker y Practitioner) desbloquean a James Legge y el Zhou Yi original. El nivel Master ofrece acceso exclusivo a la función Master (3).",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "¿Cómo funciona la síntesis Master (3) y por qué es tan potente?",
+    answer: "La función Master (3) realiza una Síntesis Personalizada: triangula simultáneamente las tres fuentes raíz (Wilhelm, Legge y el Zhou Yi original) para destilar un veredicto coherente. El resultado es un análisis dialéctico que ofrece una 'Respuesta Concreta' potente e inmediata, seguida de un análisis comparativo profundo elaborado de forma única para tu situación y adaptado con total fidelidad al contexto personal de tu consulta.",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "¿Qué es la Biblioteca y cómo se accede?",
+    answer: "Es el compendio completo de los 64 hexagramas y las tres obras literarias íntegras. El acceso se desbloquea de forma permanente al adquirir cualquier pack de pago (Seeker en adelante).",
+  },
+
+  
+  {
     id: "tokens-packs",
     question: "¿Cómo funcionan los tokens, los packs y el plan gratuito?",
     answer:
@@ -349,14 +398,16 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   },
   {
     id: "yarrow-vs-coins",
-    question: "¿En qué se diferencian los dos métodos del I Ching: Tres Monedas y Varillas?",
+    question:
+      "¿En qué se diferencian los dos métodos del I Ching: Tres Monedas y Varillas?",
     answer:
       "Ambos métodos producen los mismos 64 hexagramas y usan los mismos textos del I Ching y las reglas de Zhu Xi. Tres Monedas es rápido y accesible: lanzas tres monedas seis veces para formar las seis líneas. Varillas de Milenrama es el método ritual más antiguo: trabajas con varillas u objetos similares mediante un procedimiento más lento y contemplativo. La elección cambia la experiencia ritual, no la autoridad de la lectura. Usa Tres Monedas para rapidez; usa Varillas cuando quieras el ritmo tradicional.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
-    question: "¿Qué es el I Ching automático frente al manual, y puedo mezclar Huesos en el mismo hilo?",
+    question:
+      "¿Qué es el I Ching automático frente al manual, y puedo mezclar Huesos en el mismo hilo?",
     answer:
       "Lo automático frente a manual solo aplica al I Ching (Tres Monedas o Varillas de Milenrama). En Opciones los controles de modo de tirada aparecen cuando I Ching está seleccionado: elige Tres Monedas o Varillas de Milenrama, luego automático (la tirada se ejecuta en el servidor) o manual (introduces los seis totales de línea 6/7/8/9 con tus propias monedas o varillas). El modo Huesos es siempre automático; no hay flujo manual de huesos; el ritual y el veredicto salen solo del algoritmo. Dentro del tope de profundidad por hilo de tu plan, puedes alternar libremente I Ching y Huesos y cambiar métodos y modos entre consultas; la app guarda tus preferencias para la próxima lectura en I Ching.",
     related: ["userGuide", "methodNotes"],
@@ -372,7 +423,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "iching-how-answers",
     question: "¿Cómo opera el I Ching y de dónde salen sus respuestas?",
     answer:
-      "El I Ching opera a través de 64 hexagramas que forman un catálogo milenario de patrones de cambio en la naturaleza y en la vida humana. Cada hexagrama es una figura estructurada con un significado clásico preservado en los textos Wilhelm/Baynes. Cada consulta parte de tu pregunta concreta. El algoritmo matemático lanza las líneas bajo las reglas de Zhu Xi para determinar el hexagrama presente, las líneas en movimiento si las hay y el hexagrama futuro resultante. Después la IA articula ese resultado ya formado en tu idioma, aplicando el significado clásico de esos hexagramas a tu contexto particular. Por eso cada lectura es única y personal: los mismos hexagramas pueden aparecer para distintas personas, pero la respuesta no es la misma, porque depende de la pregunta concreta, del momento vital y del contexto personal del consultante. No existe una interpretación universal aplicable a más de una persona a la vez.",
+      "El I Ching opera a través de 64 hexagramas que forman un catálogo milenario de patrones de cambio en la naturaleza y en la vida humana. Cada hexagrama es una figura estructurada con un significado clásico preservado en las obras clásicas de Wilhelm/Baynes, James Legge o el texto original Zhou Yi. Cada consulta parte de tu pregunta concreta. El algoritmo matemático lanza las líneas bajo las reglas de Zhu Xi para determinar el hexagrama presente, las líneas en movimiento si las hay y el hexagrama futuro resultante. Después la IA articula ese resultado ya formado en tu idioma, aplicando el significado clásico de esos hexagramas a tu contexto particular. Por eso cada lectura es única y personal: los mismos hexagramas pueden aparecer para distintas personas, pero la respuesta no es la misma, porque depende de la pregunta concreta, del momento vital y del contexto personal del consultante. No existe una interpretación universal aplicable a más de una persona a la vez.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -405,18 +456,13 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "¿Dónde encuentro información sobre facturación y condiciones del servicio?",
+    question:
+      "¿Dónde encuentro información sobre facturación y condiciones del servicio?",
     answer:
       "Las condiciones comerciales y el uso aceptable están en los Términos del servicio. Los packs de tokens y el flujo de compra se resumen en la guía y en la página de precios.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "¿Qué es la Biblioteca y cómo se desbloquea?",
-    answer:
-      "La Biblioteca es una sección premium que contiene la colección completa de los 64 hexagramas en tres obras literarias: la traducción clásica de Wilhelm/Baynes, la versión de James Legge y el Zhou Yi original. Está diseñada para el estudio personal y para contrastar tus tiradas manuales con fuentes auténticas. Se desbloquea de forma permanente al adquirir cualquier pack de tokens de pago.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "¿Hay autenticación en dos pasos (2FA)?",
@@ -433,13 +479,15 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "¿Quién genera el hexagrama o el veredicto: la IA o el algoritmo?",
+    question:
+      "¿Quién genera el hexagrama o el veredicto: la IA o el algoritmo?",
     answer:
       "El algoritmo matemático, no la IA. En el modo I Ching, el algoritmo construye el hexagrama línea por línea y determina la línea regente. En el modo Huesos, genera el patrón de grietas y el veredicto. La inteligencia artificial interviene después: toma ese resultado ya calculado y lo articula en lenguaje natural en tu idioma, con el contexto de tu pregunta. La IA es el intérprete. El oráculo es el método.",
   },
   {
     id: "authentic-texts",
-    question: "¿Los textos del I Ching que aparecen en la lectura son auténticos o generados por IA?",
+    question:
+      "¿Los textos del I Ching que aparecen en la lectura son auténticos o generados por IA?",
     answer:
       "Son auténticos. Los textos del Juicio (卦辞), las sentencias de las líneas en movimiento (爻辞) y los hexagramas resultantes provienen íntegramente de la traducción Wilhelm/Baynes (dominio público desde 2020). La IA los cita y los contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con el libro original.",
     related: ["methodNotes"],
@@ -484,7 +532,8 @@ const FAQ_ITEMS_AR: FaqItem[] = [
   {
     id: "data-reliability",
     question: "ما مدى موثوقية نصوص الآي تشينغ في التطبيق؟",
-    answer: "النصوص موثوقة للغاية. لقد أجرينا تدقيقاً لسلامة البيانات بنسبة 1:1، مع التحقق من كل سداسي مقابل المصادر الأكاديمية مثل جامعة بارما (ترجمة فيلهلم)، وSacred-Texts.com (ليج)، ومشروع النصوص الصينية (تشو يي). تم تصحيح أي أخطاء في النسخ وجدت في مجموعات البيانات الأصلية يدوياً لضمان الدقة الرياضية والأدبية。",
+    answer:
+      "النصوص موثوقة للغاية. لقد أجرينا تدقيقاً لسلامة البيانات بنسبة 1:1، مع التحقق من كل سداسي مقابل المصادر الأكاديمية مثل جامعة بارما (ترجمة فيلهلم)، وSacred-Texts.com (ليج)، ومشروع النصوص الصينية (تشو يي). تم تصحيح أي أخطاء في النسخ وجدت في مجموعات البيانات الأصلية يدوياً لضمان الدقة الرياضية والأدبية。",
   },
   {
     id: "yarrow-vs-coins",
@@ -495,7 +544,8 @@ const FAQ_ITEMS_AR: FaqItem[] = [
   },
   {
     id: "iching-manual-auto-bones",
-    question: "ما الفرق بين I Ching التلقائي واليدوي، وهل يمكن خلط العظام في نفس الخيط؟",
+    question:
+      "ما الفرق بين I Ching التلقائي واليدوي، وهل يمكن خلط العظام في نفس الخيط؟",
     answer:
       "التلقائي مقابل اليدوي ينطبق فقط على I Ching (الأسكة الثلاث أو عيدان الزنبق). في الخيارات تظهر أدوات وضع القَسْم عند اختيار I Ching: اختر الأسكة الثلاث أو عيدان الزنبق، ثم تلقائي (تُنفَّذ القرعة على الخادم) أو يدوي (تُدخل مجموع الخطوط الستة 6/7/8/9 من عملاتك أو عيدانك). وضع العظام دائمًا تلقائي؛ لا يوجد مسار يدوي للعظام؛ الطقس والحكم يأتيان من الخوارزمية فقط. ضمن حد عمق الخيط في خطتك، يمكنك التناوب بحرية بين I Ching والعظام وتبديل الطرق والأوضاع بين الاستشارات؛ يحفظ التطبيق تفضيلاتك للقراءة التالية في I Ching.",
     related: ["userGuide", "methodNotes"],
@@ -549,13 +599,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
       "الشروط التجارية والاستخدام المقبول موجودة في شروط الخدمة. كما تُلخّص صفحة الباقات والأسعار آلية الشراء والدفع.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "ما هي المكتبة وكيف يمكنني فتحها؟",
-    answer:
-      "المكتبة هي قسم متميز يحتوي على المجموعة الكاملة المكونة من 64 هكساغراماً عبر ثلاثة أعمال أدبية: ترجمة فيلهلم/باينズ الكلاسيكية، ونسخة جيمس ليغ، وجو يي الأصلي. تم تصميمها للدراسة الشخصية ولمقارنة قراءاتك اليدوية مع المصادر الموثوقة. يتم فتحها بشكل دائم عند شراء أي حزمة رموز مدفوعة.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "هل تتوفر المصادقة الثنائية (2FA)؟",
@@ -578,7 +622,8 @@ const FAQ_ITEMS_AR: FaqItem[] = [
   },
   {
     id: "authentic-texts",
-    question: "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
+    question:
+      "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
       "إنها أصيلة. نصوص الحكم (卦辞)، وعبارات الخطوط المتحركة (爻辞)، والهكساجرامات الناتجة مستقاة كلها من ترجمة Wilhelm/Baynes (في الملك العام منذ عام 2020). يستشهد بها الذكاء الاصطناعي ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع الكتاب الأصلي.",
     related: ["methodNotes"],
@@ -623,18 +668,21 @@ const FAQ_ITEMS_HI: FaqItem[] = [
   {
     id: "data-reliability",
     question: "ऐप में दिए गए आई चिंग ग्रंथों की विश्वसनीयता क्या है?",
-    answer: "ग्रंथ अत्यंत विश्वसनीय हैं। हमने परमा विश्वविद्यालय (विल्हेम अनुवाद), Sacred-Texts.com (लेग), और चीनी पाठ परियोजना (झोउ यी) जैसे शैक्षणिक स्रोतों के साथ प्रत्येक हेक्साग्राम का मिलान करते हुए 1:1 डेटा अखंडता ऑडिट किया है। मूल स्रोत डेटासेट में मिली किसी भी प्रतिलेखन त्रुटि को गणितीय और साहित्यिक सटीकता सुनिश्चित करने के लिए मैन्युअल रूप से ठीक किया गया है।",
+    answer:
+      "ग्रंथ अत्यंत विश्वसनीय हैं। हमने परमा विश्वविद्यालय (विल्हेम अनुवाद), Sacred-Texts.com (लेग), और चीनी पाठ परियोजना (झोउ यी) जैसे शैक्षणिक स्रोतों के साथ प्रत्येक हेक्साग्राम का मिलान करते हुए 1:1 डेटा अखंडता ऑडिट किया है। मूल स्रोत डेटासेट में मिली किसी भी प्रतिलेखन त्रुटि को गणितीय और साहित्यिक सटीकता सुनिश्चित करने के लिए मैन्युअल रूप से ठीक किया गया है।",
   },
   {
     id: "yarrow-vs-coins",
-    question: "I Ching की दो विधियों, तीन सिक्के और यारो डंठल, में क्या अंतर है?",
+    question:
+      "I Ching की दो विधियों, तीन सिक्के और यारो डंठल, में क्या अंतर है?",
     answer:
       "दोनों विधियाँ वही 64 हेक्साग्राम बनाती हैं और I Ching के वही पाठ तथा Zhu Xi के नियम उपयोग करती हैं। तीन सिक्के तेज और सरल है: छह रेखाएँ बनाने के लिए तीन सिक्के छह बार फेंके जाते हैं। यारो डंठल पुरानी अनुष्ठानिक विधि है: गिने हुए डंठलों या समान वस्तुओं के साथ धीमी और अधिक ध्यानपूर्ण प्रक्रिया की जाती है। चुनाव पढ़ाई की प्रामाणिकता नहीं, बल्कि अनुष्ठान का अनुभव बदलता है। गति चाहिए तो तीन सिक्के; पारंपरिक लय चाहिए तो यारो डंठल।",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
-    question: "I Ching में स्वचालित बनाम मैन्युअल क्या है, और क्या मैं एक ही थ्रेड में Oracle Bones मिला सकता/सकती हूँ?",
+    question:
+      "I Ching में स्वचालित बनाम मैन्युअल क्या है, और क्या मैं एक ही थ्रेड में Oracle Bones मिला सकता/सकती हूँ?",
     answer:
       "स्वचालित बनाम मैन्युअल केवल I Ching (तीन सिक्के या यारो की छड़ें) पर लागू होता है। विकल्पों में कास्ट-मोड नियंत्रण तभी दिखते हैं जब I Ching चुना हो: तीन सिक्के या यारो की छड़ें चुनें, फिर स्वचालित (सर्वर पर कास्ट होता है) या मैन्युअल (अपने सिक्कों या छड़ों से छह पंक्ति योग 6/7/8/9 दर्ज करें)। Oracle Bones मोड हमेशा स्वचालित है; कोई मैन्युअल हड्डी प्रवाह नहीं; अनुष्ठान और निर्णय केवल एल्गोरिदम से आते हैं। आपकी योजना की प्रति-थ्रेड गहराई सीमा के भीतर, आप I Ching और Oracle Bones को स्वतंत्र रूप से बदल सकते हैं और परामर्शों के बीच विधियाँ और मोड स्विच कर सकते हैं; आपकी पसंद अगली I Ching पठन के लिए याद रखी जाती है।",
     related: ["userGuide", "methodNotes"],
@@ -688,13 +736,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
       "वाणिज्यिक शर्तें और स्वीकार्य उपयोग सेवा शर्तों में हैं। टोकन पैक और चेकआउट प्रवाह गाइड व प्राइसिंग पेज में सारांशित हैं।",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "पुस्तकालय क्या है और मैं इसे कैसे अनलॉक करूं?",
-    answer:
-      "पुस्तकालय एक प्रीमियम अनुभाग है जिसमें तीन साहित्यिक कृतियों: विल्हेल्म/बेंस का शास्त्रीय अनुवाद, जेम्स लेग संस्करण, और मूल झोउ यी में 64 हेक्साग्राम का पूरा संग्रह है। यह व्यक्तिगत अध्ययन और आपके मैन्युअल कास्ट की प्रामाणिक स्रोतों के साथ तुलना करने के लिए डिज़ाइन किया गया है। यह किसी भी सशुल्क टोकन पैक को खरीदने पर स्थायी रूप से अनलॉक हो जाता है।",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "क्या दो-कारक प्रमाणीकरण (2FA) उपलब्ध है?",
@@ -717,7 +759,8 @@ const FAQ_ITEMS_HI: FaqItem[] = [
   },
   {
     id: "authentic-texts",
-    question: "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
+    question:
+      "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
     answer:
       "वे प्रामाणिक हैं। निर्णय (卦辞), चलती रेखाओं की उक्तियाँ (爻辞), और परिणामी हेक्साग्राम पूरी तरह Wilhelm/Baynes अनुवाद (2020 से सार्वजनिक डोमेन) से आते हैं। AI उन्हें आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल पुस्तक से तुलना कर सकते हैं।",
     related: ["methodNotes"],
@@ -762,7 +805,8 @@ const FAQ_ITEMS_JA: FaqItem[] = [
   {
     id: "data-reliability",
     question: "アプリで提供される易経のテキストの信頼性はどの程度ですか？",
-    answer: "テキストの信頼性は極めて高いです。パルマ大学（ヴィルヘルム訳）、Sacred-Texts.com（レッグ訳）、Chinese Text Project（周易）などの学術的ソースと1対1のデータ整合性監査を実施しました。元のソースデータセットに見つかった転記ミスはすべて手動で修正され、数学的および文学的な正確さが保証されています。",
+    answer:
+      "テキストの信頼性は極めて高いです。パルマ大学（ヴィルヘルム訳）、Sacred-Texts.com（レッグ訳）、Chinese Text Project（周易）などの学術的ソースと1対1のデータ整合性監査を実施しました。元のソースデータセットに見つかった転記ミスはすべて手動で修正され、数学的および文学的な正確さが保証されています。",
   },
   {
     id: "yarrow-vs-coins",
@@ -827,13 +871,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
       "商業条件と許容使用は利用規約に記載されています。トークンパックとチェックアウトの流れはガイドと料金ページにまとめられています。",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "ライブラリとは何ですか？どうすればアンロックできますか？",
-    answer:
-      "ライブラリは、ヴィルヘルム/バインズ訳、ジェームズ・レッグ版、そして原典の周易という3つの文学作品にわたる64卦の完全なコレクションを含むプレミアムセクションです。個人の学習や、手動での占い結果を本物の情報源と比較するために設計されています。有料のトークンパックを購入することで永久にアンロックされます。",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "二要素認証（2FA）は利用できますか？",
@@ -850,13 +888,15 @@ const FAQ_ITEMS_JA: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "六十四卦や判定を生成するのは、AIですか、それともアルゴリズムですか？",
+    question:
+      "六十四卦や判定を生成するのは、AIですか、それともアルゴリズムですか？",
     answer:
       "数学的アルゴリズムであり、AIではありません。I Chingモードでは、アルゴリズムが卦を構築して主爻と変卦を決定します。卜骨モードでは、亀裂パターンを生成して判定を下します。人工知能はその後に介入します。すでに計算されたその結果を受け取り、あなたの質問の文脈を踏まえて、あなたの言語で自然な言葉として表現します。AIは解釈者であり、オラクルはその方法です。",
   },
   {
     id: "authentic-texts",
-    question: "解釈に表示されるI Chingのテキストは本物ですか、それともAIが生成したものですか？",
+    question:
+      "解釈に表示されるI Chingのテキストは本物ですか、それともAIが生成したものですか？",
     answer:
       "本物です。卦辞、動爻（爻辞）、変卦のテキストはすべて、ヴィルヘルム/バインズ訳（2020年よりパブリックドメイン）から引用されています。AIはあなたの質問に合わせてそれらを引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原著と照合することができます。",
     related: ["methodNotes"],
@@ -901,7 +941,8 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
   {
     id: "data-reliability",
     question: "应用中提供的易经文本可靠性如何？",
-    answer: "这些文本非常可靠。我们进行了 1:1 的数据完整性审核，根据帕尔马大学（卫礼贤译本）、Sacred-Texts.com（理雅各译本）和中国哲学书电子化计划（周易）等学术资源验证了每个卦象。原始源数据集中发现의 任何转录错误均已手动更正，以确保数学和文学的准确性。",
+    answer:
+      "这些文本非常可靠。我们进行了 1:1 的数据完整性审核，根据帕尔马大学（卫礼贤译本）、Sacred-Texts.com（理雅各译本）和中国哲学书电子化计划（周易）等学术资源验证了每个卦象。原始源数据集中发现의 任何转录错误均已手动更正，以确保数学和文学的准确性。",
   },
   {
     id: "yarrow-vs-coins",
@@ -966,13 +1007,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
       "商业条款和可接受使用规定请见服务条款。代币套餐和结账流程在指南和定价页面中有所概述。",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "资料库是什么？如何解锁？",
-    answer:
-      "资料库是一个高级板块，包含三个文学版本中的 64 卦完整合集：经典的卫礼贤/贝恩斯译本、理雅各（James Legge）版本以及《周易》古经。它专为个人学习以及将您的手动起卦与原典进行对比而设计。购买任何付费代币包即可永久解锁。",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "是否提供双因素身份验证（2FA）？",
@@ -1040,7 +1075,8 @@ const FAQ_ITEMS_KO: FaqItem[] = [
   {
     id: "data-reliability",
     question: "앱에서 제공되는 주역 텍스트는 얼마나 신뢰할 수 있습니까?",
-    answer: "텍스트는 매우 신뢰할 수 있습니다. 파르마 대학교(빌헬름 번역), Sacred-Texts.com(레그 번역), Chinese Text Project(주역)와 같은 학술적 자료를 바탕으로 1:1 데이터 무결성 감사를 실시했습니다. 원본 소스 데이터셋에서 발견된 모든 오타는 수학적 및 문학적 정확성을 보장하기 위해 수동으로 수정되었습니다.",
+    answer:
+      "텍스트는 매우 신뢰할 수 있습니다. 파르마 대학교(빌헬름 번역), Sacred-Texts.com(레그 번역), Chinese Text Project(주역)와 같은 학술적 자료를 바탕으로 1:1 데이터 무결성 감사를 실시했습니다. 원본 소스 데이터셋에서 발견된 모든 오타는 수학적 및 문학적 정확성을 보장하기 위해 수동으로 수정되었습니다.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1051,7 +1087,8 @@ const FAQ_ITEMS_KO: FaqItem[] = [
   },
   {
     id: "iching-manual-auto-bones",
-    question: "역경 자동과 수동의 차이는 무엇이며, 같은 스레드에서 갑골과 섞을 수 있나요?",
+    question:
+      "역경 자동과 수동의 차이는 무엇이며, 같은 스레드에서 갑골과 섞을 수 있나요?",
     answer:
       "자동과 수동은 역경(동전 세 개 또는 시초)에만 적용됩니다. 옵션에서 역경을 선택했을 때만 점 방식 컨트롤이 보입니다. 동전 세 개 또는 시초를 선택한 후 자동(서버에서 점괘 실행) 또는 수동(본인의 동전이나 시초로 나온 여섯 효의 합계 6/7/8/9를 입력)을 선택합니다. 갑골 모드는 항상 자동이며 수동 갑골 흐름은 없습니다. 의식과 판정은 알고리즘에서만 나옵니다. 요금제의 스레드 깊이 한도 안에서는 역경과 갑골을 자유롭게 번갈아 할 수 있고, 상담 간 방법과 모드를 바꿀 수 있습니다. 다음 역경 상담을 위해 설정은 기억됩니다.",
     related: ["userGuide", "methodNotes"],
@@ -1105,13 +1142,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
       "상업적 조건 및 허용 가능한 사용은 서비스 약관에 있습니다. 토큰 팩과 결제 흐름은 가이드와 가격 페이지에 요약되어 있습니다.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "라이브러리란 무엇이며 어떻게 잠금 해제하나요?",
-    answer:
-      "라이브러리는 빌헬름/베인즈 번역, 제임스 레그 버전, 그리고 원전 주역 등 세 가지 문헌에 걸친 64괘 전체 컬렉션을 포함하는 프리미엄 섹션입니다. 개인적인 학습과 수동 점괘를 정통 출처와 대조하기 위해 설계되었습니다. 유료 토큰 팩을 구매하면 영구적으로 잠금 해제됩니다.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "이중 인증(2FA)을 사용할 수 있나요?",
@@ -1179,18 +1210,21 @@ const FAQ_ITEMS_PT: FaqItem[] = [
   {
     id: "data-reliability",
     question: "Quão confiáveis são os textos do I Ching no aplicativo?",
-    answer: "Os textos são altamente confiáveis. Realizamos uma auditoria de integridade de dados 1:1, verificando cada hexagrama com fontes acadêmicas como a Universidade de Parma (versão Wilhelm), Sacred-Texts.com (Legge) e o Chinese Text Project (Zhou Yi). Quaisquer erros de transcrição encontrados nos conjuntos de dados originais foram corrigidos manualmente para garantir precisão matemática e literária.",
+    answer:
+      "Os textos são altamente confiáveis. Realizamos uma auditoria de integridade de dados 1:1, verificando cada hexagrama com fontes acadêmicas como a Universidade de Parma (versão Wilhelm), Sacred-Texts.com (Legge) e o Chinese Text Project (Zhou Yi). Quaisquer erros de transcrição encontrados nos conjuntos de dados originais foram corrigidos manualmente para garantir precisão matemática e literária.",
   },
   {
     id: "yarrow-vs-coins",
-    question: "Em que diferem os dois métodos do I Ching: Três Moedas e Varetas?",
+    question:
+      "Em que diferem os dois métodos do I Ching: Três Moedas e Varetas?",
     answer:
       "Ambos os métodos produzem os mesmos 64 hexagramas e usam os mesmos textos do I Ching e as regras de Zhu Xi. Três Moedas é rápido e acessível: lanças três moedas seis vezes para formar as seis linhas. Varetas de Milefólio é o método ritual mais antigo: trabalhas com varetas ou objetos semelhantes através de um procedimento mais lento e contemplativo. A escolha muda a experiência ritual, não a autoridade da leitura. Usa Três Moedas para rapidez; usa Varetas quando quiseres o ritmo tradicional.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
-    question: "O que é I Ching automático vs manual, e posso misturar Ossos no mesmo fio?",
+    question:
+      "O que é I Ching automático vs manual, e posso misturar Ossos no mesmo fio?",
     answer:
       "Automático vs manual aplica-se apenas ao I Ching (Três Moedas ou Varetas de Milefólio). Em Opções os controlos do modo de tiragem aparecem com o I Ching selecionado: escolha Três Moedas ou Varetas, depois automático (a tiragem corre no servidor) ou manual (introduza os seis totais de linha 6/7/8/9 das suas moedas ou varetas). O modo Ossos é sempre automático; não existe fluxo manual de ossos; ritual e veredicto vêm só do algoritmo. Dentro do limite de profundidade por fio do seu plano, pode alternar livremente I Ching e Ossos e mudar métodos e modos entre consultas; a app memoriza as suas preferências para a próxima leitura em I Ching.",
     related: ["userGuide", "methodNotes"],
@@ -1206,7 +1240,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "iching-how-answers",
     question: "Como é que o I Ching funciona e de onde vêm as suas respostas?",
     answer:
-      "O I Ching opera através de 64 hexagramas, um catálogo milenar dos padrões de mudança na natureza e na vida humana. Cada hexagrama é uma figura estruturada, com um significado clássico preservado nos textos Wilhelm/Baynes. Cada consulta parte da tua pergunta concreta. O algoritmo matemático lança as linhas segundo as regras de Zhu Xi para determinar o hexagrama presente, as linhas em movimento (caso existam) e o hexagrama futuro resultante. Em seguida a IA articula esse resultado já formado no teu idioma, aplicando o significado clássico desses hexagramas ao teu contexto particular. Por isso cada leitura é única e pessoal: os mesmos hexagramas podem aparecer para pessoas diferentes, mas a resposta nunca é a mesma, porque depende da pergunta concreta, do momento de vida e do contexto pessoal do consultante. Não existe uma interpretação universal aplicável a mais de uma pessoa em simultâneo.",
+      "O I Ching opera através de 64 hexagramas, um catálogo milenar dos padrões de mudança na natureza e na vida humana. Cada hexagrama é uma figura estruturada, com um significado clássico preservado nas obras clássicas de Wilhelm/Baynes, James Legge ou no texto original Zhou Yi. Cada consulta parte da tua pergunta concreta. O algoritmo matemático lança as linhas segundo as regras de Zhu Xi para determinar o hexagrama presente, as linhas em movimento (caso existam) e o hexagrama futuro resultante. Em seguida a IA articula esse resultado já formado no teu idioma, aplicando o significado clássico desses hexagramas ao teu contexto particular. Por isso cada leitura é única e pessoal: os mesmos hexagramas podem aparecer para pessoas diferentes, mas a resposta nunca é a mesma, porque depende da pergunta concreta, do momento de vida e do contexto pessoal do consultante. Não existe uma interpretação universal aplicável a mais de uma pessoa em simultâneo.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -1244,13 +1278,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
       "As condições comerciais e o uso aceitável estão nos Termos de Serviço. Os pacotes de tokens e o fluxo de compra estão resumidos no guia e na página de preços.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "O que é a Biblioteca e como a desbloqueio?",
-    answer:
-      "A Biblioteca é uma secção premium que contém a coleção completa dos 64 hexagramas em três obras literarias: a tradução clássica de Wilhelm/Baynes, a versão de James Legge e o Zhou Yi original. Foi concebida para o estudo pessoal e para contrastar as suas tiragens manuais com fontes autênticas. É desbloqueada permanentemente ao adquirir qualquer pacote de tokens pago.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "A autenticação em dois fatores (2FA) está disponível?",
@@ -1273,7 +1301,8 @@ const FAQ_ITEMS_PT: FaqItem[] = [
   },
   {
     id: "authentic-texts",
-    question: "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
+    question:
+      "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
       "São autênticos. Os textos do Julgamento (卦辞), as sentenças das linhas em movimento (爻辞) e os hexagramas resultantes provêm inteiramente da tradução Wilhelm/Baynes (domínio público desde 2020). A IA cita-os e contextualiza-os com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com o livro original.",
     related: ["methodNotes"],
@@ -1318,18 +1347,21 @@ const FAQ_ITEMS_DE: FaqItem[] = [
   {
     id: "data-reliability",
     question: "Wie zuverlässig sind die I-Ging-Texte in der App?",
-    answer: "Die Texte sind äußerst zuverlässig. Wir haben ein 1:1-Datenintegritätsaudit durchgeführt und jedes Hexagramm mit akademischen Quellen wie der Universität Parma (Wilhelm-Übersetzung), Sacred-Texts.com (Legge) und dem Chinese Text Project (Zhou Yi) abgeglichen. Etwaige Transkriptionsfehler in den ursprünglichen Quelldatensätzen wurden manuell korrigiert, um mathematische und literarische Genauigkeit zu gewährleisten.",
+    answer:
+      "Die Texte sind äußerst zuverlässig. Wir haben ein 1:1-Datenintegritätsaudit durchgeführt und jedes Hexagramm mit akademischen Quellen wie der Universität Parma (Wilhelm-Übersetzung), Sacred-Texts.com (Legge) und dem Chinese Text Project (Zhou Yi) abgeglichen. Etwaige Transkriptionsfehler in den ursprünglichen Quelldatensätzen wurden manuell korrigiert, um mathematische und literarische Genauigkeit zu gewährleisten.",
   },
   {
     id: "yarrow-vs-coins",
-    question: "Worin unterscheiden sich die zwei I Ging Methoden: Drei Münzen und Schafgarbenstäbe?",
+    question:
+      "Worin unterscheiden sich die zwei I Ging Methoden: Drei Münzen und Schafgarbenstäbe?",
     answer:
       "Beide Methoden erzeugen dieselben 64 Hexagramme und verwenden dieselben I Ging Texte sowie die Regeln Zhu Xis. Drei Münzen ist schnell und leicht zugänglich: drei Münzen werden sechsmal geworfen, um die sechs Linien zu bilden. Schafgarbenstäbe ist die ältere rituelle Methode: Man arbeitet mit gezählten Stäben oder ähnlichen Gegenständen in einem langsameren, kontemplativeren Ablauf. Die Wahl verändert das rituelle Erleben, nicht die Gültigkeit der Lesung. Nutze Drei Münzen für Schnelligkeit; nutze Schafgarbenstäbe für den traditionellen Rhythmus.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
-    question: "Was bedeutet automatisch vs. manuell beim I Ching, und kann ich Orakelknochen im selben Thread mischen?",
+    question:
+      "Was bedeutet automatisch vs. manuell beim I Ching, und kann ich Orakelknochen im selben Thread mischen?",
     answer:
       "Automatisch vs. manuell gilt nur für das I Ching (Drei Münzen oder Schafgarbenstäbe). In den Optionen erscheinen die Wurfmodus-Steuerelemente nur bei ausgewähltem I Ching: Wählen Sie Drei Münzen oder Schafgarbenstäbe, dann automatisch (der Wurf erfolgt auf dem Server) oder manuell (Sie tragen die sechs Liniensummen 6/7/8/9 Ihrer eigenen Münzen oder Stäbe ein). Der Orakelknochen-Modus ist immer automatisch; es gibt keinen manuellen Knochenablauf; Ritual und Urteil kommen ausschließlich vom Algorithmus. Innerhalb des Thread-Tiefenlimits Ihres Tarifs können Sie frei zwischen I Ching und Orakelknochen wechseln und Methoden und Modi zwischen Beratungen umschalten; Ihre Einstellungen werden für die nächste I-Ching-Beratung gespeichert.",
     related: ["userGuide", "methodNotes"],
@@ -1343,14 +1375,16 @@ const FAQ_ITEMS_DE: FaqItem[] = [
   },
   {
     id: "iching-how-answers",
-    question: "Wie funktioniert das I Ging tatsächlich, und woher kommen seine Antworten?",
+    question:
+      "Wie funktioniert das I Ging tatsächlich, und woher kommen seine Antworten?",
     answer:
       "Das I Ging arbeitet über 64 Hexagramme, einen jahrtausendealten Katalog von Wandlungsmustern in Natur und menschlichem Leben. Jedes Hexagramm ist eine strukturierte Figur, deren klassische Bedeutung in den Wilhelm/Baynes-Texten bewahrt ist. Jede Beratung beginnt mit Ihrer konkreten Frage. Der mathematische Algorithmus wirft die Linien nach den Regeln Zhu Xis und bestimmt das gegenwärtige Hexagramm, die wandelnden Linien (falls vorhanden) und das daraus resultierende zukünftige Hexagramm. Anschließend formuliert die KI dieses bereits gebildete Ergebnis in Ihrer Sprache und überträgt die klassische Bedeutung dieser Hexagramme auf Ihren persönlichen Kontext. Genau deshalb ist jede Lesung einzigartig und persönlich: Dieselben Hexagramme können bei verschiedenen Menschen auftreten, doch die Antwort ist nie dieselbe, sie hängt von der konkreten Frage, dem Lebensmoment und dem persönlichen Kontext des Ratsuchenden ab. Es gibt keine allgemeingültige Deutung, die zugleich für mehrere Personen gilt.",
     related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
-    question: "Warum kann ich manchmal im selben Chat nicht weiter «vertiefen»?",
+    question:
+      "Warum kann ich manchmal im selben Chat nicht weiter «vertiefen»?",
     answer:
       "Jeder Thread erlaubt eine begrenzte Anzahl verketteter Lesungen je nach Plan. Wenn das Limit erreicht ist, starten Sie eine neue Sitzung. Der Leitfaden erklärt Chats, neue Sitzung und Planlimits.",
     related: ["userGuide", "tokenPacks"],
@@ -1383,13 +1417,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
       "Kommerzielle Bedingungen und zulässige Nutzung finden sich in den Nutzungsbedingungen. Token-Packs und Kaufabläufe sind im Leitfaden und auf der Preisseite zusammengefasst.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "Was ist die Bibliothek und wie entsperre ich sie?",
-    answer:
-      "Die Bibliothek ist ein Premium-Bereich, der die vollständige Sammlung der 64 Hexagramme aus drei literarischen Werken enthält: der klassischen Wilhelm/Baynes-Übersetzung, der James-Legge-Version und dem originalen Zhou Yi. Sie ist für das persönliche Studium und den Abgleich Ihrer manuellen Würfe mit authentischen Quellen gedacht. Sie wird durch den Kauf eines beliebigen kostenpflichtigen Token-Pakets dauerhaft freigeschaltet.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "Ist Zwei-Faktor-Authentifizierung (2FA) verfügbar?",
@@ -1406,13 +1434,15 @@ const FAQ_ITEMS_DE: FaqItem[] = [
   },
   {
     id: "ai-vs-algorithm",
-    question: "Wer generiert das Hexagramm oder das Urteil: die KI oder der Algorithmus?",
+    question:
+      "Wer generiert das Hexagramm oder das Urteil: die KI oder der Algorithmus?",
     answer:
       "Der mathematische Algorithmus, nicht die KI. Im I-Ching-Modus baut der Algorithmus das Hexagramm Linie für Linie auf und bestimmt die leitende Linie und das resultierende Hexagramm. Im Knochenmodus generiert er das Rissmuster und das Urteil. Die künstliche Intelligenz greift danach ein: Sie nimmt dieses bereits berechnete Ergebnis und formuliert es in natürlicher Sprache in Ihrer Sprache, mit dem Kontext Ihrer Frage. Die KI ist der Interpret. Das Orakel ist die Methode.",
   },
   {
     id: "authentic-texts",
-    question: "Sind die I-Ching-Texte in der Lesung authentisch oder KI-generiert?",
+    question:
+      "Sind die I-Ching-Texte in der Lesung authentisch oder KI-generiert?",
     answer:
       "Sie sind authentisch. Die Texte des Urteils (卦辞), die Aussagen der sich bewegenden Linien (爻辞) und die resultierenden Hexagramme stammen vollständig aus der Wilhelm/Baynes-Übersetzung (seit 2020 gemeinfrei). Die KI zitiert und kontextualisiert sie mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit dem Originalbuch vergleichen.",
     related: ["methodNotes"],
@@ -1457,18 +1487,21 @@ const FAQ_ITEMS_IT: FaqItem[] = [
   {
     id: "data-reliability",
     question: "Quanto sono affidabili i testi dell'I Ching nell'app?",
-    answer: "I testi sono estremamente affidabili. Abbiamo condotto un audit di integrità dei dati 1:1, verificando ogni esagramma rispetto a fonti accademiche come l'Università di Parma (traduzione Wilhelm), Sacred-Texts.com (Legge) e il Chinese Text Project (Zhou Yi). Eventuali errori di trascrizione trovati nei dataset originali sono stati corretti manualmente per garantire la precisione matematica e letteraria.",
+    answer:
+      "I testi sono estremamente affidabili. Abbiamo condotto un audit di integrità dei dati 1:1, verificando ogni esagramma rispetto a fonti accademiche come l'Università di Parma (traduzione Wilhelm), Sacred-Texts.com (Legge) e il Chinese Text Project (Zhou Yi). Eventuali errori di trascrizione trovati nei dataset originali sono stati corretti manualmente per garantire la precisione matematica e letteraria.",
   },
   {
     id: "yarrow-vs-coins",
-    question: "In cosa differiscono i due metodi dell'I Ching: Tre Monete e Steli di Achillea?",
+    question:
+      "In cosa differiscono i due metodi dell'I Ching: Tre Monete e Steli di Achillea?",
     answer:
       "Entrambi i metodi producono gli stessi 64 esagrammi e usano gli stessi testi dell'I Ching e le regole di Zhu Xi. Tre Monete è rapido e accessibile: si lanciano tre monete sei volte per formare le sei linee. Steli di Achillea è il metodo rituale più antico: si lavora con steli o oggetti simili attraverso una procedura più lenta e contemplativa. La scelta cambia l'esperienza rituale, non l'autorità della lettura. Usa Tre Monete per la rapidità; usa Steli di Achillea quando desideri il ritmo tradizionale.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
-    question: "Che cos'è I Ching automatico vs manuale, e posso mescolare le Ossa nello stesso filo?",
+    question:
+      "Che cos'è I Ching automatico vs manuale, e posso mescolare le Ossa nello stesso filo?",
     answer:
       "Automatico vs manuale vale solo per l'I Ching (Tre Monete o Steli di Achillea). In Opzioni i controlli del modo di lancio compaiono con l'I Ching selezionato: scegli Tre Monete o Steli di Achillea, poi automatico (il lancio avviene sul server) o manuale (inserisci i sei totali di linea 6/7/8/9 delle tue monete o steli). La modalità Ossa è sempre automatica; non esiste un flusso manuale per le ossa; rituale e verdetto provengono solo dall'algoritmo. Entro il limite di profondità per filo del tuo piano, puoi alternare liberamente I Ching e Ossa e cambiare metodi e modalità tra consultazioni; l'app memorizza le tue preferenze per la prossima lettura in I Ching.",
     related: ["userGuide", "methodNotes"],
@@ -1482,14 +1515,16 @@ const FAQ_ITEMS_IT: FaqItem[] = [
   },
   {
     id: "iching-how-answers",
-    question: "Come funziona davvero l'I Ching e da dove arrivano le sue risposte?",
+    question:
+      "Come funziona davvero l'I Ching e da dove arrivano le sue risposte?",
     answer:
       "L'I Ching opera attraverso 64 esagrammi, un catalogo millenario dei pattern di cambiamento nella natura e nella vita umana. Ogni esagramma è una figura strutturata con un significato classico preservato nei testi Wilhelm/Baynes. Ogni consultazione parte dalla tua domanda concreta. L'algoritmo matematico lancia le linee secondo le regole di Zhu Xi per determinare l'esagramma presente, le eventuali linee in movimento e l'esagramma futuro risultante. L'IA articola poi quel risultato già formato nella tua lingua, applicando il significato classico di quegli esagrammi al tuo contesto particolare. Per questo ogni lettura è unica e personale: gli stessi esagrammi possono comparire per persone diverse, ma la risposta non è mai la stessa, perché dipende dalla domanda specifica, dal momento di vita e dal contesto personale di chi consulta. Non esiste un'interpretazione universale applicabile a più di una persona contemporaneamente.",
     related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
-    question: "Perché a volte non riesco ad «approfondire» ulteriormente nella stessa chat?",
+    question:
+      "Perché a volte non riesco ad «approfondire» ulteriormente nella stessa chat?",
     answer:
       "Ogni filo ammette un numero limitato di letture concatenate in base al tuo piano. Quando si raggiunge il limite, avvia una nuova sessione. La guida spiega Chat, nuova sessione e limiti per piano.",
     related: ["userGuide", "tokenPacks"],
@@ -1517,18 +1552,13 @@ const FAQ_ITEMS_IT: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "Dove trovo informazioni sulla fatturazione e sulle condizioni del servizio?",
+    question:
+      "Dove trovo informazioni sulla fatturazione e sulle condizioni del servizio?",
     answer:
       "Le condizioni commerciali e l'uso accettabile si trovano nei Termini di Servizio. I pacchetti di token e i flussi di acquisto sono riassunti nella guida e nella pagina dei prezzi.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "Cos'è la Biblioteca e come la sblocco?",
-    answer:
-      "La Biblioteca è una sezione premium che contiene la collezione completa dei 64 esagrammi in tre opere letterarie: la traduzione classica di Wilhelm/Baynes, la versione di James Legge e il Zhou Yi originale. È pensata per lo studio personale e per confrontare i tuoi lanci manuali con fonti autentiche. Si sblocca in modo permanente acquistando qualsiasi pacchetto di token a pagamento.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "È disponibile l'autenticazione a due fattori (2FA)?",
@@ -1551,7 +1581,8 @@ const FAQ_ITEMS_IT: FaqItem[] = [
   },
   {
     id: "authentic-texts",
-    question: "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
+    question:
+      "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
       "Sono autentici. I testi del Giudizio (卦辞), le sentenze delle linee in movimento (爻辞) e gli esagrammi risultanti provengono interamente dalla traduzione Wilhelm/Baynes (di pubblico dominio dal 2020). L'IA li cita e li contestualizza con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con il libro originale.",
     related: ["methodNotes"],
@@ -1588,26 +1619,31 @@ const FAQ_ITEMS_IT: FaqItem[] = [
 const FAQ_ITEMS_FR: FaqItem[] = [
   {
     id: "tokens-packs",
-    question: "Comment fonctionnent les tokens, les packs et le niveau gratuit ?",
+    question:
+      "Comment fonctionnent les tokens, les packs et le niveau gratuit ?",
     answer:
       "Chaque consultation consomme des tokens selon votre pack actif. Le guide explique le solde d'essai, les tailles de pack et comment le solde s'accumule. Les achats et renouvellements sont régis par les Conditions.",
     related: ["tokenPacks", "pricing", "termsOfService"],
   },
   {
     id: "data-reliability",
-    question: "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
-    answer: "Les textes sont extrêmement fiables. Nous avons effectué un audit d'intégrité des données 1:1, en vérifiant chaque hexagramme par rapport à des sources académiques telles que l'Université de Parme (traduction Wilhelm), Sacred-Texts.com (Legge) et le Chinese Text Project (Zhou Yi). Toutes les erreurs de transcription détectées dans les ensembles de données sources originaux ont été corrigées manuellement pour garantir une exactitude mathématique et littéraire.",
+    question:
+      "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
+    answer:
+      "Les textes sont extrêmement fiables. Nous avons effectué un audit d'intégrité des données 1:1, en vérifiant chaque hexagramme par rapport à des sources académiques telles que l'Université de Parme (traduction Wilhelm), Sacred-Texts.com (Legge) et le Chinese Text Project (Zhou Yi). Toutes les erreurs de transcription détectées dans les ensembles de données sources originaux ont été corrigées manuellement pour garantir une exactitude mathématique et littéraire.",
   },
   {
     id: "yarrow-vs-coins",
-    question: "Quelle est la différence entre les deux méthodes du I Ching: Trois Pièces et Tiges d'Achillée ?",
+    question:
+      "Quelle est la différence entre les deux méthodes du I Ching: Trois Pièces et Tiges d'Achillée ?",
     answer:
       "Les deux méthodes produisent les mêmes 64 hexagrammes et utilisent les mêmes textes du I Ching ainsi que les règles de Zhu Xi. Trois Pièces est rapide et accessible: on lance trois pièces six fois pour former les six traits. Tiges d'Achillée est la méthode rituelle plus ancienne: on travaille avec des tiges ou des objets semblables selon un procédé plus lent et plus contemplatif. Le choix modifie l'expérience rituelle, non l'autorité de la lecture. Utilise Trois Pièces pour la rapidité; utilise les Tiges d'Achillée pour le rythme traditionnel.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
     id: "iching-manual-auto-bones",
-    question: "Qu'est-ce que le I Ching automatique vs manuel, et puis-je mélanger les Os dans le même fil ?",
+    question:
+      "Qu'est-ce que le I Ching automatique vs manuel, et puis-je mélanger les Os dans le même fil ?",
     answer:
       "Automatique vs manuel ne concerne que le I Ching (Trois Pièces ou Tiges d'Achillée). Dans Options, les contrôles du mode de tirage apparaissent lorsque le I Ching est sélectionné : choisissez Trois Pièces ou Tiges d'Achillée, puis automatique (le tirage s'effectue sur le serveur) ou manuel (vous saisissez les six totaux de ligne 6/7/8/9 de vos pièces ou tiges). Le mode Os est toujours automatique ; il n'existe pas de flux manuel pour les os ; le rituel et le verdict viennent uniquement de l'algorithme. Dans la limite de profondeur par fil de votre forfait, vous pouvez librement alterner I Ching et Os et changer de méthode et de mode entre consultations ; l'application mémorise vos préférences pour la prochaine lecture en I Ching.",
     related: ["userGuide", "methodNotes"],
@@ -1621,14 +1657,16 @@ const FAQ_ITEMS_FR: FaqItem[] = [
   },
   {
     id: "iching-how-answers",
-    question: "Comment le I Ching fonctionne-t-il réellement, et d'où viennent ses réponses ?",
+    question:
+      "Comment le I Ching fonctionne-t-il réellement, et d'où viennent ses réponses ?",
     answer:
       "Le I Ching fonctionne grâce à 64 hexagrammes, un catalogue millénaire des motifs de changement dans la nature et la vie humaine. Chaque hexagramme est une figure structurée dont le sens classique est conservé dans les textes Wilhelm/Baynes. Chaque consultation part de votre question concrète. L'algorithme mathématique lance les traits selon les règles de Zhu Xi pour déterminer l'hexagramme présent, les éventuels traits en mouvement et l'hexagramme futur qui en résulte. L'IA articule ensuite ce résultat déjà formé dans votre langue, en appliquant le sens classique de ces hexagrammes à votre contexte particulier. C'est pourquoi chaque lecture est unique et personnelle : les mêmes hexagrammes peuvent apparaître pour des personnes différentes, mais la réponse n'est jamais la même, car elle dépend de la question concrète, du moment de vie et du contexte personnel du consultant. Il n'existe pas d'interprétation universelle applicable à plusieurs personnes en même temps.",
     related: ["methodNotes", "userGuide"],
   },
   {
     id: "thread-depth",
-    question: "Pourquoi parfois je ne peux pas «approfondir» davantage dans le même chat ?",
+    question:
+      "Pourquoi parfois je ne peux pas «approfondir» davantage dans le même chat ?",
     answer:
       "Chaque fil admet un nombre limité de lectures enchaînées selon votre plan. Lorsque la limite est atteinte, démarrez une nouvelle session. Le guide explique les Chats, nouvelle session et les limites par plan.",
     related: ["userGuide", "tokenPacks"],
@@ -1656,18 +1694,13 @@ const FAQ_ITEMS_FR: FaqItem[] = [
   },
   {
     id: "purchases-legal",
-    question: "Où trouver les informations de facturation et les conditions de service ?",
+    question:
+      "Où trouver les informations de facturation et les conditions de service ?",
     answer:
       "Les conditions commerciales et l'utilisation acceptable sont dans les Conditions de Service. Les packs de tokens et les flux de paiement sont résumés dans le guide et la page des tarifs.",
     related: ["termsOfService", "tokenPacks", "pricing"],
   },
-  {
-    id: "library-unlock",
-    question: "Qu'est-ce que la Bibliothèque et comment la débloquer ?",
-    answer:
-      "La Bibliothèque est une section premium contenant la collection complète des 64 hexagrammes à travers trois œuvres littéraires : la traduction classique Wilhelm/Baynes, la version de James Legge et le Zhou Yi original. Elle est conçue pour l'étude personnelle et pour comparer vos tirages manuels avec des sources authentiques. Elle est débloquée de façon permanente à l'achat de tout pack de jetons payant.",
-    related: ["tokenPacks"],
-  },
+  
   {
     id: "security-2fa",
     question: "L'authentification à deux facteurs (2FA) est-elle disponible ?",
@@ -1690,7 +1723,8 @@ const FAQ_ITEMS_FR: FaqItem[] = [
   },
   {
     id: "authentic-texts",
-    question: "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
+    question:
+      "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
       "Ils sont authentiques. Les textes du Jugement (卦辞), les sentences des lignes en mouvement (爻辞) et les hexagrammes résultants proviennent intégralement de la traduction Wilhelm/Baynes (dans le domaine public depuis 2020). L'IA les cite et les contextualise avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec le livre original.",
     related: ["methodNotes"],
@@ -1724,7 +1758,10 @@ const FAQ_ITEMS_FR: FaqItem[] = [
   },
 ];
 
-const FAQ_PAGE_META: Record<AppLocale, Pick<FaqPageUi, "title" | "intro" | "seeAlsoHeading">> = {
+const FAQ_PAGE_META: Record<
+  AppLocale,
+  Pick<FaqPageUi, "title" | "intro" | "seeAlsoHeading">
+> = {
   es: {
     title: "Preguntas frecuentes",
     intro:
@@ -1809,7 +1846,8 @@ export function getFaqPageUiMessages(locale: AppLocale): FaqPageUi {
     hi: FAQ_ITEMS_HI,
   };
   const localeItems = itemsMap[locale] ?? FAQ_ITEMS_EN;
-  const titles = FAQ_CATEGORY_TITLES[locale] ?? FAQ_CATEGORY_TITLES[DEFAULT_LOCALE];
+  const titles =
+    FAQ_CATEGORY_TITLES[locale] ?? FAQ_CATEGORY_TITLES[DEFAULT_LOCALE];
 
   const itemById = new Map<string, FaqItem>();
   for (const item of localeItems) {
@@ -1846,7 +1884,11 @@ export function getFaqPageUiMessages(locale: AppLocale): FaqPageUi {
     if (existing) {
       existing.items = [...existing.items, ...orphans];
     } else {
-      categories.unshift({ id: "app-usage", title: fallbackTitle, items: orphans });
+      categories.unshift({
+        id: "app-usage",
+        title: fallbackTitle,
+        items: orphans,
+      });
     }
   }
 

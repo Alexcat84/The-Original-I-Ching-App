@@ -73,10 +73,8 @@ const PRIVACY_EN: PrivacyPageMessages = {
   s4PdfBody:
     "You may keep conversations in your own environment by generating a PDF of the active thread or downloading a reading image, whenever you choose, from the Options panel. This is your decision: the file stays under your control (device, folder, personal backups) and does not replace or change the history stored in the service until you delete those conversations in the app.",
   s5Title: "5) Processors and transfers",
-  s5p1:
-    "To operate the service, we use technical providers (for example, authentication, database, transactional email, AI, and payments). We only send those providers the data strictly necessary to run each function.",
-  s5p2:
-    "Some providers may process data in other countries. When safeguards are required for international transfers, we use recognized mechanisms (such as standard contractual clauses or other valid tools at the time), unless another basis applies.",
+  s5p1: "To operate the service, we use technical providers (for example, authentication, database, transactional email, AI, and payments). We only send those providers the data strictly necessary to run each function.",
+  s5p2: "Some providers may process data in other countries. When safeguards are required for international transfers, we use recognized mechanisms (such as standard contractual clauses or other valid tools at the time), unless another basis applies.",
   s6Title: "6) Payments and tokens",
   s6Body:
     "Payments are handled by specialized providers. We do not store full card numbers on our servers. Purchase status is synced to enable token balance and thread limits.",
@@ -88,10 +86,8 @@ const PRIVACY_EN: PrivacyPageMessages = {
     "Error/event monitoring to protect the platform.",
   ],
   s8Title: "8) Retention and deletion",
-  s8p1:
-    "We retain data as needed to operate, comply with legal obligations, and resolve disputes. You may request account-level data deletion; individual chats are managed by you in the app (see section 4).",
-  s8p2:
-    "Deleting a chat in the app is irreversible in our system: confirm the action only if you want that history removed for good. Backups or technical logs managed solely by our infrastructure provider (hosting/database) may be subject to their own retention policies and do not constitute a user-accessible archive inside the application.",
+  s8p1: "We retain data as needed to operate, comply with legal obligations, and resolve disputes. You may request account-level data deletion; individual chats are managed by you in the app (see section 4).",
+  s8p2: "Deleting a chat in the app is irreversible in our system: confirm the action only if you want that history removed for good. Backups or technical logs managed solely by our infrastructure provider (hosting/database) may be subject to their own retention policies and do not constitute a user-accessible archive inside the application.",
   s9Title: "9) Your rights",
   s9Body:
     "You may request access, correction, deletion, export, or other account-related privacy requests through the official channels indicated on the site. We will respond to reasonable requests in line with how the service operates.",
@@ -137,10 +133,8 @@ const PRIVACY_ES: PrivacyPageMessages = {
   s4PdfBody:
     "Puedes guardar tus conversaciones en tu propio entorno generando un PDF del hilo activo o descargando la imagen de una lectura, cuando lo consideres conveniente, desde el panel Opciones. Es una decisión tuya: el archivo queda bajo tu control (dispositivo, carpeta, copias de seguridad personales) y no sustituye ni modifica el historial alojado en el servicio hasta que tú borres esas conversaciones en la app.",
   s5Title: "5) Proveedores y transferencias",
-  s5p1:
-    "Para operar el servicio usamos proveedores técnicos (por ejemplo, autenticación, base de datos, email transaccional, IA y pagos). Solo enviamos a esos proveedores los datos estrictamente necesarios para ejecutar cada función.",
-  s5p2:
-    "Algunos proveedores pueden tratar datos en otros países. Cuando se requieran garantías para transferencias internacionales, utilizamos mecanismos reconocidos (como cláusulas contractuales tipo u otras herramientas válidas en su momento), salvo que exista otra base aplicable.",
+  s5p1: "Para operar el servicio usamos proveedores técnicos (por ejemplo, autenticación, base de datos, email transaccional, IA y pagos). Solo enviamos a esos proveedores los datos estrictamente necesarios para ejecutar cada función.",
+  s5p2: "Algunos proveedores pueden tratar datos en otros países. Cuando se requieran garantías para transferencias internacionales, utilizamos mecanismos reconocidos (como cláusulas contractuales tipo u otras herramientas válidas en su momento), salvo que exista otra base aplicable.",
   s6Title: "6) Pagos y tokens",
   s6Body:
     "Los pagos son gestionados por proveedores especializados. No almacenamos números completos de tarjeta en nuestros servidores. El estado de compra se sincroniza para habilitar saldo de tokens y límites por hilo.",
@@ -152,10 +146,8 @@ const PRIVACY_ES: PrivacyPageMessages = {
     "Monitoreo de errores y eventos para proteger la plataforma.",
   ],
   s8Title: "8) Retención y eliminación",
-  s8p1:
-    "Conservamos datos mientras sean necesarios para operar, cumplir obligaciones legales y resolver disputas. Puedes solicitar eliminación de datos de cuenta; los chats individuales los gestionas tú desde la interfaz (véase la sección 4).",
-  s8p2:
-    "La eliminación de un chat desde la app es irreversible en nuestro sistema: confirma la acción solo si deseas borrar de forma definitiva ese historial. Las copias de seguridad o registros técnicos que gestione exclusivamente nuestro proveedor de infraestructura (hosting/base de datos) pueden estar sujetos a sus propias políticas de retención y no constituyen un archivo consultable por el usuario dentro de la aplicación.",
+  s8p1: "Conservamos datos mientras sean necesarios para operar, cumplir obligaciones legales y resolver disputas. Puedes solicitar eliminación de datos de cuenta; los chats individuales los gestionas tú desde la interfaz (véase la sección 4).",
+  s8p2: "La eliminación de un chat desde la app es irreversible en nuestro sistema: confirma la acción solo si deseas borrar de forma definitiva ese historial. Las copias de seguridad o registros técnicos que gestione exclusivamente nuestro proveedor de infraestructura (hosting/base de datos) pueden estar sujetos a sus propias políticas de retención y no constituyen un archivo consultable por el usuario dentro de la aplicación.",
   s9Title: "9) Tus derechos",
   s9Body:
     "Puedes solicitar acceso, rectificación, supresión, exportación u otras peticiones relacionadas con la privacidad de tu cuenta a través de los canales oficiales indicados en el sitio. Atenderemos solicitudes razonables de acuerdo con el funcionamiento del servicio.",
@@ -205,10 +197,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Podes manter conversas no teu ambiente gerando um PDF do fio ativo ou descarregando a imagem de uma leitura, quando quiseres, no painel Opções. É a tua decisão: o ficheiro fica sob o teu controlo e não substitui o histórico no serviço até eliminares essas conversas na app.",
     s5Title: "5) Subcontratantes e transferências",
-    s5p1:
-      "Para operar o serviço usamos fornecedores técnicos (por exemplo autenticação, base de dados, email transacional, IA e pagamentos). Só enviamos os dados estritamente necessários para cada função.",
-    s5p2:
-      "Alguns fornecedores podem tratar dados noutros países. Quando forem necessárias salvaguardas para transferências internacionais, usamos mecanismos reconhecidos (como cláusulas contratuais-tipo), salvo outra base aplicável.",
+    s5p1: "Para operar o serviço usamos fornecedores técnicos (por exemplo autenticação, base de dados, email transacional, IA e pagamentos). Só enviamos os dados estritamente necessários para cada função.",
+    s5p2: "Alguns fornecedores podem tratar dados noutros países. Quando forem necessárias salvaguardas para transferências internacionais, usamos mecanismos reconhecidos (como cláusulas contratuais-tipo), salvo outra base aplicável.",
     s6Title: "6) Pagamentos e tokens",
     s6Body:
       "Os pagamentos são geridos por fornecedores especializados. Não armazenamos números completos de cartão nos nossos servidores. O estado de compra sincroniza-se para ativar saldo de tokens e limites por fio.",
@@ -220,10 +210,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Monitorização de erros e eventos para proteger a plataforma.",
     ],
     s8Title: "8) Retenção e eliminação",
-    s8p1:
-      "Conservamos dados enquanto necessário para operar, cumprir obrigações legais e resolver litígios. Podes pedir eliminação ao nível da conta; chats individuais geres tu na app (ver secção 4).",
-    s8p2:
-      "Eliminar um chat na app é irreversível no nosso sistema: confirma só se quiseres apagar esse histórico definitivamente. Cópias de segurança ou registos técnicos geridos apenas pelo fornecedor de infraestrutura podem ter políticas próprias de retenção.",
+    s8p1: "Conservamos dados enquanto necessário para operar, cumprir obrigações legais e resolver litígios. Podes pedir eliminação ao nível da conta; chats individuais geres tu na app (ver secção 4).",
+    s8p2: "Eliminar um chat na app é irreversível no nosso sistema: confirma só se quiseres apagar esse histórico definitivamente. Cópias de segurança ou registos técnicos geridos apenas pelo fornecedor de infraestrutura podem ter políticas próprias de retenção.",
     s9Title: "9) Os teus direitos",
     s9Body:
       "Podes pedir acesso, retificação, apagamento, exportação ou outras solicitações relacionadas com a privacidade da conta pelos canais oficiais do site. Trataremos pedidos razoáveis de acordo com o funcionamento do serviço.",
@@ -269,10 +257,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Vous pouvez conserver des conversations sur votre environnement en générant un PDF du fil actif ou en téléchargeant l’image d’une lecture, quand vous le souhaitez, depuis Options. C’est votre choix : le fichier reste sous votre contrôle et ne remplace pas l’historique du service tant que vous n’avez pas supprimé ces conversations dans l’app.",
     s5Title: "5) Sous-traitants et transferts",
-    s5p1:
-      "Nous utilisons des prestataires techniques (authentification, base de données, e-mail transactionnel, IA, paiements). Nous ne leur transmettons que les données strictement nécessaires.",
-    s5p2:
-      "Certains prestataires peuvent traiter des données dans d’autres pays. Lorsque des garanties sont nécessaires pour les transferts internationaux, nous utilisons des mécanismes reconnus (clauses contractuelles types, etc.), sauf autre base applicable.",
+    s5p1: "Nous utilisons des prestataires techniques (authentification, base de données, e-mail transactionnel, IA, paiements). Nous ne leur transmettons que les données strictement nécessaires.",
+    s5p2: "Certains prestataires peuvent traiter des données dans d’autres pays. Lorsque des garanties sont nécessaires pour les transferts internationaux, nous utilisons des mécanismes reconnus (clauses contractuelles types, etc.), sauf autre base applicable.",
     s6Title: "6) Paiements et jetons",
     s6Body:
       "Les paiements sont gérés par des prestataires spécialisés. Nous ne stockons pas les numéros de carte complets sur nos serveurs. L’état d’achat est synchronisé pour activer le solde de jetons et les limites par fil.",
@@ -284,10 +270,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Surveillance des erreurs et événements pour protéger la plateforme.",
     ],
     s8Title: "8) Conservation et suppression",
-    s8p1:
-      "Nous conservons les données le temps nécessaire pour exploiter le service, respecter la loi et résoudre les litiges. Vous pouvez demander la suppression au niveau du compte ; les chats individuels sont gérés par vous dans l’app (voir section 4).",
-    s8p2:
-      "Supprimer un chat dans l’app est irréversible : confirmez seulement si vous voulez effacer définitivement cet historique. Les sauvegardes ou journaux gérés uniquement par l’hébergeur peuvent avoir leurs propres politiques de conservation.",
+    s8p1: "Nous conservons les données le temps nécessaire pour exploiter le service, respecter la loi et résoudre les litiges. Vous pouvez demander la suppression au niveau du compte ; les chats individuels sont gérés par vous dans l’app (voir section 4).",
+    s8p2: "Supprimer un chat dans l’app est irréversible : confirmez seulement si vous voulez effacer définitivement cet historique. Les sauvegardes ou journaux gérés uniquement par l’hébergeur peuvent avoir leurs propres politiques de conservation.",
     s9Title: "9) Vos droits",
     s9Body:
       "Vous pouvez demander l’accès, la rectification, la suppression, l’export ou d’autres demandes liées à la confidentialité du compte via les canaux officiels du site. Nous répondrons aux demandes raisonnables dans le cadre du fonctionnement du service.",
@@ -333,10 +317,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Sie können Gespräche in Ihrer Umgebung behalten, indem Sie ein PDF des aktiven Threads erzeugen oder ein Lesebild aus Optionen herunterladen. Die Datei liegt unter Ihrer Kontrolle und ersetzt den Dienstverlauf nicht, bis Sie die Chats in der App löschen.",
     s5Title: "5) Auftragsverarbeiter und Übermittlungen",
-    s5p1:
-      "Wir nutzen technische Anbieter (z. B. Authentifizierung, Datenbank, Transaktions-E-Mail, KI, Zahlungen). Es werden nur die jeweils nötigen Daten übermittelt.",
-    s5p2:
-      "Manche Anbieter verarbeiten in anderen Ländern. Wenn Schutzmaßnahmen für internationale Übermittlungen nötig sind, nutzen wir anerkannte Instrumente (z. B. Standardvertragsklauseln), sofern keine andere Grundlage greift.",
+    s5p1: "Wir nutzen technische Anbieter (z. B. Authentifizierung, Datenbank, Transaktions-E-Mail, KI, Zahlungen). Es werden nur die jeweils nötigen Daten übermittelt.",
+    s5p2: "Manche Anbieter verarbeiten in anderen Ländern. Wenn Schutzmaßnahmen für internationale Übermittlungen nötig sind, nutzen wir anerkannte Instrumente (z. B. Standardvertragsklauseln), sofern keine andere Grundlage greift.",
     s6Title: "6) Zahlungen und Token",
     s6Body:
       "Zahlungen erfolgen über spezialisierte Anbieter. Wir speichern keine vollständigen Kartennummern auf unseren Servern. Der Kaufstatus wird synchronisiert für Token-Saldo und Thread-Limits.",
@@ -348,10 +330,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Fehler-/Ereignisüberwachung zum Schutz der Plattform.",
     ],
     s8Title: "8) Aufbewahrung und Löschung",
-    s8p1:
-      "Wir bewahren Daten so lange auf, wie es für Betrieb, Rechtspflichten und Streitbeilegung nötig ist. Sie können Löschung auf Kontoebene beantragen; einzelne Chats verwalten Sie in der App (siehe Abschnitt 4).",
-    s8p2:
-      "Das Löschen eines Chats in der App ist in unserem System unwiderruflich. Sicherungen oder technische Logs allein beim Infrastrukturanbieter können eigenen Aufbewahrungsregeln unterliegen.",
+    s8p1: "Wir bewahren Daten so lange auf, wie es für Betrieb, Rechtspflichten und Streitbeilegung nötig ist. Sie können Löschung auf Kontoebene beantragen; einzelne Chats verwalten Sie in der App (siehe Abschnitt 4).",
+    s8p2: "Das Löschen eines Chats in der App ist in unserem System unwiderruflich. Sicherungen oder technische Logs allein beim Infrastrukturanbieter können eigenen Aufbewahrungsregeln unterliegen.",
     s9Title: "9) Ihre Rechte",
     s9Body:
       "Sie können Auskunft, Berichtigung, Löschung, Export oder andere datenschutzbezogene Anfragen zu Ihrem Konto über die auf der Website angegebenen Kanäle stellen. Wir bearbeiten angemessene Anfragen im Rahmen des Servicebetriebs.",
@@ -397,10 +377,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Puoi conservare conversazioni generando un PDF del thread attivo o scaricando l’immagine di una lettura da Opzioni. È tua decisione: il file resta sotto il tuo controllo e non sostituisce la cronologia del servizio finché non elimini quei chat nell’app.",
     s5Title: "5) Responsabili del trattamento e trasferimenti",
-    s5p1:
-      "Usiamo fornitori tecnici (autenticazione, database, email transazionale, IA, pagamenti). Trasmettiamo solo i dati strettamente necessari.",
-    s5p2:
-      "Alcuni fornitori possono trattare dati in altri Paesi. Quando servono garanzie per trasferimenti internazionali, usiamo meccanismi riconosciuti (es. clausole contrattuali standard), salvo altra base applicabile.",
+    s5p1: "Usiamo fornitori tecnici (autenticazione, database, email transazionale, IA, pagamenti). Trasmettiamo solo i dati strettamente necessari.",
+    s5p2: "Alcuni fornitori possono trattare dati in altri Paesi. Quando servono garanzie per trasferimenti internazionali, usiamo meccanismi riconosciuti (es. clausole contrattuali standard), salvo altra base applicabile.",
     s6Title: "6) Pagamenti e token",
     s6Body:
       "I pagamenti sono gestiti da fornitori specializzati. Non memorizziamo numeri di carta completi sui nostri server. Lo stato di acquisto si sincronizza per saldo token e limiti per thread.",
@@ -412,10 +390,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Monitoraggio errori ed eventi per proteggere la piattaforma.",
     ],
     s8Title: "8) Conservazione ed eliminazione",
-    s8p1:
-      "Conserviamo i dati per il tempo necessario a operare, adempiere obblighi legali e risolvere controversie. Puoi richiedere cancellazione a livello account; i singoli chat gestisci tu nell’app (vedi sezione 4).",
-    s8p2:
-      "Eliminare un chat nell’app è irreversibile nel nostro sistema. Backup o log tecnici gestiti solo dall’hosting possono avere policy di conservazione proprie.",
+    s8p1: "Conserviamo i dati per il tempo necessario a operare, adempiere obblighi legali e risolvere controversie. Puoi richiedere cancellazione a livello account; i singoli chat gestisci tu nell’app (vedi sezione 4).",
+    s8p2: "Eliminare un chat nell’app è irreversibile nel nostro sistema. Backup o log tecnici gestiti solo dall’hosting possono avere policy di conservazione proprie.",
     s9Title: "9) I tuoi diritti",
     s9Body:
       "Puoi richiedere accesso, rettifica, cancellazione, export o altre richieste sulla privacy del conto tramite i canali ufficiali del sito. Evaderemo richieste ragionevoli in linea con il funzionamento del servizio.",
@@ -461,10 +437,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "オプションからアクティブスレッドの PDF を生成したり、読み取り画像をダウンロードしたりして、ご自身の環境に会話を残すことができます。ファイルは端末・フォルダ・個人のバックアップなど、ご本人の管理下にあり、アプリ内で当該会話を削除するまでサービス上の履歴を置き換えたり変更したりしません。",
     s5Title: "5) 委託先と越境移転",
-    s5p1:
-      "認証、データベース、トランザクションメール、AI、決済などの技術プロバイダを利用します。各機能に必要なデータのみを送信します。",
-    s5p2:
-      "一部のプロバイダは他国でデータを処理する場合があります。国際移転に保護措置が必要な場合、当該時点で有効な標準契約条項など認められた手段を用います（別の根拠がある場合を除く）。",
+    s5p1: "認証、データベース、トランザクションメール、AI、決済などの技術プロバイダを利用します。各機能に必要なデータのみを送信します。",
+    s5p2: "一部のプロバイダは他国でデータを処理する場合があります。国際移転に保護措置が必要な場合、当該時点で有効な標準契約条項など認められた手段を用います（別の根拠がある場合を除く）。",
     s6Title: "6) 決済とトークン",
     s6Body:
       "決済は専門プロバイダが処理します。当社サーバーに完全なカード番号を保存することはありません。購入状態はトークン残高とスレッド上限の有効化のために同期されます。",
@@ -476,10 +450,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "プラットフォーム保護のためのエラー・イベント監視。",
     ],
     s8Title: "8) 保持と削除",
-    s8p1:
-      "運営、法的義務の遵守、紛争解決に必要な期間データを保持します。アカウント単位の削除を請求できます。個別のチャットはアプリ内でご本人が管理します（第 4 節参照）。",
-    s8p2:
-      "アプリ内でチャットを削除すると、当社システム上では元に戻せません。インフラプロバイダのみが管理するバックアップや技術ログは、同社の保持方針の対象となり、アプリ内でユーザーが参照できるアーカイブではありません。",
+    s8p1: "運営、法的義務の遵守、紛争解決に必要な期間データを保持します。アカウント単位の削除を請求できます。個別のチャットはアプリ内でご本人が管理します（第 4 節参照）。",
+    s8p2: "アプリ内でチャットを削除すると、当社システム上では元に戻せません。インフラプロバイダのみが管理するバックアップや技術ログは、同社の保持方針の対象となり、アプリ内でユーザーが参照できるアーカイブではありません。",
     s9Title: "9) お客様の権利",
     s9Body:
       "アクセス、訂正、消去、エクスポートなど、アカウントに関するプライバシー請求は、サイトに記載の公式窓口から行えます。サービスの運営に沿って合理的な請求に対応します。",
@@ -525,10 +497,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "您可随时从选项面板生成当前会话的 PDF 或下载某次解读的图像，将会话保存在自有环境中。由您决定；文件由您控制（设备、文件夹、个人备份），在您于应用中删除相关会话之前，不会替代或更改服务中托管的历史。",
     s5Title: "5) 处理者与跨境传输",
-    s5p1:
-      "我们使用技术提供方（例如认证、数据库、事务邮件、AI、支付）。仅向其发送执行各功能所必需的数据。",
-    s5p2:
-      "部分提供方可能在其他国家处理数据。若国际传输需要保障措施，我们使用公认机制（如标准合同条款），除非另有适用依据。",
+    s5p1: "我们使用技术提供方（例如认证、数据库、事务邮件、AI、支付）。仅向其发送执行各功能所必需的数据。",
+    s5p2: "部分提供方可能在其他国家处理数据。若国际传输需要保障措施，我们使用公认机制（如标准合同条款），除非另有适用依据。",
     s6Title: "6) 支付与代币",
     s6Body:
       "支付由专门提供方处理。我们不在服务器上存储完整卡号。购买状态会同步以启用代币余额与每会话上限。",
@@ -540,10 +510,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "错误与事件监控以保护平台。",
     ],
     s8Title: "8) 保留与删除",
-    s8p1:
-      "我们在运营、遵守法律义务及解决争议所需的期间内保留数据。您可请求账户级删除；个别会话由您在应用内管理（见第 4 节）。",
-    s8p2:
-      "在应用中删除会话在我们的系统内不可逆：请仅在希望永久清除该历史时确认。仅由基础设施提供方管理的备份或技术日志可能受其自身保留政策约束，且不构成应用内用户可访问的档案。",
+    s8p1: "我们在运营、遵守法律义务及解决争议所需的期间内保留数据。您可请求账户级删除；个别会话由您在应用内管理（见第 4 节）。",
+    s8p2: "在应用中删除会话在我们的系统内不可逆：请仅在希望永久清除该历史时确认。仅由基础设施提供方管理的备份或技术日志可能受其自身保留政策约束，且不构成应用内用户可访问的档案。",
     s9Title: "9) 您的权利",
     s9Body:
       "您可通过网站所示官方渠道提出访问、更正、删除、导出或与账户隐私相关的其他请求。我们将在服务运营范围内回应合理请求。",
@@ -589,10 +557,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "يمكنك الاحتفاظ بالمحادثات في بيئتك الخاصة عن طريق إنشاء PDF للمحادثة النشطة أو تنزيل صورة قراءة، متى شئت، من لوحة الخيارات. هذا قرارك أنت: يبقى الملف تحت سيطرتك (الجهاز والمجلد والنسخ الاحتياطية الشخصية) ولا يحل محل السجل المخزّن في الخدمة أو يعدّله حتى تحذف تلك المحادثات في التطبيق.",
     s5Title: "5) المعالجون والنقل",
-    s5p1:
-      "لتشغيل الخدمة، نستخدم مزودين تقنيين (مثل المصادقة وقاعدة البيانات والبريد الإلكتروني للمعاملات والذكاء الاصطناعي والمدفوعات). نرسل إلى هؤلاء المزودين البيانات الضرورية فحسب لتشغيل كل وظيفة.",
-    s5p2:
-      "قد يعالج بعض المزودين البيانات في دول أخرى. عند الحاجة إلى ضمانات للنقل الدولي، نستخدم آليات معترفًا بها (مثل البنود التعاقدية المعيارية أو أدوات صالحة أخرى في ذلك الوقت)، ما لم تُطبَّق أسس أخرى.",
+    s5p1: "لتشغيل الخدمة، نستخدم مزودين تقنيين (مثل المصادقة وقاعدة البيانات والبريد الإلكتروني للمعاملات والذكاء الاصطناعي والمدفوعات). نرسل إلى هؤلاء المزودين البيانات الضرورية فحسب لتشغيل كل وظيفة.",
+    s5p2: "قد يعالج بعض المزودين البيانات في دول أخرى. عند الحاجة إلى ضمانات للنقل الدولي، نستخدم آليات معترفًا بها (مثل البنود التعاقدية المعيارية أو أدوات صالحة أخرى في ذلك الوقت)، ما لم تُطبَّق أسس أخرى.",
     s6Title: "6) المدفوعات والرموز",
     s6Body:
       "تُعالَج المدفوعات من قِبل مزودين متخصصين. لا نخزّن أرقام البطاقات الكاملة على خوادمنا. تتزامن حالة الشراء لتفعيل رصيد الرموز وحدود المحادثات.",
@@ -604,10 +570,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "مراقبة الأخطاء/الأحداث لحماية المنصة.",
     ],
     s8Title: "8) الاحتفاظ والحذف",
-    s8p1:
-      "نحتفظ بالبيانات بقدر ما هو ضروري للتشغيل والوفاء بالالتزامات القانونية وتسوية النزاعات. يمكنك طلب حذف البيانات على مستوى الحساب؛ أما المحادثات الفردية فأنت من يديرها في التطبيق (انظر القسم 4).",
-    s8p2:
-      "حذف المحادثة في التطبيق لا رجعة فيه في نظامنا: أكّد الإجراء فقط إذا أردت إزالة ذلك السجل نهائيًا. قد تخضع النسخ الاحتياطية أو السجلات التقنية التي يديرها مزود البنية التحتية لوحده لسياسات الاحتفاظ الخاصة به، ولا تشكّل أرشيفًا يمكن للمستخدمين الوصول إليه داخل التطبيق.",
+    s8p1: "نحتفظ بالبيانات بقدر ما هو ضروري للتشغيل والوفاء بالالتزامات القانونية وتسوية النزاعات. يمكنك طلب حذف البيانات على مستوى الحساب؛ أما المحادثات الفردية فأنت من يديرها في التطبيق (انظر القسم 4).",
+    s8p2: "حذف المحادثة في التطبيق لا رجعة فيه في نظامنا: أكّد الإجراء فقط إذا أردت إزالة ذلك السجل نهائيًا. قد تخضع النسخ الاحتياطية أو السجلات التقنية التي يديرها مزود البنية التحتية لوحده لسياسات الاحتفاظ الخاصة به، ولا تشكّل أرشيفًا يمكن للمستخدمين الوصول إليه داخل التطبيق.",
     s9Title: "9) حقوقك",
     s9Body:
       "يمكنك طلب الوصول أو التصحيح أو الحذف أو التصدير أو طلبات الخصوصية الأخرى المتعلقة بحسابك عبر القنوات الرسمية المبيّنة على الموقع. سنستجيب للطلبات المعقولة وفق آلية عمل الخدمة.",
@@ -653,10 +617,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "आप विकल्प पैनल से जब चाहें सक्रिय थ्रेड का PDF बनाकर या पठन छवि डाउनलोड करके अपने वातावरण में बातचीत रख सकते हैं। यह आपका निर्णय है: फ़ाइल आपके नियंत्रण में रहती है (डिवाइस, फ़ोल्डर, व्यक्तिगत बैकअप) और जब तक आप ऐप में उन बातचीतों को हटाते नहीं, यह सेवा में संग्रहीत इतिहास को प्रतिस्थापित या बदलती नहीं है।",
     s5Title: "5) प्रोसेसर और स्थानांतरण",
-    s5p1:
-      "सेवा संचालित करने के लिए, हम तकनीकी प्रदाताओं का उपयोग करते हैं (उदाहरण के लिए, प्रमाणीकरण, डेटाबेस, लेनदेन ईमेल, AI और भुगतान)। हम उन प्रदाताओं को केवल प्रत्येक कार्य चलाने के लिए आवश्यक डेटा भेजते हैं।",
-    s5p2:
-      "कुछ प्रदाता अन्य देशों में डेटा संसाधित कर सकते हैं। जब अंतरराष्ट्रीय स्थानांतरण के लिए सुरक्षा उपायों की आवश्यकता होती है, हम मान्यता प्राप्त तंत्रों का उपयोग करते हैं (जैसे मानक संविदात्मक खंड या उस समय के अन्य वैध उपकरण), जब तक कोई अन्य आधार लागू न हो।",
+    s5p1: "सेवा संचालित करने के लिए, हम तकनीकी प्रदाताओं का उपयोग करते हैं (उदाहरण के लिए, प्रमाणीकरण, डेटाबेस, लेनदेन ईमेल, AI और भुगतान)। हम उन प्रदाताओं को केवल प्रत्येक कार्य चलाने के लिए आवश्यक डेटा भेजते हैं।",
+    s5p2: "कुछ प्रदाता अन्य देशों में डेटा संसाधित कर सकते हैं। जब अंतरराष्ट्रीय स्थानांतरण के लिए सुरक्षा उपायों की आवश्यकता होती है, हम मान्यता प्राप्त तंत्रों का उपयोग करते हैं (जैसे मानक संविदात्मक खंड या उस समय के अन्य वैध उपकरण), जब तक कोई अन्य आधार लागू न हो।",
     s6Title: "6) भुगतान और टोकन",
     s6Body:
       "भुगतान विशेष प्रदाताओं द्वारा संभाले जाते हैं। हम अपने सर्वर पर पूर्ण कार्ड नंबर संग्रहीत नहीं करते। टोकन शेष और थ्रेड सीमाएं सक्षम करने के लिए खरीद स्थिति सिंक की जाती है।",
@@ -668,10 +630,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "प्लेटफॉर्म की सुरक्षा के लिए त्रुटि/घटना निगरानी।",
     ],
     s8Title: "8) प्रतिधारण और हटाना",
-    s8p1:
-      "हम डेटा उतने समय तक रखते हैं जितना संचालन, कानूनी दायित्वों के अनुपालन और विवाद समाधान के लिए आवश्यक है। आप खाता स्तर पर डेटा हटाने का अनुरोध कर सकते हैं; व्यक्तिगत चैट आप ऐप में प्रबंधित करते हैं (धारा 4 देखें)।",
-    s8p2:
-      "ऐप में चैट हटाना हमारे सिस्टम में अपरिवर्तनीय है: केवल तभी पुष्टि करें जब आप उस इतिहास को हमेशा के लिए हटाना चाहते हों। हमारे बुनियादी ढांचा प्रदाता (होस्टिंग/डेटाबेस) द्वारा प्रबंधित बैकअप या तकनीकी लॉग उनकी अपनी प्रतिधारण नीतियों के अधीन हो सकते हैं और ऐप्लिकेशन के भीतर उपयोगकर्ता-पहुँच योग्य संग्रह नहीं हैं।",
+    s8p1: "हम डेटा उतने समय तक रखते हैं जितना संचालन, कानूनी दायित्वों के अनुपालन और विवाद समाधान के लिए आवश्यक है। आप खाता स्तर पर डेटा हटाने का अनुरोध कर सकते हैं; व्यक्तिगत चैट आप ऐप में प्रबंधित करते हैं (धारा 4 देखें)।",
+    s8p2: "ऐप में चैट हटाना हमारे सिस्टम में अपरिवर्तनीय है: केवल तभी पुष्टि करें जब आप उस इतिहास को हमेशा के लिए हटाना चाहते हों। हमारे बुनियादी ढांचा प्रदाता (होस्टिंग/डेटाबेस) द्वारा प्रबंधित बैकअप या तकनीकी लॉग उनकी अपनी प्रतिधारण नीतियों के अधीन हो सकते हैं और ऐप्लिकेशन के भीतर उपयोगकर्ता-पहुँच योग्य संग्रह नहीं हैं।",
     s9Title: "9) आपके अधिकार",
     s9Body:
       "आप साइट पर बताए गए आधिकारिक चैनलों के माध्यम से पहुँच, सुधार, हटाना, निर्यात या अन्य खाता-संबंधी गोपनीयता अनुरोध कर सकते हैं। हम सेवा संचालन के अनुरूप उचित अनुरोधों का जवाब देंगे।",
@@ -717,10 +677,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "옵션에서 활성 스레드 PDF를 생성하거나 읽기 이미지를 다운로드하여 본인 환경에 대화를 보관할 수 있습니다. 파일은 기기·폴더·개인 백업 등 본인 관리 하에 있으며, 앱에서 해당 대화를 삭제하기 전까지 서비스에 저장된 기록을 대체하거나 변경하지 않습니다.",
     s5Title: "5) 처리업체 및 이전",
-    s5p1:
-      "인증, 데이터베이스, 트랜잭션 이메일, AI, 결제 등 기술 제공업체를 사용합니다. 각 기능에 필요한 데이터만 전송합니다.",
-    s5p2:
-      "일부 제공업체는 다른 국가에서 데이터를 처리할 수 있습니다. 국제 이전에 보호 조치가 필요한 경우, 당시 유효한 표준계약조항 등 인정된 수단을 사용합니다(다른 근거가 있는 경우 제외).",
+    s5p1: "인증, 데이터베이스, 트랜잭션 이메일, AI, 결제 등 기술 제공업체를 사용합니다. 각 기능에 필요한 데이터만 전송합니다.",
+    s5p2: "일부 제공업체는 다른 국가에서 데이터를 처리할 수 있습니다. 국제 이전에 보호 조치가 필요한 경우, 당시 유효한 표준계약조항 등 인정된 수단을 사용합니다(다른 근거가 있는 경우 제외).",
     s6Title: "6) 결제 및 토큰",
     s6Body:
       "결제는 전문 제공업체가 처리합니다. 당사 서버에 전체 카드 번호를 저장하지 않습니다. 구매 상태는 토큰 잔액과 스레드 한도 활성화를 위해 동기화됩니다.",
@@ -732,10 +690,8 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "플랫폼 보호를 위한 오류·이벤트 모니터링.",
     ],
     s8Title: "8) 보관 및 삭제",
-    s8p1:
-      "운영, 법적 의무 이행, 분쟁 해결에 필요한 기간 동안 데이터를 보관합니다. 계정 수준 삭제를 요청할 수 있으며, 개별 채팅은 앱에서 본인이 관리합니다(4절 참조).",
-    s8p2:
-      "앱에서 채팅을 삭제하면 당사 시스템에서 되돌릴 수 없습니다. 인프라 제공업체만 관리하는 백업 또는 기술 로그는 해당사의 보관 정책을 따를 수 있으며 앱 내 사용자 접근 가능 아카이브가 아닙니다.",
+    s8p1: "운영, 법적 의무 이행, 분쟁 해결에 필요한 기간 동안 데이터를 보관합니다. 계정 수준 삭제를 요청할 수 있으며, 개별 채팅은 앱에서 본인이 관리합니다(4절 참조).",
+    s8p2: "앱에서 채팅을 삭제하면 당사 시스템에서 되돌릴 수 없습니다. 인프라 제공업체만 관리하는 백업 또는 기술 로그는 해당사의 보관 정책을 따를 수 있으며 앱 내 사용자 접근 가능 아카이브가 아닙니다.",
     s9Title: "9) 귀하의 권리",
     s9Body:
       "접근·정정·삭제·보내기 등 계정과 관련된 개인정보 요청은 사이트에 안내된 공식 채널로 제출할 수 있습니다. 서비스 운영 범위에서 합리적인 요청에 응합니다.",

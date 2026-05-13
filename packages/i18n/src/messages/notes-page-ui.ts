@@ -18,6 +18,10 @@ export type NotesPageUiMessages = {
   ichingMethodBody: string;
   ichingWilhelmHeading: string;
   ichingWilhelmBody: string;
+  ichingLeggeHeading: string;
+  ichingLeggeBody: string;
+  ichingZhouyiHeading: string;
+  ichingZhouyiBody: string;
   ichingChainHeading: string;
   ichingChain: string;
   bonesHeading: string;
@@ -68,6 +72,12 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingWilhelmHeading: "La traducción Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm produjo en 1924 la traducción más completa y respetada del I Ching en lengua occidental. Cary Baynes la tradujo al inglés en 1950 (Princeton University Press). Esta obra es el texto base de esta app, sin modificaciones ni simplificaciones.",
+    ichingLeggeHeading: "La traducción de James Legge",
+    ichingLeggeBody:
+      "James Legge, un misionero y sinólogo escocés, tradujo el I Ching en 1882 como parte de su obra monumental 'The Sacred Books of the East'. Su enfoque fue estrictamente filológico y académico, buscando descifrar el significado literal de los textos confucianos y pre-confucianos. Su versión aporta un rigor interpretativo invaluable.",
+    ichingZhouyiHeading: "El texto original Zhou Yi",
+    ichingZhouyiBody:
+      "El Zhou Yi original (literalmente 'Cambios de Zhou') es el núcleo del I Ching, compuesto por los 64 hexagramas, los juicios del Rey Wen y las líneas del Duque de Zhou, sin los comentarios confucianos posteriores (las Diez Alas). Esta fuente permite conectar directamente con la capa chamánica y más antigua del oráculo.",
     ichingChainHeading: "",
     ichingChain: "",
     bonesHeading: "Huesos de Oráculo (甲骨 · Jiǎgǔ)",
@@ -128,6 +138,12 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingWilhelmHeading: "The Wilhelm/Baynes Translation",
     ichingWilhelmBody:
       "Richard Wilhelm produced in 1924 the most complete and respected translation of the I Ching in Western languages. Cary Baynes translated it into English in 1950 (Princeton University Press). This work is the base text of this app, without modifications or simplifications.",
+    ichingLeggeHeading: "The James Legge Translation",
+    ichingLeggeBody:
+      "James Legge, a Scottish missionary and sinologist, translated the I Ching in 1882 as part of his monumental work 'The Sacred Books of the East'. His approach was strictly philological and academic, seeking to decipher the literal meaning of Confucian and pre-Confucian texts. His version brings an invaluable interpretive rigor.",
+    ichingZhouyiHeading: "The Original Zhou Yi Text",
+    ichingZhouyiBody:
+      "The original Zhou Yi (literally 'Changes of Zhou') is the core of the I Ching, composed of the 64 hexagrams, King Wen's judgments, and the Duke of Zhou's lines, without the later Confucian commentaries (the Ten Wings). This source allows a direct connection with the shamanic and oldest layer of the oracle.",
     ichingChainHeading: "The Chain of Authenticity",
     ichingChain:
       "Original Zhou Yi (Zhou dynasty) → Confucian Commentaries (5th c. BCE) → Zhu Xi's Rules (12th c. CE) → Wilhelm German translation (1924) → Baynes English translation (1950) → Public domain (2020) → This app.",
@@ -193,6 +209,12 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingWilhelmHeading: "A tradução Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm produziu em 1924 a tradução mais completa e respeitada do I Ching em língua ocidental. Cary Baynes traduziu-a para inglês em 1950 (Princeton University Press). Esta obra é o texto base desta app, sem modificações nem simplificações.",
+    ichingLeggeHeading: "A tradução de James Legge",
+    ichingLeggeBody:
+      "James Legge, um missionário e sinólogo escocês, traduziu o I Ching em 1882 como parte da sua obra monumental 'The Sacred Books of the East'. A sua abordagem foi estritamente filológica e académica, procurando decifrar o significado literal dos textos confucianos e pré-confucianos. A sua versão traz um rigor interpretativo inestimável.",
+    ichingZhouyiHeading: "O texto original Zhou Yi",
+    ichingZhouyiBody:
+      "O Zhou Yi original (literalmente 'Mutações de Zhou') é o núcleo do I Ching, composto pelos 64 hexagramas, os juízos do Rei Wen e as linhas do Duque de Zhou, sem os comentários confucianos posteriores (as Dez Asas). Esta fonte permite uma ligação direta à camada xamânica e mais antiga do oráculo.",
     ichingChainHeading: "A cadeia de autenticidade",
     ichingChain:
       "Zhou Yi original (dinastía Zhou) → Comentários de Confúcio (séc. V a.C.) → Reglas de Zhu Xi (séc. XII d.C.) → Tradução Wilhelm alemão (1924) → Tradução Baynes inglês (1950) → Domínio público (2020) → Esta app.",
@@ -258,11 +280,18 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingWilhelmHeading: "La traduction Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm a produit en 1924 la traduction la plus complète et la plus respectée du I Ching en langue occidentale. Cary Baynes l'a traduite en anglais en 1950 (Princeton University Press). Cette œuvre constitue le texte base de cette app, sans modifications ni simplifications.",
+    ichingLeggeHeading: "La traduction de James Legge",
+    ichingLeggeBody:
+      "James Legge, un missionnaire et sinologue écossais, a traduit le I Ching en 1882 dans le cadre de son œuvre monumentale 'The Sacred Books of the East'. Son approche était strictement philologique et académique, cherchant à déchiffrer le sens littéral des textes confucéens et pré-confucéens. Sa version apporte une rigueur interprétative inestimable.",
+    ichingZhouyiHeading: "Le texte original Zhou Yi",
+    ichingZhouyiBody:
+      "Le Zhou Yi original (littéralement 'Changements de Zhou') est le noyau du I Ching, composé des 64 hexagrammes, des jugements du Roi Wen et des lignes du Duc de Zhou, sans les commentaires confucéens ultérieurs (les Dix Ailes). Cette source permet une connexion directe avec la couche chamanique et la plus ancienne de l'oracle.",
     ichingChainHeading: "La chaîne d'authenticité",
     ichingChain:
       "Zhou Yi original (dynastie Zhou) → Commentaires de Confucius (Ve s. av. J.-C.) → Règles de Zhu Xi (XIIe s. ap. J.-C.) → Traduction Wilhelm en allemand (1924) → Traduction Baynes en anglais (1950) → Domaine public (2020) → Cette app.",
     bonesHeading: "Os oraculaires (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Origine historique (Dynastie Shang, ~1600–1046 av. J.-C.)",
+    bonesOriginHeading:
+      "Origine historique (Dynastie Shang, ~1600–1046 av. J.-C.)",
     bonesOriginBody:
       "La pratique oraculaire documentée la plus ancienne de Chine. Les chamanes royaux appliquaient de la chaleur sur des os ou des écailles pour lire les fissures résultantes. Cette app respecte la logique structurelle du système Shang : charge positive, charge négative et verdict par motif.",
     bonesRitualHeading: "Le processus rituel",
@@ -286,7 +315,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProcedureBody:
       "La méthode utilise un ensemble de tiges physiques ou d'objets semblables. Une tige est mise de côté, puis les autres sont divisées et comptées selon une séquence rituelle répétée jusqu'à former chacun des six traits. Pour l'utilisateur, l'essentiel est le rythme : elle demande attention, contact et patience, ce qui rend la consultation plus cérémonielle que la méthode des trois pièces.",
     yarrowProbHeading: "Caractère de la méthode",
-yarrowProbBody:
+    yarrowProbBody:
       "La méthode des tiges conserve un rythme rituel plus lent que celle des trois pièces. Dans cette app, sa valeur n'est pas présentée comme un tableau technique, mais comme une autre façon d'entrer dans la même tradition du I Ching : plus tactile, plus délibérée et plus proche du procédé classique documenté par Wilhelm/Baynes. La méthode des trois pièces reste tout aussi valide pour une consultation plus rapide.",
     interpretHeading: "Pourquoi l'IA n'invente pas",
     interpretBody:
@@ -323,11 +352,18 @@ yarrowProbBody:
     ichingWilhelmHeading: "Die Übersetzung Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm erstellte 1924 die vollständigste und angesehenste Übersetzung des I Ching in westlicher Sprache. Cary Baynes übersetzte sie 1950 ins Englische (Princeton University Press). Dieses Werk ist der Grundtext dieser App, ohne Modifikationen oder Vereinfachungen.",
+    ichingLeggeHeading: "Die Übersetzung von James Legge",
+    ichingLeggeBody:
+      "James Legge, ein schottischer Missionar und Sinologe, übersetzte das I Ging 1882 als Teil seines monumentalen Werkes 'The Sacred Books of the East'. Sein Ansatz war streng philologisch und akademisch und versuchte, die wörtliche Bedeutung konfuzianischer und vorkonfuzianischer Texte zu entschlüsseln. Seine Version bringt eine unschätzbare interpretative Strenge mit sich.",
+    ichingZhouyiHeading: "Der ursprüngliche Zhou-Yi-Text",
+    ichingZhouyiBody:
+      "Das ursprüngliche Zhou Yi (wörtlich 'Wandlungen von Zhou') ist der Kern des I Ging, bestehend aus den 64 Hexagrammen, den Urteilen von König Wen und den Linien des Herzogs von Zhou, ohne die späteren konfuzianischen Kommentare (die Zehn Flügel). Diese Quelle ermöglicht eine direkte Verbindung mit der schamanischen und ältesten Schicht des Orakels.",
     ichingChainHeading: "Die Authentizitätskette",
     ichingChain:
       "Ursprüngliches Zhou Yi (Zhou-Dynastie) → Konfuzius-Kommentare (5. Jh. v. Chr.) → Zhu Xis Regeln (12. Jh. n. Chr.) → Wilhelms deutsche Übersetzung (1924) → Baynes' englische Übersetzung (1950) → Gemeinfrei (2020) → Diese App.",
     bonesHeading: "Orakelknochen (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Historischer Ursprung (Shang-Dynastie, ~1600–1046 v. Chr.)",
+    bonesOriginHeading:
+      "Historischer Ursprung (Shang-Dynastie, ~1600–1046 v. Chr.)",
     bonesOriginBody:
       "Die älteste dokumentierte Orakelpraktik Chinas. Die königlichen Schamanen wendeten Hitze auf Knochen oder Panzer an, um die resultierenden Risse zu lesen. Diese App respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung und Befund nach Muster.",
     bonesRitualHeading: "Der rituelle Prozess",
@@ -388,6 +424,12 @@ yarrowProbBody:
     ichingWilhelmHeading: "La traduzione Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm ha prodotto nel 1924 la traduzione più completa e rispettata dello I Ching in lingua occidentale. Cary Baynes l'ha tradotta in inglese nel 1950 (Princeton University Press). Quest'opera costituisce il testo base di questa app, senza modifiche né semplificazioni.",
+    ichingLeggeHeading: "La traduzione di James Legge",
+    ichingLeggeBody:
+      "James Legge, missionario e sinologo scozzese, tradusse l'I Ching nel 1882 come parte della sua opera monumentale 'The Sacred Books of the East'. Il suo approccio fu strettamente filologico e accademico, cercando di decifrare il significato letterale dei testi confuciani e pre-confuciani. La sua versione porta un rigore interpretativo inestimabile.",
+    ichingZhouyiHeading: "Il testo originale Zhou Yi",
+    ichingZhouyiBody:
+      "Lo Zhou Yi originale (letteralmente 'Mutamenti di Zhou') è il nucleo dell'I Ching, composto dai 64 esagrammi, i giudizi del Re Wen e le linee del Duca di Zhou, senza i successivi commenti confuciani (le Dieci Ali). Questa fonte consente una connessione diretta con lo strato sciamanico e più antico dell'oracolo.",
     ichingChainHeading: "La catena di autenticità",
     ichingChain:
       "Zhou Yi original (dinastia Zhou) → Commentari di Confucio (V sec. a.C.) → Regole di Zhu Xi (XII sec. d.C.) → Traduzione Wilhelm tedesco (1924) → Traduzione Baynes inglese (1950) → Dominio pubblico (2020) → Questa app.",
@@ -453,6 +495,12 @@ yarrowProbBody:
     ichingWilhelmHeading: "ヴィルヘルム/バインズ訳",
     ichingWilhelmBody:
       "ドイツ人中国学者リヒャルト・ヴィルヘルムは数十年間中国に住み、1924年に西洋語として最も完全で尊重される易経の翻訳を出版しました。卦辞、爻辞、十翼の彖伝を含んでいます。キャリー・バインズが1950年に英語に翻訳しました。この著作は2020年にパブリックドメインに入り、このアプリのベーステキストです, 改変も簡略化もなく。",
+    ichingLeggeHeading: "ジェームズ・レッグ訳",
+    ichingLeggeBody:
+      "スコットランドの宣教師であり中国学者であるジェームズ・レッグは、その記念碑的著作「東方聖書」の一部として1882年に易経を翻訳しました。彼のアプローチは厳密に文献学的かつ学術的であり、儒教および儒教以前のテキストの文字通りの意味を解読しようとしました。彼のバージョンは非常に貴重な解釈の厳密さをもたらします。",
+    ichingZhouyiHeading: "原典 周易",
+    ichingZhouyiBody:
+      "原典である周易（文字通り「周の変化」）は易経の中核であり、64卦、文王の卦辞、周公の爻辞で構成され、後代の儒教の注釈（十翼）を含みません。この源泉は、神託のシャーマニズム的で最も古い層との直接的なつながりを可能にします。",
     ichingChainHeading: "正統性の連鎖",
     ichingChain:
       "原典周易（周王朝）→ 孔子の彖伝（紀元前5世紀）→ 朱熹の規則（12世紀）→ ヴィルヘルムのドイツ語訳（1924年）→ バインズの英語訳（1950年）→ パブリックドメイン（2020年）→ 本アプリ。",
@@ -464,10 +512,14 @@ yarrowProbBody:
     bonesRitualBody:
       "このプロセスは精確で反復可能でした：肯定的な命題とその否定を定式化します。骨に白熱した青銅を当て、亀裂を生じさせます。亀裂の方向、長さ、パターンが神託を決定しました。結果は骨そのものに刻まれ、中国最古の文字記録を構成しています。",
     bonesVerdictsHeading: "神託の五つの状態",
-    bonesVerdictAuspClear: "吉, 明確に吉：パターンは曖昧さなく肯定命題を確認します。",
-    bonesVerdictAuspMod: "吉 中程度, やや吉：確認はありますが、ニュアンスや条件が伴います。",
-    bonesVerdictInauspMod: "凶 中程度, やや凶：パターンは留保付きで否定に傾きます。",
-    bonesVerdictInauspClear: "凶, 明確に凶：パターンは曖昧さなく肯定命題を否定します。",
+    bonesVerdictAuspClear:
+      "吉, 明確に吉：パターンは曖昧さなく肯定命題を確認します。",
+    bonesVerdictAuspMod:
+      "吉 中程度, やや吉：確認はありますが、ニュアンスや条件が伴います。",
+    bonesVerdictInauspMod:
+      "凶 中程度, やや凶：パターンは留保付きで否定に傾きます。",
+    bonesVerdictInauspClear:
+      "凶, 明確に凶：パターンは曖昧さなく肯定命題を否定します。",
     bonesVerdictSilence:
       "沉默, 沈黙：パターンは読み取れる亀裂を生じさせません。商の伝統では、骨の沈黙はエラーではなく、それ自体が答えでした：祖先は、その問いの時が熟していないため、あるいはその答えが言語で表現できる範囲を超えているために語らない。このアプリはその状態を尊重し、パターンが示す際にそれを返します。",
     bonesAuthHeading: "手法の正統性",
@@ -504,7 +556,7 @@ yarrowProbBody:
     ichingHeading: "易经（周易 · Zhouyi）",
     ichingOriginHeading: "历史渊源（约公元前1000年）",
     ichingOriginBody:
-      "周易（\"周之变化\"）是人类最古老的文献之一。其根源可追溯至周朝（公元前1046至256年），但其卜筮核心更为久远。该文本由不同历史层次累积而成：文王在囚禁中整理了64卦，并写下了卦辞（guàcí）；其子周公补充了六爻辞（爻辞，yáocí）；数百年后，孔子及其弟子增添了被称为十翼的传注，构成文本最深刻的哲学层次。",
+      '周易（"周之变化"）是人类最古老的文献之一。其根源可追溯至周朝（公元前1046至256年），但其卜筮核心更为久远。该文本由不同历史层次累积而成：文王在囚禁中整理了64卦，并写下了卦辞（guàcí）；其子周公补充了六爻辞（爻辞，yáocí）；数百年后，孔子及其弟子增添了被称为十翼的传注，构成文本最深刻的哲学层次。',
     ichingHexHeading: "六十四卦系统",
     ichingHexBody:
       "每一卦由六爻组成，每爻为阴（断裂，柔顺）或阳（连续，刚健）。六十四种可能的组合描述了自然与人类生活中变化的根本规律。动爻指示转变：当下之卦变化为未来之卦，这一转变正是占卜的核心所在。",
@@ -518,6 +570,12 @@ yarrowProbBody:
     ichingWilhelmHeading: "卫礼贤／贝恩斯译本",
     ichingWilhelmBody:
       "德国汉学家卫礼贤（Richard Wilhelm）在中国生活数十年，于1924年出版了西方语言中最完整、最受推崇的易经译本，包括卦辞、爻辞及十翼注解。贝恩斯（Cary Baynes）于1950年将其译为英文。该著作于2020年进入公有领域，是本应用的基础文本，未作任何修改或简化。",
+    ichingLeggeHeading: "理雅各（James Legge）译本",
+    ichingLeggeBody:
+      "苏格兰传教士、汉学家理雅各于1882年翻译了《易经》，作为其丰碑巨著《东方圣书》的一部分。他的方法严格遵循语文学和学术标准，力图破译儒家及前儒家文本的字面意义。他的版本带来了无可估量的阐释严谨性。",
+    ichingZhouyiHeading: "原典《周易》文本",
+    ichingZhouyiBody:
+      "原典《周易》（字面意思是“周的变化”）是《易经》的核心，由64卦、文王卦辞和周公爻辞组成，不包含后来的儒家注释（十翼）。这一源头使我们能够直接连接到神谕中最古老的萨满文化层。",
     ichingChainHeading: "真实性传承链",
     ichingChain:
       "原始周易（周朝）→ 孔子注疏（公元前5世纪）→ 朱熹规则（12世纪）→ 卫礼贤德文译本（1924年）→ 贝恩斯英文译本（1950年）→ 公有领域（2020年）→ 本应用。",
@@ -583,6 +641,12 @@ yarrowProbBody:
     ichingWilhelmHeading: "빌헬름/베인스 번역",
     ichingWilhelmBody:
       "독일 중국학자 리하르트 빌헬름은 수십 년간 중국에 살며 1924년 서양 언어로 된 가장 완전하고 권위 있는 주역 번역서를 출간했습니다. 괘사, 효사, 십익 전통을 모두 포함합니다. 케리 베인스가 1950년 영어로 번역했습니다. 이 저작은 2020년에 공공 도메인에 진입하였으며, 이 앱의 기본 텍스트입니다, 수정이나 단순화 없이.",
+    ichingLeggeHeading: "제임스 레그 번역",
+    ichingLeggeBody:
+      "스코틀랜드의 선교사이자 중국학자인 제임스 레그는 자신의 기념비적 저작인 '동방의 성서'의 일부로 1882년에 주역을 번역했습니다. 그의 접근 방식은 엄격하게 문헌학적이고 학술적이었으며, 유교 및 유교 이전 텍스트의 문자적 의미를 해독하고자 했습니다. 그의 버전은 매우 귀중한 해석적 엄밀함을 제공합니다.",
+    ichingZhouyiHeading: "원전 주역 텍스트",
+    ichingZhouyiBody:
+      "원전인 주역(문자 그대로 '주나라의 변화')은 64괘, 문왕의 괘사, 주공의 효사로 구성되며, 후대의 유교 주석(십익)을 포함하지 않는 주역의 핵심입니다. 이 출처는 신탁의 샤머니즘적이고 가장 오래된 층과의 직접적인 연결을 가능하게 합니다.",
     ichingChainHeading: "정통성의 연쇄",
     ichingChain:
       "원본 주역（주나라）→ 공자 전통（기원전 5세기）→ 주희 규칙（12세기）→ 빌헬름 독일어 번역（1924년）→ 베인스 영어 번역（1950년）→ 공공 도메인（2020년）→ 이 앱.",
@@ -594,10 +658,14 @@ yarrowProbBody:
     bonesRitualBody:
       "이 과정은 정확하고 반복 가능했습니다: 긍정적인 명제와 그 부정을 공식화합니다. 뼈에 뜨거운 청동을 가하여 균열을 냅니다. 균열의 방향, 길이, 패턴이 신탁을 결정했습니다. 결과는 뼈 자체에 새겨졌으며, 이는 중국 최초의 문자 기록을 구성합니다.",
     bonesVerdictsHeading: "신탁의 다섯 가지 상태",
-    bonesVerdictAuspClear: "吉, 명확히 길함: 패턴이 긍정 명제를 모호함 없이 확인합니다.",
-    bonesVerdictAuspMod: "吉 중간, 다소 길함: 확인이 있지만 뉘앙스나 조건이 따릅니다.",
-    bonesVerdictInauspMod: "凶 중간, 다소 흉함: 패턴이 유보적으로 부정 쪽으로 기웁니다.",
-    bonesVerdictInauspClear: "凶, 명확히 흉함: 패턴이 긍정 명제를 모호함 없이 부정합니다.",
+    bonesVerdictAuspClear:
+      "吉, 명확히 길함: 패턴이 긍정 명제를 모호함 없이 확인합니다.",
+    bonesVerdictAuspMod:
+      "吉 중간, 다소 길함: 확인이 있지만 뉘앙스나 조건이 따릅니다.",
+    bonesVerdictInauspMod:
+      "凶 중간, 다소 흉함: 패턴이 유보적으로 부정 쪽으로 기웁니다.",
+    bonesVerdictInauspClear:
+      "凶, 명확히 흉함: 패턴이 긍정 명제를 모호함 없이 부정합니다.",
     bonesVerdictSilence:
       "침묵, 沉默: 패턴이 읽을 수 있는 균열을 생성하지 않습니다. 상 전통에서 뼈의 침묵은 오류가 아니라 그 자체로 응답이었습니다: 조상들은 그 질문에 대한 때가 무르익지 않았거나, 그 답이 말로 표현될 수 있는 범위를 초월하기 때문에 말하지 않습니다. 이 앱은 해당 상태를 존중하고 패턴이 나타낼 때 반환합니다.",
     bonesAuthHeading: "방법의 정통성",
@@ -648,21 +716,32 @@ yarrowProbBody:
     ichingWilhelmHeading: "ترجمة Wilhelm/Baynes",
     ichingWilhelmBody:
       "ريتشارد فيلهلم، المستشرق الألماني، عاش في الصين عقوداً وأنتج عام 1924 الترجمة الأكثر اكتمالاً واحتراماً للـ I Ching في اللغات الغربية، بما فيها الأحكام والخطوط وتعليقات «الأجنحة العشرة». ترجمتها كاري بينز إلى الإنجليزية عام 1950. دخل هذا العمل النطاق العام عام 2020 وهو النص الأساسي لهذا التطبيق, دون تعديلات أو تبسيطات.",
+    ichingLeggeHeading: "ترجمة جيمس ليغ",
+    ichingLeggeBody:
+      "ترجم جيمس ليغ، وهو مبشر وعالم صينيات اسكتلندي، كتاب I Ching في عام 1882 كجزء من عمله الضخم 'الكتب المقدسة في الشرق'. كان نهجه فقهياً وأكاديمياً بصرامة، سعياً لفك المعنى الحرفي للنصوص الكونفوشيوسية وما قبل الكونفوشيوسية. وتوفر نسخته دقة تفسيرية لا تقدر بثمن.",
+    ichingZhouyiHeading: "نص Zhou Yi الأصلي",
+    ichingZhouyiBody:
+      "نص Zhou Yi الأصلي (حرفياً 'تغييرات Zhou') هو جوهر I Ching، ويتكون من 64 شكلاً سداسياً، وأحكام الملك Wen، وخطوط الدوق Zhou، بدون التعليقات الكونفوشيوسية اللاحقة (الأجنحة العشرة). يتيح هذا المصدر اتصالاً مباشراً بالطبقة الشامانية والأقدم من العرافة.",
     ichingChainHeading: "سلسلة الأصالة",
     ichingChain:
       "الـ Zhou Yi الأصلي (أسرة Zhou) → تعليقات كونفوشيوس (القرن الخامس قبل الميلاد) → قواعد Zhu Xi (القرن الثاني عشر الميلادي) → ترجمة Wilhelm الألمانية (1924) → ترجمة Baynes الإنجليزية (1950) → النطاق العام (2020) → هذا التطبيق.",
     bonesHeading: "عظام العرافة (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "الأصول التاريخية (أسرة Shang، نحو 1600–1046 قبل الميلاد)",
+    bonesOriginHeading:
+      "الأصول التاريخية (أسرة Shang، نحو 1600–1046 قبل الميلاد)",
     bonesOriginBody:
       "التكهن بعظام العرافة هو أقدم ممارسة كهنوتية موثقة في الصين، تسبق الـ I Ching في شكله المكتوب. كان شامانو أسرة Shang الملكية يحرقون درع السلاحف أو لوح كتف الثور ويقرؤون الشقوق الناتجة للتشاور مع الأسلاف حول القرارات العسكرية والزراعية والمناخية والشخصية للملك.",
     bonesRitualHeading: "العملية الطقسية",
     bonesRitualBody:
       "كانت العملية دقيقة وقابلة للتكرار: تُصاغ شحنة إيجابية ونقيضها. يُطبق برونز متوهج على العظمة حتى تتشكل الشقوق. يحدد اتجاه الشقوق وطولها ونمطها الحكم. يُنقش الناتج على العظمة نفسها, مشكّلاً أقدم السجلات المكتوبة في الصين.",
     bonesVerdictsHeading: "الحالات الخمس للحكم",
-    bonesVerdictAuspClear: "吉, مبشّر بوضوح: يؤكد النمط الشحنة الإيجابية دون غموض.",
-    bonesVerdictAuspMod: "吉 معتدل, مبشّر بدرجة معتدلة: التأكيد موجود لكن مع فروق دقيقة أو شروط.",
-    bonesVerdictInauspMod: "凶 معتدل, غير مبشّر بدرجة معتدلة: يميل النمط نحو النفي مع تحفظات.",
-    bonesVerdictInauspClear: "凶, غير مبشّر بوضوح: ينفي النمط الشحنة الإيجابية دون غموض.",
+    bonesVerdictAuspClear:
+      "吉, مبشّر بوضوح: يؤكد النمط الشحنة الإيجابية دون غموض.",
+    bonesVerdictAuspMod:
+      "吉 معتدل, مبشّر بدرجة معتدلة: التأكيد موجود لكن مع فروق دقيقة أو شروط.",
+    bonesVerdictInauspMod:
+      "凶 معتدل, غير مبشّر بدرجة معتدلة: يميل النمط نحو النفي مع تحفظات.",
+    bonesVerdictInauspClear:
+      "凶, غير مبشّر بوضوح: ينفي النمط الشحنة الإيجابية دون غموض.",
     bonesVerdictSilence:
       "沉默, الصمت: لا ينتج النمط شقوقاً يمكن قراءتها. في التقليد Shang، لم يكن صمت العظمة خطأً, كان في حد ذاته إجابة: الأسلاف لا يتكلمون لأن اللحظة لم تنضج لهذا السؤال، أو لأن الإجابة تتجاوز ما يمكن قوله. يحترم هذا التطبيق هذه الحالة ويعيدها عندما يشير إليها النمط.",
     bonesAuthHeading: "أصالة الطريقة",
@@ -713,21 +792,32 @@ yarrowProbBody:
     ichingWilhelmHeading: "Wilhelm/Baynes अनुवाद",
     ichingWilhelmBody:
       "जर्मन चीनी विद्वान रिचर्ड विल्हेम दशकों तक चीन में रहे और 1924 में पश्चिमी भाषाओं में I Ching का सबसे पूर्ण और सम्मानित अनुवाद प्रस्तुत किया, जिसमें निर्णय, रेखाएं और दस पंखों की टिप्पणियां शामिल हैं। Cary Baynes ने इसे 1950 में अंग्रेजी में अनुवाद किया। यह कार्य 2020 में सार्वजनिक डोमेन में आ गया और इस ऐप का आधार पाठ है, बिना किसी संशोधन या सरलीकरण के।",
+    ichingLeggeHeading: "जेम्स लेग अनुवाद",
+    ichingLeggeBody:
+      "एक स्कॉटिश मिशनरी और चीनविज्ञानी जेम्स लेग ने 1882 में अपने स्मारकीय कार्य 'द सेक्रेड बुक्स ऑफ द ईस्ट' के हिस्से के रूप में आई चिंग का अनुवाद किया। उनका दृष्टिकोण कड़ाई से भाषाशास्त्रीय और शैक्षणिक था, जो कन्फ्यूशियस और पूर्व-कन्फ्यूशियस ग्रंथों के शाब्दिक अर्थ को समझने की कोशिश कर रहा था। उनका संस्करण एक अमूल्य व्याख्यात्मक कठोरता लाता है।",
+    ichingZhouyiHeading: "मूल झोउ यी पाठ",
+    ichingZhouyiBody:
+      "मूल झोउ यी (शाब्दिक रूप से 'झोउ के परिवर्तन') आई चिंग का मूल है, जो 64 हेक्साग्राम, राजा वेन के निर्णयों और ड्यूक ऑफ झोउ की पंक्तियों से बना है, बिना बाद की कन्फ्यूशियस टिप्पणियों (दस पंखों) के। यह स्रोत दैवज्ञ की ओझा और सबसे पुरानी परत के साथ सीधा संबंध बनाने की अनुमति देता है。",
     ichingChainHeading: "प्रामाणिकता की श्रृंखला",
     ichingChain:
       "मूल Zhou Yi (झोऊ राजवंश) → कन्फ्यूशियस की टिप्पणियां (5वीं सदी ईसा पूर्व) → Zhu Xi के नियम (12वीं सदी) → Wilhelm का जर्मन अनुवाद (1924) → Baynes का अंग्रेजी अनुवाद (1950) → सार्वजनिक डोमेन (2020) → यह ऐप।",
     bonesHeading: "दैवज्ञ हड्डियां (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "ऐतिहासिक उत्पत्ति (शांग राजवंश, लगभग 1600–1046 ईसा पूर्व)",
+    bonesOriginHeading:
+      "ऐतिहासिक उत्पत्ति (शांग राजवंश, लगभग 1600–1046 ईसा पूर्व)",
     bonesOriginBody:
       "दैवज्ञ हड्डी भविष्यवाणी चीन की सबसे पुरानी दस्तावेज़ीकृत भविष्यवाणी प्रथा है, जो I Ching से भी पहले की है। शांग राजवंश के शाही ओझाओं ने कछुए की छाती की हड्डी या बैल के कंधे की हड्डी को जलाया और परिणामी दरारों को पढ़कर राजा के सैन्य, कृषि, जलवायु और व्यक्तिगत निर्णयों के बारे में पूर्वजों से परामर्श किया।",
     bonesRitualHeading: "अनुष्ठान प्रक्रिया",
     bonesRitualBody:
       "प्रक्रिया सटीक और दोहराने योग्य थी: एक सकारात्मक प्रस्ताव और उसका खंडन तैयार किया जाता था। हड्डी पर तप्त कांसे को तब तक लगाया जाता था जब तक दरारें न बन जाएं। दरारों की दिशा, लंबाई और पैटर्न निर्णय निर्धारित करता था। परिणाम हड्डी पर ही उकेरा जाता था, जो चीन के सबसे पुराने लिखित अभिलेख बनाता है।",
     bonesVerdictsHeading: "निर्णय की पांच अवस्थाएं",
-    bonesVerdictAuspClear: "吉, स्पष्ट रूप से शुभ: पैटर्न बिना किसी संदेह के सकारात्मक प्रस्ताव की पुष्टि करता है।",
-    bonesVerdictAuspMod: "吉 मध्यम, मध्यम रूप से शुभ: पुष्टि मौजूद है लेकिन बारीकियों या शर्तों के साथ।",
-    bonesVerdictInauspMod: "凶 मध्यम, मध्यम रूप से अशुभ: पैटर्न आरक्षणों के साथ नकारात्मकता की ओर झुकता है।",
-    bonesVerdictInauspClear: "凶, स्पष्ट रूप से अशुभ: पैटर्न बिना किसी संदेह के सकारात्मक प्रस्ताव को नकारता है।",
+    bonesVerdictAuspClear:
+      "吉, स्पष्ट रूप से शुभ: पैटर्न बिना किसी संदेह के सकारात्मक प्रस्ताव की पुष्टि करता है।",
+    bonesVerdictAuspMod:
+      "吉 मध्यम, मध्यम रूप से शुभ: पुष्टि मौजूद है लेकिन बारीकियों या शर्तों के साथ।",
+    bonesVerdictInauspMod:
+      "凶 मध्यम, मध्यम रूप से अशुभ: पैटर्न आरक्षणों के साथ नकारात्मकता की ओर झुकता है।",
+    bonesVerdictInauspClear:
+      "凶, स्पष्ट रूप से अशुभ: पैटर्न बिना किसी संदेह के सकारात्मक प्रस्ताव को नकारता है।",
     bonesVerdictSilence:
       "沉默, मौन: पैटर्न पठनीय दरारें उत्पन्न नहीं करता। शांग परंपरा में, हड्डी का मौन एक त्रुटि नहीं था, यह स्वयं एक उत्तर था: पूर्वज इसलिए नहीं बोलते क्योंकि उस प्रश्न के लिए क्षण परिपक्व नहीं है, या क्योंकि उत्तर उस सीमा से परे है जो कहा जा सकता है। यह ऐप उस अवस्था का सम्मान करता है और जब पैटर्न इसे इंगित करता है तो इसे लौटाता है।",
     bonesAuthHeading: "विधि की प्रामाणिकता",

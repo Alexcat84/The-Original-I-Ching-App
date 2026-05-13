@@ -133,6 +133,33 @@ const STYLE_MOOD_TAGS = [
   "Heritage mood through terrain alone — rock, forest, rivers, lakes, light, and weather — zero built structures or totems.",
 ] as const;
 
+/** Scene-family macro diversity to avoid repeated mountain-lake compositions. */
+const SCENE_FAMILY_VARIANTS = [
+  "Scene family: alpine ridgelines and glacier-fed valleys with mineral water tones.",
+  "Scene family: temperate conifer forest with streams, mossy rocks, and layered canopy depth.",
+  "Scene family: bamboo valleys with humid haze, narrow rivers, and stepped slopes.",
+  "Scene family: coastal cliffs with surf mist, sea inlets, and receding headlands.",
+  "Scene family: broad grassland basin with distant hills, wind texture, and open sky.",
+  "Scene family: canyon river corridor with stratified walls and bright water ribbons.",
+  "Scene family: wetland delta with reeds, shallow reflective channels, and soft horizon.",
+  "Scene family: high plateau with sparse trees, stone outcrops, and expansive clouds.",
+  "Scene family: autumn mixed forest with layered color bands and river meanders.",
+  "Scene family: winter highland with snow traces, dark pines, and pale atmospheric gradients.",
+  "Scene family: spring hillside terraces with reflective water pockets and drifting mist.",
+  "Scene family: volcanic valley geometry with dark basalt, luminous fog, and vivid sky breaks.",
+] as const;
+
+const WEATHER_VARIANTS = [
+  "Weather: clear dry air with long visibility and soft illustrated contrast.",
+  "Weather: passing cloud shadows and intermittent sunbeams, painterly not dramatic HDR.",
+  "Weather: light drizzle haze with smooth depth falloff and muted greens.",
+  "Weather: post-rain freshness with bright ground reflections and clean sky windows.",
+  "Weather: morning mist layers separated by warm side light.",
+  "Weather: humid summer veil with softened distance and richer foreground saturation.",
+  "Weather: crisp cold air with restrained palette and clear ridge hierarchy.",
+  "Weather: gentle sea fog pushing inland, preserving low-contrast readability.",
+] as const;
+
 export function buildImagePrompt(
   primary: Hexagram,
   transformed: Hexagram | null,
@@ -152,6 +179,11 @@ export function buildImagePrompt(
   const lightIdx = ((h >>> 14) ^ (h >>> 5)) % ATMOSPHERE_ROTATIONS.length;
   const focalIdx = ((h >>> 21) ^ (h >>> 9)) % FOCAL_DIVERSITY_HINTS.length;
   const styleIdx = ((h >>> 3) ^ (h >>> 17)) % STYLE_MOOD_TAGS.length;
+  const scenePrimaryIdx = ((h >>> 25) ^ (h >>> 4)) % SCENE_FAMILY_VARIANTS.length;
+  const sceneSecondaryIdx =
+    (scenePrimaryIdx + 3 + (((h >>> 10) ^ (h >>> 2)) % 5)) %
+    SCENE_FAMILY_VARIANTS.length;
+  const weatherIdx = ((h >>> 13) ^ (h >>> 23)) % WEATHER_VARIANTS.length;
 
   const settingBlock = [
     `PRIMARY SETTING (dominate the frame — no flat blank gradient): ${theme.environment}.`,
@@ -162,6 +194,9 @@ export function buildImagePrompt(
     COMPOSITION_VARIANTS[compIdx],
     FOCAL_DIVERSITY_HINTS[focalIdx],
     STYLE_MOOD_TAGS[styleIdx],
+    SCENE_FAMILY_VARIANTS[scenePrimaryIdx],
+    `Secondary terrain accent: ${SCENE_FAMILY_VARIANTS[sceneSecondaryIdx]}`,
+    WEATHER_VARIANTS[weatherIdx],
     "Ground in illustrated landforms and weather — no beige voids, flat posters, or harsh snapshot realism.",
   ].join(" ");
 
@@ -171,7 +206,7 @@ export function buildImagePrompt(
     settingBlock,
     "Art direction: fantasy landscape illustration — poetic, luminous; never photograph or documentary snapshot.",
     "Middle band: readable softness — mist, sun haze, forest glow, water shimmer — vary glow; avoid opaque shadow in central third.",
-    "Terrain variety — rivers, lakes, forest, coast; ban patio-bench vignettes and mist-mountain clichés.",
+    "Terrain variety is mandatory across generations — rotate biome, weather, and focal anchors; avoid repeating the same mountain-lake template.",
     "Center open (water, forest aisle, mist, bright haze, or sky) for overlay — no symbols, stamps, faux-writing, bars, portals.",
     "Frame edges: seamless landscape — no inset seals, red boxes, marginal stamps, signatures.",
     "Foreground: subtle rocks, pines, shore, mist — no coins, talismans, letter-like props.",

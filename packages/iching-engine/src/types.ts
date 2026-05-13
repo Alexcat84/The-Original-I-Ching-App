@@ -47,11 +47,9 @@ export interface HexagramLine {
 }
 
 /**
- * Interpretation mode for the AI oracle. PR1 ships only "wilhelm" wired to the
- * Claude prompt; the other modes are reserved for PR2 and currently rejected
- * by `assertSupportedInterpretationMode`.
+ * Interpretation mode for the AI oracle.
  */
-export type InterpretationMode = "wilhelm" | "legge" | "zhouyi" | "synthetic";
+export type InterpretationMode = "wilhelm" | "legge" | "zhouyi" | "master_combined";
 
 export const DEFAULT_INTERPRETATION_MODE: InterpretationMode = "wilhelm";
 
@@ -67,23 +65,25 @@ export interface TextsForClaude {
   transformedImage: string | null;
   specialYaoText: string | null;
   ruleExplanation: string;
-  /**
-   * Reserved for PR2 (Legge mode). Engine does NOT populate this in PR1; the
-   * field exists so backend/claude can be extended without another type churn.
-   */
+  /** Textos para la versión Legge (sólo si el modo es master_combined) */
   leggeJudgment?: string;
-  /** Reserved for PR2 (Legge mode). Inert in PR1. */
   leggeImage?: string;
-  /** Reserved for PR2 (Zhou Yi mode). Inert in PR1. */
+  leggeTransformedJudgment?: string | null;
+  leggeTransformedImage?: string | null;
+  leggeSelectedLineTexts?: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }>;
+  /** Textos para la versión Zhou Yi (sólo si el modo es master_combined) */
   zhouyiJudgment?: string;
-  /** Reserved for PR2 (Zhou Yi mode). Inert in PR1. */
   zhouyiImage?: string;
+  zhouyiTransformedJudgment?: string | null;
+  zhouyiTransformedImage?: string | null;
+  zhouyiSelectedLineTexts?: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }>;
 }
 
 export interface CastResult {
   id: string;
   question: string;
   language: string;
+  interpretationMode: InterpretationMode;
   lines: Line[];
   primaryHexagram: Hexagram;
   transformedHexagram: Hexagram | null;

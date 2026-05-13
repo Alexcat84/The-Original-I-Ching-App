@@ -1,4 +1,7 @@
-import type { OracleBonesHistorySnapshot, OracleType } from "@iching-oracle/context-engine";
+import type {
+  OracleBonesHistorySnapshot,
+  OracleType,
+} from "@iching-oracle/context-engine";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { randomBytes } from "node:crypto";
@@ -28,8 +31,15 @@ export interface StoredConsultation {
   }>;
   changingLines: number[];
   interpretation: string;
+  interpretationSummary?: string;
   category: string;
-  imageProvider: "mock" | "svg-art" | "pollinations" | "fal" | "gpt-image" | "together";
+  imageProvider:
+    | "mock"
+    | "svg-art"
+    | "pollinations"
+    | "fal"
+    | "gpt-image"
+    | "together";
   imageUrl: string;
   imageFallbackUrl?: string;
   publicId: string;
@@ -62,7 +72,6 @@ export interface UserSessionSummary {
   updatedAt: number;
   firstQuestion: string | null;
 }
-
 
 /** Map a Supabase consultations row to StoredConsultation (shared shape for reads + KV mirror). */
 function consultationFromDbRow(data: {
@@ -114,7 +123,6 @@ function consultationFromDbRow(data: {
   };
 }
 
-
 const sessions = new Map<string, StoredSession>();
 const consultations = new Map<string, StoredConsultation>();
 const consultationByPublicId = new Map<string, string>();
@@ -124,13 +132,16 @@ export function isChatPersistenceConfigured(): boolean {
   return Boolean(getSupabaseAdmin());
 }
 
-function imageProviderFromUrl(url: string | null | undefined): StoredConsultation["imageProvider"] {
+function imageProviderFromUrl(
+  url: string | null | undefined,
+): StoredConsultation["imageProvider"] {
   if (!url) return "mock";
   if (url.startsWith("data:image/svg+xml")) return "svg-art";
   if (url.includes("pollinations")) return "pollinations";
   if (url.includes("fal.ai")) return "fal";
   if (url.includes("openai")) return "gpt-image";
-  if (url.includes("together") || url.includes("api.together")) return "together";
+  if (url.includes("together") || url.includes("api.together"))
+    return "together";
   return "mock";
 }
 
@@ -161,7 +172,9 @@ export function ensureSession(params: {
   return s;
 }
 
-export function saveConsultation(input: Omit<StoredConsultation, "publicId" | "createdAt">): StoredConsultation {
+export function saveConsultation(
+  input: Omit<StoredConsultation, "publicId" | "createdAt">,
+): StoredConsultation {
   const saved: StoredConsultation = {
     ...input,
     publicId: randomPublicId(8),
@@ -176,7 +189,9 @@ export function saveConsultation(input: Omit<StoredConsultation, "publicId" | "c
   return saved;
 }
 
-export async function getConsultationByPublicId(publicId: string): Promise<StoredConsultation | null> {
+export async function getConsultationByPublicId(
+  publicId: string,
+): Promise<StoredConsultation | null> {
   void publicId;
   return null;
 }
@@ -208,7 +223,10 @@ export async function upsertSessionAndConsultation(params: {
       language: params.language,
     });
     const saved = saveConsultation(params.consultation);
-    return { publicReadingId: saved.publicId, publicSessionId: session.publicId };
+    return {
+      publicReadingId: saved.publicId,
+      publicSessionId: session.publicId,
+    };
   }
 
   const { data: existingSession, error: existingSessionError } = await supabase
@@ -217,9 +235,13 @@ export async function upsertSessionAndConsultation(params: {
     .eq("id", params.sessionId)
     .maybeSingle();
   if (existingSessionError) {
-    throw new Error(`consultation_session_lookup_failed:${existingSessionError.message}`);
+    throw new Error(
+      `consultation_session_lookup_failed:${existingSessionError.message}`,
+    );
   }
-  let sessionPublicId = existingSession?.public_sharing_id as string | undefined;
+  let sessionPublicId = existingSession?.public_sharing_id as
+    | string
+    | undefined;
   if (!existingSession) {
     const { data: created, error: createSessionError } = await supabase
       .from("consultation_sessions")
@@ -234,7 +256,9 @@ export async function upsertSessionAndConsultation(params: {
       .select("public_sharing_id")
       .single();
     if (createSessionError) {
-      throw new Error(`consultation_session_create_failed:${createSessionError.message}`);
+      throw new Error(
+        `consultation_session_create_failed:${createSessionError.message}`,
+      );
     }
     sessionPublicId = created?.public_sharing_id;
   }
@@ -256,7 +280,8 @@ export async function upsertSessionAndConsultation(params: {
     category: params.consultation.category,
     interpretation: params.consultation.interpretation,
     image_url: params.consultation.imageUrl,
-    thumbnail_url: params.consultation.imageFallbackUrl ?? params.consultation.imageUrl,
+    thumbnail_url:
+      params.consultation.imageFallbackUrl ?? params.consultation.imageUrl,
     is_public: false,
   };
   let createdConsultation: { public_sharing_id?: string } | null = null;
@@ -301,30 +326,38 @@ export async function upsertSessionAndConsultation(params: {
     .eq("id", params.sessionId)
     .maybeSingle();
   if (sessionRefreshError) {
-    throw new Error(`consultation_session_refresh_failed:${sessionRefreshError.message}`);
+    throw new Error(
+      `consultation_session_refresh_failed:${sessionRefreshError.message}`,
+    );
   }
   const finalSessionPublicId =
-    (sessionRefresh?.public_sharing_id as string | undefined) ?? sessionPublicId;
+    (sessionRefresh?.public_sharing_id as string | undefined) ??
+    sessionPublicId;
 
   return {
-    publicReadingId: createdConsultation?.public_sharing_id ?? randomPublicId(8),
+    publicReadingId:
+      createdConsultation?.public_sharing_id ?? randomPublicId(8),
     publicSessionId: finalSessionPublicId ?? randomPublicId(8),
   };
 }
 
-export async function getUserSessionsWithConsultations(userId: string): Promise<UserSessionWithConsultations[]> {
+export async function getUserSessionsWithConsultations(
+  userId: string,
+): Promise<UserSessionWithConsultations[]> {
   const supabase = getSupabaseAdmin();
   if (!supabase) return [];
   const { data: sessionRows, error: sessionsError } = await supabase
     .from("consultation_sessions")
-    .select("id, title, theme_category, language, public_sharing_id, created_at, max_consultations")
+    .select(
+      "id, title, theme_category, language, public_sharing_id, created_at, max_consultations",
+    )
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
   if (sessionsError || !sessionRows?.length) return [];
 
   const sessionIds = sessionRows.map((s) => s.id);
   const baseConsultColumns =
-    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, image_url, thumbnail_url, public_sharing_id, created_at";
+    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
   const withOracleColumns = `${baseConsultColumns}, oracle_type, oracle_bones`;
 
   let consultRows: unknown[] | null = null;
@@ -366,9 +399,11 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
   return sessionRows.map((s) => {
     const rows = bySession.get(s.id) ?? [];
     const maxFromDb =
-      typeof (s as { max_consultations?: number | null }).max_consultations === "number"
+      typeof (s as { max_consultations?: number | null }).max_consultations ===
+      "number"
         ? (s as { max_consultations: number }).max_consultations
-        : (s as { max_consultations?: number | null }).max_consultations === null
+        : (s as { max_consultations?: number | null }).max_consultations ===
+            null
           ? null
           : undefined;
     const maxConsultations =
@@ -390,13 +425,17 @@ export async function getUserSessionsWithConsultations(userId: string): Promise<
   });
 }
 
-export async function getUserSessionSummaries(userId: string): Promise<UserSessionSummary[]> {
+export async function getUserSessionSummaries(
+  userId: string,
+): Promise<UserSessionSummary[]> {
   const supabase = getSupabaseAdmin();
   if (!supabase) return [];
 
   const { data: sessionRows, error: sessionsError } = await supabase
     .from("consultation_sessions")
-    .select("id, title, theme_category, language, public_sharing_id, created_at")
+    .select(
+      "id, title, theme_category, language, public_sharing_id, created_at",
+    )
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
   if (sessionsError || !sessionRows?.length) return [];
@@ -412,12 +451,21 @@ export async function getUserSessionSummaries(userId: string): Promise<UserSessi
 
   const bySession = new Map<
     string,
-    { count: number; firstAt: number | null; lastAt: number | null; firstQuestion: string | null }
+    {
+      count: number;
+      firstAt: number | null;
+      lastAt: number | null;
+      firstQuestion: string | null;
+    }
   >();
   for (const row of consultRows ?? []) {
     const sessionId = String((row as { session_id: string }).session_id);
-    const createdAt = new Date((row as { created_at: string }).created_at).getTime();
-    const question = String((row as { question?: string }).question ?? "").trim();
+    const createdAt = new Date(
+      (row as { created_at: string }).created_at,
+    ).getTime();
+    const question = String(
+      (row as { question?: string }).question ?? "",
+    ).trim();
     const current = bySession.get(sessionId);
     if (!current) {
       bySession.set(sessionId, {
@@ -466,14 +514,16 @@ export async function getUserSessionWithConsultations(
 
   const { data: sessionRow, error: sessionError } = await supabase
     .from("consultation_sessions")
-    .select("id, title, theme_category, language, public_sharing_id, created_at, max_consultations")
+    .select(
+      "id, title, theme_category, language, public_sharing_id, created_at, max_consultations",
+    )
     .eq("id", sessionId)
     .eq("user_id", userId)
     .maybeSingle();
   if (sessionError || !sessionRow) return null;
 
   const baseConsultColumns =
-    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, image_url, thumbnail_url, public_sharing_id, created_at";
+    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
   const withOracleColumns = `${baseConsultColumns}, oracle_type, oracle_bones`;
 
   let consultRows: unknown[] | null = null;
@@ -503,16 +553,23 @@ export async function getUserSessionWithConsultations(
   }
   if (consultError) return null;
 
-  const consultations = (consultRows ?? []).map((row) => consultationFromDbRow(row as never));
-  const sorted = consultations.sort((a, b) => a.sessionPosition - b.sessionPosition);
+  const consultations = (consultRows ?? []).map((row) =>
+    consultationFromDbRow(row as never),
+  );
+  const sorted = consultations.sort(
+    (a, b) => a.sessionPosition - b.sessionPosition,
+  );
   const maxFromDb =
-    typeof (sessionRow as { max_consultations?: number | null }).max_consultations === "number"
+    typeof (sessionRow as { max_consultations?: number | null })
+      .max_consultations === "number"
       ? (sessionRow as { max_consultations: number }).max_consultations
-      : (sessionRow as { max_consultations?: number | null }).max_consultations === null
+      : (sessionRow as { max_consultations?: number | null })
+            .max_consultations === null
         ? null
         : undefined;
   const maxConsultations =
-    maxFromDb ?? (sorted.length ? Math.max(...sorted.map((r) => r.sessionPosition), 1) : 1);
+    maxFromDb ??
+    (sorted.length ? Math.max(...sorted.map((r) => r.sessionPosition), 1) : 1);
   return {
     session: {
       sessionId: sessionRow.id,
@@ -528,7 +585,10 @@ export async function getUserSessionWithConsultations(
   };
 }
 
-export async function deleteUserSession(userId: string, sessionId: string): Promise<boolean> {
+export async function deleteUserSession(
+  userId: string,
+  sessionId: string,
+): Promise<boolean> {
   const supabase = getSupabaseAdmin();
   if (!supabase || !isPersistableUuid(sessionId)) {
     const session = sessions.get(sessionId);
@@ -551,7 +611,9 @@ export async function deleteUserSession(userId: string, sessionId: string): Prom
     .eq("session_id", sessionId)
     .eq("user_id", userId);
   if (consultDeleteError) {
-    throw new Error(`consultations_delete_failed:${consultDeleteError.message}`);
+    throw new Error(
+      `consultations_delete_failed:${consultDeleteError.message}`,
+    );
   }
 
   const { data: deletedSessions, error: sessionDeleteError } = await supabase
@@ -561,9 +623,10 @@ export async function deleteUserSession(userId: string, sessionId: string): Prom
     .eq("user_id", userId)
     .select("id");
   if (sessionDeleteError) {
-    throw new Error(`consultation_session_delete_failed:${sessionDeleteError.message}`);
+    throw new Error(
+      `consultation_session_delete_failed:${sessionDeleteError.message}`,
+    );
   }
 
   return Array.isArray(deletedSessions) && deletedSessions.length > 0;
 }
-

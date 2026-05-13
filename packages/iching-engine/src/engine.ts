@@ -1,6 +1,5 @@
 import { getHexagramRecordByBinaryTopFirst, type HexagramRecord } from "@iching-oracle/iching-data";
 import {
-  DEFAULT_INTERPRETATION_MODE,
   type CastingMethod,
   type CastResult,
   type Hexagram,
@@ -12,22 +11,6 @@ import {
   type TextsForClaude,
 } from "./types.js";
 
-/**
- * Guards against unsupported interpretation modes. PR1 wires only "wilhelm"
- * end-to-end; "legge", "zhouyi", and "synthetic" are reserved data slots that
- * must not reach the Claude prompt yet. Throwing here is intentional: it
- * surfaces accidental mode wiring loud and early during PR1 stabilization.
- */
-export function assertSupportedInterpretationMode(
-  mode: InterpretationMode = DEFAULT_INTERPRETATION_MODE,
-): asserts mode is "wilhelm" {
-  if (mode !== "wilhelm") {
-    throw new Error(
-      `Interpretation mode "${mode}" is not yet supported. Only "wilhelm" is wired in PR1; ` +
-        "the Legge / Zhou Yi / synthetic modes ship in PR2 (feature/interpretation-modes).",
-    );
-  }
-}
 
 export type Rng = () => number;
 
@@ -56,9 +39,10 @@ export function linesToBinaryTopFirst(lines: Line[]): string {
   return bottomFirst.split("").reverse().join("");
 }
 
-export function getHexagram(lines: Line[]): Hexagram {
+export function getHexagram(lines: Line[], translator: InterpretationMode = "wilhelm"): Hexagram {
   const key = linesToBinaryTopFirst(lines);
-  return recordToHexagram(getHexagramRecordByBinaryTopFirst(key));
+  const effectiveTranslator = translator === "master_combined" ? "wilhelm" : translator;
+  return recordToHexagram(getHexagramRecordByBinaryTopFirst(key, { translator: effectiveTranslator }));
 }
 
 export function throwThreeCoins(rng: Rng = Math.random): LineValue {
@@ -121,7 +105,56 @@ export function selectTextsForClaude(
   lines: Line[],
   changing: number[],
   rule: MutationRule,
+  translator: InterpretationMode = "wilhelm",
 ): TextsForClaude {
+  const attachMasterTraditions = (baseResult: TextsForClaude): TextsForClaude => {
+    if (translator !== "master_combined") return baseResult;
+
+    const keyP = linesToBinaryTopFirst(lines);
+    const keyT = transformed ? linesToBinaryTopFirst(applyMutations(lines)) : null;
+
+    const fetchExtra = (translatorId: "legge" | "zhouyi") => {
+      const primaryRecord = getHexagramRecordByBinaryTopFirst(keyP, {
+        translator: translatorId,
+      });
+      const transformedRecord = keyT
+        ? getHexagramRecordByBinaryTopFirst(keyT, { translator: translatorId })
+        : null;
+      const selectedLineTexts = baseResult.selectedLineTexts.map((lineText) => {
+        const record =
+          lineText.fromHexagram === "primary" ? primaryRecord : transformedRecord;
+        const text =
+          record?.lines.find((line) => line.position === lineText.position)?.text ??
+          "";
+        return { ...lineText, text };
+      });
+      return {
+        judgment: primaryRecord.judgment,
+        image: primaryRecord.image,
+        transformedJudgment: transformedRecord?.judgment ?? null,
+        transformedImage: transformedRecord?.image ?? null,
+        selectedLineTexts,
+      };
+    };
+
+    const legge = fetchExtra("legge");
+    const zhouyi = fetchExtra("zhouyi");
+
+    return {
+      ...baseResult,
+      leggeJudgment: legge.judgment,
+      leggeImage: legge.image,
+      leggeTransformedJudgment: legge.transformedJudgment,
+      leggeTransformedImage: legge.transformedImage,
+      leggeSelectedLineTexts: legge.selectedLineTexts,
+      zhouyiJudgment: zhouyi.judgment,
+      zhouyiImage: zhouyi.image,
+      zhouyiTransformedJudgment: zhouyi.transformedJudgment,
+      zhouyiTransformedImage: zhouyi.transformedImage,
+      zhouyiSelectedLineTexts: zhouyi.selectedLineTexts,
+    };
+  };
+
   const base: TextsForClaude = {
     primaryJudgment: primary.judgment,
     primaryImage: primary.image,
@@ -135,109 +168,109 @@ export function selectTextsForClaude(
 
   switch (rule) {
     case "NO_CHANGING":
-      return {
+      return attachMasterTraditions({
         ...base,
         transformedJudgment: null,
         transformedImage: null,
         ruleExplanation: "Sin mutaciones. Solo Juicio e Imagen del hexagrama primario.",
-      };
+      });
 
     case "ONE_CHANGING": {
       const pos = changing[0]!;
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [{ position: pos, text: gl(primary, pos), fromHexagram: "primary" }],
         ruleExplanation: `Una mutación en línea ${pos}. Es el elemento más importante.`,
-      };
+      });
     }
 
     case "TWO_YIN_YANG": {
       const yin = lines.find((l) => changing.includes(l.position) && l.type === "yin_old")!;
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: yin.position, text: gl(primary, yin.position), fromHexagram: "primary" },
         ],
         ruleExplanation: `Dos mutaciones yin+yang. Solo se lee la línea Yin (pos ${yin.position}).`,
-      };
+      });
     }
 
     case "TWO_SAME_LOWER": {
       const low = Math.min(...changing);
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: low, text: gl(primary, low), fromHexagram: "primary" },
         ],
         ruleExplanation: `Dos mutaciones mismo tipo. Solo se lee la inferior (pos ${low}).`,
-      };
+      });
     }
 
     case "THREE_MIDDLE": {
       const mid = [...changing].sort((a, b) => a - b)[1]!;
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: mid, text: gl(primary, mid), fromHexagram: "primary" },
         ],
         ruleExplanation: `Tres mutaciones. Línea central (pos ${mid}). Ambos juicios igual peso.`,
-      };
+      });
     }
 
     case "FOUR_LOWEST_STABLE": {
-      if (!transformed) return base;
+      if (!transformed) return attachMasterTraditions(base);
       const stable = [1, 2, 3, 4, 5, 6].filter((p) => !changing.includes(p));
       const low = Math.min(...stable);
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: low, text: gl(transformed, low), fromHexagram: "transformed" },
         ],
         ruleExplanation: `Cuatro mutaciones. Línea estable más baja del TRANSFORMADO (pos ${low}).`,
-      };
+      });
     }
 
     case "FIVE_ONLY_STABLE": {
-      if (!transformed) return base;
+      if (!transformed) return attachMasterTraditions(base);
       const only = [1, 2, 3, 4, 5, 6].find((p) => !changing.includes(p))!;
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
           { position: only, text: gl(transformed, only), fromHexagram: "transformed" },
         ],
         ruleExplanation: `Cinco mutaciones. Único testigo estable del TRANSFORMADO (pos ${only}).`,
-      };
+      });
     }
 
     case "SIX_ALL_CHANGING":
-      return {
+      return attachMasterTraditions({
         ...base,
         primaryImage: "",
         selectedLineTexts: [],
         ruleExplanation: "Mutación total. Solo Juicio del hexagrama transformado.",
-      };
+      });
 
     case "QIAN_ALL_NINE":
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [],
         specialYaoText:
           primary.yongJiu ??
           'Todos los Nueves (用九): "Rebaño de dragones sin cabeza; ventura."',
         ruleExplanation: "Qian (1) con todos Yang Viejos. Séptimo Yao 用九.",
-      };
+      });
 
     case "KUN_ALL_SIX":
-      return {
+      return attachMasterTraditions({
         ...base,
         selectedLineTexts: [],
         specialYaoText:
           primary.yongLiu ?? 'Todos los Seises (用六): "Ventajoso la perseverancia duradera."',
         ruleExplanation: "Kun (2) con todos Yin Viejos. Séptimo Yao 用六.",
-      };
+      });
 
     default:
-      return base;
+      return attachMasterTraditions(base);
   }
 }
 
@@ -246,6 +279,7 @@ export interface PerformCastOptions {
   id?: string;
   now?: Date;
   castingMethod?: CastingMethod;
+  translator?: InterpretationMode;
 }
 
 function newCastId(): string {
@@ -260,16 +294,18 @@ function buildCastResultFromLines(
   language: string,
   options?: PerformCastOptions,
 ): CastResult {
+  const translator = options?.translator ?? "wilhelm";
   const changing = lines.filter((l) => l.isChanging).map((l) => l.position);
-  const primary = getHexagram(lines);
+  const primary = getHexagram(lines, translator);
   const transformedLines = changing.length > 0 ? applyMutations(lines) : null;
-  const transformed = transformedLines ? getHexagram(transformedLines) : null;
+  const transformed = transformedLines ? getHexagram(transformedLines, translator) : null;
   const rule = determineMutationRule(primary, lines, changing);
-  const texts = selectTextsForClaude(primary, transformed, lines, changing, rule);
+  const texts = selectTextsForClaude(primary, transformed, lines, changing, rule, translator);
   return {
     id: options?.id ?? newCastId(),
     question,
     language,
+    interpretationMode: translator,
     lines,
     primaryHexagram: primary,
     transformedHexagram: transformed,

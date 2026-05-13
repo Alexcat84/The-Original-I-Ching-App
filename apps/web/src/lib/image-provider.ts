@@ -326,19 +326,69 @@ function resolveTierSize(lastPack?: string): { width: number; height: number } {
   return { width: 1344, height: 768 };
 }
 
-/** Together AI: dimensions must be multiples of 32 (1184≈1200, 1504≈1500). */
+/** Together AI sizing defaults per tier (validated later to docs-safe bounds). */
 function resolveTogetherImageSize(lastPack?: string): { width: number; height: number } {
   const key = resolveTierKey(lastPack);
   switch (key) {
     case "free":
-      return { width: 1024, height: 1024 };
+      return { width: 1024, height: 768 };
     case "seeker":
-      return { width: 1216, height: 1216 };
+      return { width: 1024, height: 832 };
     case "practitioner":
-      return { width: 1504, height: 1504 };
+      return { width: 1024, height: 960 };
     case "master":
-      return { width: 1792, height: 1792 };
+      return { width: 1024, height: 1024 };
   }
+}
+
+const TOGETHER_DIMENSION_MULTIPLE = 32;
+const TOGETHER_MIN_DIMENSION = 256;
+const TOGETHER_MAX_DIMENSION = 4096;
+// Cost-control cap: keep tiers at or below ~1 MP.
+const TOGETHER_MAX_PIXELS = 1_048_576; // 1 MP
+
+function normalizeTogetherDimension(value: number): number {
+  const clamped = Math.max(
+    TOGETHER_MIN_DIMENSION,
+    Math.min(TOGETHER_MAX_DIMENSION, Math.trunc(value)),
+  );
+  const rounded =
+    clamped - (clamped % TOGETHER_DIMENSION_MULTIPLE);
+  return Math.max(TOGETHER_MIN_DIMENSION, rounded);
+}
+
+function normalizeTogetherSize(width: number, height: number): { width: number; height: number } {
+  let safeWidth = normalizeTogetherDimension(width);
+  let safeHeight = normalizeTogetherDimension(height);
+
+  const pixels = safeWidth * safeHeight;
+  if (pixels <= TOGETHER_MAX_PIXELS) {
+    return { width: safeWidth, height: safeHeight };
+  }
+
+  const scale = Math.sqrt(TOGETHER_MAX_PIXELS / pixels);
+  safeWidth = normalizeTogetherDimension(Math.floor(safeWidth * scale));
+  safeHeight = normalizeTogetherDimension(Math.floor(safeHeight * scale));
+
+  while (safeWidth * safeHeight > TOGETHER_MAX_PIXELS) {
+    if (safeWidth >= safeHeight && safeWidth > TOGETHER_MIN_DIMENSION) {
+      safeWidth = Math.max(
+        TOGETHER_MIN_DIMENSION,
+        safeWidth - TOGETHER_DIMENSION_MULTIPLE,
+      );
+      continue;
+    }
+    if (safeHeight > TOGETHER_MIN_DIMENSION) {
+      safeHeight = Math.max(
+        TOGETHER_MIN_DIMENSION,
+        safeHeight - TOGETHER_DIMENSION_MULTIPLE,
+      );
+      continue;
+    }
+    break;
+  }
+
+  return { width: safeWidth, height: safeHeight };
 }
 
 async function generateWithFal(prompt: string, width: number, height: number): Promise<string | null> {
@@ -391,7 +441,7 @@ async function generateWithGptImage(prompt: string, width: number, height: numbe
   return null;
 }
 
-function togetherImageGenerationOptionalFields(): {
+function togetherImageGenerationOptionalFields(seedBase?: string): {
   guidance_scale?: number;
   seed?: number;
   output_format?: "jpeg" | "png";
@@ -409,14 +459,27 @@ function togetherImageGenerationOptionalFields(): {
   const seedRaw = process.env.TOGETHER_IMAGE_SEED?.trim();
   if (seedRaw) {
     const s = Number(seedRaw);
-    if (Number.isFinite(s)) fields.seed = Math.trunc(s);
+    if (Number.isFinite(s)) {
+      // Keep reproducibility while still varying each consultation.
+      fields.seed = seedBase
+        ? fnv1a32(`${Math.trunc(s)}:${seedBase}`) % 2_147_483_647
+        : Math.trunc(s);
+    }
+  } else if (seedBase) {
+    // Deterministic per-consultation seed to increase scene diversity and reproducibility.
+    fields.seed = fnv1a32(seedBase) % 2_147_483_647;
   }
   const fmt = process.env.TOGETHER_OUTPUT_FORMAT?.trim().toLowerCase();
   if (fmt === "jpeg" || fmt === "png") fields.output_format = fmt;
   return fields;
 }
 
-async function generateWithTogether(prompt: string, width: number, height: number): Promise<{ url: string | null; debug: TogetherDebug }> {
+async function generateWithTogether(
+  prompt: string,
+  width: number,
+  height: number,
+  seedBase?: string,
+): Promise<{ url: string | null; debug: TogetherDebug }> {
   const key = process.env.TOGETHER_API_KEY;
   if (!key) {
     return {
@@ -430,15 +493,18 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
   debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
   const model =
     process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.2-dev";
-  // Together (FLUX.2-dev) permite más steps para mayor detalle.
-  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "28");
-  const steps = Math.min(50, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 28));
+  // Conservative defaults for FLUX.2-dev to reduce request rejections.
+  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "12");
+  const steps = Math.min(28, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 12));
+  const normalizedSize = normalizeTogetherSize(width, height);
+  const safeWidth = normalizedSize.width;
+  const safeHeight = normalizedSize.height;
   const promptForApi = compactTogetherFluxPromptSegment(prompt, TOGETHER_FLUX_PROMPT_MAX_CHARS);
   const negativePrompt = compactTogetherFluxPromptSegment(
     buildTogetherNegativePrompt(),
     TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
   );
-  const optionalApi = togetherImageGenerationOptionalFields();
+  const optionalApi = togetherImageGenerationOptionalFields(seedBase);
   debugLog("together: prompt lens", {
     incomingPromptChars: prompt.length,
     outgoingPromptChars: promptForApi.length,
@@ -447,6 +513,9 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
     budgetPrompt: TOGETHER_FLUX_PROMPT_MAX_CHARS,
     budgetNegative: TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
     apiOptional: optionalApi,
+    requestedSize: { width, height },
+    normalizedSize: { width: safeWidth, height: safeHeight },
+    seedBase: seedBase ?? null,
   });
   const res = await fetch("https://api.together.xyz/v1/images/generations", {
     method: "POST",
@@ -458,8 +527,8 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
       model,
       prompt: promptForApi,
       negative_prompt: negativePrompt,
-      width,
-      height,
+      width: safeWidth,
+      height: safeHeight,
       n: 1,
       steps,
       response_format: "url",
@@ -633,7 +702,7 @@ export async function buildImageAsset(params: {
       tier: params.tier,
       width: togetherFallbackW,
       height: togetherFallbackH,
-      seed: params.consultationId ?? `${params.primaryHexagram}-${params.transformedHexagram?.number ?? "none"}`,
+      seed: `${params.consultationId ?? `${params.primaryHexagram}-${params.transformedHexagram?.number ?? "none"}`}:${Date.now()}`,
     });
     if (prebuilt) fallbackImageUrl = prebuilt;
   }
@@ -692,7 +761,13 @@ export async function buildImageAsset(params: {
 
   if (provider === "together") {
     const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
-    const { url, debug: togetherDebug } = await generateWithTogether(promptForRemote, tw, th);
+    const { url, debug: togetherDebug } = await generateWithTogether(
+      promptForRemote,
+      tw,
+      th,
+      params.consultationId ??
+        `${params.primaryHexagram}:${params.transformedHexagram?.number ?? "none"}:${params.category}`,
+    );
     debug.together = togetherDebug;
     if (url) {
       const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
@@ -752,7 +827,7 @@ export async function buildOracleBonesImageAsset(params: {
           tier: params.tier,
           width: togetherFallbackW,
           height: togetherFallbackH,
-          seed: params.consultationId ?? `${params.patternId}-${params.verdict}`,
+          seed: `${params.consultationId ?? `${params.patternId}-${params.verdict}`}:${Date.now()}`,
         })
       : null;
   const fallbackSvg = buildOracleBonesMockSvgString({
@@ -817,7 +892,13 @@ export async function buildOracleBonesImageAsset(params: {
 
   if (provider === "together") {
     const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
-    const { url } = await generateWithTogether(promptForRemote, tw, th);
+    const { url } = await generateWithTogether(
+      promptForRemote,
+      tw,
+      th,
+      params.consultationId ??
+        `${params.patternId}:${params.verdict}:${params.medium}:${params.tier ?? "free"}`,
+    );
     if (url) {
       const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
         verdict: params.verdict,

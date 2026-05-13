@@ -91,7 +91,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     closeDialogAria: "Cerrar ventana 2FA",
     challengeIntroTotp:
       "Para continuar en esta sesión, verifica tu cuenta con Authenticator (TOTP).",
-    challengeIntroEmail: "Para continuar en esta sesión, verifica tu cuenta con código por email.",
+    challengeIntroEmail:
+      "Para continuar en esta sesión, verifica tu cuenta con código por email.",
     setupMenuHint: "Elige un solo método para configurarlo paso a paso.",
     setupTotpOnlyHint:
       "Solo Authenticator (TOTP). Usa «Elegir otro método» si prefieres el correo.",
@@ -132,7 +133,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "Códigos de recuperación (se muestran una sola vez). Guárdalos en un lugar seguro:",
     recoveryAckCheckbox:
       "He guardado mis códigos de recuperación y entiendo que no se volverán a mostrar.",
-    infoTwoFaEnabledSaveCodes: "2FA activado. Guarda estos códigos de recuperación antes de cerrar.",
+    infoTwoFaEnabledSaveCodes:
+      "2FA activado. Guarda estos códigos de recuperación antes de cerrar.",
     acceptAndClose: "Aceptar y cerrar",
     modalAfterSaveCodes: "2FA configurado correctamente.",
     validateRecoveryCode: "Validar código de recuperación",
@@ -145,12 +147,16 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     signInFor2fa: "Inicia sesión para configurar la verificación en dos pasos.",
     enrollEncryptionKeyMissing:
       "2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.",
-    enrollAuthProviderMissing: "2FA no disponible: falta configuración de Supabase en servidor.",
-    enrollTryLater: "No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.",
-    confirmNotEnrolled: "Primero activa 2FA con Authenticator para generar el QR.",
+    enrollAuthProviderMissing:
+      "2FA no disponible: falta configuración de Supabase en servidor.",
+    enrollTryLater:
+      "No se pudo iniciar 2FA ahora. Inténtalo de nuevo en unos minutos.",
+    confirmNotEnrolled:
+      "Primero activa 2FA con Authenticator para generar el QR.",
     confirmEncryptionKeyMissing:
       "2FA no está habilitado en servidor: falta configurar TOTP_ENCRYPTION_KEY.",
-    confirmDecryptFailed: "No se pudo desencriptar el secreto 2FA en servidor. Reconfigura 2FA.",
+    confirmDecryptFailed:
+      "No se pudo desencriptar el secreto 2FA en servidor. Reconfigura 2FA.",
     confirmTotpInvalid:
       "Código 2FA inválido o expirado. Revisa tu app Authenticator e inténtalo de nuevo.",
     confirmTryLater: "No se pudo verificar 2FA ahora. Inténtalo de nuevo.",
@@ -159,15 +165,18 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "2FA bloqueado temporalmente por intentos fallidos. Espera 15 minutos e intenta de nuevo.",
     sendEmailNotConfiguredServer:
       "2FA por email no está habilitado en servidor. Revisa RESEND_API_KEY, TWO_FACTOR_EMAIL_FROM y TWO_FACTOR_EMAIL_CODE_SECRET.",
-    emailDeliveryFailedReason: "No se pudo enviar el código por email: {{reason}}",
+    emailDeliveryFailedReason:
+      "No se pudo enviar el código por email: {{reason}}",
     emailDeliveryFailedResendHint:
       "No se pudo enviar el código por email. Verifica que TWO_FACTOR_EMAIL_FROM esté validado en Resend y que la API key sea correcta.",
     sendTryLater: "No se pudo enviar el código por email. Inténtalo de nuevo.",
     infoCodeSent: "Código enviado por email. Revisa bandeja principal y spam.",
     verifyEmailExpired: "El código por email expiró. Solicita uno nuevo.",
     verifyEmailRequestFirst: "Primero solicita el código por email.",
-    verifyEmailInvalid: "Código por email inválido. Revisa tu bandeja e inténtalo de nuevo.",
-    verifyEmailTryLater: "No se pudo verificar el código por email. Inténtalo de nuevo.",
+    verifyEmailInvalid:
+      "Código por email inválido. Revisa tu bandeja e inténtalo de nuevo.",
+    verifyEmailTryLater:
+      "No se pudo verificar el código por email. Inténtalo de nuevo.",
     disableFailed: "No se pudo desactivar 2FA.",
     disabledOk: "2FA desactivado.",
     challengeNeedRecovery: "Ingresa un código de recuperación válido.",
@@ -191,13 +200,15 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     manageTitle: "2FA security setup",
     challengeTitle: "2FA verification required",
     closeDialogAria: "Close 2FA dialog",
-    challengeIntroTotp: "To continue in this session, verify your account with Authenticator (TOTP).",
-    challengeIntroEmail: "To continue in this session, verify your account with email code.",
+    challengeIntroTotp:
+      "To continue in this session, verify your account with Authenticator (TOTP).",
+    challengeIntroEmail:
+      "To continue in this session, verify your account with email code.",
     setupMenuHint: "Choose one method and configure it step by step.",
     setupTotpOnlyHint:
-      'Authenticator (TOTP) only. Use “Choose another method” if you prefer email.',
+      "Authenticator (TOTP) only. Use “Choose another method” if you prefer email.",
     setupEmailOnlyHint:
-      'Email verification only. Use “Choose another method” if you prefer Authenticator.',
+      "Email verification only. Use “Choose another method” if you prefer Authenticator.",
     badgeEmailCode: "Email code",
     badgeTotp: "Authenticator (TOTP)",
     authenticatorTotp: "Authenticator (TOTP)",
@@ -211,7 +222,7 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     totpPlaceholderLong: "6-digit TOTP code",
     verify: "Verify",
     challengeEmailBeforeSend:
-      'Tap «Send email code» and check your inbox (and spam). Then enter the 6-digit code.',
+      "Tap «Send email code» and check your inbox (and spam). Then enter the 6-digit code.",
     sendEmailHintManage:
       'Tap "Send email code", check your inbox, and enter the 6-digit code.',
     sending: "Sending...",
@@ -233,7 +244,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "Recovery codes (shown only once). Save them in a safe place:",
     recoveryAckCheckbox:
       "I saved my recovery codes and understand they will not be shown again.",
-    infoTwoFaEnabledSaveCodes: "2FA enabled. Save these recovery codes before closing.",
+    infoTwoFaEnabledSaveCodes:
+      "2FA enabled. Save these recovery codes before closing.",
     acceptAndClose: "Accept and close",
     modalAfterSaveCodes: "2FA configured successfully.",
     validateRecoveryCode: "Validate recovery code",
@@ -246,12 +258,16 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     signInFor2fa: "Sign in to set up two-step verification.",
     enrollEncryptionKeyMissing:
       "2FA is not enabled on the server: TOTP_ENCRYPTION_KEY is missing.",
-    enrollAuthProviderMissing: "2FA unavailable: Supabase is not configured on the server.",
-    enrollTryLater: "Could not start 2FA right now. Try again in a few minutes.",
-    confirmNotEnrolled: "Enable 2FA with Authenticator first to generate the QR.",
+    enrollAuthProviderMissing:
+      "2FA unavailable: Supabase is not configured on the server.",
+    enrollTryLater:
+      "Could not start 2FA right now. Try again in a few minutes.",
+    confirmNotEnrolled:
+      "Enable 2FA with Authenticator first to generate the QR.",
     confirmEncryptionKeyMissing:
       "2FA is not enabled on the server: TOTP_ENCRYPTION_KEY is missing.",
-    confirmDecryptFailed: "Could not decrypt the 2FA secret on the server. Reconfigure 2FA.",
+    confirmDecryptFailed:
+      "Could not decrypt the 2FA secret on the server. Reconfigure 2FA.",
     confirmTotpInvalid:
       "Invalid or expired 2FA code. Check your Authenticator app and try again.",
     confirmTryLater: "Could not verify 2FA right now. Try again.",
@@ -294,7 +310,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     closeDialogAria: "Fechar janela 2FA",
     challengeIntroTotp:
       "Para continuar nesta sessão, verifica a tua conta com Authenticator (TOTP).",
-    challengeIntroEmail: "Para continuar nesta sessão, verifica a tua conta com código por email.",
+    challengeIntroEmail:
+      "Para continuar nesta sessão, verifica a tua conta com código por email.",
     setupMenuHint: "Escolhe um método e configura-o passo a passo.",
     setupTotpOnlyHint:
       "Apenas Authenticator (TOTP). Usa «Escolher outro método» se preferires email.",
@@ -335,7 +352,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "Códigos de recuperação (mostrados apenas uma vez). Guarda-os num local seguro:",
     recoveryAckCheckbox:
       "Guardei os meus códigos de recuperação e compreendo que não serão mostrados novamente.",
-    infoTwoFaEnabledSaveCodes: "2FA ativado. Guarda estes códigos de recuperação antes de fechar.",
+    infoTwoFaEnabledSaveCodes:
+      "2FA ativado. Guarda estes códigos de recuperação antes de fechar.",
     acceptAndClose: "Aceitar e fechar",
     modalAfterSaveCodes: "2FA configurada com sucesso.",
     validateRecoveryCode: "Validar código de recuperação",
@@ -348,12 +366,16 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     signInFor2fa: "Inicia sessão para configurar a verificação em dois passos.",
     enrollEncryptionKeyMissing:
       "2FA não está ativada no servidor: falta TOTP_ENCRYPTION_KEY.",
-    enrollAuthProviderMissing: "2FA indisponível: Supabase não está configurado no servidor.",
-    enrollTryLater: "Não foi possível iniciar a 2FA agora. Tenta novamente em alguns minutos.",
-    confirmNotEnrolled: "Primeiro ativa a 2FA com Authenticator para gerar o QR.",
+    enrollAuthProviderMissing:
+      "2FA indisponível: Supabase não está configurado no servidor.",
+    enrollTryLater:
+      "Não foi possível iniciar a 2FA agora. Tenta novamente em alguns minutos.",
+    confirmNotEnrolled:
+      "Primeiro ativa a 2FA com Authenticator para gerar o QR.",
     confirmEncryptionKeyMissing:
       "2FA não está ativada no servidor: falta TOTP_ENCRYPTION_KEY.",
-    confirmDecryptFailed: "Não foi possível desencriptar o segredo 2FA no servidor. Reconfigura a 2FA.",
+    confirmDecryptFailed:
+      "Não foi possível desencriptar o segredo 2FA no servidor. Reconfigura a 2FA.",
     confirmTotpInvalid:
       "Código 2FA inválido ou expirado. Verifica a app Authenticator e tenta novamente.",
     confirmTryLater: "Não foi possível verificar a 2FA agora. Tenta novamente.",
@@ -362,15 +384,20 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "2FA bloqueada temporariamente após tentativas falhadas. Espera 15 minutos e tenta novamente.",
     sendEmailNotConfiguredServer:
       "2FA por email não está ativada no servidor. Verifica RESEND_API_KEY, TWO_FACTOR_EMAIL_FROM e TWO_FACTOR_EMAIL_CODE_SECRET.",
-    emailDeliveryFailedReason: "Não foi possível enviar o código por email: {{reason}}",
+    emailDeliveryFailedReason:
+      "Não foi possível enviar o código por email: {{reason}}",
     emailDeliveryFailedResendHint:
       "Não foi possível enviar o código por email. Verifica se TWO_FACTOR_EMAIL_FROM está validado no Resend e se a API key está correta.",
-    sendTryLater: "Não foi possível enviar o código por email. Tenta novamente.",
-    infoCodeSent: "Código enviado por email. Verifica a caixa de entrada e spam.",
+    sendTryLater:
+      "Não foi possível enviar o código por email. Tenta novamente.",
+    infoCodeSent:
+      "Código enviado por email. Verifica a caixa de entrada e spam.",
     verifyEmailExpired: "O código por email expirou. Solicita um novo.",
     verifyEmailRequestFirst: "Primeiro solicita o código por email.",
-    verifyEmailInvalid: "Código por email inválido. Verifica a caixa de entrada e tenta novamente.",
-    verifyEmailTryLater: "Não foi possível verificar o código por email. Tenta novamente.",
+    verifyEmailInvalid:
+      "Código por email inválido. Verifica a caixa de entrada e tenta novamente.",
+    verifyEmailTryLater:
+      "Não foi possível verificar o código por email. Tenta novamente.",
     disableFailed: "Não foi possível desativar a 2FA.",
     disabledOk: "2FA desativada.",
     challengeNeedRecovery: "Introduz um código de recuperação válido.",
@@ -396,7 +423,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     closeDialogAria: "Fermer la fenêtre 2FA",
     challengeIntroTotp:
       "Pour continuer cette session, vérifie ton compte avec Authenticator (TOTP).",
-    challengeIntroEmail: "Pour continuer cette session, vérifie ton compte avec un code e-mail.",
+    challengeIntroEmail:
+      "Pour continuer cette session, vérifie ton compte avec un code e-mail.",
     setupMenuHint: "Choisis une méthode et configure-la étape par étape.",
     setupTotpOnlyHint:
       "Authenticator (TOTP) uniquement. Utilise « Choisir une autre méthode » pour l’e-mail.",
@@ -437,7 +465,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "Codes de récupération (affichés une seule fois). Conserve-les en lieu sûr :",
     recoveryAckCheckbox:
       "J’ai sauvegardé mes codes et comprends qu’ils ne seront plus affichés.",
-    infoTwoFaEnabledSaveCodes: "2FA activée. Sauvegarde ces codes avant de fermer.",
+    infoTwoFaEnabledSaveCodes:
+      "2FA activée. Sauvegarde ces codes avant de fermer.",
     acceptAndClose: "Accepter et fermer",
     modalAfterSaveCodes: "2FA configurée avec succès.",
     validateRecoveryCode: "Valider le code de récupération",
@@ -447,15 +476,20 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     verify2faToContinue: "Vérifie la 2FA pour continuer.",
     twoFaRequiredByPolicy:
       "Ton compte exige la 2FA dans cet environnement. Active-la dans Options > Sécurité.",
-    signInFor2fa: "Connecte-toi pour configurer la vérification en deux étapes.",
+    signInFor2fa:
+      "Connecte-toi pour configurer la vérification en deux étapes.",
     enrollEncryptionKeyMissing:
       "2FA non activée sur le serveur : TOTP_ENCRYPTION_KEY manque.",
-    enrollAuthProviderMissing: "2FA indisponible : Supabase n’est pas configuré sur le serveur.",
-    enrollTryLater: "Impossible de démarrer la 2FA maintenant. Réessaie dans quelques minutes.",
-    confirmNotEnrolled: "Active d’abord la 2FA avec Authenticator pour générer le QR.",
+    enrollAuthProviderMissing:
+      "2FA indisponible : Supabase n’est pas configuré sur le serveur.",
+    enrollTryLater:
+      "Impossible de démarrer la 2FA maintenant. Réessaie dans quelques minutes.",
+    confirmNotEnrolled:
+      "Active d’abord la 2FA avec Authenticator pour générer le QR.",
     confirmEncryptionKeyMissing:
       "2FA non activée sur le serveur : TOTP_ENCRYPTION_KEY manque.",
-    confirmDecryptFailed: "Impossible de déchiffrer le secret 2FA sur le serveur. Reconfigure la 2FA.",
+    confirmDecryptFailed:
+      "Impossible de déchiffrer le secret 2FA sur le serveur. Reconfigure la 2FA.",
     confirmTotpInvalid:
       "Code 2FA invalide ou expiré. Vérifie ton app Authenticator et réessaie.",
     confirmTryLater: "Impossible de vérifier la 2FA maintenant. Réessaie.",
@@ -464,7 +498,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "2FA temporairement verrouillée après échecs. Attends 15 minutes et réessaie.",
     sendEmailNotConfiguredServer:
       "2FA e-mail non activée sur le serveur. Vérifie RESEND_API_KEY, TWO_FACTOR_EMAIL_FROM et TWO_FACTOR_EMAIL_CODE_SECRET.",
-    emailDeliveryFailedReason: "Impossible d’envoyer le code e-mail : {{reason}}",
+    emailDeliveryFailedReason:
+      "Impossible d’envoyer le code e-mail : {{reason}}",
     emailDeliveryFailedResendHint:
       "Impossible d’envoyer le code e-mail. Vérifie que TWO_FACTOR_EMAIL_FROM est validé dans Resend et que la clé API est correcte.",
     sendTryLater: "Impossible d’envoyer le code e-mail. Réessaie.",
@@ -498,7 +533,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     closeDialogAria: "2FA-Dialog schließen",
     challengeIntroTotp:
       "Um fortzufahren, verifiziere dein Konto mit Authenticator (TOTP).",
-    challengeIntroEmail: "Um fortzufahren, verifiziere dein Konto per E-Mail-Code.",
+    challengeIntroEmail:
+      "Um fortzufahren, verifiziere dein Konto per E-Mail-Code.",
     setupMenuHint: "Wähle eine Methode und richte sie Schritt für Schritt ein.",
     setupTotpOnlyHint:
       "Nur Authenticator (TOTP). Nutze „Andere Methode wählen“ für E-Mail.",
@@ -539,7 +575,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "Wiederherstellungscodes (nur einmal sichtbar). Sicher aufbewahren:",
     recoveryAckCheckbox:
       "Ich habe die Codes gespeichert und verstehe, dass sie nicht erneut angezeigt werden.",
-    infoTwoFaEnabledSaveCodes: "2FA aktiviert. Speichere diese Codes vor dem Schließen.",
+    infoTwoFaEnabledSaveCodes:
+      "2FA aktiviert. Speichere diese Codes vor dem Schließen.",
     acceptAndClose: "Akzeptieren und schließen",
     modalAfterSaveCodes: "2FA erfolgreich eingerichtet.",
     validateRecoveryCode: "Wiederherstellungscode prüfen",
@@ -549,32 +586,42 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     verify2faToContinue: "Bitte 2FA verifizieren, um fortzufahren.",
     twoFaRequiredByPolicy:
       "In dieser Umgebung ist 2FA Pflicht. Aktiviere sie unter Optionen > Sicherheit.",
-    signInFor2fa: "Melde dich an, um die Zwei-Schritt-Verifizierung einzurichten.",
+    signInFor2fa:
+      "Melde dich an, um die Zwei-Schritt-Verifizierung einzurichten.",
     enrollEncryptionKeyMissing:
       "2FA auf dem Server nicht aktiv: TOTP_ENCRYPTION_KEY fehlt.",
-    enrollAuthProviderMissing: "2FA nicht verfügbar: Supabase ist auf dem Server nicht konfiguriert.",
-    enrollTryLater: "2FA konnte jetzt nicht gestartet werden. Bitte später erneut versuchen.",
-    confirmNotEnrolled: "Aktiviere zuerst 2FA mit Authenticator, um den QR zu erzeugen.",
+    enrollAuthProviderMissing:
+      "2FA nicht verfügbar: Supabase ist auf dem Server nicht konfiguriert.",
+    enrollTryLater:
+      "2FA konnte jetzt nicht gestartet werden. Bitte später erneut versuchen.",
+    confirmNotEnrolled:
+      "Aktiviere zuerst 2FA mit Authenticator, um den QR zu erzeugen.",
     confirmEncryptionKeyMissing:
       "2FA auf dem Server nicht aktiv: TOTP_ENCRYPTION_KEY fehlt.",
-    confirmDecryptFailed: "2FA-Geheimnis konnte auf dem Server nicht entschlüsselt werden. 2FA neu einrichten.",
+    confirmDecryptFailed:
+      "2FA-Geheimnis konnte auf dem Server nicht entschlüsselt werden. 2FA neu einrichten.",
     confirmTotpInvalid:
       "Ungültiger oder abgelaufener 2FA-Code. Authenticator-App prüfen und erneut versuchen.",
-    confirmTryLater: "2FA konnte jetzt nicht verifiziert werden. Bitte erneut versuchen.",
+    confirmTryLater:
+      "2FA konnte jetzt nicht verifiziert werden. Bitte erneut versuchen.",
     sendSessionExpired: "Sitzung abgelaufen. Bitte erneut anmelden.",
     sendLocked:
       "2FA nach Fehlversuchen vorübergehend gesperrt. 15 Minuten warten und erneut versuchen.",
     sendEmailNotConfiguredServer:
       "E-Mail-2FA auf dem Server nicht aktiv. Prüfe RESEND_API_KEY, TWO_FACTOR_EMAIL_FROM und TWO_FACTOR_EMAIL_CODE_SECRET.",
-    emailDeliveryFailedReason: "E-Mail-Code konnte nicht gesendet werden: {{reason}}",
+    emailDeliveryFailedReason:
+      "E-Mail-Code konnte nicht gesendet werden: {{reason}}",
     emailDeliveryFailedResendHint:
       "E-Mail-Code konnte nicht gesendet werden. Prüfe TWO_FACTOR_EMAIL_FROM in Resend und den API-Key.",
-    sendTryLater: "E-Mail-Code konnte nicht gesendet werden. Bitte erneut versuchen.",
+    sendTryLater:
+      "E-Mail-Code konnte nicht gesendet werden. Bitte erneut versuchen.",
     infoCodeSent: "Code per E-Mail gesendet. Posteingang und Spam prüfen.",
     verifyEmailExpired: "E-Mail-Code abgelaufen. Neu anfordern.",
     verifyEmailRequestFirst: "Zuerst den E-Mail-Code anfordern.",
-    verifyEmailInvalid: "Ungültiger E-Mail-Code. Posteingang prüfen und erneut versuchen.",
-    verifyEmailTryLater: "E-Mail-Code konnte nicht verifiziert werden. Bitte erneut versuchen.",
+    verifyEmailInvalid:
+      "Ungültiger E-Mail-Code. Posteingang prüfen und erneut versuchen.",
+    verifyEmailTryLater:
+      "E-Mail-Code konnte nicht verifiziert werden. Bitte erneut versuchen.",
     disableFailed: "2FA konnte nicht deaktiviert werden.",
     disabledOk: "2FA deaktiviert.",
     challengeNeedRecovery: "Gültigen Wiederherstellungscode eingeben.",
@@ -584,7 +631,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "2FA nach Fehlversuchen vorübergehend gesperrt. 15 Minuten warten und erneut versuchen.",
     challengeEmailMissing: "Zuerst den E-Mail-Code senden.",
     challengeEmailExpired: "E-Mail-Code abgelaufen. Neu anfordern.",
-    challengeMethodNotLinked: "Diese Methode ist mit deinem Konto nicht verknüpft.",
+    challengeMethodNotLinked:
+      "Diese Methode ist mit deinem Konto nicht verknüpft.",
     challengeEmailServerMisconfig:
       "E-Mail-2FA auf dem Server nicht konfiguriert. Resend/Umgebungsvariablen prüfen.",
     challengeDecryptFailed:
@@ -600,7 +648,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     closeDialogAria: "Chiudi finestra 2FA",
     challengeIntroTotp:
       "Per continuare in questa sessione, verifica l’account con Authenticator (TOTP).",
-    challengeIntroEmail: "Per continuare in questa sessione, verifica l’account con codice email.",
+    challengeIntroEmail:
+      "Per continuare in questa sessione, verifica l’account con codice email.",
     setupMenuHint: "Scegli un metodo e configuralo passo dopo passo.",
     setupTotpOnlyHint:
       "Solo Authenticator (TOTP). Usa «Scegli un altro metodo» per l’email.",
@@ -641,7 +690,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "Codici di recupero (mostrati una sola volta). Salvali in un posto sicuro:",
     recoveryAckCheckbox:
       "Ho salvato i codici e capisco che non verranno mostrati di nuovo.",
-    infoTwoFaEnabledSaveCodes: "2FA attivata. Salva questi codici prima di chiudere.",
+    infoTwoFaEnabledSaveCodes:
+      "2FA attivata. Salva questi codici prima di chiudere.",
     acceptAndClose: "Accetta e chiudi",
     modalAfterSaveCodes: "2FA configurata correttamente.",
     validateRecoveryCode: "Valida codice di recupero",
@@ -654,12 +704,16 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     signInFor2fa: "Accedi per configurare la verifica in due passaggi.",
     enrollEncryptionKeyMissing:
       "2FA non attiva sul server: manca TOTP_ENCRYPTION_KEY.",
-    enrollAuthProviderMissing: "2FA non disponibile: Supabase non configurato sul server.",
-    enrollTryLater: "Impossibile avviare la 2FA ora. Riprova tra qualche minuto.",
-    confirmNotEnrolled: "Attiva prima la 2FA con Authenticator per generare il QR.",
+    enrollAuthProviderMissing:
+      "2FA non disponibile: Supabase non configurato sul server.",
+    enrollTryLater:
+      "Impossibile avviare la 2FA ora. Riprova tra qualche minuto.",
+    confirmNotEnrolled:
+      "Attiva prima la 2FA con Authenticator per generare il QR.",
     confirmEncryptionKeyMissing:
       "2FA non attiva sul server: manca TOTP_ENCRYPTION_KEY.",
-    confirmDecryptFailed: "Impossibile decifrare il segreto 2FA sul server. Riconfigura la 2FA.",
+    confirmDecryptFailed:
+      "Impossibile decifrare il segreto 2FA sul server. Riconfigura la 2FA.",
     confirmTotpInvalid:
       "Codice 2FA non valido o scaduto. Controlla l’app Authenticator e riprova.",
     confirmTryLater: "Impossibile verificare la 2FA ora. Riprova.",
@@ -668,14 +722,16 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "2FA temporaneamente bloccata dopo tentativi falliti. Attendi 15 minuti e riprova.",
     sendEmailNotConfiguredServer:
       "2FA email non attiva sul server. Controlla RESEND_API_KEY, TWO_FACTOR_EMAIL_FROM e TWO_FACTOR_EMAIL_CODE_SECRET.",
-    emailDeliveryFailedReason: "Impossibile inviare il codice email: {{reason}}",
+    emailDeliveryFailedReason:
+      "Impossibile inviare il codice email: {{reason}}",
     emailDeliveryFailedResendHint:
       "Impossibile inviare il codice email. Verifica TWO_FACTOR_EMAIL_FROM su Resend e la API key.",
     sendTryLater: "Impossibile inviare il codice email. Riprova.",
     infoCodeSent: "Codice inviato via email. Controlla posta e spam.",
     verifyEmailExpired: "Codice email scaduto. Richiedine uno nuovo.",
     verifyEmailRequestFirst: "Richiedi prima il codice email.",
-    verifyEmailInvalid: "Codice email non valido. Controlla la posta e riprova.",
+    verifyEmailInvalid:
+      "Codice email non valido. Controlla la posta e riprova.",
     verifyEmailTryLater: "Impossibile verificare il codice email. Riprova.",
     disableFailed: "Impossibile disattivare la 2FA.",
     disabledOk: "2FA disattivata.",
@@ -700,8 +756,10 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     manageTitle: "2FAセキュリティ設定",
     challengeTitle: "2FA確認が必要です",
     closeDialogAria: "2FAダイアログを閉じる",
-    challengeIntroTotp: "このセッションを続けるには、Authenticator（TOTP）で確認してください。",
-    challengeIntroEmail: "このセッションを続けるには、メールコードで確認してください。",
+    challengeIntroTotp:
+      "このセッションを続けるには、Authenticator（TOTP）で確認してください。",
+    challengeIntroEmail:
+      "このセッションを続けるには、メールコードで確認してください。",
     setupMenuHint: "方法を1つ選び、手順どおりに設定してください。",
     setupTotpOnlyHint:
       "Authenticator（TOTP）のみ。メールの場合は「別の方法を選ぶ」を使ってください。",
@@ -742,7 +800,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "リカバリコード（一度だけ表示）。安全な場所に保存してください:",
     recoveryAckCheckbox:
       "リカバリコードを保存し、再表示されないことを理解しました。",
-    infoTwoFaEnabledSaveCodes: "2FAを有効にしました。閉じる前にこれらのコードを保存してください。",
+    infoTwoFaEnabledSaveCodes:
+      "2FAを有効にしました。閉じる前にこれらのコードを保存してください。",
     acceptAndClose: "了解して閉じる",
     modalAfterSaveCodes: "2FAの設定が完了しました。",
     validateRecoveryCode: "リカバリコードを確認",
@@ -755,16 +814,21 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     signInFor2fa: "二段階認証を設定するにはサインインしてください。",
     enrollEncryptionKeyMissing:
       "サーバーで2FAが有効ではありません: TOTP_ENCRYPTION_KEY がありません。",
-    enrollAuthProviderMissing: "2FAを利用できません: サーバーにSupabase設定がありません。",
-    enrollTryLater: "2FAを開始できませんでした。数分後にもう一度お試しください。",
-    confirmNotEnrolled: "まずAuthenticatorで2FAを有効にしてQRを生成してください。",
+    enrollAuthProviderMissing:
+      "2FAを利用できません: サーバーにSupabase設定がありません。",
+    enrollTryLater:
+      "2FAを開始できませんでした。数分後にもう一度お試しください。",
+    confirmNotEnrolled:
+      "まずAuthenticatorで2FAを有効にしてQRを生成してください。",
     confirmEncryptionKeyMissing:
       "サーバーで2FAが有効ではありません: TOTP_ENCRYPTION_KEY がありません。",
-    confirmDecryptFailed: "サーバーで2FAシークレットを復号できませんでした。2FAを再設定してください。",
+    confirmDecryptFailed:
+      "サーバーで2FAシークレットを復号できませんでした。2FAを再設定してください。",
     confirmTotpInvalid:
       "2FAコードが無効または期限切れです。Authenticatorアプリを確認して再試行してください。",
     confirmTryLater: "2FAを確認できませんでした。再試行してください。",
-    sendSessionExpired: "セッションの有効期限が切れました。再度サインインしてください。",
+    sendSessionExpired:
+      "セッションの有効期限が切れました。再度サインインしてください。",
     sendLocked:
       "失敗が続いたため2FAが一時ロックされています。15分待ってから再試行してください。",
     sendEmailNotConfiguredServer:
@@ -773,20 +837,26 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     emailDeliveryFailedResendHint:
       "メールコードを送信できませんでした。ResendでTWO_FACTOR_EMAIL_FROMが検証済みか、APIキーが正しいか確認してください。",
     sendTryLater: "メールコードを送信できませんでした。再試行してください。",
-    infoCodeSent: "メールでコードを送信しました。受信トレイと迷惑メールを確認してください。",
-    verifyEmailExpired: "メールコードの期限が切れました。新しく請求してください。",
+    infoCodeSent:
+      "メールでコードを送信しました。受信トレイと迷惑メールを確認してください。",
+    verifyEmailExpired:
+      "メールコードの期限が切れました。新しく請求してください。",
     verifyEmailRequestFirst: "先にメールコードを請求してください。",
-    verifyEmailInvalid: "メールコードが無効です。受信トレイを確認して再試行してください。",
-    verifyEmailTryLater: "メールコードを確認できませんでした。再試行してください。",
+    verifyEmailInvalid:
+      "メールコードが無効です。受信トレイを確認して再試行してください。",
+    verifyEmailTryLater:
+      "メールコードを確認できませんでした。再試行してください。",
     disableFailed: "2FAを無効にできませんでした。",
     disabledOk: "2FAを無効にしました。",
     challengeNeedRecovery: "有効なリカバリコードを入力してください。",
     challengeNeedSixDigit: "有効な6桁のコードを入力してください。",
-    challengeSessionExpired: "セッションの有効期限が切れました。再度サインインしてください。",
+    challengeSessionExpired:
+      "セッションの有効期限が切れました。再度サインインしてください。",
     challengeLocked:
       "失敗が続いたため2FAが一時ロックされています。15分待ってから再試行してください。",
     challengeEmailMissing: "先にメールコードを送信してください。",
-    challengeEmailExpired: "メールコードの期限が切れました。新しく請求してください。",
+    challengeEmailExpired:
+      "メールコードの期限が切れました。新しく請求してください。",
     challengeMethodNotLinked: "この方法はアカウントに紐づいていません。",
     challengeEmailServerMisconfig:
       "サーバーでメール2FAが設定されていません。Resend/環境変数を確認してください。",
@@ -804,21 +874,26 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     challengeIntroTotp: "要继续此会话，请使用身份验证器（TOTP）验证账户。",
     challengeIntroEmail: "要继续此会话，请使用邮件验证码验证账户。",
     setupMenuHint: "选择一种方式并按步骤完成设置。",
-    setupTotpOnlyHint: "仅身份验证器（TOTP）。若要用邮件，请选择「选择其他方式」。",
-    setupEmailOnlyHint: "仅邮件验证。若要用身份验证器，请选择「选择其他方式」。",
+    setupTotpOnlyHint:
+      "仅身份验证器（TOTP）。若要用邮件，请选择「选择其他方式」。",
+    setupEmailOnlyHint:
+      "仅邮件验证。若要用身份验证器，请选择「选择其他方式」。",
     badgeEmailCode: "邮件验证码",
     badgeTotp: "身份验证器（TOTP）",
     authenticatorTotp: "身份验证器（TOTP）",
     emailCode: "邮件验证码",
     chooseAnotherMethod: "← 选择其他方式",
     totpPlaceholderShort: "TOTP 验证码（6 位）",
-    totpSetupSteps: "1）点击「生成二维码」 2）用身份验证器应用扫描 3）输入 6 位验证码",
+    totpSetupSteps:
+      "1）点击「生成二维码」 2）用身份验证器应用扫描 3）输入 6 位验证码",
     preparing: "准备中...",
     generateQr: "生成二维码",
     totpPlaceholderLong: "6 位 TOTP 验证码",
     verify: "验证",
-    challengeEmailBeforeSend: "点击「发送邮件验证码」，查看收件箱（及垃圾邮件），然后输入 6 位数字。",
-    sendEmailHintManage: "点击「发送邮件验证码」，查看收件箱并输入 6 位验证码。",
+    challengeEmailBeforeSend:
+      "点击「发送邮件验证码」，查看收件箱（及垃圾邮件），然后输入 6 位数字。",
+    sendEmailHintManage:
+      "点击「发送邮件验证码」，查看收件箱并输入 6 位验证码。",
     sending: "发送中...",
     sendEmailCode: "发送邮件验证码",
     emailCodePlaceholder: "邮件验证码（6 位）",
@@ -875,7 +950,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     challengeEmailMissing: "请先发送邮件验证码。",
     challengeEmailExpired: "邮件验证码已过期，请重新获取。",
     challengeMethodNotLinked: "该方式未绑定到您的账户。",
-    challengeEmailServerMisconfig: "服务器未配置邮件 2FA。请检查 Resend/环境变量。",
+    challengeEmailServerMisconfig:
+      "服务器未配置邮件 2FA。请检查 Resend/环境变量。",
     challengeDecryptFailed:
       "无法在服务器解密 2FA 密钥。请重新配置 2FA 或检查 TOTP_ENCRYPTION_KEY。",
     challengeInvalidWithRecovery: "无法验证该码。可使用恢复码或联系支持恢复。",
@@ -886,8 +962,10 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     manageTitle: "2FA 보안 설정",
     challengeTitle: "2FA 인증 필요",
     closeDialogAria: "2FA 창 닫기",
-    challengeIntroTotp: "이 세션을 계속하려면 Authenticator(TOTP)로 계정을 확인하세요.",
-    challengeIntroEmail: "이 세션을 계속하려면 이메일 코드로 계정을 확인하세요.",
+    challengeIntroTotp:
+      "이 세션을 계속하려면 Authenticator(TOTP)로 계정을 확인하세요.",
+    challengeIntroEmail:
+      "이 세션을 계속하려면 이메일 코드로 계정을 확인하세요.",
     setupMenuHint: "방법 하나를 고르고 단계별로 설정하세요.",
     setupTotpOnlyHint:
       "Authenticator(TOTP)만 사용합니다. 이메일을 원하면 «다른 방법 선택»을 사용하세요.",
@@ -928,7 +1006,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
       "복구 코드(한 번만 표시됩니다). 안전한 곳에 보관하세요:",
     recoveryAckCheckbox:
       "복구 코드를 저장했으며 다시 표시되지 않음을 이해합니다.",
-    infoTwoFaEnabledSaveCodes: "2FA가 켜졌습니다. 닫기 전에 이 코드를 저장하세요.",
+    infoTwoFaEnabledSaveCodes:
+      "2FA가 켜졌습니다. 닫기 전에 이 코드를 저장하세요.",
     acceptAndClose: "확인 후 닫기",
     modalAfterSaveCodes: "2FA 설정이 완료되었습니다.",
     validateRecoveryCode: "복구 코드 확인",
@@ -941,12 +1020,14 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     signInFor2fa: "2단계 인증을 설정하려면 로그인하세요.",
     enrollEncryptionKeyMissing:
       "서버에서 2FA가 켜져 있지 않습니다: TOTP_ENCRYPTION_KEY가 없습니다.",
-    enrollAuthProviderMissing: "2FA를 사용할 수 없습니다: 서버에 Supabase 설정이 없습니다.",
+    enrollAuthProviderMissing:
+      "2FA를 사용할 수 없습니다: 서버에 Supabase 설정이 없습니다.",
     enrollTryLater: "지금은 2FA를 시작할 수 없습니다. 잠시 후 다시 시도하세요.",
     confirmNotEnrolled: "먼저 Authenticator로 2FA를 켜 QR을 생성하세요.",
     confirmEncryptionKeyMissing:
       "서버에서 2FA가 켜져 있지 않습니다: TOTP_ENCRYPTION_KEY가 없습니다.",
-    confirmDecryptFailed: "서버에서 2FA 비밀을 복호화할 수 없습니다. 2FA를 다시 설정하세요.",
+    confirmDecryptFailed:
+      "서버에서 2FA 비밀을 복호화할 수 없습니다. 2FA를 다시 설정하세요.",
     confirmTotpInvalid:
       "2FA 코드가 잘못되었거나 만료되었습니다. Authenticator 앱을 확인 후 다시 시도하세요.",
     confirmTryLater: "지금은 2FA를 확인할 수 없습니다. 다시 시도하세요.",
@@ -962,7 +1043,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     infoCodeSent: "이메일로 코드를 보냈습니다. 받은편지함과 스팸을 확인하세요.",
     verifyEmailExpired: "이메일 코드가 만료되었습니다. 새로 요청하세요.",
     verifyEmailRequestFirst: "먼저 이메일 코드를 요청하세요.",
-    verifyEmailInvalid: "이메일 코드가 올바르지 않습니다. 받은편지함을 확인 후 다시 시도하세요.",
+    verifyEmailInvalid:
+      "이메일 코드가 올바르지 않습니다. 받은편지함을 확인 후 다시 시도하세요.",
     verifyEmailTryLater: "이메일 코드를 확인할 수 없습니다. 다시 시도하세요.",
     disableFailed: "2FA를 끌 수 없습니다.",
     disabledOk: "2FA가 꺼졌습니다.",
@@ -989,7 +1071,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     closeDialogAria: "إغلاق نافذة 2FA",
     challengeIntroTotp:
       "لمتابعة هذه الجلسة، تحقق من حسابك باستخدام تطبيق Authenticator (TOTP).",
-    challengeIntroEmail: "لمتابعة هذه الجلسة، تحقق من حسابك برمز البريد الإلكتروني.",
+    challengeIntroEmail:
+      "لمتابعة هذه الجلسة، تحقق من حسابك برمز البريد الإلكتروني.",
     setupMenuHint: "اختر طريقة واحدة وهيّئها خطوة بخطوة.",
     setupTotpOnlyHint:
       "Authenticator (TOTP) فقط. استخدم «اختر طريقة أخرى» إذا كنت تفضّل البريد الإلكتروني.",
@@ -1028,9 +1111,9 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     contactSupportEmail: "التواصل مع الدعم عبر البريد الإلكتروني",
     recoveryCodesShownOnce:
       "رموز الاسترداد (تُعرض مرة واحدة فقط). احفظها في مكان آمن:",
-    recoveryAckCheckbox:
-      "لقد حفظت رموز الاسترداد وأدرك أنها لن تُعرض مجددًا.",
-    infoTwoFaEnabledSaveCodes: "تم تفعيل 2FA. احفظ رموز الاسترداد هذه قبل الإغلاق.",
+    recoveryAckCheckbox: "لقد حفظت رموز الاسترداد وأدرك أنها لن تُعرض مجددًا.",
+    infoTwoFaEnabledSaveCodes:
+      "تم تفعيل 2FA. احفظ رموز الاسترداد هذه قبل الإغلاق.",
     acceptAndClose: "قبول وإغلاق",
     modalAfterSaveCodes: "تم إعداد 2FA بنجاح.",
     validateRecoveryCode: "التحقق من رمز الاسترداد",
@@ -1061,10 +1144,13 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     emailDeliveryFailedResendHint:
       "تعذّر إرسال رمز البريد الإلكتروني. تحقق من أن TWO_FACTOR_EMAIL_FROM محقَّق في Resend ومن صحة مفتاح API.",
     sendTryLater: "تعذّر إرسال رمز البريد الإلكتروني. أعد المحاولة.",
-    infoCodeSent: "تم إرسال الرمز عبر البريد الإلكتروني. تحقق من البريد الوارد والبريد العشوائي.",
-    verifyEmailExpired: "انتهت صلاحية رمز البريد الإلكتروني. اطلب رمزًا جديدًا.",
+    infoCodeSent:
+      "تم إرسال الرمز عبر البريد الإلكتروني. تحقق من البريد الوارد والبريد العشوائي.",
+    verifyEmailExpired:
+      "انتهت صلاحية رمز البريد الإلكتروني. اطلب رمزًا جديدًا.",
     verifyEmailRequestFirst: "اطلب رمز البريد الإلكتروني أولًا.",
-    verifyEmailInvalid: "رمز البريد الإلكتروني غير صالح. تحقق من بريدك الوارد وأعد المحاولة.",
+    verifyEmailInvalid:
+      "رمز البريد الإلكتروني غير صالح. تحقق من بريدك الوارد وأعد المحاولة.",
     verifyEmailTryLater: "تعذّر التحقق من رمز البريد الإلكتروني. أعد المحاولة.",
     disableFailed: "تعذّر تعطيل 2FA.",
     disabledOk: "تم تعطيل 2FA.",
@@ -1074,7 +1160,8 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     challengeLocked:
       "تم تأمين 2FA مؤقتًا بسبب المحاولات الفاشلة. انتظر 15 دقيقة وأعد المحاولة.",
     challengeEmailMissing: "أرسل رمز البريد الإلكتروني أولًا.",
-    challengeEmailExpired: "انتهت صلاحية رمز البريد الإلكتروني. اطلب رمزًا جديدًا.",
+    challengeEmailExpired:
+      "انتهت صلاحية رمز البريد الإلكتروني. اطلب رمزًا جديدًا.",
     challengeMethodNotLinked: "هذه الطريقة غير مرتبطة بحسابك.",
     challengeEmailServerMisconfig:
       "2FA عبر البريد الإلكتروني غير مهيأ على الخادم. تحقق من Resend/متغيرات البيئة.",
@@ -1099,6 +1186,9 @@ export function getTwoFactorUiMessages(locale: AppLocale): TwoFactorUiMessages {
   return TWO_FACTOR_UI[locale] ?? TWO_FACTOR_UI[DEFAULT_LOCALE]!;
 }
 
-export function formatTwoFactorSupportMailBody(m: TwoFactorUiMessages, email: string): string {
+export function formatTwoFactorSupportMailBody(
+  m: TwoFactorUiMessages,
+  email: string,
+): string {
   return interpolate(m.supportMailBody, { email });
 }

@@ -2068,7 +2068,7 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   height: 46px;
   background: color-mix(in srgb, var(--bar-border) 32%, var(--input-bg));
   border-radius: 23px;
-  overflow: hidden;
+  overflow: visible;
   /* Border thickened to 2px to match the I Ching/Bones switch
      (.composer-switch-track--visual). */
   border: 2px solid color-mix(in srgb, var(--accent) 22%, var(--bar-border));
@@ -2246,7 +2246,7 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible !important;
 }
 
 .oracle-toggle-option svg {
@@ -2304,6 +2304,82 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
 
 .oracle-toggle-wrap:has(.oracle-toggle-input:disabled) {
   cursor: not-allowed;
+}
+
+/* ─── Oracle 4-Way Toggle ────────────────────────────────────────────────────
+ * A 4-option variant of the binary toggle track. Controlled via inline styles.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.oracle-toggle-wrap-4 {
+  cursor: default;
+}
+
+.oracle-toggle-wrap-4 .oracle-toggle-thumb {
+  width: calc(25% - 4px);
+  /* left offset is injected inline */
+}
+
+.oracle-toggle-wrap-4 .oracle-toggle-glow {
+  width: 25%;
+  /* left center is injected inline */
+}
+
+.oracle-toggle-options-row {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 5;
+}
+
+.oracle-toggle-options-row .oracle-toggle-option {
+  position: relative;
+  flex: 1;
+  width: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--fg-muted);
+  opacity: 0.58;
+}
+
+.oracle-toggle-options-row .oracle-toggle-option span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  line-height: 1;
+  padding-bottom: 2px; /* Slight nudge for optical centering if needed, but let's test flat first */
+}
+
+.oracle-toggle-options-row .oracle-toggle-option.is-active {
+  color: var(--fg);
+  opacity: 1;
+  text-shadow: 0 0 7px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.oracle-toggle-master-label {
+  color: #6d28d9; /* Deeper premium purple for light mode contrast */
+}
+[data-theme="dark"] .oracle-toggle-master-label {
+  color: #d8b4fe; /* Brighter purple for dark mode */
+}
+.oracle-toggle-option.is-active .oracle-toggle-master-label {
+  color: #6d28d9;
+}
+[data-theme="dark"] .oracle-toggle-option.is-active .oracle-toggle-master-label {
+  color: #d8b4fe;
 }
 
 /* ── prefers-reduced-motion: no keyframe animations, instant transitions ──── */
@@ -2425,7 +2501,7 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   font-weight: 600;
   opacity: 0.85;
   max-width: 3.5rem;
-  overflow: hidden;
+  overflow: visible !important;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -4557,21 +4633,21 @@ html[data-theme="dark"] .verdict-pill--silent {
 }
 
 .doc-sources-list {
-  list-style: none !important;
-  padding-left: 0 !important;
+  list-style: disc !important;
+  padding-left: 1.5rem !important;
   margin: 1.25rem 0;
 }
 
 .doc-sources-list li {
   font-style: italic;
-  color: #3b82f6;
+  color: #4b6bfb; /* Softer premium blue for light mode */
   text-align: left !important;
   margin-bottom: 0.85rem !important;
   line-height: 1.5;
 }
 
 html[data-theme="dark"] .doc-sources-list li {
-  color: #60a5fa;
+  color: #81a4ff; /* Clearer soft blue for dark mode */
 }
 
 /* 64-hexagram listing on /notes — visual reference, no interpretive content */
@@ -4698,7 +4774,7 @@ html[data-theme="dark"] .doc-sources-list li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .library-filter {
@@ -4900,7 +4976,10 @@ html[data-theme="dark"] .doc-sources-list li {
   padding: 1.25rem 0.85rem;
   background: color-mix(in srgb, var(--secondary-bg) 85%, transparent);
   border-radius: var(--radius);
-  border: 1px solid var(--bar-border);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 92%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--fg) 10%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 @media (min-width: 640px) {
@@ -5003,7 +5082,8 @@ html[data-theme="dark"] .doc-sources-list li {
   padding: 0.75rem;
   background: color-mix(in srgb, var(--card-bg, var(--bg)) 40%, transparent);
   border-radius: 8px;
-  border: 1px solid var(--bar-border);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 88%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 8%, transparent);
 }
 
 .library-info-item {
@@ -5044,11 +5124,10 @@ html[data-theme="dark"] .doc-sources-list li {
   padding: 0;
   margin-bottom: 0;
   background: transparent;
-  border-bottom: 2px solid var(--bar-border);
-  border-radius: 0;
-  border-left: none;
-  border-right: none;
-  border-top: none;
+  border: 1px solid color-mix(in srgb, var(--bar-border) 88%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, var(--bar-border) 95%, transparent);
+  border-radius: 10px 10px 0 0;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 8%, transparent);
   scrollbar-width: none;
 }
 
@@ -5069,8 +5148,8 @@ html[data-theme="dark"] .doc-sources-list li {
   padding: 0.65rem 0.85rem;
   border-radius: 0;
   border: none;
-  border-right: 1px solid color-mix(in srgb, var(--bar-border) 70%, var(--fg) 20%);
-  background: color-mix(in srgb, var(--bar-border) 25%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--bar-border) 78%, var(--fg) 22%);
+  background: color-mix(in srgb, var(--bar-border) 30%, transparent);
   color: var(--fg-muted);
   font-size: 0.78rem;
   font-weight: 600;
@@ -5103,12 +5182,28 @@ html[data-theme="dark"] .doc-sources-list li {
   background: var(--bg-mid, #f2f8fc);
   color: var(--accent);
   font-weight: 700;
-  border: 1px solid var(--bar-border) !important;
+  border: 1px solid color-mix(in srgb, var(--bar-border) 92%, transparent) !important;
   border-top: 3px solid var(--accent) !important; /* Visual prominence */
   border-bottom-color: var(--bg-mid, #f2f8fc) !important;
   border-radius: 6px 6px 0 0;
   z-index: 2;
   transform: translateY(-0.5px); /* Pop out effect */
+}
+
+html[data-theme="dark"] .library-detail-header {
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--bar-border));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--accent) 12%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+html[data-theme="dark"] .library-detail-info-grid {
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--bar-border));
+}
+
+html[data-theme="dark"] .library-tablist {
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--bar-border));
+  border-bottom-color: color-mix(in srgb, var(--accent) 32%, var(--bar-border));
 }
 
 html[data-theme="dark"] .library-tab--active {
@@ -5142,9 +5237,18 @@ html[data-theme="dark"] .library-tab--active {
 .library-text-card {
   padding: 1rem 1.15rem;
   border-radius: 8px;
-  border: 1px solid color-mix(in srgb, var(--bar-border) 60%, transparent);
-  background: color-mix(in srgb, var(--card-bg, var(--bg)) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 78%, transparent);
+  background: color-mix(in srgb, var(--card-bg, var(--bg)) 74%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 8%, transparent);
   margin-bottom: 0.35rem;
+}
+
+html[data-theme="dark"] .library-text-card {
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--bar-border));
+  background: color-mix(in srgb, var(--secondary-bg) 86%, #0a0f16);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--accent) 10%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .library-prose {
@@ -5205,6 +5309,9 @@ html[data-theme="dark"] .library-tab--active {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.92rem;
+  border: 1px solid color-mix(in srgb, var(--bar-border) 78%, transparent);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .oracle-shell.doc-page .doc-article table.library-lines-table thead th {
@@ -5215,7 +5322,8 @@ html[data-theme="dark"] .library-tab--active {
   color: var(--fg-muted);
   text-align: start;
   padding: 0.35rem 0.5rem;
-  border-bottom: 1.5px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
+  border-bottom: 1.5px solid color-mix(in srgb, var(--bar-border) 90%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 72%, transparent);
 }
 
 .library-lines-table__pos {
@@ -5226,14 +5334,14 @@ html[data-theme="dark"] .library-tab--active {
   color: var(--card-title);
   white-space: nowrap;
   text-align: start;
-  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
   vertical-align: middle;
 }
 
 .library-lines-table__symbol {
   width: 4rem;
   padding: 0.65rem 0.15rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
   vertical-align: middle;
   user-select: none;
 }
@@ -5286,7 +5394,7 @@ html[data-theme="dark"] .library-tab--active {
   text-justify: inter-word;
   hyphens: auto;
   -webkit-hyphens: auto;
-  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
   vertical-align: middle;
 }
 
@@ -5297,7 +5405,17 @@ html[data-theme="dark"] .library-tab--active {
 
 /* Alternating row tint for readability */
 .oracle-shell.doc-page .doc-article table.library-lines-table tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--secondary-bg) 55%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 68%, transparent);
+}
+
+html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-table {
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--bar-border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-table thead th {
+  background: color-mix(in srgb, var(--secondary-bg) 88%, #090d14);
+  border-bottom-color: color-mix(in srgb, var(--accent) 32%, var(--bar-border));
 }
 
 /* Last row: no bottom border to avoid double-border with table edge */
@@ -5357,18 +5475,25 @@ html[data-theme="dark"] .library-tab--active {
   gap: 0.7rem;
   padding: 0.55rem 0.7rem;
   border-radius: calc(var(--radius) * 0.5);
-  border: 1px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
-  background: color-mix(in srgb, var(--secondary-bg) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 88%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 90%, transparent);
   color: inherit;
   text-decoration: none;
-  transition: border-color 120ms ease, background 120ms ease;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 8%, transparent);
+  transition: border-color 120ms ease, background 120ms ease, box-shadow 120ms ease;
 }
 
 .library-mutation__link:hover,
 .library-mutation__link:focus-visible {
   border-color: color-mix(in srgb, var(--ghost-link, #2a7a94) 70%, transparent);
-  background: color-mix(in srgb, var(--secondary-bg) 96%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 98%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ghost-link, #2a7a94) 28%, transparent);
   outline: none;
+}
+
+html[data-theme="dark"] .library-mutation__link {
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--bar-border));
+  background: color-mix(in srgb, var(--secondary-bg) 82%, #0b1018);
 }
 
 .library-mutation__glyph {
@@ -7739,5 +7864,73 @@ html.iching-rn-webview .apk-trace-native-metrics {
   .manual-yarrow-phase-pip {
     transition: none;
   }
+}
+
+
+/* ── Master (3) token tooltip ── */
+.master-token-tooltip {
+  position: relative;
+  vertical-align: middle;
+  overflow: visible;
+}
+.master-token-tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  width: 116px;
+  max-width: 116px;
+  background: var(--color-bg-elevated, #1a1a2e);
+  color: var(--color-text-primary, #f0f0f0);
+  text-align: center;
+  border-radius: 8px;
+  padding: 7px 8px;
+  position: absolute;
+  z-index: 9999;
+  top: auto;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.22s ease, visibility 0.22s ease;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.12);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.master-token-tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--color-bg-elevated, #1a1a2e) transparent transparent transparent;
+}
+.master-token-tooltip:hover .master-token-tooltip-text,
+.master-token-tooltip:focus .master-token-tooltip-text,
+.master-token-tooltip:active .master-token-tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.master-token-tooltip-line {
+  display: block;
+}
+
+html[data-theme="light"] .master-token-tooltip-text {
+  background: #ffffff;
+  color: #0f2940;
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--bar-border));
+  box-shadow: none;
+}
+
+html[data-theme="light"] .master-token-tooltip-text::after {
+  border-color: #ffffff transparent transparent transparent;
+}
+
+.oracle-toggle-options-row .oracle-toggle-option {
+  overflow: visible;
 }
 

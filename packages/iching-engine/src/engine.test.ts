@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
   applyMutations,
-  assertSupportedInterpretationMode,
   buildLine,
   castSixLines,
   determineMutationRule,
@@ -15,7 +14,7 @@ import {
   throwYarrowStalks,
   yarrowSumToLine,
 } from "./engine.js";
-import { DEFAULT_INTERPRETATION_MODE, type InterpretationMode, type Line } from "./types.js";
+import { type Line } from "./types.js";
 
 function linesFromValues(values: number[]): Line[] {
   return values.map((v, i) => buildLine(v as 6 | 7 | 8 | 9, (i + 1) as Line["position"]));
@@ -219,21 +218,6 @@ describe("yarrow distribution (Monte Carlo)", () => {
   });
 });
 
-describe("assertSupportedInterpretationMode", () => {
-  it("accepts wilhelm and the default", () => {
-    expect(DEFAULT_INTERPRETATION_MODE).toBe("wilhelm");
-    expect(() => assertSupportedInterpretationMode("wilhelm")).not.toThrow();
-    expect(() => assertSupportedInterpretationMode()).not.toThrow();
-  });
-
-  it("rejects every PR2 mode with a clear error", () => {
-    const reserved: InterpretationMode[] = ["legge", "zhouyi", "synthetic"];
-    for (const mode of reserved) {
-      expect(() => assertSupportedInterpretationMode(mode)).toThrow(/not yet supported/);
-      expect(() => assertSupportedInterpretationMode(mode)).toThrow(/PR2/);
-    }
-  });
-});
 
 describe("performCast", () => {
   it("returns stable id with fixed rng sequence", () => {

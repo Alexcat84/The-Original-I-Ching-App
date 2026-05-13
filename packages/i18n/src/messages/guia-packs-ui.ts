@@ -45,7 +45,8 @@ const GUIA_PACKS_UI: Record<AppLocale, GuiaPacksUiMessages> = {
       "Your tokens accumulate: if you buy a new pack before running out, your remaining tokens carry over and add to the new pack.",
     libraryUnlockNote:
       "Library Access: Purchasing any paid pack permanently unlocks access to the Library, which contains the complete collection of 64 hexagrams across three literary works: the classic Wilhelm/Baynes translation, the James Legge version, and the original Zhou Yi.",
-    perPlanDetailHeading: "Per-plan details (per-thread limits, consumable packs, and image resolution):",
+    perPlanDetailHeading:
+      "Per-plan details (per-thread limits, consumable packs, and image resolution):",
   },
   pt: {
     sectionTitle: "Pacotes e pagamentos",
@@ -86,7 +87,8 @@ const GUIA_PACKS_UI: Record<AppLocale, GuiaPacksUiMessages> = {
       "Deine Token summieren sich: Wenn du ein neues Paket kaufst, bevor das aktuelle aufgebraucht ist, werden die restlichen Token zum neuen Paket addiert.",
     libraryUnlockNote:
       "Bibliothekszugang: Der Kauf eines kostenpflichtigen Pakets schaltet dauerhaft den Zugang zur Bibliothek frei, die die vollständige Sammlung der 64 Hexagramme in drei literarischen Werken enthält: die klassische Wilhelm/Baynes-Übersetzung, die James-Legge-Version und das originale Zhou Yi.",
-    perPlanDetailHeading: "Details pro Plan (Thread-Limits, verbrauchbare Pakete, Bildauflösung):",
+    perPlanDetailHeading:
+      "Details pro Plan (Thread-Limits, verbrauchbare Pakete, Bildauflösung):",
   },
   it: {
     sectionTitle: "Pacchetti e pagamenti",
@@ -99,7 +101,8 @@ const GUIA_PACKS_UI: Record<AppLocale, GuiaPacksUiMessages> = {
       "I tuoi token si accumulano: se acquisti un nuovo pacchetto prima di esaurire quello attuale, i token rimanenti si sommano al nuovo pacchetto.",
     libraryUnlockNote:
       "Accesso alla Biblioteca: L'acquisto di qualsiasi pacchetto a pagamento sblocca in modo permanente l'accesso alla Biblioteca, che contiene la collezione completa di 64 esagrammi in tre opere letterarie: la traduzione classica di Wilhelm/Baynes, la versione di James Legge e l'originale Zhou Yi.",
-    perPlanDetailHeading: "Dettagli per piano (limiti per thread, pacchetti consumabili, risoluzione immagini):",
+    perPlanDetailHeading:
+      "Dettagli per piano (limiti per thread, pacchetti consumabili, risoluzione immagini):",
   },
   ja: {
     sectionTitle: "パックとお支払い",
@@ -112,7 +115,8 @@ const GUIA_PACKS_UI: Record<AppLocale, GuiaPacksUiMessages> = {
       "トークンは累積します。現在のパックを使い切る前に新しいパックを購入すると、残りのトークンは新しいパックに加算されます。",
     libraryUnlockNote:
       "ライブラリへのアクセス: 有料パックを購入すると、ライブラリへのアクセスが永久にアンロックされます。ここには、古典的な Wilhelm/Baynes 訳、James Legge 版、そして原文の Zhou Yi という 3 つの文学作品にわたる 64 卦の完全なコレクションが収録されています。",
-    perPlanDetailHeading: "プラン別の詳細（スレッド上限、消費型パック、画像解像度）:",
+    perPlanDetailHeading:
+      "プラン別の詳細（スレッド上限、消費型パック、画像解像度）:",
   },
   zh: {
     sectionTitle: "套餐与付款",
@@ -151,7 +155,8 @@ const GUIA_PACKS_UI: Record<AppLocale, GuiaPacksUiMessages> = {
       "رموزك تتراكم: إذا اشتريت حزمة جديدة قبل نفاد رموزك، تنتقل الرموز المتبقية وتُضاف إلى الحزمة الجديدة.",
     libraryUnlockNote:
       "الوصول إلى المكتبة: يؤدي شراء أي حزمة مدفوعة إلى فتح الوصول الدائم إلى المكتبة، التي تحتوي على المجموعة الكاملة المكونة من 64 رمزاً عبر ثلاثة أعمال أدبية: ترجمة Wilhelm/Baynes الكلاسيكية، ونسخة James Legge، ونص Zhou Yi الأصلي.",
-    perPlanDetailHeading: "تفاصيل حسب الخطة (حدود الخيط، الحزم القابلة للاستهلاك، ودقة الصور):",
+    perPlanDetailHeading:
+      "تفاصيل حسب الخطة (حدود الخيط، الحزم القابلة للاستهلاك، ودقة الصور):",
   },
   hi: {
     sectionTitle: "पैक और भुगतान",
@@ -164,7 +169,8 @@ const GUIA_PACKS_UI: Record<AppLocale, GuiaPacksUiMessages> = {
       "आपके टोकन जमा होते हैं: यदि आप टोकन समाप्त होने से पहले नया पैक खरीदते हैं, तो शेष टोकन नए पैक में जुड़ जाते हैं।",
     libraryUnlockNote:
       "पुस्तकालय तक पहुंच: कोई भी भुगतान किया गया पैक खरीदने से पुस्तकालय तक पहुंच स्थायी रूप से अनलॉक हो जाती है, जिसमें तीन साहित्यिक कृतियों में 64 हेक्साग्राम का पूरा संग्रह है: क्लासिक विल्हेम/बेयन्स अनुवाद, जेम्स लेगे संस्करण और मूल झोउ यी।",
-    perPlanDetailHeading: "प्रति योजना विवरण (प्रति थ्रेड सीमाएं, उपभोज्य पैक और छवि रिज़ॉल्यूशन):",
+    perPlanDetailHeading:
+      "प्रति योजना विवरण (प्रति थ्रेड सीमाएं, उपभोज्य पैक और छवि रिज़ॉल्यूशन):",
   },
 };
 
@@ -172,7 +178,10 @@ export function getGuiaPacksUiMessages(locale: AppLocale): GuiaPacksUiMessages {
   return GUIA_PACKS_UI[locale] ?? GUIA_PACKS_UI[DEFAULT_LOCALE];
 }
 
-export function formatGuiaFreeLine(msg: GuiaPacksUiMessages, freeTokens: number): string {
+export function formatGuiaFreeLine(
+  msg: GuiaPacksUiMessages,
+  freeTokens: number,
+): string {
   return interpolate(msg.freeLine, { count: freeTokens });
 }
 
