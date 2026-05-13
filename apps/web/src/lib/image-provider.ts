@@ -333,18 +333,19 @@ function resolveTogetherImageSize(lastPack?: string): { width: number; height: n
     case "free":
       return { width: 1024, height: 768 };
     case "seeker":
-      return { width: 1280, height: 960 };
+      return { width: 1024, height: 832 };
     case "practitioner":
-      return { width: 1792, height: 1344 };
+      return { width: 1024, height: 960 };
     case "master":
-      return { width: 2048, height: 2048 };
+      return { width: 1024, height: 1024 };
   }
 }
 
 const TOGETHER_DIMENSION_MULTIPLE = 32;
 const TOGETHER_MIN_DIMENSION = 256;
 const TOGETHER_MAX_DIMENSION = 4096;
-const TOGETHER_MAX_PIXELS = 4_194_304; // 4 MP
+// Cost-control cap: keep tiers at or below ~1 MP.
+const TOGETHER_MAX_PIXELS = 1_048_576; // 1 MP
 
 function normalizeTogetherDimension(value: number): number {
   const clamped = Math.max(
