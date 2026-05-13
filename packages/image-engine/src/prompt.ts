@@ -160,6 +160,32 @@ const WEATHER_VARIANTS = [
   "Weather: gentle sea fog pushing inland, preserving low-contrast readability.",
 ] as const;
 
+/** Per-category environment rotation — prevents same mountain-lake on every love_relationship cast. */
+const CATEGORY_ENVIRONMENT_VARIANTS: Partial<Record<ConsultationCategory, readonly string[]>> = {
+  love_relationship: [
+    "still lake or lagoon surrounded by weeping willows, soft mountains reflected in calm water",
+    "misty river valley at dawn, willows trailing into slow current, rolling hills beyond",
+    "hidden coastal cove at dusk, sea-smoothed stones, flowering cliff tops, silver surf",
+    "forest glade with a clear brook, dappled canopy light, wild orchids along the bank",
+    "mountain hot-spring terrace, rising steam, snow-capped peaks behind, delicate pink blossoms",
+    "autumn riverside meadow, golden reflections, birch and maple canopy, wind-rippled water",
+  ],
+  spiritual_inner: [
+    "summit clarity — vast sky, forested slopes receding into haze, open altitude air",
+    "moonlit high plateau, enormous stars overhead, dark ridges, single gnarled pine",
+    "cloud-ocean above a mountain sea, summits as islands in white silence",
+    "deep canyon at dusk, narrow sky strip of stars, waterfall mist far below",
+    "ancient glacier basin, pale mineral water, ice-blue silence, reflected aurora tones",
+  ],
+  general: [
+    "layered ridges, river braid or lake/lagoon, forest pockets, varied sky and weather",
+    "braided glacial river across a wide valley, gravel bars, conifer slopes rising each side",
+    "high volcanic plateau, obsidian fields, turquoise crater lake, dramatic clouds",
+    "bamboo sea on rolling hills, fog corridors between groves, stone path winding through",
+    "wide estuary delta at golden hour, reed beds, sandbars, warm amber light on water",
+  ],
+} as const;
+
 export function buildImagePrompt(
   primary: Hexagram,
   transformed: Hexagram | null,
@@ -185,8 +211,13 @@ export function buildImagePrompt(
     SCENE_FAMILY_VARIANTS.length;
   const weatherIdx = ((h >>> 13) ^ (h >>> 23)) % WEATHER_VARIANTS.length;
 
+  const envVariants = CATEGORY_ENVIRONMENT_VARIANTS[category];
+  const environment = envVariants
+    ? (envVariants[((h >>> 6) ^ (h >>> 18)) % envVariants.length] ?? theme.environment)
+    : theme.environment;
+
   const settingBlock = [
-    `PRIMARY SETTING (dominate the frame — no flat blank gradient): ${theme.environment}.`,
+    `PRIMARY SETTING (dominate the frame — no flat blank gradient): ${environment}.`,
     `Time and mood: ${theme.timeOfDay}; ${theme.mood}.`,
     `Palette: ${theme.colorPalette}.`,
     `Motifs (mid-ground or background): ${theme.elements}.`,

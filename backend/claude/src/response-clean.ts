@@ -27,7 +27,7 @@ export function stripInterpretationFluff(text: string): string {
     t = t.replace(/^\s*\n+/m, "");
   }
   t = t.trim();
-  t = t.replace(/\n*\*[^*\n][\s\S]*?\*\s*$/, "").trim();
+  t = t.replace(/\n+\*[^*\n][^\n]*\*\s*$/, "").trim();
   const boiler: RegExp[] = [
     /(?:^|\n)(?:Es importante tener en cuenta|Debes tener presente|Cabe recordar|Ten en cuenta que|Es crucial entender|Recuerda que|No olvides que)[^\n]*\n?/gi,
     /(?:^|\n)(?:It is important to note|Please note that|Keep in mind that|Remember that)[^\n]*\n?/gi,
