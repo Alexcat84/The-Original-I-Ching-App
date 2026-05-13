@@ -391,7 +391,7 @@ async function generateWithGptImage(prompt: string, width: number, height: numbe
   return null;
 }
 
-function togetherImageGenerationOptionalFields(): {
+function togetherImageGenerationOptionalFields(seedBase?: string): {
   guidance_scale?: number;
   seed?: number;
   output_format?: "jpeg" | "png";
@@ -410,13 +410,21 @@ function togetherImageGenerationOptionalFields(): {
   if (seedRaw) {
     const s = Number(seedRaw);
     if (Number.isFinite(s)) fields.seed = Math.trunc(s);
+  } else if (seedBase) {
+    // Deterministic per-consultation seed to increase scene diversity and reproducibility.
+    fields.seed = fnv1a32(seedBase) % 2_147_483_647;
   }
   const fmt = process.env.TOGETHER_OUTPUT_FORMAT?.trim().toLowerCase();
   if (fmt === "jpeg" || fmt === "png") fields.output_format = fmt;
   return fields;
 }
 
-async function generateWithTogether(prompt: string, width: number, height: number): Promise<{ url: string | null; debug: TogetherDebug }> {
+async function generateWithTogether(
+  prompt: string,
+  width: number,
+  height: number,
+  seedBase?: string,
+): Promise<{ url: string | null; debug: TogetherDebug }> {
   const key = process.env.TOGETHER_API_KEY;
   if (!key) {
     return {
@@ -438,7 +446,7 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
     buildTogetherNegativePrompt(),
     TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
   );
-  const optionalApi = togetherImageGenerationOptionalFields();
+  const optionalApi = togetherImageGenerationOptionalFields(seedBase);
   debugLog("together: prompt lens", {
     incomingPromptChars: prompt.length,
     outgoingPromptChars: promptForApi.length,
@@ -447,6 +455,7 @@ async function generateWithTogether(prompt: string, width: number, height: numbe
     budgetPrompt: TOGETHER_FLUX_PROMPT_MAX_CHARS,
     budgetNegative: TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
     apiOptional: optionalApi,
+    seedBase: seedBase ?? null,
   });
   const res = await fetch("https://api.together.xyz/v1/images/generations", {
     method: "POST",
@@ -692,7 +701,13 @@ export async function buildImageAsset(params: {
 
   if (provider === "together") {
     const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
-    const { url, debug: togetherDebug } = await generateWithTogether(promptForRemote, tw, th);
+    const { url, debug: togetherDebug } = await generateWithTogether(
+      promptForRemote,
+      tw,
+      th,
+      params.consultationId ??
+        `${params.primaryHexagram}:${params.transformedHexagram?.number ?? "none"}:${params.category}`,
+    );
     debug.together = togetherDebug;
     if (url) {
       const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
@@ -817,7 +832,13 @@ export async function buildOracleBonesImageAsset(params: {
 
   if (provider === "together") {
     const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
-    const { url } = await generateWithTogether(promptForRemote, tw, th);
+    const { url } = await generateWithTogether(
+      promptForRemote,
+      tw,
+      th,
+      params.consultationId ??
+        `${params.patternId}:${params.verdict}:${params.medium}:${params.tier ?? "free"}`,
+    );
     if (url) {
       const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
         verdict: params.verdict,
