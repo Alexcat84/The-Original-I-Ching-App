@@ -8,7 +8,9 @@ import {
   formatChatLoadFailedStatus,
   formatConsultFailedMessage,
   formatHistoryLoadFailedStatus,
+  formatServerErrorStatus,
   formatThreadDepthStatusLine,
+  formatTranslatorRequiresPack,
   formatTwoFactorSupportMailBody,
   getDocNavUiMessages,
   getFreeTierMarketing,
@@ -1410,15 +1412,15 @@ export default function HomePage() {
       return;
     }
     if (id === "legge" && tierAccessIndex < 1) {
-      setError("Este traductor requiere el pack Seeker. Visita la sección de Packs para desbloquearlo.");
+      setError(formatTranslatorRequiresPack(sessionUi, "Seeker"));
       return;
     }
     if (id === "zhouyi" && tierAccessIndex < 2) {
-      setError("Este traductor requiere el pack Practitioner. Visita la sección de Packs para desbloquearlo.");
+      setError(formatTranslatorRequiresPack(sessionUi, "Practitioner"));
       return;
     }
     if (id === "master_combined" && tierAccessIndex < 3) {
-      setError("Este traductor requiere el pack Master. Visita la sección de Packs para desbloquearlo.");
+      setError(formatTranslatorRequiresPack(sessionUi, "Master"));
       return;
     }
     setError(null);
@@ -3459,8 +3461,8 @@ export default function HomePage() {
     if (!questionForRequest) {
       setError(
         oracleMode === "oracle_bones"
-          ? "Escribe el cargo positivo (una afirmación clara) para consultar los huesos."
-          : "Escribe una consulta antes de enviar.",
+          ? sessionUi.emptyQueryBones
+          : sessionUi.emptyQueryIching,
       );
       return;
     }
@@ -3538,7 +3540,7 @@ export default function HomePage() {
       setLoading(false);
       setManualCastPreview(null);
       setPendingUserQuestion(null);
-      setError("No hay una conversación activa. Abre o crea una sesión.");
+      setError(sessionUi.noActiveSession);
       return;
     }
     const consultSession = activeSession;
@@ -3682,7 +3684,7 @@ export default function HomePage() {
         });
 
       if (!accessToken) {
-        setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
+        setError(sessionUi.sessionExpiredInvalid);
         return;
       }
       let res = await sendConsultRequest(accessToken);
@@ -3745,7 +3747,7 @@ export default function HomePage() {
       };
       if (contentType.includes("text/event-stream")) {
         if (!res.body) {
-          setError("Respuesta del servidor inválida.");
+          setError(sessionUi.invalidServerResponse);
           return;
         }
         /**
@@ -3832,19 +3834,17 @@ export default function HomePage() {
                 error?: string;
               };
               if (err.code === "AUTH_REQUIRED" || err.action === "login") {
-                setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
+                setError(sessionUi.sessionExpiredInvalid);
                 void signOut();
               } else {
-                setError(err.message || "No se pudo completar la consulta.");
+                setError(err.message || sessionUi.consultFailedGeneric);
               }
             }
           }
         }
         if (streamErrored || !finalPayload) {
           if (!streamErrored) {
-            setError(
-              "La respuesta se interrumpió antes de completarse. Inténtalo de nuevo.",
-            );
+            setError(sessionUi.streamInterrupted);
           }
           return;
         }
@@ -3885,15 +3885,15 @@ export default function HomePage() {
         } catch {
           setError(
             res.ok
-              ? "Respuesta del servidor inválida."
-              : `Error del servidor (${res.status}). Inténtalo de nuevo en unos minutos.`,
+              ? sessionUi.invalidServerResponse
+              : formatServerErrorStatus(sessionUi, res.status),
           );
           return;
         }
       }
       if (!res.ok) {
         if (res.status === 401) {
-          setError("Sesión caducada o no válida. Vuelve a iniciar sesión.");
+          setError(sessionUi.sessionExpiredInvalid);
           void signOut();
           return;
         }
@@ -5310,8 +5310,38 @@ export default function HomePage() {
                       <>
                         <hr className="composer-panel-divider" aria-hidden />
                         <div className="cast-selector-block">
-                          <span className="cast-selector-label">
+                          <span className="cast-selector-label" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                             {chrome.translatorLabel}
+                            <span
+                              className="master-token-tooltip"
+                              tabIndex={0}
+                              role="img"
+                              aria-label={chrome.translatorMasterCostAria}
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: 14,
+                                height: 14,
+                                borderRadius: "50%",
+                                background: "rgba(255,255,255,0.18)",
+                                fontSize: 9,
+                                fontWeight: "bold",
+                                cursor: "help",
+                                flexShrink: 0,
+                                lineHeight: 1,
+                              }}
+                            >
+                              ?
+                              <span className="master-token-tooltip-text">
+                                <span className="master-token-tooltip-line">
+                                  {chrome.translatorMasterCostLabel}
+                                </span>
+                                <span className="master-token-tooltip-line">
+                                  {chrome.translatorMasterCostValue}
+                                </span>
+                              </span>
+                            </span>
                           </span>
                           <div
                             className="oracle-toggle-wrap oracle-toggle-wrap-4"
@@ -5365,43 +5395,7 @@ export default function HomePage() {
                                   onClick={() => handleTranslatorChange("master_combined")}
                                   disabled={loading}
                                 >
-                                  <span
-                                    className="oracle-toggle-master-label"
-                                    style={{ display: "inline-flex", alignItems: "center" }}
-                                  >
-                                    {chrome.translatorMasterCombined}
-                                    <span
-                                      className="master-token-tooltip"
-                                      tabIndex={0}
-                                      role="img"
-                                      aria-label={chrome.translatorMasterCostAria}
-                                      style={{
-                                        display: "inline-flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        width: 14,
-                                        height: 14,
-                                        borderRadius: "50%",
-                                        background: "rgba(255,255,255,0.18)",
-                                        fontSize: 9,
-                                        fontWeight: "bold",
-                                        marginLeft: 5,
-                                        cursor: "help",
-                                        flexShrink: 0,
-                                        lineHeight: 1,
-                                      }}
-                                    >
-                                      ?
-                                      <span className="master-token-tooltip-text">
-                                        <span className="master-token-tooltip-line">
-                                          {chrome.translatorMasterCostLabel}
-                                        </span>
-                                        <span className="master-token-tooltip-line">
-                                          {chrome.translatorMasterCostValue}
-                                        </span>
-                                      </span>
-                                    </span>
-                                  </span>
+                                  <span>{chrome.translatorMasterCombined}</span>
                                   {!isAdmin && tierAccessIndex < 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, marginLeft: 4, opacity: 0.6, display: "inline-block", verticalAlign: "middle", marginTop: -2 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>}
                                 </button>
                               </div>

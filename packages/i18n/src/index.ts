@@ -31,6 +31,8 @@ export {
   formatChatLoadFailedStatus,
   formatConsultFailedMessage,
   formatHistoryLoadFailedStatus,
+  formatServerErrorStatus,
+  formatTranslatorRequiresPack,
   getHomeSessionUiMessages,
   type HomeSessionUiMessages,
 } from "./messages/home-session-ui.js";

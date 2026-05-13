@@ -23,6 +23,24 @@ export type HomeSessionUiMessages = {
   consultFailedPersistHint: string;
   requestFailedStatus: string;
   charLimitHint: string;
+  /** Generic session-expired-or-invalid message used during consultation flow. */
+  sessionExpiredInvalid: string;
+  /** Server returned an unexpected/unparseable response body. */
+  invalidServerResponse: string;
+  /** No active session is open when the user tries to consult. */
+  noActiveSession: string;
+  /** Translator requires a higher-tier pack — {{pack}} is the pack name. */
+  translatorRequiresPack: string;
+  /** CTA suffix appended after translatorRequiresPack. */
+  translatorRequiresPackCta: string;
+  /** User tried to submit without typing a question (I Ching mode). */
+  emptyQueryIching: string;
+  /** User tried to submit without typing the positive charge (Oracle Bones mode). */
+  emptyQueryBones: string;
+  /** SSE stream ended before the final payload arrived. */
+  streamInterrupted: string;
+  /** Server returned a non-OK status with no parseable JSON body — {{status}}. */
+  serverErrorStatus: string;
 };
 
 const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
@@ -52,6 +70,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
       " Si persiste, revisa la configuración del servidor.",
     requestFailedStatus: "Solicitud fallida ({{status}})",
     charLimitHint: "Hasta 1500 caracteres.",
+    sessionExpiredInvalid: "Sesión caducada o no válida. Vuelve a iniciar sesión.",
+    invalidServerResponse: "Respuesta del servidor inválida.",
+    noActiveSession: "No hay una conversación activa. Abre o crea una sesión.",
+    translatorRequiresPack: "Este traductor requiere el pack {{pack}}.",
+    translatorRequiresPackCta: " Visita la sección de Packs para desbloquearlo.",
+    emptyQueryIching: "Escribe una consulta antes de enviar.",
+    emptyQueryBones: "Escribe el cargo positivo (una afirmación clara) para consultar los huesos.",
+    streamInterrupted: "La respuesta se interrumpió antes de completarse. Inténtalo de nuevo.",
+    serverErrorStatus: "Error del servidor ({{status}}). Inténtalo de nuevo en unos minutos.",
   },
   en: {
     defaultSessionTitle: "Consultation",
@@ -78,6 +105,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
       " If it keeps happening, check the server configuration.",
     requestFailedStatus: "Request failed ({{status}})",
     charLimitHint: "Up to 1500 characters.",
+    sessionExpiredInvalid: "Session expired or invalid. Please sign in again.",
+    invalidServerResponse: "Invalid server response.",
+    noActiveSession: "No active conversation. Open or create a session.",
+    translatorRequiresPack: "This translator requires the {{pack}} pack.",
+    translatorRequiresPackCta: " Visit the Packs section to unlock it.",
+    emptyQueryIching: "Write a question before submitting.",
+    emptyQueryBones: "Write the positive charge (a clear affirmation) to consult the bones.",
+    streamInterrupted: "The response was interrupted before completion. Please try again.",
+    serverErrorStatus: "Server error ({{status}}). Please try again in a few minutes.",
   },
   pt: {
     defaultSessionTitle: "Consulta",
@@ -106,6 +142,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
       " Se continuar, verifica a configuração do servidor.",
     requestFailedStatus: "Pedido falhou ({{status}})",
     charLimitHint: "Até 1500 caracteres.",
+    sessionExpiredInvalid: "Sessão expirada ou inválida. Inicia sessão novamente.",
+    invalidServerResponse: "Resposta do servidor inválida.",
+    noActiveSession: "Não há conversa ativa. Abre ou cria uma sessão.",
+    translatorRequiresPack: "Este tradutor requer o pack {{pack}}.",
+    translatorRequiresPackCta: " Visita a secção de Packs para o desbloquear.",
+    emptyQueryIching: "Escreve uma consulta antes de enviar.",
+    emptyQueryBones: "Escreve a afirmação positiva para consultar os ossos.",
+    streamInterrupted: "A resposta foi interrompida antes de terminar. Tenta novamente.",
+    serverErrorStatus: "Erro do servidor ({{status}}). Tenta novamente em alguns minutos.",
   },
   fr: {
     defaultSessionTitle: "Consultation",
@@ -133,6 +178,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
       " Si cela continue, vérifiez la configuration du serveur.",
     requestFailedStatus: "Échec de la requête ({{status}})",
     charLimitHint: "Jusqu'à 1500 caractères.",
+    sessionExpiredInvalid: "Session expirée ou invalide. Reconnectez-vous.",
+    invalidServerResponse: "Réponse du serveur invalide.",
+    noActiveSession: "Pas de conversation active. Ouvrez ou créez une session.",
+    translatorRequiresPack: "Ce traducteur nécessite le pack {{pack}}.",
+    translatorRequiresPackCta: " Visitez la section Packs pour le débloquer.",
+    emptyQueryIching: "Écrivez une question avant d'envoyer.",
+    emptyQueryBones: "Écrivez la proposition positive pour consulter les os.",
+    streamInterrupted: "La réponse a été interrompue avant d'être complète. Réessayez.",
+    serverErrorStatus: "Erreur serveur ({{status}}). Réessayez dans quelques minutes.",
   },
   de: {
     defaultSessionTitle: "Konsultation",
@@ -160,6 +214,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
       " Wenn es weiterhin passiert, prüfen Sie die Serverkonfiguration.",
     requestFailedStatus: "Anfrage fehlgeschlagen ({{status}})",
     charLimitHint: "Bis zu 1500 Zeichen.",
+    sessionExpiredInvalid: "Sitzung abgelaufen oder ungültig. Bitte erneut anmelden.",
+    invalidServerResponse: "Ungültige Serverantwort.",
+    noActiveSession: "Keine aktive Konversation. Öffne oder erstelle eine Sitzung.",
+    translatorRequiresPack: "Dieser Übersetzer erfordert das {{pack}}-Paket.",
+    translatorRequiresPackCta: " Besuche den Packs-Bereich zum Freischalten.",
+    emptyQueryIching: "Schreibe eine Frage, bevor du sendest.",
+    emptyQueryBones: "Schreibe die positive Aussage, um die Knochen zu befragen.",
+    streamInterrupted: "Die Antwort wurde vor dem Abschluss unterbrochen. Bitte erneut versuchen.",
+    serverErrorStatus: "Serverfehler ({{status}}). Bitte in einigen Minuten erneut versuchen.",
   },
   it: {
     defaultSessionTitle: "Consultazione",
@@ -187,6 +250,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
       " Se continua, controlla la configurazione del server.",
     requestFailedStatus: "Richiesta non riuscita ({{status}})",
     charLimitHint: "Fino a 1500 caratteri.",
+    sessionExpiredInvalid: "Sessione scaduta o non valida. Accedi di nuovo.",
+    invalidServerResponse: "Risposta del server non valida.",
+    noActiveSession: "Nessuna conversazione attiva. Apri o crea una sessione.",
+    translatorRequiresPack: "Questo traduttore richiede il pack {{pack}}.",
+    translatorRequiresPackCta: " Visita la sezione Packs per sbloccarlo.",
+    emptyQueryIching: "Scrivi una domanda prima di inviare.",
+    emptyQueryBones: "Scrivi l'affermazione positiva per consultare le ossa.",
+    streamInterrupted: "La risposta è stata interrotta prima del completamento. Riprova.",
+    serverErrorStatus: "Errore del server ({{status}}). Riprova tra qualche minuto.",
   },
   ja: {
     defaultSessionTitle: "相談",
@@ -213,6 +285,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedPersistHint: " 繰り返す場合はサーバー設定を確認してください。",
     requestFailedStatus: "リクエストに失敗しました ({{status}})",
     charLimitHint: "最大1500文字まで。",
+    sessionExpiredInvalid: "セッションが期限切れまたは無効です。再度サインインしてください。",
+    invalidServerResponse: "サーバーから無効な応答が返されました。",
+    noActiveSession: "アクティブな会話がありません。セッションを開くか作成してください。",
+    translatorRequiresPack: "この翻訳者は{{pack}}パックが必要です。",
+    translatorRequiresPackCta: " パックセクションでアンロックしてください。",
+    emptyQueryIching: "送信前に質問を入力してください。",
+    emptyQueryBones: "骨を占うために肯定的な命題を入力してください。",
+    streamInterrupted: "完了前に応答が中断されました。もう一度お試しください。",
+    serverErrorStatus: "サーバーエラー ({{status}})。しばらくしてからもう一度お試しください。",
   },
   zh: {
     defaultSessionTitle: "咨询",
@@ -234,6 +315,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedPersistHint: " 若持续出现，请检查服务器配置。",
     requestFailedStatus: "请求失败 ({{status}})",
     charLimitHint: "最多1500个字符。",
+    sessionExpiredInvalid: "会话已过期或无效。请重新登录。",
+    invalidServerResponse: "服务器响应无效。",
+    noActiveSession: "没有活动的对话。请打开或创建一个会话。",
+    translatorRequiresPack: "此翻译需要 {{pack}} 套餐。",
+    translatorRequiresPackCta: " 请前往套餐页面解锁。",
+    emptyQueryIching: "请在发送前输入问题。",
+    emptyQueryBones: "请输入肯定句以占问骨卜。",
+    streamInterrupted: "响应在完成前被中断。请重试。",
+    serverErrorStatus: "服务器错误 ({{status}})。请稍后重试。",
   },
   ko: {
     defaultSessionTitle: "상담",
@@ -260,6 +350,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedPersistHint: " 계속되면 서버 설정을 확인하세요.",
     requestFailedStatus: "요청 실패 ({{status}})",
     charLimitHint: "최대 1500자까지.",
+    sessionExpiredInvalid: "세션이 만료되었거나 유효하지 않습니다. 다시 로그인하세요.",
+    invalidServerResponse: "서버 응답이 유효하지 않습니다.",
+    noActiveSession: "활성 대화가 없습니다. 세션을 열거나 만드세요.",
+    translatorRequiresPack: "이 번역기는 {{pack}} 팩이 필요합니다.",
+    translatorRequiresPackCta: " 잠금 해제하려면 팩 섹션을 방문하세요.",
+    emptyQueryIching: "제출 전에 질문을 입력하세요.",
+    emptyQueryBones: "뼈를 점치려면 긍정적인 명제를 입력하세요.",
+    streamInterrupted: "응답이 완료되기 전에 중단되었습니다. 다시 시도하세요.",
+    serverErrorStatus: "서버 오류 ({{status}}). 잠시 후 다시 시도하세요.",
   },
   ar: {
     defaultSessionTitle: "استشارة",
@@ -286,6 +385,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedPersistHint: " قد لا تكون الجلسة محفوظة.",
     requestFailedStatus: "فشل الطلب ({{status}}).",
     charLimitHint: "حتى 1500 حرف.",
+    sessionExpiredInvalid: "انتهت الجلسة أو غير صالحة. يرجى تسجيل الدخول مجددًا.",
+    invalidServerResponse: "استجابة الخادم غير صالحة.",
+    noActiveSession: "لا توجد محادثة نشطة. افتح جلسة أو أنشئ واحدة.",
+    translatorRequiresPack: "هذا المترجم يتطلب باقة {{pack}}.",
+    translatorRequiresPackCta: " تفضل بزيارة قسم الباقات لفتح الإمكانية.",
+    emptyQueryIching: "اكتب سؤالًا قبل الإرسال.",
+    emptyQueryBones: "اكتب الادعاء الإيجابي للاستفسار من العظام.",
+    streamInterrupted: "انقطع الرد قبل اكتماله. يرجى المحاولة مرة أخرى.",
+    serverErrorStatus: "خطأ في الخادم ({{status}}). حاول مرة أخرى بعد دقائق.",
   },
   hi: {
     defaultSessionTitle: "परामर्श",
@@ -313,6 +421,15 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     consultFailedPersistHint: " सत्र सहेजा नहीं गया हो सकता।",
     requestFailedStatus: "अनुरोध विफल ({{status}})।",
     charLimitHint: "1500 वर्णों तक।",
+    sessionExpiredInvalid: "सत्र समाप्त या अमान्य है। कृपया पुनः लॉग इन करें।",
+    invalidServerResponse: "सर्वर से अमान्य प्रतिक्रिया।",
+    noActiveSession: "कोई सक्रिय वार्तालाप नहीं है। कोई सत्र खोलें या बनाएं।",
+    translatorRequiresPack: "इस अनुवादक के लिए {{pack}} पैक आवश्यक है।",
+    translatorRequiresPackCta: " इसे अनलॉक करने के लिए पैक्स अनुभाग पर जाएं।",
+    emptyQueryIching: "भेजने से पहले प्रश्न लिखें।",
+    emptyQueryBones: "हड्डियों से परामर्श के लिए सकारात्मक प्रस्ताव लिखें।",
+    streamInterrupted: "प्रतिक्रिया पूरी होने से पहले बाधित हुई। कृपया पुनः प्रयास करें।",
+    serverErrorStatus: "सर्वर त्रुटि ({{status}})। कुछ मिनटों में पुनः प्रयास करें।",
   },
 };
 
@@ -345,4 +462,18 @@ export function formatConsultFailedMessage(
     return `${m.consultFailedGeneric} ${trimmed}`;
   }
   return `${m.consultFailedGeneric}${m.consultFailedPersistHint}`;
+}
+
+export function formatTranslatorRequiresPack(
+  m: HomeSessionUiMessages,
+  packName: string,
+): string {
+  return `${interpolate(m.translatorRequiresPack, { pack: packName })}${m.translatorRequiresPackCta}`;
+}
+
+export function formatServerErrorStatus(
+  m: HomeSessionUiMessages,
+  status: number,
+): string {
+  return interpolate(m.serverErrorStatus, { status });
 }
