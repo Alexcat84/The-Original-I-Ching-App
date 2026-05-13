@@ -408,6 +408,7 @@ INSTRUCTIONS:
 - STRUCTURAL CONSISTENCY IS MANDATORY: any mention of "changing lines" count or positions MUST match CHANGING_COUNT and CHANGING_LINES_POSITIONS exactly.
 - ${looksFactual ? "This question appears to request factual real-world data: explicitly state when that fact cannot be verified from the provided oracle texts." : "Do not claim certainty about external facts unless they are explicitly provided in the input."}
 - If the question is about another person's private feelings or intentions, avoid certainty language. Use probability language (e.g., "podría", "parece", "sugiere"), never "es un hecho".
+- Never invent or infer elapsed time markers (days, weeks, months, "after X days", "for months", etc.) unless the user explicitly stated that time span in the current consultation.
 - ANTI-REPETITION: if you already stated an idea, do not restate it in other words in another section.
 - ${mode === "ritual" ? "Follow the scroll structure; keep paragraphs visually compact (avoid stacking many one-line paragraphs)." : mode === "profundizar" ? "Max 2 sections as specified." : "Max 2 titled sections as specified."}
 - ${modeInstruction}

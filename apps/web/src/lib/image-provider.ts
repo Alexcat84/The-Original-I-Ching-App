@@ -326,19 +326,25 @@ function resolveTierSize(lastPack?: string): { width: number; height: number } {
   return { width: 1344, height: 768 };
 }
 
-/** Together AI: dimensions must be multiples of 32 (1184≈1200, 1504≈1500). */
+/** Together AI sizing defaults per tier (validated later to docs-safe bounds). */
 function resolveTogetherImageSize(lastPack?: string): { width: number; height: number } {
   const key = resolveTierKey(lastPack);
   switch (key) {
     case "free":
-      return { width: 1024, height: 1024 };
+      return { width: 1024, height: 768 };
     case "seeker":
-      return { width: 1216, height: 1216 };
+      return { width: 1024, height: 1024 };
     case "practitioner":
-      return { width: 1504, height: 1504 };
+      return { width: 1344, height: 1024 };
     case "master":
-      return { width: 1792, height: 1792 };
+      return { width: 1536, height: 1152 };
   }
+}
+
+/** Together docs baseline: keep width/height within 256..1920 and multiples of 8. */
+function normalizeTogetherDimension(value: number): number {
+  const clamped = Math.max(256, Math.min(1920, Math.trunc(value)));
+  return Math.max(256, clamped - (clamped % 8));
 }
 
 async function generateWithFal(prompt: string, width: number, height: number): Promise<string | null> {
@@ -443,9 +449,11 @@ async function generateWithTogether(
   debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
   const model =
     process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.2-dev";
-  // Together (FLUX.2-dev) permite más steps para mayor detalle.
-  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "28");
-  const steps = Math.min(50, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 28));
+  // Conservative defaults for FLUX.2-dev to reduce request rejections.
+  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "12");
+  const steps = Math.min(28, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 12));
+  const safeWidth = normalizeTogetherDimension(width);
+  const safeHeight = normalizeTogetherDimension(height);
   const promptForApi = compactTogetherFluxPromptSegment(prompt, TOGETHER_FLUX_PROMPT_MAX_CHARS);
   const negativePrompt = compactTogetherFluxPromptSegment(
     buildTogetherNegativePrompt(),
@@ -460,6 +468,8 @@ async function generateWithTogether(
     budgetPrompt: TOGETHER_FLUX_PROMPT_MAX_CHARS,
     budgetNegative: TOGETHER_FLUX_NEGATIVE_PROMPT_MAX_CHARS,
     apiOptional: optionalApi,
+    requestedSize: { width, height },
+    normalizedSize: { width: safeWidth, height: safeHeight },
     seedBase: seedBase ?? null,
   });
   const res = await fetch("https://api.together.xyz/v1/images/generations", {
@@ -472,8 +482,8 @@ async function generateWithTogether(
       model,
       prompt: promptForApi,
       negative_prompt: negativePrompt,
-      width,
-      height,
+      width: safeWidth,
+      height: safeHeight,
       n: 1,
       steps,
       response_format: "url",
