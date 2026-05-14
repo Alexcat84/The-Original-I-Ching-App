@@ -34,7 +34,7 @@ export const VISUAL_THEMES: Record<
     timeOfDay: "early dawn",
   },
   health_wellbeing: {
-    environment: "bamboo forest with clear stream, filtered light",
+    environment: "fern forest with clear stream, filtered light",
     mood: "healing, peaceful, restorative",
     elements: "flowing water, smooth stones, wild orchids, morning dew",
     colorPalette: "jade green, soft white light, pale gold",
@@ -43,7 +43,7 @@ export const VISUAL_THEMES: Record<
   spiritual_inner: {
     environment: "summit clarity — vast sky, forested slopes or quiet altitude air",
     mood: "transcendent, mysterious, profound",
-    elements: "incense smoke, stone lantern, stars or bright zenith sun-shaft over ridges",
+    elements: "stone cairn, stars or bright zenith sun-shaft over ridges, summit wind mist",
     colorPalette: "deep cosmic blue, gold light, white smoke or sunlit mist",
     timeOfDay: "deep night or clear high-altitude day",
   },
