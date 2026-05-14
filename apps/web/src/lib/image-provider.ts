@@ -535,7 +535,7 @@ async function generateWithTogether(
       body: JSON.stringify({
         model,
         prompt: promptForApi,
-        negative_prompt: negativePrompt,
+        ...(isSchnell ? {} : { negative_prompt: negativePrompt }),
         width: safeWidth,
         height: safeHeight,
         n: 1,
@@ -809,11 +809,17 @@ export async function buildImageAsset(params: {
       fallbackImageUrl,
       togetherDebug: debug.together,
     });
+    const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+      ...overlayBase,
+      outputWidth: togetherFallbackW,
+      outputHeight: togetherFallbackH,
+    });
     return {
       provider: "mock",
       imageUrl: fallbackImageUrl,
       fallbackImageUrl,
       debug: { ...debug, together: debug.together ?? undefined },
+      overlaySvgDataUrl,
     };
   }
 

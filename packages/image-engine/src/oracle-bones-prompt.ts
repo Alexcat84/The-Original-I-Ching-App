@@ -67,7 +67,7 @@ export function buildOracleBonesImagePrompt(params: {
     ORACLE_PALETTE_ACCENTS[paletteIdx],
     `Atmospheric mood: ${theme.mood}. ${mediumMood}.`,
     `Pattern energy reference: ${topology}. Translate this into terrain rhythm and light tension, not literal bone object depiction.`,
-    "Hard negative rules: no text, no letters, no numbers, no Chinese characters, no calligraphy, no logos, no watermark, no UI elements.",
+    "Scene surfaces: pristine natural terrain throughout, clean and unmarked. Purely natural elements from edge to edge.",
     "Composition rule: keep center area visually calm and uncluttered for symbol overlay.",
   ].join(" ");
 }
@@ -90,7 +90,7 @@ const ORACLE_SCENE_FAMILIES = [
   "Scene family: winter mountain pass with sparse pines and pale high-key sky.",
   "Scene family: canyon corridor with braided water and stratified stone walls.",
   "Scene family: wetland mirror plain with reeds and atmospheric pastel gradients.",
-  "Scene family: bamboo gorge with cool humidity and luminous fog pockets.",
+  "Scene family: narrow river gorge with mossy walls, cascades, and luminous fog pockets.",
   "Scene family: volcanic dark-rock valley with bright atmospheric openings.",
 ] as const;
 
@@ -118,7 +118,7 @@ const ORACLE_ELEMENT_ACCENTS = [
   "Foreground accent: ancient mossy stone at forest edge, mist-wrapped and still.",
   "Foreground accent: dark basalt outcrop at river bend, smooth water rushing past.",
   "Foreground accent: solitary pine on cliff ledge, roots gripping ancient rock.",
-  "Foreground accent: bamboo fringe at stream edge, pale light filtering through stalks.",
+  "Foreground accent: fern fringe at stream edge, pale light filtering through fronds.",
   "Foreground accent: wind-shaped boulder field, lichen-covered, open sky above.",
   "Foreground accent: reed beds at lake margin, still water reflecting pale sky.",
   "Foreground accent: twisted driftwood on pebbled shore, fog behind, water ahead.",
