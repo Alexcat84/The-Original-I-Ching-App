@@ -123,10 +123,31 @@ function isLikelyWrongLanguage(text: string, language: string): boolean {
       /\b(el|la|los|las|con|para|fue|son|esta|este|porque|entonces)\b/g,
     ) ?? []
   ).length;
+  const italianSignals = (
+    lower.match(
+      /\b(che|del|della|delle|degli|per|sono|questo|questa|dal|nella|degli)\b/g,
+    ) ?? []
+  ).length;
+  const portugueseSignals = (
+    lower.match(
+      /\b(que|com|para|uma|não|mas|pelo|pela|isso|este|essa|também)\b/g,
+    ) ?? []
+  ).length;
   if (language === "es")
-    return englishSignals >= 6 && englishSignals > spanishSignals * 2;
+    return (
+      (englishSignals >= 6 && englishSignals > spanishSignals * 2) ||
+      (italianSignals >= 6 && italianSignals > spanishSignals * 2) ||
+      (portugueseSignals >= 8 && portugueseSignals > spanishSignals * 3)
+    );
   if (language === "en")
-    return spanishSignals >= 6 && spanishSignals > englishSignals * 2;
+    return (
+      (spanishSignals >= 6 && spanishSignals > englishSignals * 2) ||
+      (italianSignals >= 6 && italianSignals > englishSignals * 2)
+    );
+  if (language === "it")
+    return spanishSignals >= 6 && spanishSignals > italianSignals * 2;
+  if (language === "pt")
+    return englishSignals >= 6 && englishSignals > portugueseSignals * 2;
   return false;
 }
 
@@ -427,7 +448,7 @@ INSTRUCTIONS:
   SYMBOLS_MIN: optional one short line only if strictly needed (max one symbol reference); prioritize personal thread over symbolism.
   [SNAPSHOT_END]
 - Snapshot must be concise (80-140 words total), high-signal, specific, and personal-first (no vague generic phrasing).
-- Respond in ${getLanguageName(language)}
+- OUTPUT LANGUAGE — FINAL OVERRIDE: Write your ENTIRE response in ${getLanguageName(language)} without exception. If the thread context or prior consultations contain text in another language (Italian, English, Portuguese, etc.), treat them as historical data only — NEVER adopt their language for your output. The selected language is ${getLanguageName(language)}.
 `.trim();
   return { textsBlock, questionBlock, isMasterCombined, question };
 }
