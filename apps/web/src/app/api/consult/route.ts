@@ -641,6 +641,7 @@ export async function POST(req: Request) {
         medium: bonesCast.medium,
         patternId: bonesCast.patternId,
         verdictLabel: verdictLabelForPrompt(bonesCast.verdict),
+        consultationId: bonesCast.id,
       });
       let image = await buildOracleBonesImageAsset({
         prompt: imagePrompt,

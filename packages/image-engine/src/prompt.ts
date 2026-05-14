@@ -160,6 +160,158 @@ const WEATHER_VARIANTS = [
   "Weather: gentle sea fog pushing inland, preserving low-contrast readability.",
 ] as const;
 
+/** Per-category environment rotation — prevents same mountain-lake on every cast. */
+const CATEGORY_ENVIRONMENT_VARIANTS: Record<ConsultationCategory, readonly string[]> = {
+  love_relationship: [
+    "still lake or lagoon surrounded by weeping willows, soft mountains reflected in calm water",
+    "misty river valley at dawn, willows trailing into slow current, rolling hills beyond",
+    "hidden coastal cove at dusk, sea-smoothed stones, flowering cliff tops, silver surf",
+    "forest glade with a clear brook, dappled canopy light, wild orchids along the bank",
+    "mountain hot-spring terrace, rising steam, snow-capped peaks behind, delicate pink blossoms",
+    "autumn riverside meadow, golden reflections, birch and maple canopy, wind-rippled water",
+  ],
+  career_work: [
+    "imposing mountain peak above cloud sea, stone path ascending through mist",
+    "sheer granite face at dawn, eagle circling, summit breaking first light",
+    "high alpine ridge above cloud ocean, wind-scoured rock, crystalline sky",
+    "stone stairway carved into clifftop, ascending ridgeline, far peaks beyond",
+    "dark forested slope ascending to sunlit summit clearing above clouds",
+    "canyon ascent with vertical walls, narrow sky strip, distant snow peak",
+  ],
+  health_wellbeing: [
+    "bamboo forest with clear stream and filtered jade light",
+    "highland meadow with wildflower field and cascading brook",
+    "mountain hot spring pool, rising steam, snow-capped peaks beyond",
+    "forest cathedral with canopy filtering green light onto mossy stream",
+    "alpine meadow with clean air, distant glacier, wildflowers and dew",
+    "river valley at dawn, mist lifting from water, fresh verdant banks",
+  ],
+  spiritual_inner: [
+    "summit clarity — vast sky, forested slopes receding into haze, open altitude air",
+    "moonlit high plateau, enormous stars overhead, dark ridges, single gnarled pine",
+    "cloud-ocean above a mountain sea, summits as islands in white silence",
+    "deep canyon at dusk, narrow sky strip of stars, waterfall mist far below",
+    "ancient glacier basin, pale mineral water, ice-blue silence, reflected aurora tones",
+    "wind-scoured ridge at twilight, distant burning horizon, lone boulder silhouette",
+  ],
+  family_home: [
+    "meadow hedgerow with oak and willow, warm amber afternoon light, pastoral distance",
+    "orchard hillside in blossom, field lane, gentle valley below in golden haze",
+    "riverside belt of willows sheltering open meadow, distant rolling hills",
+    "rolling hills with tree clusters, wildflower field, warm golden afternoon",
+    "sheltering forest edge with sun-dappled clearing, still reflective pond",
+    "old stone bridge over stream, meadow beyond, soft warm dusk glow",
+  ],
+  decision_path: [
+    "mountain crossroads where two paths diverge into lifting mist",
+    "high ridge spine with twin valleys revealed below in morning light",
+    "narrow mountain pass opening to wide panorama, cloud sea below",
+    "hilltop at dawn with two river valleys diverging toward horizon",
+    "ancient forest clearing at trail fork, dappled light, two deep paths",
+    "coastal headland with paths splitting toward open sea and wooded inland",
+  ],
+  conflict_challenge: [
+    "stormy sea cliffs, lightning distant, lone pine on cliff edge above surf",
+    "turbulent river gorge with dark canyon walls and breaking storm light",
+    "wind-lashed ridge with storm parting to reveal sunlit valley below",
+    "ocean headland at storm, iron sky, dramatic wave spray on ancient rocks",
+    "dark forest in tempest, fallen timber, sudden sun shaft through cloud",
+    "mountain face in gathering storm, clouds tearing, lone rock pinnacle",
+  ],
+  travel_change: [
+    "river winding through vast open landscape toward distant horizon",
+    "mountain pass opening to expansive new landscape beyond cloud sea",
+    "coastal cliff path extending along ocean horizon, distant ship sails",
+    "wide river delta with migrating birds in evening golden sky",
+    "high plateau road curving toward distant horizon range, open sky",
+    "winding valley river with forest banks converging at distant misty bend",
+  ],
+  general: [
+    "layered ridges, river braid or lake/lagoon, forest pockets, varied sky and weather",
+    "braided glacial river across a wide valley, gravel bars, conifer slopes rising each side",
+    "high volcanic plateau, obsidian fields, turquoise crater lake, dramatic clouds",
+    "bamboo sea on rolling hills, fog corridors between groves, stone path winding through",
+    "wide estuary delta at golden hour, reed beds, sandbars, warm amber light on water",
+    "deep forest gorge with river gleam below, layered canopy, afternoon shaft of light",
+  ],
+} as const;
+
+/** Per-category element rotation — the specific objects FLUX draws; biggest driver of visual variety. */
+const CATEGORY_ELEMENT_VARIANTS: Record<ConsultationCategory, readonly string[]> = {
+  love_relationship: [
+    "willow branches trailing water, lotus blossom, firefly sparks at dusk",
+    "flowering orchids on coastal cliff, sea-smoothed stones, silver surf",
+    "water lilies and mist on still lake, moonlit shimmer, dragonfly hover",
+    "birch canopy with golden reflections, wild blooms along stream bank",
+    "cherry blossom petals drifting on slow current, arched pine silhouette",
+    "bamboo shadow on lagoon, water hyacinth, rose evening mist",
+  ],
+  career_work: [
+    "ancient pine on cliff edge, morning mist lifting from deep valley floor",
+    "stone stairway ascending through cloud sea, distant eagle soaring",
+    "lone gnarled pine at summit wind-gap, granite ledge, crystalline air",
+    "terraced rock slopes rising to clear blue zenith, sparse lichen outcrop",
+    "ridgeline at first light breaking cloud wall, sunbeam on far snow peak",
+    "dark cliff face with sunbeam splitting cloud layer above valley floor",
+  ],
+  health_wellbeing: [
+    "flowing stream over smooth stones, wild orchids, morning dew on ferns",
+    "bamboo fronds filtering green light, moss-covered boulders, clear pool",
+    "mountain spring emerging from rock face, pale blossoms, delicate mist",
+    "riverside meadow with healing herbs, dragonfly hovering over still water",
+    "forest floor dappled through canopy, fern rings, creek gleam below",
+    "highland meadow with wildflowers, gentle waterfall thread, fresh clear air",
+  ],
+  spiritual_inner: [
+    "incense smoke suggestion above ridge, stars at high altitude, stone cairn",
+    "sun-shaft piercing cloud sea over mountain top, single ancient wind-bent tree",
+    "moonlit summit snowfield, aurora suggestion in high-altitude sky",
+    "deep canyon with narrow star-strip sky, distant waterfall mist far below",
+    "ancient glacier basin, pale mineral water, ice-blue silence, mineral shore",
+    "wind-scoured ridge at twilight, distant burning horizon, lone sacred boulder",
+  ],
+  family_home: [
+    "wind-sculpted oak above meadow, wildflowers, distant hearth-smoke thread",
+    "hedgerow and broad canopy, field stones, soft amber afternoon light",
+    "riverside willows, gentle current, farmland beyond in golden haze",
+    "orchard hillside, blossoms or fruit, soft green meadow slope below",
+    "sheltering forest edge over grassy clearing, warm dusk sky above",
+    "old stone wall in meadow, climbing vine, sunlit pastoral distance",
+  ],
+  decision_path: [
+    "stone marker at mountain crossroads, lifting fog on two diverging paths",
+    "eagle overhead at pass, two valleys revealed below, silver mist",
+    "narrow ridge spine with twin descents, clouds in one valley, sun in other",
+    "ancient waystone in forest clearing, dappled light, two branching trails",
+    "hilltop in morning mist, two rivers visible diverging toward far horizon",
+    "twin path fork in twilight forest, distant beacon light, owl silhouette",
+  ],
+  conflict_challenge: [
+    "lone pine on cliff edge above turbulent sea, storm clouds parting above",
+    "lightning distant over ocean, ancient rock stack, wave spray on cliff base",
+    "stormy ridge with wind-bent trees, dramatic cloud break revealing sun",
+    "dark canyon with rushing river, cliff faces, silver light shaft emerging",
+    "headland with crashing surf below, iron-gray sky tearing open to gold",
+    "forest in storm, fallen pine across path, sunbeam breaking cloud wall",
+  ],
+  travel_change: [
+    "boat on river bending toward unknown horizon, migrating birds in V above",
+    "mountain pass opening to vast new landscape, cloud highway far below",
+    "winding road along river valley, cumulus towers, afternoon light",
+    "coastal cliff path, sea extending to horizon, ship sails far out",
+    "river delta fanning into wide sky, reeds, flight of egrets at dusk",
+    "high pass with cairns and mule trail, vast alpine panorama beyond",
+  ],
+  general: [
+    "distant peaks, ancient pine, sun shafts over river braid, drifting cloud",
+    "layered ridges in morning mist, hawk soaring, rocky foreground pine",
+    "mountain lake, twisted shore pine, dramatic cloud tower, reflected light",
+    "gorge with silver river thread below, dense forest walls, pale sky",
+    "highland meadow, boulder field, autumn color bands, far snow peaks",
+    "bamboo grove with luminous fog corridor, stream gleam far below",
+  ],
+} as const;
+
 export function buildImagePrompt(
   primary: Hexagram,
   transformed: Hexagram | null,
@@ -185,11 +337,17 @@ export function buildImagePrompt(
     SCENE_FAMILY_VARIANTS.length;
   const weatherIdx = ((h >>> 13) ^ (h >>> 23)) % WEATHER_VARIANTS.length;
 
+  const envVariants = CATEGORY_ENVIRONMENT_VARIANTS[category];
+  const environment = envVariants[((h >>> 6) ^ (h >>> 18)) % envVariants.length] ?? theme.environment;
+
+  const elemVariants = CATEGORY_ELEMENT_VARIANTS[category];
+  const elements = elemVariants[((h >>> 1) ^ (h >>> 27)) % elemVariants.length] ?? theme.elements;
+
   const settingBlock = [
-    `PRIMARY SETTING (dominate the frame — no flat blank gradient): ${theme.environment}.`,
+    `PRIMARY SETTING (dominate the frame — no flat blank gradient): ${environment}.`,
     `Time and mood: ${theme.timeOfDay}; ${theme.mood}.`,
     `Palette: ${theme.colorPalette}.`,
-    `Motifs (mid-ground or background): ${theme.elements}.`,
+    `Motifs (foreground and mid-ground): ${elements}.`,
     ATMOSPHERE_ROTATIONS[lightIdx],
     COMPOSITION_VARIANTS[compIdx],
     FOCAL_DIVERSITY_HINTS[focalIdx],

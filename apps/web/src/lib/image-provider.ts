@@ -333,19 +333,19 @@ function resolveTogetherImageSize(lastPack?: string): { width: number; height: n
     case "free":
       return { width: 1024, height: 768 };
     case "seeker":
-      return { width: 1024, height: 832 };
-    case "practitioner":
-      return { width: 1024, height: 960 };
-    case "master":
       return { width: 1024, height: 1024 };
+    case "practitioner":
+      return { width: 1184, height: 1184 };
+    case "master":
+      return { width: 1504, height: 1504 };
   }
 }
 
 const TOGETHER_DIMENSION_MULTIPLE = 32;
 const TOGETHER_MIN_DIMENSION = 256;
 const TOGETHER_MAX_DIMENSION = 4096;
-// Cost-control cap: keep tiers at or below ~1 MP.
-const TOGETHER_MAX_PIXELS = 1_048_576; // 1 MP
+// Allow up to ~4 MP; tier pricing margins justify higher resolutions.
+const TOGETHER_MAX_PIXELS = 4_194_304; // 4 MP
 
 function normalizeTogetherDimension(value: number): number {
   const clamped = Math.max(
@@ -469,8 +469,9 @@ function togetherImageGenerationOptionalFields(seedBase?: string): {
     // Deterministic per-consultation seed to increase scene diversity and reproducibility.
     fields.seed = fnv1a32(seedBase) % 2_147_483_647;
   }
+  // Default to jpeg to keep b64_json payload small if Together returns base64 instead of a URL.
   const fmt = process.env.TOGETHER_OUTPUT_FORMAT?.trim().toLowerCase();
-  if (fmt === "jpeg" || fmt === "png") fields.output_format = fmt;
+  fields.output_format = fmt === "png" ? "png" : "jpeg";
   return fields;
 }
 
@@ -492,10 +493,14 @@ async function generateWithTogether(
   }
   debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
   const model =
-    process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.2-dev";
-  // Conservative defaults for FLUX.2-dev to reduce request rejections.
-  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? "12");
-  const steps = Math.min(28, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 12));
+    process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
+  // FLUX.1-schnell: 12 steps (max) for best negative-prompt adherence and anti-contamination.
+  // FLUX.1-dev / FLUX.2-dev: 20 default (max 50) — only viable if time budget allows.
+  const isSchnell = model.toLowerCase().includes("schnell");
+  const defaultSteps = isSchnell ? 12 : 20;
+  const maxSteps = isSchnell ? 12 : 50;
+  const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? String(defaultSteps));
+  const steps = Math.min(maxSteps, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : defaultSteps));
   const normalizedSize = normalizeTogetherSize(width, height);
   const safeWidth = normalizedSize.width;
   const safeHeight = normalizedSize.height;
@@ -517,24 +522,42 @@ async function generateWithTogether(
     normalizedSize: { width: safeWidth, height: safeHeight },
     seedBase: seedBase ?? null,
   });
-  const res = await fetch("https://api.together.xyz/v1/images/generations", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      prompt: promptForApi,
-      negative_prompt: negativePrompt,
-      width: safeWidth,
-      height: safeHeight,
-      n: 1,
-      steps,
-      response_format: "url",
-      ...optionalApi,
-    }),
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 65_000);
+  let res: Response;
+  try {
+    res = await fetch("https://api.together.xyz/v1/images/generations", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        prompt: promptForApi,
+        negative_prompt: negativePrompt,
+        width: safeWidth,
+        height: safeHeight,
+        n: 1,
+        steps,
+        ...optionalApi,
+      }),
+      signal: controller.signal,
+    });
+  } catch (err) {
+    clearTimeout(timeoutId);
+    const isAbort = err instanceof Error && err.name === "AbortError";
+    debugLog("together: fetch threw", { isAbort, err: String(err).slice(0, 200) });
+    return {
+      url: null,
+      debug: {
+        attempted: true,
+        hasKey: true,
+        errorSnippet: isAbort ? "together timeout (45s)" : String(err).slice(0, 300),
+      },
+    };
+  }
+  clearTimeout(timeoutId);
   if (!res.ok) {
     let err = "";
     try {

@@ -1,3 +1,18 @@
+const SNAPSHOT_LEAK_DELIMITERS = ["[SNAPSHOT_START]", "THREAD_LINK:", "ACTION_CORE:"];
+
+/**
+ * Safety net for partial snapshots (missing [SNAPSHOT_END]) that the regex
+ * in interpretation.ts cannot strip.  Cut at the first leak delimiter.
+ */
+export function stripSnapshotLeaks(text: string): string {
+  let t = text;
+  for (const delimiter of SNAPSHOT_LEAK_DELIMITERS) {
+    const idx = t.indexOf(delimiter);
+    if (idx !== -1) t = t.slice(0, idx);
+  }
+  return t.trim();
+}
+
 /** Remove model-added boilerplate and trailing asterisk disclaimers from oracle text. */
 export function stripInterpretationFluff(text: string): string {
   let t = text.trim();
@@ -12,7 +27,7 @@ export function stripInterpretationFluff(text: string): string {
     t = t.replace(/^\s*\n+/m, "");
   }
   t = t.trim();
-  t = t.replace(/\n*\*[^*\n][\s\S]*?\*\s*$/, "").trim();
+  t = t.replace(/\n+\*[^*\n][^\n]*\*\s*$/, "").trim();
   const boiler: RegExp[] = [
     /(?:^|\n)(?:Es importante tener en cuenta|Debes tener presente|Cabe recordar|Ten en cuenta que|Es crucial entender|Recuerda que|No olvides que)[^\n]*\n?/gi,
     /(?:^|\n)(?:It is important to note|Please note that|Keep in mind that|Remember that)[^\n]*\n?/gi,
