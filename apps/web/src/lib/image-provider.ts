@@ -493,11 +493,11 @@ async function generateWithTogether(
   }
   debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
   const model =
-    process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.2-dev";
-  // FLUX.1-schnell: optimal 4 steps (max 12). FLUX.1-dev / FLUX.2-dev: 20 default (max 50).
-  // 30 steps for FLUX.2-dev at 1504×1504 takes 40–60s; 20 steps keeps it under 35s.
+    process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
+  // FLUX.1-schnell: 12 steps (max) for best negative-prompt adherence and anti-contamination.
+  // FLUX.1-dev / FLUX.2-dev: 20 default (max 50) — only viable if time budget allows.
   const isSchnell = model.toLowerCase().includes("schnell");
-  const defaultSteps = isSchnell ? 4 : 20;
+  const defaultSteps = isSchnell ? 12 : 20;
   const maxSteps = isSchnell ? 12 : 50;
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? String(defaultSteps));
   const steps = Math.min(maxSteps, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : defaultSteps));
