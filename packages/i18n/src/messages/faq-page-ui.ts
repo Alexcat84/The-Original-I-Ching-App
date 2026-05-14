@@ -239,7 +239,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "data-reliability",
     question: "How reliable are the I Ching texts provided in the app?",
     answer:
-      "The texts are extremely reliable. We conducted a 1:1 data integrity audit, verifying each hexagram against academic sources such as the University of Parma (Wilhelm translation), Sacred-Texts.com (Legge), and the Chinese Text Project (Zhou Yi). Any transcription errors found in the original source datasets have been manually corrected to ensure mathematical and literary accuracy.",
+      "The texts are extremely reliable. We conducted a 1:1 data integrity audit, verifying each hexagram against academic sources such as the University of Parma (Wilhelm translation), Sacred-Texts.com (Legge), and the Chinese Text Project (Zhou Yi).",
   },
   {
     id: "yarrow-vs-coins",
@@ -254,7 +254,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     question:
       "What is automatic vs manual I Ching, and can I mix Oracle Bones in the same thread?",
     answer:
-      "Automatic vs manual applies only to I Ching (Three Coins or Yarrow Stalks). In Options the cast-mode controls appear when I Ching is selected: choose Three Coins or Yarrow Stalks, then choose automatic (the cast runs on the server) or manual (you enter the six line totals 6/7/8/9 from your own coins or stalks). Oracle Bones is always automatic; there is no manual bones flow; ritual and verdict come from the algorithm only. Within your plan’s per-thread depth cap, you may freely alternate I Ching and Oracle Bones and switch methods and modes between consultations; your preferences are remembered for the next I Ching reading.",
+      "Automatic vs manual applies only to I Ching (Three Coins or Yarrow Stalks). In Options the cast-mode controls appear when I Ching is selected: choose Three Coins or Yarrow Stalks, then choose automatic (the cast runs on the server) or manual (you enter the six line totals 6/7/8/9 from your own coins or stalks). Oracle Bones is always automatic; there is no manual bones flow; the oracle synthesizes crack patterns to generate a personal response tuned to your unique situation. Within your plan’s per-thread depth cap, you may freely alternate I Ching and Oracle Bones and switch methods and modes between consultations; your preferences are remembered for the next I Ching reading.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -332,7 +332,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     question:
       "Are the I Ching texts that appear in the reading authentic or AI-generated?",
     answer:
-      "They are authentic. The Judgment (卦辞), the lines in motion (爻辞), and the resulting hexagrams come entirely from the Wilhelm/Baynes translation (public domain since 2020). The AI cites and contextualises them with your question, but does not modify or replace them. You can compare any text with the original book.",
+      "They are authentic. The textual material — Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams — is drawn from three scholarly translations available in the app: Wilhelm/Baynes (public domain since 2020), James Legge, and the original Zhou Yi. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source.",
     related: ["methodNotes"],
   },
   {
@@ -368,7 +368,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   {
     id: "translators-tiers",
     question: "¿Cómo funcionan los diferentes niveles de traducción?",
-    answer: "La app ofrece diversos linajes de sabiduría para tu consulta. Mientras que el nivel inicial incluye la visión de Wilhelm, los packs superiores (Seeker y Practitioner) desbloquean a James Legge y el Zhou Yi original. El nivel Master ofrece acceso exclusivo a la función Master (3).",
+    answer: "El pack Free incluye el modo I Ching en automático o manual (Tres Monedas y Varillas de Milenrama) y el modo Huesos de Oráculo. El pack Seeker, además del Free, desbloquea la Biblioteca completa y el traductor James Legge. El pack Practitioner añade el Zhou Yi original, la versión más antigua del I Ching sin los comentarios posteriores. El pack Master activa la función Master (3): triangulación simultánea de los tres traductores para una síntesis potente y personalizada.",
   },
   {
     id: "master-tokens-cost",
@@ -394,7 +394,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "data-reliability",
     question: "¿Qué tan fiables son los textos del I Ching en la aplicación?",
     answer:
-      "Los textos son de máxima fiabilidad. Hemos realizado una auditoría de integridad de datos 1:1, contrastando cada hexagrama con fuentes académicas como la Universidad de Parma (versión Wilhelm), Sacred-Texts.com (Legge) y el Chinese Text Project (Zhou Yi). Cualquier error de transcripción detectado en los datasets fuente originales ha sido corregido manualmente para garantizar la exactitud matemática y literaria.",
+      "Los textos son de máxima fiabilidad. Hemos realizado una auditoría de integridad de datos 1:1, contrastando cada hexagrama con fuentes académicas como la Universidad de Parma (versión Wilhelm), Sacred-Texts.com (Legge) y el Chinese Text Project (Zhou Yi).",
   },
   {
     id: "yarrow-vs-coins",
@@ -409,7 +409,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿Qué es el I Ching automático frente al manual, y puedo mezclar Huesos en el mismo hilo?",
     answer:
-      "Lo automático frente a manual solo aplica al I Ching (Tres Monedas o Varillas de Milenrama). En Opciones los controles de modo de tirada aparecen cuando I Ching está seleccionado: elige Tres Monedas o Varillas de Milenrama, luego automático (la tirada se ejecuta en el servidor) o manual (introduces los seis totales de línea 6/7/8/9 con tus propias monedas o varillas). El modo Huesos es siempre automático; no hay flujo manual de huesos; el ritual y el veredicto salen solo del algoritmo. Dentro del tope de profundidad por hilo de tu plan, puedes alternar libremente I Ching y Huesos y cambiar métodos y modos entre consultas; la app guarda tus preferencias para la próxima lectura en I Ching.",
+      "Lo automático frente a manual solo aplica al I Ching (Tres Monedas o Varillas de Milenrama). En Opciones los controles de modo de tirada aparecen cuando I Ching está seleccionado: elige Tres Monedas o Varillas de Milenrama, luego automático (la tirada se ejecuta en el servidor) o manual (introduces los seis totales de línea 6/7/8/9 con tus propias monedas o varillas). El modo Huesos es siempre automático; no hay flujo manual de huesos; el oráculo sintetiza los patrones de grietas para generar una respuesta personal y adecuada a tu situación única. Dentro del tope de profundidad por hilo de tu plan, puedes alternar libremente I Ching y Huesos y cambiar métodos y modos entre consultas; la app guarda tus preferencias para la próxima lectura en I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -489,7 +489,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿Los textos del I Ching que aparecen en la lectura son auténticos o generados por IA?",
     answer:
-      "Son auténticos. Los textos del Juicio (卦辞), las sentencias de las líneas en movimiento (爻辞) y los hexagramas resultantes provienen íntegramente de la traducción Wilhelm/Baynes (dominio público desde 2020). La IA los cita y los contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con el libro original.",
+      "Son auténticos. El material textual — Juicios (卦辞), líneas en movimiento (爻辞) y hexagramas resultantes — proviene de tres traducciones académicas disponibles en la app: Wilhelm/Baynes (dominio público desde 2020), James Legge y el Zhou Yi original. La IA los cita y contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con la fuente original.",
     related: ["methodNotes"],
   },
   {
@@ -533,7 +533,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "data-reliability",
     question: "ما مدى موثوقية نصوص الآي تشينغ في التطبيق؟",
     answer:
-      "النصوص موثوقة للغاية. لقد أجرينا تدقيقاً لسلامة البيانات بنسبة 1:1، مع التحقق من كل سداسي مقابل المصادر الأكاديمية مثل جامعة بارما (ترجمة فيلهلم)، وSacred-Texts.com (ليج)، ومشروع النصوص الصينية (تشو يي). تم تصحيح أي أخطاء في النسخ وجدت في مجموعات البيانات الأصلية يدوياً لضمان الدقة الرياضية والأدبية。",
+      "النصوص موثوقة للغاية. لقد أجرينا تدقيقاً لسلامة البيانات بنسبة 1:1، مع التحقق من كل سداسي مقابل المصادر الأكاديمية مثل جامعة بارما (ترجمة فيلهلم)، وSacred-Texts.com (ليج)، ومشروع النصوص الصينية (تشو يي).",
   },
   {
     id: "yarrow-vs-coins",
@@ -547,7 +547,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     question:
       "ما الفرق بين I Ching التلقائي واليدوي، وهل يمكن خلط العظام في نفس الخيط؟",
     answer:
-      "التلقائي مقابل اليدوي ينطبق فقط على I Ching (الأسكة الثلاث أو عيدان الزنبق). في الخيارات تظهر أدوات وضع القَسْم عند اختيار I Ching: اختر الأسكة الثلاث أو عيدان الزنبق، ثم تلقائي (تُنفَّذ القرعة على الخادم) أو يدوي (تُدخل مجموع الخطوط الستة 6/7/8/9 من عملاتك أو عيدانك). وضع العظام دائمًا تلقائي؛ لا يوجد مسار يدوي للعظام؛ الطقس والحكم يأتيان من الخوارزمية فقط. ضمن حد عمق الخيط في خطتك، يمكنك التناوب بحرية بين I Ching والعظام وتبديل الطرق والأوضاع بين الاستشارات؛ يحفظ التطبيق تفضيلاتك للقراءة التالية في I Ching.",
+      "التلقائي مقابل اليدوي ينطبق فقط على I Ching (الأسكة الثلاث أو عيدان الزنبق). في الخيارات تظهر أدوات وضع القَسْم عند اختيار I Ching: اختر الأسكة الثلاث أو عيدان الزنبق، ثم تلقائي (تُنفَّذ القرعة على الخادم) أو يدوي (تُدخل مجموع الخطوط الستة 6/7/8/9 من عملاتك أو عيدانك). وضع العظام دائمًا تلقائي؛ لا يوجد مسار يدوي للعظام؛ يُوليد الأوراكل أنماط الشقوق ليُقدم استجابةً شخصية تُلائم وضعك الفريد. ضمن حد عمق الخيط في خطتك، يمكنك التناوب بحرية بين I Ching والعظام وتبديل الطرق والأوضاع بين الاستشارات؛ يحفظ التطبيق تفضيلاتك للقراءة التالية في I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -625,7 +625,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     question:
       "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
-      "إنها أصيلة. نصوص الحكم (卦辞)، وعبارات الخطوط المتحركة (爻辞)، والهكساجرامات الناتجة مستقاة كلها من ترجمة Wilhelm/Baynes (في الملك العام منذ عام 2020). يستشهد بها الذكاء الاصطناعي ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع الكتاب الأصلي.",
+      "إنها أصيلة. المادة النصية — أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة — مستقاة من ثلاث ترجمات أكاديمية متاحة في التطبيق: Wilhelm/Baynes (في الملك العام منذ عام 2020)، وJames Legge، والتشو يي الأصلي. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
     related: ["methodNotes"],
   },
   {
@@ -669,7 +669,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "data-reliability",
     question: "ऐप में दिए गए आई चिंग ग्रंथों की विश्वसनीयता क्या है?",
     answer:
-      "ग्रंथ अत्यंत विश्वसनीय हैं। हमने परमा विश्वविद्यालय (विल्हेम अनुवाद), Sacred-Texts.com (लेग), और चीनी पाठ परियोजना (झोउ यी) जैसे शैक्षणिक स्रोतों के साथ प्रत्येक हेक्साग्राम का मिलान करते हुए 1:1 डेटा अखंडता ऑडिट किया है। मूल स्रोत डेटासेट में मिली किसी भी प्रतिलेखन त्रुटि को गणितीय और साहित्यिक सटीकता सुनिश्चित करने के लिए मैन्युअल रूप से ठीक किया गया है।",
+      "ग्रंथ अत्यंत विश्वसनीय हैं। हमने परमा विश्वविद्यालय (विल्हेम अनुवाद), Sacred-Texts.com (लेग), और चीनी पाठ परियोजना (झोउ यी) जैसे शैक्षणिक स्रोतों के साथ प्रत्येक हेक्साग्राम का मिलान करते हुए 1:1 डेटा अखंडता ऑडिट किया है।",
   },
   {
     id: "yarrow-vs-coins",
@@ -684,7 +684,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     question:
       "I Ching में स्वचालित बनाम मैन्युअल क्या है, और क्या मैं एक ही थ्रेड में Oracle Bones मिला सकता/सकती हूँ?",
     answer:
-      "स्वचालित बनाम मैन्युअल केवल I Ching (तीन सिक्के या यारो की छड़ें) पर लागू होता है। विकल्पों में कास्ट-मोड नियंत्रण तभी दिखते हैं जब I Ching चुना हो: तीन सिक्के या यारो की छड़ें चुनें, फिर स्वचालित (सर्वर पर कास्ट होता है) या मैन्युअल (अपने सिक्कों या छड़ों से छह पंक्ति योग 6/7/8/9 दर्ज करें)। Oracle Bones मोड हमेशा स्वचालित है; कोई मैन्युअल हड्डी प्रवाह नहीं; अनुष्ठान और निर्णय केवल एल्गोरिदम से आते हैं। आपकी योजना की प्रति-थ्रेड गहराई सीमा के भीतर, आप I Ching और Oracle Bones को स्वतंत्र रूप से बदल सकते हैं और परामर्शों के बीच विधियाँ और मोड स्विच कर सकते हैं; आपकी पसंद अगली I Ching पठन के लिए याद रखी जाती है।",
+      "स्वचालित बनाम मैन्युअल केवल I Ching (तीन सिक्के या यारो की छड़ें) पर लागू होता है। विकल्पों में कास्ट-मोड नियंत्रण तभी दिखते हैं जब I Ching चुना हो: तीन सिक्के या यारो की छड़ें चुनें, फिर स्वचालित (सर्वर पर कास्ट होता है) या मैन्युअल (अपने सिक्कों या छड़ों से छह पंक्ति योग 6/7/8/9 दर्ज करें)। Oracle Bones मोड हमेशा स्वचालित है; कोई मैन्युअल हड्डी प्रवाह नहीं; यह ओरेकल दरार पैटर्न को संश्लेषित करके आपकी विशिष्ट स्थिति के अनुसार एक व्यक्तिगत प्रतिक्रिया उत्पन्न करता है। आपकी योजना की प्रति-थ्रेड गहराई सीमा के भीतर, आप I Ching और Oracle Bones को स्वतंत्र रूप से बदल सकते हैं और परामर्शों के बीच विधियाँ और मोड स्विच कर सकते हैं; आपकी पसंद अगली I Ching पठन के लिए याद रखी जाती है।",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -762,7 +762,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     question:
       "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
     answer:
-      "वे प्रामाणिक हैं। निर्णय (卦辞), चलती रेखाओं की उक्तियाँ (爻辞), और परिणामी हेक्साग्राम पूरी तरह Wilhelm/Baynes अनुवाद (2020 से सार्वजनिक डोमेन) से आते हैं। AI उन्हें आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल पुस्तक से तुलना कर सकते हैं।",
+      "वे प्रामाणिक हैं। पाठ्य सामग्री — निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम — ऐप में उपलब्ध तीन विद्वानों के अनुवादों से ली गई है: Wilhelm/Baynes (2020 से सार्वजनिक डोमेन), James Legge, और मूल Zhou Yi। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं।",
     related: ["methodNotes"],
   },
   {
@@ -806,7 +806,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "data-reliability",
     question: "アプリで提供される易経のテキストの信頼性はどの程度ですか？",
     answer:
-      "テキストの信頼性は極めて高いです。パルマ大学（ヴィルヘルム訳）、Sacred-Texts.com（レッグ訳）、Chinese Text Project（周易）などの学術的ソースと1対1のデータ整合性監査を実施しました。元のソースデータセットに見つかった転記ミスはすべて手動で修正され、数学的および文学的な正確さが保証されています。",
+      "テキストの信頼性は極めて高いです。パルマ大学（ヴィルヘルム訳）、Sacred-Texts.com（レッグ訳）、Chinese Text Project（周易）などの学術的ソースと1対1のデータ整合性監査を実施しました。",
   },
   {
     id: "yarrow-vs-coins",
@@ -819,7 +819,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "iching-manual-auto-bones",
     question: "易経の自動と手動の違いは？ 同じスレッドで卜骨と混ぜられますか？",
     answer:
-      "自動と手動は易経（三硬貨または蓍草）にのみ適用されます。オプションでは易経を選んだときだけ起卦方式のコントロールが表示されます。三硬貨または蓍草を選んでから、自動（サーバーで起卦を実行）か手動（自分の銭または蓍草から六爻分の合計6/7/8/9を入力）を選びます。卜骨モードは常に自動で、手動の卜骨フローはありません。儀式と判定はアルゴリズムのみから行われます。プランのスレッド深度上限の範囲内で、易経と卜骨を自由に行き来でき、相談ごとに方法とモードを切り替えられます。次回の易経相談のために設定は記憶されます。",
+      "自動と手動は易経（三硬貨または蓍草）にのみ適用されます。オプションでは易経を選んだときだけ起卦方式のコントロールが表示されます。三硬貨または蓍草を選んでから、自動（サーバーで起卦を実行）か手動（自分の銭または蓍草から六爻分の合計6/7/8/9を入力）を選びます。卜骨モードは常に自動で、手動の卜骨フローはありません。オラクルが亀裂パターンを合成し、あなたの固有の状況に合わせた個人的な応答を生成します。プランのスレッド深度上限の範囲内で、易経と卜骨を自由に行き来でき、相談ごとに方法とモードを切り替えられます。次回の易経相談のために設定は記憶されます。",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -898,7 +898,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     question:
       "解釈に表示されるI Chingのテキストは本物ですか、それともAIが生成したものですか？",
     answer:
-      "本物です。卦辞、動爻（爻辞）、変卦のテキストはすべて、ヴィルヘルム/バインズ訳（2020年よりパブリックドメイン）から引用されています。AIはあなたの質問に合わせてそれらを引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原著と照合することができます。",
+      "本物です。テキスト素材 — 卦辞、動爻（爻辞）、変卦 — はアプリで利用できる3つの学術的翻訳から引用されています：ヴィルヘルム/バインズ訳（2020年よりパブリックドメイン）、ジェームズ・レッグ訳、そして原典の周易。AIは関連するテキストをあなたの質問に合わせて引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原典と照合することができます。",
     related: ["methodNotes"],
   },
   {
@@ -942,7 +942,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "data-reliability",
     question: "应用中提供的易经文本可靠性如何？",
     answer:
-      "这些文本非常可靠。我们进行了 1:1 的数据完整性审核，根据帕尔马大学（卫礼贤译本）、Sacred-Texts.com（理雅各译本）和中国哲学书电子化计划（周易）等学术资源验证了每个卦象。原始源数据集中发现의 任何转录错误均已手动更正，以确保数学和文学的准确性。",
+      "这些文本非常可靠。我们进行了 1:1 的数据完整性审核，根据帕尔马大学（卫礼贤译本）、Sacred-Texts.com（理雅各译本）和中国哲学书电子化计划（周易）等学术资源验证了每个卦象。",
   },
   {
     id: "yarrow-vs-coins",
@@ -955,7 +955,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "iching-manual-auto-bones",
     question: "易经的自动与手动有什么区别？同一对话里能混用甲骨文吗？",
     answer:
-      "自动与手动仅适用于易经（三枚铜钱或蓍草）。在选项中，只有选中易经时才会显示起卦方式控制：选择三枚铜钱或蓍草，再选自动（服务器执行起卦）或手动（在解读前自行输入六爻的6/7/8/9合计）。甲骨文模式始终为自动，没有手动甲骨流程；仪式与兆判完全由算法产生。在您套餐的单线程深度上限内，您可以自由交替易经与甲骨文，并在咨询之间切换方法与模式；应用会记住您的偏好，供下次易经解读使用。",
+      "自动与手动仅适用于易经（三枚铜钱或蓍草）。在选项中，只有选中易经时才会显示起卦方式控制：选择三枚铜钱或蓍草，再选自动（服务器执行起卦）或手动（在解读前自行输入六爻的6/7/8/9合计）。甲骨文模式始终为自动，没有手动甲骨流程；神谕综合裂纹图案，生成一份针对您独特情况的个性化回应。在您套餐的单线程深度上限内，您可以自由交替易经与甲骨文，并在咨询之间切换方法与模式；应用会记住您的偏好，供下次易经解读使用。",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -1032,7 +1032,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "authentic-texts",
     question: "解读中出现的易经文本是真实的还是AI生成的？",
     answer:
-      "是真实的。卦辞、动爻（爻辞）和变卦的文本完全来自威廉/贝恩斯译本（2020年起属公共领域）。AI引用这些文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原著进行对照。",
+      "是真实的。文本素材 — 卦辞、动爻（爻辞）和变卦 — 来自应用中提供的三种学术译本：威廉/贝恩斯译本（2020年起属公共领域）、詹姆斯·理雅各译本和原典周易。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
     related: ["methodNotes"],
   },
   {
@@ -1076,7 +1076,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "data-reliability",
     question: "앱에서 제공되는 주역 텍스트는 얼마나 신뢰할 수 있습니까?",
     answer:
-      "텍스트는 매우 신뢰할 수 있습니다. 파르마 대학교(빌헬름 번역), Sacred-Texts.com(레그 번역), Chinese Text Project(주역)와 같은 학술적 자료를 바탕으로 1:1 데이터 무결성 감사를 실시했습니다. 원본 소스 데이터셋에서 발견된 모든 오타는 수학적 및 문학적 정확성을 보장하기 위해 수동으로 수정되었습니다.",
+      "텍스트는 매우 신뢰할 수 있습니다. 파르마 대학교(빌헬름 번역), Sacred-Texts.com(레그 번역), Chinese Text Project(주역)와 같은 학술적 자료를 바탕으로 1:1 데이터 무결성 감사를 실시했습니다.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1090,7 +1090,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     question:
       "역경 자동과 수동의 차이는 무엇이며, 같은 스레드에서 갑골과 섞을 수 있나요?",
     answer:
-      "자동과 수동은 역경(동전 세 개 또는 시초)에만 적용됩니다. 옵션에서 역경을 선택했을 때만 점 방식 컨트롤이 보입니다. 동전 세 개 또는 시초를 선택한 후 자동(서버에서 점괘 실행) 또는 수동(본인의 동전이나 시초로 나온 여섯 효의 합계 6/7/8/9를 입력)을 선택합니다. 갑골 모드는 항상 자동이며 수동 갑골 흐름은 없습니다. 의식과 판정은 알고리즘에서만 나옵니다. 요금제의 스레드 깊이 한도 안에서는 역경과 갑골을 자유롭게 번갈아 할 수 있고, 상담 간 방법과 모드를 바꿀 수 있습니다. 다음 역경 상담을 위해 설정은 기억됩니다.",
+      "자동과 수동은 역경(동전 세 개 또는 시초)에만 적용됩니다. 옵션에서 역경을 선택했을 때만 점 방식 컨트롤이 보입니다. 동전 세 개 또는 시초를 선택한 후 자동(서버에서 점괘 실행) 또는 수동(본인의 동전이나 시초로 나온 여섯 효의 합계 6/7/8/9를 입력)을 선택합니다. 갑골 모드는 항상 자동이며 수동 갑골 흐름은 없습니다. 오라클이 균열 패턴을 종합하여 귀하의 고유한 상황에 맞는 개인화된 응답을 생성합니다. 요금제의 스레드 깊이 한도 안에서는 역경과 갑골을 자유롭게 번갈아 할 수 있고, 상담 간 방법과 모드를 바꿀 수 있습니다. 다음 역경 상담을 위해 설정은 기억됩니다.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -1167,7 +1167,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "authentic-texts",
     question: "해석에 나타나는 주역 텍스트는 진본인가요, AI가 생성한 것인가요?",
     answer:
-      "진본입니다. 괘사(卦辞), 동효의 효사(爻辞), 변괘 텍스트는 모두 빌헬름/베인스 번역본(2020년부터 공공 도메인)에서 인용되었습니다. AI는 귀하의 질문에 맞게 이를 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원저와 텍스트를 비교해 볼 수 있습니다.",
+      "진본입니다. 텍스트 자료 — 괘사(卦辞), 동효의 효사(爻辞), 변괘 — 는 앱에서 제공하는 세 가지 학술 번역본에서 인용되었습니다: 빌헬름/베인스 번역본(2020년부터 공공 도메인), 제임스 레그 번역본, 그리고 원전 주역. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다.",
     related: ["methodNotes"],
   },
   {
@@ -1211,7 +1211,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "data-reliability",
     question: "Quão confiáveis são os textos do I Ching no aplicativo?",
     answer:
-      "Os textos são altamente confiáveis. Realizamos uma auditoria de integridade de dados 1:1, verificando cada hexagrama com fontes acadêmicas como a Universidade de Parma (versão Wilhelm), Sacred-Texts.com (Legge) e o Chinese Text Project (Zhou Yi). Quaisquer erros de transcrição encontrados nos conjuntos de dados originais foram corrigidos manualmente para garantir precisão matemática e literária.",
+      "Os textos são altamente confiáveis. Realizamos uma auditoria de integridade de dados 1:1, verificando cada hexagrama com fontes acadêmicas como a Universidade de Parma (versão Wilhelm), Sacred-Texts.com (Legge) e o Chinese Text Project (Zhou Yi).",
   },
   {
     id: "yarrow-vs-coins",
@@ -1226,7 +1226,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     question:
       "O que é I Ching automático vs manual, e posso misturar Ossos no mesmo fio?",
     answer:
-      "Automático vs manual aplica-se apenas ao I Ching (Três Moedas ou Varetas de Milefólio). Em Opções os controlos do modo de tiragem aparecem com o I Ching selecionado: escolha Três Moedas ou Varetas, depois automático (a tiragem corre no servidor) ou manual (introduza os seis totais de linha 6/7/8/9 das suas moedas ou varetas). O modo Ossos é sempre automático; não existe fluxo manual de ossos; ritual e veredicto vêm só do algoritmo. Dentro do limite de profundidade por fio do seu plano, pode alternar livremente I Ching e Ossos e mudar métodos e modos entre consultas; a app memoriza as suas preferências para a próxima leitura em I Ching.",
+      "Automático vs manual aplica-se apenas ao I Ching (Três Moedas ou Varetas de Milefólio). Em Opções os controlos do modo de tiragem aparecem com o I Ching selecionado: escolha Três Moedas ou Varetas, depois automático (a tiragem corre no servidor) ou manual (introduza os seis totais de linha 6/7/8/9 das suas moedas ou varetas). O modo Ossos é sempre automático; não existe fluxo manual de ossos; o oráculo sintetiza padrões de fissuras para gerar uma resposta pessoal e adequada à sua situação única. Dentro do limite de profundidade por fio do seu plano, pode alternar livremente I Ching e Ossos e mudar métodos e modos entre consultas; a app memoriza as suas preferências para a próxima leitura em I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -1304,7 +1304,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     question:
       "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
-      "São autênticos. Os textos do Julgamento (卦辞), as sentenças das linhas em movimento (爻辞) e os hexagramas resultantes provêm inteiramente da tradução Wilhelm/Baynes (domínio público desde 2020). A IA cita-os e contextualiza-os com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com o livro original.",
+      "São autênticos. O material textual — Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes — provém de três traduções académicas disponíveis na app: Wilhelm/Baynes (domínio público desde 2020), James Legge e o Zhou Yi original. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
     related: ["methodNotes"],
   },
   {
@@ -1348,7 +1348,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "data-reliability",
     question: "Wie zuverlässig sind die I-Ging-Texte in der App?",
     answer:
-      "Die Texte sind äußerst zuverlässig. Wir haben ein 1:1-Datenintegritätsaudit durchgeführt und jedes Hexagramm mit akademischen Quellen wie der Universität Parma (Wilhelm-Übersetzung), Sacred-Texts.com (Legge) und dem Chinese Text Project (Zhou Yi) abgeglichen. Etwaige Transkriptionsfehler in den ursprünglichen Quelldatensätzen wurden manuell korrigiert, um mathematische und literarische Genauigkeit zu gewährleisten.",
+      "Die Texte sind äußerst zuverlässig. Wir haben ein 1:1-Datenintegritätsaudit durchgeführt und jedes Hexagramm mit akademischen Quellen wie der Universität Parma (Wilhelm-Übersetzung), Sacred-Texts.com (Legge) und dem Chinese Text Project (Zhou Yi) abgeglichen.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1363,7 +1363,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Was bedeutet automatisch vs. manuell beim I Ching, und kann ich Orakelknochen im selben Thread mischen?",
     answer:
-      "Automatisch vs. manuell gilt nur für das I Ching (Drei Münzen oder Schafgarbenstäbe). In den Optionen erscheinen die Wurfmodus-Steuerelemente nur bei ausgewähltem I Ching: Wählen Sie Drei Münzen oder Schafgarbenstäbe, dann automatisch (der Wurf erfolgt auf dem Server) oder manuell (Sie tragen die sechs Liniensummen 6/7/8/9 Ihrer eigenen Münzen oder Stäbe ein). Der Orakelknochen-Modus ist immer automatisch; es gibt keinen manuellen Knochenablauf; Ritual und Urteil kommen ausschließlich vom Algorithmus. Innerhalb des Thread-Tiefenlimits Ihres Tarifs können Sie frei zwischen I Ching und Orakelknochen wechseln und Methoden und Modi zwischen Beratungen umschalten; Ihre Einstellungen werden für die nächste I-Ching-Beratung gespeichert.",
+      "Automatisch vs. manuell gilt nur für das I Ching (Drei Münzen oder Schafgarbenstäbe). In den Optionen erscheinen die Wurfmodus-Steuerelemente nur bei ausgewähltem I Ching: Wählen Sie Drei Münzen oder Schafgarbenstäbe, dann automatisch (der Wurf erfolgt auf dem Server) oder manuell (Sie tragen die sechs Liniensummen 6/7/8/9 Ihrer eigenen Münzen oder Stäbe ein). Der Orakelknochen-Modus ist immer automatisch; es gibt keinen manuellen Knochenablauf; Das Orakel synthetisiert Rissmuster, um eine persönliche Antwort zu erzeugen, die auf Ihre einzigartige Situation abgestimmt ist. Innerhalb des Thread-Tiefenlimits Ihres Tarifs können Sie frei zwischen I Ching und Orakelknochen wechseln und Methoden und Modi zwischen Beratungen umschalten; Ihre Einstellungen werden für die nächste I-Ching-Beratung gespeichert.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -1444,7 +1444,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Sind die I-Ching-Texte in der Lesung authentisch oder KI-generiert?",
     answer:
-      "Sie sind authentisch. Die Texte des Urteils (卦辞), die Aussagen der sich bewegenden Linien (爻辞) und die resultierenden Hexagramme stammen vollständig aus der Wilhelm/Baynes-Übersetzung (seit 2020 gemeinfrei). Die KI zitiert und kontextualisiert sie mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit dem Originalbuch vergleichen.",
+      "Sie sind authentisch. Das Textmaterial — Urteile (卦辞), sich bewegende Linien (爻辞) und resultierende Hexagramme — stammt aus drei wissenschaftlichen Übersetzungen, die in der App verfügbar sind: Wilhelm/Baynes (seit 2020 gemeinfrei), James Legge und das originale Zhou Yi. Die KI zitiert und kontextualisiert die relevanten Texte mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit der Originalquelle vergleichen.",
     related: ["methodNotes"],
   },
   {
@@ -1488,7 +1488,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "data-reliability",
     question: "Quanto sono affidabili i testi dell'I Ching nell'app?",
     answer:
-      "I testi sono estremamente affidabili. Abbiamo condotto un audit di integrità dei dati 1:1, verificando ogni esagramma rispetto a fonti accademiche come l'Università di Parma (traduzione Wilhelm), Sacred-Texts.com (Legge) e il Chinese Text Project (Zhou Yi). Eventuali errori di trascrizione trovati nei dataset originali sono stati corretti manualmente per garantire la precisione matematica e letteraria.",
+      "I testi sono estremamente affidabili. Abbiamo condotto un audit di integrità dei dati 1:1, verificando ogni esagramma rispetto a fonti accademiche come l'Università di Parma (traduzione Wilhelm), Sacred-Texts.com (Legge) e il Chinese Text Project (Zhou Yi).",
   },
   {
     id: "yarrow-vs-coins",
@@ -1503,7 +1503,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "Che cos'è I Ching automatico vs manuale, e posso mescolare le Ossa nello stesso filo?",
     answer:
-      "Automatico vs manuale vale solo per l'I Ching (Tre Monete o Steli di Achillea). In Opzioni i controlli del modo di lancio compaiono con l'I Ching selezionato: scegli Tre Monete o Steli di Achillea, poi automatico (il lancio avviene sul server) o manuale (inserisci i sei totali di linea 6/7/8/9 delle tue monete o steli). La modalità Ossa è sempre automatica; non esiste un flusso manuale per le ossa; rituale e verdetto provengono solo dall'algoritmo. Entro il limite di profondità per filo del tuo piano, puoi alternare liberamente I Ching e Ossa e cambiare metodi e modalità tra consultazioni; l'app memorizza le tue preferenze per la prossima lettura in I Ching.",
+      "Automatico vs manuale vale solo per l'I Ching (Tre Monete o Steli di Achillea). In Opzioni i controlli del modo di lancio compaiono con l'I Ching selezionato: scegli Tre Monete o Steli di Achillea, poi automatico (il lancio avviene sul server) o manuale (inserisci i sei totali di linea 6/7/8/9 delle tue monete o steli). La modalità Ossa è sempre automatica; non esiste un flusso manuale per le ossa; l'oracolo sintetizza i pattern di crepe per generare una risposta personale e adeguata alla tua situazione unica. Entro il limite di profondità per filo del tuo piano, puoi alternare liberamente I Ching e Ossa e cambiare metodi e modalità tra consultazioni; l'app memorizza le tue preferenze per la prossima lettura in I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -1584,7 +1584,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
-      "Sono autentici. I testi del Giudizio (卦辞), le sentenze delle linee in movimento (爻辞) e gli esagrammi risultanti provengono interamente dalla traduzione Wilhelm/Baynes (di pubblico dominio dal 2020). L'IA li cita e li contestualizza con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con il libro originale.",
+      "Sono autentici. Il materiale testuale — Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti — proviene da tre traduzioni accademiche disponibili nell'app: Wilhelm/Baynes (di pubblico dominio dal 2020), James Legge e lo Zhou Yi originale. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
     related: ["methodNotes"],
   },
   {
@@ -1630,7 +1630,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
     answer:
-      "Les textes sont extrêmement fiables. Nous avons effectué un audit d'intégrité des données 1:1, en vérifiant chaque hexagramme par rapport à des sources académiques telles que l'Université de Parme (traduction Wilhelm), Sacred-Texts.com (Legge) et le Chinese Text Project (Zhou Yi). Toutes les erreurs de transcription détectées dans les ensembles de données sources originaux ont été corrigées manuellement pour garantir une exactitude mathématique et littéraire.",
+      "Les textes sont extrêmement fiables. Nous avons effectué un audit d'intégrité des données 1:1, en vérifiant chaque hexagramme par rapport à des sources académiques telles que l'Université de Parme (traduction Wilhelm), Sacred-Texts.com (Legge) et le Chinese Text Project (Zhou Yi).",
   },
   {
     id: "yarrow-vs-coins",
@@ -1645,7 +1645,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Qu'est-ce que le I Ching automatique vs manuel, et puis-je mélanger les Os dans le même fil ?",
     answer:
-      "Automatique vs manuel ne concerne que le I Ching (Trois Pièces ou Tiges d'Achillée). Dans Options, les contrôles du mode de tirage apparaissent lorsque le I Ching est sélectionné : choisissez Trois Pièces ou Tiges d'Achillée, puis automatique (le tirage s'effectue sur le serveur) ou manuel (vous saisissez les six totaux de ligne 6/7/8/9 de vos pièces ou tiges). Le mode Os est toujours automatique ; il n'existe pas de flux manuel pour les os ; le rituel et le verdict viennent uniquement de l'algorithme. Dans la limite de profondeur par fil de votre forfait, vous pouvez librement alterner I Ching et Os et changer de méthode et de mode entre consultations ; l'application mémorise vos préférences pour la prochaine lecture en I Ching.",
+      "Automatique vs manuel ne concerne que le I Ching (Trois Pièces ou Tiges d'Achillée). Dans Options, les contrôles du mode de tirage apparaissent lorsque le I Ching est sélectionné : choisissez Trois Pièces ou Tiges d'Achillée, puis automatique (le tirage s'effectue sur le serveur) ou manuel (vous saisissez les six totaux de ligne 6/7/8/9 de vos pièces ou tiges). Le mode Os est toujours automatique ; il n'existe pas de flux manuel pour les os ; l'oracle synthétise les motifs de fissures pour générer une réponse personnelle et adaptée à votre situation unique. Dans la limite de profondeur par fil de votre forfait, vous pouvez librement alterner I Ching et Os et changer de méthode et de mode entre consultations ; l'application mémorise vos préférences pour la prochaine lecture en I Ching.",
     related: ["userGuide", "methodNotes"],
   },
   {
@@ -1726,7 +1726,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
-      "Ils sont authentiques. Les textes du Jugement (卦辞), les sentences des lignes en mouvement (爻辞) et les hexagrammes résultants proviennent intégralement de la traduction Wilhelm/Baynes (dans le domaine public depuis 2020). L'IA les cite et les contextualise avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec le livre original.",
+      "Ils sont authentiques. Le matériel textuel — Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants — provient de trois traductions académiques disponibles dans l'app : Wilhelm/Baynes (dans le domaine public depuis 2020), James Legge et le Zhou Yi original. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
     related: ["methodNotes"],
   },
   {
