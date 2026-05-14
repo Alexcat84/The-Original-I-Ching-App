@@ -41,9 +41,10 @@ export function buildOracleBonesImagePrompt(params: {
   medium: "turtle" | "ox";
   patternId: number;
   verdictLabel: string;
+  consultationId?: string;
 }): string {
   const theme = VISUAL_THEMES[params.category] ?? VISUAL_THEMES.general;
-  const seed = `${params.category}:${params.medium}:${params.patternId}:${params.verdictLabel}`;
+  const seed = `${params.consultationId ?? ""}:${params.category}:${params.medium}:${params.patternId}:${params.verdictLabel}`;
   const h = hashToUint(seed);
   const sceneIdx = (h ^ (h >>> 11)) % ORACLE_SCENE_FAMILIES.length;
   const lightIdx = ((h >>> 7) ^ (h >>> 19)) % ORACLE_LIGHTING_VARIANTS.length;

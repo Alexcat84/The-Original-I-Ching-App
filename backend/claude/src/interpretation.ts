@@ -366,7 +366,7 @@ JUDGMENT: ${t.transformedJudgment}`
     3) Zhou Yi (literal)
   - Quotes must be complete literal excerpts from the provided texts for that section (do NOT reduce to micro-quotes, fragments, or single clauses).
   - Each literal source quote MUST be rendered as Markdown blockquote lines (prefix every line with "> "), and the quote text itself must be italic inside that blockquote.
-  - For "Lines in motion": for each changing line, show the full literal line text from each available source before synthesis.
+  - For "Lines in motion": for each changing line, show the full literal line text from each available source as a labeled Markdown blockquote in this exact format: a bold label line (e.g. **Wilhelm:**) immediately followed by a "> *italic blockquote*" block — in order Wilhelm → Legge → Zhou Yi — before the synthesis for that line. Never render source quotes as inline text or **bold** prose.
   - If any source text is unavailable for a specific subsection, state it explicitly and continue with the other two sources.
 - In every section, bridge the three lenses into ONE integrated guidance for the querent.
 - After literal source blocks, provide synthesis in your own words for that section.

@@ -520,24 +520,43 @@ async function generateWithTogether(
     normalizedSize: { width: safeWidth, height: safeHeight },
     seedBase: seedBase ?? null,
   });
-  const res = await fetch("https://api.together.xyz/v1/images/generations", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      prompt: promptForApi,
-      negative_prompt: negativePrompt,
-      width: safeWidth,
-      height: safeHeight,
-      n: 1,
-      steps,
-      response_format: "url",
-      ...optionalApi,
-    }),
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45_000);
+  let res: Response;
+  try {
+    res = await fetch("https://api.together.xyz/v1/images/generations", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        prompt: promptForApi,
+        negative_prompt: negativePrompt,
+        width: safeWidth,
+        height: safeHeight,
+        n: 1,
+        steps,
+        response_format: "url",
+        ...optionalApi,
+      }),
+      signal: controller.signal,
+    });
+  } catch (err) {
+    clearTimeout(timeoutId);
+    const isAbort = err instanceof Error && err.name === "AbortError";
+    debugLog("together: fetch threw", { isAbort, err: String(err).slice(0, 200) });
+    return {
+      url: null,
+      debug: {
+        attempted: true,
+        hasKey: true,
+        errorSnippet: isAbort ? "together timeout (45s)" : String(err).slice(0, 300),
+      },
+    };
+  }
+  clearTimeout(timeoutId);
   if (!res.ok) {
     let err = "";
     try {
