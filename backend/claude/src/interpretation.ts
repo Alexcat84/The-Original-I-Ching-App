@@ -123,10 +123,31 @@ function isLikelyWrongLanguage(text: string, language: string): boolean {
       /\b(el|la|los|las|con|para|fue|son|esta|este|porque|entonces)\b/g,
     ) ?? []
   ).length;
+  const italianSignals = (
+    lower.match(
+      /\b(che|del|della|delle|degli|per|sono|questo|questa|dal|nella|degli)\b/g,
+    ) ?? []
+  ).length;
+  const portugueseSignals = (
+    lower.match(
+      /\b(que|com|para|uma|não|mas|pelo|pela|isso|este|essa|também)\b/g,
+    ) ?? []
+  ).length;
   if (language === "es")
-    return englishSignals >= 6 && englishSignals > spanishSignals * 2;
+    return (
+      (englishSignals >= 6 && englishSignals > spanishSignals * 2) ||
+      (italianSignals >= 6 && italianSignals > spanishSignals * 2) ||
+      (portugueseSignals >= 8 && portugueseSignals > spanishSignals * 3)
+    );
   if (language === "en")
-    return spanishSignals >= 6 && spanishSignals > englishSignals * 2;
+    return (
+      (spanishSignals >= 6 && spanishSignals > englishSignals * 2) ||
+      (italianSignals >= 6 && italianSignals > englishSignals * 2)
+    );
+  if (language === "it")
+    return spanishSignals >= 6 && spanishSignals > italianSignals * 2;
+  if (language === "pt")
+    return englishSignals >= 6 && englishSignals > portugueseSignals * 2;
   return false;
 }
 
@@ -366,7 +387,7 @@ JUDGMENT: ${t.transformedJudgment}`
     3) Zhou Yi (literal)
   - Quotes must be complete literal excerpts from the provided texts for that section (do NOT reduce to micro-quotes, fragments, or single clauses).
   - Each literal source quote MUST be rendered as Markdown blockquote lines (prefix every line with "> "), and the quote text itself must be italic inside that blockquote.
-  - For "Lines in motion": for each changing line, show the full literal line text from each available source before synthesis.
+  - For "Lines in motion": for each changing line, show the full literal line text from each available source as a labeled Markdown blockquote in this exact format: a bold label line (e.g. **Wilhelm:**) immediately followed by a "> *italic blockquote*" block — in order Wilhelm → Legge → Zhou Yi — before the synthesis for that line. Never render source quotes as inline text or **bold** prose.
   - If any source text is unavailable for a specific subsection, state it explicitly and continue with the other two sources.
 - In every section, bridge the three lenses into ONE integrated guidance for the querent.
 - After literal source blocks, provide synthesis in your own words for that section.
@@ -427,7 +448,7 @@ INSTRUCTIONS:
   SYMBOLS_MIN: optional one short line only if strictly needed (max one symbol reference); prioritize personal thread over symbolism.
   [SNAPSHOT_END]
 - Snapshot must be concise (80-140 words total), high-signal, specific, and personal-first (no vague generic phrasing).
-- Respond in ${getLanguageName(language)}
+- OUTPUT LANGUAGE — three-step rule: (1) Detect the language of the user's question (the quoted string above). If it is clearly identifiable, respond in that language — this is the strongest signal. (2) If the question is ambiguous, too short, or mixed, fall back to the user's app-selected language: ${getLanguageName(language)}. (3) NEVER derive your output language from the prior consultation context — that text is historical content, not a language directive, regardless of what language it is in.
 `.trim();
   return { textsBlock, questionBlock, isMasterCombined, question };
 }

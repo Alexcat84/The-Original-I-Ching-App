@@ -41,28 +41,32 @@ export function buildOracleBonesImagePrompt(params: {
   medium: "turtle" | "ox";
   patternId: number;
   verdictLabel: string;
+  consultationId?: string;
 }): string {
   const theme = VISUAL_THEMES[params.category] ?? VISUAL_THEMES.general;
-  const seed = `${params.category}:${params.medium}:${params.patternId}:${params.verdictLabel}`;
+  const seed = `${params.consultationId ?? ""}:${params.category}:${params.medium}:${params.patternId}:${params.verdictLabel}`;
   const h = hashToUint(seed);
   const sceneIdx = (h ^ (h >>> 11)) % ORACLE_SCENE_FAMILIES.length;
   const lightIdx = ((h >>> 7) ^ (h >>> 19)) % ORACLE_LIGHTING_VARIANTS.length;
   const compIdx = ((h >>> 14) ^ (h >>> 5)) % ORACLE_COMPOSITION_VARIANTS.length;
+  const elementIdx = ((h >>> 3) ^ (h >>> 21)) % ORACLE_ELEMENT_ACCENTS.length;
+  const paletteIdx = ((h >>> 17) ^ (h >>> 9)) % ORACLE_PALETTE_ACCENTS.length;
 
   const topology = describeOracleBoneCrackTopology(params.patternId);
   const mediumMood =
     params.medium === "turtle"
-      ? "Subtle cool-aqua serenity influence"
-      : "Subtle warm-earth gravitas influence";
+      ? "Cool-aqua serenity influence — jade, teal, and silver tones welcome"
+      : "Warm-earth gravitas influence — ochre, sienna, and bronze tones welcome";
 
   return [
     "Nature-only fantasy landscape illustration, widescreen 16:9, no ritual object closeups.",
     ORACLE_SCENE_FAMILIES[sceneIdx],
     ORACLE_LIGHTING_VARIANTS[lightIdx],
     ORACLE_COMPOSITION_VARIANTS[compIdx],
+    ORACLE_ELEMENT_ACCENTS[elementIdx],
+    ORACLE_PALETTE_ACCENTS[paletteIdx],
     `Atmospheric mood: ${theme.mood}. ${mediumMood}.`,
     `Pattern energy reference: ${topology}. Translate this into terrain rhythm and light tension, not literal bone object depiction.`,
-    "Keep landscapes varied across generations: avoid repeating same moon-lake framing.",
     "Hard negative rules: no text, no letters, no numbers, no Chinese characters, no calligraphy, no logos, no watermark, no UI elements.",
     "Composition rule: keep center area visually calm and uncluttered for symbol overlay.",
   ].join(" ");
@@ -106,4 +110,32 @@ const ORACLE_COMPOSITION_VARIANTS = [
   "Composition: asymmetrical cliff mass balanced by open sky third.",
   "Composition: forest frame opening toward reflective valley center.",
   "Composition: stepped terrain rhythm guiding eye toward horizon line.",
+  "Composition: aerial view of river bend, gravel bars, forested banks.",
+  "Composition: gorge slice with steep walls and narrow bright sky strip.",
+] as const;
+
+const ORACLE_ELEMENT_ACCENTS = [
+  "Foreground accent: ancient mossy stone at forest edge, mist-wrapped and still.",
+  "Foreground accent: dark basalt outcrop at river bend, smooth water rushing past.",
+  "Foreground accent: solitary pine on cliff ledge, roots gripping ancient rock.",
+  "Foreground accent: bamboo fringe at stream edge, pale light filtering through stalks.",
+  "Foreground accent: wind-shaped boulder field, lichen-covered, open sky above.",
+  "Foreground accent: reed beds at lake margin, still water reflecting pale sky.",
+  "Foreground accent: twisted driftwood on pebbled shore, fog behind, water ahead.",
+  "Foreground accent: fallen ancient tree bridging narrow gorge, ferns, deep shadow.",
+  "Foreground accent: granite slab at cliff top, wind-bent shrubs, valley far below.",
+  "Foreground accent: tidal rocks at coast, kelp fringe, sea spray, layered headlands.",
+] as const;
+
+const ORACLE_PALETTE_ACCENTS = [
+  "Palette: deep indigo and teal shadows, pale horizon glow, silver water.",
+  "Palette: warm amber and ochre earth tones, cool violet far distance.",
+  "Palette: silver-gray mist with dark pine silhouette and pale ice sky.",
+  "Palette: jade green and mist white, dark rock anchors, soft light.",
+  "Palette: golden hour warmth over cold blue-gray canyon depths.",
+  "Palette: moonlit pale luminosity, near-black terrain silhouettes, silver water.",
+  "Palette: storm iron-gray with bright silver light breaking through cloud.",
+  "Palette: earth sienna and ochre foreground, pale sky, bright water gleam.",
+  "Palette: cool dawn pink and lavender cloud base, dark ridges, silver river.",
+  "Palette: deep forest green, charcoal shadow, warm amber sun shaft.",
 ] as const;

@@ -5321,18 +5321,21 @@ export default function HomePage() {
                                 display: "inline-flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                width: 14,
-                                height: 14,
-                                borderRadius: "50%",
-                                background: "rgba(255,255,255,0.18)",
+                                gap: "2px",
+                                padding: "2px 5px",
+                                borderRadius: "10px",
+                                background: "rgba(217,119,6,0.13)",
+                                border: "1px solid rgba(217,119,6,0.38)",
+                                color: "#D97706",
                                 fontSize: 9,
                                 fontWeight: "bold",
                                 cursor: "help",
                                 flexShrink: 0,
-                                lineHeight: 1,
+                                lineHeight: 1.3,
+                                marginRight: "calc(12.5% - 7px)",
                               }}
                             >
-                              ?
+                              ◈ 2
                               <span className="master-token-tooltip-text">
                                 <span className="master-token-tooltip-line">
                                   {chrome.translatorMasterCostLabel}
