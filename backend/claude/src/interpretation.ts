@@ -448,7 +448,7 @@ INSTRUCTIONS:
   SYMBOLS_MIN: optional one short line only if strictly needed (max one symbol reference); prioritize personal thread over symbolism.
   [SNAPSHOT_END]
 - Snapshot must be concise (80-140 words total), high-signal, specific, and personal-first (no vague generic phrasing).
-- OUTPUT LANGUAGE — FINAL OVERRIDE: Write your ENTIRE response in ${getLanguageName(language)} without exception. If the thread context or prior consultations contain text in another language (Italian, English, Portuguese, etc.), treat them as historical data only — NEVER adopt their language for your output. The selected language is ${getLanguageName(language)}.
+- OUTPUT LANGUAGE — three-step rule: (1) Detect the language of the user's question (the quoted string above). If it is clearly identifiable, respond in that language — this is the strongest signal. (2) If the question is ambiguous, too short, or mixed, fall back to the user's app-selected language: ${getLanguageName(language)}. (3) NEVER use the language of the prior consultation context to decide your output language — that text is historical content only. Example: if prior context is in Italian but the user just asked in Spanish, respond in Spanish.
 `.trim();
   return { textsBlock, questionBlock, isMasterCombined, question };
 }
