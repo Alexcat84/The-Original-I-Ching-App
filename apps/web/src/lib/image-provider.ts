@@ -469,8 +469,9 @@ function togetherImageGenerationOptionalFields(seedBase?: string): {
     // Deterministic per-consultation seed to increase scene diversity and reproducibility.
     fields.seed = fnv1a32(seedBase) % 2_147_483_647;
   }
+  // Default to jpeg to keep b64_json payload small if Together returns base64 instead of a URL.
   const fmt = process.env.TOGETHER_OUTPUT_FORMAT?.trim().toLowerCase();
-  if (fmt === "jpeg" || fmt === "png") fields.output_format = fmt;
+  fields.output_format = fmt === "png" ? "png" : "jpeg";
   return fields;
 }
 
@@ -493,9 +494,10 @@ async function generateWithTogether(
   debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
   const model =
     process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.2-dev";
-  // FLUX.1-schnell: 1–12 steps. FLUX.1-dev / FLUX.2-dev: up to 50.
+  // FLUX.1-schnell: optimal 4 steps (max 12). FLUX.1-dev / FLUX.2-dev: 20 default (max 50).
+  // 30 steps for FLUX.2-dev at 1504×1504 takes 40–60s; 20 steps keeps it under 35s.
   const isSchnell = model.toLowerCase().includes("schnell");
-  const defaultSteps = isSchnell ? 10 : 30;
+  const defaultSteps = isSchnell ? 4 : 20;
   const maxSteps = isSchnell ? 12 : 50;
   const stepsRaw = Number(process.env.TOGETHER_IMAGE_STEPS ?? String(defaultSteps));
   const steps = Math.min(maxSteps, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : defaultSteps));
@@ -521,7 +523,7 @@ async function generateWithTogether(
     seedBase: seedBase ?? null,
   });
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 45_000);
+  const timeoutId = setTimeout(() => controller.abort(), 65_000);
   let res: Response;
   try {
     res = await fetch("https://api.together.xyz/v1/images/generations", {
@@ -538,7 +540,6 @@ async function generateWithTogether(
         height: safeHeight,
         n: 1,
         steps,
-        response_format: "url",
         ...optionalApi,
       }),
       signal: controller.signal,
