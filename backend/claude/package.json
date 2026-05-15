@@ -22,7 +22,7 @@
     "@iching-oracle/iching-engine": "file:../../packages/iching-engine",
     "@iching-oracle/image-engine": "file:../../packages/image-engine",
     "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
-    "@sentry/nextjs": "^10.53.1",
+    "@sentry/node": "^8",
     "zod": "^3.24.2"
   },
   "devDependencies": {

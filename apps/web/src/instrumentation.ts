@@ -1,3 +1,4 @@
+import "@/env"; // activa validación Zod de variables de entorno en cada cold start
 import * as Sentry from "@sentry/nextjs";
 
 export async function register() {

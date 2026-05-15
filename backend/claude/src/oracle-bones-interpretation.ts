@@ -1,8 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
+import * as Sentry from "@sentry/node";
 import type { SessionContext } from "@iching-oracle/context-engine";
 import type { OracleBonesCastResult } from "@iching-oracle/oracle-bones-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
+import { createAnthropicClient, callAnthropicWithRetry } from "./anthropic-client.js";
 import { buildHistoricalContext, type ResponseMode } from "./interpretation-context.js";
 import { loadClaudeEnv } from "./env.js";
 import {
@@ -338,44 +340,43 @@ export async function generateOracleBonesInterpretation(
 
   if (ANTHROPIC_API_KEY) {
     try {
-      const client = new Anthropic({
-        apiKey: ANTHROPIC_API_KEY,
-        defaultHeaders: {
-          "anthropic-beta": "prompt-caching-2024-07-31",
+      const client = createAnthropicClient(ANTHROPIC_API_KEY);
+      const response = await callAnthropicWithRetry(
+        client,
+        {
+          model,
+          max_tokens: maxTokens,
+          system: [
+            {
+              type: "text",
+              text: systemPrompt,
+              cache_control: { type: "ephemeral" },
+            },
+          ],
+          messages: [
+            {
+              role: "user",
+              content: [
+                ...(contextBlock
+                  ? [
+                      {
+                        type: "text" as const,
+                        text: contextBlock,
+                        cache_control: { type: "ephemeral" as const },
+                      },
+                    ]
+                  : []),
+                {
+                  type: "text",
+                  text: consultBlock,
+                  cache_control: { type: "ephemeral" },
+                },
+              ],
+            },
+          ],
         },
-      });
-      const response = await client.messages.create({
-        model,
-        max_tokens: maxTokens,
-        system: [
-          {
-            type: "text",
-            text: systemPrompt,
-            cache_control: { type: "ephemeral" },
-          },
-        ],
-        messages: [
-          {
-            role: "user",
-            content: [
-              ...(contextBlock
-                ? [
-                    {
-                      type: "text" as const,
-                      text: contextBlock,
-                      cache_control: { type: "ephemeral" as const },
-                    },
-                  ]
-                : []),
-              {
-                type: "text",
-                text: consultBlock,
-                cache_control: { type: "ephemeral" },
-              },
-            ],
-          },
-        ],
-      });
+        { tier, language, method: "oracle-bones" },
+      );
       const fullText = response.content
         .filter((b) => b.type === "text")
         .map((b) => (b as { text: string }).text)
@@ -413,6 +414,10 @@ export async function generateOracleBonesInterpretation(
       }
     } catch (err) {
       console.warn("[generateOracleBonesInterpretation] Anthropic failed, trying fallback chain", err);
+      Sentry.captureException(err, {
+        tags: { provider: "anthropic", tier, language, method: "oracle-bones" },
+        extra: { verdict: cast.verdict, medium: cast.medium },
+      });
     }
   }
 
@@ -477,6 +482,10 @@ export async function generateOracleBonesInterpretation(
       }
     } catch (err) {
       console.warn("[generateOracleBonesInterpretation] OpenRouter failed, trying Groq fallback", err);
+      Sentry.captureException(err, {
+        tags: { provider: "openrouter", tier, language, method: "oracle-bones" },
+        extra: { verdict: cast.verdict, medium: cast.medium },
+      });
     }
   }
 

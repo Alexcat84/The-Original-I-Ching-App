@@ -1,5 +1,6 @@
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from "@sentry/node";
 import Anthropic from "@anthropic-ai/sdk";
+import { createAnthropicClient, callAnthropicWithRetry } from "./anthropic-client.js";
 import type { SessionContext } from "@iching-oracle/context-engine";
 import type { CastingMethod, CastResult } from "@iching-oracle/iching-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
@@ -537,74 +538,56 @@ export async function generateInterpretation(
 
   if (ANTHROPIC_API_KEY) {
     try {
-      const client = new Anthropic({
-        apiKey: ANTHROPIC_API_KEY,
-        defaultHeaders: {
-          "anthropic-beta": "prompt-caching-2024-07-31",
+      const client = createAnthropicClient(ANTHROPIC_API_KEY);
+
+      const response = await callAnthropicWithRetry(
+        client,
+        {
+          model,
+          max_tokens: maxTokens,
+          system: [
+            {
+              type: "text",
+              text: promptBlocks.stableSystemBlock,
+              cache_control: { type: "ephemeral" },
+            },
+          ],
+          messages: [
+            {
+              role: "user",
+              content: [
+                {
+                  type: "text",
+                  text: promptBlocks.stableLibraryBlock,
+                  cache_control: { type: "ephemeral" },
+                },
+                ...(promptBlocks.historicalContextBlock
+                  ? [
+                      {
+                        type: "text" as const,
+                        text: promptBlocks.historicalContextBlock,
+                        cache_control: { type: "ephemeral" as const },
+                      },
+                    ]
+                  : []),
+                ...(promptBlocks.currentContextBlock
+                  ? [
+                      {
+                        type: "text" as const,
+                        text: promptBlocks.currentContextBlock,
+                      },
+                    ]
+                  : []),
+                {
+                  type: "text" as const,
+                  text: promptBlocks.dynamicQuestionBlock,
+                },
+              ],
+            },
+          ],
         },
-      });
-
-      async function callAnthropicWithRetry(params: any, maxRetries = 2) {
-        for (let attempt = 0; attempt <= maxRetries; attempt++) {
-          try {
-            return await client.messages.create(params);
-          } catch (error: any) {
-            if (error.status === 429 && attempt < maxRetries) {
-              const retryAfter = parseInt(error.headers?.['retry-after'] ?? '5');
-              const delay = Math.min(retryAfter * 1000, (attempt + 1) * 3000);
-              await new Promise(resolve => setTimeout(resolve, delay));
-              continue;
-            }
-            throw error;
-          }
-        }
-        throw new Error("Unreachable");
-      }
-
-      const response = await callAnthropicWithRetry({
-        model,
-        max_tokens: maxTokens,
-        system: [
-          {
-            type: "text",
-            text: promptBlocks.stableSystemBlock,
-            cache_control: { type: "ephemeral" },
-          },
-        ],
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: promptBlocks.stableLibraryBlock,
-                cache_control: { type: "ephemeral" },
-              },
-              ...(promptBlocks.historicalContextBlock
-                ? [
-                    {
-                      type: "text",
-                      text: promptBlocks.historicalContextBlock,
-                      cache_control: { type: "ephemeral" },
-                    },
-                  ]
-                : []),
-              ...(promptBlocks.currentContextBlock
-                ? [
-                    {
-                      type: "text",
-                      text: promptBlocks.currentContextBlock,
-                    },
-                  ]
-                : []),
-              {
-                type: "text",
-                text: promptBlocks.dynamicQuestionBlock,
-              },
-            ],
-          },
-        ],
-      });
+        { tier, language, method: resolvedCastingMethod ?? "iching" },
+      );
 
       const fullText = response.content
         .filter((b) => b.type === "text")
