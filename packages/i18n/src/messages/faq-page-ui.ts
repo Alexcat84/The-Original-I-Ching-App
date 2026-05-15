@@ -232,8 +232,8 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "tokens-packs",
     question: "How do tokens, packs, and the free tier work?",
     answer:
-      "Consultations consume tokens according to your active pack. The guide explains free trial allowances, pack sizes, and how balances work with your account. Purchases and renewals are governed by the Terms.",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "For up-to-date information on packs, token prices, and your current balance, open the Token Center from the app header. It shows your available tokens, the thread limit per plan, and a direct link to purchase.",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -275,8 +275,8 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "thread-depth",
     question: "Why can I sometimes not “deepen” further in the same chat?",
     answer:
-      "Each chat thread allows a limited chain of readings depending on your plan. When the cap is reached, start a new session for a fresh thread. The guide covers Chats, new session, and plan limits.",
-    related: ["userGuide", "tokenPacks"],
+      "Each chat thread allows a limited chain of readings depending on your plan. When the cap is reached, start a new session. Check your current thread limit in the Token Center (app header).",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -303,8 +303,8 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "purchases-legal",
     question: "Where can I find billing information and service terms?",
     answer:
-      "Commercial terms and acceptable use are in the Terms of Service. Token packs and checkout flows are summarized in the guide and pricing pages.",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "For billing and token purchases, open the Token Center from the app header. Commercial terms and acceptable use are in the Terms of Service.",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -387,8 +387,8 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "tokens-packs",
     question: "¿Cómo funcionan los tokens, los packs y el plan gratuito?",
     answer:
-      "Cada consulta consume tokens según tu pack activo. La guía explica el saldo de prueba, los tamaños de pack y cómo se acumula el saldo con tu cuenta. Las compras y renovaciones se rigen por los Términos del servicio.",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "Para información actualizada sobre packs, precios y tu saldo de tokens, abre el Centro de tokens desde la cabecera de la app. Ahí encontrarás tus tokens disponibles, el límite por hilo según tu plan y el enlace directo para comprar.",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -430,8 +430,8 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "thread-depth",
     question: "¿Por qué a veces no puedo “profundizar” más en el mismo chat?",
     answer:
-      "Cada hilo admite un número limitado de lecturas encadenadas según tu plan. Al llegar al tope, abre una nueva sesión. La guía explica Chats, nueva sesión y límites por plan.",
-    related: ["userGuide", "tokenPacks"],
+      "Cada hilo admite un número limitado de lecturas encadenadas según tu plan. Al llegar al tope, abre una nueva sesión. Consulta tu límite actual por hilo en el Centro de tokens (cabecera de la app).",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -459,8 +459,8 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿Dónde encuentro información sobre facturación y condiciones del servicio?",
     answer:
-      "Las condiciones comerciales y el uso aceptable están en los Términos del servicio. Los packs de tokens y el flujo de compra se resumen en la guía y en la página de precios.",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "Para información sobre facturación y compra de tokens, abre el Centro de tokens desde la cabecera de la app. Las condiciones comerciales y el uso aceptable están en los Términos del servicio.",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -526,8 +526,8 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "tokens-packs",
     question: "كيف تعمل الرموز والباقات والطبقة المجانية؟",
     answer:
-      "تستهلك كل استشارة رموزًا وفق باقتك النشطة. يوضح الدليل رصيد التجربة المجانية، أحجام الباقات، وكيف يتراكم الرصيد مع حسابك. تخضع المشتريات والتجديدات لشروط الخدمة.",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "للاطلاع على معلومات محدّثة حول الباقات والأسعار ورصيد التوكنات، افتح مركز التوكنات من ترويسة التطبيق. يعرض رصيدك الحالي وحد الخيط لكل خطة ورابطاً مباشراً للشراء.",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -568,8 +568,8 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "thread-depth",
     question: "لماذا لا أستطيع أحيانًا «التعمّق» أكثر في نفس المحادثة؟",
     answer:
-      "يسمح كل خيط بعدد محدود من القراءات المتسلسلة حسب خطتك. عند بلوغ الحد، ابدأ جلسة جديدة. يشرح الدليل المحادثات والجلسة الجديدة وحدود كل خطة.",
-    related: ["userGuide", "tokenPacks"],
+      "يسمح كل خيط بعدد محدود من القراءات المتسلسلة حسب خطتك. عند بلوغ الحد، ابدأ جلسة جديدة. تحقق من حدك الحالي للخيط في مركز التوكنات (ترويسة التطبيق).",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -596,8 +596,8 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "purchases-legal",
     question: "أين أجد معلومات الفوترة وشروط الخدمة؟",
     answer:
-      "الشروط التجارية والاستخدام المقبول موجودة في شروط الخدمة. كما تُلخّص صفحة الباقات والأسعار آلية الشراء والدفع.",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "لمعلومات الفوترة وشراء التوكنات، افتح مركز التوكنات من ترويسة التطبيق. الشروط التجارية والاستخدام المقبول موجودة في شروط الخدمة.",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -662,8 +662,8 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "tokens-packs",
     question: "टोकन, पैक और फ्री टियर कैसे काम करते हैं?",
     answer:
-      "हर परामर्श आपके सक्रिय पैक के अनुसार टोकन खर्च करता है। गाइड में फ्री ट्रायल बैलेंस, पैक साइज़ और बैलेंस कैसे जुड़ता है, यह समझाया गया है। खरीद और नवीनीकरण सेवा शर्तों के अधीन हैं।",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "पैक, टोकन कीमतों और अपने मौजूदा बैलेंस की अप-टू-डेट जानकारी के लिए, ऐप हेडर से टोकन सेंटर खोलें। वहाँ आपके उपलब्ध टोकन, प्रति-थ्रेड सीमा और खरीद का सीधा लिंक दिखाई देगा।",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -705,8 +705,8 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "thread-depth",
     question: "कभी-कभी मैं उसी चैट में आगे “deepen” क्यों नहीं कर पाता/पाती?",
     answer:
-      "आपकी योजना के अनुसार हर थ्रेड में सीमित संख्या में रीडिंग की श्रृंखला मिलती है। सीमा पूरी होने पर नई सेशन शुरू करें।",
-    related: ["userGuide", "tokenPacks"],
+      "आपकी योजना के अनुसार हर थ्रेड में सीमित संख्या में रीडिंग की श्रृंखला मिलती है। सीमा पूरी होने पर नई सेशन शुरू करें। अपनी मौजूदा थ्रेड सीमा टोकन सेंटर (ऐप हेडर) में देखें।",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -733,8 +733,8 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "purchases-legal",
     question: "रिफंड, बिलिंग और सेवा शर्तें कहाँ हैं?",
     answer:
-      "वाणिज्यिक शर्तें और स्वीकार्य उपयोग सेवा शर्तों में हैं। टोकन पैक और चेकआउट प्रवाह गाइड व प्राइसिंग पेज में सारांशित हैं।",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "बिलिंग और टोकन खरीद की जानकारी के लिए, ऐप हेडर से टोकन सेंटर खोलें। वाणिज्यिक शर्तें और स्वीकार्य उपयोग सेवा शर्तों में हैं।",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -799,8 +799,8 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "tokens-packs",
     question: "トークン、パック、無料プランはどのように機能しますか？",
     answer:
-      "各相談はアクティブなパックに応じてトークンを消費します。ガイドでは無料トライアル残高、パックのサイズ、残高の積み重ね方を説明しています。購入と更新は利用規約に基づきます。",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "パック、トークン価格、現在の残高の最新情報は、アプリのヘッダーからトークンセンターを開いてご確認ください。利用可能なトークン数、プランごとのスレッド制限、購入への直接リンクが表示されます。",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -840,8 +840,8 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "thread-depth",
     question: "なぜ同じチャットで「深める」ことができないことがありますか？",
     answer:
-      "各スレッドはプランに応じた連鎖した読みの回数に制限があります。上限に達したら、新しいセッションを開始してください。ガイドではチャット、新しいセッション、プランの制限について説明しています。",
-    related: ["userGuide", "tokenPacks"],
+      "各スレッドはプランに応じた連鎖した読みの回数に制限があります。上限に達したら、新しいセッションを開始してください。現在のスレッド制限はトークンセンター（アプリのヘッダー）で確認できます。",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -868,8 +868,8 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "purchases-legal",
     question: "払い戻し、請求、サービス規約はどこにありますか？",
     answer:
-      "商業条件と許容使用は利用規約に記載されています。トークンパックとチェックアウトの流れはガイドと料金ページにまとめられています。",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "請求やトークン購入の情報は、アプリのヘッダーからトークンセンターを開いてご確認ください。商業条件と許容使用は利用規約に記載されています。",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -935,8 +935,8 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "tokens-packs",
     question: "代币、套餐和免费层级是如何运作的？",
     answer:
-      "每次咨询根据您激活的套餐消耗代币。指南说明了试用余额、套餐大小以及余额如何累积。购买和续订受服务条款约束。",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "如需了解套餐、代币价格及您当前余额的最新信息，请从应用顶栏打开代币中心。您可以在那里查看可用代币数、每个计划的线程限制以及直接购买链接。",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -976,8 +976,8 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "thread-depth",
     question: "为什么有时我无法在同一个聊天中继续「深入」？",
     answer:
-      "每个对话线程根据您的套餐允许有限次数的连锁解读。达到上限后，请开启新会话。指南介绍了聊天、新会话和套餐限制。",
-    related: ["userGuide", "tokenPacks"],
+      "每个对话线程根据您的套餐允许有限次数的连锁解读。达到上限后，请开启新会话。您可在代币中心（应用顶栏）查看当前的线程限制。",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -1004,8 +1004,8 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "purchases-legal",
     question: "账单信息和服务条款在哪里？",
     answer:
-      "商业条款和可接受使用规定请见服务条款。代币套餐和结账流程在指南和定价页面中有所概述。",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "如需账单和代币购买信息，请从应用顶栏打开代币中心。商业条款和可接受使用规定请见服务条款。",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -1069,8 +1069,8 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "tokens-packs",
     question: "토큰, 팩, 무료 티어는 어떻게 작동하나요?",
     answer:
-      "각 상담은 활성 팩에 따라 토큰을 소비합니다. 가이드에서는 무료 체험 잔액, 팩 크기, 잔액 적립 방식을 설명합니다. 구매 및 갱신은 서비스 약관의 적용을 받습니다.",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "팩, 토큰 가격 및 현재 잔액에 대한 최신 정보는 앱 헤더에서 토큰 센터를 여세요. 사용 가능한 토큰, 플랜별 스레드 한도, 구매 직접 링크를 확인할 수 있습니다.",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -1111,8 +1111,8 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "thread-depth",
     question: "왜 때때로 같은 채팅에서 더 이상 '심화'할 수 없나요?",
     answer:
-      "각 스레드는 플랜에 따라 제한된 수의 연쇄 해석을 허용합니다. 한도에 도달하면 새 세션을 시작하세요. 가이드에서 채팅, 새 세션, 플랜 한도를 설명합니다.",
-    related: ["userGuide", "tokenPacks"],
+      "각 스레드는 플랜에 따라 제한된 수의 연쇄 해석을 허용합니다. 한도에 도달하면 새 세션을 시작하세요. 현재 스레드 한도는 토큰 센터(앱 헤더)에서 확인하세요.",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -1139,8 +1139,8 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "purchases-legal",
     question: "청구 정보와 서비스 약관은 어디에 있나요?",
     answer:
-      "상업적 조건 및 허용 가능한 사용은 서비스 약관에 있습니다. 토큰 팩과 결제 흐름은 가이드와 가격 페이지에 요약되어 있습니다.",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "청구 및 토큰 구매 정보는 앱 헤더에서 토큰 센터를 여세요. 상업적 조건 및 허용 가능한 사용은 서비스 약관에 있습니다.",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -1204,8 +1204,8 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "tokens-packs",
     question: "Como funcionam os tokens, os pacotes e o nível gratuito?",
     answer:
-      "Cada consulta consome tokens conforme o seu pacote ativo. O guia explica os créditos de teste, os tamanhos dos pacotes e como o saldo se acumula. Compras e renovações são regidas pelos Termos.",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "Para informações atualizadas sobre pacotes, preços e o seu saldo de tokens, abra o Centro de tokens no cabeçalho da app. Verá os tokens disponíveis, o limite por fio de cada plano e um link direto para comprar.",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -1247,8 +1247,8 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "thread-depth",
     question: "Por que às vezes não consigo «aprofundar» mais no mesmo chat?",
     answer:
-      "Cada fio admite um número limitado de leituras encadeadas conforme o seu plano. Ao atingir o limite, abra uma nova sessão. O guia explica Chats, nova sessão e limites por plano.",
-    related: ["userGuide", "tokenPacks"],
+      "Cada fio admite um número limitado de leituras encadeadas conforme o seu plano. Ao atingir o limite, abra uma nova sessão. Consulte o seu limite por fio atual no Centro de tokens (cabeçalho da app).",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -1275,8 +1275,8 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "purchases-legal",
     question: "Onde encontro informações de faturação e termos de serviço?",
     answer:
-      "As condições comerciais e o uso aceitável estão nos Termos de Serviço. Os pacotes de tokens e o fluxo de compra estão resumidos no guia e na página de preços.",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "Para informações de faturação e compra de tokens, abra o Centro de tokens no cabeçalho da app. As condições comerciais e o uso aceitável estão nos Termos de Serviço.",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -1341,8 +1341,8 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "tokens-packs",
     question: "Wie funktionieren Tokens, Packs und das Gratis-Tier?",
     answer:
-      "Jede Beratung verbraucht Tokens gemäß Ihrem aktiven Pack. Der Leitfaden erklärt die Testguthaben, Pack-Größen und wie sich das Guthaben anhäuft. Käufe und Verlängerungen unterliegen den Nutzungsbedingungen.",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "Aktuelle Informationen zu Packs, Token-Preisen und Ihrem Guthaben finden Sie im Token-Center, das Sie über den App-Header öffnen können. Dort sehen Sie Ihre verfügbaren Tokens, das Thread-Limit je Plan und einen Direktlink zum Kauf.",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -1386,8 +1386,8 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Warum kann ich manchmal im selben Chat nicht weiter «vertiefen»?",
     answer:
-      "Jeder Thread erlaubt eine begrenzte Anzahl verketteter Lesungen je nach Plan. Wenn das Limit erreicht ist, starten Sie eine neue Sitzung. Der Leitfaden erklärt Chats, neue Sitzung und Planlimits.",
-    related: ["userGuide", "tokenPacks"],
+      "Jeder Thread erlaubt eine begrenzte Anzahl verketteter Lesungen je nach Plan. Wenn das Limit erreicht ist, starten Sie eine neue Sitzung. Ihr aktuelles Thread-Limit finden Sie im Token-Center (App-Header).",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -1414,8 +1414,8 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "purchases-legal",
     question: "Wo finde ich Abrechnungsinformationen und Nutzungsbedingungen?",
     answer:
-      "Kommerzielle Bedingungen und zulässige Nutzung finden sich in den Nutzungsbedingungen. Token-Packs und Kaufabläufe sind im Leitfaden und auf der Preisseite zusammengefasst.",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "Für Abrechnungs- und Token-Kaufinformationen öffnen Sie das Token-Center über den App-Header. Kommerzielle Bedingungen und zulässige Nutzung finden sich in den Nutzungsbedingungen.",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -1481,8 +1481,8 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "tokens-packs",
     question: "Come funzionano i token, i pacchetti e il piano gratuito?",
     answer:
-      "Ogni consultazione consuma token in base al tuo pacchetto attivo. La guida spiega il credito di prova, le dimensioni dei pacchetti e come il saldo si accumula. Acquisti e rinnovi sono regolati dai Termini.",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "Per informazioni aggiornate su pacchetti, prezzi dei token e il tuo saldo attuale, apri il Centro token dall'intestazione dell'app. Troverai i token disponibili, il limite per filo per piano e un link diretto all'acquisto.",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -1526,8 +1526,8 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "Perché a volte non riesco ad «approfondire» ulteriormente nella stessa chat?",
     answer:
-      "Ogni filo ammette un numero limitato di letture concatenate in base al tuo piano. Quando si raggiunge il limite, avvia una nuova sessione. La guida spiega Chat, nuova sessione e limiti per piano.",
-    related: ["userGuide", "tokenPacks"],
+      "Ogni filo ammette un numero limitato di letture concatenate in base al tuo piano. Quando si raggiunge il limite, avvia una nuova sessione. Controlla il tuo limite per filo attuale nel Centro token (intestazione dell'app).",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -1555,8 +1555,8 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "Dove trovo informazioni sulla fatturazione e sulle condizioni del servizio?",
     answer:
-      "Le condizioni commerciali e l'uso accettabile si trovano nei Termini di Servizio. I pacchetti di token e i flussi di acquisto sono riassunti nella guida e nella pagina dei prezzi.",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "Per la fatturazione e l'acquisto di token, apri il Centro token dall'intestazione dell'app. Le condizioni commerciali e l'uso accettabile si trovano nei Termini di Servizio.",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
@@ -1622,8 +1622,8 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Comment fonctionnent les tokens, les packs et le niveau gratuit ?",
     answer:
-      "Chaque consultation consomme des tokens selon votre pack actif. Le guide explique le solde d'essai, les tailles de pack et comment le solde s'accumule. Les achats et renouvellements sont régis par les Conditions.",
-    related: ["tokenPacks", "pricing", "termsOfService"],
+      "Pour des informations à jour sur les packs, les prix des tokens et votre solde actuel, ouvrez le Centre de tokens depuis l'en-tête de l'app. Vous y trouverez vos tokens disponibles, la limite de fil par plan et un lien direct pour acheter.",
+    related: ["tokenPacks"],
   },
   {
     id: "data-reliability",
@@ -1668,8 +1668,8 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Pourquoi parfois je ne peux pas «approfondir» davantage dans le même chat ?",
     answer:
-      "Chaque fil admet un nombre limité de lectures enchaînées selon votre plan. Lorsque la limite est atteinte, démarrez une nouvelle session. Le guide explique les Chats, nouvelle session et les limites par plan.",
-    related: ["userGuide", "tokenPacks"],
+      "Chaque fil admet un nombre limité de lectures enchaînées selon votre plan. Lorsque la limite est atteinte, démarrez une nouvelle session. Vérifiez votre limite de fil actuelle dans le Centre de tokens (en-tête de l'app).",
+    related: ["tokenPacks"],
   },
   {
     id: "chats-drawer",
@@ -1697,8 +1697,8 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Où trouver les informations de facturation et les conditions de service ?",
     answer:
-      "Les conditions commerciales et l'utilisation acceptable sont dans les Conditions de Service. Les packs de tokens et les flux de paiement sont résumés dans le guide et la page des tarifs.",
-    related: ["termsOfService", "tokenPacks", "pricing"],
+      "Pour les informations de facturation et d'achat de tokens, ouvrez le Centre de tokens depuis l'en-tête de l'app. Les conditions commerciales et l'utilisation acceptable sont dans les Conditions de Service.",
+    related: ["tokenPacks", "termsOfService"],
   },
   
   {
