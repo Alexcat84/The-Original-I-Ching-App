@@ -3,7 +3,7 @@ import type { SessionContext } from "@iching-oracle/context-engine";
 import type { OracleBonesCastResult } from "@iching-oracle/oracle-bones-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
-import { buildContextBlock, type ResponseMode } from "./interpretation-context.js";
+import { buildHistoricalContext, type ResponseMode } from "./interpretation-context.js";
 import { loadClaudeEnv } from "./env.js";
 import {
   oracleBonesFallbackProse,
@@ -318,7 +318,7 @@ export async function generateOracleBonesInterpretation(
   const model = getAnthropicModelId(env);
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
   const contextBlock =
-    hasContext && context ? buildContextBlock(context, language, mode) : "";
+    hasContext && context ? buildHistoricalContext(context.previousConsultations, language, mode) : "";
   const consultBlock = buildOracleBonesUserContent(
     cast,
     tier,

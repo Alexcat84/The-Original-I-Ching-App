@@ -5,7 +5,7 @@ export type ResponseMode = "directo" | "ritual" | "profundizar";
 export function buildHistoricalContext(
   consultations: SessionContext["previousConsultations"],
   language: string,
-  mode: ResponseMode
+  _mode: ResponseMode
 ): string {
   if (consultations.length === 0) return "";
   
