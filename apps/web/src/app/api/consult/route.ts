@@ -518,10 +518,12 @@ export async function POST(req: Request) {
     const isDeepening = Boolean(body.isDeepening);
     let previousRows = mapHistoryToRows(body.history);
 
-    // For deepening, use DB rows bound to (user_id, session_id) as the source
-    // of truth for context. Client-provided history is never authoritative.
+    // Always look up the session in DB when a valid UUID is present — never
+    // trust the client's isDeepening flag alone. A stale or recycled sessionId
+    // sent with isDeepening=false would otherwise bypass all depth checks and
+    // let a new consultation slip into an already-full session (silent overflow).
     let authorizedDepth = previousRows.length;
-    if (isDeepening && isPersistableUuid(sessionId) && getSupabaseAdmin()) {
+    if (isPersistableUuid(sessionId) && getSupabaseAdmin()) {
       const sessionWithConsultations = await getUserSessionWithConsultations(
         authedUserId,
         sessionId,
@@ -531,15 +533,19 @@ export async function POST(req: Request) {
           sessionWithConsultations.consultations,
         );
         authorizedDepth = previousRows.length;
-      } else {
+      } else if (isDeepening) {
+        // Client claims deepening but session not found in DB — treat as fresh.
         previousRows = [];
         authorizedDepth = 0;
       }
     }
 
+    // Use DB-derived depth as the authoritative signal; if the DB shows existing
+    // consultations, enforce the depth limit regardless of what isDeepening says.
+    const effectiveIsDeepening = isDeepening || authorizedDepth > 0;
     if (
       shouldBlockDeepening({
-        isDeepening,
+        isDeepening: effectiveIsDeepening,
         historyLength: authorizedDepth,
         sessionLimit: maxDepth,
       })
