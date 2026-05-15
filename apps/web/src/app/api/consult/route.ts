@@ -520,7 +520,7 @@ export async function POST(req: Request) {
 
     // For deepening, use DB rows bound to (user_id, session_id) as the source
     // of truth for context. Client-provided history is never authoritative.
-    let authorizedDepth = filterRowsForOracleContext(previousRows, oracleMode).length;
+    let authorizedDepth = previousRows.length;
     if (isDeepening && isPersistableUuid(sessionId) && getSupabaseAdmin()) {
       const sessionWithConsultations = await getUserSessionWithConsultations(
         authedUserId,
@@ -530,9 +530,7 @@ export async function POST(req: Request) {
         previousRows = mapStoredConsultationsToRows(
           sessionWithConsultations.consultations,
         );
-        // Depth is counted per oracle type so I Ching and Oracle Bones each get
-        // the full session limit independently within the same thread.
-        authorizedDepth = filterRowsForOracleContext(previousRows, oracleMode).length;
+        authorizedDepth = previousRows.length;
       } else {
         previousRows = [];
         authorizedDepth = 0;
