@@ -3007,6 +3007,11 @@ button:disabled {
   min-width: min(100%, 11rem);
 }
 
+.reading-record-visual-row .hexagram-card {
+  flex: 1 1 14rem;
+  min-width: min(100%, 12rem);
+}
+
 .reading-visual-pane {
   flex: 1 1 10rem;
   min-width: min(100%, 200px);

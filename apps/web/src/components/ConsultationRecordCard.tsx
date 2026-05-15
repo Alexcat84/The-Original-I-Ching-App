@@ -2,6 +2,12 @@
 
 import { getIchingMutationRuleLabel, parseAppLocale } from "@iching-oracle/i18n";
 
+type OracleBonesCardData = {
+  verdictStr: string;
+  medium: "turtle" | "ox";
+  positiveCharge: string;
+};
+
 type Props = {
   consultationId: string;
   question: string;
@@ -12,6 +18,8 @@ type Props = {
   mutationRule: string;
   oracleType?: "iching" | "oracle_bones";
   locale?: string;
+  createdAt?: number;
+  oracleBones?: OracleBonesCardData;
 };
 
 function formatConsultRef(id: string): string {
@@ -30,8 +38,9 @@ export function ConsultationRecordCard({
   mutationRule,
   oracleType = "iching",
   locale = "es",
+  createdAt,
+  oracleBones,
 }: Props) {
-  if (oracleType === "oracle_bones") return null;
   const localeKey = locale.slice(0, 2).toLowerCase();
   const labels = {
     es: {
@@ -42,6 +51,11 @@ export function ConsultationRecordCard({
       thread: "En este hilo:",
       reading: "Tirada",
       question: "Pregunta asociada",
+      verdict: "Veredicto:",
+      medium: "Medio:",
+      turtle: "Caparazón de tortuga",
+      ox: "Hueso de buey",
+      chargePlus: "Cargo +:",
       dateLocale: "es",
     },
     en: {
@@ -52,6 +66,11 @@ export function ConsultationRecordCard({
       thread: "In this thread:",
       reading: "Reading",
       question: "Associated question",
+      verdict: "Verdict:",
+      medium: "Medium:",
+      turtle: "Turtle shell",
+      ox: "Ox bone",
+      chargePlus: "Charge +:",
       dateLocale: "en",
     },
     pt: {
@@ -62,6 +81,11 @@ export function ConsultationRecordCard({
       thread: "Neste fio:",
       reading: "Tiragem",
       question: "Pergunta associada",
+      verdict: "Veredicto:",
+      medium: "Médium:",
+      turtle: "Casco de tartaruga",
+      ox: "Osso de boi",
+      chargePlus: "Carga +:",
       dateLocale: "pt",
     },
     fr: {
@@ -72,6 +96,11 @@ export function ConsultationRecordCard({
       thread: "Dans ce fil :",
       reading: "Tirage",
       question: "Question associée",
+      verdict: "Verdict :",
+      medium: "Médium :",
+      turtle: "Carapace de tortue",
+      ox: "Os de bœuf",
+      chargePlus: "Charge + :",
       dateLocale: "fr",
     },
     de: {
@@ -82,6 +111,11 @@ export function ConsultationRecordCard({
       thread: "In diesem Thread:",
       reading: "Lesung",
       question: "Zugehörige Frage",
+      verdict: "Urteil:",
+      medium: "Medium:",
+      turtle: "Schildkrötenpanzer",
+      ox: "Ochsenknochen",
+      chargePlus: "Ladung +:",
       dateLocale: "de",
     },
     it: {
@@ -92,6 +126,11 @@ export function ConsultationRecordCard({
       thread: "In questo thread:",
       reading: "Lettura",
       question: "Domanda associata",
+      verdict: "Verdetto:",
+      medium: "Medium:",
+      turtle: "Guscio di tartaruga",
+      ox: "Osso di bue",
+      chargePlus: "Carica +:",
       dateLocale: "it",
     },
     ja: {
@@ -102,6 +141,11 @@ export function ConsultationRecordCard({
       thread: "このスレッド:",
       reading: "占い",
       question: "関連する質問",
+      verdict: "判定:",
+      medium: "媒介:",
+      turtle: "亀甲",
+      ox: "牛骨",
+      chargePlus: "正荷:",
       dateLocale: "ja",
     },
     zh: {
@@ -112,6 +156,11 @@ export function ConsultationRecordCard({
       thread: "本线程：",
       reading: "占卜",
       question: "关联问题",
+      verdict: "判断：",
+      medium: "媒介：",
+      turtle: "龟甲",
+      ox: "牛骨",
+      chargePlus: "正命：",
       dateLocale: "zh",
     },
     ko: {
@@ -122,6 +171,11 @@ export function ConsultationRecordCard({
       thread: "이 스레드:",
       reading: "리딩",
       question: "연결된 질문",
+      verdict: "판결:",
+      medium: "매개체:",
+      turtle: "거북 등딱지",
+      ox: "소뼈",
+      chargePlus: "양전하:",
       dateLocale: "ko",
     },
     ar: {
@@ -132,6 +186,11 @@ export function ConsultationRecordCard({
       thread: "في هذا الخيط:",
       reading: "قراءة",
       question: "السؤال المرتبط",
+      verdict: "الحكم:",
+      medium: "الوسيط:",
+      turtle: "صدفة سلحفاة",
+      ox: "عظم ثور",
+      chargePlus: "الشحنة +:",
       dateLocale: "ar",
     },
     hi: {
@@ -142,6 +201,11 @@ export function ConsultationRecordCard({
       thread: "इस थ्रेड में:",
       reading: "रीडिंग",
       question: "संबंधित प्रश्न",
+      verdict: "निर्णय:",
+      medium: "माध्यम:",
+      turtle: "कछुए का खोल",
+      ox: "बैल की हड्डी",
+      chargePlus: "आरोप +:",
       dateLocale: "hi",
     },
   }[
@@ -152,11 +216,49 @@ export function ConsultationRecordCard({
 
   const ruleLocale = parseAppLocale(localeKey);
 
-  const dateStr = new Date().toLocaleDateString(labels.dateLocale, {
+  const dateObj = createdAt ? new Date(createdAt) : new Date();
+  const dateStr = dateObj.toLocaleDateString(labels.dateLocale, {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
+
+  if (oracleType === "oracle_bones" && oracleBones) {
+    const mediumLabel = oracleBones.medium === "turtle" ? labels.turtle : labels.ox;
+    return (
+      <aside className="consultation-record" aria-label={labels.panel}>
+        <h4 className="consultation-record-title">{labels.panel}</h4>
+        <p className="consultation-record-ref-code" translate="no">
+          {formatConsultRef(consultationId)}
+        </p>
+        <div className="consultation-record-grid" role="group" aria-label={labels.summary}>
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.verdict}</span>
+            <span className="consultation-record-value">{oracleBones.verdictStr}</span>
+          </p>
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.medium}</span>
+            <span className="consultation-record-value">{mediumLabel}</span>
+          </p>
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.chargePlus}</span>
+            <span className="consultation-record-value">{oracleBones.positiveCharge}</span>
+          </p>
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.thread}</span>
+            <span className="consultation-record-value">
+              {labels.reading} {sessionPosition} · {dateStr}
+            </span>
+          </p>
+        </div>
+        <p className="consultation-record-question">
+          <span className="consultation-record-question-label">{labels.question}</span>
+          {question.length > 160 ? `${question.slice(0, 160)}…` : question}
+        </p>
+      </aside>
+    );
+  }
+
   const trace =
     transformedHexagram != null
       ? `#${primaryHexagram} ${primaryHexagramChinese} → #${transformedHexagram} (之卦)`

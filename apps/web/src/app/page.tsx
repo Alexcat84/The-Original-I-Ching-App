@@ -4770,6 +4770,7 @@ export default function HomePage() {
                           mutationRule={entry.mutationRule}
                           oracleType={entry.oracleType ?? "iching"}
                           locale={locale}
+                          createdAt={entry.createdAt}
                         />
                         <ReadingOracleImage
                           imageUrl={entry.imageUrl}
@@ -4783,7 +4784,24 @@ export default function HomePage() {
                     ) : null}
                     {entry.oracleType === "oracle_bones" &&
                     entry.oracleBones ? (
-                      <div className="reading-grid reading-grid--bones-solo">
+                      <div className="reading-record-visual-row">
+                        <ConsultationRecordCard
+                          consultationId={entry.consultationId}
+                          question={entry.question}
+                          sessionPosition={entry.sessionPosition}
+                          primaryHexagram={0}
+                          primaryHexagramChinese=""
+                          transformedHexagram={null}
+                          mutationRule=""
+                          oracleType="oracle_bones"
+                          locale={locale}
+                          createdAt={entry.createdAt}
+                          oracleBones={{
+                            verdictStr: verdictLabel(entry.oracleBones.verdict, locale),
+                            medium: entry.oracleBones.medium,
+                            positiveCharge: entry.oracleBones.positiveCharge,
+                          }}
+                        />
                         <section className="hexagram-card">
                           <h3>{runtimeText.oracleBones}</h3>
                           <p className="meta-line">
