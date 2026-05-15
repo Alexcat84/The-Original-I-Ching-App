@@ -4,6 +4,8 @@ import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
 import { renderSvgToPng } from "@/lib/svg-to-png";
 import { applyReadingImageWatermark, injectSvgDataUrlWatermark } from "@/lib/watermark-image";
 import sharp from "sharp";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 type ImageAsset = {
   provider: ResolvedImageProvider;
@@ -22,13 +24,37 @@ function targetSizeForTier(lastPack: string): { width: number; height: number } 
   return { width: 1344, height: 768 };
 }
 
+async function readLocalPublicFile(relativePath: string): Promise<Buffer | null> {
+  const noSlash = relativePath.replace(/^\//, "");
+  const candidates = [
+    join(process.cwd(), "public", noSlash),
+    join(process.cwd(), "apps", "web", "public", noSlash),
+  ];
+  for (const candidate of candidates) {
+    try {
+      return await readFile(candidate);
+    } catch {
+      // try next candidate
+    }
+  }
+  return null;
+}
+
 async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undefined, tier: string): Promise<string> {
   if (!overlayDataUrl?.startsWith("data:image/svg+xml")) return baseUrl;
-  if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) return baseUrl;
   try {
-    const baseRes = await fetch(baseUrl, { signal: AbortSignal.timeout(30_000) });
-    if (!baseRes.ok) return baseUrl;
-    const baseBuf = Buffer.from(await baseRes.arrayBuffer());
+    let baseBuf: Buffer;
+    if (baseUrl.startsWith("http://") || baseUrl.startsWith("https://")) {
+      const baseRes = await fetch(baseUrl, { signal: AbortSignal.timeout(30_000) });
+      if (!baseRes.ok) return baseUrl;
+      baseBuf = Buffer.from(await baseRes.arrayBuffer());
+    } else if (baseUrl.startsWith("/")) {
+      const fileBuf = await readLocalPublicFile(baseUrl);
+      if (!fileBuf) return baseUrl;
+      baseBuf = fileBuf;
+    } else {
+      return baseUrl;
+    }
     const meta = await sharp(baseBuf).metadata();
     const width = meta.width ?? 1024;
     const height = meta.height ?? 1024;

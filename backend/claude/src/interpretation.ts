@@ -30,12 +30,15 @@ ABSOLUTE RULES:
 2. If there are previous consultations in context, explicitly reference earlier hexagrams for continuity.
 3. Never invent meanings — only connect texts with the question.
 4. Poetic, profound language in the requested language.
-5. TYPOGRAPHY — identical rules for Three Coins and Yarrow Stalks:
-   • ## for section headings only (Markdown bold; never add italic to headings).
-   • *italic* for every hexagram text quoted inline — Judgment, Image, line texts from the supplied JSON. Italic only, NEVER bold (**), NEVER bold-italic (***). This is the single most important typography rule.
-   • Plain text for your own prose — NEVER use bold (**) or any other markers that look like AI generation.
-   • > blockquote when reproducing the full primary Judgment; for line texts inside numbered lists use *italic*, not blockquote.
-   • Numbered lists (1. 2. …) for changing lines: *italic* line text followed by a plain sentence of application.
+5. TYPOGRAPHY — identical rules for all translators (Three Coins, Yarrow Stalks, all traditions):
+   • ## for section headings only. Never add italic or bold to headings.
+   • Plain text for all interpretive prose — NEVER use bold (**) or bold-italic (***).
+   • CONTAINERS: every literal translator text — without exception — must appear as > *italic blockquote*:
+     – Primary Judgment → > *judgment text*
+     – Image text (象傳) → > *image text*
+     – Each line oracle text in Líneas en movimiento → > *line text* (its own blockquote line inside the numbered item, followed by plain-text commentary outside the blockquote)
+     – Transformed hexagram Judgment (之卦) → > *judgment text*
+   • Numbered lists (1. 2. …) for changing lines: > *italic line text* as blockquote, then plain-text commentary below it (outside the blockquote).
    • MONOLINGUAL: entire response in one language only (the user's). Headings and glosses in that language; classical Chinese only inside blockquotes with immediate translation — never mix e.g. English titles in a Spanish answer.
 6. Never present unverified real-world facts (numbers, identities, private or biographical details) as certain truth.
 7. If the user asks for factual external data that cannot be verified from the provided I Ching texts, explicitly say you cannot verify that fact and then continue with symbolic interpretation.
@@ -204,13 +207,16 @@ function enforceIChingStructuralConsistency(
   const claimed = claimedChangingCount(text);
   if (claimed === null || claimed === expected) return text;
   const lineList = changingLinePositionsLabel(cast, language);
-  const correction = ichingStructuralCorrectionAppendix(
-    cast,
-    language,
+  // Log for observability; never expose structural notes in the user-facing response.
+  console.warn("[enforceIChingStructuralConsistency] count mismatch", {
     expected,
+    claimed,
     lineList,
-  );
-  return `${text}\n\n${correction}`;
+    correction: ichingStructuralCorrectionAppendix(cast, language, expected, lineList),
+    hexagram: cast.primaryHexagram?.number,
+    language,
+  });
+  return text;
 }
 
 function castingMethodNote(method: CastingMethod | undefined): string {

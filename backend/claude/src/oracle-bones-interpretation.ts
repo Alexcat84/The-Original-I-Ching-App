@@ -244,8 +244,8 @@ function buildOracleBonesUserContent(
   const threadMemoryNote =
     hasContext
       ? language === "es"
-        ? "Incluye una memoria breve de hilo (1-2 frases) con la conexión personal detectada en consultas previas, solo si es relevante a esta pregunta."
-        : "Include a brief thread-memory note (1-2 sentences) with the personal continuity from prior consultations, only if relevant to this question."
+        ? "OBLIGATORIO: abre la respuesta con 1-2 frases que resuman explícitamente lo consultado anteriormente y cómo se conecta con esta nueva pregunta. El consultante debe ver claramente que estás leyendo el hilo, no empezando desde cero."
+        : "MANDATORY: open the response with 1-2 sentences that explicitly summarise what was consulted previously and how it connects to this new question. The querent must clearly see you are reading the thread, not starting from zero."
       : language === "es"
         ? "Sin historial previo: no inventes continuidad."
         : "No prior thread context: do not invent continuity.";
