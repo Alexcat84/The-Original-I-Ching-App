@@ -305,6 +305,15 @@ function detectLanguageFromUserText(text: string): AppLocale | null {
 }
 
 export async function POST(req: Request) {
+  // Health check de Upstash — rechazar si no está operativo
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    console.error('[CRITICAL] Upstash not configured — rate limiting disabled');
+    // En producción: retornar 503 para forzar detección inmediata
+    if (process.env.VERCEL_ENV === 'production') {
+      return new Response('Service configuration error', { status: 503 });
+    }
+  }
+
   let body: {
     question?: string;
     language?: string;
@@ -550,26 +559,20 @@ export async function POST(req: Request) {
     const isMasterCombined = resolvedTranslator === "master_combined";
     const tokensToConsume = isMasterCombined ? 2 : 1;
 
-    let currentBalance = adminUnlimitedCredits
-      ? 999_999
-      : await getTokenBalance(authedUserId);
-    if (currentBalance < tokensToConsume) {
-      return NextResponse.json(
-        {
-          error: "insufficient_credits",
-          message: isMasterCombined
-            ? "El Ensayo Maestro requiere 2 tokens. Compra un nuevo paquete para continuar."
-            : "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
-          tokens_available: currentBalance,
-        },
-        { status: 402 },
-      );
-    }
-
-    let remainingAfterConsume = currentBalance;
+    let remainingAfterConsume = adminUnlimitedCredits ? 999_999 : -1;
     if (!adminUnlimitedCredits) {
-      for (let i = 0; i < tokensToConsume; i++) {
-        remainingAfterConsume = await consumeToken(authedUserId);
+      remainingAfterConsume = await consumeToken(authedUserId, tokensToConsume);
+      if (remainingAfterConsume === -1) {
+        return NextResponse.json(
+          {
+            error: "insufficient_credits",
+            message: isMasterCombined
+              ? "El Ensayo Maestro requiere 2 tokens. Compra un nuevo paquete para continuar."
+              : "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
+            tokens_available: 0,
+          },
+          { status: 402 },
+        );
       }
     }
     const adminConfig = await getAdminConfig();
@@ -792,7 +795,7 @@ export async function POST(req: Request) {
       const stream = new ReadableStream<Uint8Array>({
         start(controller) {
           const writeEvent = (
-            event: "cast_ready" | "final_ready" | "error",
+            event: "cast_ready" | "oracle_ready" | "final_ready" | "error",
             payload: unknown,
           ) => {
             controller.enqueue(
@@ -835,6 +838,12 @@ export async function POST(req: Request) {
               const interpretationSummary =
                 rawInterpretationSummary?.trim() ||
                 summarizeInterpretationForContext(interpretation);
+
+              writeEvent("oracle_ready", {
+                interpretation,
+                category,
+              });
+              ritualLog("event:oracle_ready", { category });
 
               const imagePrompt = buildImagePrompt(
                 castResult.primaryHexagram,
