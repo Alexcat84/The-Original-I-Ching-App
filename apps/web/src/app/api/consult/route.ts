@@ -36,7 +36,6 @@ import {
   consumeToken,
   getSessionLimit,
   getUserBillingTier,
-  getTokenBalance,
 } from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
