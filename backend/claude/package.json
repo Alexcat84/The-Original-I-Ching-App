@@ -20,8 +20,9 @@
     "@anthropic-ai/sdk": "^0.39.0",
     "@iching-oracle/context-engine": "file:../../packages/context-engine",
     "@iching-oracle/iching-engine": "file:../../packages/iching-engine",
-    "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
     "@iching-oracle/image-engine": "file:../../packages/image-engine",
+    "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
+    "@sentry/node": "^8",
     "zod": "^3.24.2"
   },
   "devDependencies": {

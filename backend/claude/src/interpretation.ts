@@ -1,11 +1,14 @@
+import * as Sentry from "@sentry/node";
 import Anthropic from "@anthropic-ai/sdk";
+import { createAnthropicClient, callAnthropicWithRetry } from "./anthropic-client.js";
 import type { SessionContext } from "@iching-oracle/context-engine";
 import type { CastingMethod, CastResult } from "@iching-oracle/iching-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { loadClaudeEnv } from "./env.js";
 import {
-  buildContextBlock,
+  buildHistoricalContext,
+  buildCurrentContext,
   type ResponseMode,
 } from "./interpretation-context.js";
 import {
@@ -457,17 +460,20 @@ INSTRUCTIONS:
 function buildPromptBlocks(
   systemPrompt: string,
   promptData: PromptData,
-  userContextBlock: string,
+  historicalContextBlock: string,
+  currentContextBlock: string,
 ): {
   stableSystemBlock: string;
   stableLibraryBlock: string;
-  stableThreadContextBlock: string | null;
+  historicalContextBlock: string | null;
+  currentContextBlock: string | null;
   dynamicQuestionBlock: string;
 } {
   return {
     stableSystemBlock: systemPrompt,
     stableLibraryBlock: `BIBLIOTECA DE TEXTOS ORIGINALES:\n${promptData.textsBlock}`,
-    stableThreadContextBlock: userContextBlock || null,
+    historicalContextBlock: historicalContextBlock || null,
+    currentContextBlock: currentContextBlock || null,
     dynamicQuestionBlock: promptData.questionBlock,
   };
 }
@@ -504,8 +510,10 @@ export async function generateInterpretation(
     mode,
     resolvedCastingMethod,
   );
-  const userContextBlock =
-    hasContext && context ? buildContextBlock(context, language, mode) : "";
+  const historicalContextBlock =
+    hasContext && context ? buildHistoricalContext(context.previousConsultations.slice(0, -1), language, mode) : "";
+  const currentContextBlock =
+    hasContext && context ? buildCurrentContext(context, context.previousConsultations.at(-1), language, mode) : "";
 
   const nameNote = displayName?.trim()
     ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
@@ -514,59 +522,72 @@ export async function generateInterpretation(
   const promptBlocks = buildPromptBlocks(
     systemPrompt,
     promptData,
-    userContextBlock,
+    historicalContextBlock,
+    currentContextBlock,
   );
 
   const fallbackUserContent = `${promptBlocks.stableLibraryBlock}\n\n${
-    promptBlocks.stableThreadContextBlock
-      ? `${promptBlocks.stableThreadContextBlock}\n\n`
+    promptBlocks.historicalContextBlock
+      ? `${promptBlocks.historicalContextBlock}\n\n`
+      : ""
+  }${
+    promptBlocks.currentContextBlock
+      ? `${promptBlocks.currentContextBlock}\n\n`
       : ""
   }${promptBlocks.dynamicQuestionBlock}`;
 
   if (ANTHROPIC_API_KEY) {
     try {
-      const client = new Anthropic({
-        apiKey: ANTHROPIC_API_KEY,
-        defaultHeaders: {
-          "anthropic-beta": "prompt-caching-2024-07-31",
+      const client = createAnthropicClient(ANTHROPIC_API_KEY);
+
+      const response = await callAnthropicWithRetry(
+        client,
+        {
+          model,
+          max_tokens: maxTokens,
+          system: [
+            {
+              type: "text",
+              text: promptBlocks.stableSystemBlock,
+              cache_control: { type: "ephemeral" },
+            },
+          ],
+          messages: [
+            {
+              role: "user",
+              content: [
+                {
+                  type: "text",
+                  text: promptBlocks.stableLibraryBlock,
+                  cache_control: { type: "ephemeral" },
+                },
+                ...(promptBlocks.historicalContextBlock
+                  ? [
+                      {
+                        type: "text" as const,
+                        text: promptBlocks.historicalContextBlock,
+                        cache_control: { type: "ephemeral" as const },
+                      },
+                    ]
+                  : []),
+                ...(promptBlocks.currentContextBlock
+                  ? [
+                      {
+                        type: "text" as const,
+                        text: promptBlocks.currentContextBlock,
+                      },
+                    ]
+                  : []),
+                {
+                  type: "text" as const,
+                  text: promptBlocks.dynamicQuestionBlock,
+                },
+              ],
+            },
+          ],
         },
-      });
-      const response = await client.messages.create({
-        model,
-        max_tokens: maxTokens,
-        system: [
-          {
-            type: "text",
-            text: promptBlocks.stableSystemBlock,
-            cache_control: { type: "ephemeral" },
-          },
-        ],
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: promptBlocks.stableLibraryBlock,
-                cache_control: { type: "ephemeral" },
-              },
-              ...(promptBlocks.stableThreadContextBlock
-                ? [
-                    {
-                      type: "text" as const,
-                      text: promptBlocks.stableThreadContextBlock,
-                      cache_control: { type: "ephemeral" as const },
-                    },
-                  ]
-                : []),
-              {
-                type: "text",
-                text: promptBlocks.dynamicQuestionBlock,
-              },
-            ],
-          },
-        ],
-      });
+        { tier, language, method: resolvedCastingMethod ?? "iching" },
+      );
 
       const fullText = response.content
         .filter((b) => b.type === "text")
@@ -630,6 +651,15 @@ export async function generateInterpretation(
         "[generateInterpretation] Anthropic failed, trying fallback chain",
         err,
       );
+      Sentry.captureException(err, {
+        tags: { 
+          provider: "anthropic", 
+          tier, 
+          language,
+          model
+        },
+        extra: { hexagramNumber: castResult.primaryHexagram.number, method: resolvedCastingMethod }
+      });
     }
   }
 
@@ -722,78 +752,100 @@ export async function generateInterpretation(
         "[generateInterpretation] OpenRouter failed, trying Groq fallback",
         err,
       );
+      Sentry.captureException(err, {
+        tags: { 
+          provider: "openrouter", 
+          tier, 
+          language,
+          model
+        },
+        extra: { hexagramNumber: castResult.primaryHexagram.number, method: resolvedCastingMethod }
+      });
     }
   }
 
   if (GROQ_API_KEY) {
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${GROQ_API_KEY}`,
-          "Content-Type": "application/json",
+    try {
+      const response = await fetch(
+        "https://api.groq.com/openai/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${GROQ_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: GROQ_MODEL ?? "llama-3.3-70b-versatile",
+            temperature: 0.5,
+            max_tokens: maxTokens,
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: fallbackUserContent },
+            ],
+          }),
         },
-        body: JSON.stringify({
-          model: GROQ_MODEL ?? "llama-3.3-70b-versatile",
-          temperature: 0.5,
-          max_tokens: maxTokens,
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: fallbackUserContent },
-          ],
-        }),
-      },
-    );
-
-    if (response.ok) {
-      const data = (await response.json()) as {
-        choices?: Array<{ message?: { content?: string } }>;
-      };
-      const fullText = data.choices?.[0]?.message?.content ?? "";
-      const catMatch = fullText.match(
-        /^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im,
-      );
-      const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
-      const snapshotMatch = fullText.match(
-        /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
-      );
-      const interpretationSummary = snapshotMatch
-        ? snapshotMatch[1].trim()
-        : fallbackInterpretationSummary(fullText);
-      const rawInterpretation = stripSnapshotLeaks(
-        fullText
-          .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-          .trim(),
       );
 
-      const cleanText = stripInterpretationFluff(
-        rawInterpretation
-          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
-          .trim(),
-      );
-      if (cleanText.trim().length > 0) {
-        if (isLikelyWrongLanguage(cleanText, language)) {
-          console.warn(
-            "[generateInterpretation] Groq returned likely wrong language; using fallback",
-            {
+      if (response.ok) {
+        const data = (await response.json()) as {
+          choices?: Array<{ message?: { content?: string } }>;
+        };
+        const fullText = data.choices?.[0]?.message?.content ?? "";
+        const catMatch = fullText.match(
+          /^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im,
+        );
+        const category = (catMatch?.[1] as ConsultationCategory) ?? "general";
+        const snapshotMatch = fullText.match(
+          /\[SNAPSHOT_START\]([\s\S]*?)\[SNAPSHOT_END\]/,
+        );
+        const interpretationSummary = snapshotMatch
+          ? snapshotMatch[1].trim()
+          : fallbackInterpretationSummary(fullText);
+        const rawInterpretation = stripSnapshotLeaks(
+          fullText
+            .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
+            .trim(),
+        );
+
+        const cleanText = stripInterpretationFluff(
+          rawInterpretation
+            .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+            .trim(),
+        );
+        if (cleanText.trim().length > 0) {
+          if (isLikelyWrongLanguage(cleanText, language)) {
+            console.warn(
+              "[generateInterpretation] Groq returned likely wrong language; using fallback",
+              {
+                language,
+                primaryHexagram: castResult.primaryHexagram.number,
+              },
+            );
+          } else {
+            const hardened = enforceIChingStructuralConsistency(
+              cleanText,
+              castResult,
               language,
-              primaryHexagram: castResult.primaryHexagram.number,
-            },
-          );
-        } else {
-          const hardened = enforceIChingStructuralConsistency(
-            cleanText,
-            castResult,
-            language,
-          );
-          return {
-            text: normalizeInterpretationPunctuation(hardened),
-            category,
-            interpretationSummary,
-          };
+            );
+            return {
+              text: normalizeInterpretationPunctuation(hardened),
+              category,
+              interpretationSummary,
+            };
+          }
         }
       }
+    } catch (err) {
+      console.warn("[generateInterpretation] Groq fallback failed", err);
+      Sentry.captureException(err, {
+        tags: { 
+          provider: "groq", 
+          tier, 
+          language,
+          model: GROQ_MODEL || "llama-3.3-70b-versatile"
+        },
+        extra: { hexagramNumber: castResult.primaryHexagram.number, method: resolvedCastingMethod }
+      });
     }
 
     const cat: ConsultationCategory = "general";

@@ -63,10 +63,10 @@ export async function canConsult(userId: string): Promise<boolean> {
   return (await getTokenBalance(userId)) > 0;
 }
 
-export async function consumeToken(userId: string): Promise<number> {
+export async function consumeToken(userId: string, tokensToConsume: number = 1): Promise<number> {
   const supabase = getSupabaseAdmin();
   if (!supabase) throw new Error("SUPABASE_NOT_CONFIGURED");
-  const { data, error } = await supabase.rpc("consume_token", { p_user_id: userId });
+  const { data, error } = await supabase.rpc("consume_token", { p_user_id: userId, tokens_to_consume: tokensToConsume });
   if (error) throw error;
   return typeof data === "number" ? data : -1;
 }

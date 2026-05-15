@@ -1,6 +1,7 @@
 import type { OracleBoneMedium, OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { access } from "node:fs/promises";
 import path from "node:path";
+import * as Sentry from "@sentry/nextjs";
 import { toContextTierKey } from "@/lib/credits";
 import { embedCjkFontInOverlaySvg } from "@/lib/embed-svg-overlay-font";
 import {
@@ -480,6 +481,8 @@ async function generateWithTogether(
   width: number,
   height: number,
   seedBase?: string,
+  tier?: string,
+  hexagramNumber?: number
 ): Promise<{ url: string | null; debug: TogetherDebug }> {
   const key = process.env.TOGETHER_API_KEY;
   if (!key) {
@@ -548,6 +551,10 @@ async function generateWithTogether(
     clearTimeout(timeoutId);
     const isAbort = err instanceof Error && err.name === "AbortError";
     debugLog("together: fetch threw", { isAbort, err: String(err).slice(0, 200) });
+    Sentry.captureException(err, {
+      tags: { provider: "together_ai", tier: tier || "unknown", hexagramNumber: String(hexagramNumber || "unknown") },
+      extra: { isAbort }
+    });
     return {
       url: null,
       debug: {
@@ -566,6 +573,10 @@ async function generateWithTogether(
       err = "";
     }
     debugLog("together: request failed", { status: res.status, snippet: err.slice(0, 500) });
+    Sentry.captureException(new Error(`Together AI API Error: ${res.status}`), {
+      tags: { provider: "together_ai", tier: tier || "unknown", hexagramNumber: String(hexagramNumber || "unknown") },
+      extra: { status: res.status, snippet: err.slice(0, 300) }
+    });
     return {
       url: null,
       debug: {
@@ -790,6 +801,8 @@ export async function buildImageAsset(params: {
       th,
       params.consultationId ??
         `${params.primaryHexagram}:${params.transformedHexagram?.number ?? "none"}:${params.category}`,
+      params.tier,
+      params.primaryHexagram
     );
     debug.together = togetherDebug;
     if (url) {
