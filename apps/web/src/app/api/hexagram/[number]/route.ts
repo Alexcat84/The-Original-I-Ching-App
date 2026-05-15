@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { getHexagram } from "@iching-oracle/iching-engine";
+import { getHexagramRecordByNumber } from "@iching-oracle/iching-data";
 
 export async function GET(
-  request: Request,
+  _request: Request,
   { params }: { params: Promise<{ number: string }> }
 ) {
   const resolvedParams = await params;
@@ -12,7 +12,7 @@ export async function GET(
   }
 
   try {
-    const hexagram = getHexagram(number);
+    const hexagram = getHexagramRecordByNumber(number);
     return NextResponse.json(hexagram, {
       headers: {
         "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=43200",
