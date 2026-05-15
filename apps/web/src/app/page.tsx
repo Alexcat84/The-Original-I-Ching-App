@@ -4799,7 +4799,7 @@ export default function HomePage() {
                           oracleBones={{
                             verdictStr: verdictLabel(entry.oracleBones.verdict, locale),
                             medium: entry.oracleBones.medium,
-                            positiveCharge: entry.oracleBones.positiveCharge,
+                            verdict: entry.oracleBones.verdict,
                           }}
                         />
                         <section className="hexagram-card">
@@ -4812,14 +4812,6 @@ export default function HomePage() {
                             {entry.oracleBones.ambiguousPasses > 0
                               ? ` · ${chrome.ambiguousReadingsLabel}: ${entry.oracleBones.ambiguousPasses}`
                               : ""}
-                          </p>
-                          <p className="meta-line">
-                            <strong>{runtimeText.chargePlus}:</strong>{" "}
-                            {entry.oracleBones.positiveCharge}
-                          </p>
-                          <p className="meta-line">
-                            <strong>{runtimeText.chargeMinus}:</strong>{" "}
-                            {entry.oracleBones.negativeCharge}
                           </p>
                           <div className="bones-background-pane">
                             <ReadingOracleImage

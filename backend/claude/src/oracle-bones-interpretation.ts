@@ -5,7 +5,7 @@ import type { OracleBonesCastResult } from "@iching-oracle/oracle-bones-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { createAnthropicClient, callAnthropicWithRetry } from "./anthropic-client.js";
-import { buildHistoricalContext, type ResponseMode } from "./interpretation-context.js";
+import { buildHistoricalContext, buildCurrentContext, type ResponseMode } from "./interpretation-context.js";
 import { loadClaudeEnv } from "./env.js";
 import {
   oracleBonesFallbackProse,
@@ -244,8 +244,8 @@ function buildOracleBonesUserContent(
   const threadMemoryNote =
     hasContext
       ? language === "es"
-        ? "OBLIGATORIO: abre la respuesta con 1-2 frases que resuman explícitamente lo consultado anteriormente y cómo se conecta con esta nueva pregunta. El consultante debe ver claramente que estás leyendo el hilo, no empezando desde cero."
-        : "MANDATORY: open the response with 1-2 sentences that explicitly summarise what was consulted previously and how it connects to this new question. The querent must clearly see you are reading the thread, not starting from zero."
+        ? "OBLIGATORIO: el primer párrafo de la respuesta debe incluir de forma natural (sin encabezado separado, sin negritas de título, sin sección aparte) una referencia breve al hilo previo: qué se consultó antes y cómo enlaza con esta nueva pregunta. Fluye directamente en la prosa; no uses un encabezado tipo 'Continuidad desde tu consulta previa'."
+        : "MANDATORY: the opening paragraph must naturally weave in (no separate heading, no bold title, no standalone section) a brief reference to the prior thread: what was consulted before and how it connects to this new question. Flow directly in prose; do not use a heading like 'Continuity from your prior consultation'."
       : language === "es"
         ? "Sin historial previo: no inventes continuidad."
         : "No prior thread context: do not invent continuity.";
@@ -319,8 +319,15 @@ export async function generateOracleBonesInterpretation(
   const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
-  const contextBlock =
-    hasContext && context ? buildHistoricalContext(context.previousConsultations, language, mode) : "";
+  const historicalBlock =
+    hasContext && context && context.previousConsultations.length > 1
+      ? buildHistoricalContext(context.previousConsultations.slice(0, -1), language, mode)
+      : "";
+  const currentBlock =
+    hasContext && context
+      ? buildCurrentContext(context, context.previousConsultations.at(-1), language, mode)
+      : "";
+  const contextBlock = [historicalBlock, currentBlock].filter(Boolean).join("\n\n");
   const consultBlock = buildOracleBonesUserContent(
     cast,
     tier,
