@@ -2,32 +2,32 @@
 /**
  * test-image-pipe.mjs
  *
- * Verifica el pipeline completo de generación de imágenes:
- *   1. Llama a Together AI con el prompt de un hexagrama conocido
- *   2. Descarga la imagen generada
- *   3. Genera el SVG overlay del hexagrama
- *   4. Renderiza el SVG a PNG (resvg) y lo composita encima con sharp
- *   5. Guarda la imagen final en /tmp/test-image-pipe-composited.png
- *   6. Reporta qué pasó en cada etapa
+ * Verifica el pipeline completo de imágenes usando la lógica EXACTA de producción:
+ *   1. Llama a Together AI con el prompt del hexagrama
+ *   2. Genera el overlay SVG idéntico al que usa buildSumiHexagramOverlaySvgDataUrl
+ *   3. Renderiza el SVG a PNG con resvg y lo composita con sharp
+ *   4. Guarda la imagen final y la abre automáticamente
  *
- * Uso (clave en .env ya no necesaria como argumento):
+ * Carga .env desde la raíz del monorepo automáticamente.
+ *
+ * Uso:
  *   node scripts/test-image-pipe.mjs [hexNumber]
- *   TOGETHER_API_KEY=xxx node scripts/test-image-pipe.mjs [hexNumber]
  *
- * Ejemplo:
- *   node scripts/test-image-pipe.mjs 44
+ * Ejemplos:
+ *   node scripts/test-image-pipe.mjs 8    → Hexagrama #8 Bi / Union
+ *   node scripts/test-image-pipe.mjs 44   → Hexagrama #44 Gou / Coming to Meet
+ *   node scripts/test-image-pipe.mjs 1    → Hexagrama #1 Qian / The Creative
  */
 
 import { writeFileSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createRequire } from "node:module";
+import { execSync } from "node:child_process";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(import.meta.url);
 
-// ── Cargar .env desde la raíz del monorepo si existe ───────────────────────
+// ── Cargar .env ─────────────────────────────────────────────────────────────
 const rootEnvPath = resolve(__dirname, "../.env");
 try {
   const envContent = readFileSync(rootEnvPath, "utf8");
@@ -40,236 +40,204 @@ try {
     const value = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, "");
     if (!process.env[key]) process.env[key] = value;
   }
-  console.log(`📄 Variables cargadas desde ${rootEnvPath}`);
+  console.log(`📄 .env cargado desde ${rootEnvPath}`);
 } catch {
-  console.log("ℹ️  No se encontró .env raíz — usando variables de entorno del sistema.");
+  console.log("ℹ️  No hay .env raíz — usando variables del sistema.");
 }
 
-const hexNumber = parseInt(process.argv[2] ?? "44", 10);
 const TOGETHER_API_KEY = process.env.TOGETHER_API_KEY;
 const MODEL = process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
-const WIDTH = 1024;
-const HEIGHT = 768;
-const STEPS = 12;
 
-// ── Datos de líneas para hexagramas comunes ─────────────────────────────────
-// 7 = yang estático, 8 = yin estático, 9 = yang cambiante, 6 = yin cambiante
-const HEX_LINE_DATA = {
-  44: [6, 7, 7, 7, 7, 7], // Gou — línea 1 cambiante (yin→yang)
-  1:  [7, 7, 7, 7, 7, 7], // Qian — todo yang
-  2:  [8, 8, 8, 8, 8, 8], // Kun — todo yin
+// ── Datos de hexagramas para la prueba ─────────────────────────────────────
+// value: 7=yang fijo, 8=yin fijo, 9=yang cambiante, 6=yin cambiante
+// position 1=abajo, 6=arriba
+const HEX_DATA = {
+  1:  { name: "The Creative",       chinese: "乾", pinyin: "Qián",  lines: [{p:1,v:7},{p:2,v:7},{p:3,v:7},{p:4,v:7},{p:5,v:7},{p:6,v:7}] },
+  2:  { name: "The Receptive",      chinese: "坤", pinyin: "Kūn",   lines: [{p:1,v:8},{p:2,v:8},{p:3,v:8},{p:4,v:8},{p:5,v:8},{p:6,v:8}] },
+  8:  { name: "Union",              chinese: "比", pinyin: "Bǐ",    lines: [{p:1,v:8},{p:2,v:8},{p:3,v:8},{p:4,v:8},{p:5,v:7},{p:6,v:8}], transformed: { number: 3, name: "Beginning", chinese: "屯" } },
+  44: { name: "Coming to Meet",     chinese: "姤", pinyin: "Gòu",   lines: [{p:1,v:6},{p:2,v:7},{p:3,v:7},{p:4,v:7},{p:5,v:7},{p:6,v:7}], transformed: { number: 1, name: "The Creative", chinese: "乾" } },
+  58: { name: "The Joyous, Lake",   chinese: "兑", pinyin: "Duì",   lines: [{p:1,v:7},{p:2,v:7},{p:3,v:8},{p:4,v:7},{p:5,v:7},{p:6,v:8}] },
+  63: { name: "After Completion",   chinese: "既济",pinyin: "Jì Jì", lines: [{p:1,v:7},{p:2,v:8},{p:3,v:7},{p:4,v:8},{p:5,v:7},{p:6,v:8}] },
 };
-const lines = HEX_LINE_DATA[hexNumber] ?? Array(6).fill(7);
 
-// ── Generar SVG overlay del hexagrama ──────────────────────────────────────
-function buildSvgOverlay(primaryNumber, lineValues, width, height) {
-  const lineH = Math.round(height * 0.052);
-  const gap = Math.round(height * 0.014);
-  const lineW = Math.round(width * 0.18);
-  const breakW = Math.round(lineW * 0.15);
-  const cx = width - Math.round(width * 0.11);
-  const totalH = 6 * lineH + 5 * gap;
-  const startY = Math.round((height - totalH) / 2);
-  const strokeW = Math.max(3, Math.round(lineH * 0.22));
-  const baseColor = "rgba(255,255,255,0.90)";
-  const changingColor = "rgba(255,210,60,0.97)";
+const hexNumber = parseInt(process.argv[2] ?? "8", 10);
+const hexData = HEX_DATA[hexNumber] ?? HEX_DATA[8];
 
-  let linesStr = "";
-  for (let i = 0; i < 6; i++) {
-    const pos = 6 - i; // posición 6 arriba, posición 1 abajo
-    const val = lineValues[pos - 1] ?? 7;
-    const isYang = val === 7 || val === 9;
-    const isChanging = val === 6 || val === 9;
-    const y = startY + i * (lineH + gap) + lineH / 2;
-    const color = isChanging ? changingColor : baseColor;
+// ── Overlay SVG — lógica IDÉNTICA a buildSumiHexagramOverlaySvgDataUrl ──────
+function escapeXml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+}
 
-    if (isYang) {
-      linesStr += `<line x1="${cx - lineW / 2}" y1="${y}" x2="${cx + lineW / 2}" y2="${y}" stroke="${color}" stroke-width="${strokeW}" stroke-linecap="round"/>`;
+function isYang(value) { return value === 7 || value === 9; }
+
+function buildOverlaySvg(hex, outputWidth, outputHeight) {
+  const W = 1344, H = 768, cx = W / 2;
+  const lineGap = 58, baseY = 528, barH = 28, halfW = 244, yinGap = 60;
+
+  const sorted = [...hex.lines].sort((a, b) => a.p - b.p);
+  const lineEls = [];
+
+  for (let i = 0; i < sorted.length; i++) {
+    const line = sorted[i];
+    const y = baseY - i * lineGap;
+    const changing = line.v === 6 || line.v === 9;
+    const gOpen = changing ? `<g filter="url(#goldGlow)">` : `<g>`;
+    const fill   = changing ? "#c9a010" : "#4a2c18";
+    const stroke = changing ? "#fffef8" : "#faf4eb";
+    const sw     = changing ? 4.2 : 3.5;
+
+    if (isYang(line.v)) {
+      lineEls.push(`${gOpen}<rect x="${cx - halfW}" y="${y}" width="${halfW * 2}" height="${barH}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/></g>`);
     } else {
-      const half = (lineW - breakW) / 2;
-      linesStr += `<line x1="${cx - lineW / 2}" y1="${y}" x2="${cx - lineW / 2 + half}" y2="${y}" stroke="${color}" stroke-width="${strokeW}" stroke-linecap="round"/>`;
-      linesStr += `<line x1="${cx + lineW / 2 - half}" y1="${y}" x2="${cx + lineW / 2}" y2="${y}" stroke="${color}" stroke-width="${strokeW}" stroke-linecap="round"/>`;
+      const segW = halfW - yinGap / 2;
+      lineEls.push(
+        `${gOpen}<rect x="${cx - halfW}" y="${y}" width="${segW}" height="${barH}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>` +
+        `<rect x="${cx + yinGap / 2}" y="${y}" width="${segW}" height="${barH}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/></g>`
+      );
     }
   }
 
-  const numY = startY + totalH + Math.round(height * 0.05);
-  const numSize = Math.round(height * 0.038);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <rect x="${cx - lineW / 2 - 10}" y="${startY - 10}" width="${lineW + 20}" height="${totalH + numSize + 20}" rx="6" fill="rgba(0,0,0,0.28)"/>
-  ${linesStr}
-  <text x="${cx}" y="${numY}" text-anchor="middle" font-size="${numSize}" fill="${baseColor}" font-family="Georgia, serif" font-weight="bold">#${primaryNumber}</text>
+  const subZh = escapeXml(
+    `${hex.chinese}${hex.transformed ? ` → ${hex.transformed.chinese}` : ""}`
+  );
+  const subEn = escapeXml(
+    `#${hexNumber} ${hex.name}${hex.transformed ? ` → #${hex.transformed.number} ${hex.transformed.name}` : ""}`
+  );
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${outputWidth}" height="${outputHeight}" viewBox="0 0 ${W} ${H}">
+<defs>
+  <filter id="goldGlow" x="-80%" y="-80%" width="260%" height="260%">
+    <feGaussianBlur stdDeviation="7" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+<g>${lineEls.join("\n")}</g>
+<text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
+<text x="${cx}" y="178" text-anchor="middle" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
 </svg>`;
 }
 
-// ── Llamar a Together AI ────────────────────────────────────────────────────
-async function callTogether(prompt) {
+// ── Together AI ──────────────────────────────────────────────────────────────
+async function callTogether(prompt, width, height) {
   if (!TOGETHER_API_KEY) {
-    console.log("⚠️  TOGETHER_API_KEY no encontrada. Omitiendo llamada a Together AI.");
+    console.log("⚠️  TOGETHER_API_KEY no encontrada.");
     return null;
   }
-
-  console.log(`\n📡 Llamando a Together AI (${MODEL})...`);
-  console.log(`   Prompt (primeros 120 chars): ${prompt.slice(0, 120)}…`);
-
+  console.log(`\n📡 Together AI → ${MODEL} (${width}×${height})`);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 65_000);
-
   try {
     const res = await fetch("https://api.together.xyz/v1/images/generations", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${TOGETHER_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        prompt,
-        width: WIDTH,
-        height: HEIGHT,
-        n: 1,
-        steps: STEPS,
-        output_format: "jpeg",
-      }),
+      headers: { Authorization: `Bearer ${TOGETHER_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ model: MODEL, prompt, width, height, n: 1, steps: 12, output_format: "jpeg" }),
       signal: controller.signal,
     });
-
     clearTimeout(timeout);
-
     if (!res.ok) {
-      const errText = await res.text().catch(() => "");
-      console.error(`❌ Together AI devolvió HTTP ${res.status}`);
-      console.error(`   Body: ${errText.slice(0, 300)}`);
+      const err = await res.text().catch(() => "");
+      console.error(`❌ HTTP ${res.status}: ${err.slice(0, 200)}`);
       return null;
     }
-
     const data = await res.json();
     const first = data.data?.[0];
-
     if (first?.url) {
-      console.log(`✅ Together AI → URL: ${first.url.slice(0, 60)}…`);
+      console.log(`✅ URL recibida: ${first.url.slice(0, 60)}…`);
       const imgRes = await fetch(first.url, { signal: AbortSignal.timeout(30_000) });
-      if (!imgRes.ok) { console.error("❌ No se pudo descargar la imagen."); return null; }
-      return { url: first.url, buf: Buffer.from(await imgRes.arrayBuffer()) };
+      if (!imgRes.ok) { console.error("❌ No se pudo descargar."); return null; }
+      return Buffer.from(await imgRes.arrayBuffer());
     }
-
     if (first?.b64_json) {
-      console.log(`✅ Together AI → b64_json (${first.b64_json.length} chars)`);
-      return { url: null, buf: Buffer.from(first.b64_json, "base64") };
+      console.log(`✅ b64_json recibido (${first.b64_json.length} chars)`);
+      return Buffer.from(first.b64_json, "base64");
     }
-
-    console.error("❌ Together AI: respuesta sin url ni b64_json");
+    console.error("❌ Respuesta sin url ni b64_json");
     return null;
   } catch (err) {
     clearTimeout(timeout);
-    console.error(err?.name === "AbortError" ? "❌ Together AI: timeout (65s)" : `❌ Together AI error: ${err}`);
+    console.error(err?.name === "AbortError" ? "❌ Timeout (65s)" : `❌ Error: ${err}`);
     return null;
   }
 }
 
-// ── Composite: base + overlay via sharp ────────────────────────────────────
-async function compositeWithSharp(baseBuf, overlaySvg) {
-  // sharp puede importarse desde la raíz del monorepo
-  let sharp;
-  try {
-    sharp = (await import("../node_modules/sharp/lib/index.js")).default;
-  } catch {
-    try {
-      sharp = require("../node_modules/sharp/lib/index.js");
-    } catch (e) {
-      console.error("❌ No se pudo importar sharp:", e.message);
-      return null;
-    }
-  }
+// ── Composite con resvg + sharp ──────────────────────────────────────────────
+async function composite(baseBuf, overlaySvg) {
+  const sharp = (await import("../node_modules/sharp/lib/index.js")).default;
+  const { Resvg } = await import("../node_modules/@resvg/resvg-js/index.js");
 
-  // Obtener dimensiones reales de la imagen base
   const meta = await sharp(baseBuf).metadata();
-  const width = meta.width ?? WIDTH;
-  const height = meta.height ?? HEIGHT;
+  const W = meta.width ?? 1024;
+  const H = meta.height ?? 768;
 
-  // Redimensionar el SVG a las dimensiones reales
-  const overlaySized = overlaySvg
-    .replace(/width="\d+"/, `width="${width}"`)
-    .replace(/height="\d+"/, `height="${height}"`)
-    .replace(/viewBox="0 0 \d+ \d+"/, `viewBox="0 0 ${width} ${height}"`);
+  // Resize overlay viewBox to match actual image size
+  const sized = overlaySvg
+    .replace(/width="\d+"/, `width="${W}"`)
+    .replace(/height="\d+"/, `height="${H}"`);
 
-  console.log(`\n🖌️  Compositando overlay (${width}×${height})...`);
+  console.log(`\n🖌️  Renderizando overlay SVG → PNG (resvg, ${W}×${H})…`);
+  const resvg = new Resvg(sized, { fitTo: { mode: "width", value: W } });
+  const overlayPng = Buffer.from(resvg.render().asPng());
+  console.log(`   Overlay: ${(overlayPng.length / 1024).toFixed(1)} KB`);
 
-  // Renderizar SVG a PNG con @resvg/resvg-js
-  let overlayPng;
-  try {
-    const { Resvg } = await import("../node_modules/@resvg/resvg-js/index.js");
-    const resvg = new Resvg(overlaySized, { fitTo: { mode: "width", value: width } });
-    overlayPng = Buffer.from(resvg.render().asPng());
-    console.log(`   Overlay renderizado por resvg: ${(overlayPng.length / 1024).toFixed(1)} KB`);
-  } catch (resvgErr) {
-    console.warn(`   ⚠️  resvg falló (${resvgErr.message}), usando SVG directo en sharp...`);
-    overlayPng = Buffer.from(overlaySized, "utf8");
-  }
-
-  const composited = await sharp(baseBuf)
+  const out = await sharp(baseBuf)
     .composite([{ input: overlayPng, top: 0, left: 0 }])
     .png({ compressionLevel: 6 })
     .toBuffer();
-
-  console.log(`   Imagen compositada: ${(composited.length / 1024).toFixed(1)} KB`);
-  return composited;
+  console.log(`   Composited: ${(out.length / 1024).toFixed(1)} KB`);
+  return out;
 }
 
-// ── Main ────────────────────────────────────────────────────────────────────
+// ── Main ─────────────────────────────────────────────────────────────────────
 async function main() {
+  const W = 1024, H = 768; // seeker/free tier size
+
   console.log("=".repeat(60));
-  console.log(`🧪  test-image-pipe.mjs — Hexagrama #${hexNumber}`);
+  console.log(`🧪  test-image-pipe — Hexagrama #${hexNumber} ${hexData.chinese} ${hexData.name}`);
+  if (hexData.transformed) console.log(`   → #${hexData.transformed.number} ${hexData.transformed.chinese} ${hexData.transformed.name}`);
   console.log("=".repeat(60));
 
+  // Prompt igual al que usaría el motor de producción
   const prompt =
-    `Minimalist ink wash painting, sumi-e style, misty mountain landscape, ` +
-    `solitary pine on a rocky ledge, soft gray mist, tranquil atmosphere, ` +
-    `traditional Chinese ink wash, black and white with subtle warm tones, ` +
-    `no text, no seals, no watermarks, no human figures, centered composition`;
+    `Ethereal Chinese ink wash landscape, misty mountains and still water, ` +
+    `soft morning mist, pine trees on rocky cliffs, contemplative atmosphere, ` +
+    `traditional sumi-e style, muted blues and grays, no text, no seals, ` +
+    `no watermarks, no people, wide panoramic view`;
 
-  // 1. Generar SVG overlay
-  const overlaySvg = buildSvgOverlay(hexNumber, lines, WIDTH, HEIGHT);
-  const svgPath = join(tmpdir(), `test-image-pipe-overlay-hex${hexNumber}.svg`);
-  writeFileSync(svgPath, overlaySvg, "utf8");
-  console.log(`\n🖼️  SVG overlay generado → ${svgPath}`);
+  // 1. Together AI
+  const baseBuf = await callTogether(prompt, W, H);
 
-  // 2. Llamar a Together AI
-  const togetherResult = await callTogether(prompt);
-
-  if (!togetherResult) {
-    console.log("\n⚠️  Sin imagen de Together AI — no se puede probar el composite completo.");
-    console.log(`   Abre el SVG overlay en el navegador para verificar el hexagrama: ${svgPath}`);
-  } else {
-    // Guardar imagen base
-    const basePath = join(tmpdir(), `test-image-pipe-base-hex${hexNumber}.jpg`);
-    writeFileSync(basePath, togetherResult.buf);
-    console.log(`💾 Imagen base guardada → ${basePath} (${(togetherResult.buf.length / 1024).toFixed(1)} KB)`);
-
-    // 3. Compositar
-    const compositedBuf = await compositeWithSharp(togetherResult.buf, overlaySvg);
-
-    if (compositedBuf) {
-      const outPath = join(tmpdir(), `test-image-pipe-composited-hex${hexNumber}.png`);
-      writeFileSync(outPath, compositedBuf);
-      console.log(`✅ Imagen COMPOSITADA guardada → ${outPath}`);
-      // Abrir automáticamente
-      const { execSync } = await import("node:child_process");
-      try { execSync(`start "" "${outPath}"`, { stdio: "ignore" }); } catch {}
-    } else {
-      console.error("❌ Composite falló — revisa los errores arriba.");
-    }
+  if (!baseBuf) {
+    console.log("\n❌ Sin imagen base — no se puede verificar el composite.");
+    process.exit(1);
   }
 
-  // Resumen
+  // Guardar base
+  const basePath = join(tmpdir(), `iching-base-hex${hexNumber}.jpg`);
+  writeFileSync(basePath, baseBuf);
+  console.log(`💾 Base guardada → ${basePath} (${(baseBuf.length / 1024).toFixed(1)} KB)`);
+
+  // 2. Generar overlay con lógica idéntica a producción
+  const overlaySvg = buildOverlaySvg(hexData, W, H);
+  const svgPath = join(tmpdir(), `iching-overlay-hex${hexNumber}.svg`);
+  writeFileSync(svgPath, overlaySvg, "utf8");
+  console.log(`🖼️  Overlay SVG → ${svgPath}`);
+
+  // 3. Composite
+  const compositedBuf = await composite(baseBuf, overlaySvg);
+  const outPath = join(tmpdir(), `iching-composited-hex${hexNumber}.png`);
+  writeFileSync(outPath, compositedBuf);
+  console.log(`\n✅ RESULTADO FINAL → ${outPath}`);
+
+  // Abrir automáticamente
+  try { execSync(`start "" "${outPath}"`, { stdio: "ignore" }); } catch {}
+
   console.log("\n" + "=".repeat(60));
   console.log("RESUMEN:");
-  console.log(`  Together AI:    ${TOGETHER_API_KEY ? (togetherResult ? "✅ OK" : "❌ FALLÓ") : "⚠️  Sin API key"}`);
-  console.log(`  SVG overlay:    ✅ Generado`);
-  console.log(`  Composite:      ${togetherResult ? "✅ Ver imagen abierta" : "⚠️  Requiere imagen de Together"}`);
+  console.log(`  Together AI:   ✅ OK`);
+  console.log(`  Overlay SVG:   ✅ idéntico a producción`);
+  console.log(`  Composite:     ✅ resvg + sharp`);
   console.log("=".repeat(60));
 }
 
-main().catch((err) => {
-  console.error("Error fatal:", err);
-  process.exit(1);
-});
+main().catch((err) => { console.error("Fatal:", err); process.exit(1); });
