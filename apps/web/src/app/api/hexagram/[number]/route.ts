@@ -3,9 +3,10 @@ import { getHexagram } from "@iching-oracle/iching-engine";
 
 export async function GET(
   request: Request,
-  { params }: { params: { number: string } }
+  { params }: { params: Promise<{ number: string }> }
 ) {
-  const number = parseInt(params.number, 10);
+  const resolvedParams = await params;
+  const number = parseInt(resolvedParams.number, 10);
   if (isNaN(number) || number < 1 || number > 64) {
     return NextResponse.json({ error: "Invalid hexagram number" }, { status: 400 });
   }
