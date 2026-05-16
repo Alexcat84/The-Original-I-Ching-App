@@ -98,7 +98,7 @@ function enforceOracleBonesConsistency(text: string, cast: OracleBonesCastResult
     header,
     language,
   );
-  const merged = `${header}\n\n${normalizedBody}`.trim();
+  const merged = `${header}\n\n---\n\n${normalizedBody}`.trim();
   return normalizeInterpretationPunctuation(merged);
 }
 
@@ -132,6 +132,24 @@ function stripLeadingEmojiFromTitles(line: string): string {
     "$1",
   );
   return out;
+}
+
+function interpretationHeadingLocalized(language: string): string {
+  const map: Record<string, string> = {
+    es: "Lo que esto significa para ti",
+    en: "What this means for you",
+    pt: "O que isso significa para ti",
+    fr: "Ce que cela signifie pour vous",
+    de: "Was das fuer dich bedeutet",
+    it: "Cosa significa questo per te",
+    ja: "これがあなたにとって意味すること",
+    zh: "这对你意味着什么",
+    ko: "이것이 당신에게 의미하는 바",
+    ar: "ما يعنيه هذا بالنسبة لك",
+    hi: "यह आपके लिए क्या मायने रखता है",
+  };
+  const base = language.trim().toLowerCase().split("-")[0];
+  return map[base] ?? map.en;
 }
 
 function finalGuidanceHeadingLocalized(language: string): string {
@@ -171,17 +189,38 @@ function sanitizeOracleBonesBody(text: string, header: string, language: string)
     return false;
   });
 
-  // If the model uses Markdown headings, normalize the last one to the requested product label.
+  // Normalize Markdown headings: last → guidance heading; first (if ≥2) → interpretation heading + --- divider.
   const headingIndexes: number[] = [];
   for (let i = 0; i < filtered.length; i += 1) {
     if (/^\s{0,3}#{1,6}\s+\S/.test(filtered[i] ?? "")) headingIndexes.push(i);
   }
   if (headingIndexes.length > 0) {
+    // Process from back to front so splices don't invalidate earlier indexes.
+
+    // Last heading: normalize + ensure --- precedes it.
     const lastIdx = headingIndexes[headingIndexes.length - 1]!;
-    const line = filtered[lastIdx] ?? "";
-    const m = line.match(/^(\s{0,3}#{1,6}\s+).+$/);
-    if (m) {
-      filtered[lastIdx] = `${m[1]}${finalGuidanceHeadingLocalized(language)}`;
+    const lastLine = filtered[lastIdx] ?? "";
+    const lastM = lastLine.match(/^(\s{0,3}#{1,6}\s+).+$/);
+    if (lastM) {
+      filtered[lastIdx] = `${lastM[1]}${finalGuidanceHeadingLocalized(language)}`;
+      const lastPrev = [...filtered.slice(0, lastIdx)].reverse().find((l) => l.trim().length > 0);
+      if (lastPrev?.trim() !== "---") {
+        filtered.splice(lastIdx, 0, "---");
+      }
+    }
+
+    // First heading (when there are ≥2): normalize + ensure --- precedes it.
+    if (headingIndexes.length >= 2) {
+      const firstIdx = headingIndexes[0]!;
+      const firstLine = filtered[firstIdx] ?? "";
+      const firstM = firstLine.match(/^(\s{0,3}#{1,6}\s+).+$/);
+      if (firstM) {
+        filtered[firstIdx] = `${firstM[1]}${interpretationHeadingLocalized(language)}`;
+        const firstPrev = [...filtered.slice(0, firstIdx)].reverse().find((l) => l.trim().length > 0);
+        if (firstPrev?.trim() !== "---") {
+          filtered.splice(firstIdx, 0, "---");
+        }
+      }
     }
   }
 
@@ -272,7 +311,7 @@ INSTRUCTIONS:
 - Do not invent a different crack shape or verdict.
 - Never show raw internal code tokens to users (e.g. "auspicious_clear", "inauspicious_clear"). Use only natural-language labels.
 - Keep the verdict tone decisive and explicit. Do not dilute an auspicious_clear / inauspicious_clear outcome with hedging language.
-- If you use Markdown section headings, the LAST heading must be exactly "${finalGuidanceHeadingLocalized(language)}" (in ${getLanguageName(language)}).
+- Use exactly two ## section headings: first "## ${interpretationHeadingLocalized(language)}" (place a --- horizontal rule on its own line immediately before it), then "## ${finalGuidanceHeadingLocalized(language)}" as the closing section.
 - Anchor certainty to this cast ("in this cast", "en esta tirada"), not to universal proof claims.
 - If affirmsPositive is false, do NOT assert opposite scenarios as true/probable; only state non-confirmation of the positive charge.
 - If affirmsPositive is null, do NOT force yes/no.
@@ -335,15 +374,13 @@ export async function generateOracleBonesInterpretation(
     hasContext,
     mode,
   );
+  const nameNote = displayName?.trim()
+    ? `The user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.\n\n`
+    : "";
+  const consultBlockWithName = `${nameNote}${consultBlock}`;
   const userContent = contextBlock
-    ? `${contextBlock}\n\n${consultBlock}`
-    : consultBlock;
-
-  const nameNote =
-    displayName?.trim()
-      ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
-      : "";
-  const systemPrompt = `${ORACLE_BONES_SYSTEM}${nameNote}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+    ? `${contextBlock}\n\n${consultBlockWithName}`
+    : consultBlockWithName;
 
   if (ANTHROPIC_API_KEY) {
     try {
@@ -356,7 +393,7 @@ export async function generateOracleBonesInterpretation(
           system: [
             {
               type: "text",
-              text: systemPrompt,
+              text: ORACLE_BONES_SYSTEM,
               cache_control: { type: "ephemeral" },
             },
           ],
@@ -375,8 +412,7 @@ export async function generateOracleBonesInterpretation(
                   : []),
                 {
                   type: "text",
-                  text: consultBlock,
-                  cache_control: { type: "ephemeral" },
+                  text: consultBlockWithName,
                 },
               ],
             },
@@ -441,7 +477,7 @@ export async function generateOracleBonesInterpretation(
       const response = await openRouterClient.messages.create({
         model,
         max_tokens: maxTokens,
-        system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
+        system: [{ type: "text", text: ORACLE_BONES_SYSTEM, cache_control: { type: "ephemeral" } }],
         messages: [
           {
             role: "user",
@@ -449,7 +485,6 @@ export async function generateOracleBonesInterpretation(
               {
                 type: "text",
                 text: userContent,
-                cache_control: { type: "ephemeral" },
               },
             ],
           },
@@ -508,7 +543,7 @@ export async function generateOracleBonesInterpretation(
         temperature: 0.45,
         max_tokens: maxTokens,
         messages: [
-          { role: "system", content: systemPrompt },
+          { role: "system", content: ORACLE_BONES_SYSTEM },
           { role: "user", content: userContent },
         ],
       }),

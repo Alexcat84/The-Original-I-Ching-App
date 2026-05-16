@@ -14,6 +14,7 @@ export type MobileNativeUiMessages = {
   ok: string;
   cancel: string;
   sharePdfTitle: string;
+  deleteConfirm: string;
 };
 
 const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
@@ -30,6 +31,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "OK",
     cancel: "Cancelar",
     sharePdfTitle: "Compartir PDF",
+    deleteConfirm: "¿Eliminar esta conversación de forma permanente?",
   },
   en: {
     imageSavedTitle: "Image saved",
@@ -43,6 +45,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "OK",
     cancel: "Cancel",
     sharePdfTitle: "Share PDF",
+    deleteConfirm: "Delete this conversation permanently?",
   },
   pt: {
     imageSavedTitle: "Imagem guardada",
@@ -57,6 +60,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "OK",
     cancel: "Cancelar",
     sharePdfTitle: "Partilhar PDF",
+    deleteConfirm: "Eliminar esta conversa permanentemente?",
   },
   fr: {
     imageSavedTitle: "Image enregistrée",
@@ -71,6 +75,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "OK",
     cancel: "Annuler",
     sharePdfTitle: "Partager le PDF",
+    deleteConfirm: "Supprimer définitivement cette conversation ?",
   },
   de: {
     imageSavedTitle: "Bild gespeichert",
@@ -85,6 +90,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "OK",
     cancel: "Abbrechen",
     sharePdfTitle: "PDF teilen",
+    deleteConfirm: "Diese Konversation dauerhaft löschen?",
   },
   it: {
     imageSavedTitle: "Immagine salvata",
@@ -99,6 +105,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "OK",
     cancel: "Annulla",
     sharePdfTitle: "Condividi PDF",
+    deleteConfirm: "Eliminare definitivamente questa conversazione?",
   },
   ja: {
     imageSavedTitle: "画像を保存しました",
@@ -113,6 +120,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "OK",
     cancel: "キャンセル",
     sharePdfTitle: "PDFを共有",
+    deleteConfirm: "この会話を完全に削除しますか？",
   },
   zh: {
     imageSavedTitle: "图片已保存",
@@ -126,6 +134,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "确定",
     cancel: "取消",
     sharePdfTitle: "分享 PDF",
+    deleteConfirm: "要永久删除此对话吗？",
   },
   ko: {
     imageSavedTitle: "이미지 저장됨",
@@ -139,6 +148,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "확인",
     cancel: "취소",
     sharePdfTitle: "PDF 공유",
+    deleteConfirm: "이 대화를 영구적으로 삭제할까요?",
   },
   ar: {
     imageSavedTitle: "تم حفظ الصورة",
@@ -152,6 +162,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "حسنًا",
     cancel: "إلغاء",
     sharePdfTitle: "مشاركة PDF",
+    deleteConfirm: "هل تريد حذف هذه المحادثة نهائيًا؟",
   },
   hi: {
     imageSavedTitle: "छवि सहेजी गई",
@@ -165,6 +176,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     ok: "ठीक है",
     cancel: "रद्द करें",
     sharePdfTitle: "PDF साझा करें",
+    deleteConfirm: "क्या आप इस वार्तालाप को स्थायी रूप से हटाना चाहते हैं?",
   },
 };
 
