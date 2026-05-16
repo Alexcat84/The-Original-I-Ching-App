@@ -186,7 +186,7 @@ export function resolveFaqRelatedHref(slug: FaqRelatedSlug): string {
     case "userGuideGettingStarted":
       return "/guia#primeros-pasos";
     case "tokenPacks":
-      return "/guia#planes";
+      return "/";
     case "methodNotes":
       return "/notes";
     case "privacyPolicy":
@@ -232,7 +232,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "tokens-packs",
     question: "How do tokens, packs, and the free tier work?",
     answer:
-      "For up-to-date information on packs, token prices, and your current balance, open the Token Center from the app header. It shows your available tokens, the thread limit per plan, and a direct link to purchase.",
+      "For up-to-date information on packs, token prices, and your current balance, open the Token Center from the app header. It shows your available tokens, the thread limit per plan, and a direct link to purchase. Access requires a valid account.",
     related: ["tokenPacks"],
   },
   {
@@ -303,7 +303,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "purchases-legal",
     question: "Where can I find billing information and service terms?",
     answer:
-      "For billing and token purchases, open the Token Center from the app header. Commercial terms and acceptable use are in the Terms of Service.",
+      "For billing and token purchases, open the Token Center from the app header. Access requires a valid account. Commercial terms and acceptable use are in the Terms of Service.",
     related: ["tokenPacks", "termsOfService"],
   },
   
@@ -387,7 +387,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "tokens-packs",
     question: "¿Cómo funcionan los tokens, los packs y el plan gratuito?",
     answer:
-      "Para información actualizada sobre packs, precios y tu saldo de tokens, abre el Centro de tokens desde la cabecera de la app. Ahí encontrarás tus tokens disponibles, el límite por hilo según tu plan y el enlace directo para comprar.",
+      "Para información actualizada sobre packs, precios y tu saldo de tokens, abre el Centro de tokens desde la cabecera de la app. Ahí encontrarás tus tokens disponibles, el límite por hilo según tu plan y el enlace directo para comprar. El acceso al Centro de tokens requiere una cuenta válida.",
     related: ["tokenPacks"],
   },
   {
@@ -459,10 +459,10 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿Dónde encuentro información sobre facturación y condiciones del servicio?",
     answer:
-      "Para información sobre facturación y compra de tokens, abre el Centro de tokens desde la cabecera de la app. Las condiciones comerciales y el uso aceptable están en los Términos del servicio.",
+      "Para información sobre facturación y compra de tokens, abre el Centro de tokens desde la cabecera de la app. El acceso requiere una cuenta válida. Las condiciones comerciales y el uso aceptable están en los Términos del servicio.",
     related: ["tokenPacks", "termsOfService"],
   },
-  
+
   {
     id: "security-2fa",
     question: "¿Hay autenticación en dos pasos (2FA)?",

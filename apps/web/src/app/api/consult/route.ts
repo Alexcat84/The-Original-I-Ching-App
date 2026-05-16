@@ -155,15 +155,6 @@ function summarizeInterpretationForContext(raw: string): string {
   return (lastPunctuation > 180 ? clipped.slice(0, lastPunctuation + 1) : clipped).trim();
 }
 
-function filterRowsForOracleContext(
-  rows: PreviousConsultationRow[],
-  oracleMode: OracleType,
-): PreviousConsultationRow[] {
-  return rows.filter((row) => {
-    const rowType: OracleType = row.oracle_type === "oracle_bones" ? "oracle_bones" : "iching";
-    return rowType === oracleMode;
-  });
-}
 
 function verdictLabelForPrompt(
   verdict: OracleBonesHistorySnapshot["verdict"],
@@ -518,10 +509,12 @@ export async function POST(req: Request) {
     const isDeepening = Boolean(body.isDeepening);
     let previousRows = mapHistoryToRows(body.history);
 
-    // For deepening, use DB rows bound to (user_id, session_id) as the source
-    // of truth for context. Client-provided history is never authoritative.
+    // Always look up the session in DB when a valid UUID is present — never
+    // trust the client's isDeepening flag alone. A stale or recycled sessionId
+    // sent with isDeepening=false would otherwise bypass all depth checks and
+    // let a new consultation slip into an already-full session (silent overflow).
     let authorizedDepth = previousRows.length;
-    if (isDeepening && isPersistableUuid(sessionId) && getSupabaseAdmin()) {
+    if (isPersistableUuid(sessionId) && getSupabaseAdmin()) {
       const sessionWithConsultations = await getUserSessionWithConsultations(
         authedUserId,
         sessionId,
@@ -531,15 +524,19 @@ export async function POST(req: Request) {
           sessionWithConsultations.consultations,
         );
         authorizedDepth = previousRows.length;
-      } else {
+      } else if (isDeepening) {
+        // Client claims deepening but session not found in DB — treat as fresh.
         previousRows = [];
         authorizedDepth = 0;
       }
     }
 
+    // Use DB-derived depth as the authoritative signal; if the DB shows existing
+    // consultations, enforce the depth limit regardless of what isDeepening says.
+    const effectiveIsDeepening = isDeepening || authorizedDepth > 0;
     if (
       shouldBlockDeepening({
-        isDeepening,
+        isDeepening: effectiveIsDeepening,
         historyLength: authorizedDepth,
         sessionLimit: maxDepth,
       })
@@ -617,7 +614,7 @@ export async function POST(req: Request) {
         sessionId,
         isDeepening,
         sessionTitle: body.sessionTitle ?? null,
-        previousRows: filterRowsForOracleContext(previousRows, oracleMode),
+        previousRows: previousRows,
         patternHints: null,
       });
 
@@ -763,7 +760,7 @@ export async function POST(req: Request) {
       sessionId,
       isDeepening,
       sessionTitle: body.sessionTitle ?? null,
-      previousRows: filterRowsForOracleContext(previousRows, oracleMode),
+      previousRows: previousRows,
       patternHints: null,
     });
 
@@ -910,6 +907,7 @@ export async function POST(req: Request) {
                   transformedHexagramName:
                     castResult.transformedHexagram?.name ?? null,
                   mutationRule: castResult.mutationRule,
+                  translator: resolvedTranslator,
                   lines: castResult.lines,
                   changingLines: castResult.changingLines,
                   interpretation,
@@ -935,6 +933,7 @@ export async function POST(req: Request) {
                 transformedHexagramName:
                   castResult.transformedHexagram?.name ?? null,
                 mutationRule: castResult.mutationRule,
+                translator: resolvedTranslator,
                 lines: castResult.lines,
                 changingLines: castResult.changingLines,
                 interpretation,
@@ -1069,6 +1068,7 @@ export async function POST(req: Request) {
         transformedHexagram: castResult.transformedHexagram?.number ?? null,
         transformedHexagramName: castResult.transformedHexagram?.name ?? null,
         mutationRule: castResult.mutationRule,
+        translator: resolvedTranslator,
         lines: castResult.lines,
         changingLines: castResult.changingLines,
         interpretation,
@@ -1092,6 +1092,7 @@ export async function POST(req: Request) {
       transformedHexagram: castResult.transformedHexagram?.number ?? null,
       transformedHexagramName: castResult.transformedHexagram?.name ?? null,
       mutationRule: castResult.mutationRule,
+      translator: resolvedTranslator,
       lines: castResult.lines,
       changingLines: castResult.changingLines,
       interpretation,

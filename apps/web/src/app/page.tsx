@@ -171,6 +171,7 @@ type ConsultResponse = {
   transformedHexagram: number | null;
   transformedHexagramName: string | null;
   mutationRule: string;
+  translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
   lines: ApiLine[];
   changingLines: number[];
   interpretation: string;
@@ -1067,6 +1068,7 @@ type ApiChatConsultation = {
   transformedHexagram: number | null;
   transformedHexagramName: string | null;
   mutationRule: string;
+  translator?: string | null;
   lines: ApiLine[];
   changingLines: number[];
   interpretation: string;
@@ -1222,6 +1224,7 @@ function mapApiConsultationToItem(
     publicSessionId: sessionPublicId,
     sharingPersisted: true,
     question: c.question,
+    translator: (c.translator as ConsultResponse["translator"]) ?? undefined,
     oracleBones: c.oracleBones
       ? {
           patternId: c.oracleBones.pattern_id,
@@ -4768,8 +4771,10 @@ export default function HomePage() {
                           primaryHexagramChinese={entry.primaryHexagramChinese}
                           transformedHexagram={entry.transformedHexagram}
                           mutationRule={entry.mutationRule}
+                          translator={entry.translator}
                           oracleType={entry.oracleType ?? "iching"}
                           locale={locale}
+                          createdAt={entry.createdAt}
                         />
                         <ReadingOracleImage
                           imageUrl={entry.imageUrl}
@@ -4783,7 +4788,24 @@ export default function HomePage() {
                     ) : null}
                     {entry.oracleType === "oracle_bones" &&
                     entry.oracleBones ? (
-                      <div className="reading-grid reading-grid--bones-solo">
+                      <div className="reading-record-visual-row">
+                        <ConsultationRecordCard
+                          consultationId={entry.consultationId}
+                          question={entry.question}
+                          sessionPosition={entry.sessionPosition}
+                          primaryHexagram={0}
+                          primaryHexagramChinese=""
+                          transformedHexagram={null}
+                          mutationRule=""
+                          oracleType="oracle_bones"
+                          locale={locale}
+                          createdAt={entry.createdAt}
+                          oracleBones={{
+                            verdictStr: verdictLabel(entry.oracleBones.verdict, locale),
+                            medium: entry.oracleBones.medium,
+                            verdict: entry.oracleBones.verdict,
+                          }}
+                        />
                         <section className="hexagram-card">
                           <h3>{runtimeText.oracleBones}</h3>
                           <p className="meta-line">
@@ -4794,14 +4816,6 @@ export default function HomePage() {
                             {entry.oracleBones.ambiguousPasses > 0
                               ? ` · ${chrome.ambiguousReadingsLabel}: ${entry.oracleBones.ambiguousPasses}`
                               : ""}
-                          </p>
-                          <p className="meta-line">
-                            <strong>{runtimeText.chargePlus}:</strong>{" "}
-                            {entry.oracleBones.positiveCharge}
-                          </p>
-                          <p className="meta-line">
-                            <strong>{runtimeText.chargeMinus}:</strong>{" "}
-                            {entry.oracleBones.negativeCharge}
                           </p>
                           <div className="bones-background-pane">
                             <ReadingOracleImage
