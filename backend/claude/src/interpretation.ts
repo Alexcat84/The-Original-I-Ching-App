@@ -379,8 +379,11 @@ ${t.zhouyiTransformedImage ? `ZHOU YI IMAGE: ${t.zhouyiTransformedImage}` : ""}`
 }
 `.trim();
   } else {
+    const zhouyiHeader = cast.interpretationMode === "zhouyi"
+      ? "[FUENTE: ZHOU YI — CHINO CLÁSICO 文言文 — PRESERVAR VERBATIM EN BLOCKQUOTES, NO TRADUCIR]\n"
+      : "";
     textsBlock = `
-JUDGMENT: ${t.primaryJudgment}
+${zhouyiHeader}JUDGMENT: ${t.primaryJudgment}
 ${t.primaryImage ? `THE IMAGE: ${t.primaryImage}` : ""}
 ${lineBlock}
 ${t.specialYaoText ? `SPECIAL TEXT: ${t.specialYaoText}` : ""}
@@ -456,7 +459,13 @@ INSTRUCTIONS:
 - ${mode === "ritual" ? "Follow the scroll structure; keep paragraphs visually compact (avoid stacking many one-line paragraphs)." : mode === "profundizar" ? "Max 2 sections as specified." : "Max 2 titled sections as specified."}
 - ${modeInstruction}
 - Length: ${targetWordCount} words
-- If source excerpts arrive in a different language (often English), TRANSLATE them into the response language before quoting. Do not leave mixed-language fragments.
+${
+  cast.interpretationMode === "zhouyi"
+    ? "- SOURCE LANGUAGE (NON-NEGOTIABLE): Every text in the BIBLIOTECA above is in original Classical Chinese (文言文). You MUST preserve every blockquote verbatim in Chinese characters exactly as supplied — do NOT translate, paraphrase, or substitute with any other version (Wilhelm, Legge, or any English text). Your analysis prose goes OUTSIDE the blockquotes in the response language."
+    : isMasterCombined
+      ? "- SOURCE LANGUAGE: Wilhelm/Baynes and Legge texts arrive in English — TRANSLATE them into the response language before quoting inside blockquotes. Zhou Yi texts arrive in Classical Chinese (文言文) — preserve them VERBATIM in Chinese characters inside blockquotes; do NOT translate or substitute them."
+      : "- If source excerpts arrive in a different language (often English), TRANSLATE them into the response language before quoting. Do not leave mixed-language fragments."
+}
 - TYPOGRAPHY ENFORCEMENT: Hexagram text quotes (Judgment, Image, line texts) must be *italic only* — never **bold**, never ***bold-italic***. Section headings are ## only. Interpretation prose uses **bold** for key terms. This rule is identical for three-coins and yarrow-stalks.
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
 - ${castingMethodNote(castingMethod)}
