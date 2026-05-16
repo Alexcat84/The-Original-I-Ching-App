@@ -121,10 +121,10 @@ html[data-theme="dark"] {
   --accent: #4ecdc4;
   --accent-hover: #3db9b0;
   --bubble-user: #1e4036;
-  --bubble-user-border: #2a5c4d;
+  --bubble-user-border: #4d9a7d;
   --bubble-user-fg: #d4f0e4;
   --bubble-assistant: #0c0e10;
-  --bubble-assistant-border: #252b32;
+  --bubble-assistant-border: #3f5060;
   --bar: #0d0d0d;
   --bar-border: #1f1f1f;
   --shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
