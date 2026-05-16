@@ -233,200 +233,6 @@ type RitualDebugSnapshot = {
   transformedHexagram?: number | null;
 };
 
-const RUNTIME_TEXT: Record<
-  AppLocale,
-  {
-    ritualCoins: string;
-    ritualBones: string;
-    ritualBonesHint: string;
-    line: string;
-    signReading: string;
-    oracleBones: string;
-    medium: string;
-    turtle: string;
-    ox: string;
-    chargePlus: string;
-    chargeMinus: string;
-    leansPositive: string;
-    leansNegative: string;
-  }
-> = {
-  es: {
-    ritualCoins: "Ritual en curso · lanzando monedas",
-    ritualBones: "Ritual en curso · calor sobre el hueso",
-    ritualBonesHint:
-      "Estilización del procedimiento shang: el patrón de grieta se fija al completar la consulta.",
-    line: "Línea",
-    signReading: "Lectura del signo:",
-    oracleBones: "Huesos de oráculo",
-    medium: "Medio",
-    turtle: "Plastrón de tortuga",
-    ox: "Escápula de buey",
-    chargePlus: "Cargo +",
-    chargeMinus: "Cargo −",
-    leansPositive: "Inclina hacia el cargo positivo.",
-    leansNegative: "Inclina hacia la negación del cargo.",
-  },
-  en: {
-    ritualCoins: "Ritual in progress · tossing coins",
-    ritualBones: "Ritual in progress · heat over bone",
-    ritualBonesHint:
-      "Stylized Shang procedure: the crack pattern is fixed when the consultation completes.",
-    line: "Line",
-    signReading: "Sign reading:",
-    oracleBones: "Oracle bones",
-    medium: "Medium",
-    turtle: "Turtle plastron",
-    ox: "Ox scapula",
-    chargePlus: "Charge +",
-    chargeMinus: "Charge −",
-    leansPositive: "Leans toward the positive charge.",
-    leansNegative: "Leans toward negating the charge.",
-  },
-  pt: {
-    ritualCoins: "Ritual em curso · lançando moedas",
-    ritualBones: "Ritual em curso · calor sobre o osso",
-    ritualBonesHint:
-      "Estilização do procedimento Shang: o padrão da fissura é fixado ao concluir a consulta.",
-    line: "Linha",
-    signReading: "Leitura do sinal:",
-    oracleBones: "Ossos oraculares",
-    medium: "Meio",
-    turtle: "Plastrão de tartaruga",
-    ox: "Escápula de boi",
-    chargePlus: "Carga +",
-    chargeMinus: "Carga −",
-    leansPositive: "Inclina-se para a carga positiva.",
-    leansNegative: "Inclina-se para negar a carga.",
-  },
-  fr: {
-    ritualCoins: "Rituel en cours · lancer des pièces",
-    ritualBones: "Rituel en cours · chaleur sur l'os",
-    ritualBonesHint:
-      "Stylisation du procédé Shang : le motif de fissure se fixe à la fin de la consultation.",
-    line: "Ligne",
-    signReading: "Lecture du signe :",
-    oracleBones: "Os oraculaires",
-    medium: "Support",
-    turtle: "Plastron de tortue",
-    ox: "Omoplate de bœuf",
-    chargePlus: "Charge +",
-    chargeMinus: "Charge −",
-    leansPositive: "Penche vers la charge positive.",
-    leansNegative: "Penche vers la négation de la charge.",
-  },
-  de: {
-    ritualCoins: "Ritual läuft · Münzwurf",
-    ritualBones: "Ritual läuft · Hitze auf dem Knochen",
-    ritualBonesHint:
-      "Stilisierung des Shang-Verfahrens: Das Rissmuster wird nach Abschluss der Anfrage festgelegt.",
-    line: "Linie",
-    signReading: "Zeichenlesung:",
-    oracleBones: "Orakelknochen",
-    medium: "Medium",
-    turtle: "Schildkrötenpanzer",
-    ox: "Rinderschulterblatt",
-    chargePlus: "Ladung +",
-    chargeMinus: "Ladung −",
-    leansPositive: "Neigt zur positiven Ladung.",
-    leansNegative: "Neigt zur Verneinung der Ladung.",
-  },
-  it: {
-    ritualCoins: "Rituale in corso · lancio delle monete",
-    ritualBones: "Rituale in corso · calore sull'osso",
-    ritualBonesHint:
-      "Stilizzazione del procedimento Shang: il pattern di crepa si fissa al termine della consultazione.",
-    line: "Linea",
-    signReading: "Lettura del segno:",
-    oracleBones: "Ossa oracolari",
-    medium: "Supporto",
-    turtle: "Piastrone di tartaruga",
-    ox: "Scapola di bue",
-    chargePlus: "Carica +",
-    chargeMinus: "Carica −",
-    leansPositive: "Inclina verso la carica positiva.",
-    leansNegative: "Inclina verso la negazione della carica.",
-  },
-  ja: {
-    ritualCoins: "儀式進行中・コインを投げています",
-    ritualBones: "儀式進行中・骨に熱を加えています",
-    ritualBonesHint:
-      "殷式手順の演出：相談が完了すると亀裂パターンが確定します。",
-    line: "爻",
-    signReading: "徴の読み:",
-    oracleBones: "甲骨",
-    medium: "媒体",
-    turtle: "亀の腹甲",
-    ox: "牛の肩甲骨",
-    chargePlus: "命題 +",
-    chargeMinus: "命題 −",
-    leansPositive: "肯定命題の側に傾きます。",
-    leansNegative: "否定命題の側に傾きます。",
-  },
-  zh: {
-    ritualCoins: "仪式进行中 · 正在掷币",
-    ritualBones: "仪式进行中 · 骨上加热",
-    ritualBonesHint: "商式流程的风格化展示：咨询完成后裂纹图案会固定。",
-    line: "爻",
-    signReading: "征兆解读：",
-    oracleBones: "甲骨占",
-    medium: "介质",
-    turtle: "龟甲腹甲",
-    ox: "牛肩胛骨",
-    chargePlus: "命题 +",
-    chargeMinus: "命题 −",
-    leansPositive: "倾向于肯定命题。",
-    leansNegative: "倾向于否定命题。",
-  },
-  ko: {
-    ritualCoins: "의식 진행 중 · 동전 투척",
-    ritualBones: "의식 진행 중 · 뼈에 열 가하기",
-    ritualBonesHint:
-      "상(商)식 절차의 스타일화: 상담이 완료되면 균열 패턴이 확정됩니다.",
-    line: "효",
-    signReading: "징후 해석:",
-    oracleBones: "갑골 점복",
-    medium: "매체",
-    turtle: "거북 배딱지",
-    ox: "소 견갑골",
-    chargePlus: "명제 +",
-    chargeMinus: "명제 −",
-    leansPositive: "긍정 명제 쪽으로 기웁니다.",
-    leansNegative: "명제 부정 쪽으로 기웁니다.",
-  },
-  ar: {
-    ritualCoins: "الطقس جارٍ · رمي العملات",
-    ritualBones: "الطقس جارٍ · الحرارة على العظم",
-    ritualBonesHint:
-      "توصيف أسلوب شانغ: يُثبَّت نمط الشقوق عند اكتمال الاستشارة.",
-    line: "خط",
-    signReading: "قراءة العلامة:",
-    oracleBones: "عظام الأوراكل",
-    medium: "الوسيط",
-    turtle: "بطن السلحفاة",
-    ox: "لوح كتف الثور",
-    chargePlus: "الشحنة +",
-    chargeMinus: "الشحنة −",
-    leansPositive: "يميل نحو الشحنة الموجبة.",
-    leansNegative: "يميل نحو نفي الشحنة.",
-  },
-  hi: {
-    ritualCoins: "अनुष्ठान जारी है · सिक्के फेंके जा रहे हैं",
-    ritualBones: "अनुष्ठान जारी है · हड्डी पर ऊष्मा",
-    ritualBonesHint:
-      "शांग प्रक्रिया का शैलीकृत रूप: परामर्श पूरा होने पर दरार-पैटर्न तय होता है।",
-    line: "रेखा",
-    signReading: "चिह्न-पठन:",
-    oracleBones: "अस्थि ओरेकल",
-    medium: "माध्यम",
-    turtle: "कछुए का प्लास्ट्रॉन",
-    ox: "बैल की स्कैपुला",
-    chargePlus: "प्रस्ताव +",
-    chargeMinus: "प्रस्ताव −",
-    leansPositive: "सकारात्मक प्रस्ताव की ओर झुकता है।",
-    leansNegative: "प्रस्ताव के निषेध की ओर झुकता है।",
-  },
-};
 
 const RITUAL_STATUS_COPY: Record<
   AppLocale,
@@ -1303,7 +1109,6 @@ export default function HomePage() {
   const sessionUi = useMemo(() => getHomeSessionUiMessages(locale), [locale]);
   const tf = useMemo(() => getTwoFactorUiMessages(locale), [locale]);
   const pricingUi = useMemo(() => getPricingUiMessages(locale), [locale]);
-  const runtimeText = RUNTIME_TEXT[locale];
   const drawerText = DRAWER_TEXT[locale];
   const exportPdfLabel = chrome.exportChatPdf;
   const downloadImageLabel = chrome.downloadImage;
@@ -4807,16 +4612,6 @@ export default function HomePage() {
                           }}
                         />
                         <section className="hexagram-card">
-                          <h3>{runtimeText.oracleBones}</h3>
-                          <p className="meta-line">
-                            {runtimeText.medium}:{" "}
-                            {entry.oracleBones.medium === "turtle"
-                              ? runtimeText.turtle
-                              : runtimeText.ox}
-                            {entry.oracleBones.ambiguousPasses > 0
-                              ? ` · ${chrome.ambiguousReadingsLabel}: ${entry.oracleBones.ambiguousPasses}`
-                              : ""}
-                          </p>
                           <div className="bones-background-pane">
                             <ReadingOracleImage
                               imageUrl={entry.imageUrl}
@@ -4826,31 +4621,6 @@ export default function HomePage() {
                               openLabel={openImageLabel}
                               imageAlt={symbolicImageAlt}
                             />
-                          </div>
-                          <div className="crack-visual-wrap crack-visual-wrap--summary">
-                            <span
-                              className={`verdict-pill ${
-                                entry.oracleBones.verdict === "silent"
-                                  ? "verdict-pill--silent"
-                                  : entry.oracleBones.verdict.startsWith(
-                                        "auspicious",
-                                      )
-                                    ? "verdict-pill--ji"
-                                    : "verdict-pill--xiong"
-                              }`}
-                            >
-                              {verdictLabel(entry.oracleBones.verdict, locale)}
-                            </span>
-                            {entry.oracleBones.affirmsPositive !== null ? (
-                              <p className="meta-line">
-                                {runtimeText.signReading}{" "}
-                                <strong>
-                                  {entry.oracleBones.affirmsPositive
-                                    ? runtimeText.leansPositive
-                                    : runtimeText.leansNegative}
-                                </strong>
-                              </p>
-                            ) : null}
                           </div>
                         </section>
                       </div>
