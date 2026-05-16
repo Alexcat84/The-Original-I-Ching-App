@@ -407,7 +407,8 @@ html.iching-rn-webview[data-theme="dark"] .auth-explore-strip .locale-picker-tri
 }
 
 html[data-theme="light"] .auth-explore-strip .locale-picker-trigger,
-html.iching-rn-webview[data-theme="light"] .auth-explore-strip .locale-picker-trigger {
+html.iching-rn-webview[data-theme="light"] .auth-explore-strip .locale-picker-trigger,
+html:not([data-theme]) .auth-explore-strip .locale-picker-trigger {
   min-width: 4.25rem;
   min-height: 28px;
   height: auto;
@@ -440,7 +441,8 @@ html.iching-rn-webview[data-theme="dark"] .locale-picker-trigger__chevron {
 }
 
 html[data-theme="light"] .locale-picker-trigger__chevron,
-html.iching-rn-webview[data-theme="light"] .locale-picker-trigger__chevron {
+html.iching-rn-webview[data-theme="light"] .locale-picker-trigger__chevron,
+html:not([data-theme]) .locale-picker-trigger__chevron {
   display: inline-block;
   width: 0;
   height: 0;
