@@ -1068,6 +1068,7 @@ type ApiChatConsultation = {
   transformedHexagram: number | null;
   transformedHexagramName: string | null;
   mutationRule: string;
+  translator?: string | null;
   lines: ApiLine[];
   changingLines: number[];
   interpretation: string;
@@ -1223,6 +1224,7 @@ function mapApiConsultationToItem(
     publicSessionId: sessionPublicId,
     sharingPersisted: true,
     question: c.question,
+    translator: (c.translator as ConsultResponse["translator"]) ?? undefined,
     oracleBones: c.oracleBones
       ? {
           patternId: c.oracleBones.pattern_id,

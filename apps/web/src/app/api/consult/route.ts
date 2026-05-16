@@ -907,6 +907,7 @@ export async function POST(req: Request) {
                   transformedHexagramName:
                     castResult.transformedHexagram?.name ?? null,
                   mutationRule: castResult.mutationRule,
+                  translator: resolvedTranslator,
                   lines: castResult.lines,
                   changingLines: castResult.changingLines,
                   interpretation,
@@ -1067,6 +1068,7 @@ export async function POST(req: Request) {
         transformedHexagram: castResult.transformedHexagram?.number ?? null,
         transformedHexagramName: castResult.transformedHexagram?.name ?? null,
         mutationRule: castResult.mutationRule,
+        translator: resolvedTranslator,
         lines: castResult.lines,
         changingLines: castResult.changingLines,
         interpretation,

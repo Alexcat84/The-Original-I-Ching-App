@@ -23,6 +23,7 @@ export interface StoredConsultation {
   transformedHexagram: number | null;
   transformedHexagramName: string | null;
   mutationRule: string;
+  translator?: string | null;
   lines: Array<{
     position: 1 | 2 | 3 | 4 | 5 | 6;
     value: 6 | 7 | 8 | 9;
@@ -88,6 +89,7 @@ function consultationFromDbRow(data: {
   transformed_hexagram_name: string | null;
   changing_lines: number[];
   mutation_rule: string;
+  translator?: string | null;
   category: string;
   interpretation: string;
   image_url: string | null;
@@ -109,6 +111,7 @@ function consultationFromDbRow(data: {
     transformedHexagram: data.transformed_hexagram_number,
     transformedHexagramName: data.transformed_hexagram_name,
     mutationRule: data.mutation_rule,
+    translator: data.translator ?? null,
     lines: data.lines,
     changingLines: data.changing_lines,
     interpretation: data.interpretation,
@@ -277,6 +280,7 @@ export async function upsertSessionAndConsultation(params: {
     transformed_hexagram_name: params.consultation.transformedHexagramName,
     changing_lines: params.consultation.changingLines,
     mutation_rule: params.consultation.mutationRule,
+    translator: params.consultation.translator ?? null,
     category: params.consultation.category,
     interpretation: params.consultation.interpretation,
     image_url: params.consultation.imageUrl,
@@ -357,7 +361,7 @@ export async function getUserSessionsWithConsultations(
 
   const sessionIds = sessionRows.map((s) => s.id);
   const baseConsultColumns =
-    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
+    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, translator, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
   const withOracleColumns = `${baseConsultColumns}, oracle_type, oracle_bones`;
 
   let consultRows: unknown[] | null = null;
@@ -523,7 +527,7 @@ export async function getUserSessionWithConsultations(
   if (sessionError || !sessionRow) return null;
 
   const baseConsultColumns =
-    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
+    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, translator, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
   const withOracleColumns = `${baseConsultColumns}, oracle_type, oracle_bones`;
 
   let consultRows: unknown[] | null = null;
