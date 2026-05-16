@@ -335,15 +335,13 @@ export async function generateOracleBonesInterpretation(
     hasContext,
     mode,
   );
+  const nameNote = displayName?.trim()
+    ? `The user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.\n\n`
+    : "";
+  const consultBlockWithName = `${nameNote}${consultBlock}`;
   const userContent = contextBlock
-    ? `${contextBlock}\n\n${consultBlock}`
-    : consultBlock;
-
-  const nameNote =
-    displayName?.trim()
-      ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
-      : "";
-  const systemPrompt = `${ORACLE_BONES_SYSTEM}${nameNote}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+    ? `${contextBlock}\n\n${consultBlockWithName}`
+    : consultBlockWithName;
 
   if (ANTHROPIC_API_KEY) {
     try {
@@ -356,7 +354,7 @@ export async function generateOracleBonesInterpretation(
           system: [
             {
               type: "text",
-              text: systemPrompt,
+              text: ORACLE_BONES_SYSTEM,
               cache_control: { type: "ephemeral" },
             },
           ],
@@ -375,8 +373,7 @@ export async function generateOracleBonesInterpretation(
                   : []),
                 {
                   type: "text",
-                  text: consultBlock,
-                  cache_control: { type: "ephemeral" },
+                  text: consultBlockWithName,
                 },
               ],
             },
@@ -441,7 +438,7 @@ export async function generateOracleBonesInterpretation(
       const response = await openRouterClient.messages.create({
         model,
         max_tokens: maxTokens,
-        system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
+        system: [{ type: "text", text: ORACLE_BONES_SYSTEM, cache_control: { type: "ephemeral" } }],
         messages: [
           {
             role: "user",
@@ -449,7 +446,6 @@ export async function generateOracleBonesInterpretation(
               {
                 type: "text",
                 text: userContent,
-                cache_control: { type: "ephemeral" },
               },
             ],
           },
@@ -508,7 +504,7 @@ export async function generateOracleBonesInterpretation(
         temperature: 0.45,
         max_tokens: maxTokens,
         messages: [
-          { role: "system", content: systemPrompt },
+          { role: "system", content: ORACLE_BONES_SYSTEM },
           { role: "user", content: userContent },
         ],
       }),

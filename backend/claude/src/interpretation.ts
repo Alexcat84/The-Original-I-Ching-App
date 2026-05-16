@@ -479,19 +479,22 @@ function buildPromptBlocks(
   promptData: PromptData,
   historicalContextBlock: string,
   currentContextBlock: string,
+  nameAndLanguageNote?: string,
 ): {
   stableSystemBlock: string;
-  stableLibraryBlock: string;
+  libraryBlock: string;
   historicalContextBlock: string | null;
   currentContextBlock: string | null;
   dynamicQuestionBlock: string;
 } {
   return {
     stableSystemBlock: systemPrompt,
-    stableLibraryBlock: `BIBLIOTECA DE TEXTOS ORIGINALES:\n${promptData.textsBlock}`,
+    libraryBlock: `BIBLIOTECA DE TEXTOS ORIGINALES:\n${promptData.textsBlock}`,
     historicalContextBlock: historicalContextBlock || null,
     currentContextBlock: currentContextBlock || null,
-    dynamicQuestionBlock: promptData.questionBlock,
+    dynamicQuestionBlock: nameAndLanguageNote
+      ? `${nameAndLanguageNote}\n\n${promptData.questionBlock}`
+      : promptData.questionBlock,
   };
 }
 
@@ -532,18 +535,21 @@ export async function generateInterpretation(
   const currentContextBlock =
     hasContext && context ? buildCurrentContext(context, context.previousConsultations.at(-1), language, mode) : "";
 
-  const nameNote = displayName?.trim()
-    ? `\n\nThe user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
-    : "";
-  const systemPrompt = `${SYSTEM_PROMPT}${nameNote}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+  const nameAndLanguageNote = [
+    displayName?.trim()
+      ? `The user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
+      : "",
+    `LANGUAGE: Respond only in ${getLanguageName(language)}.`,
+  ].filter(Boolean).join("\n\n");
   const promptBlocks = buildPromptBlocks(
-    systemPrompt,
+    SYSTEM_PROMPT,
     promptData,
     historicalContextBlock,
     currentContextBlock,
+    nameAndLanguageNote,
   );
 
-  const fallbackUserContent = `${promptBlocks.stableLibraryBlock}\n\n${
+  const fallbackUserContent = `${promptBlocks.libraryBlock}\n\n${
     promptBlocks.historicalContextBlock
       ? `${promptBlocks.historicalContextBlock}\n\n`
       : ""
@@ -575,8 +581,7 @@ export async function generateInterpretation(
               content: [
                 {
                   type: "text",
-                  text: promptBlocks.stableLibraryBlock,
-                  cache_control: { type: "ephemeral" },
+                  text: promptBlocks.libraryBlock,
                 },
                 ...(promptBlocks.historicalContextBlock
                   ? [
@@ -696,7 +701,7 @@ export async function generateInterpretation(
         system: [
           {
             type: "text",
-            text: systemPrompt,
+            text: SYSTEM_PROMPT,
             cache_control: { type: "ephemeral" },
           },
         ],
@@ -707,7 +712,6 @@ export async function generateInterpretation(
               {
                 type: "text",
                 text: fallbackUserContent,
-                cache_control: { type: "ephemeral" },
               },
             ],
           },
@@ -796,7 +800,7 @@ export async function generateInterpretation(
             temperature: 0.5,
             max_tokens: maxTokens,
             messages: [
-              { role: "system", content: systemPrompt },
+              { role: "system", content: SYSTEM_PROMPT },
               { role: "user", content: fallbackUserContent },
             ],
           }),
