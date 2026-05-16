@@ -171,6 +171,7 @@ type ConsultResponse = {
   transformedHexagram: number | null;
   transformedHexagramName: string | null;
   mutationRule: string;
+  translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
   lines: ApiLine[];
   changingLines: number[];
   interpretation: string;
@@ -4768,6 +4769,7 @@ export default function HomePage() {
                           primaryHexagramChinese={entry.primaryHexagramChinese}
                           transformedHexagram={entry.transformedHexagram}
                           mutationRule={entry.mutationRule}
+                          translator={entry.translator}
                           oracleType={entry.oracleType ?? "iching"}
                           locale={locale}
                           createdAt={entry.createdAt}

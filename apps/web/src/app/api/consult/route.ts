@@ -155,15 +155,6 @@ function summarizeInterpretationForContext(raw: string): string {
   return (lastPunctuation > 180 ? clipped.slice(0, lastPunctuation + 1) : clipped).trim();
 }
 
-function filterRowsForOracleContext(
-  rows: PreviousConsultationRow[],
-  oracleMode: OracleType,
-): PreviousConsultationRow[] {
-  return rows.filter((row) => {
-    const rowType: OracleType = row.oracle_type === "oracle_bones" ? "oracle_bones" : "iching";
-    return rowType === oracleMode;
-  });
-}
 
 function verdictLabelForPrompt(
   verdict: OracleBonesHistorySnapshot["verdict"],
@@ -623,7 +614,7 @@ export async function POST(req: Request) {
         sessionId,
         isDeepening,
         sessionTitle: body.sessionTitle ?? null,
-        previousRows: filterRowsForOracleContext(previousRows, oracleMode),
+        previousRows: previousRows,
         patternHints: null,
       });
 
@@ -769,7 +760,7 @@ export async function POST(req: Request) {
       sessionId,
       isDeepening,
       sessionTitle: body.sessionTitle ?? null,
-      previousRows: filterRowsForOracleContext(previousRows, oracleMode),
+      previousRows: previousRows,
       patternHints: null,
     });
 
@@ -941,6 +932,7 @@ export async function POST(req: Request) {
                 transformedHexagramName:
                   castResult.transformedHexagram?.name ?? null,
                 mutationRule: castResult.mutationRule,
+                translator: resolvedTranslator,
                 lines: castResult.lines,
                 changingLines: castResult.changingLines,
                 interpretation,
@@ -1098,6 +1090,7 @@ export async function POST(req: Request) {
       transformedHexagram: castResult.transformedHexagram?.number ?? null,
       transformedHexagramName: castResult.transformedHexagram?.name ?? null,
       mutationRule: castResult.mutationRule,
+      translator: resolvedTranslator,
       lines: castResult.lines,
       changingLines: castResult.changingLines,
       interpretation,

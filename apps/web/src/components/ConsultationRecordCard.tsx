@@ -16,6 +16,7 @@ type Props = {
   primaryHexagramChinese: string;
   transformedHexagram: number | null;
   mutationRule: string;
+  translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
   oracleType?: "iching" | "oracle_bones";
   locale?: string;
   createdAt?: number;
@@ -36,6 +37,7 @@ export function ConsultationRecordCard({
   primaryHexagramChinese,
   transformedHexagram,
   mutationRule,
+  translator,
   oracleType = "iching",
   locale = "es",
   createdAt,
@@ -48,6 +50,7 @@ export function ConsultationRecordCard({
       summary: "Resumen de tirada",
       trace: "Trazado recibido:",
       rule: "Regla de lectura:",
+      translatorLabel: "Traductor:",
       thread: "En este hilo:",
       reading: "Tirada",
       question: "Pregunta asociada",
@@ -66,6 +69,7 @@ export function ConsultationRecordCard({
       summary: "Reading summary",
       trace: "Received trace:",
       rule: "Reading rule:",
+      translatorLabel: "Translator:",
       thread: "In this thread:",
       reading: "Reading",
       question: "Associated question",
@@ -84,6 +88,7 @@ export function ConsultationRecordCard({
       summary: "Resumo da tiragem",
       trace: "Traçado recebido:",
       rule: "Regra de leitura:",
+      translatorLabel: "Tradutor:",
       thread: "Neste fio:",
       reading: "Tiragem",
       question: "Pergunta associada",
@@ -102,6 +107,7 @@ export function ConsultationRecordCard({
       summary: "Résumé du tirage",
       trace: "Tracé reçu :",
       rule: "Règle de lecture :",
+      translatorLabel: "Traducteur :",
       thread: "Dans ce fil :",
       reading: "Tirage",
       question: "Question associée",
@@ -120,6 +126,7 @@ export function ConsultationRecordCard({
       summary: "Zusammenfassung",
       trace: "Empfangenes Muster:",
       rule: "Leseregel:",
+      translatorLabel: "Übersetzer:",
       thread: "In diesem Thread:",
       reading: "Lesung",
       question: "Zugehörige Frage",
@@ -138,6 +145,7 @@ export function ConsultationRecordCard({
       summary: "Riepilogo del lancio",
       trace: "Traccia ricevuta:",
       rule: "Regola di lettura:",
+      translatorLabel: "Traduttore:",
       thread: "In questo thread:",
       reading: "Lettura",
       question: "Domanda associata",
@@ -156,6 +164,7 @@ export function ConsultationRecordCard({
       summary: "占いサマリー",
       trace: "受け取った卦:",
       rule: "読解ルール:",
+      translatorLabel: "翻訳者:",
       thread: "このスレッド:",
       reading: "占い",
       question: "関連する質問",
@@ -174,6 +183,7 @@ export function ConsultationRecordCard({
       summary: "占卜摘要",
       trace: "接收卦象：",
       rule: "解读规则：",
+      translatorLabel: "译者：",
       thread: "本线程：",
       reading: "占卜",
       question: "关联问题",
@@ -192,6 +202,7 @@ export function ConsultationRecordCard({
       summary: "리딩 요약",
       trace: "받은 괘:",
       rule: "해석 규칙:",
+      translatorLabel: "번역자:",
       thread: "이 스레드:",
       reading: "리딩",
       question: "연결된 질문",
@@ -210,6 +221,7 @@ export function ConsultationRecordCard({
       summary: "ملخص القراءة",
       trace: "الأثر المستلَم:",
       rule: "قاعدة القراءة:",
+      translatorLabel: "المترجم:",
       thread: "في هذا الخيط:",
       reading: "قراءة",
       question: "السؤال المرتبط",
@@ -228,6 +240,7 @@ export function ConsultationRecordCard({
       summary: "रीडिंग सारांश",
       trace: "प्राप्त ट्रेस:",
       rule: "रीडिंग नियम:",
+      translatorLabel: "अनुवादक:",
       thread: "इस थ्रेड में:",
       reading: "रीडिंग",
       question: "संबंधित प्रश्न",
@@ -248,6 +261,13 @@ export function ConsultationRecordCard({
   ];
 
   const ruleLocale = parseAppLocale(localeKey);
+
+  const translatorDisplayName: Record<string, string> = {
+    wilhelm: "Wilhelm / Baynes",
+    legge: "James Legge",
+    zhouyi: "Zhou Yi",
+    master_combined: "Wilhelm · Legge · Zhou Yi",
+  };
 
   const dateObj = createdAt ? new Date(createdAt) : new Date();
   const dateStr = dateObj.toLocaleDateString(labels.dateLocale, {
@@ -321,6 +341,12 @@ export function ConsultationRecordCard({
             {getIchingMutationRuleLabel(ruleLocale, mutationRule)}
           </span>
         </p>
+        {translator && translatorDisplayName[translator] ? (
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.translatorLabel}</span>
+            <span className="consultation-record-value">{translatorDisplayName[translator]}</span>
+          </p>
+        ) : null}
         <p className="consultation-record-row">
           <span className="consultation-record-key">{labels.thread}</span>
           <span className="consultation-record-value">
