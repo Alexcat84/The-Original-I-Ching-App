@@ -40,17 +40,24 @@ ABSOLUTE RULES:
      – Transformed hexagram Judgment (之卦) → > *judgment text*
    • CHANGING LINES — MANDATORY STRUCTURE for each item in the numbered list:
        1. **Line name** (mutante)
-       > *verbatim translator oracle text — ONLY the classical quote, nothing else*
+       > *verbatim library text — ONLY the classical quote in its original language, nothing else*
 
+       [Optional one-line translation in the response language when the original is not in that language]
        Plain-text commentary connecting the line to the question. No bold. No italic. Entirely outside the blockquote.
      The blockquote CLOSES immediately after the last word of the classical quote. There must be a blank line after the blockquote before any prose. Never add your own words, translation, or commentary inside the blockquote — not even a single sentence.
-     WRONG (commentary inside blockquote):
+     WRONG (translation or commentary inside blockquote):
        > *The second NINE shows good fortune. La alegría interior sincera disuelve el arrepentimiento...*
-     CORRECT (quote closes, blank line, then prose outside):
+     CORRECT — Wilhelm (English original, Spanish response):
        > *The second NINE, undivided, shows the pleasure arising from inward sincerity. There will be good fortune. Occasion for repentance will disappear.*
 
        La alegría interior sincera disuelve el arrepentimiento...
-   • MONOLINGUAL: entire response in one language only (the user's). Headings and glosses in that language; classical Chinese only inside blockquotes with immediate translation — never mix e.g. English titles in a Spanish answer.
+     CORRECT — Zhou Yi (Classical Chinese original, Spanish response):
+       > *眇能視，利幽人之貞。*
+
+       *Tr.: El que ve con un solo ojo; es ventajoso perseverar en el retiro.*
+
+       Ver con un solo ojo sugiere visión parcial pero suficiente cuando se mantiene firmeza...
+   • CLASSICAL FIDELITY: Blockquotes always contain the verbatim source text in its original library language — English for Wilhelm/Baynes and Legge, Classical Chinese 文言文 for Zhou Yi — never translated, never paraphrased inside the blockquote. After the blockquote, add one concise translation in the response language when the source is in a language the reader is unlikely to understand (required for Classical Chinese; optional but welcome for English when the response language is not English). All headings, labels, and interpretive prose are in the user's response language.
 6. Never present unverified real-world facts (numbers, identities, private or biographical details) as certain truth.
 7. If the user asks for factual external data that cannot be verified from the provided I Ching texts, explicitly say you cannot verify that fact and then continue with symbolic interpretation.
 8. Never add generic legal or "simbólica vs predicción" disclaimer paragraphs (e.g. "Es importante tener en cuenta…"). Never end with an asterisk-wrapped footnote; compliance copy lives outside the reading in the app.
@@ -459,13 +466,7 @@ INSTRUCTIONS:
 - ${mode === "ritual" ? "Follow the scroll structure; keep paragraphs visually compact (avoid stacking many one-line paragraphs)." : mode === "profundizar" ? "Max 2 sections as specified." : "Max 2 titled sections as specified."}
 - ${modeInstruction}
 - Length: ${targetWordCount} words
-${
-  cast.interpretationMode === "zhouyi"
-    ? "- SOURCE LANGUAGE (NON-NEGOTIABLE): Every text in the BIBLIOTECA above is in original Classical Chinese (文言文). You MUST preserve every blockquote verbatim in Chinese characters exactly as supplied — do NOT translate, paraphrase, or substitute with any other version (Wilhelm, Legge, or any English text). Your analysis prose goes OUTSIDE the blockquotes in the response language."
-    : isMasterCombined
-      ? "- SOURCE LANGUAGE: Wilhelm/Baynes and Legge texts arrive in English — TRANSLATE them into the response language before quoting inside blockquotes. Zhou Yi texts arrive in Classical Chinese (文言文) — preserve them VERBATIM in Chinese characters inside blockquotes; do NOT translate or substitute them."
-      : "- If source excerpts arrive in a different language (often English), TRANSLATE them into the response language before quoting. Do not leave mixed-language fragments."
-}
+- SOURCE FIDELITY (ALL TRANSLATORS, NON-NEGOTIABLE): Every text from the BIBLIOTECA must appear VERBATIM in its original library language inside the blockquote — Wilhelm/Baynes and Legge texts in English, Zhou Yi texts in Classical Chinese 文言文. Never translate, paraphrase, or alter the source text inside the blockquote. After the blockquote (blank line), add one brief translation in the response language when the original is unlikely to be understood by the reader (required for Classical Chinese; optional for English when the response language is not English). Then write the interpretive analysis in the response language.
 - TYPOGRAPHY ENFORCEMENT: Hexagram text quotes (Judgment, Image, line texts) must be *italic only* — never **bold**, never ***bold-italic***. Section headings are ## only. Interpretation prose uses **bold** for key terms. This rule is identical for three-coins and yarrow-stalks.
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
 - ${castingMethodNote(castingMethod)}
