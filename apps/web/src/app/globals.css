@@ -28,6 +28,8 @@ html:not([data-theme]) {
   --bubble-assistant-border: #c5e4ed;
   --bar: #cfe8f2;
   --bar-border: #b8d9e8;
+  --record-card-border: #b8d9e8;
+  --record-divider: #c0dce9;
   --shadow: 0 2px 12px rgba(26, 46, 58, 0.08);
   --shell-header-bg: rgba(255, 255, 255, 0.65);
   --title-shell: #1e4a5c;
@@ -127,6 +129,8 @@ html[data-theme="dark"] {
   --bubble-assistant-border: #3f5060;
   --bar: #0d0d0d;
   --bar-border: #1f1f1f;
+  --record-card-border: #3f5060;
+  --record-divider: #2c3d4e;
   --shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
   --shell-header-bg: rgba(21, 28, 36, 0.88);
   --title-shell: #c5e8f0;
@@ -5704,7 +5708,7 @@ html[data-theme="dark"] .library-mutation__link {
   margin: 0.65rem 0 0.5rem;
   padding: 0.65rem 0.75rem;
   border-radius: 12px;
-  border: 1px solid var(--bar-border);
+  border: 1px solid var(--record-card-border);
   background: color-mix(in srgb, var(--fg-muted) 6%, var(--bubble-assistant));
 }
 
@@ -5748,7 +5752,7 @@ html[data-theme="dark"] .library-mutation__link {
 .consultation-record-refs {
   margin-top: 0.55rem;
   padding-top: 0.45rem;
-  border-top: 1px dashed var(--bar-border);
+  border-top: 1px dashed var(--record-divider);
 }
 
 .consultation-record-refs ul {
@@ -5774,7 +5778,7 @@ html[data-theme="dark"] .library-mutation__link {
 .consultation-record-question {
   margin: 0.55rem 0 0;
   padding-top: 0.45rem;
-  border-top: 1px dashed var(--bar-border);
+  border-top: 1px dashed var(--record-divider);
   font-size: 0.8rem;
   line-height: 1.45;
   color: var(--fg-muted);
