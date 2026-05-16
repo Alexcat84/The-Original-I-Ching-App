@@ -360,8 +360,10 @@ export async function getUserSessionsWithConsultations(
   if (sessionsError || !sessionRows?.length) return [];
 
   const sessionIds = sessionRows.map((s) => s.id);
-  const baseConsultColumns =
-    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, translator, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
+  const legacyBaseColumns =
+    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
+  const baseConsultColumns = `${legacyBaseColumns}, translator`;
+  const withOracleLegacyColumns = `${legacyBaseColumns}, oracle_type, oracle_bones`;
   const withOracleColumns = `${baseConsultColumns}, oracle_type, oracle_bones`;
 
   let consultRows: unknown[] | null = null;
@@ -378,8 +380,8 @@ export async function getUserSessionsWithConsultations(
 
   if (consultError) {
     const msg = consultError.message ?? "";
-    // Backward-compatible path for DBs that still miss oracle columns.
     if (msg.includes("oracle_type") || msg.includes("oracle_bones")) {
+      // DB missing oracle columns → try with translator, no oracle columns
       const fallbackRes = await supabase
         .from("consultations")
         .select(baseConsultColumns)
@@ -388,6 +390,41 @@ export async function getUserSessionsWithConsultations(
         .order("session_position", { ascending: true });
       consultRows = fallbackRes.data as unknown[] | null;
       consultError = fallbackRes.error;
+      if (consultError) {
+        const msg2 = consultError.message ?? "";
+        if (msg2.includes("translator")) {
+          // Very old DB — no oracle columns and no translator
+          const legacyRes = await supabase
+            .from("consultations")
+            .select(legacyBaseColumns)
+            .eq("user_id", userId)
+            .in("session_id", sessionIds)
+            .order("session_position", { ascending: true });
+          consultRows = legacyRes.data as unknown[] | null;
+          consultError = legacyRes.error;
+        }
+      }
+    } else if (msg.includes("translator")) {
+      // DB has oracle columns but translator column not yet migrated
+      const fallbackRes = await supabase
+        .from("consultations")
+        .select(withOracleLegacyColumns)
+        .eq("user_id", userId)
+        .in("session_id", sessionIds)
+        .order("session_position", { ascending: true });
+      consultRows = fallbackRes.data as unknown[] | null;
+      consultError = fallbackRes.error;
+      if (consultError) {
+        // Very old DB — also missing oracle columns
+        const legacyRes = await supabase
+          .from("consultations")
+          .select(legacyBaseColumns)
+          .eq("user_id", userId)
+          .in("session_id", sessionIds)
+          .order("session_position", { ascending: true });
+        consultRows = legacyRes.data as unknown[] | null;
+        consultError = legacyRes.error;
+      }
     }
   }
   if (consultError) return [];
@@ -526,8 +563,10 @@ export async function getUserSessionWithConsultations(
     .maybeSingle();
   if (sessionError || !sessionRow) return null;
 
-  const baseConsultColumns =
-    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, translator, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
+  const legacyBaseColumns =
+    "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
+  const baseConsultColumns = `${legacyBaseColumns}, translator`;
+  const withOracleLegacyColumns = `${legacyBaseColumns}, oracle_type, oracle_bones`;
   const withOracleColumns = `${baseConsultColumns}, oracle_type, oracle_bones`;
 
   let consultRows: unknown[] | null = null;
@@ -545,6 +584,7 @@ export async function getUserSessionWithConsultations(
   if (consultError) {
     const msg = consultError.message ?? "";
     if (msg.includes("oracle_type") || msg.includes("oracle_bones")) {
+      // DB missing oracle columns → try with translator, no oracle columns
       const fallbackRes = await supabase
         .from("consultations")
         .select(baseConsultColumns)
@@ -553,6 +593,41 @@ export async function getUserSessionWithConsultations(
         .order("session_position", { ascending: true });
       consultRows = fallbackRes.data as unknown[] | null;
       consultError = fallbackRes.error;
+      if (consultError) {
+        const msg2 = consultError.message ?? "";
+        if (msg2.includes("translator")) {
+          // Very old DB — no oracle columns and no translator
+          const legacyRes = await supabase
+            .from("consultations")
+            .select(legacyBaseColumns)
+            .eq("user_id", userId)
+            .eq("session_id", sessionId)
+            .order("session_position", { ascending: true });
+          consultRows = legacyRes.data as unknown[] | null;
+          consultError = legacyRes.error;
+        }
+      }
+    } else if (msg.includes("translator")) {
+      // DB has oracle columns but translator column not yet migrated
+      const fallbackRes = await supabase
+        .from("consultations")
+        .select(withOracleLegacyColumns)
+        .eq("user_id", userId)
+        .eq("session_id", sessionId)
+        .order("session_position", { ascending: true });
+      consultRows = fallbackRes.data as unknown[] | null;
+      consultError = fallbackRes.error;
+      if (consultError) {
+        // Very old DB — also missing oracle columns
+        const legacyRes = await supabase
+          .from("consultations")
+          .select(legacyBaseColumns)
+          .eq("user_id", userId)
+          .eq("session_id", sessionId)
+          .order("session_position", { ascending: true });
+        consultRows = legacyRes.data as unknown[] | null;
+        consultError = legacyRes.error;
+      }
     }
   }
   if (consultError) return null;
