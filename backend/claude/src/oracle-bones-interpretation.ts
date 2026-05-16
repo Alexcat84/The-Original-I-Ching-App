@@ -98,7 +98,7 @@ function enforceOracleBonesConsistency(text: string, cast: OracleBonesCastResult
     header,
     language,
   );
-  const merged = `${header}\n\n${normalizedBody}`.trim();
+  const merged = `${header}\n\n---\n\n${normalizedBody}`.trim();
   return normalizeInterpretationPunctuation(merged);
 }
 
@@ -195,22 +195,29 @@ function sanitizeOracleBonesBody(text: string, header: string, language: string)
     if (/^\s{0,3}#{1,6}\s+\S/.test(filtered[i] ?? "")) headingIndexes.push(i);
   }
   if (headingIndexes.length > 0) {
-    // Normalize last heading first (avoids index-shift issues from splice below).
+    // Process from back to front so splices don't invalidate earlier indexes.
+
+    // Last heading: normalize + ensure --- precedes it.
     const lastIdx = headingIndexes[headingIndexes.length - 1]!;
     const lastLine = filtered[lastIdx] ?? "";
     const lastM = lastLine.match(/^(\s{0,3}#{1,6}\s+).+$/);
     if (lastM) {
       filtered[lastIdx] = `${lastM[1]}${finalGuidanceHeadingLocalized(language)}`;
+      const lastPrev = [...filtered.slice(0, lastIdx)].reverse().find((l) => l.trim().length > 0);
+      if (lastPrev?.trim() !== "---") {
+        filtered.splice(lastIdx, 0, "---");
+      }
     }
-    // Normalize first heading (when there are ≥2 headings) + ensure --- precedes it.
+
+    // First heading (when there are ≥2): normalize + ensure --- precedes it.
     if (headingIndexes.length >= 2) {
       const firstIdx = headingIndexes[0]!;
       const firstLine = filtered[firstIdx] ?? "";
       const firstM = firstLine.match(/^(\s{0,3}#{1,6}\s+).+$/);
       if (firstM) {
         filtered[firstIdx] = `${firstM[1]}${interpretationHeadingLocalized(language)}`;
-        const prevNonEmpty = [...filtered.slice(0, firstIdx)].reverse().find((l) => l.trim().length > 0);
-        if (prevNonEmpty?.trim() !== "---") {
+        const firstPrev = [...filtered.slice(0, firstIdx)].reverse().find((l) => l.trim().length > 0);
+        if (firstPrev?.trim() !== "---") {
           filtered.splice(firstIdx, 0, "---");
         }
       }
