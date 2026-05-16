@@ -1740,33 +1740,42 @@ export default function WebViewScreen() {
 
   /* ── P6: Execute DELETE from RN with stored token ── */
   const handleDeleteChat = useCallback(
-    async (relativeUrl: string, reqId: string) => {
+    (relativeUrl: string, reqId: string) => {
       const reply = (ok: boolean, status: number) => {
         webViewRef.current?.injectJavaScript(
           `window.__rnDelResponse && window.__rnDelResponse(${JSON.stringify(reqId)}, ${ok}, ${status}); true;`
         );
       };
-      try {
-        const token =
-          accessTokenRef.current ??
-          (await SecureStore.getItemAsync(SECURE_TOKEN_KEY));
-        if (!token) {
-          reply(false, 401);
-          return;
+      const doDelete = async () => {
+        try {
+          const token =
+            accessTokenRef.current ??
+            (await SecureStore.getItemAsync(SECURE_TOKEN_KEY));
+          if (!token) {
+            reply(false, 401);
+            return;
+          }
+          const fullUrl = relativeUrl.startsWith("http")
+            ? relativeUrl
+            : `${BASE_URL}${relativeUrl}`;
+          const res = await fetch(fullUrl, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          reply(res.ok, res.status);
+        } catch {
+          reply(false, 500);
         }
-        const fullUrl = relativeUrl.startsWith("http")
-          ? relativeUrl
-          : `${BASE_URL}${relativeUrl}`;
-        const res = await fetch(fullUrl, {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        reply(res.ok, res.status);
-      } catch {
-        reply(false, 500);
-      }
+      };
+      showNativeDialog({
+        message: nativeUi.deleteConfirm,
+        buttons: [
+          { text: nativeUi.cancel, style: "cancel", onPress: () => reply(false, 0) },
+          { text: nativeUi.ok, onPress: () => void doDelete() },
+        ],
+      });
     },
-    []
+    [showNativeDialog, nativeUi]
   );
 
   /* ── onMessage dispatcher ── */
