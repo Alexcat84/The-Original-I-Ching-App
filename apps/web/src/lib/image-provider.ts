@@ -951,6 +951,15 @@ export async function buildOracleBonesImageAsset(params: {
     }
   }
 
-  return { provider: "mock", imageUrl: fallbackImageUrl, fallbackImageUrl };
+  // Prebuilt PNG fallbacks are generic bone photos with no embedded glyph — add overlay.
+  // SVG mock rasterized PNG already has the glyph baked into the artwork.
+  const overlaySvgDataUrl = prebuiltTogetherFallback
+    ? buildOracleBonesSymbolOverlaySvgDataUrl({
+        verdict: params.verdict,
+        outputWidth: togetherFallbackW,
+        outputHeight: togetherFallbackH,
+      })
+    : undefined;
+  return { provider: "mock", imageUrl: fallbackImageUrl, fallbackImageUrl, overlaySvgDataUrl };
 }
 
