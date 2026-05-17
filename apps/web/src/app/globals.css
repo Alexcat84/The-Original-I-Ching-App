@@ -2845,7 +2845,9 @@ html:not([data-theme]) textarea {
 html[data-theme="dark"] select,
 html[data-theme="dark"] input,
 html[data-theme="dark"] textarea {
-  color-scheme: dark;
+  /* Keep color-scheme light so native Android autofill/autocomplete popups render
+     with a light background — the textarea itself is styled by CSS vars, not this. */
+  color-scheme: light;
 }
 
 /* Fix for dark mode native select dropdowns */
