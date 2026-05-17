@@ -2001,9 +2001,6 @@ export default function WebViewScreen() {
         originWhitelist={["*", "theoriginaliching://*"]}
         // P4: Disable global WebView zoom — images open in native modal instead
         scalesPageToFit={false}
-        // Prevent Android Force Dark from darkening WebView system popups (spell-check,
-        // autocomplete). Our CSS color-scheme already handles both themes correctly.
-        forceDarkOn={false}
         // P7: No shared/third-party cookies — auth lives in localStorage + SecureStore
         renderLoading={() => (
           <View style={styles.loader}>
