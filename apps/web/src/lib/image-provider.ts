@@ -295,6 +295,36 @@ function indexProbeOrder(seedIndex: number, count: number): number[] {
   return list;
 }
 
+/**
+ * Constructs a Cloudflare R2 fallback URL for a precomputed landscape image.
+ * Variant (1–10) is derived deterministically from the seed via FNV1a32.
+ * Returns null when R2_PUBLIC_URL is not configured.
+ */
+function pickR2FallbackImageUrl(params: {
+  kind: "iching";
+  hexagramNumber: number;
+  width: number;
+  height: number;
+  seed?: string;
+} | {
+  kind: "bones";
+  verdict: string;
+  width: number;
+  height: number;
+  seed?: string;
+}): string | null {
+  const base = process.env.R2_PUBLIC_URL?.trim().replace(/\/$/, "");
+  if (!base) return null;
+  const variant = params.seed
+    ? (fnv1a32(params.seed) % 10) + 1
+    : Math.floor(Math.random() * 10) + 1;
+  const { width: w, height: h } = params;
+  if (params.kind === "iching") {
+    return `${base}/iching/${params.hexagramNumber}/${variant}/${w}x${h}.webp`;
+  }
+  return `${base}/bones/${params.verdict}/${variant}/${w}x${h}.webp`;
+}
+
 async function pickPrebuiltFallbackImageUrl(params: {
   kind: PrebuiltFallbackKind;
   tier?: string;
@@ -729,17 +759,27 @@ export async function buildImageAsset(params: {
     params.prompt,
     provider === "pollinations" ? 900 : provider === "together" ? TOGETHER_FLUX_PROMPT_MAX_CHARS : 1100,
   );
-  let fallbackImageUrl = sumiFallback;
-  if (provider === "together") {
-    const prebuilt = await pickPrebuiltFallbackImageUrl({
-      kind: "iching",
-      tier: params.tier,
-      width: togetherFallbackW,
-      height: togetherFallbackH,
-      seed: `${params.consultationId ?? `${params.primaryHexagram}-${params.transformedHexagram?.number ?? "none"}`}:${Date.now()}`,
-    });
-    if (prebuilt) fallbackImageUrl = prebuilt;
-  }
+  const r2FallbackUrl =
+    provider === "together"
+      ? pickR2FallbackImageUrl({
+          kind: "iching",
+          hexagramNumber: params.primaryHexagram,
+          width: togetherFallbackW,
+          height: togetherFallbackH,
+          seed: params.consultationId ?? String(params.primaryHexagram),
+        })
+      : null;
+  const localPrebuiltUrl =
+    provider === "together"
+      ? await pickPrebuiltFallbackImageUrl({
+          kind: "iching",
+          tier: params.tier,
+          width: togetherFallbackW,
+          height: togetherFallbackH,
+          seed: params.consultationId ?? `${params.primaryHexagram}-${params.transformedHexagram?.number ?? "none"}`,
+        })
+      : null;
+  let fallbackImageUrl: string = r2FallbackUrl ?? localPrebuiltUrl ?? sumiFallback;
 
   const overlayBase = {
     lines: displayLines,
@@ -815,13 +855,9 @@ export async function buildImageAsset(params: {
     }
   }
 
-  const preferPrebuiltFallback =
-    provider === "together" && fallbackImageUrl.startsWith("/fallbacks/prebuilt/");
-  if (preferPrebuiltFallback) {
-    debugLog("buildImageAsset: together failed, using prebuilt fallback as primary", {
-      fallbackImageUrl,
-      togetherDebug: debug.together,
-    });
+  // Together failed — cascade: R2 → local prebuilt → sumi SVG
+  if (r2FallbackUrl) {
+    debugLog("buildImageAsset: together failed, using R2 fallback", { r2FallbackUrl });
     const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
       ...overlayBase,
       outputWidth: togetherFallbackW,
@@ -829,8 +865,24 @@ export async function buildImageAsset(params: {
     });
     return {
       provider: "mock",
-      imageUrl: fallbackImageUrl,
-      fallbackImageUrl,
+      imageUrl: r2FallbackUrl,
+      fallbackImageUrl: localPrebuiltUrl ?? sumiFallback,
+      debug: { ...debug, together: debug.together ?? undefined },
+      overlaySvgDataUrl,
+    };
+  }
+
+  if (localPrebuiltUrl) {
+    debugLog("buildImageAsset: together failed, using local prebuilt fallback", { localPrebuiltUrl });
+    const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+      ...overlayBase,
+      outputWidth: togetherFallbackW,
+      outputHeight: togetherFallbackH,
+    });
+    return {
+      provider: "mock",
+      imageUrl: localPrebuiltUrl,
+      fallbackImageUrl: sumiFallback,
       debug: { ...debug, together: debug.together ?? undefined },
       overlaySvgDataUrl,
     };
@@ -839,7 +891,7 @@ export async function buildImageAsset(params: {
   return {
     provider: "svg-art",
     imageUrl: sumiFallback,
-    fallbackImageUrl,
+    fallbackImageUrl: sumiFallback,
     debug: { ...debug, together: debug.together ?? undefined },
   };
 }
@@ -862,14 +914,24 @@ export async function buildOracleBonesImageAsset(params: {
   const { width: tierWidth, height: tierHeight } = resolveTierSize(params.tier);
   const { width: togetherFallbackW, height: togetherFallbackH } = resolveTogetherImageSize(params.tier);
   const promptForRemote = compactPrompt(params.prompt, 900);
-  const prebuiltTogetherFallback =
+  const r2BonesFallbackUrl =
+    provider === "together"
+      ? pickR2FallbackImageUrl({
+          kind: "bones",
+          verdict: params.verdict,
+          width: togetherFallbackW,
+          height: togetherFallbackH,
+          seed: params.consultationId ?? `${params.patternId}-${params.verdict}`,
+        })
+      : null;
+  const localBonesFallbackUrl =
     provider === "together"
       ? await pickPrebuiltFallbackImageUrl({
           kind: "bones",
           tier: params.tier,
           width: togetherFallbackW,
           height: togetherFallbackH,
-          seed: `${params.consultationId ?? `${params.patternId}-${params.verdict}`}:${Date.now()}`,
+          seed: params.consultationId ?? `${params.patternId}-${params.verdict}`,
         })
       : null;
   const fallbackSvg = buildOracleBonesMockSvgString({
@@ -880,16 +942,17 @@ export async function buildOracleBonesImageAsset(params: {
     height: ORACLE_BONES_MOCK_HEIGHT,
   });
   const fallbackSvgDataUrl = svgStringToDataUrl(fallbackSvg);
-  let fallbackImageUrl = prebuiltTogetherFallback ?? fallbackSvgDataUrl;
-  if (!prebuiltTogetherFallback) {
+  let svgFallbackUrl = fallbackSvgDataUrl;
+  if (!localBonesFallbackUrl && !r2BonesFallbackUrl) {
     try {
-      fallbackImageUrl = await rasterizeOracleBonesMockSvgToPng(fallbackSvg);
+      svgFallbackUrl = await rasterizeOracleBonesMockSvgToPng(fallbackSvg);
     } catch (error) {
       console.warn("[image-provider] oracle bones fallback PNG rasterization failed, using SVG data URL", {
         error: error instanceof Error ? error.message : String(error),
       });
     }
   }
+  let fallbackImageUrl: string = r2BonesFallbackUrl ?? localBonesFallbackUrl ?? svgFallbackUrl;
 
   if (provider === "pollinations") {
     const model = process.env.POLLINATIONS_MODEL ?? "flux";
@@ -951,15 +1014,35 @@ export async function buildOracleBonesImageAsset(params: {
     }
   }
 
-  // Prebuilt PNG fallbacks are generic bone photos with no embedded glyph — add overlay.
-  // SVG mock rasterized PNG already has the glyph baked into the artwork.
-  const overlaySvgDataUrl = prebuiltTogetherFallback
-    ? buildOracleBonesSymbolOverlaySvgDataUrl({
-        verdict: params.verdict,
-        outputWidth: togetherFallbackW,
-        outputHeight: togetherFallbackH,
-      })
-    : undefined;
-  return { provider: "mock", imageUrl: fallbackImageUrl, fallbackImageUrl, overlaySvgDataUrl };
+  // Together failed — cascade: R2 → local prebuilt → SVG mock
+  if (r2BonesFallbackUrl) {
+    const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
+      verdict: params.verdict,
+      outputWidth: togetherFallbackW,
+      outputHeight: togetherFallbackH,
+    });
+    return {
+      provider: "mock",
+      imageUrl: r2BonesFallbackUrl,
+      fallbackImageUrl: localBonesFallbackUrl ?? svgFallbackUrl,
+      overlaySvgDataUrl,
+    };
+  }
+
+  if (localBonesFallbackUrl) {
+    const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
+      verdict: params.verdict,
+      outputWidth: togetherFallbackW,
+      outputHeight: togetherFallbackH,
+    });
+    return {
+      provider: "mock",
+      imageUrl: localBonesFallbackUrl,
+      fallbackImageUrl: svgFallbackUrl,
+      overlaySvgDataUrl,
+    };
+  }
+
+  return { provider: "mock", imageUrl: svgFallbackUrl, fallbackImageUrl: svgFallbackUrl };
 }
 
