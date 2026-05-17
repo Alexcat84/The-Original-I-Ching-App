@@ -90,7 +90,7 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "Oracle methods",
     "ai-texts": "Texts, AI and authenticity",
     
-      "premium-features": "Funcionalidades Premium",
+      "premium-features": "Premium features",
       "tokens-payments": "Tokens, packs and payments",
       "privacy-account": "Privacy and account",
   },
@@ -100,7 +100,7 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "ai-texts": "Textos, IA e autenticidade",
     
       "premium-features": "Funcionalidades Premium",
-      "tokens-payments": "Tokens, packs and payments",
+      "tokens-payments": "Tokens, packs e pagamentos",
       "privacy-account": "Privacidade e conta",
   },
   fr: {
@@ -108,8 +108,8 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "Méthodes de l’oracle",
     "ai-texts": "Textes, IA et authenticité",
     
-      "premium-features": "Funcionalidades Premium",
-      "tokens-payments": "Tokens, packs and payments",
+      "premium-features": "Fonctionnalités Premium",
+      "tokens-payments": "Tokens, packs et paiements",
       "privacy-account": "Confidentialité et compte",
   },
   de: {
@@ -117,8 +117,8 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "Orakel-Methoden",
     "ai-texts": "Texte, KI und Echtheit",
     
-      "premium-features": "Funcionalidades Premium",
-      "tokens-payments": "Tokens, packs and payments",
+      "premium-features": "Premium-Funktionen",
+      "tokens-payments": "Token, Packs und Zahlungen",
       "privacy-account": "Datenschutz und Konto",
   },
   it: {
@@ -126,8 +126,8 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "Metodi dell’oracolo",
     "ai-texts": "Testi, IA e autenticità",
     
-      "premium-features": "Funcionalidades Premium",
-      "tokens-payments": "Tokens, packs and payments",
+      "premium-features": "Funzionalità Premium",
+      "tokens-payments": "Token, pack e pagamenti",
       "privacy-account": "Privacy e account",
   },
   ja: {
@@ -135,8 +135,8 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "占いの方式",
     "ai-texts": "テキスト・AI・原典性",
     
-      "premium-features": "Funcionalidades Premium",
-      "tokens-payments": "Tokens, packs and payments",
+      "premium-features": "プレミアム機能",
+      "tokens-payments": "トークン・パック・支払い",
       "privacy-account": "プライバシーとアカウント",
   },
   zh: {
@@ -144,8 +144,8 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "占卜方法",
     "ai-texts": "文本、AI 与真实性",
     
-      "premium-features": "Funcionalidades Premium",
-      "tokens-payments": "Tokens, packs and payments",
+      "premium-features": "高级功能",
+      "tokens-payments": "代币、套餐与支付",
       "privacy-account": "隐私与账户",
   },
   ko: {
@@ -153,8 +153,8 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "점법",
     "ai-texts": "원문·AI·진본성",
     
-      "premium-features": "Funcionalidades Premium",
-      "tokens-payments": "Tokens, packs and payments",
+      "premium-features": "프리미엄 기능",
+      "tokens-payments": "토큰, 팩 및 결제",
       "privacy-account": "개인정보와 계정",
   },
   ar: {
@@ -162,8 +162,8 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "طرق العرافة",
     "ai-texts": "النصوص والذكاء الاصطناعي والأصالة",
     
-      "premium-features": "Funcionalidades Premium",
-      "tokens-payments": "Tokens, packs and payments",
+      "premium-features": "الميزات المتميزة",
+      "tokens-payments": "الرموز والحزم والمدفوعات",
       "privacy-account": "الخصوصية والحساب",
   },
   hi: {
@@ -171,8 +171,8 @@ const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
     "oracle-methods": "ओरेकल विधियाँ",
     "ai-texts": "मूल पाठ, एआई और प्रामाणिकता",
     
-      "premium-features": "Funcionalidades Premium",
-      "tokens-payments": "Tokens, packs and payments",
+      "premium-features": "प्रीमियम सुविधाएँ",
+      "tokens-payments": "टोकन, पैक और भुगतान",
       "privacy-account": "गोपनीयता और खाता",
   },
 };
