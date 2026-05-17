@@ -6393,6 +6393,9 @@ export default function HomePage() {
                     maxLength={QUESTION_INPUT_MAX_CHARS}
                     readOnly={threadLimitReachedUi}
                     aria-disabled={threadLimitReachedUi}
+                    spellCheck={false}
+                    autoCorrect="off"
+                    autoComplete="off"
                   />
                   <button
                     type="button"
