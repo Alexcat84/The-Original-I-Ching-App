@@ -42,7 +42,6 @@ ABSOLUTE RULES:
        1. **Line name** (mutante)
        > *verbatim library text — ONLY the classical quote in its original language, nothing else*
 
-       [Optional one-line translation in the response language when the original is not in that language]
        Plain-text commentary connecting the line to the question. No bold. No italic. Entirely outside the blockquote.
      The blockquote CLOSES immediately after the last word of the classical quote. There must be a blank line after the blockquote before any prose. Never add your own words, translation, or commentary inside the blockquote — not even a single sentence.
      WRONG (translation or commentary inside blockquote):
@@ -54,10 +53,8 @@ ABSOLUTE RULES:
      CORRECT — Zhou Yi (Classical Chinese original, Spanish response):
        > *眇能視，利幽人之貞。*
 
-       *Tr.: El que ve con un solo ojo; es ventajoso perseverar en el retiro.*
-
        Ver con un solo ojo sugiere visión parcial pero suficiente cuando se mantiene firmeza...
-   • CLASSICAL FIDELITY: Blockquotes always contain the verbatim source text in its original library language — English for Wilhelm/Baynes and Legge, Classical Chinese 文言文 for Zhou Yi — never translated, never paraphrased inside the blockquote. After the blockquote, add one concise translation in the response language when the source is in a language the reader is unlikely to understand (required for Classical Chinese; optional but welcome for English when the response language is not English). All headings, labels, and interpretive prose are in the user's response language.
+   • CLASSICAL FIDELITY: Blockquotes always contain the verbatim source text in its original library language — English for Wilhelm/Baynes and Legge, Classical Chinese 文言文 for Zhou Yi — never translated, never paraphrased inside the blockquote. All headings, labels, and interpretive prose are in the user's response language.
 6. Never present unverified real-world facts (numbers, identities, private or biographical details) as certain truth.
 7. If the user asks for factual external data that cannot be verified from the provided I Ching texts, explicitly say you cannot verify that fact and then continue with symbolic interpretation.
 8. Never add generic legal or "simbólica vs predicción" disclaimer paragraphs (e.g. "Es importante tener en cuenta…"). Never end with an asterisk-wrapped footnote; compliance copy lives outside the reading in the app.
@@ -466,7 +463,7 @@ INSTRUCTIONS:
 - ${mode === "ritual" ? "Follow the scroll structure; keep paragraphs visually compact (avoid stacking many one-line paragraphs)." : mode === "profundizar" ? "Max 2 sections as specified." : "Max 2 titled sections as specified."}
 - ${modeInstruction}
 - Length: ${targetWordCount} words
-- SOURCE FIDELITY (ALL TRANSLATORS, NON-NEGOTIABLE): Every text from the BIBLIOTECA must appear VERBATIM in its original library language inside the blockquote — Wilhelm/Baynes and Legge texts in English, Zhou Yi texts in Classical Chinese 文言文. Never translate, paraphrase, or alter the source text inside the blockquote. After the blockquote (blank line), add one brief translation in the response language when the original is unlikely to be understood by the reader (required for Classical Chinese; optional for English when the response language is not English). Then write the interpretive analysis in the response language.
+- SOURCE FIDELITY (ALL TRANSLATORS, NON-NEGOTIABLE): Every text from the BIBLIOTECA must appear VERBATIM in its original library language inside the blockquote — Wilhelm/Baynes and Legge texts in English, Zhou Yi texts in Classical Chinese 文言文. Never translate, paraphrase, or alter the source text inside the blockquote. Write the interpretive analysis in the response language.
 - TYPOGRAPHY ENFORCEMENT: Hexagram text quotes (Judgment, Image, line texts) must be *italic only* — never **bold**, never ***bold-italic***. Section headings are ## only. Interpretation prose uses **bold** for key terms. This rule is identical for three-coins and yarrow-stalks.
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
 - ${castingMethodNote(castingMethod)}
