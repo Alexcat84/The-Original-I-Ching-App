@@ -73,8 +73,12 @@ const nextConfig = {
 export default withAxiom(withSentryConfig(nextConfig, {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  disableLogger: true,
-  automaticVercelMonitors: false,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  // Suppress all build output when no auth token (avoids "no auth token" noise on preview deploys)
+  silent: !process.env.SENTRY_AUTH_TOKEN,
+  widenClientFileUpload: Boolean(process.env.SENTRY_AUTH_TOKEN),
+  webpack: {
+    treeshake: { removeDebugLogging: true },
+    automaticVercelMonitors: false,
+  },
 }));
