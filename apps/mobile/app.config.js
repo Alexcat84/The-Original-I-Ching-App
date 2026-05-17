@@ -83,6 +83,7 @@ module.exports = ({ config }) => ({
       },
     ],
     "./plugins/withProguardRules",
+    "./plugins/withForceDarkDisabled",
     [
       "./plugins/withAdiRegistrationFile",
       {
