@@ -1,5 +1,6 @@
 import { createHash, randomInt } from "node:crypto";
 import { NextResponse } from "next/server";
+import { Logger } from "next-axiom";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { rateLimitByKey } from "@/lib/rate-limit";
@@ -61,6 +62,7 @@ async function sendEmail2faCode(params: {
 }
 
 export async function POST(req: Request) {
+  const log = new Logger({ source: "api/auth/2fa/email/send" });
   const authUser = await getAuthenticatedUser(req);
   if (!authUser) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
@@ -176,11 +178,17 @@ export async function POST(req: Request) {
   });
 
   if (!delivery.ok) {
+    log.error("2fa_email_delivery_failed", {
+      userId: authUser.userId.slice(0, 8),
+      providerStatus: delivery.status,
+      providerMessage: delivery.message,
+    });
     await supabase
       .from("two_factor_email_codes")
       .delete()
       .eq("user_id", authUser.userId)
       .is("consumed_at", null);
+    await log.flush();
     return apiError(502, {
       error: "two_factor_email_delivery_failed",
       code: "TWO_FACTOR_EMAIL_DELIVERY_FAILED",
@@ -192,6 +200,8 @@ export async function POST(req: Request) {
     });
   }
 
+  log.info("2fa_email_sent", { userId: authUser.userId.slice(0, 8), ttlMinutes: EMAIL_CODE_TTL_MINUTES });
+  await log.flush();
   return NextResponse.json({
     ok: true,
     expiresInMinutes: EMAIL_CODE_TTL_MINUTES,

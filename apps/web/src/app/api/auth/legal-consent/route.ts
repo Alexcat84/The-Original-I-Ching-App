@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { Logger } from "next-axiom";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
@@ -16,6 +17,7 @@ const legalConsentSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const log = new Logger({ source: "api/auth/legal-consent" });
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
@@ -44,7 +46,13 @@ export async function POST(req: Request) {
       await clearPendingEmailLegalConsentMetadata(user.userId);
     }
   } catch (error) {
+    log.error("legal_consent_store_failed", {
+      userId: user.userId.slice(0, 8),
+      source: parsed.data.source,
+      message: error instanceof Error ? error.message : String(error),
+    });
     console.error("[auth/legal-consent] insert failed", error);
+    await log.flush();
     return apiError(500, {
       error: "legal_consent_store_failed",
       code: "LEGAL_CONSENT_STORE_FAILED",
@@ -52,5 +60,12 @@ export async function POST(req: Request) {
     });
   }
 
+  log.info("legal_consent_recorded", {
+    userId: user.userId.slice(0, 8),
+    source: parsed.data.source,
+    termsVersion: parsed.data.termsVersion,
+    privacyVersion: parsed.data.privacyVersion,
+  });
+  await log.flush();
   return NextResponse.json({ ok: true });
 }

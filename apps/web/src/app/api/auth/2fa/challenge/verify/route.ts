@@ -5,6 +5,7 @@ import {
   verifyTotpTokenWithReplayGuard,
 } from "@iching-oracle/auth-backend";
 import { NextResponse } from "next/server";
+import { Logger } from "next-axiom";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -28,6 +29,7 @@ function secureEqualHex(a: string, b: string): boolean {
 }
 
 export async function POST(req: Request) {
+  const log = new Logger({ source: "api/auth/2fa/challenge/verify" });
   const authUser = await getAuthenticatedUser(req);
   if (!authUser) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
@@ -64,6 +66,8 @@ export async function POST(req: Request) {
     })),
   );
   if (locked) {
+    log.warn("2fa_locked", { userId: userId.slice(0, 8) });
+    await log.flush();
     return apiError(423, { error: "two_factor_locked", code: "TWO_FACTOR_LOCKED", action: "wait_and_retry" });
   }
 
@@ -203,6 +207,8 @@ export async function POST(req: Request) {
   });
 
   if (!verified) {
+    log.warn("2fa_verify_failed", { userId: userId.slice(0, 8), method: configuredMethod });
+    await log.flush();
     return apiError(401, { error: "invalid_2fa_code", code: "TWO_FACTOR_INVALID_CODE", action: "retry" });
   }
 
@@ -220,6 +226,8 @@ export async function POST(req: Request) {
     }
   }
 
+  log.info("2fa_verified", { userId: userId.slice(0, 8), method: configuredMethod });
+  await log.flush();
   return NextResponse.json({ ok: true });
 }
 

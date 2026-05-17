@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
+import { Logger } from "next-axiom";
 import { getPackConfig } from "@/lib/token-packs";
 import { revenueCatWebhookAuthorized } from "@/lib/revenuecat-webhook-auth";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -9,6 +10,7 @@ export const runtime = "nodejs";
 const PURCHASE_EVENTS = new Set(["NON_RENEWING_PURCHASE", "TEST"]);
 
 export async function POST(req: NextRequest) {
+  const log = new Logger({ source: "api/webhooks/revenuecat" });
   const secret = process.env.REVENUECAT_WEBHOOK_SECRET?.trim();
   if (!secret) {
     console.error("[RC webhook] REVENUECAT_WEBHOOK_SECRET not configured — rejecting request");
@@ -39,17 +41,23 @@ export async function POST(req: NextRequest) {
   const productId = (event?.product_id as string) ?? "";
 
   if (!PURCHASE_EVENTS.has(eventType)) {
+    log.info("webhook_skipped", { eventType });
+    await log.flush();
     return NextResponse.json({ skipped: eventType });
   }
 
   if (!userId || !productId) {
+    log.error("webhook_missing_fields", { eventType, hasUserId: Boolean(userId), hasProductId: Boolean(productId) });
     console.error("[RC webhook] missing userId or productId");
+    await log.flush();
     return NextResponse.json({ error: "missing_fields" }, { status: 400 });
   }
 
   const pack = getPackConfig(productId);
   if (!pack) {
+    log.error("webhook_unknown_product", { productId, eventType });
     console.error(`[RC webhook] unknown product: ${productId}`);
+    await log.flush();
     return NextResponse.json({ error: "unknown_product" }, { status: 400 });
   }
 
@@ -67,9 +75,12 @@ export async function POST(req: NextRequest) {
   });
   if (dedupError) {
     if (dedupError.code === "23505") {
+      log.info("webhook_duplicate", { eventType, productId });
+      await log.flush();
       return NextResponse.json({ skipped: "already_processed" });
     }
     // Log but continue — prefer a duplicate grant over a lost purchase.
+    log.error("webhook_idempotency_failed", { error: dedupError.message, eventType });
     console.error("[RC webhook] idempotency insert failed:", dedupError.message);
   }
 
@@ -80,9 +91,13 @@ export async function POST(req: NextRequest) {
   });
 
   if (error) {
+    log.error("grant_tokens_failed", { productId, tokens: pack.tokens, error: error.message });
     console.error("[RC webhook] grant_tokens failed:", error.message);
+    await log.flush();
     return NextResponse.json({ error: "db_error" }, { status: 500 });
   }
 
+  log.info("tokens_granted", { userId: userId.slice(0, 8), productId, tokens: pack.tokens, eventType });
+  await log.flush();
   return NextResponse.json({ granted: pack.tokens, pack: productId });
 }

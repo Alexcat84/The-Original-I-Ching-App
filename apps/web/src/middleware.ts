@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { withAxiom } from "next-axiom";
 
 function generateNonce(): string {
   const bytes = new Uint8Array(16);
@@ -31,7 +32,7 @@ function buildCsp(nonce: string): string {
   ].join("; ");
 }
 
-export function middleware(req: NextRequest) {
+export const middleware = withAxiom(function middlewareFn(req: NextRequest) {
   const nonce = generateNonce();
 
   const reqHeaders = new Headers(req.headers);
@@ -47,7 +48,7 @@ export function middleware(req: NextRequest) {
   const res = NextResponse.next({ request: { headers: reqHeaders } });
   res.headers.set("content-security-policy", buildCsp(nonce));
   return res;
-}
+});
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon\\.ico|fonts/).*)" ],

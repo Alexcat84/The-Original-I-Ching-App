@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { withSentryConfig } from "@sentry/nextjs";
+import { withAxiom } from "next-axiom";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -69,11 +70,11 @@ const nextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
+export default withAxiom(withSentryConfig(nextConfig, {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   silent: !process.env.CI,
   widenClientFileUpload: true,
   disableLogger: true,
   automaticVercelMonitors: false,
-});
+}));

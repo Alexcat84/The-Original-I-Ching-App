@@ -1,5 +1,6 @@
 import { registerStep1Schema, validateEmailForRegistration } from "@iching-oracle/auth-backend";
 import { createClient } from "@supabase/supabase-js";
+import { Logger } from "next-axiom";
 import { apiError } from "@/lib/api-error";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -71,6 +72,7 @@ const registerRequestSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const log = new Logger({ source: "api/auth/register" });
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() ?? "unknown";
   const { limit: registerRlLimit, windowSeconds: registerRlWindow } = parseRegisterRateLimit();
   // Rate limit before any body parsing so every attempt from the same IP is counted,
@@ -129,11 +131,15 @@ export async function POST(req: Request) {
   const captchaToken = body.turnstileToken ?? body.hcaptchaToken ?? "";
   const turnstileOk = await verifyTurnstile(captchaToken, ip);
   if (!turnstileOk) {
+    log.warn("register_bot_check_failed", {});
+    await log.flush();
     return apiError(400, { error: "turnstile_failed", code: "BOT_CHECK_FAILED", action: "retry" });
   }
 
   const emailOk = await validateEmailForRegistration(parsed.data.email);
   if (!emailOk.ok) {
+    log.warn("register_email_rejected", { reason: emailOk.reason });
+    await log.flush();
     return apiError(400, {
       error: "email_rejected",
       code: "REGISTER_EMAIL_REJECTED",
@@ -223,6 +229,11 @@ export async function POST(req: Request) {
   if (signUp.error) {
     const { code: errCode, message: errMessage, status: errStatus } = readSupabaseAuthErrorFields(signUp.error);
     const lower = errMessage.toLowerCase();
+    log.error("register_signup_failed", {
+      errorCode: errCode,
+      errorStatus: errStatus,
+      emailDomain: normalizedEmail.split("@")[1] ?? "unknown",
+    });
     console.error("[auth/register] signUp failed", {
       code: errCode,
       status: errStatus,
@@ -330,6 +341,7 @@ export async function POST(req: Request) {
     }
 
     // Do not send a localized `message` here: it overrides client i18n for sign_up_failed.
+    await log.flush();
     return apiError(400, {
       error: "sign_up_failed",
       code: "REGISTER_CREATE_USER_FAILED",
@@ -365,7 +377,9 @@ export async function POST(req: Request) {
       await recordUserLegalAcceptance(uid, body.legalConsent);
       await clearPendingEmailLegalConsentMetadata(uid);
     } catch (error) {
+      log.error("register_legal_consent_failed", { userId: uid.slice(0, 8), message: error instanceof Error ? error.message : String(error) });
       console.error("[auth/register] legal consent insert failed", error);
+      await log.flush();
       return apiError(500, {
         error: "legal_consent_store_failed",
         code: "LEGAL_CONSENT_STORE_FAILED",
@@ -373,6 +387,8 @@ export async function POST(req: Request) {
       });
     }
   }
+  log.info("register_success", { emailDomain: normalizedEmail.split("@")[1] ?? "unknown", userId: uid?.slice(0, 8) ?? null });
+  await log.flush();
   return Response.json({ ok: true, userId: uid ?? null });
 }
 

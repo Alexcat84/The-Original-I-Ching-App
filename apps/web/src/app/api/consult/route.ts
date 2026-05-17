@@ -25,6 +25,7 @@ import {
 } from "@iching-oracle/oracle-bones-engine";
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
+import { Logger } from "next-axiom";
 import {
   buildImageAsset,
   buildOracleBonesImageAsset,
@@ -295,6 +296,8 @@ function detectLanguageFromUserText(text: string): AppLocale | null {
 }
 
 export async function POST(req: Request) {
+  const log = new Logger({ source: "api/consult" });
+
   // Health check de Upstash — rechazar si no está operativo
   if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
     console.error('[CRITICAL] Upstash not configured — rate limiting disabled');
@@ -442,6 +445,8 @@ export async function POST(req: Request) {
       windowSeconds: 60,
     });
     if (!rl.ok) {
+      log.warn("rate_limited", { source: "ip", userId: shortUserId(authedUserId) });
+      await log.flush();
       return NextResponse.json(
         {
           error: "rate_limited",
@@ -457,6 +462,8 @@ export async function POST(req: Request) {
       windowSeconds: 60,
     });
     if (!rlUser.ok) {
+      log.warn("rate_limited", { source: "user", userId: shortUserId(authedUserId) });
+      await log.flush();
       return NextResponse.json(
         {
           error: "rate_limited",
@@ -559,6 +566,8 @@ export async function POST(req: Request) {
     if (!adminUnlimitedCredits) {
       remainingAfterConsume = await consumeToken(authedUserId, tokensToConsume);
       if (remainingAfterConsume === -1) {
+        log.info("insufficient_credits", { userId: shortUserId(authedUserId), tier: tierKey, oracleMode });
+        await log.flush();
         return NextResponse.json(
           {
             error: "insufficient_credits",
@@ -570,6 +579,13 @@ export async function POST(req: Request) {
           { status: 402 },
         );
       }
+      log.info("token_consumed", {
+        userId: shortUserId(authedUserId),
+        tier: tierKey,
+        tokensConsumed: tokensToConsume,
+        remaining: remainingAfterConsume,
+        oracleMode,
+      });
     }
     const adminConfig = await getAdminConfig();
     const adminAllowed = adminBypassAllowed;
@@ -699,6 +715,15 @@ export async function POST(req: Request) {
         },
       });
 
+      log.info("oracle_bones_complete", {
+        userId: shortUserId(authedUserId),
+        verdict: bonesCast.verdict,
+        medium: bonesCast.medium,
+        imageProvider: image.provider,
+        sessionPosition: nextPosition,
+        canDeepen,
+      });
+      await log.flush();
       return NextResponse.json({
         sharingPersisted: isSharingPersistenceAvailable(),
         oracleType: "oracle_bones" as const,
@@ -921,6 +946,16 @@ export async function POST(req: Request) {
                 },
               });
 
+              log.info("stream_consult_complete", {
+                userId: shortUserId(authedUserId),
+                hexagram: castResult.primaryHexagram.number,
+                transformedHexagram: castResult.transformedHexagram?.number ?? null,
+                category,
+                imageProvider: image.provider,
+                sessionPosition: nextPosition,
+                canDeepen,
+                translator: resolvedTranslator,
+              });
               writeEvent("final_ready", {
                 sharingPersisted: isSharingPersistenceAvailable(),
                 oracleType: "iching" as const,
@@ -957,6 +992,10 @@ export async function POST(req: Request) {
                   castResult.transformedHexagram?.number ?? null,
               });
             } catch (streamError) {
+              log.error("stream_consult_error", {
+                userId: shortUserId(authedUserId),
+                message: streamError instanceof Error ? streamError.message : String(streamError),
+              });
               console.error("[api/consult][stream_ritual]", streamError);
               ritualLog("event:error", {
                 message:
@@ -976,6 +1015,7 @@ export async function POST(req: Request) {
               });
             } finally {
               ritualLog("close");
+              await log.flush();
               controller.close();
             }
           })();
@@ -1082,6 +1122,17 @@ export async function POST(req: Request) {
       },
     });
 
+    log.info("consult_complete", {
+      userId: shortUserId(authedUserId),
+      hexagram: castResult.primaryHexagram.number,
+      transformedHexagram: castResult.transformedHexagram?.number ?? null,
+      category,
+      imageProvider: image.provider,
+      sessionPosition: nextPosition,
+      canDeepen,
+      translator: resolvedTranslator,
+    });
+    await log.flush();
     return NextResponse.json({
       sharingPersisted: isSharingPersistenceAvailable(),
       oracleType: "iching" as const,
@@ -1112,6 +1163,8 @@ export async function POST(req: Request) {
       publicSessionId: sharing.publicSessionId,
     });
   } catch (e) {
+    log.error("consult_unhandled_error", { message: e instanceof Error ? e.message : String(e) });
+    await log.flush();
     console.error("[api/consult]", e);
     const message = e instanceof Error ? e.message : String(e);
     return NextResponse.json(

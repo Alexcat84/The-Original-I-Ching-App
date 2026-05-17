@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Logger } from "next-axiom";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
 import { getAccountBillingSnapshot } from "@/lib/credits";
@@ -8,6 +9,7 @@ import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
+  const log = new Logger({ source: "api/account/me" });
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
@@ -38,6 +40,7 @@ export async function GET(req: Request) {
       .eq("privacy_version", CURRENT_PRIVACY_VERSION)
       .maybeSingle();
     if (legalAcceptanceError) {
+      log.warn("account_me_legal_lookup_failed", { userId: user.userId.slice(0, 8), error: legalAcceptanceError.message });
       console.warn("[account/me] legal acceptance lookup failed", legalAcceptanceError.message);
     }
     return {
@@ -48,6 +51,7 @@ export async function GET(req: Request) {
       legalAccepted: Boolean(legalAcceptance?.id),
     };
   })();
+  await log.flush();
   return NextResponse.json({
     id: user.userId,
     email: user.email,

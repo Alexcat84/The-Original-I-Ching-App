@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Logger } from "next-axiom";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
 import {
@@ -61,6 +62,7 @@ export async function GET(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  const log = new Logger({ source: "api/account/chats" });
   if (!isChatPersistenceConfigured()) {
     return apiError(503, {
       error: "chat_persistence_not_configured",
@@ -79,8 +81,12 @@ export async function DELETE(req: Request) {
   }
   const ok = await deleteUserSession(user.userId, sessionId);
   if (!ok) {
+    log.warn("chat_delete_not_found", { userId: user.userId.slice(0, 8), sessionId: sessionId.slice(0, 8) });
+    await log.flush();
     return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
   }
+  log.info("chat_deleted", { userId: user.userId.slice(0, 8), sessionId: sessionId.slice(0, 8) });
+  await log.flush();
   return NextResponse.json({ ok: true });
 }
 
