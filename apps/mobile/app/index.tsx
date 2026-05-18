@@ -1302,8 +1302,6 @@ export default function WebViewScreen() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const accessTokenRef = useRef<string | null>(null);
-  const pkceVerifierRef = useRef<string | null>(null);
-  const pendingSessionRef = useRef<object | null>(null);
   const authTransitionRef = useRef(false);
   const downloadTransfersRef = useRef<
     Record<
@@ -1440,102 +1438,15 @@ export default function WebViewScreen() {
 
   const onLoadEnd = useCallback(() => {
     webReadyRef.current = true;
-    if (pendingSessionRef.current) {
-      // Cold-start: exchange completed before WebView was ready; inject now.
-      const session = pendingSessionRef.current;
-      pendingSessionRef.current = null;
-      webViewRef.current?.injectJavaScript(
-        `window.__rnInjectSession && window.__rnInjectSession(${JSON.stringify(session)}); true;`
-      );
-    } else {
-      webViewRef.current?.injectJavaScript(
-        `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
-      );
-    }
+    webViewRef.current?.injectJavaScript(
+      `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+    );
     // After native locale is known, prefer web `localStorage` over stale native default.
     if (localeStorageHydratedRef.current) {
       webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
     }
     hideSplash();
   }, [hideSplash]);
-
-  /* ── PKCE token exchange (called from handleDeepLink and auth/callback route) ── */
-  const performPkceExchange = useCallback(async (code: string): Promise<boolean> => {
-    addLog(`exchange called code:${code?.substring(0, 10)}...`);
-
-    const verifier =
-      pkceVerifierRef.current ??
-      (await SecureStore.getItemAsync("pkce_code_verifier"));
-    addLog(`verifier:${verifier ? verifier.substring(0, 10) + '...' : 'NULL'}`);
-
-    if (!verifier) {
-      addLog('NO VERIFIER — abort');
-      return false;
-    }
-
-    try {
-      addLog('POST /auth/v1/token...');
-      const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=pkce`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", apikey: SUPABASE_ANON_KEY },
-        body: JSON.stringify({ auth_code: code, code_verifier: verifier }),
-      });
-      pkceVerifierRef.current = null;
-      await SecureStore.deleteItemAsync("pkce_code_verifier");
-
-      addLog(`status:${res.status}`);
-      const body = await res.json() as Record<string, unknown>;
-      addLog(`body:${JSON.stringify(body).substring(0, 120)}`);
-
-      if (res.ok) {
-        const session = body as {
-          access_token: string;
-          refresh_token: string;
-          expires_in: number;
-          token_type: string;
-          user: { email?: string; id?: string };
-        };
-        accessTokenRef.current = session.access_token;
-        await SecureStore.setItemAsync(SECURE_TOKEN_KEY, session.access_token);
-        setIsAuthenticated(true);
-        setUserEmail(session.user?.email ?? null);
-        if (webReadyRef.current) {
-          webViewRef.current?.injectJavaScript(
-            `window.__rnInjectSession && window.__rnInjectSession(${JSON.stringify(session)}); true;`
-          );
-        } else {
-          pendingSessionRef.current = session;
-        }
-        addLog('SUCCESS — session injected');
-        return true;
-      }
-    } catch (e) {
-      addLog(`EXCEPTION:${String(e)}`);
-      pkceVerifierRef.current = null;
-      await SecureStore.deleteItemAsync("pkce_code_verifier");
-    }
-    return false;
-  }, []);
-
-  /* ── Deep link handler (auth callback via Linking — only fires for double-slash URLs) ── */
-  const handleDeepLink = useCallback(async (url: string) => {
-    // Supabase can normalize redirect_to into a triple-slash URL
-    // (theoriginaliching:///auth/callback). Collapse before parsing.
-    const normalizedUrl = url.replace('theoriginaliching:///', 'theoriginaliching://');
-    const parsed = Linking.parse(normalizedUrl);
-    if (parsed.hostname !== "auth" || !parsed.path?.startsWith("/callback")) return;
-
-    const code =
-      typeof parsed.queryParams?.code === "string" ? parsed.queryParams.code : null;
-    if (code) {
-      const ok = await performPkceExchange(code);
-      if (ok) return;
-    }
-
-    // Fallback: no verifier or exchange failed — let WebView handle the callback
-    const webUrl = deepLinkToWebUrl(normalizedUrl);
-    if (webUrl) setCurrentUrl(webUrl);
-  }, [performPkceExchange]);
 
   /* ── Deep link handler — OAuth callback + RevenueCat redemption ── */
   useEffect(() => {
@@ -1569,7 +1480,17 @@ export default function WebViewScreen() {
 
       if (!url?.includes('auth/callback')) return;
 
-      // Extract access_token from hash fragment (Supabase implicit flow)
+      // PKCE code flow — Supabase JS SDK stores the verifier in the WebView's localStorage.
+      // We can't do the exchange natively, so we hand the callback URL back to the WebView.
+      const normalizedUrl = url.replace('theoriginaliching:///', 'theoriginaliching://');
+      const codeMatch = normalizedUrl.match(/[?&]code=([^&#]+)/);
+      if (codeMatch) {
+        const webUrl = deepLinkToWebUrl(normalizedUrl);
+        if (webUrl) setCurrentUrl(webUrl);
+        return;
+      }
+
+      // Extract access_token from hash fragment (Supabase implicit flow fallback)
       const hashMatch = url.match(/#access_token=([^&]+)/);
       const accessToken = hashMatch ? decodeURIComponent(hashMatch[1]) : null;
 
@@ -1801,11 +1722,6 @@ export default function WebViewScreen() {
             webViewRef.current?.injectJavaScript(
               `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
             );
-            break;
-
-          case "pkce_verifier":
-            pkceVerifierRef.current = msg.verifier;
-            SecureStore.setItemAsync("pkce_code_verifier", msg.verifier);
             break;
 
           case "auth_signout":
