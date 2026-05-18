@@ -1383,8 +1383,12 @@ export default function WebViewScreen() {
 
   /* ── Restore token + locale from storage on cold start ── */
   useEffect(() => {
-    const RC_API_KEY = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ?? 'rcb_mEebmVMpfZYlBttOZNnKGUlmOzOd';
-    Purchases.configure({ apiKey: RC_API_KEY });
+    const RC_API_KEY = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ?? '';
+    try {
+      if (RC_API_KEY) Purchases.configure({ apiKey: RC_API_KEY });
+    } catch (e) {
+      console.warn('[RevenueCat] configure failed:', e);
+    }
 
     const purchaseSub = DeviceEventEmitter.addListener('rnPurchaseSuccess', () => {
       webViewRef.current?.injectJavaScript(
