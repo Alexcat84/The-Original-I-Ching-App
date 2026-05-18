@@ -8,6 +8,7 @@
     "android": "expo run:android",
     "lint": "node -e \"process.exit(0)\"",
     "postinstall": "node ./scripts/fix-expo-modules-core-sdk35.js",
+    "eas-build-pre-install": "rm -rf android ios",
     "android:prebuild": "expo prebuild --platform android",
     "android:sync-native": "expo prebuild --platform android --no-install",
     "android:apk:release": "node ./scripts/assemble-android-release.js",
