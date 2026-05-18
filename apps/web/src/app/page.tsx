@@ -1944,25 +1944,44 @@ export default function HomePage() {
         sy =
           drawWrapped(ctx, `${label} ${value}`, 84, sy, leftW - 60, 34, 2) + 6;
       };
+      const pdfDateStr = new Date(entry.createdAt ?? Date.now()).toLocaleDateString(
+        locale,
+        { year: "numeric", month: "short", day: "numeric" },
+      );
+      const pdfTranslatorName: Record<string, string> = {
+        wilhelm: "Wilhelm / Baynes",
+        legge: "James Legge",
+        zhouyi: "Zhou Yi",
+        master_combined: "Wilhelm · Legge · Zhou Yi",
+      };
       if (entry.oracleType === "oracle_bones" && entry.oracleBones) {
-        summaryLine(isEsPdf ? "Tipo:" : "Type:", isEsPdf ? "Huesos" : "Bones");
-        summaryLine(
-          isEsPdf ? "Veredicto:" : "Verdict:",
-          verdictLabel(entry.oracleBones.verdict, lang),
-        );
-        summaryLine(
-          isEsPdf ? "Cargo +:" : "Charge +:",
-          entry.oracleBones.positiveCharge,
-        );
-      } else {
-        summaryLine(
-          isEsPdf ? "Hexagrama:" : "Hexagram:",
-          `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`,
-        );
-        summaryLine(isEsPdf ? "Regla:" : "Rule:", getIchingMutationRuleLabel(lang as AppLocale, entry.mutationRule));
+        const mediumLabel = entry.oracleBones.medium === "turtle"
+          ? (isEsPdf ? "Caparazón de tortuga" : "Turtle shell")
+          : (isEsPdf ? "Hueso de buey" : "Ox bone");
+        const chargeLabel = entry.oracleBones.verdict === "silent"
+          ? (isEsPdf ? "Silencio" : "Silence")
+          : entry.oracleBones.verdict.startsWith("auspicious")
+            ? (isEsPdf ? "Positivo 吉" : "Positive 吉")
+            : (isEsPdf ? "Negativo 凶" : "Negative 凶");
+        summaryLine(isEsPdf ? "Veredicto:" : "Verdict:", verdictLabel(entry.oracleBones.verdict, lang));
+        summaryLine(isEsPdf ? "Medio:" : "Medium:", mediumLabel);
+        summaryLine(isEsPdf ? "Cargo:" : "Charge:", chargeLabel);
         summaryLine(
           isEsPdf ? "En hilo:" : "In thread:",
-          `${entry.sessionPosition}`,
+          `${isEsPdf ? "Lectura" : "Reading"} ${entry.sessionPosition} · ${pdfDateStr}`,
+        );
+      } else {
+        const trace = entry.transformedHexagram != null
+          ? `#${entry.primaryHexagram} ${entry.primaryHexagramChinese} → #${entry.transformedHexagram} (之卦)`
+          : `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`;
+        summaryLine(isEsPdf ? "Traza:" : "Trace:", trace);
+        summaryLine(isEsPdf ? "Regla:" : "Rule:", getIchingMutationRuleLabel(lang as AppLocale, entry.mutationRule));
+        if (entry.translator && pdfTranslatorName[entry.translator]) {
+          summaryLine(isEsPdf ? "Traductor:" : "Translator:", pdfTranslatorName[entry.translator]!);
+        }
+        summaryLine(
+          isEsPdf ? "En hilo:" : "In thread:",
+          `${isEsPdf ? "Lectura" : "Reading"} ${entry.sessionPosition} · ${pdfDateStr}`,
         );
       }
 
@@ -2011,6 +2030,29 @@ export default function HomePage() {
         doc.addImage(dataUrl, "JPEG", 0, 0, 595.28, 841.89, undefined, "FAST");
       };
 
+      // Justify paragraph/list body lines on the canvas (not headings or italics).
+      const fillCanvasJustified = (
+        c: CanvasRenderingContext2D,
+        text: string,
+        x: number,
+        yCur: number,
+        maxW: number,
+        isLast: boolean,
+      ) => {
+        if (isLast) { c.fillText(text, x, yCur); return; }
+        const words = text.split(" ").filter(Boolean);
+        if (words.length <= 1) { c.fillText(text, x, yCur); return; }
+        const totalW = words.reduce((s, w) => s + c.measureText(w).width, 0);
+        const spW = c.measureText(" ").width;
+        const gap = (maxW - totalW) / (words.length - 1);
+        if (gap < spW * 0.4 || gap > spW * 4) { c.fillText(text, x, yCur); return; }
+        let cx = x;
+        for (let wi = 0; wi < words.length; wi++) {
+          c.fillText(words[wi]!, cx, yCur);
+          if (wi < words.length - 1) cx += c.measureText(words[wi]!).width + gap;
+        }
+      };
+
       let readingBottom = pageH - 58;
       let y = panelY + 84;
       let lineIdx = 0;
@@ -2044,7 +2086,16 @@ export default function HomePage() {
         y += sl.marginTop;
         ctx.font = sl.font;
         ctx.fillStyle = sl.fillStyle;
-        ctx.fillText(sl.text, sl.x, y);
+        const isLastInBlock =
+          lineIdx === styledLines.length - 1 ||
+          (styledLines[lineIdx + 1]?.marginTop ?? 0) > 0;
+        const canJustify = !sl.font.includes("italic") && !sl.font.includes("700");
+        if (canJustify) {
+          const lineMaxW = pageW - 84 - sl.x;
+          fillCanvasJustified(ctx, sl.text, sl.x, y, lineMaxW, isLastInBlock);
+        } else {
+          ctx.fillText(sl.text, sl.x, y);
+        }
         y += sl.lineHeight;
         lineIdx += 1;
       }
