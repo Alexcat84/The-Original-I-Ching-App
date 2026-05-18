@@ -3958,7 +3958,7 @@ export default function HomePage() {
   }
 
   const creditsExhaustedCopy = creditsNotice
-    ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.reason)
+    ? creditsExhaustedBlock(creditsNotice.tier, creditsNotice.reason, locale)
     : null;
 
   const onboardingUi = getOnboardingUiMessages(locale);

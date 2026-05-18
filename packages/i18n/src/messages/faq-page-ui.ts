@@ -47,6 +47,7 @@ const FAQ_CATEGORY_ORDER: FaqCategoryId[] = [
   "oracle-methods",
   "ai-texts",
   "tokens-payments",
+  "premium-features",
   "privacy-account",
 ];
 
@@ -362,6 +363,25 @@ const FAQ_ITEMS_EN: FaqItem[] = [
       "Each consultation allows up to 1500 characters (about 250-300 words). We recommend taking advantage of this space to describe your situation in detail; the more context you provide about your current moment and feelings, the deeper and more accurate the interpretation the system generates from the resulting hexagram will be.",
     related: ["userGuide"],
   },
+  {
+    id: "translators-tiers",
+    question: "How do the different translation tiers work?",
+    answer:
+      "The Free plan includes I Ching (automatic and manual: Three Coins and Yarrow Stalks) and Oracle Bones mode. The Seeker pack additionally unlocks the full Library and the James Legge translator. The Practitioner pack adds the original Zhou Yi, the oldest version of the I Ching without later commentaries. The Master pack activates the Master (3) function: simultaneous triangulation of all three translators for a powerful, personalised synthesis.",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "How does the Master (3) synthesis work and why is it so powerful?",
+    answer:
+      "The Master (3) function performs a Personalised Synthesis: it simultaneously triangulates the three root sources (Wilhelm, Legge, and the original Zhou Yi) to distil a coherent verdict. The result is a dialectical analysis that offers a powerful and immediate 'Concrete Answer', followed by an in-depth comparative analysis crafted uniquely for your situation and adapted with complete fidelity to the personal context of your consultation. Each Master (3) consultation consumes 2 tokens.",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "What is the Library and how do I access it?",
+    answer:
+      "The Library is the complete compendium of the 64 hexagrams and the three full literary works. Access is permanently unlocked upon purchasing any paid pack (Seeker or above).",
+  },
 ];
 
 const FAQ_ITEMS_ES: FaqItem[] = [
@@ -655,6 +675,25 @@ const FAQ_ITEMS_AR: FaqItem[] = [
       "تسمح كل استشارة بما يصل إلى 1500 حرف (حوالي 250-300 كلمة). نوصي بالاستفادة من هذه المساحة لوصف موقفك بالتفصيل؛ فكلما زاد السياق الذي تقدمه حول لحظتك الحالية ومشاعرك، كان التفسير الذي يولده النظام من السداسية الناتجة أعمق وأكثر دقة.",
     related: ["userGuide"],
   },
+  {
+    id: "translators-tiers",
+    question: "كيف تعمل مستويات الترجمة المختلفة؟",
+    answer:
+      "تشمل الخطة المجانية وضع I Ching (تلقائي ويدوي: ثلاث عملات وعصي الخيزران) ووضع Oracle Bones. يفتح pack Seeker إضافةً إلى الخطة المجانية المكتبة الكاملة ومترجم James Legge بشكل دائم. يُضيف pack Practitioner Zhou Yi الأصلي، أقدم نسخة من I Ching دون تعليقات لاحقة. يُفعّل pack Master وظيفة Master (3): مثلثة متزامنة للمترجمين الثلاثة لتوليف قوي وشخصي.",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "كيف تعمل تركيبة Master (3) ولماذا هي قوية جداً؟",
+    answer:
+      "تُجري وظيفة Master (3) توليفاً شخصياً: تُثلّث في آنٍ واحد المصادر الثلاثة الجذرية (Wilhelm وLegge والZhou Yi الأصلي) لاستخلاص حكم متسق. الناتج تحليل جدلي يقدم 'إجابة ملموسة' قوية وفورية، تليها تحليل مقارن معمّق مصاغ بشكل فريد لوضعك ومتكيّف بأمانة تامة مع السياق الشخصي لاستشارتك. تستهلك كل استشارة Master (3) رمزين.",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "ما هي المكتبة وكيف يمكن الوصول إليها؟",
+    answer:
+      "المكتبة هي الموسوعة الكاملة لـ 64 سداسياً والأعمال الأدبية الثلاثة كاملةً. يُفتح الوصول إليها بشكل دائم عند شراء أي pack مدفوع (Seeker فصاعداً).",
+  },
 ];
 
 const FAQ_ITEMS_HI: FaqItem[] = [
@@ -784,6 +823,25 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     answer:
       "हाँ। आपके प्रश्न और पठन आपके हैं। इन्हें तृतीय पक्षों के साथ साझा नहीं किया जाता, AI मॉडल प्रशिक्षण के लिए उपयोग नहीं किया जाता, और अन्य उपयोगकर्ताओं को दिखाई नहीं देते। केवल आप अपना चैट इतिहास देख सकते हैं। आप Chats अनुभाग से किसी भी समय कोई भी वार्तालाप हटा सकते हैं। यदि आप विकल्पों में उपलब्ध दो-कारक प्रमाणीकरण (2FA) सक्षम करते हैं, तो आप अपने खाते में सुरक्षा की एक अतिरिक्त परत जोड़ते हैं।",
     related: ["privacyPolicy", "userGuide"],
+  },
+  {
+    id: "translators-tiers",
+    question: "विभिन्न अनुवाद स्तर कैसे काम करते हैं?",
+    answer:
+      "Free plan में I Ching (स्वचालित और मैनुअल: तीन सिक्के और यारो डंडे) और Oracle Bones mode शामिल हैं। Seeker pack Free के अलावा पूरी Library और James Legge translator को स्थायी रूप से अनलॉक करता है। Practitioner pack मूल Zhou Yi जोड़ता है, जो बाद की टिप्पणियों के बिना I Ching का सबसे पुराना संस्करण है। Master pack Master (3) फ़ंक्शन सक्रिय करता है: तीनों अनुवादकों का एक साथ त्रिकोण, एक शक्तिशाली और व्यक्तिगत संश्लेषण के लिए।",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "Master (3) संश्लेषण कैसे काम करता है और यह इतना शक्तिशाली क्यों है?",
+    answer:
+      "Master (3) फ़ंक्शन एक व्यक्तिगत संश्लेषण करता है: तीन मूल स्रोतों (Wilhelm, Legge और मूल Zhou Yi) को एक साथ त्रिकोणित करके एक सुसंगत निर्णय निकालता है। परिणाम एक द्वंद्वात्मक विश्लेषण है जो एक शक्तिशाली और तत्काल 'ठोस उत्तर' प्रदान करता है, इसके बाद आपकी स्थिति के लिए विशेष रूप से तैयार एक गहरा तुलनात्मक विश्लेषण। प्रत्येक Master (3) परामर्श 2 टोकन उपयोग करता है।",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "Library क्या है और इसे कैसे एक्सेस करें?",
+    answer:
+      "Library 64 hexagrams का पूर्ण संकलन और तीन पूरी साहित्यिक कृतियाँ हैं। किसी भी paid pack (Seeker या उससे ऊपर) खरीदने पर यह स्थायी रूप से अनलॉक हो जाती है।",
   },
   {
     id: "prompt-length",
@@ -928,6 +986,25 @@ const FAQ_ITEMS_JA: FaqItem[] = [
       "各相談には最大 1500文字 (約250-300単語) まで入力できます。このスペースを活用して状況を詳しく説明することをお勧めします。現在の状況や感情についてより多くの文脈を提供すればするほど、得られた卦からシステムが生成する解釈はより深く正確になります。",
     related: ["userGuide"],
   },
+  {
+    id: "translators-tiers",
+    question: "翻訳の各段階はどのように機能しますか？",
+    answer:
+      "無料プランにはI Ching（自動・手動：三硬貨と蓍草）とOracle Bonesモードが含まれます。Seekerパックは無料プランに加え、図書館全体とJames Legge翻訳者をアンロックします。Practitionerパックは後の注釈を含まないI Chingの最古版である原典Zhou Yiを追加します。Masterパックは3つの翻訳者を同時に三角測量し、強力かつ個人的な総合を実現するMaster (3)機能を有効にします。",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "Master (3)の統合はどのように機能し、なぜそれほど強力なのですか？",
+    answer:
+      "Master (3)機能は個人化された統合を行います：3つの根本的な典拠（Wilhelm、Legge、原典Zhou Yi）を同時に三角測量し、一貫した判断を導き出します。結果は強力で即座の「具体的な回答」を提供する弁証法的分析であり、その後にあなたの状況のために独自に作成された深い比較分析が続きます。Master (3)の相談は1回につき2トークンを消費します。",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "図書館とは何で、どのようにアクセスしますか？",
+    answer:
+      "図書館は64卦すべてと3つの完全な文学作品の完全な概要です。いずれかの有料パック（Seeker以上）を購入すると、永続的にアクセスがアンロックされます。",
+  },
 ];
 
 const FAQ_ITEMS_ZH: FaqItem[] = [
@@ -1061,6 +1138,25 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     answer:
       "每次咨询最多允许输入 1500 个字符 (约 250-300 个词)。我们建议您利用这个空间详细描述您的情况；您提供的关于当前时刻和感受的背景信息越多，系统根据所得卦象生成的解读就越深刻和准确。",
     related: ["userGuide"],
+  },
+  {
+    id: "translators-tiers",
+    question: "不同翻译层级是如何运作的？",
+    answer:
+      "免费方案包含I Ching（自动和手动：三枚硬币和蓍草）以及Oracle Bones模式。Seeker包在免费方案基础上永久解锁完整图书馆和James Legge译本。Practitioner包增加原始周易——即无后世注释的最古老版本。Master包激活Master (3)功能：同时三角化三位译者，生成强大而个性化的综合分析。",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "Master (3)综合如何运作，为何如此强大？",
+    answer:
+      "Master (3)功能进行个性化综合：同时三角化三个根本来源（威廉、理雅各和原始周易），提炼出一致的判断。结果是一个辩证分析，提供强大而即时的「具体答案」，随后是专门为您的情况精心打造的深度比较分析。每次Master (3)咨询消耗2个代币。",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "图书馆是什么，如何访问？",
+    answer:
+      "图书馆是64卦和三部完整文学作品的完整概要。购买任何付费包（Seeker及以上）后永久解锁访问权限。",
   },
 ];
 
@@ -1196,6 +1292,25 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     answer:
       "각 상담은 최대 1500자 (약 250-300 단어)까지 허용됩니다. 이 공간을 활용하여 상황을 자세히 설명하는 것이 좋습니다. 현재 상황과 감정에 대해 더 많은 맥락을 제공할수록 결과 괘에서 시스템이 생성하는 해석이 더 깊고 정확해집니다.",
     related: ["userGuide"],
+  },
+  {
+    id: "translators-tiers",
+    question: "다양한 번역 단계는 어떻게 작동하나요?",
+    answer:
+      "무료 플랜에는 I Ching(자동 및 수동: 세 동전과 서죽 방식)과 Oracle Bones 모드가 포함됩니다. Seeker 팩은 무료 플랜 외에도 전체 도서관과 James Legge 번역본을 영구적으로 잠금 해제합니다. Practitioner 팩은 후대 주석 없이 I Ching의 가장 오래된 버전인 원전 주역을 추가합니다. Master 팩은 세 번역본을 동시에 삼각 측정하여 강력하고 개인화된 종합을 실현하는 Master (3) 기능을 활성화합니다.",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "Master (3) 합성은 어떻게 작동하며 왜 그렇게 강력한가요?",
+    answer:
+      "Master (3) 기능은 개인화된 합성을 수행합니다: 세 가지 근본 출처(Wilhelm, Legge, 원전 주역)를 동시에 삼각 측정하여 일관된 판결을 도출합니다. 결과는 즉각적이고 강력한 '구체적인 답변'을 제공하는 변증법적 분석이며, 이후 귀하의 상황에 맞게 고유하게 작성된 심층 비교 분석이 이어집니다. Master (3) 상담 1회당 2토큰이 소모됩니다.",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "도서관이란 무엇이며 어떻게 접근하나요?",
+    answer:
+      "도서관은 64괘와 세 가지 완전한 문학 작품의 완전한 개요입니다. 유료 팩(Seeker 이상)을 구매하면 영구적으로 접근이 잠금 해제됩니다.",
   },
 ];
 
@@ -1333,6 +1448,25 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     answer:
       "Cada consulta permite até 1500 caracteres (cerca de 250-300 palavras). Recomendamos aproveitar este espaço para descrever a sua situação com detalhes; quanto mais contexto fornecer sobre o seu momento actual e os seus sentimentos, mais profunda e precisa será a interpretação que o sistema gera a partir do hexagrama obtido.",
     related: ["userGuide"],
+  },
+  {
+    id: "translators-tiers",
+    question: "Como funcionam os diferentes níveis de tradução?",
+    answer:
+      "O plano gratuito inclui o modo I Ching (automático e manual: Três Moedas e Palitos de Milefólio) e o modo Oracle Bones. O pack Seeker, além do gratuito, desbloqueia permanentemente a Biblioteca completa e o tradutor James Legge. O pack Practitioner adiciona o Zhou Yi original, a versão mais antiga do I Ching sem comentários posteriores. O pack Master activa a função Master (3): triangulação simultânea dos três tradutores para uma síntese poderosa e personalizada.",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "Como funciona a síntese Master (3) e por que é tão poderosa?",
+    answer:
+      "A função Master (3) realiza uma Síntese Personalizada: triangula simultaneamente as três fontes raíz (Wilhelm, Legge e o Zhou Yi original) para destilar um veredicto coerente. O resultado é uma análise dialética que oferece uma 'Resposta Concreta' poderosa e imediata, seguida de uma análise comparativa profunda elaborada de forma única para a tua situação. Cada consulta Master (3) consome 2 tokens.",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "O que é a Biblioteca e como se acede a ela?",
+    answer:
+      "É o compêndio completo dos 64 hexagramas e das três obras literárias íntegras. O acesso é desbloqueado de forma permanente ao adquirir qualquer pack pago (Seeker em diante).",
   },
 ];
 
@@ -1474,6 +1608,25 @@ const FAQ_ITEMS_DE: FaqItem[] = [
       "Jede Konsultation erlaubt bis zu 1500 Zeichen (etwa 250-300 Wörter). Wir empfehlen, diesen Platz zu nutzen, um Ihre Situation detailliert zu beschreiben; je mehr Kontext Sie über Ihren aktuellen Moment und Ihre Gefühle angeben, desto tiefer und genauer wird die Interpretation sein, die das System aus dem erhaltenen Hexagramm generiert.",
     related: ["userGuide"],
   },
+  {
+    id: "translators-tiers",
+    question: "Wie funktionieren die verschiedenen Übersetzungsstufen?",
+    answer:
+      "Der kostenlose Plan umfasst den I Ching-Modus (automatisch und manuell: Drei Münzen und Schafgarbenstäbe) und den Oracle-Bones-Modus. Das Seeker-Paket schaltet zusätzlich zum kostenlosen Plan die vollständige Bibliothek und den James-Legge-Übersetzer dauerhaft frei. Das Practitioner-Paket fügt das originale Zhou Yi hinzu, die älteste Version des I Ching ohne spätere Kommentare. Das Master-Paket aktiviert die Master (3)-Funktion: gleichzeitige Triangulierung aller drei Übersetzer für eine kraftvolle und persönliche Synthese.",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "Wie funktioniert die Master (3)-Synthese und warum ist sie so leistungsstark?",
+    answer:
+      "Die Master (3)-Funktion führt eine Persönliche Synthese durch: Sie trianguliert gleichzeitig die drei Wurzelquellen (Wilhelm, Legge und das originale Zhou Yi), um ein kohärentes Urteil zu destillieren. Das Ergebnis ist eine dialektische Analyse, die eine kraftvolle und unmittelbare 'Konkrete Antwort' bietet, gefolgt von einer eingehenden vergleichenden Analyse, die einzigartig für Ihre Situation erstellt wurde. Jede Master (3)-Konsultation verbraucht 2 Tokens.",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "Was ist die Bibliothek und wie greife ich darauf zu?",
+    answer:
+      "Die Bibliothek ist das vollständige Kompendium der 64 Hexagramme und der drei vollständigen literarischen Werke. Der Zugang wird dauerhaft freigeschaltet, wenn ein beliebiges kostenpflichtiges Paket (Seeker aufwärts) erworben wird.",
+  },
 ];
 
 const FAQ_ITEMS_IT: FaqItem[] = [
@@ -1613,6 +1766,25 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     answer:
       "Ogni consultazione permette fino a 1500 caratteri (circa 250-300 parole). Ti consigliamo di approfittare di questo spazio per descrivere la tua situazione in dettaglio; più contesto fornirai sul tuo momento attuale e sui tuoi sentimenti, più profonda e accurata sarà l'interpretazione che il sistema genererà dall'esagramma ottenuto.",
     related: ["userGuide"],
+  },
+  {
+    id: "translators-tiers",
+    question: "Come funzionano i diversi livelli di traduzione?",
+    answer:
+      "Il piano gratuito include la modalità I Ching (automatica e manuale: Tre Monete e Steli di Achillea) e la modalità Oracle Bones. Il pack Seeker, oltre al gratuito, sblocca in modo permanente la Biblioteca completa e il traduttore James Legge. Il pack Practitioner aggiunge il Zhou Yi originale, la versione più antica dell'I Ching senza commenti successivi. Il pack Master attiva la funzione Master (3): triangolazione simultanea dei tre traduttori per una sintesi potente e personalizzata.",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "Come funziona la sintesi Master (3) e perché è così potente?",
+    answer:
+      "La funzione Master (3) esegue una Sintesi Personalizzata: triangola simultaneamente le tre fonti radice (Wilhelm, Legge e il Zhou Yi originale) per distillare un verdetto coerente. Il risultato è un'analisi dialettica che offre una 'Risposta Concreta' potente e immediata, seguita da un'analisi comparativa approfondita elaborata in modo unico per la tua situazione. Ogni consultazione Master (3) consuma 2 token.",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "Cos'è la Biblioteca e come vi si accede?",
+    answer:
+      "È il compendio completo dei 64 esagrammi e delle tre opere letterarie integrali. L'accesso viene sbloccato in modo permanente acquistando qualsiasi pack a pagamento (Seeker in poi).",
   },
 ];
 
@@ -1755,6 +1927,25 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     answer:
       "Chaque consultation permet jusqu'à 1500 caractères (environ 250-300 mots). Nous vous recommandons de profiter de cet espace pour décrire votre situation en détail ; plus vous fournirez de contexte sur votre moment actuel et vos sentiments, plus l'interprétation générée par le système à partir du hexagramme obtenu sera profonde et précise.",
     related: ["userGuide"],
+  },
+  {
+    id: "translators-tiers",
+    question: "Comment fonctionnent les différents niveaux de traduction ?",
+    answer:
+      "Le forfait gratuit comprend le mode I Ching (automatique et manuel : Trois Pièces et Tiges d'Achillée) et le mode Oracle Bones. Le pack Seeker débloque en plus du gratuit la Bibliothèque complète et le traducteur James Legge de façon permanente. Le pack Practitioner ajoute le Zhou Yi original, la version la plus ancienne du I Ching sans les commentaires ultérieurs. Le pack Master active la fonction Master (3) : triangulation simultanée des trois traducteurs pour une synthèse puissante et personnalisée.",
+  },
+  {
+    id: "master-tokens-cost",
+    question: "Comment fonctionne la synthèse Master (3) et pourquoi est-elle si puissante ?",
+    answer:
+      "La fonction Master (3) réalise une Synthèse Personnalisée : elle triangule simultanément les trois sources racines (Wilhelm, Legge et le Zhou Yi original) pour en distiller un verdict cohérent. Le résultat est une analyse dialectique qui offre une 'Réponse Concrète' puissante et immédiate, suivie d'une analyse comparative approfondie élaborée de manière unique pour votre situation. Chaque consultation Master (3) consomme 2 jetons.",
+    related: ["tokenPacks", "pricing"],
+  },
+  {
+    id: "library-unlock",
+    question: "Qu'est-ce que la Bibliothèque et comment y accéder ?",
+    answer:
+      "C'est le compendium complet des 64 hexagrammes et des trois œuvres littéraires intégrales. L'accès est débloqué de façon permanente lors de l'acquisition de n'importe quel pack payant (Seeker et au-delà).",
   },
 ];
 

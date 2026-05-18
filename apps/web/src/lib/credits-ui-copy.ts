@@ -1,3 +1,5 @@
+import { getCreditsNoticeUiMessages } from "@iching-oracle/i18n";
+import type { AppLocale } from "@iching-oracle/i18n";
 import { FREE_SESSION_LIMIT, getSessionLimit } from "@/lib/token-packs";
 
 export type BillingTier = "free" | "seeker" | "practitioner" | "master";
@@ -20,61 +22,72 @@ export function tierToBillingTierCopy(tier: string): BillingTier {
   return "free";
 }
 
-export function creditsExhaustedBlock(tier: BillingTier, reason: CreditsNoticeReason): CreditsNoticeCopy {
+function packResetLine(m: ReturnType<typeof getCreditsNoticeUiMessages>, packName: string, limit: number): string {
+  return `${m.packThreadLimitPrefix} ${packName}: ${limit} ${limit === 1 ? m.threadLimitSuffixSingular : m.threadLimitSuffix}.`;
+}
+
+export function creditsExhaustedBlock(
+  tier: BillingTier,
+  reason: CreditsNoticeReason,
+  locale: AppLocale = "es",
+): CreditsNoticeCopy {
+  const m = getCreditsNoticeUiMessages(locale);
+
   if (reason === "billing_unavailable") {
     return {
-      title: "No pudimos validar tu saldo de tokens",
-      body: "Hubo un problema temporal al sincronizar tu estado de cuenta.",
-      resetLine: "Actualiza estado y vuelve a intentar en unos segundos.",
-      primaryCta: { label: "Actualizar estado", action: "sync-billing" },
+      title: m.billingUnavailableTitle,
+      body: m.billingUnavailableBody,
+      resetLine: m.billingUnavailableReset,
+      primaryCta: { label: m.billingUnavailableCta, action: "sync-billing" },
     };
   }
 
   if (reason === "credits_depleted") {
+    const packKey =
+      tier === "master"
+        ? "tokens_master_100"
+        : tier === "practitioner"
+          ? "tokens_practitioner_40"
+          : tier === "seeker"
+            ? "tokens_seeker_20"
+            : "free";
+    const limit = getSessionLimit(packKey);
     return {
-      title: "Has agotado todos tus tokens",
-      body: "Te invitamos a recargar para seguir disfrutando de los beneficios del oráculo.",
-      resetLine: `Límite por hilo actual: ${getSessionLimit(
-        tier === "master"
-          ? "tokens_master_100"
-          : tier === "practitioner"
-            ? "tokens_practitioner_40"
-            : tier === "seeker"
-              ? "tokens_seeker_20"
-              : "free",
-      )} ${tier === "free" ? "pregunta" : "preguntas"}.`,
-      primaryCta: { label: "Comprar tokens", action: "open_plans" },
+      title: m.depletedTitle,
+      body: m.depletedBody,
+      resetLine: `${m.freeDepletedReset} ${limit} ${limit === 1 ? m.threadLimitSuffixSingular : m.threadLimitSuffix}.`,
+      primaryCta: { label: m.buyTokensCta, action: "open_plans" },
     };
   }
 
   switch (tier) {
     case "free":
       return {
-        title: "Has usado tus consultas gratuitas",
-        body: "Tus 2 consultas gratuitas de por vida ya fueron usadas.",
-        resetLine: `Límite por hilo en free: ${FREE_SESSION_LIMIT} pregunta.`,
-        primaryCta: { label: "Comprar tokens", action: "open_plans" },
+        title: m.freeDepletedTitle,
+        body: m.freeDepletedBody,
+        resetLine: `${m.freeDepletedReset} ${FREE_SESSION_LIMIT} ${m.threadLimitSuffixSingular}.`,
+        primaryCta: { label: m.buyTokensCta, action: "open_plans" },
       };
     case "seeker":
       return {
-        title: "Has usado tus tokens disponibles",
-        body: "Tu saldo actual no alcanza para otra consulta.",
-        resetLine: `Límite por hilo con Seeker Pack: ${getSessionLimit("tokens_seeker_20")} preguntas.`,
-        primaryCta: { label: "Comprar más tokens", action: "open_plans" },
+        title: m.seekerDepletedTitle,
+        body: m.seekerDepletedBody,
+        resetLine: packResetLine(m, "Seeker Pack", getSessionLimit("tokens_seeker_20")),
+        primaryCta: { label: m.buyMoreTokensCta, action: "open_plans" },
       };
     case "practitioner":
       return {
-        title: "Has usado tus tokens disponibles",
-        body: "Tu saldo actual no alcanza para otra consulta.",
-        resetLine: `Límite por hilo con Practitioner Pack: ${getSessionLimit("tokens_practitioner_40")} preguntas.`,
-        primaryCta: { label: "Comprar más tokens", action: "open_plans" },
+        title: m.practitionerDepletedTitle,
+        body: m.practitionerDepletedBody,
+        resetLine: packResetLine(m, "Practitioner Pack", getSessionLimit("tokens_practitioner_40")),
+        primaryCta: { label: m.buyMoreTokensCta, action: "open_plans" },
       };
     case "master":
       return {
-        title: "Has usado tus tokens disponibles",
-        body: "Tu saldo actual no alcanza para otra consulta.",
-        resetLine: `Límite por hilo con Master Pack: ${getSessionLimit("tokens_master_100")} preguntas.`,
-        primaryCta: { label: "Comprar más tokens", action: "open_plans" },
+        title: m.masterDepletedTitle,
+        body: m.masterDepletedBody,
+        resetLine: packResetLine(m, "Master Pack", getSessionLimit("tokens_master_100")),
+        primaryCta: { label: m.buyMoreTokensCta, action: "open_plans" },
       };
   }
 }

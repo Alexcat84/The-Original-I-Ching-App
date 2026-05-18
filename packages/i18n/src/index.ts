@@ -94,3 +94,4 @@ export { getQuickstartPageUiMessages, type QuickstartPageUiMessages } from "./me
 export { getTermsPageMessages, type TermsPageMessages } from "./messages/terms-page-ui.js";
 export { getTokenPanelUiMessages, type TokenPanelUiMessages } from "./messages/token-panel-ui.js";
 export { getOnboardingUiMessages, type OnboardingUiMessages } from "./messages/onboarding-ui.js";
+export { getCreditsNoticeUiMessages, type CreditsNoticeUiMessages } from "./messages/credits-notice-ui.js";
