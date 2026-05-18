@@ -1675,26 +1675,31 @@ export default function WebViewScreen() {
 
         if (isPdf) {
           if (Platform.OS === "android") {
+            // Ask media permission first — mirrors the photo flow UX.
+            let granted = mediaPermission?.granted ?? false;
+            if (!granted) {
+              const result = await requestMediaPermission();
+              granted = result.granted;
+            }
+            if (!granted) {
+              showNativeDialog({
+                title: nativeUi.permissionDeniedTitle,
+                message: nativeUi.permissionDeniedBody,
+                buttons: [{ text: nativeUi.ok }],
+              });
+              return;
+            }
             try {
-              const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-              if (permissions.granted) {
-                const uri = await FileSystem.StorageAccessFramework.createFileAsync(
-                  permissions.directoryUri,
-                  finalName,
-                  "application/pdf"
-                );
-                await FileSystem.writeAsStringAsync(uri, base64, {
-                  encoding: FileSystem.EncodingType.Base64,
-                });
-                showNativeDialog({
-                  title: nativeUi.fileSavedTitle,
-                  message: nativeUi.fileSavedBody,
-                  buttons: [{ text: nativeUi.ok }],
-                });
-                return;
-              }
-            } catch (e) {
-              // Fallback to standard share if SAF fails or is cancelled
+              // Android 10+: MediaStore.Downloads receives non-media assets.
+              await MediaLibrary.createAssetAsync(fileUri);
+              showNativeDialog({
+                title: nativeUi.fileSavedTitle,
+                message: nativeUi.fileSavedBody,
+                buttons: [{ text: nativeUi.ok }],
+              });
+              return;
+            } catch {
+              // MediaLibrary rejected this file type; fall through to share sheet.
             }
           }
 

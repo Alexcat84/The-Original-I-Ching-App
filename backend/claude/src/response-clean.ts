@@ -10,6 +10,9 @@ export function stripSnapshotLeaks(text: string): string {
     const idx = t.indexOf(delimiter);
     if (idx !== -1) t = t.slice(0, idx);
   }
+  // Remove any orphaned [SNAPSHOT_END] that survived the main regex (happens when
+  // the model emits the closing marker without a preceding [SNAPSHOT_START]).
+  t = t.replace(/\[SNAPSHOT_END\]/g, "");
   return t.trim();
 }
 
