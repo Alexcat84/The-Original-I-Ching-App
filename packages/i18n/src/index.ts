@@ -95,3 +95,7 @@ export { getTermsPageMessages, type TermsPageMessages } from "./messages/terms-p
 export { getTokenPanelUiMessages, type TokenPanelUiMessages } from "./messages/token-panel-ui.js";
 export { getOnboardingUiMessages, type OnboardingUiMessages } from "./messages/onboarding-ui.js";
 export { getCreditsNoticeUiMessages, type CreditsNoticeUiMessages } from "./messages/credits-notice-ui.js";
+export {
+  getDeleteAccountPageMessages,
+  type DeleteAccountPageMessages,
+} from "./messages/delete-account-page-ui.js";

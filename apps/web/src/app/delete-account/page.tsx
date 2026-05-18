@@ -1,79 +1,80 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getDeleteAccountPageMessages, getDocNavUiMessages } from "@iching-oracle/i18n";
+import { resolveDocLocale } from "@/lib/doc-locale";
 
-export const metadata: Metadata = {
-  title: "Account Deletion | The Original I Ching App",
-  description: "How to delete your account and what data is removed from The Original I Ching App.",
-  robots: { index: true, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await resolveDocLocale();
+  const m = getDeleteAccountPageMessages(locale);
+  return {
+    title: m.pageTitle,
+    description: m.pageDescription,
+    robots: { index: true, follow: true },
+  };
+}
 
-export default function DeleteAccountPage() {
+export default async function DeleteAccountPage() {
+  const locale = await resolveDocLocale();
+  const m = getDeleteAccountPageMessages(locale);
+  const nav = getDocNavUiMessages(locale);
+
   return (
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
-        <Link href="/">← Back to app</Link>
+        <Link href="/">{nav.backToOracle}</Link>
         {" · "}
-        <Link href="/privacy">Privacy Policy</Link>
+        <Link href="/privacy">{nav.privacyPolicy}</Link>
         {" · "}
-        <Link href="/terms">Terms of Service</Link>
+        <Link href="/terms">{nav.termsOfService}</Link>
       </nav>
       <article className="doc-article">
-        <h1>Account Deletion</h1>
-        <p>
-          You can permanently delete your account and all associated data directly from within the app.
-        </p>
+        <h1>{m.h1}</h1>
+        <p>{m.intro}</p>
 
-        <h2>How to delete your account</h2>
+        <h2>{m.howTitle}</h2>
         <ol>
-          <li>Open the app and sign in.</li>
-          <li>
-            Tap <strong>Options</strong> (the gear / settings button in the composer footer).
-          </li>
-          <li>
-            Scroll to <strong>Delete account</strong> and tap <strong>Delete my account</strong>.
-          </li>
-          <li>
-            In the confirmation dialog, type <strong>DELETE</strong> (or <strong>ELIMINAR</strong> in Spanish) and confirm.
-          </li>
+          <li>{m.step1}</li>
+          <li>{m.step2}</li>
+          <li>{m.step3}</li>
+          <li>{m.step4}</li>
         </ol>
-        <p>
-          Your account is deleted immediately. You will be signed out automatically.
-        </p>
+        <p>{m.afterSteps}</p>
 
-        <h2>What data is deleted</h2>
+        <h2>{m.deletedTitle}</h2>
         <ul>
-          <li>Your user profile and login credentials.</li>
-          <li>All consultation sessions and chat history.</li>
-          <li>Token balance and usage records.</li>
-          <li>Two-factor authentication configuration.</li>
-          <li>All personal preferences and settings.</li>
+          {m.deletedItems.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
         </ul>
 
-        <h2>What data is retained</h2>
-        <p>
-          Purchase and transaction records are retained for a minimum period required by applicable tax and accounting laws.
-          These records are anonymized and contain no personally identifiable information after deletion.
-        </p>
+        <h2>{m.retainedTitle}</h2>
+        <p>{m.retainedBody}</p>
 
-        <h2>RevenueCat / Stripe</h2>
-        <p>
-          Deleting your account also sends a deletion request to RevenueCat (our payment processor).
-          Stripe may retain anonymized transaction records as required by financial regulations.
-        </p>
+        <h2>{m.rcTitle}</h2>
+        <p>{m.rcBody}</p>
 
-        <h2>Cannot access the app?</h2>
+        <h2>{m.noAccessTitle}</h2>
         <p>
-          If you are unable to sign in and wish to request account deletion, email us at{" "}
-          <a href="mailto:privacy@theoriginaliching.com">privacy@theoriginaliching.com</a>{" "}
-          with your registered email address. We will process your request within 30 days.
+          {m.noAccessBody.split("privacy@theoriginaliching.com").map((part, i, arr) =>
+            i < arr.length - 1 ? (
+              <span key={i}>
+                {part}
+                <a href="mailto:privacy@theoriginaliching.com">
+                  privacy@theoriginaliching.com
+                </a>
+              </span>
+            ) : (
+              <span key={i}>{part}</span>
+            ),
+          )}
         </p>
       </article>
       <nav className="doc-nav">
-        <Link href="/">← Back to app</Link>
+        <Link href="/">{nav.backToOracle}</Link>
         {" · "}
-        <Link href="/privacy">Privacy Policy</Link>
+        <Link href="/privacy">{nav.privacyPolicy}</Link>
         {" · "}
-        <Link href="/terms">Terms of Service</Link>
+        <Link href="/terms">{nav.termsOfService}</Link>
       </nav>
     </div>
   );

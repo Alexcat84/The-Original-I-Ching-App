@@ -6,7 +6,8 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 
-const VALID_CONFIRMATIONS = new Set(["DELETE", "ELIMINAR"]);
+// All locale-specific confirmation words from home-chrome-ui deleteAccountConfirmWord
+const VALID_CONFIRMATIONS = new Set(["DELETE", "ELIMINAR", "SUPPRIMER", "LÖSCHEN", "ELIMINA"]);
 
 export async function POST(req: Request) {
   const log = new Logger({ source: "api/account/delete" });

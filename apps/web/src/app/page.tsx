@@ -2229,7 +2229,7 @@ export default function HomePage() {
   const deleteAccount = useCallback(async () => {
     if (!accessToken) return;
     const input = deleteAccountConfirm.trim().toUpperCase();
-    if (input !== "DELETE" && input !== "ELIMINAR") return;
+    if (input !== chrome.deleteAccountConfirmWord) return;
     setDeleteAccountBusy(true);
     setDeleteAccountError(null);
     try {
@@ -5688,6 +5688,7 @@ export default function HomePage() {
                       <Link href="/terms">{docNav.termsOfService}</Link>
                       <Link href="/faqs">{docNav.faqs}</Link>
                       <Link href="/about">{docNav.aboutShort}</Link>
+                      <Link href="/delete-account">{docNav.deleteAccount}</Link>
                     </div>
                   </section>
                 </div>
@@ -5763,8 +5764,7 @@ export default function HomePage() {
                         onClick={() => void deleteAccount()}
                         disabled={
                           deleteAccountBusy ||
-                          (deleteAccountConfirm.trim().toUpperCase() !== "DELETE" &&
-                            deleteAccountConfirm.trim().toUpperCase() !== "ELIMINAR")
+                          deleteAccountConfirm.trim().toUpperCase() !== chrome.deleteAccountConfirmWord
                         }
                       >
                         {deleteAccountBusy ? "…" : chrome.deleteAccountConfirmBtn}
