@@ -1333,6 +1333,10 @@ export default function HomePage() {
   const [tokenCenterOpen, setTokenCenterOpen] = useState(false);
   const [tokenCenterBusy, setTokenCenterBusy] = useState(false);
   const [tokenCenterError, setTokenCenterError] = useState<string | null>(null);
+  const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
+  const [deleteAccountConfirm, setDeleteAccountConfirm] = useState("");
+  const [deleteAccountBusy, setDeleteAccountBusy] = useState(false);
+  const [deleteAccountError, setDeleteAccountError] = useState<string | null>(null);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [loadingSessionLocalId, setLoadingSessionLocalId] = useState<
     string | null
@@ -2221,6 +2225,34 @@ export default function HomePage() {
     idleSignOutRef.current = false;
     pinnedLocalSessionIdRef.current = null;
   }, [authUserId]);
+
+  const deleteAccount = useCallback(async () => {
+    if (!accessToken) return;
+    const input = deleteAccountConfirm.trim().toUpperCase();
+    if (input !== "DELETE" && input !== "ELIMINAR") return;
+    setDeleteAccountBusy(true);
+    setDeleteAccountError(null);
+    try {
+      const res = await fetch("/api/account/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ confirmation: input }),
+      });
+      if (!res.ok) {
+        setDeleteAccountError(chrome.deleteAccountError);
+        setDeleteAccountBusy(false);
+        return;
+      }
+      setDeleteAccountOpen(false);
+      await signOut();
+    } catch {
+      setDeleteAccountError(chrome.deleteAccountError);
+      setDeleteAccountBusy(false);
+    }
+  }, [accessToken, deleteAccountConfirm, chrome.deleteAccountError, signOut]);
 
   const sessionsListed = useMemo(
     () => sessions.filter((s) => s.messageCount > 0),
@@ -5618,6 +5650,32 @@ export default function HomePage() {
                         </button>
                       </div>
                     </div>
+                    <hr className="composer-panel-divider" aria-hidden />
+                    <div
+                      className="session-progress"
+                      role="group"
+                      aria-label={chrome.deleteAccountGroupAria}
+                    >
+                      <span>{chrome.deleteAccountHeading}</span>
+                      <p className="meta-line tier-hint-line">
+                        {chrome.deleteAccountHint}
+                      </p>
+                      <div className="composer-panel-actions">
+                        <button
+                          type="button"
+                          className="composer-reading-pill"
+                          style={{ color: "var(--color-error, #c0392b)" }}
+                          onClick={() => {
+                            setDeleteAccountConfirm("");
+                            setDeleteAccountError(null);
+                            setDeleteAccountOpen(true);
+                          }}
+                          disabled={!accessToken}
+                        >
+                          {chrome.deleteAccountButton}
+                        </button>
+                      </div>
+                    </div>
                     <div
                       className="composer-doc-links"
                       aria-label={chrome.docLinksAria}
@@ -5634,6 +5692,87 @@ export default function HomePage() {
                   </section>
                 </div>
               </div>
+
+              {deleteAccountOpen ? (
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  style={{
+                    position: "fixed",
+                    inset: 0,
+                    zIndex: 1300,
+                    background: "rgba(5, 8, 14, 0.85)",
+                    display: "grid",
+                    placeItems: "center",
+                    padding: 16,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "min(480px, 96vw)",
+                      borderRadius: 16,
+                      border: "1px solid rgba(192,57,43,0.45)",
+                      background:
+                        "linear-gradient(180deg, rgba(16,31,45,0.98), rgba(9,20,31,0.98))",
+                      boxShadow: "0 18px 48px rgba(0,0,0,0.55)",
+                      padding: 20,
+                    }}
+                  >
+                    <p
+                      className="card-title"
+                      style={{ color: "var(--color-error, #c0392b)", marginBottom: 10 }}
+                    >
+                      {chrome.deleteAccountModalTitle}
+                    </p>
+                    <p className="meta-line tier-hint-line" style={{ marginBottom: 14 }}>
+                      {chrome.deleteAccountModalDesc}
+                    </p>
+                    <input
+                      type="text"
+                      value={deleteAccountConfirm}
+                      onChange={(e) => setDeleteAccountConfirm(e.target.value)}
+                      placeholder={chrome.deleteAccountConfirmPlaceholder}
+                      className="composer-input"
+                      style={{ width: "100%", marginBottom: 12 }}
+                      autoComplete="off"
+                      autoCorrect="off"
+                      spellCheck={false}
+                      disabled={deleteAccountBusy}
+                    />
+                    {deleteAccountError ? (
+                      <p
+                        className="meta-line tier-hint-line"
+                        style={{ color: "var(--color-error, #c0392b)", marginBottom: 8 }}
+                      >
+                        {deleteAccountError}
+                      </p>
+                    ) : null}
+                    <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", flexWrap: "wrap" }}>
+                      <button
+                        type="button"
+                        className="composer-reading-pill"
+                        onClick={() => setDeleteAccountOpen(false)}
+                        disabled={deleteAccountBusy}
+                      >
+                        {ui.drawerClose}
+                      </button>
+                      <button
+                        type="button"
+                        className="composer-reading-pill"
+                        style={{ color: "var(--color-error, #c0392b)" }}
+                        onClick={() => void deleteAccount()}
+                        disabled={
+                          deleteAccountBusy ||
+                          (deleteAccountConfirm.trim().toUpperCase() !== "DELETE" &&
+                            deleteAccountConfirm.trim().toUpperCase() !== "ELIMINAR")
+                        }
+                      >
+                        {deleteAccountBusy ? "…" : chrome.deleteAccountConfirmBtn}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
 
               {twoFactorModalOpen ? (
                 <div
