@@ -19,7 +19,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "Plan gratuito: 2 consultas de por vida, 1 pregunta por hilo. Sin renovación automática; los packs de pago son consumibles. Imágenes generadas en resolución básica.",
       seeker:
-        "25 tokens por compra (pack consumible, sin renovación automática). Hasta 3 preguntas encadenadas por hilo. Imágenes generadas en resolución estándar. Acceso a Wilhelm y Legge.",
+        "25 tokens por compra (pack consumible, sin renovación automática). Hasta 3 preguntas encadenadas por hilo. Imágenes generadas en resolución estándar. Acceso a Wilhelm y Legge (traductores). Desbloquea la Biblioteca completa: los 64 hexagramas.",
       practitioner:
         "50 tokens por compra (pack consumible, sin renovación automática). Hasta 5 preguntas encadenadas por hilo. Imágenes generadas en alta resolución. Acceso al Zhou Yi (Fuente Original), la versión más antigua y pura escrita en chino tradicional, junto a Wilhelm y Legge.",
       master:
@@ -29,7 +29,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "Free plan: 2 lifetime consultations, 1 question per thread. No auto-renewal; paid packs are consumable. Generated images use basic resolution.",
       seeker:
-        "25 tokens per purchase (consumable pack, no auto-renewal). Up to 3 follow-up questions per thread. Generated images use standard resolution. Access to Wilhelm and Legge.",
+        "25 tokens per purchase (consumable pack, no auto-renewal). Up to 3 follow-up questions per thread. Generated images use standard resolution. Access to Wilhelm and Legge (translators). Unlocks the full Library: all 64 hexagrams.",
       practitioner:
         "50 tokens per purchase (consumable pack, no auto-renewal). Up to 5 follow-up questions per thread. Generated images use high resolution. Access to Zhou Yi (Original Source), the oldest and purest version in traditional Chinese, along with Wilhelm and Legge.",
       master:
@@ -39,7 +39,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "Plano gratuito: 2 consultas vitalícias, 1 pergunta por fio. Sem renovação automática; os packs pagos são consumíveis. Imagens geradas em resolução básica.",
       seeker:
-        "25 tokens por compra (pack consumível, sem renovação automática). Até 3 perguntas encadeadas por fio. Imagens geradas em resolução padrão. Acesso a Wilhelm e Legge.",
+        "25 tokens por compra (pack consumível, sem renovação automática). Até 3 perguntas encadeadas por fio. Imagens geradas em resolução padrão. Acesso a Wilhelm e Legge (tradutores). Desbloqueia a Biblioteca completa: os 64 hexagramas.",
       practitioner:
         "50 tokens por compra (pack consumível, sem renovação automática). Até 5 perguntas encadeadas por fio. Imagens geradas em alta resolução. Acesso ao Zhou Yi (Fonte Original), a versão mais antiga e pura escrita em chinês tradicional, junto a Wilhelm e Legge.",
       master:
@@ -49,7 +49,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "Forfait gratuit : 2 consultations à vie, 1 question par fil. Pas de renouvellement automatique ; les packs payants sont consommables. Images générées en résolution basique.",
       seeker:
-        "25 jetons par achat (pack consommable, sans renouvellement auto). Jusqu'à 3 questions enchaînées par fil. Images générées en résolution standard. Accès à Wilhelm et Legge.",
+        "25 jetons par achat (pack consommable, sans renouvellement auto). Jusqu'à 3 questions enchaînées par fil. Images générées en résolution standard. Accès à Wilhelm et Legge (traducteurs). Déverrouille la Bibliothèque complète : les 64 hexagrammes.",
       practitioner:
         "50 jetons par achat (pack consommable, sans renouvellement auto). Jusqu'à 5 questions enchaînées par fil. Images générées en haute résolution. Accès au Zhou Yi (Source Originale), la version la plus ancienne et pure en chinois traditionnel, avec Wilhelm et Legge.",
       master:
@@ -59,7 +59,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "Kostenloser Plan: 2 lebenslange Konsultationen, 1 Frage pro Thread. Keine automatische Verlängerung; bezahlte Pakete sind verbrauchbar. Generierte Bilder in Basisauflösung.",
       seeker:
-        "25 Tokens pro Kauf (verbrauchbares Paket, keine automatische Verlängerung). Bis zu 3 Anschlussfragen pro Thread. Generierte Bilder in Standardauflösung. Zugang zu Wilhelm und Legge.",
+        "25 Tokens pro Kauf (verbrauchbares Paket, keine automatische Verlängerung). Bis zu 3 Anschlussfragen pro Thread. Generierte Bilder in Standardauflösung. Zugang zu Wilhelm und Legge (Übersetzer). Schaltet die vollständige Bibliothek frei: alle 64 Hexagramme.",
       practitioner:
         "50 Tokens pro Kauf (verbrauchbares Paket, keine automatische Verlängerung). Bis zu 5 Anschlussfragen pro Thread. Generierte Bilder in hoher Auflösung. Zugang zu Zhou Yi (Originalquelle), der ältesten und reinsten Version in traditionellem Chinesisch, zusammen mit Wilhelm und Legge.",
       master:
@@ -69,7 +69,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "Piano gratuito: 2 consultazioni a vita, 1 domanda per thread. Nessun rinnovo automatico; i pacchetti a pagamento sono consumabili. Immagini generate in risoluzione base.",
       seeker:
-        "25 token per acquisto (pacchetto consumabile, senza rinnovo automatico). Fino a 3 domande concatenate per thread. Immagini generate in risoluzione standard. Accesso a Wilhelm e Legge.",
+        "25 token per acquisto (pacchetto consumabile, senza rinnovo automatico). Fino a 3 domande concatenate per thread. Immagini generate in risoluzione standard. Accesso a Wilhelm e Legge (traduttori). Sblocca la Biblioteca completa: tutti i 64 esagrammi.",
       practitioner:
         "50 token per acquisto (pacchetto consumabile, senza rinnovo automatico). Fino a 5 domande concatenate per thread. Immagini generate in alta risoluzione. Accesso allo Zhou Yi (Fonte Originale), la versione più antica e pura in cinese tradizionale, insieme a Wilhelm e Legge.",
       master:
@@ -79,7 +79,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "無料プラン：生涯2回の相談、スレッドあたり1問。自動更新なし。有料パックは消費型。生成画像は基本解像度です。",
       seeker:
-        "購入ごとに25トークン（使い切りパック、自動更新なし）。スレッドあたり最大3問まで連続質問可能。生成画像は標準解像度。ウィルヘルムとレッゲへのアクセス。",
+        "購入ごとに25トークン（使い切りパック、自動更新なし）。スレッドあたり最大3問まで連続質問可能。生成画像は標準解像度。ウィルヘルムとレッゲ（翻訳者）へのアクセス。ライブラリ全体を解放：64卦すべて。",
       practitioner:
         "購入ごとに50トークン（使い切りパック、自動更新なし）。スレッドあたり最大5問まで連続質問可能。生成画像は高解像度。周易（原典）——繁体字中国語で書かれた最古かつ最純粋な版——ウィルヘルム及びレッゲとともにアクセス可能。",
       master:
@@ -89,7 +89,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "免费方案：终身 2 次咨询，每个线程 1 个问题。无自动续费；付费包为消耗型。生成图像为基础分辨率。",
       seeker:
-        "每次购买 25 个代币（消耗型包，无自动续费）。每个线程最多连续 3 个追问。生成图像为标准分辨率。可访问威廉和理雅各译本。",
+        "每次购买 25 个代币（消耗型包，无自动续费）。每个线程最多连续 3 个追问。生成图像为标准分辨率。可访问威廉和理雅各（译者）译本。解锁完整图书馆：全部 64 卦。",
       practitioner:
         "每次购买 50 个代币（消耗型包，无自动续费）。每个线程最多连续 5 个追问。生成图像为高分辨率。可访问周易（原典）——以繁体中文写成的最古老、最纯粹的版本——以及威廉和理雅各译本。",
       master:
@@ -99,7 +99,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "무료 플랜: 평생 2회 상담, 스레드당 1개 질문. 자동 갱신 없음. 유료 팩은 소모형입니다. 생성 이미지는 기본 해상도입니다.",
       seeker:
-        "구매당 25토큰(소모형 팩, 자동 갱신 없음). 스레드당 최대 3개의 연속 질문. 생성 이미지는 표준 해상도. 빌헬름과 레그 번역본 이용 가능.",
+        "구매당 25토큰(소모형 팩, 자동 갱신 없음). 스레드당 최대 3개의 연속 질문. 생성 이미지는 표준 해상도. 빌헬름과 레그（번역가）번역본 이용 가능. 전체 라이브러리 잠금 해제: 64괘 전체.",
       practitioner:
         "구매당 50토큰(소모형 팩, 자동 갱신 없음). 스레드당 최대 5개의 연속 질문. 생성 이미지는 고해상도. 주역（원전）——전통 한자로 쓰인 가장 오래되고 순수한 판본——빌헬름 및 레그와 함께 이용 가능.",
       master:
@@ -109,7 +109,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "الخطة المجانية: استشارتان مدى الحياة، سؤال واحد لكل محادثة. لا تجديد تلقائي؛ الباقات المدفوعة قابلة للاستهلاك. الصور المُنشأة بدقة أساسية.",
       seeker:
-        "25 رمزًا لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 3 أسئلة متابعة لكل محادثة. الصور المُنشأة بدقة قياسية. الوصول إلى ويلهلم وليغ.",
+        "25 رمزًا لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 3 أسئلة متابعة لكل محادثة. الصور المُنشأة بدقة قياسية. الوصول إلى ويلهلم وليغ (المترجمَين). يُفعّل المكتبة الكاملة: جميع الـ 64 هيكساغرام.",
       practitioner:
         "50 رمزًا لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 5 أسئلة متابعة لكل محادثة. الصور المُنشأة بدقة عالية. الوصول إلى Zhou Yi (المصدر الأصلي)، أقدم نسخة وأنقاها باللغة الصينية التقليدية، مع ويلهلم وليغ.",
       master:
@@ -119,7 +119,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       freeTier:
         "मुफ़्त योजना: जीवनभर 2 परामर्श, प्रति थ्रेड 1 प्रश्न। ऑटो-रिन्यू नहीं; पेड पैक उपभोज्य हैं। जनरेटेड इमेज बेसिक रिज़ॉल्यूशन में होती हैं।",
       seeker:
-        "प्रति खरीद 25 टोकन (उपभोज्य पैक, ऑटो-रिन्यू नहीं)। प्रति थ्रेड 3 फॉलो-अप प्रश्न तक। इमेज स्टैंडर्ड रिज़ॉल्यूशन में। Wilhelm और Legge तक पहुंच।",
+        "प्रति खरीद 25 टोकन (उपभोज्य पैक, ऑटो-रिन्यू नहीं)। प्रति थ्रेड 3 फॉलो-अप प्रश्न तक। इमेज स्टैंडर्ड रिज़ॉल्यूशन में। Wilhelm और Legge (अनुवादक) तक पहुंच। पूरी लाइब्रेरी अनलॉक: सभी 64 हेक्साग्राम।",
       practitioner:
         "प्रति खरीद 50 टोकन (उपभोज्य पैक, ऑटो-रिन्यू नहीं)। प्रति थ्रेड 5 फॉलो-अप प्रश्न तक। इमेज हाई रिज़ॉल्यूशन में। Zhou Yi (मूल स्रोत), पारंपरिक चीनी में लिखा गया सबसे प्राचीन और शुद्ध संस्करण, Wilhelm और Legge के साथ पहुंच।",
       master:
