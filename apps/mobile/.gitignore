@@ -4,6 +4,7 @@ dist/
 /android
 /ios
 *.jks
+credentials.json
 *.p8
 *.p12
 *.key

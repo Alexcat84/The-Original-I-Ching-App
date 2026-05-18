@@ -115,7 +115,7 @@ module.exports = ({ config }) => ({
   extra: {
     apiUrl: APP_URL,
     eas: {
-      projectId: "e9cf7fbc-a1a1-4246-a62d-e1fff08d095f",
+      projectId: "0d7699fd-9b1d-4bc0-a6f3-4b79df9d4de6",
     },
   },
 });
