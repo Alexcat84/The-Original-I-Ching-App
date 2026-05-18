@@ -55,12 +55,12 @@ export default async function DeleteAccountPage() {
 
         <h2>{m.noAccessTitle}</h2>
         <p>
-          {m.noAccessBody.split("privacy@theoriginaliching.com").map((part, i, arr) =>
+          {m.noAccessBody.split("support@theoriginaliching.com").map((part, i, arr) =>
             i < arr.length - 1 ? (
               <span key={i}>
                 {part}
-                <a href="mailto:privacy@theoriginaliching.com">
-                  privacy@theoriginaliching.com
+                <a href="mailto:support@theoriginaliching.com">
+                  support@theoriginaliching.com
                 </a>
               </span>
             ) : (
