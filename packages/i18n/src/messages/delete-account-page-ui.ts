@@ -32,7 +32,7 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     step1: "Abre la app e inicia sesión.",
     step2: "Toca Opciones (el botón de ajustes en el pie del compositor).",
     step3: "Desplázate hasta Eliminar cuenta y toca Eliminar mi cuenta.",
-    step4: "En el diálogo de confirmación, escribe ELIMINAR (o DELETE en inglés) y confirma.",
+    step4: "En el diálogo de confirmación, escribe ELIMINAR y confirma.",
     afterSteps: "Tu cuenta se elimina de inmediato. La sesión se cierra automáticamente.",
     deletedTitle: "Qué datos se eliminan",
     deletedItems: [
@@ -42,15 +42,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "Configuración de autenticación de dos factores.",
       "Todas las preferencias y ajustes personales.",
     ],
-    retainedTitle: "Qué datos se conservan",
+    retainedTitle: "Datos de compra y facturación",
     retainedBody:
-      "Los registros de compras y transacciones se conservan durante el período mínimo exigido por las leyes fiscales y contables aplicables. Estos registros se anonimizan y no contienen información personal identificable tras la eliminación.",
-    rcTitle: "RevenueCat / Stripe",
+      "Nuestros proveedores de pasarelas de pago conservan los registros de compras para efectos fiscales, de facturación y cobros, según lo exigen las regulaciones financieras aplicables.",
+    rcTitle: "Proveedores de pago",
     rcBody:
-      "La eliminación de tu cuenta también envía una solicitud de eliminación a RevenueCat (nuestro procesador de pagos). Stripe puede conservar registros de transacciones anonimizados según lo exigen las normativas financieras.",
+      "Al eliminar tu cuenta, enviamos una solicitud de eliminación de datos a nuestros proveedores de pasarelas de pago.",
     noAccessTitle: "¿No puedes acceder a la app?",
     noAccessBody:
-      "Si no puedes iniciar sesión y deseas solicitar la eliminación de tu cuenta, envíanos un correo a privacy@theoriginaliching.com con tu dirección de email registrada. Procesaremos tu solicitud en un plazo de 30 días.",
+      "Si no puedes iniciar sesión y deseas solicitar la eliminación de tu cuenta, escríbenos a support@theoriginaliching.com con tu dirección de email registrada. Procesaremos tu solicitud en un plazo de 30 días.",
   },
   en: {
     pageTitle: "Account Deletion | The Original I Ching App",
@@ -61,7 +61,7 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     step1: "Open the app and sign in.",
     step2: "Tap Options (the gear / settings button in the composer footer).",
     step3: "Scroll to Delete account and tap Delete my account.",
-    step4: "In the confirmation dialog, type DELETE (or ELIMINAR in Spanish) and confirm.",
+    step4: "In the confirmation dialog, type DELETE and confirm.",
     afterSteps: "Your account is deleted immediately. You will be signed out automatically.",
     deletedTitle: "What data is deleted",
     deletedItems: [
@@ -71,15 +71,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "Two-factor authentication configuration.",
       "All personal preferences and settings.",
     ],
-    retainedTitle: "What data is retained",
+    retainedTitle: "Purchase and billing data",
     retainedBody:
-      "Purchase and transaction records are retained for a minimum period required by applicable tax and accounting laws. These records are anonymized and contain no personally identifiable information after deletion.",
-    rcTitle: "RevenueCat / Stripe",
+      "Our payment gateway providers retain purchase records for tax, billing, and invoicing purposes, as required by applicable financial regulations.",
+    rcTitle: "Payment providers",
     rcBody:
-      "Deleting your account also sends a deletion request to RevenueCat (our payment processor). Stripe may retain anonymized transaction records as required by financial regulations.",
+      "When you delete your account, we send a data deletion request to our payment gateway providers.",
     noAccessTitle: "Cannot access the app?",
     noAccessBody:
-      "If you are unable to sign in and wish to request account deletion, email us at privacy@theoriginaliching.com with your registered email address. We will process your request within 30 days.",
+      "If you are unable to sign in and wish to request account deletion, email us at support@theoriginaliching.com with your registered email address. We will process your request within 30 days.",
   },
   pt: {
     pageTitle: "Eliminação de conta | The Original I Ching App",
@@ -90,7 +90,7 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     step1: "Abre a app e inicia sessão.",
     step2: "Toca em Opções (o botão de definições no rodapé do compositor).",
     step3: "Desloca-te até Eliminar conta e toca em Eliminar a minha conta.",
-    step4: "No diálogo de confirmação, escreve ELIMINAR (ou DELETE em inglês) e confirma.",
+    step4: "No diálogo de confirmação, escreve ELIMINAR e confirma.",
     afterSteps: "A tua conta é eliminada imediatamente. A sessão é encerrada automaticamente.",
     deletedTitle: "Que dados são eliminados",
     deletedItems: [
@@ -100,15 +100,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "Configuração de autenticação de dois fatores.",
       "Todas as preferências e definições pessoais.",
     ],
-    retainedTitle: "Que dados são conservados",
+    retainedTitle: "Dados de compra e faturação",
     retainedBody:
-      "Os registos de compras e transações são conservados pelo período mínimo exigido pelas leis fiscais e contabilísticas aplicáveis. Estes registos são anonimizados e não contêm informação pessoal identificável após a eliminação.",
-    rcTitle: "RevenueCat / Stripe",
+      "Os nossos fornecedores de passerelles de pagamento conservam os registos de compras para efeitos fiscais, de faturação e cobranças, conforme exigido pelas regulamentações financeiras aplicáveis.",
+    rcTitle: "Fornecedores de pagamento",
     rcBody:
-      "A eliminação da tua conta também envia um pedido de eliminação ao RevenueCat (o nosso processador de pagamentos). O Stripe pode conservar registos de transações anonimizados conforme exigido pelas regulamentações financeiras.",
+      "Ao eliminar a tua conta, enviamos um pedido de eliminação de dados aos nossos fornecedores de passerelles de pagamento.",
     noAccessTitle: "Não consegues aceder à app?",
     noAccessBody:
-      "Se não consegues iniciar sessão e pretendes solicitar a eliminação da conta, envia-nos um email para privacy@theoriginaliching.com com o teu endereço de email registado. Processaremos o teu pedido no prazo de 30 dias.",
+      "Se não consegues iniciar sessão e pretendes solicitar a eliminação da conta, envia-nos um email para support@theoriginaliching.com com o teu endereço de email registado. Processaremos o teu pedido no prazo de 30 dias.",
   },
   fr: {
     pageTitle: "Suppression de compte | The Original I Ching App",
@@ -119,7 +119,7 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     step1: "Ouvrez l'application et connectez-vous.",
     step2: "Appuyez sur Options (le bouton paramètres dans le pied du compositeur).",
     step3: "Faites défiler jusqu'à Supprimer le compte et appuyez sur Supprimer mon compte.",
-    step4: "Dans la boîte de confirmation, tapez DELETE et confirmez.",
+    step4: "Dans la boîte de confirmation, écris SUPPRIMER et confirme.",
     afterSteps: "Votre compte est supprimé immédiatement. Vous serez déconnecté automatiquement.",
     deletedTitle: "Données supprimées",
     deletedItems: [
@@ -129,15 +129,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "La configuration de l'authentification à deux facteurs.",
       "Toutes les préférences et paramètres personnels.",
     ],
-    retainedTitle: "Données conservées",
+    retainedTitle: "Données d'achat et de facturation",
     retainedBody:
-      "Les enregistrements d'achats et de transactions sont conservés pendant la période minimale requise par les lois fiscales et comptables applicables. Ces enregistrements sont anonymisés et ne contiennent aucune information personnelle identifiable après suppression.",
-    rcTitle: "RevenueCat / Stripe",
+      "Nos prestataires de passerelles de paiement conservent les enregistrements d'achats à des fins fiscales, de facturation et de recouvrement, conformément aux réglementations financières applicables.",
+    rcTitle: "Prestataires de paiement",
     rcBody:
-      "La suppression de votre compte envoie également une demande de suppression à RevenueCat (notre prestataire de paiement). Stripe peut conserver des enregistrements de transactions anonymisés conformément aux réglementations financières.",
+      "Lors de la suppression de ton compte, nous envoyons une demande de suppression de données à nos prestataires de passerelles de paiement.",
     noAccessTitle: "Impossible d'accéder à l'application ?",
     noAccessBody:
-      "Si vous ne pouvez pas vous connecter et souhaitez demander la suppression de votre compte, envoyez-nous un e-mail à privacy@theoriginaliching.com avec votre adresse e-mail enregistrée. Nous traiterons votre demande dans les 30 jours.",
+      "Si tu ne peux pas te connecter et souhaites demander la suppression de ton compte, écris-nous à support@theoriginaliching.com avec ton adresse e-mail enregistrée. Nous traiterons ta demande dans les 30 jours.",
   },
   de: {
     pageTitle: "Konto löschen | The Original I Ching App",
@@ -148,7 +148,7 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     step1: "Öffne die App und melde dich an.",
     step2: "Tippe auf Optionen (das Einstellungs-Symbol in der Composer-Fußzeile).",
     step3: "Scrolle zu Konto löschen und tippe auf Mein Konto löschen.",
-    step4: "Gib im Bestätigungsdialog DELETE ein und bestätige.",
+    step4: "Gib im Bestätigungsdialog LÖSCHEN ein und bestätige.",
     afterSteps: "Dein Konto wird sofort gelöscht. Du wirst automatisch abgemeldet.",
     deletedTitle: "Gelöschte Daten",
     deletedItems: [
@@ -158,15 +158,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "Konfiguration der Zwei-Faktor-Authentifizierung.",
       "Alle persönlichen Einstellungen und Präferenzen.",
     ],
-    retainedTitle: "Aufbewahrte Daten",
+    retainedTitle: "Kauf- und Abrechnungsdaten",
     retainedBody:
-      "Kauf- und Transaktionsaufzeichnungen werden für den gesetzlich vorgeschriebenen Mindestzeitraum aufbewahrt. Diese Aufzeichnungen werden anonymisiert und enthalten nach der Löschung keine personenbezogenen Daten mehr.",
-    rcTitle: "RevenueCat / Stripe",
+      "Unsere Zahlungsgateway-Anbieter speichern Kaufbelege zu steuerlichen, Abrechnungs- und Inkassozwecken, wie es die geltenden Finanzvorschriften vorschreiben.",
+    rcTitle: "Zahlungsanbieter",
     rcBody:
-      "Die Kontolöschung sendet auch eine Löschanfrage an RevenueCat (unseren Zahlungsdienstleister). Stripe kann anonymisierte Transaktionsaufzeichnungen gemäß den Finanzvorschriften aufbewahren.",
+      "Beim Löschen deines Kontos senden wir eine Datenlöschanfrage an unsere Zahlungsgateway-Anbieter.",
     noAccessTitle: "Kein Zugriff auf die App?",
     noAccessBody:
-      "Falls du dich nicht anmelden kannst und die Löschung deines Kontos beantragen möchtest, schreibe uns eine E-Mail an privacy@theoriginaliching.com mit deiner registrierten E-Mail-Adresse. Wir bearbeiten deinen Antrag innerhalb von 30 Tagen.",
+      "Falls du dich nicht anmelden kannst und die Löschung deines Kontos beantragen möchtest, schreibe uns an support@theoriginaliching.com mit deiner registrierten E-Mail-Adresse. Wir bearbeiten deinen Antrag innerhalb von 30 Tagen.",
   },
   it: {
     pageTitle: "Eliminazione account | The Original I Ching App",
@@ -177,7 +177,7 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     step1: "Apri l'app e accedi.",
     step2: "Tocca Opzioni (il pulsante impostazioni nel piè del compositore).",
     step3: "Scorri fino a Elimina account e tocca Elimina il mio account.",
-    step4: "Nella finestra di conferma, scrivi DELETE e conferma.",
+    step4: "Nella finestra di conferma, scrivi ELIMINA e conferma.",
     afterSteps: "Il tuo account viene eliminato immediatamente. Verrai disconnesso automaticamente.",
     deletedTitle: "Dati eliminati",
     deletedItems: [
@@ -187,15 +187,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "Configurazione dell'autenticazione a due fattori.",
       "Tutte le preferenze e impostazioni personali.",
     ],
-    retainedTitle: "Dati conservati",
+    retainedTitle: "Dati di acquisto e fatturazione",
     retainedBody:
-      "I registri di acquisto e transazione sono conservati per il periodo minimo richiesto dalle leggi fiscali e contabili applicabili. Questi record vengono anonimizzati e non contengono informazioni personali identificabili dopo l'eliminazione.",
-    rcTitle: "RevenueCat / Stripe",
+      "I nostri fornitori di gateway di pagamento conservano i registri degli acquisti per finalità fiscali, di fatturazione e di riscossione, come richiesto dalle normative finanziarie applicabili.",
+    rcTitle: "Fornitori di pagamento",
     rcBody:
-      "L'eliminazione del tuo account invia anche una richiesta di cancellazione a RevenueCat (il nostro elaboratore di pagamenti). Stripe può conservare registri di transazioni anonimizzati come richiesto dalle normative finanziarie.",
+      "Quando elimini il tuo account, inviamo una richiesta di cancellazione dei dati ai nostri fornitori di gateway di pagamento.",
     noAccessTitle: "Non riesci ad accedere all'app?",
     noAccessBody:
-      "Se non riesci ad accedere e desideri richiedere l'eliminazione del tuo account, inviaci un'email a privacy@theoriginaliching.com con il tuo indirizzo email registrato. Elaboreremo la tua richiesta entro 30 giorni.",
+      "Se non riesci ad accedere e desideri richiedere l'eliminazione del tuo account, scrivici a support@theoriginaliching.com con il tuo indirizzo email registrato. Elaboreremo la tua richiesta entro 30 giorni.",
   },
   ja: {
     pageTitle: "アカウント削除 | The Original I Ching App",
@@ -216,15 +216,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "二段階認証の設定。",
       "すべての個人設定と環境設定。",
     ],
-    retainedTitle: "保持されるデータ",
+    retainedTitle: "購入・請求データ",
     retainedBody:
-      "購入記録と取引記録は、適用される税法および会計法が定める最低期間保持されます。これらの記録は削除後に匿名化され、個人を特定できる情報は含まれません。",
-    rcTitle: "RevenueCat / Stripe",
+      "当社の決済ゲートウェイプロバイダーは、適用される財務規制に従い、税務・請求・決済目的で購入記録を保持します。",
+    rcTitle: "決済プロバイダー",
     rcBody:
-      "アカウント削除により、RevenueCat（決済サービス）への削除リクエストも送信されます。Stripeは金融規制に基づき、匿名化された取引記録を保持する場合があります。",
+      "アカウントを削除すると、当社の決済ゲートウェイプロバイダーにデータ削除リクエストが送信されます。",
     noAccessTitle: "アプリにアクセスできない場合",
     noAccessBody:
-      "サインインできない場合や、アカウント削除を申請したい場合は、登録済みのメールアドレスを添えて privacy@theoriginaliching.com までご連絡ください。30日以内にご対応いたします。",
+      "サインインできない場合や、アカウント削除を申請したい場合は、登録済みのメールアドレスを添えて support@theoriginaliching.com までご連絡ください。30日以内にご対応いたします。",
   },
   zh: {
     pageTitle: "删除账户 | The Original I Ching App",
@@ -245,15 +245,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "两步验证配置。",
       "所有个人偏好和设置。",
     ],
-    retainedTitle: "将被保留的数据",
+    retainedTitle: "购买与账单数据",
     retainedBody:
-      "购买和交易记录将根据适用税法和会计法的要求保留最低期限。这些记录在删除后将被匿名处理，不含任何可识别个人身份的信息。",
-    rcTitle: "RevenueCat / Stripe",
+      "我们的支付网关提供商根据适用的财务法规，出于税务、账单及收款目的保留购买记录。",
+    rcTitle: "支付提供商",
     rcBody:
-      "删除账户时，系统还会向 RevenueCat（我们的支付处理商）发送删除请求。Stripe 可能依照金融法规保留匿名交易记录。",
+      "删除账户时，我们会向支付网关提供商发送数据删除请求。",
     noAccessTitle: "无法访问应用？",
     noAccessBody:
-      "如果你无法登录且希望请求删除账户，请发送邮件至 privacy@theoriginaliching.com，并附上你的注册邮箱地址。我们将在 30 天内处理你的请求。",
+      "如果你无法登录且希望请求删除账户，请发送邮件至 support@theoriginaliching.com，并附上你的注册邮箱地址。我们将在 30 天内处理你的请求。",
   },
   ko: {
     pageTitle: "계정 삭제 | The Original I Ching App",
@@ -274,15 +274,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "이중 인증 설정.",
       "모든 개인 환경 설정.",
     ],
-    retainedTitle: "보관되는 데이터",
+    retainedTitle: "구매 및 청구 데이터",
     retainedBody:
-      "구매 및 거래 기록은 적용 세법 및 회계법에서 요구하는 최소 기간 동안 보관됩니다. 이 기록은 삭제 후 익명화되며 개인 식별 정보를 포함하지 않습니다.",
-    rcTitle: "RevenueCat / Stripe",
+      "결제 게이트웨이 제공업체는 적용 가능한 재무 규정에 따라 세금, 청구 및 수금 목적으로 구매 기록을 보관합니다.",
+    rcTitle: "결제 제공업체",
     rcBody:
-      "계정 삭제 시 RevenueCat(결제 처리사)에도 삭제 요청이 전송됩니다. Stripe는 금융 규정에 따라 익명화된 거래 기록을 보관할 수 있습니다.",
+      "계정 삭제 시, 결제 게이트웨이 제공업체에 데이터 삭제 요청이 전송됩니다.",
     noAccessTitle: "앱에 접근할 수 없나요?",
     noAccessBody:
-      "로그인이 불가능하여 계정 삭제를 요청하려는 경우, 등록된 이메일 주소를 포함하여 privacy@theoriginaliching.com으로 이메일을 보내주세요. 30일 이내에 처리해 드립니다.",
+      "로그인이 불가능하여 계정 삭제를 요청하려는 경우, 등록된 이메일 주소를 포함하여 support@theoriginaliching.com으로 이메일을 보내주세요. 30일 이내에 처리해 드립니다.",
   },
   ar: {
     pageTitle: "حذف الحساب | The Original I Ching App",
@@ -303,15 +303,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "إعداد المصادقة الثنائية.",
       "جميع التفضيلات والإعدادات الشخصية.",
     ],
-    retainedTitle: "البيانات المحتفظ بها",
+    retainedTitle: "بيانات الشراء والفوترة",
     retainedBody:
-      "تُحتفظ بسجلات الشراء والمعاملات للمدة الدنيا المطلوبة بموجب قوانين الضرائب والمحاسبة المعمول بها. تُجعل هذه السجلات مجهولة الهوية بعد الحذف ولا تحتوي على أي معلومات شخصية.",
-    rcTitle: "RevenueCat / Stripe",
+      "يحتفظ مزودو بوابات الدفع لدينا بسجلات المشتريات لأغراض ضريبية وإصدار الفواتير والتحصيل، وفقاً للوائح المالية المعمول بها.",
+    rcTitle: "مزودو الدفع",
     rcBody:
-      "يُرسَل أيضاً طلب حذف إلى RevenueCat (معالج الدفع) عند حذف حسابك. قد يحتفظ Stripe بسجلات معاملات مجهولة الهوية وفقاً للوائح المالية.",
+      "عند حذف حسابك، نُرسل طلب حذف بيانات إلى مزودي بوابات الدفع لدينا.",
     noAccessTitle: "لا يمكنك الوصول إلى التطبيق؟",
     noAccessBody:
-      "إذا لم تتمكن من تسجيل الدخول وترغب في طلب حذف حسابك، أرسل لنا بريداً إلكترونياً إلى privacy@theoriginaliching.com مع عنوان بريدك المسجّل. سنعالج طلبك في غضون 30 يوماً.",
+      "إذا لم تتمكن من تسجيل الدخول وترغب في طلب حذف حسابك، أرسل لنا بريداً إلكترونياً إلى support@theoriginaliching.com مع عنوان بريدك المسجّل. سنعالج طلبك في غضون 30 يوماً.",
   },
   hi: {
     pageTitle: "खाता हटाएं | The Original I Ching App",
@@ -332,15 +332,15 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
       "दो-कारक प्रमाणीकरण कॉन्फ़िगरेशन।",
       "सभी व्यक्तिगत प्राथमिकताएं और सेटिंग्स।",
     ],
-    retainedTitle: "संरक्षित डेटा",
+    retainedTitle: "खरीद और बिलिंग डेटा",
     retainedBody:
-      "खरीद और लेनदेन रिकॉर्ड लागू कर और लेखांकन कानूनों द्वारा आवश्यक न्यूनतम अवधि के लिए रखे जाते हैं। ये रिकॉर्ड हटाने के बाद गुमनाम कर दिए जाते हैं और इनमें कोई व्यक्तिगत पहचान योग्य जानकारी नहीं होती।",
-    rcTitle: "RevenueCat / Stripe",
+      "हमारे पेमेंट गेटवे प्रदाता लागू वित्तीय नियमों के अनुसार कर, बिलिंग और संग्रह उद्देश्यों के लिए खरीद रिकॉर्ड रखते हैं।",
+    rcTitle: "भुगतान प्रदाता",
     rcBody:
-      "खाता हटाने पर RevenueCat (हमारे भुगतान प्रोसेसर) को भी हटाने का अनुरोध भेजा जाता है। Stripe वित्तीय नियमों के अनुसार गुमनाम लेनदेन रिकॉर्ड रख सकता है।",
+      "खाता हटाने पर, हम अपने पेमेंट गेटवे प्रदाताओं को डेटा हटाने का अनुरोध भेजते हैं।",
     noAccessTitle: "ऐप तक पहुंच नहीं है?",
     noAccessBody:
-      "यदि आप साइन इन नहीं कर पा रहे और खाता हटाने का अनुरोध करना चाहते हैं, तो अपने पंजीकृत ईमेल पते के साथ privacy@theoriginaliching.com पर हमें ईमेल करें। हम 30 दिनों के भीतर आपके अनुरोध को संसाधित करेंगे।",
+      "यदि आप साइन इन नहीं कर पा रहे और खाता हटाने का अनुरोध करना चाहते हैं, तो अपने पंजीकृत ईमेल पते के साथ support@theoriginaliching.com पर हमें ईमेल करें। हम 30 दिनों के भीतर आपके अनुरोध को संसाधित करेंगे।",
   },
 };
 
