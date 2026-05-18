@@ -601,7 +601,8 @@ html.iching-rn-webview[data-theme="dark"] .auth-explore-strip a.auth-explore-str
 }
 
 html[data-theme="light"] .auth-explore-strip a.auth-explore-strip-cta,
-html.iching-rn-webview[data-theme="light"] .auth-explore-strip a.auth-explore-strip-cta {
+html.iching-rn-webview[data-theme="light"] .auth-explore-strip a.auth-explore-strip-cta,
+html:not([data-theme]) .auth-explore-strip a.auth-explore-strip-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;

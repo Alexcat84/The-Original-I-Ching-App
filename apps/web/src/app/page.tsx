@@ -1169,17 +1169,7 @@ export default function HomePage() {
     useState<RitualDebugSnapshot | null>(null);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
   type IchingCastMode = "auto" | "manual";
-  const [ichingCastMode, setIchingCastMode] = useState<IchingCastMode>(() => {
-    if (typeof window === "undefined") return "auto";
-    try {
-      return window.localStorage.getItem(ICHING_CAST_MODE_STORAGE_KEY) ===
-        "manual"
-        ? "manual"
-        : "auto";
-    } catch {
-      return "auto";
-    }
-  });
+  const [ichingCastMode, setIchingCastMode] = useState<IchingCastMode>("auto");
   useEffect(() => {
     try {
       window.localStorage.setItem(ICHING_CAST_MODE_STORAGE_KEY, ichingCastMode);
@@ -1408,15 +1398,23 @@ export default function HomePage() {
         next = cookieLocale as AppLocale;
       }
     }
-    if (!next) return;
-    setLocale(next);
+    if (next) {
+      setLocale(next);
+      try {
+        window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, next);
+        document.documentElement.lang = htmlLangFromAppLocale(next);
+        document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
+        document.cookie = `iching_ui_locale=${encodeURIComponent(next)}; path=/; max-age=31536000; samesite=lax`;
+      } catch {
+        /* private mode / cookies blocked */
+      }
+    }
     try {
-      window.localStorage.setItem(UI_LOCALE_STORAGE_KEY, next);
-      document.documentElement.lang = htmlLangFromAppLocale(next);
-      document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
-      document.cookie = `iching_ui_locale=${encodeURIComponent(next)}; path=/; max-age=31536000; samesite=lax`;
+      if (window.localStorage.getItem(ICHING_CAST_MODE_STORAGE_KEY) === "manual") {
+        setIchingCastMode("manual");
+      }
     } catch {
-      /* private mode / cookies blocked */
+      /* ignore */
     }
   }, []);
 

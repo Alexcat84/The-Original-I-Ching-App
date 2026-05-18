@@ -26,7 +26,7 @@ function buildCsp(nonce: string): string {
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self' data:",
     "img-src 'self' data: blob: https:",
-    "connect-src 'self' data: https://*.supabase.co https://*.supabase.in https://api.revenuecat.com https://*.revenuecat.com https://*.revenue.cat https://challenges.cloudflare.com",
+    "connect-src 'self' data: https://*.supabase.co https://*.supabase.in https://api.revenuecat.com https://*.revenuecat.com https://*.revenue.cat https://challenges.cloudflare.com https://*.ingest.sentry.io https://*.ingest.us.sentry.io",
     "frame-src https://challenges.cloudflare.com https://js.stripe.com https://vercel.live",
     "worker-src 'self'",
   ].join("; ");
