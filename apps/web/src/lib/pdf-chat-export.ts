@@ -75,25 +75,51 @@ export function interpretationMarkdownToPdfBlocks(markdown: string): PdfReadingB
   return blocks;
 }
 
-/** Wrapped lines for canvas PDF (uses ctx.measureText; set font before measuring each block). */
+/** Wrapped lines for canvas PDF (uses ctx.measureText; set font before measuring each block).
+ *  Wraps at word boundaries; only hyphenates when a single word exceeds maxWidth. */
 function wrapCanvasText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
   const lines: string[] = [];
-  let line = "";
-  for (const ch of Array.from(text.replace(/\r/g, ""))) {
-    if (ch === "\n") {
-      lines.push(line);
-      line = "";
-      continue;
+
+  for (const paragraph of text.replace(/\r/g, "").split("\n")) {
+    const words = paragraph.split(" ");
+    let line = "";
+
+    for (const word of words) {
+      if (!word) continue;
+      const candidate = line ? `${line} ${word}` : word;
+
+      if (ctx.measureText(candidate).width <= maxWidth) {
+        line = candidate;
+        continue;
+      }
+
+      if (line) {
+        lines.push(line);
+        line = "";
+      }
+
+      if (ctx.measureText(word).width <= maxWidth) {
+        line = word;
+        continue;
+      }
+
+      // Word itself is too wide — hyphenate character by character.
+      let partial = "";
+      for (const ch of Array.from(word)) {
+        const probe = `${partial}${ch}-`;
+        if (ctx.measureText(probe).width > maxWidth && partial) {
+          lines.push(`${partial}-`);
+          partial = ch;
+        } else {
+          partial += ch;
+        }
+      }
+      if (partial) line = partial;
     }
-    const test = line + ch;
-    if (ctx.measureText(test).width > maxWidth && line) {
-      lines.push(line.trimEnd());
-      line = ch;
-    } else {
-      line = test;
-    }
+
+    if (line.trim()) lines.push(line.trimEnd());
   }
-  if (line.trim().length > 0) lines.push(line.trimEnd());
+
   return lines;
 }
 

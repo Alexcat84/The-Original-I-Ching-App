@@ -20,6 +20,7 @@ import {
   getPricingUiMessages,
   getTokenPanelUiMessages,
   getTwoFactorUiMessages,
+  getIchingMutationRuleLabel,
   getOnboardingUiMessages,
   getOraclePresentationUiMessages,
   htmlLangFromAppLocale,
@@ -1810,22 +1811,31 @@ export default function HomePage() {
       maxWidth: number,
     ): string[] => {
       const lines: string[] = [];
-      let line = "";
-      for (const ch of Array.from(text.replace(/\r/g, ""))) {
-        if (ch === "\n") {
-          lines.push(line);
-          line = "";
-          continue;
+      for (const paragraph of text.replace(/\r/g, "").split("\n")) {
+        const words = paragraph.split(" ");
+        let line = "";
+        for (const word of words) {
+          if (!word) continue;
+          const candidate = line ? `${line} ${word}` : word;
+          if (ctx.measureText(candidate).width <= maxWidth) {
+            line = candidate;
+            continue;
+          }
+          if (line) { lines.push(line); line = ""; }
+          if (ctx.measureText(word).width <= maxWidth) { line = word; continue; }
+          // Word too wide — hyphenate character by character.
+          let partial = "";
+          for (const ch of Array.from(word)) {
+            const probe = `${partial}${ch}-`;
+            if (ctx.measureText(probe).width > maxWidth && partial) {
+              lines.push(`${partial}-`);
+              partial = ch;
+            } else { partial += ch; }
+          }
+          if (partial) line = partial;
         }
-        const test = line + ch;
-        if (ctx.measureText(test).width > maxWidth && line) {
-          lines.push(line.trimEnd());
-          line = ch;
-        } else {
-          line = test;
-        }
+        if (line.trim()) lines.push(line.trimEnd());
       }
-      if (line.trim().length > 0) lines.push(line.trimEnd());
       return lines;
     };
 
@@ -1949,7 +1959,7 @@ export default function HomePage() {
           isEsPdf ? "Hexagrama:" : "Hexagram:",
           `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`,
         );
-        summaryLine(isEsPdf ? "Regla:" : "Rule:", entry.mutationRule);
+        summaryLine(isEsPdf ? "Regla:" : "Rule:", getIchingMutationRuleLabel(lang as AppLocale, entry.mutationRule));
         summaryLine(
           isEsPdf ? "En hilo:" : "In thread:",
           `${entry.sessionPosition}`,
