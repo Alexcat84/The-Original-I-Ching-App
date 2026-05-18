@@ -32,7 +32,7 @@ export type TermsPageMessages = {
 const TERMS_EN: TermsPageMessages = {
   title: "Terms of Service",
   lead: "These terms govern access to and use of The Original I Ching App. By using the service, you accept these terms.",
-  lastUpdated: "Last updated: April 1, 2026.",
+  lastUpdated: "Last updated: May 18, 2026.",
   s1Title: "1) Service nature",
   s1Body:
     "The platform provides symbolic consultations in I Ching and Bones modes with AI support. It is a personal reflection tool and does not replace professional medical, legal, financial, or psychological advice.",
@@ -68,7 +68,7 @@ const TERMS_EN: TermsPageMessages = {
   ],
   s8Title: "8) Termination",
   s8Body:
-    "You may stop using the service at any time. We may suspend or terminate access for violations, security risk, or legal requirements.",
+    "You may stop using the service at any time. To permanently delete your account and all associated data, use the Delete account option in the app's Options panel. We may suspend or terminate access for violations, security risk, or legal requirements.",
   s9Title: "9) Partner and product notices",
   s9Body:
     "Readings are symbolic only. Token packs, pricing, and checkout steps are summarized in the in-app guide and pricing area; partners and product details may change over time.",
@@ -81,7 +81,7 @@ const TERMS_EN: TermsPageMessages = {
 const TERMS_ES: TermsPageMessages = {
   title: "Términos del Servicio",
   lead: "Estos términos regulan el acceso y uso de The Original I Ching App. Al usar el servicio, aceptas estos términos.",
-  lastUpdated: "Última actualización: 1 de abril de 2026.",
+  lastUpdated: "Última actualización: 18 de mayo de 2026.",
   s1Title: "1) Naturaleza del servicio",
   s1Body:
     "La plataforma ofrece consultas simbólicas en modos I Ching y Huesos con apoyo de IA. Es una herramienta de reflexión personal y no sustituye asesoría profesional médica, legal, financiera o psicológica.",
@@ -117,7 +117,7 @@ const TERMS_ES: TermsPageMessages = {
   ],
   s8Title: "8) Terminación",
   s8Body:
-    "Puedes dejar de usar el servicio en cualquier momento. Podemos suspender o terminar acceso por incumplimientos, riesgo de seguridad o requerimiento legal.",
+    "Puedes dejar de usar el servicio en cualquier momento. Si deseas eliminar tu cuenta y todos los datos asociados de forma permanente, puedes hacerlo desde el panel Opciones de la aplicación (Opciones → Eliminar cuenta). Podemos suspender o terminar el acceso por incumplimientos, riesgo de seguridad o requerimiento legal.",
   s9Title: "9) Avisos sobre el producto y socios",
   s9Body:
     "Las lecturas son solo simbólicas. Packs de tokens, precios y pasos de compra se resumen en la guía y en la zona de precios; los detalles del producto y los socios pueden cambiar con el tiempo.",

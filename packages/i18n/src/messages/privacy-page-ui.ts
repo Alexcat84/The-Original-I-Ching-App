@@ -20,6 +20,10 @@ export type PrivacyPageMessages = {
   s4DeleteBody: string;
   s4PdfTitle: string;
   s4PdfBody: string;
+  s4AccountDeleteTitle: string;
+  s4AccountDeleteBodyBeforeLink: string;
+  s4AccountDeleteLinkLabel: string;
+  s4AccountDeleteBodyAfterLink: string;
   s5Title: string;
   s5p1: string;
   s5p2: string;
@@ -40,7 +44,7 @@ export type PrivacyPageMessages = {
 const PRIVACY_EN: PrivacyPageMessages = {
   title: "Privacy Policy",
   lead: "This policy explains how The Original I Ching App collects, uses, protects, and retains information when you use our I Ching and Bones consultation services.",
-  lastUpdated: "Last updated: April 1, 2026.",
+  lastUpdated: "Last updated: May 18, 2026.",
   s1Title: "1) Service provider",
   s1Body:
     "The Original I Ching App operates as a digital symbolic guidance service. For privacy-related requests, you may use the official contact channels indicated on the site.",
@@ -72,6 +76,11 @@ const PRIVACY_EN: PrivacyPageMessages = {
   s4PdfTitle: "Optional local copy (PDF and image).",
   s4PdfBody:
     "You may keep conversations in your own environment by generating a PDF of the active thread or downloading a reading image, whenever you choose, from the Options panel. This is your decision: the file stays under your control (device, folder, personal backups) and does not replace or change the history stored in the service until you delete those conversations in the app.",
+  s4AccountDeleteTitle: "Permanently deleting your account.",
+  s4AccountDeleteBodyBeforeLink:
+    "If you want to close your account entirely, you can do so directly from the app: open the Options panel and select Delete account. Deletion is permanent and irreversible: your profile, consultation history, unused tokens, and all associated data are removed. For more details, visit the ",
+  s4AccountDeleteLinkLabel: "account deletion page",
+  s4AccountDeleteBodyAfterLink: ".",
   s5Title: "5) Processors and transfers",
   s5p1: "To operate the service, we use technical providers (for example, authentication, database, transactional email, AI, and payments). We only send those providers the data strictly necessary to run each function.",
   s5p2: "Some providers may process data in other countries. When safeguards are required for international transfers, we use recognized mechanisms (such as standard contractual clauses or other valid tools at the time), unless another basis applies.",
@@ -86,7 +95,7 @@ const PRIVACY_EN: PrivacyPageMessages = {
     "Error/event monitoring to protect the platform.",
   ],
   s8Title: "8) Retention and deletion",
-  s8p1: "We retain data as needed to operate, comply with legal obligations, and resolve disputes. You may request account-level data deletion; individual chats are managed by you in the app (see section 4).",
+  s8p1: "We retain data as needed to operate, comply with legal obligations, and resolve disputes. You can permanently delete your account at any time directly from the app (Options → Delete account); individual chats are also managed by you in the app (see section 4).",
   s8p2: "Deleting a chat in the app is irreversible in our system: confirm the action only if you want that history removed for good. Backups or technical logs managed solely by our infrastructure provider (hosting/database) may be subject to their own retention policies and do not constitute a user-accessible archive inside the application.",
   s9Title: "9) Your rights",
   s9Body:
@@ -100,7 +109,7 @@ const PRIVACY_EN: PrivacyPageMessages = {
 const PRIVACY_ES: PrivacyPageMessages = {
   title: "Política de Privacidad",
   lead: "Esta política explica cómo The Original I Ching App recopila, usa, protege y conserva la información cuando utilizas nuestros servicios de consulta I Ching y Huesos.",
-  lastUpdated: "Última actualización: 1 de abril de 2026.",
+  lastUpdated: "Última actualización: 18 de mayo de 2026.",
   s1Title: "1) Responsable del servicio",
   s1Body:
     "The Original I Ching App opera como servicio digital de orientación simbólica. Para solicitudes relacionadas con privacidad, puedes usar los canales oficiales indicados en el sitio.",
@@ -132,6 +141,11 @@ const PRIVACY_ES: PrivacyPageMessages = {
   s4PdfTitle: "Copia local opcional (PDF e imagen).",
   s4PdfBody:
     "Puedes guardar tus conversaciones en tu propio entorno generando un PDF del hilo activo o descargando la imagen de una lectura, cuando lo consideres conveniente, desde el panel Opciones. Es una decisión tuya: el archivo queda bajo tu control (dispositivo, carpeta, copias de seguridad personales) y no sustituye ni modifica el historial alojado en el servicio hasta que tú borres esas conversaciones en la app.",
+  s4AccountDeleteTitle: "Eliminar tu cuenta de forma permanente.",
+  s4AccountDeleteBodyBeforeLink:
+    "Si deseas cerrar tu cuenta por completo, puedes hacerlo directamente desde la aplicación: abre el panel Opciones y selecciona Eliminar cuenta. La eliminación es permanente e irreversible: se borran el perfil, el historial de consultas, los tokens no utilizados y todos los datos asociados a tu cuenta. Para más detalles, visita la ",
+  s4AccountDeleteLinkLabel: "página de eliminación de cuenta",
+  s4AccountDeleteBodyAfterLink: ".",
   s5Title: "5) Proveedores y transferencias",
   s5p1: "Para operar el servicio usamos proveedores técnicos (por ejemplo, autenticación, base de datos, email transaccional, IA y pagos). Solo enviamos a esos proveedores los datos estrictamente necesarios para ejecutar cada función.",
   s5p2: "Algunos proveedores pueden tratar datos en otros países. Cuando se requieran garantías para transferencias internacionales, utilizamos mecanismos reconocidos (como cláusulas contractuales tipo u otras herramientas válidas en su momento), salvo que exista otra base aplicable.",
@@ -146,7 +160,7 @@ const PRIVACY_ES: PrivacyPageMessages = {
     "Monitoreo de errores y eventos para proteger la plataforma.",
   ],
   s8Title: "8) Retención y eliminación",
-  s8p1: "Conservamos datos mientras sean necesarios para operar, cumplir obligaciones legales y resolver disputas. Puedes solicitar eliminación de datos de cuenta; los chats individuales los gestionas tú desde la interfaz (véase la sección 4).",
+  s8p1: "Conservamos datos mientras sean necesarios para operar, cumplir obligaciones legales y resolver disputas. Puedes eliminar tu cuenta de forma permanente en cualquier momento desde el panel Opciones de la aplicación (Opciones → Eliminar cuenta); los chats individuales también los gestionas tú desde la interfaz (véase la sección 4).",
   s8p2: "La eliminación de un chat desde la app es irreversible en nuestro sistema: confirma la acción solo si deseas borrar de forma definitiva ese historial. Las copias de seguridad o registros técnicos que gestione exclusivamente nuestro proveedor de infraestructura (hosting/base de datos) pueden estar sujetos a sus propias políticas de retención y no constituyen un archivo consultable por el usuario dentro de la aplicación.",
   s9Title: "9) Tus derechos",
   s9Body:

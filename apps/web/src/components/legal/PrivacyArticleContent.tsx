@@ -44,6 +44,12 @@ export function PrivacyArticleContent({ messages: p, nav }: PrivacyArticleConten
       <p>
         <strong>{p.s4PdfTitle}</strong> {p.s4PdfBody}
       </p>
+      <p>
+        <strong>{p.s4AccountDeleteTitle}</strong>{" "}
+        {p.s4AccountDeleteBodyBeforeLink}
+        <Link href="/delete-account">{p.s4AccountDeleteLinkLabel}</Link>
+        {p.s4AccountDeleteBodyAfterLink}
+      </p>
 
       <h2>{p.s5Title}</h2>
       <p>{p.s5p1}</p>
