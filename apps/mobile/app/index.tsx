@@ -1770,7 +1770,7 @@ export default function WebViewScreen() {
       showNativeDialog({
         message: nativeUi.deleteConfirm,
         buttons: [
-          { text: nativeUi.cancel, style: "cancel", onPress: () => reply(false, 0) },
+          { text: nativeUi.cancel, style: "cancel", onPress: () => reply(false, 499) },
           { text: nativeUi.ok, onPress: () => void doDelete() },
         ],
       });

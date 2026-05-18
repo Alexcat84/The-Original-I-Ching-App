@@ -2256,11 +2256,17 @@ export default function HomePage() {
     async (session: ChatSessionState<ConsultationItem>) => {
       if (!accessToken || !session.sessionId) return;
       if (pendingDeletedSessionLocalIds.includes(session.localId)) return;
-      const ok = window.confirm(sessionUi.deleteConfirm);
-      if (!ok) return;
-      setPendingDeletedSessionLocalIds((prev) =>
-        prev.includes(session.localId) ? prev : [...prev, session.localId],
-      );
+      // In WebView the native bridge shows its own confirmation dialog after
+      // intercepting the DELETE fetch — skip window.confirm() and the optimistic
+      // pending state so the chat only disappears once the server confirms.
+      const isWebView = document.documentElement.classList.contains("iching-rn-webview");
+      if (!isWebView) {
+        const ok = window.confirm(sessionUi.deleteConfirm);
+        if (!ok) return;
+        setPendingDeletedSessionLocalIds((prev) =>
+          prev.includes(session.localId) ? prev : [...prev, session.localId],
+        );
+      }
       try {
         const res = await fetch(
           `/api/account/chats?sessionId=${encodeURIComponent(session.sessionId)}`,
@@ -2269,10 +2275,16 @@ export default function HomePage() {
             headers: { Authorization: `Bearer ${accessToken}` },
           },
         );
+        // 499 means the user cancelled via the native dialog — no error to show.
+        if (res.status === 499) {
+          return;
+        }
         if (!res.ok) {
-          setPendingDeletedSessionLocalIds((prev) =>
-            prev.filter((id) => id !== session.localId),
-          );
+          if (!isWebView) {
+            setPendingDeletedSessionLocalIds((prev) =>
+              prev.filter((id) => id !== session.localId),
+            );
+          }
           setError(sessionUi.couldNotDeleteConversation);
           return;
         }
@@ -2285,15 +2297,19 @@ export default function HomePage() {
           return next;
         });
       } catch {
-        setPendingDeletedSessionLocalIds((prev) =>
-          prev.filter((id) => id !== session.localId),
-        );
+        if (!isWebView) {
+          setPendingDeletedSessionLocalIds((prev) =>
+            prev.filter((id) => id !== session.localId),
+          );
+        }
         setError(sessionUi.couldNotDeleteConversation);
         return;
       }
-      setPendingDeletedSessionLocalIds((prev) =>
-        prev.filter((id) => id !== session.localId),
-      );
+      if (!isWebView) {
+        setPendingDeletedSessionLocalIds((prev) =>
+          prev.filter((id) => id !== session.localId),
+        );
+      }
     },
     [accessToken, sessionUi, pendingDeletedSessionLocalIds],
   );
