@@ -16,8 +16,6 @@ export type DeleteAccountPageMessages = {
   deletedItems: [string, string, string, string, string];
   retainedTitle: string;
   retainedBody: string;
-  rcTitle: string;
-  rcBody: string;
   noAccessTitle: string;
   noAccessBody: string;
 };
@@ -45,9 +43,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "Datos de compra y facturación",
     retainedBody:
       "Nuestros proveedores de pasarelas de pago conservan los registros de compras para efectos fiscales, de facturación y cobros, según lo exigen las regulaciones financieras aplicables.",
-    rcTitle: "Proveedores de pago",
-    rcBody:
-      "Al eliminar tu cuenta, enviamos una solicitud de eliminación de datos a nuestros proveedores de pasarelas de pago.",
     noAccessTitle: "¿No puedes acceder a la app?",
     noAccessBody:
       "Si no puedes iniciar sesión y deseas solicitar la eliminación de tu cuenta, escríbenos a support@theoriginaliching.com con tu dirección de email registrada. Procesaremos tu solicitud en un plazo de 30 días.",
@@ -74,9 +69,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "Purchase and billing data",
     retainedBody:
       "Our payment gateway providers retain purchase records for tax, billing, and invoicing purposes, as required by applicable financial regulations.",
-    rcTitle: "Payment providers",
-    rcBody:
-      "When you delete your account, we send a data deletion request to our payment gateway providers.",
     noAccessTitle: "Cannot access the app?",
     noAccessBody:
       "If you are unable to sign in and wish to request account deletion, email us at support@theoriginaliching.com with your registered email address. We will process your request within 30 days.",
@@ -103,9 +95,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "Dados de compra e faturação",
     retainedBody:
       "Os nossos fornecedores de passerelles de pagamento conservam os registos de compras para efeitos fiscais, de faturação e cobranças, conforme exigido pelas regulamentações financeiras aplicáveis.",
-    rcTitle: "Fornecedores de pagamento",
-    rcBody:
-      "Ao eliminar a tua conta, enviamos um pedido de eliminação de dados aos nossos fornecedores de passerelles de pagamento.",
     noAccessTitle: "Não consegues aceder à app?",
     noAccessBody:
       "Se não consegues iniciar sessão e pretendes solicitar a eliminação da conta, envia-nos um email para support@theoriginaliching.com com o teu endereço de email registado. Processaremos o teu pedido no prazo de 30 dias.",
@@ -132,9 +121,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "Données d'achat et de facturation",
     retainedBody:
       "Nos prestataires de passerelles de paiement conservent les enregistrements d'achats à des fins fiscales, de facturation et de recouvrement, conformément aux réglementations financières applicables.",
-    rcTitle: "Prestataires de paiement",
-    rcBody:
-      "Lors de la suppression de ton compte, nous envoyons une demande de suppression de données à nos prestataires de passerelles de paiement.",
     noAccessTitle: "Impossible d'accéder à l'application ?",
     noAccessBody:
       "Si tu ne peux pas te connecter et souhaites demander la suppression de ton compte, écris-nous à support@theoriginaliching.com avec ton adresse e-mail enregistrée. Nous traiterons ta demande dans les 30 jours.",
@@ -161,9 +147,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "Kauf- und Abrechnungsdaten",
     retainedBody:
       "Unsere Zahlungsgateway-Anbieter speichern Kaufbelege zu steuerlichen, Abrechnungs- und Inkassozwecken, wie es die geltenden Finanzvorschriften vorschreiben.",
-    rcTitle: "Zahlungsanbieter",
-    rcBody:
-      "Beim Löschen deines Kontos senden wir eine Datenlöschanfrage an unsere Zahlungsgateway-Anbieter.",
     noAccessTitle: "Kein Zugriff auf die App?",
     noAccessBody:
       "Falls du dich nicht anmelden kannst und die Löschung deines Kontos beantragen möchtest, schreibe uns an support@theoriginaliching.com mit deiner registrierten E-Mail-Adresse. Wir bearbeiten deinen Antrag innerhalb von 30 Tagen.",
@@ -190,9 +173,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "Dati di acquisto e fatturazione",
     retainedBody:
       "I nostri fornitori di gateway di pagamento conservano i registri degli acquisti per finalità fiscali, di fatturazione e di riscossione, come richiesto dalle normative finanziarie applicabili.",
-    rcTitle: "Fornitori di pagamento",
-    rcBody:
-      "Quando elimini il tuo account, inviamo una richiesta di cancellazione dei dati ai nostri fornitori di gateway di pagamento.",
     noAccessTitle: "Non riesci ad accedere all'app?",
     noAccessBody:
       "Se non riesci ad accedere e desideri richiedere l'eliminazione del tuo account, scrivici a support@theoriginaliching.com con il tuo indirizzo email registrato. Elaboreremo la tua richiesta entro 30 giorni.",
@@ -219,9 +199,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "購入・請求データ",
     retainedBody:
       "当社の決済ゲートウェイプロバイダーは、適用される財務規制に従い、税務・請求・決済目的で購入記録を保持します。",
-    rcTitle: "決済プロバイダー",
-    rcBody:
-      "アカウントを削除すると、当社の決済ゲートウェイプロバイダーにデータ削除リクエストが送信されます。",
     noAccessTitle: "アプリにアクセスできない場合",
     noAccessBody:
       "サインインできない場合や、アカウント削除を申請したい場合は、登録済みのメールアドレスを添えて support@theoriginaliching.com までご連絡ください。30日以内にご対応いたします。",
@@ -248,9 +225,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "购买与账单数据",
     retainedBody:
       "我们的支付网关提供商根据适用的财务法规，出于税务、账单及收款目的保留购买记录。",
-    rcTitle: "支付提供商",
-    rcBody:
-      "删除账户时，我们会向支付网关提供商发送数据删除请求。",
     noAccessTitle: "无法访问应用？",
     noAccessBody:
       "如果你无法登录且希望请求删除账户，请发送邮件至 support@theoriginaliching.com，并附上你的注册邮箱地址。我们将在 30 天内处理你的请求。",
@@ -277,9 +251,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "구매 및 청구 데이터",
     retainedBody:
       "결제 게이트웨이 제공업체는 적용 가능한 재무 규정에 따라 세금, 청구 및 수금 목적으로 구매 기록을 보관합니다.",
-    rcTitle: "결제 제공업체",
-    rcBody:
-      "계정 삭제 시, 결제 게이트웨이 제공업체에 데이터 삭제 요청이 전송됩니다.",
     noAccessTitle: "앱에 접근할 수 없나요?",
     noAccessBody:
       "로그인이 불가능하여 계정 삭제를 요청하려는 경우, 등록된 이메일 주소를 포함하여 support@theoriginaliching.com으로 이메일을 보내주세요. 30일 이내에 처리해 드립니다.",
@@ -306,9 +277,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "بيانات الشراء والفوترة",
     retainedBody:
       "يحتفظ مزودو بوابات الدفع لدينا بسجلات المشتريات لأغراض ضريبية وإصدار الفواتير والتحصيل، وفقاً للوائح المالية المعمول بها.",
-    rcTitle: "مزودو الدفع",
-    rcBody:
-      "عند حذف حسابك، نُرسل طلب حذف بيانات إلى مزودي بوابات الدفع لدينا.",
     noAccessTitle: "لا يمكنك الوصول إلى التطبيق؟",
     noAccessBody:
       "إذا لم تتمكن من تسجيل الدخول وترغب في طلب حذف حسابك، أرسل لنا بريداً إلكترونياً إلى support@theoriginaliching.com مع عنوان بريدك المسجّل. سنعالج طلبك في غضون 30 يوماً.",
@@ -335,9 +303,6 @@ const MESSAGES: Record<AppLocale, DeleteAccountPageMessages> = {
     retainedTitle: "खरीद और बिलिंग डेटा",
     retainedBody:
       "हमारे पेमेंट गेटवे प्रदाता लागू वित्तीय नियमों के अनुसार कर, बिलिंग और संग्रह उद्देश्यों के लिए खरीद रिकॉर्ड रखते हैं।",
-    rcTitle: "भुगतान प्रदाता",
-    rcBody:
-      "खाता हटाने पर, हम अपने पेमेंट गेटवे प्रदाताओं को डेटा हटाने का अनुरोध भेजते हैं।",
     noAccessTitle: "ऐप तक पहुंच नहीं है?",
     noAccessBody:
       "यदि आप साइन इन नहीं कर पा रहे और खाता हटाने का अनुरोध करना चाहते हैं, तो अपने पंजीकृत ईमेल पते के साथ support@theoriginaliching.com पर हमें ईमेल करें। हम 30 दिनों के भीतर आपके अनुरोध को संसाधित करेंगे।",

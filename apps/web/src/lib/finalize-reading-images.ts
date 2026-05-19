@@ -84,14 +84,29 @@ async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undef
         .toBuffer();
     }
     return `data:image/png;base64,${out.toString("base64")}`;
-  } catch {
+  } catch (err) {
+    console.warn("[tryComposeOverlay] failed, returning original URL", { baseUrl, error: String(err) });
     return baseUrl;
   }
 }
 
 export async function finalizeReadingImages(asset: ImageAsset, tier: string): Promise<ImageAsset> {
-  const composedOrOriginal = await tryComposeOverlay(asset.imageUrl, asset.overlaySvgDataUrl, tier);
-  let imageUrl = await applyReadingImageWatermark(composedOrOriginal, tier);
+  let composed = await tryComposeOverlay(asset.imageUrl, asset.overlaySvgDataUrl, tier);
+
+  // If remote compositing silently failed (URL unchanged + still https), retry on local fallback.
+  const remoteComposeFailed =
+    composed === asset.imageUrl &&
+    (asset.imageUrl.startsWith("http://") || asset.imageUrl.startsWith("https://")) &&
+    !!asset.fallbackImageUrl &&
+    asset.fallbackImageUrl !== asset.imageUrl;
+  if (remoteComposeFailed) {
+    const fallbackComposed = await tryComposeOverlay(asset.fallbackImageUrl, asset.overlaySvgDataUrl, tier);
+    if (fallbackComposed !== asset.fallbackImageUrl) {
+      composed = fallbackComposed;
+    }
+  }
+
+  let imageUrl = await applyReadingImageWatermark(composed, tier);
   let fallbackImageUrl = asset.fallbackImageUrl;
   if (fallbackImageUrl.startsWith("data:image/svg+xml")) {
     fallbackImageUrl = injectSvgDataUrlWatermark(fallbackImageUrl, tier);

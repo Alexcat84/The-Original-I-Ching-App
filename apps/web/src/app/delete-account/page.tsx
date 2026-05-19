@@ -50,9 +50,6 @@ export default async function DeleteAccountPage() {
         <h2>{m.retainedTitle}</h2>
         <p>{m.retainedBody}</p>
 
-        <h2>{m.rcTitle}</h2>
-        <p>{m.rcBody}</p>
-
         <h2>{m.noAccessTitle}</h2>
         <p>
           {m.noAccessBody.split("support@theoriginaliching.com").map((part, i, arr) =>
