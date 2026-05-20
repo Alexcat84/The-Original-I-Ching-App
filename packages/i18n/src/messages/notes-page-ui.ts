@@ -34,7 +34,6 @@ export type NotesPageUiMessages = {
   bonesVerdictAuspMod: string;
   bonesVerdictInauspMod: string;
   bonesVerdictInauspClear: string;
-  bonesVerdictSilence: string;
   bonesAuthHeading: string;
   bonesAuthBody: string;
   yarrowHeading: string;
@@ -86,13 +85,11 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "La práctica oracular documentada más antigua de China. Los chamanes reales aplicaban calor a huesos o caparazones para leer las grietas resultantes. Esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa y veredicto por patrón.",
     bonesRitualHeading: "",
     bonesRitualBody: "",
-    bonesVerdictsHeading: "Los cinco estados del veredicto:",
+    bonesVerdictsHeading: "Los cuatro estados del veredicto:",
     bonesVerdictAuspClear: "吉. Favorable claro.",
     bonesVerdictAuspMod: "吉 moderado. Favorable con matices.",
     bonesVerdictInauspMod: "凶 moderado. Desfavorable con reservas.",
     bonesVerdictInauspClear: "凶. Desfavorable claro.",
-    bonesVerdictSilence:
-      "沉默 (El Silencio). El patrón no produce grietas legibles. En la tradición Shang, esto indicaba que el momento no era maduro para la pregunta. Esta app respeta ese estado cuando el algoritmo lo indica.",
     bonesAuthHeading: "",
     bonesAuthBody: "",
     yarrowHeading: "Varillas de Milenrama (蓍草 · Shīcǎo)",
@@ -154,16 +151,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "The Ritual Process",
     bonesRitualBody:
       "The process was precise and repeatable: a positive charge and its negation were formulated. Incandescent bronze was applied to the bone until cracks formed. The orientation, length, and pattern of the cracks determined the verdict. The result was inscribed on the bone itself, constituting China's earliest written records.",
-    bonesVerdictsHeading: "The Five Verdict States:",
+    bonesVerdictsHeading: "The Four Verdict States:",
     bonesVerdictAuspClear: "吉. Clearly favorable.",
     bonesVerdictAuspMod: "吉 moderate. Favorable with nuance.",
     bonesVerdictInauspMod: "凶 moderate. Unfavorable with reservations.",
     bonesVerdictInauspClear: "凶. Clearly unfavorable.",
-    bonesVerdictSilence:
-      "沉默 (The Silence). The pattern produced no readable cracks. In the Shang tradition, this indicated that the moment was not ripe for the question. This app respects this state when the algorithm indicates it.",
     bonesAuthHeading: "Authenticity of the Method",
     bonesAuthBody:
-      "More than 150,000 oracle bone fragments have been excavated and studied since the 19th century. They are internationally recognized heritage and are preserved in museums in China, Taiwan, Japan, and Europe. The method implemented in this app respects the structural logic of the Shang system: positive charge, negative charge, verdict by pattern, including silence as a legitimate state.",
+      "More than 150,000 oracle bone fragments have been excavated and studied since the 19th century. They are internationally recognized heritage and are preserved in museums in China, Taiwan, Japan, and Europe. The method implemented in this app respects the structural logic of the Shang system: positive charge, negative charge, and verdict by pattern — always resolving to 吉 or 凶 in keeping with the authentic Shang archaeological record.",
     yarrowHeading: "Yarrow Stalks (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Historical Origins (~1000 BCE)",
     yarrowOriginBody:
@@ -225,16 +220,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "O processo ritual",
     bonesRitualBody:
       "O processo era preciso e repetível: formulava-se uma carga positiva e a sua negação. Aplicava-se bronze incandescente ao osso até produzir fissuras. A orientação, comprimento e padrão das fissuras determinava o veredicto. O resultado era gravado no próprio osso, constituindo os primeiros registos escritos da China.",
-    bonesVerdictsHeading: "Os cinco estados do veredicto:",
+    bonesVerdictsHeading: "Os quatro estados do veredicto:",
     bonesVerdictAuspClear: "吉. Favorável claro.",
     bonesVerdictAuspMod: "吉 moderado. Favorável com nuances.",
     bonesVerdictInauspMod: "凶 moderado. Desfavorável com reservas.",
     bonesVerdictInauspClear: "凶. Desfavorável claro.",
-    bonesVerdictSilence:
-      "沉默 (O Silêncio). O padrão não produz fissuras legíveis. Na tradição Shang, isto indicava que o momento não estava maduro para a pergunta. Esta app respeita esse estado quando o algoritmo o indica.",
     bonesAuthHeading: "Autenticidade do método",
     bonesAuthBody:
-      "Mais de 150.000 fragmentos de ossos oraculares foram escavados e estudados desde o século XIX. São património reconhecido internacionalmente e conservam-se em museus da China, Taiwan, Japão e Europa. O método implementado nesta app respeita a lógica estrutural do sistema Shang: carga positiva, carga negativa, veredicto por padrão, incluindo o silêncio como estado legítimo.",
+      "Mais de 150.000 fragmentos de ossos oraculares foram escavados e estudados desde o século XIX. São património reconhecido internacionalmente e conservam-se em museus da China, Taiwan, Japão e Europa. O método implementado nesta app respeita a lógica estrutural do sistema Shang: carga positiva, carga negativa, veredicto por padrão — sempre resolvendo para 吉 ou 凶.",
     yarrowHeading: "Varetas de Milenrama (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origem histórica (~1000 a.C.)",
     yarrowOriginBody:
@@ -297,16 +290,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "Le processus rituel",
     bonesRitualBody:
       "Le processus était précis et reproductible : on formulait une charge positive et sa négation. On appliquait du bronze incandescent sur l'os jusqu'à produire des fissures. L'orientation, la longueur et le motif des fissures déterminaient le verdict. Le résultat était gravé sur l'os lui-même, constituant les premiers écrits de Chine.",
-    bonesVerdictsHeading: "Les cinq états du verdict :",
+    bonesVerdictsHeading: "Les quatre états du verdict :",
     bonesVerdictAuspClear: "吉. Clairement favorable.",
     bonesVerdictAuspMod: "吉 modéré. Favorable avec nuances.",
     bonesVerdictInauspMod: "凶 modéré. Défavorable avec réserves.",
     bonesVerdictInauspClear: "凶. Clairement défavorable.",
-    bonesVerdictSilence:
-      "沉默 (Le Silence). Le motif ne produit pas de fissures lisibles. Dans la tradition Shang, cela indiquait que le moment n'était pas mûr pour la question. Cette app respecte cet état lorsque l'algorithme l'indique.",
     bonesAuthHeading: "Authenticité de la méthode",
     bonesAuthBody:
-      "Plus de 150 000 fragments d'os oraculaires ont été excavés et étudiés depuis le XIXe siècle. Ils constituent un patrimoine reconnu internationalement et sont conservés dans des musées en Chine, à Taïwan, au Japon et en Europe. La méthode implémentée dans cette app respecte la logique structurelle du système Shang : charge positive, charge négative, verdict par motif, incluant le silence comme état légitime.",
+      "Plus de 150 000 fragments d'os oraculaires ont été excavés et étudiés depuis le XIXe siècle. Ils constituent un patrimoine reconnu internationalement et sont conservés dans des musées en Chine, à Taïwan, au Japon et en Europe. La méthode implémentée dans cette app respecte la logique structurelle du système Shang : charge positive, charge négative, verdict par motif — toujours résolu en 吉 ou 凶 conformément au dossier archéologique Shang authentique.",
     yarrowHeading: "Tiges d'Achillée (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origine historique (~1000 av. J.-C.)",
     yarrowOriginBody:
@@ -369,16 +360,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "Der rituelle Prozess",
     bonesRitualBody:
       "Der Prozess war präzise und wiederholbar: Eine positive Ladung und ihre Verneinung wurden formuliert. Glühende Bronze wurde auf den Knochen aufgetragen, bis Risse entstanden. Die Ausrichtung, Länge und das Muster der Risse bestimmten den Befund. Das Ergebnis wurde in den Knochen selbst eingraviert, was Chinas früheste Schriftaufzeichnungen bildet.",
-    bonesVerdictsHeading: "Die five Befundzustände:",
+    bonesVerdictsHeading: "Die vier Befundzustände:",
     bonesVerdictAuspClear: "吉. Eindeutig günstig.",
     bonesVerdictAuspMod: "吉 mäßig. Günstig mit Nuancen.",
     bonesVerdictInauspMod: "凶 mäßig. Ungünstig mit Vorbehalten.",
     bonesVerdictInauspClear: "凶. Eindeutig ungünstig.",
-    bonesVerdictSilence:
-      "沉默 (Das Schweigen). Das Muster erzeugt keine lesbaren Risse. In der Shang-Tradition war dies ein Hinweis darauf, dass der Moment für die Frage nicht reif war. Diese App respektiert diesen Zustand, wenn der Algorithmus ihn anzeigt.",
     bonesAuthHeading: "Authentizität der Methode",
     bonesAuthBody:
-      "Mehr als 150.000 Orakelknochenfragmente wurden seit dem 19. Jahrhundert ausgegraben und untersucht. Sie sind international anerkanntes Kulturerbe und werden in Museen in China, Taiwan, Japan und Europa aufbewahrt. Die in dieser App implementierte Methode respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung, Befund nach Muster, einschließlich des Schweigens als legitimen Zustand.",
+      "Mehr als 150.000 Orakelknochenfragmente wurden seit dem 19. Jahrhundert ausgegraben und untersucht. Sie sind international anerkanntes Kulturerbe und werden in Museen in China, Taiwan, Japan und Europa aufbewahrt. Die in dieser App implementierte Methode respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung, Befund nach Muster.",
     yarrowHeading: "Schafgarbenstäbe (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Historische Ursprünge (~1000 v. Chr.)",
     yarrowOriginBody:
@@ -440,16 +429,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "Il processo rituale",
     bonesRitualBody:
       "Il processo era preciso e ripetibile : si formulava una carica positiva e la sua negazione. Si applicava bronzo incandescente all'osso finché non si formavano crepe. L'orientamento, la lunghezza e il motivo delle crepe determinavano il verdetto. Il risultato veniva inciso nell'osso stesso, costituendo i primi documenti scritti della Cina.",
-    bonesVerdictsHeading: "I cinque stati del verdetto :",
+    bonesVerdictsHeading: "I quattro stati del verdetto :",
     bonesVerdictAuspClear: "吉. Chiaramente favorevole.",
     bonesVerdictAuspMod: "吉 moderato. Favorevole con sfumature.",
     bonesVerdictInauspMod: "凶 moderato. Sfavorevole con riserve.",
     bonesVerdictInauspClear: "凶. Chiaramente sfavorevole.",
-    bonesVerdictSilence:
-      "沉默 (Il Silenzio). Il motivo non produce crepe leggibili. Nella tradizione Shang, questo indicava che il momento non era maturo per la domanda. Questa app rispetta quello stato quando l'algoritmo lo indica.",
     bonesAuthHeading: "Autenticità del metodo",
     bonesAuthBody:
-      "Più di 150.000 frammenti di ossa oracolari sono stati scavati e studiati dal XIX secolo. Sono patrimonio riconosciuto internazionalmente e conservati in musei in Cina, Taiwan, Giappone ed Europa. Il metodo implementato in questa app rispetta la logica strutturale del sistema Shang : carica positiva, carica negativa, verdetto per motivo, includendo il silenzio come stato legittimo.",
+      "Più di 150.000 frammenti di ossa oracolari sono stati scavati e studiati dal XIX secolo. Sono patrimonio riconosciuto internazionalmente e conservati in musei in Cina, Taiwan, Giappone ed Europa. Il metodo implementato in questa app rispetta la logica strutturale del sistema Shang : carica positiva, carica negativa, verdetto per motivo.",
     yarrowHeading: "Steli di Achillea (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origine storica (~1000 a.C.)",
     yarrowOriginBody:
@@ -511,7 +498,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "儀式のプロセス",
     bonesRitualBody:
       "このプロセスは精確で反復可能でした：肯定的な命題とその否定を定式化します。骨に白熱した青銅を当て、亀裂を生じさせます。亀裂の方向、長さ、パターンが神託を決定しました。結果は骨そのものに刻まれ、中国最古の文字記録を構成しています。",
-    bonesVerdictsHeading: "神託の五つの状態",
+    bonesVerdictsHeading: "神託の四つの状態",
     bonesVerdictAuspClear:
       "吉, 明確に吉：パターンは曖昧さなく肯定命題を確認します。",
     bonesVerdictAuspMod:
@@ -520,11 +507,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "凶 中程度, やや凶：パターンは留保付きで否定に傾きます。",
     bonesVerdictInauspClear:
       "凶, 明確に凶：パターンは曖昧さなく肯定命題を否定します。",
-    bonesVerdictSilence:
-      "沉默, 沈黙：パターンは読み取れる亀裂を生じさせません。商の伝統では、骨の沈黙はエラーではなく、それ自体が答えでした：祖先は、その問いの時が熟していないため、あるいはその答えが言語で表現できる範囲を超えているために語らない。このアプリはその状態を尊重し、パターンが示す際にそれを返します。",
     bonesAuthHeading: "手法の正統性",
     bonesAuthBody:
-      "19世紀以降、15万点を超える甲骨の断片が発掘・研究されてきました。それらは国際的に認められた文化遺産であり、中国・台湾・日本・ヨーロッパの博物館に保存されています。このアプリで実装された手法は、商システムの構造的論理を尊重しています：肯定命題、否定命題、パターンによる神託、沈黙を正当な状態として含めて。",
+      "19世紀以降、15万点を超える甲骨の断片が発掘・研究されてきました。それらは国際的に認められた文化遺産であり、中国・台湾・日本・ヨーロッパの博物館に保存されています。このアプリで実装された手法は、商システムの構造的論理を尊重しています：肯定命題、否定命題、パターンによる神託。",
     yarrowHeading: "蓍草による占い (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "歴史的起源（紀元前約1000年）",
     yarrowOriginBody:
@@ -586,16 +571,14 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "仪式过程",
     bonesRitualBody:
       "该过程精确且可重复：先确立正面命题及其否定；将灼热青铜施于骨上，直至产生裂纹；裂纹的方向、长度和纹样决定兆辞；结果刻于骨上，由此构成中国最早的文字记录。",
-    bonesVerdictsHeading: "五种兆辞状态",
+    bonesVerdictsHeading: "四种兆辞状态",
     bonesVerdictAuspClear: "吉, 明显为吉：纹样明确确认正面命题，无歧义。",
     bonesVerdictAuspMod: "偏吉, 偏向为吉：有所确认，但带有条件或细微差别。",
     bonesVerdictInauspMod: "偏凶, 偏向为凶：纹样有所保留地倾向否定。",
     bonesVerdictInauspClear: "凶, 明显为凶：纹样明确否定正面命题，无歧义。",
-    bonesVerdictSilence:
-      "静默, 沉默：纹样未产生可解读的裂纹。在商代传统中，骨的沉默并非失误，本身即为答复：祖先不言，是因为此问时机未到，或答案超越了可言说的范畴。本应用尊重此状态，并在纹样指示时予以返回。",
     bonesAuthHeading: "方法的真实性",
     bonesAuthBody:
-      "自19世纪以来，已出土并研究了逾15万件甲骨碎片。它们是国际公认的文化遗产，保存于中国、台湾、日本及欧洲的博物馆中。本应用所实施的方法忠实于商代系统的结构逻辑：正面命题、负面命题、依纹样作兆辞，并将沉默视为合法状态。",
+      "自19世纪以来，已出土并研究了逾15万件甲骨碎片。它们是国际公认的文化遗产，保存于中国、台湾、日本及欧洲的博物馆中。本应用所实施的方法忠实于商代系统的结构逻辑：正面命题、负面命题、依纹样作兆辞。",
     yarrowHeading: "蓍草占法 (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "历史渊源（约公元前1000年）",
     yarrowOriginBody:
@@ -657,7 +640,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "의례적 과정",
     bonesRitualBody:
       "이 과정은 정확하고 반복 가능했습니다: 긍정적인 명제와 그 부정을 공식화합니다. 뼈에 뜨거운 청동을 가하여 균열을 냅니다. 균열의 방향, 길이, 패턴이 신탁을 결정했습니다. 결과는 뼈 자체에 새겨졌으며, 이는 중국 최초의 문자 기록을 구성합니다.",
-    bonesVerdictsHeading: "신탁의 다섯 가지 상태",
+    bonesVerdictsHeading: "신탁의 네 가지 상태",
     bonesVerdictAuspClear:
       "吉, 명확히 길함: 패턴이 긍정 명제를 모호함 없이 확인합니다.",
     bonesVerdictAuspMod:
@@ -666,11 +649,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "凶 중간, 다소 흉함: 패턴이 유보적으로 부정 쪽으로 기웁니다.",
     bonesVerdictInauspClear:
       "凶, 명확히 흉함: 패턴이 긍정 명제를 모호함 없이 부정합니다.",
-    bonesVerdictSilence:
-      "침묵, 沉默: 패턴이 읽을 수 있는 균열을 생성하지 않습니다. 상 전통에서 뼈의 침묵은 오류가 아니라 그 자체로 응답이었습니다: 조상들은 그 질문에 대한 때가 무르익지 않았거나, 그 답이 말로 표현될 수 있는 범위를 초월하기 때문에 말하지 않습니다. 이 앱은 해당 상태를 존중하고 패턴이 나타낼 때 반환합니다.",
     bonesAuthHeading: "방법의 정통성",
     bonesAuthBody:
-      "19세기 이래 15만 점 이상의 갑골 파편이 발굴되어 연구되었습니다. 이는 국제적으로 인정받는 문화유산으로 중국, 대만, 일본, 유럽의 박물관에 보존되어 있습니다. 이 앱에서 구현된 방법은 상 체계의 구조적 논리를 존중합니다: 긍정 명제, 부정 명제, 패턴에 의한 신탁, 침묵을 합법적 상태로 포함하여.",
+      "19세기 이래 15만 점 이상의 갑골 파편이 발굴되어 연구되었습니다. 이는 국제적으로 인정받는 문화유산으로 중국, 대만, 일본, 유럽의 박물관에 보존되어 있습니다. 이 앱에서 구현된 방법은 상 체계의 구조적 논리를 존중합니다: 긍정 명제, 부정 명제, 패턴에 의한 신탁.",
     yarrowHeading: "시초점법 (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "역사적 기원 (기원전 약 1000년)",
     yarrowOriginBody:
@@ -733,7 +714,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "العملية الطقسية",
     bonesRitualBody:
       "كانت العملية دقيقة وقابلة للتكرار: تُصاغ شحنة إيجابية ونقيضها. يُطبق برونز متوهج على العظمة حتى تتشكل الشقوق. يحدد اتجاه الشقوق وطولها ونمطها الحكم. يُنقش الناتج على العظمة نفسها, مشكّلاً أقدم السجلات المكتوبة في الصين.",
-    bonesVerdictsHeading: "الحالات الخمس للحكم",
+    bonesVerdictsHeading: "الحالات الأربع للحكم",
     bonesVerdictAuspClear:
       "吉, مبشّر بوضوح: يؤكد النمط الشحنة الإيجابية دون غموض.",
     bonesVerdictAuspMod:
@@ -742,11 +723,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "凶 معتدل, غير مبشّر بدرجة معتدلة: يميل النمط نحو النفي مع تحفظات.",
     bonesVerdictInauspClear:
       "凶, غير مبشّر بوضوح: ينفي النمط الشحنة الإيجابية دون غموض.",
-    bonesVerdictSilence:
-      "沉默, الصمت: لا ينتج النمط شقوقاً يمكن قراءتها. في التقليد Shang، لم يكن صمت العظمة خطأً, كان في حد ذاته إجابة: الأسلاف لا يتكلمون لأن اللحظة لم تنضج لهذا السؤال، أو لأن الإجابة تتجاوز ما يمكن قوله. يحترم هذا التطبيق هذه الحالة ويعيدها عندما يشير إليها النمط.",
     bonesAuthHeading: "أصالة الطريقة",
     bonesAuthBody:
-      "تم استخراج ودراسة أكثر من 150,000 شظية من عظام العرافة منذ القرن التاسع عشر. هي تراث معترف به دولياً وتُحفظ في متاحف في الصين وتايوان واليابان وأوروبا. تحترم الطريقة المُنفَّذة في هذا التطبيق المنطق الهيكلي لنظام Shang: الشحنة الإيجابية، الشحنة السلبية، الحكم بالنمط، بما في ذلك الصمت كحالة مشروعة.",
+      "تم استخراج ودراسة أكثر من 150,000 شظية من عظام العرافة منذ القرن التاسع عشر. هي تراث معترف به دولياً وتُحفظ في متاحف في الصين وتايوان واليابان وأوروبا. تحترم الطريقة المُنفَّذة في هذا التطبيق المنطق الهيكلي لنظام Shang: الشحنة الإيجابية، الشحنة السلبية، الحكم بالنمط.",
     yarrowHeading: "عيدان الزنبق (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "الأصول التاريخية (~1000 قبل الميلاد)",
     yarrowOriginBody:
@@ -809,7 +788,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesRitualHeading: "अनुष्ठान प्रक्रिया",
     bonesRitualBody:
       "प्रक्रिया सटीक और दोहराने योग्य थी: एक सकारात्मक प्रस्ताव और उसका खंडन तैयार किया जाता था। हड्डी पर तप्त कांसे को तब तक लगाया जाता था जब तक दरारें न बन जाएं। दरारों की दिशा, लंबाई और पैटर्न निर्णय निर्धारित करता था। परिणाम हड्डी पर ही उकेरा जाता था, जो चीन के सबसे पुराने लिखित अभिलेख बनाता है।",
-    bonesVerdictsHeading: "निर्णय की पांच अवस्थाएं",
+    bonesVerdictsHeading: "निर्णय की चार अवस्थाएं",
     bonesVerdictAuspClear:
       "吉, स्पष्ट रूप से शुभ: पैटर्न बिना किसी संदेह के सकारात्मक प्रस्ताव की पुष्टि करता है।",
     bonesVerdictAuspMod:
@@ -818,11 +797,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "凶 मध्यम, मध्यम रूप से अशुभ: पैटर्न आरक्षणों के साथ नकारात्मकता की ओर झुकता है।",
     bonesVerdictInauspClear:
       "凶, स्पष्ट रूप से अशुभ: पैटर्न बिना किसी संदेह के सकारात्मक प्रस्ताव को नकारता है।",
-    bonesVerdictSilence:
-      "沉默, मौन: पैटर्न पठनीय दरारें उत्पन्न नहीं करता। शांग परंपरा में, हड्डी का मौन एक त्रुटि नहीं था, यह स्वयं एक उत्तर था: पूर्वज इसलिए नहीं बोलते क्योंकि उस प्रश्न के लिए क्षण परिपक्व नहीं है, या क्योंकि उत्तर उस सीमा से परे है जो कहा जा सकता है। यह ऐप उस अवस्था का सम्मान करता है और जब पैटर्न इसे इंगित करता है तो इसे लौटाता है।",
     bonesAuthHeading: "विधि की प्रामाणिकता",
     bonesAuthBody:
-      "19वीं सदी से 1,50,000 से अधिक दैवज्ञ हड्डी के टुकड़ों की खुदाई और अध्ययन किया गया है। वे अंतरराष्ट्रीय स्तर पर मान्यता प्राप्त विरासत हैं और चीन, ताइवान, जापान और यूरोप के संग्रहालयों में संरक्षित हैं। इस ऐप में लागू विधि शांग प्रणाली के संरचनात्मक तर्क का सम्मान करती है: सकारात्मक प्रस्ताव, नकारात्मक प्रस्ताव, पैटर्न द्वारा निर्णय, मौन को वैध अवस्था के रूप में शामिल करते हुए।",
+      "19वीं सदी से 1,50,000 से अधिक दैवज्ञ हड्डी के टुकड़ों की खुदाई और अध्ययन किया गया है। वे अंतरराष्ट्रीय स्तर पर मान्यता प्राप्त विरासत हैं और चीन, ताइवान, जापान और यूरोप के संग्रहालयों में संरक्षित हैं। इस ऐप में लागू विधि शांग प्रणाली के संरचनात्मक तर्क का सम्मान करती है: सकारात्मक प्रस्ताव, नकारात्मक प्रस्ताव, पैटर्न द्वारा निर्णय।",
     yarrowHeading: "यारो की छड़ें (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "ऐतिहासिक उत्पत्ति (~1000 ईसा पूर्व)",
     yarrowOriginBody:

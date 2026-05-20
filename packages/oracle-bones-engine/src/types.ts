@@ -2,20 +2,17 @@ export type OracleBonesVerdict =
   | "auspicious_clear"
   | "auspicious_moderate"
   | "inauspicious_moderate"
-  | "inauspicious_clear"
-  | "silent";
+  | "inauspicious_clear";
 
 export type OracleBoneMedium = "turtle" | "ox";
 
 export interface OracleBonesCastResult {
   id: string;
-  /** Winning crack motif id 1–4, or 5 when ancestors are silent after indeterminate rounds */
+  /** Winning crack motif id 1–4 */
   patternId: number;
   verdict: OracleBonesVerdict;
-  /** How many indeterminate (pattern 5) draws occurred before this result */
-  ambiguousPasses: number;
-  /** Whether the oracle affirms the positive charge; null if silent */
-  affirmsPositive: boolean | null;
+  /** Whether the oracle affirms the positive charge */
+  affirmsPositive: boolean;
   positiveCharge: string;
   negativeCharge: string;
   medium: OracleBoneMedium;

@@ -11,7 +11,6 @@ const RESULT_OPTIONS: Array<{ value: PreviewResult; label: string; verdictText: 
   { value: "auspicious_moderate", label: "auspicious_moderate", verdictText: "Moderate favorable (positive charge)" },
   { value: "inauspicious_moderate", label: "inauspicious_moderate", verdictText: "Moderate inauspicious (negative charge)" },
   { value: "inauspicious_clear", label: "inauspicious_clear", verdictText: "Clear inauspicious (negative charge)" },
-  { value: "silent", label: "silent", verdictText: "Silence (no answer)" },
 ];
 
 export default function RitualPreviewPage() {

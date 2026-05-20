@@ -4227,9 +4227,6 @@ button.credits-notice-primary:hover {
   box-shadow: inset 0 0 24px rgba(113, 44, 38, 0.26), 0 0 0 1px rgba(164, 77, 68, 0.2);
 }
 
-.bone-ritual-viewport--silent {
-  border-color: color-mix(in srgb, #8b7e6b 46%, var(--coins-border));
-}
 
 .bone-ritual-canvas {
   position: absolute;
@@ -4300,14 +4297,6 @@ button.credits-notice-primary:hover {
 
 .bone-ritual-verdict--inauspicious .bone-ritual-verdict-glyph {
   color: #cb6e64;
-}
-
-.bone-ritual-verdict--silent {
-  border-color: rgba(139, 126, 107, 0.45);
-}
-
-.bone-ritual-verdict--silent .bone-ritual-verdict-glyph {
-  color: #a2927b;
 }
 
 .bone-ritual-fallback {
@@ -4442,16 +4431,6 @@ button.credits-notice-primary:hover {
 
 .bone-ritual-fallback--inauspicious-clear .bone-ritual-fallback-cracks span {
   background: rgba(92, 29, 27, 0.93);
-}
-
-.bone-ritual-fallback--silent .bone-ritual-fallback-cracks span {
-  background: rgba(87, 71, 50, 0.84);
-}
-
-.bone-ritual-fallback--silent .bone-ritual-fallback-cracks span:nth-child(3),
-.bone-ritual-fallback--silent .bone-ritual-fallback-cracks span:nth-child(4),
-.bone-ritual-fallback--silent .bone-ritual-fallback-cracks span:nth-child(6) {
-  display: none;
 }
 
 @keyframes boneRitualFallbackFlame {
