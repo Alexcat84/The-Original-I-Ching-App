@@ -833,7 +833,7 @@ export async function buildImageAsset(params: {
     }
   }
 
-  if (provider === "together") {
+  if (provider === "together" && process.env.FORCE_TOGETHER_FAIL !== "true") {
     const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
     const { url, debug: togetherDebug } = await generateWithTogether(
       promptForRemote,
@@ -995,7 +995,7 @@ export async function buildOracleBonesImageAsset(params: {
     }
   }
 
-  if (provider === "together") {
+  if (provider === "together" && process.env.FORCE_TOGETHER_FAIL !== "true") {
     const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
     const { url } = await generateWithTogether(
       promptForRemote,
