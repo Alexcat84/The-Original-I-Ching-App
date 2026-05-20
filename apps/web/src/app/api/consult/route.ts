@@ -84,7 +84,6 @@ type HistoryEntry = {
     positiveCharge: string;
     negativeCharge: string;
     medium: OracleBonesHistorySnapshot["medium"];
-    ambiguousPasses: number;
   };
 };
 
@@ -101,7 +100,6 @@ function mapHistoryToRows(
             positive_charge: h.oracleBones.positiveCharge,
             negative_charge: h.oracleBones.negativeCharge,
             medium: h.oracleBones.medium,
-            ambiguous_passes: h.oracleBones.ambiguousPasses,
           }
         : undefined;
     return {
@@ -165,7 +163,6 @@ function verdictLabelForPrompt(
     auspicious_moderate: "moderately auspicious ji 吉",
     inauspicious_moderate: "moderately inauspicious xiong 凶",
     inauspicious_clear: "clearly inauspicious xiong 凶",
-    silent: "silent indeterminate",
   };
   return labels[verdict];
 }
@@ -675,7 +672,6 @@ export async function POST(req: Request) {
         positive_charge: bonesCast.positiveCharge,
         negative_charge: bonesCast.negativeCharge,
         medium: bonesCast.medium,
-        ambiguous_passes: bonesCast.ambiguousPasses,
       };
 
       const nextPosition = previousRows.length + 1;
@@ -754,7 +750,6 @@ export async function POST(req: Request) {
           patternId: bonesCast.patternId,
           verdict: bonesCast.verdict,
           affirmsPositive: bonesCast.affirmsPositive,
-          ambiguousPasses: bonesCast.ambiguousPasses,
           positiveCharge: bonesCast.positiveCharge,
           negativeCharge: bonesCast.negativeCharge,
           medium: bonesCast.medium,

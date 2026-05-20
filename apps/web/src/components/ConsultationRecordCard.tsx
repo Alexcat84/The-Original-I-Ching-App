@@ -61,7 +61,6 @@ export function ConsultationRecordCard({
       charge: "Cargo:",
       chargePositive: "Positivo 吉",
       chargeNegative: "Negativo 凶",
-      chargeSilence: "Silencio",
       dateLocale: "es",
     },
     en: {
@@ -80,7 +79,6 @@ export function ConsultationRecordCard({
       charge: "Charge:",
       chargePositive: "Positive 吉",
       chargeNegative: "Negative 凶",
-      chargeSilence: "Silence",
       dateLocale: "en",
     },
     pt: {
@@ -99,7 +97,6 @@ export function ConsultationRecordCard({
       charge: "Carga:",
       chargePositive: "Positivo 吉",
       chargeNegative: "Negativo 凶",
-      chargeSilence: "Silêncio",
       dateLocale: "pt",
     },
     fr: {
@@ -118,7 +115,6 @@ export function ConsultationRecordCard({
       charge: "Charge :",
       chargePositive: "Positif 吉",
       chargeNegative: "Négatif 凶",
-      chargeSilence: "Silence",
       dateLocale: "fr",
     },
     de: {
@@ -137,7 +133,6 @@ export function ConsultationRecordCard({
       charge: "Ladung:",
       chargePositive: "Positiv 吉",
       chargeNegative: "Negativ 凶",
-      chargeSilence: "Stille",
       dateLocale: "de",
     },
     it: {
@@ -156,7 +151,6 @@ export function ConsultationRecordCard({
       charge: "Carica:",
       chargePositive: "Positivo 吉",
       chargeNegative: "Negativo 凶",
-      chargeSilence: "Silenzio",
       dateLocale: "it",
     },
     ja: {
@@ -175,7 +169,6 @@ export function ConsultationRecordCard({
       charge: "荷電:",
       chargePositive: "陽 吉",
       chargeNegative: "陰 凶",
-      chargeSilence: "沈黙",
       dateLocale: "ja",
     },
     zh: {
@@ -194,7 +187,6 @@ export function ConsultationRecordCard({
       charge: "命：",
       chargePositive: "正命 吉",
       chargeNegative: "负命 凶",
-      chargeSilence: "沉默",
       dateLocale: "zh",
     },
     ko: {
@@ -213,7 +205,6 @@ export function ConsultationRecordCard({
       charge: "전하:",
       chargePositive: "양성 吉",
       chargeNegative: "음성 凶",
-      chargeSilence: "침묵",
       dateLocale: "ko",
     },
     ar: {
@@ -232,7 +223,6 @@ export function ConsultationRecordCard({
       charge: "الشحنة:",
       chargePositive: "موجب 吉",
       chargeNegative: "سالب 凶",
-      chargeSilence: "صمت",
       dateLocale: "ar",
     },
     hi: {
@@ -251,7 +241,6 @@ export function ConsultationRecordCard({
       charge: "आवेश:",
       chargePositive: "सकारात्मक 吉",
       chargeNegative: "नकारात्मक 凶",
-      chargeSilence: "मौन",
       dateLocale: "hi",
     },
   }[
@@ -278,11 +267,9 @@ export function ConsultationRecordCard({
 
   if (oracleType === "oracle_bones" && oracleBones) {
     const mediumLabel = oracleBones.medium === "turtle" ? labels.turtle : labels.ox;
-    const chargeLabel = oracleBones.verdict === "silent"
-      ? labels.chargeSilence
-      : oracleBones.verdict.startsWith("auspicious")
-        ? labels.chargePositive
-        : labels.chargeNegative;
+    const chargeLabel = oracleBones.verdict.startsWith("auspicious")
+      ? labels.chargePositive
+      : labels.chargeNegative;
     return (
       <aside className="consultation-record" aria-label={labels.panel}>
         <h4 className="consultation-record-title">{labels.panel}</h4>

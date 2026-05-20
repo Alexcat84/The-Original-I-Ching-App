@@ -9,7 +9,6 @@ import { buildHistoricalContext, buildCurrentContext, type ResponseMode } from "
 import { loadClaudeEnv } from "./env.js";
 import {
   oracleBonesFallbackProse,
-  oracleBonesSilentVerdictMessage,
   structuralVerdictLineLocalized,
   verdictNaturalLabelLocalized,
 } from "./oracle-bones-structural-i18n.js";
@@ -248,7 +247,6 @@ function replaceVerdictCodesWithNaturalLanguage(text: string, language: string):
     ["auspicious_moderate", verdictNaturalLabelLocalized("auspicious_moderate", language)],
     ["inauspicious_moderate", verdictNaturalLabelLocalized("inauspicious_moderate", language)],
     ["inauspicious_clear", verdictNaturalLabelLocalized("inauspicious_clear", language)],
-    ["silent", verdictNaturalLabelLocalized("silent", language)],
   ];
   let out = text;
   for (const [code, label] of replacements) {
@@ -265,12 +263,9 @@ function buildOracleBonesUserContent(
   mode: ResponseMode,
 ): string {
   const targetWordCount = "380-500";
-  const aff =
-    cast.affirmsPositive === null
-      ? "ANCESTORS SILENT — no clear yes/no after repeated indeterminate cracks."
-      : cast.affirmsPositive
-        ? "Verdict aligns with the POSITIVE charge (favorable to proceeding as stated)."
-        : "Verdict aligns with the NEGATIVE charge (not favorable as the positive charge claims).";
+  const aff = cast.affirmsPositive
+    ? "Verdict aligns with the POSITIVE charge (favorable to proceeding as stated)."
+    : "Verdict aligns with the NEGATIVE charge (not favorable as the positive charge claims).";
 
   const modeNote =
     mode === "profundizar"
@@ -296,7 +291,6 @@ Negative charge: "${cast.negativeCharge}"
 Medium: ${cast.medium} (turtle plastron vs ox scapula — aesthetic only; verdict is fixed)
 Crack pattern id: ${cast.patternId}
 System verdict code: ${cast.verdict}
-Ambiguous rounds before result: ${cast.ambiguousPasses}
 Alignment: ${aff}
 Public verdict label for user-facing prose: ${verdictNaturalLabelLocalized(cast.verdict, language)}
 
@@ -341,19 +335,6 @@ export async function generateOracleBonesInterpretation(
   category: ConsultationCategory;
   interpretationSummary: string;
 }> {
-  if (cast.verdict === "silent") {
-    const text = enforceOracleBonesConsistency(
-      oracleBonesSilentVerdictMessage(language),
-      cast,
-      language,
-    );
-    return {
-      text,
-      category: "general",
-      interpretationSummary: fallbackInterpretationSummary(text),
-    };
-  }
-
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);

@@ -11,7 +11,6 @@ export interface OracleBonesHistorySnapshot {
   positive_charge: string;
   negative_charge: string;
   medium: OracleBoneMedium;
-  ambiguous_passes: number;
 }
 
 export interface ConsultationSummary {

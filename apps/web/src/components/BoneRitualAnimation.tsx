@@ -77,8 +77,7 @@ function resultToViewportClass(result: BoneOracleResult | null): string {
   if (result === "auspicious_clear") return "bone-ritual-viewport--auspicious-clear";
   if (result === "auspicious_moderate") return "bone-ritual-viewport--auspicious-moderate";
   if (result === "inauspicious_moderate") return "bone-ritual-viewport--inauspicious-moderate";
-  if (result === "inauspicious_clear") return "bone-ritual-viewport--inauspicious-clear";
-  return "bone-ritual-viewport--silent";
+  return "bone-ritual-viewport--inauspicious-clear";
 }
 
 function resultToFallbackClass(result: BoneOracleResult | null): string {
@@ -86,21 +85,18 @@ function resultToFallbackClass(result: BoneOracleResult | null): string {
   if (result === "auspicious_moderate") return "bone-ritual-fallback--auspicious-moderate";
   if (result === "inauspicious_moderate") return "bone-ritual-fallback--inauspicious-moderate";
   if (result === "inauspicious_clear") return "bone-ritual-fallback--inauspicious-clear";
-  if (result === "silent") return "bone-ritual-fallback--silent";
   return "bone-ritual-fallback--pending";
 }
 
 function verdictGlyph(result: BoneOracleResult | null): string {
   if (result === "auspicious_clear" || result === "auspicious_moderate") return "吉";
   if (result === "inauspicious_moderate" || result === "inauspicious_clear") return "凶";
-  if (result === "silent") return "默";
   return "";
 }
 
 function verdictBadgeClass(result: BoneOracleResult | null): string {
   if (result === "auspicious_clear" || result === "auspicious_moderate") return "bone-ritual-verdict--auspicious";
   if (result === "inauspicious_moderate" || result === "inauspicious_clear") return "bone-ritual-verdict--inauspicious";
-  if (result === "silent") return "bone-ritual-verdict--silent";
   return "bone-ritual-verdict--pending";
 }
 
@@ -338,16 +334,6 @@ function crackPatternTemplate(result: BoneOracleResult): CrackTemplate {
           { angle: -1.18, startX: 0.19, startY: -0.13, lengths: [0.1, 0.1, 0.09], turns: [0.06, -0.08, 0.07] },
         ],
       };
-    case "silent":
-      return {
-        opening: 0.64,
-        emberBoost: 0.52,
-        roots: [
-          { angle: -0.15, startX: -0.08, startY: -0.05, lengths: [0.1, 0.09, 0.08], turns: [0.03, -0.02, 0.02] },
-          { angle: 0.26, startX: 0.02, startY: -0.04, lengths: [0.09, 0.08, 0.09], turns: [-0.02, 0.03, -0.02] },
-          { angle: -0.62, startX: 0.09, startY: -0.09, lengths: [0.08, 0.08], turns: [0.02, -0.02] },
-        ],
-      };
   }
 }
 
@@ -381,21 +367,18 @@ function buildCrackLineVertices(result: BoneOracleResult): Float32Array {
     auspicious_moderate: 5,
     inauspicious_moderate: 3,
     inauspicious_clear: 3,
-    silent: 3,
   };
   const spanScaleByResult: Record<BoneOracleResult, number> = {
     auspicious_clear: 2.28,
     auspicious_moderate: 2.24,
     inauspicious_moderate: 2.26,
     inauspicious_clear: 2.28,
-    silent: 2.0,
   };
   const yOffsetByResult: Record<BoneOracleResult, number> = {
     auspicious_clear: -0.03,
     auspicious_moderate: -0.03,
     inauspicious_moderate: -0.03,
     inauspicious_clear: -0.08,
-    silent: -0.07,
   };
   const spanScale = spanScaleByResult[result];
   const appendPath = (root: CrackRootTemplate, baseAngle = 0) => {

@@ -1,20 +1,9 @@
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 
-/**
- * Simplified-Chinese glyph(s) composited on oracle-bone imagery (matches I Ching overlay font stack + embed path).
- * "Silent" uses 沉默 — literal "silence" in modern Chinese.
- */
+/** Simplified-Chinese glyph composited on oracle-bone imagery. */
 export function oracleBonesVerdictChinese(verdict: OracleBonesVerdict): string {
-  switch (verdict) {
-    case "auspicious_clear":
-    case "auspicious_moderate":
-      return "吉";
-    case "inauspicious_moderate":
-    case "inauspicious_clear":
-      return "凶";
-    case "silent":
-      return "沉默";
-  }
+  if (verdict === "auspicious_clear" || verdict === "auspicious_moderate") return "吉";
+  return "凶";
 }
 
 /** SVG fragment + fill for verdict-colored glyph (gradients: clear vs moderate tones). */
@@ -61,19 +50,12 @@ export function oracleBonesVerdictGlyphSvgStyle(
         glyphStroke: "rgba(255,250,250,0.96)",
         overlayStrokeWidth: 5.5,
       };
-    case "inauspicious_moderate":
+    default:
       return {
         glyphGradientDefs: `<linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fca5a5"/><stop offset="100%" stop-color="#9f3942"/></linearGradient>`,
         glyphFill: `url(#${gid})`,
         glyphStroke: "rgba(255,245,245,0.92)",
         overlayStrokeWidth: 5,
-      };
-    case "silent":
-      return {
-        glyphGradientDefs: `<linearGradient id="${gid}" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#475569"/></linearGradient>`,
-        glyphFill: `url(#${gid})`,
-        glyphStroke: "rgba(248,250,252,0.95)",
-        overlayStrokeWidth: 4.5,
       };
   }
 }

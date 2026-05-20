@@ -159,7 +159,6 @@ export default async function NotesPage() {
               {n.bonesVerdictAuspMod && <li>{n.bonesVerdictAuspMod}</li>}
               {n.bonesVerdictInauspMod && <li>{n.bonesVerdictInauspMod}</li>}
               {n.bonesVerdictInauspClear && <li>{n.bonesVerdictInauspClear}</li>}
-              {n.bonesVerdictSilence && <li>{n.bonesVerdictSilence}</li>}
             </ul>
           </>
         )}
