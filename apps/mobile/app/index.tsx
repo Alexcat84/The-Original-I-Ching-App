@@ -44,7 +44,6 @@ import {
 const STAGING_WEB_FALLBACK =
   "https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app";
 
-const PROD_HOST = "theoriginaliching.com";
 
 /** Same URL as app.config.js `extra.apiUrl` (set at native build). Prefer this over Metro-inlined env to avoid .env vs APK mismatch. */
 function resolveWebBaseUrl(): string {
@@ -1881,18 +1880,12 @@ export default function WebViewScreen() {
         return true;
       }
 
-      // Production domain guard: block any WebView navigation to theoriginaliching.com
-      // when this APK is built against a different base URL (e.g. staging preview).
-      // Prevents Vercel preview-URL redirects or stray production-domain links from
-      // accidentally loading the live site inside a non-production WebView.
-      // When BASE_URL is already the production domain this check is a no-op.
-      if (
-        !BASE_URL.includes(PROD_HOST) &&
-        (url === `https://${PROD_HOST}` ||
-          url.startsWith(`https://${PROD_HOST}/`) ||
-          url.startsWith(`http://${PROD_HOST}/`))
-      ) {
-        if (__DEV__) console.warn("[WebView] prod navigation blocked:", url);
+      // Cross-origin guard: the WebView must never leave the BASE_URL domain.
+      // Applies equally in staging and production builds — there is no legitimate
+      // reason for the APK to navigate outside its configured domain outside of the
+      // Google OAuth flow (handled above) and the rn_signout reload (handled above).
+      if (!url.startsWith(BASE_URL)) {
+        if (__DEV__) console.warn("[WebView] cross-origin navigation blocked:", url);
         return false;
       }
 
