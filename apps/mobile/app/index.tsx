@@ -42,6 +42,8 @@ import {
 const STAGING_WEB_FALLBACK =
   "https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app";
 
+const PROD_HOST = "theoriginaliching.com";
+
 /** Same URL as app.config.js `extra.apiUrl` (set at native build). Prefer this over Metro-inlined env to avoid .env vs APK mismatch. */
 function resolveWebBaseUrl(): string {
   const extra = (Constants.expoConfig?.extra as { apiUrl?: string } | undefined)?.apiUrl;
@@ -1855,6 +1857,21 @@ export default function WebViewScreen() {
       // the Supabase singleton is destroyed and the session is fully cleared.
       if (url.includes('rn_signout=1')) {
         return true;
+      }
+
+      // Production domain guard: block any WebView navigation to theoriginaliching.com
+      // when this APK is built against a different base URL (e.g. staging preview).
+      // Prevents Vercel preview-URL redirects or stray production-domain links from
+      // accidentally loading the live site inside a non-production WebView.
+      // When BASE_URL is already the production domain this check is a no-op.
+      if (
+        !BASE_URL.includes(PROD_HOST) &&
+        (url === `https://${PROD_HOST}` ||
+          url.startsWith(`https://${PROD_HOST}/`) ||
+          url.startsWith(`http://${PROD_HOST}/`))
+      ) {
+        if (__DEV__) console.warn("[WebView] prod navigation blocked:", url);
+        return false;
       }
 
       // Route same-origin navigation through SPA once WebView is ready.
