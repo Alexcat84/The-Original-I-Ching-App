@@ -1,198 +1,568 @@
-# Diagnóstico Técnico de Arquitectura — iching-app
-**Fecha:** 2026-05-14  
-**Alcance:** Evaluación de preparación para alto tráfico  
-**Metodología:** Análisis estático de codebase (sin modificaciones)
+# Arquitectura Completa — The Original I Ching App
+
+**Última actualización:** 2026-05-20  
+**Branch de referencia:** `main` @ `58b56c4`  
+**Alcance:** Documentación técnica completa de A a Z
 
 ---
 
 ## Índice
 
-1. [Claude API](#1-claude-api)
-2. [Together AI / FLUX](#2-together-ai--flux)
-3. [Supabase](#3-supabase)
-4. [Upstash](#4-upstash)
-5. [Cloudflare](#5-cloudflare)
-6. [Vercel](#6-vercel)
-7. [Sistema de Tokens](#7-sistema-de-tokens)
-8. [Errores y Observabilidad](#8-errores-y-observabilidad)
-9. [Optimización de Tokens IA](#9-optimización-de-tokens-ia)
-10. [Seguridad de API Keys](#10-seguridad-de-api-keys)
-11. [Hallazgos Críticos](#hallazgos-críticos)
-12. [Quick Wins](#quick-wins)
+1. [Visión General](#1-visión-general)
+2. [Monorepo y Toolchain](#2-monorepo-y-toolchain)
+3. [Web App — Next.js](#3-web-app--nextjs)
+4. [API Endpoints](#4-api-endpoints)
+5. [Mobile App — Expo WebView](#5-mobile-app--expo-webview)
+6. [SQLite Local Cache (3 Tiers)](#6-sqlite-local-cache-3-tiers)
+7. [WebView Bridge Protocol](#7-webview-bridge-protocol)
+8. [Base de Datos — Supabase](#8-base-de-datos--supabase)
+9. [Paquetes Compartidos](#9-paquetes-compartidos)
+10. [Sistema de Tokens Consumibles](#10-sistema-de-tokens-consumibles)
+11. [Autenticación](#11-autenticación)
+12. [Generación de Imágenes](#12-generación-de-imágenes)
+13. [Claude AI — Interpretación](#13-claude-ai--interpretación)
+14. [Servicios Externos](#14-servicios-externos)
+15. [Deploy y CI/CD](#15-deploy-y-cicd)
+16. [Seguridad](#16-seguridad)
+17. [Observabilidad](#17-observabilidad)
+18. [Deuda Técnica y Hallazgos Abiertos](#18-deuda-técnica-y-hallazgos-abiertos)
 
 ---
 
-## 1. Claude API
+## 1. Visión General
 
-**Archivos principales:**
-- `backend/claude/src/interpretation.ts` (825 líneas)
-- `backend/claude/src/anthropic-model-id.ts`
-- `backend/claude/src/oracle-bones-interpretation.ts`
-- `apps/web/src/app/api/consult/route.ts`
+**Producto:** App de consultas al I Ching con IA. Oráculo ancestral chino (y Huesos de Oráculo Shang) con interpretación moderna via Claude AI.
 
-### Modelo usado
+**Modelo de negocio:** Tokens consumibles (no suscripción). El usuario compra packs; los tokens se acumulan entre compras.
 
-```
-claude-sonnet-4-5-20250929
-```
+**Plataformas:**
+- Web: SPA/SSR vía Next.js, accesible en `theoriginaliching.com`
+- Android: APK via Expo + React Native WebView (la app nativa es un wrapper de la web)
 
-Definido en `anthropic-model-id.ts` línea 8. **Un único modelo para todos los tiers y métodos** (Wilhelm, Legge, Zhou Yi, Master Combined, Oracle Bones). Sin diferenciación por plan.
-
-### Estructura del System Prompt
-
-| Bloque | Tipo | Contenido |
-|--------|------|-----------|
-| Identidad + rol | Estático | "You are the Sage of the Oracle" |
-| ABSOLUTE RULES (10 reglas) | Estático | Uso exclusivo de textos clásicos, referencias a consultas previas, prohibición de poesía, tipografía markdown, etc. |
-| ANTI-REPETITION | Estático | Cada punto concreto máximo una vez por respuesta |
-| TYPOGRAPHY | Estático | `##` headings, `*italic*` para textos clásicos, `**bold**` solo para términos propios |
-| TEMPORAL RESTRAINT | Estático | Prohibición de spans temporales en referencias a sesiones |
-| Nombre del usuario | Dinámico | `The user's name is ${displayName}...` (línea 510–512) |
-| Idioma | Dinámico | `LANGUAGE: Respond only in ${getLanguageName(language)}.` (línea 513) |
-
-### Prompt Caching
-
-✅ **Implementado** con `cache_control: { type: "ephemeral" }`:
-
-| Bloque cacheado | Líneas | Tipo |
-|-----------------|--------|------|
-| `stableSystemBlock` | 537–541 | System prompt completo |
-| `stableLibraryBlock` | 550–552 | Textos Wilhelm + Legge + Zhou Yi + hexagrama transformado |
-| `stableThreadContextBlock` | 557–559 | Contexto de sesión anterior (resumen Supabase) |
-| `dynamicQuestionBlock` | — | Pregunta actual → **sin cache** |
-
-Logging via `logCacheUsage()` (líneas 77–96): `input_tokens`, `output_tokens`, `cache_read_input_tokens`, `cache_creation_input_tokens`, ratio de acierto.  
-Activo si `LOG_CLAUDE_CACHE_METRICS=1` o `NODE_ENV=development`.
-
-### Construcción del contexto del hilo
-
-- **Modo deepening:** Si `isDeepening && isPersistableUuid(sessionId)` → carga resumen desde DB
-- Función `buildContextBlock()` en `interpretation-context.ts`
-- Por cada consulta previa: hexagrama #, nombre, chino, líneas en mutación, resumen de interpretación (~420 chars)
-- **~150–200 tokens por consulta anterior**
-- Master tier: hasta 8 consultas en sesión actual + 10 históricas
-
-### Retry logic para 429
-
-❌ **No implementado.** Existe un fallback chain, pero sin retry exponencial:
+**Stack de alto nivel:**
 
 ```
-Anthropic API → OpenRouter API → Groq API → Offline fallback text
+Usuario
+  │
+  ├── Browser → Next.js (Vercel) → Supabase (PostgreSQL + Auth)
+  │                              → Claude API (Anthropic)
+  │                              → Together AI (FLUX.1 Schnell)
+  │
+  └── Android APK → WebView → misma URL web
+                  → SQLite local (offline cache, 3 tiers)
+                  → expo-file-system (imágenes descargadas)
 ```
-
-Los errores se silencian en cada step sin logging estructurado ni alerta.
-
-### Streaming
-
-✅ **Implementado** via `ReadableStream<Uint8Array>` con event-stream format.
-
-Modo `stream_ritual` emite eventos secuenciales:
-- `cast_ready` — resultado del sorteo (hexagrama, líneas) → emitido **antes** de llamar a Claude
-- `final_ready` — interpretación completa + imagen
-- `error` — si falla el proceso
-
-Logging: `LOG_RITUAL_STREAM_DEBUG=1` loguea `+{elapsedMs}ms` por evento.
-
-### max_tokens
-
-```
-4096 — fijo para todos los tiers y métodos
-```
-
-Definido en `interpretation.ts` línea 46 y `oracle-bones-interpretation.ts` línea 29.
-
-### Diferenciación de modelo por plan
-
-❌ **No existe.** Mismo modelo para Free, Seeker, Practitioner y Master.  
-La única diferencia entre tiers es el número de tokens consumidos (1 vs 2) y la resolución de imagen.
 
 ---
 
-## 2. Together AI / FLUX
-
-**Archivo principal:** `apps/web/src/lib/image-provider.ts` (943 líneas)  
-**Paquete auxiliar:** `packages/image-engine/src/`
-
-### Sincronía vs asincronía
-
-⚠️ **Bloqueante respecto a la respuesta del oracle.**
-
-Flujo en `route.ts`:
-1. Cast del hexagrama → emite `cast_ready` (~15ms)
-2. Llamada a Claude → espera interpretación (6–20s)
-3. Build prompt de imagen
-4. Llamada a Together AI → espera imagen (30–45s)
-5. Emite `final_ready` con interpretación + imagen
-
-**El usuario espera el total de Claude + Together antes de ver resultado.**
-
-### Retry logic
-
-❌ **Sin retry automático.**
-
-- `AbortController` con timeout de 65s (línea 526)
-- Si Together falla → fallback a prebuilt PNG
-- Si no hay prebuilt → fallback a SVG sumi-e generado localmente
-- Sin reintento en ningún caso
-
-### Caché de imágenes
-
-| Tipo | Estado | Detalle |
-|------|--------|---------|
-| Prebuilt fallbacks | ✅ | `/fallbacks/prebuilt/{kind}/{tier}/{WxH}/{index}.png`, índice 1–10, seed determinístico |
-| Cache en memoria | ✅ | `prebuiltFallbackExistsCache: Map` (in-process) |
-| CDN cache headers | ❌ | Sin `Cache-Control` para imágenes dinámicas generadas |
-| Caché de Together AI | ❌ | Cada consulta genera imagen nueva |
-
-### Parámetros
+## 2. Monorepo y Toolchain
 
 ```
-Modelo:   black-forest-labs/FLUX.1-schnell
-Steps:    12 (máximo permitido para schnell)
-n:        1 (una imagen por consulta)
-
-Resolución por tier:
-  free:          1024 × 768   ($0.0021/img)
-  seeker:        1024 × 1024  ($0.0028/img)
-  practitioner:  1184 × 1184  ($0.0039/img)
-  master:        1504 × 1504  ($0.0061/img)
-
-Restricciones Together API:
-  Múltiplo de 32
-  Mínimo 256px por dimensión
-  Máximo 4 MP total (4,194,304 px)
+/
+├── apps/
+│   ├── web/              # Next.js 14 App Router (SSR + API Routes)
+│   └── mobile/           # Expo 51 + React Native WebView (APK Android)
+├── packages/
+│   ├── iching-engine/    # Algoritmos de sorteo
+│   ├── context-engine/   # Límites de sesión, créditos por tier
+│   ├── oracle-bones-engine/  # Sorteo Huesos de Oráculo Shang
+│   ├── image-engine/     # Prompt builder para imágenes AI
+│   ├── i18n/             # 11 idiomas
+│   ├── ui/               # Componentes React compartidos
+│   ├── sharing/          # URLs públicas de lecturas
+│   ├── iching-data/      # Biblioteca estática de 64 hexagramas
+│   └── mobile-api-contracts/  # Tipos del bridge nativo-web
+├── backend/
+│   ├── claude/           # Integración Anthropic API
+│   ├── auth/             # 2FA, validación de email, bcrypt
+│   └── db/migrations/    # 36 migraciones SQL (Supabase)
+└── tools/
+    └── fallback-tools/   # Utilidades locales de generación/QA
 ```
 
-### Generación por mensaje
+**Package manager:** pnpm workspaces  
+**Monorepo orchestrator:** Turborepo (builds paralelos, cache remoto)  
+**CI:** GitHub Actions (`.github/workflows/ci.yml`) — lint + typecheck + build
 
-**Una imagen por cada consulta**, siempre — no solo la primera del hilo.  
-Prompt específico por hexagrama + categoría + `consultationId` (seed para variedad).
+### Versiones clave
+
+| Pieza | Versión |
+|-------|---------|
+| Next.js | 15.5.14 |
+| React | 18.2.0 |
+| TypeScript | 5.3.3 (mobile) / 5.7.3 (web) |
+| Expo | 51.0.39 |
+| React Native | 0.74.5 |
+| expo-sqlite | 14.0.4 |
+| Node.js | ≥20 (CI) |
+
+### Apps/mobile — gestión de dependencias
+
+`apps/mobile` usa **npm** (no pnpm), con su propio `package-lock.json`. Esto es para compatibilidad con EAS Build y el toolchain de Expo.
+
+**Fix de Windows requerido después de cada `npm install`:** `@expo/config-plugins` (glob v10) no resuelve rutas con backslashes + extglob `@(java|kt)` en Windows. Aplicar manualmente en `node_modules`:
+
+```js
+// @expo/config-plugins/build/android/Paths.js — getProjectFilePath()
+const rawPattern = path().join(projectRoot, `android/app/src/main/java/**/${name}.@(java|kt)`);
+const filePath = (0, _glob().sync)(rawPattern.replace(/\\/g, '/'))[0];
+
+// @expo/config-plugins/build/android/Package.js — getCurrentPackageForProjectFile()
+const rawPattern = _path().default.join(projectRoot, `android/app/src/${type}/java/**/${fileName}.@(java|kt)`);
+const filePath = (0, _glob().sync)(rawPattern.replace(/\\/g, '/'))[0];
+```
+
+> EAS Build (Linux cloud) nunca necesita este fix. Solo afecta `expo prebuild` local en Windows.
 
 ---
 
-## 3. Supabase
+## 3. Web App — Next.js
 
-**Archivos principales:**
-- `backend/db/migrations/001_init.sql` al `022_user_trial_log.sql`
-- `apps/web/src/lib/supabase*.ts`
+**Directorio:** `apps/web/src/app/`
 
-### Tablas principales del oracle
+### Layout raíz (`layout.tsx`)
 
-| Tabla | Campos clave | RLS |
-|-------|-------------|-----|
-| `users` | `id UUID PK`, `email UNIQUE`, `language`, `two_factor_enabled` | ✅ |
-| `consultation_sessions` | `user_id FK`, `title`, `theme_category`, `max_consultations`, `public_sharing_id UNIQUE` | ✅ |
-| `consultations` | `user_id FK`, `session_id FK`, `lines JSONB`, `primary_hexagram_number`, `changing_lines INT[]`, `interpretation TEXT`, `image_url`, `thumbnail_url` | ✅ |
-| `query_credits` | `user_id FK UNIQUE`, `credits_total`, `credits_used`, `total_purchased`, `last_pack` | ✅ |
-| `user_trial_log` | Blindaje free trial lifetime | service-role only |
-| `admin_runtime_config` | Configuración runtime | service-role only |
-| `revenuecat_webhook_events` | Webhooks de pagos | service-role only |
+- `dynamic = "force-dynamic"` — SSR en cada request
+- Inyecta nonce CSP en el HTML
+- Providers: `CookieConsentGate`, **`ChatSessionProvider`** (estado de chats nunca se destruye al navegar entre rutas — fix crítico para el bug de "chats desaparecen")
+- Script de tema (dark/light) via `localStorage` con fallback a `prefers-color-scheme`
 
-### Índices definidos
+### Página principal (`page.tsx`)
 
-Encontrados en `migration 008_chat_history_query_indexes.sql`:
+Un único componente monolítico (~6,500 líneas) que contiene:
+
+- **Estado global de sesión:** `useChatSessionState<ConsultationItem>()` del `ChatSessionProvider`
+- **Oracle UI:** selector de método (Tres Monedas, Yarrow Stalks, Huesos de Oráculo), input de consulta, stream de respuesta
+- **Sidebar de chats:** listado de sesiones, búsqueda, eliminación
+- **Thread view:** renderizado de hexagramas, imágenes, interpretaciones
+- **Native bridge hooks:** event listeners para `rn:cached-chats` y `rn:thread-data` (inyectados desde el APK)
+
+**Tipos clave:**
+
+```typescript
+type ConsultResponse = {
+  oracleType: "iching" | "oracle_bones";
+  consultationId: string;
+  primaryHexagram: number;
+  primaryHexagramName: string;
+  primaryHexagramChinese: string;
+  transformedHexagram: number | null;
+  transformedHexagramName: string | null;
+  mutationRule: string;
+  translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
+  lines: ApiLine[];            // position: 1-6, value: 6|7|8|9, isChanging, symbol
+  changingLines: number[];
+  interpretation: string;
+  imageProvider: "auto" | "mock" | "svg-art" | "pollinations" | "fal" | "gpt-image" | "together";
+  imageUrl: string;
+  imageFallbackUrl?: string;
+  sessionId: string | null;
+  sessionPosition: number;
+  publicReadingId: string;
+  publicSessionId: string;
+  remainingCredits?: number;
+  category?: string;
+  oracleBones?: { pattern_id: number; verdict: OracleBonesVerdict; ... };
+};
+
+type ChatSessionState<T> = {
+  localId: string;
+  title: string;
+  sessionId: string;
+  publicSessionId: string | null;
+  thread: T[];
+  threadMaxDepth: number | null;
+  messageCount: number;
+  updatedAt: number;
+  firstConsultationAt: number | null;
+};
+```
+
+**Bridge event listeners en page.tsx:**
+
+```typescript
+// Tier 1 — lista de chats desde SQLite (cold start)
+window.addEventListener("rn:cached-chats", handler);
+if (window.__rnCachedChats) applyCache(window.__rnCachedChats);
+
+// Tier 2/3 — thread cacheado + sync incremental
+window.addEventListener("rn:thread-data", handler);
+// handler: mapApiConsultationToItem → setSessions → setHistoryLoading(false)
+```
+
+### Idiomas soportados (i18n)
+
+`en`, `es`, `pt`, `fr`, `de`, `it`, `ja`, `zh`, `ko`, `ar`, `hi` — 11 idiomas. Implementación: objeto de strings planos por idioma dentro de `page.tsx` (no next-intl — i18n formal es post-lanzamiento Fase 2).
+
+---
+
+## 4. API Endpoints
+
+Todos en `apps/web/src/app/api/`.
+
+### Consulta Oracle (endpoint principal)
+
+#### `POST /api/consult`
+
+```
+Runtime:     nodejs
+maxDuration: 120s
+Auth:        Bearer token (Supabase JWT)
+```
+
+**Flujo de ejecución:**
+
+```
+1. getAuthenticatedUser()          → 401 si no autenticado
+2. Rate limit por IP (30 req/60s)  → 429
+3. Rate limit por usuario (15/60s) → 429
+4. getTokenBalance()               → leer créditos
+5. if balance < tokensToConsume    → 402 Payment Required
+6. consumeToken() (RPC atómico)    → descontar en DB
+7. buildContextBlock()             → contexto sesión para Claude
+8. interpret() / oracle-bones      → Claude API (streaming)
+9. generateImage()                 → Together AI / fallback
+10. Emit final_ready event         → cliente recibe resultado
+```
+
+**Eventos del stream SSE:**
+```
+cast_ready   → hexagrama + líneas + imagen prebuilt       (~15ms)
+final_ready  → interpretación Claude + imagen definitiva  (~37-65s total)
+error        → si falla el proceso
+```
+
+**Consumo de tokens por método:**
+- Wilhelm/Baynes, Legge, Zhou Yi, Oracle Bones: 1 token
+- Master Combined: 2 tokens
+
+### Historial y sesiones
+
+#### `GET /api/account/chats`
+- `?summary=1` → lista de sesiones con metadata (title, messageCount, updatedAt). Usado por mobile para sincronizar el Tier 1.
+- `?sessionId={uuid}` → sesión completa con todas sus consultas (consultations). Usado por mobile para Tier 3 y por web para cargar el thread.
+
+#### `DELETE /api/account/chats?sessionId={uuid}`
+
+### Perfil de usuario
+
+#### `GET /api/account/me`
+Retorna: `session_limit` (cap del tier actual), `credits_total`, `credits_used`, `last_pack`, `display_name`, `two_factor_enabled`, estado de aceptación legal.
+
+#### `POST /api/account/display-name`
+#### `POST /api/account/delete`
+#### `POST /api/account/create-portal-session` (Stripe)
+#### `POST /api/account/sync-billing` (RevenueCat manual sync)
+
+### Autenticación
+
+```
+POST /api/auth/register
+POST /api/auth/legal-consent
+POST /api/auth/2fa/enroll
+POST /api/auth/2fa/verify
+POST /api/auth/2fa/challenge/verify
+POST /api/auth/2fa/disable
+POST /api/auth/2fa/email/send
+POST /api/auth/2fa/email/verify
+```
+
+### Datos
+
+```
+GET /api/hexagrams             → lista todos los hexagramas
+GET /api/hexagram/[number]     → detalle de un hexagrama
+```
+
+### Admin
+
+```
+GET  /api/admin/public-config  → sin auth
+POST /api/admin/login
+POST /api/admin/logout
+POST /api/admin/config
+```
+
+### Webhooks y utilidades
+
+```
+POST /api/webhooks/revenuecat  → pagos RevenueCat
+GET  /api/health               → health check
+POST /api/ritual-debug         → debug (dev only)
+```
+
+---
+
+## 5. Mobile App — Expo WebView
+
+**Directorio:** `apps/mobile/`
+
+### Arquitectura general
+
+El APK Android es fundamentalmente un **shell nativo alrededor de un WebView** que carga la URL de producción/staging. Toda la lógica de negocio vive en la web app.
+
+La capa nativa aporta:
+- Autenticación Google OAuth sin error 403 (abre browser externo)
+- Storage seguro de tokens (expo-secure-store)
+- Cache SQLite para funcionamiento offline (3 tiers)
+- Descarga de imágenes al sistema de archivos local
+- Modal nativo de zoom para imágenes
+- Export de PDF via expo-sharing
+- Idioma nativo dropdown (sincronizado con la web)
+- Barras de estado y SafeAreaView correctas
+
+### Archivo principal: `app/index.tsx`
+
+**Estado nativo principal:**
+```typescript
+const webViewRef = useRef<WebView>(null);
+const accessTokenRef = useRef<string | null>(null);    // Token JWT actual
+const cachedChatsRef = useRef<RnCachedChatEntry[]>([]); // Pre-fetch SQLite
+const webReadyRef = useRef(false);                      // WebView cargado
+const authTransitionRef = useRef(false);                // Evita race en reload
+```
+
+### Configuración de la WebView
+
+```typescript
+<WebView
+  source={{ uri: BASE_URL }}
+  javaScriptEnabled
+  domStorageEnabled
+  allowsInlineMediaPlayback
+  mediaPlaybackRequiresUserAction={false}
+  scalesPageToFit={false}        // Zoom gestionado por modal nativo
+  onLoadEnd={onLoadEnd}
+  onMessage={onMessage}
+  onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
+/>
+```
+
+**Cross-origin guard (`onShouldStartLoadWithRequest`):** Bloquea cualquier URL que no pertenezca a `BASE_URL`. Aplica igual en staging y producción — el APK nunca navega fuera de la app. Google OAuth es la única excepción (se detecta por `accounts.google.com` o `provider=google` y se intercepta para abrir en browser externo).
+
+### URLs resueltas (`resolveWebBaseUrl`)
+
+- Variable de entorno: `EXPO_PUBLIC_API_URL`
+- Fallback hard-coded: URL de staging
+- El APK de producción (Play Store) apunta a `theoriginaliching.com`
+
+### Startup sequence
+
+```
+1. SplashScreen.preventAutoHideAsync()
+2. initDb() → esquema SQLite
+3. getCachedChatsForInjection() → cachedChatsRef ← pre-fetch paralelo al load del WebView
+4. SecureStore.getItemAsync(SECURE_TOKEN_KEY) → rehydrate auth token
+5. AsyncStorage.getItem(LOCALE_STORAGE_KEY) → rehydrate locale
+6. WebView load (~1-3s)
+7. onLoadEnd() → inyectar window.__rnCachedChats + locale + forzar refresh de cuenta
+8. syncChats(token) en background → actualizar Tier 1
+9. SplashScreen.hideAsync()
+```
+
+---
+
+## 6. SQLite Local Cache (3 Tiers)
+
+### Arquitectura de 3 niveles (modelo WhatsApp/Telegram)
+
+| Tier | Qué hace | Cuándo | Cooldown |
+|------|----------|--------|----------|
+| **1 — Chat list** | Metadata de sesiones (título, fecha, count) | Al recibir `auth_token` | 5 min |
+| **2 — Thread paginado** | Últimos 30 mensajes de SQLite al abrir un chat | Inmediato, sin red | — |
+| **3 — Sync incremental** | Fetch full de ese chat desde Supabase | Tras servir Tier 2 | 1 min por chat |
+
+### Schema SQLite (`apps/mobile/src/db/schema.ts`)
 
 ```sql
+-- iching_cache.db
+PRAGMA journal_mode = WAL;
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE chats (
+  id                    TEXT    PRIMARY KEY,           -- sessionId de Supabase
+  title                 TEXT    NOT NULL DEFAULT '',   -- firstQuestion[:120] o session.title
+  created_at            TEXT    NOT NULL,
+  updated_at            TEXT    NOT NULL,
+  synced_at             TEXT    NOT NULL,              -- último upsert de metadata
+  message_count         INTEGER NOT NULL DEFAULT 0,
+  first_consultation_at TEXT,
+  is_deleted            INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX idx_chats_updated ON chats(updated_at DESC);
+
+CREATE TABLE messages (
+  id                TEXT PRIMARY KEY,                  -- consultationId de Supabase
+  chat_id           TEXT NOT NULL REFERENCES chats(id) ON DELETE CASCADE,
+  role              TEXT NOT NULL CHECK(role IN ('user','assistant')),
+  content           TEXT NOT NULL DEFAULT '',          -- JSON de ApiChatConsultation completo
+  created_at        TEXT NOT NULL,
+  synced_at         TEXT NOT NULL,
+  image_url         TEXT,                              -- URL remota de la imagen generada
+  local_image_path  TEXT,                              -- Path local descargado (file://)
+  image_sync_status TEXT NOT NULL DEFAULT 'none'
+                         CHECK(image_sync_status IN ('none','pending','done','error'))
+);
+CREATE INDEX idx_messages_chat ON messages(chat_id, created_at ASC);
+CREATE INDEX idx_messages_img ON messages(image_sync_status) WHERE image_url IS NOT NULL;
+
+CREATE TABLE sync_meta (
+  key   TEXT PRIMARY KEY,                              -- e.g. "last_sync", "chat_content_synced:{sessionId}"
+  value TEXT NOT NULL
+);
+```
+
+### Funciones del store (`apps/mobile/src/db/chat-store.ts`)
+
+```typescript
+initDb(): Promise<void>                    // Crea tablas si no existen (idempotente)
+upsertChats(chats: ChatRow[]): Promise<void>
+upsertMessages(rows: MessageRow[]): Promise<void>
+  // ON CONFLICT: actualiza content (si nuevo != ''), image_url, image_sync_status
+  // Preserva local_image_path (nunca sobreescrito por sync)
+softDeleteChat(chatId: string): Promise<void>
+clearAllData(): Promise<void>              // Limpia todo (no se usa en signout — datos persisten)
+
+getPagedThread(sessionId, limit=30, offset=0): Promise<MessageRow[]>
+  // Más recientes primero (DESC). El caller revierte para display cronológico.
+  // OFFSET para paginación al hacer scroll hacia arriba.
+
+getCachedChatsForInjection(): Promise<RnCachedChatEntry[]>
+  // Top 50 chats no eliminados con messageCount > 0, ordenados por updated_at DESC
+  // Formato: { localId: "db-{id}", sessionId, title, messageCount, updatedAt, ... }
+
+getLocalImagePath(imageUrl: string): Promise<string | null>
+  // Busca si una URL remota tiene path local descargado (image_sync_status='done')
+
+getPendingImages(limit=20): Promise<PendingImageRow[]>
+  // Imágenes pendientes de descarga, ordenadas por c.updated_at DESC (chats más recientes)
+
+getSyncMeta(key): Promise<string | null>
+setSyncMeta(key, value): Promise<void>
+setLocalImagePath(messageId, localPath): Promise<void>
+markImageError(messageId): Promise<void>
+```
+
+### Sync service (`apps/mobile/src/sync/sync-service.ts`)
+
+#### `syncChats(token, baseUrl)` — Tier 1
+
+```typescript
+// Cooldown: 5 minutos (sync_meta key: "last_sync")
+// Endpoint: GET /api/account/chats?summary=1
+// Acción: upsertChats() + void syncPendingImages()
+// NO sincroniza contenido de mensajes (solo metadata)
+```
+
+#### `syncChatContent(token, baseUrl, sessionId)` — Tier 3
+
+```typescript
+// Cooldown: 1 minuto por chat (sync_meta key: "chat_content_synced:{sessionId}")
+// Endpoint: GET /api/account/chats?sessionId={uuid}
+// Acción: fetch todas las consultas → upsertMessages() con full JSON
+//         Cada MessageRow.content = JSON.stringify(ApiChatConsultation completo)
+//         image_sync_status = "pending" si imageUrl existe
+//         void syncPendingImages() al finalizar
+```
+
+### Image sync (`apps/mobile/src/sync/image-sync.ts`)
+
+```typescript
+syncPendingImages(batchSize=10): Promise<void>
+  // 1. Asegura directorio: ${FileSystem.documentDirectory}iching_images/
+  // 2. getPendingImages(batchSize) — ya ordenados por recency
+  // 3. Para cada imagen: FileSystem.downloadAsync(imageUrl, localPath)
+  // 4. setLocalImagePath() en éxito, markImageError() en fallo
+  // Idempotente — si el archivo ya existe localmente, salta el download
+
+computeLocalImagePath(imageUrl): string
+  // Hash FNV-1a de la URL + extensión extraída
+  // Path: {documentDirectory}iching_images/{hash}.{ext}
+```
+
+**Política de imágenes:** Solo se descargan imágenes de los chats más recientes (natural via `getPendingImages` ordenado por `c.updated_at DESC`). Imágenes antiguas se sirven desde la URL remota (en caché del WebView nativo).
+
+### Flujo completo al abrir un chat
+
+```
+[Web JS] loadSessionThread(sessionId, localId) llamado
+    │
+    ├── rnBridge.postMessage({type:"request_thread", sessionId, localId})
+    │       │
+    │       └── [Native onMessage] case "request_thread":
+    │               ├── getPagedThread(sessionId, 30) ← SQLite
+    │               ├── dispatchEvent("rn:thread-data", {localId, consultations})
+    │               │       └── [Web handler] mapApiConsultationToItem → setSessions
+    │               │           setHistoryLoading(false) ← spinner desaparece
+    │               └── syncChatContent(token, BASE_URL, sessionId) [background]
+    │                       ├── GET /api/account/chats?sessionId=...
+    │                       ├── upsertMessages (nuevas consultas)
+    │                       └── si count cambió: dispatchEvent("rn:thread-data") [2ª vez]
+    │
+    └── fetch("/api/account/chats?sessionId=...") [paralelo, Supabase]
+            ├── Si llega antes que native: renderiza con publicSessionId correcto
+            ├── Si llega después que native: re-render silencioso (mismo contenido)
+            └── Si offline + native sirvió: catch → setHistoryLoadError (hint sidebar)
+                [El contenido del chat es visible — error solo en hint de sidebar]
+```
+
+---
+
+## 7. WebView Bridge Protocol
+
+Comunicación bidireccional entre la web app y la capa nativa.
+
+### Web → Native (`window.ReactNativeWebView.postMessage`)
+
+| Tipo | Payload | Acción nativa |
+|------|---------|---------------|
+| `auth_token` | `{token, email?}` | Guarda en SecureStore, syncChats, injectCachedChats |
+| `auth_signout` | — | Borra token, navega a /login |
+| `locale_changed` | `{locale}` | Guarda en AsyncStorage |
+| `open_google_auth` | — | Abre OAuth en browser externo |
+| `download_file` | `{filename, dataUrl}` | Guarda en MediaLibrary |
+| `download_file_start/chunk/end` | chunked transfer | Reconstruye y guarda archivo grande |
+| `delete_chat` | `{url, reqId}` | DELETE vía Bearer token, softDelete SQLite |
+| `open_image` | `{url}` | Busca path local → abre modal zoom nativo |
+| `request_thread` | `{sessionId, localId}` | Tier 2 + Tier 3 (ver sección 6) |
+| `shell_theme` | `{theme: "light"\|"dark"}` | Actualiza tema nativo (StatusBar, etc.) |
+| `web_alert/confirm/prompt` | `{message}` | Dialog nativo del sistema |
+| `pkce_verifier` | `{verifier}` | PKCE para OAuth |
+
+### Native → Web (`webViewRef.injectJavaScript`)
+
+| Evento / Variable | Cuándo | Datos |
+|-------------------|--------|-------|
+| `window.__rnCachedChats` + `rn:cached-chats` | onLoadEnd + post-sync | `RnCachedChatEntry[]` |
+| `rn:thread-data` | Post request_thread | `{localId, consultations: ApiChatConsultation[]}` |
+| `window.__rnForceAccountRefresh()` | onLoadEnd + post-auth | Trigger refresco de cuenta |
+| `buildSyncLocaleFromWebOrNativeScript()` | onLoadEnd si locale hydrated | Sincroniza idioma |
+
+---
+
+## 8. Base de Datos — Supabase
+
+### Tablas principales (PostgreSQL)
+
+| Tabla | Descripción | RLS |
+|-------|-------------|-----|
+| `users` | Perfil de usuario (email, language, 2FA, display_name, is_admin) | ✅ |
+| `consultation_sessions` | Hilos de consulta (user_id, title, theme_category, max_consultations, public_sharing_id) | ✅ |
+| `consultations` | Consultas individuales (session_id, lines JSONB, interpretation TEXT, image_url, session_position) | ✅ |
+| `consultation_notes` | Notas adicionales del usuario | ✅ |
+| `query_credits` | Saldo de tokens (credits_total, credits_used, total_purchased, last_pack) | ✅ |
+| `user_trial_log` | Blindaje de free trial lifetime (previene re-otorgamiento) | service-role |
+| `admin_runtime_config` | Configuración runtime (feature flags, limites) | service-role |
+| `revenuecat_webhook_events` | Idempotencia de webhooks de pago | service-role |
+| `revenuecat_customer_aliases` | Mapping RevenueCat ↔ user_id | service-role |
+| `two_factor_attempts`, `two_factor_email_codes`, `two_factor_recovery_codes` | 2FA | ✅ |
+| `user_legal_acceptances` | Registro de aceptación de términos | ✅ |
+| `pattern_analyses` | Análisis de patrones de consulta | ✅ |
+
+### Índices críticos
+
+```sql
+-- Chat history queries (migration 008)
 CREATE INDEX idx_consultation_sessions_user_created_at
   ON consultation_sessions(user_id, created_at DESC);
 
@@ -201,471 +571,602 @@ CREATE INDEX idx_consultations_user_session_position
 
 CREATE INDEX idx_consultations_session_created_at
   ON consultations(session_id, created_at DESC);
+
+-- Migration 036
+CREATE INDEX idx_consultations_session_id ON consultations(session_id);
 ```
 
-✅ Los índices más críticos para queries de historial están cubiertos.  
-❌ Sin índice en `consultations.primary_hexagram_number` (si se implementa búsqueda por hexagrama).
+### RPCs (Stored Procedures) clave
 
-### PgBouncer / Connection Pooling
+```sql
+-- migration 032: Consumo atómico de token
+-- Retorna credits_total post-descuento. Si ya es 0 antes del descuento, retorna -1.
+consume_token(p_user_id UUID, p_amount INT) → INT
 
-❌ **No encontrado en código.** No se usa la URL de pooling de Supabase (`*.pooler.supabase.com`). El cliente usa la URL directa. En alto tráfico, cada request abre una conexión nueva al pool de Supabase.
+-- Otorgar tokens (siempre suma, nunca reemplaza)
+grant_tokens(p_user_id UUID, p_tokens INT, p_pack TEXT) → VOID
+  -- ON CONFLICT DO UPDATE credits_total = credits_total + p_tokens
 
-### Resumen técnico inyectado en Claude
-
-Construido en `interpretation-context.ts` — `buildContextBlock()`:
-
-```
-Por consulta previa incluida:
-  - Hexagrama primario # + transformado #
-  - Líneas en mutación [x, y, z]
-  - Resumen de interpretación (420 chars máx)
-  → ~150–200 tokens por consulta
+-- Init free user (protegido por user_trial_log)
+init_free_user(p_user_id UUID) → VOID
+  -- INSERT INTO query_credits ... ON CONFLICT DO NOTHING
+  -- INSERT INTO user_trial_log ... (previene re-otorgamiento lifetime)
 ```
 
-**Estimación para hilo de 8 mensajes (Master):**
+### Migraciones (36 total)
 
 ```
-System prompt estático:              ~450 tokens   (cached)
-Biblioteca Wilhelm+Legge+Zhou Yi:   ~2,000 tokens  (cached)
-Contexto sesión (8 consultas):      ~1,600 tokens  (cached, pero cache miss en crecimiento)
-Pregunta actual:                       ~200 tokens  (sin cache)
-─────────────────────────────────────────────────────────────
-Total input estimado:                ~4,250 tokens
-Output máximo:                        4,096 tokens
+001_init.sql
+002_oracle_bones.sql
+003_auth_public_users_sync.sql
+004_security_advisor_rls.sql
+005_revenuecat_webhook_idempotency.sql
+006_disable_public_sharing.sql
+007_two_factor_email_codes.sql
+008_chat_history_query_indexes.sql
+010_auth_public_users_delete_sync.sql
+011_two_factor_attempts_cascade.sql
+012_auth_delete_public_users_before.sql
+013_auth_public_users_resync.sql
+016_totp_replay_guard.sql
+017_admin_runtime_config.sql
+018_revenuecat_customer_aliases.sql
+019_revenuecat_internal_tables_rls.sql
+021_consumable_tokens.sql           ← modelo consumible, consume_token, grant_tokens
+022_user_trial_log.sql              ← blindaje free trial lifetime
+023_auth_user_free_bootstrap_sync.sql
+024_security_baseline_hardening.sql
+025_display_name.sql
+026_is_admin.sql
+027_user_legal_acceptances.sql
+028_auth_email_registered_rpc.sql
+029_handle_new_auth_user_email_orphans.sql
+030_2fa_reset_recovery_codes_atomic.sql
+031_interpretation_summary.sql
+032_atomic_token_consumption.sql    ← consume_token devuelve -1 si saldo vacío
+033_drop_legacy_consume_token.sql
+034_translator_column.sql
+035_revoke_public_execute_on_secdef_functions.sql
+036_consultations_session_id_index.sql
 ```
-
-### Row Level Security (RLS)
-
-✅ **Activo en todas las tablas de usuario:**
-- `consultations` → `auth.uid() = user_id`
-- `consultation_sessions` → `auth.uid() = user_id`
-- `query_credits` → `auth.uid() = user_id`
-
-✅ **Tablas admin** protegidas con `service_role` only (sin RLS, sin acceso anon).
-
-### Plan de Supabase inferido
-
-CLAUDE.md menciona: *"Upgrade Supabase a Pro ($25/mes) al tener usuarios reales"*.  
-→ Actualmente en **Free o Starter**. Límites: 500 MB storage, 2 GB egress/mes, 500 MB DB.  
-El agotamiento de egress en producción ya fue reportado en CLAUDE.md (proyecto original).
 
 ---
 
-## 4. Upstash
+## 9. Paquetes Compartidos
 
-**Archivo:** `apps/web/src/lib/rate-limit.ts` (64 líneas)
+### `packages/iching-engine`
 
-### Usos implementados
-
-| Uso | Estado | Detalle |
-|-----|--------|---------|
-| Rate limiting por IP | ✅ | 30 req / 60s en `/api/consult` (línea 440–454) |
-| Rate limiting por usuario | ✅ | 15 req / 60s en `/api/consult` (línea 455–469) |
-| Cola para Together AI | ❌ | No implementado |
-| Caché de respuestas Claude | ❌ | No implementado |
-| Caché de system prompt | ❌ | Manejado por Anthropic nativo (ephemeral cache) |
-| KV de sesiones | ❌ | Supabase es la fuente de verdad |
-
-### Fallback crítico sin Upstash
+Algoritmos de sorteo. Sin dependencias externas.
 
 ```typescript
-// rate-limit.ts líneas 18–25
-if (process.env.NODE_ENV === "production") {
-  console.warn("[rate-limit] UPSTASH not configured — using in-memory fallback");
-}
-const inMemoryBucket = new Map<string, { count: number; resetAt: number }>();
+performCast(method, manualLines?) → CastResult
+  // methods: "three_coins" | "yarrow_stalks" | "manual"
+performYarrowCast() → CastResult
+applyMutations(lines) → { primary, transformed }
+getHexagram(number) → HexagramData
+castSixLines(throwFn) → Line[]
+throwThreeCoins() → LineValue   // 6|7|8|9
+throwYarrowStalks() → LineValue
+previewCastFromLineValues(lines) → CastPreview
 ```
 
-⚠️ **CRÍTICO:** En Vercel Functions (serverless), cada invocación corre en un aislado independiente. El `Map` en memoria es invisible entre invocaciones. Si `UPSTASH_REDIS_REST_URL` no está configurado, **el rate limiting es completamente inoperativo en producción.**
+### `packages/context-engine`
+
+Límites de sesión y costo de contexto por tier.
+
+```typescript
+type TierKey = "free" | "seeker" | "practitioner" | "master" | "oracle";
+type OracleType = "iching" | "oracle_bones";
+
+CONTEXT_LIMITS: Record<TierKey, { sessionDepth: number; historyCount: number }>
+// free:         { sessionDepth: 1, historyCount: 0 }
+// seeker:       { sessionDepth: 3, historyCount: 0 }
+// practitioner: { sessionDepth: 5, historyCount: 0 }
+// master:       { sessionDepth: 8, historyCount: 10 }
+// oracle:       { sessionDepth: 12, historyCount: 30 }
+
+CONTEXT_COST_PER_PRIOR = 0.00024  // costo por consulta previa en contexto
+
+resolveSessionContext(userId, sessionId, tier) → SessionContext
+```
+
+### `packages/oracle-bones-engine`
+
+Sorteo estilo Shang (huesos de tortuga / escápula de buey).
+
+```typescript
+performOracleBonesCast(question) → OracleBonesCastResult
+rollCrackPattern() → PatternId      // 1-16 patrones documentados
+defaultNegativeCharge(medium) → string
+
+// Veredictos (sin Silence — eliminado por falta de base arqueológica):
+type OracleBonesVerdict = "auspicious" | "auspicious_with_caution" | "inauspicious" | ...
+```
+
+### `packages/image-engine`
+
+Construcción de prompts para imágenes AI.
+
+```typescript
+buildImagePrompt(params: {
+  hexagram, hexagramName, category, consultationId, tier, oracleType
+}) → string
+  // Variedad via hash de consultationId (evita encuadres repetitivos)
+  // Componentes: paisaje chino, atmósfera, composición rotada, refuerzo anti-sellos
+
+buildTogetherNegativePrompt() → string
+  // Solo para Together AI. Anti-texto, anti-sellos, anti-bandas verticales.
+  // NO se antepone al prompt positivo (evita repetición de palabras disparadoras)
+
+buildOracleBonesImagePrompt(params) → string
+  // Prompt específico para estilo Shang (oracle bones)
+
+describeHexagramLinesForImage(lines) → string
+
+VISUAL_THEMES: Record<string, string[]>   // categorías de paisaje por tema
+WATERMARK_CONFIG: { text, position, ... } // overlay de watermark por tier
+```
+
+### `packages/i18n`
+
+```typescript
+DEFAULT_LOCALE = "en"
+SUPPORTED_LOCALES = ["en","es","pt","fr","de","it","ja","zh","ko","ar","hi"]
+
+commonStrings        // Strings compartidos web + mobile
+interpolate(template, vars) → string
+
+getMobileNativeUiMessages(locale) → MobileNativeUiMessages
+  // Botones, confirmaciones, diálogos del shell nativo
+getHomeChromeUiMessages(locale) → HomeChromeUiMessages
+getTokenPackMarketingMessages(locale) → TokenPackMarketingMessages
+```
+
+### `packages/sharing`
+
+```typescript
+consultationPublicPath(publicId) → string    // /r/{id}
+sessionPublicPath(publicId) → string         // /s/{id}
+sharingUtm(source) → URLSearchParams
+```
+
+### `packages/iching-data`
+
+Biblioteca estática de los 64 hexagramas con:
+- Número, nombre (inglés/chino), trigrama superior/inferior
+- Líneas (texto Wilhelm/Baynes, Legge, Zhou Yi)
+- Julgamento, Imagem, texto de cada línea
+- Validado con Zod
+
+### `backend/claude`
+
+```typescript
+generateInterpretation(params): Promise<ReadableStream>
+  // Modelo: claude-sonnet-4-5-20250929 (único modelo para todos los tiers)
+  // max_tokens: 4096 (fijo)
+  // Prompt caching con cache_control: "ephemeral" en 3 bloques:
+  //   1. System prompt estático (~450 tokens)
+  //   2. Biblioteca Wilhelm+Legge+Zhou Yi (~2,000 tokens)
+  //   3. Contexto de sesión previa (~150-200 tokens por consulta)
+  // Fallback chain: Anthropic → OpenRouter → Groq → texto offline
+
+generateOracleBonesInterpretation(params): Promise<ReadableStream>
+  // Mismo modelo, prompt específico para estilo Shang
+```
+
+### `backend/auth`
+
+```typescript
+validateEmailForRegistration(email) → { valid, reason }
+  // Bloquea dominios desechables (disposable-email-domains)
+createTotpEnrollment(userId) → { secret, qrUrl, backupCodes }
+verifyTotpTokenWithReplayGuard(userId, token) → boolean
+  // Guarda en DB el último token usado (previene replay)
+```
 
 ---
 
-## 5. Cloudflare
+## 10. Sistema de Tokens Consumibles
 
-**Archivos relevantes:**
-- `apps/web/src/lib/turnstile.ts`
-- `apps/web/src/middleware.ts`
+### Packs disponibles
+
+| Pack | Precio | Tokens | Consultas/hilo | Resolución imagen |
+|------|--------|--------|----------------|-------------------|
+| Free | $0 | 2 lifetime | 1 | 1024×768 |
+| Seeker | $6.99 | 20 | 3 | 1024×1024 |
+| Practitioner | $11.99 | 40 | 5 | 1184×1184 |
+| Master | $19.99 | 100 | 8 | 1504×1504 |
+
+**Reglas críticas:**
+- Tokens son **acumulables** — se suman con cada compra nueva
+- El límite por hilo depende del `last_pack` activo (no del saldo total)
+- Free trial: 2 tokens LIFETIME, nunca se renuevan
+- `user_trial_log` previene re-otorgamiento del free trial
+- Gate de acceso basado ÚNICAMENTE en `credits_total > 0`
+
+### Flujo de consumo (atómico)
+
+```typescript
+// route.ts — consumo ANTES de llamar a servicios externos
+const isMasterCombined = resolvedTranslator === "master_combined";
+const tokensToConsume = isMasterCombined ? 2 : 1;
+const balance = await getTokenBalance(userId);
+if (balance < tokensToConsume) return 402;
+// luego: consume_token RPC en DB (atómico, sin ventana de race)
+```
+
+> **Nota:** Existe una pequeña ventana de race condition entre `getTokenBalance()` (lectura) y `consumeToken()` (escritura). Si el usuario abre dos tabs simultáneos con saldo = 1, ambos podrían pasar la validación. El RPC en DB evita saldo negativo, pero Claude podría ser invocado dos veces. Ver sección 18 para solución propuesta.
+
+### RevenueCat Web Billing + Stripe
+
+- Checkout completo vía RevenueCat (incluye GST/QST automático para Quebec)
+- Webhooks en `POST /api/webhooks/revenuecat` con verificación HMAC
+- Idempotencia vía `revenuecat_webhook_events` (deduplicación por event_id)
+- Al recibir `INITIAL_PURCHASE` o `NON_SUBSCRIPTION_PURCHASE`: llama `grant_tokens()`
+
+---
+
+## 11. Autenticación
+
+### Supabase Auth
+
+- **Email/Password:** Con verificación de email
+- **Google OAuth:** Via Supabase Auth (`/auth/v1/authorize?provider=google`)
+  - En mobile: interceptado por la WebView y abierto en browser externo (evita error 403 `disallowed_useragent`)
+  - Deep link callback: `theoriginaliching://auth/callback`
+- **JWT:** Tokens de Supabase, almacenados en SecureStore (mobile) y cookies/localStorage (web)
+
+### 2FA (Two-Factor Authentication)
+
+- **TOTP:** Implementado con `otplib`. QR generado via `qrcode`. Replay guard en DB.
+- **Email OTP:** Código de 6 dígitos via Resend. Expiración configurable.
+- **Recovery codes:** Generados en enrollment, uso único, almacenados hasheados.
+
+### Idle Timeout
+
+45 minutos de inactividad → cierre automático de sesión. Implementado en el web app con `setInterval` de 30s. Motivo: el contenido de las consultas puede ser íntimo/privado.
+
+### Mobile Auth Flow
+
+```
+Cold start:
+  SecureStore.getItemAsync(SECURE_TOKEN_KEY)
+    → validateStoredToken() [verifica JWT con Supabase]
+    → si válido: injectJavaScript para forzar refresh de cuenta
+    → si inválido: borra token
+
+Login:
+  Web app hace login → emite auth_token via postMessage
+    → Native guarda en SecureStore
+    → syncChats() en background
+    → injectCachedChats()
+
+Signout:
+  Web emite auth_signout → Native borra SecureStore
+  [SQLite NO se borra — los datos persisten para el próximo login]
+```
+
+---
+
+## 12. Generación de Imágenes
+
+### Proveedores (en orden de preferencia)
+
+```typescript
+type ImageProvider = "auto" | "mock" | "svg-art" | "pollinations" | "fal" | "gpt-image" | "together";
+```
+
+**Together AI (producción):** FLUX.1-schnell, 12 steps, 1 imagen por consulta.
+
+| Tier | Resolución | Costo estimado |
+|------|-----------|----------------|
+| Free | 1024×768 | ~$0.0021/img |
+| Seeker | 1024×1024 | ~$0.0028/img |
+| Practitioner | 1184×1184 | ~$0.0039/img |
+| Master | 1504×1504 | ~$0.0061/img |
+
+**Restricciones Together API:** Múltiplos de 32, mínimo 256px, máximo 4MP total.
+
+### Mitigation de alucinaciones (glifos/sellos)
+
+FLUX tendía a añadir calligrafía/sellos rojos en imágenes de temática china.
+
+| Elemento | Archivo | Rol |
+|----------|---------|-----|
+| Prompt positivo | `packages/image-engine/src/prompt.ts → buildImagePrompt()` | Paisaje primero, variantes rotadas por hash de consultationId + hexagrama + categoría |
+| Prompt negativo | mismo archivo → `buildTogetherNegativePrompt()` | Anti-texto, anti-sellos, anti-bandas — solo enviado como `negative_prompt`, nunca antepuesto al positivo |
+| Límites API | `packages/image-engine/src/together-flux-limits.ts` | Tope de caracteres, compactación antes del request |
+
+### Fallback chain de imágenes
+
+```
+Together AI → prebuilt fallback PNG → SVG sumi-e generado localmente
+```
+
+- **Prebuilt fallbacks:** `/fallbacks/prebuilt/{kind}/{tier}/{WxH}/{index}.png`, índice 1-10, seed determinístico por consulta
+- **SVG fallback:** Generado en runtime con `sharp`, no requiere red
+
+### Watermark
+
+Overlay posterior a la generación (no parte del prompt). Configuración en `WATERMARK_CONFIG` de `image-engine`.
+
+### Cache local en mobile
+
+Una vez sincronizado (Tier 3), la imagen se descarga via `syncPendingImages()` a `documentDirectory/iching_images/{hash}.{ext}`. El zoom modal nativo (`open_image`) usa `getLocalImagePath()` para servir desde local primero.
+
+---
+
+## 13. Claude AI — Interpretación
+
+**Modelo:** `claude-sonnet-4-5-20250929` (único para todos los tiers y métodos)  
+**max_tokens:** 4096 (fijo)  
+**Streaming:** Sí, via `ReadableStream<Uint8Array>` (SSE)
+
+### Estructura del System Prompt
+
+| Bloque | Tipo | Cache |
+|--------|------|-------|
+| Identidad + rol ("You are the Sage of the Oracle") | Estático | ✅ ephemeral |
+| ABSOLUTE RULES (10 reglas de comportamiento) | Estático | ✅ ephemeral |
+| ANTI-REPETITION, TYPOGRAPHY, TEMPORAL RESTRAINT | Estático | ✅ ephemeral |
+| Biblioteca Wilhelm+Legge+Zhou Yi + hexagrama transformado | Estático por consulta | ✅ ephemeral |
+| Contexto de sesión previa (resúmenes de consultas previas) | Dinámico | ✅ ephemeral* |
+| Nombre de usuario + idioma | Dinámico | ❌ |
+| Pregunta actual | Dinámico | ❌ |
+
+(*) El bloque de contexto de sesión crece con cada consulta del hilo → cache miss sistemático porque el bloque N es diferente al bloque N-1. Cache hit efectivo: ~15-20% pese a estar marcado como ephemeral.
+
+### Estimación de tokens (Master, 8 consultas previas)
+
+```
+System prompt estático:            ~450 tokens  (cached)
+Biblioteca Wilhelm+Legge+Zhou Yi:  ~2,000 tokens (cached)
+Contexto sesión (8 consultas):     ~1,600 tokens (cached con miss alto)
+Pregunta actual:                   ~200 tokens  (sin cache)
+──────────────────────────────────────────────────────────
+Total input:                       ~4,250 tokens
+Output máximo:                      4,096 tokens
+```
+
+### Fallback chain de interpretación
+
+```
+1. Anthropic API (claude-sonnet-4-5)
+2. OpenRouter API (mismo modelo o equivalente)
+3. Groq API
+4. Texto offline predefinido
+```
+
+Los errores de cada step se silencian sin alerta estructurada (ver sección 18).
+
+---
+
+## 14. Servicios Externos
+
+| Servicio | Propósito | Estado |
+|----------|-----------|--------|
+| **Supabase** | PostgreSQL + Auth | ✅ Staging + Producción (proyectos separados) |
+| **Anthropic** | Claude AI interpretaciones | ✅ |
+| **Together AI** | FLUX.1-schnell imágenes | ✅ |
+| **RevenueCat** | Web Billing (checkout) | ✅ |
+| **Stripe** | Procesador de pagos (via RevenueCat) | ✅ |
+| **Resend** | Emails transaccionales (dominio: theoriginaliching.com) | ✅ |
+| **Cloudflare Turnstile** | CAPTCHA en /login y /register | ✅ |
+| **Upstash Redis** | Rate limiting (30 req/60s por IP, 15/60s por usuario) | ✅* |
+| **Sentry** | Error tracking (solo mobile) | ⚠️ Web sin Sentry |
+| **Vercel** | Deploy web | ✅ Staging + Producción |
+| **EAS Build** | Build APK Android | ✅ cuenta alexcat84 |
+| **Google Play Console** | Distribución Android | ✅ verificación en curso |
+| **Google OAuth** | Login social | ✅ Staging + Producción |
+| **OpenRouter / Groq** | Fallback IA | ✅ configurados |
+
+(*) Rate limiting con fallback in-memory en local. **Crítico:** el fallback in-memory no funciona en serverless Vercel — Upstash debe estar configurado en producción.
+
+### Variables de entorno requeridas
+
+**Web (Vercel):**
+```
+NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY  (public)
+SUPABASE_URL / SUPABASE_ANON_KEY / SUPABASE_SERVICE_ROLE_KEY
+ANTHROPIC_API_KEY
+TOGETHER_API_KEY
+REVENUECAT_WEBHOOK_SECRET
+RESEND_API_KEY
+UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN
+NEXT_PUBLIC_TURNSTILE_SITE_KEY  (public)
+TURNSTILE_SECRET_KEY
+OPENROUTER_API_KEY / GROQ_API_KEY
+LOG_TOKEN_BALANCE_DEBUG=true (staging)
+```
+
+**Mobile (`apps/mobile/.env`):**
+```
+EXPO_PUBLIC_SUPABASE_URL
+EXPO_PUBLIC_SUPABASE_ANON_KEY
+EXPO_PUBLIC_API_URL  (URL de staging o producción)
+EXPO_PUBLIC_REVENUECAT_API_KEY
+EXPO_PUBLIC_SENTRY_DSN
+```
+
+---
+
+## 15. Deploy y CI/CD
+
+### Ramas
+
+| Branch | Entorno | Supabase | Vercel |
+|--------|---------|----------|--------|
+| `main` | Producción | Proyecto original | `theoriginaliching.com` |
+| `staging` | Preview | Proyecto nuevo | URL de preview |
+
+**Regla de workflow:** Todo commit va a `staging` primero. `main` solo via merge desde `staging`, nunca directo.
+
+### CI (GitHub Actions)
+
+Archivo: `.github/workflows/ci.yml`
+
+```yaml
+# Pasos: checkout → setup-node → pnpm install → lint → typecheck → build
+uses: actions/checkout@v4
+uses: actions/setup-node@v4
+```
+
+> **⚠️ DEADLINE:** GitHub forzará Node.js 24 el **2 junio 2026**. Actualizar a `@v5` cuando estén disponibles.
+
+### Build APK local (Windows)
+
+```bash
+# 1. cd apps/mobile && npm install
+# 2. Re-aplicar fix de Windows en node_modules (ver sección 2)
+# 3. npx expo prebuild --platform android --clean
+# 4. cd android && ./gradlew assembleRelease
+# APK: android/app/build/outputs/apk/release/app-release.apk
+```
+
+### Build APK cloud (EAS)
+
+```bash
+cd apps/mobile
+eas build --platform android --profile preview   # APK
+eas build --platform android --profile production # AAB (Play Store)
+```
+
+EAS Build corre en Linux — no requiere el fix de Windows del glob.
+
+### Vercel timeout
+
+```typescript
+export const runtime = "nodejs";
+export const maxDuration = 120; // requiere plan Pro
+// Tiempo real de una consulta Master: 37-66s
+// Plan Hobby: límite 60s → riesgo de timeout en P75
+```
+
+---
+
+## 16. Seguridad
+
+### API Keys
+
+- Todas las keys privadas están en variables de entorno del servidor
+- Ninguna key privada en código fuente ni en `.env` commiteados
+- `EXPO_PUBLIC_*` y `TURNSTILE_SITE_KEY` son públicos por diseño
+
+### Row Level Security (Supabase)
+
+RLS activo en todas las tablas de usuario:
+```sql
+-- policy en consultations, consultation_sessions, query_credits, etc.
+auth.uid() = user_id
+```
+
+Tablas admin sin RLS pero protegidas por `service_role` (el anon key no puede acceder).
+
+### WebView Cross-Origin Guard
+
+```typescript
+onShouldStartLoadWithRequest: (request) => {
+  // Bloquea cualquier URL fuera de BASE_URL
+  // Excepción: accounts.google.com / provider=google → abre en browser externo
+  // Funciona igual en staging y producción
+}
+```
+
+### Rate Limiting
+
+- Por IP: 30 req/60s en `/api/consult`
+- Por usuario: 15 req/60s en `/api/consult`
+- Implementado con Upstash Redis. Fallback in-memory no efectivo en serverless.
+
+### Protección Free Trial
+
+```sql
+-- user_trial_log + ON CONFLICT DO NOTHING en init_free_user()
+-- Previene que un usuario reciba los 2 tokens gratis más de una vez
+```
+
+### Autenticación de Webhooks
+
+RevenueCat webhooks verificados con HMAC-SHA256 via `REVENUECAT_WEBHOOK_SECRET`.
 
 ### Turnstile (CAPTCHA)
 
-✅ **Activo en `/login` y `/register`.**
+Activo en `/login` y `/register`. Falla cerrada: si la key no está configurada, rechaza el request.
 
-```typescript
-// turnstile.ts línea 6
-if (!TURNSTILE_SECRET_KEY) return { success: false, error: "not_configured" };
-```
+### Play Store Compliance
 
-Falla cerrada: si la key no está configurada, rechaza. Verificación via `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
-
-❌ **No protege `/api/consult`** — solo rate limiting por IP/usuario vía Upstash.
-
-### Workers
-
-❌ **No encontrados.** No existe `wrangler.toml` ni configuración de Workers en el repo.
-
-### Cache headers en rutas estáticas
-
-❌ **No configurados.** No hay `Cache-Control` headers en `next.config.*` para rutas estáticas como la Biblioteca de Hexagramas. Las páginas estáticas de Next.js se sirven con el comportamiento default de Vercel/CDN.
-
-### Rate limiting en edge
-
-❌ **No existe.** El rate limiting está en el origen (Upstash Redis), no en el edge de Cloudflare. Todo el tráfico de ataque llega hasta la función de Vercel antes de ser bloqueado.
+- Sin cookies compartidas entre sesiones (cumple política de Google)
+- `privacyPolicyUrl` configurado en `app.config.js`
+- Data Safety Form pendiente
 
 ---
 
-## 6. Vercel
+## 17. Observabilidad
 
-**Archivos:** `vercel.json`, `apps/web/src/app/api/consult/route.ts`
+### Logging disponible
 
-### Timeout configurado
-
-```typescript
-// route.ts línea 59–60
-export const runtime = "nodejs";
-export const maxDuration = 120; // 120 segundos
-```
-
-| Plan | Límite real | Configurado | Resultado |
-|------|-------------|-------------|-----------|
-| Hobby | 60s | 120s | ⚠️ El `maxDuration` se ignora; corta en 60s |
-| Pro | 900s | 120s | ✅ Funciona como configurado |
-
-### Plan inferido
-
-No determinable con certeza desde el código. CLAUDE.md no lo especifica. El valor `maxDuration = 120` implica necesidad de **Pro**. Si el proyecto está en Hobby, las consultas Master con Together AI tienen riesgo alto de timeout.
-
-### Runtime de las rutas del oracle
-
-✅ **Node.js Runtime** — necesario por dependencias nativas (`sharp`, SVG, etc.).  
-❌ No Edge Runtime (incompatible con el stack actual).
-
-### Riesgo de timeout en respuestas largas
-
-```
-Componente              Tiempo estimado
-─────────────────────────────────────────
-Cast (sorteo local):          ~15ms
-Claude API (sonnet):       6,000–20,000ms
-Together AI (FLUX schnell): 30,000–45,000ms
-Finalización + stream:         ~500ms
-─────────────────────────────────────────
-Total típico:             ~37,000–66,000ms
-```
-
-En Hobby (60s límite): el percentil 75 de requests Master ya excede el límite.
-
----
-
-## 7. Sistema de Tokens
-
-**Archivos:**
-- `apps/web/src/app/api/consult/route.ts` (líneas 550–574)
-- `backend/db/migrations/021_consumable_tokens.sql`
-- `backend/db/migrations/022_user_trial_log.sql`
-
-### Orden de validación
-
-✅ **Correcto:** validación ocurre ANTES de llamar a servicios externos.
-
-```
-1. getAuthenticatedUser()       → auth required
-2. Rate limit por IP            → anti-abuse
-3. Rate limit por usuario       → anti-abuse
-4. getTokenBalance()            → leer créditos
-5. if balance < tokensToConsume → 402 Payment Required
-6. consumeToken() RPC           → descontar en DB
-7. buildContextBlock()          → preparar Claude
-8. interpret() / Claude API     → llamada externa
-9. generateImage() / Together   → llamada externa
-```
-
-### Atomicidad del descuento
-
-✅ **Atómica a nivel DB:**
-
-```sql
--- RPC consume_token() en migration 021
-UPDATE query_credits
-SET credits_total = credits_total - 1,
-    credits_used  = credits_used  + 1,
-    updated_at    = NOW()
-WHERE user_id = p_user_id
-  AND credits_total > 0
-RETURNING credits_total;
-```
-
-Si `credits_total = 0` al momento del UPDATE, la operación retorna sin consumir.
-
-### Race condition entre lectura y consumo
-
-⚠️ **Ventana de race condition:**
-
-```
-Thread 1: getTokenBalance() → balance = 2 ✓
-Thread 2: getTokenBalance() → balance = 2 ✓   ← mismo saldo leído
-Thread 1: consumeToken()    → balance = 1
-Thread 2: consumeToken()    → balance = 0
-```
-
-Ambos requests pasan la validación y ambos llaman a Claude API. La DB evita ir negativa, pero Claude ya fue invocada dos veces. **Riesgo real: revenue loss en usuarios con saldo bajo que abren múltiples tabs.**
-
-### Diferencia de consumo por tier
-
-```typescript
-// route.ts líneas 550–551
-const isMasterCombined = resolvedTranslator === "master_combined";
-const tokensToConsume = isMasterCombined ? 2 : 1;
-```
-
-| Método | Tokens consumidos |
-|--------|-----------------|
-| Wilhelm/Baynes | 1 |
-| Legge | 1 |
-| Zhou Yi | 1 |
-| Master Combined | 2 |
-| Oracle Bones | 1 |
-
----
-
-## 8. Errores y Observabilidad
+| Log | Variable | Contiene |
+|-----|----------|---------|
+| Stream ritual | `LOG_RITUAL_STREAM_DEBUG=1` | `+{elapsedMs}ms` por evento |
+| Cache de Claude | `LOG_CLAUDE_CACHE_METRICS=1` | tokens input/output/cache_read/cache_creation, ratio |
+| Token balance | `LOG_TOKEN_BALANCE_DEBUG=true` | Solo en staging |
 
 ### Sentry
 
-| Plataforma | Estado | Detalle |
-|------------|--------|---------|
-| Mobile (Expo) | ✅ | `@sentry/react-native` con error boundary global en `apps/mobile/app/_layout.tsx` |
-| Web (Next.js) | ❌ | **No encontrado.** Cero referencias a Sentry en `apps/web/src/` |
-
-### Captura de errores de Claude API
-
-❌ **No capturados estructuralmente.**
-
-El fallback chain silencia los errores de Anthropic (429, 500, 529) sin:
-- Envío a Sentry
-- Logging de la causa raíz
-- Alerta a on-call
-
-El usuario ve un resultado (desde OpenRouter/Groq/offline), pero el error de Anthropic es invisible en producción.
-
-### Logging de latencia
-
-✅ Disponible pero **opt-in y stdout-only:**
-
-| Log | Variable de activación | Contiene |
-|-----|------------------------|----------|
-| Stream ritual | `LOG_RITUAL_STREAM_DEBUG=1` | `+{elapsedMs}ms` por evento del stream |
-| Cache metrics | `LOG_CLAUDE_CACHE_METRICS=1` | input/output/cache_read/cache_creation tokens, ratio |
-
-Solo visible en Vercel Logs. Sin persistencia ni dashboards.
+- **Mobile:** `@sentry/react-native` con error boundary global en `_layout.tsx` ✅
+- **Web:** `@sentry/nextjs` declarado en dependencias pero **sin configuración activa** ❌
 
 ### Alertas
 
-❌ **No configuradas.** Sin integración a PagerDuty, DataDog, New Relic, ni alertas de Vercel/Supabase.  
-La única observabilidad en producción es revisar manualmente Vercel Logs.
+Sin alertas automáticas configuradas. Toda la observabilidad requiere revisión manual de Vercel Logs / Supabase Dashboard.
 
 ---
 
-## 9. Optimización de Tokens IA
+## 18. Deuda Técnica y Hallazgos Abiertos
 
-### Estimación de costos por request (Master, 8 consultas previas)
+### 🔴 Críticos
 
-| Bloque | Tokens | Cached | Cache hit real |
-|--------|--------|--------|----------------|
-| System prompt estático | ~450 | ✅ ephemeral | Alta (~90%+) |
-| Biblioteca Wilhelm+Legge+Zhou Yi+transformado | ~2,000 | ✅ ephemeral | Alta (~90%+) |
-| Contexto sesión (8 consultas previas) | ~1,600 | ✅ ephemeral | ⚠️ ~0–10%* |
-| Pregunta actual | ~200 | ❌ | N/A |
-| **Total input** | **~4,250** | | |
-| Output máximo | 4,096 | | |
+**1. Race condition en consumo de tokens**  
+Entre `getTokenBalance()` y `consumeToken()`, dos requests paralelos del mismo usuario pueden pasar la validación con el mismo saldo. El RPC evita saldo negativo pero Claude es invocado dos veces.  
+**Fix:** Mover `consumeToken()` antes de `getTokenBalance()` — el RPC ya retorna el saldo post-descuento (-1 si vacío). Eliminar la lectura previa.
 
-(*) **El contexto de sesión crece con cada consulta en el hilo.** El bloque de 8 consultas es diferente al bloque de 7 consultas → cache miss sistemático en ese bloque pese a estar marcado como `ephemeral`.
+**2. Rate limiting inoperativo sin Upstash**  
+El fallback `Map` en memoria no persiste entre invocaciones serverless. Sin `UPSTASH_REDIS_REST_URL` configurado, no hay protección contra abuse.  
+**Fix:** Validar en startup de `route.ts` que Upstash está operativo.
 
-### Análisis de eficiencia del prompt caching
+### 🟡 Importantes
 
-```
-% teóricamente cacheable:  (450 + 2,000) / 4,250 = 57.6%
-% real aprovechado:        (450 + 2,000) / 4,250 = ~15–20%
-                           (solo system + biblioteca en sesiones nuevas)
-```
+**3. Sin Sentry en Web**  
+Errores de Anthropic (429, 500), errores de Together AI, y excepciones en rutas de API son invisibles en producción.  
+**Fix:** Activar `@sentry/nextjs` en `instrumentation.ts`.
 
-### Candidatos para mejorar el cache hit rate
+**4. Fallback chain de Claude silencia errores**  
+Los errores de Anthropic se absorben sin logging estructurado ni alerta. Una degradación de la API pasaría desapercibida hasta que usuarios reporten.
 
-1. **Contexto de sesión como bloque estático con posición fija** — en vez de crecer linealmente, estructurarlo con un "slot" fijo de N consultas que se rellena y cuya representación no cambia entre requests de la misma posición.
-2. **Separar hexagrama actual del contexto histórico** — el contexto histórico [1..N-1] es estable una vez emitido; solo la consulta actual es nueva.
+**5. Cache hit rate de Claude ~15-20%**  
+El bloque de contexto de sesión crece con cada consulta del hilo → cache miss sistemático en el bloque más pesado. El potencial de ahorro con 60% hit rate es ~$200-400/mes en volumen alto.
 
----
+**6. Timeout Vercel si el plan es Hobby**  
+`maxDuration = 120` requiere plan Pro. En Hobby (límite 60s), el P75 de consultas Master falla con timeout.
 
-## 10. Seguridad de API Keys
+### 🟢 Pendiente de producto
 
-### Almacenamiento
+**7. GitHub Actions CI — deadline 2 junio 2026**  
+`actions/checkout@v4` y `actions/setup-node@v4` deben actualizarse a `@v5` cuando estén disponibles.
 
-✅ **Todas las keys privadas están en variables de entorno del servidor:**
+**8. Google Play Console**  
+Verificación de identidad pendiente (1-3 días hábiles). Data Safety Form pendiente. Assets para Play Store (icon 512×512, feature graphic 1024×500) pendientes.
 
-| Key | Ubicación en código |
-|-----|---------------------|
-| `ANTHROPIC_API_KEY` | `interpretation.ts` línea 488 |
-| `OPENROUTER_API_KEY` | `interpretation.ts` línea 636 |
-| `GROQ_API_KEY` | `interpretation.ts` línea 728 |
-| `TOGETHER_API_KEY` | `image-provider.ts` línea 484 |
-| `FAL_AI_KEY` | `image-provider.ts` línea 395 |
-| `UPSTASH_REDIS_REST_URL/TOKEN` | `rate-limit.ts` línea 12–13 |
-| `TURNSTILE_SECRET_KEY` | `turnstile.ts` línea 4 |
-| `SUPABASE_SERVICE_ROLE_KEY` | via `getSupabaseAdmin()` |
-| `REVENUECAT_WEBHOOK_SECRET` | en webhook handlers |
+**9. i18n formal (Fase 2)**  
+El sistema actual es un objeto de strings planos en `page.tsx`. Migración a `next-intl` es post-lanzamiento.
 
-### Keys en cliente o .env commiteados
+**10. Animación ritual de Huesos de Oráculo (Fase 2)**  
+Three.js + animación de fuego pendiente de integración completa.
 
-❌ **No encontradas.** No hay `.env` con valores reales en el repo.  
-✅ `EXPO_PUBLIC_SENTRY_DSN` y `TURNSTILE_SITE_KEY` son públicos por diseño (correcto).
-
-### Protección de rutas antes de servicios externos
-
-✅ **Orden correcto en todas las rutas del oracle:**
-
-```
-getAuthenticatedUser() → rate limit → validar créditos → Claude/Together
-```
-
-Los servicios externos solo se invocan si el usuario está autenticado y tiene créditos. RLS de Supabase aplica como segunda capa en todas las queries de usuario.
+**11. Supabase Pro**  
+El proyecto de producción debe upgradearse a Pro ($25/mes) al tener usuarios reales. El plan Free tiene 500MB storage, 2GB egress/mes — ya se saturó una vez en el proyecto original.
 
 ---
 
-## Hallazgos Críticos
-
-Riesgos ordenados por severidad para escenario de alto tráfico:
-
-### 1. Race condition en consumo de tokens
-**Severidad: ALTA**
-
-Entre `getTokenBalance()` (lectura) y `consumeToken()` (escritura) existe una ventana donde dos requests paralelos del mismo usuario (múltiples tabs, retry del cliente) pueden pasar la validación con el mismo saldo. La DB no va negativa, pero Claude ya fue invocada en ambos casos.
-
-**Impacto:** Revenue loss en usuarios con saldo bajo. En escenario de 1,000 usuarios concurrentes, frecuencia estimada: ~2–5% de requests con saldo = 1.
-
-**Fix:** Eliminar la lectura previa separada. Hacer el descuento en DB atómicamente al inicio del request y retornar 402 si el RPC retorna `credits_remaining = -1`. El sistema actual ya tiene la infraestructura (el RPC retorna remaining), solo falta mover el consumo antes de cualquier validación de contexto.
-
----
-
-### 2. Timeout Vercel: 120s configurado vs 60s real (si plan Hobby)
-**Severidad: ALTA**
-
-Tiempo típico de un request Master completo: 37–66s. En plan Hobby (límite real 60s), el percentil 75 ya falla. El `maxDuration = 120` es ignorado en Hobby.
-
-**Impacto:** Timeouts intermitentes en prod. El usuario ve error después de 60s de espera. La imagen y la interpretación ya fueron generadas (costo incurrido) pero la respuesta se pierde.
-
-**Fix a corto plazo:** Verificar plan Vercel actual. Si Hobby → upgrade a Pro.  
-**Fix estructural:** Separar la generación de imagen del tiempo de respuesta (ver Quick Win #3).
-
----
-
-### 3. Rate limiting inoperativo en serverless sin Upstash configurado
-**Severidad: ALTA**
-
-El `inMemoryBucket: Map` usado como fallback no persiste entre invocaciones serverless de Vercel. Si `UPSTASH_REDIS_REST_URL` no está en las variables de entorno de producción, no existe protección contra abuse.
-
-**Impacto:** Sin Upstash, un atacante puede hacer miles de requests/segundo a `/api/consult` hasta agotar créditos de Anthropic/Together, egress de Supabase, o disparar costos.
-
-**Fix:** Validar en CI que `UPSTASH_REDIS_REST_URL` y `UPSTASH_REDIS_REST_TOKEN` estén presentes en entorno de producción. Agregar health check al inicio de `route.ts` que rechace si Upstash no está operativo.
-
----
-
-### 4. Sin Sentry en web y errores Claude silenciosos
-**Severidad: MEDIA**
-
-La aplicación web no tiene Sentry configurado. Los errores de Anthropic (429, 500, 529) son absorbidos por el fallback chain sin registro ni alerta. En producción, una degradación de Anthropic API pasaría desapercibida hasta que usuarios reporten en soporte.
-
-**Impacto:** MTTR (Mean Time To Recover) alto. Bugs silenciosos. Sin datos para SLA.
-
-**Fix:** Instalar `@sentry/nextjs`, crear `instrumentation.ts`, capturar errores del fallback chain.
-
----
-
-### 5. Cache hit rate real ~15–20% pese a implementación de prompt caching
-**Severidad: MEDIA**
-
-El bloque de contexto de sesión es marcado como `ephemeral` pero crece linealmente con cada consulta del hilo. Consulta #3 tiene un contexto diferente a consulta #4 → cache miss en el bloque más pesado (~1,600 tokens).
-
-**Impacto:** Costo Anthropic 3–4× más alto que el potencial. Latencia de respuesta mayor por tokens procesados sin cache.
-
-**Estimación de ahorro:** Con 1,000 consultas Master/día a $15/MTok (input), la diferencia entre 20% y 60% de cache hit rate es ~$200–400/mes.
-
----
-
-## Quick Wins
-
-Los 3 cambios de mayor impacto implementables en menos de 1 día:
-
-### QW-1: Implementar Sentry en Web (30 min)
-
-```typescript
-// apps/web/src/instrumentation.ts
-import * as Sentry from "@sentry/nextjs";
-
-export async function register() {
-  if (process.env.NEXT_RUNTIME === "nodejs") {
-    Sentry.init({
-      dsn: process.env.SENTRY_DSN,
-      tracesSampleRate: 0.1,
-      environment: process.env.VERCEL_ENV ?? "development",
-    });
-  }
-}
-```
-
-```typescript
-// En interpretation.ts — capturar errores del fallback chain
-import * as Sentry from "@sentry/nextjs";
-
-catch (anthropicError) {
-  Sentry.captureException(anthropicError, {
-    tags: { provider: "anthropic", tier, language }
-  });
-  // continúa con OpenRouter...
-}
-```
-
-**ROI:** Observabilidad inmediata. Alertas en Slack/email ante degradación de Anthropic.
-
----
-
-### QW-2: Eliminar race condition en consumo de tokens (45 min)
-
-Cambiar el flujo de `route.ts` para consumir el token **antes** de construir contexto:
-
-```typescript
-// ANTES (race condition):
-const balance = await getTokenBalance(userId);        // lectura
-if (balance < tokensToConsume) return 402;
-// ... 200ms de lógica ...
-await consumeToken(userId, tokensToConsume);           // escritura separada
-// ... llamada a Claude ...
-
-// DESPUÉS (atómico):
-const remaining = await consumeToken(userId, tokensToConsume); // read+write atómico
-if (remaining === -1) return 402;                              // sin créditos
-// ... llamada a Claude ...
-```
-
-El RPC `consume_token()` ya retorna `credits_total` después del descuento. Solo requiere reordenar el código y modificar la firma del RPC para retornar -1 si `credits_total = 0` antes del descuento.
-
-**ROI:** Elimina revenue loss. Crítico para monetización en alto tráfico.
-
----
-
-### QW-3: Desacoplar imagen de la respuesta del oracle (2–4 horas)
-
-El stream actual ya tiene la arquitectura de eventos (`cast_ready` → `final_ready`). El cambio es emitir el texto de Claude como un tercer evento intermedio y la imagen cuando esté lista:
-
-```
-cast_ready      → hexagrama + líneas                   (~15ms)  ← usuario ve inmediatamente
-oracle_ready    → interpretación completa de Claude     (~10s)   ← NEW: usuario lee mientras espera imagen
-final_ready     → imagen generada por Together AI       (~45s)   ← imagen aparece sola
-```
-
-El cliente renderiza en 3 pasos: sorteo → interpretación → imagen. El usuario ve contenido a los 10s en vez de esperar 45–65s.
-
-**ROI:** Mejora dramática de UX percibida. Reduce riesgo de timeout en Hobby plan. Sin cambio de backend/DB.
-
----
-
-*Diagnóstico generado con análisis estático del codebase. Ningún archivo fue modificado.*  
-*Versiones analizadas: branch `main` @ commit `cd23576` (2026-05-14)*
+*Documento generado con análisis estático del codebase + historial de sesiones de desarrollo.*  
+*Branch: `main` @ `58b56c4` — 2026-05-20*
