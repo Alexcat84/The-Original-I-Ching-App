@@ -1349,6 +1349,7 @@ export default function HomePage() {
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const mountScrollDoneRef = useRef(false);
+  const rnLoadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
   const isSigningOutRef = useRef(false);
@@ -2274,17 +2275,21 @@ export default function HomePage() {
         rnBridge.postMessage(
           JSON.stringify({ type: "request_thread", sessionId, localId }),
         );
+        // Defer the loading indicator so SQLite cache (< 150 ms round-trip)
+        // can arrive first. If rn:thread-data fires before the timer, it
+        // cancels the timer and the user never sees "Loading conversation…".
+        if (rnLoadingTimerRef.current !== null) {
+          clearTimeout(rnLoadingTimerRef.current);
+        }
+        rnLoadingTimerRef.current = setTimeout(() => {
+          rnLoadingTimerRef.current = null;
+          setHistoryLoading(true);
+          setLoadingSessionLocalId(localId);
+        }, 250);
+      } else {
+        setHistoryLoading(true);
+        setLoadingSessionLocalId(localId);
       }
-
-      // Always run the Supabase fetch in parallel:
-      // - If native cache wins the race → Supabase result refreshes silently
-      //   (same content, no visible change for the user).
-      // - If Supabase wins → native cache result is a no-op when it arrives.
-      // - If offline + native has cache → fetch throws, finally clears spinner
-      //   (already cleared by rn:thread-data handler), catch is silent.
-      // - If offline + no cache → show error as normal.
-      setHistoryLoading(true);
-      setLoadingSessionLocalId(localId);
       setHistoryLoadError(null);
       try {
         const res = await fetch(
@@ -2835,6 +2840,11 @@ export default function HomePage() {
     const onRnThread = (e: Event) => {
       const { localId, consultations } = (e as CustomEvent<RnThreadData>).detail;
       if (!Array.isArray(consultations) || consultations.length === 0) return;
+      // Cancel deferred loading indicator — cache responded before the timer fired.
+      if (rnLoadingTimerRef.current !== null) {
+        clearTimeout(rnLoadingTimerRef.current);
+        rnLoadingTimerRef.current = null;
+      }
       const planCap = Math.max(1, accountSessionLimitRef.current);
       const thread = consultations.map((c) =>
         mapApiConsultationToItem(c, "", planCap),
