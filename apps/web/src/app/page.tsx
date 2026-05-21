@@ -2252,9 +2252,41 @@ export default function HomePage() {
   const loadSessionThread = useCallback(
     async (sessionId: string, localId: string) => {
       if (!accessToken) return;
-      setHistoryLoading(true);
-      setLoadingSessionLocalId(localId);
+
+      // Cache-first: read from window.__rnCachedThreads injected by the
+      // Android WebView shell (populated from SQLite before onLoadEnd).
+      // If data exists, render it immediately — no loading spinner — then
+      // refresh from Supabase in the background (stale-while-revalidate).
+      const win = window as unknown as {
+        __rnCachedThreads?: Record<string, ApiChatConsultation[]>;
+      };
+      const cached = win.__rnCachedThreads?.[sessionId];
+      const hasCached = Array.isArray(cached) && cached.length > 0;
+
+      if (hasCached) {
+        const planCap = Math.max(1, accountSessionLimit);
+        const thread = cached.map((c) => mapApiConsultationToItem(c, "", planCap));
+        setSessions((prev) =>
+          prev.map((s) => {
+            if (s.localId !== localId) return s;
+            return {
+              ...s,
+              thread,
+              messageCount: Math.max(thread.length, s.messageCount),
+              updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
+              firstConsultationAt: thread[0]?.createdAt ?? s.firstConsultationAt,
+            };
+          }),
+        );
+      }
+
+      // Show spinner only when there is nothing cached to display yet.
+      if (!hasCached) {
+        setHistoryLoading(true);
+        setLoadingSessionLocalId(localId);
+      }
       setHistoryLoadError(null);
+
       try {
         const res = await fetch(
           `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
@@ -2264,6 +2296,9 @@ export default function HomePage() {
           },
         );
         if (!res.ok) {
+          // If we already rendered cached data, swallow non-critical errors
+          // (e.g., offline or transient 5xx) rather than showing an error state.
+          if (hasCached) return;
           const err = parseApiErrorPayload(await res.text());
           if (res.status === 401) {
             const authError = sessionUi.chatLoadSessionExpired;
@@ -2312,7 +2347,8 @@ export default function HomePage() {
         );
         setHistoryLoadError(null);
       } catch {
-        setHistoryLoadError(sessionUi.chatLoadNetworkError);
+        // Offline with cached data → silent. Offline without cache → show error.
+        if (!hasCached) setHistoryLoadError(sessionUi.chatLoadNetworkError);
       } finally {
         setHistoryLoading(false);
         setLoadingSessionLocalId((current) =>

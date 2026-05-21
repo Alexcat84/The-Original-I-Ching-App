@@ -82,6 +82,7 @@ export async function upsertMessages(rows: MessageRow[]): Promise<void> {
            (id, chat_id, role, content, created_at, synced_at, image_url, image_sync_status)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(id) DO UPDATE SET
+           content           = CASE WHEN excluded.content != '' THEN excluded.content ELSE messages.content END,
            image_url         = excluded.image_url,
            image_sync_status = CASE
              WHEN messages.local_image_path IS NOT NULL THEN 'done'
@@ -135,6 +136,54 @@ export async function getPendingImages(limit = 20): Promise<PendingImageRow[]> {
      LIMIT ?`,
     limit,
   );
+}
+
+/** Returns the count of fully-synced messages (content != '') per sessionId. */
+export async function getStoredContentCounts(
+  sessionIds: string[],
+): Promise<Record<string, number>> {
+  if (sessionIds.length === 0) return {};
+  const db = await getDb();
+  const placeholders = sessionIds.map(() => "?").join(",");
+  const rows = await db.getAllAsync<{ chat_id: string; cnt: number }>(
+    `SELECT chat_id, COUNT(*) as cnt FROM messages
+     WHERE chat_id IN (${placeholders}) AND content != ''
+     GROUP BY chat_id`,
+    ...sessionIds,
+  );
+  return Object.fromEntries(rows.map((r) => [r.chat_id, r.cnt]));
+}
+
+/** Returns full cached threads for the 20 most recent chats, keyed by sessionId.
+ *  Each value is an array of raw ApiChatConsultation objects parsed from the
+ *  content column. Used to inject window.__rnCachedThreads into the WebView. */
+export async function getCachedThreadsForInjection(): Promise<
+  Record<string, unknown[]>
+> {
+  const db = await getDb();
+  const rows = await db.getAllAsync<{ chat_id: string; content: string }>(
+    `SELECT m.chat_id, m.content
+     FROM messages m
+     JOIN chats c ON c.id = m.chat_id
+     WHERE m.content != '' AND c.is_deleted = 0
+       AND c.id IN (
+         SELECT id FROM chats
+         WHERE is_deleted = 0 AND message_count > 0
+         ORDER BY updated_at DESC LIMIT 20
+       )
+     ORDER BY m.created_at ASC`,
+  );
+  const result: Record<string, unknown[]> = {};
+  for (const row of rows) {
+    try {
+      const item = JSON.parse(row.content) as unknown;
+      if (!result[row.chat_id]) result[row.chat_id] = [];
+      result[row.chat_id].push(item);
+    } catch {
+      // Skip malformed rows
+    }
+  }
+  return result;
 }
 
 /** Looks up the local cached path for a given remote image URL. */

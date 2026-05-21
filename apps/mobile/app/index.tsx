@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases from "react-native-purchases";
-import { initDb, getCachedChatsForInjection, getLocalImagePath, type RnCachedChatEntry } from "@/src/db/chat-store";
+import { initDb, getCachedChatsForInjection, getCachedThreadsForInjection, getLocalImagePath, type RnCachedChatEntry } from "@/src/db/chat-store";
 import { syncChats } from "@/src/sync/sync-service";
 import * as FileSystem from "expo-file-system";
 import * as Linking from "expo-linking";
@@ -1302,6 +1302,8 @@ export default function WebViewScreen() {
   const webReadyRef = useRef(false);
   /** Pre-fetched SQLite cache — populated on mount, injected synchronously in onLoadEnd. */
   const cachedChatsRef = useRef<RnCachedChatEntry[]>([]);
+  /** Pre-fetched thread cache keyed by sessionId — injected alongside cachedChats. */
+  const cachedThreadsRef = useRef<Record<string, unknown[]>>({});
 
   /* ── Auth state (P3) ── */
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -1389,8 +1391,14 @@ export default function WebViewScreen() {
      so the ref is ready for synchronous injection when the page finishes loading.  ── */
   useEffect(() => {
     void initDb()
-      .then(() => getCachedChatsForInjection())
-      .then((chats) => { cachedChatsRef.current = chats; })
+      .then(() => Promise.all([
+        getCachedChatsForInjection(),
+        getCachedThreadsForInjection(),
+      ]))
+      .then(([chats, threads]) => {
+        cachedChatsRef.current = chats;
+        cachedThreadsRef.current = threads;
+      })
       .catch(() => undefined);
   }, []);
 
@@ -1451,16 +1459,22 @@ export default function WebViewScreen() {
     }
   }, []);
 
-  /** Reads current SQLite state and pushes it to the WebView as rn:cached-chats.
-   *  Updates cachedChatsRef as a side-effect so subsequent onLoadEnd calls are also fast. */
+  /** Reads current SQLite state and pushes chats + threads to the WebView.
+   *  Updates both refs as a side-effect so subsequent onLoadEnd calls are also fast. */
   const injectCachedChats = useCallback(() => {
-    void getCachedChatsForInjection().then((chats) => {
+    void Promise.all([
+      getCachedChatsForInjection(),
+      getCachedThreadsForInjection(),
+    ]).then(([chats, threads]) => {
       cachedChatsRef.current = chats;
+      cachedThreadsRef.current = threads;
       if (chats.length === 0) return;
-      const payload = JSON.stringify(chats);
+      const chatsPayload = JSON.stringify(chats);
+      const threadsPayload = JSON.stringify(threads);
       webViewRef.current?.injectJavaScript(
         `(function(){try{` +
-          `window.__rnCachedChats=${payload};` +
+          `window.__rnCachedChats=${chatsPayload};` +
+          `window.__rnCachedThreads=${threadsPayload};` +
           `window.dispatchEvent(new CustomEvent('rn:cached-chats',{detail:window.__rnCachedChats}));` +
         `}catch(_){}})();true;`
       );
@@ -1476,14 +1490,15 @@ export default function WebViewScreen() {
       webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
     }
     hideSplash();
-    // Fast path: inject pre-fetched data from ref synchronously (no bridge round-trip delay).
-    // This fires before the web-side Supabase useEffect can make a network request,
-    // ensuring the cache is visible before network data arrives.
+    // Fast path: inject pre-fetched data from refs synchronously (no bridge round-trip delay).
+    // Both refs are populated during initDb() before onLoadEnd ever fires (~1-3s WebView load).
     if (cachedChatsRef.current.length > 0) {
-      const payload = JSON.stringify(cachedChatsRef.current);
+      const chatsPayload = JSON.stringify(cachedChatsRef.current);
+      const threadsPayload = JSON.stringify(cachedThreadsRef.current);
       webViewRef.current?.injectJavaScript(
         `(function(){try{` +
-          `window.__rnCachedChats=${payload};` +
+          `window.__rnCachedChats=${chatsPayload};` +
+          `window.__rnCachedThreads=${threadsPayload};` +
           `window.dispatchEvent(new CustomEvent('rn:cached-chats',{detail:window.__rnCachedChats}));` +
         `}catch(_){}})();true;`
       );

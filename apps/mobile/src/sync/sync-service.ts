@@ -3,13 +3,14 @@ import {
   upsertMessages,
   getSyncMeta,
   setSyncMeta,
+  getStoredContentCounts,
   type ChatRow,
   type MessageRow,
 } from "../db/chat-store";
 import { syncPendingImages } from "./image-sync";
 
 const SYNC_COOLDOWN_MS = 5 * 60 * 1000;
-const RECENT_CHATS_FOR_IMAGE_SYNC = 5;
+const MAX_FULL_SYNC = 20;
 
 type ApiSession = {
   sessionId: string;
@@ -36,6 +37,7 @@ type ApiConsultation = {
   imageUrl: string;
   imageFallbackUrl?: string;
   createdAt: number;
+  [key: string]: unknown;
 };
 
 type ApiFullEntry = {
@@ -81,7 +83,9 @@ async function fetchChatDetail(
   };
 }
 
-/** Full sync: summaries → SQLite chats, then image records for recent chats. */
+/** Full sync: summaries → SQLite chats, then full consultation content for
+ *  the most recent MAX_FULL_SYNC chats. Only fetches chats where the local
+ *  content count is behind the API message count (incremental). */
 export async function syncChats(token: string, baseUrl: string): Promise<void> {
   try {
     const lastSync = await getSyncMeta("last_sync");
@@ -111,28 +115,37 @@ export async function syncChats(token: string, baseUrl: string): Promise<void> {
     await upsertChats(chatRows);
     await setSyncMeta("last_sync", now);
 
-    // Fetch image URLs for the most recent chats and queue downloads.
-    const recentIds = chatRows
-      .slice(0, RECENT_CHATS_FOR_IMAGE_SYNC)
-      .map((c) => c.id);
+    // Determine which of the most recent chats need full content sync.
+    const syncCandidates = entries.slice(0, MAX_FULL_SYNC);
+    const storedCounts = await getStoredContentCounts(
+      syncCandidates.map((e) => e.session.sessionId),
+    );
 
-    for (const sessionId of recentIds) {
+    for (const entry of syncCandidates) {
+      const stored = storedCounts[entry.session.sessionId] ?? 0;
+      // Skip if we already have all messages for this chat.
+      if (entry.messageCount > 0 && stored >= entry.messageCount) continue;
+
       try {
-        const detail = await fetchChatDetail(token, baseUrl, sessionId);
+        const detail = await fetchChatDetail(
+          token,
+          baseUrl,
+          entry.session.sessionId,
+        );
         if (!detail) continue;
-        const msgRows: MessageRow[] = detail.consultations
-          .filter((c) => c.imageUrl)
-          .map((c) => ({
-            id: c.consultationId,
-            chat_id: sessionId,
-            role: "assistant",
-            content: "",
-            created_at: msToIso(c.createdAt),
-            synced_at: now,
-            image_url: c.imageUrl,
-            local_image_path: null,
-            image_sync_status: "pending",
-          }));
+        const msgRows: MessageRow[] = detail.consultations.map((c) => ({
+          id: c.consultationId,
+          chat_id: entry.session.sessionId,
+          role: "assistant",
+          // Store the full consultation object as JSON so it can be injected
+          // into window.__rnCachedThreads and rendered offline without Supabase.
+          content: JSON.stringify(c),
+          created_at: msToIso(c.createdAt),
+          synced_at: now,
+          image_url: c.imageUrl || null,
+          local_image_path: null,
+          image_sync_status: c.imageUrl ? "pending" : "none",
+        }));
         await upsertMessages(msgRows);
       } catch {
         // Non-fatal — continue with next chat
