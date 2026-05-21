@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases from "react-native-purchases";
+import { initDb, getCachedChatsForInjection, getLocalImagePath, clearAllData } from "@/src/db/chat-store";
+import { syncChats } from "@/src/sync/sync-service";
 import * as FileSystem from "expo-file-system";
 import * as Linking from "expo-linking";
 import * as MediaLibrary from "expo-media-library";
@@ -1381,6 +1383,11 @@ export default function WebViewScreen() {
     []
   );
 
+  /* ── SQLite: initialize schema on first mount ── */
+  useEffect(() => {
+    void initDb().catch(() => undefined);
+  }, []);
+
   /* ── Restore token + locale from storage on cold start ── */
   useEffect(() => {
     const RC_API_KEY = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ?? '';
@@ -1443,11 +1450,21 @@ export default function WebViewScreen() {
     webViewRef.current?.injectJavaScript(
       `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
     );
-    // After native locale is known, prefer web `localStorage` over stale native default.
     if (localeStorageHydratedRef.current) {
       webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
     }
     hideSplash();
+    // Inject cached chats from SQLite into the web app (stale-while-revalidate).
+    void getCachedChatsForInjection().then((chats) => {
+      if (chats.length === 0) return;
+      const payload = JSON.stringify(chats);
+      webViewRef.current?.injectJavaScript(
+        `(function(){try{` +
+          `window.__rnCachedChats=${payload};` +
+          `window.dispatchEvent(new CustomEvent('rn:cached-chats',{detail:window.__rnCachedChats}));` +
+        `}catch(_){}})();true;`
+      );
+    }).catch(() => undefined);
   }, [hideSplash]);
 
   /* ── Deep link handler — OAuth callback + RevenueCat redemption ── */
@@ -1724,6 +1741,7 @@ export default function WebViewScreen() {
             webViewRef.current?.injectJavaScript(
               `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
             );
+            void syncChats(msg.token, BASE_URL).catch(() => undefined);
             break;
 
           case "auth_signout":
@@ -1732,6 +1750,7 @@ export default function WebViewScreen() {
             setIsAuthenticated(false);
             setUserEmail(null);
             SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
+            void clearAllData().catch(() => undefined);
             webViewRef.current?.injectJavaScript(
               `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
             );
@@ -1788,7 +1807,10 @@ export default function WebViewScreen() {
             break;
 
           case "open_image":
-            setZoomImageUrl(msg.url);
+            // Prefer locally cached file; fall back to remote URL.
+            void getLocalImagePath(msg.url).then((local) => {
+              setZoomImageUrl(local ?? msg.url);
+            }).catch(() => setZoomImageUrl(msg.url));
             break;
 
           case "shell_theme":
