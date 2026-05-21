@@ -64,7 +64,6 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
     "yarrow-vs-coins",
     "iching-manual-auto-bones",
     "oracle-bones-method",
-    "silence-state",
   ],
   "ai-texts": [
     "ai-vs-algorithm",
@@ -262,7 +261,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "oracle-bones-method",
     question: "What is the Oracle Bones method?",
     answer:
-      "Oracle Bones is a Shang-era divination method inspired by crack reading on turtle plastrons and ox scapulae. In the app it is separate from I Ching: it does not create hexagrams or changing lines. The system forms a crack pattern and verdict first, then the AI interprets that already formed result in your language. The verdict always falls into one of five possible states, faithful to the original Shang tradition: 1) 吉: clearly favorable, the pattern confirms the positive charge without ambiguity; 2) 吉 moderate: moderately favorable, confirmation with nuances or conditions; 3) 凶 moderate: moderately unfavorable, the pattern leans toward negation with reservations; 4) 凶: clearly unfavorable, the pattern negates the positive charge without ambiguity; 5) 沉默: Silence, the pattern produces no readable cracks and silence itself is the answer. It is useful for concise, ancestral-style answers; I Ching is better for layered change over time.",
+      "Oracle Bones is a Shang-era divination method inspired by crack reading on turtle plastrons and ox scapulae. In the app it is separate from I Ching: it does not create hexagrams or changing lines. The system forms a crack pattern and verdict first, then the AI interprets that already formed result in your language. The verdict always falls into one of four possible states, faithful to the original Shang tradition: 1) 吉: clearly favorable, the pattern confirms the positive charge without ambiguity; 2) 吉 moderate: moderately favorable, confirmation with nuances or conditions; 3) 凶 moderate: moderately unfavorable, the pattern leans toward negation with reservations; 4) 凶: clearly unfavorable, the pattern negates the positive charge without ambiguity. It is useful for concise, ancestral-style answers; I Ching is better for layered change over time.",
     related: ["methodNotes"],
   },
   {
@@ -334,13 +333,6 @@ const FAQ_ITEMS_EN: FaqItem[] = [
       "Are the I Ching texts that appear in the reading authentic or AI-generated?",
     answer:
       "They are authentic. The textual material — Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams — is drawn from three scholarly translations available in the app: Wilhelm/Baynes (public domain since 2020), James Legge, and the original Zhou Yi. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source.",
-    related: ["methodNotes"],
-  },
-  {
-    id: "silence-state",
-    question: "What does Silence mean in Oracle Bones mode?",
-    answer:
-      "Silence (沉默) is the fifth possible verdict state in Oracle Bones mode, and it is faithful to the ancestral Shang method. In the original tradition, when the bone produced no legible cracks, it was not an error; it was an answer in itself: the ancestors do not speak because the moment is not ripe for that question, or because the answer transcends what can be said. This app respects that state and returns it when the pattern indicates.",
     related: ["methodNotes"],
   },
   {
@@ -436,7 +428,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "oracle-bones-method",
     question: "¿Qué es el método de Huesos de Oráculo?",
     answer:
-      "Huesos de Oráculo es un método de adivinación de la era Shang inspirado en la lectura de grietas sobre plastrones de tortuga y escápulas de buey. En la app está separado del I Ching: no crea hexagramas ni líneas cambiantes. El sistema forma primero un patrón de grietas y un veredicto; después la IA interpreta ese resultado ya formado en tu idioma. El veredicto cae siempre en uno de cinco estados posibles, fieles al método ancestral Shang: 1) 吉, favorable claro: el patrón confirma la carga positiva sin ambigüedad; 2) 吉 moderado, favorable moderado: hay confirmación pero con matices o condiciones; 3) 凶 moderado, desfavorable moderado: el patrón se inclina a la negación con reservas; 4) 凶, desfavorable claro: el patrón niega la carga positiva sin ambigüedad; 5) 沉默, el Silencio: el patrón no produce grietas legibles y el propio silencio es la respuesta. Es útil para respuestas concisas, de tono ancestral; el I Ching es mejor para cambios por capas a lo largo del tiempo.",
+      "Huesos de Oráculo es un método de adivinación de la era Shang inspirado en la lectura de grietas sobre plastrones de tortuga y escápulas de buey. En la app está separado del I Ching: no crea hexagramas ni líneas cambiantes. El sistema forma primero un patrón de grietas y un veredicto; después la IA interpreta ese resultado ya formado en tu idioma. El veredicto cae siempre en uno de cuatro estados posibles, fieles al método ancestral Shang: 1) 吉, favorable claro: el patrón confirma la carga positiva sin ambigüedad; 2) 吉 moderado, favorable moderado: hay confirmación pero con matices o condiciones; 3) 凶 moderado, desfavorable moderado: el patrón se inclina a la negación con reservas; 4) 凶, desfavorable claro: el patrón niega la carga positiva sin ambigüedad. Es útil para respuestas concisas, de tono ancestral; el I Ching es mejor para cambios por capas a lo largo del tiempo.",
     related: ["methodNotes"],
   },
   {
@@ -513,13 +505,6 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
-    id: "silence-state",
-    question: "¿Qué significa el Silencio en el modo Huesos?",
-    answer:
-      "El Silencio (沉默) es el quinto estado posible del veredicto en el modo Huesos, y es fiel al método ancestral Shang. En la tradición original, cuando el hueso no producía grietas legibles, no era un error; era una respuesta en sí misma: los ancestros no hablan porque el momento no está maduro para esa pregunta, o porque la respuesta trasciende lo que puede ser dicho. Esta app respeta ese estado y lo devuelve cuando el patrón lo indica.",
-    related: ["methodNotes"],
-  },
-  {
     id: "language-support",
     question: "¿La app funciona en mi idioma?",
     answer:
@@ -574,7 +559,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "oracle-bones-method",
     question: "ما هي طريقة عظام العرافة؟",
     answer:
-      "عظام العرافة طريقة من عصر شانغ مستوحاة من قراءة الشقوق على دروع السلاحف وكتف الثور. في التطبيق هي منفصلة عن الآي تشينغ: لا تنشئ سداسيات ولا خطوطا متغيرة. يكوّن النظام أولا نمط الشقوق والحكم، ثم تفسر الذكاء الاصطناعي النتيجة الموجودة بالفعل بلغتك. يندرج الحكم دائما في إحدى خمس حالات ممكنة، وفية للمنهج الشانغي الأصيل: 1) 吉، مؤاتٍ واضح: يؤكد النمط الشحنة الإيجابية دون لبس؛ 2) 吉 معتدل، مؤاتٍ نسبي: ثمة تأكيد ولكن مع تحفظات أو شروط؛ 3) 凶 معتدل، غير مؤاتٍ نسبي: يميل النمط إلى النفي مع تحفظات؛ 4) 凶، غير مؤاتٍ واضح: ينفي النمط الشحنة الإيجابية دون لبس؛ 5) 沉默، الصمت: لا يُنتج النمط شقوقا قابلة للقراءة، والصمت ذاته هو الإجابة. إنها مناسبة للإجابات المختصرة ذات الطابع الأسلافي؛ أما الآي تشينغ فهو أفضل لفهم التحول المتدرج عبر الزمن.",
+      "عظام العرافة طريقة من عصر شانغ مستوحاة من قراءة الشقوق على دروع السلاحف وكتف الثور. في التطبيق هي منفصلة عن الآي تشينغ: لا تنشئ سداسيات ولا خطوطا متغيرة. يكوّن النظام أولا نمط الشقوق والحكم، ثم تفسر الذكاء الاصطناعي النتيجة الموجودة بالفعل بلغتك. يندرج الحكم دائما في إحدى أربع حالات ممكنة، وفية للمنهج الشانغي الأصيل: 1) 吉، مؤاتٍ واضح: يؤكد النمط الشحنة الإيجابية دون لبس؛ 2) 吉 معتدل، مؤاتٍ نسبي: ثمة تأكيد ولكن مع تحفظات أو شروط؛ 3) 凶 معتدل، غير مؤاتٍ نسبي: يميل النمط إلى النفي مع تحفظات؛ 4) 凶، غير مؤاتٍ واضح: ينفي النمط الشحنة الإيجابية دون لبس. إنها مناسبة للإجابات المختصرة ذات الطابع الأسلافي؛ أما الآي تشينغ فهو أفضل لفهم التحول المتدرج عبر الزمن.",
     related: ["methodNotes"],
   },
   {
@@ -646,13 +631,6 @@ const FAQ_ITEMS_AR: FaqItem[] = [
       "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
       "إنها أصيلة. المادة النصية — أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة — مستقاة من ثلاث ترجمات أكاديمية متاحة في التطبيق: Wilhelm/Baynes (في الملك العام منذ عام 2020)، وJames Legge، والتشو يي الأصلي. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
-    related: ["methodNotes"],
-  },
-  {
-    id: "silence-state",
-    question: "ماذا يعني الصمت في وضع عظام الكهانة؟",
-    answer:
-      "الصمت (沉默) هو خامس حالة حكم ممكنة في وضع العظام، وهو وفي للمنهج الأسلافي الشانغي. في التقليد الأصلي، حين لا يُنتج العظم شقوقًا قابلة للقراءة، لم يكن ذلك خطأً؛ بل كان إجابةً في حد ذاتها: لا يتكلم الأسلاف لأن اللحظة لم تنضج بعد لهذا السؤال، أو لأن الإجابة تتجاوز ما يمكن قوله. يحترم هذا التطبيق تلك الحالة ويُعيدها حين يدل عليها النمط.",
     related: ["methodNotes"],
   },
   {
@@ -730,7 +708,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "oracle-bones-method",
     question: "Oracle Bones विधि क्या है?",
     answer:
-      "Oracle Bones शांग युग की दिव्य विधि है, जो कछुए के कवच और बैल की कंधे की हड्डी पर दरारें पढ़ने से प्रेरित है। ऐप में यह I Ching से अलग है: यह हेक्साग्राम या बदलती रेखाएँ नहीं बनाती। प्रणाली पहले दरारों का पैटर्न और निर्णय बनाती है; फिर AI उस पहले से बने परिणाम की आपकी भाषा में व्याख्या करता है। निर्णय हमेशा शांग पूर्वज परंपरा के अनुरूप पाँच संभावित अवस्थाओं में से एक में आता है: 1) 吉: स्पष्ट रूप से शुभ: पैटर्न बिना संदेह सकारात्मक प्रस्ताव की पुष्टि करता है; 2) 吉 मध्यम: मध्यम रूप से शुभ: पुष्टि होती है पर बारीकियों या शर्तों के साथ; 3) 凶 मध्यम: मध्यम रूप से अशुभ: पैटर्न आरक्षणों के साथ नकार की ओर झुकता है; 4) 凶: स्पष्ट रूप से अशुभ: पैटर्न बिना संदेह सकारात्मक प्रस्ताव को नकारता है; 5) 沉默: मौन: पैटर्न पठनीय दरारें नहीं देता और मौन स्वयं उत्तर है। यह संक्षिप्त, पूर्वजों जैसी शैली के उत्तरों के लिए उपयोगी है; समय के साथ परतदार बदलाव समझने के लिए I Ching बेहतर है।",
+      "Oracle Bones शांग युग की दिव्य विधि है, जो कछुए के कवच और बैल की कंधे की हड्डी पर दरारें पढ़ने से प्रेरित है। ऐप में यह I Ching से अलग है: यह हेक्साग्राम या बदलती रेखाएँ नहीं बनाती। प्रणाली पहले दरारों का पैटर्न और निर्णय बनाती है; फिर AI उस पहले से बने परिणाम की आपकी भाषा में व्याख्या करता है। निर्णय हमेशा शांग पूर्वज परंपरा के अनुरूप चार संभावित अवस्थाओं में से एक में आता है: 1) 吉: स्पष्ट रूप से शुभ: पैटर्न बिना संदेह सकारात्मक प्रस्ताव की पुष्टि करता है; 2) 吉 मध्यम: मध्यम रूप से शुभ: पुष्टि होती है पर बारीकियों या शर्तों के साथ; 3) 凶 मध्यम: मध्यम रूप से अशुभ: पैटर्न आरक्षणों के साथ नकार की ओर झुकता है; 4) 凶: स्पष्ट रूप से अशुभ: पैटर्न बिना संदेह सकारात्मक प्रस्ताव को नकारता है। यह संक्षिप्त, पूर्वजों जैसी शैली के उत्तरों के लिए उपयोगी है; समय के साथ परतदार बदलाव समझने के लिए I Ching बेहतर है।",
     related: ["methodNotes"],
   },
   {
@@ -802,13 +780,6 @@ const FAQ_ITEMS_HI: FaqItem[] = [
       "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
     answer:
       "वे प्रामाणिक हैं। पाठ्य सामग्री — निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम — ऐप में उपलब्ध तीन विद्वानों के अनुवादों से ली गई है: Wilhelm/Baynes (2020 से सार्वजनिक डोमेन), James Legge, और मूल Zhou Yi। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं।",
-    related: ["methodNotes"],
-  },
-  {
-    id: "silence-state",
-    question: "Oracle Bones मोड में मौन (Silence) का क्या अर्थ है?",
-    answer:
-      "मौन (沉默) Oracle Bones मोड में पाँचवाँ संभावित निर्णय स्थिति है, और यह पूर्वज शांग पद्धति के प्रति सच्चा है। मूल परंपरा में, जब हड्डी पढ़ने योग्य दरारें नहीं देती थी, तो यह कोई त्रुटि नहीं थी; यह अपने आप में एक उत्तर था: पूर्वज नहीं बोलते क्योंकि उस प्रश्न के लिए समय अभी परिपक्व नहीं है, या क्योंकि उत्तर जो कहा जा सकता है उससे परे है। यह app उस स्थिति का सम्मान करती है और जब पैटर्न इंगित करता है तब इसे लौटाती है।",
     related: ["methodNotes"],
   },
   {
@@ -884,7 +855,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "oracle-bones-method",
     question: "甲骨の方法とは何ですか？",
     answer:
-      "甲骨は、亀甲や牛の肩甲骨に現れる亀裂を読む殷代の占いに着想を得た方法です。アプリでは易経とは別の方法であり、卦や変爻を作りません。まずシステムが亀裂のパターンと判定を形成し、その後AIがその結果をあなたの言語で解釈します。判定は常に、殷代の祖先的方法に忠実な五つの可能な状態のいずれかに収まります：1) 吉: はっきりと吉：パターンが肯定命題を曖昧さなく確認します；2) 吉 中程度: やや吉：確認はあるが、含みや条件を伴います；3) 凶 中程度: やや凶：パターンは留保付きで否定に傾きます；4) 凶: はっきりと凶：パターンが肯定命題を曖昧さなく否定します；5) 沉默: 沈黙：パターンが読み取れる亀裂を生じさせず、沈黙そのものが答えとなります。祖先的で簡潔な答えに向いており、時間の中で重層的に変化を読む場合は易経が適しています。",
+      "甲骨は、亀甲や牛の肩甲骨に現れる亀裂を読む殷代の占いに着想を得た方法です。アプリでは易経とは別の方法であり、卦や変爻を作りません。まずシステムが亀裂のパターンと判定を形成し、その後AIがその結果をあなたの言語で解釈します。判定は常に、殷代の祖先的方法に忠実な四つの可能な状態のいずれかに収まります：1) 吉: はっきりと吉：パターンが肯定命題を曖昧さなく確認します；2) 吉 中程度: やや吉：確認はあるが、含みや条件を伴います；3) 凶 中程度: やや凶：パターンは留保付きで否定に傾きます；4) 凶: はっきりと凶：パターンが肯定命題を曖昧さなく否定します。祖先的で簡潔な答えに向いており、時間の中で重層的に変化を読む場合は易経が適しています。",
     related: ["methodNotes"],
   },
   {
@@ -960,13 +931,6 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
-    id: "silence-state",
-    question: "卜骨モードにおける「沉默」とはどういう意味ですか？",
-    answer:
-      "沉默（沈黙）は卜骨モードの5番目の可能な判定状態であり、殷の祖先に忠実な方法です。古来の伝統では、骨に読み取れる亀裂が生じなかった場合、それは誤りではありませんでした。それ自体が一つの答えでした。つまり、その問いに対してまだ時が熟していないか、あるいは答えが言葉を超えているため、祖先は語らないのです。このアプリはその状態を尊重し、パターンがそれを示すときに返します。",
-    related: ["methodNotes"],
-  },
-  {
     id: "language-support",
     question: "このアプリは私の言語に対応していますか？",
     answer:
@@ -1039,7 +1003,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "oracle-bones-method",
     question: "什么是甲骨方法？",
     answer:
-      "甲骨方法源自商代占卜，灵感来自龟甲和牛肩胛骨裂纹的解读。在应用中，它与《易经》分开：不会生成卦象，也不会生成变爻。系统先形成裂纹图案和判定，然后由 AI 用你的语言解释这个已经形成的结果。判定始终落入五种可能状态之一，忠实于商代祖先方法：1）吉，明显为吉：图案明确确认正面命题，无歧义；2）偏吉，偏吉：有所确认，但带条件或细微差别；3）偏凶，偏凶：图案带保留地倾向于否定；4）凶，明显为凶：图案明确否定正面命题，无歧义；5）沉默：图案不产生可读裂纹，沉默本身即为答复。它适合简洁、祖先式的回答；若要观察随时间展开的层次变化，《易经》更合适。",
+      "甲骨方法源自商代占卜，灵感来自龟甲和牛肩胛骨裂纹的解读。在应用中，它与《易经》分开：不会生成卦象，也不会生成变爻。系统先形成裂纹图案和判定，然后由 AI 用你的语言解释这个已经形成的结果。判定始终落入四种可能状态之一，忠实于商代祖先方法：1）吉，明显为吉：图案明确确认正面命题，无歧义；2）偏吉，偏吉：有所确认，但带条件或细微差别；3）偏凶，偏凶：图案带保留地倾向于否定；4）凶，明显为凶：图案明确否定正面命题，无歧义。它适合简洁、祖先式的回答；若要观察随时间展开的层次变化，《易经》更合适。",
     related: ["methodNotes"],
   },
   {
@@ -1110,13 +1074,6 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     question: "解读中出现的易经文本是真实的还是AI生成的？",
     answer:
       "是真实的。文本素材 — 卦辞、动爻（爻辞）和变卦 — 来自应用中提供的三种学术译本：威廉/贝恩斯译本（2020年起属公共领域）、詹姆斯·理雅各译本和原典周易。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
-    related: ["methodNotes"],
-  },
-  {
-    id: "silence-state",
-    question: "甲骨文模式中的「沉默」是什么意思？",
-    answer:
-      "沉默是甲骨文模式中第五种可能的判断状态，忠实于商代祖先传统方法。在古代传统中，当骨头没有产生可读裂纹时，这不是错误，这本身就是一种答案：祖先不语，因为此问的时机尚未成熟，或因为答案超越了可以言说的范畴。本应用尊重这一状态，当图案显示时将其返回。",
     related: ["methodNotes"],
   },
   {
@@ -1193,7 +1150,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "oracle-bones-method",
     question: "갑골 방법이란 무엇인가요?",
     answer:
-      "갑골은 거북 배딱지와 소 견갑골의 균열을 읽던 상나라 시대 점복에서 영감을 받은 방법입니다. 앱에서는 주역과 별개의 방식입니다. 괘나 변효를 만들지 않습니다. 시스템이 먼저 균열 패턴과 판정을 형성하고, 그다음 AI가 이미 형성된 결과를 사용자의 언어로 해석합니다. 판정은 언제나 상나라 조상 전통에 충실한 다섯 가지 가능한 상태 중 하나로 떨어집니다: 1) 吉: 명확히 길함: 패턴이 모호함 없이 긍정 명제를 확인합니다; 2) 吉 중간: 다소 길함: 확인은 있지만 뉘앙스나 조건이 따릅니다; 3) 凶 중간: 다소 흉함: 패턴이 유보적으로 부정 쪽으로 기웁니다; 4) 凶: 명확히 흉함: 패턴이 모호함 없이 긍정 명제를 부정합니다; 5) 沉默: 침묵: 패턴이 읽을 수 있는 균열을 만들지 못하며, 침묵 자체가 답입니다. 간결하고 조상적 어조의 답에 적합하며, 시간 속에서 층층이 변하는 흐름은 주역이 더 적합합니다.",
+      "갑골은 거북 배딱지와 소 견갑골의 균열을 읽던 상나라 시대 점복에서 영감을 받은 방법입니다. 앱에서는 주역과 별개의 방식입니다. 괘나 변효를 만들지 않습니다. 시스템이 먼저 균열 패턴과 판정을 형성하고, 그다음 AI가 이미 형성된 결과를 사용자의 언어로 해석합니다. 판정은 언제나 상나라 조상 전통에 충실한 네 가지 가능한 상태 중 하나로 떨어집니다: 1) 吉: 명확히 길함: 패턴이 모호함 없이 긍정 명제를 확인합니다; 2) 吉 중간: 다소 길함: 확인은 있지만 뉘앙스나 조건이 따릅니다; 3) 凶 중간: 다소 흉함: 패턴이 유보적으로 부정 쪽으로 기웁니다; 4) 凶: 명확히 흉함: 패턴이 모호함 없이 긍정 명제를 부정합니다. 간결하고 조상적 어조의 답에 적합하며, 시간 속에서 층층이 변하는 흐름은 주역이 더 적합합니다.",
     related: ["methodNotes"],
   },
   {
@@ -1264,13 +1221,6 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     question: "해석에 나타나는 주역 텍스트는 진본인가요, AI가 생성한 것인가요?",
     answer:
       "진본입니다. 텍스트 자료 — 괘사(卦辞), 동효의 효사(爻辞), 변괘 — 는 앱에서 제공하는 세 가지 학술 번역본에서 인용되었습니다: 빌헬름/베인스 번역본(2020년부터 공공 도메인), 제임스 레그 번역본, 그리고 원전 주역. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다.",
-    related: ["methodNotes"],
-  },
-  {
-    id: "silence-state",
-    question: "갑골 모드에서 '침묵'은 무엇을 의미하나요?",
-    answer:
-      "침묵(沉默)은 갑골 모드의 다섯 번째 가능한 판정 상태이며, 상나라 조상 전통 방법에 충실합니다. 고대 전통에서 뼈에 읽을 수 있는 균열이 생기지 않았을 때, 이는 오류가 아니었습니다, 그 자체가 하나의 답이었습니다. 조상들이 말하지 않는 것은 그 질문에 대한 때가 무르익지 않았거나, 답이 말로 할 수 있는 것을 초월하기 때문입니다. 이 앱은 그 상태를 존중하며 패턴이 그것을 나타낼 때 반환합니다.",
     related: ["methodNotes"],
   },
   {
@@ -1348,7 +1298,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "oracle-bones-method",
     question: "O que é o método dos Ossos Oraculares?",
     answer:
-      "Ossos Oraculares é um método de adivinhação da era Shang inspirado na leitura de fissuras em plastrões de tartaruga e escápulas de boi. Na app, é separado do I Ching: não cria hexagramas nem linhas mutantes. O sistema forma primeiro um padrão de fissuras e um veredicto; depois a IA interpreta esse resultado já formado no teu idioma. O veredicto cai sempre num de cinco estados possíveis, fiéis ao método ancestral Shang: 1) 吉: favorável claro: o padrão confirma a carga positiva sem ambiguidade; 2) 吉 moderado: favorável moderado: há confirmação, mas com nuances ou condições; 3) 凶 moderado: desfavorável moderado: o padrão inclina-se para a negação com reservas; 4) 凶: desfavorável claro: o padrão nega a carga positiva sem ambiguidade; 5) 沉默: Silêncio: o padrão não produz fissuras legíveis e o próprio silêncio é a resposta. É útil para respostas concisas, de tom ancestral; o I Ching é melhor para mudanças em camadas ao longo do tempo.",
+      "Ossos Oraculares é um método de adivinhação da era Shang inspirado na leitura de fissuras em plastrões de tartaruga e escápulas de boi. Na app, é separado do I Ching: não cria hexagramas nem linhas mutantes. O sistema forma primeiro um padrão de fissuras e um veredicto; depois a IA interpreta esse resultado já formado no teu idioma. O veredicto cai sempre num de quatro estados possíveis, fiéis ao método ancestral Shang: 1) 吉: favorável claro: o padrão confirma a carga positiva sem ambiguidade; 2) 吉 moderado: favorável moderado: há confirmação, mas com nuances ou condições; 3) 凶 moderado: desfavorável moderado: o padrão inclina-se para a negação com reservas; 4) 凶: desfavorável claro: o padrão nega a carga positiva sem ambiguidade. É útil para respostas concisas, de tom ancestral; o I Ching é melhor para mudanças em camadas ao longo do tempo.",
     related: ["methodNotes"],
   },
   {
@@ -1420,13 +1370,6 @@ const FAQ_ITEMS_PT: FaqItem[] = [
       "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
       "São autênticos. O material textual — Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes — provém de três traduções académicas disponíveis na app: Wilhelm/Baynes (domínio público desde 2020), James Legge e o Zhou Yi original. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
-    related: ["methodNotes"],
-  },
-  {
-    id: "silence-state",
-    question: "O que significa o Silêncio no modo Ossos?",
-    answer:
-      "O Silêncio (沉默) é o quinto estado possível do veredicto no modo Ossos, e é fiel ao método ancestral Shang. Na tradição original, quando o osso não produzia fissuras legíveis, não era um erro; era uma resposta em si mesma: os ancestrais não falam porque o momento não está maduro para essa pergunta, ou porque a resposta transcende o que pode ser dito. Esta app respeita esse estado e devolve-o quando o padrão o indica.",
     related: ["methodNotes"],
   },
   {
@@ -1504,7 +1447,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "oracle-bones-method",
     question: "Was ist die Methode der Orakelknochen?",
     answer:
-      "Orakelknochen ist eine Wahrsagemethode aus der Shang Zeit, inspiriert vom Lesen von Rissen auf Schildkrötenpanzern und Ochsenschulterblättern. In der App ist sie vom I Ging getrennt: Sie erzeugt keine Hexagramme und keine wandelnden Linien. Das System bildet zuerst ein Rissmuster und ein Urteil; danach interpretiert die KI dieses bereits gebildete Ergebnis in deiner Sprache. Das Urteil fällt stets in einen von fünf möglichen Zuständen, die der ursprünglichen Shang-Tradition treu sind: 1) 吉: eindeutig günstig: das Muster bestätigt die positive Ladung ohne Mehrdeutigkeit; 2) 吉 mäßig: mäßig günstig: Bestätigung mit Nuancen oder Bedingungen; 3) 凶 mäßig: mäßig ungünstig: das Muster neigt mit Vorbehalten zur Verneinung; 4) 凶: eindeutig ungünstig: das Muster verneint die positive Ladung ohne Mehrdeutigkeit; 5) 沉默: Schweigen: das Muster erzeugt keine lesbaren Risse, und das Schweigen selbst ist die Antwort. Sie eignet sich für knappe Antworten im Ahnenstil; das I Ging eignet sich besser für vielschichtigen Wandel über die Zeit.",
+      "Orakelknochen ist eine Wahrsagemethode aus der Shang Zeit, inspiriert vom Lesen von Rissen auf Schildkrötenpanzern und Ochsenschulterblättern. In der App ist sie vom I Ging getrennt: Sie erzeugt keine Hexagramme und keine wandelnden Linien. Das System bildet zuerst ein Rissmuster und ein Urteil; danach interpretiert die KI dieses bereits gebildete Ergebnis in deiner Sprache. Das Urteil fällt stets in einen von vier möglichen Zuständen, die der ursprünglichen Shang-Tradition treu sind: 1) 吉: eindeutig günstig: das Muster bestätigt die positive Ladung ohne Mehrdeutigkeit; 2) 吉 mäßig: mäßig günstig: Bestätigung mit Nuancen oder Bedingungen; 3) 凶 mäßig: mäßig ungünstig: das Muster neigt mit Vorbehalten zur Verneinung; 4) 凶: eindeutig ungünstig: das Muster verneint die positive Ladung ohne Mehrdeutigkeit. Sie eignet sich für knappe Antworten im Ahnenstil; das I Ging eignet sich besser für vielschichtigen Wandel über die Zeit.",
     related: ["methodNotes"],
   },
   {
@@ -1582,13 +1525,6 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
-    id: "silence-state",
-    question: "Was bedeutet das Schweigen im Orakelknochen-Modus?",
-    answer:
-      "Das Schweigen (沉默) ist der fünfte mögliche Urteilszustand im Orakelknochen-Modus und ist der Shang-Ahnenüberlieferung treu. In der ursprünglichen Tradition war es kein Fehler, wenn der Knochen keine lesbaren Risse produzierte; es war eine Antwort für sich: Die Ahnen sprechen nicht, weil der Moment für diese Frage noch nicht reif ist oder weil die Antwort das Sagbare übersteigt. Diese App respektiert diesen Zustand und gibt ihn zurück, wenn das Muster es anzeigt.",
-    related: ["methodNotes"],
-  },
-  {
     id: "language-support",
     question: "Funktioniert die App in meiner Sprache?",
     answer:
@@ -1663,7 +1599,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "oracle-bones-method",
     question: "Che cos'è il metodo degli Ossi Oracolari?",
     answer:
-      "Gli Ossi Oracolari sono un metodo divinatorio dell'epoca Shang ispirato alla lettura delle crepe su piastroni di tartaruga e scapole di bue. Nell'app è separato dall'I Ching: non crea esagrammi né linee mutanti. Il sistema forma prima un pattern di crepe e un verdetto; poi l'IA interpreta quel risultato già formato nella tua lingua. Il verdetto rientra sempre in uno dei cinque stati possibili, fedeli al metodo ancestrale Shang: 1) 吉: chiaramente favorevole: il motivo conferma la carica positiva senza ambiguità; 2) 吉 moderato: moderatamente favorevole: c'è conferma ma con sfumature o condizioni; 3) 凶 moderato: moderatamente sfavorevole: il motivo pende verso la negazione con riserve; 4) 凶: chiaramente sfavorevole: il motivo nega la carica positiva senza ambiguità; 5) 沉默: Silenzio: il motivo non produce crepe leggibili e il silenzio stesso è la risposta. È utile per risposte concise, dal tono ancestrale; l'I Ching è più adatto ai cambiamenti stratificati nel tempo.",
+      "Gli Ossi Oracolari sono un metodo divinatorio dell'epoca Shang ispirato alla lettura delle crepe su piastroni di tartaruga e scapole di bue. Nell'app è separato dall'I Ching: non crea esagrammi né linee mutanti. Il sistema forma prima un pattern di crepe e un verdetto; poi l'IA interpreta quel risultato già formato nella tua lingua. Il verdetto rientra sempre in uno dei quattro stati possibili, fedeli al metodo ancestrale Shang: 1) 吉: chiaramente favorevole: il motivo conferma la carica positiva senza ambiguità; 2) 吉 moderato: moderatamente favorevole: c'è conferma ma con sfumature o condizioni; 3) 凶 moderato: moderatamente sfavorevole: il motivo pende verso la negazione con riserve; 4) 凶: chiaramente sfavorevole: il motivo nega la carica positiva senza ambiguità. È utile per risposte concise, dal tono ancestrale; l'I Ching è più adatto ai cambiamenti stratificati nel tempo.",
     related: ["methodNotes"],
   },
   {
@@ -1738,13 +1674,6 @@ const FAQ_ITEMS_IT: FaqItem[] = [
       "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
       "Sono autentici. Il materiale testuale — Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti — proviene da tre traduzioni accademiche disponibili nell'app: Wilhelm/Baynes (di pubblico dominio dal 2020), James Legge e lo Zhou Yi originale. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
-    related: ["methodNotes"],
-  },
-  {
-    id: "silence-state",
-    question: "Cosa significa il Silenzio nella modalità Ossa dell'Oracolo?",
-    answer:
-      "Il Silenzio (沉默) è il quinto stato di verdetto possibile nella modalità Ossa, ed è fedele all'antico metodo Shang. Nella tradizione originale, quando l'osso non produceva crepe leggibili, non era un errore; era una risposta in sé: gli antenati non parlano perché il momento non è maturo per quella domanda, o perché la risposta trascende ciò che può essere detto. Questa app rispetta quello stato e lo restituisce quando il modello lo indica.",
     related: ["methodNotes"],
   },
   {
@@ -1824,7 +1753,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "oracle-bones-method",
     question: "Qu'est-ce que la méthode des Os de l'Oracle ?",
     answer:
-      "Les Os de l'Oracle sont une méthode divinatoire de l'époque Shang inspirée de la lecture des fissures sur des plastrons de tortue et des omoplates de bœuf. Dans l'app, elle est distincte du I Ching: elle ne crée pas d'hexagrammes ni de traits changeants. Le système forme d'abord un motif de fissures et un verdict; puis l'IA interprète ce résultat déjà formé dans ta langue. Le verdict tombe toujours dans l'un des cinq états possibles, fidèles à la méthode ancestrale Shang : 1) 吉: clairement favorable : le motif confirme la charge positive sans ambiguïté ; 2) 吉 modéré: modérément favorable : la confirmation est présente, mais nuancée ou conditionnée ; 3) 凶 modéré: modérément défavorable : le motif penche vers la négation avec des réserves ; 4) 凶: clairement défavorable : le motif nie la charge positive sans ambiguïté ; 5) 沉默: Silence : le motif ne produit pas de fissures lisibles et le silence lui-même est la réponse. Elle convient aux réponses concises, au ton ancestral ; le I Ching convient mieux aux changements stratifiés dans le temps.",
+      "Les Os de l'Oracle sont une méthode divinatoire de l'époque Shang inspirée de la lecture des fissures sur des plastrons de tortue et des omoplates de bœuf. Dans l'app, elle est distincte du I Ching: elle ne crée pas d'hexagrammes ni de traits changeants. Le système forme d'abord un motif de fissures et un verdict; puis l'IA interprète ce résultat déjà formé dans ta langue. Le verdict tombe toujours dans l'un des quatre états possibles, fidèles à la méthode ancestrale Shang : 1) 吉: clairement favorable : le motif confirme la charge positive sans ambiguïté ; 2) 吉 modéré: modérément favorable : la confirmation est présente, mais nuancée ou conditionnée ; 3) 凶 modéré: modérément défavorable : le motif penche vers la négation avec des réserves ; 4) 凶: clairement défavorable : le motif nie la charge positive sans ambiguïté. Elle convient aux réponses concises, au ton ancestral ; le I Ching convient mieux aux changements stratifiés dans le temps.",
     related: ["methodNotes"],
   },
   {
@@ -1899,13 +1828,6 @@ const FAQ_ITEMS_FR: FaqItem[] = [
       "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
       "Ils sont authentiques. Le matériel textuel — Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants — provient de trois traductions académiques disponibles dans l'app : Wilhelm/Baynes (dans le domaine public depuis 2020), James Legge et le Zhou Yi original. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
-    related: ["methodNotes"],
-  },
-  {
-    id: "silence-state",
-    question: "Que signifie le Silence en mode Os de l'Oracle ?",
-    answer:
-      "Le Silence (沉默) est le cinquième état de verdict possible en mode Os, et il est fidèle à la méthode ancestrale Shang. Dans la tradition originale, lorsque l'os ne produisait pas de fissures lisibles, ce n'était pas une erreur; c'était une réponse en soi : les ancêtres ne parlent pas car le moment n'est pas mûr pour cette question, ou parce que la réponse transcende ce qui peut être dit. Cette app respecte cet état et le renvoie lorsque le motif l'indique.",
     related: ["methodNotes"],
   },
   {

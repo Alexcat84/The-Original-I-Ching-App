@@ -2,12 +2,13 @@ import type { OracleBonesCastResult, OracleBonesVerdict, PerformOracleBonesOptio
 
 export type Rng = () => number;
 
+// Proportional redistribution of original weights after removing the silent verdict (was 15%).
+// Original ratios preserved: auspicious_clear 25/85, others 20/85 each.
 const WEIGHTS: Array<{ id: number; p: number }> = [
-  { id: 1, p: 0.25 },
-  { id: 2, p: 0.2 },
-  { id: 3, p: 0.2 },
-  { id: 4, p: 0.2 },
-  { id: 5, p: 0.15 },
+  { id: 1, p: 0.2941 }, // auspicious_clear   ~29.4%
+  { id: 2, p: 0.2353 }, // auspicious_moderate ~23.5%
+  { id: 3, p: 0.2353 }, // inauspicious_moderate ~23.5%
+  { id: 4, p: 0.2353 }, // inauspicious_clear  ~23.5%
 ];
 
 function newId(): string {
@@ -23,10 +24,10 @@ export function rollCrackPattern(rng: Rng = Math.random): number {
     acc += w.p;
     if (u < acc) return w.id;
   }
-  return 5;
+  return 4;
 }
 
-function verdictForPattern(patternId: number): { verdict: OracleBonesVerdict; affirmsPositive: boolean | null } {
+function verdictForPattern(patternId: number): { verdict: OracleBonesVerdict; affirmsPositive: boolean } {
   switch (patternId) {
     case 1:
       return { verdict: "auspicious_clear", affirmsPositive: true };
@@ -34,16 +35,11 @@ function verdictForPattern(patternId: number): { verdict: OracleBonesVerdict; af
       return { verdict: "auspicious_moderate", affirmsPositive: true };
     case 3:
       return { verdict: "inauspicious_moderate", affirmsPositive: false };
-    case 4:
-      return { verdict: "inauspicious_clear", affirmsPositive: false };
     default:
-      return { verdict: "silent", affirmsPositive: null };
+      return { verdict: "inauspicious_clear", affirmsPositive: false };
   }
 }
 
-/**
- * Shang-style oracle bone draw: indeterminate (5) may repeat up to 3 times; then "silent ancestors".
- */
 export function performOracleBonesCast(
   positiveCharge: string,
   negativeCharge: string,
@@ -51,29 +47,13 @@ export function performOracleBonesCast(
   options?: PerformOracleBonesOptions,
 ): OracleBonesCastResult {
   const rng = options?.rng ?? Math.random;
-  let ambiguousPasses = 0;
-  let patternId = 5;
-
-  for (;;) {
-    const draw = rollCrackPattern(rng);
-    if (draw !== 5) {
-      patternId = draw;
-      break;
-    }
-    ambiguousPasses += 1;
-    if (ambiguousPasses >= 3) {
-      patternId = 5;
-      break;
-    }
-  }
-
+  const patternId = rollCrackPattern(rng);
   const { verdict, affirmsPositive } = verdictForPattern(patternId);
 
   return {
     id: options?.id ?? newId(),
     patternId,
     verdict,
-    ambiguousPasses,
     affirmsPositive,
     positiveCharge: positiveCharge.trim(),
     negativeCharge: negativeCharge.trim(),

@@ -17,77 +17,66 @@ const VERDICT_LABELS: Record<OracleBonesUiLang, Record<Verdict, string>> = {
     auspicious_moderate: "favorable moderado",
     inauspicious_moderate: "desfavorable moderado",
     inauspicious_clear: "desfavorable claro",
-    silent: "silencio/indeterminado",
   },
   en: {
     auspicious_clear: "clearly favorable",
     auspicious_moderate: "moderately favorable",
     inauspicious_moderate: "moderately unfavorable",
     inauspicious_clear: "clearly unfavorable",
-    silent: "silent/indeterminate",
   },
   pt: {
     auspicious_clear: "favorável claro",
     auspicious_moderate: "favorável moderado",
     inauspicious_moderate: "desfavorável moderado",
     inauspicious_clear: "desfavorável claro",
-    silent: "silêncio/indeterminado",
   },
   fr: {
     auspicious_clear: "clairement favorable",
     auspicious_moderate: "modérément favorable",
     inauspicious_moderate: "modérément défavorable",
     inauspicious_clear: "clairement défavorable",
-    silent: "silence/indéterminé",
   },
   de: {
     auspicious_clear: "deutlich günstig",
     auspicious_moderate: "mäßig günstig",
     inauspicious_moderate: "mäßig ungünstig",
     inauspicious_clear: "deutlich ungünstig",
-    silent: "Stille/unbestimmt",
   },
   it: {
     auspicious_clear: "chiaramente favorevole",
     auspicious_moderate: "moderatamente favorevole",
     inauspicious_moderate: "moderatamente sfavorevole",
     inauspicious_clear: "chiaramente sfavorevole",
-    silent: "silenzio/indeterminato",
   },
   ja: {
     auspicious_clear: "明らかに吉",
     auspicious_moderate: "やや吉",
     inauspicious_moderate: "やや凶",
     inauspicious_clear: "明らかに凶",
-    silent: "沈黙／不定",
   },
   zh: {
     auspicious_clear: "明显为吉",
     auspicious_moderate: "偏吉",
     inauspicious_moderate: "偏凶",
     inauspicious_clear: "明显为凶",
-    silent: "静默／未定",
   },
   ko: {
     auspicious_clear: "명확히 길함",
     auspicious_moderate: "다소 길함",
     inauspicious_moderate: "다소 흉함",
     inauspicious_clear: "명확히 흉함",
-    silent: "침묵／미정",
   },
   ar: {
     auspicious_clear: "مبشّر بوضوح",
     auspicious_moderate: "مبشّر بدرجة معتدلة",
     inauspicious_moderate: "غير مبشّر بدرجة معتدلة",
     inauspicious_clear: "غير مبشّر بوضوح",
-    silent: "صمت/غير محدد",
   },
   hi: {
     auspicious_clear: "स्पष्ट रूप से शुभ",
     auspicious_moderate: "मध्यम रूप से शुभ",
     inauspicious_moderate: "मध्यम रूप से अशुभ",
     inauspicious_clear: "स्पष्ट रूप से अशुभ",
-    silent: "मौन/अनिर्धारित",
   },
 };
 
@@ -99,33 +88,6 @@ export function verdictNaturalLabelLocalized(verdict: Verdict, language: string)
 export function structuralVerdictLineLocalized(cast: OracleBonesCastResult, language: string): string {
   const lang = normalizeOracleBonesUiLang(language);
   const label = VERDICT_LABELS[lang][cast.verdict];
-
-  if (cast.affirmsPositive === null) {
-    switch (lang) {
-      case "en":
-        return `**Structural verdict:** ${label}. Ancestors are silent/indeterminate; no yes/no confirmation is available.`;
-      case "es":
-        return `**Veredicto estructural:** ${label}. Ancestros en silencio/indeterminación; no hay confirmación sí/no disponible.`;
-      case "pt":
-        return `**Veredito estrutural:** ${label}. Os ancestrais permanecem em silêncio/indeterminação; não há confirmação sim/não disponível.`;
-      case "fr":
-        return `**Verdict structurel :** ${label}. Les ancêtres demeurent dans le silence/l'indétermination ; aucune confirmation oui/non n'est disponible.`;
-      case "de":
-        return `**Strukturelles Urteil:** ${label}. Die Ahnen schweigen/sind unbestimmt; es gibt keine klare Ja/Nein-Bestätigung.`;
-      case "it":
-        return `**Verdetto strutturale:** ${label}. Gli antenati sono nel silenzio/nell'indeterminatezza; non è disponibile una conferma sì/no.`;
-      case "ja":
-        return `**構造上の裁定：**${label}。祖先の兆しは沈黙／不定であり、この占いで明確なイエス・ノーは示されません。`;
-      case "zh":
-        return `**结构裁定：**${label}。祖先之兆静默／未定；此占无法给出明确的是／否。`;
-      case "ko":
-        return `**구조적 판정:** ${label}. 조상의 계시는 침묵/미정이며, 이번 점에서 명확한 예/아니오 확인은 없습니다.`;
-      case "ar":
-        return `**الحكم البنيوي:** ${label}. إشارات الأسلاف في حالة صمت/لا تحديد؛ ولا تتوفر في هذه الرمية تأكيدات نعم/لا واضحة.`;
-      case "hi":
-        return `**संरचनात्मक निर्णय:** ${label}। पूर्वजों का संकेत मौन/अनिर्धारित है; इस कास्ट में स्पष्ट हाँ/नहीं पुष्टि उपलब्ध नहीं है।`;
-    }
-  }
 
   if (cast.affirmsPositive) {
     switch (lang) {
@@ -180,63 +142,9 @@ export function structuralVerdictLineLocalized(cast: OracleBonesCastResult, lang
   }
 }
 
-export function oracleBonesSilentVerdictMessage(language: string): string {
-  const lang = normalizeOracleBonesUiLang(language);
-  switch (lang) {
-    case "es":
-      return "Tras tres indeterminaciones seguidas en la lectura del patrón de grieta, la tradición shang sugería a veces dejar pasar el asunto y no forzar un sí o no en ese momento. Vuelve a formular la consulta cuando veas el curso más claro.";
-    case "en":
-      return "After three indeterminate crack readings in a row, Shang-era practice often meant pausing rather than forcing a yes/no. Reformulate when the situation feels clearer.";
-    case "pt":
-      return "Após três leituras indeterminadas seguidas do padrão de fissura, a prática da era Shang frequentemente aconselhava esperar em vez de forçar um sim/não. Reformule quando o quadro estiver mais claro.";
-    case "fr":
-      return "Après trois lectures indéterminées d'affilée du motif de fissure, la pratique de l'époque des Shang invitait souvent à attendre plutôt qu'à forcer un oui/non. Reformulez lorsque la situation paraît plus claire.";
-    case "de":
-      return "Nach drei nacheinander unbestimmten Riss-Lesungen bedeutete Shang-Zeit oft: pausieren statt Ja/Nein zu erzwingen. Formulieren Sie neu, wenn die Lage klarer erscheint.";
-    case "it":
-      return "Dopo tre letture indeterminate di fila del motivo di crepa, nella pratica dell'epoca Shang si consigliava spesso di attendere piuttosto che forzare un sì/no. Riformula quando la situazione ti sembra più chiara.";
-    case "ja":
-      return "亀甲の兆しが三度続けて不定だった場合、殷の占法では一時停止し、イエス・ノーを無理に求めないこともありました。状況が見えてきたら、問いを改めてください。";
-    case "zh":
-      return "若裂纹兆象连续三次不定，商代做法常是暂缓而非强求是或否。待情势更明朗时再重述所问。";
-    case "ko":
-      return "균열 패턴이 연속 세 번 불명확하면, 상(商) 시대 관례는 예/아니오를 억지로 내기보다 잠시 멈추는 경우가 많았습니다. 상황이 더 분명해지면 질문을 다시 정리해 보세요.";
-    case "ar":
-      return "إذا جاءت قراءة الشقوق غير حاسمة ثلاث مرات متتالية، فكان التقليد الشانغي يميل إلى التريّث بدل فرض إجابة نعم/لا. أعد صياغة سؤالك عندما تتضح الصورة أكثر.";
-    case "hi":
-      return "यदि दरार-पठन लगातार तीन बार अनिर्णीत आए, तो शांग परंपरा में अक्सर हाँ/नहीं को मजबूर करने के बजाय ठहरने की सलाह दी जाती थी। स्थिति स्पष्ट होने पर प्रश्न को फिर से रखें।";
-  }
-}
-
 export function oracleBonesFallbackProse(cast: OracleBonesCastResult, language: string): string {
   const lang = normalizeOracleBonesUiLang(language);
   const label = VERDICT_LABELS[lang][cast.verdict];
-  if (cast.affirmsPositive === null) {
-    switch (lang) {
-      case "es":
-        return `El patrón de grieta (${label}) no ofrece un sí o no claro en este momento.`;
-      case "en":
-        return `The crack outcome (${label}) offers no clear yes/no at this time.`;
-      case "pt":
-        return `O padrão de fissura (${label}) não oferece um sim/não claro neste momento.`;
-      case "fr":
-        return `Le motif de fissure (${label}) n'offre pas d'oui/non clair pour l'instant.`;
-      case "de":
-        return `Das Rissmuster (${label}) liefert derzeit kein klares Ja/Nein.`;
-      case "it":
-        return `Il motivo di crepa (${label}) non offre un sì/no chiaro in questo momento.`;
-      case "ja":
-        return `この亀裂の兆し（${label}）は、現時点では明確なイエス・ノーを示しません。`;
-      case "zh":
-        return `此裂纹兆象（${label}）目前无法给出明确的是／否。`;
-      case "ko":
-        return `이 균열 패턴(${label})은 지금 명확한 예/아니오를 주지 않습니다.`;
-      case "ar":
-        return `نمط الشقوق (${label}) لا يقدّم في الوقت الحالي إجابة نعم/لا واضحة.`;
-      case "hi":
-        return `यह दरार-पैटर्न (${label}) इस समय स्पष्ट हाँ/नहीं नहीं देता।`;
-    }
-  }
   if (cast.affirmsPositive) {
     switch (lang) {
       case "es":

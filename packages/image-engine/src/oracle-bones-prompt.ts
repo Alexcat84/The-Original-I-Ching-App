@@ -27,11 +27,10 @@ export function describeOracleBoneCrackTopology(patternId: number): string {
         "Crack system 兆 type D (inauspicious clear): vertical main 兆 from pit, then bifurcation ('Y') toward lower field; " +
         "one branch longer — emphatic divergence, deep carved channels."
       );
-    case 5:
     default:
       return (
-        "Crack system 兆 type E (indeterminate / ancestral silence): several short irregular stress lines from multiple shallow drill points, " +
-        "no single commanding 兆; porous bone around pits; ambiguous fracture network."
+        "Crack system 兆 type D (inauspicious clear): vertical main 兆 from pit, then bifurcation ('Y') toward lower field; " +
+        "one branch longer — emphatic divergence, deep carved channels."
       );
   }
 }
