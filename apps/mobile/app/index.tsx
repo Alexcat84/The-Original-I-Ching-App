@@ -977,54 +977,21 @@ interface ImageZoomModalProps {
 
 /* ── Offline / WebView error screen ──────────────────────────────────────── */
 function OfflineScreen({ onRetry }: { onRetry: () => void }) {
-  const ring1 = useRef(new Animated.Value(0)).current;
-  const ring2 = useRef(new Animated.Value(0)).current;
-  const ring3 = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const makeRing = (val: Animated.Value, delay: number) =>
-      Animated.loop(
-        Animated.sequence([
-          Animated.delay(delay),
-          Animated.timing(val, { toValue: 1, duration: 2400, useNativeDriver: true }),
-          Animated.timing(val, { toValue: 0, duration: 0, useNativeDriver: true }),
-        ])
-      );
-    const a1 = makeRing(ring1, 0);
-    const a2 = makeRing(ring2, 600);
-    const a3 = makeRing(ring3, 1200);
-    a1.start(); a2.start(); a3.start();
-    return () => { a1.stop(); a2.stop(); a3.stop(); };
-  }, [ring1, ring2, ring3]);
-
-  const ringStyle = (val: Animated.Value) => ({
-    opacity: val.interpolate({ inputRange: [0, 0.3, 1], outputRange: [0, 0.5, 0] }),
-    transform: [{ scale: val.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) }],
-  });
+    Animated.timing(opacity, { toValue: 1, duration: 600, useNativeDriver: true }).start();
+  }, [opacity]);
 
   return (
-    <View style={offlineStyles.root}>
-      {/* Animated radar rings */}
-      <View style={offlineStyles.radarWrap}>
-        <Animated.View style={[offlineStyles.ring, offlineStyles.ring1, ringStyle(ring1)]} />
-        <Animated.View style={[offlineStyles.ring, offlineStyles.ring2, ringStyle(ring2)]} />
-        <Animated.View style={[offlineStyles.ring, offlineStyles.ring3, ringStyle(ring3)]} />
-        {/* Center glyph */}
-        <View style={offlineStyles.center}>
-          <Text style={offlineStyles.glyph}>☰</Text>
-        </View>
-      </View>
-
-      <Text style={offlineStyles.title}>No Internet Connection</Text>
-      <Text style={offlineStyles.body}>
-        The oracle requires a connection to consult the I Ching.{"\n"}
-        Your previous readings remain saved locally.
-      </Text>
-
+    <Animated.View style={[offlineStyles.root, { opacity }]}>
+      <Text style={offlineStyles.glyph}>易</Text>
+      <Text style={offlineStyles.title}>Signal Lost</Text>
+      <Text style={offlineStyles.body}>The oracle is waiting for you.</Text>
       <TouchableOpacity style={offlineStyles.btn} onPress={onRetry} activeOpacity={0.75}>
         <Text style={offlineStyles.btnText}>Try Again</Text>
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -1034,37 +1001,12 @@ const offlineStyles = StyleSheet.create({
     backgroundColor: "#0c0f14",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 36,
-  },
-  radarWrap: {
-    width: 140,
-    height: 140,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 36,
-  },
-  ring: {
-    position: "absolute",
-    borderRadius: 9999,
-    borderWidth: 1.5,
-    borderColor: "#c9a227",
-  },
-  ring1: { width: 140, height: 140 },
-  ring2: { width: 100, height: 100 },
-  ring3: { width: 64, height: 64 },
-  center: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: "#16191f",
-    borderWidth: 1,
-    borderColor: "#c9a22766",
-    alignItems: "center",
-    justifyContent: "center",
+    paddingHorizontal: 40,
   },
   glyph: {
-    fontSize: 22,
-    color: "#c9a227",
+    fontSize: 52,
+    color: "#c9a22755",
+    marginBottom: 28,
   },
   title: {
     fontSize: 19,
