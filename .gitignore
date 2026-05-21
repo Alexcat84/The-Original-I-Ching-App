@@ -20,3 +20,7 @@ apps/mobile/.expo
 apps/mobile/dist
 .vercel
 tools/output/
+# Temporary / local artifacts — never commit
+*.keystore.bak
+*.jks.bak
+tools/fallback-tools/_sim*.mjs
