@@ -2139,7 +2139,11 @@ export default function HomePage() {
       lastScrollWasRevealRef.current = false;
       return;
     }
-    // First render after mount/remount or session change: jump instantly to avoid visual slide
+    // First render after mount/remount or session change: jump instantly to avoid visual slide.
+    // Don't mark as done until there's actual content — if the thread is still empty
+    // (loading state), a subsequent render with cached data would use "smooth" and produce
+    // the unwanted slide-up animation.
+    if (activeThread.length === 0 && !mountScrollDoneRef.current) return;
     const behavior = mountScrollDoneRef.current ? "smooth" : "instant";
     mountScrollDoneRef.current = true;
     endRef.current?.scrollIntoView({ behavior, block: "end" });
