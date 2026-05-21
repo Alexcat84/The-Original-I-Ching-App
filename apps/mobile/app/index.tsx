@@ -975,6 +975,125 @@ interface ImageZoomModalProps {
   onClose: () => void;
 }
 
+/* ── Offline / WebView error screen ──────────────────────────────────────── */
+function OfflineScreen({ onRetry }: { onRetry: () => void }) {
+  const ring1 = useRef(new Animated.Value(0)).current;
+  const ring2 = useRef(new Animated.Value(0)).current;
+  const ring3 = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const makeRing = (val: Animated.Value, delay: number) =>
+      Animated.loop(
+        Animated.sequence([
+          Animated.delay(delay),
+          Animated.timing(val, { toValue: 1, duration: 2400, useNativeDriver: true }),
+          Animated.timing(val, { toValue: 0, duration: 0, useNativeDriver: true }),
+        ])
+      );
+    const a1 = makeRing(ring1, 0);
+    const a2 = makeRing(ring2, 600);
+    const a3 = makeRing(ring3, 1200);
+    a1.start(); a2.start(); a3.start();
+    return () => { a1.stop(); a2.stop(); a3.stop(); };
+  }, [ring1, ring2, ring3]);
+
+  const ringStyle = (val: Animated.Value) => ({
+    opacity: val.interpolate({ inputRange: [0, 0.3, 1], outputRange: [0, 0.5, 0] }),
+    transform: [{ scale: val.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) }],
+  });
+
+  return (
+    <View style={offlineStyles.root}>
+      {/* Animated radar rings */}
+      <View style={offlineStyles.radarWrap}>
+        <Animated.View style={[offlineStyles.ring, offlineStyles.ring1, ringStyle(ring1)]} />
+        <Animated.View style={[offlineStyles.ring, offlineStyles.ring2, ringStyle(ring2)]} />
+        <Animated.View style={[offlineStyles.ring, offlineStyles.ring3, ringStyle(ring3)]} />
+        {/* Center glyph */}
+        <View style={offlineStyles.center}>
+          <Text style={offlineStyles.glyph}>☰</Text>
+        </View>
+      </View>
+
+      <Text style={offlineStyles.title}>No Internet Connection</Text>
+      <Text style={offlineStyles.body}>
+        The oracle requires a connection to consult the I Ching.{"\n"}
+        Your previous readings remain saved locally.
+      </Text>
+
+      <TouchableOpacity style={offlineStyles.btn} onPress={onRetry} activeOpacity={0.75}>
+        <Text style={offlineStyles.btnText}>Try Again</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const offlineStyles = StyleSheet.create({
+  root: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#0c0f14",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 36,
+  },
+  radarWrap: {
+    width: 140,
+    height: 140,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 36,
+  },
+  ring: {
+    position: "absolute",
+    borderRadius: 9999,
+    borderWidth: 1.5,
+    borderColor: "#c9a227",
+  },
+  ring1: { width: 140, height: 140 },
+  ring2: { width: 100, height: 100 },
+  ring3: { width: 64, height: 64 },
+  center: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: "#16191f",
+    borderWidth: 1,
+    borderColor: "#c9a22766",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  glyph: {
+    fontSize: 22,
+    color: "#c9a227",
+  },
+  title: {
+    fontSize: 19,
+    fontWeight: "700",
+    color: "#e8d5a3",
+    marginBottom: 12,
+    textAlign: "center",
+  },
+  body: {
+    fontSize: 14,
+    color: "#7a7060",
+    textAlign: "center",
+    lineHeight: 22,
+    marginBottom: 36,
+  },
+  btn: {
+    backgroundColor: "#c9a227",
+    paddingVertical: 13,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+  },
+  btnText: {
+    color: "#0c0f14",
+    fontWeight: "700",
+    fontSize: 15,
+    letterSpacing: 0.4,
+  },
+});
+
 function ImageZoomModal({ uri, onClose }: ImageZoomModalProps) {
   const scale = useRef(new Animated.Value(1)).current;
   const savedScale = useRef(1);
@@ -1346,6 +1465,8 @@ export default function WebViewScreen() {
   const [nativeDialog, setNativeDialog] = useState<NativeDialogConfig | null>(null);
   const showNativeDialog = useCallback((config: NativeDialogConfig) => setNativeDialog(config), []);
   const [debugLogs, setDebugLogs] = useState<string[]>([]);
+  const [webViewError, setWebViewError] = useState(false);
+  const [webViewKey, setWebViewKey] = useState(0);
 
   const addLog = (msg: string) => {
     setDebugLogs(prev => [...prev.slice(-10), `${new Date().toISOString().slice(11, 19)} ${msg}`]);
@@ -2017,6 +2138,7 @@ export default function WebViewScreen() {
         ]}
       >
         <WebView
+        key={webViewKey}
         ref={webViewRef}
         source={{ uri: currentUrl }}
         style={styles.webview}
@@ -2024,6 +2146,7 @@ export default function WebViewScreen() {
         onNavigationStateChange={onNavigationStateChange}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onMessage={onMessage}
+        onError={() => setWebViewError(true)}
         injectedJavaScriptBeforeContentLoaded="document.documentElement.classList.add('iching-rn-webview');true;"
         injectedJavaScript={COMBINED_INJECTED_JS}
         javaScriptEnabled
@@ -2041,6 +2164,9 @@ export default function WebViewScreen() {
         )}
         startInLoadingState
         />
+        {webViewError && (
+          <OfflineScreen onRetry={() => { setWebViewError(false); setWebViewKey(k => k + 1); }} />
+        )}
       </View>
 
       {/* ── P4: Native image zoom modal ───────────────────────────────────── */}
