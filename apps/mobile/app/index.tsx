@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases from "react-native-purchases";
-import { initDb, getCachedChatsForInjection, getLocalImagePath, clearAllData } from "@/src/db/chat-store";
+import { initDb, getCachedChatsForInjection, getLocalImagePath, type RnCachedChatEntry } from "@/src/db/chat-store";
 import { syncChats } from "@/src/sync/sync-service";
 import * as FileSystem from "expo-file-system";
 import * as Linking from "expo-linking";
@@ -1300,6 +1300,8 @@ export default function WebViewScreen() {
   const [canGoBack, setCanGoBack] = useState(false);
   const splashHidden = useRef(false);
   const webReadyRef = useRef(false);
+  /** Pre-fetched SQLite cache — populated on mount, injected synchronously in onLoadEnd. */
+  const cachedChatsRef = useRef<RnCachedChatEntry[]>([]);
 
   /* ── Auth state (P3) ── */
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -1382,9 +1384,14 @@ export default function WebViewScreen() {
     []
   );
 
-  /* ── SQLite: initialize schema on first mount ── */
+  /* ── SQLite: initialize schema on mount, then pre-fetch cached chats into ref.
+     Pre-fetching starts before onLoadEnd fires (WebView loading takes ~1-3s),
+     so the ref is ready for synchronous injection when the page finishes loading.  ── */
   useEffect(() => {
-    void initDb().catch(() => undefined);
+    void initDb()
+      .then(() => getCachedChatsForInjection())
+      .then((chats) => { cachedChatsRef.current = chats; })
+      .catch(() => undefined);
   }, []);
 
   /* ── Restore token + locale from storage on cold start ── */
@@ -1444,17 +1451,11 @@ export default function WebViewScreen() {
     }
   }, []);
 
-  const onLoadEnd = useCallback(() => {
-    webReadyRef.current = true;
-    webViewRef.current?.injectJavaScript(
-      `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
-    );
-    if (localeStorageHydratedRef.current) {
-      webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
-    }
-    hideSplash();
-    // Inject cached chats from SQLite into the web app (stale-while-revalidate).
+  /** Reads current SQLite state and pushes it to the WebView as rn:cached-chats.
+   *  Updates cachedChatsRef as a side-effect so subsequent onLoadEnd calls are also fast. */
+  const injectCachedChats = useCallback(() => {
     void getCachedChatsForInjection().then((chats) => {
+      cachedChatsRef.current = chats;
       if (chats.length === 0) return;
       const payload = JSON.stringify(chats);
       webViewRef.current?.injectJavaScript(
@@ -1464,7 +1465,32 @@ export default function WebViewScreen() {
         `}catch(_){}})();true;`
       );
     }).catch(() => undefined);
-  }, [hideSplash]);
+  }, []);
+
+  const onLoadEnd = useCallback(() => {
+    webReadyRef.current = true;
+    webViewRef.current?.injectJavaScript(
+      `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+    );
+    if (localeStorageHydratedRef.current) {
+      webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
+    }
+    hideSplash();
+    // Fast path: inject pre-fetched data from ref synchronously (no bridge round-trip delay).
+    // This fires before the web-side Supabase useEffect can make a network request,
+    // ensuring the cache is visible before network data arrives.
+    if (cachedChatsRef.current.length > 0) {
+      const payload = JSON.stringify(cachedChatsRef.current);
+      webViewRef.current?.injectJavaScript(
+        `(function(){try{` +
+          `window.__rnCachedChats=${payload};` +
+          `window.dispatchEvent(new CustomEvent('rn:cached-chats',{detail:window.__rnCachedChats}));` +
+        `}catch(_){}})();true;`
+      );
+    }
+    // Async refresh: covers the case where syncChats() ran after mount and updated SQLite.
+    injectCachedChats();
+  }, [hideSplash, injectCachedChats]);
 
   /* ── Deep link handler — OAuth callback + RevenueCat redemption ── */
   useEffect(() => {
@@ -1740,7 +1766,9 @@ export default function WebViewScreen() {
             webViewRef.current?.injectJavaScript(
               `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
             );
-            void syncChats(msg.token, BASE_URL).catch(() => undefined);
+            void syncChats(msg.token, BASE_URL)
+              .then(() => injectCachedChats())
+              .catch(() => undefined);
             break;
 
           case "auth_signout":
@@ -1749,7 +1777,6 @@ export default function WebViewScreen() {
             setIsAuthenticated(false);
             setUserEmail(null);
             SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
-            void clearAllData().catch(() => undefined);
             webViewRef.current?.injectJavaScript(
               `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
             );
@@ -1846,7 +1873,7 @@ export default function WebViewScreen() {
         // Ignore non-JSON bridge noise
       }
     },
-    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog]
+    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog, injectCachedChats]
   );
 
   /* ── Intercept Google OAuth + internal doc navigation ── */
