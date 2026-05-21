@@ -7,7 +7,7 @@ module.exports = ({ config }) => ({
   ...config,
   name: "The Original I Ching",
   slug: "the-original-i-ching",
-  version: "3.2.6",
+  version: "3.2.7",
   scheme: "theoriginaliching",
   orientation: "portrait",
   platforms: ["android"],
@@ -24,7 +24,7 @@ module.exports = ({ config }) => ({
   },
   android: {
     package: "com.theoriginaliching.app",
-    versionCode: 19,
+    versionCode: 20,
     compileSdkVersion: 35,
     targetSdkVersion: 35,
     buildToolsVersion: "35.0.0",
@@ -37,8 +37,6 @@ module.exports = ({ config }) => ({
       backgroundColor: "#0c0f14",
     },
     permissions: [
-      "android.permission.READ_MEDIA_IMAGES",
-      "android.permission.READ_MEDIA_VIDEO",
       "android.permission.WRITE_EXTERNAL_STORAGE",
       "android.permission.READ_EXTERNAL_STORAGE",
     ],
