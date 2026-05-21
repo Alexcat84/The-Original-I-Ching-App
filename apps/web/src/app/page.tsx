@@ -2788,6 +2788,27 @@ export default function HomePage() {
     setActiveSessionLocalId,
   ]);
 
+  // Native bridge: consume window.__rnCachedChats injected by the Android WebView shell
+  // after onLoadEnd. Populates the session list with stale SQLite data before the
+  // Supabase fetch below completes (stale-while-revalidate from native cache).
+  useEffect(() => {
+    type RnEntry = ChatSessionState<ConsultationItem>;
+    function applyCache(entries: RnEntry[]) {
+      if (!Array.isArray(entries) || entries.length === 0) return;
+      setSessions((prev) => {
+        if (prev.some((s) => s.messageCount > 0)) return prev;
+        return entries;
+      });
+    }
+    function onRnCached(e: Event) {
+      applyCache((e as CustomEvent<RnEntry[]>).detail);
+    }
+    window.addEventListener("rn:cached-chats", onRnCached);
+    const win = window as unknown as { __rnCachedChats?: RnEntry[] };
+    if (Array.isArray(win.__rnCachedChats)) applyCache(win.__rnCachedChats);
+    return () => window.removeEventListener("rn:cached-chats", onRnCached);
+  }, [setSessions]);
+
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
     let cancelled = false;
