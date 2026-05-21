@@ -190,6 +190,32 @@ Herramientas locales de QA (no producción): `pnpm run generate:together:iching-
 5. **Free trial doble** — `user_trial_log` + `ON CONFLICT DO NOTHING` previene re-otorgamiento
 6. **Auth egress Supabase** — debounce en refresh de token evita refetch innecesario
 7. **Sellos/glifos en imágenes FLUX** — prompt positivo variado + `negative_prompt` dedicado y compactación (`image-engine`); ver tabla “Mitigación de glifos” arriba
+8. **WebView cross-origin guard** — `onShouldStartLoadWithRequest` bloquea cualquier URL fuera de `BASE_URL`; aplica igual en staging y producción
+9. **SQLite local cache mobile** — `expo-sqlite` en APK: historial de chats disponible offline vía `window.__rnCachedChats`; sincronización en background con stale-while-revalidate
+
+### Fix Windows — @expo/config-plugins glob (APLICAR DESPUÉS DE CADA npm install)
+En Windows, `glob` v10 no resuelve rutas con backslashes combinadas con extglob `@(java|kt)`.
+Después de cualquier `npm install` en el monorepo, re-aplicar estos dos cambios en `node_modules`:
+
+**`node_modules/@expo/config-plugins/build/android/Paths.js`** — función `getProjectFilePath`:
+```js
+// Cambiar:
+const filePath = (0, _glob().sync)(path().join(projectRoot, `android/app/src/main/java/**/${name}.@(java|kt)`))[0];
+// Por:
+const rawPattern = path().join(projectRoot, `android/app/src/main/java/**/${name}.@(java|kt)`);
+const filePath = (0, _glob().sync)(rawPattern.replace(/\\/g, '/'))[0];
+```
+
+**`node_modules/@expo/config-plugins/build/android/Package.js`** — función `getCurrentPackageForProjectFile`:
+```js
+// Cambiar:
+const filePath = (0, _glob().sync)(_path().default.join(projectRoot, `android/app/src/${type}/java/**/${fileName}.@(java|kt)`))[0];
+// Por:
+const rawPattern = _path().default.join(projectRoot, `android/app/src/${type}/java/**/${fileName}.@(java|kt)`);
+const filePath = (0, _glob().sync)(rawPattern.replace(/\\/g, '/'))[0];
+```
+
+> EAS cloud build (Linux) no requiere este fix. Solo afecta `expo prebuild` local en Windows.
 
 ### Decisiones de Producto
 - Tokens ACUMULABLES (no se pierden al comprar nuevo pack)
