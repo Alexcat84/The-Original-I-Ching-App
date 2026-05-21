@@ -1,4 +1,5 @@
 import { getDb } from "./schema";
+export { initDb } from "./schema";
 
 export type ChatRow = {
   id: string;
