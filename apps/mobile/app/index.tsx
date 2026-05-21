@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases from "react-native-purchases";
-import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, type RnCachedChatEntry } from "@/src/db/chat-store";
+import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, softDeleteChat, clearAllData, type RnCachedChatEntry } from "@/src/db/chat-store";
 import { syncChats, syncChatContent } from "@/src/sync/sync-service";
 import * as FileSystem from "expo-file-system";
 import * as Linking from "expo-linking";
@@ -955,6 +955,7 @@ type RNMessage =
   | { type: "download_file_chunk"; transferId: string; chunk: string }
   | { type: "download_file_end"; transferId: string }
   | { type: "delete_chat"; url: string; reqId: string }
+  | { type: "account_deleted" }
   | { type: "open_image"; url: string }
   | { type: "request_thread"; sessionId: string; localId: string }
   | { type: "web_alert"; message: string }
@@ -1737,6 +1738,12 @@ export default function WebViewScreen() {
             headers: { Authorization: `Bearer ${token}` },
           });
           reply(res.ok, res.status);
+          if (res.ok) {
+            // Mirror the deletion in local SQLite so the chat doesn't
+            // reappear in the cached list on next app launch.
+            const sessionId = new URL(fullUrl).searchParams.get("sessionId");
+            if (sessionId) void softDeleteChat(sessionId).catch(() => undefined);
+          }
         } catch {
           reply(false, 500);
         }
@@ -1830,6 +1837,12 @@ export default function WebViewScreen() {
 
           case "delete_chat":
             handleDeleteChat(msg.url, msg.reqId);
+            break;
+
+          case "account_deleted":
+            // Wipe the local SQLite cache — the Supabase account no longer
+            // exists, so cached data must not appear for a future new account.
+            void clearAllData().catch(() => undefined);
             break;
 
           case "open_image":

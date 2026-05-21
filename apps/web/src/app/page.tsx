@@ -2238,6 +2238,9 @@ export default function HomePage() {
         return;
       }
       setDeleteAccountOpen(false);
+      // Notify the native shell to wipe the local SQLite cache before signing out.
+      (window as unknown as { ReactNativeWebView?: { postMessage(s: string): void } })
+        .ReactNativeWebView?.postMessage(JSON.stringify({ type: "account_deleted" }));
       await signOut();
     } catch {
       setDeleteAccountError(chrome.deleteAccountError);
