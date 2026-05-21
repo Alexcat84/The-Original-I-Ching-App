@@ -1115,6 +1115,8 @@ export default function HomePage() {
   const [tierReady, setTierReady] = useState(false);
   /** Per-thread reading cap from `/api/account/me` (`session_limit`, from pack / tier). */
   const [accountSessionLimit, setAccountSessionLimit] = useState(1);
+  const accountSessionLimitRef = useRef(1);
+  accountSessionLimitRef.current = accountSessionLimit;
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
@@ -2253,40 +2255,33 @@ export default function HomePage() {
     async (sessionId: string, localId: string) => {
       if (!accessToken) return;
 
-      // Cache-first: read from window.__rnCachedThreads injected by the
-      // Android WebView shell (populated from SQLite before onLoadEnd).
-      // If data exists, render it immediately — no loading spinner — then
-      // refresh from Supabase in the background (stale-while-revalidate).
-      const win = window as unknown as {
-        __rnCachedThreads?: Record<string, ApiChatConsultation[]>;
-      };
-      const cached = win.__rnCachedThreads?.[sessionId];
-      const hasCached = Array.isArray(cached) && cached.length > 0;
-
-      if (hasCached) {
-        const planCap = Math.max(1, accountSessionLimit);
-        const thread = cached.map((c) => mapApiConsultationToItem(c, "", planCap));
-        setSessions((prev) =>
-          prev.map((s) => {
-            if (s.localId !== localId) return s;
-            return {
-              ...s,
-              thread,
-              messageCount: Math.max(thread.length, s.messageCount),
-              updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
-              firstConsultationAt: thread[0]?.createdAt ?? s.firstConsultationAt,
-            };
-          }),
+      // Tier 2/3 (React Native WebView only): signal the native shell to
+      // serve the last 30 messages from SQLite immediately and run an
+      // incremental Supabase sync in the background. The rn:thread-data
+      // event handler above renders the result and clears the loading state
+      // as soon as native responds — typically before this Supabase fetch
+      // completes, giving an instant "WhatsApp-style" open.
+      const rnBridge = (
+        window as unknown as {
+          ReactNativeWebView?: { postMessage(s: string): void };
+        }
+      ).ReactNativeWebView;
+      if (rnBridge) {
+        rnBridge.postMessage(
+          JSON.stringify({ type: "request_thread", sessionId, localId }),
         );
       }
 
-      // Show spinner only when there is nothing cached to display yet.
-      if (!hasCached) {
-        setHistoryLoading(true);
-        setLoadingSessionLocalId(localId);
-      }
+      // Always run the Supabase fetch in parallel:
+      // - If native cache wins the race → Supabase result refreshes silently
+      //   (same content, no visible change for the user).
+      // - If Supabase wins → native cache result is a no-op when it arrives.
+      // - If offline + native has cache → fetch throws, finally clears spinner
+      //   (already cleared by rn:thread-data handler), catch is silent.
+      // - If offline + no cache → show error as normal.
+      setHistoryLoading(true);
+      setLoadingSessionLocalId(localId);
       setHistoryLoadError(null);
-
       try {
         const res = await fetch(
           `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
@@ -2296,9 +2291,6 @@ export default function HomePage() {
           },
         );
         if (!res.ok) {
-          // If we already rendered cached data, swallow non-critical errors
-          // (e.g., offline or transient 5xx) rather than showing an error state.
-          if (hasCached) return;
           const err = parseApiErrorPayload(await res.text());
           if (res.status === 401) {
             const authError = sessionUi.chatLoadSessionExpired;
@@ -2347,8 +2339,7 @@ export default function HomePage() {
         );
         setHistoryLoadError(null);
       } catch {
-        // Offline with cached data → silent. Offline without cache → show error.
-        if (!hasCached) setHistoryLoadError(sessionUi.chatLoadNetworkError);
+        setHistoryLoadError(sessionUi.chatLoadNetworkError);
       } finally {
         setHistoryLoading(false);
         setLoadingSessionLocalId((current) =>
@@ -2827,6 +2818,42 @@ export default function HomePage() {
     const win = window as unknown as { __rnCachedChats?: RnEntry[] };
     if (Array.isArray(win.__rnCachedChats)) applyCache(win.__rnCachedChats);
     return () => window.removeEventListener("rn:cached-chats", onRnCached);
+  }, [setSessions]);
+
+  // Native bridge: receive thread data from SQLite (Tier 2 cache-first) and
+  // after incremental Supabase sync (Tier 3). Fired by the request_thread
+  // onMessage handler in the Android WebView shell.
+  useEffect(() => {
+    type RnThreadData = {
+      localId: string;
+      consultations: ApiChatConsultation[];
+    };
+    const onRnThread = (e: Event) => {
+      const { localId, consultations } = (e as CustomEvent<RnThreadData>).detail;
+      if (!Array.isArray(consultations) || consultations.length === 0) return;
+      const planCap = Math.max(1, accountSessionLimitRef.current);
+      const thread = consultations.map((c) =>
+        mapApiConsultationToItem(c, "", planCap),
+      );
+      setSessions((prev) =>
+        prev.map((s) =>
+          s.localId !== localId
+            ? s
+            : {
+                ...s,
+                thread,
+                messageCount: Math.max(thread.length, s.messageCount),
+                updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
+                firstConsultationAt:
+                  thread[0]?.createdAt ?? s.firstConsultationAt,
+              },
+        ),
+      );
+      setHistoryLoading(false);
+      setLoadingSessionLocalId((curr) => (curr === localId ? null : curr));
+    };
+    window.addEventListener("rn:thread-data", onRnThread);
+    return () => window.removeEventListener("rn:thread-data", onRnThread);
   }, [setSessions]);
 
   useEffect(() => {

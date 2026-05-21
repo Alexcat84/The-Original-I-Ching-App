@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases from "react-native-purchases";
-import { initDb, getCachedChatsForInjection, getCachedThreadsForInjection, getLocalImagePath, type RnCachedChatEntry } from "@/src/db/chat-store";
-import { syncChats } from "@/src/sync/sync-service";
+import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, type RnCachedChatEntry } from "@/src/db/chat-store";
+import { syncChats, syncChatContent } from "@/src/sync/sync-service";
 import * as FileSystem from "expo-file-system";
 import * as Linking from "expo-linking";
 import * as MediaLibrary from "expo-media-library";
@@ -956,6 +956,7 @@ type RNMessage =
   | { type: "download_file_end"; transferId: string }
   | { type: "delete_chat"; url: string; reqId: string }
   | { type: "open_image"; url: string }
+  | { type: "request_thread"; sessionId: string; localId: string }
   | { type: "web_alert"; message: string }
   | { type: "web_confirm"; message: string }
   | { type: "web_prompt"; message: string; defaultValue?: string }
@@ -1302,8 +1303,6 @@ export default function WebViewScreen() {
   const webReadyRef = useRef(false);
   /** Pre-fetched SQLite cache — populated on mount, injected synchronously in onLoadEnd. */
   const cachedChatsRef = useRef<RnCachedChatEntry[]>([]);
-  /** Pre-fetched thread cache keyed by sessionId — injected alongside cachedChats. */
-  const cachedThreadsRef = useRef<Record<string, unknown[]>>({});
 
   /* ── Auth state (P3) ── */
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -1391,14 +1390,8 @@ export default function WebViewScreen() {
      so the ref is ready for synchronous injection when the page finishes loading.  ── */
   useEffect(() => {
     void initDb()
-      .then(() => Promise.all([
-        getCachedChatsForInjection(),
-        getCachedThreadsForInjection(),
-      ]))
-      .then(([chats, threads]) => {
-        cachedChatsRef.current = chats;
-        cachedThreadsRef.current = threads;
-      })
+      .then(() => getCachedChatsForInjection())
+      .then((chats) => { cachedChatsRef.current = chats; })
       .catch(() => undefined);
   }, []);
 
@@ -1459,22 +1452,16 @@ export default function WebViewScreen() {
     }
   }, []);
 
-  /** Reads current SQLite state and pushes chats + threads to the WebView.
-   *  Updates both refs as a side-effect so subsequent onLoadEnd calls are also fast. */
+  /** Reads current SQLite state and pushes the chat list to the WebView (Tier 1).
+   *  Thread content is loaded on demand via request_thread bridge messages (Tier 2/3). */
   const injectCachedChats = useCallback(() => {
-    void Promise.all([
-      getCachedChatsForInjection(),
-      getCachedThreadsForInjection(),
-    ]).then(([chats, threads]) => {
+    void getCachedChatsForInjection().then((chats) => {
       cachedChatsRef.current = chats;
-      cachedThreadsRef.current = threads;
       if (chats.length === 0) return;
-      const chatsPayload = JSON.stringify(chats);
-      const threadsPayload = JSON.stringify(threads);
+      const payload = JSON.stringify(chats);
       webViewRef.current?.injectJavaScript(
         `(function(){try{` +
-          `window.__rnCachedChats=${chatsPayload};` +
-          `window.__rnCachedThreads=${threadsPayload};` +
+          `window.__rnCachedChats=${payload};` +
           `window.dispatchEvent(new CustomEvent('rn:cached-chats',{detail:window.__rnCachedChats}));` +
         `}catch(_){}})();true;`
       );
@@ -1490,15 +1477,13 @@ export default function WebViewScreen() {
       webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
     }
     hideSplash();
-    // Fast path: inject pre-fetched data from refs synchronously (no bridge round-trip delay).
-    // Both refs are populated during initDb() before onLoadEnd ever fires (~1-3s WebView load).
+    // Fast path: inject pre-fetched chat list from ref synchronously.
+    // Thread content is loaded lazily via request_thread bridge messages.
     if (cachedChatsRef.current.length > 0) {
-      const chatsPayload = JSON.stringify(cachedChatsRef.current);
-      const threadsPayload = JSON.stringify(cachedThreadsRef.current);
+      const payload = JSON.stringify(cachedChatsRef.current);
       webViewRef.current?.injectJavaScript(
         `(function(){try{` +
-          `window.__rnCachedChats=${chatsPayload};` +
-          `window.__rnCachedThreads=${threadsPayload};` +
+          `window.__rnCachedChats=${payload};` +
           `window.dispatchEvent(new CustomEvent('rn:cached-chats',{detail:window.__rnCachedChats}));` +
         `}catch(_){}})();true;`
       );
@@ -1853,6 +1838,41 @@ export default function WebViewScreen() {
               setZoomImageUrl(local ?? msg.url);
             }).catch(() => setZoomImageUrl(msg.url));
             break;
+
+          case "request_thread": {
+            // Tier 2: serve the last 30 messages from SQLite immediately.
+            // Tier 3: run incremental sync in background, re-inject if new
+            // messages arrived, so the next open is fully up to date.
+            const { sessionId, localId } = msg;
+            void (async () => {
+              const dispatchThread = (rows: Awaited<ReturnType<typeof getPagedThread>>) => {
+                if (rows.length === 0) return;
+                const consultations = rows
+                  .map((r) => { try { return JSON.parse(r.content) as unknown; } catch { return null; } })
+                  .filter(Boolean)
+                  .reverse(); // DESC from DB → reverse for chronological display
+                const payload = JSON.stringify({ localId, consultations });
+                webViewRef.current?.injectJavaScript(
+                  `(function(){try{` +
+                    `window.dispatchEvent(new CustomEvent('rn:thread-data',{detail:${payload}}));` +
+                  `}catch(_){}})();true;`
+                );
+              };
+
+              const cached = await getPagedThread(sessionId).catch(() => []);
+              dispatchThread(cached);
+
+              // Background incremental sync (Tier 3).
+              if (accessTokenRef.current) {
+                await syncChatContent(accessTokenRef.current, BASE_URL, sessionId).catch(() => undefined);
+                const updated = await getPagedThread(sessionId).catch(() => []);
+                if (updated.length !== cached.length) {
+                  dispatchThread(updated);
+                }
+              }
+            })();
+            break;
+          }
 
           case "shell_theme":
             if (msg.theme === "light" || msg.theme === "dark") {

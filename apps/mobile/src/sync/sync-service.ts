@@ -3,14 +3,13 @@ import {
   upsertMessages,
   getSyncMeta,
   setSyncMeta,
-  getStoredContentCounts,
   type ChatRow,
   type MessageRow,
 } from "../db/chat-store";
 import { syncPendingImages } from "./image-sync";
 
-const SYNC_COOLDOWN_MS = 5 * 60 * 1000;
-const MAX_FULL_SYNC = 20;
+const SUMMARY_COOLDOWN_MS = 5 * 60 * 1000;
+const CHAT_CONTENT_COOLDOWN_MS = 60 * 1000;
 
 type ApiSession = {
   sessionId: string;
@@ -31,18 +30,9 @@ type ApiSummaryEntry = {
 type ApiConsultation = {
   consultationId: string;
   sessionId: string;
-  role?: string;
-  question: string;
-  interpretation: string;
-  imageUrl: string;
-  imageFallbackUrl?: string;
   createdAt: number;
+  imageUrl?: string;
   [key: string]: unknown;
-};
-
-type ApiFullEntry = {
-  session: ApiSession;
-  consultations: ApiConsultation[];
 };
 
 function msToIso(ms: number): string {
@@ -66,7 +56,7 @@ async function fetchChatDetail(
   token: string,
   baseUrl: string,
   sessionId: string,
-): Promise<ApiFullEntry | null> {
+): Promise<{ session: ApiSession; consultations: ApiConsultation[] } | null> {
   const res = await fetch(
     `${baseUrl}/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
     { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" },
@@ -83,15 +73,14 @@ async function fetchChatDetail(
   };
 }
 
-/** Full sync: summaries → SQLite chats, then full consultation content for
- *  the most recent MAX_FULL_SYNC chats. Only fetches chats where the local
- *  content count is behind the API message count (incremental). */
+/** Tier 1: sync chat list metadata only. No message content. Runs on auth
+ *  with a 5-minute cooldown to keep the sidebar fast without hammering the API. */
 export async function syncChats(token: string, baseUrl: string): Promise<void> {
   try {
     const lastSync = await getSyncMeta("last_sync");
     if (lastSync) {
       const elapsed = Date.now() - new Date(lastSync).getTime();
-      if (elapsed < SYNC_COOLDOWN_MS) return;
+      if (elapsed < SUMMARY_COOLDOWN_MS) return;
     }
 
     const entries = await fetchSummaries(token, baseUrl);
@@ -100,8 +89,7 @@ export async function syncChats(token: string, baseUrl: string): Promise<void> {
     const now = new Date().toISOString();
     const chatRows: ChatRow[] = entries.map((e) => ({
       id: e.session.sessionId,
-      title:
-        e.firstQuestion?.trim().slice(0, 120) || e.session.title || "",
+      title: e.firstQuestion?.trim().slice(0, 120) || e.session.title || "",
       created_at: msToIso(e.session.createdAt),
       updated_at: msToIso(e.updatedAt ?? e.session.createdAt),
       synced_at: now,
@@ -115,46 +103,55 @@ export async function syncChats(token: string, baseUrl: string): Promise<void> {
     await upsertChats(chatRows);
     await setSyncMeta("last_sync", now);
 
-    // Determine which of the most recent chats need full content sync.
-    const syncCandidates = entries.slice(0, MAX_FULL_SYNC);
-    const storedCounts = await getStoredContentCounts(
-      syncCandidates.map((e) => e.session.sessionId),
-    );
-
-    for (const entry of syncCandidates) {
-      const stored = storedCounts[entry.session.sessionId] ?? 0;
-      // Skip if we already have all messages for this chat.
-      if (entry.messageCount > 0 && stored >= entry.messageCount) continue;
-
-      try {
-        const detail = await fetchChatDetail(
-          token,
-          baseUrl,
-          entry.session.sessionId,
-        );
-        if (!detail) continue;
-        const msgRows: MessageRow[] = detail.consultations.map((c) => ({
-          id: c.consultationId,
-          chat_id: entry.session.sessionId,
-          role: "assistant",
-          // Store the full consultation object as JSON so it can be injected
-          // into window.__rnCachedThreads and rendered offline without Supabase.
-          content: JSON.stringify(c),
-          created_at: msToIso(c.createdAt),
-          synced_at: now,
-          image_url: c.imageUrl || null,
-          local_image_path: null,
-          image_sync_status: c.imageUrl ? "pending" : "none",
-        }));
-        await upsertMessages(msgRows);
-      } catch {
-        // Non-fatal — continue with next chat
-      }
-    }
-
-    // Download queued images opportunistically.
+    // Process any images that were previously queued but not downloaded.
     void syncPendingImages();
   } catch {
-    // Non-fatal — cache is best-effort
+    // Non-fatal
+  }
+}
+
+/** Tier 3: incremental per-chat content sync. Called when the user opens a
+ *  specific chat. Fetches all consultations from Supabase and upserts into
+ *  SQLite (ON CONFLICT preserves local_image_path). Updates a per-chat
+ *  sync timestamp so subsequent opens within CHAT_CONTENT_COOLDOWN_MS are
+ *  served from SQLite without hitting the network. */
+export async function syncChatContent(
+  token: string,
+  baseUrl: string,
+  sessionId: string,
+): Promise<void> {
+  try {
+    const syncKey = `chat_content_synced:${sessionId}`;
+    const lastSync = await getSyncMeta(syncKey);
+    if (lastSync) {
+      const elapsed = Date.now() - new Date(lastSync).getTime();
+      if (elapsed < CHAT_CONTENT_COOLDOWN_MS) return;
+    }
+
+    const detail = await fetchChatDetail(token, baseUrl, sessionId);
+    if (!detail || detail.consultations.length === 0) return;
+
+    const now = new Date().toISOString();
+    const msgRows: MessageRow[] = detail.consultations.map((c) => ({
+      id: c.consultationId,
+      chat_id: sessionId,
+      role: "assistant",
+      // Full consultation JSON — read back by getPagedThread and injected as
+      // window.__rnCachedThreads so the web app can render offline.
+      content: JSON.stringify(c),
+      created_at: msToIso(c.createdAt),
+      synced_at: now,
+      image_url: (c.imageUrl as string) || null,
+      local_image_path: null,
+      image_sync_status: c.imageUrl ? "pending" : "none",
+    }));
+
+    await upsertMessages(msgRows);
+    await setSyncMeta(syncKey, now);
+
+    // Queue image downloads for this chat (processed opportunistically).
+    void syncPendingImages();
+  } catch {
+    // Non-fatal
   }
 }
