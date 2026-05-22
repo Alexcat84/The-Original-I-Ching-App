@@ -77,6 +77,10 @@ import {
   stripInterpretationFluff,
 } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
+import {
+  getIdbChats, putIdbChats, getIdbThread, putIdbThread, isThreadFresh, clearIdbUser,
+  type IdbChatEntry,
+} from "@/lib/idb-cache";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
 import {
   ichingRitualProcessingBudgetMs,
@@ -2198,6 +2202,7 @@ export default function HomePage() {
       } catch {
         // ignore cache clear errors
       }
+      void clearIdbUser(uid);
     }
     setAccessToken(null);
     setAuthEmail(null);
@@ -2290,8 +2295,35 @@ export default function HomePage() {
           setLoadingSessionLocalId(localId);
         }, 250);
       } else {
-        setHistoryLoading(true);
-        setLoadingSessionLocalId(localId);
+        // Desktop web: check IndexedDB before hitting Supabase.
+        const idbCached = await getIdbThread(sessionId);
+        if (idbCached && idbCached.consultations.length > 0) {
+          const planCap = Math.max(1, accountSessionLimit);
+          const cachedThread = (idbCached.consultations as ApiChatConsultation[]).map(
+            (c) => mapApiConsultationToItem(c, "", planCap),
+          );
+          setSessions((prev) =>
+            prev.map((s) =>
+              s.localId !== localId ? s : {
+                ...s,
+                thread: cachedThread,
+                messageCount: Math.max(cachedThread.length, s.messageCount),
+                updatedAt: cachedThread.at(-1)?.createdAt ?? s.updatedAt,
+                firstConsultationAt: cachedThread[0]?.createdAt ?? s.firstConsultationAt,
+              },
+            ),
+          );
+          if (isThreadFresh(idbCached)) {
+            // Fresh enough — skip the network round-trip entirely.
+            setHistoryLoading(false);
+            setLoadingSessionLocalId((curr) => (curr === localId ? null : curr));
+            return;
+          }
+          // Stale — content is visible; refresh silently without the loading indicator.
+        } else {
+          setHistoryLoading(true);
+          setLoadingSessionLocalId(localId);
+        }
       }
       setHistoryLoadError(null);
       try {
@@ -2350,6 +2382,7 @@ export default function HomePage() {
           }),
         );
         setHistoryLoadError(null);
+        void putIdbThread(sessionId, payload.consultations);
       } catch {
         setHistoryLoadError(sessionUi.chatLoadNetworkError);
       } finally {
@@ -2811,6 +2844,30 @@ export default function HomePage() {
     setActiveSessionLocalId,
   ]);
 
+  // IDB cache: populate chat sidebar instantly on auth before Supabase responds.
+  // Runs once when authUserId is first set. The Supabase summary fetch below will
+  // overwrite with fresh data via the existing setSessions merge logic.
+  useEffect(() => {
+    if (!authUserId) return;
+    void getIdbChats(authUserId).then((cached) => {
+      if (cached.length === 0) return;
+      setSessions((prev) => {
+        if (prev.some((s) => s.messageCount > 0)) return prev; // Supabase already arrived
+        return cached.map((c) => ({
+          localId: c.localId,
+          title: c.title,
+          sessionId: c.sessionId,
+          publicSessionId: c.publicSessionId,
+          thread: [] as never[],
+          threadMaxDepth: null,
+          messageCount: c.messageCount,
+          updatedAt: c.updatedAt,
+          firstConsultationAt: c.firstConsultationAt,
+        }));
+      });
+    });
+  }, [authUserId, setSessions]);
+
   // Native bridge: consume window.__rnCachedChats injected by the Android WebView shell
   // after onLoadEnd. Populates the session list with stale SQLite data before the
   // Supabase fetch below completes (stale-while-revalidate from native cache).
@@ -2980,6 +3037,19 @@ export default function HomePage() {
           } catch {
             // ignore cache save errors
           }
+        }
+        if (authUserId) {
+          void putIdbChats(authUserId, hydrated
+            .filter((s) => s.sessionId !== null)
+            .map((s): IdbChatEntry => ({
+              localId: s.localId,
+              title: s.title,
+              sessionId: s.sessionId as string,
+              publicSessionId: s.publicSessionId ?? null,
+              messageCount: s.messageCount,
+              updatedAt: s.updatedAt,
+              firstConsultationAt: s.firstConsultationAt ?? null,
+            })));
         }
         const pinnedLocalId = pinnedLocalSessionIdRef.current;
         if (
