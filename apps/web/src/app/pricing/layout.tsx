@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
 export const metadata: Metadata = {
@@ -13,6 +12,6 @@ export const metadata: Metadata = {
   ...buildCanonicalMetadata("/pricing"),
 };
 
-export default function PricingLayout({ children }: { children: ReactNode }) {
+export default async function PricingLayout({ children }: { children: React.ReactNode }) {
   return children;
 }
