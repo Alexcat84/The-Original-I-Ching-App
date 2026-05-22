@@ -6,6 +6,7 @@ import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { ChatSessionProvider } from "@/providers/chat-session-provider";
 import { rootFontClassName } from "@/lib/google-fonts-root";
+import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 import "@fontsource/noto-serif-sc/700.css";
 import "@fontsource/noto-serif-tc/700.css";
 import "./globals.css";
@@ -35,6 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
       index: true,
       follow: true,
     },
+    ...buildCanonicalMetadata("/"),
   };
 }
 

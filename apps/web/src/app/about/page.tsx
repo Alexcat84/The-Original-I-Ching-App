@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAppTraceabilityUiMessages, getDocNavUiMessages } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
+import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
 export const metadata: Metadata = {
   title: "About | The Original I Ching App",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     title: "About | The Original I Ching App",
     description: "App version, build traceability, and credits.",
   },
+  ...buildCanonicalMetadata("/about"),
 };
 
 export default async function AboutPage() {

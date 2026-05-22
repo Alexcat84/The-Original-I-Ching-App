@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
 export const metadata: Metadata = {
   title: "User Guide | The Original I Ching App",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     description:
       "How to use the I Ching oracle app: methods, token packs, AI interpretation, and more.",
   },
+  ...buildCanonicalMetadata("/guia"),
 };
 import { getDocNavUiMessages, getGuiaPageUiMessages } from "@iching-oracle/i18n";
 

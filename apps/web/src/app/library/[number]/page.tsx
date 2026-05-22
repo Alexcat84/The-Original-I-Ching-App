@@ -11,6 +11,7 @@ import { HexagramTabs, type ResolvedLineLabels } from "@/components/library/Hexa
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { getLibraryDetail, getLibrarySummaries } from "@/lib/library/library-data";
 import { formatTrigramLabel, getTrigramById } from "@/lib/library/trigram-meta";
+import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
 interface DetailPageProps {
   params: Promise<{ number: string }>;
@@ -45,6 +46,7 @@ export async function generateMetadata(
   return {
     title: messages.detailMetaTitle(label),
     description: `${label} — ${messages.metaDescription}`,
+    ...buildCanonicalMetadata(`/library/${n}`),
   };
 }
 

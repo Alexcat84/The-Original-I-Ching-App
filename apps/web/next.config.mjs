@@ -49,6 +49,15 @@ const nextConfig = {
       { protocol: "https", hostname: "image.pollinations.ai", pathname: "/**" },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/quickstart",
+        destination: "/guia",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
 export const metadata: Metadata = {
   title: "Origen e Historia de los Métodos | The Original I Ching App",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     description:
       "Historia académica del I Ching (Zhouyi) y los Huesos de Oráculo Shang. Métodos auténticos, fuentes originales, sin invención.",
   },
+  ...buildCanonicalMetadata("/notes"),
 };
 
 import { getDocNavUiMessages, getNotesPageUiMessages } from "@iching-oracle/i18n";

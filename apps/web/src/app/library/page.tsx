@@ -5,6 +5,7 @@ import { getDocNavUiMessages, getLibraryPageUiMessages, type LibraryPageUiSerial
 import { LibraryIndex } from "@/components/library/LibraryIndex";
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { getLibrarySummaries } from "@/lib/library/library-data";
+import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await resolveDocLocale();
@@ -17,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description: messages.metaDescription,
     },
+    ...buildCanonicalMetadata("/library"),
   };
 }
 
