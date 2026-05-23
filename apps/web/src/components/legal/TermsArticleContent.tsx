@@ -65,6 +65,9 @@ export function TermsArticleContent({ messages: t, nav }: TermsArticleContentPro
         <Link href="/privacy">{nav.privacyPolicy}</Link>
         {t.s10AfterLink}
       </p>
+      <p>
+        <a href="mailto:support@theoriginaliching.com">support@theoriginaliching.com</a>
+      </p>
     </>
   );
 }
