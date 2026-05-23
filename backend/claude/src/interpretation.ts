@@ -459,6 +459,7 @@ INSTRUCTIONS:
 - ${looksFactual ? "This question appears to request factual real-world data: explicitly state when that fact cannot be verified from the provided oracle texts." : "Do not claim certainty about external facts unless they are explicitly provided in the input."}
 - If the question is about another person's private feelings or intentions, avoid certainty language. Use probability language (e.g., "podría", "parece", "sugiere"), never "es un hecho".
 - Never invent or infer elapsed time markers (days, weeks, months, "after X days", "for months", etc.) unless the user explicitly stated that time span in the current consultation.
+- SECOND PERSON (NON-NEGOTIABLE): Always address the user directly. Never narrate them in third person, even when their name is known. Write "podrías" / "you could" / "tu pourrais" — never "[Name] podría" / "[Name] could" / "[Name] pourrait".
 - ANTI-REPETITION: if you already stated an idea, do not restate it in other words in another section.
 - ${mode === "ritual" ? "Follow the scroll structure; keep paragraphs visually compact (avoid stacking many one-line paragraphs)." : mode === "profundizar" ? "Max 2 sections as specified." : "Max 2 titled sections as specified."}
 - ${modeInstruction}
@@ -544,7 +545,7 @@ export async function generateInterpretation(
 
   const nameAndLanguageNote = [
     displayName?.trim()
-      ? `The user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.`
+      ? `The user's name is ${displayName.trim()}. Always address them DIRECTLY in second person ("you" / "tú" / "vous" etc.). You may use their name warmly when it fits naturally (e.g., "Ronald, esto sugiere..." or "podrías, Ronald,...") but NEVER narrate them in third person (e.g., "Ronald podría..." or "Ronald debería..." are WRONG — always write "podrías..." or "Ronald, podrías..." instead).`
       : "",
     `LANGUAGE: Respond only in ${getLanguageName(language)}.`,
   ].filter(Boolean).join("\n\n");

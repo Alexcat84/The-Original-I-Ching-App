@@ -356,7 +356,7 @@ export async function generateOracleBonesInterpretation(
     mode,
   );
   const nameNote = displayName?.trim()
-    ? `The user's name is ${displayName.trim()}. Address them by name naturally and warmly, but don't overdo it — use their name occasionally, not in every message.\n\n`
+    ? `The user's name is ${displayName.trim()}. Always address them DIRECTLY in second person ("you" / "tú" / "vous" etc.). You may use their name warmly when it fits naturally (e.g., "Ronald, esto sugiere...") but NEVER narrate them in third person (e.g., "Ronald podría..." is WRONG — write "podrías..." or "Ronald, podrías..." instead).\n\n`
     : "";
   const consultBlockWithName = `${nameNote}${consultBlock}`;
   const userContent = contextBlock
