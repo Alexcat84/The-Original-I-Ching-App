@@ -1,6 +1,6 @@
 {
   "name": "@iching-oracle/mobile",
-  "version": "3.2.8",
+  "version": "3.2.9",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
