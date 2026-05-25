@@ -452,7 +452,7 @@ INSTRUCTIONS:
 - Use family_home ONLY when the question clearly concerns household, parents, children, partner dynamics at home, or domestic life;
   for abstract or general life questions prefer general, spiritual_inner, decision_path, or career_work as appropriate.
 - ${hasContext
-    ? "OBLIGATORIO — En el «Encuadre de la pregunta», el PRIMER PÁRRAFO debe abrir con una referencia natural al hilo previo: qué hexagramas aparecieron antes, qué dirección tomó la sesión y cómo enlaza con esta nueva tirada. Sin encabezado separado; fluye directamente en la prosa. No repitas la interpretación anterior completa, solo el hilo esencial en 2–3 oraciones."
+    ? "OBLIGATORIO — En el «Encuadre de la pregunta», el PRIMER PÁRRAFO debe abrir con una referencia natural al arco COMPLETO de la sesión: nombra TODOS los hexagramas que aparecieron desde el inicio (en orden cronológico), qué dirección trazaron juntos y cómo enlaza esta nueva tirada con ese recorrido. No te limites a la consulta inmediatamente anterior; teje el hilo desde la primera pregunta. Sin encabezado separado; fluye en la prosa. 2–3 oraciones máximo."
     : "Primera consulta de la sesión: no inventes continuidad."
   }
 - Interpret ONLY with the texts given.
@@ -475,7 +475,7 @@ INSTRUCTIONS:
 - MEMORY SNAPSHOT (MANDATORY, end of response):
   Append exactly this block at the end:
   [SNAPSHOT_START]
-  THREAD_LINK: 2-3 sentences of personal continuity from prior thread, explicit and concrete (e.g., "en tus X preguntas anteriores... y ahora regresas con...").
+  THREAD_LINK: 2-3 sentences tracing the FULL session arc — name every hexagram that appeared in this session (in order, e.g., "#7 → #53 → #6 → #18 → now #55"), the direction they traced together, and the user's concrete next step. Never reference only the immediately prior consultation; always span from session start to now.
   ACTION_CORE: one concrete next-step action for the user in second person, directly tied to that continuity.
   SYMBOLS_MIN: optional one short line only if strictly needed (max one symbol reference); prioritize personal thread over symbolism.
   [SNAPSHOT_END]

@@ -278,8 +278,8 @@ function buildOracleBonesUserContent(
   const threadMemoryNote =
     hasContext
       ? language === "es"
-        ? "OBLIGATORIO: el primer párrafo de la respuesta debe incluir de forma natural (sin encabezado separado, sin negritas de título, sin sección aparte) una referencia breve al hilo previo: qué se consultó antes y cómo enlaza con esta nueva pregunta. Fluye directamente en la prosa; no uses un encabezado tipo 'Continuidad desde tu consulta previa'."
-        : "MANDATORY: the opening paragraph must naturally weave in (no separate heading, no bold title, no standalone section) a brief reference to the prior thread: what was consulted before and how it connects to this new question. Flow directly in prose; do not use a heading like 'Continuity from your prior consultation'."
+        ? "OBLIGATORIO: el primer párrafo debe incluir de forma natural una referencia al arco COMPLETO de la sesión: nombra TODOS los hexagramas o veredictos anteriores en orden cronológico y cómo conectan con esta nueva consulta. No te limites a la tirada inmediatamente anterior; traza el hilo desde el inicio de la sesión. Sin encabezado separado; fluye en la prosa."
+        : "MANDATORY: the opening paragraph must naturally reference the FULL session arc — name ALL prior hexagrams or verdicts in chronological order and how they connect to this new question. Do not limit yourself to the immediately prior consultation; trace the thread from session start. No separate heading; flow in prose."
       : language === "es"
         ? "Sin historial previo: no inventes continuidad."
         : "No prior thread context: do not invent continuity.";
@@ -312,7 +312,7 @@ INSTRUCTIONS:
 - MEMORY SNAPSHOT (MANDATORY, end of response):
   Append exactly this block at the end:
   [SNAPSHOT_START]
-  THREAD_LINK: 2-3 sentences of personal continuity from prior thread, explicit and concrete (e.g., "en tus X consultas previas... y ahora vuelves con...").
+  THREAD_LINK: 2-3 sentences tracing the FULL session arc — name every hexagram or oracle verdict that appeared in this session (in order), the direction they traced together, and the user's concrete next step. Never reference only the immediately prior consultation; always span from session start to now.
   ACTION_CORE: one concrete next-step action for the user in second person, directly tied to that continuity.
   SYMBOLS_MIN: optional one short line only if strictly needed (max one oracle symbol/verdict mention); prioritize personal thread over technical labels.
   [SNAPSHOT_END]
