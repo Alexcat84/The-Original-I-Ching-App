@@ -333,7 +333,7 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
   const isMasterCombined =
     cast.interpretationMode === "master_combined" ||
     Boolean(t.leggeJudgment && t.zhouyiJudgment);
-  const targetWordCount = isMasterCombined ? "1200-1600" : "700-900";
+  const targetWordCount = isMasterCombined ? "1200-1600" : hasContext ? "800-1000" : "700-900";
 
   let textsBlock = "";
   if (isMasterCombined) {
@@ -451,7 +451,10 @@ INSTRUCTIONS:
   travel_change, general
 - Use family_home ONLY when the question clearly concerns household, parents, children, partner dynamics at home, or domestic life;
   for abstract or general life questions prefer general, spiritual_inner, decision_path, or career_work as appropriate.
-- ${hasContext ? "Hay consultas previas en sesión: continuidad breve según bloque de contexto (no re-pegues interpretaciones largas)." : "Primera consulta de la sesión."}
+- ${hasContext
+    ? "OBLIGATORIO — En el «Encuadre de la pregunta», el PRIMER PÁRRAFO debe abrir con una referencia natural al hilo previo: qué hexagramas aparecieron antes, qué dirección tomó la sesión y cómo enlaza con esta nueva tirada. Sin encabezado separado; fluye directamente en la prosa. No repitas la interpretación anterior completa, solo el hilo esencial en 2–3 oraciones."
+    : "Primera consulta de la sesión: no inventes continuidad."
+  }
 - Interpret ONLY with the texts given.
 - ${masterSynthesisInstruction}
 - In the first sentence, answer the user's question clearly and directly, but do not invent factual data.

@@ -117,11 +117,11 @@ export function buildCurrentContext(
     : mode === "ritual"
       ? es
         ? `CONTINUIDAD (modo ritual):
-- Incluye una memoria breve de hilo (hexagramas previos y su dirección), sin arrastrar detalles incidentales que no aparezcan en la pregunta actual.
-- Si un dato previo no está explícitamente relacionado con la nueva pregunta, no lo uses para encuadrar el caso.`
+- Menciona SIEMPRE al menos una oración de hilo (hexagrama anterior y su mensaje clave), aunque la nueva tirada sea sobre un aspecto diferente de la misma preocupación.
+- No arrastres detalles incidentales ni repitas interpretaciones largas; una referencia concreta y personal es suficiente.`
         : `CONTINUITY (ritual mode):
-- Include a brief thread memory (prior hexagrams and trajectory), without carrying incidental details not present in the current question.
-- If a prior detail is not explicitly relevant to the new question, do not use it to frame the case.`
+- ALWAYS include at least one thread sentence (prior hexagram and its key message), even if the new cast covers a different aspect of the same concern.
+- Do not carry incidental details or repeat long interpretations; one concrete, personal reference is enough.`
       : es
         ? `CONTINUIDAD: referencias breves a consultas previas (máximo 1–2 oraciones en toda la respuesta).`
         : `CONTINUITY: brief references to prior consultations (max 1–2 sentences total).`;
