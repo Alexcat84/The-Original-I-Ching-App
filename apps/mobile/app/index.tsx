@@ -1007,11 +1007,10 @@ function OfflineScreen({ onRetry }: { onRetry: () => void }) {
   return (
     // Root is always fully opaque — hides native WebView error from frame 1
     <View style={offlineStyles.root}>
+      <Image source={OFFLINE_LOGO} style={StyleSheet.absoluteFill} resizeMode="cover" />
+      {/* Dark gradient band so text is readable over the image bottom */}
+      <View style={offlineStyles.bottomBand} />
       <Animated.View style={[offlineStyles.content, contentStyle]}>
-        {/* Clip to symbol only — logo is 876×1516px, text starts at ~62% */}
-        <View style={offlineStyles.logoClip}>
-          <Image source={OFFLINE_LOGO} style={offlineStyles.logo} resizeMode="cover" />
-        </View>
         <Text style={offlineStyles.title}>Signal Lost</Text>
         <Text style={offlineStyles.body}>The oracle is waiting for you.</Text>
         <TouchableOpacity style={offlineStyles.btn} onPress={onRetry} activeOpacity={0.75}>
@@ -1026,44 +1025,41 @@ const offlineStyles = StyleSheet.create({
   root: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "#0c0f14",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 40,
+  },
+  // Semi-transparent dark band at the bottom to ensure text contrast
+  bottomBand: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "38%",
+    backgroundColor: "rgba(12, 15, 20, 0.78)",
   },
   content: {
+    position: "absolute",
+    bottom: 64,
+    left: 40,
+    right: 40,
     alignItems: "center",
-    width: "100%",
-  },
-  // Clips the logo to show only the yin-yang symbol, hiding the app name text below it
-  logoClip: {
-    width: 240,
-    height: 248,
-    overflow: "hidden",
-    marginBottom: 20,
-  },
-  // Full image at 240px wide: height = 240 * (1516/876) ≈ 415px
-  logo: {
-    width: 240,
-    height: 415,
   },
   title: {
-    fontSize: 19,
+    fontSize: 22,
     fontWeight: "700",
     color: "#e8d5a3",
     marginBottom: 10,
     textAlign: "center",
   },
   body: {
-    fontSize: 14,
-    color: "#7a7060",
+    fontSize: 15,
+    color: "#b8a98a",
     textAlign: "center",
     lineHeight: 22,
     marginBottom: 36,
   },
   btn: {
     backgroundColor: "#c9a227",
-    paddingVertical: 13,
-    paddingHorizontal: 40,
+    paddingVertical: 14,
+    paddingHorizontal: 48,
     borderRadius: 10,
   },
   btnText: {
