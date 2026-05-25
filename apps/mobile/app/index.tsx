@@ -2132,7 +2132,12 @@ export default function WebViewScreen() {
         originWhitelist={["*", "theoriginaliching://*"]}
         // P4: Disable global WebView zoom — images open in native modal instead
         scalesPageToFit={false}
-        // P7: No shared/third-party cookies — auth lives in localStorage + SecureStore
+        // Security: block HTTP mixed content on our HTTPS origin (Android WebView equivalent of CSP upgrade-insecure-requests)
+        mixedContentMode="never"
+        // Security: block file:// URI access from the WebView — app only ever loads from HTTPS
+        allowFileAccess={false}
+        // P7: No shared/third-party cookies — auth lives in localStorage + SecureStore (enforced at OS level)
+        thirdPartyCookiesEnabled={false}
         renderLoading={() => (
           <View style={styles.loader}>
             <ActivityIndicator size="large" color="#c9a227" />
