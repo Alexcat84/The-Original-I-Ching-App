@@ -20,6 +20,7 @@ import {
   Dimensions,
   type GestureResponderEvent,
   I18nManager,
+  Image,
   Modal,
   Platform,
   StatusBar as RNStatusBar,
@@ -28,6 +29,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const OFFLINE_LOGO = require("../assets/logo.png") as number;
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   WebView,
@@ -977,21 +981,44 @@ interface ImageZoomModalProps {
 
 /* ── Offline / WebView error screen ──────────────────────────────────────── */
 function OfflineScreen({ onRetry }: { onRetry: () => void }) {
-  const opacity = useRef(new Animated.Value(0)).current;
+  const contentAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.timing(opacity, { toValue: 1, duration: 600, useNativeDriver: true }).start();
-  }, [opacity]);
+    Animated.spring(contentAnim, {
+      toValue: 1,
+      tension: 55,
+      friction: 9,
+      useNativeDriver: true,
+    }).start();
+  }, [contentAnim]);
+
+  const contentStyle = {
+    opacity: contentAnim,
+    transform: [
+      {
+        scale: contentAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0.88, 1],
+        }),
+      },
+    ],
+  };
 
   return (
-    <Animated.View style={[offlineStyles.root, { opacity }]}>
-      <Text style={offlineStyles.glyph}>易</Text>
-      <Text style={offlineStyles.title}>Signal Lost</Text>
-      <Text style={offlineStyles.body}>The oracle is waiting for you.</Text>
-      <TouchableOpacity style={offlineStyles.btn} onPress={onRetry} activeOpacity={0.75}>
-        <Text style={offlineStyles.btnText}>Try Again</Text>
-      </TouchableOpacity>
-    </Animated.View>
+    // Root is always fully opaque — hides native WebView error from frame 1
+    <View style={offlineStyles.root}>
+      <Animated.View style={[offlineStyles.content, contentStyle]}>
+        {/* Clip to symbol only — logo is 876×1516px, text starts at ~62% */}
+        <View style={offlineStyles.logoClip}>
+          <Image source={OFFLINE_LOGO} style={offlineStyles.logo} resizeMode="cover" />
+        </View>
+        <Text style={offlineStyles.title}>Signal Lost</Text>
+        <Text style={offlineStyles.body}>The oracle is waiting for you.</Text>
+        <TouchableOpacity style={offlineStyles.btn} onPress={onRetry} activeOpacity={0.75}>
+          <Text style={offlineStyles.btnText}>Try Again</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    </View>
   );
 }
 
@@ -1003,16 +1030,27 @@ const offlineStyles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 40,
   },
-  glyph: {
-    fontSize: 52,
-    color: "#c9a22755",
-    marginBottom: 28,
+  content: {
+    alignItems: "center",
+    width: "100%",
+  },
+  // Clips the logo to show only the yin-yang symbol, hiding the app name text below it
+  logoClip: {
+    width: 240,
+    height: 248,
+    overflow: "hidden",
+    marginBottom: 20,
+  },
+  // Full image at 240px wide: height = 240 * (1516/876) ≈ 415px
+  logo: {
+    width: 240,
+    height: 415,
   },
   title: {
     fontSize: 19,
     fontWeight: "700",
     color: "#e8d5a3",
-    marginBottom: 12,
+    marginBottom: 10,
     textAlign: "center",
   },
   body: {
@@ -2083,7 +2121,7 @@ export default function WebViewScreen() {
         key={webViewKey}
         ref={webViewRef}
         source={{ uri: currentUrl }}
-        style={styles.webview}
+        style={[styles.webview, webViewError && { opacity: 0 }]}
         onLoadEnd={onLoadEnd}
         onNavigationStateChange={onNavigationStateChange}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
