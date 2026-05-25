@@ -790,16 +790,13 @@ export async function POST(req: Request) {
       const ritualLog = (label: string, extra?: Record<string, unknown>) => {
         if (!LOG_RITUAL_STREAM_DEBUG) return;
         const elapsedMs = Date.now() - ritualStartedAt;
-        if (extra) {
-          console.log(
-            `[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`,
-            extra,
-          );
-        } else {
-          console.log(
-            `[api/consult][stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`,
-          );
+        const msg = `[stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`;
+        // In development, also write to stdout so the local terminal shows trace timing.
+        // In production this branch is skipped — Axiom is the only sink.
+        if (process.env.NODE_ENV === "development") {
+          extra ? console.log(msg, extra) : console.log(msg);
         }
+        log.debug(msg, { traceId: ritualTraceId, elapsedMs, ...(extra ?? {}) });
       };
       ritualLog("start", {
         user: shortUserId(authedUserId),
