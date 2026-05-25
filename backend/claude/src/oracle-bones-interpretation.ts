@@ -262,7 +262,7 @@ function buildOracleBonesUserContent(
   hasContext: boolean,
   mode: ResponseMode,
 ): string {
-  const targetWordCount = "380-500";
+  const targetWordCount = hasContext ? "420-550" : "380-500";
   const aff = cast.affirmsPositive
     ? "Verdict aligns with the POSITIVE charge (favorable to proceeding as stated)."
     : "Verdict aligns with the NEGATIVE charge (not favorable as the positive charge claims).";
