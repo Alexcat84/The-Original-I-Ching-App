@@ -22,7 +22,7 @@ export function stripInterpretationFluff(text: string): string {
   // Internal taxonomy line (theme_category); never persist in interpretation text.
   while (true) {
     const next = t.replace(
-      /^\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*[\w-]+(?:\s*\([^)]*\))?\s*(?:\r?\n|$)/i,
+      /^\s*#{0,6}\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*[\w-]+(?:\s*\([^)]*\))?\s*(?:\r?\n|$)/i,
       "",
     );
     if (next === t) break;

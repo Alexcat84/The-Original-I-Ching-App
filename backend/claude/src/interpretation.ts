@@ -666,7 +666,7 @@ export async function generateInterpretation(
 
       const cleanText = stripInterpretationFluff(
         rawInterpretation
-          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .replace(/^#{0,6}\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*(?:\n|$)/im, "")
           .trim(),
       );
       if (cleanText.trim().length > 0) {
@@ -769,7 +769,7 @@ export async function generateInterpretation(
 
       const cleanText = stripInterpretationFluff(
         rawInterpretation
-          .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+          .replace(/^#{0,6}\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*(?:\n|$)/im, "")
           .trim(),
       );
       if (cleanText.trim().length > 0) {
@@ -853,7 +853,7 @@ export async function generateInterpretation(
 
         const cleanText = stripInterpretationFluff(
           rawInterpretation
-            .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+            .replace(/^#{0,6}\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*(?:\n|$)/im, "")
             .trim(),
         );
         if (cleanText.trim().length > 0) {
