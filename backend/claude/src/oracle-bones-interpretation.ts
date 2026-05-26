@@ -418,7 +418,7 @@ export async function generateOracleBonesInterpretation(
         stripSnapshotLeaks(
           fullText
             .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-            .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+            .replace(/^#{0,6}\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*(?:\n|$)/im, "")
             .trim(),
         ),
       );
@@ -488,7 +488,7 @@ export async function generateOracleBonesInterpretation(
         stripSnapshotLeaks(
           fullText
             .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-            .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+            .replace(/^#{0,6}\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*(?:\n|$)/im, "")
             .trim(),
         ),
       );
@@ -546,7 +546,7 @@ export async function generateOracleBonesInterpretation(
         stripSnapshotLeaks(
           fullText
             .replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "")
-            .replace(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*\n/im, "")
+            .replace(/^#{0,6}\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*(?:\n|$)/im, "")
             .trim(),
         ),
       );
