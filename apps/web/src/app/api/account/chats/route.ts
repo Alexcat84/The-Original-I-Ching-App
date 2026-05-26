@@ -29,7 +29,12 @@ export async function GET(req: Request) {
   const sessionId = url.searchParams.get("sessionId");
 
   if (sessionId) {
-    const entry = await getUserSessionWithConsultations(user.userId, sessionId);
+    let entry;
+    try {
+      entry = await getUserSessionWithConsultations(user.userId, sessionId);
+    } catch {
+      return apiError(503, { error: "db_error", code: "DB_ERROR", action: "retry" });
+    }
     if (!entry) {
       return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
     }

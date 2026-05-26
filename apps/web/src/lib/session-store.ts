@@ -561,7 +561,10 @@ export async function getUserSessionWithConsultations(
     .eq("id", sessionId)
     .eq("user_id", userId)
     .maybeSingle();
-  if (sessionError || !sessionRow) return null;
+  if (sessionError) {
+    throw new Error(`db_session_lookup_failed:${sessionError.message}`);
+  }
+  if (!sessionRow) return null;
 
   const legacyBaseColumns =
     "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
