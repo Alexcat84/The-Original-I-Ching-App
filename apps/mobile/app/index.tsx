@@ -1979,6 +1979,24 @@ export default function WebViewScreen() {
                 if (updated.length !== cached.length) {
                   dispatchThread(updated);
                 }
+                // Neither SQLite nor Supabase returned content — signal the web
+                // so it can clear the loading state rather than spinning forever.
+                if (updated.length === 0 && cached.length === 0) {
+                  const notFoundPayload = JSON.stringify({ localId });
+                  webViewRef.current?.injectJavaScript(
+                    `(function(){try{` +
+                      `window.dispatchEvent(new CustomEvent('rn:thread-not-found',{detail:${notFoundPayload}}));` +
+                    `}catch(_){}})();true;`
+                  );
+                }
+              } else if (cached.length === 0) {
+                // No auth token and no SQLite data — clear loading immediately.
+                const notFoundPayload = JSON.stringify({ localId });
+                webViewRef.current?.injectJavaScript(
+                  `(function(){try{` +
+                    `window.dispatchEvent(new CustomEvent('rn:thread-not-found',{detail:${notFoundPayload}}));` +
+                  `}catch(_){}})();true;`
+                );
               }
             })();
             break;
