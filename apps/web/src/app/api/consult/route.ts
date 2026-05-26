@@ -57,7 +57,7 @@ import {
 } from "@/lib/thread-depth-policy";
 
 export const runtime = "nodejs";
-export const maxDuration = 120;
+export const maxDuration = 300;
 const MAX_CONSULT_QUESTION_CHARS = 4000;
 const LOG_RITUAL_STREAM_DEBUG =
   process.env.LOG_RITUAL_STREAM_DEBUG === "1" ||
