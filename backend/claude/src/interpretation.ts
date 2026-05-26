@@ -63,8 +63,10 @@ ABSOLUTE RULES:
 11. TYPOGRAPHY: enforce clean punctuation and spacing in the response language: one space after commas/semicolons/colons, no ",." or double punctuation, no glued tokens after punctuation, and no unintended uppercase after commas.
 12. TEMPORAL RESTRAINT: Never use temporal expressions (days, weeks, months, years, "recently", "lately", "these past X", or any span of time) when referencing previous consultations, unless the user's current question explicitly contains those terms. Reference prior consultations only by number, sequence, or thematic content — never by how long ago they occurred.`;
 
-/** Same token budget for all tiers. */
-const MAX_TOKENS = 4096;
+/** Token output budget by tier. Master combined needs room for full dialectical essays. */
+const MAX_TOKENS_DEFAULT = 4096;
+const MAX_TOKENS_MASTER_WITH_CONTEXT = 7000;
+const MAX_TOKENS_MASTER_NO_CONTEXT = 5000;
 const LOG_CLAUDE_CACHE_METRICS =
   process.env.LOG_CLAUDE_CACHE_METRICS === "1" ||
   process.env.LOG_CLAUDE_CACHE_METRICS === "true" ||
@@ -525,12 +527,22 @@ export async function generateInterpretation(
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } =
     loadClaudeEnv(env);
   const language = castResult.language;
-  const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
 
   const hasContext = Boolean(
     context && context.previousConsultations.length > 0,
   );
+  const isMasterCombinedEarly =
+    castResult.interpretationMode === "master_combined" ||
+    Boolean(
+      castResult.textsForClaude.leggeJudgment &&
+        castResult.textsForClaude.zhouyiJudgment,
+    );
+  const maxTokens = isMasterCombinedEarly
+    ? hasContext
+      ? MAX_TOKENS_MASTER_WITH_CONTEXT
+      : MAX_TOKENS_MASTER_NO_CONTEXT
+    : MAX_TOKENS_DEFAULT;
   const resolvedCastingMethod = castingMethod ?? castResult.castingMethod;
 
   const promptData = buildPromptData(
