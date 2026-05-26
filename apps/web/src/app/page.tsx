@@ -2294,6 +2294,14 @@ export default function HomePage() {
           setHistoryLoading(true);
           setLoadingSessionLocalId(localId);
         }, 250);
+        // The native bridge owns Tier 2 (SQLite instant) + Tier 3 (background
+        // Supabase sync). A parallel web API call would fire "session not found"
+        // for any session that lives in SQLite but not the current Supabase project
+        // (e.g., a staging session after an APK rebuild pointing to production),
+        // overriding valid cached content with a false error. rn:thread-not-found
+        // handles the genuinely-absent case instead.
+        setHistoryLoadError(null);
+        return;
       } else {
         // Desktop web: check IndexedDB before hitting Supabase.
         const idbCached = await getIdbThread(sessionId);
@@ -2926,8 +2934,21 @@ export default function HomePage() {
       setHistoryLoading(false);
       setLoadingSessionLocalId((curr) => (curr === localId ? null : curr));
     };
+    const onRnThreadNotFound = (e: Event) => {
+      const { localId } = (e as CustomEvent<{ localId: string }>).detail;
+      if (rnLoadingTimerRef.current !== null) {
+        clearTimeout(rnLoadingTimerRef.current);
+        rnLoadingTimerRef.current = null;
+      }
+      setHistoryLoading(false);
+      setLoadingSessionLocalId((curr) => (curr === localId ? null : curr));
+    };
     window.addEventListener("rn:thread-data", onRnThread);
-    return () => window.removeEventListener("rn:thread-data", onRnThread);
+    window.addEventListener("rn:thread-not-found", onRnThreadNotFound);
+    return () => {
+      window.removeEventListener("rn:thread-data", onRnThread);
+      window.removeEventListener("rn:thread-not-found", onRnThreadNotFound);
+    };
   }, [setSessions]);
 
   useEffect(() => {
