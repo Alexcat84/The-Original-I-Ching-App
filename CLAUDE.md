@@ -72,8 +72,8 @@ Variables en Vercel separadas por entorno:
 | Pack | Precio | Tokens | Consultas/hilo | Resolución imagen |
 |------|--------|--------|----------------|-------------------|
 | Free | $0 | 2 lifetime | 1 | 1024×768 |
-| Seeker | $6.99 | 20 | 3 | 1024×1024 |
-| Practitioner | $11.99 | 40 | 5 | 1184×1184 |
+| Seeker | $6.99 | 25 | 3 | 1024×1024 |
+| Practitioner | $11.99 | 50 | 5 | 1184×1184 |
 | Master | $19.99 | 100 | 8 | 1504×1504 |
 
 **Reglas clave:**
@@ -82,6 +82,12 @@ Variables en Vercel separadas por entorno:
 - Free trial: 2 tokens LIFETIME, nunca se renuevan
 - `user_trial_log` protege contra re-otorgamiento del free trial
 - Gate de acceso basado ÚNICAMENTE en `credits_total > 0`
+
+> ⚠️ **NUNCA cambiar los product IDs de RevenueCat/Stripe:**
+> Los IDs `tokens_seeker_20`, `tokens_practitioner_40`, `tokens_master_100` están hardcodeados
+> en RevenueCat, Stripe y en `toContextTierKey()` de `credits.ts`. Cambiarlos rompe los webhooks
+> de pago y la asignación de tier. Los números en el ID (20, 40, 100) son históricos — los tokens
+> reales otorgados (25, 50, 100) están definidos en `apps/web/src/lib/token-packs.ts`.
 
 ## Schema DB (Supabase) — Tablas principales
 ```sql
