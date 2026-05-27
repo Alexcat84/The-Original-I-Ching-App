@@ -1,7 +1,7 @@
 # Arquitectura Completa — The Original I Ching App
 
-**Última actualización:** 2026-05-20  
-**Branch de referencia:** `main` @ `58b56c4`  
+**Última actualización:** 2026-05-26  
+**Branch de referencia:** `main` @ `1316508`  
 **Alcance:** Documentación técnica completa de A a Z
 
 ---
@@ -75,7 +75,7 @@ Usuario
 ├── backend/
 │   ├── claude/           # Integración Anthropic API
 │   ├── auth/             # 2FA, validación de email, bcrypt
-│   └── db/migrations/    # 36 migraciones SQL (Supabase)
+│   └── db/migrations/    # 38 migraciones SQL (Supabase)
 └── tools/
     └── fallback-tools/   # Utilidades locales de generación/QA
 ```
@@ -497,13 +497,12 @@ computeLocalImagePath(imageUrl): string
     │               └── syncChatContent(token, BASE_URL, sessionId) [background]
     │                       ├── GET /api/account/chats?sessionId=...
     │                       ├── upsertMessages (nuevas consultas)
-    │                       └── si count cambió: dispatchEvent("rn:thread-data") [2ª vez]
+    │                       ├── si count cambió: dispatchEvent("rn:thread-data") [2ª vez]
+    │                       └── si count == 0 y SQLite vacío: dispatchEvent("rn:thread-not-found")
     │
-    └── fetch("/api/account/chats?sessionId=...") [paralelo, Supabase]
-            ├── Si llega antes que native: renderiza con publicSessionId correcto
-            ├── Si llega después que native: re-render silencioso (mismo contenido)
-            └── Si offline + native sirvió: catch → setHistoryLoadError (hint sidebar)
-                [El contenido del chat es visible — error solo en hint de sidebar]
+    └── [Web loadSessionThread retorna aquí — NO hace fetch paralelo en modo RN]
+        El native bridge es el único dueño de la carga en APK.
+        Esto evita la race condition que causaba doble query a Supabase y timeout.
 ```
 
 ---
@@ -535,6 +534,7 @@ Comunicación bidireccional entre la web app y la capa nativa.
 |-------------------|--------|-------|
 | `window.__rnCachedChats` + `rn:cached-chats` | onLoadEnd + post-sync | `RnCachedChatEntry[]` |
 | `rn:thread-data` | Post request_thread | `{localId, consultations: ApiChatConsultation[]}` |
+| `rn:thread-not-found` | Si SQLite + Supabase sync devuelven vacío | `{localId}` — la web limpia el spinner sin mostrar error de "no existe" |
 | `window.__rnForceAccountRefresh()` | onLoadEnd + post-auth | Trigger refresco de cuenta |
 | `buildSyncLocaleFromWebOrNativeScript()` | onLoadEnd si locale hydrated | Sincroniza idioma |
 
@@ -593,7 +593,7 @@ init_free_user(p_user_id UUID) → VOID
   -- INSERT INTO user_trial_log ... (previene re-otorgamiento lifetime)
 ```
 
-### Migraciones (36 total)
+### Migraciones (38 total)
 
 ```
 001_init.sql
@@ -628,6 +628,8 @@ init_free_user(p_user_id UUID) → VOID
 034_translator_column.sql
 035_revoke_public_execute_on_secdef_functions.sql
 036_consultations_session_id_index.sql
+037_grant_is_admin_to_app_owner.sql    ← grant is_admin al owner account de producción
+038_raise_statement_timeout.sql        ← statement_timeout: authenticated→30s, anon→10s, authenticator→30s
 ```
 
 ---
@@ -773,8 +775,8 @@ verifyTotpTokenWithReplayGuard(userId, token) → boolean
 | Pack | Precio | Tokens | Consultas/hilo | Resolución imagen |
 |------|--------|--------|----------------|-------------------|
 | Free | $0 | 2 lifetime | 1 | 1024×768 |
-| Seeker | $6.99 | 20 | 3 | 1024×1024 |
-| Practitioner | $11.99 | 40 | 5 | 1184×1184 |
+| Seeker | $6.99 | 25 | 3 | 1024×1024 |
+| Practitioner | $11.99 | 50 | 5 | 1184×1184 |
 | Master | $19.99 | 100 | 8 | 1504×1504 |
 
 **Reglas críticas:**
@@ -1163,8 +1165,8 @@ El sistema actual es un objeto de strings planos en `page.tsx`. Migración a `ne
 **10. Animación ritual de Huesos de Oráculo (Fase 2)**  
 Three.js + animación de fuego pendiente de integración completa.
 
-**11. Supabase Pro**  
-El proyecto de producción debe upgradearse a Pro ($25/mes) al tener usuarios reales. El plan Free tiene 500MB storage, 2GB egress/mes — ya se saturó una vez en el proyecto original.
+**11. Supabase Pro** ✅ Activo  
+Ambos proyectos (staging y producción) están en Supabase Pro ($25/mes). El proyecto original saturó el egress Free (2GB/mes) durante las pruebas de carga — resuelto con Pro.
 
 ---
 
