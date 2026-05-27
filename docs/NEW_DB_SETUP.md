@@ -52,6 +52,14 @@ Las migraciones marcadas con ⚠️ tienen partes obsoletas — ver nota al fina
 028_auth_email_registered_rpc.sql     ← Función auth_email_registered (service_role)
 029_handle_new_auth_user_email_orphans.sql ← handle_new_auth_user FINAL (limpia orphans)
 030_2fa_reset_recovery_codes_atomic.sql   ← reset_2fa_recovery_codes atómica
+031_interpretation_summary.sql            ← columna interpretation_summary en consultations
+032_atomic_token_consumption.sql          ← consume_token devuelve -1 si saldo vacío
+033_drop_legacy_consume_token.sql         ← elimina versión anterior de consume_token
+034_translator_column.sql                 ← columna translator en consultations
+035_revoke_public_execute_on_secdef_functions.sql ← hardening de seguridad
+036_consultations_session_id_index.sql    ← índice en consultations(session_id)
+037_grant_is_admin_to_app_owner.sql       ← grant is_admin al owner account de producción
+038_raise_statement_timeout.sql           ← statement_timeout: authenticated→30s, anon→10s, authenticator→30s
 ```
 
 > **Nota sobre migraciones ⚠️**: Son obsoletas en el sentido de que agregan columnas
