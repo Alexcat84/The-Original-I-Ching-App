@@ -8,6 +8,24 @@ function unauthorized() {
   return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
 }
 
+function forbidden() {
+  return NextResponse.json({ ok: false, error: "forbidden" }, { status: 403 });
+}
+
+// Verify the request originates from the same host as the server (same-origin
+// check). Defends against CSRF via subdomain abuse or future browser changes
+// that may weaken SameSite=Lax guarantees on cross-site navigations.
+function isSameOrigin(req: Request): boolean {
+  const origin = req.headers.get("origin");
+  const host = req.headers.get("host");
+  if (!origin || !host) return false;
+  try {
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+}
+
 export async function GET() {
   const token = await getAdminSessionTokenFromCookies();
   if (!isValidAdminSession(token)) return unauthorized();
@@ -15,6 +33,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  if (!isSameOrigin(req)) return forbidden();
   const token = await getAdminSessionTokenFromCookies();
   if (!isValidAdminSession(token)) return unauthorized();
   let body: Partial<AdminConfig>;

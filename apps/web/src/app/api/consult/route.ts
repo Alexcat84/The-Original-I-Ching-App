@@ -41,6 +41,7 @@ import {
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey } from "@/lib/rate-limit";
+import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import {
@@ -293,6 +294,7 @@ function detectLanguageFromUserText(text: string): AppLocale | null {
 }
 
 export async function POST(req: Request) {
+  assertCriticalConfig();
   const log = new Logger({ source: "api/consult" });
 
   // Health check de Upstash — rechazar si no está operativo
