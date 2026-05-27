@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ADMIN_COOKIE_NAME, expectedAdminToken } from "@/lib/admin-auth";
 import { rateLimitByKey } from "@/lib/rate-limit";
+import { assertCriticalConfig } from "@/lib/startup-checks";
 import bcrypt from "bcryptjs";
 import { createHash, timingSafeEqual } from "node:crypto";
 
@@ -17,6 +18,7 @@ function timingSafeStringEqual(a: string, b: string): boolean {
 }
 
 export async function POST(req: Request) {
+  assertCriticalConfig();
   let body: { key?: string };
   try {
     body = (await req.json()) as { key?: string };

@@ -48,6 +48,19 @@ export async function rateLimitByKey(params: {
     }
     return { ok: count <= params.limit, remaining: Math.max(0, params.limit - count) };
   }
+
+  // Production: fail-closed. In-memory Map is not effective across serverless
+  // instances — an attacker can bypass it by distributing requests. Block all
+  // requests until Upstash is correctly configured.
+  if (process.env.NODE_ENV === "production") {
+    console.error(
+      "[rate-limit] FATAL: Upstash not configured in production. " +
+        "Blocking request (fail-closed). Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.",
+    );
+    return { ok: false, remaining: 0 };
+  }
+
+  // Development only: in-memory fallback (single process, acceptable locally).
   const now = Date.now();
   const slot = inMemoryBucket.get(params.key);
   if (!slot || now >= slot.resetAt) {

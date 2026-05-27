@@ -66,35 +66,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "db_not_configured" }, { status: 503 });
   }
 
-  // Idempotency: reject duplicate events (RC retries on timeout).
-  // UNIQUE constraint on event_hash — insert fails with 23505 if already processed.
-  const { error: dedupError } = await supabase.from("revenuecat_webhook_events").insert({
-    event_hash: eventHash,
-    event_type: eventType,
-    app_user_id: userId || null,
-  });
-  if (dedupError) {
-    if (dedupError.code === "23505") {
-      log.info("webhook_duplicate", { eventType, productId });
-      await log.flush();
-      return NextResponse.json({ skipped: "already_processed" });
-    }
-    // Log but continue — prefer a duplicate grant over a lost purchase.
-    log.error("webhook_idempotency_failed", { error: dedupError.message, eventType });
-    console.error("[RC webhook] idempotency insert failed:", dedupError.message);
-  }
-
-  const { error } = await supabase.rpc("grant_tokens", {
+  // Atomic idempotent grant: dedup insert + token credit in one transaction.
+  // Uses grant_tokens_idempotent() (migration 039) so a transient DB failure
+  // during the dedup step can never result in a duplicate grant on retry.
+  const { data: grantResult, error: grantError } = await supabase.rpc("grant_tokens_idempotent", {
+    p_event_hash: eventHash,
+    p_event_type: eventType,
     p_user_id: userId,
     p_tokens: pack.tokens,
-    p_pack_id: productId,
+    p_pack: productId,
   });
 
-  if (error) {
-    log.error("grant_tokens_failed", { productId, tokens: pack.tokens, error: error.message });
-    console.error("[RC webhook] grant_tokens failed:", error.message);
+  if (grantError) {
+    log.error("grant_tokens_idempotent_failed", { productId, tokens: pack.tokens, error: grantError.message, eventType });
+    console.error("[RC webhook] grant_tokens_idempotent failed:", grantError.message);
     await log.flush();
     return NextResponse.json({ error: "db_error" }, { status: 500 });
+  }
+
+  if (grantResult === "already_processed") {
+    log.info("webhook_duplicate", { eventType, productId });
+    await log.flush();
+    return NextResponse.json({ skipped: "already_processed" });
   }
 
   log.info("tokens_granted", { userId: userId.slice(0, 8), productId, tokens: pack.tokens, eventType });
