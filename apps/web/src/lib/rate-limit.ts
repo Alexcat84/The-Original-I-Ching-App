@@ -41,12 +41,21 @@ export async function rateLimitByKey(params: {
 }): Promise<{ ok: boolean; remaining: number }> {
   const r = redis();
   if (r) {
-    const redisKey = `rl:${params.key}`;
-    const count = await r.incr(redisKey);
-    if (count === 1) {
-      await r.expire(redisKey, params.windowSeconds);
+    try {
+      const redisKey = `rl:${params.key}`;
+      const count = await r.incr(redisKey);
+      if (count === 1) {
+        await r.expire(redisKey, params.windowSeconds);
+      }
+      return { ok: count <= params.limit, remaining: Math.max(0, params.limit - count) };
+    } catch (err) {
+      // Redis reachable but credentials invalid (e.g. rotated token not yet updated in env).
+      // Fail-closed in production; fall through to in-memory in dev.
+      console.error("[rate-limit] Upstash error (bad credentials or network):", err);
+      if (process.env.NODE_ENV === "production") {
+        return { ok: false, remaining: 0 };
+      }
     }
-    return { ok: count <= params.limit, remaining: Math.max(0, params.limit - count) };
   }
 
   // Production: fail-closed. In-memory Map is not effective across serverless
