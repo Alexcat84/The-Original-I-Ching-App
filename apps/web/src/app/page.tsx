@@ -5819,7 +5819,7 @@ export default function HomePage() {
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() => router.push("/library")}
-                          disabled={!accessToken || tierAccessKey === "free"}
+                          disabled={!accessToken || (!isAdmin && tierAccessKey === "free")}
                         >
                           {chrome.openLibrary}
                         </button>
