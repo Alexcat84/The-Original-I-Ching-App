@@ -43,6 +43,7 @@ import { InterpretationMarkdownSafe } from "@/components/InterpretationMarkdownS
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { TourTooltip } from "@/components/TourTooltip";
 import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
 import { isPersistableUuid } from "@/lib/session-ids";
 import {
@@ -1832,13 +1833,6 @@ export default function HomePage() {
     }
   }, []);
 
-  useEffect(() => {
-    try {
-      if (!localStorage.getItem(TOUR_STORAGE_KEY)) setTourRun(true);
-    } catch {
-      // ignore if localStorage is blocked (private browsing, etc.)
-    }
-  }, []);
 
   const handleTourCallback = useCallback(
     ({ type, index, status }: EventData) => {
@@ -4417,6 +4411,12 @@ export default function HomePage() {
       if (res.ok) {
         setDisplayName(onboardingInput.trim());
         setOnboardingOpen(false);
+        try {
+          if (!localStorage.getItem(TOUR_STORAGE_KEY)) {
+            setTourKey((k) => k + 1);
+            setTourRun(true);
+          }
+        } catch { /* ignore */ }
       }
     } finally {
       setOnboardingSaving(false);
@@ -7048,6 +7048,7 @@ export default function HomePage() {
           ] satisfies Step[]
         }
         continuous
+        tooltipComponent={TourTooltip}
         onEvent={handleTourCallback}
         locale={{
           back: TOUR_COPY[locale].back,
@@ -7056,10 +7057,8 @@ export default function HomePage() {
           skip: TOUR_COPY[locale].skip,
         }}
         options={{
-          showProgress: true,
           skipBeacon: true,
           skipScroll: true,
-          buttons: ["back", "primary", "skip"],
           zIndex: 10000,
         }}
       />
