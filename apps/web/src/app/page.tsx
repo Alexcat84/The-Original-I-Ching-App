@@ -1836,7 +1836,21 @@ export default function HomePage() {
 
   const handleTourCallback = useCallback(
     ({ type, index, status }: EventData) => {
-      if (type === EVENTS.STEP_BEFORE && index === 2) setConsultPanelOpen(true);
+      if (type === EVENTS.STEP_BEFORE) {
+        if (index === 2) setConsultPanelOpen(true);
+        // Steps 3–6 are inside the consult panel which has its own scroll container.
+        // Scroll the target into view so the panel reveals it before the tooltip appears.
+        if (index >= 2 && index <= 5) {
+          const targets = [
+            "#tour-oracle-mode",
+            "#tour-translator",
+            "#tour-cast-mode",
+            "#tour-library-btn",
+          ];
+          const el = document.querySelector<HTMLElement>(targets[index - 2]);
+          el?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
       if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
         setTourRun(false);
         setConsultPanelOpen(false);
