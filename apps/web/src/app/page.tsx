@@ -97,7 +97,7 @@ import {
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import type { EventData, Step } from "react-joyride";
-import { EVENTS, STATUS } from "react-joyride";
+import { STATUS } from "react-joyride";
 const JoyrideNoSSR = dynamic(
   () => import("react-joyride").then((mod) => ({ default: mod.Joyride })),
   { ssr: false },
@@ -1835,28 +1835,29 @@ export default function HomePage() {
 
 
   const handleTourCallback = useCallback(
-    ({ type, index, status }: EventData) => {
-      if (type === EVENTS.STEP_BEFORE) {
-        if (index === 2) setConsultPanelOpen(true);
-        // Steps 3–6 are inside the consult panel which has its own scroll container.
-        // Scroll the target into view so the panel reveals it before the tooltip appears.
-        if (index >= 2 && index <= 5) {
-          const targets = [
-            "#tour-oracle-mode",
-            "#tour-translator",
-            "#tour-cast-mode",
-            "#tour-library-btn",
-          ];
-          const el = document.querySelector<HTMLElement>(targets[index - 2]);
-          el?.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-      }
+    ({ status }: EventData) => {
       if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
         setTourRun(false);
         setConsultPanelOpen(false);
         try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
       }
     },
+    [setConsultPanelOpen],
+  );
+
+  // before-hook factories for panel steps — open panel (step 3 only) then scroll
+  // and wait for CSS transitions before Joyride tries to find+spotlight the target.
+  const tourBeforePanel = useCallback(
+    (id: string, openPanel: boolean) =>
+      () =>
+        new Promise<void>((resolve) => {
+          if (openPanel) setConsultPanelOpen(true);
+          // Give the panel open transition time, then scroll the target into view.
+          setTimeout(() => {
+            document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            setTimeout(resolve, 380);
+          }, openPanel ? 260 : 0);
+        }),
     [setConsultPanelOpen],
   );
   const dismissPlayPromoStrip = useCallback(() => {
@@ -5774,7 +5775,7 @@ export default function HomePage() {
                           </label>
                         </div>
                         <hr className="composer-panel-divider" aria-hidden />
-                        <div className="cast-selector-block">
+                        <div id="tour-cast-mode" className="cast-selector-block">
                           <span className="cast-selector-label">
                             {manualWizardChrome.castModeGroupAria}
                           </span>
@@ -5782,7 +5783,6 @@ export default function HomePage() {
                             <input
                               type="checkbox"
                               className="oracle-toggle-input"
-                              id="tour-cast-mode"
                               checked={ichingCastMode === "manual"}
                               onChange={() =>
                                 setIchingCastMode(
@@ -7052,13 +7052,13 @@ export default function HomePage() {
         run={tourRun}
         steps={
           [
-            { target: "#tour-menu-btn",    title: TOUR_COPY[locale].step1Title, content: TOUR_COPY[locale].step1Body,    placement: "bottom" },
-            { target: "#tour-options-btn", title: TOUR_COPY[locale].step2Title, content: TOUR_COPY[locale].step2Body,    placement: "top" },
-            { target: "#tour-oracle-mode", title: TOUR_COPY[locale].step3Title, content: TOUR_COPY[locale].step3Body,    placement: "top" },
-            { target: "#tour-translator",  title: TOUR_COPY[locale].step4Title, content: TOUR_COPY[locale].step4Body,    placement: "top" },
-            { target: "#tour-cast-mode",   title: TOUR_COPY[locale].step5Title, content: TOUR_COPY[locale].step5Body,    placement: "top" },
-            { target: "#tour-library-btn", title: TOUR_COPY[locale].step6Title, content: TOUR_COPY[locale].step6Body,    placement: "top" },
-            { target: "#tour-chat-input",  title: TOUR_COPY[locale].step7Title, content: TOUR_COPY[locale].step7Body,    placement: "top" },
+            { target: "#tour-menu-btn",    title: TOUR_COPY[locale].step1Title, content: TOUR_COPY[locale].step1Body, placement: "bottom" },
+            { target: "#tour-options-btn", title: TOUR_COPY[locale].step2Title, content: TOUR_COPY[locale].step2Body, placement: "top" },
+            { target: "#tour-oracle-mode", title: TOUR_COPY[locale].step3Title, content: TOUR_COPY[locale].step3Body, placement: "top",    before: tourBeforePanel("tour-oracle-mode", true) },
+            { target: "#tour-translator",  title: TOUR_COPY[locale].step4Title, content: TOUR_COPY[locale].step4Body, placement: "top",    before: tourBeforePanel("tour-translator",  false) },
+            { target: "#tour-cast-mode",   title: TOUR_COPY[locale].step5Title, content: TOUR_COPY[locale].step5Body, placement: "top",    before: tourBeforePanel("tour-cast-mode",   false) },
+            { target: "#tour-library-btn", title: TOUR_COPY[locale].step6Title, content: TOUR_COPY[locale].step6Body, placement: "top",    before: tourBeforePanel("tour-library-btn", false) },
+            { target: "#tour-chat-input",  title: TOUR_COPY[locale].step7Title, content: TOUR_COPY[locale].step7Body, placement: "top" },
           ] satisfies Step[]
         }
         continuous
