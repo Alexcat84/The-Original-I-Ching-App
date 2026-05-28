@@ -94,6 +94,13 @@ import {
   type ManualCastPreview,
 } from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+import type { EventData, Step } from "react-joyride";
+import { EVENTS, STATUS } from "react-joyride";
+const JoyrideNoSSR = dynamic(
+  () => import("react-joyride").then((mod) => ({ default: mod.Joyride })),
+  { ssr: false },
+);
 import {
   useCallback,
   useEffect,
@@ -108,6 +115,133 @@ const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
 
 const ICHING_CAST_MODE_STORAGE_KEY = "iching_cast_mode_v1";
 const ICHING_CASTING_METHOD_STORAGE_KEY = "iching_casting_method_v1";
+
+const TOUR_STORAGE_KEY = "iching_tour_v1";
+
+type TourCopy = {
+  step1Title: string; step1Body: string;
+  step2Title: string; step2Body: string;
+  step3Title: string; step3Body: string;
+  step4Title: string; step4Body: string;
+  step5Title: string; step5Body: string;
+  step6Title: string; step6Body: string;
+  step7Title: string; step7Body: string;
+  back: string; next: string; skip: string; finish: string;
+  replayLabel: string;
+};
+
+const TOUR_COPY: Record<AppLocale, TourCopy> = {
+  es: {
+    step1Title: "Historial de Chats", step1Body: "Accede a tus consultas anteriores y estadísticas de actividad.",
+    step2Title: "Opciones de Consulta", step2Body: "Configura tu consulta: modo de oráculo, traductor y método de lanzamiento.",
+    step3Title: "Modo de Oráculo", step3Body: "Elige el I Ching (monedas, tradición Zhu Xi) o los Huesos de Oráculo (estilo Shang, el método de adivinación más antiguo de China).",
+    step4Title: "Traductor", step4Body: "Fuente de interpretación: Wilhelm (clásico), Legge, Zhou Yi o Master Combined. Los niveles superiores desbloquean más opciones.",
+    step5Title: "Modo de Lanzamiento", step5Body: "Automático: la IA lanza las monedas. Manual: tú las lanzas físicamente y registras el resultado.",
+    step6Title: "Biblioteca de Hexagramas", step6Body: "Consulta los 64 hexagramas con interpretación completa. Disponible desde el nivel Seeker.",
+    step7Title: "Tu Consulta", step7Body: "Escribe tu pregunta y pulsa ➤ para recibir la interpretación del oráculo.",
+    back: "Atrás", next: "Siguiente", skip: "Saltar", finish: "¡Listo!", replayLabel: "Ver tutorial",
+  },
+  en: {
+    step1Title: "Chat History", step1Body: "Access your previous consultations and activity statistics.",
+    step2Title: "Consultation Options", step2Body: "Configure your consultation: oracle mode, translator, and casting method.",
+    step3Title: "Oracle Mode", step3Body: "Choose I Ching (coins, Zhu Xi tradition) or Oracle Bones (Shang style, the oldest Chinese divination method).",
+    step4Title: "Translator", step4Body: "Interpretation source: Wilhelm (classic), Legge, Zhou Yi, or Master Combined. Higher tiers unlock more options.",
+    step5Title: "Casting Mode", step5Body: "Automatic: the AI casts the coins. Manual: you cast them physically and record the result.",
+    step6Title: "Hexagram Library", step6Body: "Browse all 64 hexagrams with full interpretation. Available from the Seeker tier.",
+    step7Title: "Your Consultation", step7Body: "Type your question and press ➤ to receive the oracle's interpretation.",
+    back: "Back", next: "Next", skip: "Skip", finish: "Done!", replayLabel: "View tutorial",
+  },
+  pt: {
+    step1Title: "Histórico de Chats", step1Body: "Acesse suas consultas anteriores e estatísticas de atividade.",
+    step2Title: "Opções de Consulta", step2Body: "Configure sua consulta: modo de oráculo, tradutor e método de lançamento.",
+    step3Title: "Modo de Oráculo", step3Body: "Escolha o I Ching (moedas, tradição Zhu Xi) ou os Ossos de Oráculo (estilo Shang, o método de adivinhação mais antigo da China).",
+    step4Title: "Tradutor", step4Body: "Fonte de interpretação: Wilhelm (clássico), Legge, Zhou Yi ou Master Combined. Níveis superiores desbloqueiam mais opções.",
+    step5Title: "Modo de Lançamento", step5Body: "Automático: a IA lança as moedas. Manual: você as lança fisicamente e registra o resultado.",
+    step6Title: "Biblioteca de Hexagramas", step6Body: "Consulte os 64 hexagramas com interpretação completa. Disponível a partir do nível Seeker.",
+    step7Title: "Sua Consulta", step7Body: "Escreva sua pergunta e pressione ➤ para receber a interpretação do oráculo.",
+    back: "Voltar", next: "Próximo", skip: "Pular", finish: "Pronto!", replayLabel: "Ver tutorial",
+  },
+  fr: {
+    step1Title: "Historique des Chats", step1Body: "Accédez à vos consultations précédentes et à vos statistiques d'activité.",
+    step2Title: "Options de Consultation", step2Body: "Configurez votre consultation : mode oracle, traducteur et méthode de tirage.",
+    step3Title: "Mode Oracle", step3Body: "Choisissez le I Ching (pièces, tradition Zhu Xi) ou les Os Oraculaires (style Shang, la méthode divinatoire la plus ancienne de Chine).",
+    step4Title: "Traducteur", step4Body: "Source d'interprétation : Wilhelm (classique), Legge, Zhou Yi ou Master Combined. Les niveaux supérieurs débloquent plus d'options.",
+    step5Title: "Mode de Tirage", step5Body: "Automatique : l'IA lance les pièces. Manuel : vous les lancez physiquement et enregistrez le résultat.",
+    step6Title: "Bibliothèque des Hexagrammes", step6Body: "Consultez les 64 hexagrammes avec une interprétation complète. Disponible à partir du niveau Seeker.",
+    step7Title: "Votre Consultation", step7Body: "Tapez votre question et appuyez sur ➤ pour recevoir l'interprétation de l'oracle.",
+    back: "Retour", next: "Suivant", skip: "Passer", finish: "Terminé !", replayLabel: "Voir le tutoriel",
+  },
+  de: {
+    step1Title: "Chat-Verlauf", step1Body: "Greife auf deine früheren Beratungen und Aktivitätsstatistiken zu.",
+    step2Title: "Beratungsoptionen", step2Body: "Konfiguriere deine Beratung: Orakel-Modus, Übersetzer und Wurf-Methode.",
+    step3Title: "Orakel-Modus", step3Body: "Wähle zwischen I Ching (Münzen, Zhu Xi-Tradition) oder Orakelknochen (Shang-Stil, die älteste chinesische Wahrsagemethode).",
+    step4Title: "Übersetzer", step4Body: "Interpretationsquelle: Wilhelm (klassisch), Legge, Zhou Yi oder Master Combined. Höhere Stufen schalten mehr Optionen frei.",
+    step5Title: "Wurf-Modus", step5Body: "Automatisch: Die KI wirft die Münzen. Manuell: Du wirfst sie physisch und trägst das Ergebnis ein.",
+    step6Title: "Hexagramm-Bibliothek", step6Body: "Durchsuche alle 64 Hexagramme mit vollständiger Interpretation. Ab der Seeker-Stufe verfügbar.",
+    step7Title: "Deine Beratung", step7Body: "Schreibe deine Frage und drücke ➤, um die Interpretation des Orakels zu erhalten.",
+    back: "Zurück", next: "Weiter", skip: "Überspringen", finish: "Fertig!", replayLabel: "Tutorial anzeigen",
+  },
+  it: {
+    step1Title: "Storico Chat", step1Body: "Accedi alle tue consultazioni precedenti e alle statistiche di attività.",
+    step2Title: "Opzioni di Consultazione", step2Body: "Configura la tua consultazione: modalità oracolo, traduttore e metodo di lancio.",
+    step3Title: "Modalità Oracolo", step3Body: "Scegli l'I Ching (monete, tradizione Zhu Xi) o le Ossa Oracolari (stile Shang, il metodo divinatorio più antico della Cina).",
+    step4Title: "Traduttore", step4Body: "Fonte di interpretazione: Wilhelm (classico), Legge, Zhou Yi o Master Combined. I livelli superiori sbloccano più opzioni.",
+    step5Title: "Modalità di Lancio", step5Body: "Automatico: l'IA lancia le monete. Manuale: le lanci fisicamente e registri il risultato.",
+    step6Title: "Biblioteca degli Esagrammi", step6Body: "Consulta tutti i 64 esagrammi con interpretazione completa. Disponibile dal livello Seeker.",
+    step7Title: "La Tua Consultazione", step7Body: "Scrivi la tua domanda e premi ➤ per ricevere l'interpretazione dell'oracolo.",
+    back: "Indietro", next: "Avanti", skip: "Salta", finish: "Fatto!", replayLabel: "Vedi tutorial",
+  },
+  ja: {
+    step1Title: "チャット履歴", step1Body: "過去の相談とアクティビティ統計にアクセスできます。",
+    step2Title: "相談オプション", step2Body: "相談の設定：占いモード、翻訳者、投げ方を選択してください。",
+    step3Title: "占いモード", step3Body: "易経（コイン、朱熹伝統）か神託骨（殷商スタイル、中国最古の占い方法）を選択してください。",
+    step4Title: "翻訳者", step4Body: "解釈の出典：Wilhelm（古典）、Legge、Zhou Yi、またはMaster Combined。上位ティアでより多くの選択肢が解放されます。",
+    step5Title: "投げ方モード", step5Body: "自動：AIがコインを投げます。手動：物理的に投げて結果を記録します。",
+    step6Title: "六十四卦ライブラリ", step6Body: "全64卦の完全な解釈を閲覧できます。Seekerティア以上で利用可能。",
+    step7Title: "あなたの相談", step7Body: "質問を入力して➤を押すと、神託の解釈が届きます。",
+    back: "戻る", next: "次へ", skip: "スキップ", finish: "完了！", replayLabel: "チュートリアルを見る",
+  },
+  zh: {
+    step1Title: "聊天记录", step1Body: "访问您的历史咨询和活动统计。",
+    step2Title: "咨询选项", step2Body: "配置您的咨询：神谕模式、译者和占卜方式。",
+    step3Title: "神谕模式", step3Body: "选择易经（铜钱，朱熹传统）或甲骨神谕（商朝风格，中国最古老的占卜方式）。",
+    step4Title: "译者", step4Body: "解读来源：Wilhelm（经典）、Legge、周易或Master Combined。更高等级可解锁更多选项。",
+    step5Title: "占卜方式", step5Body: "自动：AI抛铜钱。手动：您亲手抛铜钱并记录结果。",
+    step6Title: "六十四卦典库", step6Body: "浏览全部64卦的完整解读。从Seeker等级起可用。",
+    step7Title: "您的咨询", step7Body: "输入您的问题，按➤接收神谕解读。",
+    back: "上一步", next: "下一步", skip: "跳过", finish: "完成！", replayLabel: "查看教程",
+  },
+  ko: {
+    step1Title: "채팅 기록", step1Body: "이전 상담 내역과 활동 통계에 접근하세요.",
+    step2Title: "상담 옵션", step2Body: "상담 설정: 신탁 모드, 번역자, 주조 방법을 선택하세요.",
+    step3Title: "신탁 모드", step3Body: "주역(동전, 주희 전통) 또는 신탁 뼈(상나라 양식, 중국에서 가장 오래된 점술 방법) 중 선택하세요.",
+    step4Title: "번역자", step4Body: "해석 출처: Wilhelm(고전), Legge, Zhou Yi 또는 Master Combined. 상위 등급에서 더 많은 옵션이 해제됩니다.",
+    step5Title: "주조 방식", step5Body: "자동: AI가 동전을 던집니다. 수동: 직접 던지고 결과를 기록합니다.",
+    step6Title: "육십사괘 도서관", step6Body: "64개 모든 괘의 완전한 해석을 탐색하세요. Seeker 등급부터 이용 가능합니다.",
+    step7Title: "나의 상담", step7Body: "질문을 입력하고 ➤를 눌러 신탁의 해석을 받으세요.",
+    back: "이전", next: "다음", skip: "건너뛰기", finish: "완료!", replayLabel: "튜토리얼 보기",
+  },
+  ar: {
+    step1Title: "سجل المحادثات", step1Body: "الوصول إلى استشاراتك السابقة وإحصاءات النشاط.",
+    step2Title: "خيارات الاستشارة", step2Body: "اضبط استشارتك: وضع الأوراكل والمترجم وطريقة الرمي.",
+    step3Title: "وضع الأوراكل", step3Body: "اختر بين آي تشينغ (العملات، تقليد Zhu Xi) أو عظام الأوراكل (أسلوب شانغ، أقدم طريقة عرافة صينية).",
+    step4Title: "المترجم", step4Body: "مصدر التفسير: Wilhelm (الكلاسيكي) أو Legge أو Zhou Yi أو Master Combined. تفتح المستويات الأعلى المزيد من الخيارات.",
+    step5Title: "وضع الرمي", step5Body: "تلقائي: الذكاء الاصطناعي يرمي العملات. يدوي: ترميها بنفسك وتسجّل النتيجة.",
+    step6Title: "مكتبة الهكساغرامات", step6Body: "تصفح جميع الـ 64 هكساغراماً مع تفسير كامل. متاح من مستوى Seeker.",
+    step7Title: "استشارتك", step7Body: "اكتب سؤالك واضغط ➤ لتلقّي تفسير الأوراكل.",
+    back: "رجوع", next: "التالي", skip: "تخطي", finish: "تم!", replayLabel: "مشاهدة الدرس",
+  },
+  hi: {
+    step1Title: "चैट इतिहास", step1Body: "अपनी पिछली परामर्श और गतिविधि आँकड़े देखें।",
+    step2Title: "परामर्श विकल्प", step2Body: "अपनी परामर्श सेट करें: ओरेकल मोड, अनुवादक और डाल पद्धति।",
+    step3Title: "ओरेकल मोड", step3Body: "आई चिंग (सिक्के, Zhu Xi परंपरा) या ओरेकल हड्डियाँ (शांग शैली, चीन की सबसे पुरानी भविष्यवाणी विधि) में से चुनें।",
+    step4Title: "अनुवादक", step4Body: "व्याख्या स्रोत: Wilhelm (क्लासिक), Legge, Zhou Yi, या Master Combined। उच्च स्तर अधिक विकल्प अनलॉक करते हैं।",
+    step5Title: "डाल मोड", step5Body: "स्वचालित: AI सिक्के फेंकता है। मैनुअल: आप भौतिक रूप से फेंकते हैं और परिणाम दर्ज करते हैं।",
+    step6Title: "हेक्साग्राम पुस्तकालय", step6Body: "पूर्ण व्याख्या सहित सभी 64 हेक्साग्राम देखें। Seeker स्तर से उपलब्ध।",
+    step7Title: "आपकी परामर्श", step7Body: "अपना प्रश्न लिखें और ओरेकल की व्याख्या पाने के लिए ➤ दबाएँ।",
+    back: "वापस", next: "अगला", skip: "छोड़ें", finish: "हो गया!", replayLabel: "ट्यूटोरियल देखें",
+  },
+};
 
 const ACCOUNT_SESSION_LIMIT_STORAGE_PREFIX = "iching_account_session_limit_v1:";
 const PLAY_PROMO_STRIP_DISMISSED_KEY = "iching_play_promo_strip_dismissed_v1";
@@ -1338,6 +1472,8 @@ export default function HomePage() {
   const [historyLoadError, setHistoryLoadError] = useState<string | null>(null);
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
+  const [tourRun, setTourRun] = useState(false);
+  const [tourKey, setTourKey] = useState(0);
   const endRef = useRef<HTMLDivElement | null>(null);
   const ritualCoinsStageRef = useRef<HTMLElement | null>(null);
   const ritualLinesGridRef = useRef<HTMLDivElement | null>(null);
@@ -1695,6 +1831,26 @@ export default function HomePage() {
       // ignore
     }
   }, []);
+
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem(TOUR_STORAGE_KEY)) setTourRun(true);
+    } catch {
+      // ignore if localStorage is blocked (private browsing, etc.)
+    }
+  }, []);
+
+  const handleTourCallback = useCallback(
+    ({ type, index, status }: EventData) => {
+      if (type === EVENTS.STEP_BEFORE && index === 2) setConsultPanelOpen(true);
+      if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
+        setTourRun(false);
+        setConsultPanelOpen(false);
+        try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
+      }
+    },
+    [setConsultPanelOpen],
+  );
   const dismissPlayPromoStrip = useCallback(() => {
     try {
       sessionStorage.setItem(PLAY_PROMO_STRIP_DISMISSED_KEY, "1");
@@ -4714,6 +4870,7 @@ export default function HomePage() {
             <div className="chat-app-bar-row chat-app-bar-row--top">
               <div className="chat-bar-lead">
                 <button
+                  id="tour-menu-btn"
                   type="button"
                   className="chat-icon-btn"
                   onClick={() => setChatsOpen(true)}
@@ -4734,6 +4891,15 @@ export default function HomePage() {
                 />
               </div>
               <div className="chat-bar-trail chat-bar-trail--top">
+                <button
+                  type="button"
+                  className="chat-icon-btn tour-replay-btn"
+                  onClick={() => { setTourKey((k) => k + 1); setTourRun(true); }}
+                  aria-label={TOUR_COPY[locale].replayLabel}
+                  title={TOUR_COPY[locale].replayLabel}
+                >
+                  ?
+                </button>
                 <ThemeToggle />
               </div>
             </div>
@@ -5317,6 +5483,7 @@ export default function HomePage() {
                       </button>
                     </div>
                     <div
+                      id="tour-oracle-mode"
                       className="composer-oracle-switch"
                       role="group"
                       aria-label={chrome.consultOracleTypeGroupAria}
@@ -5413,6 +5580,7 @@ export default function HomePage() {
                             </span>
                           </span>
                           <div
+                            id="tour-translator"
                             className="oracle-toggle-wrap oracle-toggle-wrap-4"
                             role="group"
                             aria-label="Fuente de Interpretación"
@@ -5600,6 +5768,7 @@ export default function HomePage() {
                             <input
                               type="checkbox"
                               className="oracle-toggle-input"
+                              id="tour-cast-mode"
                               checked={ichingCastMode === "manual"}
                               onChange={() =>
                                 setIchingCastMode(
@@ -5816,6 +5985,7 @@ export default function HomePage() {
                       </p>
                       <div className="composer-panel-actions">
                         <button
+                          id="tour-library-btn"
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() => router.push("/library")}
@@ -6733,6 +6903,7 @@ export default function HomePage() {
 
               <div className="composer-minibar">
                 <button
+                  id="tour-options-btn"
                   type="button"
                   className="composer-options-btn"
                   aria-expanded={consultPanelOpen}
@@ -6750,6 +6921,7 @@ export default function HomePage() {
                 </button>
                 <div className="composer-input-row">
                   <textarea
+                    id="tour-chat-input"
                     ref={questionInputRef}
                     data-testid="question-input"
                     value={question}
@@ -6861,6 +7033,36 @@ export default function HomePage() {
           Android APK.
         </p>
       </section>
+      <JoyrideNoSSR
+        key={tourKey}
+        run={tourRun}
+        steps={
+          [
+            { target: "#tour-menu-btn",    title: TOUR_COPY[locale].step1Title, content: TOUR_COPY[locale].step1Body,    placement: "bottom" },
+            { target: "#tour-options-btn", title: TOUR_COPY[locale].step2Title, content: TOUR_COPY[locale].step2Body,    placement: "top" },
+            { target: "#tour-oracle-mode", title: TOUR_COPY[locale].step3Title, content: TOUR_COPY[locale].step3Body,    placement: "top" },
+            { target: "#tour-translator",  title: TOUR_COPY[locale].step4Title, content: TOUR_COPY[locale].step4Body,    placement: "top" },
+            { target: "#tour-cast-mode",   title: TOUR_COPY[locale].step5Title, content: TOUR_COPY[locale].step5Body,    placement: "top" },
+            { target: "#tour-library-btn", title: TOUR_COPY[locale].step6Title, content: TOUR_COPY[locale].step6Body,    placement: "top" },
+            { target: "#tour-chat-input",  title: TOUR_COPY[locale].step7Title, content: TOUR_COPY[locale].step7Body,    placement: "top" },
+          ] satisfies Step[]
+        }
+        continuous
+        onEvent={handleTourCallback}
+        locale={{
+          back: TOUR_COPY[locale].back,
+          last: TOUR_COPY[locale].finish,
+          next: TOUR_COPY[locale].next,
+          skip: TOUR_COPY[locale].skip,
+        }}
+        options={{
+          showProgress: true,
+          skipBeacon: true,
+          skipScroll: true,
+          buttons: ["back", "primary", "skip"],
+          zIndex: 10000,
+        }}
+      />
     </OracleShell>
   );
 }
