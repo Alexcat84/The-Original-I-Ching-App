@@ -519,10 +519,12 @@ export async function generateInterpretation(
   env: NodeJS.ProcessEnv = process.env,
   displayName?: string,
   castingMethod?: CastingMethod,
+  previousMessageId?: string | null,
 ): Promise<{
   text: string;
   category: ConsultationCategory;
   interpretationSummary: string;
+  claudeMessageId?: string;
 }> {
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } =
     loadClaudeEnv(env);
@@ -632,6 +634,7 @@ export async function generateInterpretation(
           ],
         },
         { tier, language, method: resolvedCastingMethod ?? "iching" },
+        previousMessageId ?? null,
       );
 
       const fullText = response.content
@@ -688,6 +691,7 @@ export async function generateInterpretation(
             text: normalizeInterpretationPunctuation(hardened),
             category,
             interpretationSummary,
+            claudeMessageId: response.claudeMessageId,
           };
         }
       }

@@ -40,7 +40,7 @@ import {
 } from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
-import { rateLimitByKey } from "@/lib/rate-limit";
+import { rateLimitByKey, getUpstashRedis } from "@/lib/rate-limit";
 import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -67,6 +67,29 @@ const LOG_RITUAL_STREAM_DEBUG =
 
 function shortUserId(userId: string): string {
   return userId.slice(0, 8);
+}
+
+const CLAUDE_PREV_MSG_TTL = 600; // 10 min — within the 5-min cache TTL with margin
+
+async function getPrevClaudeMessageId(userId: string, sessionId: string): Promise<string | null> {
+  try {
+    const r = getUpstashRedis();
+    if (!r) return null;
+    const val = await r.get<string>(`claude:prev_msg:${userId}:${sessionId}`);
+    return val ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function setPrevClaudeMessageId(userId: string, sessionId: string, messageId: string): Promise<void> {
+  try {
+    const r = getUpstashRedis();
+    if (!r) return;
+    await r.set(`claude:prev_msg:${userId}:${sessionId}`, messageId, { ex: CLAUDE_PREV_MSG_TTL });
+  } catch {
+    // non-fatal — diagnostics are best-effort
+  }
 }
 
 type HistoryEntry = {
@@ -633,10 +656,12 @@ export async function POST(req: Request) {
         patternHints: null,
       });
 
+      const prevBonesMessageId = await getPrevClaudeMessageId(authedUserId, sessionId);
       const {
         text: interpretation,
         category,
         interpretationSummary: rawInterpretationSummary,
+        claudeMessageId: bonesClaudeMessageId,
       } = await generateOracleBonesInterpretation(
         bonesCast,
         tierEffective,
@@ -645,7 +670,9 @@ export async function POST(req: Request) {
         oracleLanguage,
         process.env,
         displayName,
+        prevBonesMessageId,
       );
+      if (bonesClaudeMessageId) void setPrevClaudeMessageId(authedUserId, sessionId, bonesClaudeMessageId);
       const interpretationSummary =
         rawInterpretationSummary?.trim() ||
         summarizeInterpretationForContext(interpretation);
@@ -837,10 +864,12 @@ export async function POST(req: Request) {
                 changedLines: castResult.changingLines.length,
               });
 
+              const prevIchingMessageId = await getPrevClaudeMessageId(authedUserId, sessionId);
               const {
                 text: interpretation,
                 category,
                 interpretationSummary: rawInterpretationSummary,
+                claudeMessageId: ichingClaudeMessageId,
               } = await generateInterpretation(
                 castResult,
                 tierEffective,
@@ -849,7 +878,9 @@ export async function POST(req: Request) {
                 process.env,
                 displayName,
                 castResult.castingMethod,
+                prevIchingMessageId,
               );
+              if (ichingClaudeMessageId) void setPrevClaudeMessageId(authedUserId, sessionId, ichingClaudeMessageId);
               const interpretationSummary =
                 rawInterpretationSummary?.trim() ||
                 summarizeInterpretationForContext(interpretation);
@@ -1026,10 +1057,12 @@ export async function POST(req: Request) {
       });
     }
 
+    const prevMsgId = await getPrevClaudeMessageId(authedUserId, sessionId);
     const {
       text: interpretation,
       category,
       interpretationSummary: rawInterpretationSummary,
+      claudeMessageId: newMsgId,
     } = await generateInterpretation(
       castResult,
       tierEffective,
@@ -1038,7 +1071,9 @@ export async function POST(req: Request) {
       process.env,
       displayName,
       castResult.castingMethod,
+      prevMsgId,
     );
+    if (newMsgId) void setPrevClaudeMessageId(authedUserId, sessionId, newMsgId);
     const interpretationSummary =
       rawInterpretationSummary?.trim() ||
       summarizeInterpretationForContext(interpretation);
