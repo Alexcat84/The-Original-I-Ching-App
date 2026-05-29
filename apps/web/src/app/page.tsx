@@ -129,7 +129,7 @@ type TourCopy = {
   step7Title: string; step7Body: string;
   step8Title: string; step8Body: string;
   back: string; next: string; skip: string; finish: string;
-  replayLabel: string;
+  replayLabel: string; tutorialLabel: string;
 };
 
 const TOUR_COPY: Record<AppLocale, TourCopy> = {
@@ -142,7 +142,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"Modo de Lanzamiento", step6Body:"Automático: la IA lanza las monedas. Manual: tú las lanzas físicamente y registras el resultado.",
     step7Title:"Biblioteca de Hexagramas", step7Body:"Consulta los 64 hexagramas con interpretación completa. Disponible desde el nivel Seeker.",
     step8Title:"Tu Consulta", step8Body:"Escribe tu pregunta y pulsa ➤ para recibir la interpretación del oráculo.",
-    back: "Atrás", next: "Siguiente", skip: "Saltar", finish: "¡Listo!", replayLabel: "Ver tutorial",
+    back: "Atrás", next: "Siguiente", skip: "Saltar", finish: "¡Listo!", replayLabel: "Ver tutorial", tutorialLabel: "Tutorial",
   },
   en: {
     step1Title: "Chat History", step1Body: "Access your previous consultations and activity statistics.",
@@ -153,7 +153,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"Casting Mode", step6Body:"Automatic: the AI casts the coins. Manual: you cast them physically and record the result.",
     step7Title:"Hexagram Library", step7Body:"Browse all 64 hexagrams with full interpretation. Available from the Seeker tier.",
     step8Title:"Your Consultation", step8Body:"Type your question and press ➤ to receive the oracle's interpretation.",
-    back: "Back", next: "Next", skip: "Skip", finish: "Done!", replayLabel: "View tutorial",
+    back: "Back", next: "Next", skip: "Skip", finish: "Done!", replayLabel: "View tutorial", tutorialLabel: "Tutorial",
   },
   pt: {
     step1Title: "Histórico de Chats", step1Body: "Acesse suas consultas anteriores e estatísticas de atividade.",
@@ -164,7 +164,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"Modo de Lançamento", step6Body:"Automático: a IA lança as moedas. Manual: você as lança fisicamente e registra o resultado.",
     step7Title:"Biblioteca de Hexagramas", step7Body:"Consulte os 64 hexagramas com interpretação completa. Disponível a partir do nível Seeker.",
     step8Title:"Sua Consulta", step8Body:"Escreva sua pergunta e pressione ➤ para receber a interpretação do oráculo.",
-    back: "Voltar", next: "Próximo", skip: "Pular", finish: "Pronto!", replayLabel: "Ver tutorial",
+    back: "Voltar", next: "Próximo", skip: "Pular", finish: "Pronto!", replayLabel: "Ver tutorial", tutorialLabel: "Tutorial",
   },
   fr: {
     step1Title: "Historique des Chats", step1Body: "Accédez à vos consultations précédentes et à vos statistiques d'activité.",
@@ -175,7 +175,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"Mode de Tirage", step6Body:"Automatique : l'IA lance les pièces. Manuel : vous les lancez physiquement et enregistrez le résultat.",
     step7Title:"Bibliothèque des Hexagrammes", step7Body:"Consultez les 64 hexagrammes avec une interprétation complète. Disponible à partir du niveau Seeker.",
     step8Title:"Votre Consultation", step8Body:"Tapez votre question et appuyez sur ➤ pour recevoir l'interprétation de l'oracle.",
-    back: "Retour", next: "Suivant", skip: "Passer", finish: "Terminé !", replayLabel: "Voir le tutoriel",
+    back: "Retour", next: "Suivant", skip: "Passer", finish: "Terminé !", replayLabel: "Voir le tutoriel", tutorialLabel: "Tutoriel",
   },
   de: {
     step1Title: "Chat-Verlauf", step1Body: "Greife auf deine früheren Beratungen und Aktivitätsstatistiken zu.",
@@ -186,7 +186,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"Wurf-Modus", step6Body:"Automatisch: Die KI wirft die Münzen. Manuell: Du wirfst sie physisch und trägst das Ergebnis ein.",
     step7Title:"Hexagramm-Bibliothek", step7Body:"Durchsuche alle 64 Hexagramme mit vollständiger Interpretation. Ab der Seeker-Stufe verfügbar.",
     step8Title:"Deine Beratung", step8Body:"Schreibe deine Frage und drücke ➤, um die Interpretation des Orakels zu erhalten.",
-    back: "Zurück", next: "Weiter", skip: "Überspringen", finish: "Fertig!", replayLabel: "Tutorial anzeigen",
+    back: "Zurück", next: "Weiter", skip: "Überspringen", finish: "Fertig!", replayLabel: "Tutorial anzeigen", tutorialLabel: "Tutorial",
   },
   it: {
     step1Title: "Storico Chat", step1Body: "Accedi alle tue consultazioni precedenti e alle statistiche di attività.",
@@ -197,7 +197,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"Modalità di Lancio", step6Body:"Automatico: l'IA lancia le monete. Manuale: le lanci fisicamente e registri il risultato.",
     step7Title:"Biblioteca degli Esagrammi", step7Body:"Consulta tutti i 64 esagrammi con interpretazione completa. Disponibile dal livello Seeker.",
     step8Title:"La Tua Consultazione", step8Body:"Scrivi la tua domanda e premi ➤ per ricevere l'interpretazione dell'oracolo.",
-    back: "Indietro", next: "Avanti", skip: "Salta", finish: "Fatto!", replayLabel: "Vedi tutorial",
+    back: "Indietro", next: "Avanti", skip: "Salta", finish: "Fatto!", replayLabel: "Vedi tutorial", tutorialLabel: "Tutorial",
   },
   ja: {
     step1Title: "チャット履歴", step1Body: "過去の相談とアクティビティ統計にアクセスできます。",
@@ -208,7 +208,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"投げ方モード", step6Body:"自動：AIがコインを投げます。手動：物理的に投げて結果を記録します。",
     step7Title:"六十四卦ライブラリ", step7Body:"全64卦の完全な解釈を閲覧できます。Seekerティア以上で利用可能。",
     step8Title:"あなたの相談", step8Body:"質問を入力して➤を押すと、神託の解釈が届きます。",
-    back: "戻る", next: "次へ", skip: "スキップ", finish: "完了！", replayLabel: "チュートリアルを見る",
+    back: "戻る", next: "次へ", skip: "スキップ", finish: "完了！", replayLabel: "チュートリアルを見る", tutorialLabel: "チュートリアル",
   },
   zh: {
     step1Title: "聊天记录", step1Body: "访问您的历史咨询和活动统计。",
@@ -219,7 +219,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"占卜方式", step6Body:"自动：AI抛铜钱。手动：您亲手抛铜钱并记录结果。",
     step7Title:"六十四卦典库", step7Body:"浏览全部64卦的完整解读。从Seeker等级起可用。",
     step8Title:"您的咨询", step8Body:"输入您的问题，按➤接收神谕解读。",
-    back: "上一步", next: "下一步", skip: "跳过", finish: "完成！", replayLabel: "查看教程",
+    back: "上一步", next: "下一步", skip: "跳过", finish: "完成！", replayLabel: "查看教程", tutorialLabel: "教程",
   },
   ko: {
     step1Title: "채팅 기록", step1Body: "이전 상담 내역과 활동 통계에 접근하세요.",
@@ -230,7 +230,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"주조 방식", step6Body:"자동: AI가 동전을 던집니다. 수동: 직접 던지고 결과를 기록합니다.",
     step7Title:"육십사괘 도서관", step7Body:"64개 모든 괘의 완전한 해석을 탐색하세요. Seeker 등급부터 이용 가능합니다.",
     step8Title:"나의 상담", step8Body:"질문을 입력하고 ➤를 눌러 신탁의 해석을 받으세요.",
-    back: "이전", next: "다음", skip: "건너뛰기", finish: "완료!", replayLabel: "튜토리얼 보기",
+    back: "이전", next: "다음", skip: "건너뛰기", finish: "완료!", replayLabel: "튜토리얼 보기", tutorialLabel: "튜토리얼",
   },
   ar: {
     step1Title: "سجل المحادثات", step1Body: "الوصول إلى استشاراتك السابقة وإحصاءات النشاط.",
@@ -241,7 +241,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"وضع الرمي", step6Body:"تلقائي: الذكاء الاصطناعي يرمي العملات. يدوي: ترميها بنفسك وتسجّل النتيجة.",
     step7Title:"مكتبة الهكساغرامات", step7Body:"تصفح جميع الـ 64 هكساغراماً مع تفسير كامل. متاح من مستوى Seeker.",
     step8Title:"استشارتك", step8Body:"اكتب سؤالك واضغط ➤ لتلقّي تفسير الأوراكل.",
-    back: "رجوع", next: "التالي", skip: "تخطي", finish: "تم!", replayLabel: "مشاهدة الدرس",
+    back: "رجوع", next: "التالي", skip: "تخطي", finish: "تم!", replayLabel: "مشاهدة الدرس", tutorialLabel: "درس",
   },
   hi: {
     step1Title: "चैट इतिहास", step1Body: "अपनी पिछली परामर्श और गतिविधि आँकड़े देखें।",
@@ -252,7 +252,7 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step6Title:"डाल मोड", step6Body:"स्वचालित: AI सिक्के फेंकता है। मैनुअल: आप भौतिक रूप से फेंकते हैं और परिणाम दर्ज करते हैं।",
     step7Title:"हेक्साग्राम पुस्तकालय", step7Body:"पूर्ण व्याख्या सहित सभी 64 हेक्साग्राम देखें। Seeker स्तर से उपलब्ध।",
     step8Title:"आपकी परामर्श", step8Body:"अपना प्रश्न लिखें और ओरेकल की व्याख्या पाने के लिए ➤ दबाएँ।",
-    back: "वापस", next: "अगला", skip: "छोड़ें", finish: "हो गया!", replayLabel: "ट्यूटोरियल देखें",
+    back: "वापस", next: "अगला", skip: "छोड़ें", finish: "हो गया!", replayLabel: "ट्यूटोरियल देखें", tutorialLabel: "ट्यूटोरियल",
   },
 };
 
@@ -4932,25 +4932,16 @@ export default function HomePage() {
               <div className="chat-bar-trail chat-bar-trail--top">
                 <button
                   type="button"
-                  className="tour-replay-btn"
+                  className="chat-icon-btn tour-replay-btn"
                   onClick={() => { setTourKey((k) => k + 1); setTourRun(true); }}
                   aria-label={TOUR_COPY[locale].replayLabel}
                   style={{
-                    padding: "0.28rem 0.72rem",
-                    borderRadius: "999px",
-                    border: "none",
-                    background: "var(--accent)",
-                    color: "#fff",
-                    fontSize: "0.78rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.04em",
-                    cursor: "pointer",
-                    lineHeight: 1.3,
-                    whiteSpace: "nowrap",
-                    flexShrink: 0,
+                    border: "1px solid color-mix(in srgb, #22c55e 38%, var(--icon-btn-border))",
+                    background: "linear-gradient(165deg, color-mix(in srgb, #22c55e 22%, var(--icon-btn-bg)) 0%, color-mix(in srgb, #22c55e 10%, var(--icon-btn-bg)) 100%)",
+                    color: "color-mix(in srgb, #22c55e 85%, var(--icon-btn-fg))",
                   }}
                 >
-                  {TOUR_COPY[locale].replayLabel}
+                  {TOUR_COPY[locale].tutorialLabel}
                 </button>
                 <ThemeToggle />
               </div>
