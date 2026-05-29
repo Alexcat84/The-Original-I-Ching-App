@@ -1891,17 +1891,34 @@ export default function HomePage() {
     [setChatsOpen],
   );
 
+  const isRnWebView = useCallback(
+    () => typeof document !== "undefined" && document.documentElement.classList.contains("iching-rn-webview"),
+    [],
+  );
+
+  const tourBeforeCloseDrawer = useCallback(
+    () => new Promise<void>((resolve) => {
+      setChatsOpen(false);
+      setTimeout(resolve, 260);
+    }),
+    [setChatsOpen],
+  );
+
   const tourBeforePanel = useCallback(
     (id: string, openPanel: boolean) =>
       () =>
         new Promise<void>((resolve) => {
           if (openPanel) { setChatsOpen(false); setConsultPanelOpen(true); }
+          // WebView on Android needs extra time for scroll to settle before
+          // Joyride measures the spotlight position.
+          const scrollDelay = openPanel ? 320 : 0;
+          const settleDelay = isRnWebView() ? 550 : 380;
           setTimeout(() => {
             document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-            setTimeout(resolve, 380);
-          }, openPanel ? 260 : 0);
+            setTimeout(resolve, settleDelay);
+          }, scrollDelay);
         }),
-    [setChatsOpen, setConsultPanelOpen],
+    [setChatsOpen, setConsultPanelOpen, isRnWebView],
   );
   const dismissPlayPromoStrip = useCallback(() => {
     try {
@@ -4961,13 +4978,13 @@ export default function HomePage() {
                     color: "color-mix(in srgb, #22c55e 85%, var(--icon-btn-fg))",
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: "0.3rem",
+                    justifyContent: "center",
                   }}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="13"
-                    height="13"
+                    width="15"
+                    height="15"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -4975,13 +4992,11 @@ export default function HomePage() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     aria-hidden="true"
-                    style={{ flexShrink: 0 }}
                   >
                     <circle cx="12" cy="12" r="10" />
                     <path d="M12 16v-4" />
                     <path d="M12 8h.01" />
                   </svg>
-                  {TOUR_COPY[locale].tutorialLabel}
                 </button>
                 <ThemeToggle />
               </div>
@@ -7123,7 +7138,7 @@ export default function HomePage() {
           [
             { target: "#tour-menu-btn",        title: TOUR_COPY[locale].step1Title, content: TOUR_COPY[locale].step1Body, placement: "bottom" },
             { target: "#tour-new-session-btn", title: TOUR_COPY[locale].step2Title, content: TOUR_COPY[locale].step2Body, placement: "bottom", before: tourBeforeDrawer },
-            { target: "#tour-options-btn",     title: TOUR_COPY[locale].step3Title, content: TOUR_COPY[locale].step3Body, placement: "top" },
+            { target: "#tour-options-btn",     title: TOUR_COPY[locale].step3Title, content: TOUR_COPY[locale].step3Body, placement: "top",    before: tourBeforeCloseDrawer },
             { target: "#tour-oracle-mode",     title: TOUR_COPY[locale].step4Title, content: TOUR_COPY[locale].step4Body, placement: "top",    before: tourBeforePanel("tour-oracle-mode", true) },
             { target: "#tour-translator",      title: TOUR_COPY[locale].step5Title, content: TOUR_COPY[locale].step5Body, placement: "top",    before: tourBeforePanel("tour-translator",  false) },
             { target: "#tour-cast-mode",       title: TOUR_COPY[locale].step6Title, content: TOUR_COPY[locale].step6Body, placement: "top",    before: tourBeforePanel("tour-cast-mode",   false) },
@@ -7145,7 +7160,7 @@ export default function HomePage() {
           skipBeacon: true,
           skipScroll: true,
           zIndex: 10000,
-          overlayColor: tourTheme === "dark" ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.50)",
+          overlayColor: tourTheme === "dark" ? "rgba(10,20,50,0.86)" : "rgba(0,0,0,0.52)",
         }}
       />
     </OracleShell>

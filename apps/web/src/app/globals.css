@@ -7941,3 +7941,12 @@ html[data-theme="light"] .master-token-tooltip-text::after {
   overflow: visible;
 }
 
+
+/* ── Joyride tour spotlight ─────────────────────────────────────────── */
+/* Teal glow ring around the spotlighted element in dark mode so the    */
+/* highlight is clearly visible against the near-black background.      */
+html[data-theme="dark"] .react-joyride__spotlight {
+  outline: 2px solid rgba(78, 205, 196, 0.65) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.15) !important;
+}
