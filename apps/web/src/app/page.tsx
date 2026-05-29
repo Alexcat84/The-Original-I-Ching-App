@@ -1909,14 +1909,16 @@ export default function HomePage() {
       () =>
         new Promise<void>((resolve) => {
           if (openPanel) { setChatsOpen(false); setConsultPanelOpen(true); }
-          // WebView on Android needs extra time for scroll to settle before
-          // Joyride measures the spotlight position.
-          const scrollDelay = openPanel ? 320 : 0;
-          const settleDelay = isRnWebView() ? 550 : 380;
+          // Use "instant" scroll (no animation) so the element is already at
+          // its final position when Joyride calls getBoundingClientRect().
+          // On WebView Android, smooth scrolling has variable duration that
+          // causes the spotlight to be measured mid-scroll and misaligned.
+          const panelOpenDelay = openPanel ? 320 : 0;
           setTimeout(() => {
-            document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-            setTimeout(resolve, settleDelay);
-          }, scrollDelay);
+            document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "center" });
+            // Small settle tick for layout/paint after instant scroll.
+            requestAnimationFrame(() => setTimeout(resolve, isRnWebView() ? 160 : 60));
+          }, panelOpenDelay);
         }),
     [setChatsOpen, setConsultPanelOpen, isRnWebView],
   );
@@ -7139,8 +7141,8 @@ export default function HomePage() {
             { target: "#tour-menu-btn",        title: TOUR_COPY[locale].step1Title, content: TOUR_COPY[locale].step1Body, placement: "bottom" },
             { target: "#tour-new-session-btn", title: TOUR_COPY[locale].step2Title, content: TOUR_COPY[locale].step2Body, placement: "bottom", before: tourBeforeDrawer },
             { target: "#tour-options-btn",     title: TOUR_COPY[locale].step3Title, content: TOUR_COPY[locale].step3Body, placement: "top",    before: tourBeforeCloseDrawer },
-            { target: "#tour-oracle-mode",     title: TOUR_COPY[locale].step4Title, content: TOUR_COPY[locale].step4Body, placement: "top",    before: tourBeforePanel("tour-oracle-mode", true) },
-            { target: "#tour-translator",      title: TOUR_COPY[locale].step5Title, content: TOUR_COPY[locale].step5Body, placement: "top",    before: tourBeforePanel("tour-translator",  false) },
+            { target: "#tour-oracle-mode",     title: TOUR_COPY[locale].step4Title, content: TOUR_COPY[locale].step4Body, placement: "bottom", before: tourBeforePanel("tour-oracle-mode", true) },
+            { target: "#tour-translator",      title: TOUR_COPY[locale].step5Title, content: TOUR_COPY[locale].step5Body, placement: "bottom", before: tourBeforePanel("tour-translator",  false) },
             { target: "#tour-cast-mode",       title: TOUR_COPY[locale].step6Title, content: TOUR_COPY[locale].step6Body, placement: "top",    before: tourBeforePanel("tour-cast-mode",   false) },
             { target: "#tour-library-btn",     title: TOUR_COPY[locale].step7Title, content: TOUR_COPY[locale].step7Body, placement: "top",    before: tourBeforePanel("tour-library-btn", false) },
             { target: "#tour-doc-links",       title: TOUR_COPY[locale].step8Title, content: TOUR_COPY[locale].step8Body, placement: "top",    before: tourBeforePanel("tour-doc-links",   false) },
