@@ -4939,8 +4939,28 @@ export default function HomePage() {
                     border: "1px solid color-mix(in srgb, #22c55e 38%, var(--icon-btn-border))",
                     background: "linear-gradient(165deg, color-mix(in srgb, #22c55e 22%, var(--icon-btn-bg)) 0%, color-mix(in srgb, #22c55e 10%, var(--icon-btn-bg)) 100%)",
                     color: "color-mix(in srgb, #22c55e 85%, var(--icon-btn-fg))",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.3rem",
                   }}
                 >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                    style={{ flexShrink: 0 }}
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                  </svg>
                   {TOUR_COPY[locale].tutorialLabel}
                 </button>
                 <ThemeToggle />
