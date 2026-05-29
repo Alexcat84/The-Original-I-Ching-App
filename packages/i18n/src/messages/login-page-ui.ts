@@ -60,6 +60,8 @@ export type LoginPageUiMessages = {
   errSignupConfirmationFailed: string;
   errLegalConsentStoreFailed: string;
   errSignupAuthInternalError: string;
+  showPasswordAria: string;
+  hidePasswordAria: string;
 };
 
 const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
@@ -140,6 +142,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "La cuenta se creó pero no pudimos guardar la aceptación legal en la base de datos. Contacta soporte; puede hacer falta una migración o permisos en Supabase.",
     errSignupAuthInternalError:
       "Supabase Auth devolvió un fallo interno (unexpected_failure). Suele ser un trigger en la base al crear el usuario (p. ej. public.users o tokens). En el panel: Logs → Postgres; revisa errores al insertar en auth.users. Si ya usaste este correo con Google, inicia sesión con Google.",
+    showPasswordAria: "Mostrar contraseña",
+    hidePasswordAria: "Ocultar contraseña",
   },
   en: {
     configErrorTitle: "Sign-in unavailable",
@@ -215,6 +219,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Your account was created but we could not store legal acceptance in the database. Contact support; a migration or Supabase permissions may be required.",
     errSignupAuthInternalError:
       "Supabase Auth returned an internal error (unexpected_failure). This is often a database trigger when creating the user (e.g. public.users or credits). In the dashboard: Logs → Postgres; look for errors on auth.users inserts. If you already use this email with Google, sign in with Google.",
+    showPasswordAria: "Show password",
+    hidePasswordAria: "Hide password",
   },
   pt: {
     configErrorTitle: "Acesso indisponível",
@@ -289,6 +295,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "A conta foi criada mas não foi possível guardar a aceitação legal na base de dados. Contacta o suporte; pode ser necessária uma migração ou permissões no Supabase.",
     errSignupAuthInternalError:
       "O Supabase Auth devolveu um erro interno (unexpected_failure). Muitas vezes é um trigger na base ao criar o utilizador. No painel: Logs → Postgres. Se já usaste este e-mail com o Google, inicia sessão com o Google.",
+    showPasswordAria: "Mostrar palavra-passe",
+    hidePasswordAria: "Ocultar palavra-passe",
   },
   fr: {
     configErrorTitle: "Connexion indisponible",
@@ -365,6 +373,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Le compte a été créé mais l’acceptation légale n’a pas pu être enregistrée. Contactez le support ; une migration ou des droits Supabase peuvent être nécessaires.",
     errSignupAuthInternalError:
       "Supabase Auth a renvoyé une erreur interne (unexpected_failure), souvent due à un trigger lors de la création d’utilisateur. Tableau de bord : Logs → Postgres. Si vous utilisez déjà cet e-mail avec Google, connectez-vous avec Google.",
+    showPasswordAria: "Afficher le mot de passe",
+    hidePasswordAria: "Masquer le mot de passe",
   },
   de: {
     configErrorTitle: "Anmeldung nicht verfügbar",
@@ -440,6 +450,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "Das Konto wurde erstellt, aber die rechtliche Zustimmung konnte nicht in der Datenbank gespeichert werden. Bitte Support kontaktieren (Migration oder Supabase-Berechtigungen).",
     errSignupAuthInternalError:
       "Supabase Auth meldete einen internen Fehler (unexpected_failure), oft durch einen DB-Trigger bei der Nutzeranlage. Im Dashboard: Logs → Postgres. Wenn Sie diese E-Mail schon mit Google nutzen, mit Google anmelden.",
+    showPasswordAria: "Passwort anzeigen",
+    hidePasswordAria: "Passwort verbergen",
   },
   it: {
     configErrorTitle: "Accesso non disponibile",
@@ -516,6 +528,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "L’account è stato creato ma non è stato possibile salvare l’accettazione legale nel database. Contatta il supporto (migrazione o permessi su Supabase).",
     errSignupAuthInternalError:
       "Supabase Auth ha restituito un errore interno (unexpected_failure), spesso per un trigger sul DB alla creazione utente. Dashboard: Logs → Postgres. Se usi già questa email con Google, accedi con Google.",
+    showPasswordAria: "Mostra password",
+    hidePasswordAria: "Nascondi password",
   },
   ja: {
     configErrorTitle: "サインインできません",
@@ -596,6 +610,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "アカウントは作成されましたが、法的同意をデータベースに保存できませんでした。サポートに連絡してください（マイグレーションまたは Supabase の権限が必要な場合があります）。",
     errSignupAuthInternalError:
       "Supabase Auth が内部エラー（unexpected_failure）を返しました。多くの場合、ユーザー作成時の DB トリガーが原因です。ダッシュボードの Logs → Postgres を確認してください。同じメールで Google を使っている場合は Google でログインしてください。",
+    showPasswordAria: "パスワードを表示",
+    hidePasswordAria: "パスワードを非表示",
   },
   zh: {
     configErrorTitle: "无法登录",
@@ -660,6 +676,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "账户已创建，但未能将法律同意保存到数据库。请联系支持（可能需要迁移或调整 Supabase 权限）。",
     errSignupAuthInternalError:
       "Supabase Auth 返回内部错误（unexpected_failure），常见原因是创建用户时的数据库触发器。请在控制台查看 Logs → Postgres。若该邮箱已用于 Google，请用 Google 登录。",
+    showPasswordAria: "显示密码",
+    hidePasswordAria: "隐藏密码",
   },
   ko: {
     configErrorTitle: "로그인을 사용할 수 없음",
@@ -732,6 +750,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "계정은 생성되었으나 법적 동의를 데이터베이스에 저장하지 못했습니다. 지원팀에 문의하세요(마이그레이션 또는 Supabase 권한이 필요할 수 있습니다).",
     errSignupAuthInternalError:
       "Supabase Auth가 내부 오류(unexpected_failure)를 반환했습니다. 사용자 생성 시 DB 트리거 문제인 경우가 많습니다. 대시보드에서 Logs → Postgres를 확인하세요. 같은 이메일로 Google을 썼다면 Google로 로그인하세요.",
+    showPasswordAria: "비밀번호 표시",
+    hidePasswordAria: "비밀번호 숨기기",
   },
   ar: {
     configErrorTitle: "تسجيل الدخول غير متاح",
@@ -807,6 +827,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "تم إنشاء الحساب لكن تعذّر حفظ القبول القانوني في قاعدة البيانات. تواصل مع الدعم؛ قد تكون هناك حاجة لترحيل أو أذونات Supabase.",
     errSignupAuthInternalError:
       "أعاد Supabase Auth خطأً داخليًا (unexpected_failure)، وغالبًا ما يكون بسبب محفّز في قاعدة البيانات عند إنشاء المستخدم. في لوحة التحكم: Logs → Postgres. إذا كنت تستخدم هذا البريد مع Google، سجّل الدخول بـ Google.",
+    showPasswordAria: "إظهار كلمة المرور",
+    hidePasswordAria: "إخفاء كلمة المرور",
   },
   hi: {
     configErrorTitle: "कॉन्फ़िगरेशन त्रुटि",
@@ -877,6 +899,8 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
       "कानूनी सहमति सहेजी नहीं जा सकी। पुनः प्रयास करें।",
     errSignupAuthInternalError:
       "प्रमाणीकरण में आंतरिक त्रुटि। पुनः प्रयास करें या सहायता से संपर्क करें।",
+    showPasswordAria: "पासवर्ड दिखाएँ",
+    hidePasswordAria: "पासवर्ड छिपाएँ",
   },
 };
 

@@ -679,6 +679,10 @@ type UiCopy = {
   emptyInviteMorning: string;
   emptyInviteAfternoon: string;
   emptyInviteNight: string;
+  logoutConfirmTitle: string;
+  logoutConfirmMessage: string;
+  logoutConfirmYes: string;
+  logoutConfirmNo: string;
 };
 
 const UI_COPY: Record<AppLocale, UiCopy> = {
@@ -704,6 +708,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
       "El cambio sigue moviéndose. ¿Qué necesitas ver con más claridad en el curso de hoy?",
     emptyInviteNight:
       "La noche también pregunta. ¿Qué frente de tu vida quieres explorar?",
+    logoutConfirmTitle: "Cerrar sesión",
+    logoutConfirmMessage: "¿Confirmas que quieres cerrar sesión?",
+    logoutConfirmYes: "Cerrar sesión",
+    logoutConfirmNo: "Cancelar",
   },
   en: {
     language: "Language",
@@ -727,6 +735,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
       "Change keeps moving. What do you need to see more clearly today?",
     emptyInviteNight:
       "The night also asks. Which part of your life do you want to explore?",
+    logoutConfirmTitle: "Sign Out",
+    logoutConfirmMessage: "Are you sure you want to sign out?",
+    logoutConfirmYes: "Sign Out",
+    logoutConfirmNo: "Cancel",
   },
   pt: {
     language: "Idioma",
@@ -750,6 +762,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
       "A mudança continua. O que você precisa ver com mais clareza hoje?",
     emptyInviteNight:
       "A noite também pergunta. Qual frente da sua vida você quer explorar?",
+    logoutConfirmTitle: "Sair",
+    logoutConfirmMessage: "Tens certeza que queres sair?",
+    logoutConfirmYes: "Sair",
+    logoutConfirmNo: "Cancelar",
   },
   fr: {
     language: "Langue",
@@ -774,6 +790,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
       "Le changement continue. Que dois-tu voir plus clairement aujourd'hui ?",
     emptyInviteNight:
       "La nuit pose aussi des questions. Quelle partie de ta vie veux-tu explorer ?",
+    logoutConfirmTitle: "Se déconnecter",
+    logoutConfirmMessage: "Veux-tu vraiment te déconnecter ?",
+    logoutConfirmYes: "Se déconnecter",
+    logoutConfirmNo: "Annuler",
   },
   de: {
     language: "Sprache",
@@ -797,6 +817,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
       "Der Wandel geht weiter. Was musst du heute klarer sehen?",
     emptyInviteNight:
       "Auch die Nacht fragt. Welchen Bereich deines Lebens möchtest du erkunden?",
+    logoutConfirmTitle: "Abmelden",
+    logoutConfirmMessage: "Möchtest du dich wirklich abmelden?",
+    logoutConfirmYes: "Abmelden",
+    logoutConfirmNo: "Abbrechen",
   },
   it: {
     language: "Lingua",
@@ -820,6 +844,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
       "Il cambiamento continua. Cosa devi vedere con più chiarezza oggi?",
     emptyInviteNight:
       "Anche la notte fa domande. Quale fronte della tua vita vuoi esplorare?",
+    logoutConfirmTitle: "Esci",
+    logoutConfirmMessage: "Sei sicuro di voler uscire?",
+    logoutConfirmYes: "Esci",
+    logoutConfirmNo: "Annulla",
   },
   ja: {
     language: "言語",
@@ -842,6 +870,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     emptyInviteAfternoon:
       "変化は動き続けています。今日、何をより明確に見たいですか。",
     emptyInviteNight: "夜もまた問いを生みます。人生のどの面を探りますか。",
+    logoutConfirmTitle: "ログアウト",
+    logoutConfirmMessage: "本当にログアウトしますか？",
+    logoutConfirmYes: "ログアウト",
+    logoutConfirmNo: "キャンセル",
   },
   zh: {
     language: "语言",
@@ -862,6 +894,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     emptyInviteMorning: "此刻适合聆听神谕。今天你带着什么问题而来？",
     emptyInviteAfternoon: "变化仍在流动。今天你需要看清什么？",
     emptyInviteNight: "夜晚也会发问。你想探索人生的哪一面？",
+    logoutConfirmTitle: "退出登录",
+    logoutConfirmMessage: "确定要退出登录吗？",
+    logoutConfirmYes: "退出登录",
+    logoutConfirmNo: "取消",
   },
   ko: {
     language: "언어",
@@ -884,6 +920,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     emptyInviteAfternoon:
       "변화는 계속 움직입니다. 오늘 무엇을 더 분명히 보고 싶나요?",
     emptyInviteNight: "밤도 질문합니다. 삶의 어떤 영역을 탐색하고 싶나요?",
+    logoutConfirmTitle: "로그아웃",
+    logoutConfirmMessage: "정말 로그아웃하시겠습니까?",
+    logoutConfirmYes: "로그아웃",
+    logoutConfirmNo: "취소",
   },
   ar: {
     language: "اللغة",
@@ -906,6 +946,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
     emptyInviteAfternoon:
       "التغيير لا يتوقف. ما الذي تحتاج إلى رؤيته بوضوح أكبر اليوم؟",
     emptyInviteNight: "الليل أيضاً يسأل. أي جانب من حياتك تريد استكشافه؟",
+    logoutConfirmTitle: "تسجيل الخروج",
+    logoutConfirmMessage: "هل تريد تسجيل الخروج؟",
+    logoutConfirmYes: "تسجيل الخروج",
+    logoutConfirmNo: "إلغاء",
   },
   hi: {
     language: "भाषा",
@@ -929,6 +973,10 @@ const UI_COPY: Record<AppLocale, UiCopy> = {
       "परिवर्तन चलता रहता है। आज आपको किस बात को और स्पष्ट देखना है?",
     emptyInviteNight:
       "रात भी प्रश्न पूछती है। जीवन के किस हिस्से को आप समझना चाहते हैं?",
+    logoutConfirmTitle: "साइन आउट",
+    logoutConfirmMessage: "क्या आप वाकई साइन आउट करना चाहते हैं?",
+    logoutConfirmYes: "साइन आउट",
+    logoutConfirmNo: "रद्द करें",
   },
 };
 
@@ -1530,6 +1578,7 @@ export default function HomePage() {
   const pinnedLocalSessionIdRef = useRef<string | null>(null);
   const [chatsOpen, setChatsOpen] = useState(false);
   const [consultPanelOpen, setConsultPanelOpen] = useState(false);
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   /** Hides only the thread-limit strip; composer stays read-only until a new session or another chat. */
   const [threadLimitBannerDismissed, setThreadLimitBannerDismissed] =
     useState(false);
@@ -4935,7 +4984,7 @@ export default function HomePage() {
               <button
                 type="button"
                 className="auth-explore-strip-signout"
-                onClick={() => void signOut()}
+                onClick={() => setLogoutConfirmOpen(true)}
               >
                 {ui.signOut}
               </button>
@@ -6808,7 +6857,7 @@ export default function HomePage() {
                         <button
                           type="button"
                           className="composer-reading-pill"
-                          onClick={() => void signOut()}
+                          onClick={() => setLogoutConfirmOpen(true)}
                           style={{
                             flex: "0 1 auto",
                             minWidth: 0,
@@ -6819,6 +6868,53 @@ export default function HomePage() {
                         </button>
                       </div>
                     ) : null}
+                  </div>
+                </div>
+              ) : null}
+
+              {logoutConfirmOpen ? (
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="logout-confirm-title"
+                  className="token-center-backdrop"
+                  onClick={() => setLogoutConfirmOpen(false)}
+                >
+                  <div
+                    className="token-center-card"
+                    style={{ maxWidth: 340, padding: "1.5rem" }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <strong
+                      id="logout-confirm-title"
+                      style={{ display: "block", fontSize: "1rem", marginBottom: "0.65rem" }}
+                    >
+                      {ui.logoutConfirmTitle}
+                    </strong>
+                    <p style={{ margin: "0 0 1.25rem", color: "var(--fg-muted)", fontSize: "0.88rem" }}>
+                      {ui.logoutConfirmMessage}
+                    </p>
+                    <div style={{ display: "flex", gap: "0.65rem", justifyContent: "flex-end" }}>
+                      <button
+                        type="button"
+                        className="composer-panel-close"
+                        onClick={() => setLogoutConfirmOpen(false)}
+                      >
+                        {ui.logoutConfirmNo}
+                      </button>
+                      <button
+                        type="button"
+                        className="composer-panel-close"
+                        onClick={() => { setLogoutConfirmOpen(false); void signOut(); }}
+                        style={{
+                          border: "1px solid color-mix(in srgb, #ef4444 40%, var(--input-border))",
+                          background: "color-mix(in srgb, #ef4444 12%, var(--icon-btn-bg))",
+                          color: "#ef4444",
+                        }}
+                      >
+                        {ui.logoutConfirmYes}
+                      </button>
+                    </div>
                   </div>
                 </div>
               ) : null}
