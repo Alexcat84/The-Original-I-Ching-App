@@ -1,6 +1,21 @@
--- Rollback for migration 018_revenuecat_customer_aliases.sql
--- The revenuecat_customer_aliases table and its alias-resolution logic were
--- never wired into the active webhook handler (grant_tokens_idempotent uses
--- app_user_id directly). The associated TypeScript module revenuecat-alias-map.ts
--- had zero callers and was confirmed dead code.
+-- Drop legacy RevenueCat customer alias table (rollback for migration 018).
+--
+-- WHY THIS TABLE EXISTED:
+-- Created during an earlier phase of the billing integration to resolve identity
+-- reconciliation problems in RevenueCat webhooks. At the time, the same user could
+-- arrive with different IDs depending on the purchase path (e.g. anonymous RC customer
+-- vs. the Supabase UUID assigned after sign-in). The table mapped every known
+-- app_user_id alias to a single canonical_app_user_id so that:
+--   - purchases made under an anonymous ID could be matched to the authenticated user;
+--   - webhooks with misaligned IDs would not produce orphaned token grants;
+--   - identity reconciliation remained possible during the billing/webhook migration.
+--
+-- WHY IT IS NOW SAFE TO DROP:
+-- The billing flow was simplified and hardened. Users are now identified directly by
+-- their Supabase UUID from the moment of sign-up, and RevenueCatSupabaseSync.tsx keeps
+-- the RC app_user_id aligned with that UUID on every auth state change. The webhook
+-- handler (grant_tokens_idempotent) uses the app_user_id field directly — no alias
+-- resolution step is needed. The TypeScript module revenuecat-alias-map.ts that wrapped
+-- this table was confirmed to have zero callers across the entire monorepo and was
+-- deleted alongside this migration.
 DROP TABLE IF EXISTS public.revenuecat_customer_aliases CASCADE;
