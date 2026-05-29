@@ -475,7 +475,7 @@ export default function LoginPage() {
               </div>
               <div className="auth-pro-field">
                 <label htmlFor="auth-password">{L.passwordLabel}</label>
-                <div style={{ position: "relative" }}>
+                <div style={{ position: "relative", display: "flex" }}>
                   <input
                     id="auth-password"
                     type={showPasswordSignin ? "text" : "password"}
@@ -484,7 +484,7 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={L.passwordPlaceholderSignin}
                     required
-                    style={{ paddingRight: "2.75rem" }}
+                    style={{ paddingRight: "2.75rem", flex: 1, minWidth: 0 }}
                   />
                   <button
                     type="button"
@@ -559,7 +559,7 @@ export default function LoginPage() {
               </div>
               <div className="auth-pro-field">
                 <label htmlFor="auth-password-su">{L.passwordLabel}</label>
-                <div style={{ position: "relative" }}>
+                <div style={{ position: "relative", display: "flex" }}>
                   <input
                     id="auth-password-su"
                     type={showPasswordSignup ? "text" : "password"}
@@ -569,7 +569,7 @@ export default function LoginPage() {
                     placeholder={L.passwordPlaceholderSignup}
                     required
                     minLength={8}
-                    style={{ paddingRight: "2.75rem" }}
+                    style={{ paddingRight: "2.75rem", flex: 1, minWidth: 0 }}
                   />
                   <button
                     type="button"
