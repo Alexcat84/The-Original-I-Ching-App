@@ -475,7 +475,7 @@ export default function LoginPage() {
               </div>
               <div className="auth-pro-field">
                 <label htmlFor="auth-password">{L.passwordLabel}</label>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr" }}>
+                <div className="auth-password-wrapper">
                   <input
                     id="auth-password"
                     type={showPasswordSignin ? "text" : "password"}
@@ -484,27 +484,13 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={L.passwordPlaceholderSignin}
                     required
-                    style={{ gridArea: "1/1", paddingRight: "2.75rem" }}
+                    style={{ paddingRight: "2.75rem" }}
                   />
                   <button
                     type="button"
+                    className="auth-password-toggle"
                     aria-label={showPasswordSignin ? L.hidePasswordAria : L.showPasswordAria}
                     onClick={() => setShowPasswordSignin((v) => !v)}
-                    style={{
-                      gridArea: "1/1",
-                      justifySelf: "end",
-                      alignSelf: "center",
-                      marginRight: "0.6rem",
-                      zIndex: 1,
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "var(--fg-muted)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "0.2rem",
-                    }}
                   >
                     {showPasswordSignin ? (
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -560,7 +546,7 @@ export default function LoginPage() {
               </div>
               <div className="auth-pro-field">
                 <label htmlFor="auth-password-su">{L.passwordLabel}</label>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr" }}>
+                <div className="auth-password-wrapper">
                   <input
                     id="auth-password-su"
                     type={showPasswordSignup ? "text" : "password"}
@@ -570,27 +556,13 @@ export default function LoginPage() {
                     placeholder={L.passwordPlaceholderSignup}
                     required
                     minLength={8}
-                    style={{ gridArea: "1/1", paddingRight: "2.75rem" }}
+                    style={{ paddingRight: "2.75rem" }}
                   />
                   <button
                     type="button"
+                    className="auth-password-toggle"
                     aria-label={showPasswordSignup ? L.hidePasswordAria : L.showPasswordAria}
                     onClick={() => setShowPasswordSignup((v) => !v)}
-                    style={{
-                      gridArea: "1/1",
-                      justifySelf: "end",
-                      alignSelf: "center",
-                      marginRight: "0.6rem",
-                      zIndex: 1,
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "var(--fg-muted)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "0.2rem",
-                    }}
                   >
                     {showPasswordSignup ? (
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
