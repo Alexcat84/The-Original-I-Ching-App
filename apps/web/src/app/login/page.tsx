@@ -475,7 +475,7 @@ export default function LoginPage() {
               </div>
               <div className="auth-pro-field">
                 <label htmlFor="auth-password">{L.passwordLabel}</label>
-                <div style={{ position: "relative", display: "flex" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr" }}>
                   <input
                     id="auth-password"
                     type={showPasswordSignin ? "text" : "password"}
@@ -484,17 +484,18 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={L.passwordPlaceholderSignin}
                     required
-                    style={{ paddingRight: "2.75rem", flex: 1, minWidth: 0 }}
+                    style={{ gridArea: "1/1", paddingRight: "2.75rem" }}
                   />
                   <button
                     type="button"
                     aria-label={showPasswordSignin ? L.hidePasswordAria : L.showPasswordAria}
                     onClick={() => setShowPasswordSignin((v) => !v)}
                     style={{
-                      position: "absolute",
-                      right: "0.6rem",
-                      top: 0,
-                      bottom: 0,
+                      gridArea: "1/1",
+                      justifySelf: "end",
+                      alignSelf: "center",
+                      marginRight: "0.6rem",
+                      zIndex: 1,
                       background: "none",
                       border: "none",
                       cursor: "pointer",
@@ -559,7 +560,7 @@ export default function LoginPage() {
               </div>
               <div className="auth-pro-field">
                 <label htmlFor="auth-password-su">{L.passwordLabel}</label>
-                <div style={{ position: "relative", display: "flex" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr" }}>
                   <input
                     id="auth-password-su"
                     type={showPasswordSignup ? "text" : "password"}
@@ -569,17 +570,18 @@ export default function LoginPage() {
                     placeholder={L.passwordPlaceholderSignup}
                     required
                     minLength={8}
-                    style={{ paddingRight: "2.75rem", flex: 1, minWidth: 0 }}
+                    style={{ gridArea: "1/1", paddingRight: "2.75rem" }}
                   />
                   <button
                     type="button"
                     aria-label={showPasswordSignup ? L.hidePasswordAria : L.showPasswordAria}
                     onClick={() => setShowPasswordSignup((v) => !v)}
                     style={{
-                      position: "absolute",
-                      right: "0.6rem",
-                      top: 0,
-                      bottom: 0,
+                      gridArea: "1/1",
+                      justifySelf: "end",
+                      alignSelf: "center",
+                      marginRight: "0.6rem",
+                      zIndex: 1,
                       background: "none",
                       border: "none",
                       cursor: "pointer",
