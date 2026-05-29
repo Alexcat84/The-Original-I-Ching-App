@@ -6282,6 +6282,32 @@ html[data-theme="dark"] .auth-pro-tab.active {
   box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
 }
 
+.auth-password-wrapper {
+  position: relative;
+}
+
+.auth-password-wrapper > input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-password-toggle {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--fg-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  line-height: 0;
+}
+
 .auth-pro-turnstile {
   justify-content: center;
   margin-bottom: 0.75rem;
