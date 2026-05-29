@@ -4957,18 +4957,6 @@ export default function HomePage() {
                 >
                   {ui.chats}
                 </button>
-              </div>
-              <div className="chat-title-logo-wrap">
-                {/* eslint-disable-next-line @next/next/no-img-element -- local brand asset, responsive CSS sizing */}
-                <img
-                  src="/brand/logo.png"
-                  alt="The Original I Ching App: 真正的易经"
-                  className="chat-header-logo"
-                  decoding="async"
-                  fetchPriority="high"
-                />
-              </div>
-              <div className="chat-bar-trail chat-bar-trail--top">
                 <button
                   type="button"
                   className="chat-icon-btn tour-replay-btn"
@@ -5000,6 +4988,18 @@ export default function HomePage() {
                     <path d="M12 8h.01" />
                   </svg>
                 </button>
+              </div>
+              <div className="chat-title-logo-wrap">
+                {/* eslint-disable-next-line @next/next/no-img-element -- local brand asset, responsive CSS sizing */}
+                <img
+                  src="/brand/logo.png"
+                  alt="The Original I Ching App: 真正的易经"
+                  className="chat-header-logo"
+                  decoding="async"
+                  fetchPriority="high"
+                />
+              </div>
+              <div className="chat-bar-trail chat-bar-trail--top">
                 <ThemeToggle />
               </div>
             </div>
