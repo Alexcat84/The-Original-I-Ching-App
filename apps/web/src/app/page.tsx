@@ -7156,11 +7156,18 @@ export default function HomePage() {
           next: TOUR_COPY[locale].next,
           skip: TOUR_COPY[locale].skip,
         }}
+        styles={tourTheme === "dark" ? {
+          spotlight: {
+            stroke: "#4ecdc4",
+            strokeWidth: 2.5,
+            style: { animation: "tour-spotlight-pulse 2s ease-in-out infinite" },
+          },
+        } : undefined}
         options={{
           skipBeacon: true,
           skipScroll: true,
           zIndex: 10000,
-          overlayColor: tourTheme === "dark" ? "rgba(10,20,50,0.86)" : "rgba(0,0,0,0.52)",
+          overlayColor: tourTheme === "dark" ? "rgba(0,0,0,0.22)" : "rgba(0,0,0,0.52)",
         }}
       />
     </OracleShell>
