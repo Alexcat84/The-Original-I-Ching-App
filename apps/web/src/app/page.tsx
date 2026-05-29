@@ -5544,34 +5544,16 @@ export default function HomePage() {
                       <p className="card-title">{t.consult}</p>
                       <button
                         type="button"
-                        className="chat-icon-btn tour-replay-btn"
+                        className="composer-panel-close tour-replay-btn"
                         onClick={() => { setTourKey((k) => k + 1); setTourRun(true); }}
                         aria-label={TOUR_COPY[locale].replayLabel}
                         style={{
                           border: "1px solid color-mix(in srgb, #22c55e 38%, var(--icon-btn-border))",
                           background: "linear-gradient(165deg, color-mix(in srgb, #22c55e 22%, var(--icon-btn-bg)) 0%, color-mix(in srgb, #22c55e 10%, var(--icon-btn-bg)) 100%)",
                           color: "color-mix(in srgb, #22c55e 85%, var(--icon-btn-fg))",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
                         }}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="15"
-                          height="15"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <circle cx="12" cy="12" r="10" />
-                          <path d="M12 16v-4" />
-                          <path d="M12 8h.01" />
-                        </svg>
+                        ⓘ
                       </button>
                       <button
                         type="button"
