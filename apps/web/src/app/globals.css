@@ -898,7 +898,15 @@ header.chat-app-bar.oracle-intro {
 
 .chat-app-bar-row--top > .chat-bar-lead,
 .chat-app-bar-row--top > .chat-bar-trail {
-  flex: 0 0 auto;
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.chat-app-bar-row--top > .chat-bar-trail {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .chat-app-bar-row--top > .chat-title-logo-wrap {

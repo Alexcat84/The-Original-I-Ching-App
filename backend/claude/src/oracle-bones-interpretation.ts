@@ -330,10 +330,12 @@ export async function generateOracleBonesInterpretation(
   language: string,
   env: NodeJS.ProcessEnv = process.env,
   displayName?: string,
+  previousMessageId?: string | null,
 ): Promise<{
   text: string;
   category: ConsultationCategory;
   interpretationSummary: string;
+  claudeMessageId?: string;
 }> {
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const maxTokens = MAX_TOKENS;
@@ -400,6 +402,7 @@ export async function generateOracleBonesInterpretation(
           ],
         },
         { tier, language, method: "oracle-bones" },
+        previousMessageId ?? null,
       );
       const fullText = response.content
         .filter((b) => b.type === "text")
@@ -433,6 +436,7 @@ export async function generateOracleBonesInterpretation(
             text: enforceOracleBonesConsistency(cleanText, cast, language),
             category,
             interpretationSummary,
+            claudeMessageId: response.claudeMessageId,
           };
         }
       }
