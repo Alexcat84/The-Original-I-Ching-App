@@ -493,8 +493,8 @@ export default function LoginPage() {
                     style={{
                       position: "absolute",
                       right: "0.6rem",
-                      top: "50%",
-                      transform: "translateY(-50%)",
+                      top: 0,
+                      bottom: 0,
                       background: "none",
                       border: "none",
                       cursor: "pointer",
@@ -578,8 +578,8 @@ export default function LoginPage() {
                     style={{
                       position: "absolute",
                       right: "0.6rem",
-                      top: "50%",
-                      transform: "translateY(-50%)",
+                      top: 0,
+                      bottom: 0,
                       background: "none",
                       border: "none",
                       cursor: "pointer",
