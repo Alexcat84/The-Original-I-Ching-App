@@ -43,6 +43,7 @@ import { InterpretationMarkdownSafe } from "@/components/InterpretationMarkdownS
 import Link from "next/link";
 import { ReadingOracleImage } from "@/components/ReadingOracleImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { readThemeFromDocument } from "@/lib/theme";
 import { TourTooltip } from "@/components/TourTooltip";
 import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
 import { isPersistableUuid } from "@/lib/session-ids";
@@ -128,6 +129,7 @@ type TourCopy = {
   step6Title: string; step6Body: string;
   step7Title: string; step7Body: string;
   step8Title: string; step8Body: string;
+  step9Title: string; step9Body: string;
   back: string; next: string; skip: string; finish: string;
   replayLabel: string; tutorialLabel: string;
 };
@@ -141,7 +143,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"Traductor", step5Body:"Fuente de interpretación: Wilhelm (clásico), Legge, Zhou Yi o Master Combined. Los niveles superiores desbloquean más opciones.",
     step6Title:"Modo de Lanzamiento", step6Body:"Automático: la IA lanza las monedas. Manual: tú las lanzas físicamente y registras el resultado.",
     step7Title:"Biblioteca de Hexagramas", step7Body:"Consulta los 64 hexagramas con interpretación completa. Disponible desde el nivel Seeker.",
-    step8Title:"Tu Consulta", step8Body:"Escribe tu pregunta y pulsa ➤ para recibir la interpretación del oráculo.",
+    step8Title: "Documentación y FAQs", step8Body: "Guía completa, preguntas frecuentes, notas del método y más. Todo desde el panel de opciones.",
+    step9Title:"Tu Consulta", step9Body:"Escribe tu pregunta y pulsa ➤ para recibir la interpretación del oráculo.",
     back: "Atrás", next: "Siguiente", skip: "Saltar", finish: "¡Listo!", replayLabel: "Ver tutorial", tutorialLabel: "Tutorial",
   },
   en: {
@@ -152,7 +155,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"Translator", step5Body:"Interpretation source: Wilhelm (classic), Legge, Zhou Yi, or Master Combined. Higher tiers unlock more options.",
     step6Title:"Casting Mode", step6Body:"Automatic: the AI casts the coins. Manual: you cast them physically and record the result.",
     step7Title:"Hexagram Library", step7Body:"Browse all 64 hexagrams with full interpretation. Available from the Seeker tier.",
-    step8Title:"Your Consultation", step8Body:"Type your question and press ➤ to receive the oracle's interpretation.",
+    step8Title: "Documentation & FAQs", step8Body: "Full user guide, frequently asked questions, method notes and more. All from the options panel.",
+    step9Title:"Your Consultation", step9Body:"Type your question and press ➤ to receive the oracle's interpretation.",
     back: "Back", next: "Next", skip: "Skip", finish: "Done!", replayLabel: "View tutorial", tutorialLabel: "Tutorial",
   },
   pt: {
@@ -163,7 +167,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"Tradutor", step5Body:"Fonte de interpretação: Wilhelm (clássico), Legge, Zhou Yi ou Master Combined. Níveis superiores desbloqueiam mais opções.",
     step6Title:"Modo de Lançamento", step6Body:"Automático: a IA lança as moedas. Manual: você as lança fisicamente e registra o resultado.",
     step7Title:"Biblioteca de Hexagramas", step7Body:"Consulte os 64 hexagramas com interpretação completa. Disponível a partir do nível Seeker.",
-    step8Title:"Sua Consulta", step8Body:"Escreva sua pergunta e pressione ➤ para receber a interpretação do oráculo.",
+    step8Title: "Documentação e FAQs", step8Body: "Guia completo, perguntas frequentes, notas do método e mais. Tudo no painel de opções.",
+    step9Title:"Sua Consulta", step9Body:"Escreva sua pergunta e pressione ➤ para receber a interpretação do oráculo.",
     back: "Voltar", next: "Próximo", skip: "Pular", finish: "Pronto!", replayLabel: "Ver tutorial", tutorialLabel: "Tutorial",
   },
   fr: {
@@ -174,7 +179,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"Traducteur", step5Body:"Source d'interprétation : Wilhelm (classique), Legge, Zhou Yi ou Master Combined. Les niveaux supérieurs débloquent plus d'options.",
     step6Title:"Mode de Tirage", step6Body:"Automatique : l'IA lance les pièces. Manuel : vous les lancez physiquement et enregistrez le résultat.",
     step7Title:"Bibliothèque des Hexagrammes", step7Body:"Consultez les 64 hexagrammes avec une interprétation complète. Disponible à partir du niveau Seeker.",
-    step8Title:"Votre Consultation", step8Body:"Tapez votre question et appuyez sur ➤ pour recevoir l'interprétation de l'oracle.",
+    step8Title: "Documentation & FAQ", step8Body: "Guide complet, questions fréquentes, notes de méthode et plus. Tout depuis le panneau des options.",
+    step9Title:"Votre Consultation", step9Body:"Tapez votre question et appuyez sur ➤ pour recevoir l'interprétation de l'oracle.",
     back: "Retour", next: "Suivant", skip: "Passer", finish: "Terminé !", replayLabel: "Voir le tutoriel", tutorialLabel: "Tutoriel",
   },
   de: {
@@ -185,7 +191,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"Übersetzer", step5Body:"Interpretationsquelle: Wilhelm (klassisch), Legge, Zhou Yi oder Master Combined. Höhere Stufen schalten mehr Optionen frei.",
     step6Title:"Wurf-Modus", step6Body:"Automatisch: Die KI wirft die Münzen. Manuell: Du wirfst sie physisch und trägst das Ergebnis ein.",
     step7Title:"Hexagramm-Bibliothek", step7Body:"Durchsuche alle 64 Hexagramme mit vollständiger Interpretation. Ab der Seeker-Stufe verfügbar.",
-    step8Title:"Deine Beratung", step8Body:"Schreibe deine Frage und drücke ➤, um die Interpretation des Orakels zu erhalten.",
+    step8Title: "Dokumentation & FAQs", step8Body: "Vollständige Anleitung, häufige Fragen, Methodennotizen und mehr. Alles im Optionsbereich.",
+    step9Title:"Deine Beratung", step9Body:"Schreibe deine Frage und drücke ➤, um die Interpretation des Orakels zu erhalten.",
     back: "Zurück", next: "Weiter", skip: "Überspringen", finish: "Fertig!", replayLabel: "Tutorial anzeigen", tutorialLabel: "Tutorial",
   },
   it: {
@@ -196,7 +203,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"Traduttore", step5Body:"Fonte di interpretazione: Wilhelm (classico), Legge, Zhou Yi o Master Combined. I livelli superiori sbloccano più opzioni.",
     step6Title:"Modalità di Lancio", step6Body:"Automatico: l'IA lancia le monete. Manuale: le lanci fisicamente e registri il risultato.",
     step7Title:"Biblioteca degli Esagrammi", step7Body:"Consulta tutti i 64 esagrammi con interpretazione completa. Disponibile dal livello Seeker.",
-    step8Title:"La Tua Consultazione", step8Body:"Scrivi la tua domanda e premi ➤ per ricevere l'interpretazione dell'oracolo.",
+    step8Title: "Documentazione e FAQ", step8Body: "Guida completa, domande frequenti, note sul metodo e altro. Tutto nel pannello opzioni.",
+    step9Title:"La Tua Consultazione", step9Body:"Scrivi la tua domanda e premi ➤ per ricevere l'interpretazione dell'oracolo.",
     back: "Indietro", next: "Avanti", skip: "Salta", finish: "Fatto!", replayLabel: "Vedi tutorial", tutorialLabel: "Tutorial",
   },
   ja: {
@@ -207,7 +215,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"翻訳者", step5Body:"解釈の出典：Wilhelm（古典）、Legge、Zhou Yi、またはMaster Combined。上位ティアでより多くの選択肢が解放されます。",
     step6Title:"投げ方モード", step6Body:"自動：AIがコインを投げます。手動：物理的に投げて結果を記録します。",
     step7Title:"六十四卦ライブラリ", step7Body:"全64卦の完全な解釈を閲覧できます。Seekerティア以上で利用可能。",
-    step8Title:"あなたの相談", step8Body:"質問を入力して➤を押すと、神託の解釈が届きます。",
+    step8Title: "ドキュメント & FAQ", step8Body: "完全なユーザーガイド、よくある質問、メソッドノートなどをオプションパネルから確認できます。",
+    step9Title:"あなたの相談", step9Body:"質問を入力して➤を押すと、神託の解釈が届きます。",
     back: "戻る", next: "次へ", skip: "スキップ", finish: "完了！", replayLabel: "チュートリアルを見る", tutorialLabel: "チュートリアル",
   },
   zh: {
@@ -218,7 +227,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"译者", step5Body:"解读来源：Wilhelm（经典）、Legge、周易或Master Combined。更高等级可解锁更多选项。",
     step6Title:"占卜方式", step6Body:"自动：AI抛铜钱。手动：您亲手抛铜钱并记录结果。",
     step7Title:"六十四卦典库", step7Body:"浏览全部64卦的完整解读。从Seeker等级起可用。",
-    step8Title:"您的咨询", step8Body:"输入您的问题，按➤接收神谕解读。",
+    step8Title: "文档与常见问题", step8Body: "完整的用户指南、常见问题、方法说明等。均可从选项面板中访问。",
+    step9Title:"您的咨询", step9Body:"输入您的问题，按➤接收神谕解读。",
     back: "上一步", next: "下一步", skip: "跳过", finish: "完成！", replayLabel: "查看教程", tutorialLabel: "教程",
   },
   ko: {
@@ -229,7 +239,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"번역자", step5Body:"해석 출처: Wilhelm(고전), Legge, Zhou Yi 또는 Master Combined. 상위 등급에서 더 많은 옵션이 해제됩니다.",
     step6Title:"주조 방식", step6Body:"자동: AI가 동전을 던집니다. 수동: 직접 던지고 결과를 기록합니다.",
     step7Title:"육십사괘 도서관", step7Body:"64개 모든 괘의 완전한 해석을 탐색하세요. Seeker 등급부터 이용 가능합니다.",
-    step8Title:"나의 상담", step8Body:"질문을 입력하고 ➤를 눌러 신탁의 해석을 받으세요.",
+    step8Title: "문서 및 FAQ", step8Body: "전체 사용자 가이드, 자주 묻는 질문, 방법 노트 등을 옵션 패널에서 찾을 수 있습니다.",
+    step9Title:"나의 상담", step9Body:"질문을 입력하고 ➤를 눌러 신탁의 해석을 받으세요.",
     back: "이전", next: "다음", skip: "건너뛰기", finish: "완료!", replayLabel: "튜토리얼 보기", tutorialLabel: "튜토리얼",
   },
   ar: {
@@ -240,7 +251,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"المترجم", step5Body:"مصدر التفسير: Wilhelm (الكلاسيكي) أو Legge أو Zhou Yi أو Master Combined. تفتح المستويات الأعلى المزيد من الخيارات.",
     step6Title:"وضع الرمي", step6Body:"تلقائي: الذكاء الاصطناعي يرمي العملات. يدوي: ترميها بنفسك وتسجّل النتيجة.",
     step7Title:"مكتبة الهكساغرامات", step7Body:"تصفح جميع الـ 64 هكساغراماً مع تفسير كامل. متاح من مستوى Seeker.",
-    step8Title:"استشارتك", step8Body:"اكتب سؤالك واضغط ➤ لتلقّي تفسير الأوراكل.",
+    step8Title: "التوثيق والأسئلة الشائعة", step8Body: "الدليل الكامل والأسئلة الشائعة وملاحظات المنهجية والمزيد. كل ذلك من لوحة الخيارات.",
+    step9Title:"استشارتك", step9Body:"اكتب سؤالك واضغط ➤ لتلقّي تفسير الأوراكل.",
     back: "رجوع", next: "التالي", skip: "تخطي", finish: "تم!", replayLabel: "مشاهدة الدرس", tutorialLabel: "درس",
   },
   hi: {
@@ -251,7 +263,8 @@ const TOUR_COPY: Record<AppLocale, TourCopy> = {
     step5Title:"अनुवादक", step5Body:"व्याख्या स्रोत: Wilhelm (क्लासिक), Legge, Zhou Yi, या Master Combined। उच्च स्तर अधिक विकल्प अनलॉक करते हैं।",
     step6Title:"डाल मोड", step6Body:"स्वचालित: AI सिक्के फेंकता है। मैनुअल: आप भौतिक रूप से फेंकते हैं और परिणाम दर्ज करते हैं।",
     step7Title:"हेक्साग्राम पुस्तकालय", step7Body:"पूर्ण व्याख्या सहित सभी 64 हेक्साग्राम देखें। Seeker स्तर से उपलब्ध।",
-    step8Title:"आपकी परामर्श", step8Body:"अपना प्रश्न लिखें और ओरेकल की व्याख्या पाने के लिए ➤ दबाएँ।",
+    step8Title: "दस्तावेज़ और FAQs", step8Body: "पूर्ण उपयोगकर्ता मार्गदर्शिका, अक्सर पूछे जाने वाले प्रश्न, विधि नोट्स और अधिक। विकल्प पैनल से उपलब्ध।",
+    step9Title:"आपकी परामर्श", step9Body:"अपना प्रश्न लिखें और ओरेकल की व्याख्या पाने के लिए ➤ दबाएँ।",
     back: "वापस", next: "अगला", skip: "छोड़ें", finish: "हो गया!", replayLabel: "ट्यूटोरियल देखें", tutorialLabel: "ट्यूटोरियल",
   },
 };
@@ -1487,6 +1500,13 @@ export default function HomePage() {
   const [streakDays, setStreakDays] = useState(0);
   const [tourRun, setTourRun] = useState(false);
   const [tourKey, setTourKey] = useState(0);
+  const [tourTheme, setTourTheme] = useState<"light" | "dark">("dark");
+  useEffect(() => {
+    setTourTheme(readThemeFromDocument());
+    const obs = new MutationObserver(() => setTourTheme(readThemeFromDocument()));
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => obs.disconnect();
+  }, []);
   const endRef = useRef<HTMLDivElement | null>(null);
   const ritualCoinsStageRef = useRef<HTMLElement | null>(null);
   const ritualLinesGridRef = useRef<HTMLDivElement | null>(null);
@@ -6084,6 +6104,7 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div
+                      id="tour-doc-links"
                       className="composer-doc-links"
                       aria-label={chrome.docLinksAria}
                     >
@@ -7107,7 +7128,8 @@ export default function HomePage() {
             { target: "#tour-translator",      title: TOUR_COPY[locale].step5Title, content: TOUR_COPY[locale].step5Body, placement: "top",    before: tourBeforePanel("tour-translator",  false) },
             { target: "#tour-cast-mode",       title: TOUR_COPY[locale].step6Title, content: TOUR_COPY[locale].step6Body, placement: "top",    before: tourBeforePanel("tour-cast-mode",   false) },
             { target: "#tour-library-btn",     title: TOUR_COPY[locale].step7Title, content: TOUR_COPY[locale].step7Body, placement: "top",    before: tourBeforePanel("tour-library-btn", false) },
-            { target: "#tour-chat-input",      title: TOUR_COPY[locale].step8Title, content: TOUR_COPY[locale].step8Body, placement: "top" },
+            { target: "#tour-doc-links",       title: TOUR_COPY[locale].step8Title, content: TOUR_COPY[locale].step8Body, placement: "top",    before: tourBeforePanel("tour-doc-links",   false) },
+            { target: "#tour-chat-input",      title: TOUR_COPY[locale].step9Title, content: TOUR_COPY[locale].step9Body, placement: "top",    before: () => new Promise<void>(resolve => { setConsultPanelOpen(false); setTimeout(resolve, 220); }) },
           ] satisfies Step[]
         }
         continuous
@@ -7123,6 +7145,7 @@ export default function HomePage() {
           skipBeacon: true,
           skipScroll: true,
           zIndex: 10000,
+          overlayColor: tourTheme === "dark" ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.50)",
         }}
       />
     </OracleShell>
