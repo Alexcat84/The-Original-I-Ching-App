@@ -156,12 +156,13 @@ function main() {
   }
 
   const marker = `<!-- changelog:last-release:${releaseBumpHash} -->\n\n`;
-  const introEnd = body.indexOf("\n\n", body.indexOf("proyecto."));
-  const intro =
-    introEnd === -1
-      ? body
-      : body.slice(0, introEnd + 2);
-  const rest = introEnd === -1 ? "" : body.slice(introEnd + 2);
+
+  // Split at the first version header so the new entry always lands at the top.
+  // Using body.indexOf("\n## [") is more robust than searching for intro text,
+  // which can fail when blank-line counts vary between runs.
+  const firstVersionIdx = body.indexOf("\n## [");
+  const intro = firstVersionIdx === -1 ? body : body.slice(0, firstVersionIdx);
+  const rest  = firstVersionIdx === -1 ? ""   : body.slice(firstVersionIdx + 1); // skip leading \n
 
   const updatedIntro = intro.startsWith("<!--")
     ? intro
