@@ -23,7 +23,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "50 tokens por compra (pack consumible, sin renovación automática). Hasta 5 preguntas encadenadas por hilo. Imágenes generadas en alta resolución. Acceso al Zhou Yi (Fuente Original), la versión más antigua y pura escrita en chino tradicional, junto a Wilhelm y Legge.",
       master:
-        "100 tokens por compra (pack consumible, sin renovación automática). Hasta 8 preguntas encadenadas por hilo. Imágenes generadas en máxima resolución. Acceso total, incluyendo el Motor Maestro (3): un análisis superior que triangula las tres fuentes en un ensayo dialéctico. (Consume 2 tokens por consulta).",
+        "100 tokens por compra (pack consumible, sin renovación automática). Hasta 8 preguntas encadenadas por hilo. Imágenes generadas en máxima resolución. Acceso total, incluyendo el Motor Maestro (3): un análisis superior que triangula las tres fuentes en una interpretación unificada. (Consume 2 tokens por consulta).",
     },
     en: {
       freeTier:
@@ -33,7 +33,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "50 tokens per purchase (consumable pack, no auto-renewal). Up to 5 follow-up questions per thread. Generated images use high resolution. Access to Zhou Yi (Original Source), the oldest and purest version in traditional Chinese, along with Wilhelm and Legge.",
       master:
-        "100 tokens per purchase (consumable pack, no auto-renewal). Up to 8 follow-up questions per thread. Generated images use maximum resolution. Full access, including the Master (3) engine: a superior analysis that triangulates all three sources in a dialectical essay. (Consumes 2 tokens per consultation).",
+        "100 tokens per purchase (consumable pack, no auto-renewal). Up to 8 follow-up questions per thread. Generated images use maximum resolution. Full access, including the Master (3) engine: a superior analysis that triangulates all three sources in a unified interpretation. (Consumes 2 tokens per consultation).",
     },
     pt: {
       freeTier:
@@ -43,7 +43,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "50 tokens por compra (pack consumível, sem renovação automática). Até 5 perguntas encadeadas por fio. Imagens geradas em alta resolução. Acesso ao Zhou Yi (Fonte Original), a versão mais antiga e pura escrita em chinês tradicional, junto a Wilhelm e Legge.",
       master:
-        "100 tokens por compra (pack consumível, sem renovação automática). Até 8 perguntas encadeadas por fio. Imagens geradas em resolução máxima. Acesso total, incluindo o Motor Mestre (3): uma análise superior que triangula as três fontes num ensaio dialético. (Consome 2 tokens por consulta).",
+        "100 tokens por compra (pack consumível, sem renovação automática). Até 8 perguntas encadeadas por fio. Imagens geradas em resolução máxima. Acesso total, incluindo o Motor Mestre (3): uma análise superior que triangula as três fontes numa interpretação unificada. (Consome 2 tokens por consulta).",
     },
     fr: {
       freeTier:
@@ -53,7 +53,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "50 jetons par achat (pack consommable, sans renouvellement auto). Jusqu'à 5 questions enchaînées par fil. Images générées en haute résolution. Accès au Zhou Yi (Source Originale), la version la plus ancienne et pure en chinois traditionnel, avec Wilhelm et Legge.",
       master:
-        "100 jetons par achat (pack consommable, sans renouvellement auto). Jusqu'à 8 questions enchaînées par fil. Images générées en résolution maximale. Accès complet, incluant le moteur Master (3) : une analyse supérieure qui triangule les trois sources dans un essai dialectique. (Consomme 2 jetons par consultation).",
+        "100 jetons par achat (pack consommable, sans renouvellement auto). Jusqu'à 8 questions enchaînées par fil. Images générées en résolution maximale. Accès complet, incluant le moteur Master (3) : une analyse supérieure qui triangule les trois sources dans une interprétation unifiée. (Consomme 2 jetons par consultation).",
     },
     de: {
       freeTier:
@@ -63,7 +63,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "50 Tokens pro Kauf (verbrauchbares Paket, keine automatische Verlängerung). Bis zu 5 Anschlussfragen pro Thread. Generierte Bilder in hoher Auflösung. Zugang zu Zhou Yi (Originalquelle), der ältesten und reinsten Version in traditionellem Chinesisch, zusammen mit Wilhelm und Legge.",
       master:
-        "100 Tokens pro Kauf (verbrauchbares Paket, keine automatische Verlängerung). Bis zu 8 Anschlussfragen pro Thread. Generierte Bilder in maximaler Auflösung. Vollständiger Zugang, einschließlich der Master (3) Engine: eine überlegene Analyse, die alle drei Quellen in einem dialektischen Essay trianguliert. (Verbraucht 2 Tokens pro Konsultation).",
+        "100 Tokens pro Kauf (verbrauchbares Paket, keine automatische Verlängerung). Bis zu 8 Anschlussfragen pro Thread. Generierte Bilder in maximaler Auflösung. Vollständiger Zugang, einschließlich der Master (3) Engine: eine überlegene Analyse, die alle drei Quellen in einer einheitlichen Interpretation vereint. (Verbraucht 2 Tokens pro Konsultation).",
     },
     it: {
       freeTier:
@@ -73,7 +73,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "50 token per acquisto (pacchetto consumabile, senza rinnovo automatico). Fino a 5 domande concatenate per thread. Immagini generate in alta risoluzione. Accesso allo Zhou Yi (Fonte Originale), la versione più antica e pura in cinese tradizionale, insieme a Wilhelm e Legge.",
       master:
-        "100 token per acquisto (pacchetto consumabile, senza rinnovo automatico). Fino a 8 domande concatenate per thread. Immagini generate in risoluzione massima. Accesso completo, incluso il motore Master (3): un'analisi superiore che triangola le tre fonti in un saggio dialettico. (Consuma 2 token per consultazione).",
+        "100 token per acquisto (pacchetto consumabile, senza rinnovo automatico). Fino a 8 domande concatenate per thread. Immagini generate in risoluzione massima. Accesso completo, incluso il motore Master (3): un'analisi superiore che triangola le tre fonti in un'interpretazione unificata. (Consuma 2 token per consultazione).",
     },
     ja: {
       freeTier:
@@ -83,7 +83,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "購入ごとに50トークン（使い切りパック、自動更新なし）。スレッドあたり最大5問まで連続質問可能。生成画像は高解像度。周易（原典）——繁体字中国語で書かれた最古かつ最純粋な版——ウィルヘルム及びレッゲとともにアクセス可能。",
       master:
-        "購入ごとに100トークン（使い切りパック、自動更新なし）。スレッドあたり最大8問まで連続質問可能。生成画像は最高解像度。Master (3)エンジンを含む全アクセス：3つの典拠を弁証法的な論文として統合する高度な分析。（1回の相談につき2トークン消費）。",
+        "購入ごとに100トークン（使い切りパック、自動更新なし）。スレッドあたり最大8問まで連続質問可能。生成画像は最高解像度。Master (3)エンジンを含む全アクセス：3つの典拠を統合的解釈としてまとめる高度な分析。（1回の相談につき2トークン消費）。",
     },
     zh: {
       freeTier:
@@ -93,7 +93,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "每次购买 50 个代币（消耗型包，无自动续费）。每个线程最多连续 5 个追问。生成图像为高分辨率。可访问周易（原典）——以繁体中文写成的最古老、最纯粹的版本——以及威廉和理雅各译本。",
       master:
-        "每次购买 100 个代币（消耗型包，无自动续费）。每个线程最多连续 8 个追问。生成图像为最高分辨率。完整访问权限，包含大师（3）引擎：以辩证论文形式融合三种典籍来源的高级分析。（每次咨询消耗 2 个代币）。",
+        "每次购买 100 个代币（消耗型包，无自动续费）。每个线程最多连续 8 个追问。生成图像为最高分辨率。完整访问权限，包含大师（3）引擎：以统一解读形式融合三种典籍来源的高级分析。（每次咨询消耗 2 个代币）。",
     },
     ko: {
       freeTier:
@@ -103,7 +103,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "구매당 50토큰(소모형 팩, 자동 갱신 없음). 스레드당 최대 5개의 연속 질문. 생성 이미지는 고해상도. 주역（원전）——전통 한자로 쓰인 가장 오래되고 순수한 판본——빌헬름 및 레그와 함께 이용 가능.",
       master:
-        "구매당 100토큰(소모형 팩, 자동 갱신 없음). 스레드당 최대 8개의 연속 질문. 생성 이미지는 최고 해상도. Master (3) 엔진을 포함한 전체 접근 권한: 세 가지 출전을 변증법적 에세이로 통합하는 고급 분석. (상담 1회당 2토큰 소모).",
+        "구매당 100토큰(소모형 팩, 자동 갱신 없음). 스레드당 최대 8개의 연속 질문. 생성 이미지는 최고 해상도. Master (3) 엔진을 포함한 전체 접근 권한: 세 가지 출전을 통합 해석으로 하나로 모은 고급 분석. (상담 1회당 2토큰 소모).",
     },
     ar: {
       freeTier:
@@ -113,7 +113,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "50 رمزًا لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 5 أسئلة متابعة لكل محادثة. الصور المُنشأة بدقة عالية. الوصول إلى Zhou Yi (المصدر الأصلي)، أقدم نسخة وأنقاها باللغة الصينية التقليدية، مع ويلهلم وليغ.",
       master:
-        "100 رمز لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 8 أسئلة متابعة لكل محادثة. الصور المُنشأة بأقصى دقة. وصول كامل، يشمل محرك Master (3): تحليل متقدم يُثلّث المصادر الثلاثة في مقالة جدلية. (يستهلك 2 رموز لكل استشارة).",
+        "100 رمز لكل عملية شراء (باقة قابلة للاستهلاك، لا تجديد تلقائي). حتى 8 أسئلة متابعة لكل محادثة. الصور المُنشأة بأقصى دقة. وصول كامل، يشمل محرك Master (3): تحليل متقدم يُثلّث المصادر الثلاثة في تفسير موحّد. (يستهلك 2 رموز لكل استشارة).",
     },
     hi: {
       freeTier:
@@ -123,7 +123,7 @@ const TOKEN_PACK_MARKETING_UI: Record<AppLocale, TokenPackMarketingUiMessages> =
       practitioner:
         "प्रति खरीद 50 टोकन (उपभोज्य पैक, ऑटो-रिन्यू नहीं)। प्रति थ्रेड 5 फॉलो-अप प्रश्न तक। इमेज हाई रिज़ॉल्यूशन में। Zhou Yi (मूल स्रोत), पारंपरिक चीनी में लिखा गया सबसे प्राचीन और शुद्ध संस्करण, Wilhelm और Legge के साथ पहुंच।",
       master:
-        "प्रति खरीद 100 टोकन (उपभोज्य पैक, ऑटो-रिन्यू नहीं)। प्रति थ्रेड 8 फॉलो-अप प्रश्न तक। इमेज अधिकतम रिज़ॉल्यूशन में। पूर्ण पहुंच, जिसमें Master (3) इंजन शामिल है: एक श्रेष्ठ विश्लेषण जो तीनों स्रोतों को द्वंद्वात्मक निबंध में संयोजित करता है। (प्रति परामर्श 2 टोकन खर्च होते हैं)।",
+        "प्रति खरीद 100 टोकन (उपभोज्य पैक, ऑटो-रिन्यू नहीं)। प्रति थ्रेड 8 फॉलो-अप प्रश्न तक। इमेज अधिकतम रिज़ॉल्यूशन में। पूर्ण पहुंच, जिसमें Master (3) इंजन शामिल है: एक श्रेष्ठ विश्लेषण जो तीनों स्रोतों को एकीकृत व्याख्या में संयोजित करता है। (प्रति परामर्श 2 टोकन खर्च होते हैं)।",
     },
   };
 

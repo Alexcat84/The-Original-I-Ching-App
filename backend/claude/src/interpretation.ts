@@ -63,7 +63,7 @@ ABSOLUTE RULES:
 11. TYPOGRAPHY: enforce clean punctuation and spacing in the response language: one space after commas/semicolons/colons, no ",." or double punctuation, no glued tokens after punctuation, and no unintended uppercase after commas.
 12. TEMPORAL RESTRAINT: Never use temporal expressions (days, weeks, months, years, "recently", "lately", "these past X", or any span of time) when referencing previous consultations, unless the user's current question explicitly contains those terms. Reference prior consultations only by number, sequence, or thematic content — never by how long ago they occurred.`;
 
-/** Token output budget by tier. Master combined needs room for full dialectical essays. */
+/** Token output budget by tier. Master combined needs room for full unified interpretations. */
 const MAX_TOKENS_DEFAULT = 4096;
 const MAX_TOKENS_MASTER_WITH_CONTEXT = 7000;
 const MAX_TOKENS_MASTER_NO_CONTEXT = 5000;
