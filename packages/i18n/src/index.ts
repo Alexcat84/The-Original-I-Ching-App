@@ -1,3 +1,7 @@
+export {
+  getConsultApiUiMessages,
+  type ConsultApiUiMessages,
+} from "./messages/consult-api-ui.js";
 export { commonStrings, DEFAULT_LOCALE, SUPPORTED_LOCALES, type AppLocale } from "./locales.js";
 export { UI_LOCALE_STORAGE_KEY } from "./locale-storage.js";
 export { isAppLocale, parseAppLocale } from "./locale-resolve.js";
