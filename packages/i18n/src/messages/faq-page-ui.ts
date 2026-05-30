@@ -73,7 +73,7 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
   ],
   "tokens-payments": ["tokens-packs", "purchases-legal"],
   "premium-features": ["translators-tiers", "master-tokens-cost", "library-unlock"],
-  "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa"],
+  "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa", "delete-chats", "delete-account"],
 };
 
 const FAQ_CATEGORY_TITLES: Record<AppLocale, Record<FaqCategoryId, string>> = {
@@ -315,6 +315,19 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     related: ["userGuide"],
   },
   {
+    id: "delete-chats",
+    question: "How do I delete a chat or conversation?",
+    answer:
+      "Open the Chats section from the app header. Long-press a conversation or use the delete option shown on each thread. Deletion is immediate and permanent — messages are removed from our servers.",
+  },
+  {
+    id: "delete-account",
+    question: "How do I delete my account and all my data?",
+    answer:
+      "Open Options in the app (button at the bottom of the screen), scroll to Delete account, and tap Delete my account. In the confirmation dialog, type DELETE and confirm. Your account is deleted immediately and you are signed out automatically. What gets deleted: your user profile and login credentials, all consultation sessions and chat history, token balance and usage records, two-factor authentication configuration, and all personal preferences. Our payment gateway providers retain purchase records for tax and billing purposes as required by applicable regulations. If you cannot sign in, email support@theoriginaliching.com with your registered address — we will process your request within 30 days.",
+    related: ["privacyPolicy"],
+  },
+  {
     id: "not-advice",
     question: "Is this professional advice?",
     answer:
@@ -483,6 +496,19 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     related: ["userGuide"],
   },
   {
+    id: "delete-chats",
+    question: "¿Cómo elimino un chat o conversación?",
+    answer:
+      "Abre la sección «Chats» desde la cabecera de la app. Mantén pulsada la conversación o usa la opción de borrar que aparece en cada hilo. La eliminación es inmediata y permanente: los mensajes se eliminan de nuestros servidores.",
+  },
+  {
+    id: "delete-account",
+    question: "¿Cómo elimino mi cuenta y todos mis datos?",
+    answer:
+      "Abre Opciones en la app (botón en el pie del compositor), desplázate hasta Eliminar cuenta y toca Eliminar mi cuenta. En el diálogo de confirmación, escribe ELIMINAR y confirma. Tu cuenta se elimina de inmediato y la sesión se cierra automáticamente. Se eliminan: tu perfil de usuario y credenciales de acceso, todas las sesiones de consulta e historial de chat, el saldo de tokens y registros de uso, la configuración de 2FA y todas las preferencias personales. Los proveedores de pasarela de pago conservan los registros de compras para efectos fiscales conforme a las regulaciones aplicables. Si no puedes iniciar sesión, escríbenos a support@theoriginaliching.com con tu email registrado — procesaremos tu solicitud en 30 días.",
+    related: ["privacyPolicy"],
+  },
+  {
     id: "not-advice",
     question: "¿Esto es asesoramiento profesional?",
     answer:
@@ -611,6 +637,19 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     answer:
       "نعم، بشكل اختياري. يمكنك تفعيل 2FA (تطبيق المصادقة و/أو رمز البريد الإلكتروني) من أمان الحساب داخل الأوراكل.",
     related: ["userGuide"],
+  },
+  {
+    id: "delete-chats",
+    question: "كيف أحذف محادثة أو دردشة؟",
+    answer:
+      "افتح قسم «المحادثات» من ترويسة التطبيق. اضغط مطولاً على المحادثة أو استخدم خيار الحذف الظاهر على كل خيط. الحذف فوري ونهائي — تُزال الرسائل من خوادمنا.",
+  },
+  {
+    id: "delete-account",
+    question: "كيف أحذف حسابي وجميع بياناتي؟",
+    answer:
+      "افتح الخيارات في التطبيق، انتقل إلى حذف الحساب واضغط على حذف حسابي. في مربع التأكيد اكتب DELETE وأكّد. يُحذف حسابك فوراً وتُسجَّل خروجاً تلقائياً. ما يُحذف: ملفك الشخصي وبيانات الدخول، جميع جلسات الاستشارة وسجل المحادثات، رصيد الرموز وسجلات الاستخدام، إعداد المصادقة الثنائية، وجميع التفضيلات الشخصية. يحتفظ مزودو بوابات الدفع بسجلات المشتريات لأغراض ضريبية وفقاً للوائح المعمول بها. إذا تعذّر عليك تسجيل الدخول، أرسل لنا بريداً إلى support@theoriginaliching.com مع عنوان بريدك المسجّل — سنعالج طلبك خلال 30 يوماً.",
+    related: ["privacyPolicy"],
   },
   {
     id: "not-advice",
@@ -762,6 +801,19 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     related: ["userGuide"],
   },
   {
+    id: "delete-chats",
+    question: "चैट या बातचीत कैसे हटाएं?",
+    answer:
+      "ऐप हेडर से «चैट» सेक्शन खोलें। किसी बातचीत को देर तक दबाएं या प्रत्येक थ्रेड पर दिखाए गए डिलीट विकल्प का उपयोग करें। हटाना तुरंत और स्थायी है — संदेश हमारे सर्वर से हटा दिए जाते हैं।",
+  },
+  {
+    id: "delete-account",
+    question: "अपना खाता और सभी डेटा कैसे हटाएं?",
+    answer:
+      "ऐप में विकल्प खोलें, खाता हटाएं तक स्क्रॉल करें और मेरा खाता हटाएं पर टैप करें। पुष्टि संवाद में DELETE टाइप करें और पुष्टि करें। आपका खाता तुरंत हटा दिया जाता है। क्या हटाया जाता है: आपका उपयोगकर्ता प्रोफ़ाइल और लॉगिन क्रेडेंशियल, सभी परामर्श सत्र और चैट इतिहास, टोकन शेष और उपयोग रिकॉर्ड, 2FA कॉन्फ़िगरेशन, और सभी व्यक्तिगत प्राथमिकताएं। भुगतान गेटवे प्रदाता लागू नियमों के अनुसार कर और बिलिंग उद्देश्यों के लिए खरीद रिकॉर्ड रखते हैं। यदि साइन इन नहीं कर सकते, तो support@theoriginaliching.com पर अपने पंजीकृत ईमेल के साथ लिखें — हम 30 दिनों के भीतर अनुरोध संसाधित करेंगे।",
+    related: ["privacyPolicy"],
+  },
+  {
     id: "not-advice",
     question: "क्या यह पेशेवर सलाह है?",
     answer:
@@ -907,6 +959,19 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     answer:
       "はい、任意でご利用いただけます。オラクルのアカウントセキュリティから2FA（認証アプリおよび/またはメールコード）を有効にできます。ガイドでは相談との連携についてまとめています。",
     related: ["userGuide"],
+  },
+  {
+    id: "delete-chats",
+    question: "チャットや会話を削除するには？",
+    answer:
+      "アプリのヘッダーから「チャット」セクションを開きます。会話を長押しするか、各スレッドに表示される削除オプションを使用してください。削除は即時かつ永続的で、メッセージはサーバーから削除されます。",
+  },
+  {
+    id: "delete-account",
+    question: "アカウントとすべてのデータを削除するには？",
+    answer:
+      "アプリのオプション（コンポーザー下部のボタン）を開き、アカウントを削除までスクロールして「アカウントを削除する」をタップします。確認ダイアログにDELETEと入力して確定します。アカウントは即時削除され、自動的にサインアウトされます。削除されるもの：ユーザープロファイルとログイン認証情報、すべての相談セッションとチャット履歴、トークン残高と利用履歴、二段階認証の設定、すべての個人設定。決済ゲートウェイプロバイダーは適用される財務規制に従い、税務・請求目的で購入記録を保持します。サインインできない場合は、登録済みのメールアドレスを添えてsupport@theoriginaliching.comまでご連絡ください——30日以内に対応いたします。",
+    related: ["privacyPolicy"],
   },
   {
     id: "not-advice",
@@ -1057,6 +1122,19 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     related: ["userGuide"],
   },
   {
+    id: "delete-chats",
+    question: "如何删除聊天或对话？",
+    answer:
+      "从应用标题栏打开「聊天」部分。长按某条对话，或使用每个会话上显示的删除选项。删除即时且永久 — 消息将从我们的服务器中移除。",
+  },
+  {
+    id: "delete-account",
+    question: "如何删除我的账户和所有数据？",
+    answer:
+      "打开应用中的「选项」（编辑器底部按钮），滚动至「删除账户」，点击「删除我的账户」。在确认对话框中输入 DELETE 并确认。账户将立即删除，并自动退出登录。将被删除的内容：用户资料和登录凭证、所有咨询会话和聊天记录、代币余额和使用记录、两步验证配置，以及所有个人偏好设置。支付网关提供商根据适用法规出于税务和账单目的保留购买记录。如果无法登录，请发送邮件至 support@theoriginaliching.com 并附上注册邮箱地址 — 我们将在 30 天内处理您的请求。",
+    related: ["privacyPolicy"],
+  },
+  {
     id: "not-advice",
     question: "这是专业建议吗？",
     answer:
@@ -1202,6 +1280,19 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     answer:
       "네, 선택 사항입니다. 오라클의 계정 보안에서 2FA(인증 앱 및/또는 이메일 코드)를 활성화할 수 있습니다. 가이드에서 상담과의 연동 방식을 요약합니다.",
     related: ["userGuide"],
+  },
+  {
+    id: "delete-chats",
+    question: "채팅이나 대화를 삭제하려면 어떻게 하나요?",
+    answer:
+      "앱 헤더에서 「채팅」 섹션을 엽니다. 대화를 길게 누르거나 각 스레드에 표시되는 삭제 옵션을 사용하세요. 삭제는 즉시 이루어지며 영구적입니다 — 메시지는 서버에서 제거됩니다.",
+  },
+  {
+    id: "delete-account",
+    question: "계정과 모든 데이터를 삭제하려면 어떻게 하나요?",
+    answer:
+      "앱에서 옵션(화면 하단의 버튼)을 열고 계정 삭제로 스크롤한 후 내 계정 삭제를 탭합니다. 확인 대화 상자에 DELETE를 입력하고 확인합니다. 계정은 즉시 삭제되며 자동으로 로그아웃됩니다. 삭제되는 항목: 사용자 프로필 및 로그인 자격 증명, 모든 상담 세션 및 채팅 기록, 토큰 잔액 및 사용 기록, 이중 인증 설정, 모든 개인 환경 설정. 결제 게이트웨이 제공업체는 적용 가능한 규정에 따라 세금 및 청구 목적으로 구매 기록을 보관합니다. 로그인이 불가능한 경우, 등록된 이메일 주소를 포함하여 support@theoriginaliching.com으로 이메일을 보내주세요 — 30일 이내에 처리해 드립니다.",
+    related: ["privacyPolicy"],
   },
   {
     id: "not-advice",
@@ -1350,6 +1441,19 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     answer:
       "Sim, de forma opcional: pode ativar 2FA (authenticator e/ou código por e-mail) nas definições de segurança da conta no oráculo. O guia resume como se integra com as consultas.",
     related: ["userGuide"],
+  },
+  {
+    id: "delete-chats",
+    question: "Como elimino um chat ou conversa?",
+    answer:
+      "Abre a secção «Conversas» no cabeçalho da app. Mantém premida a conversa ou utiliza a opção de eliminar que aparece em cada fio. A eliminação é imediata e permanente: as mensagens são removidas dos nossos servidores.",
+  },
+  {
+    id: "delete-account",
+    question: "Como elimino a minha conta e todos os meus dados?",
+    answer:
+      "Abre as Opções na app (botão na base do compositor), desloca-te até Eliminar conta e toca em Eliminar a minha conta. No diálogo de confirmação, escreve ELIMINAR e confirma. A tua conta é eliminada imediatamente e a sessão é encerrada automaticamente. O que é eliminado: o teu perfil de utilizador e credenciais de acesso, todas as sessões de consulta e histórico de chat, o saldo de tokens e registos de utilização, a configuração de 2FA e todas as preferências pessoais. Os fornecedores de passerelles de pagamento conservam os registos de compras para efeitos fiscais conforme exigido pelas regulamentações aplicáveis. Se não conseguires iniciar sessão, envia-nos um email para support@theoriginaliching.com com o teu endereço de email registado — processaremos o teu pedido em 30 dias.",
+    related: ["privacyPolicy"],
   },
   {
     id: "not-advice",
@@ -1501,6 +1605,19 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     answer:
       "Ja, optional: Sie können 2FA (Authenticator und/oder E-Mail-Codes) aus den Kontosicherheitseinstellungen im Orakel aktivieren. Der Leitfaden fasst zusammen, wie es mit Beratungen interagiert.",
     related: ["userGuide"],
+  },
+  {
+    id: "delete-chats",
+    question: "Wie lösche ich einen Chat oder eine Unterhaltung?",
+    answer:
+      "Öffne den Bereich «Chats» in der App-Kopfzeile. Halte ein Gespräch gedrückt oder nutze die Löschoption, die bei jedem Thread angezeigt wird. Die Löschung ist sofort und dauerhaft — die Nachrichten werden von unseren Servern entfernt.",
+  },
+  {
+    id: "delete-account",
+    question: "Wie lösche ich mein Konto und alle meine Daten?",
+    answer:
+      "Öffne Optionen in der App (Schaltfläche am unteren Rand des Composers), scrolle zu Konto löschen und tippe auf Mein Konto löschen. Gib im Bestätigungsdialog LÖSCHEN ein und bestätige. Dein Konto wird sofort gelöscht und du wirst automatisch abgemeldet. Was wird gelöscht: dein Benutzerprofil und Anmeldedaten, alle Beratungssitzungen und der Chat-Verlauf, Token-Guthaben und Nutzungsaufzeichnungen, die 2FA-Konfiguration und alle persönlichen Einstellungen. Zahlungsgateway-Anbieter speichern Kaufbelege zu steuerlichen und Abrechnungszwecken gemäß den geltenden Vorschriften. Falls du dich nicht anmelden kannst, schreibe uns an support@theoriginaliching.com mit deiner registrierten E-Mail-Adresse — wir bearbeiten deinen Antrag innerhalb von 30 Tagen.",
+    related: ["privacyPolicy"],
   },
   {
     id: "not-advice",
@@ -1656,6 +1773,19 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     related: ["userGuide"],
   },
   {
+    id: "delete-chats",
+    question: "Come elimino una chat o una conversazione?",
+    answer:
+      "Apri la sezione «Chat» dall'intestazione dell'app. Tieni premuta una conversazione o usa l'opzione di eliminazione mostrata su ogni thread. L'eliminazione è immediata e permanente — i messaggi vengono rimossi dai nostri server.",
+  },
+  {
+    id: "delete-account",
+    question: "Come elimino il mio account e tutti i miei dati?",
+    answer:
+      "Apri Opzioni nell'app (pulsante in fondo al compositore), scorri fino a Elimina account e tocca Elimina il mio account. Nella finestra di conferma scrivi ELIMINA e conferma. Il tuo account viene eliminato immediatamente e verrai disconnesso automaticamente. Cosa viene eliminato: il tuo profilo utente e le credenziali di accesso, tutte le sessioni di consultazione e la cronologia delle chat, il saldo token e i registri di utilizzo, la configurazione 2FA e tutte le preferenze personali. I fornitori di gateway di pagamento conservano i registri degli acquisti per finalità fiscali e di fatturazione come richiesto dalle normative applicabili. Se non riesci ad accedere, scrivici a support@theoriginaliching.com con il tuo indirizzo email registrato — elaboreremo la tua richiesta entro 30 giorni.",
+    related: ["privacyPolicy"],
+  },
+  {
     id: "not-advice",
     question: "Si tratta di una consulenza professionale?",
     answer:
@@ -1808,6 +1938,19 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     answer:
       "Oui, en option : vous pouvez activer 2FA (authenticator et/ou codes e-mail) depuis la sécurité du compte dans l'oracle. Le guide résume son interaction avec les consultations.",
     related: ["userGuide"],
+  },
+  {
+    id: "delete-chats",
+    question: "Comment supprimer un chat ou une conversation ?",
+    answer:
+      "Ouvre la section «Discussions» depuis l'en-tête de l'application. Appuie longuement sur une conversation ou utilise l'option de suppression affichée sur chaque fil. La suppression est immédiate et définitive — les messages sont retirés de nos serveurs.",
+  },
+  {
+    id: "delete-account",
+    question: "Comment supprimer mon compte et toutes mes données ?",
+    answer:
+      "Ouvre Options dans l'app (bouton en bas du compositeur), fais défiler jusqu'à Supprimer le compte et appuie sur Supprimer mon compte. Dans la boîte de confirmation, écris SUPPRIMER et confirme. Ton compte est supprimé immédiatement et tu es déconnecté automatiquement. Ce qui est supprimé : ton profil utilisateur et tes identifiants, toutes les sessions de consultation et l'historique des chats, le solde de jetons et les enregistrements d'utilisation, la configuration 2FA et toutes les préférences personnelles. Les prestataires de passerelles de paiement conservent les enregistrements d'achats à des fins fiscales et de facturation conformément aux réglementations applicables. Si tu ne peux pas te connecter, écris-nous à support@theoriginaliching.com avec ton adresse e-mail enregistrée — nous traiterons ta demande dans les 30 jours.",
+    related: ["privacyPolicy"],
   },
   {
     id: "not-advice",

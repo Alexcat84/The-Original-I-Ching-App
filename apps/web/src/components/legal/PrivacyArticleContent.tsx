@@ -47,7 +47,7 @@ export function PrivacyArticleContent({ messages: p, nav }: PrivacyArticleConten
       <p>
         <strong>{p.s4AccountDeleteTitle}</strong>{" "}
         {p.s4AccountDeleteBodyBeforeLink}
-        <Link href="/delete-account">{p.s4AccountDeleteLinkLabel}</Link>
+        <Link href="/faqs#privacy-account">{p.s4AccountDeleteLinkLabel}</Link>
         {p.s4AccountDeleteBodyAfterLink}
       </p>
 
