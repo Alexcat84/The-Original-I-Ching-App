@@ -378,7 +378,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "master-tokens-cost",
     question: "How does the Master (3) synthesis work and why is it so powerful?",
     answer:
-      "The Master (3) function performs a Personalised Synthesis: it simultaneously triangulates the three root sources (Wilhelm, Legge, and the original Zhou Yi) to distil a coherent verdict. The result is a dialectical analysis that offers a powerful and immediate 'Concrete Answer', followed by an in-depth comparative analysis crafted uniquely for your situation and adapted with complete fidelity to the personal context of your consultation. Each Master (3) consultation consumes 2 tokens.",
+      "The Master (3) function performs a Personalised Synthesis: it simultaneously triangulates the three root sources (Wilhelm, Legge, and the original Zhou Yi) to distil a coherent verdict. The result is a unified interpretation that offers a powerful and immediate 'Concrete Answer', followed by an in-depth comparative analysis crafted uniquely for your situation and adapted with complete fidelity to the personal context of your consultation. Each Master (3) consultation consumes 2 tokens.",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -398,7 +398,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   {
     id: "master-tokens-cost",
     question: "¿Cómo funciona la síntesis Master (3) y por qué es tan potente?",
-    answer: "La función Master (3) realiza una Síntesis Personalizada: triangula simultáneamente las tres fuentes raíz (Wilhelm, Legge y el Zhou Yi original) para destilar un veredicto coherente. El resultado es un análisis dialéctico que ofrece una 'Respuesta Concreta' potente e inmediata, seguida de un análisis comparativo profundo elaborado de forma única para tu situación y adaptado con total fidelidad al contexto personal de tu consulta.",
+    answer: "La función Master (3) realiza una Síntesis Personalizada: triangula simultáneamente las tres fuentes raíz (Wilhelm, Legge y el Zhou Yi original) para destilar un veredicto coherente. El resultado es una interpretación unificada que ofrece una 'Respuesta Concreta' potente e inmediata, seguida de un análisis comparativo profundo elaborado de forma única para tu situación y adaptado con total fidelidad al contexto personal de tu consulta.",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -702,7 +702,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "master-tokens-cost",
     question: "كيف تعمل تركيبة Master (3) ولماذا هي قوية جداً؟",
     answer:
-      "تُجري وظيفة Master (3) توليفاً شخصياً: تُثلّث في آنٍ واحد المصادر الثلاثة الجذرية (Wilhelm وLegge والZhou Yi الأصلي) لاستخلاص حكم متسق. الناتج تحليل جدلي يقدم 'إجابة ملموسة' قوية وفورية، تليها تحليل مقارن معمّق مصاغ بشكل فريد لوضعك ومتكيّف بأمانة تامة مع السياق الشخصي لاستشارتك. تستهلك كل استشارة Master (3) رمزين.",
+      "تُجري وظيفة Master (3) توليفاً شخصياً: تُثلّث في آنٍ واحد المصادر الثلاثة الجذرية (Wilhelm وLegge والZhou Yi الأصلي) لاستخلاص حكم متسق. الناتج تفسير موحّد يقدم 'إجابة ملموسة' قوية وفورية، تليها تحليل مقارن معمّق مصاغ بشكل فريد لوضعك ومتكيّف بأمانة تامة مع السياق الشخصي لاستشارتك. تستهلك كل استشارة Master (3) رمزين.",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -857,7 +857,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "master-tokens-cost",
     question: "Master (3) संश्लेषण कैसे काम करता है और यह इतना शक्तिशाली क्यों है?",
     answer:
-      "Master (3) फ़ंक्शन एक व्यक्तिगत संश्लेषण करता है: तीन मूल स्रोतों (Wilhelm, Legge और मूल Zhou Yi) को एक साथ त्रिकोणित करके एक सुसंगत निर्णय निकालता है। परिणाम एक द्वंद्वात्मक विश्लेषण है जो एक शक्तिशाली और तत्काल 'ठोस उत्तर' प्रदान करता है, इसके बाद आपकी स्थिति के लिए विशेष रूप से तैयार एक गहरा तुलनात्मक विश्लेषण। प्रत्येक Master (3) परामर्श 2 टोकन उपयोग करता है।",
+      "Master (3) फ़ंक्शन एक व्यक्तिगत संश्लेषण करता है: तीन मूल स्रोतों (Wilhelm, Legge और मूल Zhou Yi) को एक साथ त्रिकोणित करके एक सुसंगत निर्णय निकालता है। परिणाम एक एकीकृत व्याख्या है जो एक शक्तिशाली और तत्काल 'ठोस उत्तर' प्रदान करता है, इसके बाद आपकी स्थिति के लिए विशेष रूप से तैयार एक गहरा तुलनात्मक विश्लेषण। प्रत्येक Master (3) परामर्श 2 टोकन उपयोग करता है।",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -1025,7 +1025,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "master-tokens-cost",
     question: "Master (3)の統合はどのように機能し、なぜそれほど強力なのですか？",
     answer:
-      "Master (3)機能は個人化された統合を行います：3つの根本的な典拠（Wilhelm、Legge、原典Zhou Yi）を同時に三角測量し、一貫した判断を導き出します。結果は強力で即座の「具体的な回答」を提供する弁証法的分析であり、その後にあなたの状況のために独自に作成された深い比較分析が続きます。Master (3)の相談は1回につき2トークンを消費します。",
+      "Master (3)機能は個人化された統合を行います：3つの根本的な典拠（Wilhelm、Legge、原典Zhou Yi）を同時に三角測量し、一貫した判断を導き出します。結果は強力で即座の「具体的な回答」を提供する統合的解釈であり、その後にあなたの状況のために独自に作成された深い比較分析が続きます。Master (3)の相談は1回につき2トークンを消費します。",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -1184,7 +1184,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "master-tokens-cost",
     question: "Master (3)综合如何运作，为何如此强大？",
     answer:
-      "Master (3)功能进行个性化综合：同时三角化三个根本来源（威廉、理雅各和原始周易），提炼出一致的判断。结果是一个辩证分析，提供强大而即时的「具体答案」，随后是专门为您的情况精心打造的深度比较分析。每次Master (3)咨询消耗2个代币。",
+      "Master (3)功能进行个性化综合：同时三角化三个根本来源（威廉、理雅各和原始周易），提炼出一致的判断。结果是一个统一解读，提供强大而即时的「具体答案」，随后是专门为您的情况精心打造的深度比较分析。每次Master (3)咨询消耗2个代币。",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -1344,7 +1344,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "master-tokens-cost",
     question: "Master (3) 합성은 어떻게 작동하며 왜 그렇게 강력한가요?",
     answer:
-      "Master (3) 기능은 개인화된 합성을 수행합니다: 세 가지 근본 출처(Wilhelm, Legge, 원전 주역)를 동시에 삼각 측정하여 일관된 판결을 도출합니다. 결과는 즉각적이고 강력한 '구체적인 답변'을 제공하는 변증법적 분석이며, 이후 귀하의 상황에 맞게 고유하게 작성된 심층 비교 분석이 이어집니다. Master (3) 상담 1회당 2토큰이 소모됩니다.",
+      "Master (3) 기능은 개인화된 합성을 수행합니다: 세 가지 근본 출처(Wilhelm, Legge, 원전 주역)를 동시에 삼각 측정하여 일관된 판결을 도출합니다. 결과는 즉각적이고 강력한 '구체적인 답변'을 제공하는 통합 해석이며, 이후 귀하의 상황에 맞게 고유하게 작성된 심층 비교 분석이 이어집니다. Master (3) 상담 1회당 2토큰이 소모됩니다.",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -1506,7 +1506,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "master-tokens-cost",
     question: "Como funciona a síntese Master (3) e por que é tão poderosa?",
     answer:
-      "A função Master (3) realiza uma Síntese Personalizada: triangula simultaneamente as três fontes raíz (Wilhelm, Legge e o Zhou Yi original) para destilar um veredicto coerente. O resultado é uma análise dialética que oferece uma 'Resposta Concreta' poderosa e imediata, seguida de uma análise comparativa profunda elaborada de forma única para a tua situação. Cada consulta Master (3) consome 2 tokens.",
+      "A função Master (3) realiza uma Síntese Personalizada: triangula simultaneamente as três fontes raíz (Wilhelm, Legge e o Zhou Yi original) para destilar um veredicto coerente. O resultado é uma interpretação unificada que oferece uma 'Resposta Concreta' poderosa e imediata, seguida de uma análise comparativa profunda elaborada de forma única para a tua situação. Cada consulta Master (3) consome 2 tokens.",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -1671,7 +1671,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "master-tokens-cost",
     question: "Wie funktioniert die Master (3)-Synthese und warum ist sie so leistungsstark?",
     answer:
-      "Die Master (3)-Funktion führt eine Persönliche Synthese durch: Sie trianguliert gleichzeitig die drei Wurzelquellen (Wilhelm, Legge und das originale Zhou Yi), um ein kohärentes Urteil zu destillieren. Das Ergebnis ist eine dialektische Analyse, die eine kraftvolle und unmittelbare 'Konkrete Antwort' bietet, gefolgt von einer eingehenden vergleichenden Analyse, die einzigartig für Ihre Situation erstellt wurde. Jede Master (3)-Konsultation verbraucht 2 Tokens.",
+      "Die Master (3)-Funktion führt eine Persönliche Synthese durch: Sie trianguliert gleichzeitig die drei Wurzelquellen (Wilhelm, Legge und das originale Zhou Yi), um ein kohärentes Urteil zu destillieren. Das Ergebnis ist eine einheitliche Interpretation, die eine kraftvolle und unmittelbare 'Konkrete Antwort' bietet, gefolgt von einer eingehenden vergleichenden Analyse, die einzigartig für Ihre Situation erstellt wurde. Jede Master (3)-Konsultation verbraucht 2 Tokens.",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -1836,7 +1836,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "master-tokens-cost",
     question: "Come funziona la sintesi Master (3) e perché è così potente?",
     answer:
-      "La funzione Master (3) esegue una Sintesi Personalizzata: triangola simultaneamente le tre fonti radice (Wilhelm, Legge e il Zhou Yi originale) per distillare un verdetto coerente. Il risultato è un'analisi dialettica che offre una 'Risposta Concreta' potente e immediata, seguita da un'analisi comparativa approfondita elaborata in modo unico per la tua situazione. Ogni consultazione Master (3) consuma 2 token.",
+      "La funzione Master (3) esegue una Sintesi Personalizzata: triangola simultaneamente le tre fonti radice (Wilhelm, Legge e il Zhou Yi originale) per distillare un verdetto coerente. Il risultato è un'interpretazione unificata che offre una 'Risposta Concreta' potente e immediata, seguita da un'analisi comparativa approfondita elaborata in modo unico per la tua situazione. Ogni consultazione Master (3) consuma 2 token.",
     related: ["tokenPacks", "pricing"],
   },
   {
@@ -2003,7 +2003,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "master-tokens-cost",
     question: "Comment fonctionne la synthèse Master (3) et pourquoi est-elle si puissante ?",
     answer:
-      "La fonction Master (3) réalise une Synthèse Personnalisée : elle triangule simultanément les trois sources racines (Wilhelm, Legge et le Zhou Yi original) pour en distiller un verdict cohérent. Le résultat est une analyse dialectique qui offre une 'Réponse Concrète' puissante et immédiate, suivie d'une analyse comparative approfondie élaborée de manière unique pour votre situation. Chaque consultation Master (3) consomme 2 jetons.",
+      "La fonction Master (3) réalise une Synthèse Personnalisée : elle triangule simultanément les trois sources racines (Wilhelm, Legge et le Zhou Yi original) pour en distiller un verdict cohérent. Le résultat est une interprétation unifiée qui offre une 'Réponse Concrète' puissante et immédiate, suivie d'une analyse comparative approfondie élaborée de manière unique pour votre situation. Chaque consultation Master (3) consomme 2 jetons.",
     related: ["tokenPacks", "pricing"],
   },
   {
