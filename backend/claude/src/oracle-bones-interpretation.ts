@@ -83,10 +83,41 @@ function getLanguageName(language: string): string {
 
 function isLikelyWrongLanguage(text: string, language: string): boolean {
   const lower = text.toLowerCase();
-  const englishSignals = (lower.match(/\b(the|and|with|was|were|is|are|this|that|what|why|then)\b/g) ?? []).length;
-  const spanishSignals = (lower.match(/\b(el|la|los|las|con|para|fue|son|esta|este|porque|entonces)\b/g) ?? []).length;
-  if (language === "es") return englishSignals >= 6 && englishSignals > spanishSignals * 2;
-  if (language === "en") return spanishSignals >= 6 && spanishSignals > englishSignals * 2;
+  const englishSignals = (
+    lower.match(
+      /\b(the|and|with|was|were|is|are|this|that|what|why|then)\b/g,
+    ) ?? []
+  ).length;
+  const spanishSignals = (
+    lower.match(
+      /\b(el|la|los|las|con|para|fue|son|esta|este|porque|entonces)\b/g,
+    ) ?? []
+  ).length;
+  const italianSignals = (
+    lower.match(
+      /\b(che|del|della|delle|degli|per|sono|questo|questa|dal|nella|degli)\b/g,
+    ) ?? []
+  ).length;
+  const portugueseSignals = (
+    lower.match(
+      /\b(que|com|para|uma|não|mas|pelo|pela|isso|este|essa|também)\b/g,
+    ) ?? []
+  ).length;
+  if (language === "es")
+    return (
+      (englishSignals >= 6 && englishSignals > spanishSignals * 2) ||
+      (italianSignals >= 6 && italianSignals > spanishSignals * 2) ||
+      (portugueseSignals >= 8 && portugueseSignals > spanishSignals * 3)
+    );
+  if (language === "en")
+    return (
+      (spanishSignals >= 6 && spanishSignals > englishSignals * 2) ||
+      (italianSignals >= 6 && italianSignals > englishSignals * 2)
+    );
+  if (language === "it")
+    return spanishSignals >= 6 && spanishSignals > italianSignals * 2;
+  if (language === "pt")
+    return englishSignals >= 6 && englishSignals > portugueseSignals * 2;
   return false;
 }
 

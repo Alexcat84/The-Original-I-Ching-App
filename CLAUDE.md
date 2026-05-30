@@ -119,7 +119,7 @@ users
 - [x] Descargar imagen generada
 - [x] 2FA (TOTP + email)
 - [x] Google OAuth
-- [x] 9 idiomas (ES, EN, PT, FR, DE, IT, JA, ZH, KO)
+- [x] 11 idiomas (ES, EN, PT, FR, DE, IT, JA, ZH, KO, AR, HI)
 - [x] Modo oscuro/claro
 - [x] Idle timeout 45 minutos (privacidad — contenido íntimo)
 - [x] Centro de tokens con info de saldo y límites
@@ -129,7 +129,7 @@ users
 
 ### Mobile APK (apps/mobile)
 - [x] WebView cargando staging URL
-- [x] Barra nativa: selector de idioma dropdown (9 idiomas) + auth state
+- [x] Barra nativa: selector de idioma dropdown (11 idiomas) + auth state
 - [x] Google OAuth via browser externo (evita error 403 disallowed_useragent)
 - [x] Status bar correctamente posicionada (SafeAreaView)
 - [x] Zoom habilitado solo en imágenes (modal nativo PanResponder)

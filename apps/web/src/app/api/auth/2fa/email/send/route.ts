@@ -1,8 +1,15 @@
 import { createHash, randomInt } from "node:crypto";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { Logger } from "next-axiom";
+import {
+  formatTwoFactorEmailBody,
+  getTwoFactorEmailUiMessages,
+  parseAppLocale,
+} from "@iching-oracle/i18n";
 import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
+import { UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 import { rateLimitByKey } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -31,8 +38,9 @@ async function sendEmail2faCode(params: {
   apiKey: string;
   from: string;
   to: string;
-  code: string;
-  ttlMinutes: number;
+  subject: string;
+  text: string;
+  html: string;
 }): Promise<{ ok: boolean; status: number; message?: string }> {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -43,9 +51,9 @@ async function sendEmail2faCode(params: {
     body: JSON.stringify({
       from: params.from,
       to: [params.to],
-      subject: "Tu código de verificación (2FA) | The Original I Ching App",
-      text: `Tu código de verificación es: ${params.code}. Expira en ${params.ttlMinutes} minutos.`,
-      html: `<p>Tu código de verificación es:</p><p style="font-size:24px;font-weight:700;letter-spacing:3px">${params.code}</p><p>Expira en ${params.ttlMinutes} minutos.</p>`,
+      subject: params.subject,
+      text: params.text,
+      html: params.html,
     }),
   });
   if (response.ok) {
@@ -169,12 +177,21 @@ export async function POST(req: Request) {
     });
   }
 
+  const cookieStore = await cookies();
+  const userLocale = parseAppLocale(cookieStore.get(UI_LOCALE_COOKIE)?.value);
+  const emailBody = formatTwoFactorEmailBody(
+    getTwoFactorEmailUiMessages(userLocale),
+    code,
+    EMAIL_CODE_TTL_MINUTES,
+  );
+
   const delivery = await sendEmail2faCode({
     apiKey: resendApiKey,
     from: resendFrom,
     to: authUser.email,
-    code,
-    ttlMinutes: EMAIL_CODE_TTL_MINUTES,
+    subject: emailBody.subject,
+    text: emailBody.text,
+    html: emailBody.html,
   });
 
   if (!delivery.ok) {

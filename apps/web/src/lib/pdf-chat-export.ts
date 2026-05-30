@@ -1,4 +1,6 @@
 import type { jsPDF } from "jspdf";
+import type { PdfExportUiMessages } from "@iching-oracle/i18n";
+import { formatPdfEntryContinued } from "@iching-oracle/i18n";
 import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
 
 export type PdfReadingBlock =
@@ -238,7 +240,7 @@ export function drawPdfContinuationChrome(
   ctx: CanvasRenderingContext2D,
   pageW: number,
   pageH: number,
-  isEs: boolean,
+  pdfUi: PdfExportUiMessages,
   entryNum: number,
   accent: string,
   cjkFont: string,
@@ -253,16 +255,10 @@ export function drawPdfContinuationChrome(
 
   ctx.fillStyle = "#17212b";
   ctx.font = `700 36px ${serifFont}`;
-  ctx.fillText(isEs ? "Consulta del Oráculo" : "Oracle Consultation", 64, 68);
+  ctx.fillText(pdfUi.title, 64, 68);
   ctx.font = `600 22px ${cjkFont}`;
   ctx.fillStyle = "#36515d";
-  ctx.fillText(
-    isEs
-      ? `Entrada ${entryNum} · Lectura (continuación)`
-      : `Entry ${entryNum} · Reading (continued)`,
-    64,
-    102,
-  );
+  ctx.fillText(formatPdfEntryContinued(pdfUi, entryNum), 64, 102);
 
   const panelTop = 128;
   const panelBottom = pageH - 52;
@@ -276,7 +272,7 @@ export function drawPdfContinuationChrome(
 
   ctx.fillStyle = accent;
   ctx.font = `700 22px ${cjkFont}`;
-  ctx.fillText(isEs ? "Lectura" : "Reading", 84, panelTop + 34);
+  ctx.fillText(pdfUi.reading, 84, panelTop + 34);
 
   return { textTopY: panelTop + 72, textBottomY: panelBottom - 16 };
 }

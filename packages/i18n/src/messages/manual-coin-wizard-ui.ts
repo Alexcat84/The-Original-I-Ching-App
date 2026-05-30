@@ -1,5 +1,5 @@
-import type { AppLocale } from "@iching-oracle/i18n";
-import { DEFAULT_LOCALE } from "@iching-oracle/i18n";
+import type { AppLocale } from "../locales.js";
+import { DEFAULT_LOCALE } from "../locales.js";
 
 export type ManualWizardMessages = {
   title: string;

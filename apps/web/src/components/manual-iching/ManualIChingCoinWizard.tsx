@@ -1,10 +1,9 @@
 "use client";
 
 import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
-import type { AppLocale } from "@iching-oracle/i18n";
+import { getManualWizardMessages, type AppLocale } from "@iching-oracle/i18n";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IChingCashCoin } from "./IChingCashCoin";
-import { getManualWizardMessages } from "./manual-wizard-messages";
 
 type CoinFace = "H" | "T";
 

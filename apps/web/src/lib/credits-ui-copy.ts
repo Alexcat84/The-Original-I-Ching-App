@@ -1,4 +1,4 @@
-import { getCreditsNoticeUiMessages } from "@iching-oracle/i18n";
+import { DEFAULT_LOCALE, getCreditsNoticeUiMessages } from "@iching-oracle/i18n";
 import type { AppLocale } from "@iching-oracle/i18n";
 import { FREE_SESSION_LIMIT, getSessionLimit } from "@/lib/token-packs";
 
@@ -29,7 +29,7 @@ function packResetLine(m: ReturnType<typeof getCreditsNoticeUiMessages>, packNam
 export function creditsExhaustedBlock(
   tier: BillingTier,
   reason: CreditsNoticeReason,
-  locale: AppLocale = "es",
+  locale: AppLocale = DEFAULT_LOCALE,
 ): CreditsNoticeCopy {
   const m = getCreditsNoticeUiMessages(locale);
 
