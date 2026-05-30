@@ -252,6 +252,10 @@ npx eas login
 # Ver builds
 eas build:list
 
+# Changelog (release)
+npm run changelog:generate   # rebuild full history from git
+npm run changelog:update -- --version X.Y.Z --versionCode N --stage "Closed Testing"
+
 # Variables de entorno
 vercel env pull .env.staging
 ```
