@@ -8203,6 +8203,65 @@ html[data-theme="light"] .master-token-tooltip-text::after {
 }
 
 
+/* ── Android WebView: scroll-induced GPU compositing glitch fixes ───── */
+/*                                                                        */
+/* Root cause: WebView creates GPU compositor layers lazily on scroll.    */
+/* Elements with CSS animations, will-change, or filter that are first    */
+/* encountered mid-scroll render blank, clipped, or as stale rectangles.  */
+/*                                                                        */
+/* Fix strategy:                                                           */
+/*   1. Disable decorative sweep animations (cosmetic only, not missed).  */
+/*   2. Force pre-promote composited elements via translateZ(0) +         */
+/*      -webkit-backface-visibility:hidden before scroll begins.          */
+/*   3. Strip will-change:left from the thumb (left-based animation is    */
+/*      not GPU-friendly; translateZ(0) gives the same layer promotion).  */
+
+/* Oracle-mode switch (I Ching / Bones) — sweep animation causes the      */
+/* active segment ::after layer to render as an opaque rect on scroll.    */
+html.iching-rn-webview .composer-switch-seg--visual.is-active::after {
+  animation: none;
+  opacity: 0;
+}
+
+/* Force-promote the switch assets so their layer exists before scroll.   */
+html.iching-rn-webview .composer-switch-track--visual,
+html.iching-rn-webview .composer-switch-seg--visual,
+html.iching-rn-webview .composer-switch-asset {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Translator toggle thumb — will-change:left causes the thumb to         */
+/* disappear on scroll because WebView re-promotes it mid-frame.          */
+html.iching-rn-webview .oracle-toggle-thumb {
+  will-change: auto;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Disable the sweep and track-line animations on the translator toggle.  */
+html.iching-rn-webview .oracle-thumb-sweep {
+  animation: none;
+  opacity: 0;
+}
+
+html.iching-rn-webview .oracle-toggle-track-line {
+  animation: none;
+  opacity: 0;
+}
+
+/* Force-promote the toggle track container as well.                      */
+html.iching-rn-webview .oracle-toggle-track {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 /* ── Joyride tour spotlight ─────────────────────────────────────────── */
 /* Dark mode: overlay is 22% opaque so the app stays visible; the       */
 /* spotlight border is drawn via SVG stroke (styles.spotlight prop).    */
