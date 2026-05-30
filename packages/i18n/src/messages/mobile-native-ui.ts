@@ -15,6 +15,10 @@ export type MobileNativeUiMessages = {
   cancel: string;
   sharePdfTitle: string;
   deleteConfirm: string;
+  purchaseTitle: string;
+  purchaseMessage: string;
+  purchaseErrorTitle: string;
+  storeUnavailable: string;
 };
 
 const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
@@ -22,8 +26,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     imageSavedTitle: "Imagen guardada",
     imageSavedBody: "Se guardó en tu galería.",
     permissionDeniedTitle: "Permiso denegado",
-    permissionDeniedBody:
-      "Necesitamos acceso a tu galería para guardar imágenes.",
+    permissionDeniedBody: "Necesitamos acceso a tu galería para guardar imágenes.",
     fileSaveErrorTitle: "Error",
     fileSaveErrorBody: "No se pudo guardar el archivo.",
     fileSavedTitle: "Archivo guardado",
@@ -32,6 +35,10 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "Cancelar",
     sharePdfTitle: "Compartir PDF",
     deleteConfirm: "¿Eliminar esta conversación de forma permanente?",
+    purchaseTitle: "Comprar tokens",
+    purchaseMessage: "Elige el pack que deseas adquirir:",
+    purchaseErrorTitle: "Error en la compra",
+    storeUnavailable: "La tienda no está disponible en este momento. Inténtalo más tarde.",
   },
   en: {
     imageSavedTitle: "Image saved",
@@ -46,13 +53,16 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "Cancel",
     sharePdfTitle: "Share PDF",
     deleteConfirm: "Delete this conversation permanently?",
+    purchaseTitle: "Buy tokens",
+    purchaseMessage: "Choose the pack you want to purchase:",
+    purchaseErrorTitle: "Purchase error",
+    storeUnavailable: "The store is not available right now. Please try again later.",
   },
   pt: {
     imageSavedTitle: "Imagem guardada",
     imageSavedBody: "Guardada na sua galeria.",
     permissionDeniedTitle: "Permissão negada",
-    permissionDeniedBody:
-      "Precisamos de acesso à galeria para guardar imagens.",
+    permissionDeniedBody: "Precisamos de acesso à galeria para guardar imagens.",
     fileSaveErrorTitle: "Erro",
     fileSaveErrorBody: "No fue posible guardar o ficheiro.",
     fileSavedTitle: "Ficheiro guardado",
@@ -61,13 +71,16 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "Cancelar",
     sharePdfTitle: "Partilhar PDF",
     deleteConfirm: "Eliminar esta conversa permanentemente?",
+    purchaseTitle: "Comprar tokens",
+    purchaseMessage: "Escolha o pack que deseja adquirir:",
+    purchaseErrorTitle: "Erro na compra",
+    storeUnavailable: "A loja não está disponível neste momento. Tente mais tarde.",
   },
   fr: {
     imageSavedTitle: "Image enregistrée",
     imageSavedBody: "Enregistrée dans votre galerie.",
     permissionDeniedTitle: "Autorisation refusée",
-    permissionDeniedBody:
-      "L’accès à la galerie est nécessaire pour enregistrer les images.",
+    permissionDeniedBody: "L’accès à la galerie est nécessaire pour enregistrer les images.",
     fileSaveErrorTitle: "Erreur",
     fileSaveErrorBody: "Impossible d’enregistrer le fichier.",
     fileSavedTitle: "Fichier enregistré",
@@ -76,13 +89,16 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "Annuler",
     sharePdfTitle: "Partager le PDF",
     deleteConfirm: "Supprimer définitivement cette conversation ?",
+    purchaseTitle: "Acheter des jetons",
+    purchaseMessage: "Choisissez le pack que vous souhaitez acheter :",
+    purchaseErrorTitle: "Erreur d’achat",
+    storeUnavailable: "La boutique n’est pas disponible pour le moment. Réessayez plus tard.",
   },
   de: {
     imageSavedTitle: "Bild gespeichert",
     imageSavedBody: "In Ihrer Galerie gespeichert.",
     permissionDeniedTitle: "Berechtigung verweigert",
-    permissionDeniedBody:
-      "Für das Speichern von Bildern ist Galeriezugriff nötig.",
+    permissionDeniedBody: "Für das Speichern von Bildern ist Galeriezugriff nötig.",
     fileSaveErrorTitle: "Fehler",
     fileSaveErrorBody: "Datei konnte nicht gespeichert werden.",
     fileSavedTitle: "Datei gespeichert",
@@ -91,13 +107,16 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "Abbrechen",
     sharePdfTitle: "PDF teilen",
     deleteConfirm: "Diese Konversation dauerhaft löschen?",
+    purchaseTitle: "Tokens kaufen",
+    purchaseMessage: "Wählen Sie das gewünschte Paket:",
+    purchaseErrorTitle: "Kauffehler",
+    storeUnavailable: "Der Store ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut.",
   },
   it: {
     imageSavedTitle: "Immagine salvata",
     imageSavedBody: "Salvata nella galleria.",
     permissionDeniedTitle: "Permesso negato",
-    permissionDeniedBody:
-      "Serve l’accesso alla galleria para salvare le immagini.",
+    permissionDeniedBody: "Serve l’accesso alla galleria para salvare le immagini.",
     fileSaveErrorTitle: "Errore",
     fileSaveErrorBody: "Imposibile salvare il file.",
     fileSavedTitle: "File salvato",
@@ -106,13 +125,16 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "Annulla",
     sharePdfTitle: "Condividi PDF",
     deleteConfirm: "Eliminare definitivamente questa conversazione?",
+    purchaseTitle: "Acquista token",
+    purchaseMessage: "Scegli il pacchetto che desideri acquistare:",
+    purchaseErrorTitle: "Errore di acquisto",
+    storeUnavailable: "Il negozio non è disponibile al momento. Riprova più tardi.",
   },
   ja: {
     imageSavedTitle: "画像を保存しました",
     imageSavedBody: "ギャラリーに保存しました。",
     permissionDeniedTitle: "許可がありません",
-    permissionDeniedBody:
-      "画像を保存するにはギャラリーへのアクセスが必要です。",
+    permissionDeniedBody: "画像を保存するにはギャラリーへのアクセスが必要です。",
     fileSaveErrorTitle: "エラー",
     fileSaveErrorBody: "ファイルを保存できませんでした。",
     fileSavedTitle: "ファイルを保存しました",
@@ -121,6 +143,10 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "キャンセル",
     sharePdfTitle: "PDFを共有",
     deleteConfirm: "この会話を完全に削除しますか？",
+    purchaseTitle: "トークンを購入",
+    purchaseMessage: "購入するパックを選択してください：",
+    purchaseErrorTitle: "購入エラー",
+    storeUnavailable: "現在ストアはご利用いただけません。後でもう一度お試しください。",
   },
   zh: {
     imageSavedTitle: "图片已保存",
@@ -135,6 +161,10 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "取消",
     sharePdfTitle: "分享 PDF",
     deleteConfirm: "要永久删除此对话吗？",
+    purchaseTitle: "购买代币",
+    purchaseMessage: "请选择您要购买的套餐：",
+    purchaseErrorTitle: "购买错误",
+    storeUnavailable: "商店目前不可用。请稍后重试。",
   },
   ko: {
     imageSavedTitle: "이미지 저장됨",
@@ -149,6 +179,10 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "취소",
     sharePdfTitle: "PDF 공유",
     deleteConfirm: "이 대화를 영구적으로 삭제할까요?",
+    purchaseTitle: "토큰 구매",
+    purchaseMessage: "구매할 팩을 선택하세요:",
+    purchaseErrorTitle: "구매 오류",
+    storeUnavailable: "현재 스토어를 이용할 수 없습니다. 나중에 다시 시도하세요.",
   },
   ar: {
     imageSavedTitle: "تم حفظ الصورة",
@@ -163,6 +197,10 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "إلغاء",
     sharePdfTitle: "مشاركة PDF",
     deleteConfirm: "هل تريد حذف هذه المحادثة نهائيًا؟",
+    purchaseTitle: "شراء رموز",
+    purchaseMessage: "اختر الباقة التي تريد شراءها:",
+    purchaseErrorTitle: "خطأ في الشراء",
+    storeUnavailable: "المتجر غير متاح في الوقت الحالي. يُرجى المحاولة لاحقًا.",
   },
   hi: {
     imageSavedTitle: "छवि सहेजी गई",
@@ -177,6 +215,10 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     cancel: "रद्द करें",
     sharePdfTitle: "PDF साझा करें",
     deleteConfirm: "क्या आप इस वार्तालाप को स्थायी रूप से हटाना चाहते हैं?",
+    purchaseTitle: "टोकन खरीदें",
+    purchaseMessage: "खरीदने के लिए पैक चुनें:",
+    purchaseErrorTitle: "खरीद में त्रुटि",
+    storeUnavailable: "स्टोर अभी उपलब्ध नहीं है। कृपया बाद में पुनः प्रयास करें।",
   },
 };
 

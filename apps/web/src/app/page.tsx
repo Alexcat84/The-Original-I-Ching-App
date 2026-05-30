@@ -2182,6 +2182,23 @@ export default function HomePage() {
     };
   }, [accessToken, authReady, authUserId, router]);
 
+  // Native Google Play purchase events — emitted by the RN shell after purchasePackage()
+  useEffect(() => {
+    function onRnPurchaseSuccess() {
+      window.dispatchEvent(new Event("iching:account-refresh"));
+    }
+    function onRnPurchaseError(e: Event) {
+      const detail = (e as CustomEvent<{ message?: string }>).detail;
+      setError(detail?.message ?? pricingUi.errorCheckout);
+    }
+    window.addEventListener("rnPurchaseSuccess", onRnPurchaseSuccess);
+    window.addEventListener("rnPurchaseError", onRnPurchaseError);
+    return () => {
+      window.removeEventListener("rnPurchaseSuccess", onRnPurchaseSuccess);
+      window.removeEventListener("rnPurchaseError", onRnPurchaseError);
+    };
+  }, [pricingUi.errorCheckout]);
+
   useEffect(() => {
     if (!accessToken || !authUserId) return;
     if (!twoFactorEnabled) {
@@ -2954,6 +2971,15 @@ export default function HomePage() {
   }
 
   async function openPlansCheckoutNewTab(): Promise<boolean> {
+    // In the React Native WebView shell, delegate to native Google Play Billing.
+    const rnBridge = (window as unknown as { ReactNativeWebView?: { postMessage(s: string): void } })
+      .ReactNativeWebView;
+    if (rnBridge) {
+      rnBridge.postMessage(JSON.stringify({ type: "purchase_tokens" }));
+      return true;
+    }
+
+    // Web browser: use RevenueCat Web Billing (Stripe).
     const built = await buildPlansCheckoutUrl(
       process.env.NEXT_PUBLIC_PLANS_URL,
       {
