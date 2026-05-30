@@ -32,16 +32,6 @@ export default async function FaqsPage() {
         <h1>{faq.title}</h1>
         <p className="doc-lead">{faq.intro}</p>
         <FaqAccordion locale={locale} nav={nav} />
-        <hr className="composer-doc-links-divider" style={{ margin: "2rem 0 1.25rem" }} aria-hidden />
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Link
-            href="/feedback"
-            className="composer-reading-pill is-active composer-reading-pill--feedback"
-            style={{ textDecoration: "none", padding: "0.6rem 1.5rem", fontSize: "0.95rem" }}
-          >
-            {nav.feedback}
-          </Link>
-        </div>
       </article>
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
