@@ -12,8 +12,28 @@ import {
 } from "@iching-oracle/i18n";
 import { useAppLocale } from "@/lib/use-app-locale";
 
-const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "web";
+const WEB_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "web";
 const SUPPORT_EMAIL = "support@theoriginaliching.com";
+
+declare global {
+  interface Window {
+    __RN_APP_INFO?: { version: string; androidVersionCode: number | null };
+    __rnBridgeInstalled?: boolean;
+  }
+}
+
+function detectPlatform(): "web" | "android" | "ios" {
+  if (typeof document === "undefined") return "web";
+  if (document.documentElement.classList.contains("iching-rn-webview")) return "android";
+  return "web";
+}
+
+function detectAppVersion(): string {
+  if (typeof window === "undefined") return WEB_VERSION;
+  const rnInfo = window.__RN_APP_INFO;
+  if (rnInfo?.version) return rnInfo.version;
+  return WEB_VERSION;
+}
 
 function categoryLabel(category: FeedbackCategory, m: ReturnType<typeof getFeedbackPageUiMessages>): string {
   switch (category) {
@@ -69,8 +89,8 @@ export default function FeedbackPage() {
           description: description.trim(),
           email: email.trim() || null,
           locale: appLocale,
-          app_version: APP_VERSION,
-          platform: "web",
+          app_version: detectAppVersion(),
+          platform: detectPlatform(),
           metadata: {},
         }),
       });
