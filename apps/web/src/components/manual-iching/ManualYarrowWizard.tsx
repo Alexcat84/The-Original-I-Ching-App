@@ -1,10 +1,9 @@
 "use client";
 
 import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
-import type { AppLocale } from "@iching-oracle/i18n";
+import { getYarrowWizardMessages, type AppLocale } from "@iching-oracle/i18n";
 import { yarrowSumToLine } from "@iching-oracle/iching-engine";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { getYarrowWizardMessages } from "./yarrow-wizard-messages";
 
 type Phase1Value = 5 | 9;
 type Phase23Value = 4 | 8;

@@ -48,7 +48,7 @@ Every consultation includes a unique **AI-generated ritual image** that reflects
 | 📜 **Chat History** | All consultations saved, browsable, and fully searchable |
 | 📄 **Export to PDF** | Download any consultation as a beautifully formatted PDF |
 | 📚 **Hexagram Library** | Browse all 64 hexagrams with Wilhelm, Legge, and Zhou Yi translations |
-| 🌍 **9 Languages** | ES · EN · PT · FR · DE · IT · JA · ZH · KO |
+| 🌍 **11 Languages** | ES · EN · PT · FR · DE · IT · JA · ZH · KO · AR · HI |
 | 🔒 **2FA Security** | TOTP authenticator app + email code verification |
 | 🔑 **Google OAuth** | One-tap sign in with your Google account |
 | 🌙 **Dark / Light Mode** | Full theme support, synced to your system preference |
@@ -77,7 +77,7 @@ Tokens are **consumable and accumulate** — they never expire and stack with ev
 
 The app auto-detects the language of your question and responds accordingly.
 
-🇪🇸 Spanish · 🇺🇸 English · 🇧🇷 Portuguese · 🇫🇷 French · 🇩🇪 German · 🇮🇹 Italian · 🇯🇵 Japanese · 🇨🇳 Chinese · 🇰🇷 Korean
+🇪🇸 Spanish · 🇺🇸 English · 🇧🇷 Portuguese · 🇫🇷 French · 🇩🇪 German · 🇮🇹 Italian · 🇯🇵 Japanese · 🇨🇳 Chinese · 🇰🇷 Korean · 🇸🇦 Arabic · 🇮🇳 Hindi
 
 ---
 

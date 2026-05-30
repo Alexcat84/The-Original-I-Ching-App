@@ -14,7 +14,7 @@ import {
   performCastFromLineValues,
   performYarrowCast,
 } from "@iching-oracle/iching-engine";
-import { SUPPORTED_LOCALES, type AppLocale } from "@iching-oracle/i18n";
+import { SUPPORTED_LOCALES, getConsultApiUiMessages, parseAppLocale, type AppLocale } from "@iching-oracle/i18n";
 import {
   buildImagePrompt,
   buildOracleBonesImagePrompt,
@@ -25,6 +25,7 @@ import {
 } from "@iching-oracle/oracle-bones-engine";
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { Logger } from "next-axiom";
 import {
   buildImageAsset,
@@ -33,6 +34,7 @@ import {
 } from "@/lib/image-provider";
 import { getAdminConfig } from "@/lib/admin-config";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
+import { UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 import {
   consumeToken,
   getSessionLimit,
@@ -386,6 +388,13 @@ export async function POST(req: Request) {
     ).includes(rawLanguage)
       ? (rawLanguage as AppLocale)
       : "es";
+    const cookieStore = await cookies();
+    const uiLocale = parseAppLocale(
+      typeof body.language === "string"
+        ? body.language
+        : cookieStore.get(UI_LOCALE_COOKIE)?.value,
+    );
+    const consultApiUi = getConsultApiUiMessages(uiLocale);
     const oracleMode: OracleType =
       body.oracleMode === "oracle_bones" ? "oracle_bones" : "iching";
     const languageHint = detectLanguageFromUserText(trimmedQuestion);
@@ -398,8 +407,7 @@ export async function POST(req: Request) {
           error: "auth_required",
           code: "AUTH_REQUIRED",
           action: "login",
-          message:
-            "Inicia sesión con un correo verificado o con Google. Crea cuenta en /login si aún no tienes una.",
+          message: consultApiUi.authRequired,
         },
         { status: 401 },
       );
@@ -573,8 +581,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           error: "session_limit",
-          message:
-            "Has alcanzado el límite de este hilo. Inicia una nueva sesión para continuar explorando.",
+          message: consultApiUi.sessionLimit,
           session_limit: maxDepth,
         },
         { status: 429 },
@@ -594,8 +601,8 @@ export async function POST(req: Request) {
           {
             error: "insufficient_credits",
             message: isMasterCombined
-              ? "El Ensayo Maestro requiere 2 tokens. Compra un nuevo paquete para continuar."
-              : "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
+              ? consultApiUi.insufficientCreditsMaster
+              : consultApiUi.insufficientCredits,
             tokens_available: 0,
           },
           { status: 402 },
@@ -654,6 +661,7 @@ export async function POST(req: Request) {
         sessionTitle: body.sessionTitle ?? null,
         previousRows: previousRows,
         patternHints: null,
+        locale: oracleLanguage,
       });
 
       const prevBonesMessageId = await getPrevClaudeMessageId(authedUserId, sessionId);
@@ -811,6 +819,7 @@ export async function POST(req: Request) {
       sessionTitle: body.sessionTitle ?? null,
       previousRows: previousRows,
       patternHints: null,
+      locale: language,
     });
 
     if (responseMode === "stream_ritual") {

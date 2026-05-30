@@ -14,6 +14,7 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
+    "i18n:audit": "node tools/i18n-audit.mjs",
     "clean": "turbo run clean",
     "generate:fallbacks:together": "node tools/fallback-tools/generate-prebuilt-fallbacks-together.mjs",
     "generate:together:iching-samples": "node tools/fallback-tools/generate-together-iching-samples.mjs",

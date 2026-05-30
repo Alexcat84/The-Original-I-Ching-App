@@ -17,6 +17,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@iching-oracle/i18n": "file:../i18n",
     "@iching-oracle/iching-engine": "file:../iching-engine",
     "@iching-oracle/oracle-bones-engine": "file:../oracle-bones-engine"
   },

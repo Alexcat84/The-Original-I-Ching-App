@@ -256,7 +256,7 @@ export function selectTextsForClaude(
         selectedLineTexts: [],
         specialYaoText:
           primary.yongJiu ??
-          'Todos los Nueves (用九): "Rebaño de dragones sin cabeza; ventura."',
+          'All Nines (用九): "A host of dragons without a head; good fortune."',
         ruleExplanation: "Qian (1) con todos Yang Viejos. Séptimo Yao 用九.",
       });
 
@@ -265,7 +265,8 @@ export function selectTextsForClaude(
         ...base,
         selectedLineTexts: [],
         specialYaoText:
-          primary.yongLiu ?? 'Todos los Seises (用六): "Ventajoso la perseverancia duradera."',
+          primary.yongLiu ??
+          'All Sixes (用六): "Perseverance brings advantage."',
         ruleExplanation: "Kun (2) con todos Yin Viejos. Séptimo Yao 用六.",
       });
 
