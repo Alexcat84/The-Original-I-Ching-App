@@ -9,6 +9,61 @@ Historial completo de cambios desde el inicio del proyecto.
 
 
 
+## [3.3.2] — 2026-05-30 | versionCode: 25 | Etapa: Closed Testing
+
+### New
+- feat(billing): implement native Google Play Billing via RevenueCat | commit: 02ee288
+- feat(i18n): localize app shell title and consult API error messages | commit: 7f8a2a9
+- feat(i18n): stage 4 — SEO hreflang, backend locale fallbacks, and context theme | commit: 573045d
+- feat(i18n): stage 3 — wire PDF export and 2FA email to app locale | commit: 0d7cd40
+- feat(i18n): stage 2 — complete token-panel and two-factor locale records | commit: e49a395
+- feat(i18n): stage 1 — audit CI and migrate home UI copy to package | commit: 6a14b38
+- feat(i18n): move theme toggle labels to @iching-oracle/i18n | commit: c5f155f
+- feat(feedback): add user feedback page with Supabase storage and rate limiting | commit: 96d2da8
+- feat(danger-zone): style delete-account btn to match other action buttons | commit: 9bb750c
+- feat(consult-panel): add Tutorial label before info icon in header button | commit: 7197db9
+- feat(faq): convert delete-account doc to FAQs + add delete-chats FAQ | commit: d048578
+- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
+
+### Fix
+- fix(prompt): add explicit SELECTED_TRANSLATOR metadata field before BIBLIOTECA | commit: 980574b
+- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: a14a340
+- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
+- fix(prompt): name active translator explicitly — prevent cross-translator bleed | commit: 8059bb4
+- fix(options-panel): restore doc links vertical layout after tour refactor | commit: 5b0c9a6
+- fix(tour): scope step-8 spotlight to doc links only; remove duplicate feedback btn from FAQs | commit: 20fbf85
+- fix(db): tighten feedback RLS — drop redundant service_role policy and replace WITH CHECK (true) | commit: a4daa81
+- fix(webview): suppress GPU compositing glitches on scroll in Android WebView | commit: 0dfe0a8
+- fix(changelog): correct EAS build command in pre-release checklist | commit: 83e068b
+- fix(feedback): detect WebView platform and native app version | commit: 8efd492
+- fix(i18n): use DEFAULT_LOCALE in credits exhausted fallback | commit: 30ab092
+- fix(faq): remove long-press and em dashes from delete-chats/delete-account answers | commit: bc5d202
+- fix(options-panel): remove delete-account doc link + rename to Danger zone | commit: 4e7b20f
+- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
+- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
+- fix(auth): handle existing signup email with modal guidance | commit: 257e125
+
+### Docs
+- docs(changelog): generate full project changelog and add update script | commit: 1e899f1
+- docs(i18n): align workflow guides with post-standardization state | commit: 841581b
+- docs(readme): align language count with 11 supported locales | commit: 3b28870
+- docs(i18n): add language expansion guide for development agents | commit: 1023a55
+- docs(i18n): add language expansion guide for development agents | commit: 93f782c
+
+### Maintenance
+- chore(i18n): replace dialectical/dialéctico with unified interpretation across all 11 locales | commit: 2062133
+- chore: trigger redeploy — update Axiom env vars | commit: 5d5ba78
+- chore(agents): refresh learned preferences after i18n standardization | commit: 957e277
+- chore(i18n): stage 5 — update expansion guide and remove dead chat-suggestions | commit: 9f5fc8b
+- chore(docs): organize .md files into docs/ with categories | commit: 4f0597a
+- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
+- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
+- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
+- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
+- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
+
+---
+
 ## [3.3.1] — 2026-05-29 | versionCode: 24 | Etapa: Closed Testing
 
 ### New
@@ -903,61 +958,6 @@ Historial completo de cambios desde el inicio del proyecto.
 - revert(staging): align mobile/web baseline to cb564d6 | commit: 37bf878
 - chore(mobile): inject Play verification token asset in Android builds | commit: 103ead2
 - chore(web): update header brand logo asset | commit: 199ad87
-
----
-
-## [3.3.2] — 2026-05-30 | versionCode: 25 | Etapa: Closed Testing
-
-### New
-- feat(billing): implement native Google Play Billing via RevenueCat | commit: 02ee288
-- feat(i18n): localize app shell title and consult API error messages | commit: 7f8a2a9
-- feat(i18n): stage 4 — SEO hreflang, backend locale fallbacks, and context theme | commit: 573045d
-- feat(i18n): stage 3 — wire PDF export and 2FA email to app locale | commit: 0d7cd40
-- feat(i18n): stage 2 — complete token-panel and two-factor locale records | commit: e49a395
-- feat(i18n): stage 1 — audit CI and migrate home UI copy to package | commit: 6a14b38
-- feat(i18n): move theme toggle labels to @iching-oracle/i18n | commit: c5f155f
-- feat(feedback): add user feedback page with Supabase storage and rate limiting | commit: 96d2da8
-- feat(danger-zone): style delete-account btn to match other action buttons | commit: 9bb750c
-- feat(consult-panel): add Tutorial label before info icon in header button | commit: 7197db9
-- feat(faq): convert delete-account doc to FAQs + add delete-chats FAQ | commit: d048578
-- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
-
-### Fix
-- fix(prompt): add explicit SELECTED_TRANSLATOR metadata field before BIBLIOTECA | commit: 980574b
-- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: a14a340
-- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
-- fix(prompt): name active translator explicitly — prevent cross-translator bleed | commit: 8059bb4
-- fix(options-panel): restore doc links vertical layout after tour refactor | commit: 5b0c9a6
-- fix(tour): scope step-8 spotlight to doc links only; remove duplicate feedback btn from FAQs | commit: 20fbf85
-- fix(db): tighten feedback RLS — drop redundant service_role policy and replace WITH CHECK (true) | commit: a4daa81
-- fix(webview): suppress GPU compositing glitches on scroll in Android WebView | commit: 0dfe0a8
-- fix(changelog): correct EAS build command in pre-release checklist | commit: 83e068b
-- fix(feedback): detect WebView platform and native app version | commit: 8efd492
-- fix(i18n): use DEFAULT_LOCALE in credits exhausted fallback | commit: 30ab092
-- fix(faq): remove long-press and em dashes from delete-chats/delete-account answers | commit: bc5d202
-- fix(options-panel): remove delete-account doc link + rename to Danger zone | commit: 4e7b20f
-- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
-- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
-- fix(auth): handle existing signup email with modal guidance | commit: 257e125
-
-### Docs
-- docs(changelog): generate full project changelog and add update script | commit: 1e899f1
-- docs(i18n): align workflow guides with post-standardization state | commit: 841581b
-- docs(readme): align language count with 11 supported locales | commit: 3b28870
-- docs(i18n): add language expansion guide for development agents | commit: 1023a55
-- docs(i18n): add language expansion guide for development agents | commit: 93f782c
-
-### Maintenance
-- chore(i18n): replace dialectical/dialéctico with unified interpretation across all 11 locales | commit: 2062133
-- chore: trigger redeploy — update Axiom env vars | commit: 5d5ba78
-- chore(agents): refresh learned preferences after i18n standardization | commit: 957e277
-- chore(i18n): stage 5 — update expansion guide and remove dead chat-suggestions | commit: 9f5fc8b
-- chore(docs): organize .md files into docs/ with categories | commit: 4f0597a
-- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
-- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
-- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
-- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
-- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
 
 ---
 
