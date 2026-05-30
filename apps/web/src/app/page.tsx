@@ -6141,8 +6141,7 @@ export default function HomePage() {
                       <div className="composer-panel-actions">
                         <button
                           type="button"
-                          className="composer-reading-pill"
-                          style={{ color: "var(--color-error, #c0392b)" }}
+                          className="composer-reading-pill is-active composer-reading-pill--danger"
                           onClick={() => {
                             setDeleteAccountConfirm("");
                             setDeleteAccountError(null);

@@ -2038,6 +2038,37 @@ html[data-theme="dark"] .composer-reading-pill.is-active {
   box-shadow: none;
 }
 
+.composer-reading-pill--danger,
+.composer-reading-pill--danger.is-active {
+  color: #c0392b;
+  border-color: color-mix(in srgb, #c0392b 55%, var(--bar-border));
+  background: color-mix(in srgb, #c0392b 8%, var(--input-bg));
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .composer-reading-pill--danger,
+html[data-theme="dark"] .composer-reading-pill--danger.is-active {
+  color: #e55a4e;
+  border-color: color-mix(in srgb, #e55a4e 50%, var(--bar-border));
+  background: color-mix(in srgb, #e55a4e 10%, var(--input-bg));
+}
+
+.composer-reading-pill--danger:hover:not(:disabled),
+.composer-reading-pill--danger.is-active:hover:not(:disabled) {
+  color: #c0392b;
+  border-color: color-mix(in srgb, #c0392b 80%, var(--bar-border));
+  background: color-mix(in srgb, #c0392b 14%, var(--input-bg));
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .composer-reading-pill--danger:hover:not(:disabled),
+html[data-theme="dark"] .composer-reading-pill--danger.is-active:hover:not(:disabled) {
+  color: #e55a4e;
+  border-color: color-mix(in srgb, #e55a4e 75%, var(--bar-border));
+  background: color-mix(in srgb, #e55a4e 16%, var(--input-bg));
+  box-shadow: none;
+}
+
 .composer-panel-divider {
   margin: 0.75rem 0 0.65rem;
   border: none;
