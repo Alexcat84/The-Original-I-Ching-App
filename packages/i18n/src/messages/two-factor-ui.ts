@@ -84,7 +84,7 @@ export type TwoFactorUiMessages = {
   challengeVerifyFailed: string;
 };
 
-const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
+const TWO_FACTOR_UI: Record<AppLocale, TwoFactorUiMessages> = {
   es: {
     manageTitle: "Configuración de seguridad 2FA",
     challengeTitle: "Verificación 2FA requerida",
@@ -1172,14 +1172,114 @@ const TWO_FACTOR_UI: Partial<Record<AppLocale, TwoFactorUiMessages>> = {
     challengeInvalidCode: "رمز 2FA غير صالح أو منتهي الصلاحية.",
     challengeVerifyFailed: "تعذّر التحقق من 2FA.",
   },
-};
-
-TWO_FACTOR_UI.hi = {
-  ...(TWO_FACTOR_UI.en ?? TWO_FACTOR_UI[DEFAULT_LOCALE]!),
-  manageTitle: "2FA सुरक्षा सेटअप",
-  challengeTitle: "2FA सत्यापन आवश्यक",
-  closeDialogAria: "2FA विंडो बंद करें",
-  signInFor2fa: "दो-चरण सत्यापन सेटअप करने के लिए साइन इन करें।",
+  hi: {
+    manageTitle: "2FA सुरक्षा सेटअप",
+    challengeTitle: "2FA सत्यापन आवश्यक",
+    closeDialogAria: "2FA विंडो बंद करें",
+    challengeIntroTotp:
+      "इस सत्र में जारी रखने के लिए, Authenticator (TOTP) से अपने खाते की पुष्टि करें।",
+    challengeIntroEmail:
+      "इस सत्र में जारी रखने के लिए, ईमेल कोड से अपने खाते की पुष्टि करें।",
+    setupMenuHint: "एक विधि चुनें और इसे चरण दर चरण सेट करें।",
+    setupTotpOnlyHint:
+      "केवल Authenticator (TOTP)। यदि ईमेल पसंद है तो «दूसरी विधि चुनें» का उपयोग करें।",
+    setupEmailOnlyHint:
+      "केवल ईमेल सत्यापन। यदि Authenticator पसंद है तो «दूसरी विधि चुनें» का उपयोग करें।",
+    badgeEmailCode: "ईमेल कोड",
+    badgeTotp: "Authenticator (TOTP)",
+    authenticatorTotp: "Authenticator (TOTP)",
+    emailCode: "ईमेल कोड",
+    chooseAnotherMethod: "← दूसरी विधि चुनें",
+    totpPlaceholderShort: "TOTP कोड (6 अंक)",
+    totpSetupSteps:
+      "1) «QR जनरेट करें» दबाएँ  2) Authenticator ऐप से स्कैन करें  3) 6-अंकीय कोड दर्ज करें।",
+    preparing: "तैयार हो रहा है…",
+    generateQr: "QR जनरेट करें",
+    totpPlaceholderLong: "6-अंकीय TOTP कोड",
+    verify: "सत्यापित करें",
+    challengeEmailBeforeSend:
+      "«ईमेल कोड भेजें» दबाएँ और अपना इनबॉक्स (और स्पैम) देखें। फिर 6 अंक दर्ज करें।",
+    sendEmailHintManage:
+      "«ईमेल कोड भेजें» दबाएँ, इनबॉक्स देखें और 6-अंकीय कोड दर्ज करें।",
+    sending: "भेजा जा रहा है…",
+    sendEmailCode: "ईमेल कोड भेजें",
+    emailCodePlaceholder: "ईमेल कोड (6 अंक)",
+    verifyEmail: "ईमेल सत्यापित करें",
+    recoveryOptionsIntro:
+      "सत्यापित नहीं कर पा रहे? अपने रिकवरी कोड का उपयोग करें या सहायता से रिकवरी शुरू करें।",
+    iHaveRecoveryCodes: "मेरे पास रिकवरी कोड हैं",
+    iDontHaveRecoveryCodes: "मेरे पास रिकवरी कोड नहीं हैं",
+    recoveryCodePlaceholder: "रिकवरी कोड",
+    supportRecoveryBody:
+      "पहुँच पुनर्स्थापित करने के लिए, अपने पंजीकृत ईमेल से सहायता को लिखें। हम स्वामित्व सत्यापन के चरण भेजेंगे और पहुँच बहाल करेंगे।",
+    supportRecoverySubject: "2FA खाता रिकवरी",
+    supportMailBody:
+      "नमस्ते सहायता,\n\nमेरे पास रिकवरी कोड नहीं हैं और मुझे खाते की पहुँच पुनर्स्थापित करनी है।\nखाता ईमेल: {{email}}\n\nधन्यवाद।",
+    contactSupportEmail: "ईमेल से सहायता से संपर्क करें",
+    recoveryCodesShownOnce:
+      "रिकवरी कोड (केवल एक बार दिखाए जाते हैं)। इन्हें सुरक्षित स्थान पर सहेजें:",
+    recoveryAckCheckbox:
+      "मैंने अपने रिकवरी कोड सहेज लिए हैं और समझता/समझती हूँ कि वे दोबारा नहीं दिखाए जाएँगे।",
+    infoTwoFaEnabledSaveCodes:
+      "2FA सक्षम। बंद करने से पहले ये रिकवरी कोड सहेजें।",
+    acceptAndClose: "स्वीकार करें और बंद करें",
+    modalAfterSaveCodes: "2FA सफलतापूर्वक कॉन्फ़िगर हुआ।",
+    validateRecoveryCode: "रिकवरी कोड सत्यापित करें",
+    continueWithVerification: "सत्यापन के साथ जारी रखें",
+    cannotVerifyLink: "सत्यापित नहीं कर पा रहे?",
+    tryCodeAgain: "कोड फिर से आज़माएँ",
+    verify2faToContinue: "जारी रखने के लिए 2FA सत्यापित करें।",
+    twoFaRequiredByPolicy:
+      "इस वातावरण में आपके खाते के लिए 2FA आवश्यक है। विकल्प > सुरक्षा में सक्षम करें।",
+    signInFor2fa: "दो-चरण सत्यापन सेटअप करने के लिए साइन इन करें।",
+    enrollEncryptionKeyMissing:
+      "2FA सर्वर पर सक्षम नहीं: TOTP_ENCRYPTION_KEY गायब है।",
+    enrollAuthProviderMissing:
+      "2FA उपलब्ध नहीं: सर्वर पर Supabase कॉन्फ़िगर नहीं है।",
+    enrollTryLater:
+      "अभी 2FA शुरू नहीं हो सका। कुछ मिनट बाद फिर प्रयास करें।",
+    confirmNotEnrolled:
+      "QR जनरेट करने के लिए पहले Authenticator के साथ 2FA सक्षम करें।",
+    confirmEncryptionKeyMissing:
+      "2FA सर्वर पर सक्षम नहीं: TOTP_ENCRYPTION_KEY गायब है।",
+    confirmDecryptFailed:
+      "सर्वर पर 2FA गुप्त कुंजी डिक्रिप्ट नहीं हो सकी। 2FA पुनः कॉन्फ़िगर करें।",
+    confirmTotpInvalid:
+      "अमान्य या समाप्त 2FA कोड। Authenticator ऐप जाँचें और फिर प्रयास करें।",
+    confirmTryLater: "अभी 2FA सत्यापित नहीं हो सका। फिर प्रयास करें।",
+    sendSessionExpired: "आपका सत्र समाप्त हो गया। कृपया फिर साइन इन करें।",
+    sendLocked:
+      "असफल प्रयासों के बाद 2FA अस्थायी रूप से लॉक है। 15 मिनट प्रतीक्षा करें और फिर प्रयास करें।",
+    sendEmailNotConfiguredServer:
+      "सर्वर पर ईमेल 2FA सक्षम नहीं। RESEND_API_KEY, TWO_FACTOR_EMAIL_FROM और TWO_FACTOR_EMAIL_CODE_SECRET जाँचें।",
+    emailDeliveryFailedReason: "ईमेल कोड नहीं भेजा जा सका: {{reason}}",
+    emailDeliveryFailedResendHint:
+      "ईमेल कोड नहीं भेजा जा सका। सुनिश्चित करें कि TWO_FACTOR_EMAIL_FROM Resend में सत्यापित है और API कुंजी सही है।",
+    sendTryLater: "ईमेल कोड नहीं भेजा जा सका। फिर प्रयास करें।",
+    infoCodeSent: "कोड ईमेल द्वारा भेजा गया। इनबॉक्स और स्पैम फ़ोल्डर देखें।",
+    verifyEmailExpired: "ईमेल कोड समाप्त। नया कोड अनुरोध करें।",
+    verifyEmailRequestFirst: "पहले ईमेल कोड अनुरोध करें।",
+    verifyEmailInvalid: "अमान्य ईमेल कोड। इनबॉक्स जाँचें और फिर प्रयास करें।",
+    verifyEmailTryLater: "ईमेल कोड सत्यापित नहीं हो सका। फिर प्रयास करें।",
+    disableFailed: "2FA अक्षम नहीं हो सका।",
+    disabledOk: "2FA अक्षम।",
+    challengeNeedRecovery: "मान्य रिकवरी कोड दर्ज करें।",
+    challengeNeedSixDigit: "मान्य 6-अंकीय कोड दर्ज करें।",
+    challengeSessionExpired: "आपका सत्र समाप्त हो गया। कृपया फिर साइन इन करें।",
+    challengeLocked:
+      "असफल प्रयासों के बाद 2FA अस्थायी रूप से लॉक है। 15 मिनट प्रतीक्षा करें और फिर प्रयास करें।",
+    challengeEmailMissing: "पहले ईमेल कोड भेजें।",
+    challengeEmailExpired: "ईमेल कोड समाप्त। नया कोड अनुरोध करें।",
+    challengeMethodNotLinked: "यह विधि आपके खाते से लिंक नहीं है।",
+    challengeEmailServerMisconfig:
+      "सर्वर पर ईमेल 2FA कॉन्फ़िगर नहीं। Resend/पर्यावरण चर जाँचें।",
+    challengeDecryptFailed:
+      "सर्वर पर 2FA गुप्त कुंजी डिक्रिप्ट नहीं हो सकी। 2FA पुनः कॉन्फ़िगर करें या TOTP_ENCRYPTION_KEY जाँचें।",
+    challengeInvalidWithRecovery:
+      "कोड सत्यापित नहीं हो सका। आप रिकवरी कोड का उपयोग कर सकते हैं या सहायता रिकवरी शुरू कर सकते हैं।",
+    challengeInvalidCode: "अमान्य या समाप्त 2FA कोड।",
+    challengeVerifyFailed: "2FA सत्यापित नहीं हो सका।",
+  },
 };
 
 export function getTwoFactorUiMessages(locale: AppLocale): TwoFactorUiMessages {
