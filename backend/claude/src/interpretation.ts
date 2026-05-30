@@ -423,7 +423,18 @@ JUDGMENT: ${t.transformedJudgment}`
 - After literal source blocks, provide synthesis in your own words for that section.
 - Address the user directly in second person in the response language. Do not narrate the user in third person.
 - In "Horizon and synthesis", provide one concrete cross-source action that emerges from the triangulation.`
-    : "Use the selected translator as the authoritative source while preserving structure and tone.";
+    : (() => {
+        const translatorDisplayName =
+          cast.interpretationMode === "legge"
+            ? "James Legge"
+            : cast.interpretationMode === "zhouyi"
+              ? "Zhou Yi"
+              : "Wilhelm/Baynes";
+        const otherTranslators = ["Wilhelm/Baynes", "James Legge", "Zhou Yi"]
+          .filter((n) => n !== translatorDisplayName)
+          .join(" and ");
+        return `SELECTED TRANSLATOR: ${translatorDisplayName}. Use ONLY this translator as the sole authoritative source. NEVER mention other translators (${otherTranslators}) by name anywhere in your interpretive prose — not as contrast, not as reference, not as "Wilhelm says", "como señala Legge", or any equivalent. The provided texts belong exclusively to ${translatorDisplayName}.`;
+      })();
 
   const questionBlock = `
 NEW CONSULTATION${hasContext ? " (continues thematic session)" : ""}:
