@@ -5360,18 +5360,19 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div
-                      id="tour-doc-links"
                       className="composer-doc-links"
                       aria-label={chrome.docLinksAria}
                     >
-                      <Link href="/guia#primeros-pasos">
-                        {docNav.userGuide}
-                      </Link>
-                      <Link href="/notes">{docNav.methodNotesLong}</Link>
-                      <Link href="/privacy">{docNav.privacyPolicy}</Link>
-                      <Link href="/terms">{docNav.termsOfService}</Link>
-                      <Link href="/faqs">{docNav.faqs}</Link>
-                      <Link href="/about">{docNav.aboutShort}</Link>
+                      <div id="tour-doc-links">
+                        <Link href="/guia#primeros-pasos">
+                          {docNav.userGuide}
+                        </Link>
+                        <Link href="/notes">{docNav.methodNotesLong}</Link>
+                        <Link href="/privacy">{docNav.privacyPolicy}</Link>
+                        <Link href="/terms">{docNav.termsOfService}</Link>
+                        <Link href="/faqs">{docNav.faqs}</Link>
+                        <Link href="/about">{docNav.aboutShort}</Link>
+                      </div>
                       <hr className="composer-doc-links-divider" aria-hidden />
                       <Link
                         href="/feedback"
