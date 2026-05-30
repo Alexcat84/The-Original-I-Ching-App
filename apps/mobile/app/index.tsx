@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Purchases from "react-native-purchases";
+import Purchases, { type PurchasesPackage } from "react-native-purchases";
 import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, softDeleteChat, clearAllData, type RnCachedChatEntry } from "@/src/db/chat-store";
 import { syncChats, syncChatContent } from "@/src/sync/sync-service";
 import * as FileSystem from "expo-file-system";
@@ -14,6 +14,7 @@ import * as Application from "expo-application";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Animated,
   BackHandler,
   DeviceEventEmitter,
@@ -962,10 +963,20 @@ type RNMessage =
   | { type: "account_deleted" }
   | { type: "open_image"; url: string }
   | { type: "request_thread"; sessionId: string; localId: string }
+  | { type: "purchase_tokens" }
   | { type: "web_alert"; message: string }
   | { type: "web_confirm"; message: string }
   | { type: "web_prompt"; message: string; defaultValue?: string }
   | { type: "shell_theme"; theme: "light" | "dark" };
+
+function isPurchasesError(e: unknown): e is { userCancelled: boolean; message: string } {
+  return (
+    typeof e === "object" &&
+    e !== null &&
+    "userCancelled" in e &&
+    typeof (e as { userCancelled: unknown }).userCancelled === "boolean"
+  );
+}
 
 type NativeDialogConfig = {
   title?: string;
@@ -1856,6 +1867,69 @@ export default function WebViewScreen() {
     [showNativeDialog, nativeUi]
   );
 
+  /* ── Native Google Play Billing ── */
+  const handleNativePurchase = useCallback(async () => {
+    let offerings: Awaited<ReturnType<typeof Purchases.getOfferings>>;
+    try {
+      offerings = await Purchases.getOfferings();
+    } catch {
+      showNativeDialog({
+        title: nativeUi.purchaseErrorTitle,
+        message: nativeUi.storeUnavailable,
+        buttons: [{ text: nativeUi.ok }],
+      });
+      return;
+    }
+
+    const pkgs = offerings.current?.availablePackages ?? [];
+    if (pkgs.length === 0) {
+      showNativeDialog({
+        title: nativeUi.purchaseErrorTitle,
+        message: nativeUi.storeUnavailable,
+        buttons: [{ text: nativeUi.ok }],
+      });
+      return;
+    }
+
+    const executePurchase = async (pkg: PurchasesPackage) => {
+      try {
+        await Purchases.purchasePackage(pkg);
+        // Notify web app — triggers balance refresh via __rnForceAccountRefresh
+        DeviceEventEmitter.emit("rnPurchaseSuccess");
+        // Dispatch CustomEvent so web app can show success feedback
+        const productId = pkg.product.identifier;
+        webViewRef.current?.injectJavaScript(
+          `(function(){try{window.dispatchEvent(new CustomEvent('rnPurchaseSuccess',` +
+          `{detail:{productId:${JSON.stringify(productId)}}}));}catch(_){}})();true;`
+        );
+      } catch (e: unknown) {
+        if (isPurchasesError(e) && e.userCancelled) return;
+        const errMsg = isPurchasesError(e) ? e.message : nativeUi.storeUnavailable;
+        webViewRef.current?.injectJavaScript(
+          `(function(){try{window.dispatchEvent(new CustomEvent('rnPurchaseError',` +
+          `{detail:{message:${JSON.stringify(errMsg)}}}));}catch(_){}})();true;`
+        );
+        showNativeDialog({
+          title: nativeUi.purchaseErrorTitle,
+          message: errMsg,
+          buttons: [{ text: nativeUi.ok }],
+        });
+      }
+    };
+
+    const alertButtons: Array<{
+      text: string;
+      style?: "cancel" | "default" | "destructive";
+      onPress?: () => void;
+    }> = pkgs.map((pkg) => ({
+      text: `${pkg.product.title}  ${pkg.product.priceString}`,
+      onPress: () => { void executePurchase(pkg); },
+    }));
+    alertButtons.push({ text: nativeUi.cancel, style: "cancel" });
+
+    Alert.alert(nativeUi.purchaseTitle, nativeUi.purchaseMessage, alertButtons);
+  }, [showNativeDialog, nativeUi]);
+
   /* ── onMessage dispatcher ── */
   const onMessage = useCallback(
     (event: WebViewMessageEvent) => {
@@ -2008,6 +2082,10 @@ export default function WebViewScreen() {
             }
             break;
 
+          case "purchase_tokens":
+            void handleNativePurchase();
+            break;
+
           case "web_alert":
             showNativeDialog({
               message: msg.message,
@@ -2036,7 +2114,7 @@ export default function WebViewScreen() {
         // Ignore non-JSON bridge noise
       }
     },
-    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog, injectCachedChats]
+    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog, injectCachedChats, handleNativePurchase]
   );
 
   /* ── Intercept Google OAuth + internal doc navigation ── */
