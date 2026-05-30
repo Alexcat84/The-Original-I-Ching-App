@@ -5363,7 +5363,7 @@ export default function HomePage() {
                       className="composer-doc-links"
                       aria-label={chrome.docLinksAria}
                     >
-                      <div id="tour-doc-links">
+                      <div id="tour-doc-links" style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
                         <Link href="/guia#primeros-pasos">
                           {docNav.userGuide}
                         </Link>
