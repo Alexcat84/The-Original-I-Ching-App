@@ -5600,9 +5600,12 @@ export default function HomePage() {
                           border: "1px solid color-mix(in srgb, #22c55e 38%, var(--icon-btn-border))",
                           background: "linear-gradient(165deg, color-mix(in srgb, #22c55e 22%, var(--icon-btn-bg)) 0%, color-mix(in srgb, #22c55e 10%, var(--icon-btn-bg)) 100%)",
                           color: "color-mix(in srgb, #22c55e 85%, var(--icon-btn-fg))",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.3em",
                         }}
                       >
-                        ⓘ
+                        {TOUR_COPY[locale].tutorialLabel} ⓘ
                       </button>
                       <button
                         type="button"
