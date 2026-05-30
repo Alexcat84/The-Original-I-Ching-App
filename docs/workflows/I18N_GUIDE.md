@@ -49,22 +49,32 @@ Documento operativo para agentes de desarrollo en cada expansión de idioma.
 
 ## Paquete `@iching-oracle/i18n` (`packages/i18n/src/messages/`)
 
-Traducir **todas** las claves en **cada** archivo del paquete (30 módulos). Patrón: añadir bloque `xx: { … }` al `Record<AppLocale, …>` correspondiente.
+Traducir **todas** las claves en **cada** archivo del paquete (~40 módulos). Patrón: añadir bloque `xx: { … }` al `Record<AppLocale, …>` correspondiente.
 
 | Módulo | Uso |
 |--------|-----|
 | `login-page-ui.ts` | Login/registro, `showPasswordAria` / `hidePasswordAria` |
 | `theme-toggle-ui.ts` | Botón tema claro/oscuro (`ThemeToggle`) |
-| `home-chrome-ui.ts` | Barra del chat, opciones, biblioteca |
+| `home-chrome-ui.ts` | Barra del chat, opciones, biblioteca, `consultationInProgress` |
 | `home-session-ui.ts` | Errores de consulta, historial |
+| `home-tour-ui.ts` | Tour de 9 pasos (chat principal) |
+| `home-chat-ui.ts` | Copy del chat en `page.tsx` (logout, chips, etc.) |
+| `home-drawer-ui.ts` | Drawer lateral / historial |
+| `ritual-status-ui.ts` | Estados del ritual durante consulta |
+| `language-labels.ts` | Etiquetas nativas del selector de idioma |
+| `oracle-bones-verdict-ui.ts` | Veredictos huesos de oráculo en UI |
+| `consultation-record-ui.ts` | `ConsultationRecordCard` (turtle/ox, etc.) |
+| `manual-coin-wizard-ui.ts` / `manual-yarrow-wizard-ui.ts` | Wizards manuales I Ching |
+| `pdf-export-ui.ts` | Chrome del export PDF de chat |
+| `two-factor-email-ui.ts` | Plantillas email 2FA (Resend) |
 | `faq-page-ui.ts` | FAQs completas por categoría (arrays largos por locale) |
 | `privacy-page-ui.ts` / `terms-page-ui.ts` | Legal |
 | `feedback-page-ui.ts` | Formulario `/feedback` y categorías |
 | `pricing-ui.ts` / `token-pack-marketing-ui.ts` / `guia-packs-ui.ts` | Precios y packs |
 | `guia-page-ui.ts` / `quickstart-page-ui.ts` / `doc-nav-ui.ts` | Documentación |
 | `library-page-ui.ts` / `notes-page-ui.ts` | Biblioteca y notas |
-| `two-factor-ui.ts` | 2FA (verificar si el objeto es `Partial` — debe quedar completo) |
-| `token-panel-ui.ts` | Panel de tokens (idem `Partial`) |
+| `two-factor-ui.ts` | 2FA (`Record<AppLocale, …>` completo) |
+| `token-panel-ui.ts` | Panel de tokens (`Record<AppLocale, …>` completo) |
 | `onboarding-ui.ts` | Flujo nombre del oráculo |
 | `mobile-native-ui.ts` | Diálogos nativos APK (guardar imagen, PDF, eliminar chat) |
 | `site-meta-ui.ts` | Título/descripción SEO por locale |
@@ -81,29 +91,27 @@ Traducir **todas** las claves en **cada** archivo del paquete (30 módulos). Pat
 
 ## Web (Next.js — `apps/web`)
 
-> **No** crear `apps/web/messages/[codigo].json`. La web consume getters de `@iching-oracle/i18n` y copias locales grandes en componentes.
+> **No** crear `apps/web/messages/[codigo].json`. La web consume getters de `@iching-oracle/i18n`. **No** añadir `Record<AppLocale, …>` en `apps/web/src` salvo tipos de props (`AuthLocalePicker.tsx`).
 
 ### Selector de idioma y cookies
 
-- [ ] Añadir etiqueta nativa en `LANGUAGE_LABELS` en [`apps/web/src/app/page.tsx`](../../apps/web/src/app/page.tsx)
+- [ ] Añadir etiqueta nativa en `language-labels.ts` (`getLanguageLabels`)
 - [ ] Verificar orden en `LOCALE_SELECT_ORDER` (inglés primero por convención del producto)
 - [ ] [`apps/web/src/components/AuthLocalePicker.tsx`](../../apps/web/src/components/AuthLocalePicker.tsx): recibe `labels` desde el padre — no hardcodear ahí
 - [ ] Cookie / storage: `UI_LOCALE_STORAGE_KEY` (`iching_ui_locale`) vía [`SessionDocLocaleBridge`](../../apps/web/src/components/SessionDocLocaleBridge.tsx) y [`use-app-locale`](../../apps/web/src/lib/use-app-locale.ts)
 
-### Bloques grandes en `page.tsx` (crítico)
+### Chat principal (`page.tsx`)
 
-Los únicos `Record<AppLocale, …>` en este archivo son **`LANGUAGE_LABELS`**, **`UI_COPY`** y **`TOUR_COPY`** (más mapas inline p. ej. veredictos huesos en funciones). Buscar con `rg "Record<AppLocale" apps/web/src/app/page.tsx`.
+Copy del chat vive en módulos i18n (`home-tour-ui`, `home-chat-ui`, `home-drawer-ui`, `ritual-status-ui`, `language-labels`, `oracle-bones-verdict-ui`). `page.tsx` solo invoca getters con `useMemo` por locale.
 
-- [ ] `UI_COPY` — toda la UI del chat (incl. **logout**: `logoutConfirmTitle`, `logoutConfirmMessage`, `logoutConfirmYes`, `logoutConfirmNo`)
-- [ ] `TOUR_COPY` — **tour de 9 pasos** (`step1`…`step9`, `back`, `next`, `skip`, `finish`, `replayLabel`, `tutorialLabel`)
-- [ ] `LANGUAGE_LABELS` — nombre nativo en el selector (ej. `Русский`, no `Russian`)
+- [ ] Tras añadir locale: completar esos módulos + `home-chrome-ui` (logout, barra)
+- [ ] Ejecutar `npm run i18n:audit` — falla si reaparecen `Partial<Record<AppLocale`, `isEsPdf` o `Record<AppLocale` en web (whitelist: `AuthLocalePicker`)
 
-### Páginas y componentes con strings propias
+### Páginas y componentes
 
-- [ ] [`apps/web/src/components/manual-iching/yarrow-wizard-messages.ts`](../../apps/web/src/components/manual-iching/yarrow-wizard-messages.ts) (`Partial` → completar)
-- [ ] [`apps/web/src/components/manual-iching/manual-wizard-messages.ts`](../../apps/web/src/components/manual-iching/manual-wizard-messages.ts)
-- [ ] [`apps/web/src/components/ConsultationRecordCard.tsx`](../../apps/web/src/components/ConsultationRecordCard.tsx) — mapas embebidos `turtle` / `ox` por locale (no usa `packages/i18n`; fácil de olvidar)
-- [ ] Resto de rutas: `login`, `pricing`, `feedback`, `guia`, `library`, etc. — usan getters de `packages/i18n`; validar tras ampliar el paquete
+- [ ] [`apps/web/src/components/ConsultationRecordCard.tsx`](../../apps/web/src/components/ConsultationRecordCard.tsx) — `getConsultationRecordUiMessages`
+- [ ] Wizards manuales — `getManualWizardMessages` / `getYarrowWizardMessages` desde `@iching-oracle/i18n`
+- [ ] Resto de rutas: `login`, `pricing`, `feedback`, `guia`, `library`, etc. — getters de `packages/i18n`
 
 ### RTL [RTL]
 
@@ -120,15 +128,15 @@ Los únicos `Record<AppLocale, …>` en este archivo son **`LANGUAGE_LABELS`**, 
 ### SEO y metadatos
 
 - [ ] `getSiteMetaUiMessages` + `htmlLangFromAppLocale` en [`packages/i18n/src/messages/site-meta-ui.ts`](../../packages/i18n/src/messages/site-meta-ui.ts) (mapear variantes regionales si aplica, ej. `zh` → `zh-Hans`)
-- [ ] Añadir locale a `HREFLANG_LOCALES` en [`apps/web/src/lib/seo-canonical.ts`](../../apps/web/src/lib/seo-canonical.ts) — **deuda actual:** solo 9 códigos (`ar` e `hi` faltan); alinear siempre al añadir un idioma
+- [ ] `HREFLANG_LOCALES` en [`apps/web/src/lib/seo-canonical.ts`](../../apps/web/src/lib/seo-canonical.ts) debe ser `[...SUPPORTED_LOCALES]` importado de `@iching-oracle/i18n` (11 locales)
 - [ ] Actualizar contador en Open Graph/Twitter en [`layout.tsx`](../../apps/web/src/app/layout.tsx) (“11 languages” → N+1)
 - [ ] Revisar copy de marketing en `page.tsx` / `faq-page-ui.ts` que cite el número de idiomas
 - [ ] Actualizar [`README.md`](../../README.md) (hoy la tabla de features dice “9 Languages”; producción tiene 11)
 
 ### Export PDF y emails
 
-- [ ] [`apps/web/src/lib/pdf-chat-export.ts`](../../apps/web/src/lib/pdf-chat-export.ts) — revisar strings fijas al exportar chat
-- [ ] Rutas `apps/web/src/app/api/auth/2fa/email/` — verificar plantillas Resend / copy de códigos 2FA si solo están en `en`/`es`
+- [ ] `pdf-export-ui.ts` + [`apps/web/src/lib/pdf-chat-export.ts`](../../apps/web/src/lib/pdf-chat-export.ts) — usar locale de la app, no bifurcar `isEsPdf`
+- [ ] `two-factor-email-ui.ts` + rutas `apps/web/src/app/api/auth/2fa/email/` — locale desde cookie `UI_LOCALE_COOKIE`
 
 ### Login / contraseña
 
@@ -148,10 +156,10 @@ Los únicos `Record<AppLocale, …>` en este archivo son **`LANGUAGE_LABELS`**, 
 - [ ] Traducir strings en `packages/i18n/src/messages/mobile-native-ui.ts` (diálogos nativos: permisos, PDF, confirmación borrar chat)
 - [ ] **[RTL]** Añadir a `RTL_LOCALES` y verificar `I18nManager.forceRTL` (mismo archivo, ~línea 1700)
 - [ ] Sincronización WebView ↔ nativo: `__rnSetLocale`, `UI_LOCALE_STORAGE_KEY` — probar que elegir idioma en web no lo pisa el shell nativo en `en`
-- [ ] Tour de 9 pasos: vive en **`TOUR_COPY` en `page.tsx` web** (WebView) — no en un JSON aparte del shell
-- [ ] Diálogo logout (4 keys): en **`UI_COPY` de `page.tsx`** (`logoutConfirm*`) — visible en WebView
+- [ ] Tour de 9 pasos: `home-tour-ui.ts` (WebView carga la web)
+- [ ] Diálogo logout: `home-chat-ui.ts` (`logoutConfirm*`)
 - [ ] Visibilidad contraseña (2 keys): `login-page-ui.ts` en web `/login` dentro del WebView
-- [ ] Botón **Tutorial**: `tutorialLabel` / `replayLabel` en `TOUR_COPY`
+- [ ] Botón **Tutorial**: `replayLabel` / `tutorialLabel` en `home-tour-ui.ts`
 - [ ] Tras cambiar lista de locales, recompilar APK y validar selector nativo + strip `.auth-explore-strip`
 
 ---
@@ -188,7 +196,8 @@ Los únicos `Record<AppLocale, …>` en este archivo son **`LANGUAGE_LABELS`**, 
 
 ## Verificación técnica (antes del merge)
 
-- [ ] `pnpm typecheck` (monorepo) — especialmente `packages/i18n` y `apps/web`
+- [ ] `npm run typecheck` (monorepo) — especialmente `packages/i18n` y `apps/web`
+- [ ] `npm run i18n:audit` — gobernanza CI (`tools/i18n-audit.mjs`)
 - [ ] `pnpm test` en paquetes afectados si existen tests de i18n
 - [ ] Buscar locale huérfano: `rg "Record<AppLocale" --type ts` y `rg "Partial<Record<AppLocale"` — completar todos
 - [ ] Buscar strings hardcodeadas: `rg '"es":|"en":' apps/web/src` en archivos no migrados
@@ -230,15 +239,17 @@ feat(i18n): add [nombre idioma] ([codigo]) language support
 
 ```
 packages/i18n/src/locales.ts
-packages/i18n/src/messages/*.ts          (todos, incl. theme-toggle-ui.ts)
-apps/web/src/app/page.tsx                (LANGUAGE_LABELS, UI_COPY, TOUR_COPY)
-apps/web/src/components/ThemeToggle.tsx  (solo getter i18n; sin mapas locales)
+packages/i18n/src/messages/*.ts          (todos los módulos UI)
+apps/web/src/app/page.tsx                (getters i18n; sin Record<AppLocale> locales)
+apps/web/src/components/ThemeToggle.tsx  (solo getter i18n)
 apps/web/src/components/ConsultationRecordCard.tsx
-apps/web/src/lib/seo-canonical.ts
+apps/web/src/lib/seo-canonical.ts        (HREFLANG = [...SUPPORTED_LOCALES])
 apps/web/src/lib/pdf-chat-export.ts
+tools/i18n-audit.mjs
 apps/web/src/app/layout.tsx              (htmlDir, OG copy)
 apps/web/src/components/DocumentLangSync.tsx
 apps/mobile/app/index.tsx                (LOCALES, RTL_LOCALES)
+packages/context-engine/src/index.ts     (fallback consultationInProgress por locale)
 backend/claude/src/interpretation.ts
 backend/claude/src/interpretation-structural-i18n.ts
 backend/claude/src/oracle-bones-interpretation.ts
@@ -250,7 +261,7 @@ README.md
 
 ## Notas para el agente
 
-1. **Orden recomendado:** `locales.ts` → `packages/i18n` (typecheck fallará hasta completar Records) → `page.tsx` (3 Records) → wizards Partial → `ConsultationRecordCard` → mobile → backend claude (+ structural i18n) → SEO/README/layout → PDF/email → QA.
+1. **Orden recomendado:** `locales.ts` → `packages/i18n` (typecheck fallará hasta completar Records) → getters en `page.tsx` / componentes → mobile → backend claude (+ structural i18n) → SEO/README/layout → PDF/email → `npm run i18n:audit` → QA.
 2. **No asumir next-intl:** el proyecto usa locale en cookie/localStorage + getters tipados.
 3. **Contenido legal:** priorizar exactitud jurídica; mejor fallback `en` documentado que traducción automática.
 4. **Idioma del oráculo:** la UI puede estar en un idioma y la pregunta en otro; el motor prioriza el idioma de la pregunta — probar ambos casos.
