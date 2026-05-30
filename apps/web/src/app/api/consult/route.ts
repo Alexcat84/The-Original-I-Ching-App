@@ -654,6 +654,7 @@ export async function POST(req: Request) {
         sessionTitle: body.sessionTitle ?? null,
         previousRows: previousRows,
         patternHints: null,
+        locale: oracleLanguage,
       });
 
       const prevBonesMessageId = await getPrevClaudeMessageId(authedUserId, sessionId);
@@ -811,6 +812,7 @@ export async function POST(req: Request) {
       sessionTitle: body.sessionTitle ?? null,
       previousRows: previousRows,
       patternHints: null,
+      locale: language,
     });
 
     if (responseMode === "stream_ritual") {

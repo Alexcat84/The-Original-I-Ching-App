@@ -1,5 +1,7 @@
+import { SUPPORTED_LOCALES } from "@iching-oracle/i18n";
+
 const BASE_URL = "https://theoriginaliching.com";
-const HREFLANG_LOCALES = ["en", "es", "pt", "fr", "de", "it", "ja", "zh", "ko"];
+const HREFLANG_LOCALES = [...SUPPORTED_LOCALES];
 
 export function buildCanonicalMetadata(path: string) {
   const canonical = `${BASE_URL}${path}`;

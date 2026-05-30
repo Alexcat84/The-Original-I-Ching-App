@@ -1,5 +1,6 @@
 import type { MutationRule } from "@iching-oracle/iching-engine";
 import type { OracleBonesVerdict, OracleBoneMedium } from "@iching-oracle/oracle-bones-engine";
+import { getHomeChromeUiMessages, parseAppLocale } from "@iching-oracle/i18n";
 
 export type TierKey = "free" | "seeker" | "practitioner" | "master" | "oracle";
 
@@ -135,6 +136,7 @@ export function resolveSessionContext(params: {
   sessionTitle: string | null;
   previousRows: PreviousConsultationRow[];
   patternHints: string | null;
+  locale?: string | null;
 }): SessionContext | null {
   const limits = CONTEXT_LIMITS[params.tier];
   if (limits.sessionDepth <= 1) return null;
@@ -144,9 +146,12 @@ export function resolveSessionContext(params: {
   const previousConsultations = summarizePreviousConsultations(params.previousRows, maxPrior);
   if (previousConsultations.length === 0) return null;
 
+  const locale = parseAppLocale(params.locale ?? undefined);
+  const chrome = getHomeChromeUiMessages(locale);
+
   return {
     sessionId: params.sessionId,
-    theme: params.sessionTitle ?? "Consulta en progreso",
+    theme: params.sessionTitle ?? chrome.consultationInProgress,
     previousConsultations,
     patternHints: params.patternHints,
   };
