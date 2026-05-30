@@ -1,4 +1,4 @@
-<!-- changelog:last-release:1a5c424 -->
+<!-- changelog:last-release:02ee288 -->
 
 # Changelog — The Original I Ching App
 
@@ -6,47 +6,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 
 
-## [Unreleased]
 
-### New
-- feat: password visibility toggle + logout confirmation dialog | commit: b758130
-- feat(faq): convert delete-account doc to FAQs + add delete-chats FAQ | commit: d048578
-- feat(consult-panel): add Tutorial label before info icon in header button | commit: 7197db9
-- feat(danger-zone): style delete-account btn to match other action buttons | commit: 9bb750c
-- feat(feedback): add user feedback page with Supabase storage and rate limiting | commit: 96d2da8
-- feat(i18n): move theme toggle labels to @iching-oracle/i18n | commit: c5f155f
-- feat(i18n): stage 1 — audit CI and migrate home UI copy to package | commit: 6a14b38
-- feat(i18n): stage 2 — complete token-panel and two-factor locale records | commit: e49a395
-- feat(i18n): stage 3 — wire PDF export and 2FA email to app locale | commit: 0d7cd40
-- feat(i18n): stage 4 — SEO hreflang, backend locale fallbacks, and context theme | commit: 573045d
-- feat(i18n): localize app shell title and consult API error messages | commit: 7f8a2a9
-
-### Fix
-- fix(header): move info icon between Chats and logo | commit: fa9ca98
-- fix(header): move tour-info icon into consult panel header | commit: 7141d59
-- fix(consult-panel): match info btn shape to Cerrar, keep green colors | commit: 5de6e75
-- fix(login): fix eye icon vertical centering via display:flex on wrapper | commit: b73ef1f
-- fix(login): use CSS Grid overlay for eye icon — guaranteed vertical center | commit: 7c0eaed
-- fix(login): CSS class approach for eye icon — block input + top:50% transform | commit: 43eb404
-- fix(login): inline styles only for eye toggle — bypasses CSS cache | commit: 50fbf7f
-- fix(login): fix eye icon — margin:0 resets global button{margin-top:0.75rem} | commit: 9332444
-- fix(options-panel): remove delete-account doc link + rename to Danger zone | commit: 4e7b20f
-- fix(faq): remove long-press and em dashes from delete-chats/delete-account answers | commit: bc5d202
-- fix(i18n): use DEFAULT_LOCALE in credits exhausted fallback | commit: 30ab092
-- fix(feedback): detect WebView platform and native app version | commit: 8efd492
-
-### Docs
-- docs(i18n): add language expansion guide for development agents | commit: 93f782c
-- docs(i18n): add language expansion guide for development agents | commit: 1023a55
-- docs(readme): align language count with 11 supported locales | commit: 3b28870
-- docs(i18n): align workflow guides with post-standardization state | commit: 841581b
-
-### Maintenance
-- chore(docs): organize .md files into docs/ with categories | commit: 4f0597a
-- chore(i18n): stage 5 — update expansion guide and remove dead chat-suggestions | commit: 9f5fc8b
-- chore(agents): refresh learned preferences after i18n standardization | commit: 957e277
-
----
 
 
 ## [3.3.1] — 2026-05-29 | versionCode: 24 | Etapa: Closed Testing
@@ -946,25 +906,79 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
+## [3.3.2] — 2026-05-30 | versionCode: 25 | Etapa: Closed Testing
+
+### New
+- feat(billing): implement native Google Play Billing via RevenueCat | commit: 02ee288
+- feat(i18n): localize app shell title and consult API error messages | commit: 7f8a2a9
+- feat(i18n): stage 4 — SEO hreflang, backend locale fallbacks, and context theme | commit: 573045d
+- feat(i18n): stage 3 — wire PDF export and 2FA email to app locale | commit: 0d7cd40
+- feat(i18n): stage 2 — complete token-panel and two-factor locale records | commit: e49a395
+- feat(i18n): stage 1 — audit CI and migrate home UI copy to package | commit: 6a14b38
+- feat(i18n): move theme toggle labels to @iching-oracle/i18n | commit: c5f155f
+- feat(feedback): add user feedback page with Supabase storage and rate limiting | commit: 96d2da8
+- feat(danger-zone): style delete-account btn to match other action buttons | commit: 9bb750c
+- feat(consult-panel): add Tutorial label before info icon in header button | commit: 7197db9
+- feat(faq): convert delete-account doc to FAQs + add delete-chats FAQ | commit: d048578
+- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
+
+### Fix
+- fix(prompt): add explicit SELECTED_TRANSLATOR metadata field before BIBLIOTECA | commit: 980574b
+- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: a14a340
+- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
+- fix(prompt): name active translator explicitly — prevent cross-translator bleed | commit: 8059bb4
+- fix(options-panel): restore doc links vertical layout after tour refactor | commit: 5b0c9a6
+- fix(tour): scope step-8 spotlight to doc links only; remove duplicate feedback btn from FAQs | commit: 20fbf85
+- fix(db): tighten feedback RLS — drop redundant service_role policy and replace WITH CHECK (true) | commit: a4daa81
+- fix(webview): suppress GPU compositing glitches on scroll in Android WebView | commit: 0dfe0a8
+- fix(changelog): correct EAS build command in pre-release checklist | commit: 83e068b
+- fix(feedback): detect WebView platform and native app version | commit: 8efd492
+- fix(i18n): use DEFAULT_LOCALE in credits exhausted fallback | commit: 30ab092
+- fix(faq): remove long-press and em dashes from delete-chats/delete-account answers | commit: bc5d202
+- fix(options-panel): remove delete-account doc link + rename to Danger zone | commit: 4e7b20f
+- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
+- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
+- fix(auth): handle existing signup email with modal guidance | commit: 257e125
+
+### Docs
+- docs(changelog): generate full project changelog and add update script | commit: 1e899f1
+- docs(i18n): align workflow guides with post-standardization state | commit: 841581b
+- docs(readme): align language count with 11 supported locales | commit: 3b28870
+- docs(i18n): add language expansion guide for development agents | commit: 1023a55
+- docs(i18n): add language expansion guide for development agents | commit: 93f782c
+
+### Maintenance
+- chore(i18n): replace dialectical/dialéctico with unified interpretation across all 11 locales | commit: 2062133
+- chore: trigger redeploy — update Axiom env vars | commit: 5d5ba78
+- chore(agents): refresh learned preferences after i18n standardization | commit: 957e277
+- chore(i18n): stage 5 — update expansion guide and remove dead chat-suggestions | commit: 9f5fc8b
+- chore(docs): organize .md files into docs/ with categories | commit: 4f0597a
+- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
+- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
+- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
+- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
+- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
+
+---
 
 ## Resumen de versiones
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| Unreleased | — | 2026-05-30 | — | 30 | password visibility toggle + logout confirmation dialog; convert delete-account doc to FAQs + add delete-chats FAQ; add Tutorial label before info icon in header button |
-| 3.3.1 | 24 | 2026-05-29 | Closed Testing | 27 | add react-joyride tour with 7 steps in 11 languages; fix tour trigger + add custom styled tooltip; add Nueva Sesión step (step 2) to tour |
-| 3.3.0 | 23 | 2026-05-25 | Closed Testing | 10 | route ritual debug logs through Axiom instead of console; harden WebView security settings in Android shell; enforce thread continuity in opening paragraph for all I Ching modes |
-| 3.2.9 | 22 | 2026-05-24 | Closed Testing | 9 | add support@theoriginaliching.com contact link in Terms section 10; redesign offline screen v2 — brand logo, fix transparent bleed-through; offline screen full-bleed image layout — text overlaid on bottom band |
-| 3.2.7 | 20 | 2026-05-21 | Internal Testing | 6 | custom offline screen with animated radar when WebView fails; IndexedDB cache for chat list and thread content; sync SQLite on chat delete and account deletion |
-| 3.2.6 | 19 | 2026-05-21 | Internal Testing | 28 | merge staging → main (account deletion flow); add expo-sqlite schema and chat-store for local cache; background sync service and opportunistic image cache |
-| 3.2.4 | 17 | 2026-05-18 | Internal Testing | 9 | implement full account deletion flow for Google Play compliance; full localization of account deletion flow; add root .easignore so apps/mobile/.env reaches Metro bundler + bump 3.2.3/16 |
-| 3.2.1 | 14 | 2026-05-18 | Internal Testing | 9 | merge account deletion flow into staging; respect native dialog confirmation before removing chat + bump 3.2.1/versionC…; strip orphaned [SNAPSHOT_END], PDF saves to Downloads with permission + bump … |
-| 3.2.0 | 12 | 2026-05-17 | Internal Testing | 10 | hexagram-specific fallback image generator (2,760 WebP); integrate Cloudflare R2 as primary image fallback; structured Axiom logging across Next.js web app |
-| 3.1.8 | 11 | 2026-05-17 | Internal Testing | 8 | translate guide/FAQ sections for all 11 locales + remove Zhou Yi inline trans…; defer chat delete until native dialog confirmed; clean oracle bones card; add dividers after verdict header and before both section headings |
-| 3.1.7 | 10 | 2026-05-16 | Internal Testing | 166 | update seeker tokens 20→25 and practitioner tokens 40→50; implement Yarrow Stalks casting method; Block A — chip selectors, dynamic hint, em dash cleanup |
-| 3.1.6 | 9 | 2026-05-07 | Internal Testing | 44 | manual three-coin cast mode with preview and API validation; Kangxi cash coins + instant dual-hex ritual for manual I Ching; compact manual coin wizard; add expo export test artifacts |
-| 3.1.5 | 8 | 2026-05-03 | Internal Testing | 9 | v3.1.4 - fix EAS env vars, staging build with all secrets; add openGraph, Twitter, keywords, per-page metadata and sitemap to all public…; expand historical content for I Ching and Oracle Bones in all 11 languages |
-| 3.1.2 | 5 | 2026-04-30 | Internal Testing | 7 | disable proguard and drop mapping artifact upload to prevent startup crash; re-enable R8, add Sentry crash reporting and error boundary; re-enable R8, add Sentry crash reporting and error boundary |
-| 3.1.1 | 4 | 2026-04-29 | Internal Testing | 58 | rounded top cap on auth strip, square join to app bar; franja Play arriba, cierre hilo y aviso límite; i18n; mandatory legal consent on signup and OAuth |
-| 3.0.0 | 3 | 2026-04-23 | Internal Testing | 43 | themed native chrome, locale bridge for login, i18n dialogs; default UI locale EN, device detection via expo-localization; square shell + inset rounded auth card above WebView |
-| 2.0.0 | 2 | 2026-04-20 | Internal Testing | 259 | Cloudflare Turnstile for register; turbo env passthrough; chat UX refresh, docs routes, richer image prompts; logo header, drawer stats, prune empty chats, mode showcase |
+| 3.3.2 | 25 | 2026-05-30 | Closed Testing | 43 | implement native Google Play Billing via RevenueCat; localize app shell title and consult API error messages; stage 4 — SEO hreflang, backend locale fallbacks, and context theme |
+| 3.3.1 | 24 | 2026-05-29 | Closed Testing | 0 | — |
+| 3.3.0 | 23 | 2026-05-25 | Closed Testing | 0 | — |
+| 3.2.9 | 22 | 2026-05-24 | Closed Testing | 0 | — |
+| 3.2.7 | 20 | 2026-05-21 | Internal Testing | 0 | — |
+| 3.2.6 | 19 | 2026-05-21 | Internal Testing | 0 | — |
+| 3.2.4 | 17 | 2026-05-18 | Internal Testing | 0 | — |
+| 3.2.1 | 14 | 2026-05-18 | Internal Testing | 0 | — |
+| 3.2.0 | 12 | 2026-05-17 | Internal Testing | 0 | — |
+| 3.1.8 | 11 | 2026-05-17 | Internal Testing | 0 | — |
+| 3.1.7 | 10 | 2026-05-16 | Internal Testing | 0 | — |
+| 3.1.6 | 9 | 2026-05-07 | Internal Testing | 0 | — |
+| 3.1.5 | 8 | 2026-05-03 | Internal Testing | 0 | — |
+| 3.1.2 | 5 | 2026-04-30 | Internal Testing | 0 | — |
+| 3.1.1 | 4 | 2026-04-29 | Internal Testing | 0 | — |
+| 3.0.0 | 3 | 2026-04-23 | Internal Testing | 0 | — |
+| 2.0.0 | 2 | 2026-04-20 | Internal Testing | 0 | — |
