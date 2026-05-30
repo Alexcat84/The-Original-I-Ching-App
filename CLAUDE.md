@@ -281,5 +281,6 @@ Verificar en: https://github.com/actions/checkout/releases y https://github.com/
 - [ ] Data Safety Form en Play Console
 - [ ] APK final con todos los fixes verificados en dispositivo
 - [ ] i18n formal con next-intl (post-lanzamiento, Fase 2)
+- **Expansión de idiomas (hoy):** seguir checklist operativo en [`docs/workflows/I18N_GUIDE.md`](docs/workflows/I18N_GUIDE.md) — `@iching-oracle/i18n` + `Record<AppLocale, …>`, no `apps/web/messages/*.json`
 - [ ] App Expo nativa completa (post-lanzamiento, Fase 2)
 - [ ] Animación ritual de hueso (Three.js + fuego) — pendiente integración
