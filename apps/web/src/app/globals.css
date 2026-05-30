@@ -2075,6 +2075,206 @@ html[data-theme="dark"] .composer-reading-pill--danger.is-active:hover:not(:disa
   border-top: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
+/* Feedback button variant — warm orange, distinct from teal (accent) and red (danger) */
+.composer-reading-pill--feedback,
+.composer-reading-pill--feedback.is-active {
+  color: #e67e22;
+  border-color: color-mix(in srgb, #e67e22 55%, var(--bar-border));
+  background: color-mix(in srgb, #e67e22 8%, var(--input-bg));
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .composer-reading-pill--feedback,
+html[data-theme="dark"] .composer-reading-pill--feedback.is-active {
+  color: #f39c12;
+  border-color: color-mix(in srgb, #f39c12 50%, var(--bar-border));
+  background: color-mix(in srgb, #f39c12 10%, var(--input-bg));
+}
+
+.composer-reading-pill--feedback:hover:not(:disabled),
+.composer-reading-pill--feedback.is-active:hover:not(:disabled) {
+  color: #e67e22;
+  border-color: color-mix(in srgb, #e67e22 80%, var(--bar-border));
+  background: color-mix(in srgb, #e67e22 14%, var(--input-bg));
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .composer-reading-pill--feedback:hover:not(:disabled),
+html[data-theme="dark"] .composer-reading-pill--feedback.is-active:hover:not(:disabled) {
+  color: #f39c12;
+  border-color: color-mix(in srgb, #f39c12 75%, var(--bar-border));
+  background: color-mix(in srgb, #f39c12 16%, var(--input-bg));
+  box-shadow: none;
+}
+
+/* /feedback page form styles */
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 640px;
+}
+
+.feedback-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.feedback-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fg-muted);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.feedback-field select,
+.feedback-field input[type="email"],
+.feedback-field textarea {
+  padding: 0.65rem 0.75rem;
+  border-radius: 11px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--fg);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-family: inherit;
+}
+
+.feedback-field select:focus,
+.feedback-field input[type="email"]:focus,
+.feedback-field textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
+}
+
+.feedback-field textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.55;
+}
+
+.feedback-input--error {
+  border-color: #c0392b !important;
+}
+
+.feedback-error {
+  font-size: 0.78rem;
+  color: #c0392b;
+  font-weight: 500;
+}
+
+.feedback-hint,
+.feedback-optional {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+  font-weight: 400;
+}
+
+.feedback-char-count {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+  font-weight: 400;
+  margin-left: auto;
+}
+
+.feedback-server-error {
+  color: #c0392b;
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.feedback-submit-btn {
+  align-self: flex-start;
+  padding: 0.7rem 1.5rem;
+  border-radius: 999px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.feedback-submit-btn:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.feedback-submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.feedback-support-line {
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  margin: 0.25rem 0 0;
+}
+
+.feedback-support-line a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.feedback-support-line a:hover {
+  text-decoration: underline;
+}
+
+.feedback-success {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 560px;
+  padding: 1.5rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--bar-border));
+  background: color-mix(in srgb, var(--accent) 6%, var(--input-bg));
+}
+
+.feedback-success h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--accent);
+}
+
+.feedback-success p {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 0.92rem;
+}
+
+.feedback-back-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.feedback-back-btn:hover {
+  background: color-mix(in srgb, var(--accent) 10%, var(--input-bg));
+}
+
+/* Feedback divider in Options panel doc-links section */
+.composer-doc-links-divider {
+  border: none;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  margin: 0.5rem 0 0.25rem;
+}
+
 .cast-selector-block {
   display: flex;
   flex-direction: column;

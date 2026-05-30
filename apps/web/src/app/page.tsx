@@ -6166,6 +6166,14 @@ export default function HomePage() {
                       <Link href="/terms">{docNav.termsOfService}</Link>
                       <Link href="/faqs">{docNav.faqs}</Link>
                       <Link href="/about">{docNav.aboutShort}</Link>
+                      <hr className="composer-doc-links-divider" aria-hidden />
+                      <Link
+                        href="/feedback"
+                        className="composer-reading-pill is-active composer-reading-pill--feedback"
+                        style={{ textAlign: "center", textDecoration: "none" }}
+                      >
+                        {docNav.feedback}
+                      </Link>
                     </div>
                   </section>
                 </div>

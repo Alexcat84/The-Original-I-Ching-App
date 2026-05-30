@@ -27,6 +27,7 @@ export type DocNavUiMessages = {
   termsOfService: string;
   ichingDocLink: string;
   deleteAccount: string;
+  feedback: string;
 };
 
 const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
@@ -47,6 +48,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "Términos del Servicio",
     ichingDocLink: "Documentación sobre el I Ching",
     deleteAccount: "Eliminar cuenta",
+    feedback: "Enviar comentarios",
   },
   en: {
     backToOracle: "← Back to oracle",
@@ -65,6 +67,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "Terms of Service",
     ichingDocLink: "I Ching documentation",
     deleteAccount: "Delete account",
+    feedback: "Send feedback",
   },
   pt: {
     backToOracle: "← Voltar ao oráculo",
@@ -83,6 +86,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "Termos de Serviço",
     ichingDocLink: "Documentação sobre o I Ching",
     deleteAccount: "Eliminar conta",
+    feedback: "Enviar comentários",
   },
   fr: {
     backToOracle: "← Retour à l’oracle",
@@ -101,6 +105,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "Conditions d’utilisation",
     ichingDocLink: "Documentation sur le I Ching",
     deleteAccount: "Supprimer le compte",
+    feedback: "Envoyer un commentaire",
   },
   de: {
     backToOracle: "← Zurück zum Orakel",
@@ -119,6 +124,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "Nutzungsbedingungen",
     ichingDocLink: "Dokumentation zum I Ging",
     deleteAccount: "Konto löschen",
+    feedback: "Feedback senden",
   },
   it: {
     backToOracle: "← Torna all’oracolo",
@@ -137,6 +143,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "Termini di servizio",
     ichingDocLink: "Documentazione sul I Ching",
     deleteAccount: "Elimina account",
+    feedback: "Invia feedback",
   },
   ja: {
     backToOracle: "← オラクルに戻る",
@@ -155,6 +162,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "利用規約",
     ichingDocLink: "易経（I Ching）のドキュメント",
     deleteAccount: "アカウントを削除",
+    feedback: "フィードバックを送る",
   },
   zh: {
     backToOracle: "← 返回占卜",
@@ -173,6 +181,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "服务条款",
     ichingDocLink: "易经（I Ching）文档",
     deleteAccount: "删除账户",
+    feedback: "发送反馈",
   },
   ko: {
     backToOracle: "← 오라클로 돌아가기",
@@ -191,6 +200,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "서비스 약관",
     ichingDocLink: "역경(I Ching) 문서",
     deleteAccount: "계정 삭제",
+    feedback: "피드백 보내기",
   },
   ar: {
     backToOracle: "← العودة إلى الأوراكل",
@@ -209,6 +219,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "شروط الخدمة",
     ichingDocLink: "وثائق I Ching",
     deleteAccount: "حذف الحساب",
+    feedback: "إرسال تعليق",
   },
   hi: {
     backToOracle: "← ओरेकल पर वापस",
@@ -227,6 +238,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     termsOfService: "सेवा की शर्तें",
     ichingDocLink: "I Ching दस्तावेज़ीकरण",
     deleteAccount: "खाता हटाएं",
+    feedback: "फीडबैक भेजें",
   },
 };
 
