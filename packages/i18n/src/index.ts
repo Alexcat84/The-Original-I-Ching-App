@@ -28,6 +28,10 @@ export {
   type HomeChromeUiMessages,
 } from "./messages/home-chrome-ui.js";
 export {
+  getThemeToggleUiMessages,
+  type ThemeToggleUiMessages,
+} from "./messages/theme-toggle-ui.js";
+export {
   formatChatLoadFailedStatus,
   formatConsultFailedMessage,
   formatHistoryLoadFailedStatus,

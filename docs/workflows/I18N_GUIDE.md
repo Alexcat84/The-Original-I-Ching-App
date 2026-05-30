@@ -49,11 +49,12 @@ Documento operativo para agentes de desarrollo en cada expansión de idioma.
 
 ## Paquete `@iching-oracle/i18n` (`packages/i18n/src/messages/`)
 
-Traducir **todas** las claves en **cada** archivo del paquete (29 módulos). Patrón: añadir bloque `xx: { … }` al `Record<AppLocale, …>` correspondiente.
+Traducir **todas** las claves en **cada** archivo del paquete (30 módulos). Patrón: añadir bloque `xx: { … }` al `Record<AppLocale, …>` correspondiente.
 
 | Módulo | Uso |
 |--------|-----|
 | `login-page-ui.ts` | Login/registro, `showPasswordAria` / `hidePasswordAria` |
+| `theme-toggle-ui.ts` | Botón tema claro/oscuro (`ThemeToggle`) |
 | `home-chrome-ui.ts` | Barra del chat, opciones, biblioteca |
 | `home-session-ui.ts` | Errores de consulta, historial |
 | `faq-page-ui.ts` | FAQs completas por categoría (arrays largos por locale) |
@@ -133,6 +134,10 @@ Los únicos `Record<AppLocale, …>` en este archivo son **`LANGUAGE_LABELS`**, 
 
 - [ ] `login-page-ui.ts`: `showPasswordAria` / `hidePasswordAria` y todo el formulario
 - [ ] Verificar alineación del icono ojo: clases `.auth-password-wrapper` / `.auth-password-toggle` con `margin: 0` (el global `button { margin-top }` desalinea toggles absolutos)
+
+### Tema claro / oscuro
+
+- [ ] `theme-toggle-ui.ts` — etiquetas y `aria-label` del botón en la barra del chat (no hardcodear en `ThemeToggle.tsx`)
 
 ---
 
@@ -225,8 +230,9 @@ feat(i18n): add [nombre idioma] ([codigo]) language support
 
 ```
 packages/i18n/src/locales.ts
-packages/i18n/src/messages/*.ts          (todos)
+packages/i18n/src/messages/*.ts          (todos, incl. theme-toggle-ui.ts)
 apps/web/src/app/page.tsx                (LANGUAGE_LABELS, UI_COPY, TOUR_COPY)
+apps/web/src/components/ThemeToggle.tsx  (solo getter i18n; sin mapas locales)
 apps/web/src/components/ConsultationRecordCard.tsx
 apps/web/src/lib/seo-canonical.ts
 apps/web/src/lib/pdf-chat-export.ts
