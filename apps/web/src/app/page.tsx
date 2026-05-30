@@ -6164,7 +6164,6 @@ export default function HomePage() {
                       <Link href="/terms">{docNav.termsOfService}</Link>
                       <Link href="/faqs">{docNav.faqs}</Link>
                       <Link href="/about">{docNav.aboutShort}</Link>
-                      <Link href="/faqs#privacy-account">{docNav.deleteAccount}</Link>
                     </div>
                   </section>
                 </div>
