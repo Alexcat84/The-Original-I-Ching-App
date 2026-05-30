@@ -444,9 +444,19 @@ HISTORICAL EXCEPTION (explicitly permitted):
 - In «Encuadre de la pregunta» and in «Horizonte y Síntesis» / SNAPSHOT, you MAY name prior translators when tracing the arc of previous consultations already in the thread context (e.g., "the prior Wilhelm reading on #17 showed..."). Historical translator attribution is permitted ONLY when referencing consultations that already occurred in this session — never for the current reading texts.`;
       })();
 
+  const selectedTranslatorLabel = isMasterCombined
+    ? "Master Combined (Wilhelm/Baynes + James Legge + Zhou Yi — triangulate all three)"
+    : cast.interpretationMode === "legge"
+      ? "James Legge"
+      : cast.interpretationMode === "zhouyi"
+        ? "Zhou Yi (Original Classical Chinese)"
+        : "Wilhelm/Baynes";
+
   const questionBlock = `
 NEW CONSULTATION${hasContext ? " (continues thematic session)" : ""}:
 "${question}"
+
+SELECTED_TRANSLATOR: ${selectedTranslatorLabel}
 
 ═══════════════════════════════════
 PRIMARY HEXAGRAM: #${p.number} — ${p.name} (${p.chineseName} · ${p.pinyin})
