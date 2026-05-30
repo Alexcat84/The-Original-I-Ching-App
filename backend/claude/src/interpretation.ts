@@ -433,7 +433,15 @@ JUDGMENT: ${t.transformedJudgment}`
         const otherTranslators = ["Wilhelm/Baynes", "James Legge", "Zhou Yi"]
           .filter((n) => n !== translatorDisplayName)
           .join(" and ");
-        return `SELECTED TRANSLATOR: ${translatorDisplayName}. Use ONLY this translator as the sole authoritative source. NEVER mention other translators (${otherTranslators}) by name anywhere in your interpretive prose — not as contrast, not as reference, not as "Wilhelm says", "como señala Legge", or any equivalent. The provided texts belong exclusively to ${translatorDisplayName}.`;
+        return `SELECTED TRANSLATOR: ${translatorDisplayName}.
+
+TRANSLATOR RULE — applies ONLY to the sections that interpret the CURRENT reading texts (El Juicio, La Imagen, Líneas en movimiento, El Trazado hacia el 之卦, and all interpretive prose for this hexagram):
+- Use ONLY ${translatorDisplayName} as the authoritative source for the current reading.
+- Never write "${otherTranslators.split(" and ")[0]} says", "como señala ${otherTranslators.split(" and ")[0]}", or any cross-translator attribution when interpreting the CURRENT hexagram texts.
+- The texts provided in the BIBLIOTECA belong exclusively to ${translatorDisplayName} for this consultation.
+
+HISTORICAL EXCEPTION (explicitly permitted):
+- In «Encuadre de la pregunta» and in «Horizonte y Síntesis» / SNAPSHOT, you MAY name prior translators when tracing the arc of previous consultations already in the thread context (e.g., "the prior Wilhelm reading on #17 showed..."). Historical translator attribution is permitted ONLY when referencing consultations that already occurred in this session — never for the current reading texts.`;
       })();
 
   const questionBlock = `
