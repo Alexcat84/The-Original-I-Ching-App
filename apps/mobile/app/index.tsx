@@ -24,6 +24,8 @@ import {
   Image,
   Modal,
   Platform,
+  Pressable,
+  ScrollView,
   StatusBar as RNStatusBar,
   StyleSheet,
   Text,
@@ -33,6 +35,23 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const OFFLINE_LOGO = require("../assets/logo.png") as number;
+// Pack icons — replace placeholder PNGs in assets/ with real artwork before EAS build
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const PACK_ICON_SEEKER = require("../assets/pack-seeker.png") as number;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const PACK_ICON_PRACTITIONER = require("../assets/pack-practitioner.png") as number;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const PACK_ICON_MASTER = require("../assets/pack-master.png") as number;
+
+function cleanProductTitle(title: string): string {
+  return title.replace(/\s*\(.*?\)\s*$/, "").trim();
+}
+
+function packIconFor(productIdentifier: string): number {
+  if (productIdentifier.includes("practitioner")) return PACK_ICON_PRACTITIONER;
+  if (productIdentifier.includes("master")) return PACK_ICON_MASTER;
+  return PACK_ICON_SEEKER; // seeker + fallback
+}
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   WebView,
@@ -1401,6 +1420,217 @@ const dialogStylesLight = StyleSheet.create({
   },
 });
 
+// ── Pack Picker Modal ─────────────────────────────────────────────────────────
+interface PackPickerModalProps {
+  visible: boolean;
+  packages: PurchasesPackage[];
+  selectedIdx: number | null;
+  onSelect: (idx: number) => void;
+  onConfirm: () => void;
+  onCancel: () => void;
+  busy: boolean;
+  appearance: "dark" | "light";
+  ui: { title: string; confirmBtn: string; cancel: string };
+}
+
+function PackPickerModal({
+  visible, packages, selectedIdx, onSelect, onConfirm, onCancel, busy, appearance, ui,
+}: PackPickerModalProps) {
+  const isDark = appearance === "dark";
+  const c = {
+    backdrop:      isDark ? "rgba(0,0,0,0.80)"              : "rgba(0,0,0,0.52)",
+    card:          isDark ? "#1a222c"                        : "#ffffff",
+    headerBorder:  isDark ? "rgba(255,255,255,0.08)"         : "rgba(15,23,42,0.08)",
+    packBg:        isDark ? "#0f1720"                        : "#f4f8fb",
+    packBorder:    isDark ? "rgba(255,255,255,0.09)"         : "rgba(15,23,42,0.10)",
+    packSelBg:     isDark ? "rgba(78,205,196,0.11)"          : "rgba(42,157,143,0.08)",
+    packSelBorder: isDark ? "#4ecdc4"                        : "#2a9d8f",
+    title:         isDark ? "#eceff1"                        : "#1a2e3a",
+    price:         isDark ? "#4ecdc4"                        : "#2a9d8f",
+    desc:          isDark ? "rgba(236,239,241,0.52)"         : "rgba(26,46,58,0.55)",
+    confirm:       "#2a9d8f",
+    confirmDis:    isDark ? "rgba(255,255,255,0.15)"         : "rgba(15,23,42,0.12)",
+    confirmTxt:    "#ffffff",
+    confirmTxtDis: isDark ? "rgba(255,255,255,0.35)"         : "rgba(15,23,42,0.30)",
+    cancelTxt:     isDark ? "rgba(255,255,255,0.45)"         : "rgba(15,23,42,0.45)",
+  };
+
+  return (
+    <Modal transparent animationType="fade" visible={visible} onRequestClose={onCancel} statusBarTranslucent>
+      <Pressable style={[ppStyles.backdrop, { backgroundColor: c.backdrop }]} onPress={onCancel}>
+        <Pressable
+          style={[ppStyles.sheet, { backgroundColor: c.card }]}
+          onPress={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <View style={[ppStyles.header, { borderBottomColor: c.headerBorder }]}>
+            <Text style={[ppStyles.headerTitle, { color: c.title }]}>{ui.title}</Text>
+            <TouchableOpacity onPress={onCancel} hitSlop={12} activeOpacity={0.7}>
+              <Text style={[ppStyles.closeX, { color: c.cancelTxt }]}>✕</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Pack cards */}
+          <ScrollView
+            style={ppStyles.list}
+            contentContainerStyle={ppStyles.listContent}
+            showsVerticalScrollIndicator={false}
+          >
+            {packages.map((pkg, idx) => {
+              const selected = idx === selectedIdx;
+              return (
+                <TouchableOpacity
+                  key={pkg.product.identifier}
+                  activeOpacity={0.78}
+                  onPress={() => onSelect(idx)}
+                  style={[
+                    ppStyles.packCard,
+                    {
+                      backgroundColor: selected ? c.packSelBg : c.packBg,
+                      borderColor: selected ? c.packSelBorder : c.packBorder,
+                    },
+                  ]}
+                >
+                  <Image
+                    source={packIconFor(pkg.product.identifier)}
+                    style={ppStyles.packIcon}
+                    resizeMode="contain"
+                  />
+                  <View style={ppStyles.packInfo}>
+                    <Text style={[ppStyles.packTitle, { color: c.title }]} numberOfLines={1}>
+                      {cleanProductTitle(pkg.product.title)}
+                    </Text>
+                    <Text style={[ppStyles.packDesc, { color: c.desc }]} numberOfLines={2}>
+                      {pkg.product.description}
+                    </Text>
+                  </View>
+                  <Text style={[ppStyles.packPrice, { color: c.price }]}>
+                    {pkg.product.priceString}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+
+          {/* Confirm button */}
+          <View style={[ppStyles.footer, { borderTopColor: c.headerBorder }]}>
+            <TouchableOpacity
+              activeOpacity={0.82}
+              onPress={onConfirm}
+              disabled={selectedIdx === null || busy}
+              style={[
+                ppStyles.confirmBtn,
+                {
+                  backgroundColor:
+                    selectedIdx !== null && !busy ? c.confirm : c.confirmDis,
+                },
+              ]}
+            >
+              {busy ? (
+                <ActivityIndicator color="#fff" size="small" />
+              ) : (
+                <Text
+                  style={[
+                    ppStyles.confirmTxt,
+                    { color: selectedIdx !== null ? c.confirmTxt : c.confirmTxtDis },
+                  ]}
+                >
+                  {ui.confirmBtn}
+                </Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}
+
+const ppStyles = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  sheet: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: "88%",
+    paddingBottom: 24,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+  },
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    letterSpacing: 0.2,
+  },
+  closeX: {
+    fontSize: 17,
+    fontWeight: "600",
+    paddingHorizontal: 4,
+  },
+  list: {
+    flexGrow: 0,
+  },
+  listContent: {
+    padding: 14,
+    gap: 10,
+  },
+  packCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 14,
+    borderWidth: 1.5,
+    padding: 12,
+    gap: 12,
+  },
+  packIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+    flexShrink: 0,
+  },
+  packInfo: {
+    flex: 1,
+    gap: 3,
+  },
+  packTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+  },
+  packDesc: {
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  packPrice: {
+    fontSize: 15,
+    fontWeight: "800",
+    flexShrink: 0,
+  },
+  footer: {
+    paddingHorizontal: 14,
+    paddingTop: 14,
+    borderTopWidth: 1,
+  },
+  confirmBtn: {
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  confirmTxt: {
+    fontSize: 15,
+    fontWeight: "700",
+    letterSpacing: 0.2,
+  },
+});
+
 // ── Main screen ───────────────────────────────────────────────────────────────
 export default function WebViewScreen() {
   const webViewRef = useRef<WebView>(null);
@@ -1447,6 +1677,12 @@ export default function WebViewScreen() {
 
   /* ── Image zoom state (P4) ── */
   const [zoomImageUrl, setZoomImageUrl] = useState<string | null>(null);
+
+  /* ── Pack picker state ── */
+  const [packPickerPackages, setPackPickerPackages] = useState<PurchasesPackage[]>([]);
+  const [packPickerOpen, setPackPickerOpen] = useState(false);
+  const [packPickerSelectedIdx, setPackPickerSelectedIdx] = useState<number | null>(null);
+  const [packPickerBusy, setPackPickerBusy] = useState(false);
 
   /* ── Native dialog state (replaces Alert.alert + web window.alert) ── */
   const [nativeDialog, setNativeDialog] = useState<NativeDialogConfig | null>(null);
@@ -1868,6 +2104,38 @@ export default function WebViewScreen() {
   );
 
   /* ── Native Google Play Billing ── */
+  const executePurchaseFromPicker = useCallback(async () => {
+    if (packPickerSelectedIdx === null) return;
+    const pkg = packPickerPackages[packPickerSelectedIdx];
+    if (!pkg) return;
+    setPackPickerBusy(true);
+    try {
+      await Purchases.purchasePackage(pkg);
+      setPackPickerOpen(false);
+      DeviceEventEmitter.emit("rnPurchaseSuccess");
+      const productId = pkg.product.identifier;
+      webViewRef.current?.injectJavaScript(
+        `(function(){try{window.dispatchEvent(new CustomEvent('rnPurchaseSuccess',` +
+        `{detail:{productId:${JSON.stringify(productId)}}}));}catch(_){}})();true;`
+      );
+    } catch (e: unknown) {
+      if (isPurchasesError(e) && e.userCancelled) { setPackPickerBusy(false); return; }
+      setPackPickerOpen(false);
+      const errMsg = isPurchasesError(e) ? e.message : nativeUi.storeUnavailable;
+      webViewRef.current?.injectJavaScript(
+        `(function(){try{window.dispatchEvent(new CustomEvent('rnPurchaseError',` +
+        `{detail:{message:${JSON.stringify(errMsg)}}}));}catch(_){}})();true;`
+      );
+      showNativeDialog({
+        title: nativeUi.purchaseErrorTitle,
+        message: errMsg,
+        buttons: [{ text: nativeUi.ok }],
+      });
+    } finally {
+      setPackPickerBusy(false);
+    }
+  }, [packPickerSelectedIdx, packPickerPackages, nativeUi, showNativeDialog]);
+
   const handleNativePurchase = useCallback(async () => {
     let offerings: Awaited<ReturnType<typeof Purchases.getOfferings>>;
     try {
@@ -1891,43 +2159,10 @@ export default function WebViewScreen() {
       return;
     }
 
-    const executePurchase = async (pkg: PurchasesPackage) => {
-      try {
-        await Purchases.purchasePackage(pkg);
-        // Notify web app — triggers balance refresh via __rnForceAccountRefresh
-        DeviceEventEmitter.emit("rnPurchaseSuccess");
-        // Dispatch CustomEvent so web app can show success feedback
-        const productId = pkg.product.identifier;
-        webViewRef.current?.injectJavaScript(
-          `(function(){try{window.dispatchEvent(new CustomEvent('rnPurchaseSuccess',` +
-          `{detail:{productId:${JSON.stringify(productId)}}}));}catch(_){}})();true;`
-        );
-      } catch (e: unknown) {
-        if (isPurchasesError(e) && e.userCancelled) return;
-        const errMsg = isPurchasesError(e) ? e.message : nativeUi.storeUnavailable;
-        webViewRef.current?.injectJavaScript(
-          `(function(){try{window.dispatchEvent(new CustomEvent('rnPurchaseError',` +
-          `{detail:{message:${JSON.stringify(errMsg)}}}));}catch(_){}})();true;`
-        );
-        showNativeDialog({
-          title: nativeUi.purchaseErrorTitle,
-          message: errMsg,
-          buttons: [{ text: nativeUi.ok }],
-        });
-      }
-    };
-
-    const alertButtons: Array<{
-      text: string;
-      style?: "cancel" | "default" | "destructive";
-      onPress?: () => void;
-    }> = pkgs.map((pkg) => ({
-      text: `${pkg.product.title}  ${pkg.product.priceString}`,
-      onPress: () => { void executePurchase(pkg); },
-    }));
-    alertButtons.push({ text: nativeUi.cancel, style: "cancel" });
-
-    Alert.alert(nativeUi.purchaseTitle, nativeUi.purchaseMessage, alertButtons);
+    setPackPickerPackages(pkgs);
+    setPackPickerSelectedIdx(null);
+    setPackPickerBusy(false);
+    setPackPickerOpen(true);
   }, [showNativeDialog, nativeUi]);
 
   /* ── onMessage dispatcher ── */
@@ -2254,6 +2489,23 @@ export default function WebViewScreen() {
         config={nativeDialog}
         onClose={() => setNativeDialog(null)}
         appearance={shellTheme}
+      />
+
+      {/* ── Pack picker modal (Google Play Billing) ──────────────────────── */}
+      <PackPickerModal
+        visible={packPickerOpen}
+        packages={packPickerPackages}
+        selectedIdx={packPickerSelectedIdx}
+        onSelect={setPackPickerSelectedIdx}
+        onConfirm={() => { void executePurchaseFromPicker(); }}
+        onCancel={() => setPackPickerOpen(false)}
+        busy={packPickerBusy}
+        appearance={shellTheme}
+        ui={{
+          title: nativeUi.purchaseTitle,
+          confirmBtn: nativeUi.ok,
+          cancel: nativeUi.cancel,
+        }}
       />
 
       {debugLogs.length > 0 && (
