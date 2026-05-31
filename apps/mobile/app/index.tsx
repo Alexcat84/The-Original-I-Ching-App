@@ -292,10 +292,11 @@ const INJECTED_JS = `
     'html.iching-rn-webview .legal-consent-backdrop{z-index:2147483000!important;padding:max(.75rem,env(safe-area-inset-top,0px)) .75rem max(.75rem,env(safe-area-inset-bottom,0px))!important}',
     'html.iching-rn-webview .legal-consent-modal{max-height:calc(100vh - 1.5rem)!important;width:100%!important}',
     'html.iching-rn-webview .legal-consent-scroll{overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}',
-    /* Chat drawer: push the entire drawer content above the Android bottom nav bar.
-       Applied to the container (not just the list) so the background and all content
-       stop at the same boundary. Same clamp formula as .chat-surface. */
-    'html.iching-rn-webview .chat-drawer{padding-bottom:calc(0.25rem + clamp(18px,env(safe-area-inset-bottom,0px),52px))!important}',
+    /* Chat drawer list: push scrollable content above the Android bottom nav bar.
+       Must target .chat-drawer-list (the overflow-y:auto scroll container) not the outer
+       .chat-drawer — padding on the parent flex container does not extend into the
+       scroll area of the child. */
+    'html.iching-rn-webview .chat-drawer-list{padding-bottom:calc(0.25rem + clamp(18px,env(safe-area-inset-bottom,0px),52px))!important}',
     /* Hide Vercel preview toolbar — staging deployments inject a floating Vercel icon that confuses testers */
     'vercel-toolbar,#__vercel-toolbar,.__vercel-toolbar,div[id*="vercel-toolbar"],iframe[src*="vercel.live"]{display:none!important}'
   ].join(';');
@@ -1453,6 +1454,7 @@ interface PackPickerModalProps {
 function PackPickerModal({
   visible, packages, selectedIdx, onSelect, onConfirm, onCancel, busy, appearance, ui,
 }: PackPickerModalProps) {
+  const insets = useSafeAreaInsets();
   const isDark = appearance === "dark";
   const c = {
     backdrop:      isDark ? "rgba(0,0,0,0.80)"              : "rgba(0,0,0,0.52)",
@@ -1530,7 +1532,7 @@ function PackPickerModal({
           </ScrollView>
 
           {/* Confirm button */}
-          <View style={[ppStyles.footer, { borderTopColor: c.headerBorder }]}>
+          <View style={[ppStyles.footer, { borderTopColor: c.headerBorder, paddingBottom: Math.max(16, insets.bottom + 8) }]}>
             <TouchableOpacity
               activeOpacity={0.82}
               onPress={onConfirm}
@@ -1572,7 +1574,6 @@ const ppStyles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: "88%",
-    paddingBottom: 24,
   },
   header: {
     flexDirection: "row",
@@ -1803,7 +1804,7 @@ export default function WebViewScreen() {
         }
       } catch { /* SecureStore unavailable — fall back to anonymous */ }
       try {
-        Purchases.configure({ apiKey: RC_API_KEY, appUserId });
+        Purchases.configure({ apiKey: RC_API_KEY, appUserID: appUserId });
       } catch (e) {
         console.warn('[RevenueCat] configure failed:', e);
       }
