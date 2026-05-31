@@ -1,8 +1,18 @@
-<!-- changelog:last-release:392a717 -->
+<!-- changelog:last-release:102ceec -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.3.7] — 2026-05-31 | versionCode: 30 | Etapa: Closed Testing
+
+### Fix
+- fix(mobile/cache): evict stale SQLite chats when server confirms empty account | commit: 102ceec
+- fix(db): allow intentional tier downgrades in grant_tokens (corrects 043) | commit: 0b14e69
+- fix(billing+mobile+drawer): three independent bug fixes | commit: 86fabf3
+- fix(changelog): remove --all flag, fix window ordering, correct stage threshold | commit: fb0cdd1
+
+---
 
 ## [3.3.6] — 2026-05-31 | versionCode: 29 | Etapa: Closed Testing
 
@@ -1028,34 +1038,34 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-
 ## Resumen de versiones
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.3.6 | 29 | 2026-05-31 | Closed Testing | 2 | chat drawer list respects Android bottom nav safe area |
-| 3.3.5 | 28 | 2026-05-31 | Closed Testing | 2 | tokens not granted after purchase; chat delete fails silently |
-| 3.3.4 | 27 | 2026-05-30 | Closed Testing | 2 | — |
-| 3.3.3 | 26 | 2026-05-30 | Closed Testing | 6 | replace native <select> with themed custom dropdown; replace Alert.alert pack picker with visual modal cards; insert new release at top instead of appending at bottom |
-| 3.3.2 | 25 | 2026-05-30 | Closed Testing | 35 | convert delete-account doc to FAQs + add delete-chats FAQ; add Tutorial label before info icon in header button; style delete-account btn to match other action buttons |
-| 3.3.1 | 24 | 2026-05-29 | Closed Testing | 44 | add react-joyride tour with 7 steps in 11 languages; fix tour trigger + add custom styled tooltip; add Nueva Sesión step (step 2) to tour |
-| 3.3.0 | 23 | 2026-05-25 | Closed Testing | 3 | add base-uri, form-action, object-src directives; route ritual debug logs through Axiom instead of console |
-| 3.2.9 | 22 | 2026-05-24 | Closed Testing | 9 | IndexedDB cache for chat list and thread content; add support@theoriginaliching.com contact link in Terms section 10; redesign offline screen v2 — brand logo, fix transparent bleed-through |
-| 3.2.8 | 21 | 2026-05-21 | Internal Testing | 3 | custom offline screen with animated radar when WebView fails; simplify offline screen — Signal Lost / The oracle is waiting |
-| 3.2.7 | 20 | 2026-05-21 | Internal Testing | 2 | remove READ_MEDIA_IMAGES/VIDEO permissions + bump to 3.2.7 (versionCode 20) |
-| 3.2.6 | 19 | 2026-05-21 | Internal Testing | 36 | implement full account deletion flow for Google Play compliance; full localization of account deletion flow; merge account deletion flow into staging |
-| 3.2.5 | 18 | 2026-05-18 | Internal Testing | 1 | — |
-| 3.2.4 | 17 | 2026-05-18 | Internal Testing | 5 | suppress Expo Go warning and clean cached native dir before prebuild; add root .easignore so apps/mobile/.env reaches Metro bundler + bump 3.2.3/16; handle PKCE auth/callback deep link so Google OAuth returns to app |
-| 3.2.2 | 15 | 2026-05-18 | Internal Testing | 1 | strip orphaned [SNAPSHOT_END], PDF saves to Downloads with permission + bump … |
-| 3.2.1 | 14 | 2026-05-18 | Internal Testing | 2 | respect native dialog confirmation before removing chat + bump 3.2.1/versionC… |
-| 3.2.0 | 12 | 2026-05-17 | Internal Testing | 8 | add library unlock and translator label to Seeker pack description; commit package-lock.json with next-axiom entry; align pack descriptions in all 10 languages with Spanish source of truth |
-| 3.1.8 | 11 | 2026-05-17 | Internal Testing | 10 | translate guide/FAQ sections for all 11 locales + remove Zhou Yi inline trans…; hexagram-specific fallback image generator (2,760 WebP); integrate Cloudflare R2 as primary image fallback |
-| 3.1.7 | 10 | 2026-05-16 | Internal Testing | 167 | update seeker tokens 20→25 and practitioner tokens 40→50; implement Yarrow Stalks casting method; Block A — chip selectors, dynamic hint, em dash cleanup |
-| 3.1.6 | 9 | 2026-05-07 | Internal Testing | 45 | manual three-coin cast mode with preview and API validation; Kangxi cash coins + instant dual-hex ritual for manual I Ching; compact manual coin wizard; add expo export test artifacts |
-| 3.1.5 | 8 | 2026-05-03 | Internal Testing | 7 | v3.1.4 - fix EAS env vars, staging build with all secrets; add openGraph, Twitter, keywords, per-page metadata and sitemap to all public…; expand historical content for I Ching and Oracle Bones in all 11 languages |
-| 3.1.3 | 6 | 2026-04-30 | Internal Testing | 1 | — |
-| 3.1.2 | 5 | 2026-04-30 | Internal Testing | 4 | re-enable R8, add Sentry crash reporting and error boundary; re-enable R8, add Sentry crash reporting and error boundary; persist R8 keep rules via Expo config plugin |
-| 3.1.1 | 4 | 2026-04-29 | Internal Testing | 54 | franja Play arriba, cierre hilo y aviso límite; i18n; mandatory legal consent on signup and OAuth; i18n docs wording, legal consent flow, locale cookies, ritual UI |
-| 1.0.0 | 10 | 2026-04-23 | Internal Testing | 42 | themed native chrome, locale bridge for login, i18n dialogs; default UI locale EN, device detection via expo-localization; rounded top cap on auth strip, square join to app bar |
-| 3.0.0 | 3 | 2026-04-23 | Internal Testing | 1 | — |
-| 2.0.0 | 2 | 2026-04-20 | Internal Testing | 257 | Cloudflare Turnstile for register; turbo env passthrough; chat UX refresh, docs routes, richer image prompts; logo header, drawer stats, prune empty chats, mode showcase |
+| 3.3.7 | 30 | 2026-05-31 | Closed Testing | 4 | evict stale SQLite chats when server confirms empty account; allow intentional tier downgrades in grant_tokens (corrects 043); three independent bug fixes |
+| 3.3.6 | 29 | 2026-05-31 | Closed Testing | 0 | — |
+| 3.3.5 | 28 | 2026-05-31 | Closed Testing | 0 | — |
+| 3.3.4 | 27 | 2026-05-30 | Closed Testing | 0 | — |
+| 3.3.3 | 26 | 2026-05-30 | Closed Testing | 0 | — |
+| 3.3.2 | 25 | 2026-05-30 | Closed Testing | 0 | — |
+| 3.3.1 | 24 | 2026-05-29 | Closed Testing | 0 | — |
+| 3.3.0 | 23 | 2026-05-25 | Closed Testing | 0 | — |
+| 3.2.9 | 22 | 2026-05-24 | Closed Testing | 0 | — |
+| 3.2.8 | 21 | 2026-05-21 | Internal Testing | 0 | — |
+| 3.2.7 | 20 | 2026-05-21 | Internal Testing | 0 | — |
+| 3.2.6 | 19 | 2026-05-21 | Internal Testing | 0 | — |
+| 3.2.5 | 18 | 2026-05-18 | Internal Testing | 0 | — |
+| 3.2.4 | 17 | 2026-05-18 | Internal Testing | 0 | — |
+| 3.2.2 | 15 | 2026-05-18 | Internal Testing | 0 | — |
+| 3.2.1 | 14 | 2026-05-18 | Internal Testing | 0 | — |
+| 3.2.0 | 12 | 2026-05-17 | Internal Testing | 0 | — |
+| 3.1.8 | 11 | 2026-05-17 | Internal Testing | 0 | — |
+| 3.1.7 | 10 | 2026-05-16 | Internal Testing | 0 | — |
+| 3.1.6 | 9 | 2026-05-07 | Internal Testing | 0 | — |
+| 3.1.5 | 8 | 2026-05-03 | Internal Testing | 0 | — |
+| 3.1.3 | 6 | 2026-04-30 | Internal Testing | 0 | — |
+| 3.1.2 | 5 | 2026-04-30 | Internal Testing | 0 | — |
+| 3.1.1 | 4 | 2026-04-29 | Internal Testing | 0 | — |
+| 1.0.0 | 10 | 2026-04-23 | Internal Testing | 0 | — |
+| 3.0.0 | 3 | 2026-04-23 | Internal Testing | 0 | — |
+| 2.0.0 | 2 | 2026-04-20 | Internal Testing | 0 | — |

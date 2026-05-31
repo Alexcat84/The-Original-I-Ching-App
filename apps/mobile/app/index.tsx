@@ -1822,7 +1822,6 @@ export default function WebViewScreen() {
   const injectCachedChats = useCallback(() => {
     void getCachedChatsForInjection().then((chats) => {
       cachedChatsRef.current = chats;
-      if (chats.length === 0) return;
       const payload = JSON.stringify(chats);
       webViewRef.current?.injectJavaScript(
         `(function(){try{` +

@@ -2381,9 +2381,11 @@ export default function HomePage() {
   useEffect(() => {
     type RnEntry = ChatSessionState<ConsultationItem>;
     function applyCache(entries: RnEntry[]) {
-      if (!Array.isArray(entries) || entries.length === 0) return;
+      if (!Array.isArray(entries)) return;
       setSessions((prev) => {
+        // Never overwrite sessions that already have loaded message content.
         if (prev.some((s) => s.messageCount > 0)) return prev;
+        // [] means SQLite confirmed empty (server-evicted stale chats) — clear sidebar.
         return entries;
       });
     }
