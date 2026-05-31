@@ -68,6 +68,7 @@ module.exports = ({ config }) => ({
   plugins: [
     "expo-router",
     "expo-localization",
+    "react-native-purchases",
     [
       "expo-build-properties",
       {
