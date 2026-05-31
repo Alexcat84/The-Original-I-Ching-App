@@ -1,29 +1,24 @@
-<!-- changelog:last-release:1f76095 -->
+<!-- changelog:last-release:7b433a4 -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
 
-## [3.3.8] — 2026-05-31 | versionCode: 31 | Etapa: Closed Testing
+## [3.3.7] — 2026-05-31 | versionCode: 30 | Etapa: Closed Testing
 
 ### Fix
+- fix(mobile/billing): configure RevenueCat with stored UID on cold start | commit: 7b433a4
 - fix(mobile+web): clear stale sidebar chats when SQLite confirms empty account | commit: 5a9b141
+- fix(mobile/cache): evict stale SQLite chats when server confirms empty account | commit: 102ceec
+- fix(db): allow intentional tier downgrades in grant_tokens (corrects 043) | commit: 0b14e69
+- fix(billing+mobile+drawer): three independent bug fixes | commit: 86fabf3
+- fix(changelog): remove --all flag, fix window ordering, correct stage threshold | commit: fb0cdd1
 
 ### Docs
 - docs(claude): mark CI actions upgrade as done (v6, 2026-05-31) | commit: 1f76095
 
 ### Maintenance
 - chore(ci): upgrade actions/checkout and setup-node to v6 | commit: 2cb197c
-
----
-
-## [3.3.7] — 2026-05-31 | versionCode: 30 | Etapa: Closed Testing
-
-### Fix
-- fix(mobile/cache): evict stale SQLite chats when server confirms empty account | commit: 102ceec
-- fix(db): allow intentional tier downgrades in grant_tokens (corrects 043) | commit: 0b14e69
-- fix(billing+mobile+drawer): three independent bug fixes | commit: 86fabf3
-- fix(changelog): remove --all flag, fix window ordering, correct stage threshold | commit: fb0cdd1
 
 ---
 
@@ -1055,8 +1050,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.3.8 | 31 | 2026-05-31 | Closed Testing | 3 | clear stale sidebar chats when SQLite confirms empty account |
-| 3.3.7 | 30 | 2026-05-31 | Closed Testing | 0 | — |
+| 3.3.7 | 30 | 2026-05-31 | Closed Testing | 8 | configure RevenueCat with stored UID on cold start; clear stale sidebar chats when SQLite confirms empty account; evict stale SQLite chats when server confirms empty account |
 | 3.3.6 | 29 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.5 | 28 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.4 | 27 | 2026-05-30 | Closed Testing | 0 | — |
