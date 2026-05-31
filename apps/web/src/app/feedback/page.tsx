@@ -11,6 +11,7 @@ import {
   type AppLocale,
 } from "@iching-oracle/i18n";
 import { useAppLocale } from "@/lib/use-app-locale";
+import { CustomSelect, type SelectOption } from "@/components/CustomSelect";
 
 const WEB_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "web";
 const SUPPORT_EMAIL = "support@theoriginaliching.com";
@@ -135,17 +136,18 @@ export default function FeedbackPage() {
             {/* Category */}
             <div className="feedback-field">
               <label htmlFor="fb-category">{m.categoryLabel}</label>
-              <select
+              <CustomSelect<FeedbackCategory>
                 id="fb-category"
                 value={category}
-                onChange={(e) => setCategory(e.target.value as FeedbackCategory | "")}
-                className={fieldErrors.category ? "feedback-input--error" : ""}
-              >
-                <option value="" disabled>{m.categoryPlaceholder}</option>
-                {FEEDBACK_CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>{categoryLabel(cat, m)}</option>
-                ))}
-              </select>
+                onChange={setCategory}
+                options={FEEDBACK_CATEGORIES.map((cat): SelectOption<FeedbackCategory> => ({
+                  value: cat,
+                  label: categoryLabel(cat, m),
+                }))}
+                placeholder={m.categoryPlaceholder}
+                ariaLabel={m.categoryLabel}
+                error={!!fieldErrors.category}
+              />
               {fieldErrors.category && <span className="feedback-error">{fieldErrors.category}</span>}
             </div>
 
@@ -190,15 +192,17 @@ export default function FeedbackPage() {
             {/* App locale at time of issue */}
             <div className="feedback-field">
               <label htmlFor="fb-locale">{m.localeLabel}</label>
-              <select
+              <CustomSelect<AppLocale>
                 id="fb-locale"
                 value={appLocale}
-                onChange={(e) => setAppLocale(e.target.value as AppLocale)}
-              >
-                {SUPPORTED_LOCALES.map((loc) => (
-                  <option key={loc} value={loc}>{loc.toUpperCase()}</option>
-                ))}
-              </select>
+                onChange={setAppLocale}
+                options={SUPPORTED_LOCALES.map((loc): SelectOption<AppLocale> => ({
+                  value: loc,
+                  label: loc.toUpperCase(),
+                }))}
+                placeholder={appLocale.toUpperCase()}
+                ariaLabel={m.localeLabel}
+              />
             </div>
 
             {serverError && (
