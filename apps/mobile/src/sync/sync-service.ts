@@ -79,7 +79,7 @@ async function fetchChatDetail(
 
 /** Tier 1: sync chat list metadata only. No message content. Runs on auth
  *  with a 5-minute cooldown to keep the sidebar fast without hammering the API. */
-export async function syncChats(token: string, baseUrl: string): Promise<void> {
+export async function syncChats(token: string, baseUrl: string, userId?: string): Promise<void> {
   try {
     const lastSync = await getSyncMeta("last_sync");
     if (lastSync) {
@@ -112,6 +112,10 @@ export async function syncChats(token: string, baseUrl: string): Promise<void> {
     // in the sidebar on the next cold start before the server response arrives.
     await softDeleteStaleChats(chatRows.map((r) => r.id));
     await setSyncMeta("last_sync", now);
+    // Record which user this sync belongs to. On cold start, the mount effect
+    // compares this value against the stored JWT's UUID — if they differ, the
+    // cache is wiped before injection, preventing cross-user data leaks.
+    if (userId) await setSyncMeta("last_synced_user", userId);
 
     // Process any images that were previously queued but not downloaded.
     void syncPendingImages();

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases, { type PurchasesPackage } from "react-native-purchases";
-import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, softDeleteChat, clearAllData, type RnCachedChatEntry } from "@/src/db/chat-store";
+import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, softDeleteChat, clearAllData, getSyncMeta, setSyncMeta, type RnCachedChatEntry } from "@/src/db/chat-store";
 import { syncChats, syncChatContent } from "@/src/sync/sync-service";
 import * as FileSystem from "expo-file-system";
 import * as Linking from "expo-linking";
@@ -1749,12 +1749,32 @@ export default function WebViewScreen() {
 
   /* ── SQLite: initialize schema on mount, then pre-fetch cached chats into ref.
      Pre-fetching starts before onLoadEnd fires (WebView loading takes ~1-3s),
-     so the ref is ready for synchronous injection when the page finishes loading.  ── */
+     so the ref is ready for synchronous injection when the page finishes loading.
+     SECURITY: only populate the ref if the cached data belongs to the currently
+     stored user. A mismatch (different user, deleted account, fresh install) wipes
+     the stale SQLite rows before the WebView can inject them. ── */
   useEffect(() => {
-    void initDb()
-      .then(() => getCachedChatsForInjection())
-      .then((chats) => { cachedChatsRef.current = chats; })
-      .catch(() => undefined);
+    void (async () => {
+      try {
+        await initDb();
+        const [chats, storedTok, lastSyncedUser] = await Promise.all([
+          getCachedChatsForInjection(),
+          SecureStore.getItemAsync(SECURE_TOKEN_KEY),
+          getSyncMeta("last_synced_user"),
+        ]);
+        const storedUid = getUserIdFromJwt(storedTok ?? "");
+        if (storedUid && lastSyncedUser && storedUid === lastSyncedUser) {
+          // Cache verified: belongs to the currently stored user.
+          cachedChatsRef.current = chats;
+        } else {
+          // Mismatch or no sync record — wipe stale data before any injection.
+          await clearAllData();
+          cachedChatsRef.current = [];
+        }
+      } catch {
+        cachedChatsRef.current = [];
+      }
+    })();
   }, []);
 
   /* ── Restore token + locale from storage on cold start ── */
@@ -2209,12 +2229,13 @@ export default function WebViewScreen() {
         const msg = JSON.parse(event.nativeEvent.data) as RNMessage;
         switch (msg.type) {
           case "auth_token": {
-            // Detect user switch: if a different user logs in, wipe the SQLite
-            // cache before injecting it. Without this, stale chats from a
-            // previous user would flash in the new user's sidebar.
+            // Detect user switch (or first login after sign-out):
+            // clear SQLite AND the in-memory ref so stale chats from a previous
+            // user never reach the new user's sidebar even for a single frame.
             const prevUid = getUserIdFromJwt(accessTokenRef.current ?? "");
             const newUid  = getUserIdFromJwt(msg.token);
-            if (prevUid && newUid && prevUid !== newUid) {
+            if (newUid && prevUid !== newUid) {
+              cachedChatsRef.current = [];
               void clearAllData().catch(() => undefined);
             }
             accessTokenRef.current = msg.token;
@@ -2228,7 +2249,7 @@ export default function WebViewScreen() {
             webViewRef.current?.injectJavaScript(
               `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
             );
-            void syncChats(msg.token, BASE_URL)
+            void syncChats(msg.token, BASE_URL, newUid ?? undefined)
               .then(() => injectCachedChats())
               .catch(() => undefined);
             break;
@@ -2241,6 +2262,10 @@ export default function WebViewScreen() {
             setUserEmail(null);
             SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
             Purchases.logOut().catch(() => undefined);
+            // Clear SQLite and memory cache on sign-out so the next user (or the
+            // same user on re-login) starts with a clean slate.
+            cachedChatsRef.current = [];
+            void clearAllData().catch(() => undefined);
             webViewRef.current?.injectJavaScript(
               `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
             );
@@ -2297,8 +2322,11 @@ export default function WebViewScreen() {
             break;
 
           case "account_deleted":
-            // Wipe the local SQLite cache — the Supabase account no longer
-            // exists, so cached data must not appear for a future new account.
+            // Wipe both the SQLite disk cache AND the in-memory ref.
+            // clearAllData() alone is insufficient: cachedChatsRef.current holds
+            // an in-memory snapshot loaded at mount time that onLoadEnd would
+            // re-inject even after the disk is cleared.
+            cachedChatsRef.current = [];
             void clearAllData().catch(() => undefined);
             break;
 
