@@ -52,6 +52,19 @@ function packIconFor(productIdentifier: string): number {
   if (productIdentifier.includes("master")) return PACK_ICON_MASTER;
   return PACK_ICON_SEEKER; // seeker + fallback
 }
+
+/** Extracts the Supabase user UUID (sub claim) from a JWT without external deps. */
+function getUserIdFromJwt(token: string): string | null {
+  try {
+    const payload = token.split(".")[1];
+    if (!payload) return null;
+    const json = Buffer.from(payload, "base64").toString("utf8");
+    const claims = JSON.parse(json) as { sub?: string };
+    return typeof claims.sub === "string" && claims.sub.length > 0 ? claims.sub : null;
+  } catch {
+    return null;
+  }
+}
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   WebView,
@@ -1765,6 +1778,9 @@ export default function WebViewScreen() {
         accessTokenRef.current = tok;
         setIsAuthenticated(true);
         setUserEmail(check.email);
+        // Re-identify with RevenueCat on cold start so purchases are attributed correctly
+        const uid = getUserIdFromJwt(tok);
+        if (uid) { try { await Purchases.logIn(uid); } catch { /* non-fatal */ } }
       } else {
         accessTokenRef.current = null;
         setIsAuthenticated(false);
@@ -2176,6 +2192,11 @@ export default function WebViewScreen() {
             setIsAuthenticated(true);
             if (msg.email) setUserEmail(msg.email);
             SecureStore.setItemAsync(SECURE_TOKEN_KEY, msg.token);
+            // Identify user to RevenueCat so webhook receives a valid UUID instead of $RCAnonymousID
+            void (async () => {
+              const uid = getUserIdFromJwt(msg.token);
+              if (uid) { try { await Purchases.logIn(uid); } catch { /* non-fatal */ } }
+            })();
             webViewRef.current?.injectJavaScript(
               `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
             );
@@ -2190,6 +2211,7 @@ export default function WebViewScreen() {
             setIsAuthenticated(false);
             setUserEmail(null);
             SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
+            Purchases.logOut().catch(() => undefined);
             webViewRef.current?.injectJavaScript(
               `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
             );

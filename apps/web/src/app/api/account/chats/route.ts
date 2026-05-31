@@ -86,9 +86,10 @@ export async function DELETE(req: Request) {
   }
   const ok = await deleteUserSession(user.userId, sessionId);
   if (!ok) {
-    log.warn("chat_delete_not_found", { userId: user.userId.slice(0, 8), sessionId: sessionId.slice(0, 8) });
+    // Session not in DB (already deleted or only in local cache) — idempotent: treat as success.
+    log.info("chat_delete_not_found_idempotent", { userId: user.userId.slice(0, 8), sessionId: sessionId.slice(0, 8) });
     await log.flush();
-    return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
+    return NextResponse.json({ ok: true });
   }
   log.info("chat_deleted", { userId: user.userId.slice(0, 8), sessionId: sessionId.slice(0, 8) });
   await log.flush();
