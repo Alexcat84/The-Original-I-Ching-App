@@ -1,18 +1,5 @@
 name: CI
 
-# ⚠️  ACCIÓN REQUERIDA — ANTES DEL 2 DE JUNIO 2026
-# GitHub forzará Node.js 24 para ejecutar las actions en esa fecha.
-# Si no se actualizan, el CI fallará en el paso "Set up job".
-# PASOS:
-#   1. Verificar que existan versiones nuevas:
-#      https://github.com/actions/checkout/releases
-#      https://github.com/actions/setup-node/releases
-#   2. Actualizar las dos líneas siguientes en este archivo:
-#        uses: actions/checkout@v4   →  @v5 (o la versión disponible)
-#        uses: actions/setup-node@v4 →  @v5 (o la versión disponible)
-#   3. Push a staging y verificar que el CI pase antes de merge a main.
-# DEADLINE DURO: 2 junio 2026 (forzado) / 16 septiembre 2026 (Node 20 eliminado)
-
 on:
   push:
     branches: [main]
@@ -23,9 +10,9 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "22"
           cache: "npm"
