@@ -45,9 +45,11 @@ export default function PricingPage() {
     setBusy(true);
     setMessage(null);
     let appUserId: string | null = null;
+    let email: string | null = null;
     if (isSupabaseBrowserConfigured()) {
       const { data } = await getSupabaseBrowser().auth.getSession();
       appUserId = data.session?.user?.id?.trim() ?? null;
+      email = data.session?.user?.email?.trim() ?? null;
     }
     if (!appUserId) {
       setMessage(p.loginRequired);
@@ -57,6 +59,7 @@ export default function PricingPage() {
     }
     const built = await buildPlansCheckoutUrl(process.env.NEXT_PUBLIC_PLANS_URL, {
       appUserId,
+      email,
       requireAppUserId: true,
     });
     if (!built.ok) {

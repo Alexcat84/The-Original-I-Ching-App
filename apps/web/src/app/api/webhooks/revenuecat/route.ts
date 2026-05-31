@@ -8,6 +8,66 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 export const runtime = "nodejs";
 
 const PURCHASE_EVENTS = new Set(["NON_RENEWING_PURCHASE", "TEST"]);
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function isValidUUID(s: unknown): s is string {
+  return typeof s === "string" && UUID_RE.test(s);
+}
+
+/**
+ * Tries to resolve a real Supabase UUID from a RevenueCat webhook event that
+ * arrived with an anonymous app_user_id ($RCAnonymousID:...).
+ *
+ * RC Web Billing may create an anonymous customer when the hosted checkout
+ * page runs without a valid SDK session (e.g. browser had a stale RC cookie
+ * from a previous visit). The webhook event, however, includes two recovery
+ * signals:
+ *   1. `aliases` – array of all known IDs for that RC customer; a UUID in
+ *      this array means the user previously identified themselves.
+ *   2. `subscriber_attributes.$email` – the email RC collected during checkout;
+ *      if present, we look it up in public.users to find the Supabase UUID.
+ */
+async function resolveAnonymousUserId(
+  event: Record<string, unknown>,
+  supabase: ReturnType<typeof getSupabaseAdmin>,
+  log: Logger,
+  anonymousId: string,
+): Promise<string | null> {
+  // ── 1. Check aliases array ───────────────────────────────────────────────
+  const aliases = Array.isArray(event.aliases) ? event.aliases : [];
+  const uuidAlias = aliases.find(isValidUUID);
+  if (uuidAlias) {
+    log.info("webhook_resolved_from_alias", {
+      anonymous: anonymousId.slice(0, 32),
+      resolved: uuidAlias.slice(0, 8),
+    });
+    return uuidAlias;
+  }
+
+  // ── 2. Check subscriber_attributes.$email ───────────────────────────────
+  if (!supabase) return null;
+  const attrs = event.subscriber_attributes as Record<string, unknown> | undefined;
+  const emailAttr = attrs?.["$email"] as { value?: unknown } | undefined;
+  const email = typeof emailAttr?.value === "string" ? emailAttr.value.trim() : null;
+
+  if (!email) return null;
+
+  const { data: userRow } = await supabase
+    .from("users")
+    .select("id")
+    .eq("email", email)
+    .maybeSingle();
+
+  if (userRow?.id) {
+    log.info("webhook_resolved_from_email", {
+      anonymous: anonymousId.slice(0, 32),
+      email: email.slice(0, 6) + "…",
+    });
+    return userRow.id as string;
+  }
+
+  return null;
+}
 
 export async function POST(req: NextRequest) {
   const log = new Logger({ source: "api/webhooks/revenuecat" });
@@ -53,15 +113,39 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "missing_fields" }, { status: 400 });
   }
 
-  // RevenueCat sends "$RCAnonymousID:..." when the purchase was made before the SDK
-  // identified the user (Purchases.logIn was not called before the purchase).
-  // These IDs are not UUIDs — passing them to the DB crashes with "invalid input syntax
-  // for type uuid". Return 200 so RC stops retrying; the purchase cannot be attributed
-  // without a valid Supabase UUID. The user will need to contact support for manual credit.
+  const supabase = getSupabaseAdmin();
+
+  // ── Anonymous user resolution ────────────────────────────────────────────
+  // RC sends "$RCAnonymousID:..." when the hosted checkout ran without a
+  // properly identified SDK session. Before giving up, try to recover the
+  // real Supabase UUID from the event's aliases array or the customer email.
+  let resolvedUserId = userId;
   if (userId.startsWith("$RCAnonymousID:")) {
-    log.error("webhook_anonymous_user_id", { eventType, productId, userId: userId.slice(0, 32) });
-    await log.flush();
-    return NextResponse.json({ error: "anonymous_user_id_not_attributable" }, { status: 200 });
+    if (event) {
+      const recovered = await resolveAnonymousUserId(event, supabase, log, userId);
+      if (recovered) resolvedUserId = recovered;
+    }
+
+    if (resolvedUserId === userId) {
+      // Could not attribute — store for manual support resolution.
+      const pack = getPackConfig(productId);
+      if (supabase && pack) {
+        await supabase.from("anonymous_purchase_log").upsert(
+          {
+            event_hash: eventHash,
+            event_type: eventType,
+            rc_anonymous_id: userId,
+            product_id: productId,
+            tokens: pack.tokens,
+            raw_event: event as Record<string, unknown>,
+          },
+          { onConflict: "event_hash", ignoreDuplicates: true },
+        );
+      }
+      log.error("webhook_anonymous_unresolved", { eventType, productId, userId: userId.slice(0, 32) });
+      await log.flush();
+      return NextResponse.json({ error: "anonymous_user_id_not_attributable" }, { status: 200 });
+    }
   }
 
   const pack = getPackConfig(productId);
@@ -72,7 +156,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "unknown_product" }, { status: 400 });
   }
 
-  const supabase = getSupabaseAdmin();
   if (!supabase) {
     return NextResponse.json({ error: "db_not_configured" }, { status: 503 });
   }
@@ -83,7 +166,7 @@ export async function POST(req: NextRequest) {
   const { data: grantResult, error: grantError } = await supabase.rpc("grant_tokens_idempotent", {
     p_event_hash: eventHash,
     p_event_type: eventType,
-    p_user_id: userId,
+    p_user_id: resolvedUserId,
     p_tokens: pack.tokens,
     p_pack: productId,
   });
@@ -101,7 +184,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ skipped: "already_processed" });
   }
 
-  log.info("tokens_granted", { userId: userId.slice(0, 8), productId, tokens: pack.tokens, eventType });
+  const wasAnonymous = resolvedUserId !== userId;
+  log.info("tokens_granted", {
+    userId: resolvedUserId.slice(0, 8),
+    productId,
+    tokens: pack.tokens,
+    eventType,
+    ...(wasAnonymous && { resolvedFromAnonymous: true }),
+  });
   await log.flush();
   return NextResponse.json({ granted: pack.tokens, pack: productId });
 }

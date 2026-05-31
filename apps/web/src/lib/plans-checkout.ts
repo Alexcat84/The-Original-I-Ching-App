@@ -36,6 +36,8 @@ export function resolveBasePlansUrl(raw: string): string | null {
 export type BuildPlansCheckoutUrlOptions = {
   /** Known Supabase user id (e.g. React state) — combined with getSession to avoid races. */
   appUserId?: string | null;
+  /** User email — passed as ?email= query param so RC pre-fills the checkout form. */
+  email?: string | null;
   /** If true, fail when no user id can be resolved (authenticated CTAs must pass app_user_id). */
   requireAppUserId?: boolean;
 };
@@ -44,9 +46,18 @@ export type BuildPlansCheckoutUrlResult =
   | { ok: true; url: string }
   | { ok: false; code: "not_configured" | "build_failed" | "missing_app_user_id" };
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const UUID_PATH_RE = /\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/?$/i;
+
 /**
- * Builds the checkout URL: base from `NEXT_PUBLIC_PLANS_URL` plus `app_user_id` (and `rc_app_user_id`)
- * when a Supabase session / optional explicit id is available.
+ * Builds the RevenueCat Web Billing checkout URL.
+ *
+ * RC Web Billing identifies the customer via the app_user_id in the URL **path**:
+ *   https://pay.rev.cat/{billing-token}/{appUserId}?email=user@example.com
+ *
+ * Passing the UUID only as a query parameter (?app_user_id=...) is ignored by RC's hosted
+ * checkout and results in anonymous purchases. The UUID must be the last path segment.
+ *
  * Call only from the browser (client components).
  */
 export async function buildPlansCheckoutUrl(
@@ -64,32 +75,34 @@ export async function buildPlansCheckoutUrl(
   try {
     const target = new URL(base, window.location.origin);
 
-    // Strip any UUID that was accidentally embedded as a path segment in the plans URL.
-    // NEXT_PUBLIC_PLANS_URL must be the base URL (e.g. https://pay.rev.cat/sandbox/slug/)
-    // with the UUID only as ?app_user_id=, never in the path.
-    const UUID_PATH_RE = /\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/?$/i;
+    // Strip any UUID that was accidentally embedded as a path segment in the env var
+    // (NEXT_PUBLIC_PLANS_URL should be the base billing URL without a user ID).
     if (UUID_PATH_RE.test(target.pathname)) {
       target.pathname = target.pathname.replace(UUID_PATH_RE, "/");
     }
 
     let appUserId: string | undefined = options?.appUserId?.trim() || undefined;
+    let email: string | undefined = options?.email?.trim() || undefined;
 
     if (isSupabaseBrowserConfigured()) {
       const sb = getSupabaseBrowser();
-      const alignAndReadId = async (): Promise<string | undefined> => {
+      const alignAndReadSession = async () => {
         const { data } = await sb.auth.getSession();
         await ensureRevenueCatUserAligned(data.session ?? null);
-        return data.session?.user?.id?.trim();
+        return data.session;
       };
 
       if (appUserId) {
-        await alignAndReadId();
+        const session = await alignAndReadSession();
+        if (!email) email = session?.user?.email?.trim() || undefined;
       } else {
         const deadline = Date.now() + 2500;
         while (Date.now() < deadline) {
-          const id = await alignAndReadId();
+          const session = await alignAndReadSession();
+          const id = session?.user?.id?.trim();
           if (id) {
             appUserId = id;
+            if (!email) email = session?.user?.email?.trim() || undefined;
             break;
           }
           await new Promise((r) => setTimeout(r, 120));
@@ -102,9 +115,18 @@ export async function buildPlansCheckoutUrl(
     }
 
     if (appUserId) {
-      target.searchParams.set("app_user_id", appUserId);
-      target.searchParams.set("rc_app_user_id", appUserId);
+      // UUID goes in the path — RC Web Billing uses this to identify the customer.
+      // Query params like ?app_user_id= are not used by the hosted checkout for attribution.
+      const cleanPath = target.pathname.replace(/\/+$/, "");
+      if (UUID_RE.test(appUserId)) {
+        target.pathname = cleanPath + "/" + appUserId;
+      }
     }
+
+    if (email) {
+      target.searchParams.set("email", email);
+    }
+
     const pathOnly = target.pathname.replace(/\/+$/, "") || "/";
     const isSameOrigin = target.origin === window.location.origin;
     // Block same-origin homepage and any internal path that is a return URL, not a checkout entry.
