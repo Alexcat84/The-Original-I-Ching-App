@@ -292,6 +292,8 @@ const INJECTED_JS = `
     'html.iching-rn-webview .legal-consent-backdrop{z-index:2147483000!important;padding:max(.75rem,env(safe-area-inset-top,0px)) .75rem max(.75rem,env(safe-area-inset-bottom,0px))!important}',
     'html.iching-rn-webview .legal-consent-modal{max-height:calc(100vh - 1.5rem)!important;width:100%!important}',
     'html.iching-rn-webview .legal-consent-scroll{overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}',
+    /* Chat drawer: ensure list content isn't hidden under Android bottom nav bar */
+    'html.iching-rn-webview .chat-drawer-list{padding-bottom:max(0.5rem,env(safe-area-inset-bottom,0px))!important}',
     /* Hide Vercel preview toolbar — staging deployments inject a floating Vercel icon that confuses testers */
     'vercel-toolbar,#__vercel-toolbar,.__vercel-toolbar,div[id*="vercel-toolbar"],iframe[src*="vercel.live"]{display:none!important}'
   ].join(';');
