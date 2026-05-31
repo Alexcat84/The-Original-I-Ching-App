@@ -43,9 +43,11 @@ export async function POST(req: Request) {
   const userId = user.userId;
 
   // 1. Anonymize RevenueCat webhook events (purchase records kept for legal/tax).
+  // app_user_id is UUID — cannot store a prefixed string; NULL preserves the row
+  // for audit/tax purposes without linking it to any identifiable user.
   const { error: webhookErr } = await supabase
     .from("revenuecat_webhook_events")
-    .update({ app_user_id: `deleted_${userId}` })
+    .update({ app_user_id: null })
     .eq("app_user_id", userId);
   if (webhookErr) {
     log.warn("account_delete_webhook_anonymize_failed", { userId: userId.slice(0, 8), error: webhookErr.message });

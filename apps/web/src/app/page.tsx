@@ -788,6 +788,10 @@ export default function HomePage() {
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
   const isSigningOutRef = useRef(false);
+  /** User IDs already redirected to /auth/complete-legal this page session.
+   *  Prevents a second redirect when TOKEN_REFRESHED fires while the DB write
+   *  from the just-accepted consent hasn't propagated to the reader yet. */
+  const legalRedirectSentForRef = useRef(new Set<string>());
   const activeSessionLocalIdRef = useRef<string | null>(null);
   const pinnedLocalSessionIdRef = useRef<string | null>(null);
   const [chatsOpen, setChatsOpen] = useState(false);
@@ -2099,7 +2103,10 @@ export default function HomePage() {
               return;
             }
             if (j.legal_acceptance_current === false) {
-              router.replace("/auth/complete-legal");
+              if (authUserId && !legalRedirectSentForRef.current.has(authUserId)) {
+                legalRedirectSentForRef.current.add(authUserId);
+                router.replace("/auth/complete-legal");
+              }
               return;
             }
             const lastPack =
