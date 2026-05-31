@@ -2208,15 +2208,22 @@ export default function WebViewScreen() {
       try {
         const msg = JSON.parse(event.nativeEvent.data) as RNMessage;
         switch (msg.type) {
-          case "auth_token":
+          case "auth_token": {
+            // Detect user switch: if a different user logs in, wipe the SQLite
+            // cache before injecting it. Without this, stale chats from a
+            // previous user would flash in the new user's sidebar.
+            const prevUid = getUserIdFromJwt(accessTokenRef.current ?? "");
+            const newUid  = getUserIdFromJwt(msg.token);
+            if (prevUid && newUid && prevUid !== newUid) {
+              void clearAllData().catch(() => undefined);
+            }
             accessTokenRef.current = msg.token;
             setIsAuthenticated(true);
             if (msg.email) setUserEmail(msg.email);
             SecureStore.setItemAsync(SECURE_TOKEN_KEY, msg.token);
             // Identify user to RevenueCat so webhook receives a valid UUID instead of $RCAnonymousID
             void (async () => {
-              const uid = getUserIdFromJwt(msg.token);
-              if (uid) { try { await Purchases.logIn(uid); } catch { /* non-fatal */ } }
+              if (newUid) { try { await Purchases.logIn(newUid); } catch { /* non-fatal */ } }
             })();
             webViewRef.current?.injectJavaScript(
               `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
@@ -2225,6 +2232,7 @@ export default function WebViewScreen() {
               .then(() => injectCachedChats())
               .catch(() => undefined);
             break;
+          }
 
           case "auth_signout":
             if (authTransitionRef.current) break; // ignore during session injection reload
