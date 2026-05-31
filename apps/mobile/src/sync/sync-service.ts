@@ -3,6 +3,7 @@ import {
   upsertMessages,
   getSyncMeta,
   setSyncMeta,
+  softDeleteStaleChats,
   type ChatRow,
   type MessageRow,
 } from "../db/chat-store";
@@ -101,6 +102,10 @@ export async function syncChats(token: string, baseUrl: string): Promise<void> {
     }));
 
     await upsertChats(chatRows);
+    // Evict chats that exist in SQLite but were deleted on the server (e.g. via
+    // the web UI or another device). This prevents deleted chats from flashing
+    // in the sidebar on the next cold start before the server response arrives.
+    await softDeleteStaleChats(chatRows.map((r) => r.id));
     await setSyncMeta("last_sync", now);
 
     // Process any images that were previously queued but not downloaded.

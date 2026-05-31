@@ -53,6 +53,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "missing_fields" }, { status: 400 });
   }
 
+  // RevenueCat sends "$RCAnonymousID:..." when the purchase was made before the SDK
+  // identified the user (Purchases.logIn was not called before the purchase).
+  // These IDs are not UUIDs — passing them to the DB crashes with "invalid input syntax
+  // for type uuid". Return 200 so RC stops retrying; the purchase cannot be attributed
+  // without a valid Supabase UUID. The user will need to contact support for manual credit.
+  if (userId.startsWith("$RCAnonymousID:")) {
+    log.error("webhook_anonymous_user_id", { eventType, productId, userId: userId.slice(0, 32) });
+    await log.flush();
+    return NextResponse.json({ error: "anonymous_user_id_not_attributable" }, { status: 200 });
+  }
+
   const pack = getPackConfig(productId);
   if (!pack) {
     log.error("webhook_unknown_product", { productId, eventType });

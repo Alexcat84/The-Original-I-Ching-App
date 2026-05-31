@@ -58,8 +58,7 @@ export async function upsertChats(chats: ChatRow[]): Promise<void> {
            updated_at            = excluded.updated_at,
            synced_at             = excluded.synced_at,
            message_count         = excluded.message_count,
-           first_consultation_at = excluded.first_consultation_at,
-           is_deleted            = 0`,
+           first_consultation_at = excluded.first_consultation_at`,
         c.id,
         c.title,
         c.created_at,
@@ -194,6 +193,32 @@ export async function getCachedChatsForInjection(): Promise<RnCachedChatEntry[]>
       ? new Date(row.first_consultation_at).getTime()
       : null,
   }));
+}
+
+/** Marks as deleted any chats in SQLite whose IDs are NOT in `serverIds`.
+ *  Called after a successful server summary fetch so that chats deleted on
+ *  another device (or via the web UI) are evicted from the local cache and
+ *  no longer flash on the next app launch. */
+export async function softDeleteStaleChats(serverIds: string[]): Promise<void> {
+  if (serverIds.length === 0) {
+    // No sessions returned — don't wipe everything (could be an empty account
+    // or a transient empty response). Callers should gate on entries.length > 0.
+    return;
+  }
+  const db = await getDb();
+  // SQLite has no native NOT IN with a dynamic list via parameterized arrays,
+  // so we build the placeholders manually. Batch in chunks to stay under the
+  // SQLITE_MAX_VARIABLE_NUMBER limit (999 by default).
+  const CHUNK = 900;
+  for (let i = 0; i < serverIds.length; i += CHUNK) {
+    const chunk = serverIds.slice(i, i + CHUNK);
+    const placeholders = chunk.map(() => "?").join(", ");
+    await db.runAsync(
+      `UPDATE chats SET is_deleted = 1
+       WHERE is_deleted = 0 AND id NOT IN (${placeholders})`,
+      ...chunk,
+    );
+  }
 }
 
 export async function softDeleteChat(chatId: string): Promise<void> {
