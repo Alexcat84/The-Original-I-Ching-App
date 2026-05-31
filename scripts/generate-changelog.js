@@ -12,39 +12,52 @@ const { buildHighlights, groupCommitsBySection } = require("./changelog/categori
 const { renderChangelog } = require("./changelog/render");
 
 /**
- * Assign commits to version windows: (prevBump, currBump] per timeline entry.
+ * Assign commits to version windows using git order (index in commitsAsc).
+ * Window for version[i] = commits with index in (prevBump.idx, currBump.idx].
+ *
+ * Windows are processed in git-commit order (by idx), NOT by the timeline's
+ * date+versionCode sort. This prevents false-positive version bump commits
+ * (e.g. "Mobile 1.0.0 (versionCode 10)" appearing out of chronological order)
+ * from creating overlapping windows and producing duplicate commit hashes.
+ *
  * @param {Array<{ hash: string, date: string, subject: string }>} commitsAsc
  * @param {ReturnType<typeof buildVersionTimeline>} timelineAsc
  */
 function assignByVersionWindows(commitsAsc, timelineAsc) {
   /** @type {Map<string, Array<{ hash: string, date: string, subject: string }>>} */
   const byVersion = new Map();
-  const assigned = new Set();
 
-  for (let i = 0; i < timelineAsc.length; i++) {
-    const prev = timelineAsc[i - 1];
-    const curr = timelineAsc[i];
-    const bucket = [];
+  // Build hash→index map for O(1) lookup of each bump commit's position.
+  const hashToIdx = new Map(commitsAsc.map((c, i) => [c.hash, i]));
 
-    for (const commit of commitsAsc) {
-      if (assigned.has(commit.hash)) continue;
+  // Resolve each timeline entry to its index in commitsAsc, then sort by that
+  // index so windows are always monotonically increasing (no overlaps).
+  const windows = timelineAsc
+    .map((entry) => ({
+      ...entry,
+      idx: hashToIdx.has(entry.hash) ? hashToIdx.get(entry.hash) : Infinity,
+    }))
+    .sort((a, b) => {
+      if (a.idx === Infinity && b.idx === Infinity) return 0;
+      if (a.idx === Infinity) return 1;
+      if (b.idx === Infinity) return -1;
+      return a.idx - b.idx;
+    });
 
-      if (prev) {
-        if (commit.date < prev.date) continue;
-        if (commit.date === prev.date && commit.hash <= prev.hash) continue;
-      }
-
-      if (commit.date > curr.date) continue;
-      if (commit.date === curr.date && commit.hash > curr.hash) continue;
-
-      bucket.push(commit);
-      assigned.add(commit.hash);
+  let prevIdx = -1;
+  for (const window of windows) {
+    const currIdx = window.idx;
+    if (currIdx === Infinity || currIdx <= prevIdx) {
+      // Out-of-order or unknown bump: empty bucket, don't advance cursor.
+      byVersion.set(window.versionName, []);
+      continue;
     }
-
-    byVersion.set(curr.versionName, bucket);
+    const bucket = commitsAsc.filter((_, j) => j > prevIdx && j <= currIdx);
+    byVersion.set(window.versionName, bucket);
+    prevIdx = currIdx;
   }
 
-  const unreleased = commitsAsc.filter((c) => !assigned.has(c.hash));
+  const unreleased = commitsAsc.filter((_, j) => j > prevIdx);
   return { byVersion, unreleased };
 }
 

@@ -1,4 +1,4 @@
-<!-- changelog:last-release:2864db8 -->
+<!-- changelog:last-release:392a717 -->
 
 # Changelog — The Original I Ching App
 
@@ -6,152 +6,101 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ## [3.3.6] — 2026-05-31 | versionCode: 29 | Etapa: Closed Testing
 
-### New
-- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
-
 ### Fix
 - fix(mobile): chat drawer list respects Android bottom nav safe area | commit: 2864db8
-- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
-- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
-- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
-- fix(auth): handle existing signup email with modal guidance | commit: 257e125
 
 ### Maintenance
-- chore(mobile): bump version 3.3.5 / versionCode 28 | commit: 01d911e
-- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
-- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
-- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
-- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
-- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
+- chore(mobile): bump version 3.3.6 / versionCode 29 | commit: 392a717
 
 ---
+
 
 ## [3.3.5] — 2026-05-31 | versionCode: 28 | Etapa: Closed Testing
 
-### New
-- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
-
 ### Fix
 - fix(billing+chats): tokens not granted after purchase; chat delete fails silently | commit: f51743b
-- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
-- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
-- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
-- fix(auth): handle existing signup email with modal guidance | commit: 257e125
 
 ### Maintenance
-- chore(mobile): bump version 3.3.4 / versionCode 27 | commit: 1717b0e
-- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
-- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
-- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
-- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
-- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
+- chore(mobile): bump version 3.3.5 / versionCode 28 | commit: 01d911e
 
 ---
+
 
 ## [3.3.4] — 2026-05-30 | versionCode: 27 | Etapa: Closed Testing
 
-### New
-- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
-
-### Fix
-- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
-- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
-- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
-- fix(auth): handle existing signup email with modal guidance | commit: 257e125
-
 ### Maintenance
 - chore(assets): resize pack icons to 512x512 — reduce AAB size | commit: b56447f
-- chore(mobile): bump version 3.3.3 / versionCode 26 | commit: 66dbca5
-- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
-- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
-- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
-- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
-- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
+- chore(mobile): bump version 3.3.4 / versionCode 27 | commit: 1717b0e
 
 ---
+
 
 ## [3.3.3] — 2026-05-30 | versionCode: 26 | Etapa: Closed Testing
 
 ### New
-- feat(billing): replace Alert.alert pack picker with visual modal cards | commit: 9e4d8dd
 - feat(feedback): replace native <select> with themed custom dropdown | commit: 137d776
-- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
+- feat(billing): replace Alert.alert pack picker with visual modal cards | commit: 9e4d8dd
 
 ### Fix
-- fix(feedback): add explicit text color to custom select rows for both themes | commit: 883f4b6
 - fix(changelog): insert new release at top instead of appending at bottom | commit: 19b9565
-- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
-- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
-- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
-- fix(auth): handle existing signup email with modal guidance | commit: 257e125
+- fix(feedback): add explicit text color to custom select rows for both themes | commit: 883f4b6
 
 ### Docs
 - docs(changelog): fix 3.3.2 entry order — move to top (newest first) | commit: 0eb7dc8
 
 ### Maintenance
-- chore(mobile): bump version 3.3.2 / versionCode 25 | commit: 99d4993
-- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
-- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
-- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
-- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
-- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
+- chore(mobile): bump version 3.3.3 / versionCode 26 | commit: 66dbca5
 
 ---
+
 
 ## [3.3.2] — 2026-05-30 | versionCode: 25 | Etapa: Closed Testing
 
 ### New
-- feat(billing): implement native Google Play Billing via RevenueCat | commit: 02ee288
-- feat(i18n): localize app shell title and consult API error messages | commit: 7f8a2a9
-- feat(i18n): stage 4 — SEO hreflang, backend locale fallbacks, and context theme | commit: 573045d
-- feat(i18n): stage 3 — wire PDF export and 2FA email to app locale | commit: 0d7cd40
-- feat(i18n): stage 2 — complete token-panel and two-factor locale records | commit: e49a395
-- feat(i18n): stage 1 — audit CI and migrate home UI copy to package | commit: 6a14b38
-- feat(i18n): move theme toggle labels to @iching-oracle/i18n | commit: c5f155f
-- feat(feedback): add user feedback page with Supabase storage and rate limiting | commit: 96d2da8
-- feat(danger-zone): style delete-account btn to match other action buttons | commit: 9bb750c
-- feat(consult-panel): add Tutorial label before info icon in header button | commit: 7197db9
 - feat(faq): convert delete-account doc to FAQs + add delete-chats FAQ | commit: d048578
-- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
+- feat(consult-panel): add Tutorial label before info icon in header button | commit: 7197db9
+- feat(danger-zone): style delete-account btn to match other action buttons | commit: 9bb750c
+- feat(feedback): add user feedback page with Supabase storage and rate limiting | commit: 96d2da8
+- feat(i18n): move theme toggle labels to @iching-oracle/i18n | commit: c5f155f
+- feat(i18n): stage 1 — audit CI and migrate home UI copy to package | commit: 6a14b38
+- feat(i18n): stage 2 — complete token-panel and two-factor locale records | commit: e49a395
+- feat(i18n): stage 3 — wire PDF export and 2FA email to app locale | commit: 0d7cd40
+- feat(i18n): stage 4 — SEO hreflang, backend locale fallbacks, and context theme | commit: 573045d
+- feat(i18n): localize app shell title and consult API error messages | commit: 7f8a2a9
+- feat(billing): implement native Google Play Billing via RevenueCat | commit: 02ee288
 
 ### Fix
-- fix(prompt): add explicit SELECTED_TRANSLATOR metadata field before BIBLIOTECA | commit: 980574b
-- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: a14a340
-- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
-- fix(prompt): name active translator explicitly — prevent cross-translator bleed | commit: 8059bb4
-- fix(options-panel): restore doc links vertical layout after tour refactor | commit: 5b0c9a6
-- fix(tour): scope step-8 spotlight to doc links only; remove duplicate feedback btn from FAQs | commit: 20fbf85
-- fix(db): tighten feedback RLS — drop redundant service_role policy and replace WITH CHECK (true) | commit: a4daa81
-- fix(webview): suppress GPU compositing glitches on scroll in Android WebView | commit: 0dfe0a8
-- fix(changelog): correct EAS build command in pre-release checklist | commit: 83e068b
-- fix(feedback): detect WebView platform and native app version | commit: 8efd492
-- fix(i18n): use DEFAULT_LOCALE in credits exhausted fallback | commit: 30ab092
-- fix(faq): remove long-press and em dashes from delete-chats/delete-account answers | commit: bc5d202
 - fix(options-panel): remove delete-account doc link + rename to Danger zone | commit: 4e7b20f
-- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
-- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
-- fix(auth): handle existing signup email with modal guidance | commit: 257e125
+- fix(faq): remove long-press and em dashes from delete-chats/delete-account answers | commit: bc5d202
+- fix(i18n): use DEFAULT_LOCALE in credits exhausted fallback | commit: 30ab092
+- fix(feedback): detect WebView platform and native app version | commit: 8efd492
+- fix(changelog): correct EAS build command in pre-release checklist | commit: 83e068b
+- fix(webview): suppress GPU compositing glitches on scroll in Android WebView | commit: 0dfe0a8
+- fix(db): tighten feedback RLS — drop redundant service_role policy and replace WITH CHECK (true) | commit: a4daa81
+- fix(tour): scope step-8 spotlight to doc links only; remove duplicate feedback btn from FAQs | commit: 20fbf85
+- fix(options-panel): restore doc links vertical layout after tour refactor | commit: 5b0c9a6
+- fix(prompt): name active translator explicitly — prevent cross-translator bleed | commit: 8059bb4
+- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
+- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: a14a340
+- fix(prompt): add explicit SELECTED_TRANSLATOR metadata field before BIBLIOTECA | commit: 980574b
 
 ### Docs
-- docs(changelog): generate full project changelog and add update script | commit: 1e899f1
-- docs(i18n): align workflow guides with post-standardization state | commit: 841581b
-- docs(readme): align language count with 11 supported locales | commit: 3b28870
-- docs(i18n): add language expansion guide for development agents | commit: 1023a55
 - docs(i18n): add language expansion guide for development agents | commit: 93f782c
+- docs(i18n): add language expansion guide for development agents | commit: 1023a55
+- docs(readme): align language count with 11 supported locales | commit: 3b28870
+- docs(i18n): align workflow guides with post-standardization state | commit: 841581b
+- docs(changelog): generate full project changelog and add update script | commit: 1e899f1
 
 ### Maintenance
-- chore(i18n): replace dialectical/dialéctico with unified interpretation across all 11 locales | commit: 2062133
-- chore: trigger redeploy — update Axiom env vars | commit: 5d5ba78
-- chore(agents): refresh learned preferences after i18n standardization | commit: 957e277
-- chore(i18n): stage 5 — update expansion guide and remove dead chat-suggestions | commit: 9f5fc8b
 - chore(docs): organize .md files into docs/ with categories | commit: 4f0597a
-- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
-- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
-- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
-- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
-- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
+- chore(i18n): stage 5 — update expansion guide and remove dead chat-suggestions | commit: 9f5fc8b
+- chore(agents): refresh learned preferences after i18n standardization | commit: 957e277
+- chore: trigger redeploy — update Axiom env vars | commit: 5d5ba78
+- chore(i18n): replace dialectical/dialéctico with unified interpretation across all 11 locales | commit: 2062133
+- chore(mobile): bump version 3.3.2 / versionCode 25 | commit: 99d4993
 
 ---
+
 
 ## [3.3.1] — 2026-05-29 | versionCode: 24 | Etapa: Closed Testing
 
@@ -163,8 +112,16 @@ Historial completo de cambios desde el inicio del proyecto.
 - feat(onboarding): replace ? text with compass SVG icon on tutorial replay button | commit: dfd89dd
 - feat(onboarding): add info SVG icon to Tutorial button | commit: fe91bd4
 - feat(onboarding): dark mode spotlight fix + docs/FAQs step (9 steps total) | commit: 49ae6fc
+- feat: password visibility toggle + logout confirmation dialog | commit: b758130
 
 ### Fix
+- fix(security): harden WebView security settings in Android shell | commit: 9885963
+- fix(prompt): enforce thread continuity in opening paragraph for all I Ching modes | commit: e7649d1
+- fix(prompt): expand Oracle Bones word budget when thread context exists | commit: 4a211ee
+- fix(prompt): enforce full session arc in thread references and SNAPSHOT | commit: 410970a
+- fix(api): raise maxDuration and MAX_TOKENS for Master deep threads | commit: 75d13cb
+- fix(api): raise maxDuration and MAX_TOKENS for Master deep threads | commit: b75075b
+- fix(output): strip CATEGORY line even when model prefixes with ## heading | commit: 7112366
 - fix(mobile): skip parallel Supabase API call in RN thread loading | commit: 9bb3abc
 - fix(api): distinguish DB errors from session-not-found in chats GET | commit: 4d96052
 - fix(db): raise statement_timeout for PostgREST roles to 30s | commit: 4f761e7
@@ -178,7 +135,15 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(onboarding): mobile APK tour fixes | commit: 2d15e8c
 - fix(onboarding): dark mode overlay — low opacity + SVG spotlight stroke | commit: 76e8d78
 - fix(onboarding): instant scroll + correct placement for panel steps | commit: e5cc953
+- fix(header): move info icon between Chats and logo | commit: fa9ca98
+- fix(header): move tour-info icon into consult panel header | commit: 7141d59
+- fix(consult-panel): match info btn shape to Cerrar, keep green colors | commit: 5de6e75
 - fix(login): vertically center eye toggle button in password field | commit: 13b807f
+- fix(login): fix eye icon vertical centering via display:flex on wrapper | commit: b73ef1f
+- fix(login): use CSS Grid overlay for eye icon — guaranteed vertical center | commit: 7c0eaed
+- fix(login): CSS class approach for eye icon — block input + top:50% transform | commit: 43eb404
+- fix(login): inline styles only for eye toggle — bypasses CSS cache | commit: 50fbf7f
+- fix(login): fix eye icon — margin:0 resets global button{margin-top:0.75rem} | commit: 9332444
 
 ### Security
 - security: remediate pentest findings H1–H5 | commit: 3d773ab
@@ -189,6 +154,7 @@ Historial completo de cambios desde el inicio del proyecto.
 - docs(migrations): expand 040 comment with full historical context | commit: 3653512
 
 ### Maintenance
+- chore(db): migration 037 — grant is_admin to app owner account | commit: dafd1a4
 - chore: remove dead code revenuecat-alias-map + rollback migration | commit: 1ba4b94
 - chore(mobile): bump version 3.3.1 / versionCode 24 | commit: 1a5c424
 
@@ -198,18 +164,11 @@ Historial completo de cambios desde el inicio del proyecto.
 ## [3.3.0] — 2026-05-25 | versionCode: 23 | Etapa: Closed Testing
 
 ### Fix
+- fix(csp): add base-uri, form-action, object-src directives | commit: 4abd651
 - fix(security): route ritual debug logs through Axiom instead of console | commit: fd96d69
-- fix(security): harden WebView security settings in Android shell | commit: 9885963
-- fix(prompt): enforce thread continuity in opening paragraph for all I Ching modes | commit: e7649d1
-- fix(prompt): expand Oracle Bones word budget when thread context exists | commit: 4a211ee
-- fix(prompt): enforce full session arc in thread references and SNAPSHOT | commit: 410970a
-- fix(api): raise maxDuration and MAX_TOKENS for Master deep threads | commit: 75d13cb
-- fix(api): raise maxDuration and MAX_TOKENS for Master deep threads | commit: b75075b
-- fix(output): strip CATEGORY line even when model prefixes with ## heading | commit: 7112366
 
 ### Maintenance
 - chore(mobile): bump version to 3.3.0 (versionCode 23) | commit: fbdeaef
-- chore(db): migration 037 — grant is_admin to app owner account | commit: dafd1a4
 
 ---
 
@@ -217,6 +176,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ## [3.2.9] — 2026-05-24 | versionCode: 22 | Etapa: Closed Testing
 
 ### New
+- feat(web): IndexedDB cache for chat list and thread content | commit: a80e49f
 - feat(legal): add support@theoriginaliching.com contact link in Terms section 10 | commit: a4ad475
 - feat(mobile): redesign offline screen v2 — brand logo, fix transparent bleed-through | commit: 9e93778
 - feat(mobile): offline screen full-bleed image layout — text overlaid on bottom band | commit: 357c311
@@ -226,7 +186,6 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(seo): remove /library from sitemap and disallow crawling — premium content | commit: a541496
 - fix(seo): fix pricing layout type error — async function for Next.js 15 React types compat | commit: 9af2867
 - fix(prompt): enforce second-person address — prevent third-person narration when displayName is set | commit: 0e41a35
-- fix(csp): add base-uri, form-action, object-src directives | commit: 4abd651
 
 ### Maintenance
 - chore(mobile): bump version to 3.2.9 (versionCode 22) | commit: cb8ea88
@@ -234,19 +193,25 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.7] — 2026-05-21 | versionCode: 20 | Etapa: Internal Testing
+## [3.2.8] — 2026-05-21 | versionCode: 21 | Etapa: Internal Testing
 
 ### New
 - feat(mobile): custom offline screen with animated radar when WebView fails | commit: afaa88f
-- feat(web): IndexedDB cache for chat list and thread content | commit: a80e49f
+- feat(mobile): simplify offline screen — Signal Lost / The oracle is waiting | commit: 93ca2a3
+
+### Maintenance
+- chore(mobile): bump version to 3.2.8 (versionCode 21) | commit: cbfd016
+
+---
+
+
+## [3.2.7] — 2026-05-21 | versionCode: 20 | Etapa: Internal Testing
 
 ### Fix
-- fix(cache): sync SQLite on chat delete and account deletion | commit: bc7e23c
 - fix(mobile): remove READ_MEDIA_IMAGES/VIDEO permissions + bump to 3.2.7 (versionCode 20) | commit: e3086c3
 
 ### Maintenance
 - chore(mobile): sync package.json version to 3.2.6 | commit: be2444c
-- chore(mobile): bump version to 3.2.8 (versionCode 21) | commit: cbfd016
 
 ---
 
@@ -254,6 +219,9 @@ Historial completo de cambios desde el inicio del proyecto.
 ## [3.2.6] — 2026-05-21 | versionCode: 19 | Etapa: Internal Testing
 
 ### New
+- feat: implement full account deletion flow for Google Play compliance | commit: d239b5b
+- feat(i18n): full localization of account deletion flow | commit: 76477c4
+- feat: merge account deletion flow into staging | commit: 4bfe2de
 - feat: merge staging → main (account deletion flow) | commit: e56db2e
 - feat(mobile/db): add expo-sqlite schema and chat-store for local cache | commit: 9da23ec
 - feat(mobile/sync): background sync service and opportunistic image cache | commit: b61ba48
@@ -261,9 +229,12 @@ Historial completo de cambios desde el inicio del proyecto.
 - feat(web): consume rn:cached-chats event from native SQLite injection | commit: 401673d
 - feat(mobile): implement SQLite stale-while-revalidate cache for chat list | commit: 84f3050
 - feat(cache): offline-first conversation cache — WhatsApp model | commit: 4aae78b
-- feat(mobile): simplify offline screen — Signal Lost / The oracle is waiting | commit: 93ca2a3
 
 ### Fix
+- fix(pdf): word-boundary wrapping + readable mutation rule label | commit: dba3197
+- fix(pdf): justified canvas text + summary matches app reading card | commit: 9451e70
+- fix(i18n): delete-account page — locale-specific confirm word, corrected provider/email copy | commit: 3aa21b9
+- fix(i18n): sync delete-account page corrections from main | commit: 1709e79
 - fix(images): retry overlay+watermark on local fallback when R2 fetch fails silently | commit: 2a5a9d9
 - fix(bones): remove Silence verdict — no archaeological basis in Shang tradition | commit: f462f43
 - fix(webview): block accidental navigation to production domain in staging APK | commit: 90b2648
@@ -274,8 +245,10 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(mobile): replace deprecated moduleResolution=node with bundler | commit: 4ce987d
 - fix(mobile): eliminate slide-up animation when cached thread data arrives | commit: 79ec8ab
 - fix(mobile): defer loading indicator so SQLite cache eliminates brief flash | commit: 5c1a3bb
+- fix(cache): sync SQLite on chat delete and account deletion | commit: bc7e23c
 
 ### Docs
+- docs(legal): add permanent account deletion section to Privacy Policy and Terms | commit: 6bd2d30
 - docs: add DIVINATION_METHODS_AUDIT.md — technical reference for all oracle methods | commit: 60115a6
 - docs(claude): document Windows glob fix for expo prebuild and mobile cache feature | commit: 0c58c7e
 - docs: rewrite ARCHITECTURE_AUDIT.md — complete A-to-Z architecture reference | commit: 3b5fe41
@@ -292,20 +265,20 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
+## [3.2.5] — 2026-05-18 | versionCode: 18 | Etapa: Internal Testing
+
+### Maintenance
+- chore(mobile): bump version 3.2.5 / versionCode 18 | commit: 12ac967
+
+---
+
+
 ## [3.2.4] — 2026-05-18 | versionCode: 17 | Etapa: Internal Testing
 
-### New
-- feat: implement full account deletion flow for Google Play compliance | commit: d239b5b
-- feat(i18n): full localization of account deletion flow | commit: 76477c4
-
 ### Fix
+- fix(eas): suppress Expo Go warning and clean cached native dir before prebuild | commit: 64e3ef5
 - fix(eas): add root .easignore so apps/mobile/.env reaches Metro bundler + bump 3.2.3/16 | commit: 79f61da
 - fix(mobile): handle PKCE auth/callback deep link so Google OAuth returns to app | commit: a7bd129
-- fix(pdf): word-boundary wrapping + readable mutation rule label | commit: dba3197
-- fix(pdf): justified canvas text + summary matches app reading card | commit: 9451e70
-
-### Docs
-- docs(legal): add permanent account deletion section to Privacy Policy and Terms | commit: 6bd2d30
 
 ### Maintenance
 - chore(mobile): link EAS project to alexcat84, switch to local keystore credentials | commit: b93e4ad
@@ -314,22 +287,21 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.1] — 2026-05-18 | versionCode: 14 | Etapa: Internal Testing
+## [3.2.2] — 2026-05-18 | versionCode: 15 | Etapa: Internal Testing
 
-### New
-- feat: merge account deletion flow into staging | commit: 4bfe2de
+### Fix
+- fix: strip orphaned [SNAPSHOT_END], PDF saves to Downloads with permission + bump 3.2.2/versionCode 15 | commit: 2bd1de5
+
+---
+
+
+## [3.2.1] — 2026-05-18 | versionCode: 14 | Etapa: Internal Testing
 
 ### Fix
 - fix(mobile): respect native dialog confirmation before removing chat + bump 3.2.1/versionCode 14 | commit: 6afead0
-- fix: strip orphaned [SNAPSHOT_END], PDF saves to Downloads with permission + bump 3.2.2/versionCode 15 | commit: 2bd1de5
-- fix(eas): suppress Expo Go warning and clean cached native dir before prebuild | commit: 64e3ef5
-- fix(i18n): delete-account page — locale-specific confirm word, corrected provider/email copy | commit: 3aa21b9
-- fix(i18n): sync delete-account page corrections from main | commit: 1709e79
 
 ### Maintenance
-- chore(mobile): add staging-aab build profile for Play Store submission testing | commit: c77c3b0
 - chore(mobile): bump versionCode to 13 for production Play Store AAB | commit: e6fe089
-- chore(mobile): bump version 3.2.5 / versionCode 18 | commit: 12ac967
 
 ---
 
@@ -337,19 +309,17 @@ Historial completo de cambios desde el inicio del proyecto.
 ## [3.2.0] — 2026-05-17 | versionCode: 12 | Etapa: Internal Testing
 
 ### New
-- feat(r2-fallback): hexagram-specific fallback image generator (2,760 WebP) | commit: 8c457c9
-- feat(r2-fallback): integrate Cloudflare R2 as primary image fallback | commit: 9761b5d
-- feat(logging): structured Axiom logging across Next.js web app | commit: 4362651
 - feat(i18n): add library unlock and translator label to Seeker pack description | commit: 61744a3
 
 ### Fix
-- fix(android): remove forceDarkOn prop to prevent crash on Android 11 | commit: 8ceb9b4
-- fix(build): resolve all Sentry deprecation and Turbo env-var warnings | commit: 782b58d
 - fix(ci): commit package-lock.json with next-axiom entry | commit: 5903471
 - fix(i18n): align pack descriptions in all 10 languages with Spanish source of truth | commit: 61e3878
+- fix(i18n): ES as single source of truth — FAQ, pack descriptions, credits notices | commit: 1e01de3
 - fix(hydration): eliminate React #418 caused by localStorage read in useState initializer | commit: 42c3daa
 
 ### Maintenance
+- chore(mobile): add .easignore to exclude android dir from EAS archive | commit: 1da3622
+- chore(mobile): add staging-aab build profile for Play Store submission testing | commit: c77c3b0
 - chore(mobile): bump version to 3.2.0 / versionCode 12 for production Play Store AAB | commit: a712675
 
 ---
@@ -359,17 +329,19 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ### New
 - feat(i18n): translate guide/FAQ sections for all 11 locales + remove Zhou Yi inline translation | commit: c417049
+- feat(r2-fallback): hexagram-specific fallback image generator (2,760 WebP) | commit: 8c457c9
+- feat(r2-fallback): integrate Cloudflare R2 as primary image fallback | commit: 9761b5d
+- feat(logging): structured Axiom logging across Next.js web app | commit: 4362651
 
 ### Fix
-- fix(apk): defer chat delete until native dialog confirmed; clean oracle bones card | commit: dbfeebe
-- fix(oracle-bones): add dividers after verdict header and before both section headings | commit: e66603e
-- fix(locale-picker): add no-theme CSS fallback to prevent unstyled trigger on first load | commit: f06d4bc
-- fix(i18n): ES as single source of truth — FAQ, pack descriptions, credits notices | commit: 1e01de3
+- fix(android): always use light color-scheme on inputs + add forceDarkAllowed=false plugin | commit: 90431b4
+- fix(android): disable spellcheck/autocorrect on chat textarea | commit: 6ddcfe2
+- fix(android): remove forceDarkOn prop to prevent crash on Android 11 | commit: 8ceb9b4
+- fix(build): resolve all Sentry deprecation and Turbo env-var warnings | commit: 782b58d
 
 ### Maintenance
 - revert: restore spellCheck on chat textarea | commit: d24591b
 - chore(mobile): bump version to 3.1.8 (versionCode 11) | commit: 2237ae9
-- chore(mobile): add .easignore to exclude android dir from EAS archive | commit: 1da3622
 
 ---
 
@@ -469,12 +441,13 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(dark-mode): visible borders on consultation-record card and dividers | commit: bd3322e
 - fix: blockquote rule, shared thread history, translator field in card | commit: a2126b2
 - fix(session-store): cascade fallback for missing translator column + FAQ token-center i18n | commit: b5ae30d
+- fix(apk): defer chat delete until native dialog confirmed; clean oracle bones card | commit: dbfeebe
+- fix(oracle-bones): add dividers after verdict header and before both section headings | commit: e66603e
 - fix(oracle-bones): overlay verdict glyph on prebuilt fallback when Together fails | commit: 5a43950
+- fix(locale-picker): add no-theme CSS fallback to prevent unstyled trigger on first load | commit: f06d4bc
 - fix(locale-picker): add no-theme fallback to dropdown menu styles | commit: 8e92504
 - fix(apk+zhouyi): preserve Chinese verbatim in blockquotes; disable WebView force dark | commit: 983cea2
 - fix(translators): enforce universal source fidelity across all three libraries | commit: a32fd36
-- fix(android): always use light color-scheme on inputs + add forceDarkAllowed=false plugin | commit: 90431b4
-- fix(android): disable spellcheck/autocorrect on chat textarea | commit: 6ddcfe2
 
 ### i18n
 - i18n(yarrow): shorten toggle section labels across all locales | commit: fd3512b
@@ -494,9 +467,9 @@ Historial completo de cambios desde el inicio del proyecto.
 - docs: reestructuración final del manual funcional y maestría premium | commit: e7a15f9
 
 ### Maintenance
-- chore(mobile): bump version to 3.1.6 (versionCode 9) for Play Store | commit: 5644f64
 - chore(mobile): exclude react-native-screens and @sentry from expo doctor check | commit: 29d5607
 - refactor(i18n+ui): remove em dashes from all user-facing strings | commit: fb8b4ef
+- refactor(i18n+docs): consolidate duplicate content — single source of truth | commit: 10597d3
 - chore(ci): fix failing CI — update lockfile and bump Node to 22 | commit: d0c24a4
 - chore(ci): pin npm@11.5.1 in CI to match lockfile generator | commit: 5c00e90
 - chore(ci): install rollup Linux binary after npm ci | commit: b38c495
@@ -567,7 +540,9 @@ Historial completo de cambios desde el inicio del proyecto.
 - feat(images): diversify light/water/forest vs moon-mist; rebalance category themes | commit: 2cbe671
 
 ### Fix
+- fix(bones): degradar ritual a fallback 2D si WebGL no está disponible | commit: 1e65f6d
 - fix(bones): primer frame WebGL oculto, sin getContext redundante, teardown y webglcontextlost | commit: bfa141d
+- fix(web): restore bone ritual rendering to match staging | commit: 488fb61
 - fix(web): legible Kangxi cash coin + bronze rim + i18n copy | commit: 0e8d04f
 - fix(web): manual cast UX, chat width, image negative-prompt order | commit: abe9bfa
 - fix(web): restore browser chat column and bubble text widths | commit: e47cefe
@@ -592,7 +567,6 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(ritual): adjust manual phase split to 60-30 | commit: 601f628
 - fix(bones): normalize headings and dedupe structural verdict | commit: a4670e5
 - fix(security): harden scan signal and expose rate-limit backend health | commit: 9a52eb8
-- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
 - fix(security): patch 16 HIGH CVEs via overrides; document tar build-tool risk | commit: f87bf6c
 - fix(build): add @resvg/resvg-js-linux-x64-gnu to lockfile for Vercel | commit: 7a6eecb
 - fix(build): add sharp linux-x64 binaries to lockfile for Vercel | commit: 7acdf1f
@@ -606,8 +580,8 @@ Historial completo de cambios desde el inicio del proyecto.
 ### Maintenance
 - chore(qa): manual ritual timing experiment — seal 22s vs finale clamp 44s | commit: e0bdb9c
 - revert(manual): restore ritual seal/finale defaults after QA timing probe | commit: 1576870
+- chore(mobile): bump version to 3.1.6 (versionCode 9) for Play Store | commit: 5644f64
 - chore(mobile): bump version to 3.1.6 (versionCode 9) for Play Store | commit: 126b542
-- refactor(i18n+docs): consolidate duplicate content — single source of truth | commit: 10597d3
 
 ---
 
@@ -624,8 +598,14 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(i18n): escape inner double quotes in zh locale notes-page-ui | commit: 6f6e257
 - fix(faqs): correct i18n bug showing FAQs in English for all locales — feat(faqs): add 5 new FAQs covering AI role, text authenticity, Silence state, languages, and privacy | commit: 5bb6b10
 - fix(android): bump react-native-screens to fix NoSuchMethodError on Android 12 — release 3.1.5 versionCode 8 | commit: b14c6f4
-- fix(bones): degradar ritual a fallback 2D si WebGL no está disponible | commit: 1e65f6d
-- fix(web): restore bone ritual rendering to match staging | commit: 488fb61
+
+---
+
+
+## [3.1.3] — 2026-04-30 | versionCode: 6 | Etapa: Internal Testing
+
+### Maintenance
+- chore(mobile): bump version to 3.1.3 (versionCode 6) | commit: 2d3a244
 
 ---
 
@@ -633,15 +613,12 @@ Historial completo de cambios desde el inicio del proyecto.
 ## [3.1.2] — 2026-04-30 | versionCode: 5 | Etapa: Internal Testing
 
 ### Fix
-- fix(mobile-release): disable proguard and drop mapping artifact upload to prevent startup crash | commit: 985b70d
 - fix: re-enable R8, add Sentry crash reporting and error boundary | commit: 3c27976
 - fix: re-enable R8, add Sentry crash reporting and error boundary | commit: 17c83aa
 - fix(android): persist R8 keep rules via Expo config plugin | commit: 1f42ddc
 
 ### Maintenance
-- Fix hi/ar localization gaps in FAQ and reading summary. | commit: e0ae3ca
 - chore(mobile): bump version to 3.1.2 (versionCode 5) | commit: 46b94e3
-- chore(mobile): bump version to 3.1.3 (versionCode 6) | commit: 2d3a244
 
 ---
 
@@ -649,7 +626,6 @@ Historial completo de cambios desde el inicio del proyecto.
 ## [3.1.1] — 2026-04-29 | versionCode: 4 | Etapa: Internal Testing
 
 ### New
-- feat(chat): rounded top cap on auth strip, square join to app bar | commit: fee9f72
 - feat(web): franja Play arriba, cierre hilo y aviso límite; i18n | commit: e7a4996
 - feat(auth): mandatory legal consent on signup and OAuth | commit: 0808806
 - feat(web): i18n docs wording, legal consent flow, locale cookies, ritual UI | commit: 4e6fe8e
@@ -662,10 +638,6 @@ Historial completo de cambios desde el inicio del proyecto.
 - feat(i18n): complete Arabic and Hindi support across web, mobile, and backend (11 locales) | commit: 147ad57
 
 ### Fix
-- fix(mobile): resolve WebView URL from app.config extra.apiUrl | commit: fa8590f
-- fix(rn-ui): native top bar rounded cap + square-top WebView card | commit: e4c939f
-- fix(mobile,web): persist locale across docs and restore docs scrolling/nav in WebView | commit: fdf29bc
-- fix(mobile,web): WebView locale sync and doc nav overlap | commit: e9b4901
 - fix(auth): clarify email signup errors for duplicate DB and weak password | commit: 8363a75
 - fix(auth): diagnose email signup 400s (identities, mail, codes) and Turnstile cleanup | commit: ff2e3c3
 - fix(auth): tighten mail-failure detection for register, use 502, log raw message | commit: b4b823f
@@ -686,11 +658,11 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(three): correct THREE.Timer API — update(timestamp) + getElapsed() | commit: f534eb4
 - fix(three+css+data): cleanup warning, autocorrect color, hexagram 33 glyph | commit: fdb2db2
 - fix(csp): resolve Trusted Types violations and nonce propagation in App Router | commit: dacc790
-- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
 - fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: 52967fe
 - fix: patch postcss DoS vulnerability GHSA-q4gf-8mx6-v5v3 | commit: 0567049
 - fix(ci): remove postcss override — lock file out of sync with npm ci | commit: 01b68ec
 - fix(eas): add prepare script to i18n package so dist/ compiles on npm install | commit: bb1ae12
+- fix(mobile-release): disable proguard and drop mapping artifact upload to prevent startup crash | commit: 985b70d
 
 ### Security
 - security(fase-2): webhook fail-closed, cookie secure, mobile env vars required | commit: 955007d
@@ -705,35 +677,37 @@ Historial completo de cambios desde el inicio del proyecto.
 - docs(csp): documentar comportamiento esperado de Cloudflare Turnstile en middleware | commit: 4940819
 
 ### Maintenance
-- web: persist session_limit in sessionStorage for tier hydration | commit: f71a06f
+- Mobile: versión About/WebView desde manifest (expo-application), no expoConfig embebido obsoleto. | commit: 32afc87
+- Android release: siempre expo prebuild antes de Gradle para alinear expoConfig y manifest. | commit: 02e2664
 - trigger vercel preview deploy | commit: 6bffe4c
-- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
 - remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 7b562a7
 - remove(debug): eliminar LOG_TOKEN_BALANCE_DEBUG de account/me/route.ts | commit: db376d2
 - chore: clean migrations + db setup docs + admin scripts | commit: a36ea56
 - chore: remove obsolete migrations + update superseded ones | commit: 267d733
 - chore: merge staging → main (security hardening + postcss fix) | commit: 5727bcb
 - chore: merge staging → main (v3 README + WebView Vercel toolbar fix) | commit: c96a014
+- Fix hi/ar localization gaps in FAQ and reading summary. | commit: e0ae3ca
 - Bump Android app version to 3.1.1. | commit: 65c9187
 
 ---
 
 
-## [3.0.0] — 2026-04-23 | versionCode: 3 | Etapa: Internal Testing
+## [1.0.0] — 2026-04-23 | versionCode: 10 | Etapa: Internal Testing
 
 ### New
 - feat(mobile): themed native chrome, locale bridge for login, i18n dialogs | commit: fb3a95e
 - feat(mobile): default UI locale EN, device detection via expo-localization | commit: 6f10cbf
+- feat(chat): rounded top cap on auth strip, square join to app bar | commit: fee9f72
 - feat(mobile): square shell + inset rounded auth card above WebView | commit: 552ac80
 
 ### Fix
-- fix(mobile): stabilize SDK35 WebView layout and Android insets | commit: ab204d1
 - fix(mobile): neutralize extra vertical gaps in WebView chat (SDK35) | commit: 67b94ac
 - fix(mobile): v3 gap fix — force .oracle-chat-app flex:1 and zero .chat-surface margin | commit: 9dedb30
 - fix(android-webview): fill chat shell height on API 35 (dvh letterboxing) | commit: 03f4cfb
 - fix(mobile-webview): robust viewport height sync for SPA hydration (API 35) | commit: 70e9f4e
 - fix(chat): align shell to aqua, flex chat-surface, composer sheet overlay | commit: ae6053f
 - fix(mobile): inject chat layout CSS so WebView matches staging without stale CDN | commit: 1a423fb
+- fix(mobile): resolve WebView URL from app.config extra.apiUrl | commit: fa8590f
 - fix(mobile): tighten native chrome gap and narrow composer pill | commit: 62d51c2
 - fix(chat): align composer footer width with history inset on narrow viewports | commit: bf5b86e
 - fix(chat): full-bleed composer footer + compact mobile bar height | commit: 0086aa1
@@ -741,6 +715,7 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(chat): tighten composer bottom inset for RN WebView | commit: 295788f
 - fix(chat): restore safe bottom inset above Android nav (clamp env) | commit: 7d4e0d5
 - fix(chat): show bottom rounded border above Android nav (surface margin) | commit: 12353d6
+- fix(rn-ui): native top bar rounded cap + square-top WebView card | commit: e4c939f
 - fix(mobile): native top bar starts below status bar inset | commit: 8779d14
 - fix(mobile): align native auth strip with WebView shell (0.45rem pad) | commit: 1d25c42
 - fix(mobile): RN WebView auth strip parity, status bar, local APK script | commit: 5e26b8c
@@ -749,6 +724,8 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(mobile,web): RN chat width, locale menu scroll, dark shell border; inject + AGENTS | commit: a2c955e
 - fix(web): hydrate UI locale in useLayoutEffect so return from /guia keeps language | commit: 28d97a0
 - fix(mobile): sync WebView locale from web storage on navigation (avoid EN clobber) | commit: 8d9c681
+- fix(mobile,web): persist locale across docs and restore docs scrolling/nav in WebView | commit: fdf29bc
+- fix(mobile,web): WebView locale sync and doc nav overlap | commit: e9b4901
 - fix(web): hide chat card contour and dot grid outside RN WebView | commit: 99238ad
 - fix: revert doc nav sticky; manual-first locale (web + APK) | commit: d2978c7
 - fix(web): skip initial locale persist race vs useLayoutEffect | commit: 88247c7
@@ -757,20 +734,23 @@ Historial completo de cambios desde el inicio del proyecto.
 - Docs: rutas /faqs y /about independientes; guía sin FAQ ni trazabilidad; APK navega a ambas. | commit: 43b3219
 
 ### Maintenance
-- revert(staging): restore Apr-18 mobile/web baseline for regression isolation | commit: eac8e6b
-- chore(web): replace header logo with transparent PNG | commit: 97c9cda
-- chore(web): update brand logo with cropped transparent PNG | commit: 84ccf7b
 - revert(ui): restore full-width composer dock; keep RN top spacing | commit: 5106115
 - style(web): justify docs and token center copy on web | commit: 3f57c36
+- web: persist session_limit in sessionStorage for tier hydration | commit: f71a06f
 - web: FAQ page, Play Store dock, and copyright outside chat | commit: 570a6e4
 - Web: FAQs solo en /guia; trazabilidad APK sin package id; WebView rellena versión y build. | commit: 86d549b
 - Composer: enlaces a FAQs y About en /guia; hoja opciones más alta; About visible en web. | commit: 135b020
 - Android WebView: no interceptar SPA en /guia, notas y legales (evita freeze en FAQs/About). | commit: 4d30b5a
 - WebView: evitar bucle MutationObserver en /about al rellenar trazabilidad (rAF + no-op si mismo texto). | commit: c5f713c
 - Mobile 1.0.0 (versionCode 10); badge Google Play más grande en web. | commit: a3c0641
+
+---
+
+
+## [3.0.0] — 2026-04-23 | versionCode: 3 | Etapa: Internal Testing
+
+### Maintenance
 - Mobile 3.0.0 (versionCode 3) para siguiente internal tras 2.0.0 en Play. | commit: e4a82ff
-- Mobile: versión About/WebView desde manifest (expo-application), no expoConfig embebido obsoleto. | commit: 32afc87
-- Android release: siempre expo prebuild antes de Gradle para alinear expoConfig y manifest. | commit: 02e2664
 
 ---
 
@@ -811,7 +791,6 @@ Historial completo de cambios desde el inicio del proyecto.
 - feat(ritual): refine animations and harden oracle outputs | commit: d72eb41
 - feat(web): naturalize verdict copy, add particles, and prebuilt fallbacks | commit: 9f0be44
 - feat(web): progressive interpretation reveal and scroll anchor | commit: 7b4bf52
-- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
 - feat(ritual): integrate approved I Ching reveal flow into chat | commit: 26d6d60
 - feat(ritual): refine loading flow and pacing | commit: a3e1461
 - feat(i18n): localize web UI across nine locales; mobile Expo config | commit: 4a1ca3e
@@ -896,7 +875,6 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(web): center modal close, checkout via NEXT_PUBLIC_PLANS_URL, 2FA single-method steps | commit: 17a4ba4
 - fix(billing): address audit bf5e363 — RC stale cycles, Redis key, /me, CANCELLATION | commit: c510ae2
 - fix(security): harden auth, credits, and admin runtime config | commit: 62bfe1d
-- fix(auth): handle existing signup email with modal guidance | commit: 257e125
 - fix(auth): handle existing signup email with modal guidance | commit: cc48825
 - fix(billing): add paid grace window on temporary RC outages | commit: 2759f43
 - fix(ui): hide redundant subscription count message in center | commit: 8404c4d
@@ -977,6 +955,7 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(mobile): declare process.env globally to silence TS2591 without @types/node | commit: cb564d6
 - fix(mobile): translucent status bar with transparent background | commit: a3dfa51
 - fix(mobile): harden webview header hiding for sdk35 layout parity | commit: 3e35814
+- fix(mobile): stabilize SDK35 WebView layout and Android insets | commit: ab204d1
 
 ### Security
 - audit: security headers, RC webhook, public reads, CI, tests, observability | commit: b6a11c2
@@ -1009,7 +988,6 @@ Historial completo de cambios desde el inicio del proyecto.
 - db: before-delete trigger to wipe public.users before auth; manual delete script | commit: 62d3557
 - chore(db): do not modify applied migration 009; rely on 015 for seeker variants | commit: a25af20
 - refactor(billing): centralize tier quotas in tier-billing-constants | commit: 08a65b3
-- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
 - chore(billing): add detailed RC v1/v2 upstream failure logs | commit: 00c011e
 - chore(security): enforce RLS on internal RevenueCat tables | commit: 48bd6f8
 - chore(security): harden auth origin, webhook compare, and app headers | commit: d75c6ec
@@ -1027,9 +1005,6 @@ Historial completo de cambios desde el inicio del proyecto.
 - style(web): shift options and token modal CTAs further left | commit: aaa62c4
 - refactor(2fa): simplify modal actions and reduce button noise | commit: 9fb15ca
 - chore(ui): align particles density with demo | commit: 6eddeaa
-- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
-- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
-- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
 - chore(text): align punctuation normalization | commit: 6799513
 - chore(debug): add ritual stream diagnostics | commit: 2087ce7
 - chore(db): add security baseline and audit runbook | commit: 7d7094e
@@ -1044,34 +1019,43 @@ Historial completo de cambios desde el inicio del proyecto.
 - chore(mobile): bump versionCode to 2 | commit: ebe94be
 - chore(mobile): bump versionCode to 3 | commit: c8d9f1c
 - chore(mobile): versionCode 4 + edge-to-edge translucent bars | commit: 73dc3b8
+- revert(staging): restore Apr-18 mobile/web baseline for regression isolation | commit: eac8e6b
 - revert(staging): align mobile/web baseline to cb564d6 | commit: 37bf878
 - chore(mobile): inject Play verification token asset in Android builds | commit: 103ead2
 - chore(web): update header brand logo asset | commit: 199ad87
+- chore(web): replace header logo with transparent PNG | commit: 97c9cda
+- chore(web): update brand logo with cropped transparent PNG | commit: 84ccf7b
 
 ---
+
 
 ## Resumen de versiones
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.3.6 | 29 | 2026-05-31 | Closed Testing | 12 | integrate approved I Ching reveal flow into chat; chat drawer list respects Android bottom nav safe area; scope translator rule to current reading — permit historical arc references |
-| 3.3.5 | 28 | 2026-05-31 | Closed Testing | 0 | — |
-| 3.3.4 | 27 | 2026-05-30 | Closed Testing | 0 | — |
-| 3.3.3 | 26 | 2026-05-30 | Closed Testing | 0 | — |
-| 3.3.2 | 25 | 2026-05-30 | Closed Testing | 0 | — |
-| 3.3.1 | 24 | 2026-05-29 | Closed Testing | 0 | — |
-| 3.3.0 | 23 | 2026-05-25 | Closed Testing | 0 | — |
-| 3.2.9 | 22 | 2026-05-24 | Closed Testing | 0 | — |
-| 3.2.7 | 20 | 2026-05-21 | Internal Testing | 0 | — |
-| 3.2.6 | 19 | 2026-05-21 | Internal Testing | 0 | — |
-| 3.2.4 | 17 | 2026-05-18 | Internal Testing | 0 | — |
-| 3.2.1 | 14 | 2026-05-18 | Internal Testing | 0 | — |
-| 3.2.0 | 12 | 2026-05-17 | Internal Testing | 0 | — |
-| 3.1.8 | 11 | 2026-05-17 | Internal Testing | 0 | — |
-| 3.1.7 | 10 | 2026-05-16 | Internal Testing | 0 | — |
-| 3.1.6 | 9 | 2026-05-07 | Internal Testing | 0 | — |
-| 3.1.5 | 8 | 2026-05-03 | Internal Testing | 0 | — |
-| 3.1.2 | 5 | 2026-04-30 | Internal Testing | 0 | — |
-| 3.1.1 | 4 | 2026-04-29 | Internal Testing | 0 | — |
-| 3.0.0 | 3 | 2026-04-23 | Internal Testing | 0 | — |
-| 2.0.0 | 2 | 2026-04-20 | Internal Testing | 0 | — |
+| 3.3.6 | 29 | 2026-05-31 | Closed Testing | 2 | chat drawer list respects Android bottom nav safe area |
+| 3.3.5 | 28 | 2026-05-31 | Closed Testing | 2 | tokens not granted after purchase; chat delete fails silently |
+| 3.3.4 | 27 | 2026-05-30 | Closed Testing | 2 | — |
+| 3.3.3 | 26 | 2026-05-30 | Closed Testing | 6 | replace native <select> with themed custom dropdown; replace Alert.alert pack picker with visual modal cards; insert new release at top instead of appending at bottom |
+| 3.3.2 | 25 | 2026-05-30 | Closed Testing | 35 | convert delete-account doc to FAQs + add delete-chats FAQ; add Tutorial label before info icon in header button; style delete-account btn to match other action buttons |
+| 3.3.1 | 24 | 2026-05-29 | Closed Testing | 44 | add react-joyride tour with 7 steps in 11 languages; fix tour trigger + add custom styled tooltip; add Nueva Sesión step (step 2) to tour |
+| 3.3.0 | 23 | 2026-05-25 | Closed Testing | 3 | add base-uri, form-action, object-src directives; route ritual debug logs through Axiom instead of console |
+| 3.2.9 | 22 | 2026-05-24 | Closed Testing | 9 | IndexedDB cache for chat list and thread content; add support@theoriginaliching.com contact link in Terms section 10; redesign offline screen v2 — brand logo, fix transparent bleed-through |
+| 3.2.8 | 21 | 2026-05-21 | Internal Testing | 3 | custom offline screen with animated radar when WebView fails; simplify offline screen — Signal Lost / The oracle is waiting |
+| 3.2.7 | 20 | 2026-05-21 | Internal Testing | 2 | remove READ_MEDIA_IMAGES/VIDEO permissions + bump to 3.2.7 (versionCode 20) |
+| 3.2.6 | 19 | 2026-05-21 | Internal Testing | 36 | implement full account deletion flow for Google Play compliance; full localization of account deletion flow; merge account deletion flow into staging |
+| 3.2.5 | 18 | 2026-05-18 | Internal Testing | 1 | — |
+| 3.2.4 | 17 | 2026-05-18 | Internal Testing | 5 | suppress Expo Go warning and clean cached native dir before prebuild; add root .easignore so apps/mobile/.env reaches Metro bundler + bump 3.2.3/16; handle PKCE auth/callback deep link so Google OAuth returns to app |
+| 3.2.2 | 15 | 2026-05-18 | Internal Testing | 1 | strip orphaned [SNAPSHOT_END], PDF saves to Downloads with permission + bump … |
+| 3.2.1 | 14 | 2026-05-18 | Internal Testing | 2 | respect native dialog confirmation before removing chat + bump 3.2.1/versionC… |
+| 3.2.0 | 12 | 2026-05-17 | Internal Testing | 8 | add library unlock and translator label to Seeker pack description; commit package-lock.json with next-axiom entry; align pack descriptions in all 10 languages with Spanish source of truth |
+| 3.1.8 | 11 | 2026-05-17 | Internal Testing | 10 | translate guide/FAQ sections for all 11 locales + remove Zhou Yi inline trans…; hexagram-specific fallback image generator (2,760 WebP); integrate Cloudflare R2 as primary image fallback |
+| 3.1.7 | 10 | 2026-05-16 | Internal Testing | 167 | update seeker tokens 20→25 and practitioner tokens 40→50; implement Yarrow Stalks casting method; Block A — chip selectors, dynamic hint, em dash cleanup |
+| 3.1.6 | 9 | 2026-05-07 | Internal Testing | 45 | manual three-coin cast mode with preview and API validation; Kangxi cash coins + instant dual-hex ritual for manual I Ching; compact manual coin wizard; add expo export test artifacts |
+| 3.1.5 | 8 | 2026-05-03 | Internal Testing | 7 | v3.1.4 - fix EAS env vars, staging build with all secrets; add openGraph, Twitter, keywords, per-page metadata and sitemap to all public…; expand historical content for I Ching and Oracle Bones in all 11 languages |
+| 3.1.3 | 6 | 2026-04-30 | Internal Testing | 1 | — |
+| 3.1.2 | 5 | 2026-04-30 | Internal Testing | 4 | re-enable R8, add Sentry crash reporting and error boundary; re-enable R8, add Sentry crash reporting and error boundary; persist R8 keep rules via Expo config plugin |
+| 3.1.1 | 4 | 2026-04-29 | Internal Testing | 54 | franja Play arriba, cierre hilo y aviso límite; i18n; mandatory legal consent on signup and OAuth; i18n docs wording, legal consent flow, locale cookies, ritual UI |
+| 1.0.0 | 10 | 2026-04-23 | Internal Testing | 42 | themed native chrome, locale bridge for login, i18n dialogs; default UI locale EN, device detection via expo-localization; rounded top cap on auth strip, square join to app bar |
+| 3.0.0 | 3 | 2026-04-23 | Internal Testing | 1 | — |
+| 2.0.0 | 2 | 2026-04-20 | Internal Testing | 257 | Cloudflare Turnstile for register; turbo env passthrough; chat UX refresh, docs routes, richer image prompts; logo header, drawer stats, prune empty chats, mode showcase |

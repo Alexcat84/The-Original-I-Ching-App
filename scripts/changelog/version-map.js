@@ -70,7 +70,6 @@ function resolveStage(versionCode, date) {
   if (date < FIRST_PLAY_UPLOAD.date) {
     return "Desarrollo inicial";
   }
-  if (versionCode >= 25) return "Production";
   if (versionCode >= 22) return "Closed Testing";
   if (versionCode >= 1) return "Internal Testing";
   return "Desarrollo inicial";

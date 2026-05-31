@@ -11,11 +11,13 @@ const { REPO_ROOT } = require("./constants");
  * @param {{ includeMerges?: boolean, since?: string, until?: string }} [options]
  * @returns {GitCommit[]}
  */
+/** Subjects that git stash uses for its internal commits — never real app commits. */
+const STASH_SUBJECT_RE = /^(WIP on |On [^:]+:|index on [^:]+:|untracked files on [^:]+:)/i;
+
 function fetchGitLog(options = {}) {
   const { includeMerges = false, since, until } = options;
   const args = [
     "log",
-    "--all",
     "--format=%h|%ad|%s|%D",
     "--date=short",
   ];
@@ -39,7 +41,8 @@ function fetchGitLog(options = {}) {
     .map((line) => {
       const [hash, date, subject, refs = ""] = line.split("|");
       return { hash, date, subject, refs };
-    });
+    })
+    .filter((c) => !STASH_SUBJECT_RE.test(c.subject));
 
   if (includeMerges) {
     return commits;
