@@ -40,15 +40,18 @@ function msToIso(ms: number): string {
   return new Date(ms).toISOString();
 }
 
+/** Returns the server's session list, or null on network/auth error.
+ *  Returning null vs [] lets callers distinguish "server unreachable"
+ *  from "server confirmed account has no sessions". */
 async function fetchSummaries(
   token: string,
   baseUrl: string,
-): Promise<ApiSummaryEntry[]> {
+): Promise<ApiSummaryEntry[] | null> {
   const res = await fetch(`${baseUrl}/api/account/chats?summary=1`, {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store",
   });
-  if (!res.ok) return [];
+  if (!res.ok) return null;
   const body = (await res.json()) as { sessions?: ApiSummaryEntry[] };
   return Array.isArray(body.sessions) ? body.sessions : [];
 }
@@ -85,7 +88,9 @@ export async function syncChats(token: string, baseUrl: string): Promise<void> {
     }
 
     const entries = await fetchSummaries(token, baseUrl);
-    if (entries.length === 0) return;
+    // null = network/auth error; skip sync entirely to avoid wiping valid cache.
+    // [] = server confirmed the account has no sessions; proceed to evict stale SQLite rows.
+    if (entries === null) return;
 
     const now = new Date().toISOString();
     const chatRows: ChatRow[] = entries.map((e) => ({

@@ -198,14 +198,18 @@ export async function getCachedChatsForInjection(): Promise<RnCachedChatEntry[]>
 /** Marks as deleted any chats in SQLite whose IDs are NOT in `serverIds`.
  *  Called after a successful server summary fetch so that chats deleted on
  *  another device (or via the web UI) are evicted from the local cache and
- *  no longer flash on the next app launch. */
+ *  no longer flash on the next app launch.
+ *
+ *  When serverIds is empty the server has confirmed the account has no sessions
+ *  (the caller already filtered out network/auth errors), so ALL local chats are
+ *  marked deleted. This prevents stale chats from a previous account or environment
+ *  from persisting in the local cache indefinitely. */
 export async function softDeleteStaleChats(serverIds: string[]): Promise<void> {
+  const db = await getDb();
   if (serverIds.length === 0) {
-    // No sessions returned — don't wipe everything (could be an empty account
-    // or a transient empty response). Callers should gate on entries.length > 0.
+    await db.runAsync(`UPDATE chats SET is_deleted = 1 WHERE is_deleted = 0`);
     return;
   }
-  const db = await getDb();
   // SQLite has no native NOT IN with a dynamic list via parameterized arrays,
   // so we build the placeholders manually. Batch in chunks to stay under the
   // SQLITE_MAX_VARIABLE_NUMBER limit (999 by default).
