@@ -1,8 +1,21 @@
-<!-- changelog:last-release:102ceec -->
+<!-- changelog:last-release:1f76095 -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.3.8] — 2026-05-31 | versionCode: 31 | Etapa: Closed Testing
+
+### Fix
+- fix(mobile+web): clear stale sidebar chats when SQLite confirms empty account | commit: 5a9b141
+
+### Docs
+- docs(claude): mark CI actions upgrade as done (v6, 2026-05-31) | commit: 1f76095
+
+### Maintenance
+- chore(ci): upgrade actions/checkout and setup-node to v6 | commit: 2cb197c
+
+---
 
 ## [3.3.7] — 2026-05-31 | versionCode: 30 | Etapa: Closed Testing
 
@@ -1042,7 +1055,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.3.7 | 30 | 2026-05-31 | Closed Testing | 4 | evict stale SQLite chats when server confirms empty account; allow intentional tier downgrades in grant_tokens (corrects 043); three independent bug fixes |
+| 3.3.8 | 31 | 2026-05-31 | Closed Testing | 3 | clear stale sidebar chats when SQLite confirms empty account |
+| 3.3.7 | 30 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.6 | 29 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.5 | 28 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.4 | 27 | 2026-05-30 | Closed Testing | 0 | — |

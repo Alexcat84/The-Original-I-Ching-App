@@ -1760,17 +1760,35 @@ export default function WebViewScreen() {
   /* ── Restore token + locale from storage on cold start ── */
   useEffect(() => {
     const RC_API_KEY = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ?? '';
-    try {
-      if (RC_API_KEY) Purchases.configure({ apiKey: RC_API_KEY });
-    } catch (e) {
-      console.warn('[RevenueCat] configure failed:', e);
-    }
 
+    // Set up purchase success listener synchronously — must not wait on async ops.
     const purchaseSub = DeviceEventEmitter.addListener('rnPurchaseSuccess', () => {
       webViewRef.current?.injectJavaScript(
         `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
       );
     });
+
+    // Configure RC after checking SecureStore for a stored UID. If we already
+    // have a token, configure with appUserId so any purchase that fires before
+    // Purchases.logIn() resolves (in the effect below) is attributed to the
+    // correct user — not an anonymous $RCAnonymousID that the webhook rejects.
+    (async () => {
+      if (!RC_API_KEY) return;
+      let appUserId: string | undefined;
+      try {
+        const tok = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
+        if (tok) {
+          const uid = getUserIdFromJwt(tok);
+          if (uid) appUserId = uid;
+        }
+      } catch { /* SecureStore unavailable — fall back to anonymous */ }
+      try {
+        Purchases.configure({ apiKey: RC_API_KEY, appUserId });
+      } catch (e) {
+        console.warn('[RevenueCat] configure failed:', e);
+      }
+    })();
+
     return () => { purchaseSub.remove(); };
   }, []);
 
