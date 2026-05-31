@@ -1,8 +1,30 @@
-<!-- changelog:last-release:b56447f -->
+<!-- changelog:last-release:f51743b -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.3.5] — 2026-05-31 | versionCode: 28 | Etapa: Closed Testing
+
+### New
+- feat(ritual): integrate approved I Ching reveal flow into chat | commit: 2c1b563
+
+### Fix
+- fix(billing+chats): tokens not granted after purchase; chat delete fails silently | commit: f51743b
+- fix(prompt): scope translator rule to current reading — permit historical arc references | commit: 2cce477
+- fix(security): migrate Expo mobile chain to remove tar high vulnerabilities | commit: a2a4300
+- fix(csp): unsafe-eval for Turnstile, cspNonce wiring, remove data leak log | commit: a9a7c4b
+- fix(auth): handle existing signup email with modal guidance | commit: 257e125
+
+### Maintenance
+- chore(mobile): bump version 3.3.4 / versionCode 27 | commit: 1717b0e
+- remove(debug): eliminar logs [token-debug] y variable LOG_TOKEN_BALANCE_DEBUG | commit: 5edb66d
+- On staging: temp-before-rebase-for-ritual-push | commit: 6d9807d
+- index on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: e81af41
+- untracked files on staging: 2c1b563 feat(ritual): integrate approved I Ching reveal flow into chat | commit: d662e64
+- Revert "fix(auth): handle existing signup email with modal guidance" | commit: 8f1f34a
+
+---
 
 ## [3.3.4] — 2026-05-30 | versionCode: 27 | Etapa: Closed Testing
 
@@ -1010,7 +1032,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.3.4 | 27 | 2026-05-30 | Closed Testing | 12 | integrate approved I Ching reveal flow into chat; scope translator rule to current reading — permit historical arc references; migrate Expo mobile chain to remove tar high vulnerabilities |
+| 3.3.5 | 28 | 2026-05-31 | Closed Testing | 12 | integrate approved I Ching reveal flow into chat; tokens not granted after purchase; chat delete fails silently; scope translator rule to current reading — permit historical arc references |
+| 3.3.4 | 27 | 2026-05-30 | Closed Testing | 0 | — |
 | 3.3.3 | 26 | 2026-05-30 | Closed Testing | 0 | — |
 | 3.3.2 | 25 | 2026-05-30 | Closed Testing | 0 | — |
 | 3.3.1 | 24 | 2026-05-29 | Closed Testing | 0 | — |
