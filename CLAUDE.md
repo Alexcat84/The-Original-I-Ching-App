@@ -268,15 +268,9 @@ vercel env pull .env.staging
 
 ## Pendiente para Lanzamiento
 
-### ⚠️ DEADLINE CRÍTICO — CI GitHub Actions (antes del 2 junio 2026)
-Las actions `actions/checkout@v4` y `actions/setup-node@v4` usan Node.js 20 internamente.
-GitHub forzará Node.js 24 el **2 junio 2026** — si no se actualizan, el CI fallará.
-**Qué hacer:** Cuando existan v5+, actualizar `.github/workflows/ci.yml` líneas:
-```
-uses: actions/checkout@v4  →  @v5
-uses: actions/setup-node@v4  →  @v5
-```
-Verificar en: https://github.com/actions/checkout/releases y https://github.com/actions/setup-node/releases
+### ✅ CI GitHub Actions — actualizado (2026-05-31)
+Actualizados a `actions/checkout@v6` y `actions/setup-node@v6` (ambos en v6 al 31 mayo 2026).
+Compatibles con Node.js 24 — deadline del 2 junio 2026 cubierto.
 
 - [x] Merge staging → main (hecho — 7 mayo 2026)
 - [ ] Upgrade Supabase a Pro ($25/mes) al tener usuarios reales
