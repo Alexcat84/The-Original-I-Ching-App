@@ -2129,13 +2129,16 @@ export default function HomePage() {
               // Check provider to decide: auto-fill from Google or show modal for email
               void (async () => {
                 const sb = getSupabaseBrowser();
+                // Use getUser() (server round-trip) instead of getSession()
+                // (local JWT cache). getSession() may not include full_name
+                // after token refresh, causing the auto-fill to silently fail.
                 const {
-                  data: { session },
-                } = await sb.auth.getSession();
-                const provider = session?.user?.app_metadata?.provider;
+                  data: { user },
+                } = await sb.auth.getUser();
+                const provider = user?.app_metadata?.provider;
                 const fullName =
-                  typeof session?.user?.user_metadata?.full_name === "string"
-                    ? session.user.user_metadata.full_name.trim()
+                  typeof user?.user_metadata?.full_name === "string"
+                    ? user.user_metadata.full_name.trim()
                     : "";
                 const firstName = fullName.split(" ")[0]?.trim() ?? "";
                 if (provider === "google" && firstName) {
