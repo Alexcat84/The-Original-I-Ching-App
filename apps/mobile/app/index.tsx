@@ -245,13 +245,13 @@ const INJECTED_JS = `
     'html.iching-rn-webview:has(.iching-oracle-shell--chat){height:100%!important;min-height:100%!important;overflow:hidden!important}',
     'html.iching-rn-webview:has(.iching-oracle-shell--chat) body{height:100%!important;min-height:100%!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden!important}',
     'html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)){height:auto!important;min-height:100%!important}',
-    'html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;margin:0!important;padding:0!important;padding-bottom:max(0.75rem,env(safe-area-inset-bottom,0px))!important}',
+    'html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;margin:0!important;padding:0!important;padding-bottom:max(0.75rem,var(--rn-safe-area-inset-bottom, 0px))!important}',
     '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:none!important;overflow:hidden!important;padding:0!important;margin:0!important;background:transparent!important}',
     /* Layout parity with latest globals.css — APK must not depend on stale CDN/CSS deploy */
     '.iching-oracle-shell--chat > *:only-child{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;max-width:none!important;padding:0!important}',
     '.oracle-chat-app{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;position:relative!important;isolation:isolate!important}',
     /* .chat-surface: base layout; do NOT force square top when .chat-surface--explore-cap (auth strip rounds like former native card) */
-    '.chat-surface{margin-top:0!important;margin-bottom:calc(0.25rem + clamp(18px,env(safe-area-inset-bottom,0px),52px))!important;padding:0!important;flex:1 1 0%!important;align-self:stretch!important;min-width:0!important;min-height:0!important;border-radius:0 0 clamp(26px,5.5vw,38px) clamp(26px,5.5vw,38px)!important}',
+    '.chat-surface{margin-top:0!important;margin-bottom:calc(0.25rem + max(18px, var(--rn-safe-area-inset-bottom, 0px)))!important;padding:0!important;flex:1 1 0%!important;align-self:stretch!important;min-width:0!important;min-height:0!important;border-radius:0 0 clamp(26px,5.5vw,38px) clamp(26px,5.5vw,38px)!important}',
     'html.iching-rn-webview .chat-surface.chat-surface--explore-cap{border-radius:clamp(26px,5.5vw,38px)!important}',
     'html.iching-rn-webview .chat-surface--explore-cap>.auth-explore-strip:first-child{border-top-left-radius:clamp(26px,5.5vw,38px)!important;border-top-right-radius:clamp(26px,5.5vw,38px)!important}',
     /* Stale web deploy: hide legacy "Language" label; restyle strip like native chrome */
@@ -278,7 +278,7 @@ const INJECTED_JS = `
     '.composer-dock{position:relative!important;padding-bottom:0!important}',
     '.composer-sheet{position:absolute!important;left:0!important;right:0!important;bottom:100%!important;z-index:58!important;max-height:0!important;min-height:0!important;overflow:hidden!important;pointer-events:none!important;transition:max-height 0.28s ease!important;border-bottom:1px solid transparent!important}',
     '.composer-sheet.is-open{max-height:min(52vh,26rem)!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important;background:var(--composer-bg)!important;border-top-left-radius:calc(var(--radius) * 0.55)!important;border-top-right-radius:calc(var(--radius) * 0.55)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--fg) 6%,transparent)!important}',
-    '@media (max-width:520px){.composer-minibar{padding-top:0.28rem!important;padding-left:0.55rem!important;padding-right:0.55rem!important;padding-bottom:calc(0.25rem + clamp(14px,env(safe-area-inset-bottom,0px),52px))!important;gap:0.35rem!important;align-items:center!important}.composer-minibar .composer-input-row{gap:0.35rem!important;margin-top:0!important}.composer-minibar .composer-input-row textarea{min-height:2.08rem!important;padding:0.42rem 0.72rem!important;font-size:0.92rem!important}.composer-minibar .composer-input-row>button{width:2.42rem!important;height:2.42rem!important;font-size:1rem!important}.composer-options-btn{min-width:2.7rem!important;padding:0.24rem 0.26rem!important;border-radius:18px!important}}',
+    '@media (max-width:520px){.composer-minibar{padding-top:0.28rem!important;padding-left:0.55rem!important;padding-right:0.55rem!important;padding-bottom:calc(0.25rem + max(14px, var(--rn-safe-area-inset-bottom, 0px)))!important;gap:0.35rem!important;align-items:center!important}.composer-minibar .composer-input-row{gap:0.35rem!important;margin-top:0!important}.composer-minibar .composer-input-row textarea{min-height:2.08rem!important;padding:0.42rem 0.72rem!important;font-size:0.92rem!important}.composer-minibar .composer-input-row>button{width:2.42rem!important;height:2.42rem!important;font-size:1rem!important}.composer-options-btn{min-width:2.7rem!important;padding:0.24rem 0.26rem!important;border-radius:18px!important}}',
     'html.iching-rn-webview footer.chat-composer-wa{padding-bottom:0!important}',
     'html.iching-rn-webview .composer-minibar{padding-bottom:0.42rem!important}',
     /* Match globals: RN chat width was still capped by 34–40rem bubbles + 40–48rem surface (wide side margins). */
@@ -293,10 +293,9 @@ const INJECTED_JS = `
     'html.iching-rn-webview .legal-consent-modal{max-height:calc(100vh - 1.5rem)!important;width:100%!important}',
     'html.iching-rn-webview .legal-consent-scroll{overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}',
     /* Chat drawer list: push scrollable content above the Android bottom nav bar.
-       Must target .chat-drawer-list (the overflow-y:auto scroll container) not the outer
-       .chat-drawer — padding on the parent flex container does not extend into the
-       scroll area of the child. */
-    'html.iching-rn-webview .chat-drawer-list{padding-bottom:calc(0.25rem + clamp(18px,env(safe-area-inset-bottom,0px),52px))!important}',
+       Padding-bottom on a scroll container is often ignored by the browser's scroll height calculation.
+       Using a ::after pseudo-element + the injected RN bottom inset ensures reliable scroll boundary. */
+    'html.iching-rn-webview .chat-drawer-list::after{content:"";display:block;min-height:calc(0.25rem + max(18px, var(--rn-safe-area-inset-bottom, 0px)))!important;flex-shrink:0!important}',
     /* Hide Vercel preview toolbar — staging deployments inject a floating Vercel icon that confuses testers */
     'vercel-toolbar,#__vercel-toolbar,.__vercel-toolbar,div[id*="vercel-toolbar"],iframe[src*="vercel.live"]{display:none!important}'
   ].join(';');
@@ -2589,7 +2588,7 @@ export default function WebViewScreen() {
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onMessage={onMessage}
         onError={() => setWebViewError(true)}
-        injectedJavaScriptBeforeContentLoaded="document.documentElement.classList.add('iching-rn-webview');true;"
+        injectedJavaScriptBeforeContentLoaded={`document.documentElement.classList.add('iching-rn-webview'); document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insets.bottom}px'); true;`}
         injectedJavaScript={COMBINED_INJECTED_JS}
         javaScriptEnabled
         domStorageEnabled
