@@ -359,7 +359,6 @@ export async function getUserSessionsWithConsultations(
     .order("created_at", { ascending: false });
   if (sessionsError || !sessionRows?.length) return [];
 
-  const sessionIds = sessionRows.map((s) => s.id);
   const legacyBaseColumns =
     "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
   const baseConsultColumns = `${legacyBaseColumns}, translator`;
@@ -476,7 +475,7 @@ export async function getUserSessionSummaries(
     .order("created_at", { ascending: false });
   if (sessionsError || !sessionRows?.length) return [];
 
-  const sessionIds = sessionRows.map((s) => s.id);
+
   const { data: consultRows, error: consultError } = await supabase
     .from("consultations")
     .select("session_id, created_at, question, session_position")
