@@ -1,8 +1,27 @@
-<!-- changelog:last-release:890143c -->
+<!-- changelog:last-release:922dfe8 -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.3.9] — 2026-05-31 | versionCode: 32 | Etapa: Closed Testing
+
+### Fix
+- fix(tour): guard against re-trigger on concurrent account-refresh events | commit: 922dfe8
+- fix(tour): trigger onboarding tour for auto-filled and google users | commit: 2b70a28
+- fix(web): remove unused sessionIds variable left after .in() removal | commit: 0c6e260
+- fix(chats): resolve infinite loading bugs for heavy accounts and chinese unicode | commit: afb67bb
+- fix(mobile): unify legal consent backdrop to use --rn-safe-area-inset-bottom | commit: 5320302
+- fix(mobile): use native bottom inset instead of buggy env() for chat drawer padding | commit: 7bfebfb
+- fix(mobile): use identityCheckFailed message on RC logIn error; add migration 048 verify check | commit: fc68337
+- fix(db): add extensions to search_path in init_free_user to resolve digest() | commit: 0013433
+- fix(mobile): enforce RevenueCat logIn before purchase to prevent anonymous IDs | commit: 338f197
+- fix(account): remove dropped alias table ref and silence RC 404 on delete | commit: bd63258
+
+### Maintenance
+- chore(release): bump version 3.3.8 / versionCode 31 | commit: 88b7264
+
+---
 
 ## [3.3.8] — 2026-05-31 | versionCode: 31 | Etapa: Internal Testing
 
@@ -1071,7 +1090,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.3.8 | 31 | 2026-05-31 | Internal Testing | 13 | remove invalid react-native-purchases config plugin entry; revert migration 048 to no-op — trial email guard already in 046; block free trial re-grant after delete+re-register, fix anonymize crash, fix … |
+| 3.3.9 | 32 | 2026-05-31 | Closed Testing | 11 | guard against re-trigger on concurrent account-refresh events; trigger onboarding tour for auto-filled and google users; remove unused sessionIds variable left after .in() removal |
+| 3.3.8 | 31 | 2026-05-31 | Internal Testing | 0 | — |
 | 3.3.7 | 30 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.6 | 29 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.5 | 28 | 2026-05-31 | Closed Testing | 0 | — |
