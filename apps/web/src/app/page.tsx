@@ -761,6 +761,7 @@ export default function HomePage() {
   const [dailyCount, setDailyCount] = useState(0);
   const [streakDays, setStreakDays] = useState(0);
   const [tourRun, setTourRun] = useState(false);
+  const tourFiredRef = useRef(false);
   const [tourKey, setTourKey] = useState(0);
   const [tourTheme, setTourTheme] = useState<"light" | "dark">("dark");
   useEffect(() => {
@@ -1137,6 +1138,7 @@ export default function HomePage() {
     ({ status }: EventData) => {
       if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
         setTourRun(false);
+        tourFiredRef.current = false;
         setConsultPanelOpen(false);
         try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
       }
@@ -2162,7 +2164,8 @@ export default function HomePage() {
                     if (res.ok) {
                       setDisplayName(firstName);
                       try {
-                        if (!localStorage.getItem(TOUR_STORAGE_KEY)) {
+                        if (!localStorage.getItem(TOUR_STORAGE_KEY) && !tourFiredRef.current) {
+                          tourFiredRef.current = true;
                           setTourKey((k) => k + 1);
                           setTourRun(true);
                         }
@@ -2180,7 +2183,8 @@ export default function HomePage() {
             } else {
               // Display name already set, but check if we need to show the tour
               try {
-                if (!localStorage.getItem(TOUR_STORAGE_KEY)) {
+                if (!localStorage.getItem(TOUR_STORAGE_KEY) && !tourFiredRef.current) {
+                  tourFiredRef.current = true;
                   setTourKey((k) => k + 1);
                   setTourRun(true);
                 }
