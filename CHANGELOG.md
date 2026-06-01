@@ -1,8 +1,20 @@
-<!-- changelog:last-release:663bc75 -->
+<!-- changelog:last-release:97529b4 -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.4.1] — 2026-06-01 | versionCode: 34 | Etapa: Closed Testing
+
+### New
+- feat(faqs): add /delete-account link inside delete-account FAQ item (11 locales) | commit: e9d0440
+- feat(compliance): restore /delete-account page for Play Store Data Safety | commit: cba82d7
+
+### Maintenance
+- debug(rc): expose actual RC getOfferings error in purchase dialog | commit: 97529b4
+- chore(release): bump version 3.4.0 / versionCode 33 | commit: 2d65563
+
+---
 
 ## [3.4.0] — 2026-06-01 | versionCode: 33 | Etapa: Closed Testing
 
@@ -1104,7 +1116,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.4.0 | 33 | 2026-06-01 | Closed Testing | 6 | force full reload after legal consent to guarantee tour fires; remove pre-OAuth consent modal for Google users; re-evaluate tokenCenterMessage on locale change |
+| 3.4.1 | 34 | 2026-06-01 | Closed Testing | 4 | add /delete-account link inside delete-account FAQ item (11 locales); restore /delete-account page for Play Store Data Safety |
+| 3.4.0 | 33 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.3.9 | 32 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.8 | 31 | 2026-05-31 | Internal Testing | 0 | — |
 | 3.3.7 | 30 | 2026-05-31 | Closed Testing | 0 | — |
