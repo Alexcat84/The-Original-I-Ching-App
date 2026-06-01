@@ -2167,6 +2167,35 @@ export default function WebViewScreen() {
     const pkg = packPickerPackages[packPickerSelectedIdx];
     if (!pkg) return;
     setPackPickerBusy(true);
+
+    const currentToken = accessTokenRef.current;
+    const uid = currentToken ? getUserIdFromJwt(currentToken) : null;
+    if (!uid) {
+      setPackPickerBusy(false);
+      showNativeDialog({
+        title: nativeUi.purchaseErrorTitle,
+        message: nativeUi.storeUnavailable,
+        buttons: [{ text: nativeUi.ok }],
+      });
+      return;
+    }
+
+    try {
+      const appUserId = await Purchases.getAppUserID();
+      if (appUserId !== uid) {
+        await Purchases.logIn(uid);
+      }
+    } catch (e) {
+      console.warn("[RevenueCat] logIn failed during purchase:", e);
+      setPackPickerBusy(false);
+      showNativeDialog({
+        title: nativeUi.purchaseErrorTitle,
+        message: nativeUi.storeUnavailable,
+        buttons: [{ text: nativeUi.ok }],
+      });
+      return;
+    }
+
     try {
       await Purchases.purchasePackage(pkg);
       setPackPickerOpen(false);
@@ -2195,6 +2224,32 @@ export default function WebViewScreen() {
   }, [packPickerSelectedIdx, packPickerPackages, nativeUi, showNativeDialog]);
 
   const handleNativePurchase = useCallback(async () => {
+    const currentToken = accessTokenRef.current;
+    const uid = currentToken ? getUserIdFromJwt(currentToken) : null;
+    if (!uid) {
+      showNativeDialog({
+        title: nativeUi.purchaseErrorTitle,
+        message: nativeUi.storeUnavailable,
+        buttons: [{ text: nativeUi.ok }],
+      });
+      return;
+    }
+
+    try {
+      const appUserId = await Purchases.getAppUserID();
+      if (appUserId !== uid) {
+        await Purchases.logIn(uid);
+      }
+    } catch (e) {
+      console.warn("[RevenueCat] logIn failed before purchase:", e);
+      showNativeDialog({
+        title: nativeUi.purchaseErrorTitle,
+        message: nativeUi.storeUnavailable,
+        buttons: [{ text: nativeUi.ok }],
+      });
+      return;
+    }
+
     let offerings: Awaited<ReturnType<typeof Purchases.getOfferings>>;
     try {
       offerings = await Purchases.getOfferings();
