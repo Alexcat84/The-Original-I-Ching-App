@@ -2252,20 +2252,23 @@ export default function WebViewScreen() {
     let offerings: Awaited<ReturnType<typeof Purchases.getOfferings>>;
     try {
       offerings = await Purchases.getOfferings();
-    } catch {
+    } catch (e) {
+      const errMsg = e instanceof Error ? e.message : String(e);
+      addLog(`RC getOfferings error: ${errMsg}`);
       showNativeDialog({
         title: nativeUi.purchaseErrorTitle,
-        message: nativeUi.storeUnavailable,
+        message: `[RC] ${errMsg}`,
         buttons: [{ text: nativeUi.ok }],
       });
       return;
     }
 
     const pkgs = offerings.current?.availablePackages ?? [];
+    addLog(`RC offerings: current=${offerings.current?.identifier ?? 'null'} pkgs=${pkgs.length} allKeys=${Object.keys(offerings.all).join(',')}`);
     if (pkgs.length === 0) {
       showNativeDialog({
         title: nativeUi.purchaseErrorTitle,
-        message: nativeUi.storeUnavailable,
+        message: `[RC] current=${offerings.current?.identifier ?? 'null'} allOfferings=${Object.keys(offerings.all).join(',') || 'none'}`,
         buttons: [{ text: nativeUi.ok }],
       });
       return;
