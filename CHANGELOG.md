@@ -1,8 +1,15 @@
-<!-- changelog:last-release:97529b4 -->
+<!-- changelog:last-release:fcba50a -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.4.2] — 2026-06-01 | versionCode: 35 | Etapa: Closed Testing
+
+### Maintenance
+- chore(release): bump version 3.4.1 / versionCode 34 | commit: fcba50a
+
+---
 
 ## [3.4.1] — 2026-06-01 | versionCode: 34 | Etapa: Closed Testing
 
@@ -1116,7 +1123,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.4.1 | 34 | 2026-06-01 | Closed Testing | 4 | add /delete-account link inside delete-account FAQ item (11 locales); restore /delete-account page for Play Store Data Safety |
+| 3.4.2 | 35 | 2026-06-01 | Closed Testing | 1 | — |
+| 3.4.1 | 34 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.4.0 | 33 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.3.9 | 32 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.8 | 31 | 2026-05-31 | Internal Testing | 0 | — |

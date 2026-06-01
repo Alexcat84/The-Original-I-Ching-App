@@ -58,7 +58,9 @@ function getUserIdFromJwt(token: string): string | null {
   try {
     const payload = token.split(".")[1];
     if (!payload) return null;
-    const json = Buffer.from(payload, "base64").toString("utf8");
+    // JWT uses base64url (- and _ instead of + and /). atob requires standard base64.
+    const b64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const json = atob(b64);
     const claims = JSON.parse(json) as { sub?: string };
     return typeof claims.sub === "string" && claims.sub.length > 0 ? claims.sub : null;
   } catch {
@@ -2252,23 +2254,20 @@ export default function WebViewScreen() {
     let offerings: Awaited<ReturnType<typeof Purchases.getOfferings>>;
     try {
       offerings = await Purchases.getOfferings();
-    } catch (e) {
-      const errMsg = e instanceof Error ? e.message : String(e);
-      addLog(`RC getOfferings error: ${errMsg}`);
+    } catch {
       showNativeDialog({
         title: nativeUi.purchaseErrorTitle,
-        message: `[RC] ${errMsg}`,
+        message: nativeUi.storeUnavailable,
         buttons: [{ text: nativeUi.ok }],
       });
       return;
     }
 
     const pkgs = offerings.current?.availablePackages ?? [];
-    addLog(`RC offerings: current=${offerings.current?.identifier ?? 'null'} pkgs=${pkgs.length} allKeys=${Object.keys(offerings.all).join(',')}`);
     if (pkgs.length === 0) {
       showNativeDialog({
         title: nativeUi.purchaseErrorTitle,
-        message: `[RC] current=${offerings.current?.identifier ?? 'null'} allOfferings=${Object.keys(offerings.all).join(',') || 'none'}`,
+        message: nativeUi.storeUnavailable,
         buttons: [{ text: nativeUi.ok }],
       });
       return;
