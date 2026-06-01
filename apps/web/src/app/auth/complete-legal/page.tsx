@@ -48,7 +48,7 @@ export default function CompleteLegalPage() {
         return;
       }
       if (legal) {
-        router.replace("/");
+        window.location.replace("/");
         return;
       }
       setPhase("modal");
@@ -86,7 +86,7 @@ export default function CompleteLegalPage() {
       } catch {
         // ignore
       }
-      router.replace("/");
+      window.location.replace("/");
     } finally {
       setBusy(false);
     }
