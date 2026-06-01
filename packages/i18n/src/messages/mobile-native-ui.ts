@@ -19,6 +19,7 @@ export type MobileNativeUiMessages = {
   purchaseMessage: string;
   purchaseErrorTitle: string;
   storeUnavailable: string;
+  identityCheckFailed: string;
 };
 
 const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
@@ -39,6 +40,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "Elige el pack que deseas adquirir:",
     purchaseErrorTitle: "Error en la compra",
     storeUnavailable: "La tienda no está disponible en este momento. Inténtalo más tarde.",
+    identityCheckFailed: "No se pudo verificar tu sesión. Comprueba tu conexión e inténtalo de nuevo.",
   },
   en: {
     imageSavedTitle: "Image saved",
@@ -57,6 +59,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "Choose the pack you want to purchase:",
     purchaseErrorTitle: "Purchase error",
     storeUnavailable: "The store is not available right now. Please try again later.",
+    identityCheckFailed: "Could not verify your session. Check your connection and try again.",
   },
   pt: {
     imageSavedTitle: "Imagem guardada",
@@ -75,6 +78,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "Escolha o pack que deseja adquirir:",
     purchaseErrorTitle: "Erro na compra",
     storeUnavailable: "A loja não está disponível neste momento. Tente mais tarde.",
+    identityCheckFailed: "Não foi possível verificar a sua sessão. Verifique a ligação e tente novamente.",
   },
   fr: {
     imageSavedTitle: "Image enregistrée",
@@ -93,6 +97,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "Choisissez le pack que vous souhaitez acheter :",
     purchaseErrorTitle: "Erreur d’achat",
     storeUnavailable: "La boutique n’est pas disponible pour le moment. Réessayez plus tard.",
+    identityCheckFailed: "Impossible de vérifier votre session. Vérifiez votre connexion et réessayez.",
   },
   de: {
     imageSavedTitle: "Bild gespeichert",
@@ -111,6 +116,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "Wählen Sie das gewünschte Paket:",
     purchaseErrorTitle: "Kauffehler",
     storeUnavailable: "Der Store ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut.",
+    identityCheckFailed: "Sitzung konnte nicht verifiziert werden. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
   },
   it: {
     imageSavedTitle: "Immagine salvata",
@@ -129,6 +135,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "Scegli il pacchetto che desideri acquistare:",
     purchaseErrorTitle: "Errore di acquisto",
     storeUnavailable: "Il negozio non è disponibile al momento. Riprova più tardi.",
+    identityCheckFailed: "Impossibile verificare la sessione. Controlla la connessione e riprova.",
   },
   ja: {
     imageSavedTitle: "画像を保存しました",
@@ -147,6 +154,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "購入するパックを選択してください：",
     purchaseErrorTitle: "購入エラー",
     storeUnavailable: "現在ストアはご利用いただけません。後でもう一度お試しください。",
+    identityCheckFailed: "セッションを確認できませんでした。接続を確認して再度お試しください。",
   },
   zh: {
     imageSavedTitle: "图片已保存",
@@ -165,6 +173,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "请选择您要购买的套餐：",
     purchaseErrorTitle: "购买错误",
     storeUnavailable: "商店目前不可用。请稍后重试。",
+    identityCheckFailed: "无法验证您的会话。请检查网络连接后重试。",
   },
   ko: {
     imageSavedTitle: "이미지 저장됨",
@@ -183,6 +192,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "구매할 팩을 선택하세요:",
     purchaseErrorTitle: "구매 오류",
     storeUnavailable: "현재 스토어를 이용할 수 없습니다. 나중에 다시 시도하세요.",
+    identityCheckFailed: "세션을 확인할 수 없습니다. 연결을 확인하고 다시 시도해 주세요.",
   },
   ar: {
     imageSavedTitle: "تم حفظ الصورة",
@@ -201,6 +211,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "اختر الباقة التي تريد شراءها:",
     purchaseErrorTitle: "خطأ في الشراء",
     storeUnavailable: "المتجر غير متاح في الوقت الحالي. يُرجى المحاولة لاحقًا.",
+    identityCheckFailed: "تعذّر التحقق من جلستك. تحقق من اتصالك وحاول مجددًا.",
   },
   hi: {
     imageSavedTitle: "छवि सहेजी गई",
@@ -219,6 +230,7 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseMessage: "खरीदने के लिए पैक चुनें:",
     purchaseErrorTitle: "खरीद में त्रुटि",
     storeUnavailable: "स्टोर अभी उपलब्ध नहीं है। कृपया बाद में पुनः प्रयास करें।",
+    identityCheckFailed: "आपका सत्र सत्यापित नहीं किया जा सका। अपना कनेक्शन जाँचें और पुनः प्रयास करें।",
   },
 };
 

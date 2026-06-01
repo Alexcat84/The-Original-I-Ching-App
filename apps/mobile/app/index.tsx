@@ -2190,7 +2190,7 @@ export default function WebViewScreen() {
       setPackPickerBusy(false);
       showNativeDialog({
         title: nativeUi.purchaseErrorTitle,
-        message: nativeUi.storeUnavailable,
+        message: nativeUi.identityCheckFailed,
         buttons: [{ text: nativeUi.ok }],
       });
       return;
@@ -2244,7 +2244,7 @@ export default function WebViewScreen() {
       console.warn("[RevenueCat] logIn failed before purchase:", e);
       showNativeDialog({
         title: nativeUi.purchaseErrorTitle,
-        message: nativeUi.storeUnavailable,
+        message: nativeUi.identityCheckFailed,
         buttons: [{ text: nativeUi.ok }],
       });
       return;

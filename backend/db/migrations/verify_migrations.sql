@@ -133,5 +133,11 @@ FROM (
   SELECT '047', 'anonymous_purchase_log table',
     EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='anonymous_purchase_log')
 
+  UNION ALL
+  -- 048 · init_free_user search_path fix (pgcrypto digest)
+  SELECT '048', 'init_free_user search_path includes extensions schema',
+    EXISTS (SELECT 1 FROM pg_proc WHERE proname='init_free_user'
+            AND proconfig::text LIKE '%extensions%')
+
 ) checks
 ORDER BY num;
