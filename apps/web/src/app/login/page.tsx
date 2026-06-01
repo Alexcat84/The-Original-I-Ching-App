@@ -228,14 +228,8 @@ export default function LoginPage() {
   async function onGoogle() {
     setErr(null);
     setMsg(null);
-    if (mode === "signup") {
-      if (!isCurrentLegalConsentPayload(legalConsent)) {
-        setPendingLegalAction("google_oauth");
-        return;
-      }
-      await startGoogleOAuth(createLegalConsentPayload("google_oauth"));
-      return;
-    }
+    // Google OAuth always goes through /auth/complete-legal post-auth for consent.
+    // Pre-auth consent modal is skipped to avoid the user seeing it twice.
     await startGoogleOAuth(null);
   }
 
