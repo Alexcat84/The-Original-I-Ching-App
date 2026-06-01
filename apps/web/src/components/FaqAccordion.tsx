@@ -29,6 +29,11 @@ export function FaqAccordion(props: { locale: AppLocale; nav: DocNavUiMessages }
                 <summary className="faq-summary">{item.question}</summary>
                 <div className="faq-body">
                   <p>{item.answer}</p>
+                  {item.moreInfoLink ? (
+                    <p className="faq-more-info">
+                      <Link href={item.moreInfoLink.href}>{item.moreInfoLink.label}</Link>
+                    </p>
+                  ) : null}
                   {item.related?.length ? (
                     <div className="faq-related">
                       <p className="faq-related-heading">{faq.seeAlsoHeading}</p>
