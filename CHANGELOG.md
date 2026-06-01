@@ -1,8 +1,29 @@
-<!-- changelog:last-release:7b433a4 -->
+<!-- changelog:last-release:890143c -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.3.8] — 2026-05-31 | versionCode: 31 | Etapa: Internal Testing
+
+### Fix
+- fix(mobile): remove invalid react-native-purchases config plugin entry | commit: 890143c
+- fix: revert migration 048 to no-op — trial email guard already in 046 | commit: 2294ef5
+- fix(security): block free trial re-grant after delete+re-register, fix anonymize crash, fix legal double-prompt | commit: b5199b4
+- fix(mobile): safe area for PackPickerModal and chat drawer list | commit: ad36c3d
+- fix(mobile): add react-native-purchases Expo plugin | commit: 214c0fe
+- fix(payments): resolve RevenueCat anonymous purchases automatically | commit: a42ab0c
+- fix(security/billing): block free trial re-grant after account delete+re-register | commit: 1279093
+- fix(mobile/security): hermetic SQLite isolation — no cross-user data leaks | commit: 0120c50
+- fix(mobile+web): prevent cross-user SQLite contamination and silence Sentry noise | commit: 8c64658
+- fix(auth): auto-populate display_name for Google OAuth users | commit: 103c8e3
+
+### Maintenance
+- chore(db): add migration verification script | commit: 4adbca1
+- chore: remove migration 048 — free trial guard already complete in 046 | commit: 9d46337
+- chore(mobile): bump version 3.3.7 / versionCode 30 | commit: 5e98736
+
+---
 
 ## [3.3.7] — 2026-05-31 | versionCode: 30 | Etapa: Closed Testing
 
@@ -1050,7 +1071,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.3.7 | 30 | 2026-05-31 | Closed Testing | 8 | configure RevenueCat with stored UID on cold start; clear stale sidebar chats when SQLite confirms empty account; evict stale SQLite chats when server confirms empty account |
+| 3.3.8 | 31 | 2026-05-31 | Internal Testing | 13 | remove invalid react-native-purchases config plugin entry; revert migration 048 to no-op — trial email guard already in 046; block free trial re-grant after delete+re-register, fix anonymize crash, fix … |
+| 3.3.7 | 30 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.6 | 29 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.5 | 28 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.4 | 27 | 2026-05-30 | Closed Testing | 0 | — |
