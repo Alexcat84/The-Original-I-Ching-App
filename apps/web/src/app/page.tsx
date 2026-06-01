@@ -2159,7 +2159,15 @@ export default function HomePage() {
                       },
                       body: JSON.stringify({ display_name: firstName }),
                     });
-                    if (res.ok) setDisplayName(firstName);
+                    if (res.ok) {
+                      setDisplayName(firstName);
+                      try {
+                        if (!localStorage.getItem(TOUR_STORAGE_KEY)) {
+                          setTourKey((k) => k + 1);
+                          setTourRun(true);
+                        }
+                      } catch { /* ignore */ }
+                    }
                   } catch {
                     /* non-fatal */
                   }
@@ -2169,6 +2177,14 @@ export default function HomePage() {
                   setOnboardingOpen(true);
                 }
               })();
+            } else {
+              // Display name already set, but check if we need to show the tour
+              try {
+                if (!localStorage.getItem(TOUR_STORAGE_KEY)) {
+                  setTourKey((k) => k + 1);
+                  setTourRun(true);
+                }
+              } catch { /* ignore */ }
             }
           },
         )
