@@ -53,16 +53,7 @@ export async function POST(req: Request) {
     log.warn("account_delete_webhook_anonymize_failed", { userId: userId.slice(0, 8), error: webhookErr.message });
   }
 
-  // 2. Delete RevenueCat customer aliases.
-  const { error: aliasErr } = await supabase
-    .from("revenuecat_customer_aliases")
-    .delete()
-    .eq("user_id", userId);
-  if (aliasErr) {
-    log.warn("account_delete_alias_cleanup_failed", { userId: userId.slice(0, 8), error: aliasErr.message });
-  }
-
-  // 3. Call RevenueCat API to delete subscriber data (best effort).
+  // 2. Call RevenueCat API to delete subscriber data (best effort).
   const rcSecret = process.env.REVENUECAT_SECRET_KEY;
   if (rcSecret) {
     try {
@@ -70,7 +61,7 @@ export async function POST(req: Request) {
         method: "DELETE",
         headers: { Authorization: `Bearer ${rcSecret}` },
       });
-      if (!rcRes.ok) {
+      if (!rcRes.ok && rcRes.status !== 404) {
         log.warn("account_delete_revenuecat_api_failed", { userId: userId.slice(0, 8), status: rcRes.status });
       }
     } catch (e) {
@@ -78,7 +69,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // 4. Delete from Supabase Auth — trigger on_auth_user_deleted cascades public.users → all child tables.
+  // 3. Delete from Supabase Auth — trigger on_auth_user_deleted cascades public.users → all child tables.
   const { error: authDeleteErr } = await supabase.auth.admin.deleteUser(userId);
   if (authDeleteErr) {
     log.error("account_delete_auth_failed", { userId: userId.slice(0, 8), error: authDeleteErr.message });
