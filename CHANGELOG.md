@@ -1,8 +1,22 @@
-<!-- changelog:last-release:922dfe8 -->
+<!-- changelog:last-release:663bc75 -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.4.0] — 2026-06-01 | versionCode: 33 | Etapa: Closed Testing
+
+### Fix
+- fix(auth): force full reload after legal consent to guarantee tour fires | commit: 663bc75
+- fix(auth): remove pre-OAuth consent modal for Google users | commit: 65ee379
+- fix(i18n): re-evaluate tokenCenterMessage on locale change | commit: ae61daf
+- fix(billing): implement sync-billing — return live credits from Supabase | commit: c28edb4
+
+### Maintenance
+- chore(canvas): fix FLOW_LAYERS RC direction, add missing modules, fix API groups | commit: 9933dbb
+- chore(release): bump version 3.3.9 / versionCode 32 | commit: 1410e8d
+
+---
 
 ## [3.3.9] — 2026-05-31 | versionCode: 32 | Etapa: Closed Testing
 
@@ -1090,7 +1104,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.3.9 | 32 | 2026-05-31 | Closed Testing | 11 | guard against re-trigger on concurrent account-refresh events; trigger onboarding tour for auto-filled and google users; remove unused sessionIds variable left after .in() removal |
+| 3.4.0 | 33 | 2026-06-01 | Closed Testing | 6 | force full reload after legal consent to guarantee tour fires; remove pre-OAuth consent modal for Google users; re-evaluate tokenCenterMessage on locale change |
+| 3.3.9 | 32 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.8 | 31 | 2026-05-31 | Internal Testing | 0 | — |
 | 3.3.7 | 30 | 2026-05-31 | Closed Testing | 0 | — |
 | 3.3.6 | 29 | 2026-05-31 | Closed Testing | 0 | — |
