@@ -373,7 +373,6 @@ export async function getUserSessionsWithConsultations(
     .from("consultations")
     .select(withOracleColumns)
     .eq("user_id", userId)
-    .in("session_id", sessionIds)
     .order("session_position", { ascending: true });
   consultRows = withOracleRes.data as unknown[] | null;
   consultError = withOracleRes.error;
@@ -386,7 +385,6 @@ export async function getUserSessionsWithConsultations(
         .from("consultations")
         .select(baseConsultColumns)
         .eq("user_id", userId)
-        .in("session_id", sessionIds)
         .order("session_position", { ascending: true });
       consultRows = fallbackRes.data as unknown[] | null;
       consultError = fallbackRes.error;
@@ -398,7 +396,6 @@ export async function getUserSessionsWithConsultations(
             .from("consultations")
             .select(legacyBaseColumns)
             .eq("user_id", userId)
-            .in("session_id", sessionIds)
             .order("session_position", { ascending: true });
           consultRows = legacyRes.data as unknown[] | null;
           consultError = legacyRes.error;
@@ -410,7 +407,6 @@ export async function getUserSessionsWithConsultations(
         .from("consultations")
         .select(withOracleLegacyColumns)
         .eq("user_id", userId)
-        .in("session_id", sessionIds)
         .order("session_position", { ascending: true });
       consultRows = fallbackRes.data as unknown[] | null;
       consultError = fallbackRes.error;
@@ -420,7 +416,6 @@ export async function getUserSessionsWithConsultations(
           .from("consultations")
           .select(legacyBaseColumns)
           .eq("user_id", userId)
-          .in("session_id", sessionIds)
           .order("session_position", { ascending: true });
         consultRows = legacyRes.data as unknown[] | null;
         consultError = legacyRes.error;
@@ -486,7 +481,6 @@ export async function getUserSessionSummaries(
     .from("consultations")
     .select("session_id, created_at, question, session_position")
     .eq("user_id", userId)
-    .in("session_id", sessionIds)
     .order("session_position", { ascending: true });
   if (consultError) return [];
 

@@ -1860,10 +1860,10 @@ export default function WebViewScreen() {
   const injectCachedChats = useCallback(() => {
     void getCachedChatsForInjection().then((chats) => {
       cachedChatsRef.current = chats;
-      const payload = JSON.stringify(chats);
+      const payloadStr = JSON.stringify(JSON.stringify(chats));
       webViewRef.current?.injectJavaScript(
         `(function(){try{` +
-          `window.__rnCachedChats=${payload};` +
+          `window.__rnCachedChats=JSON.parse(${payloadStr});` +
           `window.dispatchEvent(new CustomEvent('rn:cached-chats',{detail:window.__rnCachedChats}));` +
         `}catch(_){}})();true;`
       );
@@ -1882,10 +1882,10 @@ export default function WebViewScreen() {
     // Fast path: inject pre-fetched chat list from ref synchronously.
     // Thread content is loaded lazily via request_thread bridge messages.
     if (cachedChatsRef.current.length > 0) {
-      const payload = JSON.stringify(cachedChatsRef.current);
+      const payloadStr = JSON.stringify(JSON.stringify(cachedChatsRef.current));
       webViewRef.current?.injectJavaScript(
         `(function(){try{` +
-          `window.__rnCachedChats=${payload};` +
+          `window.__rnCachedChats=JSON.parse(${payloadStr});` +
           `window.dispatchEvent(new CustomEvent('rn:cached-chats',{detail:window.__rnCachedChats}));` +
         `}catch(_){}})();true;`
       );
@@ -2404,10 +2404,10 @@ export default function WebViewScreen() {
                   .map((r) => { try { return JSON.parse(r.content) as unknown; } catch { return null; } })
                   .filter(Boolean)
                   .reverse(); // DESC from DB → reverse for chronological display
-                const payload = JSON.stringify({ localId, consultations });
+                const payloadStr = JSON.stringify(JSON.stringify({ localId, consultations }));
                 webViewRef.current?.injectJavaScript(
                   `(function(){try{` +
-                    `window.dispatchEvent(new CustomEvent('rn:thread-data',{detail:${payload}}));` +
+                    `window.dispatchEvent(new CustomEvent('rn:thread-data',{detail:JSON.parse(${payloadStr})}));` +
                   `}catch(_){}})();true;`
                 );
               };
@@ -2425,19 +2425,19 @@ export default function WebViewScreen() {
                 // Neither SQLite nor Supabase returned content — signal the web
                 // so it can clear the loading state rather than spinning forever.
                 if (updated.length === 0 && cached.length === 0) {
-                  const notFoundPayload = JSON.stringify({ localId });
+                  const notFoundPayloadStr = JSON.stringify(JSON.stringify({ localId }));
                   webViewRef.current?.injectJavaScript(
                     `(function(){try{` +
-                      `window.dispatchEvent(new CustomEvent('rn:thread-not-found',{detail:${notFoundPayload}}));` +
+                      `window.dispatchEvent(new CustomEvent('rn:thread-not-found',{detail:JSON.parse(${notFoundPayloadStr})}));` +
                     `}catch(_){}})();true;`
                   );
                 }
               } else if (cached.length === 0) {
                 // No auth token and no SQLite data — clear loading immediately.
-                const notFoundPayload = JSON.stringify({ localId });
+                const notFoundPayloadStr = JSON.stringify(JSON.stringify({ localId }));
                 webViewRef.current?.injectJavaScript(
                   `(function(){try{` +
-                    `window.dispatchEvent(new CustomEvent('rn:thread-not-found',{detail:${notFoundPayload}}));` +
+                    `window.dispatchEvent(new CustomEvent('rn:thread-not-found',{detail:JSON.parse(${notFoundPayloadStr})}));` +
                   `}catch(_){}})();true;`
                 );
               }
