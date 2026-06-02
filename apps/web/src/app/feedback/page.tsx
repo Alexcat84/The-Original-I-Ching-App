@@ -6,9 +6,7 @@ import {
   getFeedbackPageUiMessages,
   getDocNavUiMessages,
   FEEDBACK_CATEGORIES,
-  SUPPORTED_LOCALES,
   type FeedbackCategory,
-  type AppLocale,
 } from "@iching-oracle/i18n";
 import { useAppLocale } from "@/lib/use-app-locale";
 import { CustomSelect, type SelectOption } from "@/components/CustomSelect";
@@ -59,7 +57,6 @@ export default function FeedbackPage() {
   const [category, setCategory] = useState<FeedbackCategory | "">("");
   const [description, setDescription] = useState("");
   const [email, setEmail] = useState("");
-  const [appLocale, setAppLocale] = useState<AppLocale>(locale);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -89,7 +86,7 @@ export default function FeedbackPage() {
           category,
           description: description.trim(),
           email: email.trim() || null,
-          locale: appLocale,
+          locale,
           app_version: detectAppVersion(),
           platform: detectPlatform(),
           metadata: {},
@@ -103,7 +100,7 @@ export default function FeedbackPage() {
     } finally {
       setLoading(false);
     }
-  }, [validate, category, description, email, appLocale, m]);
+  }, [validate, category, description, email, locale, m]);
 
   return (
     <div className="oracle-shell doc-page">
@@ -187,22 +184,6 @@ export default function FeedbackPage() {
                 className={fieldErrors.email ? "feedback-input--error" : ""}
               />
               {fieldErrors.email && <span className="feedback-error">{fieldErrors.email}</span>}
-            </div>
-
-            {/* App locale at time of issue */}
-            <div className="feedback-field">
-              <label htmlFor="fb-locale">{m.localeLabel}</label>
-              <CustomSelect<AppLocale>
-                id="fb-locale"
-                value={appLocale}
-                onChange={setAppLocale}
-                options={SUPPORTED_LOCALES.map((loc): SelectOption<AppLocale> => ({
-                  value: loc,
-                  label: loc.toUpperCase(),
-                }))}
-                placeholder={appLocale.toUpperCase()}
-                ariaLabel={m.localeLabel}
-              />
             </div>
 
             {serverError && (
