@@ -69,12 +69,7 @@ export default async function NotesPage() {
           </>
         )}
 
-        {n.yarrowProcedureHeading && (
-          <>
-            <h3>{n.yarrowProcedureHeading}</h3>
-            <p>{n.yarrowProcedureBody}</p>
-          </>
-        )}
+
 
         {n.yarrowProbHeading && (
           <>
@@ -104,12 +99,7 @@ export default async function NotesPage() {
           </>
         )}
 
-        {n.ichingChainHeading && (
-          <>
-            <h3>{n.ichingChainHeading}</h3>
-            <p>{n.ichingChain}</p>
-          </>
-        )}
+
 
         {/* Oracle Bones */}
         {n.bonesHeading && <h2>{n.bonesHeading}</h2>}
@@ -121,12 +111,7 @@ export default async function NotesPage() {
           </>
         )}
 
-        {n.bonesRitualHeading && (
-          <>
-            <h3>{n.bonesRitualHeading}</h3>
-            <p>{n.bonesRitualBody}</p>
-          </>
-        )}
+
 
         {n.bonesVerdictsHeading && (
           <>
@@ -140,12 +125,7 @@ export default async function NotesPage() {
           </>
         )}
 
-        {n.bonesAuthHeading && (
-          <>
-            <h3>{n.bonesAuthHeading}</h3>
-            <p>{n.bonesAuthBody}</p>
-          </>
-        )}
+
 
         {/* Interpretation */}
         {n.interpretHeading && (
