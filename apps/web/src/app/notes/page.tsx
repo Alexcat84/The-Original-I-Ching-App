@@ -16,7 +16,6 @@ export const metadata: Metadata = {
 
 import { getDocNavUiMessages, getNotesPageUiMessages } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
-import { HEXAGRAM_LIST } from "./hexagram-list";
 
 export default async function NotesPage() {
   const locale = await resolveDocLocale();
@@ -53,30 +52,6 @@ export default async function NotesPage() {
           </>
         )}
 
-        {n.ichingHexListHeading && (
-          <>
-            <h4>{n.ichingHexListHeading}</h4>
-            <p>{n.ichingHexListIntro}</p>
-            <ol className="hexagram-grid" aria-label={n.ichingHexListAriaLabel}>
-              {HEXAGRAM_LIST.map((hex) => (
-                <li key={hex.number} className="hexagram-grid__item">
-                  <span className="hexagram-grid__number">{hex.number}</span>
-                  <span className="hexagram-grid__body">
-                    <span className="hexagram-grid__glyph" aria-hidden="true">
-                      {hex.glyph}
-                    </span>
-                    <span className="hexagram-grid__meta">
-                      <span className="hexagram-grid__name" lang="zh-Hant">
-                        {hex.chineseName}
-                      </span>
-                      <span className="hexagram-grid__pinyin">{hex.pinyin}</span>
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </>
-        )}
 
         {n.ichingMethodHeading && (
           <>

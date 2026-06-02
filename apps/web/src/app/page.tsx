@@ -3064,16 +3064,7 @@ export default function HomePage() {
         if (authUserId)
           writeCachedAccountSessionLimit(authUserId, data.session_limit);
       }
-      if (
-        typeof data.tokens_available === "number" &&
-        data.tokens_available <= 0
-      ) {
-        if (data.last_pack === "free") {
-          setTokenCenterMessage("free_depleted");
-        } else {
-          setTokenCenterMessage("no_active_purchase");
-        }
-      }
+      // No contextual message set here — token balance is already shown in the center UI.
     } catch {
       setTokenCenterError(tokenPanel.loadError);
     } finally {
