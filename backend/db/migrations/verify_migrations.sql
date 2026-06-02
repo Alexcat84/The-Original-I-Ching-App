@@ -139,5 +139,16 @@ FROM (
     EXISTS (SELECT 1 FROM pg_proc WHERE proname='init_free_user'
             AND proconfig::text LIKE '%extensions%')
 
+  UNION ALL
+  -- 049 · revoke RPC execute on trigger-only function
+  SELECT '049', 'anon cannot execute set_display_name_from_google via RPC',
+    NOT EXISTS (
+      SELECT 1 FROM information_schema.role_routine_grants
+      WHERE routine_schema = 'public'
+        AND routine_name = 'set_display_name_from_google'
+        AND grantee IN ('anon', 'authenticated')
+        AND privilege_type = 'EXECUTE'
+    )
+
 ) checks
 ORDER BY num;
