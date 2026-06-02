@@ -150,5 +150,24 @@ FROM (
         AND privilege_type = 'EXECUTE'
     )
 
+  UNION ALL
+  -- 050 · security linter fixes
+  SELECT '050', 'PUBLIC cannot execute set_display_name_from_google + deny-all policies on internal tables',
+    NOT EXISTS (
+      SELECT 1 FROM information_schema.role_routine_grants
+      WHERE routine_schema = 'public'
+        AND routine_name = 'set_display_name_from_google'
+        AND grantee = 'PUBLIC'
+        AND privilege_type = 'EXECUTE'
+    )
+    AND EXISTS (
+      SELECT 1 FROM pg_policies
+      WHERE schemaname = 'public' AND tablename = 'anonymous_purchase_log' AND policyname = 'deny_direct_access'
+    )
+    AND EXISTS (
+      SELECT 1 FROM pg_policies
+      WHERE schemaname = 'public' AND tablename = 'trial_email_log' AND policyname = 'deny_direct_access'
+    )
+
 ) checks
 ORDER BY num;
