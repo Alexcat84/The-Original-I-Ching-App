@@ -294,10 +294,12 @@ const INJECTED_JS = `
     'html.iching-rn-webview .legal-consent-backdrop{z-index:2147483000!important;padding:max(.75rem,env(safe-area-inset-top,0px)) .75rem max(.75rem,var(--rn-safe-area-inset-bottom,0px))!important}',
     'html.iching-rn-webview .legal-consent-modal{max-height:calc(100vh - 1.5rem)!important;width:100%!important}',
     'html.iching-rn-webview .legal-consent-scroll{overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}',
-    /* Chat drawer list: push scrollable content above the Android bottom nav bar.
-       Padding-bottom on a scroll container is often ignored by the browser's scroll height calculation.
-       Using a ::after pseudo-element + the injected RN bottom inset ensures reliable scroll boundary. */
-    'html.iching-rn-webview .chat-drawer-list::after{content:"";display:block;min-height:calc(0.25rem + max(18px, var(--rn-safe-area-inset-bottom, 0px)))!important;flex-shrink:0!important}',
+    /* Chat drawer: non-scrollable spacer at the bottom of the drawer's flex column.
+       Targeting .chat-drawer (not .chat-drawer-list) makes this a flex sibling, which
+       reduces .chat-drawer-list (flex:1) so the scroll area ends above the Android nav bar.
+       A spacer inside the scroll container only adds scrollable whitespace — it does not
+       shorten the visible scroll boundary, so the last item stays covered by the nav bar. */
+    'html.iching-rn-webview .chat-drawer::after{content:"";display:block;flex-shrink:0!important;min-height:max(20px, var(--rn-safe-area-inset-bottom, 20px))!important}',
     /* Hide Vercel preview toolbar — staging deployments inject a floating Vercel icon that confuses testers */
     'vercel-toolbar,#__vercel-toolbar,.__vercel-toolbar,div[id*="vercel-toolbar"],iframe[src*="vercel.live"]{display:none!important}'
   ].join(';');
@@ -1716,6 +1718,15 @@ export default function WebViewScreen() {
 
   /* ── Safe area insets (status bar height on Android) ── */
   const insets = useSafeAreaInsets();
+  const insetsBottomRef = useRef(insets.bottom);
+  useEffect(() => {
+    insetsBottomRef.current = insets.bottom;
+    if (webReadyRef.current) {
+      webViewRef.current?.injectJavaScript(
+        `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insets.bottom}px'); true;`
+      );
+    }
+  }, [insets.bottom]);
 
   /* Android: status bar + band under it stay dark so system icons stay readable (product: always black chrome). */
   useEffect(() => {
@@ -1876,6 +1887,10 @@ export default function WebViewScreen() {
     webReadyRef.current = true;
     webViewRef.current?.injectJavaScript(
       `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+    );
+    // Re-inject bottom inset in case it changed between first render and page load.
+    webViewRef.current?.injectJavaScript(
+      `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insetsBottomRef.current}px'); true;`
     );
     if (localeStorageHydratedRef.current) {
       webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
