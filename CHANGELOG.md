@@ -1,8 +1,21 @@
-<!-- changelog:last-release:fcba50a -->
+<!-- changelog:last-release:8e85dbe -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.4.3] — 2026-06-01 | versionCode: 36 | Etapa: Closed Testing
+
+### Fix
+- fix(mobile): fix chat drawer last item hidden behind Android nav bar | commit: 8e85dbe
+- fix(feedback): remove locale dropdown — send locale silently from useAppLocale | commit: d10d1f9
+- fix(ux): remove free_depleted token message and hexagram grid from notes | commit: f056fd7
+- fix(mobile): fix getUserIdFromJwt base64url decode — root cause of purchase failures | commit: 3310d84
+
+### Maintenance
+- chore(i18n): remove dead fields and simplify TokenCenterMessageKey | commit: d34f163
+
+---
 
 ## [3.4.2] — 2026-06-01 | versionCode: 35 | Etapa: Closed Testing
 
@@ -1123,7 +1136,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.4.2 | 35 | 2026-06-01 | Closed Testing | 1 | — |
+| 3.4.3 | 36 | 2026-06-01 | Closed Testing | 5 | fix chat drawer last item hidden behind Android nav bar; remove locale dropdown — send locale silently from useAppLocale; remove free_depleted token message and hexagram grid from notes |
+| 3.4.2 | 35 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.4.1 | 34 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.4.0 | 33 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.3.9 | 32 | 2026-05-31 | Closed Testing | 0 | — |
