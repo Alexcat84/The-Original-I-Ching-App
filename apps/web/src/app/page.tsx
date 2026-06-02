@@ -741,15 +741,10 @@ export default function HomePage() {
     null,
   );
   const [twoFactorBusy, setTwoFactorBusy] = useState(false);
-  type TokenCenterMessageKey = "free_depleted" | "no_active_purchase" | "checkout_error";
-  const [tokenCenterMessageKey, setTokenCenterMessage] = useState<TokenCenterMessageKey | null>(null);
-  const tokenCenterMessage = tokenCenterMessageKey === "free_depleted"
-    ? tokenPanel.messageFreeDepleted
-    : tokenCenterMessageKey === "no_active_purchase"
-      ? tokenPanel.messageNoActivePurchase
-      : tokenCenterMessageKey === "checkout_error"
-        ? pricingUi.errorCheckout
-        : null;
+  const [tokenCenterMessageKey, setTokenCenterMessage] = useState<"checkout_error" | null>(null);
+  const tokenCenterMessage = tokenCenterMessageKey === "checkout_error"
+    ? pricingUi.errorCheckout
+    : null;
   const [tokenCenterOpen, setTokenCenterOpen] = useState(false);
   const [tokenCenterBusy, setTokenCenterBusy] = useState(false);
   const [tokenCenterError, setTokenCenterError] = useState<string | null>(null);
