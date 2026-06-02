@@ -1,4 +1,4 @@
-﻿import type { AppLocale } from "../locales.js";
+import type { AppLocale } from "../locales.js";
 import { DEFAULT_LOCALE } from "../locales.js";
 
 /** Strings shown only in the Expo / React Native shell (dialogs, sharing). */
