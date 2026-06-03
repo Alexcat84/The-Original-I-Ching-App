@@ -39,24 +39,29 @@ function buildCsp(nonce: string): string {
 export const middleware = withAxiom(async function middlewareFn(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Rate-limit library pages AND API routes: 20 requests per 5 minutes per IP.
-  // Covers /library/* (page renders) and /api/library/* (data endpoints).
-  // Uses Vercel's trusted IP (req.ip / x-vercel-forwarded-for) — cannot be
-  // spoofed by clients, unlike x-forwarded-for which is user-controlled.
-  if (pathname.startsWith("/library") || pathname.startsWith("/api/library")) {
+  // Rate-limit only the authenticated data endpoint /api/library/*.
+  // /library/* page renders are NOT rate-limited — they now return only public
+  // metadata (no translations), so there is nothing premium to protect at the
+  // page level. The actual premium content (translations) is gated by Bearer
+  // auth + Seeker+ check inside /api/library/[number].
+  //
+  // Limit: 120 requests per 10 minutes per IP (~12/min).
+  // A user browsing all 64 hexagrams makes 64 API calls. This allows normal
+  // browsing of the full library while still blocking rapid automated scraping.
+  if (pathname.startsWith("/api/library")) {
     const ip =
       req.headers.get("x-vercel-forwarded-for") ??
       req.headers.get("x-real-ip") ??
       "unknown";
     const rl = await rateLimitByKey({
-      key: `library:${ip}`,
-      limit: 20,
-      windowSeconds: 300,
+      key: `library_api:${ip}`,
+      limit: 120,
+      windowSeconds: 600,
     });
     if (!rl.ok) {
       return new NextResponse("Too Many Requests", {
         status: 429,
-        headers: { "Retry-After": "300" },
+        headers: { "Retry-After": "600" },
       });
     }
   }
