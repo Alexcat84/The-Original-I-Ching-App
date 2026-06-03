@@ -25,23 +25,29 @@ function getAuthClient() {
 /**
  * Verifies a Play Integrity token issued by the Android app.
  *
- * Checks:
- *  1. Nonce exists in Redis (was issued by this server, not replayed).
- *  2. appRecognitionVerdict === 'PLAY_RECOGNIZED'
- *  3. deviceRecognitionVerdict includes 'MEETS_DEVICE_INTEGRITY'
- *
- * In development (NODE_ENV !== 'production') or when credentials are absent,
- * returns { passed: true } so emulators and local testing are never blocked.
+ * Fail-open / fail-closed policy:
+ *  - 4xx from Google API (invalid token, bad packageName): ALWAYS fail-closed.
+ *  - Credentials missing in production: ALWAYS fail-closed.
+ *  - Redis unavailable in production: ALWAYS fail-closed (nonce cannot be checked).
+ *  - 5xx / network / transient: fail-CLOSED by default.
+ *    Set INTEGRITY_FAIL_OPEN=true to allow consultations during Google API outages
+ *    (trade security for availability — operators opt in deliberately).
+ *  - NODE_ENV !== production: always passes (emulator / dev build support).
  */
-export async function verifyIntegrityToken(token: string): Promise<IntegrityVerdict> {
+/**
+ * @param token  The Play Integrity attestation token from the Android app.
+ * @param userId The authenticated user id from the Bearer token (for nonce binding).
+ */
+export async function verifyIntegrityToken(token: string, userId: string): Promise<IntegrityVerdict> {
   if (process.env.NODE_ENV !== "production") {
     return { passed: true };
   }
 
   const auth = getAuthClient();
   if (!auth) {
-    console.warn("[play-integrity] GOOGLE_SERVICE_ACCOUNT_JSON not configured — skipping check");
-    return { passed: true };
+    // Finding #3: missing credentials in prod → fail-closed, not skip.
+    console.error("[play-integrity] GOOGLE_SERVICE_ACCOUNT_JSON absent or invalid in production");
+    return { passed: false, reason: "misconfigured" };
   }
 
   try {
@@ -54,17 +60,25 @@ export async function verifyIntegrityToken(token: string): Promise<IntegrityVerd
     const payload = res.data.tokenPayloadExternal;
     if (!payload) return { passed: false, reason: "empty_payload" };
 
-    // Verify the nonce was issued by this server (replay protection).
+    // Finding #2: nonce MUST be present — tokens without a nonce are not bound
+    // to a server-issued challenge and cannot be replay-protected.
     const nonce = payload.requestDetails?.nonce;
-    if (nonce) {
-      const redis = getUpstashRedis();
-      if (redis) {
-        const exists = await redis.get(`integrity_nonce:${nonce}`);
-        if (!exists) return { passed: false, reason: "nonce_invalid_or_expired" };
-        // Consume — single use only.
-        await redis.del(`integrity_nonce:${nonce}`);
-      }
+    if (!nonce) return { passed: false, reason: "missing_nonce" };
+
+    const redis = getUpstashRedis();
+    if (!redis) {
+      // Finding #2: in production Redis is required for nonce bookkeeping.
+      // Without it we cannot detect replayed tokens.
+      console.error("[play-integrity] Upstash Redis unavailable — cannot verify nonce in production");
+      return { passed: false, reason: "redis_unavailable" };
     }
+
+    const storedUserId = await redis.get<string>(`integrity_nonce:${nonce}`);
+    if (!storedUserId) return { passed: false, reason: "nonce_invalid_or_expired" };
+    // Nonce must belong to the authenticated user making this request.
+    if (storedUserId !== userId) return { passed: false, reason: "nonce_user_mismatch" };
+    // Single-use: consume immediately after first successful lookup.
+    await redis.del(`integrity_nonce:${nonce}`);
 
     const appVerdict = payload.appIntegrity?.appRecognitionVerdict;
     if (appVerdict !== "PLAY_RECOGNIZED") {
@@ -77,9 +91,22 @@ export async function verifyIntegrityToken(token: string): Promise<IntegrityVerd
     }
 
     return { passed: true };
-  } catch (err) {
-    console.error("[play-integrity] verification error:", err);
-    // Fail-open on transient errors — never block a user due to a Google API hiccup.
-    return { passed: true };
+  } catch (err: unknown) {
+    // Finding #1: distinguish permanent errors from transient ones.
+    const httpStatus = (err as { response?: { status?: number } })?.response?.status;
+
+    if (typeof httpStatus === "number" && httpStatus >= 400 && httpStatus < 500) {
+      // 4xx: invalid token, bad package name, INVALID_ARGUMENT → always fail-closed.
+      return { passed: false, reason: `api_4xx:${httpStatus}` };
+    }
+
+    // 5xx / network / timeout: fail-closed by default.
+    // Operators may set INTEGRITY_FAIL_OPEN=true to allow consultations
+    // during documented Google API outages.
+    console.error("[play-integrity] transient verification error:", err);
+    if (process.env.INTEGRITY_FAIL_OPEN === "true") {
+      return { passed: true };
+    }
+    return { passed: false, reason: "transient_error" };
   }
 }
