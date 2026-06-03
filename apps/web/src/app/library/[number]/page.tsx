@@ -8,10 +8,14 @@ import {
   type LibraryPageUiSerialized,
 } from "@iching-oracle/i18n";
 import { HexagramTabs, type ResolvedLineLabels } from "@/components/library/HexagramTabs";
+import { LibraryAccessGate } from "@/components/library/LibraryAccessGate";
 import { resolveDocLocale } from "@/lib/doc-locale";
-import { getLibraryDetail, getLibrarySummaries } from "@/lib/library/library-data";
+import { getLibraryDetail } from "@/lib/library/library-data";
 import { formatTrigramLabel, getTrigramById } from "@/lib/library/trigram-meta";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
+
+// Dynamic rendering — no CDN caching of premium content, no pre-generation.
+export const dynamic = "force-dynamic";
 
 interface DetailPageProps {
   params: Promise<{ number: string }>;
@@ -21,10 +25,6 @@ function parseHexagramNumber(raw: string): number | null {
   const n = Number.parseInt(raw, 10);
   if (!Number.isInteger(n) || n < 1 || n > 64) return null;
   return n;
-}
-
-export function generateStaticParams(): Array<{ number: string }> {
-  return getLibrarySummaries().map((s) => ({ number: String(s.number) }));
 }
 
 export async function generateMetadata(
@@ -100,6 +100,7 @@ export default async function LibraryDetailPage({ params }: DetailPageProps) {
         <Link href="/library">{messages.detailCrumb}</Link>
       </nav>
 
+      <LibraryAccessGate>
       <article className="doc-article">
         <p className="library-breadcrumb">
           <Link href="/library">{messages.detailCrumb}</Link>
@@ -168,6 +169,7 @@ export default async function LibraryDetailPage({ params }: DetailPageProps) {
           </ul>
         </section>
       </article>
+      </LibraryAccessGate>
     </div>
   );
 }

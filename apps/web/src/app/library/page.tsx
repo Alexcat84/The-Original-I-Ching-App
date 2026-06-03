@@ -3,9 +3,12 @@ import Link from "next/link";
 
 import { getDocNavUiMessages, getLibraryPageUiMessages, type LibraryPageUiSerialized } from "@iching-oracle/i18n";
 import { LibraryIndex } from "@/components/library/LibraryIndex";
+import { LibraryAccessGate } from "@/components/library/LibraryAccessGate";
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { getLibrarySummaries } from "@/lib/library/library-data";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await resolveDocLocale();
@@ -47,11 +50,13 @@ export default async function LibraryIndexPage() {
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link>
       </nav>
-      <article className="doc-article">
-        <h1>{messages.title}</h1>
-        <p className="doc-lead">{messages.subtitle}</p>
-        <LibraryIndex summaries={summaries} messages={serializable} />
-      </article>
+      <LibraryAccessGate>
+        <article className="doc-article">
+          <h1>{messages.title}</h1>
+          <p className="doc-lead">{messages.subtitle}</p>
+          <LibraryIndex summaries={summaries} messages={serializable} />
+        </article>
+      </LibraryAccessGate>
     </div>
   );
 }
