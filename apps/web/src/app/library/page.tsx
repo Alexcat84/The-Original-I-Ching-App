@@ -30,6 +30,9 @@ export default async function LibraryIndexPage() {
   const nav = getDocNavUiMessages(locale);
   const messages = getLibraryPageUiMessages(locale);
   const summaries = getLibrarySummaries();
+  // RSC risk (accepted): summaries are in the RSC payload and accessible before
+  // LibraryAccessGate redirects. Content: hexagram numbers, names, glyphs, pinyin —
+  // public-domain metadata with no premium translations. Gate is UX + redirect only.
 
   // Pre-resolve function fields so the client component only receives
   // JSON-serializable strings (Next.js RSC boundary constraint).
