@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAxiom } from "next-axiom";
+import { rateLimitByKey } from "@/lib/rate-limit";
 
 function generateNonce(): string {
   const bytes = new Uint8Array(16);
@@ -35,7 +36,31 @@ function buildCsp(nonce: string): string {
   ].join("; ");
 }
 
-export const middleware = withAxiom(function middlewareFn(req: NextRequest) {
+export const middleware = withAxiom(async function middlewareFn(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  // Rate-limit library pages AND API routes: 20 requests per 5 minutes per IP.
+  // Covers /library/* (page renders) and /api/library/* (data endpoints).
+  // Uses Vercel's trusted IP (req.ip / x-vercel-forwarded-for) — cannot be
+  // spoofed by clients, unlike x-forwarded-for which is user-controlled.
+  if (pathname.startsWith("/library") || pathname.startsWith("/api/library")) {
+    const ip =
+      req.headers.get("x-vercel-forwarded-for") ??
+      req.headers.get("x-real-ip") ??
+      "unknown";
+    const rl = await rateLimitByKey({
+      key: `library:${ip}`,
+      limit: 20,
+      windowSeconds: 300,
+    });
+    if (!rl.ok) {
+      return new NextResponse("Too Many Requests", {
+        status: 429,
+        headers: { "Retry-After": "300" },
+      });
+    }
+  }
+
   const nonce = generateNonce();
 
   const reqHeaders = new Headers(req.headers);
