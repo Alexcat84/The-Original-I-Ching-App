@@ -55,9 +55,14 @@ export default async function LibraryDetailPage({ params }: DetailPageProps) {
 
   if (n === null) notFound();
 
-  // summary: public hexagram metadata (number, name, glyph, trigrams).
-  // records/sources: premium translations — intentionally NOT rendered server-side.
-  // They are fetched from /api/library/[number] (Bearer + Seeker+) by LibraryContentLoader.
+  // Auth model: metadata (number, name, glyph, trigrams) is rendered server-side for
+  // all requests — it is public-domain information equivalent to any I Ching table of
+  // contents. Translations (records/sources) are never in the RSC payload; they are
+  // fetched by LibraryContentLoader from /api/library/[number] (Bearer + Seeker+).
+  //
+  // An unauthenticated or free-tier user who navigates directly to /library/17 sees
+  // metadata briefly before LibraryContentLoader redirects them to /. This is
+  // intentional: the metadata flash is not a data leak of premium content.
   const detail = getLibraryDetail(n);
   if (!detail) notFound();
 
