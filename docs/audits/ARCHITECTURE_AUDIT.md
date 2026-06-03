@@ -270,9 +270,12 @@ POST /api/auth/2fa/email/verify
 ### Datos
 
 ```
-GET /api/hexagrams             → lista todos los hexagramas
-GET /api/hexagram/[number]     → detalle de un hexagrama
+GET /api/library/[number]      → traducciones de hexagrama (Bearer + Seeker+)
+GET /api/library/access        → check de acceso a biblioteca (Bearer + Seeker+)
 ```
+
+> ⚠️ `/api/hexagrams` y `/api/hexagram/[number]` eliminadas en feat/library-protection.
+> Eran rutas legacy sin consumidores, force-static, públicas — vector de scraping.
 
 ### Admin
 

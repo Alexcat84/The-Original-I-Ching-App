@@ -5061,6 +5061,26 @@ html[data-theme="dark"] .doc-sources-list li {
   max-width: 56rem;
 }
 
+.library-access-gate--checking {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+}
+
+.library-access-gate__spinner {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 2px solid var(--bar-border, rgba(255,255,255,0.1));
+  border-top-color: var(--accent, #c9a227);
+  animation: library-spin 0.7s linear infinite;
+}
+
+@keyframes library-spin {
+  to { transform: rotate(360deg); }
+}
+
 .library-controls {
   display: flex;
   flex-direction: column;

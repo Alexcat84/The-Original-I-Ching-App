@@ -95,7 +95,7 @@ const API_GROUPS: { group: string; routes: string }[] = [
   { group: "Cuenta", routes: "GET/DELETE /api/account/chats · GET /api/account/me · PUT /api/account/display-name · POST /api/account/delete · GET /api/account/sync-billing · POST /api/account/create-portal-session" },
   { group: "Auth", routes: "/api/auth/register · legal-consent · /api/auth/2fa/*" },
   { group: "Billing", routes: "POST /api/webhooks/revenuecat" },
-  { group: "Datos", routes: "GET /api/hexagrams · /api/hexagram/[n]" },
+  { group: "Biblioteca", routes: "GET /api/library/[n] (Bearer+Seeker+) · GET /api/library/access" },
   { group: "Ops", routes: "GET /api/health · POST /api/feedback · /api/admin/*" },
 ];
 
