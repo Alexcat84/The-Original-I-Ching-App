@@ -43,6 +43,7 @@ import {
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey, getUpstashRedis } from "@/lib/rate-limit";
+import { verifyIntegrityToken } from "@/lib/play-integrity";
 import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -413,6 +414,23 @@ export async function POST(req: Request) {
       );
     }
     const authedUserId = authUser.userId;
+
+    // Play Integrity check — only for Android app requests (header injected by native shell).
+    // Web browser requests don't send this header and are protected by Turnstile instead.
+    // Fails before any token is consumed so the user is never charged on a bad verdict.
+    const integrityToken = req.headers.get("x-integrity-token");
+    if (integrityToken) {
+      const verdict = await verifyIntegrityToken(integrityToken);
+      if (!verdict.passed) {
+        log.warn("integrity_check_failed", { reason: verdict.reason, userId: authedUserId.slice(0, 8) });
+        await log.flush();
+        return NextResponse.json(
+          { error: "integrity_check_failed", code: "INTEGRITY_FAILED", action: "none" },
+          { status: 403 },
+        );
+      }
+    }
+
     const lastPack = await getUserBillingTier(authedUserId);
     const policy = await resolveConsultPolicy({
       authUser,

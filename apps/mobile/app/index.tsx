@@ -73,6 +73,7 @@ import {
   type WebViewMessageEvent,
   type WebViewNavigation,
 } from "react-native-webview";
+import { useIntegrityCheck } from "@/src/hooks/useIntegrityCheck";
 import {
   DEFAULT_LOCALE,
   UI_LOCALE_STORAGE_KEY,
@@ -591,9 +592,21 @@ const INJECTED_JS = `
       }));
     }
   };
+  /* Play Integrity token — injected from native via window.__rnIntegrityToken. */
+  window.__rnIntegrityToken = window.__rnIntegrityToken || null;
+
   var _origFetch = window.fetch;
   window.fetch = function (input, init) {
     var url = typeof input === 'string' ? input : (input && input.url) || '';
+
+    /* P6a ── Attach Play Integrity token to /api/consult POST requests ── */
+    if (init && init.method === 'POST' && url.indexOf('/api/consult') !== -1 && window.__rnIntegrityToken) {
+      var headers = new Headers(init.headers || {});
+      headers.set('x-integrity-token', window.__rnIntegrityToken);
+      return _origFetch.call(this, input, Object.assign({}, init, { headers: headers }));
+    }
+
+    /* P6b ── Intercept DELETE /api/account/chats ── */
     if (init && init.method === 'DELETE' && url.indexOf('/api/account/chats') !== -1) {
       return new Promise(function (resolve) {
         var id = 'rnd_' + Date.now() + '_' + Math.random().toString(36).slice(2);
@@ -1716,6 +1729,19 @@ export default function WebViewScreen() {
     setDebugLogs(prev => [...prev.slice(-10), `${new Date().toISOString().slice(11, 19)} ${msg}`]);
   };
 
+  /* ── Play Integrity attestation token ── */
+  const { currentTokenRef: integrityTokenRef, tokenState: integrityTokenState } = useIntegrityCheck();
+
+  // When the integrity token is refreshed, push the new value into the WebView
+  // so the fetch interceptor always has a fresh token for /api/consult requests.
+  useEffect(() => {
+    if (!webReadyRef.current || !integrityTokenState?.token) return;
+    const escaped = JSON.stringify(integrityTokenState.token);
+    webViewRef.current?.injectJavaScript(
+      `window.__rnIntegrityToken = ${escaped}; true;`
+    );
+  }, [integrityTokenState]);
+
   /* ── Safe area insets (status bar height on Android) ── */
   const insets = useSafeAreaInsets();
   const insetsBottomRef = useRef(insets.bottom);
@@ -1892,6 +1918,12 @@ export default function WebViewScreen() {
     webViewRef.current?.injectJavaScript(
       `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insetsBottomRef.current}px'); true;`
     );
+    // Inject integrity token if already available (pre-fetched before page loaded).
+    const tok = integrityTokenRef.current;
+    if (tok) {
+      const escaped = JSON.stringify(tok);
+      webViewRef.current?.injectJavaScript(`window.__rnIntegrityToken = ${escaped}; true;`);
+    }
     if (localeStorageHydratedRef.current) {
       webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
     }
