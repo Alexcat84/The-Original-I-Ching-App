@@ -1,8 +1,18 @@
-<!-- changelog:last-release:b81ea35 -->
+<!-- changelog:last-release:09704c9 -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.4.6] — 2026-06-04 | versionCode: 39 | Etapa: Closed Testing
+
+### Fix
+- fix(mobile): sequential prewarm + fetch timeout to prevent stuck loading states | commit: 09704c9
+
+### Maintenance
+- chore(release): bump version 3.4.5 / versionCode 38 | commit: 32ec893
+
+---
 
 ## [3.4.5] — 2026-06-04 | versionCode: 38 | Etapa: Closed Testing
 
@@ -1183,7 +1193,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.4.5 | 38 | 2026-06-04 | Closed Testing | 10 | fix JVM target mismatch in expo-app-integrity Gradle build; rewrite expo-app-integrity build.gradle for AGP 8 compatibility; remove maven-publish from expo-app-integrity + stacktrace flag |
+| 3.4.6 | 39 | 2026-06-04 | Closed Testing | 2 | sequential prewarm + fetch timeout to prevent stuck loading states |
+| 3.4.5 | 38 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.4 | 37 | 2026-06-03 | Closed Testing | 0 | — |
 | 3.4.3 | 36 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.4.2 | 35 | 2026-06-01 | Closed Testing | 0 | — |
