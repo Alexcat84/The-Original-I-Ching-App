@@ -11,6 +11,9 @@ import { syncPendingImages } from "./image-sync";
 
 const SUMMARY_COOLDOWN_MS = 5 * 60 * 1000;
 const CHAT_CONTENT_COOLDOWN_MS = 5 * 60 * 1000;
+// Abort network requests that hang — prevents request_thread from getting stuck
+// waiting forever behind a stalled prewarm fetch.
+const FETCH_TIMEOUT_MS = 12_000;
 
 type ApiSession = {
   sessionId: string;
@@ -43,11 +46,19 @@ function msToIso(ms: number): string {
 /** Returns the server's session list, or null on network/auth error.
  *  Returning null vs [] lets callers distinguish "server unreachable"
  *  from "server confirmed account has no sessions". */
+function fetchWithTimeout(url: string, options: RequestInit): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() =>
+    clearTimeout(timer),
+  );
+}
+
 async function fetchSummaries(
   token: string,
   baseUrl: string,
 ): Promise<ApiSummaryEntry[] | null> {
-  const res = await fetch(`${baseUrl}/api/account/chats?summary=1`, {
+  const res = await fetchWithTimeout(`${baseUrl}/api/account/chats?summary=1`, {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store",
   });
@@ -61,7 +72,7 @@ async function fetchChatDetail(
   baseUrl: string,
   sessionId: string,
 ): Promise<{ session: ApiSession; consultations: ApiConsultation[] } | null> {
-  const res = await fetch(
+  const res = await fetchWithTimeout(
     `${baseUrl}/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
     { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" },
   );
@@ -117,13 +128,22 @@ export async function syncChats(token: string, baseUrl: string, userId?: string)
     // cache is wiped before injection, preventing cross-user data leaks.
     if (userId) await setSyncMeta("last_synced_user", userId);
 
-    // Pre-warm message cache for ALL chats so every chat opens instantly from
-    // SQLite (Tier 2). Each syncChatContent call checks its own 5-min cooldown
-    // first — already-cached chats return immediately without a network request.
-    // Runs fully in background and does not block Tier 1.
-    void Promise.all(
-      chatRows.map((r) => syncChatContent(token, baseUrl, r.id).catch(() => undefined)),
-    );
+    // Pre-warm message cache for all chats so every chat opens instantly from
+    // SQLite (Tier 2). Runs sequentially in background to avoid two problems
+    // that arise from firing all requests in parallel:
+    //   1. SQLite lock contention: concurrent upsertMessages writes block the
+    //      getCachedChatsForInjection read, leaving the sidebar stuck on
+    //      "Loading chats...".
+    //   2. HTTP connection pool exhaustion: mobile HTTP/1.1 allows ~6 concurrent
+    //      connections per host; parallel prewarm fills the pool and delays
+    //      request_thread syncs, leaving conversations stuck on "Loading...".
+    // Sequential execution avoids both: each call completes (or hits the 5-min
+    // cooldown and returns immediately) before the next starts.
+    void (async () => {
+      for (const r of chatRows) {
+        await syncChatContent(token, baseUrl, r.id).catch(() => undefined);
+      }
+    })();
 
     // Process any images that were previously queued but not downloaded.
     void syncPendingImages();
