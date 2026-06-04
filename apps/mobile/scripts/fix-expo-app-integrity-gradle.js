@@ -27,17 +27,6 @@ applyKotlinExpoModulesCorePlugin()
 useDefaultAndroidSdkVersions()
 
 android {
-  namespace "expo.modules.integrity"
-
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_11
-    targetCompatibility JavaVersion.VERSION_11
-  }
-
-  kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_11.majorVersion
-  }
-
   defaultConfig {
     versionCode 1
     versionName "0.1.0"
