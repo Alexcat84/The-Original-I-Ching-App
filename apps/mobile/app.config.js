@@ -69,6 +69,12 @@ module.exports = ({ config }) => ({
     "expo-router",
     "expo-localization",
     [
+      "expo-app-integrity",
+      {
+        androidCloudProjectNumber: "564428602412",
+      },
+    ],
+    [
       "expo-build-properties",
       {
         android: {
