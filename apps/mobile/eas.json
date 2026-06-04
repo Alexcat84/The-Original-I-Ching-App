@@ -21,7 +21,8 @@
       "distribution": "internal",
       "android": {
         "buildType": "app-bundle",
-        "credentialsSource": "remote"
+        "credentialsSource": "remote",
+        "gradleCommand": ":app:bundleRelease --stacktrace"
       }
     },
     "production": {
