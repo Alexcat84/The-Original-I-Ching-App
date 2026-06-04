@@ -58,9 +58,12 @@ function getUserIdFromJwt(token: string): string | null {
   try {
     const payload = token.split(".")[1];
     if (!payload) return null;
-    // JWT uses base64url (- and _ instead of + and /). atob requires standard base64.
+    // JWT uses base64url (- and _ instead of + and /). atob requires standard base64
+    // with = padding to a multiple of 4. Hermes is strict — missing padding throws,
+    // causing getUserIdFromJwt to return null → clearAllData() on every cold start.
     const b64 = payload.replace(/-/g, "+").replace(/_/g, "/");
-    const json = atob(b64);
+    const padded = b64 + "=".repeat((4 - (b64.length % 4)) % 4);
+    const json = atob(padded);
     const claims = JSON.parse(json) as { sub?: string };
     return typeof claims.sub === "string" && claims.sub.length > 0 ? claims.sub : null;
   } catch {
