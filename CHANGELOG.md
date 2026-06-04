@@ -1,8 +1,35 @@
-<!-- changelog:last-release:8e85dbe -->
+<!-- changelog:last-release:f3df720 -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.4.4] — 2026-06-03 | versionCode: 37 | Etapa: Closed Testing
+
+### New
+- feat(security): add Play Protect and App Access Risk verdict checks | commit: f3df720
+- feat(security): implement Play Integrity API attestation for Android app | commit: 1fc2e6e
+- feat(security): gate library behind auth+tier and rate-limit scraping | commit: e18b77c
+
+### Fix
+- fix(ci): update package-lock.json — babel 7.29.7 drift after dep install | commit: a2debf7
+- fix(deps): resolve expo-app-integrity peer dep conflict for Vercel build | commit: 1e403a9
+- fix(security): harden Play Integrity verification (security review findings) | commit: 3c6c194
+- fix(library): fix rate limit blocking normal library browsing | commit: 303788f
+- fix(security): delete legacy public hexagram API routes (audit finding) | commit: c6bc636
+- fix(security): server-side data isolation for library translations | commit: 13c19dd
+- fix(web): noindex delete-account page and disallow crawling | commit: 4b3f03f
+- fix(i18n): remove BOM from mobile-native-ui.ts | commit: 72dd87c
+- fix(web): remove dead fields from notes page | commit: 3622c4d
+- fix(i18n): restore characters corrupted by incorrect encoding on previous commits | commit: df61e00
+- fix(security): revoke PUBLIC execute + deny-all policies on internal tables (migration 050) | commit: e61ba39
+- fix(security): revoke RPC execute on trigger-only function (migration 049) | commit: 2063c96
+
+### Maintenance
+- chore(audit): resolve minor debt items from library-protection audit | commit: 630f2ed
+- chore(release): bump version 3.4.3 / versionCode 36 | commit: f821f09
+
+---
 
 ## [3.4.3] — 2026-06-01 | versionCode: 36 | Etapa: Closed Testing
 
@@ -1136,7 +1163,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.4.3 | 36 | 2026-06-01 | Closed Testing | 5 | fix chat drawer last item hidden behind Android nav bar; remove locale dropdown — send locale silently from useAppLocale; remove free_depleted token message and hexagram grid from notes |
+| 3.4.4 | 37 | 2026-06-03 | Closed Testing | 17 | add Play Protect and App Access Risk verdict checks; implement Play Integrity API attestation for Android app; gate library behind auth+tier and rate-limit scraping |
+| 3.4.3 | 36 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.4.2 | 35 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.4.1 | 34 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.4.0 | 33 | 2026-06-01 | Closed Testing | 0 | — |
