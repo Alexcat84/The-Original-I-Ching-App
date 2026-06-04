@@ -12,11 +12,6 @@ import { syncPendingImages } from "./image-sync";
 const SUMMARY_COOLDOWN_MS = 5 * 60 * 1000;
 const CHAT_CONTENT_COOLDOWN_MS = 5 * 60 * 1000;
 
-// How many of the most-recently-updated chats to pre-warm after a Tier 1 sync.
-// Pre-warming ensures opening a recent chat is served from SQLite instantly
-// rather than waiting for a Tier 3 network fetch.
-const PREWARM_CHAT_COUNT = 3;
-
 type ApiSession = {
   sessionId: string;
   title: string;
@@ -122,12 +117,12 @@ export async function syncChats(token: string, baseUrl: string, userId?: string)
     // cache is wiped before injection, preventing cross-user data leaks.
     if (userId) await setSyncMeta("last_synced_user", userId);
 
-    // Pre-warm message cache for the most recently active chats so that opening
-    // any of them is served instantly from SQLite (Tier 2) rather than waiting
-    // for a Tier 3 network fetch. Runs in background — does not block Tier 1.
-    const recentIds = chatRows.slice(0, PREWARM_CHAT_COUNT).map((r) => r.id);
+    // Pre-warm message cache for ALL chats so every chat opens instantly from
+    // SQLite (Tier 2). Each syncChatContent call checks its own 5-min cooldown
+    // first — already-cached chats return immediately without a network request.
+    // Runs fully in background and does not block Tier 1.
     void Promise.all(
-      recentIds.map((id) => syncChatContent(token, baseUrl, id).catch(() => undefined)),
+      chatRows.map((r) => syncChatContent(token, baseUrl, r.id).catch(() => undefined)),
     );
 
     // Process any images that were previously queued but not downloaded.
