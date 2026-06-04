@@ -43,6 +43,7 @@ import {
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey, getUpstashRedis } from "@/lib/rate-limit";
+import { verifyIntegrityToken } from "@/lib/play-integrity";
 import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -413,6 +414,29 @@ export async function POST(req: Request) {
       );
     }
     const authedUserId = authUser.userId;
+
+    // Play Integrity check — for Android app requests only (header injected by native shell).
+    // Web browser requests don't carry this header and are protected by Turnstile at registration.
+    // Verification runs BEFORE token consumption so a failed verdict costs the user nothing.
+    //
+    // Known limitation (security review finding #4): this is opt-in — a modified APK could
+    // strip the header and the check would be skipped. The complete fix requires binding the
+    // device class to the Supabase session at login (HMAC claim in user_metadata) so the backend
+    // can demand the token unconditionally for any session flagged as Android. Tracked as
+    // technical debt; current implementation prevents passive scraping and unmodified emulators.
+    const integrityToken = req.headers.get("x-integrity-token");
+    if (integrityToken) {
+      const verdict = await verifyIntegrityToken(integrityToken, authedUserId);
+      if (!verdict.passed) {
+        log.warn("integrity_check_failed", { reason: verdict.reason, userId: authedUserId.slice(0, 8) });
+        await log.flush();
+        return NextResponse.json(
+          { error: "integrity_check_failed", code: "INTEGRITY_FAILED", action: "none" },
+          { status: 403 },
+        );
+      }
+    }
+
     const lastPack = await getUserBillingTier(authedUserId);
     const policy = await resolveConsultPolicy({
       authUser,
