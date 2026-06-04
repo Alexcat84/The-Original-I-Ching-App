@@ -1,8 +1,28 @@
-<!-- changelog:last-release:f3df720 -->
+<!-- changelog:last-release:b81ea35 -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.4.5] — 2026-06-04 | versionCode: 38 | Etapa: Closed Testing
+
+### Fix
+- fix(mobile): fix JVM target mismatch in expo-app-integrity Gradle build | commit: 40abfd8
+- fix(mobile): rewrite expo-app-integrity build.gradle for AGP 8 compatibility | commit: 49b973c
+- fix(mobile): remove maven-publish from expo-app-integrity + stacktrace flag | commit: d4ebdce
+- fix(ci): increase Node.js heap for Next.js build to prevent OOM | commit: 87883d2
+- fix(mobile): fix expo-device version and patch expo-app-integrity for Gradle 8 | commit: 6bb241f
+- fix(mobile): fix expo-app-integrity config plugin and pass cloudProjectNumber at runtime | commit: 33d84da
+- fix(mobile): install expo-device — missing peer dep of expo-app-integrity | commit: 6b5a054
+
+### Performance
+- perf(mobile): pre-warm SQLite message cache for all chats, not just top 3 | commit: b81ea35
+- perf(mobile): pre-warm SQLite message cache for 3 most recent chats | commit: 9a5c1c1
+
+### Maintenance
+- chore(release): bump version 3.4.4 / versionCode 37 | commit: 075bd2f
+
+---
 
 ## [3.4.4] — 2026-06-03 | versionCode: 37 | Etapa: Closed Testing
 
@@ -1163,7 +1183,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.4.4 | 37 | 2026-06-03 | Closed Testing | 17 | add Play Protect and App Access Risk verdict checks; implement Play Integrity API attestation for Android app; gate library behind auth+tier and rate-limit scraping |
+| 3.4.5 | 38 | 2026-06-04 | Closed Testing | 10 | fix JVM target mismatch in expo-app-integrity Gradle build; rewrite expo-app-integrity build.gradle for AGP 8 compatibility; remove maven-publish from expo-app-integrity + stacktrace flag |
+| 3.4.4 | 37 | 2026-06-03 | Closed Testing | 0 | — |
 | 3.4.3 | 36 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.4.2 | 35 | 2026-06-01 | Closed Testing | 0 | — |
 | 3.4.1 | 34 | 2026-06-01 | Closed Testing | 0 | — |
