@@ -6,7 +6,19 @@ const PACKAGE_NAME = "com.theoriginaliching.app";
 export interface IntegrityVerdict {
   passed: boolean;
   reason?: string;
+  /** Structured environment data for Axiom logging — undefined when not available. */
+  environment?: {
+    playProtect: string | null;
+    appsDetected: string[];
+  };
 }
+
+// App access risk values that indicate active capture/control of the device.
+// These represent a direct privacy threat during an oracle consultation.
+const BLOCKING_APP_RISK = ["KNOWN_CAPTURING", "KNOWN_CONTROLLING", "UNKNOWN_CAPTURING", "UNKNOWN_CONTROLLING"];
+
+// Play Protect verdicts that indicate confirmed malware on the device.
+const BLOCKING_PLAY_PROTECT = ["MALWARE_DETECTED"];
 
 function getAuthClient() {
   const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
@@ -25,18 +37,23 @@ function getAuthClient() {
 /**
  * Verifies a Play Integrity token issued by the Android app.
  *
- * Fail-open / fail-closed policy:
- *  - 4xx from Google API (invalid token, bad packageName): ALWAYS fail-closed.
- *  - Credentials missing in production: ALWAYS fail-closed.
- *  - Redis unavailable in production: ALWAYS fail-closed (nonce cannot be checked).
- *  - 5xx / network / transient: fail-CLOSED by default.
- *    Set INTEGRITY_FAIL_OPEN=true to allow consultations during Google API outages
- *    (trade security for availability — operators opt in deliberately).
- *  - NODE_ENV !== production: always passes (emulator / dev build support).
- */
-/**
- * @param token  The Play Integrity attestation token from the Android app.
- * @param userId The authenticated user id from the Bearer token (for nonce binding).
+ * Checks (in order):
+ *  1. Nonce present, valid, belongs to userId, single-use (Redis).
+ *  2. appRecognitionVerdict === 'PLAY_RECOGNIZED'
+ *  3. deviceRecognitionVerdict includes 'MEETS_DEVICE_INTEGRITY'
+ *  4. playProtectVerdict — blocks on MALWARE_DETECTED; logs all others.
+ *  5. appAccessRiskVerdict — blocks on active capturing/controlling apps;
+ *     logs installs without blocking (avoid false positives from accessibility apps).
+ *
+ * Fail-open / fail-closed:
+ *  - Missing credentials in prod → fail-closed.
+ *  - Redis unavailable in prod → fail-closed.
+ *  - 4xx Google API → fail-closed.
+ *  - 5xx / transient → fail-closed unless INTEGRITY_FAIL_OPEN=true.
+ *  - NODE_ENV !== production → always passes (dev / emulator).
+ *
+ * @param token  Play Integrity attestation token from the Android app.
+ * @param userId Authenticated user id (Bearer token) — nonce is bound to this.
  */
 export async function verifyIntegrityToken(token: string, userId: string): Promise<IntegrityVerdict> {
   if (process.env.NODE_ENV !== "production") {
@@ -45,7 +62,6 @@ export async function verifyIntegrityToken(token: string, userId: string): Promi
 
   const auth = getAuthClient();
   if (!auth) {
-    // Finding #3: missing credentials in prod → fail-closed, not skip.
     console.error("[play-integrity] GOOGLE_SERVICE_ACCOUNT_JSON absent or invalid in production");
     return { passed: false, reason: "misconfigured" };
   }
@@ -60,49 +76,66 @@ export async function verifyIntegrityToken(token: string, userId: string): Promi
     const payload = res.data.tokenPayloadExternal;
     if (!payload) return { passed: false, reason: "empty_payload" };
 
-    // Finding #2: nonce MUST be present — tokens without a nonce are not bound
-    // to a server-issued challenge and cannot be replay-protected.
+    // ── 1. Nonce validation ──────────────────────────────────────────────────
     const nonce = payload.requestDetails?.nonce;
     if (!nonce) return { passed: false, reason: "missing_nonce" };
 
     const redis = getUpstashRedis();
     if (!redis) {
-      // Finding #2: in production Redis is required for nonce bookkeeping.
-      // Without it we cannot detect replayed tokens.
       console.error("[play-integrity] Upstash Redis unavailable — cannot verify nonce in production");
       return { passed: false, reason: "redis_unavailable" };
     }
 
     const storedUserId = await redis.get<string>(`integrity_nonce:${nonce}`);
     if (!storedUserId) return { passed: false, reason: "nonce_invalid_or_expired" };
-    // Nonce must belong to the authenticated user making this request.
     if (storedUserId !== userId) return { passed: false, reason: "nonce_user_mismatch" };
-    // Single-use: consume immediately after first successful lookup.
-    await redis.del(`integrity_nonce:${nonce}`);
+    await redis.del(`integrity_nonce:${nonce}`); // single-use
 
+    // ── 2. App recognition ───────────────────────────────────────────────────
     const appVerdict = payload.appIntegrity?.appRecognitionVerdict;
     if (appVerdict !== "PLAY_RECOGNIZED") {
       return { passed: false, reason: `app_verdict:${appVerdict}` };
     }
 
+    // ── 3. Device integrity ──────────────────────────────────────────────────
     const deviceVerdicts = payload.deviceIntegrity?.deviceRecognitionVerdict ?? [];
     if (!deviceVerdicts.includes("MEETS_DEVICE_INTEGRITY")) {
       return { passed: false, reason: `device_verdict:${deviceVerdicts.join(",")}` };
     }
 
-    return { passed: true };
-  } catch (err: unknown) {
-    // Finding #1: distinguish permanent errors from transient ones.
-    const httpStatus = (err as { response?: { status?: number } })?.response?.status;
-
-    if (typeof httpStatus === "number" && httpStatus >= 400 && httpStatus < 500) {
-      // 4xx: invalid token, bad package name, INVALID_ARGUMENT → always fail-closed.
-      return { passed: false, reason: `api_4xx:${httpStatus}` };
+    // ── 4. Play Protect status ───────────────────────────────────────────────
+    const playProtect = (payload as any).environmentDetails?.playProtectVerdict as string | undefined ?? null;
+    if (playProtect && BLOCKING_PLAY_PROTECT.includes(playProtect)) {
+      return {
+        passed: false,
+        reason: `play_protect:${playProtect}`,
+        environment: { playProtect, appsDetected: [] },
+      };
     }
 
-    // 5xx / network / timeout: fail-closed by default.
-    // Operators may set INTEGRITY_FAIL_OPEN=true to allow consultations
-    // during documented Google API outages.
+    // ── 5. App access risk ───────────────────────────────────────────────────
+    const appsDetected: string[] =
+      (payload as any).environmentDetails?.appAccessRiskVerdict?.appsDetected ?? [];
+
+    const activeRisk = appsDetected.filter((v) => BLOCKING_APP_RISK.includes(v));
+    if (activeRisk.length > 0) {
+      // Active screen capture or device control detected — privacy threat.
+      return {
+        passed: false,
+        reason: `app_access_risk:${activeRisk.join(",")}`,
+        environment: { playProtect, appsDetected },
+      };
+    }
+
+    return {
+      passed: true,
+      environment: { playProtect, appsDetected },
+    };
+  } catch (err: unknown) {
+    const httpStatus = (err as { response?: { status?: number } })?.response?.status;
+    if (typeof httpStatus === "number" && httpStatus >= 400 && httpStatus < 500) {
+      return { passed: false, reason: `api_4xx:${httpStatus}` };
+    }
     console.error("[play-integrity] transient verification error:", err);
     if (process.env.INTEGRITY_FAIL_OPEN === "true") {
       return { passed: true };

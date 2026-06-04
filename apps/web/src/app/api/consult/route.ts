@@ -428,12 +428,27 @@ export async function POST(req: Request) {
     if (integrityToken) {
       const verdict = await verifyIntegrityToken(integrityToken, authedUserId);
       if (!verdict.passed) {
-        log.warn("integrity_check_failed", { reason: verdict.reason, userId: authedUserId.slice(0, 8) });
+        log.warn("integrity_check_failed", {
+          reason: verdict.reason,
+          userId: authedUserId.slice(0, 8),
+          playProtect: verdict.environment?.playProtect ?? null,
+          appsDetected: verdict.environment?.appsDetected ?? [],
+        });
         await log.flush();
         return NextResponse.json(
           { error: "integrity_check_failed", code: "INTEGRITY_FAILED", action: "none" },
           { status: 403 },
         );
+      }
+      // Log environment data on every passing request for monitoring/analytics.
+      // Allows detecting patterns (e.g. rising app_access_risk installs) before
+      // deciding to tighten blocking thresholds.
+      if (verdict.environment) {
+        log.info("integrity_check_passed", {
+          userId: authedUserId.slice(0, 8),
+          playProtect: verdict.environment.playProtect,
+          appsDetected: verdict.environment.appsDetected,
+        });
       }
     }
 
