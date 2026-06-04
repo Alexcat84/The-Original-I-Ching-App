@@ -69,12 +69,6 @@ module.exports = ({ config }) => ({
     "expo-router",
     "expo-localization",
     [
-      "expo-app-integrity",
-      {
-        androidCloudProjectNumber: "564428602412",
-      },
-    ],
-    [
       "expo-build-properties",
       {
         android: {
@@ -118,6 +112,7 @@ module.exports = ({ config }) => ({
   /* Consumed at runtime via expo-constants in app/index.tsx (WebView BASE_URL). */
   extra: {
     apiUrl: APP_URL,
+    androidCloudProjectNumber: 564428602412,
     eas: {
       projectId: "0d7699fd-9b1d-4bc0-a6f3-4b79df9d4de6",
     },
