@@ -8,6 +8,9 @@ const BASE_URL: string =
   process.env.EXPO_PUBLIC_API_URL ??
   "https://theoriginaliching.com";
 
+const ANDROID_CLOUD_PROJECT_NUMBER: number =
+  Constants.expoConfig?.extra?.androidCloudProjectNumber ?? 564428602412;
+
 const SECURE_TOKEN_KEY = "supabase_access_token";
 
 /** How long (ms) before expiry we proactively refresh the token. */
@@ -57,7 +60,7 @@ export function useIntegrityCheck() {
       const { challenge } = (await res.json()) as { challenge: string };
 
       // 3. Attest — throws on emulator / dev build without Play Services.
-      const token = await AppIntegrity.getAttestationAsync(challenge);
+      const token = await AppIntegrity.getAttestationAsync(challenge, ANDROID_CLOUD_PROJECT_NUMBER);
 
       // 4. Cache with expiry slightly shorter than server TTL.
       const expiresAt = Date.now() + (CHALLENGE_TTL_S - 60) * 1000;
