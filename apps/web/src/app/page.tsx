@@ -4293,11 +4293,9 @@ export default function HomePage() {
               }}
             >
               {localeSelector}
-              {authReady && (
-                <Link href="/login" className="auth-explore-strip-cta">
-                  {ui.signIn}
-                </Link>
-              )}
+              <Link href="/login" className="auth-explore-strip-cta">
+                {ui.signIn}
+              </Link>
             </div>
           ) : null}
           {!supabaseConfigError && (authReady ? !!(accessToken && authEmail) : !!cachedAuthEmail) ? (
@@ -4308,15 +4306,13 @@ export default function HomePage() {
               <span className="auth-explore-strip-email" title={authEmail ?? cachedAuthEmail ?? ""}>
                 {authEmail ?? cachedAuthEmail}
               </span>
-              {authReady && (
-                <button
-                  type="button"
-                  className="auth-explore-strip-signout"
-                  onClick={() => setLogoutConfirmOpen(true)}
-                >
-                  {ui.signOut}
-                </button>
-              )}
+              <button
+                type="button"
+                className="auth-explore-strip-signout"
+                onClick={() => setLogoutConfirmOpen(true)}
+              >
+                {ui.signOut}
+              </button>
             </div>
           ) : null}
           <header
