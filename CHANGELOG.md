@@ -1,8 +1,29 @@
-<!-- changelog:last-release:c22696f -->
+<!-- changelog:last-release:2e1ecb8 -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.4.8] — 2026-06-05 | versionCode: 41 | Etapa: Closed Testing
+
+### New
+- feat(mobile): native auth bar + build warning fixes | commit: 46a3304
+- feat(mobile): native auth bar replaces web session strip | commit: 92166a7
+
+### Fix
+- fix(web): always show sign-in/sign-out button during auth loading window | commit: 2e1ecb8
+- fix(web): suppress white-frame flash on Next.js App Router navigation | commit: 9acd42d
+- fix(web): eliminate auth bar blank-flash on WebView cold start | commit: 33aadb8
+- fix(mobile): eliminate double auth bar — triple-layer session strip suppression | commit: 357835e
+- fix(build): suppress Sentry deprecation warning + declare GOOGLE_SERVICE_ACCOUNT_JSON in turbo | commit: 92425eb
+- fix(claude): suppress internal prompt keys from user-visible output | commit: 351877b
+- fix(mobile/security): persist last-known UID in SecureStore to prevent cross-user SQLite leak | commit: 7367a97
+
+### Maintenance
+- revert: remove NativeAuthBar — reverting to web bar approach | commit: 26d8597
+- chore(release): bump version 3.4.7 / versionCode 40 | commit: b1e448a
+
+---
 
 ## [3.4.7] — 2026-06-04 | versionCode: 40 | Etapa: Closed Testing
 
@@ -1205,7 +1226,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.4.7 | 40 | 2026-06-04 | Closed Testing | 4 | preserve SQLite through sign-out — instant re-login for same user; restore Supabase fallback in rn:thread-not-found handler; fix atob padding in getUserIdFromJwt — root cause of SQLite wipe on every col… |
+| 3.4.8 | 41 | 2026-06-05 | Closed Testing | 11 | native auth bar + build warning fixes; native auth bar replaces web session strip; always show sign-in/sign-out button during auth loading window |
+| 3.4.7 | 40 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.6 | 39 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.5 | 38 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.4 | 37 | 2026-06-03 | Closed Testing | 0 | — |
