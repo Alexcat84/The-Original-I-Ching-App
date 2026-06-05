@@ -550,6 +550,12 @@ export default function HomePage() {
   accessTokenRef.current = accessToken;
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
+  // Synchronous read on mount — eliminates the blank-bar flash while Supabase resolves.
+  // Populated by the effect below whenever authReady resolves with a real session.
+  const [cachedAuthEmail] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("_rnAuthEmail");
+  });
   const [authUserId, setAuthUserId] = useState<string | null>(null);
   /** Last known Supabase user id (for clearing per-user sessionStorage on sign-out). */
   const lastSignedInUserIdForStorageRef = useRef<string | null>(null);
@@ -2026,6 +2032,7 @@ export default function HomePage() {
     if (!isSupabaseBrowserConfigured()) {
       setSupabaseConfigError(true);
       setAuthReady(true);
+      localStorage.removeItem("_rnAuthEmail");
       return;
     }
     let cancelled = false;
@@ -2036,11 +2043,22 @@ export default function HomePage() {
       setAuthEmail(session?.user?.email ?? null);
       setAuthUserId(session?.user?.id ?? null);
       setAuthReady(true);
+      // Persist email for instant re-render on next mount (eliminates blank-bar flash).
+      if (session?.user?.email) {
+        localStorage.setItem("_rnAuthEmail", session.user.email);
+      } else {
+        localStorage.removeItem("_rnAuthEmail");
+      }
     });
     const { data: sub } = sb.auth.onAuthStateChange((_event, session) => {
       setAccessToken(session?.access_token ?? null);
       setAuthEmail(session?.user?.email ?? null);
       setAuthUserId(session?.user?.id ?? null);
+      if (session?.user?.email) {
+        localStorage.setItem("_rnAuthEmail", session.user.email);
+      } else {
+        localStorage.removeItem("_rnAuthEmail");
+      }
     });
     return () => {
       cancelled = true;
@@ -4265,7 +4283,7 @@ export default function HomePage() {
               </span>
             </div>
           ) : null}
-          {authReady && !supabaseConfigError && !accessToken ? (
+          {!supabaseConfigError && (authReady ? !accessToken : !cachedAuthEmail) ? (
             <div
               className="auth-explore-strip"
               style={{
@@ -4275,26 +4293,30 @@ export default function HomePage() {
               }}
             >
               {localeSelector}
-              <Link href="/login" className="auth-explore-strip-cta">
-                {ui.signIn}
-              </Link>
+              {authReady && (
+                <Link href="/login" className="auth-explore-strip-cta">
+                  {ui.signIn}
+                </Link>
+              )}
             </div>
           ) : null}
-          {authReady && !supabaseConfigError && accessToken && authEmail ? (
+          {!supabaseConfigError && (authReady ? !!(accessToken && authEmail) : !!cachedAuthEmail) ? (
             <div className="auth-explore-strip auth-explore-strip--session">
               <div className="auth-explore-strip-session__lead">
                 {localeSelector}
               </div>
-              <span className="auth-explore-strip-email" title={authEmail}>
-                {authEmail}
+              <span className="auth-explore-strip-email" title={authEmail ?? cachedAuthEmail ?? ""}>
+                {authEmail ?? cachedAuthEmail}
               </span>
-              <button
-                type="button"
-                className="auth-explore-strip-signout"
-                onClick={() => setLogoutConfirmOpen(true)}
-              >
-                {ui.signOut}
-              </button>
+              {authReady && (
+                <button
+                  type="button"
+                  className="auth-explore-strip-signout"
+                  onClick={() => setLogoutConfirmOpen(true)}
+                >
+                  {ui.signOut}
+                </button>
+              )}
             </div>
           ) : null}
           <header

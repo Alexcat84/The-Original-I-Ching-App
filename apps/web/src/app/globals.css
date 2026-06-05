@@ -367,11 +367,6 @@ html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) body {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
 }
 
-/* RN WebView: session strip replaced by NativeAuthBar — hide it; guest strip stays visible */
-html.iching-rn-webview .auth-explore-strip--session {
-  display: none !important;
-}
-
 /* RN WebView: auth strip band + controls (visual parity with former native chrome) */
 html.iching-rn-webview[data-theme="dark"] .auth-explore-strip {
   background: #080808;
