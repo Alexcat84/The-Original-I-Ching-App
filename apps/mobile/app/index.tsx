@@ -138,6 +138,7 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 }
 
 const SECURE_TOKEN_KEY = "supabase_access_token";
+const LAST_KNOWN_UID_KEY = "last_known_uid";
 const LOCALE_STORAGE_KEY = "iching_native_locale";
 
 const LOCALES: { code: AppLocale; label: string; name: string }[] = [
@@ -1801,11 +1802,14 @@ export default function WebViewScreen() {
     void (async () => {
       try {
         await initDb();
-        const [chats, storedTok, lastSyncedUser] = await Promise.all([
+        const [chats, storedTok, lastSyncedUser, persistedUid] = await Promise.all([
           getCachedChatsForInjection(),
           SecureStore.getItemAsync(SECURE_TOKEN_KEY),
           getSyncMeta("last_synced_user"),
+          SecureStore.getItemAsync(LAST_KNOWN_UID_KEY),
         ]);
+        // Restore persisted UID so auth_token cross-user check survives app restarts.
+        if (persistedUid) lastKnownUidRef.current = persistedUid;
         const storedUid = getUserIdFromJwt(storedTok ?? "");
         if (storedUid && lastSyncedUser && storedUid === lastSyncedUser) {
           // Same user as last sync → inject cache immediately.
@@ -2344,16 +2348,19 @@ export default function WebViewScreen() {
         switch (msg.type) {
           case "auth_token": {
             // Cross-user detection: clear SQLite only when a DIFFERENT user logs
-            // in. Use lastKnownUidRef (survives sign-out) rather than
-            // accessTokenRef.current (null after sign-out) so the same user
-            // re-logging in after sign-out does NOT trigger a wipe — their
-            // messages remain in SQLite and the next open is instant.
+            // in. lastKnownUidRef is loaded from SecureStore on mount so it
+            // survives app restarts — closing and reopening the app cannot reset
+            // it to null and bypass the check.
+            // Guard removed: `lastKnownUidRef.current !== null` was dropped so
+            // a null ref (first-ever login) also triggers clearAllData (safe —
+            // SQLite is empty on first install).
             const newUid = getUserIdFromJwt(msg.token);
-            if (newUid && lastKnownUidRef.current !== null && lastKnownUidRef.current !== newUid) {
+            if (newUid && lastKnownUidRef.current !== newUid) {
               cachedChatsRef.current = [];
               void clearAllData().catch(() => undefined);
             }
             lastKnownUidRef.current = newUid;
+            if (newUid) void SecureStore.setItemAsync(LAST_KNOWN_UID_KEY, newUid);
             accessTokenRef.current = msg.token;
             setIsAuthenticated(true);
             if (msg.email) setUserEmail(msg.email);
