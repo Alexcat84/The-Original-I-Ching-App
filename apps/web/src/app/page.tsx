@@ -544,6 +544,10 @@ export default function HomePage() {
   const accountSessionLimitRef = useRef(1);
   accountSessionLimitRef.current = accountSessionLimit;
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  // Refs so event-handler closures (rn:thread-not-found) always see current values
+  // without adding them to effect dependency arrays and re-registering listeners.
+  const accessTokenRef = useRef<string | null>(null);
+  accessTokenRef.current = accessToken;
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
   const [authUserId, setAuthUserId] = useState<string | null>(null);
@@ -688,6 +692,8 @@ export default function HomePage() {
     setPersistenceKeys,
     hydrateFromStorage,
   } = useChatSessionState<ConsultationItem>();
+  const sessionsRef = useRef(sessions);
+  sessionsRef.current = sessions;
   const serverHydratedRef = useRef(sessionsServerHydrated);
   serverHydratedRef.current = sessionsServerHydrated;
   const [error, setError] = useState<string | null>(null);
@@ -2472,8 +2478,53 @@ export default function HomePage() {
         clearTimeout(rnLoadingTimerRef.current);
         rnLoadingTimerRef.current = null;
       }
+      // Clear loading immediately so the UI is not stuck.
       setHistoryLoading(false);
       setLoadingSessionLocalId((curr) => (curr === localId ? null : curr));
+
+      // Supabase fallback — restores behavior removed in 9bb3abc.
+      // The original parallel call was removed because it produced false
+      // "session not found" errors for staging sessions cached in SQLite
+      // but absent in the production Supabase project. This sequential
+      // fallback fires ONLY after native confirmed it cannot deliver
+      // (SQLite empty + Tier 3 sync failed/timed-out), so it is safe:
+      // no valid SQLite content can be overridden at this point.
+      const tok = accessTokenRef.current;
+      const session = sessionsRef.current.find((s) => s.localId === localId);
+      if (!tok || !session?.sessionId) return;
+      const { sessionId } = session;
+      void (async () => {
+        try {
+          const res = await fetch(
+            `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
+            { headers: { Authorization: `Bearer ${tok}` }, cache: "no-store" },
+          );
+          if (!res.ok) return; // 404 = genuinely absent; silently leave empty
+          const payload = (await res.json()) as AccountChatSessionResponse;
+          if (!payload?.session || !Array.isArray(payload.consultations)) return;
+          const planCap = Math.max(1, accountSessionLimitRef.current);
+          const thread = payload.consultations.map((c) =>
+            mapApiConsultationToItem(c, payload.session.publicId, planCap),
+          );
+          if (thread.length === 0) return;
+          setSessions((prev) =>
+            prev.map((s) =>
+              s.localId !== localId
+                ? s
+                : {
+                    ...s,
+                    thread,
+                    messageCount: Math.max(thread.length, s.messageCount),
+                    updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
+                    firstConsultationAt:
+                      thread[0]?.createdAt ?? s.firstConsultationAt,
+                  },
+            ),
+          );
+        } catch {
+          // Truly unreachable — leave empty, spinner already cleared above.
+        }
+      })();
     };
     window.addEventListener("rn:thread-data", onRnThread);
     window.addEventListener("rn:thread-not-found", onRnThreadNotFound);
