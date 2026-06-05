@@ -1,8 +1,20 @@
-<!-- changelog:last-release:09704c9 -->
+<!-- changelog:last-release:c22696f -->
 
 # Changelog — The Original I Ching App
 
 Historial completo de cambios desde el inicio del proyecto.
+
+## [3.4.7] — 2026-06-04 | versionCode: 40 | Etapa: Closed Testing
+
+### Fix
+- fix(mobile): preserve SQLite through sign-out — instant re-login for same user | commit: c22696f
+- fix(web): restore Supabase fallback in rn:thread-not-found handler | commit: 6b1a81b
+- fix(mobile): fix atob padding in getUserIdFromJwt — root cause of SQLite wipe on every cold start | commit: 4ebafc3
+
+### Maintenance
+- chore(release): bump version 3.4.6 / versionCode 39 | commit: 718a6c1
+
+---
 
 ## [3.4.6] — 2026-06-04 | versionCode: 39 | Etapa: Closed Testing
 
@@ -1193,7 +1205,8 @@ Historial completo de cambios desde el inicio del proyecto.
 
 | Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
 |---------|-------------|-------|-------|---------|-------------------|
-| 3.4.6 | 39 | 2026-06-04 | Closed Testing | 2 | sequential prewarm + fetch timeout to prevent stuck loading states |
+| 3.4.7 | 40 | 2026-06-04 | Closed Testing | 4 | preserve SQLite through sign-out — instant re-login for same user; restore Supabase fallback in rn:thread-not-found handler; fix atob padding in getUserIdFromJwt — root cause of SQLite wipe on every col… |
+| 3.4.6 | 39 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.5 | 38 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.4 | 37 | 2026-06-03 | Closed Testing | 0 | — |
 | 3.4.3 | 36 | 2026-06-01 | Closed Testing | 0 | — |
