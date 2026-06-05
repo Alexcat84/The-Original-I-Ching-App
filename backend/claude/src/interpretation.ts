@@ -489,6 +489,7 @@ INSTRUCTIONS:
 - Interpret ONLY with the texts given.
 - ${masterSynthesisInstruction}
 - In the first sentence, answer the user's question clearly and directly, but do not invent factual data.
+- INTERNAL LABELS (NON-NEGOTIABLE): Never cite or reproduce internal prompt keys in your response — ACTIVE RULE identifiers (e.g. TWO_SAME_LOWER, ONE_CHANGING, ALL_SAME), STRUCTURAL FACTS labels, or any ALL_CAPS metadata key. These are internal reasoning aids and must never appear in user-visible output.
 - STRUCTURAL CONSISTENCY IS MANDATORY: any mention of "changing lines" count or positions MUST match CHANGING_COUNT and CHANGING_LINES_POSITIONS exactly.
 - ${looksFactual ? "This question appears to request factual real-world data: explicitly state when that fact cannot be verified from the provided oracle texts." : "Do not claim certainty about external facts unless they are explicitly provided in the input."}
 - If the question is about another person's private feelings or intentions, avoid certainty language. Use probability language (e.g., "podría", "parece", "sugiere"), never "es un hecho".
