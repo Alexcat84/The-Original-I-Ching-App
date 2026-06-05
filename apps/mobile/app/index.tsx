@@ -289,9 +289,10 @@ const INJECTED_JS = `
     'html.iching-rn-webview[data-theme=light] .locale-picker-menu{background:#f8fafc!important;border:1px solid rgba(15,23,42,.12)!important}',
     'html.iching-rn-webview[data-theme=dark] .auth-explore-strip a.auth-explore-strip-cta{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:5px 13px!important;border-radius:14px!important;border:1px solid rgba(201,162,39,.35)!important;background:rgba(201,162,39,.08)!important;color:#c9a227!important;font-size:12px!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
     'html.iching-rn-webview[data-theme=light] .auth-explore-strip a.auth-explore-strip-cta{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:5px 13px!important;border-radius:14px!important;border:1px solid rgba(13,148,136,.4)!important;background:rgba(13,148,136,.1)!important;color:#0f766e!important;font-size:12px!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
-    /* Session strip is replaced by NativeAuthBar — hide the web version entirely. */
+    /* Session strip is replaced by NativeAuthBar — hide the web version entirely.
+       Belt: CSS rule. Suspenders: MutationObserver below re-hides on every React re-render. */
     'html.iching-rn-webview .auth-explore-strip-tier{display:none!important}',
-    'html.iching-rn-webview .auth-explore-strip--session{display:none!important}',
+    'html.iching-rn-webview .auth-explore-strip--session{display:none!important;height:0!important;overflow:hidden!important;pointer-events:none!important;position:absolute!important;visibility:hidden!important}',
     '.chat-room{flex:1 1 0%!important;min-height:0!important}',
     '.chat-history{flex:1 1 0%!important;min-height:0!important;padding-bottom:0!important}',
     '.chat-app-bar-row--top{padding-top:0!important;padding-bottom:0!important}',
@@ -323,6 +324,22 @@ const INJECTED_JS = `
     'vercel-toolbar,#__vercel-toolbar,.__vercel-toolbar,div[id*="vercel-toolbar"],iframe[src*="vercel.live"]{display:none!important}'
   ].join(';');
   (document.head || document.documentElement).appendChild(_st);
+
+  /* Suspenders: MutationObserver re-hides .auth-explore-strip--session on every React re-render.
+     Belt is the CSS rule above; this catches any frame where the element briefly exists in DOM. */
+  function _rnHideWebSessionStrip() {
+    var els = document.querySelectorAll('.auth-explore-strip--session');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      el.style.setProperty('display', 'none', 'important');
+      el.style.setProperty('visibility', 'hidden', 'important');
+      el.style.setProperty('pointer-events', 'none', 'important');
+    }
+  }
+  _rnHideWebSessionStrip();
+  (new MutationObserver(function() { _rnHideWebSessionStrip(); }))
+    .observe(document.documentElement, { childList: true, subtree: true });
+
   // Debug: confirm injection worked
   setTimeout(function(){if(window.ReactNativeWebView){var s=_st.textContent.replace(/!/g,'I');window.ReactNativeWebView.postMessage('CSS_INJECTED_OK|'+s.slice(0,200));}},1500);
 
