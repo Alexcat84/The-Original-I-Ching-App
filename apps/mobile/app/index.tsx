@@ -53,6 +53,20 @@ function packIconFor(productIdentifier: string): number {
   return PACK_ICON_SEEKER; // seeker + fallback
 }
 
+/** Extracts the email claim from a JWT without external deps. */
+function getEmailFromJwt(token: string): string | null {
+  try {
+    const payload = token.split(".")[1];
+    if (!payload) return null;
+    const b64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = b64 + "=".repeat((4 - (b64.length % 4)) % 4);
+    const claims = JSON.parse(atob(padded)) as { email?: string };
+    return typeof claims.email === "string" && claims.email.length > 0 ? claims.email : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Extracts the Supabase user UUID (sub claim) from a JWT without external deps. */
 function getUserIdFromJwt(token: string): string | null {
   try {
@@ -81,6 +95,7 @@ import {
   DEFAULT_LOCALE,
   UI_LOCALE_STORAGE_KEY,
   getMobileNativeUiMessages,
+  getHomeChatUiMessages,
   type AppLocale,
 } from "@iching-oracle/i18n";
 
@@ -260,6 +275,8 @@ const INJECTED_JS = `
     /* .chat-surface: base layout; do NOT force square top when .chat-surface--explore-cap (auth strip rounds like former native card) */
     '.chat-surface{margin-top:0!important;margin-bottom:calc(0.25rem + max(18px, var(--rn-safe-area-inset-bottom, 0px)))!important;padding:0!important;flex:1 1 0%!important;align-self:stretch!important;min-width:0!important;min-height:0!important;border-radius:0 0 clamp(26px,5.5vw,38px) clamp(26px,5.5vw,38px)!important}',
     'html.iching-rn-webview .chat-surface.chat-surface--explore-cap{border-radius:clamp(26px,5.5vw,38px)!important}',
+    /* When native auth bar is above, remove top rounding so content sits flush under it. */
+    'html.iching-rn-webview.iching-rn-authed .chat-surface.chat-surface--explore-cap{border-top-left-radius:0!important;border-top-right-radius:0!important}',
     'html.iching-rn-webview .chat-surface--explore-cap>.auth-explore-strip:first-child{border-top-left-radius:clamp(26px,5.5vw,38px)!important;border-top-right-radius:clamp(26px,5.5vw,38px)!important}',
     /* Stale web deploy: hide legacy "Language" label; restyle strip like native chrome */
     'html.iching-rn-webview .locale-control>span{display:none!important}',
@@ -272,12 +289,9 @@ const INJECTED_JS = `
     'html.iching-rn-webview[data-theme=light] .locale-picker-menu{background:#f8fafc!important;border:1px solid rgba(15,23,42,.12)!important}',
     'html.iching-rn-webview[data-theme=dark] .auth-explore-strip a.auth-explore-strip-cta{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:5px 13px!important;border-radius:14px!important;border:1px solid rgba(201,162,39,.35)!important;background:rgba(201,162,39,.08)!important;color:#c9a227!important;font-size:12px!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
     'html.iching-rn-webview[data-theme=light] .auth-explore-strip a.auth-explore-strip-cta{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:5px 13px!important;border-radius:14px!important;border:1px solid rgba(13,148,136,.4)!important;background:rgba(13,148,136,.1)!important;color:#0f766e!important;font-size:12px!important;font-weight:600!important;box-shadow:none!important;background-image:none!important}',
-    'html.iching-rn-webview[data-theme=dark] .auth-explore-strip--session .auth-explore-strip-signout{border-radius:10px!important;padding:4px 7px!important;font-size:11px!important;font-weight:700!important;border:1px solid rgba(201,162,39,.25)!important;background:rgba(201,162,39,.08)!important;color:rgba(201,162,39,.6)!important;min-height:auto!important}',
-    'html.iching-rn-webview[data-theme=light] .auth-explore-strip--session .auth-explore-strip-signout{border-radius:10px!important;padding:4px 7px!important;font-size:11px!important;font-weight:700!important;border:1px solid rgba(15,23,42,.12)!important;background:rgba(255,255,255,.6)!important;color:rgba(15,23,42,.5)!important;min-height:auto!important}',
+    /* Session strip is replaced by NativeAuthBar — hide the web version entirely. */
     'html.iching-rn-webview .auth-explore-strip-tier{display:none!important}',
-    'html.iching-rn-webview .auth-explore-strip--session{display:flex!important;flex-wrap:nowrap!important;justify-content:space-between!important;align-items:center!important;min-height:2.65rem!important;overflow:visible!important}',
-    'html.iching-rn-webview .auth-explore-strip-session__lead{flex:0 0 auto!important;display:flex!important;align-items:center!important;min-width:0!important}',
-    'html.iching-rn-webview .auth-explore-strip--session .auth-explore-strip-email{flex:1 1 0!important;min-width:0!important;max-width:none!important}',
+    'html.iching-rn-webview .auth-explore-strip--session{display:none!important}',
     '.chat-room{flex:1 1 0%!important;min-height:0!important}',
     '.chat-history{flex:1 1 0%!important;min-height:0!important;padding-bottom:0!important}',
     '.chat-app-bar-row--top{padding-top:0!important;padding-bottom:0!important}',
@@ -1041,6 +1055,145 @@ type NativeDialogConfig = {
   buttons: Array<{ text: string; style?: "default" | "cancel"; onPress?: () => void }>;
 };
 
+// ── Native auth bar (replaces web .auth-explore-strip--session) ──────────────
+interface NativeAuthBarProps {
+  email: string | null;
+  locale: AppLocale;
+  theme: ShellChromeTheme;
+  signOutLabel: string;
+  signOutConfirmTitle: string;
+  signOutConfirmMessage: string;
+  signOutConfirmYes: string;
+  signOutConfirmNo: string;
+  onLocaleChange: (l: AppLocale) => void;
+  onSignOut: () => void;
+}
+
+function NativeAuthBar({
+  email, locale, theme,
+  signOutLabel, signOutConfirmTitle, signOutConfirmMessage, signOutConfirmYes, signOutConfirmNo,
+  onLocaleChange, onSignOut,
+}: NativeAuthBarProps) {
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const isDark = theme === "dark";
+
+  const c = isDark ? {
+    bg: "#080808", border: "rgba(201,162,39,0.22)", text: "rgba(255,255,255,0.72)",
+    pill: { border: "rgba(201,162,39,0.4)", bg: "rgba(201,162,39,0.06)", color: "#c9a227" },
+    signout: { border: "rgba(201,162,39,0.25)", bg: "rgba(201,162,39,0.08)", color: "rgba(201,162,39,0.6)" },
+    menu: { bg: "#161a22", border: "rgba(201,162,39,0.25)" },
+  } : {
+    bg: "#d4ebf5", border: "rgba(15,23,42,0.1)", text: "rgba(15,23,42,0.62)",
+    pill: { border: "rgba(13,148,136,0.45)", bg: "rgba(255,255,255,0.75)", color: "#0f766e" },
+    signout: { border: "rgba(15,23,42,0.12)", bg: "rgba(255,255,255,0.6)", color: "rgba(15,23,42,0.5)" },
+    menu: { bg: "#f8fafc", border: "rgba(15,23,42,0.12)" },
+  };
+
+  const currentLabel = LOCALES.find(l => l.code === locale)?.label ?? locale.toUpperCase();
+
+  return (
+    <View style={[nb.bar, { backgroundColor: c.bg, borderBottomColor: c.border }]}>
+      {/* Locale pill */}
+      <TouchableOpacity
+        style={[nb.pill, { borderColor: c.pill.border, backgroundColor: c.pill.bg }]}
+        onPress={() => setPickerOpen(true)}
+        activeOpacity={0.7}
+        hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
+      >
+        <Text style={[nb.pillLabel, { color: c.pill.color }]}>{currentLabel}</Text>
+        <Text style={[nb.pillCaret, { color: c.pill.color }]}>▾</Text>
+      </TouchableOpacity>
+
+      {/* Email */}
+      <Text style={[nb.email, { color: c.text }]} numberOfLines={1} ellipsizeMode="tail">
+        {email ?? ""}
+      </Text>
+
+      {/* Sign out */}
+      <TouchableOpacity
+        style={[nb.signoutBtn, { borderColor: c.signout.border, backgroundColor: c.signout.bg }]}
+        onPress={onSignOut}
+        activeOpacity={0.7}
+        hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
+      >
+        <Text style={[nb.signoutLabel, { color: c.signout.color }]}>{signOutLabel}</Text>
+      </TouchableOpacity>
+
+      {/* Locale picker modal */}
+      <Modal transparent visible={pickerOpen} animationType="fade" onRequestClose={() => setPickerOpen(false)} statusBarTranslucent>
+        <TouchableOpacity style={nb.overlay} activeOpacity={1} onPress={() => setPickerOpen(false)}>
+          <View style={[nb.menu, { backgroundColor: c.menu.bg, borderColor: c.menu.border }]}>
+            {LOCALES.map(l => (
+              <TouchableOpacity
+                key={l.code}
+                style={nb.menuItem}
+                onPress={() => { onLocaleChange(l.code); setPickerOpen(false); }}
+              >
+                <Text style={[nb.menuText, { color: c.text, fontWeight: l.code === locale ? "700" : "400" }]}>
+                  {l.label}{"  "}{l.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
+      {/* Sign-out confirm dialog */}
+      <Modal transparent visible={false} statusBarTranslucent>
+        <View />
+      </Modal>
+    </View>
+  );
+}
+
+const nb = StyleSheet.create({
+  bar: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    minHeight: 42,
+    flexShrink: 0,
+    borderBottomWidth: 1,
+  },
+  pill: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 14,
+    borderWidth: 1,
+    minWidth: 58,
+    gap: 4,
+  },
+  pillLabel: { fontSize: 13, fontWeight: "700", letterSpacing: 0.5 },
+  pillCaret: { fontSize: 9, marginTop: 1 },
+  email: { flex: 1, fontSize: 12, textAlign: "center", paddingHorizontal: 8 },
+  signoutBtn: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  signoutLabel: { fontSize: 11, fontWeight: "700" },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.45)",
+    justifyContent: "flex-start",
+    paddingTop: 50,
+    paddingLeft: 12,
+  },
+  menu: {
+    borderRadius: 12,
+    borderWidth: 1,
+    minWidth: 190,
+    overflow: "hidden",
+    elevation: 8,
+  },
+  menuItem: { paddingHorizontal: 16, paddingVertical: 11 },
+  menuText: { fontSize: 14 },
+});
+
 // ── P4: Native pinch-to-zoom modal for chat images ───────────────────────────
 interface ImageZoomModalProps {
   uri: string | null;
@@ -1706,6 +1859,15 @@ export default function WebViewScreen() {
   const [shellTheme, setShellTheme] = useState<ShellChromeTheme>("dark");
 
   const nativeUi = useMemo(() => getMobileNativeUiMessages(locale), [locale]);
+  const homeChatUi = useMemo(() => getHomeChatUiMessages(locale), [locale]);
+
+  /* ── Sync iching-rn-authed class so explore-cap radius matches native bar state. ── */
+  useEffect(() => {
+    if (!webReadyRef.current) return;
+    webViewRef.current?.injectJavaScript(
+      `document.documentElement.classList.${isAuthenticated ? "add" : "remove"}("iching-rn-authed"); true;`
+    );
+  }, [isAuthenticated]);
 
   /* ── Keep localeRef in sync; push locale only after native storage hydrated (see AsyncStorage effect). ── */
   useEffect(() => {
@@ -1868,15 +2030,19 @@ export default function WebViewScreen() {
   useEffect(() => {
     SecureStore.getItemAsync(SECURE_TOKEN_KEY).then(async (tok) => {
       if (!tok) return;
+      // Optimistic: show native auth bar immediately using email decoded from JWT.
+      // No network needed — revert below if /api/account/me validation fails.
+      accessTokenRef.current = tok;
+      setIsAuthenticated(true);
+      setUserEmail(getEmailFromJwt(tok));
       const check = await validateStoredToken(tok);
       if (check.valid) {
-        accessTokenRef.current = tok;
-        setIsAuthenticated(true);
         setUserEmail(check.email);
         // Re-identify with RevenueCat on cold start so purchases are attributed correctly
         const uid = getUserIdFromJwt(tok);
         if (uid) { try { await Purchases.logIn(uid); } catch { /* non-fatal */ } }
       } else {
+        // Token invalid — revert optimistic state
         accessTokenRef.current = null;
         setIsAuthenticated(false);
         setUserEmail(null);
@@ -1927,6 +2093,10 @@ export default function WebViewScreen() {
     webReadyRef.current = true;
     webViewRef.current?.injectJavaScript(
       `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+    );
+    // Sync auth class so explore-cap border-radius matches native bar visibility.
+    webViewRef.current?.injectJavaScript(
+      `document.documentElement.classList.${isAuthenticated ? "add" : "remove"}("iching-rn-authed"); true;`
     );
     // Re-inject bottom inset in case it changed between first render and page load.
     webViewRef.current?.injectJavaScript(
@@ -2636,7 +2806,7 @@ export default function WebViewScreen() {
   return (
     <View style={[styles.container, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeRoot]}>
       <StatusBar style="light" />
-      {/* ── WebView (safe-area top padding; black band under system status bar for contrast) ─ */}
+      {/* ── WebView shell: status-bar padding + optional native auth bar + WebView ── */}
       <View
         style={[
           styles.webviewShell,
@@ -2644,9 +2814,43 @@ export default function WebViewScreen() {
           {
             paddingTop: insets.top,
             backgroundColor: "#080808",
+            flexDirection: "column",
           },
         ]}
       >
+        {isAuthenticated && (
+          <NativeAuthBar
+            email={userEmail}
+            locale={locale}
+            theme={shellTheme}
+            signOutLabel={homeChatUi.signOut}
+            signOutConfirmTitle={homeChatUi.logoutConfirmTitle}
+            signOutConfirmMessage={homeChatUi.logoutConfirmMessage}
+            signOutConfirmYes={homeChatUi.logoutConfirmYes}
+            signOutConfirmNo={homeChatUi.logoutConfirmNo}
+            onLocaleChange={(l) => {
+              AsyncStorage.setItem(LOCALE_STORAGE_KEY, l);
+              setLocaleState(l);
+            }}
+            onSignOut={() => {
+              showNativeDialog({
+                title: homeChatUi.logoutConfirmTitle,
+                message: homeChatUi.logoutConfirmMessage,
+                buttons: [
+                  { text: homeChatUi.logoutConfirmNo, style: "cancel" },
+                  {
+                    text: homeChatUi.logoutConfirmYes,
+                    onPress: () => {
+                      webViewRef.current?.injectJavaScript(
+                        `window.__rnSignOut && window.__rnSignOut(); true;`
+                      );
+                    },
+                  },
+                ],
+              });
+            }}
+          />
+        )}
         <WebView
         key={webViewKey}
         ref={webViewRef}
