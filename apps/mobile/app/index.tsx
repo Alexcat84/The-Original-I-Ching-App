@@ -1682,6 +1682,8 @@ export default function WebViewScreen() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const accessTokenRef = useRef<string | null>(null);
+  // Survives sign-out so auth_token can detect a cross-user login and wipe SQLite.
+  const lastKnownUidRef = useRef<string | null>(null);
   const authTransitionRef = useRef(false);
   const downloadTransfersRef = useRef<
     Record<
@@ -1806,11 +1808,16 @@ export default function WebViewScreen() {
         ]);
         const storedUid = getUserIdFromJwt(storedTok ?? "");
         if (storedUid && lastSyncedUser && storedUid === lastSyncedUser) {
-          // Cache verified: belongs to the currently stored user.
+          // Same user as last sync → inject cache immediately.
           cachedChatsRef.current = chats;
-        } else {
-          // Mismatch or no sync record — wipe stale data before any injection.
+        } else if (storedUid && lastSyncedUser && storedUid !== lastSyncedUser) {
+          // Different user logged in → wipe to prevent cross-user data leak.
           await clearAllData();
+          cachedChatsRef.current = [];
+        } else {
+          // No stored token (signed-out cold start) or no sync record yet
+          // (fresh install). Do NOT wipe — the messages belong to the last
+          // logged-in user and should survive sign-out so re-login is instant.
           cachedChatsRef.current = [];
         }
       } catch {
@@ -2336,15 +2343,17 @@ export default function WebViewScreen() {
         const msg = JSON.parse(event.nativeEvent.data) as RNMessage;
         switch (msg.type) {
           case "auth_token": {
-            // Detect user switch (or first login after sign-out):
-            // clear SQLite AND the in-memory ref so stale chats from a previous
-            // user never reach the new user's sidebar even for a single frame.
-            const prevUid = getUserIdFromJwt(accessTokenRef.current ?? "");
-            const newUid  = getUserIdFromJwt(msg.token);
-            if (newUid && prevUid !== newUid) {
+            // Cross-user detection: clear SQLite only when a DIFFERENT user logs
+            // in. Use lastKnownUidRef (survives sign-out) rather than
+            // accessTokenRef.current (null after sign-out) so the same user
+            // re-logging in after sign-out does NOT trigger a wipe — their
+            // messages remain in SQLite and the next open is instant.
+            const newUid = getUserIdFromJwt(msg.token);
+            if (newUid && lastKnownUidRef.current !== null && lastKnownUidRef.current !== newUid) {
               cachedChatsRef.current = [];
               void clearAllData().catch(() => undefined);
             }
+            lastKnownUidRef.current = newUid;
             accessTokenRef.current = msg.token;
             setIsAuthenticated(true);
             if (msg.email) setUserEmail(msg.email);
@@ -2369,10 +2378,11 @@ export default function WebViewScreen() {
             setUserEmail(null);
             SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
             Purchases.logOut().catch(() => undefined);
-            // Clear SQLite and memory cache on sign-out so the next user (or the
-            // same user on re-login) starts with a clean slate.
+            // Do NOT clear SQLite on sign-out. The messages belong to the user
+            // who just signed out. If they (or anyone else) sign back in:
+            //   - Same user  → lastKnownUidRef matches → cache preserved → instant load ✓
+            //   - New user   → lastKnownUidRef differs → clearAllData fires in auth_token ✓
             cachedChatsRef.current = [];
-            void clearAllData().catch(() => undefined);
             webViewRef.current?.injectJavaScript(
               `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
             );
