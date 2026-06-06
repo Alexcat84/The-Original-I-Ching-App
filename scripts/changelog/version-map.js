@@ -68,11 +68,11 @@ function buildVersionTimeline(commits) {
  */
 function resolveStage(versionCode, date) {
   if (date < FIRST_PLAY_UPLOAD.date) {
-    return "Desarrollo inicial";
+    return "Initial Development";
   }
   if (versionCode >= 22) return "Closed Testing";
   if (versionCode >= 1) return "Internal Testing";
-  return "Desarrollo inicial";
+  return "Initial Development";
 }
 
 /**
@@ -106,7 +106,7 @@ function assignCommitsToVersions(commits, timeline) {
 }
 
 /**
- * Commits before first timeline entry with no version → Desarrollo inicial pseudo-release.
+ * Commits before first timeline entry with no version → Initial Development pseudo-release.
  * @param {Array<{ hash: string, date: string, subject: string }>} commits
  * @param {VersionRelease[]} timeline
  */

@@ -57,7 +57,7 @@ function parseLastReleaseHash(content) {
  * @param {string} content
  */
 function parseVersionHeaders(content) {
-  const re = /^## \[([\d.]+)\] — (\d{4}-\d{2}-\d{2}) \| versionCode: (\d+) \| Etapa: ([^\n]+)/gm;
+  const re = /^## \[([\d.]+)\] — (\d{4}-\d{2}-\d{2}) \| versionCode: (\d+) \| Stage: ([^\n]+)/gm;
   /** @type {Array<{ versionName: string, date: string, versionCode: number, stage: string }>} */
   const rows = [];
   let match;
@@ -76,7 +76,7 @@ function parseVersionHeaders(content) {
  * @param {string} content
  */
 function stripSummaryTable(content) {
-  const idx = content.indexOf("## Resumen de versiones");
+  const idx = content.indexOf("## Version Summary");
   if (idx === -1) return content.trimEnd();
   return content.slice(0, idx).trimEnd();
 }

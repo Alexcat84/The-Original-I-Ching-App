@@ -2,10 +2,10 @@
 
 # Changelog — The Original I Ching App
 
-Historial completo de cambios desde el inicio del proyecto.
+Full project change history.
 
-## [3.4.8] — 2026-06-05 | versionCode: 41 | Etapa: Closed Testing
-> APK generado y subido a Play Store (versionCode 41).
+## [3.4.8] — 2026-06-05 | versionCode: 41 | Stage: Closed Testing
+> APK build generated and submitted to Play Store (versionCode 41).
 
 ### New
 - feat(mobile): native auth bar + build warning fixes | commit: 46a3304
@@ -20,7 +20,7 @@ Historial completo de cambios desde el inicio del proyecto.
 - fix(claude): suppress internal prompt keys from user-visible output | commit: 351877b
 - fix(mobile/security): persist last-known UID in SecureStore to prevent cross-user SQLite leak | commit: 7367a97
 
-### Fix (web-only — 2026-06-06, sin nuevo build de APK)
+### Fix (web-only — 2026-06-06, no new APK build required)
 - fix(interpretation): show actual transformed hexagram Chinese name in all response headings — was always showing static 之卦 | commit: 10b0221
 - fix(interpretation): replace static 之卦 in TRANSLATOR RULE section reference with dynamic trChinese | commit: 2857460
 - fix(interpretation): escape backticks in section role description — TS parse error in CI/Vercel | commit: 2c68a01
@@ -40,7 +40,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.4.7] — 2026-06-04 | versionCode: 40 | Etapa: Closed Testing
+## [3.4.7] — 2026-06-04 | versionCode: 40 | Stage: Closed Testing
 
 ### Fix
 - fix(mobile): preserve SQLite through sign-out — instant re-login for same user | commit: c22696f
@@ -52,7 +52,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.4.6] — 2026-06-04 | versionCode: 39 | Etapa: Closed Testing
+## [3.4.6] — 2026-06-04 | versionCode: 39 | Stage: Closed Testing
 
 ### Fix
 - fix(mobile): sequential prewarm + fetch timeout to prevent stuck loading states | commit: 09704c9
@@ -62,7 +62,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.4.5] — 2026-06-04 | versionCode: 38 | Etapa: Closed Testing
+## [3.4.5] — 2026-06-04 | versionCode: 38 | Stage: Closed Testing
 
 ### Fix
 - fix(mobile): fix JVM target mismatch in expo-app-integrity Gradle build | commit: 40abfd8
@@ -82,7 +82,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.4.4] — 2026-06-03 | versionCode: 37 | Etapa: Closed Testing
+## [3.4.4] — 2026-06-03 | versionCode: 37 | Stage: Closed Testing
 
 ### New
 - feat(security): add Play Protect and App Access Risk verdict checks | commit: f3df720
@@ -109,7 +109,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.4.3] — 2026-06-01 | versionCode: 36 | Etapa: Closed Testing
+## [3.4.3] — 2026-06-01 | versionCode: 36 | Stage: Closed Testing
 
 ### Fix
 - fix(mobile): fix chat drawer last item hidden behind Android nav bar | commit: 8e85dbe
@@ -122,14 +122,14 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.4.2] — 2026-06-01 | versionCode: 35 | Etapa: Closed Testing
+## [3.4.2] — 2026-06-01 | versionCode: 35 | Stage: Closed Testing
 
 ### Maintenance
 - chore(release): bump version 3.4.1 / versionCode 34 | commit: fcba50a
 
 ---
 
-## [3.4.1] — 2026-06-01 | versionCode: 34 | Etapa: Closed Testing
+## [3.4.1] — 2026-06-01 | versionCode: 34 | Stage: Closed Testing
 
 ### New
 - feat(faqs): add /delete-account link inside delete-account FAQ item (11 locales) | commit: e9d0440
@@ -141,7 +141,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.4.0] — 2026-06-01 | versionCode: 33 | Etapa: Closed Testing
+## [3.4.0] — 2026-06-01 | versionCode: 33 | Stage: Closed Testing
 
 ### Fix
 - fix(auth): force full reload after legal consent to guarantee tour fires | commit: 663bc75
@@ -155,7 +155,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.3.9] — 2026-05-31 | versionCode: 32 | Etapa: Closed Testing
+## [3.3.9] — 2026-05-31 | versionCode: 32 | Stage: Closed Testing
 
 ### Fix
 - fix(tour): guard against re-trigger on concurrent account-refresh events | commit: 922dfe8
@@ -174,7 +174,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.3.8] — 2026-05-31 | versionCode: 31 | Etapa: Internal Testing
+## [3.3.8] — 2026-05-31 | versionCode: 31 | Stage: Internal Testing
 
 ### Fix
 - fix(mobile): remove invalid react-native-purchases config plugin entry | commit: 890143c
@@ -195,7 +195,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.3.7] — 2026-05-31 | versionCode: 30 | Etapa: Closed Testing
+## [3.3.7] — 2026-05-31 | versionCode: 30 | Stage: Closed Testing
 
 ### Fix
 - fix(mobile/billing): configure RevenueCat with stored UID on cold start | commit: 7b433a4
@@ -213,7 +213,7 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## [3.3.6] — 2026-05-31 | versionCode: 29 | Etapa: Closed Testing
+## [3.3.6] — 2026-05-31 | versionCode: 29 | Stage: Closed Testing
 
 ### Fix
 - fix(mobile): chat drawer list respects Android bottom nav safe area | commit: 2864db8
@@ -224,7 +224,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.3.5] — 2026-05-31 | versionCode: 28 | Etapa: Closed Testing
+## [3.3.5] — 2026-05-31 | versionCode: 28 | Stage: Closed Testing
 
 ### Fix
 - fix(billing+chats): tokens not granted after purchase; chat delete fails silently | commit: f51743b
@@ -235,7 +235,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.3.4] — 2026-05-30 | versionCode: 27 | Etapa: Closed Testing
+## [3.3.4] — 2026-05-30 | versionCode: 27 | Stage: Closed Testing
 
 ### Maintenance
 - chore(assets): resize pack icons to 512x512 — reduce AAB size | commit: b56447f
@@ -244,7 +244,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.3.3] — 2026-05-30 | versionCode: 26 | Etapa: Closed Testing
+## [3.3.3] — 2026-05-30 | versionCode: 26 | Stage: Closed Testing
 
 ### New
 - feat(feedback): replace native <select> with themed custom dropdown | commit: 137d776
@@ -263,7 +263,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.3.2] — 2026-05-30 | versionCode: 25 | Etapa: Closed Testing
+## [3.3.2] — 2026-05-30 | versionCode: 25 | Stage: Closed Testing
 
 ### New
 - feat(faq): convert delete-account doc to FAQs + add delete-chats FAQ | commit: d048578
@@ -311,7 +311,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.3.1] — 2026-05-29 | versionCode: 24 | Etapa: Closed Testing
+## [3.3.1] — 2026-05-29 | versionCode: 24 | Stage: Closed Testing
 
 ### New
 - feat(onboarding): add react-joyride tour with 7 steps in 11 languages | commit: 65a8dce
@@ -370,7 +370,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.3.0] — 2026-05-25 | versionCode: 23 | Etapa: Closed Testing
+## [3.3.0] — 2026-05-25 | versionCode: 23 | Stage: Closed Testing
 
 ### Fix
 - fix(csp): add base-uri, form-action, object-src directives | commit: 4abd651
@@ -382,7 +382,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.9] — 2026-05-24 | versionCode: 22 | Etapa: Closed Testing
+## [3.2.9] — 2026-05-24 | versionCode: 22 | Stage: Closed Testing
 
 ### New
 - feat(web): IndexedDB cache for chat list and thread content | commit: a80e49f
@@ -402,7 +402,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.8] — 2026-05-21 | versionCode: 21 | Etapa: Internal Testing
+## [3.2.8] — 2026-05-21 | versionCode: 21 | Stage: Internal Testing
 
 ### New
 - feat(mobile): custom offline screen with animated radar when WebView fails | commit: afaa88f
@@ -414,7 +414,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.7] — 2026-05-21 | versionCode: 20 | Etapa: Internal Testing
+## [3.2.7] — 2026-05-21 | versionCode: 20 | Stage: Internal Testing
 
 ### Fix
 - fix(mobile): remove READ_MEDIA_IMAGES/VIDEO permissions + bump to 3.2.7 (versionCode 20) | commit: e3086c3
@@ -425,7 +425,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.6] — 2026-05-21 | versionCode: 19 | Etapa: Internal Testing
+## [3.2.6] — 2026-05-21 | versionCode: 19 | Stage: Internal Testing
 
 ### New
 - feat: implement full account deletion flow for Google Play compliance | commit: d239b5b
@@ -474,7 +474,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.5] — 2026-05-18 | versionCode: 18 | Etapa: Internal Testing
+## [3.2.5] — 2026-05-18 | versionCode: 18 | Stage: Internal Testing
 
 ### Maintenance
 - chore(mobile): bump version 3.2.5 / versionCode 18 | commit: 12ac967
@@ -482,7 +482,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.4] — 2026-05-18 | versionCode: 17 | Etapa: Internal Testing
+## [3.2.4] — 2026-05-18 | versionCode: 17 | Stage: Internal Testing
 
 ### Fix
 - fix(eas): suppress Expo Go warning and clean cached native dir before prebuild | commit: 64e3ef5
@@ -496,7 +496,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.2] — 2026-05-18 | versionCode: 15 | Etapa: Internal Testing
+## [3.2.2] — 2026-05-18 | versionCode: 15 | Stage: Internal Testing
 
 ### Fix
 - fix: strip orphaned [SNAPSHOT_END], PDF saves to Downloads with permission + bump 3.2.2/versionCode 15 | commit: 2bd1de5
@@ -504,7 +504,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.1] — 2026-05-18 | versionCode: 14 | Etapa: Internal Testing
+## [3.2.1] — 2026-05-18 | versionCode: 14 | Stage: Internal Testing
 
 ### Fix
 - fix(mobile): respect native dialog confirmation before removing chat + bump 3.2.1/versionCode 14 | commit: 6afead0
@@ -515,7 +515,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.2.0] — 2026-05-17 | versionCode: 12 | Etapa: Internal Testing
+## [3.2.0] — 2026-05-17 | versionCode: 12 | Stage: Internal Testing
 
 ### New
 - feat(i18n): add library unlock and translator label to Seeker pack description | commit: 61744a3
@@ -534,7 +534,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.1.8] — 2026-05-17 | versionCode: 11 | Etapa: Internal Testing
+## [3.1.8] — 2026-05-17 | versionCode: 11 | Stage: Internal Testing
 
 ### New
 - feat(i18n): translate guide/FAQ sections for all 11 locales + remove Zhou Yi inline translation | commit: c417049
@@ -555,7 +555,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.1.7] — 2026-05-16 | versionCode: 10 | Etapa: Internal Testing
+## [3.1.7] — 2026-05-16 | versionCode: 10 | Stage: Internal Testing
 
 ### New
 - feat: update seeker tokens 20→25 and practitioner tokens 40→50 | commit: 4deee43
@@ -737,7 +737,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.1.6] — 2026-05-07 | versionCode: 9 | Etapa: Internal Testing
+## [3.1.6] — 2026-05-07 | versionCode: 9 | Stage: Internal Testing
 
 ### New
 - feat(iching): manual three-coin cast mode with preview and API validation | commit: d116551
@@ -795,7 +795,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.1.5] — 2026-05-03 | versionCode: 8 | Etapa: Internal Testing
+## [3.1.5] — 2026-05-03 | versionCode: 8 | Stage: Internal Testing
 
 ### New
 - feat: v3.1.4 - fix EAS env vars, staging build with all secrets | commit: d34d0c3
@@ -811,7 +811,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.1.3] — 2026-04-30 | versionCode: 6 | Etapa: Internal Testing
+## [3.1.3] — 2026-04-30 | versionCode: 6 | Stage: Internal Testing
 
 ### Maintenance
 - chore(mobile): bump version to 3.1.3 (versionCode 6) | commit: 2d3a244
@@ -819,7 +819,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.1.2] — 2026-04-30 | versionCode: 5 | Etapa: Internal Testing
+## [3.1.2] — 2026-04-30 | versionCode: 5 | Stage: Internal Testing
 
 ### Fix
 - fix: re-enable R8, add Sentry crash reporting and error boundary | commit: 3c27976
@@ -832,7 +832,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.1.1] — 2026-04-29 | versionCode: 4 | Etapa: Internal Testing
+## [3.1.1] — 2026-04-29 | versionCode: 4 | Stage: Internal Testing
 
 ### New
 - feat(web): franja Play arriba, cierre hilo y aviso límite; i18n | commit: e7a4996
@@ -901,7 +901,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [1.0.0] — 2026-04-23 | versionCode: 10 | Etapa: Internal Testing
+## [1.0.0] — 2026-04-23 | versionCode: 10 | Stage: Internal Testing
 
 ### New
 - feat(mobile): themed native chrome, locale bridge for login, i18n dialogs | commit: fb3a95e
@@ -956,7 +956,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [3.0.0] — 2026-04-23 | versionCode: 3 | Etapa: Internal Testing
+## [3.0.0] — 2026-04-23 | versionCode: 3 | Stage: Internal Testing
 
 ### Maintenance
 - Mobile 3.0.0 (versionCode 3) para siguiente internal tras 2.0.0 en Play. | commit: e4a82ff
@@ -964,7 +964,7 @@ Historial completo de cambios desde el inicio del proyecto.
 ---
 
 
-## [2.0.0] — 2026-04-20 | versionCode: 2 | Etapa: Internal Testing
+## [2.0.0] — 2026-04-20 | versionCode: 2 | Stage: Internal Testing
 
 ### New
 - feat(web): Cloudflare Turnstile for register; turbo env passthrough | commit: 6ee4630
@@ -1237,10 +1237,10 @@ Historial completo de cambios desde el inicio del proyecto.
 
 ---
 
-## Resumen de versiones
+## Version Summary
 
-| Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |
-|---------|-------------|-------|-------|---------|-------------------|
+| Version | versionCode | Date | Stage | Commits | Notable changes |
+|---------|-------------|------|-------|---------|-----------------|
 | 3.4.8 | 41 | 2026-06-05 | Closed Testing | 11 | native auth bar + build warning fixes; native auth bar replaces web session strip; always show sign-in/sign-out button during auth loading window |
 | 3.4.7 | 40 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.6 | 39 | 2026-06-04 | Closed Testing | 0 | — |
