@@ -29,6 +29,16 @@ Full project change history.
 - fix(api): route.ts now returns transformedHexagramChinese field in consult response | commit: 10b0221
 - fix(session-store): historical consultations derive transformedHexagramChinese from stored number via getHexagramRecordByNumber | commit: 10b0221
 
+### Fix (web-only — 2026-06-06, prompt + UI polish, no new APK build required)
+- fix(api): add transformedHexagramChinese to SSE final_ready event — auto-cast (streaming) path now shows full #X 汉 → #Y 汉 trace in ConsultationRecordCard; non-streaming path was already correct | commit: 752877d
+- fix(prompt): add La imagen (象傳) as explicit ## heading in all translators including master_combined; add section role + triangulation requirement in masterSynthesisInstruction so master_combined shows three labeled blockquotes (Wilhelm → Legge → Zhou Yi) instead of bold text | commit: 46e41db
+- fix(master-combined): bump targetWordCount 1200-1600 → 1400-1800 to accommodate 6-section structure with triple image source blockquotes without Claude compressing other sections | commit: 8b951d3
+- fix(prompt): force literary variety in Encuadre session-arc paragraph — removed seeded metaphors (arco, hilo, teje) from instruction; added VARIEDAD LITERARIA OBLIGATORIA rule requiring a different narrative stance (observational, dramatic, intimate, seasonal…) in each consultation of the same thread | commit: f57214f
+- fix(prompt): SNAPSHOT vocabulary firewall — SNAPSHOT internal terms (arc, traced, session arc) declared as internal notation; Encuadre explicitly told it is a literary re-entry, not a SNAPSHOT paraphrase | commit: 61008da
+- fix(prompt): prohibit slash-separated blockquotes — Wilhelm judgment and image texts use actual line breaks (\\n) in JSON; Claude was collapsing them into single lines with / separators; each verse line must now render as its own "> *line*" blockquote row | commit: 2c8ef08
+- fix(prompt): enforce multiline blockquotes for Wilhelm in master_combined — masterSynthesisInstruction's single-line template was overriding the SYSTEM_PROMPT rule; added explicit CRITICAL FOR WILHELM note and cross-reference to typography section | commit: 06caf05
+- fix(css): promote translator + binary toggle label layers to own GPU compositor layer (translateZ(0) + will-change: transform) — prevents text labels disappearing during scroll on Android WebView due to z-order collapse between the thumb's compositor layer and the main content layer | commit: af37871
+
 ### Docs (2026-06-06)
 - docs(audit): DYNAMIC_SYMBOLS_AUDIT.md — inventario completo de símbolos chinos en la cadena de respuesta (I Ching + Oracle Bones), verificación estático/dinámico, cadena de propagación y lección de CI | commit: 0833541
 
@@ -1241,7 +1251,7 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.4.8 | 41 | 2026-06-05 | Closed Testing | 11 | native auth bar + build warning fixes; native auth bar replaces web session strip; always show sign-in/sign-out button during auth loading window |
+| 3.4.8 | 41 | 2026-06-05 | Closed Testing | 19 | SSE trace fix; La imagen (象傳) heading in all translators; prompt literary variety; multiline blockquotes; toggle GPU layer fix for Android WebView scroll |
 | 3.4.7 | 40 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.6 | 39 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.5 | 38 | 2026-06-04 | Closed Testing | 0 | — |
