@@ -56,7 +56,7 @@ La investigación reveló que el bug tenía **dos capas independientes**: una en
 |---|---|---|---|
 | 卦辞 | `scrollHeadingsEs/En` | Label fijo en el heading del juicio | ✅ Correcto — estático intencional |
 | `${trChinese}` | `scrollHeadingsEs/En`, `headingsBlock`, TRANSLATOR RULE | Nombre real del hexagrama transformado | ✅ Correcto post-fix |
-| 象傳 | `SYSTEM_PROMPT` línea 40 (instrucción de formato) | Etiqueta interna para decirle a Claude qué texto va en blockquote | ✅ Correcto — no aparece en output |
+| 象傳 | `SYSTEM_PROMPT` línea 40 (instrucción de formato) + output de Claude | Etiqueta del tipo de texto "Comentario sobre la Imagen" — aparece como label en el response (`La imagen (象傳)`) | ✅ Correcto — estático intencional, igual que 卦辞 |
 | 之卦 | `SYSTEM_PROMPT` línea 40 (instrucción de formato) | Etiqueta genérica de categoría en regla de tipografía | ✅ Correcto — no es un nombre de hexagrama específico; es para formatear el blockquote del juicio transformado |
 | `${tr.chineseName}` | `textsBlock` (standard y master_combined) | Nombre del hexagrama transformado en el bloque de textos enviado a Claude | ✅ Siempre fue dinámico |
 
@@ -121,7 +121,24 @@ El heading `## El juicio (卦辞)` es comparable a `## Introducción` — el té
 
 ---
 
-## 5. Impacto en master_combined (Master 3)
+## 5. Símbolo estático intencional — 象傳
+
+**象傳** (xiàng zhuàn) es el "Comentario sobre la Imagen" — el segundo tipo de texto canónico del I Ching, atribuido a la escuela confuciana. Cada uno de los 64 hexagramas tiene un 象傳 propio. Es un nombre de *tipo de texto*, no el nombre de un hexagrama concreto.
+
+**Por qué aparece siempre igual:**
+Igual que 卦辞, 象傳 es la etiqueta de la categoría de texto, no del contenido. El texto del Comentario sobre la Imagen varía con cada hexagrama; el label 象傳 nunca varía. Sería incorrecto dinamizarlo.
+
+**Distinción clave frente a 之卦:**
+
+| Símbolo | Tipo | ¿Varía? | Correcto |
+|---|---|---|---|
+| 卦辞 | Nombre de sección canónica (Juicio) | No — etiqueta de tipo | ✅ Estático intencional |
+| 象傳 | Nombre de sección canónica (Imagen) | No — etiqueta de tipo | ✅ Estático intencional |
+| 之卦 | Nombre genérico del hexagrama transformado | Sí — debe ser el nombre real | ✅ Dinámico post-fix |
+
+---
+
+## 6. Impacto en master_combined (Master 3)
 
 El bug afectaba a todos los traductores, incluyendo master_combined. El fix en `buildPromptData` es compartido por todos los modos — `isMasterCombined` solo afecta al bloque de textos y a la instrucción de triangulación, no a los headings ni al TRANSLATOR RULE.
 
@@ -129,7 +146,7 @@ El `masterSynthesisInstruction` para master_combined menciona `"the turning patt
 
 ---
 
-## 6. Error de CI/Vercel — causa raíz
+## 7. Error de CI/Vercel — causa raíz
 
 Al cambiar la descripción de la sección en línea 332 de comillas dobles a backticks para mostrar la interpolación, se introdujeron backticks sin escapar **dentro** de un template literal externo. TypeScript los interpretó como cierre prematuro del template literal, generando errores de sintaxis en cascada (`TS1005: ',' expected`).
 
@@ -141,7 +158,7 @@ El check local (`apps/web/tsc --noEmit`) no detectó el error porque el paquete 
 
 ---
 
-## 7. Archivos modificados
+## 8. Archivos modificados
 
 | Archivo | Cambio |
 |---|---|
