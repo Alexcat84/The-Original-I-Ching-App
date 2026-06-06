@@ -322,7 +322,15 @@ function pickR2FallbackImageUrl(params: {
   if (params.kind === "iching") {
     return `${base}/iching/${params.hexagramNumber}/${variant}/${w}x${h}.webp`;
   }
-  return `${base}/bones/${params.verdict}/${variant}/${w}x${h}.webp`;
+  // R2 bucket uses Chinese romanization; map engine verdict names to bucket folder names.
+  const R2_BONES_FOLDER: Record<string, string> = {
+    auspicious_clear: "ji_clear",
+    auspicious_moderate: "ji_moderate",
+    inauspicious_moderate: "xiong_moderate",
+    inauspicious_clear: "xiong_clear",
+  };
+  const folder = R2_BONES_FOLDER[params.verdict] ?? params.verdict;
+  return `${base}/bones/${folder}/${variant}/${w}x${h}.webp`;
 }
 
 async function pickPrebuiltFallbackImageUrl(params: {
