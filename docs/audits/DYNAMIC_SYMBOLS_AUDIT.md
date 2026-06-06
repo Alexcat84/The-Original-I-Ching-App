@@ -158,7 +158,44 @@ El check local (`apps/web/tsc --noEmit`) no detectó el error porque el paquete 
 
 ---
 
-## 8. Archivos modificados
+## 8. Oracle Bones — auditoría de símbolos
+
+Oracle Bones es estructuralmente distinto al I Ching: no maneja hexagramas individuales ni nombres chinos de figuras. El vector de bugs del 之卦 no aplica. Todo gira alrededor de `cast.verdict` (4 valores) y `cast.affirmsPositive` (booleano).
+
+### 8.1 Inventario de símbolos Oracle Bones
+
+| Símbolo / Dato | Fuente | ¿Dinámico? | Estado |
+|---|---|---|---|
+| Veredicto natural (`favorable claro`, etc.) | `verdictNaturalLabelLocalized(cast.verdict, language)` — 4 veredictos × 11 idiomas | **Dinámico** | ✅ correcto |
+| Carga positiva / negativa | `cast.positiveCharge` / `cast.negativeCharge` — texto del usuario | **Dinámico** | ✅ correcto |
+| Medium (turtle / ox) | `cast.medium` | **Dinámico** | ✅ correcto |
+| Headings de sección | `interpretationHeadingLocalized(language)` + `finalGuidanceHeadingLocalized(language)` — 11 idiomas | **Dinámico** | ✅ correcto |
+| Línea de veredicto estructural | `structuralVerdictLineLocalized(cast, language)` — construida desde `cast.verdict` + `affirmsPositive` + idioma | **Dinámico** | ✅ correcto |
+| 吉 / 凶 en overlay de imagen | `oracleBonesVerdictChinese(verdict)` — devuelve 吉 o 凶 según veredicto | **Dinámico** | ✅ correcto |
+| Gradiente SVG del glyph | `oracleBonesVerdictGlyphSvgStyle(verdict, idPrefix)` — colores distintos por veredicto | **Dinámico** | ✅ correcto |
+| `甲骨` en `primaryHexagramChinese` | `route.ts` — valor fijo `"甲骨"` (= "huesos de oráculo") | **Estático — intencional** | ✅ identificador del tipo de oráculo; no se muestra en la card |
+
+### 8.2 ConsultationRecordCard — rama oracle_bones
+
+La card de Oracle Bones usa su propia rama de renderizado (sin trace de hexagramas). Muestra:
+- Veredicto localizado — dinámico
+- Medium (tortuga / buey) — dinámico
+- Carga (positivo / negativo) — dinámico
+- Posición en hilo + fecha — dinámico
+
+No hay ningún nombre de hexagrama en esta rama — correcto por diseño.
+
+### 8.3 甲骨 — símbolo estático intencional
+
+`甲骨` (jiǎ gǔ) = "huesos de oráculo" en chino. Es el nombre del tipo de oráculo, no de un hexagrama concreto. Se almacena en `primaryHexagramChinese` para identificar internamente el tipo de consulta. No aparece en el display de la card ni en el PDF.
+
+### 8.4 Conclusión
+
+Oracle Bones no requiere ningún fix. Sin bugs equivalentes al 之卦. Todos los valores que aparecen al usuario son derivados dinámicamente del resultado del cast.
+
+---
+
+## 9. Archivos modificados
 
 | Archivo | Cambio |
 |---|---|
