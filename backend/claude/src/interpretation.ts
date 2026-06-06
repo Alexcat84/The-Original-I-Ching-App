@@ -290,16 +290,18 @@ ${t.selectedLineTexts
       question,
     );
   const trChinese = tr?.chineseName ?? "之卦";
-  const scrollHeadingsEs = `Use these exact ## headings in Spanish (Chinese label 卦辞 only as shown; ${trChinese} is the specific transformed hexagram):
+  const scrollHeadingsEs = `Use these exact ## headings in Spanish (Chinese labels 卦辞 and 象傳 only as shown; ${trChinese} is the specific transformed hexagram):
 ## Encuadre de la pregunta
 ## El juicio (卦辞)
+## La imagen (象傳)
 ## Líneas en movimiento
 ## El trazado hacia el ${trChinese}
 ## Horizonte y síntesis`;
 
-  const scrollHeadingsEn = `Use these exact ## headings in English (Chinese label 卦辞 only as shown; ${trChinese} is the specific transformed hexagram):
+  const scrollHeadingsEn = `Use these exact ## headings in English (Chinese labels 卦辞 and 象傳 only as shown; ${trChinese} is the specific transformed hexagram):
 ## Framing the question
 ## The judgment (卦辞)
+## The image (象傳)
 ## Lines in motion
 ## The turning pattern (${trChinese})
 ## Horizon and synthesis`;
@@ -309,7 +311,7 @@ ${t.selectedLineTexts
       ? scrollHeadingsEs
       : language === "en"
         ? scrollHeadingsEn
-        : `Use the same section structure and roles as ${scrollHeadingsEn} but translate section titles fully into ${getLanguageName(language)} (keep 卦辞 next to the translated title; use ${trChinese} as the specific hexagram label for the turning pattern section).`;
+        : `Use the same section structure and roles as ${scrollHeadingsEn} but translate section titles fully into ${getLanguageName(language)} (keep 卦辞 and 象傳 next to their respective translated titles; use ${trChinese} as the specific hexagram label for the turning pattern section).`;
 
   const modeInstruction =
     mode === "directo"
@@ -321,13 +323,14 @@ ${t.selectedLineTexts
 - Exactly two ## sections only, titled in ${getLanguageName(language)}. Spanish: ## Continuidad del hilo / ## Apertura desde esta tirada. English: ## Thread continuity / ## Opening from this cast.
 - Section 1: what is new vs the prior cast (no paste of prior interpretation).
 - Section 2: one fresh angle from THIS cast's texts + one practical step.
-- Do not use the five-part scroll headings.`
+- Do not use the six-part scroll headings.`
         : `FORMAT MODE: ORACLE SCROLL (Markdown, mandatory structure)
 ${headingsBlock}
 
 Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid long abstract gaps):
 - "Encuadre de la pregunta" / "Framing the question": name the emotional or practical stake in one tight opening, then the received figure (number, name, Chinese).
 - "El juicio" / "The judgment": mandatory blockquote (>) of the classical judgment when provided; immediately after, one paragraph that names how that wording maps onto the user's situation (explicit bridge).
+- "La imagen" / "The image": mandatory blockquote (>) of the classical image text (象傳) when provided; immediately after, one paragraph connecting the image's symbolic scene to the user's situation.
 - "Líneas en movimiento" / "Lines in motion": changing lines only—numbered list with line text + one sentence of application each; if no changing lines, one crisp sentence stating stability.
 - \`El trazado hacia el ${trChinese}\` / \`The turning pattern (${trChinese})\`: ONLY if transformed hexagram exists—quote transformed judgment if supplied, then tension / opportunity vs primary.
 - "Horizonte y síntesis" / "Horizon and synthesis": single closing paragraph—one concrete behavioral or attitudinal step, same language, no new quotes.
@@ -412,7 +415,7 @@ JUDGMENT: ${t.transformedJudgment}`
   - Legge says ... (literal/structural-historical lens)
   - Zhou Yi says ... (root-classical lens)
 - SOURCE QUOTATION REQUIREMENT (NON-NEGOTIABLE):
-  - In "The judgment", "Lines in motion" (when there are changing lines), and "The turning pattern" (when transformed hexagram exists), include three labeled literal quote blocks in this exact order:
+  - In "The judgment", "The image", "Lines in motion" (when there are changing lines), and "The turning pattern" (when transformed hexagram exists), include three labeled literal quote blocks in this exact order:
     1) Wilhelm (literal)
     2) Legge (literal)
     3) Zhou Yi (literal)
