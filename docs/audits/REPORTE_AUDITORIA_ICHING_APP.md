@@ -1,12 +1,38 @@
 # Reporte de Auditoría de Seguridad y Arquitectura
 
+## Estado · Changelog de cierre
+
+> **Estado:** ✅ CERRADA — los 5 hallazgos remediados el mismo día de la auditoría
+
+| Campo | Valor |
+|-------|-------|
+| **Abierta** | 2026-05-26 |
+| **Cerrada** | 2026-05-26 |
+| **Commit de cierre** | `3d773ab` — security: remediate pentest findings H1–H5 |
+
+### Resolución de hallazgos
+
+| ID | Severidad | Hallazgo | Resultado | Detalle del fix |
+|----|-----------|---------|-----------|-----------------|
+| H1 | High | Rate limiting degradable sin Upstash distribuido | ✅ Corregido | `rate-limit.ts`: fail-closed en producción; in-memory Map solo en desarrollo |
+| H2 | Medium | Admin mutable endpoint sin CSRF explícito | ✅ Corregido | `admin/config POST`: validación `Origin`/`Host` estricta añadida |
+| H3 | Medium | Webhook billing: dedup+grant no atómico | ✅ Corregido | Migración 039 — `grant_tokens_idempotent()` RPC en transacción única |
+| H4 | Low | `admin/public-config` expone toggles a no autenticados | ✅ **RUTA ELIMINADA** | `apps/web/src/app/api/admin/public-config/route.ts` borrado |
+| H5 | Low | Service role sin fail-fast en startup | ✅ Corregido | `startup-checks.ts` — `assertCriticalConfig()` falla loud en cold start |
+
+### Lección aprendida
+
+La auditoría y la remediación completa ocurrieron el mismo día, lo que indica que los hallazgos eran accionables inmediatamente. El hallazgo más valioso fue H3: la no atomicidad entre `INSERT dedup` y `grant_tokens()` bajo fallo parcial de DB. La solución (un RPC SQL que ejecuta ambas operaciones en una sola transacción) es la arquitectura correcta para webhooks de pago idempotentes.
+
+---
+
 ## Proyecto auditado
 
 - Repositorio: `iching-app` (workspace local)
 - Fecha: 2026-05-26
 - Alcance: web (`apps/web`), mobile (`apps/mobile`), backend/migraciones (`backend/db`), librerías compartidas
 - Modalidad: auditoría estática + validación técnica controlada
-- Restricción: **sin aplicar fixes**
+- Restricción: **sin aplicar fixes** *(los fixes se aplicaron en `3d773ab` tras la auditoría)*
 
 ---
 
