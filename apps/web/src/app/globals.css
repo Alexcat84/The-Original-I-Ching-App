@@ -2577,6 +2577,10 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   user-select: none;
   white-space: nowrap;
   overflow: visible !important;
+  /* Own GPU layer — prevents z-order collapse against thumb/sweep animation
+     layers during Android WebView scroll compositing. */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .oracle-toggle-option svg {
@@ -2659,6 +2663,11 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   inset: 0;
   display: flex;
   z-index: 5;
+  /* Promote to its own GPU compositor layer so the browser resolves z-order
+     correctly against the thumb (will-change: left) and sweep animation layers
+     during scroll on Android WebView — prevents text from disappearing mid-scroll. */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .oracle-toggle-options-row .oracle-toggle-option {
