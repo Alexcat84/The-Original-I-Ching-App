@@ -1154,6 +1154,10 @@ export default function HomePage() {
         tourFiredRef.current = false;
         setConsultPanelOpen(false);
         try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
+        // Persist to Supabase user_metadata so the flag survives app reinstalls.
+        if (isSupabaseBrowserConfigured()) {
+          getSupabaseBrowser().auth.updateUser({ data: { tour_v1: true } }).catch(() => undefined);
+        }
       }
     },
     [setConsultPanelOpen],
@@ -2049,6 +2053,10 @@ export default function HomePage() {
       } else {
         localStorage.removeItem("_rnAuthEmail");
       }
+      // Sync tour flag from server → localStorage so reinstalls don't replay the tour.
+      if (session?.user?.user_metadata?.tour_v1) {
+        try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
+      }
     });
     const { data: sub } = sb.auth.onAuthStateChange((_event, session) => {
       setAccessToken(session?.access_token ?? null);
@@ -2058,6 +2066,9 @@ export default function HomePage() {
         localStorage.setItem("_rnAuthEmail", session.user.email);
       } else {
         localStorage.removeItem("_rnAuthEmail");
+      }
+      if (session?.user?.user_metadata?.tour_v1) {
+        try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
       }
     });
     return () => {
