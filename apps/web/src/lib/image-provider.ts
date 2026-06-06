@@ -256,7 +256,7 @@ function prebuiltFallbackRelativePath(params: {
   height: number;
   index: number;
 }): string {
-  const file = `${String(params.index).padStart(2, "0")}.png`;
+  const file = `${String(params.index).padStart(2, "0")}.webp`;
   return `/fallbacks/prebuilt/${params.kind}/${params.tier}/${params.width}x${params.height}/${file}`;
 }
 
