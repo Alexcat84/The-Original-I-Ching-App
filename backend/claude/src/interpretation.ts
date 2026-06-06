@@ -487,7 +487,7 @@ INSTRUCTIONS:
 - Use family_home ONLY when the question clearly concerns household, parents, children, partner dynamics at home, or domestic life;
   for abstract or general life questions prefer general, spiritual_inner, decision_path, or career_work as appropriate.
 - ${hasContext
-    ? "OBLIGATORIO — En el «Encuadre de la pregunta», el PRIMER PÁRRAFO debe abrir con una referencia natural al arco COMPLETO de la sesión: nombra TODOS los hexagramas que aparecieron desde el inicio (en orden cronológico), qué dirección trazaron juntos y cómo enlaza esta nueva tirada con ese recorrido. No te limites a la consulta inmediatamente anterior; teje el hilo desde la primera pregunta. Sin encabezado separado; fluye en la prosa. 2–3 oraciones máximo."
+    ? "OBLIGATORIO — En el «Encuadre de la pregunta», el PRIMER PÁRRAFO presenta el recorrido completo de la sesión: menciona TODOS los hexagramas aparecidos desde el inicio (en orden cronológico), qué movimiento interior o exterior describieron juntos, y cómo esta nueva tirada se inserta en ese recorrido. No te limites a la consulta inmediatamente anterior. Sin encabezado separado; prosa fluida. 2–3 oraciones. VARIEDAD LITERARIA OBLIGATORIA: adopta una posición narrativa distinta a la de los «Encuadres» anteriores ya presentes en el contexto — puede ser observacional, dramática, íntima, filosófica, estacional, espacial, etc. Nunca reutilices el mismo patrón de apertura ni las mismas metáforas centrales; si en tiradas anteriores del hilo ya aparecieron palabras como «arco», «hilo», «camino», «trazado» o «tejido», elige un encuadre completamente diferente."
     : "Primera consulta de la sesión: no inventes continuidad."
   }
 - Interpret ONLY with the texts given.
