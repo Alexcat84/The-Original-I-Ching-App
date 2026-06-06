@@ -339,7 +339,7 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
   const isMasterCombined =
     cast.interpretationMode === "master_combined" ||
     Boolean(t.leggeJudgment && t.zhouyiJudgment);
-  const targetWordCount = isMasterCombined ? "1200-1600" : hasContext ? "800-1000" : "700-900";
+  const targetWordCount = isMasterCombined ? "1400-1800" : hasContext ? "800-1000" : "700-900";
 
   let textsBlock = "";
   if (isMasterCombined) {
