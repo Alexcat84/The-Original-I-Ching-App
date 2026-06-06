@@ -2,6 +2,7 @@ import type {
   OracleBonesHistorySnapshot,
   OracleType,
 } from "@iching-oracle/context-engine";
+import { getHexagramRecordByNumber } from "@iching-oracle/iching-data";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { randomBytes } from "node:crypto";
@@ -22,6 +23,7 @@ export interface StoredConsultation {
   primaryHexagramChinese: string;
   transformedHexagram: number | null;
   transformedHexagramName: string | null;
+  transformedHexagramChinese?: string | null;
   mutationRule: string;
   translator?: string | null;
   lines: Array<{
@@ -110,6 +112,9 @@ function consultationFromDbRow(data: {
     primaryHexagramChinese: data.primary_hexagram_chinese,
     transformedHexagram: data.transformed_hexagram_number,
     transformedHexagramName: data.transformed_hexagram_name,
+    transformedHexagramChinese: data.transformed_hexagram_number != null
+      ? (getHexagramRecordByNumber(data.transformed_hexagram_number)?.chineseName ?? null)
+      : null,
     mutationRule: data.mutation_rule,
     translator: data.translator ?? null,
     lines: data.lines,

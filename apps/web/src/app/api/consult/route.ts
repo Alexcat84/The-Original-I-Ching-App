@@ -1004,6 +1004,8 @@ export async function POST(req: Request) {
                     castResult.transformedHexagram?.number ?? null,
                   transformedHexagramName:
                     castResult.transformedHexagram?.name ?? null,
+                  transformedHexagramChinese:
+                    castResult.transformedHexagram?.chineseName ?? null,
                   mutationRule: castResult.mutationRule,
                   translator: resolvedTranslator,
                   lines: castResult.lines,
@@ -1219,6 +1221,7 @@ export async function POST(req: Request) {
       primaryHexagramChinese: castResult.primaryHexagram.chineseName,
       transformedHexagram: castResult.transformedHexagram?.number ?? null,
       transformedHexagramName: castResult.transformedHexagram?.name ?? null,
+      transformedHexagramChinese: castResult.transformedHexagram?.chineseName ?? null,
       mutationRule: castResult.mutationRule,
       translator: resolvedTranslator,
       lines: castResult.lines,

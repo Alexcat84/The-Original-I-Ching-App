@@ -195,6 +195,7 @@ type ConsultResponse = {
   primaryHexagramChinese: string;
   transformedHexagram: number | null;
   transformedHexagramName: string | null;
+  transformedHexagramChinese: string | null;
   mutationRule: string;
   translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
   lines: ApiLine[];
@@ -287,6 +288,7 @@ type ApiChatConsultation = {
   primaryHexagramChinese: string;
   transformedHexagram: number | null;
   transformedHexagramName: string | null;
+  transformedHexagramChinese?: string | null;
   mutationRule: string;
   translator?: string | null;
   lines: ApiLine[];
@@ -426,6 +428,7 @@ function mapApiConsultationToItem(
     primaryHexagramChinese: c.primaryHexagramChinese,
     transformedHexagram: c.transformedHexagram,
     transformedHexagramName: c.transformedHexagramName,
+    transformedHexagramChinese: c.transformedHexagramChinese ?? null,
     mutationRule: c.mutationRule,
     lines: c.lines,
     changingLines: c.changingLines,
@@ -1473,7 +1476,7 @@ export default function HomePage() {
         );
       } else {
         const trace = entry.transformedHexagram != null
-          ? `#${entry.primaryHexagram} ${entry.primaryHexagramChinese} → #${entry.transformedHexagram} (之卦)`
+          ? `#${entry.primaryHexagram} ${entry.primaryHexagramChinese} → #${entry.transformedHexagram} ${entry.transformedHexagramChinese ?? ""}`
           : `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`;
         summaryLine(pdfUi.trace, trace);
         summaryLine(pdfUi.rule, getIchingMutationRuleLabel(locale, entry.mutationRule));
@@ -4477,6 +4480,7 @@ export default function HomePage() {
                           primaryHexagram={entry.primaryHexagram}
                           primaryHexagramChinese={entry.primaryHexagramChinese}
                           transformedHexagram={entry.transformedHexagram}
+                          transformedHexagramChinese={entry.transformedHexagramChinese}
                           mutationRule={entry.mutationRule}
                           translator={entry.translator}
                           oracleType={entry.oracleType ?? "iching"}
