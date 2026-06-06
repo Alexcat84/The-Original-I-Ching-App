@@ -29,7 +29,7 @@ export async function GET(req: Request) {
     }
     const { data } = await supabase
       .from("users")
-      .select("two_factor_enabled, two_factor_method, display_name, is_admin")
+      .select("two_factor_enabled, two_factor_method, display_name, is_admin, tour_v1_completed_at")
       .eq("id", user.userId)
       .maybeSingle();
     const { data: legalAcceptance, error: legalAcceptanceError } = await supabase
@@ -49,6 +49,7 @@ export async function GET(req: Request) {
       displayName: (data?.display_name as string | null) ?? null,
       isAdmin: data?.is_admin === true,
       legalAccepted: Boolean(legalAcceptance?.id),
+      tourV1Completed: Boolean(data?.tour_v1_completed_at),
     };
   })();
   await log.flush();
@@ -64,6 +65,7 @@ export async function GET(req: Request) {
     twoFactorMethod: userProfile.method,
     display_name: userProfile.displayName,
     is_admin: userProfile.isAdmin,
+    tour_v1_completed: userProfile.tourV1Completed,
     legal_terms_version: CURRENT_TERMS_VERSION,
     legal_privacy_version: CURRENT_PRIVACY_VERSION,
     legal_acceptance_current: userProfile.legalAccepted,

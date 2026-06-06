@@ -1154,9 +1154,14 @@ export default function HomePage() {
         tourFiredRef.current = false;
         setConsultPanelOpen(false);
         try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
+        // Persist to DB so reinstalls don't replay the tour for this account.
+        void fetch("/api/account/tour-complete", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${accessTokenRef.current ?? ""}` },
+        }).catch(() => undefined);
       }
     },
-    [setConsultPanelOpen],
+    [setConsultPanelOpen, accessTokenRef],
   );
 
   // before-hook factories for drawer/panel steps — open the container, wait for
@@ -2117,6 +2122,7 @@ export default function HomePage() {
               twoFactorMethod?: string | null;
               display_name?: string | null;
               is_admin?: boolean;
+              tour_v1_completed?: boolean;
               legal_acceptance_current?: boolean;
             } | null,
           ) => {
@@ -2156,6 +2162,11 @@ export default function HomePage() {
             );
             setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
             setTwoFactorMethod(j.twoFactorMethod ?? null);
+            // Sync tour flag from DB → localStorage before any tour-trigger check runs.
+            // This ensures reinstalls don't replay the tour for accounts that already completed it.
+            if (j.tour_v1_completed) {
+              try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
+            }
             const dn =
               typeof j.display_name === "string" ? j.display_name : null;
             setDisplayName(dn);
