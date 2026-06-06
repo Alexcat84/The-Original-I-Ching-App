@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases, { type PurchasesPackage } from "react-native-purchases";
-import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, softDeleteChat, clearAllData, getSyncMeta, setSyncMeta, type RnCachedChatEntry } from "@/src/db/chat-store";
+import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, softDeleteChat, clearAllData, getSyncMeta, setSyncMeta, deleteSyncMeta, deleteSyncMetaByPrefix, getChatMessageCount, type RnCachedChatEntry } from "@/src/db/chat-store";
 import { syncChats, syncChatContent } from "@/src/sync/sync-service";
 import * as FileSystem from "expo-file-system";
 import * as Linking from "expo-linking";
@@ -719,6 +719,20 @@ const INJECTED_JS = `
     };
     _clearAuth(localStorage);
     _clearAuth(sessionStorage);
+    // Clear cached chat state and summaries so stale partial threads from the
+    // signed-out user cannot survive into the next login via sessionStorage
+    // hydration in ChatSessionProvider. summary cache (iching_chat_summaries_*)
+    // is also cleared to match web signOut() behaviour (page.tsx lines 1707-1708).
+    var _clearChatState = function(store) {
+      for (var i = store.length - 1; i >= 0; i--) {
+        var k = store.key(i);
+        if (k && (k.startsWith('iching_chat_state_') || k.startsWith('iching_chat_summaries_'))) {
+          store.removeItem(k);
+        }
+      }
+    };
+    _clearChatState(sessionStorage);
+    _clearChatState(localStorage);
     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
       JSON.stringify({ type: 'auth_signout' })
     );
@@ -2389,6 +2403,10 @@ export default function WebViewScreen() {
             // who just signed out. If they (or anyone else) sign back in:
             //   - Same user  → lastKnownUidRef matches → cache preserved → instant load ✓
             //   - New user   → lastKnownUidRef differs → clearAllData fires in auth_token ✓
+            // Clear per-chat content cooldowns so the next login always fetches
+            // fresh message content via syncChatContent. Chat list metadata
+            // (last_sync, last_synced_user) and message rows are preserved.
+            void deleteSyncMetaByPrefix("chat_content_synced:").catch(() => undefined);
             cachedChatsRef.current = [];
             webViewRef.current?.injectJavaScript(
               `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
@@ -2486,9 +2504,18 @@ export default function WebViewScreen() {
 
               // Background incremental sync (Tier 3).
               if (accessTokenRef.current) {
+                // Fix 2b: if SQLite has fewer rows than the chat header advertises,
+                // the content cooldown is stale — invalidate it so syncChatContent
+                // makes a fresh API call instead of returning early.
+                const expectedCount = await getChatMessageCount(sessionId).catch(() => null);
+                if (expectedCount !== null && cached.length < expectedCount) {
+                  await deleteSyncMeta(`chat_content_synced:${sessionId}`).catch(() => undefined);
+                }
                 await syncChatContent(accessTokenRef.current, BASE_URL, sessionId).catch(() => undefined);
                 const updated = await getPagedThread(sessionId).catch(() => []);
-                if (updated.length !== cached.length) {
+                // Fix 5: compare newest message ID (index 0 in DESC result) in addition
+                // to length — catches same-count updates (e.g. image added to a message).
+                if (updated.length !== cached.length || updated[0]?.id !== cached[0]?.id) {
                   dispatchThread(updated);
                 }
                 // Neither SQLite nor Supabase returned content — signal the web

@@ -259,3 +259,32 @@ export async function setSyncMeta(key: string, value: string): Promise<void> {
     value,
   );
 }
+
+/** Deletes a single sync_meta entry by exact key. Used to invalidate a specific
+ *  per-chat content cooldown (e.g. `chat_content_synced:{sessionId}`) without
+ *  touching other entries. */
+export async function deleteSyncMeta(key: string): Promise<void> {
+  const db = await getDb();
+  await db.runAsync("DELETE FROM sync_meta WHERE key = ?", key);
+}
+
+/** Deletes all sync_meta entries whose key starts with `prefix`. Used on
+ *  sign-out to bulk-invalidate all per-chat content cooldowns so the next
+ *  login always fetches fresh message content from the API. */
+export async function deleteSyncMetaByPrefix(prefix: string): Promise<void> {
+  const db = await getDb();
+  await db.runAsync("DELETE FROM sync_meta WHERE key LIKE ?", [`${prefix}%`]);
+}
+
+/** Returns the expected message count for a chat from SQLite metadata.
+ *  Returns null if the chat is not found or has been soft-deleted.
+ *  Used in request_thread to detect a stale content cache (fewer SQLite
+ *  rows than the chat header advertises) and bypass the sync cooldown. */
+export async function getChatMessageCount(chatId: string): Promise<number | null> {
+  const db = await getDb();
+  const row = await db.getFirstAsync<{ message_count: number }>(
+    "SELECT message_count FROM chats WHERE id = ? AND is_deleted = 0",
+    chatId,
+  );
+  return row?.message_count ?? null;
+}
