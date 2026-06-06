@@ -289,18 +289,19 @@ ${t.selectedLineTexts
     /\b(cuant[oa]s?|n[uú]mero exacto|edad|fecha|donde vive|where|how many|exact number|biography|biographical)\b/i.test(
       question,
     );
-  const scrollHeadingsEs = `Use these exact ## headings in Spanish (Chinese labels 卦辞 / 之卦 only as shown):
+  const trChinese = tr?.chineseName ?? "之卦";
+  const scrollHeadingsEs = `Use these exact ## headings in Spanish (Chinese label 卦辞 only as shown; ${trChinese} is the specific transformed hexagram):
 ## Encuadre de la pregunta
 ## El juicio (卦辞)
 ## Líneas en movimiento
-## El trazado hacia el 之卦
+## El trazado hacia el ${trChinese}
 ## Horizonte y síntesis`;
 
-  const scrollHeadingsEn = `Use these exact ## headings in English (Chinese labels only as shown):
+  const scrollHeadingsEn = `Use these exact ## headings in English (Chinese label 卦辞 only as shown; ${trChinese} is the specific transformed hexagram):
 ## Framing the question
 ## The judgment (卦辞)
 ## Lines in motion
-## The turning pattern (之卦)
+## The turning pattern (${trChinese})
 ## Horizon and synthesis`;
 
   const headingsBlock =
@@ -308,7 +309,7 @@ ${t.selectedLineTexts
       ? scrollHeadingsEs
       : language === "en"
         ? scrollHeadingsEn
-        : `Use the same section structure and roles as ${scrollHeadingsEn} but translate section titles fully into ${getLanguageName(language)} (keep 卦辞 之卦 next to the translated title).`;
+        : `Use the same section structure and roles as ${scrollHeadingsEn} but translate section titles fully into ${getLanguageName(language)} (keep 卦辞 next to the translated title; use ${trChinese} as the specific hexagram label for the turning pattern section).`;
 
   const modeInstruction =
     mode === "directo"
@@ -328,7 +329,7 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
 - "Encuadre de la pregunta" / "Framing the question": name the emotional or practical stake in one tight opening, then the received figure (number, name, Chinese).
 - "El juicio" / "The judgment": mandatory blockquote (>) of the classical judgment when provided; immediately after, one paragraph that names how that wording maps onto the user's situation (explicit bridge).
 - "Líneas en movimiento" / "Lines in motion": changing lines only—numbered list with line text + one sentence of application each; if no changing lines, one crisp sentence stating stability.
-- "El trazado hacia el 之卦" / "The turning pattern": ONLY if transformed hexagram exists—quote transformed judgment if supplied, then tension / opportunity vs primary.
+- `El trazado hacia el ${trChinese}` / `The turning pattern (${trChinese})`: ONLY if transformed hexagram exists—quote transformed judgment if supplied, then tension / opportunity vs primary.
 - "Horizonte y síntesis" / "Horizon and synthesis": single closing paragraph—one concrete behavioral or attitudinal step, same language, no new quotes.
 - ANTI-REPETITION across sections as in global rules.`;
 

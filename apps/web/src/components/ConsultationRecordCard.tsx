@@ -19,6 +19,7 @@ type Props = {
   primaryHexagram: number;
   primaryHexagramChinese: string;
   transformedHexagram: number | null;
+  transformedHexagramChinese?: string | null;
   mutationRule: string;
   translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
   oracleType?: "iching" | "oracle_bones";
@@ -40,6 +41,7 @@ export function ConsultationRecordCard({
   primaryHexagram,
   primaryHexagramChinese,
   transformedHexagram,
+  transformedHexagramChinese,
   mutationRule,
   translator,
   oracleType = "iching",
@@ -105,7 +107,7 @@ export function ConsultationRecordCard({
 
   const trace =
     transformedHexagram != null
-      ? `#${primaryHexagram} ${primaryHexagramChinese} → #${transformedHexagram} (之卦)`
+      ? `#${primaryHexagram} ${primaryHexagramChinese} → #${transformedHexagram} ${transformedHexagramChinese ?? ""}`
       : `#${primaryHexagram} ${primaryHexagramChinese}`;
 
   return (
