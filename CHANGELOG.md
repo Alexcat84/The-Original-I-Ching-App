@@ -4,6 +4,26 @@
 
 Historial completo de cambios desde el inicio del proyecto.
 
+## [3.4.9] — 2026-06-06 | versionCode: 42 | Etapa: Closed Testing
+
+### Fix
+- fix(interpretation): show actual transformed hexagram Chinese name in all response headings — was always showing static 之卦 | commit: 10b0221
+- fix(interpretation): replace static 之卦 in TRANSLATOR RULE section reference with dynamic trChinese | commit: 2857460
+- fix(interpretation): escape backticks in section role description to fix TS parse error in CI/Vercel | commit: 2c68a01
+- fix(ui): ConsultationRecordCard trace now shows real transformed hexagram name (#X 乾 → #Y 坤) instead of hardcoded 之卦 | commit: 10b0221
+- fix(ui): PDF export trace uses real transformed hexagram Chinese name | commit: 10b0221
+- fix(api): route.ts now returns transformedHexagramChinese field in consult response | commit: 10b0221
+- fix(session-store): historical consultations now derive transformedHexagramChinese from stored number via getHexagramRecordByNumber | commit: 10b0221
+
+### Docs
+- docs(audit): DYNAMIC_SYMBOLS_AUDIT.md — inventario completo de todos los símbolos chinos en la cadena de respuesta, verificación estático/dinámico, cadena de propagación y lección de CI | commit: pending
+
+### Maintenance
+- chore(fallbacks): remove old PNG pool — WebP-only local fallbacks | commit: 307d60b
+- feat(fallbacks): replace local prebuilt pool with clean WebP images | commit: 76feb6e
+
+---
+
 ## [3.4.8] — 2026-06-05 | versionCode: 41 | Etapa: Closed Testing
 
 ### New
