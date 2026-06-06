@@ -169,14 +169,14 @@ FROM (
       WHERE schemaname = 'public' AND tablename = 'trial_email_log' AND policyname = 'deny_direct_access'
     )
 
+  UNION ALL
   -- 051 · tour_v1_completed_at column on users
-  , (SELECT '051', 'users.tour_v1_completed_at column exists',
-      EXISTS (
-        SELECT 1 FROM information_schema.columns
-        WHERE table_schema = 'public'
-          AND table_name   = 'users'
-          AND column_name  = 'tour_v1_completed_at'
-      )
+  SELECT '051', 'users.tour_v1_completed_at column exists',
+    EXISTS (
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = 'public'
+        AND table_name   = 'users'
+        AND column_name  = 'tour_v1_completed_at'
     )
 
 ) checks
