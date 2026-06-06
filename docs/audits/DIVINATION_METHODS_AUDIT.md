@@ -5,6 +5,41 @@ This document records the exact mathematical, probabilistic, and procedural foun
 
 ---
 
+## Estado · Changelog de cierre
+
+> **Estado:** ✅ CERRADA — documento de referencia estable; métodos verificados y bloqueados
+
+| Campo | Valor |
+|-------|-------|
+| **Creada** | 2026-05-19 (`60115a6`) |
+| **Cerrada** | 2026-05-19 |
+| **Commit principal** | `f462f43` / `a1a8e3a` — fix(bones): remove Silence verdict |
+
+### Resolución de hallazgos
+
+| # | Hallazgo / Decisión | Resultado | Commit |
+|---|---------------------|-----------|--------|
+| 1 | Método tres monedas: distribución simétrica 25%/75% | ✅ Verificado y documentado | — |
+| 2 | Método yarrow stalks: distribución Zhou asimétrica (6=1/16, 7=5/16, 8=7/16, 9=3/16) | ✅ Verificado con Monte Carlo | — |
+| 3 | Reglas Zhu Xi (10 reglas): implementación completa y determinista | ✅ Verificado | — |
+| 4 | Veredicto "Silencio" (沉默) en Huesos de Oráculo — 15% de probabilidad original | ✅ **ELIMINADO** | `f462f43` |
+| 5 | Crack topology descriptions para generación de imágenes (4 patrones) | ✅ Documentado | — |
+
+### Decisión de producto crítica — Eliminación del veredicto "Silencio"
+
+Esta es la decisión estructural más importante de la auditoría. El veredicto de silencio/indeterminado fue eliminado porque **no tiene base en los registros arqueológicos Shang**.
+
+**Evidencia:**
+- Más de 150,000 fragmentos de huesos de oráculo excavados (Keightley 1978; Instituto de Historia y Filología, Academia Sinica) muestran **siempre** patrones de grieta legibles.
+- Los divinadores Shang siempre producían una lectura; un resultado indeterminado habría sido teológicamente inadmisible en el sistema de consulta real.
+- Incluir el silencio comprometía la autenticidad académica del oráculo.
+
+**Redistribución de probabilidades:** El 15% original se distribuyó proporcionalmente entre los 4 veredictos auténticos (ver Sección 5).
+
+---
+
+---
+
 ## 1 · I Ching — Three-Coin Method (三硬幣法)
 
 ### Historical basis

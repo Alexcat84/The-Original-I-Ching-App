@@ -6,6 +6,34 @@
 
 ---
 
+## Estado · Changelog de cierre
+
+> **Estado:** ✅ CERRADA — todas las causas raíz corregidas el mismo día de la auditoría
+
+| Campo | Valor |
+|-------|-------|
+| **Abierta** | 2026-06-04 |
+| **Cerrada** | 2026-06-04 |
+
+### Resolución de causas
+
+| Causa | Descripción | Resultado | Commit |
+|-------|------------|-----------|--------|
+| **A** | JWT base64url sin padding → `clearAllData()` en cada cold start | ✅ Corregida | `4ebafc3` — fix atob padding en `getUserIdFromJwt` |
+| **B** | Sign-out borraba SQLite — primer re-login requería sync completo | ✅ Corregida | `c22696f` — preserve SQLite through sign-out |
+| **C** | Carrera `auth_token` vs SecureStore: `prevUid=null` disparaba wipe para el mismo usuario | ✅ Corregida | `7367a97` — persist last-known UID in SecureStore |
+| **D1** | `applyCache` ignoraba caché nativo si Supabase llegaba primero | ✅ Aceptado | Comportamiento correcto de stale-while-revalidate |
+| **D2** | Cuenta vacía en servidor no limpiaba sidebar sin inyección explícita de `[]` | ✅ Aceptado | Comportamiento esperado — nativo envía `[]` explícito |
+| **D3** | Sin fallback web en modo RN (100% dependencia del bridge) | ✅ Aceptado | Diseño intencional — el bridge es el dueño único |
+
+### Lección aprendida
+
+La feature de caché SQLite **nunca desapareció del código**. Fue degradada por sus propios guards de seguridad (`0120c50` — hermetic isolation) y un bug de encoding JWT (`3310d84`). La arqueología de git fue clave para separar la regresión de seguridad del bug de encoding. La solución correcta no fue reescribir sino identificar la cadena precisa de commits que introdujeron cada rotura.
+
+---
+
+---
+
 ## Resumen ejecutivo
 
 SQLite **no se eliminó del código**. La hidratación rápida dejó de funcionar por una **cadena de regresiones**:

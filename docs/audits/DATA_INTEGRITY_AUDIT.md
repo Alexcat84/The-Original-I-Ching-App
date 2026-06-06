@@ -2,6 +2,32 @@
 
 This document details the rigorous audit process performed on the I Ching hexagram dataset used in this application to ensure absolute fidelity to the canonical translations.
 
+---
+
+## Estado · Changelog de cierre
+
+> **Estado:** ✅ CERRADA — dataset verificado 1:1 contra fuentes académicas; corrección aplicada y regenerado
+
+| Campo | Valor |
+|-------|-------|
+| **Abierta** | 2026-05-10 |
+| **Cerrada** | 2026-05-10 |
+| **Fix aplicado en** | `scripts/iching_wilhelm_translation.mjs` + `npm run build:data` |
+
+### Resolución de hallazgos
+
+| # | Hallazgo | Resultado | Referencia |
+|---|---------|-----------|------------|
+| 1 | Hexagrama 23 (Bō): trigrama inferior etiquetado como "The Clinging" (Fire/Lì) en lugar de "The Receptive" (Earth/Kūn) | ✅ Corregido | Verificado contra University of Parma, Sacred-Texts.com, ctext.org |
+| 2 | Contenido literario (Wilhelm, Legge, Zhou Yi): 63 hexagramas restantes | ✅ 100% correcto — error limitado al campo de metadata | — |
+| 3 | Dataset regenerado completo post-corrección | ✅ Completado | `npm run build:data` |
+
+### Lección aprendida
+
+El error era exclusivamente de metadata (campo de etiqueta del trigrama), no del contenido literario. La fuente externa `adamblvck/iching-wilhelm-dataset` tenía un error tipográfico en el trigrama inferior de Hexagrama 23. La regeneración completa asegura consistencia matemática y literaria. **La biblioteca es ahora una de las representaciones digitales más precisas del I Ching disponibles.**
+
+---
+
 ## 1. Audit Trigger: Hexagram 23 Metadata Discrepancy
 During a quality control check of the **Hexagram 23 (Bō - Falling Away)**, a metadata mismatch was detected in the source dataset (`adamblvck/iching-wilhelm-dataset`):
 - **Structure**: The hexagram correctly showed "Mountain over Earth" (Binary `100000`).

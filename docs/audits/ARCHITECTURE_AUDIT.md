@@ -6,6 +6,46 @@
 
 ---
 
+## Estado · Changelog de cierre
+
+> **Estado:** 📋 DOCUMENTO VIVO — referencia de arquitectura; deuda técnica parcialmente resuelta post-auditoría
+
+| Campo | Valor |
+|-------|-------|
+| **Creado** | 2026-05-26 |
+| **Última revisión de deuda** | 2026-06-05 |
+
+### Estado de la Deuda Técnica (Sección 18)
+
+| # | Ítem | Estado actual | Commit / Decisión |
+|---|------|--------------|-------------------|
+| 1 | Race condition en consumo de tokens (2 tabs simultáneos) | 🟡 Abierto — bajo volumen actual, riesgo aceptado | — |
+| 2 | Rate limiting inoperativo sin Upstash | ✅ Resuelto | `3d773ab` — fail-closed en producción (H1) |
+| 3 | Sin Sentry en Web | 🟡 Abierto — `instrumentation-client.ts` existe, Sentry no configurado aún | — |
+| 4 | Fallback chain de Claude silencia errores | 🟡 Abierto — logging mejorado pero sin alertas estructuradas | — |
+| 5 | Cache hit rate Claude ~15-20% | ✅ Aceptado por diseño — bloque de contexto crece por necesidad | — |
+| 6 | Timeout Vercel si plan Hobby | ✅ Resuelto — plan Pro activo en producción | — |
+| 7 | GitHub Actions CI — deadline 2 jun 2026 | ✅ Resuelto | Actualizado a `actions/checkout@v6` + `setup-node@v6` el 2026-05-31 |
+| 8 | Google Play Console — verificación + assets | 🟡 En progreso — cuenta creada, verificación pendiente | — |
+| 9 | i18n formal con next-intl | 🟡 Abierto — post-lanzamiento Fase 2; estandarización de paquete `@iching-oracle/i18n` en curso | — |
+| 10 | Animación ritual Huesos de Oráculo (Three.js) | 🟡 Abierto — post-lanzamiento Fase 2 | — |
+| 11 | Supabase Pro | ✅ Resuelto — ambos entornos (staging + producción) en Pro | — |
+
+### Cambios arquitectónicos significativos post-auditoría
+
+| Fecha | Cambio | Commit |
+|-------|--------|--------|
+| 2026-05-26 | Webhook idempotency atómico (`grant_tokens_idempotent`) | `3d773ab` |
+| 2026-05-26 | `admin/public-config` eliminado | `3d773ab` |
+| 2026-05-30 | Docs reorganizados en `docs/` con categorías | `4f0597a` |
+| 2026-06-04 | SQLite: padding JWT fix + preservar caché en sign-out + UID en SecureStore | `4ebafc3`, `c22696f`, `7367a97` |
+| 2026-06-04 | Tour onboarding: persistencia en `public.users.tour_v1_completed_at` (migración 051) | `b634e7e` |
+| 2026-06-04 | Auth bar: fix de hydration gap con `_rnAuthEmail` en localStorage | `33aadb8` |
+
+---
+
+---
+
 ## Índice
 
 1. [Visión General](#1-visión-general)
