@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-3.3.0-gold)
+![Version](https://img.shields.io/badge/version-3.4.8-gold)
 ![Platform](https://img.shields.io/badge/platform-Web%20%7C%20Android-brightgreen)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![License](https://img.shields.io/badge/license-Private-red)
@@ -40,14 +40,16 @@ Every consultation includes a unique **AI-generated ritual image** that reflects
 
 | Feature | Description |
 |---------|-------------|
-| 🔮 **I Ching Consultation** | Full three-coin casting following Zhu Xi method. 64 hexagrams + changing lines |
-| 🦴 **Oracle Bones** | Shang dynasty divination with turtle shell / ox bone medium and full verdict system |
+| 🔮 **I Ching Consultation** | Three-coin and Yarrow Stalk methods following Zhu Xi rules. 64 hexagrams + changing lines |
+| 🪙 **Manual Yarrow Wizard** | Step-by-step physical stalk counting with mathematically correct Zhou dynasty distribution |
+| 🦴 **Oracle Bones** | Shang dynasty divination with turtle shell / ox bone medium. 4 archaeologically authentic verdicts |
 | 🤖 **AI Interpretation** | Claude AI generates deep, contextual readings. Each one unique |
 | 🖼️ **Ritual Images** | AI-generated art per consultation via FLUX.1 Schnell. Resolution scales with your tier |
 | 💬 **Conversation Threads** | Deepen your reading across multiple exchanges in the same session |
 | 📜 **Chat History** | All consultations saved, browsable, and fully searchable |
 | 📄 **Export to PDF** | Download any consultation as a beautifully formatted PDF |
-| 📚 **Hexagram Library** | Browse all 64 hexagrams with Wilhelm, Legge, and Zhou Yi translations |
+| 📚 **Hexagram Library** | Browse all 64 hexagrams with Wilhelm, Legge, and Zhou Yi translations (Seeker+ required) |
+| 💬 **Feedback** | In-app feedback form with rate limiting and Supabase storage |
 | 🌍 **11 Languages** | ES · EN · PT · FR · DE · IT · JA · ZH · KO · AR · HI |
 | 🔒 **2FA Security** | TOTP authenticator app + email code verification |
 | 🔑 **Google OAuth** | One-tap sign in with your Google account |
@@ -94,14 +96,17 @@ The app auto-detects the language of your question and responds accordingly.
 
 The Android app wraps the web experience in a native shell with extras:
 
-- 🌐 Language selector in the native top bar
+- 🌐 Language selector in the native top bar (11 languages)
 - 🔐 Google OAuth via external browser (avoids WebView 403 restrictions)
-- 🖼️ Save generated images directly to your gallery
+- 📦 SQLite offline cache (3-tier): instant sidebar on cold start, lazy thread loading, background sync
+- 🖼️ Save generated images directly to your gallery (local cache + gallery save)
 - 📄 Share consultations as PDF via native share sheet
+- 🗑️ Chat deletion via secure bearer token (with SQLite sync)
 - 🔒 No shared cookie storage (Play Store compliant)
 - 📏 Proper safe area insets and status bar integration
+- 🛡️ App Integrity attestation (Play Protect + App Access Risk checks)
 
-**Current version:** 3.3.0 (versionCode 23) · **Platform:** Android · **Min SDK:** 24
+**Current version:** 3.4.8 (versionCode 41) · **Platform:** Android · **Min SDK:** 24
 
 ---
 
@@ -125,30 +130,32 @@ The Android app wraps the web experience in a native shell with extras:
 
 **Infrastructure**
 - [Vercel](https://vercel.com/) — web deployment (staging + production)
-- [Upstash Redis](https://upstash.com/) — rate limiting
-- [Resend](https://resend.com/) — transactional email (2FA codes)
+- [Upstash Redis](https://upstash.com/) — distributed rate limiting (fail-closed in production)
+- [Resend](https://resend.com/) — transactional email (2FA codes, domain: theoriginaliching.com)
+- [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/) — CAPTCHA on login/register
+- [OpenRouter](https://openrouter.ai/) / [Groq](https://groq.com/) — AI interpretation fallback chain
 - [Turborepo](https://turbo.build/) — monorepo build system
 
 ---
 
 ## 🚀 Quick Start (Developers)
 
-**Prerequisites:** Node.js 20+ · npm 10+
+**Prerequisites:** Node.js 22+ · pnpm 9+
 
 ```bash
 git clone https://github.com/Alexcat84/The-Original-I-Ching-App.git iching-oracle
 cd iching-oracle
-npm install
+pnpm install
 cp .env.example .env
 ```
 
 Edit `.env` with your keys (see comments in `.env.example`).
 
 ```bash
-npm run dev          # Start all workspaces (web at localhost:3000)
-npm run build        # Production build
-npm run typecheck    # TypeScript check across monorepo
-npm run test         # Run all tests
+pnpm dev          # Start all workspaces (web at localhost:3000)
+pnpm build        # Production build
+pnpm typecheck    # TypeScript check across monorepo
+pnpm test         # Run all tests
 ```
 
 **Minimum keys needed for local dev:**
@@ -163,22 +170,31 @@ ANTHROPIC_API_KEY=
 
 ```
 ├── apps/
-│   ├── web/                  # Next.js app → Vercel
+│   ├── web/                  # Next.js 15 app → Vercel
 │   └── mobile/               # Expo WebView APK → Google Play
 ├── packages/
-│   ├── iching-engine/        # Hexagram casting logic
-│   ├── oracle-bones-engine/  # Shang divination logic
-│   ├── context-engine/       # AI context + session management
-│   ├── claude/               # Anthropic API integration
-│   ├── image-engine/         # Image prompt construction
-│   └── i18n/                 # 9-language strings
-└── backend/
-    └── db/migrations/        # 38 ordered SQL migrations (Supabase)
+│   ├── iching-engine/        # Hexagram casting logic (3-coin, yarrow, manual)
+│   ├── oracle-bones-engine/  # Shang divination logic (4 authentic verdicts)
+│   ├── context-engine/       # AI context + session limits per tier
+│   ├── image-engine/         # Image prompt construction + FLUX limits
+│   ├── i18n/                 # 11-language strings (shared web + mobile)
+│   ├── iching-data/          # Static 64-hexagram library (Wilhelm/Legge/Zhou Yi)
+│   ├── sharing/              # Public reading URL helpers
+│   ├── ui/                   # Shared React components
+│   └── mobile-api-contracts/ # TypeScript types for native↔web bridge
+├── backend/
+│   ├── claude/               # Anthropic API integration + fallback chain
+│   ├── auth/                 # TOTP, email 2FA, registration validation
+│   └── db/migrations/        # 51 ordered SQL migrations (Supabase)
+└── docs/
+    ├── audits/               # Security, architecture, data integrity audits
+    ├── workflows/            # i18n guide, legal flow
+    └── setup/                # New DB setup guide
 ```
 
 ### 🗄️ Database
 
-Run migrations in `backend/db/migrations/` **in numeric order** on your Supabase project.
+Run migrations in `backend/db/migrations/` **in numeric order** on your Supabase project (51 migrations, 001–051). Use `verify_migrations.sql` to confirm all checks pass after applying.
 
 ---
 

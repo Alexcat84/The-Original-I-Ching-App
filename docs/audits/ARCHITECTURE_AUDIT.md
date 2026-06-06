@@ -287,12 +287,13 @@ error        → si falla el proceso
 ### Perfil de usuario
 
 #### `GET /api/account/me`
-Retorna: `session_limit` (cap del tier actual), `credits_total`, `credits_used`, `last_pack`, `display_name`, `two_factor_enabled`, estado de aceptación legal.
+Retorna: `session_limit`, `credits_total`, `credits_used`, `last_pack`, `display_name`, `two_factor_enabled`, `tour_v1_completed`, estado de aceptación legal.
 
 #### `POST /api/account/display-name`
 #### `POST /api/account/delete`
 #### `POST /api/account/create-portal-session` (Stripe)
 #### `POST /api/account/sync-billing` (RevenueCat manual sync)
+#### `POST /api/account/tour-complete` — marca `tour_v1_completed_at` en `public.users` (idempotente)
 
 ### Autenticación
 
@@ -320,16 +321,30 @@ GET /api/library/access        → check de acceso a biblioteca (Bearer + Seeker
 ### Admin
 
 ```
-GET  /api/admin/public-config  → sin auth
 POST /api/admin/login
 POST /api/admin/logout
-POST /api/admin/config
+POST /api/admin/config   → requiere Origin/Host check (CSRF protection)
+```
+
+> ⚠️ `/api/admin/public-config` fue **eliminada** en `3d773ab` (2026-05-26). Exponía toggles operativos sin auth.
+
+### Feedback
+
+```
+POST /api/feedback         → formulario de feedback (rate-limited, guarda en tabla feedback)
+```
+
+### Integridad (App Integrity)
+
+```
+GET  /api/integrity/challenge   → genera nonce para attestation (Bearer + Upstash TTL 10min)
+POST /api/integrity/challenge   → verifica token de attestation Play Protect
 ```
 
 ### Webhooks y utilidades
 
 ```
-POST /api/webhooks/revenuecat  → pagos RevenueCat
+POST /api/webhooks/revenuecat  → pagos RevenueCat (grant_tokens_idempotent — atómico)
 GET  /api/health               → health check
 POST /api/ritual-debug         → debug (dev only)
 ```
@@ -346,13 +361,17 @@ El APK Android es fundamentalmente un **shell nativo alrededor de un WebView** q
 
 La capa nativa aporta:
 - Autenticación Google OAuth sin error 403 (abre browser externo)
-- Storage seguro de tokens (expo-secure-store)
-- Cache SQLite para funcionamiento offline (3 tiers)
-- Descarga de imágenes al sistema de archivos local
+- Storage seguro de tokens (expo-secure-store) + UID persistido para cross-user guard
+- Cache SQLite para funcionamiento offline (3 tiers — sidebar instantáneo, hilos lazy, sync background)
+- Prewarm de caché al inicio (todos los chats pre-cargados antes de que WebView cargue)
+- Descarga de imágenes al sistema de archivos local (expo-file-system)
 - Modal nativo de zoom para imágenes
 - Export de PDF via expo-sharing
-- Idioma nativo dropdown (sincronizado con la web)
+- Idioma nativo dropdown (sincronizado con la web — 11 idiomas)
 - Barras de estado y SafeAreaView correctas
+- App Integrity attestation (Play Protect + App Access Risk — `src/hooks/useIntegrityCheck.ts`)
+- Purchase success deep link (`app/purchase-success.tsx` → evento nativo → reload web)
+- OAuth callback nativo (`app/auth/callback.tsx`)
 
 ### Archivo principal: `app/index.tsx`
 
@@ -589,18 +608,21 @@ Comunicación bidireccional entre la web app y la capa nativa.
 
 | Tabla | Descripción | RLS |
 |-------|-------------|-----|
-| `users` | Perfil de usuario (email, language, 2FA, display_name, is_admin) | ✅ |
-| `consultation_sessions` | Hilos de consulta (user_id, title, theme_category, max_consultations, public_sharing_id) | ✅ |
-| `consultations` | Consultas individuales (session_id, lines JSONB, interpretation TEXT, image_url, session_position) | ✅ |
+| `users` | Perfil (email, 2FA, display_name, is_admin, **tour_v1_completed_at**) | ✅ |
+| `consultation_sessions` | Hilos de consulta (user_id, title, theme_category, public_sharing_id) | ✅ |
+| `consultations` | Consultas individuales (session_id, lines JSONB, interpretation TEXT, image_url) | ✅ |
 | `consultation_notes` | Notas adicionales del usuario | ✅ |
 | `query_credits` | Saldo de tokens (credits_total, credits_used, total_purchased, last_pack) | ✅ |
-| `user_trial_log` | Blindaje de free trial lifetime (previene re-otorgamiento) | service-role |
+| `user_trial_log` | Blindaje de free trial lifetime por user_id | service-role |
+| `trial_email_log` | Blindaje de free trial por email hash (migración 046) | deny-all |
+| `anonymous_purchase_log` | Purchases antes de autenticarse (migración 047) | deny-all |
+| `feedback` | Feedback de usuarios (migración 041) | ✅ |
 | `admin_runtime_config` | Configuración runtime (feature flags, limites) | service-role |
 | `revenuecat_webhook_events` | Idempotencia de webhooks de pago | service-role |
-| `revenuecat_customer_aliases` | Mapping RevenueCat ↔ user_id | service-role |
 | `two_factor_attempts`, `two_factor_email_codes`, `two_factor_recovery_codes` | 2FA | ✅ |
-| `user_legal_acceptances` | Registro de aceptación de términos | ✅ |
+| `user_legal_acceptances` | Registro de aceptación de términos (migración 027) | ✅ |
 | `pattern_analyses` | Análisis de patrones de consulta | ✅ |
+| ~~`revenuecat_customer_aliases`~~ | ~~Mapping RevenueCat ↔ user_id~~ | **ELIMINADA** en migración 040 |
 
 ### Índices críticos
 
@@ -630,13 +652,17 @@ consume_token(p_user_id UUID, p_amount INT) → INT
 grant_tokens(p_user_id UUID, p_tokens INT, p_pack TEXT) → VOID
   -- ON CONFLICT DO UPDATE credits_total = credits_total + p_tokens
 
--- Init free user (protegido por user_trial_log)
+-- migration 039: Grant + dedup atómico para webhooks de pago
+grant_tokens_idempotent(p_user_id UUID, p_tokens INT, p_pack TEXT, p_event_hash TEXT) → VOID
+  -- Ejecuta INSERT en revenuecat_webhook_events + grant_tokens en una transacción
+
+-- Init free user (protegido por user_trial_log + trial_email_log)
 init_free_user(p_user_id UUID) → VOID
   -- INSERT INTO query_credits ... ON CONFLICT DO NOTHING
-  -- INSERT INTO user_trial_log ... (previene re-otorgamiento lifetime)
+  -- INSERT INTO user_trial_log + trial_email_log ... (previene re-otorgamiento lifetime)
 ```
 
-### Migraciones (38 total)
+### Migraciones (51 total)
 
 ```
 001_init.sql
@@ -671,8 +697,21 @@ init_free_user(p_user_id UUID) → VOID
 034_translator_column.sql
 035_revoke_public_execute_on_secdef_functions.sql
 036_consultations_session_id_index.sql
-037_grant_is_admin_to_app_owner.sql    ← grant is_admin al owner account de producción
-038_raise_statement_timeout.sql        ← statement_timeout: authenticated→30s, anon→10s, authenticator→30s
+037_grant_is_admin_to_app_owner.sql
+038_raise_statement_timeout.sql     ← authenticated→30s, anon→10s, authenticator→30s
+039_atomic_webhook_grant.sql        ← grant_tokens_idempotent (dedup + grant en 1 transacción)
+040_drop_revenuecat_customer_aliases.sql ← tabla aliases eliminada
+041_feedback.sql                    ← tabla feedback de usuarios
+042_feedback_rls_fix.sql
+043_grant_tokens_protect_tier.sql
+044_grant_tokens_allow_tier_downgrade.sql
+045_auto_display_name_google.sql    ← trigger display name desde Google OAuth
+046_trial_email_log.sql             ← blindaje free trial por email hash
+047_anonymous_purchase_log.sql      ← purchases antes de autenticarse
+048_fix_init_free_user_search_path.sql
+049_revoke_trigger_fn_execute.sql   ← revoca EXECUTE en funciones trigger-only
+050_security_linter_fixes.sql       ← deny-all RLS en tablas internas
+051_tour_v1.sql                     ← tour_v1_completed_at en users (onboarding lifetime)
 ```
 
 ---

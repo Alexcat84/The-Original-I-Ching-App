@@ -5,7 +5,7 @@ App de consultas al I Ching con IA. Oráculo ancestral chino con interpretación
 moderna usando Claude AI. Modelo de negocio: tokens consumibles (no suscripción).
 
 ## Stack Tecnológico
-- **Frontend**: Next.js 14 App Router, TypeScript, Tailwind CSS
+- **Frontend**: Next.js 15 App Router, TypeScript, Tailwind CSS
 - **Backend**: Next.js API Routes, Supabase (PostgreSQL + Auth)
 - **Mobile**: Expo + React Native WebView (APK Android)
 - **Pagos**: RevenueCat Web Billing + Stripe
@@ -34,22 +34,39 @@ moderna usando Claude AI. Modelo de negocio: tokens consumibles (no suscripción
 │   │           └── webhooks/   # RevenueCat webhooks
 │   └── mobile/                 # Expo WebView APK Android
 │       ├── app/index.tsx       # Componente principal WebView
-│       └── app.config.js       # Configuración Expo
+│       ├── app/auth/callback.tsx  # OAuth callback
+│       ├── app/purchase-success.tsx  # Deep link post-compra
+│       ├── app.config.js       # Configuración Expo
+│       └── src/
+│           ├── db/             # SQLite schema + chat-store
+│           ├── sync/           # sync-service + image-sync
+│           └── hooks/          # useIntegrityCheck (Play Protect)
 ├── backend/
-│   └── db/migrations/          # 22 migraciones SQL (001-022)
+│   ├── claude/                 # Integración Anthropic API + fallback chain
+│   ├── auth/                   # TOTP, 2FA email, validación de registro
+│   └── db/migrations/          # 51 migraciones SQL (001-051)
 ├── packages/                   # Paquetes compartidos del monorepo
+│   ├── iching-engine/          # Algoritmos de sorteo (tres monedas, yarrow, manual)
+│   ├── oracle-bones-engine/    # Huesos de Oráculo Shang (4 veredictos auténticos)
+│   ├── context-engine/         # Límites de sesión y costo de contexto por tier
+│   ├── image-engine/           # Prompt builder FLUX + mitigación glifos
+│   ├── i18n/                   # 11 idiomas (web + mobile compartido)
+│   ├── iching-data/            # 64 hexagramas estáticos (Wilhelm/Legge/Zhou Yi)
+│   ├── sharing/                # URLs públicas de lecturas
+│   ├── ui/                     # Componentes React compartidos
+│   └── mobile-api-contracts/   # Tipos TypeScript del bridge nativo↔web
 └── .claude/                    # Skills de Claude Code
 ```
 
 ## Branches
 - `staging` — desarrollo y pruebas activas
-- `main` — producción (merge pendiente hasta 25 de abril 2026)
+- `main` — producción (se mergea desde staging continuamente; nunca commit directo a main)
 
 ## Entornos y Variables
 
 ### Web (Vercel)
-- **Production** → Supabase proyecto original (egress saturado hasta 25 abril)
-- **Preview/Staging** → Supabase proyecto nuevo (egress fresco)
+- **Production** → Supabase Pro (proyecto original, egress ilimitado)
+- **Preview/Staging** → Supabase Pro (proyecto staging separado)
 
 Variables en Vercel separadas por entorno:
 - `NEXT_PUBLIC_SUPABASE_URL`
@@ -59,14 +76,23 @@ Variables en Vercel separadas por entorno:
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `TOGETHER_API_KEY` — generación de imágenes (backend only)
 - `ANTHROPIC_API_KEY` — consultas IA (backend only)
+- `ANTHROPIC_MODEL` — override del modelo (opcional; default: claude-sonnet-4-5-20250929)
 - `REVENUECAT_WEBHOOK_SECRET`
 - `RESEND_API_KEY`
+- `UPSTASH_REDIS_REST_URL` — rate limiting distribuido (fail-closed en producción)
+- `UPSTASH_REDIS_REST_TOKEN`
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY` — CAPTCHA Cloudflare (public)
+- `TURNSTILE_SECRET_KEY`
+- `OPENROUTER_API_KEY` — fallback IA (backend only)
+- `GROQ_API_KEY` — fallback IA (backend only)
 - `LOG_TOKEN_BALANCE_DEBUG=true` — logs de tokens en staging
 
 ### Mobile (apps/mobile/.env)
 - `EXPO_PUBLIC_SUPABASE_URL`
 - `EXPO_PUBLIC_SUPABASE_ANON_KEY`
 - `EXPO_PUBLIC_API_URL` — URL de staging o producción
+- `EXPO_PUBLIC_REVENUECAT_API_KEY`
+- `EXPO_PUBLIC_SENTRY_DSN`
 
 ## Modelo de Tokens (Consumibles, NO suscripción)
 | Pack | Precio | Tokens | Consultas/hilo | Resolución imagen |
@@ -91,26 +117,31 @@ Variables en Vercel separadas por entorno:
 
 ## Schema DB (Supabase) — Tablas principales
 ```sql
-query_credits          -- credits_total, credits_used, total_purchased, last_pack
-user_trial_log         -- blindaje free trial lifetime
-consultation_sessions  -- historial de chats
-consultations          -- mensajes individuales
-consultation_notes     -- notas adicionales
-pattern_analyses       -- análisis de patrones
-admin_runtime_config   -- configuración runtime
-revenuecat_customer_aliases
-revenuecat_webhook_events
+users                       -- perfil, 2FA, display_name, is_admin, tour_v1_completed_at
+query_credits               -- credits_total, credits_used, total_purchased, last_pack
+user_trial_log              -- blindaje free trial lifetime (por user_id)
+trial_email_log             -- blindaje free trial por email hash (migración 046)
+anonymous_purchase_log      -- purchases antes de autenticarse (migración 047)
+consultation_sessions       -- historial de chats
+consultations               -- mensajes individuales (oracle_type, lines JSONB, image_url)
+consultation_notes          -- notas adicionales
+pattern_analyses            -- análisis de patrones
+admin_runtime_config        -- configuración runtime (feature flags)
+feedback                    -- feedback de usuarios (migración 041)
+user_legal_acceptances      -- registro de aceptación de términos (migración 027)
+revenuecat_webhook_events   -- idempotencia de webhooks de pago
 two_factor_attempts
 two_factor_email_codes
 two_factor_recovery_codes
-users
+-- NOTA: revenuecat_customer_aliases fue ELIMINADA en migración 040
 ```
 
 ## Funcionalidades Implementadas y Probadas
 
 ### Web (staging — verified ✅)
 - [x] Consulta I Ching (tres monedas, Zhu Xi, Wilhelm/Baynes)
-- [x] Consulta Huesos de Oráculo (estilo Shang)
+- [x] Asistente manual Yarrow Stalks (wizard paso a paso, distribución Zhou auténtica)
+- [x] Consulta Huesos de Oráculo (estilo Shang, 4 veredictos arqueológicamente verificados)
 - [x] Generación de imágenes por tier (Together AI FLUX.1 Schnell)
 - [x] Sistema de tokens consumibles (free, seeker, practitioner, master)
 - [x] RevenueCat Web Billing + Stripe (checkout con GST/QST automático)
@@ -126,6 +157,14 @@ users
 - [x] Aviso de tokens acumulables en UI y documentación
 - [x] Resolución de imagen por tier (bug del last_pack corregido)
 - [x] Watermark por tier en imágenes generadas
+- [x] Biblioteca de hexagramas (Seeker+ requerido — 64 hexagramas con 3 traducciones)
+- [x] Formulario de feedback (rate-limited, guardado en Supabase)
+- [x] Tour de onboarding (una sola vez lifetime — persistido en `users.tour_v1_completed_at`)
+- [x] Auth hydration gap fix (localStorage `_rnAuthEmail` — botón visible desde frame 1)
+- [x] Prevención de flash blanco en navegación (loading.tsx con tema correcto)
+- [x] Cloudflare Turnstile CAPTCHA en login/register
+- [x] Rate limiting distribuido (Upstash Redis, fail-closed en producción)
+- [x] Verificación de aceptación legal (términos + privacidad)
 
 ### Mobile APK (apps/mobile)
 - [x] WebView cargando staging URL
@@ -138,7 +177,13 @@ users
 - [x] Eliminación de chats via SecureStore token
 - [x] Sin cookies compartidas (cumple Play Store)
 - [x] privacyPolicyUrl configurado en app.config.js
-- [x] EAS Build configurado (profile: preview)
+- [x] EAS Build configurado (profile: preview / staging-aab)
+- [x] SQLite 3-tier offline cache (sidebar instantáneo, hilos lazy, sync incremental en background)
+- [x] Prewarm de caché SQLite al inicio (todos los chats pre-cargados)
+- [x] UID persistido en SecureStore (previene wipe cruzado entre usuarios)
+- [x] Purchase success deep link (`/purchase-success` → evento nativo → reload)
+- [x] App Integrity attestation (Play Protect + App Access Risk — `useIntegrityCheck`)
+- [x] Cross-origin guard estricto en WebView (bloquea cualquier URL fuera de BASE_URL)
 
 ### Arquitectura clave
 - **ChatSessionProvider** en `app/layout.tsx` — estado de chats nunca se destruye
@@ -151,12 +196,16 @@ users
 ## Servicios Externos Configurados
 | Servicio | Propósito | Configurado |
 |----------|-----------|-------------|
-| Supabase | DB + Auth | ✅ Staging + Producción |
+| Supabase | DB + Auth (Pro) | ✅ Staging + Producción |
 | RevenueCat | Pagos | ✅ Web Billing |
 | Stripe | Procesador de pagos | ✅ via RevenueCat |
 | Together AI | Imágenes FLUX.1 | ✅ |
 | Anthropic | Claude API consultas | ✅ |
+| OpenRouter | Fallback IA | ✅ |
+| Groq | Fallback IA | ✅ |
 | Resend | Emails transaccionales | ✅ dominio verificado |
+| Upstash Redis | Rate limiting distribuido | ✅ |
+| Cloudflare Turnstile | CAPTCHA login/register | ✅ |
 | Vercel | Deploy web | ✅ |
 | EAS Build | Build APK | ✅ cuenta alexcat84 |
 | Google Play Console | Distribución Android | ✅ cuenta creada, verificación pendiente |
@@ -184,9 +233,19 @@ Herramientas locales de QA (no producción): `pnpm run generate:together:iching-
 
 ## Historial de Cambios Importantes
 
-### Migraciones DB (022 total)
+### Migraciones DB (051 total — selección de hitos)
 - `021_consumable_tokens.sql` — modelo consumible, consume_token, grant_tokens
 - `022_user_trial_log.sql` — blindaje free trial lifetime con backfill
+- `027_user_legal_acceptances.sql` — registro de aceptación de términos
+- `032_atomic_token_consumption.sql` — consume_token devuelve -1 si saldo vacío
+- `039_atomic_webhook_grant.sql` — grant_tokens_idempotent (dedup + grant atómicos)
+- `040_drop_revenuecat_customer_aliases.sql` — tabla aliases eliminada
+- `041_feedback.sql` — tabla de feedback de usuarios
+- `045_auto_display_name_google.sql` — trigger display name desde Google OAuth
+- `046_trial_email_log.sql` — blindaje free trial por email hash
+- `047_anonymous_purchase_log.sql` — purchases antes de autenticarse
+- `050_security_linter_fixes.sql` — RLS deny-all en tablas internas
+- `051_tour_v1.sql` — columna `tour_v1_completed_at` en users (onboarding lifetime)
 
 ### Fixes Críticos Realizados
 1. **Bug display de tokens** — panel opciones ahora refresca post-consulta via evento `iching:account-refresh`
@@ -272,8 +331,8 @@ vercel env pull .env.staging
 Actualizados a `actions/checkout@v6` y `actions/setup-node@v6` (ambos en v6 al 31 mayo 2026).
 Compatibles con Node.js 24 — deadline del 2 junio 2026 cubierto.
 
-- [x] Merge staging → main (hecho — 7 mayo 2026)
-- [ ] Upgrade Supabase a Pro ($25/mes) al tener usuarios reales
+- [x] Merge staging → main (flujo continuo desde mayo 2026)
+- [x] Upgrade Supabase a Pro ($25/mes) — activo en ambos entornos
 - [ ] Verificación de identidad Google Play Console (1-3 días hábiles)
 - [ ] Assets para Play Store: icon 512×512, feature graphic 1024×500, screenshots
 - [ ] Data Safety Form en Play Console
