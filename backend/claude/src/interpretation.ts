@@ -38,6 +38,7 @@ ABSOLUTE RULES:
      – Image text (象傳) → > *image text*
      – Each changing line oracle text → > *verbatim line text from the translator only*
      – Transformed hexagram Judgment (之卦) → > *judgment text*
+   • MULTILINE BLOCKQUOTES (NON-NEGOTIABLE): When a source text contains multiple verse lines or stanza breaks, render EACH LINE as its own separate blockquote line ("> *line one*" on one line, "> *line two*" on the next, etc.). NEVER collapse multiple lines into one using "/" or any other separator. Preserve the original line structure exactly as it appears in the source.
    • CHANGING LINES — MANDATORY STRUCTURE for each item in the numbered list:
        1. **Line name** (mutante)
        > *verbatim library text — ONLY the classical quote in its original language, nothing else*
