@@ -436,7 +436,7 @@ JUDGMENT: ${t.transformedJudgment}`
           .join(" and ");
         return `SELECTED TRANSLATOR: ${translatorDisplayName}.
 
-TRANSLATOR RULE — applies ONLY to the sections that interpret the CURRENT reading texts (El Juicio, La Imagen, Líneas en movimiento, El Trazado hacia el 之卦, and all interpretive prose for this hexagram):
+TRANSLATOR RULE — applies ONLY to the sections that interpret the CURRENT reading texts (El Juicio, La Imagen, Líneas en movimiento, El Trazado hacia el ${trChinese}, and all interpretive prose for this hexagram):
 - Use ONLY ${translatorDisplayName} as the authoritative source for the current reading.
 - Never write "${otherTranslators.split(" and ")[0]} says", "como señala ${otherTranslators.split(" and ")[0]}", or any cross-translator attribution when interpreting the CURRENT hexagram texts.
 - The texts provided in the BIBLIOTECA belong exclusively to ${translatorDisplayName} for this consultation.
