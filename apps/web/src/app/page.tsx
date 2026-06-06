@@ -1713,6 +1713,14 @@ export default function HomePage() {
       }
       void clearIdbUser(uid);
     }
+    // Signal the native shell so it can clear SQLite content cooldowns (Fix 2),
+    // achieving the same sign-out hygiene as the native-bar __rnSignOut path.
+    try {
+      (window as unknown as { ReactNativeWebView?: { postMessage(s: string): void } })
+        .ReactNativeWebView?.postMessage(JSON.stringify({ type: "auth_signout" }));
+    } catch {
+      // non-fatal — only present inside the Android WebView shell
+    }
     setAccessToken(null);
     setAuthEmail(null);
     setAuthUserId(null);
@@ -2653,7 +2661,15 @@ export default function HomePage() {
                 !knownInProgressTitles.has(existing.title)
                   ? existing.title
                   : next.title,
-              thread: existing.thread,
+              // Preserve the thread only if it is already complete or it belongs
+              // to the currently active session (avoid clearing a visible thread
+              // mid-session on JWT refresh). In all other cases clear to [] so
+              // Fix 3 can detect the stale state and trigger a fresh fetch.
+              thread:
+                existing.thread.length >= next.messageCount ||
+                existing.localId === activeSessionLocalIdRef.current
+                  ? existing.thread
+                  : [],
               threadMaxDepth: existing.threadMaxDepth ?? next.threadMaxDepth,
               messageCount: Math.max(next.messageCount, existing.messageCount),
               updatedAt: Math.max(next.updatedAt, existing.updatedAt),
@@ -2706,8 +2722,7 @@ export default function HomePage() {
           combinedSessions[0];
         if (
           selected?.sessionId &&
-          selected.messageCount > 0 &&
-          selected.thread.length === 0
+          selected.thread.length < selected.messageCount
         ) {
           void loadSessionThread(selected.sessionId, selected.localId);
         }
@@ -4198,7 +4213,7 @@ export default function HomePage() {
                         setActiveSessionLocalId(session.localId);
                         setError(null);
                         setChatsOpen(false);
-                        if (session.thread.length === 0 && session.sessionId) {
+                        if (session.thread.length < session.messageCount && session.sessionId) {
                           void loadSessionThread(
                             session.sessionId,
                             session.localId,

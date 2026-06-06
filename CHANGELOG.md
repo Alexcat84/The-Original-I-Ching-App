@@ -1,8 +1,30 @@
-<!-- changelog:last-release:2e1ecb8 -->
+<!-- changelog:last-release:baf72f0 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [3.4.9] — 2026-06-06 | versionCode: 42 | Stage: Closed Testing
+> Mobile + web fix. New AAB build required (index.tsx + chat-store.ts modified).
+
+### Fix
+- fix(mobile+web): fix chat thread hydration — stale partial threads after login | commit: 75e71d4
+  - **Fix 1** — chat-store.ts: add `deleteSyncMeta`, `deleteSyncMetaByPrefix`, `getChatMessageCount` (filters `is_deleted=0`)
+  - **Fix 2** — index.tsx `auth_signout`: bulk-invalidate `chat_content_synced:*` on sign-out; chat list metadata and message rows preserved
+  - **Fix 2b** — index.tsx `request_thread`: bypass per-chat sync cooldown when SQLite rows < `chats.message_count` (direct SQLite query, avoids race with `injectCachedChats`)
+  - **Fix 2c** — page.tsx `signOut()`: postMessage `auth_signout` to ReactNativeWebView — web-UI logout now also clears SQLite cooldowns
+  - **Fix 3** — page.tsx: change both `loadSessionThread` gates from `thread.length===0` to `thread.length<messageCount` (sidebar click line 4213 + auto-load after summary line 2722)
+  - **Fix 4** — page.tsx summary merge: clear partial thread to `[]` unless complete or active session (`activeSessionLocalIdRef` guard prevents clearing visible thread on JWT refresh)
+  - **Fix 5** — index.tsx `request_thread`: re-dispatch on `updated[0]?.id !== cached[0]?.id` in addition to length change (DESC array — index 0 is most recent)
+  - **Fix 6** — index.tsx `INJECTED_JS __rnSignOut`: clear `iching_chat_state_*` + `iching_chat_summaries_*` from both storages before postMessage — aligns native sign-out with web `signOut()` cleanup
+
+### Docs
+- docs(audit): close CHAT_THREAD_HYDRATION_AUDIT.md — add cross-analysis Claude+Cursor, full fix implementation details, and coverage table H1–H7 | commit: baf72f0
+
+### Maintenance
+- chore(release): bump version 3.4.8 / versionCode 41 | commit: 89ecebc (previous release marker)
+
+---
 
 ## [3.4.8] — 2026-06-05 | versionCode: 41 | Stage: Closed Testing
 > APK build generated and submitted to Play Store (versionCode 41).
