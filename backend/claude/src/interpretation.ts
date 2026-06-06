@@ -329,7 +329,7 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
 - "Encuadre de la pregunta" / "Framing the question": name the emotional or practical stake in one tight opening, then the received figure (number, name, Chinese).
 - "El juicio" / "The judgment": mandatory blockquote (>) of the classical judgment when provided; immediately after, one paragraph that names how that wording maps onto the user's situation (explicit bridge).
 - "Líneas en movimiento" / "Lines in motion": changing lines only—numbered list with line text + one sentence of application each; if no changing lines, one crisp sentence stating stability.
-- `El trazado hacia el ${trChinese}` / `The turning pattern (${trChinese})`: ONLY if transformed hexagram exists—quote transformed judgment if supplied, then tension / opportunity vs primary.
+- \`El trazado hacia el ${trChinese}\` / \`The turning pattern (${trChinese})\`: ONLY if transformed hexagram exists—quote transformed judgment if supplied, then tension / opportunity vs primary.
 - "Horizonte y síntesis" / "Horizon and synthesis": single closing paragraph—one concrete behavioral or attitudinal step, same language, no new quotes.
 - ANTI-REPETITION across sections as in global rules.`;
 
