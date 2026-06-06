@@ -12,7 +12,7 @@ const FIRST_PLAY_UPLOAD = {
 };
 
 const KNOWN_STAGES = [
-  "Desarrollo inicial",
+  "Initial Development",
   "Internal Testing",
   "Closed Testing",
   "Production",
@@ -46,7 +46,7 @@ const VERSION_BUMP_PATTERNS = [
 
 const CHANGELOG_INTRO = `# Changelog — The Original I Ching App
 
-Historial completo de cambios desde el inicio del proyecto.
+Full project change history.
 `;
 
 const LAST_RELEASE_MARKER_RE = /<!--\s*changelog:last-release:([0-9a-f]+)\s*-->/i;

@@ -33,7 +33,7 @@ function renderVersionSection(meta, commits) {
   if (!body) return "";
 
   const stage = meta.stage ?? resolveStage(meta.versionCode, meta.date);
-  const header = `## [${meta.versionName}] — ${meta.date} | versionCode: ${meta.versionCode} | Etapa: ${stage}`;
+  const header = `## [${meta.versionName}] — ${meta.date} | versionCode: ${meta.versionCode} | Stage: ${stage}`;
   return `${header}\n\n${body}\n\n---\n`;
 }
 
@@ -54,10 +54,10 @@ function renderUnreleasedSection(commits) {
  */
 function renderSummaryTable(rows) {
   const lines = [
-    "## Resumen de versiones",
+    "## Version Summary",
     "",
-    "| Version | versionCode | Fecha | Etapa | Commits | Cambios destacados |",
-    "|---------|-------------|-------|-------|---------|-------------------|",
+    "| Version | versionCode | Date | Stage | Commits | Notable changes |",
+    "|---------|-------------|------|-------|---------|-----------------|",
   ];
 
   for (const row of rows) {
