@@ -40,8 +40,12 @@ BEGIN
 END;
 $$;
 
--- Trigger functions invoked by PostgreSQL internally — no direct-call grants needed.
+-- Trigger functions invoked by PostgreSQL internally — block direct RPC calls.
+-- Must revoke from PUBLIC, anon, and authenticated explicitly; Supabase grants
+-- anon/authenticated separately from the PUBLIC pseudo-role.
 REVOKE ALL ON FUNCTION public.sync_consultation_content() FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.sync_consultation_content() FROM anon;
+REVOKE ALL ON FUNCTION public.sync_consultation_content() FROM authenticated;
 
 CREATE OR REPLACE TRIGGER trg_sync_consultation_content
   AFTER INSERT OR UPDATE OF interpretation, oracle_bones

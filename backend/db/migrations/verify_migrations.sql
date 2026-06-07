@@ -304,6 +304,13 @@ FROM (
       WHERE routine_schema = 'public'
         AND routine_name   = 'sync_consultation_content'
     )
+    AND NOT EXISTS (
+      SELECT 1 FROM information_schema.role_routine_grants
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'sync_consultation_content'
+        AND grantee IN ('anon', 'authenticated', 'PUBLIC')
+        AND privilege_type = 'EXECUTE'
+    )
     AND EXISTS (
       SELECT 1 FROM information_schema.routines
       WHERE routine_schema = 'public'
