@@ -7,7 +7,6 @@ import {
   getUserSessionSummaries,
   getUserSessionThreadContent,
   getUserSessionThreadMeta,
-  getUserSessionWithConsultations,
   getUserSessionsWithConsultations,
   isChatPersistenceConfigured,
 } from "@/lib/session-store";
@@ -47,9 +46,22 @@ export async function GET(req: Request) {
         const rows = await getUserSessionThreadContent(user.userId, sessionId);
         return NextResponse.json({ consultationContent: rows, phase: "content" });
       }
-      const entry = await getUserSessionWithConsultations(user.userId, sessionId);
+      // Parallel fetch: meta (no TOAST, always fast) + content via RPC with
+      // 8 s statement_timeout (protected against Warp thread kills on cold buffer).
+      // If content fetch times out, consultations degrade to summary placeholders.
+      const [entry, contentRows] = await Promise.all([
+        getUserSessionThreadMeta(user.userId, sessionId),
+        getUserSessionThreadContent(user.userId, sessionId).catch(() => []),
+      ]);
       if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
-      return NextResponse.json({ session: entry.session, consultations: entry.consultations });
+      const consultations = contentRows.length > 0
+        ? entry.consultations.map((c) => {
+            const content = contentRows.find((r) => r.consultationId === c.consultationId);
+            if (!content) return c;
+            return { ...c, interpretation: content.interpretation || c.interpretation, oracleBones: content.oracleBones ?? c.oracleBones };
+          })
+        : entry.consultations;
+      return NextResponse.json({ session: entry.session, consultations });
     } catch {
       return apiError(503, { error: "db_error", code: "DB_ERROR", action: "retry" });
     }
