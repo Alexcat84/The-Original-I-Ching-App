@@ -340,7 +340,7 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
   const isMasterCombined =
     cast.interpretationMode === "master_combined" ||
     Boolean(t.leggeJudgment && t.zhouyiJudgment);
-  const targetWordCount = isMasterCombined ? "1400-1800" : hasContext ? "800-1000" : "700-900";
+  const targetWordCount = isMasterCombined ? "1500-1950" : hasContext ? "800-1000" : "700-900";
 
   let textsBlock = "";
   if (isMasterCombined) {
@@ -496,7 +496,7 @@ La PRIMERA ORACIÓN enumera TODOS los hexagramas de la sesión en orden cronoló
 PARTE 2 — RE-ENTRADA LITERARIA (2–3 oraciones):
 A continuación del guion cronológico, 2–3 oraciones de prosa narrativa que describan qué movimiento interior o exterior dibujaron esos hexagramas juntos y cómo esta nueva tirada se inserta en ese recorrido. VARIEDAD LITERARIA OBLIGATORIA: adopta una posición narrativa distinta a la de los «Encuadres» anteriores ya presentes en el contexto — puede ser observacional, dramática, íntima, filosófica, estacional, espacial, etc. Nunca reutilices el mismo patrón de apertura ni las mismas metáforas centrales; si en tiradas anteriores del hilo ya aparecieron palabras como «arco», «hilo», «camino», «trazado» o «tejido», elige un encuadre completamente diferente.
 
-LONGITUD TOTAL DEL ENCUADRE: 1 oración (PARTE 1) + 2–3 oraciones (PARTE 2) = 3–4 oraciones en total. Si la respuesta global necesita comprimirse, recorta las secciones intermedias (análisis de imagen, síntesis de líneas) — NUNCA la PARTE 1 del Encuadre.
+LONGITUD TOTAL DEL ENCUADRE: 1 oración (PARTE 1) + 2–3 oraciones (PARTE 2) = 3–4 oraciones en total.
 
 IMPORTANTE: el resumen estructurado de la sesión ya vive en [SNAPSHOT_START]…[SNAPSHOT_END] — el Encuadre NO es ese resumen. La PARTE 1 (cadena de hexagramas) sí está permitida porque es un ancla de orientación para el usuario, no el SNAPSHOT.`
     : "Primera consulta de la sesión: no inventes continuidad."
