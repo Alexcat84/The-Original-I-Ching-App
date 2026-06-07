@@ -89,7 +89,7 @@ import {
 } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import {
-  getIdbChats, putIdbChats, getIdbThread, putIdbThread, isThreadFresh, clearIdbUser,
+  getIdbChats, putIdbChats, getIdbThread, isThreadFresh, clearIdbUser,
   type IdbChatEntry,
 } from "@/lib/idb-cache";
 import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubstring";
@@ -323,6 +323,20 @@ type AccountChatsSummaryResponse = {
 type AccountChatSessionResponse = {
   session: ApiChatSession;
   consultations: ApiChatConsultation[];
+};
+
+type BootstrapResponse = AccountChatsSummaryResponse & {
+  id: string;
+  email: string;
+  tokens_available: number;
+  session_limit: number;
+  last_pack: string;
+  twoFactorEnabled: boolean;
+  twoFactorMethod: string | null;
+  display_name: string | null;
+  is_admin: boolean;
+  tour_v1_completed: boolean;
+  legal_acceptance_current: boolean;
 };
 
 const SESSION_IDLE_TIMEOUT_MS = 45 * 60 * 1000;
@@ -1697,6 +1711,19 @@ export default function HomePage() {
     if (!isSupabaseBrowserConfigured()) return;
     isSigningOutRef.current = true;
     const uid = authUserId;
+    // Best-effort: invalidate server-side JWT cache before Supabase revokes the token.
+    // Prevents a 60-second window where the revoked JWT still passes the in-process cache.
+    try {
+      const { data: { session } } = await getSupabaseBrowser().auth.getSession();
+      if (session?.access_token) {
+        void fetch("/api/auth/sign-out", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+      }
+    } catch {
+      // non-fatal
+    }
     try {
       await getSupabaseBrowser().auth.signOut();
     } catch {
@@ -1905,9 +1932,10 @@ export default function HomePage() {
           }
         }
 
-        // Phase 2: full content fetch (TOAST columns — interpretation + oracle_bones).
+        // Phase 2: content-only fetch (TOAST columns — interpretation + oracle_bones).
+        // Use ?content=1 to avoid re-fetching meta already loaded in Phase 1.
         const res = await fetch(
-          `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
+          `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&content=1`,
           {
             headers: { Authorization: `Bearer ${accessToken}` },
             cache: "no-store",
@@ -1931,37 +1959,48 @@ export default function HomePage() {
           );
           return;
         }
-        const payload = (await res.json()) as AccountChatSessionResponse;
-        if (!payload?.session) return;
-        const planCap = Math.max(1, accountSessionLimit);
-        const thread = payload.consultations.map((c) =>
-          mapApiConsultationToItem(c, payload.session.publicId, planCap),
-        );
+        // ?content=1 returns { consultationContent: ContentRow[], phase: "content" }
+        type ContentRow = {
+          consultationId: string;
+          interpretation: string;
+          oracleBones: {
+            pattern_id: number;
+            verdict: OracleBonesVerdict;
+            positive_charge: string;
+            negative_charge: string;
+            medium: "turtle" | "ox";
+          } | null;
+        };
+        const payload = (await res.json()) as { consultationContent: ContentRow[]; phase?: string };
+        if (!payload?.consultationContent?.length) return;
+        const contentMap = new Map(payload.consultationContent.map((r) => [r.consultationId, r]));
         setSessions((prev) =>
           prev.map((s) => {
             if (s.localId !== localId) return s;
-            return {
-              ...s,
-              title:
-                payload.session.title &&
-                !knownNewSessionTitles.has(payload.session.title) &&
-                !knownInProgressTitles.has(payload.session.title)
-                  ? payload.session.title
-                  : (thread[0]?.question.slice(0, 60) ??
-                    sessionUi.defaultSessionTitle),
-              sessionId: payload.session.sessionId,
-              publicSessionId: payload.session.publicId,
-              threadMaxDepth: planCap,
-              thread,
-              messageCount: Math.max(thread.length, s.messageCount),
-              updatedAt: thread.at(-1)?.createdAt ?? s.updatedAt,
-              firstConsultationAt:
-                thread[0]?.createdAt ?? s.firstConsultationAt,
-            };
+            const mergedThread = s.thread.map((item) => {
+              const content = contentMap.get(item.consultationId);
+              if (!content) return item;
+              return {
+                ...item,
+                interpretation: content.interpretation || item.interpretation,
+                ...(content.oracleBones != null
+                  ? {
+                      oracleBones: {
+                        patternId: content.oracleBones.pattern_id,
+                        verdict: content.oracleBones.verdict,
+                        affirmsPositive: content.oracleBones.verdict.startsWith("auspicious"),
+                        positiveCharge: content.oracleBones.positive_charge,
+                        negativeCharge: content.oracleBones.negative_charge,
+                        medium: content.oracleBones.medium,
+                      },
+                    }
+                  : {}),
+              };
+            });
+            return { ...s, thread: mergedThread };
           }),
         );
         setHistoryLoadError(null);
-        void putIdbThread(sessionId, payload.consultations);
       } catch {
         setHistoryLoadError(sessionUi.chatLoadNetworkError);
       } finally {
@@ -2165,41 +2204,27 @@ export default function HomePage() {
       isSigningOutRef.current = false;
       return;
     }
+    // Initial account state is loaded by the bootstrap effect (below).
+    // This effect only handles post-login refreshes (token balance after purchase/consult).
     let cancelled = false;
-    if (authUserId) {
-      const cached = readCachedAccountSessionLimit(authUserId);
-      if (cached !== null) setAccountSessionLimit(cached);
-    }
-    setTierReady(false);
-    function loadAccountTier() {
-      if (isSigningOutRef.current) return;
+    function onAccountRefresh() {
+      if (cancelled || isSigningOutRef.current) return;
       void fetch("/api/account/me", {
         headers: { Authorization: `Bearer ${accessToken}` },
+        cache: "no-store",
       })
         .then((r) => (r.ok ? r.json() : null))
         .then(
-          (
-            j: {
-              last_pack?: string;
-              tokens_available?: number;
-              session_limit?: number;
-              twoFactorEnabled?: boolean;
-              twoFactorMethod?: string | null;
-              display_name?: string | null;
-              is_admin?: boolean;
-              tour_v1_completed?: boolean;
-              legal_acceptance_current?: boolean;
-            } | null,
-          ) => {
-            if (cancelled) return;
-            if (!j) {
-              if (authUserId) {
-                const cached = readCachedAccountSessionLimit(authUserId);
-                if (cached !== null) setAccountSessionLimit(cached);
-              }
-              setTierReady(true);
-              return;
-            }
+          (j: {
+            last_pack?: string;
+            tokens_available?: number;
+            session_limit?: number;
+            twoFactorEnabled?: boolean;
+            twoFactorMethod?: string | null;
+            is_admin?: boolean;
+            legal_acceptance_current?: boolean;
+          } | null) => {
+            if (cancelled || !j) return;
             if (j.legal_acceptance_current === false) {
               if (authUserId && !legalRedirectSentForRef.current.has(authUserId)) {
                 legalRedirectSentForRef.current.add(authUserId);
@@ -2207,104 +2232,18 @@ export default function HomePage() {
               }
               return;
             }
-            const lastPack =
-              typeof j.last_pack === "string" ? j.last_pack : "free";
-            setTier(lastPack as Tier);
-            setTierReady(true);
+            if (typeof j.last_pack === "string") setTier(j.last_pack as Tier);
             setIsAdmin(j.is_admin === true);
-            if (
-              typeof j.session_limit === "number" &&
-              Number.isFinite(j.session_limit)
-            ) {
+            if (typeof j.session_limit === "number" && Number.isFinite(j.session_limit)) {
               setAccountSessionLimit(j.session_limit);
-              if (authUserId)
-                writeCachedAccountSessionLimit(authUserId, j.session_limit);
+              if (authUserId) writeCachedAccountSessionLimit(authUserId, j.session_limit);
             }
-            setTokenBalance(
-              typeof j.tokens_available === "number"
-                ? j.tokens_available
-                : null,
-            );
+            if (typeof j.tokens_available === "number") setTokenBalance(j.tokens_available);
             setTwoFactorEnabled(Boolean(j.twoFactorEnabled));
             setTwoFactorMethod(j.twoFactorMethod ?? null);
-            // Sync tour flag from DB → localStorage before any tour-trigger check runs.
-            // This ensures reinstalls don't replay the tour for accounts that already completed it.
-            if (j.tour_v1_completed) {
-              try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
-            }
-            const dn =
-              typeof j.display_name === "string" ? j.display_name : null;
-            setDisplayName(dn);
-            if (dn === null) {
-              // Check provider to decide: auto-fill from Google or show modal for email
-              void (async () => {
-                const sb = getSupabaseBrowser();
-                // Use getUser() (server round-trip) instead of getSession()
-                // (local JWT cache). getSession() may not include full_name
-                // after token refresh, causing the auto-fill to silently fail.
-                const {
-                  data: { user },
-                } = await sb.auth.getUser();
-                const provider = user?.app_metadata?.provider;
-                const fullName =
-                  typeof user?.user_metadata?.full_name === "string"
-                    ? user.user_metadata.full_name.trim()
-                    : "";
-                const firstName = fullName.split(" ")[0]?.trim() ?? "";
-                if (provider === "google" && firstName) {
-                  // Silently save the first name — no modal shown
-                  try {
-                    const res = await fetch("/api/account/display-name", {
-                      method: "PUT",
-                      headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${accessToken}`,
-                      },
-                      body: JSON.stringify({ display_name: firstName }),
-                    });
-                    if (res.ok) {
-                      setDisplayName(firstName);
-                      try {
-                        if (!localStorage.getItem(TOUR_STORAGE_KEY) && !tourFiredRef.current) {
-                          tourFiredRef.current = true;
-                          setTourKey((k) => k + 1);
-                          setTourRun(true);
-                        }
-                      } catch { /* ignore */ }
-                    }
-                  } catch {
-                    /* non-fatal */
-                  }
-                } else {
-                  setOnboardingStep("enter");
-                  setOnboardingInput("");
-                  setOnboardingOpen(true);
-                }
-              })();
-            } else {
-              // Display name already set, but check if we need to show the tour
-              try {
-                if (!localStorage.getItem(TOUR_STORAGE_KEY) && !tourFiredRef.current) {
-                  tourFiredRef.current = true;
-                  setTourKey((k) => k + 1);
-                  setTourRun(true);
-                }
-              } catch { /* ignore */ }
-            }
           },
         )
-        .catch(() => {
-          if (cancelled) return;
-          if (authUserId) {
-            const cached = readCachedAccountSessionLimit(authUserId);
-            if (cached !== null) setAccountSessionLimit(cached);
-          }
-          setTierReady(true);
-        });
-    }
-    loadAccountTier();
-    function onAccountRefresh() {
-      if (!cancelled) loadAccountTier();
+        .catch(() => { /* non-fatal */ });
     }
     window.addEventListener("iching:account-refresh", onAccountRefresh);
     return () => {
@@ -2640,29 +2579,18 @@ export default function HomePage() {
     hydrateFromStorage(summaryCacheKey, chatStateCacheKey);
     void (async () => {
       try {
-        const fetchSummary = async () => {
-          const firstAttempt = await fetch("/api/account/chats?summary=1", {
-            headers: { Authorization: `Bearer ${accessToken}` },
-            cache: "no-store",
-          });
-          if (firstAttempt.ok || firstAttempt.status < 500) {
-            return firstAttempt;
-          }
-          await new Promise((resolve) => window.setTimeout(resolve, 350));
-          return fetch("/api/account/chats?summary=1", {
-            headers: { Authorization: `Bearer ${accessToken}` },
-            cache: "no-store",
-          });
-        };
-        const res = await fetchSummary();
+        // Bootstrap: single call replaces concurrent /api/account/me + ?summary=1
+        if (authUserId) {
+          const cached = readCachedAccountSessionLimit(authUserId);
+          if (cached !== null) setAccountSessionLimit(cached);
+        }
+        setTierReady(false);
+        const res = await fetch("/api/account/bootstrap", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          cache: "no-store",
+        });
         if (!res.ok) {
-          const err = parseApiErrorPayload(await res.text());
-          if (err?.code === "CHAT_PERSISTENCE_NOT_CONFIGURED") {
-            const msg = sessionUi.historySupabaseMissing;
-            setError(msg);
-            setHistoryLoadError(msg);
-            return;
-          }
+          await res.text();
           if (res.status === 401) {
             const msg = sessionUi.historySessionExpired;
             setError(msg);
@@ -2673,10 +2601,78 @@ export default function HomePage() {
           const msg = formatHistoryLoadFailedStatus(sessionUi, res.status);
           setError(msg);
           setHistoryLoadError(msg);
+          setTierReady(true);
           return;
         }
-        const payload = (await res.json()) as AccountChatsSummaryResponse;
+        const payload = (await res.json()) as BootstrapResponse;
         if (cancelled || !payload) return;
+
+        // ── Account state (was /api/account/me) ──────────────────────────
+        if (payload.legal_acceptance_current === false) {
+          if (authUserId && !legalRedirectSentForRef.current.has(authUserId)) {
+            legalRedirectSentForRef.current.add(authUserId);
+            router.replace("/auth/complete-legal");
+          }
+          return;
+        }
+        setTier((typeof payload.last_pack === "string" ? payload.last_pack : "free") as Tier);
+        setTierReady(true);
+        setIsAdmin(payload.is_admin === true);
+        if (typeof payload.session_limit === "number" && Number.isFinite(payload.session_limit)) {
+          setAccountSessionLimit(payload.session_limit);
+          if (authUserId) writeCachedAccountSessionLimit(authUserId, payload.session_limit);
+        }
+        setTokenBalance(typeof payload.tokens_available === "number" ? payload.tokens_available : null);
+        setTwoFactorEnabled(Boolean(payload.twoFactorEnabled));
+        setTwoFactorMethod(payload.twoFactorMethod ?? null);
+        if (payload.tour_v1_completed) {
+          try { localStorage.setItem(TOUR_STORAGE_KEY, "1"); } catch { /* ignore */ }
+        }
+        const dn = typeof payload.display_name === "string" ? payload.display_name : null;
+        setDisplayName(dn);
+        if (dn === null) {
+          void (async () => {
+            const sb = getSupabaseBrowser();
+            const { data: { user } } = await sb.auth.getUser();
+            const provider = user?.app_metadata?.provider;
+            const fullName = typeof user?.user_metadata?.full_name === "string"
+              ? user.user_metadata.full_name.trim() : "";
+            const firstName = fullName.split(" ")[0]?.trim() ?? "";
+            if (provider === "google" && firstName) {
+              try {
+                const r = await fetch("/api/account/display-name", {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+                  body: JSON.stringify({ display_name: firstName }),
+                });
+                if (r.ok) {
+                  setDisplayName(firstName);
+                  try {
+                    if (!localStorage.getItem(TOUR_STORAGE_KEY) && !tourFiredRef.current) {
+                      tourFiredRef.current = true;
+                      setTourKey((k) => k + 1);
+                      setTourRun(true);
+                    }
+                  } catch { /* ignore */ }
+                }
+              } catch { /* non-fatal */ }
+            } else {
+              setOnboardingStep("enter");
+              setOnboardingInput("");
+              setOnboardingOpen(true);
+            }
+          })();
+        } else {
+          try {
+            if (!localStorage.getItem(TOUR_STORAGE_KEY) && !tourFiredRef.current) {
+              tourFiredRef.current = true;
+              setTourKey((k) => k + 1);
+              setTourRun(true);
+            }
+          } catch { /* ignore */ }
+        }
+
+        // ── Sessions (was /api/account/chats?summary=1) ──────────────────
         const hydrated = payload.sessions
           .map((entry): ChatSessionState<ConsultationItem> => {
             return {
@@ -2799,6 +2795,8 @@ export default function HomePage() {
     authReady,
     accessToken,
     sessionsHydrated,
+    authUserId,
+    router,
     knownInProgressTitles,
     knownNewSessionTitles,
     sessionUi,

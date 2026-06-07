@@ -67,7 +67,9 @@ async function fetchSummaries(
   token: string,
   baseUrl: string,
 ): Promise<ApiSummaryEntry[] | null> {
-  const res = await fetchWithTimeout(`${baseUrl}/api/account/chats?summary=1`, {
+  // Use bootstrap endpoint — returns sessions (same shape as ?summary=1) plus
+  // account data. Halves the login burst from 2 parallel calls to 1.
+  const res = await fetchWithTimeout(`${baseUrl}/api/account/bootstrap`, {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store",
   });
@@ -185,22 +187,9 @@ export async function syncChats(token: string, baseUrl: string, userId?: string)
     // cache is wiped before injection, preventing cross-user data leaks.
     if (userId) await setSyncMeta("last_synced_user", userId);
 
-    // Pre-warm message cache for all chats so every chat opens instantly from
-    // SQLite (Tier 2). Runs sequentially in background to avoid two problems
-    // that arise from firing all requests in parallel:
-    //   1. SQLite lock contention: concurrent upsertMessages writes block the
-    //      getCachedChatsForInjection read, leaving the sidebar stuck on
-    //      "Loading chats...".
-    //   2. HTTP connection pool exhaustion: mobile HTTP/1.1 allows ~6 concurrent
-    //      connections per host; parallel prewarm fills the pool and delays
-    //      request_thread syncs, leaving conversations stuck on "Loading...".
-    // Sequential execution avoids both: each call completes (or hits the 5-min
-    // cooldown and returns immediately) before the next starts.
-    void (async () => {
-      for (const r of chatRows) {
-        await syncChatContent(token, baseUrl, r.id).catch(() => undefined);
-      }
-    })();
+    // Chat content (TOAST) is fetched lazily when the user opens each thread,
+    // not eagerly at login. Prewarm-all at login caused 20+ sequential PostgREST
+    // connections that saturated the pool=10 and triggered Warp thread kills.
 
     // Process any images that were previously queued but not downloaded.
     void syncPendingImages();

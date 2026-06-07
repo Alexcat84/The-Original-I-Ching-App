@@ -1939,9 +1939,10 @@ export default function WebViewScreen() {
 
   const onLoadEnd = useCallback(() => {
     webReadyRef.current = true;
-    webViewRef.current?.injectJavaScript(
-      `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
-    );
+    // Note: __rnForceAccountRefresh intentionally NOT called here.
+    // The web bootstrap effect fires automatically on auth ready — triggering it again
+    // from onLoadEnd causes a redundant /api/account/me race on every WebView load.
+    // Keep __rnForceAccountRefresh only for post-purchase / RC-redemption / auth events.
     // Re-inject bottom inset in case it changed between first render and page load.
     webViewRef.current?.injectJavaScript(
       `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insetsBottomRef.current}px'); true;`
