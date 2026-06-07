@@ -1,8 +1,67 @@
-<!-- changelog:last-release:979d61a -->
+<!-- changelog:last-release:849fcf5 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [3.5.2] — 2026-06-07 | versionCode: 45 | Stage: Closed Testing
+
+### New
+- feat(db): production Supabase closure — migration 069, Fase 4 ops, recovery docs | commit: 9d40aef
+- feat(db+web): Phase 3 scale — RPC write path, thread=1, serial bootstrap | commit: 4455e7b
+- feat(db): Phase 2 TOAST split — consultation_content table (migrations 062-064) | commit: 828c894
+- feat(mobile): native auth bar + build warning fixes | commit: 215db01
+
+### Fix
+- fix(db): align verify_migrations 064 check with post-069 prod state | commit: 849fcf5
+- fix(db): stop sync trigger from wiping consultation_content on NULL | commit: bf33b59
+- fix(web+mobile): remove legacy TOAST fetch paths | commit: 32702c8
+- fix(db): migration 065 — correct pg_prewarm cron for consultation_content | commit: fa3ab63
+- fix(web): sort chat list by firstConsultationAt — matches displayed date | commit: 26c33bb
+- fix(web): skip iching:account-refresh on SIGNED_IN — bootstrap handles login hydration | commit: 89e4c26
+- fix(db): revoke anon/authenticated execute on sync_consultation_content — matches 054 pattern | commit: 2a25074
+- fix(db): remove VACUUM ANALYZE from 063 — cannot run inside transaction block | commit: 6a49b8d
+- fix(bootstrap): move optimistic lock to effect start — blocks duplicate fetch before it fires | commit: 08b49c7
+- fix(stability): eliminate post-consult /api/account/me burst + bootstrap re-run guard | commit: 90a4eb4
+- fix(stability): close 3 Phase 1 follow-up gaps — cache invalidation, mobile bootstrap, onLoadEnd refresh | commit: 16cc497
+- fix(db+api+web+mobile): Phase 1 — eliminate PostgREST connection burst (Supabase stability) | commit: da699cf
+- fix(db+api): definitive Warp timeout fix — 2s guard + eliminate all-sessions TOAST bomb | commit: ac0008b
+- fix(api): protect full thread fetch against Warp timeouts — parallel meta+content | commit: 982781a
+- fix(db): switch get_session_content_safe to SECURITY INVOKER — closes 0028/0029 | commit: 91b8e86
+- fix(db+api): bound TOAST read timeout to prevent Warp thread kills in production | commit: bf14613
+- fix(web): prevent Phase 1 from overwriting full thread content with summaries | commit: 88874f9
+- fix(prompt+context): narrative Encuadre, no-dash rule, TOAST-free consult context | commit: e35ab4c
+- fix(sync): await in-flight syncChatContent promise instead of discarding — v3.5.1 | commit: 3ffe15c
+- fix(interpretation): merge staging — transformed hexagram Chinese name fixes | commit: 508d3c0
+- fix(migrations): correct verify_migrations 051 syntax | commit: 816faa3
+- fix(web): persist tour-completed flag in public.users — migration 051 | commit: f81e3c9
+- fix(web): persist tour-completed flag to Supabase user_metadata across reinstalls | commit: 04205d7
+- fix(web): always show sign-in/sign-out button during auth loading window | commit: 7934ae1
+- fix(web): suppress white-frame flash on Next.js App Router navigation | commit: fa32b1c
+- fix(web+mobile): revert native auth bar + fix hydration gap in web bar | commit: 3d7b89b
+- fix(mobile): eliminate double auth bar | commit: 75fc3e0
+- fix(mobile): install expo-device — missing peer dep of expo-app-integrity | commit: 23a97d1
+- fix(ci): update package-lock.json — babel 7.29.7 drift | commit: 1aa8047
+
+### Docs
+- docs(db): P0 incident consultation_content wipe + permanent migration gates | commit: 99f32dc
+- docs(audit): Warp root cause closure + verification checklist | commit: 7a2778b
+- docs(audit): update SUPABASE_DB_STABILITY_AUDIT — Phase 2 implemented, migration instructions added | commit: cbccf39
+- docs(audit): close Phase 1 in SUPABASE_DB_STABILITY_AUDIT — status yellow, changelog updated | commit: 96a0e05
+
+### Maintenance
+- merge(main): Phase 2 TOAST split + Warp remediation (staging) | commit: d22a81c
+- merge(main): Phase 1 Supabase stability — complete (11 fixes) | commit: a203e5a
+- merge(staging): Phase 1 Supabase stability — 9 fixes applied | commit: 7e67f27
+- merge(main): definitive Warp timeout fix — 2s guard + exception handler | commit: fd5a08e
+- merge(main): close last unprotected TOAST read path in chats route | commit: 8a86e34
+- merge(main): two-phase loading, TOAST timeout guard, flash fix, narrative Encuadre — v3.5.1 | commit: d59e56b
+- merge(main): two-phase thread loading + P1 inFlight fix — v3.5.1 | commit: 1dc9b5b
+- chore(fallbacks): merge staging — remove old PNG pool | commit: 33de9e5
+- revert: undo user_metadata tour flag | commit: e413717
+- chore(release): bump version 3.4.8 / versionCode 41 | commit: 439a2bb
+
+---
 
 ## [3.5.1] — 2026-06-06 | versionCode: 44 | Stage: Closed Testing
 
@@ -1297,7 +1356,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.5.1 | 44 | 2026-06-06 | Closed Testing | 3 | two-phase thread loading — meta first, TOAST content in background; prevent TOAST-driven pool exhaustion + deduplicate sync requests |
+| 3.5.2 | 45 | 2026-06-07 | Closed Testing | 47 | production Supabase closure — migration 069, Fase 4 ops, recovery docs; Phase 3 scale — RPC write path, thread=1, serial bootstrap; Phase 2 TOAST split — consultation_content table (migrations 062-064) |
+| 3.5.1 | 44 | 2026-06-06 | Closed Testing | 0 | — |
 | 3.5.0 | 43 | 2026-06-06 | Closed Testing | 0 | — |
 | 3.4.9 | 42 | 2026-06-06 | Closed Testing | 0 | — |
 | 3.4.8 | 41 | 2026-06-05 | Closed Testing | 0 | — |
