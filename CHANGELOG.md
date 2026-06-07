@@ -1,8 +1,21 @@
-<!-- changelog:last-release:653fbc9 -->
+<!-- changelog:last-release:979d61a -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [3.5.1] — 2026-06-06 | versionCode: 44 | Stage: Closed Testing
+
+### New
+- feat(sync): two-phase thread loading — meta first, TOAST content in background | commit: 9ebc4f1
+
+### Fix
+- fix(db+mobile): prevent TOAST-driven pool exhaustion + deduplicate sync requests | commit: f38d52c
+
+### Maintenance
+- merge(staging): two-phase thread loading from feature/two-phase-thread-loading | commit: 979d61a
+
+---
 
 ## [3.5.0] — 2026-06-06 | versionCode: 43 | Stage: Closed Testing
 
@@ -1284,7 +1297,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.5.0 | 43 | 2026-06-06 | Closed Testing | 3 | remove compression trade-off from Encuadre + bump master_combined budget; enforce full hexagram chain in Encuadre for deep threads (up to 8 consultations) |
+| 3.5.1 | 44 | 2026-06-06 | Closed Testing | 3 | two-phase thread loading — meta first, TOAST content in background; prevent TOAST-driven pool exhaustion + deduplicate sync requests |
+| 3.5.0 | 43 | 2026-06-06 | Closed Testing | 0 | — |
 | 3.4.9 | 42 | 2026-06-06 | Closed Testing | 0 | — |
 | 3.4.8 | 41 | 2026-06-05 | Closed Testing | 0 | — |
 | 3.4.7 | 40 | 2026-06-04 | Closed Testing | 0 | — |

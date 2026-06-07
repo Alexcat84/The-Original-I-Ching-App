@@ -71,30 +71,69 @@ export async function upsertChats(chats: ChatRow[]): Promise<void> {
   });
 }
 
-export async function upsertMessages(rows: MessageRow[]): Promise<void> {
+export async function upsertMessages(
+  rows: MessageRow[],
+  opts?: { ignoreConflict?: boolean },
+): Promise<void> {
   if (rows.length === 0) return;
   const db = await getDb();
   await db.withTransactionAsync(async () => {
     for (const m of rows) {
+      if (opts?.ignoreConflict) {
+        // INSERT OR IGNORE: never overwrite an existing row that already has
+        // full interpretation content (used by Phase 1 meta sync).
+        await db.runAsync(
+          `INSERT OR IGNORE INTO messages
+             (id, chat_id, role, content, created_at, synced_at, image_url, image_sync_status)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          m.id, m.chat_id, m.role, m.content, m.created_at,
+          m.synced_at, m.image_url, m.image_sync_status,
+        );
+      } else {
+        await db.runAsync(
+          `INSERT INTO messages
+             (id, chat_id, role, content, created_at, synced_at, image_url, image_sync_status)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+           ON CONFLICT(id) DO UPDATE SET
+             content           = CASE WHEN excluded.content != '' THEN excluded.content ELSE messages.content END,
+             image_url         = excluded.image_url,
+             image_sync_status = CASE
+               WHEN messages.local_image_path IS NOT NULL THEN 'done'
+               ELSE excluded.image_sync_status
+             END`,
+          m.id, m.chat_id, m.role, m.content, m.created_at,
+          m.synced_at, m.image_url, m.image_sync_status,
+        );
+      }
+    }
+  });
+}
+
+/** Phase 2 content merge: updates interpretation + oracleBones in existing SQLite
+ *  message rows without touching any other fields. Uses json_set so the merge is
+ *  atomic at the SQLite level and never clobbers local_image_path or image_sync_status. */
+export async function mergeContentIntoMessages(
+  chatId: string,
+  contentRows: Array<{ consultationId: string; interpretation: string; oracleBones: unknown }>,
+): Promise<void> {
+  if (contentRows.length === 0) return;
+  const db = await getDb();
+  await db.withTransactionAsync(async () => {
+    for (const row of contentRows) {
       await db.runAsync(
-        `INSERT INTO messages
-           (id, chat_id, role, content, created_at, synced_at, image_url, image_sync_status)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-         ON CONFLICT(id) DO UPDATE SET
-           content           = CASE WHEN excluded.content != '' THEN excluded.content ELSE messages.content END,
-           image_url         = excluded.image_url,
-           image_sync_status = CASE
-             WHEN messages.local_image_path IS NOT NULL THEN 'done'
-             ELSE excluded.image_sync_status
-           END`,
-        m.id,
-        m.chat_id,
-        m.role,
-        m.content,
-        m.created_at,
-        m.synced_at,
-        m.image_url,
-        m.image_sync_status,
+        `UPDATE messages
+         SET content = json_set(
+           CASE WHEN content IS NULL OR content = '' THEN '{}' ELSE content END,
+           '$.interpretation', ?,
+           '$.oracleBones', json(?)
+         ),
+         synced_at = ?
+         WHERE id = ? AND chat_id = ?`,
+        row.interpretation,
+        row.oracleBones !== null ? JSON.stringify(row.oracleBones) : "null",
+        new Date().toISOString(),
+        row.consultationId,
+        chatId,
       );
     }
   });

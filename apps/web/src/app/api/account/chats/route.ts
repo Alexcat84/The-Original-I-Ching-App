@@ -5,6 +5,8 @@ import { apiError } from "@/lib/api-error";
 import {
   deleteUserSession,
   getUserSessionSummaries,
+  getUserSessionThreadContent,
+  getUserSessionThreadMeta,
   getUserSessionWithConsultations,
   getUserSessionsWithConsultations,
   isChatPersistenceConfigured,
@@ -27,21 +29,30 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const summary = url.searchParams.get("summary") === "1";
   const sessionId = url.searchParams.get("sessionId");
+  // Two-phase thread loading:
+  // ?meta=1   → metadata only (no interpretation/oracle_bones TOAST) — always <5ms
+  // ?content=1 → interpretation + oracle_bones only — may be slow on cold buffers
+  // no param  → full row (current / backward-compatible behavior)
+  const metaOnly = url.searchParams.get("meta") === "1";
+  const contentOnly = url.searchParams.get("content") === "1";
 
   if (sessionId) {
-    let entry;
     try {
-      entry = await getUserSessionWithConsultations(user.userId, sessionId);
+      if (metaOnly) {
+        const entry = await getUserSessionThreadMeta(user.userId, sessionId);
+        if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
+        return NextResponse.json({ session: entry.session, consultations: entry.consultations, phase: "meta" });
+      }
+      if (contentOnly) {
+        const rows = await getUserSessionThreadContent(user.userId, sessionId);
+        return NextResponse.json({ consultationContent: rows, phase: "content" });
+      }
+      const entry = await getUserSessionWithConsultations(user.userId, sessionId);
+      if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
+      return NextResponse.json({ session: entry.session, consultations: entry.consultations });
     } catch {
       return apiError(503, { error: "db_error", code: "DB_ERROR", action: "retry" });
     }
-    if (!entry) {
-      return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
-    }
-    return NextResponse.json({
-      session: entry.session,
-      consultations: entry.consultations,
-    });
   }
 
   if (summary) {
