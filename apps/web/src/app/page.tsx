@@ -2578,6 +2578,11 @@ export default function HomePage() {
     // Prevents cascading re-runs when deps like loadSessionThread recreate after
     // accountSessionLimit or accessToken updates (e.g., TOKEN_REFRESHED).
     if (authUserId && bootstrapCompletedForRef.current === authUserId) return;
+    // Optimistic lock: claim before the async starts so a second trigger (e.g.,
+    // Google OAuth fires two SIGNED_IN events in quick succession, or TOKEN_REFRESHED
+    // fires while bootstrap is in-flight) is blocked BEFORE launching a duplicate fetch.
+    // Cleared only in signOut — page reload also resets it via useRef(null) re-init.
+    if (authUserId) bootstrapCompletedForRef.current = authUserId;
     let cancelled = false;
     // Skip the loading spinner if sessions were already fetched from the server
     // (stale-while-revalidate: show existing data instantly, refresh silently in background)
@@ -2787,9 +2792,6 @@ export default function HomePage() {
         }
         if (!cancelled) {
           setSessionsServerHydrated(true);
-          // Mark bootstrap as done for this user — prevents redundant re-runs
-          // triggered by dep changes (loadSessionThread, accountSessionLimit, etc.)
-          if (authUserId) bootstrapCompletedForRef.current = authUserId;
         }
         setHistoryLoadError(null);
       } catch {
