@@ -819,6 +819,10 @@ export default function HomePage() {
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
   const isSigningOutRef = useRef(false);
+  /** Tracks the authUserId for which bootstrap already completed successfully.
+   *  Prevents redundant re-runs when deps like loadSessionThread recreate
+   *  without an actual user change (e.g., after accountSessionLimit updates). */
+  const bootstrapCompletedForRef = useRef<string | null>(null);
   /** User IDs already redirected to /auth/complete-legal this page session.
    *  Prevents a second redirect when TOKEN_REFRESHED fires while the DB write
    *  from the just-accepted consent hasn't propagated to the reader yet. */
@@ -1764,6 +1768,7 @@ export default function HomePage() {
     setHistoryLoadError(null);
     idleSignOutRef.current = false;
     pinnedLocalSessionIdRef.current = null;
+    bootstrapCompletedForRef.current = null;
   }, [authUserId]);
 
   const deleteAccount = useCallback(async () => {
@@ -2569,6 +2574,10 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!authReady || !accessToken || !sessionsHydrated) return;
+    // Guard: skip re-run if bootstrap already completed for this user in this session.
+    // Prevents cascading re-runs when deps like loadSessionThread recreate after
+    // accountSessionLimit or accessToken updates (e.g., TOKEN_REFRESHED).
+    if (authUserId && bootstrapCompletedForRef.current === authUserId) return;
     let cancelled = false;
     // Skip the loading spinner if sessions were already fetched from the server
     // (stale-while-revalidate: show existing data instantly, refresh silently in background)
@@ -2778,6 +2787,9 @@ export default function HomePage() {
         }
         if (!cancelled) {
           setSessionsServerHydrated(true);
+          // Mark bootstrap as done for this user — prevents redundant re-runs
+          // triggered by dep changes (loadSessionThread, accountSessionLimit, etc.)
+          if (authUserId) bootstrapCompletedForRef.current = authUserId;
         }
         setHistoryLoadError(null);
       } catch {
@@ -3850,27 +3862,11 @@ export default function HomePage() {
         Number.isFinite(data.remainingCredits)
       ) {
         setTokenBalance(data.remainingCredits);
-      } else {
-        // Fallback refresh for cases where response omits balance.
-        window.dispatchEvent(new Event("iching:account-refresh"));
       }
-      // Hard refresh from /api/account/me to guarantee UI/DB sync after consume_token.
-      if (accessToken) {
-        void fetch("/api/account/me", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          cache: "no-store",
-        })
-          .then((r) => (r.ok ? r.json() : null))
-          .then((me: { tokens_available?: number } | null) => {
-            if (
-              typeof me?.tokens_available === "number" &&
-              Number.isFinite(me.tokens_available)
-            ) {
-              setTokenBalance(me.tokens_available);
-            }
-          })
-          .catch(() => {});
-      }
+      // No fallback /api/account/me fetch here — /api/consult always returns
+      // remainingCredits. A hard fetch added 4 PostgREST calls per consultation
+      // and caused accountSessionLimit to change, which re-created loadSessionThread
+      // and re-ran the bootstrap effect in a cascade.
       const today = new Date().toISOString().slice(0, 10);
       setDailyCount((prev) => {
         const next = prev + 1;
