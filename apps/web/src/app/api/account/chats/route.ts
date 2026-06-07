@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Logger } from "next-axiom";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
+import { withSupabaseSemaphore } from "@/lib/supabase-admin";
 import {
   deleteUserSession,
   getUserSessionSummaries,
@@ -37,21 +38,21 @@ export async function GET(req: Request) {
   if (sessionId) {
     try {
       if (metaOnly) {
-        const entry = await getUserSessionThreadMeta(user.userId, sessionId);
+        const entry = await withSupabaseSemaphore(() => getUserSessionThreadMeta(user.userId, sessionId));
         if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
         return NextResponse.json({ session: entry.session, consultations: entry.consultations, phase: "meta" });
       }
       if (contentOnly) {
-        const rows = await getUserSessionThreadContent(user.userId, sessionId);
+        const rows = await withSupabaseSemaphore(() => getUserSessionThreadContent(user.userId, sessionId));
         return NextResponse.json({ consultationContent: rows, phase: "content" });
       }
       // Parallel fetch: meta (no TOAST, always fast) + content via RPC with
       // 8 s statement_timeout (protected against Warp thread kills on cold buffer).
       // If content fetch times out, consultations degrade to summary placeholders.
-      const [entry, contentRows] = await Promise.all([
+      const [entry, contentRows] = await withSupabaseSemaphore(() => Promise.all([
         getUserSessionThreadMeta(user.userId, sessionId),
         getUserSessionThreadContent(user.userId, sessionId).catch(() => []),
-      ]);
+      ]));
       if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
       const consultations = contentRows.length > 0
         ? entry.consultations.map((c) => {
@@ -67,7 +68,7 @@ export async function GET(req: Request) {
   }
 
   if (summary) {
-    const sessions = await getUserSessionSummaries(user.userId);
+    const sessions = await withSupabaseSemaphore(() => getUserSessionSummaries(user.userId));
     return NextResponse.json({
       sessions: sessions.map((entry) => ({
         session: entry.session,
