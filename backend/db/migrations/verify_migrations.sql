@@ -225,5 +225,40 @@ FROM (
         AND security_type  = 'INVOKER'
     )
 
+  UNION ALL
+  -- 059 · pg_cron prewarm job scheduled every 15 min
+  SELECT '059', 'pg_cron prewarm-consultations-toast job active',
+    EXISTS (
+      SELECT 1 FROM cron.job
+      WHERE jobname = 'prewarm-consultations-toast'
+        AND active  = true
+    )
+
+  UNION ALL
+  -- 060 · RLS initplan fix — WITH CHECK now set on all 9 FOR ALL / FOR UPDATE policies
+  -- (users_select_own is FOR SELECT → no with_check; the other 9 were updated by 060)
+  SELECT '060', 'RLS policies with_check set on all FOR ALL / FOR UPDATE policies (migration 060)',
+    (
+      SELECT COUNT(*) = 9
+      FROM   pg_policies
+      WHERE  schemaname  = 'public'
+        AND  policyname  IN (
+          'own_consultations', 'own_sessions', 'own_credits',
+          'users_update_own',
+          'own_recovery_codes', 'own_2fa_attempts',
+          'own_consultation_notes', 'own_pattern_analyses',
+          'own_2fa_email_codes'
+        )
+        AND  with_check IS NOT NULL
+    )
+
+  UNION ALL
+  -- 061 · FK indexes on consultation_notes, pattern_analyses, two_factor_recovery_codes
+  SELECT '061', 'FK indexes on consultation_notes / pattern_analyses / two_factor_recovery_codes',
+    EXISTS (SELECT 1 FROM pg_indexes WHERE schemaname='public' AND indexname='idx_consultation_notes_consultation_id')
+    AND EXISTS (SELECT 1 FROM pg_indexes WHERE schemaname='public' AND indexname='idx_consultation_notes_user_id')
+    AND EXISTS (SELECT 1 FROM pg_indexes WHERE schemaname='public' AND indexname='idx_pattern_analyses_user_id')
+    AND EXISTS (SELECT 1 FROM pg_indexes WHERE schemaname='public' AND indexname='idx_two_factor_recovery_codes_user_id')
+
 ) checks
 ORDER BY num;

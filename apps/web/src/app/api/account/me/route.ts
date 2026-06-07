@@ -5,6 +5,7 @@ import { apiError } from "@/lib/api-error";
 import { getAccountBillingSnapshot } from "@/lib/credits";
 import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
 import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
+import { withSupabaseSemaphore } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 
@@ -14,8 +15,8 @@ export async function GET(req: Request) {
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
-  const billing = await getAccountBillingSnapshot(user.userId);
-  const userProfile = await (async () => {
+  const billing = await withSupabaseSemaphore(() => getAccountBillingSnapshot(user.userId));
+  const userProfile = await withSupabaseSemaphore(async () => {
     const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
     const supabase = getSupabaseAdmin();
     if (!supabase) {
@@ -51,7 +52,7 @@ export async function GET(req: Request) {
       legalAccepted: Boolean(legalAcceptance?.id),
       tourV1Completed: Boolean(data?.tour_v1_completed_at),
     };
-  })();
+  });
   await log.flush();
   return NextResponse.json({
     id: user.userId,
