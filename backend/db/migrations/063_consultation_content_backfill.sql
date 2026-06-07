@@ -27,5 +27,7 @@ WHERE interpretation IS NOT NULL
    OR oracle_bones   IS NOT NULL
 ON CONFLICT (consultation_id) DO NOTHING;
 
--- Refresh planner stats so index scans kick in immediately.
-VACUUM ANALYZE public.consultation_content;
+-- NOTE: VACUUM ANALYZE cannot run inside a transaction block (Supabase SQL Editor wraps
+-- all statements in one).  After this migration completes, run separately:
+--   VACUUM ANALYZE public.consultation_content;
+-- This is optional — the planner will gather stats on the next autovacuum cycle anyway.
