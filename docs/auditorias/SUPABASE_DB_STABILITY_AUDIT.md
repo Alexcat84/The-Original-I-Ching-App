@@ -12,9 +12,9 @@
 
 | Campo | Valor |
 |-------|-------|
-| **Estado** | 🟡 FASE 1 CERRADA — pendiente Fase 2 (split TOAST) |
-| **Prioridad** | P1 — operación estable post-Fase 1; TOAST sigue siendo riesgo a largo plazo |
-| **Relacionado** | [SQLITE_CHAT_HYDRATION_AUDIT.md](../audits/SQLITE_CHAT_HYDRATION_AUDIT.md), [CHAT_THREAD_HYDRATION_AUDIT.md](../audits/CHAT_THREAD_HYDRATION_AUDIT.md), migraciones 052–061 |
+| **Estado** | 🟢 P0+P1 REMEDIADOS — migración 065 aplicada en prod; código legacy TOAST eliminado en staging; **P3 (066) gated** hasta smoke 10 min sin Warp |
+| **Prioridad** | P1 — TOAST duplicado en `consultations` (~270 MB) persiste hasta aplicar 066 + `VACUUM FULL` tras gate |
+| **Relacionado** | [SQLITE_CHAT_HYDRATION_AUDIT.md](../audits/SQLITE_CHAT_HYDRATION_AUDIT.md), [CHAT_THREAD_HYDRATION_AUDIT.md](../audits/CHAT_THREAD_HYDRATION_AUDIT.md), migraciones 052–066 |
 
 ---
 
@@ -171,7 +171,7 @@ Luego rutas como `/api/account/me` añaden 3 queries (`query_credits`, `users`, 
 | `getUserSessionSummaries` | Excluye |
 | `getUserSessionThreadMeta` | Excluye |
 | `getUserSessionThreadContent` | Solo vía RPC `get_session_content_safe` |
-| `getUserSessionsWithConsultations` | **Incluye TOAST — código muerto, sin callers** |
+| ~~`getUserSessionsWithConsultations`~~ | **Eliminado 2026-05-26** — incluía TOAST legacy |
 
 API bloquea listado bulk sin params (`400`) en `apps/web/src/app/api/account/chats/route.ts`.
 
@@ -297,7 +297,7 @@ sequenceDiagram
 | `060_rls_initplan_and_with_check.sql` | 10 políticas: `(select auth.uid())` + `WITH CHECK` |
 | `061_fk_indexes.sql` | Índices FK en tablas secundarias |
 
-**Código:** eliminar `getUserSessionsWithConsultations` / `getUserSessionWithConsultations` (legacy TOAST); actualizar comentarios stale en `session-store.ts`.
+**Código:** ~~eliminar `getUserSessionsWithConsultations` / `getUserSessionWithConsultations`~~ ✅ hecho (2026-05-26); comentario RPC timeout actualizado a 2s.
 
 ---
 
@@ -493,11 +493,101 @@ El plan **Pro** aporta más compute, egress y conexiones totales a Postgres, per
 |-------|---------|
 | 30–50 conexiones PostgREST | ~1 (web bootstrap) + ~2–3 (mobile: bootstrap + 1 thread lazy) |
 
-### Pendiente — Fase 2
+### Pendiente — Fase 2 (aplicar migraciones)
 
-- **Split TOAST**: migración `consultation_content` (tablas 056–058, no iniciadas) — elimina los 270 MB de TOAST coubicados en `consultations`. Reduce lectura de hilo de ~4 MB a ~1 KB para la parte meta.
-- **pg_prewarm manual**: ejecutar `SELECT pg_prewarm('consultations')` en ventana de mantenimiento para precalentar shared_buffers.
-- **Pool PostgREST**: abrir ticket a Supabase Support para solicitar aumento de pool > 10 en plan Pro.
+Las migraciones están en staging. Aplicar en Supabase SQL Editor en este orden:
+
+1. `062_consultation_content_table.sql` — tabla + RLS + índice
+2. `063_consultation_content_backfill.sql` — backfill + VACUUM ANALYZE
+3. `064_consultation_content_sync_and_read.sql` — trigger + función + prewarm retargeting
+
+Ver sección "Fase 2 — Cierre" más abajo para instrucciones de smoke test.
+
+---
+
+## Fase 2 — Cierre (2026-06-07)
+
+### Aplicado en rama `staging` (commit `828c894`)
+
+#### DB (3 migraciones)
+
+| Migración | Descripción |
+|-----------|-------------|
+| `062` | Tabla `consultation_content` — PK FK cascade, RLS `own_content` (initplan form), índice compuesto `(user_id, session_id)` |
+| `063` | Backfill: copia `interpretation` + `oracle_bones` de `consultations` → `consultation_content` para todas las filas no-null. `ON CONFLICT DO NOTHING` — reanudable. `VACUUM ANALYZE` al final |
+| `064` | Trigger `trg_sync_consultation_content` (AFTER INSERT OR UPDATE OF interpretation, oracle_bones ON consultations) + función `sync_consultation_content` (SECURITY DEFINER) + `get_session_content_safe` retargeteada a `consultation_content` + pg_cron prewarm retargeteado a `consultation_content` |
+
+#### Sin cambios TypeScript
+
+`getUserSessionThreadContent` llama `get_session_content_safe` vía RPC — misma firma, misma respuesta. Cero cambios en `session-store.ts` ni en API routes.
+
+#### Arquitectura post-Fase 2
+
+```
+consultations (heap ~152 kB, TOAST ~270 MB)          ← consultas meta NUNCA tocan TOAST
+  ↓ trigger (INSERT/UPDATE)
+consultation_content (heap pequeño, TOAST ~270 MB)   ← único origen de get_session_content_safe
+  ↑
+get_session_content_safe (SECURITY INVOKER, 2s timeout, EXCEPTION → [])
+```
+
+Ambas tablas tienen TOAST hasta Fase 3. El beneficio inmediato: páginas TOAST de `consultation_content` son las únicas que el pg_cron job calienta → más probable estar en shared_buffers al abrir un chat.
+
+#### Instrucciones de aplicación
+
+1. **Dashboard Supabase → SQL Editor** — ejecutar cada migración en orden (062 → 063 → 064).
+2. **Verificar** con `backend/db/migrations/verify_migrations.sql` — los checks 062, 063, 064 deben devolver `true`.
+3. **Smoke test**:
+   - Login → abrir chat → hilo carga con interpretación completa (no solo summary placeholder)
+   - Consultar `SELECT COUNT(*) FROM consultation_content` — debe igualar filas no-null de `consultations`
+   - Logs Vercel: 0 `Warp server error` al abrir chats
+
+#### Pendiente — Fase 3 (post-estabilización, gated)
+
+- Migración **`066_consultations_toast_reclaim.sql`** en repo (NULL TOAST + instrucciones `VACUUM FULL`)
+- **Gate:** deploy P0+P1 + smoke 10 min con 0 Warp errors
+- Ejecutar `VACUUM FULL public.consultations` en ventana de mantenimiento
+- Evaluar DROP de columnas si todos los callers usan `consultation_content`
+
+---
+
+## 12. Remediación Warp — P0/P1 (2026-05-26)
+
+### Causas raíz confirmadas y cerradas
+
+| Causa | Fix | Estado |
+|-------|-----|--------|
+| pg_cron prewarm TOAST `consultations` (~20 s / 15 min) | Migración **065** — job `prewarm-consultation-content`, single-arg `pg_prewarm` (~328 kB) | ✅ Aplicada prod |
+| Sintaxis inválida en 064 (`'buffer'/'toast'/'main'`) | 064 parcheada en repo + 065 unschedule/reschedule | ✅ |
+| SELECT legacy con `interpretation`/`oracle_bones` | Eliminadas funciones muertas en `session-store.ts`; mobile/web sin fallback full-fetch | ✅ Código staging |
+| Pool PostgREST = 10 | Ticket Support (P4) — no bloqueante tras P0+P1 | ⏳ Ops |
+
+**Nota Supabase:** `pg_prewarm(regclass, 'main')` falla con `invalid prewarm type`; la API válida en este proyecto es **single-arg** (patrón migración 059).
+
+### Verificación MCP (prod, post-065)
+
+| Check | Resultado |
+|-------|-----------|
+| `verify_migrations` check 065 | ✅ `ok = true` |
+| Job activo | `prewarm-consultation-content` (jobid 4), command incluye `consultation_content`, **no** `consultations` |
+| Job roto `prewarm-consultations-toast` | ✅ no activo |
+| Prewarm manual single-arg | ✅ ~26 blocks, sub-segundo |
+| `get_session_content_safe` | 22 calls, **~39 ms** mean |
+| Security advisors | 0 WARN |
+| Performance advisors | 0 WARN (solo INFO: unused indexes, auth % connections) |
+| `pg_stat_statements` legacy SELECT | 13 calls históricos pre-fix — **0 nuevos** tras deploy código |
+
+Próximo run programado de cron: primer ciclo `:00/:15/:30/:45` tras reschedule; runs previos jobid 1 (~20 s, consultations TOAST) y jobid 2 (invalid fork) documentados en `cron.job_run_details`.
+
+### Smoke test manual (10 min) — checklist post-deploy staging
+
+1. Login → **1** `GET /api/account/bootstrap` → silencio en logs
+2. Abrir chat → `?meta=1` + `?content=1` / RPC (no full `?sessionId=` sin params)
+3. Nueva consulta → fila en `consultation_content` vía trigger
+4. Logs PostgREST: **0** `Warp server error`
+5. APK (si rebuild): `sync-service` solo `fetchChatContent`, sin `fetchChatDetail`
+
+Tras smoke limpio → aplicar **066** Step 1 (NULL) + **VACUUM FULL** en ventana de mantenimiento.
 
 ---
 
@@ -508,3 +598,5 @@ El plan **Pro** aporta más compute, egress y conexiones totales a Postgres, per
 | 2026-06-07 | Auditoría inicial + plan de implementación en 4 fases |
 | 2026-06-07 | Fase 1 cerrada — 6 code fixes + 3 migraciones + 3 gaps de seguimiento |
 | 2026-06-07 | Sección 11: validación Supabase (MCP advisors + docs + skill) — veredicto APROBADO CON AJUSTES MENORES |
+| 2026-06-07 | Fase 2 implementada — migraciones 062-064 en staging, pendiente aplicar en Supabase |
+| 2026-05-26 | P0 migración 065 aplicada prod; P1 código legacy TOAST eliminado; 066 en repo (gated); sección 12 verificación MCP |

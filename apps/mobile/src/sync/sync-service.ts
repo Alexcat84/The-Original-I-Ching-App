@@ -78,27 +78,6 @@ async function fetchSummaries(
   return Array.isArray(body.sessions) ? body.sessions : [];
 }
 
-async function fetchChatDetail(
-  token: string,
-  baseUrl: string,
-  sessionId: string,
-): Promise<{ session: ApiSession; consultations: ApiConsultation[] } | null> {
-  const res = await fetchWithTimeout(
-    `${baseUrl}/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
-    { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" },
-  );
-  if (!res.ok) return null;
-  const body = (await res.json()) as {
-    session?: ApiSession;
-    consultations?: ApiConsultation[];
-  };
-  if (!body.session) return null;
-  return {
-    session: body.session,
-    consultations: Array.isArray(body.consultations) ? body.consultations : [],
-  };
-}
-
 // Phase 1: fetch metadata only (no interpretation/oracle_bones TOAST).
 // Uses a short 8s timeout — this path should always complete in <100ms.
 const FETCH_META_TIMEOUT_MS = 8_000;
@@ -256,34 +235,14 @@ export function syncChatContent(
         if (elapsed < CHAT_CONTENT_COOLDOWN_MS) return;
       }
 
-      // Try targeted content-only fetch first (only TOAST columns, smaller payload).
-      // Fall back to full fetch if the endpoint isn't available (older deploy).
-      let detail: { session: ApiSession; consultations: ApiConsultation[] } | null = null;
       const contentRows = await fetchChatContent(token, baseUrl, sessionId);
       if (contentRows && contentRows.length > 0) {
-        // Merge interpretation + oracle_bones into existing SQLite rows.
         await mergeContentIntoMessages(sessionId, contentRows);
-      } else {
-        // Fallback: full fetch (backward compatible with older API versions).
-        detail = await fetchChatDetail(token, baseUrl, sessionId);
-        if (!detail || detail.consultations.length === 0) return;
-        const now = new Date().toISOString();
-        const msgRows: MessageRow[] = detail.consultations.map((c) => ({
-          id: c.consultationId,
-          chat_id: sessionId,
-          role: "assistant",
-          content: JSON.stringify(c),
-          created_at: msToIso(c.createdAt),
-          synced_at: now,
-          image_url: (c.imageUrl as string) || null,
-          local_image_path: null,
-          image_sync_status: c.imageUrl ? "pending" : "none",
-        }));
-        await upsertMessages(msgRows);
+        await setSyncMeta(syncKey, new Date().toISOString());
+        void syncPendingImages();
       }
-
-      await setSyncMeta(syncKey, new Date().toISOString());
-      void syncPendingImages();
+      // No fallback to full ?sessionId= fetch — meta is already in SQLite from
+      // syncChatMeta; retry on next request_thread if content RPC fails/empty.
     } catch {
       // Non-fatal
     } finally {

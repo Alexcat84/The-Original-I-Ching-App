@@ -2533,18 +2533,67 @@ export default function HomePage() {
       const { sessionId } = session;
       void (async () => {
         try {
-          const res = await fetch(
-            `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
+          const planCap = Math.max(1, accountSessionLimitRef.current);
+          const metaRes = await fetch(
+            `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&meta=1`,
             { headers: { Authorization: `Bearer ${tok}` }, cache: "no-store" },
           );
-          if (!res.ok) return; // 404 = genuinely absent; silently leave empty
-          const payload = (await res.json()) as AccountChatSessionResponse;
-          if (!payload?.session || !Array.isArray(payload.consultations)) return;
-          const planCap = Math.max(1, accountSessionLimitRef.current);
-          const thread = payload.consultations.map((c) =>
-            mapApiConsultationToItem(c, payload.session.publicId, planCap),
+          if (!metaRes.ok) return;
+          const metaPayload = (await metaRes.json()) as AccountChatSessionResponse;
+          if (!metaPayload?.session || !Array.isArray(metaPayload.consultations)) return;
+          if (metaPayload.consultations.length === 0) return;
+
+          const partialThread = metaPayload.consultations.map((c) =>
+            mapApiConsultationToItem(c, metaPayload.session.publicId, planCap),
           );
-          if (thread.length === 0) return;
+
+          const contentRes = await fetch(
+            `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&content=1`,
+            { headers: { Authorization: `Bearer ${tok}` }, cache: "no-store" },
+          );
+          let thread = partialThread;
+          if (contentRes.ok) {
+            type ContentRow = {
+              consultationId: string;
+              interpretation: string;
+              oracleBones: {
+                pattern_id: number;
+                verdict: OracleBonesVerdict;
+                positive_charge: string;
+                negative_charge: string;
+                medium: "turtle" | "ox";
+              } | null;
+            };
+            const contentPayload = (await contentRes.json()) as {
+              consultationContent?: ContentRow[];
+            };
+            if (contentPayload.consultationContent?.length) {
+              const contentMap = new Map(
+                contentPayload.consultationContent.map((r) => [r.consultationId, r]),
+              );
+              thread = partialThread.map((item) => {
+                const content = contentMap.get(item.consultationId);
+                if (!content) return item;
+                return {
+                  ...item,
+                  interpretation: content.interpretation || item.interpretation,
+                  ...(content.oracleBones != null
+                    ? {
+                        oracleBones: {
+                          patternId: content.oracleBones.pattern_id,
+                          verdict: content.oracleBones.verdict,
+                          affirmsPositive: content.oracleBones.verdict.startsWith("auspicious"),
+                          positiveCharge: content.oracleBones.positive_charge,
+                          negativeCharge: content.oracleBones.negative_charge,
+                          medium: content.oracleBones.medium,
+                        },
+                      }
+                    : {}),
+                };
+              });
+            }
+          }
+
           setSessions((prev) =>
             prev.map((s) =>
               s.localId !== localId
@@ -4242,7 +4291,10 @@ export default function HomePage() {
               <p className="chat-drawer-empty">{drawerText.noSaved}</p>
             ) : null}
             {[...visibleSessionsListed]
-              .sort((a, b) => b.updatedAt - a.updatedAt)
+              .sort((a, b) =>
+                (b.firstConsultationAt ?? b.updatedAt) -
+                (a.firstConsultationAt ?? a.updatedAt),
+              )
               .map((session) => {
                 const isDeleting = pendingDeletedSessionLocalIds.includes(
                   session.localId,

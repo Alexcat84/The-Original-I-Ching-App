@@ -260,5 +260,93 @@ FROM (
     AND EXISTS (SELECT 1 FROM pg_indexes WHERE schemaname='public' AND indexname='idx_pattern_analyses_user_id')
     AND EXISTS (SELECT 1 FROM pg_indexes WHERE schemaname='public' AND indexname='idx_two_factor_recovery_codes_user_id')
 
+  UNION ALL
+  -- 062 · consultation_content table with RLS and composite index
+  SELECT '062', 'consultation_content table exists with RLS policy own_content and user_session index',
+    EXISTS (
+      SELECT 1 FROM information_schema.tables
+      WHERE table_schema = 'public' AND table_name = 'consultation_content'
+    )
+    AND EXISTS (
+      SELECT 1 FROM pg_policies
+      WHERE schemaname = 'public'
+        AND tablename  = 'consultation_content'
+        AND policyname = 'own_content'
+    )
+    AND EXISTS (
+      SELECT 1 FROM pg_indexes
+      WHERE schemaname = 'public'
+        AND indexname  = 'idx_consultation_content_user_session'
+    )
+
+  UNION ALL
+  -- 063 · backfill completed — consultation_content row count matches source
+  SELECT '063', 'consultation_content backfill: row count >= non-null rows in consultations',
+    (
+      SELECT COUNT(*) FROM public.consultation_content
+    ) >= (
+      SELECT COUNT(*) FROM public.consultations
+      WHERE interpretation IS NOT NULL OR oracle_bones IS NOT NULL
+    )
+
+  UNION ALL
+  -- 064 · trigger + updated function + prewarm retargeted
+  SELECT '064', 'sync trigger on consultations + get_session_content_safe reads consultation_content + prewarm job active',
+    EXISTS (
+      SELECT 1 FROM pg_trigger t
+      JOIN pg_class c ON c.oid = t.tgrelid
+      WHERE c.relname  = 'consultations'
+        AND t.tgname   = 'trg_sync_consultation_content'
+        AND t.tgenabled <> 'D'
+    )
+    AND EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'sync_consultation_content'
+    )
+    AND NOT EXISTS (
+      SELECT 1 FROM information_schema.role_routine_grants
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'sync_consultation_content'
+        AND grantee IN ('anon', 'authenticated', 'PUBLIC')
+        AND privilege_type = 'EXECUTE'
+    )
+    AND EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'get_session_content_safe'
+        AND security_type  = 'INVOKER'
+    )
+    AND NOT EXISTS (
+      SELECT 1 FROM information_schema.role_routine_grants
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'get_session_content_safe'
+        AND grantee IN ('anon', 'authenticated', 'PUBLIC')
+        AND privilege_type = 'EXECUTE'
+    )
+    AND EXISTS (
+      SELECT 1 FROM cron.job
+      WHERE jobname IN ('prewarm-consultation-content', 'prewarm-consultations-toast')
+        AND active  = true
+    )
+
+  UNION ALL
+  -- 065 · pg_cron prewarm fixed — consultation_content only, never consultations TOAST
+  SELECT '065', 'prewarm-consultation-content job active with correct pg_prewarm syntax',
+    EXISTS (
+      SELECT 1 FROM cron.job
+      WHERE jobname = 'prewarm-consultation-content'
+        AND active = true
+        AND command LIKE '%consultation_content%'
+        AND command NOT LIKE '%pg_prewarm(''consultations''%'
+        AND command NOT LIKE '%buffer%'
+        AND command NOT LIKE '%, ''main''%'
+    )
+    AND NOT EXISTS (
+      SELECT 1 FROM cron.job
+      WHERE jobname = 'prewarm-consultations-toast'
+        AND active = true
+    )
+
 ) checks
 ORDER BY num;

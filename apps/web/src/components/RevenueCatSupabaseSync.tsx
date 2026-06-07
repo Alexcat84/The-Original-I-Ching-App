@@ -62,9 +62,15 @@ export default function RevenueCatSupabaseSync() {
       syncRevenueCatWithSupabaseSession(session);
     });
 
-    const { data: sub } = sb.auth.onAuthStateChange((_event, session) => {
+    const { data: sub } = sb.auth.onAuthStateChange((event, session) => {
       syncRevenueCatWithSupabaseSession(session);
-      window.dispatchEvent(new Event("iching:account-refresh"));
+      // SIGNED_IN is handled by the bootstrap effect in page.tsx — firing
+      // iching:account-refresh here would add a duplicate /api/account/me call
+      // (4 more PostgREST queries) on top of the bootstrap, saturating pool=10.
+      // Keep the refresh for TOKEN_REFRESHED (post-purchase) and other events.
+      if (event !== "SIGNED_IN") {
+        window.dispatchEvent(new Event("iching:account-refresh"));
+      }
     });
 
     return () => {
