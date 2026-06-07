@@ -1852,6 +1852,49 @@ export default function HomePage() {
       }
       setHistoryLoadError(null);
       try {
+        // Phase 1: meta-only fetch (no TOAST interpretation/oracle_bones).
+        // Renders thread structure in ~10ms so the user sees the correct message
+        // count before the full interpretation arrives. Non-fatal on failure.
+        const metaRes = await fetch(
+          `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&meta=1`,
+          { headers: { Authorization: `Bearer ${accessToken}` }, cache: "no-store" },
+        );
+        if (metaRes.ok) {
+          const metaPayload = (await metaRes.json()) as AccountChatSessionResponse;
+          if (metaPayload?.session && metaPayload.consultations.length > 0) {
+            const planCap = Math.max(1, accountSessionLimit);
+            const partialThread = metaPayload.consultations.map((c) =>
+              mapApiConsultationToItem(c, metaPayload.session.publicId, planCap),
+            );
+            setSessions((prev) =>
+              prev.map((s) => {
+                if (s.localId !== localId) return s;
+                return {
+                  ...s,
+                  title:
+                    metaPayload.session.title &&
+                    !knownNewSessionTitles.has(metaPayload.session.title) &&
+                    !knownInProgressTitles.has(metaPayload.session.title)
+                      ? metaPayload.session.title
+                      : (partialThread[0]?.question.slice(0, 60) ??
+                        sessionUi.defaultSessionTitle),
+                  sessionId: metaPayload.session.sessionId,
+                  publicSessionId: metaPayload.session.publicId,
+                  threadMaxDepth: planCap,
+                  thread: partialThread,
+                  messageCount: Math.max(partialThread.length, s.messageCount),
+                  updatedAt: partialThread.at(-1)?.createdAt ?? s.updatedAt,
+                  firstConsultationAt: partialThread[0]?.createdAt ?? s.firstConsultationAt,
+                };
+              }),
+            );
+            // Clear loading after Phase 1 — user sees thread structure immediately.
+            setHistoryLoading(false);
+            setLoadingSessionLocalId((curr) => (curr === localId ? null : curr));
+          }
+        }
+
+        // Phase 2: full content fetch (TOAST columns — interpretation + oracle_bones).
         const res = await fetch(
           `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}`,
           {
