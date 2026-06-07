@@ -1884,67 +1884,9 @@ export default function HomePage() {
       }
       setHistoryLoadError(null);
       try {
-        // Phase 1: meta-only fetch (no TOAST interpretation/oracle_bones).
-        // Renders thread structure in ~10ms so the user sees the correct message
-        // count before the full interpretation arrives. Non-fatal on failure.
-        const metaRes = await fetch(
-          `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&meta=1`,
-          { headers: { Authorization: `Bearer ${accessToken}` }, cache: "no-store" },
-        );
-        if (metaRes.ok) {
-          const metaPayload = (await metaRes.json()) as AccountChatSessionResponse;
-          if (metaPayload?.session && metaPayload.consultations.length > 0) {
-            const planCap = Math.max(1, accountSessionLimit);
-            const partialThread = metaPayload.consultations.map((c) =>
-              mapApiConsultationToItem(c, metaPayload.session.publicId, planCap),
-            );
-            setSessions((prev) =>
-              prev.map((s) => {
-                if (s.localId !== localId) return s;
-                // Only replace thread content if Phase 1 adds new rows not yet in
-                // state. If state already has as many or more rows (e.g. from a
-                // warm IndexedDB load), keep the existing full interpretations —
-                // overwriting them with summary-only placeholders causes a visible
-                // flash where all responses disappear before Phase 2 restores them.
-                const addedNewRows = partialThread.length > s.thread.length;
-                return {
-                  ...s,
-                  title:
-                    metaPayload.session.title &&
-                    !knownNewSessionTitles.has(metaPayload.session.title) &&
-                    !knownInProgressTitles.has(metaPayload.session.title)
-                      ? metaPayload.session.title
-                      : (s.thread[0]?.question.slice(0, 60) ??
-                        partialThread[0]?.question.slice(0, 60) ??
-                        sessionUi.defaultSessionTitle),
-                  sessionId: metaPayload.session.sessionId,
-                  publicSessionId: metaPayload.session.publicId,
-                  threadMaxDepth: planCap,
-                  thread: addedNewRows ? partialThread : s.thread,
-                  messageCount: Math.max(partialThread.length, s.messageCount),
-                  updatedAt: addedNewRows
-                    ? (partialThread.at(-1)?.createdAt ?? s.updatedAt)
-                    : s.updatedAt,
-                  firstConsultationAt: addedNewRows
-                    ? (partialThread[0]?.createdAt ?? s.firstConsultationAt)
-                    : s.firstConsultationAt,
-                };
-              }),
-            );
-            // Clear loading after Phase 1 — user sees thread structure immediately.
-            setHistoryLoading(false);
-            setLoadingSessionLocalId((curr) => (curr === localId ? null : curr));
-          }
-        }
-
-        // Phase 2: content-only fetch (TOAST columns — interpretation + oracle_bones).
-        // Use ?content=1 to avoid re-fetching meta already loaded in Phase 1.
         const res = await fetch(
-          `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&content=1`,
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-            cache: "no-store",
-          },
+          `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&thread=1`,
+          { headers: { Authorization: `Bearer ${accessToken}` }, cache: "no-store" },
         );
         if (!res.ok) {
           const err = parseApiErrorPayload(await res.text());
@@ -1964,45 +1906,33 @@ export default function HomePage() {
           );
           return;
         }
-        // ?content=1 returns { consultationContent: ContentRow[], phase: "content" }
-        type ContentRow = {
-          consultationId: string;
-          interpretation: string;
-          oracleBones: {
-            pattern_id: number;
-            verdict: OracleBonesVerdict;
-            positive_charge: string;
-            negative_charge: string;
-            medium: "turtle" | "ox";
-          } | null;
-        };
-        const payload = (await res.json()) as { consultationContent: ContentRow[]; phase?: string };
-        if (!payload?.consultationContent?.length) return;
-        const contentMap = new Map(payload.consultationContent.map((r) => [r.consultationId, r]));
+        const payload = (await res.json()) as AccountChatSessionResponse;
+        if (!payload?.session || payload.consultations.length === 0) return;
+        const planCap = Math.max(1, accountSessionLimit);
+        const fullThread = payload.consultations.map((c) =>
+          mapApiConsultationToItem(c, payload.session.publicId, planCap),
+        );
         setSessions((prev) =>
           prev.map((s) => {
             if (s.localId !== localId) return s;
-            const mergedThread = s.thread.map((item) => {
-              const content = contentMap.get(item.consultationId);
-              if (!content) return item;
-              return {
-                ...item,
-                interpretation: content.interpretation || item.interpretation,
-                ...(content.oracleBones != null
-                  ? {
-                      oracleBones: {
-                        patternId: content.oracleBones.pattern_id,
-                        verdict: content.oracleBones.verdict,
-                        affirmsPositive: content.oracleBones.verdict.startsWith("auspicious"),
-                        positiveCharge: content.oracleBones.positive_charge,
-                        negativeCharge: content.oracleBones.negative_charge,
-                        medium: content.oracleBones.medium,
-                      },
-                    }
-                  : {}),
-              };
-            });
-            return { ...s, thread: mergedThread };
+            return {
+              ...s,
+              title:
+                payload.session.title &&
+                !knownNewSessionTitles.has(payload.session.title) &&
+                !knownInProgressTitles.has(payload.session.title)
+                  ? payload.session.title
+                  : (s.thread[0]?.question.slice(0, 60) ??
+                    fullThread[0]?.question.slice(0, 60) ??
+                    sessionUi.defaultSessionTitle),
+              sessionId: payload.session.sessionId,
+              publicSessionId: payload.session.publicId,
+              threadMaxDepth: planCap,
+              thread: fullThread,
+              messageCount: Math.max(fullThread.length, s.messageCount),
+              updatedAt: fullThread.at(-1)?.createdAt ?? s.updatedAt,
+              firstConsultationAt: fullThread[0]?.createdAt ?? s.firstConsultationAt,
+            };
           }),
         );
         setHistoryLoadError(null);
@@ -2534,65 +2464,18 @@ export default function HomePage() {
       void (async () => {
         try {
           const planCap = Math.max(1, accountSessionLimitRef.current);
-          const metaRes = await fetch(
-            `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&meta=1`,
+          const threadRes = await fetch(
+            `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&thread=1`,
             { headers: { Authorization: `Bearer ${tok}` }, cache: "no-store" },
           );
-          if (!metaRes.ok) return;
-          const metaPayload = (await metaRes.json()) as AccountChatSessionResponse;
-          if (!metaPayload?.session || !Array.isArray(metaPayload.consultations)) return;
-          if (metaPayload.consultations.length === 0) return;
+          if (!threadRes.ok) return;
+          const payload = (await threadRes.json()) as AccountChatSessionResponse;
+          if (!payload?.session || !Array.isArray(payload.consultations)) return;
+          if (payload.consultations.length === 0) return;
 
-          const partialThread = metaPayload.consultations.map((c) =>
-            mapApiConsultationToItem(c, metaPayload.session.publicId, planCap),
+          const thread = payload.consultations.map((c) =>
+            mapApiConsultationToItem(c, payload.session.publicId, planCap),
           );
-
-          const contentRes = await fetch(
-            `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&content=1`,
-            { headers: { Authorization: `Bearer ${tok}` }, cache: "no-store" },
-          );
-          let thread = partialThread;
-          if (contentRes.ok) {
-            type ContentRow = {
-              consultationId: string;
-              interpretation: string;
-              oracleBones: {
-                pattern_id: number;
-                verdict: OracleBonesVerdict;
-                positive_charge: string;
-                negative_charge: string;
-                medium: "turtle" | "ox";
-              } | null;
-            };
-            const contentPayload = (await contentRes.json()) as {
-              consultationContent?: ContentRow[];
-            };
-            if (contentPayload.consultationContent?.length) {
-              const contentMap = new Map(
-                contentPayload.consultationContent.map((r) => [r.consultationId, r]),
-              );
-              thread = partialThread.map((item) => {
-                const content = contentMap.get(item.consultationId);
-                if (!content) return item;
-                return {
-                  ...item,
-                  interpretation: content.interpretation || item.interpretation,
-                  ...(content.oracleBones != null
-                    ? {
-                        oracleBones: {
-                          patternId: content.oracleBones.pattern_id,
-                          verdict: content.oracleBones.verdict,
-                          affirmsPositive: content.oracleBones.verdict.startsWith("auspicious"),
-                          positiveCharge: content.oracleBones.positive_charge,
-                          negativeCharge: content.oracleBones.negative_charge,
-                          medium: content.oracleBones.medium,
-                        },
-                      }
-                    : {}),
-                };
-              });
-            }
-          }
 
           setSessions((prev) =>
             prev.map((s) =>

@@ -82,6 +82,25 @@ async function fetchSummaries(
 // Uses a short 8s timeout — this path should always complete in <100ms.
 const FETCH_META_TIMEOUT_MS = 8_000;
 
+async function fetchChatThread(
+  token: string,
+  baseUrl: string,
+  sessionId: string,
+): Promise<{ session: ApiSession; consultations: ApiConsultation[] } | null> {
+  const res = await fetchWithTimeout(
+    `${baseUrl}/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&thread=1`,
+    { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" },
+  );
+  if (!res.ok) return null;
+  const body = (await res.json()) as { session?: ApiSession; consultations?: ApiConsultation[] };
+  if (!body.session) return null;
+  return {
+    session: body.session,
+    consultations: Array.isArray(body.consultations) ? body.consultations : [],
+  };
+}
+
+// Legacy two-phase fetchers — kept for older APK builds; prefer syncChatThread.
 async function fetchChatMeta(
   token: string,
   baseUrl: string,
@@ -175,6 +194,57 @@ export async function syncChats(token: string, baseUrl: string, userId?: string)
   } catch {
     // Non-fatal
   }
+}
+
+/** Unified thread sync — one HTTP request, full meta + TOAST content.
+ *  Replaces syncChatMeta + syncChatContent pair (Phase 3 scale). */
+export function syncChatThread(
+  token: string,
+  baseUrl: string,
+  sessionId: string,
+  onReady?: (rows: MessageRow[]) => void,
+): Promise<void> {
+  const existing = inFlightContentSyncs.get(sessionId);
+  if (existing) return existing;
+
+  const work = (async () => {
+    try {
+      const syncKey = `chat_content_synced:${sessionId}`;
+      const lastSync = await getSyncMeta(syncKey);
+      if (lastSync) {
+        const elapsed = Date.now() - new Date(lastSync).getTime();
+        if (elapsed < CHAT_CONTENT_COOLDOWN_MS) return;
+      }
+
+      const thread = await fetchChatThread(token, baseUrl, sessionId);
+      if (!thread || thread.consultations.length === 0) return;
+
+      const now = new Date().toISOString();
+      const rows: MessageRow[] = thread.consultations.map((c) => ({
+        id: c.consultationId,
+        chat_id: sessionId,
+        role: "assistant",
+        content: JSON.stringify(c),
+        created_at: msToIso(c.createdAt),
+        synced_at: now,
+        image_url: (c.imageUrl as string) || null,
+        local_image_path: null,
+        image_sync_status: c.imageUrl ? "pending" : "none",
+      }));
+
+      await upsertMessages(rows);
+      await setSyncMeta(syncKey, now);
+      onReady?.(rows);
+      void syncPendingImages();
+    } catch {
+      // Non-fatal
+    } finally {
+      inFlightContentSyncs.delete(sessionId);
+    }
+  })();
+
+  inFlightContentSyncs.set(sessionId, work);
+  return work;
 }
 
 /** Tier 3 Phase 1 — fast metadata sync (no TOAST).

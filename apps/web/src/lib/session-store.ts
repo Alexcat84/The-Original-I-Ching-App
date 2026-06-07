@@ -3,7 +3,7 @@ import type {
   OracleType,
 } from "@iching-oracle/context-engine";
 import { getHexagramRecordByNumber } from "@iching-oracle/iching-data";
-import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin, withSupabaseSemaphore } from "@/lib/supabase-admin";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { randomBytes } from "node:crypto";
 
@@ -232,43 +232,94 @@ export async function upsertSessionAndConsultation(params: {
     mutation_rule: params.consultation.mutationRule,
     translator: params.consultation.translator ?? null,
     category: params.consultation.category,
-    interpretation: params.consultation.interpretation,
     image_url: params.consultation.imageUrl,
     thumbnail_url:
       params.consultation.imageFallbackUrl ?? params.consultation.imageUrl,
     is_public: false,
   };
+
   let createdConsultation: { public_sharing_id?: string } | null = null;
   let createConsultationError: string | null = null;
-  const withOraclePayload = {
-    ...consultationBasePayload,
-    oracle_type: params.consultation.oracleType,
-    oracle_bones: params.consultation.oracleBones ?? null,
-  };
-  const withOracleRes = await supabase
-    .from("consultations")
-    .insert(withOraclePayload)
-    .select("public_sharing_id")
-    .single();
-  if (!withOracleRes.error) {
-    createdConsultation = withOracleRes.data;
-  } else {
-    const msg = withOracleRes.error.message ?? "";
-    // Backward-compatible path for DBs missing oracle_bones/oracle_type columns.
-    if (msg.includes("oracle_type") || msg.includes("oracle_bones")) {
-      const fallbackRes = await supabase
-        .from("consultations")
-        .insert(consultationBasePayload)
-        .select("public_sharing_id")
-        .single();
-      if (!fallbackRes.error) {
-        createdConsultation = fallbackRes.data;
-      } else {
-        createConsultationError = fallbackRes.error.message;
+
+  const persistResult = await withSupabaseSemaphore(async () => {
+    const { data: publicId, error: rpcError } = await supabase.rpc(
+      "persist_consultation_with_content",
+      {
+        p_user_id: params.userId,
+        p_id: params.consultation.consultationId,
+        p_session_id: params.consultation.sessionId,
+        p_session_position: params.consultation.sessionPosition,
+        p_question: params.consultation.question,
+        p_language: params.consultation.language,
+        p_lines: params.consultation.lines,
+        p_primary_hexagram_number: params.consultation.primaryHexagram,
+        p_primary_hexagram_name: params.consultation.primaryHexagramName,
+        p_primary_hexagram_chinese: params.consultation.primaryHexagramChinese,
+        p_transformed_hexagram_number: params.consultation.transformedHexagram,
+        p_transformed_hexagram_name: params.consultation.transformedHexagramName,
+        p_changing_lines: params.consultation.changingLines,
+        p_mutation_rule: params.consultation.mutationRule,
+        p_translator: params.consultation.translator ?? null,
+        p_category: params.consultation.category,
+        p_interpretation_summary: params.consultation.interpretationSummary ?? null,
+        p_image_url: params.consultation.imageUrl,
+        p_thumbnail_url:
+          params.consultation.imageFallbackUrl ?? params.consultation.imageUrl,
+        p_oracle_type: params.consultation.oracleType,
+        p_interpretation: params.consultation.interpretation,
+        p_oracle_bones: params.consultation.oracleBones ?? null,
+        p_is_public: false,
+      },
+    );
+    if (rpcError) {
+      const msg = rpcError.message ?? "";
+      // Fallback for DBs without migration 067 (staging lag).
+      if (
+        msg.includes("persist_consultation_with_content") ||
+        msg.includes("Could not find the function")
+      ) {
+        const withOraclePayload = {
+          ...consultationBasePayload,
+          interpretation: params.consultation.interpretation,
+          oracle_type: params.consultation.oracleType,
+          oracle_bones: params.consultation.oracleBones ?? null,
+        };
+        const withOracleRes = await supabase
+          .from("consultations")
+          .insert(withOraclePayload)
+          .select("public_sharing_id")
+          .single();
+        if (!withOracleRes.error) {
+          return { public_sharing_id: withOracleRes.data?.public_sharing_id };
+        }
+        const fallbackMsg = withOracleRes.error.message ?? "";
+        if (fallbackMsg.includes("oracle_type") || fallbackMsg.includes("oracle_bones")) {
+          const fallbackRes = await supabase
+            .from("consultations")
+            .insert({
+              ...consultationBasePayload,
+              interpretation: params.consultation.interpretation,
+            })
+            .select("public_sharing_id")
+            .single();
+          if (fallbackRes.error) {
+            return { error: fallbackRes.error.message };
+          }
+          return { public_sharing_id: fallbackRes.data?.public_sharing_id };
+        }
+        return { error: fallbackMsg };
       }
-    } else {
-      createConsultationError = msg;
+      return { error: msg };
     }
+    return { public_sharing_id: publicId as string | null };
+  });
+
+  if ("error" in persistResult && persistResult.error) {
+    createConsultationError = persistResult.error;
+  } else {
+    createdConsultation = {
+      public_sharing_id: persistResult.public_sharing_id ?? undefined,
+    };
   }
   if (createConsultationError) {
     throw new Error(`consultation_create_failed:${createConsultationError}`);
@@ -577,6 +628,40 @@ export async function getUserSessionThreadContent(
     interpretation: row.interpretation ?? "",
     oracleBones: row.oracle_bones ?? null,
   }));
+}
+
+/** Merge TOAST content rows into meta-only consultations (shared by thread=1 API). */
+export function mergeConsultationsWithContent(
+  consultations: StoredConsultation[],
+  contentRows: ThreadContentRow[],
+): StoredConsultation[] {
+  if (contentRows.length === 0) return consultations;
+  const contentMap = new Map(contentRows.map((r) => [r.consultationId, r]));
+  return consultations.map((c) => {
+    const content = contentMap.get(c.consultationId);
+    if (!content) return c;
+    return {
+      ...c,
+      interpretation: content.interpretation || c.interpretation,
+      oracleBones: content.oracleBones ?? c.oracleBones,
+    };
+  });
+}
+
+/** Single-pass thread load: meta then content, sequential (one semaphore slot in API). */
+export async function getUserSessionThreadUnified(
+  userId: string,
+  sessionId: string,
+): Promise<UserSessionWithConsultations | null> {
+  const entry = await getUserSessionThreadMeta(userId, sessionId);
+  if (!entry) return null;
+  const contentRows = await getUserSessionThreadContent(userId, sessionId).catch(
+    () => [] as ThreadContentRow[],
+  );
+  return {
+    session: entry.session,
+    consultations: mergeConsultationsWithContent(entry.consultations, contentRows),
+  };
 }
 
 export async function deleteUserSession(

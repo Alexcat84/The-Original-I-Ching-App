@@ -46,7 +46,7 @@ import { rateLimitByKey, getUpstashRedis } from "@/lib/rate-limit";
 import { verifyIntegrityToken } from "@/lib/play-integrity";
 import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
-import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin, withSupabaseSemaphore } from "@/lib/supabase-admin";
 import {
   getUserSessionThreadMeta,
   isSharingPersistenceAvailable,
@@ -594,7 +594,9 @@ export async function POST(req: Request) {
     if (isPersistableUuid(sessionId) && getSupabaseAdmin()) {
       // Use meta-only query (no TOAST interpretation column) — the context builder
       // only needs interpretation_summary, which lives inline and is always fast.
-      const sessionMeta = await getUserSessionThreadMeta(authedUserId, sessionId);
+      const sessionMeta = await withSupabaseSemaphore(() =>
+        getUserSessionThreadMeta(authedUserId, sessionId),
+      );
       if (sessionMeta) {
         previousRows = mapStoredConsultationsToRows(sessionMeta.consultations);
         authorizedDepth = previousRows.length;
@@ -630,7 +632,9 @@ export async function POST(req: Request) {
 
     let remainingAfterConsume = adminUnlimitedCredits ? 999_999 : -1;
     if (!adminUnlimitedCredits) {
-      remainingAfterConsume = await consumeToken(authedUserId, tokensToConsume);
+      remainingAfterConsume = await withSupabaseSemaphore(() =>
+        consumeToken(authedUserId, tokensToConsume),
+      );
       if (remainingAfterConsume === -1) {
         log.info("insufficient_credits", { userId: shortUserId(authedUserId), tier: tierKey, oracleMode });
         await log.flush();

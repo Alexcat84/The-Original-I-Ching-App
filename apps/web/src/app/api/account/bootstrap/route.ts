@@ -12,7 +12,8 @@ export const runtime = "nodejs";
 /**
  * Single login bootstrap call — replaces the concurrent /api/account/me +
  * /api/account/chats?summary=1 pair fired at page load.
- * Runs billing, user-profile, legal, and session-summary queries in parallel.
+ * Runs billing, profile, legal, and session-summary queries sequentially
+ * (one PostgREST connection at a time within a single semaphore slot).
  */
 export async function GET(req: Request) {
   const user = await getAuthenticatedUser(req);
@@ -25,30 +26,38 @@ export async function GET(req: Request) {
 
   const persistenceOk = isChatPersistenceConfigured();
 
-  const [billing, sessions, profileRow, legalRow] = await withSupabaseSemaphore(() => Promise.all([
-    getAccountBillingSnapshot(user.userId),
-    persistenceOk
-      ? getUserSessionSummaries(user.userId).catch(() => [])
-      : Promise.resolve([]),
-    supabase
-      ? supabase
-          .from("users")
-          .select("two_factor_enabled, two_factor_method, display_name, is_admin, tour_v1_completed_at")
-          .eq("id", user.userId)
-          .maybeSingle()
-          .then((r) => r.data)
-      : Promise.resolve(null),
-    supabase
-      ? supabase
-          .from("user_legal_acceptances")
-          .select("id")
-          .eq("user_id", user.userId)
-          .eq("terms_version", CURRENT_TERMS_VERSION)
-          .eq("privacy_version", CURRENT_PRIVACY_VERSION)
-          .maybeSingle()
-          .then((r) => r.data)
-      : Promise.resolve(null),
-  ]));
+  const { billing, sessions, profileRow, legalRow } = await withSupabaseSemaphore(async () => {
+    const billingSnapshot = await getAccountBillingSnapshot(user.userId);
+    const sessionSummaries = persistenceOk
+      ? await getUserSessionSummaries(user.userId).catch(() => [])
+      : [];
+    const profile = supabase
+      ? (
+          await supabase
+            .from("users")
+            .select("two_factor_enabled, two_factor_method, display_name, is_admin, tour_v1_completed_at")
+            .eq("id", user.userId)
+            .maybeSingle()
+        ).data
+      : null;
+    const legal = supabase
+      ? (
+          await supabase
+            .from("user_legal_acceptances")
+            .select("id")
+            .eq("user_id", user.userId)
+            .eq("terms_version", CURRENT_TERMS_VERSION)
+            .eq("privacy_version", CURRENT_PRIVACY_VERSION)
+            .maybeSingle()
+        ).data
+      : null;
+    return {
+      billing: billingSnapshot,
+      sessions: sessionSummaries,
+      profileRow: profile,
+      legalRow: legal,
+    };
+  });
 
   return NextResponse.json({
     // ── Account (same shape as /api/account/me) ───────────────────────────

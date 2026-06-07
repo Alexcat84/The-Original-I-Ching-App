@@ -12,8 +12,8 @@
 
 | Campo | Valor |
 |-------|-------|
-| **Estado** | 🟢 P0+P1 REMEDIADOS — migración 065 aplicada en prod; código legacy TOAST eliminado en staging; **P3 (066) gated** hasta smoke 10 min sin Warp |
-| **Prioridad** | P1 — TOAST duplicado en `consultations` (~270 MB) persiste hasta aplicar 066 + `VACUUM FULL` tras gate |
+| **Estado** | 🟢 Fase 3 implementada — 067+066 Step 1 en prod; código en rama `fix/supabase-stability-phase3-scale`; **VACUUM FULL manual** pendiente (~274 MB hasta reclaim) |
+| **Prioridad** | P4 ticket pool PostgREST >10 antes de marketing >1000 WAU pico |
 | **Relacionado** | [SQLITE_CHAT_HYDRATION_AUDIT.md](../audits/SQLITE_CHAT_HYDRATION_AUDIT.md), [CHAT_THREAD_HYDRATION_AUDIT.md](../audits/CHAT_THREAD_HYDRATION_AUDIT.md), migraciones 052–066 |
 
 ---
@@ -544,10 +544,65 @@ Ambas tablas tienen TOAST hasta Fase 3. El beneficio inmediato: páginas TOAST d
 
 #### Pendiente — Fase 3 (post-estabilización, gated)
 
-- Migración **`066_consultations_toast_reclaim.sql`** en repo (NULL TOAST + instrucciones `VACUUM FULL`)
-- **Gate:** deploy P0+P1 + smoke 10 min con 0 Warp errors
-- Ejecutar `VACUUM FULL public.consultations` en ventana de mantenimiento
-- Evaluar DROP de columnas si todos los callers usan `consultation_content`
+- ~~Migración **`066_consultations_toast_reclaim.sql`**~~ ✅ Aplicada prod 2026-06-07 + `VACUUM FULL`
+- ~~Migración **`067_persist_consultation_rpc.sql`**~~ ✅ Aplicada prod 2026-06-07
+- Evaluar DROP de columnas (`068`) si todos los callers usan `consultation_content` exclusivamente
+
+---
+
+## 13. Fase 3 — Escala DB (1000 WAU) — 2026-06-07
+
+**Rama:** `fix/supabase-stability-phase3-scale`
+
+### Objetivo
+
+Soportar ~1000 usuarios activos/semana sin saturar PostgREST pool=10: ≤3 conexiones por acción de usuario, 0 Warp en operación normal.
+
+### DB (agente Supabase MCP — prod `wgborqkfnxfarkdaotsd`)
+
+| Migración | Descripción | Estado |
+|-----------|-------------|--------|
+| **067** | RPC `persist_consultation_with_content` — INSERT meta sin TOAST + content atómico; trigger sync **UPDATE-only**; `interpretation` nullable | ✅ Aplicada |
+| **066** | NULL legacy TOAST en `consultations` | ✅ Step 1 aplicada; **`VACUUM FULL` manual** en SQL Editor (no transacción) |
+
+### Código
+
+| Cambio | Archivo |
+|--------|---------|
+| RPC write path + fallback legacy | `apps/web/src/lib/session-store.ts` |
+| Semáforo en meta lookup + `consume_token` | `apps/web/src/app/api/consult/route.ts` |
+| Bootstrap secuencial (1 conexión a la vez) | `apps/web/src/app/api/account/bootstrap/route.ts` |
+| `?thread=1` unificado | `apps/web/src/app/api/account/chats/route.ts` |
+| Cliente web + fallback RN | `apps/web/src/app/page.tsx` |
+| `syncChatThread` (1 HTTP) | `apps/mobile/src/sync/sync-service.ts`, `apps/mobile/app/index.tsx` |
+| verify_migrations check 067 | `backend/db/migrations/verify_migrations.sql` |
+
+### Métricas objetivo (1000 WAU)
+
+| Métrica | Target |
+|---------|--------|
+| Conexiones PostgREST / login | ≤2 (bootstrap serial) |
+| Conexiones / abrir chat | ≤2 (thread=1 serial interno) |
+| Conexiones / consulta (tramo DB) | ≤2 serializadas |
+| Warp smoke 10 min | 0 |
+| Meta SELECT p95 | <100 ms |
+| `get_session_content_safe` p95 | <500 ms |
+| Nuevas consultas sin TOAST en `consultations` | ✅ vía RPC 067 |
+
+### P4 — Ticket Supabase Support (pendiente ops manual)
+
+Abrir en [Supabase Dashboard → Support](https://supabase.com/dashboard/support/new) (plan Pro):
+
+- **Proyecto:** `wgborqkfnxfarkdaotsd` (The Original I Ching, ca-central-1)
+- **Asunto:** PostgREST connection pool limit for chat-heavy app
+- **Detalle:** App Next.js + mobile WebView; burst post-login reducido a bootstrap + thread=1; pool PostgREST fijo en 10 con Warp timeouts bajo ~5 usuarios concurrentes con acciones simultáneas. Objetivo 1000 WAU (~10–20 concurrent peak). Solicitar guidance para aumentar pool PostgREST o compute tier.
+- **Evidencia adjunta:** logs PostgREST `Thread killed by timeout manager`, `Connection Pool initialized with a maximum size of 10 connections`
+
+### Deploy
+
+1. Merge rama → `main` → Vercel production
+2. Smoke manual: login, abrir chat (`thread=1`), nueva consulta
+3. MCP `get_logs` api + postgres — 0× HTTP 500 en buffer
 
 ---
 
@@ -600,3 +655,4 @@ Tras smoke limpio → aplicar **066** Step 1 (NULL) + **VACUUM FULL** en ventana
 | 2026-06-07 | Sección 11: validación Supabase (MCP advisors + docs + skill) — veredicto APROBADO CON AJUSTES MENORES |
 | 2026-06-07 | Fase 2 implementada — migraciones 062-064 en staging, pendiente aplicar en Supabase |
 | 2026-05-26 | P0 migración 065 aplicada prod; P1 código legacy TOAST eliminado; 066 en repo (gated); sección 12 verificación MCP |
+| 2026-06-07 | Fase 3 escala DB — 067 RPC + 066 reclaim aplicados prod; código thread=1, bootstrap serial, consult semáforo; sección 13 |

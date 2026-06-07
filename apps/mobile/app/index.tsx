@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases, { type PurchasesPackage } from "react-native-purchases";
 import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, softDeleteChat, clearAllData, getSyncMeta, setSyncMeta, deleteSyncMeta, deleteSyncMetaByPrefix, getChatMessageCount, type RnCachedChatEntry } from "@/src/db/chat-store";
-import { syncChats, syncChatContent, syncChatMeta } from "@/src/sync/sync-service";
+import { syncChats, syncChatThread } from "@/src/sync/sync-service";
 import * as FileSystem from "expo-file-system";
 import * as Linking from "expo-linking";
 import * as MediaLibrary from "expo-media-library";
@@ -2513,40 +2513,23 @@ export default function WebViewScreen() {
                 return;
               }
 
-              // Phase 1 — fast meta sync: no TOAST columns, always <100ms.
-              // Fills missing skeleton rows (INSERT OR IGNORE) so the user sees
-              // the correct message count before the full interpretation arrives.
-              await syncChatMeta(accessTokenRef.current, BASE_URL, sessionId).catch(() => undefined);
-              const afterMeta = await getPagedThread(sessionId).catch(() => cached);
-              if (afterMeta.length !== cached.length || afterMeta[0]?.id !== cached[0]?.id) {
-                dispatchThread(afterMeta);
-              }
-
-              // Phase 2 — full TOAST content sync: fetches interpretation + oracle_bones.
-              // If Phase 1 added new skeleton rows, bypass the cooldown so syncChatContent
-              // always fetches their full interpretation immediately.
-              if (afterMeta.length > cached.length) {
-                await deleteSyncMeta(`chat_content_synced:${sessionId}`).catch(() => undefined);
-              } else {
-                // Staleness fallback: SQLite row count < what the chat header advertises.
+              // Unified thread sync — one API call (thread=1), full content.
+              if (cached.length > 0) {
                 const expectedCount = await getChatMessageCount(sessionId).catch(() => null);
-                if (expectedCount !== null && afterMeta.length < expectedCount) {
+                if (expectedCount !== null && cached.length < expectedCount) {
                   await deleteSyncMeta(`chat_content_synced:${sessionId}`).catch(() => undefined);
                 }
               }
-              await syncChatContent(accessTokenRef.current, BASE_URL, sessionId).catch(() => undefined);
-              const updated = await getPagedThread(sessionId).catch(() => []);
-              // Dispatch if row count changed OR content changed (Phase 2 fills interpretation
-              // in existing rows — same IDs but different content JSON).
+              await syncChatThread(accessTokenRef.current, BASE_URL, sessionId).catch(() => undefined);
+              const updated = await getPagedThread(sessionId).catch(() => cached);
               if (
-                updated.length !== afterMeta.length ||
-                updated[0]?.id !== afterMeta[0]?.id ||
-                updated[0]?.content !== afterMeta[0]?.content
+                updated.length !== cached.length ||
+                updated[0]?.id !== cached[0]?.id ||
+                updated[0]?.content !== cached[0]?.content
               ) {
                 dispatchThread(updated);
               }
 
-              // After both phases: if still empty, clear the loading spinner.
               if (updated.length === 0 && cached.length === 0) {
                 const notFoundPayloadStr = JSON.stringify(JSON.stringify({ localId }));
                 webViewRef.current?.injectJavaScript(

@@ -226,12 +226,13 @@ FROM (
     )
 
   UNION ALL
-  -- 059 · pg_cron prewarm job scheduled every 15 min
-  SELECT '059', 'pg_cron prewarm-consultations-toast job active',
-    EXISTS (
+  -- 059 · pg_cron enabled (job superseded by 065 — do not require prewarm-consultations-toast)
+  SELECT '059', 'pg_cron extension enabled (prewarm job superseded by 065)',
+    EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron')
+    AND EXISTS (
       SELECT 1 FROM cron.job
-      WHERE jobname = 'prewarm-consultations-toast'
-        AND active  = true
+      WHERE jobname = 'prewarm-consultation-content'
+        AND active = true
     )
 
   UNION ALL
@@ -346,6 +347,44 @@ FROM (
       SELECT 1 FROM cron.job
       WHERE jobname = 'prewarm-consultations-toast'
         AND active = true
+    )
+
+  UNION ALL
+  -- 066 · legacy TOAST columns nulled on consultations (Step 1; VACUUM FULL is manual Step 2)
+  SELECT '066', 'consultations.interpretation and oracle_bones all NULL (TOAST reclaim Step 1)',
+    NOT EXISTS (
+      SELECT 1 FROM public.consultations
+      WHERE interpretation IS NOT NULL
+         OR oracle_bones IS NOT NULL
+    )
+    AND EXISTS (
+      SELECT 1 FROM public.consultation_content
+    )
+
+  UNION ALL
+  -- 067 · persist_consultation_with_content RPC + trigger UPDATE-only
+  SELECT '067', 'persist_consultation_with_content RPC (service_role only) + sync trigger UPDATE-only',
+    EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'persist_consultation_with_content'
+        AND security_type  = 'DEFINER'
+    )
+    AND NOT EXISTS (
+      SELECT 1 FROM information_schema.role_routine_grants
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'persist_consultation_with_content'
+        AND grantee IN ('anon', 'authenticated', 'PUBLIC')
+        AND privilege_type = 'EXECUTE'
+    )
+    AND EXISTS (
+      SELECT 1 FROM pg_trigger t
+      JOIN pg_class c ON c.oid = t.tgrelid
+      WHERE c.relname = 'consultations'
+        AND t.tgname  = 'trg_sync_consultation_content'
+        AND t.tgenabled <> 'D'
+        AND (t.tgtype & 4) = 0
+        AND (t.tgtype & 16) <> 0
     )
 
 ) checks

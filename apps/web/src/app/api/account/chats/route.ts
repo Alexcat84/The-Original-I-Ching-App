@@ -8,6 +8,8 @@ import {
   getUserSessionSummaries,
   getUserSessionThreadContent,
   getUserSessionThreadMeta,
+  getUserSessionThreadUnified,
+  mergeConsultationsWithContent,
   isChatPersistenceConfigured,
 } from "@/lib/session-store";
 
@@ -28,15 +30,23 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const summary = url.searchParams.get("summary") === "1";
   const sessionId = url.searchParams.get("sessionId");
-  // Two-phase thread loading:
+  // Unified thread load (preferred): meta + content in one request, sequential DB ops.
+  const threadUnified = url.searchParams.get("thread") === "1";
+  // Two-phase thread loading (legacy APK):
   // ?meta=1   → metadata only (no interpretation/oracle_bones TOAST) — always <5ms
   // ?content=1 → interpretation + oracle_bones only — may be slow on cold buffers
-  // no param  → full row (current / backward-compatible behavior)
   const metaOnly = url.searchParams.get("meta") === "1";
   const contentOnly = url.searchParams.get("content") === "1";
 
   if (sessionId) {
     try {
+      if (threadUnified) {
+        const entry = await withSupabaseSemaphore(() =>
+          getUserSessionThreadUnified(user.userId, sessionId),
+        );
+        if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
+        return NextResponse.json({ session: entry.session, consultations: entry.consultations, phase: "thread" });
+      }
       if (metaOnly) {
         const entry = await withSupabaseSemaphore(() => getUserSessionThreadMeta(user.userId, sessionId));
         if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
@@ -49,18 +59,13 @@ export async function GET(req: Request) {
       // Parallel fetch: meta (no TOAST, always fast) + content via RPC with
       // 8 s statement_timeout (protected against Warp thread kills on cold buffer).
       // If content fetch times out, consultations degrade to summary placeholders.
-      const [entry, contentRows] = await withSupabaseSemaphore(() => Promise.all([
-        getUserSessionThreadMeta(user.userId, sessionId),
-        getUserSessionThreadContent(user.userId, sessionId).catch(() => []),
-      ]));
+      const [entry, contentRows] = await withSupabaseSemaphore(async () => {
+        const meta = await getUserSessionThreadMeta(user.userId, sessionId);
+        const content = await getUserSessionThreadContent(user.userId, sessionId).catch(() => []);
+        return [meta, content] as const;
+      });
       if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
-      const consultations = contentRows.length > 0
-        ? entry.consultations.map((c) => {
-            const content = contentRows.find((r) => r.consultationId === c.consultationId);
-            if (!content) return c;
-            return { ...c, interpretation: content.interpretation || c.interpretation, oracleBones: content.oracleBones ?? c.oracleBones };
-          })
-        : entry.consultations;
+      const consultations = mergeConsultationsWithContent(entry.consultations, contentRows);
       return NextResponse.json({ session: entry.session, consultations });
     } catch {
       return apiError(503, { error: "db_error", code: "DB_ERROR", action: "retry" });
