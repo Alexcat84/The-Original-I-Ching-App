@@ -488,7 +488,17 @@ INSTRUCTIONS:
 - Use family_home ONLY when the question clearly concerns household, parents, children, partner dynamics at home, or domestic life;
   for abstract or general life questions prefer general, spiritual_inner, decision_path, or career_work as appropriate.
 - ${hasContext
-    ? "OBLIGATORIO — En el «Encuadre de la pregunta», el PRIMER PÁRRAFO presenta el recorrido completo de la sesión: menciona TODOS los hexagramas aparecidos desde el inicio (en orden cronológico), qué movimiento interior o exterior describieron juntos, y cómo esta nueva tirada se inserta en ese recorrido. No te limites a la consulta inmediatamente anterior. Sin encabezado separado; prosa fluida. 2–3 oraciones. VARIEDAD LITERARIA OBLIGATORIA: adopta una posición narrativa distinta a la de los «Encuadres» anteriores ya presentes en el contexto — puede ser observacional, dramática, íntima, filosófica, estacional, espacial, etc. Nunca reutilices el mismo patrón de apertura ni las mismas metáforas centrales; si en tiradas anteriores del hilo ya aparecieron palabras como «arco», «hilo», «camino», «trazado» o «tejido», elige un encuadre completamente diferente. IMPORTANTE: el resumen estructurado de la sesión ya vive en el bloque [SNAPSHOT_START]…[SNAPSHOT_END] al final de la respuesta — el Encuadre NO es ese resumen; es una re-entrada literaria original con vocabulario propio. Bajo ninguna circunstancia copies ni parafrasees el vocabulario o la estructura del SNAPSHOT en el cuerpo del Encuadre."
+    ? `OBLIGATORIO — El «Encuadre de la pregunta» tiene DOS PARTES. Escríbelas en un único párrafo corrido, sin subtítulos.
+
+PARTE 1 — CADENA CRONOLÓGICA (NON-NEGOTIABLE — no la recortes aunque la respuesta sea muy larga):
+La PRIMERA ORACIÓN enumera TODOS los hexagramas de la sesión en orden cronológico exacto, desde el primero hasta el actual, usando el formato: "#N Nombre → #N Nombre → … → ahora #N Nombre". Si hay 7 hexagramas previos, los 7 aparecen. Si la sesión tiene 8 consultas, la cadena tiene 8 eslabones. No comprimas («los anteriores», «la sesión previa»): nombra cada uno por número y nombre. EXCEPCIÓN DE FIREWALL: esta cadena de números y nombres está PERMITIDA y REQUERIDA en el Encuadre — el SNAPSHOT VOCABULARY FIREWALL prohíbe términos internos de análisis («arc», «hilo conductor», «trazado», «session arc») pero NUNCA prohíbe los números y nombres de hexagramas, que son datos del oráculo, no vocabulario de resumen interno.
+
+PARTE 2 — RE-ENTRADA LITERARIA (2–3 oraciones):
+A continuación del guion cronológico, 2–3 oraciones de prosa narrativa que describan qué movimiento interior o exterior dibujaron esos hexagramas juntos y cómo esta nueva tirada se inserta en ese recorrido. VARIEDAD LITERARIA OBLIGATORIA: adopta una posición narrativa distinta a la de los «Encuadres» anteriores ya presentes en el contexto — puede ser observacional, dramática, íntima, filosófica, estacional, espacial, etc. Nunca reutilices el mismo patrón de apertura ni las mismas metáforas centrales; si en tiradas anteriores del hilo ya aparecieron palabras como «arco», «hilo», «camino», «trazado» o «tejido», elige un encuadre completamente diferente.
+
+LONGITUD TOTAL DEL ENCUADRE: 1 oración (PARTE 1) + 2–3 oraciones (PARTE 2) = 3–4 oraciones en total. Si la respuesta global necesita comprimirse, recorta las secciones intermedias (análisis de imagen, síntesis de líneas) — NUNCA la PARTE 1 del Encuadre.
+
+IMPORTANTE: el resumen estructurado de la sesión ya vive en [SNAPSHOT_START]…[SNAPSHOT_END] — el Encuadre NO es ese resumen. La PARTE 1 (cadena de hexagramas) sí está permitida porque es un ancla de orientación para el usuario, no el SNAPSHOT.`
     : "Primera consulta de la sesión: no inventes continuidad."
   }
 - Interpret ONLY with the texts given.
