@@ -110,10 +110,15 @@ EXCEPTION WHEN OTHERS THEN NULL;
 END$$;
 
 SELECT cron.schedule(
-  'prewarm-consultations-toast',
+  'prewarm-consultation-content',
   '*/15 * * * *',
   $$
-    SELECT pg_prewarm('consultation_content', 'buffer', 'main');
-    SELECT pg_prewarm('consultation_content', 'buffer', 'toast');
+    SELECT pg_prewarm('consultation_content'::regclass);
+    SELECT pg_prewarm(c.reltoastrelid)
+    FROM pg_class c
+    JOIN pg_namespace n ON n.oid = c.relnamespace
+    WHERE c.relname = 'consultation_content'
+      AND n.nspname = 'public'
+      AND c.reltoastrelid <> 0;
   $$
 );

@@ -326,8 +326,26 @@ FROM (
     )
     AND EXISTS (
       SELECT 1 FROM cron.job
-      WHERE jobname = 'prewarm-consultations-toast'
+      WHERE jobname IN ('prewarm-consultation-content', 'prewarm-consultations-toast')
         AND active  = true
+    )
+
+  UNION ALL
+  -- 065 · pg_cron prewarm fixed — consultation_content only, never consultations TOAST
+  SELECT '065', 'prewarm-consultation-content job active with correct pg_prewarm syntax',
+    EXISTS (
+      SELECT 1 FROM cron.job
+      WHERE jobname = 'prewarm-consultation-content'
+        AND active = true
+        AND command LIKE '%consultation_content%'
+        AND command NOT LIKE '%pg_prewarm(''consultations''%'
+        AND command NOT LIKE '%buffer%'
+        AND command NOT LIKE '%, ''main''%'
+    )
+    AND NOT EXISTS (
+      SELECT 1 FROM cron.job
+      WHERE jobname = 'prewarm-consultations-toast'
+        AND active = true
     )
 
 ) checks
