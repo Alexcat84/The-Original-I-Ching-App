@@ -4242,7 +4242,10 @@ export default function HomePage() {
               <p className="chat-drawer-empty">{drawerText.noSaved}</p>
             ) : null}
             {[...visibleSessionsListed]
-              .sort((a, b) => b.updatedAt - a.updatedAt)
+              .sort((a, b) =>
+                (b.firstConsultationAt ?? b.updatedAt) -
+                (a.firstConsultationAt ?? a.updatedAt),
+              )
               .map((session) => {
                 const isDeleting = pendingDeletedSessionLocalIds.includes(
                   session.localId,
