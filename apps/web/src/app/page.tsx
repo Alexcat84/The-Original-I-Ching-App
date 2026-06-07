@@ -823,6 +823,8 @@ export default function HomePage() {
    *  Prevents redundant re-runs when deps like loadSessionThread recreate
    *  without an actual user change (e.g., after accountSessionLimit updates). */
   const bootstrapCompletedForRef = useRef<string | null>(null);
+  /** True while a bootstrap fetch is in-flight — blocks duplicate concurrent runs. */
+  const bootstrapInFlightRef = useRef(false);
   /** User IDs already redirected to /auth/complete-legal this page session.
    *  Prevents a second redirect when TOKEN_REFRESHED fires while the DB write
    *  from the just-accepted consent hasn't propagated to the reader yet. */
@@ -1769,6 +1771,7 @@ export default function HomePage() {
     idleSignOutRef.current = false;
     pinnedLocalSessionIdRef.current = null;
     bootstrapCompletedForRef.current = null;
+    bootstrapInFlightRef.current = false;
   }, [authUserId]);
 
   const deleteAccount = useCallback(async () => {
@@ -2528,11 +2531,8 @@ export default function HomePage() {
     // Prevents cascading re-runs when deps like loadSessionThread recreate after
     // accountSessionLimit or accessToken updates (e.g., TOKEN_REFRESHED).
     if (authUserId && bootstrapCompletedForRef.current === authUserId) return;
-    // Optimistic lock: claim before the async starts so a second trigger (e.g.,
-    // Google OAuth fires two SIGNED_IN events in quick succession, or TOKEN_REFRESHED
-    // fires while bootstrap is in-flight) is blocked BEFORE launching a duplicate fetch.
-    // Cleared only in signOut — page reload also resets it via useRef(null) re-init.
-    if (authUserId) bootstrapCompletedForRef.current = authUserId;
+    if (bootstrapInFlightRef.current) return;
+    bootstrapInFlightRef.current = true;
     let cancelled = false;
     // Skip the loading spinner if sessions were already fetched from the server
     // (stale-while-revalidate: show existing data instantly, refresh silently in background)
@@ -2577,10 +2577,12 @@ export default function HomePage() {
             legalRedirectSentForRef.current.add(authUserId);
             router.replace("/auth/complete-legal");
           }
+          setTierReady(true);
           return;
         }
         setTier((typeof payload.last_pack === "string" ? payload.last_pack : "free") as Tier);
         setTierReady(true);
+        if (authUserId) bootstrapCompletedForRef.current = authUserId;
         setIsAdmin(payload.is_admin === true);
         if (typeof payload.session_limit === "number" && Number.isFinite(payload.session_limit)) {
           setAccountSessionLimit(payload.session_limit);
@@ -2747,6 +2749,7 @@ export default function HomePage() {
       } catch {
         setHistoryLoadError(sessionUi.historyNetworkError);
       } finally {
+        bootstrapInFlightRef.current = false;
         if (!cancelled) {
           setHistoryLoading(false);
         }
@@ -2754,6 +2757,7 @@ export default function HomePage() {
     })();
     return () => {
       cancelled = true;
+      bootstrapInFlightRef.current = false;
     };
   }, [
     authReady,
