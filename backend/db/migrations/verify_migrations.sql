@@ -295,18 +295,6 @@ FROM (
     EXISTS (
       SELECT 1 FROM information_schema.routines
       WHERE routine_schema = 'public'
-        AND routine_name   = 'sync_consultation_content'
-    )
-    AND NOT EXISTS (
-      SELECT 1 FROM information_schema.role_routine_grants
-      WHERE routine_schema = 'public'
-        AND routine_name   = 'sync_consultation_content'
-        AND grantee IN ('anon', 'authenticated', 'PUBLIC')
-        AND privilege_type = 'EXECUTE'
-    )
-    AND EXISTS (
-      SELECT 1 FROM information_schema.routines
-      WHERE routine_schema = 'public'
         AND routine_name   = 'get_session_content_safe'
         AND security_type  = 'INVOKER'
     )
@@ -317,9 +305,14 @@ FROM (
         AND grantee IN ('anon', 'authenticated', 'PUBLIC')
         AND privilege_type = 'EXECUTE'
     )
+    AND NOT EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'sync_consultation_content'
+    )
     AND EXISTS (
       SELECT 1 FROM cron.job
-      WHERE jobname IN ('prewarm-consultation-content', 'prewarm-consultations-toast')
+        WHERE jobname = 'prewarm-consultation-content'
         AND active  = true
     )
 
