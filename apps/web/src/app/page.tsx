@@ -1915,6 +1915,23 @@ export default function HomePage() {
         setSessions((prev) =>
           prev.map((s) => {
             if (s.localId !== localId) return s;
+            const mergedThread = fullThread.map((serverItem) => {
+              const localItem = s.thread.find(
+                (t) => t.consultationId === serverItem.consultationId,
+              );
+              if (
+                localItem &&
+                localItem.interpretation.length >
+                  serverItem.interpretation.length + 80
+              ) {
+                return {
+                  ...serverItem,
+                  interpretation: localItem.interpretation,
+                  oracleBones: localItem.oracleBones ?? serverItem.oracleBones,
+                };
+              }
+              return serverItem;
+            });
             return {
               ...s,
               title:
@@ -1923,15 +1940,16 @@ export default function HomePage() {
                 !knownInProgressTitles.has(payload.session.title)
                   ? payload.session.title
                   : (s.thread[0]?.question.slice(0, 60) ??
-                    fullThread[0]?.question.slice(0, 60) ??
+                    mergedThread[0]?.question.slice(0, 60) ??
                     sessionUi.defaultSessionTitle),
               sessionId: payload.session.sessionId,
               publicSessionId: payload.session.publicId,
               threadMaxDepth: planCap,
-              thread: fullThread,
-              messageCount: Math.max(fullThread.length, s.messageCount),
-              updatedAt: fullThread.at(-1)?.createdAt ?? s.updatedAt,
-              firstConsultationAt: fullThread[0]?.createdAt ?? s.firstConsultationAt,
+              thread: mergedThread,
+              messageCount: Math.max(mergedThread.length, s.messageCount),
+              updatedAt: mergedThread.at(-1)?.createdAt ?? s.updatedAt,
+              firstConsultationAt:
+                mergedThread[0]?.createdAt ?? s.firstConsultationAt,
             };
           }),
         );

@@ -325,6 +325,27 @@ export async function upsertSessionAndConsultation(params: {
     throw new Error(`consultation_create_failed:${createConsultationError}`);
   }
 
+  const interpretationText = params.consultation.interpretation?.trim() ?? "";
+  if (interpretationText.length > 0) {
+    const { error: contentUpsertError } = await supabase
+      .from("consultation_content")
+      .upsert(
+        {
+          consultation_id: params.consultation.consultationId,
+          user_id: params.userId,
+          session_id: params.consultation.sessionId,
+          interpretation: interpretationText,
+          oracle_bones: params.consultation.oracleBones ?? null,
+        },
+        { onConflict: "consultation_id" },
+      );
+    if (contentUpsertError) {
+      throw new Error(
+        `consultation_content_upsert_failed:${contentUpsertError.message}`,
+      );
+    }
+  }
+
   const { data: sessionRefresh, error: sessionRefreshError } = await supabase
     .from("consultation_sessions")
     .select("public_sharing_id")
@@ -640,9 +661,13 @@ export function mergeConsultationsWithContent(
   return consultations.map((c) => {
     const content = contentMap.get(c.consultationId);
     if (!content) return c;
+    const mergedInterpretation =
+      content.interpretation && content.interpretation.length > c.interpretation.length
+        ? content.interpretation
+        : c.interpretation || content.interpretation;
     return {
       ...c,
-      interpretation: content.interpretation || c.interpretation,
+      interpretation: mergedInterpretation,
       oracleBones: content.oracleBones ?? c.oracleBones,
     };
   });
