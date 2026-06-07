@@ -189,5 +189,31 @@ FROM (
         AND reloptions::text LIKE '%autovacuum_vacuum_scale_factor=0.01%'
     )
 
+  UNION ALL
+  -- 053 · TOAST timeout guard + prewarm
+  SELECT '053', 'get_session_content_safe function exists (TOAST timeout guard)',
+    EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'get_session_content_safe'
+    )
+
+  UNION ALL
+  -- 054 · security fix — SECURITY INVOKER + explicit revoke from anon/authenticated
+  SELECT '054', 'get_session_content_safe is SECURITY INVOKER (not DEFINER)',
+    EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'get_session_content_safe'
+        AND security_type  = 'INVOKER'
+    )
+    AND NOT EXISTS (
+      SELECT 1 FROM information_schema.role_routine_grants
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'get_session_content_safe'
+        AND grantee IN ('anon', 'authenticated', 'PUBLIC')
+        AND privilege_type = 'EXECUTE'
+    )
+
 ) checks
 ORDER BY num;

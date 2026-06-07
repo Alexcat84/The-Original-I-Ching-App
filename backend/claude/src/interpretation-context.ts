@@ -32,19 +32,22 @@ export function buildHistoricalContext(
   for (const c of consultations) {
     if (c.oracleType === "oracle_bones" && c.oracleBones) {
       const ob = c.oracleBones;
-      const obLabel = lang === "es" ? "Consulta histórica (甲骨文 · huesos)" : "Historical consultation (oracle bones)";
+      const obLabel = lang === "es" ? "Consulta histórica (甲骨文 · huesos de oráculo)" : "Historical consultation (oracle bones 甲骨文)";
+      const verdictLabel = lang === "es"
+        ? { auspicious_clear: "claramente auspicioso 吉", auspicious_moderate: "favorable moderado 吉", inauspicious_moderate: "desfavorable moderado 凶", inauspicious_clear: "claramente inauspicioso 凶" }[ob.verdict] ?? ob.verdict
+        : { auspicious_clear: "clearly auspicious 吉", auspicious_moderate: "moderately auspicious 吉", inauspicious_moderate: "moderately inauspicious 凶", inauspicious_clear: "clearly inauspicious 凶" }[ob.verdict] ?? ob.verdict;
       block += `${obLabel} #${c.position}:
-  Tema consultado (resumen): "${c.question.slice(0, 120)}"
-  Cargo negativo: "${ob.negative_charge}"
-  Medio: ${ob.medium} · Patrón: ${ob.pattern_id} · Veredicto: ${ob.verdict}
-  ${labels.summary}: "${c.interpretationSummary}..."\n\n`;
+  ${labels.question}: "${c.question.slice(0, 120)}"
+  Veredicto: ${verdictLabel} · Medio: ${ob.medium} · Patrón: ${ob.pattern_id}
+  ${labels.summary}: "${c.interpretationSummary}"\n\n`;
     } else {
+      const hexChain = c.transformedHexagramName
+        ? `#${c.primaryHexagramNumber} ${c.primaryHexagramName} (${c.primaryHexagramChinese}) → ${c.transformedHexagramName}${c.changingLines.length > 0 ? ` · ${labels.changingLines}: [${c.changingLines.join(", ")}]` : ""}`
+        : `#${c.primaryHexagramNumber} ${c.primaryHexagramName} (${c.primaryHexagramChinese})${c.changingLines.length > 0 ? ` · ${labels.changingLines}: [${c.changingLines.join(", ")}]` : ""}`;
       block += `${labels.prior} #${c.position}:
-  Tema consultado (resumen): "${c.question.slice(0, 120)}"
-  ${labels.hex}: #${c.primaryHexagramNumber} ${c.primaryHexagramName} (${c.primaryHexagramChinese})
-  ${c.transformedHexagramName ? `${labels.mutated}: ${c.transformedHexagramName}` : labels.noTransform}
-  ${labels.changingLines}: [${c.changingLines.join(", ")}]
-  ${labels.summary}: "${c.interpretationSummary}..."\n\n`;
+  ${labels.question}: "${c.question.slice(0, 120)}"
+  ${labels.hex}: ${hexChain}
+  ${labels.summary}: "${c.interpretationSummary}"\n\n`;
     }
   }
   return block;
@@ -85,19 +88,22 @@ export function buildCurrentContext(
     const c = currentConsultation;
     if (c.oracleType === "oracle_bones" && c.oracleBones) {
       const ob = c.oracleBones;
-      const obLabel = lang === "es" ? "Consulta INMEDIATAMENTE anterior (甲骨文 · huesos)" : "IMMEDIATELY prior consultation (oracle bones)";
+      const obLabel = lang === "es" ? "Consulta INMEDIATAMENTE anterior (甲骨文 · huesos de oráculo)" : "IMMEDIATELY prior consultation (oracle bones 甲骨文)";
+      const verdictLabel = lang === "es"
+        ? { auspicious_clear: "claramente auspicioso 吉", auspicious_moderate: "favorable moderado 吉", inauspicious_moderate: "desfavorable moderado 凶", inauspicious_clear: "claramente inauspicioso 凶" }[ob.verdict] ?? ob.verdict
+        : { auspicious_clear: "clearly auspicious 吉", auspicious_moderate: "moderately auspicious 吉", inauspicious_moderate: "moderately inauspicious 凶", inauspicious_clear: "clearly inauspicious 凶" }[ob.verdict] ?? ob.verdict;
       block += `${obLabel} #${c.position}:
-  Tema consultado (resumen): "${c.question.slice(0, 120)}"
-  Cargo negativo: "${ob.negative_charge}"
-  Medio: ${ob.medium} · Patrón: ${ob.pattern_id} · Veredicto: ${ob.verdict}
-  ${labels.summary}: "${c.interpretationSummary}..."\n\n`;
+  ${labels.question}: "${c.question.slice(0, 120)}"
+  Veredicto: ${verdictLabel} · Medio: ${ob.medium} · Patrón: ${ob.pattern_id}
+  ${labels.summary}: "${c.interpretationSummary}"\n\n`;
     } else {
+      const hexChain = c.transformedHexagramName
+        ? `#${c.primaryHexagramNumber} ${c.primaryHexagramName} (${c.primaryHexagramChinese}) → ${c.transformedHexagramName}${c.changingLines.length > 0 ? ` · ${labels.changingLines}: [${c.changingLines.join(", ")}]` : ""}`
+        : `#${c.primaryHexagramNumber} ${c.primaryHexagramName} (${c.primaryHexagramChinese})${c.changingLines.length > 0 ? ` · ${labels.changingLines}: [${c.changingLines.join(", ")}]` : ""}`;
       block += `${labels.prior} #${c.position}:
-  Tema consultado (resumen): "${c.question.slice(0, 120)}"
-  ${labels.hex}: #${c.primaryHexagramNumber} ${c.primaryHexagramName} (${c.primaryHexagramChinese})
-  ${c.transformedHexagramName ? `${labels.mutated}: ${c.transformedHexagramName}` : labels.noTransform}
-  ${labels.changingLines}: [${c.changingLines.join(", ")}]
-  ${labels.summary}: "${c.interpretationSummary}..."\n\n`;
+  ${labels.question}: "${c.question.slice(0, 120)}"
+  ${labels.hex}: ${hexChain}
+  ${labels.summary}: "${c.interpretationSummary}"\n\n`;
     }
   }
 

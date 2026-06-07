@@ -848,8 +848,10 @@ export interface ThreadContentRow {
 }
 
 /** Phase 2 — fetch only the TOAST-heavy columns for a session.
- *  Targeted fetch that replaces placeholders set by Phase 1.
- *  May be slow on cold shared_buffers but runs in background — never blocks UI. */
+ *  Uses get_session_content_safe RPC which sets statement_timeout = '8s' internally.
+ *  This ensures a clean SQL error is returned if TOAST pages are cold, rather than
+ *  letting Warp kill the HTTP thread after ~10 s (which floods logs with
+ *  "Thread killed by timeout manager"). Caller degrades gracefully on error. */
 export async function getUserSessionThreadContent(
   userId: string,
   sessionId: string,
@@ -857,18 +859,16 @@ export async function getUserSessionThreadContent(
   const supabase = getSupabaseAdmin();
   if (!supabase) return [];
 
-  const { data, error } = await supabase
-    .from("consultations")
-    .select("id, interpretation, oracle_bones")
-    .eq("user_id", userId)
-    .eq("session_id", sessionId)
-    .order("session_position", { ascending: true });
+  const { data, error } = await supabase.rpc("get_session_content_safe", {
+    p_user_id: userId,
+    p_session_id: sessionId,
+  });
   if (error || !data) return [];
 
-  return data.map((row) => ({
-    consultationId: (row as { id: string }).id,
-    interpretation: (row as { interpretation: string }).interpretation ?? "",
-    oracleBones: ((row as { oracle_bones?: OracleBonesHistorySnapshot | null }).oracle_bones) ?? null,
+  return (data as Array<{ consultation_id: string; interpretation: string; oracle_bones: OracleBonesHistorySnapshot | null }>).map((row) => ({
+    consultationId: row.consultation_id,
+    interpretation: row.interpretation ?? "",
+    oracleBones: row.oracle_bones ?? null,
   }));
 }
 
