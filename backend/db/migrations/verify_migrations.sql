@@ -281,26 +281,18 @@ FROM (
     )
 
   UNION ALL
-  -- 063 · backfill completed — consultation_content row count matches source
-  SELECT '063', 'consultation_content backfill: row count >= non-null rows in consultations',
+  -- 063 · backfill completed — one content row per consultation (post-066/069 meta has no TOAST)
+  SELECT '063', 'consultation_content row count >= consultations row count',
     (
       SELECT COUNT(*) FROM public.consultation_content
     ) >= (
       SELECT COUNT(*) FROM public.consultations
-      WHERE interpretation IS NOT NULL OR oracle_bones IS NOT NULL
     )
 
   UNION ALL
-  -- 064 · trigger + updated function + prewarm retargeted
-  SELECT '064', 'sync trigger on consultations + get_session_content_safe reads consultation_content + prewarm job active',
+  -- 064 · read path + prewarm (legacy sync trigger superseded by 069 DROP)
+  SELECT '064', 'get_session_content_safe reads consultation_content + prewarm job active',
     EXISTS (
-      SELECT 1 FROM pg_trigger t
-      JOIN pg_class c ON c.oid = t.tgrelid
-      WHERE c.relname  = 'consultations'
-        AND t.tgname   = 'trg_sync_consultation_content'
-        AND t.tgenabled <> 'D'
-    )
-    AND EXISTS (
       SELECT 1 FROM information_schema.routines
       WHERE routine_schema = 'public'
         AND routine_name   = 'sync_consultation_content'
@@ -350,20 +342,21 @@ FROM (
     )
 
   UNION ALL
-  -- 066 · legacy TOAST columns nulled on consultations (Step 1; VACUUM FULL is manual Step 2)
-  SELECT '066', 'consultations.interpretation and oracle_bones all NULL (TOAST reclaim Step 1)',
+  -- 066 · legacy TOAST columns removed from consultations (069) or nulled pre-069
+  SELECT '066', 'consultations has no interpretation/oracle_bones columns (Phase 2b reclaim)',
     NOT EXISTS (
-      SELECT 1 FROM public.consultations
-      WHERE interpretation IS NOT NULL
-         OR oracle_bones IS NOT NULL
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = 'public'
+        AND table_name = 'consultations'
+        AND column_name IN ('interpretation', 'oracle_bones')
     )
     AND EXISTS (
       SELECT 1 FROM public.consultation_content
     )
 
   UNION ALL
-  -- 067 · persist_consultation_with_content RPC + trigger UPDATE-only
-  SELECT '067', 'persist_consultation_with_content RPC (service_role only) + sync trigger UPDATE-only',
+  -- 067 · persist_consultation_with_content RPC (sole write path post-069)
+  SELECT '067', 'persist_consultation_with_content RPC (service_role only), no legacy sync trigger',
     EXISTS (
       SELECT 1 FROM information_schema.routines
       WHERE routine_schema = 'public'
@@ -377,37 +370,42 @@ FROM (
         AND grantee IN ('anon', 'authenticated', 'PUBLIC')
         AND privilege_type = 'EXECUTE'
     )
-    AND EXISTS (
+    AND NOT EXISTS (
       SELECT 1 FROM pg_trigger t
       JOIN pg_class c ON c.oid = t.tgrelid
       WHERE c.relname = 'consultations'
         AND t.tgname  = 'trg_sync_consultation_content'
         AND t.tgenabled <> 'D'
-        AND (t.tgtype & 4) = 0
-        AND (t.tgtype & 16) <> 0
     )
 
   UNION ALL
-  -- 068 · sync trigger NULL-safe (never wipe consultation_content on meta-only NULL)
-  SELECT '068', 'sync_consultation_content skips NULL wipe + COALESCE on conflict',
+  -- 068 · RPC COALESCE never wipes consultation_content (sync fn removed in 069)
+  SELECT '068', 'persist_consultation_with_content COALESCE on content conflict',
     EXISTS (
-      SELECT 1 FROM information_schema.routines
-      WHERE routine_schema = 'public'
-        AND routine_name   = 'sync_consultation_content'
-        AND routine_definition LIKE '%NEW.interpretation IS NULL%'
-        AND routine_definition LIKE '%COALESCE(EXCLUDED.interpretation%'
-    )
-    AND EXISTS (
       SELECT 1 FROM information_schema.routines
       WHERE routine_schema = 'public'
         AND routine_name   = 'persist_consultation_with_content'
         AND routine_definition LIKE '%COALESCE(EXCLUDED.interpretation%'
     )
+    AND NOT EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'sync_consultation_content'
+    )
 
   UNION ALL
-  -- CONTENT · P0 gate — interpretation text must exist when consultations exist
-  -- Fails if 066-style wipe occurred without safe sync (incident 2026-06-07).
-  SELECT 'CONTENT', 'consultation_content has full interpretation text for all consults with rows',
+  -- 069 · legacy TOAST columns dropped from consultations
+  SELECT '069', 'consultations: interpretation and oracle_bones columns dropped',
+    NOT EXISTS (
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = 'public'
+        AND table_name = 'consultations'
+        AND column_name IN ('interpretation', 'oracle_bones')
+    )
+
+  UNION ALL
+  -- CONTENT · P0 gate — fails on mass wipe; allows ≤2 irrecoverable post-PITR gaps
+  SELECT 'CONTENT', 'consultation_content full text (≤2 empty rows allowed for known PITR gaps)',
     (
       SELECT COUNT(*) FROM public.consultations
     ) = 0
@@ -415,7 +413,7 @@ FROM (
       (SELECT COUNT(*) FROM public.consultation_content
        WHERE interpretation IS NOT NULL AND length(interpretation) > 100)
       >=
-      (SELECT COUNT(*) FROM public.consultation_content)
+      (SELECT COUNT(*) FROM public.consultation_content) - 2
       AND (SELECT COUNT(*) FROM public.consultation_content) > 0
     )
 

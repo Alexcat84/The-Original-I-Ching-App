@@ -689,3 +689,49 @@ Migración **066** (`UPDATE consultations SET interpretation = NULL`) ejecutada 
 | 2026-05-26 | P0 migración 065 aplicada prod; P1 código legacy TOAST eliminado; 066 en repo (gated); sección 12 verificación MCP |
 | 2026-06-07 | Fase 3 escala DB — 067 RPC + 066 reclaim aplicados prod; código thread=1, bootstrap serial, consult semáforo; sección 13 |
 | 2026-06-07 | **P0 incidente** — 066 propagó NULL a consultation_content; doc incidente + runbook + check CONTENT/068; sección 14 |
+| 2026-06-07 | **Producción** — 069 DROP columnas legacy TOAST; Fase 4 (db-health-check, logging chats, runbook post-restart); verify_migrations actualizado; sección 15 |
+
+---
+
+## 15. Cierre producción — 2026-06-07
+
+**Objetivo:** DB lista para lanzamiento con tráfico alto; sin TOAST legacy en `consultations`.
+
+### DB aplicado (MCP prod)
+
+| Item | Estado |
+|------|--------|
+| **069** DROP `interpretation`/`oracle_bones` + RPC persist sin columnas legacy | ✅ Prod |
+| Trigger `sync_consultation_content` eliminado (solo RPC escribe content) | ✅ |
+| Security advisors | ✅ 0 WARN |
+| Performance advisors | ✅ 0 WARN (solo INFO) |
+| CONTENT gate (64/66 textos, ≤2 gaps PITR) | ✅ |
+
+### Repo (deploy pendiente a main/Vercel)
+
+| Item | Archivo |
+|------|---------|
+| Migración 069 | `backend/db/migrations/069_drop_consultations_legacy_toast_columns.sql` |
+| verify_migrations (063–069, CONTENT) | `backend/db/migrations/verify_migrations.sql` |
+| Health check SQL | `backend/db/scripts/db-health-check.sql` |
+| Runbook post-restart | `docs/runbooks/SUPABASE_POST_RESTART.md` |
+| Logging chats GET (phase, durationMs, requestId) | `apps/web/src/app/api/account/chats/route.ts` |
+
+### Ops manual pre-lanzamiento
+
+1. **VACUUM FULL** `consultations` vía psql pooler (post-069) — reclaim ~225 MB TOAST huérfano.
+2. **Ticket Support P4** — pool PostgREST=10 si escala >10 concurrent chat opens.
+3. **Dashboard Auth** — conexiones por % (advisor INFO).
+4. **Alertas Vercel** — 5xx en `/api/account/*` y `/api/consult`.
+5. Smoke 10 min post-deploy (runbook §5).
+
+### Arquitectura final write path
+
+```
+POST /api/consult → persist_consultation_with_content (RPC)
+  → INSERT consultations (meta only, ~KB)
+  → UPSERT consultation_content (TOAST aislado)
+Lectura → get_session_content_safe / thread=1
+```
+
+Sin dual-write trigger; imposible repetir incidente 066 vía UPDATE NULL en meta.

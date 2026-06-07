@@ -16,6 +16,13 @@ import {
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
+  const log = new Logger({ source: "api/account/chats" });
+  const startedAt = Date.now();
+  const requestId =
+    req.headers.get("x-request-id") ??
+    req.headers.get("x-vercel-id") ??
+    crypto.randomUUID().slice(0, 12);
+
   if (!isChatPersistenceConfigured()) {
     return apiError(503, {
       error: "chat_persistence_not_configured",
@@ -38,23 +45,68 @@ export async function GET(req: Request) {
   const metaOnly = url.searchParams.get("meta") === "1";
   const contentOnly = url.searchParams.get("content") === "1";
 
+  const phase = sessionId
+    ? threadUnified
+      ? "thread"
+      : metaOnly
+        ? "meta"
+        : contentOnly
+          ? "content"
+          : "legacy_parallel"
+    : summary
+      ? "summary"
+      : "invalid";
+
+  const finish = async (res: NextResponse, extra?: Record<string, unknown>) => {
+    log.info("chats_get", {
+      requestId,
+      phase,
+      userId: user.userId.slice(0, 8),
+      sessionId: sessionId?.slice(0, 8) ?? null,
+      durationMs: Date.now() - startedAt,
+      status: res.status,
+      ...extra,
+    });
+    await log.flush();
+    return res;
+  };
+
   if (sessionId) {
     try {
       if (threadUnified) {
         const entry = await withSupabaseSemaphore(() =>
           getUserSessionThreadUnified(user.userId, sessionId),
         );
-        if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
-        return NextResponse.json({ session: entry.session, consultations: entry.consultations, phase: "thread" });
+        if (!entry) {
+          return finish(
+            apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" }),
+            { consultCount: 0 },
+          );
+        }
+        return finish(
+          NextResponse.json({ session: entry.session, consultations: entry.consultations, phase: "thread" }),
+          { consultCount: entry.consultations.length },
+        );
       }
       if (metaOnly) {
         const entry = await withSupabaseSemaphore(() => getUserSessionThreadMeta(user.userId, sessionId));
-        if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
-        return NextResponse.json({ session: entry.session, consultations: entry.consultations, phase: "meta" });
+        if (!entry) {
+          return finish(
+            apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" }),
+            { consultCount: 0 },
+          );
+        }
+        return finish(
+          NextResponse.json({ session: entry.session, consultations: entry.consultations, phase: "meta" }),
+          { consultCount: entry.consultations.length },
+        );
       }
       if (contentOnly) {
         const rows = await withSupabaseSemaphore(() => getUserSessionThreadContent(user.userId, sessionId));
-        return NextResponse.json({ consultationContent: rows, phase: "content" });
+        return finish(
+          NextResponse.json({ consultationContent: rows, phase: "content" }),
+          { contentRows: rows.length },
+        );
       }
       // Parallel fetch: meta (no TOAST, always fast) + content via RPC with
       // 8 s statement_timeout (protected against Warp thread kills on cold buffer).
@@ -64,32 +116,43 @@ export async function GET(req: Request) {
         const content = await getUserSessionThreadContent(user.userId, sessionId).catch(() => []);
         return [meta, content] as const;
       });
-      if (!entry) return apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" });
+      if (!entry) {
+        return finish(
+          apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" }),
+          { consultCount: 0 },
+        );
+      }
       const consultations = mergeConsultationsWithContent(entry.consultations, contentRows);
-      return NextResponse.json({ session: entry.session, consultations });
+      return finish(NextResponse.json({ session: entry.session, consultations }), {
+        consultCount: consultations.length,
+        contentRows: contentRows.length,
+      });
     } catch {
-      return apiError(503, { error: "db_error", code: "DB_ERROR", action: "retry" });
+      return finish(apiError(503, { error: "db_error", code: "DB_ERROR", action: "retry" }), { error: true });
     }
   }
 
   if (summary) {
     const sessions = await withSupabaseSemaphore(() => getUserSessionSummaries(user.userId));
-    return NextResponse.json({
-      sessions: sessions.map((entry) => ({
-        session: entry.session,
-        messageCount: entry.messageCount,
-        firstConsultationAt: entry.firstConsultationAt,
-        updatedAt: entry.updatedAt,
-        firstQuestion: entry.firstQuestion,
-      })),
-    });
+    return finish(
+      NextResponse.json({
+        sessions: sessions.map((entry) => ({
+          session: entry.session,
+          messageCount: entry.messageCount,
+          firstConsultationAt: entry.firstConsultationAt,
+          updatedAt: entry.updatedAt,
+          firstQuestion: entry.firstQuestion,
+        })),
+      }),
+      { sessionCount: sessions.length },
+    );
   }
 
   // No sessionId or summary param — this path read all TOAST for all sessions
   // (getUserSessionsWithConsultations) which reliably caused Warp timeouts on
   // cold shared_buffers. No current client sends this request; return 400 so
   // any accidental caller gets a clear error instead of a silent Warp kill.
-  return apiError(400, { error: "missing_param", code: "MISSING_PARAM", action: "fix_input" });
+  return finish(apiError(400, { error: "missing_param", code: "MISSING_PARAM", action: "fix_input" }));
 }
 
 export async function DELETE(req: Request) {
