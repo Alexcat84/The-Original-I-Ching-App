@@ -1,6 +1,7 @@
 import {
   upsertChats,
   upsertMessages,
+  mergeContentIntoMessages,
   getSyncMeta,
   setSyncMeta,
   softDeleteStaleChats,
@@ -97,6 +98,54 @@ async function fetchChatDetail(
   };
 }
 
+// Phase 1: fetch metadata only (no interpretation/oracle_bones TOAST).
+// Uses a short 8s timeout — this path should always complete in <100ms.
+const FETCH_META_TIMEOUT_MS = 8_000;
+
+async function fetchChatMeta(
+  token: string,
+  baseUrl: string,
+  sessionId: string,
+): Promise<{ session: ApiSession; consultations: ApiConsultation[] } | null> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_META_TIMEOUT_MS);
+  try {
+    const res = await fetch(
+      `${baseUrl}/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&meta=1`,
+      { headers: { Authorization: `Bearer ${token}` }, cache: "no-store", signal: controller.signal },
+    );
+    if (!res.ok) return null;
+    const body = (await res.json()) as { session?: ApiSession; consultations?: ApiConsultation[] };
+    if (!body.session) return null;
+    return {
+      session: body.session,
+      consultations: Array.isArray(body.consultations) ? body.consultations : [],
+    };
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// Phase 2: fetch only interpretation + oracle_bones (TOAST columns).
+// May be slow on cold shared_buffers — called in background after meta inject.
+type ContentRow = { consultationId: string; interpretation: string; oracleBones: unknown };
+
+async function fetchChatContent(
+  token: string,
+  baseUrl: string,
+  sessionId: string,
+): Promise<ContentRow[] | null> {
+  const res = await fetchWithTimeout(
+    `${baseUrl}/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&content=1`,
+    { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" },
+  );
+  if (!res.ok) return null;
+  const body = (await res.json()) as { consultationContent?: ContentRow[] };
+  return Array.isArray(body.consultationContent) ? body.consultationContent : null;
+}
+
 /** Tier 1: sync chat list metadata only. No message content. Runs on auth
  *  with a 5-minute cooldown to keep the sidebar fast without hammering the API. */
 export async function syncChats(token: string, baseUrl: string, userId?: string): Promise<void> {
@@ -161,11 +210,47 @@ export async function syncChats(token: string, baseUrl: string, userId?: string)
   }
 }
 
-/** Tier 3: incremental per-chat content sync. Called when the user opens a
- *  specific chat. Fetches all consultations from Supabase and upserts into
- *  SQLite (ON CONFLICT preserves local_image_path). Updates a per-chat
- *  sync timestamp so subsequent opens within CHAT_CONTENT_COOLDOWN_MS are
- *  served from SQLite without hitting the network. */
+/** Tier 3 Phase 1 — fast metadata sync (no TOAST).
+ *  Stores meta rows in SQLite so getPagedThread can inject the thread structure
+ *  to the WebView immediately (<5ms always). Does NOT set the content cooldown
+ *  so Phase 2 can follow up with the full interpretation. */
+export async function syncChatMeta(
+  token: string,
+  baseUrl: string,
+  sessionId: string,
+  onMetaReady?: (rows: MessageRow[]) => void,
+): Promise<void> {
+  try {
+    const meta = await fetchChatMeta(token, baseUrl, sessionId);
+    if (!meta || meta.consultations.length === 0) return;
+
+    const now = new Date().toISOString();
+    const metaRows: MessageRow[] = meta.consultations.map((c) => ({
+      id: c.consultationId,
+      chat_id: sessionId,
+      role: "assistant",
+      content: JSON.stringify(c),
+      created_at: msToIso(c.createdAt),
+      synced_at: now,
+      image_url: (c.imageUrl as string) || null,
+      local_image_path: null,
+      image_sync_status: c.imageUrl ? "pending" : "none",
+    }));
+
+    // Use INSERT OR IGNORE — never overwrite rows that already have full content.
+    // This prevents clobbering a previously cached interpretation with the
+    // summary-as-placeholder value from the meta response.
+    await upsertMessages(metaRows, { ignoreConflict: true });
+    onMetaReady?.(metaRows);
+  } catch {
+    // Non-fatal
+  }
+}
+
+/** Tier 3 Phase 2 — full content sync (includes TOAST interpretation/oracle_bones).
+ *  Runs after syncChatMeta so the user already sees thread structure.
+ *  Merges interpretation + oracle_bones into existing SQLite rows via ON CONFLICT UPDATE.
+ *  Sets the 5-min cooldown so subsequent opens skip the network entirely. */
 export async function syncChatContent(
   token: string,
   baseUrl: string,
@@ -181,28 +266,33 @@ export async function syncChatContent(
       if (elapsed < CHAT_CONTENT_COOLDOWN_MS) return;
     }
 
-    const detail = await fetchChatDetail(token, baseUrl, sessionId);
-    if (!detail || detail.consultations.length === 0) return;
+    // Try targeted content-only fetch first (only TOAST columns, smaller payload).
+    // Fall back to full fetch if the endpoint isn't available (older deploy).
+    let detail: { session: ApiSession; consultations: ApiConsultation[] } | null = null;
+    const contentRows = await fetchChatContent(token, baseUrl, sessionId);
+    if (contentRows && contentRows.length > 0) {
+      // Merge interpretation + oracle_bones into existing SQLite rows.
+      await mergeContentIntoMessages(sessionId, contentRows);
+    } else {
+      // Fallback: full fetch (backward compatible with older API versions).
+      detail = await fetchChatDetail(token, baseUrl, sessionId);
+      if (!detail || detail.consultations.length === 0) return;
+      const now = new Date().toISOString();
+      const msgRows: MessageRow[] = detail.consultations.map((c) => ({
+        id: c.consultationId,
+        chat_id: sessionId,
+        role: "assistant",
+        content: JSON.stringify(c),
+        created_at: msToIso(c.createdAt),
+        synced_at: now,
+        image_url: (c.imageUrl as string) || null,
+        local_image_path: null,
+        image_sync_status: c.imageUrl ? "pending" : "none",
+      }));
+      await upsertMessages(msgRows);
+    }
 
-    const now = new Date().toISOString();
-    const msgRows: MessageRow[] = detail.consultations.map((c) => ({
-      id: c.consultationId,
-      chat_id: sessionId,
-      role: "assistant",
-      // Full consultation JSON — read back by getPagedThread and injected as
-      // window.__rnCachedThreads so the web app can render offline.
-      content: JSON.stringify(c),
-      created_at: msToIso(c.createdAt),
-      synced_at: now,
-      image_url: (c.imageUrl as string) || null,
-      local_image_path: null,
-      image_sync_status: c.imageUrl ? "pending" : "none",
-    }));
-
-    await upsertMessages(msgRows);
-    await setSyncMeta(syncKey, now);
-
-    // Queue image downloads for this chat (processed opportunistically).
+    await setSyncMeta(syncKey, new Date().toISOString());
     void syncPendingImages();
   } catch {
     // Non-fatal

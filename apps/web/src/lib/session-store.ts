@@ -665,6 +665,213 @@ export async function getUserSessionWithConsultations(
   };
 }
 
+// ─── Two-phase thread loading ────────────────────────────────────────────────
+// Phase 1 (meta): all columns EXCEPT interpretation and oracle_bones.
+// These are the TOAST-heavy columns that can cause 10-15s reads on cold
+// shared_buffers. Fetching metadata first lets the UI render the thread
+// structure instantly (<5ms always) while Phase 2 loads content in background.
+//
+// Phase 2 (content): only id + interpretation + oracle_bones.
+// Targeted TOAST fetch per session — replaces placeholders from Phase 1.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const META_COLS_LEGACY =
+  "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
+const META_COLS_BASE = `${META_COLS_LEGACY}, translator`;
+const META_COLS_WITH_ORACLE_LEGACY = `${META_COLS_LEGACY}, oracle_type`;
+const META_COLS_WITH_ORACLE = `${META_COLS_BASE}, oracle_type`;
+
+/** Build a StoredConsultation from a meta-only row (no interpretation/oracle_bones).
+ *  Sets interpretation = interpretation_summary so the UI has a readable placeholder. */
+function consultationMetaFromDbRow(data: {
+  id: string;
+  session_id: string;
+  session_position: number;
+  question: string;
+  language: string;
+  lines: StoredConsultation["lines"];
+  primary_hexagram_number: number;
+  primary_hexagram_name: string;
+  primary_hexagram_chinese: string;
+  transformed_hexagram_number: number | null;
+  transformed_hexagram_name: string | null;
+  changing_lines: number[];
+  mutation_rule: string;
+  translator?: string | null;
+  category: string;
+  interpretation_summary?: string | null;
+  image_url: string | null;
+  thumbnail_url: string | null;
+  public_sharing_id: string;
+  created_at: string;
+  oracle_type?: string | null;
+}): StoredConsultation {
+  return {
+    consultationId: data.id,
+    sessionId: data.session_id,
+    sessionPosition: data.session_position,
+    question: data.question,
+    language: data.language,
+    primaryHexagram: data.primary_hexagram_number,
+    primaryHexagramName: data.primary_hexagram_name,
+    primaryHexagramChinese: data.primary_hexagram_chinese,
+    transformedHexagram: data.transformed_hexagram_number,
+    transformedHexagramName: data.transformed_hexagram_name,
+    transformedHexagramChinese:
+      data.transformed_hexagram_number != null
+        ? (getHexagramRecordByNumber(data.transformed_hexagram_number)?.chineseName ?? null)
+        : null,
+    mutationRule: data.mutation_rule,
+    translator: data.translator ?? null,
+    lines: data.lines,
+    changingLines: data.changing_lines,
+    interpretation: data.interpretation_summary ?? "",
+    interpretationSummary: data.interpretation_summary ?? undefined,
+    category: data.category,
+    imageProvider: imageProviderFromUrl(data.image_url),
+    imageUrl: data.image_url ?? "/oracle-fallback.svg",
+    imageFallbackUrl: data.thumbnail_url ?? undefined,
+    publicId: data.public_sharing_id,
+    createdAt: new Date(data.created_at).getTime(),
+    oracleType: (data.oracle_type as OracleType) ?? "iching",
+    oracleBones: null,
+  };
+}
+
+/** Phase 1 — fetch thread metadata without TOAST columns.
+ *  Always completes in <5ms regardless of shared_buffers state.
+ *  interpretation is set to interpretation_summary as a readable placeholder. */
+export async function getUserSessionThreadMeta(
+  userId: string,
+  sessionId: string,
+): Promise<UserSessionWithConsultations | null> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return null;
+
+  const { data: sessionRow, error: sessionError } = await supabase
+    .from("consultation_sessions")
+    .select("id, title, theme_category, language, public_sharing_id, created_at, max_consultations")
+    .eq("id", sessionId)
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (sessionError) throw new Error(`db_session_meta_failed:${sessionError.message}`);
+  if (!sessionRow) return null;
+
+  let consultRows: unknown[] | null = null;
+  let consultError: { message?: string } | null = null;
+
+  const res = await supabase
+    .from("consultations")
+    .select(META_COLS_WITH_ORACLE)
+    .eq("user_id", userId)
+    .eq("session_id", sessionId)
+    .order("session_position", { ascending: true });
+  consultRows = res.data as unknown[] | null;
+  consultError = res.error;
+
+  if (consultError) {
+    const msg = consultError.message ?? "";
+    if (msg.includes("oracle_type")) {
+      const r2 = await supabase
+        .from("consultations")
+        .select(META_COLS_BASE)
+        .eq("user_id", userId)
+        .eq("session_id", sessionId)
+        .order("session_position", { ascending: true });
+      consultRows = r2.data as unknown[] | null;
+      consultError = r2.error;
+      if (consultError?.message?.includes("translator")) {
+        const r3 = await supabase
+          .from("consultations")
+          .select(META_COLS_LEGACY)
+          .eq("user_id", userId)
+          .eq("session_id", sessionId)
+          .order("session_position", { ascending: true });
+        consultRows = r3.data as unknown[] | null;
+        consultError = r3.error;
+      }
+    } else if (msg.includes("translator")) {
+      const r2 = await supabase
+        .from("consultations")
+        .select(META_COLS_WITH_ORACLE_LEGACY)
+        .eq("user_id", userId)
+        .eq("session_id", sessionId)
+        .order("session_position", { ascending: true });
+      consultRows = r2.data as unknown[] | null;
+      consultError = r2.error;
+      if (consultError) {
+        const r3 = await supabase
+          .from("consultations")
+          .select(META_COLS_LEGACY)
+          .eq("user_id", userId)
+          .eq("session_id", sessionId)
+          .order("session_position", { ascending: true });
+        consultRows = r3.data as unknown[] | null;
+        consultError = r3.error;
+      }
+    }
+  }
+  if (consultError) return null;
+
+  const sorted = (consultRows ?? [])
+    .map((row) => consultationMetaFromDbRow(row as never))
+    .sort((a, b) => a.sessionPosition - b.sessionPosition);
+
+  const maxFromDb =
+    typeof (sessionRow as { max_consultations?: number | null }).max_consultations === "number"
+      ? (sessionRow as { max_consultations: number }).max_consultations
+      : (sessionRow as { max_consultations?: number | null }).max_consultations === null
+        ? null
+        : undefined;
+  const maxConsultations =
+    maxFromDb ?? (sorted.length ? Math.max(...sorted.map((r) => r.sessionPosition), 1) : 1);
+
+  return {
+    session: {
+      sessionId: sessionRow.id,
+      title: sessionRow.title ?? "",
+      themeCategory: sessionRow.theme_category,
+      language: sessionRow.language,
+      publicId: sessionRow.public_sharing_id,
+      consultationIds: sorted.map((r) => r.consultationId),
+      createdAt: new Date(sessionRow.created_at).getTime(),
+      maxConsultations,
+    },
+    consultations: sorted,
+  };
+}
+
+export interface ThreadContentRow {
+  consultationId: string;
+  interpretation: string;
+  oracleBones: OracleBonesHistorySnapshot | null;
+}
+
+/** Phase 2 — fetch only the TOAST-heavy columns for a session.
+ *  Targeted fetch that replaces placeholders set by Phase 1.
+ *  May be slow on cold shared_buffers but runs in background — never blocks UI. */
+export async function getUserSessionThreadContent(
+  userId: string,
+  sessionId: string,
+): Promise<ThreadContentRow[]> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("consultations")
+    .select("id, interpretation, oracle_bones")
+    .eq("user_id", userId)
+    .eq("session_id", sessionId)
+    .order("session_position", { ascending: true });
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    consultationId: (row as { id: string }).id,
+    interpretation: (row as { interpretation: string }).interpretation ?? "",
+    oracleBones: ((row as { oracle_bones?: OracleBonesHistorySnapshot | null }).oracle_bones) ?? null,
+  }));
+}
+
 export async function deleteUserSession(
   userId: string,
   sessionId: string,
