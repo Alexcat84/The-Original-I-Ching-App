@@ -199,7 +199,7 @@ FROM (
     )
 
   UNION ALL
-  -- 054 · security fix — SECURITY INVOKER + explicit revoke from anon/authenticated
+  -- 054 · SECURITY INVOKER + explicit revoke from anon/authenticated
   SELECT '054', 'get_session_content_safe is SECURITY INVOKER (not DEFINER)',
     EXISTS (
       SELECT 1 FROM information_schema.routines
@@ -213,6 +213,16 @@ FROM (
         AND routine_name   = 'get_session_content_safe'
         AND grantee IN ('anon', 'authenticated', 'PUBLIC')
         AND privilege_type = 'EXECUTE'
+    )
+
+  UNION ALL
+  -- 055 · 2s timeout + exception catch → HTTP 200 on cold TOAST (never kills Warp)
+  SELECT '055', 'get_session_content_safe body uses SET LOCAL 2s + EXCEPTION handler',
+    EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'get_session_content_safe'
+        AND security_type  = 'INVOKER'
     )
 
 ) checks
