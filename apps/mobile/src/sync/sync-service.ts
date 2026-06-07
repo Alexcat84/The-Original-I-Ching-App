@@ -13,7 +13,16 @@ const SUMMARY_COOLDOWN_MS = 5 * 60 * 1000;
 const CHAT_CONTENT_COOLDOWN_MS = 5 * 60 * 1000;
 // Abort network requests that hang — prevents request_thread from getting stuck
 // waiting forever behind a stalled prewarm fetch.
-const FETCH_TIMEOUT_MS = 12_000;
+// 25s gives headroom for TOAST-heavy queries (interpretation ~10-15KB × 8 rows)
+// that can take 15s under cold-buffer conditions on the staging instance.
+const FETCH_TIMEOUT_MS = 25_000;
+
+// Prevents concurrent syncChatContent calls for the same session from firing
+// duplicate API requests. The prewarm loop and request_thread handler can both
+// call syncChatContent simultaneously; without this guard each call independently
+// passes the cooldown check (cooldown not yet written) and fires its own fetch,
+// saturating PostgREST connections with identical queries.
+const inFlightContentSyncs = new Set<string>();
 
 type ApiSession = {
   sessionId: string;
@@ -162,6 +171,8 @@ export async function syncChatContent(
   baseUrl: string,
   sessionId: string,
 ): Promise<void> {
+  if (inFlightContentSyncs.has(sessionId)) return;
+  inFlightContentSyncs.add(sessionId);
   try {
     const syncKey = `chat_content_synced:${sessionId}`;
     const lastSync = await getSyncMeta(syncKey);
@@ -195,5 +206,7 @@ export async function syncChatContent(
     void syncPendingImages();
   } catch {
     // Non-fatal
+  } finally {
+    inFlightContentSyncs.delete(sessionId);
   }
 }

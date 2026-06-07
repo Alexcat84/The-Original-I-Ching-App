@@ -179,5 +179,15 @@ FROM (
         AND column_name  = 'tour_v1_completed_at'
     )
 
+  UNION ALL
+  -- 052 · autovacuum tuning on consultations
+  SELECT '052', 'consultations autovacuum_vacuum_scale_factor tuned to 0.01',
+    EXISTS (
+      SELECT 1 FROM pg_class
+      WHERE relname = 'consultations'
+        AND relnamespace = 'public'::regnamespace
+        AND reloptions::text LIKE '%autovacuum_vacuum_scale_factor=0.01%'
+    )
+
 ) checks
 ORDER BY num;

@@ -1,8 +1,19 @@
-<!-- changelog:last-release:baf72f0 -->
+<!-- changelog:last-release:653fbc9 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [3.5.0] — 2026-06-06 | versionCode: 43 | Stage: Closed Testing
+
+### Fix
+- fix(prompt): remove compression trade-off from Encuadre + bump master_combined budget | commit: 653fbc9
+- fix(prompt): enforce full hexagram chain in Encuadre for deep threads (up to 8 consultations) | commit: b1619f1
+
+### Maintenance
+- chore(release): bump version 3.4.9 / versionCode 42 | commit: bbd9d47
+
+---
 
 ## [3.4.9] — 2026-06-06 | versionCode: 42 | Stage: Closed Testing
 > Mobile + web fix. New AAB build required (index.tsx + chat-store.ts modified).
@@ -1273,7 +1284,9 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.4.8 | 41 | 2026-06-05 | Closed Testing | 19 | SSE trace fix; La imagen (象傳) heading in all translators; prompt literary variety; multiline blockquotes; toggle GPU layer fix for Android WebView scroll |
+| 3.5.0 | 43 | 2026-06-06 | Closed Testing | 3 | remove compression trade-off from Encuadre + bump master_combined budget; enforce full hexagram chain in Encuadre for deep threads (up to 8 consultations) |
+| 3.4.9 | 42 | 2026-06-06 | Closed Testing | 0 | — |
+| 3.4.8 | 41 | 2026-06-05 | Closed Testing | 0 | — |
 | 3.4.7 | 40 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.6 | 39 | 2026-06-04 | Closed Testing | 0 | — |
 | 3.4.5 | 38 | 2026-06-04 | Closed Testing | 0 | — |
