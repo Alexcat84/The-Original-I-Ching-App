@@ -7,7 +7,6 @@ import {
   getUserSessionSummaries,
   getUserSessionThreadContent,
   getUserSessionThreadMeta,
-  getUserSessionsWithConsultations,
   isChatPersistenceConfigured,
 } from "@/lib/session-store";
 
@@ -80,13 +79,11 @@ export async function GET(req: Request) {
     });
   }
 
-  const sessions = await getUserSessionsWithConsultations(user.userId);
-  return NextResponse.json({
-    sessions: sessions.map((entry) => ({
-      session: entry.session,
-      consultations: entry.consultations,
-    })),
-  });
+  // No sessionId or summary param — this path read all TOAST for all sessions
+  // (getUserSessionsWithConsultations) which reliably caused Warp timeouts on
+  // cold shared_buffers. No current client sends this request; return 400 so
+  // any accidental caller gets a clear error instead of a silent Warp kill.
+  return apiError(400, { error: "missing_param", code: "MISSING_PARAM", action: "fix_input" });
 }
 
 export async function DELETE(req: Request) {
