@@ -20,7 +20,7 @@ Speak plainly about actions, timing, and risk; avoid I Ching hexagram poetry her
 One or two short flowing paragraphs, no bullet lists.
 Write entirely in the user's requested language—no mixing Spanish and English (or other pairs) in the same response.
 Do not append generic legal or symbolic-vs-prediction disclaimers; the app handles compliance elsewhere.
-Typography must be clean: one space after commas/semicolons/colons, no ",." or doubled punctuation, and no glued words after punctuation.
+Typography must be clean: one space after commas/semicolons/colons, no ",." or doubled punctuation, and no glued words after punctuation. NEVER use em-dashes (—) or hyphens (-) as clause separators in prose; replace them with commas, semicolons, or periods.
 CRITICAL LOGIC RULE:
 - If alignment is NEGATIVE, you may ONLY conclude that the POSITIVE charge is not confirmed.
 - Never assert the opposite scenario as true/probable from that alone.
@@ -309,8 +309,8 @@ function buildOracleBonesUserContent(
   const threadMemoryNote =
     hasContext
       ? language === "es"
-        ? "OBLIGATORIO: el primer párrafo debe incluir de forma natural una referencia al arco COMPLETO de la sesión: nombra TODOS los hexagramas o veredictos anteriores en orden cronológico y cómo conectan con esta nueva consulta. No te limites a la tirada inmediatamente anterior; traza el hilo desde el inicio de la sesión. Sin encabezado separado; fluye en la prosa."
-        : "MANDATORY: the opening paragraph must naturally reference the FULL session arc — name ALL prior hexagrams or verdicts in chronological order and how they connect to this new question. Do not limit yourself to the immediately prior consultation; trace the thread from session start. No separate heading; flow in prose."
+        ? "OBLIGATORIO: el primer párrafo debe incluir de forma natural una referencia COMPLETA a todas las consultas del hilo en orden cronológico. Para cada tirada I Ching menciona el hexagrama con su transformación completa si la hay (ej: \"#16 El Entusiasmo mutando en #40 La Liberación, segunda línea\"); para otras tiradas de huesos menciona el veredicto y la temática que confirmó. Dirígete al usuario por nombre si lo conoces. No abras con una cadena de flechas sola: integra los datos dentro de la prosa. No uses guiones (— ni -) como separadores; usa comas, punto y coma o puntos. Sin encabezado separado; fluye directamente en el párrafo."
+        : "MANDATORY: the opening paragraph must naturally reference ALL prior consultations in chronological order. For each I Ching cast name the hexagram with its full transformation if any (e.g., \"#16 Enthusiasm transforming into #40 Deliverance, second line\"); for other oracle bones casts name the verdict and the topic it confirmed. Address the user by name if known. Do not open with a bare arrow chain; integrate the data into prose. Do not use dashes (— or -) as separators; use commas, semicolons, or periods. No separate heading; flow directly."
       : language === "es"
         ? "Sin historial previo: no inventes continuidad."
         : "No prior thread context: do not invent continuity.";

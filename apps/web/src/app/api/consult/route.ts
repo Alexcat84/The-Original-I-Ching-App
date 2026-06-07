@@ -48,7 +48,7 @@ import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import {
-  getUserSessionWithConsultations,
+  getUserSessionThreadMeta,
   isSharingPersistenceAvailable,
   type StoredConsultation,
   upsertSessionAndConsultation,
@@ -157,7 +157,8 @@ function mapStoredConsultationsToRows(
     transformed_hexagram_name: entry.transformedHexagramName,
     changing_lines: entry.changingLines,
     mutation_rule: entry.mutationRule,
-    interpretation: entry.interpretation,
+    interpretation: entry.interpretationSummary ?? entry.interpretation,
+    interpretation_summary: entry.interpretationSummary,
     oracle_type: entry.oracleType ?? "iching",
     oracle_bones:
       entry.oracleType === "oracle_bones" ? (entry.oracleBones ?? undefined) : undefined,
@@ -591,14 +592,11 @@ export async function POST(req: Request) {
     // let a new consultation slip into an already-full session (silent overflow).
     let authorizedDepth = previousRows.length;
     if (isPersistableUuid(sessionId) && getSupabaseAdmin()) {
-      const sessionWithConsultations = await getUserSessionWithConsultations(
-        authedUserId,
-        sessionId,
-      );
-      if (sessionWithConsultations) {
-        previousRows = mapStoredConsultationsToRows(
-          sessionWithConsultations.consultations,
-        );
+      // Use meta-only query (no TOAST interpretation column) — the context builder
+      // only needs interpretation_summary, which lives inline and is always fast.
+      const sessionMeta = await getUserSessionThreadMeta(authedUserId, sessionId);
+      if (sessionMeta) {
+        previousRows = mapStoredConsultationsToRows(sessionMeta.consultations);
         authorizedDepth = previousRows.length;
       } else if (isDeepening) {
         // Client claims deepening but session not found in DB — treat as fresh.

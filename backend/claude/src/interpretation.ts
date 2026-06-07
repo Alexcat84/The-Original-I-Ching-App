@@ -61,7 +61,7 @@ ABSOLUTE RULES:
 8. Never add generic legal or "simbólica vs predicción" disclaimer paragraphs (e.g. "Es importante tener en cuenta…"). Never end with an asterisk-wrapped footnote; compliance copy lives outside the reading in the app.
 9. ANTI-REPETITION: Each concrete point (a line's counsel, a judgment phrase, a practical recommendation) appears at most once in the entire answer. Do not restate the same advice across sections with different wording.
 10. GROUNDING: Every interpretive claim must tether to the supplied judgment, Image, or line text—paraphrase or quote in blockquote, then bridge to the question. Avoid vague uplift that could apply to any hexagram.
-11. TYPOGRAPHY: enforce clean punctuation and spacing in the response language: one space after commas/semicolons/colons, no ",." or double punctuation, no glued tokens after punctuation, and no unintended uppercase after commas.
+11. TYPOGRAPHY: enforce clean punctuation and spacing in the response language: one space after commas/semicolons/colons, no ",." or double punctuation, no glued tokens after punctuation, and no unintended uppercase after commas. NEVER use em-dashes (—) or hyphens (-) as clause separators in prose; replace them with commas, semicolons, or periods.
 12. TEMPORAL RESTRAINT: Never use temporal expressions (days, weeks, months, years, "recently", "lately", "these past X", or any span of time) when referencing previous consultations, unless the user's current question explicitly contains those terms. Reference prior consultations only by number, sequence, or thematic content — never by how long ago they occurred.`;
 
 /** Token output budget by tier. Master combined needs room for full unified interpretations. */
@@ -488,17 +488,17 @@ INSTRUCTIONS:
 - Use family_home ONLY when the question clearly concerns household, parents, children, partner dynamics at home, or domestic life;
   for abstract or general life questions prefer general, spiritual_inner, decision_path, or career_work as appropriate.
 - ${hasContext
-    ? `OBLIGATORIO — El «Encuadre de la pregunta» tiene DOS PARTES. Escríbelas en un único párrafo corrido, sin subtítulos.
+    ? `OBLIGATORIO — El «Encuadre de la pregunta» tiene DOS PARTES. Escríbelas en un único párrafo corrido, sin subtítulos, sin guiones.
 
-PARTE 1 — CADENA CRONOLÓGICA (NON-NEGOTIABLE — no la recortes aunque la respuesta sea muy larga):
-La PRIMERA ORACIÓN enumera TODOS los hexagramas de la sesión en orden cronológico exacto, desde el primero hasta el actual, usando el formato: "#N Nombre → #N Nombre → … → ahora #N Nombre". Si hay 7 hexagramas previos, los 7 aparecen. Si la sesión tiene 8 consultas, la cadena tiene 8 eslabones. No comprimas («los anteriores», «la sesión previa»): nombra cada uno por número y nombre. EXCEPCIÓN DE FIREWALL: esta cadena de números y nombres está PERMITIDA y REQUERIDA en el Encuadre — el SNAPSHOT VOCABULARY FIREWALL prohíbe términos internos de análisis («arc», «hilo conductor», «trazado», «session arc») pero NUNCA prohíbe los números y nombres de hexagramas, que son datos del oráculo, no vocabulario de resumen interno.
+PARTE 1 — APERTURA NARRATIVA CRONOLÓGICA (NON-NEGOTIABLE — no la omitas aunque la respuesta sea larga):
+Escribe 1 a 2 oraciones de prosa narrativa que recorran CADA consulta del hilo en orden cronológico exacto, dirigiéndote al usuario por nombre si lo conoces. Para cada tirada I Ching: menciona brevemente la pregunta o situación y el hexagrama con su transformación completa si la hay (ej: "preguntaste si lanzar y recibiste #16 El Entusiasmo mutando en #40 La Liberación, segunda línea"). Para cada tirada Oracle Bones que aparezca en el contexto: nómbrala explícitamente como "las grietas del plastrón" o "los huesos de oráculo" con su veredicto y la pregunta que confirmó. No abras con una cadena de flechas sola: integra los números y nombres dentro de la prosa como anclajes de orientación. Termina aterrizando en la tirada actual con una cláusula de llegada natural (ej: "Ahora, con X en pie, recibes #N Nombre"). NUNCA uses guiones (— ni -) como separadores; usa comas, punto y coma o puntos. EXCEPCIÓN DE FIREWALL: los números y nombres de hexagramas y los veredictos de huesos están PERMITIDOS y REQUERIDOS aquí; el SNAPSHOT VOCABULARY FIREWALL prohíbe términos internos de análisis («arc», «session arc», «hilo conductor») pero nunca los datos del oráculo.
 
 PARTE 2 — RE-ENTRADA LITERARIA (2–3 oraciones):
-A continuación del guion cronológico, 2–3 oraciones de prosa narrativa que describan qué movimiento interior o exterior dibujaron esos hexagramas juntos y cómo esta nueva tirada se inserta en ese recorrido. VARIEDAD LITERARIA OBLIGATORIA: adopta una posición narrativa distinta a la de los «Encuadres» anteriores ya presentes en el contexto — puede ser observacional, dramática, íntima, filosófica, estacional, espacial, etc. Nunca reutilices el mismo patrón de apertura ni las mismas metáforas centrales; si en tiradas anteriores del hilo ya aparecieron palabras como «arco», «hilo», «camino», «trazado» o «tejido», elige un encuadre completamente diferente.
+A continuación de la apertura narrativa, 2–3 oraciones de prosa que describan qué movimiento interior o exterior dibujaron esas consultas juntas y cómo esta nueva tirada se inserta en ese recorrido. VARIEDAD LITERARIA OBLIGATORIA: adopta una posición narrativa distinta a la de los «Encuadres» anteriores ya presentes en el contexto; puede ser observacional, dramática, íntima, filosófica, estacional, espacial, etc. Nunca reutilices el mismo patrón de apertura ni las mismas metáforas centrales; si en tiradas anteriores del hilo ya aparecieron palabras como «camino», «trazado» o «tejido», elige un encuadre completamente diferente.
 
-LONGITUD TOTAL DEL ENCUADRE: 1 oración (PARTE 1) + 2–3 oraciones (PARTE 2) = 3–4 oraciones en total.
+LONGITUD TOTAL DEL ENCUADRE: 1–2 oraciones (PARTE 1) + 2–3 oraciones (PARTE 2) = 3–5 oraciones en total.
 
-IMPORTANTE: el resumen estructurado de la sesión ya vive en [SNAPSHOT_START]…[SNAPSHOT_END] — el Encuadre NO es ese resumen. La PARTE 1 (cadena de hexagramas) sí está permitida porque es un ancla de orientación para el usuario, no el SNAPSHOT.`
+IMPORTANTE: el resumen estructurado de la sesión ya vive en [SNAPSHOT_START]…[SNAPSHOT_END]; el Encuadre NO es ese resumen. La PARTE 1 narrativa es el ancla de orientación para el usuario, no el SNAPSHOT.`
     : "Primera consulta de la sesión: no inventes continuidad."
   }
 - Interpret ONLY with the texts given.
