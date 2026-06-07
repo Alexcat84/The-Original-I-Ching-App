@@ -1869,6 +1869,12 @@ export default function HomePage() {
             setSessions((prev) =>
               prev.map((s) => {
                 if (s.localId !== localId) return s;
+                // Only replace thread content if Phase 1 adds new rows not yet in
+                // state. If state already has as many or more rows (e.g. from a
+                // warm IndexedDB load), keep the existing full interpretations —
+                // overwriting them with summary-only placeholders causes a visible
+                // flash where all responses disappear before Phase 2 restores them.
+                const addedNewRows = partialThread.length > s.thread.length;
                 return {
                   ...s,
                   title:
@@ -1876,15 +1882,20 @@ export default function HomePage() {
                     !knownNewSessionTitles.has(metaPayload.session.title) &&
                     !knownInProgressTitles.has(metaPayload.session.title)
                       ? metaPayload.session.title
-                      : (partialThread[0]?.question.slice(0, 60) ??
+                      : (s.thread[0]?.question.slice(0, 60) ??
+                        partialThread[0]?.question.slice(0, 60) ??
                         sessionUi.defaultSessionTitle),
                   sessionId: metaPayload.session.sessionId,
                   publicSessionId: metaPayload.session.publicId,
                   threadMaxDepth: planCap,
-                  thread: partialThread,
+                  thread: addedNewRows ? partialThread : s.thread,
                   messageCount: Math.max(partialThread.length, s.messageCount),
-                  updatedAt: partialThread.at(-1)?.createdAt ?? s.updatedAt,
-                  firstConsultationAt: partialThread[0]?.createdAt ?? s.firstConsultationAt,
+                  updatedAt: addedNewRows
+                    ? (partialThread.at(-1)?.createdAt ?? s.updatedAt)
+                    : s.updatedAt,
+                  firstConsultationAt: addedNewRows
+                    ? (partialThread[0]?.createdAt ?? s.firstConsultationAt)
+                    : s.firstConsultationAt,
                 };
               }),
             );
