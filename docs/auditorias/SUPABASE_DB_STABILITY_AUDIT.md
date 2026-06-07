@@ -12,9 +12,9 @@
 
 | Campo | Valor |
 |-------|-------|
-| **Estado** | 🟡 FASE 1 CERRADA — pendiente Fase 2 (split TOAST) |
-| **Prioridad** | P1 — operación estable post-Fase 1; TOAST sigue siendo riesgo a largo plazo |
-| **Relacionado** | [SQLITE_CHAT_HYDRATION_AUDIT.md](../audits/SQLITE_CHAT_HYDRATION_AUDIT.md), [CHAT_THREAD_HYDRATION_AUDIT.md](../audits/CHAT_THREAD_HYDRATION_AUDIT.md), migraciones 052–061 |
+| **Estado** | 🟡 FASE 2 EN STAGING — migraciones 062-064 listas, pendiente aplicar en Supabase |
+| **Prioridad** | P1 — TOAST aún existe en ambas tablas hasta Fase 3 (vacuum); `get_session_content_safe` ya lee de `consultation_content` |
+| **Relacionado** | [SQLITE_CHAT_HYDRATION_AUDIT.md](../audits/SQLITE_CHAT_HYDRATION_AUDIT.md), [CHAT_THREAD_HYDRATION_AUDIT.md](../audits/CHAT_THREAD_HYDRATION_AUDIT.md), migraciones 052–064 |
 
 ---
 
@@ -493,11 +493,61 @@ El plan **Pro** aporta más compute, egress y conexiones totales a Postgres, per
 |-------|---------|
 | 30–50 conexiones PostgREST | ~1 (web bootstrap) + ~2–3 (mobile: bootstrap + 1 thread lazy) |
 
-### Pendiente — Fase 2
+### Pendiente — Fase 2 (aplicar migraciones)
 
-- **Split TOAST**: migración `consultation_content` (tablas 056–058, no iniciadas) — elimina los 270 MB de TOAST coubicados en `consultations`. Reduce lectura de hilo de ~4 MB a ~1 KB para la parte meta.
-- **pg_prewarm manual**: ejecutar `SELECT pg_prewarm('consultations')` en ventana de mantenimiento para precalentar shared_buffers.
-- **Pool PostgREST**: abrir ticket a Supabase Support para solicitar aumento de pool > 10 en plan Pro.
+Las migraciones están en staging. Aplicar en Supabase SQL Editor en este orden:
+
+1. `062_consultation_content_table.sql` — tabla + RLS + índice
+2. `063_consultation_content_backfill.sql` — backfill + VACUUM ANALYZE
+3. `064_consultation_content_sync_and_read.sql` — trigger + función + prewarm retargeting
+
+Ver sección "Fase 2 — Cierre" más abajo para instrucciones de smoke test.
+
+---
+
+## Fase 2 — Cierre (2026-06-07)
+
+### Aplicado en rama `staging` (commit `828c894`)
+
+#### DB (3 migraciones)
+
+| Migración | Descripción |
+|-----------|-------------|
+| `062` | Tabla `consultation_content` — PK FK cascade, RLS `own_content` (initplan form), índice compuesto `(user_id, session_id)` |
+| `063` | Backfill: copia `interpretation` + `oracle_bones` de `consultations` → `consultation_content` para todas las filas no-null. `ON CONFLICT DO NOTHING` — reanudable. `VACUUM ANALYZE` al final |
+| `064` | Trigger `trg_sync_consultation_content` (AFTER INSERT OR UPDATE OF interpretation, oracle_bones ON consultations) + función `sync_consultation_content` (SECURITY DEFINER) + `get_session_content_safe` retargeteada a `consultation_content` + pg_cron prewarm retargeteado a `consultation_content` |
+
+#### Sin cambios TypeScript
+
+`getUserSessionThreadContent` llama `get_session_content_safe` vía RPC — misma firma, misma respuesta. Cero cambios en `session-store.ts` ni en API routes.
+
+#### Arquitectura post-Fase 2
+
+```
+consultations (heap ~152 kB, TOAST ~270 MB)          ← consultas meta NUNCA tocan TOAST
+  ↓ trigger (INSERT/UPDATE)
+consultation_content (heap pequeño, TOAST ~270 MB)   ← único origen de get_session_content_safe
+  ↑
+get_session_content_safe (SECURITY INVOKER, 2s timeout, EXCEPTION → [])
+```
+
+Ambas tablas tienen TOAST hasta Fase 3. El beneficio inmediato: páginas TOAST de `consultation_content` son las únicas que el pg_cron job calienta → más probable estar en shared_buffers al abrir un chat.
+
+#### Instrucciones de aplicación
+
+1. **Dashboard Supabase → SQL Editor** — ejecutar cada migración en orden (062 → 063 → 064).
+2. **Verificar** con `backend/db/migrations/verify_migrations.sql` — los checks 062, 063, 064 deben devolver `true`.
+3. **Smoke test**:
+   - Login → abrir chat → hilo carga con interpretación completa (no solo summary placeholder)
+   - Consultar `SELECT COUNT(*) FROM consultation_content` — debe igualar filas no-null de `consultations`
+   - Logs Vercel: 0 `Warp server error` al abrir chats
+
+#### Pendiente — Fase 3 (post-estabilización, 2+ semanas sin incidentes)
+
+- Nulificar `interpretation` y `oracle_bones` en `consultations`
+- `VACUUM FULL consultations` — recupera los ~270 MB de TOAST
+- Actualizar pg_cron job final (ya hecho en 064 para `consultation_content`)
+- Evaluar DROP de columnas si todos los callers usan `consultation_content`
 
 ---
 
@@ -508,3 +558,4 @@ El plan **Pro** aporta más compute, egress y conexiones totales a Postgres, per
 | 2026-06-07 | Auditoría inicial + plan de implementación en 4 fases |
 | 2026-06-07 | Fase 1 cerrada — 6 code fixes + 3 migraciones + 3 gaps de seguimiento |
 | 2026-06-07 | Sección 11: validación Supabase (MCP advisors + docs + skill) — veredicto APROBADO CON AJUSTES MENORES |
+| 2026-06-07 | Fase 2 implementada — migraciones 062-064 en staging, pendiente aplicar en Supabase |
