@@ -67,7 +67,9 @@ async function fetchSummaries(
   token: string,
   baseUrl: string,
 ): Promise<ApiSummaryEntry[] | null> {
-  const res = await fetchWithTimeout(`${baseUrl}/api/account/chats?summary=1`, {
+  // Use bootstrap endpoint — returns sessions (same shape as ?summary=1) plus
+  // account data. Halves the login burst from 2 parallel calls to 1.
+  const res = await fetchWithTimeout(`${baseUrl}/api/account/bootstrap`, {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store",
   });

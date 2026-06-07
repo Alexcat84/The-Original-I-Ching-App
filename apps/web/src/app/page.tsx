@@ -1711,6 +1711,19 @@ export default function HomePage() {
     if (!isSupabaseBrowserConfigured()) return;
     isSigningOutRef.current = true;
     const uid = authUserId;
+    // Best-effort: invalidate server-side JWT cache before Supabase revokes the token.
+    // Prevents a 60-second window where the revoked JWT still passes the in-process cache.
+    try {
+      const { data: { session } } = await getSupabaseBrowser().auth.getSession();
+      if (session?.access_token) {
+        void fetch("/api/auth/sign-out", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+      }
+    } catch {
+      // non-fatal
+    }
     try {
       await getSupabaseBrowser().auth.signOut();
     } catch {
