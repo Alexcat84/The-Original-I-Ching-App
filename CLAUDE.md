@@ -257,8 +257,16 @@ Herramientas locales de QA (no producción): `pnpm run generate:together:iching-
 7. **Sellos/glifos en imágenes FLUX** — prompt positivo variado + `negative_prompt` dedicado y compactación (`image-engine`); ver tabla “Mitigación de glifos” arriba
 8. **WebView cross-origin guard** — `onShouldStartLoadWithRequest` bloquea cualquier URL fuera de `BASE_URL`; aplica igual en staging y producción
 9. **SQLite local cache mobile** — `expo-sqlite` en APK: historial de chats disponible offline vía `window.__rnCachedChats`; sincronización en background con stale-while-revalidate
+10. **P0 wipe interpretaciones (2026-06-07)** — 066 aplicada sin 068 previo; trigger sync propagó NULL a `consultation_content`. Fix: **068** + upsert defensivo. **NUNCA 066 sin 068.** Docs: `docs/auditorias/INCIDENT_2026-06-07_CONSULTATION_CONTENT_WIPE.md`, runbook `docs/runbooks/MIGRATION_DATA_INTEGRITY.md`
 
-### Fix Windows — @expo/config-plugins glob (APLICAR DESPUÉS DE CADA npm install)
+### ⚠️ Reglas de migraciones DB (obligatorias)
+
+- **`consultation_content.interpretation` = fuente de verdad del texto del oráculo.**
+- **066 (NULL masivo) PROHIBIDA sin 068 aplicada antes.**
+- Gate SQL before/after: `content_with_full_text` en `verify_migrations.sql` check `CONTENT`.
+- Smoke post-migración: hard reload del hilo — texto completo visible, no solo Warp=0.
+- PITR confirmado antes de cualquier migración destructiva.
+
 En Windows, `glob` v10 no resuelve rutas con backslashes combinadas con extglob `@(java|kt)`.
 Después de cualquier `npm install` en el monorepo, re-aplicar estos dos cambios en `node_modules`:
 

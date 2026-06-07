@@ -387,5 +387,37 @@ FROM (
         AND (t.tgtype & 16) <> 0
     )
 
+  UNION ALL
+  -- 068 · sync trigger NULL-safe (never wipe consultation_content on meta-only NULL)
+  SELECT '068', 'sync_consultation_content skips NULL wipe + COALESCE on conflict',
+    EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'sync_consultation_content'
+        AND routine_definition LIKE '%NEW.interpretation IS NULL%'
+        AND routine_definition LIKE '%COALESCE(EXCLUDED.interpretation%'
+    )
+    AND EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'persist_consultation_with_content'
+        AND routine_definition LIKE '%COALESCE(EXCLUDED.interpretation%'
+    )
+
+  UNION ALL
+  -- CONTENT · P0 gate — interpretation text must exist when consultations exist
+  -- Fails if 066-style wipe occurred without safe sync (incident 2026-06-07).
+  SELECT 'CONTENT', 'consultation_content has full interpretation text for all consults with rows',
+    (
+      SELECT COUNT(*) FROM public.consultations
+    ) = 0
+    OR (
+      (SELECT COUNT(*) FROM public.consultation_content
+       WHERE interpretation IS NOT NULL AND length(interpretation) > 100)
+      >=
+      (SELECT COUNT(*) FROM public.consultation_content)
+      AND (SELECT COUNT(*) FROM public.consultation_content) > 0
+    )
+
 ) checks
 ORDER BY num;

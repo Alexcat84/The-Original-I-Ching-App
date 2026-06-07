@@ -12,7 +12,7 @@
 
 | Campo | Valor |
 |-------|-------|
-| **Estado** | 🟢 Fase 3 implementada — 067+066 Step 1 en prod; código en rama `fix/supabase-stability-phase3-scale`; **VACUUM FULL manual** pendiente (~274 MB hasta reclaim) |
+| **Estado** | 🔴 Incidente P0 2026-06-07 — wipe de interpretaciones por 066+trigger; **068** aplicada; consultas nuevas protegidas; histórico requiere PITR. Ver §14 |
 | **Prioridad** | P4 ticket pool PostgREST >10 antes de marketing >1000 WAU pico |
 | **Relacionado** | [SQLITE_CHAT_HYDRATION_AUDIT.md](../audits/SQLITE_CHAT_HYDRATION_AUDIT.md), [CHAT_THREAD_HYDRATION_AUDIT.md](../audits/CHAT_THREAD_HYDRATION_AUDIT.md), migraciones 052–066 |
 
@@ -642,7 +642,39 @@ Próximo run programado de cron: primer ciclo `:00/:15/:30/:45` tras reschedule;
 4. Logs PostgREST: **0** `Warp server error`
 5. APK (si rebuild): `sync-service` solo `fetchChatContent`, sin `fetchChatDetail`
 
-Tras smoke limpio → aplicar **066** Step 1 (NULL) + **VACUUM FULL** en ventana de mantenimiento.
+Tras smoke limpio → aplicar **068** → luego **066** Step 1 (NULL) con gate R3 before/after → **VACUUM FULL** solo tras confirmar integridad. **Nunca 066 sin 068.**
+
+---
+
+## 14. Incidente P0 — wipe consultation_content (2026-06-07)
+
+**Documento completo:** [`INCIDENT_2026-06-07_CONSULTATION_CONTENT_WIPE.md`](./INCIDENT_2026-06-07_CONSULTATION_CONTENT_WIPE.md)  
+**Runbook:** [`docs/runbooks/MIGRATION_DATA_INTEGRITY.md`](../runbooks/MIGRATION_DATA_INTEGRITY.md)
+
+### Qué pasó
+
+Migración **066** (`UPDATE consultations SET interpretation = NULL`) ejecutada con trigger `sync_consultation_content` activo en UPDATE **sin** guard NULL-safe (**068** no aplicada aún). El trigger propagó NULL a `consultation_content` → **66 consultas / 9 usuarios sin texto** en DB.
+
+### Impacto
+
+- Metadata intacta (pregunta, hexagrama, imagen, sesión).
+- Texto largo **perdido** en Postgres; recuperación vía **PITR** antes de 19:11 UTC 2026-06-07.
+- **No** ejecutar `VACUUM FULL` hasta decidir restore.
+
+### Remediación
+
+| Item | Estado |
+|------|--------|
+| Migración **068** (trigger + RPC COALESCE) | ✅ Prod |
+| Upsert defensivo `session-store.ts` | ✅ `bf33b59` |
+| Check **CONTENT** + **068** en `verify_migrations.sql` | ✅ Repo |
+| Reglas permanentes R1–R7 en doc incidente | ✅ |
+
+### Lección (obligatoria para futuras fases)
+
+> Validar **integridad de contenido** (reload + COUNT texto), no solo Warp/pool.  
+> **066 sin 068 = PROHIBIDO.**  
+> Smoke post-migración debe incluir hard reload del hilo.
 
 ---
 
@@ -656,3 +688,4 @@ Tras smoke limpio → aplicar **066** Step 1 (NULL) + **VACUUM FULL** en ventana
 | 2026-06-07 | Fase 2 implementada — migraciones 062-064 en staging, pendiente aplicar en Supabase |
 | 2026-05-26 | P0 migración 065 aplicada prod; P1 código legacy TOAST eliminado; 066 en repo (gated); sección 12 verificación MCP |
 | 2026-06-07 | Fase 3 escala DB — 067 RPC + 066 reclaim aplicados prod; código thread=1, bootstrap serial, consult semáforo; sección 13 |
+| 2026-06-07 | **P0 incidente** — 066 propagó NULL a consultation_content; doc incidente + runbook + check CONTENT/068; sección 14 |
