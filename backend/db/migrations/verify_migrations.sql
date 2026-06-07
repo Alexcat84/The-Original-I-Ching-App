@@ -189,5 +189,14 @@ FROM (
         AND reloptions::text LIKE '%autovacuum_vacuum_scale_factor=0.01%'
     )
 
+  UNION ALL
+  -- 053 · TOAST timeout guard + prewarm
+  SELECT '053', 'get_session_content_safe function exists (TOAST timeout guard)',
+    EXISTS (
+      SELECT 1 FROM information_schema.routines
+      WHERE routine_schema = 'public'
+        AND routine_name   = 'get_session_content_safe'
+    )
+
 ) checks
 ORDER BY num;
