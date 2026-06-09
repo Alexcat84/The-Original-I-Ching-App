@@ -7,6 +7,11 @@ import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-cons
 import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
 import { withSupabaseSemaphore } from "@/lib/supabase-admin";
 import { getUpstashRedis } from "@/lib/rate-limit";
+import {
+  buildSupabaseOpTelemetry,
+  createApiLogger,
+  isSupabaseTelemetryEnabled,
+} from "@/lib/supabase-telemetry";
 
 // Short-lived cache to absorb the login burst when multiple Vercel instances call
 // this endpoint within milliseconds (React strict remounts, APK + WebView). 8 seconds
@@ -25,18 +30,21 @@ function sleep(ms: number): Promise<void> {
 async function waitForBootstrapCache(
   redis: NonNullable<ReturnType<typeof getUpstashRedis>>,
   cacheKey: string,
-): Promise<object | null> {
+): Promise<{ payload: object | null; waitedPollMs: number }> {
+  const pollStartedAt = Date.now();
   const deadline = Date.now() + BOOTSTRAP_POLL_MAX_MS;
   while (Date.now() < deadline) {
     await sleep(BOOTSTRAP_POLL_MS);
     try {
       const cached = await redis.get<object>(cacheKey);
-      if (cached) return cached;
+      if (cached) {
+        return { payload: cached, waitedPollMs: Date.now() - pollStartedAt };
+      }
     } catch {
       // Non-fatal: keep polling
     }
   }
-  return null;
+  return { payload: null, waitedPollMs: Date.now() - pollStartedAt };
 }
 
 export const runtime = "nodejs";
@@ -48,6 +56,9 @@ export const runtime = "nodejs";
  * (one PostgREST connection at a time within a single semaphore slot).
  */
 export async function GET(req: Request) {
+  const startedAt = Date.now();
+  const api = createApiLogger("api/account/bootstrap", req, "/api/account/bootstrap");
+
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
@@ -61,29 +72,92 @@ export async function GET(req: Request) {
   const cacheKey = `bootstrap:${user.userId}`;
   const lockKey = `bootstrap:lock:${user.userId}`;
   let holdsLock = false;
+  let lockAcquired = false;
+  let cacheHit = false;
+  let waitedPollMs = 0;
 
   if (redis) {
     try {
       const cached = await redis.get<object>(cacheKey);
-      if (cached) return NextResponse.json(cached);
+      if (cached) {
+        cacheHit = true;
+        if (isSupabaseTelemetryEnabled()) {
+          api.log.info("bootstrap_get", {
+            requestId: api.requestId,
+            cacheHit: true,
+            lockAcquired: false,
+            holdsLock: false,
+            waitedPollMs: 0,
+            durationMs: Date.now() - startedAt,
+            sessionCount: Array.isArray((cached as { sessions?: unknown[] }).sessions)
+              ? (cached as { sessions: unknown[] }).sessions.length
+              : null,
+            userId: user.userId.slice(0, 8),
+          });
+          await api.log.flush();
+        }
+        return NextResponse.json(cached);
+      }
 
       const acquired = await redis.set(lockKey, "1", {
         nx: true,
         ex: BOOTSTRAP_LOCK_TTL_SECONDS,
       });
-      holdsLock = Boolean(acquired);
+      lockAcquired = Boolean(acquired);
+      holdsLock = lockAcquired;
       if (!acquired) {
         const waited = await waitForBootstrapCache(redis, cacheKey);
-        if (waited) return NextResponse.json(waited);
+        waitedPollMs = waited.waitedPollMs;
+        if (waited.payload) {
+          cacheHit = true;
+          if (isSupabaseTelemetryEnabled()) {
+            api.log.info("bootstrap_get", {
+              requestId: api.requestId,
+              cacheHit: true,
+              lockAcquired: false,
+              holdsLock: false,
+              waitedPollMs,
+              durationMs: Date.now() - startedAt,
+              sessionCount: Array.isArray((waited.payload as { sessions?: unknown[] }).sessions)
+                ? (waited.payload as { sessions: unknown[] }).sessions.length
+                : null,
+              userId: user.userId.slice(0, 8),
+            });
+            await api.log.flush();
+          }
+          return NextResponse.json(waited.payload);
+        }
         const retryAcquired = await redis.set(lockKey, "1", {
           nx: true,
           ex: BOOTSTRAP_LOCK_TTL_SECONDS,
         });
         if (retryAcquired) {
+          lockAcquired = true;
           holdsLock = true;
         } else {
           const waitedAgain = await waitForBootstrapCache(redis, cacheKey);
-          if (waitedAgain) return NextResponse.json(waitedAgain);
+          waitedPollMs += waitedAgain.waitedPollMs;
+          if (waitedAgain.payload) {
+            cacheHit = true;
+            if (isSupabaseTelemetryEnabled()) {
+              api.log.info("bootstrap_get", {
+                requestId: api.requestId,
+                cacheHit: true,
+                lockAcquired: false,
+                holdsLock: false,
+                waitedPollMs,
+                durationMs: Date.now() - startedAt,
+                sessionCount: Array.isArray(
+                  (waitedAgain.payload as { sessions?: unknown[] }).sessions,
+                )
+                  ? (waitedAgain.payload as { sessions: unknown[] }).sessions.length
+                  : null,
+                userId: user.userId.slice(0, 8),
+              });
+              await api.log.flush();
+            }
+            return NextResponse.json(waitedAgain.payload);
+          }
         }
       }
     } catch {
@@ -95,6 +169,10 @@ export async function GET(req: Request) {
   const supabase = getSupabaseAdmin();
 
   const persistenceOk = isChatPersistenceConfigured();
+
+  const bootstrapTelemetry = buildSupabaseOpTelemetry(api, "bootstrap_bundle", {
+    userId: user.userId,
+  });
 
   const { billing, sessions, profileRow, legalRow } = await withSupabaseSemaphore(async () => {
     const billingSnapshot = await getAccountBillingSnapshot(user.userId);
@@ -127,7 +205,7 @@ export async function GET(req: Request) {
       profileRow: profile,
       legalRow: legal,
     };
-  });
+  }, bootstrapTelemetry);
 
   const responseBody = {
     // ── Account (same shape as /api/account/me) ───────────────────────────
@@ -165,6 +243,20 @@ export async function GET(req: Request) {
     if (holdsLock) {
       redis.del(lockKey).catch(() => {});
     }
+  }
+
+  if (isSupabaseTelemetryEnabled()) {
+    api.log.info("bootstrap_get", {
+      requestId: api.requestId,
+      cacheHit,
+      lockAcquired,
+      holdsLock,
+      waitedPollMs,
+      durationMs: Date.now() - startedAt,
+      sessionCount: sessions.length,
+      userId: user.userId.slice(0, 8),
+    });
+    await api.log.flush();
   }
 
   return NextResponse.json(responseBody);

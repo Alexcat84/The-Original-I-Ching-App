@@ -48,6 +48,13 @@ import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin, withSupabaseSemaphore } from "@/lib/supabase-admin";
 import {
+  buildSupabaseOpTelemetry,
+  getRequestId,
+  isSupabaseTelemetryEnabled,
+  logConsultPhase,
+  logConsultRitual,
+} from "@/lib/supabase-telemetry";
+import {
   getUserSessionThreadMeta,
   isSharingPersistenceAvailable,
   type StoredConsultation,
@@ -320,9 +327,13 @@ function detectLanguageFromUserText(text: string): AppLocale | null {
   return best.lang;
 }
 
+const CONSULT_ROUTE = "/api/consult";
+
 export async function POST(req: Request) {
   assertCriticalConfig();
   const log = new Logger({ source: "api/consult" });
+  const requestId = getRequestId(req);
+  const consultStartedAt = Date.now();
 
   // Health check de Upstash — rechazar si no está operativo
   if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
@@ -415,6 +426,10 @@ export async function POST(req: Request) {
       );
     }
     const authedUserId = authUser.userId;
+    logConsultPhase(log, requestId, "auth_ok", consultStartedAt, {
+      userId: shortUserId(authedUserId),
+      oracleMode,
+    });
 
     // Play Integrity check — for Android app requests only (header injected by native shell).
     // Web browser requests don't carry this header and are protected by Turnstile at registration.
@@ -594,9 +609,20 @@ export async function POST(req: Request) {
     if (isPersistableUuid(sessionId) && getSupabaseAdmin()) {
       // Use meta-only query (no TOAST interpretation column) — the context builder
       // only needs interpretation_summary, which lives inline and is always fast.
-      const sessionMeta = await withSupabaseSemaphore(() =>
-        getUserSessionThreadMeta(authedUserId, sessionId),
+      const sessionMeta = await withSupabaseSemaphore(
+        () => getUserSessionThreadMeta(authedUserId, sessionId),
+        buildSupabaseOpTelemetry(
+          { log, requestId, route: CONSULT_ROUTE },
+          "consultations_meta",
+          { userId: authedUserId, sessionId },
+        ),
       );
+      logConsultPhase(log, requestId, "session_meta_done", consultStartedAt, {
+        userId: shortUserId(authedUserId),
+        sessionId: sessionId.slice(0, 8),
+        found: Boolean(sessionMeta),
+        depth: sessionMeta ? sessionMeta.consultations.length : 0,
+      });
       if (sessionMeta) {
         previousRows = mapStoredConsultationsToRows(sessionMeta.consultations);
         authorizedDepth = previousRows.length;
@@ -632,9 +658,19 @@ export async function POST(req: Request) {
 
     let remainingAfterConsume = adminUnlimitedCredits ? 999_999 : -1;
     if (!adminUnlimitedCredits) {
-      remainingAfterConsume = await withSupabaseSemaphore(() =>
-        consumeToken(authedUserId, tokensToConsume),
+      remainingAfterConsume = await withSupabaseSemaphore(
+        () => consumeToken(authedUserId, tokensToConsume),
+        buildSupabaseOpTelemetry(
+          { log, requestId, route: CONSULT_ROUTE },
+          "consume_token",
+          { userId: authedUserId, sessionId },
+        ),
       );
+      logConsultPhase(log, requestId, "token_consumed", consultStartedAt, {
+        userId: shortUserId(authedUserId),
+        tokensConsumed: tokensToConsume,
+        remaining: remainingAfterConsume,
+      });
       if (remainingAfterConsume === -1) {
         log.info("insufficient_credits", { userId: shortUserId(authedUserId), tier: tierKey, oracleMode });
         await log.flush();
@@ -757,6 +793,11 @@ export async function POST(req: Request) {
         historyLength: previousRows.length,
         sessionLimit: maxDepth,
       });
+      logConsultPhase(log, requestId, "persist_start", consultStartedAt, {
+        userId: shortUserId(authedUserId),
+        sessionId: sessionId.slice(0, 8),
+        oracleMode: "oracle_bones",
+      });
       const sharing = await upsertSessionAndConsultation({
         userId: authedUserId,
         sessionId,
@@ -764,6 +805,11 @@ export async function POST(req: Request) {
         language: oracleLanguage,
         category,
         maxConsultations: maxDepth,
+        semaphoreTelemetry: buildSupabaseOpTelemetry(
+          { log, requestId, route: CONSULT_ROUTE },
+          "persist_consultation",
+          { userId: authedUserId, sessionId },
+        ),
         consultation: {
           consultationId: bonesCast.id,
           sessionId,
@@ -789,13 +835,23 @@ export async function POST(req: Request) {
         },
       });
 
+      logConsultPhase(log, requestId, "persist_done", consultStartedAt, {
+        userId: shortUserId(authedUserId),
+        sessionId: sessionId.slice(0, 8),
+        oracleMode: "oracle_bones",
+      });
       log.info("oracle_bones_complete", {
+        requestId,
         userId: shortUserId(authedUserId),
         verdict: bonesCast.verdict,
         medium: bonesCast.medium,
         imageProvider: image.provider,
         sessionPosition: nextPosition,
         canDeepen,
+      });
+      logConsultPhase(log, requestId, "stream_complete", consultStartedAt, {
+        userId: shortUserId(authedUserId),
+        mode: "oracle_bones_json",
       });
       await log.flush();
       return NextResponse.json({
@@ -867,8 +923,16 @@ export async function POST(req: Request) {
       const ritualTraceId = randomUUID().slice(0, 8);
       const ritualStartedAt = Date.now();
       const ritualLog = (label: string, extra?: Record<string, unknown>) => {
-        if (!LOG_RITUAL_STREAM_DEBUG) return;
         const elapsedMs = Date.now() - ritualStartedAt;
+        if (isSupabaseTelemetryEnabled()) {
+          logConsultRitual(log, requestId, label, ritualStartedAt, {
+            traceId: ritualTraceId,
+            userId: shortUserId(authedUserId),
+            sessionId: sessionId.slice(0, 8),
+            ...(extra ?? {}),
+          });
+        }
+        if (!LOG_RITUAL_STREAM_DEBUG) return;
         const msg = `[stream_ritual][${ritualTraceId}][+${elapsedMs}ms] ${label}`;
         // In development, also write to stdout so the local terminal shows trace timing.
         // In production this branch is skipped — Axiom is the only sink.
@@ -985,6 +1049,11 @@ export async function POST(req: Request) {
                 historyLength: previousRows.length,
                 sessionLimit: maxDepth,
               });
+              logConsultPhase(log, requestId, "persist_start", consultStartedAt, {
+                userId: shortUserId(authedUserId),
+                sessionId: sessionId.slice(0, 8),
+                mode: "stream_ritual",
+              });
               const sharing = await upsertSessionAndConsultation({
                 userId: authedUserId,
                 sessionId,
@@ -992,6 +1061,11 @@ export async function POST(req: Request) {
                 language,
                 category,
                 maxConsultations: maxDepth,
+                semaphoreTelemetry: buildSupabaseOpTelemetry(
+                  { log, requestId, route: CONSULT_ROUTE },
+                  "persist_consultation",
+                  { userId: authedUserId, sessionId },
+                ),
                 consultation: {
                   consultationId: castResult.id,
                   sessionId,
@@ -1022,8 +1096,14 @@ export async function POST(req: Request) {
                   oracleBones: null,
                 },
               });
+              logConsultPhase(log, requestId, "persist_done", consultStartedAt, {
+                userId: shortUserId(authedUserId),
+                sessionId: sessionId.slice(0, 8),
+                mode: "stream_ritual",
+              });
 
               log.info("stream_consult_complete", {
+                requestId,
                 userId: shortUserId(authedUserId),
                 hexagram: castResult.primaryHexagram.number,
                 transformedHexagram: castResult.transformedHexagram?.number ?? null,
@@ -1032,6 +1112,10 @@ export async function POST(req: Request) {
                 sessionPosition: nextPosition,
                 canDeepen,
                 translator: resolvedTranslator,
+              });
+              logConsultPhase(log, requestId, "stream_complete", consultStartedAt, {
+                userId: shortUserId(authedUserId),
+                mode: "stream_ritual",
               });
               writeEvent("final_ready", {
                 sharingPersisted: isSharingPersistenceAvailable(),
@@ -1172,6 +1256,11 @@ export async function POST(req: Request) {
       historyLength: previousRows.length,
       sessionLimit: maxDepth,
     });
+    logConsultPhase(log, requestId, "persist_start", consultStartedAt, {
+      userId: shortUserId(authedUserId),
+      sessionId: sessionId.slice(0, 8),
+      mode: "ritual_json",
+    });
     const sharing = await upsertSessionAndConsultation({
       userId: authedUserId,
       sessionId,
@@ -1179,6 +1268,11 @@ export async function POST(req: Request) {
       language,
       category,
       maxConsultations: maxDepth,
+      semaphoreTelemetry: buildSupabaseOpTelemetry(
+        { log, requestId, route: CONSULT_ROUTE },
+        "persist_consultation",
+        { userId: authedUserId, sessionId },
+      ),
       consultation: {
         consultationId: castResult.id,
         sessionId,
@@ -1204,8 +1298,14 @@ export async function POST(req: Request) {
         oracleBones: null,
       },
     });
+    logConsultPhase(log, requestId, "persist_done", consultStartedAt, {
+      userId: shortUserId(authedUserId),
+      sessionId: sessionId.slice(0, 8),
+      mode: "ritual_json",
+    });
 
     log.info("consult_complete", {
+      requestId,
       userId: shortUserId(authedUserId),
       hexagram: castResult.primaryHexagram.number,
       transformedHexagram: castResult.transformedHexagram?.number ?? null,
@@ -1214,6 +1314,10 @@ export async function POST(req: Request) {
       sessionPosition: nextPosition,
       canDeepen,
       translator: resolvedTranslator,
+    });
+    logConsultPhase(log, requestId, "stream_complete", consultStartedAt, {
+      userId: shortUserId(authedUserId),
+      mode: "ritual_json",
     });
     await log.flush();
     return NextResponse.json({

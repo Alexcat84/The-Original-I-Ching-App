@@ -1,21 +1,32 @@
 import { NextResponse } from "next/server";
-import { Logger } from "next-axiom";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
 import { getAccountBillingSnapshot } from "@/lib/credits";
 import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
 import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
 import { withSupabaseSemaphore } from "@/lib/supabase-admin";
+import {
+  buildSupabaseOpTelemetry,
+  createApiLogger,
+  isSupabaseTelemetryEnabled,
+} from "@/lib/supabase-telemetry";
 
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
-  const log = new Logger({ source: "api/account/me" });
+  const startedAt = Date.now();
+  const api = createApiLogger("api/account/me", req, "/api/account/me");
+
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
-  const billing = await withSupabaseSemaphore(() => getAccountBillingSnapshot(user.userId));
+
+  const billing = await withSupabaseSemaphore(
+    () => getAccountBillingSnapshot(user.userId),
+    buildSupabaseOpTelemetry(api, "account_billing_snapshot", { userId: user.userId }),
+  );
+
   const userProfile = await withSupabaseSemaphore(async () => {
     const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
     const supabase = getSupabaseAdmin();
@@ -41,7 +52,10 @@ export async function GET(req: Request) {
       .eq("privacy_version", CURRENT_PRIVACY_VERSION)
       .maybeSingle();
     if (legalAcceptanceError) {
-      log.warn("account_me_legal_lookup_failed", { userId: user.userId.slice(0, 8), error: legalAcceptanceError.message });
+      api.log.warn("account_me_legal_lookup_failed", {
+        userId: user.userId.slice(0, 8),
+        error: legalAcceptanceError.message,
+      });
       console.warn("[account/me] legal acceptance lookup failed", legalAcceptanceError.message);
     }
     return {
@@ -52,8 +66,17 @@ export async function GET(req: Request) {
       legalAccepted: Boolean(legalAcceptance?.id),
       tourV1Completed: Boolean(data?.tour_v1_completed_at),
     };
-  });
-  await log.flush();
+  }, buildSupabaseOpTelemetry(api, "account_me_profile", { userId: user.userId }));
+
+  if (isSupabaseTelemetryEnabled()) {
+    api.log.info("account_me_get", {
+      requestId: api.requestId,
+      durationMs: Date.now() - startedAt,
+      userId: user.userId.slice(0, 8),
+    });
+  }
+
+  await api.log.flush();
   return NextResponse.json({
     id: user.userId,
     email: user.email,

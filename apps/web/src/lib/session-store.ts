@@ -4,6 +4,7 @@ import type {
 } from "@iching-oracle/context-engine";
 import { getHexagramRecordByNumber } from "@iching-oracle/iching-data";
 import { getSupabaseAdmin, withSupabaseSemaphore } from "@/lib/supabase-admin";
+import type { SupabaseOpTelemetry } from "@/lib/supabase-telemetry";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { randomBytes } from "node:crypto";
 
@@ -166,6 +167,7 @@ export async function upsertSessionAndConsultation(params: {
   category: string;
   maxConsultations: number;
   consultation: Omit<StoredConsultation, "publicId" | "createdAt">;
+  semaphoreTelemetry?: SupabaseOpTelemetry;
 }): Promise<{ publicReadingId: string; publicSessionId: string }> {
   const supabase = getSupabaseAdmin();
   if (!supabase || !isPersistableUuid(params.sessionId)) {
@@ -360,7 +362,7 @@ export async function upsertSessionAndConsultation(params: {
       publicReadingId: readingPublicId,
       publicSessionId: finalSessionPublicId,
     };
-  });
+  }, params.semaphoreTelemetry);
 
   if ("error" in persistOutcome && persistOutcome.error) {
     throw new Error(`consultation_create_failed:${persistOutcome.error}`);
