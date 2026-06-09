@@ -6,6 +6,14 @@ import { getUserSessionSummaries, isChatPersistenceConfigured } from "@/lib/sess
 import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
 import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
 import { withSupabaseSemaphore } from "@/lib/supabase-admin";
+import { getUpstashRedis } from "@/lib/rate-limit";
+
+// Short-lived cache to absorb the double-bootstrap burst that occurs when the
+// native APK and the WebView both call this endpoint within milliseconds of each
+// other on login (e.g. separate Vercel instances). 8 seconds is safe: bootstrap
+// data can only change mid-window via a purchase webhook or a new consultation,
+// neither of which can arrive within 8s of a fresh login.
+const BOOTSTRAP_CACHE_TTL_SECONDS = 8;
 
 export const runtime = "nodejs";
 
@@ -19,6 +27,21 @@ export async function GET(req: Request) {
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
+  }
+
+  // Serve cached response within the burst window. Key is per-user so a
+  // simultaneous login from two Vercel instances returns the same data without
+  // hitting PostgREST twice. Cache miss on first call, hit on any subsequent
+  // call within BOOTSTRAP_CACHE_TTL_SECONDS.
+  const redis = getUpstashRedis();
+  const cacheKey = `bootstrap:${user.userId}`;
+  if (redis) {
+    try {
+      const cached = await redis.get<object>(cacheKey);
+      if (cached) return NextResponse.json(cached);
+    } catch {
+      // Non-fatal: fall through to fresh query
+    }
   }
 
   const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
@@ -59,7 +82,7 @@ export async function GET(req: Request) {
     };
   });
 
-  return NextResponse.json({
+  const responseBody = {
     // ── Account (same shape as /api/account/me) ───────────────────────────
     id: user.userId,
     email: user.email,
@@ -84,5 +107,11 @@ export async function GET(req: Request) {
       updatedAt: entry.updatedAt,
       firstQuestion: entry.firstQuestion,
     })),
-  });
+  };
+
+  if (redis) {
+    redis.set(cacheKey, responseBody, { ex: BOOTSTRAP_CACHE_TTL_SECONDS }).catch(() => {});
+  }
+
+  return NextResponse.json(responseBody);
 }
