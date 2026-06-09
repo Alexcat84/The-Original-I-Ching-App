@@ -24,6 +24,8 @@ export type PdfExportUiMessages = {
   chargeNegative: string;
   /** e.g. "Entry {{n}} · Reading (continued)" */
   entryContinued: string;
+  /** Shown in RN WebView when thread is too heavy for mobile PDF export */
+  exportTooLargeForMobile: string;
 };
 
 const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
@@ -46,6 +48,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "Positivo 吉",
     chargeNegative: "Negativo 凶",
     entryContinued: "Entrada {{n}} · Lectura (continuación)",
+    exportTooLargeForMobile:
+      "Este hilo es demasiado grande para exportar en la app móvil. Usa la versión web o exporta un hilo más corto.",
   },
   en: {
     title: "Oracle Consultation",
@@ -66,6 +70,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "Positive 吉",
     chargeNegative: "Negative 凶",
     entryContinued: "Entry {{n}} · Reading (continued)",
+    exportTooLargeForMobile:
+      "This thread is too large to export in the mobile app. Use the web version or export a shorter thread.",
   },
   pt: {
     title: "Consulta do Oráculo",
@@ -86,6 +92,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "Positivo 吉",
     chargeNegative: "Negativo 凶",
     entryContinued: "Entrada {{n}} · Tiragem (continuação)",
+    exportTooLargeForMobile:
+      "Este fio é demasiado grande para exportar na app móvel. Use a versão web ou um fio mais curto.",
   },
   fr: {
     title: "Consultation de l'Oracle",
@@ -106,6 +114,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "Positif 吉",
     chargeNegative: "Négatif 凶",
     entryContinued: "Entrée {{n}} · Tirage (suite)",
+    exportTooLargeForMobile:
+      "Ce fil est trop volumineux pour l’export mobile. Utilisez la version web ou un fil plus court.",
   },
   de: {
     title: "Orakel-Beratung",
@@ -126,6 +136,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "Positiv 吉",
     chargeNegative: "Negativ 凶",
     entryContinued: "Eintrag {{n}} · Lesung (Fortsetzung)",
+    exportTooLargeForMobile:
+      "Dieser Thread ist zu groß für den mobilen Export. Nutzen Sie die Web-Version oder einen kürzeren Thread.",
   },
   it: {
     title: "Consultazione dell'Oracolo",
@@ -146,6 +158,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "Positivo 吉",
     chargeNegative: "Negativo 凶",
     entryContinued: "Voce {{n}} · Lettura (continua)",
+    exportTooLargeForMobile:
+      "Questo filo è troppo grande per l’export mobile. Usa la versione web o un filo più corto.",
   },
   ja: {
     title: "神託相談",
@@ -166,6 +180,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "陽 吉",
     chargeNegative: "陰 凶",
     entryContinued: "項目 {{n}} · 占い（続き）",
+    exportTooLargeForMobile:
+      "このスレッドはモバイルでのエクスポートには大きすぎます。Web版を使うか、より短いスレッドをご利用ください。",
   },
   zh: {
     title: "神谕咨询",
@@ -186,6 +202,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "正命 吉",
     chargeNegative: "负命 凶",
     entryContinued: "条目 {{n}} · 占卜（续）",
+    exportTooLargeForMobile:
+      "此对话线程过大，无法在移动应用中导出。请使用网页版或导出较短的线程。",
   },
   ko: {
     title: "신탁 상담",
@@ -206,6 +224,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "양성 吉",
     chargeNegative: "음성 凶",
     entryContinued: "항목 {{n}} · 리딩 (계속)",
+    exportTooLargeForMobile:
+      "이 스레드는 모바일 내보내기에 너무 큽니다. 웹 버전을 사용하거나 더 짧은 스레드를 이용하세요.",
   },
   ar: {
     title: "استشارة الأوراكل",
@@ -226,6 +246,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "موجب 吉",
     chargeNegative: "سالب 凶",
     entryContinued: "إدخال {{n}} · قراءة (تابع)",
+    exportTooLargeForMobile:
+      "هذا السياق كبير جدًا للتصدير على الهاتف. استخدم نسخة الويب أو سياقًا أقصر.",
   },
   hi: {
     title: "ओरेकल परामर्श",
@@ -246,6 +268,8 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     chargePositive: "सकारात्मक 吉",
     chargeNegative: "नकारात्मक 凶",
     entryContinued: "प्रविष्टि {{n}} · रीडिंग (जारी)",
+    exportTooLargeForMobile:
+      "यह थ्रेड मोबाइल निर्यात के लिए बहुत बड़ा है। वेब संस्करण उपयोग करें या छोटा थ्रेड निर्यात करें।",
   },
 };
 

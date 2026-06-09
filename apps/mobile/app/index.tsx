@@ -119,8 +119,12 @@ function resolveWebBaseUrl(): string {
 
 const BASE_URL = resolveWebBaseUrl();
 
-/** Defer native sessions-only sync after login so it does not overlap WebView bootstrap. */
-const LOGIN_SERVER_SYNC_DEFER_MS = 12_000;
+/** Defer account refresh after login so bootstrap can finish first. */
+const POST_LOGIN_ACCOUNT_REFRESH_MS = 2_500;
+/** Debounce native sessions-only sync after WebView bootstrap completes. */
+const POST_BOOTSTRAP_SYNC_DEBOUNCE_MS = 500;
+/** Max base64 payload (~12 MB binary) before rejecting chunked download on native. */
+const MAX_DOWNLOAD_BASE64_CHARS = 18_000_000;
 
 /**
  * Paths where the WebView should perform a normal navigation (not SPA-injected).
@@ -438,36 +442,34 @@ const INJECTED_JS = `
     }, 2000);
   };
 
-  /* 3b ── Download helper ─────────────────────────────────────────────── */
-  function _postDownload(filename, dataUrl) {
-    var payload = dataUrl || '';
-    var maxInline = 180000;
-    if (payload.length <= maxInline) {
-      window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: 'download_file', filename: filename, dataUrl: payload })
-      );
-      return;
-    }
-    var m = payload.match(/^data:([^;]+);base64,(.*)$/);
-    if (!m) {
-      window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: 'download_file', filename: filename, dataUrl: payload })
-      );
-      return;
-    }
-    var mimeType = m[1] || 'application/octet-stream';
-    var b64 = m[2] || '';
+  /* 3b ── Download helper (OOM-safe: never readAsDataURL on large blobs) ─ */
+  var MAX_BLOB_READ_BYTES = 12 * 1024 * 1024;
+  var BLOB_SLICE_BYTES = 256 * 1024;
+  var MAX_INLINE_DATA_URL = 180000;
+  var MAX_BLOB_IMAGE_OPEN_BYTES = 4 * 1024 * 1024;
+
+  function _postDownloadRejected(filename, size, reason) {
+    window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        type: 'download_rejected',
+        reason: reason || 'too_large',
+        size: size || 0,
+        filename: filename || 'download'
+      })
+    );
+  }
+
+  function _postDownloadChunks(filename, mimeType, b64Chunks) {
     var transferId = 'dl_' + Date.now() + '_' + Math.random().toString(36).slice(2);
     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: 'download_file_start', transferId: transferId, filename: filename, mimeType: mimeType })
+      JSON.stringify({ type: 'download_file_start', transferId: transferId, filename: filename, mimeType: mimeType || 'application/octet-stream' })
     );
-    var chunkSize = 120000;
-    for (var i = 0; i < b64.length; i += chunkSize) {
+    for (var i = 0; i < b64Chunks.length; i++) {
       window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
         JSON.stringify({
           type: 'download_file_chunk',
           transferId: transferId,
-          chunk: b64.slice(i, i + chunkSize)
+          chunk: b64Chunks[i]
         })
       );
     }
@@ -476,18 +478,83 @@ const INJECTED_JS = `
     );
   }
 
+  function _postDownload(filename, dataUrl) {
+    var payload = dataUrl || '';
+    if (payload.length <= MAX_INLINE_DATA_URL) {
+      window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+        JSON.stringify({ type: 'download_file', filename: filename, dataUrl: payload })
+      );
+      return;
+    }
+    var m = payload.match(/^data:([^;]+);base64,(.*)$/);
+    if (!m) {
+      _postDownloadRejected(filename, payload.length, 'too_large');
+      return;
+    }
+    var mimeType = m[1] || 'application/octet-stream';
+    var b64 = m[2] || '';
+    var chunkSize = 120000;
+    var b64Chunks = [];
+    for (var i = 0; i < b64.length; i += chunkSize) {
+      b64Chunks.push(b64.slice(i, i + chunkSize));
+    }
+    _postDownloadChunks(filename, mimeType, b64Chunks);
+  }
+
+  function _readBlobSliceAsB64(slice, cb) {
+    var rd = new FileReader();
+    rd.onloadend = function() {
+      var result = rd.result || '';
+      var match = String(result).match(/^data:[^;]+;base64,(.*)$/);
+      cb(match ? match[1] : '');
+    };
+    rd.onerror = function() { cb(''); };
+    rd.readAsDataURL(slice);
+  }
+
+  function _postBlobAsChunks(filename, blob) {
+    if (!blob || typeof blob.size !== 'number') return;
+    if (blob.size > MAX_BLOB_READ_BYTES) {
+      _postDownloadRejected(filename, blob.size, 'too_large');
+      return;
+    }
+    var mimeType = blob.type || 'application/octet-stream';
+    if (blob.size <= MAX_INLINE_DATA_URL) {
+      _readBlobSliceAsB64(blob, function(b64) {
+        if (!b64) return;
+        _postDownload(filename, 'data:' + mimeType + ';base64,' + b64);
+      });
+      return;
+    }
+    var slices = [];
+    for (var offset = 0; offset < blob.size; offset += BLOB_SLICE_BYTES) {
+      slices.push(blob.slice(offset, offset + BLOB_SLICE_BYTES));
+    }
+    var b64Chunks = [];
+    var idx = 0;
+    function nextSlice() {
+      if (idx >= slices.length) {
+        _postDownloadChunks(filename, mimeType, b64Chunks);
+        return;
+      }
+      _readBlobSliceAsB64(slices[idx], function(part) {
+        if (part) b64Chunks.push(part);
+        idx += 1;
+        nextSlice();
+      });
+    }
+    nextSlice();
+  }
+
   function _handleDownload(href, filename) {
     if (href.indexOf('data:') === 0) { _postDownload(filename, href); return; }
-    var readBlob = function(blob) {
-      var rd = new FileReader();
-      rd.onloadend = function() { if (rd.result) _postDownload(filename, rd.result); };
-      rd.readAsDataURL(blob);
-    };
-    // Use cached Blob directly — avoids fetch on a revoked blob: URL
-    if (href.indexOf('blob:') === 0 && _blobCache[href]) { readBlob(_blobCache[href]); return; }
+    if (href.indexOf('blob:') === 0 && _blobCache[href]) {
+      _postBlobAsChunks(filename, _blobCache[href]);
+      return;
+    }
     fetch(href)
       .then(function(r) { return r.blob(); })
-      .then(readBlob)
+      .then(function(blob) { _postBlobAsChunks(filename, blob); })
       .catch(function() {});
   }
 
@@ -893,20 +960,23 @@ const INJECTED_JS = `
     if (urlStr.indexOf('blob:') === 0) {
       var cachedBlob = _blobCache[urlStr];
       if (cachedBlob) {
-        var rd = new FileReader();
-        rd.onloadend = function() {
-          if (!rd.result) return;
-          var isImg = cachedBlob.type.indexOf('image') !== -1;
-          var isPdf = cachedBlob.type.indexOf('pdf') !== -1;
-          if (isImg) {
-            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-              JSON.stringify({ type: 'open_image', url: rd.result })
-            );
-          } else if (isPdf) {
-            _postDownload('consulta-i-ching.pdf', rd.result);
+        var isImg = cachedBlob.type.indexOf('image') !== -1;
+        var isPdf = cachedBlob.type.indexOf('pdf') !== -1;
+        if (isImg) {
+          if (cachedBlob.size > MAX_BLOB_IMAGE_OPEN_BYTES) {
+            _postDownloadRejected('image', cachedBlob.size, 'too_large');
+          } else {
+            _readBlobSliceAsB64(cachedBlob, function(b64) {
+              if (!b64) return;
+              var mime = cachedBlob.type || 'image/jpeg';
+              window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+                JSON.stringify({ type: 'open_image', url: 'data:' + mime + ';base64,' + b64 })
+              );
+            });
           }
-        };
-        rd.readAsDataURL(cachedBlob);
+        } else if (isPdf) {
+          _postBlobAsChunks('consulta-i-ching.pdf', cachedBlob);
+        }
       }
       return null; // suppress the window.open attempt
     }
@@ -1049,6 +1119,8 @@ type RNMessage =
   | { type: "download_file_start"; transferId: string; filename: string; mimeType?: string }
   | { type: "download_file_chunk"; transferId: string; chunk: string }
   | { type: "download_file_end"; transferId: string }
+  | { type: "download_rejected"; reason: string; size: number; filename: string }
+  | { type: "bootstrap_complete" }
   | { type: "delete_chat"; url: string; reqId: string }
   | { type: "account_deleted" }
   | { type: "open_image"; url: string }
@@ -1726,9 +1798,11 @@ export default function WebViewScreen() {
         filename: string;
         mimeType: string;
         chunks: string[];
+        totalBase64Chars: number;
       }
     >
   >({});
+  const postBootstrapSyncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* ── Locale state (P2) ── */
   const [locale, setLocaleState] = useState<AppLocale>(DEFAULT_LOCALE);
@@ -2104,79 +2178,49 @@ export default function WebViewScreen() {
   }, []);
 
   /* ── Handle file download (P5) ── */
-  const handleFileDownload = useCallback(
-    async (filename: string, dataUrl: string) => {
-      try {
-        const inferredPdf = dataUrl.startsWith("data:application/pdf");
-        const safeBaseName = (filename || "download")
-          .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "_")
-          .replace(/\s+/g, " ")
-          .trim();
-        const normalizedName =
-          safeBaseName.length > 0
-            ? safeBaseName
-            : inferredPdf
-              ? "consulta-i-ching.pdf"
-              : "download";
-        const isPdf = normalizedName.toLowerCase().endsWith(".pdf") || inferredPdf;
-        const finalName = isPdf
-          ? normalizedName.toLowerCase().endsWith(".pdf")
-            ? normalizedName
-            : `${normalizedName}.pdf`
-          : normalizedName;
+  const showDownloadTooLarge = useCallback(() => {
+    showNativeDialog({
+      title: nativeUi.downloadTooLargeTitle,
+      message: nativeUi.downloadTooLargeBody,
+      buttons: [{ text: nativeUi.ok }],
+    });
+  }, [nativeUi, showNativeDialog]);
 
-        const base64 = dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl;
-        if (!base64) {
-          throw new Error("invalid_download_payload");
-        }
-        const targetDir = FileSystem.cacheDirectory ?? FileSystem.documentDirectory;
-        if (!targetDir) {
-          throw new Error("filesystem_unavailable");
-        }
-        const fileUri = `${targetDir}${finalName}`;
-        await FileSystem.writeAsStringAsync(fileUri, base64, {
-          encoding: FileSystem.EncodingType.Base64,
-        });
+  const saveDownloadedFile = useCallback(
+    async (filename: string, mimeType: string, base64: string) => {
+      const inferredPdf =
+        mimeType.includes("pdf") || filename.toLowerCase().endsWith(".pdf");
+      const safeBaseName = (filename || "download")
+        .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "_")
+        .replace(/\s+/g, " ")
+        .trim();
+      const normalizedName =
+        safeBaseName.length > 0
+          ? safeBaseName
+          : inferredPdf
+            ? "consulta-i-ching.pdf"
+            : "download";
+      const isPdf = normalizedName.toLowerCase().endsWith(".pdf") || inferredPdf;
+      const finalName = isPdf
+        ? normalizedName.toLowerCase().endsWith(".pdf")
+          ? normalizedName
+          : `${normalizedName}.pdf`
+        : normalizedName;
 
-        if (isPdf) {
-          if (Platform.OS === "android") {
-            // Ask media permission first — mirrors the photo flow UX.
-            let granted = mediaPermission?.granted ?? false;
-            if (!granted) {
-              const result = await requestMediaPermission();
-              granted = result.granted;
-            }
-            if (!granted) {
-              showNativeDialog({
-                title: nativeUi.permissionDeniedTitle,
-                message: nativeUi.permissionDeniedBody,
-                buttons: [{ text: nativeUi.ok }],
-              });
-              return;
-            }
-            try {
-              // Android 10+: MediaStore.Downloads receives non-media assets.
-              await MediaLibrary.createAssetAsync(fileUri);
-              showNativeDialog({
-                title: nativeUi.fileSavedTitle,
-                message: nativeUi.fileSavedBody,
-                buttons: [{ text: nativeUi.ok }],
-              });
-              return;
-            } catch {
-              // MediaLibrary rejected this file type; fall through to share sheet.
-            }
-          }
+      if (!base64) {
+        throw new Error("invalid_download_payload");
+      }
+      const targetDir = FileSystem.cacheDirectory ?? FileSystem.documentDirectory;
+      if (!targetDir) {
+        throw new Error("filesystem_unavailable");
+      }
+      const fileUri = `${targetDir}${finalName}`;
+      await FileSystem.writeAsStringAsync(fileUri, base64, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
 
-          const sharingAvailable = await Sharing.isAvailableAsync();
-          if (!sharingAvailable) {
-            throw new Error("sharing_unavailable");
-          }
-          await Sharing.shareAsync(fileUri, {
-            mimeType: "application/pdf",
-            dialogTitle: nativeUi.sharePdfTitle,
-          });
-        } else {
+      if (isPdf) {
+        if (Platform.OS === "android") {
           let granted = mediaPermission?.granted ?? false;
           if (!granted) {
             const result = await requestMediaPermission();
@@ -2190,13 +2234,63 @@ export default function WebViewScreen() {
             });
             return;
           }
-          await MediaLibrary.saveToLibraryAsync(fileUri);
+          try {
+            await MediaLibrary.createAssetAsync(fileUri);
+            showNativeDialog({
+              title: nativeUi.fileSavedTitle,
+              message: nativeUi.fileSavedBody,
+              buttons: [{ text: nativeUi.ok }],
+            });
+            return;
+          } catch {
+            // MediaLibrary rejected this file type; fall through to share sheet.
+          }
+        }
+
+        const sharingAvailable = await Sharing.isAvailableAsync();
+        if (!sharingAvailable) {
+          throw new Error("sharing_unavailable");
+        }
+        await Sharing.shareAsync(fileUri, {
+          mimeType: "application/pdf",
+          dialogTitle: nativeUi.sharePdfTitle,
+        });
+      } else {
+        let granted = mediaPermission?.granted ?? false;
+        if (!granted) {
+          const result = await requestMediaPermission();
+          granted = result.granted;
+        }
+        if (!granted) {
           showNativeDialog({
-            title: nativeUi.imageSavedTitle,
-            message: nativeUi.imageSavedBody,
+            title: nativeUi.permissionDeniedTitle,
+            message: nativeUi.permissionDeniedBody,
             buttons: [{ text: nativeUi.ok }],
           });
+          return;
         }
+        await MediaLibrary.saveToLibraryAsync(fileUri);
+        showNativeDialog({
+          title: nativeUi.imageSavedTitle,
+          message: nativeUi.imageSavedBody,
+          buttons: [{ text: nativeUi.ok }],
+        });
+      }
+    },
+    [mediaPermission, nativeUi, requestMediaPermission, showNativeDialog]
+  );
+
+  const handleFileDownload = useCallback(
+    async (filename: string, dataUrl: string) => {
+      try {
+        const mimeMatch = dataUrl.match(/^data:([^;]+);base64,/);
+        const mimeType = mimeMatch?.[1] ?? "application/octet-stream";
+        const base64 = dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl;
+        if (base64.length > MAX_DOWNLOAD_BASE64_CHARS) {
+          showDownloadTooLarge();
+          return;
+        }
+        await saveDownloadedFile(filename, mimeType, base64);
       } catch {
         showNativeDialog({
           title: nativeUi.fileSaveErrorTitle,
@@ -2205,8 +2299,23 @@ export default function WebViewScreen() {
         });
       }
     },
-    [mediaPermission, nativeUi, requestMediaPermission, showNativeDialog]
+    [nativeUi, saveDownloadedFile, showDownloadTooLarge, showNativeDialog]
   );
+
+  const schedulePostBootstrapSync = useCallback(() => {
+    if (postBootstrapSyncTimerRef.current) {
+      clearTimeout(postBootstrapSyncTimerRef.current);
+    }
+    postBootstrapSyncTimerRef.current = setTimeout(() => {
+      postBootstrapSyncTimerRef.current = null;
+      const token = accessTokenRef.current;
+      const uid = lastKnownUidRef.current ?? undefined;
+      if (!token) return;
+      void syncChats(token, BASE_URL, uid)
+        .then(() => injectCachedChats())
+        .catch(() => undefined);
+    }, POST_BOOTSTRAP_SYNC_DEBOUNCE_MS);
+  }, [injectCachedChats]);
 
   /* ── P6: Execute DELETE from RN with stored token ── */
   const handleDeleteChat = useCallback(
@@ -2401,15 +2510,10 @@ export default function WebViewScreen() {
               if (newUid) { try { await Purchases.logIn(newUid); } catch { /* non-fatal */ } }
             })();
             // Instant sidebar from SQLite; WebView bootstrap loads account + sessions.
-            // Do not call __rnForceAccountRefresh here — it races bootstrap with /api/account/me.
             void injectCachedChats();
-            const loginToken = msg.token;
-            const loginUid = newUid ?? undefined;
-            setTimeout(() => {
-              void syncChats(loginToken, BASE_URL, loginUid)
-                .then(() => injectCachedChats())
-                .catch(() => undefined);
-            }, LOGIN_SERVER_SYNC_DEFER_MS);
+            webViewRef.current?.injectJavaScript(
+              `setTimeout(function(){window.__rnForceAccountRefresh&&window.__rnForceAccountRefresh();},${POST_LOGIN_ACCOUNT_REFRESH_MS});true;`
+            );
             break;
           }
 
@@ -2459,13 +2563,18 @@ export default function WebViewScreen() {
               filename: msg.filename,
               mimeType: msg.mimeType || "application/octet-stream",
               chunks: [],
+              totalBase64Chars: 0,
             };
             break;
 
           case "download_file_chunk": {
             const transfer = downloadTransfersRef.current[msg.transferId];
-            if (transfer) {
-              transfer.chunks.push(msg.chunk);
+            if (!transfer) break;
+            transfer.chunks.push(msg.chunk);
+            transfer.totalBase64Chars += msg.chunk.length;
+            if (transfer.totalBase64Chars > MAX_DOWNLOAD_BASE64_CHARS) {
+              delete downloadTransfersRef.current[msg.transferId];
+              showDownloadTooLarge();
             }
             break;
           }
@@ -2473,12 +2582,29 @@ export default function WebViewScreen() {
           case "download_file_end": {
             const transfer = downloadTransfersRef.current[msg.transferId];
             if (!transfer) break;
-            const base64 = transfer.chunks.join("");
             delete downloadTransfersRef.current[msg.transferId];
-            const dataUrl = `data:${transfer.mimeType};base64,${base64}`;
-            handleFileDownload(transfer.filename, dataUrl);
+            if (transfer.totalBase64Chars > MAX_DOWNLOAD_BASE64_CHARS) {
+              showDownloadTooLarge();
+              break;
+            }
+            const base64 = transfer.chunks.join("");
+            void saveDownloadedFile(transfer.filename, transfer.mimeType, base64).catch(() => {
+              showNativeDialog({
+                title: nativeUi.fileSaveErrorTitle,
+                message: nativeUi.fileSaveErrorBody,
+                buttons: [{ text: nativeUi.ok }],
+              });
+            });
             break;
           }
+
+          case "download_rejected":
+            showDownloadTooLarge();
+            break;
+
+          case "bootstrap_complete":
+            schedulePostBootstrapSync();
+            break;
 
           case "delete_chat":
             handleDeleteChat(msg.url, msg.reqId);
@@ -2600,7 +2726,7 @@ export default function WebViewScreen() {
         // Ignore non-JSON bridge noise
       }
     },
-    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog, injectCachedChats, handleNativePurchase]
+    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog, injectCachedChats, handleNativePurchase, saveDownloadedFile, showDownloadTooLarge, schedulePostBootstrapSync]
   );
 
   /* ── Intercept Google OAuth + internal doc navigation ── */

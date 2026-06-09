@@ -92,6 +92,7 @@ import {
   stripInterpretationFluff,
 } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
+import { fetchWithSessionRetry } from "@/lib/fetch-with-session-retry";
 import {
   getIdbChats, putIdbChats, getIdbThread, isThreadFresh, clearIdbUser,
   type IdbChatEntry,
@@ -1306,8 +1307,21 @@ export default function HomePage() {
 
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
-    const { jsPDF } = await import("jspdf");
     const pdfUi = getPdfExportUiMessages(locale);
+    const isRnWebView =
+      typeof window !== "undefined" &&
+      "ReactNativeWebView" in window;
+    if (isRnWebView) {
+      const consultCount = activeThread.length;
+      const imageCount = activeThread.filter(
+        (entry) => typeof entry.imageUrl === "string" && entry.imageUrl.trim().length > 0,
+      ).length;
+      if (consultCount >= 6 || imageCount >= 4) {
+        setError(pdfUi.exportTooLargeForMobile);
+        return;
+      }
+    }
+    const { jsPDF } = await import("jspdf");
     const doc = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
     const fileBase = formatPrintFilename(
       activeThread.at(-1)?.consultationId ??
@@ -1900,9 +1914,11 @@ export default function HomePage() {
       setHistoryLoadError(null);
       postgrestHydrationBusyRef.current += 1;
       try {
-        const res = await fetch(
+        const res = await fetchWithSessionRetry(
           `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&thread=1`,
-          { headers: { Authorization: `Bearer ${accessToken}` }, cache: "no-store" },
+          accessToken,
+          setAccessToken,
+          { cache: "no-store" },
         );
         if (!res.ok) {
           const err = parseApiErrorPayload(await res.text());
@@ -2195,12 +2211,13 @@ export default function HomePage() {
     // This effect only handles post-login refreshes (token balance after purchase/consult).
     let cancelled = false;
     function onAccountRefresh() {
-      if (cancelled || isSigningOutRef.current) return;
-      if (bootstrapInFlightRef.current) return;
-      void fetch("/api/account/me", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        cache: "no-store",
-      })
+      if (cancelled || isSigningOutRef.current || !accessToken) return;
+      void fetchWithSessionRetry(
+        "/api/account/me",
+        accessToken,
+        setAccessToken,
+        { cache: "no-store" },
+      )
         .then((r) => (r.ok ? r.json() : null))
         .then(
           (j: {
@@ -2596,10 +2613,12 @@ export default function HomePage() {
           if (cached !== null) setAccountSessionLimit(cached);
         }
         setTierReady(false);
-        const res = await fetch("/api/account/bootstrap", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          cache: "no-store",
-        });
+        const res = await fetchWithSessionRetry(
+          "/api/account/bootstrap",
+          accessToken,
+          setAccessToken,
+          { cache: "no-store" },
+        );
         if (!res.ok) {
           await res.text();
           if (res.status === 401) {
@@ -2630,6 +2649,11 @@ export default function HomePage() {
         setTier((typeof payload.last_pack === "string" ? payload.last_pack : "free") as Tier);
         setTierReady(true);
         if (authUserId) bootstrapCompletedForRef.current = authUserId;
+        (
+          window as unknown as { ReactNativeWebView?: { postMessage(s: string): void } }
+        ).ReactNativeWebView?.postMessage(
+          JSON.stringify({ type: "bootstrap_complete" }),
+        );
         setIsAdmin(payload.is_admin === true);
         if (typeof payload.session_limit === "number" && Number.isFinite(payload.session_limit)) {
           setAccountSessionLimit(payload.session_limit);
@@ -3703,6 +3727,20 @@ export default function HomePage() {
       }
       if (!res.ok) {
         if (res.status === 401) {
+          if (isSupabaseBrowserConfigured()) {
+            try {
+              const { data: refreshed, error: refreshError } =
+                await getSupabaseBrowser().auth.refreshSession();
+              const refreshedToken = refreshed.session?.access_token ?? null;
+              if (!refreshError && refreshedToken) {
+                setAccessToken(refreshedToken);
+                setError(sessionUi.sessionExpiredInvalid);
+                return;
+              }
+            } catch {
+              // fall through to sign-out
+            }
+          }
           setError(sessionUi.sessionExpiredInvalid);
           void signOut();
           return;
