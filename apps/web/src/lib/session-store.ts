@@ -182,39 +182,6 @@ export async function upsertSessionAndConsultation(params: {
     };
   }
 
-  const { data: existingSession, error: existingSessionError } = await supabase
-    .from("consultation_sessions")
-    .select("id, public_sharing_id")
-    .eq("id", params.sessionId)
-    .maybeSingle();
-  if (existingSessionError) {
-    throw new Error(
-      `consultation_session_lookup_failed:${existingSessionError.message}`,
-    );
-  }
-  let sessionPublicId = existingSession?.public_sharing_id as
-    | string
-    | undefined;
-  if (!existingSession) {
-    const { data: created, error: createSessionError } = await supabase
-      .from("consultation_sessions")
-      .insert({
-        id: params.sessionId,
-        user_id: params.userId,
-        title: params.sessionTitle,
-        theme_category: params.category,
-        language: params.language,
-        max_consultations: params.maxConsultations,
-      })
-      .select("public_sharing_id")
-      .single();
-    if (createSessionError) {
-      throw new Error(
-        `consultation_session_create_failed:${createSessionError.message}`,
-      );
-    }
-    sessionPublicId = created?.public_sharing_id;
-  }
   const consultationBasePayload = {
     id: params.consultation.consultationId,
     user_id: params.userId,
@@ -238,10 +205,44 @@ export async function upsertSessionAndConsultation(params: {
     is_public: false,
   };
 
-  let createdConsultation: { public_sharing_id?: string } | null = null;
-  let createConsultationError: string | null = null;
+  const interpretationText = params.consultation.interpretation?.trim() ?? "";
 
-  const persistResult = await withSupabaseSemaphore(async () => {
+  const persistOutcome = await withSupabaseSemaphore(async () => {
+    const { data: existingSession, error: existingSessionError } = await supabase
+      .from("consultation_sessions")
+      .select("id, public_sharing_id")
+      .eq("id", params.sessionId)
+      .maybeSingle();
+    if (existingSessionError) {
+      throw new Error(
+        `consultation_session_lookup_failed:${existingSessionError.message}`,
+      );
+    }
+    let sessionPublicId = existingSession?.public_sharing_id as string | undefined;
+    if (!existingSession) {
+      const { data: created, error: createSessionError } = await supabase
+        .from("consultation_sessions")
+        .insert({
+          id: params.sessionId,
+          user_id: params.userId,
+          title: params.sessionTitle,
+          theme_category: params.category,
+          language: params.language,
+          max_consultations: params.maxConsultations,
+        })
+        .select("public_sharing_id")
+        .single();
+      if (createSessionError) {
+        throw new Error(
+          `consultation_session_create_failed:${createSessionError.message}`,
+        );
+      }
+      sessionPublicId = created?.public_sharing_id;
+    }
+
+    let persistedViaRpc = false;
+    let readingPublicId: string | undefined;
+
     const { data: publicId, error: rpcError } = await supabase.rpc(
       "persist_consultation_with_content",
       {
@@ -271,6 +272,7 @@ export async function upsertSessionAndConsultation(params: {
         p_is_public: false,
       },
     );
+
     if (rpcError) {
       const msg = rpcError.message ?? "";
       // Fallback for DBs without migration 067 (staging lag).
@@ -290,80 +292,83 @@ export async function upsertSessionAndConsultation(params: {
           .select("public_sharing_id")
           .single();
         if (!withOracleRes.error) {
-          return { public_sharing_id: withOracleRes.data?.public_sharing_id };
-        }
-        const fallbackMsg = withOracleRes.error.message ?? "";
-        if (fallbackMsg.includes("oracle_type") || fallbackMsg.includes("oracle_bones")) {
-          const fallbackRes = await supabase
-            .from("consultations")
-            .insert({
-              ...consultationBasePayload,
-              interpretation: params.consultation.interpretation,
-            })
-            .select("public_sharing_id")
-            .single();
-          if (fallbackRes.error) {
-            return { error: fallbackRes.error.message };
+          readingPublicId = withOracleRes.data?.public_sharing_id ?? undefined;
+        } else {
+          const fallbackMsg = withOracleRes.error.message ?? "";
+          if (fallbackMsg.includes("oracle_type") || fallbackMsg.includes("oracle_bones")) {
+            const fallbackRes = await supabase
+              .from("consultations")
+              .insert({
+                ...consultationBasePayload,
+                interpretation: params.consultation.interpretation,
+              })
+              .select("public_sharing_id")
+              .single();
+            if (fallbackRes.error) {
+              return { error: fallbackRes.error.message };
+            }
+            readingPublicId = fallbackRes.data?.public_sharing_id ?? undefined;
+          } else {
+            return { error: fallbackMsg };
           }
-          return { public_sharing_id: fallbackRes.data?.public_sharing_id };
         }
-        return { error: fallbackMsg };
+      } else {
+        return { error: msg };
       }
-      return { error: msg };
+    } else {
+      persistedViaRpc = true;
+      readingPublicId = (publicId as string | null) ?? undefined;
     }
-    return { public_sharing_id: publicId as string | null };
+
+    // RPC 069 already writes consultation_content; upsert only for legacy insert path.
+    if (!persistedViaRpc && interpretationText.length > 0) {
+      const { error: contentUpsertError } = await supabase
+        .from("consultation_content")
+        .upsert(
+          {
+            consultation_id: params.consultation.consultationId,
+            user_id: params.userId,
+            session_id: params.consultation.sessionId,
+            interpretation: interpretationText,
+            oracle_bones: params.consultation.oracleBones ?? null,
+          },
+          { onConflict: "consultation_id" },
+        );
+      if (contentUpsertError) {
+        throw new Error(
+          `consultation_content_upsert_failed:${contentUpsertError.message}`,
+        );
+      }
+    }
+
+    let finalSessionPublicId = sessionPublicId;
+    if (!finalSessionPublicId) {
+      const { data: sessionRefresh, error: sessionRefreshError } = await supabase
+        .from("consultation_sessions")
+        .select("public_sharing_id")
+        .eq("id", params.sessionId)
+        .maybeSingle();
+      if (sessionRefreshError) {
+        throw new Error(
+          `consultation_session_refresh_failed:${sessionRefreshError.message}`,
+        );
+      }
+      finalSessionPublicId = sessionRefresh?.public_sharing_id as string | undefined;
+    }
+
+    return {
+      publicReadingId: readingPublicId,
+      publicSessionId: finalSessionPublicId,
+    };
   });
 
-  if ("error" in persistResult && persistResult.error) {
-    createConsultationError = persistResult.error;
-  } else {
-    createdConsultation = {
-      public_sharing_id: persistResult.public_sharing_id ?? undefined,
-    };
+  if ("error" in persistOutcome && persistOutcome.error) {
+    throw new Error(`consultation_create_failed:${persistOutcome.error}`);
   }
-  if (createConsultationError) {
-    throw new Error(`consultation_create_failed:${createConsultationError}`);
-  }
-
-  const interpretationText = params.consultation.interpretation?.trim() ?? "";
-  if (interpretationText.length > 0) {
-    const { error: contentUpsertError } = await supabase
-      .from("consultation_content")
-      .upsert(
-        {
-          consultation_id: params.consultation.consultationId,
-          user_id: params.userId,
-          session_id: params.consultation.sessionId,
-          interpretation: interpretationText,
-          oracle_bones: params.consultation.oracleBones ?? null,
-        },
-        { onConflict: "consultation_id" },
-      );
-    if (contentUpsertError) {
-      throw new Error(
-        `consultation_content_upsert_failed:${contentUpsertError.message}`,
-      );
-    }
-  }
-
-  const { data: sessionRefresh, error: sessionRefreshError } = await supabase
-    .from("consultation_sessions")
-    .select("public_sharing_id")
-    .eq("id", params.sessionId)
-    .maybeSingle();
-  if (sessionRefreshError) {
-    throw new Error(
-      `consultation_session_refresh_failed:${sessionRefreshError.message}`,
-    );
-  }
-  const finalSessionPublicId =
-    (sessionRefresh?.public_sharing_id as string | undefined) ??
-    sessionPublicId;
 
   return {
-    publicReadingId:
-      createdConsultation?.public_sharing_id ?? randomPublicId(8),
-    publicSessionId: finalSessionPublicId ?? randomPublicId(8),
+    publicReadingId: persistOutcome.publicReadingId ?? randomPublicId(8),
+    publicSessionId: persistOutcome.publicSessionId ?? randomPublicId(8),
   };
 }
 
