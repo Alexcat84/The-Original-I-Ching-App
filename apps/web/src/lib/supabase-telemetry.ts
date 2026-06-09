@@ -1,8 +1,12 @@
 import { Logger } from "next-axiom";
 
+/** APL (iching-app-main): message in ("supabase_op","consult_phase","chats_get") | where durationMs > 2000 */
 export function isSupabaseTelemetryEnabled(): boolean {
-  const v = process.env.LOG_SUPABASE_TELEMETRY;
-  return v === "1" || v === "true";
+  const v = (process.env.LOG_SUPABASE_TELEMETRY ?? "").trim().toLowerCase();
+  if (v === "0" || v === "false" || v === "no" || v === "off") return false;
+  if (v === "1" || v === "true" || v === "yes" || v === "on") return true;
+  // Fallback: keep diagnosis on in production when Axiom ingest is configured.
+  return Boolean(process.env.VERCEL_ENV === "production" && process.env.AXIOM_TOKEN);
 }
 
 export function getRequestId(req: Request): string {

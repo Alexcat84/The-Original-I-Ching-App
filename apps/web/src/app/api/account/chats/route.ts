@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
-import { Logger } from "next-axiom";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
 import { withSupabaseSemaphore } from "@/lib/supabase-admin";
+import {
+  buildSupabaseOpTelemetry,
+  createApiLogger,
+  type ApiLogger,
+} from "@/lib/supabase-telemetry";
 import {
   deleteUserSession,
   getUserSessionSummaries,
@@ -15,13 +19,13 @@ import {
 
 export const runtime = "nodejs";
 
+function chatsOpTelemetry(api: ApiLogger, op: string, userId: string, sessionId?: string) {
+  return buildSupabaseOpTelemetry(api, op, { userId, sessionId });
+}
+
 export async function GET(req: Request) {
-  const log = new Logger({ source: "api/account/chats" });
+  const api = createApiLogger("api/account/chats", req, "/api/account/chats");
   const startedAt = Date.now();
-  const requestId =
-    req.headers.get("x-request-id") ??
-    req.headers.get("x-vercel-id") ??
-    crypto.randomUUID().slice(0, 12);
 
   if (!isChatPersistenceConfigured()) {
     return apiError(503, {
@@ -37,11 +41,7 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const summary = url.searchParams.get("summary") === "1";
   const sessionId = url.searchParams.get("sessionId");
-  // Unified thread load (preferred): meta + content in one request, sequential DB ops.
   const threadUnified = url.searchParams.get("thread") === "1";
-  // Two-phase thread loading (legacy APK):
-  // ?meta=1   → metadata only (no interpretation/oracle_bones TOAST) — always <5ms
-  // ?content=1 → interpretation + oracle_bones only — may be slow on cold buffers
   const metaOnly = url.searchParams.get("meta") === "1";
   const contentOnly = url.searchParams.get("content") === "1";
 
@@ -58,8 +58,8 @@ export async function GET(req: Request) {
       : "invalid";
 
   const finish = async (res: NextResponse, extra?: Record<string, unknown>) => {
-    log.info("chats_get", {
-      requestId,
+    api.log.info("chats_get", {
+      requestId: api.requestId,
       phase,
       userId: user.userId.slice(0, 8),
       sessionId: sessionId?.slice(0, 8) ?? null,
@@ -67,15 +67,16 @@ export async function GET(req: Request) {
       status: res.status,
       ...extra,
     });
-    await log.flush();
+    await api.log.flush();
     return res;
   };
 
   if (sessionId) {
     try {
       if (threadUnified) {
-        const entry = await withSupabaseSemaphore(() =>
-          getUserSessionThreadUnified(user.userId, sessionId),
+        const entry = await withSupabaseSemaphore(
+          () => getUserSessionThreadUnified(user.userId, sessionId),
+          chatsOpTelemetry(api, "consultations_thread", user.userId, sessionId),
         );
         if (!entry) {
           return finish(
@@ -89,7 +90,10 @@ export async function GET(req: Request) {
         );
       }
       if (metaOnly) {
-        const entry = await withSupabaseSemaphore(() => getUserSessionThreadMeta(user.userId, sessionId));
+        const entry = await withSupabaseSemaphore(
+          () => getUserSessionThreadMeta(user.userId, sessionId),
+          chatsOpTelemetry(api, "consultations_meta", user.userId, sessionId),
+        );
         if (!entry) {
           return finish(
             apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" }),
@@ -102,20 +106,23 @@ export async function GET(req: Request) {
         );
       }
       if (contentOnly) {
-        const rows = await withSupabaseSemaphore(() => getUserSessionThreadContent(user.userId, sessionId));
+        const rows = await withSupabaseSemaphore(
+          () => getUserSessionThreadContent(user.userId, sessionId),
+          chatsOpTelemetry(api, "get_session_content_safe", user.userId, sessionId),
+        );
         return finish(
           NextResponse.json({ consultationContent: rows, phase: "content" }),
           { contentRows: rows.length },
         );
       }
-      // Parallel fetch: meta (no TOAST, always fast) + content via RPC with
-      // 8 s statement_timeout (protected against Warp thread kills on cold buffer).
-      // If content fetch times out, consultations degrade to summary placeholders.
-      const [entry, contentRows] = await withSupabaseSemaphore(async () => {
-        const meta = await getUserSessionThreadMeta(user.userId, sessionId);
-        const content = await getUserSessionThreadContent(user.userId, sessionId).catch(() => []);
-        return [meta, content] as const;
-      });
+      const [entry, contentRows] = await withSupabaseSemaphore(
+        async () => {
+          const meta = await getUserSessionThreadMeta(user.userId, sessionId);
+          const content = await getUserSessionThreadContent(user.userId, sessionId).catch(() => []);
+          return [meta, content] as const;
+        },
+        chatsOpTelemetry(api, "consultations_meta_content_bundle", user.userId, sessionId),
+      );
       if (!entry) {
         return finish(
           apiError(404, { error: "session_not_found", code: "SESSION_NOT_FOUND", action: "fix_input" }),
@@ -133,7 +140,10 @@ export async function GET(req: Request) {
   }
 
   if (summary) {
-    const sessions = await withSupabaseSemaphore(() => getUserSessionSummaries(user.userId));
+    const sessions = await withSupabaseSemaphore(
+      () => getUserSessionSummaries(user.userId),
+      chatsOpTelemetry(api, "consultations_summary", user.userId),
+    );
     return finish(
       NextResponse.json({
         sessions: sessions.map((entry) => ({
@@ -148,15 +158,11 @@ export async function GET(req: Request) {
     );
   }
 
-  // No sessionId or summary param — this path read all TOAST for all sessions
-  // (getUserSessionsWithConsultations) which reliably caused Warp timeouts on
-  // cold shared_buffers. No current client sends this request; return 400 so
-  // any accidental caller gets a clear error instead of a silent Warp kill.
   return finish(apiError(400, { error: "missing_param", code: "MISSING_PARAM", action: "fix_input" }));
 }
 
 export async function DELETE(req: Request) {
-  const log = new Logger({ source: "api/account/chats" });
+  const api = createApiLogger("api/account/chats", req, "/api/account/chats");
   if (!isChatPersistenceConfigured()) {
     return apiError(503, {
       error: "chat_persistence_not_configured",
@@ -175,13 +181,19 @@ export async function DELETE(req: Request) {
   }
   const ok = await deleteUserSession(user.userId, sessionId);
   if (!ok) {
-    // Session not in DB (already deleted or only in local cache) — idempotent: treat as success.
-    log.info("chat_delete_not_found_idempotent", { userId: user.userId.slice(0, 8), sessionId: sessionId.slice(0, 8) });
-    await log.flush();
+    api.log.info("chat_delete_not_found_idempotent", {
+      requestId: api.requestId,
+      userId: user.userId.slice(0, 8),
+      sessionId: sessionId.slice(0, 8),
+    });
+    await api.log.flush();
     return NextResponse.json({ ok: true });
   }
-  log.info("chat_deleted", { userId: user.userId.slice(0, 8), sessionId: sessionId.slice(0, 8) });
-  await log.flush();
+  api.log.info("chat_deleted", {
+    requestId: api.requestId,
+    userId: user.userId.slice(0, 8),
+    sessionId: sessionId.slice(0, 8),
+  });
+  await api.log.flush();
   return NextResponse.json({ ok: true });
 }
-

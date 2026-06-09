@@ -3,6 +3,7 @@ import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
 import { getUserSessionSummaries, isChatPersistenceConfigured } from "@/lib/session-store";
 import { withSupabaseSemaphore } from "@/lib/supabase-admin";
+import { buildSupabaseOpTelemetry, createApiLogger } from "@/lib/supabase-telemetry";
 
 export const runtime = "nodejs";
 
@@ -11,12 +12,11 @@ export const runtime = "nodejs";
  * Runs a single PostgREST query (sessions summary only) instead of the
  * 4-query /api/account/bootstrap. The native side only needs `sessions[]`
  * to populate its SQLite cache — it does not use billing, profile, or legal data.
- *
- * Replaces the native syncChats() call to /api/account/bootstrap, which was
- * causing a double-bootstrap burst (8 concurrent PostgREST connections) every
- * time a user logged in.
  */
 export async function GET(req: Request) {
+  const api = createApiLogger("api/account/sessions-only", req, "/api/account/sessions-only");
+  const startedAt = Date.now();
+
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
@@ -26,9 +26,18 @@ export async function GET(req: Request) {
     return NextResponse.json({ sessions: [] });
   }
 
-  const sessions = await withSupabaseSemaphore(() =>
-    getUserSessionSummaries(user.userId).catch(() => []),
+  const sessions = await withSupabaseSemaphore(
+    () => getUserSessionSummaries(user.userId).catch(() => []),
+    buildSupabaseOpTelemetry(api, "sessions_summary", { userId: user.userId }),
   );
+
+  api.log.info("sessions_only_get", {
+    requestId: api.requestId,
+    userId: user.userId.slice(0, 8),
+    durationMs: Date.now() - startedAt,
+    sessionCount: sessions.length,
+  });
+  await api.log.flush();
 
   return NextResponse.json({
     sessions: sessions.map((entry) => ({
