@@ -263,7 +263,6 @@ function buildPromptData(
     textsForClaude: t,
     primaryHexagram: p,
     transformedHexagram: tr,
-    mutationRule,
   } = cast;
   const rawLineVector = [...cast.lines]
     .sort((a, b) => a.position - b.position)
@@ -467,8 +466,7 @@ SELECTED_TRANSLATOR: ${selectedTranslatorLabel}
 PRIMARY HEXAGRAM: #${p.number} — ${p.name} (${p.chineseName} · ${p.pinyin})
 ${p.upperTrigram} over ${p.lowerTrigram}
 
-ACTIVE RULE: ${mutationRule}
-${t.ruleExplanation}
+MUTATION RULE: ${t.ruleExplanation}
 
 STRUCTURAL FACTS (NON-NEGOTIABLE):
 - RAW_LINES_BOTTOM_TO_TOP: [${rawLineVector}]
