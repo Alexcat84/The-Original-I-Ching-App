@@ -16,6 +16,21 @@ export function stripSnapshotLeaks(text: string): string {
   return t.trim();
 }
 
+const MUTATION_RULE_CODE_RE =
+  /\b(?:NO_CHANGING|ONE_CHANGING|TWO_YIN_YANG|TWO_SAME_LOWER|THREE_MIDDLE|FOUR_LOWEST_STABLE|FIVE_ONLY_STABLE|SIX_ALL_CHANGING|QIAN_ALL_NINE|KUN_ALL_SIX)\b/g;
+
+/** Safety net: remove any mutation rule code identifiers that leaked into the response.
+ *  Primary fix is removing them from the prompt; this catches edge cases. */
+function stripMutationRuleCodes(text: string): string {
+  // "(regla TWO_SAME_LOWER: explanation)" → "(explanation)"
+  let t = text.replace(/\(\s*regla\s+[A-Z_]+\s*:\s*/g, "(");
+  // Any remaining bare rule code
+  t = t.replace(MUTATION_RULE_CODE_RE, "");
+  // Clean up empty parens left behind
+  t = t.replace(/\(\s*\)/g, "");
+  return t;
+}
+
 /** Remove model-added boilerplate and trailing asterisk disclaimers from oracle text. */
 export function stripInterpretationFluff(text: string): string {
   let t = text.trim();
@@ -39,6 +54,7 @@ export function stripInterpretationFluff(text: string): string {
     /(?:^|\n)[^\n]*predicción certera[^\n]*\n?/gi,
   ];
   for (const r of boiler) t = t.replace(r, "\n");
+  t = stripMutationRuleCodes(t);
   return t.replace(/\n{3,}/g, "\n\n").trim();
 }
 

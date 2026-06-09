@@ -53,22 +53,38 @@ function packIconFor(productIdentifier: string): number {
   return PACK_ICON_SEEKER; // seeker + fallback
 }
 
-/** Extracts the Supabase user UUID (sub claim) from a JWT without external deps. */
-function getUserIdFromJwt(token: string): string | null {
+type JwtClaims = { sub?: string; email?: string; exp?: number };
+
+function decodeJwtPayload(token: string): JwtClaims | null {
   try {
     const payload = token.split(".")[1];
     if (!payload) return null;
     // JWT uses base64url (- and _ instead of + and /). atob requires standard base64
     // with = padding to a multiple of 4. Hermes is strict — missing padding throws,
-    // causing getUserIdFromJwt to return null → clearAllData() on every cold start.
+    // causing decodeJwtPayload to return null → clearAllData() on every cold start.
     const b64 = payload.replace(/-/g, "+").replace(/_/g, "/");
     const padded = b64 + "=".repeat((4 - (b64.length % 4)) % 4);
     const json = atob(padded);
-    const claims = JSON.parse(json) as { sub?: string };
-    return typeof claims.sub === "string" && claims.sub.length > 0 ? claims.sub : null;
+    return JSON.parse(json) as JwtClaims;
   } catch {
     return null;
   }
+}
+
+/** Extracts the Supabase user UUID (sub claim) from a JWT without external deps. */
+function getUserIdFromJwt(token: string): string | null {
+  const claims = decodeJwtPayload(token);
+  return typeof claims?.sub === "string" && claims.sub.length > 0 ? claims.sub : null;
+}
+
+/** True when JWT has sub and is not expired (60s clock skew). */
+function isStoredJwtUsable(token: string): boolean {
+  const claims = decodeJwtPayload(token);
+  if (!claims?.sub) return false;
+  if (typeof claims.exp === "number") {
+    return claims.exp * 1000 > Date.now() + 60_000;
+  }
+  return true;
 }
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -1788,20 +1804,17 @@ export default function WebViewScreen() {
 
   const validateStoredToken = useCallback(
     async (token: string): Promise<{ valid: boolean; email: string | null }> => {
-      try {
-        const res = await fetch(`${BASE_URL}/api/account/me`, {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) return { valid: false, email: null };
-        const data = (await res.json().catch(() => null)) as
-          | { user?: { email?: string | null } }
-          | null;
-        const email = typeof data?.user?.email === "string" ? data.user.email : null;
-        return { valid: true, email };
-      } catch {
+      // Local JWT check avoids /api/account/me on cold start (2-3 PostgREST queries)
+      // racing bootstrap in the WebView. Server-side auth still runs on bootstrap/consult.
+      if (!isStoredJwtUsable(token)) {
         return { valid: false, email: null };
       }
+      const claims = decodeJwtPayload(token);
+      const email =
+        typeof claims?.email === "string" && claims.email.length > 0
+          ? claims.email
+          : null;
+      return { valid: true, email };
     },
     []
   );

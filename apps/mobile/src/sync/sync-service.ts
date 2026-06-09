@@ -67,9 +67,10 @@ async function fetchSummaries(
   token: string,
   baseUrl: string,
 ): Promise<ApiSummaryEntry[] | null> {
-  // Use bootstrap endpoint — returns sessions (same shape as ?summary=1) plus
-  // account data. Halves the login burst from 2 parallel calls to 1.
-  const res = await fetchWithTimeout(`${baseUrl}/api/account/bootstrap`, {
+  // Use the lightweight sessions-only endpoint (1 PostgREST query) instead of
+  // /api/account/bootstrap (4 queries). Native only needs the sessions array;
+  // using bootstrap was causing a double-bootstrap burst on every login.
+  const res = await fetchWithTimeout(`${baseUrl}/api/account/sessions-only`, {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store",
   });

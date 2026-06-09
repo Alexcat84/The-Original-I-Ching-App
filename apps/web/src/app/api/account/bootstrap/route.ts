@@ -6,6 +6,38 @@ import { getUserSessionSummaries, isChatPersistenceConfigured } from "@/lib/sess
 import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
 import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
 import { withSupabaseSemaphore } from "@/lib/supabase-admin";
+import { getUpstashRedis } from "@/lib/rate-limit";
+
+// Short-lived cache to absorb the login burst when multiple Vercel instances call
+// this endpoint within milliseconds (React strict remounts, APK + WebView). 8 seconds
+// is safe: bootstrap data only changes mid-window via purchase webhook or consult,
+// neither of which arrives within 8s of a fresh login. Post-purchase refresh uses
+// iching:account-refresh → /api/account/me, not bootstrap.
+const BOOTSTRAP_CACHE_TTL_SECONDS = 8;
+const BOOTSTRAP_LOCK_TTL_SECONDS = 15;
+const BOOTSTRAP_POLL_MS = 150;
+const BOOTSTRAP_POLL_MAX_MS = 3_000;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function waitForBootstrapCache(
+  redis: NonNullable<ReturnType<typeof getUpstashRedis>>,
+  cacheKey: string,
+): Promise<object | null> {
+  const deadline = Date.now() + BOOTSTRAP_POLL_MAX_MS;
+  while (Date.now() < deadline) {
+    await sleep(BOOTSTRAP_POLL_MS);
+    try {
+      const cached = await redis.get<object>(cacheKey);
+      if (cached) return cached;
+    } catch {
+      // Non-fatal: keep polling
+    }
+  }
+  return null;
+}
 
 export const runtime = "nodejs";
 
@@ -19,6 +51,44 @@ export async function GET(req: Request) {
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
+  }
+
+  // Serve cached response within the burst window. Key is per-user so a
+  // simultaneous login from two Vercel instances returns the same data without
+  // hitting PostgREST twice. Cache miss on first call, hit on any subsequent
+  // call within BOOTSTRAP_CACHE_TTL_SECONDS.
+  const redis = getUpstashRedis();
+  const cacheKey = `bootstrap:${user.userId}`;
+  const lockKey = `bootstrap:lock:${user.userId}`;
+  let holdsLock = false;
+
+  if (redis) {
+    try {
+      const cached = await redis.get<object>(cacheKey);
+      if (cached) return NextResponse.json(cached);
+
+      const acquired = await redis.set(lockKey, "1", {
+        nx: true,
+        ex: BOOTSTRAP_LOCK_TTL_SECONDS,
+      });
+      holdsLock = Boolean(acquired);
+      if (!acquired) {
+        const waited = await waitForBootstrapCache(redis, cacheKey);
+        if (waited) return NextResponse.json(waited);
+        const retryAcquired = await redis.set(lockKey, "1", {
+          nx: true,
+          ex: BOOTSTRAP_LOCK_TTL_SECONDS,
+        });
+        if (retryAcquired) {
+          holdsLock = true;
+        } else {
+          const waitedAgain = await waitForBootstrapCache(redis, cacheKey);
+          if (waitedAgain) return NextResponse.json(waitedAgain);
+        }
+      }
+    } catch {
+      // Non-fatal: fall through to fresh query without lock
+    }
   }
 
   const { getSupabaseAdmin } = await import("@/lib/supabase-admin");
@@ -59,7 +129,7 @@ export async function GET(req: Request) {
     };
   });
 
-  return NextResponse.json({
+  const responseBody = {
     // ── Account (same shape as /api/account/me) ───────────────────────────
     id: user.userId,
     email: user.email,
@@ -84,5 +154,18 @@ export async function GET(req: Request) {
       updatedAt: entry.updatedAt,
       firstQuestion: entry.firstQuestion,
     })),
-  });
+  };
+
+  if (redis) {
+    try {
+      await redis.set(cacheKey, responseBody, { ex: BOOTSTRAP_CACHE_TTL_SECONDS });
+    } catch {
+      // Non-fatal: response still valid for this caller
+    }
+    if (holdsLock) {
+      redis.del(lockKey).catch(() => {});
+    }
+  }
+
+  return NextResponse.json(responseBody);
 }
