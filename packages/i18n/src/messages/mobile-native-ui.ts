@@ -22,6 +22,12 @@ export type MobileNativeUiMessages = {
   purchaseErrorTitle: string;
   storeUnavailable: string;
   identityCheckFailed: string;
+  /** RevenueCat web purchase redemption deep link (Stripe checkout → app) */
+  webPurchaseRedeemingTitle: string;
+  webPurchaseRedeemingBody: string;
+  webPurchaseRedeemSuccessTitle: string;
+  webPurchaseRedeemSuccessBody: string;
+  webPurchaseRedeemErrorBody: string;
 };
 
 const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
@@ -45,6 +51,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "Error en la compra",
     storeUnavailable: "La tienda no está disponible en este momento. Inténtalo más tarde.",
     identityCheckFailed: "No se pudo verificar tu sesión. Comprueba tu conexión e inténtalo de nuevo.",
+    webPurchaseRedeemingTitle: "Procesando compra",
+    webPurchaseRedeemingBody: "Estamos vinculando tu compra web con la app. Un momento…",
+    webPurchaseRedeemSuccessTitle: "Compra vinculada",
+    webPurchaseRedeemSuccessBody: "Tus tokens ya están disponibles. El saldo se actualizará en unos segundos.",
+    webPurchaseRedeemErrorBody: "No se pudo vincular la compra web. Abre la app de nuevo o contacta soporte si el pago ya se realizó.",
   },
   en: {
     imageSavedTitle: "Image saved",
@@ -66,6 +77,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "Purchase error",
     storeUnavailable: "The store is not available right now. Please try again later.",
     identityCheckFailed: "Could not verify your session. Check your connection and try again.",
+    webPurchaseRedeemingTitle: "Processing purchase",
+    webPurchaseRedeemingBody: "Linking your web purchase to the app. One moment…",
+    webPurchaseRedeemSuccessTitle: "Purchase linked",
+    webPurchaseRedeemSuccessBody: "Your tokens are now available. Your balance will update in a few seconds.",
+    webPurchaseRedeemErrorBody: "Could not link the web purchase. Reopen the app or contact support if you were already charged.",
   },
   pt: {
     imageSavedTitle: "Imagem guardada",
@@ -87,6 +103,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "Erro na compra",
     storeUnavailable: "A loja não está disponível neste momento. Tente mais tarde.",
     identityCheckFailed: "Não foi possível verificar a sua sessão. Verifique a ligação e tente novamente.",
+    webPurchaseRedeemingTitle: "A processar compra",
+    webPurchaseRedeemingBody: "A vincular a sua compra web à app. Aguarde um momento…",
+    webPurchaseRedeemSuccessTitle: "Compra vinculada",
+    webPurchaseRedeemSuccessBody: "Os seus tokens já estão disponíveis. O saldo atualizar-se-á em breve.",
+    webPurchaseRedeemErrorBody: "Não foi possível vincular a compra web. Reabra a app ou contacte o suporte se já foi cobrado.",
   },
   fr: {
     imageSavedTitle: "Image enregistrée",
@@ -108,6 +129,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "Erreur d’achat",
     storeUnavailable: "La boutique n’est pas disponible pour le moment. Réessayez plus tard.",
     identityCheckFailed: "Impossible de vérifier votre session. Vérifiez votre connexion et réessayez.",
+    webPurchaseRedeemingTitle: "Traitement de l’achat",
+    webPurchaseRedeemingBody: "Liaison de votre achat web à l’application. Un instant…",
+    webPurchaseRedeemSuccessTitle: "Achat lié",
+    webPurchaseRedeemSuccessBody: "Vos jetons sont disponibles. Le solde se mettra à jour dans quelques secondes.",
+    webPurchaseRedeemErrorBody: "Impossible de lier l’achat web. Rouvrez l’application ou contactez le support si vous avez déjà été débité.",
   },
   de: {
     imageSavedTitle: "Bild gespeichert",
@@ -129,6 +155,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "Kauffehler",
     storeUnavailable: "Der Store ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut.",
     identityCheckFailed: "Sitzung konnte nicht verifiziert werden. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+    webPurchaseRedeemingTitle: "Kauf wird verarbeitet",
+    webPurchaseRedeemingBody: "Ihr Web-Kauf wird mit der App verknüpft. Einen Moment…",
+    webPurchaseRedeemSuccessTitle: "Kauf verknüpft",
+    webPurchaseRedeemSuccessBody: "Ihre Tokens sind verfügbar. Das Guthaben aktualisiert sich in wenigen Sekunden.",
+    webPurchaseRedeemErrorBody: "Web-Kauf konnte nicht verknüpft werden. App erneut öffnen oder Support kontaktieren, falls bereits abgebucht.",
   },
   it: {
     imageSavedTitle: "Immagine salvata",
@@ -150,6 +181,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "Errore di acquisto",
     storeUnavailable: "Il negozio non è disponibile al momento. Riprova più tardi.",
     identityCheckFailed: "Impossibile verificare la sessione. Controlla la connessione e riprova.",
+    webPurchaseRedeemingTitle: "Elaborazione acquisto",
+    webPurchaseRedeemingBody: "Collegamento dell’acquisto web all’app. Attendi un momento…",
+    webPurchaseRedeemSuccessTitle: "Acquisto collegato",
+    webPurchaseRedeemSuccessBody: "I tuoi token sono disponibili. Il saldo si aggiornerà tra pochi secondi.",
+    webPurchaseRedeemErrorBody: "Impossibile collegare l’acquisto web. Riapri l’app o contatta l’assistenza se l’addebito è già avvenuto.",
   },
   ja: {
     imageSavedTitle: "画像を保存しました",
@@ -171,6 +207,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "購入エラー",
     storeUnavailable: "現在ストアはご利用いただけません。後でもう一度お試しください。",
     identityCheckFailed: "セッションを確認できませんでした。接続を確認して再度お試しください。",
+    webPurchaseRedeemingTitle: "購入を処理中",
+    webPurchaseRedeemingBody: "Webでの購入をアプリに紐づけています。少々お待ちください…",
+    webPurchaseRedeemSuccessTitle: "購入を紐づけました",
+    webPurchaseRedeemSuccessBody: "トークンが利用可能になりました。残高は数秒以内に更新されます。",
+    webPurchaseRedeemErrorBody: "Web購入を紐づけできませんでした。アプリを再度開くか、課金済みの場合はサポートへご連絡ください。",
   },
   zh: {
     imageSavedTitle: "图片已保存",
@@ -192,6 +233,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "购买错误",
     storeUnavailable: "商店目前不可用。请稍后重试。",
     identityCheckFailed: "无法验证您的会话。请检查网络连接后重试。",
+    webPurchaseRedeemingTitle: "正在处理购买",
+    webPurchaseRedeemingBody: "正在将网页购买关联到应用，请稍候…",
+    webPurchaseRedeemSuccessTitle: "购买已关联",
+    webPurchaseRedeemSuccessBody: "代币已可用，余额将在几秒内更新。",
+    webPurchaseRedeemErrorBody: "无法关联网页购买。请重新打开应用；若已扣款请联系支持。",
   },
   ko: {
     imageSavedTitle: "이미지 저장됨",
@@ -213,6 +259,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "구매 오류",
     storeUnavailable: "현재 스토어를 이용할 수 없습니다. 나중에 다시 시도하세요.",
     identityCheckFailed: "세션을 확인할 수 없습니다. 연결을 확인하고 다시 시도해 주세요.",
+    webPurchaseRedeemingTitle: "구매 처리 중",
+    webPurchaseRedeemingBody: "웹 구매를 앱에 연결하고 있습니다. 잠시만 기다려 주세요…",
+    webPurchaseRedeemSuccessTitle: "구매 연결됨",
+    webPurchaseRedeemSuccessBody: "토큰을 사용할 수 있습니다. 잔액은 몇 초 안에 갱신됩니다.",
+    webPurchaseRedeemErrorBody: "웹 구매를 연결하지 못했습니다. 앱을 다시 열거나 이미 결제되었다면 지원팀에 문의하세요.",
   },
   ar: {
     imageSavedTitle: "تم حفظ الصورة",
@@ -234,6 +285,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "خطأ في الشراء",
     storeUnavailable: "المتجر غير متاح في الوقت الحالي. يُرجى المحاولة لاحقًا.",
     identityCheckFailed: "تعذّر التحقق من جلستك. تحقق من اتصالك وحاول مجددًا.",
+    webPurchaseRedeemingTitle: "جاري معالجة الشراء",
+    webPurchaseRedeemingBody: "نربط عملية الشراء من الويب بالتطبيق. لحظة من فضلك…",
+    webPurchaseRedeemSuccessTitle: "تم ربط الشراء",
+    webPurchaseRedeemSuccessBody: "الرموز متاحة الآن. سيُحدَّث الرصيد خلال ثوانٍ.",
+    webPurchaseRedeemErrorBody: "تعذّر ربط الشراء من الويب. أعد فتح التطبيق أو تواصل مع الدعم إن تم الخصم.",
   },
   hi: {
     imageSavedTitle: "छवि सहेजी गई",
@@ -255,6 +311,11 @@ const MOBILE_NATIVE_UI: Record<AppLocale, MobileNativeUiMessages> = {
     purchaseErrorTitle: "खरीद में त्रुटि",
     storeUnavailable: "स्टोर अभी उपलब्ध नहीं है। कृपया बाद में पुनः प्रयास करें।",
     identityCheckFailed: "आपका सत्र सत्यापित नहीं किया जा सका। अपना कनेक्शन जाँचें और पुनः प्रयास करें।",
+    webPurchaseRedeemingTitle: "खरीद प्रसंस्करण",
+    webPurchaseRedeemingBody: "आपकी वेब खरीद को ऐप से जोड़ा जा रहा है। कृपया प्रतीक्षा करें…",
+    webPurchaseRedeemSuccessTitle: "खरीद जुड़ गई",
+    webPurchaseRedeemSuccessBody: "आपके टोकन उपलब्ध हैं। शेष कुछ सेकंड में अपडेट होगा।",
+    webPurchaseRedeemErrorBody: "वेब खरीद जोड़ नहीं सकी। ऐप फिर खोलें; यदि शुल्क लग चुका हो तो सहायता से संपर्क करें।",
   },
 };
 

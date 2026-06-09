@@ -2072,12 +2072,28 @@ export default function WebViewScreen() {
       try {
         const redemption = await Purchases.parseAsWebPurchaseRedemption(url);
         if (redemption) {
-          showNativeDialog({ title: 'RevenueCat', message: 'Redemption link detectado, procesando...', buttons: [{ text: 'OK' }] });
-          const result = await Purchases.redeemWebPurchase(redemption);
-          showNativeDialog({ title: 'RC Result', message: JSON.stringify(result).substring(0, 100), buttons: [{ text: 'OK' }] });
-          webViewRef.current?.injectJavaScript(
-            `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
-          );
+          showNativeDialog({
+            title: nativeUi.webPurchaseRedeemingTitle,
+            message: nativeUi.webPurchaseRedeemingBody,
+            buttons: [{ text: nativeUi.ok }],
+          });
+          try {
+            await Purchases.redeemWebPurchase(redemption);
+            webViewRef.current?.injectJavaScript(
+              `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
+            );
+            showNativeDialog({
+              title: nativeUi.webPurchaseRedeemSuccessTitle,
+              message: nativeUi.webPurchaseRedeemSuccessBody,
+              buttons: [{ text: nativeUi.ok }],
+            });
+          } catch {
+            showNativeDialog({
+              title: nativeUi.purchaseErrorTitle,
+              message: nativeUi.webPurchaseRedeemErrorBody,
+              buttons: [{ text: nativeUi.ok }],
+            });
+          }
           return;
         }
       } catch {
@@ -2150,7 +2166,7 @@ export default function WebViewScreen() {
     });
 
     return () => sub.remove();
-  }, [showNativeDialog]);
+  }, [showNativeDialog, nativeUi]);
 
   /* ── Android hardware back ── */
   useEffect(() => {
