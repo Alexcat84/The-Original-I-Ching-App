@@ -82,6 +82,10 @@ import {
   mergeHydratedWithLocalDrafts,
   pickPreferredSessionLocalId,
 } from "@/lib/chat-session-selection";
+import {
+  isPostgrestHydrationBusy,
+  sessionNeedsThreadHydration,
+} from "@/lib/session-thread-hydration";
 import { useChatSessionState } from "@/providers/chat-session-provider";
 import {
   normalizeInterpretationPunctuation,
@@ -825,6 +829,12 @@ export default function HomePage() {
   const bootstrapCompletedForRef = useRef<string | null>(null);
   /** True while a bootstrap fetch is in-flight — blocks duplicate concurrent runs. */
   const bootstrapInFlightRef = useRef(false);
+  /** Single-flight thread=1 loads keyed by sessionId. */
+  const threadLoadBySessionRef = useRef(new Map<string, Promise<void>>());
+  /** Count of in-flight hydration paths that hold PostgREST (bootstrap, thread sync). */
+  const postgrestHydrationBusyRef = useRef(0);
+  /** RN WebView thread syncs awaiting rn:thread-data / rn:thread-not-found. */
+  const rnHydrationLocalIdsRef = useRef(new Set<string>());
   /** User IDs already redirected to /auth/complete-legal this page session.
    *  Prevents a second redirect when TOKEN_REFRESHED fires while the DB write
    *  from the just-accepted consent hasn't propagated to the reader yet. */
@@ -1816,7 +1826,7 @@ export default function HomePage() {
       ),
     [sessionsListed, pendingDeletedSessionLocalIds],
   );
-  const loadSessionThread = useCallback(
+  const loadSessionThreadImpl = useCallback(
     async (sessionId: string, localId: string) => {
       if (!accessToken) return;
 
@@ -1835,6 +1845,8 @@ export default function HomePage() {
         rnBridge.postMessage(
           JSON.stringify({ type: "request_thread", sessionId, localId }),
         );
+        postgrestHydrationBusyRef.current += 1;
+        rnHydrationLocalIdsRef.current.add(localId);
         // Defer the loading indicator so SQLite cache (< 150 ms round-trip)
         // can arrive first. If rn:thread-data fires before the timer, it
         // cancels the timer and the user never sees "Loading conversation…".
@@ -1886,6 +1898,7 @@ export default function HomePage() {
         }
       }
       setHistoryLoadError(null);
+      postgrestHydrationBusyRef.current += 1;
       try {
         const res = await fetch(
           `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&thread=1`,
@@ -1960,6 +1973,10 @@ export default function HomePage() {
       } catch {
         setHistoryLoadError(sessionUi.chatLoadNetworkError);
       } finally {
+        postgrestHydrationBusyRef.current = Math.max(
+          0,
+          postgrestHydrationBusyRef.current - 1,
+        );
         setHistoryLoading(false);
         setLoadingSessionLocalId((current) =>
           current === localId ? null : current,
@@ -1974,6 +1991,20 @@ export default function HomePage() {
       accountSessionLimit,
       signOut,
     ],
+  );
+  const loadSessionThread = useCallback(
+    async (sessionId: string, localId: string) => {
+      const existing = threadLoadBySessionRef.current.get(sessionId);
+      if (existing) return existing;
+      const work = loadSessionThreadImpl(sessionId, localId);
+      threadLoadBySessionRef.current.set(sessionId, work);
+      try {
+        await work;
+      } finally {
+        threadLoadBySessionRef.current.delete(sessionId);
+      }
+    },
+    [loadSessionThreadImpl],
   );
   const removeSession = useCallback(
     async (session: ChatSessionState<ConsultationItem>) => {
@@ -2165,6 +2196,7 @@ export default function HomePage() {
     let cancelled = false;
     function onAccountRefresh() {
       if (cancelled || isSigningOutRef.current) return;
+      if (bootstrapInFlightRef.current) return;
       void fetch("/api/account/me", {
         headers: { Authorization: `Bearer ${accessToken}` },
         cache: "no-store",
@@ -2434,6 +2466,13 @@ export default function HomePage() {
     };
     const onRnThread = (e: Event) => {
       const { localId, consultations } = (e as CustomEvent<RnThreadData>).detail;
+      if (rnHydrationLocalIdsRef.current.has(localId)) {
+        rnHydrationLocalIdsRef.current.delete(localId);
+        postgrestHydrationBusyRef.current = Math.max(
+          0,
+          postgrestHydrationBusyRef.current - 1,
+        );
+      }
       if (!Array.isArray(consultations) || consultations.length === 0) return;
       // Cancel deferred loading indicator — cache responded before the timer fired.
       if (rnLoadingTimerRef.current !== null) {
@@ -2463,6 +2502,13 @@ export default function HomePage() {
     };
     const onRnThreadNotFound = (e: Event) => {
       const { localId } = (e as CustomEvent<{ localId: string }>).detail;
+      if (rnHydrationLocalIdsRef.current.has(localId)) {
+        rnHydrationLocalIdsRef.current.delete(localId);
+        postgrestHydrationBusyRef.current = Math.max(
+          0,
+          postgrestHydrationBusyRef.current - 1,
+        );
+      }
       if (rnLoadingTimerRef.current !== null) {
         clearTimeout(rnLoadingTimerRef.current);
         rnLoadingTimerRef.current = null;
@@ -2533,6 +2579,7 @@ export default function HomePage() {
     if (authUserId && bootstrapCompletedForRef.current === authUserId) return;
     if (bootstrapInFlightRef.current) return;
     bootstrapInFlightRef.current = true;
+    postgrestHydrationBusyRef.current += 1;
     let cancelled = false;
     // Skip the loading spinner if sessions were already fetched from the server
     // (stale-while-revalidate: show existing data instantly, refresh silently in background)
@@ -2738,7 +2785,11 @@ export default function HomePage() {
           combinedSessions[0];
         if (
           selected?.sessionId &&
-          selected.thread.length < selected.messageCount
+          sessionNeedsThreadHydration({
+            sessionId: selected.sessionId,
+            messageCount: selected.messageCount,
+            thread: selected.thread,
+          })
         ) {
           void loadSessionThread(selected.sessionId, selected.localId);
         }
@@ -2750,6 +2801,10 @@ export default function HomePage() {
         setHistoryLoadError(sessionUi.historyNetworkError);
       } finally {
         bootstrapInFlightRef.current = false;
+        postgrestHydrationBusyRef.current = Math.max(
+          0,
+          postgrestHydrationBusyRef.current - 1,
+        );
         if (!cancelled) {
           setHistoryLoading(false);
         }
@@ -2758,6 +2813,10 @@ export default function HomePage() {
     return () => {
       cancelled = true;
       bootstrapInFlightRef.current = false;
+      postgrestHydrationBusyRef.current = Math.max(
+        0,
+        postgrestHydrationBusyRef.current - 1,
+      );
     };
   }, [
     authReady,
@@ -3246,6 +3305,17 @@ export default function HomePage() {
     questionForRequest: string,
     manualLineValues?: IchingManualLineTuple,
   ) {
+    if (
+      isPostgrestHydrationBusy(
+        bootstrapInFlightRef.current,
+        postgrestHydrationBusyRef.current,
+        loadingSessionLocalId,
+        threadLoadBySessionRef.current.size,
+      )
+    ) {
+      setError(sessionUi.hydrationBusyWait);
+      return;
+    }
     if (manualRitualPhaseSwitchTimerRef.current != null) {
       window.clearTimeout(manualRitualPhaseSwitchTimerRef.current);
       manualRitualPhaseSwitchTimerRef.current = null;

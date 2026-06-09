@@ -39,6 +39,8 @@ export type HomeSessionUiMessages = {
   emptyQueryBones: string;
   /** SSE stream ended before the final payload arrived. */
   streamInterrupted: string;
+  /** Consult blocked while chat list / thread hydration is still in flight. */
+  hydrationBusyWait: string;
   /** Server returned a non-OK status with no parseable JSON body — {{status}}. */
   serverErrorStatus: string;
 };
@@ -78,6 +80,8 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "Escribe una consulta antes de enviar.",
     emptyQueryBones: "Escribe el cargo positivo (una afirmación clara) para consultar los huesos.",
     streamInterrupted: "La respuesta se interrumpió antes de completarse. Inténtalo de nuevo.",
+    hydrationBusyWait:
+      "Tus chats aún se están cargando. Espera un momento antes de consultar.",
     serverErrorStatus: "Error del servidor ({{status}}). Inténtalo de nuevo en unos minutos.",
   },
   en: {
@@ -113,6 +117,8 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "Write a question before submitting.",
     emptyQueryBones: "Write the positive charge (a clear affirmation) to consult the bones.",
     streamInterrupted: "The response was interrupted before completion. Please try again.",
+    hydrationBusyWait:
+      "Your chats are still loading. Please wait a moment before consulting.",
     serverErrorStatus: "Server error ({{status}}). Please try again in a few minutes.",
   },
   pt: {
@@ -150,6 +156,8 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "Escreve uma consulta antes de enviar.",
     emptyQueryBones: "Escreve a afirmação positiva para consultar os ossos.",
     streamInterrupted: "A resposta foi interrompida antes de terminar. Tenta novamente.",
+    hydrationBusyWait:
+      "Os teus chats ainda estão a carregar. Espera um momento antes de consultar.",
     serverErrorStatus: "Erro do servidor ({{status}}). Tenta novamente em alguns minutos.",
   },
   fr: {
@@ -186,6 +194,8 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "Écrivez une question avant d'envoyer.",
     emptyQueryBones: "Écrivez la proposition positive pour consulter les os.",
     streamInterrupted: "La réponse a été interrompue avant d'être complète. Réessayez.",
+    hydrationBusyWait:
+      "Vos chats se chargent encore. Attendez un instant avant de consulter.",
     serverErrorStatus: "Erreur serveur ({{status}}). Réessayez dans quelques minutes.",
   },
   de: {
@@ -222,6 +232,8 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "Schreibe eine Frage, bevor du sendest.",
     emptyQueryBones: "Schreibe die positive Aussage, um die Knochen zu befragen.",
     streamInterrupted: "Die Antwort wurde vor dem Abschluss unterbrochen. Bitte erneut versuchen.",
+    hydrationBusyWait:
+      "Deine Chats werden noch geladen. Bitte warte einen Moment vor der Beratung.",
     serverErrorStatus: "Serverfehler ({{status}}). Bitte in einigen Minuten erneut versuchen.",
   },
   it: {
@@ -258,6 +270,8 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "Scrivi una domanda prima di inviare.",
     emptyQueryBones: "Scrivi l'affermazione positiva per consultare le ossa.",
     streamInterrupted: "La risposta è stata interrotta prima del completamento. Riprova.",
+    hydrationBusyWait:
+      "Le tue chat si stanno ancora caricando. Attendi un momento prima di consultare.",
     serverErrorStatus: "Errore del server ({{status}}). Riprova tra qualche minuto.",
   },
   ja: {
@@ -293,6 +307,8 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "送信前に質問を入力してください。",
     emptyQueryBones: "骨を占うために肯定的な命題を入力してください。",
     streamInterrupted: "完了前に応答が中断されました。もう一度お試しください。",
+    hydrationBusyWait:
+      "チャットを読み込み中です。しばらく待ってから占ってください。",
     serverErrorStatus: "サーバーエラー ({{status}})。しばらくしてからもう一度お試しください。",
   },
   zh: {
@@ -323,6 +339,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "请在发送前输入问题。",
     emptyQueryBones: "请输入肯定句以占问骨卜。",
     streamInterrupted: "响应在完成前被中断。请重试。",
+    hydrationBusyWait: "聊天记录仍在加载中。请稍候再开始占卜。",
     serverErrorStatus: "服务器错误 ({{status}})。请稍后重试。",
   },
   ko: {
@@ -358,6 +375,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "제출 전에 질문을 입력하세요.",
     emptyQueryBones: "뼈를 점치려면 긍정적인 명제를 입력하세요.",
     streamInterrupted: "응답이 완료되기 전에 중단되었습니다. 다시 시도하세요.",
+    hydrationBusyWait: "채팅을 불러오는 중입니다. 잠시 후 다시 점을 봐 주세요.",
     serverErrorStatus: "서버 오류 ({{status}}). 잠시 후 다시 시도하세요.",
   },
   ar: {
@@ -393,6 +411,7 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "اكتب سؤالًا قبل الإرسال.",
     emptyQueryBones: "اكتب الادعاء الإيجابي للاستفسار من العظام.",
     streamInterrupted: "انقطع الرد قبل اكتماله. يرجى المحاولة مرة أخرى.",
+    hydrationBusyWait: "محادثاتك ما زالت تُحمَّل. انتظر لحظة قبل الاستشارة.",
     serverErrorStatus: "خطأ في الخادم ({{status}}). حاول مرة أخرى بعد دقائق.",
   },
   hi: {
@@ -429,6 +448,8 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     emptyQueryIching: "भेजने से पहले प्रश्न लिखें।",
     emptyQueryBones: "हड्डियों से परामर्श के लिए सकारात्मक प्रस्ताव लिखें।",
     streamInterrupted: "प्रतिक्रिया पूरी होने से पहले बाधित हुई। कृपया पुनः प्रयास करें।",
+    hydrationBusyWait:
+      "आपकी चैट अभी भी लोड हो रही हैं। परामर्श से पहले कृपया प्रतीक्षा करें।",
     serverErrorStatus: "सर्वर त्रुटि ({{status}})। कुछ मिनटों में पुनः प्रयास करें।",
   },
 };

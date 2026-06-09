@@ -119,6 +119,9 @@ function resolveWebBaseUrl(): string {
 
 const BASE_URL = resolveWebBaseUrl();
 
+/** Defer native sessions-only sync after login so it does not overlap WebView bootstrap. */
+const LOGIN_SERVER_SYNC_DEFER_MS = 12_000;
+
 /**
  * Paths where the WebView should perform a normal navigation (not SPA-injected).
  * Next.js App Router does not reliably handle `history.pushState` + synthetic `popstate`
@@ -2397,12 +2400,16 @@ export default function WebViewScreen() {
             void (async () => {
               if (newUid) { try { await Purchases.logIn(newUid); } catch { /* non-fatal */ } }
             })();
-            webViewRef.current?.injectJavaScript(
-              `window.__rnForceAccountRefresh && window.__rnForceAccountRefresh(); true;`
-            );
-            void syncChats(msg.token, BASE_URL, newUid ?? undefined)
-              .then(() => injectCachedChats())
-              .catch(() => undefined);
+            // Instant sidebar from SQLite; WebView bootstrap loads account + sessions.
+            // Do not call __rnForceAccountRefresh here — it races bootstrap with /api/account/me.
+            void injectCachedChats();
+            const loginToken = msg.token;
+            const loginUid = newUid ?? undefined;
+            setTimeout(() => {
+              void syncChats(loginToken, BASE_URL, loginUid)
+                .then(() => injectCachedChats())
+                .catch(() => undefined);
+            }, LOGIN_SERVER_SYNC_DEFER_MS);
             break;
           }
 
