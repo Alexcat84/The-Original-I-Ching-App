@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import {
   generateInterpretation,
   generateOracleBonesInterpretation,
@@ -1391,6 +1392,7 @@ export async function POST(req: Request) {
     log.error("consult_unhandled_error", { message: e instanceof Error ? e.message : String(e) });
     await log.flush();
     console.error("[api/consult]", e);
+    Sentry.captureException(e, { tags: { api: "consult" } });
     const message = e instanceof Error ? e.message : String(e);
     return NextResponse.json(
       {
