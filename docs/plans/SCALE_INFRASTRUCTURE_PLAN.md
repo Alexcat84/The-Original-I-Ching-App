@@ -13,7 +13,7 @@
 | Fase 1 | Persistencia de imágenes en R2 | ✅ Completa |
 | Fase 2 | Semáforo PostgREST global (Redis) | ✅ Completa |
 | Fase 3 | Rate limit por usuario en `/api/consult` | ⬜ Pendiente |
-| Fase 4 | Timeouts explícitos Vercel (`vercel.json`) | ⬜ Pendiente |
+| Fase 4 | Timeouts explícitos Vercel (`vercel.json`) | ✅ Completa |
 | Fase 5 | Mantenimiento automático DB (pg_cron) | ⬜ Pendiente |
 | Fase 6 | Monitoring / alertas Sentry | ⬜ Pendiente |
 
@@ -269,8 +269,8 @@ Un bootstrap que se queda colgado (PostgREST lento) ocupa un worker 60s antes de
 
 ### Checklist
 
-- [ ] Crear `apps/web/vercel.json`
-- [ ] Verificar que `/api/consult` sigue funcionando (maxDuration=300 en ambos lados)
+- [x] Crear `apps/web/vercel.json` — ✅ 2026-06-10
+- [x] Verificar que `/api/consult` sigue funcionando (maxDuration=300 en ambos lados) — confirmado, `export const maxDuration = 300` en route + vercel.json
 - [ ] Deploy
 
 ---
