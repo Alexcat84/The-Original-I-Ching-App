@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { isUpstashConfigured, rateLimitByKey } from "@/lib/rate-limit";
-import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin, withSupabaseSemaphore } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 
@@ -25,7 +25,9 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const { error } = await supabase.from("users").select("id").limit(1);
+  const { error } = await withSupabaseSemaphore(() =>
+    supabase.from("users").select("id").limit(1),
+  );
   if (error) {
     return NextResponse.json(
       {
