@@ -648,18 +648,33 @@ const INJECTED_JS = `
     }, 150);
   }
 
-  // Re-check when localStorage changes (sign-in / sign-out events)
-  // When a Supabase auth key is cleared, notify native immediately (P1 fix)
+  // Re-check when localStorage changes (sign-in / sign-out events).
+  // Debounce 1200ms — transient refresh/rotation must not trigger auth_signout (b111d7b).
+  var _pendingSignoutTimer = null;
+  function _scheduleAuthSignoutProbe() {
+    if (_pendingSignoutTimer) clearTimeout(_pendingSignoutTimer);
+    _pendingSignoutTimer = setTimeout(function() {
+      _pendingSignoutTimer = null;
+      if (!_sendToken()) {
+        window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+          JSON.stringify({ type: 'auth_signout', intentional: false })
+        );
+      }
+    }, 1200);
+  }
   window.addEventListener('storage', function(e) {
     var k = e.key || '';
     var isAuthKey = k.indexOf('auth-token') !== -1 || k.indexOf('supabase') !== -1 || k.startsWith('sb-');
     if (!isAuthKey) return;
-    if (!_sendToken()) {
-      window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: 'auth_signout' })
-      );
-    }
+    _scheduleAuthSignoutProbe();
   });
+  var _origLSRemoveItem = localStorage.removeItem.bind(localStorage);
+  localStorage.removeItem = function(key) {
+    _origLSRemoveItem(key);
+    if (!key) return;
+    var isAuthKey = key.indexOf('auth-token') !== -1 || key.indexOf('supabase') !== -1 || key.startsWith('sb-');
+    if (isAuthKey) _scheduleAuthSignoutProbe();
+  };
   // Re-check when returning via back-forward cache (P1)
   window.addEventListener('pageshow', function (e) { if (e.persisted) _sendToken(); });
   // Re-check when tab becomes visible (P1)
@@ -819,7 +834,7 @@ const INJECTED_JS = `
     _clearChatState(sessionStorage);
     _clearChatState(localStorage);
     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: 'auth_signout' })
+      JSON.stringify({ type: 'auth_signout', intentional: true })
     );
     // Navigate to /login?rn_signout=1 — the rn_signout param signals onShouldStartLoadWithRequest
     // to allow a hard reload (bypassing the SPA navigation intercept that would otherwise
@@ -1110,7 +1125,7 @@ const COMBINED_INJECTED_JS = DEBUG_WEBVIEW_CHAT_DOM_OUTLINES
 
 type RNMessage =
   | { type: "auth_token"; token: string; email?: string | null }
-  | { type: "auth_signout" }
+  | { type: "auth_signout"; intentional?: boolean }
   | { type: "locale_changed"; locale: AppLocale }
   | { type: "open_google_auth" }
   | { type: "pkce_verifier"; verifier: string }
@@ -2543,52 +2558,48 @@ export default function WebViewScreen() {
             break;
           }
 
-          case "auth_signout":
+          case "auth_signout": {
             if (authTransitionRef.current) break; // ignore during session injection reload
+            const intentional = msg.intentional === true;
             void (async () => {
-              // Guard: web may post auth_signout on transient API 401 while JWT is still valid.
-              // Re-inject session instead of nuking native state + forcing OAuth.
-              try {
-                const storedTok = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
-                if (storedTok) {
-                  const check = await validateStoredToken(storedTok);
-                  if (check.valid) {
-                    accessTokenRef.current = storedTok;
-                    setIsAuthenticated(true);
-                    if (check.email) setUserEmail(check.email);
-                    webViewRef.current?.injectJavaScript(`
-                      window.__rnInjectSession && window.__rnInjectSession({
-                        access_token: ${JSON.stringify(storedTok)},
-                        refresh_token: '',
-                        expires_in: 3600,
-                        user: { email: ${JSON.stringify(check.email)} }
-                      }); true;
-                    `);
-                    return;
+              // Transient auth_signout (storage churn / API flake): re-inject if JWT still valid.
+              // Never redirect to /login — that forces OAuth in external Chrome (b111d7b).
+              if (!intentional) {
+                try {
+                  const storedTok = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
+                  if (storedTok) {
+                    const check = await validateStoredToken(storedTok);
+                    if (check.valid) {
+                      accessTokenRef.current = storedTok;
+                      setIsAuthenticated(true);
+                      if (check.email) setUserEmail(check.email);
+                      webViewRef.current?.injectJavaScript(`
+                        window.__rnInjectSession && window.__rnInjectSession({
+                          access_token: ${JSON.stringify(storedTok)},
+                          refresh_token: '',
+                          expires_in: 3600,
+                          user: { email: ${JSON.stringify(check.email)} }
+                        }); true;
+                      `);
+                      return;
+                    }
                   }
+                } catch {
+                  return;
                 }
-              } catch {
-                // fall through to full sign-out
+                return;
               }
               accessTokenRef.current = null;
               setIsAuthenticated(false);
               setUserEmail(null);
               SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
               Purchases.logOut().catch(() => undefined);
-              // Do NOT clear SQLite on sign-out. The messages belong to the user
-              // who just signed out. If they (or anyone else) sign back in:
-              //   - Same user  → lastKnownUidRef matches → cache preserved → instant load ✓
-              //   - New user   → lastKnownUidRef differs → clearAllData fires in auth_token ✓
-              // Clear per-chat content cooldowns so the next login always fetches
-              // fresh message content via syncChatContent. Chat list metadata
-              // (last_sync, last_synced_user) and message rows are preserved.
               void deleteSyncMetaByPrefix("chat_content_synced:").catch(() => undefined);
               cachedChatsRef.current = [];
-              webViewRef.current?.injectJavaScript(
-                `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
-              );
+              // Intentional sign-out: web UI shows explore strip; no forced /login redirect.
             })();
             break;
+          }
 
           case "locale_changed":
             if (!LOCALES.some((l) => l.code === msg.locale)) break;

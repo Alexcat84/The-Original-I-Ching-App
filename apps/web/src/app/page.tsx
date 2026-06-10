@@ -1799,7 +1799,9 @@ export default function HomePage() {
     // achieving the same sign-out hygiene as the native-bar __rnSignOut path.
     try {
       (window as unknown as { ReactNativeWebView?: { postMessage(s: string): void } })
-        .ReactNativeWebView?.postMessage(JSON.stringify({ type: "auth_signout" }));
+        .ReactNativeWebView?.postMessage(
+          JSON.stringify({ type: "auth_signout", intentional: true }),
+        );
     } catch {
       // non-fatal — only present inside the Android WebView shell
     }
