@@ -2822,23 +2822,22 @@ export default function WebViewScreen() {
     (request: { url: string }): boolean => {
       const { url } = request;
 
-      // Google / Supabase OAuth → intercept and open in external browser.
-      // For /auth/v1/authorize URLs we rewrite redirect_to to the app deep-link so the
-      // OAuth callback always returns to this app, even when the Supabase SDK on the web
-      // page built the URL with the web redirect (redirect_to=BASE_URL/auth/callback).
-      if (
-        url.includes('accounts.google.com') ||
-        url.includes('provider=google') ||
-        url.includes('/auth/v1/authorize')
-      ) {
-        Linking.openURL(
-          url.includes('/auth/v1/authorize') && url.includes('redirect_to=')
-            ? url.replace(
-                /redirect_to=[^&]*/g,
-                'redirect_to=' + encodeURIComponent('theoriginaliching://auth/callback')
-              )
-            : url
-        );
+      // Supabase OAuth → intercept and open in external browser.
+      // Rewrite redirect_to to the app deep-link so the OAuth callback always
+      // returns to this app, even when the Supabase SDK built the URL with
+      // the web redirect (redirect_to=BASE_URL/auth/callback).
+      // Only intercept the Supabase authorize endpoint — never intercept
+      // accounts.google.com directly since that URL lacks redirect_to and
+      // opening it without rewriting would make Google redirect to the web
+      // URL instead of the deep link, leaving the user stuck in Chrome.
+      if (url.includes('/auth/v1/authorize') && url.includes('provider=google')) {
+        try {
+          const parsed = new URL(url);
+          parsed.searchParams.set('redirect_to', 'theoriginaliching://auth/callback');
+          setTimeout(() => Linking.openURL(parsed.toString()), 50);
+        } catch {
+          setTimeout(() => Linking.openURL(url), 50);
+        }
         return false;
       }
 
