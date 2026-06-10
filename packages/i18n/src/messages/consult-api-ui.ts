@@ -7,6 +7,7 @@ export type ConsultApiUiMessages = {
   sessionLimit: string;
   insufficientCredits: string;
   insufficientCreditsMaster: string;
+  consultationInProgress: string;
 };
 
 const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
@@ -19,6 +20,8 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
       "Has usado todos tus tokens. Compra un nuevo paquete para continuar.",
     insufficientCreditsMaster:
       "El Ensayo Maestro requiere 2 tokens. Compra un nuevo paquete para continuar.",
+    consultationInProgress:
+      "Ya hay una consulta en proceso. Por favor espera a que termine antes de iniciar otra.",
   },
   en: {
     authRequired:
@@ -28,6 +31,8 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
     insufficientCredits: "You used all your tokens. Buy a new pack to continue.",
     insufficientCreditsMaster:
       "Master Combined requires 2 tokens. Buy a new pack to continue.",
+    consultationInProgress:
+      "A consultation is already in progress. Please wait for it to finish before starting another.",
   },
   pt: {
     authRequired:
@@ -38,6 +43,8 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
       "Usaste todos os tokens. Compra um novo pacote para continuar.",
     insufficientCreditsMaster:
       "Master Combined requer 2 tokens. Compra um novo pacote para continuar.",
+    consultationInProgress:
+      "Já há uma consulta em curso. Aguarda que termine antes de iniciar outra.",
   },
   fr: {
     authRequired:
@@ -48,6 +55,8 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
       "Vous avez utilisé tous vos jetons. Achetez un nouveau pack pour continuer.",
     insufficientCreditsMaster:
       "Master Combined nécessite 2 jetons. Achetez un nouveau pack pour continuer.",
+    consultationInProgress:
+      "Une consultation est déjà en cours. Veuillez attendre qu'elle se termine avant d'en commencer une autre.",
   },
   de: {
     authRequired:
@@ -58,6 +67,8 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
       "Du hast alle Token verbraucht. Kaufe ein neues Paket, um fortzufahren.",
     insufficientCreditsMaster:
       "Master Combined erfordert 2 Token. Kaufe ein neues Paket, um fortzufahren.",
+    consultationInProgress:
+      "Eine Beratung läuft bereits. Bitte warte, bis sie abgeschlossen ist, bevor du eine neue startest.",
   },
   it: {
     authRequired:
@@ -68,6 +79,8 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
       "Hai usato tutti i token. Acquista un nuovo pacchetto per continuare.",
     insufficientCreditsMaster:
       "Master Combined richiede 2 token. Acquista un nuovo pacchetto per continuare.",
+    consultationInProgress:
+      "È già in corso una consultazione. Attendi che finisca prima di iniziarne un'altra.",
   },
   ja: {
     authRequired:
@@ -78,6 +91,8 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
       "トークンをすべて使い切りました。続けるには新しいパックを購入してください。",
     insufficientCreditsMaster:
       "Master Combinedには2トークン必要です。続けるには新しいパックを購入してください。",
+    consultationInProgress:
+      "すでに相談が進行中です。別の相談を始める前に完了をお待ちください。",
   },
   zh: {
     authRequired:
@@ -86,6 +101,8 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
     insufficientCredits: "你已用完所有代币。请购买新套餐以继续。",
     insufficientCreditsMaster:
       "Master Combined 需要 2 枚代币。请购买新套餐以继续。",
+    consultationInProgress:
+      "已有一个咨询正在进行中。请等待其完成后再开始新的咨询。",
   },
   ko: {
     authRequired:
@@ -96,16 +113,20 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
       "토큰을 모두 사용했습니다. 계속하려면 새 팩을 구매하세요.",
     insufficientCreditsMaster:
       "Master Combined에는 2토큰이 필요합니다. 계속하려면 새 팩을 구매하세요.",
+    consultationInProgress:
+      "이미 진행 중인 상담이 있습니다. 다른 상담을 시작하기 전에 완료될 때까지 기다려 주세요.",
   },
   ar: {
     authRequired:
-      "سجّل الدخول ببريد مُحقَّق أو عبر Google. أنشئ حسابًا في /login إن لم يكن لديك حساب بعد.",
+      "سجّل الدخول ببريد مُحقَّق أو عبر Google. أنشئ حسابًا في /login إن لم يكن لديك حساب بعد.",
     sessionLimit:
       "لقد وصلت إلى حد هذه المحادثة. ابدأ جلسة جديدة للمتابعة في الاستكشاف.",
     insufficientCredits:
       "لقد استخدمت جميع رموزك. اشترِ باقة جديدة للمتابعة.",
     insufficientCreditsMaster:
       "يتطلب Master Combined رمزين. اشترِ باقة جديدة للمتابعة.",
+    consultationInProgress:
+      "استشارة جارية بالفعل. يرجى الانتظار حتى تنتهي قبل بدء استشارة أخرى.",
   },
   hi: {
     authRequired:
@@ -116,6 +137,8 @@ const CONSULT_API_UI: Record<AppLocale, ConsultApiUiMessages> = {
       "आपने सभी टोकन उपयोग कर लिए हैं। जारी रखने के लिए नया पैक खरीदें।",
     insufficientCreditsMaster:
       "Master Combined के लिए 2 टोकन चाहिए। जारी रखने के लिए नया पैक खरीदें।",
+    consultationInProgress:
+      "एक परामर्श पहले से चल रही है। कृपया दूसरी शुरू करने से पहले उसके पूरा होने की प्रतीक्षा करें।",
   },
 };
 

@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import {
   generateInterpretation,
   generateOracleBonesInterpretation,
@@ -377,6 +378,10 @@ export async function POST(req: Request) {
     );
   }
 
+  // Inflight lock key — set after auth, released in finally regardless of outcome.
+  let inflightKey = "";
+  let inflightAcquired = false;
+
   try {
     const question = typeof body.question === "string" ? body.question : "";
     const trimmedQuestion = question.trim();
@@ -559,6 +564,32 @@ export async function POST(req: Request) {
         { status: 429 },
       );
     }
+
+    // Per-user inflight gate: prevents double-tap and concurrent Claude calls from
+    // the same user. SET NX with a 120s TTL — the finally block DELs it on completion.
+    // TTL is the fallback release if the process is killed before finally runs.
+    {
+      const redis = getUpstashRedis();
+      if (redis) {
+        inflightKey = `consult:inflight:${authedUserId}`;
+        const acquired = await redis.set(inflightKey, "1", { nx: true, ex: 120 });
+        if (!acquired) {
+          log.warn("inflight_blocked", { userId: shortUserId(authedUserId) });
+          await log.flush();
+          return NextResponse.json(
+            {
+              error: "consultation_in_progress",
+              code: "CONSULTATION_IN_PROGRESS",
+              action: "wait",
+              message: consultApiUi.consultationInProgress,
+            },
+            { status: 429 },
+          );
+        }
+        inflightAcquired = true;
+      }
+    }
+
     if (policy.twoFactorRequired) {
       return NextResponse.json(
         {
@@ -1361,6 +1392,7 @@ export async function POST(req: Request) {
     log.error("consult_unhandled_error", { message: e instanceof Error ? e.message : String(e) });
     await log.flush();
     console.error("[api/consult]", e);
+    Sentry.captureException(e, { tags: { api: "consult" } });
     const message = e instanceof Error ? e.message : String(e);
     return NextResponse.json(
       {
@@ -1371,5 +1403,11 @@ export async function POST(req: Request) {
       },
       { status: 500 },
     );
+  } finally {
+    // Release the inflight lock so the user can start a new consultation immediately
+    // after this one finishes (success or error). TTL auto-expires it if this is skipped.
+    if (inflightAcquired && inflightKey) {
+      getUpstashRedis()?.del(inflightKey).catch(() => {});
+    }
   }
 }
