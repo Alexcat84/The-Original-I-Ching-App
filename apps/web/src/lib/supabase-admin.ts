@@ -18,10 +18,11 @@ export function getSupabaseAdmin(): SupabaseClient | null {
   return cached;
 }
 
-// Semaphore: limits concurrent PostgREST connections per Node.js instance to 4.
-// PostgREST pool = 10; Vercel can have multiple instances, so 4/instance provides
-// headroom for concurrent users without saturating the pool.
-const MAX_CONCURRENT = 4;
+// Semaphore: limits concurrent PostgREST connections per Node.js instance.
+// PostgREST db_pool is ~10 on Small compute and does not scale with tier.
+// With Vercel serverless scaling (many instances), 2/instance keeps the
+// total well under the pool ceiling: 5 instances × 2 = 10 = pool limit.
+const MAX_CONCURRENT = 2;
 let activeCount = 0;
 const waitQueue: Array<() => void> = [];
 
