@@ -1,4 +1,5 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import * as Sentry from "@sentry/nextjs";
 
 let r2ClientCache: S3Client | null | undefined = undefined;
 
@@ -70,7 +71,11 @@ export async function uploadGeneratedImageToR2(
     );
 
     return `${publicUrl.replace(/\/$/, "")}/${key}`;
-  } catch {
+  } catch (err) {
+    Sentry.captureMessage("r2_upload_failed", {
+      level: "warning",
+      extra: { userId, consultationId, error: err instanceof Error ? err.message : String(err) },
+    });
     return null;
   }
 }

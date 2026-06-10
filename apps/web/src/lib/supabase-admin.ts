@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import * as Sentry from "@sentry/nextjs";
 import {
   isSupabaseTelemetryEnabled,
   logSupabaseOp,
@@ -141,6 +142,13 @@ export async function withSupabaseSemaphore<T>(
         queueDepth: queueAtStart,
         ok,
         error: errorMessage,
+      });
+    }
+
+    if (queueAtStart > 3 && process.env.VERCEL_ENV === "production") {
+      Sentry.captureMessage("supabase_semaphore_queue_depth_high", {
+        level: "warning",
+        extra: { queueDepth: queueAtStart, activeCount: activeAtStart },
       });
     }
   }
