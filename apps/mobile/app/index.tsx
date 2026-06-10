@@ -2545,23 +2545,49 @@ export default function WebViewScreen() {
 
           case "auth_signout":
             if (authTransitionRef.current) break; // ignore during session injection reload
-            accessTokenRef.current = null;
-            setIsAuthenticated(false);
-            setUserEmail(null);
-            SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
-            Purchases.logOut().catch(() => undefined);
-            // Do NOT clear SQLite on sign-out. The messages belong to the user
-            // who just signed out. If they (or anyone else) sign back in:
-            //   - Same user  → lastKnownUidRef matches → cache preserved → instant load ✓
-            //   - New user   → lastKnownUidRef differs → clearAllData fires in auth_token ✓
-            // Clear per-chat content cooldowns so the next login always fetches
-            // fresh message content via syncChatContent. Chat list metadata
-            // (last_sync, last_synced_user) and message rows are preserved.
-            void deleteSyncMetaByPrefix("chat_content_synced:").catch(() => undefined);
-            cachedChatsRef.current = [];
-            webViewRef.current?.injectJavaScript(
-              `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
-            );
+            void (async () => {
+              // Guard: web may post auth_signout on transient API 401 while JWT is still valid.
+              // Re-inject session instead of nuking native state + forcing OAuth.
+              try {
+                const storedTok = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
+                if (storedTok) {
+                  const check = await validateStoredToken(storedTok);
+                  if (check.valid) {
+                    accessTokenRef.current = storedTok;
+                    setIsAuthenticated(true);
+                    if (check.email) setUserEmail(check.email);
+                    webViewRef.current?.injectJavaScript(`
+                      window.__rnInjectSession && window.__rnInjectSession({
+                        access_token: ${JSON.stringify(storedTok)},
+                        refresh_token: '',
+                        expires_in: 3600,
+                        user: { email: ${JSON.stringify(check.email)} }
+                      }); true;
+                    `);
+                    return;
+                  }
+                }
+              } catch {
+                // fall through to full sign-out
+              }
+              accessTokenRef.current = null;
+              setIsAuthenticated(false);
+              setUserEmail(null);
+              SecureStore.deleteItemAsync(SECURE_TOKEN_KEY);
+              Purchases.logOut().catch(() => undefined);
+              // Do NOT clear SQLite on sign-out. The messages belong to the user
+              // who just signed out. If they (or anyone else) sign back in:
+              //   - Same user  → lastKnownUidRef matches → cache preserved → instant load ✓
+              //   - New user   → lastKnownUidRef differs → clearAllData fires in auth_token ✓
+              // Clear per-chat content cooldowns so the next login always fetches
+              // fresh message content via syncChatContent. Chat list metadata
+              // (last_sync, last_synced_user) and message rows are preserved.
+              void deleteSyncMetaByPrefix("chat_content_synced:").catch(() => undefined);
+              cachedChatsRef.current = [];
+              webViewRef.current?.injectJavaScript(
+                `window.location.href = ${JSON.stringify(BASE_URL + "/login")}; true;`
+              );
+            })();
             break;
 
           case "locale_changed":
@@ -2777,7 +2803,7 @@ export default function WebViewScreen() {
         // Ignore non-JSON bridge noise
       }
     },
-    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog, injectCachedChats, handleNativePurchase, saveDownloadedFile, showDownloadTooLarge, schedulePostBootstrapSync]
+    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog, injectCachedChats, handleNativePurchase, saveDownloadedFile, showDownloadTooLarge, schedulePostBootstrapSync, validateStoredToken]
   );
 
   /* ── Intercept Google OAuth + internal doc navigation ── */

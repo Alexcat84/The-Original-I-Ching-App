@@ -1954,7 +1954,7 @@ export default function HomePage() {
         const res = fetchResult.response;
         if (!res.ok) {
           const err = parseApiErrorPayload(await res.text());
-          if (shouldSignOutAfterAuthResilience(fetchResult)) {
+          if (await shouldSignOutAfterAuthResilience(fetchResult)) {
             const authError = sessionUi.chatLoadSessionExpired;
             setHistoryLoadError(authError);
             setError(authError);
@@ -2664,7 +2664,7 @@ export default function HomePage() {
         const res = fetchResult.response;
         if (!res.ok) {
           await res.text();
-          if (shouldSignOutAfterAuthResilience(fetchResult)) {
+          if (await shouldSignOutAfterAuthResilience(fetchResult)) {
             const msg = sessionUi.historySessionExpired;
             setError(msg);
             setHistoryLoadError(msg);

@@ -74,6 +74,20 @@ export async function fetchWithAuthResilience(
     }
 
     if (response.status === 401) {
+      // After a successful refresh, 401 is usually server-side auth validation
+      // flaking under PostgREST load — retry with backoff instead of signing out.
+      if (refreshed && attempts < MAX_ATTEMPTS) {
+        const delayMs = Math.round(transientDelayMs(attempts - 1));
+        logAuthResilienceRetry(label, {
+          url,
+          status: 401,
+          attempt: attempts,
+          delayMs,
+          reason: "post_refresh_401",
+        });
+        await sleep(delayMs);
+        continue;
+      }
       return { response, exhausted: true, attempts, refreshed };
     }
 
@@ -103,14 +117,29 @@ export async function fetchWithAuthResilience(
   };
 }
 
-export function shouldSignOutAfterAuthResilience(result: AuthResilienceResult): boolean {
-  return result.exhausted && result.response.status === 401;
+export async function shouldSignOutAfterAuthResilience(
+  result: AuthResilienceResult,
+): Promise<boolean> {
+  if (!result.exhausted || result.response.status !== 401) return false;
+  if (!isSupabaseBrowserConfigured()) return true;
+  try {
+    const { data } = await getSupabaseBrowser().auth.getSession();
+    if (data.session?.access_token) {
+      console.warn("[auth_resilience_retry] skip_sign_out_valid_client_session", {
+        refreshed: result.refreshed,
+        attempts: result.attempts,
+      });
+      return false;
+    }
+  } catch {
+    // fall through — no client session → sign out
+  }
+  return true;
 }
 
 export function isTransientAuthResilienceFailure(result: AuthResilienceResult): boolean {
-  return (
-    result.exhausted &&
-    result.response.status !== 401 &&
-    TRANSIENT_STATUSES.has(result.response.status)
-  );
+  if (!result.exhausted) return false;
+  if (TRANSIENT_STATUSES.has(result.response.status)) return true;
+  // Post-refresh 401: JWT is valid client-side; server auth validation likely flaked.
+  return result.response.status === 401 && result.refreshed;
 }
