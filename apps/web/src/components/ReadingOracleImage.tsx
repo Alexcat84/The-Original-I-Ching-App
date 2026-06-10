@@ -56,9 +56,23 @@ export function ReadingOracleImage({
   }
 
   async function download() {
+    // For https URLs (R2, CDN): proxy through server to avoid CORS and trigger download
     const tryUrls = [imageUrl, imageFallbackUrl].filter(Boolean);
     for (const url of tryUrls) {
       try {
+        if (url.startsWith("https://") || url.startsWith("http://")) {
+          const proxyUrl = `/api/image-proxy?url=${encodeURIComponent(url)}`;
+          const res = await fetch(proxyUrl);
+          if (!res.ok) continue;
+          const blob = await res.blob();
+          const jpgDataUrl = await blobToJpgDataUrl(blob);
+          const a = document.createElement("a");
+          a.href = jpgDataUrl;
+          a.download = `${downloadBasename}.jpg`;
+          a.click();
+          return;
+        }
+        // data: URLs — fetch directly (no CORS restriction)
         const res = await fetch(url);
         if (!res.ok) continue;
         const blob = await res.blob();
@@ -75,6 +89,12 @@ export function ReadingOracleImage({
   }
 
   async function openFullImage() {
+    // For https URLs (R2, CDN): open directly — no CORS fetch needed
+    if (imageUrl.startsWith("https://") || imageUrl.startsWith("http://")) {
+      window.open(imageUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+    // For data: URLs: create a blob URL for clean tab rendering
     const objectUrl = await resolveImageObjectUrl();
     if (objectUrl) {
       window.open(objectUrl, "_blank", "noopener,noreferrer");
