@@ -43,6 +43,10 @@ export type HomeSessionUiMessages = {
   hydrationBusyWait: string;
   /** Server returned a non-OK status with no parseable JSON body — {{status}}. */
   serverErrorStatus: string;
+  /** Shown while bootstrap/history retries after a transient server error. */
+  sessionLoadingRetry: string;
+  /** Transient errors exhausted; user can wait or retry manually. */
+  sessionTransientExhausted: string;
 };
 
 const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
@@ -83,6 +87,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     hydrationBusyWait:
       "Tus chats aún se están cargando. Espera un momento antes de consultar.",
     serverErrorStatus: "Error del servidor ({{status}}). Inténtalo de nuevo en unos minutos.",
+    sessionLoadingRetry: "Cargando sesión… reintentando en unos segundos.",
+    sessionTransientExhausted:
+      "El servidor está ocupado. Espera un momento o cierra y vuelve a abrir la app.",
   },
   en: {
     defaultSessionTitle: "Consultation",
@@ -120,6 +127,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     hydrationBusyWait:
       "Your chats are still loading. Please wait a moment before consulting.",
     serverErrorStatus: "Server error ({{status}}). Please try again in a few minutes.",
+    sessionLoadingRetry: "Loading session… retrying shortly.",
+    sessionTransientExhausted:
+      "The server is busy. Wait a moment or close and reopen the app.",
   },
   pt: {
     defaultSessionTitle: "Consulta",
@@ -159,6 +169,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     hydrationBusyWait:
       "Os teus chats ainda estão a carregar. Espera um momento antes de consultar.",
     serverErrorStatus: "Erro do servidor ({{status}}). Tenta novamente em alguns minutos.",
+    sessionLoadingRetry: "A carregar sessão… a tentar novamente em breve.",
+    sessionTransientExhausted:
+      "O servidor está ocupado. Aguarda um momento ou fecha e reabre a app.",
   },
   fr: {
     defaultSessionTitle: "Consultation",
@@ -197,6 +210,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     hydrationBusyWait:
       "Vos chats se chargent encore. Attendez un instant avant de consulter.",
     serverErrorStatus: "Erreur serveur ({{status}}). Réessayez dans quelques minutes.",
+    sessionLoadingRetry: "Chargement de la session… nouvel essai sous peu.",
+    sessionTransientExhausted:
+      "Le serveur est occupé. Attendez un instant ou fermez et rouvrez l’app.",
   },
   de: {
     defaultSessionTitle: "Konsultation",
@@ -235,6 +251,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     hydrationBusyWait:
       "Deine Chats werden noch geladen. Bitte warte einen Moment vor der Beratung.",
     serverErrorStatus: "Serverfehler ({{status}}). Bitte in einigen Minuten erneut versuchen.",
+    sessionLoadingRetry: "Sitzung wird geladen… erneuter Versuch in Kürze.",
+    sessionTransientExhausted:
+      "Der Server ist ausgelastet. Warte einen Moment oder starte die App neu.",
   },
   it: {
     defaultSessionTitle: "Consultazione",
@@ -273,6 +292,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     hydrationBusyWait:
       "Le tue chat si stanno ancora caricando. Attendi un momento prima di consultare.",
     serverErrorStatus: "Errore del server ({{status}}). Riprova tra qualche minuto.",
+    sessionLoadingRetry: "Caricamento sessione… nuovo tentativo a breve.",
+    sessionTransientExhausted:
+      "Il server è occupato. Attendi un momento o chiudi e riapri l’app.",
   },
   ja: {
     defaultSessionTitle: "相談",
@@ -310,6 +332,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     hydrationBusyWait:
       "チャットを読み込み中です。しばらく待ってから占ってください。",
     serverErrorStatus: "サーバーエラー ({{status}})。しばらくしてからもう一度お試しください。",
+    sessionLoadingRetry: "セッションを読み込み中…まもなく再試行します。",
+    sessionTransientExhausted:
+      "サーバーが混み合っています。しばらく待つか、アプリを再起動してください。",
   },
   zh: {
     defaultSessionTitle: "咨询",
@@ -341,6 +366,8 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     streamInterrupted: "响应在完成前被中断。请重试。",
     hydrationBusyWait: "聊天记录仍在加载中。请稍候再开始占卜。",
     serverErrorStatus: "服务器错误 ({{status}})。请稍后重试。",
+    sessionLoadingRetry: "正在加载会话…即将重试。",
+    sessionTransientExhausted: "服务器繁忙。请稍等或关闭后重新打开应用。",
   },
   ko: {
     defaultSessionTitle: "상담",
@@ -377,6 +404,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     streamInterrupted: "응답이 완료되기 전에 중단되었습니다. 다시 시도하세요.",
     hydrationBusyWait: "채팅을 불러오는 중입니다. 잠시 후 다시 점을 봐 주세요.",
     serverErrorStatus: "서버 오류 ({{status}}). 잠시 후 다시 시도하세요.",
+    sessionLoadingRetry: "세션 로드 중… 곧 다시 시도합니다.",
+    sessionTransientExhausted:
+      "서버가 바쁩니다. 잠시 기다리거나 앱을 다시 열어 주세요.",
   },
   ar: {
     defaultSessionTitle: "استشارة",
@@ -413,6 +443,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     streamInterrupted: "انقطع الرد قبل اكتماله. يرجى المحاولة مرة أخرى.",
     hydrationBusyWait: "محادثاتك ما زالت تُحمَّل. انتظر لحظة قبل الاستشارة.",
     serverErrorStatus: "خطأ في الخادم ({{status}}). حاول مرة أخرى بعد دقائق.",
+    sessionLoadingRetry: "جارٍ تحميل الجلسة… إعادة المحاولة قريبًا.",
+    sessionTransientExhausted:
+      "الخادم مشغول. انتظر لحظة أو أغلق التطبيق وأعد فتحه.",
   },
   hi: {
     defaultSessionTitle: "परामर्श",
@@ -451,6 +484,9 @@ const HOME_SESSION_UI: Record<AppLocale, HomeSessionUiMessages> = {
     hydrationBusyWait:
       "आपकी चैट अभी भी लोड हो रही हैं। परामर्श से पहले कृपया प्रतीक्षा करें।",
     serverErrorStatus: "सर्वर त्रुटि ({{status}})। कुछ मिनटों में पुनः प्रयास करें।",
+    sessionLoadingRetry: "सत्र लोड हो रहा है… जल्द पुनः प्रयास।",
+    sessionTransientExhausted:
+      "सर्वर व्यस्त है। कृपया प्रतीक्षा करें या ऐप बंद करके फिर खोलें।",
   },
 };
 

@@ -122,7 +122,9 @@ const BASE_URL = resolveWebBaseUrl();
 /** Defer account refresh after login so bootstrap can finish first. */
 const POST_LOGIN_ACCOUNT_REFRESH_MS = 2_500;
 /** Debounce native sessions-only sync after WebView bootstrap completes. */
-const POST_BOOTSTRAP_SYNC_DEBOUNCE_MS = 500;
+const POST_BOOTSTRAP_SYNC_DEBOUNCE_MS = 2_000;
+/** After a transient bootstrap error in WebView, block native syncChats briefly. */
+const POST_BOOTSTRAP_TRANSIENT_COOLDOWN_MS = 30_000;
 /** Max base64 payload for image downloads (~12 MB binary). */
 const MAX_IMAGE_DOWNLOAD_BASE64_CHARS = 18_000_000;
 /** PDF chat exports may be larger; still capped to avoid native OOM on join. */
@@ -1117,6 +1119,8 @@ type RNMessage =
   | { type: "download_file_chunk"; transferId: string; chunk: string }
   | { type: "download_file_end"; transferId: string }
   | { type: "download_rejected"; reason: string; size: number; filename: string }
+  | { type: "bootstrap_started" }
+  | { type: "bootstrap_transient_error" }
   | { type: "bootstrap_complete" }
   | { type: "delete_chat"; url: string; reqId: string }
   | { type: "account_deleted" }
@@ -1800,6 +1804,8 @@ export default function WebViewScreen() {
     >
   >({});
   const postBootstrapSyncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const webBootstrapInFlightRef = useRef(false);
+  const webBootstrapSyncBlockedUntilRef = useRef(0);
 
   /* ── Locale state (P2) ── */
   const [locale, setLocaleState] = useState<AppLocale>(DEFAULT_LOCALE);
@@ -2319,11 +2325,15 @@ export default function WebViewScreen() {
   );
 
   const schedulePostBootstrapSync = useCallback(() => {
+    if (webBootstrapInFlightRef.current) return;
+    if (Date.now() < webBootstrapSyncBlockedUntilRef.current) return;
     if (postBootstrapSyncTimerRef.current) {
       clearTimeout(postBootstrapSyncTimerRef.current);
     }
     postBootstrapSyncTimerRef.current = setTimeout(() => {
       postBootstrapSyncTimerRef.current = null;
+      if (webBootstrapInFlightRef.current) return;
+      if (Date.now() < webBootstrapSyncBlockedUntilRef.current) return;
       const token = accessTokenRef.current;
       const uid = lastKnownUidRef.current ?? undefined;
       if (!token) return;
@@ -2624,7 +2634,26 @@ export default function WebViewScreen() {
             showDownloadTooLarge();
             break;
 
+          case "bootstrap_started":
+            webBootstrapInFlightRef.current = true;
+            if (postBootstrapSyncTimerRef.current) {
+              clearTimeout(postBootstrapSyncTimerRef.current);
+              postBootstrapSyncTimerRef.current = null;
+            }
+            break;
+
+          case "bootstrap_transient_error":
+            webBootstrapInFlightRef.current = false;
+            webBootstrapSyncBlockedUntilRef.current =
+              Date.now() + POST_BOOTSTRAP_TRANSIENT_COOLDOWN_MS;
+            if (postBootstrapSyncTimerRef.current) {
+              clearTimeout(postBootstrapSyncTimerRef.current);
+              postBootstrapSyncTimerRef.current = null;
+            }
+            break;
+
           case "bootstrap_complete":
+            webBootstrapInFlightRef.current = false;
             schedulePostBootstrapSync();
             break;
 

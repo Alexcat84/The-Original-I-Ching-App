@@ -92,6 +92,11 @@ import {
   stripInterpretationFluff,
 } from "@/lib/response-clean";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
+import {
+  fetchWithAuthResilience,
+  isTransientAuthResilienceFailure,
+  shouldSignOutAfterAuthResilience,
+} from "@/lib/fetch-with-auth-resilience";
 import { fetchWithSessionRetry } from "@/lib/fetch-with-session-retry";
 import {
   getIdbChats, putIdbChats, getIdbThread, isThreadFresh, clearIdbUser,
@@ -830,6 +835,11 @@ export default function HomePage() {
   const bootstrapCompletedForRef = useRef<string | null>(null);
   /** True while a bootstrap fetch is in-flight — blocks duplicate concurrent runs. */
   const bootstrapInFlightRef = useRef(false);
+  const bootstrapAutoRetryCountRef = useRef(0);
+  const bootstrapAutoRetryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
+  const [bootstrapRetryNonce, setBootstrapRetryNonce] = useState(0);
   /** Single-flight thread=1 loads keyed by sessionId. */
   const threadLoadBySessionRef = useRef(new Map<string, Promise<void>>());
   /** Count of in-flight hydration paths that hold PostgREST (bootstrap, thread sync). */
@@ -1811,6 +1821,11 @@ export default function HomePage() {
     pinnedLocalSessionIdRef.current = null;
     bootstrapCompletedForRef.current = null;
     bootstrapInFlightRef.current = false;
+    bootstrapAutoRetryCountRef.current = 0;
+    if (bootstrapAutoRetryTimerRef.current !== null) {
+      clearTimeout(bootstrapAutoRetryTimerRef.current);
+      bootstrapAutoRetryTimerRef.current = null;
+    }
   }, [authUserId]);
 
   const deleteAccount = useCallback(async () => {
@@ -1929,19 +1944,25 @@ export default function HomePage() {
       setHistoryLoadError(null);
       postgrestHydrationBusyRef.current += 1;
       try {
-        const res = await fetchWithSessionRetry(
+        const fetchResult = await fetchWithAuthResilience(
           `/api/account/chats?sessionId=${encodeURIComponent(sessionId)}&thread=1`,
           accessToken,
           setAccessToken,
           { cache: "no-store" },
+          "loadSessionThread",
         );
+        const res = fetchResult.response;
         if (!res.ok) {
           const err = parseApiErrorPayload(await res.text());
-          if (res.status === 401) {
+          if (shouldSignOutAfterAuthResilience(fetchResult)) {
             const authError = sessionUi.chatLoadSessionExpired;
             setHistoryLoadError(authError);
             setError(authError);
             void signOut();
+            return;
+          }
+          if (isTransientAuthResilienceFailure(fetchResult)) {
+            setHistoryLoadError(sessionUi.sessionLoadingRetry);
             return;
           }
           if (res.status === 404 || err?.code === "SESSION_NOT_FOUND") {
@@ -2628,19 +2649,50 @@ export default function HomePage() {
           if (cached !== null) setAccountSessionLimit(cached);
         }
         setTierReady(false);
-        const res = await fetchWithSessionRetry(
+        (
+          window as unknown as { ReactNativeWebView?: { postMessage(s: string): void } }
+        ).ReactNativeWebView?.postMessage(
+          JSON.stringify({ type: "bootstrap_started" }),
+        );
+        const fetchResult = await fetchWithAuthResilience(
           "/api/account/bootstrap",
           accessToken,
           setAccessToken,
           { cache: "no-store" },
+          "bootstrap",
         );
+        const res = fetchResult.response;
         if (!res.ok) {
           await res.text();
-          if (res.status === 401) {
+          if (shouldSignOutAfterAuthResilience(fetchResult)) {
             const msg = sessionUi.historySessionExpired;
             setError(msg);
             setHistoryLoadError(msg);
             void signOut();
+            return;
+          }
+          if (isTransientAuthResilienceFailure(fetchResult)) {
+            (
+              window as unknown as { ReactNativeWebView?: { postMessage(s: string): void } }
+            ).ReactNativeWebView?.postMessage(
+              JSON.stringify({ type: "bootstrap_transient_error" }),
+            );
+            setHistoryLoadError(sessionUi.sessionLoadingRetry);
+            setTierReady(true);
+            if (
+              !cancelled &&
+              bootstrapAutoRetryCountRef.current < 3 &&
+              bootstrapAutoRetryTimerRef.current === null
+            ) {
+              bootstrapAutoRetryCountRef.current += 1;
+              bootstrapAutoRetryTimerRef.current = setTimeout(() => {
+                bootstrapAutoRetryTimerRef.current = null;
+                bootstrapInFlightRef.current = false;
+                setBootstrapRetryNonce((n) => n + 1);
+              }, 9000);
+            } else if (bootstrapAutoRetryCountRef.current >= 3) {
+              setHistoryLoadError(sessionUi.sessionTransientExhausted);
+            }
             return;
           }
           const msg = formatHistoryLoadFailedStatus(sessionUi, res.status);
@@ -2649,6 +2701,7 @@ export default function HomePage() {
           setTierReady(true);
           return;
         }
+        bootstrapAutoRetryCountRef.current = 0;
         const payload = (await res.json()) as BootstrapResponse;
         if (cancelled || !payload) return;
 
@@ -2852,6 +2905,10 @@ export default function HomePage() {
     return () => {
       cancelled = true;
       bootstrapInFlightRef.current = false;
+      if (bootstrapAutoRetryTimerRef.current !== null) {
+        clearTimeout(bootstrapAutoRetryTimerRef.current);
+        bootstrapAutoRetryTimerRef.current = null;
+      }
       postgrestHydrationBusyRef.current = Math.max(
         0,
         postgrestHydrationBusyRef.current - 1,
@@ -2872,6 +2929,7 @@ export default function HomePage() {
     hydrateFromStorage,
     signOut,
     setSessionsServerHydrated,
+    bootstrapRetryNonce,
   ]);
 
   async function startTwoFactorEnrollment() {

@@ -18,7 +18,8 @@ import {
 // is safe: bootstrap data only changes mid-window via purchase webhook or consult,
 // neither of which arrives within 8s of a fresh login. Post-purchase refresh uses
 // iching:account-refresh → /api/account/me, not bootstrap.
-const BOOTSTRAP_CACHE_TTL_SECONDS = 8;
+const BOOTSTRAP_CACHE_TTL_SECONDS =
+  process.env.NODE_ENV === "production" ? 30 : 8;
 const BOOTSTRAP_LOCK_TTL_SECONDS = 15;
 const BOOTSTRAP_POLL_MS = 150;
 const BOOTSTRAP_POLL_MAX_MS = 3_000;
