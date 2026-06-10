@@ -28,10 +28,10 @@ const waitQueue: Array<() => void> = [];
 
 // ── Global Redis semaphore (cross-instance) ──────────────────────────────────
 // Caps the TOTAL concurrent PostgREST connections across all Vercel instances.
-// PostgREST db_pool is ~10 regardless of compute tier; 8 leaves 2 slots as margin.
+// PostgREST db_pool confirmed at 30 (from logs); 20 cap leaves 10 slots as margin.
 // Fail-open: if Upstash is unavailable the local semaphore still applies.
 const REDIS_GLOBAL_KEY = "supabase:concurrent";
-const GLOBAL_MAX_CONCURRENT = 8;
+const GLOBAL_MAX_CONCURRENT = 20;
 const GLOBAL_TTL_SECONDS = 30; // auto-cleanup if a Vercel instance crashes mid-request
 
 function sleep(ms: number): Promise<void> {
@@ -50,11 +50,15 @@ async function acquireGlobalSlot(): Promise<boolean> {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const count = await redis.incr(REDIS_GLOBAL_KEY);
-      // Refresh TTL so the key only expires after a period of complete inactivity
-      redis.expire(REDIS_GLOBAL_KEY, GLOBAL_TTL_SECONDS).catch(() => {});
+      // Set TTL only when key is newly created (count==1) so it doesn't reset on
+      // every INCR. The key expires only after GLOBAL_TTL_SECONDS of inactivity,
+      // cleaning up a stuck counter if a Vercel instance crashes mid-request.
+      if (count === 1) {
+        redis.expire(REDIS_GLOBAL_KEY, GLOBAL_TTL_SECONDS).catch(() => {});
+      }
       if (count <= GLOBAL_MAX_CONCURRENT) return true;
       // Over limit — release the slot we just took and wait before retrying
-      redis.decr(REDIS_GLOBAL_KEY).catch(() => {});
+      await redis.decr(REDIS_GLOBAL_KEY);
     } catch {
       return false; // Redis unavailable → fail-open
     }
@@ -124,8 +128,10 @@ export async function withSupabaseSemaphore<T>(
     const next = waitQueue.shift();
     if (next) next();
 
-    // Release global slot (fire-and-forget — response already sent/thrown)
-    if (globalHeld) releaseGlobalSlot().catch(() => {});
+    // Release global slot — awaited so the DECR executes before Vercel
+    // reclaims the function. Fire-and-forget risks the counter drifting up
+    // in serverless if the runtime kills the process before the Promise resolves.
+    if (globalHeld) await releaseGlobalSlot();
 
     if (telemetry && isSupabaseTelemetryEnabled()) {
       logSupabaseOp(telemetry, {
