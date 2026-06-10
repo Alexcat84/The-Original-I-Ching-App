@@ -1,8 +1,60 @@
-<!-- changelog:last-release:849fcf5 -->
+<!-- changelog:last-release:8d4aed8 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [3.5.4] — 2026-06-10 | versionCode: 52 | Stage: Internal Testing
+
+### New
+- feat(web): Phase 6 — Sentry monitoring alerts on consult failures, R2 errors, and semaphore pressure | commit: 8d4aed8
+- feat(db): Phase 5 — weekly VACUUM ANALYZE via pg_cron (migration 070) | commit: 44c36f6
+- feat(web): Phase 3 — per-user inflight gate on /api/consult | commit: 12646b6
+- feat(web): Phase 4 — explicit Vercel function timeouts in vercel.json | commit: f223dd2
+- feat(web): Phase 2 — global Redis semaphore for PostgREST connections | commit: 7cc5ef6
+- feat(web): Phase 1 — upload generated images to R2 for permanent storage | commit: 0cc3a08
+
+### Fix
+- fix(mobile): handle WebView renderer crash with onRenderProcessGone | commit: e91ca2a
+- fix(web): Phase 2 corrections — db_pool=30, await DECR, TTL only on create | commit: 6bc11bf
+- fix(security): harden image-proxy against SSRF and header injection | commit: 4c84d7e
+- fix(web): fix image open/download for R2 URLs — bypass browser CORS | commit: 6c08057
+- fix(web): lower PostgREST semaphore from 4 to 2 concurrent per instance | commit: fb54ca2
+- fix(web): async wrapper in withSupabaseSemaphore health check + scalability runbooks | commit: 4a510bf
+- fix(mobile): restore URL-safe OAuth intercept — remove accounts.google.com catch | commit: 288bce4
+- fix(web): guard /api/health PostgREST query with withSupabaseSemaphore | commit: dac7bbe
+- fix(mobile,web): restore b111d7b auth_signout debounce — no forced OAuth redirect | commit: eeea551
+- fix(web,mobile): avoid signOut on transient 401 after Warp during chat load | commit: 40b5446
+- fix(web,mobile): resilient cold-open bootstrap and sync coordination | commit: d58fb28
+- fix(mobile,web): restore long-thread PDF export without OOM block | commit: e6f9c2b
+- fix(i18n,mobile): localize RevenueCat web purchase redemption dialogs | commit: 084c487
+- fix(mobile,web): prevent OOM on large downloads and stabilize auth on 401 | commit: 7b298b0
+- fix(web,mobile): serialize PostgREST burst on hydration and consult | commit: b4654ce
+- fix(observability): enable Supabase telemetry gate and instrument chats routes | commit: cc34421
+- fix(perf): reduce PostgREST pool saturation on login and consult | commit: abf581e
+- fix(perf): eliminate double-bootstrap burst on login (D+C pattern) | commit: 0fb94ff
+- fix(claude): remove mutation rule code from prompt to prevent leakage in response | commit: f5dca4d
+- fix(web): prevent bootstrap race leaving account tier/tokens invisible | commit: 21469c6
+- fix(web): prevent bootstrap race leaving account tier/tokens invisible | commit: 1e9a831
+
+### Docs
+- docs: mark Phase 1 R2 image persistence as complete | commit: 65ad5c2
+- docs: add scale infrastructure plan A-Z (10K-100K users) | commit: 3c7ccb8
+
+### Maintenance
+- merge: feat/pg-cron-vacuum → staging (Phase 5) | commit: 789cd9c
+- merge: feat/consult-rate-limit → staging (Phase 3) | commit: 9e4256c
+- merge: staging → main (Phase 4 Vercel timeouts + Android crash fix) | commit: a44a469
+- merge: staging → main (Phase 2 global Redis semaphore + corrections) | commit: 37e300e
+- merge: feat/global-redis-semaphore → staging (Phase 2) | commit: 1ff7eb2
+- merge: staging → main (Phase 1 R2 image persistence + image-proxy fix) | commit: efe7cc9
+- merge: feat/r2-image-persistence → staging (Phase 1 R2 image persistence) | commit: c9363ef
+- chore(mobile): bump Android versionCode to 46 for OOM/auth hotfix APK | commit: d5c7609
+- Add Supabase telemetry for Warp correlation in Axiom. | commit: 04a4bd9
+- merge: fix/warp-pool-saturation into staging | commit: d4d4e20
+- chore(release): bump version 3.5.2 / versionCode 45 | commit: 0272385
+
+---
 
 ## [3.5.2] — 2026-06-07 | versionCode: 45 | Stage: Closed Testing
 
@@ -1356,7 +1408,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.5.2 | 45 | 2026-06-07 | Closed Testing | 47 | production Supabase closure — migration 069, Fase 4 ops, recovery docs; Phase 3 scale — RPC write path, thread=1, serial bootstrap; Phase 2 TOAST split — consultation_content table (migrations 062-064) |
+| 3.5.4 | 52 | 2026-06-10 | Internal Testing | 40 | Phase 6 — Sentry monitoring alerts on consult failures, R2 errors, and semaph…; Phase 5 — weekly VACUUM ANALYZE via pg_cron (migration 070); Phase 3 — per-user inflight gate on /api/consult |
+| 3.5.2 | 45 | 2026-06-07 | Closed Testing | 0 | — |
 | 3.5.1 | 44 | 2026-06-06 | Closed Testing | 0 | — |
 | 3.5.0 | 43 | 2026-06-06 | Closed Testing | 0 | — |
 | 3.4.9 | 42 | 2026-06-06 | Closed Testing | 0 | — |
