@@ -397,6 +397,13 @@ FROM (
     )
 
   UNION ALL
+  -- 070 · Weekly VACUUM pg_cron job registered
+  SELECT '070', 'cron job weekly-vacuum-iching registered',
+    EXISTS (
+      SELECT 1 FROM cron.job WHERE jobname = 'weekly-vacuum-iching'
+    )
+
+  UNION ALL
   -- CONTENT · P0 gate — fails on mass wipe; allows ≤2 irrecoverable post-PITR gaps
   SELECT 'CONTENT', 'consultation_content full text (≤2 empty rows allowed for known PITR gaps)',
     (
