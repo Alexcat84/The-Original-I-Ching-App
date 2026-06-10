@@ -12,7 +12,7 @@
 | Fase 0 | Ops — sin código | 🟡 En progreso |
 | Fase 1 | Persistencia de imágenes en R2 | ✅ Completa |
 | Fase 2 | Semáforo PostgREST global (Redis) | ✅ Completa |
-| Fase 3 | Rate limit por usuario en `/api/consult` | ⬜ Pendiente |
+| Fase 3 | Rate limit por usuario en `/api/consult` | ✅ Completa |
 | Fase 4 | Timeouts explícitos Vercel (`vercel.json`) | ✅ Completa |
 | Fase 5 | Mantenimiento automático DB (pg_cron) | ⬜ Pendiente |
 | Fase 6 | Monitoring / alertas Sentry | ⬜ Pendiente |
@@ -229,8 +229,9 @@ Redis key `consult:inflight:{userId}` con TTL de 120s:
 
 ### Checklist
 
-- [ ] Añadir gate Redis en `apps/web/src/app/api/consult/route.ts`
-- [ ] Añadir mensaje i18n en todos los idiomas: "consultation_in_progress"
+- [x] Añadir gate Redis `consult:inflight:{userId}` en `apps/web/src/app/api/consult/route.ts` — ✅ 2026-06-10
+- [x] Añadir mensaje i18n en los 11 idiomas: `consultationInProgress` en `consult-api-ui.ts` — ✅ 2026-06-10
+- [x] TTL 120s + DEL en `finally` (garantiza liberación incluso si el proceso muere)
 - [ ] Smoke test: doble-tap rápido → segundo request devuelve 429 amigable
 - [ ] Deploy
 
