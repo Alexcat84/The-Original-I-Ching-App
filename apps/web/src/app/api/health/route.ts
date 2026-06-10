@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const { error } = await withSupabaseSemaphore(() =>
+  const { error } = await withSupabaseSemaphore(async () =>
     supabase.from("users").select("id").limit(1),
   );
   if (error) {
