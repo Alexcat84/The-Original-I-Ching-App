@@ -123,8 +123,10 @@ const BASE_URL = resolveWebBaseUrl();
 const POST_LOGIN_ACCOUNT_REFRESH_MS = 2_500;
 /** Debounce native sessions-only sync after WebView bootstrap completes. */
 const POST_BOOTSTRAP_SYNC_DEBOUNCE_MS = 500;
-/** Max base64 payload (~12 MB binary) before rejecting chunked download on native. */
-const MAX_DOWNLOAD_BASE64_CHARS = 18_000_000;
+/** Max base64 payload for image downloads (~12 MB binary). */
+const MAX_IMAGE_DOWNLOAD_BASE64_CHARS = 18_000_000;
+/** PDF chat exports may be larger; still capped to avoid native OOM on join. */
+const MAX_PDF_DOWNLOAD_BASE64_CHARS = 120_000_000;
 
 /**
  * Paths where the WebView should perform a normal navigation (not SPA-injected).
@@ -442,8 +444,7 @@ const INJECTED_JS = `
     }, 2000);
   };
 
-  /* 3b ── Download helper (OOM-safe: never readAsDataURL on large blobs) ─ */
-  var MAX_BLOB_READ_BYTES = 12 * 1024 * 1024;
+  /* 3b ── Download helper (OOM-safe: slice blobs, never readAsDataURL whole file) ─ */
   var BLOB_SLICE_BYTES = 256 * 1024;
   var MAX_INLINE_DATA_URL = 180000;
   var MAX_BLOB_IMAGE_OPEN_BYTES = 4 * 1024 * 1024;
@@ -514,10 +515,6 @@ const INJECTED_JS = `
 
   function _postBlobAsChunks(filename, blob) {
     if (!blob || typeof blob.size !== 'number') return;
-    if (blob.size > MAX_BLOB_READ_BYTES) {
-      _postDownloadRejected(filename, blob.size, 'too_large');
-      return;
-    }
     var mimeType = blob.type || 'application/octet-stream';
     if (blob.size <= MAX_INLINE_DATA_URL) {
       _readBlobSliceAsB64(blob, function(b64) {
@@ -2302,7 +2299,10 @@ export default function WebViewScreen() {
         const mimeMatch = dataUrl.match(/^data:([^;]+);base64,/);
         const mimeType = mimeMatch?.[1] ?? "application/octet-stream";
         const base64 = dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl;
-        if (base64.length > MAX_DOWNLOAD_BASE64_CHARS) {
+        const maxChars = mimeType.includes("pdf")
+          ? MAX_PDF_DOWNLOAD_BASE64_CHARS
+          : MAX_IMAGE_DOWNLOAD_BASE64_CHARS;
+        if (base64.length > maxChars) {
           showDownloadTooLarge();
           return;
         }
@@ -2588,7 +2588,10 @@ export default function WebViewScreen() {
             if (!transfer) break;
             transfer.chunks.push(msg.chunk);
             transfer.totalBase64Chars += msg.chunk.length;
-            if (transfer.totalBase64Chars > MAX_DOWNLOAD_BASE64_CHARS) {
+            const maxChars = transfer.mimeType.includes("pdf")
+              ? MAX_PDF_DOWNLOAD_BASE64_CHARS
+              : MAX_IMAGE_DOWNLOAD_BASE64_CHARS;
+            if (transfer.totalBase64Chars > maxChars) {
               delete downloadTransfersRef.current[msg.transferId];
               showDownloadTooLarge();
             }
@@ -2599,7 +2602,10 @@ export default function WebViewScreen() {
             const transfer = downloadTransfersRef.current[msg.transferId];
             if (!transfer) break;
             delete downloadTransfersRef.current[msg.transferId];
-            if (transfer.totalBase64Chars > MAX_DOWNLOAD_BASE64_CHARS) {
+            const maxChars = transfer.mimeType.includes("pdf")
+              ? MAX_PDF_DOWNLOAD_BASE64_CHARS
+              : MAX_IMAGE_DOWNLOAD_BASE64_CHARS;
+            if (transfer.totalBase64Chars > maxChars) {
               showDownloadTooLarge();
               break;
             }

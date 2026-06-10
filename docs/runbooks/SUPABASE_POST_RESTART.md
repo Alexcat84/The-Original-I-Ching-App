@@ -4,6 +4,8 @@
 
 Ejecutar tras **restart de proyecto**, ventana de mantenimiento, o antes de smoke test pre-lanzamiento.
 
+**Escalabilidad y monitoreo continuo:** [SUPABASE_SCALABILITY.md](./SUPABASE_SCALABILITY.md)
+
 ---
 
 ## 1. Verificar estado del proyecto

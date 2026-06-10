@@ -1311,16 +1311,7 @@ export default function HomePage() {
     const isRnWebView =
       typeof window !== "undefined" &&
       "ReactNativeWebView" in window;
-    if (isRnWebView) {
-      const consultCount = activeThread.length;
-      const imageCount = activeThread.filter(
-        (entry) => typeof entry.imageUrl === "string" && entry.imageUrl.trim().length > 0,
-      ).length;
-      if (consultCount >= 6 || imageCount >= 4) {
-        setError(pdfUi.exportTooLargeForMobile);
-        return;
-      }
-    }
+    const pdfCanvasJpegQuality = isRnWebView ? 0.72 : 0.92;
     const { jsPDF } = await import("jspdf");
     const doc = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
     const fileBase = formatPrintFilename(
@@ -1343,6 +1334,27 @@ export default function HomePage() {
         return await toDataUrl(await res.blob());
       } catch {
         return null;
+      }
+    };
+    const compactImageDataUrlForMobilePdf = async (
+      dataUrl: string,
+      maxDim: number,
+    ): Promise<string> => {
+      if (!isRnWebView) return dataUrl;
+      try {
+        const image = await loadImage(dataUrl);
+        const scale = Math.min(1, maxDim / Math.max(image.width, image.height));
+        const w = Math.max(1, Math.round(image.width * scale));
+        const h = Math.max(1, Math.round(image.height * scale));
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return dataUrl;
+        ctx.drawImage(image, 0, 0, w, h);
+        return canvas.toDataURL("image/jpeg", pdfCanvasJpegQuality);
+      } catch {
+        return dataUrl;
       }
     };
     const loadImage = (src: string) =>
@@ -1533,9 +1545,12 @@ export default function HomePage() {
         );
       }
 
-      const imgDataUrl =
+      let imgDataUrl =
         (await fetchImageDataUrl(entry.imageUrl)) ??
         (await fetchImageDataUrl(entry.imageFallbackUrl ?? ""));
+      if (imgDataUrl && isRnWebView) {
+        imgDataUrl = await compactImageDataUrlForMobilePdf(imgDataUrl, 960);
+      }
       if (imgDataUrl) {
         try {
           const image = await loadImage(imgDataUrl);
@@ -1574,7 +1589,7 @@ export default function HomePage() {
       );
 
       const flushCanvasToDoc = () => {
-        const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
+        const dataUrl = canvas.toDataURL("image/jpeg", pdfCanvasJpegQuality);
         doc.addImage(dataUrl, "JPEG", 0, 0, 595.28, 841.89, undefined, "FAST");
       };
 

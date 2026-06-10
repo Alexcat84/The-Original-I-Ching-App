@@ -591,6 +591,8 @@ Soportar ~1000 usuarios activos/semana sin saturar PostgREST pool=10: ≤3 conex
 
 ### P4 — Ticket Supabase Support (pendiente ops manual)
 
+**Runbook oficial escalabilidad:** [SUPABASE_SCALABILITY.md](../runbooks/SUPABASE_SCALABILITY.md) (monitoreo, umbrales, plantilla ticket, fases A–C).
+
 Abrir en [Supabase Dashboard → Support](https://supabase.com/dashboard/support/new) (plan Pro):
 
 - **Proyecto:** `wgborqkfnxfarkdaotsd` (The Original I Ching, ca-central-1)
