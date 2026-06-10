@@ -10,7 +10,7 @@
 | Fase | Descripción | Estado |
 |---|---|---|
 | Fase 0 | Ops — sin código | 🟡 En progreso |
-| Fase 1 | Persistencia de imágenes en R2 | ⬜ Pendiente |
+| Fase 1 | Persistencia de imágenes en R2 | 🟡 En progreso |
 | Fase 2 | Semáforo PostgREST global (Redis) | ⬜ Pendiente |
 | Fase 3 | Rate limit por usuario en `/api/consult` | ⬜ Pendiente |
 | Fase 4 | Timeouts explícitos Vercel (`vercel.json`) | ⬜ Pendiente |
@@ -146,9 +146,9 @@ iching-fallbacks/
 
 ### Checklist de implementación
 
-- [ ] Instalar `@aws-sdk/client-s3` en `apps/web`
-- [ ] Crear `apps/web/src/lib/upload-to-r2.ts`
-- [ ] Modificar `apps/web/src/app/api/consult/route.ts`
+- [x] Instalar `@aws-sdk/client-s3` en `apps/web`
+- [x] Crear `apps/web/src/lib/upload-to-r2.ts`
+- [x] Modificar `apps/web/src/app/api/consult/route.ts`
 - [ ] Verificar en staging que Together URL → R2 URL en DB
 - [ ] Verificar que si R2 falla, la consulta igual completa (URL de Together en DB)
 - [ ] Añadir variables a Vercel (producción + staging si aún no están)
