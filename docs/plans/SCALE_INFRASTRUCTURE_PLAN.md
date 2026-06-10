@@ -14,7 +14,7 @@
 | Fase 2 | Semáforo PostgREST global (Redis) | ✅ Completa |
 | Fase 3 | Rate limit por usuario en `/api/consult` | ✅ Completa |
 | Fase 4 | Timeouts explícitos Vercel (`vercel.json`) | ✅ Completa |
-| Fase 5 | Mantenimiento automático DB (pg_cron) | ⬜ Pendiente |
+| Fase 5 | Mantenimiento automático DB (pg_cron) | ✅ Completa |
 | Fase 6 | Monitoring / alertas Sentry | ⬜ Pendiente |
 
 ---
@@ -297,9 +297,9 @@ SELECT cron.schedule(
 
 ### Checklist
 
-- [ ] Crear `backend/db/migrations/070_scheduled_vacuum.sql`
-- [ ] Actualizar `backend/db/migrations/verify_migrations.sql`
-- [ ] Aplicar en producción
+- [x] Crear `backend/db/migrations/070_scheduled_vacuum.sql` — ✅ 2026-06-10
+- [x] Actualizar `backend/db/migrations/verify_migrations.sql` — ✅ 2026-06-10
+- [ ] Aplicar en producción (SQL Editor de Supabase)
 - [ ] Verificar que el cron quedó registrado: `SELECT * FROM cron.job;`
 
 ---
