@@ -41,6 +41,7 @@ import {
   getUserBillingTier,
 } from "@/lib/credits";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
+import { uploadGeneratedImageToR2 } from "@/lib/upload-to-r2";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey, getUpstashRedis } from "@/lib/rate-limit";
 import { verifyIntegrityToken } from "@/lib/play-integrity";
@@ -779,6 +780,8 @@ export async function POST(req: Request) {
         consultationId: bonesCast.id,
       });
       image = await finalizeReadingImages(image, tierEffective);
+      const _r2UrlBones = await uploadGeneratedImageToR2(image.imageUrl, authedUserId, bonesCast.id);
+      if (_r2UrlBones) image = { ...image, imageUrl: _r2UrlBones };
 
       const oracleBonesSnapshot: OracleBonesHistorySnapshot = {
         pattern_id: bonesCast.patternId,
@@ -1039,6 +1042,8 @@ export async function POST(req: Request) {
                 consultationId: castResult.id,
               });
               image = await finalizeReadingImages(image, tierEffective);
+              const _r2UrlStream = await uploadGeneratedImageToR2(image.imageUrl, authedUserId, castResult.id);
+              if (_r2UrlStream) image = { ...image, imageUrl: _r2UrlStream };
               ritualLog("assets_ready", {
                 category,
                 imageProvider: image.provider,
@@ -1250,6 +1255,8 @@ export async function POST(req: Request) {
       consultationId: castResult.id,
     });
     image = await finalizeReadingImages(image, tierEffective);
+    const _r2UrlRitual = await uploadGeneratedImageToR2(image.imageUrl, authedUserId, castResult.id);
+    if (_r2UrlRitual) image = { ...image, imageUrl: _r2UrlRitual };
 
     const nextPosition = previousRows.length + 1;
     const canDeepen = canDeepenAfterNextConsult({
