@@ -1,7 +1,7 @@
 # Plan de Escalabilidad — The Original I Ching App
 **Objetivo:** Sostener 10,000–100,000 descargas en el primer año con infraestructura estable y costos controlados.  
 **Fecha inicio:** 2026-06-10  
-**Última actualización:** 2026-06-10
+**Última actualización:** 2026-06-10 — Fase 1 completa
 
 ---
 
@@ -10,7 +10,7 @@
 | Fase | Descripción | Estado |
 |---|---|---|
 | Fase 0 | Ops — sin código | 🟡 En progreso |
-| Fase 1 | Persistencia de imágenes en R2 | 🟡 En progreso |
+| Fase 1 | Persistencia de imágenes en R2 | ✅ Completa |
 | Fase 2 | Semáforo PostgREST global (Redis) | ⬜ Pendiente |
 | Fase 3 | Rate limit por usuario en `/api/consult` | ⬜ Pendiente |
 | Fase 4 | Timeouts explícitos Vercel (`vercel.json`) | ⬜ Pendiente |
@@ -149,11 +149,11 @@ iching-fallbacks/
 - [x] Instalar `@aws-sdk/client-s3` en `apps/web`
 - [x] Crear `apps/web/src/lib/upload-to-r2.ts`
 - [x] Modificar `apps/web/src/app/api/consult/route.ts`
-- [ ] Verificar en staging que Together URL → R2 URL en DB
-- [ ] Verificar que si R2 falla, la consulta igual completa (URL de Together en DB)
-- [ ] Añadir variables a Vercel (producción + staging si aún no están)
-- [ ] Deploy a main + staging
-- [ ] Smoke test: hacer una consulta, revisar `consultations.image_url` en Supabase → debe ser URL de R2
+- [x] Verificar en staging que Together URL → R2 URL en DB — ✅ 2026-06-10
+- [x] Verificar que si R2 falla, la consulta igual completa (URL de Together en DB) — comportamiento degradado confirmado
+- [x] Variables R2 en Vercel (producción + staging) — ya estaban configuradas (token `iching-fallbacks-rw`)
+- [x] Deploy a main + staging — ✅ 2026-06-10
+- [x] Smoke test: `consultations.image_url` = `https://pub-362f...r2.dev/generated/...` — ✅ confirmado en staging
 
 ### Nota sobre imágenes existentes
 
