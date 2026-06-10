@@ -336,8 +336,10 @@ const INJECTED_JS = `
     'vercel-toolbar,#__vercel-toolbar,.__vercel-toolbar,div[id*="vercel-toolbar"],iframe[src*="vercel.live"]{display:none!important}'
   ].join(';');
   (document.head || document.documentElement).appendChild(_st);
-  // Debug: confirm injection worked
-  setTimeout(function(){if(window.ReactNativeWebView){var s=_st.textContent.replace(/!/g,'I');window.ReactNativeWebView.postMessage('CSS_INJECTED_OK|'+s.slice(0,200));}},1500);
+  // Debug: confirm injection worked (dev only — production builds remove the __DEV__ guard)
+  if (typeof __DEV__ !== 'undefined' && __DEV__) {
+    setTimeout(function(){if(window.ReactNativeWebView){window.ReactNativeWebView.postMessage(JSON.stringify({type:'css_injected_ok'}));}},1500);
+  }
 
   /* 1b ── Android WebView / API 35: dvh/vh and visualViewport can disagree → letterboxing.
           Use max(innerHeight, visualViewport.height), re-sync after shell mounts (SPA/hydration). */
@@ -2918,6 +2920,9 @@ export default function WebViewScreen() {
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onMessage={onMessage}
         onError={() => setWebViewError(true)}
+        // Android: when the renderer process is killed (OOM / ANR), restart the WebView
+        // instead of letting the default handler call System.exit(1) and crash the app.
+        onRenderProcessGone={() => { setWebViewError(false); setWebViewKey((k) => k + 1); }}
         injectedJavaScriptBeforeContentLoaded={`document.documentElement.classList.add('iching-rn-webview'); document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insets.bottom}px'); true;`}
         injectedJavaScript={COMBINED_INJECTED_JS}
         javaScriptEnabled
