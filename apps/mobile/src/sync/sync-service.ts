@@ -197,8 +197,18 @@ export async function syncChats(token: string, baseUrl: string, userId?: string)
   }
 }
 
-/** Unified thread sync — one HTTP request, full meta + TOAST content.
- *  Replaces syncChatMeta + syncChatContent pair (Phase 3 scale). */
+/** Two-phase thread sync — fetch meta first (small, fast, no TOAST),
+ *  then fetch TOAST content in background and merge into SQLite.
+ *
+ *  The previous single-call approach (`thread=1`) returned the full
+ *  interpretation text (~15KB × N consultations) in one JSON response.
+ *  On Android devices under memory pressure, OkHttp's response buffer
+ *  caused OutOfMemoryError during JSON deserialization (Sentry #7542347795).
+ *
+ *  Splitting into meta + content:
+ *  - Phase 1 (meta=1): ~2KB response, signals onReady for instant UI
+ *  - Phase 2 (content=1): TOAST columns fetched in background, merged lazily
+ */
 export function syncChatThread(
   token: string,
   baseUrl: string,
@@ -217,11 +227,13 @@ export function syncChatThread(
         if (elapsed < CHAT_CONTENT_COOLDOWN_MS) return;
       }
 
-      const thread = await fetchChatThread(token, baseUrl, sessionId);
-      if (!thread || thread.consultations.length === 0) return;
+      // Phase 1: fetch metadata only (no TOAST) — small payload, safe for low-memory devices.
+      // Uses meta=1 endpoint with a short 8s timeout.
+      const meta = await fetchChatMeta(token, baseUrl, sessionId);
+      if (!meta || meta.consultations.length === 0) return;
 
       const now = new Date().toISOString();
-      const rows: MessageRow[] = thread.consultations.map((c) => ({
+      const metaRows: MessageRow[] = meta.consultations.map((c) => ({
         id: c.consultationId,
         chat_id: sessionId,
         role: "assistant",
@@ -233,9 +245,25 @@ export function syncChatThread(
         image_sync_status: c.imageUrl ? "pending" : "none",
       }));
 
-      await upsertMessages(rows);
+      // INSERT OR IGNORE — never overwrite rows that already have full content
+      // from a previous content sync.
+      await upsertMessages(metaRows, { ignoreConflict: true });
+      onReady?.(metaRows);
+
+      // Phase 2: fetch TOAST content (interpretation + oracle_bones) in background.
+      // This runs after the UI has already rendered with interpretation_summary
+      // placeholders. The content=1 response uses get_session_content_safe RPC
+      // with a 2s statement_timeout — safe for constrained devices.
+      try {
+        const contentRows = await fetchChatContent(token, baseUrl, sessionId);
+        if (contentRows && contentRows.length > 0) {
+          await mergeContentIntoMessages(sessionId, contentRows);
+        }
+      } catch {
+        // Non-fatal — content will be fetched on next request_thread
+      }
+
       await setSyncMeta(syncKey, now);
-      onReady?.(rows);
       void syncPendingImages();
     } catch {
       // Non-fatal

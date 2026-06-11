@@ -1809,6 +1809,10 @@ export default function WebViewScreen() {
   // Survives sign-out so auth_token can detect a cross-user login and wipe SQLite.
   const lastKnownUidRef = useRef<string | null>(null);
   const authTransitionRef = useRef(false);
+  /** Set when the WebView renderer is killed (OOM/ANR) so onLoadEnd can
+   *  restore the session from SecureStore instead of showing a login screen
+   *  that would redirect to Google OAuth in Chrome (fatal crash loop). */
+  const rendererCrashedRef = useRef(false);
   const downloadTransfersRef = useRef<
     Record<
       string,
@@ -2066,6 +2070,40 @@ export default function WebViewScreen() {
     if (localeStorageHydratedRef.current) {
       webViewRef.current?.injectJavaScript(buildSyncLocaleFromWebOrNativeScript(localeRef.current));
     }
+    // Renderer crash recovery: if the WebView renderer was killed (OOM/ANR),
+    // the new process starts with a blank localStorage. Without this recovery,
+    // the web page shows the login screen → triggers OAuth redirect to Chrome →
+    // user presses Back → app crashes ('keeps stopping'). By re-injecting the
+    // token from SecureStore, the user stays authenticated seamlessly.
+    if (rendererCrashedRef.current) {
+      rendererCrashedRef.current = false;
+      void (async () => {
+        try {
+          const storedTok = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
+          if (storedTok) {
+            const check = await validateStoredToken(storedTok);
+            if (check.valid) {
+              accessTokenRef.current = storedTok;
+              setIsAuthenticated(true);
+              if (check.email) setUserEmail(check.email);
+              // Block auth_signout during recovery reload
+              authTransitionRef.current = true;
+              setTimeout(() => { authTransitionRef.current = false; }, 3000);
+              webViewRef.current?.injectJavaScript(`
+                window.__rnInjectSession && window.__rnInjectSession({
+                  access_token: ${JSON.stringify(storedTok)},
+                  refresh_token: '',
+                  expires_in: 3600,
+                  user: { email: ${JSON.stringify(check.email)} }
+                }); true;
+              `);
+            }
+          }
+        } catch {
+          // Non-fatal — worst case user sees login screen
+        }
+      })();
+    }
     hideSplash();
     // Fast path: inject pre-fetched chat list from ref synchronously.
     // Thread content is loaded lazily via request_thread bridge messages.
@@ -2080,7 +2118,7 @@ export default function WebViewScreen() {
     }
     // Async refresh: covers the case where syncChats() ran after mount and updated SQLite.
     injectCachedChats();
-  }, [hideSplash, injectCachedChats]);
+  }, [hideSplash, injectCachedChats, validateStoredToken]);
 
   /* ── Deep link handler — OAuth callback + RevenueCat redemption ── */
   useEffect(() => {
@@ -2922,7 +2960,13 @@ export default function WebViewScreen() {
         onError={() => setWebViewError(true)}
         // Android: when the renderer process is killed (OOM / ANR), restart the WebView
         // instead of letting the default handler call System.exit(1) and crash the app.
-        onRenderProcessGone={() => { setWebViewError(false); setWebViewKey((k) => k + 1); }}
+        onRenderProcessGone={() => {
+          // Mark renderer crash so onLoadEnd restores the session from SecureStore
+          // instead of leaving the user on a blank login screen (OOM crash recovery).
+          rendererCrashedRef.current = true;
+          setWebViewError(false);
+          setWebViewKey((k) => k + 1);
+        }}
         injectedJavaScriptBeforeContentLoaded={`document.documentElement.classList.add('iching-rn-webview'); document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insets.bottom}px'); true;`}
         injectedJavaScript={COMBINED_INJECTED_JS}
         javaScriptEnabled
