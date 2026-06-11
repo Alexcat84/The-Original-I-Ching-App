@@ -39,7 +39,7 @@ if (!fs.existsSync(androidDir)) {
   process.exit(1);
 }
 
-const gradleWrapper = process.platform === "win32" ? "gradlew.bat" : "./gradlew";
+const gradleWrapper = process.platform === "win32" ? ".\\gradlew.bat" : "./gradlew";
 console.log("[android] Gradle assembleRelease…");
 run(gradleWrapper, ["assembleRelease"], { cwd: androidDir });
 

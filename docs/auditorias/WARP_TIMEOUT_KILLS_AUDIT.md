@@ -4,7 +4,7 @@
 **Actualización:** 2026-06-10 — Monitor identificado; P0 implementado en `feat/warp-connection-efficiency`  
 **Alcance:** Capa de PostgREST y Pool de Conexiones de Supabase / Concurrencia de la App  
 **Herramientas:** Scripts Supabase (Grok), análisis arquitectónico (antigravity Claude Opus), inspección de codebase  
-**Estado:** 🟡 P0 implementado — pendiente deploy y verificación. P1 siguiente.  
+**Estado:** 🟡 P0+P1 implementados; **Phase 8 (OOM crash fix)** implementado — pendiente deploy + APK.  
 **Relacionado:** [SUPABASE_DB_STABILITY_AUDIT.md](file:///c:/Users/AlexDesk/Documents/iching-app/docs/auditorias/SUPABASE_DB_STABILITY_AUDIT.md), [SQLITE_CHAT_HYDRATION_AUDIT.md](../audits/SQLITE_CHAT_HYDRATION_AUDIT.md)
 
 ---
@@ -157,3 +157,56 @@ Este query recupera **todas** las consultas asociadas al usuario sin paginación
 | 11 | Thread hydration lazy (solo al abrir chat, no en bootstrap automático) | -3 queries PostgREST/login |
 | 12 | Reducir prewarm cron de 15min → 30min | Menos I/O contention |
 | 13 | Limpiar scripts `.tmp/smoke-monitor*.ps1` (no ejecutar durante testing en producción) | Elimina health check noise |
+
+---
+
+## Phase 8 — OOM Crash Fix Android (2026-06-10)
+
+### Hallazgo: Cadena Causal OOM → OAuth → Crash
+
+**Sentry #7542347795** — `OutOfMemoryError` en Samsung Galaxy S24 Ultra (Android 16).
+
+El crash de la app Android ("The Original I Ching keeps stopping") NO se origina en los Warp kills
+sino en una cadena causal de 4 pasos:
+
+1. **`GET /api/account/chats?thread=1`** devuelve interpretaciones TOAST completas (~15KB × N consultas)
+2. OkHttp en el proceso del WebView intenta buffear el JSON completo → **OOM** (heap 256MB, <1% libre)
+3. `onRenderProcessGone` reinicia el WebView → la web carga **sin localStorage** → muestra login
+4. `onShouldStartLoadWithRequest` intercepta OAuth → abre Chrome → Back = crash
+
+**Evidencia Sentry (breadcrumbs):**
+
+| Timestamp | Evento | Duración |
+|-----------|--------|----------|
+| 17:20:18 | `GET /api/account/sessions-only` → 200 | ~3s |
+| 17:20:33 | `GET /api/account/chats?thread=1` → 200 | **~15s** |
+| 17:20:37 | **OOM crash** | 4s después de recibir response |
+
+### Fix A: Two-Phase Thread Sync ✅
+
+**Archivo:** `apps/mobile/src/sync/sync-service.ts` — función `syncChatThread`
+
+**Antes:** Un solo `fetch` de `thread=1` que traía meta + TOAST completo en una sola respuesta HTTP.
+
+**Después:** Dos fases:
+- **Phase 1** (`meta=1`): Response pequeño (~2KB), timeout 8s. Señala `onReady` inmediatamente.
+- **Phase 2** (`content=1`): TOAST columns en background, con `mergeContentIntoMessages` en SQLite.
+
+Reduce el pico de memoria de ~120KB+ (interpretaciones) a ~5KB (solo metadatos).
+
+### Fix B: Renderer Crash Session Recovery ✅
+
+**Archivo:** `apps/mobile/app/index.tsx`
+
+**Antes:** `onRenderProcessGone` solo llamaba `setWebViewKey(k+1)` — el WebView reiniciaba sin sesión.
+
+**Después:**
+1. `rendererCrashedRef.current = true` en `onRenderProcessGone`
+2. En `onLoadEnd`, si el flag está activo:
+   - Lee token de `SecureStore`
+   - Valida JWT localmente (`validateStoredToken`)
+   - Re-inyecta vía `__rnInjectSession`
+   - Bloquea `auth_signout` transitorio durante 3s (`authTransitionRef`)
+
+El usuario mantiene su sesión tras un OOM kill sin ver la pantalla de Google OAuth.
+
