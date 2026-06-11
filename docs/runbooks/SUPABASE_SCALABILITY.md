@@ -41,7 +41,7 @@ Nuestra app usa **`@supabase/supabase-js` vía HTTP → PostgREST** (no SQL dire
 | Nueva consulta | ≤2 (tramo DB) | `persist_consultation_with_content` + `consume_token` serializados |
 | Mobile sync hilo | 1 HTTP | `syncChatThread` → API `thread=1` |
 
-**Semáforo app:** `withSupabaseSemaphore` — máx. **4** ops concurrentes **por instancia** Vercel (`apps/web/src/lib/supabase-admin.ts`). Varias instancias serverless pueden superar el pool PostgREST=10.
+**Semáforo app:** `withSupabaseSemaphore` — máx. **2** ops concurrentes **por instancia** Vercel (`MAX_CONCURRENT = 2` en `apps/web/src/lib/supabase-admin.ts`). Cap global Redis: **8** (`GLOBAL_MAX_CONCURRENT = 8`, ajustado 2026-06-11 — audit CRIT-01). Varias instancias serverless pueden superar el pool PostgREST=10 si el cap global supera el pool.
 
 ### Schema post-migración 069
 

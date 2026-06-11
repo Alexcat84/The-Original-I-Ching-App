@@ -29,11 +29,14 @@ const waitQueue: Array<() => void> = [];
 
 // ── Global Redis semaphore (cross-instance) ──────────────────────────────────
 // Caps the TOTAL concurrent PostgREST connections across all Vercel instances.
-// PostgREST db_pool confirmed at 30 (from logs); 20 cap leaves 10 slots as margin.
+// PostgREST pool confirmed ~10 (runbook SUPABASE_SCALABILITY.md 2026-06-07,
+// log: "Connection Pool initialized with a maximum size of 10 connections").
+// Cap 8 = pool − 2 slots margin (dashboard, pg_cron prewarm/vacuum, admin).
+// Raise ONLY after Supabase Support confirms db-pool increase in writing.
 // Fail-open: if Upstash is unavailable the local semaphore still applies.
 const REDIS_GLOBAL_KEY = "supabase:concurrent";
-const GLOBAL_MAX_CONCURRENT = 20;
-const GLOBAL_TTL_SECONDS = 30; // auto-cleanup if a Vercel instance crashes mid-request
+const GLOBAL_MAX_CONCURRENT = 8; // audit CRIT-01: was 20, pool is ~10 not 30
+const GLOBAL_TTL_SECONDS = 30; // key auto-expires 30s from creation — see §2.3 of audit plan 2026-06-11
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
