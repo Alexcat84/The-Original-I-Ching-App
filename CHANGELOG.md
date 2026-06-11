@@ -1,8 +1,24 @@
-<!-- changelog:last-release:8d4aed8 -->
+<!-- changelog:last-release:90a6650 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [3.5.5] — 2026-06-10 | versionCode: 53 | Stage: Internal Testing
+
+### Fix
+- fix(mobile): Phase 8 — prevent OOM crash + restore session on renderer kill | commit: 90a6650
+- fix(web): Phase 7 P1 — consolidate getUserSessionSummaries from 2 queries to 1 RPC + Redis cache | commit: a3e8ac3
+- fix(web): Phase 7 P0 — reduce PostgREST connections per login (Warp kill root cause) | commit: e542d7a
+- fix(mobile): use relative path .\gradlew.bat on Windows in assemble-android-release script | commit: 9cd94f0
+
+### Maintenance
+- sync version bump 3.5.4 from main | commit: b84ae84
+- chore(mobile): bump to 3.5.4 (versionCode 52) for local APK release | commit: eca19cf
+- merge: staging → main (Phase 4 Vercel timeouts + Android crash fix) | commit: a44a469
+- merge: staging → main (Phase 2 global Redis semaphore + corrections) | commit: 37e300e
+
+---
 
 ## [3.5.4] — 2026-06-10 | versionCode: 52 | Stage: Internal Testing
 
@@ -1408,7 +1424,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.5.4 | 52 | 2026-06-10 | Internal Testing | 40 | Phase 6 — Sentry monitoring alerts on consult failures, R2 errors, and semaph…; Phase 5 — weekly VACUUM ANALYZE via pg_cron (migration 070); Phase 3 — per-user inflight gate on /api/consult |
+| 3.5.5 | 53 | 2026-06-10 | Internal Testing | 8 | Phase 8 — prevent OOM crash + restore session on renderer kill; Phase 7 P1 — consolidate getUserSessionSummaries from 2 queries to 1 RPC + Re…; Phase 7 P0 — reduce PostgREST connections per login (Warp kill root cause) |
+| 3.5.4 | 52 | 2026-06-10 | Internal Testing | 0 | — |
 | 3.5.2 | 45 | 2026-06-07 | Closed Testing | 0 | — |
 | 3.5.1 | 44 | 2026-06-06 | Closed Testing | 0 | — |
 | 3.5.0 | 43 | 2026-06-06 | Closed Testing | 0 | — |
