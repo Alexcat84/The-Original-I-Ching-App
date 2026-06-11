@@ -54,9 +54,14 @@ async function acquireGlobalSlot(): Promise<boolean> {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const count = await redis.incr(REDIS_GLOBAL_KEY);
-      // Set TTL only when key is newly created (count==1) so it doesn't reset on
-      // every INCR. The key expires only after GLOBAL_TTL_SECONDS of inactivity,
-      // cleaning up a stuck counter if a Vercel instance crashes mid-request.
+      // IMPORTANT — do NOT move expire() to fire on every INCR. Redis EXPIRE
+      // sets an absolute deadline from the moment it's called; INCR/DECR do NOT
+      // renew it. Firing once at count=1 means the key auto-expires 30s from
+      // creation even under continuous traffic, making any lost DECR (Vercel kill)
+      // self-healing within ≤30s. Moving it to every INCR would instead create a
+      // true inactivity TTL — under sustained load the key would never expire and
+      // lost DECRs would accumulate permanently (permanent starvation).
+      // See audit plan 2026-06-11 §2.3 for the full analysis.
       if (count === 1) {
         redis.expire(REDIS_GLOBAL_KEY, GLOBAL_TTL_SECONDS).catch(() => {});
       }
@@ -82,6 +87,14 @@ async function releaseGlobalSlot(): Promise<void> {
     // Guard against counter going negative due to crash-recovery scenarios
     if (remaining < 0) {
       redis.set(REDIS_GLOBAL_KEY, 0, { ex: GLOBAL_TTL_SECONDS }).catch(() => {});
+    }
+    // Detect drift: counter elevated above half the cap indicates lost DECRs.
+    // Self-heals via TTL in ≤30s; alert is early warning before the next reset.
+    if (remaining > GLOBAL_MAX_CONCURRENT / 2 && process.env.VERCEL_ENV === "production") {
+      Sentry.captureMessage("redis_semaphore_counter_elevated", {
+        level: "warning",
+        extra: { remaining, cap: GLOBAL_MAX_CONCURRENT },
+      });
     }
   } catch {
     // Non-fatal: counter auto-expires via TTL
