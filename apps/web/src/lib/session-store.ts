@@ -4,9 +4,24 @@ import type {
 } from "@iching-oracle/context-engine";
 import { getHexagramRecordByNumber } from "@iching-oracle/iching-data";
 import { getSupabaseAdmin, withSupabaseSemaphore } from "@/lib/supabase-admin";
+import { getUpstashRedis } from "@/lib/rate-limit";
 import type { SupabaseOpTelemetry } from "@/lib/supabase-telemetry";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { randomBytes } from "node:crypto";
+
+const SESSION_SUMMARIES_CACHE_TTL_SECONDS = 60;
+
+function sessionSummariesCacheKey(userId: string): string {
+  return `session_summaries:${userId}`;
+}
+
+export async function invalidateSessionSummariesCache(userId: string): Promise<void> {
+  try {
+    await getUpstashRedis()?.del(sessionSummariesCacheKey(userId));
+  } catch {
+    // Non-fatal — cache will expire naturally via TTL
+  }
+}
 
 /** Shared /r and /s links resolve across isolates only with Supabase and/or Upstash KV. */
 export function isSharingPersistenceAvailable(): boolean {
@@ -368,6 +383,9 @@ export async function upsertSessionAndConsultation(params: {
     throw new Error(`consultation_create_failed:${persistOutcome.error}`);
   }
 
+  // Invalidate session summaries cache so next bootstrap sees the new consultation.
+  void invalidateSessionSummariesCache(params.userId);
+
   return {
     publicReadingId: persistOutcome.publicReadingId ?? randomPublicId(8),
     publicSessionId: persistOutcome.publicSessionId ?? randomPublicId(8),
@@ -377,80 +395,71 @@ export async function upsertSessionAndConsultation(params: {
 export async function getUserSessionSummaries(
   userId: string,
 ): Promise<UserSessionSummary[]> {
+  const redis = getUpstashRedis();
+  const cacheKey = sessionSummariesCacheKey(userId);
+
+  // Serve from Redis cache when available — avoids 2 PostgREST queries per bootstrap.
+  if (redis) {
+    try {
+      const cached = await redis.get<UserSessionSummary[]>(cacheKey);
+      if (cached) return cached;
+    } catch {
+      // Non-fatal — fall through to DB query
+    }
+  }
+
   const supabase = getSupabaseAdmin();
   if (!supabase) return [];
 
-  const { data: sessionRows, error: sessionsError } = await supabase
-    .from("consultation_sessions")
-    .select(
-      "id, title, theme_category, language, public_sharing_id, created_at",
-    )
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
-  if (sessionsError || !sessionRows?.length) return [];
+  // Single RPC replaces the previous 2-query pattern (sessions SELECT + consultations SELECT).
+  const { data, error } = await supabase.rpc("get_user_session_summaries", {
+    p_user_id: userId,
+  });
+  if (error || !data) return [];
 
-
-  const { data: consultRows, error: consultError } = await supabase
-    .from("consultations")
-    .select("session_id, created_at, question, session_position")
-    .eq("user_id", userId)
-    .order("session_position", { ascending: true });
-  if (consultError) return [];
-
-  const bySession = new Map<
-    string,
-    {
-      count: number;
-      firstAt: number | null;
-      lastAt: number | null;
-      firstQuestion: string | null;
-    }
-  >();
-  for (const row of consultRows ?? []) {
-    const sessionId = String((row as { session_id: string }).session_id);
-    const createdAt = new Date(
-      (row as { created_at: string }).created_at,
-    ).getTime();
-    const question = String(
-      (row as { question?: string }).question ?? "",
-    ).trim();
-    const current = bySession.get(sessionId);
-    if (!current) {
-      bySession.set(sessionId, {
-        count: 1,
-        firstAt: createdAt,
-        lastAt: createdAt,
-        firstQuestion: question || null,
-      });
-      continue;
-    }
-    bySession.set(sessionId, {
-      count: current.count + 1,
-      firstAt: current.firstAt ?? createdAt,
-      lastAt: createdAt,
-      firstQuestion: current.firstQuestion ?? (question || null),
-    });
-  }
-
-  return sessionRows.map((s) => {
-    const agg = bySession.get(s.id);
-    const createdAt = new Date(s.created_at).getTime();
+  const result: UserSessionSummary[] = (data as Array<{
+    session_id: string;
+    title: string | null;
+    theme_category: string | null;
+    language: string | null;
+    public_sharing_id: string | null;
+    session_created_at: string;
+    consultation_count: number | string;
+    first_question: string | null;
+    first_consultation_at: string | null;
+    last_consultation_at: string | null;
+  }>).map((row) => {
+    const createdAt = new Date(row.session_created_at).getTime();
     return {
       session: {
-        sessionId: s.id,
-        title: s.title ?? "",
-        themeCategory: s.theme_category,
-        language: s.language,
-        publicId: s.public_sharing_id,
+        sessionId: row.session_id,
+        title: row.title ?? "",
+        themeCategory: row.theme_category ?? "",
+        language: row.language ?? "",
+        publicId: row.public_sharing_id ?? "",
         consultationIds: [],
         createdAt,
       },
-      messageCount: agg?.count ?? 0,
-      firstConsultationAt: agg?.firstAt ?? null,
-      updatedAt: agg?.lastAt ?? createdAt,
-      firstQuestion: agg?.firstQuestion ?? null,
+      messageCount: Number(row.consultation_count),
+      firstConsultationAt: row.first_consultation_at
+        ? new Date(row.first_consultation_at).getTime()
+        : null,
+      updatedAt: row.last_consultation_at
+        ? new Date(row.last_consultation_at).getTime()
+        : createdAt,
+      firstQuestion: row.first_question ?? null,
     };
   });
+
+  if (redis && result.length > 0) {
+    try {
+      await redis.set(cacheKey, result, { ex: SESSION_SUMMARIES_CACHE_TTL_SECONDS });
+    } catch {
+      // Non-fatal
+    }
+  }
+
+  return result;
 }
 
 // ─── Two-phase thread loading ────────────────────────────────────────────────
@@ -739,5 +748,7 @@ export async function deleteUserSession(
     );
   }
 
-  return Array.isArray(deletedSessions) && deletedSessions.length > 0;
+  const deleted = Array.isArray(deletedSessions) && deletedSessions.length > 0;
+  if (deleted) void invalidateSessionSummariesCache(userId);
+  return deleted;
 }

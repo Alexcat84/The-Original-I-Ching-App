@@ -404,6 +404,15 @@ FROM (
     )
 
   UNION ALL
+  -- 071 · get_user_session_summaries RPC registered
+  SELECT '071', 'get_user_session_summaries RPC exists',
+    EXISTS (
+      SELECT 1 FROM pg_proc p
+      JOIN pg_namespace n ON n.oid = p.pronamespace
+      WHERE n.nspname = 'public' AND p.proname = 'get_user_session_summaries'
+    )
+
+  UNION ALL
   -- CONTENT · P0 gate — fails on mass wipe; allows ≤2 irrecoverable post-PITR gaps
   SELECT 'CONTENT', 'consultation_content full text (≤2 empty rows allowed for known PITR gaps)',
     (

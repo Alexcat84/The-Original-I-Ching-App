@@ -38,9 +38,9 @@ import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 import {
   consumeToken,
-  getSessionLimit,
   getUserBillingTier,
 } from "@/lib/credits";
+import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
 import { uploadGeneratedImageToR2 } from "@/lib/upload-to-r2";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
@@ -521,7 +521,8 @@ export async function POST(req: Request) {
       }
     }
 
-    const packSessionLimit = await getSessionLimit(authedUserId);
+    // Derive session limit from lastPack already fetched above — avoids a second readCreditsRow call.
+    const packSessionLimit = getSessionLimitFromPack(lastPack);
     const maxDepth = adminBypassAllowed
       ? 999_999
       : normalizeSessionDepthLimit(
