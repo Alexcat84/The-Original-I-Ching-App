@@ -37,8 +37,10 @@ import { getAdminConfig } from "@/lib/admin-config";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 import {
+  consultationExists,
   consumeToken,
   getUserBillingTier,
+  refundToken,
 } from "@/lib/credits";
 import { getSessionLimit as getSessionLimitFromPack } from "@/lib/token-packs";
 import { finalizeReadingImages } from "@/lib/finalize-reading-images";
@@ -79,6 +81,81 @@ const LOG_RITUAL_STREAM_DEBUG =
 
 function shortUserId(userId: string): string {
   return userId.slice(0, 8);
+}
+
+// ── Token refund helper (audit CRIT-02) ─────────────────────────────────────
+// Called in both error paths (stream catch + global catch) when a token was
+// consumed but the consultation was never persisted. Respects the semaphore
+// and logs to Sentry on failure for manual compensation via grant_tokens.
+async function attemptRefund(
+  ctx: {
+    userId: string;
+    tokens: number;
+    consultationId: string | null;
+    streamingStarted: boolean;
+  },
+  reason: string,
+  deps: { log: Logger; requestId: string },
+): Promise<void> {
+  // §2.4: if the stream already delivered interpretation fragments, record
+  // without refunding — user got value; manual resolution via support.
+  const tokensToRefund = ctx.streamingStarted ? 0 : ctx.tokens;
+  const finalReason = ctx.streamingStarted ? "persist_failed_no_refund" : reason;
+
+  // §2.5: pre-refund check — verify the consultation does NOT exist in DB
+  // before issuing the refund. Covers "ambiguous success": upsert confirmed
+  // in Postgres but the HTTP response toward Vercel was lost. If the row
+  // exists, the reading is recoverable via hydration — no refund needed.
+  if (tokensToRefund > 0 && ctx.consultationId) {
+    try {
+      const exists = await withSupabaseSemaphore(
+        () => consultationExists(ctx.consultationId!),
+        buildSupabaseOpTelemetry(
+          { log: deps.log, requestId: deps.requestId, route: CONSULT_ROUTE },
+          "refund_precheck",
+          { userId: ctx.userId },
+        ),
+      );
+      if (exists) {
+        deps.log.info("refund_skipped_consultation_persisted", {
+          userId: shortUserId(ctx.userId),
+          consultationId: ctx.consultationId,
+        });
+        return;
+      }
+    } catch {
+      // Verification impossible (Supabase down) — proceed with refund.
+      // Bias toward the user: a false refund is cheaper than a charged failure.
+      deps.log.warn("refund_precheck_failed_proceeding", {
+        userId: shortUserId(ctx.userId),
+      });
+    }
+  }
+
+  try {
+    await withSupabaseSemaphore(
+      () => refundToken(ctx.userId, tokensToRefund, finalReason),
+      buildSupabaseOpTelemetry(
+        { log: deps.log, requestId: deps.requestId, route: CONSULT_ROUTE },
+        "refund_token",
+        { userId: ctx.userId },
+      ),
+    );
+    deps.log.info("token_refunded", {
+      userId: shortUserId(ctx.userId),
+      tokens: tokensToRefund,
+      reason: finalReason,
+    });
+  } catch (err) {
+    // Worst case: token consumed + refund failed. Must be visible for manual
+    // compensation via grant_tokens — never swallow silently.
+    Sentry.captureException(err, { tags: { api: "consult", op: "refund_failed" } });
+    deps.log.error("refund_failed", {
+      userId: shortUserId(ctx.userId),
+      tokens: tokensToRefund,
+      reason: finalReason,
+    });
+  }
 }
 
 const CLAUDE_PREV_MSG_TTL = 600; // 10 min — within the 5-min cache TTL with margin
@@ -381,6 +458,17 @@ export async function POST(req: Request) {
   // Inflight lock key — set after auth, released in finally regardless of outcome.
   let inflightKey = "";
   let inflightAcquired = false;
+
+  // Refund context — hoisted so the global catch can access it (audit CRIT-02).
+  // Populated after consumeToken succeeds; drives attemptRefund in error paths.
+  let refundCtx: {
+    userId: string;
+    tokens: number;
+    consultationId: string | null;
+    consumed: boolean;
+    persisted: boolean;
+    streamingStarted: boolean;
+  } | null = null;
 
   try {
     const question = typeof body.question === "string" ? body.question : "";
@@ -725,6 +813,14 @@ export async function POST(req: Request) {
         remaining: remainingAfterConsume,
         oracleMode,
       });
+      refundCtx = {
+        userId: authedUserId,
+        tokens: tokensToConsume,
+        consultationId: null,
+        consumed: true,
+        persisted: false,
+        streamingStarted: false,
+      };
     }
     const adminConfig = await getAdminConfig();
     const adminAllowed = adminBypassAllowed;
@@ -764,6 +860,7 @@ export async function POST(req: Request) {
         negativeRaw || defaultNegativeCharge(positive, oracleLanguage);
 
       const bonesCast = performOracleBonesCast(positive, negative, medium);
+      if (refundCtx) refundCtx.consultationId = bonesCast.id;
       const context = resolveSessionContext({
         tier: tierKey,
         sessionId,
@@ -870,6 +967,7 @@ export async function POST(req: Request) {
         },
       });
 
+      if (refundCtx) refundCtx.persisted = true;
       logConsultPhase(log, requestId, "persist_done", consultStartedAt, {
         userId: shortUserId(authedUserId),
         sessionId: sessionId.slice(0, 8),
@@ -944,6 +1042,7 @@ export async function POST(req: Request) {
           : performCast(trimmedQuestion, language, {
               translator: resolvedTranslator,
             });
+    if (refundCtx) refundCtx.consultationId = castResult.id;
     const context = resolveSessionContext({
       tier: tierKey,
       sessionId,
@@ -1038,6 +1137,7 @@ export async function POST(req: Request) {
                 interpretation,
                 category,
               });
+              if (refundCtx) refundCtx.streamingStarted = true;
               ritualLog("event:oracle_ready", { category });
 
               const imagePrompt = buildImagePrompt(
@@ -1133,6 +1233,7 @@ export async function POST(req: Request) {
                   oracleBones: null,
                 },
               });
+              if (refundCtx) refundCtx.persisted = true;
               logConsultPhase(log, requestId, "persist_done", consultStartedAt, {
                 userId: shortUserId(authedUserId),
                 sessionId: sessionId.slice(0, 8),
@@ -1197,6 +1298,9 @@ export async function POST(req: Request) {
                 message: streamError instanceof Error ? streamError.message : String(streamError),
               });
               console.error("[api/consult][stream_ritual]", streamError);
+              if (refundCtx !== null && refundCtx.consumed && !refundCtx.persisted) {
+                await attemptRefund(refundCtx, "consult_failed", { log, requestId });
+              }
               ritualLog("event:error", {
                 message:
                   streamError instanceof Error
@@ -1337,6 +1441,7 @@ export async function POST(req: Request) {
         oracleBones: null,
       },
     });
+    if (refundCtx) refundCtx.persisted = true;
     logConsultPhase(log, requestId, "persist_done", consultStartedAt, {
       userId: shortUserId(authedUserId),
       sessionId: sessionId.slice(0, 8),
@@ -1391,6 +1496,9 @@ export async function POST(req: Request) {
     });
   } catch (e) {
     log.error("consult_unhandled_error", { message: e instanceof Error ? e.message : String(e) });
+    if (refundCtx !== null && refundCtx.consumed && !refundCtx.persisted) {
+      await attemptRefund(refundCtx, "consult_failed", { log, requestId });
+    }
     await log.flush();
     console.error("[api/consult]", e);
     Sentry.captureException(e, { tags: { api: "consult" } });
