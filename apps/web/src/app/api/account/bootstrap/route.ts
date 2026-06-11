@@ -13,13 +13,13 @@ import {
   isSupabaseTelemetryEnabled,
 } from "@/lib/supabase-telemetry";
 
-// Short-lived cache to absorb the login burst when multiple Vercel instances call
-// this endpoint within milliseconds (React strict remounts, APK + WebView). 8 seconds
-// is safe: bootstrap data only changes mid-window via purchase webhook or consult,
-// neither of which arrives within 8s of a fresh login. Post-purchase refresh uses
-// iching:account-refresh → /api/account/me, not bootstrap.
+// Cache absorbs login bursts (React strict remounts, APK + WebView, retry storms).
+// 120s TTL in production: bootstrap data changes only via purchase webhook (handled
+// by iching:account-refresh → /api/account/me) or via consult (token balance
+// refreshed from remainingCredits in the consult response). Neither path relies on
+// a fresh bootstrap within 2 minutes, so 120s is safe and cuts PostgREST load 4×.
 const BOOTSTRAP_CACHE_TTL_SECONDS =
-  process.env.NODE_ENV === "production" ? 30 : 8;
+  process.env.NODE_ENV === "production" ? 120 : 8;
 const BOOTSTRAP_LOCK_TTL_SECONDS = 15;
 const BOOTSTRAP_POLL_MS = 150;
 const BOOTSTRAP_POLL_MAX_MS = 3_000;

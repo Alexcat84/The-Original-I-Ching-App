@@ -1,7 +1,7 @@
 # Plan de Escalabilidad — The Original I Ching App
 **Objetivo:** Sostener 10,000–100,000 descargas en el primer año con infraestructura estable y costos controlados.  
 **Fecha inicio:** 2026-06-10  
-**Última actualización:** 2026-06-10 — Fases 1 y 2 completas
+**Última actualización:** 2026-06-10 — Fases 1-6 completas; Fase 7 (eficiencia PostgREST) en curso
 
 ---
 
@@ -15,7 +15,8 @@
 | Fase 3 | Rate limit por usuario en `/api/consult` | ✅ Completa |
 | Fase 4 | Timeouts explícitos Vercel (`vercel.json`) | ✅ Completa |
 | Fase 5 | Mantenimiento automático DB (pg_cron) | ✅ Completa |
-| Fase 6 | Monitoring / alertas Sentry | ⬜ Pendiente |
+| Fase 6 | Monitoring / alertas Sentry | ✅ Completa |
+| Fase 7 | Eficiencia PostgREST (Warp kill root cause) | 🟡 En progreso — P0 en rama |
 
 ---
 
@@ -324,6 +325,48 @@ SELECT cron.schedule(
 - [ ] Añadir tracking en `upload-to-r2.ts` cuando falla el upload
 - [ ] Añadir tracking en `consult/route.ts` cuando Claude devuelve 429
 - [ ] Revisar Supabase Dashboard → Logs → PostgREST semanalmente
+
+---
+
+## Fase 7 — Eficiencia PostgREST (Warp Kill Root Cause)
+
+> **Prioridad: CRÍTICA** — causa raíz confirmada de los Warp kills.  
+> Diagnóstico: auditoría completa en [`docs/auditorias/WARP_TIMEOUT_KILLS_AUDIT.md`](../auditorias/WARP_TIMEOUT_KILLS_AUDIT.md)  
+> Herramientas: scripts Supabase (Grok) + análisis arquitectónico (antigravity Claude Opus)
+
+### El problema
+
+Con un solo usuario, la app abre **~8 conexiones PostgREST por login** (5 bootstrap + 3 thread hydration). Combinado con 2 conexiones sin semáforo en `/api/consult` y el health check consultando la DB cada ~60s durante testing, el pool se satura y Warp mata los threads. No es un problema de compute — es un problema de eficiencia.
+
+### P0 — Completado ✅ (rama `feat/warp-connection-efficiency`)
+
+| Fix | Archivos | Reducción |
+|-----|---------|-----------|
+| Health check sin PostgREST — solo Redis ping | `api/health/route.ts` | -1 conexión permanente/60s |
+| Eliminar segundo `readCreditsRow` en `/api/consult` — derivar `sessionLimit` de `lastPack` ya leído (sync) | `api/consult/route.ts` | -1 conexión/consulta |
+| `BOOTSTRAP_CACHE_TTL` 30s → 120s | `api/account/bootstrap/route.ts` | -75% cache misses |
+
+### P1 — Consolidación de queries bootstrap ⬜ (próxima rama)
+
+| Fix | Reducción |
+|-----|-----------|
+| RPC `get_user_bootstrap_summary` — JOIN server-side de `consultation_sessions` + `consultations` (2 queries → 1) | -2 queries PostgREST/login |
+| Cache Redis para session summaries (TTL 60s, invalida en consult + delete) | Elimina queries en reloads |
+
+**Objetivo final P0+P1:** de 8 → 2 requests PostgREST por login.
+
+### Checklist
+
+- [x] Fix health check — P0
+- [x] Fix `readCreditsRow` duplicado — P0
+- [x] `BOOTSTRAP_CACHE_TTL` 120s — P0
+- [ ] Migración `071_bootstrap_summary_rpc.sql` — P1
+- [ ] Cache Redis session summaries en `session-store.ts` — P1
+- [ ] Deploy P0 a staging + main
+- [ ] Smoke test: login → verificar 0 Warp kills en ventana de 10 min
+- [ ] Upgrade Medium compute (Fase 0C, Supabase Dashboard)
+- [ ] VACUUM FULL consultations (ventana mantenimiento)
+- [ ] Migration 070 en producción
 
 ---
 
