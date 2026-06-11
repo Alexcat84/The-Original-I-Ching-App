@@ -103,3 +103,43 @@ export async function getUserBillingTier(userId: string): Promise<string> {
   return getLastPack(userId);
 }
 
+/**
+ * Compensates consume_token on post-charge failure (audit CRIT-02).
+ * tokens = 0 records the event in token_refund_log without refunding
+ * (streaming partial-delivery case — see plan §2.4).
+ * Returns the resulting balance, or -1 if user not found / params invalid.
+ */
+export async function refundToken(
+  userId: string,
+  tokensToRefund: number,
+  reason: string,
+): Promise<number> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return -1;
+  const { data, error } = await supabase.rpc("refund_token", {
+    p_user_id: userId,
+    p_tokens: tokensToRefund,
+    p_reason: reason,
+  });
+  if (error) throw error;
+  return typeof data === "number" ? data : -1;
+}
+
+/**
+ * Pre-refund check (audit §2.5): did this consultation actually persist?
+ * Covers the "ambiguous success" case — upsert confirmed in Postgres but
+ * the HTTP response toward Vercel was lost. If it exists, the reading is
+ * recoverable via hydration; no refund needed.
+ */
+export async function consultationExists(consultationId: string): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) throw new Error("supabase_admin_unavailable");
+  const { data, error } = await supabase
+    .from("consultations")
+    .select("id")
+    .eq("id", consultationId)
+    .maybeSingle();
+  if (error) throw error;
+  return data !== null;
+}
+
