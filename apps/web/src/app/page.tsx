@@ -3762,7 +3762,43 @@ export default function HomePage() {
         }
         if (streamErrored || !finalPayload) {
           if (!streamErrored) {
-            setError(sessionUi.streamInterrupted);
+            // Stream dropped silently (TCP timeout — Android WebView ~90-100s limit).
+            // The server likely finished and persisted before the connection was cut.
+            // Wait briefly, then check whether the consultation is now in the DB.
+            const previousCount = activeThread.length;
+            const recoverySessionId = sessionIdForRequest;
+            const recoveryLocalId = consultSession.localId;
+            const recoveryToken = accessToken;
+            let recovered = false;
+            try {
+              await new Promise<void>((r) => setTimeout(r, 3000));
+              const recovRes = await fetch(
+                `/api/account/chats?sessionId=${encodeURIComponent(recoverySessionId)}&thread=1`,
+                { headers: { Authorization: `Bearer ${recoveryToken}` }, cache: "no-store" },
+              );
+              if (recovRes.ok) {
+                const recovPayload = (await recovRes.json()) as AccountChatSessionResponse;
+                if (recovPayload?.session && recovPayload.consultations.length > previousCount) {
+                  // New consultation persisted — load it into state and recover silently.
+                  threadLoadBySessionRef.current.delete(recoverySessionId);
+                  await loadSessionThread(recoverySessionId, recoveryLocalId);
+                  window.dispatchEvent(new CustomEvent("iching:account-refresh"));
+                  ok = true;
+                  setPhase("reading");
+                  setQuestion("");
+                  requestAnimationFrame(() => resizeQuestionInput());
+                  setPendingUserQuestion(null);
+                  setManualCastPreview(null);
+                  setConsultPanelOpen(false);
+                  recovered = true;
+                }
+              }
+            } catch {
+              // Recovery best-effort — fall through to error
+            }
+            if (!recovered) {
+              setError(sessionUi.streamInterrupted);
+            }
           }
           return;
         }
