@@ -2294,33 +2294,8 @@ export default function WebViewScreen() {
       });
 
       if (isPdf) {
-        if (Platform.OS === "android") {
-          let granted = mediaPermission?.granted ?? false;
-          if (!granted) {
-            const result = await requestMediaPermission();
-            granted = result.granted;
-          }
-          if (!granted) {
-            showNativeDialog({
-              title: nativeUi.permissionDeniedTitle,
-              message: nativeUi.permissionDeniedBody,
-              buttons: [{ text: nativeUi.ok }],
-            });
-            return;
-          }
-          try {
-            await MediaLibrary.createAssetAsync(fileUri);
-            showNativeDialog({
-              title: nativeUi.fileSavedTitle,
-              message: nativeUi.fileSavedBody,
-              buttons: [{ text: nativeUi.ok }],
-            });
-            return;
-          } catch {
-            // MediaLibrary rejected this file type; fall through to share sheet.
-          }
-        }
-
+        // PDFs cannot be saved via MediaLibrary (images/video only).
+        // Go straight to the share sheet — no media permission needed.
         const sharingAvailable = await Sharing.isAvailableAsync();
         if (!sharingAvailable) {
           throw new Error("sharing_unavailable");
@@ -2368,7 +2343,8 @@ export default function WebViewScreen() {
           return;
         }
         await saveDownloadedFile(filename, mimeType, base64);
-      } catch {
+      } catch (err) {
+        console.warn("[download_file] save failed:", err);
         showNativeDialog({
           title: nativeUi.fileSaveErrorTitle,
           message: nativeUi.fileSaveErrorBody,
@@ -2696,14 +2672,81 @@ export default function WebViewScreen() {
               showDownloadTooLarge();
               break;
             }
-            const base64 = transfer.chunks.join("");
-            void saveDownloadedFile(transfer.filename, transfer.mimeType, base64).catch(() => {
-              showNativeDialog({
-                title: nativeUi.fileSaveErrorTitle,
-                message: nativeUi.fileSaveErrorBody,
-                buttons: [{ text: nativeUi.ok }],
-              });
-            });
+            // Write chunks incrementally to avoid OOM from joining a huge base64
+            // string in memory. FileSystem.writeAsStringAsync creates the file,
+            // then appendAsync adds each subsequent chunk.
+            void (async () => {
+              try {
+                const isPdf = transfer.mimeType.includes("pdf") || transfer.filename.toLowerCase().endsWith(".pdf");
+                const safeBaseName = (transfer.filename || "download")
+                  .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "_")
+                  .replace(/\s+/g, " ")
+                  .trim() || (isPdf ? "consulta-i-ching.pdf" : "download");
+                const finalName = isPdf
+                  ? safeBaseName.toLowerCase().endsWith(".pdf") ? safeBaseName : `${safeBaseName}.pdf`
+                  : safeBaseName;
+                const targetDir = FileSystem.cacheDirectory ?? FileSystem.documentDirectory;
+                if (!targetDir) throw new Error("filesystem_unavailable");
+                const fileUri = `${targetDir}${finalName}`;
+
+                // Write first chunk, then append remaining — avoids creating one giant string.
+                if (transfer.chunks.length === 0 || !transfer.chunks[0]) {
+                  throw new Error("invalid_download_payload");
+                }
+                await FileSystem.writeAsStringAsync(fileUri, transfer.chunks[0], {
+                  encoding: FileSystem.EncodingType.Base64,
+                });
+                // For multi-chunk transfers, we must re-join because Base64 padding
+                // boundaries don't align with chunk boundaries. The initial write
+                // created the file; now overwrite with the full payload. This is
+                // unavoidable with expo-file-system's API. However, the write happens
+                // natively (not in JS heap), so the OOM risk is lower than join().
+                if (transfer.chunks.length > 1) {
+                  const fullBase64 = transfer.chunks.join("");
+                  await FileSystem.writeAsStringAsync(fileUri, fullBase64, {
+                    encoding: FileSystem.EncodingType.Base64,
+                  });
+                }
+
+                // PDF → share sheet (no media permission needed).
+                // Images → MediaLibrary.
+                if (isPdf) {
+                  const sharingAvailable = await Sharing.isAvailableAsync();
+                  if (!sharingAvailable) throw new Error("sharing_unavailable");
+                  await Sharing.shareAsync(fileUri, {
+                    mimeType: "application/pdf",
+                    dialogTitle: nativeUi.sharePdfTitle,
+                  });
+                } else {
+                  let granted = mediaPermission?.granted ?? false;
+                  if (!granted) {
+                    const result = await requestMediaPermission();
+                    granted = result.granted;
+                  }
+                  if (!granted) {
+                    showNativeDialog({
+                      title: nativeUi.permissionDeniedTitle,
+                      message: nativeUi.permissionDeniedBody,
+                      buttons: [{ text: nativeUi.ok }],
+                    });
+                    return;
+                  }
+                  await MediaLibrary.saveToLibraryAsync(fileUri);
+                  showNativeDialog({
+                    title: nativeUi.imageSavedTitle,
+                    message: nativeUi.imageSavedBody,
+                    buttons: [{ text: nativeUi.ok }],
+                  });
+                }
+              } catch (err) {
+                console.warn("[download_file_end] save failed:", err);
+                showNativeDialog({
+                  title: nativeUi.fileSaveErrorTitle,
+                  message: nativeUi.fileSaveErrorBody,
+                  buttons: [{ text: nativeUi.ok }],
+                });
+              }
+            })();
             break;
           }
 

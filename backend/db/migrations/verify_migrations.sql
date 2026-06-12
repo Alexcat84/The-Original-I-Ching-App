@@ -413,6 +413,26 @@ FROM (
     )
 
   UNION ALL
+  -- 072 · refund_token RPC + token_refund_log table
+  SELECT '072', 'refund_token RPC (service_role only) + token_refund_log table',
+    EXISTS (
+      SELECT 1 FROM pg_proc p
+      JOIN pg_namespace n ON n.oid = p.pronamespace
+      WHERE n.nspname = 'public' AND p.proname = 'refund_token'
+    )
+    AND EXISTS (
+      SELECT 1 FROM information_schema.tables
+      WHERE table_schema = 'public' AND table_name = 'token_refund_log'
+    )
+    AND NOT EXISTS (
+      SELECT 1 FROM information_schema.role_routine_grants
+      WHERE routine_schema = 'public'
+        AND routine_name = 'refund_token'
+        AND grantee IN ('anon', 'authenticated', 'PUBLIC')
+        AND privilege_type = 'EXECUTE'
+    )
+
+  UNION ALL
   -- CONTENT · P0 gate — fails on mass wipe; allows ≤2 irrecoverable post-PITR gaps
   SELECT 'CONTENT', 'consultation_content full text (≤2 empty rows allowed for known PITR gaps)',
     (
