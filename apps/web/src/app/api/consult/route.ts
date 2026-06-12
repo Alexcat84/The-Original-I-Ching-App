@@ -1096,6 +1096,7 @@ export async function POST(req: Request) {
           };
 
           void (async () => {
+            let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
             try {
               writeEvent("cast_ready", {
                 oracleType: "iching" as const,
@@ -1111,6 +1112,19 @@ export async function POST(req: Request) {
                 primaryHexagram: castResult.primaryHexagram.number,
                 changedLines: castResult.changingLines.length,
               });
+
+              // Keep the connection alive during AI generation (can exceed 90s on
+              // deep master threads). Android WebView silently drops TCP connections
+              // that carry no bytes for ~90-100s; a ping every 25s prevents that.
+              heartbeatTimer = setInterval(() => {
+                try {
+                  controller.enqueue(
+                    encoder.encode(`event: ping\ndata: ${JSON.stringify({ t: Date.now() })}\n\n`),
+                  );
+                } catch {
+                  if (heartbeatTimer) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
+                }
+              }, 25_000);
 
               const prevIchingMessageId = await getPrevClaudeMessageId(authedUserId, sessionId);
               const {
@@ -1318,6 +1332,7 @@ export async function POST(req: Request) {
                     : undefined,
               });
             } finally {
+              if (heartbeatTimer) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
               ritualLog("close");
               await log.flush();
               controller.close();
