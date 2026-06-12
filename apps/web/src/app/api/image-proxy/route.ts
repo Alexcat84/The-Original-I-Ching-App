@@ -5,8 +5,19 @@ export const runtime = "nodejs";
 function isAllowedR2Url(parsed: URL): boolean {
   if (parsed.protocol !== "https:") return false;
   const host = parsed.hostname.toLowerCase().replace(/\.$/, "");
-  // Only exact r2.dev subdomains — prevents evil-r2.dev bypass
-  return host === "r2.dev" || host.endsWith(".r2.dev");
+  // Standard R2 public bucket domains
+  if (host === "r2.dev" || host.endsWith(".r2.dev")) return true;
+  // Custom R2 domain configured via R2_PUBLIC_URL (e.g. cdn.theoriginaliching.com)
+  const r2PublicUrl = process.env.R2_PUBLIC_URL?.trim().replace(/\/$/, "");
+  if (r2PublicUrl) {
+    try {
+      const r2Host = new URL(r2PublicUrl).hostname.toLowerCase().replace(/\.$/, "");
+      if (host === r2Host) return true;
+    } catch {
+      // malformed R2_PUBLIC_URL — fall through
+    }
+  }
+  return false;
 }
 
 export async function GET(req: Request) {
