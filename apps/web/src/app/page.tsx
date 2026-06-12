@@ -3530,6 +3530,46 @@ export default function HomePage() {
         : "idle",
     );
     let ok = false;
+    let consultRequestSent = false;
+    let sessionIdSentForRecovery = "";
+
+    // RCA 2026-06-12: recovery helper invoked from BOTH failure paths —
+    // the clean EOF branch (stream ends without final_ready) AND the outer
+    // catch (reader.read() / fetch throws on WebView TCP abort → "network error").
+    // Polling covers the window where the server finishes AFTER the client cut
+    // (incidente real: corte ~90-100s, persist_done a 106.9s).
+    const RECOVERY_DELAYS_MS = [3_000, 5_000, 7_000, 10_000] as const;
+    const attemptThreadRecovery = async (): Promise<boolean> => {
+      if (!consultRequestSent || !sessionIdSentForRecovery) return false;
+      const previousCount = activeThread.length;
+      for (const delayMs of RECOVERY_DELAYS_MS) {
+        await new Promise<void>((r) => setTimeout(r, delayMs));
+        try {
+          const recovRes = await fetch(
+            `/api/account/chats?sessionId=${encodeURIComponent(sessionIdSentForRecovery)}&thread=1`,
+            { headers: { Authorization: `Bearer ${accessToken}` }, cache: "no-store" },
+          );
+          if (!recovRes.ok) continue;
+          const recovPayload = (await recovRes.json()) as AccountChatSessionResponse;
+          if (recovPayload?.session && recovPayload.consultations.length > previousCount) {
+            threadLoadBySessionRef.current.delete(sessionIdSentForRecovery);
+            await loadSessionThread(sessionIdSentForRecovery, consultSession.localId);
+            window.dispatchEvent(new CustomEvent("iching:account-refresh"));
+            setPhase("reading");
+            setQuestion("");
+            requestAnimationFrame(() => resizeQuestionInput());
+            setPendingUserQuestion(null);
+            setManualCastPreview(null);
+            setConsultPanelOpen(false);
+            return true;
+          }
+        } catch {
+          // red aún caída — siguiente intento
+        }
+      }
+      return false;
+    };
+
     try {
       let sessionIdForRequest = consultSession.sessionId;
       if (!isPersistableUuid(sessionIdForRequest)) {
@@ -3605,6 +3645,8 @@ export default function HomePage() {
         setError(sessionUi.sessionExpiredInvalid);
         return;
       }
+      consultRequestSent = true;
+      sessionIdSentForRecovery = sessionIdForRequest;
       let res = await sendConsultRequest(accessToken);
       if (res.status === 401 && isSupabaseBrowserConfigured()) {
         try {
@@ -3762,41 +3804,10 @@ export default function HomePage() {
         }
         if (streamErrored || !finalPayload) {
           if (!streamErrored) {
-            // Stream dropped silently (TCP timeout — Android WebView ~90-100s limit).
-            // The server likely finished and persisted before the connection was cut.
-            // Wait briefly, then check whether the consultation is now in the DB.
-            const previousCount = activeThread.length;
-            const recoverySessionId = sessionIdForRequest;
-            const recoveryLocalId = consultSession.localId;
-            const recoveryToken = accessToken;
-            let recovered = false;
-            try {
-              await new Promise<void>((r) => setTimeout(r, 3000));
-              const recovRes = await fetch(
-                `/api/account/chats?sessionId=${encodeURIComponent(recoverySessionId)}&thread=1`,
-                { headers: { Authorization: `Bearer ${recoveryToken}` }, cache: "no-store" },
-              );
-              if (recovRes.ok) {
-                const recovPayload = (await recovRes.json()) as AccountChatSessionResponse;
-                if (recovPayload?.session && recovPayload.consultations.length > previousCount) {
-                  // New consultation persisted — load it into state and recover silently.
-                  threadLoadBySessionRef.current.delete(recoverySessionId);
-                  await loadSessionThread(recoverySessionId, recoveryLocalId);
-                  window.dispatchEvent(new CustomEvent("iching:account-refresh"));
-                  ok = true;
-                  setPhase("reading");
-                  setQuestion("");
-                  requestAnimationFrame(() => resizeQuestionInput());
-                  setPendingUserQuestion(null);
-                  setManualCastPreview(null);
-                  setConsultPanelOpen(false);
-                  recovered = true;
-                }
-              }
-            } catch {
-              // Recovery best-effort — fall through to error
-            }
-            if (!recovered) {
+            const recovered = await attemptThreadRecovery();
+            if (recovered) {
+              ok = true;
+            } else {
               setError(sessionUi.streamInterrupted);
             }
           }
@@ -4079,9 +4090,24 @@ export default function HomePage() {
       logRitualTrace("submit:error", {
         error: e instanceof Error ? e.message : String(e),
       });
-      setError(e instanceof Error ? e.message : "Error");
-      setPendingUserQuestion(null);
-      setManualCastPreview(null);
+      // RCA 2026-06-12 F-01: WebView TCP abort makes reader.read() / fetch() THROW,
+      // landing here — not in the clean-EOF branch above. Try to recover before
+      // showing an error. Covers stream_ritual AND manual/bones (JSON fetch) modes.
+      const recovered = consultRequestSent ? await attemptThreadRecovery() : false;
+      if (recovered) {
+        ok = true;
+      } else {
+        // F-04: never show raw e.message ("network error") — breaks i18n in 11 locales.
+        setError(
+          e instanceof TypeError
+            ? sessionUi.streamInterrupted
+            : e instanceof Error
+              ? e.message
+              : "Error",
+        );
+        setPendingUserQuestion(null);
+        setManualCastPreview(null);
+      }
     } finally {
       ichingConsultWallClockStartedAtRef.current = null;
       if (manualRitualPhaseSwitchTimerRef.current != null) {
