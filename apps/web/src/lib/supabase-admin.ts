@@ -88,9 +88,13 @@ async function releaseGlobalSlot(): Promise<void> {
     if (remaining < 0) {
       redis.set(REDIS_GLOBAL_KEY, 0, { ex: GLOBAL_TTL_SECONDS }).catch(() => {});
     }
-    // Detect drift: counter elevated above half the cap indicates lost DECRs.
-    // Self-heals via TTL in ≤30s; alert is early warning before the next reset.
-    if (remaining > GLOBAL_MAX_CONCURRENT / 2 && process.env.VERCEL_ENV === "production") {
+    // Detect drift: counter above the cap after a DECR is impossible under
+    // legitimate load (over-cap acquirers self-decrement within ms in
+    // acquireGlobalSlot). If it persists, it's genuine drift or extreme
+    // contention — both worth seeing in Sentry.
+    // cap/2 was wrong: with cap=8, legitimate 8-concurrent load would fire
+    // on every release (remaining=7 > 4), training engineers to ignore it.
+    if (remaining > GLOBAL_MAX_CONCURRENT && process.env.VERCEL_ENV === "production") {
       Sentry.captureMessage("redis_semaphore_counter_elevated", {
         level: "warning",
         extra: { remaining, cap: GLOBAL_MAX_CONCURRENT },

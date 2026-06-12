@@ -9,9 +9,11 @@
 --   - tokens = 0 → registro de auditoría sin reembolso (stream con fragmentos ya
 --     entregados: la lectura existe, resolución manual vía grant_tokens si el
 --     usuario reclama)
---   - verificación pre-reembolso en app: si la consulta existe en DB (éxito
---     ambiguo: upsert confirmado pero respuesta HTTP perdida), se llama con
---     tokens = 0 y reason = 'refund_skipped_consultation_persisted'
+--   - verificación pre-reembolso en app (§2.5): si la consulta existe en DB
+--     (éxito ambiguo: upsert confirmado pero respuesta HTTP perdida), la ruta
+--     hace return temprano con log de aplicación — NO registra en esta tabla.
+--     refund_token nunca es invocado para skips; la tabla solo contiene
+--     reembolsos reales (tokens > 0) y registros de streaming (tokens = 0).
 --
 -- Safe to re-run: CREATE OR REPLACE / CREATE TABLE IF NOT EXISTS.
 -- ─────────────────────────────────────────────────────────────────────────────
