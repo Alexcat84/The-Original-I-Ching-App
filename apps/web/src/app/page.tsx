@@ -1338,8 +1338,17 @@ export default function HomePage() {
         reader.readAsDataURL(blob);
       });
     const fetchImageDataUrl = async (url: string): Promise<string | null> => {
+      if (!url) return null;
+      // data: URLs need no network request — return directly
+      if (url.startsWith("data:")) return url;
       try {
-        const res = await fetch(url);
+        // Cross-origin R2 URLs require the server-side proxy to avoid CORS blocks.
+        // Relative paths (/fallbacks/...) are same-origin and don't need the proxy.
+        const fetchUrl =
+          url.startsWith("https://") || url.startsWith("http://")
+            ? `/api/image-proxy?url=${encodeURIComponent(url)}`
+            : url;
+        const res = await fetch(fetchUrl);
         if (!res.ok) return null;
         return await toDataUrl(await res.blob());
       } catch {
