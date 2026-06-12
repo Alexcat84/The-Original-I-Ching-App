@@ -449,7 +449,12 @@ const INJECTED_JS = `
   };
 
   /* 3b ── Download helper (OOM-safe: slice blobs, never readAsDataURL whole file) ─ */
-  var BLOB_SLICE_BYTES = 256 * 1024;
+  // CRITICAL: must be a multiple of 3 so that each intermediate blob slice
+  // produces unpadded base64. If not, FileReader.readAsDataURL on each slice
+  // adds independent '=' padding → joining chunks creates invalid base64 →
+  // FileSystem.writeAsStringAsync throws on decode (PDF export crash).
+  // 258 * 1024 = 264192 = 3 × 88064 ✓
+  var BLOB_SLICE_BYTES = 258 * 1024;
   var MAX_INLINE_DATA_URL = 180000;
   var MAX_BLOB_IMAGE_OPEN_BYTES = 4 * 1024 * 1024;
 
@@ -531,15 +536,26 @@ const INJECTED_JS = `
     for (var offset = 0; offset < blob.size; offset += BLOB_SLICE_BYTES) {
       slices.push(blob.slice(offset, offset + BLOB_SLICE_BYTES));
     }
+    var totalSlices = slices.length;
     var b64Chunks = [];
     var idx = 0;
     function nextSlice() {
-      if (idx >= slices.length) {
+      if (idx >= totalSlices) {
         _postDownloadChunks(filename, mimeType, b64Chunks);
         return;
       }
+      var isLast = (idx === totalSlices - 1);
       _readBlobSliceAsB64(slices[idx], function(part) {
-        if (part) b64Chunks.push(part);
+        if (part) {
+          // Safety: strip base64 padding ('=') from intermediate chunks.
+          // Each slice is independently base64-encoded by FileReader, so it
+          // gets its own padding. Concatenating padded chunks produces invalid
+          // base64. Only the last chunk keeps its natural padding.
+          if (!isLast) {
+            part = part.replace(/=+$/, '');
+          }
+          b64Chunks.push(part);
+        }
         idx += 1;
         nextSlice();
       });
