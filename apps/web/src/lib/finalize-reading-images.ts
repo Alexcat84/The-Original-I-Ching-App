@@ -52,6 +52,10 @@ async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undef
       const fileBuf = await readLocalPublicFile(baseUrl);
       if (!fileBuf) return baseUrl;
       baseBuf = fileBuf;
+    } else if (baseUrl.startsWith("data:image/")) {
+      const comma = baseUrl.indexOf(",");
+      if (comma === -1) return baseUrl;
+      baseBuf = Buffer.from(baseUrl.slice(comma + 1), "base64");
     } else {
       return baseUrl;
     }
@@ -93,10 +97,12 @@ async function tryComposeOverlay(baseUrl: string, overlayDataUrl: string | undef
 export async function finalizeReadingImages(asset: ImageAsset, tier: string): Promise<ImageAsset> {
   let composed = await tryComposeOverlay(asset.imageUrl, asset.overlaySvgDataUrl, tier);
 
-  // If remote compositing silently failed (URL unchanged + still https), retry on local fallback.
+  // If compositing silently failed (URL unchanged + was a remote or data URL), retry on local fallback.
   const remoteComposeFailed =
     composed === asset.imageUrl &&
-    (asset.imageUrl.startsWith("http://") || asset.imageUrl.startsWith("https://")) &&
+    (asset.imageUrl.startsWith("http://") ||
+      asset.imageUrl.startsWith("https://") ||
+      asset.imageUrl.startsWith("data:image/")) &&
     !!asset.fallbackImageUrl &&
     asset.fallbackImageUrl !== asset.imageUrl;
   if (remoteComposeFailed) {
