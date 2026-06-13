@@ -41,27 +41,54 @@ function joinSegments(segments: string[], joiner: "\n\n" | "\n", count: number):
   return segments.slice(0, n).join(joiner);
 }
 
+const TYPEWRITER_ENABLED =
+  typeof process !== "undefined"
+    ? process.env.NEXT_PUBLIC_TYPEWRITER_ENABLED !== "false"
+    : true;
+
+export interface RevealOptions {
+  /** Milliseconds per character for duration calc. Default 22 (legacy). Post-animation reveal: ~1.2. */
+  msPerChar?: number;
+  /** Minimum reveal duration ms. Default 2200. */
+  minMs?: number;
+  /** Maximum reveal duration ms. Default 7500. */
+  maxMs?: number;
+}
+
 /**
  * Progressive reveal for markdown: grows by paragraph / line-block boundaries so
  * react-markdown rarely sees broken emphasis, links, or lists mid-token.
- * When `enabled` is false, returns `fullText` immediately.
+ * When `enabled` is false (or prefers-reduced-motion / TYPEWRITER_ENABLED=false),
+ * returns `fullText` immediately.
  */
 export function useProgressiveRevealSubstring(
   fullText: string,
   enabled: boolean,
   onComplete?: () => void,
+  options?: RevealOptions,
 ): string {
+  const msPerChar = options?.msPerChar ?? 22;
+  const minMs = options?.minMs ?? 2200;
+  const maxMs = options?.maxMs ?? 7500;
+
+  // Respect prefers-reduced-motion system preference.
+  const prefersReduced =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const effectiveEnabled = enabled && TYPEWRITER_ENABLED && !prefersReduced;
+
   const { segments, joiner } = useMemo(() => segmentizeForReveal(fullText), [fullText]);
   const total = segments.length;
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
 
   const [visibleCount, setVisibleCount] = useState(() =>
-    !enabled || fullText.length === 0 || total === 0 ? total : Math.min(1, total),
+    !effectiveEnabled || fullText.length === 0 || total === 0 ? total : Math.min(1, total),
   );
 
   useEffect(() => {
-    if (!enabled || fullText.length === 0 || total === 0) {
+    if (!effectiveEnabled || fullText.length === 0 || total === 0) {
       setVisibleCount(total);
       return;
     }
@@ -69,7 +96,7 @@ export function useProgressiveRevealSubstring(
     setVisibleCount(Math.min(1, total));
     let raf = 0;
     const start = performance.now();
-    const duration = Math.min(7500, Math.max(2200, fullText.length * 22));
+    const duration = Math.min(maxMs, Math.max(minMs, fullText.length * msPerChar));
 
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / duration);
@@ -86,13 +113,13 @@ export function useProgressiveRevealSubstring(
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [fullText, enabled, total]);
+  }, [fullText, effectiveEnabled, total, msPerChar, minMs, maxMs]);
 
   const revealed = useMemo(
-    () => (!enabled || total === 0 ? fullText : joinSegments(segments, joiner, visibleCount)),
-    [enabled, fullText, joiner, segments, total, visibleCount],
+    () => (!effectiveEnabled || total === 0 ? fullText : joinSegments(segments, joiner, visibleCount)),
+    [effectiveEnabled, fullText, joiner, segments, total, visibleCount],
   );
 
-  if (!enabled) return fullText;
+  if (!effectiveEnabled) return fullText;
   return revealed;
 }
