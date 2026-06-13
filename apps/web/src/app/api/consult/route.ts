@@ -1285,21 +1285,24 @@ export async function POST(req: Request) {
                 consultationId: castResult.id,
               } as const;
 
+              // TDZ fix (audit 2026-06-13): `imagePrompt` is referenced by the
+              // `final_ready` event below, but was only declared in the non-streaming
+              // path. Declare it once here in the streaming scope and reuse it for the
+              // sequential build, the B3 rebuild, and the final_ready payload.
+              const imagePrompt = buildImagePrompt(
+                castResult.primaryHexagram,
+                castResult.transformedHexagram,
+                category,
+                castResult.changingLines,
+                castResult.lines,
+                castResult.id,
+              );
+
               let image = await (parallelImagePromise && parallelImageCategory === category
                 ? (ritualLog("parallel_image:await", { category }), parallelImagePromise)
                 : (() => {
                     if (parallelImagePromise) ritualLog("parallel_image:category_mismatch", { expected: parallelImageCategory, got: category });
-                    return buildImageAsset({
-                      prompt: buildImagePrompt(
-                        castResult.primaryHexagram,
-                        castResult.transformedHexagram,
-                        category,
-                        castResult.changingLines,
-                        castResult.lines,
-                        castResult.id,
-                      ),
-                      ...imageParams,
-                    });
+                    return buildImageAsset({ prompt: imagePrompt, ...imageParams });
                   })()
               );
 
@@ -1308,17 +1311,7 @@ export async function POST(req: Request) {
               // never receives undefined — rebuild sequentially with the correct category.
               if (!image) {
                 ritualLog("parallel_image:failed_rebuild", { category });
-                image = await buildImageAsset({
-                  prompt: buildImagePrompt(
-                    castResult.primaryHexagram,
-                    castResult.transformedHexagram,
-                    category,
-                    castResult.changingLines,
-                    castResult.lines,
-                    castResult.id,
-                  ),
-                  ...imageParams,
-                });
+                image = await buildImageAsset({ prompt: imagePrompt, ...imageParams });
               }
 
               image = await finalizeReadingImages(image, tierEffective);
@@ -1446,6 +1439,9 @@ export async function POST(req: Request) {
                 message: streamError instanceof Error ? streamError.message : String(streamError),
               });
               console.error("[api/consult][stream_ritual]", streamError);
+              Sentry.captureException(streamError, {
+                tags: { api: "consult", mode: "stream_ritual" },
+              });
               if (refundCtx !== null && refundCtx.consumed && !refundCtx.persisted) {
                 await attemptRefund(refundCtx, "consult_failed", { log, requestId });
               }
