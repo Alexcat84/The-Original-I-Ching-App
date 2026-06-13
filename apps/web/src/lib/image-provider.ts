@@ -433,22 +433,26 @@ function normalizeTogetherSize(width: number, height: number): { width: number; 
 async function generateWithFal(prompt: string, width: number, height: number): Promise<string | null> {
   const key = process.env.FAL_AI_KEY;
   if (!key) return null;
-  const res = await fetch("https://fal.run/fal-ai/flux/schnell", {
-    method: "POST",
-    headers: {
-      Authorization: `Key ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      prompt,
-      image_size: { width, height },
-      num_images: 1,
-      enable_safety_checker: true,
-    }),
-  });
-  if (!res.ok) return null;
-  const data = (await res.json()) as { images?: Array<{ url?: string }> };
-  return data.images?.[0]?.url ?? null;
+  try {
+    const res = await fetch("https://fal.run/fal-ai/flux/schnell", {
+      method: "POST",
+      headers: {
+        Authorization: `Key ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt,
+        image_size: { width, height },
+        num_images: 1,
+        enable_safety_checker: true,
+      }),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { images?: Array<{ url?: string }> };
+    return data.images?.[0]?.url ?? null;
+  } catch {
+    return null;
+  }
 }
 
 async function generateWithGptImage(prompt: string, width: number, height: number): Promise<string | null> {
@@ -457,27 +461,31 @@ async function generateWithGptImage(prompt: string, width: number, height: numbe
   const supported = new Set(["1024x1024", "1536x1024", "1024x1536"]);
   const candidate = `${width}x${height}`;
   const size = supported.has(candidate) ? candidate : "1536x1024";
-  const res = await fetch("https://api.openai.com/v1/images/generations", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: process.env.OPENAI_IMAGE_MODEL ?? "gpt-image-1",
-      prompt,
-      size,
-      quality: "high",
-      n: 1,
-    }),
-  });
-  if (!res.ok) return null;
-  const data = (await res.json()) as { data?: Array<{ b64_json?: string; url?: string }> };
-  const first = data.data?.[0];
-  if (!first) return null;
-  if (first.url) return first.url;
-  if (first.b64_json) return `data:image/png;base64,${first.b64_json}`;
-  return null;
+  try {
+    const res = await fetch("https://api.openai.com/v1/images/generations", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: process.env.OPENAI_IMAGE_MODEL ?? "gpt-image-1",
+        prompt,
+        size,
+        quality: "high",
+        n: 1,
+      }),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { data?: Array<{ b64_json?: string; url?: string }> };
+    const first = data.data?.[0];
+    if (!first) return null;
+    if (first.url) return first.url;
+    if (first.b64_json) return `data:image/png;base64,${first.b64_json}`;
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 function togetherImageGenerationOptionalFields(seedBase?: string): {

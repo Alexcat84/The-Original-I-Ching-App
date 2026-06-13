@@ -1220,7 +1220,9 @@ export async function POST(req: Request) {
                           tier: tierEffective,
                           providerOverride: imageProviderOverride,
                           consultationId: castResult.id,
-                        });
+                        // Suppress unhandledRejection during the ~20-30s window before
+                        // the promise is awaited. Errors surface when we await below.
+                        }).catch(() => undefined) as ReturnType<typeof buildImageAsset>;
                       }
                     }
                   }
