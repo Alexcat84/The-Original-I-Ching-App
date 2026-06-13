@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
 import Anthropic from "@anthropic-ai/sdk";
-import { createAnthropicClient, callAnthropicWithRetry } from "./anthropic-client.js";
+import { createAnthropicClient, callAnthropicWithRetry, callAnthropicStreamingWithRetry } from "./anthropic-client.js";
 import type { SessionContext } from "@iching-oracle/context-engine";
 import type { CastingMethod, CastResult } from "@iching-oracle/iching-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
@@ -640,6 +640,7 @@ export async function generateInterpretation(
   displayName?: string,
   castingMethod?: CastingMethod,
   previousMessageId?: string | null,
+  onDelta?: (text: string) => void,
 ): Promise<{
   text: string;
   category: ConsultationCategory;
@@ -734,24 +735,39 @@ export async function generateInterpretation(
             },
           ];
 
-      const anthropicCallStart = Date.now();
-      const response = await callAnthropicWithRetry(
-        client,
-        {
-          model,
-          max_tokens: maxTokens,
-          system: [
-            {
-              type: "text",
-              text: useV2 ? buildV2SystemBlock(language) : promptBlocks.stableSystemBlock,
-              cache_control: { type: "ephemeral" },
-            },
-          ],
-          messages: anthropicMessages,
-        },
-        { tier, language, method: resolvedCastingMethod ?? "iching" },
-        previousMessageId ?? null,
+      const useStreaming = Boolean(
+        onDelta &&
+          (env.ANTHROPIC_STREAM_DELTAS === "1" || env.ANTHROPIC_STREAM_DELTAS === "true"),
       );
+
+      const callParams = {
+        model,
+        max_tokens: maxTokens,
+        system: [
+          {
+            type: "text" as const,
+            text: useV2 ? buildV2SystemBlock(language) : promptBlocks.stableSystemBlock,
+            cache_control: { type: "ephemeral" as const },
+          },
+        ],
+        messages: anthropicMessages,
+      };
+
+      const anthropicCallStart = Date.now();
+      const response = useStreaming
+        ? await callAnthropicStreamingWithRetry(
+            client,
+            callParams,
+            { tier, language, method: resolvedCastingMethod ?? "iching" },
+            previousMessageId ?? null,
+            onDelta!,
+          )
+        : await callAnthropicWithRetry(
+            client,
+            callParams,
+            { tier, language, method: resolvedCastingMethod ?? "iching" },
+            previousMessageId ?? null,
+          );
 
       const fullText = response.content
         .filter((b) => b.type === "text")

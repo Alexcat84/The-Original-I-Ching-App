@@ -124,7 +124,10 @@ describe("refundCtx decision matrix", () => {
     expect(ctx.consumed && !ctx.persisted).toBe(false);
   });
 
-  it("0-token audit (no refund): consumed=true, persisted=false, streamingStarted=true", () => {
+  it("0-token audit (no refund): consumed=true, persisted=false, streamingStarted=true (set on first oracle_delta)", () => {
+    // streamingStarted is set on the FIRST oracle_delta event (streaming path)
+    // or at oracle_ready (non-streaming path). Either way, content reached the client
+    // so no refund is issued — only a 0-token audit log.
     const ctx = { consumed: true, persisted: false, streamingStarted: true };
     expect(ctx.consumed && !ctx.persisted).toBe(true);
     // streamingStarted=true → tokensToRefund=0, reason='persist_failed_no_refund'
