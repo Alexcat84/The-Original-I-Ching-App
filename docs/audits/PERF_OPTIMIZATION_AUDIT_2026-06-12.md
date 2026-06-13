@@ -8,7 +8,7 @@
 | **Implementación** | 2026-06-12/13 — Claude Sonnet 4.6 |
 | **Auditoría de seguimiento** | 2026-06-13 — Claude Opus 4.8 |
 | **Commit auditado (Opus)** | `89a7716` — main |
-| **Estado** | ⚠️ B1 + B2 PENDIENTES antes de activar `ANTHROPIC_PARALLEL_IMAGE=1` |
+| **Estado** | ✅ B1 + B2 RESUELTOS — listo para activar `ANTHROPIC_PARALLEL_IMAGE=1` tras smoke test |
 
 ---
 
@@ -109,9 +109,9 @@ Después de `generateInterpretation`:
 
 **Descripción**: `parallelImagePromise` se asigna pero no lleva `.catch()`. En el path de mismatch de categoría, la promesa paralela se abandona sin await. En el path de match, hay una ventana de ~20-30s entre el lanzamiento y el `await`. Si `buildImageAsset` rechaza en esa ventana, queda como rechazo no manejado.
 
-**Fix**: Adjuntar `.catch(() => {})` al asignar `parallelImagePromise`.
+**Fix**: Adjuntar `.catch(() => undefined)` al asignar `parallelImagePromise`. El error sigue propagándose cuando el `await` ocurre en L1262 (path match) o se abandona limpiamente en path mismatch.
 
-**Estado**: PENDIENTE
+**Estado**: ✅ RESUELTO — `fix/perf-b1-b2`
 
 ### B2 — `fal` y `gpt-image` sin try/catch en fetch ⛔ BLOQUEANTE (si se usa fal/gpt-image)
 
@@ -123,9 +123,9 @@ Después de `generateInterpretation`:
 
 **Nota**: Con `together` como provider (default actual), B2 no se activa porque `generateWithTogether` ya tiene try/catch y degrada a R2/prebuilt/sumi. Bloqueante solo si se activa `fal` o `gpt-image`.
 
-**Fix**: Envolver fetch de fal/gpt-image en try/catch que devuelva `null`, idéntico al patrón de `generateWithTogether`.
+**Fix**: Envuelto fetch de `generateWithFal` y `generateWithGptImage` en try/catch que devuelve `null` en cualquier error de red, idéntico al patrón de `generateWithTogether`.
 
-**Estado**: PENDIENTE
+**Estado**: ✅ RESUELTO — `fix/perf-b1-b2`
 
 ---
 
