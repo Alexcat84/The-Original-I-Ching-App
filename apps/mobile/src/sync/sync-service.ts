@@ -5,6 +5,7 @@ import {
   getSyncMeta,
   setSyncMeta,
   softDeleteStaleChats,
+  getChatMessageCount,
   type ChatRow,
   type MessageRow,
 } from "../db/chat-store";
@@ -224,7 +225,12 @@ export function syncChatThread(
       const lastSync = await getSyncMeta(syncKey);
       if (lastSync) {
         const elapsed = Date.now() - new Date(lastSync).getTime();
-        if (elapsed < CHAT_CONTENT_COOLDOWN_MS) return;
+        if (elapsed < CHAT_CONTENT_COOLDOWN_MS) {
+          // Acción 5: bypass cooldown when SQLite is empty — previous sync may have
+          // stored the meta key but failed before writing content rows.
+          const rowCount = await getChatMessageCount(sessionId).catch(() => null);
+          if (rowCount !== null && rowCount > 0) return;
+        }
       }
 
       // Phase 1: fetch metadata only (no TOAST) — small payload, safe for low-memory devices.
