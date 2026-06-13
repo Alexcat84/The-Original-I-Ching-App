@@ -49,3 +49,34 @@ export function isPostgrestHydrationBusy(
     threadLoadsInFlight > 0
   );
 }
+
+export type ActiveSessionGateInput = {
+  localId: string;
+  sessionId: string | null;
+  messageCount: number;
+  thread: ThreadHydrationEntry[];
+};
+
+/**
+ * Returns true only when the *active* session's own thread is still loading,
+ * blocking a new consultation on that specific thread. Sessions that are new
+ * (no sessionId), already hydrated, or whose load belongs to a *different*
+ * session never block the active one.
+ */
+export function isActiveSessionThreadHydrating(
+  active: ActiveSessionGateInput | null,
+  loadingSessionLocalId: string | null,
+  threadLoadsBySession: Map<string, unknown>,
+): boolean {
+  if (!active) return false;
+  const needsOwnThread = sessionNeedsThreadHydration({
+    sessionId: active.sessionId,
+    messageCount: active.messageCount,
+    thread: active.thread,
+  });
+  if (!needsOwnThread) return false;
+  return (
+    loadingSessionLocalId === active.localId ||
+    (active.sessionId !== null && threadLoadsBySession.has(active.sessionId))
+  );
+}
