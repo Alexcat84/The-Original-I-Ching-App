@@ -19,6 +19,7 @@ import { SUPPORTED_LOCALES, getConsultApiUiMessages, parseAppLocale, type AppLoc
 import {
   buildImagePrompt,
   buildOracleBonesImagePrompt,
+  type ConsultationCategory,
 } from "@iching-oracle/image-engine";
 import {
   defaultNegativeCharge,
@@ -1123,6 +1124,12 @@ export async function POST(req: Request) {
                 if (refundCtx) refundCtx.streamingStarted = true;
               }
             };
+            let parallelImagePromise: ReturnType<typeof buildImageAsset> | null = null;
+            let parallelImageCategory: ConsultationCategory | null = null;
+            const VALID_CATEGORIES = new Set<string>([
+              "love_relationship","career_work","health_wellbeing","spiritual_inner",
+              "family_home","decision_path","conflict_challenge","travel_change","general",
+            ]);
             try {
               writeEvent("cast_ready", {
                 oracleType: "iching" as const,
@@ -1155,6 +1162,11 @@ export async function POST(req: Request) {
               const useStreamingDeltas =
                 process.env.ANTHROPIC_STREAM_DELTAS === "1" ||
                 process.env.ANTHROPIC_STREAM_DELTAS === "true";
+              const useParallelImage =
+                useStreamingDeltas &&
+                (process.env.ANTHROPIC_PARALLEL_IMAGE === "1" ||
+                  process.env.ANTHROPIC_PARALLEL_IMAGE === "true");
+              let fullDeltaAcc = "";
               const onDelta = useStreamingDeltas
                 ? (text: string) => {
                     deltaAcc += text;
@@ -1163,6 +1175,53 @@ export async function POST(req: Request) {
                         deltaFlushTimer = null;
                         flushDeltaAcc();
                       }, 150);
+                    }
+                    if (useParallelImage && !parallelImagePromise) {
+                      fullDeltaAcc += text;
+                      const catMatch = fullDeltaAcc.match(
+                        /^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im,
+                      );
+                      if (catMatch) {
+                        const rawCat = catMatch[1].toLowerCase();
+                        const detectedCat: ConsultationCategory = VALID_CATEGORIES.has(rawCat)
+                          ? (rawCat as ConsultationCategory)
+                          : "general";
+                        parallelImageCategory = detectedCat;
+                        const parallelPrompt = buildImagePrompt(
+                          castResult.primaryHexagram,
+                          castResult.transformedHexagram,
+                          detectedCat,
+                          castResult.changingLines,
+                          castResult.lines,
+                          castResult.id,
+                        );
+                        ritualLog("parallel_image:start", { category: detectedCat });
+                        parallelImagePromise = buildImageAsset({
+                          prompt: parallelPrompt,
+                          primaryHexagram: castResult.primaryHexagram.number,
+                          primaryHexagramName: castResult.primaryHexagram.name,
+                          primaryChinese: castResult.primaryHexagram.chineseName,
+                          pinyin: castResult.primaryHexagram.pinyin,
+                          transformedHexagram: castResult.transformedHexagram
+                            ? {
+                                number: castResult.transformedHexagram.number,
+                                name: castResult.transformedHexagram.name,
+                                chineseName: castResult.transformedHexagram.chineseName,
+                              }
+                            : null,
+                          category: detectedCat,
+                          mutationRule: castResult.mutationRule,
+                          changingLines: castResult.changingLines,
+                          lines: castResult.lines.map((l) => ({
+                            position: l.position,
+                            value: l.value,
+                            isChanging: l.isChanging,
+                          })),
+                          tier: tierEffective,
+                          providerOverride: imageProviderOverride,
+                          consultationId: castResult.id,
+                        });
+                      }
                     }
                   }
                 : undefined;
@@ -1199,39 +1258,45 @@ export async function POST(req: Request) {
               if (!firstDeltaFired && refundCtx) refundCtx.streamingStarted = true;
               ritualLog("event:oracle_ready", { category });
 
-              const imagePrompt = buildImagePrompt(
-                castResult.primaryHexagram,
-                castResult.transformedHexagram,
-                category,
-                castResult.changingLines,
-                castResult.lines,
-                castResult.id,
+              let image = await (parallelImagePromise && parallelImageCategory === category
+                ? (ritualLog("parallel_image:await", { category }), parallelImagePromise)
+                : (() => {
+                    if (parallelImagePromise) ritualLog("parallel_image:category_mismatch", { expected: parallelImageCategory, got: category });
+                    const imagePrompt = buildImagePrompt(
+                      castResult.primaryHexagram,
+                      castResult.transformedHexagram,
+                      category,
+                      castResult.changingLines,
+                      castResult.lines,
+                      castResult.id,
+                    );
+                    return buildImageAsset({
+                      prompt: imagePrompt,
+                      primaryHexagram: castResult.primaryHexagram.number,
+                      primaryHexagramName: castResult.primaryHexagram.name,
+                      primaryChinese: castResult.primaryHexagram.chineseName,
+                      pinyin: castResult.primaryHexagram.pinyin,
+                      transformedHexagram: castResult.transformedHexagram
+                        ? {
+                            number: castResult.transformedHexagram.number,
+                            name: castResult.transformedHexagram.name,
+                            chineseName: castResult.transformedHexagram.chineseName,
+                          }
+                        : null,
+                      category,
+                      mutationRule: castResult.mutationRule,
+                      changingLines: castResult.changingLines,
+                      lines: castResult.lines.map((l) => ({
+                        position: l.position,
+                        value: l.value,
+                        isChanging: l.isChanging,
+                      })),
+                      tier: tierEffective,
+                      providerOverride: imageProviderOverride,
+                      consultationId: castResult.id,
+                    });
+                  })()
               );
-              let image = await buildImageAsset({
-                prompt: imagePrompt,
-                primaryHexagram: castResult.primaryHexagram.number,
-                primaryHexagramName: castResult.primaryHexagram.name,
-                primaryChinese: castResult.primaryHexagram.chineseName,
-                pinyin: castResult.primaryHexagram.pinyin,
-                transformedHexagram: castResult.transformedHexagram
-                  ? {
-                      number: castResult.transformedHexagram.number,
-                      name: castResult.transformedHexagram.name,
-                      chineseName: castResult.transformedHexagram.chineseName,
-                    }
-                  : null,
-                category,
-                mutationRule: castResult.mutationRule,
-                changingLines: castResult.changingLines,
-                lines: castResult.lines.map((l) => ({
-                  position: l.position,
-                  value: l.value,
-                  isChanging: l.isChanging,
-                })),
-                tier: tierEffective,
-                providerOverride: imageProviderOverride,
-                consultationId: castResult.id,
-              });
               image = await finalizeReadingImages(image, tierEffective);
               const _r2UrlStream = await uploadGeneratedImageToR2(image.imageUrl, authedUserId, castResult.id);
               if (_r2UrlStream) image = { ...image, imageUrl: _r2UrlStream };
