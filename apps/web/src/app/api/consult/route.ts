@@ -1260,45 +1260,67 @@ export async function POST(req: Request) {
               if (!firstDeltaFired && refundCtx) refundCtx.streamingStarted = true;
               ritualLog("event:oracle_ready", { category });
 
+              const imageParams = {
+                primaryHexagram: castResult.primaryHexagram.number,
+                primaryHexagramName: castResult.primaryHexagram.name,
+                primaryChinese: castResult.primaryHexagram.chineseName,
+                pinyin: castResult.primaryHexagram.pinyin,
+                transformedHexagram: castResult.transformedHexagram
+                  ? {
+                      number: castResult.transformedHexagram.number,
+                      name: castResult.transformedHexagram.name,
+                      chineseName: castResult.transformedHexagram.chineseName,
+                    }
+                  : null,
+                category,
+                mutationRule: castResult.mutationRule,
+                changingLines: castResult.changingLines,
+                lines: castResult.lines.map((l) => ({
+                  position: l.position,
+                  value: l.value,
+                  isChanging: l.isChanging,
+                })),
+                tier: tierEffective,
+                providerOverride: imageProviderOverride,
+                consultationId: castResult.id,
+              } as const;
+
               let image = await (parallelImagePromise && parallelImageCategory === category
                 ? (ritualLog("parallel_image:await", { category }), parallelImagePromise)
                 : (() => {
                     if (parallelImagePromise) ritualLog("parallel_image:category_mismatch", { expected: parallelImageCategory, got: category });
-                    const imagePrompt = buildImagePrompt(
-                      castResult.primaryHexagram,
-                      castResult.transformedHexagram,
-                      category,
-                      castResult.changingLines,
-                      castResult.lines,
-                      castResult.id,
-                    );
                     return buildImageAsset({
-                      prompt: imagePrompt,
-                      primaryHexagram: castResult.primaryHexagram.number,
-                      primaryHexagramName: castResult.primaryHexagram.name,
-                      primaryChinese: castResult.primaryHexagram.chineseName,
-                      pinyin: castResult.primaryHexagram.pinyin,
-                      transformedHexagram: castResult.transformedHexagram
-                        ? {
-                            number: castResult.transformedHexagram.number,
-                            name: castResult.transformedHexagram.name,
-                            chineseName: castResult.transformedHexagram.chineseName,
-                          }
-                        : null,
-                      category,
-                      mutationRule: castResult.mutationRule,
-                      changingLines: castResult.changingLines,
-                      lines: castResult.lines.map((l) => ({
-                        position: l.position,
-                        value: l.value,
-                        isChanging: l.isChanging,
-                      })),
-                      tier: tierEffective,
-                      providerOverride: imageProviderOverride,
-                      consultationId: castResult.id,
+                      prompt: buildImagePrompt(
+                        castResult.primaryHexagram,
+                        castResult.transformedHexagram,
+                        category,
+                        castResult.changingLines,
+                        castResult.lines,
+                        castResult.id,
+                      ),
+                      ...imageParams,
                     });
                   })()
               );
+
+              // B3: .catch(() => undefined) on the parallel promise means a network failure
+              // resolves to undefined instead of throwing. Guard here so finalizeReadingImages
+              // never receives undefined — rebuild sequentially with the correct category.
+              if (!image) {
+                ritualLog("parallel_image:failed_rebuild", { category });
+                image = await buildImageAsset({
+                  prompt: buildImagePrompt(
+                    castResult.primaryHexagram,
+                    castResult.transformedHexagram,
+                    category,
+                    castResult.changingLines,
+                    castResult.lines,
+                    castResult.id,
+                  ),
+                  ...imageParams,
+                });
+              }
+
               image = await finalizeReadingImages(image, tierEffective);
               const _r2UrlStream = await uploadGeneratedImageToR2(image.imageUrl, authedUserId, castResult.id);
               if (_r2UrlStream) image = { ...image, imageUrl: _r2UrlStream };
