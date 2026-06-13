@@ -1,8 +1,15 @@
-<!-- changelog:last-release:48d3be1 -->
+<!-- changelog:last-release:54b31a5 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [3.5.6] — 2026-06-13 | versionCode: 54 | Stage: Internal Testing
+
+### Docs
+- docs: changelog 3.5.6 + pre-production audit update (all findings closed) | commit: 54b31a5
+
+---
 
 ## [3.5.6] — 2026-06-13 | versionCode: 54 | Stage: Internal Testing
 
@@ -1466,7 +1473,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.5.6 | 54 | 2026-06-13 | Internal Testing | 28 | Phase 3 — parallel image generation via ANTHROPIC_PARALLEL_IMAGE flag; Phase 2 — streaming deltas via ANTHROPIC_STREAM_DELTAS flag; Phase 1 — prompt caching V2 with real conversation history pairs |
+| 3.5.6 | 54 | 2026-06-13 | Internal Testing | 1 | — |
+| 3.5.6 | 54 | 2026-06-13 | Internal Testing | 0 | — |
 | 3.5.5 | 53 | 2026-06-10 | Internal Testing | 0 | — |
 | 3.5.4 | 52 | 2026-06-10 | Internal Testing | 0 | — |
 | 3.5.2 | 45 | 2026-06-07 | Closed Testing | 0 | — |
