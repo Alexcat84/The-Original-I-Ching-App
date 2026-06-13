@@ -1318,6 +1318,12 @@ export default function HomePage() {
     resizeQuestionInput();
   }, [question, resizeQuestionInput]);
 
+  useEffect(() => {
+    if (activeThread.length > 0) {
+      void import("jspdf");
+    }
+  }, [activeThread.length]);
+
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
     const pdfUi = getPdfExportUiMessages(locale);
