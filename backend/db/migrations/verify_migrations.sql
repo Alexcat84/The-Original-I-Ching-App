@@ -433,6 +433,21 @@ FROM (
     )
 
   UNION ALL
+  -- 073 · linter security fixes (PUBLIC revoke on 071 RPC + token_refund_log policies)
+  SELECT '073', 'get_user_session_summaries no PUBLIC/anon/auth EXECUTE + token_refund_log has RLS policies',
+    NOT EXISTS (
+      SELECT 1 FROM information_schema.role_routine_grants
+      WHERE routine_schema = 'public'
+        AND routine_name = 'get_user_session_summaries'
+        AND grantee IN ('anon', 'authenticated', 'PUBLIC')
+        AND privilege_type = 'EXECUTE'
+    )
+    AND EXISTS (
+      SELECT 1 FROM pg_policies
+      WHERE schemaname = 'public' AND tablename = 'token_refund_log'
+    )
+
+  UNION ALL
   -- CONTENT · P0 gate — fails on mass wipe; allows ≤2 irrecoverable post-PITR gaps
   SELECT 'CONTENT', 'consultation_content full text (≤2 empty rows allowed for known PITR gaps)',
     (
