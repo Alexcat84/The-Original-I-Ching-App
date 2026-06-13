@@ -71,10 +71,13 @@ export function useProgressiveRevealSubstring(
   const minMs = options?.minMs ?? 2200;
   const maxMs = options?.maxMs ?? 7500;
 
-  // Respect prefers-reduced-motion system preference.
-  const prefersReduced =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Respect prefers-reduced-motion (SSR-safe: typeof window guard).
+  const prefersReduced = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    [],
+  );
 
   const effectiveEnabled = enabled && TYPEWRITER_ENABLED && !prefersReduced;
 

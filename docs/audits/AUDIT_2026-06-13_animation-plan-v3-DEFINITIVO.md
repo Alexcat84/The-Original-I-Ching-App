@@ -5,10 +5,13 @@
 |---|---|
 | **Fecha** | 2026-06-13 |
 | **Commit base** | `51f4546` |
+| **Commit implementación** | `60dbee4` (Actions 2–7) · `b94e7bc` (Acción 1 TDZ) |
+| **Commit fixes menores** | ver §10 más abajo |
 | **Sustituye a** | `AUDIT_2026-06-13_animation-plan-v2-final.md` |
-| **Incorpora** | Correcciones de dos auditorías de factibilidad independientes (verificadas en código) |
+| **Incorpora** | Correcciones de dos auditorías de factibilidad independientes + auditoría de verificación post-implementación |
 | **Enfoque** | Streaming **encendido server-side** (imagen paralela, total ~52 s); el cliente **no** pinta deltas; la animación gobierna el tiempo; reveal con typewriter acotado. |
 | **Evidencia operativa** | Logs de Axiom confirman `ANTHROPIC_STREAM_DELTAS` y `ANTHROPIC_PARALLEL_IMAGE` **activos en producción** (`theoriginaliching.com`, commit `51f4546`). El TDZ **se está disparando ahora** en cada consulta stream_ritual — **Acción 1 es hotfix P0 inmediato.** |
+| **Estado** | ✅ Acciones 1–7 implementadas y verificadas · ⏳ Acción 8 diferida (golden set N≥50) |
 
 ---
 
@@ -215,4 +218,45 @@ Nota: hoy el finale de I Ching ocurre tras los ticks sin espera; con los pisos +
 
 ---
 
-*Plan v3 generado el 2026-06-13 sobre el commit `51f4546`. Incorpora las correcciones de dos auditorías de factibilidad verificadas en código. La Acción 1 está implementada y disponible como `action-1-tdz-sentry.patch`.*
+## 10. Verificación post-implementación (HEAD `9209da5`, 2026-06-13)
+
+Auditoría independiente de los siete cambios contra código en main. Todas las acciones verificadas como correctas e internamente consistentes.
+
+### Verificación por acción
+
+| Acción | Veredicto | Notas clave |
+|---|---|---|
+| 1 — TDZ + Sentry | ✅ | `imagePrompt` declarada en scope streaming (L1292), reutilizada en 2 sitios (L1305, L1314). `Sentry.captureException` en catch (L1442). |
+| 2 — Budget store | ✅ | Keys correctas, seeds (40s/58s/25s), clamp 8–120s, localStorage prefijado, try/catch SSR-safe. 4 sitios migrados: `lastIchingConsultWallMsRef.current ?? getRitualBudget(key)`. `recordRitualBudget` persiste por traductor en L4151. |
+| 3 — Gate submit→reveal | ✅ | Más elegante que el brief: `await revealPromise + dwell` post-loop en lugar de máquina de estados. La salida del loop = señal de datos listos. `max(respuesta, animación) + 1.2s`. Early-return de error antes del await (L3886) — error no cuelga. |
+| 4 — Pisos | ✅ | `ICHING_FINALE_MIN_MS=1200` (L142), `BONES_FIRE_MIN_MS=2500` (L146), ambos con override `NEXT_PUBLIC_*`. |
+| 5 — Typewriter | ✅ | `RevealOptions { msPerChar, minMs, maxMs }`, `prefers-reduced-motion` vía `matchMedia`, `NEXT_PUBLIC_TYPEWRITER_ENABLED`. Default `msPerChar ?? 22` preserva comportamiento previo. No duplicó componente. |
+| 6 — Watchdog | ✅ | `watchdogMs = max(budget×2.5, 120_000)` (L3640). `AbortController.signal` pasado al fetch (L3711). `.abort()` en timeout (L3646). Cleanup en `finally` (L4186–4190). Abort → catch → `attemptThreadRecovery`. Orden correcto. |
+| 7 — streamingText eliminado | ✅ | Estado y refs (`streamingDeltaAccRef`, `streamingFlushTimerRef`) removidos. Sin referencias colgantes. |
+
+**Vinculación de huesos confirmada:** `isProcessing={loading && boneRitualResult === null}` — `setBoneRitualResult(verdict)` voltea `isProcessing`. Crack+reveal del componente (~1600ms) cabe dentro del dwell `BONES_FIRE_MIN_MS` (2500ms).
+
+### Observaciones menores — acciones aplicadas post-auditoría
+
+| # | Observación | Fix aplicado |
+|---|---|---|
+| O1 | `BONES_FIRE_MIN_MS` es dwell post-respuesta, no piso real sobre el fuego. Respuesta cacheada → fuego apenas visible. | **Fix:** `boneAnimationStartMs` tracking antes de `setPhase("bones")`. Dwell = `max(0, BONES_FIRE_MIN_MS − elapsed)`. ✅ |
+| O2 | `getRitualBudget` con key desconocida devuelve `undefined` (SEED_MS miss). | **Fix:** `SEED_MS[key] ?? 40_000` hardguard. ✅ |
+| O3 | `prefersReduced` evaluado en cada render (matchMedia en hot-path). | **Fix:** Wrapped en `useMemo([], ...)` — evaluado una sola vez. ✅ |
+| O4 | Seed individual 40s < 48s medido en producción → finale sostiene más en 1ª consulta. | **Acción futura:** tras medir N≥10, ajustar seed a ~46–48s o calibrar `PHASE1_WEIGHT`/`PHASE2_WEIGHT`. No bloqueante. |
+
+### Foco de pruebas en Android real
+
+| Caso | Qué observar |
+|---|---|
+| 1ª consulta sesión con M3 (seed 58s) | ¿Finale sostiene tiempo excesivo? Medir wall-clock real para calibrar seed |
+| Respuesta cacheada/rápida | ¿Animación se siente larga? (`recordRitualBudget` auto-corrige en 2ª consulta) |
+| Huesos respuesta lenta vs instantánea | ¿Fuego visible ≥2.5s desde start? (O1 fix) |
+| Cortar red a mitad → watchdog | Spinner desaparece en ≤120s + recovery sin pantalla colgada |
+| `prefers-reduced-motion` activo | Texto aparece de golpe, sin animación |
+
+**Acción 8:** Correctamente diferida. Requiere golden set N≥50 de consultas medidas para calibrar prompt cache y tiempos TTFT. No es pendiente bloqueante — es secuenciado tras las pruebas de producción.
+
+---
+
+*Plan v3 generado el 2026-06-13 sobre el commit `51f4546`. Acciones 1–7 implementadas en `b94e7bc` + `60dbee4`. Fixes menores (O1–O3) aplicados post-auditoría independiente.*

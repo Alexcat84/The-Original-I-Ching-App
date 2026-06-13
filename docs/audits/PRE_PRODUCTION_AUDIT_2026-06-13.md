@@ -191,6 +191,19 @@ Descubiertos tras instalar APK 3.5.6/vc54 en dispositivo. Documentados en `HYDRA
 - [x] **TDZ P0:** `imagePrompt` TDZ en `stream_ritual` + Sentry.captureException — rama `fix/tdz-image-prompt-sentry`
   - Documentado en `docs/audits/AUDIT_2026-06-13_animation-plan-v3-DEFINITIVO.md` (§1)
   - Brief de Acción 3 en `docs/audits/BRIEF_accion-3_submit-reveal-redesign.md`
+- [x] **Animation plan v3 Acciones 2–7** — rama `feat/animation-plan-v3` (`60dbee4`), mergeada a staging+main (`9209da5`)
+  - A2: `ritual-budget-store.ts` — budget persistido por traductor en localStorage
+  - A3: Gate submit→reveal — `await revealPromise + ICHING_FINALE_MIN_MS` post-loop
+  - A4: Pisos `ICHING_FINALE_MIN_MS=1200ms` / `BONES_FIRE_MIN_MS=2500ms` (env override)
+  - A5: `useProgressiveRevealSubstring` parametrizable + `prefers-reduced-motion` + `NEXT_PUBLIC_TYPEWRITER_ENABLED`
+  - A6: Watchdog `AbortController` `max(budget×2.5, 120s)` → abort → recovery
+  - A7: `streamingText` + `oracle_delta`/`oracle_ready` render eliminados
+  - **Verificado** por auditoría independiente — ver `AUDIT_2026-06-13_animation-plan-v3-DEFINITIVO.md` §10
+- [x] **Fixes menores post-auditoría:**
+  - Piso de fuego real bones: elapsed tracking (`boneAnimationStartMs`)
+  - `getRitualBudget` fallback `?? 40_000` para key desconocida
+  - `prefersReduced` en `useMemo([], ...)` — una evaluación por montaje
+- [ ] **Acción 8** (ANTHROPIC_PROMPT_V2): diferida — requiere golden set N≥50
 
 ### Owner — ⏳ PENDIENTE
 - [ ] **Smoke test APK 3.5.7** en dispositivo Android real (validar HG-1 principalmente)
