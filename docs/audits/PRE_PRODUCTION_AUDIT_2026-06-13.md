@@ -13,7 +13,8 @@
 | **SEC-01 implementado** | `e6d425f` — `fix/sec-01-test-webhook` → staging → main (`2082871`) |
 | **Commit final auditoría** | `2082871` |
 | **Commit final sesión 2026-06-13** | `79f5a46` — hydration gate + attestKey + 3.5.7/vc55 |
-| **Estado post-remediación** | ✅ TODOS LOS HALLAZGOS CERRADOS + 2 post-audit fixes aplicados |
+| **Commit TDZ P0 fix** | `fix/tdz-image-prompt-sentry` — TDZ imagePrompt + Sentry en stream_ritual |
+| **Estado post-remediación** | ✅ TODOS LOS HALLAZGOS CERRADOS + 3 post-audit fixes aplicados |
 
 ---
 
@@ -187,6 +188,9 @@ Descubiertos tras instalar APK 3.5.6/vc54 en dispositivo. Documentados en `HYDRA
 - [x] HG-1 a HG-7 (hydration gate + attestKey)
 - [x] APK 3.5.7 / vc55 compilado y disponible localmente
 - [x] staging = main = `79f5a46`; working tree clean
+- [x] **TDZ P0:** `imagePrompt` TDZ en `stream_ritual` + Sentry.captureException — rama `fix/tdz-image-prompt-sentry`
+  - Documentado en `docs/audits/AUDIT_2026-06-13_animation-plan-v3-DEFINITIVO.md` (§1)
+  - Brief de Acción 3 en `docs/audits/BRIEF_accion-3_submit-reveal-redesign.md`
 
 ### Owner — ⏳ PENDIENTE
 - [ ] **Smoke test APK 3.5.7** en dispositivo Android real (validar HG-1 principalmente)
