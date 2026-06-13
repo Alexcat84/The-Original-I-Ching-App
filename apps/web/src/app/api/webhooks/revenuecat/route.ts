@@ -7,7 +7,8 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 
-const PURCHASE_EVENTS = new Set(["NON_RENEWING_PURCHASE", "TEST"]);
+const REAL_PURCHASE_EVENTS = new Set(["NON_RENEWING_PURCHASE"]);
+const TEST_EVENT = "TEST";
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function isValidUUID(s: unknown): s is string {
@@ -100,7 +101,20 @@ export async function POST(req: NextRequest) {
   const userId = (event?.app_user_id as string) ?? "";
   const productId = (event?.product_id as string) ?? "";
 
-  if (!PURCHASE_EVENTS.has(eventType)) {
+  // TEST events are gated by env var (default OFF in production).
+  // Returns 200 to prevent RevenueCat from retrying the event.
+  if (eventType === TEST_EVENT) {
+    const allowTest =
+      process.env.REVENUECAT_ALLOW_TEST_EVENTS === "1" ||
+      process.env.REVENUECAT_ALLOW_TEST_EVENTS === "true";
+    if (!allowTest) {
+      log.info("webhook_test_event_skipped", { eventType });
+      await log.flush();
+      return NextResponse.json({ skipped: "test_event_disabled_in_production" });
+    }
+  }
+
+  if (!REAL_PURCHASE_EVENTS.has(eventType) && eventType !== TEST_EVENT) {
     log.info("webhook_skipped", { eventType });
     await log.flush();
     return NextResponse.json({ skipped: eventType });
