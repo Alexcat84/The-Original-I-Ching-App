@@ -1098,7 +1098,7 @@ export async function POST(req: Request) {
       const stream = new ReadableStream<Uint8Array>({
         start(controller) {
           const writeEvent = (
-            event: "cast_ready" | "oracle_ready" | "final_ready" | "error",
+            event: "cast_ready" | "oracle_ready" | "oracle_delta" | "final_ready" | "error",
             payload: unknown,
           ) => {
             controller.enqueue(
@@ -1110,6 +1110,19 @@ export async function POST(req: Request) {
 
           void (async () => {
             let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
+            let deltaFlushTimer: ReturnType<typeof setTimeout> | null = null;
+            let deltaAcc = "";
+            let firstDeltaFired = false;
+            const flushDeltaAcc = () => {
+              if (!deltaAcc) return;
+              const text = deltaAcc;
+              deltaAcc = "";
+              writeEvent("oracle_delta", { d: text });
+              if (!firstDeltaFired) {
+                firstDeltaFired = true;
+                if (refundCtx) refundCtx.streamingStarted = true;
+              }
+            };
             try {
               writeEvent("cast_ready", {
                 oracleType: "iching" as const,
@@ -1139,6 +1152,21 @@ export async function POST(req: Request) {
                 }
               }, 25_000);
 
+              const useStreamingDeltas =
+                process.env.ANTHROPIC_STREAM_DELTAS === "1" ||
+                process.env.ANTHROPIC_STREAM_DELTAS === "true";
+              const onDelta = useStreamingDeltas
+                ? (text: string) => {
+                    deltaAcc += text;
+                    if (!deltaFlushTimer) {
+                      deltaFlushTimer = setTimeout(() => {
+                        deltaFlushTimer = null;
+                        flushDeltaAcc();
+                      }, 150);
+                    }
+                  }
+                : undefined;
+
               const prevIchingMessageId = await getPrevClaudeMessageId(authedUserId, sessionId);
               const {
                 text: interpretation,
@@ -1154,7 +1182,10 @@ export async function POST(req: Request) {
                 displayName,
                 castResult.castingMethod,
                 prevIchingMessageId,
+                onDelta,
               );
+              if (deltaFlushTimer) { clearTimeout(deltaFlushTimer); deltaFlushTimer = null; }
+              flushDeltaAcc();
               if (ichingClaudeMessageId) void setPrevClaudeMessageId(authedUserId, sessionId, ichingClaudeMessageId);
               const interpretationSummary =
                 rawInterpretationSummary?.trim() ||
@@ -1164,7 +1195,8 @@ export async function POST(req: Request) {
                 interpretation,
                 category,
               });
-              if (refundCtx) refundCtx.streamingStarted = true;
+              // For non-streaming path, mark streaming started at oracle_ready (full response)
+              if (!firstDeltaFired && refundCtx) refundCtx.streamingStarted = true;
               ritualLog("event:oracle_ready", { category });
 
               const imagePrompt = buildImagePrompt(
@@ -1346,6 +1378,7 @@ export async function POST(req: Request) {
               });
             } finally {
               if (heartbeatTimer) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
+              if (deltaFlushTimer) { clearTimeout(deltaFlushTimer); deltaFlushTimer = null; flushDeltaAcc(); }
               ritualLog("close");
               await log.flush();
               controller.close();

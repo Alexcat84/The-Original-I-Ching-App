@@ -619,6 +619,7 @@ export default function HomePage() {
   > | null>(null);
   const [lastRitualDebugSnapshot, setLastRitualDebugSnapshot] =
     useState<RitualDebugSnapshot | null>(null);
+  const [streamingText, setStreamingText] = useState<string | null>(null);
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
   type IchingCastMode = "auto" | "manual";
   const [ichingCastMode, setIchingCastMode] = useState<IchingCastMode>("auto");
@@ -825,6 +826,8 @@ export default function HomePage() {
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const mountScrollDoneRef = useRef(false);
+  const streamingDeltaAccRef = useRef("");
+  const streamingFlushTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rnLoadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
@@ -3555,6 +3558,9 @@ export default function HomePage() {
             threadLoadBySessionRef.current.delete(sessionIdSentForRecovery);
             await loadSessionThread(sessionIdSentForRecovery, consultSession.localId);
             window.dispatchEvent(new CustomEvent("iching:account-refresh"));
+            streamingDeltaAccRef.current = "";
+            if (streamingFlushTimerRef.current) { clearTimeout(streamingFlushTimerRef.current); streamingFlushTimerRef.current = null; }
+            setStreamingText(null);
             setPhase("reading");
             setQuestion("");
             requestAnimationFrame(() => resizeQuestionInput());
@@ -3777,6 +3783,27 @@ export default function HomePage() {
                 castPayload.lines.length === 6
               ) {
                 startLineReveal(castPayload.lines);
+              }
+            } else if (eventName === "oracle_delta") {
+              const deltaPayload = payload as { d?: string };
+              if (typeof deltaPayload.d === "string") {
+                streamingDeltaAccRef.current += deltaPayload.d;
+                if (!streamingFlushTimerRef.current) {
+                  streamingFlushTimerRef.current = setTimeout(() => {
+                    streamingFlushTimerRef.current = null;
+                    setStreamingText(streamingDeltaAccRef.current);
+                  }, 150);
+                }
+              }
+            } else if (eventName === "oracle_ready") {
+              logRitualTrace("sse:event", { eventName });
+              if (streamingFlushTimerRef.current) {
+                clearTimeout(streamingFlushTimerRef.current);
+                streamingFlushTimerRef.current = null;
+              }
+              const readyPayload = payload as { interpretation?: string };
+              if (readyPayload.interpretation) {
+                setStreamingText(readyPayload.interpretation);
               }
             } else if (eventName === "final_ready") {
               logRitualTrace("sse:event", { eventName });
@@ -4081,6 +4108,9 @@ export default function HomePage() {
           storedBudgetMs: lastIchingConsultWallMsRef.current,
         });
       }
+      streamingDeltaAccRef.current = "";
+      if (streamingFlushTimerRef.current) { clearTimeout(streamingFlushTimerRef.current); streamingFlushTimerRef.current = null; }
+      setStreamingText(null);
       setPhase("reading");
       logRitualTrace("submit:complete");
       setConsultPanelOpen(false);
@@ -4823,6 +4853,15 @@ export default function HomePage() {
                 <div className="thread-block chat-entry">
                   <div className="chat-bubble chat-user">
                     <p className="question-chip">{pendingUserQuestion}</p>
+                  </div>
+                </div>
+              ) : null}
+              {streamingText && loading ? (
+                <div className="thread-block chat-entry" aria-live="polite" aria-busy="true">
+                  <div className="chat-bubble chat-assistant">
+                    <div className="interpretation-stack" data-testid="streaming-preview">
+                      <InterpretationBody text={streamingText} reveal={false} />
+                    </div>
                   </div>
                 </div>
               ) : null}
