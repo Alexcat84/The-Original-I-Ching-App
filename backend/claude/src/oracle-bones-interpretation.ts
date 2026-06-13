@@ -5,7 +5,7 @@ import type { OracleBonesCastResult } from "@iching-oracle/oracle-bones-engine";
 import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { createAnthropicClient, callAnthropicWithRetry } from "./anthropic-client.js";
-import { buildHistoricalContext, buildCurrentContext, type ResponseMode } from "./interpretation-context.js";
+import { buildHistoricalContext, buildCurrentContext, buildV2HistoricalUserBlock, type ResponseMode } from "./interpretation-context.js";
 import { loadClaudeEnv } from "./env.js";
 import {
   oracleBonesFallbackProse,
@@ -366,6 +366,10 @@ INSTRUCTIONS:
 `.trim();
 }
 
+function isPromptV2Enabled(env: NodeJS.ProcessEnv): boolean {
+  return env.ANTHROPIC_PROMPT_V2 === "1" || env.ANTHROPIC_PROMPT_V2 === "true";
+}
+
 export async function generateOracleBonesInterpretation(
   cast: OracleBonesCastResult,
   tier: string,
@@ -411,7 +415,50 @@ export async function generateOracleBonesInterpretation(
 
   if (ANTHROPIC_API_KEY) {
     try {
-      const client = createAnthropicClient(ANTHROPIC_API_KEY);
+      const useV2 = isPromptV2Enabled(env);
+      const client = createAnthropicClient(ANTHROPIC_API_KEY, useV2);
+
+      // V2: historical consultations become real user/assistant pairs with cache breakpoint.
+      // Current user message contains only the current consultation block + optional theme.
+      let anthropicMessages: Anthropic.MessageParam[];
+      if (useV2 && context && context.previousConsultations.length > 0) {
+        const priorConsultations = context.previousConsultations;
+        anthropicMessages = [];
+        for (let i = 0; i < priorConsultations.length; i++) {
+          const c = priorConsultations[i];
+          const isBreakpoint = i === priorConsultations.length - 1;
+          anthropicMessages.push({
+            role: "user",
+            content: [{ type: "text", text: buildV2HistoricalUserBlock(c, language) }],
+          });
+          const assistantBlock = isBreakpoint
+            ? { type: "text" as const, text: c.interpretationSummary, cache_control: { type: "ephemeral" as const } }
+            : { type: "text" as const, text: c.interpretationSummary };
+          anthropicMessages.push({ role: "assistant", content: [assistantBlock] });
+        }
+        // Current turn: theme + continuity block (without historical listing) + consultation
+        const themeOnlyBlock = buildCurrentContext(context, undefined, language, mode);
+        anthropicMessages.push({
+          role: "user",
+          content: themeOnlyBlock.trim()
+            ? [{ type: "text", text: themeOnlyBlock }, { type: "text", text: consultBlockWithName }]
+            : [{ type: "text", text: consultBlockWithName }],
+        });
+      } else {
+        // V1 path (or V2 with no prior history — same structure)
+        anthropicMessages = [
+          {
+            role: "user",
+            content: [
+              ...(contextBlock
+                ? [{ type: "text" as const, text: contextBlock, cache_control: { type: "ephemeral" as const } }]
+                : []),
+              { type: "text" as const, text: consultBlockWithName },
+            ],
+          },
+        ];
+      }
+
       const anthropicCallStart = Date.now();
       const response = await callAnthropicWithRetry(
         client,
@@ -425,26 +472,7 @@ export async function generateOracleBonesInterpretation(
               cache_control: { type: "ephemeral" },
             },
           ],
-          messages: [
-            {
-              role: "user",
-              content: [
-                ...(contextBlock
-                  ? [
-                      {
-                        type: "text" as const,
-                        text: contextBlock,
-                        cache_control: { type: "ephemeral" as const },
-                      },
-                    ]
-                  : []),
-                {
-                  type: "text",
-                  text: consultBlockWithName,
-                },
-              ],
-            },
-          ],
+          messages: anthropicMessages,
         },
         { tier, language, method: "oracle-bones" },
         previousMessageId ?? null,
