@@ -43,7 +43,19 @@ function numberField(record: Record<string, unknown>, key: string): number | nul
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-function logCacheUsage(source: "anthropic" | "openrouter", usageRaw: unknown): void {
+type CacheUsageMeta = {
+  tier: string;
+  method: string;
+  language: string;
+  sessionPosition: number;
+  generationMs: number;
+};
+
+function logCacheUsage(
+  source: "anthropic" | "openrouter",
+  usageRaw: unknown,
+  meta: CacheUsageMeta,
+): void {
   if (!LOG_CLAUDE_CACHE_METRICS) return;
   const usage = toUsageRecord(usageRaw);
   const inputTokens = numberField(usage, "input_tokens");
@@ -61,6 +73,7 @@ function logCacheUsage(source: "anthropic" | "openrouter", usageRaw: unknown): v
     cacheReadTokens,
     cacheCreationTokens,
     cacheReadRatio,
+    ...meta,
   });
 }
 
@@ -399,6 +412,7 @@ export async function generateOracleBonesInterpretation(
   if (ANTHROPIC_API_KEY) {
     try {
       const client = createAnthropicClient(ANTHROPIC_API_KEY);
+      const anthropicCallStart = Date.now();
       const response = await callAnthropicWithRetry(
         client,
         {
@@ -439,7 +453,13 @@ export async function generateOracleBonesInterpretation(
         .filter((b) => b.type === "text")
         .map((b) => (b as { text: string }).text)
         .join("");
-      logCacheUsage("anthropic", response.usage);
+      logCacheUsage("anthropic", response.usage, {
+        tier,
+        method: "oracle-bones",
+        language,
+        sessionPosition: (context?.previousConsultations?.length ?? 0) + 1,
+        generationMs: Date.now() - anthropicCallStart,
+      });
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
       const snapshotMatch = fullText.match(
@@ -490,6 +510,7 @@ export async function generateOracleBonesInterpretation(
           "X-Title": "The Original I Ching App",
         },
       });
+      const openRouterCallStart = Date.now();
       const response = await openRouterClient.messages.create({
         model,
         max_tokens: maxTokens,
@@ -510,7 +531,13 @@ export async function generateOracleBonesInterpretation(
         .filter((b) => b.type === "text")
         .map((b) => (b as { text: string }).text)
         .join("");
-      logCacheUsage("openrouter", response.usage);
+      logCacheUsage("openrouter", response.usage, {
+        tier,
+        method: "oracle-bones",
+        language,
+        sessionPosition: (context?.previousConsultations?.length ?? 0) + 1,
+        generationMs: Date.now() - openRouterCallStart,
+      });
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
       const snapshotMatch = fullText.match(
