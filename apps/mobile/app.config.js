@@ -7,7 +7,7 @@ module.exports = ({ config }) => ({
   ...config,
   name: "The Original I Ching",
   slug: "the-original-i-ching",
-  version: "3.5.6",
+  version: "3.5.7",
   scheme: "theoriginaliching",
   orientation: "portrait",
   platforms: ["android"],
@@ -24,7 +24,7 @@ module.exports = ({ config }) => ({
   },
   android: {
     package: "com.theoriginaliching.app",
-    versionCode: 54,
+    versionCode: 55,
     compileSdkVersion: 35,
     targetSdkVersion: 35,
     buildToolsVersion: "35.0.0",

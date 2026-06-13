@@ -60,7 +60,7 @@ export function useIntegrityCheck() {
       const { challenge } = (await res.json()) as { challenge: string };
 
       // 3. Attest — throws on emulator / dev build without Play Services.
-      const token = await AppIntegrity.getAttestationAsync(challenge, ANDROID_CLOUD_PROJECT_NUMBER);
+      const token = await AppIntegrity.attestKey(challenge, ANDROID_CLOUD_PROJECT_NUMBER);
 
       // 4. Cache with expiry slightly shorter than server TTL.
       const expiresAt = Date.now() + (CHALLENGE_TTL_S - 60) * 1000;
