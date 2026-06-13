@@ -30,7 +30,7 @@ export function getRitualBudget(key: RitualKey): number {
   } catch {
     /* SSR / storage unavailable — fall through to seed */
   }
-  return SEED_MS[key];
+  return SEED_MS[key] ?? 40_000;
 }
 
 /** Persists measured wall-clock duration (clamped) for the given key. */

@@ -3576,6 +3576,9 @@ export default function HomePage() {
         /* leave ritual slots empty */
       }
     }
+    // Track fire-animation start for bones elapsed-floor (Action 4 fix).
+    const boneAnimationStartMs =
+      showRitualAnimation && oracleMode === "oracle_bones" ? Date.now() : null;
     setPhase(
       showRitualAnimation
         ? oracleMode === "oracle_bones"
@@ -4003,7 +4006,10 @@ export default function HomePage() {
         data.oracleBones
       ) {
         setBoneRitualResult(data.oracleBones.verdict);
-        await new Promise<void>((r) => window.setTimeout(r, BONES_FIRE_MIN_MS));
+        // Ensure fire animation is visible for at least BONES_FIRE_MIN_MS from phase start.
+        const boneElapsed = boneAnimationStartMs != null ? Date.now() - boneAnimationStartMs : 0;
+        const boneRemaining = Math.max(0, BONES_FIRE_MIN_MS - boneElapsed);
+        await new Promise<void>((r) => window.setTimeout(r, boneRemaining));
       }
       if (
         showRitualAnimation &&
