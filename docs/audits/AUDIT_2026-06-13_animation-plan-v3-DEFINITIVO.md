@@ -1,0 +1,218 @@
+# Plan de Implementación DEFINITIVO (v3) — Streaming Server-Side + Reveal por Animación + Typewriter
+## The Original I Ching App
+
+| Campo | Valor |
+|---|---|
+| **Fecha** | 2026-06-13 |
+| **Commit base** | `51f4546` |
+| **Sustituye a** | `AUDIT_2026-06-13_animation-plan-v2-final.md` |
+| **Incorpora** | Correcciones de dos auditorías de factibilidad independientes (verificadas en código) |
+| **Enfoque** | Streaming **encendido server-side** (imagen paralela, total ~52 s); el cliente **no** pinta deltas; la animación gobierna el tiempo; reveal con typewriter acotado. |
+| **Evidencia operativa** | Logs de Axiom confirman `ANTHROPIC_STREAM_DELTAS` y `ANTHROPIC_PARALLEL_IMAGE` **activos en producción** (`theoriginaliching.com`, commit `51f4546`). El TDZ **se está disparando ahora** en cada consulta stream_ritual — **Acción 1 es hotfix P0 inmediato.** |
+
+---
+
+## 0. Cambios respecto a v2 (de las dos auditorías)
+
+| # | Corrección | Origen | Estado |
+|---|---|---|---|
+| C1 | **Acción 3 NO es "quitar streamingText" — es un rediseño del ciclo submit→reveal** | Auditoría 2 | ✅ Verificado en código |
+| C2 | **Reutilizar `useProgressiveRevealSubstring` existente** (no crear `TypewriterReveal` nuevo) | Auditoría 2 | ✅ Verificado (hook existe, 2.2–7.5 s por párrafos) |
+| C3 | `dataReady` debe dispararse **dentro** del handler `final_ready` (L3848), no post-loop | Auditoría 2 | ✅ Verificado |
+| C4 | Watchdog **relativo**: `max(budget × 2.5, 120_000)`, coordinado con `attemptThreadRecovery` | A1 (fórmula) + A2 (coordinación) | Adoptado |
+| C5 | Validar `final_ready`: `imageUrl` puede ser null — shimmer/fallback | Auditoría 1 | Adoptado |
+| C6 | Extender la máquina de estados a **huesos (JSON, no SSE)**; **manual cast fuera de alcance** | Auditoría 2 | Adoptado |
+| C7 | Re-estimación realista **~22–30 h**, Acción 3 dominante | Auditoría 2 | Adoptado |
+
+---
+
+## 1. ACCIÓN 1 — Hotfix TDZ + Sentry (P0, primero, ya en producción)
+
+**Por qué da valor al usuario:** sin este fix, `final_ready` lanza `Cannot access 'imagePrompt' before initialization` **después** de que la interpretación ya se generó y persistió; el cliente recibe `error` y la respuesta **desaparece de pantalla**. Es la causa directa de que el usuario vea su lectura y luego se borre. Confirmado en Axiom en producción.
+
+**Diagnóstico verificado:** en el path streaming (IIFE `void (async () => {…})()`, L1112), `final_ready` (L1425) referenciaba `imagePrompt`, declarada solo en el path JSON (L1506, cuerpo de `POST`). La referencia resolvía por closure a esa binding sin ejecutar — TDZ. El fix declara `imagePrompt` en el scope del IIFE (sombra legal, sin redeclaración con L1506).
+
+### Cambios exactos (archivo: `apps/web/src/app/api/consult/route.ts`)
+
+> Patch aplicado: `action-1-tdz-sentry.patch` (`git apply action-1-tdz-sentry.patch`).  
+> **Estado: ✅ APLICADO** en rama `fix/tdz-image-prompt-sentry`.
+
+**1a — Declarar `imagePrompt` una vez y reutilizarlo (fix TDZ).** Tras el cierre del objeto `imageParams` (`} as const;`) y antes de `let image = await (…)`:
+
+```ts
+// TDZ fix (audit 2026-06-13): `imagePrompt` is referenced by the
+// `final_ready` event below, but was only declared in the non-streaming
+// path. Declare it once here in the streaming scope and reuse it for the
+// sequential build, the B3 rebuild, and the final_ready payload.
+const imagePrompt = buildImagePrompt(
+  castResult.primaryHexagram,
+  castResult.transformedHexagram,
+  category,
+  castResult.changingLines,
+  castResult.lines,
+  castResult.id,
+);
+```
+
+Y reemplazar las **dos** llamadas inline a `buildImagePrompt(...)` (en la rama de mismatch del ternario y en el rebuild B3) por `prompt: imagePrompt`:
+
+```ts
+let image = await (parallelImagePromise && parallelImageCategory === category
+  ? (ritualLog("parallel_image:await", { category }), parallelImagePromise)
+  : (() => {
+      if (parallelImagePromise) ritualLog("parallel_image:category_mismatch", { expected: parallelImageCategory, got: category });
+      return buildImageAsset({ prompt: imagePrompt, ...imageParams });
+    })()
+);
+
+if (!image) {
+  ritualLog("parallel_image:failed_rebuild", { category });
+  image = await buildImageAsset({ prompt: imagePrompt, ...imageParams });
+}
+```
+
+**1b — Sentry en el catch streaming.** En `catch (streamError)`, tras `console.error("[api/consult][stream_ritual]", streamError)`:
+
+```ts
+Sentry.captureException(streamError, {
+  tags: { api: "consult", mode: "stream_ritual" },
+});
+```
+
+(`import * as Sentry from "@sentry/nextjs"` ya existe en L1.)
+
+**Verificación post-fix:** confirmar en Axiom que desaparece `stream_consult_error: Cannot access 'imagePrompt'…` y que un error inducido aparece en Sentry.
+
+---
+
+## 2. ACCIÓN 2 — Presupuesto segmentado por modo + traductor
+
+Nuevo `apps/web/src/lib/ritual-budget-store.ts`:
+
+```ts
+type RitualKey =
+  | "iching:wilhelm" | "iching:legge" | "iching:zhouyi" | "iching:master_combined"
+  | "bones";
+
+const SEED_MS: Record<RitualKey, number> = {
+  "iching:wilhelm": 40_000, "iching:legge": 40_000, "iching:zhouyi": 40_000,
+  "iching:master_combined": 58_000,   // síntesis de 3 fuentes = más largo
+  "bones": 25_000,
+};
+// localStorage "ritual_budget_v1:{key}" → ms medidos hasta final_ready (clamp 8s–120s)
+export function getRitualBudget(key: RitualKey): number;     // measured ?? seed, clamped
+export function recordRitualBudget(key: RitualKey, ms: number): void;
+```
+
+**Migración (C1 de A1):** `lastIchingConsultWallMsRef` se usa en **4 sitios** (`page.tsx` L3549, L3782, L4072, L4144). Los cuatro migran a `getRitualBudget(key)` / `recordRitualBudget(key, measured)`, con `key` compuesta de modo + `translatorId` real del request (`wilhelm`|`legge`|`zhouyi`|`master_combined`). El ref puede **coexistir como caché en sesión** sobre el store para evitar leer localStorage en hot paths. El `measured` es la pared hasta `final_ready` (texto + imagen).
+
+---
+
+## 3. ACCIÓN 3 — Rediseño del ciclo submit→reveal (núcleo, ~12–16 h)
+
+**No es "quitar `streamingText`".** Hoy (`page.tsx`):
+- `final_ready` solo **guarda** `finalPayload` dentro del loop SSE (L3850).
+- La transición a lectura ocurre **post-loop**, inmediata: `updateActiveSession` (L4088), `setRevealConsultationId` (L4119), `setPhase("reading")` (L4154), `setLoading(false)` (L4188). Por eso la animación se corta apenas llega la respuesta.
+
+Cambios:
+
+1. **(C3) Disparar la señal dentro del handler `final_ready` (L3848)**, no post-loop: al parsear `final_ready`, guardar payload en ref, marcar `dataReady = true` y llamar `tryAdvanceToFinale()` **mientras los ticks siguen corriendo**.
+2. **Diferir la transición de lectura:** mover `updateActiveSession` / `setRevealConsultationId` / `setPhase("reading")` / `setLoading(false)` para que se ejecuten **dentro de `tryAdvanceToFinale()`**, solo cuando `dataReady && buildMinSatisfied`. Mantener `phase === "coins"|"bones"` y `loading === true` durante la espera.
+3. **Eliminar render progresivo:** quitar el handler `oracle_delta` (L3827–3837) y el render de `streamingText` (L4899–4907); el estado `streamingText`, `streamingDeltaAccRef`, `streamingFlushTimerRef` se eliminan. El texto del reveal viene de `final_ready.interpretation`.
+4. **(C5) Validar el payload:** `interpretation` presente (si no → error/retry); `imageUrl` puede ser null → shimmer/fallback en el slot de imagen, no romper el reveal.
+
+Máquina de estados (única señal autoritativa = `dataReady`):
+
+```
+onConsultStart(mode, translator): budget=getRitualBudget(key); startBuildStage(budget); dataReady=false
+onFinalReady(payload):  // DENTRO del handler SSE (C3)
+   if (!payload.interpretation) return onStreamError("incomplete")
+   data=payload; dataReady=true; tryAdvanceToFinale()
+onJsonResponse(body):    // (C6) huesos / auto-JSON: el trigger es el body completo
+   data=body; dataReady=true; tryAdvanceToFinale()
+tick/onBuildBudgetElapsed: if(!dataReady) holdBuildStage() else tryAdvanceToFinale()
+tryAdvanceToFinale():
+   if(!dataReady || !buildMinSatisfied()) return
+   playFinale(data) → onFinaleMinDwellDone(() => revealWithTypewriter(data))
+   commitReadingTransition(data)   // updateActiveSession/setPhase/setLoading DIFERIDOS aquí
+```
+
+---
+
+## 4. ACCIÓN 4 — Pisos por etapa
+
+| Modo | Etapa | Parámetro (env `NEXT_PUBLIC_*`) | Default |
+|---|---|---|---|
+| I Ching | Líneas (12 ticks) | `MIN_TICK` / `MAX_TICK` (existen) | 520 / 3000 ms |
+| I Ching | Formación hexagrama | `ICHING_FINALE_MIN_MS` (nuevo) | 1200 ms |
+| Huesos | Fuego | `BONES_FIRE_MIN_MS` (nuevo) | 2500 ms |
+| Huesos | Grieta | `BONES_CRACK_MS` (de `CRACK_FADE_IN_MS`) | 900 ms |
+| Huesos | Reveal | `BONES_REVEAL_MS` (de `REVEAL_HOLD_MS`) | 700 ms |
+
+Nota: hoy el finale de I Ching ocurre tras los ticks sin espera; con los pisos + gate, el comportamiento cambia (espera `dataReady`). Es intencional.
+
+---
+
+## 5. ACCIÓN 5 — Typewriter: extender el hook existente (C2)
+
+**No crear componente nuevo.** Ya existe `apps/web/src/hooks/useProgressiveRevealSubstring.ts` (revela markdown por párrafos en `min(7500, max(2200, len×22))` ms), usado en `InterpretationBody` (L414).
+
+- **Parametrizar la duración por llamada** (no global, para no alterar el reveal del path no-streaming): aceptar `{ msPerChar, minMs, maxMs }`. Defaults para el reveal post-animación: `msPerChar ≈ 1.2`, `minMs = 1200`, `maxMs = 3500`.
+- Mantener la granularidad **por párrafo/sección** (`\n\n`) que el hook ya usa — ~5–8 re-renders del markdown, no N (evita el problema de WebView que señaló A1).
+- Respetar `prefers-reduced-motion` — texto de golpe. Flag `NEXT_PUBLIC_TYPEWRITER_ENABLED`.
+- **Orden / imagen:** la imagen ya está lista en `final_ready` (antes del reveal visual por el gate). Mostrar shimmer hasta iniciar el typewriter y revelar la imagen al comenzar a "escribir" (o al terminar) — decisión de UX, pero **no** dejar la imagen esperando indefinidamente.
+
+---
+
+## 6. ACCIÓN 6 — Watchdog + manejo de error (coordinado con recovery) (C4)
+
+- **Watchdog relativo:** `watchdogMs = max(budget × 2.5, 120_000)`. Un M3 (budget ~58 s) → ~145 s; un individual (~40 s) → ~120 s. Evita falsos positivos en consultas profundas legítimas (recordar `maxDuration = 300` en server).
+- **Coordinación con `attemptThreadRecovery`** (RCA 2026-06-12, ya existe en EOF limpio y en catch): orden **watchdog → recovery → error**. No mostrar error si recovery está en curso.
+- Evento `error` del stream → detener animación, mostrar reintento. Si `persist_done` ocurrió, la lectura está en DB y se recupera al recargar.
+
+---
+
+## 7. Reducción del tiempo
+
+1. Imagen paralela conservada (streaming ON): ~52 s vs ~70–78 s secuencial.
+2. **`ANTHROPIC_PROMPT_V2`** tras golden set N≥50: cachea texto canónico + system prompt — menor TTFT/costo (independiente de este plan).
+3. Presupuesto preciso por traductor — sin "hold muerto".
+4. Pisos cortos + typewriter acotado — respuestas rápidas revelan pronto.
+
+---
+
+## 8. Criterios de aceptación
+
+1. **I Ching individual / Master 3 / huesos:** etapas completas, sin pintar deltas durante la animación, reveal con typewriter, imagen presente.
+2. **TDZ resuelto:** sin `stream_consult_error: Cannot access 'imagePrompt'…` en Axiom; errores futuros llegan a Sentry.
+3. **Respuesta rápida (cacheada):** pisos se cumplen, sin flash del hilo.
+4. **Respuesta lenta (M3 + contexto largo):** build sostiene hasta `dataReady`; nada se adelanta al dato; watchdog no dispara falso positivo (~145 s).
+5. **Stream error / watchdog → recovery → error:** sin pantalla colgada; sin error si recovery activo.
+6. **Cambio de traductor:** presupuesto no contaminado (validar `key` con `translatorId` real).
+7. **Huesos (JSON):** mismo gate, trigger = body completo.
+8. **`prefers-reduced-motion`:** texto de golpe.
+9. **#11 (A2):** con respuesta a ~52 s, la UI permanece en fase ritual hasta `build-min + finale + typewriter` — sin flash del hilo antes.
+10. **Imagen:** medir `assets_ready` vs wall-clock del cliente (persist va después de oracle_ready).
+11. **Fuera de alcance (C6):** manual cast I Ching (usa JSON + `ICHING_MANUAL_FINALE_*`) — los criterios 1–5 aplican a auto + stream_ritual + bones JSON.
+
+---
+
+## 9. Acciones, esfuerzo y secuencia
+
+| # | Acción | Esfuerzo | Prioridad | Depende de |
+|---|---|---|---|---|
+| 1 | **Fix TDZ + Sentry** (hotfix P0, ya en prod) | ~30 min | **Crítica, primero** | — |
+| 2 | Store de presupuesto segmentado | 2–3 h | Alta | — |
+| 3 | **Rediseño submit→reveal + gate** | **12–16 h** | Alta (núcleo) | 1 |
+| 4 | Pisos por etapa | 2–3 h | Media | — |
+| 5 | Extender `useProgressiveRevealSubstring` + reduced-motion | 2–4 h | Media | 3 |
+| 6 | Watchdog relativo + coordinación recovery | 3–4 h | Alta | 3 |
+| 7 | (Opcional) suprimir deltas al cliente | 1 h | Baja | 1 |
+| 8 | `ANTHROPIC_PROMPT_V2` tras golden set | — | Media | golden set |
+
+**Total realista: ~22–30 h**, con la Acción 3 como trabajo dominante.  
+**Orden:** 1 (ya, hotfix) → 2 → 3 → (4 + 6) → 5 → 7 → 8.
+
+---
+
+*Plan v3 generado el 2026-06-13 sobre el commit `51f4546`. Incorpora las correcciones de dos auditorías de factibilidad verificadas en código. La Acción 1 está implementada y disponible como `action-1-tdz-sentry.patch`.*
