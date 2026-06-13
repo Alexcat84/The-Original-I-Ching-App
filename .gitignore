@@ -24,3 +24,7 @@ tools/output/
 *.keystore.bak
 *.jks.bak
 tools/fallback-tools/_sim*.mjs
+# Claude Code / agent runtime state — never commit
+.agents/
+.tmp/
+skills-lock.json
