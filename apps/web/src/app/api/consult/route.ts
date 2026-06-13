@@ -747,6 +747,19 @@ export async function POST(req: Request) {
       if (sessionMeta) {
         previousRows = mapStoredConsultationsToRows(sessionMeta.consultations);
         authorizedDepth = previousRows.length;
+        // F0.3 — measure inter-consultation interval to inform TTL choice in Phase 1.
+        // A high ratio of consultations within 60 min → use TTL 1h; otherwise 5m suffices.
+        const lastConsult = sessionMeta.consultations.at(-1);
+        if (lastConsult) {
+          const minutesSincePreviousConsultation =
+            Math.round(((Date.now() - lastConsult.createdAt) / 60_000) * 10) / 10;
+          log.info("session_consult_interval", {
+            userId: shortUserId(authedUserId),
+            sessionId: sessionId.slice(0, 8),
+            sessionPosition: previousRows.length + 1,
+            minutesSincePreviousConsultation,
+          });
+        }
       } else if (isDeepening) {
         // Client claims deepening but session not found in DB — treat as fresh.
         previousRows = [];
