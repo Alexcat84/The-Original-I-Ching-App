@@ -1,8 +1,50 @@
-<!-- changelog:last-release:90a6650 -->
+<!-- changelog:last-release:48d3be1 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [3.5.6] — 2026-06-13 | versionCode: 54 | Stage: Internal Testing
+
+### New
+- feat(perf): Phase 3 — parallel image generation via ANTHROPIC_PARALLEL_IMAGE flag | commit: 907d326
+- feat(perf): Phase 2 — streaming deltas via ANTHROPIC_STREAM_DELTAS flag | commit: 7e34f48
+- feat(perf): Phase 1 — prompt caching V2 with real conversation history pairs | commit: 4b931b4
+- feat(perf/phase-0): telemetry baseline for prompt-cache optimization | commit: 30ce9ec
+- feat(api): token refund on post-charge failure (audit CRIT-02) | commit: 36243b1
+- feat(db): migration 072 — refund_token RPC + token_refund_log (audit CRIT-02) | commit: c39a00d
+
+### Fix
+- fix(sec): SEC-01 — gate TEST webhook events behind REVENUECAT_ALLOW_TEST_EVENTS | commit: e6d425f
+- fix(perf): resolve B3 — guard undefined image from failed parallel build | commit: 63bbea6
+- fix(perf): resolve Opus 4.8 audit blockers B1 + B2 | commit: 0f13096
+- fix(response): strip I CHING READING / ORACLE BONES READING title headers | commit: 06e7be1
+- fix(stream): move recovery to both failure paths + polling + i18n (RCA 2026-06-12) | commit: 33bbfaf
+- fix(stream): SSE heartbeat + client-side recovery for Android WebView timeout | commit: b338329
+- fix(pdf): route image fetches through server proxy to bypass CORS on R2 URLs | commit: dd276c5
+- fix(images): overlay compositing for data:image/ URLs (b64_json fallback path) | commit: b4b2dc4
+- fix(mobile): fix PDF export — corrupt base64 from blob slicing | commit: c590e8a
+- fix(mobile): fix PDF export failing with 'No se pudo guardar' on Android | commit: 2788727
+- fix(infra): recalibrate Sentry drift threshold + fix migration comment (audit OBS-01) | commit: 4f66197
+- fix(infra): correct Redis TTL semantics comment + Sentry drift alert (audit ALT-01) | commit: ae97849
+- fix(infra): pin Vercel region to iad1 (audit MED-01) | commit: 58815b4
+- fix(infra): lower PostgREST semaphore cap 20→8 (audit CRIT-01) | commit: 05177a5
+
+### Performance
+- perf(pdf): preload jspdf bundle when thread has content to eliminate click delay | commit: adf26b1
+
+### Docs
+- docs: add perf optimization audit (Fable initial + Phase 1-3 impl + Opus 4.8 follow-up) | commit: 51e3e2d
+
+### Maintenance
+- chore: trigger Vercel staging redeploy for REVENUECAT_ALLOW_TEST_EVENTS | commit: 48d3be1
+- chore: trigger Vercel redeploy for new env vars | commit: fb8aeb1
+- test(api): token refund decision matrix + helper contracts (audit CRIT-02) | commit: 325a581
+- sync version bump 3.5.5 from main | commit: 698f312
+- chore(mobile): bump to 3.5.5 (versionCode 53) — Phase 7+8 APK | commit: dfdcdf6
+- sync main → staging: Phase 8 OOM crash fix + session recovery | commit: c8b8607
+
+---
 
 ## [3.5.5] — 2026-06-10 | versionCode: 53 | Stage: Internal Testing
 
@@ -1424,7 +1466,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.5.5 | 53 | 2026-06-10 | Internal Testing | 8 | Phase 8 — prevent OOM crash + restore session on renderer kill; Phase 7 P1 — consolidate getUserSessionSummaries from 2 queries to 1 RPC + Re…; Phase 7 P0 — reduce PostgREST connections per login (Warp kill root cause) |
+| 3.5.6 | 54 | 2026-06-13 | Internal Testing | 28 | Phase 3 — parallel image generation via ANTHROPIC_PARALLEL_IMAGE flag; Phase 2 — streaming deltas via ANTHROPIC_STREAM_DELTAS flag; Phase 1 — prompt caching V2 with real conversation history pairs |
+| 3.5.5 | 53 | 2026-06-10 | Internal Testing | 0 | — |
 | 3.5.4 | 52 | 2026-06-10 | Internal Testing | 0 | — |
 | 3.5.2 | 45 | 2026-06-07 | Closed Testing | 0 | — |
 | 3.5.1 | 44 | 2026-06-06 | Closed Testing | 0 | — |

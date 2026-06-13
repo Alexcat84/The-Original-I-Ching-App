@@ -10,7 +10,9 @@
 | **Alcance** | Límite de confianza servidor: rutas API, auth/créditos/pagos, migraciones SQL, fases de performance 1–3 |
 | **Objetivo** | Veredicto de preparación para lanzamiento en vivo (Google Play + web) |
 | **Veredicto** | ✅ APROBADO para producción (condicionado al checklist de operación §7) |
-| **SEC-01 implementado** | `fix/sec-01-test-webhook` → staging → main |
+| **SEC-01 implementado** | `e6d425f` — `fix/sec-01-test-webhook` → staging → main (`2082871`) |
+| **Commit final en main** | `2082871` |
+| **Estado post-remediación** | ✅ TODOS LOS HALLAZGOS CERRADOS |
 
 ---
 
@@ -96,8 +98,13 @@ Revisión estática priorizada por riesgo sobre el límite de confianza servidor
 - Cuando ON (staging/preview): flujo completo como antes
 
 **Variable de entorno requerida:**
-- Producción: `REVENUECAT_ALLOW_TEST_EVENTS` no establecida (o `false`) — comportamiento seguro por defecto
+- Producción: `REVENUECAT_ALLOW_TEST_EVENTS=false` (o no establecida) — comportamiento seguro por defecto
 - Staging: `REVENUECAT_ALLOW_TEST_EVENTS=true` para pruebas de integración
+
+**Estado de configuración:**
+- `.env` local: `REVENUECAT_ALLOW_TEST_EVENTS=true` (staging) — con comentario explícito ⚠️ SOLO STAGING
+- Vercel producción: `false` — confirmado por el owner
+- Vercel staging: `true` — confirmado por el owner
 
 ### 5.2 SEC-02 — Play Integrity opcional (Info / Por diseño)
 
@@ -130,13 +137,15 @@ Revisión estática priorizada por riesgo sobre el límite de confianza servidor
 Estos ítems no residen en el repositorio y deben confirmarse antes del go-live:
 
 - [ ] Variables de entorno de producción en Vercel: `SUPABASE_SERVICE_ROLE_KEY`, `REVENUECAT_WEBHOOK_SECRET`, `ADMIN_PANEL_KEY_HASH`, credenciales Upstash, R2, Anthropic
-- [ ] **`REVENUECAT_ALLOW_TEST_EVENTS` NO establecida (o `false`) en producción** ← nuevo tras SEC-01
-- [ ] `REVENUECAT_ALLOW_TEST_EVENTS=true` en staging/preview para pruebas
+- [x] **`REVENUECAT_ALLOW_TEST_EVENTS=false` en producción** — confirmado por owner (2026-06-13)
+- [x] **`REVENUECAT_ALLOW_TEST_EVENTS=true` en staging** — confirmado por owner (2026-06-13)
+- [x] **`ANTHROPIC_STREAM_DELTAS=false` en producción** — confirmado por owner (2026-06-13)
+- [x] **`ANTHROPIC_PARALLEL_IMAGE=false` en producción** — confirmado por owner (2026-06-13)
+- [x] **`ANTHROPIC_PROMPT_V2=false` en producción** — confirmado por owner (2026-06-13)
 - [ ] Plan de Vercel soporta `maxDuration=300` (Fluid/Pro) en región `iad1`
 - [ ] Migraciones aplicadas en la instancia de **producción** de Supabase (incl. 035 y grant idempotente), no solo en staging
 - [ ] RevenueCat en modo **producción** (no sandbox); webhook apuntando a URL de producción; `product_id` coinciden con `getPackConfig`
 - [ ] Sentry + Axiom recibiendo eventos de producción; alertas sobre `refund_failed` y `webhook_anonymous_unresolved`
-- [ ] Flags de performance en OFF para el lanzamiento base
 
 ---
 
@@ -150,4 +159,6 @@ Estos ítems no residen en el repositorio y deben confirmarse antes del go-live:
 ---
 
 *Auditoría realizada por Claude Opus 4.8 el 2026-06-13. Cubre el commit `11d568a`.*
-*SEC-01 implementado en `fix/sec-01-test-webhook` post-auditoría por Claude Sonnet 4.6.*
+*SEC-01 implementado en `fix/sec-01-test-webhook` (`e6d425f`) post-auditoría por Claude Sonnet 4.6.*
+*Variables de entorno confirmadas por el owner en Vercel (producción + staging) el 2026-06-13.*
+*Commit final de la sesión en main: `2082871`.*
