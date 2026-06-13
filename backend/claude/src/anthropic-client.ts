@@ -1,12 +1,15 @@
 import Anthropic from "@anthropic-ai/sdk";
 import * as Sentry from "@sentry/node";
 
-export function createAnthropicClient(apiKey: string): Anthropic {
+export function createAnthropicClient(apiKey: string, extendedTtl = false): Anthropic {
+  const betas = [
+    "prompt-caching-2024-07-31",
+    "cache-diagnosis-2026-04-07",
+    ...(extendedTtl ? ["extended-cache-ttl-2025-04-11"] : []),
+  ].join(",");
   return new Anthropic({
     apiKey,
-    defaultHeaders: {
-      "anthropic-beta": "prompt-caching-2024-07-31,cache-diagnosis-2026-04-07",
-    },
+    defaultHeaders: { "anthropic-beta": betas },
   });
 }
 

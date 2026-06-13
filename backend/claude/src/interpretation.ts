@@ -9,6 +9,7 @@ import { loadClaudeEnv } from "./env.js";
 import {
   buildHistoricalContext,
   buildCurrentContext,
+  buildV2HistoricalUserBlock,
   type ResponseMode,
 } from "./interpretation-context.js";
 import {
@@ -568,6 +569,68 @@ function buildPromptBlocks(
   };
 }
 
+function isPromptV2Enabled(env: NodeJS.ProcessEnv): boolean {
+  return env.ANTHROPIC_PROMPT_V2 === "1" || env.ANTHROPIC_PROMPT_V2 === "true";
+}
+
+function buildV2SystemBlock(language: string): string {
+  return `${SYSTEM_PROMPT}\n\nLANGUAGE: Respond only in ${getLanguageName(language)}.`;
+}
+
+/**
+ * Builds the V2 message array for the Anthropic API call.
+ * Historical consultations become real user/assistant turn pairs with a cache breakpoint
+ * on the last assistant message. Only the current turn contains the full library + question.
+ */
+function buildV2Messages(
+  context: SessionContext | null,
+  language: string,
+  mode: ResponseMode,
+  libraryBlock: string,
+  questionBlock: string,
+  displayName?: string,
+): Anthropic.MessageParam[] {
+  const messages: Anthropic.MessageParam[] = [];
+  const priorConsultations = context?.previousConsultations ?? [];
+
+  for (let i = 0; i < priorConsultations.length; i++) {
+    const c = priorConsultations[i];
+    const isBreakpoint = i === priorConsultations.length - 1;
+    messages.push({
+      role: "user",
+      content: [{ type: "text", text: buildV2HistoricalUserBlock(c, language) }],
+    });
+    const assistantBlock = isBreakpoint
+      ? { type: "text" as const, text: c.interpretationSummary, cache_control: { type: "ephemeral" as const } }
+      : { type: "text" as const, text: c.interpretationSummary };
+    messages.push({ role: "assistant", content: [assistantBlock] });
+  }
+
+  // Theme + continuity block (without "immediately prior" — that's now in conversation history)
+  const themeBlock =
+    priorConsultations.length > 0 && context
+      ? buildCurrentContext(context, undefined, language, mode)
+      : "";
+
+  // Language note is in the V2 system block; only display name goes here
+  const displayNameNote = displayName?.trim()
+    ? `The user's name is ${displayName.trim()}. Always address them DIRECTLY in second person ("you" / "tú" / "vous" etc.). You may use their name warmly when it fits naturally (e.g., "Ronald, esto sugiere..." or "podrías, Ronald,...") but NEVER narrate them in third person (e.g., "Ronald podría..." or "Ronald debería..." are WRONG — always write "podrías..." or "Ronald, podrías..." instead).`
+    : "";
+
+  const currentUserBlocks: Array<{ type: "text"; text: string }> = [
+    { type: "text", text: libraryBlock },
+  ];
+  if (themeBlock.trim()) {
+    currentUserBlocks.push({ type: "text", text: themeBlock });
+  }
+  currentUserBlocks.push({
+    type: "text",
+    text: displayNameNote ? `${displayNameNote}\n\n${questionBlock}` : questionBlock,
+  });
+  messages.push({ role: "user", content: currentUserBlocks });
+  return messages;
+}
+
 export async function generateInterpretation(
   castResult: CastResult,
   tier: string,
@@ -643,7 +706,33 @@ export async function generateInterpretation(
 
   if (ANTHROPIC_API_KEY) {
     try {
-      const client = createAnthropicClient(ANTHROPIC_API_KEY);
+      const useV2 = isPromptV2Enabled(env);
+      const client = createAnthropicClient(ANTHROPIC_API_KEY, useV2);
+
+      const anthropicMessages: Anthropic.MessageParam[] = useV2
+        ? buildV2Messages(
+            context,
+            language,
+            mode,
+            promptBlocks.libraryBlock,
+            promptData.questionBlock,
+            displayName,
+          )
+        : [
+            {
+              role: "user",
+              content: [
+                { type: "text", text: promptBlocks.libraryBlock },
+                ...(promptBlocks.historicalContextBlock
+                  ? [{ type: "text" as const, text: promptBlocks.historicalContextBlock, cache_control: { type: "ephemeral" as const } }]
+                  : []),
+                ...(promptBlocks.currentContextBlock
+                  ? [{ type: "text" as const, text: promptBlocks.currentContextBlock }]
+                  : []),
+                { type: "text" as const, text: promptBlocks.dynamicQuestionBlock },
+              ],
+            },
+          ];
 
       const anthropicCallStart = Date.now();
       const response = await callAnthropicWithRetry(
@@ -654,42 +743,11 @@ export async function generateInterpretation(
           system: [
             {
               type: "text",
-              text: promptBlocks.stableSystemBlock,
+              text: useV2 ? buildV2SystemBlock(language) : promptBlocks.stableSystemBlock,
               cache_control: { type: "ephemeral" },
             },
           ],
-          messages: [
-            {
-              role: "user",
-              content: [
-                {
-                  type: "text",
-                  text: promptBlocks.libraryBlock,
-                },
-                ...(promptBlocks.historicalContextBlock
-                  ? [
-                      {
-                        type: "text" as const,
-                        text: promptBlocks.historicalContextBlock,
-                        cache_control: { type: "ephemeral" as const },
-                      },
-                    ]
-                  : []),
-                ...(promptBlocks.currentContextBlock
-                  ? [
-                      {
-                        type: "text" as const,
-                        text: promptBlocks.currentContextBlock,
-                      },
-                    ]
-                  : []),
-                {
-                  type: "text" as const,
-                  text: promptBlocks.dynamicQuestionBlock,
-                },
-              ],
-            },
-          ],
+          messages: anthropicMessages,
         },
         { tier, language, method: resolvedCastingMethod ?? "iching" },
         previousMessageId ?? null,

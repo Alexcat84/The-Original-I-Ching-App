@@ -1,6 +1,144 @@
-import type { SessionContext } from "@iching-oracle/context-engine";
+import type { SessionContext, ConsultationSummary } from "@iching-oracle/context-engine";
 
 export type ResponseMode = "directo" | "ritual" | "profundizar";
+
+type HistoryLabels = {
+  prior: string;
+  priorOracleBones: string;
+  hex: string;
+  mutatedTo: string;
+  changingLines: string;
+  question: string;
+  verdict: string;
+};
+
+const LANG_LABELS: Record<string, HistoryLabels> = {
+  en: {
+    prior: "Historical consultation",
+    priorOracleBones: "Historical consultation (oracle bones 甲骨文)",
+    hex: "Hexagram",
+    mutatedTo: "→",
+    changingLines: "Changing lines",
+    question: "Question",
+    verdict: "Verdict",
+  },
+  es: {
+    prior: "Consulta histórica",
+    priorOracleBones: "Consulta histórica (甲骨文 · huesos de oráculo)",
+    hex: "Hexagrama",
+    mutatedTo: "→",
+    changingLines: "Líneas en mutación",
+    question: "Pregunta",
+    verdict: "Veredicto",
+  },
+  pt: {
+    prior: "Consulta histórica",
+    priorOracleBones: "Consulta histórica (甲骨文 · ossos do oráculo)",
+    hex: "Hexagrama",
+    mutatedTo: "→",
+    changingLines: "Linhas de mutação",
+    question: "Pergunta",
+    verdict: "Veredicto",
+  },
+  fr: {
+    prior: "Consultation historique",
+    priorOracleBones: "Consultation historique (甲骨文 · os de l'oracle)",
+    hex: "Hexagramme",
+    mutatedTo: "→",
+    changingLines: "Traits changeants",
+    question: "Question",
+    verdict: "Verdict",
+  },
+  de: {
+    prior: "Historische Konsultation",
+    priorOracleBones: "Historische Konsultation (甲骨文 · Orakelknochen)",
+    hex: "Hexagramm",
+    mutatedTo: "→",
+    changingLines: "Wandlungslinien",
+    question: "Frage",
+    verdict: "Urteil",
+  },
+  it: {
+    prior: "Consultazione storica",
+    priorOracleBones: "Consultazione storica (甲骨文 · ossa oracolari)",
+    hex: "Esagramma",
+    mutatedTo: "→",
+    changingLines: "Linee mutanti",
+    question: "Domanda",
+    verdict: "Verdetto",
+  },
+  ja: {
+    prior: "過去の相談",
+    priorOracleBones: "過去の相談（甲骨文）",
+    hex: "卦",
+    mutatedTo: "→",
+    changingLines: "変爻",
+    question: "質問",
+    verdict: "判断",
+  },
+  zh: {
+    prior: "历史占卜",
+    priorOracleBones: "历史占卜（甲骨文）",
+    hex: "卦",
+    mutatedTo: "→",
+    changingLines: "变爻",
+    question: "问题",
+    verdict: "判断",
+  },
+  ko: {
+    prior: "과거 상담",
+    priorOracleBones: "과거 상담 (갑골문 甲骨文)",
+    hex: "괘",
+    mutatedTo: "→",
+    changingLines: "변효",
+    question: "질문",
+    verdict: "판단",
+  },
+  ar: {
+    prior: "استشارة سابقة",
+    priorOracleBones: "استشارة سابقة (عظام الأوراكل 甲骨文)",
+    hex: "هيكساغرام",
+    mutatedTo: "→",
+    changingLines: "خطوط متحولة",
+    question: "سؤال",
+    verdict: "حكم",
+  },
+  hi: {
+    prior: "पिछला परामर्श",
+    priorOracleBones: "पिछला परामर्श (甲骨文 · ओरेकल हड्डियाँ)",
+    hex: "षट्रेखा",
+    mutatedTo: "→",
+    changingLines: "परिवर्तनशील रेखाएं",
+    question: "प्रश्न",
+    verdict: "निर्णय",
+  },
+};
+
+/**
+ * Builds the compact user-turn block for a historical consultation in the V2 structure.
+ * Sent as real user/assistant pairs rather than embedded flat text.
+ */
+export function buildV2HistoricalUserBlock(
+  consultation: ConsultationSummary,
+  language: string,
+): string {
+  const L = LANG_LABELS[language] ?? LANG_LABELS["en"]!;
+
+  if (consultation.oracleType === "oracle_bones" && consultation.oracleBones) {
+    const ob = consultation.oracleBones;
+    return `[${L.priorOracleBones} #${consultation.position}]
+${L.question}: "${consultation.question.slice(0, 120)}"
+${L.verdict}: ${ob.verdict} · ${ob.medium} · pattern ${ob.pattern_id}`;
+  }
+
+  const hexChain = consultation.transformedHexagramName
+    ? `#${consultation.primaryHexagramNumber} ${consultation.primaryHexagramName} (${consultation.primaryHexagramChinese}) ${L.mutatedTo} ${consultation.transformedHexagramName}${consultation.changingLines.length > 0 ? ` · ${L.changingLines}: [${consultation.changingLines.join(", ")}]` : ""}`
+    : `#${consultation.primaryHexagramNumber} ${consultation.primaryHexagramName} (${consultation.primaryHexagramChinese})${consultation.changingLines.length > 0 ? ` · ${L.changingLines}: [${consultation.changingLines.join(", ")}]` : ""}`;
+
+  return `[${L.prior} #${consultation.position}]
+${L.question}: "${consultation.question.slice(0, 120)}"
+${L.hex}: ${hexChain}`;
+}
 
 export function buildHistoricalContext(
   consultations: SessionContext["previousConsultations"],
