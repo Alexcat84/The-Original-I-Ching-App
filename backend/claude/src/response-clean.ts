@@ -34,6 +34,16 @@ function stripMutationRuleCodes(text: string): string {
 /** Remove model-added boilerplate and trailing asterisk disclaimers from oracle text. */
 export function stripInterpretationFluff(text: string): string {
   let t = text.trim();
+  // Strip model-emitted document title headers ("# I CHING READING", "# ORACLE BONES READING", etc.)
+  // These are internal formatting instructions that must never surface in the UI or PDF.
+  while (true) {
+    const next = t.replace(
+      /^\s*#{0,6}\s*(?:I[\s ]+CHING|ORACLE[\s ]+BONES?)\s+READING\s*(?:\r?\n|$)/i,
+      "",
+    );
+    if (next === t) break;
+    t = next.trim();
+  }
   // Internal taxonomy line (theme_category); never persist in interpretation text.
   while (true) {
     const next = t.replace(

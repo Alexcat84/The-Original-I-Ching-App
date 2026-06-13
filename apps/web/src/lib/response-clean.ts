@@ -4,6 +4,16 @@
  */
 export function stripInterpretationFluff(text: string): string {
   let t = text.trim();
+  // Strip model-emitted document title headers ("# I CHING READING", "# ORACLE BONES READING", etc.)
+  // Covers both new consultations and historical rows already stored with the header.
+  while (true) {
+    const next = t.replace(
+      /^\s*#{0,6}\s*(?:I[\s ]+CHING|ORACLE[\s ]+BONES?)\s+READING\s*(?:\r?\n|$)/i,
+      "",
+    );
+    if (next === t) break;
+    t = next.trim();
+  }
   // Internal taxonomy line (theme_category); never show in UI/PDF even if DB has legacy rows.
   while (true) {
     const next = t.replace(
