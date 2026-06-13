@@ -5,10 +5,12 @@
 |---|---|
 | **Fecha** | 2026-06-13 |
 | **Commit auditado** | `bf2f489` (Merge branch 'staging') |
+| **Commit final implementado** | `79f5a46` (main) |
 | **Documento fuente** | `AUDIT_2026-06-13_followup_hydration-gating.md` |
 | **Rama de fix** | `fix/hydration-gate-per-session` |
 | **Severidad original** | Alta — bloqueante para lanzamiento Android |
 | **Estado** | ✅ TODOS LOS HALLAZGOS IMPLEMENTADOS |
+| **APK generado** | v3.5.7 / versionCode 55 — `apps/mobile/android/app/build/outputs/apk/release/app-release.apk` |
 
 ---
 
@@ -89,6 +91,23 @@ Visible en logcat (`adb logcat`) y en Metro bundler durante desarrollo.
 
 ---
 
+### Acción 7 — Fix pre-existente: `attestKey` API correcta en Play Integrity (Media) ✅
+
+**Descubierto durante:** revisión de errores TypeScript pre-existentes en mobile al preparar el APK.
+
+**Problema:** `useIntegrityCheck.ts` llamaba `AppIntegrity.getAttestationAsync()`, función que no existe en `expo-app-integrity`. El `catch` swallowaba el error silenciosamente — Play Integrity **nunca fue evaluado** en ningún dispositivo real.
+
+**API correcta:** `AppIntegrity.attestKey(challenge, cloudProjectNumber)` — misma firma, nombre correcto según los tipos del paquete.
+
+**Implementación:**
+- `apps/mobile/src/hooks/useIntegrityCheck.ts:63`: `getAttestationAsync` → `attestKey`
+- TypeScript mobile: 0 errores tras el fix
+- Incluido en APK v3.5.7 / versionCode 55
+
+**Impacto en seguridad:** el hook seguía silenciando el error; la app funcionaba porque el backend es permisivo cuando no recibe el header `x-integrity-token`. Ahora attestKey funcionará en dispositivos Android con Play Services.
+
+---
+
 ## Archivos modificados
 
 | Archivo | Acciones |
@@ -97,17 +116,35 @@ Visible en logcat (`adb logcat`) y en Metro bundler durante desarrollo.
 | `apps/web/src/app/page.tsx` | 1, 2, 3, 4 |
 | `apps/mobile/app/index.tsx` | 4, 6 |
 | `apps/mobile/src/sync/sync-service.ts` | 5 |
+| `apps/mobile/src/hooks/useIntegrityCheck.ts` | 7 (attestKey) |
+| `apps/mobile/app.config.js` | bump 3.5.7 / vc55 |
 
 ---
 
-## Validación recomendada en Android
+## Validación recomendada en Android (APK 3.5.7)
 
-1. Login → esperar hidratación de varios chats → **crear sesión nueva → consultar** (debe funcionar sin bloqueo) ← caso bloqueante principal
-2. Abrir chat ya hidratado → consulta de seguimiento → no debe bloquearse
-3. Abrir chat que no está en SQLite → ver que aparece spinner inmediatamente (sin 250 ms de silencio)
-4. Forzar restart del WebView durante hidratación → verificar que el spinner desaparece en ~10 s (watchdog)
-5. `adb logcat -s ReactNativeJS` → verificar logs `[rn:thread] tier2_cache` y `tier3_sync` con tiempos razonables
+| # | Caso | Criterio de PASS | Bloquea lanzamiento |
+|---|---|---|---|
+| 1 | Login → hidratar varios chats → **sesión nueva → consultar** | Sin mensaje de "chats cargando" | **Sí** |
+| 2 | Chat ya hidratado → consulta de seguimiento | Consulta inmediata, sin bloqueo | Sí |
+| 3 | Abrir chat no en SQLite | Spinner aparece sin 250 ms de silencio | No |
+| 4 | Restart WebView durante hidratación | Spinner desaparece en ≤10 s (watchdog) | No |
+| 5 | `adb logcat -s ReactNativeJS` | Logs `[rn:thread] tier2_cache ms=…` y `tier3_sync ms=…` visibles | No |
+| 6 | Play Integrity (dispositivo con Play Services) | Sin excepción en logcat sobre `attestKey`; header `x-integrity-token` presente en peticiones | No (degradación graceful) |
 
 ---
 
-*Implementado el 2026-06-13 sobre la rama `fix/hydration-gate-per-session` en respuesta a la auditoría de seguimiento post-primera-prueba en Android.*
+## Estado de acciones pendientes (dueño)
+
+| Acción | Responsable | Estado |
+|---|---|---|
+| Smoke test APK 3.5.7 en dispositivo real | Owner | ⏳ pendiente |
+| Verificación identidad Google Play Console | Owner | ⏳ en proceso (1-3 días) |
+| Assets Play Store (icon 512, feature graphic, screenshots) | Owner | ⏳ pendiente |
+| Data Safety Form en Play Console | Owner | ⏳ pendiente |
+
+---
+
+*Implementado el 2026-06-13 sobre la rama `fix/hydration-gate-per-session`.*
+*Acción 7 (attestKey) implementada en el mismo día, commit `6d79c65`.*
+*Commit final en main: `79f5a46`. APK: v3.5.7 / versionCode 55.*
