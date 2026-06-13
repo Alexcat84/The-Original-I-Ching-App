@@ -11,8 +11,9 @@
 | **Objetivo** | Veredicto de preparación para lanzamiento en vivo (Google Play + web) |
 | **Veredicto** | ✅ APROBADO para producción (condicionado al checklist de operación §7) |
 | **SEC-01 implementado** | `e6d425f` — `fix/sec-01-test-webhook` → staging → main (`2082871`) |
-| **Commit final en main** | `2082871` |
-| **Estado post-remediación** | ✅ TODOS LOS HALLAZGOS CERRADOS |
+| **Commit final auditoría** | `2082871` |
+| **Commit final sesión 2026-06-13** | `79f5a46` — hydration gate + attestKey + 3.5.7/vc55 |
+| **Estado post-remediación** | ✅ TODOS LOS HALLAZGOS CERRADOS + 2 post-audit fixes aplicados |
 
 ---
 
@@ -158,7 +159,50 @@ Estos ítems no residen en el repositorio y deben confirmarse antes del go-live:
 
 ---
 
+---
+
+## 9. Hallazgos post-auditoría — primera prueba en Android real (2026-06-13)
+
+Descubiertos tras instalar APK 3.5.6/vc54 en dispositivo. Documentados en `HYDRATION_GATE_AUDIT_2026-06-13.md`.
+
+| ID | Hallazgo | Severidad | Commit fix |
+|---|---|---|---|
+| HG-1 | Gate de consulta global bloquea sesión nueva durante hidratación de otros chats | Alta — bloqueante Android | `2e8044e` |
+| HG-2 | Contador RN diverge del Set → spinner atascado permanentemente | Media | `2e8044e` |
+| HG-3 | Sin watchdog ante `injectJavaScript` perdido → spinner eterno | Media | `2e8044e` |
+| HG-4 | Sesiones sin SQLite: 250 ms de silencio antes del spinner | Baja | `2e8044e` |
+| HG-5 | Cooldown ignora caché vacía → sync omitido incorrectamente | Baja | `2e8044e` |
+| HG-6 | Sin telemetría de tiempos de hidratación RN | Baja | `2e8044e` |
+| HG-7 | `getAttestationAsync` no existe en `expo-app-integrity` — Play Integrity nunca evaluado | Media (TS error) | `6d79c65` |
+
+**Estado:** ✅ Todos implementados. APK resultante: v3.5.7 / versionCode 55.
+
+---
+
+## 10. Checklist de lanzamiento — estado actual (2026-06-13 EOD)
+
+### Código (repo) — ✅ COMPLETO
+- [x] Todos los hallazgos de auditoría Opus 4.8 cerrados
+- [x] SEC-01 (TEST webhook gate)
+- [x] HG-1 a HG-7 (hydration gate + attestKey)
+- [x] APK 3.5.7 / vc55 compilado y disponible localmente
+- [x] staging = main = `79f5a46`; working tree clean
+
+### Owner — ⏳ PENDIENTE
+- [ ] **Smoke test APK 3.5.7** en dispositivo Android real (validar HG-1 principalmente)
+- [ ] Variables de entorno de producción en Vercel (§7): `SUPABASE_SERVICE_ROLE_KEY`, `REVENUECAT_WEBHOOK_SECRET`, `ADMIN_PANEL_KEY_HASH`, Upstash, R2, Anthropic
+- [ ] Plan Vercel soporta `maxDuration=300` (Fluid/Pro) en región `iad1`
+- [ ] Migraciones aplicadas en Supabase **producción** (incl. 035, 039, 072, 073)
+- [ ] RevenueCat en modo producción; webhook → `theoriginaliching.com`; product_ids coinciden con `getPackConfig`
+- [ ] Sentry + Axiom recibiendo eventos de producción; alertas sobre `refund_failed` y `webhook_anonymous_unresolved`
+- [ ] Verificación de identidad Google Play Console (1-3 días hábiles)
+- [ ] Assets Play Store: icon 512×512, feature graphic 1024×500, screenshots
+- [ ] Data Safety Form en Play Console
+- [ ] EAS Build AAB (`staging-aab`) para Play Store — **solo tras smoke test exitoso**
+
+---
+
 *Auditoría realizada por Claude Opus 4.8 el 2026-06-13. Cubre el commit `11d568a`.*
 *SEC-01 implementado en `fix/sec-01-test-webhook` (`e6d425f`) post-auditoría por Claude Sonnet 4.6.*
 *Variables de entorno confirmadas por el owner en Vercel (producción + staging) el 2026-06-13.*
-*Commit final de la sesión en main: `2082871`.*
+*Post-audit fixes (HG-1 a HG-7): Claude Sonnet 4.6, commit `79f5a46`.*
