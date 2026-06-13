@@ -8,7 +8,7 @@
 | **Implementación** | 2026-06-12/13 — Claude Sonnet 4.6 |
 | **Auditoría de seguimiento** | 2026-06-13 — Claude Opus 4.8 |
 | **Commit auditado (Opus)** | `89a7716` — main |
-| **Estado** | ✅ B1 + B2 RESUELTOS — listo para activar `ANTHROPIC_PARALLEL_IMAGE=1` tras smoke test |
+| **Estado** | ✅ B1 + B2 + B3 RESUELTOS — listo para activar `ANTHROPIC_PARALLEL_IMAGE=1` tras smoke test |
 
 ---
 
@@ -109,9 +109,21 @@ Después de `generateInterpretation`:
 
 **Descripción**: `parallelImagePromise` se asigna pero no lleva `.catch()`. En el path de mismatch de categoría, la promesa paralela se abandona sin await. En el path de match, hay una ventana de ~20-30s entre el lanzamiento y el `await`. Si `buildImageAsset` rechaza en esa ventana, queda como rechazo no manejado.
 
-**Fix**: Adjuntar `.catch(() => undefined)` al asignar `parallelImagePromise`. El error sigue propagándose cuando el `await` ocurre en L1262 (path match) o se abandona limpiamente en path mismatch.
+**Fix**: Adjuntar `.catch(() => undefined)` al asignar `parallelImagePromise`. Previene `unhandledRejection` en la ventana de 20-30s.
 
-**Estado**: ✅ RESUELTO — `fix/perf-b1-b2`
+**Residual B3** (detectado en auditoría de seguimiento Opus 4.8): `.catch(() => undefined)` convierte el reject en resolve a `undefined`. En el path de match, `image` queda `undefined` y `finalizeReadingImages(undefined)` lanza TypeError → pérdida de token silenciosa. Ver B3.
+
+**Estado**: ✅ RESUELTO — `fix/perf-b1-b2` + B3 en `fix/perf-b3`
+
+### B3 — `image` puede ser `undefined` tras parallel failure → TypeError en `finalizeReadingImages` ⛔ BLOQUEANTE
+
+**Ubicación**: `apps/web/src/app/api/consult/route.ts` — entre el await de `parallelImagePromise` y `finalizeReadingImages`
+
+**Descripción**: El `.catch(() => undefined)` de B1 convierte un fallo del build paralelo en `undefined`. Sin guarda, `finalizeReadingImages(undefined, tier)` lanza `TypeError: Cannot read properties of undefined (reading 'imageUrl')`. Ese throw llega al catch con `streamingStarted=true` → `attemptRefund` con `tokensToRefund=0` → usuario pierde el token, lectura no persiste, sin refund automático.
+
+**Fix**: Guarda `if (!image)` después del await — si la imagen paralela falló, reconstruir secuencialmente con `buildImageAsset` antes de pasar a `finalizeReadingImages`. Se extrae `imageParams` como constante para evitar duplicación entre el path normal, mismatch y el rebuild.
+
+**Estado**: ✅ RESUELTO — `fix/perf-b3`
 
 ### B2 — `fal` y `gpt-image` sin try/catch en fetch ⛔ BLOQUEANTE (si se usa fal/gpt-image)
 
