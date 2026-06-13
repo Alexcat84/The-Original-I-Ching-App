@@ -39,12 +39,12 @@ import {
 
 // --- Release snapshot (update on each mobile bump) ---
 const CURRENT_RELEASE = {
-  versionName: "3.3.9",
-  versionCode: 32,
+  versionName: "3.5.6",
+  versionCode: 54,
   webHost: "https://theoriginaliching.com",
   stagingHost:
     "https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app",
-  updatedAt: "2026-05-31",
+  updatedAt: "2026-06-13",
 };
 
 type ViewId =
@@ -82,6 +82,8 @@ const MODULE_CATALOG: ModuleRow[] = [
 ];
 
 const VERSION_ROWS = [
+  { version: "3.5.6", vc: "54", date: "2026-06-13", stage: "Local smoke test", note: "Phase 0-3 perf (streaming deltas, parallel image, prompt cache V2) + B1/B2/B3 + SEC-01 webhook gate" },
+  { version: "3.5.5", vc: "53", date: "2026-06-12", stage: "Staging", note: "Phase 7+8: OOM crash fix + session recovery; audit remediation CRIT-01/02 (refund_token), MED-01 (iad1 pin)" },
   { version: "3.3.9", vc: "32", date: "2026-05-31", stage: "Closed Testing", note: "RC logIn before purchase; drawer safe area native inset" },
   { version: "3.3.6", vc: "29", date: "2026-05-31", stage: "Closed Testing", note: "Changelog system; billing/cache/drawer fixes" },
   { version: "3.3.1", vc: "24", date: "2026-05-29", stage: "Closed Testing", note: "i18n 11 locales merged" },
@@ -141,9 +143,10 @@ const FLOW_CONSULT: DagSpec = {
     { id: "cast", label: "iching / oracle-bones" },
     { id: "ctx", label: "context-engine" },
     { id: "claude", label: "generateInterpretation" },
+    { id: "delta", label: "oracle_delta (stream)" },
     { id: "img", label: "image-engine + provider" },
     { id: "persist", label: "session-store" },
-    { id: "sse", label: "SSE cast_ready / final_ready" },
+    { id: "sse", label: "SSE cast_ready / oracle_ready / final_ready" },
   ],
   edges: [
     { from: "ui", to: "consult" },
@@ -153,7 +156,9 @@ const FLOW_CONSULT: DagSpec = {
     { from: "cast", to: "sse" },
     { from: "consult", to: "ctx" },
     { from: "ctx", to: "claude" },
-    { from: "consult", to: "img" },
+    { from: "claude", to: "delta" },
+    { from: "delta", to: "sse" },
+    { from: "delta", to: "img" },
     { from: "claude", to: "persist" },
     { from: "img", to: "persist" },
     { from: "persist", to: "sse" },
@@ -369,8 +374,11 @@ export default function ArchitectureSystemCanvas() {
           <CardHeader trailing={<Pill tone="info">SSE</Pill>}>Flujo POST /api/consult</CardHeader>
           <CardBody>
             <Callout tone="info">
-              Rate limit Upstash → consume_token → sorteo → cast_ready (~15ms) → Claude + imagen →
-              final_ready (~37–65s). Auth obligatorio (Bearer JWT).
+              Rate limit Upstash → consume_token → sorteo → cast_ready (~15ms) → Claude stream
+              (oracle_delta SSE, 150ms flush) → imagen paralela si ANTHROPIC_PARALLEL_IMAGE=1
+              (detecta CATEGORY: en primeros tokens) → oracle_ready → persist → final_ready (~37–65s).
+              Prompt cache V2 si ANTHROPIC_PROMPT_V2=1. Refund automático si falla post-cargo
+              (refund_token RPC, migración 072). Auth obligatorio (Bearer JWT).
             </Callout>
             <Divider />
             <DagDiagram spec={FLOW_CONSULT} title="Consulta oráculo (I Ching u Oracle Bones)" />
@@ -408,6 +416,8 @@ export default function ArchitectureSystemCanvas() {
             <Callout tone="warning">
               last_pack define tier (hilo/imagen), no el saldo. Migración 044: downgrade de pack válido;
               guard solo si p_pack_id = free. Webhook ignora $RCAnonymousID con HTTP 200.
+              SEC-01: evento TEST gateado por REVENUECAT_ALLOW_TEST_EVENTS (default OFF en producción) —
+              nunca acredita tokens reales sin esa variable activa.
             </Callout>
             <Divider />
             <DagDiagram spec={FLOW_BILLING} title="Compra → webhook → grant → consult consume" />
@@ -465,7 +475,7 @@ export default function ArchitectureSystemCanvas() {
                 </div>
               ))}
               <Text size="small" tone="tertiary">
-                Runtime principal: nodejs · consult maxDuration 120s
+                Runtime principal: nodejs · consult maxDuration 300s (Fluid/Pro Vercel)
               </Text>
             </Stack>
           </CardBody>
@@ -520,6 +530,12 @@ export default function ArchitectureSystemCanvas() {
                   <Code>docs/audits/ARCHITECTURE_AUDIT.md</Code> — auditoría técnica A–Z
                 </Text>
                 <Text>
+                  <Code>docs/audits/PERF_OPTIMIZATION_AUDIT_2026-06-12.md</Code> — Phase 0-3, B1/B2/B3
+                </Text>
+                <Text>
+                  <Code>docs/audits/PRE_PRODUCTION_AUDIT_2026-06-13.md</Code> — SEC-01/02, OPS-01, veredicto go-live
+                </Text>
+                <Text>
                   <Code>CLAUDE.md</Code> — contexto producto y comandos
                 </Text>
                 <Text>
@@ -534,7 +550,9 @@ export default function ArchitectureSystemCanvas() {
               <Text tone="secondary">
                 Tokens acumulables · last_pack = última compra (tier hilo/imagen) · free trial 2
                 lifetime · RevenueCat product IDs tokens_seeker_20 / practitioner_40 / master_100 ·
-                Chats privados server-side · WebView carga URL remota (staging vs prod según build)
+                Chats privados server-side · WebView carga URL remota (staging vs prod según build) ·
+                Feature flags default OFF: ANTHROPIC_STREAM_DELTAS / ANTHROPIC_PARALLEL_IMAGE /
+                ANTHROPIC_PROMPT_V2 / REVENUECAT_ALLOW_TEST_EVENTS (esta última NUNCA ON en producción)
               </Text>
 
               <Divider />
@@ -552,7 +570,7 @@ export default function ArchitectureSystemCanvas() {
       )}
 
       <Text size="small" tone="quaternary" style={{ textAlign: "center" }}>
-        ARCHITECTURE_SYSTEM.canvas.tsx · {CURRENT_RELEASE.updatedAt} · Turborepo + pnpm · Expo 51 ·
+        ARCHITECTURE_SYSTEM.canvas.tsx · {CURRENT_RELEASE.updatedAt} · Turborepo + pnpm · Expo 52 ·
         Next.js 15
       </Text>
     </Stack>
