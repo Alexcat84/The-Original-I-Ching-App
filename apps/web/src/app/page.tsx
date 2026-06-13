@@ -83,7 +83,7 @@ import {
   pickPreferredSessionLocalId,
 } from "@/lib/chat-session-selection";
 import {
-  isPostgrestHydrationBusy,
+  isActiveSessionThreadHydrating,
   sessionNeedsThreadHydration,
 } from "@/lib/session-thread-hydration";
 import { useChatSessionState } from "@/providers/chat-session-provider";
@@ -849,6 +849,8 @@ export default function HomePage() {
   const postgrestHydrationBusyRef = useRef(0);
   /** RN WebView thread syncs awaiting rn:thread-data / rn:thread-not-found. */
   const rnHydrationLocalIdsRef = useRef(new Set<string>());
+  /** Watchdog timers keyed by localId — clear when native responds (<10 s). */
+  const rnWatchdogTimersRef = useRef(new Map<string, ReturnType<typeof setTimeout>>());
   /** User IDs already redirected to /auth/complete-legal this page session.
    *  Prevents a second redirect when TOKEN_REFRESHED fires while the DB write
    *  from the just-accepted consent hasn't propagated to the reader yet. */
@@ -1909,7 +1911,9 @@ export default function HomePage() {
         rnBridge.postMessage(
           JSON.stringify({ type: "request_thread", sessionId, localId }),
         );
-        postgrestHydrationBusyRef.current += 1;
+        // RN path does not hold a PostgREST connection — counter tracks only
+        // bootstrap and web-side thread fetches (Acción 2: Set is the source
+        // of truth for RN in-flight state).
         rnHydrationLocalIdsRef.current.add(localId);
         // Defer the loading indicator so SQLite cache (< 150 ms round-trip)
         // can arrive first. If rn:thread-data fires before the timer, it
@@ -1922,6 +1926,23 @@ export default function HomePage() {
           setHistoryLoading(true);
           setLoadingSessionLocalId(localId);
         }, 250);
+        // Acción 3: watchdog — if native never responds (injectJavaScript lost),
+        // clear the loading state after 10 s to unblock the UI.
+        const existingWatchdog = rnWatchdogTimersRef.current.get(localId);
+        if (existingWatchdog !== undefined) clearTimeout(existingWatchdog);
+        rnWatchdogTimersRef.current.set(
+          localId,
+          setTimeout(() => {
+            rnWatchdogTimersRef.current.delete(localId);
+            rnHydrationLocalIdsRef.current.delete(localId);
+            if (rnLoadingTimerRef.current !== null) {
+              clearTimeout(rnLoadingTimerRef.current);
+              rnLoadingTimerRef.current = null;
+            }
+            setHistoryLoading(false);
+            setLoadingSessionLocalId((curr) => (curr === localId ? null : curr));
+          }, 10_000),
+        );
         // The native bridge owns Tier 2 (SQLite instant) + Tier 3 (background
         // Supabase sync). A parallel web API call would fire "session not found"
         // for any session that lives in SQLite but not the current Supabase project
@@ -2539,12 +2560,11 @@ export default function HomePage() {
     };
     const onRnThread = (e: Event) => {
       const { localId, consultations } = (e as CustomEvent<RnThreadData>).detail;
-      if (rnHydrationLocalIdsRef.current.has(localId)) {
-        rnHydrationLocalIdsRef.current.delete(localId);
-        postgrestHydrationBusyRef.current = Math.max(
-          0,
-          postgrestHydrationBusyRef.current - 1,
-        );
+      rnHydrationLocalIdsRef.current.delete(localId);
+      const watchdog = rnWatchdogTimersRef.current.get(localId);
+      if (watchdog !== undefined) {
+        clearTimeout(watchdog);
+        rnWatchdogTimersRef.current.delete(localId);
       }
       if (!Array.isArray(consultations) || consultations.length === 0) return;
       // Cancel deferred loading indicator — cache responded before the timer fired.
@@ -2575,12 +2595,11 @@ export default function HomePage() {
     };
     const onRnThreadNotFound = (e: Event) => {
       const { localId } = (e as CustomEvent<{ localId: string }>).detail;
-      if (rnHydrationLocalIdsRef.current.has(localId)) {
-        rnHydrationLocalIdsRef.current.delete(localId);
-        postgrestHydrationBusyRef.current = Math.max(
-          0,
-          postgrestHydrationBusyRef.current - 1,
-        );
+      rnHydrationLocalIdsRef.current.delete(localId);
+      const watchdog = rnWatchdogTimersRef.current.get(localId);
+      if (watchdog !== undefined) {
+        clearTimeout(watchdog);
+        rnWatchdogTimersRef.current.delete(localId);
       }
       if (rnLoadingTimerRef.current !== null) {
         clearTimeout(rnLoadingTimerRef.current);
@@ -2636,11 +2655,24 @@ export default function HomePage() {
         }
       })();
     };
+    // Acción 4: native emits this immediately when SQLite cache is empty, so the
+    // web shows loading state without waiting for the 250 ms client-side timer.
+    const onRnThreadLoading = (e: Event) => {
+      const { localId } = (e as CustomEvent<{ localId: string }>).detail;
+      if (rnLoadingTimerRef.current !== null) {
+        clearTimeout(rnLoadingTimerRef.current);
+        rnLoadingTimerRef.current = null;
+      }
+      setHistoryLoading(true);
+      setLoadingSessionLocalId(localId);
+    };
     window.addEventListener("rn:thread-data", onRnThread);
     window.addEventListener("rn:thread-not-found", onRnThreadNotFound);
+    window.addEventListener("rn:thread-loading", onRnThreadLoading);
     return () => {
       window.removeEventListener("rn:thread-data", onRnThread);
       window.removeEventListener("rn:thread-not-found", onRnThreadNotFound);
+      window.removeEventListener("rn:thread-loading", onRnThreadLoading);
     };
   }, [setSessions]);
 
@@ -3422,12 +3454,14 @@ export default function HomePage() {
     questionForRequest: string,
     manualLineValues?: IchingManualLineTuple,
   ) {
+    // Gate per-active-session: only block if THIS session's own thread is still
+    // loading. A new session (no sessionId) or an already-hydrated session must
+    // never be blocked by another chat's hydration (Acción 1 — audit 2026-06-13).
     if (
-      isPostgrestHydrationBusy(
-        bootstrapInFlightRef.current,
-        postgrestHydrationBusyRef.current,
+      isActiveSessionThreadHydrating(
+        activeSession,
         loadingSessionLocalId,
-        threadLoadBySessionRef.current.size,
+        threadLoadBySessionRef.current,
       )
     ) {
       setError(sessionUi.hydrationBusyWait);

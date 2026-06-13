@@ -2816,6 +2816,7 @@ export default function WebViewScreen() {
           case "request_thread": {
             const { sessionId, localId } = msg;
             void (async () => {
+              const t0 = Date.now(); // Acción 6: telemetría
               const dispatchThread = (rows: Awaited<ReturnType<typeof getPagedThread>>) => {
                 if (rows.length === 0) return;
                 const consultations = rows
@@ -2832,7 +2833,19 @@ export default function WebViewScreen() {
 
               // Tier 2: serve SQLite cache immediately (always <5ms).
               const cached = await getPagedThread(sessionId).catch(() => []);
-              dispatchThread(cached);
+              console.log(`[rn:thread] tier2_cache localId=${localId} rows=${cached.length} ms=${Date.now()-t0}`); // Acción 6
+              if (cached.length === 0) {
+                // Acción 4: emit immediate loading signal when cache is empty so the
+                // web cancels its 250 ms deferred timer and shows the spinner now.
+                const lp = JSON.stringify(JSON.stringify({ localId }));
+                webViewRef.current?.injectJavaScript(
+                  `(function(){try{` +
+                    `window.dispatchEvent(new CustomEvent('rn:thread-loading',{detail:JSON.parse(${lp})}));` +
+                  `}catch(_){}})();true;`
+                );
+              } else {
+                dispatchThread(cached);
+              }
 
               if (!accessTokenRef.current) {
                 if (cached.length === 0) {
@@ -2853,7 +2866,9 @@ export default function WebViewScreen() {
                   await deleteSyncMeta(`chat_content_synced:${sessionId}`).catch(() => undefined);
                 }
               }
+              const tSync0 = Date.now(); // Acción 6
               await syncChatThread(accessTokenRef.current, BASE_URL, sessionId).catch(() => undefined);
+              console.log(`[rn:thread] tier3_sync localId=${localId} ms=${Date.now()-tSync0}`); // Acción 6
               const updated = await getPagedThread(sessionId).catch(() => cached);
               if (
                 updated.length !== cached.length ||
