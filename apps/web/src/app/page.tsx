@@ -108,6 +108,7 @@ import {
   ichingRitualRevealTimingFromBudget,
   type IchingRitualRevealTiming,
 } from "@/lib/iching-ritual-timing";
+import { getRitualBudget, recordRitualBudget, toRitualKey } from "@/lib/ritual-budget-store";
 import {
   previewCastFromLineValues,
   type CastingMethod,
@@ -136,6 +137,16 @@ const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
 
 const ICHING_CAST_MODE_STORAGE_KEY = "iching_cast_mode_v1";
 const ICHING_CASTING_METHOD_STORAGE_KEY = "iching_casting_method_v1";
+
+// Action 4: stage floor timers (ms). Override via NEXT_PUBLIC_* env vars.
+const ICHING_FINALE_MIN_MS = Math.max(
+  0,
+  Number(process.env.NEXT_PUBLIC_ICHING_FINALE_MIN_MS ?? 1200) || 1200,
+);
+const BONES_FIRE_MIN_MS = Math.max(
+  0,
+  Number(process.env.NEXT_PUBLIC_BONES_FIRE_MIN_MS ?? 2500) || 2500,
+);
 
 const TOUR_STORAGE_KEY = "iching_tour_v1";
 
@@ -619,7 +630,7 @@ export default function HomePage() {
   > | null>(null);
   const [lastRitualDebugSnapshot, setLastRitualDebugSnapshot] =
     useState<RitualDebugSnapshot | null>(null);
-  const [streamingText, setStreamingText] = useState<string | null>(null);
+  // streamingText removed (Action 3): deltas are no longer rendered during animation.
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
   type IchingCastMode = "auto" | "manual";
   const [ichingCastMode, setIchingCastMode] = useState<IchingCastMode>("auto");
@@ -826,8 +837,8 @@ export default function HomePage() {
   const lastScrollWasRevealRef = useRef(false);
   const prevActiveSessionLocalIdForScrollRef = useRef<string | null>(null);
   const mountScrollDoneRef = useRef(false);
-  const streamingDeltaAccRef = useRef("");
-  const streamingFlushTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const consultAbortControllerRef = useRef<AbortController | null>(null);
+  const consultWatchdogTimerRef = useRef<number | null>(null);
   const rnLoadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const historyRef = useRef<HTMLElement | null>(null);
   const idleSignOutRef = useRef(false);
@@ -3546,7 +3557,7 @@ export default function HomePage() {
         });
         if (ichingCastMode === "manual") {
           const budgetMs = ichingRitualProcessingBudgetMs(
-            lastIchingConsultWallMsRef.current,
+            lastIchingConsultWallMsRef.current ?? getRitualBudget(toRitualKey("iching", translatorId)),
           );
           const timing = ichingRitualRevealTimingFromBudget(budgetMs);
           const phaseOneMs = Math.max(1200, timing.tickDelayMs * 12);
@@ -3598,9 +3609,6 @@ export default function HomePage() {
             threadLoadBySessionRef.current.delete(sessionIdSentForRecovery);
             await loadSessionThread(sessionIdSentForRecovery, consultSession.localId);
             window.dispatchEvent(new CustomEvent("iching:account-refresh"));
-            streamingDeltaAccRef.current = "";
-            if (streamingFlushTimerRef.current) { clearTimeout(streamingFlushTimerRef.current); streamingFlushTimerRef.current = null; }
-            setStreamingText(null);
             setPhase("reading");
             setQuestion("");
             requestAnimationFrame(() => resizeQuestionInput());
@@ -3624,6 +3632,21 @@ export default function HomePage() {
       }
       ichingConsultWallClockStartedAtRef.current =
         oracleMode === "iching" ? Date.now() : null;
+
+      // Action 6: watchdog — abort fetch if total duration exceeds 2.5× budget.
+      const ritualKey = toRitualKey(oracleMode, translatorId);
+      const ritualBudgetMs =
+        lastIchingConsultWallMsRef.current ?? getRitualBudget(ritualKey);
+      const watchdogMs = Math.max(ritualBudgetMs * 2.5, 120_000);
+      const consultAbort = new AbortController();
+      consultAbortControllerRef.current = consultAbort;
+      consultWatchdogTimerRef.current = window.setTimeout(() => {
+        if (!consultAbort.signal.aborted) {
+          logRitualTrace("watchdog:abort", { watchdogMs });
+          consultAbort.abort();
+        }
+      }, watchdogMs);
+
       const requestPayload = {
         question: questionForRequest,
         language: detectInputLanguage(questionForRequest, locale),
@@ -3685,6 +3708,7 @@ export default function HomePage() {
             Authorization: `Bearer ${bearerToken}`,
           },
           body: JSON.stringify(requestPayload),
+          signal: consultAbort.signal,
         });
 
       if (!accessToken) {
@@ -3779,7 +3803,7 @@ export default function HomePage() {
           castVectorFromStream = apiLinesToVector(linesPayload);
           setRitualDebugCastVector(castVectorFromStream);
           const processingBudget = ichingRitualProcessingBudgetMs(
-            lastIchingConsultWallMsRef.current,
+            lastIchingConsultWallMsRef.current ?? getRitualBudget(ritualKey),
           );
           const timing = ichingRitualRevealTimingFromBudget(processingBudget);
           logRitualTrace("reveal:budget", {
@@ -3824,27 +3848,8 @@ export default function HomePage() {
               ) {
                 startLineReveal(castPayload.lines);
               }
-            } else if (eventName === "oracle_delta") {
-              const deltaPayload = payload as { d?: string };
-              if (typeof deltaPayload.d === "string") {
-                streamingDeltaAccRef.current += deltaPayload.d;
-                if (!streamingFlushTimerRef.current) {
-                  streamingFlushTimerRef.current = setTimeout(() => {
-                    streamingFlushTimerRef.current = null;
-                    setStreamingText(streamingDeltaAccRef.current);
-                  }, 150);
-                }
-              }
-            } else if (eventName === "oracle_ready") {
-              logRitualTrace("sse:event", { eventName });
-              if (streamingFlushTimerRef.current) {
-                clearTimeout(streamingFlushTimerRef.current);
-                streamingFlushTimerRef.current = null;
-              }
-              const readyPayload = payload as { interpretation?: string };
-              if (readyPayload.interpretation) {
-                setStreamingText(readyPayload.interpretation);
-              }
+            } else if (eventName === "oracle_delta" || eventName === "oracle_ready") {
+              // Action 3: deltas are suppressed — text is revealed post-animation via final_ready.
             } else if (eventName === "final_ready") {
               logRitualTrace("sse:event", { eventName });
               finalPayload = payload as ConsultResponse & {
@@ -3880,9 +3885,9 @@ export default function HomePage() {
           }
           return;
         }
-        if (revealPromise) {
-          void revealPromise;
-        }
+        // Action 3: gate — wait for animation to complete, then finale dwell.
+        if (revealPromise) await revealPromise;
+        await new Promise<void>((r) => window.setTimeout(r, ICHING_FINALE_MIN_MS));
         data = finalPayload;
         if (
           Array.isArray(finalPayload.lines) &&
@@ -3998,7 +4003,7 @@ export default function HomePage() {
         data.oracleBones
       ) {
         setBoneRitualResult(data.oracleBones.verdict);
-        await new Promise((r) => window.setTimeout(r, 4050));
+        await new Promise<void>((r) => window.setTimeout(r, BONES_FIRE_MIN_MS));
       }
       if (
         showRitualAnimation &&
@@ -4069,7 +4074,7 @@ export default function HomePage() {
                 )
               : null;
           const jsonTimingBudget = ichingRitualProcessingBudgetMs(
-            measuredThisJsonMs ?? lastIchingConsultWallMsRef.current,
+            measuredThisJsonMs ?? lastIchingConsultWallMsRef.current ?? getRitualBudget(ritualKey),
           );
           const jsonRevealTiming =
             ichingRitualRevealTimingFromBudget(jsonTimingBudget);
@@ -4141,16 +4146,15 @@ export default function HomePage() {
       ) {
         const rawWallMs =
           Date.now() - ichingConsultWallClockStartedAtRef.current;
-        lastIchingConsultWallMsRef.current =
-          ichingRitualProcessingBudgetMs(rawWallMs);
+        const storedBudgetMs = ichingRitualProcessingBudgetMs(rawWallMs);
+        lastIchingConsultWallMsRef.current = storedBudgetMs;
+        recordRitualBudget(ritualKey, storedBudgetMs); // Action 2: persist per translator
         logRitualTrace("iching:stored-wall-ms", {
           rawWallMs,
-          storedBudgetMs: lastIchingConsultWallMsRef.current,
+          storedBudgetMs,
+          ritualKey,
         });
       }
-      streamingDeltaAccRef.current = "";
-      if (streamingFlushTimerRef.current) { clearTimeout(streamingFlushTimerRef.current); streamingFlushTimerRef.current = null; }
-      setStreamingText(null);
       setPhase("reading");
       logRitualTrace("submit:complete");
       setConsultPanelOpen(false);
@@ -4179,6 +4183,11 @@ export default function HomePage() {
         setManualCastPreview(null);
       }
     } finally {
+      if (consultWatchdogTimerRef.current != null) {
+        window.clearTimeout(consultWatchdogTimerRef.current);
+        consultWatchdogTimerRef.current = null;
+      }
+      consultAbortControllerRef.current = null;
       ichingConsultWallClockStartedAtRef.current = null;
       if (manualRitualPhaseSwitchTimerRef.current != null) {
         window.clearTimeout(manualRitualPhaseSwitchTimerRef.current);
@@ -4896,15 +4905,7 @@ export default function HomePage() {
                   </div>
                 </div>
               ) : null}
-              {streamingText && loading ? (
-                <div className="thread-block chat-entry" aria-live="polite" aria-busy="true">
-                  <div className="chat-bubble chat-assistant">
-                    <div className="interpretation-stack" data-testid="streaming-preview">
-                      <InterpretationBody text={streamingText} reveal={false} />
-                    </div>
-                  </div>
-                </div>
-              ) : null}
+              {/* Action 3/7: streaming text preview removed — reveal happens post-animation. */}
 
               {manualCastPreview &&
               loading &&
