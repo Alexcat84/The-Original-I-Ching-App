@@ -89,7 +89,6 @@ export async function verifyIntegrityToken(token: string, userId: string): Promi
     const storedUserId = await redis.get<string>(`integrity_nonce:${nonce}`);
     if (!storedUserId) return { passed: false, reason: "nonce_invalid_or_expired" };
     if (storedUserId !== userId) return { passed: false, reason: "nonce_user_mismatch" };
-    await redis.del(`integrity_nonce:${nonce}`); // single-use
 
     // ── 2. App recognition ───────────────────────────────────────────────────
     const appVerdict = payload.appIntegrity?.appRecognitionVerdict;
@@ -126,6 +125,10 @@ export async function verifyIntegrityToken(token: string, userId: string): Promi
         environment: { playProtect, appsDetected },
       };
     }
+
+    // Single-use nonce — delete only after all checks pass so retries with the
+    // same token can recover from transient Play verdict failures.
+    await redis.del(`integrity_nonce:${nonce}`);
 
     return {
       passed: true,

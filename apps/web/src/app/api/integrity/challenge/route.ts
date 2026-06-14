@@ -42,7 +42,11 @@ export async function GET(req: NextRequest) {
   const challenge = Buffer.from(bytes).toString("base64url");
 
   const redis = getUpstashRedis();
-  if (redis) {
+  if (!redis) {
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "integrity_unavailable" }, { status: 503 });
+    }
+  } else {
     // Store userId alongside the nonce so verifyIntegrityToken can bind nonce to user.
     await redis.set(
       `integrity_nonce:${challenge}`,

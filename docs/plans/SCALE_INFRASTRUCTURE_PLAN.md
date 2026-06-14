@@ -405,3 +405,110 @@ Margen operativo: ~93%
 - **Semáforo global fail-open:** Si Upstash Redis está caído, `withSupabaseSemaphore` cae al comportamiento local (MAX_CONCURRENT=2 por instancia). Esto es intencional — Redis caído no debe bloquear consultas de pago.
 
 - **Ticket SU-392270:** Enviado por email directo, recibido como free plan. Si no hay respuesta técnica en 48h, reenviar desde el dashboard Pro en supabase.help para priorización correcta.
+
+---
+
+## Comentarios Cursor Auditor — 2026-05-26
+
+> **Instrucción:** Esta sección es solo para validación del constructor. **No sustituye** el cuerpo del plan anterior; señala desincronización detectada entre el documento y el repo/`main` al momento de la auditoría.
+
+### Resumen ejecutivo (auditor)
+
+| Fase | Estado sugerido tras revisión de código | Acción para constructor |
+|------|----------------------------------------|-------------------------|
+| 0 | 🟡 Parcial (0B ✅; 0A/0C ⬜) | Confirmar ticket SU-392270; documentar compute **Small** activo vs Medium del plan |
+| 1 | ✅ Código alineado | Ninguna urgente |
+| 2 | ✅ Código alineado | Ejecutar test 10 instancias; cap sigue en **8** (commit `05177a5`, no 20) |
+| 3 | ✅ Código alineado | Cerrar smoke doble-tap; marcar deploy ✅ (merge `e39034b` / `12646b6`) |
+| 4 | ✅ Código alineado | Marcar deploy ✅ (merge `a44a469` / `f223dd2`) |
+| 5 | 🟡 Repo ✅ / prod ⬜ | Aplicar **070** en prod y verificar `cron.job` |
+| 6 | 🟡 ~85% | Actualizar checklist §Fase 6 (ver abajo) |
+| 7 | 🟡 Código P0+P1 ✅ / validación ⬜ | Actualizar tabla estado + checklist §Fase 7 (ver abajo) |
+
+**Rama/commit de referencia:** `main` incluye P0 (`e542d7a`) y P1 (`a3e8ac3`); hardening RPC **073** (`ab19e52`). Documento aún dice “P0 en rama” y P1 pendiente.
+
+---
+
+### Por fase — hallazgos concretos
+
+#### Fase 0
+
+- **0D — `/api/health` con semáforo (`4a510bf`):** Supersedido por Fase 7 P0 (`e542d7a`). El health **ya no consulta PostgREST**; solo rate-limit + ping Redis opcional. El ítem 0D sigue siendo históricamente correcto pero **no describe el comportamiento actual**. Constructor: añadir nota de evolución o ítem 0E “health sin DB”.
+- **0C Medium:** Infra real reportada = **Small** (~$10 add-on sobre Pro). Medium (~$50) sigue siendo opcional post-lanzamiento; alinear con `docs/runbooks/SUPABASE_SCALABILITY.md` §8 (ticket pide pool, no Medium).
+
+#### Fase 1
+
+- Implementación verificada: `apps/web/src/lib/upload-to-r2.ts`, `@aws-sdk/client-s3` en `apps/web/package.json`, llamadas en `consult/route.ts` (bones / stream / ritual).
+- **Desviación menor vs spec:** el plan dice `image/jpeg` fijo; el código infiere extensión desde `Content-Type` (jpeg/png). Aceptable; constructor puede actualizar spec o dejar como está.
+- Fase 1.5 (re-procesar URLs Together expiradas): sigue pendiente — correcto en el plan.
+
+#### Fase 2
+
+- `GLOBAL_MAX_CONCURRENT = 8` en `supabase-admin.ts` (audit CRIT-01; antes 20). El plan cita cap 8 en diagrama pero el audit WARP aún menciona “20” en §2.1 — desincronización entre docs.
+- **TTL Redis:** código usa **30s** en key `supabase:concurrent` (no 10s del diagrama §Fase 2). Constructor: validar cuál es la fuente de verdad.
+- Fail-open + Sentry `redis_semaphore_counter_elevated` cuando counter > cap: presente.
+
+#### Fase 3
+
+- Gate `consult:inflight:{userId}` con `SET NX`, TTL 120s, `DEL` en `finally`: verificado en `consult/route.ts`.
+- i18n `consultationInProgress` en `packages/i18n/src/messages/consult-api-ui.ts` (11 locales).
+- Checklist dice “Deploy ⬜” pero commits `12646b6` + merge `e39034b` indican deploy hecho. Constructor: marcar o confirmar entorno prod.
+
+#### Fase 4
+
+- `apps/web/vercel.json` coincide con el JSON del plan. Checklist “Deploy ⬜” — mismo comentario que Fase 3.
+
+#### Fase 5
+
+- Migración `070_scheduled_vacuum.sql` existe; job name real = **`weekly-vacuum-iching`** (el snippet del plan usa `weekly-vacuum-consultations` — nombre distinto, mismo propósito).
+- **No hay evidencia en repo** de aplicación en prod (`verify_migrations` / runbook). Constructor: ejecutar en SQL Editor prod y cerrar checklist.
+
+#### Fase 6
+
+- **Contradicción interna del plan:** tabla “Estado general” marca Fase 6 ✅, pero checklist §Fase 6 tiene todo ⬜.
+- **Código verificado (2026-05-26):**
+  - ✅ `supabase_semaphore_queue_depth_high` cuando `queueDepth > 3` en prod — `supabase-admin.ts`
+  - ✅ `r2_upload_failed` — `upload-to-r2.ts`
+  - ✅ Together AI errors — `image-provider.ts` (no listado en plan original; bonus)
+  - 🟡 Claude 429: solo `Sentry.captureException` genérico en catch de `consult/route.ts` (commit `8d4aed8`); **no hay tag/mensaje dedicado `claude_429`**
+  - ⬜ Warp kills: revisión manual Supabase logs (sin alerta automatizada)
+  - ⬜ Together “success rate < 85% en 5 min”: no implementado como agregado; solo per-request exceptions
+- Constructor: alinear tabla vs checklist; decidir si Claude 429 explícito es requisito o suficiente el catch global.
+
+#### Fase 7
+
+- **P0 ✅ en `main`:** health sin PostgREST; `getSessionLimitFromPack(lastPack)` elimina segundo `readCreditsRow`; `BOOTSTRAP_CACHE_TTL_SECONDS` = 120 prod / 8 dev.
+- **P1 ✅ en `main` (plan aún ⬜):**
+  - Migración `071_bootstrap_summary_rpc.sql` — RPC `get_user_session_summaries`
+  - `session-store.ts`: RPC + cache Redis TTL 60s + `invalidateSessionSummariesCache` en upsert/delete
+  - Migración **073** revoca PUBLIC EXECUTE en RPC (linter security)
+- Checklist plan: “Deploy P0 ⬜”, “071 ⬜”, “Redis cache ⬜” — **desactualizado** respecto a código.
+- **Objetivo “8 → 2 requests/login”:** no alcanzado del todo. Tras P0+P1, bootstrap sigue ~4 queries bajo semáforo (credits, RPC summaries, users, legal). Consulta: 1× `getUserBillingTier` → `readCreditsRow` **fuera** del semáforo (ya no duplicado). Constructor: revisar si el objetivo numérico del plan debe rebajarse a ~4–5 o abrir P1.5 (cache billing tier).
+- **Smoke “0 Warp en 10 min”:** no cerrado formalmente. `docs/runbooks/SMOKE_POST_SMALL_CHECKLIST.md` sigue FAIL (kick OAuth pre-`eeea551`). Logs prod 2026-06-11 23:00–23:46 UTC = ventana sana (51 entradas, 0 Warp) — evidencia positiva pero no sustituye smoke en dispositivo post-Fase 7.
+
+---
+
+### Trabajo relacionado fuera de este plan (informar al constructor)
+
+No forman parte de las 7 fases pero impactan la misma superficie:
+
+| Tema | Commits / archivos | Nota auditor |
+|------|-------------------|--------------|
+| Auth resilience PR1–PR3 | `fetch-with-auth-resilience.ts`, `page.tsx`, mobile `index.tsx` | Ataca kick OAuth; independiente del pool PostgREST |
+| Phase 8 OOM Android | `sync-service.ts` two-phase, `index.tsx` recovery | Merge `90a6650`; APK dist 53+ |
+| Hydration gate per-session | `2e8044e`, dist 54–55 | Reduce ráfagas thread sync |
+| Semaphore cap 20→8 | `05177a5` | Posteriores a redacción inicial del plan |
+
+---
+
+### Checklist sugerido para el constructor (validar y editar plan original)
+
+1. Actualizar línea 4 “Última actualización” y tabla §Estado general (Fase 7: P0+P1 código ✅, smoke/ops ⬜).
+2. Fase 6: marcar ítems implementados en checklist o bajar fila “✅ Completa” a 🟡.
+3. Fase 7: marcar 071, Redis cache, deploy P0+P1 como ✅; renombrar RPC en texto plan (`get_user_bootstrap_summary` → `get_user_session_summaries` real en 071).
+4. Fase 5 + Fase 7 checklist: aplicar 070 (y confirmar 071/073) en prod vía `verify_migrations.sql`.
+5. Fase 0D: nota de supersesión por health sin DB.
+6. Alinear TTL semáforo Redis (10s plan vs 30s código) y nombre job cron 070.
+7. Cerrar smoke post-Fase 7 en dispositivo + actualizar `SMOKE_POST_SMALL_CHECKLIST.md`.
+
+*Auditor: Cursor Agent · basado en inspección estática del repo; migraciones prod no verificadas en vivo en esta pasada.*

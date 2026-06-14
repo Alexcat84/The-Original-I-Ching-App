@@ -210,3 +210,98 @@ Reduce el pico de memoria de ~120KB+ (interpretaciones) a ~5KB (solo metadatos).
 
 El usuario mantiene su sesión tras un OOM kill sin ver la pantalla de Google OAuth.
 
+---
+
+## Comentarios Cursor Auditor — 2026-05-26
+
+> **Instrucción:** Solo validación del constructor. **No modifica** secciones anteriores. Señala texto obsoleto vs código/`main` actual.
+
+### Metadatos del documento — desincronización
+
+| Campo en doc | Valor actual en doc | Valor verificado en código/repo | Acción sugerida |
+|--------------|--------------------|---------------------------------|-----------------|
+| Línea 7 “Estado” | P0+P1 implementados; Phase 8 pendiente deploy | P0+P1 en `main` (`e542d7a`, `a3e8ac3`); Phase 8 merge `90a6650` + fixes posteriores (hydration gate, dist 54–55) | Constructor: actualizar “Phase 8 pendiente deploy” → validar APK/dist en dispositivo |
+| Línea 4 “Actualización” | 2026-06-10, rama `feat/warp-connection-efficiency` | Rama mergeada; no usar nombre de rama como estado vigente | Actualizar fecha y quitar referencia a rama cerrada |
+| Resumen ejecutivo L14 | Pool máximo **30** conexiones Pro | Runbook + logs: pool PostgREST **~10** (`SUPABASE_SCALABILITY.md`, `GLOBAL_MAX_CONCURRENT=8`) | Corregir cifra 30 → 10 en resumen (error material de diagnóstico) |
+
+---
+
+### §2 Diagnóstico — secciones parcialmente obsoletas
+
+#### §2.1 Bootstrap “5 queries”
+
+- **Antes del P1:** 2 SELECTs en `getUserSessionSummaries` + credits + users + legal ≈ 5–6 round-trips.
+- **Después del P1 (`a3e8ac3`):** 1 RPC `get_user_session_summaries` + cache Redis 60s (`session-store.ts`). Bootstrap bajo semáforo ≈ **4** queries (credits, RPC summaries, users, legal) en cache miss; **0** queries summaries en cache hit.
+- El párrafo L39–46 y la lista numerada L41–46 describen el **estado pre-071**. Constructor: añadir subsección “Post-P1 (2026-06-10)” o marcar §2.1 como histórico.
+- **Cap global Redis:** doc dice “20” (L39); código = **8** desde `05177a5`.
+
+#### §2.2 `/api/consult` bypass semáforo
+
+- **P0 aplicado:** eliminado segundo `readCreditsRow`; `sessionLimit` deriva de `getSessionLimitFromPack(lastPack)` tras un solo `getUserBillingTier()` (L613–614 `consult/route.ts`).
+- **Residual válido:** `getUserBillingTier()` → `readCreditsRow()` sigue **sin** `withSupabaseSemaphore` (1 conexión/consulta). El diagrama L57–64 ya no aplica la línea `getSessionLimit() → readCreditsRow()` ❌.
+- Constructor: reescribir flujo post-P0; mantener advertencia solo para `getUserBillingTier`.
+
+#### §2.3 Health check
+
+- **Obsoleto desde P0:** L69–71 afirman query `users?select=id&limit=1`. Código actual (`health/route.ts`): **sin Supabase**; Redis ping opcional.
+- Patrón kills cada ~60s (§1, ventana 02:14–03:51): causa raíz **eliminada en código**; puede repetirse solo si prod aún sirve build anterior o scripts externos pegan otro endpoint que sí toque DB.
+- Nota: user-agent `node` en logs Supabase = runtime Vercel, no solo PowerShell — sigue siendo válido.
+
+#### §3 Sospechoso `getUserSessionSummaries`
+
+- El bloque L97–106 cita el SELECT full-scan en `consultations` — **eliminado**; reemplazado por RPC JOIN en Postgres (071).
+- Constructor: mover §3 a “Histórico pre-071” o sustituir por descripción del RPC.
+
+---
+
+### §5 Plan de remediación — estado real vs tabla del doc
+
+#### P0 — ✅ Confirmado en `main`
+
+Commits `e542d7a`. Coincide con tabla L120–124.
+
+#### P1 — Doc dice ⬜; código dice ✅
+
+| # | Acción doc | Estado auditor | Evidencia |
+|---|-----------|----------------|-----------|
+| 4 | RPC consolidado | ✅ Implementado | `071_bootstrap_summary_rpc.sql`, RPC name = **`get_user_session_summaries`** (no `get_user_bootstrap_summary` del texto plan) |
+| 5 | Cache Redis summaries | ✅ Implementado | `SESSION_SUMMARIES_CACHE_TTL_SECONDS = 60`, invalidación en upsert/delete |
+| 6 | Eliminar duplicado `getUserBillingTier` | ⬜ / mal formulado | P0 eliminó duplicado de **session limit**, no el billing tier call. Ítem 6 sigue siendo mejora opcional (cache tier 60s o semáforo) |
+
+**Reducción estimada L138 “8 → 2”:** auditor considera **optimista**. Post-P0+P1 realista ≈ **4–6** PostgREST en login burst (bootstrap miss + thread hydration al abrir chats). Constructor: recalibrar métrica objetivo.
+
+#### P2 — Sin cambio vs doc
+
+070 prod, Medium, VACUUM FULL, ticket SU-392270 siguen ⬜. Infra actual = **Small**, no Medium — coherente con posponer 0C.
+
+#### P3 — Item 13 smoke monitors
+
+Sigue válido: scripts `.tmp/smoke-monitor*.ps1` ya no amplifican PostgREST vía health **si** prod tiene health P0. Riesgo residual = otros endpoints bajo carga.
+
+---
+
+### Phase 8 — estado post-auditoría
+
+- Fix A (two-phase sync) y Fix B (renderer recovery): presentes en repo.
+- **Evolución posterior al doc:** hydration gate per-session (`2e8044e`), attestKey fix, dist **54–55**. Constructor: enlazar a `docs/audits/CHAT_THREAD_HYDRATION_AUDIT.md` y cerrar “pendiente deploy” con versión APK mínima verificada.
+
+---
+
+### Evidencia operacional reciente (para validación smoke)
+
+| Fuente | Ventana | Resultado auditor |
+|--------|---------|-------------------|
+| `supabase_logs.json` (usuario) | 2026-06-11 23:00–23:46 UTC | 51 entradas, 100% success, **0 Warp**, bootstrap + 4 sesiones OK |
+| `SMOKE_POST_SMALL_CHECKLIST.md` | 2026-06-10 ~02:14 UTC | **FAIL** kick OAuth (pre-fix auth `eeea551`) |
+| Conclusión | — | Logs prod recientes alentadores; **no sustituyen** smoke formal post-Fase 7 en dispositivo (Warp 0, 0 logout OAuth) |
+
+---
+
+### Hallazgos transversales (constructor)
+
+1. **Dos documentos desincronizados entre sí:** WARP audit L7 dice P0+P1 implementados; §5 P1 tabla dice ⬜. `SCALE_INFRASTRUCTURE_PLAN.md` dice P1 en “próxima rama”. Unificar en una sola fuente de verdad.
+2. **Migraciones prod:** 071 necesaria para que RPC funcione; si prod muestra sesiones en bootstrap (logs jun-11), RPC probablemente aplicada — **confirmar** con `verify_migrations.sql` (070/071/073).
+3. **Auth vs pool:** fixes PR1–PR3 (`fetchWithAuthResilience`, mobile gate) no están en este audit; Warp 0 en logs no implica OAuth kick resuelto en APK viejo.
+4. **Próximo paso código (opcional, no en P1):** meter `getUserBillingTier` bajo semáforo o cache Redis; tag Sentry `claude_429` explícito (Fase 6 plan).
+
+*Auditor: Cursor Agent · inspección estática; sin query en vivo a Supabase en esta pasada.*
