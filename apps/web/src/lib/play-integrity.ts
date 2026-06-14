@@ -1,23 +1,35 @@
 import { google } from "googleapis";
 import { getUpstashRedis } from "@/lib/rate-limit";
+import {
+  describeNonceShape,
+  fingerprintIntegrityValue,
+} from "@/lib/integrity-telemetry";
 
 const PACKAGE_NAME = "com.theoriginaliching.app";
+
+export interface IntegrityVerifyTelemetry {
+  traceId: string | null;
+  expectedNonceFp: string | null;
+  googleNonceFp: string | null;
+  nonceMatchExpected: boolean | null;
+  redisHit: boolean;
+  redisLookupVariant: "exact" | "trim_padding" | "miss";
+  userIdMatch: boolean | null;
+  tokenLen: number;
+  googleNonceShape: ReturnType<typeof describeNonceShape> | null;
+}
 
 export interface IntegrityVerdict {
   passed: boolean;
   reason?: string;
-  /** Structured environment data for Axiom logging — undefined when not available. */
   environment?: {
     playProtect: string | null;
     appsDetected: string[];
   };
+  telemetry?: IntegrityVerifyTelemetry;
 }
 
-// App access risk values that indicate active capture/control of the device.
-// These represent a direct privacy threat during an oracle consultation.
 const BLOCKING_APP_RISK = ["KNOWN_CAPTURING", "KNOWN_CONTROLLING", "UNKNOWN_CAPTURING", "UNKNOWN_CONTROLLING"];
-
-// Play Protect verdicts that indicate confirmed malware on the device.
 const BLOCKING_PLAY_PROTECT = ["MALWARE_DETECTED"];
 
 function getAuthClient() {
@@ -34,36 +46,62 @@ function getAuthClient() {
   }
 }
 
-/**
- * Verifies a Play Integrity token issued by the Android app.
- *
- * Checks (in order):
- *  1. Nonce present, valid, belongs to userId, single-use (Redis).
- *  2. appRecognitionVerdict === 'PLAY_RECOGNIZED'
- *  3. deviceRecognitionVerdict includes 'MEETS_DEVICE_INTEGRITY'
- *  4. playProtectVerdict — blocks on MALWARE_DETECTED; logs all others.
- *  5. appAccessRiskVerdict — blocks on active capturing/controlling apps;
- *     logs installs without blocking (avoid false positives from accessibility apps).
- *
- * Fail-open / fail-closed:
- *  - Missing credentials in prod → fail-closed.
- *  - Redis unavailable in prod → fail-closed.
- *  - 4xx Google API → fail-closed.
- *  - 5xx / transient → fail-closed unless INTEGRITY_FAIL_OPEN=true.
- *  - NODE_ENV !== production → always passes (dev / emulator).
- *
- * @param token  Play Integrity attestation token from the Android app.
- * @param userId Authenticated user id (Bearer token) — nonce is bound to this.
- */
-export async function verifyIntegrityToken(token: string, userId: string): Promise<IntegrityVerdict> {
+async function readExpectedNonceFp(
+  redis: NonNullable<ReturnType<typeof getUpstashRedis>>,
+  traceId: string | null,
+): Promise<string | null> {
+  if (!traceId) return null;
+  try {
+    const raw = await redis.get<string>(`integrity_trace:${traceId}`);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { nonceFp?: string };
+    return typeof parsed.nonceFp === "string" ? parsed.nonceFp : null;
+  } catch {
+    return null;
+  }
+}
+
+async function lookupNonceUserId(
+  redis: NonNullable<ReturnType<typeof getUpstashRedis>>,
+  nonce: string,
+): Promise<{ userId: string | null; variant: IntegrityVerifyTelemetry["redisLookupVariant"] }> {
+  const exact = await redis.get<string>(`integrity_nonce:${nonce}`);
+  if (exact) return { userId: exact, variant: "exact" };
+
+  const trimmed = nonce.replace(/=+$/, "");
+  if (trimmed !== nonce) {
+    const padded = await redis.get<string>(`integrity_nonce:${trimmed}`);
+    if (padded) return { userId: padded, variant: "trim_padding" };
+  }
+
+  return { userId: null, variant: "miss" };
+}
+
+export async function verifyIntegrityToken(
+  token: string,
+  userId: string,
+  traceId: string | null = null,
+): Promise<IntegrityVerdict> {
+  const baseTelemetry: IntegrityVerifyTelemetry = {
+    traceId,
+    expectedNonceFp: null,
+    googleNonceFp: null,
+    nonceMatchExpected: null,
+    redisHit: false,
+    redisLookupVariant: "miss",
+    userIdMatch: null,
+    tokenLen: token.length,
+    googleNonceShape: null,
+  };
+
   if (process.env.NODE_ENV !== "production") {
-    return { passed: true };
+    return { passed: true, telemetry: baseTelemetry };
   }
 
   const auth = getAuthClient();
   if (!auth) {
     console.error("[play-integrity] GOOGLE_SERVICE_ACCOUNT_JSON absent or invalid in production");
-    return { passed: false, reason: "misconfigured" };
+    return { passed: false, reason: "misconfigured", telemetry: baseTelemetry };
   }
 
   try {
@@ -74,75 +112,103 @@ export async function verifyIntegrityToken(token: string, userId: string): Promi
     });
 
     const payload = res.data.tokenPayloadExternal;
-    if (!payload) return { passed: false, reason: "empty_payload" };
+    if (!payload) {
+      return { passed: false, reason: "empty_payload", telemetry: baseTelemetry };
+    }
 
-    // ── 1. Nonce validation ──────────────────────────────────────────────────
     const nonce = payload.requestDetails?.nonce;
-    if (!nonce) return { passed: false, reason: "missing_nonce" };
+    if (!nonce) {
+      return { passed: false, reason: "missing_nonce", telemetry: baseTelemetry };
+    }
+
+    const telemetry: IntegrityVerifyTelemetry = {
+      ...baseTelemetry,
+      googleNonceFp: fingerprintIntegrityValue(nonce),
+      googleNonceShape: describeNonceShape(nonce),
+    };
 
     const redis = getUpstashRedis();
     if (!redis) {
       console.error("[play-integrity] Upstash Redis unavailable — cannot verify nonce in production");
-      return { passed: false, reason: "redis_unavailable" };
+      return { passed: false, reason: "redis_unavailable", telemetry };
     }
 
-    const storedUserId = await redis.get<string>(`integrity_nonce:${nonce}`);
-    if (!storedUserId) return { passed: false, reason: "nonce_invalid_or_expired" };
-    if (storedUserId !== userId) return { passed: false, reason: "nonce_user_mismatch" };
+    telemetry.expectedNonceFp = await readExpectedNonceFp(redis, traceId);
+    if (telemetry.expectedNonceFp && telemetry.googleNonceFp) {
+      telemetry.nonceMatchExpected = telemetry.expectedNonceFp === telemetry.googleNonceFp;
+    }
 
-    // ── 2. App recognition ───────────────────────────────────────────────────
+    const lookup = await lookupNonceUserId(redis, nonce);
+    telemetry.redisHit = lookup.userId !== null;
+    telemetry.redisLookupVariant = lookup.variant;
+
+    if (!lookup.userId) {
+      return { passed: false, reason: "nonce_invalid_or_expired", telemetry };
+    }
+
+    telemetry.userIdMatch = lookup.userId === userId;
+    if (!telemetry.userIdMatch) {
+      return { passed: false, reason: "nonce_user_mismatch", telemetry };
+    }
+
     const appVerdict = payload.appIntegrity?.appRecognitionVerdict;
     if (appVerdict !== "PLAY_RECOGNIZED") {
-      return { passed: false, reason: `app_verdict:${appVerdict}` };
+      return { passed: false, reason: `app_verdict:${appVerdict}`, telemetry };
     }
 
-    // ── 3. Device integrity ──────────────────────────────────────────────────
     const deviceVerdicts = payload.deviceIntegrity?.deviceRecognitionVerdict ?? [];
     if (!deviceVerdicts.includes("MEETS_DEVICE_INTEGRITY")) {
-      return { passed: false, reason: `device_verdict:${deviceVerdicts.join(",")}` };
+      return {
+        passed: false,
+        reason: `device_verdict:${deviceVerdicts.join(",")}`,
+        telemetry,
+      };
     }
 
-    // ── 4. Play Protect status ───────────────────────────────────────────────
-    const playProtect = (payload as any).environmentDetails?.playProtectVerdict as string | undefined ?? null;
+    const playProtect =
+      (payload as { environmentDetails?: { playProtectVerdict?: string } }).environmentDetails
+        ?.playProtectVerdict ?? null;
     if (playProtect && BLOCKING_PLAY_PROTECT.includes(playProtect)) {
       return {
         passed: false,
         reason: `play_protect:${playProtect}`,
         environment: { playProtect, appsDetected: [] },
+        telemetry,
       };
     }
 
-    // ── 5. App access risk ───────────────────────────────────────────────────
     const appsDetected: string[] =
-      (payload as any).environmentDetails?.appAccessRiskVerdict?.appsDetected ?? [];
+      (payload as { environmentDetails?: { appAccessRiskVerdict?: { appsDetected?: string[] } } })
+        .environmentDetails?.appAccessRiskVerdict?.appsDetected ?? [];
 
     const activeRisk = appsDetected.filter((v) => BLOCKING_APP_RISK.includes(v));
     if (activeRisk.length > 0) {
-      // Active screen capture or device control detected — privacy threat.
       return {
         passed: false,
         reason: `app_access_risk:${activeRisk.join(",")}`,
         environment: { playProtect, appsDetected },
+        telemetry,
       };
     }
 
-    // Single-use nonce — delete only after all checks pass so retries with the
-    // same token can recover from transient Play verdict failures.
-    await redis.del(`integrity_nonce:${nonce}`);
+    const redisKey =
+      lookup.variant === "trim_padding" ? nonce.replace(/=+$/, "") : nonce;
+    await redis.del(`integrity_nonce:${redisKey}`);
 
     return {
       passed: true,
       environment: { playProtect, appsDetected },
+      telemetry,
     };
   } catch (err: unknown) {
     const httpStatus = (err as { response?: { status?: number } })?.response?.status;
     if (typeof httpStatus === "number" && httpStatus >= 400 && httpStatus < 500) {
-      return { passed: false, reason: `api_4xx:${httpStatus}` };
+      return { passed: false, reason: `api_4xx:${httpStatus}`, telemetry: baseTelemetry };
     }
     console.error("[play-integrity] transient verification error:", err);
     if (process.env.INTEGRITY_FAIL_OPEN === "true") {
-      return { passed: true };
+      return { passed: true, telemetry: baseTelemetry };
     }
-    return { passed: false, reason: "transient_error" };
+    return { passed: false, reason: "transient_error", telemetry: baseTelemetry };
   }
 }

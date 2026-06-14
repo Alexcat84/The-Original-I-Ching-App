@@ -49,6 +49,8 @@ import { uploadGeneratedImageToR2 } from "@/lib/upload-to-r2";
 import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey, getUpstashRedis } from "@/lib/rate-limit";
 import { verifyIntegrityToken } from "@/lib/play-integrity";
+import { readIntegrityTraceId } from "@/lib/integrity-telemetry";
+import { captureIntegrityToSentry } from "@/lib/integrity-sentry";
 import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin, withSupabaseSemaphore } from "@/lib/supabase-admin";
@@ -536,14 +538,47 @@ export async function POST(req: Request) {
     // can demand the token unconditionally for any session flagged as Android. Tracked as
     // technical debt; current implementation prevents passive scraping and unmodified emulators.
     const integrityToken = req.headers.get("x-integrity-token");
+    const integrityTraceId = readIntegrityTraceId(req);
     if (integrityToken) {
-      const verdict = await verifyIntegrityToken(integrityToken, authedUserId);
+      const verdict = await verifyIntegrityToken(integrityToken, authedUserId, integrityTraceId);
+      const tel = verdict.telemetry;
       if (!verdict.passed) {
         log.warn("integrity_check_failed", {
           reason: verdict.reason,
           userId: authedUserId.slice(0, 8),
           playProtect: verdict.environment?.playProtect ?? null,
           appsDetected: verdict.environment?.appsDetected ?? [],
+          traceId: integrityTraceId,
+          expectedNonceFp: tel?.expectedNonceFp ?? null,
+          googleNonceFp: tel?.googleNonceFp ?? null,
+          nonceMatchExpected: tel?.nonceMatchExpected ?? null,
+          redisHit: tel?.redisHit ?? null,
+          redisLookupVariant: tel?.redisLookupVariant ?? null,
+          userIdMatch: tel?.userIdMatch ?? null,
+          tokenLen: tel?.tokenLen ?? integrityToken.length,
+          googleNonceLen: tel?.googleNonceShape?.len ?? null,
+          googleNonceHasPadding: tel?.googleNonceShape?.hasPadding ?? null,
+          googleNonceHasDash: tel?.googleNonceShape?.hasDash ?? null,
+          googleNonceHasUnderscore: tel?.googleNonceShape?.hasUnderscore ?? null,
+        });
+        captureIntegrityToSentry("integrity_check_failed", {
+          source: "consult",
+          reason: verdict.reason ?? "unknown",
+          traceId: integrityTraceId,
+          userId: authedUserId.slice(0, 8),
+          extra: {
+            playProtect: verdict.environment?.playProtect ?? null,
+            appsDetected: verdict.environment?.appsDetected ?? [],
+            expectedNonceFp: tel?.expectedNonceFp ?? null,
+            googleNonceFp: tel?.googleNonceFp ?? null,
+            nonceMatchExpected: tel?.nonceMatchExpected ?? null,
+            redisHit: tel?.redisHit ?? null,
+            redisLookupVariant: tel?.redisLookupVariant ?? null,
+            userIdMatch: tel?.userIdMatch ?? null,
+            tokenLen: tel?.tokenLen ?? integrityToken.length,
+            googleNonceLen: tel?.googleNonceShape?.len ?? null,
+            googleNonceHasPadding: tel?.googleNonceShape?.hasPadding ?? null,
+          },
         });
         await log.flush();
         return NextResponse.json(
@@ -551,14 +586,17 @@ export async function POST(req: Request) {
           { status: 403 },
         );
       }
-      // Log environment data on every passing request for monitoring/analytics.
-      // Allows detecting patterns (e.g. rising app_access_risk installs) before
-      // deciding to tighten blocking thresholds.
       if (verdict.environment) {
         log.info("integrity_check_passed", {
           userId: authedUserId.slice(0, 8),
           playProtect: verdict.environment.playProtect,
           appsDetected: verdict.environment.appsDetected,
+          traceId: integrityTraceId,
+          expectedNonceFp: tel?.expectedNonceFp ?? null,
+          googleNonceFp: tel?.googleNonceFp ?? null,
+          nonceMatchExpected: tel?.nonceMatchExpected ?? null,
+          redisLookupVariant: tel?.redisLookupVariant ?? null,
+          tokenLen: tel?.tokenLen ?? integrityToken.length,
         });
       }
     }
