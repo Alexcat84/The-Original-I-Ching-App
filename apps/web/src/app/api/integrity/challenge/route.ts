@@ -6,8 +6,6 @@ import {
   fingerprintIntegrityValue,
   readIntegrityTraceId,
 } from "@/lib/integrity-telemetry";
-import { captureIntegrityToSentry } from "@/lib/integrity-sentry";
-
 export const runtime = "nodejs";
 
 const CHALLENGE_TTL_SECONDS = 600; // 10 minutes
@@ -36,11 +34,6 @@ export async function GET(req: NextRequest) {
       traceId,
       reason: "rate_limited",
       userId: null,
-    });
-    captureIntegrityToSentry("integrity_challenge_denied", {
-      source: "challenge",
-      reason: "rate_limited",
-      traceId,
     });
     await api.log.flush();
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
@@ -72,13 +65,6 @@ export async function GET(req: NextRequest) {
         reason: "redis_unavailable",
         userId: authUser.userId.slice(0, 8),
         nonceFp,
-      });
-      captureIntegrityToSentry("integrity_challenge_denied", {
-        source: "challenge",
-        reason: "redis_unavailable",
-        traceId,
-        userId: authUser.userId.slice(0, 8),
-        extra: { nonceFp },
       });
       await api.log.flush();
       return NextResponse.json({ error: "integrity_unavailable" }, { status: 503 });
