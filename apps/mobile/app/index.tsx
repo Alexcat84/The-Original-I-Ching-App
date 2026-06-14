@@ -92,7 +92,7 @@ import {
   type WebViewMessageEvent,
   type WebViewNavigation,
 } from "react-native-webview";
-import { useIntegrityCheck } from "@/src/hooks/useIntegrityCheck";
+import { useIntegrityCheck, createIntegrityTraceId } from "@/src/hooks/useIntegrityCheck";
 import {
   DEFAULT_LOCALE,
   UI_LOCALE_STORAGE_KEY,
@@ -716,13 +716,15 @@ const INJECTED_JS = `
   };
   /* Play Integrity token — injected from native via window.__rnIntegrityToken. */
   window.__rnIntegrityToken = window.__rnIntegrityToken || null;
+  window.__rnIntegrityTraceId = window.__rnIntegrityTraceId || null;
   window.__rnPendingIntegrity = window.__rnPendingIntegrity || {};
-  window.__rnIntegrityTokenResponse = function (reqId, token) {
+  window.__rnIntegrityTokenResponse = function (reqId, token, traceId) {
     var cb = window.__rnPendingIntegrity[reqId];
     if (!cb) return;
     delete window.__rnPendingIntegrity[reqId];
     if (token) window.__rnIntegrityToken = token;
-    cb(token);
+    if (traceId) window.__rnIntegrityTraceId = traceId;
+    cb(token, traceId);
   };
 
   var _origFetch = window.fetch;
@@ -733,9 +735,11 @@ const INJECTED_JS = `
     if (init && init.method === 'POST' && url.indexOf('/api/consult') !== -1 && window.ReactNativeWebView) {
       return new Promise(function (resolve, reject) {
         var reqId = 'int_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-        window.__rnPendingIntegrity[reqId] = function (token) {
+        window.__rnPendingIntegrity[reqId] = function (token, traceId) {
           var headers = new Headers(init.headers || {});
           if (token) headers.set('x-integrity-token', token);
+          if (traceId) headers.set('x-integrity-trace-id', traceId);
+          else if (window.__rnIntegrityTraceId) headers.set('x-integrity-trace-id', window.__rnIntegrityTraceId);
           _origFetch.call(window, input, Object.assign({}, init, { headers: headers }))
             .then(resolve)
             .catch(reject);
@@ -746,8 +750,12 @@ const INJECTED_JS = `
         setTimeout(function () {
           if (!window.__rnPendingIntegrity[reqId]) return;
           delete window.__rnPendingIntegrity[reqId];
+          window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+            JSON.stringify({ type: 'integrity_bridge_timeout', reqId: reqId })
+          );
           var headers = new Headers(init.headers || {});
           if (window.__rnIntegrityToken) headers.set('x-integrity-token', window.__rnIntegrityToken);
+          if (window.__rnIntegrityTraceId) headers.set('x-integrity-trace-id', window.__rnIntegrityTraceId);
           _origFetch.call(window, input, Object.assign({}, init, { headers: headers }))
             .then(resolve)
             .catch(reject);
@@ -1191,6 +1199,7 @@ type RNMessage =
   | { type: "bootstrap_complete" }
   | { type: "delete_chat"; url: string; reqId: string }
   | { type: "integrity_token_request"; reqId: string }
+  | { type: "integrity_bridge_timeout"; reqId: string }
   | { type: "account_deleted" }
   | { type: "open_image"; url: string }
   | { type: "request_thread"; sessionId: string; localId: string }
@@ -1918,7 +1927,7 @@ export default function WebViewScreen() {
   };
 
   /* ── Play Integrity attestation token ── */
-  const { currentTokenRef: integrityTokenRef, tokenState: integrityTokenState, refreshToken: refreshIntegrityToken } =
+  const { currentTokenRef: integrityTokenRef, currentTraceIdRef: integrityTraceIdRef, tokenState: integrityTokenState, refreshToken: refreshIntegrityToken } =
     useIntegrityCheck(isAuthenticated);
   const refreshIntegrityTokenRef = useRef(refreshIntegrityToken);
   refreshIntegrityTokenRef.current = refreshIntegrityToken;
@@ -2833,13 +2842,57 @@ export default function WebViewScreen() {
 
           case "integrity_token_request": {
             void (async () => {
-              const token =
-                (await refreshIntegrityTokenRef.current()) ?? integrityTokenRef.current;
+              const traceId = createIntegrityTraceId();
+              const freshToken = await refreshIntegrityTokenRef.current(traceId);
+              const token = freshToken ?? integrityTokenRef.current;
+              const usedStaleFallback = freshToken === null && integrityTokenRef.current !== null;
+              const bearerToken = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
+              if (bearerToken && usedStaleFallback) {
+                void fetch(`${BASE_URL}/api/integrity/client-event`, {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${bearerToken}`,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    traceId,
+                    phase: "bridge_stale_fallback",
+                    ok: false,
+                    reason: "refresh_returned_null",
+                    tokenLen: token?.length ?? 0,
+                  }),
+                }).catch(() => undefined);
+              }
+              const resolvedTraceId = freshToken ? traceId : integrityTraceIdRef.current ?? traceId;
               const escapedReqId = JSON.stringify(msg.reqId);
               const escapedToken = JSON.stringify(token);
+              const escapedTraceId = JSON.stringify(resolvedTraceId);
               webViewRef.current?.injectJavaScript(
-                `window.__rnIntegrityTokenResponse && window.__rnIntegrityTokenResponse(${escapedReqId}, ${escapedToken}); true;`
+                `window.__rnIntegrityTokenResponse && window.__rnIntegrityTokenResponse(${escapedReqId}, ${escapedToken}, ${escapedTraceId}); true;`
               );
+            })();
+            break;
+          }
+
+          case "integrity_bridge_timeout": {
+            void (async () => {
+              const bearerToken = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
+              if (!bearerToken) return;
+              const traceId = integrityTraceIdRef.current ?? createIntegrityTraceId();
+              void fetch(`${BASE_URL}/api/integrity/client-event`, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${bearerToken}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  traceId,
+                  phase: "bridge_timeout",
+                  ok: false,
+                  reason: "webview_15s_timeout",
+                  tokenLen: integrityTokenRef.current?.length ?? 0,
+                }),
+              }).catch(() => undefined);
             })();
             break;
           }
