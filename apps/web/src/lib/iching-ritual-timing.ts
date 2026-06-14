@@ -10,7 +10,7 @@
  *
  * ## Optional overrides (when unset, defaults in this file apply)
  * - `NEXT_PUBLIC_ICHING_RITUAL_TARGET_MS` (min 8000): fallback processing budget when no prior I Ching consult duration is stored. **Default: 36_000**.
- * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick. **Default: 3000**.
+ * - `NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS` (900–4600): hard cap per tick. **Default: 4000**.
  * - `NEXT_PUBLIC_ICHING_RITUAL_PHASE1_WEIGHT`, `NEXT_PUBLIC_ICHING_RITUAL_PHASE2_WEIGHT`: positive integers used as a
  *   ratio to derive the intended share for phase 1 ticks from total wall-clock budget. Defaults **60 / 30**.
  *   Phase 2 is **not time-gated** in UI; it persists until response rendering clears the ritual stage.
@@ -41,7 +41,7 @@ export const ICHING_RITUAL_TICK_DELAY_MAX_MS = (() => {
     typeof process !== "undefined" && typeof process.env.NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS === "string"
       ? Number(process.env.NEXT_PUBLIC_ICHING_RITUAL_TICK_DELAY_MAX_MS)
       : Number.NaN;
-  return Number.isFinite(raw) && raw >= 900 && raw <= 4600 ? raw : 3000;
+  return Number.isFinite(raw) && raw >= 900 && raw <= 4600 ? raw : 4000;
 })();
 
 /** Legacy split ratio for the two finale sleeps (900 ms : 1100 ms). */
@@ -180,3 +180,13 @@ export function ichingManualFinaleMsFromFetchDuration(fetchDurationMs: number): 
   if (v > ICHING_MANUAL_FINALE_MAX_MS) v = ICHING_MANUAL_FINALE_MAX_MS;
   return v;
 }
+
+/**
+ * Subtle ambient breathing on the finale hexagram during the phase-2 hold (while AI text streams).
+ * OFF by default — set NEXT_PUBLIC_ICHING_FINALE_BREATHING=1 to enable.
+ * Does not affect oracle-bones (its hold is short) or manual cast path.
+ */
+export const ICHING_FINALE_BREATHING =
+  typeof process !== "undefined" &&
+  (process.env.NEXT_PUBLIC_ICHING_FINALE_BREATHING === "1" ||
+    process.env.NEXT_PUBLIC_ICHING_FINALE_BREATHING === "true");

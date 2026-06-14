@@ -11,7 +11,7 @@ const SEED_MS: Record<RitualKey, number> = {
   "iching:wilhelm": 40_000,
   "iching:legge": 40_000,
   "iching:zhouyi": 40_000,
-  "iching:master_combined": 58_000,
+  "iching:master_combined": 90_000, // measured M3+deep-context ~93s (audit 2026-06-14)
   "bones": 25_000,
 };
 
