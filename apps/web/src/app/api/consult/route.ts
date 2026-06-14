@@ -812,13 +812,17 @@ export async function POST(req: Request) {
         // A high ratio of consultations within 60 min → use TTL 1h; otherwise 5m suffices.
         const lastConsult = sessionMeta.consultations.at(-1);
         if (lastConsult) {
+          const now = Date.now();
           const minutesSincePreviousConsultation =
-            Math.round(((Date.now() - lastConsult.createdAt) / 60_000) * 10) / 10;
+            Math.round(((now - lastConsult.createdAt) / 60_000) * 10) / 10;
+          const firstConsult = sessionMeta.consultations[0];
           log.info("session_consult_interval", {
             userId: shortUserId(authedUserId),
             sessionId: sessionId.slice(0, 8),
             sessionPosition: previousRows.length + 1,
             minutesSincePreviousConsultation,
+            sinceLastMs: now - lastConsult.createdAt,
+            sessionAgeMs: firstConsult ? now - firstConsult.createdAt : 0,
           });
         }
       } else if (isDeepening) {
@@ -863,6 +867,7 @@ export async function POST(req: Request) {
       );
       logConsultPhase(log, requestId, "token_consumed", consultStartedAt, {
         userId: shortUserId(authedUserId),
+        sessionId: sessionId.slice(0, 8),
         tokensConsumed: tokensToConsume,
         remaining: remainingAfterConsume,
       });
@@ -1050,6 +1055,7 @@ export async function POST(req: Request) {
       log.info("oracle_bones_complete", {
         requestId,
         userId: shortUserId(authedUserId),
+        sessionId: sessionId.slice(0, 8),
         verdict: bonesCast.verdict,
         medium: bonesCast.medium,
         imageProvider: image.provider,
@@ -1125,6 +1131,13 @@ export async function POST(req: Request) {
       previousRows: previousRows,
       patternHints: null,
       locale: language,
+    });
+    logConsultPhase(log, requestId, "context_built", consultStartedAt, {
+      userId: shortUserId(authedUserId),
+      sessionId: sessionId.slice(0, 8),
+      depth: authorizedDepth,
+      oracleMode,
+      translator: resolvedTranslator,
     });
 
     if (responseMode === "stream_ritual") {
@@ -1289,11 +1302,18 @@ export async function POST(req: Request) {
                 : undefined;
 
               const prevIchingMessageId = await getPrevClaudeMessageId(authedUserId, sessionId);
+              logConsultPhase(log, requestId, "claude_start", consultStartedAt, {
+                sessionId: sessionId.slice(0, 8),
+                depth: authorizedDepth,
+                translator: resolvedTranslator,
+                oracleMode,
+              });
               const {
                 text: interpretation,
                 category,
                 interpretationSummary: rawInterpretationSummary,
                 claudeMessageId: ichingClaudeMessageId,
+                usage: ichingUsage,
               } = await generateInterpretation(
                 castResult,
                 tierEffective,
@@ -1307,6 +1327,17 @@ export async function POST(req: Request) {
               );
               if (deltaFlushTimer) { clearTimeout(deltaFlushTimer); deltaFlushTimer = null; }
               flushDeltaAcc();
+              logConsultPhase(log, requestId, "claude_done", consultStartedAt, {
+                sessionId: sessionId.slice(0, 8),
+                translator: resolvedTranslator,
+                oracleMode,
+                inputTokens: ichingUsage?.inputTokens,
+                outputTokens: ichingUsage?.outputTokens,
+                cacheReadTokens: ichingUsage?.cacheReadTokens,
+                cacheCreationTokens: ichingUsage?.cacheCreationTokens,
+                cacheReadRatio: ichingUsage?.cacheReadRatio,
+                model: ichingUsage?.model,
+              });
               if (ichingClaudeMessageId) void setPrevClaudeMessageId(authedUserId, sessionId, ichingClaudeMessageId);
               const interpretationSummary =
                 rawInterpretationSummary?.trim() ||
@@ -1381,6 +1412,19 @@ export async function POST(req: Request) {
                 category,
                 imageProvider: image.provider,
               });
+              if (image.debug?.together?.reason) {
+                log.info("image_provider_fallback", {
+                  requestId,
+                  sessionId: sessionId.slice(0, 8),
+                  requested: "together",
+                  used: image.provider,
+                  reason: image.debug.together.reason,
+                  status: image.debug.together.status,
+                  retried: image.debug.together.retried ?? false,
+                  hexagram: castResult.primaryHexagram.number,
+                  translator: resolvedTranslator,
+                });
+              }
 
               const nextPosition = previousRows.length + 1;
               const canDeepen = canDeepenAfterNextConsult({
@@ -1444,8 +1488,10 @@ export async function POST(req: Request) {
               log.info("stream_consult_complete", {
                 requestId,
                 userId: shortUserId(authedUserId),
+                sessionId: sessionId.slice(0, 8),
                 hexagram: castResult.primaryHexagram.number,
                 transformedHexagram: castResult.transformedHexagram?.number ?? null,
+                mutationRule: castResult.mutationRule,
                 category,
                 imageProvider: image.provider,
                 sessionPosition: nextPosition,
@@ -1543,11 +1589,18 @@ export async function POST(req: Request) {
     }
 
     const prevMsgId = await getPrevClaudeMessageId(authedUserId, sessionId);
+    logConsultPhase(log, requestId, "claude_start", consultStartedAt, {
+      sessionId: sessionId.slice(0, 8),
+      depth: authorizedDepth,
+      translator: resolvedTranslator,
+      oracleMode,
+    });
     const {
       text: interpretation,
       category,
       interpretationSummary: rawInterpretationSummary,
       claudeMessageId: newMsgId,
+      usage: ritualUsage,
     } = await generateInterpretation(
       castResult,
       tierEffective,
@@ -1559,6 +1612,17 @@ export async function POST(req: Request) {
       prevMsgId,
     );
     if (newMsgId) void setPrevClaudeMessageId(authedUserId, sessionId, newMsgId);
+    logConsultPhase(log, requestId, "claude_done", consultStartedAt, {
+      sessionId: sessionId.slice(0, 8),
+      translator: resolvedTranslator,
+      oracleMode,
+      inputTokens: ritualUsage?.inputTokens,
+      outputTokens: ritualUsage?.outputTokens,
+      cacheReadTokens: ritualUsage?.cacheReadTokens,
+      cacheCreationTokens: ritualUsage?.cacheCreationTokens,
+      cacheReadRatio: ritualUsage?.cacheReadRatio,
+      model: ritualUsage?.model,
+    });
     const interpretationSummary =
       rawInterpretationSummary?.trim() ||
       summarizeInterpretationForContext(interpretation);
@@ -1599,6 +1663,19 @@ export async function POST(req: Request) {
     image = await finalizeReadingImages(image, tierEffective);
     const _r2UrlRitual = await uploadGeneratedImageToR2(image.imageUrl, authedUserId, castResult.id);
     if (_r2UrlRitual) image = { ...image, imageUrl: _r2UrlRitual };
+    if (image.debug?.together?.reason) {
+      log.info("image_provider_fallback", {
+        requestId,
+        sessionId: sessionId.slice(0, 8),
+        requested: "together",
+        used: image.provider,
+        reason: image.debug.together.reason,
+        status: image.debug.together.status,
+        retried: image.debug.together.retried ?? false,
+        hexagram: castResult.primaryHexagram.number,
+        translator: resolvedTranslator,
+      });
+    }
 
     const nextPosition = previousRows.length + 1;
     const canDeepen = canDeepenAfterNextConsult({
@@ -1657,8 +1734,10 @@ export async function POST(req: Request) {
     log.info("consult_complete", {
       requestId,
       userId: shortUserId(authedUserId),
+      sessionId: sessionId.slice(0, 8),
       hexagram: castResult.primaryHexagram.number,
       transformedHexagram: castResult.transformedHexagram?.number ?? null,
+      mutationRule: castResult.mutationRule,
       category,
       imageProvider: image.provider,
       sessionPosition: nextPosition,

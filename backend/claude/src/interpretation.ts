@@ -636,6 +636,15 @@ function buildV2Messages(
   return messages;
 }
 
+export type ClaudeUsage = {
+  inputTokens: number | null;
+  outputTokens: number | null;
+  cacheReadTokens: number | null;
+  cacheCreationTokens: number | null;
+  cacheReadRatio: number | null;
+  model: string;
+};
+
 export async function generateInterpretation(
   castResult: CastResult,
   tier: string,
@@ -651,6 +660,7 @@ export async function generateInterpretation(
   category: ConsultationCategory;
   interpretationSummary: string;
   claudeMessageId?: string;
+  usage?: ClaudeUsage | null;
 }> {
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, OPENROUTER_MODEL, GROQ_API_KEY, GROQ_MODEL } =
     loadClaudeEnv(env);
@@ -785,6 +795,19 @@ export async function generateInterpretation(
         sessionPosition: (context?.previousConsultations?.length ?? 0) + 1,
         generationMs: Date.now() - anthropicCallStart,
       });
+      const usageRecord = toUsageRecord(response.usage);
+      const claudeUsage: ClaudeUsage = {
+        inputTokens: numberField(usageRecord, "input_tokens"),
+        outputTokens: numberField(usageRecord, "output_tokens"),
+        cacheReadTokens: numberField(usageRecord, "cache_read_input_tokens"),
+        cacheCreationTokens: numberField(usageRecord, "cache_creation_input_tokens"),
+        cacheReadRatio: (() => {
+          const inp = numberField(usageRecord, "input_tokens");
+          const hit = numberField(usageRecord, "cache_read_input_tokens");
+          return inp && inp > 0 && hit !== null ? Math.round((hit / inp) * 100) / 100 : null;
+        })(),
+        model: getAnthropicModelId(env),
+      };
       if (response.stop_reason === "max_tokens") {
         console.warn(
           "[generateInterpretation] hit max_tokens (output may be truncated)",
@@ -873,6 +896,7 @@ export async function generateInterpretation(
                     category,
                     interpretationSummary,
                     claudeMessageId: retryResp.claudeMessageId,
+                    usage: claudeUsage,
                   };
                 }
               } catch (retryErr) {
@@ -885,6 +909,7 @@ export async function generateInterpretation(
             category,
             interpretationSummary,
             claudeMessageId: response.claudeMessageId,
+            usage: claudeUsage,
           };
         }
       }
