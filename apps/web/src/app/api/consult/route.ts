@@ -597,17 +597,29 @@ export async function POST(req: Request) {
         );
       }
       if (verdict.environment) {
-        log.info("integrity_check_passed", {
-          userId: authedUserId.slice(0, 8),
-          playProtect: verdict.environment.playProtect,
-          appsDetected: verdict.environment.appsDetected,
-          traceId: integrityTraceId,
-          expectedNonceFp: tel?.expectedNonceFp ?? null,
-          googleNonceFp: tel?.googleNonceFp ?? null,
-          nonceMatchExpected: tel?.nonceMatchExpected ?? null,
-          redisLookupVariant: tel?.redisLookupVariant ?? null,
-          tokenLen: tel?.tokenLen ?? integrityToken.length,
-        });
+        if (verdict.reason?.startsWith("app_access_risk_warn:")) {
+          log.warn("integrity_app_access_risk_warn", {
+            reason: verdict.reason,
+            userId: authedUserId.slice(0, 8),
+            playProtect: verdict.environment.playProtect,
+            appsDetected: verdict.environment.appsDetected,
+            traceId: integrityTraceId,
+            redisLookupVariant: tel?.redisLookupVariant ?? null,
+            tokenLen: tel?.tokenLen ?? integrityToken.length,
+          });
+        } else {
+          log.info("integrity_check_passed", {
+            userId: authedUserId.slice(0, 8),
+            playProtect: verdict.environment.playProtect,
+            appsDetected: verdict.environment.appsDetected,
+            traceId: integrityTraceId,
+            expectedNonceFp: tel?.expectedNonceFp ?? null,
+            googleNonceFp: tel?.googleNonceFp ?? null,
+            nonceMatchExpected: tel?.nonceMatchExpected ?? null,
+            redisLookupVariant: tel?.redisLookupVariant ?? null,
+            tokenLen: tel?.tokenLen ?? integrityToken.length,
+          });
+        }
       }
     }
 
