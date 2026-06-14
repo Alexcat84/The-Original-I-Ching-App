@@ -33,7 +33,13 @@ export type TogetherDebug = {
   hasKey: boolean;
   status?: number;
   errorSnippet?: string;
+  reason?: string;
+  retried?: boolean;
 };
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export type ImageProviderDebug = {
   providerResolved: ResolvedImageProvider;
@@ -571,57 +577,71 @@ async function generateWithTogether(
     normalizedSize: { width: safeWidth, height: safeHeight },
     seedBase: seedBase ?? null,
   });
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 65_000);
-  let res: Response;
-  try {
-    res = await fetch("https://api.together.xyz/v1/images/generations", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model,
-        prompt: promptForApi,
-        ...(isSchnell ? {} : { negative_prompt: negativePrompt }),
-        width: safeWidth,
-        height: safeHeight,
-        n: 1,
-        steps,
-        ...optionalApi,
-      }),
-      signal: controller.signal,
-    });
-  } catch (err) {
-    clearTimeout(timeoutId);
-    const isAbort = err instanceof Error && err.name === "AbortError";
-    debugLog("together: fetch threw", { isAbort, err: String(err).slice(0, 200) });
-    Sentry.captureException(err, {
-      tags: { provider: "together_ai", tier: tier || "unknown", hexagramNumber: String(hexagramNumber || "unknown") },
-      extra: { isAbort }
-    });
-    return {
-      url: null,
-      debug: {
-        attempted: true,
-        hasKey: true,
-        errorSnippet: isAbort ? "together timeout (45s)" : String(err).slice(0, 300),
-      },
-    };
-  }
-  clearTimeout(timeoutId);
-  if (!res.ok) {
-    let err = "";
+  let res!: Response;
+  let retried = false;
+  const fetchBody = JSON.stringify({
+    model,
+    prompt: promptForApi,
+    ...(isSchnell ? {} : { negative_prompt: negativePrompt }),
+    width: safeWidth,
+    height: safeHeight,
+    n: 1,
+    steps,
+    ...optionalApi,
+  });
+  for (let attempt = 0; attempt <= 1; attempt++) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 65_000);
     try {
-      err = await res.text();
-    } catch {
-      err = "";
+      res = await fetch("https://api.together.xyz/v1/images/generations", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${key}`,
+          "Content-Type": "application/json",
+        },
+        body: fetchBody,
+        signal: controller.signal,
+      });
+    } catch (err) {
+      clearTimeout(timeoutId);
+      const isAbort = err instanceof Error && err.name === "AbortError";
+      debugLog("together: fetch threw", { isAbort, err: String(err).slice(0, 200) });
+      Sentry.captureException(err, {
+        tags: { provider: "together_ai", tier: tier || "unknown", hexagramNumber: String(hexagramNumber || "unknown") },
+        extra: { isAbort, retried }
+      });
+      return {
+        url: null,
+        debug: {
+          attempted: true,
+          hasKey: true,
+          reason: isAbort ? "abort_timeout" : "fetch_threw",
+          errorSnippet: isAbort ? "together timeout (65s)" : String(err).slice(0, 300),
+          retried,
+        },
+      };
     }
-    debugLog("together: request failed", { status: res.status, snippet: err.slice(0, 500) });
+    clearTimeout(timeoutId);
+    if (res.ok) break;
+    if (res.status >= 500 && attempt === 0) {
+      retried = true;
+      debugLog("together: 5xx on attempt 0, retrying", { status: res.status });
+      await sleep(600);
+      continue;
+    }
+    break;
+  }
+  if (!res.ok) {
+    let errSnippet = "";
+    try {
+      errSnippet = await res.text();
+    } catch {
+      errSnippet = "";
+    }
+    debugLog("together: request failed", { status: res.status, snippet: errSnippet.slice(0, 500), retried });
     Sentry.captureException(new Error(`Together AI API Error: ${res.status}`), {
       tags: { provider: "together_ai", tier: tier || "unknown", hexagramNumber: String(hexagramNumber || "unknown") },
-      extra: { status: res.status, snippet: err.slice(0, 300) }
+      extra: { status: res.status, snippet: errSnippet.slice(0, 300), retried }
     });
     return {
       url: null,
@@ -629,7 +649,9 @@ async function generateWithTogether(
         attempted: true,
         hasKey: true,
         status: res.status,
-        errorSnippet: err.slice(0, 300),
+        errorSnippet: errSnippet.slice(0, 300),
+        reason: `http_${res.status}`,
+        retried,
       },
     };
   }

@@ -203,7 +203,7 @@ Más allá de las 10 reglas de mutación Zhu Xi, se auditaron:
 - [ ] Consulta real (amor/relaciones): «Líneas en movimiento» con cita EN verbatim + prosa ES
 - [ ] Gate rechaza respuesta sin cita; retry produce lectura válida (logs Sentry)
 - [ ] #1 Qian 用九 con `master_combined`: 3 blockquotes etiquetados Wilhelm / Legge / Zhou Yi
-- [ ] Axiom/logs: `mutationRule` visible en logs de consulta
+- [x] Axiom/logs: `mutationRule` visible en logs de consulta — implementado en `stream_consult_complete` y `consult_complete` (commit `d0d4650`, 2026-06-14)
 
 ---
 
