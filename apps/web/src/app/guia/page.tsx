@@ -51,6 +51,7 @@ export default async function GuiaRapidaPage() {
             <strong>{g.bonesLabel}</strong>: {g.s1Bones}
           </li>
         </ul>
+        <p className="doc-note">{g.ichingTraditionNote}</p>
 
         {/* Sección 2 */}
         <h2 id="panel-opciones">{g.s2Heading}</h2>
