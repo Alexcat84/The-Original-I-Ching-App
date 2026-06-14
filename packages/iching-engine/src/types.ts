@@ -71,12 +71,14 @@ export interface TextsForClaude {
   leggeTransformedJudgment?: string | null;
   leggeTransformedImage?: string | null;
   leggeSelectedLineTexts?: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }>;
+  leggeSpecialYaoText?: string | null;
   /** Textos para la versión Zhou Yi (sólo si el modo es master_combined) */
   zhouyiJudgment?: string;
   zhouyiImage?: string;
   zhouyiTransformedJudgment?: string | null;
   zhouyiTransformedImage?: string | null;
   zhouyiSelectedLineTexts?: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }>;
+  zhouyiSpecialYaoText?: string | null;
 }
 
 export interface CastResult {
