@@ -29,7 +29,10 @@ export interface IntegrityVerdict {
   telemetry?: IntegrityVerifyTelemetry;
 }
 
-const BLOCKING_APP_RISK = ["KNOWN_CAPTURING", "KNOWN_CONTROLLING", "UNKNOWN_CAPTURING", "UNKNOWN_CONTROLLING"];
+// UNKNOWN_* = sideloaded app controlling/capturing → block (high risk).
+// KNOWN_* = Play Store app controlling/capturing → warn only (accessibility, password managers, etc.).
+const BLOCKING_APP_RISK = ["UNKNOWN_CAPTURING", "UNKNOWN_CONTROLLING"];
+const WARNING_APP_RISK = ["KNOWN_CAPTURING", "KNOWN_CONTROLLING"];
 const BLOCKING_PLAY_PROTECT = ["MALWARE_DETECTED"];
 
 function getAuthClient() {
@@ -195,8 +198,10 @@ export async function verifyIntegrityToken(
       lookup.variant === "trim_padding" ? nonce.replace(/=+$/, "") : nonce;
     await redis.del(`integrity_nonce:${redisKey}`);
 
+    const warningRisk = appsDetected.filter((v) => WARNING_APP_RISK.includes(v));
     return {
       passed: true,
+      reason: warningRisk.length > 0 ? `app_access_risk_warn:${warningRisk.join(",")}` : undefined,
       environment: { playProtect, appsDetected },
       telemetry,
     };
