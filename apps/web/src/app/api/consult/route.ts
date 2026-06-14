@@ -50,6 +50,7 @@ import { resolveConsultPolicy } from "@/lib/policy-engine";
 import { rateLimitByKey, getUpstashRedis } from "@/lib/rate-limit";
 import { verifyIntegrityToken } from "@/lib/play-integrity";
 import { readIntegrityTraceId } from "@/lib/integrity-telemetry";
+import { integrityFailureLogFields } from "@/lib/integrity-failure-labels";
 import { captureIntegrityToSentry } from "@/lib/integrity-sentry";
 import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
@@ -543,8 +544,13 @@ export async function POST(req: Request) {
       const verdict = await verifyIntegrityToken(integrityToken, authedUserId, integrityTraceId);
       const tel = verdict.telemetry;
       if (!verdict.passed) {
-        log.warn("integrity_check_failed", {
-          reason: verdict.reason,
+        const failure = integrityFailureLogFields(verdict.reason ?? "unknown");
+        log.warn(failure.eventName, {
+          reason: failure.reason,
+          failureCategory: failure.category,
+          failureSummary: failure.summary,
+          appVerdict: failure.appVerdict,
+          deviceVerdict: failure.deviceVerdict,
           userId: authedUserId.slice(0, 8),
           playProtect: verdict.environment?.playProtect ?? null,
           appsDetected: verdict.environment?.appsDetected ?? [],
@@ -567,6 +573,10 @@ export async function POST(req: Request) {
           traceId: integrityTraceId,
           userId: authedUserId.slice(0, 8),
           extra: {
+            failureCategory: failure.category,
+            failureSummary: failure.summary,
+            appVerdict: failure.appVerdict,
+            deviceVerdict: failure.deviceVerdict,
             playProtect: verdict.environment?.playProtect ?? null,
             appsDetected: verdict.environment?.appsDetected ?? [],
             expectedNonceFp: tel?.expectedNonceFp ?? null,
