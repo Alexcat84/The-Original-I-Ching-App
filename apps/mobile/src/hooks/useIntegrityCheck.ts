@@ -40,7 +40,7 @@ interface TokenState {
  * Security note: the challenge endpoint requires Bearer auth so nonces are
  * bound to a real authenticated user and cannot be minted anonymously.
  */
-export function useIntegrityCheck() {
+export function useIntegrityCheck(isAuthenticated: boolean) {
   const [tokenState, setTokenState] = useState<TokenState | null>(null);
   const currentTokenRef = useRef<string | null>(null);
   const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -82,12 +82,19 @@ export function useIntegrityCheck() {
     }
   }, []);
 
+  // Mint on cold start when already logged in, and again after login (SecureStore populated).
   useEffect(() => {
+    if (!isAuthenticated) {
+      currentTokenRef.current = null;
+      setTokenState(null);
+      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+      return;
+    }
     void fetchAndStore();
     return () => {
       if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
     };
-  }, [fetchAndStore]);
+  }, [isAuthenticated, fetchAndStore]);
 
   return { currentTokenRef, tokenState, refreshToken: fetchAndStore };
 }

@@ -716,12 +716,46 @@ const INJECTED_JS = `
   };
   /* Play Integrity token — injected from native via window.__rnIntegrityToken. */
   window.__rnIntegrityToken = window.__rnIntegrityToken || null;
+  window.__rnPendingIntegrity = window.__rnPendingIntegrity || {};
+  window.__rnIntegrityTokenResponse = function (reqId, token) {
+    var cb = window.__rnPendingIntegrity[reqId];
+    if (!cb) return;
+    delete window.__rnPendingIntegrity[reqId];
+    if (token) window.__rnIntegrityToken = token;
+    cb(token);
+  };
 
   var _origFetch = window.fetch;
   window.fetch = function (input, init) {
     var url = typeof input === 'string' ? input : (input && input.url) || '';
 
-    /* P6a ── Attach Play Integrity token to /api/consult POST requests ── */
+    /* P6a ── Fresh Play Integrity token before each /api/consult (nonce is single-use) ── */
+    if (init && init.method === 'POST' && url.indexOf('/api/consult') !== -1 && window.ReactNativeWebView) {
+      return new Promise(function (resolve, reject) {
+        var reqId = 'int_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+        window.__rnPendingIntegrity[reqId] = function (token) {
+          var headers = new Headers(init.headers || {});
+          if (token) headers.set('x-integrity-token', token);
+          _origFetch.call(window, input, Object.assign({}, init, { headers: headers }))
+            .then(resolve)
+            .catch(reject);
+        };
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({ type: 'integrity_token_request', reqId: reqId })
+        );
+        setTimeout(function () {
+          if (!window.__rnPendingIntegrity[reqId]) return;
+          delete window.__rnPendingIntegrity[reqId];
+          var headers = new Headers(init.headers || {});
+          if (window.__rnIntegrityToken) headers.set('x-integrity-token', window.__rnIntegrityToken);
+          _origFetch.call(window, input, Object.assign({}, init, { headers: headers }))
+            .then(resolve)
+            .catch(reject);
+        }, 15000);
+      });
+    }
+
+    /* P6a-legacy ── Web-only fallback when no RN bridge ── */
     if (init && init.method === 'POST' && url.indexOf('/api/consult') !== -1 && window.__rnIntegrityToken) {
       var headers = new Headers(init.headers || {});
       headers.set('x-integrity-token', window.__rnIntegrityToken);
@@ -1156,6 +1190,7 @@ type RNMessage =
   | { type: "bootstrap_transient_error" }
   | { type: "bootstrap_complete" }
   | { type: "delete_chat"; url: string; reqId: string }
+  | { type: "integrity_token_request"; reqId: string }
   | { type: "account_deleted" }
   | { type: "open_image"; url: string }
   | { type: "request_thread"; sessionId: string; localId: string }
@@ -1883,7 +1918,10 @@ export default function WebViewScreen() {
   };
 
   /* ── Play Integrity attestation token ── */
-  const { currentTokenRef: integrityTokenRef, tokenState: integrityTokenState } = useIntegrityCheck();
+  const { currentTokenRef: integrityTokenRef, tokenState: integrityTokenState, refreshToken: refreshIntegrityToken } =
+    useIntegrityCheck(isAuthenticated);
+  const refreshIntegrityTokenRef = useRef(refreshIntegrityToken);
+  refreshIntegrityTokenRef.current = refreshIntegrityToken;
 
   // When the integrity token is refreshed, push the new value into the WebView
   // so the fetch interceptor always has a fresh token for /api/consult requests.
@@ -2792,6 +2830,19 @@ export default function WebViewScreen() {
             webBootstrapInFlightRef.current = false;
             schedulePostBootstrapSync();
             break;
+
+          case "integrity_token_request": {
+            void (async () => {
+              const token =
+                (await refreshIntegrityTokenRef.current()) ?? integrityTokenRef.current;
+              const escapedReqId = JSON.stringify(msg.reqId);
+              const escapedToken = JSON.stringify(token);
+              webViewRef.current?.injectJavaScript(
+                `window.__rnIntegrityTokenResponse && window.__rnIntegrityTokenResponse(${escapedReqId}, ${escapedToken}); true;`
+              );
+            })();
+            break;
+          }
 
           case "delete_chat":
             handleDeleteChat(msg.url, msg.reqId);
