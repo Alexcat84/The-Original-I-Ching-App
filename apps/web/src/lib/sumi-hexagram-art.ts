@@ -276,7 +276,7 @@ export function buildSumiHexagramSvgDataUrl(params: {
 <g>${lineEls.join("\n")}</g>
 <!-- primary titles: large, centered -->
 <text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" font-size="92" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
-<text x="${cx}" y="178" text-anchor="middle" fill="#3d3830" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
+<text x="${cx}" y="178" text-anchor="middle" fill="#3d3830" font-size="34" font-family="Georgia, 'Noto Serif', Noto Serif TC, Noto Serif SC, SimSun, STSong, serif" font-weight="600">${subEn}</text>
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
@@ -354,7 +354,7 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
 <g>${lineEls.join("\n")}</g>
 <!-- primary titles: large, centered -->
 <text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
-<text x="${cx}" y="178" text-anchor="middle" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
+<text x="${cx}" y="178" text-anchor="middle" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="600">${subEn}</text>
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
