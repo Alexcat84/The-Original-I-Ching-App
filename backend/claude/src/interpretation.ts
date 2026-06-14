@@ -852,7 +852,7 @@ export async function generateInterpretation(
 
   if (OPENROUTER_API_KEY) {
     try {
-      const orModel = OPENROUTER_MODEL ?? "google/gemini-2.5-flash";
+      const orModel = OPENROUTER_MODEL ?? "openai/gpt-4o";
       const openRouterCallStart = Date.now();
       const orResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -885,7 +885,7 @@ export async function generateInterpretation(
         sessionPosition: (context?.previousConsultations?.length ?? 0) + 1,
         generationMs: Date.now() - openRouterCallStart,
       });
-      if (response.stop_reason === "max_tokens") {
+      if ((orData.choices?.[0] as { finish_reason?: string } | undefined)?.finish_reason === "length") {
         console.warn("[generateInterpretation] OpenRouter hit max_tokens", {
           tier,
           maxTokens,

@@ -530,7 +530,7 @@ export async function generateOracleBonesInterpretation(
 
   if (OPENROUTER_API_KEY) {
     try {
-      const orModel = OPENROUTER_MODEL ?? "google/gemini-2.5-flash";
+      const orModel = OPENROUTER_MODEL ?? "openai/gpt-4o";
       const openRouterCallStart = Date.now();
       const orResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
