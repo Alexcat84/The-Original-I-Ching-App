@@ -598,7 +598,7 @@ export async function POST(req: Request) {
       }
       if (verdict.environment) {
         if (verdict.reason?.startsWith("app_access_risk_warn:")) {
-          log.warn("integrity_app_access_risk_warn", {
+          log.info("integrity_known_app_access_risk", {
             reason: verdict.reason,
             userId: authedUserId.slice(0, 8),
             playProtect: verdict.environment.playProtect,
