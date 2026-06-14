@@ -51,6 +51,7 @@ import { rateLimitByKey, getUpstashRedis } from "@/lib/rate-limit";
 import { verifyIntegrityToken } from "@/lib/play-integrity";
 import { readIntegrityTraceId } from "@/lib/integrity-telemetry";
 import { integrityFailureLogFields } from "@/lib/integrity-failure-labels";
+import { captureIntegrityToSentry } from "@/lib/integrity-sentry";
 import { assertCriticalConfig } from "@/lib/startup-checks";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { getSupabaseAdmin, withSupabaseSemaphore } from "@/lib/supabase-admin";
@@ -565,6 +566,29 @@ export async function POST(req: Request) {
           googleNonceHasPadding: tel?.googleNonceShape?.hasPadding ?? null,
           googleNonceHasDash: tel?.googleNonceShape?.hasDash ?? null,
           googleNonceHasUnderscore: tel?.googleNonceShape?.hasUnderscore ?? null,
+        });
+        captureIntegrityToSentry("integrity_check_failed", {
+          source: "consult",
+          reason: verdict.reason ?? "unknown",
+          traceId: integrityTraceId,
+          userId: authedUserId.slice(0, 8),
+          extra: {
+            failureCategory: failure.category,
+            failureSummary: failure.summary,
+            appVerdict: failure.appVerdict,
+            deviceVerdict: failure.deviceVerdict,
+            playProtect: verdict.environment?.playProtect ?? null,
+            appsDetected: verdict.environment?.appsDetected ?? [],
+            expectedNonceFp: tel?.expectedNonceFp ?? null,
+            googleNonceFp: tel?.googleNonceFp ?? null,
+            nonceMatchExpected: tel?.nonceMatchExpected ?? null,
+            redisHit: tel?.redisHit ?? null,
+            redisLookupVariant: tel?.redisLookupVariant ?? null,
+            userIdMatch: tel?.userIdMatch ?? null,
+            tokenLen: tel?.tokenLen ?? integrityToken.length,
+            googleNonceLen: tel?.googleNonceShape?.len ?? null,
+            googleNonceHasPadding: tel?.googleNonceShape?.hasPadding ?? null,
+          },
         });
         await log.flush();
         return NextResponse.json(

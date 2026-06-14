@@ -3,6 +3,11 @@ import { z } from "zod";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { createApiLogger } from "@/lib/supabase-telemetry";
 import { rateLimitByKey } from "@/lib/rate-limit";
+import {
+  captureIntegrityToSentry,
+  shouldReportIntegrityClientEvent,
+} from "@/lib/integrity-sentry";
+
 export const runtime = "nodejs";
 
 const bodySchema = z.object({
@@ -61,6 +66,22 @@ export async function POST(req: NextRequest) {
     tokenLen: body.tokenLen ?? null,
     userId: authUser.userId.slice(0, 8),
   });
+
+  if (shouldReportIntegrityClientEvent(body.phase, body.ok)) {
+    captureIntegrityToSentry("integrity_client_event", {
+      source: "client_event",
+      reason: body.reason ?? body.phase,
+      phase: body.phase,
+      traceId: body.traceId,
+      userId: authUser.userId.slice(0, 8),
+      extra: {
+        ok: body.ok,
+        detail: body.detail ?? null,
+        nonceFp: body.nonceFp ?? null,
+        tokenLen: body.tokenLen ?? null,
+      },
+    });
+  }
 
   await api.log.flush();
   return NextResponse.json({ ok: true });
