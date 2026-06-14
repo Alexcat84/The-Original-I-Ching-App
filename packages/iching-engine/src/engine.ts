@@ -128,12 +128,22 @@ export function selectTextsForClaude(
           "";
         return { ...lineText, text };
       });
+      // Fetch tradition-specific 用九/用六 for QIAN (hex 1) and KUN (hex 2)
+      const specialYaoText =
+        baseResult.specialYaoText != null
+          ? primary.number === 1
+            ? (primaryRecord.yongJiu ?? null)
+            : primary.number === 2
+              ? (primaryRecord.yongLiu ?? null)
+              : null
+          : null;
       return {
         judgment: primaryRecord.judgment,
         image: primaryRecord.image,
         transformedJudgment: transformedRecord?.judgment ?? null,
         transformedImage: transformedRecord?.image ?? null,
         selectedLineTexts,
+        specialYaoText,
       };
     };
 
@@ -147,11 +157,13 @@ export function selectTextsForClaude(
       leggeTransformedJudgment: legge.transformedJudgment,
       leggeTransformedImage: legge.transformedImage,
       leggeSelectedLineTexts: legge.selectedLineTexts,
+      leggeSpecialYaoText: legge.specialYaoText,
       zhouyiJudgment: zhouyi.judgment,
       zhouyiImage: zhouyi.image,
       zhouyiTransformedJudgment: zhouyi.transformedJudgment,
       zhouyiTransformedImage: zhouyi.transformedImage,
       zhouyiSelectedLineTexts: zhouyi.selectedLineTexts,
+      zhouyiSpecialYaoText: zhouyi.specialYaoText,
     };
   };
 
