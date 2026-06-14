@@ -106,6 +106,7 @@ import { useProgressiveRevealSubstring } from "@/hooks/useProgressiveRevealSubst
 import {
   ichingRitualProcessingBudgetMs,
   ichingRitualRevealTimingFromBudget,
+  ICHING_FINALE_BREATHING,
   type IchingRitualRevealTiming,
 } from "@/lib/iching-ritual-timing";
 import { getRitualBudget, recordRitualBudget, toRitualKey } from "@/lib/ritual-budget-store";
@@ -5070,7 +5071,7 @@ export default function HomePage() {
                         })}
                       </div>
                     ) : (
-                      <div className="ritual-final-focus" aria-hidden="true">
+                      <div className={`ritual-final-focus${ICHING_FINALE_BREATHING ? " iching-finale-breathing" : ""}`} aria-hidden="true">
                         {ritualRenderOrder.map((lineNum, i) => {
                           const lineData =
                             ritualLines?.find((l) => l.position === lineNum) ??
