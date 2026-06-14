@@ -251,6 +251,47 @@ function enforceIChingStructuralConsistency(
   return text;
 }
 
+/** H1: verify Claude actually quoted the selected line text(s) in its response.
+ *  Uses the first 28 chars of each line as a fingerprint — long enough to be distinctive,
+ *  short enough to survive minor whitespace normalization. */
+function validateLineCitation(
+  text: string,
+  selectedLineTexts: CastResult["textsForClaude"]["selectedLineTexts"],
+): { passed: boolean; missing: Array<{ position: number; preview: string }> } {
+  if (selectedLineTexts.length === 0) return { passed: true, missing: [] };
+  const missing: Array<{ position: number; preview: string }> = [];
+  for (const lt of selectedLineTexts) {
+    const fingerprint = lt.text.slice(0, 28).trim();
+    if (fingerprint.length < 5) continue; // too short to validate meaningfully
+    if (!text.includes(fingerprint)) missing.push({ position: lt.position, preview: fingerprint });
+  }
+  return { passed: missing.length === 0, missing };
+}
+
+/** H2: inject a MANDATORY LINE CITATION reminder into the last user message of callParams. */
+function buildLineCitationRetryParams(
+  originalParams: Anthropic.MessageCreateParamsNonStreaming,
+  selectedLineTexts: CastResult["textsForClaude"]["selectedLineTexts"],
+): Anthropic.MessageCreateParamsNonStreaming {
+  const reminder =
+    '⚠️ MANDATORY LINE CITATION — your "Líneas en movimiento" / "Lines in motion" section MUST include a verbatim blockquote (> *exact text*) for each line below. Do not describe or paraphrase — quote verbatim:\n' +
+    selectedLineTexts.map((lt) => `  Line ${lt.position} [${lt.fromHexagram}]: "${lt.text}"`).join("\n") +
+    "\n\n";
+  const messages = originalParams.messages as Anthropic.MessageParam[];
+  const lastMsg = messages[messages.length - 1];
+  if (!lastMsg || lastMsg.role !== "user") return originalParams;
+  const injected: Anthropic.MessageParam = {
+    role: "user",
+    content: [
+      { type: "text", text: reminder },
+      ...(Array.isArray(lastMsg.content)
+        ? (lastMsg.content as Anthropic.ContentBlockParam[])
+        : [{ type: "text" as const, text: lastMsg.content as string }]),
+    ],
+  };
+  return { ...originalParams, messages: [...messages.slice(0, -1), injected] };
+}
+
 function castingMethodNote(method: CastingMethod | undefined): string {
   if (method === "yarrow-stalks") {
     return "DIVINATION METHOD: Yarrow Stalks (authentic Zhou distribution; old yang 3× more likely than old yin; the transformed hexagram carries additional interpretive weight when it appears)";
@@ -826,6 +867,56 @@ export async function generateInterpretation(
             castResult,
             language,
           );
+          // H1: verify line text citation is present
+          const { passed: citationOk, missing: missingCitations } = validateLineCitation(
+            hardened,
+            castResult.textsForClaude.selectedLineTexts,
+          );
+          if (!citationOk) {
+            Sentry.captureMessage("[iching] line_citation_missing", {
+              level: "warning",
+              tags: { provider: "anthropic", hexagram: String(castResult.primaryHexagram.number) },
+              extra: { missing: missingCitations, streaming: useStreaming },
+            });
+            // H2: single retry (non-streaming only — streaming already delivered to client)
+            if (!useStreaming) {
+              try {
+                const retryParams = buildLineCitationRetryParams(
+                  callParams as Anthropic.MessageCreateParamsNonStreaming,
+                  castResult.textsForClaude.selectedLineTexts,
+                );
+                const retryResp = await callAnthropicWithRetry(
+                  client,
+                  retryParams,
+                  { tier, language, method: resolvedCastingMethod ?? "iching" },
+                  null,
+                  0,
+                );
+                const retryFull = retryResp.content
+                  .filter((b) => b.type === "text")
+                  .map((b) => (b as { text: string }).text)
+                  .join("");
+                const retryRaw = stripSnapshotLeaks(
+                  retryFull.replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "").trim(),
+                );
+                const retryClean = stripInterpretationFluff(
+                  retryRaw.replace(/^#{0,6}\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*(?:\n|$)/im, "").trim(),
+                );
+                if (retryClean.trim().length > 0) {
+                  return {
+                    text: normalizeInterpretationPunctuation(
+                      enforceIChingStructuralConsistency(retryClean, castResult, language),
+                    ),
+                    category,
+                    interpretationSummary,
+                    claudeMessageId: retryResp.claudeMessageId,
+                  };
+                }
+              } catch (retryErr) {
+                console.warn("[generateInterpretation] line-citation retry failed", retryErr);
+              }
+            }
+          }
           return {
             text: normalizeInterpretationPunctuation(hardened),
             category,
