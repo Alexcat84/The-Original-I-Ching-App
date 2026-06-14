@@ -647,7 +647,7 @@ export async function generateInterpretation(
   interpretationSummary: string;
   claudeMessageId?: string;
 }> {
-  const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } =
+  const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, OPENROUTER_MODEL, GROQ_API_KEY, GROQ_MODEL } =
     loadClaudeEnv(env);
   const language = castResult.language;
   const model = getAnthropicModelId(env);
@@ -852,42 +852,33 @@ export async function generateInterpretation(
 
   if (OPENROUTER_API_KEY) {
     try {
-      const openRouterClient = new Anthropic({
-        apiKey: OPENROUTER_API_KEY,
-        baseURL: "https://openrouter.ai/api/v1",
-        defaultHeaders: {
+      const orModel = OPENROUTER_MODEL ?? "google/gemini-2.5-flash";
+      const openRouterCallStart = Date.now();
+      const orResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
           "HTTP-Referer": "https://theoriginaliching.com",
           "X-Title": "The Original I Ching App",
         },
+        body: JSON.stringify({
+          model: orModel,
+          temperature: 0.7,
+          max_tokens: maxTokens,
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: fallbackUserContent },
+          ],
+        }),
       });
-      const openRouterCallStart = Date.now();
-      const response = await openRouterClient.messages.create({
-        model,
-        max_tokens: maxTokens,
-        system: [
-          {
-            type: "text",
-            text: SYSTEM_PROMPT,
-            cache_control: { type: "ephemeral" },
-          },
-        ],
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: fallbackUserContent,
-              },
-            ],
-          },
-        ],
-      });
-      const fullText = response.content
-        .filter((b) => b.type === "text")
-        .map((b) => (b as { text: string }).text)
-        .join("");
-      logCacheUsage("openrouter", response.usage, {
+      if (!orResponse.ok) throw new Error(`OpenRouter HTTP ${orResponse.status}`);
+      const orData = (await orResponse.json()) as {
+        choices?: Array<{ message?: { content?: string } }>;
+        usage?: unknown;
+      };
+      const fullText = orData.choices?.[0]?.message?.content ?? "";
+      logCacheUsage("openrouter", orData.usage, {
         tier,
         method: resolvedCastingMethod ?? "iching",
         language,
@@ -959,6 +950,8 @@ export async function generateInterpretation(
 
   if (GROQ_API_KEY) {
     try {
+      // Groq has strict token limits — strip historical context to avoid 413
+      const groqUserContent = `${promptBlocks.libraryBlock}\n\n${promptBlocks.dynamicQuestionBlock}`;
       const response = await fetch(
         "https://api.groq.com/openai/v1/chat/completions",
         {
@@ -973,7 +966,7 @@ export async function generateInterpretation(
             max_tokens: maxTokens,
             messages: [
               { role: "system", content: SYSTEM_PROMPT },
-              { role: "user", content: fallbackUserContent },
+              { role: "user", content: groqUserContent },
             ],
           }),
         },
