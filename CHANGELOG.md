@@ -1,8 +1,35 @@
-<!-- changelog:last-release:54b31a5 -->
+<!-- changelog:last-release:9e24713 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [3.5.3] — 2026-06-13 | versionCode: 46 | Stage: Closed Testing
+
+### New
+- feat(integrity): Axiom trace chain + Sentry alerts for Play Integrity failures | commit: 598e2b4
+- feat(animation): plan v3 Actions 2-7 — gate + budget store + watchdog + typewriter | commit: 60dbee4
+
+### Fix
+- fix(prompt): apply mutation-rule explanation fix to master_combined mode | commit: 7c4a5bc
+- fix(prompt): restore mutation-rule explanation in Líneas en movimiento section | commit: f50156c
+- fix(integrity): label Axiom/Sentry events from Google verdicts only | commit: dfcc0cc
+- fix(mobile): fresh Play Integrity nonce per consult — dist 56 / v3.5.8 | commit: eea5cb8
+- fix(animation): post-audit minor fixes + verification docs (2026-06-13) | commit: ff1ecbd
+- fix(stream): TDZ imagePrompt in stream_ritual + Sentry captureException (audit 2026-06-13) | commit: b94e7bc
+- fix(mobile): attestKey correct API name + bump 3.5.7/vc55 | commit: 6d79c65
+- fix(hydration): per-session consult gate + RN accounting + watchdog (audit 2026-06-13) | commit: 2e8044e
+- fix(db): revoke PUBLIC execute on get_user_session_summaries + deny-all RLS on token_refund_log (073) | commit: ab19e52
+
+### Docs
+- docs(audit): update hydration gate + pre-production audit — post-session state 2026-06-13 | commit: e3a119d
+- docs(canvas): update architecture canvas to v3.5.6 + ignore agent runtime files | commit: 93f5d1f
+
+### Maintenance
+- chore(mobile): restore 3.5.3/versionCode 46 — official Play Store submission | commit: 9e24713
+- chore(mobile): bump to 3.5.6 (versionCode 54) for local APK smoke test | commit: 65a1217
+
+---
 
 ## [3.5.6] — 2026-06-13 | versionCode: 54 | Stage: Internal Testing
 
@@ -1473,7 +1500,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.5.6 | 54 | 2026-06-13 | Internal Testing | 1 | — |
+| 3.5.3 | 46 | 2026-06-13 | Closed Testing | 15 | Axiom trace chain + Sentry alerts for Play Integrity failures; plan v3 Actions 2-7 — gate + budget store + watchdog + typewriter; apply mutation-rule explanation fix to master_combined mode |
+| 3.5.6 | 54 | 2026-06-13 | Internal Testing | 0 | — |
 | 3.5.6 | 54 | 2026-06-13 | Internal Testing | 0 | — |
 | 3.5.5 | 53 | 2026-06-10 | Internal Testing | 0 | — |
 | 3.5.4 | 52 | 2026-06-10 | Internal Testing | 0 | — |
