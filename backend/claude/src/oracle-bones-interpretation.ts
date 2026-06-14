@@ -385,7 +385,7 @@ export async function generateOracleBonesInterpretation(
   interpretationSummary: string;
   claudeMessageId?: string;
 }> {
-  const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
+  const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, OPENROUTER_MODEL, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const maxTokens = MAX_TOKENS;
   const model = getAnthropicModelId(env);
   const hasContext = Boolean(context && context.previousConsultations.length > 0);
@@ -530,36 +530,33 @@ export async function generateOracleBonesInterpretation(
 
   if (OPENROUTER_API_KEY) {
     try {
-      const openRouterClient = new Anthropic({
-        apiKey: OPENROUTER_API_KEY,
-        baseURL: "https://openrouter.ai/api/v1",
-        defaultHeaders: {
+      const orModel = OPENROUTER_MODEL ?? "google/gemini-2.5-flash";
+      const openRouterCallStart = Date.now();
+      const orResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
           "HTTP-Referer": "https://theoriginaliching.com",
           "X-Title": "The Original I Ching App",
         },
+        body: JSON.stringify({
+          model: orModel,
+          temperature: 0.7,
+          max_tokens: maxTokens,
+          messages: [
+            { role: "system", content: ORACLE_BONES_SYSTEM },
+            { role: "user", content: userContent },
+          ],
+        }),
       });
-      const openRouterCallStart = Date.now();
-      const response = await openRouterClient.messages.create({
-        model,
-        max_tokens: maxTokens,
-        system: [{ type: "text", text: ORACLE_BONES_SYSTEM, cache_control: { type: "ephemeral" } }],
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: userContent,
-              },
-            ],
-          },
-        ],
-      });
-      const fullText = response.content
-        .filter((b) => b.type === "text")
-        .map((b) => (b as { text: string }).text)
-        .join("");
-      logCacheUsage("openrouter", response.usage, {
+      if (!orResponse.ok) throw new Error(`OpenRouter HTTP ${orResponse.status}`);
+      const orData = (await orResponse.json()) as {
+        choices?: Array<{ message?: { content?: string } }>;
+        usage?: unknown;
+      };
+      const fullText = orData.choices?.[0]?.message?.content ?? "";
+      logCacheUsage("openrouter", orData.usage, {
         tier,
         method: "oracle-bones",
         language,
@@ -615,7 +612,8 @@ export async function generateOracleBonesInterpretation(
         max_tokens: maxTokens,
         messages: [
           { role: "system", content: ORACLE_BONES_SYSTEM },
-          { role: "user", content: userContent },
+          // Groq has strict token limits — strip context history to avoid 413
+          { role: "user", content: consultBlockWithName },
         ],
       }),
     });

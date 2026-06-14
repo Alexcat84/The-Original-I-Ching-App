@@ -3993,6 +3993,19 @@ html[data-theme="light"] .coins-stage.ritual-coins-stage {
   animation: ritualFinalBloom 520ms ease-out both;
 }
 
+@keyframes iching-finale-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.92; }
+  50%       { transform: scale(1.018); opacity: 1;
+              filter: drop-shadow(0 0 10px var(--ritual-glow, rgba(212, 175, 55, 0.35))); }
+}
+.iching-finale-breathing {
+  animation: ritualFinalBloom 520ms ease-out both, iching-finale-breathe 4.2s ease-in-out 600ms infinite;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .iching-finale-breathing { animation: ritualFinalBloom 520ms ease-out both; }
+}
+
 .ritual-final-line {
   min-height: 1.5rem;
   display: grid;
