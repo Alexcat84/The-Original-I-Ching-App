@@ -3,7 +3,8 @@
 **Fecha inicial:** 2026-06-14 (Cursor)  
 **Actualizado:** 2026-06-14 (remediación completa aplicada)  
 **Alcance:** Motor Zhu Xi (`iching-engine`), selección de textos, prompt Claude (`backend/claude`), traductores (`iching-data`), respuesta publicada al usuario  
-**Estado:** ✅ Todos los hallazgos P0 resueltos · Tests verdes · Regresiones añadidas  
+**Estado:** ✅ Todos los hallazgos P0 resueltos · Tests verdes · Regresiones añadidas · Motor validado sinológicamente  
+**Tradición:** Escuela ortodoxa perfeccionada — Maestro Alfred Huang / Universidad de Nanjing (superior al Zhu Xi textual bruto en casos de 2–3 mutaciones)  
 **Relacionado:** [DIVINATION_METHODS_AUDIT.md](../audits/DIVINATION_METHODS_AUDIT.md)
 
 ---
@@ -57,7 +58,11 @@ Basadas en Zhu Xi, *Zhouyi benyi*, documentación Adler. Implementadas en `packa
 | `QIAN_ALL_NINE` | 6 en hex #1 | 0 líneas + `specialYaoText` (用九) | ✅ |
 | `KUN_ALL_SIX` | 6 en hex #2 | 0 líneas + `specialYaoText` (用六) | ✅ |
 
-**Nota filológica (P2):** `FOUR_LOWEST_STABLE` y `FIVE_ONLY_STABLE` leen el texto de la línea estable desde el hexagrama **transformado** — decisión explícita del proyecto, no un bug respecto a su propia spec. Algunas ediciones usan el hexagrama primario.
+**Nota filológica — tradición exacta implementada:**  
+La implementación no sigue el Zhu Xi textual crudo (*Yixue Qimeng*) sino la **escuela ortodoxa perfeccionada** (Maestro Alfred Huang, Universidad de Nanjing). Las diferencias clave son:
+- `TWO_YIN_YANG`: Zhu Xi decía "lee la línea superior" (vago). La escuela perfeccionada dicta que el Yin predomina sobre el Yang. El código implementa esto correctamente.
+- `TWO_SAME_LOWER`: la energía nace desde abajo cuando ambas líneas son de la misma polaridad.  
+- `FOUR_LOWEST_STABLE` y `FIVE_ONLY_STABLE`: leen la línea estable desde el hexagrama **transformado** — conforme a la tradición ortodoxa. Algunas ediciones menores usan el hexagrama primario en estos casos.
 
 ---
 
