@@ -228,6 +228,7 @@ async function main() {
         stopReason: apiResult?.stopReason ?? null,
         error,
         responsePreview: apiResult?.text?.slice(0, 500) ?? null,
+        responseFull: apiResult?.text ?? null,
       };
       rows.push(row);
       const status = error
@@ -295,8 +296,44 @@ async function main() {
   }
   writeFileSync(mdPath, mdLines.join("\n"), "utf8");
 
+  // Full-text transcripts grouped by (fixtureId, translator): each model's
+  // complete interpretation side by side, for human qualitative review.
+  const txPath = resolve(opts.outDir, `mutation-qa-${stamp}-transcripts.md`);
+  const groups = new Map();
+  for (const r of rows) {
+    const key = `${r.fixtureId} · ${r.translator}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(r);
+  }
+  const txLines = [`# Mutation QA transcripts — ${summary.generatedAt}`, ""];
+  for (const [key, grp] of groups) {
+    const g0 = grp[0];
+    txLines.push(
+      `## ${key}`,
+      "",
+      `Hexagram ${g0.primaryHexagram}${g0.transformedHexagram ? ` → ${g0.transformedHexagram}` : ""} · rule ${g0.mutationRule}`,
+      "",
+    );
+    for (const r of grp) {
+      const st = r.error ? "ERR" : r.blockingPass ? (r.warnCount ? "WARN" : "PASS") : "FAIL";
+      txLines.push(`### ${r.model} — ${st}${r.warnCount ? ` (${r.warnCount} warn)` : ""}`, "");
+      if (r.blockingFailures?.length)
+        txLines.push(`> blocking: ${r.blockingFailures.map((f) => `${f.gate}${f.detail ? ` ${JSON.stringify(f.detail)}` : ""}`).join(" · ")}`, "");
+      if (r.warnFailures?.length)
+        txLines.push(`> warn: ${r.warnFailures.map((f) => f.gate).join(" · ")}`, "");
+      txLines.push(
+        r.error ? `(API error: ${r.error})` : (r.responseFull ?? "(no text)"),
+        "",
+        "---",
+        "",
+      );
+    }
+  }
+  writeFileSync(txPath, txLines.join("\n"), "utf8");
+
   console.log(`\nReport: ${jsonPath}`);
   console.log(`Summary: ${mdPath}`);
+  console.log(`Transcripts: ${txPath}`);
   process.exit(summary.blockingFail + summary.errors > 0 ? 1 : 0);
 }
 

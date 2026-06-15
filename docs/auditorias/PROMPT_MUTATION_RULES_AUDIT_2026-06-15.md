@@ -275,6 +275,15 @@ Tras agotar retries Anthropic (máx. 2), un fallo **blocking** (H1/H3/H5) lanza 
 
 **H3 spec:** scope = cuerpo de «Líneas en movimiento» sin opener; fabricación = entry estructurada (`Línea N` + blockquote) para posiciones omitidas.
 
+**H3 cobertura multilingüe (patch post-Fase 2):**
+
+| Comportamiento | Idiomas |
+|---|---|
+| Sección reconocida → opener stripeado → H3 en cuerpo | ES, EN, PT, FR, DE, IT |
+| Sección no reconocida → fallback a texto completo → H3 best-effort | JA, KO, AR, HI, ZH |
+
+Lexicón "línea" ampliado: `Línea|Line|Linea|Linha|Ligne|Linie|第|爻`. Límite documentado: numeral chino (`第二爻`) vs arábigo (`第2`) — H3 detecta arábigos; la forma numeral-chino es follow-up dedicado.
+
 ### PR3 — QA harness
 
 - `packages/iching-engine/src/mutation-qa-fixtures.ts` — 10 reglas, assert `mutationRule`
@@ -305,15 +314,31 @@ node scripts/mutation-output-qa.mjs --rules THREE_MIDDLE,FIVE_ONLY_STABLE --conc
 
 Fixtures usan `buildPromptForCast` **sin contexto de sesión**. La sección «Líneas en movimiento» es invariante al contexto; **Encuadre PARTE 1+2 y SNAPSHOT con hilo no se validan** en este barrido.
 
+### Outputs del script
+
+| Archivo | Contenido |
+|---|---|
+| `reports/mutation-qa-{stamp}.json` | Todos los campos por fila (incl. `responseFull`) |
+| `reports/mutation-qa-{stamp}.md` | Tabla resumen: fixture × traductor × modelo, estado, warns |
+| `reports/mutation-qa-{stamp}-transcripts.md` | Texto completo por (regla × traductor), ambos modelos adyacentes — para revisión humana comparativa |
+
 ### Validadores en reporte
 
 - **Blocking (release):** H1, H3, H5
 - **Warn (calidad):** H1b, H4, H6
-- Comparación 4.5 vs 4.6 por fixture×traductor
+- Comparación 4.5 vs 4.6 por fixture×traductor en `transcripts.md`
 
 ### Resultados del barrido
 
-> Ejecutar tras deploy: `pnpm qa:mutation-output`. Los reportes se escriben en `reports/mutation-qa-{timestamp}.json` y `.md`. Actualizar esta tabla con el primer barrido post-implementación.
+> Ejecutar: `pnpm run build --workspace=@iching-oracle/iching-engine && pnpm run build --workspace=@iching-oracle/claude && pnpm qa:mutation-output`
+> Los reportes van a `reports/`. Actualizar esta tabla con el primer barrido post-implementación.
+
+| Métrica | Valor |
+|---------|-------|
+| Fecha barrido | Pendiente ejecución con `ANTHROPIC_API_KEY` |
+| Blocking pass | — / 80 |
+| Con warns | — |
+| API errors | — |
 
 | Métrica | Valor |
 |---------|-------|

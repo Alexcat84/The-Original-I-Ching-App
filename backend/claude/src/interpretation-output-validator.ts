@@ -33,7 +33,7 @@ const INTERNAL_RULE_CODES: MutationRule[] = [
 ];
 
 const LINES_SECTION_HEADINGS =
-  /^##\s*(?:Líneas en movimiento|Lines in motion|爻动|Lignes en mouvement|Linien in Bewegung|Linee in movimento)(?:\s*\([^)]*\))?/im;
+  /^##\s*(?:Líneas en movimiento|Lines in motion|Linhas em movimento|爻动|Lignes en mouvement|Linien in Bewegung|Linee in movimento)(?:\s*\([^)]*\))?/im;
 
 const RITUAL_HEADING_COUNT = 6;
 
@@ -82,14 +82,14 @@ function omittedChangingPositions(cast: CastResult): number[] {
 
 function lineEntryPattern(position: number): RegExp {
   return new RegExp(
-    `(?:^|\\n)\\s*(?:\\d+\\.\\s*)?(?:\\*\\*)?(?:Línea|Line|Linea|第)\\s*${position}(?:\\*\\*)?(?:\\s|:|\\)|\\]|,|\\.)`,
+    `(?:^|\\n)\\s*(?:\\d+\\.\\s*)?(?:\\*\\*)?(?:Línea|Line|Linea|Linha|Ligne|Linie|第|爻)\\s*${position}(?:\\*\\*)?(?:\\s|:|\\)|\\]|,|\\.)`,
     "im",
   );
 }
 
 function positionFollowedByBlockquote(text: string, position: number): boolean {
   const posPattern = new RegExp(
-    `(?:Línea|Line|Linea|第)\\s*${position}[^\\n]*\\n(?:[^\\n]*\\n){0,2}\\s*>\\s*\\*`,
+    `(?:Línea|Line|Linea|Linha|Ligne|Linie|第|爻)\\s*${position}[^\\n]*\\n(?:[^\\n]*\\n){0,2}\\s*>\\s*\\*`,
     "im",
   );
   return posPattern.test(text);
@@ -106,8 +106,11 @@ export function validateNoFabricatedLines(
   const omitted = omittedChangingPositions(cast);
   if (omitted.length === 0) return { passed: true, fabricated: [] };
 
-  const body = extractLinesSectionBody(text);
-  if (!body) return { passed: true, fabricated: [] };
+  // Robustness: fall back to the whole text when the Lines-section heading is
+  // not recognized (output language whose heading is not in LINES_SECTION_HEADINGS),
+  // so H3 never silently passes by failing to locate the section.
+  // The selected positions are never flagged (only omitted ones).
+  const body = extractLinesSectionBody(text) ?? text;
 
   const fabricated: number[] = [];
   for (const pos of omitted) {
