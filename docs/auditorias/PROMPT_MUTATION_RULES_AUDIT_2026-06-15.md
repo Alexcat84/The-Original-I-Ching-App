@@ -6,7 +6,7 @@
 **Prompt:** `backend/claude/src/interpretation.ts`  
 **Disparador:** Incidente #31 THREE_MIDDLE — Claude 4.6 fabricó el texto de línea 1 y citó correctamente que la 4 no tenía texto  
 **Alcance:** Reglas de mutación + cómo se envían al prompt + cruce completo + hallazgos + remediación  
-**Estado:** ✅ Remediación Fase 2 implementada (PR1 prompt + PR2 gates + PR3 QA harness)
+**Estado:** ✅ Remediación Fase 2 implementada y desplegada (`2cb6e48` — `fix/mutation-rules-fase2` → staging → main)
 
 ---
 
@@ -233,6 +233,8 @@ La remediación arquitectural de este commit reemplaza ese parche completamente.
 
 **Riesgo residual:** calidad de formato (H1b blockquote, H6 headings) no bloquea entrega; depende del modelo en edge cases M3 word count.
 
+**Cierre post-implementación (revisión 2026-06-15):** 17/17 ítems del plan verificados en código. Política de persistencia alineada con Opción B (fallback chain, no refund por gates). `enforceIChingStructuralConsistency` solo loguea — no modifica texto (nombre histórico).
+
 ---
 
 ## 14. Plan de remediación Fase 2 — ejecutado
@@ -255,7 +257,7 @@ Secuencia aplicada: **PR1 prompt → PR2 gates → PR3 fixtures + script**.
 |---------|-----|
 | `interpretation-output-validator.ts` | H1, H1b, H3, H4, H5, H6 |
 | `apply-interpretation-gates.ts` | Orquestación + H2 retry (máx. 2) |
-| `interpretation-quality-error.ts` | Error blocking → no persistir + refund |
+| `interpretation-quality-error.ts` | Señal blocking; capturada en fallback chain (Opción B), no llega a `route.ts` |
 
 **Política de fallo (Opción B — fallback chain, implementada):**
 
