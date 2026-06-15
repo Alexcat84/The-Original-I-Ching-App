@@ -17,6 +17,7 @@
     "i18n:audit": "node tools/i18n-audit.mjs",
     "changelog:generate": "node scripts/generate-changelog.js",
     "changelog:update": "node scripts/update-changelog.js",
+    "qa:mutation-output": "node scripts/mutation-output-qa.mjs",
     "clean": "turbo run clean",
     "generate:fallbacks:together": "node tools/fallback-tools/generate-prebuilt-fallbacks-together.mjs",
     "generate:together:iching-samples": "node tools/fallback-tools/generate-together-iching-samples.mjs",
