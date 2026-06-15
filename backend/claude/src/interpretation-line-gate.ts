@@ -24,8 +24,10 @@ export function validateLineCitation(
   if (selectedLineTexts.length === 0) return { passed: true, missing: [] };
   const missing: Array<{ position: number; preview: string }> = [];
   for (const lt of selectedLineTexts) {
-    const fingerprint = lt.text.slice(0, 28).trim();
-    if (fingerprint.length < 2) continue; // skip empty / single-char (classical Chinese still validates at 4+ chars)
+    // Use first line only (avoids \n crossing blockquote markers in multiline Wilhelm texts)
+    // and strip trailing CJK punctuation that Claude sometimes normalizes to ASCII equivalents.
+    const fingerprint = lt.text.split("\n")[0].replace(/[。！？，、；：]$/u, "").slice(0, 20).trim();
+    if (fingerprint.length < 2) continue;
     if (!text.includes(fingerprint)) {
       missing.push({ position: lt.position, preview: fingerprint });
     }

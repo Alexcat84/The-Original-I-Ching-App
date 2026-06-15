@@ -134,7 +134,7 @@ export function validateLineBlockquoteInSection(
   const missing: number[] = [];
 
   for (const lt of selectedLineTexts) {
-    const fingerprint = lt.text.slice(0, 28).trim();
+    const fingerprint = lt.text.split("\n")[0].replace(/[。！？，、；：]$/u, "").slice(0, 20).trim();
     if (fingerprint.length < 2) continue;
     const blockquotePattern = new RegExp(
       `>\\s*\\*[^*]*${escapeRegex(fingerprint.slice(0, 12))}`,
@@ -187,11 +187,15 @@ export function validateSpecialYaoHandling(
 export function validateSectionStructure(
   text: string,
   mode: "ritual" | "directo" | "profundizar",
+  hasTransformedHexagram?: boolean,
 ): { passed: boolean; count: number } {
   if (mode !== "ritual") return { passed: true, count: 0 };
   const headings = text.match(/^##\s+/gm);
   const count = headings?.length ?? 0;
-  return { passed: count >= RITUAL_HEADING_COUNT, count };
+  // When there is no transformed hexagram, the «Trazado» section is correctly
+  // absent → expect 5 headings; with transformed hexagram → expect 6.
+  const expected = hasTransformedHexagram === false ? RITUAL_HEADING_COUNT - 1 : RITUAL_HEADING_COUNT;
+  return { passed: count >= expected, count };
 }
 
 export function validateInterpretationOutput(
@@ -251,12 +255,14 @@ export function validateInterpretationOutput(
     });
   }
 
-  const h6 = validateSectionStructure(text, mode);
+  const hasTransformed = Boolean(cast.transformedHexagram);
+  const h6 = validateSectionStructure(text, mode, hasTransformed);
   if (!h6.passed) {
+    const expectedSections = hasTransformed ? RITUAL_HEADING_COUNT : RITUAL_HEADING_COUNT - 1;
     warnFailures.push({
       gate: "H6",
       severity: "warn",
-      message: `Expected at least ${RITUAL_HEADING_COUNT} ## sections in ritual mode`,
+      message: `Expected at least ${expectedSections} ## sections in ritual mode`,
       detail: { count: h6.count },
     });
   }
