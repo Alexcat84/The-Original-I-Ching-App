@@ -12,14 +12,10 @@ import {
   buildV2HistoricalUserBlock,
   type ResponseMode,
 } from "./interpretation-context.js";
-import {
-  changingLinePositionsLabel,
-  ichingStructuralCorrectionAppendix,
-} from "./interpretation-structural-i18n.js";
-import {
-  validateLineCitation,
-  buildLineCitationRetryParams,
-} from "./interpretation-line-gate.js";
+import { applyInterpretationGates } from "./apply-interpretation-gates.js";
+import { buildAnthropicInterpretationParams } from "./anthropic-interpretation-params.js";
+import { enforceIChingStructuralConsistency } from "./interpretation-gates-helpers.js";
+import { InterpretationQualityError } from "./interpretation-quality-error.js";
 import {
   normalizeInterpretationPunctuation,
   stripInterpretationFluff,
@@ -69,10 +65,6 @@ ABSOLUTE RULES:
 11. TYPOGRAPHY: enforce clean punctuation and spacing in the response language: one space after commas/semicolons/colons, no ",." or double punctuation, no glued tokens after punctuation, and no unintended uppercase after commas. NEVER use em-dashes (—) or hyphens (-) as clause separators in prose; replace them with commas, semicolons, or periods.
 12. TEMPORAL RESTRAINT: Never use temporal expressions (days, weeks, months, years, "recently", "lately", "these past X", or any span of time) when referencing previous consultations, unless the user's current question explicitly contains those terms. Reference prior consultations only by number, sequence, or thematic content — never by how long ago they occurred.`;
 
-/** Token output budget by tier. Master combined needs room for full unified interpretations. */
-const MAX_TOKENS_DEFAULT = 4096;
-const MAX_TOKENS_MASTER_WITH_CONTEXT = 7000;
-const MAX_TOKENS_MASTER_NO_CONTEXT = 5000;
 const LOG_CLAUDE_CACHE_METRICS =
   process.env.LOG_CLAUDE_CACHE_METRICS === "1" ||
   process.env.LOG_CLAUDE_CACHE_METRICS === "true" ||
@@ -208,53 +200,6 @@ function offlineFallbackText(
   return `[Offline / ${reason}] ${getLanguageName(language)} reading fallback for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
 }
 
-function claimedChangingCount(text: string): number | null {
-  const lower = text.toLowerCase();
-  if (
-    /sin l[ií]neas?\s+(en\s+)?(movimiento|mutaci[oó]n|mutantes?)/i.test(
-      lower,
-    ) ||
-    /no changing lines?/i.test(lower) ||
-    /without changing lines?/i.test(lower)
-  ) {
-    return 0;
-  }
-  if (/l[ií]nea\s+[uú]nica|[uú]nica\s+l[ií]nea|one changing line/i.test(lower))
-    return 1;
-  if (/dos\s+l[ií]neas|2\s+l[ií]neas|two changing lines?/i.test(lower))
-    return 2;
-  if (/tres\s+l[ií]neas|3\s+l[ií]neas|three changing lines?/i.test(lower))
-    return 3;
-  if (/cuatro\s+l[ií]neas|4\s+l[ií]neas|four changing lines?/i.test(lower))
-    return 4;
-  if (/cinco\s+l[ií]neas|5\s+l[ií]neas|five changing lines?/i.test(lower))
-    return 5;
-  if (/seis\s+l[ií]neas|6\s+l[ií]neas|six changing lines?/i.test(lower))
-    return 6;
-  return null;
-}
-
-function enforceIChingStructuralConsistency(
-  text: string,
-  cast: CastResult,
-  language: string,
-): string {
-  const expected = cast.changingLines.length;
-  const claimed = claimedChangingCount(text);
-  if (claimed === null || claimed === expected) return text;
-  const lineList = changingLinePositionsLabel(cast, language);
-  // Log for observability; never expose structural notes in the user-facing response.
-  console.warn("[enforceIChingStructuralConsistency] count mismatch", {
-    expected,
-    claimed,
-    lineList,
-    correction: ichingStructuralCorrectionAppendix(cast, language, expected, lineList),
-    hexagram: cast.primaryHexagram?.number,
-    language,
-  });
-  return text;
-}
-
 function castingMethodNote(method: CastingMethod | undefined): string {
   if (method === "yarrow-stalks") {
     return "DIVINATION METHOD: Yarrow Stalks (authentic Zhou distribution; old yang 3× more likely than old yin; the transformed hexagram carries additional interpretive weight when it appears)";
@@ -350,14 +295,14 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
 - "El juicio" / "The judgment": mandatory blockquote (>) of the classical judgment when provided; immediately after, one paragraph that names how that wording maps onto the user's situation (explicit bridge).
 - "La imagen" / "The image": mandatory blockquote (>) of the classical image text (象傳) when provided; immediately after, one paragraph connecting the image's symbolic scene to the user's situation.
 - "Líneas en movimiento" / "Lines in motion": interpret the LINE TEXTS provided—numbered list with line text + one sentence of application each; if no changing lines (CHANGING_COUNT = 0), one crisp sentence stating stability. IMPORTANT: when CHANGING_COUNT exceeds the number of LINE TEXTS given (a mutation rule is filtering lines), open this section with one plain-language sentence that explains which line(s) are read and why (drawn from the MUTATION RULE field — never echo the rule code), then: (a) if LINE TEXTS are provided, the LINE TEXTS list is the COMPLETE and EXCLUSIVE set of lines to interpret — quote and interpret EVERY LINE TEXTS entry and NO other position. Do NOT quote, interpret, or invent text for any other changing position: the mutation rule already excluded those on purpose, and the opener (drawn from MUTATION RULE) tells the user why only these are read. NOTE: a LINE TEXTS entry tagged [transformed] is a STABLE line of the TRANSFORMED hexagram chosen by the rule (4 or 5 changing lines) — interpret it as such; it is intentionally NOT one of the changing positions; (b) if a SPECIAL YAO field is present and LINE TEXTS are empty (hexagrams 1 and 2 with their seventh yao 用九/用六), quote that SPECIAL YAO text as a blockquote and interpret it as the single oracular statement for this cast; (c) if neither LINE TEXTS nor SPECIAL YAO are present (total mutation — all six lines change in any hexagram other than 1 or 2), close the section after the explanation with one sentence noting that no individual line is singled out and the reading focuses entirely on the transformed hexagram.
-- \`El trazado hacia el ${trChinese}\` / \`The turning pattern (${trChinese})\`: ONLY if transformed hexagram exists—quote transformed judgment if supplied, then tension / opportunity vs primary.
+- \`El trazado hacia el ${trChinese}\` / \`The turning pattern (${trChinese})\`: ONLY if transformed hexagram exists—quote transformed judgment and image if supplied, then tension / opportunity vs primary. Do NOT repeat any individual line text (爻辞) already quoted in «Líneas en movimiento» / «Lines in motion»; for FOUR/FIVE changing-line rules the stable transformed line belongs ONLY in the Lines section.
 - "Horizonte y síntesis" / "Horizon and synthesis": single closing paragraph—one concrete behavioral or attitudinal step, same language, no new quotes.
 - ANTI-REPETITION across sections as in global rules.`;
 
   const isMasterCombined =
     cast.interpretationMode === "master_combined" ||
     Boolean(t.leggeJudgment && t.zhouyiJudgment);
-  const targetWordCount = isMasterCombined ? "1500-1950" : hasContext ? "800-1000" : "700-900";
+  const targetWordCount = isMasterCombined ? "1800-2300" : hasContext ? "800-1000" : "700-900";
 
   let textsBlock = "";
   if (isMasterCombined) {
@@ -377,12 +322,6 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
         .join("\n") || "";
 
     textsBlock = `
---- TRADITION: ZHOU YI (Original Classical Chinese) ---
-JUDGMENT: ${t.zhouyiJudgment}
-${t.zhouyiImage ? `THE IMAGE: ${t.zhouyiImage}` : ""}
-${t.zhouyiSpecialYaoText ? `SPECIAL YAO (用九/用六): ${t.zhouyiSpecialYaoText}` : ""}
-${zhouyiLines ? `LINE TEXTS:\n${zhouyiLines}` : ""}
-
 --- TRADITION: WILHELM / BAYNES ---
 JUDGMENT: ${t.primaryJudgment}
 ${t.primaryImage ? `THE IMAGE: ${t.primaryImage}` : ""}
@@ -394,6 +333,12 @@ JUDGMENT: ${t.leggeJudgment}
 ${t.leggeImage ? `THE IMAGE: ${t.leggeImage}` : ""}
 ${t.leggeSpecialYaoText ? `SPECIAL YAO (用九/用六): ${t.leggeSpecialYaoText}` : ""}
 ${leggeLines ? `LINE TEXTS:\n${leggeLines}` : ""}
+
+--- TRADITION: ZHOU YI (Original Classical Chinese) ---
+JUDGMENT: ${t.zhouyiJudgment}
+${t.zhouyiImage ? `THE IMAGE: ${t.zhouyiImage}` : ""}
+${t.zhouyiSpecialYaoText ? `SPECIAL YAO (用九/用六): ${t.zhouyiSpecialYaoText}` : ""}
+${zhouyiLines ? `LINE TEXTS:\n${zhouyiLines}` : ""}
 ${
   tr && t.transformedJudgment
     ? `
@@ -438,9 +383,10 @@ JUDGMENT: ${t.transformedJudgment}`
     1) Wilhelm (literal)
     2) Legge (literal)
     3) Zhou Yi (literal)
-  - Quotes must be complete literal excerpts from the provided texts for that section (do NOT reduce to micro-quotes, fragments, or single clauses).
+  - Quotes must be complete literal excerpts from the provided texts for that section (do NOT reduce to micro-quotes, fragments, single clauses, or select one verse from a multiline Wilhelm passage — every verse line must appear).
   - Each literal source quote MUST be rendered as Markdown blockquote lines (prefix every line with "> "), and the quote text itself must be italic inside that blockquote. CRITICAL FOR WILHELM: Wilhelm/Baynes texts contain multiple verse lines separated by line breaks — each verse line must appear on its own "> *line*" blockquote row, never compressed into one line with "/" or any separator. Legge and Zhou Yi are prose/compact and render as single blockquote lines. Apply the MULTILINE BLOCKQUOTES rule from the typography section to every Wilhelm quote in this mode.
   - For "Lines in motion": when CHANGING_COUNT exceeds the number of LINE TEXTS given (a mutation rule is filtering lines), open this section with one plain-language sentence drawn from the MUTATION RULE field explaining which line(s) are read and why — never echo the rule code, only its meaning. Then: (a) if LINE TEXTS are provided, the LINE TEXTS list is the COMPLETE and EXCLUSIVE set of lines to interpret — cover every entry and NO other position (do not quote, interpret, or invent text for any other changing position; the rule excluded it on purpose; a [transformed] entry is a STABLE line of the transformed hexagram, intentionally not among the changing positions). For each LINE TEXTS entry, show the full literal line text from each available source as a labeled Markdown blockquote in this exact format: a bold label line (e.g. **Wilhelm:**) immediately followed by a "> *italic blockquote*" block (multiline if Wilhelm) — in order Wilhelm → Legge → Zhou Yi — before the synthesis for that line; (b) if SPECIAL YAO fields are present and LINE TEXTS are empty (hexagram 1 用九 or hexagram 2 用六), render each tradition's special yao text as its own labeled blockquote block (Wilhelm / Legge / Zhou Yi in that order, skipping any absent) followed by a unified synthesis interpreting the seventh yao in the context of the question; (c) if neither LINE TEXTS nor SPECIAL YAO are present (total mutation — all six lines change in a hexagram other than 1 or 2), close the section after the explanation with one sentence noting that no individual line is singled out. Never render source quotes as inline text or **bold** prose.
+  - For "The turning pattern": quote transformed judgment/image only — never repeat individual line texts (爻辞) already shown in "Lines in motion"; for FOUR/FIVE changing-line rules the stable transformed line belongs ONLY in Lines in motion.
   - If any source text is unavailable for a specific subsection, state it explicitly and continue with the other two sources.
 - In every section, bridge the three lenses into ONE integrated guidance for the querent.
 - After literal source blocks, provide synthesis in your own words for that section.
@@ -475,6 +421,30 @@ HISTORICAL EXCEPTION (explicitly permitted):
         ? "Zhou Yi (Original Classical Chinese)"
         : "Wilhelm/Baynes";
 
+  const selectedPositions = new Set(
+    t.selectedLineTexts.map((l) => l.position),
+  );
+  const omittedPositions = cast.changingLines.filter((p) => !selectedPositions.has(p));
+  const interpretedLinesBlock =
+    t.selectedLineTexts.length > 0
+      ? `INTERPRETED_LINES (AUTHORITATIVE — quote and interpret ONLY these):
+${t.selectedLineTexts
+  .map(
+    (l) =>
+      `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`,
+  )
+  .join("\n")}
+INTERPRETATION_LINE_COUNT: ${t.selectedLineTexts.length}`
+      : t.specialYaoText
+        ? `INTERPRETED_LINES: (none — use SPECIAL YAO below)
+INTERPRETATION_LINE_COUNT: 0`
+        : `INTERPRETED_LINES: (none — total mutation or stability)
+INTERPRETATION_LINE_COUNT: 0`;
+  const omittedBlock =
+    omittedPositions.length > 0
+      ? `OMITTED_CHANGING_POSITIONS (internal — do NOT quote individually): [${omittedPositions.join(",")}]`
+      : "";
+
   const questionBlock = `
 NEW CONSULTATION${hasContext ? " (continues thematic session)" : ""}:
 "${question}"
@@ -487,7 +457,9 @@ ${p.upperTrigram} over ${p.lowerTrigram}
 
 MUTATION RULE: ${t.ruleExplanation}
 
-STRUCTURAL FACTS (NON-NEGOTIABLE):
+${interpretedLinesBlock}
+${omittedBlock ? `${omittedBlock}\n` : ""}
+STRUCTURAL FACTS (REFERENCE ONLY — for factual count/position statements; NOT an interpretation checklist):
 - RAW_LINES_BOTTOM_TO_TOP: [${rawLineVector}]
 - TRANSFORMED_LINES_BOTTOM_TO_TOP: [${transformedLineVector}]
 - CHANGING_LINES_POSITIONS: [${cast.changingLines.join(",")}]
@@ -521,7 +493,7 @@ IMPORTANTE: el resumen estructurado de la sesión ya vive en [SNAPSHOT_START]…
 - Interpret ONLY with the texts given.
 - ${masterSynthesisInstruction}
 - In the first sentence, answer the user's question clearly and directly, but do not invent factual data.
-- INTERNAL LABELS (NON-NEGOTIABLE): Never cite or reproduce internal prompt keys in your response — ACTIVE RULE identifiers (e.g. TWO_SAME_LOWER, ONE_CHANGING, ALL_SAME), STRUCTURAL FACTS labels, or any ALL_CAPS metadata key. These are internal reasoning aids and must never appear in user-visible output.
+- INTERNAL LABELS (NON-NEGOTIABLE): Never cite or reproduce internal prompt keys in your response — ACTIVE RULE identifiers (e.g. TWO_SAME_LOWER, ONE_CHANGING, ALL_SAME), STRUCTURAL FACTS labels, INTERPRETED_LINES, OMITTED_CHANGING_POSITIONS, INTERPRETATION_LINE_COUNT, or any ALL_CAPS metadata key. These are internal planning fields — never reference them by name, label, or list their contents in user-visible output. The MUTATION RULE opener in «Líneas en movimiento» may explain which line is read and why in plain language only.
 - STRUCTURAL CONSISTENCY IS MANDATORY: the factual STATEMENT of how many lines are changing and at which positions MUST match CHANGING_COUNT and CHANGING_LINES_POSITIONS exactly. This governs ONLY that structural statement — it does NOT require interpreting every changing position. Which line(s) are actually interpreted is decided solely by the MUTATION RULE / LINE TEXTS, which may be a subset of the changing positions.
 - ${looksFactual ? "This question appears to request factual real-world data: explicitly state when that fact cannot be verified from the provided oracle texts." : "Do not claim certainty about external facts unless they are explicitly provided in the input."}
 - If the question is about another person's private feelings or intentions, avoid certainty language. Use probability language (e.g., "podría", "parece", "sugiere"), never "es un hecho".
@@ -531,7 +503,7 @@ IMPORTANTE: el resumen estructurado de la sesión ya vive en [SNAPSHOT_START]…
 - ${mode === "ritual" ? "Follow the scroll structure; keep paragraphs visually compact (avoid stacking many one-line paragraphs)." : mode === "profundizar" ? "Max 2 sections as specified." : "Max 2 titled sections as specified."}
 - ${modeInstruction}
 - Length: ${targetWordCount} words
-- SOURCE FIDELITY (ALL TRANSLATORS, NON-NEGOTIABLE): Every text from the BIBLIOTECA must appear VERBATIM in its original library language inside the blockquote — Wilhelm/Baynes and Legge texts in English, Zhou Yi texts in Classical Chinese 文言文. Never translate, paraphrase, or alter the source text inside the blockquote. Write the interpretive analysis in the response language.
+- SOURCE FIDELITY (ALL TRANSLATORS, NON-NEGOTIABLE): Every text from the BIBLIOTECA must appear VERBATIM in its original library language inside the blockquote — Wilhelm/Baynes and Legge texts in English, Zhou Yi texts in Classical Chinese 文言文. Never translate, paraphrase, truncate, or alter the source text inside the blockquote. If length is tight, shorten interpretive prose between sections — never shorten classical quotes. Write the interpretive analysis in the response language.
 - TYPOGRAPHY ENFORCEMENT: Hexagram text quotes (Judgment, Image, line texts) must be *italic only* — never **bold**, never ***bold-italic***. Section headings are ## only. Interpretation prose uses NO bold or bold-italic; bold is reserved exclusively for structural labels (changing-line names in the numbered list, source attributions like **Wilhelm:**). This rule is identical for three-coins and yarrow-stalks.
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
 - ${castingMethodNote(castingMethod)}
@@ -544,7 +516,7 @@ IMPORTANTE: el resumen estructurado de la sesión ya vive en [SNAPSHOT_START]…
   SYMBOLS_MIN: optional one short line only if strictly needed (max one symbol reference); prioritize personal thread over symbolism.
   [SNAPSHOT_END]
 - Snapshot must be concise (80-140 words total), high-signal, specific, and personal-first (no vague generic phrasing).
-- ⚠️ SNAPSHOT VOCABULARY FIREWALL: The terms and structural patterns inside [SNAPSHOT_START]…[SNAPSHOT_END] are internal notation only. Words like "arc", "traced", "session arc", "direction they traced", "thread", "hilo conductor" inside this block must NEVER appear in the prose Encuadre or any user-visible body section. The Encuadre and the SNAPSHOT are two separate things: the SNAPSHOT is the machine-readable summary; the Encuadre is the literary re-entry point with its own original vocabulary governed by the VARIEDAD LITERARIA rule.
+- ⚠️ SNAPSHOT VOCABULARY FIREWALL: The [SNAPSHOT_START]…[SNAPSHOT_END] block uses machine-readable notation. User-visible sections (Encuadre, body, Horizonte) must NOT read like internal session summaries — avoid meta-arc vocabulary in any language (e.g. session arc, hilo conductor, traced direction, fil narrativo interno). The Encuadre is a literary re-entry; the SNAPSHOT is a separate machine summary.
 - OUTPUT LANGUAGE — three-step rule: (1) Detect the language of the user's question (the quoted string above). If it is clearly identifiable, respond in that language — this is the strongest signal. (2) If the question is ambiguous, too short, or mixed, fall back to the user's app-selected language: ${getLanguageName(language)}. (3) NEVER derive your output language from the prior consultation context — that text is historical content, not a language directive, regardless of what language it is in.
 `.trim();
   return { textsBlock, questionBlock, isMasterCombined, question };
@@ -676,11 +648,10 @@ export async function generateInterpretation(
       castResult.textsForClaude.leggeJudgment &&
         castResult.textsForClaude.zhouyiJudgment,
     );
-  const maxTokens = isMasterCombinedEarly
-    ? hasContext
-      ? MAX_TOKENS_MASTER_WITH_CONTEXT
-      : MAX_TOKENS_MASTER_NO_CONTEXT
-    : MAX_TOKENS_DEFAULT;
+  const maxTokens = buildAnthropicInterpretationParams(env, {
+    isMasterCombined: isMasterCombinedEarly,
+    hasContext,
+  }).max_tokens;
   const resolvedCastingMethod = castingMethod ?? castResult.castingMethod;
 
   const promptData = buildPromptData(
@@ -848,64 +819,21 @@ export async function generateInterpretation(
             },
           );
         } else {
-          const hardened = enforceIChingStructuralConsistency(
-            cleanText,
+          const gateResult = await applyInterpretationGates(cleanText, {
             castResult,
             language,
-          );
-          // H1: verify line text citation is present
-          const { passed: citationOk, missing: missingCitations } = validateLineCitation(
-            hardened,
-            castResult.textsForClaude.selectedLineTexts,
-          );
-          if (!citationOk) {
-            Sentry.captureMessage("[iching] line_citation_missing", {
-              level: "warning",
-              tags: { provider: "anthropic", hexagram: String(castResult.primaryHexagram.number) },
-              extra: { missing: missingCitations, streaming: useStreaming },
-            });
-            // H2: single retry (non-streaming only — streaming already delivered to client)
-            if (!useStreaming) {
-              try {
-                const retryParams = buildLineCitationRetryParams(
-                  callParams as Anthropic.MessageCreateParamsNonStreaming,
-                  castResult.textsForClaude.selectedLineTexts,
-                );
-                const retryResp = await callAnthropicWithRetry(
-                  client,
-                  retryParams,
-                  { tier, language, method: resolvedCastingMethod ?? "iching" },
-                  null,
-                  0,
-                );
-                const retryFull = retryResp.content
-                  .filter((b) => b.type === "text")
-                  .map((b) => (b as { text: string }).text)
-                  .join("");
-                const retryRaw = stripSnapshotLeaks(
-                  retryFull.replace(/\[SNAPSHOT_START\][\s\S]*?\[SNAPSHOT_END\]/, "").trim(),
-                );
-                const retryClean = stripInterpretationFluff(
-                  retryRaw.replace(/^#{0,6}\s*(?:CATEGORY|CATEGOR[IÍ]A)\s*:.*(?:\n|$)/im, "").trim(),
-                );
-                if (retryClean.trim().length > 0) {
-                  return {
-                    text: normalizeInterpretationPunctuation(
-                      enforceIChingStructuralConsistency(retryClean, castResult, language),
-                    ),
-                    category,
-                    interpretationSummary,
-                    claudeMessageId: retryResp.claudeMessageId,
-                    usage: claudeUsage,
-                  };
-                }
-              } catch (retryErr) {
-                console.warn("[generateInterpretation] line-citation retry failed", retryErr);
-              }
-            }
-          }
+            mode,
+            provider: "anthropic",
+            streaming: useStreaming,
+            anthropicRetry: {
+              client,
+              callParams: callParams as Anthropic.MessageCreateParamsNonStreaming,
+              tier,
+              method: resolvedCastingMethod ?? "iching",
+            },
+          });
           return {
-            text: normalizeInterpretationPunctuation(hardened),
+            text: normalizeInterpretationPunctuation(gateResult.text),
             category,
             interpretationSummary,
             claudeMessageId: response.claudeMessageId,
@@ -914,19 +842,43 @@ export async function generateInterpretation(
         }
       }
     } catch (err) {
-      console.warn(
-        "[generateInterpretation] Anthropic failed, trying fallback chain",
-        err,
-      );
-      Sentry.captureException(err, {
-        tags: { 
-          provider: "anthropic", 
-          tier, 
-          language,
-          model
-        },
-        extra: { hexagramNumber: castResult.primaryHexagram.number, method: resolvedCastingMethod }
-      });
+      if (err instanceof InterpretationQualityError) {
+        console.warn(
+          "[generateInterpretation] Anthropic quality gates failed after retries, trying fallback chain",
+          { gates: err.failures.map((f) => f.gate) },
+        );
+        Sentry.captureMessage("[iching] interpretation_quality_gate_failed", {
+          level: "warning",
+          tags: {
+            provider: "anthropic",
+            tier,
+            language,
+            model,
+          },
+          extra: {
+            failures: err.failures,
+            hexagramNumber: castResult.primaryHexagram.number,
+            method: resolvedCastingMethod,
+          },
+        });
+      } else {
+        console.warn(
+          "[generateInterpretation] Anthropic failed, trying fallback chain",
+          err,
+        );
+        Sentry.captureException(err, {
+          tags: {
+            provider: "anthropic",
+            tier,
+            language,
+            model,
+          },
+          extra: {
+            hexagramNumber: castResult.primaryHexagram.number,
+            method: resolvedCastingMethod,
+          },
+        });
+      }
     }
   }
 
@@ -999,16 +951,34 @@ export async function generateInterpretation(
             { language },
           );
         } else {
-          const hardened = enforceIChingStructuralConsistency(
-            cleanText,
-            castResult,
-            language,
-          );
-          return {
-            text: normalizeInterpretationPunctuation(hardened),
-            category,
-            interpretationSummary,
-          };
+          try {
+            const gateResult = await applyInterpretationGates(cleanText, {
+              castResult,
+              language,
+              mode,
+              provider: "openrouter",
+              streaming: false,
+            });
+            return {
+              text: normalizeInterpretationPunctuation(gateResult.text),
+              category,
+              interpretationSummary,
+            };
+          } catch (gateErr) {
+            if (gateErr instanceof InterpretationQualityError) {
+              console.warn(
+                "[generateInterpretation] OpenRouter quality gates failed",
+                { gates: gateErr.failures.map((f) => f.gate) },
+              );
+              Sentry.captureMessage("[iching] interpretation_quality_gate_failed", {
+                level: "warning",
+                tags: { provider: "openrouter", tier, language },
+                extra: { failures: gateErr.failures },
+              });
+            } else {
+              throw gateErr;
+            }
+          }
         }
       }
     } catch (err) {
@@ -1088,16 +1058,34 @@ export async function generateInterpretation(
               },
             );
           } else {
-            const hardened = enforceIChingStructuralConsistency(
-              cleanText,
-              castResult,
-              language,
-            );
-            return {
-              text: normalizeInterpretationPunctuation(hardened),
-              category,
-              interpretationSummary,
-            };
+            try {
+              const gateResult = await applyInterpretationGates(cleanText, {
+                castResult,
+                language,
+                mode,
+                provider: "groq",
+                streaming: false,
+              });
+              return {
+                text: normalizeInterpretationPunctuation(gateResult.text),
+                category,
+                interpretationSummary,
+              };
+            } catch (gateErr) {
+              if (gateErr instanceof InterpretationQualityError) {
+                console.warn(
+                  "[generateInterpretation] Groq quality gates failed",
+                  { gates: gateErr.failures.map((f) => f.gate) },
+                );
+                Sentry.captureMessage("[iching] interpretation_quality_gate_failed", {
+                  level: "warning",
+                  tags: { provider: "groq", tier, language },
+                  extra: { failures: gateErr.failures },
+                });
+              } else {
+                throw gateErr;
+              }
+            }
           }
         }
       }
@@ -1139,5 +1127,60 @@ export async function generateInterpretation(
     text: normalizeInterpretationPunctuation(hardened),
     category: cat,
     interpretationSummary: fallbackInterpretationSummary(body),
+  };
+}
+
+export type BuiltPromptForCast = {
+  system: string;
+  userContent: string;
+  libraryBlock: string;
+  questionBlock: string;
+  isMasterCombined: boolean;
+};
+
+/** Build production-equivalent prompt blocks for QA scripts (depth=1, no session context). */
+export function buildPromptForCast(
+  cast: CastResult,
+  tier: string,
+  language: string,
+  mode: ResponseMode = "ritual",
+  options?: { castingMethod?: CastingMethod },
+): BuiltPromptForCast {
+  const promptData = buildPromptData(
+    cast,
+    tier,
+    language,
+    false,
+    mode,
+    options?.castingMethod ?? cast.castingMethod,
+  );
+  const blocks = buildPromptBlocks(
+    SYSTEM_PROMPT,
+    promptData,
+    "",
+    "",
+    `LANGUAGE: Respond only in ${getLanguageName(language)}.`,
+  );
+  return {
+    system: blocks.stableSystemBlock,
+    userContent: blocks.dynamicQuestionBlock,
+    libraryBlock: blocks.libraryBlock,
+    questionBlock: promptData.questionBlock,
+    isMasterCombined: promptData.isMasterCombined,
+  };
+}
+
+/** Full Anthropic Messages API user payload for mutation QA. */
+export function buildAnthropicUserPayloadForCast(
+  cast: CastResult,
+  tier: string,
+  language: string,
+  mode: ResponseMode = "ritual",
+): { system: string; user: string; isMasterCombined: boolean } {
+  const built = buildPromptForCast(cast, tier, language, mode);
+  return {
+    system: built.system,
+    user: `${built.libraryBlock}\n\n${built.userContent}`,
+    isMasterCombined: built.isMasterCombined,
   };
 }

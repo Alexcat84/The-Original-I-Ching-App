@@ -30,3 +30,11 @@ export {
   throwYarrowStalks,
   yarrowSumToLine,
 } from "./engine.js";
+export {
+  MUTATION_QA_FIXTURES,
+  buildCastFixture,
+  listMutationQaCases,
+  type MutationQaFixture,
+  type MutationQaFixtureId,
+  type MutationQaTranslator,
+} from "./mutation-qa-fixtures.js";

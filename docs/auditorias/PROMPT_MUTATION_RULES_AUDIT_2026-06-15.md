@@ -6,7 +6,7 @@
 **Prompt:** `backend/claude/src/interpretation.ts`  
 **Disparador:** Incidente #31 THREE_MIDDLE — Claude 4.6 fabricó el texto de línea 1 y citó correctamente que la 4 no tenía texto  
 **Alcance:** Reglas de mutación + cómo se envían al prompt + cruce completo + hallazgos + remediación  
-**Estado:** ✅ Remediación arquitectural aplicada en staging
+**Estado:** ✅ Remediación Fase 2 implementada (PR1 prompt + PR2 gates + PR3 QA harness)
 
 ---
 
@@ -204,16 +204,121 @@ La remediación arquitectural de este commit reemplaza ese parche completamente.
 
 ---
 
-## 8. Remediaciones pendientes (no aplicadas aún)
+## 8. Remediaciones Fase 2 — estado
 
-| ID | Remediación | Complejidad |
-|----|-------------|-------------|
-| P2-2 | Unificar orden de tradiciones en `textsBlock` M3: entregar W→L→ZH | Media |
-| P2-6 | Firewall SNAPSHOT multilingüe — reformular como instrucción semántica | Media |
-| P2-7 | Word count M3: subir techo o permitir quotes acotados explícitamente | Baja |
-| P2-9 | Gate anti-fabricación: complementar H1 con chequeo de posiciones fuera de `selectedLineTexts` | Alta |
-| P2-4 | Reducir redundancia (deduplica R1, R9, R12) | Media |
-| P2-10 | Encuadre/firewall balance cognitivo | Baja |
+| ID | Remediación | Estado Fase 2 |
+|----|-------------|---------------|
+| P2-2 | Unificar orden W→L→ZH en `textsBlock` M3 | ✅ Aplicado |
+| P2-6 | Firewall SNAPSHOT semántico | ✅ Aplicado |
+| P2-7 | Word count M3 + quotes íntegros (1800–2300, nunca truncar quotes) | ✅ Aplicado |
+| P2-9 | Gate anti-fabricación H3 | ✅ Aplicado (`interpretation-output-validator.ts`) |
+| P2-4 | Reducir redundancia (deduplica R1, R9, R12) | ⏸ Diferido (P2-10 scope) |
+| P2-10 | Encuadre/firewall balance cognitivo | ⏸ Sin cambio (excepción explícita existente) |
+| G-1 | H2 en streaming | ✅ Aplicado |
+| G-2 | Gates en fallbacks OpenRouter/Groq | ✅ Aplicado (blocking H1/H3/H5) |
+| P2-8 | Líneas vs Trazado FOUR/FIVE | ✅ Aplicado |
+
+---
+
+## 13. Verificación de implementación (2026-06-15)
+
+| Área | Resultado |
+|------|-----------|
+| §6 Remediación prompt `edfbd8c` | ✅ 100% en código |
+| PR1 Fase 2 prompt | ✅ `INTERPRETED_LINES`, INTERNAL LABELS guard, P2-2/6/7/8 |
+| PR2 Gates | ✅ H1/H3/H5 blocking; H1b/H4/H6 warn-only; H2 universal (incl. streaming) |
+| Motor ↔ prompt | ✅ 53 tests `engine.mutation-rules` |
+| Validadores | ✅ 49 tests `interpretation-*` (incl. H3 opener vs fabricación) |
+| Script QA | ✅ `scripts/mutation-output-qa.mjs` + fixtures |
+
+**Riesgo residual:** calidad de formato (H1b blockquote, H6 headings) no bloquea entrega; depende del modelo en edge cases M3 word count.
+
+---
+
+## 14. Plan de remediación Fase 2 — ejecutado
+
+Secuencia aplicada: **PR1 prompt → PR2 gates → PR3 fixtures + script**.
+
+### PR1 — Prompt (`interpretation.ts`)
+
+- `INTERPRETED_LINES (AUTHORITATIVE)` + `OMITTED_CHANGING_POSITIONS` + `INTERPRETATION_LINE_COUNT`
+- STRUCTURAL FACTS → REFERENCE ONLY
+- INTERNAL LABELS: campos internos nunca visibles al usuario
+- Master `textsBlock`: Wilhelm → Legge → Zhou Yi
+- P2-8: 爻辞 individual solo en Líneas; Trazado sin repetir
+- P2-7: master 1800–2300 palabras; quotes verbatim completos
+- P2-6: firewall SNAPSHOT semántico (cualquier idioma)
+
+### PR2 — Gates
+
+| Archivo | Rol |
+|---------|-----|
+| `interpretation-output-validator.ts` | H1, H1b, H3, H4, H5, H6 |
+| `apply-interpretation-gates.ts` | Orquestación + H2 retry (máx. 2) |
+| `interpretation-quality-error.ts` | Error blocking → no persistir + refund |
+
+**Política de fallo (Opción B — fallback chain, implementada):**
+
+Tras agotar retries Anthropic (máx. 2), un fallo **blocking** (H1/H3/H5) lanza `InterpretationQualityError`. Ese error **no aborta la consulta**: `generateInterpretation` continúa con OpenRouter → Groq. Cada fallback aplica los mismos gates blocking.
+
+| Gate | Retry Anthropic | Si persiste tras fallbacks |
+|------|-----------------|----------------------------|
+| H1, H3, H5 | Sí (H2, máx. 2) | Offline fallback (`offlineFallbackText`); **token consumido**; Sentry warn `interpretation_quality_gate_failed` por provider |
+| H1b | No (warn-only) | Emitir + Sentry `line_blockquote_missing` |
+| H4, H6 | No | Emitir + Sentry warn |
+
+**No hay refund automático** por fallo de gates si algún provider entrega texto válido o si se usa offline fallback. Rationale: un provider alternativo puede corregir fabricación de líneas sin castigar al usuario (Anthropic falló gates ≠ consulta imposible).
+
+**Opción A descartada:** re-lanzar `InterpretationQualityError` a `route.ts` sin intentar fallbacks habría bloqueado consultas recuperables vía OpenRouter/Groq.
+
+**H3 spec:** scope = cuerpo de «Líneas en movimiento» sin opener; fabricación = entry estructurada (`Línea N` + blockquote) para posiciones omitidas.
+
+### PR3 — QA harness
+
+- `packages/iching-engine/src/mutation-qa-fixtures.ts` — 10 reglas, assert `mutationRule`
+- Export: `buildPromptForCast`, `buildAnthropicInterpretationParams` (sin temperature)
+- `pnpm qa:mutation-output` → `scripts/mutation-output-qa.mjs`
+
+---
+
+## 15. Especificación script QA + resultados
+
+### Invocación
+
+```bash
+pnpm run build --workspace=@iching-oracle/iching-engine
+pnpm run build --workspace=@iching-oracle/claude
+pnpm qa:mutation-output
+# subset:
+node scripts/mutation-output-qa.mjs --rules THREE_MIDDLE,FIVE_ONLY_STABLE --concurrency 2 --delay-ms 1200
+```
+
+### Matriz
+
+- **10 reglas** × **4 traductores** (`wilhelm`, `legge`, `zhouyi`, `master_combined`) × **2 modelos** (`claude-sonnet-4-5-20250929`, `claude-sonnet-4-6`) = **80 llamadas**
+- Params API: `buildAnthropicInterpretationParams` — **sin temperature** (igual path Anthropic producción)
+- Rate limit: concurrency 2, backoff 429/529, `--delay-ms 1200`
+
+### Limitación conocida (depth=1)
+
+Fixtures usan `buildPromptForCast` **sin contexto de sesión**. La sección «Líneas en movimiento» es invariante al contexto; **Encuadre PARTE 1+2 y SNAPSHOT con hilo no se validan** en este barrido.
+
+### Validadores en reporte
+
+- **Blocking (release):** H1, H3, H5
+- **Warn (calidad):** H1b, H4, H6
+- Comparación 4.5 vs 4.6 por fixture×traductor
+
+### Resultados del barrido
+
+> Ejecutar tras deploy: `pnpm qa:mutation-output`. Los reportes se escriben en `reports/mutation-qa-{timestamp}.json` y `.md`. Actualizar esta tabla con el primer barrido post-implementación.
+
+| Métrica | Valor |
+|---------|-------|
+| Fecha barrido | Pendiente ejecución con `ANTHROPIC_API_KEY` |
+| Blocking pass | — / 80 |
+| Con warns | — |
+| API errors | — |
 
 ---
 
@@ -236,7 +341,7 @@ La remediación arquitectural de este commit reemplaza ese parche completamente.
 |---|---|---|
 | Data block (L485–494) | Todos | PRIMARY HEXAGRAM, `MUTATION RULE`, STRUCTURAL FACTS, `textsBlock` |
 | `textsBlock` — single (L411) | wilhelm/legge/zhouyi | `zhouyiHeader` + JUDGMENT + IMAGE + `lineBlock` + `SPECIAL YAO (用九/用六):` + transformado |
-| `textsBlock` — master (L364) | master_combined | 3 tradiciones en orden ZH→W→L, cada una JUDGMENT/IMAGE/`SPECIAL YAO`/LINE TEXTS + transformado |
+| `textsBlock` — master (L364) | master_combined | 3 tradiciones en orden **W→L→ZH** (Fase 2), cada una JUDGMENT/IMAGE/`SPECIAL YAO`/LINE TEXTS + transformado |
 | `lineBlock` (L294) | Todos | `Line {pos} [{primary\|transformed}]: {text}` — solo las seleccionadas |
 | Headings (L313–325) | scroll | 6 `##` ES/EN; otros idiomas traducen conservando 卦辞/象傳 |
 | `modeInstruction` (L335–355) | Todos | DIRECT (2 secc.), DEEPEN (2 secc. follow-up), ORACLE SCROLL (6 secc. + roles) |
@@ -245,14 +350,19 @@ La remediación arquitectural de este commit reemplaza ese parche completamente.
 | TRANSLATOR RULE (L458–467) | single | Solo 1 fuente; excepción histórica en Encuadre/Síntesis |
 | Encuadre PARTE 1+2 (L505–518) | Con contexto | Apertura cronológica + re-entrada literaria (VARIEDAD); excepción de firewall para datos del oráculo |
 | Cierre (L521–551) | Todos | first-sentence, INTERNAL LABELS, **L525 (REMEDIADO — acotado a statement)**, fidelidad, TYPOGRAPHY ENFORCEMENT (REMEDIADO — no bold en prosa), CLOSURE, MEMORY SNAPSHOT, SNAPSHOT FIREWALL |
-| `targetWordCount` (L360) | Todos | M3: 1500–1950 · con contexto: 800–1000 · sin contexto: 700–900 |
+| `targetWordCount` (L360) | Todos | M3: **1800–2300** · con contexto: 800–1000 · sin contexto: 700–900 |
 
-### 9.3 Gates de validación (`interpretation-line-gate.ts`)
+### 9.3 Gates de validación (Fase 2)
 
-| Gate | Qué hace | Límite |
+| Gate | Qué hace | Severidad |
 |---|---|---|
-| H1 `validateLineCitation` | Verifica que los primeros 28 chars de cada línea seleccionada aparezcan en la respuesta | Solo valida **presencia** de las seleccionadas; **no detecta líneas fabricadas de más** (P2-9 — pendiente) |
-| H2 `buildLineCitationRetryParams` | Reintento inyectando recordatorio de cita verbatim | Solo se dispara si H1 falla |
+| H1 `validateLineCitation` | Fingerprint de cada línea seleccionada | **blocking** |
+| H1b `validateLineBlockquoteInSection` | Blockquote en sección Líneas | warn |
+| H3 `validateNoFabricatedLines` | Anti-fabricación (entry estructurada, sin opener) | **blocking** |
+| H4 | Sin códigos de regla internos | warn |
+| H5 | QIAN/KUN special yao | **blocking** |
+| H6 | 6 headings ritual | warn |
+| H2 `buildLineCitationRetryParams` | Reintento + posiciones omitidas | Ante blocking; incl. streaming |
 
 ### Diagrama 3 — Ensamblaje del prompt por lectura (estado actual)
 
@@ -273,9 +383,10 @@ flowchart TD
   CTX -->|no| ENC0["«no inventes continuidad»"]
   SEC --> OUT["Respuesta"]
   OUT --> SNAP["[SNAPSHOT_START]…[SNAPSHOT_END]"]
-  OUT --> H1{"H1 valida líneas citadas"}
-  H1 -->|falla| H2["H2 retry"] --> OUT
+  OUT --> H1{"H1/H3 blocking"}
+  H1 -->|falla| H2["H2 retry (stream OK)"] --> OUT
   H1 -->|pasa| DONE["entrega"]
+  OUT --> WARN["H1b/H6 warn → Sentry"]
 ```
 
 ---
@@ -296,9 +407,15 @@ flowchart TD
 
 | Archivo | Tipo | Cambio |
 |---------|------|--------|
-| `backend/claude/src/interpretation.ts` | Modificado | L352 scroll path Líneas (EXCLUSIVE + [transformed]); L418 SPECIAL TEXT→YAO; L443 master path Líneas (EXCLUSIVE + [transformed]); L525 STRUCTURAL acotado; L535 TYPOGRAPHY sin bold en prosa |
-| `packages/i18n/src/messages/faq-page-ui.ts` | Modificado | 11 idiomas × 4 afirmaciones: intro, 2-yin/yang, 3-medio, conclusión — removido "Nanjing University", corregida atribución Zhu Xi/Alfred Huang/Sherrill&Chu |
-| `packages/i18n/src/messages/guia-page-ui.ts` | Modificado | 6 idiomas: removida "escuela ortodoxa moderna" → "métodos de maestros modernos (Alfred Huang y otros)" |
+| `backend/claude/src/interpretation.ts` | Modificado | Fase 1 `edfbd8c` + Fase 2 INTERPRETED_LINES, P2-2/6/7/8, exports QA |
+| `backend/claude/src/interpretation-output-validator.ts` | Nuevo | H1–H6 validadores |
+| `backend/claude/src/apply-interpretation-gates.ts` | Nuevo | Orquestación gates + H2 universal |
+| `backend/claude/src/interpretation-quality-error.ts` | Nuevo | Error blocking |
+| `backend/claude/src/anthropic-interpretation-params.ts` | Nuevo | Params API sin temperature |
+| `packages/iching-engine/src/mutation-qa-fixtures.ts` | Nuevo | 10 fixtures QA |
+| `scripts/mutation-output-qa.mjs` | Nuevo | Barrido 80 calls Claude API |
+| `packages/i18n/src/messages/faq-page-ui.ts` | Modificado | Sinología (Fase 1) |
+| `packages/i18n/src/messages/guia-page-ui.ts` | Modificado | Sinología (Fase 1) |
 
 ---
 
@@ -309,6 +426,11 @@ flowchart TD
 | Reglas Zhu Xi | `packages/iching-engine/src/engine.ts` |
 | Prompt Claude | `backend/claude/src/interpretation.ts` |
 | Gate H1/H2 | `backend/claude/src/interpretation-line-gate.ts` |
+| Validadores salida H1–H6 | `backend/claude/src/interpretation-output-validator.ts` |
+| Orquestación gates | `backend/claude/src/apply-interpretation-gates.ts` |
+| Fixtures QA | `packages/iching-engine/src/mutation-qa-fixtures.ts` |
+| Script QA API | `scripts/mutation-output-qa.mjs` |
 | Tests motor mutación | `packages/iching-engine/src/engine.mutation-rules.test.ts` |
 | Tests gate | `backend/claude/src/interpretation-line-gate.test.ts` |
+| Tests validador | `backend/claude/src/interpretation-output-validator.test.ts` |
 | Auditoría líneas mutantes (anterior) | `docs/auditorias/ICHING_CHANGING_LINES_AUDIT_2026-06-14.md` |
