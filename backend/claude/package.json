@@ -24,7 +24,7 @@
     "@iching-oracle/iching-engine": "file:../../packages/iching-engine",
     "@iching-oracle/image-engine": "file:../../packages/image-engine",
     "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
-    "@sentry/node": "^8",
+    "@sentry/node": "10.58.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
