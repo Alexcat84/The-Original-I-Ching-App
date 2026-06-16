@@ -81,8 +81,10 @@ function omittedChangingPositions(cast: CastResult): number[] {
 }
 
 function lineEntryPattern(position: number): RegExp {
+  // Terminator requires structural marker (colon, paren, bracket, comma, period, or space+open-paren)
+  // but NOT bare whitespace alone — prevents false positives on prose like "Line 1 is not interpreted…"
   return new RegExp(
-    `(?:^|\\n)\\s*(?:\\d+\\.\\s*)?(?:\\*\\*)?(?:Línea|Line|Linea|Linha|Ligne|Linie|第|爻)\\s*${position}(?:\\*\\*)?(?:\\s|:|\\)|\\]|,|\\.)`,
+    `(?:^|\\n)\\s*(?:\\d+\\.\\s*)?(?:\\*\\*)?(?:Línea|Line|Linea|Linha|Ligne|Linie|第|爻)\\s*${position}(?:\\*\\*)?(?:\\s*\\(|:|\\)|\\]|,|\\.)`,
     "im",
   );
 }
@@ -175,7 +177,7 @@ export function validateSpecialYaoHandling(
     return { passed: false, reason: "special yao text not cited" };
   }
 
-  const body = extractLinesSectionBody(text) ?? "";
+  const body = extractLinesSectionBody(text) ?? text;
   for (const pos of cast.changingLines) {
     if (lineEntryPattern(pos).test(body)) {
       return { passed: false, reason: `individual line ${pos} entry in QIAN/KUN cast` };

@@ -33,10 +33,20 @@ export function buildExtendedLineCitationRetryParams(
   originalParams: Anthropic.MessageCreateParamsNonStreaming,
   selectedLineTexts: SelectedLineText[],
   cast: CastResult,
+  specialYaoReminder?: string,
 ): Anthropic.MessageCreateParamsNonStreaming {
   const base = buildLineCitationRetryParams(originalParams, selectedLineTexts);
   const omitted = omittedPositions(cast);
-  if (omitted.length === 0) return base;
+
+  let suffix = "";
+  if (specialYaoReminder) {
+    suffix += `\n⚠️ MANDATORY SPECIAL YAO — your «Líneas en movimiento» section MUST include a verbatim blockquote (> *exact text*) of the special yao: "${specialYaoReminder}"\n`;
+  }
+  if (omitted.length > 0) {
+    suffix += `\n⚠️ ANTI-FABRICATION — do NOT quote or interpret these changing positions individually (mutation rule excluded them): [${omitted.join(", ")}]. Only interpret INTERPRETED_LINES entries.\n\n`;
+  }
+
+  if (!suffix) return base;
 
   const messages = base.messages as Anthropic.MessageParam[];
   const lastMsg = messages[messages.length - 1];
@@ -44,15 +54,12 @@ export function buildExtendedLineCitationRetryParams(
     return base;
   }
 
-  const antiFab =
-    `\n⚠️ ANTI-FABRICATION — do NOT quote or interpret these changing positions individually (mutation rule excluded them): [${omitted.join(", ")}]. Only interpret INTERPRETED_LINES / LINE TEXTS entries.\n\n`;
-
   const blocks = lastMsg.content as Anthropic.ContentBlockParam[];
   const first = blocks[0];
   if (first?.type === "text") {
     blocks[0] = {
       type: "text",
-      text: (first as { type: "text"; text: string }).text + antiFab,
+      text: (first as { type: "text"; text: string }).text + suffix,
     };
   }
 
@@ -130,10 +137,16 @@ export async function applyInterpretationGates(
 
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
+        const specialYaoReminder = validation.blockingFailures.some(
+          (f) => f.gate === "H5" && f.message === "special yao text not cited",
+        )
+          ? (castResult.textsForClaude.specialYaoText?.trim() || undefined)
+          : undefined;
         const retryParams = buildExtendedLineCitationRetryParams(
           anthropicRetry.callParams,
           castResult.textsForClaude.selectedLineTexts,
           castResult,
+          specialYaoReminder,
         );
         const retryResp = await callAnthropicWithRetry(
           anthropicRetry.client,
