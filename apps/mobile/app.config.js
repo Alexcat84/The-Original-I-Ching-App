@@ -7,7 +7,7 @@ module.exports = ({ config }) => ({
   ...config,
   name: "The Original I Ching",
   slug: "the-original-i-ching",
-  version: "4.0.0",
+  version: "4.0.1",
   scheme: "theoriginaliching",
   orientation: "portrait",
   platforms: ["android"],
@@ -24,7 +24,7 @@ module.exports = ({ config }) => ({
   },
   android: {
     package: "com.theoriginaliching.app",
-    versionCode: 47,
+    versionCode: 48,
     compileSdkVersion: 35,
     targetSdkVersion: 35,
     buildToolsVersion: "35.0.0",
@@ -36,9 +36,13 @@ module.exports = ({ config }) => ({
     adaptiveIcon: {
       backgroundColor: "#0c0f14",
     },
-    permissions: [
-      "android.permission.WRITE_EXTERNAL_STORAGE",
+    permissions: ["android.permission.WRITE_EXTERNAL_STORAGE"],
+    blockedPermissions: [
       "android.permission.READ_EXTERNAL_STORAGE",
+      "android.permission.READ_MEDIA_IMAGES",
+      "android.permission.READ_MEDIA_VIDEO",
+      "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+      "android.permission.ACCESS_MEDIA_LOCATION",
     ],
     intentFilters: [
       {
@@ -102,9 +106,8 @@ module.exports = ({ config }) => ({
     [
       "expo-media-library",
       {
-        photosPermission: "Necesitamos acceso a tu galería para guardar imágenes.",
         savePhotosPermission: "Necesitamos permiso para guardar imágenes en tu galería.",
-        isAccessMediaLocationEnabled: true,
+        isAccessMediaLocationEnabled: false,
       },
     ],
     "expo-secure-store",
