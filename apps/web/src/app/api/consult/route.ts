@@ -852,7 +852,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const isMasterCombined = resolvedTranslator === "master_combined";
+    const isMasterCombined = oracleMode === "iching" && resolvedTranslator === "master_combined";
     const tokensToConsume = isMasterCombined ? 2 : 1;
 
     let remainingAfterConsume = adminUnlimitedCredits ? 999_999 : -1;
