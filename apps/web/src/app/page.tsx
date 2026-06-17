@@ -3664,15 +3664,17 @@ export default function HomePage() {
         isDeepening: activeThread.length > 0,
         oracleMode,
         ...(oracleMode === "iching"
-          ? manualLineValues
-            ? {
-                ichingCastMode: "manual" as const,
-                ichingCastingMethod,
-                ichingManualLineValues: [...manualLineValues],
-              }
-            : { ichingCastMode, ichingCastingMethod }
+          ? {
+              translatorId,
+              ...(manualLineValues
+                ? {
+                    ichingCastMode: "manual" as const,
+                    ichingCastingMethod,
+                    ichingManualLineValues: [...manualLineValues],
+                  }
+                : { ichingCastMode, ichingCastingMethod }),
+            }
           : {}),
-        translatorId,
         displayName: displayName ?? undefined,
         oracleBones:
           oracleMode === "oracle_bones"
