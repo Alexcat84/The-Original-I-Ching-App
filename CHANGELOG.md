@@ -1,8 +1,16 @@
-<!-- changelog:last-release:6e88af5 -->
+<!-- changelog:last-release:f1815fe -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.1.0] — 2026-06-17 | versionCode: 49 | Stage: Production
+
+### Maintenance
+- chore(mobile): upgrade Expo SDK 51 → 53, RN 0.74 → 0.79 (Release A) | commit: f1815fe
+- chore(changelog): add 4.0.1/vc48 — permissions fix entry | commit: 23e6ae8
+
+---
 
 ## [4.0.1] — 2026-06-16 | versionCode: 48 | Stage: Production
 
@@ -1573,7 +1581,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.0.1 | 48 | 2026-06-16 | Production | 8 | remove broad photo read permissions for Play policy (vc48); no enviar translatorId en requests de oracle_bones; oracle_bones siempre cuesta 1 token independiente del translator activo |
+| 4.1.0 | 49 | 2026-06-17 | Production | 2 | — |
+| 4.0.1 | 48 | 2026-06-16 | Production | 0 | — |
 | 4.0.0 | 47 | 2026-06-16 | Production | 0 | — |
 | 3.5.3 | 46 | 2026-06-13 | Closed Testing | 0 | — |
 | 3.5.6 | 54 | 2026-06-13 | Internal Testing | 0 | — |
