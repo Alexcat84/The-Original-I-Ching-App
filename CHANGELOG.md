@@ -1,8 +1,63 @@
-<!-- changelog:last-release:9e24713 -->
+<!-- changelog:last-release:a816838 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.0.0] — 2026-06-16 | versionCode: 47 | Stage: Production
+
+### New
+- feat(observability): cache tokens, fases Claude, retry Together 5xx, fallback logging | commit: d0d4650
+- feat(i18n): add iching-mutation-rules FAQ in all 11 locales | commit: c1de3bb
+- feat(guia): render ichingTraditionNote in Section 1 — best of both worlds | commit: 3250ce7
+- feat(i18n): add ichingTraditionNote — best of both worlds (Zhu Xi + orthodox school) | commit: 16faf3f
+- feat(animation): tune tick pacing for M3 — 48s active / 45s hold (was 36s/57s) | commit: 6573cc9
+
+### Fix
+- fix(oracle-bones): no enviar translatorId en requests de oracle_bones | commit: a816838
+- fix(tokens): oracle_bones siempre cuesta 1 token independiente del translator activo | commit: c7d5964
+- fix(deps): npm audit — next 15.5.19 + sentry 10.58.0 + turbo 2.9.18 | commit: 0823358
+- fix(gates+prompt): code-review Fase 2 — INTERPRETED_LINES alignment + H3/H5 gate fixes | commit: 970cf8e
+- fix(gates): H1 multiline fingerprint + CJK punctuation + H6 false positive | commit: 4cc0b5d
+- fix(qa): H3 multilingual robustness + full-text transcripts for QA barrido | commit: 8f929bc9
+- fix(iching): Fase 2 mutation rules — gates, prompt authority, QA harness | commit: 2cb6e48
+- fix(prompt/i18n): architectural fix for mutation-rule line scope + sinological corrections | commit: edfbd8c
+- fix(prompt): restrict LINE TEXTS citation to provided positions only | commit: 33eb879
+- fix(image): CJK font for subtitle text on ZhouYi translator | commit: a5ec79b
+- fix(prompt): mutation rule explanation no longer displaces line text analysis | commit: 9da09b8
+- fix(fallback): OpenRouter model gpt-4o + TS error response→orResponse | commit: ab44d09
+- fix(fallback): OpenRouter → Gemini Flash via fetch; Groq payload truncation | commit: 1313afe
+- fix(prompt): enforce forward chronological order in oracle bones threadMemoryNote | commit: 4b1fdc0
+- fix(prompt): enforce strict forward chronological order in Encuadre PARTE 1 | commit: 530b340
+- fix(integrity): log KNOWN_* access risk as info, not warn — no Sentry | commit: fae2633
+- fix(integrity): downgrade KNOWN_CONTROLLING/CAPTURING from block to warn-only | commit: 5e9e3c6
+
+### i18n
+- merge(staging→main): ichingTraditionNote i18n — orthodox school in guia docs | commit: 4733cdb
+
+### Docs
+- docs(audit): auditoría general pre-producción 2026-06-16 | commit: 062ca61
+- docs(audit): align Fase 2 closure with Opcion B and commit 2cb6e48 | commit: e4c249f
+- docs: auditoría observabilidad + mutationRule checked en changing lines audit | commit: 9aaf584
+- docs(audit): add sinological validation — orthodox school (Alfred Huang / Nanjing) | commit: c20a45b
+- docs: changelog 3.5.3 — Play Integrity + animation plan v3 + prompt fixes | commit: 07ee2c1
+
+### Maintenance
+- merge: staging into main (audit Fase 2 closure) | commit: bc04bef
+- merge: staging into main (mutation rules Fase 2) | commit: 040f41f
+- chore: trigger redeploy production (claude-sonnet-4-5-20250929) | commit: 5104e2a
+- chore: trigger redeploy staging (testing claude-sonnet-4-6) | commit: a1b889e
+- merge(staging→main): wire ichingTraditionNote into guia page | commit: 0fca6c6
+- merge(staging→main): sinological validation docs — orthodox school confirmed | commit: 09a5cf7
+- merge(staging→main): Zhu Xi mutation audit — H1/H2 gate, tests, QIAN/KUN fix | commit: 390bd4d
+- test(engine): comprehensive mutation-rule regression suite + gate tests + audit update | commit: dd46fce
+- ﻿feat(gate): H1/H2 line citation gate + retry for missing line blockquotes | commit: 83e1cc2
+- ﻿fix(prompt): mutation-rule audit -- fix 6-line and QIAN/KUN edge cases | commit: 1e7a858
+- Revert "refactor(integrity): remove Sentry from integrity events — Axiom only" | commit: 3c566cc
+- refactor(integrity): remove Sentry from integrity events — Axiom only | commit: 1f23425
+- chore: trigger Vercel redeploy for new env vars | commit: e0e83e3
+
+---
 
 ## [3.5.3] — 2026-06-13 | versionCode: 46 | Stage: Closed Testing
 
@@ -1500,7 +1555,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 3.5.3 | 46 | 2026-06-13 | Closed Testing | 15 | Axiom trace chain + Sentry alerts for Play Integrity failures; plan v3 Actions 2-7 — gate + budget store + watchdog + typewriter; apply mutation-rule explanation fix to master_combined mode |
+| 4.0.0 | 47 | 2026-06-16 | Production | 41 | cache tokens, fases Claude, retry Together 5xx, fallback logging; add iching-mutation-rules FAQ in all 11 locales; render ichingTraditionNote in Section 1 — best of both worlds |
+| 3.5.3 | 46 | 2026-06-13 | Closed Testing | 0 | — |
 | 3.5.6 | 54 | 2026-06-13 | Internal Testing | 0 | — |
 | 3.5.6 | 54 | 2026-06-13 | Internal Testing | 0 | — |
 | 3.5.5 | 53 | 2026-06-10 | Internal Testing | 0 | — |
