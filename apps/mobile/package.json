@@ -7,7 +7,6 @@
     "start": "expo start",
     "android": "expo run:android",
     "lint": "node -e \"process.exit(0)\"",
-    "postinstall": "node ./scripts/fix-expo-modules-core-sdk35.js && node ./scripts/fix-expo-app-integrity-gradle.js",
     "eas-build-pre-install": "rm -rf android ios",
     "android:prebuild": "expo prebuild --platform android",
     "android:sync-native": "expo prebuild --platform android --no-install",
@@ -17,44 +16,44 @@
   },
   "dependencies": {
     "@iching-oracle/i18n": "file:../../packages/i18n",
-    "@react-native-async-storage/async-storage": "1.23.1",
-    "@sentry/react-native": "^5.36.0",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@sentry/react-native": "^6.3.0",
     "eruda": "^3.4.3",
-    "expo": "~51.0.39",
+    "expo": "^53",
     "expo-app-integrity": "^0.3.0",
-    "expo-application": "~5.9.1",
-    "expo-build-properties": "~0.12.5",
-    "expo-constants": "~16.0.2",
-    "expo-device": "~6.0.2",
-    "expo-file-system": "~17.0.1",
-    "expo-linking": "~6.3.1",
-    "expo-localization": "~15.0.3",
-    "expo-media-library": "~16.0.5",
-    "expo-router": "~3.5.24",
-    "expo-secure-store": "~13.0.2",
-    "expo-sharing": "~12.0.1",
-    "expo-splash-screen": "~0.27.5",
-    "expo-sqlite": "~14.0.4",
-    "expo-status-bar": "~1.12.1",
-    "react": "18.2.0",
-    "react-native": "0.74.5",
-    "react-native-purchases": "^10.0.1",
-    "react-native-safe-area-context": "4.10.5",
-    "react-native-screens": "3.37.0",
-    "react-native-webview": "13.8.6"
+    "expo-application": "~6.1.5",
+    "expo-build-properties": "~0.14.8",
+    "expo-constants": "~17.1.8",
+    "expo-device": "~7.1.4",
+    "expo-file-system": "~18.1.11",
+    "expo-linking": "~7.1.7",
+    "expo-localization": "~16.1.6",
+    "expo-media-library": "~17.1.7",
+    "expo-router": "~5.1.11",
+    "expo-secure-store": "~14.2.4",
+    "expo-sharing": "~13.1.5",
+    "expo-splash-screen": "~0.30.10",
+    "expo-sqlite": "~15.2.14",
+    "expo-status-bar": "~2.2.3",
+    "expo-system-ui": "~5.0.11",
+    "react": "19.0.0",
+    "react-native": "0.79.6",
+    "react-native-purchases": "^10.3.0",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
+    "react-native-webview": "13.13.5"
   },
   "expo": {
     "install": {
       "exclude": [
-        "react-native-screens",
         "@sentry/react-native"
       ]
     }
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
-    "@types/react": "~18.2.79",
+    "@types/react": "~19.0.10",
     "patch-package": "^8.0.1",
-    "typescript": "~5.3.3"
+    "typescript": "~5.8.3"
   }
 }
