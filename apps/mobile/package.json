@@ -7,6 +7,7 @@
     "start": "expo start",
     "android": "expo run:android",
     "lint": "node -e \"process.exit(0)\"",
+    "postinstall": "node ./scripts/fix-expo-app-integrity-gradle.js",
     "eas-build-pre-install": "rm -rf android ios",
     "android:prebuild": "expo prebuild --platform android",
     "android:sync-native": "expo prebuild --platform android --no-install",
