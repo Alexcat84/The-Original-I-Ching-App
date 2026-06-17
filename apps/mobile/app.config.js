@@ -20,6 +20,7 @@ module.exports = ({ config }) => ({
     translucent: false,
   },
   splash: {
+    image: "./assets/logo.png",
     backgroundColor: "#0c0f14",
     resizeMode: "contain",
   },
@@ -31,7 +32,9 @@ module.exports = ({ config }) => ({
     backgroundColor: "#0c0f14",
     // P7: Required by Google Play Store listing
     privacyPolicyUrl: "https://theoriginaliching.com/privacy",
+    icon: "./assets/logo.png",
     adaptiveIcon: {
+      foregroundImage: "./assets/logo.png",
       backgroundColor: "#0c0f14",
     },
     permissions: ["android.permission.WRITE_EXTERNAL_STORAGE"],
@@ -93,9 +96,13 @@ module.exports = ({ config }) => ({
     [
       "expo-splash-screen",
       {
+        image: "./assets/logo.png",
+        imageWidth: 200,
         backgroundColor: "#0c0f14",
         resizeMode: "contain",
         dark: {
+          image: "./assets/logo.png",
+          imageWidth: 200,
           backgroundColor: "#0c0f14",
           resizeMode: "contain",
         },
