@@ -1964,7 +1964,9 @@ export default function WebViewScreen() {
   }, []);
 
   /* ── Media permission ── */
-  const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
+  const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions({
+    writeOnly: true,
+  });
 
   const validateStoredToken = useCallback(
     async (token: string): Promise<{ valid: boolean; email: string | null }> => {
