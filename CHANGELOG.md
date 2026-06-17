@@ -1,8 +1,34 @@
-<!-- changelog:last-release:a816838 -->
+<!-- changelog:last-release:f1815fe -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.1.0] — 2026-06-17 | versionCode: 49 | Stage: Production
+
+### Maintenance
+- chore(mobile): upgrade Expo SDK 51 → 53, RN 0.74 → 0.79 (Release A) | commit: f1815fe
+- chore(changelog): add 4.0.1/vc48 — permissions fix entry | commit: 23e6ae8
+
+---
+
+## [4.0.1] — 2026-06-16 | versionCode: 48 | Stage: Production
+
+### Fix
+- fix(mobile): remove broad photo read permissions for Play policy (vc48) | commit: 612c1ce
+- fix(oracle-bones): no enviar translatorId en requests de oracle_bones | commit: 35f101a
+- fix(tokens): oracle_bones siempre cuesta 1 token independiente del translator activo | commit: 93ac021
+
+### Docs
+- docs(agents): update preferences — oracle bones independence, PDF export, QA mutation tracing | commit: e29db4f
+- docs(agents): update preferences — oracle bones independence, PDF export, QA mutation tracing | commit: 788878c
+
+### Maintenance
+- merge: fix/android-media-permissions-vc48 into staging | commit: 6e88af5
+- chore(mobile): bump to 4.0.0/versionCode 47 — official production launch | commit: 5f6707f
+- chore(mobile): bump to 4.0.0/versionCode 47 — official production launch | commit: 5e9df73
+
+---
 
 ## [4.0.0] — 2026-06-16 | versionCode: 47 | Stage: Production
 
@@ -1555,7 +1581,9 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.0.0 | 47 | 2026-06-16 | Production | 41 | cache tokens, fases Claude, retry Together 5xx, fallback logging; add iching-mutation-rules FAQ in all 11 locales; render ichingTraditionNote in Section 1 — best of both worlds |
+| 4.1.0 | 49 | 2026-06-17 | Production | 2 | — |
+| 4.0.1 | 48 | 2026-06-16 | Production | 0 | — |
+| 4.0.0 | 47 | 2026-06-16 | Production | 0 | — |
 | 3.5.3 | 46 | 2026-06-13 | Closed Testing | 0 | — |
 | 3.5.6 | 54 | 2026-06-13 | Internal Testing | 0 | — |
 | 3.5.6 | 54 | 2026-06-13 | Internal Testing | 0 | — |

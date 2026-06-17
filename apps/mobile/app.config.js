@@ -7,12 +7,13 @@ module.exports = ({ config }) => ({
   ...config,
   name: "The Original I Ching",
   slug: "the-original-i-ching",
-  version: "4.0.1",
+  version: "4.1.0",
   scheme: "theoriginaliching",
   orientation: "portrait",
   platforms: ["android"],
   userInterfaceStyle: "dark",
   backgroundColor: "#0c0f14",
+  newArchEnabled: false,
   androidStatusBar: {
     barStyle: "light-content",
     backgroundColor: "#0c0f14",
@@ -24,10 +25,7 @@ module.exports = ({ config }) => ({
   },
   android: {
     package: "com.theoriginaliching.app",
-    versionCode: 48,
-    compileSdkVersion: 35,
-    targetSdkVersion: 35,
-    buildToolsVersion: "35.0.0",
+    versionCode: 49,
     // Prevent restoring stale auth/webview state after reinstall from Android backup.
     allowBackup: false,
     backgroundColor: "#0c0f14",
