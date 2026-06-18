@@ -6,6 +6,7 @@ import type { ConsultationCategory } from "@iching-oracle/image-engine";
 import { getAnthropicModelId } from "./anthropic-model-id.js";
 import { createAnthropicClient, callAnthropicWithRetry } from "./anthropic-client.js";
 import { buildHistoricalContext, buildCurrentContext, buildV2HistoricalUserBlock, type ResponseMode } from "./interpretation-context.js";
+import type { ClaudeUsage } from "./interpretation.js";
 import { loadClaudeEnv } from "./env.js";
 import {
   oracleBonesFallbackProse,
@@ -384,6 +385,7 @@ export async function generateOracleBonesInterpretation(
   category: ConsultationCategory;
   interpretationSummary: string;
   claudeMessageId?: string;
+  usage?: ClaudeUsage | null;
 }> {
   const { ANTHROPIC_API_KEY, OPENROUTER_API_KEY, OPENROUTER_MODEL, GROQ_API_KEY, GROQ_MODEL } = loadClaudeEnv(env);
   const maxTokens = MAX_TOKENS;
@@ -488,6 +490,19 @@ export async function generateOracleBonesInterpretation(
         sessionPosition: (context?.previousConsultations?.length ?? 0) + 1,
         generationMs: Date.now() - anthropicCallStart,
       });
+      const usageRecord = toUsageRecord(response.usage);
+      const claudeUsage: ClaudeUsage = {
+        inputTokens: numberField(usageRecord, "input_tokens"),
+        outputTokens: numberField(usageRecord, "output_tokens"),
+        cacheReadTokens: numberField(usageRecord, "cache_read_input_tokens"),
+        cacheCreationTokens: numberField(usageRecord, "cache_creation_input_tokens"),
+        cacheReadRatio: (() => {
+          const inp = numberField(usageRecord, "input_tokens");
+          const hit = numberField(usageRecord, "cache_read_input_tokens");
+          return inp && inp > 0 && hit !== null ? Math.round((hit / inp) * 100) / 100 : null;
+        })(),
+        model: getAnthropicModelId(env),
+      };
       const catMatch = fullText.match(/^(?:CATEGORY|CATEGOR[IÍ]A)\s*:\s*([\w_]+)/im);
       const category = (catMatch?.[1] as ConsultationCategory) ?? "decision_path";
       const snapshotMatch = fullText.match(
@@ -516,6 +531,7 @@ export async function generateOracleBonesInterpretation(
             category,
             interpretationSummary,
             claudeMessageId: response.claudeMessageId,
+            usage: claudeUsage,
           };
         }
       }

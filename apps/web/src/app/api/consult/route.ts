@@ -951,11 +951,16 @@ export async function POST(req: Request) {
       });
 
       const prevBonesMessageId = await getPrevClaudeMessageId(authedUserId, sessionId);
+      logConsultPhase(log, requestId, "claude_start", consultStartedAt, {
+        sessionId: sessionId.slice(0, 8),
+        oracleMode,
+      });
       const {
         text: interpretation,
         category,
         interpretationSummary: rawInterpretationSummary,
         claudeMessageId: bonesClaudeMessageId,
+        usage: bonesUsage,
       } = await generateOracleBonesInterpretation(
         bonesCast,
         tierEffective,
@@ -966,6 +971,16 @@ export async function POST(req: Request) {
         displayName,
         prevBonesMessageId,
       );
+      logConsultPhase(log, requestId, "claude_done", consultStartedAt, {
+        sessionId: sessionId.slice(0, 8),
+        oracleMode,
+        inputTokens: bonesUsage?.inputTokens,
+        outputTokens: bonesUsage?.outputTokens,
+        cacheReadTokens: bonesUsage?.cacheReadTokens,
+        cacheCreationTokens: bonesUsage?.cacheCreationTokens,
+        cacheReadRatio: bonesUsage?.cacheReadRatio,
+        model: bonesUsage?.model,
+      });
       if (bonesClaudeMessageId) void setPrevClaudeMessageId(authedUserId, sessionId, bonesClaudeMessageId);
       const interpretationSummary =
         rawInterpretationSummary?.trim() ||
