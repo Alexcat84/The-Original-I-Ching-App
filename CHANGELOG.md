@@ -1,12 +1,13 @@
-<!-- changelog:last-release:5f2ef9b -->
+<!-- changelog:last-release:5c6fe87 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
 
-## [4.1.2] — 2026-06-18 | versionCode: 55 | Stage: Closed Testing
+## [4.1.2] — 2026-06-18 | versionCode: 51 | Stage: Closed Testing
 
 ### Fix
+- fix(mobile): true React singleton via resolveRequest + replace banner icon with square app icon | commit: 5c6fe87
 - fix(web): correct broken anchors in privacy/guia doc links | commit: 5f2ef9b
 - fix(mobile): extraNodeModules only for react, not react-native/react-dom | commit: 24a4a29
 - fix(mobile): force React singleton via extraNodeModules in Metro config | commit: 62fd288
@@ -1601,7 +1602,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.2 | 55 | 2026-06-18 | Closed Testing | 12 | correct broken anchors in privacy/guia doc links; extraNodeModules only for react, not react-native/react-dom; force React singleton via extraNodeModules in Metro config |
+| 4.1.2 | 51 | 2026-06-18 | Closed Testing | 1 | true React singleton via resolveRequest + replace banner icon with square app… |
+| 4.1.2 | 55 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.0 | 49 | 2026-06-17 | Production | 0 | — |
 | 4.0.1 | 48 | 2026-06-16 | Production | 0 | — |
 | 4.0.0 | 47 | 2026-06-16 | Production | 0 | — |

@@ -26,7 +26,7 @@ module.exports = ({ config }) => ({
   },
   android: {
     package: "com.theoriginaliching.app",
-    versionCode: 55,
+    versionCode: 51,
     // Prevent restoring stale auth/webview state after reinstall from Android backup.
     allowBackup: false,
     backgroundColor: "#0c0f14",
