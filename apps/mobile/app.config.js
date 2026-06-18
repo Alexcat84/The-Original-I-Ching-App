@@ -7,7 +7,7 @@ module.exports = ({ config }) => ({
   ...config,
   name: "The Original I Ching",
   slug: "the-original-i-ching",
-  version: "4.1.1",
+  version: "4.1.2",
   scheme: "theoriginaliching",
   orientation: "portrait",
   platforms: ["android"],
@@ -26,15 +26,15 @@ module.exports = ({ config }) => ({
   },
   android: {
     package: "com.theoriginaliching.app",
-    versionCode: 50,
+    versionCode: 55,
     // Prevent restoring stale auth/webview state after reinstall from Android backup.
     allowBackup: false,
     backgroundColor: "#0c0f14",
     // P7: Required by Google Play Store listing
     privacyPolicyUrl: "https://theoriginaliching.com/privacy",
-    icon: "./assets/logo.png",
+    icon: "./assets/icon.png",
     adaptiveIcon: {
-      foregroundImage: "./assets/logo.png",
+      foregroundImage: "./assets/icon.png",
       backgroundColor: "#0c0f14",
     },
     permissions: ["android.permission.WRITE_EXTERNAL_STORAGE"],

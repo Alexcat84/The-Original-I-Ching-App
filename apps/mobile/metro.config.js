@@ -12,15 +12,34 @@ config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, "node_modules"),
 ];
 
-// Force singleton resolution for packages that must have exactly one instance
-// across the entire monorepo bundle. Without this, hoisted packages (e.g.
-// expo-router in root/node_modules) resolve React 18 from the monorepo root
-// while the app uses React 19 from apps/mobile/node_modules — two React
-// instances in the same bundle → ReactSharedInternals.S crash at launch.
-// Force React singleton: only 'react' has two copies (18 in root, 19 in mobile).
-// react-native and react-dom live only in root/node_modules so they need no redirect.
-config.resolver.extraNodeModules = {
-  react: path.resolve(projectRoot, "node_modules/react"),
+// Force singleton resolution for React across the entire monorepo bundle.
+// expo-router (and other Expo packages) are hoisted to root/node_modules and
+// have no nested react copy, so Node's hierarchical lookup resolves their
+// `require("react")` to root/node_modules/react@18.2.0 (used by apps/web) —
+// while apps/mobile's own code uses react@19.0.0 from its local node_modules.
+// Two React instances in one bundle → ReactSharedInternals.S undefined crash.
+//
+// `extraNodeModules` is only a fallback consulted when hierarchical lookup
+// FAILS — since root/node_modules/react exists, it's found first and the
+// fallback never triggers. A custom `resolveRequest` is required to truly
+// override resolution for every requester, regardless of where they live.
+const mobileReactDir = path.resolve(projectRoot, "node_modules/react");
+const mobileReactMain = path.join(
+  mobileReactDir,
+  require(path.join(mobileReactDir, "package.json")).main
+);
+const defaultResolveRequest = config.resolver.resolveRequest;
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  if (moduleName === "react" || moduleName.startsWith("react/")) {
+    const subpath = moduleName === "react" ? "" : moduleName.slice("react/".length);
+    const filePath = subpath
+      ? path.join(mobileReactDir, path.extname(subpath) ? subpath : `${subpath}.js`)
+      : mobileReactMain;
+    return { type: "sourceFile", filePath };
+  }
+  return defaultResolveRequest
+    ? defaultResolveRequest(context, moduleName, platform)
+    : context.resolveRequest(context, moduleName, platform);
 };
 
 module.exports = config;

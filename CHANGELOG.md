@@ -1,8 +1,28 @@
-<!-- changelog:last-release:f1815fe -->
+<!-- changelog:last-release:5f2ef9b -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.1.2] — 2026-06-18 | versionCode: 55 | Stage: Closed Testing
+
+### Fix
+- fix(web): correct broken anchors in privacy/guia doc links | commit: 5f2ef9b
+- fix(mobile): extraNodeModules only for react, not react-native/react-dom | commit: 24a4a29
+- fix(mobile): force React singleton via extraNodeModules in Metro config | commit: 62fd288
+- fix(oracle): rename fifth section to 'El hexagrama en su plenitud' when no mutations | commit: 7bd4a72
+- fix(oracle): omit 'El trazado' section when no changing lines | commit: f77ac00
+- fix(mobile): add splash and app icon assets for SDK 53 native build | commit: de6c501
+- fix(mobile): restore expo-app-integrity Gradle 8 postinstall fix | commit: b28560e
+- fix(mobile): add promise dep — Sentry 6.x requires it, removed from RN 0.79 | commit: cb4e00e
+
+### Maintenance
+- chore(mobile): bump to 4.1.1 / versionCode 50 | commit: 28c47a2
+- merge: staging into main — SDK 53 + RN 0.79 Release A (vc49 / 4.1.0) | commit: d69d939
+- merge: chore/upgrade-expo-sdk53 into staging — SDK 53 + RN 0.79 (Release A, vc49) | commit: 3cd462e
+- chore(changelog): add 4.1.0/vc49 — SDK 53 upgrade entry | commit: 84c8f14
+
+---
 
 ## [4.1.0] — 2026-06-17 | versionCode: 49 | Stage: Production
 
@@ -1581,7 +1601,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.0 | 49 | 2026-06-17 | Production | 2 | — |
+| 4.1.2 | 55 | 2026-06-18 | Closed Testing | 12 | correct broken anchors in privacy/guia doc links; extraNodeModules only for react, not react-native/react-dom; force React singleton via extraNodeModules in Metro config |
+| 4.1.0 | 49 | 2026-06-17 | Production | 0 | — |
 | 4.0.1 | 48 | 2026-06-16 | Production | 0 | — |
 | 4.0.0 | 47 | 2026-06-16 | Production | 0 | — |
 | 3.5.3 | 46 | 2026-06-13 | Closed Testing | 0 | — |
