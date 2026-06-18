@@ -253,20 +253,18 @@ ${t.selectedLineTexts
       question,
     );
   const trChinese = tr?.chineseName ?? "之卦";
-  const scrollHeadingsEs = `Use these exact ## headings in Spanish (Chinese labels 卦辞 and 象傳 only as shown; ${trChinese} is the specific transformed hexagram):
+  const scrollHeadingsEs = `Use these exact ## headings in Spanish (Chinese labels 卦辞 and 象傳 only as shown${tr ? `; ${trChinese} is the specific transformed hexagram` : ""}):
 ## Encuadre de la pregunta
 ## El juicio (卦辞)
 ## La imagen (象傳)
-## Líneas en movimiento
-## El trazado hacia el ${trChinese}
+## Líneas en movimiento${tr ? `\n## El trazado hacia el ${trChinese}` : ""}
 ## Horizonte y síntesis`;
 
-  const scrollHeadingsEn = `Use these exact ## headings in English (Chinese labels 卦辞 and 象傳 only as shown; ${trChinese} is the specific transformed hexagram):
+  const scrollHeadingsEn = `Use these exact ## headings in English (Chinese labels 卦辞 and 象傳 only as shown${tr ? `; ${trChinese} is the specific transformed hexagram` : ""}):
 ## Framing the question
 ## The judgment (卦辞)
 ## The image (象傳)
-## Lines in motion
-## The turning pattern (${trChinese})
+## Lines in motion${tr ? `\n## The turning pattern (${trChinese})` : ""}
 ## Horizon and synthesis`;
 
   const headingsBlock =
@@ -274,7 +272,7 @@ ${t.selectedLineTexts
       ? scrollHeadingsEs
       : language === "en"
         ? scrollHeadingsEn
-        : `Use the same section structure and roles as ${scrollHeadingsEn} but translate section titles fully into ${getLanguageName(language)} (keep 卦辞 and 象傳 next to their respective translated titles; use ${trChinese} as the specific hexagram label for the turning pattern section).`;
+        : `Use the same section structure and roles as ${scrollHeadingsEn} but translate section titles fully into ${getLanguageName(language)} (keep 卦辞 and 象傳 next to their respective translated titles;${tr ? ` use ${trChinese} as the specific hexagram label for the turning pattern section` : " omit the turning pattern section entirely — no transformed hexagram exists"}).`;
 
   const modeInstruction =
     mode === "directo"
@@ -404,7 +402,7 @@ JUDGMENT: ${t.transformedJudgment}`
           .join(" and ");
         return `SELECTED TRANSLATOR: ${translatorDisplayName}.
 
-TRANSLATOR RULE — applies ONLY to the sections that interpret the CURRENT reading texts (El Juicio, La Imagen, Líneas en movimiento, El Trazado hacia el ${trChinese}, and all interpretive prose for this hexagram):
+TRANSLATOR RULE — applies ONLY to the sections that interpret the CURRENT reading texts (El Juicio, La Imagen, Líneas en movimiento${tr ? `, El Trazado hacia el ${trChinese}` : ""}, and all interpretive prose for this hexagram):
 - Use ONLY ${translatorDisplayName} as the authoritative source for the current reading.
 - Never write "${otherTranslators.split(" and ")[0]} says", "como señala ${otherTranslators.split(" and ")[0]}", or any cross-translator attribution when interpreting the CURRENT hexagram texts.
 - The texts provided in the BIBLIOTECA belong exclusively to ${translatorDisplayName} for this consultation.
