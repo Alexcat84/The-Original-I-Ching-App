@@ -253,18 +253,22 @@ ${t.selectedLineTexts
       question,
     );
   const trChinese = tr?.chineseName ?? "之卦";
+  const stabilityHeadingEs = "El hexagrama en su plenitud";
+  const stabilityHeadingEn = "The hexagram in its fullness";
   const scrollHeadingsEs = `Use these exact ## headings in Spanish (Chinese labels 卦辞 and 象傳 only as shown${tr ? `; ${trChinese} is the specific transformed hexagram` : ""}):
 ## Encuadre de la pregunta
 ## El juicio (卦辞)
 ## La imagen (象傳)
-## Líneas en movimiento${tr ? `\n## El trazado hacia el ${trChinese}` : ""}
+## Líneas en movimiento
+## ${tr ? `El trazado hacia el ${trChinese}` : stabilityHeadingEs}
 ## Horizonte y síntesis`;
 
   const scrollHeadingsEn = `Use these exact ## headings in English (Chinese labels 卦辞 and 象傳 only as shown${tr ? `; ${trChinese} is the specific transformed hexagram` : ""}):
 ## Framing the question
 ## The judgment (卦辞)
 ## The image (象傳)
-## Lines in motion${tr ? `\n## The turning pattern (${trChinese})` : ""}
+## Lines in motion
+## ${tr ? `The turning pattern (${trChinese})` : stabilityHeadingEn}
 ## Horizon and synthesis`;
 
   const headingsBlock =
@@ -272,7 +276,7 @@ ${t.selectedLineTexts
       ? scrollHeadingsEs
       : language === "en"
         ? scrollHeadingsEn
-        : `Use the same section structure and roles as ${scrollHeadingsEn} but translate section titles fully into ${getLanguageName(language)} (keep 卦辞 and 象傳 next to their respective translated titles;${tr ? ` use ${trChinese} as the specific hexagram label for the turning pattern section` : " omit the turning pattern section entirely — no transformed hexagram exists"}).`;
+        : `Use the same section structure and roles as ${scrollHeadingsEn} but translate section titles fully into ${getLanguageName(language)} (keep 卦辞 and 象傳 next to their respective translated titles;${tr ? ` use ${trChinese} as the specific hexagram label for the turning pattern section` : ` translate "${stabilityHeadingEn}" as the title of the fifth section`}).`;
 
   const modeInstruction =
     mode === "directo"
@@ -293,7 +297,7 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
 - "El juicio" / "The judgment": mandatory blockquote (>) of the classical judgment when provided; immediately after, one paragraph that names how that wording maps onto the user's situation (explicit bridge).
 - "La imagen" / "The image": mandatory blockquote (>) of the classical image text (象傳) when provided; immediately after, one paragraph connecting the image's symbolic scene to the user's situation.
 - "Líneas en movimiento" / "Lines in motion": interpret the entries in INTERPRETED_LINES—numbered list with line text + one sentence of application each; if no changing lines (CHANGING_COUNT = 0), one crisp sentence stating stability. IMPORTANT: when CHANGING_COUNT exceeds INTERPRETATION_LINE_COUNT (a mutation rule is filtering lines), open this section with one plain-language sentence that explains which line(s) are read and why (drawn from the MUTATION RULE field — never echo the rule code), then: (a) if INTERPRETED_LINES has entries, the INTERPRETED_LINES list is the COMPLETE and EXCLUSIVE set of lines to interpret — quote and interpret EVERY entry and NO other position. Do NOT quote, interpret, or invent text for any other changing position: the mutation rule already excluded those on purpose, and the opener (drawn from MUTATION RULE) tells the user why only these are read. NOTE: an INTERPRETED_LINES entry tagged [transformed] is a STABLE line of the TRANSFORMED hexagram chosen by the rule (4 or 5 changing lines) — interpret it as such; it is intentionally NOT one of the changing positions; (b) if a SPECIAL YAO field is present and LINE TEXTS are empty (hexagrams 1 and 2 with their seventh yao 用九/用六), quote that SPECIAL YAO text as a blockquote and interpret it as the single oracular statement for this cast; (c) if neither LINE TEXTS nor SPECIAL YAO are present (total mutation — all six lines change in any hexagram other than 1 or 2), close the section after the explanation with one sentence noting that no individual line is singled out and the reading focuses entirely on the transformed hexagram.
-- \`El trazado hacia el ${trChinese}\` / \`The turning pattern (${trChinese})\`: ONLY if transformed hexagram exists—quote transformed judgment and image if supplied, then tension / opportunity vs primary. Do NOT repeat any individual line text (爻辞) already quoted in «Líneas en movimiento» / «Lines in motion»; for FOUR/FIVE changing-line rules the stable transformed line belongs ONLY in the Lines section.
+- ${tr ? `\`El trazado hacia el ${trChinese}\` / \`The turning pattern (${trChinese})\`: quote transformed judgment and image if supplied, then tension / opportunity vs primary. Do NOT repeat any individual line text (爻辞) already quoted in «Líneas en movimiento» / «Lines in motion»; for FOUR/FIVE changing-line rules the stable transformed line belongs ONLY in the Lines section.` : `"${stabilityHeadingEs}" / "${stabilityHeadingEn}": CHANGING_COUNT = 0 — no transformed hexagram exists. Write 2–3 sentences explaining that the absence of mutation is itself the oracle's message: the hexagram stands whole and undivided, and its counsel applies without the pressure of a transition. Do NOT invent a transformation or reference 之卦.`}
 - "Horizonte y síntesis" / "Horizon and synthesis": single closing paragraph—one concrete behavioral or attitudinal step, same language, no new quotes.
 - ANTI-REPETITION across sections as in global rules.`;
 
