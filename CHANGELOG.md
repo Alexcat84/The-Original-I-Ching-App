@@ -1602,8 +1602,7 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.2 | 51 | 2026-06-18 | Closed Testing | 1 | true React singleton via resolveRequest + replace banner icon with square app… |
-| 4.1.2 | 55 | 2026-06-18 | Closed Testing | 0 | — |
+| 4.1.2 | 51 | 2026-06-18 | Closed Testing | 2 | true React singleton via resolveRequest + replace banner icon with square app… |
 | 4.1.0 | 49 | 2026-06-17 | Production | 0 | — |
 | 4.0.1 | 48 | 2026-06-16 | Production | 0 | — |
 | 4.0.0 | 47 | 2026-06-16 | Production | 0 | — |
