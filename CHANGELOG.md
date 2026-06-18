@@ -1,8 +1,18 @@
-<!-- changelog:last-release:5c6fe87 -->
+<!-- changelog:last-release:35ac93d -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.1.3] — 2026-06-18 | versionCode: 52 | Stage: Closed Testing
+
+### Fix
+- fix(mobile): correct versionCode to 51, not 55 | commit: 2e572e8
+
+### Maintenance
+- chore(mobile): drop stale changelog row, shrink icon.png 1.3MB -> 237KB | commit: 35ac93d
+
+---
 
 ## [4.1.2] — 2026-06-18 | versionCode: 51 | Stage: Closed Testing
 
@@ -1602,7 +1612,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.2 | 51 | 2026-06-18 | Closed Testing | 2 | true React singleton via resolveRequest + replace banner icon with square app… |
+| 4.1.3 | 52 | 2026-06-18 | Closed Testing | 2 | correct versionCode to 51, not 55 |
+| 4.1.2 | 51 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.0 | 49 | 2026-06-17 | Production | 0 | — |
 | 4.0.1 | 48 | 2026-06-16 | Production | 0 | — |
 | 4.0.0 | 47 | 2026-06-16 | Production | 0 | — |
