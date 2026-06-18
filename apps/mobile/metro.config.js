@@ -17,10 +17,10 @@ config.resolver.nodeModulesPaths = [
 // expo-router in root/node_modules) resolve React 18 from the monorepo root
 // while the app uses React 19 from apps/mobile/node_modules — two React
 // instances in the same bundle → ReactSharedInternals.S crash at launch.
+// Force React singleton: only 'react' has two copies (18 in root, 19 in mobile).
+// react-native and react-dom live only in root/node_modules so they need no redirect.
 config.resolver.extraNodeModules = {
   react: path.resolve(projectRoot, "node_modules/react"),
-  "react-native": path.resolve(projectRoot, "node_modules/react-native"),
-  "react-dom": path.resolve(projectRoot, "node_modules/react-dom"),
 };
 
 module.exports = config;
