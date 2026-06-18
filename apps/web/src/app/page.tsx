@@ -5863,7 +5863,7 @@ export default function HomePage() {
                       aria-label={chrome.docLinksAria}
                     >
                       <div id="tour-doc-links" style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-                        <Link href="/guia#primeros-pasos">
+                        <Link href="/guia#modos-consulta">
                           {docNav.userGuide}
                         </Link>
                         <Link href="/notes">{docNav.methodNotesLong}</Link>
@@ -6752,7 +6752,7 @@ export default function HomePage() {
                       className="meta-line tier-hint-line token-center-message"
                       style={{ marginTop: 8 }}
                     >
-                      <Link href="/guia#planes">
+                      <Link href="/guia#panel-opciones">
                         {tokenPanel.tokenCenterGuideLink}
                       </Link>
                     </p>
