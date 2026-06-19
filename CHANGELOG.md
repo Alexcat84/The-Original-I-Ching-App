@@ -7,11 +7,13 @@ Full project change history.
 ## [4.1.6] — 2026-06-19 | versionCode: 55 | Stage: Closed Testing
 
 ### Fix
+- fix(auth): invalidate bootstrap redis cache on legal consent acceptance — fixes infinite re-consent loop on new account creation | commit: 0eb84fd
 - fix(web): block WordPress probe paths, require Turnstile on sign-in too | commit: aa55620
 - fix(web+mobile): guard __rnNavigateTo against pre-hydration router dispatch | commit: af6c476
 - fix(mobile+web): chat drawer safe-area top and nav bar on RN | commit: 4d79fd5
 
 ### Docs
+- docs(legal): align CURRENT_TERMS_VERSION/CURRENT_PRIVACY_VERSION with actual publication dates, fix stale "last updated" date in terms page across 9 locales | commit: 805e972
 - docs(auditorias): document Data Safety rejection root cause and resolution | commit: f2574c0
 - docs(privacy): disclose device/installation identifiers and provider categories | commit: cbaca12
 
