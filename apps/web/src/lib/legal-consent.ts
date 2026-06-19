@@ -1,5 +1,5 @@
-export const CURRENT_TERMS_VERSION = "terms-2026-04-01";
-export const CURRENT_PRIVACY_VERSION = "privacy-2026-04-01";
+export const CURRENT_TERMS_VERSION = "terms-2026-05-18";
+export const CURRENT_PRIVACY_VERSION = "privacy-2026-06-19";
 export const LEGAL_CONSENT_PENDING_STORAGE_KEY = "iching_legal_consent_pending_v1";
 
 /** Stored on auth.users.user_metadata at email sign-up when the session is created only after email confirmation. */
