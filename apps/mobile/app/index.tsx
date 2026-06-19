@@ -932,9 +932,12 @@ const INJECTED_JS = `
   };
 
   /* 9 ── SPA navigation to avoid full reload (P1) ─────────────────────── */
+  // __nextRouterReady (set by RouterReadySignal in apps/web/src/app/layout.tsx, after
+  // App Router hydration) guards against "Router action dispatched before initialization" —
+  // window.next.router exists as soon as the HTML loads, but its reducer isn't ready yet.
   window.__rnNavigateTo = function (path) {
     try {
-      if (window.next && window.next.router) {
+      if (window.__nextRouterReady && window.next && window.next.router) {
         window.next.router.push(path);
       } else {
         window.history.pushState({}, '', path);

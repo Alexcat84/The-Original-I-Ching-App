@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import CookieConsentGate from "@/components/CookieConsentGate";
 import RevenueCatSupabaseSync from "@/components/RevenueCatSupabaseSync";
+import RouterReadySignal from "@/components/RouterReadySignal";
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { ChatSessionProvider } from "@/providers/chat-session-provider";
 import { rootFontClassName } from "@/lib/google-fonts-root";
@@ -62,6 +63,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <meta name="csp-nonce" content={nonce} suppressHydrationWarning />
       </head>
       <body>
+        <RouterReadySignal />
         <RevenueCatSupabaseSync />
         <CookieConsentGate>
           <ChatSessionProvider>{children}</ChatSessionProvider>
