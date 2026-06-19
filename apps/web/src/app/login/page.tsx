@@ -120,7 +120,7 @@ export default function LoginPage() {
   }, [router]);
 
   useEffect(() => {
-    if (!turnstileSiteKey || mode !== "signup") {
+    if (!turnstileSiteKey) {
       turnstileTokenRef.current = "";
       const id = turnstileWidgetIdRef.current;
       if (id && window.turnstile) {
@@ -197,6 +197,18 @@ export default function LoginPage() {
     if (!isSupabaseBrowserConfigured()) return;
     setLoading(true);
     try {
+      if (turnstileSiteKey) {
+        const verifyRes = await fetch("/api/auth/verify-turnstile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ turnstileToken: turnstileTokenRef.current }),
+        });
+        if (!verifyRes.ok) {
+          const data = (await verifyRes.json().catch(() => ({}))) as { error?: string };
+          setErr(formatLoginRegisterApiError(L, data));
+          return;
+        }
+      }
       const sb = getSupabaseBrowser();
       const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password });
       if (error) {
@@ -519,6 +531,12 @@ export default function LoginPage() {
                   {L.resendConfirmation}
                 </button>
               </div>
+              <div
+                ref={turnstileHostRef}
+                className="auth-pro-turnstile"
+                style={{ display: turnstileSiteKey ? "flex" : "none" }}
+                aria-hidden={!turnstileSiteKey}
+              />
               <button type="submit" className="auth-pro-btn auth-pro-btn-primary" disabled={loading}>
                 {loading ? L.signingIn : L.signInSubmit}
               </button>

@@ -21,10 +21,12 @@ Los **103 requests a `/login`** observados en Axiom durante la ventana de 6 hora
 | Rango IP | Requests | Propietario | User-Agent | Diagnóstico |
 |----------|----------|-------------|------------|-------------|
 | `66.249.84.32–38` | **90** (87%) | Google LLC (AS15169) | `OnePlus8Pro Build/QKR1.191246.002; wv` | **Google WRS** renderizando con UA del dispositivo del Sentry |
-| `72.10.128.4` | **12** (12%) | — | `SM-S918U1 (Galaxy S24 Ultra); wv` | Segundo dispositivo/crawler |
+| `72.10.128.4` | **6** (en esta ventana) | **EBOX (AS1403), ISP residencial — Montreal, QC, Canadá** | `SM-S918U1; wv`, Android 16, Chrome/149 | **Usuario real autenticado** — no es crawler (ver corrección abajo) |
 | `100.57.4.5` | **1** (1%) | — | `HeadlessChrome/138.0.7204.23` | Vercel preview bot o test |
 
 > **IMPORTANTE:** El rango `66.249.84.0/24` es **propiedad verificada de Google** y se usa para Googlebot y el Google Web Rendering Service (WRS). El UA que envía coincide con el dispositivo del error Sentry (OnePlus8Pro/Android 11/WebView 90) porque WRS replica las condiciones del dispositivo que originó la visita.
+
+> **CORRECCIÓN (Claude, verificado en vivo contra Axiom, dataset `iching-app-main`, vía API REST con `AXIOM_PAT`):** la atribución original de `72.10.128.4` como "segundo dispositivo/crawler" es incorrecta. WHOIS confirma que es un rango residencial de EBOX (Montreal, Canadá), no un datacenter ni rango de bot conocido. La traza completa de esta IP el 2026-06-19 muestra navegación humana normal durante todo el día: páginas de marketing, `/notes`, `/terms`, `/guia`, `/faqs`, `/feedback`, llamadas autenticadas a `/api/account/*` (incluye `chats`, `me`, `bootstrap`, `sessions-only`), `/api/integrity/challenge` + `/api/integrity/client-event` (Play Integrity, normal), y recorrido del catálogo `/library/1` a `/library/64`. La secuencia exacta dentro de la ventana del spike (12:09:38–12:11:30 UTC) es: `GET /api/account/me` → 9× `GET /api/account/chats` (polling normal, ~5-6s de intervalo) → `GET /api/account/me` → `POST /api/auth/sign-out` → `GET /login`. Es decir: el usuario cerró sesión y la app lo redirigió a `/login` — comportamiento esperado, no un patrón de bot ni parte real del spike de Google. El recuento de "12%" del resumen original no debe leerse como tráfico anómalo.
 
 ### 1.2 IPs individuales de Google
 
@@ -157,7 +159,7 @@ Un request aislado de Chrome headless — probablemente un bot de Vercel, Lighth
 
 | Pregunta | Respuesta |
 |----------|-----------|
-| ¿Hay 96 logins reales? | **No.** 90 son Google WRS, 12 de un segundo crawler/usuario, 1 HeadlessChrome |
+| ¿Hay 96 logins reales? | **No.** 90 son Google WRS; el resto es 1 usuario real (EBOX, Montreal) cerrando sesión normalmente + 1 HeadlessChrome aislado |
 | ¿Es un ataque? | **No.** Es crawling legítimo de Google |
 | ¿Hay impacto en usuarios? | **No.** Los requests son GET 200 de 0-3ms, no generan carga |
 | ¿El error Sentry es de un usuario real? | **Probablemente no** — el UA coincide con Google WRS |
@@ -175,7 +177,7 @@ Un request aislado de Chrome headless — probablemente un bot de Vercel, Lighth
 | P4 | Rate-limit `/login` por IP | ❌ Pendiente — verificado contra `apps/web/src/middleware.ts`: el rate limiting existente (`rateLimitByKey`) solo cubre `/api/library/*`; `/login` (page render) no tiene límite. No es redundante con el rate limiting ya documentado en `CLAUDE.md` (ese es para endpoints de auth/2FA, no para el render de la página) |
 | P4 | Monitorear recurrencia | Verificar si el crawl burst de Google se repite y a qué frecuencia |
 
-> **Nota de verificación (Claude, mismo día):** Auditoría re-verificada contra el código real (no solo aceptada de la inspección automatizada) — ver detalle de qué se confirmó por código vs. qué se acepta de los datos de Axiom (sin acceso directo a Axiom en esta verificación) en `RN_NAVIGATE_TO_ROUTER_RACE_AUDIT_2026-06-19.md`.
+> **Nota de verificación (Claude, mismo día — actualizada):** Auditoría re-verificada en dos pasadas. Primera pasada: contra el código real (sin acceso a Axiom). Segunda pasada: con acceso directo a Axiom vía API REST (`AXIOM_PAT` + `AXIOM_ORG_ID` en `.env`, dataset `iching-app-main`) — se confirmaron los 90 requests de Google WRS (mismas 7 IPs `66.249.84.32–38`, mismo UA, GET 200 0-3ms) y se corrigió la atribución de `72.10.128.4` (ver nota en sección 1.1: es un usuario real, no un segundo crawler). El resto de hallazgos (WordPress probing, ausencia de rate-limit en `/login`) no requirió corrección.
 
 ---
 
