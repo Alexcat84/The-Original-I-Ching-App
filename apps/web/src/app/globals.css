@@ -282,12 +282,12 @@ html.iching-rn-webview .iching-oracle-shell--chat {
    env(safe-area-inset-bottom) is unreliable in this WebView and was masking the real
    value via a guessed clamp(18px,...,52px) floor/cap. */
 html.iching-rn-webview {
-  --rn-chat-bottom-offset: calc(0.25rem + max(18px, var(--rn-safe-area-inset-bottom, 0px)));
+  --rn-composer-bottom-padding: calc(0.42rem + var(--rn-safe-area-inset-bottom, 0px));
 }
 
 /* RN: full card radius when auth/locale strip is shown (strip carries top curve like former native card) */
 html.iching-rn-webview .chat-surface {
-  margin-bottom: var(--rn-chat-bottom-offset);
+  margin-bottom: 0;
   /* Use almost full viewport; rem caps (40–48rem) left large side margins on common phone/tablet widths. */
   max-width: min(120rem, calc(100vw - 0.35rem));
 }
@@ -345,9 +345,9 @@ html.iching-rn-webview .composer-dock {
   padding-bottom: 0 !important;
 }
 
-/* Inset lives on .chat-surface margin — keep composer visually balanced */
+/* Composer sits flush at the bottom of .chat-surface; safe inset only here when needed */
 html.iching-rn-webview .composer-minibar {
-  padding-bottom: 0.42rem !important;
+  padding-bottom: var(--rn-composer-bottom-padding) !important;
 }
 
 /*
