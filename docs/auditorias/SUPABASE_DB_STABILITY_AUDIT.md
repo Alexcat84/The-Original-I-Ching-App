@@ -14,7 +14,7 @@
 |-------|-------|
 | **Estado** | 🔴 Incidente P0 2026-06-07 — wipe de interpretaciones por 066+trigger; **068** aplicada; consultas nuevas protegidas; histórico requiere PITR. Ver §14 |
 | **Prioridad** | P4 ticket pool PostgREST >10 antes de marketing >1000 WAU pico |
-| **Relacionado** | [SQLITE_CHAT_HYDRATION_AUDIT.md](../audits/SQLITE_CHAT_HYDRATION_AUDIT.md), [CHAT_THREAD_HYDRATION_AUDIT.md](../audits/CHAT_THREAD_HYDRATION_AUDIT.md), migraciones 052–066 |
+| **Relacionado** | [SQLITE_CHAT_HYDRATION_AUDIT.md](./SQLITE_CHAT_HYDRATION_AUDIT.md), [CHAT_THREAD_HYDRATION_AUDIT.md](./CHAT_THREAD_HYDRATION_AUDIT.md), migraciones 052–066 |
 
 ---
 
@@ -308,7 +308,7 @@ sequenceDiagram
 | 4.1 | `scripts/db-health-check.sql` — TOAST size, connections waiting, cron, p95 |
 | 4.2 | Logging correlacionado en `chats/route.ts` (fase, duración, request-id) |
 | 4.3 | Alertas Dashboard: 5xx API, connection spikes |
-| 4.4 | Runbook post-restart en `docs/auditorias/` o `docs/audits/` |
+| 4.4 | Runbook post-restart en `docs/auditorias/` |
 
 ---
 

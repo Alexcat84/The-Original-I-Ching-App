@@ -187,7 +187,7 @@ ANTHROPIC_API_KEY=
 │   ├── auth/                 # TOTP, email 2FA, registration validation
 │   └── db/migrations/        # 51 ordered SQL migrations (Supabase)
 └── docs/
-    ├── audits/               # Security, architecture, data integrity audits
+    ├── auditorias/           # Security, architecture, data integrity audits (canonical)
     ├── workflows/            # i18n guide, legal flow
     └── setup/                # New DB setup guide
 ```

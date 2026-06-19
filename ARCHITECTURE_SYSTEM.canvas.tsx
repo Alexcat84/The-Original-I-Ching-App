@@ -6,7 +6,7 @@
  * - Update CURRENT_RELEASE when apps/mobile/app.config.js changes.
  * - Add architecture notes via useCanvasState key "archNotes" (persisted in .canvas.data.json).
  * - Full release history: CHANGELOG.md at repo root (npm run changelog:update).
- * - Deep reference: docs/audits/ARCHITECTURE_AUDIT.md, CLAUDE.md, AGENTS.md.
+ * - Deep reference: docs/auditorias/ARCHITECTURE_AUDIT.md, CLAUDE.md, AGENTS.md.
  * - Do not add fetch() or external imports; only cursor/canvas.
  */
 import {
@@ -39,12 +39,12 @@ import {
 
 // --- Release snapshot (update on each mobile bump) ---
 const CURRENT_RELEASE = {
-  versionName: "3.5.6",
-  versionCode: 54,
+  versionName: "4.1.0",
+  versionCode: 49,
   webHost: "https://theoriginaliching.com",
   stagingHost:
     "https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app",
-  updatedAt: "2026-06-13",
+  updatedAt: "2026-06-17",
 };
 
 type ViewId =
@@ -82,6 +82,7 @@ const MODULE_CATALOG: ModuleRow[] = [
 ];
 
 const VERSION_ROWS = [
+  { version: "4.1.0", vc: "49", date: "2026-06-17", stage: "Production", note: "Expo SDK 53 + RN 0.79 Release A (16 KB); splash/icon; integrity Gradle 8; Sentry 6" },
   { version: "3.5.6", vc: "54", date: "2026-06-13", stage: "Local smoke test", note: "Phase 0-3 perf (streaming deltas, parallel image, prompt cache V2) + B1/B2/B3 + SEC-01 webhook gate" },
   { version: "3.5.5", vc: "53", date: "2026-06-12", stage: "Staging", note: "Phase 7+8: OOM crash fix + session recovery; audit remediation CRIT-01/02 (refund_token), MED-01 (iad1 pin)" },
   { version: "3.3.9", vc: "32", date: "2026-05-31", stage: "Closed Testing", note: "RC logIn before purchase; drawer safe area native inset" },
@@ -527,13 +528,13 @@ export default function ArchitectureSystemCanvas() {
                   <Code>CHANGELOG.md</Code> — historial releases
                 </Text>
                 <Text>
-                  <Code>docs/audits/ARCHITECTURE_AUDIT.md</Code> — auditoría técnica A–Z
+                  <Code>docs/auditorias/ARCHITECTURE_AUDIT.md</Code> — auditoría técnica A–Z
                 </Text>
                 <Text>
-                  <Code>docs/audits/PERF_OPTIMIZATION_AUDIT_2026-06-12.md</Code> — Phase 0-3, B1/B2/B3
+                  <Code>docs/auditorias/PERF_OPTIMIZATION_AUDIT_2026-06-12.md</Code> — Phase 0-3, B1/B2/B3
                 </Text>
                 <Text>
-                  <Code>docs/audits/PRE_PRODUCTION_AUDIT_2026-06-13.md</Code> — SEC-01/02, OPS-01, veredicto go-live
+                  <Code>docs/auditorias/PRE_PRODUCTION_AUDIT_2026-06-13.md</Code> — SEC-01/02, OPS-01, veredicto go-live
                 </Text>
                 <Text>
                   <Code>CLAUDE.md</Code> — contexto producto y comandos
@@ -570,7 +571,7 @@ export default function ArchitectureSystemCanvas() {
       )}
 
       <Text size="small" tone="quaternary" style={{ textAlign: "center" }}>
-        ARCHITECTURE_SYSTEM.canvas.tsx · {CURRENT_RELEASE.updatedAt} · Turborepo + pnpm · Expo 52 ·
+        ARCHITECTURE_SYSTEM.canvas.tsx · {CURRENT_RELEASE.updatedAt} · Turborepo + npm · Expo 53 ·
         Next.js 15
       </Text>
     </Stack>

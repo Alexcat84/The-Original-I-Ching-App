@@ -5,7 +5,7 @@
 **Alcance:** Capa de PostgREST y Pool de Conexiones de Supabase / Concurrencia de la App  
 **Herramientas:** Scripts Supabase (Grok), análisis arquitectónico (antigravity Claude Opus), inspección de codebase  
 **Estado:** 🟡 P0+P1 implementados; **Phase 8 (OOM crash fix)** implementado — pendiente deploy + APK.  
-**Relacionado:** [SUPABASE_DB_STABILITY_AUDIT.md](file:///c:/Users/AlexDesk/Documents/iching-app/docs/auditorias/SUPABASE_DB_STABILITY_AUDIT.md), [SQLITE_CHAT_HYDRATION_AUDIT.md](../audits/SQLITE_CHAT_HYDRATION_AUDIT.md)
+**Relacionado:** [SUPABASE_DB_STABILITY_AUDIT.md](file:///c:/Users/AlexDesk/Documents/iching-app/docs/auditorias/SUPABASE_DB_STABILITY_AUDIT.md), [SQLITE_CHAT_HYDRATION_AUDIT.md](./SQLITE_CHAT_HYDRATION_AUDIT.md)
 
 ---
 
@@ -283,7 +283,7 @@ Sigue válido: scripts `.tmp/smoke-monitor*.ps1` ya no amplifican PostgREST vía
 ### Phase 8 — estado post-auditoría
 
 - Fix A (two-phase sync) y Fix B (renderer recovery): presentes en repo.
-- **Evolución posterior al doc:** hydration gate per-session (`2e8044e`), attestKey fix, dist **54–55**. Constructor: enlazar a `docs/audits/CHAT_THREAD_HYDRATION_AUDIT.md` y cerrar “pendiente deploy” con versión APK mínima verificada.
+- **Evolución posterior al doc:** hydration gate per-session (`2e8044e`), attestKey fix, dist **54–55**. Constructor: enlazar a `docs/auditorias/CHAT_THREAD_HYDRATION_AUDIT.md` y cerrar “pendiente deploy” con versión APK mínima verificada.
 
 ---
 

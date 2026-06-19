@@ -5,7 +5,7 @@
 **Alcance:** Motor Zhu Xi (`iching-engine`), selección de textos, prompt Claude (`backend/claude`), traductores (`iching-data`), respuesta publicada al usuario  
 **Estado:** ✅ Todos los hallazgos P0 resueltos · Tests verdes · Regresiones añadidas · Motor validado sinológicamente  
 **Tradición:** Escuela ortodoxa perfeccionada — Maestro Alfred Huang / Universidad de Nanjing (superior al Zhu Xi textual bruto en casos de 2–3 mutaciones)  
-**Relacionado:** [DIVINATION_METHODS_AUDIT.md](../audits/DIVINATION_METHODS_AUDIT.md)
+**Relacionado:** [DIVINATION_METHODS_AUDIT.md](./DIVINATION_METHODS_AUDIT.md)
 
 ---
 
@@ -219,4 +219,4 @@ Más allá de las 10 reglas de mutación Zhu Xi, se auditaron:
 | Tests gate | `backend/claude/src/interpretation-line-gate.test.ts` |
 | Prompt Claude | `backend/claude/src/interpretation.ts` |
 | Datos Wilhelm | `packages/iching-data/src/generated/hexagrams.wilhelm.json` |
-| Doc métodos | `docs/audits/DIVINATION_METHODS_AUDIT.md` |
+| Doc métodos | `docs/auditorias/DIVINATION_METHODS_AUDIT.md` |

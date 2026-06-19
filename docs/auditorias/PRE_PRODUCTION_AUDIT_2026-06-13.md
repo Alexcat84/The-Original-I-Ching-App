@@ -189,8 +189,8 @@ Descubiertos tras instalar APK 3.5.6/vc54 en dispositivo. Documentados en `HYDRA
 - [x] APK 3.5.7 / vc55 compilado y disponible localmente
 - [x] staging = main = `79f5a46`; working tree clean
 - [x] **TDZ P0:** `imagePrompt` TDZ en `stream_ritual` + Sentry.captureException — rama `fix/tdz-image-prompt-sentry`
-  - Documentado en `docs/audits/AUDIT_2026-06-13_animation-plan-v3-DEFINITIVO.md` (§1)
-  - Brief de Acción 3 en `docs/audits/BRIEF_accion-3_submit-reveal-redesign.md`
+  - Documentado en `docs/auditorias/AUDIT_2026-06-13_animation-plan-v3-DEFINITIVO.md` (§1)
+  - Brief de Acción 3 en `docs/auditorias/BRIEF_accion-3_submit-reveal-redesign.md`
 - [x] **Animation plan v3 Acciones 2–7** — rama `feat/animation-plan-v3` (`60dbee4`), mergeada a staging+main (`9209da5`)
   - A2: `ritual-budget-store.ts` — budget persistido por traductor en localStorage
   - A3: Gate submit→reveal — `await revealPromise + ICHING_FINALE_MIN_MS` post-loop
