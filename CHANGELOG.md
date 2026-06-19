@@ -1,4 +1,4 @@
-<!-- changelog:last-release:5f83864 -->
+<!-- changelog:last-release:2dc640a -->
 
 # Changelog — The Original I Ching App
 
@@ -7,7 +7,18 @@ Full project change history.
 ## [4.1.6] — 2026-06-19 | versionCode: 55 | Stage: Closed Testing
 
 ### Fix
-- fix(mobile+web): chat drawer respects status bar and nav bar insets on RN WebView
+- fix(web): block WordPress probe paths, require Turnstile on sign-in too | commit: aa55620
+- fix(web+mobile): guard __rnNavigateTo against pre-hydration router dispatch | commit: af6c476
+- fix(mobile+web): chat drawer safe-area top and nav bar on RN | commit: 4d79fd5
+
+### Docs
+- docs(auditorias): document Data Safety rejection root cause and resolution | commit: f2574c0
+- docs(privacy): disclose device/installation identifiers and provider categories | commit: cbaca12
+
+### Maintenance
+- chore(reports): add mutation QA recheck and post-fix npm audit reports | commit: 2dc640a
+- chore(mobile): keep 4.1.5 / versionCode 54 — drawer fix without version bump | commit: 12c0d0b
+- chore(mobile): bump to 4.1.5 / versionCode 54 for Release B Play upload | commit: 24672d6
 
 ---
 
@@ -1642,7 +1653,9 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.4 | 53 | 2026-06-18 | Closed Testing | 5 | remove fake 18px chat bottom gap in RN WebView; auto-adjusting chat bottom inset + full-bleed splash image; instrument Oracle Bones Claude call in Axiom traces |
+| 4.1.6 | 55 | 2026-06-19 | Closed Testing | 8 | block WordPress probe paths, require Turnstile on sign-in too; guard __rnNavigateTo against pre-hydration router dispatch; chat drawer safe-area top and nav bar on RN |
+| 4.1.5 | 54 | 2026-06-19 | Closed Testing | 0 | — |
+| 4.1.4 | 53 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.3 | 52 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.2 | 51 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.0 | 49 | 2026-06-17 | Production | 0 | — |
