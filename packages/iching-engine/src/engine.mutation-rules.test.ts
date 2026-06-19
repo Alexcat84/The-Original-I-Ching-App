@@ -179,21 +179,17 @@ describe("selectTextsForClaude — complete coverage of all 10 Zhu Xi rules", ()
     expect(texts.selectedLineTexts).toHaveLength(1);
     expect(texts.selectedLineTexts[0]!.position).toBe(2);
     expect(texts.selectedLineTexts[0]!.fromHexagram).toBe("primary");
-    expect(texts.ruleExplanation).toContain("igual peso");
+    expect(texts.ruleExplanation).toContain("central");
   });
 
   // ------ FOUR_LOWEST_STABLE ------------------------------------------------
-  it("FOUR_LOWEST_STABLE: line text from TRANSFORMED, at lowest stable position", () => {
-    // Qian(#1) with pos1-4 changing → stable=[5,6] → lowest stable=5
+  it("FOUR (Huang): line text from TRANSFORMED, at highest stable position", () => {
+    // Qian(#1) with pos1-4 changing → stable=[5,6] → Huang reads highest stable=6
     const { texts, rule, transformed } = cast([9, 9, 9, 9, 7, 7]);
     expect(rule).toBe("FOUR_LOWEST_STABLE");
     expect(texts.selectedLineTexts).toHaveLength(1);
-    expect(texts.selectedLineTexts[0]!.position).toBe(5);
+    expect(texts.selectedLineTexts[0]!.position).toBe(6);
     expect(texts.selectedLineTexts[0]!.fromHexagram).toBe("transformed");
-    // Text comes from transformed hex (not primary Qian) at position 5
-    expect(texts.selectedLineTexts[0]!.text).not.toBe(
-      "The flying dragon is in the heavens", // Qian line 5 text
-    );
     expect(transformed.number).toBe(20); // Qian+4changes → Guan (#20)
   });
 

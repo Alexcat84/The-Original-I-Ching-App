@@ -248,7 +248,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     question:
       "What are the two I Ching casting methods: Three Coins and Yarrow Stalks?",
     answer:
-      "Both methods produce the same 64 hexagrams and use the same I Ching texts and Zhu Xi rules. Three Coins is quick and accessible: you cast three coins six times to build the six lines. Yarrow Stalks is the older ritual method: you work with counted stalks or similar objects through a slower, more contemplative procedure. The choice changes the ritual experience, not the authority of the reading. Use Three Coins for speed; use Yarrow Stalks when you want the traditional rhythm.",
+      "Both methods produce the same 64 hexagrams and use the same I Ching texts and the same classical line-selection rules. Three Coins is quick and accessible: you cast three coins six times to build the six lines. Yarrow Stalks is the older ritual method: you work with counted stalks or similar objects through a slower, more contemplative procedure. The choice changes the ritual experience, not the authority of the reading. Use Three Coins for speed; use Yarrow Stalks when you want the traditional rhythm.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -270,25 +270,25 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "iching-how-answers",
     question: "How does the I Ching actually work and produce its answers?",
     answer:
-      "The I Ching works through 64 hexagrams that form an ancient catalog of patterns of change in nature and human life. Each hexagram is a structured figure with classical meaning preserved in the classical works of Wilhelm/Baynes, James Legge, or the original Zhou Yi text. Each consultation begins from your specific question. The mathematical algorithm casts the lines under the rules of Zhu Xi to determine the present hexagram, any moving lines, and the resulting future hexagram. The AI then articulates that already-formed result in your language, applying the classical meaning of those hexagrams to your particular context. That is why every reading is unique and personal: the same hexagrams can appear for different people, but the answer is never the same, because it depends on the specific question, the moment in life, and the personal context of the seeker. There is no universal interpretation that applies to more than one person at the same time.",
+      "The I Ching works through 64 hexagrams that form an ancient catalog of patterns of change in nature and human life. Each hexagram is a structured figure with classical meaning preserved in the classical works of Wilhelm/Baynes, James Legge, or the original Zhou Yi text. Each consultation begins from your specific question. The mathematical algorithm casts the lines under the classical line-selection rules (Alfred Huang's reduction system) to determine the present hexagram, any moving lines, and the resulting future hexagram. The AI then articulates that already-formed result in your language, applying the classical meaning of those hexagrams to your particular context. That is why every reading is unique and personal: the same hexagrams can appear for different people, but the answer is never the same, because it depends on the specific question, the moment in life, and the personal context of the seeker. There is no universal interpretation that applies to more than one person at the same time.",
     related: ["methodNotes", "userGuide"],
   },
   {
     id: "iching-mutation-rules",
     question: "What rule system determines which line text governs an I Ching reading?",
     answer:
-      "The app uses a single-line reduction method built on recognized classical systems. The base framework is Zhu Xi (朱熹, 1130–1200 CE), the most widely cited standard for I Ching divination; for the cases his rule left to multiple texts, the app applies the reductions used by modern teachers so that one governing line text always results. Those rules determine which line text (爻辞) governs the reading based on how many of the six lines are changing.\n\n" +
+      "The app implements Alfred Huang's single-line reduction system, set out in The Complete I Ching, with Zhu Xi (朱熹, 1130–1200 CE) as the classical antecedent for the underlying structure. Huang's method reduces any combination of changing lines to one governing line text (爻辞), so the reading always rests on a single precise passage. Which text governs depends on how many of the six lines are changing.\n\n" +
       "0 changing lines — only the Judgment (卦辞) and Image (象辞) of the primary hexagram are read. The hexagram stands as a complete statement; no line text is cited.\n\n" +
       "1 changing line — the text of that single changing line governs.\n\n" +
-      "2 changing lines, yin and yang — the yin line takes precedence. This follows the reduction taught by Alfred Huang in The Complete I Ching (for one yin and one yang moving line, read the yin). Zhu Xi's own rule was to read both lines, giving the upper precedence.\n\n" +
-      "2 changing lines, same polarity — the lower of the two lines governs.\n\n" +
-      "3 changing lines — the middle line of the three (by position) governs. This follows the median-line reduction (e.g. Sherrill & Chu's Anthology of I Ching), not Zhu Xi, who for three moving lines read the judgments of both hexagrams.\n\n" +
-      "4 changing lines — the reading shifts to the transformed hexagram. Among the two stable lines, the lower one governs, and its text is drawn from the transformed hexagram.\n\n" +
+      "2 changing lines, yin and yang — the yin line governs (Alfred Huang: with one yin and one yang moving line, read the yin). Zhu Xi instead read both lines, giving the upper precedence.\n\n" +
+      "2 changing lines, same polarity — the lower of the two governs (Alfred Huang). Zhu Xi instead read both, giving the upper precedence.\n\n" +
+      "3 changing lines — the middle line of the three (by position) governs (Alfred Huang: with three moving lines, read the middle one). Zhu Xi instead read the Judgments of both hexagrams, using a set of charts to decide which to emphasize.\n\n" +
+      "4 changing lines — the reading shifts to the transformed hexagram; the upper of its two stable lines governs (Alfred Huang). Zhu Xi instead read the lower of the two.\n\n" +
       "5 changing lines — the reading shifts to the transformed hexagram. The single stable line governs, and its text is drawn from the transformed hexagram.\n\n" +
       "6 changing lines (any hexagram except #1 and #2) — total mutation. Only the Judgment of the transformed hexagram is read; no individual line text is cited.\n\n" +
       "Hexagram #1 Qian, all lines old yang (用九) — the special seventh-yao text 'Use of Nines' governs: 'A host of dragons without heads — good fortune.'\n\n" +
       "Hexagram #2 Kun, all lines old yin (用六) — the special text 'Use of Sixes' governs: 'Perseverance furthers.'\n\n" +
-      "The app combines Zhu Xi's classical structure with the single-line reductions used by modern teachers (Alfred Huang and others) so that every possible combination of changing lines yields one precise governing text — no ambiguity, no gap.",
+      "Across every case the app follows Alfred Huang's reduction system, so each combination of changing lines yields one precise governing text with no ambiguity and no gap. Where Huang and the older Zhu Xi tradition diverge, the app follows Huang.",
     related: ["methodNotes"],
   },
   {
@@ -447,7 +447,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿En qué se diferencian los dos métodos del I Ching: Tres Monedas y Varillas?",
     answer:
-      "Ambos métodos producen los mismos 64 hexagramas y usan los mismos textos del I Ching y las reglas de Zhu Xi. Tres Monedas es rápido y accesible: lanzas tres monedas seis veces para formar las seis líneas. Varillas de Milenrama es el método ritual más antiguo: trabajas con varillas u objetos similares mediante un procedimiento más lento y contemplativo. La elección cambia la experiencia ritual, no la autoridad de la lectura. Usa Tres Monedas para rapidez; usa Varillas cuando quieras el ritmo tradicional.",
+      "Ambos métodos producen los mismos 64 hexagramas y usan los mismos textos del I Ching y las mismas reglas clásicas de selección de línea. Tres Monedas es rápido y accesible: lanzas tres monedas seis veces para formar las seis líneas. Varillas de Milenrama es el método ritual más antiguo: trabajas con varillas u objetos similares mediante un procedimiento más lento y contemplativo. La elección cambia la experiencia ritual, no la autoridad de la lectura. Usa Tres Monedas para rapidez; usa Varillas cuando quieras el ritmo tradicional.",
     related: ["methodNotes", "userGuideGettingStarted"],
   },
   {
@@ -469,25 +469,25 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "iching-how-answers",
     question: "¿Cómo opera el I Ching y de dónde salen sus respuestas?",
     answer:
-      "El I Ching opera a través de 64 hexagramas que forman un catálogo milenario de patrones de cambio en la naturaleza y en la vida humana. Cada hexagrama es una figura estructurada con un significado clásico preservado en las obras clásicas de Wilhelm/Baynes, James Legge o el texto original Zhou Yi. Cada consulta parte de tu pregunta concreta. El algoritmo matemático lanza las líneas bajo las reglas de Zhu Xi para determinar el hexagrama presente, las líneas en movimiento si las hay y el hexagrama futuro resultante. Después la IA articula ese resultado ya formado en tu idioma, aplicando el significado clásico de esos hexagramas a tu contexto particular. Por eso cada lectura es única y personal: los mismos hexagramas pueden aparecer para distintas personas, pero la respuesta no es la misma, porque depende de la pregunta concreta, del momento vital y del contexto personal del consultante. No existe una interpretación universal aplicable a más de una persona a la vez.",
+      "El I Ching opera a través de 64 hexagramas que forman un catálogo milenario de patrones de cambio en la naturaleza y en la vida humana. Cada hexagrama es una figura estructurada con un significado clásico preservado en las obras clásicas de Wilhelm/Baynes, James Legge o el texto original Zhou Yi. Cada consulta parte de tu pregunta concreta. El algoritmo matemático lanza las líneas bajo las reglas clásicas de selección de línea (el sistema de reducción de Alfred Huang) para determinar el hexagrama presente, las líneas en movimiento si las hay y el hexagrama futuro resultante. Después la IA articula ese resultado ya formado en tu idioma, aplicando el significado clásico de esos hexagramas a tu contexto particular. Por eso cada lectura es única y personal: los mismos hexagramas pueden aparecer para distintas personas, pero la respuesta no es la misma, porque depende de la pregunta concreta, del momento vital y del contexto personal del consultante. No existe una interpretación universal aplicable a más de una persona a la vez.",
     related: ["methodNotes", "userGuide"],
   },
   {
     id: "iching-mutation-rules",
     question: "¿Qué sistema de reglas determina qué texto de línea gobierna una lectura del I Ching?",
     answer:
-      "La app usa un método de reducción a una sola línea basado en sistemas clásicos reconocidos. El marco base es Zhu Xi (朱熹, 1130–1200 d.C.), el estándar más citado para la adivinación con el I Ching; para los casos que su regla dejaba a varios textos, la app aplica las reducciones usadas por maestros modernos para que siempre resulte un único texto de línea gobernante. Estas reglas determinan qué texto de línea (爻辞) gobierna la lectura según cuántas de las seis líneas están en cambio.\n\n" +
+      "La app implementa el sistema de reducción a una sola línea de Alfred Huang, expuesto en The Complete I Ching, con Zhu Xi (朱熹, 1130–1200 d.C.) como antecedente clásico de la estructura de fondo. El método de Huang reduce cualquier combinación de líneas cambiantes a un único texto de línea gobernante (爻辞), de modo que la lectura siempre descansa en un pasaje preciso. Qué texto gobierna depende de cuántas de las seis líneas están en cambio.\n\n" +
       "0 líneas en cambio — solo se leen el Juicio (卦辞) y la Imagen (象辞) del hexagrama primario. El hexagrama habla como declaración completa; no se cita ningún texto de línea.\n\n" +
       "1 línea en cambio — el texto de esa única línea cambiante gobierna.\n\n" +
-      "2 líneas en cambio, yin y yang — la línea yin tiene precedencia. Sigue la reducción de Alfred Huang en The Complete I Ching (con una yin y una yang en movimiento, se lee la yin). La regla propia de Zhu Xi era leer ambas líneas, dando precedencia a la superior.\n\n" +
-      "2 líneas en cambio, misma polaridad — la inferior de las dos governa.\n\n" +
-      "3 líneas en cambio — governa la línea central de las tres (por posición). Sigue la reducción de la línea mediana (p. ej. Sherrill & Chu, Anthology of I Ching), no a Zhu Xi, que para tres líneas leía los juicios de ambos hexagramas.\n\n" +
-      "4 líneas en cambio — la lectura se desplaza al hexagrama transformado. Entre las dos líneas estables, governa la inferior, y su texto se toma del hexagrama transformado.\n\n" +
-      "5 líneas en cambio — la lectura se desplaza al hexagrama transformado. La única línea estable governa, y su texto se toma del hexagrama transformado.\n\n" +
+      "2 líneas en cambio, yin y yang — gobierna la línea yin (Alfred Huang: con una yin y una yang en movimiento, se lee la yin). Zhu Xi en cambio leía ambas líneas, dando precedencia a la superior.\n\n" +
+      "2 líneas en cambio, misma polaridad — gobierna la inferior de las dos (Alfred Huang). Zhu Xi en cambio leía ambas, dando precedencia a la superior.\n\n" +
+      "3 líneas en cambio — gobierna la línea central de las tres por posición (Alfred Huang: con tres líneas en movimiento, se lee la del medio). Zhu Xi en cambio leía los Juicios de ambos hexagramas, usando un conjunto de diagramas para decidir cuál enfatizar.\n\n" +
+      "4 líneas en cambio — la lectura se desplaza al hexagrama transformado; gobierna la superior de sus dos líneas estables (Alfred Huang). Zhu Xi en cambio leía la inferior de las dos.\n\n" +
+      "5 líneas en cambio — la lectura se desplaza al hexagrama transformado. La única línea estable gobierna, y su texto se toma del hexagrama transformado.\n\n" +
       "6 líneas en cambio (cualquier hexagrama excepto el #1 y el #2) — mutación total. Solo se lee el Juicio del hexagrama transformado; no se cita ningún texto de línea individual.\n\n" +
-      "Hexagrama #1 Qian, todas las líneas yang viejas (用九) — governa el texto especial del séptimo yao «Uso de los Nueves»: «Una multitud de dragones sin cabeza — buena fortuna».\n\n" +
-      "Hexagrama #2 Kun, todas las líneas yin viejas (用六) — governa el texto especial «Uso de los Seises»: «La perseverancia trae ventaja».\n\n" +
-      "La app combina la estructura clásica de Zhu Xi con los métodos de reducción a una sola línea usados por maestros modernos (Alfred Huang y otros), de modo que toda combinación posible de líneas en cambio produce un único texto gobernante preciso, sin ambigüedad ni laguna.",
+      "Hexagrama #1 Qian, todas las líneas yang viejas (用九) — gobierna el texto especial del séptimo yao «Uso de los Nueves»: «Una multitud de dragones sin cabeza — buena fortuna».\n\n" +
+      "Hexagrama #2 Kun, todas las líneas yin viejas (用六) — gobierna el texto especial «Uso de los Seises»: «La perseverancia trae ventaja».\n\n" +
+      "En todos los casos la app sigue el sistema de reducción de Alfred Huang, de modo que cada combinación de líneas cambiantes produce un único texto gobernante preciso, sin ambigüedad ni laguna. Donde Huang y la tradición más antigua de Zhu Xi divergen, la app sigue a Huang.",
     related: ["methodNotes"],
   },
   {

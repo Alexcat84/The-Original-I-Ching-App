@@ -225,20 +225,24 @@ export function selectTextsForClaude(
         selectedLineTexts: [
           { position: mid, text: gl(primary, mid), fromHexagram: "primary" },
         ],
-        ruleExplanation: `Tres mutaciones. Línea central (pos ${mid}). Ambos juicios igual peso.`,
+        ruleExplanation: `Tres mutaciones. Solo se lee la línea central (pos ${mid}).`,
       });
     }
 
     case "FOUR_LOWEST_STABLE": {
       if (!transformed) return attachMasterTraditions(base);
+      // Alfred Huang: with four moving lines, read the UPPER of the two stable
+      // (non-moving) lines of the transformed hexagram. Key name kept as
+      // FOUR_LOWEST_STABLE to avoid a wide rename; revisit when the Huang/Zhu Xi
+      // selector lands (Zhu Xi reads the lower of the two, Huang the upper).
       const stable = [1, 2, 3, 4, 5, 6].filter((p) => !changing.includes(p));
-      const low = Math.min(...stable);
+      const high = Math.max(...stable);
       return attachMasterTraditions({
         ...base,
         selectedLineTexts: [
-          { position: low, text: gl(transformed, low), fromHexagram: "transformed" },
+          { position: high, text: gl(transformed, high), fromHexagram: "transformed" },
         ],
-        ruleExplanation: `Cuatro mutaciones. Línea estable más baja del TRANSFORMADO (pos ${low}).`,
+        ruleExplanation: `Cuatro mutaciones. Línea estable superior del TRANSFORMADO (pos ${high}).`,
       });
     }
 
