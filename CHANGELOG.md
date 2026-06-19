@@ -1,8 +1,18 @@
-<!-- changelog:last-release:6e4885b -->
+<!-- changelog:last-release:5f83864 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.1.5] — 2026-06-19 | versionCode: 54 | Stage: Closed Testing
+
+### Feature
+- feat(mobile): Release B edge-to-edge (Play warning #1) — react-native-edge-to-edge, SystemBars, safe-area CSS vars | commit: 7a73aad
+
+### Fix
+- fix(mobile): theme-aware SystemBars and Android top inset fallback | commit: 5f83864
+
+---
 
 ## [4.1.4] — 2026-06-18 | versionCode: 53 | Stage: Closed Testing
 
