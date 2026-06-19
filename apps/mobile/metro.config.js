@@ -1,4 +1,5 @@
 const { getSentryExpoConfig } = require("@sentry/react-native/metro");
+const fs = require("fs");
 const path = require("path");
 
 const projectRoot = __dirname;
@@ -7,6 +8,7 @@ const workspaceRoot = path.resolve(projectRoot, "../..");
 const config = getSentryExpoConfig(projectRoot);
 
 config.watchFolders = [...(config.watchFolders ?? []), workspaceRoot];
+config.resolver.unstable_enableTsconfigPaths = true;
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, "node_modules"),
   path.resolve(workspaceRoot, "node_modules"),
@@ -30,6 +32,21 @@ const mobileReactMain = path.join(
 );
 const defaultResolveRequest = config.resolver.resolveRequest;
 config.resolver.resolveRequest = (context, moduleName, platform) => {
+  if (moduleName.startsWith("@/")) {
+    const relative = moduleName.slice(2);
+    const candidates = [
+      path.resolve(projectRoot, relative),
+      path.resolve(projectRoot, `${relative}.ts`),
+      path.resolve(projectRoot, `${relative}.tsx`),
+      path.resolve(projectRoot, relative, "index.ts"),
+      path.resolve(projectRoot, relative, "index.tsx"),
+    ];
+    for (const candidate of candidates) {
+      if (fs.existsSync(candidate)) {
+        return { type: "sourceFile", filePath: candidate };
+      }
+    }
+  }
   if (moduleName === "react" || moduleName.startsWith("react/")) {
     const subpath = moduleName === "react" ? "" : moduleName.slice("react/".length);
     const filePath = subpath

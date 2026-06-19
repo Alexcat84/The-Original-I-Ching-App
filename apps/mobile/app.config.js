@@ -16,8 +16,9 @@ module.exports = ({ config }) => ({
   newArchEnabled: false,
   androidStatusBar: {
     barStyle: "light-content",
-    backgroundColor: "#0c0f14",
-    translucent: false,
+  },
+  androidNavigationBar: {
+    barStyle: "light-content",
   },
   splash: {
     image: "./assets/logo.png",
@@ -73,6 +74,15 @@ module.exports = ({ config }) => ({
   plugins: [
     "expo-router",
     "expo-localization",
+    [
+      "react-native-edge-to-edge",
+      {
+        android: {
+          parentTheme: "Default",
+          enforceNavigationBarContrast: false,
+        },
+      },
+    ],
     [
       "expo-build-properties",
       {

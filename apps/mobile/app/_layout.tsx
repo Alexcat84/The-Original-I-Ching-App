@@ -1,9 +1,9 @@
 import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
 import { Component, type ReactNode, useEffect } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SystemBars } from "react-native-edge-to-edge";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 Sentry.init({
@@ -84,7 +84,7 @@ export default function Layout() {
   return (
     <GlobalErrorBoundary>
       <SafeAreaProvider>
-        <StatusBar style="light" backgroundColor="#0c0f14" translucent={false} />
+        <SystemBars style="light" />
         <Stack
           screenOptions={{
             headerShown: false,

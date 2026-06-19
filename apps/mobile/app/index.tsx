@@ -8,7 +8,6 @@ import * as MediaLibrary from "expo-media-library";
 import * as SecureStore from "expo-secure-store";
 import * as Sharing from "expo-sharing";
 import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import * as Application from "expo-application";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -26,7 +25,6 @@ import {
   Platform,
   Pressable,
   ScrollView,
-  StatusBar as RNStatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -263,6 +261,14 @@ function resolveRnAppInfoForWeb(): { version: string; androidVersionCode: number
 
 const RN_APP_INFO_FOR_WEB = JSON.stringify(resolveRnAppInfoForWeb());
 
+/** Sync native safe-area insets into WebView CSS variables (source of truth for RN shell). */
+function buildRnSafeAreaInjectScript(top: number, bottom: number): string {
+  return (
+    `document.documentElement.style.setProperty('--rn-safe-area-inset-top','${top}px');` +
+    `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom','${bottom}px'); true;`
+  );
+}
+
 const INJECTED_JS = `
 (function () {
   try {
@@ -275,12 +281,12 @@ const INJECTED_JS = `
   /* 1 ── Layout parity + neutralize vertical gaps (P7 — DEBUG + v4 fix) */
   var _st = document.createElement('style');
   _st.textContent = [
-    /* Chat-only: locking overflow on html/body breaks /guia, /notes, etc. (no .iching-oracle-shell--chat). */
+    'html.iching-rn-webview{--rn-composer-bottom-padding:calc(0.42rem + var(--rn-safe-area-inset-bottom, 0px));--rn-drawer-bottom-spacer:calc(0.75rem + var(--rn-safe-area-inset-bottom, 0px))}',
     'html.iching-rn-webview:has(.iching-oracle-shell--chat){height:100%!important;min-height:100%!important;overflow:hidden!important}',
     'html.iching-rn-webview:has(.iching-oracle-shell--chat) body{height:100%!important;min-height:100%!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden!important}',
     'html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)){height:auto!important;min-height:100%!important}',
     'html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;margin:0!important;padding:0!important;padding-bottom:max(0.75rem,var(--rn-safe-area-inset-bottom, 0px))!important}',
-    '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:none!important;overflow:hidden!important;padding:0!important;margin:0!important;background:transparent!important}',
+    '.iching-oracle-shell--chat{height:100%!important;min-height:100%!important;max-height:none!important;overflow:hidden!important;padding:0!important;padding-top:var(--rn-safe-area-inset-top, 0px)!important;margin:0!important;background:transparent!important}',
     /* Layout parity with latest globals.css — APK must not depend on stale CDN/CSS deploy */
     '.iching-oracle-shell--chat > *:only-child{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;max-width:none!important;padding:0!important}',
     '.oracle-chat-app{flex:1 1 0%!important;min-height:0!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;position:relative!important;isolation:isolate!important}',
@@ -314,7 +320,7 @@ const INJECTED_JS = `
     '.composer-sheet.is-open{max-height:min(52vh,26rem)!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important;background:var(--composer-bg)!important;border-top-left-radius:calc(var(--radius) * 0.55)!important;border-top-right-radius:calc(var(--radius) * 0.55)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--fg) 6%,transparent)!important}',
     '@media (max-width:520px){.composer-minibar{padding-top:0.28rem!important;padding-left:0.55rem!important;padding-right:0.55rem!important;gap:0.35rem!important;align-items:center!important}.composer-minibar .composer-input-row{gap:0.35rem!important;margin-top:0!important}.composer-minibar .composer-input-row textarea{min-height:2.08rem!important;padding:0.42rem 0.72rem!important;font-size:0.92rem!important}.composer-minibar .composer-input-row>button{width:2.42rem!important;height:2.42rem!important;font-size:1rem!important}.composer-options-btn{min-width:2.7rem!important;padding:0.24rem 0.26rem!important;border-radius:18px!important}}',
     'html.iching-rn-webview footer.chat-composer-wa{padding-bottom:0!important}',
-    'html.iching-rn-webview .composer-minibar{padding-bottom:calc(0.42rem + var(--rn-safe-area-inset-bottom, 0px))!important}',
+    'html.iching-rn-webview .composer-minibar{padding-bottom:var(--rn-composer-bottom-padding, calc(0.42rem + var(--rn-safe-area-inset-bottom, 0px)))!important}',
     /* Match globals: RN chat width was still capped by 34–40rem bubbles + 40–48rem surface (wide side margins). */
     'html.iching-rn-webview .chat-surface{max-width:min(120rem,calc(100vw - 0.35rem))!important}',
     '@media (min-width:480px){html.iching-rn-webview .chat-surface{max-width:min(120rem,calc(100vw - 0.55rem))!important}}',
@@ -323,7 +329,7 @@ const INJECTED_JS = `
     'html.iching-rn-webview .chat-bubble,html.iching-rn-webview .chat-bubble.chat-user,html.iching-rn-webview .chat-bubble.chat-assistant{max-width:100%!important}',
     'html.iching-rn-webview .chat-empty-hint,html.iching-rn-webview .credits-notice-card,html.iching-rn-webview .chat-error-bubble{max-width:min(100%,calc(100vw - 1.1rem))!important}',
     /* Legal consent modal: keep it above WebView chrome and avoid injected chat sizing from crushing it. */
-    'html.iching-rn-webview .legal-consent-backdrop{z-index:2147483000!important;padding:max(.75rem,env(safe-area-inset-top,0px)) .75rem max(.75rem,var(--rn-safe-area-inset-bottom,0px))!important}',
+    'html.iching-rn-webview .legal-consent-backdrop{z-index:2147483000!important;padding:max(.75rem,var(--rn-safe-area-inset-top,0px)) .75rem max(.75rem,var(--rn-safe-area-inset-bottom,0px))!important}',
     'html.iching-rn-webview .legal-consent-modal{max-height:calc(100vh - 1.5rem)!important;width:100%!important}',
     'html.iching-rn-webview .legal-consent-scroll{overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}',
     /* Chat drawer: non-scrollable spacer at the bottom of the drawer's flex column.
@@ -331,7 +337,7 @@ const INJECTED_JS = `
        reduces .chat-drawer-list (flex:1) so the scroll area ends above the Android nav bar.
        A spacer inside the scroll container only adds scrollable whitespace — it does not
        shorten the visible scroll boundary, so the last item stays covered by the nav bar. */
-    'html.iching-rn-webview .chat-drawer::after{content:"";display:block;flex-shrink:0!important;min-height:max(20px, var(--rn-safe-area-inset-bottom, 20px))!important}',
+    'html.iching-rn-webview .chat-drawer::after{content:"";display:block;flex-shrink:0!important;min-height:var(--rn-drawer-bottom-spacer, calc(0.75rem + var(--rn-safe-area-inset-bottom, 0px)))!important}',
     /* Hide Vercel preview toolbar — staging deployments inject a floating Vercel icon that confuses testers */
     'vercel-toolbar,#__vercel-toolbar,.__vercel-toolbar,div[id*="vercel-toolbar"],iframe[src*="vercel.live"]{display:none!important}'
   ].join(';');
@@ -1231,7 +1237,7 @@ interface ImageZoomModalProps {
 }
 
 /* ── Offline / WebView error screen ──────────────────────────────────────── */
-function OfflineScreen({ onRetry }: { onRetry: () => void }) {
+function OfflineScreen({ onRetry, bottomInset }: { onRetry: () => void; bottomInset: number }) {
   const contentAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -1261,7 +1267,7 @@ function OfflineScreen({ onRetry }: { onRetry: () => void }) {
       <Image source={OFFLINE_LOGO} style={StyleSheet.absoluteFill} resizeMode="cover" />
       {/* Dark gradient band so text is readable over the image bottom */}
       <View style={offlineStyles.bottomBand} />
-      <Animated.View style={[offlineStyles.content, contentStyle]}>
+      <Animated.View style={[offlineStyles.content, { bottom: 64 + bottomInset }, contentStyle]}>
         <Text style={offlineStyles.title}>Signal Lost</Text>
         <Text style={offlineStyles.body}>The oracle is waiting for you.</Text>
         <TouchableOpacity style={offlineStyles.btn} onPress={onRetry} activeOpacity={0.75}>
@@ -1942,26 +1948,17 @@ export default function WebViewScreen() {
     );
   }, [integrityTokenState]);
 
-  /* ── Safe area insets (status bar height on Android) ── */
+  /* ── Safe area insets (edge-to-edge — injected into WebView CSS vars) ── */
   const insets = useSafeAreaInsets();
-  const insetsBottomRef = useRef(insets.bottom);
+  const insetsRef = useRef({ top: insets.top, bottom: insets.bottom });
   useEffect(() => {
-    insetsBottomRef.current = insets.bottom;
+    insetsRef.current = { top: insets.top, bottom: insets.bottom };
     if (webReadyRef.current) {
       webViewRef.current?.injectJavaScript(
-        `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insets.bottom}px'); true;`
+        buildRnSafeAreaInjectScript(insets.top, insets.bottom)
       );
     }
-  }, [insets.bottom]);
-
-  /* Android: status bar + band under it stay dark so system icons stay readable (product: always black chrome). */
-  useEffect(() => {
-    RNStatusBar.setBarStyle("light-content", true);
-    if (Platform.OS === "android") {
-      RNStatusBar.setBackgroundColor("#080808", true);
-      RNStatusBar.setTranslucent(false);
-    }
-  }, []);
+  }, [insets.top, insets.bottom]);
 
   /* ── Media permission ── */
   const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions({
@@ -2130,10 +2127,9 @@ export default function WebViewScreen() {
     // The web bootstrap effect fires automatically on auth ready — triggering it again
     // from onLoadEnd causes a redundant /api/account/me race on every WebView load.
     // Keep __rnForceAccountRefresh only for post-purchase / RC-redemption / auth events.
-    // Re-inject bottom inset in case it changed between first render and page load.
-    webViewRef.current?.injectJavaScript(
-      `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insetsBottomRef.current}px'); true;`
-    );
+    // Re-inject safe-area insets in case they changed between first render and page load.
+    const { top, bottom } = insetsRef.current;
+    webViewRef.current?.injectJavaScript(buildRnSafeAreaInjectScript(top, bottom));
     // Inject integrity token if already available (pre-fetched before page loaded).
     const tok = integrityTokenRef.current;
     if (tok) {
@@ -3124,16 +3120,11 @@ export default function WebViewScreen() {
 
   return (
     <View style={[styles.container, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeRoot]}>
-      <StatusBar style="light" />
-      {/* ── WebView (safe-area top padding; black band under system status bar for contrast) ─ */}
+      {/* ── WebView edge-to-edge; safe area via --rn-safe-area-inset-* in injected CSS ─ */}
       <View
         style={[
           styles.webviewShell,
           DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeWebViewWrap,
-          {
-            paddingTop: insets.top,
-            backgroundColor: "#080808",
-          },
         ]}
       >
         <WebView
@@ -3155,7 +3146,7 @@ export default function WebViewScreen() {
           setWebViewError(false);
           setWebViewKey((k) => k + 1);
         }}
-        injectedJavaScriptBeforeContentLoaded={`document.documentElement.classList.add('iching-rn-webview'); document.documentElement.style.setProperty('--rn-safe-area-inset-bottom', '${insets.bottom}px'); true;`}
+        injectedJavaScriptBeforeContentLoaded={`document.documentElement.classList.add('iching-rn-webview'); ${buildRnSafeAreaInjectScript(insets.top, insets.bottom)}`}
         injectedJavaScript={COMBINED_INJECTED_JS}
         javaScriptEnabled
         domStorageEnabled
@@ -3179,7 +3170,10 @@ export default function WebViewScreen() {
         startInLoadingState
         />
         {webViewError && (
-          <OfflineScreen onRetry={() => { setWebViewError(false); setWebViewKey(k => k + 1); }} />
+          <OfflineScreen
+            onRetry={() => { setWebViewError(false); setWebViewKey(k => k + 1); }}
+            bottomInset={insets.bottom}
+          />
         )}
       </View>
 

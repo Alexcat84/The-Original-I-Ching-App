@@ -18,7 +18,7 @@
   "dependencies": {
     "@iching-oracle/i18n": "file:../../packages/i18n",
     "@react-native-async-storage/async-storage": "2.1.2",
-    "@sentry/react-native": "^6.3.0",
+    "@sentry/react-native": "^6.22.0",
     "eruda": "^3.4.3",
     "expo": "^53",
     "expo-app-integrity": "^0.3.0",
@@ -40,7 +40,8 @@
     "promise": "^8.3.0",
     "react": "19.0.0",
     "react-native": "0.79.6",
-    "react-native-purchases": "^10.3.0",
+    "react-native-edge-to-edge": "^1.6.0",
+    "react-native-purchases": "^10.4.0",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-webview": "13.13.5"

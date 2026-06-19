@@ -109,6 +109,14 @@ html.iching-rn-webview .composer-minibar {
 
 When `insets.bottom > 0`, composer padding grows with the real inset. The **18px floor on `.chat-surface` is not restored** — avoids the Release A gap without breaking safe area on Release B.
 
+**Addendum (branch `feat/release-b-edge-to-edge`):**
+
+- `react-native-edge-to-edge` plugin + `SystemBars` (replaces opaque `RNStatusBar.setBackgroundColor`).
+- WebView fullscreen; `--rn-safe-area-inset-top` and `--rn-safe-area-inset-bottom` injected via `buildRnSafeAreaInjectScript`.
+- `.iching-oracle-shell--chat` gets `padding-top: var(--rn-safe-area-inset-top)`.
+- Drawer/composer CSS vars (`--rn-drawer-bottom-spacer`, `--rn-composer-bottom-padding`) in `globals.css` + `INJECTED_JS`.
+- **Fase 2 deps:** `@sentry/react-native` ^6.22.0, `react-native-purchases` ^10.4.0 (Play deprecated-API warning may persist in Fresco/RN until upstream patches).
+
 ---
 
 ## Verification
@@ -135,6 +143,39 @@ Output: `apps/mobile/android/app/build/outputs/apk/release/app-release.apk`
 - [ ] Composer flush with the rounded bottom edge of the orange card  
 - [ ] No black band between composer and `.chat-surface` bottom edge  
 - [ ] Chat drawer: bottom spacer **unchanged** (still uses `--rn-safe-area-inset-bottom` so last item clears nav bar on scroll)
+
+### Release B — Fase 0 QA matrix (baseline 4.1.3 / Release B APK)
+
+Run on **staging** URL after web deploy + local APK from `feat/release-b-edge-to-edge`. Record PASS/FAIL and attach screenshots.
+
+| Check | Samsung 3-button | Pixel gesture | Emulator API 35 |
+|---|---|---|---|
+| Composer visible + tappable | PENDING | PENDING | PENDING |
+| Last chat message not covered | PENDING | PENDING | PENDING |
+| Drawer: last chat visible on scroll | PENDING | PENDING | PENDING |
+| Legal consent modal (top + bottom insets) | PENDING | PENDING | PENDING |
+| Pack picker / image zoom modal | PENDING | PENDING | PENDING |
+| OAuth / login smoke | PENDING | PENDING | PENDING |
+| `/guia`, `/privacy` scroll | PENDING | PENDING | PENDING |
+| No double status bar / auth strip gap | PENDING | PENDING | PENDING |
+| Edge-to-edge: content behind transparent bars OK | PENDING | PENDING | PENDING |
+
+**Release B build:**
+
+```powershell
+cd apps\mobile
+$env:NODE_ENV = "production"
+npm run android:prebuild
+npm run android:apk:release
+```
+
+Uninstall prior APK before install. Staging web must include `globals.css` Release B vars before remote-only surfaces match injected parity.
+
+**Local build verified (2026-06-19):** `gradlew assembleRelease` OK — `app-release.apk` with `versionCode` 53 / `4.1.4`, `expo.edgeToEdgeEnabled=true`, `Theme.EdgeToEdge`. Metro `@/` alias fix in `metro.config.js` required for release bundle.
+
+### Portrait / tablets (Fase 3 — deferred)
+
+**Decision:** Option A — keep `orientation: "portrait"` until Release B is stable on phones. Play warning #3 is preventive (Android 16); does not block publication. Revisit after edge-to-edge QA passes on 3-button + gesture devices.
 
 ---
 

@@ -269,20 +269,23 @@ body {
   box-sizing: border-box;
 }
 
-/* RN WebView: class set from apps/mobile before first paint — native bar already owns top/bottom safe chrome */
+/* RN WebView: class set from apps/mobile before first paint — native shell injects --rn-safe-area-inset-* */
 html.iching-rn-webview .iching-oracle-shell--chat {
-  padding-top: 0 !important;
+  padding-top: var(--rn-safe-area-inset-top, 0px) !important;
   padding-bottom: 0 !important;
   padding-left: max(0.2rem, env(safe-area-inset-left, 0px)) !important;
   padding-right: max(0.2rem, env(safe-area-inset-right, 0px)) !important;
 }
 
-/* RN WebView: lift the bordered .chat-surface so bottom radius clears gesture nav.
-   Use the real native inset injected by RN (--rn-safe-area-inset-bottom), not env() —
-   env(safe-area-inset-bottom) is unreliable in this WebView and was masking the real
-   value via a guessed clamp(18px,...,52px) floor/cap. */
+/* RN WebView (Release B): inset on composer/drawer only — no fake px floor on .chat-surface */
 html.iching-rn-webview {
   --rn-composer-bottom-padding: calc(0.42rem + var(--rn-safe-area-inset-bottom, 0px));
+  --rn-drawer-bottom-spacer: calc(0.75rem + var(--rn-safe-area-inset-bottom, 0px));
+}
+
+html.iching-rn-webview .legal-consent-backdrop {
+  padding: max(1rem, var(--rn-safe-area-inset-top, 0px)) max(1rem, env(safe-area-inset-right, 0px))
+    max(1rem, var(--rn-safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px)) !important;
 }
 
 /* RN: full card radius when auth/locale strip is shown (strip carries top curve like former native card) */
@@ -348,6 +351,10 @@ html.iching-rn-webview .composer-dock {
 /* Composer sits flush at the bottom of .chat-surface; safe inset only here when needed */
 html.iching-rn-webview .composer-minibar {
   padding-bottom: var(--rn-composer-bottom-padding) !important;
+}
+
+html.iching-rn-webview .chat-drawer::after {
+  min-height: var(--rn-drawer-bottom-spacer) !important;
 }
 
 /*
