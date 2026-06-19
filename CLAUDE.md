@@ -290,6 +290,36 @@ const filePath = (0, _glob().sync)(rawPattern.replace(/\\/g, '/'))[0];
 
 > EAS cloud build (Linux) no requiere este fix. Solo afecta `expo prebuild` local en Windows.
 
+**Build APK local en Windows (`gradlew assembleRelease`/`assembleDebug`) falla con
+`Unable to resolve module ./../../node_modules/expo-router/entry.js`:**
+Gradle calcula el `--entry-file` como ruta relativa a `apps/mobile` (correcto), pero Metro
+lo resuelve internamente contra la raíz del workspace pnpm detectada automáticamente
+(`getMetroServerRoot`), duplicando el "subir de directorio" y rompiendo la ruta — pasa
+porque `expo-router` solo vive en el `node_modules` de la raíz del monorepo, nunca
+symlinkeado dentro de `apps/mobile/node_modules`.
+**Fix:** `EXPO_NO_METRO_WORKSPACE_ROOT=1` ya está en `apps/mobile/.env` (gitignored, se
+recarga solo — no se pierde con `npm install`, a diferencia del fix de `glob` arriba).
+Si el build falla y no estaba ahí, agregarlo y, si Gradle ya tenía un daemon corriendo,
+`./gradlew --stop` antes de reintentar (el daemon no relee env vars sin reiniciarse).
+> EAS cloud build (Linux) tampoco necesita este fix — solo afecta Gradle local en Windows.
+
+**Validar APK local: usar `assembleRelease`, no `assembleDebug`.**
+`assembleDebug` no empaqueta el JS (depende de un Metro corriendo en la PC, conectado por
+USB/WiFi) — útil solo si ya tienes ese flujo activo. Para un APK que se instala y abre
+solo en el teléfono, sin nada corriendo en la PC, usar siempre `assembleRelease`
+(firmado con `android/app/debug.keystore` local, suficiente para pruebas — no es para
+Play Store). Salida: `apps/mobile/android/app/build/outputs/apk/release/app-release.apk`.
+
+**Outlines de debug del layout del chat (`DEBUG_NATIVE_CHAT_SHELL_RECTS` /
+`DEBUG_WEBVIEW_CHAT_DOM_OUTLINES` en `apps/mobile/app/index.tsx`):**
+Atados a `__DEV__` (false en `assembleRelease`, por lo tanto invisibles ahí salvo que se
+fuercen). Pintan con `outline` (no afecta layout) cada caja relevante para depurar gaps/
+márgenes: nativo (`container` magenta, `webviewShell` dorado) y DOM dentro del WebView
+(`.chat-surface` naranja, `.chat-room` verde, `.chat-history` ocre, `.composer-dock`
+púrpura, etc. — ver el array `WEBVIEW_DOM_LAYOUT_DEBUG_JS`). Para un APK de diagnóstico
+de un solo uso: forzar ambos flags a `true` temporalmente, generar `assembleRelease`,
+**revertir a `__DEV__`** antes de cualquier commit a staging/main.
+
 ### Decisiones de Producto
 - Tokens ACUMULABLES (no se pierden al comprar nuevo pack)
 - Límite por hilo depende de `last_pack`, NO del saldo

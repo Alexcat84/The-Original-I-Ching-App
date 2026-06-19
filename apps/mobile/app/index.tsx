@@ -2101,6 +2101,14 @@ export default function WebViewScreen() {
     }
   }, []);
 
+  // Dismiss the native (icon-only) splash as soon as this screen mounts, instead of
+  // waiting for the WebView's onLoadEnd — the full-bleed renderLoading view below takes
+  // over immediately so the brand image, not the small Android 12+ splash icon, is what
+  // users see for the rest of the load.
+  useEffect(() => {
+    hideSplash();
+  }, [hideSplash]);
+
   /** Reads current SQLite state and pushes the chat list to the WebView (Tier 1).
    *  Thread content is loaded on demand via request_thread bridge messages (Tier 2/3). */
   const injectCachedChats = useCallback(() => {
@@ -3164,6 +3172,7 @@ export default function WebViewScreen() {
         thirdPartyCookiesEnabled={false}
         renderLoading={() => (
           <View style={styles.loader}>
+            <Image source={OFFLINE_LOGO} style={StyleSheet.absoluteFill} resizeMode="cover" />
             <ActivityIndicator size="large" color="#c9a227" />
           </View>
         )}

@@ -277,9 +277,12 @@ html.iching-rn-webview .iching-oracle-shell--chat {
   padding-right: max(0.2rem, env(safe-area-inset-right, 0px)) !important;
 }
 
-/* RN WebView: lift the bordered .chat-surface so bottom radius clears gesture nav (env often 0 here) */
+/* RN WebView: lift the bordered .chat-surface so bottom radius clears gesture nav.
+   Use the real native inset injected by RN (--rn-safe-area-inset-bottom), not env() —
+   env(safe-area-inset-bottom) is unreliable in this WebView and was masking the real
+   value via a guessed clamp(18px,...,52px) floor/cap. */
 html.iching-rn-webview {
-  --rn-chat-bottom-offset: calc(0.25rem + clamp(18px, env(safe-area-inset-bottom, 0px), 52px));
+  --rn-chat-bottom-offset: calc(0.25rem + max(18px, var(--rn-safe-area-inset-bottom, 0px)));
 }
 
 /* RN: full card radius when auth/locale strip is shown (strip carries top curve like former native card) */
@@ -364,7 +367,7 @@ html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)) body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-top: max(0.35rem, env(safe-area-inset-top, 0px));
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  padding-bottom: max(0.75rem, var(--rn-safe-area-inset-bottom, 0px));
 }
 
 /* RN WebView: auth strip band + controls (visual parity with former native chrome) */
