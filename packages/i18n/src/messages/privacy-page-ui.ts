@@ -8,7 +8,7 @@ export type PrivacyPageMessages = {
   s1Title: string;
   s1Body: string;
   s2Title: string;
-  s2Items: [string, string, string, string];
+  s2Items: [string, string, string, string, string];
   s3Title: string;
   s3Items: [string, string, string, string];
   s3LegalBasis: string;
@@ -44,7 +44,7 @@ export type PrivacyPageMessages = {
 const PRIVACY_EN: PrivacyPageMessages = {
   title: "Privacy Policy",
   lead: "This policy explains how The Original I Ching App collects, uses, protects, and retains information when you use our I Ching and Bones consultation services.",
-  lastUpdated: "Last updated: May 18, 2026.",
+  lastUpdated: "Last updated: June 19, 2026.",
   s1Title: "1) Service provider",
   s1Body:
     "The Original I Ching App operates as a digital symbolic guidance service. For privacy-related requests, you may use the official contact channels indicated on the site.",
@@ -54,6 +54,7 @@ const PRIVACY_EN: PrivacyPageMessages = {
     "Usage-generated content: questions, readings, chat metadata, and images tied to the service. If you generate a PDF or save an image from the app, the file is created on your own device when you request it; we do not automatically receive a copy of that file.",
     "Minimum technical data for operations and security: IP, error events, metrics, and audit logs.",
     "Billing and token-purchase data processed by payment and billing infrastructure providers.",
+    "Device and installation identifiers, plus crash/error diagnostics, collected by our crash-reporting tool to keep the app stable and secure.",
   ],
   s3Title: "3) How we use your data",
   s3Items: [
@@ -82,11 +83,11 @@ const PRIVACY_EN: PrivacyPageMessages = {
   s4AccountDeleteLinkLabel: "account deletion page",
   s4AccountDeleteBodyAfterLink: ".",
   s5Title: "5) Processors and transfers",
-  s5p1: "To operate the service, we use technical providers (for example, authentication, database, transactional email, AI, and payments). We only send those providers the data strictly necessary to run each function.",
+  s5p1: "To operate the service, we use technical providers for crash reporting and diagnostics, purchase and subscription management, and — on Android — device attestation for fraud prevention and security. We also use providers for authentication, database, transactional email, AI, and payments. We only send each provider the data strictly necessary to run its function.",
   s5p2: "Some providers may process data in other countries. When safeguards are required for international transfers, we use recognized mechanisms (such as standard contractual clauses or other valid tools at the time), unless another basis applies.",
   s6Title: "6) Payments and tokens",
   s6Body:
-    "Payments are handled by specialized providers. We do not store full card numbers on our servers. Purchase status is synced to enable token balance and thread limits.",
+    "Payments and purchases are managed through a specialized purchase-management platform and processed by payment providers. We do not store full card numbers on our servers. Purchase status is synced to enable token balance and thread limits.",
   s7Title: "7) Security",
   s7Items: [
     "Communication with the app and typical APIs uses HTTPS (encryption in transit).",
@@ -109,7 +110,7 @@ const PRIVACY_EN: PrivacyPageMessages = {
 const PRIVACY_ES: PrivacyPageMessages = {
   title: "Política de Privacidad",
   lead: "Esta política explica cómo The Original I Ching App recopila, usa, protege y conserva la información cuando utilizas nuestros servicios de consulta I Ching y Huesos.",
-  lastUpdated: "Última actualización: 18 de mayo de 2026.",
+  lastUpdated: "Última actualización: 19 de junio de 2026.",
   s1Title: "1) Responsable del servicio",
   s1Body:
     "The Original I Ching App opera como servicio digital de orientación simbólica. Para solicitudes relacionadas con privacidad, puedes usar los canales oficiales indicados en el sitio.",
@@ -119,6 +120,7 @@ const PRIVACY_ES: PrivacyPageMessages = {
     "Contenido generado por uso: preguntas, lecturas, metadatos de chat e imágenes asociadas al servicio. Si generas un PDF o guardas una imagen desde la app, el archivo se produce en tu propio dispositivo cuando tú lo solicitas; no recibimos automáticamente una copia de ese archivo.",
     "Datos técnicos mínimos para operación y seguridad: IP, eventos de error, métricas y registros de auditoría.",
     "Datos de facturación y compras de tokens procesados por proveedores de pago e infraestructura de billing.",
+    "Identificadores de dispositivo e instalación, además de diagnósticos de errores/fallos, recopilados por nuestra herramienta de reporte de errores para mantener la app estable y segura.",
   ],
   s3Title: "3) Cómo usamos tus datos",
   s3Items: [
@@ -147,11 +149,11 @@ const PRIVACY_ES: PrivacyPageMessages = {
   s4AccountDeleteLinkLabel: "página de eliminación de cuenta",
   s4AccountDeleteBodyAfterLink: ".",
   s5Title: "5) Proveedores y transferencias",
-  s5p1: "Para operar el servicio usamos proveedores técnicos (por ejemplo, autenticación, base de datos, email transaccional, IA y pagos). Solo enviamos a esos proveedores los datos estrictamente necesarios para ejecutar cada función.",
+  s5p1: "Para operar el servicio usamos proveedores técnicos de reporte de errores y diagnósticos, gestión de compras y suscripciones, y —en Android— atestación de dispositivo para prevención de fraude y seguridad. También usamos proveedores de autenticación, base de datos, email transaccional, IA y pagos. Solo enviamos a cada proveedor los datos estrictamente necesarios para ejecutar su función.",
   s5p2: "Algunos proveedores pueden tratar datos en otros países. Cuando se requieran garantías para transferencias internacionales, utilizamos mecanismos reconocidos (como cláusulas contractuales tipo u otras herramientas válidas en su momento), salvo que exista otra base aplicable.",
   s6Title: "6) Pagos y tokens",
   s6Body:
-    "Los pagos son gestionados por proveedores especializados. No almacenamos números completos de tarjeta en nuestros servidores. El estado de compra se sincroniza para habilitar saldo de tokens y límites por hilo.",
+    "Las compras se gestionan a través de una plataforma especializada de gestión de compras y son procesadas por proveedores de pago especializados. No almacenamos números completos de tarjeta en nuestros servidores. El estado de compra se sincroniza para habilitar saldo de tokens y límites por hilo.",
   s7Title: "7) Seguridad",
   s7Items: [
     "Comunicaciones con la aplicación y APIs habituales sobre HTTPS (cifrado en tránsito).",
@@ -178,7 +180,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     ...PRIVACY_EN,
     title: "Política de Privacidade",
     lead: "Esta política explica como The Original I Ching App recolhe, utiliza, protege e conserva informações quando utilizas os nossos serviços de consulta I Ching e Ossos.",
-    lastUpdated: "Última atualização: 1 de abril de 2026.",
+    lastUpdated: "Última atualização: 19 de junho de 2026.",
     s1Title: "1) Responsável pelo serviço",
     s1Body:
       "The Original I Ching App opera como serviço digital de orientação simbólica. Para pedidos relacionados com privacidade, podes usar os canais oficiais indicados no site.",
@@ -188,6 +190,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Conteúdo gerado pelo uso: perguntas, leituras, metadados de chat e imagens associadas ao serviço. Se gerares um PDF ou guardares uma imagem na app, o ficheiro é criado no teu dispositivo quando o solicitas; não recebemos automaticamente uma cópia desse ficheiro.",
       "Dados técnicos mínimos para operação e segurança: IP, eventos de erro, métricas e registos de auditoria.",
       "Dados de faturação e compras de tokens processados por fornecedores de pagamento e infraestrutura de billing.",
+      "Identificadores de dispositivo e instalação, além de diagnósticos de erros/falhas, recolhidos pela nossa ferramenta de relatório de erros para manter a app estável e segura.",
     ],
     s3Title: "3) Como usamos os teus dados",
     s3Items: [
@@ -211,11 +214,11 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Podes manter conversas no teu ambiente gerando um PDF do fio ativo ou descarregando a imagem de uma leitura, quando quiseres, no painel Opções. É a tua decisão: o ficheiro fica sob o teu controlo e não substitui o histórico no serviço até eliminares essas conversas na app.",
     s5Title: "5) Subcontratantes e transferências",
-    s5p1: "Para operar o serviço usamos fornecedores técnicos (por exemplo autenticação, base de dados, email transacional, IA e pagamentos). Só enviamos os dados estritamente necessários para cada função.",
+    s5p1: "Para operar o serviço usamos fornecedores técnicos de relatório de erros e diagnósticos, gestão de compras e subscrições, e — no Android — atestação de dispositivo para prevenção de fraude e segurança. Também usamos fornecedores de autenticação, base de dados, email transacional, IA e pagamentos. Só enviamos a cada fornecedor os dados estritamente necessários para a sua função.",
     s5p2: "Alguns fornecedores podem tratar dados noutros países. Quando forem necessárias salvaguardas para transferências internacionais, usamos mecanismos reconhecidos (como cláusulas contratuais-tipo), salvo outra base aplicável.",
     s6Title: "6) Pagamentos e tokens",
     s6Body:
-      "Os pagamentos são geridos por fornecedores especializados. Não armazenamos números completos de cartão nos nossos servidores. O estado de compra sincroniza-se para ativar saldo de tokens e limites por fio.",
+      "As compras são geridas através de uma plataforma especializada de gestão de compras e processadas por fornecedores de pagamento especializados. Não armazenamos números completos de cartão nos nossos servidores. O estado de compra sincroniza-se para ativar saldo de tokens e limites por fio.",
     s7Title: "7) Segurança",
     s7Items: [
       "Comunicações com a app e APIs habituais sobre HTTPS (encriptação em trânsito).",
@@ -238,7 +241,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     ...PRIVACY_EN,
     title: "Politique de confidentialité",
     lead: "Cette politique explique comment The Original I Ching App collecte, utilise, protège et conserve les informations lorsque vous utilisez nos services de consultation I Ching et Os.",
-    lastUpdated: "Dernière mise à jour : 1er avril 2026.",
+    lastUpdated: "Dernière mise à jour : 19 juin 2026.",
     s1Title: "1) Responsable du service",
     s1Body:
       "The Original I Ching App est un service numérique d’orientation symbolique. Pour toute demande liée à la confidentialité, utilisez les canaux officiels indiqués sur le site.",
@@ -248,6 +251,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Contenu généré par l’usage : questions, lectures, métadonnées de chat et images liées au service. Si vous générez un PDF ou enregistrez une image depuis l’app, le fichier est créé sur votre appareil sur votre demande ; nous n’en recevons pas automatiquement une copie.",
       "Données techniques minimales pour l’exploitation et la sécurité : IP, événements d’erreur, métriques et journaux d’audit.",
       "Données de facturation et d’achat de jetons traitées par des prestataires de paiement et de facturation.",
+      "Identifiants d’appareil et d’installation, ainsi que diagnostics d’erreurs/incidents, collectés par notre outil de rapport d’incidents pour garder l’app stable et sécurisée.",
     ],
     s3Title: "3) Utilisation de vos données",
     s3Items: [
@@ -271,11 +275,11 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Vous pouvez conserver des conversations sur votre environnement en générant un PDF du fil actif ou en téléchargeant l’image d’une lecture, quand vous le souhaitez, depuis Options. C’est votre choix : le fichier reste sous votre contrôle et ne remplace pas l’historique du service tant que vous n’avez pas supprimé ces conversations dans l’app.",
     s5Title: "5) Sous-traitants et transferts",
-    s5p1: "Nous utilisons des prestataires techniques (authentification, base de données, e-mail transactionnel, IA, paiements). Nous ne leur transmettons que les données strictement nécessaires.",
+    s5p1: "Pour exploiter le service, nous utilisons des prestataires techniques pour le rapport d’incidents et les diagnostics, la gestion des achats et abonnements, et — sur Android — l’attestation d’appareil pour la prévention de la fraude et la sécurité. Nous utilisons aussi des prestataires d’authentification, de base de données, d’e-mail transactionnel, d’IA et de paiement. Nous ne transmettons à chaque prestataire que les données strictement nécessaires à sa fonction.",
     s5p2: "Certains prestataires peuvent traiter des données dans d’autres pays. Lorsque des garanties sont nécessaires pour les transferts internationaux, nous utilisons des mécanismes reconnus (clauses contractuelles types, etc.), sauf autre base applicable.",
     s6Title: "6) Paiements et jetons",
     s6Body:
-      "Les paiements sont gérés par des prestataires spécialisés. Nous ne stockons pas les numéros de carte complets sur nos serveurs. L’état d’achat est synchronisé pour activer le solde de jetons et les limites par fil.",
+      "Les achats sont gérés via une plateforme spécialisée de gestion des achats et traités par des prestataires de paiement spécialisés. Nous ne stockons pas les numéros de carte complets sur nos serveurs. L’état d’achat est synchronisé pour activer le solde de jetons et les limites par fil.",
     s7Title: "7) Sécurité",
     s7Items: [
       "Communications avec l’app et API courantes en HTTPS (chiffrement en transit).",
@@ -298,7 +302,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     ...PRIVACY_EN,
     title: "Datenschutzerklärung",
     lead: "Diese Erklärung beschreibt, wie The Original I Ching App Informationen erhebt, nutzt, schützt und aufbewahrt, wenn Sie unsere I-Ging- und Knochen-Beratungsdienste nutzen.",
-    lastUpdated: "Zuletzt aktualisiert: 1. April 2026.",
+    lastUpdated: "Zuletzt aktualisiert: 19. Juni 2026.",
     s1Title: "1) Dienstanbieter",
     s1Body:
       "The Original I Ching App ist ein digitaler Dienst zur symbolischen Orientierung. Für datenschutzbezogene Anfragen nutzen Sie bitte die offiziellen Kontaktwege auf der Website.",
@@ -308,6 +312,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Nutzungsbedingte Inhalte: Fragen, Lesungen, Chat-Metadaten und bildbezogene Daten. Wenn Sie ein PDF erzeugen oder ein Bild speichern, entsteht die Datei auf Ihrem Gerät auf Ihre Anforderung; wir erhalten davon nicht automatisch eine Kopie.",
       "Mindesttechnische Daten für Betrieb und Sicherheit: IP, Fehlerereignisse, Metriken und Audit-Logs.",
       "Abrechnungs- und Token-Kaufdaten durch Zahlungs- und Billing-Anbieter.",
+      "Geräte- und Installationskennungen sowie Absturz-/Fehlerdiagnosen, erfasst durch unser Absturzberichts-Tool, um die App stabil und sicher zu halten.",
     ],
     s3Title: "3) Wie wir Ihre Daten nutzen",
     s3Items: [
@@ -331,11 +336,11 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Sie können Gespräche in Ihrer Umgebung behalten, indem Sie ein PDF des aktiven Threads erzeugen oder ein Lesebild aus Optionen herunterladen. Die Datei liegt unter Ihrer Kontrolle und ersetzt den Dienstverlauf nicht, bis Sie die Chats in der App löschen.",
     s5Title: "5) Auftragsverarbeiter und Übermittlungen",
-    s5p1: "Wir nutzen technische Anbieter (z. B. Authentifizierung, Datenbank, Transaktions-E-Mail, KI, Zahlungen). Es werden nur die jeweils nötigen Daten übermittelt.",
+    s5p1: "Zum Betrieb des Dienstes nutzen wir technische Anbieter für Absturzberichte und Diagnosen, die Verwaltung von Käufen und Abonnements sowie — auf Android — die Geräteattestierung zur Betrugsprävention und Sicherheit. Wir nutzen außerdem Anbieter für Authentifizierung, Datenbank, Transaktions-E-Mail, KI und Zahlungen. Wir übermitteln jedem Anbieter nur die für seine Funktion unbedingt erforderlichen Daten.",
     s5p2: "Manche Anbieter verarbeiten in anderen Ländern. Wenn Schutzmaßnahmen für internationale Übermittlungen nötig sind, nutzen wir anerkannte Instrumente (z. B. Standardvertragsklauseln), sofern keine andere Grundlage greift.",
     s6Title: "6) Zahlungen und Token",
     s6Body:
-      "Zahlungen erfolgen über spezialisierte Anbieter. Wir speichern keine vollständigen Kartennummern auf unseren Servern. Der Kaufstatus wird synchronisiert für Token-Saldo und Thread-Limits.",
+      "Käufe werden über eine spezialisierte Kaufverwaltungsplattform abgewickelt und von spezialisierten Zahlungsanbietern verarbeitet. Wir speichern keine vollständigen Kartennummern auf unseren Servern. Der Kaufstatus wird synchronisiert, um Token-Saldo und Thread-Limits zu aktivieren.",
     s7Title: "7) Sicherheit",
     s7Items: [
       "Kommunikation mit App und APIs über HTTPS (Verschlüsselung während der Übertragung).",
@@ -358,7 +363,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     ...PRIVACY_EN,
     title: "Informativa sulla privacy",
     lead: "Questa informativa spiega come The Original I Ching App raccoglie, usa, protegge e conserva le informazioni quando usi i servizi di consulto I Ching e Ossa.",
-    lastUpdated: "Ultimo aggiornamento: 1 aprile 2026.",
+    lastUpdated: "Ultimo aggiornamento: 19 giugno 2026.",
     s1Title: "1) Titolare del servizio",
     s1Body:
       "The Original I Ching App è un servizio digitale di orientamento simbolico. Per richieste sulla privacy usa i canali ufficiali indicati sul sito.",
@@ -368,6 +373,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "Contenuto generato dall’uso: domande, letture, metadati chat e immagini collegate al servizio. Se generi un PDF o salvi un’immagine dall’app, il file è creato sul tuo dispositivo su tua richiesta; non ne riceviamo automaticamente una copia.",
       "Dati tecnici minimi per operatività e sicurezza: IP, eventi di errore, metriche e log di audit.",
       "Dati di fatturazione e acquisto token elaborati da fornitori di pagamento e billing.",
+      "Identificativi di dispositivo e installazione, oltre a diagnosi di errori/crash, raccolti dal nostro strumento di reporting crash per mantenere l’app stabile e sicura.",
     ],
     s3Title: "3) Come usiamo i dati",
     s3Items: [
@@ -391,11 +397,11 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Puoi conservare conversazioni generando un PDF del thread attivo o scaricando l’immagine di una lettura da Opzioni. È tua decisione: il file resta sotto il tuo controllo e non sostituisce la cronologia del servizio finché non elimini quei chat nell’app.",
     s5Title: "5) Responsabili del trattamento e trasferimenti",
-    s5p1: "Usiamo fornitori tecnici (autenticazione, database, email transazionale, IA, pagamenti). Trasmettiamo solo i dati strettamente necessari.",
+    s5p1: "Per gestire il servizio usiamo fornitori tecnici per il reporting crash e la diagnostica, la gestione di acquisti e abbonamenti, e — su Android — l’attestazione del dispositivo per la prevenzione delle frodi e la sicurezza. Usiamo anche fornitori di autenticazione, database, email transazionale, IA e pagamenti. Trasmettiamo a ciascun fornitore solo i dati strettamente necessari per la sua funzione.",
     s5p2: "Alcuni fornitori possono trattare dati in altri Paesi. Quando servono garanzie per trasferimenti internazionali, usiamo meccanismi riconosciuti (es. clausole contrattuali standard), salvo altra base applicabile.",
     s6Title: "6) Pagamenti e token",
     s6Body:
-      "I pagamenti sono gestiti da fornitori specializzati. Non memorizziamo numeri di carta completi sui nostri server. Lo stato di acquisto si sincronizza per saldo token e limiti per thread.",
+      "Gli acquisti sono gestiti tramite una piattaforma specializzata di gestione degli acquisti ed elaborati da fornitori di pagamento specializzati. Non memorizziamo numeri di carta completi sui nostri server. Lo stato di acquisto si sincronizza per attivare saldo token e limiti per thread.",
     s7Title: "7) Sicurezza",
     s7Items: [
       "Comunicazioni con app e API su HTTPS (crittografia in transito).",
@@ -418,7 +424,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     ...PRIVACY_EN,
     title: "プライバシーポリシー",
     lead: "本ポリシーは、当社の易経・甲骨スタイルの相談サービスをご利用いただく際に、The Original I Ching App がどのように情報を収集・利用・保護・保持するかを説明します。",
-    lastUpdated: "最終更新：2026年4月1日",
+    lastUpdated: "最終更新：2026年6月19日",
     s1Title: "1) サービス提供者",
     s1Body:
       "The Original I Ching App は象徴的なガイダンスを提供するデジタルサービスです。プライバシーに関するお問い合わせは、サイトに記載の公式連絡先をご利用ください。",
@@ -428,6 +434,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "利用に伴い生成されるコンテンツ：質問、読み取り、チャットのメタデータ、サービスに紐づく画像。アプリから PDF を生成したり画像を保存したりする場合、ファイルはご本人の操作で端末上に作成されます。当社が自動的にそのコピーを受け取ることはありません。",
       "運用とセキュリティに必要な最小限の技術データ：IP、アラート・エラーイベント、指標、監査ログ。",
       "決済およびトークン購入に関するデータ（決済・課金インフラのプロセッサが処理）。",
+      "アプリの安定性とセキュリティを保つため、クラッシュレポートツールにより収集されるデバイス・インストール識別子およびクラッシュ・エラー診断情報。",
     ],
     s3Title: "3) データの利用目的",
     s3Items: [
@@ -451,11 +458,11 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "オプションからアクティブスレッドの PDF を生成したり、読み取り画像をダウンロードしたりして、ご自身の環境に会話を残すことができます。ファイルは端末・フォルダ・個人のバックアップなど、ご本人の管理下にあり、アプリ内で当該会話を削除するまでサービス上の履歴を置き換えたり変更したりしません。",
     s5Title: "5) 委託先と越境移転",
-    s5p1: "認証、データベース、トランザクションメール、AI、決済などの技術プロバイダを利用します。各機能に必要なデータのみを送信します。",
+    s5p1: "サービス運営のため、クラッシュレポートおよび診断、購入・サブスクリプション管理、Android では不正防止・セキュリティのためのデバイス認証を行う技術プロバイダを利用しています。また、認証、データベース、トランザクションメール、AI、決済の各プロバイダも利用します。各プロバイダには、その機能の実行に厳密に必要なデータのみを送信します。",
     s5p2: "一部のプロバイダは他国でデータを処理する場合があります。国際移転に保護措置が必要な場合、当該時点で有効な標準契約条項など認められた手段を用います（別の根拠がある場合を除く）。",
     s6Title: "6) 決済とトークン",
     s6Body:
-      "決済は専門プロバイダが処理します。当社サーバーに完全なカード番号を保存することはありません。購入状態はトークン残高とスレッド上限の有効化のために同期されます。",
+      "購入は専門の購入管理プラットフォームを通じて管理され、決済プロバイダによって処理されます。当社サーバーに完全なカード番号を保存することはありません。購入状態はトークン残高とスレッド上限の有効化のために同期されます。",
     s7Title: "7) セキュリティ",
     s7Items: [
       "アプリおよび通常の API との通信は HTTPS（転送時暗号化）。",
@@ -478,7 +485,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     ...PRIVACY_EN,
     title: "隐私政策",
     lead: "本政策说明在您使用我们的易经与甲骨风格咨询服务时，The Original I Ching App 如何收集、使用、保护与保留信息。",
-    lastUpdated: "最后更新：2026 年 4 月 1 日",
+    lastUpdated: "最后更新：2026 年 6 月 19 日",
     s1Title: "1) 服务提供者",
     s1Body:
       "The Original I Ching App 以数字形式提供象征性指引服务。与隐私相关的请求请使用网站所示官方联系渠道。",
@@ -488,6 +495,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "使用产生的内容：问题、解读、聊天元数据及服务相关图像。若您从应用生成 PDF 或保存图像，文件在您请求时在您自有设备上生成；我们不会自动收到该文件的副本。",
       "运营与安全所需的最少技术数据：IP、错误事件、指标与审计日志。",
       "由支付与计费基础设施提供方处理的账单与代币购买数据。",
+      "为保持应用稳定与安全，由我们的崩溃报告工具收集的设备与安装标识符，以及崩溃/错误诊断信息。",
     ],
     s3Title: "3) 我们如何使用数据",
     s3Items: [
@@ -511,11 +519,11 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "您可随时从选项面板生成当前会话的 PDF 或下载某次解读的图像，将会话保存在自有环境中。由您决定；文件由您控制（设备、文件夹、个人备份），在您于应用中删除相关会话之前，不会替代或更改服务中托管的历史。",
     s5Title: "5) 处理者与跨境传输",
-    s5p1: "我们使用技术提供方（例如认证、数据库、事务邮件、AI、支付）。仅向其发送执行各功能所必需的数据。",
+    s5p1: "为运营本服务，我们使用技术提供方处理崩溃报告与诊断、购买与订阅管理，以及在 Android 上用于防欺诈与安全的设备认证。我们还使用认证、数据库、事务邮件、AI 与支付提供方。我们仅向每个提供方发送其履行职能所必需的数据。",
     s5p2: "部分提供方可能在其他国家处理数据。若国际传输需要保障措施，我们使用公认机制（如标准合同条款），除非另有适用依据。",
     s6Title: "6) 支付与代币",
     s6Body:
-      "支付由专门提供方处理。我们不在服务器上存储完整卡号。购买状态会同步以启用代币余额与每会话上限。",
+      "购买通过专门的购买管理平台管理，并由专门的支付提供方处理。我们不在服务器上存储完整卡号。购买状态会同步以启用代币余额与每会话上限。",
     s7Title: "7) 安全",
     s7Items: [
       "与应用及常见 API 的通信使用 HTTPS（传输加密）。",
@@ -538,7 +546,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     ...PRIVACY_EN,
     title: "سياسة الخصوصية",
     lead: "تشرح هذه السياسة كيفية جمع The Original I Ching App للمعلومات واستخدامها وحمايتها والاحتفاظ بها عند استخدام خدمات استشارة I Ching والعظام.",
-    lastUpdated: "آخر تحديث: 1 أبريل 2026.",
+    lastUpdated: "آخر تحديث: 19 يونيو 2026.",
     s1Title: "1) مزوّد الخدمة",
     s1Body:
       "تعمل The Original I Ching App بوصفها خدمة إرشاد رمزي رقمية. للطلبات المتعلقة بالخصوصية، يمكنك استخدام قنوات التواصل الرسمية المبيّنة على الموقع.",
@@ -548,6 +556,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "المحتوى الناتج عن الاستخدام: الأسئلة والقراءات وبيانات المحادثة والصور المرتبطة بالخدمة. إذا أنشأت ملف PDF أو حفظت صورة من التطبيق، يُنشأ الملف على جهازك الخاص عند طلبك ذلك؛ ولا نتلقى نسخة من هذا الملف تلقائيًا.",
       "الحد الأدنى من البيانات التقنية للعمليات والأمان: عنوان IP وأحداث الأخطاء والمقاييس وسجلات التدقيق.",
       "بيانات الفواتير وشراء الرموز التي تعالجها مزودو البنية التحتية للدفع والفوترة.",
+      "معرّفات الجهاز والتثبيت، بالإضافة إلى تشخيصات الأعطال/الأخطاء، التي تجمعها أداة الإبلاغ عن الأعطال للحفاظ على استقرار التطبيق وأمانه.",
     ],
     s3Title: "3) كيف نستخدم بياناتك",
     s3Items: [
@@ -571,11 +580,11 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "يمكنك الاحتفاظ بالمحادثات في بيئتك الخاصة عن طريق إنشاء PDF للمحادثة النشطة أو تنزيل صورة قراءة، متى شئت، من لوحة الخيارات. هذا قرارك أنت: يبقى الملف تحت سيطرتك (الجهاز والمجلد والنسخ الاحتياطية الشخصية) ولا يحل محل السجل المخزّن في الخدمة أو يعدّله حتى تحذف تلك المحادثات في التطبيق.",
     s5Title: "5) المعالجون والنقل",
-    s5p1: "لتشغيل الخدمة، نستخدم مزودين تقنيين (مثل المصادقة وقاعدة البيانات والبريد الإلكتروني للمعاملات والذكاء الاصطناعي والمدفوعات). نرسل إلى هؤلاء المزودين البيانات الضرورية فحسب لتشغيل كل وظيفة.",
+    s5p1: "لتشغيل الخدمة، نستخدم مزودين تقنيين للإبلاغ عن الأعطال والتشخيصات، وإدارة المشتريات والاشتراكات، وعلى أندرويد، التحقق من سلامة الجهاز لمنع الاحتيال والأمان. كما نستخدم مزودين للمصادقة وقاعدة البيانات والبريد الإلكتروني للمعاملات والذكاء الاصطناعي والمدفوعات. نرسل إلى كل مزود فقط البيانات الضرورية تمامًا لتنفيذ وظيفته.",
     s5p2: "قد يعالج بعض المزودين البيانات في دول أخرى. عند الحاجة إلى ضمانات للنقل الدولي، نستخدم آليات معترفًا بها (مثل البنود التعاقدية المعيارية أو أدوات صالحة أخرى في ذلك الوقت)، ما لم تُطبَّق أسس أخرى.",
     s6Title: "6) المدفوعات والرموز",
     s6Body:
-      "تُعالَج المدفوعات من قِبل مزودين متخصصين. لا نخزّن أرقام البطاقات الكاملة على خوادمنا. تتزامن حالة الشراء لتفعيل رصيد الرموز وحدود المحادثات.",
+      "تُدار المشتريات عبر منصة متخصصة لإدارة المشتريات وتُعالَج من قِبل مزودي دفع متخصصين. لا نخزّن أرقام البطاقات الكاملة على خوادمنا. تتزامن حالة الشراء لتفعيل رصيد الرموز وحدود المحادثات.",
     s7Title: "7) الأمان",
     s7Items: [
       "التواصل مع التطبيق وواجهات برمجة التطبيقات المعتادة عبر HTTPS (التشفير أثناء النقل).",
@@ -598,7 +607,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     ...PRIVACY_EN,
     title: "गोपनीयता नीति",
     lead: "यह नीति बताती है कि The Original I Ching App हमारी I Ching और हड्डियाँ परामर्श सेवाओं के उपयोग के दौरान जानकारी कैसे एकत्र करता, उपयोग करता, सुरक्षित रखता और संग्रहीत करता है।",
-    lastUpdated: "अंतिम अपडेट: 1 अप्रैल 2026।",
+    lastUpdated: "अंतिम अपडेट: 19 जून 2026।",
     s1Title: "1) सेवा प्रदाता",
     s1Body:
       "The Original I Ching App एक डिजिटल प्रतीकात्मक मार्गदर्शन सेवा के रूप में संचालित होता है। गोपनीयता संबंधी अनुरोधों के लिए, आप साइट पर बताए गए आधिकारिक संपर्क चैनलों का उपयोग कर सकते हैं।",
@@ -608,6 +617,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "उपयोग-जनित सामग्री: प्रश्न, पठन, चैट मेटाडेटा और सेवा से जुड़ी छवियाँ। यदि आप ऐप से PDF बनाते हैं या छवि सहेजते हैं, तो आपके अनुरोध पर आपके डिवाइस पर फ़ाइल बनती है; हम स्वचालित रूप से उस फ़ाइल की प्रति नहीं पाते।",
       "संचालन और सुरक्षा के लिए न्यूनतम तकनीकी डेटा: IP, त्रुटि घटनाएं, मेट्रिक्स और ऑडिट लॉग।",
       "भुगतान और टोकन खरीद डेटा जो भुगतान और बिलिंग बुनियादी ढांचा प्रदाताओं द्वारा संसाधित होता है।",
+      "ऐप को स्थिर और सुरक्षित रखने के लिए हमारे क्रैश-रिपोर्टिंग टूल द्वारा एकत्र किए गए डिवाइस और इंस्टॉलेशन पहचानकर्ता, साथ ही क्रैश/त्रुटि निदान जानकारी।",
     ],
     s3Title: "3) हम आपका डेटा कैसे उपयोग करते हैं",
     s3Items: [
@@ -631,11 +641,11 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "आप विकल्प पैनल से जब चाहें सक्रिय थ्रेड का PDF बनाकर या पठन छवि डाउनलोड करके अपने वातावरण में बातचीत रख सकते हैं। यह आपका निर्णय है: फ़ाइल आपके नियंत्रण में रहती है (डिवाइस, फ़ोल्डर, व्यक्तिगत बैकअप) और जब तक आप ऐप में उन बातचीतों को हटाते नहीं, यह सेवा में संग्रहीत इतिहास को प्रतिस्थापित या बदलती नहीं है।",
     s5Title: "5) प्रोसेसर और स्थानांतरण",
-    s5p1: "सेवा संचालित करने के लिए, हम तकनीकी प्रदाताओं का उपयोग करते हैं (उदाहरण के लिए, प्रमाणीकरण, डेटाबेस, लेनदेन ईमेल, AI और भुगतान)। हम उन प्रदाताओं को केवल प्रत्येक कार्य चलाने के लिए आवश्यक डेटा भेजते हैं।",
+    s5p1: "सेवा संचालित करने के लिए, हम क्रैश रिपोर्टिंग और निदान, खरीद और सदस्यता प्रबंधन, और Android पर धोखाधड़ी रोकथाम और सुरक्षा के लिए डिवाइस सत्यापन हेतु तकनीकी प्रदाताओं का उपयोग करते हैं। हम प्रमाणीकरण, डेटाबेस, लेनदेन ईमेल, AI और भुगतान प्रदाताओं का भी उपयोग करते हैं। हम प्रत्येक प्रदाता को केवल उसके कार्य के लिए सख्ती से आवश्यक डेटा भेजते हैं।",
     s5p2: "कुछ प्रदाता अन्य देशों में डेटा संसाधित कर सकते हैं। जब अंतरराष्ट्रीय स्थानांतरण के लिए सुरक्षा उपायों की आवश्यकता होती है, हम मान्यता प्राप्त तंत्रों का उपयोग करते हैं (जैसे मानक संविदात्मक खंड या उस समय के अन्य वैध उपकरण), जब तक कोई अन्य आधार लागू न हो।",
     s6Title: "6) भुगतान और टोकन",
     s6Body:
-      "भुगतान विशेष प्रदाताओं द्वारा संभाले जाते हैं। हम अपने सर्वर पर पूर्ण कार्ड नंबर संग्रहीत नहीं करते। टोकन शेष और थ्रेड सीमाएं सक्षम करने के लिए खरीद स्थिति सिंक की जाती है।",
+      "खरीद एक विशेष खरीद-प्रबंधन प्लेटफ़ॉर्म के माध्यम से प्रबंधित की जाती है और विशेष भुगतान प्रदाताओं द्वारा संसाधित की जाती है। हम अपने सर्वर पर पूर्ण कार्ड नंबर संग्रहीत नहीं करते। टोकन शेष और थ्रेड सीमाएं सक्षम करने के लिए खरीद स्थिति सिंक की जाती है।",
     s7Title: "7) सुरक्षा",
     s7Items: [
       "ऐप और सामान्य API के साथ संचार HTTPS (पारगमन में एन्क्रिप्शन) का उपयोग करता है।",
@@ -658,7 +668,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     ...PRIVACY_EN,
     title: "개인정보 처리방침",
     lead: "본 방침은 The Original I Ching App이 역경·갑골 스타일 상담 서비스 이용 시 정보를 어떻게 수집·이용·보호·보관하는지 설명합니다.",
-    lastUpdated: "최종 업데이트: 2026년 4월 1일",
+    lastUpdated: "최종 업데이트: 2026년 6월 19일",
     s1Title: "1) 서비스 제공자",
     s1Body:
       "The Original I Ching App은 상징적 안내를 제공하는 디지털 서비스입니다. 개인정보 관련 요청은 사이트에 안내된 공식 채널을 이용하세요.",
@@ -668,6 +678,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
       "이용으로 생성된 콘텐츠: 질문, 해석, 채팅 메타데이터, 서비스 관련 이미지. 앱에서 PDF를 만들거나 이미지를 저장하면 요청 시 본인 기기에서 파일이 생성되며, 당사가 자동으로 그 사본을 받지는 않습니다.",
       "운영 및 보안에 필요한 최소 기술 데이터: IP, 오류 이벤트, 지표, 감사 로그.",
       "결제·과금 인프라 제공자가 처리하는 청구 및 토큰 구매 데이터.",
+      "앱의 안정성과 보안을 유지하기 위해 당사의 충돌 보고 도구가 수집하는 기기 및 설치 식별자와 충돌/오류 진단 정보.",
     ],
     s3Title: "3) 데이터 이용",
     s3Items: [
@@ -691,11 +702,11 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "옵션에서 활성 스레드 PDF를 생성하거나 읽기 이미지를 다운로드하여 본인 환경에 대화를 보관할 수 있습니다. 파일은 기기·폴더·개인 백업 등 본인 관리 하에 있으며, 앱에서 해당 대화를 삭제하기 전까지 서비스에 저장된 기록을 대체하거나 변경하지 않습니다.",
     s5Title: "5) 처리업체 및 이전",
-    s5p1: "인증, 데이터베이스, 트랜잭션 이메일, AI, 결제 등 기술 제공업체를 사용합니다. 각 기능에 필요한 데이터만 전송합니다.",
+    s5p1: "서비스 운영을 위해 충돌 보고 및 진단, 구매 및 구독 관리, Android에서의 부정 방지 및 보안을 위한 기기 검증을 담당하는 기술 제공업체를 이용합니다. 또한 인증, 데이터베이스, 트랜잭션 이메일, AI, 결제 제공업체도 이용합니다. 각 제공업체에는 해당 기능 수행에 엄격히 필요한 데이터만 전송합니다.",
     s5p2: "일부 제공업체는 다른 국가에서 데이터를 처리할 수 있습니다. 국제 이전에 보호 조치가 필요한 경우, 당시 유효한 표준계약조항 등 인정된 수단을 사용합니다(다른 근거가 있는 경우 제외).",
     s6Title: "6) 결제 및 토큰",
     s6Body:
-      "결제는 전문 제공업체가 처리합니다. 당사 서버에 전체 카드 번호를 저장하지 않습니다. 구매 상태는 토큰 잔액과 스레드 한도 활성화를 위해 동기화됩니다.",
+      "구매는 전문 구매 관리 플랫폼을 통해 관리되며 전문 결제 제공업체가 처리합니다. 당사 서버에 전체 카드 번호를 저장하지 않습니다. 구매 상태는 토큰 잔액과 스레드 한도 활성화를 위해 동기화됩니다.",
     s7Title: "7) 보안",
     s7Items: [
       "앱 및 일반 API와의 통신은 HTTPS(전송 중 암호화).",
