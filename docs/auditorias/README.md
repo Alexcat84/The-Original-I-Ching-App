@@ -11,6 +11,7 @@ Single canonical location for audit reports, incident write-ups, post-fix follow
 
 | Date | Document | Topic | Status |
 |---|---|---|---|
+| 2026-06-19 | [AUDIT_2026-06-19_data-safety-resolucion.md](./AUDIT_2026-06-19_data-safety-resolucion.md) | Play Console Data Safety rejection (vc49, Device or other IDs) | ✅ Resolved |
 | 2026-06-18 | [RN_WEBVIEW_CHAT_BOTTOM_GAP_AUDIT_2026-06-18.md](./RN_WEBVIEW_CHAT_BOTTOM_GAP_AUDIT_2026-06-18.md) | Black gap below composer on Release A APK | ✅ `e4b04e5` |
 | 2026-06-16 | [GENERAL_PRE_PRODUCCION_2026-06-16.md](./GENERAL_PRE_PRODUCCION_2026-06-16.md) | General pre-production | ✅ Go with conditions |
 | 2026-06-16 | [NPM_AUDIT_2026-06-16.md](./NPM_AUDIT_2026-06-16.md) | npm dependencies | 📋 |
