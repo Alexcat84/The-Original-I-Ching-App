@@ -3,8 +3,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { Component, type ReactNode, useEffect } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { SystemBars } from "react-native-edge-to-edge";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
 
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_DSN || "",
@@ -83,8 +82,7 @@ export default function Layout() {
 
   return (
     <GlobalErrorBoundary>
-      <SafeAreaProvider>
-        <SystemBars style="light" />
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <Stack
           screenOptions={{
             headerShown: false,

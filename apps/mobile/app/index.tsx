@@ -25,6 +25,7 @@ import {
   Platform,
   Pressable,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -91,6 +92,7 @@ import {
   type WebViewNavigation,
 } from "react-native-webview";
 import { useIntegrityCheck, createIntegrityTraceId } from "@/src/hooks/useIntegrityCheck";
+import { SystemBars } from "react-native-edge-to-edge";
 import {
   DEFAULT_LOCALE,
   UI_LOCALE_STORAGE_KEY,
@@ -261,10 +263,20 @@ function resolveRnAppInfoForWeb(): { version: string; androidVersionCode: number
 
 const RN_APP_INFO_FOR_WEB = JSON.stringify(resolveRnAppInfoForWeb());
 
+/** Android edge-to-edge: useSafeAreaInsets().top can be 0 while status bar still overlaps WebView. */
+function resolveRnTopInset(top: number): number {
+  if (top > 0) return top;
+  if (Platform.OS === "android") {
+    return StatusBar.currentHeight ?? 0;
+  }
+  return top;
+}
+
 /** Sync native safe-area insets into WebView CSS variables (source of truth for RN shell). */
 function buildRnSafeAreaInjectScript(top: number, bottom: number): string {
+  const resolvedTop = resolveRnTopInset(top);
   return (
-    `document.documentElement.style.setProperty('--rn-safe-area-inset-top','${top}px');` +
+    `document.documentElement.style.setProperty('--rn-safe-area-inset-top','${resolvedTop}px');` +
     `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom','${bottom}px'); true;`
   );
 }
@@ -3120,6 +3132,7 @@ export default function WebViewScreen() {
 
   return (
     <View style={[styles.container, DEBUG_NATIVE_CHAT_SHELL_RECTS && styles.debugNativeRoot]}>
+      <SystemBars style={shellTheme === "dark" ? "light" : "dark"} />
       {/* ── WebView edge-to-edge; safe area via --rn-safe-area-inset-* in injected CSS ─ */}
       <View
         style={[
