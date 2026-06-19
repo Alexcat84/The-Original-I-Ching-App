@@ -1,8 +1,21 @@
-<!-- changelog:last-release:35ac93d -->
+<!-- changelog:last-release:6e4885b -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.1.4] — 2026-06-18 | versionCode: 53 | Stage: Closed Testing
+
+### Fix
+- fix(mobile+web): remove fake 18px chat bottom gap in RN WebView | commit: e4b04e5
+- fix(mobile): auto-adjusting chat bottom inset + full-bleed splash image | commit: 16dc714
+- fix(observability): instrument Oracle Bones Claude call in Axiom traces | commit: df3e204
+- fix(mobile): use the actual brand icon (swirl) as the launcher icon | commit: 7ba4a0d
+
+### Docs
+- docs(auditorias): consolidate audits folder and document RN WebView bottom gap | commit: 6e4885b
+
+---
 
 ## [4.1.3] — 2026-06-18 | versionCode: 52 | Stage: Closed Testing
 
@@ -1612,7 +1625,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.3 | 52 | 2026-06-18 | Closed Testing | 2 | correct versionCode to 51, not 55 |
+| 4.1.4 | 53 | 2026-06-18 | Closed Testing | 5 | remove fake 18px chat bottom gap in RN WebView; auto-adjusting chat bottom inset + full-bleed splash image; instrument Oracle Bones Claude call in Axiom traces |
+| 4.1.3 | 52 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.2 | 51 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.0 | 49 | 2026-06-17 | Production | 0 | — |
 | 4.0.1 | 48 | 2026-06-16 | Production | 0 | — |
