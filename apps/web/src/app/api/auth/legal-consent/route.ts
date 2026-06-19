@@ -5,6 +5,7 @@ import { apiError } from "@/lib/api-error";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";
 import { clearPendingEmailLegalConsentMetadata, recordUserLegalAcceptance } from "@/lib/legal-consent-server";
+import { getUpstashRedis } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -44,6 +45,10 @@ export async function POST(req: Request) {
     await recordUserLegalAcceptance(user.userId, parsed.data);
     if (parsed.data.source === "email_signup") {
       await clearPendingEmailLegalConsentMetadata(user.userId);
+    }
+    const redis = getUpstashRedis();
+    if (redis) {
+      await redis.del(`bootstrap:${user.userId}`).catch(() => {});
     }
   } catch (error) {
     log.error("legal_consent_store_failed", {
