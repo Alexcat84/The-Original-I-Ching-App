@@ -134,7 +134,7 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     ...TERMS_EN,
     title: "Termos de Serviço",
     lead: "Estes termos regem o acesso e uso de The Original I Ching App. Ao usar o serviço, aceita estes termos.",
-    lastUpdated: "Última atualização: 1 de abril de 2026.",
+    lastUpdated: "Última atualização: 18 de maio de 2026.",
     s1Title: "1) Natureza do serviço",
     s1Body:
       "A plataforma oferece consultas simbólicas nos modos I Ching e Ossos com apoio de IA. É uma ferramenta de reflexão pessoal e não substitui aconselhamento médico, jurídico, financeiro ou psicológico profissional.",
@@ -183,7 +183,7 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     ...TERMS_EN,
     title: "Conditions d’utilisation",
     lead: "Les présentes conditions régissent l’accès et l’utilisation de The Original I Ching App. En utilisant le service, vous les acceptez.",
-    lastUpdated: "Dernière mise à jour : 1er avril 2026.",
+    lastUpdated: "Dernière mise à jour : 18 mai 2026.",
     s1Title: "1) Nature du service",
     s1Body:
       "La plateforme propose des consultations symboliques en modes I Ching et Os avec assistance IA. C’est un outil de réflexion personnelle et ne remplace pas un conseil médical, juridique, financier ou psychologique professionnel.",
@@ -232,7 +232,7 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     ...TERMS_EN,
     title: "Nutzungsbedingungen",
     lead: "Diese Bedingungen regeln den Zugang zu und die Nutzung von The Original I Ching App. Mit der Nutzung akzeptieren Sie sie.",
-    lastUpdated: "Zuletzt aktualisiert: 1. April 2026.",
+    lastUpdated: "Zuletzt aktualisiert: 18. Mai 2026.",
     s1Title: "1) Art des Dienstes",
     s1Body:
       "Die Plattform bietet symbolische Beratungen in I-Ging- und Knochen-Modi mit KI-Unterstützung. Sie ist ein persönliches Reflexionswerkzeug und ersetzt keine professionelle medizinische, rechtliche, finanzielle oder psychologische Beratung.",
@@ -281,7 +281,7 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     ...TERMS_EN,
     title: "Termini di servizio",
     lead: "Questi termini regolano l’accesso e l’uso di The Original I Ching App. Usando il servizio, li accetti.",
-    lastUpdated: "Ultimo aggiornamento: 1 aprile 2026.",
+    lastUpdated: "Ultimo aggiornamento: 18 maggio 2026.",
     s1Title: "1) Natura del servizio",
     s1Body:
       "La piattaforma offre consultazioni simboliche in modalità I Ching e Ossa con supporto IA. È uno strumento di riflessione personale e non sostituisce pareri medici, legali, finanziari o psicologici professionali.",
@@ -330,7 +330,7 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     ...TERMS_EN,
     title: "利用規約",
     lead: "本規約は The Original I Ching App へのアクセスと利用を定めます。サービスを利用することで本規約に同意したものとみなされます。",
-    lastUpdated: "最終更新：2026年4月1日",
+    lastUpdated: "最終更新：2026年5月18日",
     s1Title: "1) サービスの性質",
     s1Body:
       "本プラットフォームは AI 支援のもと、易経モードおよび甲骨モードで象徴的な相談を提供します。個人的内省のためのツールであり、専門的な医療・法律・金融・心理のアドバイスに代わるものではありません。",
@@ -379,7 +379,7 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     ...TERMS_EN,
     title: "服务条款",
     lead: "本条款规范对 The Original I Ching App 的访问与使用。使用服务即表示您接受本条款。",
-    lastUpdated: "最后更新：2026 年 4 月 1 日",
+    lastUpdated: "最后更新：2026 年 5 月 18 日",
     s1Title: "1) 服务性质",
     s1Body:
       "平台在 AI 支持下提供易经与甲骨模式的象征性咨询。其为个人反思工具，不替代专业医疗、法律、财务或心理建议。",
@@ -428,7 +428,7 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     ...TERMS_EN,
     title: "شروط الخدمة",
     lead: "تحكم هذه الشروط الوصول إلى The Original I Ching App واستخدامه. باستخدامك الخدمة، فإنك تقبل هذه الشروط.",
-    lastUpdated: "آخر تحديث: 1 أبريل 2026.",
+    lastUpdated: "آخر تحديث: 18 مايو 2026.",
     s1Title: "1) طبيعة الخدمة",
     s1Body:
       "تقدم المنصة استشارات رمزية في وضعَي I Ching والعظام بدعم من الذكاء الاصطناعي. وهي أداة تأمل شخصي ولا تحل محل المشورة الطبية أو القانونية أو المالية أو النفسية المتخصصة.",
@@ -477,7 +477,7 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     ...TERMS_EN,
     title: "सेवा की शर्तें",
     lead: "ये शर्तें The Original I Ching App तक पहुँच और उपयोग को नियंत्रित करती हैं। सेवा का उपयोग करके, आप इन शर्तों को स्वीकार करते हैं।",
-    lastUpdated: "अंतिम अपडेट: 1 अप्रैल 2026।",
+    lastUpdated: "अंतिम अपडेट: 18 मई 2026।",
     s1Title: "1) सेवा की प्रकृति",
     s1Body:
       "यह प्लेटफॉर्म AI सहायता के साथ I Ching और हड्डियाँ मोड में प्रतीकात्मक परामर्श प्रदान करता है। यह व्यक्तिगत चिंतन का उपकरण है और पेशेवर चिकित्सा, कानूनी, वित्तीय या मनोवैज्ञानिक सलाह का विकल्प नहीं है।",
@@ -526,7 +526,7 @@ const TERMS_BY_LOCALE: Record<AppLocale, TermsPageMessages> = {
     ...TERMS_EN,
     title: "서비스 약관",
     lead: "본 약관은 The Original I Ching App에 대한 접근과 이용을 규율합니다. 서비스를 이용하면 본 약관에 동의한 것으로 간주됩니다.",
-    lastUpdated: "최종 업데이트: 2026년 4월 1일",
+    lastUpdated: "최종 업데이트: 2026년 5월 18일",
     s1Title: "1) 서비스 성격",
     s1Body:
       "플랫폼은 AI 지원 하에 역경 및 갑골 모드에서 상징적 상담을 제공합니다. 개인 성찰 도구이며 전문 의료·법률·재무·심리 조언을 대체하지 않습니다.",
