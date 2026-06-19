@@ -272,12 +272,25 @@ function resolveRnTopInset(top: number): number {
   return top;
 }
 
+/** Drawer is full-height fixed; 3-button nav often reports bottom inset 0 under edge-to-edge. */
+const ANDROID_NAV_BAR_FALLBACK_PX = 48;
+
+function resolveRnDrawerBottomInset(bottom: number): number {
+  if (bottom > 0) return bottom;
+  if (Platform.OS === "android") {
+    return ANDROID_NAV_BAR_FALLBACK_PX;
+  }
+  return bottom;
+}
+
 /** Sync native safe-area insets into WebView CSS variables (source of truth for RN shell). */
 function buildRnSafeAreaInjectScript(top: number, bottom: number): string {
   const resolvedTop = resolveRnTopInset(top);
+  const drawerBottom = resolveRnDrawerBottomInset(bottom);
   return (
     `document.documentElement.style.setProperty('--rn-safe-area-inset-top','${resolvedTop}px');` +
-    `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom','${bottom}px'); true;`
+    `document.documentElement.style.setProperty('--rn-safe-area-inset-bottom','${bottom}px');` +
+    `document.documentElement.style.setProperty('--rn-drawer-bottom-inset','${drawerBottom}px'); true;`
   );
 }
 
@@ -293,7 +306,7 @@ const INJECTED_JS = `
   /* 1 ── Layout parity + neutralize vertical gaps (P7 — DEBUG + v4 fix) */
   var _st = document.createElement('style');
   _st.textContent = [
-    'html.iching-rn-webview{--rn-composer-bottom-padding:calc(0.42rem + var(--rn-safe-area-inset-bottom, 0px));--rn-drawer-bottom-spacer:calc(0.75rem + var(--rn-safe-area-inset-bottom, 0px))}',
+    'html.iching-rn-webview{--rn-composer-bottom-padding:calc(0.42rem + var(--rn-safe-area-inset-bottom, 0px))}',
     'html.iching-rn-webview:has(.iching-oracle-shell--chat){height:100%!important;min-height:100%!important;overflow:hidden!important}',
     'html.iching-rn-webview:has(.iching-oracle-shell--chat) body{height:100%!important;min-height:100%!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden!important}',
     'html.iching-rn-webview:not(:has(.iching-oracle-shell--chat)){height:auto!important;min-height:100%!important}',
@@ -344,12 +357,10 @@ const INJECTED_JS = `
     'html.iching-rn-webview .legal-consent-backdrop{z-index:2147483000!important;padding:max(.75rem,var(--rn-safe-area-inset-top,0px)) .75rem max(.75rem,var(--rn-safe-area-inset-bottom,0px))!important}',
     'html.iching-rn-webview .legal-consent-modal{max-height:calc(100vh - 1.5rem)!important;width:100%!important}',
     'html.iching-rn-webview .legal-consent-scroll{overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}',
-    /* Chat drawer: non-scrollable spacer at the bottom of the drawer's flex column.
-       Targeting .chat-drawer (not .chat-drawer-list) makes this a flex sibling, which
-       reduces .chat-drawer-list (flex:1) so the scroll area ends above the Android nav bar.
-       A spacer inside the scroll container only adds scrollable whitespace — it does not
-       shorten the visible scroll boundary, so the last item stays covered by the nav bar. */
-    'html.iching-rn-webview .chat-drawer::after{content:"";display:block;flex-shrink:0!important;min-height:var(--rn-drawer-bottom-spacer, calc(0.75rem + var(--rn-safe-area-inset-bottom, 0px)))!important}',
+    /* Chat drawer: inset frame between status bar and nav bar (full-height fixed panel). */
+    'html.iching-rn-webview .chat-drawer{top:var(--rn-safe-area-inset-top, 0px)!important;bottom:var(--rn-drawer-bottom-inset, var(--rn-safe-area-inset-bottom, 0px))!important}',
+    /* Internal pad at end of drawer column — system inset handled by top/bottom above. */
+    'html.iching-rn-webview .chat-drawer::after{content:"";display:block;flex-shrink:0!important;min-height:0.75rem!important}',
     /* Hide Vercel preview toolbar — staging deployments inject a floating Vercel icon that confuses testers */
     'vercel-toolbar,#__vercel-toolbar,.__vercel-toolbar,div[id*="vercel-toolbar"],iframe[src*="vercel.live"]{display:none!important}'
   ].join(';');

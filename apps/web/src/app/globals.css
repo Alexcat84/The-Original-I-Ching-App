@@ -280,7 +280,6 @@ html.iching-rn-webview .iching-oracle-shell--chat {
 /* RN WebView (Release B): inset on composer/drawer only — no fake px floor on .chat-surface */
 html.iching-rn-webview {
   --rn-composer-bottom-padding: calc(0.42rem + var(--rn-safe-area-inset-bottom, 0px));
-  --rn-drawer-bottom-spacer: calc(0.75rem + var(--rn-safe-area-inset-bottom, 0px));
 }
 
 html.iching-rn-webview .legal-consent-backdrop {
@@ -353,8 +352,14 @@ html.iching-rn-webview .composer-minibar {
   padding-bottom: var(--rn-composer-bottom-padding) !important;
 }
 
+/* Full-height drawer: respect status bar + nav bar without affecting composer inset */
+html.iching-rn-webview .chat-drawer {
+  top: var(--rn-safe-area-inset-top, 0px) !important;
+  bottom: var(--rn-drawer-bottom-inset, var(--rn-safe-area-inset-bottom, 0px)) !important;
+}
+
 html.iching-rn-webview .chat-drawer::after {
-  min-height: var(--rn-drawer-bottom-spacer) !important;
+  min-height: 0.75rem !important;
 }
 
 /*

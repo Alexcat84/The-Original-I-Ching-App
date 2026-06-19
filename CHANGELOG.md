@@ -4,6 +4,13 @@
 
 Full project change history.
 
+## [4.1.6] — 2026-06-19 | versionCode: 55 | Stage: Closed Testing
+
+### Fix
+- fix(mobile+web): chat drawer respects status bar and nav bar insets on RN WebView
+
+---
+
 ## [4.1.5] — 2026-06-19 | versionCode: 54 | Stage: Closed Testing
 
 ### Feature
