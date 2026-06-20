@@ -730,3 +730,25 @@ I Ching · Tres Monedas · Zhu Xi · Wilhelm/Baynes
 - Rebuild `@iching-oracle/i18n` ✅ · `tsc --noEmit` en `apps/web` ✅ sin errores.
 - Taglines no usadas `castMethod*Tagline` (que aún contienen «Zhu Xi» literal) no se renderizan en
   el web; se dejan sin tocar (fuera de alcance).
+
+---
+
+# Parte 7 — Alineación del tour con el orden del panel (20 jun 2026, Opus 4.8)
+
+Tras el reorden de Parte 5, el tour quedó desincronizado: después de «Lectura de líneas cambiantes»
+saltaba al bloque de auto/manual con el título **«Modo de Lanzamiento»** (no coincidía con la
+etiqueta visible **«Ejecución»** = `castModeGroupAria`) y **se saltaba «Método»** por completo (el
+bloque `castMethodGroupAria` no tenía `id` de tour).
+
+**Remediación:**
+
+1. `apps/web/src/app/page.tsx`: el bloque «Método» recibe `id="tour-cast-method"`; nuevo paso de tour
+   `#tour-cast-method` insertado **entre** `#tour-line-reading-system` y `#tour-cast-mode`. Orden final
+   del tour: **Traductor → Lectura de líneas cambiantes → Método → Ejecución**, idéntico al panel.
+2. `packages/i18n/src/messages/home-tour-ui.ts` (11 locales): `step6Title` renombrado de
+   «Modo de Lanzamiento» → **«Ejecución»** (coincide con `castModeGroupAria` por idioma:
+   Execution/Execução/Exécution/Ausführung/Esecuzione/実行/执行/실행/تنفيذ/निष्पादन). Nuevos
+   `methodTitle`/`methodBody` (= `castMethodGroupAria` + descripción Tres Monedas vs Yarrow).
+
+Verificación: build `@iching-oracle/i18n` ✅ · `tsc --noEmit` en `apps/web` ✅. Cierra la
+desalineación del tutorial; el resto del flujo del tour se mantiene correcto.
