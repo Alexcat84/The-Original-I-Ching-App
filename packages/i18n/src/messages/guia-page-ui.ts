@@ -144,9 +144,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "El I Ching y los Huesos son métodos distintos. El I Ching trabaja por hexagrama y líneas, e incluye dos formas de tirada: Tres Monedas y Varillas de milenrama. Los Huesos siguen un esquema separado, sin hexagramas.",
     ichingPracticalHeading: "I Ching",
     ichingPracticalBody:
-      "Útil para preguntas abiertas, dilemas y procesos en el tiempo. Devuelve un hexagrama, las líneas en movimiento que apliquen y el segundo hexagrama si lo hay. La lectura sigue las reglas clásicas de Zhu Xi y los textos auténticos del libro.",
+      "Útil para preguntas abiertas, dilemas y procesos en el tiempo. Devuelve un hexagrama, las líneas en movimiento que apliquen y el segundo hexagrama si lo hay. La lectura sigue el sistema de reducción de Alfred Huang y los textos auténticos del libro.",
     ichingTraditionNote:
-      "La app combina la estructura clásica de Zhu Xi con los métodos de reducción a una sola línea usados por maestros modernos (Alfred Huang, entre otros), para que toda combinación de líneas produzca siempre un único texto guía preciso.",
+      "La app implementa el sistema de reducción a una sola línea de Alfred Huang, con la estructura clásica de Zhu Xi como antecedente, para que toda combinación de líneas produzca siempre un único texto guía preciso.",
     coinsPracticalHeading: "Tres Monedas",
     coinsPracticalBody:
       "Es la forma rápida de tirar el I Ching. Funciona en modo automático (la app ejecuta la tirada por ti) o en modo manual (registras tú las seis líneas a partir de tus propias monedas). El resultado y la interpretación son los mismos en ambos modos.",
@@ -158,7 +158,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Pregunta breve, respuesta breve. Funciona siempre en modo automático: el sistema genera el patrón de grietas y el veredicto, y la IA lo expresa en tu idioma. Útil para confirmaciones puntuales o cuando buscas claridad directa, no un análisis largo.",
     ichingCastModeHeading: "I Ching: tirada automática o manual",
     ichingCastModeP1:
-      "Con I Ching activo en Opciones puedes elegir el modo de tirada. En ambos casos el servidor aplica las mismas reglas de Zhu Xi y el mismo corpus; solo cambia quién fija las seis líneas antes de la interpretación.",
+      "Con I Ching activo en Opciones puedes elegir el modo de tirada. En ambos casos el servidor aplica las mismas reglas de selección de línea y el mismo corpus; solo cambia quién fija las seis líneas antes de la interpretación.",
     ichingCastAutoLi:
       "Automática: al enviar la consulta, el ritual anima el trazado y las seis líneas se obtienen en el servidor.",
     ichingCastManualLi:
@@ -253,9 +253,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "I Ching and Bones are different methods. I Ching reads by hexagram and lines and offers two casting modes: Three Coins and Yarrow Stalks. Bones follow a separate scheme, without hexagrams.",
     ichingPracticalHeading: "I Ching",
     ichingPracticalBody:
-      "Useful for open questions, dilemmas, and processes that unfold over time. It returns a hexagram, the changing lines that apply, and the resulting hexagram if any. Readings follow the classical Zhu Xi rules and the authentic source texts.",
+      "Useful for open questions, dilemmas, and processes that unfold over time. It returns a hexagram, the changing lines that apply, and the resulting hexagram if any. Readings follow Alfred Huang's reduction system and the authentic source texts.",
     ichingTraditionNote:
-      "The app combines Zhu Xi's classical structure with the single-line reduction methods used by modern teachers (Alfred Huang and others), so that every combination of changing lines always yields a single, precise guiding text.",
+      "The app implements Alfred Huang's single-line reduction system, with Zhu Xi's classical structure as its antecedent, so that every combination of changing lines always yields a single, precise guiding text.",
     coinsPracticalHeading: "Three Coins",
     coinsPracticalBody:
       "The quick way to cast the I Ching. It works either automatically (the app casts for you) or manually (you record the six lines from your own physical coins). The result and the interpretation are the same in both modes.",
@@ -363,9 +363,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "O I Ching e os Ossos são métodos diferentes. O I Ching lê por hexagrama e linhas e oferece duas formas de tiragem: Três Moedas e Varetas de aquilégia. Os Ossos seguem um esquema próprio, sem hexagramas.",
     ichingPracticalHeading: "I Ching",
     ichingPracticalBody:
-      "Útil para perguntas abertas, dilemas e processos no tempo. Devolve um hexagrama, as linhas em movimento que se apliquem e o hexagrama resultante se houver. A leitura segue as regras clássicas de Zhu Xi e os textos autênticos do livro.",
+      "Útil para perguntas abertas, dilemas e processos no tempo. Devolve um hexagrama, as linhas em movimento que se apliquem e o hexagrama resultante se houver. A leitura segue o sistema de redução de Alfred Huang e os textos autênticos do livro.",
     ichingTraditionNote:
-      "O app combina a estrutura clássica de Zhu Xi com os métodos de redução a uma única linha usados por professores modernos (Alfred Huang e outros), para que toda combinação de linhas produza sempre um único texto guia preciso.",
+      "O app implementa o sistema de redução a uma única linha de Alfred Huang, com a estrutura clássica de Zhu Xi como antecedente, para que toda combinação de linhas produza sempre um único texto guia preciso.",
     coinsPracticalHeading: "Três Moedas",
     coinsPracticalBody:
       "É a forma rápida de tirar o I Ching. Funciona em modo automático (a app faz a tiragem) ou manual (registas tu as seis linhas a partir das tuas próprias moedas). O resultado e a interpretação são iguais nos dois modos.",
@@ -377,7 +377,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Pergunta breve, resposta breve. Funciona sempre em automático: o sistema gera o padrão de fendas e o veredicto, e a IA expressa-o no teu idioma. Útil para confirmações pontuais ou quando procuras clareza direta, não uma análise longa.",
     ichingCastModeHeading: "I Ching: tiragem automática ou manual",
     ichingCastModeP1:
-      "Com o I Ching ativo em Opções podes escolher o modo de tiragem. Em ambos os casos o servidor aplica as mesmas regras de Zhu Xi e o mesmo corpus; só muda quem define as seis linhas antes da interpretação.",
+      "Com o I Ching ativo em Opções podes escolher o modo de tiragem. Em ambos os casos o servidor aplica as mesmas regras de seleção de linha e o mesmo corpus; só muda quem define as seis linhas antes da interpretação.",
     ichingCastAutoLi:
       "Automática: ao enviar a consulta, o ritual anima o traçado e as seis linhas são obtidas no servidor.",
     ichingCastManualLi:
@@ -474,9 +474,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Le I Ching et les Os sont deux méthodes différentes. Le I Ching lit par hexagramme et traits et propose deux modes de tirage : Trois Pièces et Tiges d’achillée. Les Os suivent un schéma propre, sans hexagramme.",
     ichingPracticalHeading: "I Ching",
     ichingPracticalBody:
-      "Utile pour les questions ouvertes, les dilemmes et les processus qui se déploient dans le temps. Il renvoie un hexagramme, les traits en mouvement qui s’appliquent et l’hexagramme dérivé s’il y a lieu. La lecture suit les règles classiques de Zhu Xi et les textes authentiques du livre.",
+      "Utile pour les questions ouvertes, les dilemmes et les processus qui se déploient dans le temps. Il renvoie un hexagramme, les traits en mouvement qui s’appliquent et l’hexagramme dérivé s’il y a lieu. La lecture suit le système de réduction d’Alfred Huang et les textes authentiques du livre.",
     ichingTraditionNote:
-      "L’application combine la structure classique de Zhu Xi avec les méthodes de réduction à un seul trait utilisées par les enseignants modernes (Alfred Huang et autres), pour que chaque combinaison de traits produise toujours un texte directeur unique et précis.",
+      "L’application met en œuvre le système de réduction à un seul trait d’Alfred Huang, avec la structure classique de Zhu Xi comme antécédent, pour que chaque combinaison de traits produise toujours un texte directeur unique et précis.",
     coinsPracticalHeading: "Trois Pièces",
     coinsPracticalBody:
       "C’est la façon rapide de tirer le I Ching. Fonctionne en mode automatique (l’app fait le tirage) ou manuel (vous saisissez vous-même les six traits à partir de vos pièces). Le résultat et l’interprétation sont identiques dans les deux modes.",
@@ -488,7 +488,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Question brève, réponse brève. Toujours en automatique : le système génère le motif de fissures et le verdict, l’IA l’articule dans votre langue. Utile pour des confirmations ponctuelles ou pour aller droit à la clarté plutôt qu’à une longue analyse.",
     ichingCastModeHeading: "I Ching : tirage automatique ou manuel",
     ichingCastModeP1:
-      "Avec I Ching sélectionné dans Options, vous choisissez le mode de tirage. Dans les deux cas le serveur applique les mêmes règles de Zhu Xi et le même corpus ; seul change l’origine des six traits avant l’interprétation.",
+      "Avec I Ching sélectionné dans Options, vous choisissez le mode de tirage. Dans les deux cas le serveur applique les mêmes règles classiques de sélection de trait et le même corpus ; seul change l’origine des six traits avant l’interprétation.",
     ichingCastAutoLi:
       "Automatique : à l’envoi, le rituel anime le tracé et les six traits sont générés côté serveur.",
     ichingCastManualLi:
@@ -585,9 +585,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "I Ging und Knochen sind unterschiedliche Methoden. I Ging liest nach Hexagramm und Strichen und bietet zwei Wurfarten: Drei Münzen und Schafgarbenstäbe. Die Knochen folgen einem eigenen Schema, ohne Hexagramm.",
     ichingPracticalHeading: "I Ging",
     ichingPracticalBody:
-      "Geeignet für offene Fragen, Dilemmata und Prozesse, die sich über Zeit entfalten. Du erhältst ein Hexagramm, die zutreffenden bewegten Striche und gegebenenfalls das daraus folgende Hexagramm. Die Lesung folgt den klassischen Zhu-Xi-Regeln und den authentischen Quellentexten.",
+      "Geeignet für offene Fragen, Dilemmata und Prozesse, die sich über Zeit entfalten. Du erhältst ein Hexagramm, die zutreffenden bewegten Striche und gegebenenfalls das daraus folgende Hexagramm. Die Lesung folgt Alfred Huangs Reduktionssystem und den authentischen Quellentexten.",
     ichingTraditionNote:
-      "Die App verbindet Zhu Xis klassischen Rahmen mit den Einzel-Linien-Reduktionen moderner Lehrer (Alfred Huang und andere), damit jede Strichkombination stets einen einzigen, präzisen Leittext ergibt.",
+      "Die App setzt Alfred Huangs Einzel-Linien-Reduktionssystem um, mit Zhu Xis klassischem Rahmen als Vorläufer, damit jede Strichkombination stets einen einzigen, präzisen Leittext ergibt.",
     coinsPracticalHeading: "Drei Münzen",
     coinsPracticalBody:
       "Der schnelle Weg, das I Ging zu werfen. Geht automatisch (die App wirft für dich) oder manuell (du trägst die sechs Striche aus deinem eigenen Wurf ein). Ergebnis und Auslegung sind in beiden Modi identisch.",
@@ -599,7 +599,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Kurze Frage, kurze Antwort. Immer automatisch: Das System erzeugt das Riss-Muster und das Verdikt, die KI formuliert es in deiner Sprache. Geeignet für punktuelle Bestätigungen oder direkte Klarheit statt langer Analyse.",
     ichingCastModeHeading: "I Ging: automatischer oder manueller Wurf",
     ichingCastModeP1:
-      "Mit ausgewähltem I Ging unter Optionen wählst du den Wurfmodus. In beiden Fällen wendet der Server dieselben Zhu-Xi-Regeln und denselben Textbestand an; nur die Herkunft der sechs Striche vor der Auslegung ändert sich.",
+      "Mit ausgewähltem I Ging unter Optionen wählst du den Wurfmodus. In beiden Fällen wendet der Server dieselben klassischen Linienauswahl-Regeln und denselben Textbestand an; nur die Herkunft der sechs Striche vor der Auslegung ändert sich.",
     ichingCastAutoLi:
       "Automatisch: Beim Senden animiert das Ritual das Muster, die sechs Striche entstehen auf dem Server.",
     ichingCastManualLi:
@@ -696,9 +696,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "I Ching e Ossa sono metodi differenti. L’I Ching legge per esagramma e linee e offre due modi di lancio: Tre Monete e Stecche di achillea. Le Ossa seguono uno schema proprio, senza esagramma.",
     ichingPracticalHeading: "I Ching",
     ichingPracticalBody:
-      "Utile per domande aperte, dilemmi e processi che si dispiegano nel tempo. Restituisce un esagramma, le linee in movimento applicabili e l’esagramma risultante se presente. La lettura segue le regole classiche di Zhu Xi e i testi autentici del libro.",
+      "Utile per domande aperte, dilemmi e processi che si dispiegano nel tempo. Restituisce un esagramma, le linee in movimento applicabili e l’esagramma risultante se presente. La lettura segue il sistema di riduzione di Alfred Huang e i testi autentici del libro.",
     ichingTraditionNote:
-      "L’app combina la struttura classica di Zhu Xi con i metodi di riduzione a linea singola usati dagli insegnanti moderni (Alfred Huang e altri), in modo che ogni combinazione di linee produca sempre un unico testo guida preciso.",
+      "L’app implementa il sistema di riduzione a linea singola di Alfred Huang, con la struttura classica di Zhu Xi come precedente, in modo che ogni combinazione di linee produca sempre un unico testo guida preciso.",
     coinsPracticalHeading: "Tre Monete",
     coinsPracticalBody:
       "È il modo rapido di lanciare l’I Ching. Funziona in automatico (lancia l’app) o in manuale (registri tu le sei linee partendo dalle tue monete). Il risultato e l’interpretazione sono uguali nei due modi.",
@@ -710,7 +710,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Domanda breve, risposta breve. Sempre in automatico: il sistema genera il pattern di crepe e il verdetto, e l’IA lo articola nella tua lingua. Utile per conferme puntuali o quando cerchi chiarezza diretta più che un’analisi lunga.",
     ichingCastModeHeading: "I Ching: lancio automatico o manuale",
     ichingCastModeP1:
-      "Con I Ching attivo in Opzioni puoi scegliere la modalità di lancio. In entrambi i casi il server applica le stesse regole di Zhu Xi e lo stesso corpus; cambia solo chi fornisce le sei linee prima dell’interpretazione.",
+      "Con I Ching attivo in Opzioni puoi scegliere la modalità di lancio. In entrambi i casi il server applica le stesse regole classiche di selezione della linea e lo stesso corpus; cambia solo chi fornisce le sei linee prima dell’interpretazione.",
     ichingCastAutoLi:
       "Automatico: all’invio il rituale anima il tracciato e le sei linee sono generate sul server.",
     ichingCastManualLi:
@@ -804,9 +804,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "易経と甲骨は別の方式です。易経は卦と爻で読み、占い方は二通り（三銭と蓍草）です。甲骨は卦を作らず、独自の流れで進みます。",
     ichingPracticalHeading: "易経",
     ichingPracticalBody:
-      "開かれた問いやジレンマ、時間とともに動いていくテーマに向きます。卦と該当する変爻、そして導かれる卦を返します。占いは朱熹の古典規則と原典テキストに従います。",
+      "開かれた問いやジレンマ、時間とともに動いていくテーマに向きます。卦と該当する変爻、そして導かれる卦を返します。占いはアルフレッド・ホアンの還元システムと原典テキストに従います。",
     ichingTraditionNote:
-      "このアプリは両者のベストを融合しています。朱熹の古典規則を基礎としつつ、現代正統派（アルフレッド・ファン師）の洗練を加えることで、どの変爻の組み合わせでも——曖昧なケースを含め——常に的確な主爻テキストが得られます。",
+      "このアプリはアルフレッド・ホアンの一爻還元システムを採用しています。朱熹の古典的な枠組みをその前身としつつ、どの変爻の組み合わせでも常に的確な主爻テキストが一つに定まります。",
     coinsPracticalHeading: "三銭",
     coinsPracticalBody:
       "易経をすばやく立てる方法です。自動（アプリが立てる）または手動（自分の銭から六爻を入力）で使えます。結果と解釈はどちらの方式でも同じです。",
@@ -818,7 +818,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "短い問いに短い答え。常に自動で動作します。システムが亀裂のパターンと判定を生成し、AIがあなたの言語で表現します。長い分析より、その場の確認や直接的な明瞭さがほしいときに役立ちます。",
     ichingCastModeHeading: "易経：自動か手動の占い",
     ichingCastModeP1:
-      "オプションで易経を選ぶと占い方を選べます。どちらもサーバー側で朱熹の同じルールと同じ本文系を適用します。解釈の前に六爻を誰が確定するかだけが異なります。",
+      "オプションで易経を選ぶと占い方を選べます。どちらもサーバー側で同じ古典的な爻選択ルールと同じ本文系を適用します。解釈の前に六爻を誰が確定するかだけが異なります。",
     ichingCastAutoLi:
       "自動：送信すると儀式が卦の展開をアニメーションし、六爻はサーバーで得られます。",
     ichingCastManualLi:
@@ -910,9 +910,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "易经和甲骨是两种不同的方法。易经按卦象与爻辞解读，并有两种起卦方式：三钱与蓍草。甲骨自成体系，不形成卦象。",
     ichingPracticalHeading: "易经",
     ichingPracticalBody:
-      "适合开放性问题、两难抉择以及随时间展开的过程。返回一个本卦、相应的变爻以及之卦（若有）。解读遵循朱熹的古典规则与原典文本。",
+      "适合开放性问题、两难抉择以及随时间展开的过程。返回一个本卦、相应的变爻以及之卦（若有）。解读遵循 Alfred Huang 的归简系统与原典文本。",
     ichingTraditionNote:
-      "本应用融合两者之长：以朱熹古典规则为基础，结合现代正统学派（黄明珍师）的精炼，确保每种变爻组合——包括边界情况——都能呈现一个精准、明确的主导爻辞。",
+      "本应用采用 Alfred Huang 的单爻归简系统，以朱熹的古典框架为其源头，确保每种变爻组合都能呈现一个精准、明确的主导爻辞。",
     coinsPracticalHeading: "三钱",
     coinsPracticalBody:
       "起易经最快捷的方式。可在自动模式下使用（由应用代为投掷），也可在手动模式下使用（你根据自己的实物投掷输入六爻）。两种模式的结果与解读相同。",
@@ -924,7 +924,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "问题简短，回答简短。始终为自动模式：系统生成裂纹形态与判词，AI 用你的语言加以表达。适合就事论事的确认，或希望直接获得清晰指向而非长篇分析的场合。",
     ichingCastModeHeading: "易经：自动起卦或手动起卦",
     ichingCastModeP1:
-      "在选项中选择易经后，可选择起卦方式。两种方式服务器都应用相同的朱熹规则与同一套文本；差别仅在于六爻由谁确定。",
+      "在选项中选择易经后，可选择起卦方式。两种方式服务器都应用相同的古典爻位选择规则与同一套文本；差别仅在于六爻由谁确定。",
     ichingCastAutoLi: "自动：发送咨询后会有仪式动画，六爻由服务器生成。",
     ichingCastManualLi:
       "手动：打开助手自下而上逐爻输入。三钱法时输入字/背；蓍草时按你的实际操作逐爻记录。六爻完成后显示卦象预览，直到解读返回。请确保输入与您实际操作一致。",
@@ -1018,9 +1018,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "역경과 갑골은 서로 다른 방법입니다. 역경은 괘와 효로 풀이하며 점치는 방식이 두 가지(삼전과 시초)입니다. 갑골은 괘를 만들지 않고 독자적인 흐름을 따릅니다.",
     ichingPracticalHeading: "역경",
     ichingPracticalBody:
-      "열린 질문, 딜레마, 시간 속에서 펼쳐지는 흐름에 적합합니다. 본괘와 해당하는 동효, 그리고 지괘가 있다면 함께 돌려줍니다. 풀이는 주희의 고전 규칙과 원전 텍스트를 따릅니다.",
+      "열린 질문, 딜레마, 시간 속에서 펼쳐지는 흐름에 적합합니다. 본괘와 해당하는 동효, 그리고 지괘가 있다면 함께 돌려줍니다. 풀이는 Alfred Huang의 환원 체계와 원전 텍스트를 따릅니다.",
     ichingTraditionNote:
-      "이 앱은 두 세계의 장점을 결합합니다. 주희의 고전 규칙을 토대로 현대 정통파 학파(알프레드 황 스승)의 정제를 더해, 어떤 동효 조합에서도 — 모호한 경우를 포함해 — 항상 정확한 지도 효사를 얻을 수 있습니다.",
+      "이 앱은 Alfred Huang의 단일 효 환원 체계를 구현하며, 주희의 고전적 틀을 그 선행 구조로 삼습니다. 그래서 어떤 동효 조합에서도 항상 정확한 지도 효사 하나를 얻을 수 있습니다.",
     coinsPracticalHeading: "삼전(三錢)",
     coinsPracticalBody:
       "역경을 빠르게 세우는 방법입니다. 자동(앱이 대신 던짐)과 수동(직접 동전을 던지고 여섯 효를 입력) 양쪽으로 쓸 수 있습니다. 결과와 풀이는 두 방식 모두 동일합니다.",
@@ -1032,7 +1032,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "짧은 질문에 짧은 답. 항상 자동으로 작동합니다. 시스템이 균열 패턴과 판정을 만들고 AI가 당신의 언어로 표현합니다. 긴 분석보다 즉시 확인이나 분명한 방향이 필요할 때 유용합니다.",
     ichingCastModeHeading: "역경: 자동 또는 수동 점",
     ichingCastModeP1:
-      "옵션에서 역경을 선택하면 점 방식을 고를 수 있습니다. 두 경우 모두 서버는 동일한 주희 규칙과 동일한 텍스트 체계를 적용합니다. 해석 전 여섯 효를 누가 확정하느냐만 다릅니다.",
+      "옵션에서 역경을 선택하면 점 방식을 고를 수 있습니다. 두 경우 모두 서버는 동일한 고전적 효 선택 규칙과 동일한 텍스트 체계를 적용합니다. 해석 전 여섯 효를 누가 확정하느냐만 다릅니다.",
     ichingCastAutoLi:
       "자동: 전송하면 의식 애니메이션이 재생되고 여섯 효는 서버에서 생성됩니다.",
     ichingCastManualLi:
@@ -1126,9 +1126,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "I Ching والعظام طريقتان مختلفتان. يقرأ I Ching وفق الهكساغرام والخطوط ويتيح أسلوبين للقَسْم: ثلاث عملات وعيدان الزنبق. تتبع العظام مخططها الخاص بدون هكساغرام.",
     ichingPracticalHeading: "I Ching",
     ichingPracticalBody:
-      "مناسب للأسئلة المفتوحة، والمآزق، والمسارات التي تنكشف عبر الزمن. يعيد هكساغرامًا، والخطوط المتحركة المنطبقة، والهكساغرام الناتج إن وُجد. يتبع التفسير قواعد زو شي الكلاسيكية والنصوص الأصلية للكتاب.",
+      "مناسب للأسئلة المفتوحة، والمآزق، والمسارات التي تنكشف عبر الزمن. يعيد هكساغرامًا، والخطوط المتحركة المنطبقة، والهكساغرام الناتج إن وُجد. يتبع التفسير نظام ألفريد هوانغ للاختزال والنصوص الأصلية للكتاب.",
     ichingTraditionNote:
-      "يجمع التطبيق أفضل العالمين: قواعد زو شي الكلاسيكية أساسًا، مُصقَّلةً بالمدرسة الأرثوذكسية الحديثة (الأستاذ ألفريد هوانغ)، لضمان أن كل تركيبة من الخطوط — بما في ذلك الحالات الغامضة — تُنتج دائمًا نصًا راهنًا دقيقًا.",
+      "يطبّق التطبيق نظام ألفريد هوانغ لاختزال الخط الواحد، مع قواعد زو شي الكلاسيكية كأصل تاريخي لهذا البناء، لضمان أن كل تركيبة من الخطوط المتغيرة تُنتج دائمًا نصًا راهنًا واحدًا ودقيقًا.",
     coinsPracticalHeading: "الثلاث عملات",
     coinsPracticalBody:
       "الطريقة السريعة لقَسْم I Ching. تعمل تلقائيًا (يقوم التطبيق بالقَسْم) أو يدويًا (تُدخل الخطوط الستة من رميتك الحقيقية). النتيجة والتفسير متطابقتان في الحالتين.",
@@ -1140,7 +1140,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "سؤال موجز، إجابة موجزة. تعمل دائمًا تلقائيًا: يولّد النظام نمط الشقوق والحكم، ويعبر عنه الذكاء الاصطناعي بلغتك. مفيدة للتأكيدات السريعة أو حين تطلب وضوحًا مباشرًا بدلاً من تحليل مطوّل.",
     ichingCastModeHeading: "I Ching: قَسْم تلقائي أو يدوي",
     ichingCastModeP1:
-      "عند اختيار I Ching في الخيارات يمكنك اختيار أسلوب القَسْم. في الحالتين يطبق الخادم نفس قواعد زو شي ونفس المرجع النصي؛ يتغيّر فقط من يثبت الخطوط الستة قبل التفسير.",
+      "عند اختيار I Ching في الخيارات يمكنك اختيار أسلوب القَسْم. في الحالتين يطبق الخادم نفس قواعد اختيار الخط الكلاسيكية ونفس المرجع النصي؛ يتغيّر فقط من يثبت الخطوط الستة قبل التفسير.",
     ichingCastAutoLi:
       "تلقائي: عند الإرسال يعرض الطقس الحركة وتُولَّد الخطوط الستة على الخادم.",
     ichingCastManualLi:
@@ -1235,9 +1235,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "I Ching और हड्डियाँ अलग विधियाँ हैं। I Ching हेक्साग्राम और रेखाओं के माध्यम से पढ़ता है और दो कास्टिंग मोड प्रदान करता है: तीन सिक्के और यारो छड़ें। हड्डियाँ अपनी अलग प्रणाली से चलती हैं, हेक्साग्राम के बिना।",
     ichingPracticalHeading: "I Ching",
     ichingPracticalBody:
-      "खुले प्रश्नों, द्वंद्वों और समय में खुलने वाली प्रक्रियाओं के लिए उपयोगी। यह एक हेक्साग्राम, लागू होने वाली परिवर्तित रेखाएँ और परिणामी हेक्साग्राम (यदि कोई हो) लौटाता है। पठन झू शी के शास्त्रीय नियमों और पुस्तक के प्रामाणिक पाठों का अनुसरण करता है।",
+      "खुले प्रश्नों, द्वंद्वों और समय में खुलने वाली प्रक्रियाओं के लिए उपयोगी। यह एक हेक्साग्राम, लागू होने वाली परिवर्तित रेखाएँ और परिणामी हेक्साग्राम (यदि कोई हो) लौटाता है। पठन अल्फ्रेड हुआंग की न्यूनीकरण प्रणाली और पुस्तक के प्रामाणिक पाठों का अनुसरण करता है।",
     ichingTraditionNote:
-      "यह ऐप दोनों दुनियाओं का सर्वश्रेष्ठ जोड़ती है: झू शी के शास्त्रीय नियमों को आधार के रूप में और आधुनिक रूढ़िवादी विद्यालय (गुरु अल्फ्रेड हुआंग) के परिशोधनों के साथ — ताकि परिवर्तनशील रेखाओं का हर संयोजन, अस्पष्ट मामलों सहित, हमेशा एक सटीक मार्गदर्शक पाठ उत्पन्न करे।",
+      "यह ऐप अल्फ्रेड हुआंग की एक-रेखा न्यूनीकरण प्रणाली को लागू करता है, जिसमें झू शी की शास्त्रीय संरचना इसके ऐतिहासिक आधार के रूप में है — ताकि परिवर्तनशील रेखाओं का हर संयोजन हमेशा एक सटीक मार्गदर्शक पाठ उत्पन्न करे।",
     coinsPracticalHeading: "तीन सिक्के",
     coinsPracticalBody:
       "I Ching डालने का त्वरित तरीका। यह स्वचालित मोड में (ऐप कास्ट करता है) या मैन्युअल मोड में (आप अपने वास्तविक सिक्कों से छह रेखाएँ दर्ज करते हैं) चलता है। दोनों मोड में परिणाम और व्याख्या समान होते हैं।",
@@ -1249,7 +1249,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "छोटा प्रश्न, छोटा उत्तर। हमेशा स्वचालित रूप से चलती है: सिस्टम दरार पैटर्न और निर्णय बनाता है, और AI इसे आपकी भाषा में व्यक्त करती है। त्वरित पुष्टि या सीधे स्पष्टता के लिए उपयोगी, लंबे विश्लेषण के बजाय।",
     ichingCastModeHeading: "I Ching: स्वचालित या मैन्युअल कास्ट",
     ichingCastModeP1:
-      "विकल्पों में I Ching चुनने पर आप कास्ट मोड चुन सकते हैं। दोनों स्थितियों में सर्वर समान झू शी नियम और समान पाठ आधार लागू करता है; केवल यह बदलता है कि व्याख्या से पहले छह रेखाएँ कौन तय करता है।",
+      "विकल्पों में I Ching चुनने पर आप कास्ट मोड चुन सकते हैं। दोनों स्थितियों में सर्वर समान शास्त्रीय रेखा-चयन नियम और समान पाठ आधार लागू करता है; केवल यह बदलता है कि व्याख्या से पहले छह रेखाएँ कौन तय करता है।",
     ichingCastAutoLi:
       "स्वचालित: भेजने पर अनुष्ठान चित्रण चलाता है और छह रेखाएँ सर्वर पर बनती हैं।",
     ichingCastManualLi:
