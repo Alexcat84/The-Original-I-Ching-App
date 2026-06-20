@@ -11,6 +11,7 @@ Single canonical location for audit reports, incident write-ups, post-fix follow
 
 | Date | Document | Topic | Status |
 |---|---|---|---|
+| 2026-06-20 | [LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md](./LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md) | Huang/Zhu Xi line-reading selector — plan + audit (9 findings, not yet implemented) | 📋 Audited, pending fixes |
 | 2026-06-19 | [RN_NAVIGATE_TO_ROUTER_RACE_AUDIT_2026-06-19.md](./RN_NAVIGATE_TO_ROUTER_RACE_AUDIT_2026-06-19.md) | `__rnNavigateTo` × Next.js App Router race condition | ✅ Fixed |
 | 2026-06-19 | [AXIOM_LOGIN_SPIKE_AUDIT_2026-06-19.md](./AXIOM_LOGIN_SPIKE_AUDIT_2026-06-19.md) | `/login` traffic spike — Google WRS crawl, not real logins | ✅ Diagnosed |
 | 2026-06-19 | [AUDIT_2026-06-19_data-safety-resolucion.md](./AUDIT_2026-06-19_data-safety-resolucion.md) | Play Console Data Safety rejection (vc49, Device or other IDs) | ✅ Resolved |
