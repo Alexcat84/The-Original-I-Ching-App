@@ -4,6 +4,8 @@ export type SelectedLineText = {
   position: number;
   text: string;
   fromHexagram: "primary" | "transformed";
+  /** Zhu Xi multi-line cases (2/4 changing): which line leads. */
+  emphasis?: "primary" | "secondary";
 };
 
 /**
@@ -52,7 +54,10 @@ export function buildLineCitationRetryParams(
   const reminder =
     '⚠️ MANDATORY LINE CITATION — your "Líneas en movimiento" / "Lines in motion" section MUST include a verbatim blockquote (> *exact text*) for each line below. Do not describe or paraphrase — quote verbatim:\n' +
     selectedLineTexts
-      .map((lt) => `  Line ${lt.position} [${lt.fromHexagram}]: "${lt.text}"`)
+      .map(
+        (lt) =>
+          `  Line ${lt.position} [${lt.fromHexagram}${lt.emphasis ? `, ${lt.emphasis}` : ""}]: "${lt.text}"`,
+      )
       .join("\n") +
     "\n\n";
 

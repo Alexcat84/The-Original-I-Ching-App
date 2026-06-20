@@ -3,10 +3,12 @@
 **Feature:** selector de UI para elegir entre el sistema de reducción de Alfred Huang (actual,
 default) y las reglas clásicas de Zhu Xi para casos de 2/3/4 líneas cambiantes.
 **Fecha auditoría:** 20 jun 2026 · **Autor del plan/patches:** Claude Opus 4.8 (sesión previa) ·
-**Auditor:** Claude Sonnet 4.6 · **Estado:** Plan + 3 patches entregados y **auditados contra el
-código real del repo** (no en aislado), y posteriormente **implementados en 5 commits** en la
-rama `feat/line-reading-system-selector` (ver Parte 3, abajo). Pendiente: aplicar la migración
-074 en Supabase, correr la QA con la API real, y mergear la rama a `staging`/`main`.
+**Auditor:** Claude Sonnet 4.6 · **Re-auditoría + remediación:** Claude Opus 4.8 (ver Parte 4) ·
+**Estado:** Plan + 3 patches entregados y **auditados contra el código real del repo** (no en
+aislado), **implementados en 5 commits** (ver Parte 3) y posteriormente **re-auditados contra
+código + tests + `tsc` en vivo**, detectando 1 hallazgo HIGH nuevo (H10) + 2 menores (H11/H12)
+ya **remediados** (ver Parte 4). Pendiente: aplicar la migración 074 en Supabase, correr la QA
+con la API real, y mergear la rama a `staging`/`main`.
 
 ---
 
@@ -552,3 +554,89 @@ Cada afirmación de código de esta Parte 3 (números de línea, nombres de func
 `verify_migrations.sql`) fue re-confirmada por `grep`/lectura directa del código real del repo en
 el momento de escribir este documento (20 jun 2026), no copiada únicamente de los mensajes de
 commit.
+
+---
+
+## Parte 4 — Re-auditoría de verificación + remediación (20 jun 2026)
+
+**Auditor/implementador:** Claude Opus 4.8. **Método:** se re-leyó cada archivo tocado por los 5
+commits contra el código real del repo, se rastrearon los consumidores de los campos nuevos
+(lectura de historial, no solo escritura), y se **ejecutaron en vivo** los tests y el typecheck
+(no se asumieron del registro de la Parte 3): `vitest` 113/113 en `iching-engine` (incluidos los
+37 de `engine.line-reading-systems.test.ts`), `tsc --noEmit` limpio en `backend/claude` **y**
+`apps/web`. **Resultado:** los 9 hallazgos de la Parte 2 están **genuinamente resueltos en
+código** (confirmado 1:1). Se detectó **1 hallazgo HIGH nuevo** que la Parte 2 no vio —es una
+consecuencia directa de su propia decisión de diseño en H5/H6— más 2 menores. Los tres se
+**remediaron en esta sesión**.
+
+### 🔴 H10 (HIGH, nuevo) — La cascada de **lectura** de historial no tiene tier de fallback para `line_reading_system`
+
+**Problema:** `apps/web/src/lib/session-store.ts` → `getUserSessionThreadMeta` (Fase 1 de carga
+de hilo) detectaba columnas faltantes **por substring del mensaje de error**, pero solo
+ramificaba sobre `"oracle_type"` y `"translator"`. La Parte 3 (H5) metió la columna nueva dentro
+de `META_COLS_BASE`/`META_COLS_WITH_ORACLE` **sin** añadir una rama de detección para
+`line_reading_system`, siguiendo la recomendación de H5 de no crear un tier `_LEGACY` nuevo.
+
+Efecto concreto si el código se despliega **antes** de aplicar la migración 074 (escenario
+real y vigente: la 074 **no está aplicada** y la rama se mergeará a `staging`): el primer
+`SELECT` con `META_COLS_WITH_ORACLE` falla con `column consultations.line_reading_system does
+not exist`. En un entorno donde `oracle_type` y `translator` ya existen (producción actual), ese
+mensaje **no contiene** `"oracle_type"` ni `"translator"`, así que **ninguna rama de la cascada
+se ejecutaba**, `consultError` persistía y la función retornaba `null` → **todos los hilos del
+historial dejaban de cargar** (no "degradación silenciosa a huang" como sugería H6, sino fallo
+duro de lectura).
+
+**Contradicción con H6:** la Parte 2 declaró el "hazard de orden" *sobredimensionado* porque la
+ruta de **escritura** tiene el fallback de RPC (`persist_rpc_fallback_engaged`). Cierto para
+escritura. Pero la ruta de **lectura** es independiente y no tenía amortiguación alguna para esta
+columna; el hazard ahí estaba **subestimado**, no sobredimensionado. La decisión de H5 de omitir
+un tier nuevo eliminó la defensa en profundidad que sí existe para `translator`/`oracle_type`,
+cuyo propósito exacto es cubrir la ventana de lag deploy(Vercel)→migración(Supabase).
+
+**Remediación aplicada:** se reemplazó la cascada anidada por un **ladder descendente** de
+conjuntos de columnas (`META_COL_TIERS`), recorrido en orden de mayor a menor riqueza; ante un
+error que menciona cualquier columna opcional (`line_reading_system`/`translator`/`oracle_type`)
+se baja un escalón en vez de abortar. Se añadió el tier intermedio
+`META_COLS_WITH_ORACLE_NO_LRS` (`translator + oracle_type`, sin `line_reading_system`) para que,
+con 074 sin aplicar, la lectura conserve `translator`/`oracle_type` y solo pierda
+`line_reading_system` (que cae a `'huang'` por el `?? "huang"` del mapper, comportamiento
+correcto pre-migración). Cualquier error que **no** sea de columna opcional detiene el ladder y
+surfacea como `null` (comportamiento previo preservado para errores reales). En DB moderna (074
+aplicada) el primer tier acierta a la primera: una sola query, igual que antes.
+
+### 🟡 H11 (bajo) — `ADD CONSTRAINT` de la migración 074 no era idempotente
+
+**Problema:** `074_line_reading_system.sql` usaba `ADD COLUMN IF NOT EXISTS` (idempotente) pero
+`ADD CONSTRAINT consultations_line_reading_system_check` **sin** guarda. Una re-ejecución o una
+aplicación parcial previa de la migración fallaría con `constraint already exists`, contra la
+disciplina de migraciones del proyecto.
+
+**Remediación aplicada:** se antepuso `ALTER TABLE ... DROP CONSTRAINT IF EXISTS
+consultations_line_reading_system_check;` antes del `ADD CONSTRAINT`, haciendo el bloque
+idempotente. (Seguro de editar: la migración aún no se ha aplicado a ningún proyecto Supabase.)
+
+### 🟡 H12 (bajo, cosmético) — `emphasis` no se propagaba al recordatorio del gate de reintento H2
+
+**Problema:** `backend/claude/src/interpretation-line-gate.ts` → el tipo `SelectedLineText` no
+incluía `emphasis`, y `buildLineCitationRetryParams` renderizaba `[${lt.fromHexagram}]` sin la
+marca `[primary]/[secondary]`. Inconsistente con `formatLineEntry` (que sí la lleva), aunque sin
+impacto en los gates (iteran por array) ni en el render principal.
+
+**Remediación aplicada:** se añadió `emphasis?: "primary" | "secondary"` a `SelectedLineText` y
+se incluyó la marca en el recordatorio de reintento, alineándolo con `formatLineEntry`.
+
+### Verificación post-remediación (en vivo, 20 jun 2026)
+
+- `vitest run` en `iching-engine`: **113/113** verde tras los cambios.
+- `tsc --noEmit` limpio en `backend/claude` y `apps/web` tras los cambios.
+- Archivos tocados en la remediación: `apps/web/src/lib/session-store.ts` (H10),
+  `backend/db/migrations/074_line_reading_system.sql` (H11),
+  `backend/claude/src/interpretation-line-gate.ts` (H12).
+
+### Pendiente (sin cambios respecto a Parte 3)
+
+1. **Migración 074 aún sin aplicar** en ningún proyecto Supabase. El fix H10 ahora hace la
+   lectura tolerante a la ventana pre-migración, pero la 074 sigue siendo bloqueante antes de
+   cualquier deploy con tráfico real (la escritura del campo y su lectura fiel dependen de ella).
+2. **`scripts/line-reading-system-qa.mjs` sin ejecutar** (consume tokens reales).
+3. **Sin push a `origin` ni merge** a `staging`/`main` — decisión explícita del usuario.

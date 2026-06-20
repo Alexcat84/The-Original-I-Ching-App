@@ -489,6 +489,21 @@ const META_COLS_LEGACY =
 const META_COLS_BASE = `${META_COLS_LEGACY}, translator, line_reading_system`;
 const META_COLS_WITH_ORACLE_LEGACY = `${META_COLS_LEGACY}, oracle_type`;
 const META_COLS_WITH_ORACLE = `${META_COLS_BASE}, oracle_type`;
+// translator + oracle_type WITHOUT line_reading_system: recovers reads while
+// migration 074 has not landed yet but translator/oracle_type already exist.
+const META_COLS_WITH_ORACLE_NO_LRS = `${META_COLS_LEGACY}, translator, oracle_type`;
+
+// Descending column ladder (richest first). The reader walks down this list on a
+// "missing optional column" error so a lagging migration degrades to fewer columns
+// instead of returning null (which would make the whole thread fail to load).
+const META_COL_TIERS: readonly string[] = [
+  META_COLS_WITH_ORACLE,
+  META_COLS_BASE,
+  META_COLS_WITH_ORACLE_NO_LRS,
+  META_COLS_WITH_ORACLE_LEGACY,
+  META_COLS_LEGACY,
+];
+const OPTIONAL_META_COLUMNS = ["line_reading_system", "translator", "oracle_type"] as const;
 
 /** Build a StoredConsultation from a meta-only row (no interpretation/oracle_bones).
  *  Sets interpretation = interpretation_summary so the UI has a readable placeholder. */
@@ -571,56 +586,22 @@ export async function getUserSessionThreadMeta(
   let consultRows: unknown[] | null = null;
   let consultError: { message?: string } | null = null;
 
-  const res = await supabase
-    .from("consultations")
-    .select(META_COLS_WITH_ORACLE)
-    .eq("user_id", userId)
-    .eq("session_id", sessionId)
-    .order("session_position", { ascending: true });
-  consultRows = res.data as unknown[] | null;
-  consultError = res.error;
-
-  if (consultError) {
+  // Walk the column ladder: on a missing optional column (e.g. line_reading_system
+  // before migration 074 lands, or translator/oracle_type on a lagging env) step
+  // down to a smaller column set instead of failing the entire thread read. A
+  // non-column error (network, RLS, etc.) stops the walk and surfaces as null.
+  for (const cols of META_COL_TIERS) {
+    const r = await supabase
+      .from("consultations")
+      .select(cols)
+      .eq("user_id", userId)
+      .eq("session_id", sessionId)
+      .order("session_position", { ascending: true });
+    consultRows = r.data as unknown[] | null;
+    consultError = r.error;
+    if (!consultError) break;
     const msg = consultError.message ?? "";
-    if (msg.includes("oracle_type")) {
-      const r2 = await supabase
-        .from("consultations")
-        .select(META_COLS_BASE)
-        .eq("user_id", userId)
-        .eq("session_id", sessionId)
-        .order("session_position", { ascending: true });
-      consultRows = r2.data as unknown[] | null;
-      consultError = r2.error;
-      if (consultError?.message?.includes("translator")) {
-        const r3 = await supabase
-          .from("consultations")
-          .select(META_COLS_LEGACY)
-          .eq("user_id", userId)
-          .eq("session_id", sessionId)
-          .order("session_position", { ascending: true });
-        consultRows = r3.data as unknown[] | null;
-        consultError = r3.error;
-      }
-    } else if (msg.includes("translator")) {
-      const r2 = await supabase
-        .from("consultations")
-        .select(META_COLS_WITH_ORACLE_LEGACY)
-        .eq("user_id", userId)
-        .eq("session_id", sessionId)
-        .order("session_position", { ascending: true });
-      consultRows = r2.data as unknown[] | null;
-      consultError = r2.error;
-      if (consultError) {
-        const r3 = await supabase
-          .from("consultations")
-          .select(META_COLS_LEGACY)
-          .eq("user_id", userId)
-          .eq("session_id", sessionId)
-          .order("session_position", { ascending: true });
-        consultRows = r3.data as unknown[] | null;
-        consultError = r3.error;
-      }
-    }
+    if (!OPTIONAL_META_COLUMNS.some((c) => msg.includes(c))) break;
   }
   if (consultError) return null;
 

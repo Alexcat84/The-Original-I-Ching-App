@@ -4,6 +4,10 @@
 ALTER TABLE public.consultations
   ADD COLUMN IF NOT EXISTS line_reading_system text NOT NULL DEFAULT 'huang';
 
+-- Idempotent: ADD CONSTRAINT has no IF NOT EXISTS, so drop any prior copy first
+-- (a partial/re-run of this migration would otherwise fail with "already exists").
+ALTER TABLE public.consultations
+  DROP CONSTRAINT IF EXISTS consultations_line_reading_system_check;
 ALTER TABLE public.consultations
   ADD CONSTRAINT consultations_line_reading_system_check
   CHECK (line_reading_system IN ('huang', 'zhuxi'));
