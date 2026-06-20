@@ -28,3 +28,7 @@ tools/fallback-tools/_sim*.mjs
 .agents/
 .tmp/
 skills-lock.json
+# Temporary QA / audit artifacts (root junk + line-reading QA outputs) - never commit
+mis_logs.json
+reportsnpm-audit-raw.json
+reports/lrs-qa-*
