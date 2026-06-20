@@ -4826,11 +4826,7 @@ export default function HomePage() {
                   }}
                 >
                   {oracleMode === "iching"
-                    ? `${ichingCastingMethod === "yarrow-stalks" ? manualWizardChrome.castMethodYarrowLabel.split(" (")[0] : manualWizardChrome.castMethodCoinsLabel} · ${
-                        ichingLineReadingSystem === "zhuxi"
-                          ? manualWizardChrome.lineReadingSystemZhuxiShort
-                          : manualWizardChrome.lineReadingSystemHuangShort
-                      } · ${
+                    ? `${
                         translatorId === "wilhelm"
                           ? "Wilhelm/Baynes"
                           : translatorId === "legge"
@@ -4838,7 +4834,11 @@ export default function HomePage() {
                             : translatorId === "zhouyi"
                               ? "Zhou Yi"
                               : "Master Synthesis"
-                      }`
+                      } · ${
+                        ichingLineReadingSystem === "zhuxi"
+                          ? manualWizardChrome.lineReadingSystemZhuxiShort
+                          : manualWizardChrome.lineReadingSystemHuangShort
+                      } · ${ichingCastingMethod === "yarrow-stalks" ? manualWizardChrome.castMethodYarrowLabel.split(" (")[0] : manualWizardChrome.castMethodCoinsLabel}`
                     : ui.bonesTagline}
                 </p>
               </div>
