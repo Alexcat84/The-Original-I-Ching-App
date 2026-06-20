@@ -8,6 +8,7 @@ import { getUpstashRedis } from "@/lib/rate-limit";
 import type { SupabaseOpTelemetry } from "@/lib/supabase-telemetry";
 import { isPersistableUuid } from "@/lib/session-ids";
 import { randomBytes } from "node:crypto";
+import { Logger } from "next-axiom";
 
 const SESSION_SUMMARIES_CACHE_TTL_SECONDS = 60;
 
@@ -42,6 +43,7 @@ export interface StoredConsultation {
   transformedHexagramChinese?: string | null;
   mutationRule: string;
   translator?: string | null;
+  lineReadingSystem?: "huang" | "zhuxi" | null;
   lines: Array<{
     position: 1 | 2 | 3 | 4 | 5 | 6;
     value: 6 | 7 | 8 | 9;
@@ -215,6 +217,7 @@ export async function upsertSessionAndConsultation(params: {
     changing_lines: params.consultation.changingLines,
     mutation_rule: params.consultation.mutationRule,
     translator: params.consultation.translator ?? null,
+    line_reading_system: params.consultation.lineReadingSystem ?? "huang",
     category: params.consultation.category,
     image_url: params.consultation.imageUrl,
     thumbnail_url:
@@ -287,6 +290,7 @@ export async function upsertSessionAndConsultation(params: {
         p_interpretation: params.consultation.interpretation,
         p_oracle_bones: params.consultation.oracleBones ?? null,
         p_is_public: false,
+        p_line_reading_system: params.consultation.lineReadingSystem ?? "huang",
       },
     );
 
@@ -297,6 +301,14 @@ export async function upsertSessionAndConsultation(params: {
         msg.includes("persist_consultation_with_content") ||
         msg.includes("Could not find the function")
       ) {
+        new Logger({ source: "lib/session-store" }).warn(
+          "persist_rpc_fallback_engaged",
+          {
+            userId: params.userId,
+            sessionId: params.consultation.sessionId,
+            rpcError: msg,
+          },
+        );
         const withOraclePayload = {
           ...consultationBasePayload,
           interpretation: params.consultation.interpretation,
@@ -474,7 +486,7 @@ export async function getUserSessionSummaries(
 
 const META_COLS_LEGACY =
   "id, session_id, session_position, question, language, lines, primary_hexagram_number, primary_hexagram_name, primary_hexagram_chinese, transformed_hexagram_number, transformed_hexagram_name, changing_lines, mutation_rule, category, interpretation_summary, image_url, thumbnail_url, public_sharing_id, created_at";
-const META_COLS_BASE = `${META_COLS_LEGACY}, translator`;
+const META_COLS_BASE = `${META_COLS_LEGACY}, translator, line_reading_system`;
 const META_COLS_WITH_ORACLE_LEGACY = `${META_COLS_LEGACY}, oracle_type`;
 const META_COLS_WITH_ORACLE = `${META_COLS_BASE}, oracle_type`;
 
@@ -495,6 +507,7 @@ function consultationMetaFromDbRow(data: {
   changing_lines: number[];
   mutation_rule: string;
   translator?: string | null;
+  line_reading_system?: string | null;
   category: string;
   interpretation_summary?: string | null;
   image_url: string | null;
@@ -520,6 +533,7 @@ function consultationMetaFromDbRow(data: {
         : null,
     mutationRule: data.mutation_rule,
     translator: data.translator ?? null,
+    lineReadingSystem: (data.line_reading_system as "huang" | "zhuxi" | null) ?? "huang",
     lines: data.lines,
     changingLines: data.changing_lines,
     interpretation: data.interpretation_summary ?? "",
