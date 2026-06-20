@@ -830,3 +830,86 @@ inexacto); en `ja` se translitereó como アルフレッド・ホアン junto al
 **Git:** commit `26ebfd4` en `feat/line-reading-system-selector` (pusheado) → merge `--no-ff`
 `cdaf73d` en `staging` (pusheado, deploy Vercel). Pendiente: validación visual en staging desplegado
 de `/guia#modos-consulta`, `/notes` y `/faqs`. **Aún NO promovido a `main`.**
+
+---
+
+# Parte 9 — Verificación independiente de las Partes 4-8 (20 jun 2026, Claude Sonnet 4.6)
+
+Tras detectar que las Partes 4-8 fueron producidas por una sesión externa (Cursor / Claude Opus
+4.8) sin intervención del agente que mantenía esta auditoría hasta la Parte 3, se realizó una
+**re-verificación independiente** de cada afirmación contra el código real en `origin/staging`
+(`b699a47`), sin asumir que el texto de las Partes 4-8 fuera correcto solo por estar escrito.
+Metodología: primero un gate amplio (tests + compilación de toda la cadena de paquetes), luego
+spot-checks dirigidos archivo por archivo de cada remediación puntual.
+
+## 9.1 — Gate amplio
+
+| Verificación | Resultado |
+|---|---|
+| `git log` / `git diff --stat` de los commits narrados en Partes 4-8 | Existen en `origin/staging` en la secuencia exacta documentada (`338247e` → `b699a47`); diffstat (27 archivos, +1776/-373) coincide con el listado de archivos de las Partes 4-8, sin archivos no documentados. |
+| `origin/main` | Sigue en `0aaf432`/`62a6dc1` — ninguna de las Partes 3-8 llegó a `main`, consistente con lo declarado. |
+| `npx vitest run` en `packages/iching-engine` | **113/113 PASS** (3 suites) — coincide con el número que reclama la Parte 4. |
+| `npx vitest run` en `apps/web` | **62/62 PASS** (12 suites). |
+| `npm run build` en `iching-engine` → `context-engine` → `i18n` (orden de dependencias) | Limpio, sin errores `tsc`. |
+| `tsc --noEmit` / `npm run build` en `backend/claude` | Limpio. |
+| `tsc --noEmit` en `apps/web` | Limpio (0 errores) sobre todo el HEAD de `staging`, no solo el diff de una Parte. |
+
+## 9.2 — Spot-checks dirigidos (lectura directa del código, no solo del texto de la auditoría)
+
+| Claim auditado | Archivo:línea verificado | Resultado |
+|---|---|---|
+| H10 — ladder `META_COL_TIERS` (5 niveles descendentes) | `apps/web/src/lib/session-store.ts:487-605` | **Confirmado.** `META_COL_TIERS` recorre 5 sets de columnas de más a menos rico; en error de columna ausente (substring match contra `OPTIONAL_META_COLUMNS`) baja un nivel, en cualquier otro error rompe el loop y devuelve `null`. Comportamiento correcto incluso en el caso límite (074 sin aplicar pero `translator`/`oracle_type` ya existentes): tarda hasta 3 intentos pero termina en `META_COLS_WITH_ORACLE_NO_LRS`, sin perder datos no relacionados. |
+| H11 — idempotencia de migración 074 | `backend/db/migrations/074_line_reading_system.sql:7-13` | **Confirmado.** `DROP CONSTRAINT IF EXISTS consultations_line_reading_system_check;` antepuesto a `ADD CONSTRAINT`, comentario explicando el motivo. `verify_migrations.sql:452-460` ya chequea columna + `pronargs = 24`. |
+| H12 — campo `emphasis` en `SelectedLineText` | `backend/claude/src/interpretation-line-gate.ts:8,59` | **Confirmado.** Tipo `emphasis?: "primary" \| "secondary"` declarado y renderizado en el recordatorio de retry (`buildLineCitationRetryParams`). |
+| `route.ts` devuelve `lineReadingSystem` en la respuesta JSON | `apps/web/src/app/api/consult/route.ts` (6 ocurrencias: líneas 1136, 1142, 1146, 1492, 1739, 1789) | **Confirmado.** |
+| `ConsultationRecordCard.tsx` — fila «Lectura de líneas» | líneas 26, 49, 58-61, 147-148 | **Confirmado.** Renderiza `lineReadingSystemHuangShort`/`ZhuxiShort` según el valor persistido. |
+| Fix de hardcode en tagline (`oracle-tagline`) | `apps/web/src/app/page.tsx:4828-4842` | **Confirmado.** Ya no hay literal `"· Zhu Xi ·"`; el segmento es `ichingLineReadingSystem === "zhuxi" ? manualWizardChrome.lineReadingSystemZhuxiShort : manualWizardChrome.lineReadingSystemHuangShort`. |
+| Reorden DOM Traductor → Lectura de líneas → Método → Ejecución | `page.tsx:5469` (`#tour-translator`), `5530` (`#tour-line-reading-system`), `5586` (`#tour-cast-method`), `5706` (`#tour-cast-mode`) | **Confirmado.** Orden físico en el JSX coincide exactamente con el orden narrado. |
+| Tour Joyride reordenado en el mismo sentido | `page.tsx:7042-7045` (array de steps) | **Confirmado.** `#tour-translator` → `#tour-line-reading-system` (con `tour.lineReadingTitle/Body`) → `#tour-cast-method` (con `tour.methodTitle/Body`) → `#tour-cast-mode` (con `tour.step6Title/Body`, renombrado a «Ejecución»). |
+| `home-tour-ui.ts`: `step6Title` renombrado a «Ejecución» + `methodTitle`/`methodBody` nuevos | `packages/i18n/src/messages/home-tour-ui.ts` | **Confirmado.** 11/11 locales con las 3 claves completas y coherentes (verificado leyendo cada locale, no solo `es`/`en`). |
+| `lineReadingSystemHuangShort`/`ZhuxiShort` nuevos | `packages/i18n/src/messages/manual-coin-wizard-ui.ts` | **Confirmado.** 22 ocurrencias = 11 locales × 2 claves. |
+| `lineReading` nueva clave en record card y PDF | `consultation-record-ui.ts`, `pdf-export-ui.ts` | **Confirmado.** 11/11 locales en cada archivo. |
+| Em-dash/en-dash → 0 en FAQ/Guía/Notes | conteo directo de caracteres U+2014 (—) y U+2013 (–) en los 3 archivos | **Confirmado.** `0/0` en `faq-page-ui.ts`, `guia-page-ui.ts`, `notes-page-ui.ts`. |
+| Corrección factual en `ichingMethodBody` (ya no afirma Zhu Xi «exacto») | `notes-page-ui.ts:68-69` (es) | **Confirmado.** El texto ahora dice explícitamente que cómo se leen las líneas en movimiento «es una cuestión aparte, que se aborda en la siguiente sección» — ya no reclama implementar Zhu Xi exactamente. |
+| Nuevas secciones `lineReadingHeading`/`Intro`/`Huang*`/`Zhuxi*` realmente renderizadas (no solo declaradas en i18n) | `apps/web/src/app/notes/page.tsx:102-104`, `apps/web/src/app/guia/page.tsx:77` | **Confirmado.** Ambos componentes consumen las claves nuevas en JSX real. |
+
+## 9.3 — Verificación del reporte de QA real (`reports/lrs-qa-2026-06-20T17-46-21-336Z.json`)
+
+Se abrió y analizó el JSON completo (no solo se confió en el resumen narrado en la Parte 5):
+
+- `total: 48, pass: 40, fail: 8` — coincide exactamente con «48/48 generadas, 8 pass:false» de la
+  Parte 5.
+- **0 entradas `blocking` en los 48 registros** (`rows.reduce(blocking.length) === 0`) — confirma
+  «0 fallos de gate bloqueante».
+- **0 registros con `error` distinto de `null`** — ninguna llamada a la API falló.
+- Los 8 `fail` son homogéneos: los 4 casos `two_yy`/`two_same`/`two_same_yin`/`four`, sistema
+  `zhuxi`, ambos traductores probados (`wilhelm`, `master_combined`), todos con
+  `extra: ["expecting N cited lines at X,Y (verify in transcript)"]` y `blocking: []`.
+- Se inspeccionó manualmente el transcript completo de `two_yy · zhuxi · wilhelm` (líneas 770-889
+  de `reports/lrs-qa-2026-06-20T17-46-21-336Z-transcripts.md`): la respuesta cita correctamente
+  **Línea 1 (secundaria)** y **Línea 2 (primaria)**, ambas con texto completo y análisis. El
+  detector del script de QA evidentemente no reconoce el formato `**Línea N** (secundaria)` —
+  **confirma que los 8 `fail` son falsos negativos del arnés de QA, no defectos reales de la
+  respuesta del modelo**, tal como afirma la Parte 5.
+
+## 9.4 — Lo que NO se pudo verificar de forma independiente
+
+- **Aplicación de la migración 074 en el proyecto Supabase de staging**: esta sesión no tiene
+  credenciales de DB ni acceso a Supabase. La afirmación de la Parte 4/5 de que la migración fue
+  aplicada en staging queda como **dato asertado por la sesión externa, no confirmado aquí**. El
+  gate de `tsc`/tests pasa porque el código está preparado para ambos casos (columna presente o
+  ausente, vía el ladder de 9.2), por lo que el sistema es seguro incluso si la migración no
+  estuviera aplicada — pero eso no prueba que sí lo esté.
+- **Validación visual en staging desplegado** (UI real renderizada en navegador/APK) — fuera de
+  alcance de esta sesión, que solo verificó código fuente, tests automatizados y reportes de QA ya
+  generados.
+
+## 9.5 — Conclusión de la re-verificación
+
+**Ninguna discrepancia encontrada.** Todas las afirmaciones técnicamente verificables de las
+Partes 4-8 (remediaciones H10/H11/H12, propagación de `lineReadingSystem` a route/record-card/PDF,
+fix del hardcode de tagline, reorden de panel + tour, limpieza de em-dash, corrección factual en
+notes) se sostienen contra una lectura directa e independiente del código real, los resultados de
+tests ejecutados en esta sesión, y el contenido íntegro del reporte de QA real (no solo su resumen
+narrado). El único punto no verificable de forma independiente es la aplicación efectiva de la
+migración 074 en la base de datos de staging, por ausencia de acceso a credenciales en esta sesión.
