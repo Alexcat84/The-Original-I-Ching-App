@@ -26,6 +26,12 @@ export type LoginPageUiMessages = {
   continueGoogle: string;
   legalConsentTitle: string;
   legalConsentIntro: string;
+  /** Header shown on /auth/complete-legal when an existing user must re-accept updated policies. */
+  legalConsentUpdateTitle: string;
+  legalConsentUpdateIntro: string;
+  /** Neutral header shown on /auth/complete-legal for an authenticated user accepting for the first time. */
+  legalConsentReviewTitle: string;
+  legalConsentReviewIntro: string;
   legalConsentPendingScroll: string;
   legalConsentReady: string;
   legalConsentAccept: string;
@@ -92,6 +98,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Antes de crear tu cuenta",
     legalConsentIntro:
       "Para crear tu cuenta debes leer y aceptar la Política de Privacidad y los Términos del Servicio.",
+    legalConsentUpdateTitle: "Hemos actualizado nuestras políticas",
+    legalConsentUpdateIntro: "Para seguir usando tu cuenta, revisa y acepta la Política de Privacidad y los Términos del Servicio actualizados.",
+    legalConsentReviewTitle: "Antes de continuar",
+    legalConsentReviewIntro: "Para usar tu cuenta debes leer y aceptar la Política de Privacidad y los Términos del Servicio.",
     legalConsentPendingScroll:
       "Desplázate hasta el final para habilitar la aceptación.",
     legalConsentReady: "Ya puedes aceptar y continuar.",
@@ -172,6 +182,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Before you create your account",
     legalConsentIntro:
       "To create your account, you must read and accept the Privacy Policy and Terms of Service.",
+    legalConsentUpdateTitle: "We've updated our policies",
+    legalConsentUpdateIntro: "To keep using your account, please review and accept the updated Privacy Policy and Terms of Service.",
+    legalConsentReviewTitle: "Before you continue",
+    legalConsentReviewIntro: "To use your account you must read and accept the Privacy Policy and the Terms of Service.",
     legalConsentPendingScroll: "Scroll to the end to enable acceptance.",
     legalConsentReady: "You can now accept and continue.",
     legalConsentAccept: "Accept and continue",
@@ -249,6 +263,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Antes de criares a tua conta",
     legalConsentIntro:
       "Para criares a tua conta, deves ler e aceitar a Política de Privacidade e os Termos de Serviço.",
+    legalConsentUpdateTitle: "Atualizámos as nossas políticas",
+    legalConsentUpdateIntro: "Para continuar a usar a tua conta, revê e aceita a Política de Privacidade e os Termos do Serviço atualizados.",
+    legalConsentReviewTitle: "Antes de continuar",
+    legalConsentReviewIntro: "Para usar a tua conta deves ler e aceitar a Política de Privacidade e os Termos do Serviço.",
     legalConsentPendingScroll: "Desce até ao final para ativar a aceitação.",
     legalConsentReady: "Já podes aceitar e continuar.",
     legalConsentAccept: "Aceitar e continuar",
@@ -325,6 +343,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Avant de créer votre compte",
     legalConsentIntro:
       "Pour créer votre compte, vous devez lire et accepter la Politique de confidentialité et les Conditions d'utilisation.",
+    legalConsentUpdateTitle: "Nous avons mis à jour nos politiques",
+    legalConsentUpdateIntro: "Pour continuer à utiliser votre compte, veuillez consulter et accepter la Politique de confidentialité et les Conditions d'utilisation mises à jour.",
+    legalConsentReviewTitle: "Avant de continuer",
+    legalConsentReviewIntro: "Pour utiliser votre compte, vous devez lire et accepter la Politique de confidentialité et les Conditions d'utilisation.",
     legalConsentPendingScroll:
       "Faites défiler jusqu'à la fin pour activer l'acceptation.",
     legalConsentReady: "Vous pouvez maintenant accepter et continuer.",
@@ -403,6 +425,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Bevor Sie Ihr Konto anlegen",
     legalConsentIntro:
       "Um Ihr Konto zu erstellen, müssen Sie die Datenschutzerklärung und die Nutzungsbedingungen lesen und akzeptieren.",
+    legalConsentUpdateTitle: "Wir haben unsere Richtlinien aktualisiert",
+    legalConsentUpdateIntro: "Um Ihr Konto weiter zu nutzen, lesen und akzeptieren Sie bitte die aktualisierte Datenschutzrichtlinie und die Nutzungsbedingungen.",
+    legalConsentReviewTitle: "Bevor Sie fortfahren",
+    legalConsentReviewIntro: "Um Ihr Konto zu nutzen, müssen Sie die Datenschutzrichtlinie und die Nutzungsbedingungen lesen und akzeptieren.",
     legalConsentPendingScroll:
       "Scrollen Sie bis zum Ende, um die Zustimmung zu aktivieren.",
     legalConsentReady: "Sie können jetzt akzeptieren und fortfahren.",
@@ -480,6 +506,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "Prima di creare il tuo account",
     legalConsentIntro:
       "Per creare il tuo account devi leggere e accettare l'Informativa sulla privacy e i Termini di servizio.",
+    legalConsentUpdateTitle: "Abbiamo aggiornato le nostre policy",
+    legalConsentUpdateIntro: "Per continuare a usare il tuo account, leggi e accetta l'Informativa sulla privacy e i Termini di servizio aggiornati.",
+    legalConsentReviewTitle: "Prima di continuare",
+    legalConsentReviewIntro: "Per usare il tuo account devi leggere e accettare l'Informativa sulla privacy e i Termini di servizio.",
     legalConsentPendingScroll:
       "Scorri fino alla fine per abilitare l'accettazione.",
     legalConsentReady: "Ora puoi accettare e continuare.",
@@ -559,6 +589,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "アカウント作成前の確認",
     legalConsentIntro:
       "アカウントを作成するには、プライバシーポリシーと利用規約を読んで同意する必要があります。",
+    legalConsentUpdateTitle: "ポリシーを更新しました",
+    legalConsentUpdateIntro: "アカウントの利用を続けるには、更新されたプライバシーポリシーと利用規約を確認して同意してください。",
+    legalConsentReviewTitle: "続行する前に",
+    legalConsentReviewIntro: "アカウントを利用するには、プライバシーポリシーと利用規約を読んで同意する必要があります。",
     legalConsentPendingScroll: "最後までスクロールすると同意できます。",
     legalConsentReady: "同意して続行できます。",
     legalConsentAccept: "同意して続行",
@@ -637,6 +671,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     continueGoogle: "使用 Google 继续",
     legalConsentTitle: "创建账户前的确认",
     legalConsentIntro: "创建账户前，你必须阅读并接受隐私政策和服务条款。",
+    legalConsentUpdateTitle: "我们更新了相关政策",
+    legalConsentUpdateIntro: "若要继续使用你的账户，请阅读并接受更新后的隐私政策和服务条款。",
+    legalConsentReviewTitle: "继续之前",
+    legalConsentReviewIntro: "若要使用你的账户，你必须阅读并接受隐私政策和服务条款。",
     legalConsentPendingScroll: "请滚动到底部以启用接受按钮。",
     legalConsentReady: "现在可以接受并继续。",
     legalConsentAccept: "接受并继续",
@@ -705,6 +743,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "계정을 만들기 전에",
     legalConsentIntro:
       "계정을 만들려면 개인정보 처리방침과 서비스 약관을 읽고 동의해야 합니다.",
+    legalConsentUpdateTitle: "정책이 업데이트되었습니다",
+    legalConsentUpdateIntro: "계정을 계속 사용하려면 업데이트된 개인정보 처리방침과 서비스 약관을 확인하고 동의해 주세요.",
+    legalConsentReviewTitle: "계속하기 전에",
+    legalConsentReviewIntro: "계정을 사용하려면 개인정보 처리방침과 서비스 약관을 읽고 동의해야 합니다.",
     legalConsentPendingScroll: "끝까지 스크롤하면 동의할 수 있습니다.",
     legalConsentReady: "이제 동의하고 계속할 수 있습니다.",
     legalConsentAccept: "동의하고 계속",
@@ -779,6 +821,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "قبل إنشاء حسابك",
     legalConsentIntro:
       "لإنشاء حسابك، يجب عليك قراءة وقبول سياسة الخصوصية وشروط الخدمة.",
+    legalConsentUpdateTitle: "لقد حدّثنا سياساتنا",
+    legalConsentUpdateIntro: "لمواصلة استخدام حسابك، يرجى مراجعة سياسة الخصوصية وشروط الخدمة المحدّثة والموافقة عليها.",
+    legalConsentReviewTitle: "قبل المتابعة",
+    legalConsentReviewIntro: "لاستخدام حسابك يجب أن تقرأ سياسة الخصوصية وشروط الخدمة وتوافق عليهما.",
     legalConsentPendingScroll: "مرّر للأسفل حتى النهاية لتفعيل القبول.",
     legalConsentReady: "يمكنك الآن القبول والمتابعة.",
     legalConsentAccept: "قبول والمتابعة",
@@ -856,6 +902,10 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     legalConsentTitle: "कानूनी सहमति",
     legalConsentIntro:
       "खाता बनाने से पहले सेवा की शर्तें और गोपनीयता नीति पढ़ें और स्वीकार करें।",
+    legalConsentUpdateTitle: "हमने अपनी नीतियां अपडेट की हैं",
+    legalConsentUpdateIntro: "अपना खाता उपयोग करते रहने के लिए, कृपया अपडेट की गई गोपनीयता नीति और सेवा की शर्तें पढ़कर स्वीकार करें।",
+    legalConsentReviewTitle: "जारी रखने से पहले",
+    legalConsentReviewIntro: "अपना खाता उपयोग करने के लिए आपको गोपनीयता नीति और सेवा की शर्तें पढ़कर स्वीकार करनी होंगी।",
     legalConsentPendingScroll: "पूरी शर्तें देखने के लिए नीचे स्क्रॉल करें",
     legalConsentReady: "मैंने शर्तें पढ़ ली हैं",
     legalConsentAccept: "स्वीकार करें और खाता बनाएँ",
