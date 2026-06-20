@@ -288,7 +288,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
       "6 changing lines (any hexagram except #1 and #2) — total mutation. Only the Judgment of the transformed hexagram is read; no individual line text is cited.\n\n" +
       "Hexagram #1 Qian, all lines old yang (用九) — the special seventh-yao text 'Use of Nines' governs: 'A host of dragons without heads — good fortune.'\n\n" +
       "Hexagram #2 Kun, all lines old yin (用六) — the special text 'Use of Sixes' governs: 'Perseverance furthers.'\n\n" +
-      "Across every case the app follows Alfred Huang's reduction system, so each combination of changing lines yields one precise governing text with no ambiguity and no gap. Where Huang and the older Zhu Xi tradition diverge, the app follows Huang.",
+      "Across every case the app yields one precise governing text with no ambiguity and no gap. By default it follows Alfred Huang's reduction system; the Reading system selector in Options lets you switch to Zhu Xi's classical reading instead, applying the alternates described above for each case. Your choice is remembered and applied consistently to that reading.",
     related: ["methodNotes"],
   },
   {
@@ -487,7 +487,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
       "6 líneas en cambio (cualquier hexagrama excepto el #1 y el #2) — mutación total. Solo se lee el Juicio del hexagrama transformado; no se cita ningún texto de línea individual.\n\n" +
       "Hexagrama #1 Qian, todas las líneas yang viejas (用九) — gobierna el texto especial del séptimo yao «Uso de los Nueves»: «Una multitud de dragones sin cabeza — buena fortuna».\n\n" +
       "Hexagrama #2 Kun, todas las líneas yin viejas (用六) — gobierna el texto especial «Uso de los Seises»: «La perseverancia trae ventaja».\n\n" +
-      "En todos los casos la app sigue el sistema de reducción de Alfred Huang, de modo que cada combinación de líneas cambiantes produce un único texto gobernante preciso, sin ambigüedad ni laguna. Donde Huang y la tradición más antigua de Zhu Xi divergen, la app sigue a Huang.",
+      "En todos los casos la app produce un único texto gobernante preciso, sin ambigüedad ni laguna. Por defecto sigue el sistema de reducción de Alfred Huang; el selector «Sistema de lectura» en Opciones permite cambiar a la lectura clásica de Zhu Xi, que aplica las alternativas descritas arriba para cada caso. Tu elección se recuerda y se aplica de forma consistente en esa lectura.",
     related: ["methodNotes"],
   },
   {
@@ -650,7 +650,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
       "ستة خطوط متغيرة (أي سداسي ما عدا #1 و#2) — طفرة كاملة. يُقرأ حكم السداسي المحوّل فقط؛ لا يُستشهد بأي نص خط فردي.\n\n" +
       "السداسي #1 Qian بكل خطوطه يانغ قديمة (用九) — يحكم النص الخاص بالياو السابع «استخدام التسعات»: «حشد من التنانين بلا رؤوس — حظ سعيد».\n\n" +
       "السداسي #2 Kun بكل خطوطه يين قديمة (用六) — يحكم النص الخاص «استخدام الستات»: «الثبات يُجدي نفعاً».\n\n" +
-      "في كل الحالات يتبع التطبيق نظام اختزال Alfred Huang، بحيث تُنتج كل تركيبة من الخطوط المتغيرة نصاً حاكماً واحداً ودقيقاً، دون غموض أو ثغرة. وحيثما يختلف Huang عن تقليد Zhu Xi الأقدم، يتبع التطبيق Huang.",
+      "في كل الحالات يُنتج التطبيق نصاً حاكماً واحداً ودقيقاً، دون غموض أو ثغرة. يتبع التطبيق افتراضياً نظام اختزال Alfred Huang؛ ويتيح لك مُحدِّد «نظام القراءة» في الخيارات التبديل إلى قراءة Zhu Xi الكلاسيكية، التي تطبّق البدائل الموصوفة أعلاه لكل حالة. يُحفظ اختيارك ويُطبَّق باستمرار على تلك القراءة.",
     related: ["methodNotes"],
   },
   {
@@ -831,7 +831,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
       "6 परिवर्तनशील रेखाएँ (#1 और #2 को छोड़कर कोई भी हेक्साग्राम) — पूर्ण उत्परिवर्तन। केवल रूपांतरित हेक्साग्राम का निर्णय पढ़ा जाता है; किसी व्यक्तिगत रेखा-पाठ का हवाला नहीं दिया जाता।\n\n" +
       "हेक्साग्राम #1 Qian, सभी रेखाएँ पुराना यांग (用九) — विशेष सातवें याओ पाठ 'नौ का उपयोग' शासन करता है: 'बिना सिर के ड्रैगनों का समूह — शुभ फल'।\n\n" +
       "हेक्साग्राम #2 Kun, सभी रेखाएँ पुराना यिन (用六) — विशेष पाठ 'छह का उपयोग' शासन करता है: 'दृढ़ता लाभकारी है'।\n\n" +
-      "हर स्थिति में ऐप Alfred Huang की संक्षेपण प्रणाली का अनुसरण करती है, जिससे परिवर्तनशील रेखाओं का प्रत्येक संयोजन हमेशा एक सटीक शासक पाठ देता है, बिना किसी अस्पष्टता या अंतराल के। जहाँ Huang और पुरानी Zhu Xi परंपरा में भिन्नता है, वहाँ ऐप Huang का अनुसरण करती है।",
+      "हर स्थिति में ऐप एक सटीक शासक पाठ देती है, बिना किसी अस्पष्टता या अंतराल के। डिफ़ॉल्ट रूप से यह Alfred Huang की संक्षेपण प्रणाली का अनुसरण करती है; विकल्पों में 'पठन प्रणाली' चयनकर्ता आपको इसके बदले Zhu Xi की शास्त्रीय पठन शैली चुनने देता है, जो ऊपर वर्णित विकल्पों को हर स्थिति में लागू करती है। आपकी पसंद याद रखी जाती है और उस पठन पर लगातार लागू होती है।",
     related: ["methodNotes"],
   },
   {
@@ -1010,7 +1010,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
       "変爻6本（1・2番卦以外）— 完全な変化。之卦の彖辞のみを読み、個々の爻辞は引用されない。\n\n" +
       "第1卦 乾、すべて老陽（用九）— 特別な第7爻「用九」の爻辞が支配する：「頭のない龍の群れ — 吉」。\n\n" +
       "第2卦 坤、すべて老陰（用六）— 特別な爻辞「用六」が支配する：「貞固にして利し」。\n\n" +
-      "このアプリはすべての場合においてAlfred Huangの還元法に従い、変爻のあらゆる組み合わせが常に一つの精確な支配爻辞を生み出すことを保証します。Huangとより古い朱熹の伝統が異なる場合は、このアプリはHuangに従います。",
+      "このアプリはすべての場合において一つの精確な支配爻辞を生み出します。既定ではAlfred Huangの還元法に従いますが、オプションの「読解システム」セレクターで朱熹の古典的な読み方に切り替えることができ、上記で説明した各場合の代替ルールが適用されます。選択した設定は記憶され、その占いに一貫して適用されます。",
     related: ["methodNotes"],
   },
   {
@@ -1190,7 +1190,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
       "6爻全变（非第1、2卦）— 完全变化。仅读之卦卦辞；不引用任何单独的爻辞。\n\n" +
       "第1卦 乾，全为老阳（用九）— 特殊第七爻「用九」爻辞主导：「见群龙无首，吉」。\n\n" +
       "第2卦 坤，全为老阴（用六）— 特殊爻辞「用六」主导：「利永贞」。\n\n" +
-      "在每一种情况下，本应用都遵循Alfred Huang的简化系统，使变爻的每种可能组合始终产生一条精确、唯一的主导爻辞，没有歧义、没有遗漏。在Huang与更古老的朱熹传统出现分歧之处，本应用以Huang为准。",
+      "在每一种情况下，本应用都会产生一条精确、唯一的主导爻辞，没有歧义、没有遗漏。默认情况下遵循Alfred Huang的简化系统；选项中的「解卦系统」选择器可让你切换为朱熹的经典解法，按上文所述对每种情况应用相应的替代规则。你的选择会被记住，并一致地应用于该次解读。",
     related: ["methodNotes"],
   },
   {
@@ -1369,7 +1369,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
       "변효 6개 (1·2번 괘 제외) — 완전 변화. 지괘의 괘사만 읽으며, 개별 효사는 인용하지 않는다.\n\n" +
       "1번 괘 건(乾), 전부 노양(用九) — 특별한 일곱 번째 효 '용구(用九)' 효사가 지배한다: '군룡무수(群龍無首), 길하다'.\n\n" +
       "2번 괘 곤(坤), 전부 노음(用六) — 특별 효사 '용육(用六)'이 지배한다: '영정(永貞)이 이롭다'.\n\n" +
-      "모든 경우에 이 앱은 Alfred Huang의 축약 체계를 따르므로, 변효의 모든 가능한 조합이 항상 하나의 정확하고 유일한 지배 효사를 산출하며 모호함이나 공백이 없습니다. Huang과 더 오래된 주희 전통이 갈리는 지점에서는 이 앱이 Huang을 따릅니다.",
+      "모든 경우에 이 앱은 하나의 정확하고 유일한 지배 효사를 산출하며, 모호함이나 공백이 없습니다. 기본적으로 Alfred Huang의 축약 체계를 따르지만, 옵션의 '해석 체계' 선택기를 사용하면 주희의 고전적 해석으로 전환할 수 있으며, 위에서 설명한 각 경우의 대안 규칙이 적용됩니다. 선택한 설정은 저장되어 해당 해석에 일관되게 적용됩니다.",
     related: ["methodNotes"],
   },
   {
@@ -1549,7 +1549,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
       "6 linhas mutantes (qualquer hexagrama exceto o #1 e o #2) — Mutação total. Lê-se apenas o Julgamento do hexagrama transformado; nenhum texto de linha individual é citado.\n\n" +
       "Hexagrama #1 Qian, todas as linhas yang antigo (用九) — O texto especial do sétimo yao 'Usar o Nove' governa: 'Um grupo de dragões sem cabeça — boa fortuna'.\n\n" +
       "Hexagrama #2 Kun, todas as linhas yin antigo (用六) — O texto especial 'Usar o Seis' governa: 'A perseverança é benéfica'.\n\n" +
-      "Em todos os casos a app segue o sistema de redução de Alfred Huang, de modo que cada combinação de linhas mutantes produz um único texto governante preciso, sem ambiguidade nem lacuna. Onde Huang e a tradição mais antiga de Zhu Xi divergem, a app segue Huang.",
+      "Em todos os casos a app produz um único texto governante preciso, sem ambiguidade nem lacuna. Por padrão segue o sistema de redução de Alfred Huang; o seletor «Sistema de leitura» em Opções permite alternar para a leitura clássica de Zhu Xi, aplicando as alternativas descritas acima para cada caso. A sua escolha é lembrada e aplicada de forma consistente nessa leitura.",
     related: ["methodNotes"],
   },
   {
@@ -1732,7 +1732,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
       "6 wandelnde Linien (jedes Hexagramm außer #1 und #2) — Vollständige Wandlung. Nur das Urteil des Transformationshexagramms wird gelesen; kein einzelner Linientext wird zitiert.\n\n" +
       "Hexagramm #1 Qian, alle Linien altes Yang (用九) — Der spezielle siebte Yao-Text 'Neun benutzen' beherrscht: 'Eine Gruppe Drachen ohne Kopf — Heil'.\n\n" +
       "Hexagramm #2 Kun, alle Linien altes Yin (用六) — Der Sondertext 'Sechs benutzen' beherrscht: 'Beharrlichkeit ist förderlich'.\n\n" +
-      "In jedem Fall folgt die App Alfred Huangs Reduktionssystem, sodass jede Kombination wandelnder Linien stets einen präzisen, eindeutigen beherrschenden Text ergibt — ohne Mehrdeutigkeit, ohne Lücke. Wo Huang und die ältere Tradition Zhu Xis voneinander abweichen, folgt die App Huang.",
+      "In jedem Fall ergibt sich ein präziser, eindeutiger beherrschender Text — ohne Mehrdeutigkeit, ohne Lücke. Standardmäßig folgt die App Alfred Huangs Reduktionssystem; der Auswahlschalter „Lesesystem“ in den Optionen lässt dich stattdessen zu Zhu Xis klassischer Lesung wechseln, die die oben beschriebenen Alternativen für jeden Fall anwendet. Deine Wahl wird gespeichert und konsistent auf diese Lesung angewendet.",
     related: ["methodNotes"],
   },
   {
@@ -1917,7 +1917,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
       "6 linee mutanti (qualsiasi esagramma tranne #1 e #2) — Mutazione totale. Si legge solo il Giudizio dell'esagramma trasformato; nessun testo di linea individuale viene citato.\n\n" +
       "Esagramma #1 Qian, tutte le linee yang antico (用九) — Il testo speciale del settimo yao 'Usare il Nove' governa: 'Un gruppo di draghi senza testa — buona fortuna'.\n\n" +
       "Esagramma #2 Kun, tutte le linee yin antico (用六) — Il testo speciale 'Usare il Sei' governa: 'La perseveranza è benefica'.\n\n" +
-      "In ogni caso l'app segue il sistema di riduzione di Alfred Huang, così che ogni combinazione di linee mutanti produca sempre un unico testo governante preciso, senza ambiguità né lacune. Dove Huang e la tradizione più antica di Zhu Xi divergono, l'app segue Huang.",
+      "In ogni caso l'app produce sempre un unico testo governante preciso, senza ambiguità né lacune. Per impostazione predefinita segue il sistema di riduzione di Alfred Huang; il selettore «Sistema di lettura» in Opzioni permette di passare invece alla lettura classica di Zhu Xi, applicando le alternative descritte sopra per ciascun caso. La tua scelta viene memorizzata e applicata in modo coerente a quella lettura.",
     related: ["methodNotes"],
   },
   {
@@ -2104,7 +2104,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
       "6 traits mutants (tout hexagramme sauf #1 et #2) — Mutation totale. On lit uniquement le Jugement de l'hexagramme transformé ; aucun texte de trait individuel n'est cité.\n\n" +
       "Hexagramme #1 Qian, tout yang ancien (用九) — Le texte spécial du septième yao 'Utiliser le Neuf' gouverne : 'Un groupe de dragons sans tête — heureux présage'.\n\n" +
       "Hexagramme #2 Kun, tout yin ancien (用六) — Le texte spécial 'Utiliser le Six' gouverne : 'La persévérance est bénéfique'.\n\n" +
-      "Dans tous les cas, l'application suit le système de réduction d'Alfred Huang, de sorte que chaque combinaison de traits mutants produise toujours un texte gouvernant unique et précis, sans ambiguïté ni lacune. Là où Huang et la tradition plus ancienne de Zhu Xi divergent, l'application suit Huang.",
+      "Dans tous les cas, l'application produit toujours un texte gouvernant unique et précis, sans ambiguïté ni lacune. Par défaut, elle suit le système de réduction d'Alfred Huang ; le sélecteur « Système de lecture » dans les Options permet de passer à la lecture classique de Zhu Xi, qui applique les alternatives décrites ci-dessus pour chaque cas. Votre choix est mémorisé et appliqué de façon cohérente à cette lecture.",
     related: ["methodNotes"],
   },
   {

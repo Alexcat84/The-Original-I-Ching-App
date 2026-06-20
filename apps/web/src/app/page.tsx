@@ -114,6 +114,7 @@ import {
   previewCastFromLineValues,
   type CastingMethod,
   type Line,
+  type LineReadingSystem,
   type ManualCastPreview,
 } from "@iching-oracle/iching-engine";
 import { useRouter } from "next/navigation";
@@ -138,6 +139,7 @@ const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
 
 const ICHING_CAST_MODE_STORAGE_KEY = "iching_cast_mode_v1";
 const ICHING_CASTING_METHOD_STORAGE_KEY = "iching_casting_method_v1";
+const ICHING_LINE_READING_SYSTEM_STORAGE_KEY = "iching_line_reading_system_v1";
 
 // Action 4: stage floor timers (ms). Override via NEXT_PUBLIC_* env vars.
 const ICHING_FINALE_MIN_MS = Math.max(
@@ -714,6 +716,29 @@ export default function HomePage() {
       /* ignore */
     }
   }, [ichingCastingMethod]);
+  const [ichingLineReadingSystem, setIchingLineReadingSystem] =
+    useState<LineReadingSystem>(() => {
+      if (typeof window === "undefined") return "huang";
+      try {
+        return window.localStorage.getItem(
+          ICHING_LINE_READING_SYSTEM_STORAGE_KEY,
+        ) === "zhuxi"
+          ? "zhuxi"
+          : "huang";
+      } catch {
+        return "huang";
+      }
+    });
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(
+        ICHING_LINE_READING_SYSTEM_STORAGE_KEY,
+        ichingLineReadingSystem,
+      );
+    } catch {
+      /* ignore */
+    }
+  }, [ichingLineReadingSystem]);
   const [manualWizardOpen, setManualWizardOpen] = useState(false);
   const [manualWizardQuestionSnapshot, setManualWizardQuestionSnapshot] =
     useState<string | null>(null);
@@ -3494,7 +3519,10 @@ export default function HomePage() {
     setPendingUserQuestion(questionForRequest || null);
     if (manualLineValues) {
       try {
-        manualCastPreviewEngine = previewCastFromLineValues(manualLineValues);
+        manualCastPreviewEngine = previewCastFromLineValues(
+          manualLineValues,
+          ichingLineReadingSystem,
+        );
         setManualCastPreview({
           primaryHexagram: manualCastPreviewEngine.primaryHexagram.number,
           primaryHexagramChinese:
@@ -3666,6 +3694,7 @@ export default function HomePage() {
         ...(oracleMode === "iching"
           ? {
               translatorId,
+              ichingLineReadingSystem,
               ...(manualLineValues
                 ? {
                     ichingCastMode: "manual" as const,
@@ -5679,6 +5708,63 @@ export default function HomePage() {
                             </div>
                           </label>
                         </div>
+                        <hr className="composer-panel-divider" aria-hidden />
+                        <div
+                          id="tour-line-reading-system"
+                          className="cast-selector-block"
+                        >
+                          <span className="cast-selector-label">
+                            {manualWizardChrome.lineReadingSystemGroupAria}
+                          </span>
+                          <label className="oracle-toggle-wrap">
+                            <input
+                              type="checkbox"
+                              className="oracle-toggle-input"
+                              checked={ichingLineReadingSystem === "zhuxi"}
+                              onChange={() =>
+                                setIchingLineReadingSystem(
+                                  ichingLineReadingSystem === "zhuxi"
+                                    ? "huang"
+                                    : "zhuxi",
+                                )
+                              }
+                              disabled={loading}
+                              aria-label={`${manualWizardChrome.lineReadingSystemHuangLabel} / ${manualWizardChrome.lineReadingSystemZhuxiLabel}`}
+                              title={manualWizardChrome.lineReadingSystemHint}
+                            />
+                            <div className="oracle-toggle-track">
+                              <div className="oracle-toggle-glow" />
+                              <div className="oracle-toggle-track-line" />
+                              <div className="oracle-toggle-thumb">
+                                <div className="oracle-thumb-sweep" />
+                              </div>
+                              <div
+                                className="oracle-toggle-option oracle-toggle-option--left"
+                                aria-hidden="true"
+                              >
+                                <span>
+                                  {
+                                    manualWizardChrome.lineReadingSystemHuangLabel.split(
+                                      " (",
+                                    )[0]
+                                  }
+                                </span>
+                              </div>
+                              <div
+                                className="oracle-toggle-option oracle-toggle-option--right"
+                                aria-hidden="true"
+                              >
+                                <span>
+                                  {
+                                    manualWizardChrome.lineReadingSystemZhuxiLabel.split(
+                                      " (",
+                                    )[0]
+                                  }
+                                </span>
+                              </div>
+                            </div>
+                          </label>
+                        </div>
                       </>
                     ) : null}
                     {activeThread.length > 0 && result ? (
@@ -6937,6 +7023,7 @@ export default function HomePage() {
             { target: "#tour-oracle-mode",     title: tour.step4Title, content: tour.step4Body, placement: "bottom", before: tourBeforePanel("tour-oracle-mode", true) },
             { target: "#tour-translator",      title: tour.step5Title, content: tour.step5Body, placement: "bottom", before: tourBeforePanel("tour-translator",  false) },
             { target: "#tour-cast-mode",       title: tour.step6Title, content: tour.step6Body, placement: "top",    before: tourBeforePanel("tour-cast-mode",   false) },
+            { target: "#tour-line-reading-system", title: tour.lineReadingTitle, content: tour.lineReadingBody, placement: "top", before: tourBeforePanel("tour-line-reading-system", false) },
             { target: "#tour-library-btn",     title: tour.step7Title, content: tour.step7Body, placement: "top",    before: tourBeforePanel("tour-library-btn", false) },
             { target: "#tour-doc-links",       title: tour.step8Title, content: tour.step8Body, placement: "top",    before: tourBeforePanel("tour-doc-links",   false) },
             { target: "#tour-chat-input",      title: tour.step9Title, content: tour.step9Body, placement: "top",    before: () => new Promise<void>(resolve => { setConsultPanelOpen(false); setTimeout(resolve, 220); }) },

@@ -1,4 +1,4 @@
-import type { CastResult, MutationRule } from "@iching-oracle/iching-engine";
+import type { AnyMutationRule, CastResult } from "@iching-oracle/iching-engine";
 import {
   validateLineCitation,
   type SelectedLineText,
@@ -19,7 +19,7 @@ export type InterpretationValidationResult = {
   warnFailures: ValidationFailure[];
 };
 
-const INTERNAL_RULE_CODES: MutationRule[] = [
+const INTERNAL_RULE_CODES: AnyMutationRule[] = [
   "NO_CHANGING",
   "ONE_CHANGING",
   "TWO_YIN_YANG",
@@ -30,6 +30,13 @@ const INTERNAL_RULE_CODES: MutationRule[] = [
   "SIX_ALL_CHANGING",
   "QIAN_ALL_NINE",
   "KUN_ALL_SIX",
+  "ZX_ZERO",
+  "ZX_ONE",
+  "ZX_TWO_UPPER",
+  "ZX_THREE_JUDGMENTS",
+  "ZX_FOUR_LOWER",
+  "ZX_FIVE_ONLY",
+  "ZX_SIX_TRANSFORMED",
 ];
 
 const LINES_SECTION_HEADINGS =
