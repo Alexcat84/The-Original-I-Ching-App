@@ -37,6 +37,8 @@ export async function GET(req: Request) {
         displayName: null as string | null,
         isAdmin: false,
         legalAccepted: false,
+        legalHasPriorAcceptance: false,
+        tourV1Completed: false,
       };
     }
     const { data } = await supabase
@@ -44,13 +46,17 @@ export async function GET(req: Request) {
       .select("two_factor_enabled, two_factor_method, display_name, is_admin, tour_v1_completed_at")
       .eq("id", user.userId)
       .maybeSingle();
-    const { data: legalAcceptance, error: legalAcceptanceError } = await supabase
+    const { data: latestAcceptance, error: legalAcceptanceError } = await supabase
       .from("user_legal_acceptances")
-      .select("id")
+      .select("terms_version, privacy_version")
       .eq("user_id", user.userId)
-      .eq("terms_version", CURRENT_TERMS_VERSION)
-      .eq("privacy_version", CURRENT_PRIVACY_VERSION)
+      .order("accepted_at", { ascending: false })
+      .limit(1)
       .maybeSingle();
+    const hasPriorAcceptance = Boolean(latestAcceptance);
+    const legalCurrent =
+      latestAcceptance?.terms_version === CURRENT_TERMS_VERSION &&
+      latestAcceptance?.privacy_version === CURRENT_PRIVACY_VERSION;
     if (legalAcceptanceError) {
       api.log.warn("account_me_legal_lookup_failed", {
         userId: user.userId.slice(0, 8),
@@ -63,7 +69,8 @@ export async function GET(req: Request) {
       method: (data?.two_factor_method as string | null) ?? null,
       displayName: (data?.display_name as string | null) ?? null,
       isAdmin: data?.is_admin === true,
-      legalAccepted: Boolean(legalAcceptance?.id),
+      legalAccepted: legalCurrent,
+      legalHasPriorAcceptance: hasPriorAcceptance,
       tourV1Completed: Boolean(data?.tour_v1_completed_at),
     };
   }, buildSupabaseOpTelemetry(api, "account_me_profile", { userId: user.userId }));
@@ -93,5 +100,6 @@ export async function GET(req: Request) {
     legal_terms_version: CURRENT_TERMS_VERSION,
     legal_privacy_version: CURRENT_PRIVACY_VERSION,
     legal_acceptance_current: userProfile.legalAccepted,
+    legal_has_prior_acceptance: userProfile.legalHasPriorAcceptance,
   });
 }

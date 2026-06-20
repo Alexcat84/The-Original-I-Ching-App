@@ -19,6 +19,9 @@ type LegalConsentModalProps = {
   busy: boolean;
   onAccept: () => void;
   onCancel: () => void;
+  /** Optional header overrides (defaults to the account-creation copy). */
+  title?: string;
+  intro?: string;
 };
 
 export function LegalConsentModal({
@@ -29,6 +32,8 @@ export function LegalConsentModal({
   busy,
   onAccept,
   onCancel,
+  title,
+  intro,
 }: LegalConsentModalProps) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -84,10 +89,10 @@ export function LegalConsentModal({
         <header className="legal-consent-header">
           <div>
             <h2 id="legal-consent-title" className="legal-consent-title">
-              {login.legalConsentTitle}
+              {title ?? login.legalConsentTitle}
             </h2>
             <p id="legal-consent-intro" className="legal-consent-intro">
-              {login.legalConsentIntro}
+              {intro ?? login.legalConsentIntro}
             </p>
           </div>
           <button
