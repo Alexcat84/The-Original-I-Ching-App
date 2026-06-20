@@ -101,14 +101,18 @@ Además, el FAQ atribuía la regla de 3 líneas a *"la reducción de la línea m
 
 ---
 
-## Pendiente de propagación i18n
+## Propagación i18n — completada
 
-El texto autoritativo (EN + ES) ya está corregido en `faq-page-ui.ts`. Los otros 9 locales del FAQ (PT, FR, DE, IT, JA, ZH, KO, AR, HI) **todavía no tienen la reescritura completa del Q&A de reglas** — siguen con la narrativa "Zhu Xi" antigua en esos idiomas. Pendiente para el flujo i18n habitual (ver `docs/workflows/I18N_GUIDE.md`), usando el EN/ES de este commit como fuente.
+El texto autoritativo (EN + ES) corregido en `faq-page-ui.ts` se propagó a los otros 9 locales del FAQ (PT, FR, DE, IT, JA, ZH, KO, AR, HI): las tres entradas `yarrow-vs-coins`, `iching-how-answers` e `iching-mutation-rules` ya no atribuyen la base de reglas a Zhu Xi en ningún idioma — cada locale fue reescrito espejando la estructura EN/ES (Alfred Huang como sistema base citado de *The Complete I Ching*, Zhu Xi como antecedente clásico de la estructura, caso de 4 líneas corregido a "superior" en los 9 idiomas).
 
-Los rótulos cortos de `iching-mutation-ui.ts` (`FOUR_LOWEST_STABLE`, el único campo afectado por el cambio de regla) **sí se actualizaron en los 11 locales** en este mismo commit (inferior→superior / lowest→highest y equivalentes nativos en JA/ZH/KO/AR/HI). Conviene una pasada de revisión nativa para JA/ZH/KO/AR/HI, aunque el cambio es semánticamente directo.
+`guia-page-ui.ts` también se corrigió en los 11 locales (es, en, pt, fr, de, it, ja, zh, ko, ar, hi): los campos `ichingPracticalBody`, `ichingTraditionNote` e `ichingCastModeP1` ya no describen "reglas clásicas de Zhu Xi" como base operativa — ahora atribuyen el sistema a Alfred Huang con Zhu Xi como antecedente histórico de la estructura.
+
+Verificado con `npx tsc --noEmit` en `packages/i18n` (sin errores) tras todas las ediciones.
+
+Los rótulos cortos de `iching-mutation-ui.ts` (`FOUR_LOWEST_STABLE`, el único campo afectado por el cambio de regla) **ya se habían actualizado en los 11 locales** en el commit original de esta auditoría (inferior→superior / lowest→highest y equivalentes nativos en JA/ZH/KO/AR/HI).
 
 ---
 
 ## Conclusión honesta (sin sorpresas)
 
-No existe "el método ortodoxo único" del I Ching para líneas múltiples: hay al menos dos sistemas mayores en tensión (Zhu Xi, que lee varios textos; Huang, que reduce a uno), más la práctica antigua del Zuozhuan que nunca leía más de una línea. Esta app eligió **un sistema de reducción coherente y nombrado: el de Alfred Huang.** Tras esta corrección, el motor queda **10/10 fiel a Alfred Huang**, y el texto al usuario (FAQ EN/ES) lo narra con precisión — el resto de locales queda pendiente de propagación i18n.
+No existe "el método ortodoxo único" del I Ching para líneas múltiples: hay al menos dos sistemas mayores en tensión (Zhu Xi, que lee varios textos; Huang, que reduce a uno), más la práctica antigua del Zuozhuan que nunca leía más de una línea. Esta app eligió **un sistema de reducción coherente y nombrado: el de Alfred Huang.** Tras esta corrección, el motor queda **10/10 fiel a Alfred Huang**, y el texto al usuario lo narra con precisión en los **11 locales** de `faq-page-ui.ts` y `guia-page-ui.ts`.
