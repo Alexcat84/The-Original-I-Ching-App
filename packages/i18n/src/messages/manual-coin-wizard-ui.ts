@@ -34,6 +34,9 @@ export type ManualWizardMessages = {
   lineReadingSystemGroupAria: string;
   lineReadingSystemHuangLabel: string;
   lineReadingSystemZhuxiLabel: string;
+  /** Compact, parenthesis-free names for taglines/summaries (status bar, record card, PDF). */
+  lineReadingSystemHuangShort: string;
+  lineReadingSystemZhuxiShort: string;
   lineReadingSystemHint: string;
   physicalWarning: string;
   startButton: string;
@@ -70,6 +73,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "Lectura de líneas cambiantes",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (clásico)",
+    lineReadingSystemHuangShort: "Alfred Huang",
+    lineReadingSystemZhuxiShort: "Zhu Xi",
     lineReadingSystemHint:
       "Huang lee solo la línea clave; Zhu Xi puede leer dos líneas o ambos juicios.",
     physicalWarning: "Este método requiere 3 monedas físicas. Cualquier tres monedas similares funcionan igual de bien.",
@@ -105,6 +110,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "Changing-line reading",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (classical)",
+    lineReadingSystemHuangShort: "Alfred Huang",
+    lineReadingSystemZhuxiShort: "Zhu Xi",
     lineReadingSystemHint:
       "Huang reads only the key line; Zhu Xi may read two lines or both judgments.",
     physicalWarning: "This method requires 3 physical coins. Any three similar coins work equally well.",
@@ -140,6 +147,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "Leitura de linhas mutantes",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (clássico)",
+    lineReadingSystemHuangShort: "Alfred Huang",
+    lineReadingSystemZhuxiShort: "Zhu Xi",
     lineReadingSystemHint:
       "Huang lê apenas a linha-chave; Zhu Xi pode ler duas linhas ou ambos os julgamentos.",
     physicalWarning: "Este método requer 3 moedas físicas. Quaisquer três moedas similares funcionam igualmente bem.",
@@ -175,6 +184,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "Lecture des lignes mobiles",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (classique)",
+    lineReadingSystemHuangShort: "Alfred Huang",
+    lineReadingSystemZhuxiShort: "Zhu Xi",
     lineReadingSystemHint:
       "Huang ne lit que le trait clé ; Zhu Xi peut lire deux traits ou les deux jugements.",
     physicalWarning: "Cette méthode nécessite 3 pièces de monnaie physiques. Trois pièces quelconques fonctionnent tout aussi bien.",
@@ -210,6 +221,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "Lesung wandelnder Linien",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (klassisch)",
+    lineReadingSystemHuangShort: "Alfred Huang",
+    lineReadingSystemZhuxiShort: "Zhu Xi",
     lineReadingSystemHint:
       "Huang liest nur die Schlüssellinie; Zhu Xi kann zwei Linien oder beide Urteile lesen.",
     physicalWarning: "Diese Methode erfordert 3 physische Münzen. Drei beliebige ähnliche Münzen funktionieren ebenso gut.",
@@ -245,6 +258,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "Lettura delle linee mutanti",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (classico)",
+    lineReadingSystemHuangShort: "Alfred Huang",
+    lineReadingSystemZhuxiShort: "Zhu Xi",
     lineReadingSystemHint:
       "Huang legge solo la linea chiave; Zhu Xi può leggere due linee o entrambi i giudizi.",
     physicalWarning: "Questo metodo richiede 3 monete fisiche. Qualsiasi tre monete simili funzionano ugualmente bene.",
@@ -280,6 +295,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "変爻の読み方",
     lineReadingSystemHuangLabel: "アルフレッド・ホアン",
     lineReadingSystemZhuxiLabel: "朱熹（古典）",
+    lineReadingSystemHuangShort: "アルフレッド・ホアン",
+    lineReadingSystemZhuxiShort: "朱熹",
     lineReadingSystemHint: "黄の体系は要となる一爻のみを読む。朱熹の体系は二爻または両方の卦辞を読むことがある。",
     physicalWarning: "この方法には3枚の実際のコインが必要です。同様の3枚のコインならどれでも同様に機能します。",
     startButton: "開始",
@@ -314,6 +331,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "变爻解读法",
     lineReadingSystemHuangLabel: "黄（Huang）",
     lineReadingSystemZhuxiLabel: "朱熹（古典）",
+    lineReadingSystemHuangShort: "黄",
+    lineReadingSystemZhuxiShort: "朱熹",
     lineReadingSystemHint: "黄氏体系只读关键一爻；朱熹体系可能读两爻或两卦辞。",
     physicalWarning: "此方法需要3枚实物硬币。任意三枚类似的硬币均可使用。",
     startButton: "开始",
@@ -348,6 +367,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "변효 해석 방식",
     lineReadingSystemHuangLabel: "알프레드 황(Huang)",
     lineReadingSystemZhuxiLabel: "주희(고전)",
+    lineReadingSystemHuangShort: "알프레드 황",
+    lineReadingSystemZhuxiShort: "주희",
     lineReadingSystemHint:
       "황 체계는 핵심 효 하나만 읽고, 주희 체계는 두 효 또는 두 괘사를 읽을 수 있습니다.",
     physicalWarning: "이 방법은 실제 동전 3개가 필요합니다. 유사한 동전 3개라면 어떤 것이든 동일하게 작동합니다.",
@@ -383,6 +404,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "قراءة الخطوط المتغيرة",
     lineReadingSystemHuangLabel: "ألفريد هوانغ",
     lineReadingSystemZhuxiLabel: "تشو شي (كلاسيكي)",
+    lineReadingSystemHuangShort: "ألفريد هوانغ",
+    lineReadingSystemZhuxiShort: "تشو شي",
     lineReadingSystemHint:
       "يقرأ نظام هوانغ الخط الأساسي فقط؛ قد يقرأ نظام تشو شي خطين أو كلا الحُكمين.",
     physicalWarning: "تتطلب هذه الطريقة 3 عملات حقيقية. أي ثلاث عملات مشابهة تؤدي الغرض ذاته.",
@@ -418,6 +441,8 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     lineReadingSystemGroupAria: "परिवर्तनशील रेखाओं का पठन",
     lineReadingSystemHuangLabel: "अल्फ़्रेड हुआंग",
     lineReadingSystemZhuxiLabel: "झू शी (शास्त्रीय)",
+    lineReadingSystemHuangShort: "अल्फ़्रेड हुआंग",
+    lineReadingSystemZhuxiShort: "झू शी",
     lineReadingSystemHint:
       "हुआंग प्रणाली केवल मुख्य रेखा पढ़ती है; झू शी प्रणाली दो रेखाएं या दोनों निर्णय पढ़ सकती है।",
     physicalWarning: "इस विधि के लिए 3 भौतिक सिक्कों की आवश्यकता है। कोई भी तीन समान सिक्के समान रूप से काम करते हैं।",

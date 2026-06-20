@@ -222,6 +222,7 @@ type ConsultResponse = {
   transformedHexagramChinese: string | null;
   mutationRule: string;
   translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
+  lineReadingSystem?: "huang" | "zhuxi";
   lines: ApiLine[];
   changingLines: number[];
   interpretation: string;
@@ -315,6 +316,7 @@ type ApiChatConsultation = {
   transformedHexagramChinese?: string | null;
   mutationRule: string;
   translator?: string | null;
+  lineReadingSystem?: "huang" | "zhuxi" | null;
   lines: ApiLine[];
   changingLines: number[];
   interpretation: string;
@@ -485,6 +487,10 @@ function mapApiConsultationToItem(
     sharingPersisted: true,
     question: c.question,
     translator: (c.translator as ConsultResponse["translator"]) ?? undefined,
+    lineReadingSystem:
+      c.lineReadingSystem === "zhuxi" || c.lineReadingSystem === "huang"
+        ? c.lineReadingSystem
+        : "huang",
     oracleBones: c.oracleBones
       ? {
           patternId: c.oracleBones.pattern_id,
@@ -1606,6 +1612,12 @@ export default function HomePage() {
         if (entry.translator && pdfTranslatorName[entry.translator]) {
           summaryLine(pdfUi.translator, pdfTranslatorName[entry.translator]!);
         }
+        summaryLine(
+          pdfUi.lineReading,
+          entry.lineReadingSystem === "zhuxi"
+            ? manualWizardChrome.lineReadingSystemZhuxiShort
+            : manualWizardChrome.lineReadingSystemHuangShort,
+        );
         summaryLine(
           pdfUi.inThread,
           formatPdfThreadReadingLine(pdfUi, entry.sessionPosition, pdfDateStr),
@@ -4814,7 +4826,11 @@ export default function HomePage() {
                   }}
                 >
                   {oracleMode === "iching"
-                    ? `${ichingCastingMethod === "yarrow-stalks" ? manualWizardChrome.castMethodYarrowLabel.split(" (")[0] : manualWizardChrome.castMethodCoinsLabel} · Zhu Xi · ${
+                    ? `${ichingCastingMethod === "yarrow-stalks" ? manualWizardChrome.castMethodYarrowLabel.split(" (")[0] : manualWizardChrome.castMethodCoinsLabel} · ${
+                        ichingLineReadingSystem === "zhuxi"
+                          ? manualWizardChrome.lineReadingSystemZhuxiShort
+                          : manualWizardChrome.lineReadingSystemHuangShort
+                      } · ${
                         translatorId === "wilhelm"
                           ? "Wilhelm/Baynes"
                           : translatorId === "legge"
@@ -4876,6 +4892,7 @@ export default function HomePage() {
                           transformedHexagramChinese={entry.transformedHexagramChinese}
                           mutationRule={entry.mutationRule}
                           translator={entry.translator}
+                          lineReadingSystem={entry.lineReadingSystem}
                           oracleType={entry.oracleType ?? "iching"}
                           locale={locale}
                           createdAt={entry.createdAt}
@@ -4970,6 +4987,7 @@ export default function HomePage() {
                           manualCastPreview.transformedHexagram
                         }
                         mutationRule={manualCastPreview.mutationRule}
+                        lineReadingSystem={ichingLineReadingSystem}
                         oracleType="iching"
                         locale={locale}
                       />

@@ -3,6 +3,7 @@
 import {
   getConsultationRecordUiMessages,
   getIchingMutationRuleLabel,
+  getManualWizardMessages,
   parseAppLocale,
 } from "@iching-oracle/i18n";
 
@@ -22,6 +23,7 @@ type Props = {
   transformedHexagramChinese?: string | null;
   mutationRule: string;
   translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
+  lineReadingSystem?: "huang" | "zhuxi" | null;
   oracleType?: "iching" | "oracle_bones";
   locale?: string;
   createdAt?: number;
@@ -44,6 +46,7 @@ export function ConsultationRecordCard({
   transformedHexagramChinese,
   mutationRule,
   translator,
+  lineReadingSystem,
   oracleType = "iching",
   locale = "es",
   createdAt,
@@ -51,6 +54,11 @@ export function ConsultationRecordCard({
 }: Props) {
   const ruleLocale = parseAppLocale(locale.slice(0, 2).toLowerCase());
   const labels = getConsultationRecordUiMessages(ruleLocale);
+  const wizardLabels = getManualWizardMessages(ruleLocale);
+  const lineReadingSystemName =
+    lineReadingSystem === "zhuxi"
+      ? wizardLabels.lineReadingSystemZhuxiShort
+      : wizardLabels.lineReadingSystemHuangShort;
 
   const translatorDisplayName: Record<string, string> = {
     wilhelm: "Wilhelm / Baynes",
@@ -135,6 +143,10 @@ export function ConsultationRecordCard({
             <span className="consultation-record-value">{translatorDisplayName[translator]}</span>
           </p>
         ) : null}
+        <p className="consultation-record-row">
+          <span className="consultation-record-key">{labels.lineReading}</span>
+          <span className="consultation-record-value">{lineReadingSystemName}</span>
+        </p>
         <p className="consultation-record-row">
           <span className="consultation-record-key">{labels.thread}</span>
           <span className="consultation-record-value">
