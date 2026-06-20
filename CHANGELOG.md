@@ -1,8 +1,51 @@
-<!-- changelog:last-release:2dc640a -->
+<!-- changelog:last-release:e21426e -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.1.7] — 2026-06-20 | versionCode: 57 | Stage: Closed Testing
+
+### New
+- feat(line-reading-system): mostrar sistema de líneas en resumen + fix barra de estado | commit: 01882fd
+- feat(ui): renombrar y reubicar selector de lectura de líneas cambiantes | commit: 3985a3b
+- feat(line-reading-system): document selector in tour, FAQ and guide (Fase 5) | commit: b73739a
+- feat(iching): UI selector for Huang/Zhu Xi line-reading system | commit: 4eef2ca
+- feat(db): persist line_reading_system end-to-end (Phase 2 — H5/H6/H7) | commit: c15a073
+- feat(iching-engine): add Zhu Xi changing-line reading system (Phase 1: core + prompt + route, no UI/persistence yet) | commit: f698848
+
+### Fix
+- fix(legal): encabezado de actualización al re-aceptar políticas | commit: 834c8f9
+- fix(tour): alinear tutorial con el panel (Metodo + titulo Ejecucion) | commit: a8e8014
+- fix(ui): reordenar barra de estado a Traductor -> Lectura de lineas -> Metodo | commit: 951615c
+- fix(line-reading-system): post-impl audit remediation (H10/H11/H12) | commit: 338247e
+- fix(iching-engine): align FOUR_LOWEST_STABLE mutation rule to Alfred Huang's reduction system | commit: f05b189
+- fix(auth): invalidate bootstrap redis cache on legal consent acceptance | commit: 0eb84fd
+
+### i18n
+- i18n(faq,guia): propagate Huang/Zhu Xi attribution fix to all 11 locales | commit: 6b1e3a9
+
+### Docs
+- docs(auditorias): Parte 9 verificacion independiente del line-reading system selector | commit: 4b5cf02
+- docs(audit): documentar resultados de pruebas Parte 8 (build/tsc PASS, 0 dashes, hashes) | commit: 713c584
+- docs: reorganizar guia/notes por orden de selectores + limpiar em-dashes FAQ | commit: 26ebfd4
+- docs(auditorias): record Phase 1-5 implementation against the Zhu Xi audit | commit: 3b71822
+- docs(auditorias): document Huang/Zhu Xi line-reading selector plan + audit | commit: e887c95
+- docs(changelog): document legal-consent bootstrap-cache loop fix and version date alignment | commit: f0d0366
+- docs(legal): align current terms and privacy versions with publication dates | commit: 805e972
+
+### Maintenance
+- chore(mobile): bump version 4.1.7 / versionCode 57 for Play release | commit: e21426e
+- merge: fix(legal) encabezado de actualizacion al re-aceptar politicas | commit: 258383e
+- merge: documentar resultados de pruebas Parte 8 en audit | commit: b699a47
+- merge: reorganizar docs (guia/notes orden de selectores) + limpiar em-dashes FAQ | commit: cdaf73d
+- merge: alinear tour con panel (Metodo + Ejecucion) + memoria | commit: bf001d2
+- merge: reordenar barra de estado (traductor -> lectura -> metodo) | commit: 2b164ad
+- merge: mostrar sistema de líneas en resumen + fix barra de estado | commit: 385d8a2
+- merge: line reading system selector (Huang/Zhu Xi) into staging | commit: 4baed77
+- refactor(iching-engine,context-engine): housekeeping from Zhu Xi audit (H8/H9) | commit: 3a8ba78
+
+---
 
 ## [4.1.6] — 2026-06-19 | versionCode: 55 | Stage: Closed Testing
 
@@ -1656,7 +1699,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.6 | 55 | 2026-06-19 | Closed Testing | 8 | block WordPress probe paths, require Turnstile on sign-in too; guard __rnNavigateTo against pre-hydration router dispatch; chat drawer safe-area top and nav bar on RN |
+| 4.1.7 | 57 | 2026-06-20 | Closed Testing | 29 | mostrar sistema de líneas en resumen + fix barra de estado; renombrar y reubicar selector de lectura de líneas cambiantes; document selector in tour, FAQ and guide (Fase 5) |
+| 4.1.6 | 55 | 2026-06-19 | Closed Testing | 0 | — |
 | 4.1.5 | 54 | 2026-06-19 | Closed Testing | 0 | — |
 | 4.1.4 | 53 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.3 | 52 | 2026-06-18 | Closed Testing | 0 | — |

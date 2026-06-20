@@ -448,6 +448,18 @@ FROM (
     )
 
   UNION ALL
+  -- 074 · line_reading_system column + persist_consultation_with_content param
+  SELECT '074', 'line_reading_system column on consultations + RPC has p_line_reading_system param',
+    EXISTS (
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = 'public' AND table_name = 'consultations' AND column_name = 'line_reading_system'
+    )
+    AND EXISTS (
+      SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
+      WHERE n.nspname = 'public' AND p.proname = 'persist_consultation_with_content' AND p.pronargs = 24
+    )
+
+  UNION ALL
   -- CONTENT · P0 gate — fails on mass wipe; allows ≤2 irrecoverable post-PITR gaps
   SELECT 'CONTENT', 'consultation_content full text (≤2 empty rows allowed for known PITR gaps)',
     (

@@ -1,4 +1,4 @@
-import type { MutationRule } from "@iching-oracle/iching-engine";
+import type { AnyMutationRule } from "@iching-oracle/iching-engine";
 import type { OracleBonesVerdict, OracleBoneMedium } from "@iching-oracle/oracle-bones-engine";
 import { getHomeChromeUiMessages, parseAppLocale } from "@iching-oracle/i18n";
 
@@ -22,7 +22,7 @@ export interface ConsultationSummary {
   primaryHexagramChinese: string;
   transformedHexagramName: string | null;
   changingLines: number[];
-  mutationRule: MutationRule | "ORACLE_BONES";
+  mutationRule: AnyMutationRule | "ORACLE_BONES";
   interpretationSummary: string;
   oracleType: OracleType;
   oracleBones?: OracleBonesHistorySnapshot;
@@ -121,7 +121,7 @@ export function summarizePreviousConsultations(
     transformedHexagramName: c.transformed_hexagram_name,
     changingLines: c.changing_lines,
     mutationRule: (c.oracle_type === "oracle_bones" ? "ORACLE_BONES" : c.mutation_rule) as
-      | MutationRule
+      | AnyMutationRule
       | "ORACLE_BONES",
     interpretationSummary: c.interpretation_summary || c.interpretation.slice(0, 200),
     oracleType: c.oracle_type ?? "iching",

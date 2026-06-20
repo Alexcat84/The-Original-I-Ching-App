@@ -35,6 +35,13 @@ export type NotesPageUiMessages = {
   yarrowOriginBody: string;
   yarrowProbHeading: string;
   yarrowProbBody: string;
+  translationsHeading: string;
+  lineReadingHeading: string;
+  lineReadingIntroBody: string;
+  lineReadingHuangHeading: string;
+  lineReadingHuangBody: string;
+  lineReadingZhuxiHeading: string;
+  lineReadingZhuxiBody: string;
   interpretHeading: string;
   interpretBody: string;
   sourcesHeading: string;
@@ -50,16 +57,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Origen histórico (~1000 a.C.)",
     ichingOriginBody:
-      "El Zhouyi, «Los Cambios de Zhou», es uno de los textos más antiguos de la humanidad. Sus raíces se remontan a la dinastía Zhou (1046–256 a.C.). El texto se construyó en capas históricas: el Rey Wen organizó los 64 hexagramas y escribió los Juicios (guàcí) mientras estaba prisionero. Su hijo, el Duque de Zhou, añadió las sentencias de las seis líneas (yáocí). Siglos después, Confucio y sus discípulos agregaron los Comentarios conocidos como las Diez Alas (十翼), el estrato filosófico más profundo del texto.",
+      "El Zhouyi, «Los Cambios de Zhou», es uno de los textos más antiguos de la humanidad. Sus raíces se remontan a la dinastía Zhou (1046-256 a.C.). El texto se construyó en capas históricas: el Rey Wen organizó los 64 hexagramas y escribió los Juicios (guàcí) mientras estaba prisionero. Su hijo, el Duque de Zhou, añadió las sentencias de las seis líneas (yáocí). Siglos después, Confucio y sus discípulos agregaron los Comentarios conocidos como las Diez Alas (十翼), el estrato filosófico más profundo del texto.",
     ichingHexHeading: "El sistema de los 64 hexagramas",
     ichingHexBody:
       "Cada hexagrama es una figura de seis líneas, cada una yin (rota) o yang (entera). Las 64 combinaciones posibles describen los patrones fundamentales del cambio. Las líneas en movimiento indican transformación: el hexagrama presente muta hacia uno futuro, y esa transición es el corazón de la lectura.",
     ichingHexListHeading: "",
     ichingHexListIntro: "",
     ichingHexListAriaLabel: "",
-    ichingMethodHeading: "El método de las tres monedas y las reglas de Zhu Xi",
+    ichingMethodHeading: "El método de las tres monedas",
     ichingMethodBody:
-      "El método clásico usa tres monedas lanzadas seis veces. Cuando múltiples líneas cambian, la escuela de Zhu Xi (neoconfucianismo, siglo XII d.C.) establece reglas precisas para determinar qué línea gobierna la lectura, eliminando la ambigüedad interpretativa. Esta app implementa exactamente esas reglas sin modificación.",
+      "El método clásico de monedas lanza tres monedas seis veces y construye el hexagrama línea a línea. Es más rápido que las varillas de milenrama y produce el mismo tipo de resultado: líneas enteras (yang) y partidas (yin), algunas en movimiento. Cómo se leen luego esas líneas en movimiento es una cuestión aparte, que se aborda en la siguiente sección.",
     ichingWilhelmHeading: "La traducción Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm produjo en 1924 la traducción más completa y respetada del I Ching en lengua occidental. Cary Baynes la tradujo al inglés en 1950 (Princeton University Press). Esta obra es el texto base de esta app, sin modificaciones ni simplificaciones.",
@@ -70,7 +77,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiBody:
       "El Zhou Yi original (literalmente 'Cambios de Zhou') es el núcleo del I Ching, compuesto por los 64 hexagramas, los juicios del Rey Wen y las líneas del Duque de Zhou, sin los comentarios confucianos posteriores (las Diez Alas). Esta fuente permite conectar directamente con la capa chamánica y más antigua del oráculo.",
     bonesHeading: "Huesos de Oráculo (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Origen histórico (Dinastía Shang, ~1600–1046 a.C.)",
+    bonesOriginHeading: "Origen histórico (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
       "La práctica oracular documentada más antigua de China. Los chamanes reales aplicaban calor a huesos o caparazones para leer las grietas resultantes. Esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa y veredicto por patrón.",
     bonesVerdictsHeading: "Los cuatro estados del veredicto:",
@@ -84,6 +91,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Es el procedimiento descrito en el Gran Comentario (Dàzhuàn). El método precisa: «El número de la Gran Expansión es 50, de los que se usan 49». El método es anterior al de tres monedas en más de un milenio. Richard Wilhelm documentó el procedimiento completo en su obra de 1924, rescatando un ritmo ritual más lento, táctil y deliberado que el de las monedas.",
     yarrowProbHeading: "",
     yarrowProbBody: "",
+    translationsHeading: "Las traducciones",
+    lineReadingHeading: "La lectura de las líneas cambiantes",
+    lineReadingIntroBody:
+      "Cuando una tirada produce líneas en movimiento, el hexagrama presente se transforma en un segundo. Surge entonces una pregunta: ¿qué texto gobierna la lectura? A lo largo de los siglos cristalizaron dos grandes respuestas. Por defecto, esta app aplica el sistema de reducción de Alfred Huang, y desde el panel de opciones puedes cambiar a la lectura clásica de Zhu Xi. Ambos son métodos auténticos; ninguno se inventa aquí. Elijas el que elijas, cada combinación de líneas produce siempre un único texto guía preciso.",
+    lineReadingHuangHeading: "El sistema de Alfred Huang (por defecto)",
+    lineReadingHuangBody:
+      "Alfred Huang (1921 a 2014) fue un erudito chino y maestro taoísta que, tras sobrevivir al encarcelamiento durante la Revolución Cultural, llevó la tradición a Occidente en 'The Complete I Ching' (1998). Su lectura reduce cualquier número de líneas en movimiento a un único texto rector mediante reglas posicionales claras: con una línea en movimiento gobierna su propio texto; con dos de polaridad opuesta gobierna la línea yin; con dos de la misma polaridad gobierna la inferior; con tres gobierna la del medio; con cuatro o cinco la lectura pasa al hexagrama transformado; con seis líneas en movimiento (y con ninguna) solo se lee el Juicio. El resultado es siempre un texto inequívoco, y por eso la app lo usa por defecto.",
+    lineReadingZhuxiHeading: "La lectura clásica de Zhu Xi",
+    lineReadingZhuxiBody:
+      "Zhu Xi (1130 a 1200) fue el gran filósofo neoconfuciano que sistematizó la práctica de los Cambios en su 'Yijing benyi' (El significado original del Yijing). Sus reglas son más antiguas y de más capas, y a menudo leen más de un texto: con dos líneas en movimiento lee ambas, dando precedencia a la superior; con tres pondera los Juicios de ambos hexagramas con ayuda de un conjunto de diagramas; con cuatro o cinco lee las líneas estables del hexagrama transformado. Elegir este sistema en el panel de opciones aplica fielmente esas alternativas clásicas, caso por caso.",
     interpretHeading: "Por qué la IA no inventa",
     interpretBody:
       "La inteligencia artificial en esta app tiene una función específica y acotada: tomar el resultado del algoritmo (hexagramas, líneas en movimiento o veredicto de grietas) y articularlo en lenguaje natural con el contexto de la pregunta del usuario.\n\nLa IA no genera hexagramas, no decide veredictos, ni modifica los textos de Wilhelm, Legge ni del Zhou Yi. El algoritmo matemático realiza el proceso técnico-tradicional fielmente antes de que la IA intervenga. La IA es el intérprete; el oráculo es el método.",
@@ -105,7 +122,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Historical Origins (~1000 BCE)",
     ichingOriginBody:
-      "The Zhouyi, 'The Changes of Zhou', is one of the oldest texts in human history. Its roots trace back to the Zhou dynasty (1046–256 BCE). The text was built in historical layers: King Wen organized the 64 hexagrams and wrote the Judgments (guàcí) while imprisoned. His son, the Duke of Zhou, added the statements for the six lines (yáocí). Centuries later, Confucius and his disciples added the Commentaries known as the Ten Wings (十翼), the deepest philosophical stratum of the text.",
+      "The Zhouyi, 'The Changes of Zhou', is one of the oldest texts in human history. Its roots trace back to the Zhou dynasty (1046-256 BCE). The text was built in historical layers: King Wen organized the 64 hexagrams and wrote the Judgments (guàcí) while imprisoned. His son, the Duke of Zhou, added the statements for the six lines (yáocí). Centuries later, Confucius and his disciples added the Commentaries known as the Ten Wings (十翼), the deepest philosophical stratum of the text.",
     ichingHexHeading: "The 64-Hexagram System",
     ichingHexBody:
       "Each hexagram is a figure composed of six lines, either yin (broken) or yang (solid). The 64 possible combinations describe the fundamental patterns of change. Moving lines indicate transformation: the present hexagram mutates into a future one, and this transition is the heart of the reading.",
@@ -113,9 +130,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "Complete list of the 64 hexagrams with their number, glyph, and classical name in Chinese and pinyin. Their meaning is not included here: each hexagram only takes shape inside a specific consultation, where the question and the seeker's context determine the reading.",
     ichingHexListAriaLabel: "List of the 64 hexagrams",
-    ichingMethodHeading: "The Three-Coin Method and Zhu Xi's Rules",
+    ichingMethodHeading: "The Three-Coin Method",
     ichingMethodBody:
-      "The classic method uses three coins cast six times. When multiple lines change, the Zhu Xi school (Neo-Confucianism, 12th century CE) establishes precise rules to determine which line governs the reading, eliminating interpretive ambiguity. This app implements these rules exactly without modification.",
+      "The classic coin method casts three coins six times, building the hexagram one line at a time. It is faster than the yarrow stalks and produces the same kind of result: solid (yang) and broken (yin) lines, some of them moving. How those moving lines are then read is a separate matter, addressed in the next section.",
     ichingWilhelmHeading: "The Wilhelm/Baynes Translation",
     ichingWilhelmBody:
       "Richard Wilhelm produced in 1924 the most complete and respected translation of the I Ching in Western languages. Cary Baynes translated it into English in 1950 (Princeton University Press). This work is the base text of this app, without modifications or simplifications.",
@@ -126,7 +143,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiBody:
       "The original Zhou Yi (literally 'Changes of Zhou') is the core of the I Ching, composed of the 64 hexagrams, King Wen's judgments, and the Duke of Zhou's lines, without the later Confucian commentaries (the Ten Wings). This source allows a direct connection with the shamanic and oldest layer of the oracle.",
     bonesHeading: "Oracle Bones (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Historical Origins (Shang Dynasty, ~1600–1046 BCE)",
+    bonesOriginHeading: "Historical Origins (Shang Dynasty, ~1600-1046 BCE)",
     bonesOriginBody:
       "The oldest documented oracular practice in China. Royal shamans applied heat to bones or shells to read the resulting cracks. This app respects the structural logic of the Shang system: positive charge, negative charge, and verdict by pattern.",
     bonesVerdictsHeading: "The Four Verdict States:",
@@ -141,6 +158,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "Character of the method",
     yarrowProbBody:
       "The stalk method preserves a slower ritual tempo than the three-coin method. In this app, its value is not presented as a technical table, but as a different way of entering the same I Ching tradition: more tactile, more deliberate, and closer to the classical procedure documented by Wilhelm/Baynes. The three-coin method remains equally valid for a faster consultation.",
+    translationsHeading: "The Translations",
+    lineReadingHeading: "Reading the Changing Lines",
+    lineReadingIntroBody:
+      "When a cast produces moving lines, the present hexagram transforms into a second one. A question follows: which text governs the reading? Across the centuries two great answers took shape. By default this app applies Alfred Huang's reduction system, and from the options panel you can switch to Zhu Xi's classical reading. Both are authentic methods; neither is invented here. Whichever you choose, every combination of lines always yields a single, precise governing text.",
+    lineReadingHuangHeading: "Alfred Huang's system (default)",
+    lineReadingHuangBody:
+      "Alfred Huang (1921 to 2014) was a Chinese scholar and Taoist master who, after surviving imprisonment during the Cultural Revolution, brought the tradition to the West in 'The Complete I Ching' (1998). His reading reduces any number of moving lines to a single governing text through clear positional rules: with one moving line, its own text governs; with two of opposite polarity, the yin line governs; with two of the same polarity, the lower line governs; with three, the middle one governs; with four or five, the reading shifts to the transformed hexagram; with six moving lines (and with none), only the Judgment is read. The outcome is always one unambiguous text, which is why the app uses it as the default.",
+    lineReadingZhuxiHeading: "Zhu Xi's classical reading",
+    lineReadingZhuxiBody:
+      "Zhu Xi (1130 to 1200) was the great Neo-Confucian philosopher who systematized the practice of the Changes in his 'Yijing benyi' (The Original Meaning of the Yijing). His rules are older and more layered, and often read more than one text: with two moving lines he reads both, giving precedence to the upper; with three he weighs the Judgments of both hexagrams with the help of a set of charts; with four or five he reads the stable lines of the transformed hexagram. Selecting this system in the options panel applies these classical alternatives faithfully, case by case.",
     interpretHeading: "Why AI Does Not Invent",
     interpretBody:
       "The artificial intelligence in this app has a specific and bounded function: to take the result of the algorithm (hexagrams, moving lines, or crack verdicts) and articulate it in natural language with the context of the user's question. The AI does not generate hexagrams, does not decide verdicts, and does not modify the texts of Wilhelm, Legge, or the Zhou Yi. The mathematical algorithm performs the technical-traditional process faithfully before the AI intervenes. The AI is the interpreter; the oracle is the method.",
@@ -162,7 +189,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Origem histórica (~1000 a.C.)",
     ichingOriginBody:
-      "O Zhouyi, «As Mutações de Zhou», é um dos textos mais antigos da humanidade. As suas raízes remontam à dinastia Zhou (1046–256 a.C.). O texto foi construído em camadas históricas: o Rei Wen organizou os 64 hexagramas e escreveu os Juízos (guàcí) enquanto estava prisioneiro. O seu filho, o Duque de Zhou, acrescentou as sentenças das seis linhas (yáocí). Séculos depois, Confúcio e os seus discípulos acrescentaram os Comentários conhecidos como as Dez Asas (十翼), o estrato filosófico mais profundo do texto.",
+      "O Zhouyi, «As Mutações de Zhou», é um dos textos mais antigos da humanidade. As suas raízes remontam à dinastia Zhou (1046-256 a.C.). O texto foi construído em camadas históricas: o Rei Wen organizou os 64 hexagramas e escreveu os Juízos (guàcí) enquanto estava prisioneiro. O seu filho, o Duque de Zhou, acrescentou as sentenças das seis linhas (yáocí). Séculos depois, Confúcio e os seus discípulos acrescentaram os Comentários conhecidos como as Dez Asas (十翼), o estrato filosófico mais profundo do texto.",
     ichingHexHeading: "O sistema dos 64 hexagramas",
     ichingHexBody:
       "Cada hexagrama é uma figura composta por seis linhas, cada uma yin (quebrada) ou yang (inteira). As 64 combinações possíveis descrevem os padrões fundamentais da mudança. As linhas em movimento indicam transformação: o hexagrama presente muta para um futuro, e essa transição é o coração da leitura.",
@@ -170,9 +197,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "Listagem completa dos 64 hexagramas com o seu número, glifo e nome clássico em chinês e pinyin. O significado não é apresentado aqui: cada hexagrama só ganha sentido numa consulta concreta, onde a pergunta e o contexto do consultante determinan a leitura.",
     ichingHexListAriaLabel: "Listagem dos 64 hexagramas",
-    ichingMethodHeading: "O método das três moedas e as regras de Zhu Xi",
+    ichingMethodHeading: "O método das três moedas",
     ichingMethodBody:
-      "O método clássico usa três moedas lançadas seis vezes. Quando múltiplas linhas mudam, a escola de Zhu Xi (neo-confucionismo, século XII d.C.) estabelece regras precisas para determinar qual linha governa a leitura, eliminando a ambiguidade interpretativa. Esta app implementa exatamente essas regras sem modificação.",
+      "O método clássico de moedas lança três moedas seis vezes e constrói o hexagrama linha a linha. É mais rápido do que as varetas de milenrama e produz o mesmo tipo de resultado: linhas inteiras (yang) e quebradas (yin), algumas em movimento. Como se leem depois essas linhas em movimento é uma questão à parte, abordada na secção seguinte.",
     ichingWilhelmHeading: "A tradução Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm produziu em 1924 a tradução mais completa e respeitada do I Ching em língua ocidental. Cary Baynes traduziu-a para inglês em 1950 (Princeton University Press). Esta obra é o texto base desta app, sem modificações nem simplificações.",
@@ -183,7 +210,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiBody:
       "O Zhou Yi original (literalmente 'Mutações de Zhou') é o núcleo do I Ching, composto pelos 64 hexagramas, os juízos do Rei Wen e as linhas do Duque de Zhou, sem os comentários confucianos posteriores (as Dez Asas). Esta fonte permite uma ligação direta à camada xamânica e mais antiga do oráculo.",
     bonesHeading: "Ossos Oraculares (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Origem histórica (Dinastía Shang, ~1600–1046 a.C.)",
+    bonesOriginHeading: "Origem histórica (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
       "A prática oracular documentada mais antiga da China. Os xamãs reais aplicavam calor a ossos ou carapaças para ler as fissuras resultantes. Esta app respeita a lógica estrutural do sistema Shang: carga positiva, carga negativa e veredicto por padrão.",
     bonesVerdictsHeading: "Os quatro estados do veredicto:",
@@ -198,6 +225,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "Caráter do método",
     yarrowProbBody:
       "O método das varetas preserva um ritmo ritual mais lento do que o das três moedas. Nesta app, o seu valor não é apresentado como uma tabela técnica, mas como uma forma diferente de entrar na mesma tradição do I Ching: mais tátil, mais deliberada e mais próxima do procedimento clássico documentado por Wilhelm/Baynes. O método das três moedas continua igualmente válido para uma consulta mais rápida.",
+    translationsHeading: "As traduções",
+    lineReadingHeading: "A leitura das linhas em movimento",
+    lineReadingIntroBody:
+      "Quando uma tirada produz linhas em movimento, o hexagrama presente transforma-se num segundo. Surge então uma pergunta: que texto governa a leitura? Ao longo dos séculos cristalizaram-se duas grandes respostas. Por predefinição, esta app aplica o sistema de redução de Alfred Huang, e a partir do painel de opções pode mudar para a leitura clássica de Zhu Xi. Ambos são métodos autênticos; nenhum é inventado aqui. Escolha o que escolher, cada combinação de linhas produz sempre um único texto guia preciso.",
+    lineReadingHuangHeading: "O sistema de Alfred Huang (predefinido)",
+    lineReadingHuangBody:
+      "Alfred Huang (1921 a 2014) foi um erudito chinês e mestre taoista que, depois de sobreviver ao encarceramento durante a Revolução Cultural, levou a tradição ao Ocidente em 'The Complete I Ching' (1998). A sua leitura reduz qualquer número de linhas em movimento a um único texto regente através de regras posicionais claras: com uma linha em movimento governa o seu próprio texto; com duas de polaridade oposta governa a linha yin; com duas da mesma polaridade governa a inferior; com três governa a do meio; com quatro ou cinco a leitura passa para o hexagrama transformado; com seis linhas em movimento (e com nenhuma) lê-se apenas o Juízo. O resultado é sempre um texto inequívoco, e por isso a app o usa por predefinição.",
+    lineReadingZhuxiHeading: "A leitura clássica de Zhu Xi",
+    lineReadingZhuxiBody:
+      "Zhu Xi (1130 a 1200) foi o grande filósofo neoconfuciano que sistematizou a prática das Mutações no seu 'Yijing benyi' (O significado original do Yijing). As suas regras são mais antigas e de mais camadas, e muitas vezes leem mais de um texto: com duas linhas em movimento lê ambas, dando precedência à superior; com três pondera os Juízos de ambos os hexagramas com a ajuda de um conjunto de diagramas; com quatro ou cinco lê as linhas estáveis do hexagrama transformado. Escolher este sistema no painel de opções aplica fielmente essas alternativas clássicas, caso a caso.",
     interpretHeading: "Por que a IA não inventa",
     interpretBody:
       "A inteligência artificial nesta app tem uma função específica e delimitada: tomar o resultado do algoritmo (hexagramas, linhas em movimento ou veredicto de fissuras) e articulá-lo em linguagem natural com o contexto da pergunta do utilizador. A IA não gera hexagramas, não decide veredictos, nem modifica os textos de Wilhelm. O algoritmo matemático realiza o processo técnico-tradicional fielmente antes de a IA intervir. A IA é o intérprete; o oráculo é o método.",
@@ -219,7 +256,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Origine historique (~1000 av. J.-C.)",
     ichingOriginBody:
-      "Le Zhouyi, « Les Changements de Zhou », est l'un des textes plus anciens de l'humanité. Ses racines remontent à la dynastie Zhou (1046–256 av. J.-C.). Le texte a été construit en couches historiques : le Roi Wen a organisé les 64 hexagrammes et a écrit les Jugements (guàcí) pendant son emprisonnement. Son fils, le Duc de Zhou, a ajouté les sentences pour les six traits (yáocí). Des siècles plus tard, Confucius et ses disciples ont ajouté les Commentaires connus sous le nom des Dix Ailes (十翼), la strate philosophique la plus profonde du texte.",
+      "Le Zhouyi, « Les Changements de Zhou », est l'un des textes plus anciens de l'humanité. Ses racines remontent à la dynastie Zhou (1046-256 av. J.-C.). Le texte a été construit en couches historiques : le Roi Wen a organisé les 64 hexagrammes et a écrit les Jugements (guàcí) pendant son emprisonnement. Son fils, le Duc de Zhou, a ajouté les sentences pour les six traits (yáocí). Des siècles plus tard, Confucius et ses disciples ont ajouté les Commentaires connus sous le nom des Dix Ailes (十翼), la strate philosophique la plus profonde du texte.",
     ichingHexHeading: "Le système des 64 hexagrammes",
     ichingHexBody:
       "Chaque hexagramme est une figure composée de six traits, chacun yin (brisé) ou yang (plein). Les 64 combinaisons possibles décrivent les modèles fondamentaux du changement. Les traits en mouvement indiquent une transformation : l'hexagramme présent mute en un futur, et cette transition est au cœur de la lecture.",
@@ -227,9 +264,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "Liste complète des 64 hexagrammes avec leur numéro, leur glyphe et leur nom classique en chinois et pinyin. Leur signification n'est pas incluse ici : chaque hexagramme ne prend sens que lors d'une consultation précise, où la question et le contexte du consultant déterminent la lecture.",
     ichingHexListAriaLabel: "Liste des 64 hexagrammes",
-    ichingMethodHeading: "La méthode des trois pièces et les reglas de Zhu Xi",
+    ichingMethodHeading: "La méthode des trois pièces",
     ichingMethodBody:
-      "La méthode classique utilise trois pièces lancées six fois. Lorsque plusieurs traits changent, l'école de Zhu Xi (néoconfucianisme, XIIe siècle ap. J.-C.) établit des règles précises pour déterminer quel trait gouverne la lecture, éliminant toute ambiguïté interprétative. Cette app implémente exactement ces règles sans modification.",
+      "La méthode classique des pièces lance trois pièces six fois et construit l'hexagramme trait par trait. Elle est plus rapide que les tiges d'achillée et produit le même type de résultat : des traits pleins (yang) et brisés (yin), certains en mouvement. La façon dont ces traits en mouvement sont ensuite lus est une question distincte, abordée dans la section suivante.",
     ichingWilhelmHeading: "La traduction Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm a produit en 1924 la traduction la plus complète et la plus respectée du I Ching en langue occidentale. Cary Baynes l'a traduite en anglais en 1950 (Princeton University Press). Cette œuvre constitue le texte base de cette app, sans modifications ni simplifications.",
@@ -241,7 +278,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Le Zhou Yi original (littéralement 'Changements de Zhou') est le noyau du I Ching, composé des 64 hexagrammes, des jugements du Roi Wen et des lignes du Duc de Zhou, sans les commentaires confucéens ultérieurs (les Dix Ailes). Cette source permet une connexion directe avec la couche chamanique et la plus ancienne de l'oracle.",
     bonesHeading: "Os oraculaires (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
-      "Origine historique (Dynastie Shang, ~1600–1046 av. J.-C.)",
+      "Origine historique (Dynastie Shang, ~1600-1046 av. J.-C.)",
     bonesOriginBody:
       "La pratique oraculaire documentée la plus ancienne de Chine. Les chamanes royaux appliquaient de la chaleur sur des os ou des écailles pour lire les fissures résultantes. Cette app respecte la logique structurelle du système Shang : charge positive, charge négative et verdict par motif.",
     bonesVerdictsHeading: "Les quatre états du verdict :",
@@ -256,6 +293,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "Caractère de la méthode",
     yarrowProbBody:
       "La méthode des tiges conserve un rythme rituel plus lent que celle des trois pièces. Dans cette app, sa valeur n'est pas présentée comme un tableau technique, mais comme une autre façon d'entrer dans la même tradition du I Ching : plus tactile, plus délibérée et plus proche du procédé classique documenté par Wilhelm/Baynes. La méthode des trois pièces reste tout aussi valide pour une consultation plus rapide.",
+    translationsHeading: "Les traductions",
+    lineReadingHeading: "La lecture des traits en mouvement",
+    lineReadingIntroBody:
+      "Lorsqu'un tirage produit des traits en mouvement, l'hexagramme présent se transforme en un second. Une question surgit alors : quel texte gouverne la lecture ? Au fil des siècles, deux grandes réponses ont pris forme. Par défaut, cette app applique le système de réduction d'Alfred Huang, et depuis le panneau d'options vous pouvez passer à la lecture classique de Zhu Xi. Les deux sont des méthodes authentiques ; aucune n'est inventée ici. Quel que soit votre choix, chaque combinaison de traits produit toujours un texte directeur unique et précis.",
+    lineReadingHuangHeading: "Le système d'Alfred Huang (par défaut)",
+    lineReadingHuangBody:
+      "Alfred Huang (1921 à 2014) fut un érudit chinois et maître taoïste qui, après avoir survécu à l'emprisonnement durant la Révolution culturelle, apporta la tradition en Occident dans 'The Complete I Ching' (1998). Sa lecture réduit n'importe quel nombre de traits en mouvement à un seul texte directeur grâce à des règles positionnelles claires : avec un trait en mouvement, son propre texte gouverne ; avec deux de polarité opposée, le trait yin gouverne ; avec deux de même polarité, le trait inférieur gouverne ; avec trois, celui du milieu gouverne ; avec quatre ou cinq, la lecture passe à l'hexagramme transformé ; avec six traits en mouvement (et avec aucun), seul le Jugement est lu. Le résultat est toujours un texte sans ambiguïté, et c'est pourquoi l'app l'utilise par défaut.",
+    lineReadingZhuxiHeading: "La lecture classique de Zhu Xi",
+    lineReadingZhuxiBody:
+      "Zhu Xi (1130 à 1200) fut le grand philosophe néoconfucéen qui systématisa la pratique des Changements dans son 'Yijing benyi' (Le sens originel du Yijing). Ses règles sont plus anciennes et plus stratifiées, et lisent souvent plus d'un texte : avec deux traits en mouvement, il lit les deux, en donnant la précédence au supérieur ; avec trois, il pèse les Jugements des deux hexagrammes à l'aide d'un ensemble de diagrammes ; avec quatre ou cinq, il lit les traits stables de l'hexagramme transformé. Choisir ce système dans le panneau d'options applique fidèlement ces alternatives classiques, au cas par cas.",
     interpretHeading: "Pourquoi l'IA n'invente pas",
     interpretBody:
       "L'intelligence artificielle dans cette app a une fonction spécifique et délimitée : prendre le résultat de l'algorithme (hexagrammes, traits en mouvement ou verdict de fissures) et l'articuler en langage naturel avec le contexte de la question de l'utilisateur. L'IA ne génère pas d'hexagrammes, ne décide pas des verdicts, et ne modifie pas les textes de Wilhelm. L'algorithme mathématique réalise le processus technico-traditionnel fidèlement avant que l'IA n'intervienne. L'IA est l'interprète ; l'oracle est la méthode.",
@@ -277,7 +324,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Historischer Ursprung (~1000 v. Chr.)",
     ichingOriginBody:
-      "Das Zhouyi, «Die Wandlungen von Zhou», ist einer der ältesten Texte der Menschheit. Seine Wurzeln reichen bis in die Zhou-Dynastie (1046–256 v. Chr.). Der Text wurde in historischen Schichten aufgebaut: König Wen ordnete die 64 Hexagramme und verfasste die Urteile (guàcí) während seiner Gefangenschaft. Sein Sohn, der Herzog von Zhou, fügte die Liniensätze (yáocí) hinzu. Jahrhunderte später fügten Konfuzius und seine Schüler die als Zehn Flügel (十翼) bekannten Kommentare hinzu, das tiefste philosophische Stratum des Textes.",
+      "Das Zhouyi, «Die Wandlungen von Zhou», ist einer der ältesten Texte der Menschheit. Seine Wurzeln reichen bis in die Zhou-Dynastie (1046-256 v. Chr.). Der Text wurde in historischen Schichten aufgebaut: König Wen ordnete die 64 Hexagramme und verfasste die Urteile (guàcí) während seiner Gefangenschaft. Sein Sohn, der Herzog von Zhou, fügte die Liniensätze (yáocí) hinzu. Jahrhunderte später fügten Konfuzius und seine Schüler die als Zehn Flügel (十翼) bekannten Kommentare hinzu, das tiefste philosophische Stratum des Textes.",
     ichingHexHeading: "Das System der 64 Hexagramme",
     ichingHexBody:
       "Jedes Hexagramm ist eine Figur aus sechs Linien, jede entweder yin (gebrochen) oder yang (ganz). Die 64 möglichen Kombinationen beschreiben die grundlegenden Muster des Wandels. Bewegende Linien zeigen Transformation an: das gegenwärtige Hexagramm wandelt sich in ein zukünftiges, und dieser Übergang ist das Herzstück der Lesung.",
@@ -285,9 +332,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "Vollständige Liste der 64 Hexagramme mit Nummer, Schriftzeichen und klassischem Namen in Chinesisch und Pinyin. Die Bedeutung wird hier nicht aufgeführt: Jedes Hexagramm gewinnt erst innerhalb einer konkreten Beratung Gestalt, in der Frage und Kontext der ratsuchenden Person die Lesung bestimmen.",
     ichingHexListAriaLabel: "Liste der 64 Hexagramme",
-    ichingMethodHeading: "Die Drei-Münzen-Methode und Zhu Xis Regeln",
+    ichingMethodHeading: "Die Drei-Münzen-Methode",
     ichingMethodBody:
-      "Die klassische Methode verwendet drei Münzen, die sechsmal geworfen werden. Wenn mehrere Linien wechseln, legt die Schule von Zhu Xi (Neokonfuzianismus, 12. Jh. n. Chr.) genaue Regeln fest, um zu bestimmen, welche Linie die Lesung regiert, wodurch interpretative Mehrdeutigkeit beseitigt wird. Diese App implementiert genau diese Regeln ohne Änderung.",
+      "Die klassische Münzmethode wirft sechsmal drei Münzen und baut das Hexagramm Linie für Linie auf. Sie ist schneller als die Schafgarbenstäbe und liefert dieselbe Art von Ergebnis: ganze (yang) und gebrochene (yin) Linien, einige davon bewegend. Wie diese bewegenden Linien dann gelesen werden, ist eine eigene Frage, die im nächsten Abschnitt behandelt wird.",
     ichingWilhelmHeading: "Die Übersetzung Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm erstellte 1924 die vollständigste und angesehenste Übersetzung des I Ching in westlicher Sprache. Cary Baynes übersetzte sie 1950 ins Englische (Princeton University Press). Dieses Werk ist der Grundtext dieser App, ohne Modifikationen oder Vereinfachungen.",
@@ -299,7 +346,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Das ursprüngliche Zhou Yi (wörtlich 'Wandlungen von Zhou') ist der Kern des I Ging, bestehend aus den 64 Hexagrammen, den Urteilen von König Wen und den Linien des Herzogs von Zhou, ohne die späteren konfuzianischen Kommentare (die Zehn Flügel). Diese Quelle ermöglicht eine direkte Verbindung mit der schamanischen und ältesten Schicht des Orakels.",
     bonesHeading: "Orakelknochen (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
-      "Historischer Ursprung (Shang-Dynastie, ~1600–1046 v. Chr.)",
+      "Historischer Ursprung (Shang-Dynastie, ~1600-1046 v. Chr.)",
     bonesOriginBody:
       "Die älteste dokumentierte Orakelpraktik Chinas. Die königlichen Schamanen wendeten Hitze auf Knochen oder Panzer an, um die resultierenden Risse zu lesen. Diese App respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung und Befund nach Muster.",
     bonesVerdictsHeading: "Die vier Befundzustände:",
@@ -314,6 +361,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "Charakter der Methode",
     yarrowProbBody:
       "Die Stabmethode bewahrt einen langsameren rituellen Rhythmus als die Drei-Münzen-Methode. Ihr Wert wird in dieser App nicht als technische Tabelle dargestellt, sondern als ein anderer Weg, in dieselbe I Ching-Tradition einzutreten: taktiler, bewusster und näher am klassischen Verfahren, das von Wilhelm/Baynes dokumentiert wurde. Die Drei-Münzen-Methode bleibt für eine schnellere Beratung ebenso gültig.",
+    translationsHeading: "Die Übersetzungen",
+    lineReadingHeading: "Das Lesen der bewegenden Linien",
+    lineReadingIntroBody:
+      "Wenn ein Wurf bewegende Linien hervorbringt, wandelt sich das gegenwärtige Hexagramm in ein zweites. Daraus folgt eine Frage: welcher Text regiert die Lesung? Im Laufe der Jahrhunderte nahmen zwei große Antworten Gestalt an. Standardmäßig wendet diese App das Reduktionssystem von Alfred Huang an, und über das Optionsfeld können Sie zur klassischen Lesung von Zhu Xi wechseln. Beide sind authentische Methoden; keine wird hier erfunden. Welche Sie auch wählen, jede Kombination von Linien ergibt stets einen einzigen, präzisen maßgeblichen Text.",
+    lineReadingHuangHeading: "Das System von Alfred Huang (Standard)",
+    lineReadingHuangBody:
+      "Alfred Huang (1921 bis 2014) war ein chinesischer Gelehrter und taoistischer Meister, der, nachdem er die Gefangenschaft während der Kulturrevolution überlebt hatte, die Tradition mit 'The Complete I Ching' (1998) in den Westen brachte. Seine Lesung reduziert jede beliebige Anzahl bewegender Linien durch klare positionsbezogene Regeln auf einen einzigen maßgeblichen Text: bei einer bewegenden Linie regiert ihr eigener Text; bei zwei entgegengesetzter Polarität regiert die Yin-Linie; bei zwei gleicher Polarität regiert die untere; bei drei regiert die mittlere; bei vier oder fünf wechselt die Lesung zum gewandelten Hexagramm; bei sechs bewegenden Linien (und bei keiner) wird nur das Urteil gelesen. Das Ergebnis ist stets ein eindeutiger Text, weshalb die App es als Standard verwendet.",
+    lineReadingZhuxiHeading: "Die klassische Lesung von Zhu Xi",
+    lineReadingZhuxiBody:
+      "Zhu Xi (1130 bis 1200) war der große neukonfuzianische Philosoph, der die Praxis der Wandlungen in seinem 'Yijing benyi' (Die ursprüngliche Bedeutung des Yijing) systematisierte. Seine Regeln sind älter und vielschichtiger und lesen oft mehr als einen Text: bei zwei bewegenden Linien liest er beide und gibt der oberen den Vorrang; bei drei wägt er die Urteile beider Hexagramme mithilfe einer Reihe von Tafeln ab; bei vier oder fünf liest er die stabilen Linien des gewandelten Hexagramms. Die Wahl dieses Systems im Optionsfeld wendet diese klassischen Alternativen getreu an, Fall für Fall.",
     interpretHeading: "Warum die KI nicht erfindet",
     interpretBody:
       "Die künstliche Intelligenz in dieser App hat eine spezifische und begrenzte Funktion: das Ergebnis des Algorithmus (Hexagramm, bewegende Linien oder Riss-Befund) zu nehmen und es in natürlicher Sprache in den Kontext der Frage des Nutzers zu artikulieren. Die KI generiert keine Hexagramme, entscheidet nicht über Befunde und verändert Wilhelms Texte nicht. Der mathematische Algorithmus führt den technisch-traditionellen Prozess getreu aus, bevor die KI eingreift. Die KI ist der Interpret; das Orakel ist die Methode.",
@@ -335,7 +392,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHeading: "I Ching (周易 · Zhouyi)",
     ichingOriginHeading: "Origine storica (~1000 a.C.)",
     ichingOriginBody:
-      "Lo Zhouyi, «I Mutamenti di Zhou», è uno dei testi più antichi dell'umanità. Le sue radici risalgono alla dinastia Zhou (1046–256 a.C.). Il testo è stato costruito in strati storici : il Re Wen ha organizzato i 64 esagrammi e ha scritto i Giudizi (guàcí) mentre era prigioniero. Suo figlio, il Duca di Zhou, ha aggiunto le sentenze per le sei linee (yáocí). Secoli dopo, Confucio e i suoi discepoli hanno aggiunto i Commentari noti come le Dieci Ali (十翼), lo strato filosofico più profondo del testo.",
+      "Lo Zhouyi, «I Mutamenti di Zhou», è uno dei testi più antichi dell'umanità. Le sue radici risalgono alla dinastia Zhou (1046-256 a.C.). Il testo è stato costruito in strati storici : il Re Wen ha organizzato i 64 esagrammi e ha scritto i Giudizi (guàcí) mentre era prigioniero. Suo figlio, il Duca di Zhou, ha aggiunto le sentenze per le sei linee (yáocí). Secoli dopo, Confucio e i suoi discepoli hanno aggiunto i Commentari noti come le Dieci Ali (十翼), lo strato filosofico più profondo del testo.",
     ichingHexHeading: "Il sistema dei 64 esagrammi",
     ichingHexBody:
       "Ogni esagramma è una figura composta da sei linee, ciascuna yin (spezzata) o yang (intera). Le 64 combinazioni possibili descrivono i modelli fondamentali del cambiamento. Le linee in movimento indicano una trasformazione : l'esagramma presente muta in uno futuro, e quella transizione è il cuore della lettura.",
@@ -343,9 +400,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "Elenco completo dei 64 esagrammi con il loro numero, glifo e nome classico in cinese e pinyin. Il significato non è riportato qui : ogni esagramma prende forma solo all'interno di una consultazione precisa, dove la domanda e il contesto di chi consulta determinano la lettura.",
     ichingHexListAriaLabel: "Elenco dei 64 esagrammi",
-    ichingMethodHeading: "Il metodo delle tre monete e le regole di Zhu Xi",
+    ichingMethodHeading: "Il metodo delle tre monete",
     ichingMethodBody:
-      "Il metodo classico usa tre monete lanciate sei volte. Quando più linee cambiano, la scuola di Zhu Xi (neo-confucianesimo, XII secolo d.C.) stabilisce regole precise per determinare quale linea governa la lettura, eliminando l'ambiguità interpretativa. Questa app implementa esattamente quelle regole senza modifiche.",
+      "Il metodo classico delle monete lancia tre monete sei volte e costruisce l'esagramma linea per linea. È più rapido degli steli di achillea e produce lo stesso tipo di risultato: linee intere (yang) e spezzate (yin), alcune in movimento. Come si leggono poi quelle linee in movimento è una questione a parte, affrontata nella sezione successiva.",
     ichingWilhelmHeading: "La traduzione Wilhelm/Baynes",
     ichingWilhelmBody:
       "Richard Wilhelm ha prodotto nel 1924 la traduzione più completa e rispettata dello I Ching in lingua occidentale. Cary Baynes l'ha tradotta in inglese nel 1950 (Princeton University Press). Quest'opera costituisce il testo base di questa app, senza modifiche né semplificazioni.",
@@ -356,7 +413,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiBody:
       "Lo Zhou Yi originale (letteralmente 'Mutamenti di Zhou') è il nucleo dell'I Ching, composto dai 64 esagrammi, i giudizi del Re Wen e le linee del Duca di Zhou, senza i successivi commenti confuciani (le Dieci Ali). Questa fonte consente una connessione diretta con lo strato sciamanico e più antico dell'oracolo.",
     bonesHeading: "Ossa Oracolari (甲骨 · Jiǎgǔ)",
-    bonesOriginHeading: "Origine storica (Dinastia Shang, ~1600–1046 a.C.)",
+    bonesOriginHeading: "Origine storica (Dinastia Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
       "La pratica oracolare documentata più antica della Cina. Gli sciamani reali applicavano calore a ossa o gusci per leggere le crepe risultanti. Questa app rispetta la logica strutturale del sistema Shang : carica positiva, carica negativa e verdetto per motivo.",
     bonesVerdictsHeading: "I quattro stati del verdetto :",
@@ -371,6 +428,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "Carattere del metodo",
     yarrowProbBody:
       "La procedura degli steli conserva un ritmo rituale più lento rispetto a quello delle monete. In questa app il suo valore non viene presentato come una tabella tecnica, ma come un modo diverso di entrare nella stessa tradizione dell'I Ching: più tattile, più deliberato e più vicino al procedimento classico documentato da Wilhelm/Baynes. Il metodo delle tre monete rimane altrettanto valido per una consultazione più rapida.",
+    translationsHeading: "Le traduzioni",
+    lineReadingHeading: "La lettura delle linee in movimento",
+    lineReadingIntroBody:
+      "Quando una tirata produce linee in movimento, l'esagramma presente si trasforma in un secondo. Sorge allora una domanda: quale testo governa la lettura? Nel corso dei secoli presero forma due grandi risposte. Per impostazione predefinita, questa app applica il sistema di riduzione di Alfred Huang, e dal pannello delle opzioni puoi passare alla lettura classica di Zhu Xi. Entrambi sono metodi autentici; nessuno è inventato qui. Qualunque cosa tu scelga, ogni combinazione di linee produce sempre un unico testo guida preciso.",
+    lineReadingHuangHeading: "Il sistema di Alfred Huang (predefinito)",
+    lineReadingHuangBody:
+      "Alfred Huang (1921 al 2014) fu un erudito cinese e maestro taoista che, dopo essere sopravvissuto alla prigionia durante la Rivoluzione Culturale, portò la tradizione in Occidente con 'The Complete I Ching' (1998). La sua lettura riduce qualsiasi numero di linee in movimento a un unico testo reggente mediante chiare regole posizionali: con una linea in movimento governa il proprio testo; con due di polarità opposta governa la linea yin; con due della stessa polarità governa quella inferiore; con tre governa quella centrale; con quattro o cinque la lettura passa all'esagramma trasformato; con sei linee in movimento (e con nessuna) si legge solo il Giudizio. Il risultato è sempre un testo inequivocabile, ed è per questo che l'app lo usa come impostazione predefinita.",
+    lineReadingZhuxiHeading: "La lettura classica di Zhu Xi",
+    lineReadingZhuxiBody:
+      "Zhu Xi (1130 al 1200) fu il grande filosofo neoconfuciano che sistematizzò la pratica dei Mutamenti nel suo 'Yijing benyi' (Il significato originale dello Yijing). Le sue regole sono più antiche e più stratificate, e spesso leggono più di un testo: con due linee in movimento legge entrambe, dando precedenza a quella superiore; con tre soppesa i Giudizi di entrambi gli esagrammi con l'aiuto di una serie di diagrammi; con quattro o cinque legge le linee stabili dell'esagramma trasformato. Selezionare questo sistema nel pannello delle opzioni applica fedelmente queste alternative classiche, caso per caso.",
     interpretHeading: "Perché l'IA non inventa",
     interpretBody:
       "L'intelligenza artificiale in questa app ha una funzione specifica e delimitata: prendere il risultato dell'algoritmo (esagrammi, linee in movimento o verdetto di crepe) e articolarlo in linguaggio naturale con il contesto della domanda dell'utente. L'IA non genera esagrammi, non decide verdetti e non modifica i testi di Wilhelm. L'algoritmo matematico esegue fedelmente il processo tecnico-tradizionale prima che l'IA intervenga. L'IA è l'interprete ; l'oracolo è il metodo.",
@@ -400,9 +467,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "64卦の番号、卦象、漢字名と拼音をすべて掲載した一覧です。意味はここでは扱いません。各卦は具体的な相談のなかではじめて形を持ち、問いと相談者の文脈が読みを決めます。",
     ichingHexListAriaLabel: "64卦の一覧",
-    ichingMethodHeading: "三枚銭法と朱熹の規則",
+    ichingMethodHeading: "三枚銭法",
     ichingMethodBody:
-      "古典的な方法は、三枚の銭を六回投じて卦を一爻ずつ構築します。複数の爻が変化する場合、朱熹の学派（新儒学、12世紀）は、どの爻が占いを支配するかを決定する精確な規則を設けており、解釈上の曖昧さを排除しています。このアプリはその規則を改変なく正確に実装しています。",
+      "古典的な銭法は、三枚の銭を六回投じ、卦を一爻ずつ構築します。蓍草より速く、同じ種類の結果をもたらします：陽（連続した）と陰（切れた）の爻があり、その一部は動爻です。それらの動爻をどう読むかは別の問題であり、次の節で扱います。",
     ichingWilhelmHeading: "ヴィルヘルム/バインズ訳",
     ichingWilhelmBody:
       "ドイツ人中国学者リヒャルト・ヴィルヘルムは数十年間中国に住み、1924年に西洋語として最も完全で尊重される易経の翻訳を出版しました。卦辞、爻辞、十翼の彖伝を含んでいます。キャリー・バインズが1950年に英語に翻訳しました。この著作は2020年にパブリックドメインに入り、このアプリのベーステキストです, 改変も簡略化もなく。",
@@ -432,6 +499,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "方法の性格",
     yarrowProbBody:
       "筮竹の方法は、三枚硬貨よりもゆっくりした儀礼的なリズムを保ちます。このアプリでは、その価値を技術的な表としてではなく、同じ易経伝統に入る別の方法として示しています。より触覚的で、より意識的で、Wilhelm/Baynes が記録した古典的手順に近いものです。より速い占いには三枚硬貨の方法も同じく有効です。",
+    translationsHeading: "翻訳",
+    lineReadingHeading: "動爻の読み方",
+    lineReadingIntroBody:
+      "卦が動爻を生じると、現在の卦は第二の卦へと変化します。そこで一つの問いが生じます：どの本文が読みを支配するのか。幾世紀にもわたって二つの大きな答えが形を成しました。本アプリは既定でアルフレッド・ホアン (Alfred Huang) の還元方式を適用し、オプションパネルから朱熹の古典的な読みに切り替えることができます。どちらも本物の方法であり、ここで創作されたものではありません。いずれを選んでも、爻のあらゆる組み合わせは常に唯一の精確な支配本文を導きます。",
+    lineReadingHuangHeading: "アルフレッド・ホアンの方式（既定）",
+    lineReadingHuangBody:
+      "アルフレッド・ホアン (Alfred Huang、1921年から2014年) は中国の学者であり道教の師で、文化大革命中の投獄を生き延びたのち、'The Complete I Ching' (1998年) によって伝統を西洋に伝えました。彼の読みは、明快な位置の規則によって、いくつの動爻であっても唯一の支配本文へと還元します：動爻が一つならその爻辞が支配し、極性の異なる二つなら陰の爻が支配し、同じ極性の二つなら下の爻が支配し、三つなら中央の爻が支配し、四つか五つなら読みは変化後の卦へ移り、動爻が六つのとき（および一つもないとき）は卦辞のみを読みます。結果は常に一義的な本文であり、それゆえアプリはこれを既定として用います。",
+    lineReadingZhuxiHeading: "朱熹の古典的な読み",
+    lineReadingZhuxiBody:
+      "朱熹 (1130年から1200年) は、その著『周易本義』（Yijing benyi、周易の本来の意味）において変化の実践を体系化した偉大な新儒学の哲学者です。彼の規則はより古く、より重層的で、しばしば複数の本文を読みます：動爻が二つなら両方を読み、上の爻を優先し、三つなら一組の図表の助けを借りて両卦の卦辞を比べ量り、四つか五つなら変化後の卦の不変の爻を読みます。オプションパネルでこの方式を選ぶと、これらの古典的な代替法が一つ一つ忠実に適用されます。",
     interpretHeading: "AIが発明しない理由",
     interpretBody:
       "このアプリの人工知能には特定かつ限定的な機能があります：アルゴリズムの結果（卦、動爻、亀裂の神託）を受け取り、ユーザーの質問のコンテキストと共に、ユーザーの言語で自然言語として表現することです。AIは卦を生成せず、神託を決定せず、ヴィルヘルムのテキストも商の手法のパターンも改変しません。数学的アルゴリズムがそれを忠実に行い、その後AIが介入します。AIは解釈者です。神託は手法です。",
@@ -461,9 +538,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "完整列出六十四卦的卦序、卦象、汉字名称与拼音。此处不附释义：每一卦的意涵都只有在具体咨询中才会成形，由问题与问卜者的处境共同决定解读。",
     ichingHexListAriaLabel: "六十四卦列表",
-    ichingMethodHeading: "三枚铜钱法与朱熹规则",
+    ichingMethodHeading: "三枚铜钱法",
     ichingMethodBody:
-      "经典方法以三枚铜钱掷六次，逐爻构建卦象。当多爻变动时，朱熹学派（新儒家，公元12世纪）制定了精确的规则，以确定哪一爻主导解读，从而消除解释上的歧义。本应用严格按照这些规则实施，未作任何修改。",
+      "经典的铜钱法以三枚铜钱掷六次，逐爻构建卦象。它比蓍草更快，产生同样类型的结果：阳爻（连续）与阴爻（断裂），其中部分为动爻。这些动爻随后如何解读，则是另一个问题，将在下一节中讨论。",
     ichingWilhelmHeading: "卫礼贤／贝恩斯译本",
     ichingWilhelmBody:
       "德国汉学家卫礼贤（Richard Wilhelm）在中国生活数十年，于1924年出版了西方语言中最完整、最受推崇的易经译本，包括卦辞、爻辞及十翼注解。贝恩斯（Cary Baynes）于1950年将其译为英文。该著作于2020年进入公有领域，是本应用的基础文本，未作任何修改或简化。",
@@ -489,6 +566,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "方法的气质",
     yarrowProbBody:
       "蓍草方法保留了比三枚铜钱更慢的仪式节奏。在本应用中，它的价值不以技术表格呈现，而是作为进入同一《易经》传统的另一种方式：更具触感，更审慎，也更接近 Wilhelm/Baynes 所记录的经典程序。若需要更快速的咨询，三枚铜钱方法同样有效。",
+    translationsHeading: "各家译本",
+    lineReadingHeading: "动爻的读法",
+    lineReadingIntroBody:
+      "当一次起卦产生动爻时，当下之卦会转变为第二卦。于是产生一个问题：哪一段文本主导解读？数百年来形成了两种伟大的答案。本应用默认采用 Alfred Huang 的归约系统，你也可以在选项面板中切换为朱熹的经典读法。两者都是真实可信的方法，皆非本应用所自创。无论你选择哪一种，任何爻的组合都始终导出唯一而精确的主导文本。",
+    lineReadingHuangHeading: "Alfred Huang 的系统（默认）",
+    lineReadingHuangBody:
+      "Alfred Huang（1921 至 2014）是一位中国学者与道家宗师，在文化大革命中历经牢狱之灾后幸存，并以《The Complete I Ching》（1998）将这一传统带入西方。他的读法通过清晰的位置规则，将任意数量的动爻归约为唯一的主导文本：一个动爻时，由其本爻辞主导；两个极性相反时，由阴爻主导；两个极性相同时，由下爻主导；三个时，由中爻主导；四个或五个时，解读转向变卦；六个动爻时（以及没有动爻时），只读卦辞。结果始终是唯一无歧义的文本，因此本应用以其为默认。",
+    lineReadingZhuxiHeading: "朱熹的经典读法",
+    lineReadingZhuxiBody:
+      "朱熹（1130 至 1200）是伟大的新儒家哲学家，他在《周易本义》（Yijing benyi）中系统化了《易》的占法。他的规则更为古老、更具层次，往往会读不止一段文本：两个动爻时，两者皆读，以上爻为先；三个时，借助一组图表权衡两卦的卦辞；四个或五个时，读变卦中不变之爻。在选项面板中选择此系统，便会逐一忠实地应用这些经典的替代规则。",
     interpretHeading: "为何人工智能不自创内容",
     interpretBody:
       "本应用中的人工智能具有特定且有限的功能：获取算法结果（卦象、动爻、裂纹兆辞）并结合用户问题的语境，以用户的语言将其表述为自然语言。人工智能不生成卦象，不裁定兆辞，不修改卫礼贤的文本，也不改变商代方法的纹样。数学算法在人工智能介入之前，已忠实地完成了这一切。人工智能是解读者，神谕是方法本身。",
@@ -518,9 +605,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "64괘의 번호, 괘상, 한자 이름과 병음을 모두 정리한 목록입니다. 의미는 여기에 싣지 않습니다. 각 괘는 구체적인 상담 안에서만 형태를 갖추며, 질문과 상담자의 맥락이 풀이를 결정합니다.",
     ichingHexListAriaLabel: "64괘 목록",
-    ichingMethodHeading: "삼전법과 주희의 규칙",
+    ichingMethodHeading: "삼전법",
     ichingMethodBody:
-      "고전적 방법은 동전 세 개를 여섯 번 던져 효를 하나씩 구성합니다. 여러 효가 변할 때, 주희 학파（신유학, 12세기）는 어떤 효가 독해를 지배하는지를 결정하는 정확한 규칙을 확립하여 해석상의 모호성을 제거합니다. 이 앱은 수정 없이 해당 규칙을 정확히 구현합니다.",
+      "고전적인 동전법은 동전 세 개를 여섯 번 던져 괘를 한 효씩 구성합니다. 시초보다 빠르며 같은 종류의 결과를 냅니다: 양효(이어진 선)와 음효(끊긴 선), 그중 일부는 변효입니다. 그 변효를 그 다음 어떻게 읽는가는 별개의 문제로, 다음 절에서 다룹니다.",
     ichingWilhelmHeading: "빌헬름/베인스 번역",
     ichingWilhelmBody:
       "독일 중국학자 리하르트 빌헬름은 수십 년간 중국에 살며 1924년 서양 언어로 된 가장 완전하고 권위 있는 주역 번역서를 출간했습니다. 괘사, 효사, 십익 전통을 모두 포함합니다. 케리 베인스가 1950년 영어로 번역했습니다. 이 저작은 2020년에 공공 도메인에 진입하였으며, 이 앱의 기본 텍스트입니다, 수정이나 단순화 없이.",
@@ -550,6 +637,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "방법의 성격",
     yarrowProbBody:
       "시초 방법은 세 동전 방법보다 더 느린 의례적 리듬을 보존합니다. 이 앱에서 그 가치는 기술적인 표가 아니라 같은 주역 전통에 들어가는 다른 방식으로 제시됩니다. 더 촉각적이고, 더 신중하며, Wilhelm/Baynes가 기록한 고전적 절차에 더 가깝습니다. 빠른 상담에는 세 동전 방법도 똑같이 유효합니다.",
+    translationsHeading: "번역본",
+    lineReadingHeading: "변효 읽기",
+    lineReadingIntroBody:
+      "한 번의 점이 변효를 낳으면, 현재의 괘는 두 번째 괘로 변합니다. 그러면 한 가지 물음이 따릅니다: 어떤 본문이 독해를 지배하는가? 여러 세기에 걸쳐 두 가지 위대한 답이 형태를 갖추었습니다. 이 앱은 기본적으로 Alfred Huang의 축약 체계를 적용하며, 옵션 패널에서 주희의 고전적 독해로 전환할 수 있습니다. 둘 다 정통 방법이며, 어느 것도 여기서 창작된 것이 아닙니다. 어느 쪽을 택하든, 효의 모든 조합은 언제나 유일하고 정확한 지배 본문을 도출합니다.",
+    lineReadingHuangHeading: "Alfred Huang의 체계 (기본값)",
+    lineReadingHuangBody:
+      "Alfred Huang(1921~2014)은 중국의 학자이자 도교 스승으로, 문화대혁명 동안의 투옥을 견뎌낸 뒤 'The Complete I Ching'(1998)을 통해 그 전통을 서양에 전했습니다. 그의 독해는 명료한 위치 규칙을 통해 변효가 몇 개이든 하나의 지배 본문으로 축약합니다: 변효가 하나면 그 자체의 효사가 지배하고, 극성이 반대인 둘이면 음효가 지배하며, 같은 극성의 둘이면 아래쪽 효가 지배하고, 셋이면 가운데 효가 지배하며, 넷이나 다섯이면 독해는 변한 괘로 옮겨가고, 변효가 여섯이면(그리고 하나도 없으면) 괘사만을 읽습니다. 결과는 언제나 모호함이 없는 하나의 본문이며, 그래서 앱은 이를 기본값으로 사용합니다.",
+    lineReadingZhuxiHeading: "주희의 고전적 독해",
+    lineReadingZhuxiBody:
+      "주희(1130~1200)는 그의 저서 '주역본의'(Yijing benyi, 주역의 본래 의미)에서 변화의 실천을 체계화한 위대한 신유학 철학자입니다. 그의 규칙은 더 오래되고 더 여러 층위를 지니며, 종종 둘 이상의 본문을 읽습니다: 변효가 둘이면 둘 다 읽되 위쪽을 우선하고, 셋이면 한 벌의 도표의 도움을 받아 두 괘의 괘사를 견주며, 넷이나 다섯이면 변한 괘의 변하지 않는 효들을 읽습니다. 옵션 패널에서 이 체계를 선택하면 이러한 고전적 대안들이 경우마다 충실히 적용됩니다.",
     interpretHeading: "인공지능이 창작하지 않는 이유",
     interpretBody:
       "이 앱의 인공지능은 특정하고 한정된 기능을 수행합니다: 알고리즘의 결과, 괘, 변효, 균열 신탁, 를 받아 사용자의 질문 맥락과 함께 사용자의 언어로 자연어로 표현하는 것입니다. AI는 괘를 생성하지 않고, 신탁을 결정하지 않으며, 빌헬름의 텍스트나 상 방법의 패턴을 수정하지 않습니다. 수학적 알고리즘이 AI가 개입하기 전에 충실히 그 역할을 합니다. AI는 해석자입니다. 신탁은 방법 그 자체입니다.",
@@ -571,7 +668,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHeading: "الآي تشينغ (周易 · Zhouyi)",
     ichingOriginHeading: "الأصول التاريخية (نحو 1000 قبل الميلاد)",
     ichingOriginBody:
-      "الـ Zhouyi, «تحولات الـ Zhou», هو أحد أقدم النصوص في تاريخ البشرية. تعود جذوره إلى أسرة Zhou (1046–256 قبل الميلاد)، وإن كان نواته الكهنوتية أقدم من ذلك. بُني النص في طبقات تاريخية متمايزة: نظّم الملك Wen الأغراض الـ 64 وكتب الأحكام (卦辞، guàcí) أثناء سجنه. أضاف ابنه الدوق Zhou عبارات الأسطر الست (爻辞، yáocí). وبعد قرون، أضاف كونفوشيوس وتلاميذه التعليقات المعروفة بـ «الأجنحة العشرة» (十翼)، أعمق الطبقات الفلسفية في النص.",
+      "الـ Zhouyi, «تحولات الـ Zhou», هو أحد أقدم النصوص في تاريخ البشرية. تعود جذوره إلى أسرة Zhou (1046-256 قبل الميلاد)، وإن كان نواته الكهنوتية أقدم من ذلك. بُني النص في طبقات تاريخية متمايزة: نظّم الملك Wen الأغراض الـ 64 وكتب الأحكام (卦辞، guàcí) أثناء سجنه. أضاف ابنه الدوق Zhou عبارات الأسطر الست (爻辞، yáocí). وبعد قرون، أضاف كونفوشيوس وتلاميذه التعليقات المعروفة بـ «الأجنحة العشرة» (十翼)، أعمق الطبقات الفلسفية في النص.",
     ichingHexHeading: "نظام الأغراض الأربعة والستين",
     ichingHexBody:
       "كل غرض هو شكل من ستة خطوط، كل منها إما يين (مكسور، متقبّل) أو يانغ (مستمر، نشط). تصف الـ 64 تركيبة الممكنة الأنماط الأساسية للتغيير في الطبيعة والحياة البشرية. تشير الخطوط المتحركة إلى التحول: الغرض الحاضر يتحول إلى غرض مستقبلي، وهذا الانتقال هو جوهر القراءة.",
@@ -579,9 +676,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "قائمة كاملة بالأغراض الأربعة والستين مع رقم كل غرض ورمزه واسمه الكلاسيكي بالصينية والبينين. لا يُذكر هنا معناها: لا يكتمل أي غرض إلا داخل استشارة محددة، حيث يحدد سؤال المستشير وسياقه الشخصي القراءة.",
     ichingHexListAriaLabel: "قائمة الأغراض الأربعة والستين",
-    ichingMethodHeading: "طريقة العملات الثلاث وقواعد Zhu Xi",
+    ichingMethodHeading: "طريقة العملات الثلاث",
     ichingMethodBody:
-      "تستخدم الطريقة الكلاسيكية ثلاث عملات تُقذف ست مرات لبناء الغرض خطاً بخط. عندما تتغير خطوط متعددة، تضع مدرسة Zhu Xi (الكونفوشيانية الجديدة، القرن الثاني عشر الميلادي) قواعد دقيقة لتحديد أي خط يحكم القراءة، مما يزيل الغموض التفسيري. ينفذ هذا التطبيق تلك القواعد بدقة دون أي تعديل.",
+      "طريقة العملات الكلاسيكية تقذف ثلاث عملات ست مرات وتبني الغرض خطاً بخط. وهي أسرع من عيدان الزنبق وتعطي النوع نفسه من النتيجة: خطوط كاملة (يانغ) ومكسورة (يين)، بعضها متحرك. أما كيف تُقرأ تلك الخطوط المتحركة بعد ذلك فمسألة منفصلة، يتناولها القسم التالي.",
     ichingWilhelmHeading: "ترجمة Wilhelm/Baynes",
     ichingWilhelmBody:
       "ريتشارد فيلهلم، المستشرق الألماني، عاش في الصين عقوداً وأنتج عام 1924 الترجمة الأكثر اكتمالاً واحتراماً للـ I Ching في اللغات الغربية، بما فيها الأحكام والخطوط وتعليقات «الأجنحة العشرة». ترجمتها كاري بينز إلى الإنجليزية عام 1950. دخل هذا العمل النطاق العام عام 2020 وهو النص الأساسي لهذا التطبيق, دون تعديلات أو تبسيطات.",
@@ -593,7 +690,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "نص Zhou Yi الأصلي (حرفياً 'تغييرات Zhou') هو جوهر I Ching، ويتكون من 64 شكلاً سداسياً، وأحكام الملك Wen، وخطوط الدوق Zhou، بدون التعليقات الكونفوشيوسية اللاحقة (الأجنحة العشرة). يتيح هذا المصدر اتصالاً مباشراً بالطبقة الشامانية والأقدم من العرافة.",
     bonesHeading: "عظام العرافة (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
-      "الأصول التاريخية (أسرة Shang، نحو 1600–1046 قبل الميلاد)",
+      "الأصول التاريخية (أسرة Shang، نحو 1600-1046 قبل الميلاد)",
     bonesOriginBody:
       "التكهن بعظام العرافة هو أقدم ممارسة كهنوتية موثقة في الصين، تسبق الـ I Ching في شكله المكتوب. كان شامانو أسرة Shang الملكية يحرقون درع السلاحف أو لوح كتف الثور ويقرؤون الشقوق الناتجة للتشاور مع الأسلاف حول القرارات العسكرية والزراعية والمناخية والشخصية للملك.",
     bonesVerdictsHeading: "الحالات الأربع للحكم",
@@ -612,6 +709,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "طابع الطريقة",
     yarrowProbBody:
       "تحافظ طريقة السيقان على إيقاع طقسي أبطأ من طريقة العملات الثلاث. في هذا التطبيق لا تعرض قيمتها كجدول تقني، بل كطريقة مختلفة للدخول في تقليد الآي تشينغ نفسه: أكثر لمسا، وأكثر تعمدا، وأقرب إلى الإجراء الكلاسيكي الذي وثقه ويلهلم/باينز. وتظل طريقة العملات الثلاث صالحة بالقدر نفسه للاستشارة الأسرع.",
+    translationsHeading: "الترجمات",
+    lineReadingHeading: "قراءة الخطوط المتحركة",
+    lineReadingIntroBody:
+      "عندما يُنتج رمي الخطوط خطوطاً متحركة، يتحول الغرض الحاضر إلى غرض ثانٍ. فيطرح سؤال: أي نص يحكم القراءة؟ على مر القرون تبلورت إجابتان كبيرتان. يطبّق هذا التطبيق افتراضياً نظام الاختزال لـ Alfred Huang، ومن لوحة الخيارات يمكنك التبديل إلى القراءة الكلاسيكية لـ Zhu Xi. كلاهما طريقتان أصيلتان، ولم تُخترع أي منهما هنا. أياً كان اختيارك، فإن كل تركيبة من الخطوط تُنتج دائماً نصاً حاكماً واحداً ودقيقاً.",
+    lineReadingHuangHeading: "نظام Alfred Huang (الافتراضي)",
+    lineReadingHuangBody:
+      "كان Alfred Huang (1921 إلى 2014) عالماً صينياً ومعلماً طاوياً، وبعد أن نجا من السجن خلال الثورة الثقافية، حمل التقليد إلى الغرب في 'The Complete I Ching' (1998). تختزل قراءته أي عدد من الخطوط المتحركة إلى نص حاكم واحد عبر قواعد موضعية واضحة: مع خط متحرك واحد، يحكم نصه الخاص، ومع اثنين متعاكسي القطبية، يحكم الخط يين، ومع اثنين من القطبية نفسها، يحكم الخط الأسفل، ومع ثلاثة، يحكم الأوسط، ومع أربعة أو خمسة، تنتقل القراءة إلى الغرض المتحول، ومع ستة خطوط متحركة (ومع عدم وجود أي منها)، يُقرأ الحكم وحده. النتيجة دائماً نص واحد لا لبس فيه، ولهذا يستخدمه التطبيق بشكل افتراضي.",
+    lineReadingZhuxiHeading: "القراءة الكلاسيكية لـ Zhu Xi",
+    lineReadingZhuxiBody:
+      "كان Zhu Xi (1130 إلى 1200) الفيلسوف الكونفوشيوسي الجديد العظيم الذي نظّم ممارسة التغيّرات في كتابه 'Yijing benyi' (المعنى الأصلي للـ Yijing). قواعده أقدم وأكثر تعدداً في الطبقات، وكثيراً ما تقرأ أكثر من نص واحد: مع خطين متحركين يقرأ كليهما، مع تقديم الأعلى، ومع ثلاثة يوازن بين أحكام الغرضين بمساعدة مجموعة من الجداول، ومع أربعة أو خمسة يقرأ الخطوط الثابتة من الغرض المتحول. اختيار هذا النظام من لوحة الخيارات يطبّق هذه البدائل الكلاسيكية بأمانة، حالة بحالة.",
     interpretHeading: "لماذا الذكاء الاصطناعي لا يخترع",
     interpretBody:
       "للذكاء الاصطناعي في هذا التطبيق وظيفة محددة ومحدودة: أخذ نتيجة الخوارزمية, الغرض، الخطوط المتحركة، حكم الشقوق, وصياغتها بلغة طبيعية في لغة المستخدم، مع سياق سؤاله. لا يُولّد الذكاء الاصطناعي أغراضاً، ولا يقرر أحكاماً، ولا يعدّل نصوص Wilhelm أو أنماط طريقة Shang. الخوارزمية الرياضية تفعل ذلك بأمانة قبل أن يتدخل الذكاء الاصطناعي. الذكاء الاصطناعي هو المفسر. العرافة هي الطريقة.",
@@ -633,7 +740,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHeading: "आई चिंग (周易 · Zhouyi)",
     ichingOriginHeading: "ऐतिहासिक उत्पत्ति (लगभग 1000 ईसा पूर्व)",
     ichingOriginBody:
-      "झोऊयी, 'झोऊ के परिवर्तन', मानवता के सबसे प्राचीन ग्रंथों में से एक है। इसकी जड़ें झोऊ राजवंश (1046–256 ईसा पूर्व) तक जाती हैं, हालांकि इसका भविष्यवाणी केंद्र इससे भी पहले का है। यह पाठ विभिन्न ऐतिहासिक परतों में बनाया गया था: राजा वेन ने कैद में रहते हुए 64 हेक्साग्राम का आयोजन किया और निर्णय (卦辞, guàcí) लिखे। उनके पुत्र झोऊ के ड्यूक ने छह रेखाओं के वाक्य (爻辞, yáocí) जोड़े। सदियों बाद, कन्फ्यूशियस और उनके शिष्यों ने दस पंखों (十翼) के रूप में जाने जाने वाले टिप्पणियां जोड़ीं, जो पाठ की सबसे गहरी दार्शनिक परत है।",
+      "झोऊयी, 'झोऊ के परिवर्तन', मानवता के सबसे प्राचीन ग्रंथों में से एक है। इसकी जड़ें झोऊ राजवंश (1046-256 ईसा पूर्व) तक जाती हैं, हालांकि इसका भविष्यवाणी केंद्र इससे भी पहले का है। यह पाठ विभिन्न ऐतिहासिक परतों में बनाया गया था: राजा वेन ने कैद में रहते हुए 64 हेक्साग्राम का आयोजन किया और निर्णय (卦辞, guàcí) लिखे। उनके पुत्र झोऊ के ड्यूक ने छह रेखाओं के वाक्य (爻辞, yáocí) जोड़े। सदियों बाद, कन्फ्यूशियस और उनके शिष्यों ने दस पंखों (十翼) के रूप में जाने जाने वाले टिप्पणियां जोड़ीं, जो पाठ की सबसे गहरी दार्शनिक परत है।",
     ichingHexHeading: "64 हेक्साग्राम प्रणाली",
     ichingHexBody:
       "प्रत्येक हेक्साग्राम छह रेखाओं की एक आकृति है, प्रत्येक यिन (टूटी हुई, ग्रहणशील) या यांग (अखंड, सक्रिय)। 64 संभावित संयोजन प्रकृति और मानव जीवन में परिवर्तन के मौलिक पैटर्न का वर्णन करते हैं। गतिशील रेखाएं परिवर्तन का संकेत देती हैं: वर्तमान हेक्साग्राम एक भविष्य के हेक्साग्राम में बदल जाता है, और वह संक्रमण पाठन का केंद्र है।",
@@ -641,9 +748,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingHexListIntro:
       "सभी 64 हेक्साग्रामों की पूरी सूची, उनके क्रमांक, चिह्न और चीनी तथा पिनयिन में पारंपरिक नाम के साथ। उनका अर्थ यहां नहीं दिया गया है: प्रत्येक हेक्साग्राम केवल किसी ठोस परामर्श के भीतर ही रूप लेता है, जहां प्रश्न और परामर्शक का संदर्भ पठन तय करते हैं।",
     ichingHexListAriaLabel: "64 हेक्साग्रामों की सूची",
-    ichingMethodHeading: "तीन सिक्कों की विधि और Zhu Xi के नियम",
+    ichingMethodHeading: "तीन सिक्कों की विधि",
     ichingMethodBody:
-      "शास्त्रीय विधि तीन सिक्कों का उपयोग करती है जिन्हें छह बार फेंका जाता है ताकि हेक्साग्राम एक-एक रेखा बनाया जा सके। जब कई रेखाएं बदलती हैं, तो Zhu Xi स्कूल (नव-कन्फ्यूशीवाद, 12वीं सदी ई.) सटीक नियम स्थापित करता है जो यह निर्धारित करते हैं कि कौन सी रेखा पाठन को नियंत्रित करती है, व्याख्यात्मक अस्पष्टता को समाप्त करते हुए। यह ऐप बिना किसी संशोधन के उन नियमों को सटीक रूप से लागू करता है।",
+      "शास्त्रीय सिक्का विधि तीन सिक्कों को छह बार फेंककर हेक्साग्राम को एक-एक रेखा बनाती है। यह यारो की छड़ों से तेज़ है और उसी प्रकार का परिणाम देती है: अखंड (यांग) और टूटी हुई (यिन) रेखाएं, जिनमें कुछ गतिशील होती हैं। उन गतिशील रेखाओं को फिर कैसे पढ़ा जाता है, यह एक अलग विषय है, जिसे अगले खंड में देखा गया है।",
     ichingWilhelmHeading: "Wilhelm/Baynes अनुवाद",
     ichingWilhelmBody:
       "जर्मन चीनी विद्वान रिचर्ड विल्हेम दशकों तक चीन में रहे और 1924 में पश्चिमी भाषाओं में I Ching का सबसे पूर्ण और सम्मानित अनुवाद प्रस्तुत किया, जिसमें निर्णय, रेखाएं और दस पंखों की टिप्पणियां शामिल हैं। Cary Baynes ने इसे 1950 में अंग्रेजी में अनुवाद किया। यह कार्य 2020 में सार्वजनिक डोमेन में आ गया और इस ऐप का आधार पाठ है, बिना किसी संशोधन या सरलीकरण के।",
@@ -655,7 +762,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "मूल झोउ यी (शाब्दिक रूप से 'झोउ के परिवर्तन') आई चिंग का मूल है, जो 64 हेक्साग्राम, राजा वेन के निर्णयों और ड्यूक ऑफ झोउ की पंक्तियों से बना है, बिना बाद की कन्फ्यूशियस टिप्पणियों (दस पंखों) के। यह स्रोत दैवज्ञ की ओझा और सबसे पुरानी परत के साथ सीधा संबंध बनाने की अनुमति देता है。",
     bonesHeading: "दैवज्ञ हड्डियां (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
-      "ऐतिहासिक उत्पत्ति (शांग राजवंश, लगभग 1600–1046 ईसा पूर्व)",
+      "ऐतिहासिक उत्पत्ति (शांग राजवंश, लगभग 1600-1046 ईसा पूर्व)",
     bonesOriginBody:
       "दैवज्ञ हड्डी भविष्यवाणी चीन की सबसे पुरानी दस्तावेज़ीकृत भविष्यवाणी प्रथा है, जो I Ching से भी पहले की है। शांग राजवंश के शाही ओझाओं ने कछुए की छाती की हड्डी या बैल के कंधे की हड्डी को जलाया और परिणामी दरारों को पढ़कर राजा के सैन्य, कृषि, जलवायु और व्यक्तिगत निर्णयों के बारे में पूर्वजों से परामर्श किया।",
     bonesVerdictsHeading: "निर्णय की चार अवस्थाएं",
@@ -674,6 +781,16 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     yarrowProbHeading: "विधि का स्वभाव",
     yarrowProbBody:
       "डंठल विधि तीन सिक्कों की विधि की तुलना में धीमी अनुष्ठानिक लय रखती है। इस ऐप में इसका मूल्य किसी तकनीकी तालिका के रूप में नहीं, बल्कि उसी I Ching परंपरा में प्रवेश करने के दूसरे तरीके के रूप में प्रस्तुत है: अधिक स्पर्शनीय, अधिक सजग और Wilhelm/Baynes द्वारा दर्ज शास्त्रीय प्रक्रिया के निकट। तेज परामर्श के लिए तीन सिक्कों की विधि उतनी ही वैध रहती है।",
+    translationsHeading: "अनुवाद",
+    lineReadingHeading: "गतिशील रेखाओं का पठन",
+    lineReadingIntroBody:
+      "जब कोई फेंक गतिशील रेखाएं उत्पन्न करती है, तो वर्तमान हेक्साग्राम एक दूसरे में बदल जाता है। तब एक प्रश्न उठता है: कौन-सा पाठ पठन को नियंत्रित करता है? सदियों के दौरान दो महान उत्तर आकार लेते गए। यह ऐप डिफ़ॉल्ट रूप से Alfred Huang की न्यूनीकरण प्रणाली लागू करता है, और विकल्प पैनल से आप Zhu Xi के शास्त्रीय पठन पर स्विच कर सकते हैं। दोनों प्रामाणिक विधियां हैं; इनमें से कोई भी यहां आविष्कृत नहीं है। आप जो भी चुनें, रेखाओं का हर संयोजन हमेशा एक ही, सटीक नियंत्रक पाठ देता है।",
+    lineReadingHuangHeading: "Alfred Huang की प्रणाली (डिफ़ॉल्ट)",
+    lineReadingHuangBody:
+      "Alfred Huang (1921 से 2014) एक चीनी विद्वान और ताओ गुरु थे, जिन्होंने सांस्कृतिक क्रांति के दौरान कारावास से बचने के बाद 'The Complete I Ching' (1998) के माध्यम से इस परंपरा को पश्चिम में पहुंचाया। उनका पठन स्पष्ट स्थानिक नियमों के द्वारा किसी भी संख्या की गतिशील रेखाओं को एक ही नियंत्रक पाठ में न्यूनीकृत करता है: एक गतिशील रेखा होने पर उसका अपना पाठ नियंत्रित करता है; विपरीत ध्रुवता की दो होने पर यिन रेखा नियंत्रित करती है; समान ध्रुवता की दो होने पर निचली नियंत्रित करती है; तीन होने पर बीच वाली नियंत्रित करती है; चार या पांच होने पर पठन रूपांतरित हेक्साग्राम पर चला जाता है; छह गतिशील रेखाएं होने पर (और कोई न होने पर) केवल निर्णय पढ़ा जाता है। परिणाम हमेशा एक स्पष्ट पाठ होता है, और इसीलिए ऐप इसे डिफ़ॉल्ट रूप से उपयोग करता है।",
+    lineReadingZhuxiHeading: "Zhu Xi का शास्त्रीय पठन",
+    lineReadingZhuxiBody:
+      "Zhu Xi (1130 से 1200) महान नव-कन्फ्यूशियस दार्शनिक थे जिन्होंने अपने 'Yijing benyi' (Yijing का मूल अर्थ) में परिवर्तनों के अभ्यास को व्यवस्थित किया। उनके नियम अधिक प्राचीन और अधिक परतदार हैं, और अक्सर एक से अधिक पाठ पढ़ते हैं: दो गतिशील रेखाओं पर वे दोनों को पढ़ते हैं, ऊपरी को प्राथमिकता देते हुए; तीन पर वे आरेखों के एक समूह की सहायता से दोनों हेक्साग्रामों के निर्णयों को तौलते हैं; चार या पांच पर वे रूपांतरित हेक्साग्राम की स्थिर रेखाओं को पढ़ते हैं। विकल्प पैनल में इस प्रणाली को चुनने पर ये शास्त्रीय विकल्प हर मामले में निष्ठापूर्वक लागू होते हैं।",
     interpretHeading: "AI क्यों नहीं बनाता",
     interpretBody:
       "इस ऐप में कृत्रिम बुद्धिमत्ता की एक विशिष्ट और सीमित कार्य है: एल्गोरिदम का परिणाम, हेक्साग्राम, गतिशील रेखाएं, दरार निर्णय, लेना और उसे उपयोगकर्ता के प्रश्न के संदर्भ के साथ उपयोगकर्ता की भाषा में प्राकृतिक भाषा में व्यक्त करना। AI हेक्साग्राम उत्पन्न नहीं करता, निर्णय तय नहीं करता, Wilhelm के ग्रंथों या शांग विधि के पैटर्न को संशोधित नहीं करता। गणितीय एल्गोरिदम AI के हस्तक्षेप से पहले यह सब विश्वासपूर्वक करता है। AI दुभाषिया है। दैवज्ञ विधि है।",

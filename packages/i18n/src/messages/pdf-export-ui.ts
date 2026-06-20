@@ -18,6 +18,7 @@ export type PdfExportUiMessages = {
   trace: string;
   rule: string;
   translator: string;
+  lineReading: string;
   turtle: string;
   ox: string;
   chargePositive: string;
@@ -43,6 +44,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "Traza:",
     rule: "Regla:",
     translator: "Traductor:",
+    lineReading: "Lectura de líneas:",
     turtle: "Caparazón de tortuga",
     ox: "Hueso de buey",
     chargePositive: "Positivo 吉",
@@ -65,6 +67,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "Trace:",
     rule: "Rule:",
     translator: "Translator:",
+    lineReading: "Changing-line reading:",
     turtle: "Turtle shell",
     ox: "Ox bone",
     chargePositive: "Positive 吉",
@@ -87,6 +90,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "Traçado:",
     rule: "Regra:",
     translator: "Tradutor:",
+    lineReading: "Leitura de linhas:",
     turtle: "Casco de tartaruga",
     ox: "Osso de boi",
     chargePositive: "Positivo 吉",
@@ -109,6 +113,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "Tracé :",
     rule: "Règle :",
     translator: "Traducteur :",
+    lineReading: "Lecture des lignes :",
     turtle: "Carapace de tortue",
     ox: "Os de bœuf",
     chargePositive: "Positif 吉",
@@ -131,6 +136,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "Muster:",
     rule: "Regel:",
     translator: "Übersetzer:",
+    lineReading: "Linienlesung:",
     turtle: "Schildkrötenpanzer",
     ox: "Ochsenknochen",
     chargePositive: "Positiv 吉",
@@ -153,6 +159,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "Traccia:",
     rule: "Regola:",
     translator: "Traduttore:",
+    lineReading: "Lettura delle linee:",
     turtle: "Guscio di tartaruga",
     ox: "Osso di bue",
     chargePositive: "Positivo 吉",
@@ -175,6 +182,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "卦:",
     rule: "ルール:",
     translator: "翻訳者:",
+    lineReading: "爻の読み方:",
     turtle: "亀甲",
     ox: "牛骨",
     chargePositive: "陽 吉",
@@ -197,6 +205,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "卦象：",
     rule: "规则：",
     translator: "译者：",
+    lineReading: "变爻解读：",
     turtle: "龟甲",
     ox: "牛骨",
     chargePositive: "正命 吉",
@@ -219,6 +228,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "괘:",
     rule: "규칙:",
     translator: "번역자:",
+    lineReading: "변효 해석:",
     turtle: "거북 등딱지",
     ox: "소뼈",
     chargePositive: "양성 吉",
@@ -241,6 +251,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "الأثر:",
     rule: "القاعدة:",
     translator: "المترجم:",
+    lineReading: "قراءة الخطوط:",
     turtle: "صدفة سلحفاة",
     ox: "عظم ثور",
     chargePositive: "موجب 吉",
@@ -263,6 +274,7 @@ const PDF_EXPORT_UI: Record<AppLocale, PdfExportUiMessages> = {
     trace: "ट्रेस:",
     rule: "नियम:",
     translator: "अनुवादक:",
+    lineReading: "रेखा पठन:",
     turtle: "कछुए का खोल",
     ox: "बैल की हड्डी",
     chargePositive: "सकारात्मक 吉",

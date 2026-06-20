@@ -17,7 +17,7 @@ export function stripSnapshotLeaks(text: string): string {
 }
 
 const MUTATION_RULE_CODE_RE =
-  /\b(?:NO_CHANGING|ONE_CHANGING|TWO_YIN_YANG|TWO_SAME_LOWER|THREE_MIDDLE|FOUR_LOWEST_STABLE|FIVE_ONLY_STABLE|SIX_ALL_CHANGING|QIAN_ALL_NINE|KUN_ALL_SIX)\b/g;
+  /\b(?:NO_CHANGING|ONE_CHANGING|TWO_YIN_YANG|TWO_SAME_LOWER|THREE_MIDDLE|FOUR_LOWEST_STABLE|FIVE_ONLY_STABLE|SIX_ALL_CHANGING|QIAN_ALL_NINE|KUN_ALL_SIX|ZX_ZERO|ZX_ONE|ZX_TWO_UPPER|ZX_THREE_JUDGMENTS|ZX_FOUR_LOWER|ZX_FIVE_ONLY|ZX_SIX_TRANSFORMED)\b/g;
 
 /** Safety net: remove any mutation rule code identifiers that leaked into the response.
  *  Primary fix is removing them from the prompt; this catches edge cases. */

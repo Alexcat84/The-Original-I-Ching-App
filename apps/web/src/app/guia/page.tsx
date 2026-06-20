@@ -41,7 +41,7 @@ export default async function GuiaRapidaPage() {
           {g.leadPart3}
         </p>
 
-        {/* Sección 1 */}
+        {/* Modo de oráculo (selector principal) */}
         <h2 id="modos-consulta">{g.s1Heading}</h2>
         <ul>
           <li>
@@ -51,35 +51,13 @@ export default async function GuiaRapidaPage() {
             <strong>{g.bonesLabel}</strong>: {g.s1Bones}
           </li>
         </ul>
-        <p className="doc-note">{g.ichingTraditionNote}</p>
 
-        {/* Sección 2 */}
-        <h2 id="panel-opciones">{g.s2Heading}</h2>
-        <ul>
-          <li>
-            <strong>{g.s2TranslatorsTitle}</strong>: {g.s2Translators}
-          </li>
-          <li>
-            <strong>{g.s2TokensTitle}</strong>: {g.s2Tokens}
-          </li>
-          <li>
-            <strong>{g.s2SecurityTitle}</strong>: {g.s2Security}
-          </li>
-        </ul>
+        {/* Panel de opciones — en el mismo orden que los selectores de la app */}
+        <h2 id="panel-opciones">{g.optionsHeading}</h2>
+        <p className="doc-note">{g.optionsIntro}</p>
 
-        {/* Sección 3 */}
-        <h2 id="sesiones-mensajes">{g.s3Heading}</h2>
-        <ul>
-          <li>
-            <strong>{g.s3NewSessionTitle}</strong>: {g.s3NewSession}
-          </li>
-          <li>
-            <strong>{g.s3HistoryTitle}</strong>: {g.s3History}
-          </li>
-        </ul>
-
-        {/* Sección 4 */}
-        <h2 id="pilares">{g.translatorsHeading}</h2>
+        {/* Selector 1: Traductor */}
+        <h3 id="traductor">{g.translatorsHeading}</h3>
         <ul>
           <li>
             <strong>Wilhelm/Baynes</strong>: {g.translatorsWilhelm}
@@ -95,18 +73,46 @@ export default async function GuiaRapidaPage() {
           </li>
         </ul>
 
-        {/* Sección 5 */}
-        <h2 id="metodos-lanzamiento">{g.s5Heading}</h2>
+        {/* Selector 2: Lectura de líneas cambiantes */}
+        <h3 id="lectura-lineas">{g.lineReadingHeading}</h3>
+        <p>{g.ichingTraditionNote}</p>
+
+        {/* Selector 3: Método */}
+        <h3 id="metodo">{g.methodsHeading}</h3>
+        <p className="doc-note">{g.methodsIntro}</p>
         <ul>
           <li>
-            <strong>{g.s5AutoTitle}</strong>: {g.s5Auto}
+            <strong>{g.coinsPracticalHeading}</strong>: {g.coinsPracticalBody}
           </li>
           <li>
-            <strong>{g.s5ManualTitle}</strong>: {g.s5Manual}
+            <strong>{g.yarrowPracticalHeading}</strong>: {g.yarrowPracticalBody}
           </li>
         </ul>
 
-        {/* Sección 6 */}
+        {/* Selector 4: Ejecución (automática o manual) */}
+        <h3 id="ejecucion">{g.ichingCastModeHeading}</h3>
+        <p>{g.ichingCastModeP1}</p>
+        <ul>
+          <li>{g.ichingCastAutoLi}</li>
+          <li>{g.ichingCastManualLi}</li>
+        </ul>
+
+        {/* Sesiones y chats */}
+        <h2 id="sesiones-mensajes">{g.s3Heading}</h2>
+        <ul>
+          <li>
+            <strong>{g.s3NewSessionTitle}</strong>: {g.s3NewSession}
+          </li>
+          <li>
+            <strong>{g.s3HistoryTitle}</strong>: {g.s3History}
+          </li>
+        </ul>
+
+        {/* Tokens */}
+        <h2 id="tokens">{g.tokensHeading}</h2>
+        <p>{g.tokensIntro}</p>
+
+        {/* Biblioteca y documentación */}
         <h2 id="biblioteca-docs">{g.s6Heading}</h2>
         <ul>
           <li>
@@ -115,6 +121,18 @@ export default async function GuiaRapidaPage() {
           <li>
             <strong>{g.s6DocsTitle}</strong>: {g.s6Docs}
           </li>
+        </ul>
+
+        {/* Exportar y guardar */}
+        <h2 id="exportar">{g.exportHeading}</h2>
+        <p>{g.exportBody}</p>
+
+        {/* Privacidad */}
+        <h2 id="privacidad">{g.privacyHeading}</h2>
+        <ul>
+          <li>{g.privacyLi1}</li>
+          <li>{g.privacyLi2}</li>
+          <li>{g.privacyLi3}</li>
         </ul>
 
         <nav className="doc-nav" style={{ marginTop: "3rem" }}>

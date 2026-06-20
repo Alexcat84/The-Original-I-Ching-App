@@ -2,7 +2,7 @@
 
 import { LegalConsentModal } from "@/components/LegalConsentModal";
 import { createLegalConsentPayload, LEGAL_CONSENT_PENDING_STORAGE_KEY } from "@/lib/legal-consent";
-import { fetchLegalAcceptanceCurrent } from "@/lib/post-auth-legal";
+import { fetchLegalAcceptanceStatus } from "@/lib/post-auth-legal";
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import { useAppLocale } from "@/lib/use-app-locale";
 import {
@@ -27,6 +27,8 @@ export default function CompleteLegalPage() {
   const [phase, setPhase] = useState<"checking" | "modal">("checking");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  // True when the user already accepted an earlier version and must re-accept an update.
+  const [isUpdate, setIsUpdate] = useState(false);
 
   useEffect(() => {
     if (!isSupabaseBrowserConfigured()) {
@@ -42,15 +44,16 @@ export default function CompleteLegalPage() {
         router.replace("/login");
         return;
       }
-      const legal = await fetchLegalAcceptanceCurrent(session.access_token);
+      const legal = await fetchLegalAcceptanceStatus(session.access_token);
       if (legal === null) {
         router.replace("/login");
         return;
       }
-      if (legal) {
+      if (legal.current) {
         window.location.replace("/");
         return;
       }
+      setIsUpdate(legal.hasPrior);
       setPhase("modal");
     })();
   }, [router]);
@@ -125,6 +128,8 @@ export default function CompleteLegalPage() {
         privacy={privacy}
         terms={terms}
         busy={busy}
+        title={isUpdate ? L.legalConsentUpdateTitle : L.legalConsentReviewTitle}
+        intro={isUpdate ? L.legalConsentUpdateIntro : L.legalConsentReviewIntro}
         onAccept={() => void handleAccept()}
         onCancel={handleCancel}
       />

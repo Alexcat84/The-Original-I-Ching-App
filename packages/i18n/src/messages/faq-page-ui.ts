@@ -277,18 +277,18 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "What rule system determines which line text governs an I Ching reading?",
     answer:
-      "The app implements Alfred Huang's single-line reduction system, set out in The Complete I Ching, with Zhu Xi (朱熹, 1130–1200 CE) as the classical antecedent for the underlying structure. Huang's method reduces any combination of changing lines to one governing line text (爻辞), so the reading always rests on a single precise passage. Which text governs depends on how many of the six lines are changing.\n\n" +
-      "0 changing lines — only the Judgment (卦辞) and Image (象辞) of the primary hexagram are read. The hexagram stands as a complete statement; no line text is cited.\n\n" +
-      "1 changing line — the text of that single changing line governs.\n\n" +
-      "2 changing lines, yin and yang — the yin line governs (Alfred Huang: with one yin and one yang moving line, read the yin). Zhu Xi instead read both lines, giving the upper precedence.\n\n" +
-      "2 changing lines, same polarity — the lower of the two governs (Alfred Huang). Zhu Xi instead read both, giving the upper precedence.\n\n" +
-      "3 changing lines — the middle line of the three (by position) governs (Alfred Huang: with three moving lines, read the middle one). Zhu Xi instead read the Judgments of both hexagrams, using a set of charts to decide which to emphasize.\n\n" +
-      "4 changing lines — the reading shifts to the transformed hexagram; the upper of its two stable lines governs (Alfred Huang). Zhu Xi instead read the lower of the two.\n\n" +
-      "5 changing lines — the reading shifts to the transformed hexagram. The single stable line governs, and its text is drawn from the transformed hexagram.\n\n" +
-      "6 changing lines (any hexagram except #1 and #2) — total mutation. Only the Judgment of the transformed hexagram is read; no individual line text is cited.\n\n" +
-      "Hexagram #1 Qian, all lines old yang (用九) — the special seventh-yao text 'Use of Nines' governs: 'A host of dragons without heads — good fortune.'\n\n" +
-      "Hexagram #2 Kun, all lines old yin (用六) — the special text 'Use of Sixes' governs: 'Perseverance furthers.'\n\n" +
-      "Across every case the app follows Alfred Huang's reduction system, so each combination of changing lines yields one precise governing text with no ambiguity and no gap. Where Huang and the older Zhu Xi tradition diverge, the app follows Huang.",
+      "The app implements Alfred Huang's single-line reduction system, set out in The Complete I Ching, with Zhu Xi (朱熹, 1130-1200 CE) as the classical antecedent for the underlying structure. Huang's method reduces any combination of changing lines to one governing line text (爻辞), so the reading always rests on a single precise passage. Which text governs depends on how many of the six lines are changing.\n\n" +
+      "0 changing lines: only the Judgment (卦辞) and Image (象辞) of the primary hexagram are read. The hexagram stands as a complete statement; no line text is cited.\n\n" +
+      "1 changing line: the text of that single changing line governs.\n\n" +
+      "2 changing lines, yin and yang: the yin line governs (Alfred Huang: with one yin and one yang moving line, read the yin). Zhu Xi instead read both lines, giving the upper precedence.\n\n" +
+      "2 changing lines, same polarity: the lower of the two governs (Alfred Huang). Zhu Xi instead read both, giving the upper precedence.\n\n" +
+      "3 changing lines: the middle line of the three (by position) governs (Alfred Huang: with three moving lines, read the middle one). Zhu Xi instead read the Judgments of both hexagrams, using a set of charts to decide which to emphasize.\n\n" +
+      "4 changing lines: the reading shifts to the transformed hexagram; the upper of its two stable lines governs (Alfred Huang). Zhu Xi instead read the lower of the two.\n\n" +
+      "5 changing lines: the reading shifts to the transformed hexagram. The single stable line governs, and its text is drawn from the transformed hexagram.\n\n" +
+      "6 changing lines (any hexagram except #1 and #2): total mutation. Only the Judgment of the transformed hexagram is read; no individual line text is cited.\n\n" +
+      "Hexagram #1 Qian, all lines old yang (用九): the special seventh-yao text 'Use of Nines' governs: 'A host of dragons without heads, good fortune.'\n\n" +
+      "Hexagram #2 Kun, all lines old yin (用六): the special text 'Use of Sixes' governs: 'Perseverance furthers.'\n\n" +
+      "Across every case the app yields one precise governing text with no ambiguity and no gap. By default it follows Alfred Huang's reduction system; the Changing-line reading selector in Options lets you switch to Zhu Xi's classical reading instead, applying the alternates described above for each case. Your choice is remembered and applied consistently to that reading.",
     related: ["methodNotes"],
   },
   {
@@ -366,7 +366,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     question:
       "Are the I Ching texts that appear in the reading authentic or AI-generated?",
     answer:
-      "They are authentic. The textual material — Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams — is drawn from three scholarly translations available in the app: Wilhelm/Baynes (public domain since 2020), James Legge, and the original Zhou Yi. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source.",
+      "They are authentic. The textual material (Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams) is drawn from three scholarly translations available in the app: Wilhelm/Baynes (public domain since 2020), James Legge, and the original Zhou Yi. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source.",
     related: ["methodNotes"],
   },
   {
@@ -476,18 +476,18 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "¿Qué sistema de reglas determina qué texto de línea gobierna una lectura del I Ching?",
     answer:
-      "La app implementa el sistema de reducción a una sola línea de Alfred Huang, expuesto en The Complete I Ching, con Zhu Xi (朱熹, 1130–1200 d.C.) como antecedente clásico de la estructura de fondo. El método de Huang reduce cualquier combinación de líneas cambiantes a un único texto de línea gobernante (爻辞), de modo que la lectura siempre descansa en un pasaje preciso. Qué texto gobierna depende de cuántas de las seis líneas están en cambio.\n\n" +
-      "0 líneas en cambio — solo se leen el Juicio (卦辞) y la Imagen (象辞) del hexagrama primario. El hexagrama habla como declaración completa; no se cita ningún texto de línea.\n\n" +
-      "1 línea en cambio — el texto de esa única línea cambiante gobierna.\n\n" +
-      "2 líneas en cambio, yin y yang — gobierna la línea yin (Alfred Huang: con una yin y una yang en movimiento, se lee la yin). Zhu Xi en cambio leía ambas líneas, dando precedencia a la superior.\n\n" +
-      "2 líneas en cambio, misma polaridad — gobierna la inferior de las dos (Alfred Huang). Zhu Xi en cambio leía ambas, dando precedencia a la superior.\n\n" +
-      "3 líneas en cambio — gobierna la línea central de las tres por posición (Alfred Huang: con tres líneas en movimiento, se lee la del medio). Zhu Xi en cambio leía los Juicios de ambos hexagramas, usando un conjunto de diagramas para decidir cuál enfatizar.\n\n" +
-      "4 líneas en cambio — la lectura se desplaza al hexagrama transformado; gobierna la superior de sus dos líneas estables (Alfred Huang). Zhu Xi en cambio leía la inferior de las dos.\n\n" +
-      "5 líneas en cambio — la lectura se desplaza al hexagrama transformado. La única línea estable gobierna, y su texto se toma del hexagrama transformado.\n\n" +
-      "6 líneas en cambio (cualquier hexagrama excepto el #1 y el #2) — mutación total. Solo se lee el Juicio del hexagrama transformado; no se cita ningún texto de línea individual.\n\n" +
-      "Hexagrama #1 Qian, todas las líneas yang viejas (用九) — gobierna el texto especial del séptimo yao «Uso de los Nueves»: «Una multitud de dragones sin cabeza — buena fortuna».\n\n" +
-      "Hexagrama #2 Kun, todas las líneas yin viejas (用六) — gobierna el texto especial «Uso de los Seises»: «La perseverancia trae ventaja».\n\n" +
-      "En todos los casos la app sigue el sistema de reducción de Alfred Huang, de modo que cada combinación de líneas cambiantes produce un único texto gobernante preciso, sin ambigüedad ni laguna. Donde Huang y la tradición más antigua de Zhu Xi divergen, la app sigue a Huang.",
+      "La app implementa el sistema de reducción a una sola línea de Alfred Huang, expuesto en The Complete I Ching, con Zhu Xi (朱熹, 1130-1200 d.C.) como antecedente clásico de la estructura de fondo. El método de Huang reduce cualquier combinación de líneas cambiantes a un único texto de línea gobernante (爻辞), de modo que la lectura siempre descansa en un pasaje preciso. Qué texto gobierna depende de cuántas de las seis líneas están en cambio.\n\n" +
+      "0 líneas en cambio: solo se leen el Juicio (卦辞) y la Imagen (象辞) del hexagrama primario. El hexagrama habla como declaración completa; no se cita ningún texto de línea.\n\n" +
+      "1 línea en cambio: el texto de esa única línea cambiante gobierna.\n\n" +
+      "2 líneas en cambio, yin y yang: gobierna la línea yin (Alfred Huang: con una yin y una yang en movimiento, se lee la yin). Zhu Xi en cambio leía ambas líneas, dando precedencia a la superior.\n\n" +
+      "2 líneas en cambio, misma polaridad: gobierna la inferior de las dos (Alfred Huang). Zhu Xi en cambio leía ambas, dando precedencia a la superior.\n\n" +
+      "3 líneas en cambio: gobierna la línea central de las tres por posición (Alfred Huang: con tres líneas en movimiento, se lee la del medio). Zhu Xi en cambio leía los Juicios de ambos hexagramas, usando un conjunto de diagramas para decidir cuál enfatizar.\n\n" +
+      "4 líneas en cambio: la lectura se desplaza al hexagrama transformado; gobierna la superior de sus dos líneas estables (Alfred Huang). Zhu Xi en cambio leía la inferior de las dos.\n\n" +
+      "5 líneas en cambio: la lectura se desplaza al hexagrama transformado. La única línea estable gobierna, y su texto se toma del hexagrama transformado.\n\n" +
+      "6 líneas en cambio (cualquier hexagrama excepto el #1 y el #2): mutación total. Solo se lee el Juicio del hexagrama transformado; no se cita ningún texto de línea individual.\n\n" +
+      "Hexagrama #1 Qian, todas las líneas yang viejas (用九): gobierna el texto especial del séptimo yao «Uso de los Nueves»: «Una multitud de dragones sin cabeza, buena fortuna».\n\n" +
+      "Hexagrama #2 Kun, todas las líneas yin viejas (用六): gobierna el texto especial «Uso de los Seises»: «La perseverancia trae ventaja».\n\n" +
+      "En todos los casos la app produce un único texto gobernante preciso, sin ambigüedad ni laguna. Por defecto sigue el sistema de reducción de Alfred Huang; el selector «Lectura de líneas cambiantes» en Opciones permite cambiar a la lectura clásica de Zhu Xi, que aplica las alternativas descritas arriba para cada caso. Tu elección se recuerda y se aplica de forma consistente en esa lectura.",
     related: ["methodNotes"],
   },
   {
@@ -567,7 +567,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿Los textos del I Ching que aparecen en la lectura son auténticos o generados por IA?",
     answer:
-      "Son auténticos. El material textual — Juicios (卦辞), líneas en movimiento (爻辞) y hexagramas resultantes — proviene de tres traducciones académicas disponibles en la app: Wilhelm/Baynes (dominio público desde 2020), James Legge y el Zhou Yi original. La IA los cita y contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con la fuente original.",
+      "Son auténticos. El material textual (Juicios (卦辞), líneas en movimiento (爻辞) y hexagramas resultantes) proviene de tres traducciones académicas disponibles en la app: Wilhelm/Baynes (dominio público desde 2020), James Legge y el Zhou Yi original. La IA los cita y contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con la fuente original.",
     related: ["methodNotes"],
   },
   {
@@ -639,18 +639,18 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "ما نظام القواعد الذي يحدد أيّ نص خط يحكم قراءة الآي تشينغ؟",
     answer:
-      "يطبّق التطبيق نظام الاختزال إلى خط واحد الذي وضعه Alfred Huang في كتابه The Complete I Ching، مع اعتبار Zhu Xi (朱熹، 1130–1200 م) السابقة الكلاسيكية للبنية الأساسية. تختزل طريقة Huang أي تركيبة من الخطوط المتغيرة إلى نص خط حاكم واحد (爻辞)، بحيث ترتكز القراءة دائماً على فقرة واحدة دقيقة. أيّ نص يحكم يتوقف على عدد الخطوط الستة المتغيرة.\n\n" +
-      "0 خطوط متغيرة — يُقرأ فقط الحكم (卦辞) والصورة (象辞) للسداسي الأصلي. يقف السداسي كبيان كامل؛ لا يُستشهد بأي نص خط.\n\n" +
-      "خط واحد متغير — يحكم نص ذلك الخط المتغير الوحيد.\n\n" +
-      "خطان متغيران، يين ويانغ — يحكم خط اليين (Alfred Huang: عند وجود خط يين وخط يانغ متحركَين، يُقرأ خط اليين). أما Zhu Xi فكان يقرأ كلا الخطين، مع إعطاء الأولوية للأعلى.\n\n" +
-      "خطان متغيران، نفس القطبية — يحكم الخط الأسفل من الاثنين (Alfred Huang). أما Zhu Xi فكان يقرأ كلا الخطين، مع إعطاء الأولوية للأعلى.\n\n" +
-      "ثلاثة خطوط متغيرة — يحكم الخط الأوسط من الثلاثة حسب الموضع (Alfred Huang: عند وجود ثلاثة خطوط متحركة، يُقرأ الخط الأوسط). أما Zhu Xi فكان يقرأ أحكام كلا السداسيين، مستخدماً مجموعة من المخططات لتحديد أيهما يُرجَّح.\n\n" +
-      "أربعة خطوط متغيرة — تنتقل القراءة إلى السداسي المحوّل؛ يحكم الخط الثابت الأعلى من الخطين (Alfred Huang). أما Zhu Xi فكان يقرأ الأدنى من الاثنين.\n\n" +
-      "خمسة خطوط متغيرة — تنتقل القراءة إلى السداسي المحوّل. يحكم الخط الثابت الوحيد ويُؤخذ نصه من السداسي المحوّل.\n\n" +
-      "ستة خطوط متغيرة (أي سداسي ما عدا #1 و#2) — طفرة كاملة. يُقرأ حكم السداسي المحوّل فقط؛ لا يُستشهد بأي نص خط فردي.\n\n" +
-      "السداسي #1 Qian بكل خطوطه يانغ قديمة (用九) — يحكم النص الخاص بالياو السابع «استخدام التسعات»: «حشد من التنانين بلا رؤوس — حظ سعيد».\n\n" +
-      "السداسي #2 Kun بكل خطوطه يين قديمة (用六) — يحكم النص الخاص «استخدام الستات»: «الثبات يُجدي نفعاً».\n\n" +
-      "في كل الحالات يتبع التطبيق نظام اختزال Alfred Huang، بحيث تُنتج كل تركيبة من الخطوط المتغيرة نصاً حاكماً واحداً ودقيقاً، دون غموض أو ثغرة. وحيثما يختلف Huang عن تقليد Zhu Xi الأقدم، يتبع التطبيق Huang.",
+      "يطبّق التطبيق نظام الاختزال إلى خط واحد الذي وضعه Alfred Huang في كتابه The Complete I Ching، مع اعتبار Zhu Xi (朱熹، 1130-1200 م) السابقة الكلاسيكية للبنية الأساسية. تختزل طريقة Huang أي تركيبة من الخطوط المتغيرة إلى نص خط حاكم واحد (爻辞)، بحيث ترتكز القراءة دائماً على فقرة واحدة دقيقة. أيّ نص يحكم يتوقف على عدد الخطوط الستة المتغيرة.\n\n" +
+      "0 خطوط متغيرة: يُقرأ فقط الحكم (卦辞) والصورة (象辞) للسداسي الأصلي. يقف السداسي كبيان كامل؛ لا يُستشهد بأي نص خط.\n\n" +
+      "خط واحد متغير: يحكم نص ذلك الخط المتغير الوحيد.\n\n" +
+      "خطان متغيران، يين ويانغ: يحكم خط اليين (Alfred Huang: عند وجود خط يين وخط يانغ متحركَين، يُقرأ خط اليين). أما Zhu Xi فكان يقرأ كلا الخطين، مع إعطاء الأولوية للأعلى.\n\n" +
+      "خطان متغيران، نفس القطبية: يحكم الخط الأسفل من الاثنين (Alfred Huang). أما Zhu Xi فكان يقرأ كلا الخطين، مع إعطاء الأولوية للأعلى.\n\n" +
+      "ثلاثة خطوط متغيرة: يحكم الخط الأوسط من الثلاثة حسب الموضع (Alfred Huang: عند وجود ثلاثة خطوط متحركة، يُقرأ الخط الأوسط). أما Zhu Xi فكان يقرأ أحكام كلا السداسيين، مستخدماً مجموعة من المخططات لتحديد أيهما يُرجَّح.\n\n" +
+      "أربعة خطوط متغيرة: تنتقل القراءة إلى السداسي المحوّل؛ يحكم الخط الثابت الأعلى من الخطين (Alfred Huang). أما Zhu Xi فكان يقرأ الأدنى من الاثنين.\n\n" +
+      "خمسة خطوط متغيرة: تنتقل القراءة إلى السداسي المحوّل. يحكم الخط الثابت الوحيد ويُؤخذ نصه من السداسي المحوّل.\n\n" +
+      "ستة خطوط متغيرة (أي سداسي ما عدا #1 و#2): طفرة كاملة. يُقرأ حكم السداسي المحوّل فقط؛ لا يُستشهد بأي نص خط فردي.\n\n" +
+      "السداسي #1 Qian بكل خطوطه يانغ قديمة (用九): يحكم النص الخاص بالياو السابع «استخدام التسعات»: «حشد من التنانين بلا رؤوس، حظ سعيد».\n\n" +
+      "السداسي #2 Kun بكل خطوطه يين قديمة (用六): يحكم النص الخاص «استخدام الستات»: «الثبات يُجدي نفعاً».\n\n" +
+      "في كل الحالات يُنتج التطبيق نصاً حاكماً واحداً ودقيقاً، دون غموض أو ثغرة. يتبع التطبيق افتراضياً نظام اختزال Alfred Huang؛ ويتيح لك مُحدِّد «قراءة الخطوط المتغيرة» في الخيارات التبديل إلى قراءة Zhu Xi الكلاسيكية، التي تطبّق البدائل الموصوفة أعلاه لكل حالة. يُحفظ اختيارك ويُطبَّق باستمرار على تلك القراءة.",
     related: ["methodNotes"],
   },
   {
@@ -728,7 +728,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     question:
       "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
-      "إنها أصيلة. المادة النصية — أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة — مستقاة من ثلاث ترجمات أكاديمية متاحة في التطبيق: Wilhelm/Baynes (في الملك العام منذ عام 2020)، وJames Legge، والتشو يي الأصلي. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
+      "إنها أصيلة. المادة النصية، أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة، مستقاة من ثلاث ترجمات أكاديمية متاحة في التطبيق: Wilhelm/Baynes (في الملك العام منذ عام 2020)، وJames Legge، والتشو يي الأصلي. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
     related: ["methodNotes"],
   },
   {
@@ -820,18 +820,18 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "कौन सी नियम-प्रणाली यह निर्धारित करती है कि I Ching पठन में कौन सा रेखा-पाठ शासन करता है?",
     answer:
-      "यह ऐप Alfred Huang की एकल-रेखा संक्षेपण प्रणाली को लागू करती है, जो उनकी पुस्तक The Complete I Ching में वर्णित है, जिसमें Zhu Xi (朱熹, 1130–1200 ई.) अंतर्निहित संरचना के शास्त्रीय पूर्ववृत्त के रूप में हैं। Huang की पद्धति परिवर्तनशील रेखाओं के किसी भी संयोजन को एक शासक रेखा-पाठ (爻辞) तक संक्षिप्त करती है, जिससे पठन हमेशा एक सटीक अंश पर आधारित होता है। कौन सा पाठ शासन करता है, यह इस पर निर्भर करता है कि छह में से कितनी रेखाएँ परिवर्तनशील हैं।\n\n" +
-      "0 परिवर्तनशील रेखाएँ — केवल प्राथमिक हेक्साग्राम का निर्णय (卦辞) और छवि (象辞) पढ़ी जाती है। हेक्साग्राम एक पूर्ण कथन के रूप में खड़ा रहता है; किसी रेखा-पाठ का हवाला नहीं दिया जाता।\n\n" +
-      "1 परिवर्तनशील रेखा — उस एकल परिवर्तनशील रेखा का पाठ शासन करता है।\n\n" +
-      "2 परिवर्तनशील रेखाएँ, यिन और यांग — यिन रेखा शासन करती है (Alfred Huang: एक यिन और एक यांग चलती रेखा होने पर, यिन रेखा पढ़ी जाती है)। इसके विपरीत Zhu Xi दोनों रेखाएँ पढ़ते थे, ऊपरी को प्राथमिकता देते हुए।\n\n" +
-      "2 परिवर्तनशील रेखाएँ, समान ध्रुवीयता — दोनों में से निचली रेखा शासन करती है (Alfred Huang)। इसके विपरीत Zhu Xi दोनों पढ़ते थे, ऊपरी को प्राथमिकता देते हुए।\n\n" +
-      "3 परिवर्तनशील रेखाएँ — तीनों में से मध्य रेखा (स्थिति के अनुसार) शासन करती है (Alfred Huang: तीन चलती रेखाओं पर, मध्य रेखा पढ़ी जाती है)। इसके विपरीत Zhu Xi दोनों हेक्साग्रामों के निर्णय पढ़ते थे, यह तय करने के लिए चार्टों के एक सेट का उपयोग करते हुए कि किसे प्राथमिकता देनी है।\n\n" +
-      "4 परिवर्तनशील रेखाएँ — पठन रूपांतरित हेक्साग्राम में स्थानांतरित होता है; इसकी दो स्थिर रेखाओं में से ऊपरी शासन करती है (Alfred Huang)। इसके विपरीत Zhu Xi दोनों में से निचली पढ़ते थे।\n\n" +
-      "5 परिवर्तनशील रेखाएँ — रूपांतरित हेक्साग्राम में स्थानांतरण। एकमात्र स्थिर रेखा शासन करती है, और उसका पाठ रूपांतरित हेक्साग्राम से लिया जाता है।\n\n" +
-      "6 परिवर्तनशील रेखाएँ (#1 और #2 को छोड़कर कोई भी हेक्साग्राम) — पूर्ण उत्परिवर्तन। केवल रूपांतरित हेक्साग्राम का निर्णय पढ़ा जाता है; किसी व्यक्तिगत रेखा-पाठ का हवाला नहीं दिया जाता।\n\n" +
-      "हेक्साग्राम #1 Qian, सभी रेखाएँ पुराना यांग (用九) — विशेष सातवें याओ पाठ 'नौ का उपयोग' शासन करता है: 'बिना सिर के ड्रैगनों का समूह — शुभ फल'।\n\n" +
-      "हेक्साग्राम #2 Kun, सभी रेखाएँ पुराना यिन (用六) — विशेष पाठ 'छह का उपयोग' शासन करता है: 'दृढ़ता लाभकारी है'।\n\n" +
-      "हर स्थिति में ऐप Alfred Huang की संक्षेपण प्रणाली का अनुसरण करती है, जिससे परिवर्तनशील रेखाओं का प्रत्येक संयोजन हमेशा एक सटीक शासक पाठ देता है, बिना किसी अस्पष्टता या अंतराल के। जहाँ Huang और पुरानी Zhu Xi परंपरा में भिन्नता है, वहाँ ऐप Huang का अनुसरण करती है।",
+      "यह ऐप Alfred Huang की एकल-रेखा संक्षेपण प्रणाली को लागू करती है, जो उनकी पुस्तक The Complete I Ching में वर्णित है, जिसमें Zhu Xi (朱熹, 1130-1200 ई.) अंतर्निहित संरचना के शास्त्रीय पूर्ववृत्त के रूप में हैं। Huang की पद्धति परिवर्तनशील रेखाओं के किसी भी संयोजन को एक शासक रेखा-पाठ (爻辞) तक संक्षिप्त करती है, जिससे पठन हमेशा एक सटीक अंश पर आधारित होता है। कौन सा पाठ शासन करता है, यह इस पर निर्भर करता है कि छह में से कितनी रेखाएँ परिवर्तनशील हैं।\n\n" +
+      "0 परिवर्तनशील रेखाएँ: केवल प्राथमिक हेक्साग्राम का निर्णय (卦辞) और छवि (象辞) पढ़ी जाती है। हेक्साग्राम एक पूर्ण कथन के रूप में खड़ा रहता है; किसी रेखा-पाठ का हवाला नहीं दिया जाता।\n\n" +
+      "1 परिवर्तनशील रेखा: उस एकल परिवर्तनशील रेखा का पाठ शासन करता है।\n\n" +
+      "2 परिवर्तनशील रेखाएँ, यिन और यांग: यिन रेखा शासन करती है (Alfred Huang: एक यिन और एक यांग चलती रेखा होने पर, यिन रेखा पढ़ी जाती है)। इसके विपरीत Zhu Xi दोनों रेखाएँ पढ़ते थे, ऊपरी को प्राथमिकता देते हुए।\n\n" +
+      "2 परिवर्तनशील रेखाएँ, समान ध्रुवीयता: दोनों में से निचली रेखा शासन करती है (Alfred Huang)। इसके विपरीत Zhu Xi दोनों पढ़ते थे, ऊपरी को प्राथमिकता देते हुए।\n\n" +
+      "3 परिवर्तनशील रेखाएँ: तीनों में से मध्य रेखा (स्थिति के अनुसार) शासन करती है (Alfred Huang: तीन चलती रेखाओं पर, मध्य रेखा पढ़ी जाती है)। इसके विपरीत Zhu Xi दोनों हेक्साग्रामों के निर्णय पढ़ते थे, यह तय करने के लिए चार्टों के एक सेट का उपयोग करते हुए कि किसे प्राथमिकता देनी है।\n\n" +
+      "4 परिवर्तनशील रेखाएँ: पठन रूपांतरित हेक्साग्राम में स्थानांतरित होता है; इसकी दो स्थिर रेखाओं में से ऊपरी शासन करती है (Alfred Huang)। इसके विपरीत Zhu Xi दोनों में से निचली पढ़ते थे।\n\n" +
+      "5 परिवर्तनशील रेखाएँ: रूपांतरित हेक्साग्राम में स्थानांतरण। एकमात्र स्थिर रेखा शासन करती है, और उसका पाठ रूपांतरित हेक्साग्राम से लिया जाता है।\n\n" +
+      "6 परिवर्तनशील रेखाएँ (#1 और #2 को छोड़कर कोई भी हेक्साग्राम): पूर्ण उत्परिवर्तन। केवल रूपांतरित हेक्साग्राम का निर्णय पढ़ा जाता है; किसी व्यक्तिगत रेखा-पाठ का हवाला नहीं दिया जाता।\n\n" +
+      "हेक्साग्राम #1 Qian, सभी रेखाएँ पुराना यांग (用九): विशेष सातवें याओ पाठ 'नौ का उपयोग' शासन करता है: 'बिना सिर के ड्रैगनों का समूह, शुभ फल'।\n\n" +
+      "हेक्साग्राम #2 Kun, सभी रेखाएँ पुराना यिन (用六): विशेष पाठ 'छह का उपयोग' शासन करता है: 'दृढ़ता लाभकारी है'।\n\n" +
+      "हर स्थिति में ऐप एक सटीक शासक पाठ देती है, बिना किसी अस्पष्टता या अंतराल के। डिफ़ॉल्ट रूप से यह Alfred Huang की संक्षेपण प्रणाली का अनुसरण करती है; विकल्पों में 'परिवर्तनशील रेखाओं का पठन' चयनकर्ता आपको इसके बदले Zhu Xi की शास्त्रीय पठन शैली चुनने देता है, जो ऊपर वर्णित विकल्पों को हर स्थिति में लागू करती है। आपकी पसंद याद रखी जाती है और उस पठन पर लगातार लागू होती है।",
     related: ["methodNotes"],
   },
   {
@@ -909,7 +909,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     question:
       "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
     answer:
-      "वे प्रामाणिक हैं। पाठ्य सामग्री — निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम — ऐप में उपलब्ध तीन विद्वानों के अनुवादों से ली गई है: Wilhelm/Baynes (2020 से सार्वजनिक डोमेन), James Legge, और मूल Zhou Yi। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं।",
+      "वे प्रामाणिक हैं। पाठ्य सामग्री (निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम) ऐप में उपलब्ध तीन विद्वानों के अनुवादों से ली गई है: Wilhelm/Baynes (2020 से सार्वजनिक डोमेन), James Legge, और मूल Zhou Yi। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं।",
     related: ["methodNotes"],
   },
   {
@@ -999,18 +999,18 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "易経の占いでどの爻辞が支配するかを決めるルール体系とは何ですか？",
     answer:
-      "このアプリはAlfred Huangが『The Complete I Ching』で示した一本爻への還元法を採用しており、朱熹（朱熹, 1130–1200）はその基礎構造の古典的な先例として位置づけられます。Huangの方法は、変爻のどのような組み合わせも単一の支配爻辞（爻辞）に還元するため、占いは常に一つの精確な箇所に基づきます。どの爻辞が支配するかは、六爻のうち何本が変爻かによって決まります。\n\n" +
-      "変爻なし — 本卦の彖辞（卦辞）と象辞のみを読む。卦はそれ自体で完結した言明であり、爻辞は引用されない。\n\n" +
-      "変爻1本 — その1本の変爻の爻辞が支配する。\n\n" +
-      "変爻2本（陰と陽）— 陰爻が支配する（Alfred Huang：陰爻と陽爻が1本ずつ動く場合は陰爻を読む）。これに対し朱熹は両爻を読み、上の爻を優先した。\n\n" +
-      "変爻2本（同じ極性）— 下の爻が支配する（Alfred Huang）。これに対し朱熹は両爻を読み、上の爻を優先した。\n\n" +
-      "変爻3本 — 3本のうち中央の爻（位置による）が支配する（Alfred Huang：変爻3本の場合は中央の爻を読む）。これに対し朱熹は両卦の彖辞を読み、どちらを重視するかを一連の図によって決めた。\n\n" +
-      "変爻4本 — 之卦に移行。2本の不変爻のうち上の爻が支配する（Alfred Huang）。これに対し朱熹は下の爻を読んだ。\n\n" +
-      "変爻5本 — 之卦に移行。唯一の不変爻が支配し、その爻辞は之卦から読まれる。\n\n" +
-      "変爻6本（1・2番卦以外）— 完全な変化。之卦の彖辞のみを読み、個々の爻辞は引用されない。\n\n" +
-      "第1卦 乾、すべて老陽（用九）— 特別な第7爻「用九」の爻辞が支配する：「頭のない龍の群れ — 吉」。\n\n" +
-      "第2卦 坤、すべて老陰（用六）— 特別な爻辞「用六」が支配する：「貞固にして利し」。\n\n" +
-      "このアプリはすべての場合においてAlfred Huangの還元法に従い、変爻のあらゆる組み合わせが常に一つの精確な支配爻辞を生み出すことを保証します。Huangとより古い朱熹の伝統が異なる場合は、このアプリはHuangに従います。",
+      "このアプリはAlfred Huangが『The Complete I Ching』で示した一本爻への還元法を採用しており、朱熹（朱熹, 1130-1200）はその基礎構造の古典的な先例として位置づけられます。Huangの方法は、変爻のどのような組み合わせも単一の支配爻辞（爻辞）に還元するため、占いは常に一つの精確な箇所に基づきます。どの爻辞が支配するかは、六爻のうち何本が変爻かによって決まります。\n\n" +
+      "変爻なし: 本卦の彖辞（卦辞）と象辞のみを読む。卦はそれ自体で完結した言明であり、爻辞は引用されない。\n\n" +
+      "変爻1本: その1本の変爻の爻辞が支配する。\n\n" +
+      "変爻2本（陰と陽）: 陰爻が支配する（Alfred Huang：陰爻と陽爻が1本ずつ動く場合は陰爻を読む）。これに対し朱熹は両爻を読み、上の爻を優先した。\n\n" +
+      "変爻2本（同じ極性）: 下の爻が支配する（Alfred Huang）。これに対し朱熹は両爻を読み、上の爻を優先した。\n\n" +
+      "変爻3本: 3本のうち中央の爻（位置による）が支配する（Alfred Huang：変爻3本の場合は中央の爻を読む）。これに対し朱熹は両卦の彖辞を読み、どちらを重視するかを一連の図によって決めた。\n\n" +
+      "変爻4本: 之卦に移行。2本の不変爻のうち上の爻が支配する（Alfred Huang）。これに対し朱熹は下の爻を読んだ。\n\n" +
+      "変爻5本: 之卦に移行。唯一の不変爻が支配し、その爻辞は之卦から読まれる。\n\n" +
+      "変爻6本（1・2番卦以外）: 完全な変化。之卦の彖辞のみを読み、個々の爻辞は引用されない。\n\n" +
+      "第1卦 乾、すべて老陽（用九）: 特別な第7爻「用九」の爻辞が支配する：「頭のない龍の群れ、吉」。\n\n" +
+      "第2卦 坤、すべて老陰（用六）: 特別な爻辞「用六」が支配する：「貞固にして利し」。\n\n" +
+      "このアプリはすべての場合において一つの精確な支配爻辞を生み出します。既定ではAlfred Huangの還元法に従いますが、オプションの「変爻の読み方」セレクターで朱熹の古典的な読み方に切り替えることができ、上記で説明した各場合の代替ルールが適用されます。選択した設定は記憶され、その占いに一貫して適用されます。",
     related: ["methodNotes"],
   },
   {
@@ -1089,7 +1089,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     question:
       "解釈に表示されるI Chingのテキストは本物ですか、それともAIが生成したものですか？",
     answer:
-      "本物です。テキスト素材 — 卦辞、動爻（爻辞）、変卦 — はアプリで利用できる3つの学術的翻訳から引用されています：ヴィルヘルム/バインズ訳（2020年よりパブリックドメイン）、ジェームズ・レッグ訳、そして原典の周易。AIは関連するテキストをあなたの質問に合わせて引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原典と照合することができます。",
+      "本物です。テキスト素材（卦辞、動爻（爻辞）、変卦）はアプリで利用できる3つの学術的翻訳から引用されています：ヴィルヘルム/バインズ訳（2020年よりパブリックドメイン）、ジェームズ・レッグ訳、そして原典の周易。AIは関連するテキストをあなたの質問に合わせて引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原典と照合することができます。",
     related: ["methodNotes"],
   },
   {
@@ -1179,18 +1179,18 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "易经占卜中，决定哪条爻辞主导解读的规则体系是什么？",
     answer:
-      "本应用采用Alfred Huang在《The Complete I Ching》中提出的单爻简化系统，朱熹（朱熹，1130–1200年）则是这一底层结构的经典先驱。Huang的方法将任意变爻组合简化为单一主导爻辞（爻辞），使占卜始终基于一段精确的文字。哪条爻辞主导，取决于六爻中有多少爻发生变化。\n\n" +
-      "无变爻 — 仅读本卦的卦辞与象辞。本卦本身即是完整的陈述；不引用任何爻辞。\n\n" +
-      "1爻变 — 该唯一变爻的爻辞主导。\n\n" +
-      "2爻变（阴阳各一）— 阴爻主导（Alfred Huang：一阴一阳动爻时，读阴爻）。朱熹则读两爻，以上爻为先。\n\n" +
-      "2爻变（同一极性）— 下爻主导（Alfred Huang）。朱熹则读两爻，以上爻为先。\n\n" +
-      "3爻变 — 三爻中居中者（按位置）主导（Alfred Huang：三动爻时，读居中的一爻）。朱熹则读两卦的卦辞，并借助一套图表来决定侧重哪一卦。\n\n" +
-      "4爻变 — 移至之卦。两条不变爻中居上者主导（Alfred Huang），其爻辞取自之卦。朱熹则读居下者。\n\n" +
-      "5爻变 — 移至之卦。唯一不变爻主导，其爻辞取自之卦。\n\n" +
-      "6爻全变（非第1、2卦）— 完全变化。仅读之卦卦辞；不引用任何单独的爻辞。\n\n" +
-      "第1卦 乾，全为老阳（用九）— 特殊第七爻「用九」爻辞主导：「见群龙无首，吉」。\n\n" +
-      "第2卦 坤，全为老阴（用六）— 特殊爻辞「用六」主导：「利永贞」。\n\n" +
-      "在每一种情况下，本应用都遵循Alfred Huang的简化系统，使变爻的每种可能组合始终产生一条精确、唯一的主导爻辞，没有歧义、没有遗漏。在Huang与更古老的朱熹传统出现分歧之处，本应用以Huang为准。",
+      "本应用采用Alfred Huang在《The Complete I Ching》中提出的单爻简化系统，朱熹（朱熹，1130-1200年）则是这一底层结构的经典先驱。Huang的方法将任意变爻组合简化为单一主导爻辞（爻辞），使占卜始终基于一段精确的文字。哪条爻辞主导，取决于六爻中有多少爻发生变化。\n\n" +
+      "无变爻: 仅读本卦的卦辞与象辞。本卦本身即是完整的陈述；不引用任何爻辞。\n\n" +
+      "1爻变: 该唯一变爻的爻辞主导。\n\n" +
+      "2爻变（阴阳各一）: 阴爻主导（Alfred Huang：一阴一阳动爻时，读阴爻）。朱熹则读两爻，以上爻为先。\n\n" +
+      "2爻变（同一极性）: 下爻主导（Alfred Huang）。朱熹则读两爻，以上爻为先。\n\n" +
+      "3爻变: 三爻中居中者（按位置）主导（Alfred Huang：三动爻时，读居中的一爻）。朱熹则读两卦的卦辞，并借助一套图表来决定侧重哪一卦。\n\n" +
+      "4爻变: 移至之卦。两条不变爻中居上者主导（Alfred Huang），其爻辞取自之卦。朱熹则读居下者。\n\n" +
+      "5爻变: 移至之卦。唯一不变爻主导，其爻辞取自之卦。\n\n" +
+      "6爻全变（非第1、2卦）: 完全变化。仅读之卦卦辞；不引用任何单独的爻辞。\n\n" +
+      "第1卦 乾，全为老阳（用九）: 特殊第七爻「用九」爻辞主导：「见群龙无首，吉」。\n\n" +
+      "第2卦 坤，全为老阴（用六）: 特殊爻辞「用六」主导：「利永贞」。\n\n" +
+      "在每一种情况下，本应用都会产生一条精确、唯一的主导爻辞，没有歧义、没有遗漏。默认情况下遵循Alfred Huang的简化系统；选项中的「变爻解读法」选择器可让你切换为朱熹的经典解法，按上文所述对每种情况应用相应的替代规则。你的选择会被记住，并一致地应用于该次解读。",
     related: ["methodNotes"],
   },
   {
@@ -1267,7 +1267,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "authentic-texts",
     question: "解读中出现的易经文本是真实的还是AI生成的？",
     answer:
-      "是真实的。文本素材 — 卦辞、动爻（爻辞）和变卦 — 来自应用中提供的三种学术译本：威廉/贝恩斯译本（2020年起属公共领域）、詹姆斯·理雅各译本和原典周易。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
+      "是真实的。文本素材（卦辞、动爻（爻辞）和变卦）来自应用中提供的三种学术译本：威廉/贝恩斯译本（2020年起属公共领域）、詹姆斯·理雅各译本和原典周易。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
     related: ["methodNotes"],
   },
   {
@@ -1294,7 +1294,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "translators-tiers",
     question: "不同翻译层级是如何运作的？",
     answer:
-      "免费方案包含I Ching（自动和手动：三枚硬币和蓍草）以及Oracle Bones模式。Seeker包在免费方案基础上永久解锁完整图书馆和James Legge译本。Practitioner包增加原始周易——即无后世注释的最古老版本。Master包激活Master (3)功能：同时三角化三位译者，生成强大而个性化的综合分析。",
+      "免费方案包含I Ching（自动和手动：三枚硬币和蓍草）以及Oracle Bones模式。Seeker包在免费方案基础上永久解锁完整图书馆和James Legge译本。Practitioner包增加原始周易，即无后世注释的最古老版本。Master包激活Master (3)功能：同时三角化三位译者，生成强大而个性化的综合分析。",
   },
   {
     id: "master-tokens-cost",
@@ -1358,18 +1358,18 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "주역 점괘에서 어떤 효사가 해석을 지배하는지 결정하는 규칙 체계는 무엇인가요?",
     answer:
-      "이 앱은 Alfred Huang이 『The Complete I Ching』에서 제시한 단일 효 축약 체계를 따르며, 주희(朱熹, 1130–1200)는 그 기저 구조의 고전적 선례로 자리합니다. Huang의 방법은 변효의 어떤 조합이든 하나의 지배 효사(爻辭)로 축약하므로, 점괘는 항상 하나의 정확한 구절에 근거합니다. 어떤 효사가 지배하는지는 여섯 효 중 몇 개가 변하는지에 따라 결정됩니다.\n\n" +
-      "변효 없음 — 본괘의 괘사와 상사만 읽는다. 괘 자체가 완결된 진술이며, 어떤 효사도 인용하지 않는다.\n\n" +
-      "변효 1개 — 해당 단일 변효의 효사가 지배한다.\n\n" +
-      "변효 2개 (음과 양) — 음효가 지배한다(Alfred Huang: 음효와 양효가 각 1개 변할 경우 음효를 읽는다). 반면 주희는 두 효를 모두 읽되 상효를 우선시했다.\n\n" +
-      "변효 2개 (같은 극성) — 아래 효가 지배한다(Alfred Huang). 반면 주희는 두 효를 모두 읽되 상효를 우선시했다.\n\n" +
-      "변효 3개 — 3개 중 가운데 효(위치에 따라)가 지배한다(Alfred Huang: 3개 변효일 경우 가운데 효를 읽는다). 반면 주희는 두 괘의 괘사를 읽고, 어느 쪽을 강조할지 일련의 도표로 결정했다.\n\n" +
-      "변효 4개 — 지괘(之卦)로 이행. 2개의 불변효 중 위 효가 지배하며(Alfred Huang), 그 효사는 지괘에서 가져온다. 반면 주희는 아래 효를 읽었다.\n\n" +
-      "변효 5개 — 지괘로 이행. 유일한 불변효가 지배하며, 그 효사는 지괘에서 가져온다.\n\n" +
-      "변효 6개 (1·2번 괘 제외) — 완전 변화. 지괘의 괘사만 읽으며, 개별 효사는 인용하지 않는다.\n\n" +
-      "1번 괘 건(乾), 전부 노양(用九) — 특별한 일곱 번째 효 '용구(用九)' 효사가 지배한다: '군룡무수(群龍無首), 길하다'.\n\n" +
-      "2번 괘 곤(坤), 전부 노음(用六) — 특별 효사 '용육(用六)'이 지배한다: '영정(永貞)이 이롭다'.\n\n" +
-      "모든 경우에 이 앱은 Alfred Huang의 축약 체계를 따르므로, 변효의 모든 가능한 조합이 항상 하나의 정확하고 유일한 지배 효사를 산출하며 모호함이나 공백이 없습니다. Huang과 더 오래된 주희 전통이 갈리는 지점에서는 이 앱이 Huang을 따릅니다.",
+      "이 앱은 Alfred Huang이 『The Complete I Ching』에서 제시한 단일 효 축약 체계를 따르며, 주희(朱熹, 1130-1200)는 그 기저 구조의 고전적 선례로 자리합니다. Huang의 방법은 변효의 어떤 조합이든 하나의 지배 효사(爻辭)로 축약하므로, 점괘는 항상 하나의 정확한 구절에 근거합니다. 어떤 효사가 지배하는지는 여섯 효 중 몇 개가 변하는지에 따라 결정됩니다.\n\n" +
+      "변효 없음: 본괘의 괘사와 상사만 읽는다. 괘 자체가 완결된 진술이며, 어떤 효사도 인용하지 않는다.\n\n" +
+      "변효 1개: 해당 단일 변효의 효사가 지배한다.\n\n" +
+      "변효 2개 (음과 양): 음효가 지배한다(Alfred Huang: 음효와 양효가 각 1개 변할 경우 음효를 읽는다). 반면 주희는 두 효를 모두 읽되 상효를 우선시했다.\n\n" +
+      "변효 2개 (같은 극성): 아래 효가 지배한다(Alfred Huang). 반면 주희는 두 효를 모두 읽되 상효를 우선시했다.\n\n" +
+      "변효 3개: 3개 중 가운데 효(위치에 따라)가 지배한다(Alfred Huang: 3개 변효일 경우 가운데 효를 읽는다). 반면 주희는 두 괘의 괘사를 읽고, 어느 쪽을 강조할지 일련의 도표로 결정했다.\n\n" +
+      "변효 4개: 지괘(之卦)로 이행. 2개의 불변효 중 위 효가 지배하며(Alfred Huang), 그 효사는 지괘에서 가져온다. 반면 주희는 아래 효를 읽었다.\n\n" +
+      "변효 5개: 지괘로 이행. 유일한 불변효가 지배하며, 그 효사는 지괘에서 가져온다.\n\n" +
+      "변효 6개 (1·2번 괘 제외): 완전 변화. 지괘의 괘사만 읽으며, 개별 효사는 인용하지 않는다.\n\n" +
+      "1번 괘 건(乾), 전부 노양(用九): 특별한 일곱 번째 효 '용구(用九)' 효사가 지배한다: '군룡무수(群龍無首), 길하다'.\n\n" +
+      "2번 괘 곤(坤), 전부 노음(用六): 특별 효사 '용육(用六)'이 지배한다: '영정(永貞)이 이롭다'.\n\n" +
+      "모든 경우에 이 앱은 하나의 정확하고 유일한 지배 효사를 산출하며, 모호함이나 공백이 없습니다. 기본적으로 Alfred Huang의 축약 체계를 따르지만, 옵션의 '변효 해석 방식' 선택기를 사용하면 주희의 고전적 해석으로 전환할 수 있으며, 위에서 설명한 각 경우의 대안 규칙이 적용됩니다. 선택한 설정은 저장되어 해당 해석에 일관되게 적용됩니다.",
     related: ["methodNotes"],
   },
   {
@@ -1446,7 +1446,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "authentic-texts",
     question: "해석에 나타나는 주역 텍스트는 진본인가요, AI가 생성한 것인가요?",
     answer:
-      "진본입니다. 텍스트 자료 — 괘사(卦辞), 동효의 효사(爻辞), 변괘 — 는 앱에서 제공하는 세 가지 학술 번역본에서 인용되었습니다: 빌헬름/베인스 번역본(2020년부터 공공 도메인), 제임스 레그 번역본, 그리고 원전 주역. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다.",
+      "진본입니다. 텍스트 자료(괘사(卦辞), 동효의 효사(爻辞), 변괘)는 앱에서 제공하는 세 가지 학술 번역본에서 인용되었습니다: 빌헬름/베인스 번역본(2020년부터 공공 도메인), 제임스 레그 번역본, 그리고 원전 주역. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다.",
     related: ["methodNotes"],
   },
   {
@@ -1538,18 +1538,18 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "Qual é o sistema de regras que determina qual texto de linha governa uma leitura do I Ching?",
     answer:
-      "A app implementa o sistema de redução a uma única linha de Alfred Huang, exposto em The Complete I Ching, com Zhu Xi (朱熹, 1130–1200) como antecedente clássico da estrutura subjacente. O método de Huang reduz qualquer combinação de linhas mutantes a um único texto de linha governante (爻辞), de modo que a leitura repousa sempre sobre uma passagem precisa. Qual texto governa depende de quantas das seis linhas se tornam mutantes.\n\n" +
-      "0 linhas mutantes — Lê-se apenas o Julgamento (卦辞) e a Imagem (象辞) do hexagrama principal. O hexagrama vale como declaração completa; nenhum texto de linha é citado.\n\n" +
-      "1 linha mutante — O texto dessa única linha mutante governa.\n\n" +
-      "2 linhas mutantes (yin e yang) — A linha yin governa (Alfred Huang: havendo uma linha yin e uma yang em movimento, lê-se a yin). Zhu Xi, por sua vez, lia ambas as linhas, dando precedência à superior.\n\n" +
-      "2 linhas mutantes (mesma polaridade) — A linha inferior das duas governa (Alfred Huang). Zhu Xi lia ambas, dando precedência à superior.\n\n" +
-      "3 linhas mutantes — A linha do meio das três (por posição) governa (Alfred Huang: havendo três linhas em movimento, lê-se a do meio). Zhu Xi, em vez disso, lia os Julgamentos de ambos os hexagramas, usando um conjunto de diagramas para decidir qual enfatizar.\n\n" +
-      "4 linhas mutantes — A leitura passa para o hexagrama transformado; a superior das suas duas linhas estáveis governa (Alfred Huang). Zhu Xi lia a inferior das duas.\n\n" +
-      "5 linhas mutantes — A leitura passa para o hexagrama transformado. A única linha estável governa, e o seu texto vem do hexagrama transformado.\n\n" +
-      "6 linhas mutantes (qualquer hexagrama exceto o #1 e o #2) — Mutação total. Lê-se apenas o Julgamento do hexagrama transformado; nenhum texto de linha individual é citado.\n\n" +
-      "Hexagrama #1 Qian, todas as linhas yang antigo (用九) — O texto especial do sétimo yao 'Usar o Nove' governa: 'Um grupo de dragões sem cabeça — boa fortuna'.\n\n" +
-      "Hexagrama #2 Kun, todas as linhas yin antigo (用六) — O texto especial 'Usar o Seis' governa: 'A perseverança é benéfica'.\n\n" +
-      "Em todos os casos a app segue o sistema de redução de Alfred Huang, de modo que cada combinação de linhas mutantes produz um único texto governante preciso, sem ambiguidade nem lacuna. Onde Huang e a tradição mais antiga de Zhu Xi divergem, a app segue Huang.",
+      "A app implementa o sistema de redução a uma única linha de Alfred Huang, exposto em The Complete I Ching, com Zhu Xi (朱熹, 1130-1200) como antecedente clássico da estrutura subjacente. O método de Huang reduz qualquer combinação de linhas mutantes a um único texto de linha governante (爻辞), de modo que a leitura repousa sempre sobre uma passagem precisa. Qual texto governa depende de quantas das seis linhas se tornam mutantes.\n\n" +
+      "0 linhas mutantes: Lê-se apenas o Julgamento (卦辞) e a Imagem (象辞) do hexagrama principal. O hexagrama vale como declaração completa; nenhum texto de linha é citado.\n\n" +
+      "1 linha mutante: O texto dessa única linha mutante governa.\n\n" +
+      "2 linhas mutantes (yin e yang): A linha yin governa (Alfred Huang: havendo uma linha yin e uma yang em movimento, lê-se a yin). Zhu Xi, por sua vez, lia ambas as linhas, dando precedência à superior.\n\n" +
+      "2 linhas mutantes (mesma polaridade): A linha inferior das duas governa (Alfred Huang). Zhu Xi lia ambas, dando precedência à superior.\n\n" +
+      "3 linhas mutantes: A linha do meio das três (por posição) governa (Alfred Huang: havendo três linhas em movimento, lê-se a do meio). Zhu Xi, em vez disso, lia os Julgamentos de ambos os hexagramas, usando um conjunto de diagramas para decidir qual enfatizar.\n\n" +
+      "4 linhas mutantes: A leitura passa para o hexagrama transformado; a superior das suas duas linhas estáveis governa (Alfred Huang). Zhu Xi lia a inferior das duas.\n\n" +
+      "5 linhas mutantes: A leitura passa para o hexagrama transformado. A única linha estável governa, e o seu texto vem do hexagrama transformado.\n\n" +
+      "6 linhas mutantes (qualquer hexagrama exceto o #1 e o #2): Mutação total. Lê-se apenas o Julgamento do hexagrama transformado; nenhum texto de linha individual é citado.\n\n" +
+      "Hexagrama #1 Qian, todas as linhas yang antigo (用九): O texto especial do sétimo yao 'Usar o Nove' governa: 'Um grupo de dragões sem cabeça, boa fortuna'.\n\n" +
+      "Hexagrama #2 Kun, todas as linhas yin antigo (用六): O texto especial 'Usar o Seis' governa: 'A perseverança é benéfica'.\n\n" +
+      "Em todos os casos a app produz um único texto governante preciso, sem ambiguidade nem lacuna. Por padrão segue o sistema de redução de Alfred Huang; o seletor «Leitura de linhas mutantes» em Opções permite alternar para a leitura clássica de Zhu Xi, aplicando as alternativas descritas acima para cada caso. A sua escolha é lembrada e aplicada de forma consistente nessa leitura.",
     related: ["methodNotes"],
   },
   {
@@ -1627,7 +1627,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     question:
       "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
-      "São autênticos. O material textual — Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes — provém de três traduções académicas disponíveis na app: Wilhelm/Baynes (domínio público desde 2020), James Legge e o Zhou Yi original. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
+      "São autênticos. O material textual (Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes) provém de três traduções académicas disponíveis na app: Wilhelm/Baynes (domínio público desde 2020), James Legge e o Zhou Yi original. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
     related: ["methodNotes"],
   },
   {
@@ -1721,18 +1721,18 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Welches Regelsystem bestimmt, welcher Linientext eine I-Ging-Lesung beherrscht?",
     answer:
-      "Die App setzt Alfred Huangs Reduktion auf eine einzige Linie um, wie in The Complete I Ching dargelegt, wobei Zhu Xi (朱熹, 1130–1200) als klassischer Vorläufer der zugrunde liegenden Struktur gilt. Huangs Methode reduziert jede Kombination wandelnder Linien auf einen einzigen beherrschenden Linientext (爻辞), sodass die Lesung stets auf einer präzisen Textstelle ruht. Welcher Text beherrscht, hängt davon ab, wie viele der sechs Linien wandeln.\n\n" +
-      "0 wandelnde Linien — Es werden nur das Urteil (卦辞) und das Bild (象辞) des Primärhexagramms gelesen. Das Hexagramm steht als vollständige Aussage; kein Linientext wird zitiert.\n\n" +
-      "1 wandelnde Linie — Der Text dieser einzelnen wandelnden Linie beherrscht.\n\n" +
-      "2 wandelnde Linien (Yin und Yang) — Die Yin-Linie beherrscht (Alfred Huang: bei je einer Yin- und einer Yang-Linie wird die Yin-Linie gelesen). Zhu Xi dagegen las beide Linien, wobei die obere Vorrang hatte.\n\n" +
-      "2 wandelnde Linien (gleiche Polarität) — Die untere der beiden beherrscht (Alfred Huang). Zhu Xi las beide, wobei die obere Vorrang hatte.\n\n" +
-      "3 wandelnde Linien — Die mittlere der drei (nach Position) beherrscht (Alfred Huang: bei drei wandelnden Linien wird die mittlere gelesen). Zhu Xi las stattdessen die Urteile beider Hexagramme und nutzte eine Reihe von Diagrammen, um zu entscheiden, welches betont wird.\n\n" +
-      "4 wandelnde Linien — Die Lesung wechselt zum Transformationshexagramm; die obere seiner zwei stabilen Linien beherrscht (Alfred Huang). Zhu Xi las die untere der beiden.\n\n" +
-      "5 wandelnde Linien — Die Lesung wechselt zum Transformationshexagramm. Die einzige stabile Linie beherrscht, und ihr Text kommt aus dem Transformationshexagramm.\n\n" +
-      "6 wandelnde Linien (jedes Hexagramm außer #1 und #2) — Vollständige Wandlung. Nur das Urteil des Transformationshexagramms wird gelesen; kein einzelner Linientext wird zitiert.\n\n" +
-      "Hexagramm #1 Qian, alle Linien altes Yang (用九) — Der spezielle siebte Yao-Text 'Neun benutzen' beherrscht: 'Eine Gruppe Drachen ohne Kopf — Heil'.\n\n" +
-      "Hexagramm #2 Kun, alle Linien altes Yin (用六) — Der Sondertext 'Sechs benutzen' beherrscht: 'Beharrlichkeit ist förderlich'.\n\n" +
-      "In jedem Fall folgt die App Alfred Huangs Reduktionssystem, sodass jede Kombination wandelnder Linien stets einen präzisen, eindeutigen beherrschenden Text ergibt — ohne Mehrdeutigkeit, ohne Lücke. Wo Huang und die ältere Tradition Zhu Xis voneinander abweichen, folgt die App Huang.",
+      "Die App setzt Alfred Huangs Reduktion auf eine einzige Linie um, wie in The Complete I Ching dargelegt, wobei Zhu Xi (朱熹, 1130-1200) als klassischer Vorläufer der zugrunde liegenden Struktur gilt. Huangs Methode reduziert jede Kombination wandelnder Linien auf einen einzigen beherrschenden Linientext (爻辞), sodass die Lesung stets auf einer präzisen Textstelle ruht. Welcher Text beherrscht, hängt davon ab, wie viele der sechs Linien wandeln.\n\n" +
+      "0 wandelnde Linien: Es werden nur das Urteil (卦辞) und das Bild (象辞) des Primärhexagramms gelesen. Das Hexagramm steht als vollständige Aussage; kein Linientext wird zitiert.\n\n" +
+      "1 wandelnde Linie: Der Text dieser einzelnen wandelnden Linie beherrscht.\n\n" +
+      "2 wandelnde Linien (Yin und Yang): Die Yin-Linie beherrscht (Alfred Huang: bei je einer Yin- und einer Yang-Linie wird die Yin-Linie gelesen). Zhu Xi dagegen las beide Linien, wobei die obere Vorrang hatte.\n\n" +
+      "2 wandelnde Linien (gleiche Polarität): Die untere der beiden beherrscht (Alfred Huang). Zhu Xi las beide, wobei die obere Vorrang hatte.\n\n" +
+      "3 wandelnde Linien: Die mittlere der drei (nach Position) beherrscht (Alfred Huang: bei drei wandelnden Linien wird die mittlere gelesen). Zhu Xi las stattdessen die Urteile beider Hexagramme und nutzte eine Reihe von Diagrammen, um zu entscheiden, welches betont wird.\n\n" +
+      "4 wandelnde Linien: Die Lesung wechselt zum Transformationshexagramm; die obere seiner zwei stabilen Linien beherrscht (Alfred Huang). Zhu Xi las die untere der beiden.\n\n" +
+      "5 wandelnde Linien: Die Lesung wechselt zum Transformationshexagramm. Die einzige stabile Linie beherrscht, und ihr Text kommt aus dem Transformationshexagramm.\n\n" +
+      "6 wandelnde Linien (jedes Hexagramm außer #1 und #2): Vollständige Wandlung. Nur das Urteil des Transformationshexagramms wird gelesen; kein einzelner Linientext wird zitiert.\n\n" +
+      "Hexagramm #1 Qian, alle Linien altes Yang (用九): Der spezielle siebte Yao-Text 'Neun benutzen' beherrscht: 'Eine Gruppe Drachen ohne Kopf, Heil'.\n\n" +
+      "Hexagramm #2 Kun, alle Linien altes Yin (用六): Der Sondertext 'Sechs benutzen' beherrscht: 'Beharrlichkeit ist förderlich'.\n\n" +
+      "In jedem Fall ergibt sich ein präziser, eindeutiger beherrschender Text, ohne Mehrdeutigkeit, ohne Lücke. Standardmäßig folgt die App Alfred Huangs Reduktionssystem; der Auswahlschalter „Lesung wandelnder Linien“ in den Optionen lässt dich stattdessen zu Zhu Xis klassischer Lesung wechseln, die die oben beschriebenen Alternativen für jeden Fall anwendet. Deine Wahl wird gespeichert und konsistent auf diese Lesung angewendet.",
     related: ["methodNotes"],
   },
   {
@@ -1812,7 +1812,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Sind die I-Ching-Texte in der Lesung authentisch oder KI-generiert?",
     answer:
-      "Sie sind authentisch. Das Textmaterial — Urteile (卦辞), sich bewegende Linien (爻辞) und resultierende Hexagramme — stammt aus drei wissenschaftlichen Übersetzungen, die in der App verfügbar sind: Wilhelm/Baynes (seit 2020 gemeinfrei), James Legge und das originale Zhou Yi. Die KI zitiert und kontextualisiert die relevanten Texte mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit der Originalquelle vergleichen.",
+      "Sie sind authentisch. Das Textmaterial (Urteile (卦辞), sich bewegende Linien (爻辞) und resultierende Hexagramme) stammt aus drei wissenschaftlichen Übersetzungen, die in der App verfügbar sind: Wilhelm/Baynes (seit 2020 gemeinfrei), James Legge und das originale Zhou Yi. Die KI zitiert und kontextualisiert die relevanten Texte mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit der Originalquelle vergleichen.",
     related: ["methodNotes"],
   },
   {
@@ -1906,18 +1906,18 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "Qual è il sistema di regole che determina quale testo di linea governa una lettura dell'I Ching?",
     answer:
-      "L'app implementa il sistema di riduzione a una sola linea di Alfred Huang, esposto in The Complete I Ching, con Zhu Xi (朱熹, 1130–1200) come precedente classico della struttura sottostante. Il metodo di Huang riduce qualsiasi combinazione di linee mutanti a un unico testo di linea governante (爻辞), così che la lettura si basi sempre su un passaggio preciso. Quale testo governa dipende da quante delle sei linee diventano mutanti.\n\n" +
-      "0 linee mutanti — Si legge solo il Giudizio (卦辞) e l'Immagine (象辞) dell'esagramma primario. L'esagramma vale come dichiarazione completa; nessun testo di linea viene citato.\n\n" +
-      "1 linea mutante — Il testo di quella singola linea mutante governa.\n\n" +
-      "2 linee mutanti (yin e yang) — La linea yin governa (Alfred Huang: con una linea yin e una yang in movimento, si legge la yin). Zhu Xi, invece, leggeva entrambe le linee, dando precedenza alla superiore.\n\n" +
-      "2 linee mutanti (stessa polarità) — La linea inferiore delle due governa (Alfred Huang). Zhu Xi leggeva entrambe, dando precedenza alla superiore.\n\n" +
-      "3 linee mutanti — La linea centrale delle tre (per posizione) governa (Alfred Huang: con tre linee in movimento, si legge quella centrale). Zhu Xi, invece, leggeva i Giudizi di entrambi gli esagrammi, usando una serie di diagrammi per decidere quale enfatizzare.\n\n" +
-      "4 linee mutanti — La lettura passa all'esagramma trasformato; la superiore delle sue due linee stabili governa (Alfred Huang). Zhu Xi leggeva l'inferiore delle due.\n\n" +
-      "5 linee mutanti — La lettura passa all'esagramma trasformato. L'unica linea stabile governa e il suo testo viene dall'esagramma trasformato.\n\n" +
-      "6 linee mutanti (qualsiasi esagramma tranne #1 e #2) — Mutazione totale. Si legge solo il Giudizio dell'esagramma trasformato; nessun testo di linea individuale viene citato.\n\n" +
-      "Esagramma #1 Qian, tutte le linee yang antico (用九) — Il testo speciale del settimo yao 'Usare il Nove' governa: 'Un gruppo di draghi senza testa — buona fortuna'.\n\n" +
-      "Esagramma #2 Kun, tutte le linee yin antico (用六) — Il testo speciale 'Usare il Sei' governa: 'La perseveranza è benefica'.\n\n" +
-      "In ogni caso l'app segue il sistema di riduzione di Alfred Huang, così che ogni combinazione di linee mutanti produca sempre un unico testo governante preciso, senza ambiguità né lacune. Dove Huang e la tradizione più antica di Zhu Xi divergono, l'app segue Huang.",
+      "L'app implementa il sistema di riduzione a una sola linea di Alfred Huang, esposto in The Complete I Ching, con Zhu Xi (朱熹, 1130-1200) come precedente classico della struttura sottostante. Il metodo di Huang riduce qualsiasi combinazione di linee mutanti a un unico testo di linea governante (爻辞), così che la lettura si basi sempre su un passaggio preciso. Quale testo governa dipende da quante delle sei linee diventano mutanti.\n\n" +
+      "0 linee mutanti: Si legge solo il Giudizio (卦辞) e l'Immagine (象辞) dell'esagramma primario. L'esagramma vale come dichiarazione completa; nessun testo di linea viene citato.\n\n" +
+      "1 linea mutante: Il testo di quella singola linea mutante governa.\n\n" +
+      "2 linee mutanti (yin e yang): La linea yin governa (Alfred Huang: con una linea yin e una yang in movimento, si legge la yin). Zhu Xi, invece, leggeva entrambe le linee, dando precedenza alla superiore.\n\n" +
+      "2 linee mutanti (stessa polarità): La linea inferiore delle due governa (Alfred Huang). Zhu Xi leggeva entrambe, dando precedenza alla superiore.\n\n" +
+      "3 linee mutanti: La linea centrale delle tre (per posizione) governa (Alfred Huang: con tre linee in movimento, si legge quella centrale). Zhu Xi, invece, leggeva i Giudizi di entrambi gli esagrammi, usando una serie di diagrammi per decidere quale enfatizzare.\n\n" +
+      "4 linee mutanti: La lettura passa all'esagramma trasformato; la superiore delle sue due linee stabili governa (Alfred Huang). Zhu Xi leggeva l'inferiore delle due.\n\n" +
+      "5 linee mutanti: La lettura passa all'esagramma trasformato. L'unica linea stabile governa e il suo testo viene dall'esagramma trasformato.\n\n" +
+      "6 linee mutanti (qualsiasi esagramma tranne #1 e #2): Mutazione totale. Si legge solo il Giudizio dell'esagramma trasformato; nessun testo di linea individuale viene citato.\n\n" +
+      "Esagramma #1 Qian, tutte le linee yang antico (用九): Il testo speciale del settimo yao 'Usare il Nove' governa: 'Un gruppo di draghi senza testa, buona fortuna'.\n\n" +
+      "Esagramma #2 Kun, tutte le linee yin antico (用六): Il testo speciale 'Usare il Sei' governa: 'La perseveranza è benefica'.\n\n" +
+      "In ogni caso l'app produce sempre un unico testo governante preciso, senza ambiguità né lacune. Per impostazione predefinita segue il sistema di riduzione di Alfred Huang; il selettore «Lettura delle linee mutanti» in Opzioni permette di passare invece alla lettura classica di Zhu Xi, applicando le alternative descritte sopra per ciascun caso. La tua scelta viene memorizzata e applicata in modo coerente a quella lettura.",
     related: ["methodNotes"],
   },
   {
@@ -1997,7 +1997,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
-      "Sono autentici. Il materiale testuale — Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti — proviene da tre traduzioni accademiche disponibili nell'app: Wilhelm/Baynes (di pubblico dominio dal 2020), James Legge e lo Zhou Yi originale. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
+      "Sono autentici. Il materiale testuale (Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti) proviene da tre traduzioni accademiche disponibili nell'app: Wilhelm/Baynes (di pubblico dominio dal 2020), James Legge e lo Zhou Yi originale. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
     related: ["methodNotes"],
   },
   {
@@ -2093,18 +2093,18 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Quel est le système de règles qui détermine quel texte de trait gouverne une lecture du I Ching ?",
     answer:
-      "L'application met en œuvre le système de réduction à un seul trait d'Alfred Huang, exposé dans The Complete I Ching, avec Zhu Xi (朱熹, 1130–1200) comme antécédent classique de la structure sous-jacente. La méthode de Huang réduit toute combinaison de traits mutants à un seul texte de trait gouvernant (爻辞), de sorte que la lecture repose toujours sur un passage précis. Le texte qui gouverne dépend du nombre de traits, parmi les six, qui deviennent mutants.\n\n" +
-      "0 trait mutant — On lit uniquement le Jugement (卦辞) et l'Image (象辞) de l'hexagramme primaire. L'hexagramme vaut comme déclaration complète ; aucun texte de trait n'est cité.\n\n" +
-      "1 trait mutant — Le texte de ce seul trait mutant gouverne.\n\n" +
-      "2 traits mutants (yin et yang) — Le trait yin gouverne (Alfred Huang : avec un trait yin et un trait yang en mouvement, on lit le yin). Zhu Xi, lui, lisait les deux traits, en donnant la priorité au supérieur.\n\n" +
-      "2 traits mutants (même polarité) — Le trait inférieur des deux gouverne (Alfred Huang). Zhu Xi lisait les deux, en donnant la priorité au supérieur.\n\n" +
-      "3 traits mutants — Le trait central des trois (par position) gouverne (Alfred Huang : avec trois traits en mouvement, on lit celui du milieu). Zhu Xi, lui, lisait les Jugements des deux hexagrammes, en s'appuyant sur un ensemble de diagrammes pour décider lequel privilégier.\n\n" +
-      "4 traits mutants — La lecture passe à l'hexagramme transformé ; le supérieur de ses deux traits stables gouverne (Alfred Huang). Zhu Xi lisait l'inférieur des deux.\n\n" +
-      "5 traits mutants — La lecture passe à l'hexagramme transformé. L'unique trait stable gouverne et son texte vient de l'hexagramme transformé.\n\n" +
-      "6 traits mutants (tout hexagramme sauf #1 et #2) — Mutation totale. On lit uniquement le Jugement de l'hexagramme transformé ; aucun texte de trait individuel n'est cité.\n\n" +
-      "Hexagramme #1 Qian, tout yang ancien (用九) — Le texte spécial du septième yao 'Utiliser le Neuf' gouverne : 'Un groupe de dragons sans tête — heureux présage'.\n\n" +
-      "Hexagramme #2 Kun, tout yin ancien (用六) — Le texte spécial 'Utiliser le Six' gouverne : 'La persévérance est bénéfique'.\n\n" +
-      "Dans tous les cas, l'application suit le système de réduction d'Alfred Huang, de sorte que chaque combinaison de traits mutants produise toujours un texte gouvernant unique et précis, sans ambiguïté ni lacune. Là où Huang et la tradition plus ancienne de Zhu Xi divergent, l'application suit Huang.",
+      "L'application met en œuvre le système de réduction à un seul trait d'Alfred Huang, exposé dans The Complete I Ching, avec Zhu Xi (朱熹, 1130-1200) comme antécédent classique de la structure sous-jacente. La méthode de Huang réduit toute combinaison de traits mutants à un seul texte de trait gouvernant (爻辞), de sorte que la lecture repose toujours sur un passage précis. Le texte qui gouverne dépend du nombre de traits, parmi les six, qui deviennent mutants.\n\n" +
+      "0 trait mutant: On lit uniquement le Jugement (卦辞) et l'Image (象辞) de l'hexagramme primaire. L'hexagramme vaut comme déclaration complète ; aucun texte de trait n'est cité.\n\n" +
+      "1 trait mutant: Le texte de ce seul trait mutant gouverne.\n\n" +
+      "2 traits mutants (yin et yang): Le trait yin gouverne (Alfred Huang : avec un trait yin et un trait yang en mouvement, on lit le yin). Zhu Xi, lui, lisait les deux traits, en donnant la priorité au supérieur.\n\n" +
+      "2 traits mutants (même polarité): Le trait inférieur des deux gouverne (Alfred Huang). Zhu Xi lisait les deux, en donnant la priorité au supérieur.\n\n" +
+      "3 traits mutants: Le trait central des trois (par position) gouverne (Alfred Huang : avec trois traits en mouvement, on lit celui du milieu). Zhu Xi, lui, lisait les Jugements des deux hexagrammes, en s'appuyant sur un ensemble de diagrammes pour décider lequel privilégier.\n\n" +
+      "4 traits mutants: La lecture passe à l'hexagramme transformé ; le supérieur de ses deux traits stables gouverne (Alfred Huang). Zhu Xi lisait l'inférieur des deux.\n\n" +
+      "5 traits mutants: La lecture passe à l'hexagramme transformé. L'unique trait stable gouverne et son texte vient de l'hexagramme transformé.\n\n" +
+      "6 traits mutants (tout hexagramme sauf #1 et #2): Mutation totale. On lit uniquement le Jugement de l'hexagramme transformé ; aucun texte de trait individuel n'est cité.\n\n" +
+      "Hexagramme #1 Qian, tout yang ancien (用九): Le texte spécial du septième yao 'Utiliser le Neuf' gouverne : 'Un groupe de dragons sans tête, heureux présage'.\n\n" +
+      "Hexagramme #2 Kun, tout yin ancien (用六): Le texte spécial 'Utiliser le Six' gouverne : 'La persévérance est bénéfique'.\n\n" +
+      "Dans tous les cas, l'application produit toujours un texte gouvernant unique et précis, sans ambiguïté ni lacune. Par défaut, elle suit le système de réduction d'Alfred Huang ; le sélecteur « Lecture des lignes mobiles » dans les Options permet de passer à la lecture classique de Zhu Xi, qui applique les alternatives décrites ci-dessus pour chaque cas. Votre choix est mémorisé et appliqué de façon cohérente à cette lecture.",
     related: ["methodNotes"],
   },
   {
@@ -2184,7 +2184,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
-      "Ils sont authentiques. Le matériel textuel — Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants — provient de trois traductions académiques disponibles dans l'app : Wilhelm/Baynes (dans le domaine public depuis 2020), James Legge et le Zhou Yi original. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
+      "Ils sont authentiques. Le matériel textuel (Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants) provient de trois traductions académiques disponibles dans l'app : Wilhelm/Baynes (dans le domaine public depuis 2020), James Legge et le Zhou Yi original. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
     related: ["methodNotes"],
   },
   {

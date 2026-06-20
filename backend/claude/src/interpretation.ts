@@ -207,6 +207,21 @@ function castingMethodNote(method: CastingMethod | undefined): string {
   return "DIVINATION METHOD: Three Coins (symmetric probability; equal weight for both types of moving lines)";
 }
 
+/**
+ * Renders one selected-line entry for the prompt. Shared by every "LINE TEXTS:" /
+ * "INTERPRETED_LINES" block (Wilhelm, Legge, Zhou Yi, master-combined) so the
+ * Zhu Xi `emphasis` tag (multi-line cases) never goes missing in one of the copies.
+ */
+function formatLineEntry(l: {
+  position: number;
+  text: string;
+  fromHexagram: "primary" | "transformed";
+  emphasis?: "primary" | "secondary";
+}): string {
+  const tag = l.fromHexagram === "primary" ? "primary" : "transformed";
+  return `  Line ${l.position} [${tag}${l.emphasis ? `, ${l.emphasis}` : ""}]: ${l.text}`;
+}
+
 export interface PromptData {
   textsBlock: string;
   questionBlock: string;
@@ -240,12 +255,7 @@ function buildPromptData(
     t.selectedLineTexts.length > 0
       ? `
 LINE TEXTS:
-${t.selectedLineTexts
-  .map(
-    (l) =>
-      `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`,
-  )
-  .join("\n")}`
+${t.selectedLineTexts.map(formatLineEntry).join("\n")}`
       : "";
 
   const looksFactual =
@@ -296,7 +306,7 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
 - "Encuadre de la pregunta" / "Framing the question": name the emotional or practical stake in one tight opening, then the received figure (number, name, Chinese).
 - "El juicio" / "The judgment": mandatory blockquote (>) of the classical judgment when provided; immediately after, one paragraph that names how that wording maps onto the user's situation (explicit bridge).
 - "La imagen" / "The image": mandatory blockquote (>) of the classical image text (象傳) when provided; immediately after, one paragraph connecting the image's symbolic scene to the user's situation.
-- "Líneas en movimiento" / "Lines in motion": interpret the entries in INTERPRETED_LINES—numbered list with line text + one sentence of application each; if no changing lines (CHANGING_COUNT = 0), one crisp sentence stating stability. IMPORTANT: when CHANGING_COUNT exceeds INTERPRETATION_LINE_COUNT (a mutation rule is filtering lines), open this section with one plain-language sentence that explains which line(s) are read and why (drawn from the MUTATION RULE field — never echo the rule code), then: (a) if INTERPRETED_LINES has entries, the INTERPRETED_LINES list is the COMPLETE and EXCLUSIVE set of lines to interpret — quote and interpret EVERY entry and NO other position. Do NOT quote, interpret, or invent text for any other changing position: the mutation rule already excluded those on purpose, and the opener (drawn from MUTATION RULE) tells the user why only these are read. NOTE: an INTERPRETED_LINES entry tagged [transformed] is a STABLE line of the TRANSFORMED hexagram chosen by the rule (4 or 5 changing lines) — interpret it as such; it is intentionally NOT one of the changing positions; (b) if a SPECIAL YAO field is present and LINE TEXTS are empty (hexagrams 1 and 2 with their seventh yao 用九/用六), quote that SPECIAL YAO text as a blockquote and interpret it as the single oracular statement for this cast; (c) if neither LINE TEXTS nor SPECIAL YAO are present (total mutation — all six lines change in any hexagram other than 1 or 2), close the section after the explanation with one sentence noting that no individual line is singled out and the reading focuses entirely on the transformed hexagram.
+- "Líneas en movimiento" / "Lines in motion": interpret the entries in INTERPRETED_LINES—numbered list with line text + one sentence of application each; if no changing lines (CHANGING_COUNT = 0), one crisp sentence stating stability. IMPORTANT: when CHANGING_COUNT exceeds INTERPRETATION_LINE_COUNT (a mutation rule is filtering lines), open this section with one plain-language sentence that explains which line(s) are read and why (drawn from the MUTATION RULE field — never echo the rule code), then: (a) if INTERPRETED_LINES has entries, the INTERPRETED_LINES list is the COMPLETE and EXCLUSIVE set of lines to interpret — quote and interpret EVERY entry and NO other position. Do NOT quote, interpret, or invent text for any other changing position: the mutation rule already excluded those on purpose, and the opener (drawn from MUTATION RULE) tells the user why only these are read. NOTE: an INTERPRETED_LINES entry tagged [transformed] is a STABLE line of the TRANSFORMED hexagram chosen by the rule (4 or 5 changing lines) — interpret it as such; it is intentionally NOT one of the changing positions. When an entry carries an emphasis tag ([primary]/[secondary], Zhu Xi 2- or 4-line cases), lead with the [primary] entry and let the [secondary] one qualify it; (b) if a SPECIAL YAO field is present and LINE TEXTS are empty (hexagrams 1 and 2 with their seventh yao 用九/用六), quote that SPECIAL YAO text as a blockquote and interpret it as the single oracular statement for this cast; (c) if neither LINE TEXTS nor SPECIAL YAO are present (total mutation — all six lines change in any hexagram other than 1 or 2), close the section after the explanation with one sentence noting that no individual line is singled out and the reading focuses entirely on the transformed hexagram; (d) if a JUDGMENT_EMPHASIS field is present (no LINE TEXTS, no SPECIAL YAO; Zhu Xi 3-line case), do NOT say the focus is entirely on the transformed hexagram, and do NOT quote either Judgment here — both already get their own mandatory blockquote elsewhere ("El juicio"/"The judgment" for the primary; the turning-pattern section for the transformed, since it always exists in this case). In THIS section, write ONE sentence naming which hexagram's counsel takes precedence per JUDGMENT_EMPHASIS and treat the other as counterpoint, without singling out, quoting, or inventing any individual line.
 - ${tr ? `\`El trazado hacia el ${trChinese}\` / \`The turning pattern (${trChinese})\`: quote transformed judgment and image if supplied, then tension / opportunity vs primary. Do NOT repeat any individual line text (爻辞) already quoted in «Líneas en movimiento» / «Lines in motion»; for FOUR/FIVE changing-line rules the stable transformed line belongs ONLY in the Lines section.` : `"${stabilityHeadingEs}" / "${stabilityHeadingEn}": CHANGING_COUNT = 0 — no transformed hexagram exists. Write 2–3 sentences explaining that the absence of mutation is itself the oracle's message: the hexagram stands whole and undivided, and its counsel applies without the pressure of a transition. Do NOT invent a transformation or reference 之卦.`}
 - "Horizonte y síntesis" / "Horizon and synthesis": single closing paragraph—one concrete behavioral or attitudinal step, same language, no new quotes.
 - ANTI-REPETITION across sections as in global rules.`;
@@ -308,20 +318,8 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
 
   let textsBlock = "";
   if (isMasterCombined) {
-    const leggeLines =
-      t.leggeSelectedLineTexts
-        ?.map(
-          (l) =>
-            `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`,
-        )
-        .join("\n") || "";
-    const zhouyiLines =
-      t.zhouyiSelectedLineTexts
-        ?.map(
-          (l) =>
-            `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`,
-        )
-        .join("\n") || "";
+    const leggeLines = t.leggeSelectedLineTexts?.map(formatLineEntry).join("\n") || "";
+    const zhouyiLines = t.zhouyiSelectedLineTexts?.map(formatLineEntry).join("\n") || "";
 
     textsBlock = `
 --- TRADITION: WILHELM / BAYNES ---
@@ -387,7 +385,7 @@ JUDGMENT: ${t.transformedJudgment}`
     3) Zhou Yi (literal)
   - Quotes must be complete literal excerpts from the provided texts for that section (do NOT reduce to micro-quotes, fragments, single clauses, or select one verse from a multiline Wilhelm passage — every verse line must appear).
   - Each literal source quote MUST be rendered as Markdown blockquote lines (prefix every line with "> "), and the quote text itself must be italic inside that blockquote. CRITICAL FOR WILHELM: Wilhelm/Baynes texts contain multiple verse lines separated by line breaks — each verse line must appear on its own "> *line*" blockquote row, never compressed into one line with "/" or any separator. Legge and Zhou Yi are prose/compact and render as single blockquote lines. Apply the MULTILINE BLOCKQUOTES rule from the typography section to every Wilhelm quote in this mode.
-  - For "Lines in motion": when CHANGING_COUNT exceeds INTERPRETATION_LINE_COUNT (a mutation rule is filtering lines), open this section with one plain-language sentence drawn from the MUTATION RULE field explaining which line(s) are read and why — never echo the rule code, only its meaning. Then: (a) if INTERPRETED_LINES has entries, the INTERPRETED_LINES list is the COMPLETE and EXCLUSIVE set of lines to interpret — cover every entry and NO other position (do not quote, interpret, or invent text for any other changing position; the rule excluded it on purpose; a [transformed] entry is a STABLE line of the transformed hexagram, intentionally not among the changing positions). For each LINE TEXTS entry, show the full literal line text from each available source as a labeled Markdown blockquote in this exact format: a bold label line (e.g. **Wilhelm:**) immediately followed by a "> *italic blockquote*" block (multiline if Wilhelm) — in order Wilhelm → Legge → Zhou Yi — before the synthesis for that line; (b) if SPECIAL YAO fields are present and LINE TEXTS are empty (hexagram 1 用九 or hexagram 2 用六), render each tradition's special yao text as its own labeled blockquote block (Wilhelm / Legge / Zhou Yi in that order, skipping any absent) followed by a unified synthesis interpreting the seventh yao in the context of the question; (c) if neither LINE TEXTS nor SPECIAL YAO are present (total mutation — all six lines change in a hexagram other than 1 or 2), close the section after the explanation with one sentence noting that no individual line is singled out. Never render source quotes as inline text or **bold** prose.
+  - For "Lines in motion": when CHANGING_COUNT exceeds INTERPRETATION_LINE_COUNT (a mutation rule is filtering lines), open this section with one plain-language sentence drawn from the MUTATION RULE field explaining which line(s) are read and why — never echo the rule code, only its meaning. Then: (a) if INTERPRETED_LINES has entries, the INTERPRETED_LINES list is the COMPLETE and EXCLUSIVE set of lines to interpret — cover every entry and NO other position (do not quote, interpret, or invent text for any other changing position; the rule excluded it on purpose; a [transformed] entry is a STABLE line of the transformed hexagram, intentionally not among the changing positions). When an entry carries an emphasis tag ([primary]/[secondary], Zhu Xi 2- or 4-line cases), lead with the [primary] entry across all three traditions and let the [secondary] one qualify it. For each LINE TEXTS entry, show the full literal line text from each available source as a labeled Markdown blockquote in this exact format: a bold label line (e.g. **Wilhelm:**) immediately followed by a "> *italic blockquote*" block (multiline if Wilhelm) — in order Wilhelm → Legge → Zhou Yi — before the synthesis for that line; (b) if SPECIAL YAO fields are present and LINE TEXTS are empty (hexagram 1 用九 or hexagram 2 用六), render each tradition's special yao text as its own labeled blockquote block (Wilhelm / Legge / Zhou Yi in that order, skipping any absent) followed by a unified synthesis interpreting the seventh yao in the context of the question; (c) if neither LINE TEXTS nor SPECIAL YAO are present (total mutation — all six lines change in a hexagram other than 1 or 2), close the section after the explanation with one sentence noting that no individual line is singled out; (d) if a JUDGMENT_EMPHASIS field is present (no LINE TEXTS, no SPECIAL YAO; Zhu Xi 3-line case), do not claim the focus is entirely on the transformed hexagram, and do NOT quote either Judgment here — both already get their own mandatory labeled blockquote elsewhere ("The judgment" for the primary; the turning-pattern section for the transformed, since it always exists in this case). Write ONE sentence naming which hexagram's counsel takes precedence per JUDGMENT_EMPHASIS, without singling out any individual line. Never render source quotes as inline text or **bold** prose.
   - For "The turning pattern": quote transformed judgment/image only — never repeat individual line texts (爻辞) already shown in "Lines in motion"; for FOUR/FIVE changing-line rules the stable transformed line belongs ONLY in Lines in motion.
   - If any source text is unavailable for a specific subsection, state it explicitly and continue with the other two sources.
 - In every section, bridge the three lenses into ONE integrated guidance for the querent.
@@ -430,17 +428,18 @@ HISTORICAL EXCEPTION (explicitly permitted):
   const interpretedLinesBlock =
     t.selectedLineTexts.length > 0
       ? `INTERPRETED_LINES (AUTHORITATIVE — quote and interpret ONLY these):
-${t.selectedLineTexts
-  .map(
-    (l) =>
-      `  Line ${l.position} [${l.fromHexagram === "primary" ? "primary" : "transformed"}]: ${l.text}`,
-  )
-  .join("\n")}
+${t.selectedLineTexts.map(formatLineEntry).join("\n")}
 INTERPRETATION_LINE_COUNT: ${t.selectedLineTexts.length}`
       : t.specialYaoText
         ? `INTERPRETED_LINES: (none — use SPECIAL YAO below)
 INTERPRETATION_LINE_COUNT: 0`
-        : `INTERPRETED_LINES: (none — total mutation or stability)
+        : t.judgmentEmphasis
+          ? `INTERPRETED_LINES: (none — both Judgments apply; the ${
+              t.judgmentEmphasis === "primary" ? "PRIMARY" : "TRANSFORMED"
+            } hexagram's Judgment takes precedence, the other is counterpoint. Both Judgments are ALREADY quoted in their own mandatory sections elsewhere — do NOT quote either Judgment again here. State the precedence in one sentence only; do NOT single out, quote, or invent any individual line.)
+INTERPRETATION_LINE_COUNT: 0
+JUDGMENT_EMPHASIS: ${t.judgmentEmphasis}`
+          : `INTERPRETED_LINES: (none — total mutation or stability)
 INTERPRETATION_LINE_COUNT: 0`;
   const omittedBlock =
     omittedPositions.length > 0
