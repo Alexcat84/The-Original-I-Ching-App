@@ -11,6 +11,7 @@ import {
   type LineValue,
   type MutationRule,
   type TextsForClaude,
+  type ZhuXiMutationRule,
 } from "./types.js";
 import { determineMutationRuleZhuXi, selectTextsZhuXi } from "./rules/zhuxi.js";
 
@@ -110,6 +111,7 @@ export function selectTextsForClaude(
   rule: MutationRule,
   translator: InterpretationMode = "wilhelm",
   system: LineReadingSystem = "huang",
+  precomputedZhuXiRule?: ZhuXiMutationRule,
 ): TextsForClaude {
   const attachMasterTraditions = (baseResult: TextsForClaude): TextsForClaude => {
     if (translator !== "master_combined") return baseResult;
@@ -183,7 +185,7 @@ export function selectTextsForClaude(
   const gl = (hex: Hexagram, pos: number) => hex.lines.find((l) => l.position === pos)?.text ?? "";
 
   if (system === "zhuxi") {
-    const zxRule = determineMutationRuleZhuXi(primary, changing);
+    const zxRule = precomputedZhuXiRule ?? determineMutationRuleZhuXi(primary, changing);
     return attachMasterTraditions(
       selectTextsZhuXi(primary, transformed, lines, changing, zxRule, base, gl),
     );
@@ -330,9 +332,9 @@ function buildCastResultFromLines(
   const transformedLines = changing.length > 0 ? applyMutations(lines) : null;
   const transformed = transformedLines ? getHexagram(transformedLines, translator) : null;
   const huangRule = determineMutationRule(primary, lines, changing);
+  const zxRule = system === "zhuxi" ? determineMutationRuleZhuXi(primary, changing) : null;
   // The persisted rule reflects the active system (distinct ZX_* names; no collision).
-  const rule: AnyMutationRule =
-    system === "zhuxi" ? determineMutationRuleZhuXi(primary, changing) : huangRule;
+  const rule: AnyMutationRule = zxRule ?? huangRule;
   const texts = selectTextsForClaude(
     primary,
     transformed,
@@ -341,6 +343,7 @@ function buildCastResultFromLines(
     huangRule,
     translator,
     system,
+    zxRule ?? undefined,
   );
   return {
     id: options?.id ?? newCastId(),
