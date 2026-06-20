@@ -7,6 +7,7 @@ export type ConsultationRecordUiMessages = {
   trace: string;
   rule: string;
   translatorLabel: string;
+  lineReading: string;
   thread: string;
   reading: string;
   question: string;
@@ -28,6 +29,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "Trazado recibido:",
     rule: "Regla de lectura:",
     translatorLabel: "Traductor:",
+    lineReading: "Lectura de líneas:",
     thread: "En este hilo:",
     reading: "Tirada",
     question: "Pregunta asociada",
@@ -46,6 +48,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "Received trace:",
     rule: "Reading rule:",
     translatorLabel: "Translator:",
+    lineReading: "Changing-line reading:",
     thread: "In this thread:",
     reading: "Reading",
     question: "Associated question",
@@ -64,6 +67,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "Traçado recebido:",
     rule: "Regra de leitura:",
     translatorLabel: "Tradutor:",
+    lineReading: "Leitura de linhas:",
     thread: "Neste fio:",
     reading: "Tiragem",
     question: "Pergunta associada",
@@ -82,6 +86,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "Tracé reçu :",
     rule: "Règle de lecture :",
     translatorLabel: "Traducteur :",
+    lineReading: "Lecture des lignes :",
     thread: "Dans ce fil :",
     reading: "Tirage",
     question: "Question associée",
@@ -100,6 +105,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "Empfangenes Muster:",
     rule: "Leseregel:",
     translatorLabel: "Übersetzer:",
+    lineReading: "Linienlesung:",
     thread: "In diesem Thread:",
     reading: "Lesung",
     question: "Zugehörige Frage",
@@ -118,6 +124,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "Traccia ricevuta:",
     rule: "Regola di lettura:",
     translatorLabel: "Traduttore:",
+    lineReading: "Lettura delle linee:",
     thread: "In questo thread:",
     reading: "Lettura",
     question: "Domanda associata",
@@ -136,6 +143,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "受け取った卦:",
     rule: "読解ルール:",
     translatorLabel: "翻訳者:",
+    lineReading: "爻の読み方:",
     thread: "このスレッド:",
     reading: "占い",
     question: "関連する質問",
@@ -154,6 +162,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "接收卦象：",
     rule: "解读规则：",
     translatorLabel: "译者：",
+    lineReading: "变爻解读：",
     thread: "本线程：",
     reading: "占卜",
     question: "关联问题",
@@ -172,6 +181,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "받은 괘:",
     rule: "해석 규칙:",
     translatorLabel: "번역자:",
+    lineReading: "변효 해석:",
     thread: "이 스레드:",
     reading: "리딩",
     question: "연결된 질문",
@@ -190,6 +200,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "الأثر المستلَم:",
     rule: "قاعدة القراءة:",
     translatorLabel: "المترجم:",
+    lineReading: "قراءة الخطوط:",
     thread: "في هذا الخيط:",
     reading: "قراءة",
     question: "السؤال المرتبط",
@@ -208,6 +219,7 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     trace: "प्राप्त ट्रेस:",
     rule: "रीडिंग नियम:",
     translatorLabel: "अनुवादक:",
+    lineReading: "रेखा पठन:",
     thread: "इस थ्रेड में:",
     reading: "रीडिंग",
     question: "संबंधित प्रश्न",

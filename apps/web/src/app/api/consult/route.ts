@@ -1786,6 +1786,7 @@ export async function POST(req: Request) {
       transformedHexagramChinese: castResult.transformedHexagram?.chineseName ?? null,
       mutationRule: castResult.mutationRule,
       translator: resolvedTranslator,
+      lineReadingSystem: resolvedLineReadingSystem,
       lines: castResult.lines,
       changingLines: castResult.changingLines,
       interpretation,

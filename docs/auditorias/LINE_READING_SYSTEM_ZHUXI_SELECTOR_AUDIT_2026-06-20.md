@@ -677,3 +677,56 @@ A petición del usuario, sobre `staging`:
 
 Verificación: `tsc --noEmit` limpio en `apps/web`; build limpio en `@iching-oracle/i18n`; orden del
 DOM confirmado en `page.tsx`. Pendiente: **Capa 3 (persistencia E2E)** contra staging desplegado.
+
+---
+
+# Parte 6 — Sistema de líneas en el resumen + fix barra de estado (20 jun 2026, Opus 4.8)
+
+A petición del usuario, dos cambios visibles que faltaban tras la Parte 5.
+
+## 6.1 — El resumen de la tirada debe mostrar el sistema de lectura usado
+
+**Estado previo: NO implementado.** `ConsultationRecordCard` mostraba traza, regla de lectura,
+traductor e hilo, pero **no** qué sistema de líneas cambiantes se aplicó. Además, la respuesta JSON
+de `/api/consult` **no devolvía** `lineReadingSystem` (se persistía en DB vía RPC desde la 074, pero
+no se exponía al cliente), por lo que el dato no estaba disponible en una consulta recién hecha.
+
+**Remediación — propagación de punta a punta:**
+
+| Capa | Archivo | Cambio |
+|------|---------|--------|
+| API | `apps/web/src/app/api/consult/route.ts` | El JSON de respuesta ahora incluye `lineReadingSystem: resolvedLineReadingSystem`. |
+| Tipos cliente | `apps/web/src/app/page.tsx` | `lineReadingSystem` añadido a `ConsultResponse` y `ApiChatConsultation`. |
+| Historial | `apps/web/src/app/page.tsx` (`mapApiConsultationToItem`) | Mapea `c.lineReadingSystem` con fallback `"huang"`. |
+| Tarjeta | `apps/web/src/components/ConsultationRecordCard.tsx` | Nueva fila **«Lectura de líneas: Alfred Huang / Zhu Xi»**, tras «Traductor». Aplica a cualquier traductor. |
+| PDF | `apps/web/src/app/page.tsx` (`exportChatPdf`) | Línea equivalente en el resumen exportado. |
+| Preview manual | `apps/web/src/app/page.tsx` | La tarjeta de preview muestra el sistema seleccionado en vivo. |
+
+El **path histórico ya transportaba el dato**: `session-store.ts` (`mapRowToStoredConsultation`) lee
+`line_reading_system` y lo expone en `StoredConsultationMeta`; la API de chats devuelve
+`entry.consultations` tal cual (meta y unificado usan el mismo mapper). Lecturas previas a la 074
+caen al default `"huang"`.
+
+## 6.2 — Fix barra de estado superior: «Zhu Xi» hardcodeado
+
+**Bug:** `page.tsx` (tagline `oracle-tagline`) intercalaba un literal fijo `· Zhu Xi ·` entre método
+y traductor. Nunca reflejó una selección real — era un valor estático heredado. Ahora es dinámico
+según `ichingLineReadingSystem`, igual que ya hacía con método y traductor:
+
+```
+I Ching · Tres Monedas · Alfred Huang · Master Synthesis
+I Ching · Tres Monedas · Zhu Xi · Wilhelm/Baynes
+```
+
+## i18n (11 locales)
+
+- `manual-coin-wizard-ui.ts`: nuevos `lineReadingSystemHuangShort` / `lineReadingSystemZhuxiShort`
+  (nombres compactos sin paréntesis — fuente única para barra de estado, tarjeta y PDF).
+- `consultation-record-ui.ts`: nuevo `lineReading` (etiqueta de fila).
+- `pdf-export-ui.ts`: nuevo `lineReading` (etiqueta de fila del PDF).
+
+## Verificación
+
+- Rebuild `@iching-oracle/i18n` ✅ · `tsc --noEmit` en `apps/web` ✅ sin errores.
+- Taglines no usadas `castMethod*Tagline` (que aún contienen «Zhu Xi» literal) no se renderizan en
+  el web; se dejan sin tocar (fuera de alcance).
