@@ -35,6 +35,28 @@ export default async function NotesPage() {
         <p className="doc-lead">{n.lead}</p>
         <p className="doc-auth-notice">{n.authNotice}</p>
 
+        {/* Oracle Bones (oldest) */}
+        {n.bonesHeading && <h2>{n.bonesHeading}</h2>}
+
+        {n.bonesOriginHeading && (
+          <>
+            <h3>{n.bonesOriginHeading}</h3>
+            <p>{n.bonesOriginBody}</p>
+          </>
+        )}
+
+        {n.bonesVerdictsHeading && (
+          <>
+            <h3>{n.bonesVerdictsHeading}</h3>
+            <ul>
+              {n.bonesVerdictAuspClear && <li>{n.bonesVerdictAuspClear}</li>}
+              {n.bonesVerdictAuspMod && <li>{n.bonesVerdictAuspMod}</li>}
+              {n.bonesVerdictInauspMod && <li>{n.bonesVerdictInauspMod}</li>}
+              {n.bonesVerdictInauspClear && <li>{n.bonesVerdictInauspClear}</li>}
+            </ul>
+          </>
+        )}
+
         {/* I Ching */}
         {n.ichingHeading && <h2>{n.ichingHeading}</h2>}
 
@@ -52,14 +74,7 @@ export default async function NotesPage() {
           </>
         )}
 
-
-        {n.ichingMethodHeading && (
-          <>
-            <h3>{n.ichingMethodHeading}</h3>
-            <p>{n.ichingMethodBody}</p>
-          </>
-        )}
-
+        {/* Casting methods */}
         {n.yarrowHeading && <h2>{n.yarrowHeading}</h2>}
 
         {n.yarrowOriginHeading && (
@@ -69,12 +84,49 @@ export default async function NotesPage() {
           </>
         )}
 
-
-
         {n.yarrowProbHeading && (
           <>
             <h3>{n.yarrowProbHeading}</h3>
             <p>{n.yarrowProbBody}</p>
+          </>
+        )}
+
+        {n.ichingMethodHeading && (
+          <>
+            <h3>{n.ichingMethodHeading}</h3>
+            <p>{n.ichingMethodBody}</p>
+          </>
+        )}
+
+        {/* Reading the changing lines */}
+        {n.lineReadingHeading && (
+          <>
+            <h2>{n.lineReadingHeading}</h2>
+            <p>{n.lineReadingIntroBody}</p>
+          </>
+        )}
+
+        {n.lineReadingHuangHeading && (
+          <>
+            <h3>{n.lineReadingHuangHeading}</h3>
+            <p>{n.lineReadingHuangBody}</p>
+          </>
+        )}
+
+        {n.lineReadingZhuxiHeading && (
+          <>
+            <h3>{n.lineReadingZhuxiHeading}</h3>
+            <p>{n.lineReadingZhuxiBody}</p>
+          </>
+        )}
+
+        {/* The translations */}
+        {n.translationsHeading && <h2>{n.translationsHeading}</h2>}
+
+        {n.ichingLeggeHeading && (
+          <>
+            <h3>{n.ichingLeggeHeading}</h3>
+            <p>{n.ichingLeggeBody}</p>
           </>
         )}
 
@@ -85,47 +137,12 @@ export default async function NotesPage() {
           </>
         )}
 
-        {n.ichingLeggeHeading && (
-          <>
-            <h3>{n.ichingLeggeHeading}</h3>
-            <p>{n.ichingLeggeBody}</p>
-          </>
-        )}
-
         {n.ichingZhouyiHeading && (
           <>
             <h3>{n.ichingZhouyiHeading}</h3>
             <p>{n.ichingZhouyiBody}</p>
           </>
         )}
-
-
-
-        {/* Oracle Bones */}
-        {n.bonesHeading && <h2>{n.bonesHeading}</h2>}
-
-        {n.bonesOriginHeading && (
-          <>
-            <h3>{n.bonesOriginHeading}</h3>
-            <p>{n.bonesOriginBody}</p>
-          </>
-        )}
-
-
-
-        {n.bonesVerdictsHeading && (
-          <>
-            <h3>{n.bonesVerdictsHeading}</h3>
-            <ul>
-              {n.bonesVerdictAuspClear && <li>{n.bonesVerdictAuspClear}</li>}
-              {n.bonesVerdictAuspMod && <li>{n.bonesVerdictAuspMod}</li>}
-              {n.bonesVerdictInauspMod && <li>{n.bonesVerdictInauspMod}</li>}
-              {n.bonesVerdictInauspClear && <li>{n.bonesVerdictInauspClear}</li>}
-            </ul>
-          </>
-        )}
-
-
 
         {/* Interpretation */}
         {n.interpretHeading && (

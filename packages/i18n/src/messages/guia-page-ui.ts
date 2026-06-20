@@ -38,6 +38,8 @@ export type GuiaPageUiMessages = {
   ichingPracticalBody: string;
   /** Brief note on the tradition behind the casting rules (best of both worlds). */
   ichingTraditionNote: string;
+  /** Heading for the changing-line reading selector subsection (matches the UI label). */
+  lineReadingHeading: string;
   coinsPracticalHeading: string;
   coinsPracticalBody: string;
   yarrowPracticalHeading: string;
@@ -195,6 +197,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "Enfoque estructural e histórico (Nivel Seeker).",
     translatorsZhouyi: "El texto canónico puro en chino tradicional (Nivel Practitioner).",
     translatorsMaster: "Síntesis magistral personalizada de los tres linajes para un veredicto definitivo (Nivel Master).",
+    lineReadingHeading: "Lectura de líneas cambiantes",
     s5Heading: "Métodos de Lanzamiento",
     s5AutoTitle: "Automático",
     s5Auto: "El sistema genera las líneas mediante el algoritmo ritual en el servidor.",
@@ -304,6 +307,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "Structural and historical approach (Seeker level).",
     translatorsZhouyi: "The pure canonical text in classical Chinese (Practitioner level).",
     translatorsMaster: "Customized masterful synthesis of all three lineages for a definitive verdict (Master level).",
+    lineReadingHeading: "Changing-line reading",
     s5Heading: "Casting Methods",
     s5AutoTitle: "Automatic",
     s5Auto: "The system generates lines via the ritual algorithm on the server.",
@@ -414,6 +418,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "Abordagem estrutural e histórica (Nível Seeker).",
     translatorsZhouyi: "O texto canónico puro em chinês clássico (Nível Practitioner).",
     translatorsMaster: "Síntese magistral personalizada das três tradições para um veredicto definitivo (Nível Master).",
+    lineReadingHeading: "Leitura de linhas mutantes",
     s5Heading: "Métodos de Lançamento",
     s5AutoTitle: "Automático",
     s5Auto: "O sistema gera as linhas através do algoritmo ritual no servidor.",
@@ -525,6 +530,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "Approche structurelle et historique (niveau Seeker).",
     translatorsZhouyi: "Le texte canonique pur en chinois classique (niveau Practitioner).",
     translatorsMaster: "Synthèse magistrale personnalisée des trois traditions pour un verdict définitif (niveau Master).",
+    lineReadingHeading: "Lecture des lignes mobiles",
     s5Heading: "Méthodes de tirage",
     s5AutoTitle: "Automatique",
     s5Auto: "Le système génère les lignes via l'algorithme rituel sur le serveur.",
@@ -636,6 +642,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "Struktureller und historischer Ansatz (Seeker-Stufe).",
     translatorsZhouyi: "Der reine kanonische Text auf klassischem Chinesisch (Practitioner-Stufe).",
     translatorsMaster: "Individuelle Meistersynthese aller drei Traditionen für ein endgültiges Urteil (Master-Stufe).",
+    lineReadingHeading: "Lesung wandelnder Linien",
     s5Heading: "Würfelmethoden",
     s5AutoTitle: "Automatisch",
     s5Auto: "Das System generiert die Linien über den rituellen Algorithmus auf dem Server.",
@@ -747,6 +754,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "Approccio strutturale e storico (livello Seeker).",
     translatorsZhouyi: "Il testo canonico puro in cinese classico (livello Practitioner).",
     translatorsMaster: "Sintesi magistrale personalizzata delle tre tradizioni per un verdetto definitivo (livello Master).",
+    lineReadingHeading: "Lettura delle linee mutanti",
     s5Heading: "Metodi di lancio",
     s5AutoTitle: "Automatico",
     s5Auto: "Il sistema genera le linee tramite l'algoritmo rituale sul server.",
@@ -855,6 +863,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "構造的・歴史的アプローチ（Seekerレベル）。",
     translatorsZhouyi: "古典中国語による純粋な正典テキスト（Practitionerレベル）。",
     translatorsMaster: "三系統すべての個別化されたマスター統合による最終的判定（Masterレベル）。",
+    lineReadingHeading: "変爻の読み方",
     s5Heading: "キャストメソッド",
     s5AutoTitle: "自動",
     s5Auto: "システムがサーバー上の儀式アルゴリズムで爻を生成します。",
@@ -960,6 +969,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "结构与历史方法（Seeker级别）。",
     translatorsZhouyi: "文言文原典文本（Practitioner级别）。",
     translatorsMaster: "三大传承的个性化大师综合，获得最终判断（Master级别）。",
+    lineReadingHeading: "变爻解读法",
     s5Heading: "起卦方法",
     s5AutoTitle: "自动",
     s5Auto: "系统通过服务器上的仪式算法生成爻。",
@@ -1069,6 +1079,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "구조적·역사적 접근 (Seeker 레벨).",
     translatorsZhouyi: "고전 중국어 순수 정전 텍스트 (Practitioner 레벨).",
     translatorsMaster: "세 계통 모두의 개인화된 마스터 종합, 최종 판결 도출 (Master 레벨).",
+    lineReadingHeading: "변효 해석 방식",
     s5Heading: "점법 방식",
     s5AutoTitle: "자동",
     s5Auto: "시스템이 서버의 의례 알고리즘으로 효를 생성합니다.",
@@ -1177,6 +1188,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "نهج بنيوي وتاريخي (مستوى Seeker).",
     translatorsZhouyi: "النص الأصلي الخالص بالصينية الكلاسيكية (مستوى Practitioner).",
     translatorsMaster: "توليف رئيسي مخصص للتقاليد الثلاث للحصول على حكم نهائي (مستوى Master).",
+    lineReadingHeading: "قراءة الخطوط المتغيرة",
     s5Heading: "طرق القرعة",
     s5AutoTitle: "تلقائي",
     s5Auto: "يولد النظام الخطوط عبر الخوارزمية الطقسية على الخادم.",
@@ -1286,6 +1298,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     translatorsLegge: "संरचनात्मक और ऐतिहासिक दृष्टिकोण (Seeker स्तर)।",
     translatorsZhouyi: "शास्त्रीय चीनी में शुद्ध विहित पाठ (Practitioner स्तर)।",
     translatorsMaster: "अंतिम निर्णय के लिए तीनों परंपराओं का वैयक्तिकृत महारत संश्लेषण (Master स्तर)।",
+    lineReadingHeading: "परिवर्तनशील रेखाओं का पठन",
     s5Heading: "कास्टिंग विधियाँ",
     s5AutoTitle: "स्वचालित",
     s5Auto: "सिस्टम सर्वर पर अनुष्ठान एल्गोरिदम के माध्यम से रेखाएँ उत्पन्न करता है।",

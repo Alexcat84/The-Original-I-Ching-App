@@ -752,3 +752,66 @@ bloque `castMethodGroupAria` no tenía `id` de tour).
 
 Verificación: build `@iching-oracle/i18n` ✅ · `tsc --noEmit` en `apps/web` ✅. Cierra la
 desalineación del tutorial; el resto del flujo del tour se mantiene correcto.
+
+---
+
+# Parte 8 — Reorganización de la documentación pública (20 jun 2026, Opus 4.8)
+
+Auditoría de las tres páginas de docs públicas tras detectar que estaban desactualizadas respecto
+a la feature de líneas cambiantes y que el FAQ contenía marcas tipográficas de IA (em-dash). Todo
+compilado a `@iching-oracle/i18n` (11 locales, EN fuente de verdad). Sin tocar billing.
+
+## 8.1 — Guía (`/guia#modos-consulta`): reorden al orden real de selectores
+
+**Hallazgo:** `apps/web/src/app/guia/page.tsx` renderizaba un set legacy `s1`–`s6` simplificado,
+mientras `guia-page-ui.ts` ya contenía claves ricas y precisas **sin renderizar**
+(`methodsHeading`, `coinsPractical*`, `yarrowPractical*`, `ichingCastMode*`, `tokens*`, `export*`,
+`ichingTraditionNote` — esta última ya explicaba Huang por defecto + selector Zhu Xi). Además no
+mencionaba el selector «Lectura de líneas cambiantes» y mezclaba «Método» con «Ejecución».
+
+**Remediación:**
+
+1. `guia/page.tsx` reescrito para renderizar el contenido rico en el **orden del panel**:
+   Modo de oráculo (`#modos-consulta`) → **Traductor** (`#traductor`) → **Lectura de líneas
+   cambiantes** (`#lectura-lineas`) → **Método** (`#metodo`, Tres Monedas + Varillas) →
+   **Ejecución** (`#ejecucion`, automática/manual) → Sesiones → Tokens → Biblioteca/Docs →
+   Exportar → Privacidad. Se conserva `#panel-opciones` (enlazado desde `page.tsx`) y
+   `#modos-consulta` (enlace externo + quickstart).
+2. `guia-page-ui.ts`: nueva clave `lineReadingHeading` en los 11 locales, con el **mismo texto que
+   el label del selector en la UI** (`manual-coin-wizard-ui.lineReadingSystemGroupAria`) para
+   consistencia. El cuerpo reutiliza `ichingTraditionNote` (ya preciso).
+
+## 8.2 — Notes (`/notes`): orden cronológico + sección de líneas cambiantes
+
+**Hallazgo:** orden no cronológico (I Ching antes que los Huesos Shang, más antiguos), traductores
+anidados de forma incoherente bajo «Yarrow», y **sin** sección de líneas cambiantes. Peor:
+`ichingMethodBody` afirmaba que la app implementa «exactamente las reglas de Zhu Xi», cuando el
+**default es Alfred Huang** (Zhu Xi es opcional) — imprecisión histórica corregida.
+
+**Remediación** (`notes-page-ui.ts` + `notes/page.tsx`, 11 locales):
+
+- Reorden cronológico: **Huesos (Shang ~1600 a.C.) → I Ching/Zhouyi → Métodos de tirada (Yarrow →
+  Tres Monedas) → Lectura de líneas cambiantes → Las traducciones (Legge 1882 → Wilhelm 1924/1950 →
+  Zhou Yi) → Por qué la IA no inventa → Fuentes.**
+- Nueva sección **«La lectura de las líneas cambiantes»** con `lineReadingIntroBody` +
+  `lineReadingHuangHeading/Body` (Alfred Huang, 1921–2014, *The Complete I Ching* 1998, sistema de
+  reducción por defecto) + `lineReadingZhuxiHeading/Body` (Zhu Xi, 1130–1200, *Yijing benyi*, lectura
+  clásica multi-texto). Nueva clave `translationsHeading` para agrupar los traductores.
+- `ichingMethodHeading/Body` reescritos: ahora describen **solo** el método de las tres monedas, sin
+  reclamar reglas de Zhu Xi.
+
+## 8.3 — FAQ: eliminación de em-dashes (evidencia de IA)
+
+**Hallazgo:** 116 ocurrencias de em-dash (—, U+2014) en `faq-page-ui.ts`, concentradas en
+`iching-mutation-rules` (listado «N líneas en cambio — …») y `authentic-texts` (inciso pareado),
+en los 11 locales.
+
+**Remediación:** reemplazo por puntuación natural según contexto (`:` en listados, `,` en frases,
+`()` en incisos), conservando caracteres chinos (卦辞, 爻辞, 用九, etc.) y el middot «·» (diseño de
+navegación, no es guión). Objetivo: 0 em-dash / 0 en-dash.
+
+## Verificación Parte 8
+
+- Build `@iching-oracle/i18n` ✅ · `tsc --noEmit` en `apps/web` ✅.
+- Anclas externas (`#modos-consulta`, `#panel-opciones`) preservadas.
+- Sin em-dash/en-dash residual en `faq-page-ui.ts`.
