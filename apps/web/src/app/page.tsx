@@ -5709,7 +5709,10 @@ export default function HomePage() {
                           </label>
                         </div>
                         <hr className="composer-panel-divider" aria-hidden />
-                        <div className="cast-selector-block">
+                        <div
+                          id="tour-line-reading-system"
+                          className="cast-selector-block"
+                        >
                           <span className="cast-selector-label">
                             {manualWizardChrome.lineReadingSystemGroupAria}
                           </span>
@@ -7020,6 +7023,7 @@ export default function HomePage() {
             { target: "#tour-oracle-mode",     title: tour.step4Title, content: tour.step4Body, placement: "bottom", before: tourBeforePanel("tour-oracle-mode", true) },
             { target: "#tour-translator",      title: tour.step5Title, content: tour.step5Body, placement: "bottom", before: tourBeforePanel("tour-translator",  false) },
             { target: "#tour-cast-mode",       title: tour.step6Title, content: tour.step6Body, placement: "top",    before: tourBeforePanel("tour-cast-mode",   false) },
+            { target: "#tour-line-reading-system", title: tour.lineReadingTitle, content: tour.lineReadingBody, placement: "top", before: tourBeforePanel("tour-line-reading-system", false) },
             { target: "#tour-library-btn",     title: tour.step7Title, content: tour.step7Body, placement: "top",    before: tourBeforePanel("tour-library-btn", false) },
             { target: "#tour-doc-links",       title: tour.step8Title, content: tour.step8Body, placement: "top",    before: tourBeforePanel("tour-doc-links",   false) },
             { target: "#tour-chat-input",      title: tour.step9Title, content: tour.step9Body, placement: "top",    before: () => new Promise<void>(resolve => { setConsultPanelOpen(false); setTimeout(resolve, 220); }) },
