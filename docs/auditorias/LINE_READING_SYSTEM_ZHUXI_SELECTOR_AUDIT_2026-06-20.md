@@ -640,3 +640,40 @@ se incluyó la marca en el recordatorio de reintento, alineándolo con `formatLi
    cualquier deploy con tráfico real (la escritura del campo y su lectura fiel dependen de ella).
 2. **`scripts/line-reading-system-qa.mjs` sin ejecutar** (consume tokens reales).
 3. **Sin push a `origin` ni merge** a `staging`/`main` — decisión explícita del usuario.
+
+---
+
+# Parte 5 — QA API real + merge a staging + ajuste de UX (20 jun 2026, Opus 4.8)
+
+**Migración 074 aplicada en staging** (decisión del usuario). Ejecutada la **Capa 4** del plan de
+pruebas: `scripts/line-reading-system-qa.mjs --models claude-sonnet-4-6`, **48/48 lecturas reales**
+(12 fixtures × {huang, zhuxi} × {wilhelm, master_combined}). Resultado: **0 fallos de gate**
+(`blocking: []` en todas). Los 8 `pass:false` son falsos negativos del harness (nota forzada
+"verify in transcript" para los casos ZX de 2/4 líneas); verificados a mano en el transcript:
+
+- **2 líneas:** Huang cita 1 línea; Zhu Xi (`ZX_TWO_UPPER`) cita ambas, superior primaria.
+- **3 líneas Hacker A** (pos 1 cambia): prima el Juicio **primario**, sin citar línea, sin doble-cita.
+- **3 líneas Hacker B** (pos 1 estable): prima el Juicio **transformado** (énfasis invertido OK).
+- **4 líneas** (`ZX_FOUR_LOWER`): ambas estables del transformado, inferior (pos 5) primaria.
+- Énfasis `primaria/secundaria` propagado a Wilhelm/Legge/Zhou Yi en `master_combined` (H3 OK).
+
+Concordancia 100% con Yixue Qimeng + Ed Hacker → **merge `feat/line-reading-system-selector` →
+`staging`** (`--no-ff`) y push. Reporte: `reports/lrs-qa-2026-06-20T17-46-21-336Z*.{json,md}`.
+
+## Ajuste de UX post-merge
+
+A petición del usuario, sobre `staging`:
+
+1. **Rename del selector:** `lineReadingSystemGroupAria` pasa de «Sistema de lectura» (ambiguo) a
+   **«Lectura de líneas cambiantes»** (EN: *Changing-line reading*), en los 11 locales de
+   `manual-coin-wizard-ui.ts`. Mismo rename del título del tour en `home-tour-ui.ts`.
+2. **Reorden:** el selector pasa a **2ª posición, justo tras Traductor**. Orden nuevo del panel:
+   **Traductor → Lectura de líneas cambiantes → Método → Ejecución** (`apps/web/src/app/page.tsx`).
+   El paso del tour `#tour-line-reading-system` se reubica entre `#tour-translator` y
+   `#tour-cast-mode` para reflejar el orden visual.
+3. **Docs:** referencias al nombre del selector actualizadas en `guia-page-ui.ts` y `faq-page-ui.ts`
+   (11 locales). El desglose 0–6 líneas Huang/Zhu Xi de la FAQ ya documenta cómo se aplica la
+   lectura en **ambos** métodos; se mantiene.
+
+Verificación: `tsc --noEmit` limpio en `apps/web`; build limpio en `@iching-oracle/i18n`; orden del
+DOM confirmado en `page.tsx`. Pendiente: **Capa 3 (persistencia E2E)** contra staging desplegado.

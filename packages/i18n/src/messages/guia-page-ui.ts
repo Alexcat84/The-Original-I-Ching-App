@@ -146,7 +146,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "Útil para preguntas abiertas, dilemas y procesos en el tiempo. Devuelve un hexagrama, las líneas en movimiento que apliquen y el segundo hexagrama si lo hay. La lectura sigue el sistema de reducción de Alfred Huang y los textos auténticos del libro.",
     ichingTraditionNote:
-      "Por defecto, la app implementa el sistema de reducción a una sola línea de Alfred Huang, con la estructura clásica de Zhu Xi como antecedente. Desde Opciones puedes activar el selector «Sistema de lectura» para usar en su lugar la lectura clásica de Zhu Xi; en cualquiera de los dos casos, cada combinación de líneas produce siempre un único texto guía preciso.",
+      "Por defecto, la app implementa el sistema de reducción a una sola línea de Alfred Huang, con la estructura clásica de Zhu Xi como antecedente. Desde Opciones puedes activar el selector «Lectura de líneas cambiantes» para usar en su lugar la lectura clásica de Zhu Xi; en cualquiera de los dos casos, cada combinación de líneas produce siempre un único texto guía preciso.",
     coinsPracticalHeading: "Tres Monedas",
     coinsPracticalBody:
       "Es la forma rápida de tirar el I Ching. Funciona en modo automático (la app ejecuta la tirada por ti) o en modo manual (registras tú las seis líneas a partir de tus propias monedas). El resultado y la interpretación son los mismos en ambos modos.",
@@ -255,7 +255,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "Useful for open questions, dilemmas, and processes that unfold over time. It returns a hexagram, the changing lines that apply, and the resulting hexagram if any. Readings follow Alfred Huang's reduction system and the authentic source texts.",
     ichingTraditionNote:
-      "By default, the app implements Alfred Huang's single-line reduction system, with Zhu Xi's classical structure as its antecedent. From Options you can enable the Reading system selector to use Zhu Xi's classical reading instead; either way, every combination of changing lines always yields a single, precise guiding text.",
+      "By default, the app implements Alfred Huang's single-line reduction system, with Zhu Xi's classical structure as its antecedent. From Options you can enable the Changing-line reading selector to use Zhu Xi's classical reading instead; either way, every combination of changing lines always yields a single, precise guiding text.",
     coinsPracticalHeading: "Three Coins",
     coinsPracticalBody:
       "The quick way to cast the I Ching. It works either automatically (the app casts for you) or manually (you record the six lines from your own physical coins). The result and the interpretation are the same in both modes.",
@@ -365,7 +365,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "Útil para perguntas abertas, dilemas e processos no tempo. Devolve um hexagrama, as linhas em movimento que se apliquem e o hexagrama resultante se houver. A leitura segue o sistema de redução de Alfred Huang e os textos autênticos do livro.",
     ichingTraditionNote:
-      "Por padrão, o app implementa o sistema de redução a uma única linha de Alfred Huang, com a estrutura clássica de Zhu Xi como antecedente. Em Opções você pode ativar o seletor «Sistema de leitura» para usar a leitura clássica de Zhu Xi; em qualquer um dos dois casos, toda combinação de linhas produz sempre um único texto guia preciso.",
+      "Por padrão, o app implementa o sistema de redução a uma única linha de Alfred Huang, com a estrutura clássica de Zhu Xi como antecedente. Em Opções você pode ativar o seletor «Leitura de linhas mutantes» para usar a leitura clássica de Zhu Xi; em qualquer um dos dois casos, toda combinação de linhas produz sempre um único texto guia preciso.",
     coinsPracticalHeading: "Três Moedas",
     coinsPracticalBody:
       "É a forma rápida de tirar o I Ching. Funciona em modo automático (a app faz a tiragem) ou manual (registas tu as seis linhas a partir das tuas próprias moedas). O resultado e a interpretação são iguais nos dois modos.",
@@ -476,7 +476,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "Utile pour les questions ouvertes, les dilemmes et les processus qui se déploient dans le temps. Il renvoie un hexagramme, les traits en mouvement qui s’appliquent et l’hexagramme dérivé s’il y a lieu. La lecture suit le système de réduction d’Alfred Huang et les textes authentiques du livre.",
     ichingTraditionNote:
-      "Par défaut, l’application met en œuvre le système de réduction à un seul trait d’Alfred Huang, avec la structure classique de Zhu Xi comme antécédent. Depuis les Options, vous pouvez activer le sélecteur « Système de lecture » pour utiliser à la place la lecture classique de Zhu Xi ; dans les deux cas, chaque combinaison de traits produit toujours un texte directeur unique et précis.",
+      "Par défaut, l’application met en œuvre le système de réduction à un seul trait d’Alfred Huang, avec la structure classique de Zhu Xi comme antécédent. Depuis les Options, vous pouvez activer le sélecteur « Lecture des lignes mobiles » pour utiliser à la place la lecture classique de Zhu Xi ; dans les deux cas, chaque combinaison de traits produit toujours un texte directeur unique et précis.",
     coinsPracticalHeading: "Trois Pièces",
     coinsPracticalBody:
       "C’est la façon rapide de tirer le I Ching. Fonctionne en mode automatique (l’app fait le tirage) ou manuel (vous saisissez vous-même les six traits à partir de vos pièces). Le résultat et l’interprétation sont identiques dans les deux modes.",
@@ -587,7 +587,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "Geeignet für offene Fragen, Dilemmata und Prozesse, die sich über Zeit entfalten. Du erhältst ein Hexagramm, die zutreffenden bewegten Striche und gegebenenfalls das daraus folgende Hexagramm. Die Lesung folgt Alfred Huangs Reduktionssystem und den authentischen Quellentexten.",
     ichingTraditionNote:
-      "Standardmäßig setzt die App Alfred Huangs Einzel-Linien-Reduktionssystem um, mit Zhu Xis klassischem Rahmen als Vorläufer. In den Optionen kannst du den Auswahlschalter „Lesesystem“ aktivieren, um stattdessen Zhu Xis klassische Lesung zu verwenden; in beiden Fällen ergibt jede Strichkombination stets einen einzigen, präzisen Leittext.",
+      "Standardmäßig setzt die App Alfred Huangs Einzel-Linien-Reduktionssystem um, mit Zhu Xis klassischem Rahmen als Vorläufer. In den Optionen kannst du den Auswahlschalter „Lesung wandelnder Linien“ aktivieren, um stattdessen Zhu Xis klassische Lesung zu verwenden; in beiden Fällen ergibt jede Strichkombination stets einen einzigen, präzisen Leittext.",
     coinsPracticalHeading: "Drei Münzen",
     coinsPracticalBody:
       "Der schnelle Weg, das I Ging zu werfen. Geht automatisch (die App wirft für dich) oder manuell (du trägst die sechs Striche aus deinem eigenen Wurf ein). Ergebnis und Auslegung sind in beiden Modi identisch.",
@@ -698,7 +698,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "Utile per domande aperte, dilemmi e processi che si dispiegano nel tempo. Restituisce un esagramma, le linee in movimento applicabili e l’esagramma risultante se presente. La lettura segue il sistema di riduzione di Alfred Huang e i testi autentici del libro.",
     ichingTraditionNote:
-      "Per impostazione predefinita, l’app implementa il sistema di riduzione a linea singola di Alfred Huang, con la struttura classica di Zhu Xi come precedente. Dalle Opzioni puoi attivare il selettore «Sistema di lettura» per usare invece la lettura classica di Zhu Xi; in entrambi i casi, ogni combinazione di linee produce sempre un unico testo guida preciso.",
+      "Per impostazione predefinita, l’app implementa il sistema di riduzione a linea singola di Alfred Huang, con la struttura classica di Zhu Xi come precedente. Dalle Opzioni puoi attivare il selettore «Lettura delle linee mutanti» per usare invece la lettura classica di Zhu Xi; in entrambi i casi, ogni combinazione di linee produce sempre un unico testo guida preciso.",
     coinsPracticalHeading: "Tre Monete",
     coinsPracticalBody:
       "È il modo rapido di lanciare l’I Ching. Funziona in automatico (lancia l’app) o in manuale (registri tu le sei linee partendo dalle tue monete). Il risultato e l’interpretazione sono uguali nei due modi.",
@@ -806,7 +806,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "開かれた問いやジレンマ、時間とともに動いていくテーマに向きます。卦と該当する変爻、そして導かれる卦を返します。占いはアルフレッド・ホアンの還元システムと原典テキストに従います。",
     ichingTraditionNote:
-      "既定では、このアプリはアルフレッド・ホアンの一爻還元システムを採用し、朱熹の古典的な枠組みをその前身としています。オプションの「読解システム」セレクターを使うと、代わりに朱熹の古典的な読み方を選べます。どちらの場合も、どの変爻の組み合わせでも常に的確な主爻テキストが一つに定まります。",
+      "既定では、このアプリはアルフレッド・ホアンの一爻還元システムを採用し、朱熹の古典的な枠組みをその前身としています。オプションの「変爻の読み方」セレクターを使うと、代わりに朱熹の古典的な読み方を選べます。どちらの場合も、どの変爻の組み合わせでも常に的確な主爻テキストが一つに定まります。",
     coinsPracticalHeading: "三銭",
     coinsPracticalBody:
       "易経をすばやく立てる方法です。自動（アプリが立てる）または手動（自分の銭から六爻を入力）で使えます。結果と解釈はどちらの方式でも同じです。",
@@ -912,7 +912,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "适合开放性问题、两难抉择以及随时间展开的过程。返回一个本卦、相应的变爻以及之卦（若有）。解读遵循 Alfred Huang 的归简系统与原典文本。",
     ichingTraditionNote:
-      "默认情况下，本应用采用 Alfred Huang 的单爻归简系统，以朱熹的古典框架为其源头。在选项中可启用「解卦系统」选择器，改用朱熹的经典解法；无论哪种情况，每种变爻组合都能呈现一个精准、明确的主导爻辞。",
+      "默认情况下，本应用采用 Alfred Huang 的单爻归简系统，以朱熹的古典框架为其源头。在选项中可启用「变爻解读法」选择器，改用朱熹的经典解法；无论哪种情况，每种变爻组合都能呈现一个精准、明确的主导爻辞。",
     coinsPracticalHeading: "三钱",
     coinsPracticalBody:
       "起易经最快捷的方式。可在自动模式下使用（由应用代为投掷），也可在手动模式下使用（你根据自己的实物投掷输入六爻）。两种模式的结果与解读相同。",
@@ -1020,7 +1020,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "열린 질문, 딜레마, 시간 속에서 펼쳐지는 흐름에 적합합니다. 본괘와 해당하는 동효, 그리고 지괘가 있다면 함께 돌려줍니다. 풀이는 Alfred Huang의 환원 체계와 원전 텍스트를 따릅니다.",
     ichingTraditionNote:
-      "기본적으로 이 앱은 Alfred Huang의 단일 효 환원 체계를 구현하며, 주희의 고전적 틀을 그 선행 구조로 삼습니다. 옵션에서 '해석 체계' 선택기를 활성화하면 대신 주희의 고전적 해석을 사용할 수 있습니다. 어느 쪽이든 동효의 모든 조합은 항상 정확한 지도 효사 하나를 산출합니다.",
+      "기본적으로 이 앱은 Alfred Huang의 단일 효 환원 체계를 구현하며, 주희의 고전적 틀을 그 선행 구조로 삼습니다. 옵션에서 '변효 해석 방식' 선택기를 활성화하면 대신 주희의 고전적 해석을 사용할 수 있습니다. 어느 쪽이든 동효의 모든 조합은 항상 정확한 지도 효사 하나를 산출합니다.",
     coinsPracticalHeading: "삼전(三錢)",
     coinsPracticalBody:
       "역경을 빠르게 세우는 방법입니다. 자동(앱이 대신 던짐)과 수동(직접 동전을 던지고 여섯 효를 입력) 양쪽으로 쓸 수 있습니다. 결과와 풀이는 두 방식 모두 동일합니다.",
@@ -1128,7 +1128,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "مناسب للأسئلة المفتوحة، والمآزق، والمسارات التي تنكشف عبر الزمن. يعيد هكساغرامًا، والخطوط المتحركة المنطبقة، والهكساغرام الناتج إن وُجد. يتبع التفسير نظام ألفريد هوانغ للاختزال والنصوص الأصلية للكتاب.",
     ichingTraditionNote:
-      "افتراضيًا، يطبّق التطبيق نظام ألفريد هوانغ لاختزال الخط الواحد، مع قواعد زو شي الكلاسيكية كأصل تاريخي لهذا البناء. من الخيارات يمكنك تفعيل مُحدِّد «نظام القراءة» لاستخدام قراءة زو شي الكلاسيكية بدلاً من ذلك؛ وفي كل الحالتين، تُنتج كل تركيبة من الخطوط المتغيرة دائمًا نصًا راهنًا واحدًا ودقيقًا.",
+      "افتراضيًا، يطبّق التطبيق نظام ألفريد هوانغ لاختزال الخط الواحد، مع قواعد زو شي الكلاسيكية كأصل تاريخي لهذا البناء. من الخيارات يمكنك تفعيل مُحدِّد «قراءة الخطوط المتغيرة» لاستخدام قراءة زو شي الكلاسيكية بدلاً من ذلك؛ وفي كل الحالتين، تُنتج كل تركيبة من الخطوط المتغيرة دائمًا نصًا راهنًا واحدًا ودقيقًا.",
     coinsPracticalHeading: "الثلاث عملات",
     coinsPracticalBody:
       "الطريقة السريعة لقَسْم I Ching. تعمل تلقائيًا (يقوم التطبيق بالقَسْم) أو يدويًا (تُدخل الخطوط الستة من رميتك الحقيقية). النتيجة والتفسير متطابقتان في الحالتين.",
@@ -1237,7 +1237,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     ichingPracticalBody:
       "खुले प्रश्नों, द्वंद्वों और समय में खुलने वाली प्रक्रियाओं के लिए उपयोगी। यह एक हेक्साग्राम, लागू होने वाली परिवर्तित रेखाएँ और परिणामी हेक्साग्राम (यदि कोई हो) लौटाता है। पठन अल्फ्रेड हुआंग की न्यूनीकरण प्रणाली और पुस्तक के प्रामाणिक पाठों का अनुसरण करता है।",
     ichingTraditionNote:
-      "डिफ़ॉल्ट रूप से, यह ऐप अल्फ्रेड हुआंग की एक-रेखा न्यूनीकरण प्रणाली को लागू करता है, जिसमें झू शी की शास्त्रीय संरचना इसके ऐतिहासिक आधार के रूप में है। विकल्पों में 'पठन प्रणाली' चयनकर्ता सक्रिय करके आप इसके बदले झू शी की शास्त्रीय पठन शैली उपयोग कर सकते हैं; दोनों स्थितियों में, परिवर्तनशील रेखाओं का हर संयोजन हमेशा एक सटीक मार्गदर्शक पाठ उत्पन्न करता है।",
+      "डिफ़ॉल्ट रूप से, यह ऐप अल्फ्रेड हुआंग की एक-रेखा न्यूनीकरण प्रणाली को लागू करता है, जिसमें झू शी की शास्त्रीय संरचना इसके ऐतिहासिक आधार के रूप में है। विकल्पों में 'परिवर्तनशील रेखाओं का पठन' चयनकर्ता सक्रिय करके आप इसके बदले झू शी की शास्त्रीय पठन शैली उपयोग कर सकते हैं; दोनों स्थितियों में, परिवर्तनशील रेखाओं का हर संयोजन हमेशा एक सटीक मार्गदर्शक पाठ उत्पन्न करता है।",
     coinsPracticalHeading: "तीन सिक्के",
     coinsPracticalBody:
       "I Ching डालने का त्वरित तरीका। यह स्वचालित मोड में (ऐप कास्ट करता है) या मैन्युअल मोड में (आप अपने वास्तविक सिक्कों से छह रेखाएँ दर्ज करते हैं) चलता है। दोनों मोड में परिणाम और व्याख्या समान होते हैं।",

@@ -67,7 +67,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Varillas (Yarrow)",
     castMethodYarrowHint: "Distribución auténtica Zhou; yang móvil 3× más frecuente que yin móvil",
     castMethodYarrowTagline: "Varillas · Zhu Xi · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "Sistema de lectura",
+    lineReadingSystemGroupAria: "Lectura de líneas cambiantes",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (clásico)",
     lineReadingSystemHint:
@@ -102,7 +102,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Yarrow Stalks",
     castMethodYarrowHint: "Authentic Zhou distribution; moving yang 3× more likely than moving yin",
     castMethodYarrowTagline: "Yarrow Stalks · Zhu Xi · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "Reading system",
+    lineReadingSystemGroupAria: "Changing-line reading",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (classical)",
     lineReadingSystemHint:
@@ -137,7 +137,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Varetas (Yarrow)",
     castMethodYarrowHint: "Distribuição Zhou autêntica; yang móvel 3× mais provável que yin móvel",
     castMethodYarrowTagline: "Varetas · Zhu Xi · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "Sistema de leitura",
+    lineReadingSystemGroupAria: "Leitura de linhas mutantes",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (clássico)",
     lineReadingSystemHint:
@@ -172,7 +172,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Tiges d’Achillée",
     castMethodYarrowHint: "Distribution Zhou authentique; yang mobile 3× plus probable que yin mobile",
     castMethodYarrowTagline: "Tiges d’Achillée · Zhu Xi · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "Système de lecture",
+    lineReadingSystemGroupAria: "Lecture des lignes mobiles",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (classique)",
     lineReadingSystemHint:
@@ -207,7 +207,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Schafgarbenstäbe",
     castMethodYarrowHint: "Authentische Zhou-Verteilung; bewegendes Yang 3× wahrscheinlicher als bewegendes Yin",
     castMethodYarrowTagline: "Schafgarbenstäbe · Zhu Xi · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "Lesesystem",
+    lineReadingSystemGroupAria: "Lesung wandelnder Linien",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (klassisch)",
     lineReadingSystemHint:
@@ -242,7 +242,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "Stecche di Achillea",
     castMethodYarrowHint: "Distribuzione Zhou autentica; yang mutabile 3× più probabile dello yin mutabile",
     castMethodYarrowTagline: "Stecche di Achillea · Zhu Xi · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "Sistema di lettura",
+    lineReadingSystemGroupAria: "Lettura delle linee mutanti",
     lineReadingSystemHuangLabel: "Alfred Huang",
     lineReadingSystemZhuxiLabel: "Zhu Xi (classico)",
     lineReadingSystemHint:
@@ -277,7 +277,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "蓍草",
     castMethodYarrowHint: "周朝本来の分布；動爻の陽は陰の3倍",
     castMethodYarrowTagline: "蓍草 · 朱熹 · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "読解システム",
+    lineReadingSystemGroupAria: "変爻の読み方",
     lineReadingSystemHuangLabel: "アルフレッド・ホアン",
     lineReadingSystemZhuxiLabel: "朱熹（古典）",
     lineReadingSystemHint: "黄の体系は要となる一爻のみを読む。朱熹の体系は二爻または両方の卦辞を読むことがある。",
@@ -311,7 +311,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "蓍草",
     castMethodYarrowHint: "周代本真分布；动爻中阳爻概率是阴爻三倍",
     castMethodYarrowTagline: "蓍草 · 朱熹 · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "解卦系统",
+    lineReadingSystemGroupAria: "变爻解读法",
     lineReadingSystemHuangLabel: "黄（Huang）",
     lineReadingSystemZhuxiLabel: "朱熹（古典）",
     lineReadingSystemHint: "黄氏体系只读关键一爻；朱熹体系可能读两爻或两卦辞。",
@@ -345,7 +345,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "시초",
     castMethodYarrowHint: "주 왕조 본래 분포; 동효 양은 음보다 3배 많음",
     castMethodYarrowTagline: "시초 · 주희 · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "해석 체계",
+    lineReadingSystemGroupAria: "변효 해석 방식",
     lineReadingSystemHuangLabel: "알프레드 황(Huang)",
     lineReadingSystemZhuxiLabel: "주희(고전)",
     lineReadingSystemHint:
@@ -380,7 +380,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "عيدان الزنبق",
     castMethodYarrowHint: "توزيع تشو الأصيل؛ يانغ متحرك أكثر من ين متحرك بثلاثة أضعاف",
     castMethodYarrowTagline: "عيدان الزنبق · تشو شي · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "نظام القراءة",
+    lineReadingSystemGroupAria: "قراءة الخطوط المتغيرة",
     lineReadingSystemHuangLabel: "ألفريد هوانغ",
     lineReadingSystemZhuxiLabel: "تشو شي (كلاسيكي)",
     lineReadingSystemHint:
@@ -415,7 +415,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     castMethodYarrowLabel: "यारो की छड़ें",
     castMethodYarrowHint: "प्रामाणिक झोउ वितरण; गतिशील यांग, गतिशील यिन से 3 गुना अधिक संभावित",
     castMethodYarrowTagline: "यारो · झू शी · Wilhelm/Baynes",
-    lineReadingSystemGroupAria: "पठन प्रणाली",
+    lineReadingSystemGroupAria: "परिवर्तनशील रेखाओं का पठन",
     lineReadingSystemHuangLabel: "अल्फ़्रेड हुआंग",
     lineReadingSystemZhuxiLabel: "झू शी (शास्त्रीय)",
     lineReadingSystemHint:
