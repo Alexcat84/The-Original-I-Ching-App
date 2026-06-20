@@ -802,16 +802,31 @@ anidados de forma incoherente bajo «Yarrow», y **sin** sección de líneas cam
 
 ## 8.3 — FAQ: eliminación de em-dashes (evidencia de IA)
 
-**Hallazgo:** 116 ocurrencias de em-dash (—, U+2014) en `faq-page-ui.ts`, concentradas en
-`iching-mutation-rules` (listado «N líneas en cambio — …») y `authentic-texts` (inciso pareado),
-en los 11 locales.
+**Hallazgo:** em-dash (—, U+2014) en `faq-page-ui.ts`, concentrados en `iching-mutation-rules`
+(listado «N líneas en cambio — …») y `authentic-texts` (inciso pareado), en los 11 locales. El
+conteo inicial por líneas dio ~116; el conteo real por ocurrencia fue **144 em-dash + 11 en-dash =
+155**.
 
 **Remediación:** reemplazo por puntuación natural según contexto (`:` en listados, `,` en frases,
-`()` en incisos), conservando caracteres chinos (卦辞, 爻辞, 用九, etc.) y el middot «·» (diseño de
-navegación, no es guión). Objetivo: 0 em-dash / 0 en-dash.
+`()` en incisos; paréntesis full-width `（）` en ja/zh, comas en ar por RTL), conservando caracteres
+chinos (卦辞, 爻辞, 用九, etc.) y el middot «·» (diseño de navegación, no es guión).
 
-## Verificación Parte 8
+## Resultados de pruebas (Parte 8)
 
-- Build `@iching-oracle/i18n` ✅ · `tsc --noEmit` en `apps/web` ✅.
-- Anclas externas (`#modos-consulta`, `#panel-opciones`) preservadas.
-- Sin em-dash/en-dash residual en `faq-page-ui.ts`.
+Ejecutadas el 20 jun 2026 sobre la rama `feat/line-reading-system-selector` antes del merge.
+
+| Prueba | Comando | Resultado |
+|--------|---------|-----------|
+| Build i18n | `npm run build` en `packages/i18n` (`tsc`) | **PASS** (exit 0) — confirma que las 7 claves nuevas existen en los 11 locales (`Record<AppLocale,…>`). |
+| Typecheck web | `npm run typecheck` en `apps/web` (`tsc --noEmit`) | **PASS** (exit 0) — valida `guia/page.tsx` y `notes/page.tsx` con las claves nuevas. |
+| FAQ sin dashes | búsqueda U+2014 / U+2013 en `faq-page-ui.ts` | **0 / 0** (144 em + 11 en eliminados). |
+| Guía sin dashes | búsqueda en `guia-page-ui.ts` | **0 / 0**. |
+| Notes sin dashes | búsqueda en `notes-page-ui.ts` | **0 / 0** tras normalizar 16 en-dash de rangos de fecha (`1046–256` → `1046-256`). Texto nuevo escrito sin dashes (conectores `a` / `至` / `から` / `~` / `से` / `إلى`). |
+| Anclas externas | `#modos-consulta`, `#panel-opciones` | preservadas (enlazadas desde `page.tsx` / quickstart). |
+
+**Decisiones de traducción (notes):** en `zh` se dejó «Alfred Huang» sin hanzi (evitar carácter
+inexacto); en `ja` se translitereó como アルフレッド・ホアン junto al nombre latino.
+
+**Git:** commit `26ebfd4` en `feat/line-reading-system-selector` (pusheado) → merge `--no-ff`
+`cdaf73d` en `staging` (pusheado, deploy Vercel). Pendiente: validación visual en staging desplegado
+de `/guia#modos-consulta`, `/notes` y `/faqs`. **Aún NO promovido a `main`.**
