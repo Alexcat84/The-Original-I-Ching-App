@@ -1,15 +1,18 @@
 import { getHexagramRecordByBinaryTopFirst, type HexagramRecord } from "@iching-oracle/iching-data";
 import {
+  type AnyMutationRule,
   type CastingMethod,
   type CastResult,
   type Hexagram,
   type InterpretationMode,
   type Line,
+  type LineReadingSystem,
   type LineType,
   type LineValue,
   type MutationRule,
   type TextsForClaude,
 } from "./types.js";
+import { determineMutationRuleZhuXi, selectTextsZhuXi } from "./rules/zhuxi.js";
 
 
 export type Rng = () => number;
@@ -106,6 +109,7 @@ export function selectTextsForClaude(
   changing: number[],
   rule: MutationRule,
   translator: InterpretationMode = "wilhelm",
+  system: LineReadingSystem = "huang",
 ): TextsForClaude {
   const attachMasterTraditions = (baseResult: TextsForClaude): TextsForClaude => {
     if (translator !== "master_combined") return baseResult;
@@ -177,6 +181,13 @@ export function selectTextsForClaude(
     ruleExplanation: "",
   };
   const gl = (hex: Hexagram, pos: number) => hex.lines.find((l) => l.position === pos)?.text ?? "";
+
+  if (system === "zhuxi") {
+    const zxRule = determineMutationRuleZhuXi(primary, changing);
+    return attachMasterTraditions(
+      selectTextsZhuXi(primary, transformed, lines, changing, zxRule, base, gl),
+    );
+  }
 
   switch (rule) {
     case "NO_CHANGING":
@@ -297,6 +308,7 @@ export interface PerformCastOptions {
   now?: Date;
   castingMethod?: CastingMethod;
   translator?: InterpretationMode;
+  lineReadingSystem?: LineReadingSystem;
 }
 
 function newCastId(): string {
@@ -312,17 +324,30 @@ function buildCastResultFromLines(
   options?: PerformCastOptions,
 ): CastResult {
   const translator = options?.translator ?? "wilhelm";
+  const system: LineReadingSystem = options?.lineReadingSystem ?? "huang";
   const changing = lines.filter((l) => l.isChanging).map((l) => l.position);
   const primary = getHexagram(lines, translator);
   const transformedLines = changing.length > 0 ? applyMutations(lines) : null;
   const transformed = transformedLines ? getHexagram(transformedLines, translator) : null;
-  const rule = determineMutationRule(primary, lines, changing);
-  const texts = selectTextsForClaude(primary, transformed, lines, changing, rule, translator);
+  const huangRule = determineMutationRule(primary, lines, changing);
+  // The persisted rule reflects the active system (distinct ZX_* names; no collision).
+  const rule: AnyMutationRule =
+    system === "zhuxi" ? determineMutationRuleZhuXi(primary, changing) : huangRule;
+  const texts = selectTextsForClaude(
+    primary,
+    transformed,
+    lines,
+    changing,
+    huangRule,
+    translator,
+    system,
+  );
   return {
     id: options?.id ?? newCastId(),
     question,
     language,
     interpretationMode: translator,
+    lineReadingSystem: system,
     lines,
     primaryHexagram: primary,
     transformedHexagram: transformed,
@@ -364,7 +389,10 @@ export function performCastFromLineValues(
 }
 
 /** Client-side preview of primary / transformed hexagram from six values (same geometry as performCastFromLineValues). */
-export function previewCastFromLineValues(lineValues: readonly LineValue[]): ManualCastPreview {
+export function previewCastFromLineValues(
+  lineValues: readonly LineValue[],
+  system: LineReadingSystem = "huang",
+): ManualCastPreview {
   if (lineValues.length !== 6) {
     throw new RangeError("previewCastFromLineValues requires exactly 6 line values");
   }
@@ -374,7 +402,9 @@ export function previewCastFromLineValues(lineValues: readonly LineValue[]): Man
   const primary = getHexagram(lines);
   const transformedLines = changing.length > 0 ? applyMutations(lines) : null;
   const transformed = transformedLines ? getHexagram(transformedLines) : null;
-  const rule = determineMutationRule(primary, lines, changing);
+  const huangRule = determineMutationRule(primary, lines, changing);
+  const rule: AnyMutationRule =
+    system === "zhuxi" ? determineMutationRuleZhuXi(primary, changing) : huangRule;
   return { lines, primaryHexagram: primary, transformedHexagram: transformed, changingLines: changing, mutationRule: rule };
 }
 

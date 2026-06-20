@@ -1,4 +1,5 @@
 export type {
+  AnyMutationRule,
   CastingMethod,
   CastingMode,
   CastResult,
@@ -6,12 +7,16 @@ export type {
   HexagramLine,
   InterpretationMode,
   Line,
+  LineReadingSystem,
   LineType,
   LineValue,
   MutationRule,
+  SelectedLineEntry,
   TextsForClaude,
+  ZhuXiMutationRule,
 } from "./types.js";
-export { DEFAULT_INTERPRETATION_MODE } from "./types.js";
+export { DEFAULT_INTERPRETATION_MODE, DEFAULT_LINE_READING_SYSTEM } from "./types.js";
+export { determineMutationRuleZhuXi, selectTextsZhuXi } from "./rules/zhuxi.js";
 export type { ManualCastPreview, PerformCastOptions, Rng } from "./engine.js";
 export {
   applyMutations,

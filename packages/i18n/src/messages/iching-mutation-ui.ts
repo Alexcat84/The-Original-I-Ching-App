@@ -12,6 +12,13 @@ export const ICHING_MUTATION_RULE_IDS = [
   "SIX_ALL_CHANGING",
   "QIAN_ALL_NINE",
   "KUN_ALL_SIX",
+  "ZX_ZERO",
+  "ZX_ONE",
+  "ZX_TWO_UPPER",
+  "ZX_THREE_JUDGMENTS",
+  "ZX_FOUR_LOWER",
+  "ZX_FIVE_ONLY",
+  "ZX_SIX_TRANSFORMED",
 ] as const;
 
 export type IchingMutationRuleId = (typeof ICHING_MUTATION_RULE_IDS)[number];
@@ -29,6 +36,13 @@ const ES: RuleMap = {
   SIX_ALL_CHANGING: "Las seis líneas mutan",
   QIAN_ALL_NINE: "Qian: nueve al novenario",
   KUN_ALL_SIX: "Kun: seis al senario",
+  ZX_ZERO: "Sin líneas mutantes (Zhu Xi)",
+  ZX_ONE: "Una línea en mutación (Zhu Xi)",
+  ZX_TWO_UPPER: "Dos líneas: se leen ambas, prima la superior",
+  ZX_THREE_JUDGMENTS: "Tres líneas: ambos Juicios, ninguna línea individual",
+  ZX_FOUR_LOWER: "Cuatro líneas: ambas estables, prima la inferior",
+  ZX_FIVE_ONLY: "Cinco mutando; una estable (Zhu Xi)",
+  ZX_SIX_TRANSFORMED: "Las seis líneas mutan (Zhu Xi)",
 };
 
 const EN: RuleMap = {
@@ -42,6 +56,13 @@ const EN: RuleMap = {
   SIX_ALL_CHANGING: "All six lines change",
   QIAN_ALL_NINE: "Qian: all nines",
   KUN_ALL_SIX: "Kun: all sixes",
+  ZX_ZERO: "No changing lines (Zhu Xi)",
+  ZX_ONE: "One changing line (Zhu Xi)",
+  ZX_TWO_UPPER: "Two lines: both read, upper leads",
+  ZX_THREE_JUDGMENTS: "Three lines: both Judgments, no single line",
+  ZX_FOUR_LOWER: "Four lines: both stable, lower leads",
+  ZX_FIVE_ONLY: "Five changing; one stable (Zhu Xi)",
+  ZX_SIX_TRANSFORMED: "All six lines change (Zhu Xi)",
 };
 
 const PT: RuleMap = {
@@ -55,6 +76,13 @@ const PT: RuleMap = {
   SIX_ALL_CHANGING: "As seis linhas mudam",
   QIAN_ALL_NINE: "Qian: todos noves",
   KUN_ALL_SIX: "Kun: todos seis",
+  ZX_ZERO: "Sem linhas mutantes (Zhu Xi)",
+  ZX_ONE: "Uma linha em mutação (Zhu Xi)",
+  ZX_TWO_UPPER: "Duas linhas: lêem-se ambas, prima a superior",
+  ZX_THREE_JUDGMENTS: "Três linhas: ambos os Juízos, nenhuma linha individual",
+  ZX_FOUR_LOWER: "Quatro linhas: ambas estáveis, prima a inferior",
+  ZX_FIVE_ONLY: "Cinco a mutar; uma estável (Zhu Xi)",
+  ZX_SIX_TRANSFORMED: "As seis linhas mudam (Zhu Xi)",
 };
 
 const FR: RuleMap = {
@@ -68,6 +96,13 @@ const FR: RuleMap = {
   SIX_ALL_CHANGING: "Les six lignes changent",
   QIAN_ALL_NINE: "Qian: tous les neuf",
   KUN_ALL_SIX: "Kun: tous les six",
+  ZX_ZERO: "Aucune ligne mobile (Zhu Xi)",
+  ZX_ONE: "Une ligne mobile (Zhu Xi)",
+  ZX_TWO_UPPER: "Deux lignes : les deux lues, la supérieure prime",
+  ZX_THREE_JUDGMENTS: "Trois lignes : les deux Jugements, aucune ligne individuelle",
+  ZX_FOUR_LOWER: "Quatre lignes : les deux stables, l'inférieure prime",
+  ZX_FIVE_ONLY: "Cinq mobiles ; une stable (Zhu Xi)",
+  ZX_SIX_TRANSFORMED: "Les six lignes changent (Zhu Xi)",
 };
 
 const DE: RuleMap = {
@@ -81,6 +116,13 @@ const DE: RuleMap = {
   SIX_ALL_CHANGING: "Alle sechs Linien wandeln",
   QIAN_ALL_NINE: "Qian: alle Neun",
   KUN_ALL_SIX: "Kun: alle Sechs",
+  ZX_ZERO: "Keine wandelnden Linien (Zhu Xi)",
+  ZX_ONE: "Eine wandelnde Linie (Zhu Xi)",
+  ZX_TWO_UPPER: "Zwei Linien: beide gelesen, die obere führt",
+  ZX_THREE_JUDGMENTS: "Drei Linien: beide Urteile, keine einzelne Linie",
+  ZX_FOUR_LOWER: "Vier Linien: beide stabil, die untere führt",
+  ZX_FIVE_ONLY: "Fünf wandelnd; eine stabil (Zhu Xi)",
+  ZX_SIX_TRANSFORMED: "Alle sechs Linien wandeln (Zhu Xi)",
 };
 
 const IT: RuleMap = {
@@ -94,6 +136,13 @@ const IT: RuleMap = {
   SIX_ALL_CHANGING: "Tutte e sei le linee mutano",
   QIAN_ALL_NINE: "Qian: tutti nove",
   KUN_ALL_SIX: "Kun: tutti sei",
+  ZX_ZERO: "Nessuna linea mutante (Zhu Xi)",
+  ZX_ONE: "Una linea mutante (Zhu Xi)",
+  ZX_TWO_UPPER: "Due linee: si leggono entrambe, prevale la superiore",
+  ZX_THREE_JUDGMENTS: "Tre linee: entrambi i Giudizi, nessuna linea singola",
+  ZX_FOUR_LOWER: "Quattro linee: entrambe stabili, prevale l'inferiore",
+  ZX_FIVE_ONLY: "Cinque mutanti; una stabile (Zhu Xi)",
+  ZX_SIX_TRANSFORMED: "Tutte e sei le linee mutano (Zhu Xi)",
 };
 
 const JA: RuleMap = {
@@ -107,6 +156,13 @@ const JA: RuleMap = {
   SIX_ALL_CHANGING: "6本すべて変化",
   QIAN_ALL_NINE: "乾: 九が六爻すべて",
   KUN_ALL_SIX: "坤: 六が六爻すべて",
+  ZX_ZERO: "変爻なし（朱熹）",
+  ZX_ONE: "変爻1本（朱熹）",
+  ZX_TWO_UPPER: "2本：両方を読む、上が主導",
+  ZX_THREE_JUDGMENTS: "3本：両卦辞を読む、個別の爻なし",
+  ZX_FOUR_LOWER: "4本：両方の不変爻、下が主導",
+  ZX_FIVE_ONLY: "5本が変化、1本は安定（朱熹）",
+  ZX_SIX_TRANSFORMED: "6本すべて変化（朱熹）",
 };
 
 const ZH: RuleMap = {
@@ -120,6 +176,13 @@ const ZH: RuleMap = {
   SIX_ALL_CHANGING: "六爻皆变",
   QIAN_ALL_NINE: "乾: 六爻皆九",
   KUN_ALL_SIX: "坤: 六爻皆六",
+  ZX_ZERO: "无变爻（朱熹）",
+  ZX_ONE: "一变爻（朱熹）",
+  ZX_TWO_UPPER: "两爻：皆读，居上者主导",
+  ZX_THREE_JUDGMENTS: "三爻：两卦辞并读，不举个别爻",
+  ZX_FOUR_LOWER: "四爻：两不变爻并读，居下者主导",
+  ZX_FIVE_ONLY: "五爻变，一爻不变（朱熹）",
+  ZX_SIX_TRANSFORMED: "六爻皆变（朱熹）",
 };
 
 const KO: RuleMap = {
@@ -133,6 +196,13 @@ const KO: RuleMap = {
   SIX_ALL_CHANGING: "6획 모두 변함",
   QIAN_ALL_NINE: "건: 육효 모두 구",
   KUN_ALL_SIX: "곤: 육효 모두 육",
+  ZX_ZERO: "변효 없음 (주희)",
+  ZX_ONE: "변효 1획 (주희)",
+  ZX_TWO_UPPER: "2획: 둘 다 읽음, 위 효가 주도",
+  ZX_THREE_JUDGMENTS: "3획: 두 괘사 모두, 개별 효 없음",
+  ZX_FOUR_LOWER: "4획: 두 불변효 모두, 아래 효가 주도",
+  ZX_FIVE_ONLY: "5획 변함, 1획 안정 (주희)",
+  ZX_SIX_TRANSFORMED: "6획 모두 변함 (주희)",
 };
 
 const AR: RuleMap = {
@@ -146,6 +216,13 @@ const AR: RuleMap = {
   SIX_ALL_CHANGING: "كل الخطوط الستة تتغير",
   QIAN_ALL_NINE: "Qian: كل التسعات",
   KUN_ALL_SIX: "Kun: كل الستات",
+  ZX_ZERO: "لا خطوط متغيرة (تشو شي)",
+  ZX_ONE: "خط متغير واحد (تشو شي)",
+  ZX_TWO_UPPER: "خطان: يُقرآن كلاهما، العلوي هو الأساس",
+  ZX_THREE_JUDGMENTS: "ثلاثة خطوط: كلا الحكمين، دون خط فردي",
+  ZX_FOUR_LOWER: "أربعة خطوط: كلا الثابتين، السفلي هو الأساس",
+  ZX_FIVE_ONLY: "خمسة تتغير؛ واحد ثابت (تشو شي)",
+  ZX_SIX_TRANSFORMED: "كل الخطوط الستة تتغير (تشو شي)",
 };
 
 const HI: RuleMap = {
@@ -159,6 +236,13 @@ const HI: RuleMap = {
   SIX_ALL_CHANGING: "सभी छह रेखाएं बदलती हैं",
   QIAN_ALL_NINE: "Qian: सभी नौ",
   KUN_ALL_SIX: "Kun: सभी छह",
+  ZX_ZERO: "कोई परिवर्तनशील रेखा नहीं (झू शी)",
+  ZX_ONE: "एक परिवर्तनशील रेखा (झू शी)",
+  ZX_TWO_UPPER: "दो रेखाएं: दोनों पढ़ी जाती हैं, ऊपरी प्रमुख",
+  ZX_THREE_JUDGMENTS: "तीन रेखाएं: दोनों निर्णय, कोई एक रेखा नहीं",
+  ZX_FOUR_LOWER: "चार रेखाएं: दोनों स्थिर, निचली प्रमुख",
+  ZX_FIVE_ONLY: "पांच परिवर्तनशील; एक स्थिर (झू शी)",
+  ZX_SIX_TRANSFORMED: "सभी छह रेखाएं बदलती हैं (झू शी)",
 };
 
 const BY_LOCALE: Record<AppLocale, RuleMap> = {

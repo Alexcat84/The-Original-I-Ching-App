@@ -448,6 +448,7 @@ export async function POST(req: Request) {
     ichingCastMode?: "auto" | "manual";
     ichingCastingMethod?: "three-coins" | "yarrow-stalks";
     ichingManualLineValues?: unknown;
+    ichingLineReadingSystem?: "huang" | "zhuxi";
     translatorId?: string;
   };
   try {
@@ -669,6 +670,10 @@ export async function POST(req: Request) {
         resolvedTranslator = "wilhelm"; // fallback si no tiene permiso
       }
     }
+
+    // Changing-line reading system: default Huang (reads fewer lines); user opt-in to Zhu Xi.
+    const resolvedLineReadingSystem: "huang" | "zhuxi" =
+      body.ichingLineReadingSystem === "zhuxi" ? "zhuxi" : "huang";
 
     // Derive session limit from lastPack already fetched above — avoids a second readCreditsRow call.
     const packSessionLimit = getSessionLimitFromPack(lastPack);
@@ -1128,14 +1133,17 @@ export async function POST(req: Request) {
             {
               castingMethod: ichingManualPayload.castingMethod,
               translator: resolvedTranslator,
+              lineReadingSystem: resolvedLineReadingSystem,
             },
           )
         : ichingManualPayload.castingMethod === "yarrow-stalks"
           ? performYarrowCast(trimmedQuestion, language, {
               translator: resolvedTranslator,
+              lineReadingSystem: resolvedLineReadingSystem,
             })
           : performCast(trimmedQuestion, language, {
               translator: resolvedTranslator,
+              lineReadingSystem: resolvedLineReadingSystem,
             });
     if (refundCtx) refundCtx.consultationId = castResult.id;
     const context = resolveSessionContext({

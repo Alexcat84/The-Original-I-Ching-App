@@ -18,6 +18,29 @@ export type MutationRule =
   | "QIAN_ALL_NINE"
   | "KUN_ALL_SIX";
 
+/**
+ * Changing-line reading systems the user can choose between.
+ * "huang"  = Alfred Huang's single-line reduction (default; reads fewer lines).
+ * "zhuxi"  = Zhu Xi's classical system (may read two lines or both judgments).
+ */
+export type LineReadingSystem = "huang" | "zhuxi";
+export const DEFAULT_LINE_READING_SYSTEM: LineReadingSystem = "huang";
+
+/** Zhu Xi rule taxonomy (distinct names from Huang's — no collision in persistence). */
+export type ZhuXiMutationRule =
+  | "ZX_ZERO"
+  | "ZX_ONE"
+  | "ZX_TWO_UPPER"
+  | "ZX_THREE_JUDGMENTS"
+  | "ZX_FOUR_LOWER"
+  | "ZX_FIVE_ONLY"
+  | "ZX_SIX_TRANSFORMED"
+  | "QIAN_ALL_NINE"
+  | "KUN_ALL_SIX";
+
+/** Any rule constant that may be persisted / validated, across both systems. */
+export type AnyMutationRule = MutationRule | ZhuXiMutationRule;
+
 export interface Line {
   position: 1 | 2 | 3 | 4 | 5 | 6;
   value: LineValue;
@@ -53,31 +76,37 @@ export type InterpretationMode = "wilhelm" | "legge" | "zhouyi" | "master_combin
 
 export const DEFAULT_INTERPRETATION_MODE: InterpretationMode = "wilhelm";
 
+export interface SelectedLineEntry {
+  position: number;
+  text: string;
+  fromHexagram: "primary" | "transformed";
+  /** Zhu Xi multi-text cases: which line leads (2-line = upper, 4-line = lower). */
+  emphasis?: "primary" | "secondary";
+}
+
 export interface TextsForClaude {
   primaryJudgment: string;
   primaryImage: string;
-  selectedLineTexts: Array<{
-    position: number;
-    text: string;
-    fromHexagram: "primary" | "transformed";
-  }>;
+  selectedLineTexts: SelectedLineEntry[];
   transformedJudgment: string | null;
   transformedImage: string | null;
   specialYaoText: string | null;
   ruleExplanation: string;
+  /** Zhu Xi 3-changing case: both judgments are read; which one leads. */
+  judgmentEmphasis?: "primary" | "transformed" | null;
   /** Textos para la versión Legge (sólo si el modo es master_combined) */
   leggeJudgment?: string;
   leggeImage?: string;
   leggeTransformedJudgment?: string | null;
   leggeTransformedImage?: string | null;
-  leggeSelectedLineTexts?: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }>;
+  leggeSelectedLineTexts?: SelectedLineEntry[];
   leggeSpecialYaoText?: string | null;
   /** Textos para la versión Zhou Yi (sólo si el modo es master_combined) */
   zhouyiJudgment?: string;
   zhouyiImage?: string;
   zhouyiTransformedJudgment?: string | null;
   zhouyiTransformedImage?: string | null;
-  zhouyiSelectedLineTexts?: Array<{ position: number; text: string; fromHexagram: "primary" | "transformed" }>;
+  zhouyiSelectedLineTexts?: SelectedLineEntry[];
   zhouyiSpecialYaoText?: string | null;
 }
 
@@ -86,11 +115,12 @@ export interface CastResult {
   question: string;
   language: string;
   interpretationMode: InterpretationMode;
+  lineReadingSystem?: LineReadingSystem;
   lines: Line[];
   primaryHexagram: Hexagram;
   transformedHexagram: Hexagram | null;
   changingLines: number[];
-  mutationRule: MutationRule;
+  mutationRule: AnyMutationRule;
   textsForClaude: TextsForClaude;
   timestamp: Date;
   castingMethod?: CastingMethod;
