@@ -89,11 +89,14 @@ function buildWilhelmRecord(base, n) {
     binaryTopFirst: base.binaryTopFirst,
   };
   if (n === 1) {
-    entry.yongJiu =
+    const yong =
+      String(w.yong_jiu ?? w.yongJiu ?? "").trim() ||
       "There appears a flight of dragons without heads.\nGood fortune.";
+    entry.yongJiu = yong;
   }
   if (n === 2) {
-    entry.yongLiu = "Perseverance furthers.";
+    const yong = String(w.yong_liu ?? w.yongLiu ?? "").trim() || "Perseverance furthers.";
+    entry.yongLiu = yong;
   }
   return entry;
 }
@@ -153,6 +156,8 @@ function buildZhouyiRecord(base, n) {
 }
 
 const generatedAt = new Date().toISOString();
+const FIDELITY_AUDIT_DATE = "2026-06-21";
+const FIDELITY_REPORT_ID = "hexagram-fidelity-2026-06-21T19-45-04-900Z";
 
 const bundles = [
   {
@@ -160,10 +165,10 @@ const bundles = [
     bundle: {
       translator: "wilhelm",
       edition:
-        "The I Ching or Book of Changes — Richard Wilhelm / Cary F. Baynes (1950, public domain since 2020).",
+        "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes (1950, public domain since 2020).",
       sourceUrl: "http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html",
       licenseNote:
-        "Public domain (Wilhelm 1950 / Baynes English rendering). Cross-verified 1:1 against the University of Parma academic mirror for maximum reliability.",
+        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts cross-verified 1:1 against the University of Parma mirror on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). Hex 56 judgment uses a documented Baynes supplement where Parma omits THE JUDGMENT.`,
       generatedAt,
       build: buildWilhelmRecord,
     },
@@ -173,10 +178,10 @@ const bundles = [
     bundle: {
       translator: "legge",
       edition:
-        "Sacred Books of the East, Volume 16: The Yi King — James Legge (1882, revised 1899).",
+        "Sacred Books of the East, Volume 16: The Yi King, James Legge (1882, revised 1899).",
       sourceUrl: "https://sacred-texts.com/ich/index.htm",
       licenseNote:
-        "James Legge (1882) translation in the public domain. Cross-verified 1:1 against the Internet Sacred Text Archive (sacred-texts.com) for structural and textual integrity.",
+        `James Legge (1882) translation in the public domain. Oracle fields cross-verified 1:1 against sacred-texts.com on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 513/513 oracle fields match.`,
       generatedAt,
       build: buildLeggeRecord,
     },
@@ -185,10 +190,10 @@ const bundles = [
     file: "hexagrams.zhouyi.json",
     bundle: {
       translator: "zhouyi",
-      edition: "周易 (Zhou Yi) — Classical Chinese canonical text.",
+      edition: "周易 (Zhou Yi), Classical Chinese canonical text.",
       sourceUrl: "https://ctext.org/book-of-changes",
       licenseNote:
-        "Zhou Yi (周易) is in the public domain. Cross-verified 1:1 against the Chinese Text Project (ctext.org) to ensure canonical accuracy.",
+        `Zhou Yi (周易) is in the public domain. Oracle fields cross-verified 1:1 against ctext.org on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 514/514 oracle fields match.`,
       generatedAt,
       build: buildZhouyiRecord,
     },
