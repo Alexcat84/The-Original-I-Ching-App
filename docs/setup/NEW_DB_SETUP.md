@@ -10,14 +10,21 @@ Aplica a: entorno de staging nuevo, entorno de producción, o cualquier reset de
 - Proyecto Supabase creado (Free o Pro)
 - Acceso al SQL Editor del proyecto
 - Variables de entorno disponibles (ver sección final)
-- Node.js 18+ y pnpm instalados
+- Node.js 22+ y npm instalados
 
 ---
 
 ## Paso 1 — Migraciones SQL (orden estricto)
 
+> **Lista canónica actual:** ejecutar **todos** los archivos numerados en
+> `backend/db/migrations/` del **001** al **074** (`074_line_reading_system.sql`
+> incluye `consultations.line_reading_system`). Al finalizar, ejecutar
+> `verify_migrations.sql` y confirmar que todos los checks pasan.
+
 Ejecutar **en este orden exacto** en el SQL Editor de Supabase.
 Las migraciones marcadas con ⚠️ tienen partes obsoletas — ver nota al final.
+
+**Nota:** el detalle histórico abajo cubre 001–038; continuar con 039–074 desde el directorio del repo antes del paso 2.
 
 ```
 001_init.sql                          ← Schema base: todas las tablas principales
@@ -60,6 +67,9 @@ Las migraciones marcadas con ⚠️ tienen partes obsoletas — ver nota al fina
 036_consultations_session_id_index.sql    ← índice en consultations(session_id)
 037_grant_is_admin_to_app_owner.sql       ← grant is_admin al owner account de producción
 038_raise_statement_timeout.sql           ← statement_timeout: authenticated→30s, anon→10s, authenticator→30s
+039_atomic_webhook_grant.sql              ← grant_tokens_idempotent
+… (040–073: ver `backend/db/migrations/`)
+074_line_reading_system.sql               ← consultations.line_reading_system (huang | zhuxi)
 ```
 
 > **Nota sobre migraciones ⚠️**: Son obsoletas en el sentido de que agregan columnas
