@@ -913,3 +913,125 @@ notes) se sostienen contra una lectura directa e independiente del código real,
 tests ejecutados en esta sesión, y el contenido íntegro del reporte de QA real (no solo su resumen
 narrado). El único punto no verificable de forma independiente es la aplicación efectiva de la
 migración 074 en la base de datos de staging, por ausencia de acceso a credenciales en esta sesión.
+
+---
+
+# Parte 10 — Verificación de dos bugs reportados en producción + fix de Cursor (20 jun 2026, Claude Sonnet 4.6)
+
+Tras el merge de las Partes 4-9 a `staging`, el usuario reportó dos bugs reales detectados en uso:
+(1) una pregunta en español ("...le escribí a Cherry... no pasó su examen de **francés**... está
+muy triste") fue respondida **en francés**; (2) una consulta hecha con el selector en Zhu Xi, modo
+automático, mostró en el resumen **"Alfred Huang"**. El usuario pasó ambos a una sesión de Cursor,
+que entregó un fix + un informe propio (causa raíz, política implementada, tabla de auditoría de
+campos, análisis matemático de yarrow, checklist de validación). Esta Parte re-verifica ese informe
+contra el código real, igual que las Partes 4-9 verificaron el trabajo anterior.
+
+## 10.1 — Bug 1: detección de idioma (falso positivo ES→FR)
+
+**Causa raíz reportada:** el servidor tenía una función `detectLanguageFromUserText()` que
+ganaba siempre sobre el idioma de la UI, y trataba tokens como `le` (pronombre español) y el `est`
+dentro de `está` como evidencia de francés.
+
+**Verificado:**
+- `detectLanguageFromUserText` **ya no existe** en el repo (`grep` sin resultados en
+  `apps/web/src/` ni `backend/`) — no es que esté deshabilitada, está eliminada.
+- Nueva lib única `apps/web/src/lib/detect-input-language.ts`, usada **tanto en servidor
+  (`route.ts:381,809`) como referenciada desde el mismo módulo compartido** (no hay una copia
+  client-side separada que pueda desincronizarse).
+- Lógica leída directamente (no solo el resumen de Cursor): script CJK/Arabic/Devanagari manda
+  siempre; en latinas, puntúa por palabra completa con `\b` (nunca substring — así "está" no
+  puede matchear `est`, y de hecho ni `le` ni `est` están en ninguna lista de palabras, fueron
+  excluidos por ser ambiguos); UI locale gana en empate/ambigüedad; el idioma de la pregunta gana
+  solo con margen ≥ 2 sobre el segundo lugar y sobre el score de la UI.
+- `route.ts:374-381`: `uiLocale` se deriva de la cookie `iching_ui_locale`
+  (`apps/web/src/lib/doc-locale-cookies.ts:10`) con fallback a `body.language`, y
+  `detectInputLanguage(trimmedQuestion, uiLocale)` reemplaza la lógica vieja en los dos puntos
+  donde antes corría (`route.ts:381` confirmación inicial, `:809` para `oracleLanguage` del modo
+  Huesos de Oráculo).
+- **Test de regresión con la pregunta real reportada** (`detect-input-language.test.ts:5-9`, literal
+  "Sabes, le escribi a Cherry... francés... está muy triste") — ejecutado en esta sesión:
+  **PASS**, devuelve `"es"`. Las otras 4 casos del archivo (EN claro con UI ES, FR claro con UI ES,
+  3 scripts CJK, pregunta corta ambigua) también **PASS** (5/5).
+
+## 10.2 — Bug 2: resumen mostraba "Alfred Huang" con Zhu Xi activo
+
+**Causa raíz reportada:** en modo automático, el evento SSE `final_ready` no incluía
+`lineReadingSystem`, así que el resumen caía al default `undefined` → Alfred Huang, aunque el motor
+sí había aplicado las reglas de Zhu Xi para el cast.
+
+**Verificado:**
+- `route.ts:543` calcula `resolvedLineReadingSystem` **una sola vez** y lo reutiliza en *todos* los
+  puntos de salida: eventos SSE intermedios (`:1003,1009,1013,1359`), `final_ready` (`:1411`),
+  respuesta JSON no-streaming (`:1607,1657`) — antes solo faltaba en `:1411`, ahora está en los 7.
+- El mismo `resolvedLineReadingSystem` se pasa a las tres rutas de cast
+  (`route.ts:1002-1013`): `performCastFromLineValues` (manual monedas/varillas con líneas dadas),
+  `performYarrowCast` (varillas automáticas), `performCast` (monedas automáticas) — confirma la
+  fila "✅ en manual monedas / manual varillas" de la tabla de Cursor, no solo el modo automático.
+- `packages/iching-engine/src/engine.ts:313,329,353`: el motor recibe `lineReadingSystem` como
+  opción y lo **devuelve en el `castResult`** (`system` default `"huang"` si no se pasa) — la
+  cadena de propagación hasta la respuesta es real, no solo nominal.
+- Fallback cliente confirmado en `page.tsx:4104-4109`: si `data.lineReadingSystem` no es
+  `"zhuxi"`/`"huang"` válido, usa `ichingLineReadingSystem` (estado del switch activo en el panel)
+  en lugar de quedar `undefined`. Fallback de traductor análogo en `:4095-4103` (cae a
+  `translatorId` del panel). Este bloque es compartido por el path de streaming (`finalPayload` se
+  asigna a `data` en `:3896`) y el no-streaming, así que el fallback cubre ambos.
+
+## 10.3 — Verificación de la tabla de auditoría de campos de Cursor
+
+La tabla de Cursor afirma `lineReadingSystem`/`translator`/`language` consistentes en
+auto-SSE/auto-JSON/manual-monedas/manual-varillas/persist-DB/resumen-UI/tagline. Verificado por
+lectura directa (no por confiar en la tabla):
+- Una sola variable `resolvedLineReadingSystem` alimenta los 7 puntos de salida de `route.ts` →
+  imposible que un modo tenga el campo y otro no, a diferencia del bug original donde `final_ready`
+  era el único punto que lo omitía.
+- Persistencia a DB ya cubierta en la Parte 9 (`session-store.ts:220,293` pasa
+  `params.consultation.lineReadingSystem ?? "huang"` al RPC `persist_consultation_with_content`).
+- Tagline (`page.tsx:4828-4842`, verificada en Parte 9) lee del estado local del switch
+  (`ichingLineReadingSystem`), no de la respuesta del servidor — por diseño no puede desincronizarse
+  del campo de la API, ya que ambos refieren a la misma fuente de verdad mientras el usuario no
+  recarga.
+
+## 10.4 — Gate de pruebas (ejecutado en esta sesión, no solo reportado)
+
+| Verificación | Resultado |
+|---|---|
+| `npx vitest run src/lib/__tests__/detect-input-language.test.ts` | **5/5 PASS**, incluyendo el caso real reportado por el usuario. |
+| `npx vitest run` (suite completa `apps/web`) | **67/67 PASS** (13 archivos; 62 previos + 5 nuevos). |
+| `npx tsc --noEmit` en `apps/web` | Limpio, 0 errores. |
+
+## 10.5 — Yarrow Monte Carlo: re-ejecutado independientemente (corrección a este mismo documento)
+
+La primera versión de esta Parte marcó el análisis Monte Carlo de Cursor como "no re-ejecutado".
+Al preguntar el usuario por qué, dado que es un cálculo trivial, se corrigió en el momento: se
+extrajo la implementación real de `throwYarrowStalks` (`engine.ts:430-436`,
+`n = Math.floor(rng() * 16)` con umbrales `<1 → 6`, `<6 → 7`, `<13 → 8`, resto `→ 9`) y se corrió
+con `Math.random` real (no un mock), 2,000,000 tiradas:
+
+| Valor | Esperado (1/16, 5/16, 7/16, 3/16) | Observado (N=2M) |
+|---|---|---|
+| 6 (yin viejo) | 6.250% | 6.275% |
+| 7 (yang joven) | 31.250% | 31.233% |
+| 8 (yin joven) | 43.750% | 43.748% |
+| 9 (yang viejo) | 18.750% | 18.744% |
+
+Desviaciones dentro del ruido estadístico esperado para N=2M (σ ≈ 0.02-0.04 puntos porcentuales
+según el valor). **Confirma la distribución que cita el informe de Cursor**, y de paso confirma que
+no hay off-by-one en los umbrales del bucket de 16 valores (0 → 6, 1-5 → 7, 6-12 → 8, 13-15 → 9 —
+1+5+7+3 = 16, particiona el espacio completo sin huecos ni solapes).
+
+## 10.6 — Validación pendiente (fuera de alcance de esta sesión)
+
+Validación visual en staging desplegado (las 5 pruebas que Cursor pide hacer en "internal
+testing": idioma cruzado, Zhu Xi + automática, Zhu Xi + manual, recarga de hilo) — pendiente del
+lado del usuario, requiere navegador/APK real, fuera del alcance de código/tests de esta sesión.
+
+## 10.7 — Conclusión
+
+**Ambos bugs y su fix se confirman correctos contra el código real, no solo contra el informe**,
+incluyendo ahora la re-ejecución independiente del análisis matemático de yarrow. La causa raíz
+declarada para cada bug coincide con lo que efectivamente se encuentra en el código anterior al fix
+(función de idioma eliminada, único punto faltante de `lineReadingSystem` identificado y
+corregido), la solución implementada es coherente en los 7 puntos de salida de `route.ts` y en las
+3 rutas de cast, el test de regresión usa literalmente la pregunta real que disparó el bug, y la
+distribución de probabilidad de las varillas se confirmó por simulación directa. Único pendiente:
+validación visual manual en staging desplegado (responsabilidad del usuario).
