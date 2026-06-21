@@ -89,11 +89,14 @@ function buildWilhelmRecord(base, n) {
     binaryTopFirst: base.binaryTopFirst,
   };
   if (n === 1) {
-    entry.yongJiu =
+    const yong =
+      String(w.yong_jiu ?? w.yongJiu ?? "").trim() ||
       "There appears a flight of dragons without heads.\nGood fortune.";
+    entry.yongJiu = yong;
   }
   if (n === 2) {
-    entry.yongLiu = "Perseverance furthers.";
+    const yong = String(w.yong_liu ?? w.yongLiu ?? "").trim() || "Perseverance furthers.";
+    entry.yongLiu = yong;
   }
   return entry;
 }

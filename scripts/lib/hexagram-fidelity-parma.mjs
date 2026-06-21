@@ -56,7 +56,7 @@ function findHeaderIndices(html) {
 }
 
 const LINE_LABEL_HTML =
-  /(?:Nine|Six) (?:at the beginning|in the second place|in the third place|in the fourth place|in the fifth place|at the top) means:\s*(?:<\/p>\s*<p[^>]*>\s*)?([\s\S]*?)<\/p>/gi;
+  /(?:Nine|Six) (?:(?:at|in) the beginning|in the second place|in the third place|in the fourth place|in the fifth place|at the top) means:\s*(?:<\/p>\s*<p[^>]*>\s*)?([\s\S]*?)<\/p>/gi;
 
 function isCommentaryParagraph(text) {
   const t = text.trim();

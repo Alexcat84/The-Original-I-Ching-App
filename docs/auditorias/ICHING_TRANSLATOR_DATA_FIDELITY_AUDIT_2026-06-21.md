@@ -214,18 +214,63 @@ Matriz de cobertura obligatoria:
 | Zhou Yi | 64 | idem (大象 incluido) | 514 |
 | **Total** | | | **1,541** |
 
-**Gate Fase 2 (parcial):** reporte archivado ✅ · clasificación A–E en §5 ✅ · **P0 Zhou Yi cerrado por evidencia:** 5 hex (13/14, 19, 31, 44) vía `tools/scan-zhouyi-corruption.mjs` — **pendiente Fase 3 remediación**
+**Gate Fase 2 (parcial):** reporte archivado ✅ · clasificación A–E en §5 ✅ · **P0 Zhou Yi cerrado por evidencia:** 5 hex (13/14, 19, 31, 44) vía `tools/scan-zhouyi-corruption.mjs`
 
-### Fase 3 — Remediación (variable, post-aprobación)
+### Fase 3 — Remediación ✅ implementada 2026-06-21
 
-Orden recomendado:
+**Ingesters nuevos (gold-aligned):**
 
-1. Wilhelm — corregir `iching_wilhelm_translation.mjs` o nuevo `tools/ingest-wilhelm.mjs` desde Parma/Archive
-2. Legge — re-ingest desde Sacred Texts **directo** (nuevo ingester), Baharna solo como validación cruzada
-3. Zhou Yi — re-ingest desde ctext API/HTML o validar freizl ≡ ctext
-4. `npm run build:data` + tests + diff report **PASS**
+| Traductor | Script | Fuente primaria | Intermedio |
+|-----------|--------|-----------------|------------|
+| Zhou Yi | `tools/ingest-zhouyi-ctext.mjs` | ctext.org API + HTML 大象 | `scripts/iching_zhouyi_translation.mjs` |
+| Wilhelm | `tools/ingest-wilhelm.mjs` | Parma mirror | `scripts/iching_wilhelm_translation.mjs` (solo oracle) |
+| Legge | `tools/ingest-legge-sacred.mjs` | sacred-texts ic01–64 + icap2 | `scripts/iching_legge_translation.mjs` |
 
-**Regla:** no merge a staging hasta reporte post-fix con ≥99.5% match exact post-normalizer, 100% en campos críticos (lines + judgment core).
+**Scripts npm (raíz):**
+
+```bash
+npm run ingest:zhouyi      # ctext → iching_zhouyi_translation.mjs
+npm run ingest:wilhelm     # Parma → oracle fields en iching_wilhelm_translation.mjs
+npm run ingest:legge       # sacred-texts → iching_legge_translation.mjs
+npm run ingest:translations  # los tres en orden Zhou Yi → Wilhelm → Legge
+npm run build:data         # scripts/build-hexagrams.mjs → packages/iching-data/src/generated/
+```
+
+Flags comunes: `--live` (refetch remoto; sin flag usa cache `tools/output/fidelity-gold/`).
+
+**Fix parser Parma (hex 18):** regex de líneas ampliado a `(?:at|in) the beginning` — el mirror usa «Six **in** the beginning» además de «Nine **at** the beginning». Sin esto el parser intercambiaba L1/L2 en hex 18.
+
+**Política merge defensiva (Wilhelm / Legge):**
+
+- **Wilhelm:** si Parma devuelve campo vacío, se conserva el texto previo del bundle (adamblvck). Afecta 7 campos gold-parser (`missing_gold` en verify): hex 20 L6, 21 L5–L6, 26 L6, 38 image, 52 L6, 56 judgment.
+- **Legge:** si sacred-texts devuelve vacío, judgment no-Legge, o commentary bleed (>700ch judgment con fallback baharna <500ch), se conserva baharna. 18 campos `missing_gold` + 6 mismatches reales (hex 12, 35, 37, 44, 50, 52 judgment) — deuda parser sacred, no P0 producto.
+
+**Zhou Yi:** reemplazo total desde ctext; normalización 繁 en ingest (`toCanonicalZhouYiText` en `hexagram-fidelity-normalize.mjs`).
+
+**Deprecados como fuente primaria (cross-check only):**
+
+- `tools/ingest-zhouyi.mjs` (freizl/yijing)
+- `tools/ingest-legge.mjs` (baharna.com)
+- adamblvck Wilhelm dataset (metadata estructural conservada; oracle refrescado desde Parma)
+
+**Reporte post-remediación:** `reports/hexagram-fidelity-2026-06-21T19-27-17-467Z.{json,md}`
+
+| Traductor | Match % | Mismatch | Notas |
+|-----------|--------:|---------:|-------|
+| **Zhou Yi** | **100%** (514/514) | 0 | Gate `scan:zhouyi-corruption` = **0 incidencias** ✅ |
+| Wilhelm | 98.64% (507/514) | 0 | 7× `missing_gold` = lagunas parser Parma |
+| Legge | 95.32% (489/513) | 6 | 18× `missing_gold` + 6 judgment mismatch (parser sacred) |
+
+**Gates Fase 3:**
+
+| Gate | Estado |
+|------|--------|
+| `npm run scan:zhouyi-corruption` = 0 | ✅ PASS |
+| Zhou Yi verify 100% | ✅ PASS |
+| Wilhelm/Legge ≥99.5% | ⏳ Pendiente mejoras parser gold (Fase 3b) |
+| `npm run build:data` + bundles regenerados | ✅ |
+
+**Regla original (≥99.5% global):** cumplida para Zhou Yi (P0); Wilhelm/Legge mejoraron vs baseline Fase 2 (~95% / ~77%) pero no alcanzan 99.5% hasta cerrar lagunas parser Parma/sacred o aceptar merge baharna documentado como transitorio.
 
 ### Fase 4 — Alineación de claims legales/producto (1 día)
 
@@ -262,6 +307,8 @@ Si quedan extractos (ej. judgment sin comentario Confucio): cambiar “sin modif
 |------------|------|
 | Plan maestro (este doc) | `docs/auditorias/ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md` |
 | Script verificación | `scripts/verify-hexagram-fidelity.mjs` (Fase 1) |
+| Ingesters Fase 3 | `tools/ingest-zhouyi-ctext.mjs`, `tools/ingest-wilhelm.mjs`, `tools/ingest-legge-sacred.mjs` |
+| Escáner Zhou Yi | `tools/scan-zhouyi-corruption.mjs` |
 | Reporte JSON | `reports/hexagram-fidelity-*.json` |
 | Reporte legible | `reports/hexagram-fidelity-*.md` |
 | Gold cache | `tools/output/fidelity-gold/` (gitignored) |
@@ -341,10 +388,12 @@ Tras cada re-ingest: `npm run build:data` → Zhou Yi: **`node tools/scan-zhouyi
 
 ## 11. Próximo paso inmediato
 
-**Fase 3 (post-go)** — re-ingesters alineados con gold (orden: Zhou Yi → Wilhelm → Legge). Gate Zhou Yi: `scan-zhouyi-corruption.mjs` = 0. Validación cruzada externa alineada (2026-06-21).
+**Fase 3b (parser gold)** — cerrar lagunas Parma (`missing_gold` Wilhelm 7 campos) y sacred-texts Legge (18 `missing_gold` + 6 judgment mismatch) para ≥99.5% global.
 
-Reporte de referencia: `reports/hexagram-fidelity-2026-06-21T18-59-13-876Z.json` · escáner: `tools/scan-zhouyi-corruption.mjs`.
+**Fase 4** — alinear claims UI/docs con fuentes reales del ingester (Zhou Yi 100% listo; Wilhelm/Legge parcial).
+
+Reporte post-Fase 3: `reports/hexagram-fidelity-2026-06-21T19-27-17-467Z.json` · escáner Zhou Yi: **0 incidencias** · workflow: `npm run ingest:translations && npm run build:data`.
 
 ---
 
-*Auditoría abierta 2026-06-21. Fase 2 primera pasada completada 2026-06-21. Supersedes el veredicto “100% accurate” de DATA_INTEGRITY_AUDIT (2026-05-10).*
+*Auditoría abierta 2026-06-21. Fase 2 primera pasada completada 2026-06-21. Fase 3 remediación implementada 2026-06-21 (Zhou Yi gate PASS). Supersedes el veredicto “100% accurate” de DATA_INTEGRITY_AUDIT (2026-05-10).*

@@ -51,7 +51,7 @@ function tokenize(html) {
   return out;
 }
 
-function looksLikeLeggeJudgment(text) {
+export function looksLikeLeggeJudgment(text) {
   if (text.length < 40) return false;
   return (
     /\((?:represents|indicates)\b/i.test(text) ||

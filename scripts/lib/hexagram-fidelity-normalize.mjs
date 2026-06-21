@@ -27,12 +27,19 @@ const ZHOUYI_LINE_PREFIX =
 
 const ZHOUYI_JUDGMENT_PREFIX = /^[^：:]{1,4}[：:]\s*/u;
 
-function applyZhouYiVariants(text) {
+/** Map ctext/simplified glyphs to canonical traditional Zhou Yi bundle text. */
+export function applyZhouYiVariants(text) {
   let out = text;
   for (const [from, to] of ZHOUYI_VARIANT_MAP) {
     out = out.split(from).join(to);
   }
   return out;
+}
+
+/** Canonical traditional text for ingest (NFKC + variant map, labels stripped separately). */
+export function toCanonicalZhouYiText(text) {
+  if (text == null) return "";
+  return applyZhouYiVariants(String(text).normalize("NFKC")).trim();
 }
 
 /**
