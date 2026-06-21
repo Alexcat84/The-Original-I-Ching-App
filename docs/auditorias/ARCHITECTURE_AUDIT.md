@@ -1,7 +1,7 @@
 # Arquitectura Completa — The Original I Ching App
 
-**Última actualización:** 2026-05-26  
-**Branch de referencia:** `main` @ `1316508`  
+**Última actualización:** 2026-06-21  
+**Branch de referencia:** `main` (release 4.1.7 / versionCode 57)  
 **Alcance:** Documentación técnica completa de A a Z
 
 ---
@@ -13,7 +13,7 @@
 | Campo | Valor |
 |-------|-------|
 | **Creado** | 2026-05-26 |
-| **Última revisión de deuda** | 2026-06-05 |
+| **Última revisión de deuda** | 2026-06-21 |
 
 ### Estado de la Deuda Técnica (Sección 18)
 
@@ -31,6 +31,15 @@
 | 10 | Animación ritual Huesos de Oráculo (Three.js) | 🟡 Abierto — post-lanzamiento Fase 2 | — |
 | 11 | Supabase Pro | ✅ Resuelto — ambos entornos (staging + producción) en Pro | — |
 
+### Cambios arquitectónicos recientes (2026-06)
+
+| Fecha | Cambio | Referencia |
+|-------|--------|------------|
+| 2026-06-21 | Selector lectura líneas Huang/Zhu Xi (`line_reading_system`, migración 074); SSE `final_ready` + JSON manual exponen `lineReadingSystem` | `LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md` |
+| 2026-06-21 | Idioma consulta: lib compartida `detect-input-language.ts`; eliminada heurística servidor con false-positives FR | `8d2d09e` |
+| 2026-06-19 | Legal re-aceptación: encabezado distinto vs primera aceptación | `834c8f9` |
+| 2026-06-17 | Expo SDK 53 + RN 0.79 Release A (4.1.0/vc49) | CHANGELOG 4.1.0 |
+
 ### Cambios arquitectónicos significativos post-auditoría
 
 | Fecha | Cambio | Commit |
@@ -41,8 +50,7 @@
 | 2026-06-04 | SQLite: padding JWT fix + preservar caché en sign-out + UID en SecureStore | `4ebafc3`, `c22696f`, `7367a97` |
 | 2026-06-04 | Tour onboarding: persistencia en `public.users.tour_v1_completed_at` (migración 051) | `b634e7e` |
 | 2026-06-04 | Auth bar: fix de hydration gap con `_rnAuthEmail` en localStorage | `33aadb8` |
-
----
+| 2026-06-21 | Selector Huang/Zhu Xi + `detect-input-language` + legal re-accept header | ver tabla «Cambios recientes» arriba |
 
 ---
 

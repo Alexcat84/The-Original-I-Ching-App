@@ -14,24 +14,23 @@ moderna usando Claude AI. Modelo de negocio: tokens consumibles (no suscripción
 - **Consultas IA**: Anthropic Claude API
 - **Deploy web**: Vercel (staging + production)
 - **Build APK**: EAS Build (Expo Application Services)
-- **Monorepo**: Turborepo + pnpm workspaces
+- **Monorepo**: Turborepo + npm workspaces
 
 ## Estructura del Proyecto
 ```
 /
 ├── apps/
 │   ├── web/                    # Next.js app principal
-│   │   └── src/app/
-│   │       ├── page.tsx        # Componente principal (chat + oráculo)
-│   │       ├── guia/           # Documentación/quickstart
-│   │       ├── pricing/        # Página de precios
-│   │       ├── privacy/        # Política de privacidad
-│   │       ├── terms/          # Términos de servicio
-│   │       └── api/            # API routes
-│   │           ├── consult/    # Endpoint principal de consulta
-│   │           ├── account/    # Chats, historial, perfil
-│   │           ├── auth/       # Callbacks de autenticación
-│   │           └── webhooks/   # RevenueCat webhooks
+│   │   └── src/
+│   │       ├── app/
+│   │       │   ├── page.tsx    # Componente principal (chat + oráculo)
+│   │       │   ├── guia/       # Documentación/quickstart
+│   │       │   ├── pricing/    # Página de precios
+│   │       │   ├── privacy/    # Política de privacidad
+│   │       │   ├── terms/      # Términos de servicio
+│   │       │   └── api/        # API routes (consult, account, auth, webhooks)
+│   │       └── lib/
+│   │           └── detect-input-language.ts  # Idioma pregunta vs UI (cliente + servidor)
 │   └── mobile/                 # Expo WebView APK Android
 │       ├── app/index.tsx       # Componente principal WebView
 │       ├── app/auth/callback.tsx  # OAuth callback
@@ -44,7 +43,7 @@ moderna usando Claude AI. Modelo de negocio: tokens consumibles (no suscripción
 ├── backend/
 │   ├── claude/                 # Integración Anthropic API + fallback chain
 │   ├── auth/                   # TOTP, 2FA email, validación de registro
-│   └── db/migrations/          # 51 migraciones SQL (001-051)
+│   └── db/migrations/          # 74 migraciones SQL (001-074)
 ├── packages/                   # Paquetes compartidos del monorepo
 │   ├── iching-engine/          # Algoritmos de sorteo (tres monedas, yarrow, manual)
 │   ├── oracle-bones-engine/    # Huesos de Oráculo Shang (4 veredictos auténticos)
@@ -123,7 +122,7 @@ user_trial_log              -- blindaje free trial lifetime (por user_id)
 trial_email_log             -- blindaje free trial por email hash (migración 046)
 anonymous_purchase_log      -- purchases antes de autenticarse (migración 047)
 consultation_sessions       -- historial de chats
-consultations               -- mensajes individuales (oracle_type, lines JSONB, image_url)
+consultations               -- mensajes (oracle_type, lines JSONB, image_url, line_reading_system, translator)
 consultation_notes          -- notas adicionales
 pattern_analyses            -- análisis de patrones
 admin_runtime_config        -- configuración runtime (feature flags)
@@ -139,7 +138,10 @@ two_factor_recovery_codes
 ## Funcionalidades Implementadas y Probadas
 
 ### Web (staging — verified ✅)
-- [x] Consulta I Ching (tres monedas, Zhu Xi, Wilhelm/Baynes)
+- [x] Consulta I Ching (tres monedas, varas Zhou, traductores Wilhelm/Legge/Zhou Yi/Master Combined)
+- [x] Selector de lectura de líneas cambiantes: **Alfred Huang** (default) o **Zhu Xi clásico** — afecta reglas de mutación, prompt IA, tagline, PDF y persistencia (`line_reading_system`, migración 074)
+- [x] Orden panel consulta: Traductor → Lectura de líneas → Método → Ejecución
+- [x] Idioma de respuesta: `detectInputLanguage(pregunta, uiLocale)` compartido cliente/servidor; fallback a locale UI si la pregunta es ambigua
 - [x] Asistente manual Yarrow Stalks (wizard paso a paso, distribución Zhou auténtica)
 - [x] Consulta Huesos de Oráculo (estilo Shang, 4 veredictos arqueológicamente verificados)
 - [x] Generación de imágenes por tier (Together AI FLUX.1 Schnell)
@@ -164,7 +166,7 @@ two_factor_recovery_codes
 - [x] Prevención de flash blanco en navegación (loading.tsx con tema correcto)
 - [x] Cloudflare Turnstile CAPTCHA en login/register
 - [x] Rate limiting distribuido (Upstash Redis, fail-closed en producción)
-- [x] Verificación de aceptación legal (términos + privacidad)
+- [x] Verificación de aceptación legal (términos + privacidad; encabezado distinto en re-aceptación vs primera vez)
 
 ### Mobile APK (apps/mobile)
 - [x] WebView cargando staging URL
@@ -229,11 +231,11 @@ FLUX a veces añadía “chops” o marcas tipo caligrafía en márgenes al asoc
 | Límites API | `packages/image-engine/src/together-flux-limits.ts` | Tope de caracteres FLUX; compactación antes de la petición. |
 | Runtime | `apps/web/src/lib/image-provider.ts` → `generateWithTogether` | Una imagen por consulta (`n: 1`); ancho/alto siguen `resolveTogetherImageSize(tier)` — **las resoluciones por tier no cambian**. |
 
-Herramientas locales de QA (no producción): `pnpm run generate:together:iching-samples` puede generar varias imágenes según `SAMPLE_COUNT`; la app solo dispara **una** generación por consulta.
+Herramientas locales de QA (no producción): `npm run generate:together:iching-samples` puede generar varias imágenes según `SAMPLE_COUNT`; la app solo dispara **una** generación por consulta.
 
 ## Historial de Cambios Importantes
 
-### Migraciones DB (051 total — selección de hitos)
+### Migraciones DB (074 total — selección de hitos)
 - `021_consumable_tokens.sql` — modelo consumible, consume_token, grant_tokens
 - `022_user_trial_log.sql` — blindaje free trial lifetime con backfill
 - `027_user_legal_acceptances.sql` — registro de aceptación de términos
@@ -246,6 +248,11 @@ Herramientas locales de QA (no producción): `pnpm run generate:together:iching-
 - `047_anonymous_purchase_log.sql` — purchases antes de autenticarse
 - `050_security_linter_fixes.sql` — RLS deny-all en tablas internas
 - `051_tour_v1.sql` — columna `tour_v1_completed_at` en users (onboarding lifetime)
+- `062_consultation_content_table.sql` — tabla `consultation_content` (fuente de verdad del texto)
+- `069_drop_consultations_legacy_toast_columns.sql` — elimina columnas TOAST legacy en consultations
+- `071_bootstrap_summary_rpc.sql` — RPC resumen para `GET /api/account/bootstrap`
+- `072_refund_token.sql` — refund automático post-cargo fallido
+- `074_line_reading_system.sql` — columna `consultations.line_reading_system` (`huang` | `zhuxi`)
 
 ### Fixes Críticos Realizados
 1. **Bug display de tokens** — panel opciones ahora refresca post-consulta via evento `iching:account-refresh`
@@ -258,6 +265,8 @@ Herramientas locales de QA (no producción): `pnpm run generate:together:iching-
 8. **WebView cross-origin guard** — `onShouldStartLoadWithRequest` bloquea cualquier URL fuera de `BASE_URL`; aplica igual en staging y producción
 9. **SQLite local cache mobile** — `expo-sqlite` en APK: historial de chats disponible offline vía `window.__rnCachedChats`; sincronización en background con stale-while-revalidate
 10. **P0 wipe interpretaciones (2026-06-07)** — 066 aplicada sin 068 previo; trigger sync propagó NULL a `consultation_content`. Fix: **068** + upsert defensivo. **NUNCA 066 sin 068.** Docs: `docs/auditorias/INCIDENT_2026-06-07_CONSULTATION_CONTENT_WIPE.md`, runbook `docs/runbooks/MIGRATION_DATA_INTEGRITY.md`
+11. **Idioma consulta false-positive FR (2026-06-21)** — eliminada heurística servidor `detectLanguageFromUserText`; lib compartida `detect-input-language.ts` respeta UI locale si pregunta ambigua
+12. **Resumen tirada Huang con Zhu Xi (2026-06-21)** — SSE `final_ready` ahora incluye `lineReadingSystem`; fallback UI desde estado del panel
 
 ### ⚠️ Reglas de migraciones DB (obligatorias)
 
@@ -331,7 +340,7 @@ de un solo uso: forzar ambos flags a `true` temporalmente, generar `assembleRele
 ## Comandos Útiles
 ```bash
 # Desarrollo web
-pnpm dev
+npm run dev
 
 # Build staging
 git push origin staging

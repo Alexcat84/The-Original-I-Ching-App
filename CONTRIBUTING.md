@@ -9,7 +9,7 @@ Thanks for your interest in improving **The Original I Ching App**.
 
 ## Development
 
-- **Web app:** `apps/web` — see that package’s `README` or root `README.md` for install and dev commands.
+- **Web app:** `apps/web` — ver `README.md` en la raíz (`npm install`, `npm run dev`, `npm test`).
 - **TypeScript:** strict mode; avoid `any` (prefer `unknown` or concrete types).
 - **Tests:** run the relevant package tests after substantive changes (e.g. `npm run test` in `apps/web`).
 

@@ -39,12 +39,12 @@ import {
 
 // --- Release snapshot (update on each mobile bump) ---
 const CURRENT_RELEASE = {
-  versionName: "4.1.0",
-  versionCode: 49,
+  versionName: "4.1.7",
+  versionCode: 57,
   webHost: "https://theoriginaliching.com",
   stagingHost:
     "https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app",
-  updatedAt: "2026-06-17",
+  updatedAt: "2026-06-21",
 };
 
 type ViewId =
@@ -67,7 +67,7 @@ type ModuleRow = {
 const MODULE_CATALOG: ModuleRow[] = [
   { id: "web", path: "apps/web", role: "Next.js UI + API Routes", depends: "packages/*, backend/claude, Supabase" },
   { id: "mobile", path: "apps/mobile", role: "Expo WebView shell, SQLite, Play Billing", depends: "web URL, @iching-oracle/i18n" },
-  { id: "iching-engine", path: "packages/iching-engine", role: "Sorteo monedas/varas, hexagrama", depends: "iching-data" },
+  { id: "iching-engine", path: "packages/iching-engine", role: "Sorteo monedas/varas; reglas Huang/Zhu Xi", depends: "iching-data" },
   { id: "oracle-bones-engine", path: "packages/oracle-bones-engine", role: "Sorteo huesos Shang", depends: "—" },
   { id: "context-engine", path: "packages/context-engine", role: "Límites hilo, contexto sesión", depends: "i18n" },
   { id: "image-engine", path: "packages/image-engine", role: "Prompts FLUX + negativos", depends: "—" },
@@ -82,6 +82,8 @@ const MODULE_CATALOG: ModuleRow[] = [
 ];
 
 const VERSION_ROWS = [
+  { version: "4.1.7", vc: "57", date: "2026-06-21", stage: "Closed Testing", note: "Selector lectura líneas Huang/Zhu Xi (074); detect-input-language; legal re-accept header; SSE final_ready lineReadingSystem" },
+  { version: "4.1.6", vc: "55", date: "2026-06-19", stage: "Closed Testing", note: "Legal consent bootstrap cache; Turnstile sign-in; RN WebView safe-area" },
   { version: "4.1.0", vc: "49", date: "2026-06-17", stage: "Production", note: "Expo SDK 53 + RN 0.79 Release A (16 KB); splash/icon; integrity Gradle 8; Sentry 6" },
   { version: "3.5.6", vc: "54", date: "2026-06-13", stage: "Local smoke test", note: "Phase 0-3 perf (streaming deltas, parallel image, prompt cache V2) + B1/B2/B3 + SEC-01 webhook gate" },
   { version: "3.5.5", vc: "53", date: "2026-06-12", stage: "Staging", note: "Phase 7+8: OOM crash fix + session recovery; audit remediation CRIT-01/02 (refund_token), MED-01 (iad1 pin)" },
@@ -94,9 +96,9 @@ const VERSION_ROWS = [
 ];
 
 const API_GROUPS: { group: string; routes: string }[] = [
-  { group: "Oráculo", routes: "POST /api/consult (SSE)" },
-  { group: "Cuenta", routes: "GET/DELETE /api/account/chats · GET /api/account/me · PUT /api/account/display-name · POST /api/account/delete · GET /api/account/sync-billing · POST /api/account/create-portal-session" },
-  { group: "Auth", routes: "/api/auth/register · legal-consent · /api/auth/2fa/*" },
+  { group: "Oráculo", routes: "POST /api/consult (SSE stream_ritual + JSON manual)" },
+  { group: "Cuenta", routes: "GET /api/account/bootstrap · GET/DELETE /api/account/chats · GET /api/account/me · PUT /api/account/display-name · POST /api/account/delete · POST /api/account/tour-complete · GET /api/account/sync-billing" },
+  { group: "Auth", routes: "/api/auth/register · legal-consent · /api/auth/2fa/* · /auth/complete-legal" },
   { group: "Billing", routes: "POST /api/webhooks/revenuecat" },
   { group: "Biblioteca", routes: "GET /api/library/[n] (Bearer+Seeker+) · GET /api/library/access" },
   { group: "Ops", routes: "GET /api/health · POST /api/feedback · /api/admin/*" },
@@ -138,19 +140,21 @@ const FLOW_LAYERS: DagSpec = {
 const FLOW_CONSULT: DagSpec = {
   nodes: [
     { id: "ui", label: "page.tsx" },
+    { id: "lang", label: "detect-input-language" },
     { id: "consult", label: "POST /api/consult" },
     { id: "auth", label: "auth + rate limit" },
     { id: "tokens", label: "consume_token" },
-    { id: "cast", label: "iching / oracle-bones" },
+    { id: "cast", label: "iching-engine (LRS)" },
     { id: "ctx", label: "context-engine" },
     { id: "claude", label: "generateInterpretation" },
     { id: "delta", label: "oracle_delta (stream)" },
     { id: "img", label: "image-engine + provider" },
     { id: "persist", label: "session-store" },
-    { id: "sse", label: "SSE cast_ready / oracle_ready / final_ready" },
+    { id: "sse", label: "SSE final_ready (+lineReadingSystem)" },
   ],
   edges: [
-    { from: "ui", to: "consult" },
+    { from: "ui", to: "lang" },
+    { from: "lang", to: "consult" },
     { from: "consult", to: "auth" },
     { from: "auth", to: "tokens" },
     { from: "consult", to: "cast" },
@@ -375,11 +379,13 @@ export default function ArchitectureSystemCanvas() {
           <CardHeader trailing={<Pill tone="info">SSE</Pill>}>Flujo POST /api/consult</CardHeader>
           <CardBody>
             <Callout tone="info">
-              Rate limit Upstash → consume_token → sorteo → cast_ready (~15ms) → Claude stream
-              (oracle_delta SSE, 150ms flush) → imagen paralela si ANTHROPIC_PARALLEL_IMAGE=1
-              (detecta CATEGORY: en primeros tokens) → oracle_ready → persist → final_ready (~37–65s).
-              Prompt cache V2 si ANTHROPIC_PROMPT_V2=1. Refund automático si falla post-cargo
-              (refund_token RPC, migración 072). Auth obligatorio (Bearer JWT).
+              Idioma: detectInputLanguage(pregunta, cookie iching_ui_locale) — responde en el idioma
+              escrito si hay margen claro; si no, UI locale. Panel I Ching: Traductor → Lectura líneas
+              (Huang/Zhu Xi, migración 074) → Método → Ejecución. Rate limit Upstash → consume_token →
+              sorteo → cast_ready (~15ms) → Claude stream (oracle_delta SSE, 150ms flush) → imagen
+              paralela si ANTHROPIC_PARALLEL_IMAGE=1 → oracle_ready → persist (line_reading_system) →
+              final_ready incluye lineReadingSystem (auto SSE y JSON manual). Refund automático si falla
+              post-cargo (refund_token RPC, migración 072).
             </Callout>
             <Divider />
             <DagDiagram spec={FLOW_CONSULT} title="Consulta oráculo (I Ching u Oracle Bones)" />
@@ -545,15 +551,22 @@ export default function ArchitectureSystemCanvas() {
                 <Text>
                   <Code>docs/workflows/I18N_GUIDE.md</Code> · I18N_STANDARDIZATION.md
                 </Text>
+                <Text>
+                  <Code>docs/auditorias/LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md</Code> — selector Huang/Zhu Xi (074)
+                </Text>
+                <Text>
+                  <Code>apps/web/src/lib/detect-input-language.ts</Code> — idioma pregunta vs UI
+                </Text>
               </Stack>
 
               <H3>Invariantes de producto (no romper)</H3>
               <Text tone="secondary">
                 Tokens acumulables · last_pack = última compra (tier hilo/imagen) · free trial 2
                 lifetime · RevenueCat product IDs tokens_seeker_20 / practitioner_40 / master_100 ·
-                Chats privados server-side · WebView carga URL remota (staging vs prod según build) ·
-                Feature flags default OFF: ANTHROPIC_STREAM_DELTAS / ANTHROPIC_PARALLEL_IMAGE /
-                ANTHROPIC_PROMPT_V2 / REVENUECAT_ALLOW_TEST_EVENTS (esta última NUNCA ON en producción)
+                Chats privados server-side · line_reading_system default huang · WebView carga URL
+                remota (staging vs prod según build) · Feature flags default OFF:
+                ANTHROPIC_STREAM_DELTAS / ANTHROPIC_PARALLEL_IMAGE / ANTHROPIC_PROMPT_V2 /
+                REVENUECAT_ALLOW_TEST_EVENTS (esta última NUNCA ON en producción)
               </Text>
 
               <Divider />
