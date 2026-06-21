@@ -6,7 +6,7 @@ This document details the rigorous audit process performed on the I Ching hexagr
 
 ## Estado · Changelog de cierre
 
-> **Estado:** ✅ CERRADA — dataset verificado 1:1 contra fuentes académicas; corrección aplicada y regenerado
+> **Estado:** ⚠️ **SUPERSEDED (2026-06-21)** — ver re-auditoría abierta [ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md](./ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md). El cierre “100% accurate” de 2026-05-10 no tenía harness reproducible; el hex 23 sigue siendo válido como precedente.
 
 | Campo | Valor |
 |-------|-------|
