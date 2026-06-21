@@ -240,7 +240,7 @@ Flags comunes: `--live` (refetch remoto; sin flag usa cache `tools/output/fideli
 
 **Fix parser Parma (hex 18):** regex de líneas ampliado a `(?:at|in) the beginning` — ver §12 y Fase 3b.
 
-**Política merge (Wilhelm judgment/image):** si Parma devuelve vacío, se conserva texto previo (adamblvck) — aplica hoy solo **hex 56 judgment** (§12.4). Líneas: siempre Parma.
+**Política merge (Wilhelm judgment/image):** Parma primero; si judgment vacío, **tier-2 Baynes** (`hexagram-fidelity-wilhelm-baynes-supplement.mjs`, hoy solo hex 56) y solo entonces fallback bundle previo. Líneas: siempre Parma.
 
 **Zhou Yi:** reemplazo total desde ctext; normalización 繁 en ingest (`toCanonicalZhouYiText`).
 
@@ -296,7 +296,7 @@ Los gaps pre-3b **no eran** typos de una letra en masa: eran **bugs de parser** 
 | L6 vacío en gold (hex 20, 21, 26, 52) | Parser incrementaba posición 1…N por orden de aparición; Parma omite «in the fifth place» y salta a «at the top» | Mapeo semántico de etiqueta |
 | image vacío (hex 38) | Encabezado `THE IMAGE.` con punto; parser exigía match exacto | Normalización de heading |
 | image incompleto (hex 38) | Imagen oracle = 4 párrafos cortos; parser tomaba solo el primero | `extractImageOracle()` multi-párrafo |
-| judgment vacío (hex 56) | **HTML Parma no contiene `THE JUDGMENT` ni el oracle breve Baynes** | Excepción documentada §12.4 |
+| judgment vacío (hex 56) | **HTML Parma no contiene `THE JUDGMENT` ni el oracle breve Baynes** | Tier-2 Baynes supplement (Fase 3c §12.6) |
 
 ### 12.3 Legge — causas raíz (24 → 0 gap)
 
@@ -334,12 +334,12 @@ Los gaps pre-3b **no eran** typos de una letra en masa: eran **bugs de parser** 
 - [iching-online.com hex 56](https://www.iching-online.com/hexagrams/iching-hexagram-101100.html) — idem.
 - [castiching.com hex 56](https://castiching.com/hexagrams/56-wanderer) — cita oracle Baynes estándar.
 
-**Política producto (ingest):**
+**Política producto (ingest, post-3c):**
 
-- `ingest-wilhelm.mjs` conserva judgment adamblvck cuando Parma vacío (merge solo judgment/image, no líneas).
-- Contenido bundle hex 56 = oracle Baynes + comentario Wilhelm — **correcto para usuarios**, no verificable 1:1 contra Parma.
+- `ingest-wilhelm.mjs` → `resolveWilhelmJudgmentForIngest()`: Parma, luego tier-2 Baynes (§12.6), luego fallback previo.
+- Contenido bundle hex 56 = oracle Baynes + primer párrafo comentario Wilhelm — alineado wengu / iching-online.
 
-**Para 514/514 vs Parma:** imposible sin (a) fuente suplementaria Baynes documentada como gold tier-2, o (b) eliminar oracle breve del producto (rechazado).
+**Para 514/514 verify:** resuelto en Fase 3c con gold tier-2 documentado (Parma + Baynes supplement solo donde Parma omite oracle).
 
 ### 12.5 Gates finales Fase 3b
 
@@ -348,8 +348,29 @@ Los gaps pre-3b **no eran** typos de una letra en masa: eran **bugs de parser** 
 | `npm run scan:zhouyi-corruption` | 0 ✅ |
 | `npm run verify:hexagram-fidelity` Zhou Yi | 100% ✅ |
 | idem Legge | 100% ✅ |
-| idem Wilhelm vs Parma | 99.81% (1 excepción §12.4) |
+| idem Wilhelm vs Parma | 99.81% (1 excepción §12.4, cerrada en 3c) |
 | `npm run build:data` | ✅ |
+
+### 12.6 Fase 3c — gold tier-2 Baynes (hex 56 judgment)
+
+**Decisión:** aceptar supplement tier-2 solo para el único campo donde Parma omite el oracle canónico Baynes.
+
+| Artefacto | Ruta |
+|-----------|------|
+| Supplement module | `scripts/lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs` |
+| Verify | `applyWilhelmBaynesSupplements()` en `verify-hexagram-fidelity.mjs` |
+| Ingest | `resolveWilhelmJudgmentForIngest()` en `tools/ingest-wilhelm.mjs` |
+
+**Texto tier-2 hex 56 judgment:** oracle Baynes (*The Wanderer. Success through smallness…*) + comentario Wilhelm (*WHEN A man is a wanderer…*) — cross-check wengu, iching-online, castiching; fuentes citadas en el módulo.
+
+**Gates Fase 3c:**
+
+| Gate | Resultado |
+|------|-----------|
+| `npm run ingest:wilhelm` | hex 56 `tier2_baynes` ✅ |
+| `npm run verify:hexagram-fidelity` Wilhelm | **514/514 (100%)** ✅ |
+| Zhou Yi + Legge | 100% (sin regresión) ✅ |
+| Reporte | `reports/hexagram-fidelity-2026-06-21T19-45-04-900Z.json` |
 
 **Gates Fase 3 (obsoletos post-3b):**
 
@@ -360,7 +381,7 @@ Los gaps pre-3b **no eran** typos de una letra en masa: eran **bugs de parser** 
 | Wilhelm/Legge ≥99.5% | ⏳ Pendiente mejoras parser gold (Fase 3b) |
 | `npm run build:data` + bundles regenerados | ✅ |
 
-**Regla ≥99.5% global:** cumplida Zhou Yi + Legge; Wilhelm **99.81% vs Parma** con excepción documentada hex 56.
+**Regla ≥99.5% global:** cumplida los 3 traductores al **100%** post-Fase 3c (Wilhelm: Parma + tier-2 Baynes hex 56).
 
 ### Fase 4 — Alineación de claims legales/producto (1 día)
 
@@ -398,6 +419,7 @@ Si quedan extractos (ej. judgment sin comentario Confucio): cambiar “sin modif
 | Plan maestro (este doc) | `docs/auditorias/ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md` |
 | Script verificación | `scripts/verify-hexagram-fidelity.mjs` (Fase 1) |
 | Ingesters Fase 3 | `tools/ingest-zhouyi-ctext.mjs`, `tools/ingest-wilhelm.mjs`, `tools/ingest-legge-sacred.mjs` |
+| Wilhelm tier-2 supplement (3c) | `scripts/lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs` |
 | Escáner Zhou Yi | `tools/scan-zhouyi-corruption.mjs` |
 | Reporte JSON | `reports/hexagram-fidelity-*.json` |
 | Reporte legible | `reports/hexagram-fidelity-*.md` |
@@ -478,12 +500,10 @@ Tras cada re-ingest: `npm run build:data` → Zhou Yi: **`node tools/scan-zhouyi
 
 ## 11. Próximo paso inmediato
 
-**Fase 4** — alinear claims UI/docs (`notes-page-ui.ts`, `licenseNote`, README iching-data) con evidencia Fase 3b.
+**Fase 4** — alinear claims UI/docs (`notes-page-ui.ts`, `licenseNote`, README iching-data) con evidencia Fase 3b–3c.
 
-**Opcional Fase 3c** — gold tier-2 Baynes (Princeton/wengu) solo para hex 56 judgment → 514/514 verify dual-gold; requiere decisión de producto.
-
-Reporte canónico: `reports/hexagram-fidelity-2026-06-21T19-40-28-164Z.json` · workflow: `npm run ingest:translations && npm run build:data`.
+Reporte canónico: `reports/hexagram-fidelity-2026-06-21T19-45-04-900Z.json` · workflow: `npm run ingest:translations && npm run build:data`.
 
 ---
 
-*Auditoría abierta 2026-06-21. Fase 3 remediación 2026-06-21. Fase 3b parser gold 2026-06-21 (Legge+Zhou Yi 100%, Wilhelm 99.81% vs Parma).*
+*Auditoría abierta 2026-06-21. Fase 3 remediación 2026-06-21. Fase 3b parser gold 2026-06-21 (Legge+Zhou Yi 100%). Fase 3c tier-2 Baynes hex 56 → Wilhelm **514/514 (100%)**.*

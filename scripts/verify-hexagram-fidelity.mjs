@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Verify @iching-oracle/iching-data bundles against Tier-0 gold sources:
- *  - Wilhelm → Uni Parma mirror
+ *  - Wilhelm → Uni Parma mirror (+ Baynes tier-2 for documented Parma gaps, hex 56)
  *  - Legge → sacred-texts.com (Wayback fallback when live 403)
  *  - Zhou Yi → ctext.org gettext API + HTML (大象傳)
  *
@@ -15,6 +15,10 @@ import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { ROOT, GOLD_DIR, loadParmaHtml, loadLeggeTextHtml, loadLeggeSymbolismHtml, loadCtextJson, loadCtextHtml, loadBundle } from "./lib/hexagram-fidelity-fetch.mjs";
 import { parseAllParmaWilhelm } from "./lib/hexagram-fidelity-parma.mjs";
+import {
+  applyWilhelmBaynesSupplements,
+  getWilhelmBaynesJudgmentSupplement,
+} from "./lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs";
 import { parseLeggeTextPage, parseLeggeSymbolismAppendix } from "./lib/hexagram-fidelity-legge-sacred.mjs";
 import { parseCtextZhouYi, parseCtextZhouYiFromHtml, mergeCtextGold } from "./lib/hexagram-fidelity-ctext.mjs";
 import {
@@ -35,9 +39,10 @@ function log(msg) {
 }
 
 async function compareWilhelm(bundle) {
-  log("Wilhelm: loading Parma gold…");
+  log("Wilhelm: loading Parma gold (+ Baynes tier-2 supplements)…");
   const parmaHtml = await loadParmaHtml({ live });
-  const goldByHex = parseAllParmaWilhelm(parmaHtml);
+  const parmaGold = parseAllParmaWilhelm(parmaHtml);
+  const goldByHex = applyWilhelmBaynesSupplements(parmaGold);
   const diffs = [];
 
   for (const hex of bundle.hexagrams) {
@@ -56,6 +61,10 @@ async function compareWilhelm(bundle) {
       continue;
     }
 
+    const usedTier2 =
+      Boolean(getWilhelmBaynesJudgmentSupplement(hex.number)) &&
+      !String(parmaGold[hex.number]?.judgment ?? "").trim();
+
     const goldFields = goldWilhelmFields(gold);
     const bundleFields = bundleHexToFields(hex, "wilhelm");
     const byKey = new Map(bundleFields.map((f) => [f.field + (f.linePos ?? ""), f]));
@@ -71,6 +80,9 @@ async function compareWilhelm(bundle) {
           linePos: gf.linePos,
           expected: gf.expected,
           actual: bf?.actual ?? "",
+          ...(usedTier2 && gf.field === "judgment"
+            ? { note: "tier2_baynes_judgment" }
+            : {}),
         }),
       );
     }
@@ -204,7 +216,7 @@ async function main() {
 
   const blocks = [];
   const notes = [
-    "Wilhelm gold: Uni Parma mirror — oracle judgment/image/lines only (Wilhelm commentary excluded by parser).",
+    "Wilhelm gold: Uni Parma mirror (+ Baynes tier-2 judgment for hex 56 where Parma omits THE JUDGMENT). Oracle judgment/image/lines only (Wilhelm commentary excluded by parser).",
     "Legge gold: sacred-texts.com ic01–ic64 (text) + icap2 (Great Symbolism). Live site may 403; Wayback used as fallback.",
     "Zhou Yi gold: ctext.org gettext API (卦辭+爻辭+用九/六) + HTML scrape (大象傳).",
     "Normalizer: lowercase + whitespace collapse (EN); NFKC + strip 爻 labels (ZH).",

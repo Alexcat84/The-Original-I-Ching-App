@@ -15,6 +15,10 @@ import { writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseAllParmaWilhelm } from "../scripts/lib/hexagram-fidelity-parma.mjs";
+import {
+  resolveWilhelmJudgmentForIngest,
+  getWilhelmBaynesJudgmentSupplement,
+} from "../scripts/lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs";
 import { loadParmaHtml } from "../scripts/lib/hexagram-fidelity-fetch.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -54,11 +58,14 @@ async function main() {
 
     const prevJ = row.wilhelm_judgment?.text ?? "";
     const prevI = row.wilhelm_image?.text ?? "";
-    row.wilhelm_judgment = {
-      text: mergeOracleField(prevJ, gold.judgment),
-    };
+    const judgmentText = resolveWilhelmJudgmentForIngest(n, gold.judgment, prevJ);
+    row.wilhelm_judgment = { text: cleanOracleText(judgmentText) };
     row.wilhelm_image = { text: mergeOracleField(prevI, gold.image) };
-    if (!gold.judgment?.trim() && prevJ) warnings.push({ n, field: "judgment", kept: "existing" });
+    if (!gold.judgment?.trim() && judgmentText && getWilhelmBaynesJudgmentSupplement(n)) {
+      warnings.push({ n, field: "judgment", source: "tier2_baynes" });
+    } else if (!gold.judgment?.trim() && prevJ) {
+      warnings.push({ n, field: "judgment", kept: "existing" });
+    }
     if (!gold.image?.trim() && prevI) warnings.push({ n, field: "image", kept: "existing" });
 
     const prevLines = row.wilhelm_lines ?? {};
