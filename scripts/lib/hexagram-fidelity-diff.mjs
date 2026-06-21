@@ -16,12 +16,26 @@ import { similarityHint, textsMatch } from "./hexagram-fidelity-normalize.mjs";
  */
 export function makeDiff(args) {
   const { translator, hex, field, linePos, expected, actual, note } = args;
-  const match = textsMatch(expected, actual, translator);
-  const hint = similarityHint(expected, actual, translator);
-  let status = "mismatch";
-  if (match) status = "match";
-  else if (hint === "missing_in_gold") status = "missing_gold";
-  else if (hint === "missing_in_bundle") status = "missing_bundle";
+  const expEmpty = !String(expected ?? "").trim();
+  const actEmpty = !String(actual ?? "").trim();
+
+  // Both sides empty is not evidence of a verified match — it means gold extraction
+  // found nothing AND the bundle has nothing, which textsMatch("","") would otherwise
+  // silently score as "exact". Flag it instead so a real content gap (bundle empty
+  // because the ingester mirrored an empty gold field) can never hide behind 100%.
+  let status;
+  let hint;
+  if (expEmpty && actEmpty) {
+    status = "missing_gold";
+    hint = "both_empty";
+  } else {
+    const match = textsMatch(expected, actual, translator);
+    hint = similarityHint(expected, actual, translator);
+    status = "mismatch";
+    if (match) status = "match";
+    else if (hint === "missing_in_gold") status = "missing_gold";
+    else if (hint === "missing_in_bundle") status = "missing_bundle";
+  }
 
   return {
     translator,

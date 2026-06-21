@@ -241,7 +241,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "data-reliability",
     question: "How reliable are the I Ching texts provided in the app?",
     answer:
-      "Last audit: 21 June 2026. Legge and Zhou Yi match sacred-texts.com and ctext.org at 100%. Wilhelm matches at 100% with one documented Baynes supplement for hex 56 judgment only, where the Parma mirror omits THE JUDGMENT. See Method Notes for detail.",
+      "Last audit: 21 June 2026. Legge and Zhou Yi match sacred-texts.com and ctext.org at 100%. Wilhelm matches at 100% with 6 documented Baynes supplements (hex 56 judgment plus 5 individual lines) where the Parma mirror omits the passage entirely. See Method Notes for detail.",
   },
   {
     id: "yarrow-vs-coins",
@@ -440,7 +440,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "data-reliability",
     question: "¿Qué tan fiables son los textos del I Ching en la aplicación?",
     answer:
-      "Última auditoría: 21 de junio de 2026. Legge y Zhou Yi coinciden al 100% con sacred-texts.com y ctext.org. Wilhelm coincide al 100% con un único suplemento Baynes documentado solo para el juicio del hexagrama 56, donde Parma omite THE JUDGMENT. Ver Notas de método.",
+      "Última auditoría: 21 de junio de 2026. Legge y Zhou Yi coinciden al 100% con sacred-texts.com y ctext.org. Wilhelm coincide al 100% con 6 suplementos Baynes documentados (juicio del hexagrama 56 más 5 líneas individuales), donde Parma omite el pasaje por completo. Ver Notas de método.",
   },
   {
     id: "yarrow-vs-coins",
@@ -604,7 +604,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "data-reliability",
     question: "ما مدى موثوقية نصوص الآي تشينغ في التطبيق؟",
     answer:
-      "آخر تدقيق: 21 يونيو 2026. Legge وZhou Yi يطابقان sacred-texts.com وctext.org بنسبة 100%. Wilhelm يطابق بنسبة 100% مع مكمل Baynes واحد موثق لحكم السداسي 56 فقط، حيث تنقص مرآة Parma عبارة THE JUDGMENT. راجع ملاحظات المنهج.",
+      "آخر تدقيق: 21 يونيو 2026. Legge وZhou Yi يطابقان sacred-texts.com وctext.org بنسبة 100%. Wilhelm يطابق بنسبة 100% مع 6 مكملات Baynes موثقة (حكم السداسي 56 إضافة إلى 5 خطوط فردية)، حيث تحذف مرآة Parma المقطع بالكامل. راجع ملاحظات المنهج.",
   },
   {
     id: "yarrow-vs-coins",
@@ -784,7 +784,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "data-reliability",
     question: "ऐप में दिए गए आई चिंग ग्रंथों की विश्वसनीयता क्या है?",
     answer:
-      "अंतिम ऑडिट: 21 जून 2026. Legge और Zhou Yi sacred-texts.com और ctext.org से 100% मेल खाते हैं. Wilhelm भी 100% मेल खाता है, hexagram 56 के निर्णय के लिए एक ही दस्तावेजीकृत Baynes पूरक के साथ, जहाँ Parma मिरर THE JUDGMENT छोड़ता है. विधि नोट्स देखें.",
+      "अंतिम ऑडिट: 21 जून 2026. Legge और Zhou Yi sacred-texts.com और ctext.org से 100% मेल खाते हैं. Wilhelm भी 100% मेल खाता है, 6 दस्तावेजीकृत Baynes पूरकों के साथ (hexagram 56 का निर्णय और 5 अलग-अलग पंक्तियाँ), जहाँ Parma मिरर पूरा अंश ही छोड़ देता है. विधि नोट्स देखें.",
   },
   {
     id: "yarrow-vs-coins",
@@ -965,7 +965,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "data-reliability",
     question: "アプリで提供される易経のテキストの信頼性はどの程度ですか？",
     answer:
-      "最新監査: 2026年6月21日。Leggeと周易は sacred-texts.com および ctext.org と100%一致。Wilhelmも100%一致。第56卦卦辞のみ、Parmaミラーが THE JUDGMENT を欠落するため文書化されたBaynes補足を使用。詳細はメソッドノート参照。",
+      "最新監査: 2026年6月21日。Leggeと周易は sacred-texts.com および ctext.org と100%一致。Wilhelmも100%一致。Parmaミラーが該当箇所を完全に欠落させる6か所（第56卦の卦辞および個別の爻5つ）で文書化されたBaynes補足を使用。詳細はメソッドノート参照。",
   },
   {
     id: "yarrow-vs-coins",
@@ -1145,7 +1145,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "data-reliability",
     question: "应用中提供的易经文本可靠性如何？",
     answer:
-      "最近一次审计：2026年6月21日。理雅各译本与周易原文与 sacred-texts.com 及 ctext.org 100%一致。卫礼贤译本整体100%一致；仅第56卦卦辞使用有据可查的 Baynes 补充，因帕尔马镜像缺少 THE JUDGMENT。详见方法说明。",
+      "最近一次审计：2026年6月21日。理雅各译本与周易原文与 sacred-texts.com 及 ctext.org 100%一致。卫礼贤译本整体100%一致；在帕尔马镜像完全缺失对应段落的6处（第56卦卦辞及5条独立爻辞）使用了有据可查的 Baynes 补充。详见方法说明。",
   },
   {
     id: "yarrow-vs-coins",
@@ -1323,7 +1323,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "data-reliability",
     question: "앱에서 제공되는 주역 텍스트는 얼마나 신뢰할 수 있습니까?",
     answer:
-      "최근 감사: 2026년 6월 21일. Legge와 주역은 sacred-texts.com 및 ctext.org와 100% 일치합니다. Wilhelm도 100% 일치하며, 56괘 괘사만 Parma 미러가 THE JUDGMENT을 누락하여 문서화된 Baynes 보완을 사용합니다. 방법 노트 참조.",
+      "최근 감사: 2026년 6월 21일. Legge와 주역은 sacred-texts.com 및 ctext.org와 100% 일치합니다. Wilhelm도 100% 일치하며, Parma 미러가 해당 구절을 완전히 누락한 6곳(56괘 괘사 및 개별 효 5곳)에 문서화된 Baynes 보완을 사용합니다. 방법 노트 참조.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1502,7 +1502,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "data-reliability",
     question: "Quão confiáveis são os textos do I Ching no aplicativo?",
     answer:
-      "Última auditoria: 21 de junho de 2026. Legge e Zhou Yi coincidem a 100% com sacred-texts.com e ctext.org. Wilhelm coincide a 100% com um único suplemento Baynes documentado apenas para o julgamento do hexagrama 56, onde Parma omite THE JUDGMENT. Ver Notas de método.",
+      "Última auditoria: 21 de junho de 2026. Legge e Zhou Yi coincidem a 100% com sacred-texts.com e ctext.org. Wilhelm coincide a 100% com 6 suplementos Baynes documentados (julgamento do hexagrama 56 mais 5 linhas individuais), onde Parma omite a passagem por completo. Ver Notas de método.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1683,7 +1683,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "data-reliability",
     question: "Wie zuverlässig sind die I-Ging-Texte in der App?",
     answer:
-      "Letzte Prüfung: 21. Juni 2026. Legge und Zhou Yi stimmen zu 100 % mit sacred-texts.com und ctext.org überein. Wilhelm stimmt zu 100 % überein mit einer einzigen dokumentierten Baynes-Ergänzung nur für das Urteil von Hexagramm 56, wo der Parma-Spiegel THE JUDGMENT auslässt. Siehe Methodenhinweise.",
+      "Letzte Prüfung: 21. Juni 2026. Legge und Zhou Yi stimmen zu 100 % mit sacred-texts.com und ctext.org überein. Wilhelm stimmt zu 100 % überein mit 6 dokumentierten Baynes-Ergänzungen (Urteil von Hexagramm 56 plus 5 einzelne Linien), wo der Parma-Spiegel die Passage vollständig auslässt. Siehe Methodenhinweise.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1868,7 +1868,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "data-reliability",
     question: "Quanto sono affidabili i testi dell'I Ching nell'app?",
     answer:
-      "Ultimo audit: 21 giugno 2026. Legge e Zhou Yi coincidono al 100% con sacred-texts.com e ctext.org. Wilhelm coincide al 100% con un unico supplemento Baynes documentato solo per il giudizio dell'esagramma 56, dove Parma omette THE JUDGMENT. Vedi Note sui metodi.",
+      "Ultimo audit: 21 giugno 2026. Legge e Zhou Yi coincidono al 100% con sacred-texts.com e ctext.org. Wilhelm coincide al 100% con 6 supplementi Baynes documentati (giudizio dell'esagramma 56 più 5 linee individuali), dove Parma omette il passaggio per intero. Vedi Note sui metodi.",
   },
   {
     id: "yarrow-vs-coins",
@@ -2055,7 +2055,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
     answer:
-      "Dernier audit : 21 juin 2026. Legge et Zhou Yi concordent à 100 % avec sacred-texts.com et ctext.org. Wilhelm concorde à 100 % avec un seul supplément Baynes documenté pour le jugement de l'hexagramme 56 seulement, où le miroir de Parma omet THE JUDGMENT. Voir Notes sur les méthodes.",
+      "Dernier audit : 21 juin 2026. Legge et Zhou Yi concordent à 100 % avec sacred-texts.com et ctext.org. Wilhelm concorde à 100 % avec 6 suppléments Baynes documentés (jugement de l'hexagramme 56 plus 5 lignes individuelles), là où le miroir de Parma omet entièrement le passage. Voir Notes sur les méthodes.",
   },
   {
     id: "yarrow-vs-coins",

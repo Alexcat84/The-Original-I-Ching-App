@@ -17,7 +17,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseAllParmaWilhelm } from "../scripts/lib/hexagram-fidelity-parma.mjs";
 import {
   resolveWilhelmJudgmentForIngest,
+  resolveWilhelmLineForIngest,
   getWilhelmBaynesJudgmentSupplement,
+  getWilhelmBaynesLineSupplement,
 } from "../scripts/lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs";
 import { loadParmaHtml } from "../scripts/lib/hexagram-fidelity-fetch.mjs";
 
@@ -71,10 +73,14 @@ async function main() {
     const prevLines = row.wilhelm_lines ?? {};
     const lines = {};
     for (let pos = 1; pos <= 6; pos++) {
-      const next = cleanOracleText(gold.lines[pos] ?? "");
-      lines[String(pos)] = { text: next };
-      if (!next && (prevLines[String(pos)]?.text ?? "").trim()) {
-        warnings.push({ n, field: `line${pos}`, note: "cleared (absent in Parma)" });
+      const fromParma = cleanOracleText(gold.lines[pos] ?? "");
+      const prevText = prevLines[String(pos)]?.text ?? "";
+      const resolved = resolveWilhelmLineForIngest(n, pos, fromParma, prevText);
+      lines[String(pos)] = { text: cleanOracleText(resolved) };
+      if (!fromParma && resolved && getWilhelmBaynesLineSupplement(n, pos)) {
+        warnings.push({ n, field: `line${pos}`, source: "tier2_baynes" });
+      } else if (!fromParma && prevText.trim()) {
+        warnings.push({ n, field: `line${pos}`, kept: "existing", note: "absent in Parma" });
       }
     }
     row.wilhelm_lines = lines;

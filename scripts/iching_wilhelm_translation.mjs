@@ -918,7 +918,7 @@ export default {
         "text": "Contemplation of the light of the kingdom.\n\r It furthers one to exert influence as the guest of a king."
       },
       "5": {
-        "text": ""
+        "text": "Contemplation of my life.\nThe superior man is without blame."
       },
       "6": {
         "text": "Contemplation of his life.\n\r The superior man is without blame."
@@ -955,10 +955,10 @@ export default {
         "text": "His feet are fastened in the stocks,\n\r So that his toes disappear.\n\r No blame."
       },
       "2": {
-        "text": ""
+        "text": "Bites through tender meat,\nSo that his nose disappears.\nNo blame."
       },
       "3": {
-        "text": ""
+        "text": "Bites on old dried meat\nAnd strikes on something poisonous.\nSlight humiliation. No blame."
       },
       "4": {
         "text": "Bites on dried gristly meat.\n\r Receives metal arrows.\n\r It furthers one to be mindful of difficulties\n\r And to be persevering.\n\r Good fortune."
@@ -1188,7 +1188,7 @@ export default {
         "text": "The axletrees are taken from the wagon."
       },
       "3": {
-        "text": ""
+        "text": "A good horse that follows others.\nAwareness of danger,\nWith perseverance, furthers.\nPractice chariot driving and armed defense daily.\nIt furthers one to have somewhere to go."
       },
       "4": {
         "text": "The headboard of a young bull.\n\r Great good fortune."
@@ -2381,7 +2381,7 @@ export default {
         "text": "Keeping his toes still."
       },
       "2": {
-        "text": ""
+        "text": "Keeping his calves still.\nHe cannot rescue him whom he follows.\nHis heart is not glad."
       },
       "3": {
         "text": "Keeping his hips still.\n\r Making his sacrum stiff.\n\r Dangerous. The heart suffocates."
