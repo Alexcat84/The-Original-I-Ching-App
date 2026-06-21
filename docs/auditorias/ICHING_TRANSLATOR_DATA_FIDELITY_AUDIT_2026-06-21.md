@@ -137,12 +137,13 @@ Cobertura: **64 hex × 3 traductores × (judgment + image + 6 lines + yong*)** �
 
 | Traductor | Hex | Campo | Clase | Evidencia |
 |-----------|-----|-------|-------|-----------|
-| Wilhelm | 18 | lines 1–5 | **A** | Padre/madre **intercambiados** vs Parma (swap en bundle adamblvck) |
-| Wilhelm | 2 | yongLiu | **A/B** | Texto distinto: gold «Lasting perseverance…» vs bundle «Perseverance furthers.» |
+| Wilhelm | 18 | lines 1–5 | **D/E — refutado** | **Falso positivo:** bundle `main` correcto (L1 padre, L2 madre); swap está en **parser gold Parma**, no en producto. **No hotfix.** |
+| Wilhelm | 2 | yongLiu | **B — por verificar** | Texto distinto: gold «Lasting perseverance…» vs bundle «Perseverance furthers.» — confirmar contra fuente antes de tocar |
 | Wilhelm | 27, 62 | judgment | **C** (histórico) | Comentario Wilhelm embebido — el harness Parma extrae solo oracle; el bundle incluye bleed (match parcial por prefijo) |
 | Legge | 2, 4, 5… | judgment/image | **B + gap ingest** | `Khwan` vs `Khwăn`, entidades HTML sin decodificar en gold parser; bundle desde **Baharna** ≠ Sacred Texts |
 | Legge | 7–64 (muestra) | judgment | **E→resuelto** | Judgment multi-párrafo en ic07+ — parser harness corregido; 18 missing gold residuales (icap2 hex partido, ic08 líneas «In the…») |
 | Zhou Yi | 14 | line 2 | **A — crítico** | Bundle tiene **爻辞 de hex 13** (`同人於宗，吝。`) donde gold ctext espera `大車以載…` |
+| Zhou Yi | 19 | lines 1–2 | **A** | `咸→鹹` en `鹹臨` (omitido en primera pasada interna; confirmado por auditoría externa) |
 | Zhou Yi | 31 | judgment + lines | **A** | Glifo **鹹** (salado) sustituye **咸** (influencia) en todo el hex; prefijos `，` corruptos en líneas |
 | Zhou Yi | 44 | line 5 | **A** | Label duplicado en bundle: `九五：…` concatenado al texto |
 | Zhou Yi | ~40 campos | varios | **B** | Variantes 简/繁 (`无/無`, `于/於`, `后/後`, `志/誌`) — freizl zh-TW vs ctext |
@@ -153,7 +154,7 @@ Las señales rojas de §5 preliminar (**hex 25 truncado, 27 Mencius, 62 hex 28**
 
 | Clase | Wilhelm | Legge | Zhou Yi | Acción recomendada |
 |-------|--------:|------:|--------:|-------------------|
-| **A** — error en bundle | ~12 | ~15–20 (est.) | ~5 | Re-ingest o patch puntual + rebuild |
+| **A** — error en bundle | ~4 (excl. hex 18) | ~0 corrupción (est.) | **5 hex** (13/14, 19, 31, 44) | Re-ingest desde gold |
 | **B** — normalización | ~6 | ~60+ (ortografía Legge) | ~40 | Normalizer + política 繁/简 explícita |
 | **C** — producto (extracto oracle) | ~0–8 | — | — | Actualizar claim UI si se mantiene extracto |
 | **D** — gold mirror | ~8 | ~1 image | 0 | Triangular; no tocar bundle |
@@ -213,7 +214,7 @@ Matriz de cobertura obligatoria:
 | Zhou Yi | 64 | idem (大象 incluido) | 514 |
 | **Total** | | | **1,541** |
 
-**Gate Fase 2 (parcial):** reporte archivado ✅ · clasificación A–E en §5 ✅ · mismatches **clase A abiertos** (hex 14, 31 Zhou Yi; hex 18 Wilhelm; etc.) — **pendiente Fase 3**
+**Gate Fase 2 (parcial):** reporte archivado ✅ · clasificación A–E en §5 ✅ · **P0 Zhou Yi cerrado por evidencia:** 5 hex (13/14, 19, 31, 44) vía `tools/scan-zhouyi-corruption.mjs` — **pendiente Fase 3 remediación**
 
 ### Fase 3 — Remediación (variable, post-aprobación)
 
@@ -282,11 +283,11 @@ Si quedan extractos (ej. judgment sin comentario Confucio): cambiar “sin modif
 
 ### Wilhelm (~95% match vs Parma)
 
-**Diagnóstico:** El bundle proviene de `adamblvck/iching-wilhelm-dataset`; el gold es Parma. La mayoría del texto coincide; los ~26 desvíos restantes mezclan **swap líneas (hex 18)**, **typos OCR**, y **comentario Wilhelm en judgment** (clase C — el producto puede incluir más texto que el oracle puro de Parma).
+**Diagnóstico:** El bundle proviene de `adamblvck/iching-wilhelm-dataset`; el gold es Parma. La mayoría del texto coincide. **Hex 18 refutado** (auditoría externa + verificación bundle): el dato en producto es canónico; el mismatch venía del parser Parma. Resto: typos OCR puntuales, comentario Wilhelm en judgment (clase C).
 
-**Fix puntual:** viable solo para ≤5 campos A confirmados (hex 18, yongLiu hex 2, typos puntuales). No escala.
+**Fix puntual:** **no aplicar swap hex 18** (introduciría el bug). yongLiu hex 2 solo tras verificar fuente.
 
-**Re-ingesta:** crear `tools/ingest-wilhelm.mjs` que scrape/cache Parma (misma fuente que el claim público), mapee judgment/image/lines/yong*, excluya comentario Wilhelm de forma **explícita y documentada**, y reemplace `iching_wilhelm_translation.mjs` + adamblvck como fuente primaria. adamblvck queda como validación cruzada opcional.
+**Re-ingesta:** crear `tools/ingest-wilhelm.mjs` desde Parma **tras validar parser gold** (spot-check incluye hex 18). adamblvck queda cross-check.
 
 **Beneficio:** ingest = gold → un solo pipeline; CI fidelity pasa al ~100% oracle; claims defendibles.
 
@@ -304,11 +305,9 @@ Si quedan extractos (ej. judgment sin comentario Confucio): cambiar “sin modif
 
 **Diagnóstico:** freizl/yijing zh-TW está **cerca** de ctext en ~90% de campos. El ~10% restante incluye:
 - **~40 campos clase B** (variantes 简/繁, puntuación) — resoluble con política de normalización al ingest
-- **~5 campos clase A críticos** (hex 14 línea 2 intercambiada, hex 31 咸→鹹 corrupto, hex 44 label duplicado) — **no** son variantes; son bugs de upstream o ingest
+- **~5 campos clase A críticos** en **5 hex** (13/14 cross-contam, **19**, 31, 44) — gate determinista `node tools/scan-zhouyi-corruption.mjs` = **0** post-remediación
 
-**Fix puntual:** corregir hex 14/31/44 en `iching_zhouyi_translation.mjs` es rápido pero **frágil** (¿qué más está mal en freizl no detectado?).
-
-**Re-ingesta:** `tools/ingest-zhouyi-ctext.mjs` — API gettext + HTML para 大象, normalizar a **tradicional canónico** (mapa 简→繁 documentado, mismo que el harness). freizl queda cross-check.
+**Re-ingesta (fix único acordado):** `tools/ingest-zhouyi-ctext.mjs` — API + HTML 大象, 繁 canónico, strip etiquetas. freizl solo cross-check. Hotfix manual hex-a-hex **desaconsejado** salvo P0 urgente pre-ingester.
 
 **Beneficio:** fuente única ctext = claim actual; hex 1 (乾) ya demostró 100% match en 卦辭+爻辭+用九+大象 post-normalizer.
 
@@ -318,13 +317,13 @@ Si quedan extractos (ej. judgment sin comentario Confucio): cambiar “sin modif
 2. **Wilhelm** — alto impacto producto EN; re-ingest Parma cierra gap claim vs implementación.
 3. **Legge** — mayor esfuerzo de parsing HTML (64 ic + icap2), pero patrón ya probado en harness.
 
-Tras cada re-ingest: `npm run build:data` → `npm run verify:hexagram-fidelity` → gate ≥99.5% match.
+Tras cada re-ingest: `npm run build:data` → Zhou Yi: **`node tools/scan-zhouyi-corruption.mjs` exit 0**; luego `verify:hexagram-fidelity` (≥99.5% solo tras validar parser gold + política 繁/简).
 
 ### Cuándo sí un fix puntual
 
-- Hotfix **P0** (hex 14 Zhou Yi en producción) antes del ingester nuevo.
 - Metadata estructural (trigramas, ya corregido hex 23).
 - Ajustes **solo normalizer** (clase B masiva Zhou Yi) si se documenta política 繁/简 en README.
+- **Prohibido:** hotfix Wilhelm hex 18; parches manuales masivos Legge “99 errores”.
 
 ---
 
@@ -342,11 +341,9 @@ Tras cada re-ingest: `npm run build:data` → `npm run verify:hexagram-fidelity`
 
 ## 11. Próximo paso inmediato
 
-**Fase 3 (post-go)** — implementar re-ingesters alineados con gold (orden: Zhou Yi → Wilhelm → Legge). Hotfix opcional hex 14/31 Zhou Yi si se prioriza antes del ingester.
+**Fase 3 (post-go)** — re-ingesters alineados con gold (orden: Zhou Yi → Wilhelm → Legge). Gate Zhou Yi: `scan-zhouyi-corruption.mjs` = 0. Validación cruzada externa alineada (2026-06-21).
 
-**Sin remediar textos de producto** hasta confirmación explícita de alcance.
-
-Reporte de referencia: `reports/hexagram-fidelity-2026-06-21T18-59-13-876Z.json`.
+Reporte de referencia: `reports/hexagram-fidelity-2026-06-21T18-59-13-876Z.json` · escáner: `tools/scan-zhouyi-corruption.mjs`.
 
 ---
 
