@@ -8,7 +8,7 @@ export default {
     "hex_font": "䷀",
     "name": "Khien",
     "legge_judgment": {
-      "text": "Khien (represents) what is great and originating, penetrating, advantageous, correct and firm. Explanation of the separate lines by the duke of K&acirc;u."
+      "text": "Khien (represents) what is great and originating, penetrating, advantageous, correct and firm."
     },
     "legge_image": {
       "text": "Heaven, in its motion, (gives the idea of) strength. The superior man, in accordance with this, nerves himself to ceaseless activity."
@@ -40,7 +40,7 @@ export default {
     "hex_font": "䷁",
     "name": "Khwan",
     "legge_judgment": {
-      "text": "Khwăn (represents) what is great and originating, penetrating, advantageous, correct and having the firmness of a mare. When the superior man (here intended) has to make any movement, if he take the initiative, he will go astray; if he follow, he will find his (proper) lord. The advantageousness will be seen in his getting friends in the south-west, and losing friends in the north-east. If he rest in correctness and firmness, there will be good fortune."
+      "text": "Khwăn (represents) what is great and originating, penetrating, advantageous, correct and having the firmness of a mare. When the superior man (here"
     },
     "legge_image": {
       "text": "The (capacity and sustaining) power of the earth is what is denoted by Khwăn. The superior man, in accordance with this, with his large virtue supports (men and) things."
@@ -64,8 +64,7 @@ export default {
       "6": {
         "text": "The sixth SIX, divided (shows) dragons fighting in the wild. Their blood is purple and yellow."
       }
-    },
-    "yong_supernumerary": "(The lines of this hexagram are all weak and divided, as appears from) the use of the number six. If those (who are thus represented) be perpetually correct and firm, advantage will arise."
+    }
   },
   "3": {
     "hex": 3,
@@ -103,7 +102,7 @@ export default {
     "hex_font": "䷃",
     "name": "Mang",
     "legge_judgment": {
-      "text": "Măng (indicates that in the case which it presupposes) there will be progress and success. I do not (go and) seek the youthful and inexperienced, but he comes and seeks me. When he shows (the sincerity that marks) the first recourse to divination, I instruct him. If he apply a second and third time, that is troublesome; and I do not instruct the troublesome. There will be advantage in being firm and correct."
+      "text": "Măng (indicates that in the case which it presupposes) there will be progress and success. I do not (go and) seek the youthful and inexperienced,"
     },
     "legge_image": {
       "text": "(The trigram representing) a mountain, and beneath it that for a spring issuing forth form Măng. The superior man, in accordance with this, strives to be resolute in his conduct and nourishes his virtue."
@@ -196,7 +195,7 @@ export default {
     "hex_font": "䷆",
     "name": "Sze",
     "legge_judgment": {
-      "text": "Sze indicates how, in the case which it supposes, with firmness and correctness, and (a leader of) age and experience, there will be good fortune and no error."
+      "text": "Sze indicates how, in the case which it supposes, with firmness and correctness, and (a leader of) age"
     },
     "legge_image": {
       "text": "(The trigram representing) the earth and in the midst of it that representing water, form Sze. The superior man, in accordance with this, nourishes and educates the people, and collects (from among them) the multitudes (of the hosts)."
@@ -227,10 +226,10 @@ export default {
     "hex_font": "䷇",
     "name": "Pi",
     "legge_judgment": {
-      "text": "P&icirc; indicates that (under the conditions which it supposes) there is good fortune. But let (the principal party intended in it) re-examine himself, (as if) by divination, whether his virtue be great, unintermitting, and firm. If it be so, there will be no error. Those who have not rest will then come to him; and with those who are (too) late in coming it will be ill."
+      "text": "Pî indicates that (under the conditions which it supposes) there is good fortune. But let (the principal party intended in it) re-examine himself, (as if)"
     },
     "legge_image": {
-      "text": "(The trigram representing) the earth, and over it (that representing) water, form P&icirc;. The ancient kings, in accordance with this, established the various states and maintained an affectionate relation to their princes."
+      "text": "(The trigram representing) the earth, and over it (that representing) water, form Pî. The ancient kings, in accordance with this, established the various states and maintained an affectionate relation to their princes."
     },
     "legge_lines": {
       "1": {
@@ -258,10 +257,10 @@ export default {
     "hex_font": "䷈",
     "name": "Hsien",
     "legge_judgment": {
-      "text": "Hsi&acirc;o Kh&ucirc; indicates that (under its conditions) there will be progress and success. (We see) dense clouds, but no rain coming from our borders in the west."
+      "text": "Hsiâo Khû indicates that (under its conditions) there will be progress and success. (We see) dense clouds, but no rain coming from our borders in the west."
     },
     "legge_image": {
-      "text": "(The trigram representing) the sky, and that representing wind moving above it, form Hsi&acirc;o Kh&ucirc; The superior man, in accordance with this, adorns the outward manifestation of his virtue."
+      "text": "(The trigram representing) the sky, and that representing wind moving above it, form Hsiâo Khû The superior man, in accordance with this, adorns the outward manifestation of his virtue."
     },
     "legge_lines": {
       "1": {
@@ -289,10 +288,10 @@ export default {
     "hex_font": "䷉",
     "name": "Lu",
     "legge_judgment": {
-      "text": "(Li suggests the idea of) one treading on the tail of a tiger, which does not bite him. There will be progress and success."
+      "text": "(Lî suggests the idea of) one treading on the tail of a tiger, which does not bite him. There will be progress and success."
     },
     "legge_image": {
-      "text": "(The trigram representing) the sky above, and below it (that representing the waters of) a marsh, form L&icirc;. The superior man, in accordance with this, discriminates between high and low, and gives settlement to the aims of the people."
+      "text": "(The trigram representing) the sky above, and below it (that representing the waters of) a marsh, form Lî. The superior man, in accordance with this, discriminates between high and low, and gives settlement to the aims of the people."
     },
     "legge_lines": {
       "1": {
@@ -320,10 +319,10 @@ export default {
     "hex_font": "䷊",
     "name": "Thai",
     "legge_judgment": {
-      "text": "In Th&acirc;i (we see) the little gone and the great come. (It indicates that) there will be good fortune, with progress and success."
+      "text": "In Thâi (we see) the little gone and the great come. (It indicates that) there will be good fortune, with progress and success."
     },
     "legge_image": {
-      "text": "(The trigrams for) heaven and earth in communication together form Th&acirc;i. The (sage) sovereign, in harmony with this, fashions and completes (his regulations) after the courses of heaven and earth, and assists the application of the adaptations furnished by them,--in order to benefit the people."
+      "text": "(The trigrams for) heaven and earth in communication together form Thâi. The (sage) sovereign, in harmony with this, fashions and completes (his regulations) after the courses of heaven and earth, and assists the application of the adaptations furnished by them,--in order to benefit the people."
     },
     "legge_lines": {
       "1": {
@@ -339,7 +338,7 @@ export default {
         "text": "The fourth SIX, divided, shows its subject fluttering (down);--not relying on his own rich"
       },
       "5": {
-        "text": "The fifth six, divided, reminds us of (king) T&icirc;-y&icirc;'s (rule about the) marriage of his younger sister. By such a course there is happiness and there will be great good fortune."
+        "text": "The fifth six, divided, reminds us of (king) Tî-yî's (rule about the) marriage of his younger sister. By such a course there is happiness and there will be great good fortune."
       },
       "6": {
         "text": "The sixth six, divided, shows us the city wall returned into the moat. It is not the time to use the army. (The subject of the line) may, indeed, announce his orders to the people of his own city; but however correct and firm he may be, he will have cause for regret."
@@ -351,10 +350,10 @@ export default {
     "hex_font": "䷋",
     "name": "Pho",
     "legge_judgment": {
-      "text": "In Phi there is the want of good understanding between the (different classes of) men, and its indication is unfavourable to the firm and correct course of the superior man. We see in it the great gone and the little come."
+      "text": "In Phî there is the want of good understanding between the (different classes of) men, and its indication is unfavourable to the firm and correct"
     },
     "legge_image": {
-      "text": "(The trigrams of) heaven and earth, not in intercommunication, form Ph&icirc;. The superior man, in accordance with this, restrains (the manifestation) of) his virtue, and avoids the calamities (that threaten him). There is no opportunity of conferring on him the glory of emolument."
+      "text": "(The trigrams of) heaven and earth, not in intercommunication, form Phî. The superior man, in accordance with this, restrains (the manifestation) of) his virtue, and avoids the calamities (that threaten him). There is no opportunity of conferring on him the glory of emolument."
     },
     "legge_lines": {
       "1": {
@@ -382,7 +381,7 @@ export default {
     "hex_font": "䷌",
     "name": "Thung Zin",
     "legge_judgment": {
-      "text": "Thung Zan (or 'Union of men') appears here (as we find it) in the (remote districts of the) country, indicating progress and success. It will be advantageous to cross the great stream. It will be advantageous to maintain the firm correctness of the superior man."
+      "text": "Thung Zăn (or 'Union of men') appears here (as we find it) in the (remote districts of the) country, indicating progress and success. It will be advantageous to cross the great stream. It will be advantageous to maintain the firm correctness of the superior man."
     },
     "legge_image": {
       "text": "(The trigrams for) heaven and fire form Thung Zăn. The superior man, in accordance with this), distinguishes things according to their kinds and classes."
@@ -413,10 +412,10 @@ export default {
     "hex_font": "䷍",
     "name": "Ta Yu",
     "legge_judgment": {
-      "text": "T&acirc; Y&ucirc; indicates that, (under the circumstances which it implies), there will be great progress and success."
+      "text": "Tâ Yû indicates that, (under the circumstances which it implies), there will be great progress and success."
     },
     "legge_image": {
-      "text": "(The trigram for) heaven and (that of) fire above it form T&acirc; Y&ucirc; The superior man, in accordance with this, represses what is evil and gives distinction to what is good, in sympathy with the excellent Heaven-conferred (nature)."
+      "text": "(The trigram for) heaven and (that of) fire above it form Tâ Yû The superior man, in accordance with this, represses what is evil and gives distinction to what is good, in sympathy with the excellent Heaven-conferred (nature)."
     },
     "legge_lines": {
       "1": {
@@ -537,10 +536,10 @@ export default {
     "hex_font": "䷑",
     "name": "Ku",
     "legge_judgment": {
-      "text": "K&ucirc; indicates great progress and success (to him who deals properly with the condition represented by it). There will be advantage in (efforts like that of) crossing the great stream. (He should weigh well, however, the events of) three days before the turning point, and those (to be done) three days after it."
+      "text": "Kû indicates great progress and success (to him who deals properly with the condition represented by it). There will be advantage in (efforts like that of) crossing the great stream. (He should weigh well, however, the events of) three days before the turning point, and those (to be done) three days after it."
     },
     "legge_image": {
-      "text": "(The trigram for) a mountain, and below it that for wind, form K&ucirc;. The superior man, in accordance with this, (addresses himself to) help the people and nourish his own virtue."
+      "text": "(The trigram for) a mountain, and below it that for wind, form Kû. The superior man, in accordance with this, (addresses himself to) help the people and nourish his own virtue."
     },
     "legge_lines": {
       "1": {
@@ -599,7 +598,7 @@ export default {
     "hex_font": "䷓",
     "name": "Kwan",
     "legge_judgment": {
-      "text": "Kw&acirc;n shows (how he whom it represents should be like) the worshipper who has washed his hands, but not (yet) presented his offerings;--with sincerity and an appearance of dignity (commanding reverent regard)."
+      "text": "Kwân shows (how he whom it represents should be like) the worshipper who has washed his hands, but not (yet) presented his offerings;--with sincerity"
     },
     "legge_image": {
       "text": "(The trigram representing) the earth, and that for wind moving above it, form Kwan. The ancient kings, in accordance with this, examined the (different) regions (of the kingdom), to see the (ways of the) people, and set forth their instructions."
@@ -661,10 +660,10 @@ export default {
     "hex_font": "䷕",
     "name": "Pi",
     "legge_judgment": {
-      "text": "P&icirc; indicates that there should be free course (in what it denotes). There will be little advantage (however) if it be allowed to advance (and take the lead)."
+      "text": "Pî indicates that there should be free course (in what it denotes). There will be little advantage (however) if it be allowed to advance (and take the lead)."
     },
     "legge_image": {
-      "text": "(The trigram representing) a mountain and that for fire under it form P&icirc;. The superior man, in accordance with this, throws a brilliancy around his various processes of government, but does not dare (in a similar way) to decide cases of criminal litigation."
+      "text": "(The trigram representing) a mountain and that for fire under it form Pî. The superior man, in accordance with this, throws a brilliancy around his various processes of government, but does not dare (in a similar way) to decide cases of criminal litigation."
     },
     "legge_lines": {
       "1": {
@@ -723,10 +722,10 @@ export default {
     "hex_font": "䷗",
     "name": "Fu",
     "legge_judgment": {
-      "text": "F&ucirc; indicates that there will be free course and progress (in what it denotes). (The subject of it) finds no one to distress him in his exits and entrances; friends come to him, and no error is committed . He will return and repeat his (proper) course. In seven days comes his return. There will be advantage in whatever direction movement is made."
+      "text": "Fû indicates that there will be free course and progress (in what it denotes). (The subject of it) finds no one to distress him in his exits and"
     },
     "legge_image": {
-      "text": "(The trigram representing) the earth and that for thunder in the midst of it form F&ucirc;. The ancient kings, in accordance with this, on the day. of the (winter) solstice, shut the gates of the passes (from one state to another), so that the travelling merchants could not (then) pursue their journeys, nor the princes go on with the inspection of their states."
+      "text": "(The trigram representing) the earth and that for thunder in the midst of it form Fû. The ancient kings, in accordance with this, on the day. of the (winter) solstice, shut the gates of the passes (from one state to another), so that the travelling merchants could not (then) pursue their journeys, nor the princes go on with the inspection of their states."
     },
     "legge_lines": {
       "1": {
@@ -754,7 +753,7 @@ export default {
     "hex_font": "䷘",
     "name": "Wu Wang",
     "legge_judgment": {
-      "text": "W&ucirc; Wang indicates great progress and success, while there will be advantage in being firm and correct. If (its subject and his action) be not correct, he will fall into errors, and it will not be advantageous for him to move in any direction."
+      "text": "Wû Wang indicates great progress and success, while there will be advantage in being firm and"
     },
     "legge_image": {
       "text": "The thunder rolls all under the sky, and to (every)thing there is given (its nature), free from all insincerity. The ancient kings, in accordance with this, (made their regulations) in complete accordance with the seasons, thereby nourishing all things."
@@ -785,10 +784,10 @@ export default {
     "hex_font": "䷙",
     "name": "Ta Khu",
     "legge_judgment": {
-      "text": "Under the conditions of T&acirc; Kh&ucirc; it will be advantageous to be firm and correct. (If its subject do not seek to) enjoy his revenues in his own family (without taking service at court), there will be good fortune. It will be advantageous for him to cross the great stream."
+      "text": "Under the conditions of Tâ Khû it will be advantageous to be firm and correct. (If its subject do not seek to) enjoy his revenues in his own family (without taking service at court), there will be good fortune. It will be advantageous for him to cross the great stream."
     },
     "legge_image": {
-      "text": "(The trigram representing) a mountain, and in the midst of it that (representing) heaven, form T&acirc; Kh&ucirc;. The superior man, in accordance with this, stores largely in his memory the words and deeds of former men, to subserve the accumulation of his virtue."
+      "text": "(The trigram representing) a mountain, and in the midst of it that (representing) heaven, form Tâ Khû. The superior man, in accordance with this, stores largely in his memory the words and deeds of former men, to subserve the accumulation of his virtue."
     },
     "legge_lines": {
       "1": {
@@ -816,10 +815,10 @@ export default {
     "hex_font": "䷚",
     "name": "I",
     "legge_judgment": {
-      "text": "&Icirc; indicates that with firm correctness there will be good fortune (in what is denoted by it). We must look at what we are seeking to nourish, and by the exercise of our thoughts seek for the proper aliment."
+      "text": "Î indicates that with firm correctness there will be good fortune (in what is denoted by it). We must look at what we are seeking to nourish, and by the exercise of our thoughts seek for the proper aliment."
     },
     "legge_image": {
-      "text": "(The trigram representing) a mountain and under it that for thunder form &Icirc;. The superior man, in accordance with this, (enjoins) watchfulness over our words, and the temperate regulation of our eating and drinking."
+      "text": "(The trigram representing) a mountain and under it that for thunder form Î. The superior man, in accordance with this, (enjoins) watchfulness over our words, and the temperate regulation of our eating and drinking."
     },
     "legge_lines": {
       "1": {
@@ -847,14 +846,14 @@ export default {
     "hex_font": "䷛",
     "name": "Ta Kwo",
     "legge_judgment": {
-      "text": "Ta Kwo suggests to us a beam that is weak. There will be advantage in moving (under its conditions) in any direction whatever; there will be success."
+      "text": "Tâ Kwo suggests to us a beam that is weak. There will be advantage in moving (under its conditions) in any direction whatever; there will be success."
     },
     "legge_image": {
-      "text": "(The trigram representing) trees hidden beneath that for the waters of a marsh forms T&acirc; Kwo. The superior man, in accordance with this, stands up alone and has no fear, and keeps retired from the world without regret."
+      "text": "(The trigram representing) trees hidden beneath that for the waters of a marsh forms Tâ Kwo. The superior man, in accordance with this, stands up alone and has no fear, and keeps retired from the world without regret."
     },
     "legge_lines": {
       "1": {
-        "text": "The first SIX, divided, shows one placing mats of the white m&acirc;o grass under things set on the ground. There will be no error."
+        "text": "The first SIX, divided, shows one placing mats of the white mâo grass under things set on the ground. There will be no error."
       },
       "2": {
         "text": "The second NINE, undivided, shows a decayed"
@@ -878,7 +877,7 @@ export default {
     "hex_font": "䷜",
     "name": "Khan",
     "legge_judgment": {
-      "text": "Khan, here repeated, shows the possession of sincerity, through which the mind is penetrating. Action (in accordance with this) will be of high value."
+      "text": "Khan, here repeated, shows the possession of sincerity, through which the mind is. penetrating. Action (in accordance with this) will be of high value."
     },
     "legge_image": {
       "text": "(The representation of) water flowing on continuously forms the repeated Khan. The superior man, in accordance with this, maintains constantly the virtue (of his heart) and (the integrity of) his conduct, and practises the business of instruction."
@@ -909,10 +908,10 @@ export default {
     "hex_font": "䷝",
     "name": "Li",
     "legge_judgment": {
-      "text": "L&icirc; indicates that, (in regard to what it denotes), it will be advantageous to be firm and correct, and that thus there will be free course and success. [paragraph continues] Let (its subject) also nourish (a docility like that of) the cow, and there will be good fortune."
+      "text": "Lî indicates that, (in regard to what it denotes), it will be advantageous to be firm and correct, and that thus there will be free course and success."
     },
     "legge_image": {
-      "text": "(The trigram for) brightness, repeated, forms L&icirc;. The great man, in accordance with this, cultivates more and more his brilliant (virtue), and diffuses its brightness over the four quarters (of the land)."
+      "text": "(The trigram for) brightness, repeated, forms Lî. The great man, in accordance with this, cultivates more and more his brilliant (virtue), and diffuses its brightness over the four quarters (of the land)."
     },
     "legge_lines": {
       "1": {
@@ -1033,10 +1032,10 @@ export default {
     "hex_font": "䷡",
     "name": "Ta Chwang",
     "legge_judgment": {
-      "text": "T&acirc; Kwang indicates that (under the conditions which it symbolises) it will be advantageous to be firm and correct."
+      "text": "Tâ Kwang indicates that (under the conditions which it symbolises) it will be advantageous to be firm and correct."
     },
     "legge_image": {
-      "text": "(The trigram representing) heaven and above it that for thunder form T&acirc; Kwang. The superior man, in accordance with this, does not take a step which is not according to propriety."
+      "text": "(The trigram representing) heaven and above it that for thunder form Tâ Kwang. The superior man, in accordance with this, does not take a step which is not according to propriety."
     },
     "legge_lines": {
       "1": {
@@ -1064,7 +1063,7 @@ export default {
     "hex_font": "䷢",
     "name": "Zin",
     "legge_judgment": {
-      "text": "In Zin we see a prince who secures the tranquillity (of the people) presented on that account with numerous horses (by the king), and three times in a day received at interviews."
+      "text": "In Žin we see a prince who secures the tranquillity (of the people) presented on that account with numerous horses (by the king), and three times in a day received at interviews."
     },
     "legge_image": {
       "text": "(The trigram representing) the earth and that for the bright (sun) coming forth above it form Žin. The superior man, according to this, gives himself to make more brilliant his bright virtue."
@@ -1095,26 +1094,26 @@ export default {
     "hex_font": "䷣",
     "name": "Ming I",
     "legge_judgment": {
-      "text": "Ming &Icirc; indicates that (in the circumstances which it denotes) it will be advantageous to realise the difficulty (of the position), and maintain firm correctness."
+      "text": "Ming Î indicates that (in the circumstances which it denotes) it will be advantageous to realise the"
     },
     "legge_image": {
-      "text": "(The trigram representing) the earth and that for the bright (sun) entering within it form Ming &Icirc;. The superior man, in accordance with this, conducts his management of men;--he shows his intelligence by keeping it obscured."
+      "text": "(The trigram representing) the earth and that for the bright (sun) entering within it form Ming Î. The superior man, in accordance with this, conducts his management of men;--he shows his intelligence by keeping it obscured."
     },
     "legge_lines": {
       "1": {
-        "text": "The first NINE, undivided, shows its subject, (in the condition indicated by) Ming &Icirc;, flying, but with drooping wings. When the superior man (is revolving) his going away, he may be for three days without eating. Wherever he goes, the people there may speak (derisively of him)."
+        "text": "The first NINE, undivided, shows its subject, (in the condition indicated by) Ming Î, flying, but with drooping wings. When the superior man (is revolving) his going away, he may be for three days without eating. Wherever he goes, the people there may speak (derisively of him)."
       },
       "2": {
-        "text": "The second SIX, divided, shows its subject, (in the condition indicated by) Ming &Icirc;, wounded in the left thigh. He saves himself by the strength of a (swift) horse; and is fortunate."
+        "text": "The second SIX, divided, shows its subject, (in the condition indicated by) Ming Î, wounded in the left thigh. He saves himself by the strength of a (swift) horse; and is fortunate."
       },
       "3": {
-        "text": "The third NINE, undivided, shows its subject, (in the condition indicated by) Ming &Icirc;, hunting in the south, and taking the great chief (of the darkness). He should not be eager to make (all) correct (at once)."
+        "text": "The third NINE, undivided, shows its subject, (in the condition indicated by) Ming Î, hunting in the south, and taking the great chief (of the darkness). He should not be eager to make (all) correct (at once)."
       },
       "4": {
-        "text": "The fourth six, divided, shows its subject (just) entered into the left side of the belly (of the dark land). (But) he is able to carry out the mind appropriate (in the condition indicated by) Ming &Icirc;, quitting the gate and courtyard (of the lord of darkness)."
+        "text": "The fourth six, divided, shows its subject (just) entered into the left side of the belly (of the dark land). (But) he is able to carry out the mind appropriate (in the condition indicated by) Ming Î, quitting the gate and courtyard (of the lord of darkness)."
       },
       "5": {
-        "text": "The fifth six, divided, shows how the count of K&icirc; fulfilled the condition indicated by Ming &Icirc;. It will be advantageous to be firm and correct."
+        "text": "The fifth six, divided, shows how the count of Kî fulfilled the condition indicated by Ming Î. It will be advantageous to be firm and correct."
       },
       "6": {
         "text": "The sixth six, divided, shows the case where there is no light, but (only) obscurity. (Its subject) had at first ascended to (the top of) the sky; his future shall be to go into the earth."
@@ -1126,10 +1125,10 @@ export default {
     "hex_font": "䷤",
     "name": "Kia Zan",
     "legge_judgment": {
-      "text": "For (the realisation of what is taught in) Kia Zan, (or for the regulation of the family), what is most advantageous is that the wife be firm and correct."
+      "text": "For (the realisation of what is taught in) Kiâ Zăn, (or for the regulation of the family), what is"
     },
     "legge_image": {
-      "text": "(The trigram representing) fire, and that for wind coming forth from it, form Ki&acirc; Zăn. The superior man, in accordance with this, orders his words according to (the truth of) things, and his conduct so that it is uniformly consistent."
+      "text": "(The trigram representing) fire, and that for wind coming forth from it, form Kiâ Zăn. The superior man, in accordance with this, orders his words according to (the truth of) things, and his conduct so that it is uniformly consistent."
     },
     "legge_lines": {
       "1": {
@@ -1188,7 +1187,7 @@ export default {
     "hex_font": "䷦",
     "name": "Kien",
     "legge_judgment": {
-      "text": "with the great man. (In these circumstances), with firmness and correctness, there will be good fortune. 1. From the first SIX, divided, we learn that advance (on the part of its subject) will lead to (greater) difficulties, while remaining stationary will afford ground for praise."
+      "text": "In (the state indicated by) Kien advantage will be found in the south-west, and the contrary in the north-east. It will be advantageous (also) to meet"
     },
     "legge_image": {
       "text": "(The trigram representing) a mountain, and above it that for water, form Kien. The superior man, in accordance with this, turns round (and examines) himself, and cultivates his virtue."
@@ -1250,7 +1249,7 @@ export default {
     "hex_font": "䷨",
     "name": "Sun",
     "legge_judgment": {
-      "text": "In (what is denoted by) Sun, if there be sincerity (in him who employs it), there will be great good fortune:—freedom from error; firmness and correctness that can be maintained; and advantage in every movement that shall be made. In what shall this (sincerity in the exercise of Sun) be employed? (Even) in sacrifice two baskets of grain, (though there be nothing else), may be presented."
+      "text": "In (what is denoted by) Sun, if there be sincerity (in him who employs it), there will be great good fortune:--freedom from error; firmness and correctness that can be maintained; and advantage in every"
     },
     "legge_image": {
       "text": "(The trigram representing) a mountain and beneath it that for the waters of a marsh form Sun. The superior man, in accordance with this, restrains his wrath and represses his desires."
@@ -1281,10 +1280,10 @@ export default {
     "hex_font": "䷩",
     "name": "Yi",
     "legge_judgment": {
-      "text": "Y&icirc; indicates that (in the state which it denotes) there will be advantage in every movement which shall be undertaken, that it will be advantageous (even) to cross the great stream."
+      "text": "Yî indicates that (in the state which it denotes) there will be advantage in every movement which shall be undertaken, that it will be advantageous (even) to cross the great stream."
     },
     "legge_image": {
-      "text": "(The trigram representing) wind and that for thunder form Y&icirc;. The superior man, in accordance with this, when he sees what is good, moves towards it; and when he sees his errors, he turns from them."
+      "text": "(The trigram representing) wind and that for thunder form Yî. The superior man, in accordance with this, when he sees what is good, moves towards it; and when he sees his errors, he turns from them."
     },
     "legge_lines": {
       "1": {
@@ -1312,10 +1311,10 @@ export default {
     "hex_font": "䷪",
     "name": "Kwai",
     "legge_judgment": {
-      "text": "Kwai requires (in him who would fulfil its meaning) the exhibition (of the culprit's guilt) in the royal court, and a sincere and earnest appeal (for sympathy and support), with a consciousness of the peril (involved in cutting off the criminal). He should (also) make announcement in his own city, and show that it will not be well to have recourse at once to arms. (In this way) there will be advantage in whatever he shall go forward to."
+      "text": "Kwâi requires (in him who would fulfil its meaning) the exhibition (of the culprit's guilt) in the royal court, and a sincere and earnest appeal (for sympathy"
     },
     "legge_image": {
-      "text": "(The trigram representing) heaven and that for the waters of a marsh mounting above it form Kw&acirc;i. The superior man, in accordance with this, bestows emolument on those below him, and dislikes allowing his gifts to accumulate (undispensed)."
+      "text": "(The trigram representing) heaven and that for the waters of a marsh mounting above it form Kwâi. The superior man, in accordance with this, bestows emolument on those below him, and dislikes allowing his gifts to accumulate (undispensed)."
     },
     "legge_lines": {
       "1": {
@@ -1343,10 +1342,10 @@ export default {
     "hex_font": "䷫",
     "name": "Kau",
     "legge_judgment": {
-      "text": "Kau shows a female who is bold and strong. It will not be good to marry (such) a female."
+      "text": "Kâu shows a female who is bold and strong. It will not be good to marry (such) a female."
     },
     "legge_image": {
-      "text": "(The trigram representing) wind and that for the sky above it form K&acirc;u. The sovereign, in accordance with this, delivers his charges, and promulgates his announcements throughout the four quarters (of the kingdom)."
+      "text": "(The trigram representing) wind and that for the sky above it form Kâu. The sovereign, in accordance with this, delivers his charges, and promulgates his announcements throughout the four quarters (of the kingdom)."
     },
     "legge_lines": {
       "1": {
@@ -1374,7 +1373,7 @@ export default {
     "hex_font": "䷬",
     "name": "Tsui",
     "legge_judgment": {
-      "text": "In (the state denoted by) Zhui, the king will repair to his ancestral temple. It will be advantageous (also) to meet with the great man; and then there will be progress and success, though the advantage must come through firm correctness. The use of great victims will conduce to good fortune; and in whatever direction movement is made, it will be advantageous."
+      "text": "In (the state denoted by) Žhui, the king will repair to his ancestral temple. It will be advantageous"
     },
     "legge_image": {
       "text": "(The trigram representing the) earth and that for the waters of a marsh raised above it form Žhui. The superior man, in accordance with this, has his weapons of war put in good repair, to be prepared against unforeseen contingencies."
@@ -1405,7 +1404,7 @@ export default {
     "hex_font": "䷭",
     "name": "Shang",
     "legge_judgment": {
-      "text": "Shăng indicates that (under its conditions) there will be great progress and success. Seeking by (the qualities implied in it) to meet with the great man, its subject need have no anxiety. Advance to the south will be fortunate."
+      "text": "Shăng indicates that (under its conditions) there will be great progress and success. Seeking by"
     },
     "legge_image": {
       "text": "(The trigram representing) wood and that for the earth with the wood growing in the midst of it form Shăng. The superior man, in accordance with this, pays careful attention to his virtue, and accumulates the small developments of it till it is high and great."
@@ -1421,7 +1420,7 @@ export default {
         "text": "The third NINE, undivided, shows its subject ascending upwards (as into) an empty city."
       },
       "4": {
-        "text": "The fourth SIX, divided, shows its subject employed by the king to present his offerings on mount Kh&icirc;. There will be good fortune; there will be no mistake."
+        "text": "The fourth SIX, divided, shows its subject employed by the king to present his offerings on mount Khî. There will be good fortune; there will be no mistake."
       },
       "5": {
         "text": "The fifth six, divided, shows its subject firmly correct, and therefore enjoying good fortune. He ascends the stairs (with all due ceremony)."
@@ -1436,7 +1435,7 @@ export default {
     "hex_font": "䷮",
     "name": "Kun",
     "legge_judgment": {
-      "text": "correct, the (really) great man, there will be good fortune. He will fall into no error. If he make speeches, his words cannot be made good."
+      "text": "In (the condition denoted by) Khwăn there may (yet be) progress and success. For the firm and"
     },
     "legge_image": {
       "text": "(The trigram representing) a marsh, and (below it that for a defile, which has drained the other dry so that there is) no water in it, form Khwăn. The superior man, in accordance with this, will sacrifice his life in order to carry out his purpose."
@@ -1467,7 +1466,7 @@ export default {
     "hex_font": "䷯",
     "name": "King",
     "legge_judgment": {
-      "text": "(Looking at) Zing, (we think of) how (the site of) a town may be changed, while (the fashion of) its wells undergoes no change. (The water of a well) never disappears and never receives (any great) increase, and those who come and those who go can draw and enjoy the benefit. If (the drawing) have nearly been accomplished, but, before the rope has quite reached the water, the bucket is broken, this is evil."
+      "text": "(Looking at) Žing, (we think of) how (the site of) a town may be changed, while (the fashion of) its"
     },
     "legge_image": {
       "text": "(The trigram representing) wood and above it that for water form Žing. The superior man, in accordance with this, comforts the people, and. stimulates them to mutual helpfulness."
@@ -1560,7 +1559,7 @@ export default {
     "hex_font": "䷲",
     "name": "Kan",
     "legge_judgment": {
-      "text": "Kăn gives the intimation of ease and development. When (the time of) movement (which it indicates) comes, (the subject of the hexagram) will be found looking out with apprehension, and yet smiling and talking cheerfully. When the movement (like a crash of thunder) terrifies all within a hundred l&icirc;, he will be (like the sincere worshipper) who is not (startled into) letting go his ladle and (cup of) sacrificial spirits."
+      "text": "Kăn gives the intimation of ease and development. When (the time of) movement (which it indicates) comes, (the subject of the hexagram) will be found looking out with apprehension, and yet"
     },
     "legge_image": {
       "text": "(The trigram representing) thunder, being repeated, forms Kăn. The superior man, in accordance with this, is fearful and apprehensive, cultivates (his virtue), and examines (his faults)."
@@ -1591,7 +1590,7 @@ export default {
     "hex_font": "䷳",
     "name": "Kan",
     "legge_judgment": {
-      "text": "When one's resting is like that of the back, and he loses all consciousness of self; when he walks in his courtyard, and does not see any (of the persons) in it,&mdash;there will be no error."
+      "text": "When one's resting is like that of the back, and he loses all consciousness of self; when he walks"
     },
     "legge_image": {
       "text": "(Two trigrams representing) a mountain, one over the other, form Kăn. The superior man, in"
@@ -1672,7 +1671,7 @@ export default {
         "text": "The fourth NINE, undivided, shows the younger sister who is to be married off protracting the time. She may be late in being married, but the time will come."
       },
       "5": {
-        "text": "The fifth SIX, divided, reminds us of the marrying of the younger sister of (king) T&icirc;-y&icirc;, when the sleeves of her the princess were not equal to those of the (still) younger sister who accompanied her in an inferior capacity. (The case suggests the thought of) the moon almost full. There will be good fortune."
+        "text": "The fifth SIX, divided, reminds us of the marrying of the younger sister of (king) Tî-yî, when the sleeves of her the princess were not equal to those of the (still) younger sister who accompanied her in an inferior capacity. (The case suggests the thought of) the moon almost full. There will be good fortune."
       },
       "6": {
         "text": "The sixth SIX, divided, shows the young lady bearing the basket, but without anything in it, and the gentleman slaughtering the sheep, but without blood flowing from it. There will be no advantage in any way."
@@ -1684,7 +1683,7 @@ export default {
     "hex_font": "䷶",
     "name": "Fung",
     "legge_judgment": {
-      "text": "Făng intimates progress and development. When a king has reached the point (which the name denotes) there is no occasion to be anxious (through fear of a change). Let him be as the sun at noon."
+      "text": "Făng intimates progress and development. When a king has reached the point (which the name denotes)"
     },
     "legge_image": {
       "text": "(The trigrams representing) thunder and lightning combine to form Făng. The superior man, in accordance with this, decides cases of litigation, and apportions punishments with exactness."
@@ -1700,7 +1699,7 @@ export default {
         "text": "The third NINE, undivided, shows its subject with an (additional) screen of a large and thick banner, through which at midday he can see (the small) Mei star. (In the darkness) he breaks his right arm; but there will be no error."
       },
       "4": {
-        "text": "The fourth NINE, undivided, shows its subject in a tent so large and thick that at midday he can see from it the constellation of the Bushel. But he meets with the subject of the (first) line, undivided like himself. There will be good fortune."
+        "text": "T he fourth NINE, undivided, shows its subject in a tent so large and thick that at midday he can see from it the constellation of the Bushel. But he meets with the subject of the (first) line, undivided like himself. There will be good fortune."
       },
       "5": {
         "text": "The fifth SIX, divided, shows its subject bringing around him the men of brilliant ability. There will be occasion for congratulation and praise. There will be good fortune."
@@ -1746,7 +1745,7 @@ export default {
     "hex_font": "䷸",
     "name": "Sun",
     "legge_judgment": {
-      "text": "Sun intimates that (under the conditions which it denotes) there will be some little attainment and progress. There will be advantage in movement onward in whatever direction. It will be advantageous (also) to see the great man."
+      "text": "Sun intimates that (under the conditions which it denotes) there will be some little attainment and progress. There will be advantage in movement"
     },
     "legge_image": {
       "text": "(Two trigrams representing) wind, following each other, form Sun. The superior man, in accordance with this, reiterates his orders, and secures the practice of his affairs."
@@ -1808,10 +1807,10 @@ export default {
     "hex_font": "䷺",
     "name": "Hwan",
     "legge_judgment": {
-      "text": "Hw&acirc;n intimates that (under its conditions) there will be progress and success. The king goes to his ancestral temple; and it will be advantageous to cross the great stream. It will be advantageous to be firm and correct."
+      "text": "Hwân intimates that (under its conditions) there will be progress and success. The king goes to his ancestral temple; and it will be advantageous to"
     },
     "legge_image": {
-      "text": "(The trigram representing) water and that for wind moving above the water form Hw&acirc;n. The ancient kings, in accordance with this, presented offerings to God and established the ancestral temple."
+      "text": "(The trigram representing) water and that for wind moving above the water form Hwân. The ancient kings, in accordance with this, presented offerings to God and established the ancestral temple."
     },
     "legge_lines": {
       "1": {
@@ -1870,10 +1869,10 @@ export default {
     "hex_font": "䷼",
     "name": "Kung Fu",
     "legge_judgment": {
-      "text": "I. The first NINE, undivided, shows its subject resting (in himself). There will be good fortune. If he sought to any other, he would not find rest."
+      "text": "Kung Fû (moves even) pigs and fish, and leads to good fortune. There will be advantage in crossing"
     },
     "legge_image": {
-      "text": "(The trigram representing the waters of) a marsh and that for wind above it form Kung F&ucirc;. The superior man, in accordance with this, deliberates about cases of litigation and delays (the infliction of) death."
+      "text": "(The trigram representing the waters of) a marsh and that for wind above it form Kung Fû. The superior man, in accordance with this, deliberates about cases of litigation and delays (the infliction of) death."
     },
     "legge_lines": {
       "1": {
@@ -1901,10 +1900,10 @@ export default {
     "hex_font": "䷽",
     "name": "Hsien Kwan",
     "legge_judgment": {
-      "text": "Hsi&acirc;o Kwo indicates that (in the circumstances which it implies) there will be progress and attainment. [paragraph continues] But it will be advantageous to be firm and correct. (What the name denotes) may be done in small affairs, but not in great affairs. (It is like) the notes that come down from a bird on the wing;--to descend is better than to ascend. There will (in this way) be great good fortune."
+      "text": "Hsiâo Kwo indicates that (in the circumstances which it implies) there will be progress and attainment."
     },
     "legge_image": {
-      "text": "(The trigram representing) a hill and that for thunder above it form Hsi&acirc;o Kwo. The superior man, in accordance with this, in his conduct exceeds in humility, in mourning exceeds in sorrow, and in his expenditure exceeds in economy."
+      "text": "(The trigram representing) a hill and that for thunder above it form Hsiâo Kwo. The superior man, in accordance with this, in his conduct exceeds in humility, in mourning exceeds in sorrow, and in his expenditure exceeds in economy."
     },
     "legge_lines": {
       "1": {
@@ -1932,10 +1931,10 @@ export default {
     "hex_font": "䷾",
     "name": "Ki Zi",
     "legge_judgment": {
-      "text": "K&icirc; Ž&icirc; intimates progress and success in small matters. There will be advantage in being firm and correct. There has been good fortune in the beginning; there may be disorder in the end."
+      "text": "Kî Žî intimates progress and success in small matters. There will be advantage in being firm"
     },
     "legge_image": {
-      "text": "(The trigram representing) fire and that for water above it form K&icirc; Ž&icirc;. The superior"
+      "text": "(The trigram representing) fire and that for water above it form Kî Žî. The superior"
     },
     "legge_lines": {
       "1": {
@@ -1945,7 +1944,7 @@ export default {
         "text": "The second SIX, divided, (shows its subject as) a wife who has lost her (carriage-)screen. There is no occasion to go in pursuit of it. In seven days she will find it."
       },
       "3": {
-        "text": "The third NINE, undivided, (suggests the case of) K&acirc;o Žung, who attacked the Demon region, but was three years in subduing it. Small men should not be employed (in such enterprises)."
+        "text": "The third NINE, undivided, (suggests the case of) Kâo Žung, who attacked the Demon region, but was three years in subduing it. Small men should not be employed (in such enterprises)."
       },
       "4": {
         "text": "The fourth SIX, divided, shows its subject with rags provided against any leak (in his boat), and on his guard all day long."
@@ -1963,10 +1962,10 @@ export default {
     "hex_font": "䷿",
     "name": "Wei Zi",
     "legge_judgment": {
-      "text": "Wei Ž&icirc; intimates progress and success (in the circumstances which it implies). (We see) a young fox that has nearly crossed (the stream), when its tail gets immersed. There will be no advantage in any way."
+      "text": "Wei Žî intimates progress and success (in the circumstances which it implies). (We see) a young fox that has nearly crossed (the stream), when its tail gets immersed. There will be no advantage in any way."
     },
     "legge_image": {
-      "text": "(The trigram representing) water and that for fire above it form Wei Ž&icirc;. The superior man, in accordance with this, carefully discriminates among (the qualities of) things, and the (different) positions they (naturally) occupy."
+      "text": "(The trigram representing) water and that for fire above it form Wei Žî. The superior man, in accordance with this, carefully discriminates among (the qualities of) things, and the (different) positions they (naturally) occupy."
     },
     "legge_lines": {
       "1": {

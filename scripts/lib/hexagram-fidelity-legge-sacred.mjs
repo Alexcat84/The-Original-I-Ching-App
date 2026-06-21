@@ -8,6 +8,23 @@ const HTML_ENTITIES = {
   "&#39;": "'",
   "&apos;": "'",
   "&nbsp;": " ",
+  "&icirc;": "î",
+  "&acirc;": "â",
+  "&ucirc;": "û",
+  "&ecirc;": "ê",
+  "&ocirc;": "ô",
+  "&Icirc;": "Î",
+  "&Acirc;": "Â",
+  "&Ucirc;": "Û",
+  "&Ecirc;": "Ê",
+  "&Ocirc;": "Ô",
+  "&ccedil;": "ç",
+  "&Ccedil;": "Ç",
+  "&aelig;": "æ",
+  "&AElig;": "Æ",
+  "&eth;": "ð",
+  "&mdash;": "—",
+  "&ndash;": "–",
 };
 
 function decodeEntities(s) {
@@ -51,59 +68,145 @@ function tokenize(html) {
   return out;
 }
 
-export function looksLikeLeggeJudgment(text) {
-  if (text.length < 40) return false;
+const ORDINAL_TO_POS = {
+  first: 1,
+  second: 2,
+  third: 3,
+  fourth: 4,
+  fifth: 5,
+  sixth: 6,
+  topmost: 6,
+};
+
+function isLineCommentary(text) {
   return (
-    /\((?:represents|indicates)\b/i.test(text) ||
-    /\b(?:represents|indicates|intimates)\b/i.test(text) ||
-    /\bhas\b.*\bsuccess\b/i.test(text) ||
-    /\bthere will be good fortune\b/i.test(text)
+    /^The (?:first|second|third|fourth|fifth|sixth) line is\b/i.test(text) ||
+    /^Line \d+ (?:is|represents)\b/i.test(text) ||
+    /^\d{3}:L\b/.test(text) ||
+    /^'\w/.test(text)
+  );
+}
+
+function isLineStatementBody(body) {
+  return (
+    /^(?:From the|In the|The|T he)\s+(?:first|second|third|fourth|fifth|topmost|sixth)/i.test(body) ||
+    /^The (?:first|second|third|fourth|fifth|topmost|sixth)/i.test(body) ||
+    /^\(To the subject of\)\s+the (?:first|second|third|fourth|fifth|topmost|sixth)/i.test(body)
   );
 }
 
 function isNumberedLine(text) {
-  const m = text.match(/^(\d+|S)\.\s+([\s\S]+)$/i);
+  const m = text.match(/^(\d+|S|[IVXLCDM]+)\s*\.\s*(?:\.\s*)?([\s\S]+)$/i);
   if (!m) return false;
-  const body = m[2];
-  return (
-    /^(?:In the|The)\s+(?:first|second|third|fourth|fifth|topmost|sixth)/i.test(body) ||
-    /^The (?:first|second|third|fourth|fifth|topmost|sixth)/i.test(body)
-  );
+  return isLineStatementBody(m[2]);
+}
+
+function ordinalFromLineBody(body) {
+  let m = body.match(/^(?:From the|In the|The|T he)\s+(first|second|third|fourth|fifth|topmost|sixth)\b/i);
+  if (m) return ORDINAL_TO_POS[m[1].toLowerCase()] ?? 0;
+  m = body.match(/^\(To the subject of\)\s+the (first|second|third|fourth|fifth|topmost|sixth)\b/i);
+  if (m) return ORDINAL_TO_POS[m[1].toLowerCase()] ?? 0;
+  m = body.match(/^The (first|second|third|fourth|fifth|topmost|sixth)\b/i);
+  if (m) return ORDINAL_TO_POS[m[1].toLowerCase()] ?? 0;
+  return 0;
+}
+
+function parseUnprefixedLine(text) {
+  const pos = ordinalFromLineBody(text);
+  if (!pos) return null;
+  return { pos, body: text.trim() };
 }
 
 function lineIndexFromNumber(raw) {
   if (/^S$/i.test(raw)) return 5;
-  return parseInt(raw, 10);
+  const roman = String(raw).trim().toUpperCase();
+  const romanMap = new Map([
+    ["I", 1],
+    ["II", 2],
+    ["III", 3],
+    ["IV", 4],
+    ["V", 5],
+    ["VI", 6],
+    ["VII", 7],
+  ]);
+  if (romanMap.has(roman)) return romanMap.get(roman);
+  const n = parseInt(raw, 10);
+  if (n >= 1 && n <= 6) return n;
+  if (n === 7) return 7;
+  return 0;
 }
 
-function mergeJudgmentFrom(tokens, startIdx) {
-  const parts = [];
-  for (let i = startIdx; i < tokens.length; i++) {
-    const t = tokens[i];
-    if (t.tag !== "p") continue;
-    if (isNumberedLine(t.text)) break;
-    if (/^page_\d+/i.test(t.text)) continue;
-    parts.push(t.text);
-  }
-  return parts.join(" ").replace(/\s+/g, " ").trim();
-}
-
-function findJudgmentFallback(tokens) {
+/** Thwan = first substantive paragraph after HEXAGRAM heading, before line 1. */
+function findThwanJudgment(tokens) {
   const h3Idx = tokens.findIndex((t) => t.tag === "h3" && /HEXAGRAM/i.test(t.text));
-  if (h3Idx < 0) return "";
-  for (let i = h3Idx + 1; i < tokens.length; i++) {
+  const start = h3Idx >= 0 ? h3Idx + 1 : 0;
+
+  for (let i = start; i < tokens.length; i++) {
     const t = tokens[i];
     if (isNumberedLine(t.text)) break;
     if (/Explanation of the separate lines/i.test(t.text)) break;
     if (t.tag !== "p") continue;
     if (/^page_\d+/i.test(t.text)) continue;
     if (/^Explanation of the entire figure/i.test(t.text)) continue;
+    if (isLineCommentary(t.text)) continue;
+    if (isLineStatementBody(t.text)) continue;
     if (t.text.length < 20) continue;
-    if (looksLikeLeggeJudgment(t.text)) {
-      return mergeJudgmentFrom(tokens, i);
-    }
+    if (/^The character giving its name/i.test(t.text)) continue;
+    if (/^The I Ching, Legge tr/i.test(t.text)) continue;
+    return t.text.replace(/\s+/g, " ").trim();
   }
   return "";
+}
+
+function parseLineEntries(tokens) {
+  const lineByPos = {};
+  let supernumerary = "";
+  let sawLinesSection = false;
+
+  for (const t of tokens) {
+    if (/Explanation of the separate lines by the duke/i.test(t.text)) {
+      sawLinesSection = true;
+    }
+
+    if (t.tag !== "p") continue;
+    if (t.text.startsWith("Footnotes") || /^page_\d+/i.test(t.text)) continue;
+
+    const numbered = t.text.match(/^(\d+|S|[IVXLCDM]+)\s*\.\s*(?:\.\s*)?([\s\S]+)$/i);
+    if (numbered && isNumberedLine(t.text)) {
+      const idx = lineIndexFromNumber(numbered[1]);
+      const body = numbered[2].trim();
+      if (idx >= 1 && idx <= 6) lineByPos[idx] = body;
+      else if (idx === 7) supernumerary = body;
+      continue;
+    }
+
+    const unprefixed = parseUnprefixedLine(t.text);
+    if (unprefixed && !lineByPos[unprefixed.pos]) {
+      lineByPos[unprefixed.pos] = unprefixed.body;
+      continue;
+    }
+
+    if (sawLinesSection && numbered) {
+      const idx = lineIndexFromNumber(numbered[1]);
+      const body = numbered[2].trim();
+      if (idx >= 1 && idx <= 6 && !lineByPos[idx]) lineByPos[idx] = body;
+      else if (idx === 7 && !supernumerary) supernumerary = body;
+    }
+  }
+
+  return { lineByPos, supernumerary };
+}
+
+/** @deprecated Kept for tests; Thwan detection no longer relies on this alone. */
+export function looksLikeLeggeJudgment(text) {
+  if (text.length < 40) return false;
+  if (isLineCommentary(text)) return false;
+  return (
+    /\((?:represents|indicates|suggests)\b/i.test(text) ||
+    /\b(?:represents|indicates|intimates)\b/i.test(text) ||
+    /\bshows\b/i.test(text) ||
+    /\bthere will be good fortune\b/i.test(text)
+  );
 }
 
 /**
@@ -114,9 +217,7 @@ export function parseLeggeTextPage(html) {
   const tokens = tokenize(preprocessLeggeHtml(html));
   let judgment = "";
   let sawKingWen = false;
-  let sawLines = false;
-  const lineByPos = {};
-  let supernumerary = "";
+  const { lineByPos, supernumerary } = parseLineEntries(tokens);
 
   for (let i = 0; i < tokens.length; i++) {
     const t = tokens[i];
@@ -124,48 +225,14 @@ export function parseLeggeTextPage(html) {
       sawKingWen = true;
       continue;
     }
-    if (/Explanation of the separate lines by the duke/i.test(t.text)) {
-      sawLines = true;
-      sawKingWen = false;
-      continue;
-    }
-    if (t.tag.startsWith("h")) continue;
-    if (t.text.startsWith("Footnotes") || /^page_\d+/i.test(t.text)) continue;
-
     if (sawKingWen && !judgment && t.tag === "p") {
-      judgment = mergeJudgmentFrom(tokens, i);
+      judgment = t.text.replace(/\s+/g, " ").trim();
       sawKingWen = false;
-      continue;
-    }
-
-    if (!judgment && t.tag === "p" && !sawLines && !isNumberedLine(t.text)) {
-      if (looksLikeLeggeJudgment(t.text)) {
-        judgment = mergeJudgmentFrom(tokens, i);
-        continue;
-      }
-    }
-
-    if (sawLines && t.tag === "p") {
-      const m = t.text.match(/^(\d+|S)\.\s+([\s\S]+)$/i);
-      if (!m) continue;
-      const idx = lineIndexFromNumber(m[1]);
-      const body = m[2].trim();
-      if (idx >= 1 && idx <= 6) lineByPos[idx] = body;
-      else if (idx === 7) supernumerary = body;
-      continue;
-    }
-
-    if (t.tag === "p" && isNumberedLine(t.text)) {
-      const m = t.text.match(/^(\d+|S)\.\s+([\s\S]+)$/i);
-      if (!m) continue;
-      const idx = lineIndexFromNumber(m[1]);
-      const body = m[2].trim();
-      if (idx >= 1 && idx <= 6) lineByPos[idx] = body;
-      else if (idx === 7) supernumerary = body;
+      break;
     }
   }
 
-  if (!judgment) judgment = findJudgmentFallback(tokens);
+  if (!judgment) judgment = findThwanJudgment(tokens);
 
   return { judgment, lineByPos, supernumerary };
 }
@@ -185,7 +252,7 @@ function parseRomanNumeral(roman) {
 export function parseLeggeSymbolismAppendix(html) {
   const out = {};
   const re =
-    /<FONT SIZE="1">([IVXLCDM]+)<\/FONT><\/A>\.\s*([\s\S]*?)<\/P>/gi;
+    /<FONT SIZE="1">([IVXLCDM]+)<\/FONT><\/A>\.?\s*([\s\S]*?)<\/P>/gi;
   let m;
   while ((m = re.exec(html)) !== null) {
     const hex = parseRomanNumeral(m[1]);

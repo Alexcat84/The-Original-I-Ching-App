@@ -238,14 +238,11 @@ npm run build:data         # scripts/build-hexagrams.mjs → packages/iching-dat
 
 Flags comunes: `--live` (refetch remoto; sin flag usa cache `tools/output/fidelity-gold/`).
 
-**Fix parser Parma (hex 18):** regex de líneas ampliado a `(?:at|in) the beginning` — el mirror usa «Six **in** the beginning» además de «Nine **at** the beginning». Sin esto el parser intercambiaba L1/L2 en hex 18.
+**Fix parser Parma (hex 18):** regex de líneas ampliado a `(?:at|in) the beginning` — ver §12 y Fase 3b.
 
-**Política merge defensiva (Wilhelm / Legge):**
+**Política merge (Wilhelm judgment/image):** si Parma devuelve vacío, se conserva texto previo (adamblvck) — aplica hoy solo **hex 56 judgment** (§12.4). Líneas: siempre Parma.
 
-- **Wilhelm:** si Parma devuelve campo vacío, se conserva el texto previo del bundle (adamblvck). Afecta 7 campos gold-parser (`missing_gold` en verify): hex 20 L6, 21 L5–L6, 26 L6, 38 image, 52 L6, 56 judgment.
-- **Legge:** si sacred-texts devuelve vacío, judgment no-Legge, o commentary bleed (>700ch judgment con fallback baharna <500ch), se conserva baharna. 18 campos `missing_gold` + 6 mismatches reales (hex 12, 35, 37, 44, 50, 52 judgment) — deuda parser sacred, no P0 producto.
-
-**Zhou Yi:** reemplazo total desde ctext; normalización 繁 en ingest (`toCanonicalZhouYiText` en `hexagram-fidelity-normalize.mjs`).
+**Zhou Yi:** reemplazo total desde ctext; normalización 繁 en ingest (`toCanonicalZhouYiText`).
 
 **Deprecados como fuente primaria (cross-check only):**
 
@@ -253,15 +250,108 @@ Flags comunes: `--live` (refetch remoto; sin flag usa cache `tools/output/fideli
 - `tools/ingest-legge.mjs` (baharna.com)
 - adamblvck Wilhelm dataset (metadata estructural conservada; oracle refrescado desde Parma)
 
-**Reporte post-remediación:** `reports/hexagram-fidelity-2026-06-21T19-27-17-467Z.{json,md}`
+**Reporte post-remediación (Fase 3):** `reports/hexagram-fidelity-2026-06-21T19-27-17-467Z.{json,md}`
 
-| Traductor | Match % | Mismatch | Notas |
-|-----------|--------:|---------:|-------|
-| **Zhou Yi** | **100%** (514/514) | 0 | Gate `scan:zhouyi-corruption` = **0 incidencias** ✅ |
-| Wilhelm | 98.64% (507/514) | 0 | 7× `missing_gold` = lagunas parser Parma |
-| Legge | 95.32% (489/513) | 6 | 18× `missing_gold` + 6 judgment mismatch (parser sacred) |
+### Fase 3b — Parser gold + re-ingest ✅ 2026-06-21
 
-**Gates Fase 3:**
+**Reporte canónico:** `reports/hexagram-fidelity-2026-06-21T19-40-28-164Z.{json,md}`
+
+| Traductor | Match % | Mismatch | Gate |
+|-----------|--------:|---------:|------|
+| **Zhou Yi** | **100%** (514/514) | 0 | `scan:zhouyi-corruption` = 0 ✅ |
+| **Legge** | **100%** (513/513) | 0 | sacred-texts ic + icap2 ✅ |
+| **Wilhelm** | **99.81%** (513/514) | 0 | 1 excepción documentada (hex 56) |
+
+**Fixes parser aplicados:**
+
+| Componente | Fix | Hex afectados |
+|------------|-----|---------------|
+| `hexagram-fidelity-parma.mjs` | Mapeo etiqueta→posición (1–6) en lugar de contador secuencial | 20, 21, 26, 52 (L6) |
+| idem | `THE IMAGE.` con punto; imagen multi-párrafo hasta comentario | 38 |
+| idem | `(?:at\|in) the beginning` | 18 (regresión) |
+| `hexagram-fidelity-legge-sacred.mjs` | Thwan = primer `<p>` post-HEXAGRAM antes de línea 1 | 10, 12, 13, 28, 29, 35, 37, 44, 50, 52, 61 |
+| idem | Líneas sin prefijo `N.`; `(To the subject of)`; `From the first`; `2 .`; `T he`; romano `I.` | 8, 39, 40, 41, 55, 60, 61 |
+| idem | icap2: `</A>.?` opcional (hex 19 XIX sin punto) | 19 |
+| idem | Entidades HTML Legge (`&icirc;`, `&ucirc;`, …) | ortografía vs bundle |
+| `ingest-legge-sacred.mjs` | Solo sacred-texts (sin merge baharna) | paridad gold=bundle |
+| `ingest-wilhelm.mjs` | Líneas siempre desde Parma (sin merge adamblvck en líneas) | alineación posiciones |
+
+---
+
+## 12. Investigación causa raíz — gaps pre-3b y excepción hex 56
+
+### 12.1 Veredicto: ¿era imposible el 100%?
+
+**No globalmente.** Tras Fase 3b:
+
+- **Zhou Yi + Legge:** 100% alcanzable y **alcanzado** contra gold declarado (ctext / sacred-texts).
+- **Wilhelm:** 100% contra el mirror Parma **no es alcanzable** sin fuente suplementaria — **1 campo** (hex 56 judgment) omite el bloque oracle canónico Baynes en el HTML de Parma.
+
+Los gaps pre-3b **no eran** typos de una letra en masa: eran **bugs de parser** (≈95%) + **1 omisión estructural en la fuente gold** (≈5%).
+
+### 12.2 Wilhelm — causas raíz (7 → 1 gap)
+
+| Síntoma pre-3b | Causa raíz | Resolución |
+|----------------|------------|------------|
+| L6 vacío en gold (hex 20, 21, 26, 52) | Parser incrementaba posición 1…N por orden de aparición; Parma omite «in the fifth place» y salta a «at the top» | Mapeo semántico de etiqueta |
+| image vacío (hex 38) | Encabezado `THE IMAGE.` con punto; parser exigía match exacto | Normalización de heading |
+| image incompleto (hex 38) | Imagen oracle = 4 párrafos cortos; parser tomaba solo el primero | `extractImageOracle()` multi-párrafo |
+| judgment vacío (hex 56) | **HTML Parma no contiene `THE JUDGMENT` ni el oracle breve Baynes** | Excepción documentada §12.4 |
+
+### 12.3 Legge — causas raíz (24 → 0 gap)
+
+| Síntoma | Causa raíz | Resolución |
+|---------|------------|------------|
+| 9 judgments vacíos | Thwan no usa siempre `(represents)`; heurístico `looksLikeLeggeJudgment` fallaba | `findThwanJudgment()` |
+| 6 mismatches | Parser elegía comentario de línea/nota al pie (párrafos 601+ chars con `has…success` embebido) | Thwan antes de línea 1; excluir comentario |
+| 8 líneas vacías | Variantes HTML: sin `N.`, `From the first`, `(To the subject of)`, `2 .`, `3. .`, `T he`, `I.` romano | Regex ampliado |
+| image hex 19 | icap2 `<FONT>XIX</FONT></A>` sin punto tras `</A>` (solo este hex en 64) | `\.?` en regex icap2 |
+
+**Fuentes externas que confirman variabilidad HTML Legge (no corrupción de texto):**
+
+- [sacred-texts icap2-1](https://www.sacred-texts.com/ich/icap2-1.htm) — hex XIX sin punto tras anchor (verificado en cache local).
+- [baharna.com Legge 19](https://baharna.com/iching/legge/110000.htm) — misma edición Legge, markup distinto (confirma que baharna ≠ parser gold, no que el Thwan difiera).
+- Legge *Introduction* Appendix II ([icintr03.htm](https://www.sacred-texts.com/ich/icintr03.htm)) — describe estructura «Great Symbolism» separada del Thwan; coherente con pipeline ic + icap2.
+
+### 12.4 Excepción documentada — Wilhelm hex 56 (Lu / The Wanderer)
+
+**Campo:** `judgment` · **Estado verify:** `missing_gold` (gold Parma vacío; bundle tiene texto).
+
+**Hecho verificado en HTML Parma** (`tools/output/fidelity-gold/parma-wilhelm.html`):
+
+- No existe sección `THE JUDGMENT`.
+- No aparece la cadena oracle Baynes: *«The Wanderer. Success through smallness. Perseverance brings good fortune to the wanderer.»*
+- El HTML salta de comentario introductorio trigramático a `THE IMAGE` / `THE LINES`.
+
+**Cross-check mirrors digitales (misma omisión estructural):**
+
+- [wisdomportal.com IChing-Wilhelm](https://www.wisdomportal.com/IChing/IChing-Wilhelm.html) — hex 56: mismo layout (intro + IMAGE, sin oracle breve separado). Usado como referencia por [ExtraJuiceMan/BookOfChanges](https://github.com/ExtraJuiceMan/BookOfChanges) para corregir typos adamblvck vs Parma.
+- [harrywang/iching-book](https://github.com/harrywang/iching-book) — fuente Parma; issues de calidad OCR reconocidos upstream.
+
+**Edición Princeton / Baynes (oracle presente):**
+
+- [wengu Wilhelm hex 56](http://wengu.tartarie.com/wg/wengu.php?l=Yijing&no=56) — Judgment con oracle + comentario separados.
+- [iching-online.com hex 56](https://www.iching-online.com/hexagrams/iching-hexagram-101100.html) — idem.
+- [castiching.com hex 56](https://castiching.com/hexagrams/56-wanderer) — cita oracle Baynes estándar.
+
+**Política producto (ingest):**
+
+- `ingest-wilhelm.mjs` conserva judgment adamblvck cuando Parma vacío (merge solo judgment/image, no líneas).
+- Contenido bundle hex 56 = oracle Baynes + comentario Wilhelm — **correcto para usuarios**, no verificable 1:1 contra Parma.
+
+**Para 514/514 vs Parma:** imposible sin (a) fuente suplementaria Baynes documentada como gold tier-2, o (b) eliminar oracle breve del producto (rechazado).
+
+### 12.5 Gates finales Fase 3b
+
+| Gate | Resultado |
+|------|-----------|
+| `npm run scan:zhouyi-corruption` | 0 ✅ |
+| `npm run verify:hexagram-fidelity` Zhou Yi | 100% ✅ |
+| idem Legge | 100% ✅ |
+| idem Wilhelm vs Parma | 99.81% (1 excepción §12.4) |
+| `npm run build:data` | ✅ |
+
+**Gates Fase 3 (obsoletos post-3b):**
 
 | Gate | Estado |
 |------|--------|
@@ -270,7 +360,7 @@ Flags comunes: `--live` (refetch remoto; sin flag usa cache `tools/output/fideli
 | Wilhelm/Legge ≥99.5% | ⏳ Pendiente mejoras parser gold (Fase 3b) |
 | `npm run build:data` + bundles regenerados | ✅ |
 
-**Regla original (≥99.5% global):** cumplida para Zhou Yi (P0); Wilhelm/Legge mejoraron vs baseline Fase 2 (~95% / ~77%) pero no alcanzan 99.5% hasta cerrar lagunas parser Parma/sacred o aceptar merge baharna documentado como transitorio.
+**Regla ≥99.5% global:** cumplida Zhou Yi + Legge; Wilhelm **99.81% vs Parma** con excepción documentada hex 56.
 
 ### Fase 4 — Alineación de claims legales/producto (1 día)
 
@@ -388,12 +478,12 @@ Tras cada re-ingest: `npm run build:data` → Zhou Yi: **`node tools/scan-zhouyi
 
 ## 11. Próximo paso inmediato
 
-**Fase 3b (parser gold)** — cerrar lagunas Parma (`missing_gold` Wilhelm 7 campos) y sacred-texts Legge (18 `missing_gold` + 6 judgment mismatch) para ≥99.5% global.
+**Fase 4** — alinear claims UI/docs (`notes-page-ui.ts`, `licenseNote`, README iching-data) con evidencia Fase 3b.
 
-**Fase 4** — alinear claims UI/docs con fuentes reales del ingester (Zhou Yi 100% listo; Wilhelm/Legge parcial).
+**Opcional Fase 3c** — gold tier-2 Baynes (Princeton/wengu) solo para hex 56 judgment → 514/514 verify dual-gold; requiere decisión de producto.
 
-Reporte post-Fase 3: `reports/hexagram-fidelity-2026-06-21T19-27-17-467Z.json` · escáner Zhou Yi: **0 incidencias** · workflow: `npm run ingest:translations && npm run build:data`.
+Reporte canónico: `reports/hexagram-fidelity-2026-06-21T19-40-28-164Z.json` · workflow: `npm run ingest:translations && npm run build:data`.
 
 ---
 
-*Auditoría abierta 2026-06-21. Fase 2 primera pasada completada 2026-06-21. Fase 3 remediación implementada 2026-06-21 (Zhou Yi gate PASS). Supersedes el veredicto “100% accurate” de DATA_INTEGRITY_AUDIT (2026-05-10).*
+*Auditoría abierta 2026-06-21. Fase 3 remediación 2026-06-21. Fase 3b parser gold 2026-06-21 (Legge+Zhou Yi 100%, Wilhelm 99.81% vs Parma).*

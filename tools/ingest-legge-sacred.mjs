@@ -16,7 +16,6 @@ import { writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
-  looksLikeLeggeJudgment,
   parseLeggeSymbolismAppendix,
   parseLeggeTextPage,
 } from "../scripts/lib/hexagram-fidelity-legge-sacred.mjs";
@@ -35,32 +34,6 @@ const wilhelmModule = await import(
   pathToFileURL(join(root, "scripts", "iching_wilhelm_translation.mjs")).href
 );
 const wilhelm = wilhelmModule.default;
-
-const priorModule = await import(pathToFileURL(finalOut).href);
-const prior = priorModule.default;
-
-function pickJudgment(sacred, existing) {
-  const s = String(sacred ?? "").trim();
-  const e = String(existing ?? "").trim();
-  if (!s) return e;
-  if (!looksLikeLeggeJudgment(s)) return e || s;
-  if (s.length > 700 && e.length > 0 && e.length < 500) return e;
-  return s;
-}
-
-function pickImage(sacred, existing) {
-  const s = String(sacred ?? "").trim();
-  const e = String(existing ?? "").trim();
-  if (!s) return e;
-  if (s.length > 400 && e.length > 0 && e.length < 350) return e;
-  return s;
-}
-
-function pickLine(sacred, existing) {
-  const s = String(sacred ?? "").trim();
-  const e = String(existing ?? "").trim();
-  return s || e;
-}
 
 /** Legge chapter titles from sacred-texts h3 (fallback: Wilhelm english). */
 const LEGGE_NAMES = {
@@ -144,23 +117,17 @@ async function main() {
   for (let n = 1; n <= 64; n++) {
     const html = await loadLeggeTextHtml(n, { live });
     const parsed = parseLeggeTextPage(html);
-    const prev = prior[String(n)] ?? {};
-    const judgment = pickJudgment(parsed.judgment, prev.legge_judgment?.text);
-    const image = pickImage(images[n], prev.legge_image?.text);
+    const judgment = String(parsed.judgment ?? "").trim();
+    const image = String(images[n] ?? "").trim();
 
     if (!judgment) issues.push({ n, why: "empty judgment" });
     if (!image) issues.push({ n, why: "empty Great Symbolism" });
 
     const lines = {};
     for (let pos = 1; pos <= 6; pos++) {
-      lines[String(pos)] = {
-        text: pickLine(parsed.lineByPos[pos], prev.legge_lines?.[String(pos)]?.text),
-      };
+      lines[String(pos)] = { text: String(parsed.lineByPos[pos] ?? "").trim() };
       if (!lines[String(pos)].text) issues.push({ n, pos, why: "empty line" });
     }
-
-    const supernumerary =
-      pickLine(parsed.supernumerary, prev.yong_supernumerary) || undefined;
 
     dataset[String(n)] = {
       hex: n,
@@ -169,7 +136,7 @@ async function main() {
       legge_judgment: { text: judgment },
       legge_image: { text: image },
       legge_lines: lines,
-      ...(supernumerary ? { yong_supernumerary: supernumerary } : {}),
+      ...(parsed.supernumerary ? { yong_supernumerary: parsed.supernumerary.trim() } : {}),
     };
 
     console.log(

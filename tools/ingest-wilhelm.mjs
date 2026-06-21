@@ -64,11 +64,10 @@ async function main() {
     const prevLines = row.wilhelm_lines ?? {};
     const lines = {};
     for (let pos = 1; pos <= 6; pos++) {
-      const prev = prevLines[String(pos)]?.text ?? "";
-      const next = mergeOracleField(prev, gold.lines[pos] ?? "");
+      const next = cleanOracleText(gold.lines[pos] ?? "");
       lines[String(pos)] = { text: next };
-      if (!(gold.lines[pos] ?? "").trim() && prev) {
-        warnings.push({ n, field: `line${pos}`, kept: "existing" });
+      if (!next && (prevLines[String(pos)]?.text ?? "").trim()) {
+        warnings.push({ n, field: `line${pos}`, note: "cleared (absent in Parma)" });
       }
     }
     row.wilhelm_lines = lines;
