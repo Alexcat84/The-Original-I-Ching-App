@@ -15,7 +15,7 @@ import {
   performCastFromLineValues,
   performYarrowCast,
 } from "@iching-oracle/iching-engine";
-import { SUPPORTED_LOCALES, getConsultApiUiMessages, parseAppLocale, type AppLocale } from "@iching-oracle/i18n";
+import { getConsultApiUiMessages, parseAppLocale } from "@iching-oracle/i18n";
 import {
   buildImagePrompt,
   buildOracleBonesImagePrompt,
@@ -37,6 +37,7 @@ import {
 import { getAdminConfig } from "@/lib/admin-config";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
 import { UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
+import { detectInputLanguage } from "@/lib/detect-input-language";
 import {
   consultationExists,
   consumeToken,
@@ -285,131 +286,6 @@ function verdictLabelForPrompt(
   return labels[verdict];
 }
 
-function countWordHits(text: string, words: readonly string[]): number {
-  let score = 0;
-  for (const word of words) {
-    const re = new RegExp(`\\b${word}\\b`, "gi");
-    const matches = text.match(re);
-    if (matches) score += matches.length;
-  }
-  return score;
-}
-
-function detectLanguageFromUserText(text: string): AppLocale | null {
-  const sample = text.trim();
-  if (!sample) return null;
-
-  if (/[\uac00-\ud7af]/.test(sample)) return "ko";
-  if (/[\u3040-\u309f\u30a0-\u30ff]/.test(sample)) return "ja";
-  if (/[\u4e00-\u9fff]/.test(sample)) return "zh";
-
-  const lower = sample.toLowerCase();
-  const langWords: Array<{ lang: AppLocale; words: readonly string[] }> = [
-    {
-      lang: "es",
-      words: [
-        "el",
-        "la",
-        "los",
-        "las",
-        "que",
-        "por",
-        "para",
-        "con",
-        "fue",
-        "entonces",
-        "porque",
-        "hija",
-      ],
-    },
-    {
-      lang: "en",
-      words: [
-        "the",
-        "and",
-        "with",
-        "was",
-        "were",
-        "is",
-        "are",
-        "why",
-        "what",
-        "then",
-        "because",
-      ],
-    },
-    {
-      lang: "pt",
-      words: [
-        "que",
-        "com",
-        "para",
-        "não",
-        "foi",
-        "então",
-        "porque",
-        "uma",
-        "você",
-      ],
-    },
-    {
-      lang: "fr",
-      words: [
-        "le",
-        "la",
-        "les",
-        "avec",
-        "pour",
-        "pas",
-        "est",
-        "sont",
-        "pourquoi",
-        "alors",
-      ],
-    },
-    {
-      lang: "de",
-      words: [
-        "der",
-        "die",
-        "das",
-        "und",
-        "mit",
-        "nicht",
-        "ist",
-        "sind",
-        "warum",
-        "dann",
-      ],
-    },
-    {
-      lang: "it",
-      words: [
-        "il",
-        "lo",
-        "la",
-        "gli",
-        "con",
-        "per",
-        "non",
-        "che",
-        "perché",
-        "allora",
-      ],
-    },
-  ];
-
-  const scores = langWords
-    .map(({ lang, words }) => ({ lang, score: countWordHits(lower, words) }))
-    .sort((a, b) => b.score - a.score);
-
-  const best = scores[0];
-  const second = scores[1];
-  if (!best || best.score < 2) return null;
-  if (second && best.score - second.score < 1) return null;
-  return best.lang;
-}
-
 const CONSULT_ROUTE = "/api/consult";
 
 export async function POST(req: Request) {
@@ -495,22 +371,14 @@ export async function POST(req: Request) {
         : undefined;
     const rawLanguage =
       typeof body.language === "string" ? body.language : "es";
-    const selectedLanguage: AppLocale = (
-      SUPPORTED_LOCALES as readonly string[]
-    ).includes(rawLanguage)
-      ? (rawLanguage as AppLocale)
-      : "es";
     const cookieStore = await cookies();
     const uiLocale = parseAppLocale(
-      typeof body.language === "string"
-        ? body.language
-        : cookieStore.get(UI_LOCALE_COOKIE)?.value,
+      cookieStore.get(UI_LOCALE_COOKIE)?.value ?? rawLanguage,
     );
     const consultApiUi = getConsultApiUiMessages(uiLocale);
     const oracleMode: OracleType =
       body.oracleMode === "oracle_bones" ? "oracle_bones" : "iching";
-    const languageHint = detectLanguageFromUserText(trimmedQuestion);
-    const language: AppLocale = languageHint ?? selectedLanguage;
+    const language = detectInputLanguage(trimmedQuestion, uiLocale);
 
     const authUser = await getAuthenticatedUser(req);
     if (!authUser) {
@@ -938,8 +806,7 @@ export async function POST(req: Request) {
         typeof body.oracleBones?.negativeCharge === "string"
           ? body.oracleBones.negativeCharge.trim()
           : "";
-      const positiveLanguageHint = detectLanguageFromUserText(positive);
-      const oracleLanguage = positiveLanguageHint ?? language;
+      const oracleLanguage = detectInputLanguage(positive, uiLocale);
       const negative =
         negativeRaw || defaultNegativeCharge(positive, oracleLanguage);
 
@@ -1541,6 +1408,7 @@ export async function POST(req: Request) {
                   castResult.transformedHexagram?.chineseName ?? null,
                 mutationRule: castResult.mutationRule,
                 translator: resolvedTranslator,
+                lineReadingSystem: resolvedLineReadingSystem,
                 lines: castResult.lines,
                 changingLines: castResult.changingLines,
                 interpretation,

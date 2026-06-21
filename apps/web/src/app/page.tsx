@@ -41,6 +41,7 @@ import {
 } from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
+import { detectInputLanguage } from "@/lib/detect-input-language";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
 import { ManualIChingCoinWizard } from "@/components/manual-iching/ManualIChingCoinWizard";
 import { ManualYarrowWizard } from "@/components/manual-iching/ManualYarrowWizard";
@@ -502,49 +503,6 @@ function mapApiConsultationToItem(
         }
       : undefined,
   };
-}
-
-function detectInputLanguage(
-  question: string,
-  fallbackLocale: AppLocale,
-): AppLocale {
-  const text = question.trim().toLowerCase();
-  if (!text) return fallbackLocale;
-  if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(text)) return "ko";
-  if (/[ぁ-ゖァ-ヺ]/.test(text)) return "ja";
-  if (/[一-鿿]/.test(text)) return "zh";
-
-  const ptHits = (text.match(/\b(não|você|está|ção|ções|pra|queria)\b/g) ?? [])
-    .length;
-  const frHits = (
-    text.match(/\b(être|avec|pourquoi|où|ça|merci|vous)\b/g) ?? []
-  ).length;
-  const deHits = (
-    text.match(/\b(und|nicht|ich|dass|über|möchte|fragen)\b/g) ?? []
-  ).length;
-  const itHits = (
-    text.match(/\b(perché|con|sono|voglio|grazie|quindi|domanda)\b/g) ?? []
-  ).length;
-
-  const esHits =
-    (
-      text.match(
-        /\b(el|la|los|las|de|que|para|con|por|como|qué|dónde|cuál|mensaje|consulta|camino|relación)\b/g,
-      ) ?? []
-    ).length + (text.match(/[áéíóúñ¿¡]/g) ?? []).length;
-  if (fallbackLocale === "es" && esHits > 0) return "es";
-  if (ptHits >= 3 && ptHits > esHits + 1) return "pt";
-  if (frHits >= 2) return "fr";
-  if (deHits >= 2) return "de";
-  if (itHits >= 2) return "it";
-  const enHits = (
-    text.match(
-      /\b(the|and|what|where|when|why|how|message|relationship|question|path|oracle|reading)\b/g,
-    ) ?? []
-  ).length;
-  if (enHits > esHits) return "en";
-  if (esHits > 0) return "es";
-  return fallbackLocale;
 }
 
 export default function HomePage() {
@@ -4134,6 +4092,21 @@ export default function HomePage() {
       const item: ConsultationItem = {
         ...data,
         oracleType: data.oracleType ?? "iching",
+        translator:
+          data.translator === "wilhelm" ||
+          data.translator === "legge" ||
+          data.translator === "zhouyi" ||
+          data.translator === "master_combined"
+            ? data.translator
+            : oracleMode === "iching"
+              ? translatorId
+              : undefined,
+        lineReadingSystem:
+          data.lineReadingSystem === "zhuxi" || data.lineReadingSystem === "huang"
+            ? data.lineReadingSystem
+            : oracleMode === "iching"
+              ? ichingLineReadingSystem
+              : undefined,
         question:
           data.oracleType === "oracle_bones" && data.oracleBones?.positiveCharge
             ? data.oracleBones.positiveCharge
