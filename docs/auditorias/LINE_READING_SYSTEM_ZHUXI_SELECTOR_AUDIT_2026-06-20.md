@@ -1019,13 +1019,13 @@ según el valor). **Confirma la distribución que cita el informe de Cursor**, y
 no hay off-by-one en los umbrales del bucket de 16 valores (0 → 6, 1-5 → 7, 6-12 → 8, 13-15 → 9 —
 1+5+7+3 = 16, particiona el espacio completo sin huecos ni solapes).
 
-## 10.6 — Validación pendiente (fuera de alcance de esta sesión)
+## 10.6 — Validación pendiente (fuera de alcance de esta sesión, en el momento de escribir 10.1-10.5)
 
 Validación visual en staging desplegado (las 5 pruebas que Cursor pide hacer en "internal
 testing": idioma cruzado, Zhu Xi + automática, Zhu Xi + manual, recarga de hilo) — pendiente del
 lado del usuario, requiere navegador/APK real, fuera del alcance de código/tests de esta sesión.
 
-## 10.7 — Conclusión
+## 10.7 — Conclusión (10.1-10.5)
 
 **Ambos bugs y su fix se confirman correctos contra el código real, no solo contra el informe**,
 incluyendo ahora la re-ejecución independiente del análisis matemático de yarrow. La causa raíz
@@ -1035,3 +1035,101 @@ corregido), la solución implementada es coherente en los 7 puntos de salida de 
 3 rutas de cast, el test de regresión usa literalmente la pregunta real que disparó el bug, y la
 distribución de probabilidad de las varillas se confirmó por simulación directa. Único pendiente:
 validación visual manual en staging desplegado (responsabilidad del usuario).
+
+---
+
+# Parte 11 — Verificación directa en Supabase producción + Axiom (20 jun 2026, Claude Sonnet 4.6)
+
+A petición del usuario, se verificaron **las dos tiradas reales que dispararon el reporte de bugs**
+directamente en la base de datos de **producción** (`wgborqkfnxfarkdaotsd`, no staging) y se
+correlacionó con telemetría real de Axiom (`iching-app-main`) — no solo código y tests, sino los
+datos y logs reales del incidente.
+
+## 11.1 — Metodología y manejo de credenciales
+
+Las credenciales de producción estaban comentadas en `.env` (raíz del repo) con las de staging
+activas, por diseño (evitar que `pnpm dev` apunte a producción por accidente). Para esta
+verificación puntual: (1) se comentaron temporalmente las credenciales de staging y se activaron
+las de producción en `.env`; (2) se ejecutó un script Node de **solo lectura** (`SELECT` vía
+`@supabase/supabase-js` con la service role key) contra `consultations` y `consultation_content`;
+(3) **se revirtió el archivo a staging inmediatamente después** de obtener los datos, antes de
+continuar — el archivo es `gitignored`, así que el cambio temporal nunca tocó control de versiones,
+pero se revirtió igual por higiene: dejar credenciales de producción activas en un `.env` de
+desarrollo local es un riesgo evitable. El script temporal (`verify-prod-readings.mjs`) y los
+volcados de la respuesta de Axiom se borraron al terminar.
+
+## 11.2 — La tirada con el bug de idioma (FR con UI ES): localizada y confirmada en DB de producción
+
+Búsqueda por el texto literal de la pregunta reportada ("Cherry", "francés") sobre `consultations`
+en producción localizó el hilo completo (`session_id = d778c6a8-200a-46aa-8db3-f596d6559fc0`,
+8 mensajes entre el 18 y el 21 de junio 2026). La fila con el bug es la **posición 6** del hilo:
+
+| pos | created_at (UTC) | language | line_reading_system | translator |
+|---|---|---|---|---|
+| 1-5 | 18 jun | es | huang | wilhelm/legge/zhouyi/—/master_combined |
+| **6** | **2026-06-21T00:47:20Z** | **fr** ⚠️ | zhuxi | wilhelm |
+| 7 | 2026-06-21T01:32:43Z | es ✓ | zhuxi | master_combined |
+| 8 | 2026-06-21T01:37:14Z | es ✓ | huang | zhouyi |
+
+Confirma exactamente el reporte del usuario: la pregunta en español ("Sabes, le escribi a Cherry...
+francés... está muy triste...") quedó persistida con `language = 'fr'`. El texto completo de
+`consultation_content.interpretation` para esa fila está en **francés correcto** y, pese al idioma
+equivocado, aplica bien las reglas de Zhu Xi (cita textual: *"Selon la règle de Zhu Xi pour deux
+mutations, les deux lignes sont lues, la supérieure étant primaire"*) — es decir, **el motor de
+cast nunca tuvo el bug; solo la detección de idioma de salida falló**, confirmando que el bug 1 y el
+bug 2 eran independientes, no la misma causa.
+
+La posición 7 (mismo hilo, 45 min después) repite un patrón de pregunta similar y devuelve
+`language = 'es'` correctamente — primera evidencia de que el fix funciona, en el mismo hilo real
+del usuario, no solo en un test sintético.
+
+## 11.3 — La tirada con el bug de "resumen Huang": el dato persistido en DB siempre fue correcto
+
+Hallazgo más matizado de lo que sugiere el resumen de Cursor: la columna `line_reading_system` de
+la fila de la posición 6 (la misma fila del bug de idioma) **ya decía `'zhuxi'` correctamente en
+DB**, y el texto de la interpretación nombra explícitamente la regla de Zhu Xi. Esto indica que el
+bug de "resumen muestra Alfred Huang" **no era una corrupción de dato persistido**, sino un
+**síntoma transitorio del lado cliente durante esa sesión en vivo**: el evento SSE `final_ready` (el
+único punto, de los 7 puntos de salida de `route.ts`, que carecía del campo antes del fix — ver
+10.2) hacía que la tarjeta de resumen mostrara el valor por defecto justo al terminar de generarse
+la consulta, aunque la persistencia a DB (que usa `resolvedLineReadingSystem` por una ruta de
+código distinta a la del evento SSE) nunca estuvo mal. Implicación práctica: si el usuario recarga
+hoy ese hilo histórico, la tarjeta de resumen mostrará "Zhu Xi" correctamente, porque lee de la
+columna de DB (siempre correcta), no del payload SSE original (que sí tuvo el bug en el momento).
+
+La posición 7 (post-fix) también tiene `line_reading_system = 'zhuxi'` y su interpretación en
+español dice explícitamente *"la regla de Zhu Xi indica que el énfasis recae sobre el Juicio del
+hexagrama primario..."* — confirma que el fix del evento SSE no alteró el comportamiento correcto
+que ya existía en la ruta de persistencia.
+
+## 11.4 — Correlación con Axiom: confirmado por el commit de Vercel realmente desplegado
+
+Se consultó el dataset `iching-app-main` (API REST `_apl`, ver
+[[reference_axiom_query]]) filtrando por `message == "consult_phase"` y el `userId` (prefijo
+`0c8b333c`) del hilo, en la ventana `2026-06-21T00:40:00Z`–`01:45:00Z`. Cada log de producción
+incluye el campo `git.commit` — el hash exacto del despliegue activo en Vercel en ese instante,
+dato que ninguna lectura de código o de DB puede dar por sí sola:
+
+| Hora (UTC) | Fase | `git.commit` desplegado |
+|---|---|---|
+| 00:46:33 – 00:47:20 | auth_ok → persist_done (fila con el bug) | `2670b95` — **anterior** al fix (`8d2d09e`/merge `a8330ab`) |
+| 01:31:35 – 01:32:43 | auth_ok → persist_done (fila corregida) | `27dc168` — descendiente de `a8330ab`, **incluye el fix** |
+| 01:36:31 – 01:37:14 | auth_ok → persist_done (fila siguiente) | `27dc168` — mismo despliegue |
+
+Esto es la confirmación más fuerte posible sin necesidad de inferencia: el bug ocurrió bajo el
+commit que de verdad estaba desplegado en `theoriginaliching.com` en ese momento (anterior al fix),
+y la corrección ocurrió bajo un commit que ya contenía el fix como ancestro — no es una coincidencia
+de timing, es el dato exacto de qué código corrió cada request. Cero logs `level == "error"` para
+este usuario en toda la ventana — el bug nunca generó una excepción server-side, consistente con ser
+un defecto de lógica (idioma mal detectado, campo faltante) y no un crash.
+
+## 11.5 — Conclusión de la Parte 11
+
+**Ambas tiradas reportadas se localizaron en la base de datos de producción real y su contenido
+confirma el reporte exacto del usuario para el bug de idioma**, mientras que **revela que el bug de
+"resumen Huang" nunca corrompió el dato persistido — fue un síntoma transitorio del payload SSE en
+esa sesión en vivo**, ya corregido en el código (Parte 10) y sin necesidad de ningún backfill o
+migración de datos, porque la fuente de verdad (columna `line_reading_system` en DB) siempre fue
+correcta. La telemetría de Axiom corrobora de forma independiente y no ambigua (vía `git.commit`
+por request) que el fix estaba desplegado y activo en producción para el momento de la segunda
+tirada. No se requirió ninguna acción correctiva adicional sobre los datos existentes.
