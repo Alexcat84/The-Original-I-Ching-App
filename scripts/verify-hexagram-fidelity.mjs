@@ -3,7 +3,7 @@
  * Verify @iching-oracle/iching-data bundles against Tier-0 gold sources:
  *  - Wilhelm → Uni Parma mirror
  *  - Legge → sacred-texts.com (Wayback fallback when live 403)
- *  - Zhou Yi → ctext.org gettext API (卦辭+爻辭; 大象 not in API)
+ *  - Zhou Yi → ctext.org gettext API + HTML (大象傳)
  *
  * Usage:
  *   node scripts/verify-hexagram-fidelity.mjs [--live] [--translator wilhelm|legge|zhouyi|all]
@@ -13,10 +13,10 @@
  */
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
-import { ROOT, GOLD_DIR, loadParmaHtml, loadLeggeTextHtml, loadLeggeSymbolismHtml, loadCtextJson, loadBundle } from "./lib/hexagram-fidelity-fetch.mjs";
+import { ROOT, GOLD_DIR, loadParmaHtml, loadLeggeTextHtml, loadLeggeSymbolismHtml, loadCtextJson, loadCtextHtml, loadBundle } from "./lib/hexagram-fidelity-fetch.mjs";
 import { parseAllParmaWilhelm } from "./lib/hexagram-fidelity-parma.mjs";
 import { parseLeggeTextPage, parseLeggeSymbolismAppendix } from "./lib/hexagram-fidelity-legge-sacred.mjs";
-import { parseCtextZhouYi } from "./lib/hexagram-fidelity-ctext.mjs";
+import { parseCtextZhouYi, parseCtextZhouYiFromHtml, mergeCtextGold } from "./lib/hexagram-fidelity-ctext.mjs";
 import {
   makeDiff,
   summarizeDiffs,
@@ -136,16 +136,25 @@ async function compareLegge(bundle) {
 }
 
 async function compareZhouYi(bundle) {
-  log("Zhou Yi: loading ctext.org gold…");
+  log("Zhou Yi: loading ctext.org gold (API + HTML 大象)…");
   const diffs = [];
 
   for (let n = 1; n <= 64; n++) {
     const hex = bundle.hexagrams.find((h) => h.number === n);
     const payload = await loadCtextJson(n, { live });
-    const gold = parseCtextZhouYi(payload);
+    const apiGold = parseCtextZhouYi(payload);
+    let htmlGold = null;
+    try {
+      const html = await loadCtextHtml(n, { live });
+      htmlGold = parseCtextZhouYiFromHtml(html);
+    } catch (err) {
+      log(`  warn hex ${n}: ctext HTML image fallback failed — ${err.message}`);
+    }
+    const gold = mergeCtextGold(apiGold, htmlGold);
 
     const comparisons = [
       { field: "judgment", linePos: null, expected: gold.judgment, actual: hex?.judgment ?? "" },
+      { field: "image", linePos: null, expected: gold.image ?? "", actual: hex?.image ?? "" },
     ];
     for (let p = 1; p <= 6; p++) {
       comparisons.push({
@@ -184,18 +193,6 @@ async function compareZhouYi(bundle) {
         }),
       );
     }
-
-    diffs.push({
-      translator: "zhouyi",
-      hex: n,
-      field: "image",
-      linePos: null,
-      status: "skipped",
-      hint: "ctext_gettext_no_da_xiang",
-      expected: "(大象傳 not exposed by ctext gettext API)",
-      actual: hex?.image ?? "",
-      note: "Compare image in Fase 2 via HTML scrape or freizl upstream",
-    });
   }
 
   return { translator: "zhouyi", diffs, summary: summarizeDiffs(diffs) };
@@ -209,7 +206,7 @@ async function main() {
   const notes = [
     "Wilhelm gold: Uni Parma mirror — oracle judgment/image/lines only (Wilhelm commentary excluded by parser).",
     "Legge gold: sacred-texts.com ic01–ic64 (text) + icap2 (Great Symbolism). Live site may 403; Wayback used as fallback.",
-    "Zhou Yi gold: ctext.org gettext API — 卦辭+爻辭+用九/六. 大象傳 skipped (not in API).",
+    "Zhou Yi gold: ctext.org gettext API (卦辭+爻辭+用九/六) + HTML scrape (大象傳).",
     "Normalizer: lowercase + whitespace collapse (EN); NFKC + strip 爻 labels (ZH).",
     "Classify mismatches A–E in Fase 2 per ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md.",
   ];

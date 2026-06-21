@@ -55,8 +55,18 @@ function findHeaderIndices(html) {
   return headers;
 }
 
-const LINE_LABEL =
-  /^(?:Nine|Six) (?:at the beginning|in the second place|in the third place|in the fourth place|in the fifth place|at the top)(?: means)?:?$/i;
+const LINE_LABEL_HTML =
+  /(?:Nine|Six) (?:at the beginning|in the second place|in the third place|in the fourth place|in the fifth place|at the top) means:\s*(?:<\/p>\s*<p[^>]*>\s*)?([\s\S]*?)<\/p>/gi;
+
+function isCommentaryParagraph(text) {
+  const t = text.trim();
+  if (t.length > 500) return true;
+  if (/^According to the original meaning/i.test(t)) return true;
+  if (/^Since there is only one heaven/i.test(t)) return true;
+  if (/^In China the dragon/i.test(t)) return true;
+  if (/^We are in a situation/i.test(t)) return true;
+  return false;
+}
 
 function extractOracleAfterLabel(paragraphs, label) {
   const idx = paragraphs.findIndex((p) => p.trim().toUpperCase() === label.toUpperCase());
@@ -65,64 +75,44 @@ function extractOracleAfterLabel(paragraphs, label) {
     const p = paragraphs[i].trim();
     if (!p) continue;
     if (/^THE (JUDGMENT|IMAGE|LINES)$/i.test(p)) break;
-    if (/^According to the original meaning/i.test(p)) break;
-    if (/^Since there is only one heaven/i.test(p)) break;
+    if (isCommentaryParagraph(p)) continue;
     if (p.length > 600) continue;
     return p;
   }
   return "";
 }
 
-function expandParagraphLines(paragraphs) {
-  const out = [];
-  for (const p of paragraphs) {
-    const parts = p
-      .split(/\n+/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-    out.push(...parts);
-  }
-  return out;
-}
-
-function parseLines(paragraphs) {
+function parseLinesFromSectionHtml(sectionHtml) {
   const lines = {};
-  const expanded = expandParagraphLines(paragraphs);
-  const linesIdx = expanded.findIndex((p) => p.trim().toUpperCase() === "THE LINES");
-  if (linesIdx < 0) return { lines, yongJiu: "", yongLiu: "" };
-
-  let pos = 0;
   let yongJiu = "";
   let yongLiu = "";
+  let pos = 0;
 
-  for (let i = linesIdx + 1; i < expanded.length; i++) {
-    const p = expanded[i].trim();
-    if (/^\d+\.\s/.test(p) && p.includes(" / ")) break;
-    if (/^THE JUDGMENT$/i.test(p)) break;
+  const re = new RegExp(LINE_LABEL_HTML.source, "gi");
+  let m;
+  while ((m = re.exec(sectionHtml)) !== null) {
+    pos += 1;
+    if (pos >= 1 && pos <= 6) {
+      lines[pos] = stripTags(m[1]).replace(/\s+\n\s+/g, "\n").trim();
+    }
+  }
 
-    if (/^When all the lines are nines/i.test(p)) {
-      const next = expanded[i + 1]?.trim() ?? "";
-      if (next && !/^When all the lines/i.test(next)) {
-        yongJiu = next.replace(/\s+Good fortune\.?\s*$/i, "").trim();
-      }
-      continue;
-    }
-    if (/^When all the lines are sixes/i.test(p)) {
-      const next = expanded[i + 1]?.trim() ?? "";
-      if (next && !/^When all the lines/i.test(next)) {
-        yongLiu = next.replace(/\s+Good fortune\.?\s*$/i, "").trim();
-      }
-      continue;
-    }
+  const yongNine = sectionHtml.match(
+    /When all the lines are nines, it means:\s*<\/p>\s*<p[^>]*>\s*([\s\S]*?)<\/p>/i,
+  );
+  if (yongNine) {
+    yongJiu = stripTags(yongNine[1])
+      .replace(/\s+Good fortune\.?\s*$/i, "")
+      .trim();
+  }
 
-    if (LINE_LABEL.test(p)) {
-      pos += 1;
-      const text = expanded[i + 1]?.trim() ?? "";
-      if (pos >= 1 && pos <= 6 && text && !LINE_LABEL.test(text)) {
-        lines[pos] = text;
-        i += 1;
-      }
-    }
+  const yongSix = sectionHtml.match(
+    /When all the lines are sixes, it means:\s*<\/p>\s*<p[^>]*>\s*([\s\S]*?)<\/p>/i,
+  );
+  if (yongSix) {
+    yongLiu = stripTags(yongSix[1])
+      .replace(/\s+Good fortune\.?\s*$/i, "")
+      .trim();
   }
 
   return { lines, yongJiu, yongLiu };
@@ -130,7 +120,6 @@ function parseLines(paragraphs) {
 
 /**
  * @param {string} html Full Parma mirror HTML
- * @returns {Record<number, { judgment: string, image: string, lines: Record<number,string>, yongJiu?: string, yongLiu?: string }>}
  */
 export function parseParmaWilhelm(html) {
   const headers = findHeaderIndices(html);
@@ -143,7 +132,7 @@ export function parseParmaWilhelm(html) {
     const paragraphs = tokenizeParagraphs(section);
     const judgment = extractOracleAfterLabel(paragraphs, "THE JUDGMENT");
     const image = extractOracleAfterLabel(paragraphs, "THE IMAGE");
-    const { lines, yongJiu, yongLiu } = parseLines(paragraphs);
+    const { lines, yongJiu, yongLiu } = parseLinesFromSectionHtml(section);
 
     out[number] = {
       judgment,

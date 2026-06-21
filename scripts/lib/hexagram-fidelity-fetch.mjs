@@ -95,6 +95,22 @@ export async function loadLeggeSymbolismHtml({ live = false } = {}) {
   return icap2Promise;
 }
 
+export async function loadCtextHtml(hex, { live = false } = {}) {
+  const slug = ctextSlugForHex(hex);
+  const htmlUrl = `https://ctext.org/book-of-changes/${slug}?lang=zh`;
+  const htmlCache = join(GOLD_DIR, "ctext-html", `${String(hex).padStart(2, "0")}.html`);
+  if (!live && (await exists(htmlCache))) {
+    return readFile(htmlCache, "utf8");
+  }
+  const res = await fetch(htmlUrl, { headers: BROWSER_HEADERS });
+  if (!res.ok) throw new Error(`ctext HTML ${res.status} hex ${hex}`);
+  const html = await res.text();
+  await mkdir(dirname(htmlCache), { recursive: true });
+  await writeFile(htmlCache, html, "utf8");
+  await sleep(1200);
+  return html;
+}
+
 export async function loadCtextJson(hex, { live = false } = {}) {
   const urn = ctextUrnForHex(hex);
   const cachePath = join(GOLD_DIR, "ctext", `${String(hex).padStart(2, "0")}.json`);

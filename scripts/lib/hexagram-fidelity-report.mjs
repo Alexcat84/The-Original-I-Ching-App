@@ -6,6 +6,12 @@ function fmtField(d) {
   return d.field;
 }
 
+function truncate(s, max = 48) {
+  const t = String(s ?? "").replace(/\s+/g, " ").trim();
+  if (t.length <= max) return t;
+  return `${t.slice(0, max - 1)}…`;
+}
+
 /**
  * @param {object} report
  * @param {string} outPath
@@ -21,6 +27,7 @@ export async function writeMarkdownReport(report, outPath) {
 
   for (const block of report.translators) {
     const s = block.summary;
+    const isZh = block.translator === "zhouyi";
     lines.push(`## ${block.translator}`);
     lines.push("");
     lines.push(
@@ -43,10 +50,20 @@ export async function writeMarkdownReport(report, outPath) {
 
     lines.push("### Mismatches (first 80)");
     lines.push("");
-    lines.push("| Hex | Field | Status | Hint |");
-    lines.push("|----:|-------|--------|------|");
-    for (const d of mismatches.slice(0, 80)) {
-      lines.push(`| ${d.hex} | ${fmtField(d)} | ${d.status} | ${d.hint} |`);
+    if (isZh) {
+      lines.push("| Hex | Field | Status | Hint | Expected (gold) | Actual (bundle) |");
+      lines.push("|----:|-------|--------|------|-----------------|-----------------|");
+      for (const d of mismatches.slice(0, 80)) {
+        lines.push(
+          `| ${d.hex} | ${fmtField(d)} | ${d.status} | ${d.hint} | ${truncate(d.expected)} | ${truncate(d.actual)} |`,
+        );
+      }
+    } else {
+      lines.push("| Hex | Field | Status | Hint |");
+      lines.push("|----:|-------|--------|------|");
+      for (const d of mismatches.slice(0, 80)) {
+        lines.push(`| ${d.hex} | ${fmtField(d)} | ${d.status} | ${d.hint} |`);
+      }
     }
     if (mismatches.length > 80) {
       lines.push("");

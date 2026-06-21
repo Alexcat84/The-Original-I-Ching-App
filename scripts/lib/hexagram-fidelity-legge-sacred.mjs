@@ -52,17 +52,28 @@ function tokenize(html) {
 }
 
 function looksLikeLeggeJudgment(text) {
+  if (text.length < 40) return false;
   return (
     /\((?:represents|indicates)\b/i.test(text) ||
-    /\bintimates that\b/i.test(text) ||
-    /\bhas\b.*\bsuccess\b/i.test(text)
+    /\b(?:represents|indicates|intimates)\b/i.test(text) ||
+    /\bhas\b.*\bsuccess\b/i.test(text) ||
+    /\bthere will be good fortune\b/i.test(text)
   );
 }
 
 function isNumberedLine(text) {
-  const m = text.match(/^(\d+)\.\s+([\s\S]+)$/);
+  const m = text.match(/^(\d+|S)\.\s+([\s\S]+)$/i);
   if (!m) return false;
-  return /^(?:In the|The)\s+(?:first|second|third|fourth|fifth|topmost|sixth)/i.test(m[2]);
+  const body = m[2];
+  return (
+    /^(?:In the|The)\s+(?:first|second|third|fourth|fifth|topmost|sixth)/i.test(body) ||
+    /^The (?:first|second|third|fourth|fifth|topmost|sixth)/i.test(body)
+  );
+}
+
+function lineIndexFromNumber(raw) {
+  if (/^S$/i.test(raw)) return 5;
+  return parseInt(raw, 10);
 }
 
 function mergeJudgmentFrom(tokens, startIdx) {
@@ -77,9 +88,26 @@ function mergeJudgmentFrom(tokens, startIdx) {
   return parts.join(" ").replace(/\s+/g, " ").trim();
 }
 
+function findJudgmentFallback(tokens) {
+  const h3Idx = tokens.findIndex((t) => t.tag === "h3" && /HEXAGRAM/i.test(t.text));
+  if (h3Idx < 0) return "";
+  for (let i = h3Idx + 1; i < tokens.length; i++) {
+    const t = tokens[i];
+    if (isNumberedLine(t.text)) break;
+    if (/Explanation of the separate lines/i.test(t.text)) break;
+    if (t.tag !== "p") continue;
+    if (/^page_\d+/i.test(t.text)) continue;
+    if (/^Explanation of the entire figure/i.test(t.text)) continue;
+    if (t.text.length < 20) continue;
+    if (looksLikeLeggeJudgment(t.text)) {
+      return mergeJudgmentFrom(tokens, i);
+    }
+  }
+  return "";
+}
+
 /**
  * Parse sacred-texts.com icNN.htm (TEXT section I).
- * Supports ic01-style headers and ic03+ direct paragraphs.
  * @param {string} html
  */
 export function parseLeggeTextPage(html) {
@@ -110,8 +138,7 @@ export function parseLeggeTextPage(html) {
       continue;
     }
 
-    if (!judgment && t.tag === "p" && !sawLines) {
-      if (isNumberedLine(t.text)) continue;
+    if (!judgment && t.tag === "p" && !sawLines && !isNumberedLine(t.text)) {
       if (looksLikeLeggeJudgment(t.text)) {
         judgment = mergeJudgmentFrom(tokens, i);
         continue;
@@ -119,9 +146,9 @@ export function parseLeggeTextPage(html) {
     }
 
     if (sawLines && t.tag === "p") {
-      const m = t.text.match(/^(\d+)\.\s+([\s\S]+)$/);
+      const m = t.text.match(/^(\d+|S)\.\s+([\s\S]+)$/i);
       if (!m) continue;
-      const idx = parseInt(m[1], 10);
+      const idx = lineIndexFromNumber(m[1]);
       const body = m[2].trim();
       if (idx >= 1 && idx <= 6) lineByPos[idx] = body;
       else if (idx === 7) supernumerary = body;
@@ -129,16 +156,25 @@ export function parseLeggeTextPage(html) {
     }
 
     if (t.tag === "p" && isNumberedLine(t.text)) {
-      const m = t.text.match(/^(\d+)\.\s+([\s\S]+)$/);
+      const m = t.text.match(/^(\d+|S)\.\s+([\s\S]+)$/i);
       if (!m) continue;
-      const idx = parseInt(m[1], 10);
+      const idx = lineIndexFromNumber(m[1]);
       const body = m[2].trim();
       if (idx >= 1 && idx <= 6) lineByPos[idx] = body;
       else if (idx === 7) supernumerary = body;
     }
   }
 
+  if (!judgment) judgment = findJudgmentFallback(tokens);
+
   return { judgment, lineByPos, supernumerary };
+}
+
+/** @param {string} roman */
+function parseRomanNumeral(roman) {
+  const map = new Map();
+  for (let n = 1; n <= 64; n++) map.set(romanNumeral(n).toUpperCase(), n);
+  return map.get(String(roman).trim().toUpperCase()) ?? null;
 }
 
 /**
@@ -148,37 +184,18 @@ export function parseLeggeTextPage(html) {
  */
 export function parseLeggeSymbolismAppendix(html) {
   const out = {};
-  for (let n = 1; n <= 64; n++) {
-    const roman = romanNumeral(n);
-    const marker = `<FONT SIZE="1">${roman}</FONT></A>.`;
-    const idx = html.indexOf(marker);
-    if (idx < 0) {
-      // Fallback: plain-text marker after strip
-      continue;
-    }
-    const slice = html.slice(idx, idx + 1200);
-    const pMatch = slice.match(/<P[^>]*>([\s\S]*?)<\/P>/i);
-    if (!pMatch) continue;
-    let text = stripTags(pMatch[1]);
-    text = text.replace(new RegExp(`^${roman}\\.\\s*`, "i"), "").trim();
-    if (text && !/^\d+\.\s/.test(text)) out[n] = text;
+  const re =
+    /<FONT SIZE="1">([IVXLCDM]+)<\/FONT><\/A>\.\s*([\s\S]*?)<\/P>/gi;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    const hex = parseRomanNumeral(m[1]);
+    if (!hex) continue;
+    let body = stripTags(m[2]).trim();
+    body = body.replace(/^[IVXLCDM]+\.\s*/i, "").trim();
+    if (!body || /^\d+\.\s/.test(body)) continue;
+    if (/^The lines of this hexagram/i.test(body)) continue;
+    if (/^'\w/.test(body)) continue;
+    out[hex] = body;
   }
-
-  if (Object.keys(out).length < 64) {
-    // Second pass: find all `<FONT SIZE="1">ROMAN</FONT></A>. text` in order
-    const re =
-      /<FONT SIZE="1">([IVXLCDM]+)<\/FONT><\/A>\.\s*([^<]+?)(?=<\/P>)/gi;
-    const found = [];
-    let m;
-    while ((m = re.exec(html)) !== null) {
-      const body = stripTags(m[2]).trim();
-      if (!body || /^\d+\.\s/.test(body)) continue;
-      found.push(body);
-    }
-    if (found.length >= 64) {
-      for (let n = 1; n <= 64; n++) out[n] = found[n - 1];
-    }
-  }
-
   return out;
 }
