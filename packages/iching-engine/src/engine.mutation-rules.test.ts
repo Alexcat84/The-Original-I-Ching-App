@@ -231,7 +231,7 @@ describe("selectTextsForClaude — complete coverage of all 10 Zhu Xi rules", ()
     expect(rule).toBe("KUN_ALL_SIX");
     expect(texts.selectedLineTexts).toHaveLength(0);
     expect(texts.specialYaoText).toBeTruthy();
-    expect(texts.specialYaoText).toContain("Perseverance"); // Wilhelm 用六
+    expect(texts.specialYaoText).toContain("perseverance"); // Wilhelm 用六
     expect(texts.primaryImage).not.toBe("");
   });
 });
