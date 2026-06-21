@@ -144,6 +144,13 @@ export default async function NotesPage() {
           </>
         )}
 
+        {n.ichingDataAuditHeading && (
+          <>
+            <h2>{n.ichingDataAuditHeading}</h2>
+            <p>{n.ichingDataAuditBody}</p>
+          </>
+        )}
+
         {/* Interpretation */}
         {n.interpretHeading && (
           <>

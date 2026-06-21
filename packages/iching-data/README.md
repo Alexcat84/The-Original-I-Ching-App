@@ -4,13 +4,15 @@ Three public-domain translations of the I Ching (Yijing), shipped as
 schema-validated JSON bundles plus typed accessor functions. This package is
 the canonical source of hexagram texts for the rest of the monorepo.
 
-## What ships in PR1 (`feature/iching-library`)
+## Translators and gold sources
 
-| Translator | ID | Source | Edition |
+| Translator | ID | Ingest pipeline | Gold source (verify) |
 | --- | --- | --- | --- |
-| Wilhelm / Baynes | `wilhelm` | [adamblvck/iching-wilhelm-dataset](https://github.com/adamblvck/iching-wilhelm-dataset) | _The I Ching or Book of Changes_ — Richard Wilhelm / Cary F. Baynes (1950, public domain since 2020). |
-| James Legge | `legge` | [Baharna.com / Sacred Texts](https://www.baharna.com/iching/index.htm) | _The Sacred Books of China — The Yî King_ (1882/1899, public domain). |
-| Zhou Yi (original Chinese) | `zhouyi` | [freizl/yijing](https://github.com/freizl/yijing) (`zh-TW/64gua.json`) | Classical Chinese, traditional script. Public domain. |
+| Wilhelm / Baynes | `wilhelm` | `npm run ingest:wilhelm` | [Uni Parma mirror](http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html) + Baynes tier-2 supplement for hex 56 judgment only |
+| James Legge | `legge` | `npm run ingest:legge` | [sacred-texts.com](https://sacred-texts.com/ich/index.htm) (ic + icap2) |
+| Zhou Yi (original Chinese) | `zhouyi` | `npm run ingest:zhouyi` | [ctext.org](https://ctext.org/book-of-changes) (API + 大象 HTML) |
+
+**Last 1:1 fidelity audit:** 21 June 2026. Legge and Zhou Yi: 100% oracle-field match. Wilhelm: 100% with one documented Baynes supplement (hex 56 judgment). Report: `reports/hexagram-fidelity-2026-06-21T19-45-04-900Z.json`. See `docs/auditorias/DATA_INTEGRITY_AUDIT.md`.
 
 Each bundle covers all 64 King Wen hexagrams, with the same schema:
 
@@ -30,7 +32,7 @@ For Wilhelm and Legge `image` is the canonical "Image / Symbolism" passage. For
 visual parity with the other two translations across the library UI.
 
 Structural metadata (number, binary, Chinese name, pinyin, trigrams) is
-**identical across all three bundles** — only `name`, `judgment`, `image`,
+**identical across all three bundles**; only `name`, `judgment`, `image`,
 `lines`, and `yong*` differ. This invariant is enforced by tests in
 `src/index.test.ts`.
 
@@ -64,6 +66,7 @@ const bundle = getHexagramBundle("legge");
 npm run build:data --workspace @iching-oracle/iching-data   # regenerates all 3 bundles
 npm run build --workspace @iching-oracle/iching-data        # build:data + tsc + copy
 npm run test --workspace @iching-oracle/iching-data         # vitest
+npm run verify:hexagram-fidelity                            # 1:1 gold verify (repo root)
 ```
 
 `build:data` runs `scripts/build-hexagrams.mjs` which combines the three
@@ -75,15 +78,18 @@ reproducibility, so consumers don't need to re-ingest at install time.
 
 ## Re-ingesting from primary sources
 
-The two ingester scripts live in `tools/` and write raw caches to
-`tools/output/<translator>-raw/` (gitignored):
+Gold-aligned ingesters in `tools/`:
 
 ```bash
-node tools/ingest-legge.mjs    # Baharna.com → scripts/iching_legge_translation.mjs
-node tools/ingest-zhouyi.mjs   # freizl/yijing → scripts/iching_zhouyi_translation.mjs
+npm run ingest:wilhelm    # Parma mirror → scripts/iching_wilhelm_translation.mjs
+npm run ingest:legge      # sacred-texts → scripts/iching_legge_translation.mjs
+npm run ingest:zhouyi     # ctext.org → scripts/iching_zhouyi_translation.mjs
+npm run ingest:translations   # all three
 ```
 
-After ingestion, run `npm run build:data` to rebuild the JSON bundles.
+Legacy ingesters (`tools/ingest-legge.mjs` Baharna, `tools/ingest-zhouyi.mjs` freizl) are deprecated for production; use only for cross-check.
+
+After ingestion, run `npm run build:data` and `npm run verify:hexagram-fidelity`.
 
 ## What this package does NOT do
 

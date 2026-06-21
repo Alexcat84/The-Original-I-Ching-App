@@ -383,16 +383,12 @@ Los gaps pre-3b **no eran** typos de una letra en masa: eran **bugs de parser** 
 
 **Regla ≥99.5% global:** cumplida los 3 traductores al **100%** post-Fase 3c (Wilhelm: Parma + tier-2 Baynes hex 56).
 
-### Fase 4 — Alineación de claims legales/producto (1 día)
+### Fase 4 — Alineación de claims legales/producto ✅ 2026-06-21
 
-Actualizar solo si Fase 2–3 PASS:
-
-- `packages/i18n` → `notes-page-ui.ts` (11 locales vía `@iching-oracle/i18n`)
-- `scripts/build-hexagrams.mjs` → `licenseNote` con fecha + hash del reporte
-- `DATA_INTEGRITY_AUDIT.md` → enlace a este doc; marcar superseded
+- `packages/i18n` → `notes-page-ui.ts`, `faq-page-ui.ts` (11 locales)
+- `scripts/build-hexagrams.mjs` → `licenseNote` con fecha de auditoría + id de reporte
+- `DATA_INTEGRITY_AUDIT.md` → apartado «Auditorías realizadas» (solo resultado final)
 - `packages/iching-data/README.md` → fuentes gold reales del ingester
-
-Si quedan extractos (ej. judgment sin comentario Confucio): cambiar “sin modificaciones” → “texto del oráculo (卦辞/爻辞/象传) sin parafrasear; comentarios editoriales excluidos”.
 
 ### Fase 5 — CI gate permanente (1 día)
 
@@ -500,7 +496,7 @@ Tras cada re-ingest: `npm run build:data` → Zhou Yi: **`node tools/scan-zhouyi
 
 ## 11. Próximo paso inmediato
 
-**Fase 4** — alinear claims UI/docs (`notes-page-ui.ts`, `licenseNote`, README iching-data) con evidencia Fase 3b–3c.
+**Fase 5** — CI gate permanente (`verify:hexagram-fidelity` en CI).
 
 Reporte canónico: `reports/hexagram-fidelity-2026-06-21T19-45-04-900Z.json` · workflow: `npm run ingest:translations && npm run build:data`.
 

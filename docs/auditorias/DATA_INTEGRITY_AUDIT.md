@@ -1,64 +1,52 @@
 # I Ching Data Integrity & Reliability Audit
 
-This document details the rigorous audit process performed on the I Ching hexagram dataset used in this application to ensure absolute fidelity to the canonical translations.
+This document records the 1:1 fidelity audits performed on the three translator bundles in `@iching-oracle/iching-data`.
+
+**Master audit (open plan and harness):** [ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md](./ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md)
 
 ---
 
-## Estado · Changelog de cierre
+## Auditorías realizadas
 
-> **Estado:** ⚠️ **SUPERSEDED (2026-06-21)** — ver re-auditoría abierta [ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md](./ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md). El cierre “100% accurate” de 2026-05-10 no tenía harness reproducible; el hex 23 sigue siendo válido como precedente.
+### Última auditoría 1:1 · 21 de junio de 2026
+
+| Traductor | Gold declarado | Resultado verify | Notas |
+|-----------|----------------|------------------|-------|
+| **Legge** | sacred-texts.com (ic + icap2) | **100%** (513/513 campos oráculo) | Juicio, imagen (Great Symbolism) y líneas |
+| **Zhou Yi** | ctext.org (API + 大象) | **100%** (514/514 campos oráculo) | 卦辞, 爻辞, 用九/六, 大象 |
+| **Wilhelm** | Uni Parma mirror + suplemento Baynes tier-2 | **100%** (514/514 campos oráculo) | Un único suplemento documentado: **hex 56 judgment**, donde Parma omite `THE JUDGMENT`; el oracle Baynes (edición Princeton) se aplica vía `hexagram-fidelity-wilhelm-baynes-supplement.mjs`, contrastado con wengu e iching-online |
+
+**Reporte:** `reports/hexagram-fidelity-2026-06-21T19-45-04-900Z.json`
+
+**Hallazgo y resolución (Wilhelm hex 56):** el HTML del mirror de Parma no incluye la sección `THE JUDGMENT` ni el oracle breve Baynes para el hexagrama 56 (Lu / The Wanderer). El bundle ya contenía el texto correcto; el gap era de verificación contra gold Parma vacío. **Solución:** gold tier-2 Baynes documentado solo para ese campo, sin cambiar nombres de campo ni forma JSON del dataset.
+
+**Alcance del verify:** solo textos del oráculo (judgment/image/lines, yongJiu/yongLiu). Comentarios editoriales Wilhelm/Legge excluidos por diseño del parser.
+
+**Comandos reproducibles:**
+
+```bash
+npm run ingest:translations
+npm run build:data
+npm run verify:hexagram-fidelity
+npm run scan:zhouyi-corruption   # gate Zhou Yi = 0
+```
+
+---
+
+## Precedente · hex 23 metadata (2026-05-10)
+
+Corrección puntual del trigrama inferior en metadata Wilhelm (hex 23: Kūn, no Lì). Precedente válido; la auditoría 2026-06-21 es la referencia actual para fidelidad literaria 1:1.
 
 | Campo | Valor |
 |-------|-------|
-| **Abierta** | 2026-05-10 |
-| **Cerrada** | 2026-05-10 |
-| **Fix aplicado en** | `scripts/iching_wilhelm_translation.mjs` + `npm run build:data` |
-
-### Resolución de hallazgos
-
-| # | Hallazgo | Resultado | Referencia |
-|---|---------|-----------|------------|
-| 1 | Hexagrama 23 (Bō): trigrama inferior etiquetado como "The Clinging" (Fire/Lì) en lugar de "The Receptive" (Earth/Kūn) | ✅ Corregido | Verificado contra University of Parma, Sacred-Texts.com, ctext.org |
-| 2 | Contenido literario (Wilhelm, Legge, Zhou Yi): 63 hexagramas restantes | ✅ 100% correcto — error limitado al campo de metadata | — |
-| 3 | Dataset regenerado completo post-corrección | ✅ Completado | `npm run build:data` |
-
-### Lección aprendida
-
-El error era exclusivamente de metadata (campo de etiqueta del trigrama), no del contenido literario. La fuente externa `adamblvck/iching-wilhelm-dataset` tenía un error tipográfico en el trigrama inferior de Hexagrama 23. La regeneración completa asegura consistencia matemática y literaria. **La biblioteca es ahora una de las representaciones digitales más precisas del I Ching disponibles.**
+| **Fecha** | 2026-05-10 |
+| **Fix** | `scripts/iching_wilhelm_translation.mjs` + `npm run build:data` |
+| **Alcance** | Solo metadata trigrama inferior hex 23 |
 
 ---
 
-## 1. Audit Trigger: Hexagram 23 Metadata Discrepancy
-During a quality control check of the **Hexagram 23 (Bō - Falling Away)**, a metadata mismatch was detected in the source dataset (`adamblvck/iching-wilhelm-dataset`):
-- **Structure**: The hexagram correctly showed "Mountain over Earth" (Binary `100000`).
-- **Error**: The source label for the lower trigram was incorrectly set to "The Clinging" (Fire/Lì) instead of "The Receptive" (Earth/Kūn).
+## Ongoing reliability
 
-## 2. Investigation and Verification Process
-To resolve this and ensure the integrity of the remaining 63 hexagrams, a **1:1 Comparative Audit** was conducted against the world's most respected academic sources:
+Los bundles se regeneran con `npm run build:data` desde los ingesters gold-aligned (`tools/ingest-wilhelm.mjs`, `tools/ingest-legge-sacred.mjs`, `tools/ingest-zhouyi-ctext.mjs`). El harness `npm run verify:hexagram-fidelity` debe pasar antes de promover cambios de dataset.
 
-### Canonical Reference Sources
-| Translation | Academic Source | Verification Method |
-| :--- | :--- | :--- |
-| **Richard Wilhelm** | [University of Parma Academic Mirror](http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html) | Full text comparison of Image and Judgment. |
-| **James Legge** | [Internet Sacred Text Archive](https://sacred-texts.com/ich/index.htm) | 1:1 match of line texts and commentary. |
-| **Zhou Yi** | [Chinese Text Project (ctext.org)](https://ctext.org/book-of-changes) | Structural verification of trigram components. |
-
-## 3. Findings and Resolution
-- **Text Fidelity**: The literary content (Wilhelm, Legge, Zhouyi) was found to be **100% accurate**; the error was strictly limited to a metadata labeling field in the original transcription.
-- **Correction**: The source scripts (`scripts/iching_wilhelm_translation.mjs`) were manually corrected.
-- **Regeneration**: The entire dataset was rebuilt using `npm run build:data`, ensuring mathematical and literary consistency across all JSON files.
-
-## 4. Ongoing Reliability Guarantee
-Every hexagram in this application has been verified to ensure that its binary representation, trigram components, and literary translation are in perfect alignment. Users can trust that this library is one of the most accurate digital representations of the I Ching available today.
-
----
-*Last Audit Date: May 10, 2026*
-
-## 5. Change Log & Traceability
-
-| Date | Version | Change Type | Description | Auditor |
-| :--- | :--- | :--- | :--- | :--- |
-| 2026-05-10 | 1.0.0 | **Critical Fix** | Correction of Hexagram 23 metadata (Lower Trigram Kūn). | theoriginaliching.com |
-| 2026-05-10 | 1.0.1 | **1:1 Audit** | Full cross-verification against University sources (Parma/Sacred-Texts). | theoriginaliching.com |
-| 2026-05-10 | 1.0.2 | **i18n Support** | Inclusion of reliability guarantee in FAQ for 11 languages. | theoriginaliching.com |
-
+*Last 1:1 audit date: 21 June 2026*
