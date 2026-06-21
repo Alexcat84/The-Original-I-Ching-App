@@ -101,6 +101,19 @@ function isNumberedLine(text) {
   return isLineStatementBody(m[2]);
 }
 
+/**
+ * The "use of the number nine/six" supernumerary paragraph (hex 1/2 only) never
+ * opens with an ordinal ("The first…"), so isNumberedLine() always rejects it.
+ * Detect it directly by its fixed Legge phrasing instead of relying on the
+ * "Explanation of the separate lines" heading, which is absent on some
+ * per-hexagram pages (e.g. ic02.htm) even though the paragraph itself is present.
+ */
+function isSupernumeraryStatement(text) {
+  return /^\(The lines of this hexagram are all (?:strong and undivided|weak and divided)/i.test(
+    text,
+  );
+}
+
 function ordinalFromLineBody(body) {
   let m = body.match(/^(?:From the|In the|The|T he)\s+(first|second|third|fourth|fifth|topmost|sixth)\b/i);
   if (m) return ORDINAL_TO_POS[m[1].toLowerCase()] ?? 0;
@@ -172,6 +185,10 @@ function parseLineEntries(tokens) {
     if (t.text.startsWith("Footnotes") || /^page_\d+/i.test(t.text)) continue;
 
     const numbered = t.text.match(/^(\d+|S|[IVXLCDM]+)\s*\.\s*(?:\.\s*)?([\s\S]+)$/i);
+    if (numbered && !supernumerary && isSupernumeraryStatement(numbered[2])) {
+      supernumerary = numbered[2].trim();
+      continue;
+    }
     if (numbered && isNumberedLine(t.text)) {
       const idx = lineIndexFromNumber(numbered[1]);
       const body = numbered[2].trim();

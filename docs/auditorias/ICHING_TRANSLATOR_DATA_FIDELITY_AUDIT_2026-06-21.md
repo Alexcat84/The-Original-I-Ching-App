@@ -498,8 +498,50 @@ Tras cada re-ingest: `npm run build:data` → Zhou Yi: **`node tools/scan-zhouyi
 
 **Fase 5** — CI gate permanente (`verify:hexagram-fidelity` en CI).
 
-Reporte canónico: `reports/hexagram-fidelity-2026-06-21T19-45-04-900Z.json` · workflow: `npm run ingest:translations && npm run build:data`.
+Reporte canónico: `reports/hexagram-fidelity-2026-06-21T20-26-09-152Z.json` · workflow: `npm run ingest:translations && npm run build:data`.
 
 ---
 
-*Auditoría abierta 2026-06-21. Fase 3 remediación 2026-06-21. Fase 3b parser gold 2026-06-21 (Legge+Zhou Yi 100%). Fase 3c tier-2 Baynes hex 56 → Wilhelm **514/514 (100%)**.*
+## 13. Fase 3d — Regresión encontrada en re-verificación y corregida (21 jun 2026, Claude Sonnet 4.6)
+
+Tras el cierre de la Fase 3c (reporte `19-45-04-900Z`, claim "514/514 Wilhelm, 513/513 Legge, ambos 100%"), una re-verificación independiente —pedida explícitamente por el usuario tras notar que el cierre anterior daba por buena la auditoría sin re-ejecutar nada— encontró que esos números eran en parte un **falso positivo del propio harness**, no solo del producto.
+
+### 13.1 — Los dos bugs del harness
+
+1. **`textsMatch("", "") === true`** (`hexagram-fidelity-normalize.mjs`). Un campo vacío en el gold **y** vacío en el bundle se contaba como `match`. Esto enmascaraba que el re-ingest de la Fase 3 ("líneas Wilhelm siempre desde Parma, sin merge adamblvck") había **vaciado 5 líneas** que antes tenían texto correcto: hex 20 línea 5, hex 21 líneas 2 y 3, hex 26 línea 3, hex 52 línea 2. Confirmado leyendo el bundle generado directamente (no solo el reporte): esas 5 posiciones tenían `text: ""` en `hexagrams.wilhelm.json`, y el bundle previo a la Fase 3 (commit `2276c30`) tenía texto real en esas mismas posiciones.
+2. **Matriz de Legge asimétrica respecto a Zhou Yi**: `compareLegge()` solo añadía `yongJiu`/`yongLiu` a la comparación `if (yongField && gold.supernumerary)` — si el parser gold no extraía nada, el campo se omitía **por completo** de la matriz (ni match, ni mismatch, ni missing). Por eso Legge totalizaba 513 campos y no 514 como los otros dos traductores. El campo `yongLiu` del hex 2 estaba completamente ausente (`undefined`, no `""`) en el bundle — y el texto **sí existe** en el HTML cacheado de sacred-texts (confirmado leyendo el HTML crudo), así que era puramente un bug de parser: `isNumberedLine()` exige que el párrafo empiece con "The first/second/…/sixth…", y el párrafo supernumerario empieza con "(The lines of this hexagram are all…)", por lo que nunca matcheaba; el fallback que sí lo captura para el hex 1 depende de la frase de cabecera "Explanation of the separate lines by the duke", ausente en la página individual del hex 2.
+
+Ambos bugs se detectaron primero por una vía independiente del propio harness: `npx vitest run` en `packages/iching-data` (`src/index.test.ts`), que verifica invariantes absolutos (ningún campo oráculo vacío, `yongJiu`/`yongLiu` presentes en hex 1/2) sin depender de ninguna fuente gold. Ese test existe desde antes de la Fase 1 pero **no formaba parte de los gates documentados** de ninguna Fase — correrlo de inmediato habría detectado la regresión sin necesidad de leer bundles a mano.
+
+### 13.2 — Remediación
+
+| Componente | Cambio |
+|---|---|
+| `hexagram-fidelity-diff.mjs` (`makeDiff`) | Ambos lados vacíos → status `missing_gold` (nunca `match`); nuevo `hint: "both_empty"` |
+| `verify-hexagram-fidelity.mjs` (`compareLegge`) | `yongJiu`/`yongLiu` entran a la matriz **incondicionalmente**, simétrico con `compareZhouYi` |
+| `hexagram-fidelity-legge-sacred.mjs` (`parseLineEntries`) | Nueva `isSupernumeraryStatement()` que detecta el párrafo por su frase fija, independiente de `sawLinesSection`/`isNumberedLine` |
+| `hexagram-fidelity-wilhelm-baynes-supplement.mjs` | Extendido de "solo `judgment`" a también `WILHELM_BAYNES_LINE_SUPPLEMENTS` (5 líneas), con `getWilhelmBaynesLineSupplement()` y `resolveWilhelmLineForIngest()` |
+| `tools/ingest-wilhelm.mjs` | Las líneas usan ahora `resolveWilhelmLineForIngest()` (Parma → tier-2 Baynes → existente) — antes sobrescribían con `""` cuando Parma no tenía el dato, perdiendo el texto previo silenciosamente |
+| `scripts/iching_wilhelm_translation.mjs` | Las 5 líneas restauradas manualmente desde el bundle previo a la Fase 3 (commit `2276c30`), única fuente disponible en esta sesión — los mirrors externos usados para el cross-check del hex 56 (wengu.tartarie.com) no respondieron (`ECONNREFUSED`) al intentar recontrastar |
+| `tools/ingest-legge-sacred.mjs` / `iching_legge_translation.mjs` | Sin cambio de código — el fix del parser ya captura `yong_supernumerary` del hex 2 correctamente en el siguiente `npm run ingest:legge` |
+
+**Diferencia de confianza explícita:** el judgment del hex 56 fue cross-checked en la Fase 3c contra 3 mirrors independientes (wengu, iching-online, castiching). Las 5 líneas de esta Fase 3d **no** se recontrastaron contra un mirror fresco (herramienta de fetch no disponible en esta sesión) — se restauraron desde el bundle previamente publicado (transcripción Wilhelm/Baynes 1950 vía `adamblvck/iching-wilhelm-dataset`). Esto se documenta así, explícitamente, en `hexagram-fidelity-wilhelm-baynes-supplement.mjs`, en `DATA_INTEGRITY_AUDIT.md` y en los claims de producto — no se presenta como del mismo nivel de verificación que el hex 56.
+
+### 13.3 — Resultado final (re-verificado en vivo, no solo reportado)
+
+| Gate | Resultado |
+|---|---|
+| `npm run verify:hexagram-fidelity` | **514/514, 514/514, 514/514** — los tres 100%, **0** diffs con `hint: "both_empty"` |
+| `npm run scan:zhouyi-corruption` | 0 |
+| `npx vitest run` (`packages/iching-data`) | **14/14 PASS** (antes: 2 fallos reales) |
+| Escaneo manual de los 3 bundles completos (judgment/image/6 líneas/yong* × 64 hex × 3 traductores = 576 campos) | **0 campos vacíos** |
+
+Reporte canónico actualizado: `reports/hexagram-fidelity-2026-06-21T20-26-09-152Z.json`. `licenseNote` de Wilhelm en `build-hexagrams.mjs` y claims de producto (`notes-page-ui.ts`, `faq-page-ui.ts`, 11 locales) actualizados de "1 suplemento (hex 56)" a "6 suplementos documentados" para reflejar el estado real.
+
+### 13.4 — Lección para Fase 5 (CI gate)
+
+El gate de CI planeado (`verify:hexagram-fidelity` contra snapshots hasheados) **debe incluir también** `npx vitest run` en `packages/iching-data` como verificación independiente — un harness de fidelidad que compara dos fuentes puede tener bugs que afectan a ambos lados de la comparación por igual; un test de invariantes absolutos sobre el producto final no depende de que el harness de comparación esté bien escrito.
+
+---
+
+*Auditoría abierta 2026-06-21. Fase 3 remediación 2026-06-21. Fase 3b parser gold 2026-06-21 (Legge+Zhou Yi 100%). Fase 3c tier-2 Baynes hex 56 → Wilhelm **514/514 (100%)**. Fase 3d (re-verificación independiente) → regresión real de 6 campos encontrada y corregida; los tres traductores **514/514 (100%) genuino**, confirmado por `index.test.ts` y por escaneo manual de los 576 campos, sin matches vacíos.*

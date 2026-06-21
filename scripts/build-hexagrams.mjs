@@ -157,7 +157,7 @@ function buildZhouyiRecord(base, n) {
 
 const generatedAt = new Date().toISOString();
 const FIDELITY_AUDIT_DATE = "2026-06-21";
-const FIDELITY_REPORT_ID = "hexagram-fidelity-2026-06-21T19-45-04-900Z";
+const FIDELITY_REPORT_ID = "hexagram-fidelity-2026-06-21T20-26-09-152Z";
 
 const bundles = [
   {
@@ -168,7 +168,7 @@ const bundles = [
         "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes (1950, public domain since 2020).",
       sourceUrl: "http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html",
       licenseNote:
-        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts cross-verified 1:1 against the University of Parma mirror on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). Hex 56 judgment uses a documented Baynes supplement where Parma omits THE JUDGMENT.`,
+        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts cross-verified 1:1 against the University of Parma mirror on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 6 fields use a documented tier-2 Baynes supplement where Parma's HTML omits the passage entirely: hex 56 judgment, plus 5 individual changing lines (hex 20 line 5, hex 21 lines 2 and 3, hex 26 line 3, hex 52 line 2).`,
       generatedAt,
       build: buildWilhelmRecord,
     },

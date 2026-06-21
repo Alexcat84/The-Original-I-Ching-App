@@ -80,7 +80,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "El Zhou Yi original (literalmente 'Cambios de Zhou') es el núcleo del I Ching, compuesto por los 64 hexagramas, los juicios del Rey Wen y las líneas del Duque de Zhou, sin los comentarios confucianos posteriores (las Diez Alas). Esta fuente permite conectar directamente con la capa chamánica y más antigua del oráculo.",
     ichingDataAuditHeading: "Auditorías de fidelidad 1:1",
     ichingDataAuditBody:
-      "Última auditoría: 21 de junio de 2026. Legge y Zhou Yi (juicio, imagen y líneas) coinciden al 100% con sacred-texts.com y ctext.org. Wilhelm coincide al 100% con un único suplemento documentado: juicio del hexagrama 56 (El Viajero), donde el mirror de Parma omite THE JUDGMENT; el oracle Baynes de la edición Princeton cubre esa omisión (contrastado con wengu e iching-online). Los nombres de campo del dataset y la estructura JSON no cambiaron.",
+      "Última auditoría: 21 de junio de 2026. Legge y Zhou Yi (juicio, imagen y líneas) coinciden al 100% con sacred-texts.com y ctext.org. Wilhelm coincide al 100% con 6 suplementos documentados donde el mirror de Parma omite el pasaje por completo: el juicio del hexagrama 56 (El Viajero, contrastado con wengu e iching-online) y 5 líneas individuales (hex 20 línea 5; hex 21 líneas 2 y 3; hex 26 línea 3; hex 52 línea 2; restauradas del texto previamente publicado). Los nombres de campo del dataset y la estructura JSON no cambiaron.",
     bonesHeading: "Huesos de Oráculo (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origen histórico (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
@@ -149,7 +149,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "The original Zhou Yi (literally 'Changes of Zhou') is the core of the I Ching, composed of the 64 hexagrams, King Wen's judgments, and the Duke of Zhou's lines, without the later Confucian commentaries (the Ten Wings). This source allows a direct connection with the shamanic and oldest layer of the oracle.",
     ichingDataAuditHeading: "1:1 data fidelity audits",
     ichingDataAuditBody:
-      "Last audit: 21 June 2026. Legge and Zhou Yi oracle texts (judgment, image, and lines) match sacred-texts.com and ctext.org at 100%. Wilhelm matches at 100% with one documented supplement only: hex 56 (The Wanderer) judgment, where the Parma mirror omits THE JUDGMENT; the Baynes oracle from the Princeton edition fills that gap (cross-checked with wengu and iching-online). Dataset field names and JSON structure are unchanged.",
+      "Last audit: 21 June 2026. Legge and Zhou Yi oracle texts (judgment, image, and lines) match sacred-texts.com and ctext.org at 100%. Wilhelm matches at 100% with 6 documented supplements where the Parma mirror omits the passage entirely: hex 56 (The Wanderer) judgment (cross-checked with wengu and iching-online) and 5 individual changing lines (hex 20 line 5; hex 21 lines 2 and 3; hex 26 line 3; hex 52 line 2; restored from the previously published text). Dataset field names and JSON structure are unchanged.",
     bonesHeading: "Oracle Bones (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Historical Origins (Shang Dynasty, ~1600-1046 BCE)",
     bonesOriginBody:
@@ -219,7 +219,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "O Zhou Yi original (literalmente 'Mutações de Zhou') é o núcleo do I Ching, composto pelos 64 hexagramas, os juízos do Rei Wen e as linhas do Duque de Zhou, sem os comentários confucianos posteriores (as Dez Asas). Esta fonte permite uma ligação direta à camada xamânica e mais antiga do oráculo.",
     ichingDataAuditHeading: "Auditorias de fidelidade 1:1",
     ichingDataAuditBody:
-      "Última auditoria: 21 de junho de 2026. Legge e Zhou Yi (julgamento, imagem e linhas) coincidem a 100% com sacred-texts.com e ctext.org. Wilhelm coincide a 100% com um único suplemento documentado: julgamento do hexagrama 56 (O Viajante), onde o espelho de Parma omite THE JUDGMENT; o oráculo Baynes da edição Princeton cobre essa omissão (verificado com wengu e iching-online). Os nomes de campo do dataset e a estrutura JSON não mudaram.",
+      "Última auditoria: 21 de junho de 2026. Legge e Zhou Yi (julgamento, imagem e linhas) coincidem a 100% com sacred-texts.com e ctext.org. Wilhelm coincide a 100% com 6 suplementos documentados onde o espelho de Parma omite a passagem por completo: o julgamento do hexagrama 56 (O Viajante, verificado com wengu e iching-online) e 5 linhas individuais (hex 20 linha 5; hex 21 linhas 2 e 3; hex 26 linha 3; hex 52 linha 2; restauradas do texto previamente publicado). Os nomes de campo do dataset e a estrutura JSON não mudaram.",
     bonesHeading: "Ossos Oraculares (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origem histórica (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
@@ -289,7 +289,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Le Zhou Yi original (littéralement 'Changements de Zhou') est le noyau du I Ching, composé des 64 hexagrammes, des jugements du Roi Wen et des lignes du Duc de Zhou, sans les commentaires confucéens ultérieurs (les Dix Ailes). Cette source permet une connexion directe avec la couche chamanique et la plus ancienne de l'oracle.",
     ichingDataAuditHeading: "Audits de fidélité 1:1",
     ichingDataAuditBody:
-      "Dernier audit : 21 juin 2026. Legge et Zhou Yi (jugement, image et lignes) concordent à 100 % avec sacred-texts.com et ctext.org. Wilhelm concorde à 100 % avec un seul supplément documenté : jugement de l'hexagramme 56 (Le Voyageur), où le miroir de Parma omet THE JUDGMENT ; l'oracle Baynes de l'édition Princeton comble cette omission (vérifié avec wengu et iching-online). Les noms de champs du jeu de données et la structure JSON n'ont pas changé.",
+      "Dernier audit : 21 juin 2026. Legge et Zhou Yi (jugement, image et lignes) concordent à 100 % avec sacred-texts.com et ctext.org. Wilhelm concorde à 100 % avec 6 suppléments documentés là où le miroir de Parma omet entièrement le passage : le jugement de l'hexagramme 56 (Le Voyageur, vérifié avec wengu et iching-online) et 5 lignes individuelles (hex 20 ligne 5 ; hex 21 lignes 2 et 3 ; hex 26 ligne 3 ; hex 52 ligne 2 ; restaurées à partir du texte précédemment publié). Les noms de champs du jeu de données et la structure JSON n'ont pas changé.",
     bonesHeading: "Os oraculaires (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
       "Origine historique (Dynastie Shang, ~1600-1046 av. J.-C.)",
@@ -360,7 +360,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Das ursprüngliche Zhou Yi (wörtlich 'Wandlungen von Zhou') ist der Kern des I Ging, bestehend aus den 64 Hexagrammen, den Urteilen von König Wen und den Linien des Herzogs von Zhou, ohne die späteren konfuzianischen Kommentare (die Zehn Flügel). Diese Quelle ermöglicht eine direkte Verbindung mit der schamanischen und ältesten Schicht des Orakels.",
     ichingDataAuditHeading: "1:1-Datenfidelitätsprüfungen",
     ichingDataAuditBody:
-      "Letzte Prüfung: 21. Juni 2026. Legge und Zhou Yi (Urteil, Bild und Linien) stimmen zu 100 % mit sacred-texts.com und ctext.org überein. Wilhelm stimmt zu 100 % überein mit einer einzigen dokumentierten Ergänzung: Urteil von Hexagramm 56 (Der Wanderer), wo der Parma-Spiegel THE JUDGMENT auslässt; das Baynes-Orakel der Princeton-Ausgabe schließt diese Lücke (gegen wengu und iching-online geprüft). Feldnamen und JSON-Struktur des Datensatzes sind unverändert.",
+      "Letzte Prüfung: 21. Juni 2026. Legge und Zhou Yi (Urteil, Bild und Linien) stimmen zu 100 % mit sacred-texts.com und ctext.org überein. Wilhelm stimmt zu 100 % überein mit 6 dokumentierten Ergänzungen, wo der Parma-Spiegel die Passage vollständig auslässt: Urteil von Hexagramm 56 (Der Wanderer, gegen wengu und iching-online geprüft) sowie 5 einzelne Linien (Hexagramm 20 Linie 5; Hexagramm 21 Linien 2 und 3; Hexagramm 26 Linie 3; Hexagramm 52 Linie 2; aus dem zuvor veröffentlichten Text wiederherstellt). Feldnamen und JSON-Struktur des Datensatzes sind unverändert.",
     bonesHeading: "Orakelknochen (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
       "Historischer Ursprung (Shang-Dynastie, ~1600-1046 v. Chr.)",
@@ -431,7 +431,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Lo Zhou Yi originale (letteralmente 'Mutamenti di Zhou') è il nucleo dell'I Ching, composto dai 64 esagrammi, i giudizi del Re Wen e le linee del Duca di Zhou, senza i successivi commenti confuciani (le Dieci Ali). Questa fonte consente una connessione diretta con lo strato sciamanico e più antico dell'oracolo.",
     ichingDataAuditHeading: "Audit di fedeltà 1:1",
     ichingDataAuditBody:
-      "Ultimo audit: 21 giugno 2026. Legge e Zhou Yi (giudizio, immagine e linee) coincidono al 100% con sacred-texts.com e ctext.org. Wilhelm coincide al 100% con un unico supplemento documentato: giudizio dell'esagramma 56 (Il Viaggiatore), dove lo specchio di Parma omette THE JUDGMENT; l'oracolo Baynes dell'edizione Princeton colma quell'omissione (verificato con wengu e iching-online). I nomi dei campi del dataset e la struttura JSON non sono cambiati.",
+      "Ultimo audit: 21 giugno 2026. Legge e Zhou Yi (giudizio, immagine e linee) coincidono al 100% con sacred-texts.com e ctext.org. Wilhelm coincide al 100% con 6 supplementi documentati dove lo specchio di Parma omette il passaggio per intero: il giudizio dell'esagramma 56 (Il Viaggiatore, verificato con wengu e iching-online) e 5 linee individuali (esagramma 20 linea 5; esagramma 21 linee 2 e 3; esagramma 26 linea 3; esagramma 52 linea 2; ripristinate dal testo precedentemente pubblicato). I nomi dei campi del dataset e la struttura JSON non sono cambiati.",
     bonesHeading: "Ossa Oracolari (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origine storica (Dinastia Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
@@ -501,7 +501,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "原典である周易（文字通り「周の変化」）は易経の中核であり、64卦、文王の卦辞、周公の爻辞で構成され、後代の儒教の注釈（十翼）を含みません。この源泉は、神託のシャーマニズム的で最も古い層との直接的なつながりを可能にします。",
     ichingDataAuditHeading: "1:1データ忠実度監査",
     ichingDataAuditBody:
-      "最新監査: 2026年6月21日。Leggeと周易（卦辞・象辞・爻辞）は sacred-texts.com および ctext.org と100%一致。Wilhelmも100%一致。唯一の文書化された補足は第56卦（旅）の卦辞のみ。Parmaミラーは THE JUDGMENT を欠落するため、Princeton版Baynesの神託文で補完（wenguおよび iching-online で照合）。データセットのフィールド名とJSON構造は変更なし。",
+      "最新監査: 2026年6月21日。Leggeと周易（卦辞・象辞・爻辞）は sacred-texts.com および ctext.org と100%一致。Wilhelmも100%一致。Parmaミラーが該当箇所を完全に欠落させている6か所に文書化された補足を適用：第56卦（旅）の卦辞（wenguおよびiching-onlineで照合）、および5つの個別の爻（第20卦5爻、第21卦2爻と3爻、第26卦3爻、第52卦2爻、いずれも以前公開されていた本文から復元）。データセットのフィールド名とJSON構造は変更なし。",
     bonesHeading: "甲骨占い（甲骨 · Jiǎgǔ）",
     bonesOriginHeading: "歴史的起源（商王朝、紀元前1600〜1046年頃）",
     bonesOriginBody:
@@ -575,7 +575,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "原典《周易》（字面意思是“周的变化”）是《易经》的核心，由64卦、文王卦辞和周公爻辞组成，不包含后来的儒家注释（十翼）。这一源头使我们能够直接连接到神谕中最古老的萨满文化层。",
     ichingDataAuditHeading: "1:1数据保真审计",
     ichingDataAuditBody:
-      "最近一次审计：2026年6月21日。理雅各译本与周易原文（卦辞、象辞、爻辞）与 sacred-texts.com 及 ctext.org 100%一致。卫礼贤译本整体100%一致；唯一有据可查的补充是第56卦（旅）卦辞，因帕尔马镜像缺少 THE JUDGMENT，采用普林斯顿版 Baynes 神谕文填补（已与 wengu 及 iching-online 对照）。数据集字段名与 JSON 结构未变。",
+      "最近一次审计：2026年6月21日。理雅各译本与周易原文（卦辞、象辞、爻辞）与 sacred-texts.com 及 ctext.org 100%一致。卫礼贤译本整体100%一致；在帕尔马镜像完全缺失对应段落的6处采用了有据可查的补充：第56卦（旅）卦辞（已与 wengu 及 iching-online 对照），以及5条独立爻辞（第20卦五爻、第21卦二爻与三爻、第26卦三爻、第52卦二爻，均从此前已发布的文本中恢复）。数据集字段名与 JSON 结构未变。",
     bonesHeading: "甲骨占卜（甲骨 · Jiǎgǔ）",
     bonesOriginHeading: "历史渊源（商朝，约公元前1600至1046年）",
     bonesOriginBody:
@@ -645,7 +645,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "원전인 주역(문자 그대로 '주나라의 변화')은 64괘, 문왕의 괘사, 주공의 효사로 구성되며, 후대의 유교 주석(십익)을 포함하지 않는 주역의 핵심입니다. 이 출처는 신탁의 샤머니즘적이고 가장 오래된 층과의 직접적인 연결을 가능하게 합니다.",
     ichingDataAuditHeading: "1:1 데이터 충실도 감사",
     ichingDataAuditBody:
-      "최근 감사: 2026년 6월 21일. Legge와 주역(괘사·상사·효사)은 sacred-texts.com 및 ctext.org와 100% 일치합니다. Wilhelm도 100% 일치하며, 유일하게 문서화된 보완은 56괘(려) 괘사뿐입니다. Parma 미러는 THE JUDGMENT을 누락하므로 Princeton판 Baynes 신탁문으로 보완했습니다(wengu 및 iching-online과 대조). 데이터셋 필드명과 JSON 구조는 변경되지 않았습니다.",
+      "최근 감사: 2026년 6월 21일. Legge와 주역(괘사·상사·효사)은 sacred-texts.com 및 ctext.org와 100% 일치합니다. Wilhelm도 100% 일치하며, Parma 미러가 해당 구절을 완전히 누락한 6곳에 문서화된 보완을 적용했습니다: 56괘(려) 괘사(wengu 및 iching-online과 대조) 및 개별 효 5곳(20괘 5효, 21괘 2효와 3효, 26괘 3효, 52괘 2효, 모두 이전에 공개된 본문에서 복원). 데이터셋 필드명과 JSON 구조는 변경되지 않았습니다.",
     bonesHeading: "갑골 점복（甲骨 · Jiǎgǔ）",
     bonesOriginHeading: "역사적 기원（상나라, 기원전 1600~1046년경）",
     bonesOriginBody:
@@ -719,7 +719,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "نص Zhou Yi الأصلي (حرفياً 'تغييرات Zhou') هو جوهر I Ching، ويتكون من 64 شكلاً سداسياً، وأحكام الملك Wen، وخطوط الدوق Zhou، بدون التعليقات الكونفوشيوسية اللاحقة (الأجنحة العشرة). يتيح هذا المصدر اتصالاً مباشراً بالطبقة الشامانية والأقدم من العرافة.",
     ichingDataAuditHeading: "تدقيقات مطابقة البيانات 1:1",
     ichingDataAuditBody:
-      "آخر تدقيق: 21 يونيو 2026. Legge وZhou Yi (الحكم والصورة والخطوط) تطابق sacred-texts.com وctext.org بنسبة 100%. Wilhelm يطابق بنسبة 100% مع مكمل واحد موثق فقط: حكم السداسي 56 (المسافر)، حيث ينقص مرآة Parma عبارة THE JUDGMENT؛ يملأ oracle Baynes من إصدار Princeton هذا النقص (تم التحقق مع wengu وiching-online). أسماء حقول مجموعة البيانات وبنية JSON لم تتغير.",
+      "آخر تدقيق: 21 يونيو 2026. Legge وZhou Yi (الحكم والصورة والخطوط) تطابق sacred-texts.com وctext.org بنسبة 100%. Wilhelm يطابق بنسبة 100% مع 6 مكملات موثقة حيث تحذف مرآة Parma المقطع بالكامل: حكم السداسي 56 (المسافر، تم التحقق منه مع wengu وiching-online) و5 خطوط فردية (السداسي 20 الخط 5؛ السداسي 21 الخطان 2 و3؛ السداسي 26 الخط 3؛ السداسي 52 الخط 2؛ مستعادة من النص المنشور سابقاً). أسماء حقول مجموعة البيانات وبنية JSON لم تتغير.",
     bonesHeading: "عظام العرافة (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
       "الأصول التاريخية (أسرة Shang، نحو 1600-1046 قبل الميلاد)",
@@ -794,7 +794,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "मूल झोउ यी (शाब्दिक रूप से 'झोउ के परिवर्तन') आई चिंग का मूल है, जो 64 हेक्साग्राम, राजा वेन के निर्णयों और ड्यूक ऑफ झोउ की पंक्तियों से बना है, बिना बाद की कन्फ्यूशियस टिप्पणियों (दस पंखों) के। यह स्रोत दैवज्ञ की ओझा और सबसे पुरानी परत के साथ सीधा संबंध बनाने की अनुमति देता है。",
     ichingDataAuditHeading: "1:1 डेटा निष्ठा ऑडिट",
     ichingDataAuditBody:
-      "अंतिम ऑडिट: 21 जून 2026. Legge और Zhou Yi (निर्णय, प्रतीक और पंक्तियाँ) sacred-texts.com और ctext.org से 100% मेल खाते हैं. Wilhelm भी 100% मेल खाता है, एक ही दस्तावेजीकृत पूरक के साथ: hexagram 56 (यात्री) का निर्णय, जहाँ Parma मिरर THE JUDGMENT छोड़ता है; Princeton संस्करण का Baynes oracle उस अंतर को भरता है (wengu और iching-online से जाँचा गया). डेटासेट फ़ील्ड नाम और JSON संरचना अपरिवर्तित हैं.",
+      "अंतिम ऑडिट: 21 जून 2026. Legge और Zhou Yi (निर्णय, प्रतीक और पंक्तियाँ) sacred-texts.com और ctext.org से 100% मेल खाते हैं. Wilhelm भी 100% मेल खाता है, उन 6 जगहों पर दस्तावेजीकृत पूरक के साथ जहाँ Parma मिरर पूरा अंश ही छोड़ देता है: hexagram 56 (यात्री) का निर्णय (wengu और iching-online से जाँचा गया) और 5 अलग-अलग पंक्तियाँ (hex 20 पंक्ति 5; hex 21 पंक्तियाँ 2 और 3; hex 26 पंक्ति 3; hex 52 पंक्ति 2; पहले प्रकाशित पाठ से पुनर्स्थापित). डेटासेट फ़ील्ड नाम और JSON संरचना अपरिवर्तित हैं.",
     bonesHeading: "दैवज्ञ हड्डियां (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
       "ऐतिहासिक उत्पत्ति (शांग राजवंश, लगभग 1600-1046 ईसा पूर्व)",

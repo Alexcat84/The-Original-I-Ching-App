@@ -121,11 +121,14 @@ async function compareLegge(bundle) {
       });
     }
     const yongField = n === 1 ? "yongJiu" : n === 2 ? "yongLiu" : null;
-    if (yongField && gold.supernumerary) {
+    if (yongField) {
+      // Unconditional (matches the Zhou Yi comparator below): a real gap in either
+      // side must surface as missing_gold/missing_bundle, never be silently dropped
+      // from the matrix just because the gold parser came back empty.
       fields.push({
         field: yongField,
         linePos: null,
-        expected: gold.supernumerary,
+        expected: gold.supernumerary ?? "",
         actual: hex?.[yongField] ?? "",
       });
     }

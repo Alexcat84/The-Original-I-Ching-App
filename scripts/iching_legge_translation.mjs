@@ -64,7 +64,8 @@ export default {
       "6": {
         "text": "The sixth SIX, divided (shows) dragons fighting in the wild. Their blood is purple and yellow."
       }
-    }
+    },
+    "yong_supernumerary": "(The lines of this hexagram are all weak and divided, as appears from) the use of the number six. If those (who are thus represented) be perpetually correct and firm, advantage will arise."
   },
   "3": {
     "hex": 3,
