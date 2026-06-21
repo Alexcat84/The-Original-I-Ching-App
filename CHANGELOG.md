@@ -103,10 +103,10 @@ Full project change history.
 ## [4.1.2] — 2026-06-18 | versionCode: 51 | Stage: Closed Testing
 
 ### Fix
-- fix(mobile): true React singleton via resolveRequest + replace banner icon with square app icon | commit: 5c6fe87
+- fix(mobile): **P0 cold-start crash post-SDK 53** — force single React instance via Metro `resolveRequest` + square app icon (hoisted `expo-router` was resolving `react@18` from monorepo root while the shell uses `react@19` in `apps/mobile`; two copies in one bundle → instant close / `JavascriptException` on Android, e.g. Galaxy S23 Ultra on vc50). Definitive fix; supersedes partial `extraNodeModules` attempt in vc50 | commit: 5c6fe87
 - fix(web): correct broken anchors in privacy/guia doc links | commit: 5f2ef9b
 - fix(mobile): extraNodeModules only for react, not react-native/react-dom | commit: 24a4a29
-- fix(mobile): force React singleton via extraNodeModules in Metro config | commit: 62fd288
+- fix(mobile): force React singleton via extraNodeModules in Metro config (partial — insufficient alone; see vc51 `resolveRequest`) | commit: 62fd288
 - fix(oracle): rename fifth section to 'El hexagrama en su plenitud' when no mutations | commit: 7bd4a72
 - fix(oracle): omit 'El trazado' section when no changing lines | commit: f77ac00
 - fix(mobile): add splash and app icon assets for SDK 53 native build | commit: de6c501
@@ -121,7 +121,18 @@ Full project change history.
 
 ---
 
+## [4.1.1] — 2026-06-17 | versionCode: 50 | Stage: Closed Testing
+
+> **Known regression (fixed in 4.1.2 / vc51):** APK could **close immediately on launch** after the SDK 53 upgrade. Root cause: **two React versions in the same Metro bundle** — `react@19` (mobile shell) and `react@18` (hoisted from monorepo root via packages like `expo-router`) both initializing at startup → native `JavascriptException`. Same-day `extraNodeModules` mitigations (commits `62fd288`, `24a4a29`) were not enough; **do not ship vc50 to testers** — use **vc51+**. Not related to the older WebView `/about` MutationObserver loop (fixed April, commit `c5f713c`).
+
+### Maintenance
+- chore(mobile): bump to 4.1.1 / versionCode 50 | commit: 28c47a2
+
+---
+
 ## [4.1.0] — 2026-06-17 | versionCode: 49 | Stage: Production
+
+> **Follow-up required:** first Release A build after SDK 53 exposed the dual-React crash above; resolved in **4.1.2 / vc51** (`apps/mobile/metro.config.js` → custom `resolveRequest` forcing `apps/mobile/node_modules/react` for every `require("react")`).
 
 ### Maintenance
 - chore(mobile): upgrade Expo SDK 51 → 53, RN 0.74 → 0.79 (Release A) | commit: f1815fe
