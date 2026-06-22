@@ -37,36 +37,36 @@ const REPORTS_EN: AuditReportEntry[] = [
   {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 Jun 2026",
-    title: "Oracle texts — Wilhelm, Legge & Zhou Yi",
+    title: "Oracle texts: Wilhelm, Legge and Zhou Yi",
     summary:
-      "Audited against Wilhelm/Baynes (Pantheon 1950), James Legge (Sacred Books of the East XVI, 1882), and the Zhou Yi (Chinese Text Project). Result: pass — all oracle fields verified.",
+      "Audited against Wilhelm/Baynes (Pantheon 1950), James Legge (Sacred Books of the East XVI, 1882), and the Zhou Yi (Chinese Text Project). Result: pass. All oracle fields verified.",
     status: "closed",
     statusLabel: "Closed",
   },
   {
     id: "huang-book-mutation-2026-06-22",
     date: "22 Jun 2026",
-    title: "Changing lines — Alfred Huang",
+    title: "Changing lines: Alfred Huang",
     summary:
-      "Audited against The Complete I Ching — 10th Anniversary Edition (Taoist Master Alfred Huang, 2010). Result: pass — published changing-line rules verified.",
+      "Audited against The Complete I Ching (10th Anniversary Edition, Taoist Master Alfred Huang, 2010). Result: pass. Published changing-line rules verified.",
     status: "closed",
     statusLabel: "Closed",
   },
   {
     id: "zhuxi-adler-mutation-2026-06-22",
     date: "22 Jun 2026",
-    title: "Changing lines — Zhu Xi (Adler translation)",
+    title: "Changing lines: Zhu Xi (Adler translation)",
     summary:
-      "Audited against Zhu Xi, Yixue Qimeng ch. IV — Joseph Adler translation (Bilingual Texts in Chinese History). Result: pass — core changing-line rules verified.",
+      "Audited against Zhu Xi, Yixue Qimeng ch. IV (Joseph Adler translation, Bilingual Texts in Chinese History). Result: pass. Core changing-line rules verified.",
     status: "closed",
     statusLabel: "Closed",
   },
   {
     id: "line-reading-selector-2026-06-20",
     date: "20 Jun 2026",
-    title: "Dual line-reading systems (Huang | Zhu Xi)",
+    title: "Dual line-reading systems (Huang or Zhu Xi)",
     summary:
-      "Feature release: user-selectable Huang or Zhu Xi changing-line reading. Result: pass — both systems available in the app.",
+      "Feature release: user-selectable Huang or Zhu Xi changing-line reading. Result: pass. Both systems available in the app.",
     status: "closed",
     statusLabel: "Closed",
   },
@@ -76,36 +76,36 @@ const REPORTS_ES: AuditReportEntry[] = [
   {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 jun 2026",
-    title: "Textos del oráculo — Wilhelm, Legge y Zhou Yi",
+    title: "Textos del oráculo: Wilhelm, Legge y Zhou Yi",
     summary:
-      "Auditado contra Wilhelm/Baynes (Pantheon 1950), James Legge (Sacred Books of the East XVI, 1882) y el Zhou Yi (Chinese Text Project). Resultado: aprobado — todos los campos del oráculo verificados.",
+      "Auditado contra Wilhelm/Baynes (Pantheon 1950), James Legge (Sacred Books of the East XVI, 1882) y el Zhou Yi (Chinese Text Project). Resultado: aprobado. Todos los campos del oráculo verificados.",
     status: "closed",
     statusLabel: "Cerrada",
   },
   {
     id: "huang-book-mutation-2026-06-22",
     date: "22 jun 2026",
-    title: "Líneas cambiantes — Alfred Huang",
+    title: "Líneas cambiantes: Alfred Huang",
     summary:
-      "Auditado contra The Complete I Ching — 10th Anniversary Edition (Taoist Master Alfred Huang, 2010). Resultado: aprobado — reglas publicadas de líneas cambiantes verificadas.",
+      "Auditado contra The Complete I Ching (10th Anniversary Edition, Taoist Master Alfred Huang, 2010). Resultado: aprobado. Reglas publicadas de líneas cambiantes verificadas.",
     status: "closed",
     statusLabel: "Cerrada",
   },
   {
     id: "zhuxi-adler-mutation-2026-06-22",
     date: "22 jun 2026",
-    title: "Líneas cambiantes — Zhu Xi (traducción Adler)",
+    title: "Líneas cambiantes: Zhu Xi (traducción Adler)",
     summary:
-      "Auditado contra Zhu Xi, Yixue Qimeng cap. IV — traducción de Joseph Adler (Bilingual Texts in Chinese History). Resultado: aprobado — reglas núcleo de líneas cambiantes verificadas.",
+      "Auditado contra Zhu Xi, Yixue Qimeng cap. IV (traducción de Joseph Adler, Bilingual Texts in Chinese History). Resultado: aprobado. Reglas núcleo de líneas cambiantes verificadas.",
     status: "closed",
     statusLabel: "Cerrada",
   },
   {
     id: "line-reading-selector-2026-06-20",
     date: "20 jun 2026",
-    title: "Dos sistemas de lectura (Huang | Zhu Xi)",
+    title: "Dos sistemas de lectura (Huang o Zhu Xi)",
     summary:
-      "Lanzamiento de función: lectura Huang o Zhu Xi seleccionable por el usuario. Resultado: aprobado — ambos sistemas disponibles en la app.",
+      "Lanzamiento de función: lectura Huang o Zhu Xi seleccionable por el usuario. Resultado: aprobado. Ambos sistemas disponibles en la app.",
     status: "closed",
     statusLabel: "Cerrada",
   },
@@ -119,17 +119,17 @@ const EN_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lastUpdated: "22 June 2026",
   introHeading: "What we publish here",
   introBody:
-    "Each entry records when we audited, which edition or translation we used as reference, and whether the app passed. Detailed methodology and engineering reports are kept internally — not on this page.",
+    "Each entry records when we audited, which edition or translation we used as reference, and whether the app passed. Detailed methodology and engineering reports are kept internally, not on this page.",
   oracleTextsHeading: "Oracle texts (Wilhelm, Legge, Zhou Yi)",
   oracleTextsBody:
     "Last verified: 22 June 2026. Reference editions: Wilhelm/Baynes (Pantheon 1950), James Legge (SBE XVI, 1882), Zhou Yi (Chinese Text Project). Result: pass.",
   mutationRulesHeading: "Changing-line reading rules",
   mutationRulesIntro:
     "The app offers two classical systems. Each is checked against its named source book.",
-  mutationRulesHuangHeading: "Alfred Huang — The Complete I Ching",
+  mutationRulesHuangHeading: "Alfred Huang: The Complete I Ching",
   mutationRulesHuangBody:
     "Last verified: 22 June 2026. Reference: 10th Anniversary Edition (2010). Result: pass.",
-  mutationRulesZhuxiHeading: "Zhu Xi — Yixue Qimeng (trans. Joseph Adler)",
+  mutationRulesZhuxiHeading: "Zhu Xi: Yixue Qimeng (trans. Joseph Adler)",
   mutationRulesZhuxiBody:
     "Last verified: 22 June 2026. Reference: ch. IV, Joseph Adler translation. Result: pass.",
   reportsHeading: "Audit log",
@@ -145,17 +145,17 @@ const ES_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lastUpdated: "22 de junio de 2026",
   introHeading: "Qué publicamos aquí",
   introBody:
-    "Cada entrada indica cuándo auditamos, qué edición o traducción usamos como referencia y si la app aprobó. La metodología detallada y los informes de ingeniería son internos — no aparecen en esta página.",
+    "Cada entrada indica cuándo auditamos, qué edición o traducción usamos como referencia y si la app aprobó. La metodología detallada y los informes de ingeniería son internos y no aparecen en esta página.",
   oracleTextsHeading: "Textos del oráculo (Wilhelm, Legge, Zhou Yi)",
   oracleTextsBody:
     "Última verificación: 22 de junio de 2026. Ediciones de referencia: Wilhelm/Baynes (Pantheon 1950), James Legge (SBE XVI, 1882), Zhou Yi (Chinese Text Project). Resultado: aprobado.",
   mutationRulesHeading: "Reglas de lectura de líneas cambiantes",
   mutationRulesIntro:
     "La app ofrece dos sistemas clásicos. Cada uno se contrasta con su libro fuente indicado.",
-  mutationRulesHuangHeading: "Alfred Huang — The Complete I Ching",
+  mutationRulesHuangHeading: "Alfred Huang: The Complete I Ching",
   mutationRulesHuangBody:
     "Última verificación: 22 de junio de 2026. Referencia: edición 10.º aniversario (2010). Resultado: aprobado.",
-  mutationRulesZhuxiHeading: "Zhu Xi — Yixue Qimeng (trad. Joseph Adler)",
+  mutationRulesZhuxiHeading: "Zhu Xi: Yixue Qimeng (trad. Joseph Adler)",
   mutationRulesZhuxiBody:
     "Última verificación: 22 de junio de 2026. Referencia: cap. IV, traducción de Joseph Adler. Resultado: aprobado.",
   reportsHeading: "Registro de auditorías",

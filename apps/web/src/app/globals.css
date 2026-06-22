@@ -7327,6 +7327,7 @@ html[data-theme="dark"] .auth-pro-err {
   margin: 0.75rem 0 0;
   color: var(--fg);
   line-height: 1.55;
+  white-space: pre-line;
 }
 
 .faq-related {
