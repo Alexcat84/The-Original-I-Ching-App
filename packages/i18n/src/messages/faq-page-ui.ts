@@ -246,7 +246,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "data-reliability",
     question: "How reliable are the I Ching texts provided in the app?",
     answer:
-      "Last audit: 22 June 2026. Oracle texts verified against Tier-0 sources: Wilhelm/Baynes (Pantheon PDF), Legge (SBE XVI), Zhou Yi (Chinese Text Project / ctext.org), Huang and Zhu Xi/Adler (local PDFs). Changing-line rules verified against Huang and Adler gold. See the Fidelity Audits page for methodology, gate results, and the full audit log.",
+      "Last audit: 22 June 2026. Oracle texts verified against Tier-0 sources: Wilhelm/Baynes (Pantheon PDF), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang and Zhu Xi/Adler (local PDFs). Changing-line rules verified against Huang and Adler gold. See the Fidelity Audits page for methodology, gate results, and the full audit log.",
     related: ["fidelityAudits"],
   },
   {
