@@ -9,6 +9,8 @@ import {
 } from "./hexagram-fidelity-legge-sacred.mjs";
 import { loadLeggeSbePdfFullText } from "./legge-sbe-pdf-text-extract.mjs";
 import { joinLeggeOcrHyphenation, repairLeggeSbeOcrText } from "./hexagram-fidelity-legge-sbe-ocr.mjs";
+import { applyEpubGuideToLeggeRow } from "./hexagram-fidelity-legge-sbe-epub-guide.mjs";
+import { parseAllLeggeEpubOrThrow } from "./hexagram-fidelity-legge-epub.mjs";
 
 const ROMAN_OCR_VARIANTS = {
   I: ["I", "l", "1"],
@@ -133,6 +135,9 @@ const HEX_FALLBACK_ANCHORS = {
   53: /Khien suggests to us the marriage of a young/i,
   57: /Sun intimates that \(under the conditions which/i,
   61: /\bKung F\w*\s*\(moves even\)[^.]{0,60}pigs and fish/i,
+  35: /In Žin we see a prince who secures the tranquillity/i,
+  52: /When one['’]s resting is like that of the back/i,
+  62: /Hsiâo Kwo indicates that \(in the circumstances/i,
 };
 
 function isLeggeOcrNoiseLine(line) {
@@ -559,6 +564,9 @@ function extractOcrJudgmentFallback(sectionText) {
     /\bSze indicates how, in the case which it supposes,[^.]+\./i,
     /\bThun indicates successful progress \(in its circumstances\)\. To a small extent[^.]+\./i,
     /\bWa Wang indicates great progress and success[^.]+\./i,
+    /\bIn Žin we see a prince[^.]+\./i,
+    /\bWhen one['’]s resting is like that of the back[^.]+\./i,
+    /\bHsiâo Kwo indicates that \(in the circumstances[^.]+\./i,
     /\bKung F\w*\s*\(moves even\)[^.]{0,80}pigs and fish[^.]+\./i,
     /\b(?:Khien|Khw[aâ]n|Sze|Pi|Pî|Phî|Yü|Kieh|Ding|Kăn|Sun|Lü|Lii|Xien|Sung|Mang|Hsii|Kun|Thai|Po|Fu|Shih|Ta|Kwan)\b[^.]{0,80}(?:\(represents\)|indicates how|indicates that|intimates how|intimates that|gives the intimation|\(moves even\))[^.]+\./i,
     /\(Looking at\)[^.]+\./i,
@@ -583,7 +591,7 @@ function repairLeggeLineBody(body) {
 
 function normalizeLeggeLinePrefix(body) {
   let out = String(body).trim();
-  out = out.replace(/^\s*(?:[_~\-:\\]+|\s)*\d+[.\-_~\s]+/, "");
+  out = out.replace(/^\s*(?:[_~\-:\\.]+\s*)*\d+[.\-_~\s]+/, "");
   out = out.replace(/^The\s+[''`]+/i, "The ");
   if (!/^In the /i.test(out) && /^the sixth \(or topmost\) line,/i.test(out)) {
     out = `In the ${out}`;
@@ -804,7 +812,11 @@ export function parseLeggeSbeTextSection(sectionText) {
   if (!parsed.supernumerary?.trim() && ocrLines.supernumerary) {
     parsed.supernumerary = ocrLines.supernumerary;
   }
-  parsed.judgment = pickLeggeJudgment(merged, parsed.judgment ?? "");
+  parsed.judgment = repairLeggeSbeOcrText(pickLeggeJudgment(merged, parsed.judgment ?? ""));
+  for (const [pos, body] of Object.entries(parsed.lineByPos ?? {})) {
+    parsed.lineByPos[Number(pos)] = repairLeggeSbeOcrText(body);
+  }
+  if (parsed.supernumerary) parsed.supernumerary = repairLeggeSbeOcrText(parsed.supernumerary);
   return parsed;
 }
 
@@ -846,7 +858,7 @@ export function parseLeggeSbeSymbolism(text) {
 }
 
 /**
- * @param {{ bodyText: string; symbolismText: string }} input
+ * @param {{ bodyText: string; symbolismText: string; epubByHex?: Record<number, object> }} input
  */
 export function parseAllLeggeSbePdfFromText(input) {
   const boundaries = findLeggeHexBoundaries(input.bodyText);
@@ -864,13 +876,17 @@ export function parseAllLeggeSbePdfFromText(input) {
     const next = boundaries[i + 1];
     const slice = input.bodyText.slice(h.index, next?.index ?? input.bodyText.length);
     const parsed = parseLeggeSbeTextSection(slice);
-    const row = {
+    let row = {
       judgment: parsed.judgment ?? "",
-      image: imageByHex[h.number] ?? "",
+      image: repairLeggeSbeOcrText(imageByHex[h.number] ?? ""),
       lines: parsed.lineByPos ?? {},
     };
     if (h.number === 1 && parsed.supernumerary) row.yongJiu = parsed.supernumerary;
     if (h.number === 2 && parsed.supernumerary) row.yongLiu = parsed.supernumerary;
+    const epubRow = input.epubByHex?.[h.number];
+    if (epubRow) {
+      row = applyEpubGuideToLeggeRow(row, epubRow, slice, input.symbolismText);
+    }
     out[h.number] = row;
   }
 
@@ -897,11 +913,22 @@ export function parseAllLeggeSbePdfFromText(input) {
 }
 
 /**
- * @param {{ force?: boolean; onProgress?: (msg: string) => void }} [opts]
+ * @param {{ force?: boolean; epubGuide?: boolean; onProgress?: (msg: string) => void }} [opts]
  */
 export async function parseAllLeggeSbePdfOrThrow(opts = {}) {
   const { bodyText, symbolismText } = await loadLeggeSbePdfFullText(opts);
-  return parseAllLeggeSbePdfFromText({ bodyText, symbolismText });
+  const useEpubGuide = opts.epubGuide !== false;
+  /** @type {Record<number, object> | undefined} */
+  let epubByHex;
+  if (useEpubGuide) {
+    try {
+      opts.onProgress?.("Loading Legge EPUB cross-check guide (repair-only, book-primary)…");
+      epubByHex = await parseAllLeggeEpubOrThrow();
+    } catch (err) {
+      opts.onProgress?.(`EPUB guide unavailable (${err.message}); PDF OCR only.`);
+    }
+  }
+  return parseAllLeggeSbePdfFromText({ bodyText, symbolismText, epubByHex });
 }
 
 export { parseRomanNumeralLoose };
