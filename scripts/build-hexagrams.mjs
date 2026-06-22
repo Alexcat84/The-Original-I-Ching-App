@@ -168,7 +168,7 @@ const bundles = [
         "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes (1950, public domain since 2020).",
       sourceUrl: "http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html",
       licenseNote:
-        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts cross-verified 1:1 against the University of Parma mirror on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 6 fields use a documented tier-2 Baynes supplement where Parma's HTML omits the passage entirely: hex 56 judgment, plus 5 individual changing lines (hex 20 line 5, hex 21 lines 2 and 3, hex 26 line 3, hex 52 line 2).`,
+        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts cross-verified 1:1 against the University of Parma mirror on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 6 fields where Parma's HTML omits the passage are sourced from the printed Wilhelm/Baynes edition (Princeton University Press, 1950), page-verified in the physical book: hex 56 judgment (p. 231), hex 20 line 5 (pp. 88-89), hex 21 lines 2 and 3 (pp. 92-93), hex 26 line 3 (p. 112), hex 52 line 2 (p. 215).`,
       generatedAt,
       build: buildWilhelmRecord,
     },

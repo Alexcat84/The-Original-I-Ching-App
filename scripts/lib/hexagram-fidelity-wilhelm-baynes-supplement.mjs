@@ -2,11 +2,27 @@
  * Tier-2 Wilhelm gold supplements where the Parma HTML mirror omits content
  * present in the Cary F. Baynes / Princeton (1950) English edition.
  *
- * Tier-0: http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html
- * Tier-2: Baynes rendering cross-checked against wengu (Wilhelm tr.) hex 56.
+ * Tier-0 (Parma): http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html
+ * Tier-2 (supplements): Wilhelm/Baynes print edition (1950), page-verified 2026-06-21.
  *
+ * @see docs/auditorias/DATA_INTEGRITY_AUDIT.md
  * @see docs/auditorias/ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md §12.4
  */
+
+/** Primary print source for all six Parma gaps. */
+export const WILHELM_BAYNES_1950_CITATION =
+  "Wilhelm, Richard; Baynes, Cary F. The I Ching or Book of Changes. " +
+  "Princeton University Press, 1950 (Bollingen Series XIX).";
+
+/** Page references in the 1950 print edition (physical copy verification). */
+export const WILHELM_BAYNES_SUPPLEMENT_PAGES = {
+  "56:judgment": "p. 231",
+  "20:5": "pp. 88-89",
+  "21:2": "pp. 92-93",
+  "21:3": "pp. 92-93",
+  "26:3": "p. 112",
+  "52:2": "p. 215",
+};
 
 /** @type {Record<number, { judgment: string; sources: string[] }>} */
 export const WILHELM_BAYNES_JUDGMENT_SUPPLEMENTS = {
@@ -19,38 +35,32 @@ export const WILHELM_BAYNES_JUDGMENT_SUPPLEMENTS = {
       "He must be cautious and reserved; in this way he protects himself from evil. " +
       "If he is obliging toward others, he wins success.",
     sources: [
-      "https://www.penguinrandomhouse.com/books/574185/the-i-ching-or-book-of-changes-by-richard-wilhelm-and-cary-f-baynes/",
-      "http://wengu.tartarie.com/wg/wengu.php?l=Yijing&no=56",
-      "https://www.iching-online.com/hexagrams/iching-hexagram-101100.html",
+      `${WILHELM_BAYNES_1950_CITATION} ${WILHELM_BAYNES_SUPPLEMENT_PAGES["56:judgment"]}`,
     ],
   },
 };
 
 /**
  * Five individual changing-line texts the Parma mirror omits entirely (the HTML
- * skips straight from the prior label to the next, e.g. "in the fourth place"
- * to "at the top" — same class of gap as the hex 56 judgment, just at line
- * granularity). Restored from the bundle text that shipped before the Fase 3
- * Parma re-ingest (itself transcribed from the 1950 Wilhelm/Baynes English
- * edition) — not an independent fresh cross-check like hex 56's judgment, so
- * documented here as a distinct, lower-confidence tier-2 source.
+ * skips straight from the prior label to the next). Sourced from the 1950 print
+ * edition (page-verified against a physical copy, 2026-06-21).
  * @type {Record<number, Record<number, { text: string; source: string }>>}
  */
 export const WILHELM_BAYNES_LINE_SUPPLEMENTS = {
   20: {
     5: {
       text: "Contemplation of my life.\nThe superior man is without blame.",
-      source: "pre-Fase-3 bundle (Wilhelm/Baynes 1950, adamblvck/iching-wilhelm-dataset transcription)",
+      source: `${WILHELM_BAYNES_1950_CITATION} ${WILHELM_BAYNES_SUPPLEMENT_PAGES["20:5"]}`,
     },
   },
   21: {
     2: {
       text: "Bites through tender meat,\nSo that his nose disappears.\nNo blame.",
-      source: "pre-Fase-3 bundle (Wilhelm/Baynes 1950, adamblvck/iching-wilhelm-dataset transcription)",
+      source: `${WILHELM_BAYNES_1950_CITATION} ${WILHELM_BAYNES_SUPPLEMENT_PAGES["21:2"]}`,
     },
     3: {
       text: "Bites on old dried meat\nAnd strikes on something poisonous.\nSlight humiliation. No blame.",
-      source: "pre-Fase-3 bundle (Wilhelm/Baynes 1950, adamblvck/iching-wilhelm-dataset transcription)",
+      source: `${WILHELM_BAYNES_1950_CITATION} ${WILHELM_BAYNES_SUPPLEMENT_PAGES["21:3"]}`,
     },
   },
   26: {
@@ -58,13 +68,13 @@ export const WILHELM_BAYNES_LINE_SUPPLEMENTS = {
       text:
         "A good horse that follows others.\nAwareness of danger,\nWith perseverance, furthers.\n" +
         "Practice chariot driving and armed defense daily.\nIt furthers one to have somewhere to go.",
-      source: "pre-Fase-3 bundle (Wilhelm/Baynes 1950, adamblvck/iching-wilhelm-dataset transcription)",
+      source: `${WILHELM_BAYNES_1950_CITATION} ${WILHELM_BAYNES_SUPPLEMENT_PAGES["26:3"]}`,
     },
   },
   52: {
     2: {
       text: "Keeping his calves still.\nHe cannot rescue him whom he follows.\nHis heart is not glad.",
-      source: "pre-Fase-3 bundle (Wilhelm/Baynes 1950, adamblvck/iching-wilhelm-dataset transcription)",
+      source: `${WILHELM_BAYNES_1950_CITATION} ${WILHELM_BAYNES_SUPPLEMENT_PAGES["52:2"]}`,
     },
   },
 };
@@ -74,7 +84,7 @@ export const WILHELM_BAYNES_LINE_SUPPLEMENTS = {
  * @returns {{ judgment: string; sources: string[] } | null}
  */
 export function getWilhelmBaynesJudgmentSupplement(hex) {
-  return WILHELM_BAYNES_JUDGMENT_SUPPLEMENTS[hex] ?? null;
+  return WILHELM_BAYNES_JUDGLEMENT_SUPPLEMENTS[hex] ?? null;
 }
 
 /**

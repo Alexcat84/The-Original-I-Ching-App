@@ -241,7 +241,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "data-reliability",
     question: "How reliable are the I Ching texts provided in the app?",
     answer:
-      "Last audit: 21 June 2026. Oracle texts were verified against established academic editions: James Legge (sacred-texts.com), the canonical Zhou Yi (ctext.org), and Wilhelm/Baynes (University of Parma mirror of the Princeton 1950 edition). Legge and Zhou Yi: 100%. Wilhelm: 100%; six passages missing from Parma are taken from the Baynes English edition. See Method Notes for detail.",
+      "Last audit: 21 June 2026. Oracle texts were verified against established academic editions: James Legge (sacred-texts.com), the canonical Zhou Yi (ctext.org), and Wilhelm/Baynes (University of Parma mirror of the Princeton 1950 edition). Legge and Zhou Yi: 100%. Wilhelm: 100%; six passages missing from Parma are taken from the printed Wilhelm/Baynes edition (Princeton, 1950), page-verified in the physical book. See Method Notes for detail.",
   },
   {
     id: "yarrow-vs-coins",
@@ -440,7 +440,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "data-reliability",
     question: "¿Qué tan fiables son los textos del I Ching en la aplicación?",
     answer:
-      "Última auditoría: 21 de junio de 2026. Los textos del oráculo se verificaron contra ediciones académicas establecidas: James Legge (sacred-texts.com), Zhou Yi canónico (ctext.org) y Wilhelm/Baynes (mirror académico de la Universidad de Parma, edición Princeton 1950). Legge y Zhou Yi: 100%. Wilhelm: 100%; seis pasajes que Parma no incluye provienen de la edición inglesa Baynes. Ver Notas de método.",
+      "Última auditoría: 21 de junio de 2026. Los textos del oráculo se verificaron contra ediciones académicas establecidas: James Legge (sacred-texts.com), Zhou Yi canónico (ctext.org) y Wilhelm/Baynes (mirror académico de la Universidad de Parma, edición Princeton 1950). Legge y Zhou Yi: 100%. Wilhelm: 100%; seis pasajes que Parma no incluye provienen de la edición impresa Wilhelm/Baynes (Princeton, 1950), verificados en el libro físico. Ver Notas de método.",
   },
   {
     id: "yarrow-vs-coins",
@@ -604,7 +604,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "data-reliability",
     question: "ما مدى موثوقية نصوص الآي تشينغ في التطبيق؟",
     answer:
-      "آخر تدقيق: 21 يونيو 2026. تم التحقق من نصوص العرافة مقابل طبعات أكاديمية معتمدة: James Legge (sacred-texts.com)، Zhou Yi القانوني (ctext.org)، وWilhelm/Baynes (مرآة جامعة Parma لطبعة Princeton 1950). Legge وZhou Yi: 100%. Wilhelm: 100%؛ ستة مقاطع ناقصة في Parma مأخوذة من طبعة Baynes الإنجليزية. راجع ملاحظات المنهج.",
+      "آخر تدقيق: 21 يونيو 2026. تم التحقق من نصوص العرافة مقابل طبعات أكاديمية معتمدة: James Legge (sacred-texts.com)، Zhou Yi القانوني (ctext.org)، وWilhelm/Baynes (مرآة جامعة Parma لطبعة Princeton 1950). Legge وZhou Yi: 100%. Wilhelm: 100%؛ ستة مقاطع ناقصة في Parma مأخوذة من الطبعة المطبوعة Wilhelm/Baynes (Princeton, 1950)، تم التحقق منها في الكتاب الورقي. راجع ملاحظات المنهج.",
   },
   {
     id: "yarrow-vs-coins",
@@ -784,7 +784,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "data-reliability",
     question: "ऐप में दिए गए आई चिंग ग्रंथों की विश्वसनीयता क्या है?",
     answer:
-      "अंतिम ऑडिट: 21 जून 2026. Oracle पाठ स्थापित शैक्षणिक संस्करणों से सत्यापित: James Legge (sacred-texts.com), शास्त्रीय Zhou Yi (ctext.org), Wilhelm/Baynes (Princeton 1950 का Parma विश्वविद्यालय मिरर). Legge और Zhou Yi: 100%. Wilhelm: 100%; Parma में अनुपस्थित छह अंश Baynes अंग्रेज़ी संस्करण से। विधि नोट्स देखें.",
+      "अंतिम ऑडिट: 21 जून 2026. Oracle पाठ स्थापित शैक्षणिक संस्करणों से सत्यापित: James Legge (sacred-texts.com), शास्त्रीय Zhou Yi (ctext.org), Wilhelm/Baynes (Princeton 1950 का Parma विश्वविद्यालय मिरर). Legge और Zhou Yi: 100%. Wilhelm: 100%; Parma में अनुपस्थित छह अंश मुद्रित Wilhelm/Baynes संस्करण (Princeton, 1950) से, भौतिक पुस्तक में सत्यापित। विधि नोट्स देखें.",
   },
   {
     id: "yarrow-vs-coins",
@@ -965,7 +965,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "data-reliability",
     question: "アプリで提供される易経のテキストの信頼性はどの程度ですか？",
     answer:
-      "最新監査: 2026年6月21日。神託文は James Legge（sacred-texts.com）、正典周易（ctext.org）、Wilhelm/Baynes（Princeton 1950版パルマ大学ミラー）の学術版と照合。Leggeと周易100%、Wilhelm100%。Parmaに欠ける6箇所はBaynes英訳版から採用。詳細はメソッドノート参照。",
+      "最新監査: 2026年6月21日。神託文は James Legge（sacred-texts.com）、正典周易（ctext.org）、Wilhelm/Baynes（Princeton 1950版パルマ大学ミラー）の学術版と照合。Leggeと周易100%、Wilhelm100%。Parmaに欠ける6箇所はWilhelm/Baynes印刷版（Princeton, 1950）から採用し、紙の書籍でページ照合。詳細はメソッドノート参照。",
   },
   {
     id: "yarrow-vs-coins",
@@ -1145,7 +1145,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "data-reliability",
     question: "应用中提供的易经文本可靠性如何？",
     answer:
-      "最近一次审计：2026年6月21日。已与 James Legge（sacred-texts.com）、正典周易（ctext.org）、Wilhelm/Baynes（Princeton 1950 帕尔马大学镜像）等学术版本对照。理雅各与周易 100%，卫礼贤 100%；帕尔马镜像缺失的 6 处取自 Baynes 英译本。详见方法说明。",
+      "最近一次审计：2026年6月21日。已与 James Legge（sacred-texts.com）、正典周易（ctext.org）、Wilhelm/Baynes（Princeton 1950 帕尔马大学镜像）等学术版本对照。理雅各与周易 100%，卫礼贤 100%；帕尔马镜像缺失的 6 处取自 Wilhelm/Baynes 印刷版（Princeton, 1950），已在纸质书中逐页核对。详见方法说明。",
   },
   {
     id: "yarrow-vs-coins",
@@ -1323,7 +1323,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "data-reliability",
     question: "앱에서 제공되는 주역 텍스트는 얼마나 신뢰할 수 있습니까?",
     answer:
-      "최근 감사: 2026년 6월 21일. 신탁문을 James Legge(sacred-texts.com), 정전 주역(ctext.org), Wilhelm/Baynes(Princeton 1950 Parma 대학 미러) 학술 판본과 대조했습니다. Legge·주역 100%, Wilhelm 100%. Parma에 없는 6곳은 Baynes 영역에서 채택. 방법 노트 참조.",
+      "최근 감사: 2026년 6월 21일. 신탁문을 James Legge(sacred-texts.com), 정전 주역(ctext.org), Wilhelm/Baynes(Princeton 1950 Parma 대학 미러) 학술 판본과 대조했습니다. Legge·주역 100%, Wilhelm 100%. Parma에 없는 6곳은 Wilhelm/Baynes 인쇄판(Princeton, 1950)에서 채택, 실물 책으로 페이지 대조. 방법 노트 참조.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1502,7 +1502,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "data-reliability",
     question: "Quão confiáveis são os textos do I Ching no aplicativo?",
     answer:
-      "Última auditoria: 21 de junho de 2026. Os textos do oráculo foram verificados contra edições académicas estabelecidas: James Legge (sacred-texts.com), Zhou Yi canónico (ctext.org) e Wilhelm/Baynes (espelho académico da Universidade de Parma, edição Princeton 1950). Legge e Zhou Yi: 100%. Wilhelm: 100%; seis passagens ausentes em Parma vêm da edição inglesa Baynes. Ver Notas de método.",
+      "Última auditoria: 21 de junho de 2026. Os textos do oráculo foram verificados contra edições académicas estabelecidas: James Legge (sacred-texts.com), Zhou Yi canónico (ctext.org) e Wilhelm/Baynes (espelho académico da Universidade de Parma, edição Princeton 1950). Legge e Zhou Yi: 100%. Wilhelm: 100%; seis passagens ausentes em Parma vêm da edição impressa Wilhelm/Baynes (Princeton, 1950), verificadas no livro físico. Ver Notas de método.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1683,7 +1683,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "data-reliability",
     question: "Wie zuverlässig sind die I-Ging-Texte in der App?",
     answer:
-      "Letzte Prüfung: 21. Juni 2026. Orakeltexte wurden mit etablierten akademischen Ausgaben verglichen: James Legge (sacred-texts.com), kanonisches Zhou Yi (ctext.org) und Wilhelm/Baynes (Parma-Spiegel der Princeton-Ausgabe von 1950). Legge und Zhou Yi: 100 %. Wilhelm: 100 %; sechs in Parma fehlende Passagen stammen aus der englischen Baynes-Ausgabe. Siehe Methodenhinweise.",
+      "Letzte Prüfung: 21. Juni 2026. Orakeltexte wurden mit etablierten akademischen Ausgaben verglichen: James Legge (sacred-texts.com), kanonisches Zhou Yi (ctext.org) und Wilhelm/Baynes (Parma-Spiegel der Princeton-Ausgabe von 1950). Legge und Zhou Yi: 100 %. Wilhelm: 100 %; sechs in Parma fehlende Passagen stammen aus der gedruckten Wilhelm/Baynes-Ausgabe (Princeton, 1950), im physischen Buch geprüft. Siehe Methodenhinweise.",
   },
   {
     id: "yarrow-vs-coins",
@@ -1868,7 +1868,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "data-reliability",
     question: "Quanto sono affidabili i testi dell'I Ching nell'app?",
     answer:
-      "Ultimo audit: 21 giugno 2026. I testi dell'oracolo sono stati verificati rispetto a edizioni accademiche consolidate: James Legge (sacred-texts.com), Zhou Yi canonico (ctext.org) e Wilhelm/Baynes (mirror accademico dell'Università di Parma, edizione Princeton 1950). Legge e Zhou Yi: 100%. Wilhelm: 100%; sei passaggi assenti in Parma provengono dall'edizione inglese Baynes. Vedi Note sui metodi.",
+      "Ultimo audit: 21 giugno 2026. I testi dell'oracolo sono stati verificati rispetto a edizioni accademiche consolidate: James Legge (sacred-texts.com), Zhou Yi canonico (ctext.org) e Wilhelm/Baynes (mirror accademico dell'Università di Parma, edizione Princeton 1950). Legge e Zhou Yi: 100%. Wilhelm: 100%; sei passaggi assenti in Parma provengono dall'edizione a stampa Wilhelm/Baynes (Princeton, 1950), verificati nel libro fisico. Vedi Note sui metodi.",
   },
   {
     id: "yarrow-vs-coins",
@@ -2055,7 +2055,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
     answer:
-      "Dernier audit : 21 juin 2026. Les textes de l'oracle ont été vérifiés par rapport à des éditions académiques établies : James Legge (sacred-texts.com), Zhou Yi canonique (ctext.org) et Wilhelm/Baynes (miroir académique de l'Université de Parme, édition Princeton 1950). Legge et Zhou Yi : 100 %. Wilhelm : 100 % ; six passages absents de Parma proviennent de l'édition anglaise Baynes. Voir Notes sur les méthodes.",
+      "Dernier audit : 21 juin 2026. Les textes de l'oracle ont été vérifiés par rapport à des éditions académiques établies : James Legge (sacred-texts.com), Zhou Yi canonique (ctext.org) et Wilhelm/Baynes (miroir académique de l'Université de Parme, édition Princeton 1950). Legge et Zhou Yi : 100 %. Wilhelm : 100 % ; six passages absents de Parma proviennent de l'édition imprimée Wilhelm/Baynes (Princeton, 1950), vérifiés dans le livre physique. Voir Notes sur les méthodes.",
   },
   {
     id: "yarrow-vs-coins",
