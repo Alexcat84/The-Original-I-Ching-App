@@ -108,13 +108,13 @@ Ver [`ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md`](ZHUXI_32_CHARTS_IMPLEM
 
 | Gap | Impacto si se implementa |
 |-----|--------------------------|
-| Regla 3 líneas first-ten/latter-ten (20 casos) | Cambia `judgmentEmphasis` en casos donde pos 1 no está entre las tres |
-| 32 diagramas (Fig. 19, PDF 159–204) | Cambia `selectedLineTexts` / `fromHexagram` en 3/4/5 cambios |
+| Regla 3 líneas first-ten/latter-ten (20 casos) | **Probable no-op** si D0.1 confirma orden lex = `includes(1)`; si no → cambia `judgmentEmphasis` |
+| 32 diagramas (Fig. 19, PDF 159–204) | Cambia `selectedLineTexts` / `fromHexagram` en 3/4/5 — **D0.2** decide bug latente vs excepciones |
 | API `/api/consult` | `mutation_rule` puede diferir para misma tirada |
 | Prompt gates H1/H3/H5 | Nuevos fixtures multi-línea desde transformado |
 | QA `pnpm qa:mutation-output` | Baseline JSON debe regenerarse con trazabilidad modelo |
 
-**Regla operativa:** no mergear cambios de motor sin gates + tests + smoke staging.
+**Regla operativa:** no mergear cambios de motor sin **Gate 0 (Fase 0)** + gates + tests + smoke staging.
 
 ---
 
