@@ -3,6 +3,12 @@
  * Oracle-only: judgment stanza, image verse, changing lines (no Wilhelm commentary).
  */
 
+import {
+  WILHELM_ORACLE_COMMENTARY_START,
+  repairWilhelmOcrText,
+} from "./hexagram-fidelity-wilhelm-ocr.mjs";
+import { wilhelmImageOracleOnly } from "./hexagram-fidelity-normalize.mjs";
+
 const HEX_HEADER_PATTERNS = [
   /(?:^|\f|\n)\s*(\d{1,2})[.,]\s+([A-Z0-9][^\n]{0,80}?[-—][^\n]+)/gm,
   /(?:^|\f|\n)\s*(\d{1,2})\.\s*\n(?:[^\n]{0,40}\n)?\s*([A-Z][^\n]{0,80}?[-—][^\n]+)/gm,
@@ -308,7 +314,7 @@ function findSectionIndex(paragraphs, label) {
   });
 }
 
-function oracleLinesFromBlock(text) {
+function oracleLinesFromBlock(text, { maxLines = 6, maxChars = 260 } = {}) {
   const lines = text
     .split("\n")
     .map((l) => l.trim())
@@ -316,20 +322,25 @@ function oracleLinesFromBlock(text) {
   const out = [];
   for (const line of lines) {
     if (/^\d{1,3}$/.test(line)) continue;
-    if (
-      out.length > 0 &&
-      /^(According|When a |When an |The symbol|Just as |In the |Note\.|©|\d\s+\[|These lines|This hexagram|Religious forces|Clouds and thunder|Hidden dragon\.|Nine |Six )/i.test(
-        line,
-      )
-    ) {
-      break;
-    }
+    if (out.length > 0 && WILHELM_ORACLE_COMMENTARY_START.test(line)) break;
     if (out.length >= 4 && /^A spring succeeds|^Water is something|^Character is developed/i.test(line)) break;
+    if (out.length >= 2 && line.length > 100 && /^[a-z("']/.test(line)) break;
     out.push(line);
-    if (out.join(" ").length > 260) break;
-    if (out.length >= 6) break;
+    if (out.join(" ").length > maxChars) break;
+    if (out.length >= maxLines) break;
   }
   return out;
+}
+
+function oracleJudgmentLines(text) {
+  const lines = oracleLinesFromBlock(text, { maxLines: 6, maxChars: 320 });
+  return lines.filter((line, i) => {
+    if (WILHELM_ORACLE_COMMENTARY_START.test(line)) return false;
+    if (i >= 2 && line.length > 95 && !/^(It furthers|Perseverance|Then there|Those who|Whoever|Return brings|No blame)/i.test(line)) {
+      return false;
+    }
+    return true;
+  });
 }
 
 function extractJudgmentOracle(paragraphs) {
@@ -339,8 +350,8 @@ function extractJudgmentOracle(paragraphs) {
     const p = paragraphs[i].trim();
     if (!p) continue;
     if (isSectionHeading(p)) break;
-    const lines = oracleLinesFromBlock(p);
-    if (lines.length > 0) return lines.slice(0, 4).join("\n").trim();
+    const lines = oracleJudgmentLines(p);
+    if (lines.length > 0) return lines.slice(0, 6).join("\n").trim();
     if (isCommentaryParagraph(p)) break;
   }
   return "";
@@ -360,43 +371,29 @@ function extractImageOracle(paragraphs) {
     if (parts.length > 0) break;
     if (isCommentaryParagraph(p)) break;
   }
-  return parts.join("\n").trim();
+  return wilhelmImageOracleOnly(parts.join("\n"));
 }
 
 function trimWilhelmLineOracle(linesOnly) {
   const out = [];
+  const seen = new Set();
   for (const line of linesOnly) {
-    if (
-      out.length > 0 &&
-      /^(When |If |In |The |Here |Thus |Just as |While |He |It |One |Such |Therefore |However |Because |Since |At |We |There |A man|Conditions|In terms|Since the hexagram|Yellow is the color|Making a boast|This describes|Confucius says)/i.test(
-        line,
-      ) &&
-      line.length > 70
-    ) {
-      break;
-    }
-    if (/^\d+\s+\[|^See pp\.|^©|^\*\s*\[|^\°\s*\[/i.test(line)) break;
+    if (/^\d+\s+The usual translation|^on the basis of Chinese commentaries|^the basis of Chinese commentaries/i.test(line)) continue;
+    if (WILHELM_ORACLE_COMMENTARY_START.test(line) && line.length > 50) break;
+    if (/^\d+\s+\[|^See pp\.|^©|^\°\s*\[|^\d+\s+Apart from/i.test(line)) break;
+    const key = line.toLowerCase().replace(/\W+/g, " ").trim();
+    if (key && seen.has(key)) break;
+    if (key) seen.add(key);
     out.push(line.replace(/\s+\|\s*$/, "").trim());
     if (out.length >= 6) break;
-    if (out.join("\n").length > 240 && /\.\s*$/.test(line)) break;
+    if (out.join("\n").length > 220 && /\.\s*$/.test(line)) break;
   }
   return out.filter(Boolean);
 }
 
 function cleanWilhelmOracleText(text) {
-  if (!text) return "";
-  return text
-    .replace(/\u2019|\u2018/g, "'")
-    .replace(/\s+'\s+/g, " ")
-    .replace(/[™©°]/g, "")
-    .replace(/\s+\|\s*$/gm, "")
+  return repairWilhelmOcrText(text)
     .replace(/\?\s*There are all/g, ". There are all")
-    .replace(/\bF lying\b/gi, "Flying")
-    .replace(/\bConFrtict\b/gi, "Conflict")
-    .replace(/\bDispErsion\b/gi, "Dispersion")
-    .replace(/\bFo\.?LLow1?nc\b/gi, "Following")
-    .replace(/\bring humiliation\b/gi, "rings humiliation")
-    .replace(/[ \t]{2,}/g, " ")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
 }
@@ -430,7 +427,15 @@ function parseLinesFromRaw(sectionText) {
     const linesOnly = body
       .split("\n")
       .map((l) => l.trim())
-      .filter((l) => l && !/^\d{1,3}$/.test(l) && !/^See pp\./i.test(l));
+      .filter(
+        (l) =>
+          l &&
+          !/^\d{1,3}$/.test(l) &&
+          !/^See pp\./i.test(l) &&
+          !/^\d+\s+The usual translation/i.test(l) &&
+          !/^on the basis of Chinese commentaries/i.test(l) &&
+          !/^the basis of Chinese commentaries/i.test(l),
+      );
 
     const proseStart = linesOnly.findIndex((l) => l.length > 100 && /^[A-Z]/.test(l));
     const oracleLines = trimWilhelmLineOracle(

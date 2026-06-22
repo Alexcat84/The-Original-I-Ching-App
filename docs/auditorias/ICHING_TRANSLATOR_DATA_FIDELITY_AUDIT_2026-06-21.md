@@ -545,3 +545,67 @@ El gate de CI planeado (`verify:hexagram-fidelity` contra snapshots hasheados) *
 ---
 
 *Auditoría abierta 2026-06-21. Fase 3 remediación 2026-06-21. Fase 3b parser gold 2026-06-21 (Legge+Zhou Yi 100%). Fase 3c tier-2 Baynes hex 56 → Wilhelm **514/514 (100%)**. Fase 3d (re-verificación independiente) → regresión real de 6 campos encontrada y corregida; los tres traductores **514/514 (100%) genuino**, confirmado por `index.test.ts` y por escaneo manual de los 576 campos, sin matches vacíos.*
+
+---
+
+## 14. Política book-primary · Fase PDF (2026-06-22)
+
+**Rama:** `feat/pdf-gold-verification`  
+**Decisión de producto (Alexis, 2026-06-22):** la **única fuente de verdad** para fidelidad 1:1 es el **libro físico** (PDF/EPUB local en `tools/source-pdfs/`). El dataset (`scripts/iching_*_translation.mjs` → `npm run build:data`) se compara **solo** contra el texto extraído de esa edición. **No más verificaciones contra fuentes secundarias web** ni inyección de suplementos desde mirrors.
+
+### 14.1 — Qué queda obsoleto
+
+| Componente | Estado | Motivo |
+|------------|--------|--------|
+| `npm run verify:hexagram-fidelity:mirrors-deprecated` | **OBSOLETO** | Comparaba bundle vs Parma / sacred-texts / ctext |
+| `npm run ingest:wilhelm` (Parma → tier-2 Baynes inject) | **OBSOLETO** para producción | Sobrescribe desde mirror web + inyecta huecos |
+| `npm run ingest:legge` (sacred-texts scrape) | **OBSOLETO** para producción | Gold debe ser EPUB Legge local |
+| `npm run ingest:zhouyi` (ctext scrape) | **OBSOLETO** para producción | Gold debe ser PDF 周易注疏 local |
+| `applyWilhelmBaynesSupplements()` / `resolveWilhelm*ForIngest()` | **Legacy** | Solo útil como histórico; no gate de CI |
+| Claims “cross-verified vs Uni Parma / sacred-texts / ctext” | **Retirados** (Wilhelm actualizado) | Sustituidos por verificación contra edición impresa |
+
+Los scripts legacy **permanecen en el repo** como referencia arqueológica y cross-check manual puntual, pero **no definen el gate de calidad** ni deben ejecutarse en el flujo normal de cierre de dataset.
+
+### 14.2 — Gate canónico (vigente)
+
+```bash
+npm run pdf-gold:preflight          # PDF/EPUB locales presentes (manifest)
+npm run extract:gold:wilhelm-pdf    # cache gold JSON desde PDF Pantheon
+npm run build:data
+npm run verify:hexagram-fidelity    # Wilhelm 513/513 vs libro (alias pdf-wilhelm)
+```
+
+**Flujo:** libro → parser gold → `compare(bundle, gold)` → corregir `iching_*_translation.mjs` → `build:data` → re-verify hasta 100%.
+
+**Overrides foto-verificados** (`hexagram-fidelity-wilhelm-pdf-verified.mjs`): solo cuando `pdftotext` corrompe un pasaje; el texto sigue siendo del **mismo libro físico**, no de web.
+
+### 14.3 — Wilhelm · cierre Fase PDF
+
+| Campo | Detalle |
+|-------|---------|
+| **Edición gold** | Wilhelm/Baynes 1950, Pantheon (Bollingen XIX) — `wilhelm-baynes-1950-pantheon.pdf` |
+| **Parser** | `scripts/lib/hexagram-fidelity-wilhelm-pdf.mjs` + OCR repairs + trim comentario Wilhelm |
+| **Resultado** | **513/513 (100%)** — `reports/hexagram-fidelity-2026-06-22T01-52-32-542Z.json` |
+| **Remediación** | Correcciones directas en `scripts/iching_wilhelm_translation.mjs` (typos, truncados, alineación libro) |
+| **Sin** | Re-ingest Parma, suplementos tier-2, mirrors wengu/iching-online |
+
+### 14.4 — Próximas fases (mismo modelo)
+
+| Traductor | Gold local | Formato | Estado |
+|-----------|------------|---------|--------|
+| **Legge** | `The Yi King or, Book of Changes -- James Legge.epub` | EPUB (nativo, preferido sobre PDF) | EPUB en `tools/source-pdfs/` · parser pendiente |
+| **Zhou Yi** | `zhouyi-zhushu-song-er07.pdf` | PDF 注疏 | PDF en manifest · parser pendiente |
+
+Legge y Zhou Yi **no se consideran cerrados** hasta repetir el mismo ciclo book-primary (extract → compare → fix bundle → 100%).
+
+### 14.5 — Comandos npm (post-2026-06-22)
+
+| Comando | Rol |
+|---------|-----|
+| `verify:hexagram-fidelity` | **Canónico** — Wilhelm vs PDF Pantheon |
+| `verify:hexagram-fidelity:pdf-wilhelm` | Explícito (equivalente) |
+| `verify:hexagram-fidelity:mirrors-deprecated` | Obsoleto — no usar en CI ni cierre de release |
+
+---
+
+*Actualizado 2026-06-22 · Wilhelm book-primary 100% · Legge EPUB staged · mirrors deprecated.*

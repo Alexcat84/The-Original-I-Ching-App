@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /**
- * Verify @iching-oracle/iching-data bundles against Tier-0 gold sources:
- *  - Wilhelm → Uni Parma mirror (+ Baynes tier-2 for documented Parma gaps, hex 56)
- *  - Legge → sacred-texts.com (Wayback fallback when live 403)
- *  - Zhou Yi → ctext.org gettext API + HTML (大象傳)
+ * Verify @iching-oracle/iching-data bundles against Tier-0 gold from local books.
+ *
+ * Canonical gate (2026-06-22+): dataset vs text extracted from physical editions
+ * in tools/source-pdfs/ (see manifest.json). No web mirrors or injected supplements.
  *
  * Usage:
- *   node scripts/verify-hexagram-fidelity.mjs [--live] [--translator wilhelm|legge|zhouyi|all]
- *   node scripts/verify-hexagram-fidelity.mjs --gold=pdf-wilhelm [--translator wilhelm]
+ *   npm run verify:hexagram-fidelity              # Wilhelm vs Pantheon 1950 PDF (canonical)
+ *   npm run verify:hexagram-fidelity:pdf-wilhelm    # same, explicit
+ *   npm run verify:hexagram-fidelity:mirrors-deprecated  # OBSOLETE — Parma/sacred/ctext
  *
  * Cache: tools/output/fidelity-gold/ (gitignored)
  * Reports: reports/hexagram-fidelity-{timestamp}.{json,md}
@@ -22,6 +23,7 @@ import {
 } from "./lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs";
 import { loadWilhelmPdfFullText } from "./lib/pdf-text-extract.mjs";
 import { parseAllWilhelmPdfOrThrow } from "./lib/hexagram-fidelity-wilhelm-pdf.mjs";
+import { applyWilhelmPdfPrintVerified } from "./lib/hexagram-fidelity-wilhelm-pdf-verified.mjs";
 import { parseLeggeTextPage, parseLeggeSymbolismAppendix } from "./lib/hexagram-fidelity-legge-sacred.mjs";
 import { parseCtextZhouYi, parseCtextZhouYiFromHtml, mergeCtextGold } from "./lib/hexagram-fidelity-ctext.mjs";
 import {
@@ -53,7 +55,7 @@ async function compareWilhelm(bundle) {
   if (goldMode === "pdf-wilhelm") {
     log("Wilhelm: loading PDF gold (Wilhelm/Baynes 1950 Pantheon)…");
     const text = await loadWilhelmPdfFullText();
-    goldByHex = parseAllWilhelmPdfOrThrow(text);
+    goldByHex = applyWilhelmPdfPrintVerified(parseAllWilhelmPdfOrThrow(text));
     goldLabel = "pdf-wilhelm";
   } else {
     log("Wilhelm: loading Parma gold (+ Baynes tier-2 supplements)…");

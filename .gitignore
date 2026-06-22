@@ -22,6 +22,7 @@ apps/mobile/dist
 tools/output/
 # Local Tier-0 PDF sources (large binaries — manifest.json is tracked)
 tools/source-pdfs/*.pdf
+tools/source-pdfs/*.epub
 # Temporary / local artifacts — never commit
 *.keystore.bak
 *.jks.bak

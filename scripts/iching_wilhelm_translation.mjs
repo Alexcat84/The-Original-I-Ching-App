@@ -170,7 +170,7 @@ export default {
     },
     "wilhelm_lines": {
       "1": {
-        "text": "To make a fool develop\n\r It furthers one to apply discipline.\n\r The fetters should be removed.\n\r To go on in this way bring humiliation."
+        "text": "To make a fool develop\n\r It furthers one to apply discipline.\n\r The fetters should be removed.\n\r To go on in this way brings humiliation."
       },
       "2": {
         "text": "To bear with fools in kindliness brings good fortune.\n\r To know how to take women\n\r Brings good fortune.\n\r The son is capable of taking charge of the household."
@@ -179,7 +179,7 @@ export default {
         "text": "Take not a maiden who. When she sees a man of bronze,\n\r Loses possession of herself.\n\r Nothing furthers."
       },
       "4": {
-        "text": "Entangled folly bring humiliation."
+        "text": "Entangled folly brings humiliation."
       },
       "5": {
         "text": "Childlike folly brings good fortune."
@@ -504,7 +504,7 @@ export default {
         "text": "He flutters down, not boasting of his wealth,\n\r Together with his neighbor,\n\r Guileless and sincere."
       },
       "5": {
-        "text": "The sovereign I\n\r Gives his daughter in marriage.\n\r And supreme good fortune."
+        "text": "The sovereign I\n\r Gives his daughter in marriage.\n\r This brings blessing\n\r And supreme good fortune."
       },
       "6": {
         "text": "The wall falls back into the moat.\n\r Use no army now.\n\r Make your commands known within your own town.\n\r Perseverance brings humiliation."
@@ -875,7 +875,7 @@ export default {
         "text": "Wise approach.\n\r This is right for a great prince.\n\r Good fortune."
       },
       "6": {
-        "text": "Great hearted approach.\n\r Good-hearted approach.\n\r Good fortune. No blame."
+        "text": "Greathearted approach.\n\r Good fortune. No blame."
       }
     }
   },
@@ -948,7 +948,7 @@ export default {
       "text": "BITING THROUGH has success.\n\r It is favorable to let justice be administered."
     },
     "wilhelm_image": {
-      "text": "Thunder and lighting:\n\r The image of BITING THROUGH.\n\r Thus the kings of former times made firm the laws\n\r Through clearly defined penalties."
+      "text": "Thunder and lightning:\n\r The image of BITING THROUGH.\n\r Thus the kings of former times made firm the laws\n\r Through clearly defined penalties."
     },
     "wilhelm_lines": {
       "1": {
@@ -964,7 +964,7 @@ export default {
         "text": "Bites on dried gristly meat.\n\r Receives metal arrows.\n\r It furthers one to be mindful of difficulties\n\r And to be persevering.\n\r Good fortune."
       },
       "5": {
-        "text": "Bites on dried lean meat.\n\r Receives yellow gold.\n\r Perseveringly aware of danger."
+        "text": "Bites on dried lean meat.\n\r Receives yellow gold.\n\r Perseveringly aware of danger.\n\r No blame."
       },
       "6": {
         "text": "His neck is fastened in the wooden cangue,\n\r So that his ears disappear.\n\r Misfortune."
@@ -1326,10 +1326,10 @@ export default {
         "text": "The abyss is dangerous.\n\r One should strive to attain small things only."
       },
       "3": {
-        "text": "Forward and backward, abyss on abyss.\n\r In danger like this, pause at first and wait,\n\r Otherwise you will fall into a pit in the abyss.\n\r Do not act this way."
+        "text": "Forward and backward, abyss on abyss.\n\r In danger like this, pause at first and wait,\n\r Otherwise you will fall into a pit in the abyss.\n\r Do not act in this way."
       },
       "4": {
-        "text": "A jug of wine, a bowl of rice with it;\n\r Earthen vessels"
+        "text": "A jug of wine, a bowl of rice with it;\n\r Earthen vessels\n\r Simply handed in through the window.\n\r There is certainly no blame in this."
       },
       "5": {
         "text": "The abyss is not filled to overflowing,\n\r It is filled only to the rim."
@@ -1381,7 +1381,7 @@ export default {
         "text": "Tears in floods, sighing and lamenting.\n\r Good fortune."
       },
       "6": {
-        "text": "The king used him to march forth and chastise."
+        "text": "The king uses him to march forth and chastise.\n\r Then it is best to kill the leaders\n\r And take captive the followers. No blame."
       }
     }
   },
@@ -1454,7 +1454,7 @@ export default {
       "text": "DURATION. Success. No blame.\n\r Perseverance furthers.\n\r It furthers one to have somewhere to go."
     },
     "wilhelm_image": {
-      "text": "Thunder and wind: the image of DURATION.\n\nThus the superior man stands firm\n\r And does not change has direction.\n\nThunder rolls, and the wind blows; both are examples of extreme mobility\r and so are seemingly the very opposite of duration, but the laws governing\r their appearance and subsidence, their coming and going, endure. In the\r same way the independence of the superior man is not based on rigidity\rand immobility of character. He always keeps abreast of the time and changes\r with it. What endures is the unswerving directive, the inner law of his\r being, which determines all his actions."
+      "text": "Thunder and wind: the image of DURATION.\n\nThus the superior man stands firm\n\r And does not change his direction.\n\nThunder rolls, and the wind blows; both are examples of extreme mobility\r and so are seemingly the very opposite of duration, but the laws governing\r their appearance and subsidence, their coming and going, endure. In the\r same way the independence of the superior man is not based on rigidity\rand immobility of character. He always keeps abreast of the time and changes\r with it. What endures is the unswerving directive, the inner law of his\r being, which determines all his actions."
     },
     "wilhelm_lines": {
       "1": {
@@ -1927,7 +1927,7 @@ export default {
         "text": "One is enriched through unfortunate events."
       },
       "4": {
-        "text": "If you walk in the middle\n\r And report the prince,\n\r He will follow.\n\r It furthers one to be used\n\r In the removal of the capital."
+        "text": "If you walk in the middle\n\r And report to the prince,\n\r He will follow.\n\r It furthers one to be used\n\r In the removal of the capital."
       },
       "5": {
         "text": "If in truth you have a kind heart, ask not."
@@ -2154,7 +2154,7 @@ export default {
         "text": "One is oppressed while at meat and drink."
       },
       "3": {
-        "text": "A man permits himself to be oppressed by stone,\n\r And leans on thorns and thistles.\n\r He enters the house and does not see his wife.\n\r Misfortune."
+        "text": "A man permits himself to be oppressed by stone,\n\r And leans on thorns and thistles.\n\r He enters his house and does not see his wife.\n\r Misfortune."
       },
       "4": {
         "text": "He comes very quietly, oppressed in a golden carriage.\n\r Humiliation, but the end is reached."
@@ -2197,7 +2197,7 @@ export default {
         "text": "One does not drink the mud of the well."
       },
       "2": {
-        "text": "At the well hole one shoots fishes."
+        "text": "At the wellhole one shoots fishes.\n\r The jug is broken and leaks."
       },
       "3": {
         "text": "The well is cleaned, but no one drinks from it."
@@ -2752,7 +2752,7 @@ export default {
         "text": "Not going out of the gate and the courtyard\n\r Brings misfortune."
       },
       "3": {
-        "text": "He who knows limitation\n\r Will have cause to lament."
+        "text": "He who knows no limitation\n\r Will have cause to lament.\n\r No blame."
       },
       "4": {
         "text": "Contented limitation. Success."

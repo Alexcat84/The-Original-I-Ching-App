@@ -1,4 +1,4 @@
-import { similarityHint, textsMatch } from "./hexagram-fidelity-normalize.mjs";
+import { similarityHint, textsMatch, wilhelmImageOracleOnly } from "./hexagram-fidelity-normalize.mjs";
 
 /**
  * @typedef {"match"|"mismatch"|"missing_gold"|"missing_bundle"|"skipped"} DiffStatus
@@ -15,7 +15,13 @@ import { similarityHint, textsMatch } from "./hexagram-fidelity-normalize.mjs";
  * @param {string} [args.note]
  */
 export function makeDiff(args) {
-  const { translator, hex, field, linePos, expected, actual, note } = args;
+  const { translator, hex, field, linePos, note } = args;
+  let expected = args.expected;
+  let actual = args.actual;
+  if (translator === "wilhelm" && field === "image") {
+    expected = wilhelmImageOracleOnly(expected);
+    actual = wilhelmImageOracleOnly(actual);
+  }
   const expEmpty = !String(expected ?? "").trim();
   const actEmpty = !String(actual ?? "").trim();
 

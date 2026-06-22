@@ -10,6 +10,7 @@ import { join } from "node:path";
 import { ROOT, GOLD_DIR } from "../scripts/lib/hexagram-fidelity-fetch.mjs";
 import { loadWilhelmPdfFullText } from "../scripts/lib/pdf-text-extract.mjs";
 import { parseAllWilhelmPdfOrThrow } from "../scripts/lib/hexagram-fidelity-wilhelm-pdf.mjs";
+import { applyWilhelmPdfPrintVerified } from "../scripts/lib/hexagram-fidelity-wilhelm-pdf-verified.mjs";
 import { WILHELM_BAYNES_1950_CITATION } from "../scripts/lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs";
 
 const force = process.argv.includes("--force");
@@ -21,7 +22,7 @@ async function main() {
   const text = await loadWilhelmPdfFullText({ force });
   console.log(`  ${text.length} chars cached`);
 
-  const gold = parseAllWilhelmPdfOrThrow(text);
+  const gold = applyWilhelmPdfPrintVerified(parseAllWilhelmPdfOrThrow(text));
   const payload = {
     source: WILHELM_BAYNES_1950_CITATION,
     extractedAt: new Date().toISOString(),
