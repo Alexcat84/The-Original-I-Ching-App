@@ -9,6 +9,7 @@
  */
 
 import { normalizeHexText, textsMatch } from "./hexagram-fidelity-normalize.mjs";
+import { fieldLooksLeggeOcrJunk } from "./hexagram-fidelity-legge-sbe-ocr.mjs";
 
 const JUDGMENT_COVERAGE = 0.68;
 const LINE_COVERAGE = 0.58;
@@ -63,7 +64,13 @@ function fieldLooksCorrupt(pdfVal) {
     ) ||
     /\b5\.\s+The fifth line,/i.test(t) ||
     /The Great Symbolism here has come before us|Of the application of that symbolism/i.test(t) ||
-    /\ba\.\s+'When the/i.test(t)
+    /\ba\.\s+'When the/i.test(t) ||
+    /The subject of \d therefore/i.test(t) ||
+    /pointed out in the conclusion/i.test(t) ||
+    /The constellation of the Bushel corresponds to our Ursa Major/i.test(t) ||
+    /according to their kinds and classes\. \d+,/i.test(t) ||
+    /regret\. \d+\. \(To the subject of\)/i.test(t) ||
+    /nourishes his virtue\. \./i.test(t)
   );
 }
 
@@ -150,6 +157,7 @@ function pdfFieldNeedsEpubHelp(pdfVal, epubVal, kind = {}) {
   if (textsMatch(pdfVal, epubVal, "legge")) return false;
   if (!String(pdfVal ?? "").trim()) return true;
   if (fieldLooksCorrupt(pdfVal)) return true;
+  if (fieldLooksLeggeOcrJunk(pdfVal) && !fieldLooksLeggeOcrJunk(epubVal)) return true;
 
   if (kind.judgment) {
     if (!isValidLeggeJudgment(pdfVal) && isValidLeggeJudgment(epubVal)) return true;
@@ -179,6 +187,14 @@ function adoptIfAnchored(
   { line = false, judgment = false, image = false } = {},
 ) {
   if (!String(epubVal ?? "").trim()) return pdfVal;
+
+  if (
+    fieldLooksLeggeOcrJunk(pdfVal) &&
+    !fieldLooksLeggeOcrJunk(epubVal) &&
+    String(epubVal).trim().length >= 20
+  ) {
+    return epubVal.trim();
+  }
 
   if (line && isTruncatedPdfLine(pdfVal, epubVal)) {
     return epubVal.trim();

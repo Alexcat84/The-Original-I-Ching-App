@@ -69,6 +69,24 @@ export const LEGGE_SBE_OCR_REPAIRS = [
   [/\bTreatise onthe\b/gi, "Treatise on the"],
   [/\bInthe\b/g, "In the"],
   [/\bT he\b/g, "The"],
+  [/\bits,\s+subject\b/gi, "its subject"],
+  [/\(\s*to his\.\s*help\s*\)/g, "(to his help)"],
+  [/\bshould \. /g, "should "],
+  [/\bwith \. bare\b/g, "with bare"],
+  [/\bsubject \. retiring\b/g, "subject retiring"],
+  [/\(his wish to \. contend\)/g, "(his wish to contend)"],
+  [/\(who thinks\. he\)/g, "(who thinks he)"],
+  [/tail of \. a tiger/g, "tail of a tiger"],
+  [/thunder \. and/g, "thunder and"],
+  [/committed \. He/g, "committed. He"],
+  [/\bshows\. its\b/g, "shows its"],
+  [/;\s*or n a high/g, "; or in a high"],
+  [/\bdeprived of his cars\b/g, "deprived of his ears"],
+  [/nourishes his virtue\. \. \d+,/g, "nourishes his virtue."],
+  [/ according to their kinds and classes\. \d+,.*$/s, " according to their kinds and classes."],
+  [/ there will be cause for regret\. \d+\. \(To the subject of\).*$/s, " there will be cause for regret."],
+  [/ affairs\. :$/g, " affairs."],
+  [/\s+~$/g, ""],
   [/\bIl\./g, "II."],
   [/\bIl\b(?=\s+The)/g, "II"],
   [/\b;civided\b/gi, "; divided"],
@@ -126,6 +144,54 @@ export function repairLeggeSbeOcrText(text) {
     .replace(/\n[ \t]+/g, "\n")
     .replace(/[ \t]{2,}/g, " ")
     .trim();
+}
+
+/**
+ * Line/image fields with obvious scan artifacts (not intentional Legge punctuation).
+ * @param {string} text
+ */
+export function fieldLooksLeggeOcrJunk(text) {
+  const t = String(text ?? "").trim();
+  if (!t) return false;
+  return (
+    /\bits,\s+subject\b/i.test(t) ||
+    /\(\s*to his\.\s*help\s*\)/.test(t) ||
+    /\bshould \. /.test(t) ||
+    / affairs\. :$/.test(t) ||
+    / ~$/.test(t) ||
+    /\bshows\. its\b/.test(t) ||
+    /\bor n a high\b/.test(t) ||
+    /\bdeprived of his cars\b/.test(t) ||
+    /^T he /.test(t) ||
+    / \(his wish to \. contend\)/.test(t) ||
+    /\(who thinks\. he\)/.test(t) ||
+    /tail of \. a tiger/.test(t) ||
+    /subject \. retiring/.test(t) ||
+    /with \. bare buttocks/.test(t) ||
+    /nourishes his virtue\. \./.test(t) ||
+    /thunder \. and/.test(t) ||
+    /committed \. He/.test(t) ||
+    /regret\. \d+\. \(To the subject of\)/.test(t) ||
+    /according to their kinds and classes\. \d+,/.test(t) ||
+    /The subject of \d therefore/.test(t) ||
+    /pointed out in the conclusion/.test(t) ||
+    /The constellation of the Bushel corresponds to our Ursa Major/.test(t)
+  );
+}
+
+/**
+ * @param {{ judgment: string; image: string; lines: Record<number, string>; yongJiu?: string; yongLiu?: string }} row
+ */
+export function finalizeLeggeSbeRow(row) {
+  const out = { ...row, lines: { ...(row.lines ?? {}) } };
+  out.judgment = repairLeggeSbeOcrText(out.judgment ?? "");
+  out.image = repairLeggeSbeOcrText(out.image ?? "");
+  for (const [pos, line] of Object.entries(out.lines)) {
+    out.lines[Number(pos)] = repairLeggeSbeOcrText(String(line ?? ""));
+  }
+  if (out.yongJiu) out.yongJiu = repairLeggeSbeOcrText(out.yongJiu);
+  if (out.yongLiu) out.yongLiu = repairLeggeSbeOcrText(out.yongLiu);
+  return out;
 }
 
 /**

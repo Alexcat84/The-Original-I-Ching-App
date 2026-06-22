@@ -1,6 +1,6 @@
 // Oracle text synced from James Legge SBE XVI Oxford scan (book-primary gold).
 // Source: tools/output/fidelity-gold/legge-sbe-pdf-gold.json
-// Synced: 2026-06-22T12:32:11.146Z
+// Synced: 2026-06-22T13:23:08.377Z
 // Translator: James Legge. Public domain.
 
 export default {
@@ -92,7 +92,7 @@ export default {
         "text": "The fourth line, divided, shows (its subject as a lady), the horses of whose chariot appear in retreat. She seeks, however, (the help of) him who seeks her to be his wife. Advance will be fortunate ; all will turn out advantageously."
       },
       "5": {
-        "text": "The fifth line, undivided, shows the difficulties in the way of (its subject’s) dispensing the rich favours that might be expected from him. With firmness and correctness there will be good fortune in small things; (even) with them in great things there will be evil."
+        "text": "The fifth line, undivided, shows the difficulties in the way of (its subject's) dispensing the rich favours that might be expected from him. With firmness and correctness there will be good fortune in small things; (even) with them in great things there will be evil."
       },
       "6": {
         "text": "The topmost line, divided, shows (its subject) with the horses of his chariot obliged to retreat, and weeping tears of blood in streams."
@@ -107,7 +107,7 @@ export default {
       "text": "Măng (indicates that in the case which it presupposes) there will be progress and success. I do not (go and) seek the youthful and inexperienced, but he comes and seeks me. When he shows (the sincerity that marks) the first recourse to divination, I instruct him. If he apply a second and third time, that is troublesome; and I do not instruct the troublesome. There will be advantage in being firm and correct."
     },
     "legge_image": {
-      "text": "(The trigram representing) a mountain, and beneath it that for a spring issuing forth form Măng. The superior man, in accordance with this, strives to be resolute in his conduct and nourishes his virtue. . 1, '"
+      "text": "(The trigram representing) a mountain, and beneath it that for a spring issuing forth form Măng. The superior man, in accordance with this, strives to be resolute in his conduct and nourishes his virtue. '"
     },
     "legge_lines": {
       "1": {
@@ -166,7 +166,7 @@ export default {
     "hex_font": "䷅",
     "name": "Sung",
     "legge_judgment": {
-      "text": "Sung intimates how, though there is sincerity in one’s contention, he will yet meet with opposition and obstruction; but if he cherish an apprehensive caution, there will be good fortune, while, if he must prosecute the contention to the (bitter) end, there will be evil. It will be advantageous to see the great man; it will not be advantageous to cross the great stream."
+      "text": "Sung intimates how, though there is sincerity in one's contention, he will yet meet with opposition and obstruction; but if he cherish an apprehensive caution, there will be good fortune, while, if he must prosecute the contention to the (bitter) end, there will be evil. It will be advantageous to see the great man; it will not be advantageous to cross the great stream."
     },
     "legge_image": {
       "text": "(The trigram representing) heaven and (that representing) water, moving away from each other, form Sung. The superior man, in accordance with this, in the transaction of affairs takes good counsel about his first steps."
@@ -179,10 +179,10 @@ export default {
         "text": "The second line, undivided, shows its subject unequal to the contention. If he retire and keep concealed (where) the inhabitants of his city are (only) three hundred families, he will fall into no mistake."
       },
       "3": {
-        "text": "The third line, divided, shows its subject keeping in the old place assigned for his support, and firmly correct. Perilous as the position is, there will be good fortune in the end. Should he perchance engage in the king’s business, he will not (claim the merit of) achievement."
+        "text": "The third line, divided, shows its subject keeping in the old place assigned for his support, and firmly correct. Perilous as the position is, there will be good fortune in the end. Should he perchance engage in the king's business, he will not (claim the merit of) achievement."
       },
       "4": {
-        "text": "The fourth line, undivided, shows its subject unequal to the contention. He returns to (the study of Heaven's) ordinances, changes (his wish to . contend), and rests in being firm and correct. There will be good fortune."
+        "text": "The fourth line, undivided, shows its subject unequal to the contention. He returns to (the study of Heaven's) ordinances, changes (his wish to contend), and rests in being firm and correct. There will be good fortune."
       },
       "5": {
         "text": "The fifth line, undivided, shows its subject contending ;—and with great good fortune."
@@ -303,7 +303,7 @@ export default {
         "text": "The second line, undivided, shows its subject treading the path that is level and easy;—a quiet and solitary man, to whom, if he be firm and correct, there will be good fortune."
       },
       "3": {
-        "text": "The third line, divided, shows a one-eyed man (who thinks he) can see; a lame man (who thinks. he) can walk well; one who treads on the tail of . a tiger and is bitten. (All this indicates) ill fortune. We have a (mere) bravo acting the part of a great ruler."
+        "text": "The third line, divided, shows a one-eyed man (who thinks he) can see; a lame man (who thinks he) can walk well; one who treads on the tail of a tiger and is bitten. (All this indicates) ill fortune. We have a (mere) bravo acting the part of a great ruler."
       },
       "4": {
         "text": "The fourth line, undivided, shows its subject treading on the tail of a tiger. He becomes full of . apprehensive caution, and in the end there will be good fortune."
@@ -371,7 +371,7 @@ export default {
         "text": "The fourth line, undivided, shows its subject acting in accordance with the ordination (of Heaven), and committing no error. His companions will come and share in his happiness."
       },
       "5": {
-        "text": "In the fifth line, undivided, we see him who brings the distress and obstruction to a close,—the great man and fortunate. (But let him say), ‘We may perish! We may perish!’ (so shall the state of things become firm, as if) bound to a clump of bushy mulberry trees."
+        "text": "In the fifth line, undivided, we see him who brings the distress and obstruction to a close,—the great man and fortunate. (But let him say), 'We may perish! We may perish!' (so shall the state of things become firm, as if) bound to a clump of bushy mulberry trees."
       },
       "6": {
         "text": "The sixth line, undivided, shows the overthrow (and removal of) the condition of distress and obstruction. Before this there was that condition. Hereafter there will be joy."
@@ -383,10 +383,10 @@ export default {
     "hex_font": "䷌",
     "name": "Thung Zin",
     "legge_judgment": {
-      "text": "Thung Zăn (or ‘Union of men‘) appears here (as we find it) in the (remote districts of the) country, indicating progress and success. It will be advantageous to cross the great stream. It will be advantageous to maintain the firm correctness of the superior man."
+      "text": "Thung Zăn (or 'Union of men') appears here (as we find it) in the (remote districts of the) country, indicating progress and success. It will be advantageous to cross the great stream. It will be advantageous to maintain the firm correctness of the superior man."
     },
     "legge_image": {
-      "text": "(The trigrams for) heaven and fire form Thung Zan. The superior man, in accordance with this), distinguishes things according to their kinds and classes. 1, '(The representative of) the union of men is just issuing from his gate :-—who will blame him ?"
+      "text": "(The trigrams for) heaven and fire form Thung Zan. The superior man, in accordance with this), distinguishes things according to their kinds and classes."
     },
     "legge_lines": {
       "1": {
@@ -653,7 +653,7 @@ export default {
         "text": "The fifth line, divided, shows one gnawing at dried flesh, and finding the yellow gold. Let him be firm and correct, realising the peril (of his position). There will be no error. —"
       },
       "6": {
-        "text": "The sixth line, undivided, shows one wearing the cangue, and deprived of his cars. There will be evil."
+        "text": "The sixth line, undivided, shows one wearing the cangue, and deprived of his ears. There will be evil."
       }
     }
   },
@@ -724,7 +724,7 @@ export default {
     "hex_font": "䷗",
     "name": "Fu",
     "legge_judgment": {
-      "text": "Fû indicates that there will be free course and progress (in what it denotes). (The subject of it) finds no one to distress him in his exits and entrances; friends come to him, and no error is committed . He will return and repeat his (proper) course. In seven days comes his return. There will be advantage in whatever direction movement is made."
+      "text": "Fû indicates that there will be free course and progress (in what it denotes). (The subject of it) finds no one to distress him in his exits and entrances; friends come to him, and no error is committed. He will return and repeat his (proper) course. In seven days comes his return. There will be advantage in whatever direction movement is made."
     },
     "legge_image": {
       "text": "(The trigram representing) the earth and that for thunder in the midst of it form Fû. The ancient kings, in accordance with this, on the day. of the (winter) solstice, shut the gates of the passes (from one state to another), so that the travelling merchants could not (then) pursue their journeys, nor the princes go on with the inspection of their states."
@@ -975,7 +975,7 @@ export default {
       "text": "Hăng indicates successful progress and no error (in what it denotes). But the advantage will come from being firm and correct; and movement in any direction whatever will be advantageous."
     },
     "legge_image": {
-      "text": "(The trigram representing) thunder . and that for wind form Hang. The superior man, in accordance with this, stands firm, and does not change his method (of operation)."
+      "text": "(The trigram representing) thunder and that for wind form Hang. The superior man, in accordance with this, stands firm, and does not change his method (of operation)."
     },
     "legge_lines": {
       "1": {
@@ -1019,7 +1019,7 @@ export default {
         "text": "The third line, undivided, shows one retiring but bound,—to his distress and peril. (If he were to deal with his binders as in) nourishing a servant or concubine, it would be fortunate for him."
       },
       "4": {
-        "text": "The fourth line, undivided, shows its subject . retiring notwithstanding his likings. In a superior man this will lead to good fortune; a small man cannot attain to this."
+        "text": "The fourth line, undivided, shows its subject retiring notwithstanding his likings. In a superior man this will lead to good fortune; a small man cannot attain to this."
       },
       "5": {
         "text": "The fifth line, undivided, shows its subject retiring in an admirable way. With firm correctness there will be good fortune."
@@ -1233,10 +1233,10 @@ export default {
         "text": "The second line, undivided, shows its subject catch, in hunting, three foxes, and obtain the yellow (= golden) arrows. With firm correctness there will be good fortune."
       },
       "3": {
-        "text": "The third line, divided, shows a porter with his burden, (yet) riding in a carriage. He will (only) tempt robbers to attack him. However firm and correct he may (try to) be, there will be cause for regret. 4. (To the subject of) the fourth line, undivided, (it is said), 'Remove your toes. Friends will (then) come, between you and whom there will be mutual confidence."
+        "text": "The third line, divided, shows a porter with his burden, (yet) riding in a carriage. He will (only) tempt robbers to attack him. However firm and correct he may (try to) be, there will be cause for regret."
       },
       "4": {
-        "text": "(To the subject of) the fourth line, undivided, (it is said), ‘Remove your toes. Friends will (then) come, between you and whom there will be mutual confidence.’"
+        "text": "(To the subject of) the fourth line, undivided, (it is said), 'Remove your toes. Friends will (then) come, between you and whom there will be mutual confidence.'"
       },
       "5": {
         "text": "The fifth line, divided, shows (its subject), the superior man (= the ruler), executing his function of removing (whatever is injurious to the idea of the hexagram), in which case there will he good fortune, and confidence in him will be shown even by the small men."
@@ -1258,7 +1258,7 @@ export default {
     },
     "legge_lines": {
       "1": {
-        "text": "The first line, undivided, shows its subject suspending his own affairs, and hurrying away (to help the subject of the fourth line). He will commit no error, but let him consider how far he should . contribute of what is his (for the other)."
+        "text": "The first line, undivided, shows its subject suspending his own affairs, and hurrying away (to help the subject of the fourth line). He will commit no error, but let him consider how far he should contribute of what is his (for the other)."
       },
       "2": {
         "text": "The second line, undivided, shows that it will be advantageous for its subject to maintain a firm correctness, and that action on his part will be evil. He can give increase (to his correlate) without taking from himself"
@@ -1267,7 +1267,7 @@ export default {
         "text": "The third line, divided, shows how of three men walking together, the number is diminished by one; and how one, walking, finds his friend."
       },
       "4": {
-        "text": "The fourth line, divided, shows its, subject diminishing the ailment under which he labours by making (the subject of the first line) hasten (to his. help), and make him glad. There will be no error."
+        "text": "The fourth line, divided, shows its subject diminishing the ailment under which he labours by making (the subject of the first line) hasten (to his help), and make him glad. There will be no error."
       },
       "5": {
         "text": "The fifth line, divided, shows parties adding to (the stores of) its subject ten pairs of tortoise shells, and accepting no refusal. There will be great good fortune."
@@ -1313,7 +1313,7 @@ export default {
     "hex_font": "䷪",
     "name": "Kwai",
     "legge_judgment": {
-      "text": "Kwâi requires (in him who would fulfil its meaning) the exhibition (of the culprit’s guilt) in the royal court, and a sincere and earnest appeal (for sympathy and support), with a consciousness of the peril (involved in cutting off the criminal). He should (also) make announcement in his own city, and show that it will not be well to have recourse at once to arms. (In this way) there will be advantage in whatever he shall go forward to."
+      "text": "Kwâi requires (in him who would fulfil its meaning) the exhibition (of the culprit's guilt) in the royal court, and a sincere and earnest appeal (for sympathy and support), with a consciousness of the peril (involved in cutting off the criminal). He should (also) make announcement in his own city, and show that it will not be well to have recourse at once to arms. (In this way) there will be advantage in whatever he shall go forward to."
     },
     "legge_image": {
       "text": "(The trigram representing) heaven and that for the waters of a marsh mounting above it form Kwâi. The superior man, in accordance with this, bestows emolument on those below him, and dislikes allowing his gifts to accumulate (undispensed)."
@@ -1444,7 +1444,7 @@ export default {
     },
     "legge_lines": {
       "1": {
-        "text": "The first line, divided, shows its subject with . bare buttocks straitened under the stump of a tree. He enters a dark valley, and for three years has no prospect (of deliverance)."
+        "text": "The first line, divided, shows its subject with bare buttocks straitened under the stump of a tree. He enters a dark valley, and for three years has no prospect (of deliverance)."
       },
       "2": {
         "text": "The second line, undivided, shows its subject straitened amidst his wine and viands. There come to him anon the red knee-covers (of the ruler). It will be well for him (to maintain his sincerity as) in sacrificing. Active operations (on his part) will lead to evil, but he will be free from blame."
@@ -1459,7 +1459,7 @@ export default {
         "text": "The fifth line, undivided, shows its subject with his nose and feet cut off. He is straitened by (his ministers in their) scarlet aprons. He is leisurely in his movements, however, and is satisfied. It will be well for him to be (as sincere) as in sacrificing (to spiritual beings)."
       },
       "6": {
-        "text": "The sixth line, divided, shows its subject straitened, as if bound with creepers; or n a high and dangerous position, and saying (to himself), ‘If I move, I shall repent it.’ If he do repent of former errors, there will be good fortune in his going forward."
+        "text": "The sixth line, divided, shows its subject straitened, as if bound with creepers; or in a high and dangerous position, and saying (to himself), 'If I move, I shall repent it.' If he do repent of former errors, there will be good fortune in his going forward."
       }
     }
   },
@@ -1540,7 +1540,7 @@ export default {
         "text": "The first line, divided, shows the caldron overthrown and its feet turned up. (But) there will be advantage in its getting rid of what was bad in it. (Or it shows us) the concubine (whose position is improved) by means of her son. There will be no error."
       },
       "2": {
-        "text": "The second line, undivided, shows the caldron with the things (to be cooked) in it. (If its subject can say), ‘My enemy dislikes me, but he cannot approach me,’ there will be good fortune."
+        "text": "The second line, undivided, shows the caldron with the things (to be cooked) in it. (If its subject can say), 'My enemy dislikes me, but he cannot approach me,' there will be good fortune."
       },
       "3": {
         "text": "The third line, undivided, shows the caldron with (the places of) its ears changed. The progress (of its subject) is (thus) stopped. The fat flesh of the pheasant (which is in the caldron) will not be eaten. But the (genial) rain will come, and the grounds for repentance will disappear. There will be good fortune in the end."
@@ -1592,7 +1592,7 @@ export default {
     "hex_font": "䷳",
     "name": "Kan",
     "legge_judgment": {
-      "text": "When one’s resting is like that of the back, and he loses all consciousness of self; when he walks in his courtyard, and does not see any (of the persons) in it,—there will be no error."
+      "text": "When one's resting is like that of the back, and he loses all consciousness of self; when he walks in his courtyard, and does not see any (of the persons) in it,—there will be no error."
     },
     "legge_image": {
       "text": "(Two trigrams representing) a mountain, one over the other, form Kăn. The superior man, in accordance with this, does not go in his thoughts beyond the (duties of the) position in which he is."
@@ -1701,7 +1701,7 @@ export default {
         "text": "The third line, undivided, shows its subject with an (additional) screen of a large and thick banner, through which at midday he can see (the small) Mei star. (In the darkness) he breaks his right arm; but there will be no error,"
       },
       "4": {
-        "text": "T he fourth line, undivided, shows its subject in a tent so large and thick that at midday he can see from it the constellation of the Bushel. But he meets with the subject of the (first) line, undivided like himself. There will be good fortune."
+        "text": "The fourth line, undivided, shows its subject in a tent so large and thick that at midday he can see from it the constellation of the Bushel. But he meets with the subject of the (first) line, undivided like himself. There will be good fortune."
       },
       "5": {
         "text": "The fifth line, divided, shows its subject bringing around him the men of brilliant ability. There will be occasion for congratulation and praise. There will be good fortune."
@@ -1723,7 +1723,7 @@ export default {
     },
     "legge_lines": {
       "1": {
-        "text": "The first line, divided, shows the stranger mean and meanly occupied. It is thus that he brings on himself (further) calamity. The subject of 2 therefore, if he advance, will not be acceptable to his ruler, and will not be employed. The only way in which he can be useful by developing the light that is in him is pointed out in the conclusion. The constellation of the Bushel corresponds to our Ursa Major, or perhaps part of Sagittarius."
+        "text": "The first line, divided, shows the stranger mean and meanly occupied. It is thus that he brings on himself (further) calamity."
       },
       "2": {
         "text": "The second line, divided, shows the stranger, occupying his lodging-house, carrying with him his means of livelihood, and provided with good and trusty servants."
@@ -1750,7 +1750,7 @@ export default {
       "text": "Sun intimates that (under the conditions which it denotes) there will be some little attainment and progress. There will be advantage in movement onward in whatever direction. It will be advantageous (also) to see the great man."
     },
     "legge_image": {
-      "text": "(Two trigrams representing) wind, following each other, form Sun. The superior man, in accordance with this, reiterates his orders, and secures the practice of his affairs. :"
+      "text": "(Two trigrams representing) wind, following each other, form Sun. The superior man, in accordance with this, reiterates his orders, and secures the practice of his affairs."
     },
     "legge_lines": {
       "1": {
@@ -1788,7 +1788,7 @@ export default {
         "text": "The first line, undivided, shows the pleasure of (inward) harmony. There will be good fortune."
       },
       "2": {
-        "text": "The second line, undivided, shows the pleasure arising from (inward) sincerity. There will be good fortune. Occasion for repentance will disappear. ~"
+        "text": "The second line, undivided, shows the pleasure arising from (inward) sincerity. There will be good fortune. Occasion for repentance will disappear."
       },
       "3": {
         "text": "The third line, divided, shows its subject bringing round. himself whatever can give pleasure. There will be evil."
@@ -1924,7 +1924,7 @@ export default {
         "text": "The fifth line, divided, (suggests the idea) of dense clouds, but no rain, coming from our borders in the west. It also (shows) the prince shooting his arrow, and taking the bird in a cave."
       },
       "6": {
-        "text": "The sixth line, divided, shows. its subject not meeting (the exigency of his situation), and exceeding (his proper course). (It suggests the idea of) a bird flying far aloft. There will be evil. The case is what is called one of calamity and self-produced injury."
+        "text": "The sixth line, divided, shows its subject not meeting (the exigency of his situation), and exceeding (his proper course). (It suggests the idea of) a bird flying far aloft. There will be evil. The case is what is called one of calamity and self-produced injury."
       }
     }
   },

@@ -24,9 +24,18 @@ export const LEGGE_SBE_BOOK_PRIMARY_PATCHES = {
       6: "The sixth line, divided, shows us the city wall returned into the moat. It is not the time to use the army. (The subject of the line) may, indeed, announce his orders to the people of his own city; but however correct and firm he may be, he will have cause for regret.",
     },
   },
+  5: {
+    image:
+      "(The trigram for) clouds ascending over that for the sky forms Hsü. The superior man, in accordance with this, eats and drinks, feasts and enjoys himself (as if there were nothing else to employ him).",
+  },
   16: {
     lines: {
       5: "The fifth line, divided, shows one with a chronic complaint, but who lives on without dying.",
+    },
+  },
+  21: {
+    lines: {
+      6: "The sixth line, undivided, shows one wearing the cangue, and deprived of his ears. There will be evil.",
     },
   },
   39: {

@@ -8,7 +8,7 @@ import {
   preprocessLeggeHtml,
 } from "./hexagram-fidelity-legge-sacred.mjs";
 import { loadLeggeSbePdfFullText } from "./legge-sbe-pdf-text-extract.mjs";
-import { joinLeggeOcrHyphenation, repairLeggeSbeOcrText } from "./hexagram-fidelity-legge-sbe-ocr.mjs";
+import { joinLeggeOcrHyphenation, repairLeggeSbeOcrText, finalizeLeggeSbeRow } from "./hexagram-fidelity-legge-sbe-ocr.mjs";
 import { applyEpubGuideToLeggeRow } from "./hexagram-fidelity-legge-sbe-epub-guide.mjs";
 import { applyLeggeSbeBookPrimaryPatches } from "./hexagram-fidelity-legge-sbe-book-primary.mjs";
 import { parseAllLeggeEpubOrThrow } from "./hexagram-fidelity-legge-epub.mjs";
@@ -896,7 +896,7 @@ export function parseAllLeggeSbePdfFromText(input) {
     if (epubRow) {
       row = applyEpubGuideToLeggeRow(row, epubRow, slice, input.symbolismText);
     }
-    out[h.number] = row;
+    out[h.number] = finalizeLeggeSbeRow(row);
   }
 
   const missingHex = [];
