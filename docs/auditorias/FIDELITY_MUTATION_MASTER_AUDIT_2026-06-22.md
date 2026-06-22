@@ -3,7 +3,7 @@
 **App:** The Original I Ching  
 **Fecha cierre documento:** 22 jun 2026  
 **Merge a `staging`:** 22 jun 2026 (desde `feat/wilhelm-pdf-gold-sync`; **`main` pendiente**)  
-**Estado global:** Textos W/L **book-primary PASS** · Mutaciones Huang/Zhu Xi **core PASS** · Zhu Xi **32 diagramas PENDIENTE**  
+**Estado global:** Textos W/L **book-primary PASS** · Mutaciones Huang/Zhu Xi **core PASS** · Zhu Xi **32 diagramas: Gate 0 CERRADO — ≡ reglas por conteo, no se implementa (§E.2.2)**  
 **Página pública usuarios:** [`/audits`](https://theoriginaliching.com/audits) — solo fechas, fuente y resultado  
 **Audiencia:** auditoría interna pre-implementación (32 charts); ingeniería + revisión académica
 
@@ -34,7 +34,7 @@
 | **Zhou Yi** | ctext.org (API + HTML) | `verify` mirrors + `scan:zhouyi-corruption` | **514/514 + 0 corrupt** | ✅ Cerrado (gold = ctext, no PDF 注疏) |
 | **Huang mutaciones** | Complete I Ching 10th ed. PDF | `audit:huang-rules-vs-pdf-gold` | **9/9 snippets, 90/90 tests** | ✅ Cerrado |
 | **Zhu Xi mutaciones** | Adler trans. Yixue Qimeng ch. IV | `audit:zhuxi-rules-vs-adler-gold` | **10/10 snippets, 37/37 tests** | ✅ Core cerrado |
-| **Zhu Xi 32 diagramas** | Adler Fig. 19 (PDF 159–204) | — | **not_implemented** | ⏳ Plan §E |
+| **Zhu Xi 32 diagramas** | Adler Fig. 19 + 御纂折中 + reconstrucción | `tools/reconstruct-zhuxi-3line-chart.mjs` + visual PDF | **≡ reglas por conteo (10/10 boundary 恒/益)** | ✅ Cerrado — no se implementa (§E.2.2) |
 
 **Línea de tiempo (commits clave en rama mergeada):**
 
@@ -200,7 +200,7 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 | **Capítulo** | IV «Examining the Prognostications» 占筮 |
 | **PDF core** | **150–158** (folio impreso **48–53**) — **no** PDF 113 (cap. III milfoil) |
 | **PDF notas** | **205–215** (notas al pie **128–150**, folio impreso ~64–74) |
-| **Fig. 19 (pendiente)** | PDF **159–204** — 32 diagramas |
+| **Fig. 19 (resuelta §E.2.2)** | PDF **159–204** — 32 diagramas (imágenes). Chart 乾/坤 = p.162; render `tools/output/zhuxi-32charts/`. Resultado: ≡ reglas por conteo |
 | **Gold JSON** | `tools/output/fidelity-gold/zhuxi-adler-mutation-rules-gold.json` |
 | **Extract** | `zhuxi-adler-ch4-core-p150-158.txt`, `zhuxi-adler-ch4-notes-p205-215.txt` |
 | **Scripts** | `scripts/lib/zhuxi-adler-pdf-gold.mjs`, `npm run extract:gold:zhuxi-adler-pdf`, `npm run audit:zhuxi-rules-vs-adler-gold` |
@@ -222,7 +222,7 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 | 5 | 156 | 51 | «…five lines change… unchanging line of the resulting hexagram» | `ZX_FIVE_ONLY` |
 | 6 Q/K | 150,158 | 48,52 | Qian/Kun all-changing + 用九/用六; «both hexagram statements and their interrelationships» (fn. **148**) | `QIAN_ALL_NINE` / `KUN_ALL_SIX` + `readBothJudgments` |
 | 6 otros | 158 | 52 | «…other hexagrams… T'uan statement of the resulting hexagram» | `ZX_SIX_TRANSFORMED` |
-| 32 charts | 158 | 52 | «…up through the 32 use the lines of the **original** hexagram… after the 32 use the lines of the **changed** hexagram» | **not_implemented** |
+| 32 charts | 158 | 52 | «…up through the 32 use the lines of the **original** hexagram… after the 32 use the lines of the **changed** hexagram» | ≡ reglas por conteo (§E.2.2) — `ZX_*` ya equivalentes |
 
 **Footnotes con peso académico:**
 
@@ -250,12 +250,12 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 
 | ID | Brecha | Evidencia libro | Impacto si se implementa |
 |----|--------|-----------------|--------------------------|
-| **G1** | Zhu Xi 20 casos × 3 líneas (first-ten / latter-ten) | Adler p.154 | **Probable no-op** si D0.1 confirma orden lex = `includes(1)` (Opus 4.8). Si no → tabla explícita |
-| **G2** | Zhu Xi 32 diagramas Fig. 19 | Adler p.158 + PDF 159–204 | Cambia `fromHexagram` en 3/4/5 — **Gate D0.2** decide si bug latente 4/5 |
+| **G1** | Zhu Xi 20 casos × 3 líneas (first-ten / latter-ten) | Adler p.154 | ✅ **CERRADO — no-op.** D0.1 confirmó `includes(1)` exacto (§E.2.2) |
+| **G2** | Zhu Xi 32 diagramas Fig. 19 | Adler p.158 + 御纂折中 | ✅ **CERRADO — no diverge.** Fig. 19 ≡ reglas por conteo (§E.2.2). No hay bug latente 4/5 |
 | **G3** | Huang Qian/Kun prompt dual-judgment | Huang p.62 + regla 6 | Solo prompt; motor ya entrega textos |
 | **G4** | `licenseNote` Legge bundle metadata desactualizado | — | Cosmético; oracle 514/514 OK |
 
-**Regla operativa:** G2 requiere **Fase 0 (Gate 0)** + plan §E v2 antes de tocar motor. G1 puede ser verificación solamente.
+**Regla operativa:** G1/G2 **cerrados** — motor verificado correcto, **sin** cambios. No tocar `zhuxi.ts`.
 
 ---
 
@@ -264,10 +264,10 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 **Documento:** [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md)  
 **Rama verificada por auditor:** `staging` `fe1f184`  
 **Luz verde documental v2.1:** SÍ  
-**Luz verde motor:** pendiente Gate 0 técnico (D0.1/D0.2)  
-**Gate 0:** **PENDIENTE** (22 jun 2026, decisión Alexis: no iniciar aún)
+**Luz verde motor:** N/A — Gate 0 cerrado, motor verificado correcto, sin cambios  
+**Gate 0:** ✅ **CERRADO** (22 jun 2026) — D0.1 confirmado + D0.2 resuelto (§E.2.2). Fases A→E canceladas.
 
-> **DECISIÓN DE PRODUCTO (Alexis, 22 jun 2026): GREENFIELD.** Forward-only. Sign-off D0.2 (producto) dado. Gate 0 técnico sigue bloqueante.
+> **DECISIÓN DE PRODUCTO (Alexis, 22 jun 2026): GREENFIELD.** Forward-only. **Actualización (2ª sesión):** los 32 charts resultaron ≡ reglas por conteo; no se implementa nada nuevo, el motor actual ya es canónico.
 
 ### F.1 Acuerdo del equipo (Cursor, post v2.1)
 
@@ -291,20 +291,20 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 - [x] **T2:** `sourceUrl` Wilhelm → Pantheon/Bollingen (Princeton bibliographic); `licenseNote` Legge 514/514 PDF gold (`feat/t2-wilhelm-metadata`, 22 jun 2026)
 - [x] **T1:** coma Zhou Yi `,` → `，` en campos oráculo; re-gate 514/514 ctext; 0 half-width / 908 full-width (`feat/t1-zhouyi-comma-normalize`, 22 jun 2026)
 
-**Gate 0 (bloqueante motor, sin código):**
+**Gate 0 (bloqueante motor, sin código) — CERRADO:**
 
-> **Estado (22 jun 2026): PENDIENTE.** Decisión Alexis: no iniciar Gate 0 aún. T1/T2 cerrados; motor Zhu Xi charts sin tocar.
+> **Estado (22 jun 2026): ✅ CERRADO.** D0.1 confirmado + D0.2 resuelto (§E.2.2). Veredicto: 32 charts ≡ reglas por conteo. Motor sin tocar (riesgo cero).
 
-- [ ] **D0.1:** Adler p.154 + Fig. 19 → `equivalentToIncludesPos1`
-- [ ] **D0.2:** p.158 + reglas 4/5 p.156 → dictamen técnico escrito
-- [ ] Spot-check ≥10 celdas Fig. 19 (PDF 159-204)
+- [x] **D0.1:** ✅ `includes(1)` **confirmado exacto** — reconstrucción `tools/reconstruct-zhuxi-3line-chart.mjs` (10/10, boundary 恒/益) + visual PDF + Hacker/Cottrell
+- [x] **D0.2:** ✅ Fig. 19 **NO diverge** — cita 朱子 (御纂折中) mapea exacto sobre n=1,2/4,5,6 del motor
+- [x] Spot-check Fig. 4.19.1 (乾/坤) vs reconstrucción — primeros-10 en sub-grid 乾, últimos-10 en sub-grid 坤
 - [x] Sign-off producto D0.2 (greenfield, forward-only)
 
-**Tras Gate 0:**
+**Tras Gate 0 — Fases A→E CANCELADAS (innecesarias, §E.2.2):**
 
-- [ ] Fase A: gold JSON 32 entradas
-- [ ] Fase B-D: motor + prompt + API (flag scaffold)
-- [ ] Fase E: cutover **default ON**
+- [x] ~~Fase A: gold JSON 32 entradas~~ — cancelada (producería salida idéntica)
+- [x] ~~Fase B-D: motor + prompt + API~~ — cancelada (motor ya es el sistema de charts)
+- [x] ~~Fase E: cutover~~ — cancelada (nada que migrar)
 
 ---
 
@@ -312,7 +312,7 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 
 Orden completo en [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) §Parte 6 y [`ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md`](ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md) §10.
 
-**Regla operativa:** no escribir motor de charts hasta Gate 0 cerrado con citas de folio.
+**Regla operativa:** Gate 0 **cerrado** (§E.2.2). Motor de charts **no se escribe** — el motor por conteo actual ya es el sistema de 32 charts de Zhu Xi. No tocar `zhuxi.ts`.
 
 ---
 
@@ -400,29 +400,50 @@ Paridad motor vs gold Adler Fig. 19 sobre **inputs de chart distintos** (no 4096
 
 **Regla 3 líneas (PDF 154):** 20 casos. D0.1 pendiente (probable no-op con `includes(1)`).
 
-### E.2.1 Gate 0 EJECUTADO (22 jun 2026) — bloqueo a Fase A
+### E.2.1 Gate 0 EJECUTADO (22 jun 2026, 1ª sesión) — tentativo, superado por E.2.2
 
-Gate 0 cerrado documentalmente (ver plan §0.A). Resumen:
+Gate 0 cerrado documentalmente (ver plan §0.A). Resumen (⚠️ **conclusiones corregidas en E.2.2**):
 
-| Decisión | Resultado |
+| Decisión | Resultado (tentativo) |
 |----------|-----------|
-| **D0.1** (`includes(1)` exacto n=3) | Hipótesis fuerte (split 10/10 coincide) **no confirmada**: el orden de los 20 casos lo fija Fig. 19, no derivable de `pdftotext` |
-| **D0.2** (Fig. 19 override 4/5) | Fig. 19 = sistema **paralelo** de 爻辭 sobre 4096 combinaciones; no override limpio del método por conteo (estándar Shao Yung) |
+| **D0.1** (`includes(1)` exacto n=3) | Hipótesis fuerte (split 10/10 coincide) **no confirmada** entonces: orden de los 20 casos no derivable de `pdftotext` |
+| **D0.2** (Fig. 19 override 4/5) | (Erróneo) creído sistema **paralelo** divergente — **corregido en E.2.2** |
 | **Spot-check** | Figure 4.19.1 (乾 regente) leída vía `pdftoppm`; estructura de rejilla confirmada |
-| **🔴 Go/No-Go** | **Fig. 19 son diagramas escaneados, NO texto.** `tools/extract-zhuxi-adler-charts.mjs → 32-charts-gold.json` **no factible** con `pdftotext`. Fases A→E **bloqueadas** hasta decidir fuente machine-readable (transcripción manual / dataset publicado / OCR visión + validación) |
+| **🔴 Go/No-Go (1ª sesión)** | Fig. 19 son diagramas escaneados; `pdftotext` no sirve → se buscó otra vía (E.2.2) |
 
-**Recomendación:** mantener motor actual (reglas por conteo, 37/37 tests) como método clásico estándar cerrado. Abrir Fase A solo tras decisión de Alexis sobre cómo obtener el gold Fig. 19. Sin cambios de código de motor en este Gate 0.
+### E.2.2 Gate 0 CERRADO DEFINITIVO (22 jun 2026, 2ª sesión) — Fases A→E CANCELADAS
 
-### E.3 Fases (resumen)
+**Veredicto: el aparente "sistema adicional de 32 charts" no es más que las MISMAS reglas por conteo, resumidas de otra forma.** Probado por reconstrucción algorítmica + comparativa visual contra la imagen del PDF + 3 autoridades. Detalle completo en plan **§0.B**.
 
-| Fase | Entregable | Gate |
+| Decisión | Resultado **definitivo** |
+|----------|-----------|
+| **D0.2** (¿Fig. 19 diverge de reglas 4/5?) | ❌ **NO.** Cita de Zhu Xi (御纂折中 考變占第四): `一爻二爻變在前 → 本卦`; `四爻五爻六爻變在後 → 之卦`; `三爻變二十卦，十前十後`. Mapea **exacto** sobre n=1,2 (original) / 4,5,6 (transformado) del motor. Boundary autoconsistente 32/32 ✓ |
+| **D0.1** (¿`includes(1)` exacto n=3?) | ✅ **CONFIRMADO.** Reconstrucción `tools/reconstruct-zhuxi-3line-chart.mjs` → split **10/10** con boundary 恒(#32)/益(#33) **idéntico** al texto clásico (`乾自姤至恒…乾自益至坤`). Comparativa visual: primeros-10 todos en sub-grid 乾, últimos-10 todos en sub-grid 坤 (Fig. 4.19.1). |
+| **Autoridades** | Ed Hacker (biroco.com) + Russell Cottrell (russellcottrell.com): "if bottom/first line changing → first hexagram judgment; else second — gives the same result as Zhu Xi's 32 charts." |
+| **Veredicto** | Motor actual (`zhuxi.ts`, incl. `includes(1)` L85) **ES** el sistema de 32 charts. Sin cambios de código (riesgo cero). **No** se añade tercera opción de lectura. |
+
+**Mapeo de equivalencia (verbatim 朱子):**
+
+| Líneas | 32 charts | Motor `zhuxi.ts` | ✓ |
+|---|---|---|---|
+| 1–2 | antes del 32 → 本卦 | `ZX_ONE`/`ZX_TWO_UPPER` (original) | ✅ |
+| 4–5–6 | después del 32 → 之卦 | `ZX_FOUR_LOWER`/`ZX_FIVE_ONLY`/`ZX_SIX_TRANSFORMED` | ✅ |
+| 3 (×20) | split 10/10 主貞/主悔 | `ZX_THREE_JUDGMENTS` `includes(1)` | ✅ |
+
+**Evidencias guardadas:** `tools/reconstruct-zhuxi-3line-chart.mjs` (commiteado, reproducible); `tools/output/fidelity-gold/zhuxi-32charts-textual-sources.txt` + `zhuxi-fig19-qian-kun-chart-upright.png` + `tools/output/zhuxi-32charts/` (cache gitignored). Fuentes web: eee-learning.com/book/4716, taijizhidian.net/book/read/10202.html, ctext.org/wiki.pl?chapter=699485, russellcottrell.com/VirtualYarrowStalks/ChuHsiRules.htm, biroco.com/yijing/basics.htm.
+
+**Recomendación final:** motor cerrado y verificado correcto. **Fases A→E canceladas** (innecesarias — producirían salida idéntica). No tocar `zhuxi.ts`.
+
+### E.3 Fases (resumen) — A→E CANCELADAS tras §E.2.2
+
+| Fase | Entregable | Estado |
 |------|------------|------|
-| **0** | D0.1 + D0.2 citadas | Bloqueante motor |
-| **A** | `zhuxi-adler-32-charts-gold.json` | 32 entradas + spot-check ≥10 |
-| **B** | `resolveZhuXiChart()` + flag scaffold | 90 tests OFF; chart tests ON |
-| **C** | Prompt + H1/H3/H2 | QA mutation-output |
-| **D** | API + Axiom | Smoke 3/4/5 |
-| **E** | Cutover **default ON** | `/audits` re-entrada |
+| **0** | D0.1 + D0.2 citadas | ✅ **CERRADO** (D0.1 confirmado, D0.2 resuelto) |
+| **A** | `zhuxi-adler-32-charts-gold.json` | ❌ Cancelada (salida idéntica al motor) |
+| **B** | `resolveZhuXiChart()` + flag scaffold | ❌ Cancelada (motor ya ≡ charts) |
+| **C** | Prompt + H1/H3/H2 | ❌ Cancelada |
+| **D** | API + Axiom | ❌ Cancelada |
+| **E** | Cutover **default ON** | ❌ Cancelada (nada que migrar) |
 
 ### E.4 Decisiones producto (cerradas v2.1)
 
@@ -447,7 +468,7 @@ Gate 0 cerrado documentalmente (ver plan §0.A). Resumen:
 | Legge SBE XVI scan | Spot-check manual | `LEGGE_SBE_XVI_OXFORD_SCAN_SPOT_CHECK_2026-06-22.md` |
 | Huang 2010 PDF | Rule extract | `huang-mutation-rules-gold.json` + 9/9 snippets |
 | Adler Zhu Xi ch. IV | Rule extract | `zhuxi-adler-mutation-rules-gold.json` + 10/10 snippets |
-| Adler Fig. 19 | Pendiente | PDF pp. 159–204 |
+| Adler Fig. 19 (32 charts) | Reconstrucción + visual | `tools/reconstruct-zhuxi-3line-chart.mjs` (10/10 boundary 恒/益); `zhuxi-fig19-qian-kun-chart-upright.png`; `zhuxi-32charts-textual-sources.txt` |
 | Validación externa Opus 4.8 | Adoptada v2.1 greenfield | `EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md` |
 | Motor iching-engine | Tests | 90 mutation + 37 line-reading |
 | Prompt producción | Gates | H1–H5 `interpretation-output-validator.ts` |
@@ -468,4 +489,4 @@ Gate 0 cerrado documentalmente (ver plan §0.A). Resumen:
 
 ---
 
-*Actualizado 22 jun 2026: Gate 0 PENDIENTE; T1/T2 cerrados; Zhou Yi trazabilidad §Parte H (staging `9f2a170`).*
+*Actualizado 22 jun 2026 (2ª sesión): **Gate 0 CERRADO** — 32 charts ≡ reglas por conteo (§E.2.2), Fases A→E canceladas; T1/T2 cerrados; Zhou Yi trazabilidad §Parte H (staging `9f2a170`).*

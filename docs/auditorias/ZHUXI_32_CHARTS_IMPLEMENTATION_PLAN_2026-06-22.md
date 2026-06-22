@@ -1,8 +1,9 @@
 # Plan de implementación — Zhu Xi 32 diagramas + regla clásica 3 líneas
 
-**Fecha:** 22 jun 2026 · **Revisión:** v2.1 (greenfield, post-validación Opus 4.8)  
-**Estado:** **Luz verde documental.** Motor: **NO implementar sin Gate 0 (Fase 0) técnico**  
-**Gate 0 (22 jun 2026): EJECUTADO** — ver §0.A. Resultado: **Fases A→E bloqueadas** (Fig. 19 es imagen, no texto extraíble). Motor actual (reglas por conteo) intacto.  
+**Fecha:** 22 jun 2026 · **Revisión:** v2.2 (Gate 0 cerrado definitivamente)  
+**Estado:** **CERRADO.** Gate 0 resuelto al 100%. **Fases A→E CANCELADAS** — innecesarias.  
+**Gate 0 (22 jun 2026): EJECUTADO Y CERRADO** — ver §0.A (primera sesión, tentativo) y **§0.B (cierre definitivo)**.  
+**VEREDICTO FINAL:** El sistema de 32 charts (Fig. 19) **no es un método adicional** — es una re-derivación geométrica de **las mismas reglas por conteo** que el motor ya implementa. Una "tercera opción Zhu Xi 32-charts" produciría salida **idéntica** al Zhu Xi clásico ya en staging. **No se implementa.** Motor actual verificado **correcto** (incl. `includes(1)` para n=3, ahora **confirmado exacto**).  
 **Audiencia:** ejecutor + auditoría interna  
 **Validación externa:** [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) (v2.1)  
 **Índice maestro:** [`FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`](FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md) §Parte E-F  
@@ -46,8 +47,8 @@ Portar el motor Zhu Xi de **reglas por conteo** (operativas, validadas en tests 
 |-----------|------------|---------------|-------------|-------------------|
 | Reglas 0–6 + Q/K | 150–158 | 48–53 | ✅ Extraído | `scripts/lib/zhuxi-adler-pdf-gold.mjs` → `zhuxi-adler-mutation-rules-gold.json` |
 | Regla 3 (20 casos) | **154** | **50** | ⚠️ **D0.1 pendiente** | Combinatoria sugiere `includes(1)` exacto; confirmar orden Adler en Fig. 19 |
-| Regla 32/64 charts | **158** | **52** | ❌ not_implemented | Cita: «…up through the 32… **original** hexagram… after the 32… **changed** hexagram» |
-| Fig. 19 — 32 diagrams | **159–204** | — | ❌ Pendiente Fase A | Manifest `zhuxi-adler.chapterIv` figures range |
+| Regla 32/64 charts | **158** | **52** | ✅ Resuelto (§0.B): ≡ reglas por conteo | Cita: «…up through the 32… **original** hexagram… after the 32… **changed** hexagram» |
+| Fig. 19 — 32 diagrams | **159–204** | — | ✅ Reconstruido (§0.B) sin OCR | Chart 乾/坤 = p.162; `tools/reconstruct-zhuxi-3line-chart.mjs` |
 | Nota 4096 | **215** | **74** fn.149 | Referencia | «Hsi-tz'u A.9.8» — base combinatoria |
 | Nota Gen→Sui | **205** | **73** fn.144–145 | Caso test | Mu Chiang: línea 2 de Sui, **no** T'uan — gate manual Fase E |
 | Nota Q/K 6 cambios | **215** | **73–74** fn.148 | Implementado | «both hexagram statements and their interrelationships» → `readBothJudgments` |
@@ -140,25 +141,28 @@ type ZhuXiChartResolution = {
 
 Resolver desde PDF Adler con **cita literal + captura de folio**:
 
-| ID | Pregunta | Si sí | Si no | Producto |
-|----|----------|-------|-------|----------|
-| **D0.1** | ¿Los 20 casos de 3 líneas en Adler siguen orden lex ascendente? | G1 = **no-op** (`includes(1)` exacto) | Tabla explícita 20 casos | N/A |
-| **D0.2** | ¿Fig. 19 sobrescribe reglas 4/5 (original vs transformado)? | Spec: chart decide `fromHexagram` | Spec: default + excepciones chart | **Resuelto:** forward-only |
+| ID | Pregunta | Resultado |
+|----|----------|-----------|
+| **D0.1** | ¿`includes(1)` es exacto para los 20 casos de 3 líneas? | ✅ **CONFIRMADO EXACTO** (§0.B). G1 = **no-op**. |
+| **D0.2** | ¿Fig. 19 sobrescribe reglas 4/5 (original vs transformado)? | ✅ **NO** — coincide con reglas por conteo (§0.B). Sin divergencia. |
 
-**Gate 0 (bloqueante para motor):**
+**Gate 0 (bloqueante para motor) — CERRADO:**
 
-- [x] D0.1 respondida con cita folio p.154 (ver §0.A abajo)
+- [x] D0.1 respondida con cita folio p.154 (ver §0.A)
 - [x] D0.2 respondida con cita folio p.158 + chino folio 52 + lectura cruzada (ver §0.A)
 - [x] Spot-check Fig. 19 — Figure 4.19.1 (乾 regente) renderizada y leída (ver §0.A)
 - [x] Resultado documentado en este plan antes de Fase A
 - [x] Sign-off producto D0.2 (greenfield, forward-only)
-- [x] **Gate 0 EJECUTADO 22 jun 2026** — resultado abajo
+- [x] **Gate 0 EJECUTADO 22 jun 2026** — resultado §0.A
+- [x] **D0.1 CONFIRMADO + D0.2 RESUELTO 22 jun 2026 (2ª sesión)** — reconstrucción algorítmica + comparativa visual vs PDF + 3 autoridades (§0.B). **Gate 0 cerrado; Fases A→E canceladas.**
 
 **Duración real:** lectura PDF + render Fig. 19 (1 sesión).
 
 ---
 
-### 0.A — RESULTADO GATE 0 (ejecutado 22 jun 2026)
+### 0.A — RESULTADO GATE 0 (primera sesión, 22 jun 2026 — TENTATIVO)
+
+> ⚠️ **SUPERSEDIDO POR §0.B.** Esta primera pasada quedó con D0.1 como "hipótesis no confirmada" y D0.2 como "sistema paralelo divergente" porque la extracción se detuvo al ver que Fig. 19 son imágenes. La 2ª sesión (§0.B) **resolvió ambas** con reconstrucción algorítmica + comparativa visual contra la imagen del PDF + tres autoridades independientes. **Conclusión corregida:** Fig. 19 **NO diverge** del método por conteo; lo confirma.
 
 **Fuente:** PDF Adler local (`tools/source-pdfs/Introduction To The Study…`). Extracción `pdftotext`/`pdftoppm` cacheada en `tools/output/fidelity-gold/` (gitignored): `zhuxi-adler-folio154.txt`, `zhuxi-adler-folio158.txt`, `zhuxi-adler-fig19-p159-204.txt`, `fig19-chart-162.png`.
 
@@ -213,11 +217,92 @@ Renderizada y leída visualmente. Estructura confirmada: rejilla donde la celda 
 1. Requiere resolver primero la fuente machine-readable de Fig. 19 (opción A/B/C) — decisión de Alexis.
 2. Cambia el comportamiento de n=3/4/5 frente al método estándar — decisión de producto, no solo técnica.
 
-**Estado tras Gate 0:** Fases A→E **siguen bloqueadas** por falta de gold Fig. 19 extraíble. Gate 0 cerrado documentalmente; **sin cambios de código de motor** (riesgo cero).
+**Estado tras Gate 0 (1ª sesión):** Fases A→E bloqueadas por falta de gold Fig. 19 extraíble. **Superado por §0.B.**
 
 ---
 
-### Fase A — Extracción gold (solo datos, sin motor)
+### 0.B — CIERRE DEFINITIVO GATE 0 (22 jun 2026, 2ª sesión)
+
+**Pregunta del producto:** ¿El sistema de 32 charts de Zhu Xi (Fig. 19) es un método de interpretación *adicional/distinto* que justificaría una tercera opción de lectura de líneas, o es lo mismo que ya tenemos?
+
+**RESPUESTA: Es lo mismo, resumido de otra forma.** Los 32 charts son una **re-derivación geométrica** de las reglas por conteo que el motor ya implementa. Probado por tres vías independientes que convergen.
+
+#### B.1 — El sistema de 32 charts ≡ reglas por conteo (D0.2 resuelto)
+
+Cita literal de **Zhu Xi** (vía 御纂周易折中 考變占第四, edición imperial Kangxi校對 completada, y 易經大全會解 en ctext.org):
+
+> 朱子曰：變在三十二卦以前，占本卦辭；變在三十二卦以後，占之卦辭。**蓋一爻二爻，變在三十二卦之前；四爻五爻六爻，變在三十二卦之後**，此甚易見。**獨三爻變者凡二十卦，十卦在三十二卦之前，十卦在三十二卦之後。**然占法三爻變者雖占兩卦彖辭，而變在前十卦者，主貞；變在後十卦者，主悔。
+
+Es decir, el "antes/después del 32" del sistema de charts **mapea exactamente** sobre el número de líneas cambiantes:
+
+| Líneas cambiantes | Sistema 32 charts | Motor actual `zhuxi.ts` | Coincide |
+|---|---|---|---|
+| 1–2 | "antes del 32" → 本卦 (original) | `ZX_ONE`, `ZX_TWO_UPPER` (original) | ✅ |
+| 4–5–6 | "después del 32" → 之卦 (transformado) | `ZX_FOUR_LOWER`, `ZX_FIVE_ONLY`, `ZX_SIX_TRANSFORMED` | ✅ |
+| 3 (20 casos) | split 10/10, 主貞/主悔 | `ZX_THREE_JUDGMENTS` con `includes(1)` | ✅ (B.2) |
+
+Verificación de conteo del boundary (autoconsistencia):
+- antes(32) = 0-chg(1) + 1-chg(6) + 2-chg(15) + 3-chg primeros 10 = **32** ✓
+- después(32) = 3-chg últimos 10 + 4-chg(15) + 5-chg(6) + 6-chg(1) = **32** ✓
+
+**Conclusión D0.2:** Fig. 19 NO sobrescribe ni diverge de las reglas 4/5. Para n=1,2,4,5,6 produce el **mismo** resultado que el motor por definición del propio Zhu Xi. El único matiz está en n=3 (B.2).
+
+#### B.2 — `includes(1)` es exacto para los 20 casos de 3 líneas (D0.1 confirmado)
+
+El único punto que la 1ª sesión dejó como hipótesis. Resuelto por **tres fuentes independientes que convergen**:
+
+**(a) Texto clásico — anclaje de boundary.** La fuente fija el orden: `乾自姤至恒` (los primeros 32 terminan en 恒) y `乾自益至坤` (los últimos 32 empiezan en 益).
+
+**(b) Reconstrucción algorítmica.** Script `tools/reconstruct-zhuxi-3line-chart.mjs` (reproducible): enumera los C(6,3)=20 patrones de 3 líneas para el regente 乾, calcula el 之卦 resultante y clasifica por `includes(1)`. Resultado **10/10 exacto**, con boundary 恒(#32)/益(#33) **idéntico al texto clásico**:
+
+| Grupo | Casos: líneas cambiantes → 之卦 (#KingWen) | Regla |
+|---|---|---|
+| **Primeros 10** (主貞/chen, incluyen línea 1) | {1,2,3}→否(12), {1,2,4}→漸(53), {1,2,5}→旅(56), {1,2,6}→咸(31), {1,3,4}→渙(59), {1,3,5}→未濟(64), {1,3,6}→困(47), {1,4,5}→蠱(18), {1,4,6}→井(48), {1,5,6}→**恆(32)** | 本卦 (original) gobierna |
+| **Últimos 10** (主悔/hui, sin línea 1) | {2,3,4}→**益(42)**, {2,3,5}→噬嗑(21), {2,3,6}→隨(17), {2,4,5}→賁(22), {2,4,6}→既濟(63), {2,5,6}→豐(55), {3,4,5}→損(41), {3,4,6}→節(60), {3,5,6}→歸妹(54), {4,5,6}→泰(11) | 之卦 (transformado) gobierna |
+
+**(c) Comparativa visual contra la imagen pura del PDF.** Renderizado de **Figure 4.19.1** (Adler PDF p.162, chart 乾/坤) a PNG y enderezado. Mapeo celda a celda:
+- Los 10 "primeros" (否, 漸, 旅, 咸, 渙, 未濟, 困, 蠱, 井, **恆**) aparecen **todos en el sub-grid de 乾** (regente, con 恆 al fondo = posición 32). ✓
+- Los 10 "últimos" (**益**, 噬嗑, 隨, 賁, 既濟, 豐, 損, 節, 歸妹, 泰) aparecen **todos en el sub-grid de 坤** (= "después del 32" de 乾 por reverso). ✓
+
+**(d) Autoridades modernas (validación secundaria).** Dos eruditos, analizando los charts de Adler de forma independiente, llegan a la misma regla:
+- **Ed Hacker** (vía Yijing Dao / biroco.com): *"when three lines change, if the bottom line of the hexagram is among those changing then the first hexagram's judgment should take precedence… it just happens to give the same result as Zhu Xi's 32 charts."*
+- **Russell Cottrell** (russellcottrell.com, reproduciendo el chart 乾/坤 con los primeros 10 sombreados): *"If the first line is a changing line we make chen the ruler; otherwise we make hui the ruler."*
+
+**Conclusión D0.1:** `packages/iching-engine/src/rules/zhuxi.ts` L85 (`sorted.includes(1) ? "primary" : "transformed"`) **reproduce exactamente** el sistema de 32 charts para n=3. No es heurística aproximada — es matemáticamente equivalente, confirmado contra la imagen del PDF, el texto clásico chino, y dos eruditos.
+
+#### B.3 — Evidencias guardadas
+
+| Evidencia | Ubicación | Tipo |
+|---|---|---|
+| Script reconstrucción (reproducible) | `tools/reconstruct-zhuxi-3line-chart.mjs` | Commiteado |
+| Fuentes textuales chinas (御纂折中 + 田閒易學 + 朱子) | `tools/output/fidelity-gold/zhuxi-32charts-textual-sources.txt` | Cache (gitignored) |
+| Salida de reconstrucción (20 casos) | `tools/output/zhuxi-32charts/reconstruction-qian-3line.txt` | Cache (gitignored) |
+| Imagen pura PDF chart 乾/坤 (enderezada) | `tools/output/fidelity-gold/zhuxi-fig19-qian-kun-chart-upright.png` | Cache (gitignored) |
+| Render original PDF p.162 | `tools/output/zhuxi-32charts/qian-kun-chart-hires-162.png` | Cache (gitignored) |
+
+**Regenerar imagen del PDF:**
+```bash
+pdftoppm -png -r 240 -f 162 -l 162 "tools/source-pdfs/Introduction To The Study…Adler….pdf" tools/output/zhuxi-32charts/qian-kun-chart-hires
+```
+**Regenerar reconstrucción:** `node tools/reconstruct-zhuxi-3line-chart.mjs`
+
+Fuentes web consultadas:
+- 御纂周易折中 考變占第四 — https://www.eee-learning.com/book/4716
+- 田閒易學 啟蒙三十二卦變圖例 — http://www.taijizhidian.net/book/read/10202.html
+- 易經大全會解 (ctext.org) — https://ctext.org/wiki.pl?chapter=699485
+- Russell Cottrell, "Chu Hsi's Rules" — https://russellcottrell.com/VirtualYarrowStalks/ChuHsiRules.htm
+- Yijing Dao (biroco.com), "How to consult the Yijing" — https://biroco.com/yijing/basics.htm
+
+#### B.4 — Veredicto y decisión
+
+1. **Gate 0 cerrado al 100%.** D0.1 confirmado, D0.2 resuelto (sin divergencia).
+2. **Fases A→E CANCELADAS.** No hay valor en extraer el gold de Fig. 19 ni en construir el módulo de charts: produciría salida idéntica al motor actual. La opción C (OCR de visión) y la transcripción manual quedan descartadas.
+3. **Motor actual verificado correcto.** Las reglas por conteo de `zhuxi.ts` (incl. `includes(1)` en n=3) **son** el sistema de 32 charts de Zhu Xi. Sin cambios de código (riesgo cero).
+4. **Producto:** NO se añade una "tercera opción Zhu Xi 32-charts". Quedan las dos lecturas actuales (Huang default / Zhu Xi clásico), siendo la de Zhu Xi ya fiel a Yixue Qimeng cap. IV.
+
+---
+
+### Fase A — Extracción gold (solo datos, sin motor) — ❌ CANCELADA (ver §0.B.4)
 
 **Entregables:**
 
