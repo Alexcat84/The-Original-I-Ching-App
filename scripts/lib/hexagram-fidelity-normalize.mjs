@@ -69,6 +69,9 @@ export function normalizeHexText(text, translator = "wilhelm") {
   } else {
     out = out.replace(/[™©°]/g, "");
     out = out.replace(/\s+'\s+/g, " ");
+    if (translator === "legge") {
+      out = out.normalize("NFD").replace(/\p{M}/gu, "");
+    }
     out = out.replace(/[,.;:"']/g, " ");
     out = out.replace(/\s*\n+\s*/g, "\n");
     out = out.replace(/[ \t]+/g, " ");

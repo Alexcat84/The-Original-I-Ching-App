@@ -166,9 +166,9 @@ const bundles = [
       translator: "wilhelm",
       edition:
         "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes (1950, public domain since 2020).",
-      sourceUrl: "tools/source-pdfs/wilhelm-baynes-1950-pantheon.pdf",
+      sourceUrl: "http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html",
       licenseNote:
-        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts verified 1:1 against the printed Wilhelm/Baynes edition (Pantheon Books, Bollingen Series XIX, 1950) on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). Gold extracted locally from the physical book PDF; 513/513 oracle fields match. Spot-check overrides for OCR gaps are photo-verified from the same edition (see hexagram-fidelity-wilhelm-pdf-verified.mjs).`,
+        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts verified 1:1 against the printed Wilhelm/Baynes edition (Pantheon Books, Bollingen Series XIX, 1950) on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). Tier-0 gold extracted locally from tools/source-pdfs/wilhelm-baynes-1950-pantheon.pdf; 513/513 oracle fields match. Spot-check overrides for OCR gaps are photo-verified from the same edition (see hexagram-fidelity-wilhelm-pdf-verified.mjs).`,
       generatedAt,
       build: buildWilhelmRecord,
     },
@@ -179,9 +179,9 @@ const bundles = [
       translator: "legge",
       edition:
         "Sacred Books of the East, Volume 16: The Yi King, James Legge (1882, revised 1899).",
-      sourceUrl: "tools/source-pdfs/The Yi King or, Book of Changes -- James Legge.epub",
+      sourceUrl: "https://archive.org/details/sacredbooksofch16legg",
       licenseNote:
-        `James Legge (1882) translation in the public domain. Oracle fields verified 1:1 against the local James Legge EPUB (Sacred Books of the East XVI) on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 514/514 oracle fields match.`,
+        `James Legge (1882) translation in the public domain. Production bundle verified 1:1 against the local James Legge EPUB (Sacred Books of the East XVI re-pack) on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). Tier-0 SBE XVI Oxford scan OCR gold in progress (tools/source-pdfs/ manifest legge); EPUB gate 514/514, PDF OCR gate 365/514 as of ${FIDELITY_AUDIT_DATE}.`,
       generatedAt,
       build: buildLeggeRecord,
     },

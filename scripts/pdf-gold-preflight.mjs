@@ -11,6 +11,7 @@
 import { spawnSync } from "node:child_process";
 import { stat } from "node:fs/promises";
 import { loadPdfManifest, resolvePdfPath, SOURCE_PDF_DIR } from "./lib/pdf-gold-paths.mjs";
+import { hasLeggeOcrTools } from "./lib/legge-sbe-pdf-ocr.mjs";
 
 const args = process.argv.slice(2);
 const pageFlag = args.indexOf("--page");
@@ -68,7 +69,13 @@ async function main() {
   console.log(
     pdftotextOk
       ? "[ok] pdftotext found (poppler)"
-      : "[warn] pdftotext not on PATH — install poppler for automated page extraction",
+      : "[warn] pdftotext not on PATH — install poppler for Wilhelm PDF extraction",
+  );
+  const leggeOcrOk = hasLeggeOcrTools();
+  console.log(
+    leggeOcrOk
+      ? "[ok] pdftoppm + tesseract found (Legge SBE OCR)"
+      : "[warn] pdftoppm/tesseract not on PATH — Legge SBE scan requires OCR tools",
   );
 
   if (pageProbe?.key && pageProbe.page) {
@@ -98,9 +105,23 @@ async function main() {
         console.error(`  p.${page}: ${err instanceof Error ? err.message : err}`);
       }
     }
+    if (leggeOcrOk) {
+      console.log("\nLegge SBE scan (OCR probe — body start page 86):");
+      try {
+        const { ocrLeggePdfPage } = await import("./lib/legge-sbe-pdf-ocr.mjs");
+        const { abs, entry } = await resolvePdfPath("legge");
+        const start = Number(entry.ocrBodyStartPage) || 86;
+        const text = ocrLeggePdfPage(abs, start, { dpi: 200 });
+        const snippet = text.replace(/\s+/g, " ").slice(0, 140);
+        console.log(`  p.${start}: ${snippet || "(empty)"}${text.length > 140 ? "…" : ""}`);
+      } catch (err) {
+        ok = false;
+        console.error(`  legge OCR: ${err instanceof Error ? err.message : err}`);
+      }
+    }
   }
 
-  console.log("\nNext: implement extract-wilhelm-pdf.mjs → verify --gold=pdf");
+  console.log("\nNext: npm run extract:gold:legge-sbe-pdf → verify --gold=pdf-legge");
   process.exit(ok ? 0 : 1);
 }
 

@@ -598,23 +598,36 @@ npm run verify:hexagram-fidelity    # Wilhelm 513/513 vs libro (alias pdf-wilhel
 | **Resultado** | **514/514 (100%)** — `reports/hexagram-fidelity-2026-06-22T01-59-15-175Z.json` |
 | **Gate combinado** | `npm run verify:hexagram-fidelity` → Wilhelm PDF + Legge EPUB (**1027/1027**) |
 
-### 14.4 — Próximas fases (mismo modelo)
+### 14.4 — Legge · migración gold SBE Oxford scan (2026-06-22, en curso)
+
+| Campo | Detalle |
+|-------|---------|
+| **Edición gold (manifest)** | SBE XVI — `16_ The Sacred Books of China… Oxford University Press.pdf` (Google Books scan, **solo OCR**) |
+| **Cross-check** | EPUB sacred-texts re-pack → `fileCrossCheckEpub` en manifest |
+| **Pipeline** | `legge-sbe-pdf-ocr.mjs` → cache `tools/output/fidelity-gold/legge-sbe-{pdf-full,symbolism}.txt` → `hexagram-fidelity-legge-sbe-pdf.mjs` |
+| **Calibración OCR** | Texto §I pp.86–240 · Great Symbolism pp.296–420 |
+| **Extract** | `npm run extract:gold:legge-sbe-pdf` → `legge-sbe-pdf-gold.json` |
+| **Verify** | `npm run verify:hexagram-fidelity:pdf-legge` (iterativo; parser OCR aún ≠ 100%) |
+| **Gate canónico** | `verify:hexagram-fidelity` sigue **Wilhelm PDF + Legge EPUB** hasta cierre parser SBE |
+
+### 14.5 — Próximas fases (mismo modelo)
 
 | Traductor | Gold local | Formato | Estado |
 |-----------|------------|---------|--------|
-| **Legge** | `The Yi King or, Book of Changes -- James Legge.epub` | EPUB (nativo, preferido sobre PDF) | **514/514 (100%)** · parser + sync 2026-06-22 |
+| **Legge** | SBE XVI Oxford PDF (manifest) + EPUB cross-check | pdf-ocr + epub | OCR pipeline ✅ · parser tuning · gate PDF pendiente |
 | **Zhou Yi** | `zhouyi-zhushu-song-er07.pdf` | PDF 注疏 | PDF en manifest · parser pendiente |
 
-Legge y Zhou Yi **no se consideran cerrados** hasta repetir el mismo ciclo book-primary (extract → compare → fix bundle → 100%).
-
-### 14.5 — Comandos npm (post-2026-06-22)
+### 14.6 — Comandos npm (post-2026-06-22)
 
 | Comando | Rol |
 |---------|-----|
-| `verify:hexagram-fidelity` | **Canónico** — Wilhelm vs PDF Pantheon |
-| `verify:hexagram-fidelity:pdf-wilhelm` | Explícito (equivalente) |
+| `verify:hexagram-fidelity` | **Canónico** — Wilhelm PDF + Legge EPUB |
+| `verify:hexagram-fidelity:pdf-wilhelm` | Wilhelm vs Pantheon PDF |
+| `verify:hexagram-fidelity:pdf-legge` | Legge vs SBE XVI scan (OCR) |
+| `verify:hexagram-fidelity:epub-legge` | Legge vs EPUB cross-check |
+| `extract:gold:legge-sbe-pdf` | OCR + JSON gold Legge SBE |
 | `verify:hexagram-fidelity:mirrors-deprecated` | Obsoleto — no usar en CI ni cierre de release |
 
 ---
 
-*Actualizado 2026-06-22 · Wilhelm book-primary 100% · Legge EPUB staged · mirrors deprecated.*
+*Actualizado 2026-06-22 · Wilhelm book-primary 100% · Legge SBE OCR pipeline · gate canónico EPUB cross-check · mirrors deprecated.*

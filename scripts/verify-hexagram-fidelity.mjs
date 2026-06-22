@@ -8,7 +8,8 @@
  * Usage:
  *   npm run verify:hexagram-fidelity              # Wilhelm vs Pantheon 1950 PDF (canonical)
  *   npm run verify:hexagram-fidelity:pdf-wilhelm    # same, explicit
- *   npm run verify:hexagram-fidelity:mirrors-deprecated  # OBSOLETE — Parma/sacred/ctext
+ *   npm run verify:hexagram-fidelity:pdf-legge      # Legge vs SBE XVI Oxford scan (OCR)
+ *   npm run verify:hexagram-fidelity:epub-legge     # Legge vs EPUB cross-check
  *
  * Cache: tools/output/fidelity-gold/ (gitignored)
  * Reports: reports/hexagram-fidelity-{timestamp}.{json,md}
@@ -27,6 +28,7 @@ import { applyWilhelmPdfPrintVerified } from "./lib/hexagram-fidelity-wilhelm-pd
 import { parseLeggeTextPage, parseLeggeSymbolismAppendix } from "./lib/hexagram-fidelity-legge-sacred.mjs";
 import { parseCtextZhouYi, parseCtextZhouYiFromHtml, mergeCtextGold } from "./lib/hexagram-fidelity-ctext.mjs";
 import { parseAllLeggeEpubOrThrow } from "./lib/hexagram-fidelity-legge-epub.mjs";
+import { parseAllLeggeSbePdfOrThrow } from "./lib/hexagram-fidelity-legge-sbe-pdf.mjs";
 import {
   makeDiff,
   summarizeDiffs,
@@ -62,6 +64,14 @@ function wilhelmUsesBookGold(mode) {
 }
 
 function leggeUsesBookGold(mode) {
+  return mode === "books" || mode === "pdf-legge" || mode === "epub-legge";
+}
+
+function leggeUsesPdfGold(mode) {
+  return mode === "pdf-legge";
+}
+
+function leggeUsesEpubGold(mode) {
   return mode === "books" || mode === "epub-legge";
 }
 
@@ -142,8 +152,23 @@ async function compareLegge(bundle) {
   /** @type {Record<number, { judgment: string; image: string; lines: Record<number, string>; supernumerary?: string; yongJiu?: string; yongLiu?: string }>} */
   let goldByHex;
 
-  if (leggeUsesBookGold(goldMode)) {
-    log("Legge: loading EPUB gold (James Legge, SBE XVI)…");
+  if (leggeUsesPdfGold(goldMode)) {
+    log("Legge: loading SBE XVI PDF gold (James Legge, Oxford scan + OCR)…");
+    const parsed = await parseAllLeggeSbePdfOrThrow({
+      onProgress: (msg) => log(`  ${msg}`),
+    });
+    goldByHex = {};
+    for (let n = 1; n <= 64; n++) {
+      const row = parsed[n];
+      goldByHex[n] = {
+        judgment: row.judgment,
+        image: row.image,
+        lines: row.lines,
+        supernumerary: n === 1 ? row.yongJiu : n === 2 ? row.yongLiu : "",
+      };
+    }
+  } else if (leggeUsesEpubGold(goldMode)) {
+    log("Legge: loading EPUB gold cross-check (James Legge, sacred-texts re-pack)…");
     const parsed = await parseAllLeggeEpubOrThrow();
     goldByHex = {};
     for (let n = 1; n <= 64; n++) {
@@ -183,7 +208,11 @@ async function compareLegge(bundle) {
         field: "*",
         linePos: null,
         status: "missing_gold",
-        hint: leggeUsesBookGold(goldMode) ? "hex_not_in_epub" : "hex_not_in_sacred",
+        hint: leggeUsesPdfGold(goldMode)
+          ? "hex_not_in_sbe_pdf"
+          : leggeUsesEpubGold(goldMode)
+            ? "hex_not_in_epub"
+            : "hex_not_in_sacred",
         expected: "",
         actual: "",
       });
@@ -299,9 +328,11 @@ async function main() {
         wilhelmUsesBookGold(goldMode)
           ? "Wilhelm: Pantheon 1950 PDF — judgment/image/lines only."
           : null,
-        leggeUsesBookGold(goldMode)
-          ? "Legge: James Legge EPUB (SBE XVI) — Thwan, Great Symbolism, lines, yongJiu/yongLiu."
-          : null,
+        leggeUsesPdfGold(goldMode)
+          ? "Legge: James Legge SBE XVI Oxford scan (OCR) — Thwan, Great Symbolism, lines, yongJiu/yongLiu."
+          : leggeUsesEpubGold(goldMode)
+            ? "Legge: James Legge EPUB cross-check (sacred-texts re-pack)."
+            : null,
         goldMode === "books" ? "Zhou Yi: pending local PDF 注疏 parser." : null,
       ].filter(Boolean);
 

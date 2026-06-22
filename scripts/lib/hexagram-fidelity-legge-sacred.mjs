@@ -227,7 +227,7 @@ export function looksLikeLeggeJudgment(text) {
   if (isLineCommentary(text)) return false;
   return (
     /\((?:represents|indicates|suggests)\b/i.test(text) ||
-    /\b(?:represents|indicates|intimates)\b/i.test(text) ||
+    /\b(?:represents|indicates how|indicates|intimates)\b/i.test(text) ||
     /\bshows\b/i.test(text) ||
     /\bthere will be good fortune\b/i.test(text)
   );

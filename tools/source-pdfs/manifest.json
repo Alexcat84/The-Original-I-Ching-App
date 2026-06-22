@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "updatedAt": "2026-06-22",
   "branch": "feat/pdf-gold-verification",
-  "note": "PDF files live in this directory locally; they are gitignored. Only this manifest is committed.",
+  "note": "PDF/EPUB files live in this directory locally; they are gitignored. Only this manifest is committed.",
   "sources": {
     "wilhelm": {
       "file": "wilhelm-baynes-1950-pantheon.pdf",
@@ -25,16 +25,22 @@
       }
     },
     "legge": {
-      "file": "The Yi King or, Book of Changes -- James Legge.epub",
+      "file": "16_ The Sacred Books of China, vol_ 2 of 6_ Part II of The -- Friedrich Max Müller -- The sacred books of the East -- Oxford University Press.pdf",
+      "fileCrossCheckEpub": "The Yi King or, Book of Changes -- James Legge.epub",
       "fileLegacyPdf": "legge-yi-king-sbe-xvi.pdf",
-      "format": "epub",
+      "format": "pdf-ocr",
       "title": "The Yî King, or Book of Changes",
       "translator": "James Legge",
       "series": "Sacred Books of the East, Volume XVI",
+      "publisher": "Oxford University Press (Google Books scan)",
       "year": 1882,
       "language": "en",
       "role": "Tier-0 gold for Thwan, Great Symbolism, lines, yongJiu/yongLiu",
-      "note": "EPUB preferred over PDF (native text, less OCR). Placed locally 2026-06-22."
+      "ocrBodyStartPage": 86,
+      "ocrTextEndPage": 240,
+      "ocrSymbolismStartPage": 296,
+      "ocrSymbolismEndPage": 420,
+      "note": "Scan-only PDF; gold via Tesseract OCR. EPUB (sacred-texts re-pack) retained for cross-check only."
     },
     "zhouyi": {
       "file": "zhouyi-zhushu-song-er07.pdf",

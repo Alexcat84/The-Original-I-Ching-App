@@ -14,10 +14,15 @@ const LEGGE_EPUB_STAMP = join(LEGGE_EPUB_CACHE_DIR, ".epub-stamp.json");
 export async function resolveLeggeEpubPath() {
   const manifest = await loadPdfManifest();
   const entry = manifest.sources.legge;
-  if (!entry?.file) {
-    throw new Error("Legge source missing from tools/source-pdfs/manifest.json");
+  const epubFile =
+    (typeof entry?.fileCrossCheckEpub === "string" && entry.fileCrossCheckEpub) ||
+    (entry?.format === "epub" ? entry.file : null);
+  if (!epubFile) {
+    throw new Error(
+      "Legge EPUB cross-check file missing from tools/source-pdfs/manifest.json (fileCrossCheckEpub)",
+    );
   }
-  const abs = join(SOURCE_PDF_DIR, entry.file);
+  const abs = join(SOURCE_PDF_DIR, epubFile);
   try {
     await stat(abs);
   } catch {
