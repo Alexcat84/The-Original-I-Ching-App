@@ -200,7 +200,7 @@ const bundles = [
       edition: "周易 (Zhou Yi), Classical Chinese canonical text.",
       sourceUrl: "https://ctext.org/book-of-changes",
       licenseNote:
-        `Zhou Yi (周易) is in the public domain. Oracle fields cross-verified 1:1 against ctext.org on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 514/514 oracle fields match.`,
+        `Zhou Yi (周易) is in the public domain. Oracle fields cross-verified 1:1 against ctext.org on ${FIDELITY_AUDIT_DATE} (report hexagram-fidelity-2026-06-22T14-55-29-522Z; gate 514/514). Stored punctuation uses canonical full-width Chinese commas (，).`,
       generatedAt,
       build: buildZhouyiRecord,
     },
