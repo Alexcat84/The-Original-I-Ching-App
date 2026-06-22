@@ -117,15 +117,15 @@ npm run sync:legge-oracle-from-pdf-gold        # re-inyección L (solo con PDF l
 |-----------|------------|
 | **Libro** | James Legge, *The Yî King*, Sacred Books of the East Vol. XVI, Oxford 1882 |
 | **Archivo local (gold)** | `tools/source-pdfs/16_ The Sacred Books of China...Oxford University Press.pdf` |
-| **Cross-check (repair-only)** | `The Yi King or, Book of Changes -- James Legge.epub` — **no** sustituye escaneo |
+| **EPUB** | `The Yi King or, Book of Changes -- James Legge.epub` — **solo diagnóstico** (`audit:legge-pdf-vs-epub`) |
 | **Manifest** | `manifest.json` → `sources.legge` (OCR pp. 86–240 texto, 296–420 Great Symbolism) |
 | **Parser OCR** | `scripts/lib/hexagram-fidelity-legge-sbe-pdf.mjs`, `hexagram-fidelity-legge-sbe-ocr.mjs` |
-| **Parches book-primary** | `hexagram-fidelity-legge-sbe-book-primary.mjs` (h5 Thwan, h21 L6, labels «line» vs «six») |
-| **Sync / inyección** | `tools/sync-legge-oracle-from-pdf-gold.mjs` |
-| **Auditoría injector** | `tools/audit-legge-injector-vs-datasets.mjs` — book_primary_label / yongJiu OK |
-| **Spot-check manual** | [`LEGGE_SBE_XVI_OXFORD_SCAN_SPOT_CHECK_2026-06-22.md`](LEGGE_SBE_XVI_OXFORD_SCAN_SPOT_CHECK_2026-06-22.md) — capturas h01 yongJiu, h10 Thwan, patrón line/six |
-| **Gate PASS** | `reports/hexagram-fidelity-2026-06-22T14-55-40-301Z.json` — **514/514 match (100%)** |
-| **Commits** | `4409062`, `46aa80a` |
+| **Parches book-primary** | `hexagram-fidelity-legge-sbe-book-primary.mjs` — **15 campos**, 8 hex (foto-verificados) |
+| **Sync / inyección** | `tools/sync-legge-oracle-from-pdf-gold.mjs` — `epubGuide: false`, sin fallback bundle EPUB |
+| **Auditoría proceso** | [`LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md`](LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md) |
+| **Spot-check manual** | [`LEGGE_SBE_XVI_OXFORD_SCAN_SPOT_CHECK_2026-06-22.md`](LEGGE_SBE_XVI_OXFORD_SCAN_SPOT_CHECK_2026-06-22.md) |
+| **Gate PASS** | `reports/hexagram-fidelity-2026-06-22T23-23-50-099Z.json` — **514/514 match (100%)** |
+| **Rama / commit** | `fix/legge-pdf-fidelity-100` · `e8ba543` |
 
 **Evidencia textual crítica (hex 1 yongJiu, escaneo Oxford):**
 

@@ -69,6 +69,16 @@ npm run scan:zhouyi-corruption   # gate Zhou Yi = 0
 
 **Gate adicional (no estaba en los gates documentados de Fase 1-4; se incorpora aquí):** `npx vitest run` en `packages/iching-data` (`src/index.test.ts`) — verifica invariantes absolutos (todo campo oráculo no vacío, `yongJiu`/`yongLiu` presentes en hex 1/2) independientemente de cualquier fuente gold. Este test existía desde antes de la Fase 1 pero **no se había ejecutado** como parte de los gates de Fase 1-4; correrlo hubiera detectado la regresión de inmediato sin depender del harness de fidelidad.
 
+### Cierre Legge book-primary PDF · 22 de junio de 2026
+
+| Campo | Detalle |
+|-------|---------|
+| **Gold** | Escaneo Oxford SBE XVI (manifest) + 15 parches foto-verificados |
+| **EPUB** | Solo diagnóstico — no entra en sync/verify producción |
+| **Gate** | `npm run verify:hexagram-fidelity:pdf-legge` → **514/514** |
+| **Auditoría** | [`LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md`](LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md) |
+| **Rama** | `fix/legge-pdf-fidelity-100` · `e8ba543` |
+
 ### Verificación en libro físico · Wilhelm/Baynes 1950
 
 **Obra:** Wilhelm, Richard; Baynes, Cary F. *The I Ching or Book of Changes*. Princeton University Press, 1950 (Bollingen Series XIX).
@@ -106,6 +116,6 @@ Corrección puntual del trigrama inferior en metadata Wilhelm (hex 23: Kūn, no 
 
 ## Ongoing reliability
 
-Wilhelm/Legge: ingesters book-primary (`sync:*-from-pdf-gold`, etc.). Zhou Yi: `tools/ingest-zhouyi-ctext.mjs` → gold **ctext.org**. Antes de promover cambios de dataset: `verify:hexagram-fidelity` (W+L) y, si tocó Zhou Yi, `scan:zhouyi-corruption` + `verify:hexagram-fidelity:zhouyi-ctext`.
+Wilhelm/Legge: ingesters book-primary (`sync:*-from-pdf-gold`). Legge gate: `verify:hexagram-fidelity:pdf-legge` (514/514). Zhou Yi: `tools/ingest-zhouyi-ctext.mjs` → gold **ctext.org**. Antes de promover cambios de dataset: gates PDF W+L y, si tocó Zhou Yi, `scan:zhouyi-corruption` + `verify:hexagram-fidelity:zhouyi-ctext`.
 
 *Last 1:1 audit date: 22 June 2026 (Zhou Yi ctext + W/L PDF gates)*

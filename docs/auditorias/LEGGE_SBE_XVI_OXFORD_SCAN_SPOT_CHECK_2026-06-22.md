@@ -233,15 +233,20 @@ Notas: _______________________________________________
 ## F. Comandos de reproducción
 
 ```bash
-# Gold PDF (OCR + guía EPUB repair-only)
+# Gold PDF (OCR + parches foto — producción)
 npm run extract:gold:legge-sbe-pdf
 
-# OCR puro sin EPUB (comparar)
-npm run extract:gold:legge-sbe-pdf -- --no-epub-guide
+# Solo diagnóstico con EPUB repair (NO producción)
+node tools/extract-legge-sbe-pdf.mjs --with-epub-guide
 
-# Gate PDF vs bundle
+# Gate PDF vs bundle (producción)
 npm run verify:hexagram-fidelity:pdf-legge
+
+# Transparencia PDF vs EPUB
+npm run audit:legge-pdf-vs-epub
 ```
+
+Ver proceso completo: [LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md](./LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md).
 
 ---
 
@@ -293,13 +298,13 @@ Capturas recibidas + OCR cruzado. Política **book-primary**: el escaneo Oxford 
 2. **h1 yongJiu:** `number line` → `number nine` + 2ª oración  
 3. **h39/h53:** `Khien` → `Kien` en juicio/imagen (si el bundle aún difiere)
 
-Gate actual post-parches: `npm run verify:hexagram-fidelity:pdf-legge` → **514/514 (100%)** ✅ (2026-06-22 sync).
+Gate actual post-parches: `npm run verify:hexagram-fidelity:pdf-legge` → **514/514 (100%)** ✅ (2026-06-22, rama `fix/legge-pdf-fidelity-100`, **sin EPUB repair**).
 
-### Re-ingesta bundle (2026-06-22)
+Documentación proceso completo: [LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md](./LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md).
+
+### Re-ingesta bundle (2026-06-22, cierre book-primary)
 
 - Script: `npm run sync:legge-oracle-from-pdf-gold` → `iching_legge_translation.mjs` → `build:data`
-- **514/514** PDF gold vs bundle
-- **500/514** EPUB vs bundle (14 diffs intencionales book-primary)
-- **1 campo** conservado del bundle previo: **h5 imagen** (OCR escaneo truncado; EPUB repair no ancló)
-- EPUB usado **solo repair-only**: truncados (h41 L5, etc.), corruptos (h51 imagen con bleed comentario)
-- Capturas h51 p.173 confirman L3 = `third line, divided` ✅
+- **514/514** PDF gold vs bundle (gate producción)
+- EPUB: solo `npm run audit:legge-pdf-vs-epub` (~68% strict OCR+fotos vs EPUB; variantes intencionales book-primary)
+- **Sin** fallback al bundle EPUB-reparado cuando OCR falla
