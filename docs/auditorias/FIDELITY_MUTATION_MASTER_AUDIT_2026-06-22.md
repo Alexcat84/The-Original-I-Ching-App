@@ -271,7 +271,7 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 
 **Ejecutar YA (no bloquea Gate 0):**
 
-- [ ] **T2:** `sourceUrl` Wilhelm → Pantheon; `licenseNote` Legge
+- [x] **T2:** `sourceUrl` Wilhelm → Pantheon/Bollingen (Princeton bibliographic); `licenseNote` Legge 514/514 PDF gold (`feat/t2-wilhelm-metadata`, 22 jun 2026)
 - [ ] **T1:** coma Zhou Yi + re-gate 514/514 + biblioteca
 
 **Gate 0 (bloqueante motor, sin código):**
