@@ -27,6 +27,7 @@ export default async function GuiaRapidaPage() {
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> ·{" "}
         <Link href="/faqs">{nav.faqs}</Link> ·{" "}
+        <Link href="/audits">{nav.fidelityAudits}</Link> ·{" "}
         <Link href="/about">{nav.aboutShort}</Link> ·{" "}
         <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
         <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}

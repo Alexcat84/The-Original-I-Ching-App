@@ -24,7 +24,7 @@ export default async function FaqsPage() {
     <div className="oracle-shell doc-page">
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
-        <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
+        <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/audits">{nav.fidelityAudits}</Link> ·{" "}
         <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
         <Link href="/terms">{nav.termsShort}</Link>
       </nav>
@@ -35,7 +35,7 @@ export default async function FaqsPage() {
       </article>
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
-        <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
+        <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/audits">{nav.fidelityAudits}</Link> ·{" "}
         <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
         <Link href="/terms">{nav.termsShort}</Link>
       </nav>

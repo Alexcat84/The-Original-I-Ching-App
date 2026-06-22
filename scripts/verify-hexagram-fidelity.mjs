@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 /**
- * Verify @iching-oracle/iching-data bundles against Tier-0 gold sources:
- *  - Wilhelm → Uni Parma mirror (+ Baynes tier-2 for documented Parma gaps, hex 56)
- *  - Legge → sacred-texts.com (Wayback fallback when live 403)
- *  - Zhou Yi → ctext.org gettext API + HTML (大象傳)
+ * Verify @iching-oracle/iching-data bundles against Tier-0 gold from local books.
+ *
+ * Canonical gate (2026-06-22+): dataset vs text extracted from physical editions
+ * in tools/source-pdfs/ (see manifest.json). No web mirrors or injected supplements.
  *
  * Usage:
- *   node scripts/verify-hexagram-fidelity.mjs [--live] [--translator wilhelm|legge|zhouyi|all]
+ *   npm run verify:hexagram-fidelity              # Wilhelm vs Pantheon 1950 PDF (canonical)
+ *   npm run verify:hexagram-fidelity:pdf-wilhelm    # same, explicit
+ *   npm run verify:hexagram-fidelity:pdf-legge      # Legge vs SBE XVI Oxford scan (OCR)
+ *   npm run verify:hexagram-fidelity:epub-legge     # Legge vs EPUB cross-check
  *
  * Cache: tools/output/fidelity-gold/ (gitignored)
  * Reports: reports/hexagram-fidelity-{timestamp}.{json,md}
@@ -19,30 +22,83 @@ import {
   applyWilhelmBaynesSupplements,
   getWilhelmBaynesJudgmentSupplement,
 } from "./lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs";
+import { loadWilhelmPdfFullText } from "./lib/pdf-text-extract.mjs";
+import { parseAllWilhelmPdfOrThrow } from "./lib/hexagram-fidelity-wilhelm-pdf.mjs";
+import { applyWilhelmPdfPrintVerified } from "./lib/hexagram-fidelity-wilhelm-pdf-verified.mjs";
 import { parseLeggeTextPage, parseLeggeSymbolismAppendix } from "./lib/hexagram-fidelity-legge-sacred.mjs";
 import { parseCtextZhouYi, parseCtextZhouYiFromHtml, mergeCtextGold } from "./lib/hexagram-fidelity-ctext.mjs";
+import { parseAllLeggeEpubOrThrow } from "./lib/hexagram-fidelity-legge-epub.mjs";
+import { parseAllLeggeSbePdfOrThrow } from "./lib/hexagram-fidelity-legge-sbe-pdf.mjs";
 import {
   makeDiff,
   summarizeDiffs,
   bundleHexToFields,
   goldWilhelmFields,
+  goldLeggeFields,
 } from "./lib/hexagram-fidelity-diff.mjs";
 import { writeJsonReport, writeMarkdownReport, buildTimestamp } from "./lib/hexagram-fidelity-report.mjs";
 
 const args = new Set(process.argv.slice(2));
 const live = args.has("--live");
 const translatorArg = [...args].find((a) => a.startsWith("--translator="));
-const selected = translatorArg?.split("=")[1] ?? "all";
+const selectedRaw = translatorArg?.split("=")[1] ?? "all";
+const selectedSet = new Set(
+  selectedRaw === "all"
+    ? ["wilhelm", "legge", "zhouyi"]
+    : selectedRaw.split(",").map((s) => s.trim()).filter(Boolean),
+);
+
+function isSelected(name) {
+  return selectedSet.has(name);
+}
 
 function log(msg) {
   console.log(msg);
 }
 
+const goldArg = [...args].find((a) => a.startsWith("--gold="));
+const goldMode = goldArg?.split("=")[1] ?? "books";
+
+function wilhelmUsesBookGold(mode) {
+  return mode === "books" || mode === "pdf-wilhelm";
+}
+
+function leggeUsesBookGold(mode) {
+  return mode === "books" || mode === "pdf-legge" || mode === "epub-legge";
+}
+
+function leggeUsesPdfGold(mode) {
+  return mode === "pdf-legge";
+}
+
+function leggeUsesEpubGold(mode) {
+  return mode === "books" || mode === "epub-legge";
+}
+
+function usesMirrorGold(mode) {
+  return mode === "parma" || mode === "mirrors";
+}
+
 async function compareWilhelm(bundle) {
-  log("Wilhelm: loading Parma gold (+ Baynes tier-2 supplements)…");
-  const parmaHtml = await loadParmaHtml({ live });
-  const parmaGold = parseAllParmaWilhelm(parmaHtml);
-  const goldByHex = applyWilhelmBaynesSupplements(parmaGold);
+  let goldByHex;
+  let goldLabel;
+  /** @type {Record<number, { judgment?: string }> | null} */
+  let parmaGoldRaw = null;
+
+  if (wilhelmUsesBookGold(goldMode)) {
+    log("Wilhelm: loading PDF gold (Wilhelm/Baynes 1950 Pantheon)…");
+    const text = await loadWilhelmPdfFullText();
+    goldByHex = applyWilhelmPdfPrintVerified(parseAllWilhelmPdfOrThrow(text));
+    goldLabel = "pdf-wilhelm";
+  } else {
+    log("Wilhelm: loading Parma gold (+ Baynes tier-2 supplements)…");
+    const parmaHtml = await loadParmaHtml({ live });
+    const parmaGold = parseAllParmaWilhelm(parmaHtml);
+    parmaGoldRaw = parmaGold;
+    goldByHex = applyWilhelmBaynesSupplements(parmaGold);
+    goldLabel = "parma";
+  }
+
   const diffs = [];
 
   for (const hex of bundle.hexagrams) {
@@ -54,7 +110,7 @@ async function compareWilhelm(bundle) {
         field: "*",
         linePos: null,
         status: "missing_gold",
-        hint: "hex_not_in_parma",
+        hint: wilhelmUsesBookGold(goldMode) ? "hex_not_in_pdf" : "hex_not_in_parma",
         expected: "",
         actual: "",
       });
@@ -62,8 +118,9 @@ async function compareWilhelm(bundle) {
     }
 
     const usedTier2 =
+      goldLabel === "parma" &&
       Boolean(getWilhelmBaynesJudgmentSupplement(hex.number)) &&
-      !String(parmaGold[hex.number]?.judgment ?? "").trim();
+      !String(parmaGoldRaw?.[hex.number]?.judgment ?? "").trim();
 
     const goldFields = goldWilhelmFields(gold);
     const bundleFields = bundleHexToFields(hex, "wilhelm");
@@ -92,56 +149,97 @@ async function compareWilhelm(bundle) {
 }
 
 async function compareLegge(bundle) {
-  log("Legge: loading sacred-texts gold (ic + icap2)…");
-  const symbolismHtml = await loadLeggeSymbolismHtml({ live });
-  const imageByHex = parseLeggeSymbolismAppendix(symbolismHtml);
+  /** @type {Record<number, { judgment: string; image: string; lines: Record<number, string>; supernumerary?: string; yongJiu?: string; yongLiu?: string }>} */
+  let goldByHex;
+
+  if (leggeUsesPdfGold(goldMode)) {
+    log("Legge: loading SBE XVI PDF gold (James Legge, Oxford scan + OCR)…");
+    const parsed = await parseAllLeggeSbePdfOrThrow({
+      onProgress: (msg) => log(`  ${msg}`),
+    });
+    goldByHex = {};
+    for (let n = 1; n <= 64; n++) {
+      const row = parsed[n];
+      goldByHex[n] = {
+        judgment: row.judgment,
+        image: row.image,
+        lines: row.lines,
+        supernumerary: n === 1 ? row.yongJiu : n === 2 ? row.yongLiu : "",
+      };
+    }
+  } else if (leggeUsesEpubGold(goldMode)) {
+    log("Legge: loading EPUB gold cross-check (James Legge, sacred-texts re-pack)…");
+    const parsed = await parseAllLeggeEpubOrThrow();
+    goldByHex = {};
+    for (let n = 1; n <= 64; n++) {
+      const row = parsed[n];
+      goldByHex[n] = {
+        judgment: row.judgment,
+        image: row.image,
+        lines: row.lines,
+        supernumerary: n === 1 ? row.yongJiu : n === 2 ? row.yongLiu : "",
+      };
+    }
+  } else {
+    log("Legge: loading sacred-texts gold (ic + icap2) [deprecated]…");
+    const symbolismHtml = await loadLeggeSymbolismHtml({ live });
+    const imageByHex = parseLeggeSymbolismAppendix(symbolismHtml);
+    goldByHex = {};
+    for (let n = 1; n <= 64; n++) {
+      const html = await loadLeggeTextHtml(n, { live });
+      const parsed = parseLeggeTextPage(html);
+      goldByHex[n] = {
+        judgment: parsed.judgment,
+        image: imageByHex[n] ?? "",
+        lines: parsed.lineByPos,
+        supernumerary: parsed.supernumerary,
+      };
+    }
+  }
+
   const diffs = [];
 
-  for (let n = 1; n <= 64; n++) {
-    const hex = bundle.hexagrams.find((h) => h.number === n);
-    const html = await loadLeggeTextHtml(n, { live });
-    const parsed = parseLeggeTextPage(html);
-    const gold = {
-      judgment: parsed.judgment,
-      image: imageByHex[n] ?? "",
-      lines: parsed.lineByPos,
-      supernumerary: parsed.supernumerary,
-    };
-
-    const fields = [
-      { field: "judgment", linePos: null, expected: gold.judgment, actual: hex?.judgment ?? "" },
-      { field: "image", linePos: null, expected: gold.image, actual: hex?.image ?? "" },
-    ];
-    for (let p = 1; p <= 6; p++) {
-      fields.push({
-        field: "line",
-        linePos: p,
-        expected: gold.lines[p] ?? "",
-        actual: hex?.lines?.find((l) => l.position === p)?.text ?? "",
-      });
-    }
-    const yongField = n === 1 ? "yongJiu" : n === 2 ? "yongLiu" : null;
-    if (yongField) {
-      // Unconditional (matches the Zhou Yi comparator below): a real gap in either
-      // side must surface as missing_gold/missing_bundle, never be silently dropped
-      // from the matrix just because the gold parser came back empty.
-      fields.push({
-        field: yongField,
+  for (const hex of bundle.hexagrams) {
+    const gold = goldByHex[hex.number];
+    if (!gold) {
+      diffs.push({
+        translator: "legge",
+        hex: hex.number,
+        field: "*",
         linePos: null,
-        expected: gold.supernumerary ?? "",
-        actual: hex?.[yongField] ?? "",
+        status: "missing_gold",
+        hint: leggeUsesPdfGold(goldMode)
+          ? "hex_not_in_sbe_pdf"
+          : leggeUsesEpubGold(goldMode)
+            ? "hex_not_in_epub"
+            : "hex_not_in_sacred",
+        expected: "",
+        actual: "",
       });
+      continue;
     }
 
-    for (const f of fields) {
+    const goldFields = goldLeggeFields({
+      hex: hex.number,
+      judgment: gold.judgment,
+      image: gold.image,
+      lines: gold.lines,
+      supernumerary: gold.supernumerary,
+    });
+    const bundleFields = bundleHexToFields(hex, "legge");
+    const byKey = new Map(bundleFields.map((f) => [f.field + (f.linePos ?? ""), f]));
+
+    for (const gf of goldFields) {
+      const key = gf.field + (gf.linePos ?? "");
+      const bf = byKey.get(key);
       diffs.push(
         makeDiff({
           translator: "legge",
-          hex: n,
-          field: f.field,
-          linePos: f.linePos,
-          expected: f.expected,
-          actual: f.actual,
+          hex: hex.number,
+          field: gf.field,
+          linePos: gf.linePos,
+          expected: gf.expected,
+          actual: bf?.actual ?? "",
         }),
       );
     }
@@ -218,23 +316,35 @@ async function main() {
   await mkdir(join(ROOT, "reports"), { recursive: true });
 
   const blocks = [];
-  const notes = [
-    "Wilhelm gold: Uni Parma mirror (+ Baynes tier-2 judgment for hex 56 where Parma omits THE JUDGMENT). Oracle judgment/image/lines only (Wilhelm commentary excluded by parser).",
-    "Legge gold: sacred-texts.com ic01–ic64 (text) + icap2 (Great Symbolism). Live site may 403; Wayback used as fallback.",
-    "Zhou Yi gold: ctext.org gettext API (卦辭+爻辭+用九/六) + HTML scrape (大象傳).",
-    "Normalizer: lowercase + whitespace collapse (EN); NFKC + strip 爻 labels (ZH).",
-    "Classify mismatches A–E in Fase 2 per ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md.",
-  ];
+  const notes = usesMirrorGold(goldMode)
+    ? [
+        "OBSOLETE mirror gold (Parma / sacred-texts / ctext). Use --gold=books instead.",
+        "Wilhelm gold: Uni Parma mirror (+ Baynes tier-2 supplements).",
+        "Legge gold: sacred-texts.com ic01–ic64 + icap2.",
+        "Zhou Yi gold: ctext.org API + HTML 大象傳.",
+      ]
+    : [
+        "Book-primary gold (2026-06-22+): local editions in tools/source-pdfs/.",
+        wilhelmUsesBookGold(goldMode)
+          ? "Wilhelm: Pantheon 1950 PDF — judgment/image/lines only."
+          : null,
+        leggeUsesPdfGold(goldMode)
+          ? "Legge: James Legge SBE XVI Oxford scan (OCR) — Thwan, Great Symbolism, lines, yongJiu/yongLiu."
+          : leggeUsesEpubGold(goldMode)
+            ? "Legge: James Legge EPUB cross-check (sacred-texts re-pack)."
+            : null,
+        goldMode === "books" ? "Zhou Yi: pending local PDF 注疏 parser." : null,
+      ].filter(Boolean);
 
-  if (selected === "all" || selected === "wilhelm") {
+  if (isSelected("wilhelm") && (wilhelmUsesBookGold(goldMode) || usesMirrorGold(goldMode))) {
     const bundle = await loadBundle("wilhelm");
     blocks.push(await compareWilhelm(bundle));
   }
-  if (selected === "all" || selected === "legge") {
+  if (isSelected("legge") && (leggeUsesBookGold(goldMode) || usesMirrorGold(goldMode))) {
     const bundle = await loadBundle("legge");
     blocks.push(await compareLegge(bundle));
   }
-  if (selected === "all" || selected === "zhouyi") {
+  if (isSelected("zhouyi") && usesMirrorGold(goldMode)) {
     const bundle = await loadBundle("zhouyi");
     blocks.push(await compareZhouYi(bundle));
   }

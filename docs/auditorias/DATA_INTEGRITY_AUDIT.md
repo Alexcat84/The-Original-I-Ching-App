@@ -2,7 +2,24 @@
 
 This document records the 1:1 fidelity audits performed on the three translator bundles in `@iching-oracle/iching-data`.
 
-**Master audit (open plan and harness):** [ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md](./ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md)
+**Master audit (open plan and harness):** [ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md](./ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md) — **§14 book-primary (2026-06-22)** es la política vigente de verificación.
+
+---
+
+## Política vigente · book-primary (2026-06-22)
+
+La fidelidad 1:1 se demuestra **solo** comparando el dataset contra texto extraído de **ediciones locales** (`tools/source-pdfs/`, ver `manifest.json`). Los gates contra mirrors web (Parma, sacred-texts, ctext) están **obsoletos** — ver §14 del master audit.
+
+**Gate canónico Wilhelm + Legge (cerrado):**
+
+```bash
+npm run build:data
+npm run verify:hexagram-fidelity   # 513/513 Wilhelm + 514/514 Legge vs libros locales
+```
+
+Reporte combinado: `reports/hexagram-fidelity-2026-06-22T01-59-28-099Z.json`
+
+**Pendiente:** Zhou Yi (PDF 注疏) con el mismo ciclo extract → compare → 100%.
 
 ---
 

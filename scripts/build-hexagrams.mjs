@@ -156,8 +156,8 @@ function buildZhouyiRecord(base, n) {
 }
 
 const generatedAt = new Date().toISOString();
-const FIDELITY_AUDIT_DATE = "2026-06-21";
-const FIDELITY_REPORT_ID = "hexagram-fidelity-2026-06-21T20-26-09-152Z";
+const FIDELITY_AUDIT_DATE = "2026-06-22";
+const FIDELITY_REPORT_ID = "hexagram-fidelity-2026-06-22T01-59-28-099Z";
 
 const bundles = [
   {
@@ -168,7 +168,7 @@ const bundles = [
         "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes (1950, public domain since 2020).",
       sourceUrl: "http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html",
       licenseNote:
-        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts cross-verified 1:1 against the University of Parma mirror on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 6 fields where Parma's HTML omits the passage are sourced from the printed Wilhelm/Baynes edition (Princeton University Press, 1950), page-verified in the physical book: hex 56 judgment (p. 231), hex 20 line 5 (pp. 88-89), hex 21 lines 2 and 3 (pp. 92-93), hex 26 line 3 (p. 112), hex 52 line 2 (p. 215).`,
+        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts verified 1:1 against the printed Wilhelm/Baynes edition (Pantheon Books, Bollingen Series XIX, 1950) on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). Tier-0 gold extracted locally from tools/source-pdfs/wilhelm-baynes-1950-pantheon.pdf; 513/513 oracle fields match. Spot-check overrides for OCR gaps are photo-verified from the same edition (see hexagram-fidelity-wilhelm-pdf-verified.mjs).`,
       generatedAt,
       build: buildWilhelmRecord,
     },
@@ -179,9 +179,9 @@ const bundles = [
       translator: "legge",
       edition:
         "Sacred Books of the East, Volume 16: The Yi King, James Legge (1882, revised 1899).",
-      sourceUrl: "https://sacred-texts.com/ich/index.htm",
+      sourceUrl: "https://archive.org/details/sacredbooksofch16legg",
       licenseNote:
-        `James Legge (1882) translation in the public domain. Oracle fields cross-verified 1:1 against sacred-texts.com on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 513/513 oracle fields match.`,
+        `James Legge (1882) translation in the public domain. Production bundle verified 1:1 against the local James Legge EPUB (Sacred Books of the East XVI re-pack) on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). Tier-0 SBE XVI Oxford scan OCR gold in progress (tools/source-pdfs/ manifest legge); EPUB gate 514/514, PDF OCR gate 365/514 as of ${FIDELITY_AUDIT_DATE}.`,
       generatedAt,
       build: buildLeggeRecord,
     },

@@ -6,7 +6,7 @@ import type { Hexagram, Line, TextsForClaude, ZhuXiMutationRule } from "../types
  *
  * Difference from Huang: Zhu Xi does NOT always reduce to a single line.
  *  - 2 changing: read BOTH lines, upper is primary.
- *  - 3 changing: read BOTH judgments (no line text); emphasis via Ed Hacker's rule.
+ *  - 3 changing: read BOTH judgments (no line text); emphasis via bottom-line rule (Adler ch. IV operational equivalent).
  *  - 4 changing: read BOTH stable lines of the transformed hexagram, lower is primary.
  */
 export function determineMutationRuleZhuXi(
@@ -80,17 +80,16 @@ export function selectTextsZhuXi(
     }
 
     case "ZX_THREE_JUDGMENTS": {
-      // Ed Hacker's simple equivalent of Zhu Xi's 32 charts:
-      // if the bottom line (pos 1) is among the three changing → primary judgment leads;
-      // otherwise → transformed judgment leads.
+      // Adler ch. IV: first ten of the 20 three-changing cases → chen (primary) rules;
+      // latter ten → hui (transformed). Operational equivalent: pos 1 among the three → primary.
       const emphasis: "primary" | "transformed" = sorted.includes(1) ? "primary" : "transformed";
       return {
         ...base,
-        selectedLineTexts: [], // no individual line is cited
+        selectedLineTexts: [],
         judgmentEmphasis: emphasis,
         ruleExplanation: `Zhu Xi: tres mutaciones. Se leen los Juicios de ambos hexagramas; prima el ${
           emphasis === "primary" ? "primario" : "transformado"
-        } (regla de Ed Hacker).`,
+        } (regla operativa equivalente a Adler, cap. IV).`,
       };
     }
 
@@ -135,20 +134,24 @@ export function selectTextsZhuXi(
       return {
         ...base,
         selectedLineTexts: [],
+        readBothJudgments: true,
         specialYaoText:
           primary.yongJiu ??
           'All Nines (用九): "A host of dragons without a head; good fortune."',
-        ruleExplanation: "Zhu Xi: Qian (1) con todos Yang Viejos. Séptimo Yao 用九.",
+        ruleExplanation:
+          "Zhu Xi: Qian (1) con los seis Yang Viejos. 用九 más los juicios de ambos hexágramas y su interrelación (Adler, cap. IV).",
       };
 
     case "KUN_ALL_SIX":
       return {
         ...base,
         selectedLineTexts: [],
+        readBothJudgments: true,
         specialYaoText:
           primary.yongLiu ??
           'All Sixes (用六): "Perseverance brings advantage."',
-        ruleExplanation: "Zhu Xi: Kun (2) con todos Yin Viejos. Séptimo Yao 用六.",
+        ruleExplanation:
+          "Zhu Xi: Kun (2) con los seis Yin Viejos. 用六 más los juicios de ambos hexágramas y su interrelación (Adler, cap. IV).",
       };
   }
 }

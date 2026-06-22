@@ -191,10 +191,12 @@ describe("Zhu Xi reading system", () => {
     expect(texts.transformedJudgment?.length ?? 0).toBeGreaterThan(0);
   });
 
-  it("6 Qian → QIAN_ALL_NINE (用九, shared with Huang)", () => {
+  it("6 Qian → QIAN_ALL_NINE (用九) + both judgments (Zhu Xi)", () => {
     const { ruleName, texts } = cast([9, 9, 9, 9, 9, 9], "zhuxi");
     expect(ruleName).toBe("QIAN_ALL_NINE");
     expect(texts.specialYaoText?.length ?? 0).toBeGreaterThan(0);
+    expect(texts.readBothJudgments).toBe(true);
+    expect(texts.transformedJudgment?.length ?? 0).toBeGreaterThan(0);
   });
 
   it("6 Kun → KUN_ALL_SIX (用六, shared with Huang)", () => {
