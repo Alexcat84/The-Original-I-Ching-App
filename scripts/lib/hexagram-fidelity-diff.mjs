@@ -1,4 +1,4 @@
-import { similarityHint, textsMatch, wilhelmImageOracleOnly } from "./hexagram-fidelity-normalize.mjs";
+import { similarityHint, textsMatch, textsMatchStrict, wilhelmImageOracleOnly } from "./hexagram-fidelity-normalize.mjs";
 
 /**
  * @typedef {"match"|"mismatch"|"missing_gold"|"missing_bundle"|"skipped"} DiffStatus
@@ -13,9 +13,10 @@ import { similarityHint, textsMatch, wilhelmImageOracleOnly } from "./hexagram-f
  * @param {string} args.expected
  * @param {string} args.actual
  * @param {string} [args.note]
+ * @param {boolean} [args.strict]
  */
 export function makeDiff(args) {
-  const { translator, hex, field, linePos, note } = args;
+  const { translator, hex, field, linePos, note, strict = false } = args;
   let expected = args.expected;
   let actual = args.actual;
   if (translator === "wilhelm" && field === "image") {
@@ -35,7 +36,9 @@ export function makeDiff(args) {
     status = "missing_gold";
     hint = "both_empty";
   } else {
-    const match = textsMatch(expected, actual, translator);
+    const match = strict
+      ? textsMatchStrict(expected, actual, translator)
+      : textsMatch(expected, actual, translator);
     hint = similarityHint(expected, actual, translator);
     status = "mismatch";
     if (match) status = "match";

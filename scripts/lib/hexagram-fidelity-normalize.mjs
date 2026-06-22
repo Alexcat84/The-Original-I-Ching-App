@@ -162,6 +162,26 @@ export function textsMatch(expected, actual, translator) {
   return false;
 }
 
+/** Exact match after normalization — no prefix leniency (Wilhelm line statements). */
+export function textsMatchStrict(expected, actual, translator) {
+  const a = normalizeHexText(expected, translator);
+  const b = normalizeHexText(actual, translator);
+  return Boolean(a && b && a === b);
+}
+
+/**
+ * Detect Wilhelm commentary bleed: bundle line extends beyond statement-only gold.
+ * @param {string} actualLine
+ * @param {string} statementGold Parma (+ tier-2) statement-only reference
+ */
+export function detectWilhelmLineBleed(actualLine, statementGold) {
+  const a = normalizeHexText(actualLine, "wilhelm");
+  const g = normalizeHexText(statementGold, "wilhelm");
+  if (!a || !g) return false;
+  // Statement-only gold is authoritative; extra prose after it is bleed.
+  return g.length >= 8 && a.startsWith(g) && a.length > g.length + 20;
+}
+
 export function similarityHint(expected, actual, translator) {
   const a = normalizeHexText(expected, translator);
   const b = normalizeHexText(actual, translator);

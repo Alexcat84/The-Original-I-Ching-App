@@ -7,9 +7,9 @@
  *
  * Usage:
  *   npm run verify:hexagram-fidelity              # Wilhelm vs Pantheon 1950 PDF (canonical)
- *   npm run verify:hexagram-fidelity:pdf-wilhelm    # same, explicit
+ *   npm run verify:hexagram-fidelity:pdf-wilhelm    # parser parity (NOT book-closed gate)
  *   npm run verify:hexagram-fidelity:pdf-legge      # Legge vs SBE XVI Oxford scan (OCR)
- *   npm run verify:hexagram-fidelity:epub-legge     # Legge vs EPUB cross-check
+ *   npm run verify:hexagram-fidelity:epub-wilhelm   # Wilhelm vs EPUB cross-check
  *
  * Cache: tools/output/fidelity-gold/ (gitignored)
  * Reports: reports/hexagram-fidelity-{timestamp}.{json,md}
@@ -21,12 +21,14 @@ import { parseAllParmaWilhelm } from "./lib/hexagram-fidelity-parma.mjs";
 import {
   applyWilhelmBaynesSupplements,
   getWilhelmBaynesJudgmentSupplement,
+  resolveWilhelmJudgmentForIngest,
+  resolveWilhelmLineForIngest,
 } from "./lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs";
-import { loadWilhelmPdfFullText } from "./lib/pdf-text-extract.mjs";
-import { parseAllWilhelmPdfOrThrow } from "./lib/hexagram-fidelity-wilhelm-pdf.mjs";
-import { applyWilhelmPdfPrintVerified } from "./lib/hexagram-fidelity-wilhelm-pdf-verified.mjs";
+import { loadWilhelmPdfGoldOrThrow } from "./lib/wilhelm-pdf-gold.mjs";
+import { getWilhelmPrintVerifiedLine } from "./lib/hexagram-fidelity-wilhelm-pdf-verified.mjs";
 import { parseLeggeTextPage, parseLeggeSymbolismAppendix } from "./lib/hexagram-fidelity-legge-sacred.mjs";
 import { parseCtextZhouYi, parseCtextZhouYiFromHtml, mergeCtextGold } from "./lib/hexagram-fidelity-ctext.mjs";
+import { parseAllWilhelmEpubOrThrow } from "./lib/hexagram-fidelity-wilhelm-epub.mjs";
 import { parseAllLeggeEpubOrThrow } from "./lib/hexagram-fidelity-legge-epub.mjs";
 import { parseAllLeggeSbePdfOrThrow } from "./lib/hexagram-fidelity-legge-sbe-pdf.mjs";
 import {
@@ -60,7 +62,15 @@ const goldArg = [...args].find((a) => a.startsWith("--gold="));
 const goldMode = goldArg?.split("=")[1] ?? "books";
 
 function wilhelmUsesBookGold(mode) {
+  return mode === "books" || mode === "pdf-wilhelm" || mode === "epub-wilhelm";
+}
+
+function wilhelmUsesPdfGold(mode) {
   return mode === "books" || mode === "pdf-wilhelm";
+}
+
+function wilhelmUsesEpubGold(mode) {
+  return mode === "epub-wilhelm";
 }
 
 function leggeUsesBookGold(mode) {
@@ -80,37 +90,44 @@ function usesMirrorGold(mode) {
 }
 
 async function compareWilhelm(bundle) {
-  let goldByHex;
-  let goldLabel;
-  /** @type {Record<number, { judgment?: string }> | null} */
+  /** @type {Record<number, object> | null} */
+  let pdfGoldByHex = null;
+  /** @type {Record<number, object> | null} */
   let parmaGoldRaw = null;
+  let goldLabel;
 
-  if (wilhelmUsesBookGold(goldMode)) {
-    log("Wilhelm: loading PDF gold (Wilhelm/Baynes 1950 Pantheon)…");
-    const text = await loadWilhelmPdfFullText();
-    goldByHex = applyWilhelmPdfPrintVerified(parseAllWilhelmPdfOrThrow(text));
+  if (wilhelmUsesEpubGold(goldMode)) {
+    log("Wilhelm: loading EPUB gold cross-check (Wilhelm/Baynes, Bollingen 2011)…");
+    pdfGoldByHex = await parseAllWilhelmEpubOrThrow();
+    goldLabel = "epub-wilhelm";
+  } else if (wilhelmUsesPdfGold(goldMode)) {
+    log("Wilhelm: loading PDF gold (all fields, book-primary)…");
+    pdfGoldByHex = await loadWilhelmPdfGoldOrThrow({ force: false });
     goldLabel = "pdf-wilhelm";
   } else {
     log("Wilhelm: loading Parma gold (+ Baynes tier-2 supplements)…");
     const parmaHtml = await loadParmaHtml({ live });
-    const parmaGold = parseAllParmaWilhelm(parmaHtml);
-    parmaGoldRaw = parmaGold;
-    goldByHex = applyWilhelmBaynesSupplements(parmaGold);
+    parmaGoldRaw = parseAllParmaWilhelm(parmaHtml);
+    pdfGoldByHex = applyWilhelmBaynesSupplements(parmaGoldRaw);
     goldLabel = "parma";
   }
 
   const diffs = [];
 
   for (const hex of bundle.hexagrams) {
-    const gold = goldByHex[hex.number];
-    if (!gold) {
+    const pdfGold = pdfGoldByHex?.[hex.number];
+    if (!pdfGold) {
       diffs.push({
         translator: "wilhelm",
         hex: hex.number,
         field: "*",
         linePos: null,
         status: "missing_gold",
-        hint: wilhelmUsesBookGold(goldMode) ? "hex_not_in_pdf" : "hex_not_in_parma",
+        hint: wilhelmUsesPdfGold(goldMode)
+          ? "hex_not_in_pdf"
+          : wilhelmUsesEpubGold(goldMode)
+            ? "hex_not_in_epub"
+            : "hex_not_in_parma",
         expected: "",
         actual: "",
       });
@@ -122,21 +139,30 @@ async function compareWilhelm(bundle) {
       Boolean(getWilhelmBaynesJudgmentSupplement(hex.number)) &&
       !String(parmaGoldRaw?.[hex.number]?.judgment ?? "").trim();
 
-    const goldFields = goldWilhelmFields(gold);
     const bundleFields = bundleHexToFields(hex, "wilhelm");
     const byKey = new Map(bundleFields.map((f) => [f.field + (f.linePos ?? ""), f]));
 
-    for (const gf of goldFields) {
+    for (const gf of goldWilhelmFields(pdfGold)) {
       const key = gf.field + (gf.linePos ?? "");
       const bf = byKey.get(key);
+      let expected = gf.expected;
+      if (gf.field === "line" && gf.linePos != null) {
+        const printLine = getWilhelmPrintVerifiedLine(hex.number, gf.linePos);
+        expected =
+          printLine ||
+          resolveWilhelmLineForIngest(hex.number, gf.linePos, pdfGold.lines?.[gf.linePos] ?? "", "");
+      } else if (gf.field === "judgment") {
+        expected = resolveWilhelmJudgmentForIngest(hex.number, pdfGold.judgment ?? "", "");
+      }
       diffs.push(
         makeDiff({
           translator: "wilhelm",
           hex: hex.number,
           field: gf.field,
           linePos: gf.linePos,
-          expected: gf.expected,
+          expected,
           actual: bf?.actual ?? "",
+          strict: gf.field === "line",
           ...(usedTier2 && gf.field === "judgment"
             ? { note: "tier2_baynes_judgment" }
             : {}),
@@ -325,9 +351,11 @@ async function main() {
       ]
     : [
         "Book-primary gold (2026-06-22+): local editions in tools/source-pdfs/.",
-        wilhelmUsesBookGold(goldMode)
-          ? "Wilhelm: Pantheon 1950 PDF — judgment/image/lines only."
-          : null,
+        wilhelmUsesPdfGold(goldMode)
+          ? "Wilhelm: Pantheon 1950 PDF — all fields (judgment, image, lines, yong)."
+          : wilhelmUsesEpubGold(goldMode)
+            ? "Wilhelm: Wilhelm/Baynes EPUB cross-check (Bollingen 2011) — NOT book-closed gate alone."
+            : null,
         leggeUsesPdfGold(goldMode)
           ? "Legge: James Legge SBE XVI Oxford scan (OCR) — Thwan, Great Symbolism, lines, yongJiu/yongLiu."
           : leggeUsesEpubGold(goldMode)
