@@ -234,12 +234,60 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 
 | ID | Brecha | Evidencia libro | Impacto si se implementa |
 |----|--------|-----------------|--------------------------|
-| **G1** | Zhu Xi 20 casos × 3 líneas (first-ten / latter-ten) | Adler p.154 | Cambia `judgmentEmphasis` vs regla operativa pos 1 |
-| **G2** | Zhu Xi 32 diagramas Fig. 19 | Adler p.158 + PDF 159–204 | Cambia `fromHexagram` en 3/4/5 cambios |
+| **G1** | Zhu Xi 20 casos × 3 líneas (first-ten / latter-ten) | Adler p.154 | **Probable no-op** si D0.1 confirma orden lex = `includes(1)` (Opus 4.8). Si no → tabla explícita |
+| **G2** | Zhu Xi 32 diagramas Fig. 19 | Adler p.158 + PDF 159–204 | Cambia `fromHexagram` en 3/4/5 — **Gate D0.2** decide si bug latente 4/5 |
 | **G3** | Huang Qian/Kun prompt dual-judgment | Huang p.62 + regla 6 | Solo prompt; motor ya entrega textos |
 | **G4** | `licenseNote` Legge bundle metadata desactualizado | — | Cosmético; oracle 514/514 OK |
 
-**Regla operativa:** G1/G2 requieren plan §E + sign-off antes de tocar motor en producción.
+**Regla operativa:** G2 requiere **Fase 0 (Gate 0)** + plan §E v2 antes de tocar motor. G1 puede ser verificación solamente.
+
+---
+
+## Parte F — Validación externa Opus 4.8 + acuerdo implementación
+
+**Documento:** [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md)  
+**Rama verificada por auditor:** `staging` `86bddef`
+
+### F.1 Acuerdo del equipo (Cursor, post-revisión)
+
+| Observación Opus 4.8 | ¿De acuerdo? | Notas |
+|---------------------|--------------|-------|
+| W/L re-ingesta 100% book-primary sólida; hex 18 OK | **Sí** | Reproducible con gates PDF 22 jun |
+| G1 = combinatoria 10/10 ↔ `includes(1)` | **Sí, con reserva** | Matemática correcta; falta confirmar que Adler **enumera** en ese orden (D0.1), no solo que los **conjuntos** coincidan |
+| G2 tensión reglas 4/5 vs Fig. 19 | **Sí — crítico** | Puede ser bug latente Zhu Xi hoy para subset de tiradas |
+| Fase 0 gate duro antes de motor | **Sí — adoptado** | Plan v2 |
+| H2 faltaba en Fase C | **Sí** | Añadido a plan v2 |
+| H1/H3 ambas fuentes (primario + transformado) | **Sí** | Corregido en plan v2 |
+| Gen→Sui automatizado, no solo smoke | **Sí** | Fixture obligatorio Fase B |
+| Criterio éxito ≠ 4096 literales | **Sí** | Paridad vs gold inputs distintos |
+| T1 coma Zhou Yi (display) | **Sí** | Ortogonal a charts; decidir producto |
+| T2 metadata sourceUrl/licenseNote | **Sí** | Honestidad claims; bajo riesgo |
+| Asimetría gate ZY normalizado vs W/L exact | **Sí** | Documentar en claims; no bloquea charts |
+
+### F.2 Checklist pre-implementación (bloqueante)
+
+**No iniciar Fase A del plan charts hasta:**
+
+- [ ] **D0.1** — Leer Adler p.154 + Fig. 19: ¿orden de los 20 tríos documentado? Captura folio + cita literal en plan
+- [ ] **D0.2** — Leer p.158 + reglas 4/5 p.156: ¿Fig. 19 override `fromHexagram` en 4/5? Captura + dictamen escrito (bug latente sí/no)
+- [ ] **Gate 0** — Spot-check ≥10 celdas Fig. 19 (PDF 159–204) vs transcripción manual
+- [ ] Sign-off Alexis sobre dictamen D0.2 (impacto producción actual Zhu Xi)
+
+**Antes de Fase B (motor):**
+
+- [ ] Gate A PASS — `zhuxi-adler-32-charts-gold.json` con 32 entradas + `equivalentToIncludesPos1`
+- [ ] Re-ejecutar `audit:zhuxi-rules-vs-adler-gold` + 90 tests motor (baseline flag OFF)
+
+**Antes de cutover (Fase E):**
+
+- [ ] Gate B/C/D completos; H2 re-validado
+- [ ] `pnpm qa:mutation-output` diff documentado flag OFF vs ON
+- [ ] Smoke staging Zhu Xi 3/4/5 + Gen→Sui case en app real
+
+**Paralelo (no bloquea Gate 0, recomendado antes de merge main):**
+
+- [ ] T2 metadata W/L
+- [ ] T1 decisión coma Zhou Yi + check biblioteca
 
 ---
 
@@ -295,6 +343,7 @@ Consultas ya persistidas: **no recalcular** al re-leer hilo; `consultation_conte
 | Huang 2010 PDF | Rule extract | `huang-mutation-rules-gold.json` + 9/9 snippets |
 | Adler Zhu Xi ch. IV | Rule extract | `zhuxi-adler-mutation-rules-gold.json` + 10/10 snippets |
 | Adler Fig. 19 | Pendiente | PDF pp. 159–204 |
+| Validación externa Opus 4.8 | Adoptada | `EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md` |
 | Motor iching-engine | Tests | 90 mutation + 37 line-reading |
 | Prompt producción | Gates | H1–H5 `interpretation-output-validator.ts` |
 
@@ -309,8 +358,9 @@ Consultas ya persistidas: **no recalcular** al re-leer hilo; `consultation_conte
 | [`ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md`](ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md) | Plan implementación G1/G2 |
 | [`LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md`](LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md) | Selector dual + migración 074 |
 | [`MUTATION_RULES_HUANG_ALIGNMENT_AUDIT_2026-06-19.md`](MUTATION_RULES_HUANG_ALIGNMENT_AUDIT_2026-06-19.md) | FOUR_LOWEST_STABLE |
+| [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) | Validación externa + plan v2 |
 | [`PROMPT_MUTATION_RULES_AUDIT_2026-06-15.md`](PROMPT_MUTATION_RULES_AUDIT_2026-06-15.md) | Gates prompt mutación |
 
 ---
 
-*Documento preparado para auditoría interna pre-ejecución plan 32 diagramas. Actualizar al cerrar Fase A del plan o al merge `staging`→`main`.*
+*Actualizado 22 jun 2026 post-validación Opus 4.8 — plan charts v2 con Fase 0.*
