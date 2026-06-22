@@ -26,6 +26,7 @@
     "extract:gold:legge-sbe-pdf": "node tools/extract-legge-sbe-pdf.mjs",
     "sync:legge-oracle-from-epub": "node tools/sync-legge-oracle-from-epub.mjs",
     "sync:legge-oracle-from-pdf-gold": "node tools/sync-legge-oracle-from-pdf-gold.mjs",
+    "sync:wilhelm-oracle-from-pdf-gold": "node tools/sync-wilhelm-oracle-from-pdf-gold.mjs",
     "verify:hexagram-fidelity:pdf-wilhelm": "node scripts/verify-hexagram-fidelity.mjs --gold=pdf-wilhelm --translator=wilhelm",
     "verify:hexagram-fidelity:pdf-legge": "node scripts/verify-hexagram-fidelity.mjs --gold=pdf-legge --translator=legge",
     "verify:hexagram-fidelity:epub-legge": "node scripts/verify-hexagram-fidelity.mjs --gold=epub-legge --translator=legge",
