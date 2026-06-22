@@ -104,9 +104,10 @@ async function main() {
   }
 
   const body =
-    "// Oracle text refreshed by tools/ingest-wilhelm.mjs from Parma mirror.\n" +
-    "// Source: http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html\n" +
-    "// Structural metadata retained from prior transcription; judgment/image/lines from Parma.\n\n" +
+    "// Oracle text refreshed by tools/ingest-wilhelm.mjs (legacy Parma mirror ingest path).\n" +
+    "// Production bundle oracle fields sync from Pantheon 1950 PDF gold via tools/sync-wilhelm-oracle-from-pdf-gold.mjs.\n" +
+    "// Secondary cross-check mirror: http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html\n" +
+    "// Structural metadata retained from prior transcription; judgment/image/lines from Parma when using this script.\n\n" +
     "export default " +
     JSON.stringify(existing, null, 2) +
     ";\n";
