@@ -2,6 +2,8 @@
 
 **Fecha:** 22 jun 2026  
 **Estado:** Plan aprobación pendiente — **NO implementar sin sign-off explícito**  
+**Audiencia:** auditoría interna pre-ejecución  
+**Índice maestro:** [`FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`](FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md) §Parte E  
 **Prerequisito:** [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md)  
 **Rama sugerida:** `feat/zhuxi-32-charts-lookup` (desde `staging` actualizado)
 
@@ -31,16 +33,48 @@ Portar el motor Zhu Xi de **reglas por conteo** (operativas, validadas en tests 
 
 ---
 
-## 2. Fuentes primarias a codificar
+## 2. Fuentes primarias y evidencias (obligatorias para implementación)
 
-| Artefacto | Ubicación PDF Adler | Contenido |
-|-----------|---------------------|-----------|
-| Reglas 0–6 Q/K | PDF 150–158 | Ya en gold JSON |
-| Fig. 19 — 32 charts | PDF 159–204 | **Extraer en Fase A** |
-| Nota 4096 | fn. 149, PDF 215 | Hsi-tz'u A.9.8 |
-| Regla «hasta 32 / después 32» | PDF 158 | Original vs transformado para líneas |
+### 2.1 Artefactos PDF Adler
 
-Referencias cruzadas: Yijing Dao (biroco.com), Ts'ai Yuan-ting extrapolations documentadas en gold.
+| Artefacto | PDF índice | Folio impreso | Estado gold | Evidencia en repo |
+|-----------|------------|---------------|-------------|-------------------|
+| Reglas 0–6 + Q/K | 150–158 | 48–53 | ✅ Extraído | `scripts/lib/zhuxi-adler-pdf-gold.mjs` → `zhuxi-adler-mutation-rules-gold.json` |
+| Regla 3 (20 casos) | **154** | **50** | ⚠️ Equivalente operativo | Cita: «…first ten hexagrams… chen the ruler; latter ten… hui the ruler» — verificado 10/10 extract |
+| Regla 32/64 charts | **158** | **52** | ❌ not_implemented | Cita: «…up through the 32… **original** hexagram… after the 32… **changed** hexagram» |
+| Fig. 19 — 32 diagrams | **159–204** | — | ❌ Pendiente Fase A | Manifest `zhuxi-adler.chapterIv` figures range |
+| Nota 4096 | **215** | **74** fn.149 | Referencia | «Hsi-tz'u A.9.8» — base combinatoria |
+| Nota Gen→Sui | **205** | **73** fn.144–145 | Caso test | Mu Chiang: línea 2 de Sui, **no** T'uan — gate manual Fase E |
+| Nota Q/K 6 cambios | **215** | **73–74** fn.148 | Implementado | «both hexagram statements and their interrelationships» → `readBothJudgments` |
+
+### 2.2 Extractos verificados (gold `bookText` → PDF extract match)
+
+Regenerar y verificar:
+
+```bash
+npm run extract:gold:zhuxi-adler-pdf
+npm run audit:zhuxi-rules-vs-adler-gold
+```
+
+Salida esperada: **10/10** snippets en `zhuxi-adler-ch4-core-p150-158.txt`; regla `thirty_two_charts` marcada `not_implemented`.
+
+### 2.3 Referencias cruzadas académicas
+
+| Referencia | Uso en plan |
+|------------|-------------|
+| Joseph Adler, *Introduction to the Study of the Classic of Change* (SUNY) | Fuente primaria Tier-0 |
+| Yijing Dao (biroco.com) — exposición Yixue Qimeng | Validación secundaria post-gold |
+| Ts'ai Yuan-ting extrapolations | Documentadas en gold como `extrapolated: true` (reglas 2, 4) |
+| [`LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md`](LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md) | Baseline motor actual + gates H1–H5 |
+
+### 2.4 Evidencia motor actual (baseline pre-chart)
+
+| Artefacto | Ubicación | Evidencia |
+|-----------|-----------|-----------|
+| Regla operativa 3 líneas | `packages/iching-engine/src/rules/zhuxi.ts` L82–93 | `sorted.includes(1) ? "primary" : "transformed"` |
+| Tests regresión | `engine.line-reading-systems.test.ts` | **37/37 PASS** — no cambiar sin flag |
+| QA interpretación | `pnpm qa:mutation-output` | Baseline JSON con `model`, `fixtureId`, `lineReadingSystem` |
+| Persistencia | migración **074** | `line_reading_system` en `consultations` |
 
 ---
 

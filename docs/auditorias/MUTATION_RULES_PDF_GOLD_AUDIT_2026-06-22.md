@@ -1,8 +1,9 @@
 # Mutation rules — PDF gold audit (Huang + Zhu Xi)
 
 **Fecha:** 22 jun 2026  
-**Rama:** `feat/wilhelm-pdf-gold-sync`  
+**Rama:** mergeada a `staging` (22 jun 2026) · `main` pendiente  
 **Estado:** Cerrada (core rules) · **Pendiente:** lookup 32 diagramas Zhu Xi (ver plan dedicado)  
+**Índice maestro:** [`FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`](FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md)  
 **Página pública:** `/audits` — resumen solo fechas/fuentes/resultado  
 **Scripts:** `npm run extract:gold:huang-pdf`, `npm run audit:huang-rules-vs-pdf-gold`, `npm run extract:gold:zhuxi-adler-pdf`, `npm run audit:zhuxi-rules-vs-adler-gold`
 
