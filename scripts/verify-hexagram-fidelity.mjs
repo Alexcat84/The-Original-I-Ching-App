@@ -7,6 +7,7 @@
  *
  * Usage:
  *   node scripts/verify-hexagram-fidelity.mjs [--live] [--translator wilhelm|legge|zhouyi|all]
+ *   node scripts/verify-hexagram-fidelity.mjs --gold=pdf-wilhelm [--translator wilhelm]
  *
  * Cache: tools/output/fidelity-gold/ (gitignored)
  * Reports: reports/hexagram-fidelity-{timestamp}.{json,md}
@@ -19,6 +20,8 @@ import {
   applyWilhelmBaynesSupplements,
   getWilhelmBaynesJudgmentSupplement,
 } from "./lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs";
+import { loadWilhelmPdfFullText } from "./lib/pdf-text-extract.mjs";
+import { parseAllWilhelmPdfOrThrow } from "./lib/hexagram-fidelity-wilhelm-pdf.mjs";
 import { parseLeggeTextPage, parseLeggeSymbolismAppendix } from "./lib/hexagram-fidelity-legge-sacred.mjs";
 import { parseCtextZhouYi, parseCtextZhouYiFromHtml, mergeCtextGold } from "./lib/hexagram-fidelity-ctext.mjs";
 import {
@@ -38,11 +41,29 @@ function log(msg) {
   console.log(msg);
 }
 
+const goldArg = [...args].find((a) => a.startsWith("--gold="));
+const goldMode = goldArg?.split("=")[1] ?? "parma";
+
 async function compareWilhelm(bundle) {
-  log("Wilhelm: loading Parma gold (+ Baynes tier-2 supplements)…");
-  const parmaHtml = await loadParmaHtml({ live });
-  const parmaGold = parseAllParmaWilhelm(parmaHtml);
-  const goldByHex = applyWilhelmBaynesSupplements(parmaGold);
+  let goldByHex;
+  let goldLabel;
+  /** @type {Record<number, { judgment?: string }> | null} */
+  let parmaGoldRaw = null;
+
+  if (goldMode === "pdf-wilhelm") {
+    log("Wilhelm: loading PDF gold (Wilhelm/Baynes 1950 Pantheon)…");
+    const text = await loadWilhelmPdfFullText();
+    goldByHex = parseAllWilhelmPdfOrThrow(text);
+    goldLabel = "pdf-wilhelm";
+  } else {
+    log("Wilhelm: loading Parma gold (+ Baynes tier-2 supplements)…");
+    const parmaHtml = await loadParmaHtml({ live });
+    const parmaGold = parseAllParmaWilhelm(parmaHtml);
+    parmaGoldRaw = parmaGold;
+    goldByHex = applyWilhelmBaynesSupplements(parmaGold);
+    goldLabel = "parma";
+  }
+
   const diffs = [];
 
   for (const hex of bundle.hexagrams) {
@@ -54,7 +75,7 @@ async function compareWilhelm(bundle) {
         field: "*",
         linePos: null,
         status: "missing_gold",
-        hint: "hex_not_in_parma",
+        hint: goldMode === "pdf-wilhelm" ? "hex_not_in_pdf" : "hex_not_in_parma",
         expected: "",
         actual: "",
       });
@@ -62,8 +83,9 @@ async function compareWilhelm(bundle) {
     }
 
     const usedTier2 =
+      goldLabel === "parma" &&
       Boolean(getWilhelmBaynesJudgmentSupplement(hex.number)) &&
-      !String(parmaGold[hex.number]?.judgment ?? "").trim();
+      !String(parmaGoldRaw?.[hex.number]?.judgment ?? "").trim();
 
     const goldFields = goldWilhelmFields(gold);
     const bundleFields = bundleHexToFields(hex, "wilhelm");
@@ -218,13 +240,19 @@ async function main() {
   await mkdir(join(ROOT, "reports"), { recursive: true });
 
   const blocks = [];
-  const notes = [
-    "Wilhelm gold: Uni Parma mirror (+ Baynes tier-2 judgment for hex 56 where Parma omits THE JUDGMENT). Oracle judgment/image/lines only (Wilhelm commentary excluded by parser).",
-    "Legge gold: sacred-texts.com ic01–ic64 (text) + icap2 (Great Symbolism). Live site may 403; Wayback used as fallback.",
-    "Zhou Yi gold: ctext.org gettext API (卦辭+爻辭+用九/六) + HTML scrape (大象傳).",
-    "Normalizer: lowercase + whitespace collapse (EN); NFKC + strip 爻 labels (ZH).",
-    "Classify mismatches A–E in Fase 2 per ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md.",
-  ];
+  const notes =
+    goldMode === "pdf-wilhelm"
+      ? [
+          "Wilhelm gold: local PDF Wilhelm/Baynes 1950 (Pantheon). Oracle judgment/image/lines only.",
+          "Legge/Zhou Yi skipped unless --translator=all without pdf gold.",
+        ]
+      : [
+          "Wilhelm gold: Uni Parma mirror (+ Baynes tier-2 judgment for hex 56 where Parma omits THE JUDGMENT). Oracle judgment/image/lines only (Wilhelm commentary excluded by parser).",
+          "Legge gold: sacred-texts.com ic01–ic64 (text) + icap2 (Great Symbolism). Live site may 403; Wayback used as fallback.",
+          "Zhou Yi gold: ctext.org gettext API (卦辭+爻辭+用九/六) + HTML scrape (大象傳).",
+          "Normalizer: lowercase + whitespace collapse (EN); NFKC + strip 爻 labels (ZH).",
+          "Classify mismatches A–E in Fase 2 per ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md.",
+        ];
 
   if (selected === "all" || selected === "wilhelm") {
     const bundle = await loadBundle("wilhelm");

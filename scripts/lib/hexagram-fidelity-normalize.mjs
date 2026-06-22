@@ -66,6 +66,8 @@ export function normalizeHexText(text, translator = "wilhelm") {
     out = out.replace(/[：:]/g, "：");
     out = out.replace(/\s+/g, "");
   } else {
+    out = out.replace(/[™©°]/g, "");
+    out = out.replace(/\s+'\s+/g, " ");
     out = out.replace(/\s*\n+\s*/g, "\n");
     out = out.replace(/[ \t]+/g, " ");
     out = out.replace(/\n{3,}/g, "\n\n");

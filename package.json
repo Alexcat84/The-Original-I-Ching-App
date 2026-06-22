@@ -20,6 +20,8 @@
     "qa:mutation-output": "node scripts/mutation-output-qa.mjs",
     "verify:hexagram-fidelity": "node scripts/verify-hexagram-fidelity.mjs",
     "pdf-gold:preflight": "node scripts/pdf-gold-preflight.mjs",
+    "extract:gold:wilhelm-pdf": "node tools/extract-wilhelm-pdf.mjs",
+    "verify:hexagram-fidelity:pdf-wilhelm": "node scripts/verify-hexagram-fidelity.mjs --gold=pdf-wilhelm --translator=wilhelm",
     "scan:zhouyi-corruption": "node tools/scan-zhouyi-corruption.mjs",
     "ingest:zhouyi": "node tools/ingest-zhouyi-ctext.mjs",
     "ingest:wilhelm": "node tools/ingest-wilhelm.mjs",
