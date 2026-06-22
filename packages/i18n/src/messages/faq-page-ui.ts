@@ -246,7 +246,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "data-reliability",
     question: "How reliable are the I Ching texts provided in the app?",
     answer:
-      "Last audit: 22 June 2026. Oracle texts and changing-line rules are verified against Tier-0 book sources (Wilhelm/Baynes PDF, Legge SBE, Zhou Yi, Huang, Zhu Xi/Adler). See the Fidelity Audits page for methodology, gate results, and the full audit log.",
+      "Last audit: 22 June 2026. Oracle texts verified against Tier-0 sources: Wilhelm/Baynes (Pantheon PDF), Legge (SBE XVI), Zhou Yi (Chinese Text Project / ctext.org), Huang and Zhu Xi/Adler (local PDFs). Changing-line rules verified against Huang and Adler gold. See the Fidelity Audits page for methodology, gate results, and the full audit log.",
     related: ["fidelityAudits"],
   },
   {
@@ -446,7 +446,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "data-reliability",
     question: "¿Qué tan fiables son los textos del I Ching en la aplicación?",
     answer:
-      "Última auditoría: 22 de junio de 2026. Textos del oráculo y reglas de líneas cambiantes verificados contra fuentes libro Tier-0 (PDF Wilhelm/Baynes, Legge SBE, Zhou Yi, Huang, Zhu Xi/Adler). Consulta la página Auditorías de fidelidad para metodología, resultados de gates y el registro completo.",
+      "Última auditoría: 22 de junio de 2026. Textos del oráculo verificados contra fuentes Tier-0: Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project / ctext.org), Huang y Zhu Xi/Adler (PDF locales). Reglas de líneas cambiantes verificadas contra gold Huang y Adler. Consulta la página Auditorías de fidelidad para metodología, resultados de gates y el registro completo.",
     related: ["fidelityAudits"],
   },
   {

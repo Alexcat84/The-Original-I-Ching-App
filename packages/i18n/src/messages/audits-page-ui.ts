@@ -35,6 +35,15 @@ export type AuditsPageUiMessages = {
 
 const REPORTS_EN: AuditReportEntry[] = [
   {
+    id: "zhouyi-freizl-xian-correction-2026-06-21",
+    date: "21 Jun 2026",
+    title: "Zhou Yi — 咸/鹹 glyph correction",
+    summary:
+      "Found and fixed a dataset error from our earlier upstream source (freizl/yijing): hex 31 (Xian / Influence) used 鹹 (salty) instead of 咸. The same wrong glyph also appeared in hex 19 line text, so one character could appear for two hexagrams in the library. freizl/yijing still contains this error today; we re-ingested from the Chinese Text Project (ctext.org), which has 咸 correctly. Result: pass — 514/514 verified vs ctext; corruption scan 0.",
+    status: "closed",
+    statusLabel: "Closed",
+  },
+  {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 Jun 2026",
     title: "Oracle texts — Wilhelm, Legge & Zhou Yi",
@@ -73,6 +82,15 @@ const REPORTS_EN: AuditReportEntry[] = [
 ];
 
 const REPORTS_ES: AuditReportEntry[] = [
+  {
+    id: "zhouyi-freizl-xian-correction-2026-06-21",
+    date: "21 jun 2026",
+    title: "Zhou Yi — corrección de glifo 咸/鹹",
+    summary:
+      "Detectado y corregido un error del dataset intermedio anterior (freizl/yijing): el hex 31 (Influencia / 咸) usaba 鹹 (salado) en lugar de 咸. El mismo glifo erróneo aparecía en líneas del hex 19, de modo que un carácter podía mostrarse en dos hexagramas en la biblioteca. freizl/yijing sigue conteniendo ese error hoy; re-ingestamos desde Chinese Text Project (ctext.org), que tiene 咸 correcto. Resultado: aprobado — 514/514 verificados vs ctext; escáner de corrupción 0.",
+    status: "closed",
+    statusLabel: "Cerrada",
+  },
   {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 jun 2026",
@@ -122,7 +140,7 @@ const EN_BASE: Omit<AuditsPageUiMessages, "reports"> = {
     "Each entry records when we audited, which edition or translation we used as reference, and whether the app passed. Detailed methodology and engineering reports are kept internally — not on this page.",
   oracleTextsHeading: "Oracle texts (Wilhelm, Legge, Zhou Yi)",
   oracleTextsBody:
-    "Last verified: 22 June 2026. Reference editions: Wilhelm/Baynes (Pantheon 1950), James Legge (SBE XVI, 1882), Zhou Yi (Chinese Text Project). Result: pass.",
+    "Last verified: 22 June 2026. Reference editions: Wilhelm/Baynes (Pantheon 1950), James Legge (SBE XVI, 1882), Zhou Yi (Chinese Text Project / ctext.org). Result: pass. We disclose material dataset findings: an earlier Zhou Yi intermediate source (freizl/yijing) had 鹹 instead of 咸 for hex 31 — corrected by re-ingest from ctext (see audit log entry 21 Jun 2026).",
   mutationRulesHeading: "Changing-line reading rules",
   mutationRulesIntro:
     "The app offers two classical systems. Each is checked against its named source book.",
@@ -148,7 +166,7 @@ const ES_BASE: Omit<AuditsPageUiMessages, "reports"> = {
     "Cada entrada indica cuándo auditamos, qué edición o traducción usamos como referencia y si la app aprobó. La metodología detallada y los informes de ingeniería son internos — no aparecen en esta página.",
   oracleTextsHeading: "Textos del oráculo (Wilhelm, Legge, Zhou Yi)",
   oracleTextsBody:
-    "Última verificación: 22 de junio de 2026. Ediciones de referencia: Wilhelm/Baynes (Pantheon 1950), James Legge (SBE XVI, 1882), Zhou Yi (Chinese Text Project). Resultado: aprobado.",
+    "Última verificación: 22 de junio de 2026. Ediciones de referencia: Wilhelm/Baynes (Pantheon 1950), James Legge (SBE XVI, 1882), Zhou Yi (Chinese Text Project / ctext.org). Resultado: aprobado. Divulgamos hallazgos materiales del dataset: una fuente intermedia anterior del Zhou Yi (freizl/yijing) tenía 鹹 en lugar de 咸 en el hex 31 — corregido por re-ingesta desde ctext (ver entrada del registro, 21 jun 2026).",
   mutationRulesHeading: "Reglas de lectura de líneas cambiantes",
   mutationRulesIntro:
     "La app ofrece dos sistemas clásicos. Cada uno se contrasta con su libro fuente indicado.",

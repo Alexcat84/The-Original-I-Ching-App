@@ -35,6 +35,8 @@
     "verify:hexagram-fidelity:pdf-legge": "node scripts/verify-hexagram-fidelity.mjs --gold=pdf-legge --translator=legge",
     "verify:hexagram-fidelity:epub-legge": "node scripts/verify-hexagram-fidelity.mjs --gold=epub-legge --translator=legge",
     "scan:zhouyi-corruption": "node tools/scan-zhouyi-corruption.mjs",
+    "check:hex-glyph-uniqueness": "node tools/check-hex-glyph-uniqueness.mjs",
+    "verify:hexagram-fidelity:zhouyi-ctext": "node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=zhouyi",
     "ingest:zhouyi": "node tools/ingest-zhouyi-ctext.mjs",
     "ingest:wilhelm": "node tools/ingest-wilhelm.mjs",
     "ingest:legge": "node tools/ingest-legge-sacred.mjs",

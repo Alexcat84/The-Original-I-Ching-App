@@ -54,13 +54,18 @@
 
 **Decisión de producto (22 jun 2026):** la única fuente de verdad para fidelidad 1:1 es el **libro físico** (PDF/EPUB local en `tools/source-pdfs/`, gitignored). El manifest versionado es `tools/source-pdfs/manifest.json`.
 
-**Mirrors web** (Parma, sacred-texts, ctext): deprecated como gate de producción; conservados solo como histórico en [`ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md`](ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md) §14.
+**Mirrors web** (Parma, sacred-texts): deprecated como gate de producción; conservados solo como histórico en [`ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md`](ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md) §14.
+
+**Excepción Zhou Yi (decisión Alexis, 22 jun 2026):** gold operativo = **ctext.org** — no PDF 注疏 local. Gate: `verify:hexagram-fidelity:zhouyi-ctext` + `scan:zhouyi-corruption` + `check:hex-glyph-uniqueness`.
 
 **Comandos canónicos:**
 
 ```bash
 npm run verify:hexagram-fidelity:pdf-wilhelm   # Wilhelm vs Pantheon PDF
 npm run verify:hexagram-fidelity:pdf-legge      # Legge vs SBE XVI OCR gold
+npm run verify:hexagram-fidelity:zhouyi-ctext   # Zhou Yi vs ctext.org (514/514)
+npm run scan:zhouyi-corruption                  # 咸→鹹, cross-hex, etiquetas (exit 0)
+npm run check:hex-glyph-uniqueness              # nombres/glyphs únicos por hex 1–64
 npm run audit:huang-rules-vs-pdf-gold
 npm run audit:zhuxi-rules-vs-adler-gold
 npm run sync:wilhelm-oracle-from-pdf-gold      # re-inyección W (solo con PDF local)
@@ -337,26 +342,36 @@ El PDF `zhouyi-zhushu-song-er07.pdf` (影印南宋刊本 + 注疏) mezcla texto 
 
 **Recomendación:** no prometer "verified against our local 注疏 PDF" hasta Fase PDF Zhou Yi. Claim vigente = **ctext.org** + escáner de corrupción.
 
-### H.3 Incidente recordado (hex 32/34?): lo encontrado en git
+### H.3 Incidente biblioteca · mismo glifo en dos hexagramas (cerrado)
 
-No hay evidencia de corrupción en **hex 32 (恆)** o **hex 34 (大壯)**. Probable confusión con **hex 13/14** (pareja) o **31/44**.
+**Síntoma reportado (Alexis):** al buscar o navegar en la **biblioteca**, el mismo carácter chino aparecía asociado a **dos hexagramas distintos**.
 
-**P0 cerrado 21 jun 2026** (dataset intermedio `freizl/yijing`, no el PDF):
+**Causa raíz (dataset `freizl/yijing`, commit `8063006` — lanzamiento biblioteca):** confusión **咸** (Influencia, hex **31**) vs **鹹** (salado, carácter distinto pero visualmente parecido). En freizl:
+
+- Hex **31** tenía `name: "鹹"` y juicio `鹹，亨…` — el **nombre del hexagrama** era el glifo equivocado.
+- Hex **19** (臨) incluía `鹹臨` en líneas — el mismo glifo **鹹** reaparecía en otro hex.
+
+En la UI de biblioteca (nombre + búsqueda por carácter), **鹹** podía mostrarse como titular del hex 31 y también dentro del hex 19 → percepción de “símbolo duplicado entre hexagramas”. No era hex **32/34** (恆/大壯 verificados OK).
+
+**P0 cerrado 21 jun 2026** (re-ingesta **ctext**, no parche sobre freizl ni PDF 注疏):
 
 | Hex | Campo | Error (freizl) | Estado hoy |
 |-----|-------|----------------|------------|
-| **14** | L2 | Texto de hex **13** | ✅ `大車以載，有攸往，無咎。` |
+| **14** | L2 | Texto de hex **13** (`同人於宗`) | ✅ `大車以載，有攸往，無咎。` |
 | **19** | L1-L2 | `鹹臨` vs `咸臨` | ✅ `咸臨，吉無不利。` |
-| **31** | judgment + lines | **鹹** por **咸** | ✅ 咸 correcto |
+| **31** | `name` + judgment + lines | **`鹹` por `咸`** | ✅ `name=咸`, juicio `咸，亨…` |
 | **44** | L5 | Etiqueta `九五：` filtrada | ✅ limpio |
 
-**Commits:** `0e003ea` (ingest ctext), `1fc4cbf` (Fase 3b), `bfbe8f6` (Fase 3d harness). Fix = re-ingesta ctext, no parche manual sobre freizl ni sobre PDF 注疏.
+**Commits:** `0e003ea` (ingest ctext), `1fc4cbf` (Fase 3b), `bfbe8f6` (Fase 3d harness).
+
+**Nota upstream (verificado 22 jun 2026):** `freizl/yijing` `zh-TW/64gua.json` **sigue** con `name: "鹹"` en hex 31 hoy. **ctext.org** tiene **咸** correcto. El error era del dataset intermedio inicial de la app, no del gold ctext actual.
 
 ### H.4 Verificación en vivo (22 jun 2026)
 
 ```bash
-npm run scan:zhouyi-corruption
-node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=zhouyi
+npm run scan:zhouyi-corruption              # TOTAL incidencias: 0
+npm run check:hex-glyph-uniqueness          # dup name / hex_font: []
+npm run verify:hexagram-fidelity:zhouyi-ctext   # 514/514 match (100%)
 ```
 
 ### H.5 Riesgo residual

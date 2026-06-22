@@ -560,7 +560,7 @@ El gate de CI planeado (`verify:hexagram-fidelity` contra snapshots hasheados) *
 | `npm run verify:hexagram-fidelity:mirrors-deprecated` | **OBSOLETO** | Comparaba bundle vs Parma / sacred-texts / ctext |
 | `npm run ingest:wilhelm` (Parma → tier-2 Baynes inject) | **OBSOLETO** para producción | Sobrescribe desde mirror web + inyecta huecos |
 | `npm run ingest:legge` (sacred-texts scrape) | **OBSOLETO** para producción | Gold debe ser EPUB Legge local |
-| `npm run ingest:zhouyi` (ctext scrape) | **OBSOLETO** para producción | Gold debe ser PDF 周易注疏 local |
+| `npm run ingest:zhouyi` (ctext scrape) | **Vigente para Zhou Yi** | Gold operativo ctext.org; excepción a book-primary (PDF 注疏 = reserva académica) |
 | `applyWilhelmBaynesSupplements()` / `resolveWilhelm*ForIngest()` | **Legacy** | Solo útil como histórico; no gate de CI |
 | Claims “cross-verified vs Uni Parma / sacred-texts / ctext” | **Retirados** (Wilhelm actualizado) | Sustituidos por verificación contra edición impresa |
 
@@ -615,7 +615,7 @@ npm run verify:hexagram-fidelity    # Wilhelm 513/513 vs libro (alias pdf-wilhel
 | Traductor | Gold local | Formato | Estado |
 |-----------|------------|---------|--------|
 | **Legge** | SBE XVI Oxford PDF (manifest) + EPUB cross-check | pdf-ocr + epub | OCR pipeline ✅ · parser tuning · gate PDF pendiente |
-| **Zhou Yi** | `zhouyi-zhushu-song-er07.pdf` | PDF 注疏 | PDF en manifest · parser pendiente |
+| **Zhou Yi** | ctext.org (Chinese Text Project) | API + HTML 大象 | **514/514 cerrado** · `scan:zhouyi-corruption` + `check:hex-glyph-uniqueness` · PDF 注疏 local = futuro opcional |
 
 ### 14.6 — Comandos npm (post-2026-06-22)
 
@@ -626,8 +626,11 @@ npm run verify:hexagram-fidelity    # Wilhelm 513/513 vs libro (alias pdf-wilhel
 | `verify:hexagram-fidelity:pdf-legge` | Legge vs SBE XVI scan (OCR) |
 | `verify:hexagram-fidelity:epub-legge` | Legge vs EPUB cross-check |
 | `extract:gold:legge-sbe-pdf` | OCR + JSON gold Legge SBE |
-| `verify:hexagram-fidelity:mirrors-deprecated` | Obsoleto — no usar en CI ni cierre de release |
+| `verify:hexagram-fidelity:zhouyi-ctext` | Zhou Yi vs ctext.org (514/514) |
+| `scan:zhouyi-corruption` | Gate corrupción Zhou Yi (咸→鹹, cross-hex, etc.) |
+| `check:hex-glyph-uniqueness` | Nombres/glyphs únicos por hex 1–64 (biblioteca) |
+| `verify:hexagram-fidelity:mirrors-deprecated` | Obsoleto para W/L — no usar en CI; Zhou Yi usa `verify:hexagram-fidelity:zhouyi-ctext` |
 
 ---
 
-*Actualizado 2026-06-22 · Wilhelm book-primary 100% · Legge SBE OCR pipeline · gate canónico EPUB cross-check · mirrors deprecated.*
+*Actualizado 2026-06-22 · Wilhelm book-primary 100% · Legge SBE OCR 514/514 · Zhou Yi ctext 514/514 · mirrors deprecated para W/L.*

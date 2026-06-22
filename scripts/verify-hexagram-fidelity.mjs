@@ -333,7 +333,9 @@ async function main() {
           : leggeUsesEpubGold(goldMode)
             ? "Legge: James Legge EPUB cross-check (sacred-texts re-pack)."
             : null,
-        goldMode === "books" ? "Zhou Yi: pending local PDF 注疏 parser." : null,
+        goldMode === "books"
+          ? "Zhou Yi: operational gold = ctext.org (npm run verify:hexagram-fidelity:zhouyi-ctext). Local 注疏 PDF is academic reserve, not book-primary gate."
+          : null,
       ].filter(Boolean);
 
   if (isSelected("wilhelm") && (wilhelmUsesBookGold(goldMode) || usesMirrorGold(goldMode))) {
