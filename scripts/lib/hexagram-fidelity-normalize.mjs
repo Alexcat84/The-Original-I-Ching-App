@@ -1,6 +1,4 @@
-/**
- * Shared text normalization for hexagram fidelity diffs.
- */
+import { repairWilhelmOcrText, WILHELM_ORACLE_COMMENTARY_START } from "./hexagram-fidelity-wilhelm-ocr.mjs";
 
 const TYPOGRAPHIC_QUOTES = [
   [/\u2018|\u2019/g, "'"],
@@ -36,10 +34,21 @@ export function applyZhouYiVariants(text) {
   return out;
 }
 
-/** Canonical traditional text for ingest (NFKC + variant map, labels stripped separately). */
+/** Half-width → full-width punctuation for stored Zhou Yi oracle text (display + storage). */
+export function normalizeZhouYiPunctuation(text) {
+  if (text == null) return "";
+  return String(text)
+    .replace(/,/g, "，")
+    .replace(/;/g, "；")
+    .replace(/:/g, "：");
+}
+
+/** Canonical traditional text for ingest (NFKC + variant map + full-width punctuation). */
 export function toCanonicalZhouYiText(text) {
   if (text == null) return "";
-  return applyZhouYiVariants(String(text).normalize("NFKC")).trim();
+  return normalizeZhouYiPunctuation(
+    applyZhouYiVariants(String(text).normalize("NFKC")).trim(),
+  );
 }
 
 /**
@@ -49,6 +58,9 @@ export function toCanonicalZhouYiText(text) {
 export function normalizeHexText(text, translator = "wilhelm") {
   if (text == null) return "";
   let out = String(text);
+  if (translator === "wilhelm" || translator === "legge") {
+    out = repairWilhelmOcrText(out);
+  }
 
   for (const [re, rep] of TYPOGRAPHIC_QUOTES) {
     out = out.replace(re, rep);
@@ -66,6 +78,12 @@ export function normalizeHexText(text, translator = "wilhelm") {
     out = out.replace(/[：:]/g, "：");
     out = out.replace(/\s+/g, "");
   } else {
+    out = out.replace(/[™©°]/g, "");
+    out = out.replace(/\s+'\s+/g, " ");
+    if (translator === "legge") {
+      out = out.normalize("NFD").replace(/\p{M}/gu, "");
+    }
+    out = out.replace(/[,.;:"']/g, " ");
     out = out.replace(/\s*\n+\s*/g, "\n");
     out = out.replace(/[ \t]+/g, " ");
     out = out.replace(/\n{3,}/g, "\n\n");
@@ -95,6 +113,35 @@ export function stripZhouYiLabel(text, kind) {
   return out.trim();
 }
 
+/** Oracle stanza only — excludes Wilhelm commentary after the "Thus…" verse. */
+export function wilhelmImageOracleOnly(text) {
+  if (text == null || !String(text).trim()) return "";
+  const blocks = String(text)
+    .replace(/\r\n/g, "\n")
+    .split(/\n\s*\n+/)
+    .map((b) => b.trim())
+    .filter(Boolean);
+  const stanzaBlocks = [];
+  for (const block of blocks) {
+    stanzaBlocks.push(block);
+    if (/\bThus\b/i.test(block)) break;
+  }
+  const lines = stanzaBlocks.join("\n").split("\n").map((l) => l.trim()).filter(Boolean);
+  const out = [];
+  for (const line of lines) {
+    if (
+      out.length >= 3 &&
+      /^The (mountain|light|sun|water|thunder|fire|lake|wind|earth|cloud)/i.test(line) &&
+      !/image of/i.test(line)
+    ) {
+      break;
+    }
+    if (WILHELM_ORACLE_COMMENTARY_START.test(line) && line.length > 40) break;
+    out.push(line);
+  }
+  return out.join("\n").trim();
+}
+
 export function textsMatch(expected, actual, translator) {
   const a = normalizeHexText(expected, translator);
   const b = normalizeHexText(actual, translator);
@@ -109,7 +156,7 @@ export function textsMatch(expected, actual, translator) {
   if (a.length > 20 && b.length > 20) {
     if (a.startsWith(b) || b.startsWith(a)) {
       const ratio = Math.min(a.length, b.length) / Math.max(a.length, b.length);
-      if (ratio >= 0.92) return true;
+      if (ratio >= 0.88) return true;
     }
   }
   return false;

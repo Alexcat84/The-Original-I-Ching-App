@@ -50,7 +50,7 @@ function stripTags(s) {
     .trim();
 }
 
-function preprocessLeggeHtml(html) {
+export function preprocessLeggeHtml(html) {
   return html
     .replace(/<(i|b|em|strong)\b[^>]*>/gi, "")
     .replace(/<\/(i|b|em|strong)>/gi, "");
@@ -171,6 +171,12 @@ function findThwanJudgment(tokens) {
   return "";
 }
 
+function normalizeLineParagraphText(text) {
+  return String(text)
+    .replace(/^(\d+)\.\s*(?:\r?\n+\s*)?\1\.\s*/, "$1. ")
+    .trim();
+}
+
 function parseLineEntries(tokens) {
   const lineByPos = {};
   let supernumerary = "";
@@ -182,14 +188,15 @@ function parseLineEntries(tokens) {
     }
 
     if (t.tag !== "p") continue;
-    if (t.text.startsWith("Footnotes") || /^page_\d+/i.test(t.text)) continue;
+    const lineText = normalizeLineParagraphText(t.text);
+    if (lineText.startsWith("Footnotes") || /^page_\d+/i.test(lineText)) continue;
 
-    const numbered = t.text.match(/^(\d+|S|[IVXLCDM]+)\s*\.\s*(?:\.\s*)?([\s\S]+)$/i);
+    const numbered = lineText.match(/^(\d+|S|[IVXLCDM]+)\s*\.\s*(?:\.\s*)?([\s\S]+)$/i);
     if (numbered && !supernumerary && isSupernumeraryStatement(numbered[2])) {
       supernumerary = numbered[2].trim();
       continue;
     }
-    if (numbered && isNumberedLine(t.text)) {
+    if (numbered && isNumberedLine(lineText)) {
       const idx = lineIndexFromNumber(numbered[1]);
       const body = numbered[2].trim();
       if (idx >= 1 && idx <= 6) lineByPos[idx] = body;
@@ -197,7 +204,7 @@ function parseLineEntries(tokens) {
       continue;
     }
 
-    const unprefixed = parseUnprefixedLine(t.text);
+    const unprefixed = parseUnprefixedLine(lineText);
     if (unprefixed && !lineByPos[unprefixed.pos]) {
       lineByPos[unprefixed.pos] = unprefixed.body;
       continue;
@@ -220,7 +227,7 @@ export function looksLikeLeggeJudgment(text) {
   if (isLineCommentary(text)) return false;
   return (
     /\((?:represents|indicates|suggests)\b/i.test(text) ||
-    /\b(?:represents|indicates|intimates)\b/i.test(text) ||
+    /\b(?:represents|indicates how|indicates|intimates)\b/i.test(text) ||
     /\bshows\b/i.test(text) ||
     /\bthere will be good fortune\b/i.test(text)
   );

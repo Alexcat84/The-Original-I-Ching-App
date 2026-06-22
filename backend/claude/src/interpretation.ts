@@ -430,7 +430,11 @@ HISTORICAL EXCEPTION (explicitly permitted):
       ? `INTERPRETED_LINES (AUTHORITATIVE — quote and interpret ONLY these):
 ${t.selectedLineTexts.map(formatLineEntry).join("\n")}
 INTERPRETATION_LINE_COUNT: ${t.selectedLineTexts.length}`
-      : t.specialYaoText
+      : t.readBothJudgments && t.specialYaoText
+        ? `INTERPRETED_LINES: (none — Zhu Xi Qian/Kun all-changing)
+INTERPRETATION_LINE_COUNT: 0
+DUAL JUDGMENT PROGNOSTICATION: Quote SPECIAL YAO (用九/用六) AND both primary and transformed hexagram judgments; interpret their interrelationship per MUTATION RULE. Both judgments are quoted in «El juicio» / «The judgment» and «El trazado» / «The turning pattern» — here synthesize how they relate to the special yao and the question.`
+        : t.specialYaoText
         ? `INTERPRETED_LINES: (none — use SPECIAL YAO below)
 INTERPRETATION_LINE_COUNT: 0`
         : t.judgmentEmphasis

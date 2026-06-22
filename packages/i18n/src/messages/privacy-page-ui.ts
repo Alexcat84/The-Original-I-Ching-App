@@ -83,7 +83,7 @@ const PRIVACY_EN: PrivacyPageMessages = {
   s4AccountDeleteLinkLabel: "account deletion page",
   s4AccountDeleteBodyAfterLink: ".",
   s5Title: "5) Processors and transfers",
-  s5p1: "To operate the service, we use technical providers for crash reporting and diagnostics, purchase and subscription management, and — on Android — device attestation for fraud prevention and security. We also use providers for authentication, database, transactional email, AI, and payments. We only send each provider the data strictly necessary to run its function.",
+  s5p1: "To operate the service, we use technical providers for crash reporting and diagnostics, purchase and subscription management, and (on Android) device attestation for fraud prevention and security. We also use providers for authentication, database, transactional email, AI, and payments. We only send each provider the data strictly necessary to run its function.",
   s5p2: "Some providers may process data in other countries. When safeguards are required for international transfers, we use recognized mechanisms (such as standard contractual clauses or other valid tools at the time), unless another basis applies.",
   s6Title: "6) Payments and tokens",
   s6Body:
@@ -149,7 +149,7 @@ const PRIVACY_ES: PrivacyPageMessages = {
   s4AccountDeleteLinkLabel: "página de eliminación de cuenta",
   s4AccountDeleteBodyAfterLink: ".",
   s5Title: "5) Proveedores y transferencias",
-  s5p1: "Para operar el servicio usamos proveedores técnicos de reporte de errores y diagnósticos, gestión de compras y suscripciones, y —en Android— atestación de dispositivo para prevención de fraude y seguridad. También usamos proveedores de autenticación, base de datos, email transaccional, IA y pagos. Solo enviamos a cada proveedor los datos estrictamente necesarios para ejecutar su función.",
+  s5p1: "Para operar el servicio usamos proveedores técnicos de reporte de errores y diagnósticos, gestión de compras y suscripciones, y (en Android) atestación de dispositivo para prevención de fraude y seguridad. También usamos proveedores de autenticación, base de datos, email transaccional, IA y pagos. Solo enviamos a cada proveedor los datos estrictamente necesarios para ejecutar su función.",
   s5p2: "Algunos proveedores pueden tratar datos en otros países. Cuando se requieran garantías para transferencias internacionales, utilizamos mecanismos reconocidos (como cláusulas contractuales tipo u otras herramientas válidas en su momento), salvo que exista otra base aplicable.",
   s6Title: "6) Pagos y tokens",
   s6Body:
@@ -214,7 +214,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Podes manter conversas no teu ambiente gerando um PDF do fio ativo ou descarregando a imagem de uma leitura, quando quiseres, no painel Opções. É a tua decisão: o ficheiro fica sob o teu controlo e não substitui o histórico no serviço até eliminares essas conversas na app.",
     s5Title: "5) Subcontratantes e transferências",
-    s5p1: "Para operar o serviço usamos fornecedores técnicos de relatório de erros e diagnósticos, gestão de compras e subscrições, e — no Android — atestação de dispositivo para prevenção de fraude e segurança. Também usamos fornecedores de autenticação, base de dados, email transacional, IA e pagamentos. Só enviamos a cada fornecedor os dados estritamente necessários para a sua função.",
+    s5p1: "Para operar o serviço usamos fornecedores técnicos de relatório de erros e diagnósticos, gestão de compras e subscrições, e (no Android) atestação de dispositivo para prevenção de fraude e segurança. Também usamos fornecedores de autenticação, base de dados, email transacional, IA e pagamentos. Só enviamos a cada fornecedor os dados estritamente necessários para a sua função.",
     s5p2: "Alguns fornecedores podem tratar dados noutros países. Quando forem necessárias salvaguardas para transferências internacionais, usamos mecanismos reconhecidos (como cláusulas contratuais-tipo), salvo outra base aplicável.",
     s6Title: "6) Pagamentos e tokens",
     s6Body:
@@ -275,7 +275,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Vous pouvez conserver des conversations sur votre environnement en générant un PDF du fil actif ou en téléchargeant l’image d’une lecture, quand vous le souhaitez, depuis Options. C’est votre choix : le fichier reste sous votre contrôle et ne remplace pas l’historique du service tant que vous n’avez pas supprimé ces conversations dans l’app.",
     s5Title: "5) Sous-traitants et transferts",
-    s5p1: "Pour exploiter le service, nous utilisons des prestataires techniques pour le rapport d’incidents et les diagnostics, la gestion des achats et abonnements, et — sur Android — l’attestation d’appareil pour la prévention de la fraude et la sécurité. Nous utilisons aussi des prestataires d’authentification, de base de données, d’e-mail transactionnel, d’IA et de paiement. Nous ne transmettons à chaque prestataire que les données strictement nécessaires à sa fonction.",
+    s5p1: "Pour exploiter le service, nous utilisons des prestataires techniques pour le rapport d’incidents et les diagnostics, la gestion des achats et abonnements, et (sur Android) l’attestation d’appareil pour la prévention de la fraude et la sécurité. Nous utilisons aussi des prestataires d’authentification, de base de données, d’e-mail transactionnel, d’IA et de paiement. Nous ne transmettons à chaque prestataire que les données strictement nécessaires à sa fonction.",
     s5p2: "Certains prestataires peuvent traiter des données dans d’autres pays. Lorsque des garanties sont nécessaires pour les transferts internationaux, nous utilisons des mécanismes reconnus (clauses contractuelles types, etc.), sauf autre base applicable.",
     s6Title: "6) Paiements et jetons",
     s6Body:
@@ -336,7 +336,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Sie können Gespräche in Ihrer Umgebung behalten, indem Sie ein PDF des aktiven Threads erzeugen oder ein Lesebild aus Optionen herunterladen. Die Datei liegt unter Ihrer Kontrolle und ersetzt den Dienstverlauf nicht, bis Sie die Chats in der App löschen.",
     s5Title: "5) Auftragsverarbeiter und Übermittlungen",
-    s5p1: "Zum Betrieb des Dienstes nutzen wir technische Anbieter für Absturzberichte und Diagnosen, die Verwaltung von Käufen und Abonnements sowie — auf Android — die Geräteattestierung zur Betrugsprävention und Sicherheit. Wir nutzen außerdem Anbieter für Authentifizierung, Datenbank, Transaktions-E-Mail, KI und Zahlungen. Wir übermitteln jedem Anbieter nur die für seine Funktion unbedingt erforderlichen Daten.",
+    s5p1: "Zum Betrieb des Dienstes nutzen wir technische Anbieter für Absturzberichte und Diagnosen, die Verwaltung von Käufen und Abonnements sowie (auf Android) die Geräteattestierung zur Betrugsprävention und Sicherheit. Wir nutzen außerdem Anbieter für Authentifizierung, Datenbank, Transaktions-E-Mail, KI und Zahlungen. Wir übermitteln jedem Anbieter nur die für seine Funktion unbedingt erforderlichen Daten.",
     s5p2: "Manche Anbieter verarbeiten in anderen Ländern. Wenn Schutzmaßnahmen für internationale Übermittlungen nötig sind, nutzen wir anerkannte Instrumente (z. B. Standardvertragsklauseln), sofern keine andere Grundlage greift.",
     s6Title: "6) Zahlungen und Token",
     s6Body:
@@ -397,7 +397,7 @@ const PRIVACY_BY_LOCALE: Record<AppLocale, PrivacyPageMessages> = {
     s4PdfBody:
       "Puoi conservare conversazioni generando un PDF del thread attivo o scaricando l’immagine di una lettura da Opzioni. È tua decisione: il file resta sotto il tuo controllo e non sostituisce la cronologia del servizio finché non elimini quei chat nell’app.",
     s5Title: "5) Responsabili del trattamento e trasferimenti",
-    s5p1: "Per gestire il servizio usiamo fornitori tecnici per il reporting crash e la diagnostica, la gestione di acquisti e abbonamenti, e — su Android — l’attestazione del dispositivo per la prevenzione delle frodi e la sicurezza. Usiamo anche fornitori di autenticazione, database, email transazionale, IA e pagamenti. Trasmettiamo a ciascun fornitore solo i dati strettamente necessari per la sua funzione.",
+    s5p1: "Per gestire il servizio usiamo fornitori tecnici per il reporting crash e la diagnostica, la gestione di acquisti e abbonamenti, e (su Android) l’attestazione del dispositivo per la prevenzione delle frodi e la sicurezza. Usiamo anche fornitori di autenticazione, database, email transazionale, IA e pagamenti. Trasmettiamo a ciascun fornitore solo i dati strettamente necessari per la sua funzione.",
     s5p2: "Alcuni fornitori possono trattare dati in altri Paesi. Quando servono garanzie per trasferimenti internazionali, usiamo meccanismi riconosciuti (es. clausole contrattuali standard), salvo altra base applicabile.",
     s6Title: "6) Pagamenti e token",
     s6Body:

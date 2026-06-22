@@ -8,6 +8,8 @@ export type DocNavUiMessages = {
   oracleHome: string;
   /** FAQ page (/faqs). */
   faqs: string;
+  /** Public fidelity audits (/audits). */
+  fidelityAudits: string;
   /** About / build info page (/about), short nav label. */
   aboutShort: string;
   /** Link label for the in-app Token Center (opened from the app header). */
@@ -35,6 +37,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Volver al oráculo",
     oracleHome: "Oráculo",
     faqs: "Preguntas frecuentes",
+    fidelityAudits: "Auditorías de fidelidad",
     aboutShort: "Sobre la app",
     guidePlansSection: "Centro de tokens",
     guideFirstSteps: "Primeros pasos (guía)",
@@ -54,6 +57,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Back to oracle",
     oracleHome: "Oracle",
     faqs: "FAQ",
+    fidelityAudits: "Fidelity audits",
     aboutShort: "About",
     guidePlansSection: "Token Center",
     guideFirstSteps: "Getting started (guide)",
@@ -73,6 +77,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Voltar ao oráculo",
     oracleHome: "Oráculo",
     faqs: "Perguntas frequentes",
+    fidelityAudits: "Auditorias de fidelidade",
     aboutShort: "Sobre a app",
     guidePlansSection: "Centro de tokens",
     guideFirstSteps: "Primeiros passos (guia)",
@@ -92,6 +97,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Retour à l’oracle",
     oracleHome: "Oracle",
     faqs: "FAQ",
+    fidelityAudits: "Audits de fidélité",
     aboutShort: "À propos",
     guidePlansSection: "Centre de tokens",
     guideFirstSteps: "Premiers pas (guide)",
@@ -111,6 +117,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Zurück zum Orakel",
     oracleHome: "Orakel",
     faqs: "FAQ",
+    fidelityAudits: "Fidelitätsprüfungen",
     aboutShort: "Über die App",
     guidePlansSection: "Token-Center",
     guideFirstSteps: "Erste Schritte (Leitfaden)",
@@ -130,6 +137,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← Torna all’oracolo",
     oracleHome: "Oracolo",
     faqs: "FAQ",
+    fidelityAudits: "Audit di fedeltà",
     aboutShort: "Informazioni",
     guidePlansSection: "Centro token",
     guideFirstSteps: "Primi passi (guida)",
@@ -149,6 +157,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← オラクルに戻る",
     oracleHome: "オラクル",
     faqs: "よくある質問",
+    fidelityAudits: "忠実度監査",
     aboutShort: "アプリについて",
     guidePlansSection: "トークンセンター",
     guideFirstSteps: "はじめに（ガイド）",
@@ -168,6 +177,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← 返回占卜",
     oracleHome: "占卜首页",
     faqs: "常见问题",
+    fidelityAudits: "保真审计",
     aboutShort: "关于应用",
     guidePlansSection: "代币中心",
     guideFirstSteps: "入门（指南）",
@@ -187,6 +197,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← 오라클로 돌아가기",
     oracleHome: "오라클",
     faqs: "자주 묻는 질문",
+    fidelityAudits: "충실도 감사",
     aboutShort: "앱 정보",
     guidePlansSection: "토큰 센터",
     guideFirstSteps: "시작하기(안내)",
@@ -206,6 +217,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← العودة إلى الأوراكل",
     oracleHome: "الأوراكل",
     faqs: "أسئلة شائعة",
+    fidelityAudits: "تدقيقات المطابقة",
     aboutShort: "حول",
     guidePlansSection: "مركز التوكنات",
     guideFirstSteps: "البدء (الدليل)",
@@ -225,6 +237,7 @@ const DOC_NAV_UI: Record<AppLocale, DocNavUiMessages> = {
     backToOracle: "← ओरेकल पर वापस",
     oracleHome: "ओरेकल",
     faqs: "अक्सर पूछे जाने वाले प्रश्न",
+    fidelityAudits: "निष्ठा ऑडिट",
     aboutShort: "परिचय",
     guidePlansSection: "टोकन केंद्र",
     guideFirstSteps: "शुरुआत करना (मार्गदर्शिका)",

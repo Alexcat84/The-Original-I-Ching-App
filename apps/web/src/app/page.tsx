@@ -5944,6 +5944,7 @@ export default function HomePage() {
                           {docNav.userGuide}
                         </Link>
                         <Link href="/notes">{docNav.methodNotesLong}</Link>
+                        <Link href="/audits">{docNav.fidelityAudits}</Link>
                         <Link href="/privacy">{docNav.privacyPolicy}</Link>
                         <Link href="/terms">{docNav.termsOfService}</Link>
                         <Link href="/faqs">{docNav.faqs}</Link>

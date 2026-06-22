@@ -84,7 +84,7 @@ export const WILHELM_BAYNES_LINE_SUPPLEMENTS = {
  * @returns {{ judgment: string; sources: string[] } | null}
  */
 export function getWilhelmBaynesJudgmentSupplement(hex) {
-  return WILHELM_BAYNES_JUDGLEMENT_SUPPLEMENTS[hex] ?? null;
+  return WILHELM_BAYNES_JUDGMENT_SUPPLEMENTS[hex] ?? null;
 }
 
 /**

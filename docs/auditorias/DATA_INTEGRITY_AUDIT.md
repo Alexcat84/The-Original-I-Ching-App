@@ -2,7 +2,33 @@
 
 This document records the 1:1 fidelity audits performed on the three translator bundles in `@iching-oracle/iching-data`.
 
-**Master audit (open plan and harness):** [ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md](./ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md)
+**Master audit (open plan and harness):** [ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md](./ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md) — **§14 book-primary (2026-06-22)** es la política vigente de verificación.
+
+---
+
+## Política vigente · book-primary + ctext Zhou Yi (2026-06-22)
+
+Wilhelm y Legge: fidelidad 1:1 contra **ediciones locales** (`tools/source-pdfs/`, ver `manifest.json`). Mirrors web (Parma, sacred-texts) **obsoletos** como gate — ver §14 del master audit.
+
+**Zhou Yi (excepción deliberada):** gold operativo = **ctext.org** (Chinese Text Project), no PDF 注疏 local. Detalle e incidente 咸/鹹: [`FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`](./FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md) §Parte H.
+
+**Gate canónico Wilhelm + Legge (cerrado):**
+
+```bash
+npm run build:data
+npm run verify:hexagram-fidelity   # 513/513 Wilhelm + 514/514 Legge vs libros locales
+```
+
+**Gate canónico Zhou Yi (cerrado):**
+
+```bash
+npm run build:data
+npm run scan:zhouyi-corruption                  # exit 0
+npm run check:hex-glyph-uniqueness              # sin nombres/glyphs duplicados
+npm run verify:hexagram-fidelity:zhouyi-ctext   # 514/514 vs ctext.org
+```
+
+Reporte Wilhelm/Legge: `reports/hexagram-fidelity-2026-06-22T01-59-28-099Z.json`
 
 ---
 
@@ -60,6 +86,12 @@ npm run scan:zhouyi-corruption   # gate Zhou Yi = 0
 
 ---
 
+## Precedente · biblioteca Zhou Yi 咸/鹹 (2026-06-21)
+
+Dataset intermedio `freizl/yijing` (commit `8063006`): hex **31** llevaba `name: "鹹"` (salado) en lugar de **`咸`** (Influencia); hex **19** repetía **鹹** en `鹹臨`. En la biblioteca, el mismo glifo podía asociarse a dos hexagramas al buscar o navegar. Cierre: re-ingesta desde **ctext.org** (`0e003ea`); gates actuales confirman 0 corrupción y nombres únicos.
+
+---
+
 ## Precedente · hex 23 metadata (2026-05-10)
 
 Corrección puntual del trigrama inferior en metadata Wilhelm (hex 23: Kūn, no Lì). Precedente válido; la auditoría 2026-06-21 es la referencia actual para fidelidad literaria 1:1.
@@ -74,6 +106,6 @@ Corrección puntual del trigrama inferior en metadata Wilhelm (hex 23: Kūn, no 
 
 ## Ongoing reliability
 
-Los bundles se regeneran con `npm run build:data` desde los ingesters gold-aligned (`tools/ingest-wilhelm.mjs`, `tools/ingest-legge-sacred.mjs`, `tools/ingest-zhouyi-ctext.mjs`). El harness `npm run verify:hexagram-fidelity` debe pasar antes de promover cambios de dataset.
+Wilhelm/Legge: ingesters book-primary (`sync:*-from-pdf-gold`, etc.). Zhou Yi: `tools/ingest-zhouyi-ctext.mjs` → gold **ctext.org**. Antes de promover cambios de dataset: `verify:hexagram-fidelity` (W+L) y, si tocó Zhou Yi, `scan:zhouyi-corruption` + `verify:hexagram-fidelity:zhouyi-ctext`.
 
-*Last 1:1 audit date: 21 June 2026*
+*Last 1:1 audit date: 22 June 2026 (Zhou Yi ctext + W/L PDF gates)*

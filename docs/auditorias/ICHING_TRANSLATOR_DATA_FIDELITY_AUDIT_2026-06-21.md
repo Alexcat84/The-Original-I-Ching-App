@@ -545,3 +545,92 @@ El gate de CI planeado (`verify:hexagram-fidelity` contra snapshots hasheados) *
 ---
 
 *Auditoría abierta 2026-06-21. Fase 3 remediación 2026-06-21. Fase 3b parser gold 2026-06-21 (Legge+Zhou Yi 100%). Fase 3c tier-2 Baynes hex 56 → Wilhelm **514/514 (100%)**. Fase 3d (re-verificación independiente) → regresión real de 6 campos encontrada y corregida; los tres traductores **514/514 (100%) genuino**, confirmado por `index.test.ts` y por escaneo manual de los 576 campos, sin matches vacíos.*
+
+---
+
+## 14. Política book-primary · Fase PDF (2026-06-22)
+
+**Rama:** `feat/pdf-gold-verification`  
+**Decisión de producto (Alexis, 2026-06-22):** la **única fuente de verdad** para fidelidad 1:1 es el **libro físico** (PDF/EPUB local en `tools/source-pdfs/`). El dataset (`scripts/iching_*_translation.mjs` → `npm run build:data`) se compara **solo** contra el texto extraído de esa edición. **No más verificaciones contra fuentes secundarias web** ni inyección de suplementos desde mirrors.
+
+### 14.1 — Qué queda obsoleto
+
+| Componente | Estado | Motivo |
+|------------|--------|--------|
+| `npm run verify:hexagram-fidelity:mirrors-deprecated` | **OBSOLETO** | Comparaba bundle vs Parma / sacred-texts / ctext |
+| `npm run ingest:wilhelm` (Parma → tier-2 Baynes inject) | **OBSOLETO** para producción | Sobrescribe desde mirror web + inyecta huecos |
+| `npm run ingest:legge` (sacred-texts scrape) | **OBSOLETO** para producción | Gold debe ser EPUB Legge local |
+| `npm run ingest:zhouyi` (ctext scrape) | **Vigente para Zhou Yi** | Gold operativo ctext.org; excepción a book-primary (PDF 注疏 = reserva académica) |
+| `applyWilhelmBaynesSupplements()` / `resolveWilhelm*ForIngest()` | **Legacy** | Solo útil como histórico; no gate de CI |
+| Claims “cross-verified vs Uni Parma / sacred-texts / ctext” | **Retirados** (Wilhelm actualizado) | Sustituidos por verificación contra edición impresa |
+
+Los scripts legacy **permanecen en el repo** como referencia arqueológica y cross-check manual puntual, pero **no definen el gate de calidad** ni deben ejecutarse en el flujo normal de cierre de dataset.
+
+### 14.2 — Gate canónico (vigente)
+
+```bash
+npm run pdf-gold:preflight          # PDF/EPUB locales presentes (manifest)
+npm run extract:gold:wilhelm-pdf    # cache gold JSON desde PDF Pantheon
+npm run build:data
+npm run verify:hexagram-fidelity    # Wilhelm 513/513 vs libro (alias pdf-wilhelm)
+```
+
+**Flujo:** libro → parser gold → `compare(bundle, gold)` → corregir `iching_*_translation.mjs` → `build:data` → re-verify hasta 100%.
+
+**Overrides foto-verificados** (`hexagram-fidelity-wilhelm-pdf-verified.mjs`): solo cuando `pdftotext` corrompe un pasaje; el texto sigue siendo del **mismo libro físico**, no de web.
+
+### 14.3 — Wilhelm · cierre Fase PDF
+
+| Campo | Detalle |
+|-------|---------|
+| **Edición gold** | Wilhelm/Baynes 1950, Pantheon (Bollingen XIX) — `wilhelm-baynes-1950-pantheon.pdf` |
+| **Parser** | `scripts/lib/hexagram-fidelity-wilhelm-pdf.mjs` + OCR repairs + trim comentario Wilhelm |
+| **Resultado** | **513/513 (100%)** — `reports/hexagram-fidelity-2026-06-22T01-52-32-542Z.json` |
+| **Remediación** | Correcciones directas en `scripts/iching_wilhelm_translation.mjs` |
+
+### 14.3b — Legge · cierre Fase EPUB (2026-06-22)
+
+| Campo | Detalle |
+|-------|---------|
+| **Edición gold** | James Legge, SBE XVI — `The Yi King or, Book of Changes -- James Legge.epub` |
+| **Parser** | `hexagram-fidelity-legge-epub.mjs` (reutiliza lógica sacred + normalización EPUB + Great Symbolism icap2) |
+| **Sync** | `npm run sync:legge-oracle-from-epub` → `iching_legge_translation.mjs` |
+| **Resultado** | **514/514 (100%)** — `reports/hexagram-fidelity-2026-06-22T01-59-15-175Z.json` |
+| **Gate combinado** | `npm run verify:hexagram-fidelity` → Wilhelm PDF + Legge EPUB (**1027/1027**) |
+
+### 14.4 — Legge · migración gold SBE Oxford scan (2026-06-22, en curso)
+
+| Campo | Detalle |
+|-------|---------|
+| **Edición gold (manifest)** | SBE XVI — `16_ The Sacred Books of China… Oxford University Press.pdf` (Google Books scan, **solo OCR**) |
+| **Cross-check** | EPUB sacred-texts re-pack → `fileCrossCheckEpub` en manifest |
+| **Pipeline** | `legge-sbe-pdf-ocr.mjs` → cache `tools/output/fidelity-gold/legge-sbe-{pdf-full,symbolism}.txt` → `hexagram-fidelity-legge-sbe-pdf.mjs` |
+| **Calibración OCR** | Texto §I pp.86–240 · Great Symbolism pp.296–420 |
+| **Extract** | `npm run extract:gold:legge-sbe-pdf` → `legge-sbe-pdf-gold.json` |
+| **Verify** | `npm run verify:hexagram-fidelity:pdf-legge` (iterativo; parser OCR aún ≠ 100%) |
+| **Gate canónico** | `verify:hexagram-fidelity` sigue **Wilhelm PDF + Legge EPUB** hasta cierre parser SBE |
+
+### 14.5 — Próximas fases (mismo modelo)
+
+| Traductor | Gold local | Formato | Estado |
+|-----------|------------|---------|--------|
+| **Legge** | SBE XVI Oxford PDF (manifest) + EPUB cross-check | pdf-ocr + epub | OCR pipeline ✅ · parser tuning · gate PDF pendiente |
+| **Zhou Yi** | ctext.org (Chinese Text Project) | API + HTML 大象 | **514/514 cerrado** · `scan:zhouyi-corruption` + `check:hex-glyph-uniqueness` · PDF 注疏 local = futuro opcional |
+
+### 14.6 — Comandos npm (post-2026-06-22)
+
+| Comando | Rol |
+|---------|-----|
+| `verify:hexagram-fidelity` | **Canónico** — Wilhelm PDF + Legge EPUB |
+| `verify:hexagram-fidelity:pdf-wilhelm` | Wilhelm vs Pantheon PDF |
+| `verify:hexagram-fidelity:pdf-legge` | Legge vs SBE XVI scan (OCR) |
+| `verify:hexagram-fidelity:epub-legge` | Legge vs EPUB cross-check |
+| `extract:gold:legge-sbe-pdf` | OCR + JSON gold Legge SBE |
+| `verify:hexagram-fidelity:zhouyi-ctext` | Zhou Yi vs ctext.org (514/514) |
+| `scan:zhouyi-corruption` | Gate corrupción Zhou Yi (咸→鹹, cross-hex, etc.) |
+| `check:hex-glyph-uniqueness` | Nombres/glyphs únicos por hex 1–64 (biblioteca) |
+| `verify:hexagram-fidelity:mirrors-deprecated` | Obsoleto para W/L — no usar en CI; Zhou Yi usa `verify:hexagram-fidelity:zhouyi-ctext` |
+
+---
+
+*Actualizado 2026-06-22 · Wilhelm book-primary 100% · Legge SBE OCR 514/514 · Zhou Yi ctext 514/514 · mirrors deprecated para W/L.*

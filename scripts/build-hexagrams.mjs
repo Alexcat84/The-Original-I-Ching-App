@@ -156,8 +156,15 @@ function buildZhouyiRecord(base, n) {
 }
 
 const generatedAt = new Date().toISOString();
-const FIDELITY_AUDIT_DATE = "2026-06-21";
-const FIDELITY_REPORT_ID = "hexagram-fidelity-2026-06-21T20-26-09-152Z";
+const FIDELITY_AUDIT_DATE = "2026-06-22";
+const FIDELITY_REPORT_ID = "hexagram-fidelity-2026-06-22T14-55-38-200Z";
+
+/** Bibliographic reference (Bollingen / Princeton; same Wilhelm/Baynes translation). */
+const WILHELM_SOURCE_URL =
+  "https://press.princeton.edu/books/paperback/9780691097503/the-i-ching-or-book-of-changes";
+/** Legacy public mirror; secondary cross-check only (Tier-0 gold = local Pantheon 1950 PDF). */
+const WILHELM_PARMA_MIRROR_URL =
+  "http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html";
 
 const bundles = [
   {
@@ -165,10 +172,10 @@ const bundles = [
     bundle: {
       translator: "wilhelm",
       edition:
-        "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes (1950, public domain since 2020).",
-      sourceUrl: "http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html",
+        "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes, Pantheon Books, Bollingen Series XIX, 1950 (public domain since 2020).",
+      sourceUrl: WILHELM_SOURCE_URL,
       licenseNote:
-        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts cross-verified 1:1 against the University of Parma mirror on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 6 fields where Parma's HTML omits the passage are sourced from the printed Wilhelm/Baynes edition (Princeton University Press, 1950), page-verified in the physical book: hex 56 judgment (p. 231), hex 20 line 5 (pp. 88-89), hex 21 lines 2 and 3 (pp. 92-93), hex 26 line 3 (p. 112), hex 52 line 2 (p. 215).`,
+        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts verified 1:1 against the Pantheon Books 1950 edition (local Tier-0 PDF tools/source-pdfs/wilhelm-baynes-1950-pantheon.pdf) on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}; gate 513/513). Secondary cross-check mirror: ${WILHELM_PARMA_MIRROR_URL}. Spot-check overrides for OCR gaps are photo-verified from the same edition (see hexagram-fidelity-wilhelm-pdf-verified.mjs).`,
       generatedAt,
       build: buildWilhelmRecord,
     },
@@ -179,9 +186,9 @@ const bundles = [
       translator: "legge",
       edition:
         "Sacred Books of the East, Volume 16: The Yi King, James Legge (1882, revised 1899).",
-      sourceUrl: "https://sacred-texts.com/ich/index.htm",
+      sourceUrl: "https://archive.org/details/sacredbooksofch16legg",
       licenseNote:
-        `James Legge (1882) translation in the public domain. Oracle fields cross-verified 1:1 against sacred-texts.com on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 513/513 oracle fields match.`,
+        `James Legge (1882) translation in the public domain. Oracle fields verified 1:1 against the Sacred Books of the East XVI Oxford scan (local Tier-0 PDF; tools/source-pdfs/ manifest legge) on ${FIDELITY_AUDIT_DATE} (report hexagram-fidelity-2026-06-22T14-55-40-301Z; gate 514/514). Archive.org mirror linked as bibliographic reference.`,
       generatedAt,
       build: buildLeggeRecord,
     },
@@ -193,7 +200,7 @@ const bundles = [
       edition: "周易 (Zhou Yi), Classical Chinese canonical text.",
       sourceUrl: "https://ctext.org/book-of-changes",
       licenseNote:
-        `Zhou Yi (周易) is in the public domain. Oracle fields cross-verified 1:1 against ctext.org on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 514/514 oracle fields match.`,
+        `Zhou Yi (周易) is in the public domain. Oracle fields cross-verified 1:1 against ctext.org on ${FIDELITY_AUDIT_DATE} (report hexagram-fidelity-2026-06-22T14-55-29-522Z; gate 514/514). Stored punctuation uses canonical full-width Chinese commas (，).`,
       generatedAt,
       build: buildZhouyiRecord,
     },

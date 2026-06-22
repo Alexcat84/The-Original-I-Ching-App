@@ -4975,6 +4975,64 @@ html[data-theme="dark"] .verdict-pill--silent {
   color: var(--fg);
 }
 
+.doc-meta {
+  margin: 0 0 1.25rem;
+  font-size: 0.92rem;
+  color: var(--muted-fg, #666);
+}
+
+.audit-log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.audit-log-entry {
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--fg) 12%, transparent);
+  border-radius: 0.5rem;
+}
+
+.audit-log-entry__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.88rem;
+}
+
+.audit-log-entry__title {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.audit-status {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.audit-status--closed {
+  background: color-mix(in srgb, #2e7d32 18%, transparent);
+  color: #2e7d32;
+}
+
+.audit-status--ongoing {
+  background: color-mix(in srgb, #b8860b 20%, transparent);
+  color: #9a7209;
+}
+
+.doc-see-also {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--muted-fg, #666);
+}
+
 .doc-article ul {
   margin: 0.35rem 0 0.75rem;
   padding-left: 1.25rem;
@@ -7269,6 +7327,7 @@ html[data-theme="dark"] .auth-pro-err {
   margin: 0.75rem 0 0;
   color: var(--fg);
   line-height: 1.55;
+  white-space: pre-line;
 }
 
 .faq-related {
