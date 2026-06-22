@@ -10,6 +10,7 @@ import {
 import { loadLeggeSbePdfFullText } from "./legge-sbe-pdf-text-extract.mjs";
 import { joinLeggeOcrHyphenation, repairLeggeSbeOcrText } from "./hexagram-fidelity-legge-sbe-ocr.mjs";
 import { applyEpubGuideToLeggeRow } from "./hexagram-fidelity-legge-sbe-epub-guide.mjs";
+import { applyLeggeSbeBookPrimaryPatches } from "./hexagram-fidelity-legge-sbe-book-primary.mjs";
 import { parseAllLeggeEpubOrThrow } from "./hexagram-fidelity-legge-epub.mjs";
 
 const ROMAN_OCR_VARIANTS = {
@@ -132,7 +133,7 @@ const HEX_FALLBACK_ANCHORS = {
   48: /\(Looking at\)[\s\S]{0,100}?town may be changed/i,
   50: /Ding gives the intimation of great progress and success/i,
   51: /Kăn gives the intimation of ease and development/i,
-  53: /Khien suggests to us the marriage of a young/i,
+  53: /K(?:h)?ien suggests to us the marriage of a young/i,
   57: /Sun intimates that \(under the conditions which/i,
   61: /\bKung F\w*\s*\(moves even\)[^.]{0,60}pigs and fish/i,
   35: /In Žin we see a prince who secures the tranquillity/i,
@@ -184,6 +185,9 @@ function isValidLeggeJudgment(text) {
     )
   );
 }
+
+const MULTI_SENTENCE_JUDGMENT_MARKERS =
+  /In \(the state indicated by\)|\(L[îiü]?\s+suggests the idea of\)|Kien suggests to us the marriage|In Th(?:ai|âi|4i)\s*\(we see\)/i;
 
 function pickLeggeJudgment(sectionText, parsedJudgment) {
   const candidates = [
@@ -264,6 +268,7 @@ function reconstructLeggeJudgment(sectionText) {
     }
     kept.push(t);
     if (
+      !MULTI_SENTENCE_JUDGMENT_MARKERS.test(body) &&
       kept.join(" ").length > 80 &&
       /\.\s*$/.test(sent) &&
       !/with firmness and correctness, and \(a leader of\) age\s*\.?$/i.test(t)
@@ -554,6 +559,10 @@ function extractOcrJudgmentFallback(sectionText) {
     .replace(/\s+/g, " ")
     .trim();
   const patterns = [
+    /\(\s*L[îiü]?\s+suggests the idea of[^.]+\.\s*There will be progress and success\./i,
+    /\bIn \(the state indicated by\) K(?:h)?ien advantage[^.]+\.\s*It will be advantageous[^.]+\.\s*\(In these circumstances\)[^.]+\./i,
+    /\bKien suggests to us the marriage[^.]+\.\s*There will be advantage[^.]+\./i,
+    /\bIn Th(?:ai|âi|4i)\s*\(we see\)[^.]+\.\s*\(It indicates that\)[^.]+\./i,
     /\b(?:L[tü]|Lu)\s+suggests the idea of[^.]+\./i,
     /\bY(?:ü|ii)\s+indicates that,[^.]+\./i,
     /\bPo indicates that[^.]+\./i,
@@ -606,7 +615,7 @@ function normalizeLeggeLinePrefix(body) {
 }
 
 function hasLineBleed(body) {
-  return /THE Y[^\n]{0,24}KING|Line \d+ is (?:weak|strong)|Explanation of the separate lines|Two explanations have been proposed|Geer or EI Ok Miah/i.test(
+  return /THE Y[^\n]{0,24}KING|Line \d+ is (?:weak|strong)|Explanation of the separate lines|Two explanations have been proposed|Geer or EI Ok Miah|with him, and head of some branch|What is said on line \d+/i.test(
     body,
   );
 }
@@ -616,7 +625,7 @@ function trimLineBody(body) {
   const innerSix = out.search(/\b(?:In the sixth \(or topmost\)|the sixth \(or topmost\)) line,/i);
   if (innerSix >= 28) out = out.slice(0, innerSix).trim();
   const cut = out.search(
-    /\(\d+\]\s*[A-Z0-9]+\s+THE Y|THE Y[^\n]{0,24}KING\. TEXT|Line \d+ is (?:weak|strong)|SECT\.\s+[IVXLCDM]+\.|Explanation of the separate lines|Two explanations have been proposed|Geer or EI Ok Miah/i,
+    /\(\d+\]\s*[A-Z0-9]+\s+THE Y|THE Y[^\n]{0,24}KING\. TEXT|Line \d+ is (?:weak|strong)|SECT\.\s+[IVXLCDM]+\.|Explanation of the separate lines|Two explanations have been proposed|Geer or EI Ok Miah|with him, and head of some branch|What is said on line \d+/i,
   );
   if (cut >= 24) out = out.slice(0, cut).trim();
   if (!/[.?!]$/.test(out) && out.length > 40) {
@@ -750,7 +759,7 @@ function extractLeggeSbeLines(sectionText) {
   }
 
   const supM = text.match(
-    /(?:^|\n)\s*(?:7|S)\.\s*((?:\(The lines of this hexagram)[\s\S]{0,500}?\.)/i,
+    /(?:^|\n)\s*(?:7|S)\.\s*((?:\(The lines of this hexagram)[\s\S]{0,800}?good fortune\.)/i,
   );
   if (supM?.[1]) supernumerary = trimLineBody(supM[1]);
 
@@ -909,7 +918,7 @@ export function parseAllLeggeSbePdfFromText(input) {
   if (missingImage.length) {
     throw new Error(`Legge SBE PDF: missing Great Symbolism for hex: ${missingImage.join(", ")}`);
   }
-  return out;
+  return applyLeggeSbeBookPrimaryPatches(out);
 }
 
 /**

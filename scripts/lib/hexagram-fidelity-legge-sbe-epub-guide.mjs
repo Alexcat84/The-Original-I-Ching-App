@@ -61,8 +61,17 @@ function fieldLooksCorrupt(pdfVal) {
     /Two indications are evident in the lines|component trigrams will be considered|symso as to dispense benefits/i.test(
       t,
     ) ||
-    /\b5\.\s+The fifth line,/i.test(t)
+    /\b5\.\s+The fifth line,/i.test(t) ||
+    /The Great Symbolism here has come before us|Of the application of that symbolism/i.test(t) ||
+    /\ba\.\s+'When the/i.test(t)
   );
+}
+
+/** PDF OCR stopped mid-field (common on spliced scan pages). */
+export function fieldLooksTruncated(text) {
+  const t = String(text ?? "").trim();
+  if (!t || t.length >= 80) return false;
+  return !/[.!?]["'”)]?$/.test(t);
 }
 
 function isCommentaryJudgment(text) {
@@ -151,6 +160,7 @@ function pdfFieldNeedsEpubHelp(pdfVal, epubVal, kind = {}) {
 
   if (kind.line) {
     if (isTruncatedPdfLine(pdfVal, epubVal)) return true;
+    if (fieldLooksTruncated(pdfVal)) return true;
     return false;
   }
 
@@ -169,6 +179,17 @@ function adoptIfAnchored(
   { line = false, judgment = false, image = false } = {},
 ) {
   if (!String(epubVal ?? "").trim()) return pdfVal;
+
+  if (line && isTruncatedPdfLine(pdfVal, epubVal)) {
+    return epubVal.trim();
+  }
+  if (judgment && isTruncatedPdfJudgment(pdfVal, epubVal)) {
+    return epubVal.trim();
+  }
+  if (image && fieldLooksCorrupt(pdfVal) && String(epubVal ?? "").trim().length > 40) {
+    return epubVal.trim();
+  }
+
   if (textsMatch(pdfVal, epubVal, "legge")) return pdfVal;
 
   const kind = { line, judgment, image };
@@ -186,7 +207,19 @@ function adoptIfAnchored(
     if (isValidLeggeJudgment(epubVal)) return epubVal.trim();
   }
 
-  if (line && (corrupt || isTruncatedPdfLine(pdfVal, epubVal)) && lineAnchorCoverage(ocrContext, epubVal) >= CORRUPT_REPAIR_COVERAGE) {
+  if (
+    line &&
+    isTruncatedPdfLine(pdfVal, epubVal) &&
+    String(epubVal).trim().length > String(pdfVal).trim().length + 8
+  ) {
+    return epubVal.trim();
+  }
+
+  if (line && (corrupt || fieldLooksTruncated(pdfVal)) && lineAnchorCoverage(ocrContext, epubVal) >= CORRUPT_REPAIR_COVERAGE) {
+    return epubVal.trim();
+  }
+
+  if (image && corrupt && String(epubVal ?? "").trim().length > 40) {
     return epubVal.trim();
   }
 
@@ -239,4 +272,17 @@ export function applyEpubGuideToLeggeRow(pdfRow, epubRow, bodySlice, symbolismTe
     out.yongLiu = adoptIfAnchored(pdfRow.yongLiu ?? "", epubRow.yongLiu ?? "", bodySlice, YONG_COVERAGE);
   }
   return out;
+}
+
+export { fieldLooksCorrupt };
+
+/**
+ * Final bundle-safe pass: PDF gold first, EPUB repair-only when PDF is broken/truncated.
+ * @param {{ judgment: string; image: string; lines: Record<number, string>; yongJiu?: string; yongLiu?: string }} pdfRow
+ * @param {{ judgment: string; image: string; lines: Record<number, string>; yongJiu?: string; yongLiu?: string }} epubRow
+ * @param {string} bodySlice
+ * @param {string} symbolismText
+ */
+export function sanitizeLeggeRowForBundle(pdfRow, epubRow, bodySlice, symbolismText) {
+  return applyEpubGuideToLeggeRow(pdfRow, epubRow, bodySlice, symbolismText);
 }
