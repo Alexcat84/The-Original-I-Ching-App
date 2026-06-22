@@ -149,15 +149,18 @@ Resumen:
 ## Parte 6: Para el ejecutor (luz verde y orden)
 
 **Luz verde documental:** SÍ (v2.1 greenfield).  
-**Luz verde de implementación de motor:** pendiente solo de **Gate 0 técnico** (D0.1/D0.2 con citas de folio).  
+**Luz verde de implementación de motor:** pendiente **Gate 0 técnico** (D0.1/D0.2 con citas de folio).  
+**Gate 0 (22 jun 2026): PENDIENTE.** Decisión Alexis: no iniciar aún. T1/T2 cerrados en staging `9f2a170`.  
 **Sign-off de producto D0.2:** dado (forward-only).
+
+**Zhou Yi (paralelo, no bloquea Gate 0):** gold operativo = ctext.org, no PDF 注疏 local. Ver [`FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`](FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md) §Parte H.
 
 **Puede ejecutar YA (no depende de Gate 0):**
 
 1. **T2:** `sourceUrl`/`edition` Wilhelm → Pantheon PDF; `licenseNote` Legge (G4).
 2. **T1:** decidir coma Zhou Yi (normalizar a `，` recomendado) + verificar display biblioteca + re-gate 514/514.
 
-**Siguiente paso bloqueante (Gate 0, sin código de motor):**
+**Siguiente paso bloqueante (Gate 0, sin código de motor):** **PENDIENTE** (no iniciar hasta nueva decisión).
 
 3. **D0.1:** Adler p.154 + Fig. 19: orden lexicográfico de los 20 tríos → `equivalentToIncludesPos1: true|false`.
 4. **D0.2:** p.158 + reglas 4/5 p.156: ¿Fig. 19 cambia `fromHexagram` en 4/5? → dictamen técnico escrito.
