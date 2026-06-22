@@ -29,6 +29,8 @@
     "sync:wilhelm-oracle-from-pdf-gold": "node tools/sync-wilhelm-oracle-from-pdf-gold.mjs",
     "extract:gold:zhuxi-adler-pdf": "node tools/extract-zhuxi-adler-pdf.mjs",
     "audit:zhuxi-rules-vs-adler-gold": "node tools/audit-zhuxi-rules-vs-adler-gold.mjs",
+    "extract:gold:huang-pdf": "node tools/extract-huang-pdf.mjs",
+    "audit:huang-rules-vs-pdf-gold": "node tools/audit-huang-rules-vs-pdf-gold.mjs",
     "verify:hexagram-fidelity:pdf-wilhelm": "node scripts/verify-hexagram-fidelity.mjs --gold=pdf-wilhelm --translator=wilhelm",
     "verify:hexagram-fidelity:pdf-legge": "node scripts/verify-hexagram-fidelity.mjs --gold=pdf-legge --translator=legge",
     "verify:hexagram-fidelity:epub-legge": "node scripts/verify-hexagram-fidelity.mjs --gold=epub-legge --translator=legge",

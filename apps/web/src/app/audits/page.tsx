@@ -7,10 +7,10 @@ import { resolveDocLocale } from "@/lib/doc-locale";
 export const metadata: Metadata = {
   title: "Fidelity Audits | The Original I Ching App",
   description:
-    "Independent verification of I Ching oracle texts (Wilhelm, Legge, Zhou Yi) and changing-line rules (Huang, Zhu Xi). Methodology and audit log.",
+    "Audit dates, reference editions, and pass outcomes for I Ching oracle texts and changing-line rules.",
   openGraph: {
     title: "Fidelity Audits | The Original I Ching App",
-    description: "Public audit log for oracle text fidelity and mutation rules.",
+    description: "Public audit log: dates, sources, and outcomes.",
   },
   ...buildCanonicalMetadata("/audits"),
 };
@@ -51,9 +51,6 @@ export default async function AuditsPage() {
         <p>{a.mutationRulesHuangBody}</p>
         <h3>{a.mutationRulesZhuxiHeading}</h3>
         <p>{a.mutationRulesZhuxiBody}</p>
-
-        <h2>{a.methodologyHeading}</h2>
-        <p>{a.methodologyBody}</p>
 
         <h2>{a.reportsHeading}</h2>
         <ul className="audit-log-list">

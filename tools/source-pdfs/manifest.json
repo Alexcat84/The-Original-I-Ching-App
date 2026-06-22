@@ -75,9 +75,15 @@
       "author": "Taoist Master Alfred Huang",
       "year": 2010,
       "language": "en",
-      "role": "Tier-0 gold for Huang changing-line reduction rules (full book verification pending)",
-      "pageNumberBasis": "printed_folio",
-      "note": "Text-extractable PDF; extract phase TBD after Zhu Xi ch. IV closed."
+      "role": "Tier-0 gold for Huang changing-line reduction rules (Master Yin method)",
+      "pageNumberBasis": "pdf_index",
+      "mutationRulesPdfRange": [48, 55],
+      "mutationRulesPdfPage": 51,
+      "spotCheckPages": {
+        "51:rules_1_to_7": 51,
+        "62:qian_all_nines": 62
+      },
+      "note": "Rules 1–7 verified 2026-06-22; Qian/Kun All Nines cross-ref in hexagram chapters."
     }
   }
 }
