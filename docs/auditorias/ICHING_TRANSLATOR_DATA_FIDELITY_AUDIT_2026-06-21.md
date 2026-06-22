@@ -588,44 +588,43 @@ npm run verify:hexagram-fidelity    # Wilhelm 513/513 vs libro (alias pdf-wilhel
 | **Resultado** | **513/513 (100%)** — `reports/hexagram-fidelity-2026-06-22T01-52-32-542Z.json` |
 | **Remediación** | Correcciones directas en `scripts/iching_wilhelm_translation.mjs` |
 
-### 14.3b — Legge · cierre Fase EPUB (2026-06-22)
+### 14.3b — Legge · cierre Fase PDF book-primary (2026-06-22)
 
 | Campo | Detalle |
 |-------|---------|
-| **Edición gold** | James Legge, SBE XVI — `The Yi King or, Book of Changes -- James Legge.epub` |
-| **Parser** | `hexagram-fidelity-legge-epub.mjs` (reutiliza lógica sacred + normalización EPUB + Great Symbolism icap2) |
-| **Sync** | `npm run sync:legge-oracle-from-epub` → `iching_legge_translation.mjs` |
-| **Resultado** | **514/514 (100%)** — `reports/hexagram-fidelity-2026-06-22T01-59-15-175Z.json` |
-| **Gate combinado** | `npm run verify:hexagram-fidelity` → Wilhelm PDF + Legge EPUB (**1027/1027**) |
+| **Edición gold** | James Legge, SBE XVI — escaneo Oxford PDF (manifest) |
+| **Parser** | `hexagram-fidelity-legge-sbe-pdf.mjs` + OCR repairs + parches foto (`book-primary.mjs`) |
+| **EPUB** | **No** en producción — solo `audit:legge-pdf-vs-epub` |
+| **Sync** | `npm run sync:legge-oracle-from-pdf-gold` → `iching_legge_translation.mjs` |
+| **Resultado** | **514/514 (100%)** — `reports/hexagram-fidelity-2026-06-22T23-23-50-099Z.json` |
+| **Auditoría** | [`LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md`](LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md) |
+| **Rama** | `fix/legge-pdf-fidelity-100` · commit `e8ba543` |
 
-### 14.4 — Legge · migración gold SBE Oxford scan (2026-06-22, en curso)
+### 14.4 — Legge · histórico EPUB (obsoleto como gate)
 
 | Campo | Detalle |
 |-------|---------|
-| **Edición gold (manifest)** | SBE XVI — `16_ The Sacred Books of China… Oxford University Press.pdf` (Google Books scan, **solo OCR**) |
-| **Cross-check** | EPUB sacred-texts re-pack → `fileCrossCheckEpub` en manifest |
-| **Pipeline** | `legge-sbe-pdf-ocr.mjs` → cache `tools/output/fidelity-gold/legge-sbe-{pdf-full,symbolism}.txt` → `hexagram-fidelity-legge-sbe-pdf.mjs` |
-| **Calibración OCR** | Texto §I pp.86–240 · Great Symbolism pp.296–420 |
-| **Extract** | `npm run extract:gold:legge-sbe-pdf` → `legge-sbe-pdf-gold.json` |
-| **Verify** | `npm run verify:hexagram-fidelity:pdf-legge` (iterativo; parser OCR aún ≠ 100%) |
-| **Gate canónico** | `verify:hexagram-fidelity` sigue **Wilhelm PDF + Legge EPUB** hasta cierre parser SBE |
+| **Edición** | EPUB sacred-texts re-pack |
+| **Estado** | Superseded por PDF book-primary; conservar solo como cross-check |
+| **Verify alterno** | `verify:hexagram-fidelity:epub-legge` |
 
 ### 14.5 — Próximas fases (mismo modelo)
 
 | Traductor | Gold local | Formato | Estado |
 |-----------|------------|---------|--------|
-| **Legge** | SBE XVI Oxford PDF (manifest) + EPUB cross-check | pdf-ocr + epub | OCR pipeline ✅ · parser tuning · gate PDF pendiente |
+| **Legge** | SBE XVI Oxford PDF (manifest) + EPUB cross-check diagnóstico | pdf-ocr | **514/514 cerrado** · [`LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md`](LEGGE_SBE_XVI_PDF_BOOK_PRIMARY_AUDIT_2026-06-22.md) |
 | **Zhou Yi** | ctext.org (Chinese Text Project) | API + HTML 大象 | **514/514 cerrado** · `scan:zhouyi-corruption` + `check:hex-glyph-uniqueness` · PDF 注疏 local = futuro opcional |
 
 ### 14.6 — Comandos npm (post-2026-06-22)
 
 | Comando | Rol |
 |---------|-----|
-| `verify:hexagram-fidelity` | **Canónico** — Wilhelm PDF + Legge EPUB |
+| `verify:hexagram-fidelity` | Wilhelm PDF + Legge PDF (pendiente alinear alias default post-merge) |
 | `verify:hexagram-fidelity:pdf-wilhelm` | Wilhelm vs Pantheon PDF |
-| `verify:hexagram-fidelity:pdf-legge` | Legge vs SBE XVI scan (OCR) |
-| `verify:hexagram-fidelity:epub-legge` | Legge vs EPUB cross-check |
-| `extract:gold:legge-sbe-pdf` | OCR + JSON gold Legge SBE |
+| `verify:hexagram-fidelity:pdf-legge` | **Legge gate producción** — SBE XVI scan OCR + parches foto |
+| `verify:hexagram-fidelity:epub-legge` | Legge vs EPUB (diagnóstico) |
+| `extract:gold:legge-sbe-pdf` | OCR + JSON gold Legge SBE (sin EPUB por defecto) |
+| `audit:legge-pdf-vs-epub` | Transparencia PDF vs EPUB |
 | `verify:hexagram-fidelity:zhouyi-ctext` | Zhou Yi vs ctext.org (514/514) |
 | `scan:zhouyi-corruption` | Gate corrupción Zhou Yi (咸→鹹, cross-hex, etc.) |
 | `check:hex-glyph-uniqueness` | Nombres/glyphs únicos por hex 1–64 (biblioteca) |
@@ -633,4 +632,4 @@ npm run verify:hexagram-fidelity    # Wilhelm 513/513 vs libro (alias pdf-wilhel
 
 ---
 
-*Actualizado 2026-06-22 · Wilhelm book-primary 100% · Legge SBE OCR 514/514 · Zhou Yi ctext 514/514 · mirrors deprecated para W/L.*
+*Actualizado 2026-06-22 · Wilhelm PDF 513/513 · Legge PDF book-primary 514/514 (sin EPUB repair) · Zhou Yi ctext 514/514 · mirrors deprecated para W/L.*

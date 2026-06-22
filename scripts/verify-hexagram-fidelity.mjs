@@ -182,6 +182,7 @@ async function compareLegge(bundle) {
     log("Legge: loading SBE XVI PDF gold (James Legge, Oxford scan + OCR)…");
     const parsed = await parseAllLeggeSbePdfOrThrow({
       onProgress: (msg) => log(`  ${msg}`),
+      epubGuide: false,
     });
     goldByHex = {};
     for (let n = 1; n <= 64; n++) {

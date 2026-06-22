@@ -170,13 +170,19 @@ function isCommentaryJudgment(text) {
     /^Line \d+, though (?:weak|strong)/i.test(text) ||
     /That the subject of the line|further proof of his humility|to be very small/i.test(text) ||
     /But what suggests the statement|^P\. Regis says|^The strong line \d+/i.test(text) ||
-    /^All men love and honour humility/i.test(text)
+    /^All men love and honour humility/i.test(text) ||
+    /ect of the line appears at work|is advised to abide in that state and mind|^He appears also in the Sha|further so soon after success/i.test(
+      text,
+    )
   );
 }
 
 function isValidLeggeJudgment(text) {
   const t = String(text).trim();
   if (t.length < 20) return false;
+  if (/\b1\.\s+The first line,|Explanation of the separate lines|Line \d+ is (?:weak|strong)/i.test(t)) {
+    return false;
+  }
   if (isCommentaryJudgment(t)) return false;
   return (
     LEGGE_ORACLE_START.test(t) ||
@@ -186,8 +192,39 @@ function isValidLeggeJudgment(text) {
   );
 }
 
-const MULTI_SENTENCE_JUDGMENT_MARKERS =
-  /In \(the state indicated by\)|\(L[îiü]?\s+suggests the idea of\)|Kien suggests to us the marriage|In Th(?:ai|âi|4i)\s*\(we see\)/i;
+function sanitizeLeggeJudgmentCandidate(text) {
+  let s = stripLeggeJudgmentNoise(text);
+  if (!s) return "";
+  const lineCut = s.search(/\b1\.\s+The (?:first|second|third|fourth|fifth|sixth)/i);
+  if (lineCut > 40) s = s.slice(0, lineCut).trim();
+  if (s.length > 520) {
+    const sentences = s.match(/[^.]+\./g) ?? [];
+    const kept = [];
+    for (const sent of sentences) {
+      const t = sent.trim();
+      if (/^Line \d+|^\d+\.\s+The first/i.test(t)) break;
+      if (isCommentaryJudgment(t)) break;
+      kept.push(t);
+      if (kept.join(" ").length >= 500) break;
+    }
+    s = kept.join(" ").trim();
+    if (s.length > 520) {
+      const cut = s.lastIndexOf(".", 500);
+      s = cut > 80 ? s.slice(0, cut + 1) : s.slice(0, 520);
+    }
+  }
+  if (s && !/^[A-Z(]/.test(s)) {
+    const nameStart = s.search(
+      /\b[A-Z][A-Za-zăâîûêô''\-]{1,14} (?:indicates|intimates|suggests|\(represents\))/,
+    );
+    if (nameStart >= 0) s = s.slice(nameStart);
+    else {
+      const start = s.search(LEGGE_ORACLE_START);
+      if (start > 0) s = s.slice(start);
+    }
+  }
+  return s;
+}
 
 function pickLeggeJudgment(sectionText, parsedJudgment) {
   const candidates = [
@@ -195,12 +232,21 @@ function pickLeggeJudgment(sectionText, parsedJudgment) {
     reconstructLeggeJudgment(sectionText),
     stripLeggeJudgmentNoise(parsedJudgment ?? ""),
   ];
+  let best = "";
   for (const c of candidates) {
-    const cleaned = stripLeggeJudgmentNoise(c);
-    if (isValidLeggeJudgment(cleaned)) return cleaned;
+    const cleaned = sanitizeLeggeJudgmentCandidate(c);
+    if (!cleaned || !isValidLeggeJudgment(cleaned)) continue;
+    if (cleaned.length > best.length) best = cleaned;
   }
-  const fallback = candidates.map((c) => stripLeggeJudgmentNoise(c)).find((c) => c.length > 15);
-  return fallback ?? "";
+  if (best) return best;
+  for (const c of candidates) {
+    const cleaned = sanitizeLeggeJudgmentCandidate(c);
+    if (cleaned.length > 15 && !isCommentaryJudgment(cleaned) && LEGGE_ORACLE_START.test(cleaned)) {
+      return cleaned;
+    }
+  }
+  const last = candidates.map((c) => sanitizeLeggeJudgmentCandidate(c)).find((c) => c.length > 15);
+  return last ?? "";
 }
 
 const LEGGE_ORACLE_START =
@@ -263,18 +309,11 @@ function reconstructLeggeJudgment(sectionText) {
   for (const sent of sentences) {
     const t = sent.trim();
     if (/^Line \d+/i.test(t)) break;
+    if (/^\d+\.\s+The first line,/i.test(t)) break;
     if (/That the subject of the line|Its subject therefore|further proof of his humility/i.test(t)) {
       break;
     }
     kept.push(t);
-    if (
-      !MULTI_SENTENCE_JUDGMENT_MARKERS.test(body) &&
-      kept.join(" ").length > 80 &&
-      /\.\s*$/.test(sent) &&
-      !/with firmness and correctness, and \(a leader of\) age\s*\.?$/i.test(t)
-    ) {
-      break;
-    }
   }
   let out = stripLeggeJudgmentNoise(kept.join(" ").trim());
   if (
@@ -306,7 +345,7 @@ function stripLeggeImageNoise(text) {
     const idx = body.search(re);
     if (idx >= 40) body = body.slice(0, idx).trim();
   }
-  body = body.replace(/\s+\.\s*$/, ".").trim();
+  body = body.replace(/\s+\.\s*$/, ".").replace(/\s+sl\s*$/i, "").trim();
   return body;
 }
 
@@ -559,6 +598,13 @@ function extractOcrJudgmentFallback(sectionText) {
     .replace(/\s+/g, " ")
     .trim();
   const patterns = [
+    /\bPî indicates that \(under the conditions which it supposes\) there is good fortune\.[^.]+\./i,
+    /\bFu indicates that there will be free course and progress \(in what it denotes\)\.[^.]+\./i,
+    /\bWei Zi intimates progress and success \(in the circumstances which it implies\)\.\s*\(We see\)[^.]+\.\s*There will be no advantage in any way\./i,
+    /\bMăng \(indicates that in the case which it presupposes\)[^.]+\.\s*I do not \(go and\) seek[^.]+\.\s*When he shows \(the sincerity that marks\) the first recourse to divination, I instruct him\.\s*If he apply a second and third time, that is troublesome; and I do not instruct the troublesome\.\s*There will be advantage in being firm and correct\./i,
+    /\bHsü intimates that, with the sincerity which is declared in it, there will be brilliant success\.\s*With firmness there will be good fortune; and it will be advantageous to cross the great stream\./i,
+    /\bKhw[ăâ]n \(represents\) what is great and originating, penetrating, advantageous, correct and having the firmness of a mare\.[\s\S]{0,420}?If he rest in correctness and firmness, there will be good fortune\./i,
+    /\bKun \(indicates that in the case which it presupposes\)[^.]+\.\s*\(But\) any movement in advance should not be \(lightly\) undertaken\.\s*There will be advantage in appointing feudal princes\./i,
     /\(\s*L[îiü]?\s+suggests the idea of[^.]+\.\s*There will be progress and success\./i,
     /\bIn \(the state indicated by\) K(?:h)?ien advantage[^.]+\.\s*It will be advantageous[^.]+\.\s*\(In these circumstances\)[^.]+\./i,
     /\bKien suggests to us the marriage[^.]+\.\s*There will be advantage[^.]+\./i,
@@ -615,8 +661,10 @@ function normalizeLeggeLinePrefix(body) {
 }
 
 function hasLineBleed(body) {
-  return /THE Y[^\n]{0,24}KING|Line \d+ is (?:weak|strong)|Explanation of the separate lines|Two explanations have been proposed|Geer or EI Ok Miah|with him, and head of some branch|What is said on line \d+/i.test(
-    body,
+  return (
+    /THE Y[^\n]{0,24}KING|Line \d+ is (?:weak|strong)|Explanation of the separate lines|Two explanations have been proposed|Geer or EI Ok Miah|with him, and head of some branch|What is said on line \d+|\s+\d+\.\s+In the (?:third|fourth|fifth|sixth) line,|(?:^|\s)(?:X{0,3}[IVXLCDM]+\.\s+The character|SECT\.\s+[IVXLCDM]+\.)| move them is inauspicious| what is correct, he must| the attraction of his correlate| is the symbol of what is ornamental|Its subject, however, the line being|The subject of \d+ therefore/i.test(
+      body,
+    )
   );
 }
 
@@ -624,10 +672,15 @@ function trimLineBody(body) {
   let out = repairLeggeLineBody(body);
   const innerSix = out.search(/\b(?:In the sixth \(or topmost\)|the sixth \(or topmost\)) line,/i);
   if (innerSix >= 28) out = out.slice(0, innerSix).trim();
+  const embeddedLine = out.search(
+    /\s+(?:[2-6][.\-_~]+\s+)?(?:In the )?(?:third|fourth|fifth|sixth) line,/i,
+  );
+  if (embeddedLine >= 28) out = out.slice(0, embeddedLine).trim();
   const cut = out.search(
-    /\(\d+\]\s*[A-Z0-9]+\s+THE Y|THE Y[^\n]{0,24}KING\. TEXT|Line \d+ is (?:weak|strong)|SECT\.\s+[IVXLCDM]+\.|Explanation of the separate lines|Two explanations have been proposed|Geer or EI Ok Miah|with him, and head of some branch|What is said on line \d+/i,
+    /\(\d+\]\s*[A-Z0-9]+\s+THE Y|THE Y[^\n]{0,24}KING\. TEXT|Line \d+ is (?:weak|strong)|SECT\.\s+[IVXLCDM]+\.|(?:^|\s)(?:X{0,3}[IVXLCDM]+\.\s+(?:T&|The character|[A-Z][^.,]{2,24} means))|Explanation of the separate lines|Two explanations have been proposed|Geer or EI Ok Miah|with him, and head of some branch|What is said on line \d+|\.\s+(?:move them is inauspicious|what is correct, he must|the attraction of his correlate|Its subject, however|is the symbol of what is ornamental|The subject of \d+ therefore)/i,
   );
   if (cut >= 24) out = out.slice(0, cut).trim();
+  out = out.replace(/\s+—\s*$/, "").replace(/\s+sl\s*$/i, "").trim();
   if (!/[.?!]$/.test(out) && out.length > 40) {
     const lastPeriod = out.lastIndexOf(".");
     if (lastPeriod >= 40) out = out.slice(0, lastPeriod + 1);
@@ -638,8 +691,20 @@ function trimLineBody(body) {
 function splitEmbeddedLines(lineByPos) {
   /** @type {Record<number, string>} */
   const out = { ...lineByPos };
-  for (const [posRaw, body] of Object.entries(lineByPos)) {
+  for (const [posRaw, body] of Object.entries({ ...out })) {
     const pos = Number(posRaw);
+    const embedded = body.match(
+      /\s+(?:[2-6][.\-_~]+\s+)?(?:In the )?(third|fourth|fifth|sixth) line,/i,
+    );
+    if (embedded && embedded.index != null && embedded.index >= 28) {
+      const nextPos = pos + 1;
+      if (nextPos <= 6 && !out[nextPos]) {
+        out[pos] = trimLineBody(body.slice(0, embedded.index));
+        let tail = body.slice(embedded.index).trim();
+        tail = tail.replace(/^(?:[2-6][.\-_~]+\s+)?(?:In the )?/i, "In the ");
+        out[nextPos] = trimLineBody(tail);
+      }
+    }
     const m6 = body.match(
       /\b(?:In the sixth \(or topmost\)|the sixth \(or topmost\)) line, undivided,[\s\S]{0,360}?dragon exceeding the proper\s+limits\s*\./i,
     );
@@ -647,6 +712,9 @@ function splitEmbeddedLines(lineByPos) {
       out[6] = trimLineBody(m6[0]);
       out[pos] = trimLineBody(body.slice(0, m6.index ?? 0));
     }
+  }
+  for (const pos of Object.keys(out)) {
+    out[Number(pos)] = trimLineBody(out[Number(pos)]);
   }
   return out;
 }
@@ -672,26 +740,36 @@ function leggeLineStartRe(pos, ordinal) {
   );
 }
 
+function extractLeggeLineSlice(normalized, pos, ord) {
+  const startRe = new RegExp(
+    `(?:^|\\n)[^\\n]{0,14}?${pos}[.\\-_~\\s]*(?:The|In the)?\\s*['']?${ord} line,`,
+    "im",
+  );
+  const m = startRe.exec(normalized);
+  if (!m) return null;
+  const start = m.index;
+  const nextRe = /(?:^|\n)[^\n]{0,14}?[1-7][.\-_~]+\s+(?:The|In the|S\.|\()/gim;
+  nextRe.lastIndex = start + m[0].length;
+  const next = nextRe.exec(normalized);
+  const end = next ? next.index : Math.min(normalized.length, start + 980);
+  return normalized.slice(start, end).replace(/\n+/g, " ").trim();
+}
+
 function stitchIncompleteLeggeLines(rawText, lineByPos) {
   const normalized = String(rawText).replace(/\r\n/g, "\n");
   const ordinals = ["first", "second", "third", "fourth", "fifth", "sixth"];
 
   for (let pos = 1; pos <= 6; pos++) {
-    if (lineByPos[pos]) continue;
     const ord = ordinals[pos - 1];
-    const re = new RegExp(
-      `(?:^|\\n)[^\\n]{0,14}?${pos}[.\\-_~\\s]*The ${ord} line,[\\s\\S]{0,560}?\\.`,
-      "im",
-    );
-    let m = normalized.match(re);
-    if (!m) {
-      const reBare = new RegExp(`(?:^|\\n)[^\\n]{0,6}?${ord} line, [\\s\\S]{0,560}?\\.`, "im");
-      m = normalized.match(reBare);
-    }
-    if (!m) continue;
-    const chunk = trimLineBody(m[0].replace(/^[^\S\n]*\n?/, "").trim());
+    const slice = extractLeggeLineSlice(normalized, pos, ord);
+    if (!slice) continue;
+    const chunk = trimLineBody(slice);
     if (chunk.length > 24 && !hasLineBleed(chunk)) {
-      lineByPos[pos] = normalizeLeggeLinePrefix(chunk);
+      const prefixed = normalizeLeggeLinePrefix(chunk);
+      const cur = lineByPos[pos] ?? "";
+      if (!cur || (!hasLineBleed(prefixed) && prefixed.length > cur.length + 6)) {
+        lineByPos[pos] = prefixed;
+      }
     }
   }
 
@@ -758,9 +836,13 @@ function extractLeggeSbeLines(sectionText) {
     if (m6) lineByPos[6] = normalizeLeggeLinePrefix(trimLineBody(m6[0].replace(/^O10\s*/, "")));
   }
 
-  const supM = text.match(
-    /(?:^|\n)\s*(?:7|S)\.\s*((?:\(The lines of this hexagram)[\s\S]{0,800}?good fortune\.)/i,
-  );
+  const supM =
+    text.match(
+      /(?:^|\n)\s*(?:7|S)\.\s*((?:\(The lines of this hexagram)[\s\S]{0,800}?(?:good fortune|advantage will arise)\.)/i,
+    ) ??
+    text.match(
+      /(?:^|\n)\s*7\.\s*(\(The lines of this hexagram are all weak[\s\S]{0,800}?(?:good fortune|advantage will arise)\.)/i,
+    );
   if (supM?.[1]) supernumerary = trimLineBody(supM[1]);
 
   const numberedRe =
@@ -867,7 +949,7 @@ export function parseLeggeSbeSymbolism(text) {
 }
 
 /**
- * @param {{ bodyText: string; symbolismText: string; epubByHex?: Record<number, object> }} input
+ * @param {{ bodyText: string; symbolismText: string; epubByHex?: Record<number, object>; applyPatches?: boolean }} input
  */
 export function parseAllLeggeSbePdfFromText(input) {
   const boundaries = findLeggeHexBoundaries(input.bodyText);
@@ -918,15 +1000,18 @@ export function parseAllLeggeSbePdfFromText(input) {
   if (missingImage.length) {
     throw new Error(`Legge SBE PDF: missing Great Symbolism for hex: ${missingImage.join(", ")}`);
   }
-  return applyLeggeSbeBookPrimaryPatches(out);
+  if (input.applyPatches !== false) {
+    return applyLeggeSbeBookPrimaryPatches(out);
+  }
+  return out;
 }
 
 /**
- * @param {{ force?: boolean; epubGuide?: boolean; onProgress?: (msg: string) => void }} [opts]
+ * @param {{ force?: boolean; epubGuide?: boolean; applyPatches?: boolean; onProgress?: (msg: string) => void }} [opts]
  */
 export async function parseAllLeggeSbePdfOrThrow(opts = {}) {
   const { bodyText, symbolismText } = await loadLeggeSbePdfFullText(opts);
-  const useEpubGuide = opts.epubGuide !== false;
+  const useEpubGuide = opts.epubGuide === true;
   /** @type {Record<number, object> | undefined} */
   let epubByHex;
   if (useEpubGuide) {
@@ -937,7 +1022,12 @@ export async function parseAllLeggeSbePdfOrThrow(opts = {}) {
       opts.onProgress?.(`EPUB guide unavailable (${err.message}); PDF OCR only.`);
     }
   }
-  return parseAllLeggeSbePdfFromText({ bodyText, symbolismText, epubByHex });
+  return parseAllLeggeSbePdfFromText({
+    bodyText,
+    symbolismText,
+    epubByHex,
+    applyPatches: opts.applyPatches,
+  });
 }
 
 export { parseRomanNumeralLoose };

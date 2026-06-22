@@ -36,6 +36,7 @@
     "verify:hexagram-fidelity:epub-wilhelm": "node scripts/verify-hexagram-fidelity.mjs --gold=epub-wilhelm --translator=wilhelm",
     "audit:wilhelm-pdf-vs-parma": "node scripts/audit-wilhelm-pdf-vs-parma.mjs",
     "audit:wilhelm-pdf-vs-epub": "node scripts/audit-wilhelm-pdf-vs-epub.mjs",
+    "audit:legge-pdf-vs-epub": "node scripts/audit-legge-pdf-vs-epub.mjs",
     "verify:hexagram-fidelity:pdf-legge": "node scripts/verify-hexagram-fidelity.mjs --gold=pdf-legge --translator=legge",
     "verify:hexagram-fidelity:epub-legge": "node scripts/verify-hexagram-fidelity.mjs --gold=epub-legge --translator=legge",
     "scan:zhouyi-corruption": "node tools/scan-zhouyi-corruption.mjs",
