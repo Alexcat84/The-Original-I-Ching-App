@@ -113,7 +113,10 @@ describe("H6 regression — #44 姤 → #51 震 with 5 changing lines", () => {
     const leggeLine = texts.leggeSelectedLineTexts?.[0];
     expect(leggeLine?.position).toBe(4);
     expect(leggeLine?.fromHexagram).toBe("transformed");
-    expect(leggeLine?.text).toContain("The fourth NINE");
+    // Oxford SBE XVI PDF wording ("line, undivided"), not sacred-texts EPUB ("NINE, undivided")
+    expect(leggeLine?.text).toBe(
+      "The fourth line, undivided, shows its subject, amid the startling movements, supinely sinking (deeper) in the mud.",
+    );
   });
 
   it("master_combined supplies ZhouYi line 4 of #51 (震遂泥。)", () => {
