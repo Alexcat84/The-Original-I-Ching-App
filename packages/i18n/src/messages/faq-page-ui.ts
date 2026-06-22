@@ -446,7 +446,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "data-reliability",
     question: "¿Qué tan fiables son los textos del I Ching en la aplicación?",
     answer:
-      "Última auditoría: 22 de junio de 2026. Textos del oráculo verificados contra fuentes Tier-0: Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project / ctext.org), Huang y Zhu Xi/Adler (PDF locales). Reglas de líneas cambiantes verificadas contra gold Huang y Adler. Consulta la página Auditorías de fidelidad para metodología, resultados de gates y el registro completo.",
+      "Última auditoría: 22 de junio de 2026. Textos del oráculo verificados contra fuentes Tier-0: Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang y Zhu Xi/Adler (PDF locales). Reglas de líneas cambiantes verificadas contra gold Huang y Adler. Consulta la página Auditorías de fidelidad para metodología, resultados de gates y el registro completo.",
     related: ["fidelityAudits"],
   },
   {
