@@ -19,6 +19,7 @@
     "changelog:update": "node scripts/update-changelog.js",
     "qa:mutation-output": "node scripts/mutation-output-qa.mjs",
     "verify:hexagram-fidelity": "node scripts/verify-hexagram-fidelity.mjs",
+    "pdf-gold:preflight": "node scripts/pdf-gold-preflight.mjs",
     "scan:zhouyi-corruption": "node tools/scan-zhouyi-corruption.mjs",
     "ingest:zhouyi": "node tools/ingest-zhouyi-ctext.mjs",
     "ingest:wilhelm": "node tools/ingest-wilhelm.mjs",

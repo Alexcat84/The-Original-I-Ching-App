@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "updatedAt": "2026-06-21",
+  "branch": "feat/pdf-gold-verification",
+  "note": "PDF files live in this directory locally; they are gitignored. Only this manifest is committed.",
+  "sources": {
+    "wilhelm": {
+      "file": "wilhelm-baynes-1950-pantheon.pdf",
+      "title": "The I Ching or Book of Changes",
+      "translators": ["Richard Wilhelm", "Cary F. Baynes"],
+      "publisher": "Pantheon Books",
+      "series": "Bollingen Series XIX",
+      "year": 1950,
+      "language": "en",
+      "role": "Tier-0 gold for oracle fields (judgment, image, lines 1-6)",
+      "pageNumberBasis": "printed_folio_on_book_page_footer",
+      "pdfPageOffsetNote": "PDF page index may differ from printed folio; calibrate during extract phase",
+      "spotCheckPages": {
+        "56:judgment": 231,
+        "20:5": "88-89",
+        "21:2": "92-93",
+        "21:3": "92-93",
+        "26:3": 112,
+        "52:2": 215
+      }
+    },
+    "legge": {
+      "file": "legge-yi-king-sbe-xvi.pdf",
+      "title": "The Yî King, or Book of Changes",
+      "translator": "James Legge",
+      "series": "Sacred Books of the East, Volume XVI",
+      "year": 1882,
+      "language": "en",
+      "role": "Tier-0 gold for Thwan, Great Symbolism, lines, yongJiu/yongLiu"
+    },
+    "zhouyi": {
+      "file": "zhouyi-zhushu-song-er07.pdf",
+      "title": "周易注疏",
+      "edition": "南宋刊本影印（北京图书馆藏）",
+      "provider": "爱如生数字古籍 (er07.com)",
+      "language": "zh-Hant",
+      "role": "Primary Chinese witness (canon + 注疏); extract 卦辞/爻辞/大象/用九/用六 only"
+    }
+  }
+}
