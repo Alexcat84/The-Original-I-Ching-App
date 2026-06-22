@@ -1,12 +1,14 @@
 # Plan de implementación — Zhu Xi 32 diagramas + regla clásica 3 líneas
 
-**Fecha:** 22 jun 2026 · **Revisión:** v2 (post-validación Opus 4.8)  
-**Estado:** Plan aprobación pendiente — **NO implementar sin Gate 0 (Fase 0)**  
-**Audiencia:** auditoría interna pre-ejecución  
-**Validación externa:** [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md)  
-**Índice maestro:** [`FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`](FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md) §Parte E–F  
+**Fecha:** 22 jun 2026 · **Revisión:** v2.1 (greenfield, post-validación Opus 4.8)  
+**Estado:** **Luz verde documental.** Motor: **NO implementar sin Gate 0 (Fase 0) técnico**  
+**Audiencia:** ejecutor + auditoría interna  
+**Validación externa:** [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) (v2.1)  
+**Índice maestro:** [`FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`](FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md) §Parte E-F  
 **Prerequisito:** [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md)  
 **Rama sugerida:** `feat/zhuxi-32-charts-lookup` (desde `staging` actualizado)
+
+> **DECISIÓN DE PRODUCTO (Alexis, 22 jun 2026): GREENFIELD.** Sin usuarios reales ni consultas históricas. Comportamiento Zhu Xi actual = default pre-lanzamiento. Cambios post Gate 0 = **forward-only** (comportamiento canónico día 1). Resuelve sign-off de producto D0.2. **No elimina** Gate 0 técnico (D0.1/D0.2 con cita de folio = especificación del motor).
 
 ---
 
@@ -26,12 +28,12 @@ Portar el motor Zhu Xi de **reglas por conteo** (operativas, validadas en tests 
 
 ## 1. Por qué requiere plan estricto
 
-| Riesgo | Evidencia actual |
-|--------|------------------|
-| **Regresión API** | `/api/consult` persiste `mutation_rule` + `line_reading_system`; consultas históricas Zhu Xi pueden mostrar regla distinta si se re-hidrata |
-| **Tests verdes hoy** | 90 tests motor + gates H1–H5 + QA mutation-output validados contra reglas operativas |
-| **Comportamiento usuario** | Interpretaciones Zhu Xi con 3/4/5 cambios pueden citar líneas/juicios diferentes |
-| **Prompt** | `interpretation.ts` asume `judgmentEmphasis` pos-1 para 3 líneas; 32 charts cambian `fromHexagram` en 4/5 |
+| Riesgo | Evidencia actual | Postura v2.1 |
+|--------|------------------|--------------|
+| **Regresión API / históricos** | N/A en greenfield | **Neutralizado:** no hay usuarios ni hilos que preservar |
+| **Tests verdes hoy** | 90 tests motor + gates H1-H5 + QA mutation-output | Flag OFF mantiene baseline durante desarrollo |
+| **Comportamiento usuario** | Interpretaciones Zhu Xi 3/4/5 pueden cambiar vs default pre-lanzamiento | **Forward-only:** canónico desde día 1 |
+| **Prompt** | `interpretation.ts` + 32 charts cambian `fromHexagram` en 4/5 | Gate 0 + Fase C (H2) |
 
 ---
 
@@ -120,37 +122,37 @@ type ZhuXiChartResolution = {
 - Mantener códigos `ZX_*` existentes en API — **no renombrar**; solo cambiar selección interna de textos.
 - Añadir campo opcional en `TextsForClaude`: `zhuxiChartId?: number` (telemetría + debug; no exponer en UI usuario).
 
-### 3.3 Compatibilidad hacia atrás
+### 3.3 Flag y cutover (greenfield v2.1)
 
-| Opción | Pros | Contras |
-|--------|------|---------|
-| **A — Flag runtime** `ZHUXI_CLASSICAL_CHARTS=1` | Staging A/B; rollback instantáneo | Dos comportamientos en prod |
-| **B — Cutover limpio** | Un solo comportamiento | Rompe paridad con consultas pre-cutover |
-| **Recomendación** | **A en staging** → validar QA → **B en prod** tras smoke | Documentar en changelog |
-
-Consultas ya persistidas: **no re-calcular** al re-leer hilo; usar `mutation_rule` + textos guardados en `consultation_content`. Solo afecta **nuevas** consultas post-cutover.
+| Rol | Comportamiento |
+|-----|----------------|
+| **`ZHUXI_CLASSICAL_CHARTS` OFF** | Andamio de desarrollo: reglas operativas actuales; mantiene 90 tests verdes mientras se construye charts |
+| **`ZHUXI_CLASSICAL_CHARTS` ON** | Camino canónico (charts Adler); validación del motor nuevo |
+| **Lanzamiento (Fase E)** | **Default ON** en `main`/prod. No hay A/B de paridad con usuarios legados |
+| **Rollback** | Flag OFF = interruptor de seguridad (<5 min redeploy). Greenfield: sin históricos que remediar |
 
 ---
 
-## 4. Fases de implementación (v2 — post Opus 4.8)
+## 4. Fases de implementación (v2.1 greenfield)
 
-### Fase 0 — Decisiones de fuente (gate duro, **sin código motor**)
+### Fase 0: Decisiones de fuente (gate duro, **sin código motor**)
 
 Resolver desde PDF Adler con **cita literal + captura de folio**:
 
-| ID | Pregunta | Si sí | Si no |
-|----|----------|-------|-------|
-| **D0.1** | ¿Los 20 casos de 3 líneas en Adler siguen orden lex ascendente? | G1 = **no-op** (`includes(1)` exacto) | Tabla explícita 20 casos |
-| **D0.2** | ¿Fig. 19 sobrescribe reglas 4/5 (original vs transformado)? | Motor chart corrige posible bug latente | Charts = excepciones sobre default actual |
+| ID | Pregunta | Si sí | Si no | Producto |
+|----|----------|-------|-------|----------|
+| **D0.1** | ¿Los 20 casos de 3 líneas en Adler siguen orden lex ascendente? | G1 = **no-op** (`includes(1)` exacto) | Tabla explícita 20 casos | N/A |
+| **D0.2** | ¿Fig. 19 sobrescribe reglas 4/5 (original vs transformado)? | Spec: chart decide `fromHexagram` | Spec: default + excepciones chart | **Resuelto:** forward-only |
 
-**Gate 0 (bloqueante):**
+**Gate 0 (bloqueante para motor):**
 
 - [ ] D0.1 respondida con cita folio p.154 + evidencia Fig. 19 si aplica
-- [ ] D0.2 respondida con cita folio p.158 + lectura cruzada reglas 4/5 p.156
-- [ ] Spot-check manual ≥10 charts vs PDF 159–204
+- [ ] D0.2 respondida con cita folio p.158 + lectura cruzada reglas 4/5 p.156 (dictamen **técnico**)
+- [ ] Spot-check manual ≥10 charts vs PDF 159-204
 - [ ] Resultado documentado en este plan antes de Fase A
+- [x] Sign-off producto D0.2 (greenfield, forward-only)
 
-**Duración estimada:** 1–2 días (lectura académica + capturas)
+**Duración estimada:** 1-2 días (lectura académica + capturas)
 
 ---
 
@@ -215,21 +217,36 @@ Resolver desde PDF Adler con **cita literal + captura de folio**:
 
 ---
 
-### Fase D — API + telemetría
+### Fase D: API + telemetría
 
-*(Sin cambio vs v1 — ver plan original.)*
+**Entregables:**
 
-**Gate D:** smoke 5 consultas; Axiom `zhuxiChartId` + `zhuxiChartLineSource`; no recalcular históricos.
+- `apps/web/src/app/api/consult/route.ts`: pasar flag env en staging/dev
+- Axiom: log `zhuxiChartId` + `zhuxiChartLineSource` en `consult_complete`
+
+**Greenfield:** flag = **andamio de desarrollo** (OFF = 90 tests verdes; ON = validar camino charts). No es A/B de paridad con producción legada.
+
+**Gate D:**
+
+- [ ] Response JSON mismos campos que hoy (+ debug opcional staging)
+- [ ] Smoke 5 consultas 3/4/5 cambios Zhu Xi
+- [ ] Logs Axiom correlacionados
 
 **Duración estimada:** 1 día
 
 ---
 
-### Fase E — Cutover staging → prod
+### Fase E: Cutover (default ON al lanzar)
 
-*(Sin cambio vs v1.)*
+**Checklist:**
 
-**Duración estimada:** 1–2 días validación humana
+- [ ] Validar staging con flag ON
+- [ ] Merge a `main` con **charts default ON** (sin A/B legado)
+- [ ] Flag conservado como interruptor de seguridad; retirable cuando estable
+- [ ] Actualizar doc interno + `/audits` ("re-auditado, pass")
+- [ ] APK: sin rebuild salvo copy i18n (WebView remoto)
+
+**Duración estimada:** 1-2 días validación humana
 
 ---
 
@@ -266,9 +283,9 @@ Resolver desde PDF Adler con **cita literal + captura de folio**:
 
 ## 7. Rollback
 
-1. `ZHUXI_CLASSICAL_CHARTS=0` en Vercel → redeploy (< 5 min)
-2. Motor default vuelve a reglas operativas
-3. Consultas nuevas post-rollback usan reglas operativas; históricas intactas en DB
+1. `ZHUXI_CLASSICAL_CHARTS=0` en Vercel → redeploy (<5 min)
+2. Motor vuelve a reglas operativas pre-chart (andamio OFF)
+3. Greenfield: no hay históricos de usuarios que preservar ni recalcular
 
 ---
 
@@ -286,24 +303,36 @@ Resolver desde PDF Adler con **cita literal + captura de folio**:
 
 ---
 
-## 9. Decisión requerida antes de Fase B
+## 9. Decisiones de producto (v2.1)
 
-Confirmar con producto (post Gate 0):
-
-1. ¿Cutover **A/B flag** o directo? (recomendado: flag staging primero)
-2. ¿Re-auditoría pública `/audits` al cerrar Fase E?
-3. ¿Baseline QA mutation-output en CI?
-4. **T1/T2:** ¿normalizar coma Zhou Yi y metadata W/L en el mismo sprint o aparte?
-
----
-
-## 10. Validación externa
-
-- [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) — Opus 4.8, 22 jun 2026
+| Tema | Decisión |
+|------|----------|
+| Greenfield / D0.2 producto | **Forward-only.** Sign-off dado 22 jun 2026 |
+| Cutover | **Default ON** al lanzar. Flag = andamio + interruptor |
+| Re-auditoría `/audits` | Sí al cerrar Fase E |
+| Baseline QA en CI | Pendiente confirmación |
+| T1/T2 | **Ejecutables ya** (no bloquean Gate 0) |
 
 ---
 
-## 11. Referencias
+## 10. Para el ejecutor (orden de trabajo)
+
+Ver [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) §Parte 6.
+
+1. **T2** (ya): metadata Wilhelm Pantheon + `licenseNote` Legge  
+2. **T1** (ya): coma Zhou Yi + re-gate + biblioteca  
+3. **Gate 0:** D0.1 + D0.2 + spot-check ≥10 (sin código motor)  
+4. **Fases A→E:** gold → motor (flag scaffold) → prompt → API → cutover **default ON**
+
+---
+
+## 11. Validación externa
+
+- [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) — Opus 4.8, v2.1 greenfield, 22 jun 2026
+
+---
+
+## 12. Referencias
 
 - `scripts/lib/zhuxi-adler-pdf-gold.mjs` — reglas core + `thirty_two_charts` not_implemented
 - `packages/iching-engine/src/rules/zhuxi.ts` — regla operativa pos 1 (líneas 82–93)

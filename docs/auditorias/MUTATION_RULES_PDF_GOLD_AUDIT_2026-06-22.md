@@ -114,7 +114,7 @@ Ver [`ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md`](ZHUXI_32_CHARTS_IMPLEM
 | Prompt gates H1/H3/H5 | Nuevos fixtures multi-línea desde transformado |
 | QA `pnpm qa:mutation-output` | Baseline JSON debe regenerarse con trazabilidad modelo |
 
-**Regla operativa:** no mergear cambios de motor sin **Gate 0 (Fase 0)** + gates + tests + smoke staging.
+**Regla operativa:** no mergear motor sin **Gate 0 técnico** (Fase 0). Producto greenfield: forward-only, default ON al lanzar.
 
 ---
 

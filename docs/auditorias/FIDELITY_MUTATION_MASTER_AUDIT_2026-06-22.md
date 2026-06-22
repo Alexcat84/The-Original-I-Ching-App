@@ -243,62 +243,65 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 
 ---
 
-## Parte F — Validación externa Opus 4.8 + acuerdo implementación
+## Parte F: Validación externa Opus 4.8 v2.1 (greenfield) + acuerdo implementación
 
 **Documento:** [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md)  
-**Rama verificada por auditor:** `staging` `86bddef`
+**Rama verificada por auditor:** `staging` `fe1f184`  
+**Luz verde documental v2.1:** SÍ  
+**Luz verde motor:** pendiente Gate 0 técnico (D0.1/D0.2)
 
-### F.1 Acuerdo del equipo (Cursor, post-revisión)
+> **DECISIÓN DE PRODUCTO (Alexis, 22 jun 2026): GREENFIELD.** Forward-only. Sign-off D0.2 (producto) dado. Gate 0 técnico sigue bloqueante.
+
+### F.1 Acuerdo del equipo (Cursor, post v2.1)
 
 | Observación Opus 4.8 | ¿De acuerdo? | Notas |
 |---------------------|--------------|-------|
 | W/L re-ingesta 100% book-primary sólida; hex 18 OK | **Sí** | Reproducible con gates PDF 22 jun |
-| G1 = combinatoria 10/10 ↔ `includes(1)` | **Sí, con reserva** | Matemática correcta; falta confirmar que Adler **enumera** en ese orden (D0.1), no solo que los **conjuntos** coincidan |
-| G2 tensión reglas 4/5 vs Fig. 19 | **Sí — crítico** | Puede ser bug latente Zhu Xi hoy para subset de tiradas |
-| Fase 0 gate duro antes de motor | **Sí — adoptado** | Plan v2 |
-| H2 faltaba en Fase C | **Sí** | Añadido a plan v2 |
-| H1/H3 ambas fuentes (primario + transformado) | **Sí** | Corregido en plan v2 |
-| Gen→Sui automatizado, no solo smoke | **Sí** | Fixture obligatorio Fase B |
-| Criterio éxito ≠ 4096 literales | **Sí** | Paridad vs gold inputs distintos |
-| T1 coma Zhou Yi (display) | **Sí** | Ortogonal a charts; decidir producto |
-| T2 metadata sourceUrl/licenseNote | **Sí** | Honestidad claims; bajo riesgo |
-| Asimetría gate ZY normalizado vs W/L exact | **Sí** | Documentar en claims; no bloquea charts |
+| G1 = combinatoria 10/10 ↔ `includes(1)` | **Sí, con reserva** | Confirmar orden Adler en D0.1 |
+| G2 tensión reglas 4/5 vs Fig. 19 | **Sí, crítico** | Lectura técnica D0.2 obligatoria |
+| Fase 0 gate duro antes de motor | **Sí, adoptado** | Plan v2.1 |
+| Greenfield forward-only | **Sí, adoptado** | Neutraliza riesgos históricos; default ON al lanzar |
+| Flag = andamio dev, no A/B paridad | **Sí, adoptado** | Fase D/E v2.1 |
+| H2 en Fase C | **Sí** | Plan v2.1 |
+| H1/H3 ambas fuentes | **Sí** | Plan v2.1 |
+| Gen→Sui automatizado | **Sí** | Fase B |
+| T1/T2 ejecutables ya | **Sí** | Orden ejecutor §Parte G |
 
-### F.2 Checklist pre-implementación (bloqueante)
+### F.2 Checklist ejecutor
 
-**No iniciar Fase A del plan charts hasta:**
+**Ejecutar YA (no bloquea Gate 0):**
 
-- [ ] **D0.1** — Leer Adler p.154 + Fig. 19: ¿orden de los 20 tríos documentado? Captura folio + cita literal en plan
-- [ ] **D0.2** — Leer p.158 + reglas 4/5 p.156: ¿Fig. 19 override `fromHexagram` en 4/5? Captura + dictamen escrito (bug latente sí/no)
-- [ ] **Gate 0** — Spot-check ≥10 celdas Fig. 19 (PDF 159–204) vs transcripción manual
-- [ ] Sign-off Alexis sobre dictamen D0.2 (impacto producción actual Zhu Xi)
+- [ ] **T2:** `sourceUrl` Wilhelm → Pantheon; `licenseNote` Legge
+- [ ] **T1:** coma Zhou Yi + re-gate 514/514 + biblioteca
 
-**Antes de Fase B (motor):**
+**Gate 0 (bloqueante motor, sin código):**
 
-- [ ] Gate A PASS — `zhuxi-adler-32-charts-gold.json` con 32 entradas + `equivalentToIncludesPos1`
-- [ ] Re-ejecutar `audit:zhuxi-rules-vs-adler-gold` + 90 tests motor (baseline flag OFF)
+- [ ] **D0.1:** Adler p.154 + Fig. 19 → `equivalentToIncludesPos1`
+- [ ] **D0.2:** p.158 + reglas 4/5 p.156 → dictamen técnico escrito
+- [ ] Spot-check ≥10 celdas Fig. 19 (PDF 159-204)
+- [x] Sign-off producto D0.2 (greenfield, forward-only)
 
-**Antes de cutover (Fase E):**
+**Tras Gate 0:**
 
-- [ ] Gate B/C/D completos; H2 re-validado
-- [ ] `pnpm qa:mutation-output` diff documentado flag OFF vs ON
-- [ ] Smoke staging Zhu Xi 3/4/5 + Gen→Sui case en app real
-
-**Paralelo (no bloquea Gate 0, recomendado antes de merge main):**
-
-- [ ] T2 metadata W/L
-- [ ] T1 decisión coma Zhou Yi + check biblioteca
+- [ ] Fase A: gold JSON 32 entradas
+- [ ] Fase B-D: motor + prompt + API (flag scaffold)
+- [ ] Fase E: cutover **default ON**
 
 ---
 
-## Parte E — Plan 32 diagramas Zhu Xi
+## Parte G: Para el ejecutor
 
-Plan completo (fases A–E, gates, rollback, estimación **9–12 días**):  
-[`ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md`](ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md)
+Orden completo en [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) §Parte 6 y [`ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md`](ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md) §10.
+
+**Regla operativa:** no escribir motor de charts hasta Gate 0 cerrado con citas de folio.
+
+## Parte E: Plan 32 diagramas Zhu Xi (v2.1 greenfield)
+
+Plan completo: [`ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md`](ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md)
 
 ### E.1 Objetivo
 
-Para cada estado válido de 6 líneas (4096 combinaciones yarrow/coin), el motor Zhu Xi debe seleccionar los mismos textos que prescribe el chart gold extraído del PDF Adler Fig. 19.
+Paridad motor vs gold Adler Fig. 19 sobre **inputs de chart distintos** (no 4096 literales exhaustivos). Comportamiento canónico **forward-only** desde lanzamiento (greenfield).
 
 ### E.2 Evidencia que obliga la implementación
 
@@ -306,29 +309,29 @@ Para cada estado válido de 6 líneas (4096 combinaciones yarrow/coin), el motor
 
 > «The changes in the hexagrams up through the 32 use the lines of the **original** hexagram as prognostication. The changes of the hexagrams **after the 32** use the lines of the **changed** hexagram as prognostication.»
 
-**Nota 149 (PDF 215):** cita *Hsi-tz'u* A.9.8 sobre las 4096 combinaciones — base teórica de los 32 charts (64 charts al invertir).
-
-**Regla 3 líneas (PDF 154):** 20 casos particulares — primeros 10 chen primario; últimos 10 hui transformado. Hoy: equivalente operativo «pos 1 entre las tres → primario».
+**Regla 3 líneas (PDF 154):** 20 casos. D0.1 pendiente (probable no-op con `includes(1)`).
 
 ### E.3 Fases (resumen)
 
 | Fase | Entregable | Gate |
 |------|------------|------|
-| **A** | `zhuxi-adler-32-charts-gold.json` desde PDF 159–204 | 32 entradas + spot-check ≥10 |
-| **B** | `resolveZhuXiChart()` + flag `ZHUXI_CLASSICAL_CHARTS` | Legacy tests PASS flag OFF; chart tests PASS flag ON |
-| **C** | Prompt + H1/H3/H5 | QA mutation-output con `zhuxiChartId` |
-| **D** | API + Axiom | Smoke staging 3/4/5 cambios |
-| **E** | Cutover staging → main | Rollback env flag |
+| **0** | D0.1 + D0.2 citadas | Bloqueante motor |
+| **A** | `zhuxi-adler-32-charts-gold.json` | 32 entradas + spot-check ≥10 |
+| **B** | `resolveZhuXiChart()` + flag scaffold | 90 tests OFF; chart tests ON |
+| **C** | Prompt + H1/H3/H2 | QA mutation-output |
+| **D** | API + Axiom | Smoke 3/4/5 |
+| **E** | Cutover **default ON** | `/audits` re-entrada |
 
-### E.4 Decisiones pendientes (auditoría interna)
+### E.4 Decisiones producto (cerradas v2.1)
 
-1. ¿Flag A/B en staging antes de prod? (**recomendado: sí**)
-2. ¿Baseline QA mutation-output en CI?
-3. ¿Re-entrada pública `/audits` al cerrar G1+G2?
+1. Greenfield forward-only: **sí** (22 jun 2026)
+2. Cutover default ON: **sí**
+3. Flag = andamio + interruptor: **sí**
+4. T1/T2: ejecutables ya
 
 ### E.5 Compatibilidad histórica
 
-Consultas ya persistidas: **no recalcular** al re-leer hilo; `consultation_content` es fuente de verdad del texto entregado. Solo consultas **nuevas** post-cutover usan charts.
+**Neutralizado (greenfield):** no hay consultas de usuarios. Sin re-hidratación ni remediación retroactiva.
 
 ---
 
@@ -343,7 +346,7 @@ Consultas ya persistidas: **no recalcular** al re-leer hilo; `consultation_conte
 | Huang 2010 PDF | Rule extract | `huang-mutation-rules-gold.json` + 9/9 snippets |
 | Adler Zhu Xi ch. IV | Rule extract | `zhuxi-adler-mutation-rules-gold.json` + 10/10 snippets |
 | Adler Fig. 19 | Pendiente | PDF pp. 159–204 |
-| Validación externa Opus 4.8 | Adoptada | `EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md` |
+| Validación externa Opus 4.8 | Adoptada v2.1 greenfield | `EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md` |
 | Motor iching-engine | Tests | 90 mutation + 37 line-reading |
 | Prompt producción | Gates | H1–H5 `interpretation-output-validator.ts` |
 
@@ -358,9 +361,9 @@ Consultas ya persistidas: **no recalcular** al re-leer hilo; `consultation_conte
 | [`ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md`](ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md) | Plan implementación G1/G2 |
 | [`LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md`](LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md) | Selector dual + migración 074 |
 | [`MUTATION_RULES_HUANG_ALIGNMENT_AUDIT_2026-06-19.md`](MUTATION_RULES_HUANG_ALIGNMENT_AUDIT_2026-06-19.md) | FOUR_LOWEST_STABLE |
-| [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) | Validación externa + plan v2 |
+| [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) | Validación externa v2.1 greenfield |
 | [`PROMPT_MUTATION_RULES_AUDIT_2026-06-15.md`](PROMPT_MUTATION_RULES_AUDIT_2026-06-15.md) | Gates prompt mutación |
 
 ---
 
-*Actualizado 22 jun 2026 post-validación Opus 4.8 — plan charts v2 con Fase 0.*
+*Actualizado 22 jun 2026: validación Opus 4.8 v2.1 greenfield, luz verde documental.*
