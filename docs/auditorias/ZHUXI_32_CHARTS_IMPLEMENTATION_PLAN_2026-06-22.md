@@ -2,7 +2,7 @@
 
 **Fecha:** 22 jun 2026 · **Revisión:** v2.1 (greenfield, post-validación Opus 4.8)  
 **Estado:** **Luz verde documental.** Motor: **NO implementar sin Gate 0 (Fase 0) técnico**  
-**Gate 0 (22 jun 2026): PENDIENTE** (decisión Alexis: no iniciar aún; T1/T2 cerrados)  
+**Gate 0 (22 jun 2026): EJECUTADO** — ver §0.A. Resultado: **Fases A→E bloqueadas** (Fig. 19 es imagen, no texto extraíble). Motor actual (reglas por conteo) intacto.  
 **Audiencia:** ejecutor + auditoría interna  
 **Validación externa:** [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) (v2.1)  
 **Índice maestro:** [`FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`](FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md) §Parte E-F  
@@ -147,14 +147,73 @@ Resolver desde PDF Adler con **cita literal + captura de folio**:
 
 **Gate 0 (bloqueante para motor):**
 
-- [ ] D0.1 respondida con cita folio p.154 + evidencia Fig. 19 si aplica
-- [ ] D0.2 respondida con cita folio p.158 + lectura cruzada reglas 4/5 p.156 (dictamen **técnico**)
-- [ ] Spot-check manual ≥10 charts vs PDF 159-204
-- [ ] Resultado documentado en este plan antes de Fase A
+- [x] D0.1 respondida con cita folio p.154 (ver §0.A abajo)
+- [x] D0.2 respondida con cita folio p.158 + chino folio 52 + lectura cruzada (ver §0.A)
+- [x] Spot-check Fig. 19 — Figure 4.19.1 (乾 regente) renderizada y leída (ver §0.A)
+- [x] Resultado documentado en este plan antes de Fase A
 - [x] Sign-off producto D0.2 (greenfield, forward-only)
-- [ ] **Gate 0 en pausa** (22 jun 2026): pendiente decisión de cuándo abrir lectura PDF Adler
+- [x] **Gate 0 EJECUTADO 22 jun 2026** — resultado abajo
 
-**Duración estimada:** 1-2 días (lectura académica + capturas)
+**Duración real:** lectura PDF + render Fig. 19 (1 sesión).
+
+---
+
+### 0.A — RESULTADO GATE 0 (ejecutado 22 jun 2026)
+
+**Fuente:** PDF Adler local (`tools/source-pdfs/Introduction To The Study…`). Extracción `pdftotext`/`pdftoppm` cacheada en `tools/output/fidelity-gold/` (gitignored): `zhuxi-adler-folio154.txt`, `zhuxi-adler-folio158.txt`, `zhuxi-adler-fig19-p159-204.txt`, `fig19-chart-162.png`.
+
+#### Citas literales verificadas
+
+**Folio 50 (PDF 154) — regla 3 líneas (D0.1):**
+> «When three lines change, the prognostication is the T'uan statement of the original hexagram and the resulting hexagram, and we use the original hexagram as *chen* and the resulting hexagram as *hui*. **In the first ten hexagrams [of this sort] we make *chen* the ruler; in the latter ten hexagrams we make *hui* the ruler.**»
+
+**Folio 52 (PDF 158) — regla 32 charts (D0.2), inglés:**
+> «We now take the changes [combinations] of the sixty-four hexagrams and arrange them into thirty-two charts (Fig. 19). To obtain the first [32] hexagrams we go from beginning to end and from top to bottom… **The changes in the hexagrams up through the 32 use the lines of the original hexagram as prognostication. The changes of the hexagrams after the 32 use the lines of the changed hexagram as prognostication.**»
+
+**Folio 52 (PDF 159) — chino original:**
+> 「今以六十四卦之變，列為三十二圖。得初卦者自初而終，自上而下。得末卦者自終而初，自下而上。**變在第三十二卦以前者占本卦爻之辭。變在第三十(二)卦以後者，占變卦爻之辭。**凡言初終上下者，據圖而言。」
+
+**Nota Ts'ai Yüan-ting (PDF 160):**
+> «Whenever we speak of earlier and later hexagrams, the order proceeds from the original hexagram.»
+
+#### D0.1 — ¿`includes(1)` es exacto para los 20 casos de 3 líneas?
+
+**Dictamen: HIPÓTESIS FUERTE, NO CONFIRMADA al 100% por texto.**
+
+- Combinatoria: C(6,3)=20 patrones; los que incluyen la posición 1 = C(5,2)=**10**; los que no = **10**. El split `includes(1)` da exactamente **10/10**, que coincide numéricamente con «first ten / latter ten» de Adler.
+- **Pero** el *orden* de los 20 casos en Adler lo fija Fig. 19 («order proceeds from the original hexagram»), no el patrón de líneas cambiantes. Confirmar que «first ten» ≡ «patrones que incluyen pos 1» exige leer el orden real de los charts (imágenes), no derivable de `pdftotext`.
+- **Conclusión:** la regla actual del motor (`sorted.includes(1) ? "primary" : "transformed"`) es **plausiblemente exacta** pero queda como hipótesis hasta transcribir el orden de Fig. 19.
+
+#### D0.2 — ¿Fig. 19 sobrescribe las reglas 4/5?
+
+**Dictamen técnico: Fig. 19 es un SISTEMA PARALELO de 爻辭 (line statements), no un override limpio de las reglas por conteo.**
+
+- La regla de 32 charts habla de **爻之辭 (textos de línea)** para las **4096** combinaciones completas, asignando fuente (original/changed) por posición del par en el orden de charts (primeros 32 → original; tras el 32 → changed).
+- Las reglas por conteo operan sobre tipos de texto distintos según n: n=3 lee **彖辭 (juicios)**, no líneas; n=4/5 lee líneas del transformado. Es decir, el sistema de charts y el de conteo **no operan sobre el mismo campo** para n=3.
+- Adler/Ts'ai presentan Fig. 19 como la tabulación sistemática de Chu Xi siguiendo el *I-lin* de Chiao Kan, con «aspects… not expressed by former scholars» — es una innovación comprehensiva, no una corrección de las reglas estándar (Shao Yung) que el motor implementa.
+- **Conclusión:** adoptar Fig. 19 implicaría **reemplazar** la selección por conteo en 3/4/5 por lookup de chart — divergencia mayor del método estándar (el que usan Wilhelm/Baynes y la mayoría de apps). No es un ajuste menor.
+
+#### Spot-check Fig. 19 — Figure 4.19.1 (PDF 162)
+
+Renderizada y leída visualmente. Estructura confirmada: rejilla donde la celda superior-izquierda marca el **hexagrama regente** (乾 Qian) y el resto de celdas son los 63 hexagramas en que Qian se transforma (姤, 同人, 履, 小畜, 大有, 夬, 遯, 訟…). Cada uno de los 32 charts = un regente × 63 + sí mismo. Chart 1 (Qian) cae en «primeros 32» → líneas del **original**.
+
+#### 🔴 HALLAZGO GO/NO-GO (crítico)
+
+**Fig. 19 (los 32 charts) son DIAGRAMAS xilográficos escaneados — NO texto.** `pdftotext` sobre PDF 159-204 devuelve ruido OCR; el contenido real son imágenes (confirmado con `pdftoppm`).
+
+**Implicación para Fase A:** el entregable «`tools/extract-zhuxi-adler-charts.mjs` → `zhuxi-adler-32-charts-gold.json` (32 entradas machine-readable)» **NO es factible con el pipeline `pdftotext` actual.** Opciones:
+
+| Opción | Esfuerzo | Riesgo |
+|--------|----------|--------|
+| **A. Transcripción manual** de 32 charts × 64 celdas = ~2048 entradas | Alto | Error humano; necesita doble verificación |
+| **B. Dataset digital publicado** de Fig. 19 (si existe) | Medio (búsqueda) | Procedencia/fidelidad a validar vs Adler |
+| **C. OCR de visión** por chart (modelo) + validación celda a celda | Medio-alto | Alucinación; gate de verificación obligatorio |
+
+**Recomendación del ejecutor:** **NO abrir Fase A→E todavía.** El motor actual (reglas por conteo, 37/37 tests, `includes(1)` plausiblemente exacto en n=3) es el método clásico estándar y está cerrado. Adoptar el sistema de 32 charts:
+1. Requiere resolver primero la fuente machine-readable de Fig. 19 (opción A/B/C) — decisión de Alexis.
+2. Cambia el comportamiento de n=3/4/5 frente al método estándar — decisión de producto, no solo técnica.
+
+**Estado tras Gate 0:** Fases A→E **siguen bloqueadas** por falta de gold Fig. 19 extraíble. Gate 0 cerrado documentalmente; **sin cambios de código de motor** (riesgo cero).
 
 ---
 

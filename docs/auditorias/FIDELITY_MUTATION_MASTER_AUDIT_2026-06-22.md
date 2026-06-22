@@ -400,6 +400,19 @@ Paridad motor vs gold Adler Fig. 19 sobre **inputs de chart distintos** (no 4096
 
 **Regla 3 líneas (PDF 154):** 20 casos. D0.1 pendiente (probable no-op con `includes(1)`).
 
+### E.2.1 Gate 0 EJECUTADO (22 jun 2026) — bloqueo a Fase A
+
+Gate 0 cerrado documentalmente (ver plan §0.A). Resumen:
+
+| Decisión | Resultado |
+|----------|-----------|
+| **D0.1** (`includes(1)` exacto n=3) | Hipótesis fuerte (split 10/10 coincide) **no confirmada**: el orden de los 20 casos lo fija Fig. 19, no derivable de `pdftotext` |
+| **D0.2** (Fig. 19 override 4/5) | Fig. 19 = sistema **paralelo** de 爻辭 sobre 4096 combinaciones; no override limpio del método por conteo (estándar Shao Yung) |
+| **Spot-check** | Figure 4.19.1 (乾 regente) leída vía `pdftoppm`; estructura de rejilla confirmada |
+| **🔴 Go/No-Go** | **Fig. 19 son diagramas escaneados, NO texto.** `tools/extract-zhuxi-adler-charts.mjs → 32-charts-gold.json` **no factible** con `pdftotext`. Fases A→E **bloqueadas** hasta decidir fuente machine-readable (transcripción manual / dataset publicado / OCR visión + validación) |
+
+**Recomendación:** mantener motor actual (reglas por conteo, 37/37 tests) como método clásico estándar cerrado. Abrir Fase A solo tras decisión de Alexis sobre cómo obtener el gold Fig. 19. Sin cambios de código de motor en este Gate 0.
+
 ### E.3 Fases (resumen)
 
 | Fase | Entregable | Gate |
