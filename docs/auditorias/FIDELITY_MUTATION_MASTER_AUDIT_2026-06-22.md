@@ -18,8 +18,10 @@
 5. [Parte C — Producto y transparencia (`/audits`)](#parte-c--producto-y-transparencia)
 6. [Parte D — Brechas abiertas y riesgo](#parte-d--brechas-abiertas)
 7. [Parte E — Plan de implementación 32 diagramas Zhu Xi](#parte-e--plan-32-diagramas-zhu-xi)
-8. [Índice de evidencias por fuente](#8-índice-de-evidencias-por-fuente)
-9. [Documentos relacionados](#9-documentos-relacionados)
+8. [Parte F/G — Validación Opus + ejecutor](#parte-f-validación-externa-opus-48-v21-greenfield--acuerdo-implementación)
+9. [Parte H — Zhou Yi trazabilidad](#parte-h-zhou-yi-trazabilidad-e-incidentes-históricos)
+10. [Índice de evidencias por fuente](#8-índice-de-evidencias-por-fuente)
+11. [Documentos relacionados](#9-documentos-relacionados)
 
 ---
 
@@ -29,7 +31,7 @@
 |---------|---------------|------------------|-----------|--------|
 | **Wilhelm/Baynes** | Pantheon 1950 PDF local | `verify:hexagram-fidelity:pdf-wilhelm` | **513/513 (100%)** | ✅ Cerrado |
 | **James Legge** | SBE XVI Oxford scan OCR | `verify:hexagram-fidelity:pdf-legge` | **514/514 (100%)** | ✅ Cerrado |
-| **Zhou Yi** | 周易注疏 + ctext.org | `verify:hexagram-fidelity` (zhouyi) | **514/514 (100%)** | ✅ Cerrado (sin cambio en esta rama) |
+| **Zhou Yi** | ctext.org (API + HTML) | `verify` mirrors + `scan:zhouyi-corruption` | **514/514 + 0 corrupt** | ✅ Cerrado (gold = ctext, no PDF 注疏) |
 | **Huang mutaciones** | Complete I Ching 10th ed. PDF | `audit:huang-rules-vs-pdf-gold` | **9/9 snippets, 90/90 tests** | ✅ Cerrado |
 | **Zhu Xi mutaciones** | Adler trans. Yixue Qimeng ch. IV | `audit:zhuxi-rules-vs-adler-gold` | **10/10 snippets, 37/37 tests** | ✅ Core cerrado |
 | **Zhu Xi 32 diagramas** | Adler Fig. 19 (PDF 159–204) | — | **not_implemented** | ⏳ Plan §E |
@@ -130,14 +132,23 @@ Bundle alineado al escaneo (`nine`, no `line` del EPUB re-pack). Ver §A1 spot-c
 
 ---
 
-### A.3 Zhou Yi (canon + 注疏)
+### A.3 Zhou Yi (周易 canon)
 
 | Evidencia | Referencia |
 |-----------|------------|
-| **Fuente** | 周易注疏 (南宋刊本影印); ingest ctext.org |
-| **Archivo local** | `tools/source-pdfs/zhouyi-zhushu-song-er07.pdf` |
+| **Gold operativo (Tier-0 efectivo hoy)** | [ctext.org Book of Changes](https://ctext.org/book-of-changes): API gettext + HTML 大象傳 |
+| **Ingest** | `tools/ingest-zhouyi-ctext.mjs` → `scripts/iching_zhouyi_translation.mjs` |
 | **Bundle** | `packages/iching-data/src/generated/hexagrams.zhouyi.json` |
-| **Estado** | 100% oracle fields — sin regresión en rama `feat/wilhelm-pdf-gold-sync` |
+| **Gate canónico** | `node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=zhouyi` → **514/514** |
+| **Gate corrupción** | `npm run scan:zhouyi-corruption` → **0** incidencias |
+| **PDF local (NO gate hoy)** | `tools/source-pdfs/zhouyi-zhushu-song-er07.pdf` (南宋刊本影印, 爱如生 er07; manuscrito/OCR complejo) |
+| **Estado PDF 注疏** | Manifest tracked; **parser book-primary pendiente** (`verify-hexagram-fidelity.mjs` L336: "pending local PDF 注疏 parser") |
+
+**Honestidad de claims:** el producto verifica 1:1 contra **ctext**, no contra el PDF 注疏 local. El PDF es reserva académica / futuro Tier-0; no usarlo en `/audits` ni `licenseNote` como fuente primaria hasta tener extract+compare reproducible.
+
+**T1 (22 jun 2026):** comas almacenadas en full-width `，` (`feat/t1-zhouyi-comma-normalize`).
+
+Detalle histórico e incidentes: §Parte H.
 
 ---
 
@@ -248,7 +259,8 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 **Documento:** [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md)  
 **Rama verificada por auditor:** `staging` `fe1f184`  
 **Luz verde documental v2.1:** SÍ  
-**Luz verde motor:** pendiente Gate 0 técnico (D0.1/D0.2)
+**Luz verde motor:** pendiente Gate 0 técnico (D0.1/D0.2)  
+**Gate 0:** **PENDIENTE** (22 jun 2026, decisión Alexis: no iniciar aún)
 
 > **DECISIÓN DE PRODUCTO (Alexis, 22 jun 2026): GREENFIELD.** Forward-only. Sign-off D0.2 (producto) dado. Gate 0 técnico sigue bloqueante.
 
@@ -276,6 +288,8 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 
 **Gate 0 (bloqueante motor, sin código):**
 
+> **Estado (22 jun 2026): PENDIENTE.** Decisión Alexis: no iniciar Gate 0 aún. T1/T2 cerrados; motor Zhu Xi charts sin tocar.
+
 - [ ] **D0.1:** Adler p.154 + Fig. 19 → `equivalentToIncludesPos1`
 - [ ] **D0.2:** p.158 + reglas 4/5 p.156 → dictamen técnico escrito
 - [ ] Spot-check ≥10 celdas Fig. 19 (PDF 159-204)
@@ -294,6 +308,66 @@ Documento detallado: [`MUTATION_RULES_PDF_GOLD_AUDIT_2026-06-22.md`](MUTATION_RU
 Orden completo en [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) §Parte 6 y [`ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md`](ZHUXI_32_CHARTS_IMPLEMENTATION_PLAN_2026-06-22.md) §10.
 
 **Regla operativa:** no escribir motor de charts hasta Gate 0 cerrado con citas de folio.
+
+---
+
+## Parte H: Zhou Yi, trazabilidad e incidentes históricos
+
+### H.1 Cadena de trazabilidad vigente (staging post-T1)
+
+```
+ctext.org (cache tools/output/fidelity-gold/ctext-*.json + HTML)
+    ↓ tools/ingest-zhouyi-ctext.mjs  (toCanonicalZhouYiText + full-width punctuation)
+scripts/iching_zhouyi_translation.mjs
+    ↓ npm run build:data
+packages/iching-data/src/generated/hexagrams.zhouyi.json
+    ↓ app / biblioteca / prompt
+Usuario ve 卦辞·爻辞·大象·用九/用六
+```
+
+| Eslabón | Reproducible | Evidencia |
+|---------|--------------|-----------|
+| Gold compare | Sí | `--gold=mirrors --translator=zhouyi` → 514/514 |
+| Corrupción objetiva | Sí | `scan:zhouyi-corruption` = 0 |
+| PDF 注疏 local | No (sin parser) | `tools/source-pdfs/manifest.json` → `zhouyi.file` |
+
+### H.2 PDF 注疏 vs ctext: por qué NO es gold 1:1 hoy
+
+El PDF `zhouyi-zhushu-song-er07.pdf` (影印南宋刊本 + 注疏) mezcla texto canónico, comentarios 注·疏 y escaneo/manuscrito denso. Extraer solo campos oráculo con paridad 1:1 tipo Wilhelm/Legge requiere pipeline OCR+segmentación dedicado (no existe). Gold operativo = **ctext**.
+
+**Recomendación:** no prometer "verified against our local 注疏 PDF" hasta Fase PDF Zhou Yi. Claim vigente = **ctext.org** + escáner de corrupción.
+
+### H.3 Incidente recordado (hex 32/34?): lo encontrado en git
+
+No hay evidencia de corrupción en **hex 32 (恆)** o **hex 34 (大壯)**. Probable confusión con **hex 13/14** (pareja) o **31/44**.
+
+**P0 cerrado 21 jun 2026** (dataset intermedio `freizl/yijing`, no el PDF):
+
+| Hex | Campo | Error (freizl) | Estado hoy |
+|-----|-------|----------------|------------|
+| **14** | L2 | Texto de hex **13** | ✅ `大車以載，有攸往，無咎。` |
+| **19** | L1-L2 | `鹹臨` vs `咸臨` | ✅ `咸臨，吉無不利。` |
+| **31** | judgment + lines | **鹹** por **咸** | ✅ 咸 correcto |
+| **44** | L5 | Etiqueta `九五：` filtrada | ✅ limpio |
+
+**Commits:** `0e003ea` (ingest ctext), `1fc4cbf` (Fase 3b), `bfbe8f6` (Fase 3d harness). Fix = re-ingesta ctext, no parche manual sobre freizl ni sobre PDF 注疏.
+
+### H.4 Verificación en vivo (22 jun 2026)
+
+```bash
+npm run scan:zhouyi-corruption
+node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=zhouyi
+```
+
+### H.5 Riesgo residual
+
+| Riesgo | Mitigación |
+|--------|------------|
+| ctext ≠ edición impresa 注疏 | variant map + gate ctext |
+| Sin gate book-primary chino | claims honestos; Fase PDF = proyecto separado |
+| Regresión tipo freizl | `scan:zhouyi-corruption`; no reintroducir freizl como ingest |
+
+---
 
 ## Parte E: Plan 32 diagramas Zhu Xi (v2.1 greenfield)
 
@@ -366,4 +440,4 @@ Paridad motor vs gold Adler Fig. 19 sobre **inputs de chart distintos** (no 4096
 
 ---
 
-*Actualizado 22 jun 2026: validación Opus 4.8 v2.1 greenfield, luz verde documental.*
+*Actualizado 22 jun 2026: Gate 0 PENDIENTE; T1/T2 cerrados; Zhou Yi trazabilidad §Parte H (staging `9f2a170`).*

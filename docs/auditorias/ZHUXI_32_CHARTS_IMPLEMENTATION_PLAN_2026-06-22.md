@@ -2,6 +2,7 @@
 
 **Fecha:** 22 jun 2026 · **Revisión:** v2.1 (greenfield, post-validación Opus 4.8)  
 **Estado:** **Luz verde documental.** Motor: **NO implementar sin Gate 0 (Fase 0) técnico**  
+**Gate 0 (22 jun 2026): PENDIENTE** (decisión Alexis: no iniciar aún; T1/T2 cerrados)  
 **Audiencia:** ejecutor + auditoría interna  
 **Validación externa:** [`EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md`](EXTERNAL_VALIDATION_FIDELITY_MUTATION_2026-06-22_OPUS48.md) (v2.1)  
 **Índice maestro:** [`FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`](FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md) §Parte E-F  
@@ -151,6 +152,7 @@ Resolver desde PDF Adler con **cita literal + captura de folio**:
 - [ ] Spot-check manual ≥10 charts vs PDF 159-204
 - [ ] Resultado documentado en este plan antes de Fase A
 - [x] Sign-off producto D0.2 (greenfield, forward-only)
+- [ ] **Gate 0 en pausa** (22 jun 2026): pendiente decisión de cuándo abrir lectura PDF Adler
 
 **Duración estimada:** 1-2 días (lectura académica + capturas)
 
