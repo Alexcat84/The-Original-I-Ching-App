@@ -146,6 +146,8 @@ function isPublicDocInternalPath(path: string): boolean {
     n.startsWith("/guia/") ||
     n === "/notes" ||
     n.startsWith("/notes/") ||
+    n === "/audits" ||
+    n.startsWith("/audits/") ||
     n === "/privacy" ||
     n === "/terms" ||
     n.startsWith("/documentacion")

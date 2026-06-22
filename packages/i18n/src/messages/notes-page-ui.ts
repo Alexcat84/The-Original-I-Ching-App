@@ -22,8 +22,6 @@ export type NotesPageUiMessages = {
   ichingLeggeBody: string;
   ichingZhouyiHeading: string;
   ichingZhouyiBody: string;
-  ichingDataAuditHeading: string;
-  ichingDataAuditBody: string;
   bonesHeading: string;
   bonesOriginHeading: string;
   bonesOriginBody: string;
@@ -78,9 +76,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "El texto original Zhou Yi",
     ichingZhouyiBody:
       "El Zhou Yi original (literalmente 'Cambios de Zhou') es el núcleo del I Ching, compuesto por los 64 hexagramas, los juicios del Rey Wen y las líneas del Duque de Zhou, sin los comentarios confucianos posteriores (las Diez Alas). Esta fuente permite conectar directamente con la capa chamánica y más antigua del oráculo.",
-    ichingDataAuditHeading: "Auditorías de fidelidad 1:1",
-    ichingDataAuditBody:
-      "Última auditoría: 21 de junio de 2026. Los textos se contrastaron línea por línea con ediciones académicas establecidas: James Legge (1882, Sacred Books of the East, vía sacred-texts.com), el Zhou Yi canónico (Chinese Text Project, ctext.org) y la traducción al inglés Wilhelm/Baynes (mirror académico de la Universidad de Parma de la edición Princeton 1950). Legge y Zhou Yi: 100%. Wilhelm: 100%; donde Parma omite un pasaje, seis textos provienen de la edición impresa Wilhelm/Baynes (Princeton University Press, 1950), verificados página a página en el libro físico: juicio del hexagrama 56 (El Viajero), p. 231; hex 20 línea 5, pp. 88-89; hex 21 líneas 2 y 3, pp. 92-93; hex 26 línea 3, p. 112; hex 52 línea 2, p. 215.",
     bonesHeading: "Huesos de Oráculo (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origen histórico (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
@@ -147,9 +142,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "The Original Zhou Yi Text",
     ichingZhouyiBody:
       "The original Zhou Yi (literally 'Changes of Zhou') is the core of the I Ching, composed of the 64 hexagrams, King Wen's judgments, and the Duke of Zhou's lines, without the later Confucian commentaries (the Ten Wings). This source allows a direct connection with the shamanic and oldest layer of the oracle.",
-    ichingDataAuditHeading: "1:1 data fidelity audits",
-    ichingDataAuditBody:
-      "Last audit: 21 June 2026. Texts were compared line by line against established academic editions: James Legge (1882, Sacred Books of the East via sacred-texts.com), the canonical Zhou Yi (Chinese Text Project, ctext.org), and the Wilhelm/Baynes English rendering (University of Parma academic mirror of the Princeton 1950 edition). Legge and Zhou Yi: 100%. Wilhelm: 100%; where Parma omits a passage, six texts are taken from the printed Wilhelm/Baynes edition (Princeton University Press, 1950), page-verified in the physical book: hex 56 (The Wanderer) judgment, p. 231; hex 20 line 5, pp. 88-89; hex 21 lines 2 and 3, pp. 92-93; hex 26 line 3, p. 112; hex 52 line 2, p. 215.",
     bonesHeading: "Oracle Bones (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Historical Origins (Shang Dynasty, ~1600-1046 BCE)",
     bonesOriginBody:
@@ -217,9 +209,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "O texto original Zhou Yi",
     ichingZhouyiBody:
       "O Zhou Yi original (literalmente 'Mutações de Zhou') é o núcleo do I Ching, composto pelos 64 hexagramas, os juízos do Rei Wen e as linhas do Duque de Zhou, sem os comentários confucianos posteriores (as Dez Asas). Esta fonte permite uma ligação direta à camada xamânica e mais antiga do oráculo.",
-    ichingDataAuditHeading: "Auditorias de fidelidade 1:1",
-    ichingDataAuditBody:
-      "Última auditoria: 21 de junho de 2026. Os textos foram comparados linha por linha com edições académicas estabelecidas: James Legge (1882, Sacred Books of the East, via sacred-texts.com), o Zhou Yi canónico (Chinese Text Project, ctext.org) e a tradução inglesa Wilhelm/Baynes (espelho académico da Universidade de Parma da edição Princeton 1950). Legge e Zhou Yi: 100%. Wilhelm: 100%; onde Parma omite uma passagem, seis textos vêm da edição impressa Wilhelm/Baynes (Princeton University Press, 1950), verificados página a página no livro físico: julgamento do hexagrama 56 (O Viajante), p. 231; hex 20 linha 5, pp. 88-89; hex 21 linhas 2 e 3, pp. 92-93; hex 26 linha 3, p. 112; hex 52 linha 2, p. 215.",
     bonesHeading: "Ossos Oraculares (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origem histórica (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
@@ -287,9 +276,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "Le texte original Zhou Yi",
     ichingZhouyiBody:
       "Le Zhou Yi original (littéralement 'Changements de Zhou') est le noyau du I Ching, composé des 64 hexagrammes, des jugements du Roi Wen et des lignes du Duc de Zhou, sans les commentaires confucéens ultérieurs (les Dix Ailes). Cette source permet une connexion directe avec la couche chamanique et la plus ancienne de l'oracle.",
-    ichingDataAuditHeading: "Audits de fidélité 1:1",
-    ichingDataAuditBody:
-      "Dernier audit : 21 juin 2026. Les textes ont été comparés ligne par ligne à des éditions académiques établies : James Legge (1882, Sacred Books of the East, via sacred-texts.com), le Zhou Yi canonique (Chinese Text Project, ctext.org) et la traduction anglaise Wilhelm/Baynes (miroir académique de l'Université de Parme de l'édition Princeton 1950). Legge et Zhou Yi : 100 %. Wilhelm : 100 % ; lorsque Parma omet un passage, six textes proviennent de l'édition imprimée Wilhelm/Baynes (Princeton University Press, 1950), vérifiés page par page dans le livre physique : jugement de l'hexagramme 56 (Le Voyageur), p. 231 ; hex 20 ligne 5, pp. 88-89 ; hex 21 lignes 2 et 3, pp. 92-93 ; hex 26 ligne 3, p. 112 ; hex 52 ligne 2, p. 215.",
     bonesHeading: "Os oraculaires (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
       "Origine historique (Dynastie Shang, ~1600-1046 av. J.-C.)",
@@ -358,9 +344,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "Der ursprüngliche Zhou-Yi-Text",
     ichingZhouyiBody:
       "Das ursprüngliche Zhou Yi (wörtlich 'Wandlungen von Zhou') ist der Kern des I Ging, bestehend aus den 64 Hexagrammen, den Urteilen von König Wen und den Linien des Herzogs von Zhou, ohne die späteren konfuzianischen Kommentare (die Zehn Flügel). Diese Quelle ermöglicht eine direkte Verbindung mit der schamanischen und ältesten Schicht des Orakels.",
-    ichingDataAuditHeading: "1:1-Datenfidelitätsprüfungen",
-    ichingDataAuditBody:
-      "Letzte Prüfung: 21. Juni 2026. Die Texte wurden Zeile für Zeile mit etablierten akademischen Ausgaben verglichen: James Legge (1882, Sacred Books of the East über sacred-texts.com), das kanonische Zhou Yi (Chinese Text Project, ctext.org) und die englische Wilhelm/Baynes-Übersetzung (akademischer Spiegel der Universität Parma der Princeton-Ausgabe von 1950). Legge und Zhou Yi: 100 %. Wilhelm: 100 %; wo Parma eine Passage auslässt, stammen sechs Texte aus der gedruckten Wilhelm/Baynes-Ausgabe (Princeton University Press, 1950), seitenweise im physischen Buch geprüft: Urteil von Hexagramm 56 (Der Wanderer), S. 231; Hexagramm 20 Linie 5, S. 88-89; Hexagramm 21 Linien 2 und 3, S. 92-93; Hexagramm 26 Linie 3, S. 112; Hexagramm 52 Linie 2, S. 215.",
     bonesHeading: "Orakelknochen (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
       "Historischer Ursprung (Shang-Dynastie, ~1600-1046 v. Chr.)",
@@ -429,9 +412,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "Il testo originale Zhou Yi",
     ichingZhouyiBody:
       "Lo Zhou Yi originale (letteralmente 'Mutamenti di Zhou') è il nucleo dell'I Ching, composto dai 64 esagrammi, i giudizi del Re Wen e le linee del Duca di Zhou, senza i successivi commenti confuciani (le Dieci Ali). Questa fonte consente una connessione diretta con lo strato sciamanico e più antico dell'oracolo.",
-    ichingDataAuditHeading: "Audit di fedeltà 1:1",
-    ichingDataAuditBody:
-      "Ultimo audit: 21 giugno 2026. I testi sono stati confrontati riga per riga con edizioni accademiche consolidate: James Legge (1882, Sacred Books of the East, via sacred-texts.com), lo Zhou Yi canonico (Chinese Text Project, ctext.org) e la traduzione inglese Wilhelm/Baynes (mirror accademico dell'Università di Parma dell'edizione Princeton 1950). Legge e Zhou Yi: 100%. Wilhelm: 100%; dove Parma omette un passaggio, sei testi provengono dall'edizione a stampa Wilhelm/Baynes (Princeton University Press, 1950), verificati pagina per pagina nel libro fisico: giudizio dell'esagramma 56 (Il Viaggiatore), p. 231; esagramma 20 linea 5, pp. 88-89; esagramma 21 linee 2 e 3, pp. 92-93; esagramma 26 linea 3, p. 112; esagramma 52 linea 2, p. 215.",
     bonesHeading: "Ossa Oracolari (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origine storica (Dinastia Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
@@ -499,9 +479,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "原典 周易",
     ichingZhouyiBody:
       "原典である周易（文字通り「周の変化」）は易経の中核であり、64卦、文王の卦辞、周公の爻辞で構成され、後代の儒教の注釈（十翼）を含みません。この源泉は、神託のシャーマニズム的で最も古い層との直接的なつながりを可能にします。",
-    ichingDataAuditHeading: "1:1データ忠実度監査",
-    ichingDataAuditBody:
-      "最新監査: 2026年6月21日。卦辞・象辞・爻辞を、James Legge（1882、Sacred Books of the East、sacred-texts.com）、正典周易（Chinese Text Project、ctext.org）、Wilhelm/Baynes英訳（プリンストン1950年版のパルマ大学学術ミラー）の確立された学術版と1行ずつ照合。Leggeと周易は100%一致。Wilhelmも100%一致。Parmaに欠ける6か所は、Wilhelm/Baynes印刷版（Princeton University Press, 1950）から採用し、紙の書籍でページ照合：第56卦卦辞 p.231、第20卦5爻 pp.88-89、第21卦2・3爻 pp.92-93、第26卦3爻 p.112、第52卦2爻 p.215。",
     bonesHeading: "甲骨占い（甲骨 · Jiǎgǔ）",
     bonesOriginHeading: "歴史的起源（商王朝、紀元前1600〜1046年頃）",
     bonesOriginBody:
@@ -573,9 +550,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "原典《周易》文本",
     ichingZhouyiBody:
       "原典《周易》（字面意思是“周的变化”）是《易经》的核心，由64卦、文王卦辞和周公爻辞组成，不包含后来的儒家注释（十翼）。这一源头使我们能够直接连接到神谕中最古老的萨满文化层。",
-    ichingDataAuditHeading: "1:1数据保真审计",
-    ichingDataAuditBody:
-      "最近一次审计：2026年6月21日。卦辞、象辞与爻辞已与下列权威学术版本逐行对照：James Legge（1882，《Sacred Books of the East》，sacred-texts.com）、正典周易（Chinese Text Project，ctext.org）、Wilhelm/Baynes英译本（普林斯顿1950年版的帕尔马大学学术镜像）。理雅各与周易：100%一致。卫礼贤：100%一致；帕尔马镜像缺失的6处取自 Wilhelm/Baynes 印刷版（Princeton University Press, 1950），已在纸质书中逐页核对：第56卦卦辞 p.231、第20卦五爻 pp.88-89、第21卦二爻与三爻 pp.92-93、第26卦三爻 p.112、第52卦二爻 p.215。",
     bonesHeading: "甲骨占卜（甲骨 · Jiǎgǔ）",
     bonesOriginHeading: "历史渊源（商朝，约公元前1600至1046年）",
     bonesOriginBody:
@@ -643,9 +617,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "원전 주역 텍스트",
     ichingZhouyiBody:
       "원전인 주역(문자 그대로 '주나라의 변화')은 64괘, 문왕의 괘사, 주공의 효사로 구성되며, 후대의 유교 주석(십익)을 포함하지 않는 주역의 핵심입니다. 이 출처는 신탁의 샤머니즘적이고 가장 오래된 층과의 직접적인 연결을 가능하게 합니다.",
-    ichingDataAuditHeading: "1:1 데이터 충실도 감사",
-    ichingDataAuditBody:
-      "최근 감사: 2026년 6월 21일. 괘사·상사·효사를 확립된 학술 판본과 한 줄씩 대조했습니다: James Legge(1882, Sacred Books of the East, sacred-texts.com), 정전 주역(Chinese Text Project, ctext.org), Wilhelm/Baynes 영역(Princeton 1950판 파르마 대학 학술 미러). Legge와 주역: 100% 일치. Wilhelm: 100% 일치. Parma에 없는 6곳은 Wilhelm/Baynes 인쇄판(Princeton University Press, 1950)에서 채택, 실물 책으로 페이지 대조: 56괘 괘사 p.231, 20괘 5효 pp.88-89, 21괘 2·3효 pp.92-93, 26괘 3효 p.112, 52괘 2효 p.215.",
     bonesHeading: "갑골 점복（甲骨 · Jiǎgǔ）",
     bonesOriginHeading: "역사적 기원（상나라, 기원전 1600~1046년경）",
     bonesOriginBody:
@@ -717,9 +688,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "نص Zhou Yi الأصلي",
     ichingZhouyiBody:
       "نص Zhou Yi الأصلي (حرفياً 'تغييرات Zhou') هو جوهر I Ching، ويتكون من 64 شكلاً سداسياً، وأحكام الملك Wen، وخطوط الدوق Zhou، بدون التعليقات الكونفوشيوسية اللاحقة (الأجنحة العشرة). يتيح هذا المصدر اتصالاً مباشراً بالطبقة الشامانية والأقدم من العرافة.",
-    ichingDataAuditHeading: "تدقيقات مطابقة البيانات 1:1",
-    ichingDataAuditBody:
-      "آخر تدقيق: 21 يونيو 2026. قورنت النصوص سطراً بسطر مع طبعات أكاديمية معتمدة: James Legge (1882، Sacred Books of the East عبر sacred-texts.com)، Zhou Yi القانوني (Chinese Text Project، ctext.org)، والترجمة الإنجليزية Wilhelm/Baynes (مرآة جامعة Parma الأكاديمية لطبعة Princeton 1950). Legge وZhou Yi: 100%. Wilhelm: 100%؛ حيث يحذف Parma مقطعاً، ستة نصوص من الطبعة المطبوعة Wilhelm/Baynes (Princeton University Press, 1950)، تم التحقق منها صفحة بصفحة في الكتاب الورقي: حكم السداسي 56 ص.231؛ السداسي 20 الخط 5 ص.88-89؛ السداسي 21 الخطان 2 و3 ص.92-93؛ السداسي 26 الخط 3 ص.112؛ السداسي 52 الخط 2 ص.215.",
     bonesHeading: "عظام العرافة (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
       "الأصول التاريخية (أسرة Shang، نحو 1600-1046 قبل الميلاد)",
@@ -792,9 +760,6 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingZhouyiHeading: "मूल झोउ यी पाठ",
     ichingZhouyiBody:
       "मूल झोउ यी (शाब्दिक रूप से 'झोउ के परिवर्तन') आई चिंग का मूल है, जो 64 हेक्साग्राम, राजा वेन के निर्णयों और ड्यूक ऑफ झोउ की पंक्तियों से बना है, बिना बाद की कन्फ्यूशियस टिप्पणियों (दस पंखों) के। यह स्रोत दैवज्ञ की ओझा और सबसे पुरानी परत के साथ सीधा संबंध बनाने की अनुमति देता है。",
-    ichingDataAuditHeading: "1:1 डेटा निष्ठा ऑडिट",
-    ichingDataAuditBody:
-      "अंतिम ऑडिट: 21 जून 2026. पाठों की पंक्ति-दर-पंक्ति तुलना स्थापित शैक्षणिक संस्करणों से की गई: James Legge (1882, Sacred Books of the East, sacred-texts.com), शास्त्रीय Zhou Yi (Chinese Text Project, ctext.org), और Wilhelm/Baynes अंग्रेज़ी अनुवाद (Princeton 1950 संस्करण का Parma विश्वविद्यालय शैक्षणिक मिरर)। Legge और Zhou Yi: 100%। Wilhelm: 100%; जहाँ Parma अंश छोड़ता है, छह पाठ मुद्रित Wilhelm/Baynes संस्करण (Princeton University Press, 1950) से, भौतिक पुस्तक में पृष्ठ-दर-पृष्ठ सत्यापित: hex 56 निर्णय p.231; hex 20 पंक्ति 5 pp.88-89; hex 21 पंक्तियाँ 2 और 3 pp.92-93; hex 26 पंक्ति 3 p.112; hex 52 पंक्ति 2 p.215।",
     bonesHeading: "दैवज्ञ हड्डियां (甲骨 · Jiǎgǔ)",
     bonesOriginHeading:
       "ऐतिहासिक उत्पत्ति (शांग राजवंश, लगभग 1600-1046 ईसा पूर्व)",

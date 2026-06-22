@@ -94,6 +94,8 @@ export interface TextsForClaude {
   ruleExplanation: string;
   /** Zhu Xi 3-changing case: both judgments are read; which one leads. */
   judgmentEmphasis?: "primary" | "transformed" | null;
+  /** Zhu Xi Qian/Kun all-changing: both hexagram judgments + 用九/用六 (Adler ch. IV). */
+  readBothJudgments?: boolean;
   /** Textos para la versión Legge (sólo si el modo es master_combined) */
   leggeJudgment?: string;
   leggeImage?: string;
