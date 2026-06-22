@@ -619,7 +619,7 @@ npm run verify:hexagram-fidelity    # Wilhelm 513/513 vs libro (alias pdf-wilhel
 
 | Comando | Rol |
 |---------|-----|
-| `verify:hexagram-fidelity` | Wilhelm PDF + Legge PDF (pendiente alinear alias default post-merge) |
+| `verify:hexagram-fidelity` | **Gate canónico** — Wilhelm PDF 513/513 + Legge PDF 514/514 (`--gold=books`) |
 | `verify:hexagram-fidelity:pdf-wilhelm` | Wilhelm vs Pantheon PDF |
 | `verify:hexagram-fidelity:pdf-legge` | **Legge gate producción** — SBE XVI scan OCR + parches foto |
 | `verify:hexagram-fidelity:epub-legge` | Legge vs EPUB (diagnóstico) |

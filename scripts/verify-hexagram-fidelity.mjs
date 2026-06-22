@@ -6,10 +6,11 @@
  * in tools/source-pdfs/ (see manifest.json). No web mirrors or injected supplements.
  *
  * Usage:
- *   npm run verify:hexagram-fidelity              # Wilhelm vs Pantheon 1950 PDF (canonical)
- *   npm run verify:hexagram-fidelity:pdf-wilhelm    # parser parity (NOT book-closed gate)
- *   npm run verify:hexagram-fidelity:pdf-legge      # Legge vs SBE XVI Oxford scan (OCR)
- *   npm run verify:hexagram-fidelity:epub-wilhelm   # Wilhelm vs EPUB cross-check
+ *   npm run verify:hexagram-fidelity              # Wilhelm + Legge vs PDF book-primary (canonical)
+ *   npm run verify:hexagram-fidelity:pdf-wilhelm    # Wilhelm vs Pantheon 1950 PDF (alias)
+ *   npm run verify:hexagram-fidelity:pdf-legge      # Legge vs SBE XVI Oxford scan (alias)
+ *   npm run verify:hexagram-fidelity:epub-wilhelm   # Wilhelm vs EPUB cross-check (diagnostic only)
+ *   npm run verify:hexagram-fidelity:epub-legge     # Legge vs EPUB cross-check (diagnostic only)
  *
  * Cache: tools/output/fidelity-gold/ (gitignored)
  * Reports: reports/hexagram-fidelity-{timestamp}.{json,md}
@@ -78,11 +79,11 @@ function leggeUsesBookGold(mode) {
 }
 
 function leggeUsesPdfGold(mode) {
-  return mode === "pdf-legge";
+  return mode === "books" || mode === "pdf-legge";
 }
 
 function leggeUsesEpubGold(mode) {
-  return mode === "books" || mode === "epub-legge";
+  return mode === "epub-legge";
 }
 
 function usesMirrorGold(mode) {
@@ -355,13 +356,16 @@ async function main() {
         wilhelmUsesPdfGold(goldMode)
           ? "Wilhelm: Pantheon 1950 PDF — all fields (judgment, image, lines, yong)."
           : wilhelmUsesEpubGold(goldMode)
-            ? "Wilhelm: Wilhelm/Baynes EPUB cross-check (Bollingen 2011) — NOT book-closed gate alone."
+            ? "Wilhelm: Wilhelm/Baynes EPUB cross-check (Bollingen 2011) — diagnostic only, not book-primary gate."
             : null,
         leggeUsesPdfGold(goldMode)
           ? "Legge: James Legge SBE XVI Oxford scan (OCR) — Thwan, Great Symbolism, lines, yongJiu/yongLiu."
           : leggeUsesEpubGold(goldMode)
-            ? "Legge: James Legge EPUB cross-check (sacred-texts re-pack)."
+            ? "Legge: James Legge EPUB cross-check (sacred-texts re-pack) — diagnostic only, not book-primary gate."
             : null,
+        goldMode === "books"
+          ? "Default gate (--gold=books): Wilhelm PDF + Legge PDF. Use :epub-* scripts for EPUB cross-checks."
+          : null,
         goldMode === "books"
           ? "Zhou Yi: operational gold = ctext.org (npm run verify:hexagram-fidelity:zhouyi-ctext). Local 注疏 PDF is academic reserve, not book-primary gate."
           : null,
