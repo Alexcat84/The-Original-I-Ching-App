@@ -34,10 +34,21 @@ export function applyZhouYiVariants(text) {
   return out;
 }
 
-/** Canonical traditional text for ingest (NFKC + variant map, labels stripped separately). */
+/** Half-width → full-width punctuation for stored Zhou Yi oracle text (display + storage). */
+export function normalizeZhouYiPunctuation(text) {
+  if (text == null) return "";
+  return String(text)
+    .replace(/,/g, "，")
+    .replace(/;/g, "；")
+    .replace(/:/g, "：");
+}
+
+/** Canonical traditional text for ingest (NFKC + variant map + full-width punctuation). */
 export function toCanonicalZhouYiText(text) {
   if (text == null) return "";
-  return applyZhouYiVariants(String(text).normalize("NFKC")).trim();
+  return normalizeZhouYiPunctuation(
+    applyZhouYiVariants(String(text).normalize("NFKC")).trim(),
+  );
 }
 
 /**
