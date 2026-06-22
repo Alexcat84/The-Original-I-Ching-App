@@ -2,23 +2,29 @@
 /**
  * Sync Wilhelm/Baynes oracle fields from Pantheon 1950 PDF gold (book-primary).
  *
- * Source chain: PDF OCR → print-verified photo overrides → Baynes tier-2 supplements.
- * Images stored oracle-only (no Wilhelm commentary bleed).
+ * All fields from Pantheon 1950 PDF OCR + print-verified + Baynes tier-2.
+ * Oracle only: literal statement text + punctuation — never Wilhelm commentary.
+ * Parma is NOT used for ingest (cross-check only via audit:wilhelm-pdf-vs-parma).
  *
  * Usage:
  *   npm run extract:gold:wilhelm-pdf
  *   npm run sync:wilhelm-oracle-from-pdf-gold
  *   npm run build:data
  */
-import { readFile, writeFile } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { loadWilhelmPdfGoldOrThrow } from "../scripts/lib/wilhelm-pdf-gold.mjs";
 import {
+  applyWilhelmBaynesSupplements,
   resolveWilhelmJudgmentForIngest,
   resolveWilhelmLineForIngest,
 } from "../scripts/lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs";
-import { wilhelmImageOracleOnly } from "../scripts/lib/hexagram-fidelity-normalize.mjs";
+import {
+  detectWilhelmLineBleed,
+  wilhelmImageOracleOnly,
+} from "../scripts/lib/hexagram-fidelity-normalize.mjs";
+import { getWilhelmPrintVerifiedLine } from "../scripts/lib/hexagram-fidelity-wilhelm-pdf-verified.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -51,15 +57,16 @@ function pickOracleField(pdfVal, prevVal, { image = false } = {}) {
 async function main() {
   const existing = (await import(pathToFileURL(wilhelmOut).href)).default;
   console.log("Loading Wilhelm Pantheon PDF gold (OCR + print-verified + Baynes tier-2)…");
-  const gold = await loadWilhelmPdfGoldOrThrow({ force: false });
+  const pdfGold = await loadWilhelmPdfGoldOrThrow({ force: false });
 
   const keptFromBundle = [];
   const issues = [];
+  const bleedHits = [];
 
   for (let n = 1; n <= 64; n++) {
     const key = String(n);
     const row = existing[key];
-    const pdf = gold[n];
+    const pdf = pdfGold[n];
     if (!row) throw new Error(`Existing Wilhelm dataset missing hex ${n}`);
     if (!pdf) throw new Error(`PDF gold missing hex ${n}`);
 
@@ -85,14 +92,23 @@ async function main() {
     const prevLines = row.wilhelm_lines ?? {};
     const lines = {};
     for (let pos = 1; pos <= 6; pos++) {
-      const pdfLine = resolveWilhelmLineForIngest(n, pos, pdf.lines?.[pos] ?? "", "");
+      const printLine = getWilhelmPrintVerifiedLine(n, pos);
+      const pdfLine = String(pdf.lines?.[pos] ?? "").trim();
       const prevText = prevLines[String(pos)]?.text ?? "";
-      const resolved = pickOracleField(pdfLine, prevText);
+      const resolved = cleanOracleText(
+        printLine || resolveWilhelmLineForIngest(n, pos, pdfLine, prevText),
+      );
       lines[String(pos)] = { text: resolved };
       if (!fieldUsable(resolved, 8)) {
         issues.push({ n, pos, why: "empty line" });
-      } else if (!fieldUsable(pdfLine, 8) && fieldUsable(prevText, 8)) {
-        keptFromBundle.push({ n, field: `L${pos}` });
+      } else if (!fieldUsable(pdfLine, 8) && !printLine && fieldUsable(prevText, 8)) {
+        keptFromBundle.push({ n, field: `L${pos}`, source: "bundle_fallback" });
+      }
+      const statementGold = cleanOracleText(
+        printLine || resolveWilhelmLineForIngest(n, pos, pdfLine, ""),
+      );
+      if (detectWilhelmLineBleed(resolved, statementGold)) {
+        bleedHits.push({ n, pos, preview: resolved.slice(0, 80) });
       }
     }
     row.wilhelm_lines = lines;
@@ -106,9 +122,16 @@ async function main() {
     );
   }
 
+  if (bleedHits.length > 0) {
+    console.error(`\nBLEED GUARD: ${bleedHits.length} line(s) still contain commentary after sync:`);
+    for (const hit of bleedHits.slice(0, 20)) console.error("  ", hit);
+    process.exitCode = 1;
+    throw new Error("Wilhelm line bleed guard failed — aborting write");
+  }
+
   const body =
     "// Oracle text synced from Wilhelm/Baynes Pantheon 1950 PDF gold (book-primary).\n" +
-    "// Source: tools/source-pdfs/wilhelm-baynes-1950-pantheon.pdf + print-verified overrides.\n" +
+    "// All fields: tools/source-pdfs/wilhelm-baynes-1950-pantheon.pdf + print-verified + Baynes tier-2.\n" +
     `// Synced: ${new Date().toISOString()}\n\n` +
     "export default " +
     JSON.stringify(existing, null, 2) +

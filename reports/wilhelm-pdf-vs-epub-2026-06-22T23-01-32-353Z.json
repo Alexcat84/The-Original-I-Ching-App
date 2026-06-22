@@ -1,0 +1,726 @@
+{
+  "generatedAt": "2026-06-22T23:01:32.281Z",
+  "policy": {
+    "bookPrimary": "Pantheon 1950 PDF + print-verified + Baynes tier-2",
+    "epubRole": "Princeton Bollingen EPUB 2011 — statement-only cross-check / repair-only",
+    "outOfScope": "Wilhelm/Baynes commentary (EPUB blockquote boundary is clean)"
+  },
+  "rawPdfVsEpub": {
+    "label": "raw_pdf_before_epub_trim",
+    "summary": {
+      "linesCompared": 384,
+      "strict_match": 384,
+      "pdf_bleed": 0,
+      "pdf_truncated": 0,
+      "wording": 0,
+      "bookReadyPct": 100
+    },
+    "needsReview": []
+  },
+  "finalPdfVsEpub": {
+    "label": "final_pdf_after_epub_trim",
+    "summary": {
+      "linesCompared": 384,
+      "strict_match": 285,
+      "pdf_bleed": 0,
+      "pdf_truncated": 99,
+      "wording": 0,
+      "bookReadyPct": 74.22
+    },
+    "needsReview": [
+      {
+        "hex": 11,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "Bearing with the uncultured in gentleness,\nFording the river with resolution,\nNot neglecting what is distant,\nNot regarding one's companions:",
+        "epub": "Bearing with the uncultured in gentleness,\nFording the river with resolution,\nNot neglecting what is distant,\nNot regarding one’s companions:\nThus one may manage to walk in the middle."
+      },
+      {
+        "hex": 21,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Bites on dried lean meat.\nReceives yellow gold.\nPerseveringly aware of danger.",
+        "epub": "Bites on dried lean meat.\nReceives yellow gold.\nPerseveringly aware of danger.\nNo blame."
+      },
+      {
+        "hex": 25,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "If one does not count on the harvest while plowing,",
+        "epub": "If one does not count on the harvest while plowing,\nNor on the use of the ground while clearing it,\nIt furthers one to undertake something."
+      },
+      {
+        "hex": 25,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "Undeserved misfortune.",
+        "epub": "Undeserved misfortune.\nThe cow that was tethered by someone\nIs the wanderer’s gain, the citizen’s loss."
+      },
+      {
+        "hex": 25,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "Innocent action brings misfortune.",
+        "epub": "Innocent action brings misfortune.\nNothing furthers."
+      },
+      {
+        "hex": 27,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "Turning away from nourishment.\nPerseverance brings misfortune.\nDo not act thus for ten years.",
+        "epub": "Turning away from nourishment.\nPerseverance brings misfortune.\nDo not act thus for ten years.\nNothing serves to further."
+      },
+      {
+        "hex": 27,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "Turning to the summit\nFor provision of nourishment\nBrings good fortune.",
+        "epub": "Turning to the summit\nFor provision of nourishment\nBrings good fortune.\nSpying about with sharp eyes\nLike a tiger with insatiable craving.\nNo blame."
+      },
+      {
+        "hex": 27,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Turning away from the path.",
+        "epub": "Turning away from the path.\nTo remain persevering brings good fortune.\nOne should not cross the great water."
+      },
+      {
+        "hex": 28,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "To spread white rushes underneath.",
+        "epub": "To spread white rushes underneath.\nNo blame."
+      },
+      {
+        "hex": 28,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "A withered poplar puts forth flowers.\nAn older woman takes a husband.",
+        "epub": "A withered poplar puts forth flowers.\nAn older woman takes a husband.\nNo blame. No praise."
+      },
+      {
+        "hex": 29,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "A jug of wine, a bowl of rice with it;\nEarthen vessels",
+        "epub": "A jug of wine, a bowl of rice with it;\nEarthen vessels\nSimply handed in through the window.\nThere is certainly no blame in this."
+      },
+      {
+        "hex": 29,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "Bound with cords and ropes,",
+        "epub": "Bound with cords and ropes,\nShut in between thorn-hedged prison walls:\nFor three years one does not find the way.\nMisfortune."
+      },
+      {
+        "hex": 31,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "The influence shows itself in the calves of the legs.\nMisfortune.",
+        "epub": "The influence shows itself in the calves of the legs.\nMisfortune.\nTarrying brings good fortune."
+      },
+      {
+        "hex": 31,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "The influence shows itself in the thighs.\nHolds to that which follows it.",
+        "epub": "The influence shows itself in the thighs.\nHolds to that which follows it.\nTo continue is humiliating."
+      },
+      {
+        "hex": 31,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "The influence shows itself in the back of the neck.",
+        "epub": "The influence shows itself in the back of the neck.\nNo remorse."
+      },
+      {
+        "hex": 32,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "Seeking duration too hastily brings misfortune persistently.",
+        "epub": "Seeking duration too hastily brings misfortune persistently.\nNothing that would further."
+      },
+      {
+        "hex": 32,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Giving duration to one's character through perseverance.",
+        "epub": "Giving duration to one’s character through perseverance.\nThis is good fortune for a woman, misfortune for a man."
+      },
+      {
+        "hex": 33,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "he holds him fast with yellow oxhide.",
+        "epub": "He holds him fast with yellow oxhide.\nNo one can tear him loose."
+      },
+      {
+        "hex": 33,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "A halted retreat\nIs nerve-wracking and dangerous.",
+        "epub": "A halted retreat\nIs nerve-wracking and dangerous.\nTo retain people as men- and maidservants\nBrings good fortune."
+      },
+      {
+        "hex": 34,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "Power in the toes.\nContinuing brings misfortune.",
+        "epub": "Power in the toes.\nContinuing brings misfortune.\nThis is certainly true."
+      },
+      {
+        "hex": 34,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "The inferior man works through power.",
+        "epub": "The inferior man works through power.\nThe superior man does not act thus.\nTo continue is dangerous.\nA goat butts against a hedge\nAnd gets its horns entangled."
+      },
+      {
+        "hex": 34,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "Perseverance brings good fortune.\nRemorse disappears.",
+        "epub": "Perseverance brings good fortune.\nRemorse disappears.\nThe hedge opens; there is no entanglement.\nPower depends upon the axle of a big cart."
+      },
+      {
+        "hex": 34,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Loses the goat with ease.",
+        "epub": "Loses the goat with ease.\nNo remorse."
+      },
+      {
+        "hex": 34,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "A goat butts against a hedge.\nIt cannot go backward, it cannot go forward.",
+        "epub": "A goat butts against a hedge.\nIt cannot go backward, it cannot go forward.\nNothing serves to further.\nIf one notes the difficulty, this brings good fortune."
+      },
+      {
+        "hex": 35,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "Progressing, but turned back.\nPerseverance brings good fortune.\nIf one meets with no confidence, one should remain calm.",
+        "epub": "Progressing, but turned back.\nPerseverance brings good fortune.\nIf one meets with no confidence, one should remain calm.\nNo mistake."
+      },
+      {
+        "hex": 35,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "Progressing, but in sorrow.\nPerseverance brings good fortune.",
+        "epub": "Progressing, but in sorrow.\nPerseverance brings good fortune.\nThen one obtains great happiness from one’s ancestress."
+      },
+      {
+        "hex": 35,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Remorse disappears.",
+        "epub": "Remorse disappears.\nTake not gain and loss to heart.\nUndertakings bring good fortune.\nEverything serves to further."
+      },
+      {
+        "hex": 35,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "Making progress with the horns is permissible\nOnly for the purpose of punishing one's own city.",
+        "epub": "Making progress with the horns is permissible\nOnly for the purpose of punishing one’s own city.\nTo be conscious of danger brings good fortune.\nNo blame.\nPerseverance brings humiliation."
+      },
+      {
+        "hex": 36,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "Darkening of the light during flight.\nHe lowers his wings.",
+        "epub": "Darkening of the light during flight.\nHe lowers his wings.\nThe superior man does not eat for three days\nOn his wanderings.\nBut he has somewhere to go.\nThe host has occasion to gossip about him."
+      },
+      {
+        "hex": 36,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "Darkening of the light during the hunt in the south.",
+        "epub": "Darkening of the light during the hunt in the south.\nTheir great leader is captured.\nOne must not expect perseverance too soon."
+      },
+      {
+        "hex": 36,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "He penetrates the left side of the belly.\nOne gets at the very heart of the darkening of the light.",
+        "epub": "He penetrates the left side of the belly.\nOne gets at the very heart of the darkening of the light,\nAnd leaves gate and courtyard."
+      },
+      {
+        "hex": 36,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "Not light but darkness.\nFirst he climbed up to heaven,",
+        "epub": "Not light but darkness.\nFirst he climbed up to heaven,\nThen he plunged into the depths of the earth."
+      },
+      {
+        "hex": 37,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "She should not follow her whims.",
+        "epub": "She should not follow her whims.\nShe must attend within to the food.\nPerseverance brings good fortune."
+      },
+      {
+        "hex": 37,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "When tempers flare up in the family,",
+        "epub": "When tempers flare up in the family,\nToo great severity brings remorse.\nGood fortune nonetheless.\nWhen woman and child dally and laugh,\nIt leads in the end to humiliation."
+      },
+      {
+        "hex": 38,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "One meets his lord in a narrow street.",
+        "epub": "One meets his lord in a narrow street.\nNo blame."
+      },
+      {
+        "hex": 38,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "One sees the wagon dragged back,",
+        "epub": "One sees the wagon dragged back,\nThe oxen halted,\nA man’s hair and nose cut off.\nNot a good beginning, but a good end."
+      },
+      {
+        "hex": 38,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Remorse disappears.",
+        "epub": "Remorse disappears.\nThe companion bites his way through the wrappings.\nIf one goes to him,\nHow could it be a mistake?"
+      },
+      {
+        "hex": 38,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "Isolated through opposition,\nOne sees one's companion as a pig covered with dirt,\nAs a wagon full of devils.\nFirst one draws a bow against him,",
+        "epub": "Isolated through opposition,\nOne sees one’s companion as a pig covered with dirt,\nAs a wagon full of devils.\nFirst one draws a bow against him,\nThen one lays the bow aside.\nHe is not a robber; he will woo at the right time.\nAs one goes, rain falls; then good fortune comes."
+      },
+      {
+        "hex": 40,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "Deliver yourself from your great toe.",
+        "epub": "Deliver yourself from your great toe.\nThen the companion comes,\nAnd him you can trust."
+      },
+      {
+        "hex": 40,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "If only the superior man can deliver himself,\nIt brings good fortune.",
+        "epub": "If only the superior man can deliver himself,\nIt brings good fortune.\nThus he proves to inferior men that he is in earnest."
+      },
+      {
+        "hex": 41,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "Perseverance furthers.",
+        "epub": "Perseverance furthers.\nTo undertake something brings misfortune.\nWithout decreasing oneself,\nOne is able to bring increase to others."
+      },
+      {
+        "hex": 41,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "When three people journey together,",
+        "epub": "When three people journey together,\nTheir number decreases by one.\nWhen one man journeys alone,\nHe finds a companion."
+      },
+      {
+        "hex": 41,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Someone does indeed increase him.",
+        "epub": "Someone does indeed increase him.\nTen pairs of tortoises cannot oppose it.\nSupreme good fortune."
+      },
+      {
+        "hex": 41,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "If one is increased without depriving other,",
+        "epub": "If one is increased without depriving others,\nThere is no blame.\nPerseverance brings good fortune.\nIt furthers one to undertake something.\nOne obtains servants\nBut no longer has a separate home."
+      },
+      {
+        "hex": 42,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "It furthers one to accomplish great deeds.",
+        "epub": "It furthers one to accomplish great deeds.\nSupreme good fortune. No blame."
+      },
+      {
+        "hex": 42,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "Someone does indeed increase him;",
+        "epub": "Someone does indeed increase him;\nTen pairs of tortoises cannot oppose it.\nConstant perseverance brings good fortune.\nThe king presents him before God.\nGood fortune."
+      },
+      {
+        "hex": 42,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "One is enriched through unfortunate events.",
+        "epub": "One is enriched through unfortunate events.\nNo blame, if you are sincere\nAnd walk in the middle,\nAnd report with a seal to the prince."
+      },
+      {
+        "hex": 42,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "If in truth you have a kind heart, ask not.",
+        "epub": "If in truth you have a kind heart, ask not.\nSupreme good fortune.\nTruly, kindness will be recognized as your virtue."
+      },
+      {
+        "hex": 43,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "To be powerful in the cheekbones\nBrings misfortune.",
+        "epub": "To be powerful in the cheekbones\nBrings misfortune.\nThe superior man is firmly resolved.\nHe walks alone and is caught in the rain.\nHe is bespattered,\nAnd people murmur against him.\nNo blame."
+      },
+      {
+        "hex": 43,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "There is no skin on his thighs,\nAnd walking comes hard.\nIf a man were to let himself be led like a sheep,\nRemorse would disappear.\nBut if these words are heard",
+        "epub": "There is no skin on his thighs,\nAnd walking comes hard.\nIf a man were to let himself be led like a sheep,\nRemorse would disappear.\nBut if these words are heard\nThey will not be believed."
+      },
+      {
+        "hex": 44,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "There is no skin on his thighs,\nAnd walking comes hard.\nIf one is mindful of the danger,",
+        "epub": "There is no skin on his thighs,\nAnd walking comes hard.\nIf one is mindful of the danger,\nNo great mistake is made."
+      },
+      {
+        "hex": 44,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "No fish in the tank.",
+        "epub": "No fish in the tank.\nThis leads to misfortune."
+      },
+      {
+        "hex": 44,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "A melon covered with willow leaves.\nHidden lines.",
+        "epub": "A melon covered with willow leaves.\nHidden lines.\nThen it drops down to one from heaven."
+      },
+      {
+        "hex": 45,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "If you are sincere, but not to the end,",
+        "epub": "If you are sincere, but not to the end,\nThere will sometimes be confusion, sometimes gathering together.\nIf you call out,\nThen after one grasp of the hand you can laugh again.\nRegret not. Going is without blame."
+      },
+      {
+        "hex": 45,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "Gathering together amid sighs.",
+        "epub": "Gathering together amid sighs.\nNothing that would further.\nGoing is without blame.\nSlight humiliation."
+      },
+      {
+        "hex": 45,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "If in gathering together one has position,",
+        "epub": "If in gathering together one has position,\nThis brings no blame.\nIf there are some who are not yet sincerely in the work,\nSublime and enduring perseverance is needed.\nThen remorse disappears."
+      },
+      {
+        "hex": 45,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "Lamenting and sighing, floods of tears.",
+        "epub": "Lamenting and sighing, floods of tears.\nNo blame."
+      },
+      {
+        "hex": 46,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "Pushing upward in darkness.\nIt furthers one",
+        "epub": "Pushing upward in darkness.\nIt furthers one\nTo be unremittingly persevering."
+      },
+      {
+        "hex": 47,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "One is oppressed while at meat and drink.",
+        "epub": "One is oppressed while at meat and drink.\nThe man with the scarlet knee bands is just coming.\nIt furthers one to offer sacrifice.\nTo set forth brings misfortune.\nNo blame."
+      },
+      {
+        "hex": 48,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "One does not drink the mud of the well.",
+        "epub": "One does not drink the mud of the well.\nNo animals come to an old well."
+      },
+      {
+        "hex": 48,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "At the well hole one shoots fishes.",
+        "epub": "At the wellhole one shoots fishes.\nThe jug is broken and leaks."
+      },
+      {
+        "hex": 48,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "The well is cleaned, but no one drinks from it.",
+        "epub": "The well is cleaned, but no one drinks from it.\nThis is my heart’s sorrow,\nFor one might draw from it.\nIf the king were clear-minded,\nGood fortune might be enjoyed in common."
+      },
+      {
+        "hex": 48,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "One draws from the well\nWithout hindrance.\nIt is dependable.",
+        "epub": "One draws from the well\nWithout hindrance.\nIt is dependable.\nSupreme good fortune."
+      },
+      {
+        "hex": 49,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "When one's own day comes, one may create revolution.",
+        "epub": "When one’s own day comes, one may create revolution.\nStarting brings good fortune.\nNo blame."
+      },
+      {
+        "hex": 49,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "The superior man changes like a panther.",
+        "epub": "The superior man changes like a panther.\nThe inferior man molts in the face.\nStarting brings misfortune.\nTo remain persevering brings good fortune."
+      },
+      {
+        "hex": 50,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "A ting with legs upturned.\nFurthers removal of stagnating stuff.\nOne takes a concubine for the sake of her son.",
+        "epub": "A ting with legs upturned.\nFurthers removal of stagnating stuff.\nOne takes a concubine for the sake of her son.\nNo blame."
+      },
+      {
+        "hex": 50,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "The handle of the ting is altered.\nOne is impeded in his way of life.",
+        "epub": "The handle of the ting is altered.\nOne is impeded in his way of life.\nThe fat of the pheasant is not eaten.\nOnce rain falls, remorse is spent.\nGood fortune comes in the end."
+      },
+      {
+        "hex": 50,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "The legs of the ting are broken.",
+        "epub": "The legs of the ting are broken.\nThe prince’s meal is spilled\nAnd his person is soiled.\nMisfortune."
+      },
+      {
+        "hex": 50,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "The ting has rings of jade.\nGreat good fortune.",
+        "epub": "The ting has rings of jade.\nGreat good fortune.\nNothing that would not act to further."
+      },
+      {
+        "hex": 51,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "Shock comes-oh, oh!",
+        "epub": "Shock comes—oh, oh!\nThen follow laughing words—ha, ha!\nGood fortune."
+      },
+      {
+        "hex": 51,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "Shock brings ruin and terrified gazing around.\nGoing ahead brings misfortune.\nIf it has not yet touched one's own body\nBut has reached one's neighbor first,",
+        "epub": "Shock brings ruin and terrified gazing around.\nGoing ahead brings misfortune.\nIf it has not yet touched one’s own body\nBut has reached one’s neighbor first,\nThere is no blame.\nOne’s comrades have something to talk about."
+      },
+      {
+        "hex": 52,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "Keeping his toes still.",
+        "epub": "Keeping his toes still.\nNo blame.\nContinued perseverance furthers."
+      },
+      {
+        "hex": 52,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "Keeping his trunk still.",
+        "epub": "Keeping his trunk still.\nNo blame."
+      },
+      {
+        "hex": 52,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Keeping his jaws still.",
+        "epub": "Keeping his jaws still.\nThe words have order.\nRemorse disappears."
+      },
+      {
+        "hex": 53,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "The wild goose gradually draws near the shore.",
+        "epub": "The wild goose gradually draws near the shore.\nThe young son is in danger.\nThere is talk. No blame."
+      },
+      {
+        "hex": 53,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "The wild goose gradually draws near the plateau.",
+        "epub": "The wild goose gradually draws near the plateau.\nThe man goes forth and does not return.\nThe woman carries a child but does not bring it forth.\nMisfortune.\nIt furthers one to fight off robbers."
+      },
+      {
+        "hex": 54,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "A one-eyed man who is able to see.",
+        "epub": "A one-eyed man who is able to see.\nThe perseverance of a solitary man furthers."
+      },
+      {
+        "hex": 54,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "The marrying maiden as a slave.",
+        "epub": "The marrying maiden as a slave.\nShe marries as a concubine."
+      },
+      {
+        "hex": 54,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "The sovereign I gave his daughter in marriage.",
+        "epub": "The sovereign I gave his daughter in marriage.\nThe embroidered garments of the princess\nWere not as gorgeous\nAs those of the servingmaid.\nThe moon that is nearly full\nBrings good fortune."
+      },
+      {
+        "hex": 54,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "The woman holds the basket, but there are no fruits in it.",
+        "epub": "The woman holds the basket, but there are no fruits in it.\nThe man stabs the sheep, but no blood flows.\nNothing that acts to further."
+      },
+      {
+        "hex": 55,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "When a man meets his destined ruler,",
+        "epub": "When a man meets his destined ruler,\nThey can be together ten days,\nAnd it is not a mistake.\nGoing meets with recognition."
+      },
+      {
+        "hex": 55,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "The curtain is of such fullness",
+        "epub": "The curtain is of such fullness\nThat the polestars can be seen at noon.\nThrough going one meets with mistrust and hate.\nIf one rouses him through truth,\nGood fortune comes."
+      },
+      {
+        "hex": 55,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "The underbrush is of such abundance",
+        "epub": "The underbrush is of such abundance\nThat the small stars can be seen at noon.\nHe breaks his right arm. No blame."
+      },
+      {
+        "hex": 55,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "The curtain is of such fullness",
+        "epub": "The curtain is of such fullness\nThat the polestars can be seen at noon.\nHe meets his ruler, who is of like kind.\nGood fortune."
+      },
+      {
+        "hex": 56,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "The bird's nest burns up.",
+        "epub": "The bird’s nest burns up.\nThe wanderer laughs at first,\nThen must needs lament and weep.\nThrough carelessness he loses his cow.\nMisfortune."
+      },
+      {
+        "hex": 57,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "In advancing and in retreating,",
+        "epub": "In advancing and in retreating,\nThe perseverance of a warrior furthers."
+      },
+      {
+        "hex": 57,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "Remorse vanishes.\nDuring the hunt",
+        "epub": "Remorse vanishes.\nDuring the hunt\nThree kinds of game are caught."
+      },
+      {
+        "hex": 57,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Perseverance brings good fortune.\nRemorse vanishes.",
+        "epub": "Perseverance brings good fortune.\nRemorse vanishes.\nNothing that does not further.\nNo beginning, but an end.\nBefore the change, three days.\nAfter the change, three days.\nGood fortune."
+      },
+      {
+        "hex": 59,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "He dissolves his bond with his group.",
+        "epub": "He dissolves his bond with his group.\nSupreme good fortune.\nDispersion leads in turn to accumulation.\nThis is something that ordinary men do not think of."
+      },
+      {
+        "hex": 61,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "He finds a comrade.",
+        "epub": "He finds a comrade.\nNow he beats the drum, now he stops.\nNow he sobs, now he sings."
+      },
+      {
+        "hex": 61,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "The moon nearly at the full.",
+        "epub": "The moon nearly at the full.\nThe team horse goes astray.\nNo blame."
+      },
+      {
+        "hex": 61,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "He possesses truth, which links together.",
+        "epub": "He possesses truth, which links together.\nNo blame."
+      },
+      {
+        "hex": 62,
+        "line": 2,
+        "status": "pdf_truncated",
+        "pdf": "She passes by her ancestor\nAnd meets her ancestress.\nHe does not reach his prince\nAnd meets the official.",
+        "epub": "She passes by her ancestor\nAnd meets her ancestress.\nHe does not reach his prince\nAnd meets the official.\nNo blame."
+      },
+      {
+        "hex": 62,
+        "line": 3,
+        "status": "pdf_truncated",
+        "pdf": "If one is not extremely careful,",
+        "epub": "If one is not extremely careful,\nSomebody may come up from behind and strike him.\nMisfortune."
+      },
+      {
+        "hex": 62,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Dense clouds,",
+        "epub": "Dense clouds,\nNo rain from our western territory.\nThe prince shoots and hits him who is in the cave."
+      },
+      {
+        "hex": 62,
+        "line": 6,
+        "status": "pdf_truncated",
+        "pdf": "He passes him by, not meeting him.",
+        "epub": "He passes him by, not meeting him.\nThe flying bird leaves him.\nMisfortune.\nThis means bad luck and injury."
+      },
+      {
+        "hex": 63,
+        "line": 1,
+        "status": "pdf_truncated",
+        "pdf": "He breaks his wheels.\nHe gets his tail in the water.",
+        "epub": "He brakes his wheels.\nHe gets his tail in the water.\nNo blame."
+      },
+      {
+        "hex": 64,
+        "line": 4,
+        "status": "pdf_truncated",
+        "pdf": "Perseverance brings good fortune.\nRemorse disappears.",
+        "epub": "Perseverance brings good fortune.\nRemorse disappears.\nShock, thus to discipline the Devil’s Country.\nFor three years, great realms are awarded."
+      },
+      {
+        "hex": 64,
+        "line": 5,
+        "status": "pdf_truncated",
+        "pdf": "Perseverance brings good fortune.",
+        "epub": "Perseverance brings good fortune.\nNo remorse.\nThe light of the superior man is true.\nGood fortune."
+      }
+    ]
+  }
+}
