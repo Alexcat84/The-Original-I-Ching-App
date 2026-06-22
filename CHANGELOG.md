@@ -1,8 +1,62 @@
-<!-- changelog:last-release:e21426e -->
+<!-- changelog:last-release:25af895 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.1.8] — 2026-06-22 | versionCode: 58 | Stage: Closed Testing
+
+### New
+- feat(audits,i18n): surface Fidelity Audits in app menu and refine docs for 4.1.8 | commit: 25af895
+- feat(audits): Huang PDF gold, public summary only, internal AU docs. | commit: 2dbfa76
+- feat(mutations): Zhu Xi Adler gold, readBothJudgments, and public /audits page. | commit: 86f6b2b
+- feat(data): sync Wilhelm bundle from Pantheon PDF gold at 513/513. | commit: 6f19218
+- feat(data): Legge bundle synced from Oxford SBE PDF gold at 514/514. | commit: 46aa80a
+- feat(data): Legge PDF OCR with repair-only EPUB guide (book-primary) | commit: 3647fc9
+- feat(data): Legge SBE XVI PDF OCR gold parser at 71% fidelity | commit: 0b9c5c6
+- feat(data): Legge 100% EPUB book-primary fidelity gate | commit: f0a4208
+- feat(data): Wilhelm 100% book-primary fidelity gate | commit: da607cf
+- feat(data): Wilhelm PDF gold parser with 64/64 hex extraction | commit: 73a74a8
+- feat(data): scaffold PDF Tier-0 gold verification branch | commit: 800ff70
+- feat(data): Fase 3 gold-aligned ingesters for all three translators | commit: 0e003ea
+- feat(data): add hexagram fidelity harness and first audit report | commit: b853d63
+
+### Fix
+- fix(i18n): align ES FAQ Zhou Yi source wording with /audits | commit: 9d80e95
+- fix(i18n): remove freizl disclosure from public audits | commit: 166ac7d
+- fix(data): T1 normalize Zhou Yi commas to full-width canonical | commit: 2db05c5
+- fix(data): T2 Wilhelm metadata Pantheon gold, Legge licenseNote | commit: 4af5614
+- fix(data): close Legge SBE PDF gold at 514/514 with OCR cleanup pipeline. | commit: 4409062
+- fix(test): update stale Wilhelm hex2 yongLiu assertion (case mismatch) | commit: 9e53377
+- fix(data): corregir regresion real enmascarada por bugs del harness de fidelidad | commit: bfbe8f6
+- fix(data): Fase 3c tier-2 Baynes supplement for Wilhelm hex 56 judgment | commit: 59cff16
+- fix(data): Fase 3b parser gold — Legge and Zhou Yi 100% fidelity | commit: 1fc4cbf
+- fix(consult): idioma correcto + lineReadingSystem en SSE y resumen | commit: 8d2d09e
+
+### Docs
+- docs(auditorias): Gate 0 cerrado - 32 charts Zhu Xi equivalen a reglas por conteo | commit: 1fcec43
+- docs(auditorias): Gate 0 ejecutado - Fig.19 imagen, Fases A-E bloqueadas | commit: e730aab
+- docs(auditorias): Zhou Yi ctext gold + public 咸/鹹 disclosure | commit: 94b5217
+- docs(auditorias): Gate 0 pending and Zhou Yi traceability | commit: d937af5
+- docs(auditorias): Opus 4.8 v2.1 greenfield plan for executor | commit: 0174120
+- docs(auditorias): archive Opus 4.8 validation and Zhu Xi plan v2 | commit: 12ca5b8
+- docs(auditorias): master fidelity/mutation audit with source evidence and 32-chart plan. | commit: 92e312d
+- docs(data): cite Wilhelm/Baynes 1950 print edition for six Parma gaps | commit: 8c33479
+- docs(i18n): reframe public fidelity audit against academic editions | commit: 0da877b
+- docs(data): Fase 4 align fidelity claims with 2026-06-21 audit results | commit: 26469c9
+- docs(audit): align fidelity remediation with external validation and add Zhou Yi corruption scanner | commit: 2276c30
+- docs(audit): complete Fase 2 fidelity report for all three translators | commit: 4afb84a
+- docs(changelog): document SDK 53 dual-React cold-start crash (vc50 to vc51) | commit: cb77424
+- docs: sync developer docs for 4.1.7, LRS selector, and detect-input-language | commit: 18de19c
+- docs(auditorias): Parte 11 - verificacion directa en Supabase produccion + Axiom | commit: 9116e59
+- docs(auditorias): Parte 9-10 - verificacion independiente del selector Huang/Zhu Xi y fix de idioma/lineReadingSystem | commit: ed6daff
+- docs(changelog): 4.1.7 / versionCode 57 (Closed Testing) | commit: 608555f
+
+### Maintenance
+- chore(reports): add line-reading system QA results (Capa 4) | commit: 33eaf1a
+- chore(gitignore): ignore transient QA/audit artifacts | commit: 6b4c925
+
+---
 
 ## [4.1.7] — 2026-06-20 | versionCode: 57 | Stage: Closed Testing
 
@@ -1709,12 +1763,14 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.7 | 57 | 2026-06-20 | Closed Testing | 29 | mostrar sistema de líneas en resumen + fix barra de estado; renombrar y reubicar selector de lectura de líneas cambiantes; document selector in tour, FAQ and guide (Fase 5) |
+| 4.1.8 | 58 | 2026-06-22 | Closed Testing | 42 | surface Fidelity Audits in app menu and refine docs for 4.1.8; Huang PDF gold, public summary only, internal AU docs.; Zhu Xi Adler gold, readBothJudgments, and public /audits page. |
+| 4.1.7 | 57 | 2026-06-20 | Closed Testing | 0 | — |
 | 4.1.6 | 55 | 2026-06-19 | Closed Testing | 0 | — |
 | 4.1.5 | 54 | 2026-06-19 | Closed Testing | 0 | — |
 | 4.1.4 | 53 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.3 | 52 | 2026-06-18 | Closed Testing | 0 | — |
 | 4.1.2 | 51 | 2026-06-18 | Closed Testing | 0 | — |
+| 4.1.1 | 50 | 2026-06-17 | Closed Testing | 0 | — |
 | 4.1.0 | 49 | 2026-06-17 | Production | 0 | — |
 | 4.0.1 | 48 | 2026-06-16 | Production | 0 | — |
 | 4.0.0 | 47 | 2026-06-16 | Production | 0 | — |
