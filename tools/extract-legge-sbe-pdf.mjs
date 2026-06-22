@@ -3,7 +3,7 @@
  * Extract James Legge oracle gold from local SBE XVI scan (OCR) → JSON cache.
  *
  * Usage:
- *   node tools/extract-legge-sbe-pdf.mjs [--force] [--no-epub-guide]
+ *   node tools/extract-legge-sbe-pdf.mjs [--force] [--with-epub-guide]
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -13,7 +13,7 @@ import { resolveLeggeSbePdfPath } from "../scripts/lib/legge-sbe-pdf-text-extrac
 
 const outPath = join(GOLD_DIR, "legge-sbe-pdf-gold.json");
 const force = process.argv.includes("--force");
-const noEpubGuide = process.argv.includes("--no-epub-guide");
+const withEpubGuide = process.argv.includes("--with-epub-guide");
 
 async function main() {
   await mkdir(GOLD_DIR, { recursive: true });
@@ -21,7 +21,7 @@ async function main() {
   console.log("Extracting Legge SBE PDF gold (OCR)…");
   const gold = await parseAllLeggeSbePdfOrThrow({
     force,
-    epubGuide: !noEpubGuide,
+    epubGuide: withEpubGuide,
     onProgress: (msg) => console.log(msg),
   });
   const payload = {
