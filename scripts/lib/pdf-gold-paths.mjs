@@ -28,8 +28,17 @@ export async function resolvePdfPath(translatorKey) {
   try {
     await stat(abs);
   } catch {
+    const legacy = entry.fileLegacyPdf ? join(SOURCE_PDF_DIR, entry.fileLegacyPdf) : null;
+    if (legacy) {
+      try {
+        await stat(legacy);
+        return { abs: legacy, entry };
+      } catch {
+        /* fall through */
+      }
+    }
     throw new Error(
-      `Missing PDF for ${translatorKey}: ${abs}\n` +
+      `Missing book file for ${translatorKey}: ${abs}\n` +
         "Place the file locally (gitignored). See tools/source-pdfs/manifest.json.",
     );
   }

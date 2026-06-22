@@ -586,14 +586,23 @@ npm run verify:hexagram-fidelity    # Wilhelm 513/513 vs libro (alias pdf-wilhel
 | **Edición gold** | Wilhelm/Baynes 1950, Pantheon (Bollingen XIX) — `wilhelm-baynes-1950-pantheon.pdf` |
 | **Parser** | `scripts/lib/hexagram-fidelity-wilhelm-pdf.mjs` + OCR repairs + trim comentario Wilhelm |
 | **Resultado** | **513/513 (100%)** — `reports/hexagram-fidelity-2026-06-22T01-52-32-542Z.json` |
-| **Remediación** | Correcciones directas en `scripts/iching_wilhelm_translation.mjs` (typos, truncados, alineación libro) |
-| **Sin** | Re-ingest Parma, suplementos tier-2, mirrors wengu/iching-online |
+| **Remediación** | Correcciones directas en `scripts/iching_wilhelm_translation.mjs` |
+
+### 14.3b — Legge · cierre Fase EPUB (2026-06-22)
+
+| Campo | Detalle |
+|-------|---------|
+| **Edición gold** | James Legge, SBE XVI — `The Yi King or, Book of Changes -- James Legge.epub` |
+| **Parser** | `hexagram-fidelity-legge-epub.mjs` (reutiliza lógica sacred + normalización EPUB + Great Symbolism icap2) |
+| **Sync** | `npm run sync:legge-oracle-from-epub` → `iching_legge_translation.mjs` |
+| **Resultado** | **514/514 (100%)** — `reports/hexagram-fidelity-2026-06-22T01-59-15-175Z.json` |
+| **Gate combinado** | `npm run verify:hexagram-fidelity` → Wilhelm PDF + Legge EPUB (**1027/1027**) |
 
 ### 14.4 — Próximas fases (mismo modelo)
 
 | Traductor | Gold local | Formato | Estado |
 |-----------|------------|---------|--------|
-| **Legge** | `The Yi King or, Book of Changes -- James Legge.epub` | EPUB (nativo, preferido sobre PDF) | EPUB en `tools/source-pdfs/` · parser pendiente |
+| **Legge** | `The Yi King or, Book of Changes -- James Legge.epub` | EPUB (nativo, preferido sobre PDF) | **514/514 (100%)** · parser + sync 2026-06-22 |
 | **Zhou Yi** | `zhouyi-zhushu-song-er07.pdf` | PDF 注疏 | PDF en manifest · parser pendiente |
 
 Legge y Zhou Yi **no se consideran cerrados** hasta repetir el mismo ciclo book-primary (extract → compare → fix bundle → 100%).

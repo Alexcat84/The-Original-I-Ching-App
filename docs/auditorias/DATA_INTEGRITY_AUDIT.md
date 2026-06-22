@@ -10,16 +10,16 @@ This document records the 1:1 fidelity audits performed on the three translator 
 
 La fidelidad 1:1 se demuestra **solo** comparando el dataset contra texto extraído de **ediciones locales** (`tools/source-pdfs/`, ver `manifest.json`). Los gates contra mirrors web (Parma, sacred-texts, ctext) están **obsoletos** — ver §14 del master audit.
 
-**Gate canónico Wilhelm (cerrado):**
+**Gate canónico Wilhelm + Legge (cerrado):**
 
 ```bash
 npm run build:data
-npm run verify:hexagram-fidelity   # 513/513 vs Pantheon 1950 PDF
+npm run verify:hexagram-fidelity   # 513/513 Wilhelm + 514/514 Legge vs libros locales
 ```
 
-Reporte: `reports/hexagram-fidelity-2026-06-22T01-52-32-542Z.json`
+Reporte combinado: `reports/hexagram-fidelity-2026-06-22T01-59-28-099Z.json`
 
-**Pendiente:** Legge (EPUB local) y Zhou Yi (PDF 注疏) con el mismo ciclo extract → compare → 100%.
+**Pendiente:** Zhou Yi (PDF 注疏) con el mismo ciclo extract → compare → 100%.
 
 ---
 

@@ -157,7 +157,7 @@ function buildZhouyiRecord(base, n) {
 
 const generatedAt = new Date().toISOString();
 const FIDELITY_AUDIT_DATE = "2026-06-22";
-const FIDELITY_REPORT_ID = "hexagram-fidelity-2026-06-22T01-52-32-542Z";
+const FIDELITY_REPORT_ID = "hexagram-fidelity-2026-06-22T01-59-28-099Z";
 
 const bundles = [
   {
@@ -179,9 +179,9 @@ const bundles = [
       translator: "legge",
       edition:
         "Sacred Books of the East, Volume 16: The Yi King, James Legge (1882, revised 1899).",
-      sourceUrl: "https://sacred-texts.com/ich/index.htm",
+      sourceUrl: "tools/source-pdfs/The Yi King or, Book of Changes -- James Legge.epub",
       licenseNote:
-        `James Legge (1882) translation in the public domain. Oracle fields cross-verified 1:1 against sacred-texts.com on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 513/513 oracle fields match.`,
+        `James Legge (1882) translation in the public domain. Oracle fields verified 1:1 against the local James Legge EPUB (Sacred Books of the East XVI) on ${FIDELITY_AUDIT_DATE} (report ${FIDELITY_REPORT_ID}). 514/514 oracle fields match.`,
       generatedAt,
       build: buildLeggeRecord,
     },
