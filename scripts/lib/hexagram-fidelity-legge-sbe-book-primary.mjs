@@ -1,6 +1,6 @@
 /**
  * Oxford SBE XVI scan-verified overrides (book-primary).
- * Applied after OCR + optional EPUB repair-only guide.
+ * Applied after OCR parse — equivalent to Wilhelm print-verified patches.
  */
 
 /** @type {Record<number, Partial<{ judgment: string; image: string; lines: Record<number, string>; yongJiu: string; yongLiu: string }>>} */
@@ -75,4 +75,23 @@ export function applyLeggeSbeBookPrimaryPatches(rows) {
     }
   }
   return rows;
+}
+
+/** @returns {Array<{ hex: number; field: string }>} */
+export function listLeggeSbeBookPrimaryPatchFields() {
+  /** @type {Array<{ hex: number; field: string }>} */
+  const out = [];
+  for (const [hexRaw, patch] of Object.entries(LEGGE_SBE_BOOK_PRIMARY_PATCHES)) {
+    const hex = Number(hexRaw);
+    if (patch.judgment) out.push({ hex, field: "judgment" });
+    if (patch.image) out.push({ hex, field: "image" });
+    if (patch.yongJiu) out.push({ hex, field: "yongJiu" });
+    if (patch.yongLiu) out.push({ hex, field: "yongLiu" });
+    if (patch.lines) {
+      for (const p of Object.keys(patch.lines)) {
+        out.push({ hex, field: `line${p}` });
+      }
+    }
+  }
+  return out;
 }

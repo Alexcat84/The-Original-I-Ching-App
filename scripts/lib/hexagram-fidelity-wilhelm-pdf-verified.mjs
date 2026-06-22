@@ -14,6 +14,10 @@ export const WILHELM_PDF_PRINT_VERIFIED_PAGES = {
   "21:judgment": "p. 92",
   "21:image": "p. 92",
   "21:5": "p. 94",
+  "32:judgment": "p. 135",
+  "32:1": "p. 136",
+  "32:2": "p. 137",
+  "32:5": "p. 138",
 };
 
 /** @type {Record<number, Partial<{ judgment: string; image: string; lines: Record<number, string> }>>} */
@@ -59,7 +63,31 @@ export const WILHELM_PDF_PRINT_VERIFIED = {
         "No blame.",
     },
   },
+  32: {
+    judgment:
+      "DURATION. Success. No blame.\n" +
+      "Perseverance furthers.\n" +
+      "It furthers one to have somewhere to go.",
+    lines: {
+      1:
+        "Seeking duration too hastily brings misfortune persistently.\n" +
+        "Nothing that would further.",
+      2: "Remorse disappears.",
+      5:
+        "Giving duration to one's character through perseverance.\n" +
+        "This is good fortune for a woman, misfortune for a man.",
+    },
+  },
 };
+
+/**
+ * Photo-verified line statement (book-primary); overrides Parma when present.
+ * @param {number} hex 1..64
+ * @param {number} pos 1..6
+ */
+export function getWilhelmPrintVerifiedLine(hex, pos) {
+  return WILHELM_PDF_PRINT_VERIFIED[hex]?.lines?.[pos]?.trim() ?? "";
+}
 
 /**
  * Apply photo-verified oracle fields onto PDF-parsed gold (mutates copy).

@@ -6,6 +6,7 @@
   "sources": {
     "wilhelm": {
       "file": "wilhelm-baynes-1950-pantheon.pdf",
+      "fileCrossCheckEpub": "The I Ching or Book of Changes (Bollingen Series) -- Wilhelm, Hellmut -- Bollingen Series, 2011.epub",
       "title": "The I Ching or Book of Changes",
       "translators": ["Richard Wilhelm", "Cary F. Baynes"],
       "publisher": "Pantheon Books",
