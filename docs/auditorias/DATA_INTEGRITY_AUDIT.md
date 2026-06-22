@@ -14,7 +14,7 @@ This document records the 1:1 fidelity audits performed on the three translator 
 |-----------|----------------|------------------|-------|
 | **Legge** | sacred-texts.com (ic + icap2) | **100%** (514/514 campos oráculo) | Juicio, imagen (Great Symbolism), líneas y `yongJiu`/`yongLiu` |
 | **Zhou Yi** | ctext.org (API + 大象) | **100%** (514/514 campos oráculo) | 卦辞, 爻辞, 用九/六, 大象 |
-| **Wilhelm** | Uni Parma mirror + suplemento Baynes tier-2 | **100%** (514/514 campos oráculo) | 6 suplementos documentados (no 1): **hex 56 judgment**, más 5 líneas individuales (hex 20 línea 5, hex 21 líneas 2 y 3, hex 26 línea 3, hex 52 línea 2), donde Parma omite la sección/línea por completo |
+| **Wilhelm** | Uni Parma mirror + suplemento Baynes (edición impresa 1950) | **100%** (514/514 campos oráculo) | 6 suplementos donde Parma omite la sección/línea: **hex 56 judgment**, hex 20 línea 5, hex 21 líneas 2 y 3, hex 26 línea 3, hex 52 línea 2. Los seis contrastados página a página contra *The I Ching or Book of Changes* (Wilhelm/Baynes, Princeton University Press, 1950) |
 
 **Reporte:** `reports/hexagram-fidelity-2026-06-21T20-26-09-152Z.json`
 
@@ -27,7 +27,7 @@ This document records the 1:1 fidelity audits performed on the three translator 
 - `hexagram-fidelity-diff.mjs`: ambos lados vacíos → `missing_gold`, nunca `match`.
 - `verify-hexagram-fidelity.mjs` (Legge): `yongJiu`/`yongLiu` siempre entran a la matriz (514 campos, simétrico con Zhou Yi).
 - `hexagram-fidelity-legge-sacred.mjs`: nueva detección directa del párrafo supernumerario por su frase fija, independiente del heading de sección (ausente en algunas páginas individuales).
-- `hexagram-fidelity-wilhelm-baynes-supplement.mjs`: extendido de "solo judgment" a también 5 líneas (`WILHELM_BAYNES_LINE_SUPPLEMENTS`), restauradas desde el bundle previo a la Fase 3 (transcripción Wilhelm/Baynes 1950 vía `adamblvck/iching-wilhelm-dataset`) — documentado como fuente de menor confianza que el cross-check fresco del hex 56 (wengu/iching-online no estaban disponibles para recontrastar en esta sesión).
+- `hexagram-fidelity-wilhelm-baynes-supplement.mjs`: extendido de "solo judgment" a también 5 líneas (`WILHELM_BAYNES_LINE_SUPPLEMENTS`). Los seis pasajes provienen de la edición impresa Wilhelm/Baynes (Princeton University Press, 1950); verificados página a página en libro físico el 2026-06-21 (ver tabla abajo).
 - `tools/ingest-wilhelm.mjs`: las líneas ya no se sobrescriben con vacío cuando Parma no tiene el dato — aplican la misma política Parma→tier2→existente que ya regía para `judgment`/`image`.
 
 **Alcance del verify:** solo textos del oráculo (judgment/image/lines, yongJiu/yongLiu). Comentarios editoriales Wilhelm/Legge excluidos por diseño del parser.
@@ -42,6 +42,21 @@ npm run scan:zhouyi-corruption   # gate Zhou Yi = 0
 ```
 
 **Gate adicional (no estaba en los gates documentados de Fase 1-4; se incorpora aquí):** `npx vitest run` en `packages/iching-data` (`src/index.test.ts`) — verifica invariantes absolutos (todo campo oráculo no vacío, `yongJiu`/`yongLiu` presentes en hex 1/2) independientemente de cualquier fuente gold. Este test existía desde antes de la Fase 1 pero **no se había ejecutado** como parte de los gates de Fase 1-4; correrlo hubiera detectado la regresión de inmediato sin depender del harness de fidelidad.
+
+### Verificación en libro físico · Wilhelm/Baynes 1950
+
+**Obra:** Wilhelm, Richard; Baynes, Cary F. *The I Ching or Book of Changes*. Princeton University Press, 1950 (Bollingen Series XIX).
+
+| Campo | Hex | Página (ed. 1950) | Texto oracle (verificado) |
+|-------|-----|-------------------|---------------------------|
+| judgment | 56 Lü / The Wanderer | p. 231 | THE WANDERER. Success through smallness… (+ comentario Wilhelm, 1.er párrafo) |
+| line 5 | 20 Kuan / Contemplation | pp. 88-89 | Contemplation of my life. / The superior man is without blame. |
+| line 2 | 21 Shih Ho / Biting Through | pp. 92-93 | Bites through tender meat… / No blame. |
+| line 3 | 21 | pp. 92-93 | Bites on old dried meat… / Slight humiliation. No blame. |
+| line 3 | 26 Ta Ch'u / Taming Power of the Great | p. 112 | A good horse that follows others… / It furthers one to have somewhere to go. |
+| line 2 | 52 Kên / Keeping Still | p. 215 | Keeping his calves still… / His heart is not glad. |
+
+**Módulo:** `scripts/lib/hexagram-fidelity-wilhelm-baynes-supplement.mjs` (`WILHELM_BAYNES_1950_CITATION`, `WILHELM_BAYNES_SUPPLEMENT_PAGES`).
 
 ---
 

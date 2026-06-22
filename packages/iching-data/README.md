@@ -8,11 +8,11 @@ the canonical source of hexagram texts for the rest of the monorepo.
 
 | Translator | ID | Ingest pipeline | Gold source (verify) |
 | --- | --- | --- | --- |
-| Wilhelm / Baynes | `wilhelm` | `npm run ingest:wilhelm` | [Uni Parma mirror](http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html) + Baynes tier-2 supplement (6 fields where Parma's HTML omits the passage entirely) |
+| Wilhelm / Baynes | `wilhelm` | `npm run ingest:wilhelm` | [Uni Parma mirror](http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html) + 6 fields from printed Wilhelm/Baynes (Princeton UP, 1950), page-verified |
 | James Legge | `legge` | `npm run ingest:legge` | [sacred-texts.com](https://sacred-texts.com/ich/index.htm) (ic + icap2) |
 | Zhou Yi (original Chinese) | `zhouyi` | `npm run ingest:zhouyi` | [ctext.org](https://ctext.org/book-of-changes) (API + 大象 HTML) |
 
-**Last 1:1 fidelity audit:** 21 June 2026. Legge and Zhou Yi: 100% oracle-field match. Wilhelm: 100% with 6 documented tier-2 Baynes supplements (hex 56 judgment; hex 20 line 5; hex 21 lines 2 and 3; hex 26 line 3; hex 52 line 2). Report: `reports/hexagram-fidelity-2026-06-21T20-26-09-152Z.json`. See `docs/auditorias/DATA_INTEGRITY_AUDIT.md`.
+**Last 1:1 fidelity audit:** 21 June 2026. Legge and Zhou Yi: 100% oracle-field match. Wilhelm: 100%; 6 Parma gaps sourced from the printed Wilhelm/Baynes edition (Princeton University Press, 1950), page-verified in the physical book. Report: `reports/hexagram-fidelity-2026-06-21T20-26-09-152Z.json`. See `docs/auditorias/DATA_INTEGRITY_AUDIT.md`.
 
 Each bundle covers all 64 King Wen hexagrams, with the same schema:
 
