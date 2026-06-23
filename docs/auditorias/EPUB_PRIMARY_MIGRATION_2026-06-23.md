@@ -61,13 +61,19 @@ El propietario aportó capturas del libro Wilhelm/Baynes del hex 41. El contrast
 
 ---
 
-## 3. Duda pendiente de juicio del propietario (captura del libro)
+## 3. Adjudicación del propietario (captura del libro) — RESUELTO
 
 **Legge hex 41, línea 2.** El EPUB termina sin puntuación terminal:
 
 > "The second line, undivided, shows that it will be advantageous for its subject to maintain a firm correctness, and that action on his part will be evil. He can give increase (to his correlate) **without taking from himself**"
 
-Esto es **idéntico en el EPUB y en el sacred-texts previo** (no es un defecto introducido por el EPUB). Probable falta del punto final. Pendiente de confirmar contra el libro físico si debe cerrar con `"…from himself."` o si continúa.
+**Veredicto del propietario (captura SBE XVI, 2026-06-23):** el libro físico **cierra sin punto** — el texto salta directo a "3. The third line…". El EPUB es **fiel a la fuente**; no es un defecto. **No se modifica.**
+
+### Spot-checks contra el libro físico (Wilhelm/Baynes)
+| Hex | Campos verificados 1:1 | Resultado |
+|---|---|---|
+| 41 (DECREASE) | juicio, imagen (4 líneas), 6 líneas | ✓ tras fix §2.bis |
+| 43 (BREAK-THROUGH) | juicio (6 líneas), imagen (5 líneas, incl. "The image of BREAK-THROUGH." + cierre "Dispenses riches downward / And refrains from resting on his virtue."), 6 líneas | ✓ idéntico |
 
 ---
 
