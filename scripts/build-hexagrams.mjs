@@ -165,10 +165,11 @@ const bundles = [
     bundle: {
       translator: "wilhelm",
       edition:
-        "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes (1950, public domain since 2020).",
-      sourceUrl: "http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html",
+        "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes, Princeton University Press, Bollingen Series XIX (digital EPUB, 2011; translation 1950, public domain since 2020).",
+      sourceUrl:
+        "https://press.princeton.edu/books/paperback/9780691097503/the-i-ching-or-book-of-changes",
       licenseNote:
-        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image, and line texts cross-verified 1:1 against the University of Parma mirror on 2026-06-21 (report hexagram-fidelity-2026-06-21T20-26-09-152Z). 6 fields use a documented tier-2 Baynes supplement where Parma's HTML omits the passage entirely: hex 56 judgment, plus 5 individual changing lines (hex 20 line 5, hex 21 lines 2 and 3, hex 26 line 3, hex 52 line 2).`,
+        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image (Great Image / 大象), line, and yong texts verified 1:1 against the Princeton Bollingen digital EPUB (2011) on 2026-06-23 (report hexagram-fidelity-2026-06-23T02-10-31-945Z; gate 514/514). EPUB-primary gold: structured digital text replaces the OCR PDF and the Parma mirror.`,
       generatedAt,
       build: buildWilhelmRecord,
     },
@@ -178,10 +179,10 @@ const bundles = [
     bundle: {
       translator: "legge",
       edition:
-        "Sacred Books of the East, Volume 16: The Yi King, James Legge (1882, revised 1899).",
+        "Sacred Books of the East, Volume 16: The Yi King, James Legge (1882, revised 1899; digital EPUB).",
       sourceUrl: "https://sacred-texts.com/ich/index.htm",
       licenseNote:
-        `James Legge (1882) translation in the public domain. Oracle fields cross-verified 1:1 against sacred-texts.com on 2026-06-21 (report hexagram-fidelity-2026-06-21T20-26-09-152Z). 513/513 oracle fields match.`,
+        `James Legge (1882) translation in the public domain. Oracle fields (Thwan, Great Symbolism, lines, yongJiu/yongLiu) verified 1:1 against the James Legge digital EPUB (Sacred Books of the East XVI) on 2026-06-23 (report hexagram-fidelity-2026-06-23T02-10-32-509Z; gate 514/514). EPUB-primary gold: structured digital text replaces the OCR scan.`,
       generatedAt,
       build: buildLeggeRecord,
     },

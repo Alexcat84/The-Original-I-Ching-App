@@ -71,8 +71,11 @@ function linePosFromLabel(label) {
  * @param {"JUDGMENT"|"IMAGE"|"LINES"} section
  */
 function findWilhelmEpubSectionStart(html, section) {
+  // Anchor tightly on the section header blockquote (<blockquote><p><span class="calibre9">THE …</span>).
+  // A lazy [\s\S]*? between the blockquote and the span would jump to the document's first
+  // blockquote, making IMAGE/LINES resolve to the JUDGMENT region (image == judgment bug).
   const re = new RegExp(
-    `<blockquote[^>]*>[\\s\\S]*?<span class="calibre9">\\s*THE ${section}(?:\\s*<a\\b[^>]*>[\\s\\S]*?<\\/a>)?\\s*<\\/span>`,
+    `<blockquote[^>]*>\\s*<p[^>]*>\\s*<span class="calibre9">\\s*THE ${section}(?:\\s*<a\\b[^>]*>[\\s\\S]*?<\\/a>)?\\s*<\\/span>`,
     "i",
   );
   const m = re.exec(html);
