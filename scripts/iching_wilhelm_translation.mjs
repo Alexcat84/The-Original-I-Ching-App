@@ -48,7 +48,7 @@ export default {
         "text": "Arrogant dragon will have cause to repent."
       }
     },
-    "yong_jiu": "There appears a flight of dragons without heads."
+    "yong_jiu": "There appears a flight of dragons without heads.\nGood fortune."
   },
   "2": {
     "hex": 2,
@@ -1263,7 +1263,7 @@ export default {
     "wilhelm_below": {
       "chinese": "SUN",
       "symbolic": "THE GENTLE,",
-      "alchemical": "WIND,"
+      "alchemical": "WIND, WOOD"
     },
     "wilhelm_symbolic": "This hexagram consists of four strong lines inside and two weak lines outside. When the strong are outside and the weak inside, all is well and there is nothing out of balance, nothing extraordinary in the situation. Here, however, the opposite is the case. The hexagram represents a beam that is thick and heavy in the middle but too weak at the ends. This is a condition that cannot last; it must be changed, must pass, or misfortune will result.",
     "wilhelm_judgment": {
@@ -2091,7 +2091,7 @@ export default {
     "wilhelm_below": {
       "chinese": "SUN",
       "symbolic": "THE GENTLE,",
-      "alchemical": "WIND,"
+      "alchemical": "WIND, WOOD"
     },
     "wilhelm_symbolic": "The lower trigram, Sun, represents wood, and the upper, K'un, means the earth. Linked with this is the idea that wood in the earth grows upward. In contrast to the meaning of Chin, PROGRESS\n\n35, this pushing upward is associated with effort, just as a plant needs energy for pushing upward through the earth. That is why this hexagram, although it is connected with success, is associated with effort of the will. In PROGRESS the emphasis is on expansion; PUSHING UPWARD indicates rather a vertical ascent-direct rise from obscurity and lowliness to power and influence.",
     "wilhelm_judgment": {
@@ -2183,7 +2183,7 @@ export default {
     "wilhelm_below": {
       "chinese": "SUN",
       "symbolic": "THE GENTLE,",
-      "alchemical": "WIND,"
+      "alchemical": "WIND, WOOD"
     },
     "wilhelm_symbolic": "Wood is below, water above. The wood goes down into the earth to bring up water. The image derives from the pole-and-bucket well of ancient China. The wood represents not the buckets, which in ancient times were made of clay, but rather the wooden poles by which the water is hauled up from the well. The image also refers to the world of plants, which lift water out of the earth by means of their fibers. The well from which water is drawn conveys the further idea of an inexhaustible dispensing of nourishment.",
     "wilhelm_judgment": {
@@ -2275,7 +2275,7 @@ export default {
     "wilhelm_below": {
       "chinese": "SUN",
       "symbolic": "THE GENTLE,",
-      "alchemical": "WIND,"
+      "alchemical": "WIND, WOOD"
     },
     "wilhelm_symbolic": "The six lines construct the image of Ting, THE CALDRON; at the bottom are the legs, over them the belly, then come the ears (handles), and at the top the carrying rings. At the same time, the image suggests the idea of nourishment. The ting, cast of bronze, was the vessel that held the cooked viands in the temple of the ancestors and at banquets. The heads of the family served the food from the ting into the bowls of the guests. THE WELL\n\n48 likewise has the secondary meaning of giving nourishment, but rather more in relation to the people. The ting, as a utensil pertaining to a refined civilization, suggests the fostering and nourishing of able men, which redounded to the benefit of the state. This hexagram and THE WELL are the only two in the Book of Changes that represent concrete, men-made objects. Yet here too the thought has its abstract connotation. Sun, below, is wood and wind; Li, above, is flame. Thus together they stand for the flame kindled by wood and wind, which likewise suggests the idea of preparing food.",
     "wilhelm_judgment": {
@@ -2408,7 +2408,7 @@ export default {
     "wilhelm_above": {
       "chinese": "SUN",
       "symbolic": "THE GENTLE,",
-      "alchemical": "WIND,"
+      "alchemical": "WIND, WOOD"
     },
     "wilhelm_below": {
       "chinese": "KêN",
@@ -2592,12 +2592,12 @@ export default {
     "wilhelm_above": {
       "chinese": "SUN",
       "symbolic": "THE GENTLE,",
-      "alchemical": "WIND,"
+      "alchemical": "WIND, WOOD"
     },
     "wilhelm_below": {
       "chinese": "SUN",
       "symbolic": "THE GENTLE,",
-      "alchemical": "WIND,"
+      "alchemical": "WIND, WOOD"
     },
     "wilhelm_symbolic": "Sun is one of the eight doubled trigrams. It is the eldest daughter and symbolizes wind or wood; it has for its attribute gentleness, which nonetheless penetrates like the wind or like growing wood with its roots. The dark principle, in itself rigid and immovable, is dissolved by the penetrating light principle, to which it subordinates itself in gentleness. In nature, it is the wind that disperses the gathered clouds, leaving the sky clear and serene. In human life it is penetrating clarity of judgment that thwarts all dark hidden motives. In the life of the community it is the powerful influence of a great personality that uncovers and breaks up those intrigues which shun the light of day.",
     "wilhelm_judgment": {

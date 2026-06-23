@@ -24,6 +24,7 @@
     "extract:gold:wilhelm-pdf": "node tools/extract-wilhelm-pdf.mjs",
     "extract:gold:legge-epub": "node tools/extract-legge-epub.mjs",
     "extract:gold:wilhelm-epub": "node tools/extract-wilhelm-epub.mjs",
+    "audit:wilhelm-trigram-parma": "node tools/audit-wilhelm-trigram-parma.mjs",
     "extract:gold:legge-sbe-pdf": "node tools/extract-legge-sbe-pdf.mjs",
     "sync:legge-oracle-from-epub": "node tools/sync-legge-oracle-from-epub.mjs",
     "sync:wilhelm-oracle-from-epub": "node tools/sync-wilhelm-oracle-from-epub.mjs",
