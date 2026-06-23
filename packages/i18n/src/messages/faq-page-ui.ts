@@ -611,7 +611,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "data-reliability",
     question: "ما مدى موثوقية نصوص الآي تشينغ في التطبيق؟",
     answer:
-      "آخر تدقيق: 22 يونيو 2026. تم التحقق من نصوص العرافة وقواعد الخطوط المتغيرة مقابل مصادر كتاب Tier-0. راجع صفحة تدقيقات المطابقة للمنهجية والسجل الكامل.",
+      "آخر تدقيق: 22 يونيو 2026. نصوص الأوراكل مُحقَّقة مقابل مصادر Tier-0: Wilhelm/Baynes (PDF Pantheon)، Legge (SBE XVI)، Zhou Yi (Chinese Text Project)، Huang و Zhu Xi/Adler (ملفات PDF محلية). قواعد الخطوط المتغيرة مُحقَّقة مقابل مرجعية Huang و Adler. راجع صفحة تدقيقات المطابقة للمنهجية ونتائج البوابات والسجل الكامل.",
     related: ["fidelityAudits"],
   },
   {
@@ -792,7 +792,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "data-reliability",
     question: "ऐप में दिए गए आई चिंग ग्रंथों की विश्वसनीयता क्या है?",
     answer:
-      "अंतिम ऑडिट: 22 जून 2026. Oracle पाठ और बदलती रेखा नियम Tier-0 पुस्तक स्रोतों से सत्यापित। पूर्ण लॉग के लिए Fidelity Audits पृष्ठ देखें।",
+      "अंतिम ऑडिट: 22 जून 2026. Oracle पाठ Tier-0 स्रोतों के विरुद्ध सत्यापित: Wilhelm/Baynes (Pantheon PDF), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang और Zhu Xi/Adler (लोकल PDF)। बदलती-रेखा नियम Huang और Adler गोल्ड के विरुद्ध सत्यापित। पद्धति, गेट परिणाम और पूर्ण लॉग के लिए निष्ठा ऑडिट पृष्ठ देखें।",
     related: ["fidelityAudits"],
   },
   {
@@ -974,7 +974,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "data-reliability",
     question: "アプリで提供される易経のテキストの信頼性はどの程度ですか？",
     answer:
-      "最新監査: 2026年6月22日。神託文と変爻ルールをTier-0書籍ソースで検証。方法論と全ログは忠実度監査ページを参照。",
+      "最新監査: 2026年6月22日。神託文をTier-0ソースと照合して検証: Wilhelm/Baynes（Pantheon PDF）、Legge（SBE XVI）、周易（Chinese Text Project）、Huangおよび朱熹/Adler（ローカルPDF）。変爻ルールはHuangおよびAdlerのgoldと照合して検証。方法論、ゲート結果、全ログは忠実度監査ページを参照。",
     related: ["fidelityAudits"],
   },
   {
@@ -1155,7 +1155,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "data-reliability",
     question: "应用中提供的易经文本可靠性如何？",
     answer:
-      "最近一次审计：2026年6月22日。神谕文本与变爻规则已对照 Tier-0 书籍源验证。详见保真审计页面的方法与完整记录。",
+      "最近一次审计：2026年6月22日。神谕文本已对照 Tier-0 来源验证：卫礼贤/贝恩斯（Pantheon PDF）、理雅各（SBE XVI）、周易（Chinese Text Project）、黄忠天与朱熹/Adler（本地 PDF）。变爻规则已对照黄忠天与 Adler 的 gold 标准验证。方法论、闸门结果与完整记录详见保真审计页面。",
     related: ["fidelityAudits"],
   },
   {
@@ -1334,7 +1334,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "data-reliability",
     question: "앱에서 제공되는 주역 텍스트는 얼마나 신뢰할 수 있습니까?",
     answer:
-      "최근 감사: 2026년 6월 22일. 신탁문과 변효 규칙을 Tier-0 도서 소스로 검증했습니다. 방법론과 전체 로그는 충실도 감사 페이지를 참조하세요.",
+      "최근 감사: 2026년 6월 22일. 신탁문은 Tier-0 소스와 대조하여 검증: Wilhelm/Baynes(Pantheon PDF), Legge(SBE XVI), 주역(Chinese Text Project), Huang 및 Zhu Xi/Adler(로컬 PDF). 변효 규칙은 Huang 및 Adler gold와 대조하여 검증. 방법론, 게이트 결과, 전체 로그는 충실도 감사 페이지를 참조하세요.",
     related: ["fidelityAudits"],
   },
   {
@@ -1514,7 +1514,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "data-reliability",
     question: "Quão confiáveis são os textos do I Ching no aplicativo?",
     answer:
-      "Última auditoria: 22 de junho de 2026. Textos e regras de linhas mutantes verificados contra fontes livro Tier-0. Consulte a página Auditorias de fidelidade para metodologia e registo completo.",
+      "Última auditoria: 22 de junho de 2026. Textos do oráculo verificados contra fontes Tier-0: Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang e Zhu Xi/Adler (PDFs locais). Regras de linhas mutantes verificadas contra gold Huang e Adler. Consulte a página Auditorias de fidelidade para metodologia, resultados de gates e o registo completo.",
     related: ["fidelityAudits"],
   },
   {
@@ -1696,7 +1696,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "data-reliability",
     question: "Wie zuverlässig sind die I-Ging-Texte in der App?",
     answer:
-      "Letzte Prüfung: 22. Juni 2026. Orakeltexte und Wechsel-Linien-Regeln gegen Tier-0-Buchquellen verifiziert. Siehe Fidelity Audits für Methodik und vollständiges Protokoll.",
+      "Letzte Prüfung: 22. Juni 2026. Orakeltexte gegen Tier-0-Quellen verifiziert: Wilhelm/Baynes (Pantheon-PDF), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang und Zhu Xi/Adler (lokale PDFs). Regeln für wechselnde Linien gegen Huang- und Adler-Gold verifiziert. Siehe die Fidelitätsprüfungen-Seite für Methodik, Gate-Ergebnisse und das vollständige Protokoll.",
     related: ["fidelityAudits"],
   },
   {
@@ -1882,7 +1882,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "data-reliability",
     question: "Quanto sono affidabili i testi dell'I Ching nell'app?",
     answer:
-      "Ultimo audit: 22 giugno 2026. Testi dell'oracolo e regole delle linee mutanti verificati rispetto a fonti libro Tier-0. Vedi la pagina Fidelity Audits per metodologia e registro completo.",
+      "Ultimo audit: 22 giugno 2026. Testi dell'oracolo verificati rispetto a fonti Tier-0: Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang e Zhu Xi/Adler (PDF locali). Regole delle linee mutanti verificate rispetto al gold di Huang e Adler. Vedi la pagina Audit di fedeltà per metodologia, risultati dei gate e il registro completo.",
     related: ["fidelityAudits"],
   },
   {
@@ -2070,7 +2070,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
     answer:
-      "Dernier audit : 22 juin 2026. Textes de l'oracle et règles de lignes changeantes vérifiés contre sources livre Tier-0. Voir la page Audits de fidélité pour la méthodologie et le journal complet.",
+      "Dernier audit : 22 juin 2026. Textes de l'oracle vérifiés par rapport aux sources Tier-0 : Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang et Zhu Xi/Adler (PDF locaux). Règles de lignes changeantes vérifiées par rapport au gold de Huang et Adler. Voir la page Audits de fidélité pour la méthodologie, les résultats des gates et le journal complet.",
     related: ["fidelityAudits"],
   },
   {
