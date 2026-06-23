@@ -12,6 +12,6 @@
   "fieldCount": 37,
   "metaSource": "book header (nombre=bookTitle, chinese_roman=bookChinese Wade-Giles); chinese + hex_font from iching_wilhelm_translation.mjs; trigramas from bundle injector",
   "csvAudit": "reports/wilhelm-64hex-comments-audit-latest.csv",
-  "runtimeIngest": false,
-  "note": "Audited structure; text field G2 optional. Do not merge into AI prompt or packages/iching-data until product design."
+  "runtimeIngest": true,
+  "note": "Audited structure; text field G2 optional. Ingested into packages/iching-data/src/generated/hexagrams.wilhelm.commentary.json (combined per-point with book-one commentary), library display only — still never merged into the AI prompt or HexagramRecord."
 }

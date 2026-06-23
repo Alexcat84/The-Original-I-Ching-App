@@ -11,6 +11,7 @@ Single canonical location for audit reports, incident write-ups, post-fix follow
 
 | Date | Document | Topic | Status |
 |---|---|---|---|
+| 2026-06-23 | [LIBRARY_COMMENTARY_LAYER_2026-06-23.md](./LIBRARY_COMMENTARY_LAYER_2026-06-23.md) | Biblioteca: capa de comentario opcional W+L ("+" por punto), sin tocar motor/IA | ✅ Implementado |
 | 2026-06-23 | [TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md](./TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md) | Política: solo W+L con notas · fidelidad 100% book-primary · Zhou Yi sin notas | ✅ Cerrada |
 | 2026-06-23 | [LEGGE_TXT_AU_MAESTRO_2026-06-23.md](./LEGGE_TXT_AU_MAESTRO_2026-06-23.md) | Maestro Legge TXT Princeton + AU + gates 4/4 (sin ingest runtime) | ✅ Cerrada |
 | 2026-06-23 | [WILHELM_TXT_AU_MAESTRO_2026-06-23.md](./WILHELM_TXT_AU_MAESTRO_2026-06-23.md) | Maestro Wilhelm TXT Princeton + AU Sheets + gates 100/100 (sin ingest runtime) | ✅ Cerrada |

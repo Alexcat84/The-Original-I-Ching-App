@@ -6,7 +6,7 @@ import Link from "next/link";
 import { getSupabaseBrowser } from "@/lib/supabase-browser";
 import { HexagramTabs, type ResolvedLineLabels } from "@/components/library/HexagramTabs";
 import type { LibraryPageUiSerialized } from "@iching-oracle/i18n";
-import type { LibraryDetailRecords } from "@/lib/library/library-data";
+import type { LibraryDetailCommentary, LibraryDetailRecords } from "@/lib/library/library-data";
 import type { TranslatorId } from "@iching-oracle/iching-data";
 
 interface MutationEntry {
@@ -38,6 +38,7 @@ type LoadState = "loading" | "ready" | "denied";
 
 interface DetailPayload {
   records: LibraryDetailRecords;
+  commentary: LibraryDetailCommentary;
   sources: Record<TranslatorId, SourceMeta>;
 }
 
@@ -88,7 +89,7 @@ export function LibraryContentLoader({
         }
 
         const data = (await res.json()) as DetailPayload & { summary: unknown; mutations: unknown };
-        setDetail({ records: data.records, sources: data.sources });
+        setDetail({ records: data.records, commentary: data.commentary, sources: data.sources });
         setState("ready");
       } catch {
         setState("denied");
@@ -114,6 +115,7 @@ export function LibraryContentLoader({
       <h2 className="library-translations-heading">{messages.translationsHeading}</h2>
       <HexagramTabs
         records={detail.records}
+        commentary={detail.commentary}
         sources={detail.sources}
         messages={messages}
         lineLabels={lineLabels}

@@ -3,8 +3,12 @@ import {
   getHexagramBundle,
   getHexagramRecordByBinaryTopFirst,
   getHexagramRecordByNumber,
+  getLeggeCommentaryByNumber,
+  getWilhelmCommentaryByNumber,
   type HexagramRecord,
+  type LeggeCommentary,
   type TranslatorId,
+  type WilhelmCommentary,
 } from "@iching-oracle/iching-data";
 import { trigramIdFromWilhelmLabel, type TrigramId } from "./trigram-meta";
 
@@ -41,9 +45,20 @@ export interface LibraryDetailRecords {
   readonly zhouyi: HexagramRecord;
 }
 
+/**
+ * Optional scholarly-commentary layer (library display only — never fed into
+ * the AI prompt or the core HexagramRecord). Zhou Yi has no field here by
+ * design: it never had commentary and the notes policy keeps it that way.
+ */
+export interface LibraryDetailCommentary {
+  readonly wilhelm: WilhelmCommentary;
+  readonly legge: LeggeCommentary;
+}
+
 export interface LibraryDetail {
   readonly summary: LibrarySummary;
   readonly records: LibraryDetailRecords;
+  readonly commentary: LibraryDetailCommentary;
   readonly mutations: ReadonlyArray<LibraryDetailMutation>;
   readonly sources: Record<TranslatorId, { edition: string; sourceUrl: string }>;
 }
@@ -121,6 +136,10 @@ export function getLibraryDetail(num: number): LibraryDetail | null {
   return {
     summary,
     records: { wilhelm, legge, zhouyi },
+    commentary: {
+      wilhelm: getWilhelmCommentaryByNumber(num),
+      legge: getLeggeCommentaryByNumber(num),
+    },
     mutations: buildMutations(wilhelm.binaryTopFirst, wilhelm.number),
     sources: {
       wilhelm: { edition: wilhelmBundle.edition, sourceUrl: wilhelmBundle.sourceUrl },

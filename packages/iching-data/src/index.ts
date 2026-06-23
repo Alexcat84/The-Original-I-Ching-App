@@ -65,3 +65,18 @@ export function getAvailableTranslators(): readonly TranslatorId[] {
 
 export type { HexagramRecord, HexagramsBundle, TranslatorId } from "./schema.js";
 export { TRANSLATOR_IDS } from "./schema.js";
+
+export {
+  getAllWilhelmCommentary,
+  getWilhelmCommentaryByNumber,
+  getAllLeggeCommentary,
+  getLeggeCommentaryByNumber,
+} from "./commentary.js";
+export type {
+  WilhelmCommentary,
+  WilhelmPointCommentary,
+  WilhelmAbout,
+  WilhelmWenYen,
+  LeggeCommentary,
+  LeggeLineSymbolism,
+} from "./commentary.js";
