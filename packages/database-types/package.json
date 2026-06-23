@@ -1,0 +1,21 @@
+{
+  "name": "@iching-oracle/database-types",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/database.types.ts",
+  "types": "./src/database.types.ts",
+  "exports": {
+    ".": {
+      "types": "./src/database.types.ts",
+      "import": "./src/database.types.ts"
+    }
+  },
+  "scripts": {
+    "build": "node -e \"console.log('database-types: run npm run db:types from repo root')\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

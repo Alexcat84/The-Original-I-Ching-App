@@ -1,4 +1,4 @@
-<!-- changelog:last-release:25af895 -->
+<!-- changelog:last-release:282a8a3 -->
 
 # Changelog — The Original I Ching App
 
@@ -7,6 +7,7 @@ Full project change history.
 ## [4.1.8] — 2026-06-22 | versionCode: 58 | Stage: Closed Testing
 
 ### New
+- feat(tooling): add Supabase DB tooling (types generation + migration helpers) | commit: 282a8a3
 - feat(audits,i18n): surface Fidelity Audits in app menu and refine docs for 4.1.8 | commit: 25af895
 - feat(audits): Huang PDF gold, public summary only, internal AU docs. | commit: 2dbfa76
 - feat(mutations): Zhu Xi Adler gold, readBothJudgments, and public /audits page. | commit: 86f6b2b
@@ -22,6 +23,10 @@ Full project change history.
 - feat(data): add hexagram fidelity harness and first audit report | commit: b853d63
 
 ### Fix
+- fix(i18n): complete audits page and FAQ translations across all locales | commit: f0d9a9c
+- fix(data): default verify gate uses PDF book-primary for Wilhelm and Legge | commit: feda460
+- fix(legge): close SBE XVI PDF oracle fidelity at 514/514 without EPUB repair | commit: e8ba543
+- fix(wilhelm): close Pantheon PDF oracle fidelity at 513/513 | commit: 3802fae
 - fix(i18n): align ES FAQ Zhou Yi source wording with /audits | commit: 9d80e95
 - fix(i18n): remove freizl disclosure from public audits | commit: 166ac7d
 - fix(data): T1 normalize Zhou Yi commas to full-width canonical | commit: 2db05c5
@@ -34,6 +39,7 @@ Full project change history.
 - fix(consult): idioma correcto + lineReadingSystem en SSE y resumen | commit: 8d2d09e
 
 ### Docs
+- docs(auditorias): document Legge SBE XVI PDF book-primary process (514/514, no EPUB repair) | commit: c412ad9
 - docs(auditorias): Gate 0 cerrado - 32 charts Zhu Xi equivalen a reglas por conteo | commit: 1fcec43
 - docs(auditorias): Gate 0 ejecutado - Fig.19 imagen, Fases A-E bloqueadas | commit: e730aab
 - docs(auditorias): Zhou Yi ctext gold + public 咸/鹹 disclosure | commit: 94b5217
@@ -53,6 +59,9 @@ Full project change history.
 - docs(changelog): 4.1.7 / versionCode 57 (Closed Testing) | commit: 608555f
 
 ### Maintenance
+- test(engine): align H6 Legge assertion with Oxford SBE PDF line wording | commit: 2feef74
+- merge: Legge SBE XVI PDF book-primary fidelity 514/514 (no EPUB repair) into staging | commit: 2587476
+- merge: Wilhelm Pantheon PDF oracle fidelity 513/513 into staging | commit: 36266b9
 - chore(reports): add line-reading system QA results (Capa 4) | commit: 33eaf1a
 - chore(gitignore): ignore transient QA/audit artifacts | commit: 6b4c925
 
