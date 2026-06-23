@@ -1,0 +1,14 @@
+{
+  "id": "wilhelm-64hex-book-one",
+  "status": "draft",
+  "layer": "oracle-primary",
+  "updatedAt": "2026-06-23",
+  "sourceTxt": "tools/source-pdfs/I Ching or Book of Changes (Bollingen Series), The - Wilhelm, Hellmut-64hex.txt",
+  "parsedJson": "wilhelm-64hex-parsed.json",
+  "hexCount": 64,
+  "fieldCount": 33,
+  "metaSource": "book header (nombre=bookTitle, chinese_roman=bookChinese Wade-Giles); chinese + hex_font from iching_wilhelm_translation.mjs; trigramas from bundle injector",
+  "csvAudit": "reports/wilhelm-64hex-txt-audit-latest.csv",
+  "runtimeIngest": false,
+  "note": "Pending manual G2 audit on primary oracle TXT. G1 vs runtime passed earlier; do not promote to official until audit closes."
+}
