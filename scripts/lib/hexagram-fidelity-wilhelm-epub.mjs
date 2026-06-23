@@ -3,7 +3,6 @@
  * Statement-only: blockquote oracle text; commentary in <p class="calibre21"> is ignored.
  */
 
-import { wilhelmImageOracleOnly } from "./hexagram-fidelity-normalize.mjs";
 import {
   buildWilhelmEpubHexFileMap,
   ensureWilhelmEpubExtracted,
@@ -45,7 +44,10 @@ function blockquoteTextsFromDiv(divHtml) {
   while ((m = re.exec(divHtml)) !== null) {
     const t = stripWilhelmEpubTags(m[1]);
     if (!t) continue;
-    if (/^THE (JUDGMEN|IMAGE|LINES)\b/i.test(t)) continue;
+    // Skip ONLY the exact section-title blockquote ("THE JUDGMENT" / "THE IMAGE" / "THE LINES").
+    // A loose \b prefix match also dropped the oracle verse "The image of <NAME>." (a standalone
+    // blockquote in the EPUB), silently truncating the IMAGE field for ~50 hexagrams.
+    if (/^THE (JUDGMENT|JUDGEMENT|IMAGE|LINES)\.?$/i.test(t)) continue;
     texts.push(t);
   }
   return texts;
@@ -107,7 +109,10 @@ function extractJudgmentOrImage(html, section) {
  */
 export function parseWilhelmEpubHexHtml(html) {
   const judgment = extractJudgmentOrImage(html, "JUDGMENT");
-  const image = wilhelmImageOracleOnly(extractJudgmentOrImage(html, "IMAGE"));
+  // EPUB blockquotes are already oracle-only (commentary lives in <p class="calibre21">,
+  // which we never read). The OCR-era wilhelmImageOracleOnly() heuristic truncated valid
+  // verses that matched commentary-starter patterns (e.g. hex 11 "He furthers and regulates…").
+  const image = extractJudgmentOrImage(html, "IMAGE");
   /** @type {Record<number, string>} */
   const lines = {};
   let yongJiu = "";
