@@ -120,7 +120,7 @@ export default {
       "text": "Difficulty at the Beginning works supreme success,\nFurthering through perseverance.\nNothing should be undertaken.\nIt furthers one to appoint helpers."
     },
     "wilhelm_image": {
-      "text": "Clouds and thunder:\nThus the superior man\nBrings order out of confusion."
+      "text": "Clouds and thunder:\nThe image of Difficulty at the Beginning.\nThus the superior man\nBrings order out of confusion."
     },
     "wilhelm_lines": {
       "1": {
@@ -166,7 +166,7 @@ export default {
       "text": "YOUTHFUL FOLLY has success.\nIt is not I who seek the young fool;\nThe young fool seeks me.\nAt the first oracle I inform him.\nIf he asks two or three times, it is importunity.\nIf he importunes, I give him no information.\nPerseverance furthers."
     },
     "wilhelm_image": {
-      "text": "A spring wells up at the foot of the mountain:\nThus the superior man fosters his character\nBy thoroughness in all that he does."
+      "text": "A spring wells up at the foot of the mountain:\nThe image Of YOUTH.\nThus the superior man fosters his character\nBy thoroughness in all that he does."
     },
     "wilhelm_lines": {
       "1": {
@@ -212,7 +212,7 @@ export default {
       "text": "WAITING. If you are sincere,\nYou have light and success.\nPerseverance brings good fortune.\nIt furthers one to cross the great water."
     },
     "wilhelm_image": {
-      "text": "Clouds rise up to heaven:\nThus the superior man eats and drinks,\nIs joyous and of good cheer."
+      "text": "Clouds rise up to heaven:\nThe image of WAITING.\nThus the superior man eats and drinks,\nIs joyous and of good cheer."
     },
     "wilhelm_lines": {
       "1": {
@@ -258,7 +258,7 @@ export default {
       "text": "CONFLICT. You are sincere\nAnd are being obstructed.\nA cautious halt halfway brings good fortune.\nGoing through to the end brings misfortune.\nIt furthers one to see the great man.\nIt does not further one to cross the great water."
     },
     "wilhelm_image": {
-      "text": "Heaven and water go their opposite ways:\nThus in all his transactions the superior man\nCarefully considers the beginning."
+      "text": "Heaven and water go their opposite ways:\nThe image of CONFLICT.\nThus in all his transactions the superior man\nCarefully considers the beginning."
     },
     "wilhelm_lines": {
       "1": {
@@ -304,7 +304,7 @@ export default {
       "text": "THE ARMY. The army needs perseverance\nAnd a strong man.\nGood fortune without blame."
     },
     "wilhelm_image": {
-      "text": "In the middle of the earth is water:\nThus the superior man increases his masses\nBy generosity toward the people."
+      "text": "In the middle of the earth is water:\nThe image of THE ARMY.\nThus the superior man increases his masses\nBy generosity toward the people."
     },
     "wilhelm_lines": {
       "1": {
@@ -350,7 +350,7 @@ export default {
       "text": "HOLDING TOGETHER brings good fortune.\nInquire of the oracle once again\nWhether you possess sublimity, constancy, and perseverance;\nThen there is no blame.\nThose who are uncertain gradually join.\nWhoever comes too late\nMeets with misfortune."
     },
     "wilhelm_image": {
-      "text": "On the earth is water:\nThus the kings of antiquity\nBestowed the different states as fiefs\nAnd cultivated friendly relations\nWith the feudal lords."
+      "text": "On the earth is water:\nThe image of HOLDING TOGETHER.\nThus the kings of antiquity\nBestowed the different states as fiefs\nAnd cultivated friendly relations\nWith the feudal lords."
     },
     "wilhelm_lines": {
       "1": {
@@ -396,7 +396,7 @@ export default {
       "text": "THE TAMING POWER OF THE SMALL\nHas success.\nDense clouds, no rain from our western region."
     },
     "wilhelm_image": {
-      "text": "The wind drives across heaven:\nThus the superior man\nRefines the outward aspect of his nature."
+      "text": "The wind drives across heaven:\nThe image of THE TAMING POWER OF THE SMALL.\nThus the superior man\nRefines the outward aspect of his nature."
     },
     "wilhelm_lines": {
       "1": {
@@ -442,7 +442,7 @@ export default {
       "text": "TREADING. Treading upon the tail of the tiger.\nIt does not bite the man. Success."
     },
     "wilhelm_image": {
-      "text": "Heaven above, the lake below:\nThus the superior man discriminates between high and low,\nAnd thereby fortifies the thinking of the people."
+      "text": "Heaven above, the lake below:\nThe image of TREADING.\nThus the superior man discriminates between high and low,\nAnd thereby fortifies the thinking of the people."
     },
     "wilhelm_lines": {
       "1": {
@@ -488,7 +488,7 @@ export default {
       "text": "PEACE. The small departs,\nThe great approaches.\nGood fortune. Success."
     },
     "wilhelm_image": {
-      "text": "Heaven and earth unite: the image of PEACE.\nThus the ruler\nDivides and completes the course of heaven and earth;"
+      "text": "Heaven and earth unite: the image of PEACE.\nThus the ruler\nDivides and completes the course of heaven and earth;\nHe furthers and regulates the gifts of heaven and earth,\nAnd so aids the people."
     },
     "wilhelm_lines": {
       "1": {
@@ -534,7 +534,7 @@ export default {
       "text": "STANDSTILL. Evil people do not further\nThe perseverance of the superior man.\nThe great departs; the small approaches."
     },
     "wilhelm_image": {
-      "text": "Heaven and earth do not unite:\nThus the superior man falls back upon his inner worth\nIn order to escape the difficulties.\nHe does not permit himself to be honored with revenue."
+      "text": "Heaven and earth do not unite:\nThe image of STANDSTILL.\nThus the superior man falls back upon his inner worth\nIn order to escape the difficulties.\nHe does not permit himself to be honored with revenue."
     },
     "wilhelm_lines": {
       "1": {
@@ -580,7 +580,7 @@ export default {
       "text": "FELLOWSHIP WITH MEN in the open.\nSuccess.\nIt furthers one to cross the great water.\nThe perseverance of the superior man furthers."
     },
     "wilhelm_image": {
-      "text": "Heaven together with fire:\nThus the superior man organizes the clans\nAnd makes distinctions between things."
+      "text": "Heaven together with fire:\nThe image of FELLOWSHIP WITH MEN.\nThus the superior man organizes the clans\nAnd makes distinctions between things."
     },
     "wilhelm_lines": {
       "1": {
@@ -626,7 +626,7 @@ export default {
       "text": "POSSESSION IN GREAT MEASURE.\nSupreme success."
     },
     "wilhelm_image": {
-      "text": "Fire in heaven above:\nMEASURE.\nThus the superior man curbs evil and furthers good,\nAnd thereby obeys the benevolent will of heaven."
+      "text": "Fire in heaven above:\nThe image of POSSESSION IN GREAT\nMEASURE.\nThus the superior man curbs evil and furthers good,\nAnd thereby obeys the benevolent will of heaven."
     },
     "wilhelm_lines": {
       "1": {
@@ -672,7 +672,7 @@ export default {
       "text": "MODESTY creates success.\nThe superior man carries things through."
     },
     "wilhelm_image": {
-      "text": "Within the earth, a mountain:\nThus the superior man reduces that which is too much,\nAnd augments that which is too little.\nHe weighs things and makes them equal."
+      "text": "Within the earth, a mountain:\nThe image of MODESTY.\nThus the superior man reduces that which is too much,\nAnd augments that which is too little.\nHe weighs things and makes them equal."
     },
     "wilhelm_lines": {
       "1": {
@@ -718,7 +718,7 @@ export default {
       "text": "ENTHUSIASM. It furthers one to install helpers\nAnd to set armies marching."
     },
     "wilhelm_image": {
-      "text": "Thunder comes resounding out of the earth:\nThus the ancient kings made music\nIn order to honor merit,\nAnd offered it with splendor\nTo the Supreme Deity,\nInviting their ancestors to be present."
+      "text": "Thunder comes resounding out of the earth:\nThe image of ENTHUSIASM.\nThus the ancient kings made music\nIn order to honor merit,\nAnd offered it with splendor\nTo the Supreme Deity,\nInviting their ancestors to be present."
     },
     "wilhelm_lines": {
       "1": {
@@ -764,7 +764,7 @@ export default {
       "text": "FOLLOWING has supreme success.\nPerseverance furthers. No blame."
     },
     "wilhelm_image": {
-      "text": "Thunder in the middle of the lake:\nThus the superior man at nightfall\nGoes indoors for rest and recuperation."
+      "text": "Thunder in the middle of the lake:\nThe image of FOLLOWING.\nThus the superior man at nightfall\nGoes indoors for rest and recuperation."
     },
     "wilhelm_lines": {
       "1": {
@@ -810,7 +810,7 @@ export default {
       "text": "WORK ON WHAT HAS BEEN SPOILED\nHas supreme success.\nIt furthers one to cross the great water.\nBefore the starting point, three days.\nAfter the starting point, three days."
     },
     "wilhelm_image": {
-      "text": "The wind blows low on the mountain:\nThus the superior man stirs up the people\nAnd strengthens their spirit."
+      "text": "The wind blows low on the mountain:\nThe image of DECAY.\nThus the superior man stirs up the people\nAnd strengthens their spirit."
     },
     "wilhelm_lines": {
       "1": {
@@ -856,7 +856,7 @@ export default {
       "text": "APPPROACH has supreme success.\nPerseverance furthers.\nWhen the eighth month comes,\nThere will be misfortune."
     },
     "wilhelm_image": {
-      "text": "The earth above the lake:\nThus the superior man is inexhaustible\nIn his will to teach,\nAnd without limits\nIn his tolerance and protection of the people."
+      "text": "The earth above the lake:\nThe image of APPROACH.\nThus the superior man is inexhaustible\nIn his will to teach,\nAnd without limits\nIn his tolerance and protection of the people."
     },
     "wilhelm_lines": {
       "1": {
@@ -902,7 +902,7 @@ export default {
       "text": "CONTEMPLATION. The ablution has been made,\nBut not yet the offering.\nFull of trust they look up to him."
     },
     "wilhelm_image": {
-      "text": "The wind blows over the earth:\nThus the kings of old visited the regions of the world,\nContemplated the people,\nAnd gave them instruction."
+      "text": "The wind blows over the earth:\nThe image of CONTEMPLATION.\nThus the kings of old visited the regions of the world,\nContemplated the people,\nAnd gave them instruction."
     },
     "wilhelm_lines": {
       "1": {
@@ -948,7 +948,7 @@ export default {
       "text": "BITING THROUGH has success.\nIt is favorable to let justice be administered."
     },
     "wilhelm_image": {
-      "text": "Thunder and lightning:\nThus the kings of former times made firm the laws\nThrough clearly defined penalties."
+      "text": "Thunder and lightning:\nThe image of BITING THROUGH.\nThus the kings of former times made firm the laws\nThrough clearly defined penalties."
     },
     "wilhelm_lines": {
       "1": {
@@ -994,7 +994,7 @@ export default {
       "text": "GRACE has success.\nIn small matters\nIt is favorable to undertake something."
     },
     "wilhelm_image": {
-      "text": "Fire at the foot of the mountain:\nThus does the superior man proceed\nWhen clearing up current affairs.\nBut he dare not decide controversial issues in this way."
+      "text": "Fire at the foot of the mountain:\nThe image of GRACE.\nThus does the superior man proceed\nWhen clearing up current affairs.\nBut he dare not decide controversial issues in this way."
     },
     "wilhelm_lines": {
       "1": {
@@ -1040,7 +1040,7 @@ export default {
       "text": "SPLITTING APART. It does not further one\nTo go anywhere."
     },
     "wilhelm_image": {
-      "text": "The mountain rests on the earth:\nThus those above can ensure their position\nOnly by giving generously to those below."
+      "text": "The mountain rests on the earth:\nThe image of SPLITTING APART.\nThus those above can ensure their position\nOnly by giving generously to those below."
     },
     "wilhelm_lines": {
       "1": {
@@ -1086,7 +1086,7 @@ export default {
       "text": "RETURN. Success.\nGoing out and coming in without error.\nFriends come without blame.\nTo and fro goes the way.\nOn the seventh day comes return.\nIt furthers one to have somewhere to go."
     },
     "wilhelm_image": {
-      "text": "Thunder within the earth:\nThus the kings of antiquity closed the passes\nAt the time of solstice.\nMerchants and strangers did not go about,\nAnd the ruler\nDid not travel through the provinces."
+      "text": "Thunder within the earth:\nThe image of THE TURNING POINT.\nThus the kings of antiquity closed the passes\nAt the time of solstice.\nMerchants and strangers did not go about,\nAnd the ruler\nDid not travel through the provinces."
     },
     "wilhelm_lines": {
       "1": {
@@ -1178,7 +1178,7 @@ export default {
       "text": "THE TAMING POWER OF THE GREAT.\nPerseverance furthers.\nNot eating at home brings good fortune.\nIt furthers one to cross the great water."
     },
     "wilhelm_image": {
-      "text": "Heaven within the mountain:\nTHE GREAT.\nThus the superior man acquaints himself with many sayings of antiquity\nAnd many deeds of the past,\nIn order to strengthen his character thereby."
+      "text": "Heaven within the mountain:\nThe image of THE TAMING POWER OF\nTHE GREAT.\nThus the superior man acquaints himself with many sayings of antiquity\nAnd many deeds of the past,\nIn order to strengthen his character thereby."
     },
     "wilhelm_lines": {
       "1": {
@@ -1224,7 +1224,7 @@ export default {
       "text": "THE CORNERS OF THE MOUTH.\nPerseverance brings good fortune.\nPay heed to the providing of nourishment\nAnd to what a man seeks\nTo fill his own mouth with."
     },
     "wilhelm_image": {
-      "text": "At the foot of the mountain, thunder:\nNOURISHMENT.\nThus the superior man is careful of his words\nAnd temperate in eating and drinking."
+      "text": "At the foot of the mountain, thunder:\nThe image of PROVIDING\nNOURISHMENT.\nThus the superior man is careful of his words\nAnd temperate in eating and drinking."
     },
     "wilhelm_lines": {
       "1": {
@@ -1270,7 +1270,7 @@ export default {
       "text": "PREPONDERANCE OF THE GREAT.\nThe ridgepole sags to the breaking point.\nIt furthers one to have somewhere to go.\nSuccess."
     },
     "wilhelm_image": {
-      "text": "The lake rises above the trees:\nTHE GREAT.\nThus the superior man, when he stands alone,\nIs unconcerned,\nAnd if he has to renounce the world,\nHe is undaunted."
+      "text": "The lake rises above the trees:\nThe image of PREPONDERANCE OF\nTHE GREAT.\nThus the superior man, when he stands alone,\nIs unconcerned,\nAnd if he has to renounce the world,\nHe is undaunted."
     },
     "wilhelm_lines": {
       "1": {
@@ -1316,7 +1316,7 @@ export default {
       "text": "The Abysmal repeated.\nIf you are sincere, you have success in your heart,\nAnd whatever you do succeeds."
     },
     "wilhelm_image": {
-      "text": "Water flows on uninterruptedly and reaches its goal:\nThus the superior man walks in lasting virtue\nAnd carries on the business of teaching."
+      "text": "Water flows on uninterruptedly and reaches its goal:\nThe image of the Abysmal repeated.\nThus the superior man walks in lasting virtue\nAnd carries on the business of teaching."
     },
     "wilhelm_lines": {
       "1": {
@@ -1362,7 +1362,7 @@ export default {
       "text": "THE CLINGING. Perseverance furthers.\nIt brings success.\nCare of the cow brings good fortune."
     },
     "wilhelm_image": {
-      "text": "That which is bright rises twice:\nThus the great man, by perpetuating this brightness,\nIllumines the four quarters of the world."
+      "text": "That which is bright rises twice:\nThe image of FIRE.\nThus the great man, by perpetuating this brightness,\nIllumines the four quarters of the world."
     },
     "wilhelm_lines": {
       "1": {
@@ -1408,7 +1408,7 @@ export default {
       "text": "Influence. Success.\nPerseverance furthers.\nTo take a maiden to wife brings good fortune."
     },
     "wilhelm_image": {
-      "text": "A lake on the mountain:\nThus the superior man encourages people to approach him\nBy his readiness to receive them."
+      "text": "A lake on the mountain:\nThe image of influence.\nThus the superior man encourages people to approach him\nBy his readiness to receive them."
     },
     "wilhelm_lines": {
       "1": {
@@ -1546,7 +1546,7 @@ export default {
       "text": "THE POWER OF THE GREAT. Perseverance furthers."
     },
     "wilhelm_image": {
-      "text": "Thunder in heaven above:\nGREAT.\nThus the superior man does not tread upon paths\nThat do not accord with established order."
+      "text": "Thunder in heaven above:\nThe image of THE POWER OF THE\nGREAT.\nThus the superior man does not tread upon paths\nThat do not accord with established order."
     },
     "wilhelm_lines": {
       "1": {
@@ -1592,7 +1592,7 @@ export default {
       "text": "PROGRESS. The powerful prince\nIs honored with horses in large numbers.\nIn a single day he is granted audience three times."
     },
     "wilhelm_image": {
-      "text": "The sun rises over the earth:\nThus the superior man himself\nBrightens his bright virtue."
+      "text": "The sun rises over the earth:\nThe image of PROGRESS.\nThus the superior man himself\nBrightens his bright virtue."
     },
     "wilhelm_lines": {
       "1": {
@@ -1638,7 +1638,7 @@ export default {
       "text": "DARKENING OF THE LIGHT. In adversity\nIt furthers one to be persevering."
     },
     "wilhelm_image": {
-      "text": "The light has sunk into the earth:\nThus does the superior man live with the great mass:\nHe veils his light, yet still shines."
+      "text": "The light has sunk into the earth:\nThe image of DARKENING OF THE LIGHT.\nThus does the superior man live with the great mass:\nHe veils his light, yet still shines."
     },
     "wilhelm_lines": {
       "1": {
@@ -1684,7 +1684,7 @@ export default {
       "text": "THE FAMILY. The perseverance of the woman furthers."
     },
     "wilhelm_image": {
-      "text": "Thus the superior man has substance in his words\nAnd duration in his way of life."
+      "text": "The image of THE FAMILY.\nThus the superior man has substance in his words\nAnd duration in his way of life."
     },
     "wilhelm_lines": {
       "1": {
@@ -1730,7 +1730,7 @@ export default {
       "text": "OPPOSITION. In small matters, good fortune."
     },
     "wilhelm_image": {
-      "text": "Above, fire; below, the lake:\nThus amid all fellowship\nThe superior man retains his individuality."
+      "text": "Above, fire; below, the lake:\nThe image of OPPOSITION.\nThus amid all fellowship\nThe superior man retains his individuality."
     },
     "wilhelm_lines": {
       "1": {
@@ -1776,7 +1776,7 @@ export default {
       "text": "OBSTRUCTION. The southwest furthers.\nThe northeast does not further.\nIt furthers one to see the great man.\nPerseverance brings good fortune."
     },
     "wilhelm_image": {
-      "text": "Water on the mountain:\nThus the superior man turns his attention to himself\nAnd molds his character."
+      "text": "Water on the mountain:\nThe image of OBSTRUCTION.\nThus the superior man turns his attention to himself\nAnd molds his character."
     },
     "wilhelm_lines": {
       "1": {
@@ -1822,7 +1822,7 @@ export default {
       "text": "DELIVERANCE. The southwest furthers.\nIf there is no longer anything where one has to go,\nReturn brings good fortune.\nIf there is still something where one has to go,\nHastening brings good fortune."
     },
     "wilhelm_image": {
-      "text": "Thunder and rain set in:\nThus the superior man pardons mistakes\nAnd forgives misdeeds."
+      "text": "Thunder and rain set in:\nThe image of DELIVERANCE.\nThus the superior man pardons mistakes\nAnd forgives misdeeds."
     },
     "wilhelm_lines": {
       "1": {
@@ -1868,7 +1868,7 @@ export default {
       "text": "DECREASE combined with sincerity\nBrings about supreme good fortune\nWithout blame.\nOne may be persevering in this.\nIt furthers one to undertake something.\nHow is this to be carried out?\nOne may use two small bowls for the sacrifice."
     },
     "wilhelm_image": {
-      "text": "At the foot of the mountain, the lake:\nThus the superior man controls his anger\nAnd restrains his instincts."
+      "text": "At the foot of the mountain, the lake:\nThe image of DECREASE.\nThus the superior man controls his anger\nAnd restrains his instincts."
     },
     "wilhelm_lines": {
       "1": {
@@ -1960,7 +1960,7 @@ export default {
       "text": "BREAK-THROUGH. One must resolutely make the matter known\nAt the court of the king.\nIt must be announced truthfully. Danger.\nIt is necessary to notify one’s own city.\nIt does not further to resort to arms.\nIt furthers one to undertake something."
     },
     "wilhelm_image": {
-      "text": "The lake has risen up to heaven:\nThus the superior man\nDispenses riches downward\nAnd refrains from resting on his virtue."
+      "text": "The lake has risen up to heaven:\nThe image of BREAK-THROUGH.\nThus the superior man\nDispenses riches downward\nAnd refrains from resting on his virtue."
     },
     "wilhelm_lines": {
       "1": {
@@ -2006,7 +2006,7 @@ export default {
       "text": "COMING TO MEET. The maiden is powerful.\nOne should not marry such a maiden."
     },
     "wilhelm_image": {
-      "text": "Under heaven, wind:\nThus does the prince act when disseminating his commands\nAnd proclaiming them to the four quarters of heaven."
+      "text": "Under heaven, wind:\nThe image of COMING TO MEET.\nThus does the prince act when disseminating his commands\nAnd proclaiming them to the four quarters of heaven."
     },
     "wilhelm_lines": {
       "1": {
@@ -2052,7 +2052,7 @@ export default {
       "text": "GATHERING TOGETHER. Success.\nThe king approaches his temple.\nIt furthers one to see the great man.\nThis brings success. Perseverance furthers.\nTo bring great offerings creates good fortune.\nIt furthers one to undertake something."
     },
     "wilhelm_image": {
-      "text": "Over the earth, the lake:\nThus the superior man renews his weapons\nIn order to meet the unforeseen."
+      "text": "Over the earth, the lake:\nThe image of GATHERING TOGETHER.\nThus the superior man renews his weapons\nIn order to meet the unforeseen."
     },
     "wilhelm_lines": {
       "1": {
@@ -2098,7 +2098,7 @@ export default {
       "text": "PUSHING UPWARD has supreme success.\nOne must see the great man.\nFear not.\nDeparture toward the south\nBrings good fortune."
     },
     "wilhelm_image": {
-      "text": "Within the earth, wood grows:\nThus the superior man of devoted character\nHeaps up small things\nIn order to achieve something high and great."
+      "text": "Within the earth, wood grows:\nThe image of PUSHING UPWARD.\nThus the superior man of devoted character\nHeaps up small things\nIn order to achieve something high and great."
     },
     "wilhelm_lines": {
       "1": {
@@ -2144,7 +2144,7 @@ export default {
       "text": "OPPPRESSION. Success. Perseverance.\nThe great man brings about good fortune.\nNo blame.\nWhen one has something to say,\nIt is not believed."
     },
     "wilhelm_image": {
-      "text": "There is no water in the lake:\nThus the superior man stakes his life\nOn following his will."
+      "text": "There is no water in the lake:\nThe image of EXHAUSTION.\nThus the superior man stakes his life\nOn following his will."
     },
     "wilhelm_lines": {
       "1": {
@@ -2282,7 +2282,7 @@ export default {
       "text": "THE CALDRON. Supreme good fortune.\nSuccess."
     },
     "wilhelm_image": {
-      "text": "Fire over wood:\nThus the superior man consolidates his fate\nBy making his position correct."
+      "text": "Fire over wood:\nThe image of THE CALDRON.\nThus the superior man consolidates his fate\nBy making his position correct."
     },
     "wilhelm_lines": {
       "1": {
@@ -2374,7 +2374,7 @@ export default {
       "text": "KEEPING STILL. Keeping his back still\nSo that he no longer feels his body.\nHe goes into his courtyard\nAnd does not see his people.\nNo blame."
     },
     "wilhelm_image": {
-      "text": "Mountains standing close together:\nThus the superior man\nDoes not permit his thoughts\nTo go beyond his situation."
+      "text": "Mountains standing close together:\nThe image of KEEPING STILL.\nThus the superior man\nDoes not permit his thoughts\nTo go beyond his situation."
     },
     "wilhelm_lines": {
       "1": {
@@ -2420,7 +2420,7 @@ export default {
       "text": "DEVELOPMENT. The maiden\nIs given in marriage.\nGood fortune.\nPerseverance furthers."
     },
     "wilhelm_image": {
-      "text": "On the mountain, a tree:\nThus the superior man abides in dignity and virtue,\nIn order to improve the mores."
+      "text": "On the mountain, a tree:\nThe image of DEVELOPMENT.\nThus the superior man abides in dignity and virtue,\nIn order to improve the mores."
     },
     "wilhelm_lines": {
       "1": {
@@ -2466,7 +2466,7 @@ export default {
       "text": "THE MARRYING MAIDEN.\nUndertakings bring misfortune.\nNothing that would further."
     },
     "wilhelm_image": {
-      "text": "Thunder over the lake:\nThus the superior man\nUnderstands the transitory\nIn the light of the eternity of the end."
+      "text": "Thunder over the lake:\nThe image of THE MARRYING MAIDEN.\nThus the superior man\nUnderstands the transitory\nIn the light of the eternity of the end."
     },
     "wilhelm_lines": {
       "1": {
@@ -2512,7 +2512,7 @@ export default {
       "text": "ABUNDANCE has success.\nThe king attains abundance.\nBe not sad.\nBe like the sun at midday."
     },
     "wilhelm_image": {
-      "text": "Both thunder and lightning come:\nThus the superior man decides lawsuits\nAnd carries out punishments."
+      "text": "Both thunder and lightning come:\nThe image of ABUNDANCE.\nThus the superior man decides lawsuits\nAnd carries out punishments."
     },
     "wilhelm_lines": {
       "1": {
@@ -2558,7 +2558,7 @@ export default {
       "text": "THE WANDERER. Success through smallness.\nPerseverance brings good fortune\nTo the wanderer."
     },
     "wilhelm_image": {
-      "text": "Fire on the mountain:\nThus the superior man\nIs clear-minded and cautious\nIn imposing penalties,\nAnd protracts no lawsuits."
+      "text": "Fire on the mountain:\nThe image of THE WANDERER.\nThus the superior man\nIs clear-minded and cautious\nIn imposing penalties,\nAnd protracts no lawsuits."
     },
     "wilhelm_lines": {
       "1": {
@@ -2604,7 +2604,7 @@ export default {
       "text": "THE GENTLE. Success through what is small.\nIt furthers one to have somewhere to go.\nIt furthers one to see the great man."
     },
     "wilhelm_image": {
-      "text": "Winds following one upon the other:\nThus the superior man\nSpreads his commands abroad\nAnd carries out his undertakings."
+      "text": "Winds following one upon the other:\nThe image of THE GENTLY PENETRATING.\nThus the superior man\nSpreads his commands abroad\nAnd carries out his undertakings."
     },
     "wilhelm_lines": {
       "1": {
@@ -2650,7 +2650,7 @@ export default {
       "text": "THE JOYOUS. Success.\nPerseverance is favorable."
     },
     "wilhelm_image": {
-      "text": "Lakes resting one on the other:\nThus the superior man joins with his friends\nFor discussion and practice."
+      "text": "Lakes resting one on the other:\nThe image of THE JOYOUS.\nThus the superior man joins with his friends\nFor discussion and practice."
     },
     "wilhelm_lines": {
       "1": {
@@ -2696,7 +2696,7 @@ export default {
       "text": "DISPERSION. Success.\nThe king approaches his temple.\nIt furthers one to cross the great water.\nPerseverance furthers."
     },
     "wilhelm_image": {
-      "text": "The wind drives over the water:\nThus the kings of old sacrificed to the Lord\nAnd built temples."
+      "text": "The wind drives over the water:\nThe image of DISPERSION.\nThus the kings of old sacrificed to the Lord\nAnd built temples."
     },
     "wilhelm_lines": {
       "1": {
@@ -2834,7 +2834,7 @@ export default {
       "text": "PREPONDERANCE OF THE SMALL. Success.\nPerseverance furthers.\nSmall things may be done; great things should not be done.\nThe flying bird brings the message:\nIt is not well to strive upward,\nIt is well to remain below.\nGreat good fortune."
     },
     "wilhelm_image": {
-      "text": "Thunder on the mountain:\nSMALL.\nThus in his conduct the superior man gives preponderance to reverence.\nIn bereavement he gives preponderance to grief.\nIn his expenditures he gives preponderance to thrift."
+      "text": "Thunder on the mountain:\nThe image of PREPONDERANCE OF THE\nSMALL.\nThus in his conduct the superior man gives preponderance to reverence.\nIn bereavement he gives preponderance to grief.\nIn his expenditures he gives preponderance to thrift."
     },
     "wilhelm_lines": {
       "1": {
@@ -2926,7 +2926,7 @@ export default {
       "text": "BEFORE COMPLETION. Success.\nBut if the little fox, after nearly completing the crossing,\nGets his tail in the water,\nThere is nothing that would further."
     },
     "wilhelm_image": {
-      "text": "Fire over water:\nThus the superior man is careful\nIn the differentiation of things,\nSo that each finds its place."
+      "text": "Fire over water:\nThe image of the condition before transition.\nThus the superior man is careful\nIn the differentiation of things,\nSo that each finds its place."
     },
     "wilhelm_lines": {
       "1": {

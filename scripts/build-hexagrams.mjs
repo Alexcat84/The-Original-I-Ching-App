@@ -169,7 +169,7 @@ const bundles = [
       sourceUrl:
         "https://press.princeton.edu/books/paperback/9780691097503/the-i-ching-or-book-of-changes",
       licenseNote:
-        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image (Great Image / 大象), line, and yong texts verified 1:1 against the Princeton Bollingen digital EPUB (2011) on 2026-06-23 (report hexagram-fidelity-2026-06-23T02-10-31-945Z; gate 514/514). EPUB-primary gold: structured digital text replaces the OCR PDF and the Parma mirror.`,
+        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image (Great Image / 大象), line, and yong texts verified 1:1 against the Princeton Bollingen digital EPUB (2011) on 2026-06-23 (report hexagram-fidelity-2026-06-23T02-36-34-538Z; gate 514/514). Great Image extraction corrected to keep every oracle verse (prior OCR-era heuristic truncated standalone "The image of …" and "He furthers …" lines). EPUB-primary gold: structured digital text replaces the OCR PDF and the Parma mirror.`,
       generatedAt,
       build: buildWilhelmRecord,
     },

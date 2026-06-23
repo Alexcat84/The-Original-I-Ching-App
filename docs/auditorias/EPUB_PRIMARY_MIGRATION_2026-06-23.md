@@ -40,6 +40,27 @@ Verificación inyector == EPUB (post-normalización): **0/512 discrepancias** en
 
 ---
 
+## 2.bis Segundo hallazgo (captura del libro del propietario) — Gran Símbolo truncado en Wilhelm
+
+El propietario aportó capturas del libro Wilhelm/Baynes del hex 41. El contraste 1:1 reveló que el campo `image` (大象) **perdía versos** que el gate "bundle == EPUB" no podía detectar (circular: ambos lados pasaban por el mismo parser).
+
+**Dos causas en cadena:**
+
+1. **Filtro de blockquote demasiado amplio** (`blockquoteTextsFromDiv`). `/^THE (JUDGMEN|IMAGE|LINES)\b/i` descartaba no solo el encabezado de sección, sino también el verso de oráculo **"The image of <NOMBRE>."** (un `<blockquote>` propio en el EPUB). → ~51 hexagramas perdían esa línea. Fix: match del **título exacto** `/^THE (JUDGMENT|JUDGEMENT|IMAGE|LINES)\.?$/i`.
+2. **Heurística OCR aplicada a texto EPUB limpio** (`wilhelmImageOracleOnly`). Su lista `WILHELM_ORACLE_COMMENTARY_START` (diseñada para cortar comentario en el pipeline PDF) incluye `He furthers and regulates`, truncando p. ej. el 大象 de hex 11 (`"…He furthers and regulates the gifts of heaven and earth, / And so aids the people."`). En el EPUB los blockquotes ya son solo oráculo (el comentario vive en `<p class="calibre21">`, que no se lee), así que la heurística sobra. Fix: el parser EPUB **no** llama a `wilhelmImageOracleOnly`; usa los blockquotes tal cual.
+
+**Verificación contra las capturas (hex 41):** juicio (7 líneas), imagen (4 líneas, incl. "The image of DECREASE."), y las 6 líneas coinciden 1:1.
+
+**Tras el fix:**
+- Solo hex 1, 2 y 25 quedan sin línea "image of" — formatos especiales genuinos de Wilhelm/Baynes (verificado).
+- QA anti-malformado Wilhelm: **0 banderas** (sin truncación, sin minúscula inicial, sin verso final sin puntuación, sin fuga de comentario >80 ch).
+- Gate `epub-wilhelm`: **514/514**. `iching-engine` 113/113, `iching-data` 14/14.
+- Reporte: `hexagram-fidelity-2026-06-23T02-36-34-538Z`.
+
+> Lección: el gate "bundle == parse" es **circular** y no detecta defectos de extracción. La validación definitiva fue el contraste con el libro físico (juez propietario). Refuerza el pendiente §5 (gate semántico).
+
+---
+
 ## 3. Duda pendiente de juicio del propietario (captura del libro)
 
 **Legge hex 41, línea 2.** El EPUB termina sin puntuación terminal:
