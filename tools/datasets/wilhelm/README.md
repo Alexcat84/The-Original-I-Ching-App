@@ -5,7 +5,7 @@ Canonical parsed datasets from the user-edited EPUB exports. **Not ingested to r
 | Directory | Status | Source TXT (`tools/source-pdfs/`) |
 |-----------|--------|-----------------------------------|
 | `comments/` | **official** | `The I Ching or Book of Changes - Wilhelm-comments 64 hex.txt` |
-| `book-one/` | **gates G0/G1/G2 cerrados** — pending product decision for runtime ingest | `I Ching or Book of Changes (Bollingen Series), The - Wilhelm, Hellmut-64hex.txt` |
+| `book-one/` | **gates + AU cerrados** — pending product decision for runtime ingest | `I Ching or Book of Changes (Bollingen Series), The - Wilhelm, Hellmut-64hex.txt` |
 | `appendix/` | **draft** — separate file, future use | `The I Ching or Book of Changes - Wilhelm-Appendix.txt` |
 
 ## Regenerate

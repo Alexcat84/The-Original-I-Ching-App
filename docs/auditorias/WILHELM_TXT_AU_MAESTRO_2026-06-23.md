@@ -2,7 +2,7 @@
 
 - **Fecha:** 2026-06-23
 - **Rama:** `feature/wilhelm-txt-au-maestro-2026-06-23`
-- **Estado:** **Gates 100/100 PASS** · datasets parseados listos · **sin ingest a runtime** (`packages/iching-data`)
+- **Estado:** **Gates 100/100 PASS** · **AU profunda APROBADA** · datasets listos · **sin ingest a runtime**
 - **Relacionado:** `EPUB_PRIMARY_MIGRATION_2026-06-23.md` (bundle runtime EPUB-primary, capa distinta), `ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md`
 
 ---
@@ -23,7 +23,7 @@ Construir el **maestro book-primary** de Wilhelm a partir de los TXT Princeton e
 
 | Dataset | Directorio | TXT fuente | Estado manifest |
 |---------|------------|------------|-----------------|
-| **Book-one** (64 hex oráculo) | `book-one/` | `…Wilhelm, Hellmut-64hex.txt` | draft → **gates cerrados** |
+| **Book-one** (64 hex oráculo) | `book-one/` | `…Wilhelm, Hellmut-64hex.txt` | **gates + AU cerrados** |
 | **Comments** (Ten Wings) | `comments/` | `…Wilhelm-comments 64 hex.txt` | **official** (G0+G2 PASS) |
 | **Appendix** | `appendix/` | `…Wilhelm-Appendix.txt` | draft (fuera de alcance AU actual) |
 
@@ -133,14 +133,52 @@ Librerías clave: `scripts/lib/wilhelm-64hex-txt.mjs`, `wilhelm-64hex-comments-t
 
 ## 9. Pendiente (fuera de 100/100 actual)
 
-- [ ] **Ingest runtime** desde maestro TXT (decisión producto; hoy bundle EPUB-primary).
+- [ ] **Ingest al core** (`packages/iching-data`) — **no iniciado**; requiere alinear primero maestros **Legge** y **Zhou Yi** (Wilhelm TXT maestro cerrado en AU, pero el switch de runtime será coordinado para los tres traductores).
 - [ ] **Appendix** parse + AU (`tools/datasets/wilhelm/appendix/`).
 - [ ] Ampliar gold manual TSV a más hex (muestreo 4–64) si se desea doble verificación humana además del G2 determinista.
 - [ ] Publicar resumen en `/audits` cuando se promueva el maestro TXT a fuente canónica de producto.
 
 ---
 
-## 10. Cómo reproducir PASS
+## 10. AU profunda — ronda 2 (2026-06-23)
+
+**Veredicto humano:** book-one y comments **APROBADO CON EXCELENCIA**.  
+**Veredicto técnico:** todos los hallazgos cuantitativos reproducibles → **PASS** (`node tools/verify-wilhelm-audit-claims.mjs`).
+
+### 10.1 Book-one (64 hex CSV)
+
+| Hallazgo AU | Verificación automática | Adjudicación |
+|-------------|-------------------------|--------------|
+| 64 hex × 34 filas CSV (33 campos + `hex_fin`) = 2.176 | PASS | Correcto |
+| 250 celdas vacías | 186 en JSON (yong×62 + campos yong vacíos) + 64 `hex_fin` = **250** | Correcto por diseño |
+| Balance Yin-Yang: 192 Nine + 192 Six en etiquetas de línea | **192 / 192** | Correcto — simetría matemática I Ching |
+| `nombre`, `chinese`, `hex_font` únicos ×64 | **64 / 64 / 64** | Correcto |
+| `chinese_roman` con homónimos Wade-Giles | 7 pares documentados | Correcto — no usar roman como PK |
+| Trigramas FIRE/FLAME, CHêN/CHEN, WIND vs WIND WOOD | Variantes Parma | **No normalizar** (book-primary) |
+| Densidad texto (judgment_comentario ~1k chars, líneas ~450) | Cualitativo AU | Coherente con Princeton completo |
+| Recomendación: estandarizar trigramas para BD | — | **Rechazada** para maestro; capa índice futura opcional |
+
+### 10.2 Comments (64 hex CSV)
+
+| Hallazgo AU | Verificación | Adjudicación |
+|-------------|--------------|--------------|
+| 64 hex, L1–L6 completos (etiqueta + oráculo + comentario) | G0 + G2 1920/1920 | PASS |
+| Yong solo hex 1–2 | 2 hex con `yong_a_oraculo` | Correcto |
+| Wen Yen solo hex 1–2 | 2 hex con `wen_yen` | Correcto |
+| `sequence` vacío hex 1–2 | `[1, 2]` | Correcto (origen del libro) |
+| Trigramas FIRE/FLAME etc. | Igual book-one | No normalizar |
+| Análisis filosófico (Junzi, Good fortune, Danger…) | Cualitativo / conteo AU | Informativo; no gate bloqueante |
+| Hex 1 máxima densidad, hex 30 más conciso | Cualitativo AU | Plausible; no indica laguna |
+
+### 10.3 Acción post-AU
+
+- **Book-one** pasa de draft a **gates + AU cerrados** en manifest/README.
+- **Comments** permanece **official** (Ten Wings).
+- **Siguiente decisión producto:** ingest al core cuando Legge + Zhou Yi estén en paridad de maestro; hasta entonces bundle EPUB-primary sigue en runtime (`EPUB_PRIMARY_MIGRATION_2026-06-23.md`).
+
+---
+
+## 11. Cómo reproducir PASS
 
 ```bash
 npm run verify:wilhelm-all-gates

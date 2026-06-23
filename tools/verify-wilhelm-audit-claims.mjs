@@ -68,7 +68,39 @@ function auditBook() {
   console.log("Empty mandatory fields:", emptyMandatory.length);
   console.log("yong_oraculo filled:", [1, 2].filter((n) => book.hexagrams[String(n)].fields.yong_oraculo?.trim()).length, "/2");
   console.log("yong_oraculo in hex 3-64:", [3, 4, 5].every((n) => !book.hexagrams[String(n)].fields.yong_oraculo?.trim()));
+
+  let nineLines = 0;
+  let sixLines = 0;
+  /** @type {Set<string>} */
+  const chineseSet = new Set();
+  /** @type {Set<string>} */
+  const fontSet = new Set();
+  /** @type {Set<string>} */
+  const nombreSet = new Set();
+  let emptyCells = 0;
+  for (let n = 1; n <= 64; n++) {
+    const f = book.hexagrams[String(n)].fields;
+    nombreSet.add(f.nombre);
+    chineseSet.add(f.chinese);
+    fontSet.add(f.hex_font);
+    for (const v of Object.values(f)) {
+      if (!String(v ?? "").trim()) emptyCells++;
+    }
+    for (let p = 1; p <= 6; p++) {
+      const label = f[`L${p}_etiqueta`] ?? "";
+      if (/Nine/.test(label)) nineLines++;
+      if (/Six/.test(label)) sixLines++;
+    }
+  }
+  const csvEmptyCells = emptyCells + 64; // hex_fin delimiter rows in CSV export
+  console.log("Line labels Nine/Six:", nineLines, sixLines, nineLines === 192 && sixLines === 192 ? "OK" : "FAIL");
+  console.log("Unique nombre/chinese/hex_font:", nombreSet.size, chineseSet.size, fontSet.size);
+  console.log("Empty cells JSON:", emptyCells, "| CSV (+hex_fin):", csvEmptyCells);
   console.log("Trigram stats:", countTrigramSpellings(book));
+
+  if (nineLines !== 192 || sixLines !== 192) process.exitCode = 1;
+  if (nombreSet.size !== 64 || chineseSet.size !== 64 || fontSet.size !== 64) process.exitCode = 1;
+  if (csvEmptyCells !== 250) process.exitCode = 1;
 }
 
 function auditComments() {
