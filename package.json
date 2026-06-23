@@ -26,6 +26,7 @@
     "extract:gold:wilhelm-epub": "node tools/extract-wilhelm-epub.mjs",
     "extract:gold:legge-sbe-pdf": "node tools/extract-legge-sbe-pdf.mjs",
     "sync:legge-oracle-from-epub": "node tools/sync-legge-oracle-from-epub.mjs",
+    "sync:wilhelm-oracle-from-epub": "node tools/sync-wilhelm-oracle-from-epub.mjs",
     "sync:legge-oracle-from-pdf-gold": "node tools/sync-legge-oracle-from-pdf-gold.mjs",
     "sync:wilhelm-oracle-from-pdf-gold": "node tools/sync-wilhelm-oracle-from-pdf-gold.mjs",
     "extract:gold:zhuxi-adler-pdf": "node tools/extract-zhuxi-adler-pdf.mjs",
