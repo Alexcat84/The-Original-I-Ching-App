@@ -256,7 +256,7 @@ export default {
   "9": {
     "hex": 9,
     "hex_font": "䷈",
-    "name": "Hsien",
+    "name": "Hsiâo Khû",
     "legge_judgment": {
       "text": "Hsiâo Khû indicates that (under its conditions) there will be progress and success. (We see) dense clouds, but no rain coming from our borders in the west."
     },

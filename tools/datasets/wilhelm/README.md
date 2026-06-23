@@ -2,10 +2,11 @@
 
 Canonical parsed datasets from the user-edited EPUB exports. **Not ingested to runtime** until explicitly wired.
 
+**Notas:** solo Wilhelm (book-one + comments) y Legge llevan capa de notas en el maestro; Zhou Yi no. Ver `docs/auditorias/TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md`.
 | Directory | Status | Source TXT (`tools/source-pdfs/`) |
 |-----------|--------|-----------------------------------|
-| `comments/` | **official** | `The I Ching or Book of Changes - Wilhelm-comments 64 hex.txt` |
-| `book-one/` | **gates + AU cerrados** — pending product decision for runtime ingest | `I Ching or Book of Changes (Bollingen Series), The - Wilhelm, Hellmut-64hex.txt` |
+| `comments/` | **official** (notas Ten Wings) | `The I Ching or Book of Changes - Wilhelm-comments 64 hex.txt` |
+| `book-one/` | **official** (oráculo + comentario Wilhelm) | `I Ching or Book of Changes (Bollingen Series), The - Wilhelm, Hellmut-64hex.txt` |
 | `appendix/` | **draft** — separate file, future use | `The I Ching or Book of Changes - Wilhelm-Appendix.txt` |
 
 ## Regenerate

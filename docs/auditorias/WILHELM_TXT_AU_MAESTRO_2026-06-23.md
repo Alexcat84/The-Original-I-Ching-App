@@ -2,7 +2,7 @@
 
 - **Fecha:** 2026-06-23
 - **Rama:** `feature/wilhelm-txt-au-maestro-2026-06-23`
-- **Estado:** **Gates 100/100 PASS** · **AU profunda APROBADA** · datasets listos · **sin ingest a runtime**
+- **Estado:** **Gates 100/100 PASS** · **AU profunda APROBADA** · datasets **`official`** · **sin ingest a runtime**
 - **Relacionado:** `EPUB_PRIMARY_MIGRATION_2026-06-23.md` (bundle runtime EPUB-primary, capa distinta), `ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md`
 
 ---
@@ -23,7 +23,7 @@ Construir el **maestro book-primary** de Wilhelm a partir de los TXT Princeton e
 
 | Dataset | Directorio | TXT fuente | Estado manifest |
 |---------|------------|------------|-----------------|
-| **Book-one** (64 hex oráculo) | `book-one/` | `…Wilhelm, Hellmut-64hex.txt` | **gates + AU cerrados** |
+| **Book-one** (64 hex oráculo) | `book-one/` | `…Wilhelm, Hellmut-64hex.txt` | **official** |
 | **Comments** (Ten Wings) | `comments/` | `…Wilhelm-comments 64 hex.txt` | **official** (G0+G2 PASS) |
 | **Appendix** | `appendix/` | `…Wilhelm-Appendix.txt` | draft (fuera de alcance AU actual) |
 
