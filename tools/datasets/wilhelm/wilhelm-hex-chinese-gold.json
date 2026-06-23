@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 2,
+  "description": "Canonical hanzi + Unicode hex symbol + Wade-Giles roman for Wilhelm 64 hex names.",
+  "provenance": {
+    "chinese": "scripts/iching_wilhelm_translation.mjs → trad_chinese",
+    "hex_font": "scripts/iching_wilhelm_translation.mjs → hex_font (Unicode I Ching block)",
+    "chinese_roman": "Book I TXT header (Wade-Giles); EPUB hanzi are scan images, not extractable",
+    "bookTitle": "Book I TXT header (English Wilhelm title)",
+    "crossCheck": "scripts/iching_zhouyi_translation.mjs → name (64/64 vs trad_chinese)"
+  },
+  "fields": {
+    "chinese": "Traditional hanzi — dataset field `chinese`",
+    "chinese_roman": "Wade-Giles — dataset field `chinese_roman`",
+    "hex_font": "Unicode hexagram glyph — dataset field `hex_font`",
+    "bookTitle": "English title — dataset field `nombre`"
+  },
+  "hexagrams": {
+    "1": {
+      "chinese": "乾",
+      "chinese_roman": "Ch'ien",
+      "hex_font": "䷀",
+      "pinyin": "qián",
+      "bookTitle": "The Creative"
+    },
+    "2": {
+      "chinese": "坤",
+      "chinese_roman": "K'un",
+      "hex_font": "䷁",
+      "pinyin": "kūn",
+      "bookTitle": "The Receptive"
+    },
+    "3": {
+      "chinese": "屯",
+      "chinese_roman": "Chun",
+      "hex_font": "䷂",
+      "pinyin": "zhūn",
+      "bookTitle": "Difficulty at the Beginning"
+    },
+    "4": {
+      "chinese": "蒙",
+      "chinese_roman": "Mêng",
+      "hex_font": "䷃",
+      "pinyin": "méng",
+      "bookTitle": "Youthful Folly"
+    },
+    "5": {
+      "chinese": "需",
+      "chinese_roman": "Hsü",
+      "hex_font": "䷄",
+      "pinyin": "xū",
+      "bookTitle": "Waiting (Nourishment)"
+    },
+    "6": {
+      "chinese": "訟",
+      "chinese_roman": "Sung",
+      "hex_font": "䷅",
+      "pinyin": "sòng",
+      "bookTitle": "Conflict"
+    },
+    "7": {
+      "chinese": "師",
+      "chinese_roman": "Shih",
+      "hex_font": "䷆",
+      "pinyin": "shī",
+      "bookTitle": "The Army"
+    },
+    "8": {
+      "chinese": "比",
+      "chinese_roman": "Pi",
+      "hex_font": "䷇",
+      "pinyin": "bǐ",
+      "bookTitle": "Holding Together [Union]"
+    },
+    "9": {
+      "chinese": "小畜",
+      "chinese_roman": "Hsiao Ch'u",
+      "hex_font": "䷈",
+      "pinyin": "xiǎochù",
+      "bookTitle": "The Taming Power of the Small"
+    },
+    "10": {
+      "chinese": "履",
+      "chinese_roman": "Lü",
+      "hex_font": "䷉",
+      "pinyin": "lǚ",
+      "bookTitle": "Treading [Conduct]"
+    },
+    "11": {
+      "chinese": "泰",
+      "chinese_roman": "T'ai",
+      "hex_font": "䷊",
+      "pinyin": "tài",
+      "bookTitle": "Peace"
+    },
+    "12": {
+      "chinese": "否",
+      "chinese_roman": "P'i",
+      "hex_font": "䷋",
+      "pinyin": "pǐ",
+      "bookTitle": "Standstill [Stagnation]"
+    },
+    "13": {
+      "chinese": "同人",
+      "chinese_roman": "T'ung Jên",
+      "hex_font": "䷌",
+      "pinyin": "tóngrén",
+      "bookTitle": "Fellowship with Men"
+    },
+    "14": {
+      "chinese": "大有",
+      "chinese_roman": "Ta Yu",
+      "hex_font": "䷍",
+      "pinyin": "dàyǒu",
+      "bookTitle": "Posession in Great Measure"
+    },
+    "15": {
+      "chinese": "謙",
+      "chinese_roman": "Ch'ien",
+      "hex_font": "䷎",
+      "pinyin": "qiān",
+      "bookTitle": "Modesty"
+    },
+    "16": {
+      "chinese": "豫",
+      "chinese_roman": "Yü",
+      "hex_font": "䷏",
+      "pinyin": "yù",
+      "bookTitle": "Enthusiasm"
+    },
+    "17": {
+      "chinese": "隨",
+      "chinese_roman": "Sui",
+      "hex_font": "䷐",
+      "pinyin": "suí",
+      "bookTitle": "Following"
+    },
+    "18": {
+      "chinese": "蠱",
+      "chinese_roman": "Ku",
+      "hex_font": "䷑",
+      "pinyin": "gǔ",
+      "bookTitle": "Work on What Has Been Spoiled [Decay]"
+    },
+    "19": {
+      "chinese": "臨",
+      "chinese_roman": "Lin",
+      "hex_font": "䷒",
+      "pinyin": "lín",
+      "bookTitle": "Approach"
+    },
+    "20": {
+      "chinese": "觀",
+      "chinese_roman": "Kuan",
+      "hex_font": "䷓",
+      "pinyin": "guān",
+      "bookTitle": "Contemplation (View)"
+    },
+    "21": {
+      "chinese": "噬嗑",
+      "chinese_roman": "Shih Ho",
+      "hex_font": "䷔",
+      "pinyin": "shìkè",
+      "bookTitle": "Biting Through"
+    },
+    "22": {
+      "chinese": "賁",
+      "chinese_roman": "Pi",
+      "hex_font": "䷕",
+      "pinyin": "bì",
+      "bookTitle": "Grace"
+    },
+    "23": {
+      "chinese": "剝",
+      "chinese_roman": "Po",
+      "hex_font": "䷖",
+      "pinyin": "bō",
+      "bookTitle": "Splitting Apart"
+    },
+    "24": {
+      "chinese": "復",
+      "chinese_roman": "Fu",
+      "hex_font": "䷗",
+      "pinyin": "fù",
+      "bookTitle": "Return (The Turning Point)"
+    },
+    "25": {
+      "chinese": "無妄",
+      "chinese_roman": "Wu Wang",
+      "hex_font": "䷘",
+      "pinyin": "wúwàng",
+      "bookTitle": "Innocence (The Unexpected)"
+    },
+    "26": {
+      "chinese": "大畜",
+      "chinese_roman": "Ta Ch'u",
+      "hex_font": "䷙",
+      "pinyin": "dàchù",
+      "bookTitle": "The Taming Power of the Great"
+    },
+    "27": {
+      "chinese": "頤",
+      "chinese_roman": "I",
+      "hex_font": "䷚",
+      "pinyin": "yí",
+      "bookTitle": "The Corners of the Mouth"
+    },
+    "28": {
+      "chinese": "大過",
+      "chinese_roman": "Ta Kuo",
+      "hex_font": "䷛",
+      "pinyin": "dàguò",
+      "bookTitle": "Preponderance of the Great"
+    },
+    "29": {
+      "chinese": "坎",
+      "chinese_roman": "K'an",
+      "hex_font": "䷜",
+      "pinyin": "kǎn",
+      "bookTitle": "The Abysmal (Water)"
+    },
+    "30": {
+      "chinese": "離",
+      "chinese_roman": "Li",
+      "hex_font": "䷝",
+      "pinyin": "lí",
+      "bookTitle": "The Clinging, Fire"
+    },
+    "31": {
+      "chinese": "咸",
+      "chinese_roman": "Hsien",
+      "hex_font": "䷞",
+      "pinyin": "xián",
+      "bookTitle": "Influence (Wooing)"
+    },
+    "32": {
+      "chinese": "恆",
+      "chinese_roman": "Hêng",
+      "hex_font": "䷟",
+      "pinyin": "héng",
+      "bookTitle": "Duration"
+    },
+    "33": {
+      "chinese": "遯",
+      "chinese_roman": "Tun",
+      "hex_font": "䷠",
+      "pinyin": "dùn",
+      "bookTitle": "Retreat"
+    },
+    "34": {
+      "chinese": "大壯",
+      "chinese_roman": "Ta Chuang",
+      "hex_font": "䷡",
+      "pinyin": "dàzhuàng",
+      "bookTitle": "The Power of the Great"
+    },
+    "35": {
+      "chinese": "晉",
+      "chinese_roman": "Chin",
+      "hex_font": "䷢",
+      "pinyin": "jìn",
+      "bookTitle": "Progress"
+    },
+    "36": {
+      "chinese": "明夷",
+      "chinese_roman": "Ming I",
+      "hex_font": "䷣",
+      "pinyin": "míngyí",
+      "bookTitle": "Darkening of the Light"
+    },
+    "37": {
+      "chinese": "家人",
+      "chinese_roman": "Chia Jên",
+      "hex_font": "䷤",
+      "pinyin": "jiārén",
+      "bookTitle": "The Family [The Clan]"
+    },
+    "38": {
+      "chinese": "睽",
+      "chinese_roman": "K'uei",
+      "hex_font": "䷥",
+      "pinyin": "kuí",
+      "bookTitle": "Opposition"
+    },
+    "39": {
+      "chinese": "蹇",
+      "chinese_roman": "Chien",
+      "hex_font": "䷦",
+      "pinyin": "jiǎn",
+      "bookTitle": "Obstruction"
+    },
+    "40": {
+      "chinese": "解",
+      "chinese_roman": "Hsieh",
+      "hex_font": "䷧",
+      "pinyin": "xiè",
+      "bookTitle": "Deliverance"
+    },
+    "41": {
+      "chinese": "損",
+      "chinese_roman": "Sun",
+      "hex_font": "䷨",
+      "pinyin": "sǔn",
+      "bookTitle": "Decrease"
+    },
+    "42": {
+      "chinese": "益",
+      "chinese_roman": "I",
+      "hex_font": "䷩",
+      "pinyin": "yì",
+      "bookTitle": "Increase"
+    },
+    "43": {
+      "chinese": "夬",
+      "chinese_roman": "Kuai",
+      "hex_font": "䷪",
+      "pinyin": "guài",
+      "bookTitle": "Break-through (Resoluteness)"
+    },
+    "44": {
+      "chinese": "姤",
+      "chinese_roman": "Kou",
+      "hex_font": "䷫",
+      "pinyin": "gòu",
+      "bookTitle": "Coming to Meet"
+    },
+    "45": {
+      "chinese": "萃",
+      "chinese_roman": "Ts'ui",
+      "hex_font": "䷬",
+      "pinyin": "cuì",
+      "bookTitle": "Gathering Together [Massing]"
+    },
+    "46": {
+      "chinese": "升",
+      "chinese_roman": "Shêng",
+      "hex_font": "䷭",
+      "pinyin": "shēng",
+      "bookTitle": "Pushing Upward"
+    },
+    "47": {
+      "chinese": "困",
+      "chinese_roman": "K'un",
+      "hex_font": "䷮",
+      "pinyin": "kùn",
+      "bookTitle": "Oppression (Exhaustion)"
+    },
+    "48": {
+      "chinese": "井",
+      "chinese_roman": "Ching",
+      "hex_font": "䷯",
+      "pinyin": "jǐng",
+      "bookTitle": "The Well"
+    },
+    "49": {
+      "chinese": "革",
+      "chinese_roman": "Ko",
+      "hex_font": "䷰",
+      "pinyin": "gé",
+      "bookTitle": "Revolution (Molting)"
+    },
+    "50": {
+      "chinese": "鼎",
+      "chinese_roman": "Ting",
+      "hex_font": "䷱",
+      "pinyin": "dǐng",
+      "bookTitle": "The Caldron"
+    },
+    "51": {
+      "chinese": "震",
+      "chinese_roman": "Chên",
+      "hex_font": "䷲",
+      "pinyin": "zhèn",
+      "bookTitle": "The Arousing (Shock, Thunder)"
+    },
+    "52": {
+      "chinese": "艮",
+      "chinese_roman": "Kên",
+      "hex_font": "䷳",
+      "pinyin": "gèn",
+      "bookTitle": "Keeping Still, Mountain"
+    },
+    "53": {
+      "chinese": "漸",
+      "chinese_roman": "Chien",
+      "hex_font": "䷴",
+      "pinyin": "jiàn",
+      "bookTitle": "Development (Gradual Progress)"
+    },
+    "54": {
+      "chinese": "歸妹",
+      "chinese_roman": "Kuei Mei",
+      "hex_font": "䷵",
+      "pinyin": "guīmèi",
+      "bookTitle": "The Marrying Maiden"
+    },
+    "55": {
+      "chinese": "豐",
+      "chinese_roman": "Fêng",
+      "hex_font": "䷶",
+      "pinyin": "fēng",
+      "bookTitle": "Abundance [Fullness]"
+    },
+    "56": {
+      "chinese": "旅",
+      "chinese_roman": "Lü",
+      "hex_font": "䷷",
+      "pinyin": "lǚ",
+      "bookTitle": "The Wanderer"
+    },
+    "57": {
+      "chinese": "巽",
+      "chinese_roman": "Sun",
+      "hex_font": "䷸",
+      "pinyin": "xùn",
+      "bookTitle": "The Gentle (Penetrating, Wind)"
+    },
+    "58": {
+      "chinese": "兌",
+      "chinese_roman": "Tui",
+      "hex_font": "䷹",
+      "pinyin": "duì",
+      "bookTitle": "The Joyous, Lake"
+    },
+    "59": {
+      "chinese": "渙",
+      "chinese_roman": "Huan",
+      "hex_font": "䷺",
+      "pinyin": "huàn",
+      "bookTitle": "Dispersion [Dissolution]"
+    },
+    "60": {
+      "chinese": "節",
+      "chinese_roman": "Chieh",
+      "hex_font": "䷻",
+      "pinyin": "jié",
+      "bookTitle": "Limitation"
+    },
+    "61": {
+      "chinese": "中孚",
+      "chinese_roman": "Chung Fu",
+      "hex_font": "䷼",
+      "pinyin": "zhōngfú",
+      "bookTitle": "Inner Truth"
+    },
+    "62": {
+      "chinese": "小過",
+      "chinese_roman": "Hsiao Kuo",
+      "hex_font": "䷽",
+      "pinyin": "xiǎoguò",
+      "bookTitle": "Preponderance of the Small"
+    },
+    "63": {
+      "chinese": "既濟",
+      "chinese_roman": "Chi Chi",
+      "hex_font": "䷾",
+      "pinyin": "jìjì",
+      "bookTitle": "After Completion"
+    },
+    "64": {
+      "chinese": "未濟",
+      "chinese_roman": "Wei Chi",
+      "hex_font": "䷿",
+      "pinyin": "wèijì",
+      "bookTitle": "Before Completion"
+    }
+  }
+}
