@@ -853,7 +853,7 @@ export default {
     },
     "wilhelm_symbolic": "The Chinese word lin has a range of meanings that is not exhausted by any single word of another language. The ancient explanations in the Book of Changes give as its first meaning, \"becoming great.\" What becomes great are the two strong lines growing into the hexagram from below; the light-giving power expands with them. The meaning is then further extended to include the concept of approach, especially the approach of what is lower. Finally the meaning includes the attitude of condescension of a man in high position toward the people, and in general the setting to work on affairs. This hexagram is linked with the twelfth month (January-February), when after the winter solstice, the light power begins to ascend again.",
     "wilhelm_judgment": {
-      "text": "APPPROACH has supreme success.\nPerseverance furthers.\nWhen the eighth month comes,\nThere will be misfortune."
+      "text": "APPROACH has supreme success.\nPerseverance furthers.\nWhen the eighth month comes,\nThere will be misfortune."
     },
     "wilhelm_image": {
       "text": "The earth above the lake:\nThe image of APPROACH.\nThus the superior man is inexhaustible\nIn his will to teach,\nAnd without limits\nIn his tolerance and protection of the people."
@@ -2141,7 +2141,7 @@ export default {
     },
     "wilhelm_symbolic": "The lake is above, water below; the lake is empty, dried up. Exhaustion is expressed in yet another way: at the top, a dark line is holding down two light line; below, a light line is hemmed in between two dark ones. The upper trigram belongs to the principle of darkness, the lower to the principle of light. Thus everywhere superior men are oppressed and held in restraint by inferior men.",
     "wilhelm_judgment": {
-      "text": "OPPPRESSION. Success. Perseverance.\nThe great man brings about good fortune.\nNo blame.\nWhen one has something to say,\nIt is not believed."
+      "text": "OPPRESSION. Success. Perseverance.\nThe great man brings about good fortune.\nNo blame.\nWhen one has something to say,\nIt is not believed."
     },
     "wilhelm_image": {
       "text": "There is no water in the lake:\nThe image of EXHAUSTION.\nThus the superior man stakes his life\nOn following his will."
