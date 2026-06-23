@@ -11,7 +11,8 @@ Single canonical location for audit reports, incident write-ups, post-fix follow
 
 | Date | Document | Topic | Status |
 |---|---|---|---|
-| 2026-06-20 | [LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md](./LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md) | Huang/Zhu Xi line-reading selector (074) + idioma/SSE fixes (Partes 1–9) | ✅ Shipped 4.1.7 |
+| 2026-06-23 | [WILHELM_TXT_AU_MAESTRO_2026-06-23.md](./WILHELM_TXT_AU_MAESTRO_2026-06-23.md) | Maestro Wilhelm TXT Princeton + AU Sheets + gates 100/100 (sin ingest runtime) | 🟡 Rama `feature/wilhelm-txt-au-maestro-2026-06-23` |
+| 2026-06-23 | [EPUB_PRIMARY_MIGRATION_2026-06-23.md](./EPUB_PRIMARY_MIGRATION_2026-06-23.md) | Bundle runtime EPUB-primary Wilhelm/Legge | ✅ Shipped |
 | 2026-06-21 | [ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md](./ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md) | Re-auditoría 1:1 Wilhelm/Legge/Zhou Yi vs fuentes oro (Fases 3 to 4) | ✅ Cerrada |
 | 2026-06-19 | [RN_NAVIGATE_TO_ROUTER_RACE_AUDIT_2026-06-19.md](./RN_NAVIGATE_TO_ROUTER_RACE_AUDIT_2026-06-19.md) | `__rnNavigateTo` × Next.js App Router race condition | ✅ Fixed |
 | 2026-06-19 | [AXIOM_LOGIN_SPIKE_AUDIT_2026-06-19.md](./AXIOM_LOGIN_SPIKE_AUDIT_2026-06-19.md) | `/login` traffic spike — Google WRS crawl, not real logins | ✅ Diagnosed |
