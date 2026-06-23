@@ -137,6 +137,7 @@ Full project change history.
 
 ### Fix
 - fix(mobile): theme-aware SystemBars and Android top inset fallback | commit: 5f83864
+- fix(mobile+web): chat drawer respects status bar and nav bar insets on RN WebView | commit: 4d79fd5
 
 ---
 
