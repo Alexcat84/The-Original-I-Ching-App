@@ -1188,3 +1188,83 @@ real cuando el texto citado no coincide. `node --check` confirma sintaxis válid
 **Pendiente:** re-ejecutar `scripts/line-reading-system-qa.mjs` contra la API real (gasta tokens) para
 obtener un reporte fresco con el harness corregido; los 8 `pass:false` históricos de la Parte 5/9.3
 quedan reclasificados como falsos negativos confirmados y resueltos en el código, no en los datos.
+
+---
+
+# Parte 13 — Smoke test real de 20 llamadas + segundo falso FAIL encontrado y corregido en el propio fix de la Parte 12 (24 jun 2026, Claude Sonnet 4.6)
+
+A petición del usuario: 20 llamadas reales a la API (no sintéticas) para verificar fidelidad literal
+1:1 contra `cast.textsForClaude` — 10 de fidelidad base (Juicio/Imagen, 0-1 línea) y 10 del eje de
+líneas cambiantes (5 Zhu Xi + 5 Huang), rotando los 4 traductores (Wilhelm, Legge, Zhou Yi,
+Master Combined) y 2 modelos. Script nuevo: `scripts/smoke-literal-fidelity-2026-06-24.mjs`.
+
+## 13.1 — Resultado crudo: 10/20 PASS, con un patrón perfectamente determinista
+
+El primer corrido (sin normalización) dio exactamente 10/20 PASS, y el patrón no era ruido: el
+**100% de las llamadas con traductor Wilhelm o Master Combined fallaron (10/10)**, el **100% de las
+llamadas con Legge o Zhou Yi pasaron (10/10)**. Una correlación perfecta con el traductor no es un
+fallo aleatorio del modelo — es la firma de un bug en el comparador.
+
+## 13.2 — Causa raíz: el propio fix de la Parte 12 tenía el mismo defecto que corregía
+
+Inspección del transcript de un caso `FAIL` (`zero · huang · wilhelm`): el modelo citó el Juicio
+**perfectamente correcto**, solo que como blockquote-por-línea-interna:
+
+```
+> *AFTER COMPLETION. Success in small matters.*
+> *Perseverance furthers.*
+> *At the beginning good fortune,*
+> *At the end disorder.*
+```
+
+mientras que `cast.textsForClaude.primaryJudgment` (la fuente única de verdad) guarda esas mismas
+cuatro líneas como **un solo string con `\n` internos**, sin marcadores `>` ni `*`. El comparador
+literal añadido en la Parte 12 (`text.includes(t.primaryJudgment.trim())`) compara el string crudo
+del modelo contra el string crudo canónico sin normalizar — y un `\n` interno nunca puede matchear
+contra `> *texto*\n> *texto*`, aunque el contenido sea idéntico palabra por palabra. Wilhelm es el
+único de los tres traductores cuyo Juicio/Imagen tiene saltos de línea internos por estrofa
+(Legge y Zhou Yi son prosa continua), lo que explica la correlación perfecta por traductor.
+
+**Esto es exactamente el mismo defecto que la Parte 12 corrigió** — un recordatorio de que arreglar
+un falso FAIL con una comparación literal *naïve* puede introducir uno nuevo si no se reutiliza la
+normalización ya validada en producción. El propio gate H7 (`interpretation-judgment-image-gate.ts`,
+`normalizeForVerbatimCompare` + `extractQuote`) ya resuelve esto: colapsa espacios/saltos de línea y
+homologa comillas/guiones tras despojar los marcadores `>`/`*` por línea — pero el comparador nuevo
+de la Parte 12 no reutilizó esa función, reinventó una comparación más simple e incompleta.
+
+## 13.3 — Remediación
+
+`flattenQuoted()` añadida en **ambos** scripts (`smoke-literal-fidelity-2026-06-24.mjs` y
+`line-reading-system-qa.mjs`): despoja `> ` y el envoltorio `*texto*` línea por línea, une con
+espacio, y aplica `normalizeForVerbatimCompare` (importada de `backend/claude/dist`, la misma
+función que usa H7 en producción) sobre ambos lados de la comparación antes del `.includes()`.
+
+## 13.4 — Re-verificación sin gastar tokens nuevos
+
+En vez de volver a llamar a la API (mismo costo, mismo riesgo de volver a no notar un bug del
+comparador), se re-procesaron **los mismos 20 transcripts ya guardados** con la lógica corregida,
+parseando el markdown por los encabezados exactos `## caso · sistema · traductor · modelo` (cuidado:
+la respuesta del modelo también contiene sus propios `## ` — un primer parser ingenuo se confundía
+con eso). Resultado: **20/20 PASS** — los 10 "fallos" eran 100% el bug del comparador, cero defectos
+reales de contenido.
+
+| Eje | Resultado |
+|-----|-----------|
+| Bloque A — fidelidad base (Juicio/Imagen, 0-1 línea), 4 traductores × 2 modelos | 10/10 PASS |
+| Bloque B — líneas cambiantes, 5 Zhu Xi + 5 Huang, 4 traductores | 10/10 PASS |
+| **Total** | **20/20 PASS** |
+
+También se repitió la verificación sintética aislada de la Parte 12 (`two_yy`, `four`, `three_a`)
+pero esta vez con el formato **realista** que de verdad produce el modelo (blockquote por línea
+interna), no con el texto canónico crudo como antes — la verificación de la Parte 12 había usado un
+formato sintético que por casualidad no exponía este defecto. Con el formato realista: 0 issues en
+la respuesta perfecta, issues detectados en la respuesta incorrecta, en los tres fixtures.
+
+## 13.5 — Lección de proceso
+
+Verificar un comparador con datos sintéticos solo es confiable si esos datos imitan la **forma**
+real de la salida del modelo, no solo su contenido textual. Un texto canónico pegado tal cual
+(con `\n` crudos) no expone defectos de normalización de markdown que sí aparecen con la salida
+real de Claude. A partir de ahora, cualquier verificación sintética de un comparador de citas debe
+envolver el texto esperado en blockquote-por-línea (`> *línea*`) antes de usarlo como "respuesta
+perfecta" de prueba.

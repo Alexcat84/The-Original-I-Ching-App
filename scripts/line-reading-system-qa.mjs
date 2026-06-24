@@ -50,6 +50,7 @@ const {
   buildAnthropicUserPayloadForCast,
   buildAnthropicInterpretationParams,
   validateInterpretationOutput,
+  normalizeForVerbatimCompare,
 } = await import("../backend/claude/dist/index.js");
 
 // ─── Fixtures: una por clase de configuración de líneas cambiantes ───
@@ -152,16 +153,39 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
  * Esto cierra el hueco que H7 v1 deja sin gate automático en "El trazado
  * hacia…" para el hexagrama transformado.
  */
+/**
+ * Despoja blockquote (`> `) y énfasis (`*texto*`) línea por línea antes de
+ * unir con espacio. Imprescindible: los Juicios/Imágenes/líneas de Wilhelm
+ * suelen tener saltos de línea internos por estrofa (p. ej. "AFTER
+ * COMPLETION...\nPerseverance furthers.\n..."), y el modelo correctamente
+ * renderiza cada una como su propio `> *línea*` — un `.includes()` crudo
+ * sobre el texto canónico con \n nunca matchea eso aunque el contenido sea
+ * idéntico. Encontrado por smoke-literal-fidelity-2026-06-24.mjs: un primer
+ * intento de este mismo fix (sin esta normalización) marcaba como FAIL un
+ * caso 100% correcto. Misma normalización que usa el gate de producción H7
+ * (`normalizeForVerbatimCompare`), más el despojo de marcadores markdown.
+ */
+function flattenQuoted(raw) {
+  return normalizeForVerbatimCompare(
+    raw
+      .split("\n")
+      .map((line) => line.trim().replace(/^>\s*/, "").replace(/^\*(.*)\*$/, "$1"))
+      .join(" "),
+  );
+}
+
 function caseChecks(text, fixture, system, cast) {
   const exp = fixture[system];
   const issues = [];
   const t = cast.textsForClaude;
+  const haystack = flattenQuoted(text);
+  const cites = (expected) => haystack.includes(flattenQuoted(expected));
 
   if (exp.judgments) {
-    if (!t.primaryJudgment || !text.includes(t.primaryJudgment.trim())) {
+    if (!t.primaryJudgment || !cites(t.primaryJudgment)) {
       issues.push("ZX 3-judgments: falta cita literal del Juicio primario");
     }
-    if (!t.transformedJudgment || !text.includes(t.transformedJudgment.trim())) {
+    if (!t.transformedJudgment || !cites(t.transformedJudgment)) {
       issues.push("ZX 3-judgments: falta cita literal del Juicio transformado");
     }
   }
@@ -172,7 +196,7 @@ function caseChecks(text, fixture, system, cast) {
         issues.push(`línea ${pos}: no encontrada en cast.textsForClaude.selectedLineTexts`);
         continue;
       }
-      if (!text.includes(entry.text.trim())) {
+      if (!cites(entry.text)) {
         issues.push(`línea ${pos}: cita literal no encontrada en la respuesta`);
       }
     }
