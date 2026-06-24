@@ -96,10 +96,19 @@ de definirlo, cita las fuentes — no al revés.
 | Desglose caso-por-caso (0 a 6 líneas cambiantes, 9 viñetas) en una FAQ | `iching-mutation-rules` | Se trasladó documentación de ingeniería completa a un canal que solo necesitaba el resumen de los dos métodos |
 | Falso FAIL en harness de QA (`line-reading-system-qa.mjs`) | `caseChecks()` | Un recordatorio "verify in transcript" se implementó como `issues.push(...)` incondicional — el harness lo contaba como fallo real para siempre, sin comparar nada |
 | Hueco sin gate automático en Juicios del hexagrama transformado (casos Zhu Xi 3 líneas) | mismo harness | El check existente solo validaba con una regex laxa ("¿menciona transformación?"), no el texto literal de `primaryJudgment`/`transformedJudgment` |
+| Segundo falso FAIL, esta vez en el propio fix del punto anterior | mismo harness + `smoke-literal-fidelity-2026-06-24.mjs` | El comparador literal nuevo (`text.includes(canonico.trim())`) no normalizaba el blockquote-por-línea que el modelo usa para Juicios/Imágenes con saltos de línea internos (Wilhelm); 10/20 llamadas reales fallaron con contenido 100% correcto, solo por formato. Fix: reutilizar `normalizeForVerbatimCompare` (la misma función del gate de producción H7), no reinventar la comparación |
 
-Ver `docs/auditorias/LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md` (Parte 12) y
+Ver `docs/auditorias/LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md` (Partes 12 y 13) y
 `docs/auditorias/USER_FACING_DOCS_VS_IMPLEMENTATION_AUDIT_2026-06-22.md` (§12) para el detalle
 completo de la remediación de cada fila.
+
+**Lección reforzada por la Parte 13:** una verificación sintética de un comparador de citas solo es
+confiable si el texto de prueba imita la *forma* real de la salida del modelo (blockquote `> *línea*`
+por cada línea interna), no solo su contenido. Un texto canónico pegado tal cual, con `\n` crudos,
+no expone defectos de normalización de markdown — pasa la prueba sintética y falla con la API real.
+Antes de confiar en cualquier comparador de texto nuevo, reutiliza `normalizeForVerbatimCompare`
+(`backend/claude/src/interpretation-judgment-image-gate.ts`, ya validada en producción vía el gate
+H7) en vez de escribir una normalización propia desde cero.
 
 ---
 
