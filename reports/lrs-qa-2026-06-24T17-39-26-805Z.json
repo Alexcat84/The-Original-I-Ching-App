@@ -1,0 +1,67 @@
+{
+  "stamp": "2026-06-24T17-39-26-805Z",
+  "total": 5,
+  "pass": 3,
+  "fail": 2,
+  "rows": [
+    {
+      "case": "two_yy",
+      "system": "zhuxi",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_TWO_UPPER",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "expecting 2 cited lines at 1,2 (verify in transcript)"
+      ],
+      "error": null
+    },
+    {
+      "case": "three_a",
+      "system": "zhuxi",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_THREE_JUDGMENTS",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "three_b",
+      "system": "zhuxi",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_THREE_JUDGMENTS",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "four",
+      "system": "zhuxi",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_FOUR_LOWER",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "expecting 2 cited lines at 5,6 (verify in transcript)"
+      ],
+      "error": null
+    },
+    {
+      "case": "six",
+      "system": "zhuxi",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_SIX_TRANSFORMED",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    }
+  ]
+}
