@@ -23,15 +23,44 @@ function paragraphs(text: string): string[] {
     .filter((line) => line.length > 0);
 }
 
-/** Full-width ribbon, reserved for the 3 hexagram-level ribbons (Wilhelm's
- * "About this hexagram", Wen Yen, Legge's footnotes) — never for per-point
- * toggles, which use CommentaryRibbon below. */
-function CommentaryDetails({ label, children }: { readonly label: string; readonly children: ReactNode }) {
+/** Hex-level block: title + toggle on one row; panel expands below (About, Wen Yen, footnotes). */
+function HexCommentaryBlock({
+  panelId,
+  heading,
+  ariaLabel,
+  isOpen,
+  onToggle,
+  children,
+}: {
+  readonly panelId: string;
+  readonly heading: string;
+  readonly ariaLabel: string;
+  readonly isOpen: boolean;
+  readonly onToggle: () => void;
+  readonly children: ReactNode;
+}) {
   return (
-    <details className="library-commentary">
-      <summary className="library-commentary-summary">{label}</summary>
-      <div className="library-commentary-body">{children}</div>
-    </details>
+    <div className="library-hex-block">
+      <div className="library-hex-block__head">
+        <span className="library-hex-block__title">{heading}</span>
+        <CommentaryRibbonToggle
+          panelId={panelId}
+          ariaLabel={ariaLabel}
+          isOpen={isOpen}
+          onToggle={onToggle}
+          icon={isOpen ? "−" : "+"}
+        />
+      </div>
+      <CommentaryRibbon
+        panelId={panelId}
+        ariaLabel={ariaLabel}
+        isOpen={isOpen}
+        onToggle={onToggle}
+        panelOnly
+      >
+        {children}
+      </CommentaryRibbon>
+    </div>
   );
 }
 
@@ -198,29 +227,33 @@ function TabPanel({
     >
 
       {wilhelmCommentary ? (
-        <div className="library-about-block">
-          <CommentaryDetails label={messages.aboutHeading}>
-            {paragraphs(wilhelmCommentary.about.intro).map((p, i) => (
-              <p key={`intro-${i}`}>{p}</p>
-            ))}
-            <p className="library-commentary-source">{messages.rulerNoteLabel}</p>
-            {paragraphs(wilhelmCommentary.about.rulerNote).map((p, i) => (
-              <p key={`ruler-${i}`}>{p}</p>
-            ))}
-            <p className="library-commentary-source">{messages.miscNotesLabel}</p>
-            {paragraphs(wilhelmCommentary.about.miscNotes).map((p, i) => (
-              <p key={`misc-${i}`}>{p}</p>
-            ))}
-            {wilhelmCommentary.about.sequence ? (
-              <>
-                <p className="library-commentary-source">{messages.sequenceLabel}</p>
-                {paragraphs(wilhelmCommentary.about.sequence).map((p, i) => (
-                  <p key={`seq-${i}`}>{p}</p>
-                ))}
-              </>
-            ) : null}
-          </CommentaryDetails>
-        </div>
+        <HexCommentaryBlock
+          panelId="commentary-about"
+          heading={messages.aboutHeading}
+          ariaLabel={`${messages.commentaryShowLabel} — ${messages.aboutHeading}`}
+          isOpen={open.has("about")}
+          onToggle={() => toggle("about")}
+        >
+          {paragraphs(wilhelmCommentary.about.intro).map((p, i) => (
+            <p key={`intro-${i}`}>{p}</p>
+          ))}
+          <p className="library-commentary-source">{messages.rulerNoteLabel}</p>
+          {paragraphs(wilhelmCommentary.about.rulerNote).map((p, i) => (
+            <p key={`ruler-${i}`}>{p}</p>
+          ))}
+          <p className="library-commentary-source">{messages.miscNotesLabel}</p>
+          {paragraphs(wilhelmCommentary.about.miscNotes).map((p, i) => (
+            <p key={`misc-${i}`}>{p}</p>
+          ))}
+          {wilhelmCommentary.about.sequence ? (
+            <>
+              <p className="library-commentary-source">{messages.sequenceLabel}</p>
+              {paragraphs(wilhelmCommentary.about.sequence).map((p, i) => (
+                <p key={`seq-${i}`}>{p}</p>
+              ))}
+            </>
+          ) : null}
+        </HexCommentaryBlock>
       ) : null}
 
       <section className="library-section">
@@ -355,6 +388,7 @@ function TabPanel({
                 <th className="library-lines-table__pos" />
                 <th className="library-lines-table__symbol" aria-hidden="true" />
                 <th className="library-lines-table__text" />
+                <th className="library-lines-table__toggle" aria-hidden="true" />
               </tr>
             </thead>
             <tbody>
@@ -367,47 +401,29 @@ function TabPanel({
                 const hasCommentary = wilhelmLine !== null || leggeNote !== null;
                 return (
                   <Fragment key={line.position}>
-                    <tr
-                      className={`library-lines-row library-lines-row--${line.type}${hasCommentary ? " library-lines-row--expandable" : ""}`}
-                    >
-                      {hasCommentary ? (
-                        <td colSpan={3} className="library-lines-table__block">
-                          <div className="library-line-block">
-                            <div className="library-line-block__main">
-                              <span className="library-line-block__pos">{lineLabel}</span>
-                              <span className="library-line-block__symbol" aria-hidden="true">
-                                <LineGlyph type={line.type} />
-                              </span>
-                              <span lang={langAttr} className="library-line-block__text">
-                                {line.text}
-                              </span>
-                            </div>
-                            <div className="library-line-block__bar">
-                              <CommentaryRibbonToggle
-                                panelId={panelId}
-                                ariaLabel={`${messages.commentaryShowLabel} — ${lineLabel}`}
-                                isOpen={open.has(key)}
-                                onToggle={() => toggle(key)}
-                                icon={open.has(key) ? "−" : "+"}
-                              />
-                            </div>
-                          </div>
-                        </td>
-                      ) : (
-                        <>
-                          <td className="library-lines-table__pos">{lineLabel}</td>
-                          <td className="library-lines-table__symbol" aria-hidden="true">
-                            <LineGlyph type={line.type} />
-                          </td>
-                          <td lang={langAttr} className="library-lines-table__text">
-                            {line.text}
-                          </td>
-                        </>
-                      )}
+                    <tr className={`library-lines-row library-lines-row--${line.type}`}>
+                      <td className="library-lines-table__pos">{lineLabel}</td>
+                      <td className="library-lines-table__symbol" aria-hidden="true">
+                        <LineGlyph type={line.type} />
+                      </td>
+                      <td lang={langAttr} className="library-lines-table__text">
+                        {line.text}
+                      </td>
+                      <td className="library-lines-table__toggle">
+                        {hasCommentary ? (
+                          <CommentaryRibbonToggle
+                            panelId={panelId}
+                            ariaLabel={`${messages.commentaryShowLabel} — ${lineLabel}`}
+                            isOpen={open.has(key)}
+                            onToggle={() => toggle(key)}
+                            icon={open.has(key) ? "−" : "+"}
+                          />
+                        ) : null}
+                      </td>
                     </tr>
                     {hasCommentary ? (
                       <tr className="library-lines-row library-lines-row--ribbon">
-                        <td colSpan={3} className="library-lines-table__ribbon">
+                        <td colSpan={4} className="library-lines-table__ribbon">
                           <CommentaryRibbon
                             panelId={panelId}
                             ariaLabel={`${messages.commentaryShowLabel} — ${lineLabel}`}
@@ -448,47 +464,29 @@ function TabPanel({
                     const yongHasCommentary = !!wilhelmCommentary?.yong || yongLeggeNote !== null;
                     return (
                       <>
-                        <tr
-                          className={`library-lines-row library-lines-row--yong${yongHasCommentary ? " library-lines-row--expandable" : ""}`}
-                        >
-                          {yongHasCommentary ? (
-                            <td colSpan={3} className="library-lines-table__block">
-                              <div className="library-line-block">
-                                <div className="library-line-block__main">
-                                  <span className="library-line-block__pos">{yongLabel}</span>
-                                  <span className="library-line-block__symbol" aria-hidden="true">
-                                    <LineGlyph type={yong} />
-                                  </span>
-                                  <span lang={langAttr} className="library-line-block__text">
-                                    {record.yongJiu ?? record.yongLiu ?? ""}
-                                  </span>
-                                </div>
-                                <div className="library-line-block__bar">
-                                  <CommentaryRibbonToggle
-                                    panelId={yongPanelId}
-                                    ariaLabel={`${messages.commentaryShowLabel} — ${yongLabel}`}
-                                    isOpen={open.has(yongKey)}
-                                    onToggle={() => toggle(yongKey)}
-                                    icon={open.has(yongKey) ? "−" : "+"}
-                                  />
-                                </div>
-                              </div>
-                            </td>
-                          ) : (
-                            <>
-                              <td className="library-lines-table__pos">{yongLabel}</td>
-                              <td className="library-lines-table__symbol" aria-hidden="true">
-                                <LineGlyph type={yong} />
-                              </td>
-                              <td lang={langAttr} className="library-lines-table__text">
-                                {record.yongJiu ?? record.yongLiu ?? ""}
-                              </td>
-                            </>
-                          )}
+                        <tr className="library-lines-row library-lines-row--yong">
+                          <td className="library-lines-table__pos">{yongLabel}</td>
+                          <td className="library-lines-table__symbol" aria-hidden="true">
+                            <LineGlyph type={yong} />
+                          </td>
+                          <td lang={langAttr} className="library-lines-table__text">
+                            {record.yongJiu ?? record.yongLiu ?? ""}
+                          </td>
+                          <td className="library-lines-table__toggle">
+                            {yongHasCommentary ? (
+                              <CommentaryRibbonToggle
+                                panelId={yongPanelId}
+                                ariaLabel={`${messages.commentaryShowLabel} — ${yongLabel}`}
+                                isOpen={open.has(yongKey)}
+                                onToggle={() => toggle(yongKey)}
+                                icon={open.has(yongKey) ? "−" : "+"}
+                              />
+                            ) : null}
+                          </td>
                         </tr>
                         {yongHasCommentary ? (
                           <tr className="library-lines-row library-lines-row--ribbon">
-                            <td colSpan={3} className="library-lines-table__ribbon">
+                            <td colSpan={4} className="library-lines-table__ribbon">
                               <CommentaryRibbon
                                 panelId={yongPanelId}
                                 ariaLabel={`${messages.commentaryShowLabel} — ${yongLabel}`}
@@ -524,7 +522,13 @@ function TabPanel({
       </section>
 
       {wilhelmCommentary?.wenYen ? (
-        <CommentaryDetails label={messages.wenYenHeading}>
+        <HexCommentaryBlock
+          panelId="commentary-wen-yen"
+          heading={messages.wenYenHeading}
+          ariaLabel={`${messages.commentaryShowLabel} — ${messages.wenYenHeading}`}
+          isOpen={open.has("wen-yen")}
+          onToggle={() => toggle("wen-yen")}
+        >
           {paragraphs(wilhelmCommentary.wenYen.text).map((p, i) => (
             <p key={`wy-${i}`}>{p}</p>
           ))}
@@ -532,15 +536,21 @@ function TabPanel({
           {paragraphs(wilhelmCommentary.wenYen.note).map((p, i) => (
             <p key={`wyn-${i}`}>{p}</p>
           ))}
-        </CommentaryDetails>
+        </HexCommentaryBlock>
       ) : null}
 
       {leggeCommentary ? (
-        <CommentaryDetails label={messages.scholarlyNotesHeading}>
+        <HexCommentaryBlock
+          panelId="commentary-footnotes"
+          heading={messages.scholarlyNotesHeading}
+          ariaLabel={`${messages.commentaryShowLabel} — ${messages.scholarlyNotesHeading}`}
+          isOpen={open.has("footnotes")}
+          onToggle={() => toggle("footnotes")}
+        >
           {paragraphs(leggeCommentary.footnotes).map((p, i) => (
             <p key={i}>{p}</p>
           ))}
-        </CommentaryDetails>
+        </HexCommentaryBlock>
       ) : null}
 
       <p className="library-source">

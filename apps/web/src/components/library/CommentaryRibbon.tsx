@@ -1,6 +1,9 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+
+/** Content taller than this (px) gets a footer "−" to collapse without scrolling up. */
+const FOOTER_SCROLL_THRESHOLD_PX = 280;
 
 export interface CommentaryRibbonToggleProps {
   readonly panelId: string;
@@ -37,8 +40,18 @@ export interface CommentaryRibbonProps {
   readonly isOpen: boolean;
   readonly onToggle: () => void;
   readonly children: ReactNode;
-  /** When true, only the collapsible panel (+ footer −) — toggle rendered elsewhere. */
+  /** Optional title shown in the top bar (hex-level blocks: About, Wen Yen, footnotes). */
+  readonly heading?: string;
+  /** When true, only the collapsible panel — toggle rendered elsewhere (lines table). */
   readonly panelOnly?: boolean;
+}
+
+interface CommentaryRibbonPanelProps {
+  readonly panelId: string;
+  readonly ariaLabel: string;
+  readonly isOpen: boolean;
+  readonly onToggle: () => void;
+  readonly children: ReactNode;
 }
 
 function CommentaryRibbonPanel({
@@ -47,7 +60,28 @@ function CommentaryRibbonPanel({
   isOpen,
   onToggle,
   children,
-}: Omit<CommentaryRibbonProps, "panelOnly">) {
+}: CommentaryRibbonPanelProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [showFooter, setShowFooter] = useState(false);
+
+  useLayoutEffect(() => {
+    if (!isOpen) {
+      setShowFooter(false);
+      return;
+    }
+    const el = contentRef.current;
+    if (!el) return;
+
+    const measure = () => {
+      setShowFooter(el.scrollHeight > FOOTER_SCROLL_THRESHOLD_PX);
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [isOpen, children]);
+
   return (
     <div
       id={panelId}
@@ -55,8 +89,10 @@ function CommentaryRibbonPanel({
       aria-hidden={!isOpen}
     >
       <div className="library-ribbon__panel-inner">
-        <div className="library-ribbon__content">{children}</div>
-        {isOpen ? (
+        <div ref={contentRef} className="library-ribbon__content">
+          {children}
+        </div>
+        {isOpen && showFooter ? (
           <div className="library-ribbon__bar library-ribbon__bar--footer">
             <CommentaryRibbonToggle
               panelId={panelId}
@@ -72,6 +108,33 @@ function CommentaryRibbonPanel({
   );
 }
 
+function CommentaryRibbonBar({
+  panelId,
+  ariaLabel,
+  isOpen,
+  onToggle,
+  heading,
+}: {
+  readonly panelId: string;
+  readonly ariaLabel: string;
+  readonly isOpen: boolean;
+  readonly onToggle: () => void;
+  readonly heading?: string;
+}) {
+  return (
+    <div className={`library-ribbon__bar${heading ? " library-ribbon__bar--labeled" : ""}`}>
+      {heading ? <span className="library-ribbon__heading">{heading}</span> : null}
+      <CommentaryRibbonToggle
+        panelId={panelId}
+        ariaLabel={ariaLabel}
+        isOpen={isOpen}
+        onToggle={onToggle}
+        icon={isOpen ? "−" : "+"}
+      />
+    </div>
+  );
+}
+
 /** Full-width per-point commentary accordion: oracle text stays above (caller
  * responsibility); toggle bar lives inside the same bordered zone as the oracle
  * row/card. State is controlled because table rows cannot wrap a single native
@@ -82,6 +145,7 @@ export function CommentaryRibbon({
   isOpen,
   onToggle,
   children,
+  heading,
   panelOnly = false,
 }: CommentaryRibbonProps) {
   if (panelOnly) {
@@ -101,15 +165,13 @@ export function CommentaryRibbon({
 
   return (
     <div className="library-ribbon">
-      <div className="library-ribbon__bar">
-        <CommentaryRibbonToggle
-          panelId={panelId}
-          ariaLabel={ariaLabel}
-          isOpen={isOpen}
-          onToggle={onToggle}
-          icon={isOpen ? "−" : "+"}
-        />
-      </div>
+      <CommentaryRibbonBar
+        panelId={panelId}
+        ariaLabel={ariaLabel}
+        isOpen={isOpen}
+        onToggle={onToggle}
+        heading={heading}
+      />
       <CommentaryRibbonPanel
         panelId={panelId}
         ariaLabel={ariaLabel}
