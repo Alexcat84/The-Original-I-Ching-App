@@ -2,8 +2,8 @@
 
 - **Fecha:** 2026-06-23
 - **Rama:** `feature/wilhelm-txt-au-maestro-2026-06-23`
-- **Estado:** **Gates 100/100 PASS** · **AU profunda APROBADA** · datasets **`official`** · **sin ingest a runtime**
-- **Relacionado:** `EPUB_PRIMARY_MIGRATION_2026-06-23.md` (bundle runtime EPUB-primary, capa distinta), `ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md`
+- **Estado:** **Gates 100/100 PASS** · **AU profunda APROBADA** · datasets **`official`** · **ingest runtime parcial** (ver tabla, actualizado 2026-06-23 post-fix)
+- **Relacionado:** `EPUB_PRIMARY_MIGRATION_2026-06-23.md` (bundle runtime EPUB-primary, capa distinta), `ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md`, `LIBRARY_COMMENTARY_LAYER_2026-06-23.md` (consumidor display-only), `LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md` (consumidor core — campo `name`)
 
 ---
 
@@ -11,11 +11,19 @@
 
 Construir el **maestro book-primary** de Wilhelm a partir de los TXT Princeton editados por el usuario (export EPUB → limpieza → parse), con trazabilidad campo a campo para AU en Google Sheets, **sin promover al bundle de producción** hasta cierre explícito.
 
+> **Actualización (2026-06-23, posterior a este cierre):** ese "sin promover"
+> ya no es total. Dos consumidores en runtime usan hoy `book-one`: la capa de
+> comentario de Biblioteca (`hexagrams.wilhelm.commentary.json`, display-only) y
+> el campo `name` del bundle principal (`scripts/build-hexagrams.mjs`, core +
+> prompt de IA). El oráculo (`judgment`/`image`/`lines`/`yong`) sigue viniendo
+> del EPUB-primary, no de este maestro.
+
 | Capa | Ubicación | Runtime |
 |------|-----------|---------|
-| Injector estructural + hanzi | `scripts/iching_wilhelm_translation.mjs` | Sí (metadata/trigramas; `english` = naming producto) |
-| Datasets TXT parseados | `tools/datasets/wilhelm/` | **No** (`runtimeIngest: false`) |
-| Bundle consultas | `packages/iching-data/src/generated/` | Sí (hoy EPUB-primary, no TXT maestro) |
+| Injector estructural + hanzi | `scripts/iching_wilhelm_translation.mjs` | Sí (metadata/trigramas) |
+| Datasets TXT parseados (`book-one`) | `tools/datasets/wilhelm/book-one/` | **Sí, parcial** — `name` (`build-hexagrams.mjs`) + comentario (`build-hexagram-commentary.mjs`) |
+| Datasets TXT parseados (`comments`) | `tools/datasets/wilhelm/comments/` | Sí — comentario Ten Wings, display-only |
+| Bundle consultas (oráculo) | `packages/iching-data/src/generated/hexagrams.wilhelm.json` | Sí (EPUB-primary para judgment/image/lines/yong; book-one TXT-maestro para `name`) |
 
 ---
 

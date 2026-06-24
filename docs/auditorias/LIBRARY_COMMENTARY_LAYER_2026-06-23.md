@@ -156,3 +156,23 @@ no chrome de UI.
   feature.
 - El apéndice de Wilhelm (`tools/datasets/wilhelm/appendix/`) sigue en estado draft,
   fuera de alcance de este feature.
+
+---
+
+## 8. Nota de seguimiento (2026-06-23, sesión posterior)
+
+La afirmación del §1 ("`HexagramRecord`/`HexagramsBundle` no se tocan") sigue
+siendo cierta **para esta capa de comentario** — su `git diff --stat` en
+`image-engine`/`backend/claude` se mantiene vacío. Pero en un fix **separado**
+ese mismo día se detectó que el campo `name` de `HexagramRecord` (fuera del
+alcance de este feature) estaba roto en 167 instancias y nunca había sido
+auditado contra fuente primaria. Se corrigió usando **el mismo dataset
+book-one** (`tools/datasets/{wilhelm,legge}/book-one/*-64hex-parsed.json`) pero
+por una ruta de build distinta: `scripts/build-hexagrams.mjs` (el bundle
+runtime principal), no `scripts/build-hexagram-commentary.mjs`. Ver
+`LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md`.
+
+Consecuencia práctica: a partir de ahora `tools/datasets/.../book-one` tiene
+**dos consumidores** en runtime — el comentario (display-only, este doc) y el
+campo `name` (core, incluido el prompt de IA). El comentario sigue sin
+inyectarse en el prompt; eso no cambió.

@@ -643,7 +643,6 @@ function parseLinesFromRaw(sectionText) {
       .filter((l) => l && !/^\d{1,3}$/.test(l))
       .slice(0, 3)
       .join("\n")
-      .replace(/\s+Good fortune\.?\s*$/i, "")
       .trim();
   }
 
@@ -657,7 +656,6 @@ function parseLinesFromRaw(sectionText) {
       .filter((l) => l && !/^\d{1,3}$/.test(l))
       .slice(0, 3)
       .join("\n")
-      .replace(/\s+Good fortune\.?\s*$/i, "")
       .trim();
   }
 

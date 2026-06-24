@@ -2,8 +2,9 @@
 
 - **Fecha:** 2026-06-23
 - **Rama:** `feature/wilhelm-txt-au-maestro-2026-06-23`
-- **Estado:** **Gates 4/4 PASS** · **AU manual APROBADA** · datasets **`official`** · **sin ingest runtime**
+- **Estado:** **Gates 4/4 PASS** · **AU manual APROBADA** · datasets **`official`** · **ingest runtime parcial** (ver §1, actualizado 2026-06-23 post-fix)
 - **Política notas:** ver [TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md](./TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md)
+- **Relacionado:** `LIBRARY_COMMENTARY_LAYER_2026-06-23.md` (consumidor display-only), `LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md` (consumidor core — campo `name`)
 
 ---
 
@@ -15,6 +16,13 @@
 | **Appendix** (I–VII + back matter) | `tools/datasets/legge/appendix/` | `Yi King - James Legge-Appendix.txt` | **official** |
 
 Meta: `nombre` = header TXT; `chinese_roman` = title-case(header); `chinese` + `hex_font` = `iching_zhouyi_translation.mjs` (canónico ×64).
+
+> **Actualización (2026-06-23, posterior a este cierre):** `book-one` tiene hoy
+> dos consumidores en runtime: la capa de comentario de Biblioteca
+> (`hexagrams.legge.commentary.json`, display-only, `footnotes`) y el campo
+> `name` del bundle principal (`scripts/build-hexagrams.mjs` ← `chinese_roman`,
+> Title Case con diacríticos). El oráculo (Thwan/líneas/yong) sigue viniendo del
+> EPUB-primary, no de este maestro.
 
 ---
 
@@ -69,4 +77,9 @@ Compactación vertical aplicada en parse (footnotes: una sola `\n` entre entrada
 
 ## 6. Runtime
 
-`runtimeIngest: false` en ambos manifests. Bundle `packages/iching-data` sigue EPUB/PDF-primary hasta gate de producto explícito.
+`runtimeIngest: true` en ambos manifests desde 2026-06-23 (actualizado tras este
+cierre) — `book-one` alimenta el comentario display-only
+(`hexagrams.legge.commentary.json`, ver `LIBRARY_COMMENTARY_LAYER_2026-06-23.md`)
+y el campo `name` del bundle principal (`chinese_roman`, ver
+`LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md`). El oráculo (Thwan, líneas,
+yong) sigue EPUB-primary, no de este maestro.

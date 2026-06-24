@@ -148,7 +148,6 @@ function parseLinesFromSectionHtml(sectionHtml) {
   );
   if (yongNine) {
     yongJiu = stripTags(yongNine[1])
-      .replace(/\s+Good fortune\.?\s*$/i, "")
       .trim();
   }
 
@@ -157,7 +156,6 @@ function parseLinesFromSectionHtml(sectionHtml) {
   );
   if (yongSix) {
     yongLiu = stripTags(yongSix[1])
-      .replace(/\s+Good fortune\.?\s*$/i, "")
       .trim();
   }
 

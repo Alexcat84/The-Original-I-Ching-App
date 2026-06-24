@@ -188,13 +188,13 @@ function TabPanel({
 >
 
       <section className="library-section">
-        {leggeCommentary?.thwanIntro ? (
-          <p className="library-editorial-note">
-            <em>{leggeCommentary.thwanIntro}</em>
-          </p>
-        ) : null}
         <h3>{messages.judgmentHeading}</h3>
         <div className="library-text-card">
+          {leggeCommentary?.thwanIntro ? (
+            <p className="library-editorial-note">
+              <em>{leggeCommentary.thwanIntro}</em>
+            </p>
+          ) : null}
           <div lang={langAttr} className="library-prose">
             {record.judgment.split("\n").filter(line => line.trim()).map((line, i) => (
               <div key={i} className="library-stanza">
@@ -244,12 +244,14 @@ function TabPanel({
       </section>
 
     <section className="library-section">
-      {leggeCommentary?.linesIntro ? (
-        <p className="library-editorial-note">
-          <em>{leggeCommentary.linesIntro}</em>
-        </p>
-      ) : null}
       <h3>{messages.linesHeading}</h3>
+      {leggeCommentary?.linesIntro ? (
+        <div className="library-text-card">
+          <p className="library-editorial-note">
+            <em>{leggeCommentary.linesIntro}</em>
+          </p>
+        </div>
+      ) : null}
       <div className="library-lines-table-wrap">
         <table className="library-lines-table">
           <thead>
@@ -341,13 +343,6 @@ function TabPanel({
         </div>
       </section>
 
-      <p className="library-source">
-        <span>{messages.sourceLabel}: </span>
-        <a href={source.sourceUrl} target="_blank" rel="noopener noreferrer">
-          {source.edition}
-        </a>
-      </p>
-
       {wilhelmCommentary ? (
         <CommentaryDetails label={messages.aboutHeading}>
           {paragraphs(wilhelmCommentary.about.intro).map((p, i) => (
@@ -391,6 +386,13 @@ function TabPanel({
           ))}
         </CommentaryDetails>
       ) : null}
+
+      <p className="library-source">
+        <span>{messages.sourceLabel}: </span>
+        <a href={source.sourceUrl} target="_blank" rel="noopener noreferrer">
+          {source.edition}
+        </a>
+      </p>
     </div>
   );
 }
