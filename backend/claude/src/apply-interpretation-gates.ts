@@ -76,10 +76,17 @@ function logValidationWarnings(
         ? "[iching] line_blockquote_missing"
         : failure.gate === "H4"
           ? "[iching] internal_rule_code_leak"
-          : "[iching] interpretation_format_warn";
+          : failure.gate === "H7"
+            ? "[iching] judgment_image_verbatim_drift"
+            : "[iching] interpretation_format_warn";
+    const h7Detail = failure.gate === "H7" ? (failure.detail as { translator?: string; field?: string } | undefined) : undefined;
     Sentry.captureMessage(event, {
       level: "warning",
-      tags: { provider: context.provider, hexagram: String(context.hexagram) },
+      tags: {
+        provider: context.provider,
+        hexagram: String(context.hexagram),
+        ...(h7Detail ? { translator: h7Detail.translator ?? "unknown", field: h7Detail.field ?? "unknown" } : {}),
+      },
       extra: { gate: failure.gate, streaming: context.streaming, detail: failure.detail },
     });
   }

@@ -54,17 +54,20 @@ export type LibraryPageUiMessages = {
   sourceLabel: string;
   /**
    * Optional scholarly-commentary layer (Wilhelm + Legge only, never Zhou Yi).
-   * One generic toggle label is reused for every per-point "+" disclosure
-   * (Judgment/Image/each Line/yong), following the existing FaqAccordion
-   * pattern: a single <summary> label, no separate "hide" text needed.
+   * Used as the visible label for the 3 hexagram-level ribbons (about/wenYen/
+   * scholarly notes). For the per-point "+" toggles (Judgment/Image/each
+   * Line/yong) it is only an aria-label suffix — the "+" itself has no
+   * visible text, since it repeats too often to read every time.
    */
   commentaryShowLabel: string;
   /** Sub-label inside a combined Wilhelm panel: book-one's own commentary. */
   wilhelmCommentaryLabel: string;
   /** Sub-label inside a combined Wilhelm panel: Ten Wings (Confucian) commentary. */
   tenWingsCommentaryLabel: string;
-  /** Sub-label inside a Legge panel: Great Symbolism (Appendix II). */
+  /** Sub-label inside a Legge panel, hexagram-level: "the Great Symbolism" (Appendix II, Legge's own term). */
   greatSymbolismLabel: string;
+  /** Sub-label inside a Legge panel, per-line: "the Lesser Symbolism" (Appendix II, Legge's own term — distinct from greatSymbolismLabel). */
+  lesserSymbolismLabel: string;
   /** Toggle heading: Wilhelm's general hexagram essay + ruler note + sequence. */
   aboutHeading: string;
   rulerNoteLabel: string;
@@ -134,7 +137,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "Ver comentario clásico",
     wilhelmCommentaryLabel: "Comentario de Wilhelm",
     tenWingsCommentaryLabel: "Diez Alas (comentario confuciano)",
-    greatSymbolismLabel: "Gran Simbolismo",
+    greatSymbolismLabel: "Gran Simbolismo (comentario Legge)",
+    lesserSymbolismLabel: "Simbolismo Menor (comentario Legge)",
     aboutHeading: "Acerca de este hexagrama",
     rulerNoteLabel: "La línea regente",
     miscNotesLabel: "Notas",
@@ -185,7 +189,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "Show classical commentary",
     wilhelmCommentaryLabel: "Wilhelm's commentary",
     tenWingsCommentaryLabel: "Ten Wings (Confucian commentary)",
-    greatSymbolismLabel: "Great Symbolism",
+    greatSymbolismLabel: "Great Symbolism (Legge commentary)",
+    lesserSymbolismLabel: "Lesser Symbolism (Legge commentary)",
     aboutHeading: "About this hexagram",
     rulerNoteLabel: "The ruling line",
     miscNotesLabel: "Notes",
@@ -235,7 +240,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "Ver comentário clássico",
     wilhelmCommentaryLabel: "Comentário de Wilhelm",
     tenWingsCommentaryLabel: "Dez Alas (comentário confuciano)",
-    greatSymbolismLabel: "Grande Simbolismo",
+    greatSymbolismLabel: "Grande Simbolismo (comentário Legge)",
+    lesserSymbolismLabel: "Simbolismo Menor (comentário Legge)",
     aboutHeading: "Sobre este hexagrama",
     rulerNoteLabel: "A linha regente",
     miscNotesLabel: "Notas",
@@ -286,7 +292,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "Voir le commentaire classique",
     wilhelmCommentaryLabel: "Commentaire de Wilhelm",
     tenWingsCommentaryLabel: "Dix Ailes (commentaire confucéen)",
-    greatSymbolismLabel: "Grand Symbolisme",
+    greatSymbolismLabel: "Grand Symbolisme (commentaire Legge)",
+    lesserSymbolismLabel: "Symbolisme Mineur (commentaire Legge)",
     aboutHeading: "À propos de cet hexagramme",
     rulerNoteLabel: "Le trait dominant",
     miscNotesLabel: "Notes",
@@ -337,7 +344,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "Klassischen Kommentar anzeigen",
     wilhelmCommentaryLabel: "Wilhelms Kommentar",
     tenWingsCommentaryLabel: "Zehn Flügel (konfuzianischer Kommentar)",
-    greatSymbolismLabel: "Große Symbolik",
+    greatSymbolismLabel: "Große Symbolik (Legge-Kommentar)",
+    lesserSymbolismLabel: "Kleinere Symbolik (Legge-Kommentar)",
     aboutHeading: "Über dieses Hexagramm",
     rulerNoteLabel: "Die herrschende Linie",
     miscNotesLabel: "Anmerkungen",
@@ -388,7 +396,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "Mostra commento classico",
     wilhelmCommentaryLabel: "Commento di Wilhelm",
     tenWingsCommentaryLabel: "Dieci Ali (commento confuciano)",
-    greatSymbolismLabel: "Grande Simbolismo",
+    greatSymbolismLabel: "Grande Simbolismo (commento Legge)",
+    lesserSymbolismLabel: "Piccolo Simbolismo (commento Legge)",
     aboutHeading: "Informazioni su questo esagramma",
     rulerNoteLabel: "La linea dominante",
     miscNotesLabel: "Note",
@@ -439,7 +448,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "古典注釈を表示",
     wilhelmCommentaryLabel: "ヴィルヘルムの注釈",
     tenWingsCommentaryLabel: "十翼（儒教的注釈）",
-    greatSymbolismLabel: "大象解",
+    greatSymbolismLabel: "大象解（レッジ注釈）",
+    lesserSymbolismLabel: "小象解（レッジ注釈）",
     aboutHeading: "この卦について",
     rulerNoteLabel: "主爻について",
     miscNotesLabel: "注記",
@@ -490,7 +500,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "查看古典注释",
     wilhelmCommentaryLabel: "卫礼贤注释",
     tenWingsCommentaryLabel: "十翼（儒家注释）",
-    greatSymbolismLabel: "大象解",
+    greatSymbolismLabel: "大象解（理雅各注）",
+    lesserSymbolismLabel: "小象解（理雅各注）",
     aboutHeading: "关于此卦",
     rulerNoteLabel: "主爻说明",
     miscNotesLabel: "注释",
@@ -539,7 +550,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "고전 주석 보기",
     wilhelmCommentaryLabel: "빌헬름 주석",
     tenWingsCommentaryLabel: "십익 (유교 주석)",
-    greatSymbolismLabel: "대상해",
+    greatSymbolismLabel: "대상해 (레그 주석)",
+    lesserSymbolismLabel: "소상해 (레그 주석)",
     aboutHeading: "이 괘에 대하여",
     rulerNoteLabel: "주효 설명",
     miscNotesLabel: "참고",
@@ -590,7 +602,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "عرض الشرح الكلاسيكي",
     wilhelmCommentaryLabel: "شرح ويلهلم",
     tenWingsCommentaryLabel: "الأجنحة العشرة (شرح كونفوشيوسي)",
-    greatSymbolismLabel: "الرمزية العظيمة",
+    greatSymbolismLabel: "الرمزية العظيمة (تعليق ليج)",
+    lesserSymbolismLabel: "الرمزية الصغرى (تعليق ليج)",
     aboutHeading: "عن هذا الغرض",
     rulerNoteLabel: "السطر الحاكم",
     miscNotesLabel: "ملاحظات",
@@ -640,7 +653,8 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     commentaryShowLabel: "शास्त्रीय टीका देखें",
     wilhelmCommentaryLabel: "विल्हेल्म की टीका",
     tenWingsCommentaryLabel: "दस पंख (कन्फ्यूशियाई टीका)",
-    greatSymbolismLabel: "महान प्रतीकवाद",
+    greatSymbolismLabel: "महान प्रतीकवाद (लेग की टिप्पणी)",
+    lesserSymbolismLabel: "लघु प्रतीकवाद (लेग की टिप्पणी)",
     aboutHeading: "इस हेक्साग्राम के बारे में",
     rulerNoteLabel: "प्रमुख रेखा",
     miscNotesLabel: "टिप्पणियाँ",

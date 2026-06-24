@@ -22,5 +22,9 @@ export {
   type ValidationFailure,
 } from "./interpretation-output-validator.js";
 export { validateLineCitation, buildLineCitationRetryParams } from "./interpretation-line-gate.js";
+export {
+  validateJudgmentImageVerbatim,
+  normalizeForVerbatimCompare,
+} from "./interpretation-judgment-image-gate.js";
 export { InterpretationQualityError } from "./interpretation-quality-error.js";
 export { generateOracleBonesInterpretation } from "./oracle-bones-interpretation.js";

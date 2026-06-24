@@ -325,6 +325,11 @@ async function main() {
           });
         }
         const detectedCategory = apiResult?.text ? extractCategory(apiResult.text) : null;
+        // Gate H7 (judgment/image verbatim fidelity) already runs inside
+        // validateInterpretationOutput and lands in warnFailures — surfaced
+        // here as its own column per docs/auditorias/
+        // READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md §8.
+        const judgmentImageVerbatimFailures = validation?.warnFailures.filter((f) => f.gate === "H7") ?? [];
 
         const row = {
           hexagram: n,
@@ -341,6 +346,7 @@ async function main() {
           warnCount: validation?.warnFailures.length ?? 0,
           blockingFailures: validation?.blockingFailures ?? [],
           warnFailures: validation?.warnFailures ?? [],
+          judgmentImageVerbatimFailures,
           latencyMs,
           inputTokens: apiResult?.inputTokens ?? null,
           outputTokens: apiResult?.outputTokens ?? null,
@@ -391,7 +397,12 @@ async function main() {
       rows.filter((r) => r.outputTokens).reduce((s, r) => s + r.outputTokens, 0) /
         Math.max(1, rows.filter((r) => r.outputTokens).length),
     ),
-    scope: "NO_CHANGING reading quality; changing lines covered by mutation QA",
+    judgmentImageVerbatimFailRows: rows
+      .filter((r) => r.judgmentImageVerbatimFailures.length > 0)
+      .map((r) => `${r.hexagram}/${r.translator}`),
+    scope:
+      "NO_CHANGING reading quality; changing lines covered by mutation QA. " +
+      "judgmentImageVerbatimFailures is the production Gate H7 (warn-only; backend/claude/src/interpretation-judgment-image-gate.ts).",
     hexNumbers,
     rows,
   };
@@ -411,14 +422,18 @@ async function main() {
     `| API errors | ${summary.errors} |`,
     `| Avg output tokens | ${summary.avgOutputTokens} |`,
     `| Duration | ${Math.round(summary.durationMs / 1000)}s |`,
+    `| Gate H7 verbatim fail (judgment/image) | ${summary.judgmentImageVerbatimFailRows.length}: [${summary.judgmentImageVerbatimFailRows.join(", ")}] |`,
     "",
-    "| Hex | Name | Translator | Status | Warns | Cat (model) | Out tok |",
-    "|-----|------|------------|--------|-------|-------------|---------|",
+    "| Hex | Name | Translator | Status | Warns | H7 | Cat (model) | Out tok |",
+    "|-----|------|------------|--------|-------|----|-------------|---------|",
   ];
   for (const r of rows) {
     const st = r.error ? "ERR" : r.blockingPass ? (r.warnCount ? "WARN" : "OK") : "FAIL";
+    const h7 = r.judgmentImageVerbatimFailures.length
+      ? r.judgmentImageVerbatimFailures.map((f) => f.detail.field).join(",")
+      : "ok";
     mdLines.push(
-      `| ${r.hexagram} | ${r.hexagramName} | ${r.translator} | ${st} | ${r.warnCount} | ${r.detectedCategory ?? "-"} | ${r.outputTokens ?? "-"} |`,
+      `| ${r.hexagram} | ${r.hexagramName} | ${r.translator} | ${st} | ${r.warnCount} | ${h7} | ${r.detectedCategory ?? "-"} | ${r.outputTokens ?? "-"} |`,
     );
   }
   writeFileSync(mdPath, mdLines.join("\n"), "utf8");
