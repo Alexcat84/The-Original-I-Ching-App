@@ -1,7 +1,7 @@
 # Biblioteca — capa de comentario opcional (Wilhelm + Legge)
 
 - **Fecha:** 2026-06-23
-- **Estado:** **Implementado** · tests en verde · `HexagramRecord`/motor/IA sin cambios
+- **Estado:** **Implementado** · UI ribbon cerrada 2026-06-24 · tests en verde · `HexagramRecord`/motor/IA sin cambios (capa comentario)
 - **Relacionado:** `TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md` (política de notas que habilita este feature), `WILHELM_TXT_AU_MAESTRO_2026-06-23.md`, `LEGGE_TXT_AU_MAESTRO_2026-06-23.md`
 
 ---
@@ -161,11 +161,25 @@ no chrome de UI.
 
 ## 8. Nota de seguimiento UI (2026-06-24)
 
-La capa de datos y la lógica de producto de este doc siguen válidas. Tras deploy a
-staging se detectaron defectos de layout en los toggles `"+"` por punto (Juicio,
-Imagen, Líneas): panel mal ubicado, columna estrecha, icono incorrecto, sin `−` al
-final del comentario extenso. **Plan de corrección** (pendiente implementación, 12
-riesgos con mitigación): [`LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md`](./LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md).
+La capa de datos y la lógica de producto de este doc siguen válidas. Tras el deploy
+inicial (2026-06-23) se detectaron defectos de layout en los toggles `"+"` por punto;
+corregidos en la iteración ribbon documentada en
+[`LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md`](./LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md).
+
+---
+
+## 10. Cierre UI Biblioteca (2026-06-24)
+
+La Biblioteca (detalle hexagrama, tabs Wilhelm/Legge) queda **cerrada visualmente**
+para la capa de comentario opcional:
+
+- Componente `CommentaryRibbon` + tokens cian del tema (`--accent`).
+- Juicio/Imagen: oráculo arriba, cinta debajo; footer `−` solo en textos extensos.
+- Líneas y bloques hex (About, Wen Yen, Notas eruditas): toggle `+`/`−` inline en
+  la misma fila.
+- Promovido a producción: merge `staging` → `main` (`7679281`).
+
+No quedan acciones abiertas de UI para este feature. Ver auditoría ribbon §10.
 
 ---
 

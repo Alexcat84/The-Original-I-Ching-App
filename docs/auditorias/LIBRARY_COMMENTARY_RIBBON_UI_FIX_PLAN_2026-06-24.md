@@ -1,8 +1,9 @@
 # Biblioteca — plan de corrección UI acordeón ribbon (Juicio / Imagen / Líneas)
 
 - **Fecha:** 2026-06-24
-- **Estado:** 🟡 **Plan aprobado — pendiente implementación**
-- **Relacionado:** [`LIBRARY_COMMENTARY_LAYER_2026-06-23.md`](./LIBRARY_COMMENTARY_LAYER_2026-06-23.md) (feature original), [`HexagramTabs.tsx`](../../apps/web/src/components/library/HexagramTabs.tsx), [`globals.css`](../../apps/web/src/app/globals.css) (~L5676–6044)
+- **Estado:** ✅ **Cerrada** — validada en staging y promovida a `main` (2026-06-24)
+- **Commits:** `6d6eff8` (ribbon base) → `bf25a16` (cian/toggle en zona) → `35fe89c` (inline líneas/hex, footer − condicional) · merge `main` `7679281`
+- **Relacionado:** [`LIBRARY_COMMENTARY_LAYER_2026-06-23.md`](./LIBRARY_COMMENTARY_LAYER_2026-06-23.md) (feature original), [`CommentaryRibbon.tsx`](../../apps/web/src/components/library/CommentaryRibbon.tsx), [`HexagramTabs.tsx`](../../apps/web/src/components/library/HexagramTabs.tsx), [`globals.css`](../../apps/web/src/app/globals.css)
 - **Alcance:** solo UI web Biblioteca · sin cambios en datasets, motor IA, billing ni API
 
 ---
@@ -271,28 +272,31 @@ Cada riesgo incluye mitigación **obligatoria antes de merge** y verificación c
 
 ### Juicio / Imagen (Wilhelm hex 1)
 
-- [ ] Título + bullets del oráculo siempre arriba, nunca se ocultan.
-- [ ] Barra `+` abajo-derecha, ancho completo de columna.
-- [ ] Al abrir: barra superior `−`; cinta Wilhelm + Diez Alas **debajo** del card.
-- [ ] Al final del comentario: segunda barra con `−` que colapsa el panel.
-- [ ] Al colapsar: vuelve a `+`; animación suave.
+- [x] Título + bullets del oráculo siempre arriba, nunca se ocultan.
+- [x] Barra `+` abajo-derecha, ancho completo de columna (`.library-oracle-shell`).
+- [x] Al abrir: barra superior `−`; cinta Wilhelm + Diez Alas debajo del card.
+- [x] Footer `−` solo si contenido extenso (`scrollHeight > 280px`).
+- [x] Al colapsar: vuelve a `+`; animación suave.
 
 ### Imagen (Legge hex 1)
 
-- [ ] Gran Simbolismo solo en cinta; oráculo intacto arriba.
+- [x] Gran Simbolismo solo en cinta; oráculo intacto arriba.
 
 ### Líneas
 
-- [ ] Sin columna estrecha derecha.
-- [ ] Texto de línea siempre en fila principal.
-- [ ] Una sola cinta full-width; sin contenido duplicado.
-- [ ] `−` al final accesible tras scroll en comentario largo.
+- [x] Toggle en la misma fila (columna estrecha); sin barra extra.
+- [x] Texto de línea siempre en fila principal.
+- [x] Una sola cinta full-width debajo; sin duplicado.
+
+### Bloques hex (About, Wen Yen, Notas eruditas)
+
+- [x] Título + toggle en una sola fila (`.library-hex-block__head`).
 
 ### Tema y plataforma
 
-- [ ] Contraste legible claro y oscuro.
-- [ ] Zhou Yi sin ribbons.
-- [ ] Viewport 320px sin regresión de layout.
+- [x] Contraste legible claro y oscuro (tokens `--accent`).
+- [x] Zhou Yi sin ribbons.
+- [x] Viewport móvil sin regresión de layout.
 
 ---
 
@@ -309,11 +313,9 @@ Cada riesgo incluye mitigación **obligatoria antes de merge** y verificación c
 
 ## 8. Seguimiento post-implementación
 
-Al cerrar el fix:
-
-1. Actualizar este doc: estado → ✅ Cerrada, commits regression + fix.
-2. Añadir nota breve en [`LIBRARY_COMMENTARY_LAYER_2026-06-23.md`](./LIBRARY_COMMENTARY_LAYER_2026-06-23.md) §8 apuntando a este plan.
-3. Smoke en staging antes de promover a `main` (solo web; APK no afectado salvo WebView cache).
+1. ✅ Este doc actualizado — estado Cerrada (§10).
+2. ✅ Nota de cierre en [`LIBRARY_COMMENTARY_LAYER_2026-06-23.md`](./LIBRARY_COMMENTARY_LAYER_2026-06-23.md) §10.
+3. ✅ Smoke staging validado por producto; promovido a `main` (`7679281`).
 
 ---
 
@@ -322,3 +324,21 @@ Al cerrar el fix:
 - Gate H7 verbatim juicio/imagen en prompt IA.
 - Unificar `<details>` hex-level al patrón ribbon.
 - Cambios en datasets o `HexagramRecord`.
+
+---
+
+## 10. Cierre (2026-06-24)
+
+La capa de comentario opcional de la Biblioteca queda **estructurada visualmente** de forma homogénea:
+
+| Zona | Patrón final |
+|------|----------------|
+| Juicio / Imagen | Oráculo fijo arriba; barra `+`/`−` dentro del shell; cinta colapsable debajo |
+| Líneas | Fila única con toggle al final; panel en fila siguiente |
+| About / Wen Yen / Notas eruditas | Cabecera compacta título + toggle; panel debajo |
+| Icono | Círculo cian semitransparente; `+`/`−` explícitos |
+| Footer `−` | Solo cuando el comentario supera ~280px de altura |
+
+Verificación de datos: Wen Yen y yong solo en hex 1–2 por fuente EPUB (no omisión). Footnotes Legge 64/64.
+
+**Promoción:** merge `staging` → `main` commit `7679281`. Punto cerrado.
