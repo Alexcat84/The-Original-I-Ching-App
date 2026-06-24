@@ -11,7 +11,92 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 | Version | versionCode | Date | Stage |
 |---|---|---|---|
+| 4.1.9 | 59 | 2026-06-24 | Closed Testing |
 | 4.1.8 | 58 | 2026-06-22 | Closed Testing |
+
+---
+
+## 4.1.9 (versionCode 59) — 2026-06-24
+
+Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
+order — copy the whole block below in one paste.
+
+<en-US>
+The Library, deeper.
+- New: optional classical commentary from Wilhelm and Legge, shown as a small "+" next to the Judgment, Image, and each line.
+- Redesigned layout: the oracle text always stays visible, the commentary expands below it.
+- The guide now covers every Library feature: tabs, search, trigram filter, and the mutations map.
+</en-US>
+
+<ar>
+المكتبة، بتعمق أكبر.
+- جديد: تعليق كلاسيكي اختياري من ويلهلم وليج، يظهر كعلامة "+" صغيرة بجانب الحكم والصورة وكل خط.
+- تصميم جديد: يبقى نص الأوراكل ظاهرا دائما، ويُفتح التعليق أسفله.
+- الدليل الآن يشرح كل ميزة في المكتبة: التبويبات والبحث وتصفية الرسوم الثلاثية وخريطة التحولات.
+</ar>
+
+<de-DE>
+Die Bibliothek, vertieft.
+- Neu: optionaler klassischer Kommentar von Wilhelm und Legge, gezeigt als kleines "+" neben Urteil, Bild und jeder Linie.
+- Neues Layout: der Orakeltext bleibt immer sichtbar, der Kommentar klappt darunter auf.
+- Der Leitfaden erklärt jetzt jede Bibliotheksfunktion: Tabs, Suche, Trigramm-Filter und die Mutationskarte.
+</de-DE>
+
+<es-419>
+La Biblioteca, más profunda.
+- Nuevo: comentario clásico opcional de Wilhelm y Legge, mostrado como un pequeño "+" junto al Juicio, la Imagen y cada línea.
+- Diseño renovado: el texto del oráculo siempre queda visible, el comentario se despliega debajo.
+- La guía ahora explica cada función de la Biblioteca: pestañas, búsqueda, filtro de trigramas y el mapa de mutaciones.
+</es-419>
+
+<fr-FR>
+La Bibliothèque, plus riche.
+- Nouveau : commentaire classique optionnel de Wilhelm et Legge, affiché comme un petit "+" près du Jugement, de l'Image et de chaque trait.
+- Nouvelle mise en page : le texte de l'oracle reste toujours visible, le commentaire se déplie en dessous.
+- Le guide explique maintenant chaque fonction de la Bibliothèque : onglets, recherche, filtre de trigramme et la carte des mutations.
+</fr-FR>
+
+<hi-IN>
+लाइब्रेरी, और गहरी।
+- नया: विल्हेम और लेग की वैकल्पिक शास्त्रीय टिप्पणी, जो निर्णय, छवि और हर रेखा के पास एक छोटे "+" के रूप में दिखती है।
+- नया डिज़ाइन: ओरेकल का पाठ हमेशा दिखता रहता है, टिप्पणी उसके नीचे खुलती है।
+- गाइड अब लाइब्रेरी की हर सुविधा बताती है: टैब, खोज, त्रिग्राम फ़िल्टर और परिवर्तन मानचित्र।
+</hi-IN>
+
+<it-IT>
+La Biblioteca, più profonda.
+- Novità: commento classico opzionale di Wilhelm e Legge, mostrato come un piccolo "+" accanto al Giudizio, all'Immagine e a ciascuna linea.
+- Nuovo layout: il testo dell'oracolo resta sempre visibile, il commento si apre sotto.
+- La guida ora spiega ogni funzione della Biblioteca: schede, ricerca, filtro per trigramma e la mappa delle mutazioni.
+</it-IT>
+
+<ja-JP>
+図書館、さらに深く。
+- 新機能：ヴィルヘルムとレッグによる任意の古典注釈を追加。判断・象・各爻の横に小さな「+」で表示。
+- 新しいレイアウト：卦辞は常に表示されたまま、注釈はその下に展開します。
+- ガイドは図書館の全機能を説明：タブ、検索、卦の絞り込み、変卦マップ。
+</ja-JP>
+
+<ko-KR>
+도서관, 더 깊어졌습니다.
+- 신규: 빌헬름과 레그의 선택적 고전 주석. 괘사, 상, 각 효 옆에 작은 "+"로 표시됩니다.
+- 새로운 레이아웃: 괘사는 항상 보이고, 주석은 그 아래에서 펼쳐집니다.
+- 가이드가 이제 도서관의 모든 기능을 설명합니다: 탭, 검색, 괘 필터, 변괘 지도.
+</ko-KR>
+
+<pt-BR>
+A Biblioteca, mais profunda.
+- Novo: comentário clássico opcional de Wilhelm e Legge, mostrado como um pequeno "+" junto ao Julgamento, à Imagem e a cada linha.
+- Novo layout: o texto do oráculo permanece sempre visível, o comentário expande abaixo dele.
+- O guia agora explica cada recurso da Biblioteca: abas, busca, filtro de trigramas e o mapa de mutações.
+</pt-BR>
+
+<zh-CN>
+图书馆，更深入了。
+- 新增：威廉与理雅各的可选古典注释，在判断、象和每条爻旁以小小的「+」显示。
+- 全新布局：卦辞始终保持可见，注释在其下方展开。
+- 使用指南现已说明图书馆的每项功能：标签、搜索、卦象筛选与变卦地图。
+</zh-CN>
 
 ---
 

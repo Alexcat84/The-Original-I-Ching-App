@@ -35,6 +35,15 @@ export type AuditsPageUiMessages = {
 
 const REPORTS_EN: AuditReportEntry[] = [
   {
+    id: "library-commentary-2026-06-24",
+    date: "24 Jun 2026",
+    title: "Library: classical commentary and accordion UI",
+    summary:
+      "Feature release: optional classical commentary (Wilhelm and Legge) in the Hexagram Library, shown as an expandable \"+\" next to the Judgment, the Image, and each line. Result: pass. Library-only, never sent to the AI during a consultation.",
+    status: "closed",
+    statusLabel: "Closed",
+  },
+  {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 Jun 2026",
     title: "Oracle texts: Wilhelm, Legge and Zhou Yi",
@@ -73,6 +82,15 @@ const REPORTS_EN: AuditReportEntry[] = [
 ];
 
 const REPORTS_ES: AuditReportEntry[] = [
+  {
+    id: "library-commentary-2026-06-24",
+    date: "24 jun 2026",
+    title: "Biblioteca: comentario clásico e interfaz de acordeón",
+    summary:
+      "Lanzamiento de funcionalidad: comentario clásico opcional (Wilhelm y Legge) en la Biblioteca de hexagramas, mostrado como un \"+\" desplegable junto al Juicio, la Imagen y cada línea. Resultado: aprobado. Solo en la Biblioteca, nunca se envía a la IA durante una consulta.",
+    status: "closed",
+    statusLabel: "Cerrada",
+  },
   {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 jun 2026",
@@ -113,6 +131,15 @@ const REPORTS_ES: AuditReportEntry[] = [
 
 const REPORTS_PT: AuditReportEntry[] = [
   {
+    id: "library-commentary-2026-06-24",
+    date: "24 jun 2026",
+    title: "Biblioteca: comentário clássico e interface em acordeão",
+    summary:
+      "Lançamento de funcionalidade: comentário clássico opcional (Wilhelm e Legge) na Biblioteca de hexagramas, mostrado como um \"+\" expansível junto ao Julgamento, à Imagem e a cada linha. Resultado: aprovado. Apenas na Biblioteca, nunca enviado à IA durante uma consulta.",
+    status: "closed",
+    statusLabel: "Encerrada",
+  },
+  {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 jun 2026",
     title: "Textos do oráculo: Wilhelm, Legge e Zhou Yi",
@@ -151,6 +178,15 @@ const REPORTS_PT: AuditReportEntry[] = [
 ];
 
 const REPORTS_FR: AuditReportEntry[] = [
+  {
+    id: "library-commentary-2026-06-24",
+    date: "24 juin 2026",
+    title: "Bibliothèque : commentaire classique et interface en accordéon",
+    summary:
+      "Sortie de fonctionnalité : commentaire classique optionnel (Wilhelm et Legge) dans la Bibliothèque des hexagrammes, affiché comme un \"+\" dépliable près du Jugement, de l'Image et de chaque trait. Résultat : réussi. Réservé à la Bibliothèque, jamais envoyé à l'IA pendant une consultation.",
+    status: "closed",
+    statusLabel: "Clos",
+  },
   {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 juin 2026",
@@ -191,6 +227,15 @@ const REPORTS_FR: AuditReportEntry[] = [
 
 const REPORTS_DE: AuditReportEntry[] = [
   {
+    id: "library-commentary-2026-06-24",
+    date: "24. Juni 2026",
+    title: "Bibliothek: klassischer Kommentar und Akkordeon-Oberfläche",
+    summary:
+      "Feature-Release: optionaler klassischer Kommentar (Wilhelm und Legge) in der Hexagramm-Bibliothek, gezeigt als aufklappbares \"+\" neben dem Urteil, dem Bild und jeder Linie. Ergebnis: bestanden. Nur in der Bibliothek, nie an die KI während einer Beratung gesendet.",
+    status: "closed",
+    statusLabel: "Abgeschlossen",
+  },
+  {
     id: "translator-pdf-gold-2026-06-22",
     date: "22. Juni 2026",
     title: "Orakeltexte: Wilhelm, Legge und Zhou Yi",
@@ -229,6 +274,15 @@ const REPORTS_DE: AuditReportEntry[] = [
 ];
 
 const REPORTS_IT: AuditReportEntry[] = [
+  {
+    id: "library-commentary-2026-06-24",
+    date: "24 giugno 2026",
+    title: "Biblioteca: commento classico e interfaccia ad accordion",
+    summary:
+      "Rilascio funzionalità: commento classico opzionale (Wilhelm e Legge) nella Biblioteca degli esagrammi, mostrato come un \"+\" espandibile accanto al Giudizio, all'Immagine e a ciascuna linea. Risultato: superato. Solo nella Biblioteca, mai inviato all'IA durante una consultazione.",
+    status: "closed",
+    statusLabel: "Chiusa",
+  },
   {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 giu 2026",
@@ -269,6 +323,15 @@ const REPORTS_IT: AuditReportEntry[] = [
 
 const REPORTS_JA: AuditReportEntry[] = [
   {
+    id: "library-commentary-2026-06-24",
+    date: "2026年6月24日",
+    title: "図書館：古典注釈とアコーディオンUI",
+    summary:
+      "機能リリース：易経図書館における任意の古典注釈（ヴィルヘルムとレッグ）。判断・象・各爻の横の展開可能な「+」で表示。結果：合格。図書館内のみで、相談中にAIへ送信されることはありません。",
+    status: "closed",
+    statusLabel: "完了",
+  },
+  {
     id: "translator-pdf-gold-2026-06-22",
     date: "2026年6月22日",
     title: "神託文: Wilhelm、Legge、周易",
@@ -307,6 +370,15 @@ const REPORTS_JA: AuditReportEntry[] = [
 ];
 
 const REPORTS_ZH: AuditReportEntry[] = [
+  {
+    id: "library-commentary-2026-06-24",
+    date: "2026年6月24日",
+    title: "图书馆：古典注释与折叠式界面",
+    summary:
+      "功能发布：易经图书馆中可选的古典注释（威廉与理雅各），以判断、象和每条爻旁可展开的「+」显示。结果：通过。仅限图书馆内，咨询过程中绝不会发送给AI。",
+    status: "closed",
+    statusLabel: "已结案",
+  },
   {
     id: "translator-pdf-gold-2026-06-22",
     date: "2026年6月22日",
@@ -347,6 +419,15 @@ const REPORTS_ZH: AuditReportEntry[] = [
 
 const REPORTS_KO: AuditReportEntry[] = [
   {
+    id: "library-commentary-2026-06-24",
+    date: "2026년 6월 24일",
+    title: "도서관: 고전 주석 및 아코디언 UI",
+    summary:
+      "기능 출시: 괘사, 상, 각 효 옆에 펼칠 수 있는 \"+\"로 표시되는 헥사그램 도서관의 선택적 고전 주석(빌헬름과 레그). 결과: 통과. 도서관 전용이며 상담 중 AI로 전송되지 않습니다.",
+    status: "closed",
+    statusLabel: "종료",
+  },
+  {
     id: "translator-pdf-gold-2026-06-22",
     date: "2026년 6월 22일",
     title: "신탁문: Wilhelm, Legge, 주역",
@@ -386,6 +467,15 @@ const REPORTS_KO: AuditReportEntry[] = [
 
 const REPORTS_AR: AuditReportEntry[] = [
   {
+    id: "library-commentary-2026-06-24",
+    date: "24 يونيو 2026",
+    title: "المكتبة: تعليق كلاسيكي وواجهة أكورديون",
+    summary:
+      "إصدار ميزة: تعليق كلاسيكي اختياري (ويلهلم وليج) في مكتبة الهكساغرامات، يظهر كعلامة \"+\" قابلة للتوسيع بجانب الحكم والصورة وكل خط. النتيجة: نجاح. خاص بالمكتبة فقط، ولا يُرسل إلى الذكاء الاصطناعي أثناء الاستشارة.",
+    status: "closed",
+    statusLabel: "مغلقة",
+  },
+  {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 يونيو 2026",
     title: "نصوص الأوراكل: Wilhelm وLegge وZhou Yi",
@@ -424,6 +514,15 @@ const REPORTS_AR: AuditReportEntry[] = [
 ];
 
 const REPORTS_HI: AuditReportEntry[] = [
+  {
+    id: "library-commentary-2026-06-24",
+    date: "24 जून 2026",
+    title: "लाइब्रेरी: शास्त्रीय टिप्पणी और अकॉर्डियन UI",
+    summary:
+      "फ़ीचर रिलीज़: हेक्साग्राम लाइब्रेरी में वैकल्पिक शास्त्रीय टिप्पणी (विल्हेम और लेग), जो निर्णय, छवि और हर रेखा के पास विस्तार योग्य \"+\" के रूप में दिखती है। परिणाम: उत्तीर्ण। केवल लाइब्रेरी के लिए, परामर्श के दौरान कभी AI को नहीं भेजी जाती।",
+    status: "closed",
+    statusLabel: "बंद",
+  },
   {
     id: "translator-pdf-gold-2026-06-22",
     date: "22 जून 2026",
@@ -467,7 +566,7 @@ const EN_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "We verify oracle texts and changing-line rules against named classical editions. This page lists audit dates, sources, and outcomes.",
   lastUpdatedLabel: "Last updated",
-  lastUpdated: "22 June 2026",
+  lastUpdated: "24 June 2026",
   introHeading: "What we publish here",
   introBody:
     "Each entry records when we audited, which edition or translation we used as reference, and whether the app passed. Detailed methodology and engineering reports are kept internally, not on this page.",
@@ -493,7 +592,7 @@ const ES_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "Verificamos textos del oráculo y reglas de líneas cambiantes contra ediciones clásicas nombradas. Esta página lista fechas, fuentes y resultados.",
   lastUpdatedLabel: "Última actualización",
-  lastUpdated: "22 de junio de 2026",
+  lastUpdated: "24 de junio de 2026",
   introHeading: "Qué publicamos aquí",
   introBody:
     "Cada entrada indica cuándo auditamos, qué edición o traducción usamos como referencia y si la app aprobó. La metodología detallada y los informes de ingeniería son internos y no aparecen en esta página.",
@@ -519,7 +618,7 @@ const PT_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "Verificamos os textos do oráculo e as regras de linhas mutantes contra edições clássicas nomeadas. Esta página lista datas de auditoria, fontes e resultados.",
   lastUpdatedLabel: "Última atualização",
-  lastUpdated: "22 de junho de 2026",
+  lastUpdated: "24 de junho de 2026",
   introHeading: "O que publicamos aqui",
   introBody:
     "Cada entrada indica quando auditámos, qual edição ou tradução usámos como referência e se a app passou. A metodologia detalhada e os relatórios de engenharia são internos e não aparecem nesta página.",
@@ -545,7 +644,7 @@ const FR_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "Nous vérifions les textes de l'oracle et les règles de lignes changeantes par rapport à des éditions classiques nommées. Cette page liste les dates d'audit, les sources et les résultats.",
   lastUpdatedLabel: "Dernière mise à jour",
-  lastUpdated: "22 juin 2026",
+  lastUpdated: "24 juin 2026",
   introHeading: "Ce que nous publions ici",
   introBody:
     "Chaque entrée indique quand nous avons audité, quelle édition ou traduction nous avons utilisée comme référence, et si l'app a réussi. La méthodologie détaillée et les rapports d'ingénierie restent internes, pas sur cette page.",
@@ -571,7 +670,7 @@ const DE_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "Wir prüfen Orakeltexte und Regeln für wechselnde Linien gegen namentlich genannte klassische Ausgaben. Diese Seite listet Prüfdaten, Quellen und Ergebnisse auf.",
   lastUpdatedLabel: "Zuletzt aktualisiert",
-  lastUpdated: "22. Juni 2026",
+  lastUpdated: "24. Juni 2026",
   introHeading: "Was wir hier veröffentlichen",
   introBody:
     "Jeder Eintrag zeigt, wann wir geprüft haben, welche Ausgabe oder Übersetzung als Referenz diente und ob die App bestanden hat. Detaillierte Methodik und technische Berichte bleiben intern und erscheinen nicht auf dieser Seite.",
@@ -597,7 +696,7 @@ const IT_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "Verifichiamo i testi dell'oracolo e le regole delle linee mutanti rispetto a edizioni classiche nominate. Questa pagina elenca date di audit, fonti e risultati.",
   lastUpdatedLabel: "Ultimo aggiornamento",
-  lastUpdated: "22 giugno 2026",
+  lastUpdated: "24 giugno 2026",
   introHeading: "Cosa pubblichiamo qui",
   introBody:
     "Ogni voce indica quando abbiamo eseguito l'audit, quale edizione o traduzione abbiamo usato come riferimento e se l'app ha superato il test. La metodologia detagliata e i rapporti di ingegneria restano interni, non in questa pagina.",
@@ -623,7 +722,7 @@ const JA_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "神託文と変爻ルールを、明示された古典版と照合して検証します。このページには監査日、出典、結果を記載します。",
   lastUpdatedLabel: "最終更新",
-  lastUpdated: "2026年6月22日",
+  lastUpdated: "2026年6月24日",
   introHeading: "ここに掲載する内容",
   introBody:
     "各項目には、監査を実施した日時、参照に使用した版または訳、アプリが合格したかどうかを記載します。詳細な方法論とエンジニアリングレポートは社内で保管し、このページには掲載しません。",
@@ -649,7 +748,7 @@ const ZH_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "我们将神谕文本和变爻规则与指定的经典版本进行核对。本页列出审计日期、来源和结果。",
   lastUpdatedLabel: "最后更新",
-  lastUpdated: "2026年6月22日",
+  lastUpdated: "2026年6月24日",
   introHeading: "本页发布内容",
   introBody:
     "每条记录显示我们何时进行审计、使用哪个版本或译本作为参照，以及应用是否通过。详细方法论和工程报告仅供内部使用，不在本页公开。",
@@ -674,7 +773,7 @@ const KO_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "신탁문과 변효 규칙을 명시된 고전판과 대조하여 검증합니다. 이 페이지에는 감사 날짜, 출처, 결과가 나열됩니다.",
   lastUpdatedLabel: "최종 업데이트",
-  lastUpdated: "2026년 6월 22일",
+  lastUpdated: "2026년 6월 24일",
   introHeading: "여기에 게시하는 내용",
   introBody:
     "각 항목은 감사 시점, 참조로 사용한 판본이나 번역본, 앱의 통과 여부를 기록합니다. 상세 방법론과 엔지니어링 보고서는 내부적으로만 보관하며 이 페이지에는 게시하지 않습니다.",
@@ -700,7 +799,7 @@ const AR_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "نتحقق من نصوص العرافة وقواعد الخطوط المتغيرة مقابل إصدارات كلاسيكية محددة بالاسم. تسرد هذه الصفحة تواريخ التدقيق والمصادر والنتائج.",
   lastUpdatedLabel: "آخر تحديث",
-  lastUpdated: "22 يونيو 2026",
+  lastUpdated: "24 يونيو 2026",
   introHeading: "ما ننشره هنا",
   introBody:
     "يسجل كل إدخال وقت التدقيق، والإصدار أو الترجمة التي استخدمناها كمرجع، وما إذا نجح التطبيق. تبقى المنهجية التفصيلية وتقارير الهندسة داخلية، ولا تُنشر في هذه الصفحة.",
@@ -726,7 +825,7 @@ const HI_BASE: Omit<AuditsPageUiMessages, "reports"> = {
   lead:
     "हम Oracle पाठ और बदलती रेखाओं के नियमों को नामित शास्त्रीय संस्करणों के विरुद्ध सत्यापित करते हैं। इस पृष्ठ पर ऑडिट तिथियाँ, स्रोत और परिणाम सूचीबद्ध हैं।",
   lastUpdatedLabel: "अंतिम अपडेट",
-  lastUpdated: "22 जून 2026",
+  lastUpdated: "24 जून 2026",
   introHeading: "हम यहाँ क्या प्रकाशित करते हैं",
   introBody:
     "प्रत्येक प्रविष्टि यह दर्शाती है कि हमने कब ऑडिट किया, किस संस्करण या अनुवाद को संदर्भ के रूप में उपयोग किया, और ऐप पास हुआ या नहीं। विस्तृत पद्धति और इंजीनियरिंग रिपोर्ट आंतरिक रूप से रखी जाती हैं, इस पृष्ठ पर नहीं।",

@@ -1,8 +1,8 @@
 # Biblioteca — plan de corrección UI acordeón ribbon (Juicio / Imagen / Líneas)
 
 - **Fecha:** 2026-06-24
-- **Estado:** ✅ **Cerrada** — validada en staging y promovida a `main` (2026-06-24)
-- **Commits:** `6d6eff8` (ribbon base) → `bf25a16` (cian/toggle en zona) → `35fe89c` (inline líneas/hex, footer − condicional) · merge `main` `7679281`
+- **Estado:** ✅ **Cerrada** — validada en staging, promovida a `main` (2026-06-24), y confirmada en dispositivo real (APK Android) tras un fix adicional (§11)
+- **Commits:** `6d6eff8` (ribbon base) → `bf25a16` (cian/toggle en zona) → `35fe89c` (inline líneas/hex, footer − condicional) · merge `main` `7679281` · **`4460ad5`** (fix posterior: altura medida en JS en vez de `grid-template-rows: 0fr→1fr`, ver §11)
 - **Relacionado:** [`LIBRARY_COMMENTARY_LAYER_2026-06-23.md`](./LIBRARY_COMMENTARY_LAYER_2026-06-23.md) (feature original), [`CommentaryRibbon.tsx`](../../apps/web/src/components/library/CommentaryRibbon.tsx), [`HexagramTabs.tsx`](../../apps/web/src/components/library/HexagramTabs.tsx), [`globals.css`](../../apps/web/src/app/globals.css)
 - **Alcance:** solo UI web Biblioteca · sin cambios en datasets, motor IA, billing ni API
 
@@ -340,5 +340,24 @@ La capa de comentario opcional de la Biblioteca queda **estructurada visualmente
 | Footer `−` | Solo cuando el comentario supera ~280px de altura |
 
 Verificación de datos: Wen Yen y yong solo en hex 1–2 por fuente EPUB (no omisión). Footnotes Legge 64/64.
+
+---
+
+## 11. Hallazgo posterior al cierre + fix + confirmación en dispositivo real (2026-06-24, sesión siguiente)
+
+El "comportamiento esperado" del §1 (fila de la animación) especificaba `grid-template-rows: 0fr → 1fr` como técnica de colapso/expansión. Esa técnica **fue la causa de un bug real** reportado por el propietario con capturas de la APK Android: al expandir el comentario de una línea (celda `<td colSpan={4}>` en la tabla), el panel colapsaba a una columna casi sin ancho y partía cada palabra del texto en su propia línea ("He / does / not / allow / himself..."), y en Juicio/Imagen el toggle aparecía pegado al título en vez de abajo-a-la-derecha del card.
+
+**Causa raíz confirmada:** `grid-template-rows: 0fr` dimensiona el track del grid contra el ancho intrínseco del contenido cuando el contenedor no tiene un tamaño definido — exactamente la situación de una celda de tabla con `colSpan`. El bloque "abajo-a-la-derecha" en sí ya estaba bien ubicado en el JSX (la barra `+`/`−` vive después del `.library-oracle-shell__body`); lo que se veía en una captura coincidía con una versión en caché del navegador anterior a estos commits, no con el código real en ese momento — confirmado al comparar contra el HEAD real.
+
+**Fix aplicado (commit `4460ad5`, mismo día):**
+- `CommentaryRibbon.tsx`: la altura del panel pasa de `grid-template-rows: 0fr/1fr` a una altura **medida en JS** (`ResizeObserver` + `scrollHeight` → `style.maxHeight` en px), técnica sin ambigüedad de dimensionamiento dentro de una celda con `colSpan`.
+- `globals.css`: `width: 100%; box-sizing: border-box;` reforzado en `.library-ribbon`, `.library-ribbon__panel`, `.library-ribbon__panel-inner`, `.library-ribbon__content` y `.library-oracle-shell` como segunda defensa independiente contra el mismo tipo de colapso. Ícono `+`/`−` agrandado (1.28rem → 1.45rem) y columna de toggle de la tabla ensanchada (2.25rem → 2.6rem) para que no quede ajustado.
+- Mismo commit corrige, en `backend/claude`, una etiqueta de traductor incorrecta en el Gate H7 (no relacionado a este bug de UI, ver `READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md` §11).
+
+**Confirmación en dispositivo real (capturas del propietario, APK Android, hex 61 中孚 zhōngfú):**
+- "Acerca de este hexagrama" aparece **primero**, antes de "Juicio" — confirma el reorden de `HexagramTabs.tsx` (sesión previa) funcionando en producción, no solo en teoría.
+- El layout no muestra el bug de columna angosta/palabra-por-línea reportado en las capturas anteriores.
+
+**Verificación adicional (mismo día, fuera de alcance original de este doc):** la sección "Mutaciones" de la página de detalle (`apps/web/src/lib/library/library-data.ts`, `buildMutations`) visible en la misma captura fue auditada por separado — 384/384 mutaciones (64 hexagramas × 6 líneas) verificadas matemáticamente como involuciones consistentes (sin errores), y el caso hex 61 de la captura coincide carácter a carácter con el cálculo independiente. No es un bug de este doc; se documenta aquí solo porque apareció en la misma evidencia visual.
 
 **Promoción:** merge `staging` → `main` commit `7679281`. Punto cerrado.

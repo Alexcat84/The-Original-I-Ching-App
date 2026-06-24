@@ -114,8 +114,17 @@ function buildCheckEntries(cast: CastResult): CheckEntry[] {
     // section with no localized heading list yet — out of scope for H7 v1
     // (primary Judgment/Image is the highest-traffic, highest-confidence case).
   } else {
-    push("wilhelm", "judgment", t.primaryJudgment);
-    push("wilhelm", "image", t.primaryImage);
+    // Single-translator mode: primaryJudgment/primaryImage hold whichever
+    // translator was actually selected (wilhelm/legge/zhouyi) — see
+    // engine.ts buildCastResultFromLines. Label the check entry with the
+    // real translator so Sentry telemetry isn't misattributed to Wilhelm
+    // for a Legge or Zhou Yi single-translator reading.
+    const singleTranslator: Translator =
+      cast.interpretationMode === "legge" || cast.interpretationMode === "zhouyi"
+        ? cast.interpretationMode
+        : "wilhelm";
+    push(singleTranslator, "judgment", t.primaryJudgment);
+    push(singleTranslator, "image", t.primaryImage);
   }
   void hasTransformed; // documented exclusion above, not a TODO
   return entries;

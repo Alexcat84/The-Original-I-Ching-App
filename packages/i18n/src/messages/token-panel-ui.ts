@@ -18,7 +18,7 @@ export type TokenPanelUiMessages = {
   consultThreadLimitStrip: string;
   noTokensDepleted: string;
   signInForBalance: string;
-  /** Link label → `/guia#planes` from token center modal. */
+  /** Link label → `/guia#panel-opciones` from token center modal (see page.tsx). */
   tokenCenterGuideLink: string;
   /** Token center summary row (not the same as `remaining` mid-sentence). */
   availableBalance: string;

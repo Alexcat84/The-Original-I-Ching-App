@@ -88,6 +88,9 @@ export default async function GuiaRapidaPage() {
           <li>
             <strong>{g.yarrowPracticalHeading}</strong>: {g.yarrowPracticalBody}
           </li>
+          <li>
+            <strong>{g.bonesPracticalHeading}</strong>: {g.bonesPracticalBody}
+          </li>
         </ul>
 
         {/* Selector 4: Ejecución (automática o manual) */}
@@ -115,6 +118,15 @@ export default async function GuiaRapidaPage() {
 
         {/* Biblioteca y documentación */}
         <h2 id="biblioteca-docs">{g.s6Heading}</h2>
+        <p>{g.libraryFeatureBody}</p>
+        <ul>
+          <li>{g.libraryTabsBullet}</li>
+          <li>{g.libraryCommentaryBullet}</li>
+          <li>{g.libraryWenYenBullet}</li>
+          <li>{g.librarySearchBullet}</li>
+          <li>{g.libraryMutationsBullet}</li>
+          <li>{g.libraryCommentaryScopeBullet}</li>
+        </ul>
         <ul>
           <li>
             <strong>{g.s6LibraryTitle}</strong>: {g.s6Library}
