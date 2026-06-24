@@ -72,6 +72,7 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
     "ai-vs-algorithm",
     "authentic-texts",
     "library-source-language",
+    "zhouyi-no-commentary",
     "data-reliability",
     "not-advice",
   ],
@@ -386,6 +387,15 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "zhouyi-no-commentary",
+    question:
+      "Why doesn't the Zhou Yi tab in the Library show any \"+\" commentary like Wilhelm or Legge?",
+    answer:
+      "Because there is none to show. The Zhou Yi is the oldest core text, without any later layer of commentary attached: only the Judgment, the Image, and the line oracles, exactly as it circulated before later scholars added their own readings. Wilhelm's tab adds his own commentary plus the Confucian Ten Wings; Legge's tab adds his footnotes plus the Great and Lesser Symbolism from his Appendix II. Zhou Yi has neither, on purpose: it is the root text those later commentaries were written about, not a version that received one of its own.",
+    moreInfoLink: { href: "/library", label: "Open the Library →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "Does the app work in my language?",
     answer:
@@ -597,6 +607,15 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "zhouyi-no-commentary",
+    question:
+      "¿Por qué la pestaña Zhou Yi en la Biblioteca no muestra ningún comentario con \"+\" como Wilhelm o Legge?",
+    answer:
+      "Porque no hay ninguno que mostrar. El Zhou Yi es el texto núcleo más antiguo, sin ninguna capa posterior de comentario añadida: solo el Juicio, la Imagen y los oráculos de cada línea, tal como circulaba antes de que eruditos posteriores agregaran sus propias lecturas. La pestaña de Wilhelm añade su propio comentario más las Diez Alas confucianas; la de Legge añade sus notas más el Gran y el Menor Simbolismo de su Apéndice II. El Zhou Yi no tiene ninguno de los dos, a propósito: es el texto raíz sobre el que se escribieron esos comentarios posteriores, no una versión que recibió uno propio.",
+    moreInfoLink: { href: "/library", label: "Abre la Biblioteca →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "¿La app funciona en mi idioma?",
     answer:
@@ -764,6 +783,15 @@ const FAQ_ITEMS_AR: FaqItem[] = [
       "لماذا لا يتغيّر نص الهكساجرامات في المكتبة عند تغيير لغة التطبيق؟",
     answer:
       "يُعرض كما نُشر بالضبط. تظهر ترجمتا Wilhelm/Baynes وJames Legge بلغتهما الإنجليزية الأصلية، ويظهر التشو يي بالصينية الكلاسيكية، بنفس الكلمات في جميع لغات الواجهة الإحدى عشرة. إعادة ترجمة ترجمة سابقة تستبدل كلمات المترجم نفسه بصياغة مُعاد التعبير عنها، وقد تشوّه عقودًا من العمل الأكاديمي المُستقر. الهدف هو إعطاؤك وصولاً مباشرًا إلى المصدر المنشور الأكثر موثوقية، لا إلى نسخة مُستمدة منه. هذا يختلف عن استشارتك مع الذكاء الاصطناعي، التي تجيب دائمًا بلغة سؤالك: فهناك يفسّر الذكاء الاصطناعي من أجلك نتيجة متشكّلة مسبقًا، ولا يقدّم نصًا أصليًا.",
+    moreInfoLink: { href: "/library", label: "افتح المكتبة →" },
+    related: ["methodNotes"],
+  },
+  {
+    id: "zhouyi-no-commentary",
+    question:
+      "لماذا لا تُظهر علامة تبويب تشو يي في المكتبة أي تعليق بعلامة \"+\" كما يظهر عند ويلهلم أو ليج؟",
+    answer:
+      "لأنه لا يوجد تعليق لعرضه. التشو يي هو النص الجذري الأقدم، دون أي طبقة تعليق لاحقة أُضيفت إليه: فقط الحكم والصورة وأقوال كل خط، تمامًا كما تم تداوله قبل أن يضيف علماء لاحقون قراءاتهم الخاصة. تبويب ويلهلم يضيف تعليقه الخاص بالإضافة إلى الأجنحة العشرة الكونفوشيوسية، وتبويب ليج يضيف ملاحظاته بالإضافة إلى الرمزية العظيمة والرمزية الصغرى من ملحقه الثاني. التشو يي لا يحتوي على أي منهما، عن قصد: فهو النص الجذري الذي كُتبت تلك التعليقات اللاحقة عنه، لا نسخة حصلت على تعليق خاص بها.",
     moreInfoLink: { href: "/library", label: "افتح المكتبة →" },
     related: ["methodNotes"],
   },
@@ -959,6 +987,15 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "zhouyi-no-commentary",
+    question:
+      "लाइब्रेरी के झोउ यी टैब में विल्हेम या लेग की तरह \"+\" टिप्पणी क्यों नहीं दिखाई जाती?",
+    answer:
+      "क्योंकि दिखाने के लिए कोई टिप्पणी मौजूद ही नहीं है। झोउ यी सबसे पुराना मूल पाठ है, जिसमें बाद में जोड़ी गई टिप्पणी की कोई परत नहीं है: केवल निर्णय, छवि और प्रत्येक रेखा के कथन, ठीक वैसे जैसे बाद के विद्वानों द्वारा अपनी व्याख्याएँ जोड़े जाने से पहले प्रचलित थे। विल्हेम के टैब में उनकी अपनी टिप्पणी के साथ कन्फ्यूशियाई दस पंख जोड़े गए हैं; लेग के टैब में उनके नोट्स के साथ उनके परिशिष्ट II से महान प्रतीकवाद और लघु प्रतीकवाद जोड़े गए हैं। झोउ यी में जानबूझकर दोनों में से कोई भी नहीं है: यह वह मूल पाठ है जिसके बारे में वे बाद की टिप्पणियाँ लिखी गईं, न कि कोई ऐसा संस्करण जिसे स्वयं अपनी टिप्पणी मिली हो।",
+    moreInfoLink: { href: "/library", label: "Library खोलें →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "क्या यह app मेरी भाषा में काम करती है?",
     answer:
@@ -1149,6 +1186,15 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "zhouyi-no-commentary",
+    question:
+      "ライブラリの周易タブに、ヴィルヘルムやレッグのような「+」の注釈が表示されないのはなぜですか？",
+    answer:
+      "表示すべき注釈が存在しないからです。周易は最も古い核となる原典であり、後から付け加えられた注釈の層を一切持ちません。卦辞、象、そして各爻の文言だけが、後世の学者たちが独自の解釈を加える以前の姿のまま伝わっています。ヴィルヘルムのタブには彼自身の注釈と儒教の十翼が、レッグのタブには彼の注記と附録IIの大象解・小象解が加えられています。周易にはそのどちらもありません。それは意図的なものです。周易はそれらの後代の注釈が書かれた対象となった原典であり、自らが注釈を受けた版ではないのです。",
+    moreInfoLink: { href: "/library", label: "図書館を開く →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "このアプリは私の言語に対応していますか？",
     answer:
@@ -1332,6 +1378,14 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     question: "为什么切换应用语言时，图书馆里的卦辞文本不会跟着改变语言？",
     answer:
       "因为它完全按照原始出版的样子呈现。威廉/贝恩斯译本和理雅各译本保留原始英文，周易保留古典中文，在全部11种界面语言中显示的都是同一段文字。对一份译本再次翻译，会用意译替换译者本人的措辞，可能扭曲数十年已确立的学术成果。我们的目标是让你直接接触最可靠的出版来源，而不是它的衍生版本。这与AI解读不同：AI始终用你提问的语言回答，但那是在为你诠释一个已经形成的结果，并不是在呈现原始文本。",
+    moreInfoLink: { href: "/library", label: "打开图书馆 →" },
+    related: ["methodNotes"],
+  },
+  {
+    id: "zhouyi-no-commentary",
+    question: "为什么图书馆里的周易标签不像威廉或理雅各那样显示任何带「+」的注释？",
+    answer:
+      "因为根本没有注释可以显示。周易是最古老的核心原典，没有附加任何后来的注释层：只有卦辞、象和每条爻辞，正是后世学者加入自己的解读之前流传的样子。威廉的标签加入了他自己的注释以及儒家的十翼；理雅各的标签加入了他的注记以及附录二中的大象解与小象解。周易两者都没有，这是有意为之：它是那些后代注释所依据的根本原典，而不是一个自身也被加注的版本。",
     moreInfoLink: { href: "/library", label: "打开图书馆 →" },
     related: ["methodNotes"],
   },
@@ -1524,6 +1578,14 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "zhouyi-no-commentary",
+    question: "도서관의 주역 탭에는 빌헬름이나 레그처럼 \"+\" 주석이 왜 전혀 표시되지 않나요?",
+    answer:
+      "보여줄 주석이 전혀 없기 때문입니다. 주역은 가장 오래된 핵심 원전으로, 후대에 덧붙여진 어떤 주석 층도 없이 괘사, 상, 그리고 각 효사만을 담고 있습니다. 이는 후대 학자들이 자신만의 해석을 더하기 이전에 전해지던 그대로의 모습입니다. 빌헬름 탭에는 그 자신의 주석과 유교의 십익이 더해져 있고, 레그 탭에는 그의 주석과 부록 II의 대상해 및 소상해가 더해져 있습니다. 주역에는 의도적으로 둘 다 없습니다. 주역은 그러한 후대 주석들이 다루는 대상이 된 근본 원전이며, 그 자체로 주석을 받은 판본이 아니기 때문입니다.",
+    moreInfoLink: { href: "/library", label: "도서관 열기 →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "이 앱은 내 언어로 작동하나요?",
     answer:
@@ -1711,6 +1773,15 @@ const FAQ_ITEMS_PT: FaqItem[] = [
       "Por que o texto dos hexagramas na Biblioteca não muda de idioma quando mudo o idioma do app?",
     answer:
       "É mostrado exatamente como foi publicado. Wilhelm/Baynes e Legge aparecem no seu inglês original, e o Zhou Yi em chinês clássico, as mesmas palavras nos 11 idiomas da interface. Voltar a traduzir uma tradução substituiria as palavras do próprio tradutor por uma paráfrase e poderia distorcer décadas de trabalho académico já estabelecido. O objetivo é dar acesso direto à fonte publicada mais confiável, não a uma versão derivada dela. Isso é diferente da sua consulta com a IA, que responde sempre no idioma da sua pergunta: ali a IA interpreta para si um resultado já formado, não apresenta um texto primário.",
+    moreInfoLink: { href: "/library", label: "Abre a Biblioteca →" },
+    related: ["methodNotes"],
+  },
+  {
+    id: "zhouyi-no-commentary",
+    question:
+      "Por que a aba Zhou Yi na Biblioteca não mostra nenhum comentário com \"+\" como Wilhelm ou Legge?",
+    answer:
+      "Porque não há nenhum para mostrar. O Zhou Yi é o texto núcleo mais antigo, sem nenhuma camada posterior de comentário associada: apenas o Julgamento, a Imagem e os oráculos de cada linha, exatamente como circulava antes de estudiosos posteriores acrescentarem as suas próprias leituras. A aba de Wilhelm acrescenta o seu próprio comentário mais as Dez Alas confucianas; a de Legge acrescenta as suas notas mais o Grande e o Menor Simbolismo do seu Apêndice II. O Zhou Yi não tem nenhum dos dois, de propósito: é o texto raiz sobre o qual esses comentários posteriores foram escritos, não uma versão que recebeu um próprio.",
     moreInfoLink: { href: "/library", label: "Abre a Biblioteca →" },
     related: ["methodNotes"],
   },
@@ -1910,6 +1981,15 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "zhouyi-no-commentary",
+    question:
+      "Warum zeigt der Zhou-Yi-Tab in der Bibliothek keinen Kommentar mit einem \"+\" wie Wilhelm oder Legge?",
+    answer:
+      "Weil es keinen zu zeigen gibt. Das Zhou Yi ist der älteste Kerntext, ohne jede später hinzugefügte Kommentarschicht: nur das Urteil, das Bild und die Linienorakel, genau wie er kursierte, bevor spätere Gelehrte ihre eigenen Deutungen hinzufügten. Der Wilhelm-Tab fügt seinen eigenen Kommentar plus die konfuzianischen Zehn Flügel hinzu; der Legge-Tab fügt seine Anmerkungen plus die Große und die Kleinere Symbolik aus seinem Anhang II hinzu. Das Zhou Yi hat keines von beiden, absichtlich: es ist der Wurzeltext, über den diese späteren Kommentare geschrieben wurden, nicht eine Fassung, die selbst einen erhalten hat.",
+    moreInfoLink: { href: "/library", label: "Bibliothek öffnen →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "Funktioniert die App in meiner Sprache?",
     answer:
@@ -2101,6 +2181,15 @@ const FAQ_ITEMS_IT: FaqItem[] = [
       "Perché il testo degli esagrammi nella Biblioteca non cambia lingua quando cambio la lingua dell'app?",
     answer:
       "Viene mostrato esattamente come è stato pubblicato. Wilhelm/Baynes e Legge appaiono nel loro inglese originale, e lo Zhou Yi in cinese classico, le stesse parole in tutte le 11 lingue dell'interfaccia. Ritradurre una traduzione sostituirebbe le parole proprie del traduttore con una parafrasi e potrebbe distorcere decenni di lavoro accademico già consolidato. L'obiettivo è darti accesso diretto alla fonte pubblicata più affidabile, non a una versione derivata di essa. Questo è diverso dalla tua consultazione con l'IA, che risponde sempre nella lingua della tua domanda: lì l'IA interpreta per te un risultato già formato, non presenta un testo primario.",
+    moreInfoLink: { href: "/library", label: "Apri la Biblioteca →" },
+    related: ["methodNotes"],
+  },
+  {
+    id: "zhouyi-no-commentary",
+    question:
+      "Perché la scheda Zhou Yi nella Biblioteca non mostra nessun commento con \"+\" come Wilhelm o Legge?",
+    answer:
+      "Perché non ce n'è nessuno da mostrare. Lo Zhou Yi è il testo nucleo più antico, senza alcuno strato di commento successivo aggiunto: solo il Giudizio, l'Immagine e gli oracoli di ciascuna linea, esattamente come circolava prima che studiosi successivi aggiungessero le proprie letture. La scheda di Wilhelm aggiunge il proprio commento più le Dieci Ali confuciane; quella di Legge aggiunge le sue note più il Grande e il Piccolo Simbolismo del suo Appendice II. Lo Zhou Yi non ha né l'uno né l'altro, di proposito: è il testo radice su cui sono stati scritti quei commenti successivi, non una versione che ne ha ricevuto uno proprio.",
     moreInfoLink: { href: "/library", label: "Apri la Biblioteca →" },
     related: ["methodNotes"],
   },
@@ -2298,6 +2387,15 @@ const FAQ_ITEMS_FR: FaqItem[] = [
       "Pourquoi le texte des hexagrammes dans la Bibliothèque ne change pas de langue quand je change la langue de l'application ?",
     answer:
       "Il est montré exactement comme il a été publié. Wilhelm/Baynes et Legge apparaissent dans leur anglais original, et le Zhou Yi en chinois classique, les mêmes mots dans les 11 langues de l'interface. Retraduire une traduction remplacerait les mots propres du traducteur par une paraphrase et pourrait déformer des décennies de travail académique déjà établi. L'objectif est de vous donner un accès direct à la source publiée la plus fiable, pas à une version dérivée de celle-ci. C'est différent de votre consultation avec l'IA, qui répond toujours dans la langue de votre question : là, l'IA interprète pour vous un résultat déjà formé, elle ne présente pas un texte primaire.",
+    moreInfoLink: { href: "/library", label: "Ouvre la Bibliothèque →" },
+    related: ["methodNotes"],
+  },
+  {
+    id: "zhouyi-no-commentary",
+    question:
+      "Pourquoi l'onglet Zhou Yi dans la Bibliothèque ne montre-t-il aucun commentaire avec un \"+\" comme Wilhelm ou Legge ?",
+    answer:
+      "Parce qu'il n'y en a aucun à montrer. Le Zhou Yi est le texte source le plus ancien, sans aucune couche de commentaire ultérieure ajoutée : seulement le Jugement, l'Image et les oracles de chaque ligne, exactement comme il circulait avant que des érudits plus tardifs n'ajoutent leurs propres lectures. L'onglet de Wilhelm ajoute son propre commentaire plus les Dix Ailes confucéennes ; celui de Legge ajoute ses notes plus le Grand et le Petit Symbolisme de son Appendice II. Le Zhou Yi n'a ni l'un ni l'autre, volontairement : c'est le texte racine au sujet duquel ces commentaires postérieurs ont été écrits, pas une version qui en a reçu un à elle.",
     moreInfoLink: { href: "/library", label: "Ouvre la Bibliothèque →" },
     related: ["methodNotes"],
   },

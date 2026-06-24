@@ -20,6 +20,12 @@ html:not([data-theme]) {
   --fg-muted: #4a6573;
   --accent: #2a9d8f;
   --accent-hover: #238a7e;
+  /* Library scholarly-commentary accent: warm sepia, distinct from the teal
+     --accent used by interactive chrome, in the same parchment/manuscript
+     family as .library-text-card/.library-editorial-note. */
+  --commentary-accent: #96672f;
+  --commentary-accent-bg: rgba(150, 103, 47, 0.12);
+  --commentary-accent-border: rgba(150, 103, 47, 0.32);
   --bubble-user: #c8ebd4;
   --bubble-user-border: #a8d9b8;
   --bubble-user-fg: #1a3d2e;
@@ -122,6 +128,9 @@ html[data-theme="dark"] {
   --fg-muted: #8ca5b3;
   --accent: #4ecdc4;
   --accent-hover: #3db9b0;
+  --commentary-accent: #d9a96a;
+  --commentary-accent-bg: rgba(217, 169, 106, 0.14);
+  --commentary-accent-border: rgba(217, 169, 106, 0.38);
   --bubble-user: #1e4036;
   --bubble-user-border: #4d9a7d;
   --bubble-user-fg: #d4f0e4;
@@ -5664,6 +5673,19 @@ html[data-theme="dark"] .library-tab--active {
   letter-spacing: 0.02em;
 }
 
+/* Judgment/Image heading row: title on the left, its "+" toggle flush right
+   on the same line — keeps the per-point disclosure out of a separate row. */
+.library-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.library-section-head h3 {
+  margin: 0 0 0.3rem;
+}
+
 /* ── Text cards for Judgment & Image ── */
 .library-text-card {
   padding: 1rem 1.15rem;
@@ -5829,6 +5851,14 @@ html[data-theme="dark"] .library-text-card {
   vertical-align: middle;
 }
 
+.library-lines-table__plus {
+  width: 2.5rem;
+  padding: 0.65rem 0.4rem;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
+}
+
 .library-lines-row--yong .library-lines-table__pos {
   color: var(--title-shell);
   font-style: italic;
@@ -5866,8 +5896,11 @@ html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-
 }
 
 /* ── Optional scholarly-commentary disclosures (Wilhelm + Legge only) ──
-   Same visual language as .faq-item/.faq-summary/.faq-body (see below):
-   native <details>, chevron via ::after, no separate "hide" label. */
+   Two variants: (1) full-width ribbons (.library-commentary, native <details>,
+   used only for the 3 hexagram-level blocks: Wilhelm's "About this hexagram",
+   Wen Yen, Legge's footnotes); (2) compact "+" badges (.library-commentary-plus,
+   controlled via React state, used for every per-point toggle — Judgment/
+   Image/each Line/yong) so the same text label is never repeated per point. */
 .library-commentary {
   margin-top: 0.5rem;
   border-radius: calc(var(--radius) * 0.75);
@@ -5882,7 +5915,7 @@ html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-
   padding: 0.55rem 0.85rem;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--card-title);
+  color: var(--commentary-accent);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -5897,8 +5930,8 @@ html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-
   margin-left: auto;
   width: 0.4rem;
   height: 0.4rem;
-  border-right: 2px solid var(--accent);
-  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--commentary-accent);
+  border-bottom: 2px solid var(--commentary-accent);
   transform: rotate(45deg);
   transition: transform 0.2s ease;
   opacity: 0.85;
@@ -5913,6 +5946,58 @@ html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-
   border-top: 1px solid color-mix(in srgb, var(--bar-border) 55%, transparent);
 }
 
+/* Compact "+" badge for per-point toggles (replaces a repeated text label). */
+.library-commentary-plus {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--commentary-accent-border);
+  background: var(--commentary-accent-bg);
+  color: var(--commentary-accent);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.library-commentary-plus:hover {
+  background: color-mix(in srgb, var(--commentary-accent-bg) 70%, var(--commentary-accent-border));
+}
+
+.library-commentary-plus span {
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.library-commentary-plus.is-open span {
+  transform: rotate(45deg);
+}
+
+/* Revealed panel for a "+" toggle — same body styling as a ribbon, lighter
+   border since it's not inside a <details> box of its own. */
+.library-commentary-body--plus {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: calc(var(--radius) * 0.5);
+  border: 1px solid color-mix(in srgb, var(--commentary-accent-border) 60%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 92%, transparent);
+  text-align: start;
+}
+
+.library-commentary-body--plus > p {
+  margin: 0.65rem 0 0;
+  color: var(--fg);
+  line-height: 1.55;
+}
+
+.library-commentary-body--plus > .library-commentary-source:first-child {
+  margin-top: 0 !important;
+}
+
 .library-commentary-body > p {
   margin: 0.65rem 0 0;
   color: var(--fg);
@@ -5921,11 +6006,11 @@ html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-
 
 .library-commentary-source {
   margin: 0.85rem 0 0 !important;
-  font-size: 0.72rem;
+  font-size: 1rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--fg-muted);
+  letter-spacing: 0.03em;
+  color: var(--commentary-accent);
 }
 
 .library-commentary-body > .library-commentary-source:first-child {

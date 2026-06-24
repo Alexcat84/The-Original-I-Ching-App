@@ -22,6 +22,9 @@ function paragraphs(text: string): string[] {
     .filter((line) => line.length > 0);
 }
 
+/** Full-width ribbon, reserved for the 3 hexagram-level ribbons (Wilhelm's
+ * "About this hexagram", Wen Yen, Legge's footnotes) — never for per-point
+ * toggles, which use the compact CommentaryPlusToggle "+" below. */
 function CommentaryDetails({ label, children }: { readonly label: string; readonly children: ReactNode }) {
   return (
     <details className="library-commentary">
@@ -31,18 +34,65 @@ function CommentaryDetails({ label, children }: { readonly label: string; readon
   );
 }
 
+interface CommentaryPlusToggleProps {
+  readonly panelId: string;
+  readonly ariaLabel: string;
+  readonly isOpen: boolean;
+  readonly onToggle: () => void;
+  readonly children: ReactNode;
+}
+
+/** Compact "+" disclosure for a single point (Judgment/Image/Line/yong) —
+ * no repeated visible label, just an icon; the revealed panel clearly
+ * sub-labels each source so the reader never confuses it with the reading
+ * itself. State is controlled (not native <details>) because the Lines-table
+ * variant needs the trigger in the line's own row and the panel in the row
+ * below, which a single <details> element cannot span. */
+function CommentaryPlusToggle({ panelId, ariaLabel, isOpen, onToggle, children }: CommentaryPlusToggleProps) {
+  return (
+    <>
+      <button
+        type="button"
+        className={`library-commentary-plus${isOpen ? " is-open" : ""}`}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        aria-label={ariaLabel}
+        onClick={onToggle}
+      >
+        <span aria-hidden="true">+</span>
+      </button>
+      {isOpen ? (
+        <div id={panelId} className="library-commentary-body library-commentary-body--plus">
+          {children}
+        </div>
+      ) : null}
+    </>
+  );
+}
+
 interface WilhelmPointToggleProps {
   readonly point: WilhelmPointCommentary;
-  readonly label: string;
+  readonly panelId: string;
+  readonly ariaLabel: string;
+  readonly isOpen: boolean;
+  readonly onToggle: () => void;
   readonly bookOneLabel: string;
   readonly tenWingsLabel: string;
 }
 
 /** Combined "+" panel: Wilhelm's own commentary, then the Ten Wings note for
  * the same point, each clearly sub-labeled inside one revealed panel. */
-function WilhelmPointToggle({ point, label, bookOneLabel, tenWingsLabel }: WilhelmPointToggleProps) {
+function WilhelmPointToggle({
+  point,
+  panelId,
+  ariaLabel,
+  isOpen,
+  onToggle,
+  bookOneLabel,
+  tenWingsLabel,
+}: WilhelmPointToggleProps) {
   return (
-    <CommentaryDetails label={label}>
+    <CommentaryPlusToggle panelId={panelId} ariaLabel={ariaLabel} isOpen={isOpen} onToggle={onToggle}>
       <p className="library-commentary-source">{bookOneLabel}</p>
       {paragraphs(point.bookOne).map((p, i) => (
         <p key={`bo-${i}`}>{p}</p>
@@ -51,25 +101,28 @@ function WilhelmPointToggle({ point, label, bookOneLabel, tenWingsLabel }: Wilhe
       {paragraphs(point.tenWings).map((p, i) => (
         <p key={`tw-${i}`}>{p}</p>
       ))}
-    </CommentaryDetails>
+    </CommentaryPlusToggle>
   );
 }
 
 interface SingleSourceToggleProps {
-  readonly label: string;
+  readonly panelId: string;
+  readonly ariaLabel: string;
+  readonly isOpen: boolean;
+  readonly onToggle: () => void;
   readonly sourceLabel: string;
   readonly text: string;
 }
 
-/** Single-source "+" panel (Legge's Great Symbolism — no second source to combine). */
-function SingleSourceToggle({ label, sourceLabel, text }: SingleSourceToggleProps) {
+/** Single-source "+" panel (Legge's Great/Lesser Symbolism — no second source to combine). */
+function SingleSourceToggle({ panelId, ariaLabel, isOpen, onToggle, sourceLabel, text }: SingleSourceToggleProps) {
   return (
-    <CommentaryDetails label={label}>
+    <CommentaryPlusToggle panelId={panelId} ariaLabel={ariaLabel} isOpen={isOpen} onToggle={onToggle}>
       <p className="library-commentary-source">{sourceLabel}</p>
       {paragraphs(text).map((p, i) => (
         <p key={i}>{p}</p>
       ))}
-    </CommentaryDetails>
+    </CommentaryPlusToggle>
   );
 }
 
@@ -179,6 +232,15 @@ function TabPanel({
 
   const yong = yongType(!!record.yongJiu, !!record.yongLiu);
 
+  const [open, setOpen] = useState<ReadonlySet<string>>(new Set());
+  const toggle = (key: string) =>
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+
   return (
     <div
       className="library-tab-panel"
@@ -187,8 +249,47 @@ function TabPanel({
       aria-labelledby={`library-tab-${id}`}
 >
 
+      {wilhelmCommentary ? (
+        <div className="library-about-block">
+          <CommentaryDetails label={messages.aboutHeading}>
+            {paragraphs(wilhelmCommentary.about.intro).map((p, i) => (
+              <p key={`intro-${i}`}>{p}</p>
+            ))}
+            <p className="library-commentary-source">{messages.rulerNoteLabel}</p>
+            {paragraphs(wilhelmCommentary.about.rulerNote).map((p, i) => (
+              <p key={`ruler-${i}`}>{p}</p>
+            ))}
+            <p className="library-commentary-source">{messages.miscNotesLabel}</p>
+            {paragraphs(wilhelmCommentary.about.miscNotes).map((p, i) => (
+              <p key={`misc-${i}`}>{p}</p>
+            ))}
+            {wilhelmCommentary.about.sequence ? (
+              <>
+                <p className="library-commentary-source">{messages.sequenceLabel}</p>
+                {paragraphs(wilhelmCommentary.about.sequence).map((p, i) => (
+                  <p key={`seq-${i}`}>{p}</p>
+                ))}
+              </>
+            ) : null}
+          </CommentaryDetails>
+        </div>
+      ) : null}
+
       <section className="library-section">
-        <h3>{messages.judgmentHeading}</h3>
+        <div className="library-section-head">
+          <h3>{messages.judgmentHeading}</h3>
+          {wilhelmCommentary ? (
+            <WilhelmPointToggle
+              point={wilhelmCommentary.judgment}
+              panelId="commentary-judgment"
+              ariaLabel={`${messages.commentaryShowLabel} — ${messages.judgmentHeading}`}
+              isOpen={open.has("judgment")}
+              onToggle={() => toggle("judgment")}
+              bookOneLabel={messages.wilhelmCommentaryLabel}
+              tenWingsLabel={messages.tenWingsCommentaryLabel}
+            />
+          ) : null}
+        </div>
         <div className="library-text-card">
           {leggeCommentary?.thwanIntro ? (
             <p className="library-editorial-note">
@@ -204,18 +305,33 @@ function TabPanel({
             ))}
           </div>
         </div>
-        {wilhelmCommentary ? (
-          <WilhelmPointToggle
-            point={wilhelmCommentary.judgment}
-            label={messages.commentaryShowLabel}
-            bookOneLabel={messages.wilhelmCommentaryLabel}
-            tenWingsLabel={messages.tenWingsCommentaryLabel}
-          />
-        ) : null}
       </section>
 
       <section className="library-section">
-        <h3>{messages.imageHeading}</h3>
+        <div className="library-section-head">
+          <h3>{messages.imageHeading}</h3>
+          {wilhelmCommentary ? (
+            <WilhelmPointToggle
+              point={wilhelmCommentary.image}
+              panelId="commentary-image"
+              ariaLabel={`${messages.commentaryShowLabel} — ${messages.imageHeading}`}
+              isOpen={open.has("image")}
+              onToggle={() => toggle("image")}
+              bookOneLabel={messages.wilhelmCommentaryLabel}
+              tenWingsLabel={messages.tenWingsCommentaryLabel}
+            />
+          ) : null}
+          {leggeCommentary ? (
+            <SingleSourceToggle
+              panelId="commentary-image"
+              ariaLabel={`${messages.commentaryShowLabel} — ${messages.imageHeading}`}
+              isOpen={open.has("image")}
+              onToggle={() => toggle("image")}
+              sourceLabel={messages.greatSymbolismLabel}
+              text={leggeCommentary.imageSymbolism}
+            />
+          ) : null}
+        </div>
         <div className="library-text-card">
           <div lang={langAttr} className="library-prose library-prose--image">
             {record.image.split("\n").filter(line => line.trim()).map((line, i) => (
@@ -226,21 +342,6 @@ function TabPanel({
             ))}
           </div>
         </div>
-        {wilhelmCommentary ? (
-          <WilhelmPointToggle
-            point={wilhelmCommentary.image}
-            label={messages.commentaryShowLabel}
-            bookOneLabel={messages.wilhelmCommentaryLabel}
-            tenWingsLabel={messages.tenWingsCommentaryLabel}
-          />
-        ) : null}
-        {leggeCommentary ? (
-          <SingleSourceToggle
-            label={messages.commentaryShowLabel}
-            sourceLabel={messages.greatSymbolismLabel}
-            text={leggeCommentary.imageSymbolism}
-          />
-        ) : null}
       </section>
 
     <section className="library-section">
@@ -259,43 +360,65 @@ function TabPanel({
               <th className="library-lines-table__pos" />
               <th className="library-lines-table__symbol" aria-hidden="true" />
               <th className="library-lines-table__text" />
+              <th className="library-lines-table__plus" aria-hidden="true" />
             </tr>
           </thead>
             <tbody>
               {orderedLines.map((line) => {
                 const wilhelmLine = wilhelmCommentary?.lines.find((l) => l.position === line.position) ?? null;
                 const leggeNote = leggeCommentary ? leggeNoteForPosition(leggeCommentary, line.position) : null;
+                const key = `line-${line.position}`;
+                const panelId = `commentary-${key}`;
+                const lineLabel = lineLabelByPosition(lineLabels, line.position);
                 return (
                   <Fragment key={line.position}>
                     <tr className={`library-lines-row library-lines-row--${line.type}`}>
-                      <td className="library-lines-table__pos">
-                        {lineLabelByPosition(lineLabels, line.position)}
-                      </td>
+                      <td className="library-lines-table__pos">{lineLabel}</td>
                       <td className="library-lines-table__symbol" aria-hidden="true">
                         <LineGlyph type={line.type} />
                       </td>
                       <td lang={langAttr} className="library-lines-table__text">
                         {line.text}
                       </td>
+                      <td className="library-lines-table__plus">
+                        {wilhelmLine ? (
+                          <WilhelmPointToggle
+                            point={wilhelmLine.commentary}
+                            panelId={panelId}
+                            ariaLabel={`${messages.commentaryShowLabel} — ${lineLabel}`}
+                            isOpen={open.has(key)}
+                            onToggle={() => toggle(key)}
+                            bookOneLabel={messages.wilhelmCommentaryLabel}
+                            tenWingsLabel={messages.tenWingsCommentaryLabel}
+                          />
+                        ) : null}
+                        {leggeNote ? (
+                          <SingleSourceToggle
+                            panelId={panelId}
+                            ariaLabel={`${messages.commentaryShowLabel} — ${lineLabel}`}
+                            isOpen={open.has(key)}
+                            onToggle={() => toggle(key)}
+                            sourceLabel={messages.lesserSymbolismLabel}
+                            text={leggeNote}
+                          />
+                        ) : null}
+                      </td>
                     </tr>
-                    {wilhelmLine || leggeNote ? (
+                    {(wilhelmLine || leggeNote) && open.has(key) ? (
                       <tr className="library-lines-row library-lines-row--commentary">
-                        <td colSpan={3} className="library-lines-table__commentary">
+                        <td colSpan={4} className="library-lines-table__commentary">
                           {wilhelmLine ? (
-                            <WilhelmPointToggle
-                              point={wilhelmLine.commentary}
-                              label={messages.commentaryShowLabel}
-                              bookOneLabel={messages.wilhelmCommentaryLabel}
-                              tenWingsLabel={messages.tenWingsCommentaryLabel}
-                            />
+                            <p className="library-commentary-source">{messages.wilhelmCommentaryLabel}</p>
                           ) : null}
+                          {wilhelmLine ? paragraphs(wilhelmLine.commentary.bookOne).map((p, i) => <p key={`bo-${i}`}>{p}</p>) : null}
+                          {wilhelmLine ? (
+                            <p className="library-commentary-source">{messages.tenWingsCommentaryLabel}</p>
+                          ) : null}
+                          {wilhelmLine ? paragraphs(wilhelmLine.commentary.tenWings).map((p, i) => <p key={`tw-${i}`}>{p}</p>) : null}
                           {leggeNote ? (
-                            <SingleSourceToggle
-                              label={messages.commentaryShowLabel}
-                              sourceLabel={messages.greatSymbolismLabel}
-                              text={leggeNote}
-                            />
+                            <p className="library-commentary-source">{messages.lesserSymbolismLabel}</p>
                           ) : null}
+                          {leggeNote ? paragraphs(leggeNote).map((p, i) => <p key={i}>{p}</p>) : null}
                         </td>
                       </tr>
                     ) : null}
@@ -314,25 +437,51 @@ function TabPanel({
                     <td lang={langAttr} className="library-lines-table__text">
                       {record.yongJiu ?? record.yongLiu ?? ""}
                     </td>
+                    <td className="library-lines-table__plus">
+                      {wilhelmCommentary?.yong ? (
+                        <WilhelmPointToggle
+                          point={wilhelmCommentary.yong}
+                          panelId="commentary-yong"
+                          ariaLabel={`${messages.commentaryShowLabel} — ${record.yongJiu ? messages.yongJiuLabel : messages.yongLiuLabel}`}
+                          isOpen={open.has("yong")}
+                          onToggle={() => toggle("yong")}
+                          bookOneLabel={messages.wilhelmCommentaryLabel}
+                          tenWingsLabel={messages.tenWingsCommentaryLabel}
+                        />
+                      ) : null}
+                      {leggeCommentary && leggeNoteForPosition(leggeCommentary, 7) ? (
+                        <SingleSourceToggle
+                          panelId="commentary-yong"
+                          ariaLabel={`${messages.commentaryShowLabel} — ${record.yongJiu ? messages.yongJiuLabel : messages.yongLiuLabel}`}
+                          isOpen={open.has("yong")}
+                          onToggle={() => toggle("yong")}
+                          sourceLabel={messages.lesserSymbolismLabel}
+                          text={leggeNoteForPosition(leggeCommentary, 7) ?? ""}
+                        />
+                      ) : null}
+                    </td>
                   </tr>
-                  {wilhelmCommentary?.yong || (leggeCommentary && leggeNoteForPosition(leggeCommentary, 7)) ? (
+                  {(wilhelmCommentary?.yong || (leggeCommentary && leggeNoteForPosition(leggeCommentary, 7))) && open.has("yong") ? (
                     <tr className="library-lines-row library-lines-row--commentary">
-                      <td colSpan={3} className="library-lines-table__commentary">
+                      <td colSpan={4} className="library-lines-table__commentary">
                         {wilhelmCommentary?.yong ? (
-                          <WilhelmPointToggle
-                            point={wilhelmCommentary.yong}
-                            label={messages.commentaryShowLabel}
-                            bookOneLabel={messages.wilhelmCommentaryLabel}
-                            tenWingsLabel={messages.tenWingsCommentaryLabel}
-                          />
+                          <p className="library-commentary-source">{messages.wilhelmCommentaryLabel}</p>
                         ) : null}
+                        {wilhelmCommentary?.yong
+                          ? paragraphs(wilhelmCommentary.yong.bookOne).map((p, i) => <p key={`bo-${i}`}>{p}</p>)
+                          : null}
+                        {wilhelmCommentary?.yong ? (
+                          <p className="library-commentary-source">{messages.tenWingsCommentaryLabel}</p>
+                        ) : null}
+                        {wilhelmCommentary?.yong
+                          ? paragraphs(wilhelmCommentary.yong.tenWings).map((p, i) => <p key={`tw-${i}`}>{p}</p>)
+                          : null}
                         {leggeCommentary && leggeNoteForPosition(leggeCommentary, 7) ? (
-                          <SingleSourceToggle
-                            label={messages.commentaryShowLabel}
-                            sourceLabel={messages.greatSymbolismLabel}
-                            text={leggeNoteForPosition(leggeCommentary, 7) ?? ""}
-                          />
+                          <p className="library-commentary-source">{messages.lesserSymbolismLabel}</p>
                         ) : null}
+                        {leggeCommentary && leggeNoteForPosition(leggeCommentary, 7)
+                          ? paragraphs(leggeNoteForPosition(leggeCommentary, 7) ?? "").map((p, i) => <p key={i}>{p}</p>)
+                          : null}
                       </td>
                     </tr>
                   ) : null}
@@ -342,30 +491,6 @@ function TabPanel({
           </table>
         </div>
       </section>
-
-      {wilhelmCommentary ? (
-        <CommentaryDetails label={messages.aboutHeading}>
-          {paragraphs(wilhelmCommentary.about.intro).map((p, i) => (
-            <p key={`intro-${i}`}>{p}</p>
-          ))}
-          <p className="library-commentary-source">{messages.rulerNoteLabel}</p>
-          {paragraphs(wilhelmCommentary.about.rulerNote).map((p, i) => (
-            <p key={`ruler-${i}`}>{p}</p>
-          ))}
-          <p className="library-commentary-source">{messages.miscNotesLabel}</p>
-          {paragraphs(wilhelmCommentary.about.miscNotes).map((p, i) => (
-            <p key={`misc-${i}`}>{p}</p>
-          ))}
-          {wilhelmCommentary.about.sequence ? (
-            <>
-              <p className="library-commentary-source">{messages.sequenceLabel}</p>
-              {paragraphs(wilhelmCommentary.about.sequence).map((p, i) => (
-                <p key={`seq-${i}`}>{p}</p>
-              ))}
-            </>
-          ) : null}
-        </CommentaryDetails>
-      ) : null}
 
       {wilhelmCommentary?.wenYen ? (
         <CommentaryDetails label={messages.wenYenHeading}>
@@ -423,6 +548,7 @@ export function HexagramTabs({ records, commentary, sources, messages, lineLabel
         })}
       </div>
       <TabPanel
+        key={active}
         id={active}
         record={records[active]}
         source={sources[active]}
