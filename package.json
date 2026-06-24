@@ -20,6 +20,7 @@
     "qa:mutation-output": "node scripts/mutation-output-qa.mjs",
     "qa:reading-quality": "node scripts/reading-quality-qa.mjs",
     "verify:pinyin-gold": "node scripts/verify-pinyin-gold.mjs",
+    "verify:docs-remediation": "node scripts/verify-docs-remediation.mjs",
     "verify:hexagram-fidelity": "node scripts/verify-hexagram-fidelity.mjs --gold=books --translator=wilhelm,legge",
     "verify:hexagram-fidelity:mirrors-deprecated": "node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=all",
     "pdf-gold:preflight": "node scripts/pdf-gold-preflight.mjs",

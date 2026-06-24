@@ -189,7 +189,7 @@ export function resolveFaqRelatedHref(slug: FaqRelatedSlug): string {
     case "userGuide":
       return "/guia";
     case "userGuideGettingStarted":
-      return "/guia#primeros-pasos";
+      return "/guia#modos-consulta";
     case "tokenPacks":
       return "/";
     case "methodNotes":

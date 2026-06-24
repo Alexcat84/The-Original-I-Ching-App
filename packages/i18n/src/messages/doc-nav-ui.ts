@@ -14,7 +14,7 @@ export type DocNavUiMessages = {
   aboutShort: string;
   /** Link label for the in-app Token Center (opened from the app header). */
   guidePlansSection: string;
-  /** Anchor to /guia#primeros-pasos. */
+  /** Anchor to /guia#modos-consulta (see resolveFaqRelatedHref in faq-page-ui.ts). */
   guideFirstSteps: string;
   /** Single user-facing guide (/guia); replaces former “quick guide” + “Quickstart” split. */
   userGuide: string;

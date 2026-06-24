@@ -1,7 +1,7 @@
 # Auditoría — Documentación de producto vs implementación (jun 2026)
 
 - **Fecha:** 2026-06-22
-- **Estado:** 🟡 **Abierta** — inventario verificado; remediación P0–P3 pendiente de aprobación
+- **Estado:** ✅ **Cerrada (2026-06-24)** — remediación P0–P4 implementada y verificada; ver §12
 - **Alcance:** Todo lo que lee el usuario final, **excluyendo** `/privacy` y `/terms`
 - **Disparador:** Verificar que guía, notas, FAQ, auditorías públicas, pricing e in-app copy reflejen lo implementado, especialmente biblioteca (comentario W+L, ribbon UI, jun 2026)
 - **Relacionado:**
@@ -153,35 +153,53 @@ Anclas válidas en guía: `#modos-consulta`, `#panel-opciones`, `#traductor`, `#
 
 ---
 
-## 9. Plan de remediación (pendiente aprobación)
+## 9. Plan de remediación — ✅ implementado 2026-06-24 (ver §12)
 
 ### P0 — Corrección factual + enlaces
 
-- [ ] `ichingCastModeP1` (11 locales): reglas de lectura **seleccionadas** (Huang default), no “Zhu Xi rules”
-- [ ] `home-tour-ui.ts` `step4Body`: quitar Zhu Xi como tradición default I Ching
-- [ ] FAQ / token-panel / doc-nav: `#primeros-pasos` → `#modos-consulta`; `#planes` → `#tokens`
+- [x] `ichingCastModeP1`: solo el locale EN tenía "Zhu Xi rules" sin condición; las otras 10 ya
+  decían algo genérico y correcto. Corregido solo EN.
+- [x] `home-tour-ui.ts` `step4Body`: quitado "Zhu Xi tradition" en las 11 locales.
+- [x] **Corrección de alcance** (verificado contra código antes de tocar nada): de las "2 anclas
+  rotas" originales, solo `faq-page-ui.ts` (`userGuideGettingStarted`) era un bug real y
+  alcanzable por un usuario → `/guia#modos-consulta`. Las de `doc-nav-ui.ts`/`token-panel-ui.ts`
+  eran solo comentarios desactualizados (los `<Link href>` reales ya usaban anclas válidas:
+  `#modos-consulta`, `#panel-opciones`) — corregidos los comentarios, sin cambio de comportamiento.
 
 ### P1 — Biblioteca (producto jun 2026)
 
-- [ ] `/guia#biblioteca-docs`: renderizar `libraryFeatureBody` + párrafo nuevo:
-  - tabs W/L/Zhou Yi;
-  - `+`/`−` comentario clásico (Wilhelm/Legge);
-  - Wen Yen solo hex 1–2;
-  - búsqueda y filtro trigramas;
-  - sección mutaciones;
-  - comentario solo biblioteca, no consultas IA
-- [ ] FAQ opcional: «¿Qué es el comentario clásico con + en la Biblioteca?»
+- [x] `/guia#biblioteca-docs`: `libraryFeatureBody` reactivado + 6 viñetas nuevas (tabs W/L/Zhou
+  Yi, comentario clásico `+`, Wen Yen solo hex 1–2, búsqueda y filtro de trigramas, sección de
+  mutaciones, alcance solo-Biblioteca nunca-IA) — 11 locales, sin guion medio.
+- [x] **Sin FAQ nueva** (instrucción explícita del propietario): las 3 entradas FAQ ya existentes
+  (`library-unlock`, `library-source-language`, `zhouyi-no-commentary`) ya cubren el ángulo FAQ.
 
 ### P2 — Completitud
 
-- [ ] Guía `#tokens`: «1 token (2 en Master Combined)»
-- [ ] Guía `#exportar`: PDF incluye traductor y lectura de líneas
-- [ ] `/audits`: entrada comentario biblioteca + `lastUpdated`
-- [ ] Tour paso 7: comentario expandible, no solo «interpretación completa»
+- [x] Guía `#tokens`: agregada la excepción de Master (3) = 2 tokens, 11 locales.
+- [x] Guía `#exportar`: agregada la mención de traductor + sistema de lectura en el PDF, 11 locales.
+- [x] `/audits`: nueva entrada de log (`library-commentary-2026-06-24`) + `lastUpdated` actualizado
+  a 24 jun 2026, 11 locales.
+- [x] Tour paso 7: agregada mención del comentario clásico desplegable, 11 locales.
 
 ### P3 — Limpieza i18n guía
 
-- [ ] Integrar o podar strings no usados en `guia-page-ui.ts` (`appUseHeading`, `gettingStartedHeading`, `s5Heading`, `ichingPractical*`, etc.)
+- [x] Podados 34 campos sin uso de `GuiaPageUiMessages` (tipo + 11 locales): `privacyDocsHeading/Intro`,
+  `appUseHeading/Intro`, `chatsHeading/Label/OpensHistory`, `newSessionLabel/Desc`,
+  `chatsUnlimited`, `packChangesLine`, `libraryFeatureHeading`, `ichingBullet`,
+  `bonesBulletSuffix`, `threadDepthBullet`, `translatorOptionsBullet`,
+  `ichingPracticalHeading/Body`, `legalMetaBeforePrivacy/Between/AfterTerms`,
+  `gettingStartedHeading`, `promptLengthHint`, y el bloque legacy completo `s2*`/`s5*`.
+- [x] Excepción integrada en vez de podada: `bonesPracticalHeading`/`bonesPracticalBody` no tenían
+  consumidor pero eran el único hueco real (Huesos sin explicación práctica paralela a
+  Monedas/Varillas) — se activaron como tercera viñeta en `#metodo`.
+
+### P4 — Verificación automatizada (no estaba en el plan original, agregada a pedido)
+
+- [x] `scripts/verify-docs-remediation.mjs` (`npm run verify:docs-remediation`): test punto a
+  punto de estructura (clave presente y no vacía en las 11 locales) y contenido (la afirmación
+  correcta está presente, la incorrecta no) para cada ítem P0–P3, más higiene (cero guion medio en
+  los 6 archivos tocados). 0 fallos.
 
 **Regla producto:** no editar `/privacy`, `/terms`, ni docs internos de producto en `guia/` FAQ copy salvo pedido explícito — esta auditoría propone cambios en **guía operativa, FAQ, tour, audits, doc-nav** alineados con implementación.
 
@@ -201,7 +219,35 @@ Anclas válidas en guía: `#modos-consulta`, `#panel-opciones`, `#traductor`, `#
 | Ítem | Estado |
 |------|--------|
 | Inventario docs vs código | ✅ Este documento |
-| Remediación P0–P3 | ⏳ Pendiente propietario |
-| Cierre auditoría | Tras deploy staging + smoke docs |
+| Remediación P0–P4 | ✅ Implementada 2026-06-24 |
+| Verificación automatizada | ✅ `npm run verify:docs-remediation`, 0 fallos |
+| Cierre auditoría | ✅ Este documento (§12) |
 
-**Siguiente paso sugerido:** aprobar P0+P1 → PR i18n + `guia/page.tsx` (+ FAQ/anclas) → smoke → actualizar §11 a ✅ Cerrada.
+---
+
+## 12. Cierre (2026-06-24)
+
+Implementado en una sola sesión, con verificación en cada paso (no solo al final):
+
+- `tsc --noEmit` limpio en `packages/i18n` y `apps/web`.
+- `eslint` limpio en `guia/page.tsx` y `faqs/page.tsx`.
+- `npm run i18n:audit` en verde (completitud `Record<AppLocale,T>` en los 6 archivos tocados:
+  `guia-page-ui.ts`, `home-tour-ui.ts`, `faq-page-ui.ts`, `audits-page-ui.ts`, `doc-nav-ui.ts`,
+  `token-panel-ui.ts`).
+- `npm run verify:docs-remediation` (nuevo, §9 P4) — 0 fallos, verifica estructura y contenido
+  punto a punto para cada ítem P0–P3 en las 11 locales, no solo que el build compile.
+- Cero guion medio (`—`/`–`) en los 6 archivos i18n tocados, verificado por grep y por el script
+  P4.
+- Cero ocurrencias de muletillas típicas de redacción IA (`leverage`, `seamless`, `delve`, etc.)
+  en el texto nuevo en inglés.
+
+**Hallazgo de proceso, no de producto:** al investigar las "2 anclas rotas" del inventario original
+(§7), se confirmó que **solo una** (`faq-page-ui.ts`) era un bug real alcanzable por un usuario —
+las otras dos eran comentarios de código desactualizados sin ningún `<Link href>` real apuntando
+ahí. Corregido el código real donde aplicaba y los comentarios donde no, sin inflar el alcance del
+fix más allá de lo que el código realmente necesitaba.
+
+**Archivos tocados:** `packages/i18n/src/messages/{guia-page-ui,home-tour-ui,faq-page-ui,
+audits-page-ui,doc-nav-ui,token-panel-ui}.ts`, `apps/web/src/app/guia/page.tsx`,
+`scripts/verify-docs-remediation.mjs` (nuevo), `package.json` (nuevo script
+`verify:docs-remediation`).
