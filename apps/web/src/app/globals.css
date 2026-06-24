@@ -20,12 +20,10 @@ html:not([data-theme]) {
   --fg-muted: #4a6573;
   --accent: #2a9d8f;
   --accent-hover: #238a7e;
-  /* Library scholarly-commentary accent: warm sepia, distinct from the teal
-     --accent used by interactive chrome, in the same parchment/manuscript
-     family as .library-text-card/.library-editorial-note. */
-  --commentary-accent: #96672f;
-  --commentary-accent-bg: rgba(150, 103, 47, 0.12);
-  --commentary-accent-border: rgba(150, 103, 47, 0.32);
+  /* Library scholarly-commentary accent: same cyan family as --accent / chrome. */
+  --commentary-accent: var(--accent);
+  --commentary-accent-bg: color-mix(in srgb, var(--accent) 14%, transparent);
+  --commentary-accent-border: color-mix(in srgb, var(--accent) 32%, transparent);
   --bubble-user: #c8ebd4;
   --bubble-user-border: #a8d9b8;
   --bubble-user-fg: #1a3d2e;
@@ -128,9 +126,9 @@ html[data-theme="dark"] {
   --fg-muted: #8ca5b3;
   --accent: #4ecdc4;
   --accent-hover: #3db9b0;
-  --commentary-accent: #d9a96a;
-  --commentary-accent-bg: rgba(217, 169, 106, 0.14);
-  --commentary-accent-border: rgba(217, 169, 106, 0.38);
+  --commentary-accent: var(--accent);
+  --commentary-accent-bg: color-mix(in srgb, var(--accent) 16%, transparent);
+  --commentary-accent-border: color-mix(in srgb, var(--accent) 38%, transparent);
   --bubble-user: #1e4036;
   --bubble-user-border: #4d9a7d;
   --bubble-user-fg: #d4f0e4;
@@ -5691,6 +5689,40 @@ html[data-theme="dark"] .library-text-card {
     0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
+/* Oracle block: prose + in-box commentary toggle (Judgment / Image). */
+.library-oracle-shell {
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--bar-border) 78%, transparent);
+  background: color-mix(in srgb, var(--card-bg, var(--bg)) 74%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 8%, transparent);
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+html[data-theme="dark"] .library-oracle-shell {
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--bar-border));
+  background: color-mix(in srgb, var(--secondary-bg) 86%, #0a0f16);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--accent) 10%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.library-oracle-shell__body {
+  padding: 1rem 1.15rem 0.65rem;
+}
+
+.library-oracle-shell .library-ribbon {
+  margin-top: 0;
+}
+
+.library-oracle-shell .library-ribbon__bar {
+  background: color-mix(in srgb, var(--bar) 55%, transparent);
+}
+
+html[data-theme="dark"] .library-oracle-shell .library-ribbon__bar {
+  background: color-mix(in srgb, var(--bar) 80%, transparent);
+}
+
 .library-prose {
   margin: 0;
   text-align: justify;
@@ -5838,6 +5870,73 @@ html[data-theme="dark"] .library-text-card {
   vertical-align: middle;
 }
 
+.library-line-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.library-line-block__main {
+  display: grid;
+  grid-template-columns: 5.5rem 4rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0;
+  padding: 0.65rem 0.6rem 0.35rem;
+}
+
+.library-line-block__pos {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--card-title);
+  white-space: nowrap;
+}
+
+.library-lines-row--yong .library-line-block__pos {
+  color: var(--title-shell);
+  font-style: italic;
+}
+
+.library-line-block__symbol {
+  display: flex;
+  align-items: center;
+  padding: 0 0.15rem;
+}
+
+.library-line-block__text {
+  line-height: 1.55;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.library-line-block__bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.2rem 0.65rem 0.45rem;
+  border-top: 1px solid color-mix(in srgb, var(--bar-border) 55%, transparent);
+  background: color-mix(in srgb, var(--bar) 40%, transparent);
+}
+
+html[data-theme="dark"] .library-line-block__bar {
+  background: color-mix(in srgb, var(--bar) 75%, transparent);
+}
+
+.library-lines-table__block {
+  padding: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
+  vertical-align: top;
+}
+
+.library-lines-row--expandable {
+  border-bottom: none;
+}
+
+.library-lines-row--expandable + .library-lines-row--ribbon .library-lines-table__ribbon {
+  border-top: none;
+}
+
 .library-lines-row--yong .library-lines-table__pos {
   color: var(--title-shell);
   font-style: italic;
@@ -5927,21 +6026,22 @@ html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-
 /* ── Per-point commentary accordion (Judgment / Image / Lines / yong) ── */
 .library-ribbon {
   width: 100%;
-  margin-top: 0.15rem;
 }
 
 .library-ribbon__bar {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0.45rem 0.6rem;
+  padding: 0.35rem 0.65rem;
   border-top: 1px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
+  background: color-mix(in srgb, var(--bar) 45%, transparent);
 }
 
 .library-ribbon__bar--footer {
-  margin-top: 0.5rem;
-  padding-top: 0.65rem;
+  margin-top: 0.35rem;
+  padding-top: 0.5rem;
   border-top: 1px solid color-mix(in srgb, var(--bar-border) 55%, transparent);
+  background: transparent;
 }
 
 .library-ribbon__toggle {
@@ -5949,29 +6049,40 @@ html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border: none;
+  width: 1.28rem;
+  height: 1.28rem;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
   border-radius: 50%;
-  background: var(--commentary-accent);
-  color: #eee;
-  font-size: 1.05rem;
+  background: color-mix(in srgb, var(--accent) 58%, transparent);
+  color: #f8fcfd;
+  font-size: 0.82rem;
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
   box-shadow:
+    inset 0 1px 3px color-mix(in srgb, var(--fg) 22%, transparent),
+    0 1px 0 color-mix(in srgb, var(--secondary-bg) 35%, transparent);
+  text-shadow: 0 1px 1px color-mix(in srgb, var(--fg) 35%, transparent);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+html[data-theme="dark"] .library-ribbon__toggle {
+  background: color-mix(in srgb, var(--accent) 48%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  color: #eefcfb;
+  box-shadow:
     inset 0 1px 4px rgba(0, 0, 0, 0.35),
-    0 1px 0 color-mix(in srgb, var(--fg) 12%, transparent);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
-  transition: background 0.2s ease, transform 0.15s ease;
+    0 1px 0 color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
 .library-ribbon__toggle:hover {
-  background: color-mix(in srgb, var(--commentary-accent) 88%, var(--fg));
+  background: color-mix(in srgb, var(--accent) 72%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
 }
 
 .library-ribbon__toggle:focus-visible {
-  outline: 2px solid var(--commentary-accent);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -5991,27 +6102,21 @@ html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-
 }
 
 .library-ribbon__content {
-  padding: 0.75rem 1rem 0.25rem;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--secondary-bg) 92%, var(--fg)),
-    color-mix(in srgb, var(--secondary-bg) 78%, var(--fg))
-  );
-  box-shadow:
-    inset 4px 0 0 var(--commentary-accent),
-    inset 0 3px 6px color-mix(in srgb, var(--fg) 8%, transparent);
+  padding: 0.7rem 0.95rem 0.2rem;
+  background: color-mix(in srgb, var(--secondary-bg) 88%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--bar-border) 55%, transparent);
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--accent) 70%, transparent);
   color: var(--fg);
 }
 
 html[data-theme="dark"] .library-ribbon__content {
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--secondary-bg) 86%, #0a0f16),
-    color-mix(in srgb, var(--secondary-bg) 62%, #05080c)
-  );
-  box-shadow:
-    inset 4px 0 0 var(--commentary-accent),
-    inset 0 3px 8px rgba(0, 0, 0, 0.45);
+  background: color-mix(in srgb, var(--secondary-bg) 72%, #0a0f16);
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.library-ribbon--panel-only .library-ribbon__content {
+  border-top: none;
+  padding-top: 0.35rem;
 }
 
 .library-ribbon__content > p {
@@ -6070,10 +6175,8 @@ html[data-theme="dark"] .library-ribbon__content {
   margin-top: 0;
 }
 
-.library-lines-table__ribbon .library-ribbon__bar:first-child {
-  border-top: none;
-  padding-top: 0.35rem;
-  padding-bottom: 0.35rem;
+.library-lines-row--expandable + .library-lines-row--ribbon .library-lines-table__ribbon {
+  border-top: 1px solid color-mix(in srgb, var(--bar-border) 50%, transparent);
 }
 
 .oracle-shell.doc-page .doc-article table.library-lines-table tbody tr:last-child .library-lines-table__ribbon,
