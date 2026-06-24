@@ -1,8 +1,78 @@
-<!-- changelog:last-release:282a8a3 -->
+<!-- changelog:last-release:3a52d00 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.1.9] — 2026-06-24 | versionCode: 59 | Stage: Closed Testing
+
+### New
+- feat(library): rediseno de la capa de comentario (orden, "+", titulos, color) | commit: 1133f6b
+- feat(claude): Gate H7 verbatim juicio/imagen (warn + telemetria), cierra audit 2026-06-24 | commit: 2a1ce72
+- feat(qa): master-synthesis QA harness + confirma gap verbatim también en Wilhelm | commit: 4325279
+- feat(data): trigram pinyin gold gate + artefactos TXT maestro W/L | commit: a209f70
+- feat(library): optional scholarly-commentary layer for Wilhelm + Legge | commit: ae26e30
+- feat(legge): maestro TXT official + política notas W/L | commit: c52f774
+- feat(wilhelm): maestro TXT Princeton + gates AU 100/100 | commit: fbc2e8c
+- feat(data): EPUB-primary oracle injectors for Wilhelm + Legge (fix CI) | commit: 58a9b29
+
+### Fix
+- fix(library,claude): ribbon height via JS measurado + Gate H7 etiqueta traductor real | commit: 4460ad5
+- fix(library): toggle inline en lineas y bloques hex, footer - solo si extenso | commit: 35fe89c
+- fix(library): pulir ribbon comentario — cian tema, toggle dentro de zona | commit: bf25a16
+- fix(library): acordeon ribbon full-width para comentario por punto | commit: 6d6eff8
+- fix(library): correct hexagram name/title field from TXT-maestro book-one | commit: 9f26a5a
+- fix(data): alinear trigramas Sun alchemical WIND, WOOD con Parma | commit: 6fc8ced
+- fix(data): correct two Wilhelm EPUB digitization typos + reinforce Legge parenthesis fidelity in prompt | commit: ef40fb8
+- fix(iching-data): restaura versos del Gran Símbolo (大象) en Wilhelm EPUB | commit: 58a3d04
+- fix(data): restore clean Wilhelm + Legge oracle bundles (pre book-primary PDF regression) | commit: 3075998
+- fix(build): sync lockfile with database-types workspace package | commit: f23c41c
+- fix(auth): invalidate bootstrap redis cache on legal consent acceptance | commit: 54252c3
+
+### i18n
+- merge: i18n fixes for audits page and FAQ data-reliability into main | commit: 14e1769
+- merge: 4.1.8 audits/i18n docs (Fidelity Audits menu link, FAQ bullets, em-dash cleanup) into main | commit: 5df8c1a
+
+### Docs
+- docs: remediacion completa P0-P4 docs de usuario vs implementacion | commit: 3a52d00
+- docs(auditorias): cierra decision H2 con datos reales Axiom + confirma fix ribbon en APK real | commit: 52684e3
+- docs(auditorias): cerrar UI ribbon Biblioteca — validada en main | commit: 1e46d3b
+- docs(audit): gap verbatim juicio/imagen en lecturas IA + QA smoke | commit: b9e96f2
+- docs(wilhelm): cierra AU profunda ronda 2 book-one + comments | commit: a09f22b
+- docs(auditoria): indice WILHELM_TXT_AU_MAESTRO en README | commit: 44686e0
+- docs(auditoria): cierra adjudicacion Legge 41 L2 (sin punto, fiel) + spot-check Wilhelm hex 43 | commit: 592d0ad
+- docs(play-store): wrap each locale block in XML tags matching Play Console bulk-paste format | commit: 645e08b
+- docs(play-store): strip markdown markup from changelog locale blocks | commit: edf2493
+- docs(changelog): fold post-25af895 commits into existing 4.1.8/58 entry | commit: e58340e
+- docs(legal): align current terms and privacy versions with publication dates | commit: 331811e
+
+### Maintenance
+- merge: staging — biblioteca ribbon comentario UI cerrada | commit: 7679281
+- merge: fix/library-ribbon-ui-polish — pulir ribbon cian y toggle en zona | commit: 033f523
+- merge: fix/library-commentary-ribbon-ui — acordeon ribbon comentario Biblioteca | commit: 0915baf
+- merge: staging — audit verbatim blockquote gap + QA smoke | commit: 97bd8d4
+- merge: maestro TXT Wilhelm + Legge official (notas W/L, sin ingest runtime) | commit: 13f089e
+- merge(staging): fix typos Wilhelm EPUB + fidelidad parentesis Legge en prompt | commit: d8371c6
+- merge(staging): cierre adjudicacion Legge 41 L2 + spot-check Wilhelm 43 | commit: 1815bd4
+- merge(staging): fix Gran Símbolo (大象) truncado en Wilhelm EPUB | commit: 03a8dee
+- merge(staging->main): EPUB-primary oracle injectors for Wilhelm + Legge (fix CI) | commit: de85b00
+- merge(staging->main): restore clean Wilhelm + Legge oracle bundles (revert book-primary PDF regression) | commit: e6b2894
+- merge: sync lockfile with database-types workspace package | commit: de713f9
+- merge: fold 4.1.8/58 changelog + db tooling into main | commit: f6dc342
+- merge: fix H6 Legge test for Oxford PDF wording into main | commit: fa6fde8
+- merge: default verify gate PDF book-primary for Wilhelm and Legge into main | commit: 61aff7d
+- merge: Wilhelm 513/513 + Legge 514/514 PDF book-primary fidelity (audits incl.) into main | commit: e4b601a
+- merge: fix stale Wilhelm hex2 yongLiu test assertion (CI green) | commit: 2dbada7
+- merge: fix regresion real Wilhelm/Legge enmascarada por bugs del harness de fidelidad | commit: bc97045
+- merge: docs auditoria Parte 11 (verificacion produccion Supabase + Axiom) | commit: 6d0a711
+- merge: docs auditoria Parte 9-10 (verificacion independiente selector + fix idioma/lineReadingSystem) | commit: 27dc168
+- merge: fix consult idioma + lineReadingSystem SSE/resumen | commit: a8330ab
+- merge: line-reading QA reports (Capa 4) | commit: 2670b95
+- chore(gitignore): ignore transient QA/audit artifacts | commit: 0067f7a
+- release: merge staging into main — 4.1.7 / versionCode 57 (line-reading system selector, legal update header) | commit: 80dcda4
+- chore(mobile): keep 4.1.5 / versionCode 54 — drawer fix without version bump | commit: 12c0d0b
+
+---
 
 ## [4.1.8] — 2026-06-22 | versionCode: 58 | Stage: Closed Testing
 
@@ -1773,7 +1843,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.8 | 58 | 2026-06-22 | Closed Testing | 42 | surface Fidelity Audits in app menu and refine docs for 4.1.8; Huang PDF gold, public summary only, internal AU docs.; Zhu Xi Adler gold, readBothJudgments, and public /audits page. |
+| 4.1.9 | 59 | 2026-06-24 | Closed Testing | 56 | rediseno de la capa de comentario (orden, "+", titulos, color); Gate H7 verbatim juicio/imagen (warn + telemetria), cierra audit 2026-06-24; master-synthesis QA harness + confirma gap verbatim también en Wilhelm |
+| 4.1.8 | 58 | 2026-06-22 | Closed Testing | 0 | — |
 | 4.1.7 | 57 | 2026-06-20 | Closed Testing | 0 | — |
 | 4.1.6 | 55 | 2026-06-19 | Closed Testing | 0 | — |
 | 4.1.5 | 54 | 2026-06-19 | Closed Testing | 0 | — |
