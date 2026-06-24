@@ -1133,3 +1133,58 @@ migración de datos, porque la fuente de verdad (columna `line_reading_system` e
 correcta. La telemetría de Axiom corrobora de forma independiente y no ambigua (vía `git.commit`
 por request) que el fix estaba desplegado y activo en producción para el momento de la segunda
 tirada. No se requirió ninguna acción correctiva adicional sobre los datos existentes.
+
+---
+
+# Parte 12 — Fix del falso FAIL del harness + gate literal para Juicios transformados (24 jun 2026, Claude Sonnet 4.6)
+
+A petición del usuario, se corrigió de raíz el falso negativo de `scripts/line-reading-system-qa.mjs`
+identificado desde la Parte 5/9.3 (`extra: ["expecting N cited lines at X,Y (verify in transcript)"]`)
+y, en el mismo cambio, se cerró el hueco que la Parte 9 y el propio harness dejaban explícitamente
+sin gate automático: los Juicios del hexagrama transformado en los casos Zhu Xi de 3 líneas.
+
+## 12.1 — Causa raíz confirmada
+
+`caseChecks()` (línea 159, versión previa) hacía `issues.push(...)` **sin condición** para todo caso
+con `exp.lines.length === 2` — no comparaba nada contra la respuesta real, era un recordatorio para
+revisar el transcript a mano que el harness contaba como fallo. Por eso `two_yy` y `four` (los dos
+únicos casos Zhu Xi de 2 líneas) salían `pass:false` incluso con contenido 100% correcto, tal como
+ya había diagnosticado la Parte 9.3 leyendo el transcript manualmente.
+
+## 12.2 — Remediación
+
+Reescrito `caseChecks()` en `scripts/line-reading-system-qa.mjs` para recibir `cast` (no solo
+`fixture`) y comparar **texto literal completo**, no solo un fingerprint:
+
+- **Líneas citadas** (cualquier cantidad, no solo el caso de 2): por cada posición esperada, busca
+  `cast.textsForClaude.selectedLineTexts[i].text.trim()` completo como substring literal de la
+  respuesta — a diferencia de H1 (gate de producción, `interpretation-line-gate.ts`), que solo usa
+  los primeros 20 caracteres como fingerprint para decidir un retry sin falsos negativos por
+  espacios/puntuación. Aquí, al ser una verificación de QA y no un gate de producción que dispara
+  reintentos, no hace falta esa tolerancia: se exige el texto íntegro.
+- **Juicios (casos Zhu Xi de 3 líneas, `exp.judgments`)**: antes solo verificaba con una regex laxa
+  (`/transform|之卦|deriva|muta/iu`) que el texto mencionara *algo* sobre transformación. Ahora
+  compara literalmente `cast.textsForClaude.primaryJudgment` **y**
+  `cast.textsForClaude.transformedJudgment` contra la respuesta — cerrando exactamente el hueco que
+  la Parte 9 (vía la cita del usuario en la sesión del 24 jun) señalaba como no auditado: *"Juicios
+  del hexagrama transformado en 'El trazado hacia…' — fuera de H7 v1... no hubo gate automático
+  campo a campo en esas secciones"*.
+
+## 12.3 — Verificación de la propia verificación
+
+No se confió en la lógica a simple lectura: se extrajo `caseChecks()` a un script aislado que llama
+a `performCastFromLineValues` directamente (sin gastar tokens de la API) y se probó con dos
+respuestas sintéticas por fixture (`two_yy`, `four`, `three_a`):
+
+| Fixture | Respuesta perfecta (textos canónicos concatenados) | Respuesta parafraseada/incorrecta |
+|---|---|---|
+| `two_yy` (ZX, 2 líneas) | `issues: []` | `issues: ["línea 1: cita literal no encontrada…", "línea 2: …"]` |
+| `four` (ZX, 2 líneas) | `issues: []` | `issues: ["línea 5: …", "línea 6: …"]` |
+| `three_a` (ZX, 3 líneas → Juicios) | `issues: []` | `issues: ["falta cita literal del Juicio primario", "falta cita literal del Juicio transformado"]` |
+
+Confirma ambas direcciones: ya no marca falso FAIL ante contenido correcto, y sí detecta una falla
+real cuando el texto citado no coincide. `node --check` confirma sintaxis válida del script.
+
+**Pendiente:** re-ejecutar `scripts/line-reading-system-qa.mjs` contra la API real (gasta tokens) para
+obtener un reporte fresco con el harness corregido; los 8 `pass:false` históricos de la Parte 5/9.3
+quedan reclasificados como falsos negativos confirmados y resueltos en el código, no en los datos.

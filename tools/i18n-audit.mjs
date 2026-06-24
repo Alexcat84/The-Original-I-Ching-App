@@ -4,6 +4,7 @@
  */
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const ROOT = new URL("..", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1");
 
@@ -98,10 +99,51 @@ function scanHreflang() {
   }
 }
 
+/**
+ * FAQ items live as 11 separate FAQ_ITEMS_<LOCALE> arrays (not a
+ * Record<AppLocale, T>), so a locale can silently lose or keep a stale `id`
+ * during a rename without tripping the Record/Partial checks above — this is
+ * exactly how the translators-tiers/translators-three split drifted in one
+ * locale while looking fine in es/en. Catch that by diffing the id set.
+ */
+async function scanFaqIdParity() {
+  const distPath = join(ROOT, "packages/i18n/dist/index.js");
+  let mod;
+  try {
+    mod = await import(pathToFileURL(distPath).href);
+  } catch {
+    errors.push(
+      "tools/i18n-audit.mjs: could not import packages/i18n/dist/index.js — run `npx tsc` in packages/i18n before auditing",
+    );
+    return;
+  }
+  const { SUPPORTED_LOCALES, getFaqPageUiMessages } = mod;
+  const idSets = SUPPORTED_LOCALES.map((locale) => ({
+    locale,
+    ids: new Set(getFaqPageUiMessages(locale).items.map((item) => item.id)),
+  }));
+  const reference = idSets[0];
+  for (const { locale, ids } of idSets.slice(1)) {
+    const missing = [...reference.ids].filter((id) => !ids.has(id));
+    const extra = [...ids].filter((id) => !reference.ids.has(id));
+    if (missing.length > 0) {
+      errors.push(
+        `faq-page-ui.ts: locale "${locale}" is missing FAQ id(s) present in "${reference.locale}": ${missing.join(", ")}`,
+      );
+    }
+    if (extra.length > 0) {
+      errors.push(
+        `faq-page-ui.ts: locale "${locale}" has FAQ id(s) not present in "${reference.locale}": ${extra.join(", ")}`,
+      );
+    }
+  }
+}
+
 scanPartialRecord();
 scanIsEsPdf();
 scanWebRecordBlocks();
 scanHreflang();
+await scanFaqIdParity();
 
 if (errors.length > 0) {
   console.error("i18n audit failed:\n");

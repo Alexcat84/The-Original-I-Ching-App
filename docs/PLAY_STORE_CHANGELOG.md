@@ -11,8 +11,8 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 | Version | versionCode | Date | Stage |
 |---|---|---|---|
-| 4.1.9 | 59 | 2026-06-24 | Closed Testing |
-| 4.1.8 | 58 | 2026-06-22 | Closed Testing |
+| 4.1.9 | 59 | 2026-06-24 | Production |
+| 4.1.8 | 58 | 2026-06-22 | Production |
 
 ---
 

@@ -386,5 +386,6 @@ Compatibles con Node.js 24 — deadline del 2 junio 2026 cubierto.
 - [ ] APK final con todos los fixes verificados en dispositivo
 - [ ] i18n formal con next-intl (post-lanzamiento, Fase 2)
 - **Expansión de idiomas (hoy):** seguir checklist operativo en [`docs/workflows/I18N_GUIDE.md`](docs/workflows/I18N_GUIDE.md) — `@iching-oracle/i18n` + `Record<AppLocale, …>`, no `apps/web/messages/*.json`
+- **Actualizar contenido de FAQ/guía/notas existente (no agregar idioma):** seguir [`docs/workflows/DOCS_CONTENT_UPDATE_GUIDE.md`](docs/workflows/DOCS_CONTENT_UPDATE_GUIDE.md) — fuentes citables reales (nunca "PDF"), nivel de detalle por canal, y el chequeo de paridad de `id` de FAQ entre los 11 locales (`npm run i18n:audit`)
 - [ ] App Expo nativa completa (post-lanzamiento, Fase 2)
 - [ ] Animación ritual de hueso (Three.js + fuego) — pendiente integración

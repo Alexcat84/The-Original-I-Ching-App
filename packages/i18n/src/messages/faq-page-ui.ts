@@ -77,7 +77,7 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
     "not-advice",
   ],
   "tokens-payments": ["tokens-packs", "purchases-legal"],
-  "premium-features": ["translators-tiers", "master-tokens-cost", "library-unlock"],
+  "premium-features": ["translators-three", "tier-features", "master-tokens-cost", "library-unlock"],
   "privacy-account": ["privacy-consultations", "privacy-data", "security-2fa", "delete-chats", "delete-account"],
 };
 
@@ -248,7 +248,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "data-reliability",
     question: "How reliable are the I Ching texts provided in the app?",
     answer:
-      "Last audit: 22 June 2026. Oracle texts verified against Tier-0 sources: Wilhelm/Baynes (Pantheon PDF), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang and Zhu Xi/Adler (local PDFs). Changing-line rules verified against Huang and Adler gold. See the Fidelity Audits page for methodology, gate results, and the full audit log.",
+      "Reliability means the oracle text you read, the Judgment, the Image, and each line, is never written or altered by AI. It is a direct citation checked word for word against a named published source. The English text comes from Richard Wilhelm and Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) and from James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); the classical Chinese Zhou Yi comes from the Chinese Text Project. The changing-line rules come from Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) and, for the classical alternative, from Zhu Xi's Yixue Qimeng in Joseph Adler's translation (Introduction to the Study of the Classic of Change, 2002). The AI interprets these already-cited texts for your question; it never generates or rewrites them. See the Fidelity Audits page for the full verification log.",
     related: ["fidelityAudits"],
   },
   {
@@ -285,18 +285,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "What rule system determines which line text governs an I Ching reading?",
     answer:
-      "The app implements Alfred Huang's single-line reduction system, set out in The Complete I Ching, with Zhu Xi (朱熹, 1130-1200 CE) as the classical antecedent for the underlying structure. Huang's method reduces any combination of changing lines to one governing line text (爻辞), so the reading always rests on a single precise passage. Which text governs depends on how many of the six lines are changing.\n\n" +
-      "- 0 changing lines: only the Judgment (卦辞) and Image (象辞) of the primary hexagram are read. The hexagram stands as a complete statement; no line text is cited.\n" +
-      "- 1 changing line: the text of that single changing line governs.\n" +
-      "- 2 changing lines, yin and yang: the yin line governs (Alfred Huang: with one yin and one yang moving line, read the yin). Zhu Xi instead read both lines, giving the upper precedence.\n" +
-      "- 2 changing lines, same polarity: the lower of the two governs (Alfred Huang). Zhu Xi instead read both, giving the upper precedence.\n" +
-      "- 3 changing lines: the middle line of the three (by position) governs (Alfred Huang: with three moving lines, read the middle one). Zhu Xi instead read the Judgments of both hexagrams, using a set of charts to decide which to emphasize.\n" +
-      "- 4 changing lines: the reading shifts to the transformed hexagram; the upper of its two stable lines governs (Alfred Huang). Zhu Xi instead read the lower of the two.\n" +
-      "- 5 changing lines: the reading shifts to the transformed hexagram. The single stable line governs, and its text is drawn from the transformed hexagram.\n" +
-      "- 6 changing lines (any hexagram except #1 and #2): total mutation. Only the Judgment of the transformed hexagram is read; no individual line text is cited.\n" +
-      "- Hexagram #1 Qian, all lines old yang (用九): the special seventh-yao text 'Use of Nines' governs: 'A host of dragons without heads, good fortune.'\n" +
-      "- Hexagram #2 Kun, all lines old yin (用六): the special text 'Use of Sixes' governs: 'Perseverance furthers.'\n\n" +
-      "Across every case the app yields one precise governing text with no ambiguity and no gap. By default it follows Alfred Huang's reduction system; the Changing-line reading selector in Options lets you switch to Zhu Xi's classical reading instead, applying the alternates described above for each case. Your choice is remembered and applied consistently to that reading.",
+      "The app supports two systems for resolving changing lines to the line text, or texts, that governs a reading. Alfred Huang's reduction system (The Complete I Ching, 10th Anniversary Edition, 2010) is the default: a clear, modern rule set that always resolves any combination of changing lines to one precise governing passage. Zhu Xi's classical reading (朱熹, 1130-1200 CE; Yixue Qimeng, in Joseph Adler's translation) is the traditional alternative: an older method that, in several cases, reads both lines or both Judgments instead of reducing to one. Switch between them with the Changing-line reading selector in Options; your choice is remembered for that reading.",
     related: ["methodNotes"],
   },
   {
@@ -416,10 +405,17 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     related: ["userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "How do the different translation tiers work?",
+    id: "translators-three",
+    question: "What are the three translators available in the app?",
     answer:
-      "The Free plan includes I Ching (automatic and manual: Three Coins and Yarrow Stalks) and Oracle Bones mode. The Seeker pack additionally unlocks the full Library and the James Legge translator. The Practitioner pack adds the original Zhou Yi, the oldest version of the I Ching without later commentaries. The Master pack activates the Master (3) function: simultaneous triangulation of all three translators for a powerful, personalised synthesis.",
+      "The app draws on three classical translations of the I Ching, shown as separate tabs. Richard Wilhelm and Cary F. Baynes (Princeton University Press, 1950) is the most widely read Western edition, with extensive commentary. James Legge (The Sacred Books of the East, vol. XVI, 1882) is the pioneering English scholarly translation, with his own footnotes and symbolism. The Zhou Yi is the original classical Chinese text itself, the root all later commentaries were written about, shown with no added commentary layer. All three describe the same 64 hexagrams; they differ in scholarly voice, language, and how much explanatory material surrounds the core text.",
+  },
+  {
+    id: "tier-features",
+    question: "What does each pack include, beyond tokens?",
+    answer:
+      "Free includes I Ching (Three Coins or Yarrow Stalks, automatic or manual) and Oracle Bones, with the Wilhelm/Baynes translator. Seeker adds the full Library and the Legge translator. Practitioner adds the original Zhou Yi text. Master adds the Master (3) synthesis, which triangulates all three translators at once. For current token amounts, thread limits, and how to purchase, open the Token Center from the app header.",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -438,9 +434,15 @@ const FAQ_ITEMS_EN: FaqItem[] = [
 
 const FAQ_ITEMS_ES: FaqItem[] = [
   {
-    id: "translators-tiers",
-    question: "¿Cómo funcionan los diferentes niveles de traducción?",
-    answer: "El pack Free incluye el modo I Ching en automático o manual (Tres Monedas y Varillas de Milenrama) y el modo Huesos de Oráculo. El pack Seeker, además del Free, desbloquea la Biblioteca completa y el traductor James Legge. El pack Practitioner añade el Zhou Yi original, la versión más antigua del I Ching sin los comentarios posteriores. El pack Master activa la función Master (3): triangulación simultánea de los tres traductores para una síntesis potente y personalizada.",
+    id: "translators-three",
+    question: "¿Cuáles son los tres traductores disponibles en la app?",
+    answer: "La app se apoya en tres traducciones clásicas del I Ching, mostradas como pestañas separadas. Richard Wilhelm y Cary F. Baynes (Princeton University Press, 1950) es la edición occidental más leída, con un comentario extenso. James Legge (The Sacred Books of the East, vol. XVI, 1882) es la traducción académica pionera en inglés, con sus propias notas y simbolismo. El Zhou Yi es el texto original en chino clásico, la raíz sobre la que se escribieron los comentarios posteriores, mostrado sin ninguna capa de comentario añadida. Los tres describen los mismos 64 hexagramas; difieren en la voz del traductor, el idioma y cuánto material explicativo rodea al texto central.",
+  },
+  {
+    id: "tier-features",
+    question: "¿Qué incluye cada pack, además de los tokens?",
+    answer: "Free incluye el I Ching (Tres Monedas o Varillas de Milenrama, automático o manual) y los Huesos de Oráculo, con el traductor Wilhelm/Baynes. Seeker añade la Biblioteca completa y el traductor Legge. Practitioner añade el texto original del Zhou Yi. Master añade la síntesis Master (3), que triangula los tres traductores a la vez. Para ver cantidades de tokens vigentes, límites por hilo y cómo comprar, abre el Centro de tokens desde el encabezado de la app.",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -466,7 +468,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "data-reliability",
     question: "¿Qué tan fiables son los textos del I Ching en la aplicación?",
     answer:
-      "Última auditoría: 22 de junio de 2026. Textos del oráculo verificados contra fuentes Tier-0: Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang y Zhu Xi/Adler (PDF locales). Reglas de líneas cambiantes verificadas contra gold Huang y Adler. Consulta la página Auditorías de fidelidad para metodología, resultados de gates y el registro completo.",
+      "Fiabilidad significa que el texto del oráculo que lees, el Juicio, la Imagen y cada línea, nunca es escrito ni alterado por la IA. Es una cita directa, verificada palabra por palabra contra una fuente publicada con nombre propio. El texto en inglés proviene de Richard Wilhelm y Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) y de James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); el Zhou Yi en chino clásico proviene del Chinese Text Project. Las reglas de líneas cambiantes provienen de Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) y, para la alternativa clásica, del Yixue Qimeng de Zhu Xi en la traducción de Joseph Adler (Introduction to the Study of the Classic of Change, 2002). La IA interpreta estos textos ya citados para tu pregunta; nunca los genera ni los reescribe. Consulta la página Auditorías de fidelidad para el registro completo de verificación.",
     related: ["fidelityAudits"],
   },
   {
@@ -503,18 +505,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "¿Qué sistema de reglas determina qué texto de línea gobierna una lectura del I Ching?",
     answer:
-      "La app implementa el sistema de reducción a una sola línea de Alfred Huang, expuesto en The Complete I Ching, con Zhu Xi (朱熹, 1130-1200 d.C.) como antecedente clásico de la estructura de fondo. El método de Huang reduce cualquier combinación de líneas cambiantes a un único texto de línea gobernante (爻辞), de modo que la lectura siempre descansa en un pasaje preciso. Qué texto gobierna depende de cuántas de las seis líneas están en cambio.\n\n" +
-      "- 0 líneas en cambio: solo se leen el Juicio (卦辞) y la Imagen (象辞) del hexagrama primario. El hexagrama habla como declaración completa; no se cita ningún texto de línea.\n" +
-      "- 1 línea en cambio: el texto de esa única línea cambiante gobierna.\n" +
-      "- 2 líneas en cambio, yin y yang: gobierna la línea yin (Alfred Huang: con una yin y una yang en movimiento, se lee la yin). Zhu Xi en cambio leía ambas líneas, dando precedencia a la superior.\n" +
-      "- 2 líneas en cambio, misma polaridad: gobierna la inferior de las dos (Alfred Huang). Zhu Xi en cambio leía ambas, dando precedencia a la superior.\n" +
-      "- 3 líneas en cambio: gobierna la línea central de las tres por posición (Alfred Huang: con tres líneas en movimiento, se lee la del medio). Zhu Xi en cambio leía los Juicios de ambos hexagramas, usando un conjunto de diagramas para decidir cuál enfatizar.\n" +
-      "- 4 líneas en cambio: la lectura se desplaza al hexagrama transformado; gobierna la superior de sus dos líneas estables (Alfred Huang). Zhu Xi en cambio leía la inferior de las dos.\n" +
-      "- 5 líneas en cambio: la lectura se desplaza al hexagrama transformado. La única línea estable gobierna, y su texto se toma del hexagrama transformado.\n" +
-      "- 6 líneas en cambio (cualquier hexagrama excepto el #1 y el #2): mutación total. Solo se lee el Juicio del hexagrama transformado; no se cita ningún texto de línea individual.\n" +
-      "- Hexagrama #1 Qian, todas las líneas yang viejas (用九): gobierna el texto especial del séptimo yao «Uso de los Nueves»: «Una multitud de dragones sin cabeza, buena fortuna».\n" +
-      "- Hexagrama #2 Kun, todas las líneas yin viejas (用六): gobierna el texto especial «Uso de los Seises»: «La perseverancia trae ventaja».\n\n" +
-      "En todos los casos la app produce un único texto gobernante preciso, sin ambigüedad ni laguna. Por defecto sigue el sistema de reducción de Alfred Huang; el selector «Lectura de líneas cambiantes» en Opciones permite cambiar a la lectura clásica de Zhu Xi, que aplica las alternativas descritas arriba para cada caso. Tu elección se recuerda y se aplica de forma consistente en esa lectura.",
+      "La app admite dos sistemas para resolver qué texto de línea, o textos, gobierna una lectura cuando hay líneas cambiantes. El sistema de reducción de Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) es el predeterminado: un conjunto de reglas claro y moderno que siempre reduce cualquier combinación de líneas cambiantes a un único pasaje gobernante preciso. La lectura clásica de Zhu Xi (朱熹, 1130-1200 d.C.; Yixue Qimeng, en la traducción de Joseph Adler) es la alternativa tradicional: un método más antiguo que, en varios casos, lee ambas líneas o ambos Juicios en vez de reducir a uno solo. Cambia entre ambos con el selector «Lectura de líneas cambiantes» en Opciones; tu elección se recuerda para esa lectura.",
     related: ["methodNotes"],
   },
   {
@@ -649,7 +640,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "data-reliability",
     question: "ما مدى موثوقية نصوص الآي تشينغ في التطبيق؟",
     answer:
-      "آخر تدقيق: 22 يونيو 2026. نصوص الأوراكل مُحقَّقة مقابل مصادر Tier-0: Wilhelm/Baynes (PDF Pantheon)، Legge (SBE XVI)، Zhou Yi (Chinese Text Project)، Huang و Zhu Xi/Adler (ملفات PDF محلية). قواعد الخطوط المتغيرة مُحقَّقة مقابل مرجعية Huang و Adler. راجع صفحة تدقيقات المطابقة للمنهجية ونتائج البوابات والسجل الكامل.",
+      "الموثوقية تعني أن نص الأوراكل الذي تقرأه، الحكم والصورة وكل خط، لا تكتبه ولا تعدّله الذكاء الاصطناعي أبداً. إنه اقتباس مباشر، مُحقَّق كلمة بكلمة مقابل مصدر منشور باسمه الصريح. يأتي النص الإنجليزي من Richard Wilhelm وCary F. Baynes (The I Ching or Book of Changes، Princeton University Press، 1950) ومن James Legge (The Sacred Books of the East، المجلد XVI، أكسفورد، 1882)؛ ويأتي التشو يي بالصينية الكلاسيكية من Chinese Text Project. تأتي قواعد الخطوط المتغيرة من Alfred Huang (The Complete I Ching، الطبعة العاشرة التذكارية، 2010)، ومن أجل البديل الكلاسيكي، من كتاب Yixue Qimeng لـZhu Xi بترجمة Joseph Adler (Introduction to the Study of the Classic of Change، 2002). يفسّر الذكاء الاصطناعي هذه النصوص المقتبسة سلفاً من أجل سؤالك؛ ولا يولّدها أو يعيد كتابتها أبداً. راجع صفحة تدقيقات المطابقة للسجل الكامل للتحقق.",
     related: ["fidelityAudits"],
   },
   {
@@ -685,18 +676,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "ما نظام القواعد الذي يحدد أيّ نص خط يحكم قراءة الآي تشينغ؟",
     answer:
-      "يطبّق التطبيق نظام الاختزال إلى خط واحد الذي وضعه Alfred Huang في كتابه The Complete I Ching، مع اعتبار Zhu Xi (朱熹، 1130-1200 م) السابقة الكلاسيكية للبنية الأساسية. تختزل طريقة Huang أي تركيبة من الخطوط المتغيرة إلى نص خط حاكم واحد (爻辞)، بحيث ترتكز القراءة دائماً على فقرة واحدة دقيقة. أيّ نص يحكم يتوقف على عدد الخطوط الستة المتغيرة.\n\n" +
-      "- 0 خطوط متغيرة: يُقرأ فقط الحكم (卦辞) والصورة (象辞) للسداسي الأصلي. يقف السداسي كبيان كامل؛ لا يُستشهد بأي نص خط.\n" +
-      "- خط واحد متغير: يحكم نص ذلك الخط المتغير الوحيد.\n" +
-      "- خطان متغيران، يين ويانغ: يحكم خط اليين (Alfred Huang: عند وجود خط يين وخط يانغ متحركَين، يُقرأ خط اليين). أما Zhu Xi فكان يقرأ كلا الخطين، مع إعطاء الأولوية للأعلى.\n" +
-      "- خطان متغيران، نفس القطبية: يحكم الخط الأسفل من الاثنين (Alfred Huang). أما Zhu Xi فكان يقرأ كلا الخطين، مع إعطاء الأولوية للأعلى.\n" +
-      "- ثلاثة خطوط متغيرة: يحكم الخط الأوسط من الثلاثة حسب الموضع (Alfred Huang: عند وجود ثلاثة خطوط متحركة، يُقرأ الخط الأوسط). أما Zhu Xi فكان يقرأ أحكام كلا السداسيين، مستخدماً مجموعة من المخططات لتحديد أيهما يُرجَّح.\n" +
-      "- أربعة خطوط متغيرة: تنتقل القراءة إلى السداسي المحوّل؛ يحكم الخط الثابت الأعلى من الخطين (Alfred Huang). أما Zhu Xi فكان يقرأ الأدنى من الاثنين.\n" +
-      "- خمسة خطوط متغيرة: تنتقل القراءة إلى السداسي المحوّل. يحكم الخط الثابت الوحيد ويُؤخذ نصه من السداسي المحوّل.\n" +
-      "- ستة خطوط متغيرة (أي سداسي ما عدا #1 و#2): طفرة كاملة. يُقرأ حكم السداسي المحوّل فقط؛ لا يُستشهد بأي نص خط فردي.\n" +
-      "- السداسي #1 Qian بكل خطوطه يانغ قديمة (用九): يحكم النص الخاص بالياو السابع «استخدام التسعات»: «حشد من التنانين بلا رؤوس، حظ سعيد».\n" +
-      "- السداسي #2 Kun بكل خطوطه يين قديمة (用六): يحكم النص الخاص «استخدام الستات»: «الثبات يُجدي نفعاً».\n\n" +
-      "في كل الحالات يُنتج التطبيق نصاً حاكماً واحداً ودقيقاً، دون غموض أو ثغرة. يتبع التطبيق افتراضياً نظام اختزال Alfred Huang؛ ويتيح لك مُحدِّد «قراءة الخطوط المتغيرة» في الخيارات التبديل إلى قراءة Zhu Xi الكلاسيكية، التي تطبّق البدائل الموصوفة أعلاه لكل حالة. يُحفظ اختيارك ويُطبَّق باستمرار على تلك القراءة.",
+      "يتيح التطبيق نظامين لتحديد نص الخط، أو النصوص، التي تحكم القراءة عند وجود خطوط متغيرة. نظام الاختزال الذي وضعه Alfred Huang (The Complete I Ching، الطبعة العاشرة التذكارية، 2010) هو الافتراضي: مجموعة قواعد واضحة وحديثة تختزل دائماً أي تركيبة من الخطوط المتغيرة إلى فقرة حاكمة واحدة دقيقة. أما قراءة Zhu Xi الكلاسيكية (朱熹، 1130-1200 م؛ Yixue Qimeng، بترجمة Joseph Adler) فهي البديل التقليدي: طريقة أقدم تقرأ في حالات عدة كلا الخطين أو كلا الحكمين بدلاً من الاختزال إلى واحد. بدّل بينهما باستخدام مُحدِّد «قراءة الخطوط المتغيرة» في الخيارات؛ يُحفظ اختيارك لتلك القراءة.",
     related: ["methodNotes"],
   },
   {
@@ -816,10 +796,17 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     related: ["userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "كيف تعمل مستويات الترجمة المختلفة؟",
+    id: "translators-three",
+    question: "ما هي الترجمات الثلاث المتوفرة في التطبيق؟",
     answer:
-      "تشمل الخطة المجانية وضع I Ching (تلقائي ويدوي: ثلاث عملات وعصي الخيزران) ووضع Oracle Bones. يفتح pack Seeker إضافةً إلى الخطة المجانية المكتبة الكاملة ومترجم James Legge بشكل دائم. يُضيف pack Practitioner Zhou Yi الأصلي، أقدم نسخة من I Ching دون تعليقات لاحقة. يُفعّل pack Master وظيفة Master (3): مثلثة متزامنة للمترجمين الثلاثة لتوليف قوي وشخصي.",
+      "يستند التطبيق إلى ثلاث ترجمات كلاسيكية للآي تشينغ، تُعرض كعلامات تبويب منفصلة. ترجمة Richard Wilhelm وCary F. Baynes (Princeton University Press، 1950) هي النسخة الغربية الأكثر قراءة، وتتضمن تعليقاً موسعاً. ترجمة James Legge (The Sacred Books of the East، المجلد XVI، 1882) هي الترجمة الأكاديمية الإنجليزية الرائدة، وتتضمن ملاحظاته الخاصة ورمزيته. والتشو يي هو النص الأصلي بالصينية الكلاسيكية نفسه، الجذر الذي كُتبت عنه التعليقات اللاحقة كلها، ويُعرض دون أي طبقة تعليق مُضافة. تصف الثلاث جميعها السداسيات الأربع والستين نفسها؛ وتختلف في صوت المترجم واللغة وكمّ المادة التوضيحية المحيطة بالنص الأساسي.",
+  },
+  {
+    id: "tier-features",
+    question: "ما الذي يتضمنه كل pack، إلى جانب التوكنات؟",
+    answer:
+      "تشمل الخطة المجانية I Ching (ثلاث عملات أو عيدان اليارو، تلقائي أو يدوي) وعظام العرافة، مع مترجم Wilhelm/Baynes. يضيف Seeker المكتبة الكاملة ومترجم Legge. يضيف Practitioner نص التشو يي الأصلي. يضيف Master توليفة Master (3)، التي تُثلّث المترجمين الثلاثة في آنٍ واحد. لرؤية كميات التوكنات الحالية وحدود الخيط وكيفية الشراء، افتح مركز التوكنات من ترويسة التطبيق.",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -848,7 +835,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "data-reliability",
     question: "ऐप में दिए गए आई चिंग ग्रंथों की विश्वसनीयता क्या है?",
     answer:
-      "अंतिम ऑडिट: 22 जून 2026. Oracle पाठ Tier-0 स्रोतों के विरुद्ध सत्यापित: Wilhelm/Baynes (Pantheon PDF), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang और Zhu Xi/Adler (लोकल PDF)। बदलती-रेखा नियम Huang और Adler गोल्ड के विरुद्ध सत्यापित। पद्धति, गेट परिणाम और पूर्ण लॉग के लिए निष्ठा ऑडिट पृष्ठ देखें।",
+      "विश्वसनीयता का अर्थ है कि आप जो ओरेकल पाठ पढ़ते हैं, निर्णय, छवि और हर रेखा, वह कभी AI द्वारा न लिखा जाता है न बदला जाता है। यह एक प्रत्यक्ष उद्धरण है, जिसे एक नामित प्रकाशित स्रोत के विरुद्ध शब्द-दर-शब्द सत्यापित किया गया है। अंग्रेज़ी पाठ Richard Wilhelm और Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) तथा James Legge (The Sacred Books of the East, खंड XVI, ऑक्सफ़ोर्ड, 1882) से आता है; शास्त्रीय चीनी Zhou Yi Chinese Text Project से आता है। बदलती-रेखा नियम Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) से आते हैं, और शास्त्रीय विकल्प के लिए, Zhu Xi के Yixue Qimeng से, Joseph Adler के अनुवाद में (Introduction to the Study of the Classic of Change, 2002)। AI आपके प्रश्न के लिए इन पहले से उद्धृत पाठों की व्याख्या करता है; यह इन्हें कभी उत्पन्न या फिर से नहीं लिखता। पूर्ण सत्यापन लॉग के लिए निष्ठा ऑडिट पृष्ठ देखें।",
     related: ["fidelityAudits"],
   },
   {
@@ -885,18 +872,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "कौन सी नियम-प्रणाली यह निर्धारित करती है कि I Ching पठन में कौन सा रेखा-पाठ शासन करता है?",
     answer:
-      "यह ऐप Alfred Huang की एकल-रेखा संक्षेपण प्रणाली को लागू करती है, जो उनकी पुस्तक The Complete I Ching में वर्णित है, जिसमें Zhu Xi (朱熹, 1130-1200 ई.) अंतर्निहित संरचना के शास्त्रीय पूर्ववृत्त के रूप में हैं। Huang की पद्धति परिवर्तनशील रेखाओं के किसी भी संयोजन को एक शासक रेखा-पाठ (爻辞) तक संक्षिप्त करती है, जिससे पठन हमेशा एक सटीक अंश पर आधारित होता है। कौन सा पाठ शासन करता है, यह इस पर निर्भर करता है कि छह में से कितनी रेखाएँ परिवर्तनशील हैं।\n\n" +
-      "- 0 परिवर्तनशील रेखाएँ: केवल प्राथमिक हेक्साग्राम का निर्णय (卦辞) और छवि (象辞) पढ़ी जाती है। हेक्साग्राम एक पूर्ण कथन के रूप में खड़ा रहता है; किसी रेखा-पाठ का हवाला नहीं दिया जाता।\n" +
-      "- 1 परिवर्तनशील रेखा: उस एकल परिवर्तनशील रेखा का पाठ शासन करता है।\n" +
-      "- 2 परिवर्तनशील रेखाएँ, यिन और यांग: यिन रेखा शासन करती है (Alfred Huang: एक यिन और एक यांग चलती रेखा होने पर, यिन रेखा पढ़ी जाती है)। इसके विपरीत Zhu Xi दोनों रेखाएँ पढ़ते थे, ऊपरी को प्राथमिकता देते हुए।\n" +
-      "- 2 परिवर्तनशील रेखाएँ, समान ध्रुवीयता: दोनों में से निचली रेखा शासन करती है (Alfred Huang)। इसके विपरीत Zhu Xi दोनों पढ़ते थे, ऊपरी को प्राथमिकता देते हुए।\n" +
-      "- 3 परिवर्तनशील रेखाएँ: तीनों में से मध्य रेखा (स्थिति के अनुसार) शासन करती है (Alfred Huang: तीन चलती रेखाओं पर, मध्य रेखा पढ़ी जाती है)। इसके विपरीत Zhu Xi दोनों हेक्साग्रामों के निर्णय पढ़ते थे, यह तय करने के लिए चार्टों के एक सेट का उपयोग करते हुए कि किसे प्राथमिकता देनी है।\n" +
-      "- 4 परिवर्तनशील रेखाएँ: पठन रूपांतरित हेक्साग्राम में स्थानांतरित होता है; इसकी दो स्थिर रेखाओं में से ऊपरी शासन करती है (Alfred Huang)। इसके विपरीत Zhu Xi दोनों में से निचली पढ़ते थे।\n" +
-      "- 5 परिवर्तनशील रेखाएँ: रूपांतरित हेक्साग्राम में स्थानांतरण। एकमात्र स्थिर रेखा शासन करती है, और उसका पाठ रूपांतरित हेक्साग्राम से लिया जाता है।\n" +
-      "- 6 परिवर्तनशील रेखाएँ (#1 और #2 को छोड़कर कोई भी हेक्साग्राम): पूर्ण उत्परिवर्तन। केवल रूपांतरित हेक्साग्राम का निर्णय पढ़ा जाता है; किसी व्यक्तिगत रेखा-पाठ का हवाला नहीं दिया जाता।\n" +
-      "- हेक्साग्राम #1 Qian, सभी रेखाएँ पुराना यांग (用九): विशेष सातवें याओ पाठ 'नौ का उपयोग' शासन करता है: 'बिना सिर के ड्रैगनों का समूह, शुभ फल'।\n" +
-      "- हेक्साग्राम #2 Kun, सभी रेखाएँ पुराना यिन (用六): विशेष पाठ 'छह का उपयोग' शासन करता है: 'दृढ़ता लाभकारी है'।\n\n" +
-      "हर स्थिति में ऐप एक सटीक शासक पाठ देती है, बिना किसी अस्पष्टता या अंतराल के। डिफ़ॉल्ट रूप से यह Alfred Huang की संक्षेपण प्रणाली का अनुसरण करती है; विकल्पों में 'परिवर्तनशील रेखाओं का पठन' चयनकर्ता आपको इसके बदले Zhu Xi की शास्त्रीय पठन शैली चुनने देता है, जो ऊपर वर्णित विकल्पों को हर स्थिति में लागू करती है। आपकी पसंद याद रखी जाती है और उस पठन पर लगातार लागू होती है।",
+      "यह ऐप बदलती रेखाओं को उस रेखा-पाठ, या पाठों, तक हल करने के लिए दो प्रणालियों का समर्थन करती है जो पठन पर शासन करते हैं। Alfred Huang की संक्षेपण प्रणाली (The Complete I Ching, 10th Anniversary Edition, 2010) डिफ़ॉल्ट है: नियमों का एक स्पष्ट, आधुनिक सेट जो परिवर्तनशील रेखाओं के किसी भी संयोजन को हमेशा एक सटीक शासक अंश तक संक्षिप्त करता है। Zhu Xi की शास्त्रीय पठन शैली (朱熹, 1130-1200 ई.; Yixue Qimeng, Joseph Adler के अनुवाद में) पारंपरिक विकल्प है: एक पुरानी पद्धति जो कई स्थितियों में एक तक संक्षिप्त करने के बजाय दोनों रेखाएँ या दोनों निर्णय पढ़ती है। विकल्पों में 'परिवर्तनशील रेखाओं का पठन' चयनकर्ता से दोनों के बीच स्विच करें; आपकी पसंद उस पठन के लिए याद रखी जाती है।",
     related: ["methodNotes"],
   },
   {
@@ -1009,10 +985,17 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     related: ["privacyPolicy", "userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "विभिन्न अनुवाद स्तर कैसे काम करते हैं?",
+    id: "translators-three",
+    question: "ऐप में उपलब्ध तीन अनुवादक कौन-कौन से हैं?",
     answer:
-      "Free plan में I Ching (स्वचालित और मैनुअल: तीन सिक्के और यारो डंडे) और Oracle Bones mode शामिल हैं। Seeker pack Free के अलावा पूरी Library और James Legge translator को स्थायी रूप से अनलॉक करता है। Practitioner pack मूल Zhou Yi जोड़ता है, जो बाद की टिप्पणियों के बिना I Ching का सबसे पुराना संस्करण है। Master pack Master (3) फ़ंक्शन सक्रिय करता है: तीनों अनुवादकों का एक साथ त्रिकोण, एक शक्तिशाली और व्यक्तिगत संश्लेषण के लिए।",
+      "यह ऐप I Ching के तीन शास्त्रीय अनुवादों पर आधारित है, जो अलग-अलग टैब के रूप में दिखाए जाते हैं। Richard Wilhelm और Cary F. Baynes (Princeton University Press, 1950) सबसे अधिक पढ़ा जाने वाला पश्चिमी संस्करण है, जिसमें विस्तृत टिप्पणी है। James Legge (The Sacred Books of the East, खंड XVI, 1882) अग्रणी अंग्रेज़ी विद्वत्तापूर्ण अनुवाद है, जिसमें उनके अपने फुटनोट और प्रतीकवाद हैं। Zhou Yi मूल शास्त्रीय चीनी पाठ स्वयं है, वह जड़ जिसके बारे में बाद की सभी टिप्पणियाँ लिखी गईं, जिसे टिप्पणी की किसी अतिरिक्त परत के बिना दिखाया जाता है। तीनों एक जैसे 64 हेक्साग्रामों का वर्णन करते हैं; वे अनुवादक की आवाज़, भाषा और मूल पाठ के आसपास कितनी व्याख्यात्मक सामग्री है, इसमें भिन्न हैं।",
+  },
+  {
+    id: "tier-features",
+    question: "टोकनों के अलावा, हर pack में क्या शामिल है?",
+    answer:
+      "Free में I Ching (तीन सिक्के या यारो डंठल, स्वचालित या मैन्युअल) और Oracle Bones शामिल हैं, Wilhelm/Baynes अनुवादक के साथ। Seeker पूरी Library और Legge अनुवादक जोड़ता है। Practitioner मूल Zhou Yi पाठ जोड़ता है। Master, Master (3) संश्लेषण जोड़ता है, जो तीनों अनुवादकों को एक साथ त्रिकोणित करता है। वर्तमान टोकन मात्रा, थ्रेड सीमाएँ और खरीदने का तरीका देखने के लिए, ऐप हेडर से टोकन सेंटर खोलें।",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -1048,7 +1031,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "data-reliability",
     question: "アプリで提供される易経のテキストの信頼性はどの程度ですか？",
     answer:
-      "最新監査: 2026年6月22日。神託文をTier-0ソースと照合して検証: Wilhelm/Baynes（Pantheon PDF）、Legge（SBE XVI）、周易（Chinese Text Project）、Huangおよび朱熹/Adler（ローカルPDF）。変爻ルールはHuangおよびAdlerのgoldと照合して検証。方法論、ゲート結果、全ログは忠実度監査ページを参照。",
+      "信頼性とは、あなたが読む神託のテキスト、彖辞、象、そして各爻が、AIによって書かれたり改変されたりすることが決してないことを意味します。これは、名前の明示された出版済みの典拠と一語一句照合された直接の引用です。英語テキストはRichard WilhelmとCary F. Baynes（The I Ching or Book of Changes、Princeton University Press、1950年）およびJames Legge（The Sacred Books of the East、第XVI巻、オックスフォード、1882年）に由来し、古典中国語の周易はChinese Text Projectに由来します。変爻のルールはAlfred Huang（The Complete I Ching、10th Anniversary Edition、2010年）に由来し、古典的な選択肢としては、朱熹の『易学啓蒙』のJoseph Adlerによる英訳（Introduction to the Study of the Classic of Change、2002年）に由来します。AIはあなたの質問のためにこれらすでに引用されたテキストを解釈するのみで、生成したり書き換えたりすることは決してありません。完全な検証ログは忠実度監査ページをご覧ください。",
     related: ["fidelityAudits"],
   },
   {
@@ -1083,18 +1066,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "易経の占いでどの爻辞が支配するかを決めるルール体系とは何ですか？",
     answer:
-      "このアプリはAlfred Huangが『The Complete I Ching』で示した一本爻への還元法を採用しており、朱熹（朱熹, 1130-1200）はその基礎構造の古典的な先例として位置づけられます。Huangの方法は、変爻のどのような組み合わせも単一の支配爻辞（爻辞）に還元するため、占いは常に一つの精確な箇所に基づきます。どの爻辞が支配するかは、六爻のうち何本が変爻かによって決まります。\n\n" +
-      "- 変爻なし: 本卦の彖辞（卦辞）と象辞のみを読む。卦はそれ自体で完結した言明であり、爻辞は引用されない。\n" +
-      "- 変爻1本: その1本の変爻の爻辞が支配する。\n" +
-      "- 変爻2本（陰と陽）: 陰爻が支配する（Alfred Huang：陰爻と陽爻が1本ずつ動く場合は陰爻を読む）。これに対し朱熹は両爻を読み、上の爻を優先した。\n" +
-      "- 変爻2本（同じ極性）: 下の爻が支配する（Alfred Huang）。これに対し朱熹は両爻を読み、上の爻を優先した。\n" +
-      "- 変爻3本: 3本のうち中央の爻（位置による）が支配する（Alfred Huang：変爻3本の場合は中央の爻を読む）。これに対し朱熹は両卦の彖辞を読み、どちらを重視するかを一連の図によって決めた。\n" +
-      "- 変爻4本: 之卦に移行。2本の不変爻のうち上の爻が支配する（Alfred Huang）。これに対し朱熹は下の爻を読んだ。\n" +
-      "- 変爻5本: 之卦に移行。唯一の不変爻が支配し、その爻辞は之卦から読まれる。\n" +
-      "- 変爻6本（1・2番卦以外）: 完全な変化。之卦の彖辞のみを読み、個々の爻辞は引用されない。\n" +
-      "- 第1卦 乾、すべて老陽（用九）: 特別な第7爻「用九」の爻辞が支配する：「頭のない龍の群れ、吉」。\n" +
-      "- 第2卦 坤、すべて老陰（用六）: 特別な爻辞「用六」が支配する：「貞固にして利し」。\n\n" +
-      "このアプリはすべての場合において一つの精確な支配爻辞を生み出します。既定ではAlfred Huangの還元法に従いますが、オプションの「変爻の読み方」セレクターで朱熹の古典的な読み方に切り替えることができ、上記で説明した各場合の代替ルールが適用されます。選択した設定は記憶され、その占いに一貫して適用されます。",
+      "このアプリは、変爻を支配する爻辞（または爻辞群）を決定するための二つの体系をサポートしています。Alfred Huangの還元法（The Complete I Ching、10th Anniversary Edition、2010年）が既定であり、変爻のどのような組み合わせも常に一つの精確な支配箇所へと還元する、明快で現代的な規則の体系です。朱熹の古典的な読み方（朱熹、1130-1200年；『易学啓蒙』、Joseph Adlerによる英訳）は伝統的な選択肢であり、一つに還元する代わりに複数の場合で両方の爻、または両方の彖辞を読む、より古い方法です。オプションの「変爻の読み方」セレクターで切り替えられ、選択した設定はその占いについて記憶されます。",
     related: ["methodNotes"],
   },
   {
@@ -1215,10 +1187,17 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     related: ["userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "翻訳の各段階はどのように機能しますか？",
+    id: "translators-three",
+    question: "アプリで利用できる3つの翻訳者とは何ですか？",
     answer:
-      "無料プランにはI Ching（自動・手動：三硬貨と蓍草）とOracle Bonesモードが含まれます。Seekerパックは無料プランに加え、図書館全体とJames Legge翻訳者をアンロックします。Practitionerパックは後の注釈を含まないI Chingの最古版である原典Zhou Yiを追加します。Masterパックは3つの翻訳者を同時に三角測量し、強力かつ個人的な総合を実現するMaster (3)機能を有効にします。",
+      "このアプリは易経の3つの古典的な翻訳に基づいており、それぞれ別のタブとして表示されます。Richard WilhelmとCary F. Baynes訳（Princeton University Press、1950年）は最も広く読まれている西洋版で、充実した注釈が付いています。James Legge訳（The Sacred Books of the East、第XVI巻、1882年）は先駆的な英語学術翻訳で、彼自身の脚注と象徴解釈が付いています。周易は原典の古典中国語のテキスト自体であり、後のすべての注釈が書かれた対象となる根本であって、注釈の層が一切加えられていない形で示されます。3つとも同じ64卦を説明しますが、訳者の文体、言語、そして核となるテキストを取り囲む説明資料の量が異なります。",
+  },
+  {
+    id: "tier-features",
+    question: "トークン以外に、各パックには何が含まれますか？",
+    answer:
+      "無料プランには易経（三硬貨または蓍草、自動または手動）と卜骨が含まれ、Wilhelm/Baynes訳が使えます。Seekerは図書館全体とLegge訳を追加します。Practitionerは原典の周易テキストを追加します。MasterはMaster (3)統合を追加し、3つの翻訳者を同時に三角測量します。現在のトークン量、スレッド制限、購入方法については、アプリのヘッダーからトークンセンターを開いてください。",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -1247,7 +1226,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "data-reliability",
     question: "应用中提供的易经文本可靠性如何？",
     answer:
-      "最近一次审计：2026年6月22日。神谕文本已对照 Tier-0 来源验证：卫礼贤/贝恩斯（Pantheon PDF）、理雅各（SBE XVI）、周易（Chinese Text Project）、黄忠天与朱熹/Adler（本地 PDF）。变爻规则已对照黄忠天与 Adler 的 gold 标准验证。方法论、闸门结果与完整记录详见保真审计页面。",
+      "可靠性意味着您读到的神谕文本，卦辞、象辞和每条爻辞，绝不由 AI 撰写或更改。它是与具名出版来源逐字核对的直接引用。英文文本来自 Richard Wilhelm 与 Cary F. Baynes（《The I Ching or Book of Changes》，Princeton University Press，1950年）以及 James Legge（《The Sacred Books of the East》第 XVI 卷，牛津，1882年）；古典中文的周易来自 Chinese Text Project。变爻规则来自 Alfred Huang（《The Complete I Ching》，10th Anniversary Edition，2010年），经典替代方案则来自朱熹《易学启蒙》的 Joseph Adler 英译本（《Introduction to the Study of the Classic of Change》，2002年）。AI 只为您的问题诠释这些已经引用好的文本，绝不生成或重写它们。完整核验记录请见保真审计页面。",
     related: ["fidelityAudits"],
   },
   {
@@ -1282,18 +1261,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "易经占卜中，决定哪条爻辞主导解读的规则体系是什么？",
     answer:
-      "本应用采用Alfred Huang在《The Complete I Ching》中提出的单爻简化系统，朱熹（朱熹，1130-1200年）则是这一底层结构的经典先驱。Huang的方法将任意变爻组合简化为单一主导爻辞（爻辞），使占卜始终基于一段精确的文字。哪条爻辞主导，取决于六爻中有多少爻发生变化。\n\n" +
-      "- 无变爻: 仅读本卦的卦辞与象辞。本卦本身即是完整的陈述；不引用任何爻辞。\n" +
-      "- 1爻变: 该唯一变爻的爻辞主导。\n" +
-      "- 2爻变（阴阳各一）: 阴爻主导（Alfred Huang：一阴一阳动爻时，读阴爻）。朱熹则读两爻，以上爻为先。\n" +
-      "- 2爻变（同一极性）: 下爻主导（Alfred Huang）。朱熹则读两爻，以上爻为先。\n" +
-      "- 3爻变: 三爻中居中者（按位置）主导（Alfred Huang：三动爻时，读居中的一爻）。朱熹则读两卦的卦辞，并借助一套图表来决定侧重哪一卦。\n" +
-      "- 4爻变: 移至之卦。两条不变爻中居上者主导（Alfred Huang），其爻辞取自之卦。朱熹则读居下者。\n" +
-      "- 5爻变: 移至之卦。唯一不变爻主导，其爻辞取自之卦。\n" +
-      "- 6爻全变（非第1、2卦）: 完全变化。仅读之卦卦辞；不引用任何单独的爻辞。\n" +
-      "- 第1卦 乾，全为老阳（用九）: 特殊第七爻「用九」爻辞主导：「见群龙无首，吉」。\n" +
-      "- 第2卦 坤，全为老阴（用六）: 特殊爻辞「用六」主导：「利永贞」。\n\n" +
-      "在每一种情况下，本应用都会产生一条精确、唯一的主导爻辞，没有歧义、没有遗漏。默认情况下遵循Alfred Huang的简化系统；选项中的「变爻解读法」选择器可让你切换为朱熹的经典解法，按上文所述对每种情况应用相应的替代规则。你的选择会被记住，并一致地应用于该次解读。",
+      "本应用支持两套体系，用于在出现变爻时确定主导解读的爻辞（或多条爻辞）。Alfred Huang 的简化系统（《The Complete I Ching》，10th Anniversary Edition，2010年）是默认选项：一套清晰、现代的规则，始终将任意变爻组合简化为一段精确的主导文字。朱熹的经典解法（朱熹，1130-1200年；《易学启蒙》，Joseph Adler 英译本）是传统的替代方案：一种较古老的方法，在多种情况下会同时读取两条爻辞或两卦的卦辞，而不是简化为一条。可在选项中的「变爻解读法」选择器之间切换；您的选择会被记住，应用于该次解读。",
     related: ["methodNotes"],
   },
   {
@@ -1410,10 +1378,17 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     related: ["userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "不同翻译层级是如何运作的？",
+    id: "translators-three",
+    question: "应用中提供的三种译本是什么？",
     answer:
-      "免费方案包含I Ching（自动和手动：三枚硬币和蓍草）以及Oracle Bones模式。Seeker包在免费方案基础上永久解锁完整图书馆和James Legge译本。Practitioner包增加原始周易，即无后世注释的最古老版本。Master包激活Master (3)功能：同时三角化三位译者，生成强大而个性化的综合分析。",
+      "本应用基于《易经》的三种经典译本，以独立标签呈现。Richard Wilhelm 与 Cary F. Baynes 译本（Princeton University Press，1950年）是西方读者最广泛阅读的版本，附有详尽的注释。James Legge 译本（《The Sacred Books of the East》第 XVI 卷，1882年）是开创性的英文学术译本，附有他自己的注脚和象征解读。周易则是古典中文原典本身，是后世所有注释据以撰写的根本，呈现时不附加任何注释层。三者描述的都是同样的六十四卦；区别在于译者的笔调、语言，以及围绕核心文字的注解材料多少。",
+  },
+  {
+    id: "tier-features",
+    question: "除了代币之外，每个套餐还包含什么？",
+    answer:
+      "Free 包含易经（三枚铜钱或蓍草，自动或手动）和甲骨，使用威廉/贝恩斯译本。Seeker 增加完整图书馆和理雅各译本。Practitioner 增加原始周易文本。Master 增加 Master (3) 综合，同时三角化三种译本。当前代币数量、线程上限及购买方式，请从应用顶栏打开代币中心查看。",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -1442,7 +1417,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "data-reliability",
     question: "앱에서 제공되는 주역 텍스트는 얼마나 신뢰할 수 있습니까?",
     answer:
-      "최근 감사: 2026년 6월 22일. 신탁문은 Tier-0 소스와 대조하여 검증: Wilhelm/Baynes(Pantheon PDF), Legge(SBE XVI), 주역(Chinese Text Project), Huang 및 Zhu Xi/Adler(로컬 PDF). 변효 규칙은 Huang 및 Adler gold와 대조하여 검증. 방법론, 게이트 결과, 전체 로그는 충실도 감사 페이지를 참조하세요.",
+      "신뢰성이란 당신이 읽는 신탁문, 즉 괘사, 상사, 그리고 각 효사가 AI에 의해 쓰이거나 변경되는 일이 결코 없다는 의미입니다. 이는 명시된 출판 원전과 한 글자씩 대조하여 검증된 직접 인용입니다. 영문 텍스트는 Richard Wilhelm과 Cary F. Baynes(『The I Ching or Book of Changes』, Princeton University Press, 1950년)와 James Legge(『The Sacred Books of the East』 제16권, 옥스퍼드, 1882년)에서 가져왔으며, 고전 중국어 주역은 Chinese Text Project에서 가져왔습니다. 변효 규칙은 Alfred Huang(『The Complete I Ching』, 10th Anniversary Edition, 2010년)에서, 고전적 대안은 주희의 『易學啓蒙』을 Joseph Adler가 번역한 『Introduction to the Study of the Classic of Change』(2002년)에서 가져왔습니다. AI는 귀하의 질문을 위해 이미 인용된 이 텍스트들을 해석할 뿐, 결코 생성하거나 다시 쓰지 않습니다. 전체 검증 기록은 충실도 감사 페이지를 참조하세요.",
     related: ["fidelityAudits"],
   },
   {
@@ -1478,18 +1453,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "주역 점괘에서 어떤 효사가 해석을 지배하는지 결정하는 규칙 체계는 무엇인가요?",
     answer:
-      "이 앱은 Alfred Huang이 『The Complete I Ching』에서 제시한 단일 효 축약 체계를 따르며, 주희(朱熹, 1130-1200)는 그 기저 구조의 고전적 선례로 자리합니다. Huang의 방법은 변효의 어떤 조합이든 하나의 지배 효사(爻辭)로 축약하므로, 점괘는 항상 하나의 정확한 구절에 근거합니다. 어떤 효사가 지배하는지는 여섯 효 중 몇 개가 변하는지에 따라 결정됩니다.\n\n" +
-      "- 변효 없음: 본괘의 괘사와 상사만 읽는다. 괘 자체가 완결된 진술이며, 어떤 효사도 인용하지 않는다.\n" +
-      "- 변효 1개: 해당 단일 변효의 효사가 지배한다.\n" +
-      "- 변효 2개 (음과 양): 음효가 지배한다(Alfred Huang: 음효와 양효가 각 1개 변할 경우 음효를 읽는다). 반면 주희는 두 효를 모두 읽되 상효를 우선시했다.\n" +
-      "- 변효 2개 (같은 극성): 아래 효가 지배한다(Alfred Huang). 반면 주희는 두 효를 모두 읽되 상효를 우선시했다.\n" +
-      "- 변효 3개: 3개 중 가운데 효(위치에 따라)가 지배한다(Alfred Huang: 3개 변효일 경우 가운데 효를 읽는다). 반면 주희는 두 괘의 괘사를 읽고, 어느 쪽을 강조할지 일련의 도표로 결정했다.\n" +
-      "- 변효 4개: 지괘(之卦)로 이행. 2개의 불변효 중 위 효가 지배하며(Alfred Huang), 그 효사는 지괘에서 가져온다. 반면 주희는 아래 효를 읽었다.\n" +
-      "- 변효 5개: 지괘로 이행. 유일한 불변효가 지배하며, 그 효사는 지괘에서 가져온다.\n" +
-      "- 변효 6개 (1·2번 괘 제외): 완전 변화. 지괘의 괘사만 읽으며, 개별 효사는 인용하지 않는다.\n" +
-      "- 1번 괘 건(乾), 전부 노양(用九): 특별한 일곱 번째 효 '용구(用九)' 효사가 지배한다: '군룡무수(群龍無首), 길하다'.\n" +
-      "- 2번 괘 곤(坤), 전부 노음(用六): 특별 효사 '용육(用六)'이 지배한다: '영정(永貞)이 이롭다'.\n\n" +
-      "모든 경우에 이 앱은 하나의 정확하고 유일한 지배 효사를 산출하며, 모호함이나 공백이 없습니다. 기본적으로 Alfred Huang의 축약 체계를 따르지만, 옵션의 '변효 해석 방식' 선택기를 사용하면 주희의 고전적 해석으로 전환할 수 있으며, 위에서 설명한 각 경우의 대안 규칙이 적용됩니다. 선택한 설정은 저장되어 해당 해석에 일관되게 적용됩니다.",
+      "이 앱은 변효가 있을 때 해석을 지배하는 효사(또는 효사들)를 결정하는 두 가지 체계를 지원합니다. Alfred Huang의 축약 체계(『The Complete I Ching』, 10th Anniversary Edition, 2010년)가 기본값으로, 변효의 어떤 조합이든 항상 하나의 정확한 지배 구절로 축약하는 명확하고 현대적인 규칙 체계입니다. 주희의 고전적 해석(주희, 1130-1200년; 『易學啓蒙』, Joseph Adler 번역본)은 전통적 대안으로, 하나로 축약하는 대신 여러 경우에 두 효 또는 두 괘의 괘사를 모두 읽는 더 오래된 방법입니다. 옵션의 '변효 해석 방식' 선택기로 둘 사이를 전환할 수 있으며, 선택한 설정은 해당 해석에 대해 저장됩니다.",
     related: ["methodNotes"],
   },
   {
@@ -1606,10 +1570,17 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     related: ["userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "다양한 번역 단계는 어떻게 작동하나요?",
+    id: "translators-three",
+    question: "앱에서 제공되는 세 가지 번역본은 무엇인가요?",
     answer:
-      "무료 플랜에는 I Ching(자동 및 수동: 세 동전과 서죽 방식)과 Oracle Bones 모드가 포함됩니다. Seeker 팩은 무료 플랜 외에도 전체 도서관과 James Legge 번역본을 영구적으로 잠금 해제합니다. Practitioner 팩은 후대 주석 없이 I Ching의 가장 오래된 버전인 원전 주역을 추가합니다. Master 팩은 세 번역본을 동시에 삼각 측정하여 강력하고 개인화된 종합을 실현하는 Master (3) 기능을 활성화합니다.",
+      "이 앱은 주역의 세 가지 고전 번역본을 기반으로 하며, 각각 별도의 탭으로 표시됩니다. Richard Wilhelm과 Cary F. Baynes 번역본(Princeton University Press, 1950년)은 가장 널리 읽힌 서양판으로, 방대한 주석이 달려 있습니다. James Legge 번역본(『The Sacred Books of the East』 제16권, 1882년)은 선구적인 영문 학술 번역본으로, 그 자신의 주석과 상징 해석이 달려 있습니다. 주역은 원전 고전 중국어 텍스트 그 자체로, 후대의 모든 주석이 그것을 두고 쓰인 근본이며, 어떤 주석 층도 더해지지 않은 채로 표시됩니다. 세 가지 모두 같은 64괘를 설명하지만, 번역자의 어조, 언어, 그리고 핵심 텍스트를 둘러싼 설명 자료의 양에서 차이가 있습니다.",
+  },
+  {
+    id: "tier-features",
+    question: "토큰 외에 각 팩에는 무엇이 포함되나요?",
+    answer:
+      "Free에는 주역(세 동전 또는 서죽, 자동 또는 수동)과 갑골이 포함되며, Wilhelm/Baynes 번역본을 사용할 수 있습니다. Seeker는 전체 도서관과 Legge 번역본을 추가합니다. Practitioner는 원전 주역 텍스트를 추가합니다. Master는 세 번역본을 동시에 삼각 측정하는 Master (3) 합성을 추가합니다. 현재 토큰 수량, 스레드 한도, 구매 방법은 앱 헤더에서 토큰 센터를 열어 확인하세요.",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -1638,7 +1609,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "data-reliability",
     question: "Quão confiáveis são os textos do I Ching no aplicativo?",
     answer:
-      "Última auditoria: 22 de junho de 2026. Textos do oráculo verificados contra fontes Tier-0: Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang e Zhu Xi/Adler (PDFs locais). Regras de linhas mutantes verificadas contra gold Huang e Adler. Consulte a página Auditorias de fidelidade para metodologia, resultados de gates e o registo completo.",
+      "Confiabilidade significa que o texto do oráculo que lês, o Julgamento, a Imagem e cada linha, nunca é escrito nem alterado pela IA. É uma citação direta, verificada palavra por palavra contra uma fonte publicada com nome próprio. O texto em inglês vem de Richard Wilhelm e Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) e de James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); o Zhou Yi em chinês clássico vem do Chinese Text Project. As regras de linhas mutantes vêm de Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) e, para a alternativa clássica, do Yixue Qimeng de Zhu Xi na tradução de Joseph Adler (Introduction to the Study of the Classic of Change, 2002). A IA interpreta estes textos já citados para a tua pergunta; nunca os gera nem os reescreve. Consulta a página Auditorias de fidelidade para o registo completo de verificação.",
     related: ["fidelityAudits"],
   },
   {
@@ -1675,18 +1646,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "iching-mutation-rules",
     question: "Qual é o sistema de regras que determina qual texto de linha governa uma leitura do I Ching?",
     answer:
-      "A app implementa o sistema de redução a uma única linha de Alfred Huang, exposto em The Complete I Ching, com Zhu Xi (朱熹, 1130-1200) como antecedente clássico da estrutura subjacente. O método de Huang reduz qualquer combinação de linhas mutantes a um único texto de linha governante (爻辞), de modo que a leitura repousa sempre sobre uma passagem precisa. Qual texto governa depende de quantas das seis linhas se tornam mutantes.\n\n" +
-      "- 0 linhas mutantes: Lê-se apenas o Julgamento (卦辞) e a Imagem (象辞) do hexagrama principal. O hexagrama vale como declaração completa; nenhum texto de linha é citado.\n" +
-      "- 1 linha mutante: O texto dessa única linha mutante governa.\n" +
-      "- 2 linhas mutantes (yin e yang): A linha yin governa (Alfred Huang: havendo uma linha yin e uma yang em movimento, lê-se a yin). Zhu Xi, por sua vez, lia ambas as linhas, dando precedência à superior.\n" +
-      "- 2 linhas mutantes (mesma polaridade): A linha inferior das duas governa (Alfred Huang). Zhu Xi lia ambas, dando precedência à superior.\n" +
-      "- 3 linhas mutantes: A linha do meio das três (por posição) governa (Alfred Huang: havendo três linhas em movimento, lê-se a do meio). Zhu Xi, em vez disso, lia os Julgamentos de ambos os hexagramas, usando um conjunto de diagramas para decidir qual enfatizar.\n" +
-      "- 4 linhas mutantes: A leitura passa para o hexagrama transformado; a superior das suas duas linhas estáveis governa (Alfred Huang). Zhu Xi lia a inferior das duas.\n" +
-      "- 5 linhas mutantes: A leitura passa para o hexagrama transformado. A única linha estável governa, e o seu texto vem do hexagrama transformado.\n" +
-      "- 6 linhas mutantes (qualquer hexagrama exceto o #1 e o #2): Mutação total. Lê-se apenas o Julgamento do hexagrama transformado; nenhum texto de linha individual é citado.\n" +
-      "- Hexagrama #1 Qian, todas as linhas yang antigo (用九): O texto especial do sétimo yao 'Usar o Nove' governa: 'Um grupo de dragões sem cabeça, boa fortuna'.\n" +
-      "- Hexagrama #2 Kun, todas as linhas yin antigo (用六): O texto especial 'Usar o Seis' governa: 'A perseverança é benéfica'.\n\n" +
-      "Em todos os casos a app produz um único texto governante preciso, sem ambiguidade nem lacuna. Por padrão segue o sistema de redução de Alfred Huang; o seletor «Leitura de linhas mutantes» em Opções permite alternar para a leitura clássica de Zhu Xi, aplicando as alternativas descritas acima para cada caso. A sua escolha é lembrada e aplicada de forma consistente nessa leitura.",
+      "A app admite dois sistemas para resolver qual texto de linha, ou textos, governa uma leitura quando há linhas mutantes. O sistema de redução de Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) é o predefinido: um conjunto de regras claro e moderno que reduz sempre qualquer combinação de linhas mutantes a uma única passagem governante precisa. A leitura clássica de Zhu Xi (朱熹, 1130-1200; Yixue Qimeng, na tradução de Joseph Adler) é a alternativa tradicional: um método mais antigo que, em vários casos, lê ambas as linhas ou ambos os Julgamentos em vez de reduzir a um só. Alterna entre os dois com o seletor «Leitura de linhas mutantes» em Opções; a tua escolha é lembrada para essa leitura.",
     related: ["methodNotes"],
   },
   {
@@ -1806,10 +1766,17 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     related: ["userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "Como funcionam os diferentes níveis de tradução?",
+    id: "translators-three",
+    question: "Quais são os três tradutores disponíveis na app?",
     answer:
-      "O plano gratuito inclui o modo I Ching (automático e manual: Três Moedas e Palitos de Milefólio) e o modo Oracle Bones. O pack Seeker, além do gratuito, desbloqueia permanentemente a Biblioteca completa e o tradutor James Legge. O pack Practitioner adiciona o Zhou Yi original, a versão mais antiga do I Ching sem comentários posteriores. O pack Master activa a função Master (3): triangulação simultânea dos três tradutores para uma síntese poderosa e personalizada.",
+      "A app apoia-se em três traduções clássicas do I Ching, mostradas como separadores distintos. Richard Wilhelm e Cary F. Baynes (Princeton University Press, 1950) é a edição ocidental mais lida, com um comentário extenso. James Legge (The Sacred Books of the East, vol. XVI, 1882) é a tradução académica pioneira em inglês, com as suas próprias notas e simbolismo. O Zhou Yi é o texto original em chinês clássico, a raiz sobre a qual foram escritos os comentários posteriores, mostrado sem nenhuma camada de comentário adicionada. Os três descrevem os mesmos 64 hexagramas; diferem na voz do tradutor, no idioma e em quanto material explicativo rodeia o texto central.",
+  },
+  {
+    id: "tier-features",
+    question: "O que inclui cada pack, além dos tokens?",
+    answer:
+      "O Free inclui o I Ching (Três Moedas ou Varetas de Milefólio, automático ou manual) e os Ossos Oraculares, com o tradutor Wilhelm/Baynes. O Seeker adiciona a Biblioteca completa e o tradutor Legge. O Practitioner adiciona o texto original do Zhou Yi. O Master adiciona a síntese Master (3), que triangula os três tradutores em simultâneo. Para ver quantidades de tokens em vigor, limites por fio e como comprar, abre o Centro de tokens no cabeçalho da app.",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -1838,7 +1805,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "data-reliability",
     question: "Wie zuverlässig sind die I-Ging-Texte in der App?",
     answer:
-      "Letzte Prüfung: 22. Juni 2026. Orakeltexte gegen Tier-0-Quellen verifiziert: Wilhelm/Baynes (Pantheon-PDF), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang und Zhu Xi/Adler (lokale PDFs). Regeln für wechselnde Linien gegen Huang- und Adler-Gold verifiziert. Siehe die Fidelitätsprüfungen-Seite für Methodik, Gate-Ergebnisse und das vollständige Protokoll.",
+      "Zuverlässigkeit bedeutet, dass der Orakeltext, den Sie lesen, das Urteil, das Bild und jede Linie, niemals von der KI geschrieben oder verändert wird. Es ist ein direktes Zitat, Wort für Wort gegen eine namentlich genannte veröffentlichte Quelle geprüft. Der englische Text stammt von Richard Wilhelm und Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) und von James Legge (The Sacred Books of the East, Bd. XVI, Oxford, 1882); das klassische chinesische Zhou Yi stammt vom Chinese Text Project. Die Regeln für wandelnde Linien stammen von Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) und, für die klassische Alternative, aus Zhu Xis Yixue Qimeng in der Übersetzung von Joseph Adler (Introduction to the Study of the Classic of Change, 2002). Die KI interpretiert diese bereits zitierten Texte für Ihre Frage; sie erzeugt oder schreibt sie niemals neu. Das vollständige Verifizierungsprotokoll finden Sie auf der Fidelitätsprüfungen-Seite.",
     related: ["fidelityAudits"],
   },
   {
@@ -1877,18 +1844,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Welches Regelsystem bestimmt, welcher Linientext eine I-Ging-Lesung beherrscht?",
     answer:
-      "Die App setzt Alfred Huangs Reduktion auf eine einzige Linie um, wie in The Complete I Ching dargelegt, wobei Zhu Xi (朱熹, 1130-1200) als klassischer Vorläufer der zugrunde liegenden Struktur gilt. Huangs Methode reduziert jede Kombination wandelnder Linien auf einen einzigen beherrschenden Linientext (爻辞), sodass die Lesung stets auf einer präzisen Textstelle ruht. Welcher Text beherrscht, hängt davon ab, wie viele der sechs Linien wandeln.\n\n" +
-      "- 0 wandelnde Linien: Es werden nur das Urteil (卦辞) und das Bild (象辞) des Primärhexagramms gelesen. Das Hexagramm steht als vollständige Aussage; kein Linientext wird zitiert.\n" +
-      "- 1 wandelnde Linie: Der Text dieser einzelnen wandelnden Linie beherrscht.\n" +
-      "- 2 wandelnde Linien (Yin und Yang): Die Yin-Linie beherrscht (Alfred Huang: bei je einer Yin- und einer Yang-Linie wird die Yin-Linie gelesen). Zhu Xi dagegen las beide Linien, wobei die obere Vorrang hatte.\n" +
-      "- 2 wandelnde Linien (gleiche Polarität): Die untere der beiden beherrscht (Alfred Huang). Zhu Xi las beide, wobei die obere Vorrang hatte.\n" +
-      "- 3 wandelnde Linien: Die mittlere der drei (nach Position) beherrscht (Alfred Huang: bei drei wandelnden Linien wird die mittlere gelesen). Zhu Xi las stattdessen die Urteile beider Hexagramme und nutzte eine Reihe von Diagrammen, um zu entscheiden, welches betont wird.\n" +
-      "- 4 wandelnde Linien: Die Lesung wechselt zum Transformationshexagramm; die obere seiner zwei stabilen Linien beherrscht (Alfred Huang). Zhu Xi las die untere der beiden.\n" +
-      "- 5 wandelnde Linien: Die Lesung wechselt zum Transformationshexagramm. Die einzige stabile Linie beherrscht, und ihr Text kommt aus dem Transformationshexagramm.\n" +
-      "- 6 wandelnde Linien (jedes Hexagramm außer #1 und #2): Vollständige Wandlung. Nur das Urteil des Transformationshexagramms wird gelesen; kein einzelner Linientext wird zitiert.\n" +
-      "- Hexagramm #1 Qian, alle Linien altes Yang (用九): Der spezielle siebte Yao-Text 'Neun benutzen' beherrscht: 'Eine Gruppe Drachen ohne Kopf, Heil'.\n" +
-      "- Hexagramm #2 Kun, alle Linien altes Yin (用六): Der Sondertext 'Sechs benutzen' beherrscht: 'Beharrlichkeit ist förderlich'.\n\n" +
-      "In jedem Fall ergibt sich ein präziser, eindeutiger beherrschender Text, ohne Mehrdeutigkeit, ohne Lücke. Standardmäßig folgt die App Alfred Huangs Reduktionssystem; der Auswahlschalter „Lesung wandelnder Linien“ in den Optionen lässt dich stattdessen zu Zhu Xis klassischer Lesung wechseln, die die oben beschriebenen Alternativen für jeden Fall anwendet. Deine Wahl wird gespeichert und konsistent auf diese Lesung angewendet.",
+      "Die App unterstützt zwei Systeme, um zu bestimmen, welcher Linientext, oder welche Linientexte, eine Lesung beherrschen, wenn Linien wandeln. Alfred Huangs Reduktionssystem (The Complete I Ching, 10th Anniversary Edition, 2010) ist die Standardeinstellung: ein klares, modernes Regelwerk, das jede Kombination wandelnder Linien stets auf eine präzise beherrschende Textstelle reduziert. Zhu Xis klassische Lesung (朱熹, 1130-1200; Yixue Qimeng, in der Übersetzung von Joseph Adler) ist die traditionelle Alternative: eine ältere Methode, die in mehreren Fällen beide Linien oder beide Urteile liest, statt auf eine zu reduzieren. Wechseln Sie zwischen beiden mit dem Auswahlschalter „Lesung wandelnder Linien“ in den Optionen; Ihre Wahl wird für diese Lesung gespeichert.",
     related: ["methodNotes"],
   },
   {
@@ -2010,10 +1966,17 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     related: ["userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "Wie funktionieren die verschiedenen Übersetzungsstufen?",
+    id: "translators-three",
+    question: "Welche drei Übersetzer stehen in der App zur Verfügung?",
     answer:
-      "Der kostenlose Plan umfasst den I Ching-Modus (automatisch und manuell: Drei Münzen und Schafgarbenstäbe) und den Oracle-Bones-Modus. Das Seeker-Paket schaltet zusätzlich zum kostenlosen Plan die vollständige Bibliothek und den James-Legge-Übersetzer dauerhaft frei. Das Practitioner-Paket fügt das originale Zhou Yi hinzu, die älteste Version des I Ching ohne spätere Kommentare. Das Master-Paket aktiviert die Master (3)-Funktion: gleichzeitige Triangulierung aller drei Übersetzer für eine kraftvolle und persönliche Synthese.",
+      "Die App stützt sich auf drei klassische Übersetzungen des I Ging, die als separate Tabs angezeigt werden. Richard Wilhelm und Cary F. Baynes (Princeton University Press, 1950) ist die meistgelesene westliche Ausgabe, mit einem ausführlichen Kommentar. James Legge (The Sacred Books of the East, Bd. XVI, 1882) ist die bahnbrechende englische wissenschaftliche Übersetzung, mit seinen eigenen Fußnoten und seiner Symbolik. Das Zhou Yi ist der originale klassische chinesische Text selbst, die Wurzel, über die alle späteren Kommentare geschrieben wurden, dargestellt ohne jede hinzugefügte Kommentarschicht. Alle drei beschreiben dieselben 64 Hexagramme; sie unterscheiden sich in der Stimme des Übersetzers, der Sprache und dem Umfang des erklärenden Materials rund um den Kerntext.",
+  },
+  {
+    id: "tier-features",
+    question: "Was enthält jedes Paket, abgesehen von den Tokens?",
+    answer:
+      "Free umfasst das I Ging (Drei Münzen oder Schafgarbenstäbe, automatisch oder manuell) und Orakelknochen, mit dem Übersetzer Wilhelm/Baynes. Seeker fügt die vollständige Bibliothek und den Übersetzer Legge hinzu. Practitioner fügt den originalen Zhou-Yi-Text hinzu. Master fügt die Master (3)-Synthese hinzu, die alle drei Übersetzer gleichzeitig trianguliert. Aktuelle Token-Mengen, Thread-Limits und wie Sie kaufen können, finden Sie im Token-Center, das Sie über den App-Header öffnen.",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -2042,7 +2005,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "data-reliability",
     question: "Quanto sono affidabili i testi dell'I Ching nell'app?",
     answer:
-      "Ultimo audit: 22 giugno 2026. Testi dell'oracolo verificati rispetto a fonti Tier-0: Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang e Zhu Xi/Adler (PDF locali). Regole delle linee mutanti verificate rispetto al gold di Huang e Adler. Vedi la pagina Audit di fedeltà per metodologia, risultati dei gate e il registro completo.",
+      "Affidabilità significa che il testo dell'oracolo che leggi, il Giudizio, l'Immagine e ogni linea, non viene mai scritto né alterato dall'IA. È una citazione diretta, verificata parola per parola rispetto a una fonte pubblicata con nome proprio. Il testo in inglese proviene da Richard Wilhelm e Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) e da James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); lo Zhou Yi in cinese classico proviene dal Chinese Text Project. Le regole delle linee mutanti provengono da Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) e, per l'alternativa classica, dallo Yixue Qimeng di Zhu Xi nella traduzione di Joseph Adler (Introduction to the Study of the Classic of Change, 2002). L'IA interpreta questi testi già citati per la tua domanda; non li genera né li riscrive mai. Consulta la pagina Audit di fedeltà per il registro completo di verifica.",
     related: ["fidelityAudits"],
   },
   {
@@ -2081,18 +2044,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "Qual è il sistema di regole che determina quale testo di linea governa una lettura dell'I Ching?",
     answer:
-      "L'app implementa il sistema di riduzione a una sola linea di Alfred Huang, esposto in The Complete I Ching, con Zhu Xi (朱熹, 1130-1200) come precedente classico della struttura sottostante. Il metodo di Huang riduce qualsiasi combinazione di linee mutanti a un unico testo di linea governante (爻辞), così che la lettura si basi sempre su un passaggio preciso. Quale testo governa dipende da quante delle sei linee diventano mutanti.\n\n" +
-      "- 0 linee mutanti: Si legge solo il Giudizio (卦辞) e l'Immagine (象辞) dell'esagramma primario. L'esagramma vale come dichiarazione completa; nessun testo di linea viene citato.\n" +
-      "- 1 linea mutante: Il testo di quella singola linea mutante governa.\n" +
-      "- 2 linee mutanti (yin e yang): La linea yin governa (Alfred Huang: con una linea yin e una yang in movimento, si legge la yin). Zhu Xi, invece, leggeva entrambe le linee, dando precedenza alla superiore.\n" +
-      "- 2 linee mutanti (stessa polarità): La linea inferiore delle due governa (Alfred Huang). Zhu Xi leggeva entrambe, dando precedenza alla superiore.\n" +
-      "- 3 linee mutanti: La linea centrale delle tre (per posizione) governa (Alfred Huang: con tre linee in movimento, si legge quella centrale). Zhu Xi, invece, leggeva i Giudizi di entrambi gli esagrammi, usando una serie di diagrammi per decidere quale enfatizzare.\n" +
-      "- 4 linee mutanti: La lettura passa all'esagramma trasformato; la superiore delle sue due linee stabili governa (Alfred Huang). Zhu Xi leggeva l'inferiore delle due.\n" +
-      "- 5 linee mutanti: La lettura passa all'esagramma trasformato. L'unica linea stabile governa e il suo testo viene dall'esagramma trasformato.\n" +
-      "- 6 linee mutanti (qualsiasi esagramma tranne #1 e #2): Mutazione totale. Si legge solo il Giudizio dell'esagramma trasformato; nessun testo di linea individuale viene citato.\n" +
-      "- Esagramma #1 Qian, tutte le linee yang antico (用九): Il testo speciale del settimo yao 'Usare il Nove' governa: 'Un gruppo di draghi senza testa, buona fortuna'.\n" +
-      "- Esagramma #2 Kun, tutte le linee yin antico (用六): Il testo speciale 'Usare il Sei' governa: 'La perseveranza è benefica'.\n\n" +
-      "In ogni caso l'app produce sempre un unico testo governante preciso, senza ambiguità né lacune. Per impostazione predefinita segue il sistema di riduzione di Alfred Huang; il selettore «Lettura delle linee mutanti» in Opzioni permette di passare invece alla lettura classica di Zhu Xi, applicando le alternative descritte sopra per ciascun caso. La tua scelta viene memorizzata e applicata in modo coerente a quella lettura.",
+      "L'app supporta due sistemi per stabilire quale testo di linea, o testi, governa una lettura quando ci sono linee mutanti. Il sistema di riduzione di Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) è quello predefinito: un insieme di regole chiaro e moderno che riduce sempre qualsiasi combinazione di linee mutanti a un unico passaggio governante preciso. La lettura classica di Zhu Xi (朱熹, 1130-1200; Yixue Qimeng, nella traduzione di Joseph Adler) è l'alternativa tradizionale: un metodo più antico che, in diversi casi, legge entrambe le linee o entrambi i Giudizi invece di ridurre a uno solo. Passa dall'uno all'altro con il selettore «Lettura delle linee mutanti» in Opzioni; la tua scelta viene memorizzata per quella lettura.",
     related: ["methodNotes"],
   },
   {
@@ -2214,10 +2166,17 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     related: ["userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "Come funzionano i diversi livelli di traduzione?",
+    id: "translators-three",
+    question: "Quali sono i tre traduttori disponibili nell'app?",
     answer:
-      "Il piano gratuito include la modalità I Ching (automatica e manuale: Tre Monete e Steli di Achillea) e la modalità Oracle Bones. Il pack Seeker, oltre al gratuito, sblocca in modo permanente la Biblioteca completa e il traduttore James Legge. Il pack Practitioner aggiunge il Zhou Yi originale, la versione più antica dell'I Ching senza commenti successivi. Il pack Master attiva la funzione Master (3): triangolazione simultanea dei tre traduttori per una sintesi potente e personalizzata.",
+      "L'app si basa su tre traduzioni classiche dell'I Ching, mostrate come schede separate. Richard Wilhelm e Cary F. Baynes (Princeton University Press, 1950) è l'edizione occidentale più letta, con un commento esteso. James Legge (The Sacred Books of the East, vol. XVI, 1882) è la traduzione accademica inglese pionieristica, con le sue note e il suo simbolismo. Lo Zhou Yi è il testo originale in cinese classico stesso, la radice su cui sono stati scritti tutti i commenti successivi, mostrato senza alcuno strato di commento aggiunto. Tutti e tre descrivono gli stessi 64 esagrammi; differiscono per la voce del traduttore, la lingua e quanto materiale esplicativo circonda il testo centrale.",
+  },
+  {
+    id: "tier-features",
+    question: "Cosa include ciascun pack, oltre ai token?",
+    answer:
+      "Free include l'I Ching (Tre Monete o Steli di Achillea, automatico o manuale) e gli Ossi Oracolari, con il traduttore Wilhelm/Baynes. Seeker aggiunge la Biblioteca completa e il traduttore Legge. Practitioner aggiunge il testo originale dello Zhou Yi. Master aggiunge la sintesi Master (3), che triangola i tre traduttori contemporaneamente. Per vedere le quantità di token in vigore, i limiti per filo e come acquistare, apri il Centro token dall'intestazione dell'app.",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",
@@ -2248,7 +2207,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
     answer:
-      "Dernier audit : 22 juin 2026. Textes de l'oracle vérifiés par rapport aux sources Tier-0 : Wilhelm/Baynes (PDF Pantheon), Legge (SBE XVI), Zhou Yi (Chinese Text Project), Huang et Zhu Xi/Adler (PDF locaux). Règles de lignes changeantes vérifiées par rapport au gold de Huang et Adler. Voir la page Audits de fidélité pour la méthodologie, les résultats des gates et le journal complet.",
+      "La fiabilité signifie que le texte de l'oracle que vous lisez, le Jugement, l'Image et chaque trait, n'est jamais écrit ni modifié par l'IA. C'est une citation directe, vérifiée mot pour mot par rapport à une source publiée nommément. Le texte anglais provient de Richard Wilhelm et Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) et de James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882) ; le Zhou Yi en chinois classique provient du Chinese Text Project. Les règles des traits mutants proviennent d'Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) et, pour l'alternative classique, du Yixue Qimeng de Zhu Xi dans la traduction de Joseph Adler (Introduction to the Study of the Classic of Change, 2002). L'IA interprète ces textes déjà cités pour votre question ; elle ne les génère ni ne les réécrit jamais. Consultez la page Audits de fidélité pour le journal complet de vérification.",
     related: ["fidelityAudits"],
   },
   {
@@ -2287,18 +2246,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Quel est le système de règles qui détermine quel texte de trait gouverne une lecture du I Ching ?",
     answer:
-      "L'application met en œuvre le système de réduction à un seul trait d'Alfred Huang, exposé dans The Complete I Ching, avec Zhu Xi (朱熹, 1130-1200) comme antécédent classique de la structure sous-jacente. La méthode de Huang réduit toute combinaison de traits mutants à un seul texte de trait gouvernant (爻辞), de sorte que la lecture repose toujours sur un passage précis. Le texte qui gouverne dépend du nombre de traits, parmi les six, qui deviennent mutants.\n\n" +
-      "- 0 trait mutant: On lit uniquement le Jugement (卦辞) et l'Image (象辞) de l'hexagramme primaire. L'hexagramme vaut comme déclaration complète ; aucun texte de trait n'est cité.\n" +
-      "- 1 trait mutant: Le texte de ce seul trait mutant gouverne.\n" +
-      "- 2 traits mutants (yin et yang): Le trait yin gouverne (Alfred Huang : avec un trait yin et un trait yang en mouvement, on lit le yin). Zhu Xi, lui, lisait les deux traits, en donnant la priorité au supérieur.\n" +
-      "- 2 traits mutants (même polarité): Le trait inférieur des deux gouverne (Alfred Huang). Zhu Xi lisait les deux, en donnant la priorité au supérieur.\n" +
-      "- 3 traits mutants: Le trait central des trois (par position) gouverne (Alfred Huang : avec trois traits en mouvement, on lit celui du milieu). Zhu Xi, lui, lisait les Jugements des deux hexagrammes, en s'appuyant sur un ensemble de diagrammes pour décider lequel privilégier.\n" +
-      "- 4 traits mutants: La lecture passe à l'hexagramme transformé ; le supérieur de ses deux traits stables gouverne (Alfred Huang). Zhu Xi lisait l'inférieur des deux.\n" +
-      "- 5 traits mutants: La lecture passe à l'hexagramme transformé. L'unique trait stable gouverne et son texte vient de l'hexagramme transformé.\n" +
-      "- 6 traits mutants (tout hexagramme sauf #1 et #2): Mutation totale. On lit uniquement le Jugement de l'hexagramme transformé ; aucun texte de trait individuel n'est cité.\n" +
-      "- Hexagramme #1 Qian, tout yang ancien (用九): Le texte spécial du septième yao 'Utiliser le Neuf' gouverne : 'Un groupe de dragons sans tête, heureux présage'.\n" +
-      "- Hexagramme #2 Kun, tout yin ancien (用六): Le texte spécial 'Utiliser le Six' gouverne : 'La persévérance est bénéfique'.\n\n" +
-      "Dans tous les cas, l'application produit toujours un texte gouvernant unique et précis, sans ambiguïté ni lacune. Par défaut, elle suit le système de réduction d'Alfred Huang ; le sélecteur « Lecture des lignes mobiles » dans les Options permet de passer à la lecture classique de Zhu Xi, qui applique les alternatives décrites ci-dessus pour chaque cas. Votre choix est mémorisé et appliqué de façon cohérente à cette lecture.",
+      "L'application prend en charge deux systèmes pour déterminer quel texte de trait, ou quels textes, gouverne une lecture lorsqu'il y a des traits mutants. Le système de réduction d'Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) est celui par défaut : un ensemble de règles clair et moderne qui réduit toujours toute combinaison de traits mutants à un seul passage gouvernant précis. La lecture classique de Zhu Xi (朱熹, 1130-1200 ; Yixue Qimeng, dans la traduction de Joseph Adler) est l'alternative traditionnelle : une méthode plus ancienne qui, dans plusieurs cas, lit les deux traits ou les deux Jugements au lieu de réduire à un seul. Basculez entre les deux avec le sélecteur « Lecture des lignes mobiles » dans Options ; votre choix est mémorisé pour cette lecture.",
     related: ["methodNotes"],
   },
   {
@@ -2420,10 +2368,17 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     related: ["userGuide"],
   },
   {
-    id: "translators-tiers",
-    question: "Comment fonctionnent les différents niveaux de traduction ?",
+    id: "translators-three",
+    question: "Quels sont les trois traducteurs disponibles dans l'app ?",
     answer:
-      "Le forfait gratuit comprend le mode I Ching (automatique et manuel : Trois Pièces et Tiges d'Achillée) et le mode Oracle Bones. Le pack Seeker débloque en plus du gratuit la Bibliothèque complète et le traducteur James Legge de façon permanente. Le pack Practitioner ajoute le Zhou Yi original, la version la plus ancienne du I Ching sans les commentaires ultérieurs. Le pack Master active la fonction Master (3) : triangulation simultanée des trois traducteurs pour une synthèse puissante et personnalisée.",
+      "L'application s'appuie sur trois traductions classiques du I Ching, présentées comme des onglets distincts. Richard Wilhelm et Cary F. Baynes (Princeton University Press, 1950) est l'édition occidentale la plus lue, accompagnée d'un commentaire étendu. James Legge (The Sacred Books of the East, vol. XVI, 1882) est la traduction académique anglaise pionnière, avec ses propres notes et son symbolisme. Le Zhou Yi est le texte original en chinois classique lui-même, la racine sur laquelle tous les commentaires postérieurs ont été écrits, présenté sans aucune couche de commentaire ajoutée. Les trois décrivent les mêmes 64 hexagrammes ; ils diffèrent par la voix du traducteur, la langue et la quantité de matériel explicatif entourant le texte central.",
+  },
+  {
+    id: "tier-features",
+    question: "Qu'inclut chaque pack, en plus des jetons ?",
+    answer:
+      "Free comprend le I Ching (Trois Pièces ou Tiges d'Achillée, automatique ou manuel) et les Os de l'Oracle, avec le traducteur Wilhelm/Baynes. Seeker ajoute la Bibliothèque complète et le traducteur Legge. Practitioner ajoute le texte original du Zhou Yi. Master ajoute la synthèse Master (3), qui triangule les trois traducteurs simultanément. Pour voir les quantités de jetons en vigueur, les limites par fil et comment acheter, ouvrez le Centre de tokens depuis l'en-tête de l'app.",
+    related: ["tokenPacks"],
   },
   {
     id: "master-tokens-cost",

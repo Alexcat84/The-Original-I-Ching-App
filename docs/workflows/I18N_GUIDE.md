@@ -6,6 +6,10 @@ Documento operativo para agentes de desarrollo en cada expansión de idioma.
 
 **Historial del cambio de arquitectura:** [`I18N_STANDARDIZATION.md`](./I18N_STANDARDIZATION.md)
 
+**¿Vas a cambiar el contenido de una FAQ/guía/nota existente, no a agregar un idioma?** Usa
+[`DOCS_CONTENT_UPDATE_GUIDE.md`](./DOCS_CONTENT_UPDATE_GUIDE.md) — cubre fuentes citables, nivel de
+detalle por canal y el chequeo de paridad de `id` entre locales que esta guía no aborda.
+
 ---
 
 ## Principios (obligatorios)
