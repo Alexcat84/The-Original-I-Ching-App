@@ -11,6 +11,7 @@ Single canonical location for audit reports, incident write-ups, post-fix follow
 
 | Date | Document | Topic | Status |
 |---|---|---|---|
+| 2026-06-24 | [LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md](./LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md) | Biblioteca: plan corrección UI acordeón ribbon (Juicio/Imagen/Líneas), toggle +/− full-width, footer −, 12 mitigaciones | 🟡 Plan — pendiente implementación |
 | 2026-06-24 | [READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md](./READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md) | Gap verbatim juicio/imagen: gates H1–H6 no cubrían cita literal; Gate H7 (warn + telemetría Sentry) implementado mismo día | 🟢 Mitigada — reintento diferido |
 | 2026-06-23 | [HEXAGRAM_PINYIN_GOLD_GATE_2026-06-23.md](./HEXAGRAM_PINYIN_GOLD_GATE_2026-06-23.md) | Gate nuevo: pinyin derivado (pinyin-pro) vs hardcodeado, 64 hexagramas + 8 trigramas — sin discrepancias reales | ✅ Cerrada |
 | 2026-06-23 | [LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md](./LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md) | Biblioteca: fix campo `name` (167 instancias rotas, nunca auditado) + orden "Fuente" + nota Legge fuera de caja | ✅ Cerrada |
