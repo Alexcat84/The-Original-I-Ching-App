@@ -18,6 +18,7 @@
     "changelog:generate": "node scripts/generate-changelog.js",
     "changelog:update": "node scripts/update-changelog.js",
     "qa:mutation-output": "node scripts/mutation-output-qa.mjs",
+    "qa:reading-quality": "node scripts/reading-quality-qa.mjs",
     "verify:pinyin-gold": "node scripts/verify-pinyin-gold.mjs",
     "verify:hexagram-fidelity": "node scripts/verify-hexagram-fidelity.mjs --gold=books --translator=wilhelm,legge",
     "verify:hexagram-fidelity:mirrors-deprecated": "node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=all",
