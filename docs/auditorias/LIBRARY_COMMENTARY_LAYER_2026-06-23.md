@@ -159,7 +159,17 @@ no chrome de UI.
 
 ---
 
-## 8. Nota de seguimiento (2026-06-23, sesión posterior)
+## 8. Nota de seguimiento UI (2026-06-24)
+
+La capa de datos y la lógica de producto de este doc siguen válidas. Tras deploy a
+staging se detectaron defectos de layout en los toggles `"+"` por punto (Juicio,
+Imagen, Líneas): panel mal ubicado, columna estrecha, icono incorrecto, sin `−` al
+final del comentario extenso. **Plan de corrección** (pendiente implementación, 12
+riesgos con mitigación): [`LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md`](./LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md).
+
+---
+
+## 9. Nota de seguimiento (2026-06-23, sesión posterior)
 
 La afirmación del §1 ("`HexagramRecord`/`HexagramsBundle` no se tocan") sigue
 siendo cierta **para esta capa de comentario** — su `git diff --stat` en
