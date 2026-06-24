@@ -298,4 +298,5 @@ suficiente de `judgment_image_verbatim_drift` para caracterizar el patrón.
 - Decisión editorial separada (ya señalada en §7): si el punto `is.` de Legge hex 29 es fidelidad
   obligatoria del SBE o candidato a normalización en el bundle — no se mezcla con este gate.
 - Revisar volumen/patrón de `judgment_image_verbatim_drift` en Sentry tras acumular tráfico real
-  antes de decidir sobre reintento (§11.3).
+  antes de decidir sobre reintento (§11.3). **Política de negocio (2026-06-22):** reintento H7
+  descartado; ver [INTERPRETATION_RETRY_AND_FALLBACK_ECONOMICS_AUDIT_2026-06-22.md](./INTERPRETATION_RETRY_AND_FALLBACK_ECONOMICS_AUDIT_2026-06-22.md) para H2, fallback chain y entrega al usuario.

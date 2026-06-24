@@ -11,6 +11,8 @@ Single canonical location for audit reports, incident write-ups, post-fix follow
 
 | Date | Document | Topic | Status |
 |---|---|---|---|
+| 2026-06-22 | [USER_FACING_DOCS_VS_IMPLEMENTATION_AUDIT_2026-06-22.md](./USER_FACING_DOCS_VS_IMPLEMENTATION_AUDIT_2026-06-22.md) | Docs de producto vs implementación (guía, FAQ, biblioteca comentario, anclas rotas) | 🟡 Abierta — remediación P0–P3 pendiente |
+| 2026-06-22 | [INTERPRETATION_RETRY_AND_FALLBACK_ECONOMICS_AUDIT_2026-06-22.md](./INTERPRETATION_RETRY_AND_FALLBACK_ECONOMICS_AUDIT_2026-06-22.md) | Economía reintentos LLM (H2 vs H7) vs cadena fallback; baseline real Axiom (0 fallback en 60d a ~70 consultas/mes) | 🟢 Decidida — mantener H2, sin cambios |
 | 2026-06-24 | [LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md](./LIBRARY_COMMENTARY_RIBBON_UI_FIX_PLAN_2026-06-24.md) | Biblioteca: UI acordeón ribbon (Juicio/Imagen/Líneas/hex-level), cian tema, toggle inline | ✅ Cerrada · `main` `7679281` |
 | 2026-06-24 | [READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md](./READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md) | Gap verbatim juicio/imagen: gates H1–H6 no cubrían cita literal; Gate H7 (warn + telemetría Sentry) implementado mismo día | 🟢 Mitigada — reintento diferido |
 | 2026-06-23 | [HEXAGRAM_PINYIN_GOLD_GATE_2026-06-23.md](./HEXAGRAM_PINYIN_GOLD_GATE_2026-06-23.md) | Gate nuevo: pinyin derivado (pinyin-pro) vs hardcodeado, 64 hexagramas + 8 trigramas — sin discrepancias reales | ✅ Cerrada |
