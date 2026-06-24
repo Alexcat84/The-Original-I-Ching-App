@@ -5691,6 +5691,8 @@ html[data-theme="dark"] .library-text-card {
 
 /* Oracle block: prose + in-box commentary toggle (Judgment / Image). */
 .library-oracle-shell {
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 8px;
   border: 1px solid color-mix(in srgb, var(--bar-border) 78%, transparent);
   background: color-mix(in srgb, var(--card-bg, var(--bg)) 74%, transparent);
@@ -5871,8 +5873,8 @@ html[data-theme="dark"] .library-oracle-shell .library-ribbon__bar {
 }
 
 .library-lines-table__toggle {
-  width: 2.25rem;
-  padding: 0.65rem 0.45rem;
+  width: 2.6rem;
+  padding: 0.65rem 0.4rem;
   text-align: center;
   vertical-align: middle;
   border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
@@ -5975,6 +5977,8 @@ html[data-theme="dark"] .library-hex-block__head {
 /* ── Per-point and hex-level commentary accordion (+/− toggle) ── */
 .library-ribbon {
   width: 100%;
+  box-sizing: border-box;
+  display: block;
 }
 
 .library-ribbon__bar {
@@ -6011,11 +6015,12 @@ html[data-theme="dark"] .library-hex-block__head {
 
 .library-ribbon__toggle {
   flex-shrink: 0;
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.28rem;
-  height: 1.28rem;
+  width: 1.45rem;
+  height: 1.45rem;
   padding: 0;
   border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
   border-radius: 50%;
@@ -6051,22 +6056,28 @@ html[data-theme="dark"] .library-ribbon__toggle {
   outline-offset: 2px;
 }
 
+/* Height-measured (JS, see CommentaryRibbon.tsx) rather than the CSS-grid
+   "0fr/1fr" trick: that trick sizes against intrinsic content width when the
+   grid container itself has no definite size, which is exactly what a
+   colSpan'd <td> gives it — it could collapse the panel to a sliver and wrap
+   every word onto its own line. width:100%+box-sizing here is a second,
+   independent guard against the same class of collapse. */
 .library-ribbon__panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.4s cubic-bezier(0.865, 0.14, 0.095, 0.87);
-}
-
-.library-ribbon__panel.is-open {
-  grid-template-rows: 1fr;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  max-height: 0px;
+  transition: max-height 0.4s cubic-bezier(0.865, 0.14, 0.095, 0.87);
 }
 
 .library-ribbon__panel-inner {
-  overflow: hidden;
-  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .library-ribbon__content {
+  width: 100%;
+  box-sizing: border-box;
   padding: 0.7rem 0.95rem 0.2rem;
   background: color-mix(in srgb, var(--secondary-bg) 88%, transparent);
   border-top: 1px solid color-mix(in srgb, var(--bar-border) 55%, transparent);

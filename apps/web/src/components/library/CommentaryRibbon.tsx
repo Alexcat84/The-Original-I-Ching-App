@@ -63,17 +63,23 @@ function CommentaryRibbonPanel({
 }: CommentaryRibbonPanelProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [showFooter, setShowFooter] = useState(false);
+  // Measured pixel height drives the open/close transition (see maxHeight
+  // below) instead of the CSS-grid "0fr/1fr" auto-height trick: that trick
+  // sizes a grid track against the content's intrinsic width when the grid
+  // container's own size is indefinite, which is exactly the situation
+  // inside a colSpan'd <td> (the lines-table case) — it can collapse the
+  // panel to a near-zero-width column and force every word onto its own
+  // wrapped line. A JS-measured max-height has no such ambiguity.
+  const [maxHeight, setMaxHeight] = useState(0);
 
   useLayoutEffect(() => {
-    if (!isOpen) {
-      setShowFooter(false);
-      return;
-    }
     const el = contentRef.current;
     if (!el) return;
 
     const measure = () => {
-      setShowFooter(el.scrollHeight > FOOTER_SCROLL_THRESHOLD_PX);
+      const height = el.scrollHeight;
+      setMaxHeight(height);
+      setShowFooter(isOpen && height > FOOTER_SCROLL_THRESHOLD_PX);
     };
 
     measure();
@@ -86,6 +92,7 @@ function CommentaryRibbonPanel({
     <div
       id={panelId}
       className={`library-ribbon__panel${isOpen ? " is-open" : ""}`}
+      style={{ maxHeight: isOpen ? `${maxHeight}px` : "0px" }}
       aria-hidden={!isOpen}
     >
       <div className="library-ribbon__panel-inner">

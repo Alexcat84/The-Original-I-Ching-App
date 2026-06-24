@@ -192,6 +192,44 @@ El oráculo no cita el texto clásico aquí.
     expect(failures).toHaveLength(0);
   });
 
+  it("labels the check entry as zhouyi (not wilhelm) when interpretationMode is zhouyi", () => {
+    const cast = makeCast({
+      interpretationMode: "zhouyi",
+      textsForClaude: { primaryJudgment: "元亨利貞", primaryImage: "i" },
+    });
+    const text = `
+## El juicio (卦辞)
+
+> *元亨利贞*
+
+## La imagen (象傳)
+
+> *i*
+`;
+    const { failures } = validateJudgmentImageVerbatim(text, cast, "ritual");
+    expect(failures).toHaveLength(1);
+    expect((failures[0]!.detail as { translator: string }).translator).toBe("zhouyi");
+  });
+
+  it("labels the check entry as legge (not wilhelm) when interpretationMode is legge", () => {
+    const cast = makeCast({
+      interpretationMode: "legge",
+      textsForClaude: { primaryJudgment: "Khien represents what is great and originating.", primaryImage: "i" },
+    });
+    const text = `
+## El juicio (卦辞)
+
+> *altered text, not the literal Legge judgment*
+
+## La imagen (象傳)
+
+> *i*
+`;
+    const { failures } = validateJudgmentImageVerbatim(text, cast, "ritual");
+    expect(failures).toHaveLength(1);
+    expect((failures[0]!.detail as { translator: string }).translator).toBe("legge");
+  });
+
   it("returns no failures outside ritual mode (directo/profundizar have no Juicio/Imagen headings)", () => {
     const cast = makeCast({
       textsForClaude: { primaryJudgment: "THE CREATIVE works sublime success.", primaryImage: "i" },
