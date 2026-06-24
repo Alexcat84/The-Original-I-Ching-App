@@ -10,8 +10,13 @@
  * packages/iching-data/src/schema.ts (translator + edition + sourceUrl +
  * licenseNote + generatedAt + 64-entry hexagrams array). The structural
  * metadata that does not depend on translator (chineseName, pinyin, trigrams,
- * binaryTopFirst, English `name`) is sourced from the canonical Wilhelm
- * transcription so all three bundles line up perfectly in the library UI.
+ * binaryTopFirst) is sourced from the canonical Wilhelm transcription so all
+ * three bundles line up perfectly in the library UI. `name` is the exception —
+ * it is built per translator (see buildWilhelmRecord/buildLeggeRecord/
+ * buildZhouyiRecord below), each from its own TXT-maestro/ctext source, not
+ * from Wilhelm's transcription. `chineseName`/`pinyin` are verified against
+ * ctext.org and a dictionary derivation respectively — see
+ * scripts/sync-wilhelm-hex-chinese-gold.mjs and scripts/verify-pinyin-gold.mjs.
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";

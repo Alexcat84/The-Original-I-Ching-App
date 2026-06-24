@@ -1,0 +1,56 @@
+{
+  "g0": {
+    "ok": false,
+    "errors": [
+      "hex 41: empty L2",
+      "hex 61: empty L1"
+    ]
+  },
+  "g1": {
+    "match": 445,
+    "mismatch": 5,
+    "total": 450,
+    "mismatches": [
+      {
+        "hex": 31,
+        "hexName": "Hsien",
+        "fieldKey": "L4",
+        "runtime": "The fourth line, undivided, shows that firm correctness which will lead to good fortune, and prevent all occasion for repentance. If its subject be unsettled in his movements, (only) his friends will follow his purpose.",
+        "txt": "4. The fourth line, undivided, shows that firm correctness which will lead to good fortune, and prevent all occasion for repentance. If its subject be unsettled in his movements, (only) his friends will follow his purpose.",
+        "status": "mismatch"
+      },
+      {
+        "hex": 41,
+        "hexName": "Sun",
+        "fieldKey": "L2",
+        "runtime": "The second line, undivided, shows that it will be advantageous for its subject to maintain a firm correctness, and that action on his part will be evil. He can give increase (to his correlate) without taking from himself",
+        "txt": "",
+        "status": "mismatch"
+      },
+      {
+        "hex": 60,
+        "hexName": "Kieh",
+        "fieldKey": "L3",
+        "runtime": "The third line, divided, shows its subject with no appearance of observing the (proper) regulations, in which case we shall see him lamenting. But there will be no one to blame (but himself).",
+        "txt": ". The third line, divided, shows its subject with no appearance of observing the (proper) regulations, in which case we shall see him lamenting. But there will be no one to blame (but himself).",
+        "status": "mismatch"
+      },
+      {
+        "hex": 61,
+        "hexName": "Kung Fu",
+        "fieldKey": "judgment",
+        "runtime": "Kung Fû (moves even) pigs and fish, and leads to good fortune. There will be advantage in crossing the great stream. There will be advantage in being firm and correct.",
+        "txt": "Kung Fû (moves even) pigs and fish, and leads to good fortune. There will be advantage in crossing the great stream. There will be advantage in being firm and correct.\nI. The first line, undivided, shows its subject resting (in himself). There will be good fortune. If he sought to any other, he would not find rest.",
+        "status": "mismatch"
+      },
+      {
+        "hex": 61,
+        "hexName": "Kung Fu",
+        "fieldKey": "L1",
+        "runtime": "The first line, undivided, shows its subject resting (in himself). There will be good fortune. If he sought to any other, he would not find rest.",
+        "txt": "",
+        "status": "mismatch"
+      }
+    ]
+  }
+}

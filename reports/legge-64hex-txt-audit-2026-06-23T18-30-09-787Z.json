@@ -1,0 +1,12 @@
+{
+  "g0": {
+    "ok": true,
+    "errors": []
+  },
+  "g1": {
+    "match": 450,
+    "mismatch": 0,
+    "total": 450,
+    "mismatches": []
+  }
+}

@@ -71,6 +71,7 @@ const FAQ_ITEMS_BY_CATEGORY: Record<FaqCategoryId, string[]> = {
   "ai-texts": [
     "ai-vs-algorithm",
     "authentic-texts",
+    "library-source-language",
     "data-reliability",
     "not-advice",
   ],
@@ -376,6 +377,15 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "library-source-language",
+    question:
+      "Why doesn't the Library's hexagram text change language when I switch the app's language?",
+    answer:
+      "It is shown exactly as published. Wilhelm/Baynes and Legge appear in their original English, and the Zhou Yi in classical Chinese, the same words across all 11 interface languages. Re-translating a translation would replace the translator's own wording with a paraphrase and could distort decades of established scholarship. The goal is to give you direct access to the most reliable published source, not a derivative version of it. This is different from your AI consultation, which always answers in the language of your question: there the AI interprets an already-formed result for you, it does not present a primary text.",
+    moreInfoLink: { href: "/library", label: "Open the Library →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "Does the app work in my language?",
     answer:
@@ -578,6 +588,15 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "library-source-language",
+    question:
+      "¿Por qué el texto de los hexagramas en la Biblioteca no cambia de idioma al cambiar el idioma de la app?",
+    answer:
+      "Se muestra tal como fue publicado. Wilhelm/Baynes y Legge aparecen en su inglés original, y el Zhou Yi en chino clásico, las mismas palabras en los 11 idiomas de la interfaz. Volver a traducir una traducción reemplazaría las palabras propias del traductor por una paráfrasis y podría distorsionar décadas de trabajo académico ya establecido. El objetivo es darte acceso directo a la fuente publicada más fiable, no a una versión derivada de ella. Esto es distinto de tu consulta con la IA, que siempre responde en el idioma de tu pregunta: ahí la IA interpreta para ti un resultado ya formado, no presenta un texto primario.",
+    moreInfoLink: { href: "/library", label: "Abre la Biblioteca →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "¿La app funciona en mi idioma?",
     answer:
@@ -737,6 +756,15 @@ const FAQ_ITEMS_AR: FaqItem[] = [
       "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
       "إنها أصيلة. المادة النصية، أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة، مستقاة من ثلاث ترجمات أكاديمية متاحة في التطبيق: Wilhelm/Baynes (في الملك العام منذ عام 2020)، وJames Legge، والتشو يي الأصلي. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "library-source-language",
+    question:
+      "لماذا لا يتغيّر نص الهكساجرامات في المكتبة عند تغيير لغة التطبيق؟",
+    answer:
+      "يُعرض كما نُشر بالضبط. تظهر ترجمتا Wilhelm/Baynes وJames Legge بلغتهما الإنجليزية الأصلية، ويظهر التشو يي بالصينية الكلاسيكية، بنفس الكلمات في جميع لغات الواجهة الإحدى عشرة. إعادة ترجمة ترجمة سابقة تستبدل كلمات المترجم نفسه بصياغة مُعاد التعبير عنها، وقد تشوّه عقودًا من العمل الأكاديمي المُستقر. الهدف هو إعطاؤك وصولاً مباشرًا إلى المصدر المنشور الأكثر موثوقية، لا إلى نسخة مُستمدة منه. هذا يختلف عن استشارتك مع الذكاء الاصطناعي، التي تجيب دائمًا بلغة سؤالك: فهناك يفسّر الذكاء الاصطناعي من أجلك نتيجة متشكّلة مسبقًا، ولا يقدّم نصًا أصليًا.",
+    moreInfoLink: { href: "/library", label: "افتح المكتبة →" },
     related: ["methodNotes"],
   },
   {
@@ -922,6 +950,15 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "library-source-language",
+    question:
+      "ऐप की भाषा बदलने पर Library के हेक्साग्राम पाठ की भाषा क्यों नहीं बदलती?",
+    answer:
+      "इसे ठीक उसी तरह दिखाया जाता है जैसे यह प्रकाशित हुआ था। Wilhelm/Baynes और James Legge अपनी मूल अंग्रेज़ी में दिखाई देते हैं, और मूल Zhou Yi शास्त्रीय चीनी भाषा में, सभी 11 इंटरफ़ेस भाषाओं में एक जैसे शब्दों के साथ। किसी अनुवाद का फिर से अनुवाद करने से अनुवादक के अपने शब्दों की जगह एक व्याख्या आ जाती और दशकों के स्थापित विद्वत्तापूर्ण कार्य को विकृत कर सकती। उद्देश्य है आपको सबसे भरोसेमंद प्रकाशित स्रोत तक सीधी पहुँच देना, उसका कोई व्युत्पन्न संस्करण नहीं। यह आपकी AI सलाह से अलग है, जो हमेशा आपके प्रश्न की भाषा में उत्तर देती है: वहाँ AI आपके लिए एक पहले से बने परिणाम की व्याख्या करता है, यह कोई मूल पाठ प्रस्तुत नहीं करता।",
+    moreInfoLink: { href: "/library", label: "Library खोलें →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "क्या यह app मेरी भाषा में काम करती है?",
     answer:
@@ -1103,6 +1140,15 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "library-source-language",
+    question:
+      "アプリの言語を切り替えても、ライブラリの卦辞のテキストが言語を変えないのはなぜですか？",
+    answer:
+      "出版された通りの形で表示されているからです。ヴィルヘルム/バインズ訳とレッグ訳は原典の英語のまま、周易は原典の古典中国語のまま、11のインターフェース言語すべてで同じ言葉が表示されます。翻訳をさらに翻訳し直すと、翻訳者自身の言葉が意訳に置き換わり、数十年にわたる学術的な蓄積をゆがめる可能性があります。目的は、最も信頼できる出版源に直接アクセスしてもらうことであり、その派生版を提供することではありません。これはAIによる解釈とは異なります。AIは常にあなたの質問の言語で答えますが、それはすでに形成された結果をあなたのために解釈しているのであり、原典そのものを示しているわけではありません。",
+    moreInfoLink: { href: "/library", label: "図書館を開く →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "このアプリは私の言語に対応していますか？",
     answer:
@@ -1279,6 +1325,14 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     question: "解读中出现的易经文本是真实的还是AI生成的？",
     answer:
       "是真实的。文本素材（卦辞、动爻（爻辞）和变卦）来自应用中提供的三种学术译本：威廉/贝恩斯译本（2020年起属公共领域）、詹姆斯·理雅各译本和原典周易。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
+    related: ["methodNotes"],
+  },
+  {
+    id: "library-source-language",
+    question: "为什么切换应用语言时，图书馆里的卦辞文本不会跟着改变语言？",
+    answer:
+      "因为它完全按照原始出版的样子呈现。威廉/贝恩斯译本和理雅各译本保留原始英文，周易保留古典中文，在全部11种界面语言中显示的都是同一段文字。对一份译本再次翻译，会用意译替换译者本人的措辞，可能扭曲数十年已确立的学术成果。我们的目标是让你直接接触最可靠的出版来源，而不是它的衍生版本。这与AI解读不同：AI始终用你提问的语言回答，但那是在为你诠释一个已经形成的结果，并不是在呈现原始文本。",
+    moreInfoLink: { href: "/library", label: "打开图书馆 →" },
     related: ["methodNotes"],
   },
   {
@@ -1462,6 +1516,14 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "library-source-language",
+    question: "앱 언어를 바꿔도 도서관의 괘사 텍스트는 왜 언어가 바뀌지 않나요?",
+    answer:
+      "출판된 그대로 보여주기 때문입니다. 빌헬름/베인스 번역본과 레그 번역본은 원래의 영어 그대로, 주역은 고전 중국어 그대로, 11개 인터페이스 언어 모두에서 동일한 문구로 표시됩니다. 번역본을 다시 번역하면 번역자 본인의 표현이 의역으로 바뀌어 수십 년간 확립된 학술적 성과를 왜곡할 수 있습니다. 목표는 가장 신뢰할 수 있는 출판 원전에 직접 접근하게 하는 것이며, 그것의 파생본을 제공하는 것이 아닙니다. 이는 AI 상담과는 다릅니다. AI는 항상 귀하의 질문 언어로 답하지만, 그것은 이미 형성된 결과를 귀하를 위해 해석하는 것이지 원전 텍스트를 제시하는 것이 아닙니다.",
+    moreInfoLink: { href: "/library", label: "도서관 열기 →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "이 앱은 내 언어로 작동하나요?",
     answer:
@@ -1641,6 +1703,15 @@ const FAQ_ITEMS_PT: FaqItem[] = [
       "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
       "São autênticos. O material textual (Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes) provém de três traduções académicas disponíveis na app: Wilhelm/Baynes (domínio público desde 2020), James Legge e o Zhou Yi original. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "library-source-language",
+    question:
+      "Por que o texto dos hexagramas na Biblioteca não muda de idioma quando mudo o idioma do app?",
+    answer:
+      "É mostrado exatamente como foi publicado. Wilhelm/Baynes e Legge aparecem no seu inglês original, e o Zhou Yi em chinês clássico, as mesmas palavras nos 11 idiomas da interface. Voltar a traduzir uma tradução substituiria as palavras do próprio tradutor por uma paráfrase e poderia distorcer décadas de trabalho académico já estabelecido. O objetivo é dar acesso direto à fonte publicada mais confiável, não a uma versão derivada dela. Isso é diferente da sua consulta com a IA, que responde sempre no idioma da sua pergunta: ali a IA interpreta para si um resultado já formado, não apresenta um texto primário.",
+    moreInfoLink: { href: "/library", label: "Abre a Biblioteca →" },
     related: ["methodNotes"],
   },
   {
@@ -1830,6 +1901,15 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     related: ["methodNotes"],
   },
   {
+    id: "library-source-language",
+    question:
+      "Warum ändert sich der Hexagramm-Text in der Bibliothek nicht, wenn ich die Sprache der App wechsle?",
+    answer:
+      "Er wird genau so angezeigt, wie er veröffentlicht wurde. Wilhelm/Baynes und Legge erscheinen in ihrem ursprünglichen Englisch, und das Zhou Yi in klassischem Chinesisch, mit denselben Worten in allen 11 Oberflächensprachen. Eine Übersetzung erneut zu übersetzen würde die eigenen Worte des Übersetzers durch eine Paraphrase ersetzen und könnte Jahrzehnte etablierter Forschung verzerren. Ziel ist direkter Zugang zur zuverlässigsten veröffentlichten Quelle, nicht zu einer abgeleiteten Version davon. Das unterscheidet sich von Ihrer KI-Beratung, die immer in der Sprache Ihrer Frage antwortet: dort interpretiert die KI ein bereits geformtes Ergebnis für Sie, sie stellt keinen Primärtext dar.",
+    moreInfoLink: { href: "/library", label: "Bibliothek öffnen →" },
+    related: ["methodNotes"],
+  },
+  {
     id: "language-support",
     question: "Funktioniert die App in meiner Sprache?",
     answer:
@@ -2013,6 +2093,15 @@ const FAQ_ITEMS_IT: FaqItem[] = [
       "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
       "Sono autentici. Il materiale testuale (Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti) proviene da tre traduzioni accademiche disponibili nell'app: Wilhelm/Baynes (di pubblico dominio dal 2020), James Legge e lo Zhou Yi originale. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "library-source-language",
+    question:
+      "Perché il testo degli esagrammi nella Biblioteca non cambia lingua quando cambio la lingua dell'app?",
+    answer:
+      "Viene mostrato esattamente come è stato pubblicato. Wilhelm/Baynes e Legge appaiono nel loro inglese originale, e lo Zhou Yi in cinese classico, le stesse parole in tutte le 11 lingue dell'interfaccia. Ritradurre una traduzione sostituirebbe le parole proprie del traduttore con una parafrasi e potrebbe distorcere decenni di lavoro accademico già consolidato. L'obiettivo è darti accesso diretto alla fonte pubblicata più affidabile, non a una versione derivata di essa. Questo è diverso dalla tua consultazione con l'IA, che risponde sempre nella lingua della tua domanda: lì l'IA interpreta per te un risultato già formato, non presenta un testo primario.",
+    moreInfoLink: { href: "/library", label: "Apri la Biblioteca →" },
     related: ["methodNotes"],
   },
   {
@@ -2201,6 +2290,15 @@ const FAQ_ITEMS_FR: FaqItem[] = [
       "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
       "Ils sont authentiques. Le matériel textuel (Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants) provient de trois traductions académiques disponibles dans l'app : Wilhelm/Baynes (dans le domaine public depuis 2020), James Legge et le Zhou Yi original. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
+    related: ["methodNotes"],
+  },
+  {
+    id: "library-source-language",
+    question:
+      "Pourquoi le texte des hexagrammes dans la Bibliothèque ne change pas de langue quand je change la langue de l'application ?",
+    answer:
+      "Il est montré exactement comme il a été publié. Wilhelm/Baynes et Legge apparaissent dans leur anglais original, et le Zhou Yi en chinois classique, les mêmes mots dans les 11 langues de l'interface. Retraduire une traduction remplacerait les mots propres du traducteur par une paraphrase et pourrait déformer des décennies de travail académique déjà établi. L'objectif est de vous donner un accès direct à la source publiée la plus fiable, pas à une version dérivée de celle-ci. C'est différent de votre consultation avec l'IA, qui répond toujours dans la langue de votre question : là, l'IA interprète pour vous un résultat déjà formé, elle ne présente pas un texte primaire.",
+    moreInfoLink: { href: "/library", label: "Ouvre la Bibliothèque →" },
     related: ["methodNotes"],
   },
   {

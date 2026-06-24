@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-06-24T02:10:45.250Z",
+  "method": "pinyin-pro derivation from hanzi vs hardcoded pinyin field",
+  "totalChecks": 72,
+  "totalFails": 4,
+  "fails": [
+    {
+      "source": "iching_wilhelm_translation.mjs",
+      "key": "hex 3",
+      "hanzi": "屯",
+      "current": "zhūn",
+      "expected": "tún",
+      "pass": false
+    },
+    {
+      "source": "iching_wilhelm_translation.mjs",
+      "key": "hex 12",
+      "hanzi": "否",
+      "current": "pǐ",
+      "expected": "fǒu",
+      "pass": false
+    },
+    {
+      "source": "iching_wilhelm_translation.mjs",
+      "key": "hex 23",
+      "hanzi": "剝",
+      "current": "bō",
+      "expected": "bāo",
+      "pass": false
+    },
+    {
+      "source": "iching_wilhelm_translation.mjs",
+      "key": "hex 40",
+      "hanzi": "解",
+      "current": "xiè",
+      "expected": "jiě",
+      "pass": false
+    }
+  ]
+}

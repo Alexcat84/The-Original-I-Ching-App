@@ -80,3 +80,7 @@ export type {
   LeggeCommentary,
   LeggeLineSymbolism,
 } from "./commentary.js";
+
+export { getAllTrigrams } from "./trigrams.js";
+export type { TrigramRecord, TrigramId } from "./trigrams.js";
+export { TRIGRAM_IDS } from "./trigrams.js";

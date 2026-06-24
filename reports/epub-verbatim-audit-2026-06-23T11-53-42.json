@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-06-23T11:53:42.747Z",
+  "gate": "epub-verbatim-vs-runtime",
+  "summary": [
+    {
+      "translator": "wilhelm",
+      "total": 514,
+      "match": 512,
+      "mismatch": 2
+    },
+    {
+      "translator": "legge",
+      "total": 514,
+      "match": 514,
+      "mismatch": 0
+    }
+  ],
+  "mismatches": [
+    {
+      "translator": "wilhelm",
+      "hex": 19,
+      "hexName": "Approaching",
+      "field": "judgment",
+      "fieldKey": "judgment",
+      "label": "Juicio",
+      "runtime": "APPROACH has supreme success.\nPerseverance furthers.\nWhen the eighth month comes,\nThere will be misfortune.",
+      "epub": "APPPROACH has supreme success.\nPerseverance furthers.\nWhen the eighth month comes,\nThere will be misfortune.",
+      "status": "mismatch",
+      "reason": "text_diff"
+    },
+    {
+      "translator": "wilhelm",
+      "hex": 47,
+      "hexName": "Exhausting",
+      "field": "judgment",
+      "fieldKey": "judgment",
+      "label": "Juicio",
+      "runtime": "OPPRESSION. Success. Perseverance.\nThe great man brings about good fortune.\nNo blame.\nWhen one has something to say,\nIt is not believed.",
+      "epub": "OPPPRESSION. Success. Perseverance.\nThe great man brings about good fortune.\nNo blame.\nWhen one has something to say,\nIt is not believed.",
+      "status": "mismatch",
+      "reason": "text_diff"
+    }
+  ],
+  "matchCount": 1026,
+  "mismatchCount": 2
+}

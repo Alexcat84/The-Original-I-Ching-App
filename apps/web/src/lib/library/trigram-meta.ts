@@ -7,20 +7,17 @@
  * pinyin, so the dropdown reads the same to every reader. We do NOT translate
  * the eight trigrams into 11 locales — the Chinese glyph + pinyin is the
  * universally accepted reference.
+ *
+ * The glyph + pinyin are NOT hardcoded here — they're imported from
+ * @iching-oracle/iching-data's generated trigrams.json (built by
+ * scripts/build-trigrams.mjs, pinyin derived from hanzi at build time so
+ * there is exactly one place this data is authored). This file only owns the
+ * UI-facing lookup helpers.
  */
+import { getAllTrigrams, TRIGRAM_IDS, type TrigramId } from "@iching-oracle/iching-data";
 
-export const TRIGRAM_IDS = [
-  "heaven",
-  "earth",
-  "water",
-  "thunder",
-  "mountain",
-  "wind",
-  "lake",
-  "fire",
-] as const;
-
-export type TrigramId = (typeof TRIGRAM_IDS)[number];
+export { TRIGRAM_IDS };
+export type { TrigramId };
 
 export interface TrigramMeta {
   readonly id: TrigramId;
@@ -30,16 +27,7 @@ export interface TrigramMeta {
   readonly wilhelmLabel: string;
 }
 
-const TRIGRAMS: ReadonlyArray<TrigramMeta> = [
-  { id: "heaven", chinese: "乾", pinyin: "qián", wilhelmLabel: "THE CREATIVE" },
-  { id: "earth", chinese: "坤", pinyin: "kūn", wilhelmLabel: "THE RECEPTIVE" },
-  { id: "water", chinese: "坎", pinyin: "kǎn", wilhelmLabel: "THE ABYSMAL" },
-  { id: "thunder", chinese: "震", pinyin: "zhèn", wilhelmLabel: "THE AROUSING" },
-  { id: "mountain", chinese: "艮", pinyin: "gèn", wilhelmLabel: "KEEPING STILL" },
-  { id: "wind", chinese: "巽", pinyin: "xùn", wilhelmLabel: "THE GENTLE" },
-  { id: "lake", chinese: "兌", pinyin: "duì", wilhelmLabel: "THE JOYOUS" },
-  { id: "fire", chinese: "離", pinyin: "lí", wilhelmLabel: "THE CLINGING" },
-];
+const TRIGRAMS: ReadonlyArray<TrigramMeta> = getAllTrigrams();
 
 const BY_ID: Record<TrigramId, TrigramMeta> = TRIGRAMS.reduce(
   (acc, t) => ({ ...acc, [t.id]: t }),

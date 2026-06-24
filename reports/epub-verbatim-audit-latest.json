@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-06-23T11:54:40.746Z",
+  "gate": "epub-verbatim-vs-runtime",
+  "summary": [
+    {
+      "translator": "wilhelm",
+      "total": 514,
+      "match": 514,
+      "mismatch": 0
+    },
+    {
+      "translator": "legge",
+      "total": 514,
+      "match": 514,
+      "mismatch": 0
+    }
+  ],
+  "mismatches": [],
+  "matchCount": 1028,
+  "mismatchCount": 0
+}

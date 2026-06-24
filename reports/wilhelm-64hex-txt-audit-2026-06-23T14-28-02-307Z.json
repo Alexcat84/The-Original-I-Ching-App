@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-06-23T14:28:02.307Z",
+  "source": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\source-pdfs\\I Ching or Book of Changes (Bollingen Series), The - Wilhelm, Hellmut-64hex.txt",
+  "outputJson": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\output\\wilhelm-64hex-parsed.json",
+  "g0": {
+    "pass": true,
+    "errors": [],
+    "warnings": [],
+    "fieldCount": 31
+  },
+  "g1": {
+    "pass": false,
+    "matches": 512,
+    "mismatches": 2,
+    "totalOracleFields": 514,
+    "mismatchDetails": [
+      {
+        "hex": 34,
+        "hexName": "Great Strength",
+        "fieldKey": "image",
+        "runtime": "Thunder in heaven above:\nThe image of THE POWER OF THE\nGREAT.\nThus the superior man does not tread upon paths\nThat do not accord with established order.",
+        "txt": "Thunder in heaven above:\nThe image of THE POWER OF THE\nGREAT.",
+        "txtNormalized": "Thunder in heaven above:\nThe image of THE POWER OF THE\nGREAT.",
+        "status": "mismatch"
+      },
+      {
+        "hex": 59,
+        "hexName": "Dispersing",
+        "fieldKey": "L4",
+        "runtime": "He dissolves his bond with his group.\nSupreme good fortune.\nDispersion leads in turn to accumulation.\nThis is something that ordinary men do not think of.",
+        "txt": "He dissolves his bond with his group.1\nSupreme good fortune.\nDispersion leads in turn to accumulation.\nThis is something that ordinary men do not think of.",
+        "txtNormalized": "He dissolves his bond with his group.1\nSupreme good fortune.\nDispersion leads in turn to accumulation.\nThis is something that ordinary men do not think of.",
+        "status": "mismatch"
+      }
+    ]
+  }
+}
