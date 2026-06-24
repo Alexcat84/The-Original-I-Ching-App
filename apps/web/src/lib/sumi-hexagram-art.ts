@@ -3,6 +3,13 @@
  * when remote image APIs fail or rate-limit.
  */
 
+import {
+  OVERLAY_TITLE_EN_CLASS,
+  OVERLAY_TITLE_EN_FONT,
+  OVERLAY_TITLE_ZH_CLASS,
+  OVERLAY_TITLE_ZH_FONT,
+} from "@/lib/embed-svg-overlay-font";
+
 export type SumiLineInput = {
   position: 1 | 2 | 3 | 4 | 5 | 6;
   value: number;
@@ -353,8 +360,8 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
 </defs>
 <g>${lineEls.join("\n")}</g>
 <!-- primary titles: large, centered -->
-<text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
-<text x="${cx}" y="178" text-anchor="middle" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="600">${subEn}</text>
+<text x="${cx}" y="125" text-anchor="middle" class="${OVERLAY_TITLE_ZH_CLASS}" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='${OVERLAY_TITLE_ZH_FONT}' font-weight="700">${subZh}</text>
+<text x="${cx}" y="178" text-anchor="middle" class="${OVERLAY_TITLE_EN_CLASS}" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="${OVERLAY_TITLE_EN_FONT}" font-weight="600">${subEn}</text>
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
