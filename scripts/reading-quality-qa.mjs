@@ -18,6 +18,8 @@
  *   node scripts/reading-quality-qa.mjs
  *   node scripts/reading-quality-qa.mjs --translators wilhelm
  *   node scripts/reading-quality-qa.mjs --limit 2      # first 2 hexagrams/translator (smoke)
+ *   node scripts/reading-quality-qa.mjs --random 3       # 3 random hexagrams per translator
+ *   node scripts/reading-quality-qa.mjs --random 2 --translators wilhelm
  */
 
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
@@ -149,6 +151,7 @@ function parseArgs(argv) {
     language: "es",
     tier: "master",
     limit: 64,
+    random: 0,
     concurrency: 2,
     delayMs: 1200,
     model: process.env.ANTHROPIC_MODEL?.trim() || "claude-sonnet-4-6",
@@ -159,6 +162,7 @@ function parseArgs(argv) {
     if (a === "--translators" && argv[i + 1])
       opts.translators = argv[++i].split(",").map((s) => s.trim());
     else if (a === "--limit" && argv[i + 1]) opts.limit = Number(argv[++i]);
+    else if (a === "--random" && argv[i + 1]) opts.random = Number(argv[++i]);
     else if (a === "--model" && argv[i + 1]) opts.model = argv[++i];
     else if (a === "--concurrency" && argv[i + 1]) opts.concurrency = Number(argv[++i]);
     else if (a === "--delay-ms" && argv[i + 1]) opts.delayMs = Number(argv[++i]);
@@ -168,6 +172,19 @@ function parseArgs(argv) {
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
+}
+
+function pickHexNumbers(opts) {
+  if (opts.random > 0) {
+    const count = Math.min(opts.random, 64);
+    const bag = Array.from({ length: 64 }, (_, i) => i + 1);
+    for (let i = bag.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [bag[i], bag[j]] = [bag[j], bag[i]];
+    }
+    return bag.slice(0, count).sort((a, b) => a - b);
+  }
+  return Array.from({ length: Math.min(opts.limit, 64) }, (_, i) => i + 1);
 }
 
 async function callAnthropic({ apiKey, model, system, user, maxTokens }) {
@@ -255,10 +272,13 @@ async function main() {
     process.exit(1);
   }
 
-  const hexCount = Math.min(opts.limit, 64);
+  const hexNumbers = pickHexNumbers(opts);
+  const hexCount = hexNumbers.length;
+  const pickLabel = opts.random > 0 ? "random" : "sequential";
   console.log(
-    `Reading-quality QA: ${opts.translators.join("+")} × ${hexCount} hexagrams = ${opts.translators.length * hexCount} API calls`,
+    `Reading-quality QA (${pickLabel}): ${opts.translators.join("+")} × ${hexCount} hexagrams = ${opts.translators.length * hexCount} API calls`,
   );
+  if (opts.random > 0) console.log(`Hex picks: ${hexNumbers.join(", ")}`);
   console.log(`Model: ${opts.model} · tier=${opts.tier} · lang=${opts.language} · NO_CHANGING (zero mutation)`);
 
   const started = Date.now();
@@ -266,7 +286,7 @@ async function main() {
 
   const tasks = [];
   for (const translator of opts.translators) {
-    for (let n = 1; n <= hexCount; n++) {
+    for (const n of hexNumbers) {
       tasks.push(async () => {
         const lineValues = hexToLines[n];
         const { q, cat } = QUESTIONS[n - 1];
@@ -372,6 +392,7 @@ async function main() {
         Math.max(1, rows.filter((r) => r.outputTokens).length),
     ),
     scope: "NO_CHANGING reading quality; changing lines covered by mutation QA",
+    hexNumbers,
     rows,
   };
   writeFileSync(jsonPath, JSON.stringify(summary, null, 2), "utf8");

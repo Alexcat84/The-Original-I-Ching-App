@@ -1,0 +1,17 @@
+{
+  "id": "legge-appendix",
+  "status": "official",
+  "layer": "commentary-appendix",
+  "updatedAt": "2026-06-23",
+  "auClosedAt": "2026-06-23",
+  "sourceTxt": "tools/source-pdfs/Yi King - James Legge-Appendix.txt",
+  "parsedJson": "legge-appendix-parsed.json",
+  "appendixCount": 7,
+  "runtimeIngest": true,
+  "structure": "appendices[I-VII] → sections (where present) → content + footnotes; Appendix II symbolismHex[64]; backMatter = transliteration + hexagram key + TOC (main text truncates before transliteration)",
+  "csvAuditSections": "reports/legge-appendix-sections-audit-latest.csv",
+  "csvAuditSymbolism": "reports/legge-appendix-symbolism-audit-latest.csv",
+  "csvStructureIndex": "reports/legge-appendix-structure-latest.csv",
+  "gates": "verify:legge-all-gates appendix G0 PASS; AU sections + symbolism PASS 2026-06-23",
+  "note": "AU manual: 12 section blocks + 64 symbolism hex (578 rows). Book-primary IDs (appendix-I-i, section-I-KHIEN, etc.) per Oxford TXT. Ap. VII has no footnotes in source. Only Appendix II symbolismHex (Great Symbolism, image + lineNotes) is ingested into packages/iching-data/src/generated/hexagrams.legge.commentary.json — the other 6 appendices + backMatter are general I Ching theory essays, not per-hexagram, and remain out of scope for the library."
+}

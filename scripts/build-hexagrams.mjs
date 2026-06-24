@@ -10,10 +10,15 @@
  * packages/iching-data/src/schema.ts (translator + edition + sourceUrl +
  * licenseNote + generatedAt + 64-entry hexagrams array). The structural
  * metadata that does not depend on translator (chineseName, pinyin, trigrams,
- * binaryTopFirst, English `name`) is sourced from the canonical Wilhelm
- * transcription so all three bundles line up perfectly in the library UI.
+ * binaryTopFirst) is sourced from the canonical Wilhelm transcription so all
+ * three bundles line up perfectly in the library UI. `name` is the exception —
+ * it is built per translator (see buildWilhelmRecord/buildLeggeRecord/
+ * buildZhouyiRecord below), each from its own TXT-maestro/ctext source, not
+ * from Wilhelm's transcription. `chineseName`/`pinyin` are verified against
+ * ctext.org and a dictionary derivation respectively — see
+ * scripts/sync-wilhelm-hex-chinese-gold.mjs and scripts/verify-pinyin-gold.mjs.
  */
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -27,6 +32,18 @@ const outDir = join(root, "packages", "iching-data", "src", "generated");
 const wilhelm = (await import(pathToFileURL(wilhelmModulePath).href)).default;
 const legge = (await import(pathToFileURL(leggeModulePath).href)).default;
 const zhouyi = (await import(pathToFileURL(zhouyiModulePath).href)).default;
+
+// Book-one TXT-maestro datasets — AU-verified 1:1 against the Princeton EPUB
+// sources (docs/auditorias/WILHELM_TXT_AU_MAESTRO_2026-06-23.md,
+// LEGGE_TXT_AU_MAESTRO_2026-06-23.md). Title/name metadata was never part of
+// the 2026-06-21/23 oracle-field fidelity audits (judgment/image/lines), so
+// it is sourced from here instead of the legacy translation scripts above.
+const wilhelmMaestro = JSON.parse(
+  await readFile(join(root, "tools", "datasets", "wilhelm", "book-one", "wilhelm-64hex-parsed.json"), "utf8"),
+).hexagrams;
+const leggeMaestro = JSON.parse(
+  await readFile(join(root, "tools", "datasets", "legge", "book-one", "legge-64hex-parsed.json"), "utf8"),
+).hexagrams;
 
 function normalizeBinaryTopFirst(raw) {
   return String(raw ?? "").replace(/\D/g, "").padStart(6, "0").slice(-6);
@@ -73,12 +90,13 @@ function buildLines(topBin, perPosition) {
 
 function buildWilhelmRecord(base, n) {
   const w = wilhelm[String(n)];
+  const wMaestro = wilhelmMaestro[String(n)].fields;
   const judgment = String(w.wilhelm_judgment?.text ?? "").trim();
   const image = String(w.wilhelm_image?.text ?? "").trim();
   const lines = buildLines(base.binaryTopFirst, w.wilhelm_lines);
   const entry = {
     number: base.number,
-    name: base.englishName,
+    name: String(wMaestro.nombre ?? "").trim() || base.englishName,
     chineseName: base.chineseName,
     pinyin: base.pinyin,
     upperTrigram: base.upperTrigram,
@@ -90,6 +108,7 @@ function buildWilhelmRecord(base, n) {
   };
   if (n === 1) {
     const yong =
+      String(wMaestro.yong_oraculo ?? "").trim() ||
       String(w.yong_jiu ?? w.yongJiu ?? "").trim() ||
       "There appears a flight of dragons without heads.\nGood fortune.";
     entry.yongJiu = yong;
@@ -104,12 +123,13 @@ function buildWilhelmRecord(base, n) {
 function buildLeggeRecord(base, n) {
   const l = legge[String(n)];
   if (!l) throw new Error(`Legge dataset missing hex ${n}`);
+  const lMaestro = leggeMaestro[String(n)].fields;
   const judgment = String(l.legge_judgment?.text ?? "").trim();
   const image = String(l.legge_image?.text ?? "").trim();
   const lines = buildLines(base.binaryTopFirst, l.legge_lines);
   const entry = {
     number: base.number,
-    name: String(l.name ?? "").trim() || base.englishName,
+    name: String(lMaestro.chinese_roman ?? "").trim() || String(l.name ?? "").trim() || base.englishName,
     chineseName: base.chineseName,
     pinyin: base.pinyin,
     upperTrigram: base.upperTrigram,

@@ -37,7 +37,7 @@ export function stripWilhelmEpubTags(html) {
 /**
  * @param {string} divHtml
  */
-function blockquoteTextsFromDiv(divHtml) {
+export function blockquoteTextsFromDiv(divHtml) {
   const texts = [];
   const re = /<blockquote[^>]*>([\s\S]*?)<\/blockquote>/gi;
   let m;
@@ -56,7 +56,7 @@ function blockquoteTextsFromDiv(divHtml) {
 /**
  * @param {string} label
  */
-function linePosFromLabel(label) {
+export function linePosFromLabel(label) {
   if (/all the lines are nines/i.test(label)) return "yongJiu";
   if (/all the lines are sixes/i.test(label)) return "yongLiu";
   if (/at the beginning|in the beginning/i.test(label)) return 1;
@@ -72,7 +72,7 @@ function linePosFromLabel(label) {
  * @param {string} html
  * @param {"JUDGMENT"|"IMAGE"|"LINES"} section
  */
-function findWilhelmEpubSectionStart(html, section) {
+export function findWilhelmEpubSectionStart(html, section) {
   // Anchor tightly on the section header blockquote (<blockquote><p><span class="calibre9">THE …</span>).
   // A lazy [\s\S]*? between the blockquote and the span would jump to the document's first
   // blockquote, making IMAGE/LINES resolve to the JUDGMENT region (image == judgment bug).
@@ -129,11 +129,7 @@ export function parseWilhelmEpubHexHtml(html) {
       const label = bqs[0];
       if (!/means:/i.test(label)) continue;
       const pos = linePosFromLabel(label);
-      const oracleParts = bqs.slice(1);
-      let text = oracleParts.join("\n").trim();
-      if (pos === "yongJiu" || pos === "yongLiu") {
-        text = text.replace(/\s+Good fortune\.?\s*$/i, "").trim();
-      }
+      const text = bqs.slice(1).join("\n").trim();
       if (pos === "yongJiu") yongJiu = text;
       else if (pos === "yongLiu") yongLiu = text;
       else if (typeof pos === "number" && pos >= 1 && pos <= 6 && text) lines[pos] = text;

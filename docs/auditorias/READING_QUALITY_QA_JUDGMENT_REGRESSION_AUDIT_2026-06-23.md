@@ -1,7 +1,7 @@
 # Auditoría — Test de calidad de lectura (W + L, 64 hexagramas sin mutación) y regresión del campo `judgment`
 
 - **Fecha:** 2026-06-23
-- **Estado:** AUDITORÍA — sin remediación aplicada (separación auditoría/remediación)
+- **Estado:** 🟡 **Hallazgo 1 resuelto** vía migración EPUB-primary (`EPUB_PRIMARY_MIGRATION_2026-06-23.md`, gates 514/514 ambos traductores) · **Hallazgo 2 diferido** — decisión explícita del propietario de retomarlo en otra sesión, sin fecha fijada
 - **Modelo evaluado:** `claude-sonnet-4-6` (estándar de producción) · tier master · idioma `es`
 - **Alcance:** Wilhelm + Legge (Zhou Yi excluido: no fue tocado por el sync PDF y no tenemos forma de validarlo book-primary). Solo regla `NO_CHANGING` (cero líneas cambiantes). Las líneas cambiantes ya se cubrieron en `PROMPT_MUTATION_RULES_AUDIT` / `qa:mutation-output`.
 - **Artefactos:**
@@ -95,6 +95,12 @@ Recomendación de gate (no aplicada): añadir un check que rechace `judgment`/`i
 - Error puntual de atributo: hex 1 Wilhelm describe Ch'ien (cielo) como "trueno".
 
 Esto **sí es del prompt/generación**, independiente del bundle, y es visible para el usuario final. Candidato a ajuste del prompt de interpretación (instrucción de sección única + prohibición de meta-notas) — no aplicado.
+
+> **Estado (2026-06-23, sesión posterior):** el propietario revisó este hallazgo
+> junto con el fix de `LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md` y decidió
+> explícitamente diferirlo ("lo haremos otro momento") — no forma parte de ese fix.
+> Sigue sin fecha de retomada; el plan de remediación (instrucción de sección única
+> + prohibición de meta-notas) descrito arriba sigue siendo el candidato.
 
 ---
 

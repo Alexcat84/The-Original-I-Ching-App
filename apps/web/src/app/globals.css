@@ -5865,6 +5865,99 @@ html[data-theme="dark"] .oracle-shell.doc-page .doc-article table.library-lines-
   text-decoration: underline;
 }
 
+/* ── Optional scholarly-commentary disclosures (Wilhelm + Legge only) ──
+   Same visual language as .faq-item/.faq-summary/.faq-body (see below):
+   native <details>, chevron via ::after, no separate "hide" label. */
+.library-commentary {
+  margin-top: 0.5rem;
+  border-radius: calc(var(--radius) * 0.75);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 80%, transparent);
+  background: color-mix(in srgb, var(--secondary-bg) 92%, transparent);
+  overflow: hidden;
+}
+
+.library-commentary-summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--card-title);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.library-commentary-summary::-webkit-details-marker {
+  display: none;
+}
+
+.library-commentary-summary::after {
+  content: "";
+  margin-left: auto;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  opacity: 0.85;
+}
+
+.library-commentary[open] > .library-commentary-summary::after {
+  transform: rotate(-135deg);
+}
+
+.library-commentary-body {
+  padding: 0 0.85rem 0.8rem;
+  border-top: 1px solid color-mix(in srgb, var(--bar-border) 55%, transparent);
+}
+
+.library-commentary-body > p {
+  margin: 0.65rem 0 0;
+  color: var(--fg);
+  line-height: 1.55;
+}
+
+.library-commentary-source {
+  margin: 0.85rem 0 0 !important;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-muted);
+}
+
+.library-commentary-body > .library-commentary-source:first-child {
+  margin-top: 0.65rem !important;
+}
+
+/* Top-of-tab slot: Wilhelm "About this hexagram" / Legge "Scholarly notes". */
+.library-about-block {
+  margin-top: 0.75rem;
+}
+
+/* Always-visible short editorial note (Legge thwan_intro / lines_intro). */
+.library-editorial-note {
+  margin: 0 0 0.4rem;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+}
+
+/* Commentary row inside the lines table: no striping, no dangling border. */
+.oracle-shell.doc-page .doc-article table.library-lines-table tbody tr.library-lines-row--commentary {
+  background: none;
+}
+
+.library-lines-table__commentary {
+  padding: 0 0 0.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--bar-border) 62%, transparent);
+}
+
+.oracle-shell.doc-page .doc-article table.library-lines-table tbody tr:last-child .library-lines-table__commentary {
+  border-bottom: none;
+}
+
 /* —— Mutations panel —— */
 .library-mutations {
   margin-top: 1.4rem;

@@ -1,7 +1,7 @@
 # Migración EPUB-primary — inyectores Wilhelm + Legge
 
 - **Fecha:** 2026-06-23
-- **Estado:** EJECUTADO (inyectores W y L sincronizados desde EPUB) · 1 duda pendiente de juicio del propietario
+- **Estado:** ✅ **EJECUTADO y cerrado** (inyectores W y L sincronizados desde EPUB; la duda de juicio del propietario sobre Legge hex 41 L2 se resolvió en §3 — RESUELTO, EPUB fiel al libro). Alcance: solo `judgment`/`image`/`lines`/`yong`. El campo `name` (título) quedó **fuera de este alcance** y se descubrió roto por separado — ver `LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md`.
 - **Motivo:** La auditoría `READING_QUALITY_QA_JUDGMENT_REGRESSION_AUDIT_2026-06-23.md` demostró que extraer la fuente desde el scan PDF (OCR) corrompe `judgment`/`image` (corte a media palabra, mala detección de región). El EPUB es texto digital estructurado, sin esas patologías. Se invierte la política: **PDF book-primary → EPUB-primary** para Wilhelm y Legge.
 
 ---
@@ -85,6 +85,7 @@ El EPUB usa `"The Nth line, divided/undivided"` (texto de Legge SBE XVI). El sac
 
 ## 5. Pendientes (no ejecutados)
 
-- Promover el escaneo anti-malformado a gate permanente (`verify:*`), según recomendación de la auditoría de regresión §4 (validación semántica además de "bundle == parse").
-- Aplicar el fix de prompt (Hallazgo 2 de la auditoría de regresión: sección "plenitud" duplicada + fuga de meta-notas) — independiente de datos.
-- Actualizar claims de fidelidad en docs de producto/UI (notes, FAQ, README) de "book-primary PDF" a "EPUB-primary".
+- Promover el escaneo anti-malformado a gate permanente (`verify:*`), según recomendación de la auditoría de regresión §4 (validación semántica además de "bundle == parse"). **Sigue sin ejecutar.**
+- Aplicar el fix de prompt (Hallazgo 2 de la auditoría de regresión: sección "plenitud" duplicada + fuga de meta-notas) — independiente de datos. **Sigue diferido** (decisión explícita del propietario, 2026-06-23, sin fecha).
+- Actualizar claims de fidelidad en docs de producto/UI (notes, FAQ, README) de "book-primary PDF" a "EPUB-primary". **Sigue sin ejecutar.**
+- **(Nuevo, cerrado por separado)** El campo `name` no estaba cubierto por esta migración ni por la auditoría 2026-06-21 (exclusión explícita) — se detectó roto en 167/256 instancias y se corrigió en `LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md`, sourceando desde los datasets TXT-maestro book-one en vez del EPUB.

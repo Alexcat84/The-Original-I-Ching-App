@@ -93,6 +93,12 @@ Usar **Tier 0** para verificación 1:1. Tier 1–2 solo como respaldo o cuando T
 **Campos a comparar por hex:** `judgment`, `image` (Image / Symbolism), `lines[1..6].text`, `yongJiu` (hex 1), `yongLiu` (hex 2).  
 **Excluir de diff estricto:** nombres modernos de hex (`Initiating` vs `The Creative`), mayúsculas de título en judgment, saltos de línea (normalizar).
 
+> **Nota de cierre (2026-06-23):** esta exclusión dejó el campo `name` sin
+> verificar contra ninguna fuente primaria durante meses. Se detectó roto en
+> 62/64 (Wilhelm) y 40/64 (Legge) instancias — incluido el ejemplo "Initiating"
+> citado arriba — y se corrigió sourceando desde los datasets TXT-maestro
+> book-one (AU-verificados). Ver `LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md`.
+
 ### James Legge (inglés, Sacred Books of the East vol. XVI, 1882/1899)
 
 | Tier | Fuente | URL | Rol |

@@ -1,0 +1,52 @@
+{
+  "trigrams": [
+    {
+      "id": "heaven",
+      "chinese": "乾",
+      "wilhelmLabel": "THE CREATIVE",
+      "pinyin": "qián"
+    },
+    {
+      "id": "earth",
+      "chinese": "坤",
+      "wilhelmLabel": "THE RECEPTIVE",
+      "pinyin": "kūn"
+    },
+    {
+      "id": "water",
+      "chinese": "坎",
+      "wilhelmLabel": "THE ABYSMAL",
+      "pinyin": "kǎn"
+    },
+    {
+      "id": "thunder",
+      "chinese": "震",
+      "wilhelmLabel": "THE AROUSING",
+      "pinyin": "zhèn"
+    },
+    {
+      "id": "mountain",
+      "chinese": "艮",
+      "wilhelmLabel": "KEEPING STILL",
+      "pinyin": "gèn"
+    },
+    {
+      "id": "wind",
+      "chinese": "巽",
+      "wilhelmLabel": "THE GENTLE",
+      "pinyin": "xùn"
+    },
+    {
+      "id": "lake",
+      "chinese": "兌",
+      "wilhelmLabel": "THE JOYOUS",
+      "pinyin": "duì"
+    },
+    {
+      "id": "fire",
+      "chinese": "離",
+      "wilhelmLabel": "THE CLINGING",
+      "pinyin": "lí"
+    }
+  ]
+}

@@ -11,7 +11,15 @@ Single canonical location for audit reports, incident write-ups, post-fix follow
 
 | Date | Document | Topic | Status |
 |---|---|---|---|
-| 2026-06-20 | [LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md](./LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md) | Huang/Zhu Xi line-reading selector (074) + idioma/SSE fixes (Partes 1–9) | ✅ Shipped 4.1.7 |
+| 2026-06-24 | [READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md](./READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md) | Gap verbatim juicio/imagen: prompt VERBATIM + bundle correcto, modelo altera citas Legge; gates H1–H6 no cubren | 🟡 Abierta — verificar 2026-06-25 |
+| 2026-06-23 | [HEXAGRAM_PINYIN_GOLD_GATE_2026-06-23.md](./HEXAGRAM_PINYIN_GOLD_GATE_2026-06-23.md) | Gate nuevo: pinyin derivado (pinyin-pro) vs hardcodeado, 64 hexagramas + 8 trigramas — sin discrepancias reales | ✅ Cerrada |
+| 2026-06-23 | [LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md](./LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md) | Biblioteca: fix campo `name` (167 instancias rotas, nunca auditado) + orden "Fuente" + nota Legge fuera de caja | ✅ Cerrada |
+| 2026-06-23 | [LIBRARY_COMMENTARY_LAYER_2026-06-23.md](./LIBRARY_COMMENTARY_LAYER_2026-06-23.md) | Biblioteca: capa de comentario opcional W+L ("+" por punto), sin tocar motor/IA | ✅ Implementado |
+| 2026-06-23 | [TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md](./TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md) | Política: solo W+L con notas · fidelidad 100% book-primary · Zhou Yi sin notas | ✅ Cerrada |
+| 2026-06-23 | [LEGGE_TXT_AU_MAESTRO_2026-06-23.md](./LEGGE_TXT_AU_MAESTRO_2026-06-23.md) | Maestro Legge TXT Princeton + AU + gates 4/4 (sin ingest runtime) | ✅ Cerrada |
+| 2026-06-23 | [WILHELM_TXT_AU_MAESTRO_2026-06-23.md](./WILHELM_TXT_AU_MAESTRO_2026-06-23.md) | Maestro Wilhelm TXT Princeton + AU Sheets + gates 100/100 (sin ingest runtime) | ✅ Cerrada |
+| 2026-06-23 | [EPUB_PRIMARY_MIGRATION_2026-06-23.md](./EPUB_PRIMARY_MIGRATION_2026-06-23.md) | Bundle runtime EPUB-primary Wilhelm/Legge | ✅ Shipped |
+| 2026-06-23 | [READING_QUALITY_QA_JUDGMENT_REGRESSION_AUDIT_2026-06-23.md](./READING_QUALITY_QA_JUDGMENT_REGRESSION_AUDIT_2026-06-23.md) | QA 128 lecturas reales — Hallazgo 1 (regresión judgment/image) y Hallazgo 2 (plenitud duplicada) | 🟡 H1 resuelto vía EPUB-primary · H2 diferido |
 | 2026-06-21 | [ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md](./ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md) | Re-auditoría 1:1 Wilhelm/Legge/Zhou Yi vs fuentes oro (Fases 3 to 4) | ✅ Cerrada |
 | 2026-06-19 | [RN_NAVIGATE_TO_ROUTER_RACE_AUDIT_2026-06-19.md](./RN_NAVIGATE_TO_ROUTER_RACE_AUDIT_2026-06-19.md) | `__rnNavigateTo` × Next.js App Router race condition | ✅ Fixed |
 | 2026-06-19 | [AXIOM_LOGIN_SPIKE_AUDIT_2026-06-19.md](./AXIOM_LOGIN_SPIKE_AUDIT_2026-06-19.md) | `/login` traffic spike — Google WRS crawl, not real logins | ✅ Diagnosed |

@@ -1,0 +1,16 @@
+{
+  "id": "legge-64hex-book-one",
+  "status": "official",
+  "layer": "oracle-primary",
+  "updatedAt": "2026-06-23",
+  "auClosedAt": "2026-06-23",
+  "sourceTxt": "tools/source-pdfs/Yi King - James Legge-64hex.txt",
+  "parsedJson": "legge-64hex-parsed.json",
+  "hexCount": 64,
+  "fieldCount": 17,
+  "metaSource": "nombre=bookTitle from TXT header; chinese_roman=title-case(bookTitle); chinese + hex_font from iching_zhouyi_translation.mjs (canonical across translators)",
+  "csvAudit": "reports/legge-64hex-txt-audit-latest.csv",
+  "gates": "verify:legge-all-gates 4/4 PASS (G0/G1 meta, appendix G0, G2 deterministic)",
+  "runtimeIngest": true,
+  "note": "AU manual book-one PASS 2026-06-23. Thwan + lines + yong + footnotes from Princeton TXT. Great Symbolism (image) in appendix dataset. Footnotes ingested into packages/iching-data/src/generated/hexagrams.legge.commentary.json, library display only — Zhou Yi maestro/full ingest plan still out of scope."
+}

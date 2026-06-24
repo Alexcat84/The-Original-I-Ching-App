@@ -16,6 +16,9 @@ import { readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseAllWilhelmEpubOrThrow } from "../scripts/lib/hexagram-fidelity-wilhelm-epub.mjs";
+import {
+  applyWilhelmEpubJudgmentTypoFix,
+} from "../scripts/lib/wilhelm-epub-typo-fixes.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -30,23 +33,6 @@ function cleanOracleText(text) {
     .trim();
 }
 
-// Known digitization typos in the Princeton Bollingen EPUB (2011) itself — the all-caps
-// hexagram name in the judgment heading has a tripled letter, while the same word appears
-// correctly spelled elsewhere in the same hexagram's text (e.g. hex 19's Image says
-// "The image of APPROACH"). Confirmed 2026-06-23: not a parser or pipeline defect, the EPUB
-// source text reads this way. Applied here (not patched into the EPUB) so any future re-run
-// of `npm run sync:wilhelm-oracle-from-epub` against the same EPUB keeps the correction.
-const EPUB_JUDGMENT_TYPO_FIXES = {
-  19: [/\bAPPPROACH\b/g, "APPROACH"],
-  47: [/\bOPPPRESSION\b/g, "OPPRESSION"],
-};
-
-function fixKnownEpubTypos(n, judgment) {
-  const fix = EPUB_JUDGMENT_TYPO_FIXES[n];
-  if (!fix) return judgment;
-  const [pattern, replacement] = fix;
-  return judgment.replace(pattern, replacement);
-}
 
 async function main() {
   const existingRaw = await readFile(wilhelmOut, "utf8");
@@ -66,7 +52,7 @@ async function main() {
     if (!row) throw new Error(`Existing Wilhelm dataset missing hex ${n}`);
     if (!ep) throw new Error(`Wilhelm EPUB gold missing hex ${n}`);
 
-    const judgment = fixKnownEpubTypos(n, cleanOracleText(ep.judgment));
+    const judgment = applyWilhelmEpubJudgmentTypoFix(n, cleanOracleText(ep.judgment));
     const image = cleanOracleText(ep.image);
     row.wilhelm_judgment = { text: judgment };
     row.wilhelm_image = { text: image };

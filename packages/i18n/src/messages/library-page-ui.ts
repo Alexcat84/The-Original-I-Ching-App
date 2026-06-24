@@ -52,6 +52,29 @@ export type LibraryPageUiMessages = {
   mutationLine: (from: number, to: number, position: number) => string;
   /** Bundle source footer (per tab). */
   sourceLabel: string;
+  /**
+   * Optional scholarly-commentary layer (Wilhelm + Legge only, never Zhou Yi).
+   * One generic toggle label is reused for every per-point "+" disclosure
+   * (Judgment/Image/each Line/yong), following the existing FaqAccordion
+   * pattern: a single <summary> label, no separate "hide" text needed.
+   */
+  commentaryShowLabel: string;
+  /** Sub-label inside a combined Wilhelm panel: book-one's own commentary. */
+  wilhelmCommentaryLabel: string;
+  /** Sub-label inside a combined Wilhelm panel: Ten Wings (Confucian) commentary. */
+  tenWingsCommentaryLabel: string;
+  /** Sub-label inside a Legge panel: Great Symbolism (Appendix II). */
+  greatSymbolismLabel: string;
+  /** Toggle heading: Wilhelm's general hexagram essay + ruler note + sequence. */
+  aboutHeading: string;
+  rulerNoteLabel: string;
+  miscNotesLabel: string;
+  sequenceLabel: string;
+  /** Toggle heading: Confucius's "Words on the Text" — only hex 1 and 2. */
+  wenYenHeading: string;
+  wenYenNoteLabel: string;
+  /** Toggle heading: Legge's Oxford SBE XVI footnotes (one block per hexagram). */
+  scholarlyNotesHeading: string;
   /** Disclaimer about Zhou Yi being Classical Chinese (no translation in PR1). */
   zhouyiClassicalNotice: string;
   /** Empty state if a binary lookup fails (defensive — shouldn't happen). */
@@ -108,6 +131,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Línea ${position} cambia → del hexagrama ${from} al ${to}`,
     sourceLabel: "Fuente",
+    commentaryShowLabel: "Ver comentario clásico",
+    wilhelmCommentaryLabel: "Comentario de Wilhelm",
+    tenWingsCommentaryLabel: "Diez Alas (comentario confuciano)",
+    greatSymbolismLabel: "Gran Simbolismo",
+    aboutHeading: "Acerca de este hexagrama",
+    rulerNoteLabel: "La línea regente",
+    miscNotesLabel: "Notas",
+    sequenceLabel: "Secuencia",
+    wenYenHeading: "Palabras sobre el Texto (Wen Yen)",
+    wenYenNoteLabel: "Nota editorial",
+    scholarlyNotesHeading: "Notas eruditas",
     zhouyiClassicalNotice: "",
     notFound:
       "No se encontró ese hexagrama. Vuelve a la biblioteca y prueba con un número entre 1 y 64.",
@@ -148,6 +182,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Line ${position} changes → from hexagram ${from} to ${to}`,
     sourceLabel: "Source",
+    commentaryShowLabel: "Show classical commentary",
+    wilhelmCommentaryLabel: "Wilhelm's commentary",
+    tenWingsCommentaryLabel: "Ten Wings (Confucian commentary)",
+    greatSymbolismLabel: "Great Symbolism",
+    aboutHeading: "About this hexagram",
+    rulerNoteLabel: "The ruling line",
+    miscNotesLabel: "Notes",
+    sequenceLabel: "Sequence",
+    wenYenHeading: "Words on the Text (Wen Yen)",
+    wenYenNoteLabel: "Editorial note",
+    scholarlyNotesHeading: "Scholarly notes",
     zhouyiClassicalNotice: "",
     notFound:
       "That hexagram could not be found. Go back to the library and pick a number between 1 and 64.",
@@ -187,6 +232,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Linha ${position} muda → do hexagrama ${from} para ${to}`,
     sourceLabel: "Fonte",
+    commentaryShowLabel: "Ver comentário clássico",
+    wilhelmCommentaryLabel: "Comentário de Wilhelm",
+    tenWingsCommentaryLabel: "Dez Alas (comentário confuciano)",
+    greatSymbolismLabel: "Grande Simbolismo",
+    aboutHeading: "Sobre este hexagrama",
+    rulerNoteLabel: "A linha regente",
+    miscNotesLabel: "Notas",
+    sequenceLabel: "Sequência",
+    wenYenHeading: "Palavras sobre o Texto (Wen Yen)",
+    wenYenNoteLabel: "Nota editorial",
+    scholarlyNotesHeading: "Notas eruditas",
     zhouyiClassicalNotice: "",
     notFound:
       "Hexagrama não encontrado. Volte à biblioteca e tente um número entre 1 e 64.",
@@ -227,6 +283,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Trait ${position} change → de l’hexagramme ${from} vers ${to}`,
     sourceLabel: "Source",
+    commentaryShowLabel: "Voir le commentaire classique",
+    wilhelmCommentaryLabel: "Commentaire de Wilhelm",
+    tenWingsCommentaryLabel: "Dix Ailes (commentaire confucéen)",
+    greatSymbolismLabel: "Grand Symbolisme",
+    aboutHeading: "À propos de cet hexagramme",
+    rulerNoteLabel: "Le trait dominant",
+    miscNotesLabel: "Notes",
+    sequenceLabel: "Séquence",
+    wenYenHeading: "Paroles sur le Texte (Wen Yen)",
+    wenYenNoteLabel: "Note éditoriale",
+    scholarlyNotesHeading: "Notes savantes",
     zhouyiClassicalNotice: "",
     notFound:
       "Cet hexagramme est introuvable. Revenez à la bibliothèque et choisissez un numéro entre 1 et 64.",
@@ -267,6 +334,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Linie ${position} wechselt → von Hexagramm ${from} zu ${to}`,
     sourceLabel: "Quelle",
+    commentaryShowLabel: "Klassischen Kommentar anzeigen",
+    wilhelmCommentaryLabel: "Wilhelms Kommentar",
+    tenWingsCommentaryLabel: "Zehn Flügel (konfuzianischer Kommentar)",
+    greatSymbolismLabel: "Große Symbolik",
+    aboutHeading: "Über dieses Hexagramm",
+    rulerNoteLabel: "Die herrschende Linie",
+    miscNotesLabel: "Anmerkungen",
+    sequenceLabel: "Abfolge",
+    wenYenHeading: "Worte zum Text (Wen Yen)",
+    wenYenNoteLabel: "Redaktionelle Anmerkung",
+    scholarlyNotesHeading: "Gelehrte Anmerkungen",
     zhouyiClassicalNotice: "",
     notFound:
       "Dieses Hexagramm wurde nicht gefunden. Kehre zur Bibliothek zurück und wähle eine Zahl zwischen 1 und 64.",
@@ -307,6 +385,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `Linea ${position} cambia → dall’esagramma ${from} a ${to}`,
     sourceLabel: "Fonte",
+    commentaryShowLabel: "Mostra commento classico",
+    wilhelmCommentaryLabel: "Commento di Wilhelm",
+    tenWingsCommentaryLabel: "Dieci Ali (commento confuciano)",
+    greatSymbolismLabel: "Grande Simbolismo",
+    aboutHeading: "Informazioni su questo esagramma",
+    rulerNoteLabel: "La linea dominante",
+    miscNotesLabel: "Note",
+    sequenceLabel: "Sequenza",
+    wenYenHeading: "Parole sul Testo (Wen Yen)",
+    wenYenNoteLabel: "Nota editoriale",
+    scholarlyNotesHeading: "Note erudite",
     zhouyiClassicalNotice: "",
     notFound:
       "Esagramma non trovato. Torna alla biblioteca e prova un numero tra 1 e 64.",
@@ -347,6 +436,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `第${position}爻が変化 → 第${from}卦から第${to}卦へ`,
     sourceLabel: "出典",
+    commentaryShowLabel: "古典注釈を表示",
+    wilhelmCommentaryLabel: "ヴィルヘルムの注釈",
+    tenWingsCommentaryLabel: "十翼（儒教的注釈）",
+    greatSymbolismLabel: "大象解",
+    aboutHeading: "この卦について",
+    rulerNoteLabel: "主爻について",
+    miscNotesLabel: "注記",
+    sequenceLabel: "序卦",
+    wenYenHeading: "文言（テキストについての言葉）",
+    wenYenNoteLabel: "編注",
+    scholarlyNotesHeading: "学術注",
     zhouyiClassicalNotice: "",
     notFound:
       "その卦は見つかりませんでした。ライブラリに戻り、1〜64 の番号を選んでください。",
@@ -387,6 +487,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `第${position}爻变化 → 由第 ${from} 卦至第 ${to} 卦`,
     sourceLabel: "出处",
+    commentaryShowLabel: "查看古典注释",
+    wilhelmCommentaryLabel: "卫礼贤注释",
+    tenWingsCommentaryLabel: "十翼（儒家注释）",
+    greatSymbolismLabel: "大象解",
+    aboutHeading: "关于此卦",
+    rulerNoteLabel: "主爻说明",
+    miscNotesLabel: "注释",
+    sequenceLabel: "序卦",
+    wenYenHeading: "文言",
+    wenYenNoteLabel: "编者注",
+    scholarlyNotesHeading: "学术注释",
     zhouyiClassicalNotice: "",
     notFound: "未找到该卦。请返回图书馆，并选择 1 至 64 之间的编号。",
     metaDescription:
@@ -425,6 +536,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `${position}번째 효 변화 → 제 ${from}괘에서 제 ${to}괘로`,
     sourceLabel: "출처",
+    commentaryShowLabel: "고전 주석 보기",
+    wilhelmCommentaryLabel: "빌헬름 주석",
+    tenWingsCommentaryLabel: "십익 (유교 주석)",
+    greatSymbolismLabel: "대상해",
+    aboutHeading: "이 괘에 대하여",
+    rulerNoteLabel: "주효 설명",
+    miscNotesLabel: "참고",
+    sequenceLabel: "서괘",
+    wenYenHeading: "문언 (본문에 대한 말)",
+    wenYenNoteLabel: "편집자 주",
+    scholarlyNotesHeading: "학술 주석",
     zhouyiClassicalNotice: "",
     notFound:
       "해당 괘를 찾을 수 없습니다. 라이브러리로 돌아가 1부터 64 사이의 번호를 선택하세요.",
@@ -465,6 +587,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `السطر ${position} يتغير → من الغرض ${from} إلى ${to}`,
     sourceLabel: "المصدر",
+    commentaryShowLabel: "عرض الشرح الكلاسيكي",
+    wilhelmCommentaryLabel: "شرح ويلهلم",
+    tenWingsCommentaryLabel: "الأجنحة العشرة (شرح كونفوشيوسي)",
+    greatSymbolismLabel: "الرمزية العظيمة",
+    aboutHeading: "عن هذا الغرض",
+    rulerNoteLabel: "السطر الحاكم",
+    miscNotesLabel: "ملاحظات",
+    sequenceLabel: "التسلسل",
+    wenYenHeading: "كلمات عن النص (Wen Yen)",
+    wenYenNoteLabel: "ملاحظة تحريرية",
+    scholarlyNotesHeading: "ملاحظات علمية",
     zhouyiClassicalNotice: "",
     notFound:
       "تعذر العثور على هذا الغرض. عُد إلى المكتبة واختر رقمًا بين 1 و 64.",
@@ -504,6 +637,17 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     mutationLine: (from, to, position) =>
       `रेखा ${position} बदलती है → हेक्साग्राम ${from} से ${to} तक`,
     sourceLabel: "स्रोत",
+    commentaryShowLabel: "शास्त्रीय टीका देखें",
+    wilhelmCommentaryLabel: "विल्हेल्म की टीका",
+    tenWingsCommentaryLabel: "दस पंख (कन्फ्यूशियाई टीका)",
+    greatSymbolismLabel: "महान प्रतीकवाद",
+    aboutHeading: "इस हेक्साग्राम के बारे में",
+    rulerNoteLabel: "प्रमुख रेखा",
+    miscNotesLabel: "टिप्पणियाँ",
+    sequenceLabel: "अनुक्रम",
+    wenYenHeading: "पाठ पर शब्द (Wen Yen)",
+    wenYenNoteLabel: "संपादकीय टिप्पणी",
+    scholarlyNotesHeading: "विद्वत्तापूर्ण टिप्पणियाँ",
     zhouyiClassicalNotice: "",
     notFound:
       "वह हेक्साग्राम नहीं मिला। पुस्तकालय पर वापस जाएँ और 1 से 64 के बीच कोई संख्या चुनें।",
