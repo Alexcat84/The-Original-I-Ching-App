@@ -1,0 +1,267 @@
+{
+  "stamp": "2026-06-24T21-41-00-309Z",
+  "total": 20,
+  "pass": 10,
+  "fail": 10,
+  "blockA": [
+    {
+      "case": "zero",
+      "system": "huang",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "NO_CHANGING",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario",
+        "falta cita literal de la Imagen primaria"
+      ],
+      "error": null
+    },
+    {
+      "case": "zero",
+      "system": "huang",
+      "translator": "legge",
+      "model": "claude-sonnet-4-6",
+      "rule": "NO_CHANGING",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "zero",
+      "system": "huang",
+      "translator": "zhouyi",
+      "model": "claude-sonnet-4-6",
+      "rule": "NO_CHANGING",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "zero",
+      "system": "huang",
+      "translator": "master_combined",
+      "model": "claude-sonnet-4-6",
+      "rule": "NO_CHANGING",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario",
+        "falta cita literal de la Imagen primaria"
+      ],
+      "error": null
+    },
+    {
+      "case": "one",
+      "system": "huang",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "ONE_CHANGING",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario",
+        "falta cita literal de la Imagen primaria",
+        "línea 1: cita literal no encontrada"
+      ],
+      "error": null
+    },
+    {
+      "case": "one",
+      "system": "huang",
+      "translator": "legge",
+      "model": "claude-sonnet-4-6",
+      "rule": "ONE_CHANGING",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "one",
+      "system": "huang",
+      "translator": "zhouyi",
+      "model": "claude-sonnet-4-6",
+      "rule": "ONE_CHANGING",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "one",
+      "system": "huang",
+      "translator": "master_combined",
+      "model": "claude-sonnet-4-6",
+      "rule": "ONE_CHANGING",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario",
+        "falta cita literal de la Imagen primaria",
+        "línea 1: cita literal no encontrada"
+      ],
+      "error": null
+    },
+    {
+      "case": "zero",
+      "system": "huang",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-5-20250929",
+      "rule": "NO_CHANGING",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario",
+        "falta cita literal de la Imagen primaria"
+      ],
+      "error": null
+    },
+    {
+      "case": "one",
+      "system": "huang",
+      "translator": "legge",
+      "model": "claude-sonnet-4-5-20250929",
+      "rule": "ONE_CHANGING",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    }
+  ],
+  "blockB": [
+    {
+      "case": "two_yy",
+      "system": "zhuxi",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_TWO_UPPER",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario",
+        "falta cita literal de la Imagen primaria",
+        "línea 1: cita literal no encontrada",
+        "línea 2: cita literal no encontrada"
+      ],
+      "error": null
+    },
+    {
+      "case": "two_same",
+      "system": "zhuxi",
+      "translator": "legge",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_TWO_UPPER",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "two_same_yin",
+      "system": "zhuxi",
+      "translator": "zhouyi",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_TWO_UPPER",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "three_a",
+      "system": "zhuxi",
+      "translator": "master_combined",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_THREE_JUDGMENTS",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario"
+      ],
+      "error": null
+    },
+    {
+      "case": "four",
+      "system": "zhuxi",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "ZX_FOUR_LOWER",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario",
+        "falta cita literal de la Imagen primaria",
+        "línea 5: cita literal no encontrada",
+        "línea 6: cita literal no encontrada"
+      ],
+      "error": null
+    },
+    {
+      "case": "two_yy",
+      "system": "huang",
+      "translator": "legge",
+      "model": "claude-sonnet-4-6",
+      "rule": "TWO_YIN_YANG",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "two_same",
+      "system": "huang",
+      "translator": "zhouyi",
+      "model": "claude-sonnet-4-6",
+      "rule": "TWO_SAME_LOWER",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    },
+    {
+      "case": "three_b",
+      "system": "huang",
+      "translator": "master_combined",
+      "model": "claude-sonnet-4-6",
+      "rule": "THREE_MIDDLE",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario",
+        "falta cita literal de la Imagen primaria",
+        "línea 4: cita literal no encontrada"
+      ],
+      "error": null
+    },
+    {
+      "case": "four",
+      "system": "huang",
+      "translator": "wilhelm",
+      "model": "claude-sonnet-4-6",
+      "rule": "FOUR_LOWEST_STABLE",
+      "pass": false,
+      "blocking": [],
+      "extra": [
+        "falta cita literal del Juicio primario",
+        "falta cita literal de la Imagen primaria",
+        "línea 6: cita literal no encontrada"
+      ],
+      "error": null
+    },
+    {
+      "case": "five",
+      "system": "huang",
+      "translator": "legge",
+      "model": "claude-sonnet-4-6",
+      "rule": "FIVE_ONLY_STABLE",
+      "pass": true,
+      "blocking": [],
+      "extra": [],
+      "error": null
+    }
+  ]
+}
