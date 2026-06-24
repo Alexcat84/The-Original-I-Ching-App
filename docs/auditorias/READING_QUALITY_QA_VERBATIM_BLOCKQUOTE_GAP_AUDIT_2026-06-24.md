@@ -170,3 +170,46 @@ Opciones para sesión posterior (requieren aprobación explícita):
 
 - Documento creado en sesión 2026-06-24; smoke artefactos en `reports/reading-quality-qa-2026-06-24T03-15-06.*`.
 - Harness: flag `--random N` añadido a `scripts/reading-quality-qa.mjs`; npm script `qa:reading-quality`.
+
+---
+
+## 10. Addendum — el gap se confirma también en Master (3) / Wilhelm (2026-06-24, sesión posterior)
+
+Se construyó `scripts/master-synthesis-qa.mjs` (nuevo harness, mismo patrón de
+`reading-quality-qa.mjs`: `performCastFromLineValues` → `buildAnthropicUserPayloadForCast` →
+Anthropic API real → `validateInterpretationOutput`, sin Supabase ni `/api/consult`) para
+extender la cobertura de este hallazgo a `translatorId: "master_combined"`, donde el prompt exige
+cita literal de **los 3 traductores** (Wilhelm + Legge + Zhou Yi) en bloques etiquetados dentro de
+"El juicio"/"La imagen". El script implementa el **Gate H7 propuesto en §8.1** como chequeo
+post-hoc (no productivo todavía): extrae el blockquote etiquetado por traductor y lo compara
+`===` contra `cast.textsForClaude.{primary,legge,zhouyi}{Judgment,Image}` (el texto literal que de
+hecho se inyectó en el prompt).
+
+**Smoke ejecutado: 2 llamadas reales (hex 1, hex 2, `master_combined`, NO_CHANGING).** Resultado:
+
+| Hex | Wilhelm | Legge | Zhou Yi |
+|---|---|---|---|
+| 1 | OK | OK | OK |
+| 2 | **FAIL (Imagen)** | OK | OK |
+
+**Diff hex 2, Imagen, Wilhelm:**
+
+```
+esperado: "The earth’s condition is receptive devotion. ..."   (U+2019 ’ tipográfico)
+obtenido: "The earth's condition is receptive devotion. ..."   (U+0027 ' recto)
+```
+
+El modelo normalizó el apóstrofe tipográfico del bundle a uno recto ASCII. **Mismo patrón de causa
+raíz que el hallazgo de Legge en §3** (el modelo "corrige" tipografía que percibe como atípica),
+ahora confirmado también en **Wilhelm**, no solo Legge, y específicamente bajo síntesis Master (3)
+donde se triangulan los 3 traductores a la vez. No se ejecutaron más llamadas tras este smoke
+(decisión del propietario: el gap ya estaba confirmado por la Parte 1-9 de este documento; no se
+requiere re-validación adicional, solo pasar a remediación). Artefactos:
+`reports/master-synthesis-qa-2026-06-24T10-59-38.{json,md}` +
+`-transcripts.md`.
+
+**Conclusión del addendum:** el gap no es específico de Legge ni de un solo traductor: es
+estructural a "el modelo no preserva tipografía/puntuación atípica del bundle al citar
+verbatim", y afecta a cualquier traductor/modo que dependa de cita literal sin un gate mecánico
+que la fuerce. Refuerza la prioridad de implementar el Gate H7 (opción 1 de §8) antes que seguir
+ampliando muestras.
