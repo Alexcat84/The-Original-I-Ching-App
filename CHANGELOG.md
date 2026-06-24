@@ -4,7 +4,7 @@
 
 Full project change history.
 
-## [4.1.9] — 2026-06-24 | versionCode: 59 | Stage: Closed Testing
+## [4.1.9] — 2026-06-24 | versionCode: 59 | Stage: Production
 
 ### New
 - feat(library): rediseno de la capa de comentario (orden, "+", titulos, color) | commit: 1133f6b
@@ -74,7 +74,7 @@ Full project change history.
 
 ---
 
-## [4.1.8] — 2026-06-22 | versionCode: 58 | Stage: Closed Testing
+## [4.1.8] — 2026-06-22 | versionCode: 58 | Stage: Production
 
 ### New
 - feat(tooling): add Supabase DB tooling (types generation + migration helpers) | commit: 282a8a3
@@ -1843,8 +1843,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.9 | 59 | 2026-06-24 | Closed Testing | 56 | rediseno de la capa de comentario (orden, "+", titulos, color); Gate H7 verbatim juicio/imagen (warn + telemetria), cierra audit 2026-06-24; master-synthesis QA harness + confirma gap verbatim también en Wilhelm |
-| 4.1.8 | 58 | 2026-06-22 | Closed Testing | 0 | — |
+| 4.1.9 | 59 | 2026-06-24 | Production | 56 | rediseno de la capa de comentario (orden, "+", titulos, color); Gate H7 verbatim juicio/imagen (warn + telemetria), cierra audit 2026-06-24; master-synthesis QA harness + confirma gap verbatim también en Wilhelm |
+| 4.1.8 | 58 | 2026-06-22 | Production | 0 | — |
 | 4.1.7 | 57 | 2026-06-20 | Closed Testing | 0 | — |
 | 4.1.6 | 55 | 2026-06-19 | Closed Testing | 0 | — |
 | 4.1.5 | 54 | 2026-06-19 | Closed Testing | 0 | — |

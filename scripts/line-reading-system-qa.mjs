@@ -141,22 +141,41 @@ async function callAnthropic({ apiKey, model, system, user, maxTokens }) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// ─── Validaciones específicas del caso (sobre las del validador de producción) ───
-function caseChecks(text, fixture, system) {
+/**
+ * Validaciones específicas del caso, sobre las del validador de producción.
+ *
+ * A diferencia de H1 (gate de producción, que solo compara un fingerprint de
+ * los primeros 20 caracteres de cada línea — suficiente para decidir un retry
+ * sin falsos negativos por espacios/puntuación), aquí se exige texto literal
+ * completo carácter a carácter contra `cast.textsForClaude`: cada línea citada
+ * y, en los casos Zhu Xi de 3 líneas, ambos Juicios (primario y transformado).
+ * Esto cierra el hueco que H7 v1 deja sin gate automático en "El trazado
+ * hacia…" para el hexagrama transformado.
+ */
+function caseChecks(text, fixture, system, cast) {
   const exp = fixture[system];
   const issues = [];
-  const lower = text;
+  const t = cast.textsForClaude;
 
-  // Para Zhu Xi 3 líneas: deben aparecer AMBOS juicios y NINGUNA línea individual.
   if (exp.judgments) {
-    // heurística: el texto debe referenciar el hexagrama transformado (之卦) / "se transforma"
-    if (!/transform|之卦|deriva|muta/iu.test(lower)) {
-      issues.push("ZX 3-judgments: no se aprecia referencia al hexagrama transformado");
+    if (!t.primaryJudgment || !text.includes(t.primaryJudgment.trim())) {
+      issues.push("ZX 3-judgments: falta cita literal del Juicio primario");
+    }
+    if (!t.transformedJudgment || !text.includes(t.transformedJudgment.trim())) {
+      issues.push("ZX 3-judgments: falta cita literal del Juicio transformado");
     }
   }
-  // Para Zhu Xi 2/4 líneas: ambas posiciones deben citarse (lo cubre H1, redundante aquí).
-  if (Array.isArray(exp.lines) && exp.lines.length === 2) {
-    issues.push(`expecting 2 cited lines at ${exp.lines.join(",")} (verify in transcript)`);
+  if (Array.isArray(exp.lines) && exp.lines.length > 0) {
+    for (const pos of exp.lines) {
+      const entry = t.selectedLineTexts.find((l) => l.position === pos);
+      if (!entry) {
+        issues.push(`línea ${pos}: no encontrada en cast.textsForClaude.selectedLineTexts`);
+        continue;
+      }
+      if (!text.includes(entry.text.trim())) {
+        issues.push(`línea ${pos}: cita literal no encontrada en la respuesta`);
+      }
+    }
   }
   return issues;
 }
@@ -195,7 +214,7 @@ async function main() {
             const r = await callAnthropic({ apiKey, model, system: payload.system, user: payload.user, maxTokens });
             text = r.text;
             validation = validateInterpretationOutput(text, cast, { mode: "ritual" });
-            extra = caseChecks(text, fixture, system);
+            extra = caseChecks(text, fixture, system, cast);
           } catch (e) {
             error = e instanceof Error ? e.message : String(e);
           }
