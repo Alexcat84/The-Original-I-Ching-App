@@ -3,11 +3,12 @@ import {
   validateLineCitation,
   type SelectedLineText,
 } from "./interpretation-line-gate.js";
+import { validateJudgmentImageVerbatim } from "./interpretation-judgment-image-gate.js";
 
 export type { SelectedLineText };
 
 export type ValidationFailure = {
-  gate: "H1" | "H1b" | "H3" | "H4" | "H5" | "H6";
+  gate: "H1" | "H1b" | "H3" | "H4" | "H5" | "H6" | "H7";
   severity: "blocking" | "warn";
   message: string;
   detail?: unknown;
@@ -275,6 +276,9 @@ export function validateInterpretationOutput(
       detail: { count: h6.count },
     });
   }
+
+  const h7 = validateJudgmentImageVerbatim(text, cast, mode);
+  warnFailures.push(...h7.failures);
 
   return {
     passed: blockingFailures.length === 0,

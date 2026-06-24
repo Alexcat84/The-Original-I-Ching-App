@@ -18,15 +18,12 @@
  * call. Token/API cost is intentional (validates triangulated reading
  * quality); model is recorded per row.
  *
- * Also closes part of the open checklist in docs/auditorias/
- * READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md (§8.1,
- * proposed Gate H7): H1-H6 never check verbatim fidelity of Judgment/Image,
- * only changing lines. This script extracts each translator's labeled
- * blockquote ("**Wilhelm:**" / "**Legge:**" / "**Zhou Yi:**" under "El
- * juicio" / "La imagen") and compares it character-for-character against
- * cast.textsForClaude (the literal text actually placed in the prompt for
- * that translator), reporting per-translator verbatim pass/fail — across all
- * three traditions simultaneously, since Master(3) triangulates all of them.
+ * Verbatim fidelity of Judgment/Image per translator is checked via the
+ * production Gate H7 (backend/claude/src/interpretation-judgment-image-gate.ts,
+ * exported as validateJudgmentImageVerbatim) — same function the real
+ * /api/consult pipeline uses for its warn-only telemetry, so this harness
+ * never duplicates that extraction/comparison logic. See
+ * docs/auditorias/READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md.
  *
  * Usage:
  *   node scripts/master-synthesis-qa.mjs
@@ -211,89 +208,12 @@ function checkTriangulationLabels(text) {
   return { passed: missing.length === 0, missing };
 }
 
-// ── Gate H7 (proposed, not yet wired into production validators) ──────────
-// Extracts the labeled blockquote for one translator under a given ## section
-// and compares it verbatim against the literal text placed in the prompt.
-
-function extractSection(text, headingPattern) {
-  const lines = text.split("\n");
-  const start = lines.findIndex((l) => /^##\s+/.test(l) && headingPattern.test(l));
-  if (start === -1) return null;
-  let end = lines.length;
-  for (let i = start + 1; i < lines.length; i++) {
-    if (/^##\s+/.test(lines[i])) {
-      end = i;
-      break;
-    }
-  }
-  return lines.slice(start + 1, end).join("\n");
-}
-
-function extractLabeledBlockquote(sectionText, labelPattern) {
-  if (!sectionText) return null;
-  const lines = sectionText.split("\n");
-  const start = lines.findIndex((l) => labelPattern.test(l.trim()));
-  if (start === -1) return null;
-  const quoteLines = [];
-  for (let i = start + 1; i < lines.length; i++) {
-    const trimmed = lines[i].trim();
-    if (trimmed.startsWith(">")) {
-      quoteLines.push(trimmed.replace(/^>\s*/, "").replace(/^\*(.*)\*$/, "$1"));
-    } else if (trimmed === "" && quoteLines.length === 0) {
-      continue;
-    } else if (quoteLines.length > 0) {
-      break;
-    } else {
-      break;
-    }
-  }
-  return quoteLines.length > 0 ? quoteLines.join("\n").trim() : null;
-}
-
-/** "wilhelm=OK/FAIL, legge=OK/FAIL, zhouyi=OK/FAIL" for console/MD; null means quote not found (parser miss, not necessarily a real fail — see transcripts). */
-function summarizeVerbatim(verbatim) {
-  if (!verbatim) return "n/a";
-  const fmt = (v) => (v.judgment === null && v.image === null ? "?" : v.judgment !== false && v.image !== false ? "OK" : "FAIL");
-  return `W=${fmt(verbatim.wilhelm)},L=${fmt(verbatim.legge)},Z=${fmt(verbatim.zhouyi)}`;
-}
-
-const JUDGMENT_HEADING = /juicio|judgment/i;
-const IMAGE_HEADING = /imagen|image/i;
-const TRANSLATOR_LABELS = {
-  wilhelm: /^\*\*wilhelm.*\*\*:?\s*$|^\*\*wilhelm.*:\*\*\s*$/i,
-  legge: /^\*\*legge.*\*\*:?\s*$|^\*\*legge.*:\*\*\s*$/i,
-  zhouyi: /^\*\*zhou\s*yi.*\*\*:?\s*$|^\*\*zhou\s*yi.*:\*\*\s*$/i,
-};
-
-function checkVerbatimFidelity(text, cast) {
-  const judgmentSection = extractSection(text, JUDGMENT_HEADING);
-  const imageSection = extractSection(text, IMAGE_HEADING);
-  const expected = {
-    wilhelm: { judgment: cast.textsForClaude.primaryJudgment, image: cast.textsForClaude.primaryImage },
-    legge: { judgment: cast.textsForClaude.leggeJudgment, image: cast.textsForClaude.leggeImage },
-    zhouyi: { judgment: cast.textsForClaude.zhouyiJudgment, image: cast.textsForClaude.zhouyiImage },
-  };
-  const result = {};
-  for (const translator of ["wilhelm", "legge", "zhouyi"]) {
-    const labelRe = TRANSLATOR_LABELS[translator];
-    const judgmentQuote = extractLabeledBlockquote(judgmentSection, labelRe);
-    const imageQuote = extractLabeledBlockquote(imageSection, labelRe);
-    result[translator] = {
-      judgment:
-        judgmentQuote === null || expected[translator].judgment === undefined
-          ? null
-          : judgmentQuote === expected[translator].judgment.trim(),
-      image:
-        imageQuote === null || expected[translator].image === undefined
-          ? null
-          : imageQuote === expected[translator].image.trim(),
-      judgmentQuote,
-      judgmentExpected: expected[translator].judgment ?? null,
-      imageQuote,
-      imageExpected: expected[translator].image ?? null,
-    };
-  }
-  return result;
+/** "wilhelm=OK/FAIL, legge=OK/FAIL, zhouyi=OK/FAIL" for console/MD, derived from
+ * the production Gate H7 failures list (empty per-translator = OK). */
+function summarizeVerbatim(failures) {
+  if (!failures) return "n/a";
+  const fmt = (t) => (failures.some((f) => f.detail.translator === t) ? "FAIL" : "OK");
+  return `W=${fmt("wilhelm")},L=${fmt("legge")},Z=${fmt("zhouyi")}`;
 }
 
 async function main() {
@@ -354,7 +274,9 @@ async function main() {
       const rendered = renderForReview(apiResult.text);
       validation = validateInterpretationOutput(rendered, cast, { mode: "ritual" });
       triangulation = checkTriangulationLabels(rendered);
-      verbatim = checkVerbatimFidelity(rendered, cast);
+      // Gate H7 (production) already ran inside validateInterpretationOutput —
+      // no separate call, no duplicated extraction logic.
+      verbatim = validation.warnFailures.filter((f) => f.gate === "H7");
     }
 
     const row = {
@@ -419,17 +341,10 @@ async function main() {
       rows.filter((r) => r.outputTokens).reduce((s, r) => s + r.outputTokens, 0) /
         Math.max(1, rows.filter((r) => r.outputTokens).length),
     ),
-    verbatimFailRows: rows
-      .filter((r) => r.verbatim)
-      .filter((r) =>
-        ["wilhelm", "legge", "zhouyi"].some(
-          (t) => r.verbatim[t].judgment === false || r.verbatim[t].image === false,
-        ),
-      )
-      .map((r) => r.hexagram),
+    verbatimFailRows: rows.filter((r) => r.verbatim?.length > 0).map((r) => r.hexagram),
     scope:
       "Master (3) synthesis, NO_CHANGING fixed hexagrams; changing lines covered by line-reading-system-qa.mjs. " +
-      "verbatim* fields are a proposed Gate H7 (docs/auditorias/READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md), not a production gate yet.",
+      "verbatim* fields are the production Gate H7 (warn-only; backend/claude/src/interpretation-judgment-image-gate.ts).",
     hexNumbers,
     rows,
   };
@@ -490,18 +405,11 @@ async function main() {
       txLines.push(`> blocking: ${r.blockingFailures.map((f) => f.gate).join(" · ")}`, "");
     if (r.warnFailures?.length)
       txLines.push(`> warn: ${r.warnFailures.map((f) => f.gate).join(" · ")}`, "");
-    if (r.verbatim) {
-      for (const t of ["wilhelm", "legge", "zhouyi"]) {
-        const v = r.verbatim[t];
-        for (const field of ["judgment", "image"]) {
-          if (v[field] === false) {
-            txLines.push(
-              `> H7 FAIL [${t}/${field}]\n> expected: ${JSON.stringify(v[`${field}Expected`])}\n> got:      ${JSON.stringify(v[`${field}Quote`])}`,
-              "",
-            );
-          }
-        }
-      }
+    for (const f of r.verbatim ?? []) {
+      txLines.push(
+        `> H7 [${f.detail.translator}/${f.detail.field}]\n> expected: ${JSON.stringify(f.detail.expected)}\n> got:      ${JSON.stringify(f.detail.got)}`,
+        "",
+      );
     }
     txLines.push(r.error ? `(API error: ${r.error})` : (r.rendered ?? "(no text)"), "", "---", "");
   }

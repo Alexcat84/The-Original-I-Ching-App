@@ -1,7 +1,7 @@
 # Auditoría — Gap verbatim juicio/imagen en lecturas IA (prompt vs gates vs salida)
 
 - **Fecha:** 2026-06-24
-- **Estado:** 🟡 **Abierta** — pendiente verificación manual del propietario (2026-06-25)
+- **Estado:** 🟢 **Mitigada** — Gate H7 (warn + telemetría) implementado y verificado offline (§11); reintento automático diferido a decisión futura con datos reales de Sentry.
 - **Modelo evaluado:** `claude-sonnet-4-6` (estándar de producción) · tier master · idioma `es`
 - **Alcance:** Citas literales en blockquote de **Juicio** e **Imagen** (ruta `NO_CHANGING`, sin líneas mutantes). Comparación **carácter a carácter** contra bundle runtime local — no EPUB remoto, no git, no `% match` heurístico.
 - **Artefactos smoke (reproducibles):**
@@ -213,3 +213,89 @@ estructural a "el modelo no preserva tipografía/puntuación atípica del bundle
 verbatim", y afecta a cualquier traductor/modo que dependa de cita literal sin un gate mecánico
 que la fuerce. Refuerza la prioridad de implementar el Gate H7 (opción 1 de §8) antes que seguir
 ampliando muestras.
+
+---
+
+## 11. Remediación implementada (2026-06-24, mismo día)
+
+Decisión del propietario: el gap ya estaba suficientemente probado (§1-10); no se necesitan más
+smokes manuales, pasar directo a remediación. Severidad acordada explícitamente: **warn +
+telemetría, sin reintento automático** (no bloqueante) — un mismatch aquí no debe duplicar costo
+de API ni arriesgar que una consulta completa falle (`InterpretationQualityError`, 2 reintentos
+agotados) por una normalización tipográfica menor; la opción de escalar a bloqueante (§8, opción
+2) se revisita más adelante con volumen/patrón reales de Sentry, no con más smokes.
+
+### 11.1 — Qué se implementó (opción 1 de §8)
+
+- **`backend/claude/src/interpretation-judgment-image-gate.ts`** (nuevo) — `validateJudgmentImageVerbatim(text, cast, mode)`:
+  - Solo corre en `mode === "ritual"` (directo/profundizar no tienen headings de Juicio/Imagen).
+  - Extrae la cita por traductor: en modo single-translator, el primer blockquote de la sección;
+    en `master_combined`, el bloque etiquetado (`**Wilhelm:**`/`**Legge:**`/`**Zhou Yi:**`) que el
+    prompt ya exige (`interpretation.ts:383-389`).
+  - Compara contra `cast.textsForClaude.{primary,legge,zhouyi}{Judgment,Image}` con
+    `normalizeForVerbatimCompare` (NFC, comillas tipográficas → rectas, guiones → guion simple,
+    colapso de espacios) — absorbe ruido tipográfico puro (el caso Wilhelm/apóstrofe del §10) pero
+    **no** un drop de contenido real (paréntesis editorial Legge, frases completas) — verificado
+    con tests dedicados para ambos casos.
+  - Alcance v1 deliberadamente acotado a Juicio/Imagen **primario** (no transformado): en modo
+    single-translator `transformedImage` ni siquiera se le pide al modelo
+    (`interpretation.ts:368-369`), y el bloque "El trazado"/"turning pattern" no tiene todavía un
+    listado de headings localizados propio — queda fuera de v1, no es un olvido.
+  - Mismo patrón de cobertura de idiomas que H3 hoy (ES/EN explícitos + 4 más; fallback a texto
+    completo si no reconoce el heading, igual que `extractLinesSectionBody`) — limitación
+    heredada, no nueva.
+  - `ValidationFailure.gate` extendido con `"H7"`; wireado dentro de `validateInterpretationOutput`
+    (`interpretation-output-validator.ts`) como `warnFailures`, nunca `blockingFailures`.
+- **Telemetría** — `apply-interpretation-gates.ts` → `logValidationWarnings` emite
+  `Sentry.captureMessage("[iching] judgment_image_verbatim_drift", { tags: { translator, field } })`
+  por cada warning H7. Esto es lo que reemplaza la necesidad de más smokes manuales: cada consulta
+  real en producción que dispare H7 queda registrada sola, con volumen y patrón reales.
+- **Exportado** desde `backend/claude/src/index.ts` (`validateJudgmentImageVerbatim`,
+  `normalizeForVerbatimCompare`).
+
+### 11.2 — Opción 3 de §8 (columna en `reading-quality-qa.mjs`)
+
+`scripts/reading-quality-qa.mjs` ya llamaba `validateInterpretationOutput` (que ahora corre H7
+internamente); se agregó la columna explícita `judgmentImageVerbatimFailures` por fila +
+`judgmentImageVerbatimFailRows` en el resumen + columna `H7` en la tabla Markdown. No agrega
+llamadas a la API — solo expone una señal que el harness ya tenía disponible.
+
+`scripts/master-synthesis-qa.mjs` (el harness nuevo de la sesión, §10) se refactorizó para
+**eliminar su lógica duplicada** de extracción/comparación (`extractSection`/
+`extractLabeledBlockquote`/`checkVerbatimFidelity` ad-hoc) e importar
+`validateJudgmentImageVerbatim` desde `backend/claude/dist/index.js` — fuente única, mismo
+principio aplicado al resto de esta sesión (trigramas/pinyin en `packages/iching-data`).
+
+### 11.3 — Opción 2 de §8 (reintento) — diferida, no descartada
+
+No implementada en esta sesión. Razón (decisión explícita del propietario): el patrón de H1/H3/H5
+reintenta hasta 2 veces (`apply-interpretation-gates.ts:138`) y si los 2 fallan lanza
+`InterpretationQualityError` — la consulta completa falla para el usuario. Sin datos de producción
+sobre qué fracción de los mismatches H7 son ruido tipográfico (que probablemente persistiría tras
+reintentar, agotando los 2 intentos) vs. drops de contenido reales (donde el reintento sí
+ayudaría), activar reintento ahora es apostar a ciegas con costo real (doble llamada a Anthropic
+por cada warning) y riesgo real (fallar consultas válidas). Revisitar cuando Sentry tenga volumen
+suficiente de `judgment_image_verbatim_drift` para caracterizar el patrón.
+
+### 11.4 — Verificación (sin gastar tokens nuevos)
+
+- `vitest run` en `backend/claude`: **62/62 PASS** (49 existentes + 13 nuevos en
+  `interpretation-judgment-image-gate.test.ts`), sin regresión.
+- `tsc` (build) en `backend/claude`: limpio.
+- **Replay offline del hallazgo original de este documento** (§3.3, hex 29 Legge): se alimentó el
+  texto ya guardado en `reports/reading-quality-qa-2026-06-24T03-15-06.json` a través del nuevo
+  `validateInterpretationOutput` → el Gate H7 reprodujo **exactamente** el mismo mismatch
+  (`judgment`, "Khan, here repeated... mind is[.] penetrating") sin ninguna llamada nueva a la API.
+- **Replay offline del hallazgo de §10** (hex 2 Wilhelm, apóstrofe): correctamente **no** se
+  reporta como warning — confirma que la normalización tipográfica funciona como se diseñó (ruido
+  cosmético absorbido, no escondido del registro porque nunca hubo drop de contenido real).
+- Tests dedicados confirman que un drop de contenido real (paréntesis editorial Legge eliminado)
+  **sí** se reporta — la normalización no enmascara el caso que realmente importa.
+
+### 11.5 — Pendiente (fuera de alcance de esta sesión)
+
+- Headings localizados para "El trazado"/"turning pattern" (transformado) — H7 no lo cubre todavía.
+- Decisión editorial separada (ya señalada en §7): si el punto `is.` de Legge hex 29 es fidelidad
+  obligatoria del SBE o candidato a normalización en el bundle — no se mezcla con este gate.
+- Revisar volumen/patrón de `judgment_image_verbatim_drift` en Sentry tras acumular tráfico real
+  antes de decidir sobre reintento (§11.3).
