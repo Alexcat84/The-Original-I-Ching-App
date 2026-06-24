@@ -113,8 +113,8 @@ function buildOverlaySvg(hex, outputWidth, outputHeight) {
   </filter>
 </defs>
 <g>${lineEls.join("\n")}</g>
-<text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
-<text x="${cx}" y="178" text-anchor="middle" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
+<text x="${cx}" y="125" text-anchor="middle" class="overlay-title-zh" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
+<text x="${cx}" y="178" text-anchor="middle" class="overlay-title-en" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="Georgia, 'Noto Serif', serif" font-weight="600">${subEn}</text>
 </svg>`;
 }
 
