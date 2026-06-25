@@ -1945,7 +1945,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%).",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
+    statusLabel: "현재 기준 유효.",
     currentStatusNote: "",
   },
   {
@@ -1973,7 +1973,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%).",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
+    statusLabel: "현재 기준 유효.",
     currentStatusNote: "",
   },
   {
@@ -2002,7 +2002,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     standardCompared: "64개 괘 전체의 괘사(卦辭), 대상(大象), 6개 효, 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%), 손상 플래그 0건.",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
+    statusLabel: "현재 기준 유효.",
     currentStatusNote: "",
   },
   {
@@ -2017,7 +2017,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "Wilhelm 자신의 주석과 공자 십익의 괘사·상사·각 효 주석; 이 괘에 대하여 블록; Words on the Text(1-2괴만); 용 주석(1-2괴만). 64괴.",
     result: "1920/1920 필드 일치(100%).",
     statusKind: "current",
-    statusLabel: "현행 고전 주석 출처",
+    statusLabel: "현재 기준 유효.",
     currentStatusNote: "",
   },
   {
@@ -2033,7 +2033,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     result:
       "각주와 대상전 상 해설은 완전 커버(64/64, 100%); 소상전 효별 주석은 Legge판에 수록된 모든 괴에서 검증 완료. 검증 PASS.",
     statusKind: "current",
-    statusLabel: "현행 고전 주석 출처",
+    statusLabel: "현재 기준 유효.",
     currentStatusNote: "",
   },
   {
@@ -2047,7 +2047,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "변효를 단일한 지배 효 텍스트로 축소하기 위한 9가지 공개 규칙 사례(변효 0개부터 6개까지, 그리고 용구/용육 포함).",
     result: "최종: 9/9개 규칙 사례 일치(100%).",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
+    statusLabel: "현재 기준 유효.",
     currentStatusNote: "",
   },
   {
@@ -2061,7 +2061,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "변효를 단일한 지배 효 텍스트로 축소하기 위한 공개 규칙 사례(변효 0개부터 6개까지, 그리고 용구/용육 포함).",
     result: "최종: 10/10 규칙 발췌 일치(100%).",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
+    statusLabel: "현재 기준 유효.",
     currentStatusNote: "",
   },
   {
@@ -2140,7 +2140,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result:
       "نهائي: تطابق 514/514 حقلاً (100%)، مراحل وسيطة: 94.94% → 99.81% → 100%؛ اكتملت الحقول الستة الأخيرة من النسخة المطبوعة حيث كان للمرآة فراغات.",
     statusKind: "superseded",
-    statusLabel: "مستبدَل",
+    statusLabel: "مهمل.",
     currentStatusNote: "",
   },
   {
@@ -2154,7 +2154,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
+    statusLabel: "ساري حتى هذا التاريخ.",
     currentStatusNote: "",
   },
   {
@@ -2168,7 +2168,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result:
       "نهائي: تطابق 514/514 حقلاً (100%). مرحلة وسيطة في 21 يونيو: 77.19% → نهائي: 100% بعد تصحيحات المحلل والمرجع الذهبي، تم التحقق مباشرة مقابل هذه النسخة المنشورة.",
     statusKind: "superseded",
-    statusLabel: "مستبدَل",
+    statusLabel: "مهمل.",
     currentStatusNote: "",
   },
   {
@@ -2182,7 +2182,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
+    statusLabel: "ساري حتى هذا التاريخ.",
     currentStatusNote: "",
   },
   {
@@ -2197,7 +2197,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result:
       "نهائي: تطابق 514/514 حقلاً (100%). مرحلة وسيطة في 21 يونيو: 90.66% → نهائي: 100% بعد إعادة التحميل وتصحيح المحلل.",
     statusKind: "superseded",
-    statusLabel: "مستبدَل",
+    statusLabel: "مهمل.",
     currentStatusNote: "",
   },
   {
@@ -2211,7 +2211,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     standardCompared: "卦辭، 大象، والخطوط الستة لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%)، مع صفر مؤشرات فساد.",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
+    statusLabel: "ساري حتى هذا التاريخ.",
     currentStatusNote: "",
   },
   {
@@ -2226,7 +2226,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "شرح Wilhelm نفسه وملاحظات العشرة أجنحة لConfucius على الحكم والصورة وكل خط؛ كتلة حول هذا الHexagram؛ Words on the Text (Hexagram 1-2 فقط)؛ شرح yong (1-2 فقط). 64 hexagram.",
     result: "1920/1920 حقلاً متطابقاً (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الشرح التقليدي الحالي",
+    statusLabel: "ساري حتى هذا التاريخ.",
     currentStatusNote: "",
   },
   {
@@ -2242,7 +2242,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result:
       "Footnotes وشرح صورة الرمزية الكبرى مغطاة بالكامل (64/64، 100%)؛ ملاحظات الرمزية الصغرى مُحققة لكل hexagram تتضمنه نسخة Legge. تحقق PASS.",
     statusKind: "current",
-    statusLabel: "مصدر الشرح التقليدي الحالي",
+    statusLabel: "ساري حتى هذا التاريخ.",
     currentStatusNote: "",
   },
   {
@@ -2256,7 +2256,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "حالات القواعد المنشورة التسع لاختزال الخطوط المتغيرة إلى نص خط حاكم واحد (من 0 إلى 6 خطوط متغيرة، بالإضافة إلى 用九/用六).",
     result: "نهائي: تطابق 9/9 حالات القواعد (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
+    statusLabel: "ساري حتى هذا التاريخ.",
     currentStatusNote: "",
   },
   {
@@ -2270,7 +2270,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "حالات القواعد المنشورة لاختزال الخطوط المتغيرة إلى نص خط حاكم واحد (من 0 إلى 6 خطوط متغيرة، بالإضافة إلى 用九/用六).",
     result: "نهائي: تطابق 10/10 مقتطفات القواعد (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
+    statusLabel: "ساري حتى هذا التاريخ.",
     currentStatusNote: "",
   },
   {

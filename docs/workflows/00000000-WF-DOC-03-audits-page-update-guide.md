@@ -188,7 +188,7 @@ y actualizar esta guía + gate.
 3. Método (`blockMethodLabel`)
 4. Estándar comparado (`blockStandardLabel`)
 5. Resultado (`blockResultLabel`)
-6. Estado (`blockStatusLabel`) — concatena `statusLabel + ". " + currentStatusNote`
+6. Estado (`blockStatusLabel`) — muestra solo `statusLabel` (con punto final); `currentStatusNote` debe ser `""`.
 
 **Layout (CSS):** etiquetas de campo (`.audit-timeline__tree-label`) alineadas a la **izquierda**;
 contenido (`.audit-timeline__tree-value`) **justificado** en todos los bloques y locales.
