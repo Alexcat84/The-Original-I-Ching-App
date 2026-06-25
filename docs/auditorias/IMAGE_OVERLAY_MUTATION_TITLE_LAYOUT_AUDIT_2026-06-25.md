@@ -1,7 +1,7 @@
 # Overlay PNG — títulos mutación, flecha → y layout vertical (sumi fallback QA)
 
 - **Fecha:** 2026-06-25
-- **Estado:** ⚠️ **Abierto** — revertido forzado “todas las mutaciones en 2 líneas”; pendiente solución definitiva por producto
+- **Estado:** ✅ **Cerrada (Claude Sonnet 4.6)** — causa raíz confirmada (bug de resvg-js con `<tspan>` dentro de `<text>`, no predecible por contenido) y corregida con elementos `<text>` independientes sin tspan; ver §10. **Pendiente exclusivamente: revisión visual del usuario antes de mergear `staging` → `main`** (a petición explícita del usuario, no se mergeó automáticamente).
 - **Relacionado:** [`IMAGE_OVERLAY_LEGGE_DIACRITICS_AUDIT_2026-06-24.md`](./IMAGE_OVERLAY_LEGGE_DIACRITICS_AUDIT_2026-06-24.md), [`IMAGE_OVERLAY_DUAL_FONT_FIX_PLAN_2026-06-24.md`](./IMAGE_OVERLAY_DUAL_FONT_FIX_PLAN_2026-06-24.md)
 - **Artefactos QA:** `reports/sumi-fallback-glyphs/` (292 PNG), `npm run generate:sumi-fallback-glyphs`
 
@@ -187,3 +187,95 @@ scripts/
 - Iteraciones de `font-weight` 600→**400** en EN para homogeneidad (mantener en working tree).
 - Bug TDZ: `needsSymbolFont` usado antes de declararse en `embedCjkFontInOverlaySvg` — rompía embed silenciosamente (catch → SVG sin fuentes). **Corregido.**
 - Reports en `reports/sumi-fallback-glyphs/` pueden quedar desactualizados respecto al revert; regenerar tras fix definitivo.
+
+---
+
+## 10. Cierre — causa raíz confirmada y corregida (2026-06-25, Claude Sonnet 4.6)
+
+A petición del usuario, se verificó cada detalle de lo entregado por Cursor (los cambios se estaban
+mergeando directamente, sin pasar por esta sesión) antes de aceptar el diagnóstico H1-H3 como
+definitivo, y se cerró la causa raíz que la Parte anterior dejaba como hipótesis no confirmada al
+100%.
+
+### 10.1 — Reproducción confirmada
+
+`npm run generate:sumi-fallback-glyph-samples` (292 PNG, sin tokens) reprodujo exactamente H1: en
+`mutations/by-hex/wilhelm/03-difficulty-at-the-beginning-to-08-holding-together-union.png` y
+`06-conflict-to-10-treading-conduct.png` la línea inglesa estaba **completamente ausente** (no solo
+la flecha) — coincide con las 4 capturas que adjuntó el usuario (屯→比, 訟→履, 比→屯, 履→訟).
+
+### 10.2 — La hipótesis "tspan intercalado rompe el `<text>`" se confirma, pero no es predecible por contenido
+
+Aislando casos con un harness dedicado (`buildSumiHexagramSvgDataUrl` → `embedCjkFontInOverlaySvg` →
+`renderSvgToPng`, sin pasar por vitest snapshot): `"#1 The Creative → #44 Coming to Meet"` renderiza
+bien con tspan intercalado, pero `"#6 Conflict → #10 Treading [Conduct]"` (longitud casi idéntica,
+36 vs 37 caracteres, mismo patrón estructural) pierde el nodo `<text>` completo. Se probó aislar por
+nombre (`"Conflict" + "Coming to Meet"` → OK; `"The Creative" + "Treading [Conduct]"` → OK; solo la
+combinación de ambos → falla) sin encontrar una variable de contenido que prediga el fallo. **Esto
+confirma que es un bug de resvg-js en el manejo de `<tspan>` dentro de `<text>`, no algo corregible
+ajustando el contenido o el `font-family`.**
+
+Se descartó también la hipótesis de la Parte 9 sobre el orden del `font-family` del `<text>` padre
+(prefijar con el font de símbolos): se corrigió igualmente (ver `embed-svg-overlay-font.ts`, el
+`<tspan>` ya fija su propio `font-family` y no necesita que el padre lo repita), pero **no** era la
+causa del texto ausente — solo una mejora real y válida por separado (evita que el resto de la línea
+dependa del fallback de fuente del símbolo).
+
+### 10.3 — Fix: eliminar el `<tspan>` por completo, elementos `<text>` independientes
+
+Verificado empíricamente (prototipo aislado, luego trasladado a producción): reemplazando el único
+`<text>` con `<tspan>` intercalado por **varios `<text>` hermanos** (uno por segmento alrededor de
+la flecha, posicionados manualmente vía `x` calculado con `estimateOverlayEnTextWidth`, sin ningún
+`<tspan>` en absoluto) el bug desaparece en el caso antes roto, sin reaparecer en ningún caso que
+antes funcionaba.
+
+**Cambios:**
+
+- `apps/web/src/lib/sumi-hexagram-art.ts` — `buildOverlayEnInnerHtml` (basada en tspan) reemplazada
+  por `buildOverlayEnLineElements`, que emite un `<text class="overlay-title-en">` por segmento de
+  texto y un `<text font-family="'NotoSymbols2Overlay'">` separado (sin clase) para la flecha,
+  centrados como bloque vía ancho total estimado.
+- `apps/web/src/lib/embed-svg-overlay-font.ts` — `needsSymbolFont`/`latinNeedsSymbol` simplificado:
+  ya no se prefija el `font-family` del `<text class="overlay-title-en">` con el font de símbolos
+  (el nuevo `<text>` de la flecha ya trae el suyo inline). `rewriteOverlayFontFamily` sigue
+  funcionando sin cambios porque usa `g` flag y localiza por `class`, no le importa cuántos
+  elementos con esa clase haya en la línea.
+- Espaciado: el espacio en blanco inicial/final de cada segmento se colapsa al volverse cada uno su
+  propio nodo `<text>` (comportamiento por defecto de `xml:space` en SVG), así que el espaciado entre
+  segmentos se calcula explícitamente (`gapWidth = fontSize`) en vez de depender del texto. El ancho
+  estimado por `estimateOverlayEnTextWidth` resultó subestimar hasta ~60-80px en segmentos largos
+  (28+ caracteres) — el gap fijo absorbe ese margen de error sin necesitar afinar el estimador
+  compartido (que también decide 1 vs 2 líneas en `overlay-title-layout.ts` y no debía tocarse).
+
+### 10.4 — Verificación
+
+- `npm run verify:overlay-glyphs` — verde (128/128 filas, gate de diacríticos sin cambios).
+- `npm run test --prefix apps/web` (suite completa) — **76/76 PASS** (1 skip esperado, requiere env
+  var de generación).
+- `sumi-fallback-glyph-samples.test.ts` — el smoke que afirmaba literalmente el `<tspan>` (patrón
+  viejo) se actualizó para afirmar el `<text font-family="'NotoSymbols2Overlay'">→</text>` nuevo y
+  `not.toMatch(/<tspan/)`.
+- Regenerado el manifest completo de 292 PNG; inspección visual manual de: los 4 casos exactos de
+  las capturas del usuario (#3↔#8, #6↔#10), los 8 hexagramas con corchetes en el nombre (#8, #10,
+  #12, #18, #37, #45, #55, #59) en ambas posiciones (primario y transformado), el caso más largo
+  (#9↔#57, nombres de ~30 caracteres cada uno), el caso de 2 líneas más largo (#18↔#26), y una
+  muestra Legge con diacríticos + flecha (#6→#10 Legge, #32→#34 Legge) — todos legibles, sin texto
+  ausente, sin desborde del lienzo de 1344px, espaciado visualmente equilibrado.
+- `tsc --noEmit` en `apps/web`: 4 errores preexistentes en `sumi-fallback-glyph-samples.test.ts`
+  (`'transformed' is possibly 'null'`, líneas 433/440-442) confirmados **anteriores** a esta sesión
+  (presentes ya en el commit `6c5711a` antes de cualquier cambio propio, verificado con `git stash`).
+  No introducidos por este fix; quedan fuera de alcance de este cierre.
+
+### 10.5 — Criterios de cierre (§7 original) — estado final
+
+1. ✅ H1 — `#3→#8`, `#6→#10` y reversas: línea inglesa completa visible con `→`.
+2. ✅ H2 — `#26→#18`, `#9→#57`: sin truncar, cabe en el ancho del lienzo.
+3. ✅ H3 — dos líneas solo cuando el ancho lo exige (sin cambios en esa decisión); márgenes
+   hanzi↔texto y texto↔hex visualmente correctos en todas las muestras revisadas.
+4. ✅ Paridad — mismo `buildOverlayEnTextElements`/`buildOverlayEnLineElements` usado por
+   `buildSumiHexagramSvgDataUrl` (fallback completo) y `buildSumiHexagramOverlaySvgDataUrl`
+   (overlay sobre imagen Together), sin rutas de código separadas.
+5. ✅ Gates CI — `verify:overlay-glyphs` y la suite de `sumi-fallback-glyph-samples` en verde.
+
+**No mergeado a `main` en esta sesión** — el usuario pidió revisar el fix antes de que llegue a
+producción; queda en `staging` a la espera de su aprobación visual.

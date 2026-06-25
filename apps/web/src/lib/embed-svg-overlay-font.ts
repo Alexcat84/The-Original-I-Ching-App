@@ -234,9 +234,18 @@ export async function embedCjkFontInOverlaySvg(svg: string): Promise<string> {
         : null;
     if (!cjkB64 && !latinB64) return svg;
 
-    const needsSymbolFont =
-      zhText.includes("\u2192") || enText.includes("\u2192") || svg.includes("\u2192");
-    const latinNeedsSymbol = enText.includes("\u2192");
+    // Only the Chinese line ever renders the arrow as plain text needing a
+    // font-family fallback on the parent <text> \u2014 the English line always
+    // wraps the arrow in its own <tspan font-family="...NotoSymbols2Overlay">
+    // (see buildOverlayEnInnerHtml), which already overrides font resolution
+    // for that span regardless of the parent's stack. Prefixing the PARENT
+    // <text class="overlay-title-en"> font-family with the symbol font too
+    // (as done previously) made resvg's multi-font fallback for the *entire*
+    // line content-dependent and non-deterministic: some Latin titles with an
+    // identical structure (text + tspan(arrow) + text) silently dropped the
+    // whole <text> node while others rendered fine. Scoping the symbol font
+    // to the tspan only removes that risk entirely.
+    const needsSymbolFont = zhText.includes("\u2192") || svg.includes("\u2192");
     const symbolB64 = needsSymbolFont ? await loadLocalSymbolWoffBase64() : null;
     const faces: string[] = [];
     if (cjkB64) {
@@ -263,10 +272,9 @@ ${faces.join("\n")}
     const cjkFamily = symbolB64
       ? `${SYMBOL_FONT_FAMILY}, ${CJK_FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif`
       : `${CJK_FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif`;
-    const latinFamily =
-      symbolB64 && latinNeedsSymbol
-        ? `${SYMBOL_FONT_FAMILY}, ${LATIN_FONT_FAMILY}, Georgia, 'Noto Serif', serif`
-        : `${LATIN_FONT_FAMILY}, Georgia, 'Noto Serif', serif`;
+    // No symbol-font prefix here: the tspan in buildOverlayEnInnerHtml already
+    // pins its own font-family for the arrow glyph (see comment above).
+    const latinFamily = `${LATIN_FONT_FAMILY}, Georgia, 'Noto Serif', serif`;
 
     if (cjkB64) {
       result = rewriteOverlayFontFamily(result, OVERLAY_TITLE_ZH_CLASS, "'", cjkFamily);

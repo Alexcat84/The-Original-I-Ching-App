@@ -448,9 +448,11 @@ describe("sumi fallback glyph smoke", () => {
     expect(embedded).toContain("NotoSerifLatinOverlay");
     expect(embedded).toContain("Hăng");
     expect(embedded).toContain(transformed!.name);
-    expect(embedded).toMatch(
-      /<tspan font-family="'NotoSymbols2Overlay'" font-size="inherit">\u2192<\/tspan>/,
-    );
+    // Arrow renders as its own sibling <text>, never a <tspan> nested inside
+    // a <text> \u2014 resvg-js can silently drop the whole node for that pattern
+    // for specific name pairs (see IMAGE_OVERLAY_MUTATION_TITLE_LAYOUT_AUDIT_2026-06-25.md \u00a713).
+    expect(embedded).toMatch(/<text[^>]*font-family="'NotoSymbols2Overlay'"[^>]*>\u2192<\/text>/);
+    expect(embedded).not.toMatch(/<tspan/);
     expect(embedded).not.toMatch(/class="overlay-title-en"[^>]*>[^<]*-&gt;/);
     expect(png.byteLength).toBeGreaterThan(10_000);
   });
