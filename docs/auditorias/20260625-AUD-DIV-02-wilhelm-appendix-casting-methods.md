@@ -562,7 +562,7 @@ Para la re-auditoría book-primary de huesos (fuera del alcance inmediato de blo
 
 ### 13.4 Qué quedaría por verificar contra Keightley (borrador fases futuras)
 
-Propuesta de código AU sucesora: `AUD-DIV-03 oracle-bones-keightley` (no abierta aún).
+Propuesta de código AU sucesora: **`20260625-AUD-DIV-03 oracle-bones-keightley`** — **abierta 2026-06-25** (Fase 1: gold + hallazgos G–J). Ver [`20260625-AUD-DIV-03-oracle-bones-keightley.md`](./20260625-AUD-DIV-03-oracle-bones-keightley.md).
 
 | Bloque | Pregunta | Implementación actual |
 |--------|----------|------------------------|

@@ -107,7 +107,14 @@
       "language": "en",
       "role": "Tier-0 gold for Oracle Bones divination method (verdict taxonomy, crack reading, charge logic); AUD-DIV-03 follow-up",
       "pageNumberBasis": "printed_book",
-      "note": "Ingested 2026-06-25 for re-audit vs packages/oracle-bones-engine. PDF gitignored locally; manifest tracked."
+      "proceduralGoldDataset": "tools/datasets/keightley/procedural/keightley-procedural-gold.json",
+      "proceduralPdfRanges": {
+        "2.5": [54, 55],
+        "2.6": [56, 57],
+        "2.7": [57, 58],
+        "4.3.1.11": [136, 137]
+      },
+      "note": "Ingested 2026-06-25 for re-audit vs packages/oracle-bones-engine. PDF gitignored locally; manifest tracked. Procedural gold extracted 2026-06-25 (AUD-DIV-03 Fase 1)."
     }
   }
 }

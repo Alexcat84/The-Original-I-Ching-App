@@ -397,7 +397,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Automated verification against Appendix I, section 1, of the Wilhelm/Baynes (1950) published edition (automatic and manual paths).",
     standardCompared:
       "Three-round procedure, residue-to-line mapping, and line probabilities 1/16, 5/16, 7/16, 3/16.",
-    result: "Final: 4/4 checks passed (100%).",
+    result:
+      "Final: 6/6 checks passed (100%). The classical 1/16, 5/16, 7/16, 3/16 distribution is exact; an independent literal simulation of the physical procedure differs by under 1%, a fully explained effect of counting stalks in groups of four, not a discrepancy.",
     statusKind: "current",
     statusLabel: "Current as of this date.",
     currentStatusNote: "",
@@ -611,7 +612,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Verificación automatizada contra el Apéndice I, sección 1, de la edición publicada Wilhelm/Baynes (1950), en rutas automática y manual.",
     standardCompared:
       "Procedimiento de tres rondas, mapeo de restos a línea y probabilidades 1/16, 5/16, 7/16, 3/16.",
-    result: "Final: 4/4 comprobaciones aprobadas (100%).",
+    result:
+      "Final: 6/6 comprobaciones aprobadas (100%). La distribución clásica 1/16, 5/16, 7/16, 3/16 es exacta; una simulación independiente y literal del procedimiento físico difiere en menos del 1%, un efecto totalmente explicado por contar las varas en grupos de cuatro, no una discrepancia.",
     statusKind: "current",
     statusLabel: "Vigente a la fecha.",
     currentStatusNote: "",
@@ -825,7 +827,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Verificação automatizada contra o Apêndice I, secção 1, da edição publicada Wilhelm/Baynes (1950), em percursos automático e manual.",
     standardCompared:
       "Procedimento de três rondas, mapeamento de restos para linha e probabilidades 1/16, 5/16, 7/16, 3/16.",
-    result: "Final: 4/4 verificações aprovadas (100%).",
+    result:
+      "Final: 6/6 verificações aprovadas (100%). A distribuição clássica 1/16, 5/16, 7/16, 3/16 é exata; uma simulação independente e literal do procedimento físico difere em menos de 1%, um efeito totalmente explicado por contar as varetas em grupos de quatro, não uma discrepância.",
     statusKind: "current",
     statusLabel: "Vigente nesta data.",
     currentStatusNote: "",
@@ -1039,7 +1042,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Vérification automatisée contre l'Annexe I, section 1, de l'édition publiée Wilhelm/Baynes (1950), sur les parcours automatique et manuel.",
     standardCompared:
       "Procédure en trois tours, correspondance restes-trait et probabilités 1/16, 5/16, 7/16, 3/16.",
-    result: "Final : 4/4 contrôles approuvés (100 %).",
+    result:
+      "Final : 6/6 contrôles approuvés (100 %). La distribution classique 1/16, 5/16, 7/16, 3/16 est exacte ; une simulation indépendante et littérale de la procédure physique diffère de moins de 1 %, un effet entièrement expliqué par le comptage des tiges en groupes de quatre, et non un écart.",
     statusKind: "current",
     statusLabel: "En vigueur à ce jour.",
     currentStatusNote: "",
@@ -1252,7 +1256,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Automatisierte Verifikation gegen Anhang I, Abschnitt 1, der veröffentlichten Wilhelm/Baynes-Ausgabe (1950), automatisch und manuell.",
     standardCompared:
       "Dreirundiges Verfahren, Rest-zu-Linie-Zuordnung und Wahrscheinlichkeiten 1/16, 5/16, 7/16, 3/16.",
-    result: "Final: 4/4 Prüfungen bestanden (100 %).",
+    result:
+      "Final: 6/6 Prüfungen bestanden (100 %). Die klassische Verteilung 1/16, 5/16, 7/16, 3/16 ist exakt; eine unabhängige, wörtliche Simulation des physischen Verfahrens weicht um weniger als 1 % ab, ein vollständig erklärter Effekt des Zählens der Stäbchen in Vierergruppen, keine Abweichung.",
     statusKind: "current",
     statusLabel: "Gültig zum Stichtag.",
     currentStatusNote: "",
@@ -1465,7 +1470,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Verifica automatizzata contro l'Appendice I, sezione 1, dell'edizione pubblicata Wilhelm/Baynes (1950), su percorsi automatico e manuale.",
     standardCompared:
       "Procedura a tre round, mappatura resti-linea e probabilità 1/16, 5/16, 7/16, 3/16.",
-    result: "Finale: 4/4 controlli approvati (100%).",
+    result:
+      "Finale: 6/6 controlli approvati (100%). La distribuzione classica 1/16, 5/16, 7/16, 3/16 è esatta; una simulazione indipendente e letterale della procedura fisica differisce di meno dell'1%, un effetto interamente spiegato dal conteggio degli steli in gruppi di quattro, non una discrepanza.",
     statusKind: "current",
     statusLabel: "Vigente alla data.",
     currentStatusNote: "",
@@ -1674,7 +1680,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
       "Wilhelm/Baynes（1950）刊行版付録I第1節に対する自動検証（自動・手動ルート）。",
     standardCompared:
       "三回の手順、余りから爻への対応、確率1/16、5/16、7/16、3/16。",
-    result: "最終：4/4チェック合格（100%）。",
+    result:
+      "最終：6/6チェック合格（100%）。古典的な1/16、5/16、7/16、3/16の分布は正確であり、物理的な手順を文字どおりに再現した独立シミュレーションとの差は1%未満で、これは蓍草を4本ずつ束ねて数える方法に起因することが完全に説明済みの効果であり、不一致ではない。",
     statusKind: "current",
     statusLabel: "現時点で有効。",
     currentStatusNote: "",
@@ -1881,7 +1888,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
       "对照 Wilhelm/Baynes（1950）出版版附录 I 第 1 节进行自动验证（自动与手动路径）。",
     standardCompared:
       "三轮程序、余数到爻的映射及概率 1/16、5/16、7/16、3/16。",
-    result: "最终：4/4 项检查通过（100%）。",
+    result:
+      "最终：6/6 项检查通过（100%）。经典的 1/16、5/16、7/16、3/16 分布是精确的；对物理操作过程进行的独立逐步模拟与之相差不到 1%，这是按四根一组数取蓍草这一计数方式所致的、已完全解释清楚的效应，并非不一致。",
     statusKind: "current",
     statusLabel: "截至本日有效。",
     currentStatusNote: "",
@@ -2089,7 +2097,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "Wilhelm/Baynes(1950) 출판판 부록 I 제1절에 대한 자동 검증(자동·수동 경로).",
     standardCompared:
       "3라운드 절차, 나머지-효 매핑, 확률 1/16, 5/16, 7/16, 3/16.",
-    result: "최종: 4/4 검사 통과(100%).",
+    result:
+      "최종: 6/6 검사 통과(100%). 고전적인 1/16, 5/16, 7/16, 3/16 분포는 정확하며, 물리적 절차를 문자 그대로 재현한 독립 시뮬레이션과의 차이는 1% 미만으로, 이는 서초를 네 개씩 묶어 세는 방식에서 비롯된 것임이 완전히 설명된 효과이지 불일치가 아니다.",
     statusKind: "current",
     statusLabel: "현재 기준 유효.",
     currentStatusNote: "",
@@ -2298,7 +2307,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "تحقق آلي مقابل الملحق I، القسم 1، من طبعة Wilhelm/Baynes (1950) المنشورة، في المسارات الآلية واليدوية.",
     standardCompared:
       "إجراء من ثلاث جولات، وتعيين الباقي إلى الخط، واحتمالات 1/16 و5/16 و7/16 و3/16.",
-    result: "النهائي: 4/4 فحوصات ناجحة (100%).",
+    result:
+      "النهائي: 6/6 فحوصات ناجحة (100%). التوزيع التقليدي 1/16 و5/16 و7/16 و3/16 دقيق تماماً؛ وتختلف عنه محاكاة مستقلة وحرفية للإجراء الفعلي بأقل من 1%، وهو أثر مفهوم تماماً ناتج عن عدّ سيقان العرقوس في مجموعات من أربعة، وليس تبايناً حقيقياً.",
     statusKind: "current",
     statusLabel: "ساري حتى هذا التاريخ.",
     currentStatusNote: "",
@@ -2507,7 +2517,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
       "Wilhelm/Baynes (1950) प्रकाशित संस्करण के परिशिष्ट I, अनुभाग 1, के विरुद्ध स्वचालित सत्यापन (स्वचालित और मैन्युअल मार्ग)।",
     standardCompared:
       "तीन-राउंड प्रक्रिया, अवशेष-से-रेखा मैपिंग, और प्रायिकताएँ 1/16, 5/16, 7/16, 3/16।",
-    result: "अंतिम: 4/4 जाँचें उत्तीर्ण (100%)।",
+    result:
+      "अंतिम: 6/6 जाँचें उत्तीर्ण (100%)। शास्त्रीय 1/16, 5/16, 7/16, 3/16 वितरण सटीक है; भौतिक प्रक्रिया के एक स्वतंत्र, शब्दशः अनुकरण में अंतर 1% से कम है, जो डंडियों को चार-चार के समूह में गिनने के तरीके से पूरी तरह समझाया गया प्रभाव है, कोई विसंगति नहीं।",
     statusKind: "current",
     statusLabel: "इस तिथि तक वैध।",
     currentStatusNote: "",

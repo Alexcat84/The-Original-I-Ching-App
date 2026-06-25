@@ -30,6 +30,7 @@
     "verify:hexagram-fidelity": "node scripts/verify-hexagram-fidelity.mjs --gold=books --translator=wilhelm,legge",
     "verify:hexagram-fidelity:mirrors-deprecated": "node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=all",
     "pdf-gold:preflight": "node scripts/pdf-gold-preflight.mjs",
+    "extract:gold:keightley-procedural": "node tools/extract-keightley-procedural-gold.mjs",
     "extract:gold:wilhelm-pdf": "node tools/extract-wilhelm-pdf.mjs",
     "extract:gold:legge-epub": "node tools/extract-legge-epub.mjs",
     "extract:gold:wilhelm-epub": "node tools/extract-wilhelm-epub.mjs",
