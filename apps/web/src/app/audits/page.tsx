@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 import {
@@ -11,9 +12,53 @@ import {
 } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
 
-function timelineDotClass(statusKind: AuditTimelineEntry["statusKind"]): string {
-  if (statusKind === "superseded") return "audit-timeline__dot audit-timeline__dot--muted";
-  return "audit-timeline__dot audit-timeline__dot--active";
+type TimelineField = {
+  label: string;
+  value: ReactNode;
+};
+
+function timelineDateClass(statusKind: AuditTimelineEntry["statusKind"]): string {
+  if (statusKind === "superseded") return "audit-timeline__date audit-timeline__date--muted";
+  return "audit-timeline__date audit-timeline__date--active";
+}
+
+function timelineSpineDotClass(statusKind: AuditTimelineEntry["statusKind"]): string {
+  if (statusKind === "superseded") return "audit-timeline__spine-dot audit-timeline__spine-dot--muted";
+  return "audit-timeline__spine-dot audit-timeline__spine-dot--active";
+}
+
+function buildTimelineFields(
+  a: AuditsPageUiMessages,
+  entry: AuditTimelineEntry,
+): TimelineField[] {
+  const fields: TimelineField[] = [];
+
+  if (entry.source) {
+    fields.push({
+      label: a.blockSourceLabel,
+      value: (
+        <>
+          {entry.source.citation}
+          <em>{entry.source.title}</em>
+          {entry.source.rest}
+        </>
+      ),
+    });
+  }
+  if (entry.method) {
+    fields.push({ label: a.blockMethodLabel, value: entry.method });
+  }
+  if (entry.standardCompared) {
+    fields.push({ label: a.blockStandardLabel, value: entry.standardCompared });
+  }
+  if (entry.result) {
+    fields.push({ label: a.blockResultLabel, value: entry.result });
+  }
+  if (entry.currentStatusNote && entry.kind === "verification") {
+    fields.push({ label: a.blockStatusLabel, value: entry.currentStatusNote });
+  }
+
+  return fields;
 }
 
 function AuditTimelineRow({
@@ -26,57 +71,38 @@ function AuditTimelineRow({
   locale: AppLocale;
 }) {
   const dateLabel = formatAuditTimelineDate(entry.verificationDateIso, locale);
+  const fields = buildTimelineFields(a, entry);
 
   return (
     <li className="audit-timeline__item">
-      <div className="audit-timeline__rail" aria-hidden="true">
-        <time className="audit-timeline__date" dateTime={entry.verificationDateIso}>
+      <div className="audit-timeline__marker">
+        <span className={timelineSpineDotClass(entry.statusKind)} aria-hidden="true" />
+        <time className={timelineDateClass(entry.statusKind)} dateTime={entry.verificationDateIso}>
           {dateLabel}
         </time>
-        <span className={timelineDotClass(entry.statusKind)} />
       </div>
-      <div className="audit-timeline__body">
+      <div className="audit-timeline__panel">
         <details className="audit-timeline__details">
           <summary className="audit-timeline__summary">
-            <span className="audit-timeline__headline">{entry.headline}</span>
-            <span className="audit-timeline__status">{entry.statusLabel}</span>
+            <div className="audit-timeline__summary-main">
+              <span className="audit-timeline__headline">{entry.headline}</span>
+              <span className="audit-timeline__status">{entry.statusLabel}</span>
+            </div>
+            <span className="audit-timeline__toggle" aria-hidden="true" />
           </summary>
-          <dl className="audit-timeline__fields">
-            {entry.source ? (
-              <>
-                <dt>{a.blockSourceLabel}</dt>
-                <dd>
-                  {entry.source.citation}
-                  <em>{entry.source.title}</em>
-                  {entry.source.rest}
-                </dd>
-              </>
-            ) : null}
-            {entry.method ? (
-              <>
-                <dt>{a.blockMethodLabel}</dt>
-                <dd>{entry.method}</dd>
-              </>
-            ) : null}
-            {entry.standardCompared ? (
-              <>
-                <dt>{a.blockStandardLabel}</dt>
-                <dd>{entry.standardCompared}</dd>
-              </>
-            ) : null}
-            {entry.result ? (
-              <>
-                <dt>{a.blockResultLabel}</dt>
-                <dd>{entry.result}</dd>
-              </>
-            ) : null}
-            {entry.currentStatusNote && entry.kind === "verification" ? (
-              <>
-                <dt>{a.blockStatusLabel}</dt>
-                <dd>{entry.currentStatusNote}</dd>
-              </>
-            ) : null}
-          </dl>
+          {fields.length > 0 ? (
+            <ul className="audit-timeline__tree">
+              {fields.map((field, index) => (
+                <li
+                  key={field.label}
+                  className={index === fields.length - 1 ? "audit-timeline__tree-item is-last" : "audit-timeline__tree-item"}
+                >
+                  <span className="audit-timeline__tree-label">{field.label}</span>
+                  <span className="audit-timeline__tree-value">{field.value}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </details>
       </div>
     </li>
