@@ -1,7 +1,7 @@
 # Overlay PNG — tofu en nombres Legge con diacríticos (Hăng, Ž…)
 
 - **Fecha:** 2026-06-24
-- **Estado:** ✅ **Fix aplicado** — gate `verify:overlay-glyphs` verde; pendiente smoke visual staging (casos A–E)
+- **Estado:** ✅ **Fix diacríticos aplicado** — gate `verify:overlay-glyphs` verde; **layout mutación / flecha → abierto** → ver [`IMAGE_OVERLAY_MUTATION_TITLE_LAYOUT_AUDIT_2026-06-25.md`](./IMAGE_OVERLAY_MUTATION_TITLE_LAYOUT_AUDIT_2026-06-25.md)
 - **Relacionado:** [`LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md`](./LIBRARY_HEXAGRAM_TITLE_FIDELITY_FIX_2026-06-23.md) (origen del campo `name` Legge restaurado), [`HEXAGRAM_PINYIN_GOLD_GATE_2026-06-23.md`](./HEXAGRAM_PINYIN_GOLD_GATE_2026-06-23.md) (trigramas — superficie distinta), plan [`IMAGE_OVERLAY_DUAL_FONT_FIX_PLAN_2026-06-24.md`](./IMAGE_OVERLAY_DUAL_FONT_FIX_PLAN_2026-06-24.md)
 
 ---
@@ -100,3 +100,5 @@ Ver plan detallado: [`IMAGE_OVERLAY_DUAL_FONT_FIX_PLAN_2026-06-24.md`](./IMAGE_O
 | E | Legge | mutación | `→` + segundo nombre con diacríticos |
 
 Comando gate: `npm run verify:overlay-glyphs`
+
+Comando muestras visuales locales (sumi fallback, sin tokens Together): `npm run generate:sumi-fallback-glyphs` → `reports/sumi-fallback-glyphs/` (146 PNG). Smoke rápido: `npm run generate:sumi-fallback-glyphs:quick`.

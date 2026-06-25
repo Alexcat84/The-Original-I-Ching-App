@@ -4,17 +4,74 @@
  */
 
 import {
+  OVERLAY_SYMBOL_FONT_FAMILY,
   OVERLAY_TITLE_EN_CLASS,
   OVERLAY_TITLE_EN_FONT,
+  OVERLAY_TITLE_EN_FONT_WEIGHT,
   OVERLAY_TITLE_ZH_CLASS,
   OVERLAY_TITLE_ZH_FONT,
 } from "@/lib/embed-svg-overlay-font";
+import {
+  SUMI_FALLBACK_HEX_TOP_Y,
+  SUMI_OVERLAY_HEX_TOP_Y,
+  buildOverlayEnglishTitleLayout,
+} from "@/lib/overlay-title-layout";
 
 export type SumiLineInput = {
   position: 1 | 2 | 3 | 4 | 5 | 6;
   value: number;
   isChanging: boolean;
 };
+
+function buildOverlayEnInnerHtml(text: string): string {
+  if (!text.includes("\u2192")) return escapeXml(text);
+  const trimmed = text.trimStart();
+  if (trimmed.startsWith("\u2192")) {
+    const rest = trimmed.slice(1);
+    return `<tspan font-family="'${OVERLAY_SYMBOL_FONT_FAMILY}'" font-size="inherit">\u2192</tspan>${escapeXml(rest)}`;
+  }
+  const segments = text.split("\u2192");
+  let html = "";
+  for (let i = 0; i < segments.length; i++) {
+    html += escapeXml(segments[i]!);
+    if (i < segments.length - 1) {
+      html += `<tspan font-family="'${OVERLAY_SYMBOL_FONT_FAMILY}'" font-size="inherit">\u2192</tspan>`;
+    }
+  }
+  return html;
+}
+
+function buildOverlayEnTextElements(params: {
+  cx: number;
+  primaryNumber: number;
+  primaryName: string;
+  transformedNumber?: number | null;
+  transformedName?: string | null;
+  hexTopY: number;
+  fill: string;
+  stroke?: string;
+  strokeWidth?: number;
+  paintOrder?: string;
+}): string {
+  const layout = buildOverlayEnglishTitleLayout(
+    {
+      primaryNumber: params.primaryNumber,
+      primaryName: params.primaryName,
+      transformedNumber: params.transformedNumber,
+      transformedName: params.transformedName,
+    },
+    { hexTopY: params.hexTopY },
+  );
+  return layout.lines
+    .map((line, index) => {
+      const strokeAttrs =
+        params.stroke !== undefined
+          ? ` stroke="${params.stroke}" stroke-width="${params.strokeWidth ?? 3}" paint-order="${params.paintOrder ?? "stroke fill"}"`
+          : "";
+      return `<text x="${params.cx}" y="${layout.ys[index]}" text-anchor="middle" class="${OVERLAY_TITLE_EN_CLASS}" fill="${params.fill}"${strokeAttrs} font-size="${layout.fontSize}" font-family="${OVERLAY_TITLE_EN_FONT}" font-weight="${OVERLAY_TITLE_EN_FONT_WEIGHT}">${buildOverlayEnInnerHtml(line)}</text>`;
+    })
+    .join("\n");
+}
 
 function escapeXml(s: string): string {
   return s
@@ -132,11 +189,15 @@ export function buildSumiHexagramSvgDataUrl(params: {
   const subZh = escapeXml(
     `${params.primaryChinese}${params.transformedChinese ? ` → ${params.transformedChinese}` : ""}`,
   );
-  const subEn = escapeXml(
-    `#${params.primaryNumber} ${params.primaryName}${
-      params.transformedNumber ? ` → #${params.transformedNumber} ${params.transformedName ?? ""}` : ""
-    }`,
-  );
+  const subEnEls = buildOverlayEnTextElements({
+    cx,
+    primaryNumber: params.primaryNumber,
+    primaryName: params.primaryName,
+    transformedNumber: params.transformedNumber,
+    transformedName: params.transformedName,
+    hexTopY: SUMI_FALLBACK_HEX_TOP_Y,
+    fill: "#3d3830",
+  });
 
   const seedStr =
     params.artSeed ??
@@ -282,8 +343,8 @@ export function buildSumiHexagramSvgDataUrl(params: {
 <!-- hexagram (dominant) -->
 <g>${lineEls.join("\n")}</g>
 <!-- primary titles: large, centered -->
-<text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" font-size="92" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
-<text x="${cx}" y="178" text-anchor="middle" fill="#3d3830" font-size="34" font-family="Georgia, 'Noto Serif', Noto Serif TC, Noto Serif SC, SimSun, STSong, serif" font-weight="600">${subEn}</text>
+<text x="${cx}" y="125" text-anchor="middle" class="${OVERLAY_TITLE_ZH_CLASS}" fill="#1c1a16" font-size="92" font-family='${OVERLAY_TITLE_ZH_FONT}' font-weight="700">${subZh}</text>
+${subEnEls}
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
@@ -345,11 +406,18 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
   const subZh = escapeXml(
     `${params.primaryChinese}${params.transformedChinese ? ` → ${params.transformedChinese}` : ""}`,
   );
-  const subEn = escapeXml(
-    `#${params.primaryNumber} ${params.primaryName}${
-      params.transformedNumber ? ` → #${params.transformedNumber} ${params.transformedName ?? ""}` : ""
-    }`,
-  );
+  const subEnEls = buildOverlayEnTextElements({
+    cx,
+    primaryNumber: params.primaryNumber,
+    primaryName: params.primaryName,
+    transformedNumber: params.transformedNumber,
+    transformedName: params.transformedName,
+    hexTopY: SUMI_OVERLAY_HEX_TOP_Y,
+    fill: "#2e2a22",
+    stroke: "rgba(255,248,242,0.9)",
+    strokeWidth: 3,
+    paintOrder: "stroke fill",
+  });
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${outputWidth}" height="${outputHeight}" viewBox="0 0 ${W} ${H}">
 <defs>
@@ -361,7 +429,7 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
 <g>${lineEls.join("\n")}</g>
 <!-- primary titles: large, centered -->
 <text x="${cx}" y="125" text-anchor="middle" class="${OVERLAY_TITLE_ZH_CLASS}" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='${OVERLAY_TITLE_ZH_FONT}' font-weight="700">${subZh}</text>
-<text x="${cx}" y="178" text-anchor="middle" class="${OVERLAY_TITLE_EN_CLASS}" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="${OVERLAY_TITLE_EN_FONT}" font-weight="600">${subEn}</text>
+${subEnEls}
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;

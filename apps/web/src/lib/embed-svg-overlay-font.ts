@@ -18,15 +18,18 @@ import path from "node:path";
 
 export const OVERLAY_TITLE_ZH_FONT = "Noto Serif TC, Noto Serif SC, SimSun, STSong, serif";
 export const OVERLAY_TITLE_EN_FONT = "Georgia, 'Noto Serif', serif";
+export const OVERLAY_TITLE_EN_FONT_WEIGHT = "400";
 export const OVERLAY_TITLE_ZH_CLASS = "overlay-title-zh";
 export const OVERLAY_TITLE_EN_CLASS = "overlay-title-en";
+/** Embedded Noto Sans Symbols 2 — mutation arrow (U+2192) in English tspans. */
+export const OVERLAY_SYMBOL_FONT_FAMILY = "NotoSymbols2Overlay";
 
 const CJK_FONT_FAMILY = "NotoSerifTCOverlay";
 const LATIN_FONT_FAMILY = "NotoSerifLatinOverlay";
 const SYMBOL_FONT_FAMILY = "NotoSymbols2Overlay";
 const LOCAL_TC_FONT_SPEC =
   "@fontsource/noto-serif-tc/files/noto-serif-tc-chinese-traditional-700-normal.woff";
-const LOCAL_LATIN_FONT_SPEC = "@fontsource/noto-serif/files/noto-serif-latin-ext-600-normal.woff";
+const LOCAL_LATIN_FONT_SPEC = "@fontsource/noto-serif/files/noto-serif-latin-ext-400-normal.woff";
 const LOCAL_SYMBOL_FONT_SPEC =
   "@fontsource/noto-sans-symbols-2/files/noto-sans-symbols-2-symbols-400-normal.woff";
 const requireForResolve = createRequire(import.meta.url);
@@ -40,10 +43,14 @@ let cachedLocalLatinWoff2Base64: string | null | undefined;
 let cachedLocalSymbolWoff2Base64: string | null | undefined;
 
 function extractOverlayLineInnerText(svg: string, className: string): string {
-  const re = new RegExp(`<text[^>]*class="${className}"[^>]*>([\\s\\S]*?)<\\/text>`, "i");
-  const match = svg.match(re);
-  if (!match?.[1]) return "";
-  return match[1]
+  const re = new RegExp(`<text[^>]*class="${className}"[^>]*>([\\s\\S]*?)<\\/text>`, "gi");
+  const parts: string[] = [];
+  for (const match of svg.matchAll(re)) {
+    if (match[1]) parts.push(match[1]);
+  }
+  return parts
+    .join("")
+    .replace(/<[^>]+>/g, "")
     .replace(/&apos;/g, "'")
     .replace(/&quot;/g, '"')
     .replace(/&lt;/g, "<")
@@ -135,7 +142,7 @@ async function fetchCjkSubsetWoff2Base64(subsetText: string): Promise<string | n
 }
 
 async function fetchLatinSubsetWoff2Base64(subsetText: string): Promise<string | null> {
-  return fetchGoogleSubsetWoff2Base64("Noto Serif:wght@600", subsetText, {
+  return fetchGoogleSubsetWoff2Base64("Noto Serif:wght@400", subsetText, {
     key: cachedLatinSubsetKey,
     value: cachedLatinWoff2Base64,
   });
@@ -176,7 +183,7 @@ async function loadLocalCjkWoffBase64(): Promise<string | null> {
 async function loadLocalLatinWoffBase64(): Promise<string | null> {
   return loadBundledWoffBase64(
     LOCAL_LATIN_FONT_SPEC,
-    ["@fontsource", "noto-serif", "files", "noto-serif-latin-ext-600-normal.woff"],
+    ["@fontsource", "noto-serif", "files", "noto-serif-latin-ext-400-normal.woff"],
     { current: cachedLocalLatinWoff2Base64 },
   );
 }
@@ -227,7 +234,10 @@ export async function embedCjkFontInOverlaySvg(svg: string): Promise<string> {
         : null;
     if (!cjkB64 && !latinB64) return svg;
 
-    const symbolB64 = await loadLocalSymbolWoffBase64();
+    const needsSymbolFont =
+      zhText.includes("\u2192") || enText.includes("\u2192") || svg.includes("\u2192");
+    const latinNeedsSymbol = enText.includes("\u2192");
+    const symbolB64 = needsSymbolFont ? await loadLocalSymbolWoffBase64() : null;
     const faces: string[] = [];
     if (cjkB64) {
       faces.push(
@@ -236,7 +246,7 @@ export async function embedCjkFontInOverlaySvg(svg: string): Promise<string> {
     }
     if (latinB64) {
       faces.push(
-        `@font-face{font-family:'${LATIN_FONT_FAMILY}';font-style:normal;font-weight:600;src:url(data:font/woff;base64,${latinB64}) format('woff');font-display:swap;}`,
+        `@font-face{font-family:'${LATIN_FONT_FAMILY}';font-style:normal;font-weight:400;src:url(data:font/woff;base64,${latinB64}) format('woff');font-display:swap;}`,
       );
     }
     if (symbolB64) {
@@ -253,7 +263,10 @@ ${faces.join("\n")}
     const cjkFamily = symbolB64
       ? `${SYMBOL_FONT_FAMILY}, ${CJK_FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif`
       : `${CJK_FONT_FAMILY}, Noto Serif TC, Noto Serif SC, serif`;
-    const latinFamily = `${LATIN_FONT_FAMILY}, Georgia, 'Noto Serif', serif`;
+    const latinFamily =
+      symbolB64 && latinNeedsSymbol
+        ? `${SYMBOL_FONT_FAMILY}, ${LATIN_FONT_FAMILY}, Georgia, 'Noto Serif', serif`
+        : `${LATIN_FONT_FAMILY}, Georgia, 'Noto Serif', serif`;
 
     if (cjkB64) {
       result = rewriteOverlayFontFamily(result, OVERLAY_TITLE_ZH_CLASS, "'", cjkFamily);
