@@ -4992,8 +4992,8 @@ html[data-theme="dark"] .verdict-pill--silent {
   --audit-timeline-line: color-mix(in srgb, var(--accent) 38%, var(--bar-border));
   --audit-timeline-text: color-mix(in srgb, var(--card-title) 78%, var(--accent));
   --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 72%, var(--accent));
-  /* Distinct from --accent (teal): forest green for active/permanent dates in light mode */
-  --audit-timeline-date-active: #1a7a34;
+  /* Light mode: deep emerald chip — high contrast on pale shell, distinct from teal --accent */
+  --audit-timeline-date-active: #065f36;
   list-style: none;
   margin: 0.35rem 0 0;
   padding: 0;
@@ -5088,6 +5088,17 @@ html[data-theme="dark"] .audit-timeline {
 
 .audit-timeline__date--active {
   color: var(--audit-timeline-date-active);
+  font-weight: 700;
+}
+
+/* Light mode only: verification-date chip so active dates pop off the pale shell */
+html:not([data-theme="dark"]) .audit-timeline__date--active {
+  display: inline-block;
+  padding: 0.06rem 0.4rem;
+  border-radius: 0.22rem;
+  background: color-mix(in srgb, var(--audit-timeline-date-active) 13%, var(--bg));
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .audit-timeline__date--muted {
@@ -5144,15 +5155,25 @@ html[data-theme="dark"] .audit-timeline {
   font-weight: 600;
   font-size: 0.8rem;
   color: var(--audit-timeline-text-muted);
+  text-align: start;
+  hyphens: manual;
 }
 
 .audit-timeline__tree-value {
   margin: 0;
   color: var(--audit-timeline-text);
+  text-align: start;
+  hyphens: manual;
 }
 
 .audit-timeline__tree-value em {
   font-style: italic;
+}
+
+/* /audits tree: left-aligned labels (override doc-article justify on li) */
+.oracle-shell.doc-page .doc-article .audit-timeline__tree-item {
+  text-align: start;
+  hyphens: manual;
 }
 
 @media (max-width: 640px) {
