@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-CTX-001 context-limits · v1.0.0
+ * Area: packages/context-engine/src/context-limits
+ * Family: CTX
+ */
+
 import { describe, expect, it } from "vitest";
 import { CONTEXT_LIMITS } from "./index.js";
 

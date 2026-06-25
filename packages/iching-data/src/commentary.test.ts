@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-DATA-002 commentary-schema · v1.0.0
+ * Area: packages/iching-data/src/commentary
+ * Family: DATA
+ */
+
 import { describe, expect, it } from "vitest";
 import {
   getAllWilhelmCommentary,

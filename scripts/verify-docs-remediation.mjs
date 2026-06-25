@@ -1,7 +1,14 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: VF-DOC-001 docs-remediation · v1.0.0
+ * Area: scripts/verify-docs-remediation
+ * Family: DOC
+ */
+
 /**
  * Point-by-point verification for the P0-P3 remediation in
- * docs/auditorias/USER_FACING_DOCS_VS_IMPLEMENTATION_AUDIT_2026-06-22.md.
+ * docs/auditorias/20260622-AUD-DOC-01-user-docs-vs-implementation.md.
  *
  * Checks both STRUCTURE (the key exists, non-empty, in all 11 locales — a
  * Record<AppLocale,T> already guarantees this at compile time, this is an

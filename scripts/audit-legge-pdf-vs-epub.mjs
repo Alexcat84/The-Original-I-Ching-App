@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-L-003 legge-pdf-vs-epub · v1.0.0
+ * Area: scripts/audit-legge-pdf-vs-epub
+ * Family: FID-L
+ */
+
 /**
  * Non-gate cross-check: Legge SBE XVI PDF gold vs sacred-texts EPUB.
  *

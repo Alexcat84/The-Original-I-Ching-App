@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-W-003 wilhelm-hex-meta · v1.0.0
+ * Area: tools/audit-wilhelm-hex-meta-gate
+ * Family: FID-W
+ */
+
 /**
  * Gate: Wilhelm dataset meta (names + hanzi + hex symbols) vs gold + Zhou Yi.
  *

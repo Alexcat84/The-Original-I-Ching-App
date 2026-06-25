@@ -1,0 +1,263 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-06-25",
+  "conventions": "./CONVENTIONS.md",
+  "subRegistries": [
+    {
+      "collection": "auditorias",
+      "path": "docs/auditorias/registry.json",
+      "index": "docs/auditorias/INDEX.md",
+      "description": "Audits, incidents, plans in auditorias/, runbook refs"
+    },
+    {
+      "collection": "qa",
+      "path": "docs/qa/registry.json",
+      "index": "docs/qa/INDEX.md",
+      "description": "Vitest, verify gates, QA harnesses, dataset audit scripts"
+    }
+  ],
+  "entries": [
+    {
+      "code": "00000000-RUN-SUP-01 migration-data-integrity",
+      "title": "Runbook: migration data integrity",
+      "shortName": "migration-data-integrity",
+      "type": "RUN",
+      "family": "SUP",
+      "collection": "runbooks",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-01-migration-data-integrity.md",
+      "relatedCodes": [
+        "20260607-INC-SUP-INC-01 consultation-content-wipe"
+      ],
+      "relatedAuditRegistry": true
+    },
+    {
+      "code": "00000000-RUN-SUP-02 supabase-scalability",
+      "title": "Runbook: Supabase scalability",
+      "shortName": "supabase-scalability",
+      "type": "RUN",
+      "family": "SUP",
+      "collection": "runbooks",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-02-supabase-scalability.md",
+      "relatedCodes": [
+        "00000000-AUD-SUP-01 supabase-db-stability"
+      ],
+      "relatedAuditRegistry": true
+    },
+    {
+      "code": "00000000-RUN-SUP-03 smoke-post-small",
+      "title": "Runbook: smoke post-Small checklist",
+      "shortName": "smoke-post-small",
+      "type": "RUN",
+      "family": "SUP",
+      "collection": "runbooks",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-03-smoke-post-small.md",
+      "relatedCodes": [],
+      "relatedAuditRegistry": true
+    },
+    {
+      "code": "00000000-RUN-SUP-04 post-restart",
+      "title": "Runbook: Supabase post-restart",
+      "shortName": "post-restart",
+      "type": "RUN",
+      "family": "SUP",
+      "collection": "runbooks",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-04-post-restart.md",
+      "relatedCodes": [],
+      "relatedAuditRegistry": true
+    },
+    {
+      "code": "00000000-RUN-SUP-05 recover-pitr",
+      "title": "Runbook: recover consultation_content (PITR)",
+      "shortName": "recover-pitr",
+      "type": "RUN",
+      "family": "SUP",
+      "collection": "runbooks",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-05-recover-pitr.md",
+      "relatedCodes": [
+        "20260607-INC-SUP-INC-01 consultation-content-wipe"
+      ],
+      "relatedAuditRegistry": true
+    },
+    {
+      "code": "00000000-PLAN-SUP-07 scale-infrastructure",
+      "title": "Plan: scale infrastructure",
+      "shortName": "scale-infrastructure",
+      "type": "PLAN",
+      "family": "SUP",
+      "collection": "plans",
+      "date": null,
+      "status": "reference",
+      "path": "docs/plans/00000000-PLAN-SUP-07-scale-infrastructure.md",
+      "relatedCodes": [
+        "00000000-AUD-SUP-01 supabase-db-stability"
+      ],
+      "relatedAuditRegistry": true
+    },
+    {
+      "code": "00000000-PLAN-SUP-08 anti-warp-serialize-burst",
+      "title": "Plan: anti-Warp serialize hydration vs consult",
+      "shortName": "anti-warp-serialize-burst",
+      "type": "PLAN",
+      "family": "SUP",
+      "collection": "plans",
+      "date": null,
+      "status": "reference",
+      "path": "docs/plans/00000000-PLAN-SUP-08-anti-warp-serialize-burst.md",
+      "relatedCodes": [
+        "00000000-AUD-SUP-02 warp-timeout-kills"
+      ],
+      "relatedAuditRegistry": false
+    },
+    {
+      "code": "00000000-WF-I18N-01 i18n-guide",
+      "title": "Workflow: add a new language (i18n expansion)",
+      "shortName": "i18n-guide",
+      "type": "WF",
+      "family": "I18N",
+      "collection": "workflows",
+      "date": null,
+      "status": "reference",
+      "path": "docs/workflows/00000000-WF-I18N-01-i18n-guide.md",
+      "relatedCodes": [
+        "00000000-WF-I18N-02 i18n-standardization"
+      ],
+      "relatedTests": [
+        "I18N-001 i18n-audit"
+      ]
+    },
+    {
+      "code": "00000000-WF-I18N-02 i18n-standardization",
+      "title": "Workflow: i18n standardization DoD and debt",
+      "shortName": "i18n-standardization",
+      "type": "WF",
+      "family": "I18N",
+      "collection": "workflows",
+      "date": null,
+      "status": "reference",
+      "path": "docs/workflows/00000000-WF-I18N-02-i18n-standardization.md",
+      "relatedCodes": [
+        "00000000-WF-I18N-01 i18n-guide"
+      ],
+      "relatedTests": [
+        "I18N-001 i18n-audit"
+      ]
+    },
+    {
+      "code": "00000000-WF-DOC-01 docs-content-update-guide",
+      "title": "Workflow: update user-facing docs content",
+      "shortName": "docs-content-update-guide",
+      "type": "WF",
+      "family": "DOC",
+      "collection": "workflows",
+      "date": null,
+      "status": "reference",
+      "path": "docs/workflows/00000000-WF-DOC-01-docs-content-update-guide.md",
+      "relatedCodes": [
+        "20260622-AUD-DOC-01 user-docs-vs-implementation"
+      ],
+      "relatedTests": [
+        "VF-DOC-001 docs-remediation"
+      ]
+    },
+    {
+      "code": "00000000-WF-DOC-02 mandatory-doc-qa-registration",
+      "title": "Mandatory doc and QA registration workflow",
+      "shortName": "mandatory-doc-qa-registration",
+      "type": "WF",
+      "family": "DOC",
+      "collection": "workflows",
+      "date": null,
+      "status": "reference",
+      "path": "docs/workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md",
+      "relatedCodes": ["00000000-WF-DOC-01 docs-content-update-guide"],
+      "relatedTests": ["VF-DOC-002 qa-registry-integrity"]
+    },
+    {
+      "code": "00000000-WF-QA-01 test-lifecycle",
+      "title": "Workflow: QA test and gate lifecycle (create, update, index)",
+      "shortName": "test-lifecycle",
+      "type": "WF",
+      "family": "QA",
+      "collection": "workflows",
+      "date": null,
+      "status": "reference",
+      "path": "docs/workflows/00000000-WF-QA-01-test-lifecycle.md",
+      "relatedCodes": [
+        "00000000-WF-DOC-02 mandatory-doc-qa-registration"
+      ],
+      "relatedTests": [
+        "VF-DOC-002 qa-registry-integrity"
+      ]
+    },
+    {
+      "code": "00000000-WF-AUTH-01 legal-post-auth",
+      "title": "Workflow: legal acceptance post-auth",
+      "shortName": "legal-post-auth",
+      "type": "WF",
+      "family": "AUTH",
+      "collection": "workflows",
+      "date": null,
+      "status": "reference",
+      "path": "docs/workflows/00000000-WF-AUTH-01-legal-post-auth.md",
+      "relatedCodes": [],
+      "relatedTests": [
+        "TS-WEB-006 post-auth-legal",
+        "TS-WEB-007 legal-consent-pending-meta"
+      ]
+    },
+    {
+      "code": "00000000-SETUP-DB-01 new-db-setup",
+      "title": "Setup: new Supabase database project",
+      "shortName": "new-db-setup",
+      "type": "SETUP",
+      "family": "SUP",
+      "collection": "setup",
+      "date": null,
+      "status": "reference",
+      "path": "docs/setup/00000000-SETUP-DB-01-new-db-setup.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-OPS-PLAY-01 play-store-changelog",
+      "title": "Ops: Play Store release changelog template",
+      "shortName": "play-store-changelog",
+      "type": "OPS",
+      "family": "MOB-PLAY",
+      "collection": "ops",
+      "date": null,
+      "status": "reference",
+      "path": "docs/00000000-OPS-PLAY-01-play-store-changelog.md",
+      "relatedCodes": [
+        "20260619-FIX-MOB-PLAY-01 play-data-safety"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-RUN-REST-01 restoration-manual",
+      "title": "Runbook: consultation content restoration manual",
+      "shortName": "restoration-manual",
+      "type": "RUN",
+      "family": "SUP-REST",
+      "collection": "restoration-manual",
+      "date": null,
+      "status": "reference",
+      "path": "docs/restoration-manual/README.md",
+      "relatedCodes": [
+        "20260607-INC-SUP-INC-01 consultation-content-wipe",
+        "00000000-RUN-SUP-05 recover-pitr"
+      ],
+      "relatedTests": []
+    }
+  ]
+}

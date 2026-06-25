@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-W-005 wilhelm-comments-txt-g2 · v1.0.0
+ * Area: tools/audit-wilhelm-comments-txt-g2
+ * Family: FID-W
+ */
+
 /**
  * G2 gate (comments): fresh parse vs stored wilhelm-64hex-comments-parsed.json
  *

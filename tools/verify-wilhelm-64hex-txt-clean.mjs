@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: VF-FID-W-002 wilhelm-64hex-txt-clean · v1.0.0
+ * Area: tools/verify-wilhelm-64hex-txt-clean
+ * Family: FID-W
+ */
+
 /**
  * Post-cleanup verification: orphans in source, G0/G1/G2, spot-checks on key hex.
  */

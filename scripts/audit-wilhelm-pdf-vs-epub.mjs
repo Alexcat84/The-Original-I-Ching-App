@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-W-007 wilhelm-pdf-vs-epub · v1.0.0
+ * Area: scripts/audit-wilhelm-pdf-vs-epub
+ * Family: FID-W
+ */
+
 /**
  * Non-gate cross-check: Wilhelm PDF gold vs Bollingen EPUB (statement-only blockquotes).
  *

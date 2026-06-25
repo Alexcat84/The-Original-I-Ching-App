@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: QA-RDG-002 master-synthesis · v1.0.0
+ * Area: scripts/master-synthesis-qa
+ * Family: RDG
+ */
+
 /**
  * master-synthesis-qa.mjs
  *
@@ -23,7 +30,7 @@
  * exported as validateJudgmentImageVerbatim) — same function the real
  * /api/consult pipeline uses for its warn-only telemetry, so this harness
  * never duplicates that extraction/comparison logic. See
- * docs/auditorias/READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md.
+ * docs/auditorias/20260624-AUD-RDG-QA-02-verbatim-blockquote-gap.md.
  *
  * Usage:
  *   node scripts/master-synthesis-qa.mjs

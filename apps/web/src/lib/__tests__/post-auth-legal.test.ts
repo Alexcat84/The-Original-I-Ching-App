@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-006 post-auth-legal · v1.0.0
+ * Area: apps/web/src/lib/post-auth-legal
+ * Family: AUTH
+ */
+
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 import { CURRENT_PRIVACY_VERSION, CURRENT_TERMS_VERSION } from "@/lib/legal-consent";

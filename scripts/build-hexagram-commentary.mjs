@@ -5,7 +5,7 @@
  * is kept separate from the core HexagramRecord/HexagramsBundle schema).
  *
  * Sources (audited "TXT maestro" datasets, see
- * docs/auditorias/TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md):
+ * docs/auditorias/20260623-POL-DAT-MAESTRO-00-txt-maestro-notes-policy.md):
  *   - tools/datasets/wilhelm/book-one/wilhelm-64hex-parsed.json
  *   - tools/datasets/wilhelm/comments/wilhelm-64hex-comments-parsed.json
  *   - tools/datasets/legge/book-one/legge-64hex-parsed.json

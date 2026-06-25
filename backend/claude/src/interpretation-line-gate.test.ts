@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-CLAUDE-001 line-gate · v1.0.0
+ * Area: backend/claude/src/interpretation-line-gate
+ * Family: CLAUDE
+ */
+
 import { describe, it, expect } from "vitest";
 import Anthropic from "@anthropic-ai/sdk";
 import {

@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-005 db-idempotency · v1.0.0
+ * Area: apps/web/src/lib/db-idempotency
+ * Family: WEB
+ */
+
 import { describe, expect, it } from "vitest";
 import { isDuplicateInsertErrorMessage } from "../db-idempotency";
 

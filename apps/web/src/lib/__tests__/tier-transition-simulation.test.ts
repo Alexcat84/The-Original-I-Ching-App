@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-010 tier-transition-simulation · v1.0.0
+ * Area: apps/web/src/lib/tier-transition-simulation
+ * Family: BILL
+ */
+
 import { describe, expect, it } from "vitest";
 import { getSessionLimit } from "../token-packs";
 import { canDeepenAfterNextConsult, shouldBlockDeepening } from "../thread-depth-policy";

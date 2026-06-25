@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: I18N-001 i18n-audit · v1.0.0
+ * Area: tools/i18n-audit
+ * Family: WEB
+ */
+
 /**
  * i18n governance audit — fails CI when copy drifts outside @iching-oracle/i18n.
  */

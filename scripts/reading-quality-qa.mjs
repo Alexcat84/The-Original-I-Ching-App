@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: QA-RDG-001 reading-quality · v1.1.0
+ * Area: scripts/reading-quality-qa
+ * Family: RDG
+ */
+
 /**
  * reading-quality-qa.mjs
  *
@@ -328,7 +335,7 @@ async function main() {
         // Gate H7 (judgment/image verbatim fidelity) already runs inside
         // validateInterpretationOutput and lands in warnFailures — surfaced
         // here as its own column per docs/auditorias/
-        // READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md §8.
+        // 20260624-AUD-RDG-QA-02-verbatim-blockquote-gap.md §8.
         const judgmentImageVerbatimFailures = validation?.warnFailures.filter((f) => f.gate === "H7") ?? [];
 
         const row = {

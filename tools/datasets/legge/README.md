@@ -2,7 +2,7 @@
 
 Book-primary sources from user-edited Princeton TXT exports (not runtime ingest yet).
 
-**Notas:** solo Wilhelm y Legge llevan footnotes/comentario en el maestro; Zhou Yi = 经 sin notas. Ver `docs/auditorias/TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md`.
+**Notas:** solo Wilhelm y Legge llevan footnotes/comentario en el maestro; Zhou Yi = 经 sin notas. Ver `docs/auditorias/20260623-POL-DAT-MAESTRO-00-txt-maestro-notes-policy.md`.
 | Dataset | Source TXT | Parsed JSON | Status |
 |---------|------------|-------------|--------|
 | `book-one/` | `tools/source-pdfs/Yi King - James Legge-64hex.txt` | `legge-64hex-parsed.json` | **official** (AU 2026-06-23) |

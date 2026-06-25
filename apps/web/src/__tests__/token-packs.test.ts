@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-008 token-packs · v1.0.0
+ * Area: apps/web/src/token-packs
+ * Family: BILL
+ */
+
 import { describe, expect, it } from "vitest";
 import { FREE_SESSION_LIMIT, FREE_TOKENS, getPackConfig, getSessionLimit } from "../lib/token-packs";
 

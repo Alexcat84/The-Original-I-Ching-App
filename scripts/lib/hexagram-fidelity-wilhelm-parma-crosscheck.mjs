@@ -13,7 +13,7 @@
  *   - Detect PDF OCR bleed (PDF longer than statement-only reference)
  *   - NEVER auto-fill from Parma when PDF is shorter — Parma omits lines AND bleeds commentary
  *
- * @see docs/auditorias/ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md
+ * @see docs/auditorias/20260621-AUD-DAT-FID-01-translator-fidelity-reaudit.md
  */
 
 import {

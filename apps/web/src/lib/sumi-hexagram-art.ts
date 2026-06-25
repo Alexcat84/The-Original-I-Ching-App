@@ -4,17 +4,138 @@
  */
 
 import {
+  OVERLAY_SYMBOL_FONT_FAMILY,
   OVERLAY_TITLE_EN_CLASS,
   OVERLAY_TITLE_EN_FONT,
+  OVERLAY_TITLE_EN_FONT_WEIGHT,
   OVERLAY_TITLE_ZH_CLASS,
   OVERLAY_TITLE_ZH_FONT,
 } from "@/lib/embed-svg-overlay-font";
+import {
+  SUMI_FALLBACK_HEX_TOP_Y,
+  SUMI_OVERLAY_HEX_TOP_Y,
+  buildOverlayEnglishTitleLayout,
+  estimateOverlayEnTextWidth,
+} from "@/lib/overlay-title-layout";
 
 export type SumiLineInput = {
   position: 1 | 2 | 3 | 4 | 5 | 6;
   value: number;
   isChanging: boolean;
 };
+
+/**
+ * Renders one English title line as one or more sibling <text> elements,
+ * never a <tspan> nested inside a <text>.
+ *
+ * Root cause (see 20260625-AUD-IMG-OVR-02-mutation-title-layout.md \u00a713):
+ * resvg-js can silently drop an entire <text> node that mixes plain text with
+ * a <tspan> for the arrow glyph \u2014 reproduced for specific name pairs (e.g.
+ * "#6 Conflict \u2192 #10 Treading [Conduct]") while structurally identical
+ * pairs rendered fine, so it isn't predictable from text length or content
+ * alone. Splitting the line into separate, manually positioned <text>
+ * elements (one per segment around the arrow) avoids the tspan-in-text
+ * pattern entirely and was verified to fix every previously-failing case.
+ */
+function buildOverlayEnLineElements(params: {
+  line: string;
+  y: number;
+  cx: number;
+  fontSize: number;
+  fill: string;
+  strokeAttrs: string;
+}): string {
+  if (!params.line.includes("\u2192")) {
+    return `<text x="${params.cx}" y="${params.y}" text-anchor="middle" class="${OVERLAY_TITLE_EN_CLASS}" fill="${params.fill}"${params.strokeAttrs} font-size="${params.fontSize}" font-family="${OVERLAY_TITLE_EN_FONT}" font-weight="${OVERLAY_TITLE_EN_FONT_WEIGHT}">${escapeXml(params.line)}</text>`;
+  }
+
+  // Trim each segment and account for inter-segment spacing as an explicit
+  // gap rather than relying on a leading/trailing space inside the text
+  // content: SVG's default xml:space handling collapses that whitespace once
+  // each segment becomes its own <text> node, which otherwise glues the
+  // arrow to the adjacent word.
+  // estimateOverlayEnTextWidth() is a rough per-character heuristic tuned for
+  // the fit-or-shrink decision in overlay-title-layout.ts, not pixel-precise
+  // positioning (measured underestimate of ~60-80px on a 28-character
+  // segment, "Holding Together [Union]"). A generous fixed gap absorbs that
+  // error instead of needing a per-character correction.
+  const gapWidth = params.fontSize;
+  // NotoSymbols2Overlay's arrow glyph renders visually wider than the
+  // generic per-character width heuristic assumes (verified: a gap sized
+  // from estimateOverlayEnTextWidth("\u2192", \u2026) left the arrow touching the
+  // following word even though the same gap before the arrow looked right).
+  // Reserve extra room specifically for it rather than tuning the shared
+  // estimator, which other layout decisions (1-line vs 2-line fit) depend on.
+  const arrowWidth = params.fontSize * 1.05;
+  const rawSegments = params.line.split("\u2192");
+  const parts: Array<{ text: string; isArrow: boolean }> = [];
+  rawSegments.forEach((segment, index) => {
+    const trimmed = segment.trim();
+    if (trimmed.length > 0) parts.push({ text: trimmed, isArrow: false });
+    if (index < rawSegments.length - 1) parts.push({ text: "\u2192", isArrow: true });
+  });
+
+  // A trailing "]" (e.g. "Holding Together [Union]") renders visually wider
+  // than the generic estimate when it sits right at a segment boundary,
+  // eating into the gap reserved after it — pad that case specifically.
+  const widths = parts.map((part) => {
+    if (part.isArrow) return arrowWidth;
+    const base = estimateOverlayEnTextWidth(part.text, params.fontSize);
+    return part.text.endsWith("]") ? base + params.fontSize * 0.22 : base;
+  });
+  const totalWidth = widths.reduce((sum, w) => sum + w, 0) + gapWidth * (parts.length - 1);
+  let x = params.cx - totalWidth / 2;
+
+  return parts
+    .map((part, index) => {
+      const elX = x;
+      x += widths[index]! + gapWidth;
+      if (part.isArrow) {
+        return `<text x="${elX}" y="${params.y}" text-anchor="start" fill="${params.fill}"${params.strokeAttrs} font-size="${params.fontSize}" font-family="'${OVERLAY_SYMBOL_FONT_FAMILY}'">${part.text}</text>`;
+      }
+      return `<text x="${elX}" y="${params.y}" text-anchor="start" class="${OVERLAY_TITLE_EN_CLASS}" fill="${params.fill}"${params.strokeAttrs} font-size="${params.fontSize}" font-family="${OVERLAY_TITLE_EN_FONT}" font-weight="${OVERLAY_TITLE_EN_FONT_WEIGHT}">${escapeXml(part.text)}</text>`;
+    })
+    .join("\n");
+}
+
+function buildOverlayEnTextElements(params: {
+  cx: number;
+  primaryNumber: number;
+  primaryName: string;
+  transformedNumber?: number | null;
+  transformedName?: string | null;
+  hexTopY: number;
+  fill: string;
+  stroke?: string;
+  strokeWidth?: number;
+  paintOrder?: string;
+}): string {
+  const layout = buildOverlayEnglishTitleLayout(
+    {
+      primaryNumber: params.primaryNumber,
+      primaryName: params.primaryName,
+      transformedNumber: params.transformedNumber,
+      transformedName: params.transformedName,
+    },
+    { hexTopY: params.hexTopY },
+  );
+  const strokeAttrs =
+    params.stroke !== undefined
+      ? ` stroke="${params.stroke}" stroke-width="${params.strokeWidth ?? 3}" paint-order="${params.paintOrder ?? "stroke fill"}"`
+      : "";
+  return layout.lines
+    .map((line, index) =>
+      buildOverlayEnLineElements({
+        line,
+        y: layout.ys[index]!,
+        cx: params.cx,
+        fontSize: layout.fontSize,
+        fill: params.fill,
+        strokeAttrs,
+      }),
+    )
+    .join("\n");
+}
 
 function escapeXml(s: string): string {
   return s
@@ -132,11 +253,15 @@ export function buildSumiHexagramSvgDataUrl(params: {
   const subZh = escapeXml(
     `${params.primaryChinese}${params.transformedChinese ? ` → ${params.transformedChinese}` : ""}`,
   );
-  const subEn = escapeXml(
-    `#${params.primaryNumber} ${params.primaryName}${
-      params.transformedNumber ? ` → #${params.transformedNumber} ${params.transformedName ?? ""}` : ""
-    }`,
-  );
+  const subEnEls = buildOverlayEnTextElements({
+    cx,
+    primaryNumber: params.primaryNumber,
+    primaryName: params.primaryName,
+    transformedNumber: params.transformedNumber,
+    transformedName: params.transformedName,
+    hexTopY: SUMI_FALLBACK_HEX_TOP_Y,
+    fill: "#3d3830",
+  });
 
   const seedStr =
     params.artSeed ??
@@ -282,8 +407,8 @@ export function buildSumiHexagramSvgDataUrl(params: {
 <!-- hexagram (dominant) -->
 <g>${lineEls.join("\n")}</g>
 <!-- primary titles: large, centered -->
-<text x="${cx}" y="125" text-anchor="middle" fill="#1c1a16" font-size="92" font-family='Noto Serif TC, Noto Serif SC, SimSun, STSong, serif' font-weight="700">${subZh}</text>
-<text x="${cx}" y="178" text-anchor="middle" fill="#3d3830" font-size="34" font-family="Georgia, 'Noto Serif', Noto Serif TC, Noto Serif SC, SimSun, STSong, serif" font-weight="600">${subEn}</text>
+<text x="${cx}" y="125" text-anchor="middle" class="${OVERLAY_TITLE_ZH_CLASS}" fill="#1c1a16" font-size="92" font-family='${OVERLAY_TITLE_ZH_FONT}' font-weight="700">${subZh}</text>
+${subEnEls}
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
@@ -345,11 +470,18 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
   const subZh = escapeXml(
     `${params.primaryChinese}${params.transformedChinese ? ` → ${params.transformedChinese}` : ""}`,
   );
-  const subEn = escapeXml(
-    `#${params.primaryNumber} ${params.primaryName}${
-      params.transformedNumber ? ` → #${params.transformedNumber} ${params.transformedName ?? ""}` : ""
-    }`,
-  );
+  const subEnEls = buildOverlayEnTextElements({
+    cx,
+    primaryNumber: params.primaryNumber,
+    primaryName: params.primaryName,
+    transformedNumber: params.transformedNumber,
+    transformedName: params.transformedName,
+    hexTopY: SUMI_OVERLAY_HEX_TOP_Y,
+    fill: "#2e2a22",
+    stroke: "rgba(255,248,242,0.9)",
+    strokeWidth: 3,
+    paintOrder: "stroke fill",
+  });
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${outputWidth}" height="${outputHeight}" viewBox="0 0 ${W} ${H}">
 <defs>
@@ -361,7 +493,7 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
 <g>${lineEls.join("\n")}</g>
 <!-- primary titles: large, centered -->
 <text x="${cx}" y="125" text-anchor="middle" class="${OVERLAY_TITLE_ZH_CLASS}" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='${OVERLAY_TITLE_ZH_FONT}' font-weight="700">${subZh}</text>
-<text x="${cx}" y="178" text-anchor="middle" class="${OVERLAY_TITLE_EN_CLASS}" fill="#2e2a22" stroke="rgba(255,248,242,0.9)" stroke-width="3" paint-order="stroke fill" font-size="34" font-family="${OVERLAY_TITLE_EN_FONT}" font-weight="600">${subEn}</text>
+${subEnEls}
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;

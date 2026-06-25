@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-003 response-clean · v1.0.0
+ * Area: apps/web/src/lib/response-clean
+ * Family: WEB
+ */
+
 import { describe, expect, it } from "vitest";
 import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
 

@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-004 chat-session-selection · v1.0.0
+ * Area: apps/web/src/lib/chat-session-selection
+ * Family: CHAT
+ */
+
 import { describe, expect, it } from "vitest";
 import { mergeHydratedWithLocalDrafts, pickPreferredSessionLocalId, type SessionSelectorEntry } from "../chat-session-selection";
 

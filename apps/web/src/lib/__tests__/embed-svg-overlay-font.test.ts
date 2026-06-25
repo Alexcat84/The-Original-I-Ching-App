@@ -1,7 +1,14 @@
+/**
+ * QA code: TS-WEB-OVR-001 embed-svg-overlay-font · v1.2.0
+ * Area: apps/web/src/lib/embed-svg-overlay-font
+ * Family: WEB-OVR
+ */
+
 import { describe, expect, it } from "vitest";
 import {
   OVERLAY_TITLE_EN_CLASS,
   OVERLAY_TITLE_EN_FONT,
+  OVERLAY_TITLE_EN_FONT_WEIGHT,
   OVERLAY_TITLE_ZH_CLASS,
   OVERLAY_TITLE_ZH_FONT,
   collectCjkOverlayChars,
@@ -12,7 +19,7 @@ import {
 function buildSampleOverlaySvg(subZh: string, subEn: string): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1344" height="768" viewBox="0 0 1344 768">
 <text x="672" y="125" text-anchor="middle" class="${OVERLAY_TITLE_ZH_CLASS}" fill="#1c1a16" font-size="92" font-family='${OVERLAY_TITLE_ZH_FONT}' font-weight="700">${subZh}</text>
-<text x="672" y="178" text-anchor="middle" class="${OVERLAY_TITLE_EN_CLASS}" fill="#2e2a22" font-size="34" font-family="${OVERLAY_TITLE_EN_FONT}" font-weight="600">${subEn}</text>
+<text x="672" y="178" text-anchor="middle" class="${OVERLAY_TITLE_EN_CLASS}" fill="#2e2a22" font-size="32" font-family="${OVERLAY_TITLE_EN_FONT}" font-weight="${OVERLAY_TITLE_EN_FONT_WEIGHT}">${subEn}</text>
 </svg>`;
 }
 
@@ -51,5 +58,16 @@ describe("embedCjkFontInOverlaySvg", () => {
         `class="${OVERLAY_TITLE_EN_CLASS}"[^>]*font-family='NotoSerifTCOverlay`,
       ),
     );
+  });
+
+  it("embeds symbol font when English overlay includes mutation arrow", async () => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1344" height="768" viewBox="0 0 1344 768">
+<text x="672" y="125" text-anchor="middle" class="${OVERLAY_TITLE_ZH_CLASS}" fill="#1c1a16" font-size="92" font-family='${OVERLAY_TITLE_ZH_FONT}' font-weight="700">恆 → 乾</text>
+<text x="672" y="178" text-anchor="middle" class="${OVERLAY_TITLE_EN_CLASS}" fill="#2e2a22" font-size="32" font-family="${OVERLAY_TITLE_EN_FONT}" font-weight="${OVERLAY_TITLE_EN_FONT_WEIGHT}">#32 Hăng <tspan font-family="'NotoSymbols2Overlay'">\u2192</tspan> #35 Žin</text>
+</svg>`;
+    const embedded = await embedCjkFontInOverlaySvg(svg);
+
+    expect(embedded).toContain("NotoSymbols2Overlay");
+    expect(embedded).toContain("NotoSerifLatinOverlay");
   });
 });

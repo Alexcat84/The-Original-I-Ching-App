@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-011 revenuecat-webhook-auth · v1.0.0
+ * Area: apps/web/src/lib/revenuecat-webhook-auth
+ * Family: BILL
+ */
+
 import { describe, expect, it } from "vitest";
 import { revenueCatWebhookAuthorized } from "../revenuecat-webhook-auth";
 

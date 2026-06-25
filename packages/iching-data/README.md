@@ -12,7 +12,7 @@ the canonical source of hexagram texts for the rest of the monorepo.
 | James Legge | `legge` | `npm run ingest:legge` | [sacred-texts.com](https://sacred-texts.com/ich/index.htm) (ic + icap2) |
 | Zhou Yi (original Chinese) | `zhouyi` | `npm run ingest:zhouyi` | [ctext.org](https://ctext.org/book-of-changes) (API + 大象 HTML) |
 
-**Last 1:1 fidelity audit:** 22 June 2026. Wilhelm: 513/513 vs Pantheon 1950 PDF gold. Legge: 514/514 vs SBE XVI Oxford scan. Zhou Yi: 514/514 vs ctext. Reports: `reports/hexagram-fidelity-2026-06-22T14-55-38-200Z.json` (Wilhelm), `reports/hexagram-fidelity-2026-06-22T14-55-40-301Z.json` (Legge). See `docs/auditorias/FIDELITY_MUTATION_MASTER_AUDIT_2026-06-22.md`.
+**Last 1:1 fidelity audit:** 22 June 2026. Wilhelm: 513/513 vs Pantheon 1950 PDF gold. Legge: 514/514 vs SBE XVI Oxford scan. Zhou Yi: 514/514 vs ctext. Reports: `reports/hexagram-fidelity-2026-06-22T14-55-38-200Z.json` (Wilhelm), `reports/hexagram-fidelity-2026-06-22T14-55-40-301Z.json` (Legge). See `docs/auditorias/20260622-AUD-DAT-FID-04-fidelity-mutation-master.md`.
 
 Each bundle covers all 64 King Wen hexagrams, with the same schema:
 

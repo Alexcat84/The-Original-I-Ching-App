@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: VF-WEB-OVR-001 overlay-glyphs · v1.1.0
+ * Area: scripts/verify-overlay-glyphs
+ * Family: WEB-OVR
+ */
+
 /**
  * Overlay glyph coverage gate — ensures production overlay SVG markers and the
  * Legge/Wilhelm name corpus include all codepoints the dual font-stack must render.

@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-CLAUDE-003 interpretation-v2 · v1.0.0
+ * Area: backend/claude/src/interpretation.v2
+ * Family: CLAUDE
+ */
+
 import { describe, it, expect } from "vitest";
 import { buildV2HistoricalUserBlock } from "./interpretation-context.js";
 import type { ConsultationSummary } from "@iching-oracle/context-engine";

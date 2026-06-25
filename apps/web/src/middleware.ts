@@ -37,7 +37,7 @@ function buildCsp(nonce: string): string {
 }
 
 // Known WordPress probe paths seen scanning this domain (never served by this app —
-// see docs/auditorias/AXIOM_LOGIN_SPIKE_AUDIT_2026-06-19.md §5.1). 404 them cheaply,
+// see docs/auditorias/20260619-AUD-OBS-02-axiom-login-spike.md §5.1). 404 them cheaply,
 // before nonce/CSP generation, instead of falling through to the Next.js catch-all.
 const WORDPRESS_PROBE_PATTERN = /^\/(wp-admin|wp-login\.php|wp-content|wp-includes|xmlrpc\.php)/i;
 

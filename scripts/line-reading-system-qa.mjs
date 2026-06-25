@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: QA-LRS-001 line-reading-system · v1.0.0
+ * Area: scripts/line-reading-system-qa
+ * Family: LRS
+ */
+
 /**
  * line-reading-system-qa.mjs
  *

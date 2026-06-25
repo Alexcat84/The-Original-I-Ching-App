@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-002 manual-iching-consult · v1.0.0
+ * Area: apps/web/src/lib/manual-iching-consult
+ * Family: WEB
+ */
+
 import { describe, expect, it } from "vitest";
 import { ichingManualLineValuesSchema, parseIchingManualPayload } from "../manual-iching-consult";
 

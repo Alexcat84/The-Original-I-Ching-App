@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: VF-PINYIN-001 pinyin-gold · v1.0.0
+ * Area: scripts/verify-pinyin-gold
+ * Family: PINYIN
+ */
+
 /**
  * Pinyin gold gate — cross-checks hardcoded pinyin against pinyin-pro's
  * dictionary readings for the underlying hanzi, instead of trusting a

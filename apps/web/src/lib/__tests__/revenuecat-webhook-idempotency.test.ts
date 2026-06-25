@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-012 revenuecat-webhook-idempotency · v1.0.0
+ * Area: apps/web/src/lib/revenuecat-webhook-idempotency
+ * Family: BILL
+ */
+
 import { describe, expect, it } from "vitest";
 import { computeRevenueCatEventHash } from "../revenuecat-webhook-idempotency";
 

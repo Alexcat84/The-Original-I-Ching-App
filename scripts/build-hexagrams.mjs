@@ -34,8 +34,8 @@ const legge = (await import(pathToFileURL(leggeModulePath).href)).default;
 const zhouyi = (await import(pathToFileURL(zhouyiModulePath).href)).default;
 
 // Book-one TXT-maestro datasets — AU-verified 1:1 against the Princeton EPUB
-// sources (docs/auditorias/WILHELM_TXT_AU_MAESTRO_2026-06-23.md,
-// LEGGE_TXT_AU_MAESTRO_2026-06-23.md). Title/name metadata was never part of
+// sources (docs/auditorias/20260623-AUD-DAT-MAESTRO-W-01-wilhelm-txt-maestro.md,
+// 20260623-AUD-DAT-MAESTRO-L-01-legge-txt-maestro.md). Title/name metadata was never part of
 // the 2026-06-21/23 oracle-field fidelity audits (judgment/image/lines), so
 // it is sourced from here instead of the legacy translation scripts above.
 const wilhelmMaestro = JSON.parse(

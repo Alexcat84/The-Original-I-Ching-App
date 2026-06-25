@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-001 detect-input-language · v1.1.0
+ * Area: apps/web/src/lib/detect-input-language
+ * Family: WEB
+ */
+
 import { describe, expect, it } from "vitest";
 import { detectInputLanguage } from "../detect-input-language";
 

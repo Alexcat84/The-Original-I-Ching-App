@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: QA-MUT-001 mutation-output · v2.0.0
+ * Area: scripts/mutation-output-qa
+ * Family: MUT
+ */
+
 /**
  * mutation-output-qa.mjs
  *

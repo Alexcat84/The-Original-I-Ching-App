@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-CLAUDE-002 output-validator · v1.0.0
+ * Area: backend/claude/src/interpretation-output-validator
+ * Family: CLAUDE
+ */
+
 import { describe, it, expect } from "vitest";
 import type { CastResult } from "@iching-oracle/iching-engine";
 import { buildCastFixture } from "@iching-oracle/iching-engine";

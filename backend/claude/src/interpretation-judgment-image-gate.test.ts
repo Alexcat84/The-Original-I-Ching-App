@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-CLAUDE-004 judgment-image-gate · v1.0.0
+ * Area: backend/claude/src/interpretation-judgment-image-gate
+ * Family: CLAUDE
+ */
+
 import { describe, it, expect } from "vitest";
 import type { CastResult, Hexagram, TextsForClaude } from "@iching-oracle/iching-engine";
 import { buildCastFixture } from "@iching-oracle/iching-engine";

@@ -6,7 +6,7 @@
  * - Update CURRENT_RELEASE when apps/mobile/app.config.js changes.
  * - Add architecture notes via useCanvasState key "archNotes" (persisted in .canvas.data.json).
  * - Full release history: CHANGELOG.md at repo root (npm run changelog:update).
- * - Deep reference: docs/auditorias/ARCHITECTURE_AUDIT.md, CLAUDE.md, AGENTS.md.
+ * - Deep reference: docs/auditorias/00000000-RPT-ARCH-01-architecture-fullstack.md, CLAUDE.md, AGENTS.md.
  * - Do not add fetch() or external imports; only cursor/canvas.
  */
 import {
@@ -534,13 +534,13 @@ export default function ArchitectureSystemCanvas() {
                   <Code>CHANGELOG.md</Code> — historial releases
                 </Text>
                 <Text>
-                  <Code>docs/auditorias/ARCHITECTURE_AUDIT.md</Code> — auditoría técnica A–Z
+                  <Code>docs/auditorias/00000000-RPT-ARCH-01-architecture-fullstack.md</Code> — auditoría técnica A–Z
                 </Text>
                 <Text>
-                  <Code>docs/auditorias/PERF_OPTIMIZATION_AUDIT_2026-06-12.md</Code> — Phase 0-3, B1/B2/B3
+                  <Code>docs/auditorias/20260612-AUD-PERF-01-claude-image-performance.md</Code> — Phase 0-3, B1/B2/B3
                 </Text>
                 <Text>
-                  <Code>docs/auditorias/PRE_PRODUCTION_AUDIT_2026-06-13.md</Code> — SEC-01/02, OPS-01, veredicto go-live
+                  <Code>docs/auditorias/20260613-AUD-PRD-01-pre-production-jun13.md</Code> — SEC-01/02, OPS-01, veredicto go-live
                 </Text>
                 <Text>
                   <Code>CLAUDE.md</Code> — contexto producto y comandos
@@ -549,10 +549,10 @@ export default function ArchitectureSystemCanvas() {
                   <Code>AGENTS.md</Code> — preferencias aprendidas del usuario
                 </Text>
                 <Text>
-                  <Code>docs/workflows/I18N_GUIDE.md</Code> · I18N_STANDARDIZATION.md
+                  <Code>docs/workflows/00000000-WF-I18N-01-i18n-guide.md</Code> · 00000000-WF-I18N-02-i18n-standardization.md
                 </Text>
                 <Text>
-                  <Code>docs/auditorias/LINE_READING_SYSTEM_ZHUXI_SELECTOR_AUDIT_2026-06-20.md</Code> — selector Huang/Zhu Xi (074)
+                  <Code>docs/auditorias/20260620-AUD-LRS-01-zhuxi-line-reading-selector.md</Code> — selector Huang/Zhu Xi (074)
                 </Text>
                 <Text>
                   <Code>apps/web/src/lib/detect-input-language.ts</Code> — idioma pregunta vs UI
