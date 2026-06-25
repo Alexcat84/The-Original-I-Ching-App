@@ -61,13 +61,62 @@
       "path": "docs/auditorias/20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md",
       "relatedCodes": [
         "00000000-AUD-DIV-01 divination-methods",
-        "00000000-RPT-DIV-00 procedural-integrity-summary"
+        "00000000-RPT-DIV-00 procedural-integrity-summary",
+        "20260625-AUD-DIV-03 oracle-bones-keightley"
       ],
       "relatedTests": [
         "TS-ENG-001 engine-core",
         "TS-WEB-014 manual-coin-value",
         "VF-DIV-001 divination-wilhelm-appendix"
       ]
+    },
+    {
+      "code": "20260625-AUD-DIV-03 oracle-bones-keightley",
+      "title": "Oracle Bones method vs Keightley PDF (book-primary procedural)",
+      "shortName": "oracle-bones-keightley",
+      "type": "AUD",
+      "family": "DIV",
+      "date": "2026-06-25",
+      "status": "open",
+      "path": "docs/auditorias/20260625-AUD-DIV-03-oracle-bones-keightley.md",
+      "relatedCodes": [
+        "00000000-AUD-DIV-01 divination-methods",
+        "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods",
+        "20260625-BRIEF-DIV-04 keightley-procedural-reference",
+        "00000000-RPT-DIV-00 procedural-integrity-summary"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260625-BRIEF-DIV-04 keightley-procedural-reference",
+      "title": "Keightley procedural reference (Ping-pien 8 + 12-21 case studies)",
+      "shortName": "keightley-procedural-reference",
+      "type": "BRIEF",
+      "family": "DIV",
+      "date": "2026-06-25",
+      "status": "reference",
+      "path": "docs/auditorias/20260625-BRIEF-DIV-04-keightley-procedural-reference.md",
+      "relatedCodes": [
+        "20260625-AUD-DIV-03 oracle-bones-keightley",
+        "00000000-AUD-DIV-01 divination-methods"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260625-BRIEF-DIV-05 guia-bones-sources-trace",
+      "title": "Guía/notas — trazabilidad bibliografía huesos vs fuentes externas",
+      "shortName": "guia-bones-sources-trace",
+      "type": "BRIEF",
+      "family": "DIV",
+      "date": "2026-06-25",
+      "status": "reference",
+      "path": "docs/auditorias/20260625-BRIEF-DIV-05-guia-bones-sources-trace.md",
+      "relatedCodes": [
+        "20260625-BRIEF-DIV-04 keightley-procedural-reference",
+        "20260625-AUD-DIV-03 oracle-bones-keightley",
+        "00000000-AUD-DIV-01 divination-methods"
+      ],
+      "relatedTests": []
     },
     {
       "code": "00000000-RPT-DIV-00 procedural-integrity-summary",
@@ -81,6 +130,7 @@
       "relatedCodes": [
         "00000000-AUD-DIV-01 divination-methods",
         "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods",
+        "20260625-AUD-DIV-03 oracle-bones-keightley",
         "20260619-AUD-MUT-03 huang-rules-alignment",
         "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
         "20260620-AUD-LRS-01 zhuxi-line-reading-selector",

@@ -104,7 +104,7 @@ npm run test --workspace=@iching-oracle/iching-engine
 |-------|--------|
 | **Gold** | Keightley, D. N. (1978). *Sources of Shang history: The oracle-bone inscriptions of Bronze Age China*. University of California Press. (Reprinted 1985). |
 | **Scope today** | The 4-verdict taxonomy (`auspicious_clear`/`moderate`, `inauspicious_moderate`/`clear`) was decided in `00000000-AUD-DIV-01` §5 (2026-05-19, removal of a 5th "Silence" verdict) citing Keightley as the academic basis for the decision — not a field-by-field book-primary verification of weights/patterns. |
-| **Status** | PDF ingested 2026-06-25 (`tools/source-pdfs/`, manifest key `keightley`); no extractor or procedural gate built yet. Successor audit proposed: `AUD-DIV-03 oracle-bones-keightley` (not opened). |
+| **Status** | PDF ingested 2026-06-25 (`tools/source-pdfs/`, manifest key `keightley`); procedural gold + **AUD-DIV-03 Fase 1** open 2026-06-25. Harness VF-DIV-002 pending. |
 | **Tests** | None yet for book-primary verdict weights — `oracle-bones-engine`'s existing unit tests cover determinism only, not Keightley fidelity. |
 | **Audit** | `00000000-AUD-DIV-01-divination-methods.md` §5 (original decision) · `20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md` §13 (gold designated, scope drafted for the successor audit) |
 
