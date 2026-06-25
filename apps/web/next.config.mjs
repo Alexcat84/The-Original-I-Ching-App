@@ -28,7 +28,12 @@ const nextConfig = {
   outputFileTracingRoot: path.join(__dirname, "../.."),
   serverExternalPackages: ["sharp", "@resvg/resvg-js"],
   outputFileTracingIncludes: {
-    "/api/**": ["./fonts/**"],
+    "/api/**": [
+      "./fonts/**",
+      "../../node_modules/@fontsource/noto-serif-tc/files/noto-serif-tc-chinese-traditional-700-normal.woff",
+      "../../node_modules/@fontsource/noto-serif/files/noto-serif-latin-ext-400-normal.woff",
+      "../../node_modules/@fontsource/noto-sans-symbols-2/files/noto-sans-symbols-2-symbols-400-normal.woff",
+    ],
   },
   transpilePackages: [
     "@iching-oracle/iching-data",

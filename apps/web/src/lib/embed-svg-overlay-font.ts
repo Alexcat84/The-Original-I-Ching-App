@@ -1,6 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { createRequire } from "node:module";
-import path from "node:path";
+import { FONTSOURCE_WOFF_PATHS, type FontsourceWoffKey } from "./fontsource-woff-paths";
 
 /**
  * Sharp/librsvg on Linux (e.g. Vercel) has no CJK or Latin Extended fonts. Overlay SVGs
@@ -27,12 +26,9 @@ export const OVERLAY_SYMBOL_FONT_FAMILY = "NotoSymbols2Overlay";
 const CJK_FONT_FAMILY = "NotoSerifTCOverlay";
 const LATIN_FONT_FAMILY = "NotoSerifLatinOverlay";
 const SYMBOL_FONT_FAMILY = "NotoSymbols2Overlay";
-const LOCAL_TC_FONT_SPEC =
-  "@fontsource/noto-serif-tc/files/noto-serif-tc-chinese-traditional-700-normal.woff";
-const LOCAL_LATIN_FONT_SPEC = "@fontsource/noto-serif/files/noto-serif-latin-ext-400-normal.woff";
-const LOCAL_SYMBOL_FONT_SPEC =
-  "@fontsource/noto-sans-symbols-2/files/noto-sans-symbols-2-symbols-400-normal.woff";
-const requireForResolve = createRequire(import.meta.url);
+const LOCAL_TC_FONT_KEY: FontsourceWoffKey = "notoSerifTc700";
+const LOCAL_LATIN_FONT_KEY: FontsourceWoffKey = "notoSerifLatinExt400";
+const LOCAL_SYMBOL_FONT_KEY: FontsourceWoffKey = "notoSansSymbols400";
 
 let cachedCjkSubsetKey: string | null = null;
 let cachedCjkWoff2Base64: string | null = null;
@@ -149,51 +145,30 @@ async function fetchLatinSubsetWoff2Base64(subsetText: string): Promise<string |
 }
 
 async function loadBundledWoffBase64(
-  spec: string,
-  fallbackRelativePath: string[],
+  fontKey: FontsourceWoffKey,
   cache: { current: string | null | undefined },
 ): Promise<string | null> {
   if (cache.current !== undefined) return cache.current;
   try {
-    const resolved = requireForResolve.resolve(spec);
-    const buf = await readFile(resolved);
+    const buf = await readFile(FONTSOURCE_WOFF_PATHS[fontKey]);
     cache.current = buf.toString("base64");
     return cache.current;
   } catch {
-    try {
-      const localPath = path.join(process.cwd(), "node_modules", ...fallbackRelativePath);
-      const buf = await readFile(localPath);
-      cache.current = buf.toString("base64");
-      return cache.current;
-    } catch {
-      cache.current = null;
-      return null;
-    }
+    cache.current = null;
+    return null;
   }
 }
 
 async function loadLocalCjkWoffBase64(): Promise<string | null> {
-  return loadBundledWoffBase64(
-    LOCAL_TC_FONT_SPEC,
-    ["@fontsource", "noto-serif-tc", "files", "noto-serif-tc-chinese-traditional-700-normal.woff"],
-    { current: cachedLocalCjkWoff2Base64 },
-  );
+  return loadBundledWoffBase64(LOCAL_TC_FONT_KEY, { current: cachedLocalCjkWoff2Base64 });
 }
 
 async function loadLocalLatinWoffBase64(): Promise<string | null> {
-  return loadBundledWoffBase64(
-    LOCAL_LATIN_FONT_SPEC,
-    ["@fontsource", "noto-serif", "files", "noto-serif-latin-ext-400-normal.woff"],
-    { current: cachedLocalLatinWoff2Base64 },
-  );
+  return loadBundledWoffBase64(LOCAL_LATIN_FONT_KEY, { current: cachedLocalLatinWoff2Base64 });
 }
 
 async function loadLocalSymbolWoffBase64(): Promise<string | null> {
-  return loadBundledWoffBase64(
-    LOCAL_SYMBOL_FONT_SPEC,
-    ["@fontsource", "noto-sans-symbols-2", "files", "noto-sans-symbols-2-symbols-400-normal.woff"],
-    { current: cachedLocalSymbolWoff2Base64 },
-  );
+  return loadBundledWoffBase64(LOCAL_SYMBOL_FONT_KEY, { current: cachedLocalSymbolWoff2Base64 });
 }
 
 function rewriteOverlayFontFamily(
