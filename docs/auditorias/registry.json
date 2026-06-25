@@ -60,11 +60,39 @@
       "status": "open",
       "path": "docs/auditorias/20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md",
       "relatedCodes": [
-        "00000000-AUD-DIV-01 divination-methods"
+        "00000000-AUD-DIV-01 divination-methods",
+        "00000000-RPT-DIV-00 procedural-integrity-summary"
       ],
       "relatedTests": [
         "TS-ENG-001 engine-core",
-        "TS-WEB-014 manual-coin-wizard"
+        "TS-WEB-014 manual-coin-value",
+        "VF-DIV-001 divination-wilhelm-appendix"
+      ]
+    },
+    {
+      "code": "00000000-RPT-DIV-00 procedural-integrity-summary",
+      "title": "Procedural integrity summary (casting methods + changing-line rules)",
+      "shortName": "procedural-integrity-summary",
+      "type": "RPT",
+      "family": "DIV",
+      "date": null,
+      "status": "reference",
+      "path": "docs/auditorias/00000000-RPT-DIV-00-procedural-integrity-summary.md",
+      "relatedCodes": [
+        "00000000-AUD-DIV-01 divination-methods",
+        "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods",
+        "20260619-AUD-MUT-03 huang-rules-alignment",
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector",
+        "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
+      ],
+      "relatedTests": [
+        "VF-DIV-001 divination-wilhelm-appendix",
+        "TS-WEB-014 manual-coin-value",
+        "AU-MUT-001 huang-rules-vs-pdf-gold",
+        "AU-MUT-002 zhuxi-rules-vs-adler-gold",
+        "TS-ENG-002 mutation-rules",
+        "TS-ENG-003 line-reading-systems"
       ]
     },
     {

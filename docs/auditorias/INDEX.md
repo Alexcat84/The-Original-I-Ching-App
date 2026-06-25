@@ -77,8 +77,9 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 |--------|-------|--------|--------|-----------|
 | `00000000-AUD-DIV-01 divination-methods` | 2026-05-19 | Métodos adivinación (referencia matemática) | closed | [00000000-AUD-DIV-01-divination-methods.md](./00000000-AUD-DIV-01-divination-methods.md) |
 | `20260625-AUD-DIV-02 wilhelm-appendix-casting-methods` | 2026-06-25 | Métodos vs apéndice Wilhelm TXT (book-primary) | open | [20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md](./20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md) |
+| `00000000-RPT-DIV-00 procedural-integrity-summary` | — | **Fuentes de verdad procedurales** (monedas, varas, reglas Huang/Zhu Xi) | reference | [00000000-RPT-DIV-00-procedural-integrity-summary.md](./00000000-RPT-DIV-00-procedural-integrity-summary.md) |
 
-**Gold:** `tools/source-pdfs/The I Ching or Book of Changes - Wilhelm-Appendix.txt` · **Tests:** `TS-ENG-001`, `VF-DIV-002` (propuesto)
+**Gold:** `tools/source-pdfs/The I Ching or Book of Changes - Wilhelm-Appendix.txt` · **Tests:** `TS-ENG-001`, `VF-DIV-001 divination-wilhelm-appendix` (G1-G7, exacto)
 
 ---
 
