@@ -215,7 +215,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 Jun 2026",
     method:
-      "Automated field-by-field comparison (verify:hexagram-fidelity) between the text extracted from the mirror and the text served by the app.",
+      "Automated field-by-field comparison between the text extracted from the mirror and the text served by the app.",
     standardCompared:
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including the special texts 用九/用六 for hexagrams 1 and 2 (514 fields total).",
     result:
@@ -231,7 +231,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 Jun 2026",
     method:
-      "Automated field-by-field comparison (verify:hexagram-fidelity) between text extracted from a local EPUB of the published edition and the text served by the app.",
+      "Automated field-by-field comparison between text extracted from a local EPUB of the published edition and the text served by the app.",
     standardCompared:
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result: "Final: 514/514 fields matched (100%).",
@@ -245,7 +245,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     title: "James Legge: initial verification",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "21 Jun 2026",
-    method: "Automated field-by-field comparison (verify:hexagram-fidelity) against this published edition.",
+    method: "Automated field-by-field comparison against this published edition.",
     standardCompared:
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result:
@@ -261,7 +261,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "23 Jun 2026",
     method:
-      "Automated field-by-field comparison (verify:hexagram-fidelity) between text extracted from a local EPUB of the published edition and the text served by the app.",
+      "Automated field-by-field comparison between text extracted from a local EPUB of the published edition and the text served by the app.",
     standardCompared:
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result: "Final: 514/514 fields matched (100%).",
@@ -276,7 +276,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "21 Jun 2026",
     method:
-      "The app dataset had been built from a non-ctext source. First automated field-by-field comparison (verify:hexagram-fidelity) detected wrong and duplicated glyphs in that dataset (hex 31 咸/鹹; hex 19 label collision). The bundle was re-ingested from ctext.org and re-verified the same day.",
+      "The app dataset had been built from a non-ctext source. A first automated field-by-field comparison detected wrong and duplicated glyphs in that dataset (hex 31 咸/鹹; hex 19 label collision). The bundle was re-ingested from ctext.org and re-verified the same day.",
     standardCompared:
       "卦辭, 大象, and the 6 lines of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result:
@@ -292,7 +292,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 Jun 2026",
     method:
-      "Independent re-run of verify:hexagram-fidelity plus corruption gates (scan:zhouyi-corruption, check:hex-glyph-uniqueness) on 22-23 Jun 2026.",
+      "Independent re-run of the field-by-field comparison plus dedicated checks for character corruption and duplicate glyphs, on 22-23 Jun 2026.",
     standardCompared:
       "卦辭, 大象, and the 6 lines of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result: "514/514 fields matched (100%), with zero corruption flags.",
@@ -326,8 +326,9 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     method:
       "Automated verification of classical commentaries against the James Legge (1882) published edition, including footnotes and the Great Symbolism of Appendix II.",
     standardCompared:
-      "Footnotes and Lesser Symbolism line notes; Great Symbolism image and line gloses (Appendix II). 64 hexagrams.",
-    result: "Footnotes and Appendix II symbolism fully covered; verification PASS.",
+      "Footnotes (64 hexagrams); Great Symbolism image gloss, Appendix II (64 hexagrams); Lesser Symbolism line notes, Appendix II (present for 6 of 64 hexagrams in Legge's edition).",
+    result:
+      "Footnotes and Great Symbolism image gloss fully covered (64/64, 100%); Lesser Symbolism line notes verified for every hexagram where Legge's edition includes them. Verification PASS.",
     statusKind: "current",
     statusLabel: "Current classical source",
     currentStatusNote:
@@ -354,7 +355,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     source: CITATIONS.zhuxiAdler,
     verificationDate: "22 Jun 2026",
     method: "Automated comparison of the app's classical reduction rules against the translated rule text.",
-    standardCompared: "The core published rule cases for 2, 3, 4, and 5 changing lines.",
+    standardCompared:
+      "The published rule cases for reducing changing lines to a single governing line text (0 through 6 changing lines, plus 用九/用六).",
     result: "Final: 10/10 rule snippets matched (100%).",
     statusKind: "current",
     statusLabel: "Current production source",
@@ -370,7 +372,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 jun 2026",
     method:
-      "Comparación automatizada campo por campo (verify:hexagram-fidelity) entre el texto extraído del mirror y el texto que sirve la app.",
+      "Comparación automatizada campo por campo entre el texto extraído del mirror y el texto que sirve la app.",
     standardCompared:
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluidos los textos especiales 用九/用六 de los hexagramas 1 y 2 (514 campos en total).",
     result:
@@ -386,7 +388,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 jun 2026",
     method:
-      "Comparación automatizada campo por campo (verify:hexagram-fidelity) entre el texto extraído de un EPUB local de la edición publicada y el texto que sirve la app.",
+      "Comparación automatizada campo por campo entre el texto extraído de un EPUB local de la edición publicada y el texto que sirve la app.",
     standardCompared:
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result: "Final: 514/514 campos coincidentes (100%).",
@@ -400,7 +402,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     title: "James Legge: verificación inicial",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "21 jun 2026",
-    method: "Comparación automatizada campo por campo (verify:hexagram-fidelity) contra esta edición publicada.",
+    method: "Comparación automatizada campo por campo contra esta edición publicada.",
     standardCompared:
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result:
@@ -416,7 +418,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "23 jun 2026",
     method:
-      "Comparación automatizada campo por campo (verify:hexagram-fidelity) entre el texto extraído de un EPUB local de la edición publicada y el texto que sirve la app.",
+      "Comparación automatizada campo por campo entre el texto extraído de un EPUB local de la edición publicada y el texto que sirve la app.",
     standardCompared:
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result: "Final: 514/514 campos coincidentes (100%).",
@@ -431,7 +433,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "21 jun 2026",
     method:
-      "El dataset de la app se había construido desde una fuente distinta de ctext.org. Primera comparación automatizada campo por campo (verify:hexagram-fidelity) que detectó glifos erróneos y duplicados en ese dataset (hex 31 咸/鹹; colisión de etiqueta hex 19). El bundle se volvió a cargar desde ctext.org y se re-verificó el mismo día.",
+      "El dataset de la app se había construido desde una fuente distinta de ctext.org. Una primera comparación automatizada campo por campo detectó glifos erróneos y duplicados en ese dataset (hex 31 咸/鹹; colisión de etiqueta hex 19). El bundle se volvió a cargar desde ctext.org y se re-verificó el mismo día.",
     standardCompared: "卦辭, 大象 y las 6 líneas de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result:
       "Final: 514/514 campos coincidentes (100%). Pasada intermedia el 21 jun: 90.66% → final: 100% tras recarga y corrección del parser.",
@@ -446,7 +448,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 jun 2026",
     method:
-      "Re-ejecución independiente de verify:hexagram-fidelity más gates de corrupción (scan:zhouyi-corruption, check:hex-glyph-uniqueness) el 22-23 jun 2026.",
+      "Re-ejecución independiente de la comparación campo por campo más verificaciones dedicadas de corrupción de caracteres y glifos duplicados, el 22-23 jun 2026.",
     standardCompared: "卦辭, 大象 y las 6 líneas de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result: "514/514 campos coincidentes (100%), con cero indicadores de corrupción.",
     statusKind: "current",
@@ -479,8 +481,9 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     method:
       "Verificación automatizada de los comentarios clásicos contra la edición publicada de James Legge (1882), incluidas footnotes y el Gran Simbolismo del Apéndice II.",
     standardCompared:
-      "Footnotes y notas de Simbolismo menor por línea; imagen del Gran Simbolismo y glosas por línea (Apéndice II). 64 hexagramas.",
-    result: "Footnotes y simbolismo del Apéndice II cubiertos por completo; verificación PASS.",
+      "Footnotes (64 hexagramas); glosa de imagen del Gran Simbolismo, Apéndice II (64 hexagramas); notas de Simbolismo menor por línea, Apéndice II (presentes en 6 de los 64 hexagramas en la edición de Legge).",
+    result:
+      "Footnotes y glosa de imagen del Gran Simbolismo cubiertos por completo (64/64, 100%); notas de Simbolismo menor verificadas en cada hexagrama donde la edición de Legge las incluye. Verificación PASS.",
     statusKind: "current",
     statusLabel: "Fuente clásica vigente",
     currentStatusNote:
@@ -509,7 +512,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     verificationDate: "22 jun 2026",
     method:
       "Comparación automatizada de las reglas de reducción clásicas de la app contra el texto traducido de las reglas.",
-    standardCompared: "Los casos de regla principales publicados para 2, 3, 4 y 5 líneas cambiantes.",
+    standardCompared:
+      "Los casos de regla publicados para reducir líneas cambiantes a un único texto de línea gobernante (0 a 6 líneas cambiantes, más 用九/用六).",
     result: "Final: 10/10 fragmentos de regla coincidentes (100%).",
     statusKind: "current",
     statusLabel: "Fuente de producción vigente",
@@ -525,7 +529,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 de junho de 2026",
     method:
-      "Comparação automatizada campo a campo (verify:hexagram-fidelity) entre o texto extraído do mirror e o texto servido pela app.",
+      "Comparação automatizada campo a campo entre o texto extraído do mirror e o texto servido pela app.",
     standardCompared:
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo os textos especiais 用九/用六 dos hexagramas 1 e 2 (514 campos no total).",
     result:
@@ -541,7 +545,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 de junho de 2026",
     method:
-      "Comparação automatizada campo a campo (verify:hexagram-fidelity) entre o texto extraído de um EPUB local da edição publicada e o texto servido pela app.",
+      "Comparação automatizada campo a campo entre o texto extraído de um EPUB local da edição publicada e o texto servido pela app.",
     standardCompared:
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result: "Final: 514/514 campos correspondentes (100%).",
@@ -555,7 +559,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     title: "James Legge: verificação inicial",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "21 de junho de 2026",
-    method: "Comparação automatizada campo a campo (verify:hexagram-fidelity) contra esta edição publicada.",
+    method: "Comparação automatizada campo a campo contra esta edição publicada.",
     standardCompared:
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result:
@@ -571,7 +575,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "23 de junho de 2026",
     method:
-      "Comparação automatizada campo a campo (verify:hexagram-fidelity) entre o texto extraído de um EPUB local da edição publicada e o texto servido pela app.",
+      "Comparação automatizada campo a campo entre o texto extraído de um EPUB local da edição publicada e o texto servido pela app.",
     standardCompared:
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result: "Final: 514/514 campos correspondentes (100%).",
@@ -586,7 +590,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "21 de junho de 2026",
     method:
-      "O dataset da app tinha sido construído a partir de uma fonte distinta de ctext.org. Primeira comparação automatizada campo a campo (verify:hexagram-fidelity) que detectou glifos errados e duplicados nesse dataset (hex 31 咸/鹹; colisão de rótulo hex 19). O bundle foi recarregado a partir de ctext.org e re-verificado no mesmo dia.",
+      "O dataset da app tinha sido construído a partir de uma fonte distinta de ctext.org. Uma primeira comparação automatizada campo a campo detectou glifos errados e duplicados nesse dataset (hex 31 咸/鹹; colisão de rótulo hex 19). O bundle foi recarregado a partir de ctext.org e re-verificado no mesmo dia.",
     standardCompared: "卦辭, 大象 e as 6 linhas dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result:
       "Final: 514/514 campos correspondentes (100%). Passagem intermédia em 21 de junho: 90.66% → final: 100% após recarga e correção do parser.",
@@ -601,7 +605,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 de junho de 2026",
     method:
-      "Reexecução independente de verify:hexagram-fidelity mais gates de corrupção (scan:zhouyi-corruption, check:hex-glyph-uniqueness) em 22-23 de junho de 2026.",
+      "Reexecução independente da comparação campo a campo mais verificações dedicadas de corrupção de caracteres e glifos duplicados, em 22-23 de junho de 2026.",
     standardCompared: "卦辭, 大象 e as 6 linhas dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result: "514/514 campos correspondentes (100%), com zero indicadores de corrupção.",
     statusKind: "current",
@@ -634,8 +638,9 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     method:
       "Verificação automatizada dos comentários clássicos contra a edição publicada de James Legge (1882), incluindo footnotes e o Grande Simbolismo do Apêndice II.",
     standardCompared:
-      "Footnotes e notas de Simbolismo menor por linha; imagem do Grande Simbolismo e glosas por linha (Apêndice II). 64 hexagramas.",
-    result: "Footnotes e simbolismo do Apêndice II totalmente cobertos; verificação PASS.",
+      "Footnotes (64 hexagramas); glosa de imagem do Grande Simbolismo, Apêndice II (64 hexagramas); notas de Simbolismo menor por linha, Apêndice II (presentes em 6 dos 64 hexagramas na edição de Legge).",
+    result:
+      "Footnotes e glosa de imagem do Grande Simbolismo totalmente cobertos (64/64, 100%); notas de Simbolismo menor verificadas em cada hexagrama onde a edição de Legge as inclui. Verificação PASS.",
     statusKind: "current",
     statusLabel: "Fonte clássica vigente",
     currentStatusNote:
@@ -664,7 +669,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     verificationDate: "22 de junho de 2026",
     method:
       "Comparação automatizada das regras de redução clássicas da app contra o texto traduzido das regras.",
-    standardCompared: "Os principais casos de regra publicados para 2, 3, 4 e 5 linhas mutantes.",
+    standardCompared:
+      "Os casos de regra publicados para reduzir linhas mutantes a um único texto de linha governante (0 a 6 linhas mutantes, mais 用九/用六).",
     result: "Final: 10/10 excertos de regra correspondentes (100%).",
     statusKind: "current",
     statusLabel: "Fonte de produção atual",
@@ -680,7 +686,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 juin 2026",
     method:
-      "Comparaison automatisée champ par champ (verify:hexagram-fidelity) entre le texte extrait du mirror et le texte servi par l'app.",
+      "Comparaison automatisée champ par champ entre le texte extrait du mirror et le texte servi par l'app.",
     standardCompared:
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris les textes spéciaux 用九/用六 des hexagrammes 1 et 2 (514 champs au total).",
     result:
@@ -696,7 +702,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 juin 2026",
     method:
-      "Comparaison automatisée champ par champ (verify:hexagram-fidelity) entre le texte extrait d'un EPUB local de l'édition publiée et le texte servi par l'app.",
+      "Comparaison automatisée champ par champ entre le texte extrait d'un EPUB local de l'édition publiée et le texte servi par l'app.",
     standardCompared:
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result: "Final : 514/514 champs correspondants (100 %).",
@@ -710,7 +716,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     title: "James Legge: vérification initiale",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "21 juin 2026",
-    method: "Comparaison automatisée champ par champ (verify:hexagram-fidelity) contre cette édition publiée.",
+    method: "Comparaison automatisée champ par champ contre cette édition publiée.",
     standardCompared:
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result:
@@ -726,7 +732,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "23 juin 2026",
     method:
-      "Comparaison automatisée champ par champ (verify:hexagram-fidelity) entre le texte extrait d'un EPUB local de l'édition publiée et le texte servi par l'app.",
+      "Comparaison automatisée champ par champ entre le texte extrait d'un EPUB local de l'édition publiée et le texte servi par l'app.",
     standardCompared:
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result: "Final : 514/514 champs correspondants (100 %).",
@@ -741,7 +747,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "21 juin 2026",
     method:
-      "Le dataset de l'app avait été construit à partir d'une source autre que ctext.org. Première comparaison automatisée champ par champ (verify:hexagram-fidelity) ayant détecté des glyphes erronés et dupliqués dans ce dataset (hex 31 咸/鹹 ; collision d'étiquette hex 19). Le bundle a été rechargé depuis ctext.org et re-vérifié le même jour.",
+      "Le dataset de l'app avait été construit à partir d'une source autre que ctext.org. Une première comparaison automatisée champ par champ a détecté des glyphes erronés et dupliqués dans ce dataset (hex 31 咸/鹹 ; collision d'étiquette hex 19). Le bundle a été rechargé depuis ctext.org et re-vérifié le même jour.",
     standardCompared: "卦辭, 大象 et les 6 traits des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result:
       "Final : 514/514 champs correspondants (100 %). Passe intermédiaire le 21 juin : 90.66 % → final : 100 % après rechargement et correction du parser.",
@@ -756,7 +762,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 juin 2026",
     method:
-      "Re-exécution indépendante de verify:hexagram-fidelity plus gates de corruption (scan:zhouyi-corruption, check:hex-glyph-uniqueness) les 22-23 juin 2026.",
+      "Re-exécution indépendante de la comparaison champ par champ plus des vérifications dédiées de corruption de caractères et de glyphes dupliqués, les 22-23 juin 2026.",
     standardCompared: "卦辭, 大象 et les 6 traits des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result: "Final : 514/514 champs correspondants (100 %), avec zéro indicateur de corruption.",
     statusKind: "current",
@@ -789,8 +795,9 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     method:
       "Vérification automatisée des commentaires classiques par rapport à l'édition publiée de James Legge (1882), y compris footnotes et le Grand Symbolisme de l'Appendice II.",
     standardCompared:
-      "Footnotes et notes de Petit Symbolisme par ligne; image du Grand Symbolisme et gloses par ligne (Appendice II). 64 hexagrammes.",
-    result: "Footnotes et symbolisme de l'Appendice II entièrement couverts; vérification PASS.",
+      "Footnotes (64 hexagrammes); glose d'image du Grand Symbolisme, Appendice II (64 hexagrammes); notes de Petit Symbolisme par ligne, Appendice II (présentes pour 6 des 64 hexagrammes dans l'édition de Legge).",
+    result:
+      "Footnotes et glose d'image du Grand Symbolisme entièrement couverts (64/64, 100 %); notes de Petit Symbolisme vérifiées pour chaque hexagramme où l'édition de Legge les inclut. Vérification PASS.",
     statusKind: "current",
     statusLabel: "Source classique actuelle",
     currentStatusNote:
@@ -819,7 +826,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     verificationDate: "22 juin 2026",
     method:
       "Comparaison automatisée des règles de réduction classiques de l'app par rapport au texte traduit des règles.",
-    standardCompared: "Les cas de règle principaux publiés pour 2, 3, 4 et 5 lignes changeantes.",
+    standardCompared:
+      "Les cas de règle publiés pour réduire les lignes changeantes à un seul texte de trait gouvernant (0 à 6 lignes changeantes, plus 用九/用六).",
     result: "Final : 10/10 extraits de règle correspondants (100 %).",
     statusKind: "current",
     statusLabel: "Source de production actuelle",
@@ -835,7 +843,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmParma,
     verificationDate: "21. Juni 2026",
     method:
-      "Automatisierter Feld-für-Feld-Vergleich (verify:hexagram-fidelity) zwischen dem aus dem Mirror extrahierten Text und dem von der App ausgelieferten Text.",
+      "Automatisierter Feld-für-Feld-Vergleich zwischen dem aus dem Mirror extrahierten Text und dem von der App ausgelieferten Text.",
     standardCompared:
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich der Sondertexte 用九/用六 für Hexagramm 1 und 2 (514 Felder insgesamt).",
     result:
@@ -851,7 +859,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23. Juni 2026",
     method:
-      "Automatisierter Feld-für-Feld-Vergleich (verify:hexagram-fidelity) zwischen aus einem lokalen EPUB der veröffentlichten Ausgabe extrahiertem Text und dem von der App ausgelieferten Text.",
+      "Automatisierter Feld-für-Feld-Vergleich zwischen aus einem lokalen EPUB der veröffentlichten Ausgabe extrahiertem Text und dem von der App ausgelieferten Text.",
     standardCompared:
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result: "Final: 514/514 Felder übereinstimmend (100 %).",
@@ -865,7 +873,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     title: "James Legge: erste Verifikation",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "21. Juni 2026",
-    method: "Automatisierter Feld-für-Feld-Vergleich (verify:hexagram-fidelity) gegen diese veröffentlichte Ausgabe.",
+    method: "Automatisierter Feld-für-Feld-Vergleich gegen diese veröffentlichte Ausgabe.",
     standardCompared:
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result:
@@ -881,7 +889,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "23. Juni 2026",
     method:
-      "Automatisierter Feld-für-Feld-Vergleich (verify:hexagram-fidelity) zwischen aus einem lokalen EPUB der veröffentlichten Ausgabe extrahiertem Text und dem von der App ausgelieferten Text.",
+      "Automatisierter Feld-für-Feld-Vergleich zwischen aus einem lokalen EPUB der veröffentlichten Ausgabe extrahiertem Text und dem von der App ausgelieferten Text.",
     standardCompared:
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result: "Final: 514/514 Felder übereinstimmend (100 %).",
@@ -896,7 +904,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "21. Juni 2026",
     method:
-      "Das App-Dataset war zuvor aus einer Nicht-ctext-Quelle aufgebaut worden. Erster automatisierter Feld-für-Feld-Vergleich (verify:hexagram-fidelity), der falsche und doppelte Glyphen in diesem Dataset erkannte (Hex 31 咸/鹹; Bezeichnungskollision Hex 19). Das Bundle wurde aus ctext.org neu geladen und am selben Tag erneut verifiziert.",
+      "Das App-Dataset war zuvor aus einer Nicht-ctext-Quelle aufgebaut worden. Ein erster automatisierter Feld-für-Feld-Vergleich erkannte falsche und doppelte Glyphen in diesem Dataset (Hex 31 咸/鹹; Bezeichnungskollision Hex 19). Das Bundle wurde aus ctext.org neu geladen und am selben Tag erneut verifiziert.",
     standardCompared: "卦辭, 大象 und die 6 Linien aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result:
       "Final: 514/514 Felder übereinstimmend (100 %). Zwischenstand am 21. Juni: 90.66 % → final: 100 % nach Neuladen und Parser-Korrektur.",
@@ -911,7 +919,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23. Juni 2026",
     method:
-      "Unabhängiger erneuter Lauf von verify:hexagram-fidelity plus Korruptions-Gates (scan:zhouyi-corruption, check:hex-glyph-uniqueness) am 22.-23. Juni 2026.",
+      "Unabhängiger erneuter Lauf des Feld-für-Feld-Vergleichs plus dedizierter Prüfungen auf Zeichenkorruption und doppelte Glyphen, am 22.-23. Juni 2026.",
     standardCompared: "卦辭, 大象 und die 6 Linien aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result: "514/514 Felder übereinstimmend (100 %), mit null Korruptionsflags.",
     statusKind: "current",
@@ -944,8 +952,9 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     method:
       "Automatisierte Verifikation der klassischen Kommentare gegen die veröffentlichte Ausgabe von James Legge (1882), einschließlich Footnotes und Große Symbolik des Anhangs II.",
     standardCompared:
-      "Footnotes und Kleinere-Symbolik-Liniennoten; Große-Symbolik-Bild und Linienglossen (Anhang II). 64 Hexagramme.",
-    result: "Footnotes und Symbolik des Anhangs II vollständig abgedeckt; Verifikation PASS.",
+      "Footnotes (64 Hexagramme); Große-Symbolik-Bildglosse, Anhang II (64 Hexagramme); Kleinere-Symbolik-Liniennoten, Anhang II (vorhanden für 6 von 64 Hexagrammen in Legges Ausgabe).",
+    result:
+      "Footnotes und Große-Symbolik-Bildglosse vollständig abgedeckt (64/64, 100 %); Kleinere-Symbolik-Liniennoten für jedes Hexagramm verifiziert, in dem Legges Ausgabe sie enthält. Verifikation PASS.",
     statusKind: "current",
     statusLabel: "Aktuelle klassische Quelle",
     currentStatusNote:
@@ -973,7 +982,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     verificationDate: "22. Juni 2026",
     method:
       "Automatisierter Vergleich der klassischen Reduktionsregeln der App gegen den übersetzten Regeltext.",
-    standardCompared: "Die zentralen veröffentlichten Regelfälle für 2, 3, 4 und 5 wechselnde Linien.",
+    standardCompared:
+      "Die veröffentlichten Regelfälle zur Reduktion wechselnder Linien auf einen einzigen maßgebenden Linientext (0 bis 6 wechselnde Linien, plus 用九/用六).",
     result: "Final: 10/10 Regelausschnitte übereinstimmend (100 %).",
     statusKind: "current",
     statusLabel: "Aktuelle Produktionsquelle",
@@ -989,7 +999,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 giugno 2026",
     method:
-      "Confronto automatizzato campo per campo (verify:hexagram-fidelity) tra il testo estratto dal mirror e il testo servito dall'app.",
+      "Confronto automatizzato campo per campo tra il testo estratto dal mirror e il testo servito dall'app.",
     standardCompared:
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, inclusi i testi speciali 用九/用六 per gli esagrammi 1 e 2 (514 campi totali).",
     result:
@@ -1005,7 +1015,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 giugno 2026",
     method:
-      "Confronto automatizzato campo per campo (verify:hexagram-fidelity) tra il testo estratto da un EPUB locale dell'edizione pubblicata e il testo servito dall'app.",
+      "Confronto automatizzato campo per campo tra il testo estratto da un EPUB locale dell'edizione pubblicata e il testo servito dall'app.",
     standardCompared:
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result: "Final: 514/514 campi corrispondenti (100%).",
@@ -1019,7 +1029,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     title: "James Legge: verifica iniziale",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "21 giugno 2026",
-    method: "Confronto automatizzato campo per campo (verify:hexagram-fidelity) rispetto a questa edizione pubblicata.",
+    method: "Confronto automatizzato campo per campo rispetto a questa edizione pubblicata.",
     standardCompared:
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result:
@@ -1035,7 +1045,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "23 giugno 2026",
     method:
-      "Confronto automatizzato campo per campo (verify:hexagram-fidelity) tra il testo estratto da un EPUB locale dell'edizione pubblicata e il testo servito dall'app.",
+      "Confronto automatizzato campo per campo tra il testo estratto da un EPUB locale dell'edizione pubblicata e il testo servito dall'app.",
     standardCompared:
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result: "Final: 514/514 campi corrispondenti (100%).",
@@ -1050,7 +1060,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "21 giugno 2026",
     method:
-      "Il dataset dell'app era stato costruito da una fonte diversa da ctext.org. Primo confronto automatizzato campo per campo (verify:hexagram-fidelity) che ha rilevato glifi errati e duplicati in quel dataset (hex 31 咸/鹹; collisione etichetta hex 19). Il bundle è stato ricaricato da ctext.org e ri-verificato lo stesso giorno.",
+      "Il dataset dell'app era stato costruito da una fonte diversa da ctext.org. Un primo confronto automatizzato campo per campo ha rilevato glifi errati e duplicati in quel dataset (hex 31 咸/鹹; collisione etichetta hex 19). Il bundle è stato ricaricato da ctext.org e ri-verificato lo stesso giorno.",
     standardCompared: "卦辭, 大象 e le 6 linee di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result:
       "Final: 514/514 campi corrispondenti (100%). Passaggio intermedio il 21 giugno: 90.66% → final: 100% dopo ricaricamento e correzione del parser.",
@@ -1065,7 +1075,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 giugno 2026",
     method:
-      "Riesecuzione indipendente di verify:hexagram-fidelity più gate di corruzione (scan:zhouyi-corruption, check:hex-glyph-uniqueness) il 22-23 giugno 2026.",
+      "Riesecuzione indipendente del confronto campo per campo più verifiche dedicate per la corruzione dei caratteri e i glifi duplicati, il 22-23 giugno 2026.",
     standardCompared: "卦辭, 大象 e le 6 linee di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result: "514/514 campi corrispondenti (100%), con zero indicatori di corruzione.",
     statusKind: "current",
@@ -1098,8 +1108,9 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     method:
       "Verifica automatizzata dei commenti classici rispetto all'edizione pubblicata di James Legge (1882), inclusi footnotes e Grande Simbolismo dell'Appendice II.",
     standardCompared:
-      "Footnotes e note di Simbolismo minore per linea; immagine del Grande Simbolismo e glosse per linea (Appendice II). 64 esagrammi.",
-    result: "Footnotes e simbolismo dell'Appendice II completamente coperti; verifica PASS.",
+      "Footnotes (64 esagrammi); glossa dell'immagine del Grande Simbolismo, Appendice II (64 esagrammi); note di Simbolismo minore per linea, Appendice II (presenti per 6 dei 64 esagrammi nell'edizione di Legge).",
+    result:
+      "Footnotes e glossa dell'immagine del Grande Simbolismo completamente coperti (64/64, 100%); note di Simbolismo minore verificate per ogni esagramma in cui l'edizione di Legge le include. Verifica PASS.",
     statusKind: "current",
     statusLabel: "Fonte classica attuale",
     currentStatusNote:
@@ -1127,7 +1138,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     verificationDate: "22 giugno 2026",
     method:
       "Confronto automatizzato delle regole di riduzione classiche dell'app rispetto al testo tradotto delle regole.",
-    standardCompared: "I principali casi di regola pubblicati per 2, 3, 4 e 5 linee mutanti.",
+    standardCompared:
+      "I casi di regola pubblicati per ridurre le linee mutanti a un unico testo di linea governante (da 0 a 6 linee mutanti, più 用九/用六).",
     result: "Final: 10/10 estratti di regola corrispondenti (100%).",
     statusKind: "current",
     statusLabel: "Fonte di produzione attuale",
@@ -1143,7 +1155,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmParma,
     verificationDate: "2026年6月21日",
     method:
-      "ミラーから抽出したテキストとアプリが提供するテキストとの間で、自動化されたフィールド単位の比較（verify:hexagram-fidelity）を実施。",
+      "ミラーから抽出したテキストとアプリが提供するテキストとの間で、自動化されたフィールド単位の比較を実施。",
     standardCompared:
       "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、および卦1・卦2の特殊テキスト用九/用六を含む、合計514フィールド。",
     result:
@@ -1159,7 +1171,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月23日",
     method:
-      "出版版のローカルEPUBから抽出したテキストとアプリが提供するテキストとの間で、自動化されたフィールド単位の比較（verify:hexagram-fidelity）を実施。",
+      "出版版のローカルEPUBから抽出したテキストとアプリが提供するテキストとの間で、自動化されたフィールド単位の比較を実施。",
     standardCompared: "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、用九/用六を含む、合計514フィールド。",
     result: "最終: 514/514フィールドが一致（100%）。",
     statusKind: "current",
@@ -1172,7 +1184,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     title: "James Legge: 初回検証",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "2026年6月21日",
-    method: "自動化されたフィールド単位の比較（verify:hexagram-fidelity）を、この出版版に対して実施。",
+    method: "自動化されたフィールド単位の比較を、この出版版に対して実施。",
     standardCompared: "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、用九/用六を含む、合計514フィールド。",
     result:
       "最終: 514/514フィールドが一致（100%）。6月21日の中間結果: 77.19% → 最終: 100%（パーサーとゴールドの修正後、この出版版に直接照合して検証）。",
@@ -1187,7 +1199,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "2026年6月23日",
     method:
-      "出版版のローカルEPUBから抽出したテキストとアプリが提供するテキストとの間で、自動化されたフィールド単位の比較（verify:hexagram-fidelity）を実施。",
+      "出版版のローカルEPUBから抽出したテキストとアプリが提供するテキストとの間で、自動化されたフィールド単位の比較を実施。",
     standardCompared: "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、用九/用六を含む、合計514フィールド。",
     result: "最終: 514/514フィールドが一致（100%）。",
     statusKind: "current",
@@ -1201,7 +1213,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "2026年6月21日",
     method:
-      "アプリのデータセットはctext.org以外のソースから構築されていました。初回の自動化されたフィールド単位の比較（verify:hexagram-fidelity）で、そのデータセット内の誤字・重複字形を検出（卦31 咸/鹹; 卦19のラベル衝突）。バンドルをctext.orgから再読み込みし、同日に再検証。",
+      "アプリのデータセットはctext.org以外のソースから構築されていました。初回の自動化されたフィールド単位の比較で、そのデータセット内の誤字・重複字形を検出（卦31 咸/鹹; 卦19のラベル衝突）。バンドルをctext.orgから再読み込みし、同日に再検証。",
     standardCompared: "全64卦の卦辭、大象、6本の爻、用九/用六を含む、合計514フィールド。",
     result:
       "最終: 514/514フィールドが一致（100%）。6月21日の中間結果: 90.66% → 最終: 100%（再読み込みとパーサー修正後）。",
@@ -1216,7 +1228,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "2026年6月23日",
     method:
-      "2026年6月22-23日にverify:hexagram-fidelityの独立再実行と破損ゲート（scan:zhouyi-corruption, check:hex-glyph-uniqueness）を実施。",
+      "2026年6月22-23日に、フィールド単位の比較の独立再実行と、文字破損および重複字形を検出する専用チェックを実施。",
     standardCompared: "全64卦の卦辭、大象、6本の爻、用九/用六を含む、合計514フィールド。",
     result: "最終: 514/514フィールドが一致（100%）、破損フラグゼロ。",
     statusKind: "current",
@@ -1247,8 +1259,9 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     method:
       "古典注釈を、出版版James Legge（1882）と照合する自動検証。脚注と付録II大象伝を含む。",
     standardCompared:
-      "脚注と小象伝の各爻注；大象伝の象と各爻の解（付録II）。64卦。",
-    result: "脚注と付録IIの象伝を完全カバー；検証PASS。",
+      "脚注（64卦）；大象伝の象解、付録II（64卦）；小象伝の各爻注、付録II（レッジ版では64卦中6卦のみ収録）。",
+    result:
+      "脚注と大象伝の象解は完全カバー（64/64、100%）；小象伝の各爻注はレッジ版に収録されている卦すべてで検証済み。検証PASS。",
     statusKind: "current",
     statusLabel: "現行の古典注釈ソース",
     currentStatusNote: "64卦すべての学術注釈を検証済み。",
@@ -1274,7 +1287,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     source: CITATIONS.zhuxiAdler,
     verificationDate: "2026年6月22日",
     method: "アプリの古典的な還元ルールを翻訳されたルールテキストと照合する、自動化された比較を実施。",
-    standardCompared: "変爻2本、3本、4本、5本に関する主要な公開ルールケース。",
+    standardCompared:
+      "変爻を単一の支配的な爻テキストに還元するための公開ルールケース（変爻0本から6本、および用九/用六）。",
     result: "最終: 10/10のルール抜粋が一致（100%）。",
     statusKind: "current",
     statusLabel: "現行の本番ソース",
@@ -1289,7 +1303,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     title: "卫礼贤/贝恩斯: 初步验证",
     source: CITATIONS.wilhelmParma,
     verificationDate: "2026年6月21日",
-    method: "在从镜像站提取的文本与应用提供的文本之间进行自动化逐字段比对（verify:hexagram-fidelity）。",
+    method: "在从镜像站提取的文本与应用提供的文本之间进行自动化逐字段比对。",
     standardCompared:
       "全部64卦的卦辭、象辭，以及6条爻辭，包括卦1、卦2的特殊文本用九/用六（共514个字段）。",
     result:
@@ -1305,7 +1319,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月23日",
     method:
-      "在出版版本地EPUB提取的文本与应用提供的文本之间进行自动化逐字段比对（verify:hexagram-fidelity）。",
+      "在出版版本地EPUB提取的文本与应用提供的文本之间进行自动化逐字段比对。",
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
     result: "最终: 514/514个字段一致（100%）。",
     statusKind: "current",
@@ -1318,7 +1332,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     title: "理雅各: 初步验证",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "2026年6月21日",
-    method: "针对本出版版进行自动化逐字段比对（verify:hexagram-fidelity）。",
+    method: "针对本出版版进行自动化逐字段比对。",
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
     result:
       "最终: 514/514个字段一致（100%）。6月21日中间结果: 77.19% → 最终: 100%（经解析器与黄金标准修正后，直接对照该出版版验证）。",
@@ -1333,7 +1347,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "2026年6月23日",
     method:
-      "在出版版本地EPUB提取的文本与应用提供的文本之间进行自动化逐字段比对（verify:hexagram-fidelity）。",
+      "在出版版本地EPUB提取的文本与应用提供的文本之间进行自动化逐字段比对。",
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
     result: "最终: 514/514个字段一致（100%）。",
     statusKind: "current",
@@ -1347,7 +1361,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "2026年6月21日",
     method:
-      "应用数据集此前来自 ctext.org 以外的来源。首次自动化逐字段比对（verify:hexagram-fidelity）在该数据集中发现错误和重复字形（卦31 咸/鹹；卦19标签冲突）。数据集从 ctext.org 重新加载并于同日再验证。",
+      "应用数据集此前来自 ctext.org 以外的来源。首次自动化逐字段比对在该数据集中发现错误和重复字形（卦31 咸/鹹；卦19标签冲突）。数据集从 ctext.org 重新加载并于同日再验证。",
     standardCompared: "全部64卦的卦辭、大象，以及6条爻辭，包括用九/用六（共514个字段）。",
     result:
       "最终: 514/514个字段一致（100%）。6月21日中间结果: 90.66% → 最终: 100%（重新加载与解析器修正后）。",
@@ -1362,7 +1376,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "2026年6月23日",
     method:
-      "2026年6月22-23日独立重跑verify:hexagram-fidelity及损坏检测门（scan:zhouyi-corruption, check:hex-glyph-uniqueness）。",
+      "2026年6月22-23日独立重跑逐字段比对，并执行专门的字符损坏与重复字形检测。",
     standardCompared: "全部64卦的卦辭、大象，以及6条爻辭，包括用九/用六（共514个字段）。",
     result: "最终: 514/514个字段一致（100%），损坏标记为零。",
     statusKind: "current",
@@ -1393,8 +1407,9 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     method:
       "将古典注释与出版版理雅各（1882）进行自动化验证，包括脚注与附录II大象传。",
     standardCompared:
-      "脚注与小象传各爻注；大象传象与各爻解（附录II）。64卦。",
-    result: "脚注与附录II象传全覆盖；验证PASS。",
+      "脚注（64卦）；大象传象解，附录II（64卦）；小象传各爻注，附录II（理雅各版本中仅64卦中的6卦收录）。",
+    result:
+      "脚注与大象传象解已全覆盖（64/64，100%）；小象传各爻注已在理雅各版本收录的所有卦中验证。验证PASS。",
     statusKind: "current",
     statusLabel: "现行古典注释来源",
     currentStatusNote: "64卦学术注释均已验证。",
@@ -1419,7 +1434,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     source: CITATIONS.zhuxiAdler,
     verificationDate: "2026年6月22日",
     method: "对比应用的古典简化规则与翻译后的规则文本，进行自动化比对。",
-    standardCompared: "已发布的核心规则情形，适用于2、3、4、5条变爻。",
+    standardCompared:
+      "已发布的规则情形，用于将变爻简化为单一的主导爻文本（0至6条变爻，加上用九/用六）。",
     result: "最终: 10/10条规则摘录一致（100%）。",
     statusKind: "current",
     statusLabel: "当前生产来源",
@@ -1434,7 +1450,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     title: "Wilhelm/Baynes: 초기 검증",
     source: CITATIONS.wilhelmParma,
     verificationDate: "2026년 6월 21일",
-    method: "미러에서 추출한 텍스트와 앱이 제공하는 텍스트 간의 자동화된 필드별 비교(verify:hexagram-fidelity) 수행.",
+    method: "미러에서 추출한 텍스트와 앱이 제공하는 텍스트 간의 자동화된 필드별 비교 수행.",
     standardCompared:
       "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 그리고 괘 1과 2의 특수 텍스트 용구/용육(用九/用六)을 포함한 총 514개 필드.",
     result:
@@ -1450,7 +1466,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026년 6월 23일",
     method:
-      "출판판 로컬 EPUB에서 추출한 텍스트와 앱이 제공하는 텍스트 간의 자동화된 필드별 비교(verify:hexagram-fidelity) 수행.",
+      "출판판 로컬 EPUB에서 추출한 텍스트와 앱이 제공하는 텍스트 간의 자동화된 필드별 비교 수행.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%).",
     statusKind: "current",
@@ -1463,7 +1479,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     title: "James Legge: 초기 검증",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "2026년 6월 21일",
-    method: "자동화된 필드별 비교(verify:hexagram-fidelity)를 이 출판판에 대해 수행.",
+    method: "자동화된 필드별 비교를 이 출판판에 대해 수행.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result:
       "최종: 514/514개 필드 일치(100%). 6월 21일 중간 결과: 77.19% → 최종: 100% (파서 및 골드 수정 후, 이 출판판에 직접 대조하여 검증).",
@@ -1478,7 +1494,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "2026년 6월 23일",
     method:
-      "출판판 로컬 EPUB에서 추출한 텍스트와 앱이 제공하는 텍스트 간의 자동화된 필드별 비교(verify:hexagram-fidelity) 수행.",
+      "출판판 로컬 EPUB에서 추출한 텍스트와 앱이 제공하는 텍스트 간의 자동화된 필드별 비교 수행.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%).",
     statusKind: "current",
@@ -1492,7 +1508,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "2026년 6월 21일",
     method:
-      "앱 데이터셋은 ctext.org가 아닌 다른 출처에서 구축되었습니다. 최초 자동화된 필드별 비교(verify:hexagram-fidelity)에서 해당 데이터셋의 잘못된·중복 자형을 검출(괘31 咸/鹹; 괘19 라벨 충돌). 데이터셋을 ctext.org에서 다시 불러와 같은 날 재검증.",
+      "앱 데이터셋은 ctext.org가 아닌 다른 출처에서 구축되었습니다. 최초 자동화된 필드별 비교에서 해당 데이터셋의 잘못된·중복 자형을 검출(괘31 咸/鹹; 괘19 라벨 충돌). 데이터셋을 ctext.org에서 다시 불러와 같은 날 재검증.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 대상(大象), 6개 효, 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result:
       "최종: 514/514개 필드 일치(100%). 6월 21일 중간 결과: 90.66% → 최종: 100% (재로드 및 파서 수정 후).",
@@ -1507,7 +1523,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "2026년 6월 23일",
     method:
-      "2026년 6월 22-23일 verify:hexagram-fidelity 독립 재실행 및 손상 게이트(scan:zhouyi-corruption, check:hex-glyph-uniqueness) 수행.",
+      "2026년 6월 22-23일 필드별 비교의 독립 재실행과 문자 손상 및 중복 자형을 검사하는 전용 점검을 수행.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 대상(大象), 6개 효, 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%), 손상 플래그 0건.",
     statusKind: "current",
@@ -1538,8 +1554,9 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     method:
       "고전 주석을 출판판 James Legge(1882)와 대조하는 자동 검증. 각주와 부록 II 대상전 포함.",
     standardCompared:
-      "각주와 소상전 효별 주석; 대상전 상과 효별 해(부록 II). 64괴.",
-    result: "각주와 부록 II 상전 완전 커버; 검증 PASS.",
+      "각주(64괴); 대상전 상 해설, 부록 II(64괴); 소상전 효별 주석, 부록 II(Legge판에서는 64괴 중 6괴에만 수록).",
+    result:
+      "각주와 대상전 상 해설은 완전 커버(64/64, 100%); 소상전 효별 주석은 Legge판에 수록된 모든 괴에서 검증 완료. 검증 PASS.",
     statusKind: "current",
     statusLabel: "현행 고전 주석 출처",
     currentStatusNote: "64괴 학술 주석 검증 완료.",
@@ -1565,7 +1582,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     source: CITATIONS.zhuxiAdler,
     verificationDate: "2026년 6월 22일",
     method: "앱의 고전적 축소 규칙을 번역된 규칙 텍스트와 대조한 자동화된 비교 수행.",
-    standardCompared: "변효 2, 3, 4, 5개에 대한 핵심 공개 규칙 사례.",
+    standardCompared:
+      "변효를 단일한 지배 효 텍스트로 축소하기 위한 공개 규칙 사례(변효 0개부터 6개까지, 그리고 용구/용육 포함).",
     result: "최종: 10/10 규칙 발췌 일치(100%).",
     statusKind: "current",
     statusLabel: "현재 운영 출처",
@@ -1581,7 +1599,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 يونيو 2026",
     method:
-      "مقارنة تلقائية حقل بحقل (verify:hexagram-fidelity) بين النص المستخرج من المرآة والنص الذي يقدمه التطبيق.",
+      "مقارنة تلقائية حقل بحقل بين النص المستخرج من المرآة والنص الذي يقدمه التطبيق.",
     standardCompared:
       "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك النصوص الخاصة 用九/用六 للهكساغرامين 1 و2 (514 حقلاً إجمالاً).",
     result:
@@ -1597,7 +1615,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 يونيو 2026",
     method:
-      "مقارنة تلقائية حقل بحقل (verify:hexagram-fidelity) بين نص مستخرج من EPUB محلي للنسخة المنشورة والنص الذي يقدمه التطبيق.",
+      "مقارنة تلقائية حقل بحقل بين نص مستخرج من EPUB محلي للنسخة المنشورة والنص الذي يقدمه التطبيق.",
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%).",
     statusKind: "current",
@@ -1610,7 +1628,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     title: "James Legge: التحقق الأولي",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "21 يونيو 2026",
-    method: "مقارنة تلقائية حقل بحقل (verify:hexagram-fidelity) مقابل هذه النسخة المنشورة.",
+    method: "مقارنة تلقائية حقل بحقل مقابل هذه النسخة المنشورة.",
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result:
       "نهائي: تطابق 514/514 حقلاً (100%). مرحلة وسيطة في 21 يونيو: 77.19% → نهائي: 100% بعد تصحيحات المحلل والمرجع الذهبي، تم التحقق مباشرة مقابل هذه النسخة المنشورة.",
@@ -1625,7 +1643,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "23 يونيو 2026",
     method:
-      "مقارنة تلقائية حقل بحقل (verify:hexagram-fidelity) بين نص مستخرج من EPUB محلي للنسخة المنشورة والنص الذي يقدمه التطبيق.",
+      "مقارنة تلقائية حقل بحقل بين نص مستخرج من EPUB محلي للنسخة المنشورة والنص الذي يقدمه التطبيق.",
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%).",
     statusKind: "current",
@@ -1639,7 +1657,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "21 يونيو 2026",
     method:
-      "كانت مجموعة بيانات التطبيق قد بُنيت من مصدر غير ctext.org. أول مقارنة تلقائية حقل بحقل (verify:hexagram-fidelity) كشفت عن حروف خاطئة ومكررة في تلك المجموعة (هكس 31 咸/鹹؛ تصادم تسمية هكس 19). أُعيد تحميل الحزمة من ctext.org وأُعيد التحقق في اليوم نفسه.",
+      "كانت مجموعة بيانات التطبيق قد بُنيت من مصدر غير ctext.org. أول مقارنة تلقائية حقل بحقل كشفت عن حروف خاطئة ومكررة في تلك المجموعة (هكس 31 咸/鹹؛ تصادم تسمية هكس 19). أُعيد تحميل الحزمة من ctext.org وأُعيد التحقق في اليوم نفسه.",
     standardCompared: "卦辭، 大象، والخطوط الستة لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result:
       "نهائي: تطابق 514/514 حقلاً (100%). مرحلة وسيطة في 21 يونيو: 90.66% → نهائي: 100% بعد إعادة التحميل وتصحيح المحلل.",
@@ -1654,7 +1672,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 يونيو 2026",
     method:
-      "إعادة تشغيل مستقلة لـ verify:hexagram-fidelity بالإضافة إلى بوابات الفساد (scan:zhouyi-corruption, check:hex-glyph-uniqueness) في 22-23 يونيو 2026.",
+      "إعادة تشغيل مستقلة للمقارنة حقل بحقل بالإضافة إلى فحوصات مخصصة لتلف الحروف والحروف المكررة، في 22-23 يونيو 2026.",
     standardCompared: "卦辭، 大象، والخطوط الستة لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%)، مع صفر مؤشرات فساد.",
     statusKind: "current",
@@ -1685,8 +1703,9 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     method:
       "تحقق آلي من الشروح التقليدية مقابل النسخة المنشورة James Legge (1882)، بما في ذلك footnotes والرمزية الكبرى للملحق II.",
     standardCompared:
-      "Footnotes وملاحظات الرمزية الصغرى لكل خط؛ صورة الرمزية الكبرى وشروح الخطوط (الملحق II). 64 hexagram.",
-    result: "Footnotes ورمزية الملحق II مغطاة بالكامل؛ تحقق PASS.",
+      "Footnotes (64 hexagram)؛ شرح صورة الرمزية الكبرى، الملحق II (64 hexagram)؛ ملاحظات الرمزية الصغرى لكل خط، الملحق II (موجودة في 6 من أصل 64 hexagram في نسخة Legge).",
+    result:
+      "Footnotes وشرح صورة الرمزية الكبرى مغطاة بالكامل (64/64، 100%)؛ ملاحظات الرمزية الصغرى مُحققة لكل hexagram تتضمنه نسخة Legge. تحقق PASS.",
     statusKind: "current",
     statusLabel: "مصدر الشرح التقليدي الحالي",
     currentStatusNote: "شروح أكاديمية مُحققة لجميع الـ64 hexagram.",
@@ -1712,7 +1731,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     source: CITATIONS.zhuxiAdler,
     verificationDate: "22 يونيو 2026",
     method: "مقارنة تلقائية لقواعد الاختزال الكلاسيكية في التطبيق مقابل نص القواعد المترجم.",
-    standardCompared: "حالات القواعد الأساسية المنشورة لـ 2 و3 و4 و5 خطوط متغيرة.",
+    standardCompared:
+      "حالات القواعد المنشورة لاختزال الخطوط المتغيرة إلى نص خط حاكم واحد (من 0 إلى 6 خطوط متغيرة، بالإضافة إلى 用九/用六).",
     result: "نهائي: تطابق 10/10 مقتطفات القواعد (100%).",
     statusKind: "current",
     statusLabel: "مصدر الإنتاج الحالي",
@@ -1728,7 +1748,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 जून 2026",
     method:
-      "मिरर से निकाले गए पाठ और ऐप द्वारा परोसे गए पाठ के बीच स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना (verify:hexagram-fidelity)।",
+      "मिरर से निकाले गए पाठ और ऐप द्वारा परोसे गए पाठ के बीच स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना।",
     standardCompared:
       "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें हेक्साग्राम 1 और 2 के विशेष पाठ 用九/用六 शामिल हैं (कुल 514 फ़ील्ड)।",
     result:
@@ -1744,7 +1764,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 जून 2026",
     method:
-      "प्रकाशित संस्करण के स्थानीय EPUB से निकाले गए पाठ और ऐप द्वारा परोसे गए पाठ के बीच स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना (verify:hexagram-fidelity)।",
+      "प्रकाशित संस्करण के स्थानीय EPUB से निकाले गए पाठ और ऐप द्वारा परोसे गए पाठ के बीच स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना।",
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
@@ -1757,7 +1777,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     title: "James Legge: प्रारंभिक सत्यापन",
     source: CITATIONS.leggeSacredTexts,
     verificationDate: "21 जून 2026",
-    method: "स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना (verify:hexagram-fidelity) इस प्रकाशित संस्करण के विरुद्ध।",
+    method: "स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना इस प्रकाशित संस्करण के विरुद्ध।",
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result:
       "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)। 21 जून का मध्यवर्ती चरण: 77.19% → अंतिम: 100% पार्सर और गोल्ड सुधार के बाद, इस प्रकाशित संस्करण के विरुद्ध सीधे सत्यापित।",
@@ -1772,7 +1792,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     source: CITATIONS.leggeOxford,
     verificationDate: "23 जून 2026",
     method:
-      "प्रकाशित संस्करण के स्थानीय EPUB से निकाले गए पाठ और ऐप द्वारा परोसे गए पाठ के बीच स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना (verify:hexagram-fidelity)।",
+      "प्रकाशित संस्करण के स्थानीय EPUB से निकाले गए पाठ और ऐप द्वारा परोसे गए पाठ के बीच स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना।",
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
@@ -1786,7 +1806,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "21 जून 2026",
     method:
-      "ऐप डेटासेट ctext.org के अलावा किसी अन्य स्रोत से बना था। पहली स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना (verify:hexagram-fidelity) ने उस डेटासेट में गलत और दोहरे अक्षर पाए (hex 31 咸/鹹; hex 19 लेबल टकराव)। बंडल ctext.org से पुनः लोड किया गया और उसी दिन पुनः सत्यापित।",
+      "ऐप डेटासेट ctext.org के अलावा किसी अन्य स्रोत से बना था। पहली स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना ने उस डेटासेट में गलत और दोहरे अक्षर पाए (hex 31 咸/鹹; hex 19 लेबल टकराव)। बंडल ctext.org से पुनः लोड किया गया और उसी दिन पुनः सत्यापित।",
     standardCompared: "सभी 64 हेक्साग्राम का 卦辭, 大象, और 6 रेखाएँ, जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result:
       "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)। 21 जून का मध्यवर्ती चरण: 90.66% → अंतिम: 100% पुनः लोड और पार्सर सुधार के बाद।",
@@ -1801,7 +1821,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 जून 2026",
     method:
-      "22-23 जून 2026 को verify:hexagram-fidelity का स्वतंत्र पुनः-चालन और भ्रष्टाचार गेट (scan:zhouyi-corruption, check:hex-glyph-uniqueness)।",
+      "22-23 जून 2026 को फ़ील्ड-दर-फ़ील्ड तुलना का स्वतंत्र पुनः-चालन, साथ ही अक्षर भ्रष्टाचार और दोहरे अक्षरों की समर्पित जाँच।",
     standardCompared: "सभी 64 हेक्साग्राम का 卦辭, 大象, और 6 रेखाएँ, जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%), शून्य भ्रष्टाचार ध्वज।",
     statusKind: "current",
@@ -1833,8 +1853,9 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     method:
       "शास्त्रीय टिप्पणियों का James Legge (1882) प्रकाशित संस्करण के विरुद्ध स्वचालित सत्यापन, footnotes और Appendix II Great Symbolism सहित।",
     standardCompared:
-      "Footnotes और Lesser Symbolism रेखा-टिप्पणियाँ; Great Symbolism image और रेखा-ग्लोस (Appendix II)। 64 हेक्साग्राम।",
-    result: "Footnotes और Appendix II symbolism पूर्ण कवर; सत्यापन PASS।",
+      "Footnotes (64 हेक्साग्राम); Great Symbolism image-ग्लोस, Appendix II (64 हेक्साग्राम); Lesser Symbolism रेखा-टिप्पणियाँ, Appendix II (Legge के संस्करण में 64 में से केवल 6 हेक्साग्राम में मौजूद)।",
+    result:
+      "Footnotes और Great Symbolism image-ग्लोस पूर्ण रूप से कवर (64/64, 100%); Lesser Symbolism रेखा-टिप्पणियाँ हर उस हेक्साग्राम के लिए सत्यापित जहाँ Legge का संस्करण उन्हें शामिल करता है। सत्यापन PASS।",
     statusKind: "current",
     statusLabel: "वर्तमान शास्त्रीय स्रोत",
     currentStatusNote: "सभी 64 हेक्साग्राम के लिए शास्त्रीय टिप्पणियाँ सत्यापित।",
@@ -1860,7 +1881,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     source: CITATIONS.zhuxiAdler,
     verificationDate: "22 जून 2026",
     method: "ऐप के शास्त्रीय समाहार नियमों की अनुवादित नियम पाठ के विरुद्ध स्वचालित तुलना।",
-    standardCompared: "2, 3, 4, और 5 बदलती रेखाओं के लिए मुख्य प्रकाशित नियम मामले।",
+    standardCompared:
+      "बदलती रेखाओं को एक एकल शासक रेखा पाठ में समाहार करने के लिए प्रकाशित नियम मामले (0 से 6 बदलती रेखाओं तक, साथ ही 用九/用六)।",
     result: "अंतिम: 10/10 नियम अंश मेल खाए (100%)।",
     statusKind: "current",
     statusLabel: "वर्तमान उत्पादन स्रोत",
