@@ -6,6 +6,7 @@ import {
   formatAuditTimelineDateCompact,
   getAuditsPageUiMessages,
   getDocNavUiMessages,
+  type AuditBlockCategory,
   type AuditsPageUiMessages,
   type AuditTimelineEntry,
 } from "@iching-oracle/i18n";
@@ -19,6 +20,18 @@ type TimelineField = {
 function timelineDateClass(statusKind: AuditTimelineEntry["statusKind"]): string {
   if (statusKind === "superseded") return "audit-timeline__date audit-timeline__date--muted";
   return "audit-timeline__date audit-timeline__date--active";
+}
+
+function groupTimelineByCategory(
+  timeline: AuditTimelineEntry[],
+): { category: NonNullable<AuditTimelineEntry["category"]>; entries: AuditTimelineEntry[] }[] {
+  const order: NonNullable<AuditTimelineEntry["category"]>[] = ["oracle-text", "mutation-rule"];
+  return order
+    .map((category) => ({
+      category,
+      entries: timeline.filter((entry) => entry.category === category),
+    }))
+    .filter((section) => section.entries.length > 0);
 }
 
 function buildTimelineFields(
@@ -97,6 +110,13 @@ function AuditTimelineRow({
   );
 }
 
+function sectionHeading(
+  a: AuditsPageUiMessages,
+  category: AuditBlockCategory,
+): string {
+  return category === "oracle-text" ? a.oracleTextSectionHeading : a.mutationRulesSectionHeading;
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await resolveDocLocale();
   const a = getAuditsPageUiMessages(locale);
@@ -117,6 +137,7 @@ export default async function AuditsPage() {
   const locale = await resolveDocLocale();
   const nav = getDocNavUiMessages(locale);
   const a = getAuditsPageUiMessages(locale);
+  const sections = groupTimelineByCategory(a.timeline);
 
   return (
     <div className="oracle-shell doc-page">
@@ -128,11 +149,16 @@ export default async function AuditsPage() {
         <Link href="/terms">{nav.termsShort}</Link>
       </nav>
       <article className="doc-article doc-article--audits-timeline">
-        <ul className="audit-timeline">
-          {a.timeline.map((entry) => (
-            <AuditTimelineRow key={entry.id} a={a} entry={entry} />
-          ))}
-        </ul>
+        {sections.map((section) => (
+          <section key={section.category} className="audit-timeline-section">
+            <h2 className="audit-timeline-section__heading">{sectionHeading(a, section.category)}</h2>
+            <ul className="audit-timeline">
+              {section.entries.map((entry) => (
+                <AuditTimelineRow key={entry.id} a={a} entry={entry} />
+              ))}
+            </ul>
+          </section>
+        ))}
       </article>
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}

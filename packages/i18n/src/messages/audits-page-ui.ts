@@ -53,6 +53,7 @@ export type AuditTimelineEntryKind = "verification" | "release";
 export type AuditTimelineEntry = {
   id: string;
   kind: AuditTimelineEntryKind;
+  category?: AuditBlockCategory;
   verificationDateIso: string;
   headline: string;
   statusKind: AuditBlockStatusKind;
@@ -67,6 +68,8 @@ export type AuditTimelineEntry = {
 export type AuditsPageUiMessages = {
   /** Page `<title>` / Open Graph only; not rendered in the article body. */
   title: string;
+  oracleTextSectionHeading: string;
+  mutationRulesSectionHeading: string;
   blockSourceLabel: string;
   blockMethodLabel: string;
   blockStandardLabel: string;
@@ -77,15 +80,14 @@ export type AuditsPageUiMessages = {
 
 /** Sort metadata keyed by block/report id (ISO date is locale-neutral). */
 const TIMELINE_META: Record<string, { verificationDateIso: string; sortOrder: number }> = {
-  "library-commentary-2026-06-24": { verificationDateIso: "2026-06-24", sortOrder: 0 },
+  "zhouyi-ctext-2026-06-21": { verificationDateIso: "2026-06-23", sortOrder: 0 },
   "legge-oxford-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 0 },
   "wilhelm-pantheon-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 1 },
-  "huang-mutation-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 2 },
-  "zhuxi-adler-mutation-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 3 },
-  "zhouyi-ctext-2026-06-21": { verificationDateIso: "2026-06-23", sortOrder: 0 },
+  "huang-mutation-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 0 },
+  "zhuxi-adler-mutation-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 1 },
   "wilhelm-parma-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 0 },
   "legge-sacred-texts-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 1 },
-  "line-reading-selector-2026-06-20": { verificationDateIso: "2026-06-20", sortOrder: 0 },
+  "zhouyi-ctext-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 2 },
 };
 
 function timelineMetaFor(id: string): { verificationDateIso: string; sortOrder: number } {
@@ -101,6 +103,7 @@ function blockToTimelineEntry(block: AuditSourceBlock): AuditTimelineEntry & { s
   return {
     id: block.id,
     kind: "verification",
+    category: block.category,
     verificationDateIso,
     sortOrder,
     headline: block.title,
@@ -185,26 +188,7 @@ const CITATIONS = {
   },
 } satisfies Record<string, AuditSourceCitation>;
 
-const REPORTS_EN: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "24 Jun 2026",
-    title: "Library: classical commentary and accordion UI",
-    summary:
-      "Feature release: optional classical commentary (Wilhelm and Legge) in the Hexagram Library, shown as an expandable \"+\" next to the Judgment, the Image, and each line. Result: pass. Library-only, never sent to the AI during a consultation.",
-    status: "closed",
-    statusLabel: "Closed",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "20 Jun 2026",
-    title: "Dual line-reading systems (Huang or Zhu Xi)",
-    summary:
-      "Feature release: user-selectable Huang or Zhu Xi changing-line reading. Result: pass. Both systems available in the app.",
-    status: "closed",
-    statusLabel: "Closed",
-  },
-];
+const REPORTS_EN: AuditReportEntry[] = [];
 
 const BLOCKS_EN: AuditSourceBlock[] = [
   {
@@ -218,11 +202,11 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     standardCompared:
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including the special texts 用九/用六 for hexagrams 1 and 2 (514 fields total).",
     result:
-      "514/514 fields matched (100%), after two rounds of extractor correction (94.94% → 99.81% → 100%, completing with the printed edition the 6 fields the web mirror did not include).",
+      "Final: 514/514 fields matched (100%). Intermediate passes: 94.94% → 99.81% → 100%; the last 6 fields were completed from the printed edition where the web mirror had gaps.",
     statusKind: "superseded",
     statusLabel: "Superseded",
     currentStatusNote:
-      "Historical cross-check. Since 22 Jun 2026 the production source is the printed edition (see the next entry).",
+      "Historical cross-check. An independent re-verification on the same day fixed harness false positives and confirmed genuine 100%. Since 22 Jun 2026 the production source is the printed edition (see the next entry).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -234,7 +218,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Automated field-by-field comparison (verify:hexagram-fidelity) between OCR text from the printed edition and the text served by the app.",
     standardCompared:
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
-    result: "514/514 fields matched (100%).",
+    result: "Final: 513/513 fields matched (100%).",
     statusKind: "current",
     statusLabel: "Current production source",
     currentStatusNote: "This is the gold reference the app verifies against today.",
@@ -249,11 +233,11 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     standardCompared:
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result:
-      "514/514 fields matched (100%), after re-extracting directly from this source (an initial pass using a different scrape matched 77.19%).",
+      "Final: 514/514 fields matched (100%). Intermediate pass on 21 Jun: 77.19% → final: 100% after parser and gold corrections, verified directly against this published edition.",
     statusKind: "superseded",
     statusLabel: "Superseded",
     currentStatusNote:
-      "Historical cross-check. Since 22 Jun 2026 the production source is the Sacred Books of the East Oxford scan (see the next entry).",
+      "Historical cross-check. An independent re-verification on the same day closed remaining gaps. Since 22 Jun 2026 the production source is the Sacred Books of the East Oxford scan (see the next entry).",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -264,21 +248,39 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     method: "Automated field-by-field comparison against an Oxford-scanned PDF of the original edition.",
     standardCompared:
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
-    result: "514/514 fields matched (100%).",
+    result: "Final: 514/514 fields matched (100%).",
     statusKind: "current",
     statusLabel: "Current production source",
     currentStatusNote: "This is the gold reference the app verifies against today.",
   },
   {
-    id: "zhouyi-ctext-2026-06-21",
+    id: "zhouyi-ctext-initial-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: classical Chinese text",
+    title: "Zhou Yi: first audit and glyph correction",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "21 Jun 2026 (re-confirmed 22-23 Jun 2026)",
-    method: "Automated field-by-field comparison against the text served by ctext.org's API and HTML pages.",
+    verificationDate: "21 Jun 2026",
+    method:
+      "First automated field-by-field comparison (verify:hexagram-fidelity). The audit detected wrong and duplicated glyphs in the dataset (hex 31 咸/鹹; hex 19 label collision). The bundle was re-ingested from ctext.org and re-verified the same day.",
     standardCompared:
       "卦辭, 大象, and the 6 lines of all 64 hexagrams, including 用九/用六 (514 fields total).",
-    result: "514/514 fields matched (100%).",
+    result:
+      "Final: 514/514 fields matched (100%). Intermediate pass on 21 Jun: 90.66% → final: 100% after re-ingestion and parser correction.",
+    statusKind: "superseded",
+    statusLabel: "Superseded",
+    currentStatusNote:
+      "First quality pass that exposed dataset corruption and closed the loop to 100%. Re-confirmed on 23 Jun 2026 (see the next entry).",
+  },
+  {
+    id: "zhouyi-ctext-2026-06-21",
+    category: "oracle-text",
+    title: "Zhou Yi: re-confirmation",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "23 Jun 2026",
+    method:
+      "Independent re-run of verify:hexagram-fidelity plus corruption gates (scan:zhouyi-corruption, check:hex-glyph-uniqueness) on 22-23 Jun 2026.",
+    standardCompared:
+      "卦辭, 大象, and the 6 lines of all 64 hexagrams, including 用九/用六 (514 fields total).",
+    result: "Final: 514/514 fields matched (100%), with zero corruption flags.",
     statusKind: "permanent",
     statusLabel: "Permanent production source",
     currentStatusNote:
@@ -313,26 +315,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_ES: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "24 jun 2026",
-    title: "Biblioteca: comentario clásico e interfaz de acordeón",
-    summary:
-      "Lanzamiento de funcionalidad: comentario clásico opcional (Wilhelm y Legge) en la Biblioteca de hexagramas, mostrado como un \"+\" desplegable junto al Juicio, la Imagen y cada línea. Resultado: aprobado. Solo en la Biblioteca, nunca se envía a la IA durante una consulta.",
-    status: "closed",
-    statusLabel: "Cerrada",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "20 jun 2026",
-    title: "Dos sistemas de lectura (Huang o Zhu Xi)",
-    summary:
-      "Lanzamiento de función: lectura Huang o Zhu Xi seleccionable por el usuario. Resultado: aprobado. Ambos sistemas disponibles en la app.",
-    status: "closed",
-    statusLabel: "Cerrada",
-  },
-];
+const REPORTS_ES: AuditReportEntry[] = [];
 
 const BLOCKS_ES: AuditSourceBlock[] = [
   {
@@ -346,11 +329,11 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     standardCompared:
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluidos los textos especiales 用九/用六 de los hexagramas 1 y 2 (514 campos en total).",
     result:
-      "514/514 campos coincidentes (100%), tras dos rondas de corrección del extractor (94.94% → 99.81% → 100%, completando con la edición impresa los 6 campos que el mirror web no incluía).",
+      "Final: 514/514 campos coincidentes (100%). Pasadas intermedias: 94.94% → 99.81% → 100%; los últimos 6 campos se completaron desde la edición impresa donde el mirror web tenía vacíos.",
     statusKind: "superseded",
     statusLabel: "Reemplazada",
     currentStatusNote:
-      "Verificación cruzada histórica. Desde el 22 jun 2026 la fuente de producción es la edición impresa (ver la siguiente entrada).",
+      "Verificación cruzada histórica. Una re-verificación independiente el mismo día corrigió falsos positivos del harness y confirmó el 100% genuino. Desde el 22 jun 2026 la fuente de producción es la edición impresa (ver la siguiente entrada).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -362,7 +345,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Comparación automatizada campo por campo (verify:hexagram-fidelity) entre el texto OCR de la edición impresa y el texto que sirve la app.",
     standardCompared:
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
-    result: "514/514 campos coincidentes (100%).",
+    result: "Final: 513/513 campos coincidentes (100%).",
     statusKind: "current",
     statusLabel: "Fuente de producción vigente",
     currentStatusNote: "Esta es la referencia gold contra la que la app se verifica hoy.",
@@ -377,11 +360,11 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     standardCompared:
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result:
-      "514/514 campos coincidentes (100%), tras re-extraer directamente desde esta fuente (una primera pasada con otro scraping coincidía en 77.19%).",
+      "Final: 514/514 campos coincidentes (100%). Pasada intermedia el 21 jun: 77.19% → final: 100% tras correcciones del parser y gold, verificados directamente contra esta edición publicada.",
     statusKind: "superseded",
     statusLabel: "Reemplazada",
     currentStatusNote:
-      "Verificación cruzada histórica. Desde el 22 jun 2026 la fuente de producción es el escaneo de Sacred Books of the East de Oxford (ver la siguiente entrada).",
+      "Verificación cruzada histórica. Una re-verificación independiente el mismo día cerró las brechas restantes. Desde el 22 jun 2026 la fuente de producción es el escaneo de Sacred Books of the East de Oxford (ver la siguiente entrada).",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -392,21 +375,37 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     method: "Comparación automatizada campo por campo contra un PDF escaneado por Oxford de la edición original.",
     standardCompared:
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
-    result: "514/514 campos coincidentes (100%).",
+    result: "Final: 514/514 campos coincidentes (100%).",
     statusKind: "current",
     statusLabel: "Fuente de producción vigente",
     currentStatusNote: "Esta es la referencia gold contra la que la app se verifica hoy.",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "Zhou Yi: primera auditoría y corrección de glifos",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "21 jun 2026",
+    method:
+      "Primera comparación automatizada campo por campo (verify:hexagram-fidelity). La auditoría detectó glifos erróneos y duplicados en el dataset (hex 31 咸/鹹; colisión de etiqueta hex 19). El bundle se volvió a cargar desde ctext.org y se re-verificó el mismo día.",
+    standardCompared: "卦辭, 大象 y las 6 líneas de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
+    result:
+      "Final: 514/514 campos coincidentes (100%). Pasada intermedia el 21 jun: 90.66% → final: 100% tras recarga y corrección del parser.",
+    statusKind: "superseded",
+    statusLabel: "Reemplazada",
+    currentStatusNote:
+      "Primer pase de calidad que expuso corrupción del dataset y cerró el ciclo al 100%. Reconfirmado el 23 jun 2026 (ver la siguiente entrada).",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: texto en chino clásico",
+    title: "Zhou Yi: reconfirmación",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "21 jun 2026 (reconfirmado 22-23 jun 2026)",
+    verificationDate: "23 jun 2026",
     method:
-      "Comparación automatizada campo por campo contra el texto que sirve la API y las páginas HTML de ctext.org.",
+      "Re-ejecución independiente de verify:hexagram-fidelity más gates de corrupción (scan:zhouyi-corruption, check:hex-glyph-uniqueness) el 22-23 jun 2026.",
     standardCompared: "卦辭, 大象 y las 6 líneas de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
-    result: "514/514 campos coincidentes (100%).",
+    result: "Final: 514/514 campos coincidentes (100%), con cero indicadores de corrupción.",
     statusKind: "permanent",
     statusLabel: "Fuente de producción permanente",
     currentStatusNote:
@@ -443,26 +442,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_PT: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "24 jun 2026",
-    title: "Biblioteca: comentário clássico e interface em acordeão",
-    summary:
-      "Lançamento de funcionalidade: comentário clássico opcional (Wilhelm e Legge) na Biblioteca de hexagramas, mostrado como um \"+\" expansível junto ao Julgamento, à Imagem e a cada linha. Resultado: aprovado. Apenas na Biblioteca, nunca enviado à IA durante uma consulta.",
-    status: "closed",
-    statusLabel: "Encerrada",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "20 jun 2026",
-    title: "Dois sistemas de leitura (Huang ou Zhu Xi)",
-    summary:
-      "Lançamento de funcionalidade: leitura Huang ou Zhu Xi selecionável pelo utilizador. Resultado: aprovado. Ambos os sistemas disponíveis na app.",
-    status: "closed",
-    statusLabel: "Encerrada",
-  },
-];
+const REPORTS_PT: AuditReportEntry[] = [];
 
 const BLOCKS_PT: AuditSourceBlock[] = [
   {
@@ -476,11 +456,11 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     standardCompared:
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo os textos especiais 用九/用六 dos hexagramas 1 e 2 (514 campos no total).",
     result:
-      "514/514 campos correspondentes (100%), após duas rondas de correção do extrator (94.94% → 99.81% → 100%, completando com a edição impressa os 6 campos que o mirror web não incluía).",
+      "Final: 514/514 campos correspondentes (100%). Passagens intermédias: 94.94% → 99.81% → 100%; os últimos 6 campos foram completados a partir da edição impressa onde o mirror web tinha lacunas.",
     statusKind: "superseded",
     statusLabel: "Substituída",
     currentStatusNote:
-      "Verificação cruzada histórica. Desde 22 de junho de 2026 a fonte de produção é a edição impressa (ver a entrada seguinte).",
+      "Verificação cruzada histórica. Uma re-verificação independente no mesmo dia corrigiu falsos positivos do harness e confirmou 100% genuíno. Desde 22 de junho de 2026 a fonte de produção é a edição impressa (ver a entrada seguinte).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -492,7 +472,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Comparação automatizada campo a campo (verify:hexagram-fidelity) entre o texto OCR da edição impressa e o texto servido pela app.",
     standardCompared:
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
-    result: "514/514 campos correspondentes (100%).",
+    result: "Final: 513/513 campos correspondentes (100%).",
     statusKind: "current",
     statusLabel: "Fonte de produção atual",
     currentStatusNote: "Esta é a referência gold contra a qual a app se verifica hoje.",
@@ -507,11 +487,11 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     standardCompared:
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result:
-      "514/514 campos correspondentes (100%), após reextrair diretamente desta fonte (uma primeira passagem com outro scraping correspondia a 77.19%).",
+      "Final: 514/514 campos correspondentes (100%). Passagem intermédia em 21 de junho: 77.19% → final: 100% após correções do parser e gold, verificados diretamente contra esta edição publicada.",
     statusKind: "superseded",
     statusLabel: "Substituída",
     currentStatusNote:
-      "Verificação cruzada histórica. Desde 22 de junho de 2026 a fonte de produção é a digitalização da Sacred Books of the East de Oxford (ver a entrada seguinte).",
+      "Verificação cruzada histórica. Uma re-verificação independente no mesmo dia fechou as lacunas restantes. Desde 22 de junho de 2026 a fonte de produção é a digitalização da Sacred Books of the East de Oxford (ver a entrada seguinte).",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -522,20 +502,37 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     method: "Comparação automatizada campo a campo contra um PDF digitalizado por Oxford da edição original.",
     standardCompared:
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
-    result: "514/514 campos correspondentes (100%).",
+    result: "Final: 514/514 campos correspondentes (100%).",
     statusKind: "current",
     statusLabel: "Fonte de produção atual",
     currentStatusNote: "Esta é a referência gold contra a qual a app se verifica hoje.",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "Zhou Yi: primeira auditoria e correção de glifos",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "21 de junho de 2026",
+    method:
+      "Primeira comparação automatizada campo a campo (verify:hexagram-fidelity). A auditoria detectou glifos errados e duplicados no dataset (hex 31 咸/鹹; colisão de rótulo hex 19). O bundle foi recarregado a partir de ctext.org e re-verificado no mesmo dia.",
+    standardCompared: "卦辭, 大象 e as 6 linhas dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
+    result:
+      "Final: 514/514 campos correspondentes (100%). Passagem intermédia em 21 de junho: 90.66% → final: 100% após recarga e correção do parser.",
+    statusKind: "superseded",
+    statusLabel: "Substituída",
+    currentStatusNote:
+      "Primeira passagem de qualidade que expôs corrupção do dataset e fechou o ciclo a 100%. Reconfirmado em 23 de junho de 2026 (ver a entrada seguinte).",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: texto em chinês clássico",
+    title: "Zhou Yi: reconfirmação",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "21 de junho de 2026 (reconfirmado em 22-23 de junho de 2026)",
-    method: "Comparação automatizada campo a campo contra o texto servido pela API e pelas páginas HTML de ctext.org.",
+    verificationDate: "23 de junho de 2026",
+    method:
+      "Reexecução independente de verify:hexagram-fidelity mais gates de corrupção (scan:zhouyi-corruption, check:hex-glyph-uniqueness) em 22-23 de junho de 2026.",
     standardCompared: "卦辭, 大象 e as 6 linhas dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
-    result: "514/514 campos correspondentes (100%).",
+    result: "Final: 514/514 campos correspondentes (100%), com zero indicadores de corrupção.",
     statusKind: "permanent",
     statusLabel: "Fonte de produção permanente",
     currentStatusNote:
@@ -572,26 +569,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_FR: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "24 juin 2026",
-    title: "Bibliothèque : commentaire classique et interface en accordéon",
-    summary:
-      "Sortie de fonctionnalité : commentaire classique optionnel (Wilhelm et Legge) dans la Bibliothèque des hexagrammes, affiché comme un \"+\" dépliable près du Jugement, de l'Image et de chaque trait. Résultat : réussi. Réservé à la Bibliothèque, jamais envoyé à l'IA pendant une consultation.",
-    status: "closed",
-    statusLabel: "Clos",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "20 juin 2026",
-    title: "Deux systèmes de lecture (Huang ou Zhu Xi)",
-    summary:
-      "Sortie de fonctionnalité : lecture Huang ou Zhu Xi sélectionnable par l'utilisateur. Résultat : réussi. Les deux systèmes sont disponibles dans l'app.",
-    status: "closed",
-    statusLabel: "Clos",
-  },
-];
+const REPORTS_FR: AuditReportEntry[] = [];
 
 const BLOCKS_FR: AuditSourceBlock[] = [
   {
@@ -605,11 +583,11 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     standardCompared:
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris les textes spéciaux 用九/用六 des hexagrammes 1 et 2 (514 champs au total).",
     result:
-      "514/514 champs correspondants (100 %), après deux séries de correction de l'extracteur (94.94 % → 99.81 % → 100 %, complétant avec l'édition imprimée les 6 champs que le mirror web n'incluait pas).",
+      "Final : 514/514 champs correspondants (100 %). Passes intermédiaires : 94.94 % → 99.81 % → 100 % ; les 6 derniers champs ont été complétés à partir de l'édition imprimée là où le mirror web avait des lacunes.",
     statusKind: "superseded",
     statusLabel: "Remplacée",
     currentStatusNote:
-      "Vérification croisée historique. Depuis le 22 juin 2026, la source de production est l'édition imprimée (voir l'entrée suivante).",
+      "Vérification croisée historique. Une re-vérification indépendante le même jour a corrigé les faux positifs du harness et confirmé un 100 % authentique. Depuis le 22 juin 2026, la source de production est l'édition imprimée (voir l'entrée suivante).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -621,7 +599,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Comparaison automatisée champ par champ (verify:hexagram-fidelity) entre le texte OCR de l'édition imprimée et le texte servi par l'app.",
     standardCompared:
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
-    result: "514/514 champs correspondants (100 %).",
+    result: "Final : 513/513 champs correspondants (100 %).",
     statusKind: "current",
     statusLabel: "Source de production actuelle",
     currentStatusNote: "C'est la référence gold par rapport à laquelle l'app se vérifie aujourd'hui.",
@@ -636,11 +614,11 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     standardCompared:
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result:
-      "514/514 champs correspondants (100 %), après ré-extraction directe depuis cette source (un premier passage utilisant un autre scraping correspondait à 77.19 %).",
+      "Final : 514/514 champs correspondants (100 %). Passe intermédiaire le 21 juin : 77.19 % → final : 100 % après corrections du parser et du gold, vérifiés directement contre cette édition publiée.",
     statusKind: "superseded",
     statusLabel: "Remplacée",
     currentStatusNote:
-      "Vérification croisée historique. Depuis le 22 juin 2026, la source de production est le scan Sacred Books of the East d'Oxford (voir l'entrée suivante).",
+      "Vérification croisée historique. Une re-vérification indépendante le même jour a comblé les lacunes restantes. Depuis le 22 juin 2026, la source de production est le scan Sacred Books of the East d'Oxford (voir l'entrée suivante).",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -651,21 +629,37 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     method: "Comparaison automatisée champ par champ contre un PDF scanné par Oxford de l'édition originale.",
     standardCompared:
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
-    result: "514/514 champs correspondants (100 %).",
+    result: "Final : 514/514 champs correspondants (100 %).",
     statusKind: "current",
     statusLabel: "Source de production actuelle",
     currentStatusNote: "C'est la référence gold par rapport à laquelle l'app se vérifie aujourd'hui.",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "Zhou Yi : premier audit et correction de glyphes",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "21 juin 2026",
+    method:
+      "Première comparaison automatisée champ par champ (verify:hexagram-fidelity). L'audit a détecté des glyphes erronés et dupliqués dans le dataset (hex 31 咸/鹹 ; collision d'étiquette hex 19). Le bundle a été rechargé depuis ctext.org et re-vérifié le même jour.",
+    standardCompared: "卦辭, 大象 et les 6 traits des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
+    result:
+      "Final : 514/514 champs correspondants (100 %). Passe intermédiaire le 21 juin : 90.66 % → final : 100 % après rechargement et correction du parser.",
+    statusKind: "superseded",
+    statusLabel: "Remplacée",
+    currentStatusNote:
+      "Premier passage qualité qui a exposé la corruption du dataset et bouclé la boucle à 100 %. Reconfirmé le 23 juin 2026 (voir l'entrée suivante).",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: texte en chinois classique",
+    title: "Zhou Yi : reconfirmation",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "21 juin 2026 (reconfirmé 22-23 juin 2026)",
+    verificationDate: "23 juin 2026",
     method:
-      "Comparaison automatisée champ par champ contre le texte servi par l'API et les pages HTML de ctext.org.",
+      "Re-exécution indépendante de verify:hexagram-fidelity plus gates de corruption (scan:zhouyi-corruption, check:hex-glyph-uniqueness) les 22-23 juin 2026.",
     standardCompared: "卦辭, 大象 et les 6 traits des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
-    result: "514/514 champs correspondants (100 %).",
+    result: "Final : 514/514 champs correspondants (100 %), avec zéro indicateur de corruption.",
     statusKind: "permanent",
     statusLabel: "Source de production permanente",
     currentStatusNote:
@@ -702,26 +696,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_DE: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "24. Juni 2026",
-    title: "Bibliothek: klassischer Kommentar und Akkordeon-Oberfläche",
-    summary:
-      "Feature-Release: optionaler klassischer Kommentar (Wilhelm und Legge) in der Hexagramm-Bibliothek, gezeigt als aufklappbares \"+\" neben dem Urteil, dem Bild und jeder Linie. Ergebnis: bestanden. Nur in der Bibliothek, nie an die KI während einer Beratung gesendet.",
-    status: "closed",
-    statusLabel: "Abgeschlossen",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "20. Juni 2026",
-    title: "Zwei Lesesysteme (Huang oder Zhu Xi)",
-    summary:
-      "Feature-Release: vom Nutzer wählbare Huang- oder Zhu-Xi-Lesart wechselnder Linien. Ergebnis: bestanden. Beide Systeme in der App verfügbar.",
-    status: "closed",
-    statusLabel: "Abgeschlossen",
-  },
-];
+const REPORTS_DE: AuditReportEntry[] = [];
 
 const BLOCKS_DE: AuditSourceBlock[] = [
   {
@@ -735,11 +710,11 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     standardCompared:
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich der Sondertexte 用九/用六 für Hexagramm 1 und 2 (514 Felder insgesamt).",
     result:
-      "514/514 Felder übereinstimmend (100 %), nach zwei Korrekturrunden des Extraktors (94.94 % → 99.81 % → 100 %, wobei die 6 Felder, die der Web-Mirror nicht enthielt, mit der gedruckten Ausgabe ergänzt wurden).",
+      "Final: 514/514 Felder übereinstimmend (100 %). Zwischenstände: 94.94 % → 99.81 % → 100 %; die letzten 6 Felder wurden aus der gedruckten Ausgabe ergänzt, wo der Web-Mirror Lücken hatte.",
     statusKind: "superseded",
     statusLabel: "Abgelöst",
     currentStatusNote:
-      "Historischer Abgleich. Seit dem 22. Juni 2026 ist die gedruckte Ausgabe die Produktionsquelle (siehe den nächsten Eintrag).",
+      "Historischer Abgleich. Eine unabhängige Re-Verifikation am selben Tag korrigierte Harness-Falschpositive und bestätigte echte 100 %. Seit dem 22. Juni 2026 ist die gedruckte Ausgabe die Produktionsquelle (siehe den nächsten Eintrag).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -751,7 +726,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Automatisierter Feld-für-Feld-Vergleich (verify:hexagram-fidelity) zwischen dem OCR-Text der gedruckten Ausgabe und dem von der App ausgelieferten Text.",
     standardCompared:
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
-    result: "514/514 Felder übereinstimmend (100 %).",
+    result: "Final: 513/513 Felder übereinstimmend (100 %).",
     statusKind: "current",
     statusLabel: "Aktuelle Produktionsquelle",
     currentStatusNote: "Dies ist die Goldreferenz, gegen die die App sich heute verifiziert.",
@@ -766,11 +741,11 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     standardCompared:
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result:
-      "514/514 Felder übereinstimmend (100 %), nach erneuter direkter Extraktion aus dieser Quelle (ein erster Durchlauf mit einem anderen Scraping stimmte zu 77.19 % überein).",
+      "Final: 514/514 Felder übereinstimmend (100 %). Zwischenstand am 21. Juni: 77.19 % → final: 100 % nach Parser- und Gold-Korrekturen, direkt gegen diese veröffentlichte Ausgabe verifiziert.",
     statusKind: "superseded",
     statusLabel: "Abgelöst",
     currentStatusNote:
-      "Historischer Abgleich. Seit dem 22. Juni 2026 ist der Oxford-Scan der Sacred Books of the East die Produktionsquelle (siehe den nächsten Eintrag).",
+      "Historischer Abgleich. Eine unabhängige Re-Verifikation am selben Tag schloss verbleibende Lücken. Seit dem 22. Juni 2026 ist der Oxford-Scan der Sacred Books of the East die Produktionsquelle (siehe den nächsten Eintrag).",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -781,21 +756,37 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     method: "Automatisierter Feld-für-Feld-Vergleich gegen ein von Oxford gescanntes PDF der Originalausgabe.",
     standardCompared:
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
-    result: "514/514 Felder übereinstimmend (100 %).",
+    result: "Final: 514/514 Felder übereinstimmend (100 %).",
     statusKind: "current",
     statusLabel: "Aktuelle Produktionsquelle",
     currentStatusNote: "Dies ist die Goldreferenz, gegen die die App sich heute verifiziert.",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "Zhou Yi: erste Prüfung und Glyphenkorrektur",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "21. Juni 2026",
+    method:
+      "Erster automatisierter Feld-für-Feld-Vergleich (verify:hexagram-fidelity). Die Prüfung erkannte falsche und doppelte Glyphen im Dataset (Hex 31 咸/鹹; Bezeichnungskollision Hex 19). Das Bundle wurde aus ctext.org neu geladen und am selben Tag erneut verifiziert.",
+    standardCompared: "卦辭, 大象 und die 6 Linien aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
+    result:
+      "Final: 514/514 Felder übereinstimmend (100 %). Zwischenstand am 21. Juni: 90.66 % → final: 100 % nach Neuladen und Parser-Korrektur.",
+    statusKind: "superseded",
+    statusLabel: "Abgelöst",
+    currentStatusNote:
+      "Erster Qualitätsdurchlauf, der Dataset-Korruption aufdeckte und den Kreislauf auf 100 % schloss. Am 23. Juni 2026 erneut bestätigt (siehe den nächsten Eintrag).",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: klassischer chinesischer Text",
+    title: "Zhou Yi: erneute Bestätigung",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "21. Juni 2026 (erneut bestätigt am 22.-23. Juni 2026)",
+    verificationDate: "23. Juni 2026",
     method:
-      "Automatisierter Feld-für-Feld-Vergleich gegen den von der API und den HTML-Seiten von ctext.org ausgelieferten Text.",
+      "Unabhängiger erneuter Lauf von verify:hexagram-fidelity plus Korruptions-Gates (scan:zhouyi-corruption, check:hex-glyph-uniqueness) am 22.-23. Juni 2026.",
     standardCompared: "卦辭, 大象 und die 6 Linien aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
-    result: "514/514 Felder übereinstimmend (100 %).",
+    result: "Final: 514/514 Felder übereinstimmend (100 %), mit null Korruptionsflags.",
     statusKind: "permanent",
     statusLabel: "Permanente Produktionsquelle",
     currentStatusNote:
@@ -831,26 +822,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_IT: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "24 giugno 2026",
-    title: "Biblioteca: commento classico e interfaccia ad accordion",
-    summary:
-      "Rilascio funzionalità: commento classico opzionale (Wilhelm e Legge) nella Biblioteca degli esagrammi, mostrato come un \"+\" espandibile accanto al Giudizio, all'Immagine e a ciascuna linea. Risultato: superato. Solo nella Biblioteca, mai inviato all'IA durante una consultazione.",
-    status: "closed",
-    statusLabel: "Chiusa",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "20 giu 2026",
-    title: "Due sistemi di lettura (Huang o Zhu Xi)",
-    summary:
-      "Rilascio funzionalità: lettura Huang o Zhu Xi selezionabile dall'utente. Risultato: superato. Entrambi i sistemi disponibili nell'app.",
-    status: "closed",
-    statusLabel: "Chiusa",
-  },
-];
+const REPORTS_IT: AuditReportEntry[] = [];
 
 const BLOCKS_IT: AuditSourceBlock[] = [
   {
@@ -864,11 +836,11 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     standardCompared:
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, inclusi i testi speciali 用九/用六 per gli esagrammi 1 e 2 (514 campi totali).",
     result:
-      "514/514 campi corrispondenti (100%), dopo due cicli di correzione dell'estrattore (94.94% → 99.81% → 100%, completando con l'edizione stampata i 6 campi che il mirror web non includeva).",
+      "Final: 514/514 campi corrispondenti (100%), passaggi intermedi: 94.94% → 99.81% → 100%; gli ultimi 6 campi sono stati completati dall'edizione stampata dove il mirror web aveva lacune.",
     statusKind: "superseded",
     statusLabel: "Sostituita",
     currentStatusNote:
-      "Verifica incrociata storica. Dal 22 giugno 2026 la fonte di produzione è l'edizione stampata (vedi la voce successiva).",
+      "Verifica incrociata storica. Una re-verifica indipendente lo stesso giorno ha corretto i falsi positivi del harness e confermato il 100% genuino. Dal 22 giugno 2026 la fonte di produzione è l'edizione stampata (vedi la voce successiva).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -880,7 +852,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Confronto automatizzato campo per campo (verify:hexagram-fidelity) tra il testo OCR dell'edizione stampata e il testo servito dall'app.",
     standardCompared:
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
-    result: "514/514 campi corrispondenti (100%).",
+    result: "Final: 513/513 campi corrispondenti (100%).",
     statusKind: "current",
     statusLabel: "Fonte di produzione attuale",
     currentStatusNote: "Questo è il riferimento gold rispetto al quale l'app si verifica oggi.",
@@ -895,11 +867,11 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     standardCompared:
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result:
-      "514/514 campi corrispondenti (100%), dopo una nuova estrazione diretta da questa fonte (un primo passaggio con uno scraping diverso corrispondeva al 77.19%).",
+      "Final: 514/514 campi corrispondenti (100%). Passaggio intermedio il 21 giugno: 77.19% → final: 100% dopo correzioni del parser e gold, verificati direttamente rispetto a questa edizione pubblicata.",
     statusKind: "superseded",
     statusLabel: "Sostituita",
     currentStatusNote:
-      "Verifica incrociata storica. Dal 22 giugno 2026 la fonte di produzione è la scansione Sacred Books of the East di Oxford (vedi la voce successiva).",
+      "Verifica incrociata storica. Una re-verifica indipendente lo stesso giorno ha colmato le lacune restanti. Dal 22 giugno 2026 la fonte di produzione è la scansione Sacred Books of the East di Oxford (vedi la voce successiva).",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -910,20 +882,37 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     method: "Confronto automatizzato campo per campo contro un PDF scansionato da Oxford dell'edizione originale.",
     standardCompared:
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
-    result: "514/514 campi corrispondenti (100%).",
+    result: "Final: 514/514 campi corrispondenti (100%).",
     statusKind: "current",
     statusLabel: "Fonte di produzione attuale",
     currentStatusNote: "Questo è il riferimento gold rispetto al quale l'app si verifica oggi.",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "Zhou Yi: prima verifica e correzione dei glifi",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "21 giugno 2026",
+    method:
+      "Primo confronto automatizzato campo per campo (verify:hexagram-fidelity). La verifica ha rilevato glifi errati e duplicati nel dataset (hex 31 咸/鹹; collisione etichetta hex 19). Il bundle è stato ricaricato da ctext.org e ri-verificato lo stesso giorno.",
+    standardCompared: "卦辭, 大象 e le 6 linee di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
+    result:
+      "Final: 514/514 campi corrispondenti (100%). Passaggio intermedio il 21 giugno: 90.66% → final: 100% dopo ricaricamento e correzione del parser.",
+    statusKind: "superseded",
+    statusLabel: "Sostituita",
+    currentStatusNote:
+      "Primo passaggio qualità che ha esposto la corruzione del dataset e chiuso il ciclo al 100%. Riconfermato il 23 giugno 2026 (vedi la voce successiva).",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: testo in cinese classico",
+    title: "Zhou Yi: riconferma",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "21 giugno 2026 (riconfermato il 22-23 giugno 2026)",
-    method: "Confronto automatizzato campo per campo contro il testo servito dall'API e dalle pagine HTML di ctext.org.",
+    verificationDate: "23 giugno 2026",
+    method:
+      "Riesecuzione indipendente di verify:hexagram-fidelity più gate di corruzione (scan:zhouyi-corruption, check:hex-glyph-uniqueness) il 22-23 giugno 2026.",
     standardCompared: "卦辭, 大象 e le 6 linee di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
-    result: "514/514 campi corrispondenti (100%).",
+    result: "Final: 514/514 campi corrispondenti (100%), con zero indicatori di corruzione.",
     statusKind: "permanent",
     statusLabel: "Fonte di produzione permanente",
     currentStatusNote:
@@ -959,26 +948,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_JA: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "2026年6月24日",
-    title: "図書館：古典注釈とアコーディオンUI",
-    summary:
-      "機能リリース：易経図書館における任意の古典注釈（ヴィルヘルムとレッグ）。判断・象・各爻の横の展開可能な「+」で表示。結果：合格。図書館内のみで、相談中にAIへ送信されることはありません。",
-    status: "closed",
-    statusLabel: "完了",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "2026年6月20日",
-    title: "2つの読み方体系（ホアンまたは朱熹）",
-    summary:
-      "機能リリース: ユーザーが選択可能なホアンまたは朱熹の変爻読み方。結果: 合格。両体系がアプリで利用可能。",
-    status: "closed",
-    statusLabel: "完了",
-  },
-];
+const REPORTS_JA: AuditReportEntry[] = [];
 
 const BLOCKS_JA: AuditSourceBlock[] = [
   {
@@ -992,11 +962,11 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     standardCompared:
       "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、および卦1・卦2の特殊テキスト用九/用六を含む、合計514フィールド。",
     result:
-      "514/514フィールドが一致（100%）。抽出器を2回修正した後の結果（94.94% → 99.81% → 100%。Webミラーに含まれていなかった6フィールドは印刷版で補完）。",
+      "最終: 514/514フィールドが一致（100%）。中間結果: 94.94% → 99.81% → 100%; Webミラーに欠けていた最後の6フィールドは印刷版で補完。",
     statusKind: "superseded",
     statusLabel: "置き換え済み",
     currentStatusNote:
-      "過去の相互検証。2026年6月22日以降、本番ソースは印刷版です（次の項目を参照）。",
+      "過去の相互検証。同日の独立した再検証でハーネスの偽陽性を修正し、真の100%を確認。2026年6月22日以降、本番ソースは印刷版です（次の項目を参照）。",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1007,7 +977,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     method:
       "印刷版のOCRテキストとアプリが提供するテキストとの間で、自動化されたフィールド単位の比較（verify:hexagram-fidelity）を実施。",
     standardCompared: "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、用九/用六を含む、合計514フィールド。",
-    result: "514/514フィールドが一致（100%）。",
+    result: "最終: 513/513フィールドが一致（100%）。",
     statusKind: "current",
     statusLabel: "現行の本番ソース",
     currentStatusNote: "これは現在アプリが照合の基準とするゴールドリファレンスです。",
@@ -1021,11 +991,11 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     method: "自動化されたフィールド単位の比較（verify:hexagram-fidelity）を実施。",
     standardCompared: "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、用九/用六を含む、合計514フィールド。",
     result:
-      "514/514フィールドが一致（100%）。この出典から直接再抽出した後の結果（別のスクレイピングを使用した最初の試行では77.19%の一致）。",
+      "最終: 514/514フィールドが一致（100%）。6月21日の中間結果: 77.19% → 最終: 100%（パーサーとゴールドの修正後、この出版版に直接照合して検証）。",
     statusKind: "superseded",
     statusLabel: "置き換え済み",
     currentStatusNote:
-      "過去の相互検証。2026年6月22日以降、本番ソースはオックスフォードによるSacred Books of the Eastのスキャンです（次の項目を参照）。",
+      "過去の相互検証。同日の独立した再検証で残りのギャップを解消。2026年6月22日以降、本番ソースはオックスフォードによるSacred Books of the Eastのスキャンです（次の項目を参照）。",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1035,20 +1005,37 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     verificationDate: "2026年6月22日",
     method: "オックスフォードがスキャンした原版のPDFと比較する、自動化されたフィールド単位の比較を実施。",
     standardCompared: "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、用九/用六を含む、合計514フィールド。",
-    result: "514/514フィールドが一致（100%）。",
+    result: "最終: 514/514フィールドが一致（100%）。",
     statusKind: "current",
     statusLabel: "現行の本番ソース",
     currentStatusNote: "これは現在アプリが照合の基準とするゴールドリファレンスです。",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "周易: 初回監査と字形修正",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "2026年6月21日",
+    method:
+      "初回の自動化されたフィールド単位の比較（verify:hexagram-fidelity）。監査でデータセット内の誤字・重複字形を検出（卦31 咸/鹹; 卦19のラベル衝突）。バンドルをctext.orgから再読み込みし、同日に再検証。",
+    standardCompared: "全64卦の卦辭、大象、6本の爻、用九/用六を含む、合計514フィールド。",
+    result:
+      "最終: 514/514フィールドが一致（100%）。6月21日の中間結果: 90.66% → 最終: 100%（再読み込みとパーサー修正後）。",
+    statusKind: "superseded",
+    statusLabel: "置き換え済み",
+    currentStatusNote:
+      "データセットの破損を露呈し100%まで完結させた最初の品質パス。2026年6月23日に再確認（次の項目を参照）。",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "周易: 古典中国語テキスト",
+    title: "周易: 再確認",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "2026年6月21日（2026年6月22日-23日に再確認）",
-    method: "ctext.orgのAPIおよびHTMLページが提供するテキストと比較する、自動化されたフィールド単位の比較を実施。",
+    verificationDate: "2026年6月23日",
+    method:
+      "2026年6月22-23日にverify:hexagram-fidelityの独立再実行と破損ゲート（scan:zhouyi-corruption, check:hex-glyph-uniqueness）を実施。",
     standardCompared: "全64卦の卦辭、大象、6本の爻、用九/用六を含む、合計514フィールド。",
-    result: "514/514フィールドが一致（100%）。",
+    result: "最終: 514/514フィールドが一致（100%）、破損フラグゼロ。",
     statusKind: "permanent",
     statusLabel: "永続的な本番ソース",
     currentStatusNote:
@@ -1083,26 +1070,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_ZH: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "2026年6月24日",
-    title: "图书馆：古典注释与折叠式界面",
-    summary:
-      "功能发布：易经图书馆中可选的古典注释（威廉与理雅各），以判断、象和每条爻旁可展开的「+」显示。结果：通过。仅限图书馆内，咨询过程中绝不会发送给AI。",
-    status: "closed",
-    statusLabel: "已结案",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "2026年6月20日",
-    title: "双重读法体系（黄忠天或朱熹）",
-    summary:
-      "功能发布：用户可选择黄忠天或朱熹变爻读法。结果：通过。两种体系均已在应用中提供。",
-    status: "closed",
-    statusLabel: "已结案",
-  },
-];
+const REPORTS_ZH: AuditReportEntry[] = [];
 
 const BLOCKS_ZH: AuditSourceBlock[] = [
   {
@@ -1115,10 +1083,11 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     standardCompared:
       "全部64卦的卦辭、象辭，以及6条爻辭，包括卦1、卦2的特殊文本用九/用六（共514个字段）。",
     result:
-      "514/514个字段一致（100%），经过两轮提取器修正后达成（94.94% → 99.81% → 100%，用印刷版补全了网页镜像未包含的6个字段）。",
+      "最终: 514/514个字段一致（100%）。中间结果: 94.94% → 99.81% → 100%；最后6个字段从印刷版补全，因网页镜像存在空缺。",
     statusKind: "superseded",
     statusLabel: "已被取代",
-    currentStatusNote: "历史交叉核验。自2026年6月22日起，生产来源为印刷版（见下一条目）。",
+    currentStatusNote:
+      "历史交叉核验。同日的独立再验证修正了测试框架的误报并确认了真实的100%。自2026年6月22日起，生产来源为印刷版（见下一条目）。",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1128,7 +1097,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     verificationDate: "2026年6月22日",
     method: "在印刷版的OCR文本与应用提供的文本之间进行自动化逐字段比对（verify:hexagram-fidelity）。",
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
-    result: "514/514个字段一致（100%）。",
+    result: "最终: 513/513个字段一致（100%）。",
     statusKind: "current",
     statusLabel: "当前生产来源",
     currentStatusNote: "这是应用目前用于核验的黄金参照。",
@@ -1141,10 +1110,12 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     verificationDate: "2026年6月21日",
     method: "进行自动化逐字段比对（verify:hexagram-fidelity）。",
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
-    result: "514/514个字段一致（100%），系直接从该来源重新提取后达成（最初使用另一种抓取方式的结果为77.19%一致）。",
+    result:
+      "最终: 514/514个字段一致（100%）。6月21日中间结果: 77.19% → 最终: 100%（经解析器与黄金标准修正后，直接对照该出版版验证）。",
     statusKind: "superseded",
     statusLabel: "已被取代",
-    currentStatusNote: "历史交叉核验。自2026年6月22日起，生产来源为牛津的Sacred Books of the East扫描版（见下一条目）。",
+    currentStatusNote:
+      "历史交叉核验。同日的独立再验证填补了剩余缺口。自2026年6月22日起，生产来源为牛津的Sacred Books of the East扫描版（见下一条目）。",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1154,20 +1125,37 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     verificationDate: "2026年6月22日",
     method: "与牛津扫描的原版PDF进行自动化逐字段比对。",
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
-    result: "514/514个字段一致（100%）。",
+    result: "最终: 514/514个字段一致（100%）。",
     statusKind: "current",
     statusLabel: "当前生产来源",
     currentStatusNote: "这是应用目前用于核验的黄金参照。",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "周易: 首次审计与字形修正",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "2026年6月21日",
+    method:
+      "首次自动化逐字段比对（verify:hexagram-fidelity）。审计发现数据集中存在错误和重复字形（卦31 咸/鹹；卦19标签冲突）。数据集从ctext.org重新加载并于同日再验证。",
+    standardCompared: "全部64卦的卦辭、大象，以及6条爻辭，包括用九/用六（共514个字段）。",
+    result:
+      "最终: 514/514个字段一致（100%）。6月21日中间结果: 90.66% → 最终: 100%（重新加载与解析器修正后）。",
+    statusKind: "superseded",
+    statusLabel: "已被取代",
+    currentStatusNote:
+      "首次质量检查，暴露了数据集损坏并完成100%闭环。2026年6月23日再次确认（见下一条目）。",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "周易: 古典中文文本",
+    title: "周易: 再次确认",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "2026年6月21日（2026年6月22-23日再次确认）",
-    method: "与ctext.org的API及HTML页面提供的文本进行自动化逐字段比对。",
+    verificationDate: "2026年6月23日",
+    method:
+      "2026年6月22-23日独立重跑verify:hexagram-fidelity及损坏检测门（scan:zhouyi-corruption, check:hex-glyph-uniqueness）。",
     standardCompared: "全部64卦的卦辭、大象，以及6条爻辭，包括用九/用六（共514个字段）。",
-    result: "514/514个字段一致（100%）。",
+    result: "最终: 514/514个字段一致（100%），损坏标记为零。",
     statusKind: "permanent",
     statusLabel: "永久生产来源",
     currentStatusNote:
@@ -1201,26 +1189,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_KO: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "2026년 6월 24일",
-    title: "도서관: 고전 주석 및 아코디언 UI",
-    summary:
-      "기능 출시: 괘사, 상, 각 효 옆에 펼칠 수 있는 \"+\"로 표시되는 헥사그램 도서관의 선택적 고전 주석(빌헬름과 레그). 결과: 통과. 도서관 전용이며 상담 중 AI로 전송되지 않습니다.",
-    status: "closed",
-    statusLabel: "종료",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "2026년 6월 20일",
-    title: "이중 변효 읽기 체계(Huang 또는 주희)",
-    summary:
-      "기능 출시: 사용자가 선택 가능한 Huang 또는 주희 변효 읽기. 결과: 통과. 두 체계 모두 앱에서 사용 가능.",
-    status: "closed",
-    statusLabel: "종료",
-  },
-];
+const REPORTS_KO: AuditReportEntry[] = [];
 
 const BLOCKS_KO: AuditSourceBlock[] = [
   {
@@ -1233,10 +1202,11 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     standardCompared:
       "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 그리고 괘 1과 2의 특수 텍스트 용구/용육(用九/用六)을 포함한 총 514개 필드.",
     result:
-      "514/514개 필드 일치(100%), 추출기 보정 두 차례를 거쳐 달성(94.94% → 99.81% → 100%, 웹 미러에 포함되지 않았던 6개 필드는 인쇄판으로 보완).",
+      "최종: 514/514개 필드 일치(100%). 중간 결과: 94.94% → 99.81% → 100%; 웹 미러에 빠져 있던 마지막 6개 필드는 인쇄판으로 보완.",
     statusKind: "superseded",
     statusLabel: "대체됨",
-    currentStatusNote: "과거의 상호 검증입니다. 2026년 6월 22일부터 운영 출처는 인쇄판입니다 (다음 항목을 참조하세요).",
+    currentStatusNote:
+      "과거의 상호 검증입니다. 같은 날 독립적인 재검증으로 하네스의 위양성을 수정하고 진정한 100%를 확인했습니다. 2026년 6월 22일부터 운영 출처는 인쇄판입니다 (다음 항목을 참조하세요).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1246,7 +1216,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     verificationDate: "2026년 6월 22일",
     method: "인쇄판의 OCR 텍스트와 앱이 제공하는 텍스트 간의 자동화된 필드별 비교(verify:hexagram-fidelity) 수행.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
-    result: "514/514개 필드 일치(100%).",
+    result: "최종: 513/513개 필드 일치(100%).",
     statusKind: "current",
     statusLabel: "현재 운영 출처",
     currentStatusNote: "이것이 오늘날 앱이 대조하는 기준 참조본입니다.",
@@ -1259,11 +1229,12 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     verificationDate: "2026년 6월 21일",
     method: "자동화된 필드별 비교(verify:hexagram-fidelity) 수행.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
-    result: "514/514개 필드 일치(100%), 이 출처에서 직접 재추출한 후 달성(다른 스크래핑 방식을 사용한 최초 시도는 77.19% 일치).",
+    result:
+      "최종: 514/514개 필드 일치(100%). 6월 21일 중간 결과: 77.19% → 최종: 100% (파서 및 골드 수정 후, 이 출판판에 직접 대조하여 검증).",
     statusKind: "superseded",
     statusLabel: "대체됨",
     currentStatusNote:
-      "과거의 상호 검증입니다. 2026년 6월 22일부터 운영 출처는 옥스퍼드의 Sacred Books of the East 스캔본입니다 (다음 항목을 참조하세요).",
+      "과거의 상호 검증입니다. 같은 날 독립적인 재검증으로 남은 공백을 해소했습니다. 2026년 6월 22일부터 운영 출처는 옥스퍼드의 Sacred Books of the East 스캔본입니다 (다음 항목을 참조하세요).",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1273,20 +1244,37 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     verificationDate: "2026년 6월 22일",
     method: "옥스퍼드가 스캔한 원본 PDF와 대조한 자동화된 필드별 비교 수행.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
-    result: "514/514개 필드 일치(100%).",
+    result: "최종: 514/514개 필드 일치(100%).",
     statusKind: "current",
     statusLabel: "현재 운영 출처",
     currentStatusNote: "이것이 오늘날 앱이 대조하는 기준 참조본입니다.",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "주역: 최초 감사 및 자형 수정",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "2026년 6월 21일",
+    method:
+      "최초 자동화된 필드별 비교(verify:hexagram-fidelity). 감사에서 데이터셋의 잘못된·중복 자형을 검출(괘31 咸/鹹; 괘19 라벨 충돌). 데이터셋을 ctext.org에서 다시 불러와 같은 날 재검증.",
+    standardCompared: "64개 괘 전체의 괘사(卦辭), 대상(大象), 6개 효, 용구/용육(用九/用六) 포함, 총 514개 필드.",
+    result:
+      "최종: 514/514개 필드 일치(100%). 6월 21일 중간 결과: 90.66% → 최종: 100% (재로드 및 파서 수정 후).",
+    statusKind: "superseded",
+    statusLabel: "대체됨",
+    currentStatusNote:
+      "데이터셋 손상을 드러내 100%까지 완료한 첫 품질 검사. 2026년 6월 23일 재확인 (다음 항목 참조).",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "주역: 고전 중국어 텍스트",
+    title: "주역: 재확인",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "2026년 6월 21일(2026년 6월 22-23일 재확인)",
-    method: "ctext.org의 API 및 HTML 페이지가 제공하는 텍스트와 대조한 자동화된 필드별 비교 수행.",
+    verificationDate: "2026년 6월 23일",
+    method:
+      "2026년 6월 22-23일 verify:hexagram-fidelity 독립 재실행 및 손상 게이트(scan:zhouyi-corruption, check:hex-glyph-uniqueness) 수행.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 대상(大象), 6개 효, 용구/용육(用九/用六) 포함, 총 514개 필드.",
-    result: "514/514개 필드 일치(100%).",
+    result: "최종: 514/514개 필드 일치(100%), 손상 플래그 0건.",
     statusKind: "permanent",
     statusLabel: "영구 운영 출처",
     currentStatusNote:
@@ -1321,26 +1309,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_AR: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "24 يونيو 2026",
-    title: "المكتبة: تعليق كلاسيكي وواجهة أكورديون",
-    summary:
-      "إصدار ميزة: تعليق كلاسيكي اختياري (ويلهلم وليج) في مكتبة الهكساغرامات، يظهر كعلامة \"+\" قابلة للتوسيع بجانب الحكم والصورة وكل خط. النتيجة: نجاح. خاص بالمكتبة فقط، ولا يُرسل إلى الذكاء الاصطناعي أثناء الاستشارة.",
-    status: "closed",
-    statusLabel: "مغلقة",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "20 يونيو 2026",
-    title: "نظاما قراءة مزدوجان (Huang أو Zhu Xi)",
-    summary:
-      "إصدار ميزة: قراءة خطوط متغيرة قابلة للاختيار من المستخدم بين Huang وZhu Xi. النتيجة: نجاح. كلا النظامين متاحان في التطبيق.",
-    status: "closed",
-    statusLabel: "مغلقة",
-  },
-];
+const REPORTS_AR: AuditReportEntry[] = [];
 
 const BLOCKS_AR: AuditSourceBlock[] = [
   {
@@ -1354,10 +1323,11 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     standardCompared:
       "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك النصوص الخاصة 用九/用六 للهكساغرامين 1 و2 (514 حقلاً إجمالاً).",
     result:
-      "تطابق 514/514 حقلاً (100%)، بعد جولتين من تصحيح المستخرج (94.94% → 99.81% → 100%، مع إكمال الحقول الستة التي لم تتضمنها المرآة بالاعتماد على النسخة المطبوعة).",
+      "نهائي: تطابق 514/514 حقلاً (100%)، مراحل وسيطة: 94.94% → 99.81% → 100%؛ اكتملت الحقول الستة الأخيرة من النسخة المطبوعة حيث كان للمرآة فراغات.",
     statusKind: "superseded",
     statusLabel: "مستبدَل",
-    currentStatusNote: "تحقق تاريخي متبادل. منذ 22 يونيو 2026 أصبح مصدر الإنتاج هو النسخة المطبوعة (انظر الإدخال التالي).",
+    currentStatusNote:
+      "تحقق تاريخي متبادل. إعادة تحقق مستقلة في اليوم نفسه صححت الإيجابيات الكاذبة للأداة وأكدت 100% حقيقية. منذ 22 يونيو 2026 أصبح مصدر الإنتاج هو النسخة المطبوعة (انظر الإدخال التالي).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1368,7 +1338,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     method:
       "مقارنة تلقائية حقل بحقل (verify:hexagram-fidelity) بين نص OCR للنسخة المطبوعة والنص الذي يقدمه التطبيق.",
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
-    result: "تطابق 514/514 حقلاً (100%).",
+    result: "نهائي: تطابق 513/513 حقلاً (100%).",
     statusKind: "current",
     statusLabel: "مصدر الإنتاج الحالي",
     currentStatusNote: "هذا هو المرجع الذهبي الذي يتحقق التطبيق مقابله اليوم.",
@@ -1382,11 +1352,11 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     method: "مقارنة تلقائية حقل بحقل (verify:hexagram-fidelity).",
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result:
-      "تطابق 514/514 حقلاً (100%)، بعد إعادة الاستخراج مباشرة من هذا المصدر (تطابقت محاولة أولية باستخدام طريقة استخراج مختلفة بنسبة 77.19%).",
+      "نهائي: تطابق 514/514 حقلاً (100%). مرحلة وسيطة في 21 يونيو: 77.19% → نهائي: 100% بعد تصحيحات المحلل والمرجع الذهبي، تم التحقق مباشرة مقابل هذه النسخة المنشورة.",
     statusKind: "superseded",
     statusLabel: "مستبدَل",
     currentStatusNote:
-      "تحقق تاريخي متبادل. منذ 22 يونيو 2026 أصبح مصدر الإنتاج هو نسخة Sacred Books of the East الممسوحة من أكسفورد (انظر الإدخال التالي).",
+      "تحقق تاريخي متبادل. إعادة تحقق مستقلة في اليوم نفسه أغلقت الفجوات المتبقية. منذ 22 يونيو 2026 أصبح مصدر الإنتاج هو نسخة Sacred Books of the East الممسوحة من أكسفورد (انظر الإدخال التالي).",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1396,20 +1366,37 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     verificationDate: "22 يونيو 2026",
     method: "مقارنة تلقائية حقل بحقل مقابل ملف PDF ممسوح من أكسفورد للنسخة الأصلية.",
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
-    result: "تطابق 514/514 حقلاً (100%).",
+    result: "نهائي: تطابق 514/514 حقلاً (100%).",
     statusKind: "current",
     statusLabel: "مصدر الإنتاج الحالي",
     currentStatusNote: "هذا هو المرجع الذهبي الذي يتحقق التطبيق مقابله اليوم.",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "Zhou Yi: أول تدقيق وتصحيح الحروف",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "21 يونيو 2026",
+    method:
+      "أول مقارنة تلقائية حقل بحقل (verify:hexagram-fidelity). كشف التدقيق عن حروف خاطئة ومكررة في مجموعة البيانات (هكس 31 咸/鹹؛ تصادم تسمية هكس 19). أُعيد تحميل الحزمة من ctext.org وأُعيد التحقق في اليوم نفسه.",
+    standardCompared: "卦辭، 大象، والخطوط الستة لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
+    result:
+      "نهائي: تطابق 514/514 حقلاً (100%). مرحلة وسيطة في 21 يونيو: 90.66% → نهائي: 100% بعد إعادة التحميل وتصحيح المحلل.",
+    statusKind: "superseded",
+    statusLabel: "مستبدَل",
+    currentStatusNote:
+      "أول مرحلة جودة كشفت فساد مجموعة البيانات وأغلقت الدورة عند 100%. أُعيد التأكيد في 23 يونيو 2026 (انظر الإدخال التالي).",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: النص الصيني الكلاسيكي",
+    title: "Zhou Yi: إعادة التأكيد",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "21 يونيو 2026 (أُعيد التأكيد في 22-23 يونيو 2026)",
-    method: "مقارنة تلقائية حقل بحقل مقابل النص الذي تقدمه واجهة برمجة التطبيقات وصفحات HTML الخاصة بـ ctext.org.",
+    verificationDate: "23 يونيو 2026",
+    method:
+      "إعادة تشغيل مستقلة لـ verify:hexagram-fidelity بالإضافة إلى بوابات الفساد (scan:zhouyi-corruption, check:hex-glyph-uniqueness) في 22-23 يونيو 2026.",
     standardCompared: "卦辭، 大象، والخطوط الستة لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
-    result: "تطابق 514/514 حقلاً (100%).",
+    result: "نهائي: تطابق 514/514 حقلاً (100%)، مع صفر مؤشرات فساد.",
     statusKind: "permanent",
     statusLabel: "مصدر الإنتاج الدائم",
     currentStatusNote:
@@ -1444,26 +1431,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
   },
 ];
 
-const REPORTS_HI: AuditReportEntry[] = [
-  {
-    id: "library-commentary-2026-06-24",
-    date: "24 जून 2026",
-    title: "लाइब्रेरी: शास्त्रीय टिप्पणी और अकॉर्डियन UI",
-    summary:
-      "फ़ीचर रिलीज़: हेक्साग्राम लाइब्रेरी में वैकल्पिक शास्त्रीय टिप्पणी (विल्हेम और लेग), जो निर्णय, छवि और हर रेखा के पास विस्तार योग्य \"+\" के रूप में दिखती है। परिणाम: उत्तीर्ण। केवल लाइब्रेरी के लिए, परामर्श के दौरान कभी AI को नहीं भेजी जाती।",
-    status: "closed",
-    statusLabel: "बंद",
-  },
-  {
-    id: "line-reading-selector-2026-06-20",
-    date: "20 जून 2026",
-    title: "दोहरी पठन प्रणालियाँ (Huang या Zhu Xi)",
-    summary:
-      "फ़ीचर रिलीज़: उपयोगकर्ता द्वारा चयन योग्य Huang या Zhu Xi बदलती-रेखा पठन। परिणाम: पास। ऐप में दोनों प्रणालियाँ उपलब्ध।",
-    status: "closed",
-    statusLabel: "बंद",
-  },
-];
+const REPORTS_HI: AuditReportEntry[] = [];
 
 const BLOCKS_HI: AuditSourceBlock[] = [
   {
@@ -1477,10 +1445,11 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     standardCompared:
       "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें हेक्साग्राम 1 और 2 के विशेष पाठ 用九/用六 शामिल हैं (कुल 514 फ़ील्ड)।",
     result:
-      "514/514 फ़ील्ड मेल खाए (100%), एक्सट्रैक्टर सुधार के दो चरणों के बाद (94.94% → 99.81% → 100%, वेब मिरर में शामिल न किए गए 6 फ़ील्ड को मुद्रित संस्करण से पूरा किया गया)।",
+      "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)। मध्यवर्ती चरण: 94.94% → 99.81% → 100%; अंतिम 6 फ़ील्ड मुद्रित संस्करण से पूरे किए गए जहाँ वेब मिरर में अंतराल थे।",
     statusKind: "superseded",
     statusLabel: "प्रतिस्थापित",
-    currentStatusNote: "ऐतिहासिक क्रॉस-चेक। 22 जून 2026 से उत्पादन स्रोत मुद्रित संस्करण है (अगली प्रविष्टि देखें)।",
+    currentStatusNote:
+      "ऐतिहासिक क्रॉस-चेक। उसी दिन स्वतंत्र पुनः-सत्यापन ने हार्नेस के गलत सकारात्मक सुधारे और वास्तविक 100% की पुष्टि की। 22 जून 2026 से उत्पादन स्रोत मुद्रित संस्करण है (अगली प्रविष्टि देखें)।",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1491,7 +1460,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     method:
       "मुद्रित संस्करण के OCR पाठ और ऐप द्वारा परोसे गए पाठ के बीच स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना (verify:hexagram-fidelity)।",
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
-    result: "514/514 फ़ील्ड मेल खाए (100%)।",
+    result: "अंतिम: 513/513 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
     statusLabel: "वर्तमान उत्पादन स्रोत",
     currentStatusNote: "यह वह स्वर्ण संदर्भ है जिसके विरुद्ध ऐप आज सत्यापित होता है।",
@@ -1505,11 +1474,11 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     method: "स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना (verify:hexagram-fidelity)।",
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result:
-      "514/514 फ़ील्ड मेल खाए (100%), इस स्रोत से सीधे पुनः-निष्कर्षण के बाद (एक अलग स्क्रैपिंग का उपयोग करने वाला प्रारंभिक प्रयास 77.19% मेल खाया था)।",
+      "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)। 21 जून का मध्यवर्ती चरण: 77.19% → अंतिम: 100% पार्सर और गोल्ड सुधार के बाद, इस प्रकाशित संस्करण के विरुद्ध सीधे सत्यापित।",
     statusKind: "superseded",
     statusLabel: "प्रतिस्थापित",
     currentStatusNote:
-      "ऐतिहासिक क्रॉस-चेक। 22 जून 2026 से उत्पादन स्रोत ऑक्सफ़ोर्ड का Sacred Books of the East स्कैन है (अगली प्रविष्टि देखें)।",
+      "ऐतिहासिक क्रॉस-चेक। उसी दिन स्वतंत्र पुनः-सत्यापन ने शेष अंतराल बंद किए। 22 जून 2026 से उत्पादन स्रोत ऑक्सफ़ोर्ड का Sacred Books of the East स्कैन है (अगली प्रविष्टि देखें)।",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1519,20 +1488,37 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     verificationDate: "22 जून 2026",
     method: "मूल संस्करण के ऑक्सफ़ोर्ड-स्कैन किए गए PDF के विरुद्ध स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना।",
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
-    result: "514/514 फ़ील्ड मेल खाए (100%)।",
+    result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
     statusLabel: "वर्तमान उत्पादन स्रोत",
     currentStatusNote: "यह वह स्वर्ण संदर्भ है जिसके विरुद्ध ऐप आज सत्यापित होता है।",
   },
   {
+    id: "zhouyi-ctext-initial-2026-06-21",
+    category: "oracle-text",
+    title: "Zhou Yi: पहला ऑडिट और अक्षर सुधार",
+    source: CITATIONS.zhouyiCtext,
+    verificationDate: "21 जून 2026",
+    method:
+      "पहली स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना (verify:hexagram-fidelity)। ऑडिट ने डेटासेट में गलत और दोहरे अक्षर पाए (hex 31 咸/鹹; hex 19 लेबल टकराव)। बंडल ctext.org से पुनः लोड किया गया और उसी दिन पुनः सत्यापित।",
+    standardCompared: "सभी 64 हेक्साग्राम का 卦辭, 大象, और 6 रेखाएँ, जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
+    result:
+      "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)। 21 जून का मध्यवर्ती चरण: 90.66% → अंतिम: 100% पुनः लोड और पार्सर सुधार के बाद।",
+    statusKind: "superseded",
+    statusLabel: "प्रतिस्थापित",
+    currentStatusNote:
+      "पहला गुणवत्ता पास जिसने डेटासेट भ्रष्टाचार उजागर किया और 100% पर चक्र पूरा किया। 23 जून 2026 को पुनः पुष्टि (अगली प्रविष्टि देखें)।",
+  },
+  {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: शास्त्रीय चीनी पाठ",
+    title: "Zhou Yi: पुनः पुष्टि",
     source: CITATIONS.zhouyiCtext,
-    verificationDate: "21 जून 2026 (22-23 जून 2026 को पुनः पुष्टि की गई)",
-    method: "ctext.org के API और HTML पृष्ठों द्वारा परोसे गए पाठ के विरुद्ध स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना।",
+    verificationDate: "23 जून 2026",
+    method:
+      "22-23 जून 2026 को verify:hexagram-fidelity का स्वतंत्र पुनः-चालन और भ्रष्टाचार गेट (scan:zhouyi-corruption, check:hex-glyph-uniqueness)।",
     standardCompared: "सभी 64 हेक्साग्राम का 卦辭, 大象, और 6 रेखाएँ, जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
-    result: "514/514 फ़ील्ड मेल खाए (100%)।",
+    result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%), शून्य भ्रष्टाचार ध्वज।",
     statusKind: "permanent",
     statusLabel: "स्थायी उत्पादन स्रोत",
     currentStatusNote:
@@ -1569,6 +1555,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
 
 const EN_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Fidelity Audits",
+  oracleTextSectionHeading: "I Ching oracle texts",
+  mutationRulesSectionHeading: "Changing-line mutation rules",
   blockSourceLabel: "Source",
   blockMethodLabel: "Method",
   blockStandardLabel: "Standard compared",
@@ -1578,6 +1566,8 @@ const EN_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const ES_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Auditorías de fidelidad",
+  oracleTextSectionHeading: "Textos del oráculo del I Ching",
+  mutationRulesSectionHeading: "Reglas de mutación de líneas cambiantes",
   blockSourceLabel: "Fuente",
   blockMethodLabel: "Método",
   blockStandardLabel: "Estándar comparado",
@@ -1587,6 +1577,8 @@ const ES_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const PT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Auditorias de fidelidade",
+  oracleTextSectionHeading: "Textos do oráculo do I Ching",
+  mutationRulesSectionHeading: "Regras de mutação de linhas móveis",
   blockSourceLabel: "Fonte",
   blockMethodLabel: "Método",
   blockStandardLabel: "Padrão comparado",
@@ -1596,6 +1588,8 @@ const PT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const FR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Audits de fidélité",
+  oracleTextSectionHeading: "Textes oraculaires du I Ching",
+  mutationRulesSectionHeading: "Règles de mutation des lignes changeantes",
   blockSourceLabel: "Source",
   blockMethodLabel: "Méthode",
   blockStandardLabel: "Norme comparée",
@@ -1605,6 +1599,8 @@ const FR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const DE_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Fidelitätsprüfungen",
+  oracleTextSectionHeading: "I-Ching-Orakeltexte",
+  mutationRulesSectionHeading: "Mutationsregeln für wechselnde Linien",
   blockSourceLabel: "Quelle",
   blockMethodLabel: "Methode",
   blockStandardLabel: "Verglichener Standard",
@@ -1614,6 +1610,8 @@ const DE_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const IT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Audit di fedeltà",
+  oracleTextSectionHeading: "Testi oracolari dell'I Ching",
+  mutationRulesSectionHeading: "Regole di mutazione delle linee mutanti",
   blockSourceLabel: "Fonte",
   blockMethodLabel: "Metodo",
   blockStandardLabel: "Standard confrontato",
@@ -1623,6 +1621,8 @@ const IT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const JA_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "忠実度監査",
+  oracleTextSectionHeading: "I Ching オラクルテキスト",
+  mutationRulesSectionHeading: "変爻の解釈規則",
   blockSourceLabel: "出典",
   blockMethodLabel: "方法",
   blockStandardLabel: "比較基準",
@@ -1632,6 +1632,8 @@ const JA_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const ZH_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "保真审计",
+  oracleTextSectionHeading: "I Ching 卦辞文本",
+  mutationRulesSectionHeading: "变爻解读规则",
   blockSourceLabel: "来源",
   blockMethodLabel: "方法",
   blockStandardLabel: "比对标准",
@@ -1641,6 +1643,8 @@ const ZH_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const KO_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "충실도 감사",
+  oracleTextSectionHeading: "I Ching 오라클 텍스트",
+  mutationRulesSectionHeading: "변효 해석 규칙",
   blockSourceLabel: "출처",
   blockMethodLabel: "방법",
   blockStandardLabel: "비교 기준",
@@ -1650,6 +1654,8 @@ const KO_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const AR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "تدقيقات المطابقة",
+  oracleTextSectionHeading: "نصوص أوراكل I Ching",
+  mutationRulesSectionHeading: "قواعد تحول الخطوط المتغيرة",
   blockSourceLabel: "المصدر",
   blockMethodLabel: "الطريقة",
   blockStandardLabel: "المعيار المُقارَن",
@@ -1659,6 +1665,8 @@ const AR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 
 const HI_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "निष्ठा ऑडिट",
+  oracleTextSectionHeading: "I Ching ओरेकल पाठ",
+  mutationRulesSectionHeading: "बदलती रेखाओं के परिवर्तन नियम",
   blockSourceLabel: "स्रोत",
   blockMethodLabel: "विधि",
   blockStandardLabel: "तुलना मानक",

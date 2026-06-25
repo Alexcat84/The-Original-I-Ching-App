@@ -4992,6 +4992,7 @@ html[data-theme="dark"] .verdict-pill--silent {
   --audit-timeline-line: color-mix(in srgb, var(--accent) 38%, var(--bar-border));
   --audit-timeline-text: color-mix(in srgb, var(--card-title) 78%, var(--accent));
   --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 72%, var(--accent));
+  --audit-timeline-date-active: #0a7a6e;
   list-style: none;
   margin: 0.35rem 0 0;
   padding: 0;
@@ -5001,6 +5002,20 @@ html[data-theme="dark"] .audit-timeline {
   --audit-timeline-line: color-mix(in srgb, var(--fg) 28%, transparent);
   --audit-timeline-text: color-mix(in srgb, var(--fg) 86%, var(--accent));
   --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 82%, var(--accent));
+  --audit-timeline-date-active: #4fd9c8;
+}
+
+.audit-timeline-section + .audit-timeline-section {
+  margin-top: 1.35rem;
+}
+
+.audit-timeline-section__heading {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--audit-timeline-text-muted);
 }
 
 .doc-article--audits-timeline {
@@ -5070,7 +5085,7 @@ html[data-theme="dark"] .audit-timeline {
 }
 
 .audit-timeline__date--active {
-  color: var(--accent);
+  color: var(--audit-timeline-date-active);
 }
 
 .audit-timeline__date--muted {
