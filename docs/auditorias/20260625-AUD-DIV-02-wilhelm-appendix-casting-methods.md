@@ -3,7 +3,7 @@
 
 **Fecha apertura:** 2026-06-25  
 **Auditoría anterior:** [`00000000-AUD-DIV-01 divination-methods`](./00000000-AUD-DIV-01-divination-methods.md) (cerrada 2026-05-19; referencia matemática general, **sin** gold TXT del apéndice Princeton)  
-**Canal público `/audits`:** fuera de alcance (esta AU es algoritmo de tirada, no fidelidad de textos oraculares)
+**Canal público `/audits`:** sección `divination-method` (2 entradas: verificación inicial 2026-05-19 superseded + Apéndice I 2026-06-25 current)
 
 ---
 
@@ -430,7 +430,7 @@ Comando: `npm run verify:divination-wilhelm-appendix` (acepta `--trials N` para 
 - [x] Veredicto por bloque B (§6.B), D (§6.D), F (§6.F) — A/C/E quedan con veredicto provisional, sin hallazgo abierto
 - [ ] Actualizar AUD-DIV-01 con enlace «superseded parcialmente por DIV-02» o merge
 - [x] Decisión producto H-DIV-02-01: **fix** (sin alternativa documentada, se sigue el libro) — ver §6.B
-- [x] **No** publicado en `/audits` — sin cambio de alcance público en esta AU
+- [x] **Publicado en `/audits`** — sección `divination-method` (WF-DOC-03 §5.4), 2026-06-25
 
 ---
 

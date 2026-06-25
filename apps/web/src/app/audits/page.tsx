@@ -27,6 +27,7 @@ function groupTimelineByCategory(
 ): { category: NonNullable<AuditTimelineEntry["category"]>; entries: AuditTimelineEntry[] }[] {
   const order: NonNullable<AuditTimelineEntry["category"]>[] = [
     "oracle-text",
+    "divination-method",
     "library-commentary",
     "mutation-rule",
   ];
@@ -113,6 +114,8 @@ function sectionHeading(
   switch (category) {
     case "oracle-text":
       return a.oracleTextSectionHeading;
+    case "divination-method":
+      return a.divinationMethodSectionHeading;
     case "library-commentary":
       return a.libraryCommentarySectionHeading;
     case "mutation-rule":
@@ -131,10 +134,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${a.title} | The Original I Ching App`,
     description:
-      "Audit dates, reference editions, and pass outcomes for I Ching oracle texts and changing-line rules.",
+      "Audit dates, reference editions, and pass outcomes for I Ching oracle texts, casting methods, and changing-line rules.",
     openGraph: {
       title: `${a.title} | The Original I Ching App`,
-      description: "Public audit log: dates, sources, and outcomes.",
+      description: "Public audit log: dates, sources, and outcomes for texts, casting, and rules.",
     },
     ...buildCanonicalMetadata("/audits"),
   };
