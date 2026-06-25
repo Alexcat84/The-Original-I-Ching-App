@@ -172,12 +172,16 @@ for (const locale of SUPPORTED_LOCALES) {
 
   const audits = getAuditsPageUiMessages(locale);
   check(
-    `P2.3 [${locale}] audits log has the library-commentary-2026-06-24 entry`,
-    audits.reports.some((r) => r.id === "library-commentary-2026-06-24"),
+    `P2.3 [${locale}] audits timeline has the library-commentary-2026-06-24 entry`,
+    audits.timeline.some((entry) => entry.id === "library-commentary-2026-06-24"),
   );
   check(
-    `P2.3 [${locale}] audits lastUpdated reflects 24, not the stale 22`,
-    /24/.test(audits.lastUpdated) && !/\b22\b/.test(audits.lastUpdated),
+    `P2.3 [${locale}] audits timeline is sorted newest first`,
+    audits.timeline[0]?.id === "library-commentary-2026-06-24",
+  );
+  check(
+    `P2.3 [${locale}] audits timeline has 9 entries`,
+    audits.timeline.length === 9,
   );
 }
 

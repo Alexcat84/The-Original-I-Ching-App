@@ -139,6 +139,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `00000000-BRIEF-ANM-02 submit-reveal-redesign` | ANM | Brief submit/reveal | reference | [00000000-BRIEF-ANM-02-submit-reveal-redesign.md](./00000000-BRIEF-ANM-02-submit-reveal-redesign.md) |
 | `20260614-AUD-ANM-03 tick-pacing` | ANM | Tick pacing ritual | closed | [20260614-AUD-ANM-03-tick-pacing.md](./20260614-AUD-ANM-03-tick-pacing.md) |
 | `20260622-AUD-DOC-01 user-docs-vs-implementation` | DOC | Docs producto vs código | closed | [20260622-AUD-DOC-01-user-docs-vs-implementation.md](./20260622-AUD-DOC-01-user-docs-vs-implementation.md) |
+| `20260625-PLAN-DOC-04 audits-timeline-ui` | DOC | Plan timeline único `/audits` | closed | [20260625-PLAN-DOC-04-audits-timeline-ui.md](./20260625-PLAN-DOC-04-audits-timeline-ui.md) |
 | `20260616-AUD-SEC-01 npm-dependencies` | SEC | Dependencias npm | open | [20260616-AUD-SEC-01-npm-dependencies.md](./20260616-AUD-SEC-01-npm-dependencies.md) |
 | `00000000-RPT-ARCH-01 architecture-fullstack` | ARCH | Arquitectura full-stack | reference | [00000000-RPT-ARCH-01-architecture-fullstack.md](./00000000-RPT-ARCH-01-architecture-fullstack.md) |
 | `00000000-AUD-DIV-01 divination-methods` | DIV | Métodos adivinación | closed | [00000000-AUD-DIV-01-divination-methods.md](./00000000-AUD-DIV-01-divination-methods.md) |

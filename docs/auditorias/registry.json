@@ -861,6 +861,20 @@
         "00000000-AUD-SUP-01 supabase-db-stability"
       ],
       "relatedTests": []
+    },
+    {
+      "code": "20260625-PLAN-DOC-04 audits-timeline-ui",
+      "title": "Plan: /audits single timeline UI",
+      "shortName": "audits-timeline-ui",
+      "type": "PLAN",
+      "family": "DOC",
+      "date": "2026-06-25",
+      "status": "closed",
+      "path": "docs/auditorias/20260625-PLAN-DOC-04-audits-timeline-ui.md",
+      "relatedCodes": [
+        "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
+      ],
+      "relatedTests": []
     }
   ]
 }

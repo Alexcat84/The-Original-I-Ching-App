@@ -47,28 +47,100 @@ export type AuditSourceBlock = {
   currentStatusNote: string;
 };
 
+export type AuditTimelineEntryKind = "verification" | "release";
+
+/** One row in the public `/audits` timeline (blocks + feature releases merged). */
+export type AuditTimelineEntry = {
+  id: string;
+  kind: AuditTimelineEntryKind;
+  verificationDateIso: string;
+  headline: string;
+  statusKind: AuditBlockStatusKind;
+  statusLabel: string;
+  source?: AuditSourceCitation;
+  method?: string;
+  standardCompared?: string;
+  result?: string;
+  currentStatusNote?: string;
+};
+
 export type AuditsPageUiMessages = {
+  /** Page `<title>` / Open Graph only; not rendered in the article body. */
   title: string;
-  lead: string;
-  lastUpdatedLabel: string;
-  lastUpdated: string;
-  introHeading: string;
-  introBody: string;
-  oracleTextsHeading: string;
-  oracleTextsBody: string;
-  mutationRulesHeading: string;
-  mutationRulesIntro: string;
   blockSourceLabel: string;
-  blockDateLabel: string;
   blockMethodLabel: string;
   blockStandardLabel: string;
   blockResultLabel: string;
   blockStatusLabel: string;
-  sourceBlocks: AuditSourceBlock[];
-  reportsHeading: string;
-  reports: AuditReportEntry[];
-  seeAlsoNotes: string;
+  timeline: AuditTimelineEntry[];
 };
+
+/** Sort metadata keyed by block/report id (ISO date is locale-neutral). */
+const TIMELINE_META: Record<string, { verificationDateIso: string; sortOrder: number }> = {
+  "library-commentary-2026-06-24": { verificationDateIso: "2026-06-24", sortOrder: 0 },
+  "legge-oxford-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 0 },
+  "wilhelm-pantheon-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 1 },
+  "huang-mutation-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 2 },
+  "zhuxi-adler-mutation-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 3 },
+  "zhouyi-ctext-2026-06-21": { verificationDateIso: "2026-06-23", sortOrder: 0 },
+  "wilhelm-parma-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 0 },
+  "legge-sacred-texts-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 1 },
+  "line-reading-selector-2026-06-20": { verificationDateIso: "2026-06-20", sortOrder: 0 },
+};
+
+function timelineMetaFor(id: string): { verificationDateIso: string; sortOrder: number } {
+  const meta = TIMELINE_META[id];
+  if (!meta) {
+    throw new Error(`Missing TIMELINE_META for audit entry "${id}"`);
+  }
+  return meta;
+}
+
+function blockToTimelineEntry(block: AuditSourceBlock): AuditTimelineEntry & { sortOrder: number } {
+  const { verificationDateIso, sortOrder } = timelineMetaFor(block.id);
+  return {
+    id: block.id,
+    kind: "verification",
+    verificationDateIso,
+    sortOrder,
+    headline: block.title,
+    statusKind: block.statusKind,
+    statusLabel: block.statusLabel,
+    source: block.source,
+    method: block.method,
+    standardCompared: block.standardCompared,
+    result: block.result,
+    currentStatusNote: block.currentStatusNote,
+  };
+}
+
+function reportToTimelineEntry(report: AuditReportEntry): AuditTimelineEntry & { sortOrder: number } {
+  const { verificationDateIso, sortOrder } = timelineMetaFor(report.id);
+  return {
+    id: report.id,
+    kind: "release",
+    verificationDateIso,
+    sortOrder,
+    headline: report.title,
+    statusKind: "current",
+    statusLabel: report.statusLabel,
+    result: report.summary,
+    currentStatusNote: report.summary,
+  };
+}
+
+function buildTimeline(
+  blocks: AuditSourceBlock[],
+  reports: AuditReportEntry[],
+): AuditTimelineEntry[] {
+  return [...blocks.map(blockToTimelineEntry), ...reports.map(reportToTimelineEntry)]
+    .sort((a, b) => {
+      const byDate = b.verificationDateIso.localeCompare(a.verificationDateIso);
+      if (byDate !== 0) return byDate;
+      return a.sortOrder - b.sortOrder;
+    })
+    .map(({ sortOrder: _sortOrder, ...entry }) => entry);
+}
 
 /**
  * Shared APA 7 citations for verification sources. Author/title/publisher
@@ -1496,301 +1568,150 @@ const BLOCKS_HI: AuditSourceBlock[] = [
   },
 ];
 
-const EN_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const EN_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Fidelity Audits",
-  lead:
-    "We verify oracle texts and changing-line rules against named classical editions. This page lists audit dates, sources, and outcomes.",
-  lastUpdatedLabel: "Last updated",
-  lastUpdated: "25 June 2026",
-  introHeading: "What we publish here",
-  introBody:
-    "Each block below documents one source comparison: which edition we verified against, when, how, which textual fields we checked, and the exact result. The goal is to maintain absolute fidelity to the classical texts and apply the same verification standard a serious academic edition would use.",
-  oracleTextsHeading: "Oracle texts (Wilhelm, Legge, Zhou Yi)",
-  oracleTextsBody: "Three classical sources, each verified independently and shown below.",
-  mutationRulesHeading: "Changing-line reading rules",
-  mutationRulesIntro:
-    "The app offers two classical systems. Each is checked against its named source book, shown below.",
   blockSourceLabel: "Source",
-  blockDateLabel: "Verification date",
   blockMethodLabel: "Method",
   blockStandardLabel: "Standard compared",
   blockResultLabel: "Result",
   blockStatusLabel: "Status",
-  reportsHeading: "Other updates",
-  seeAlsoNotes:
-    "For historical context of the casting methods, see Method Notes. For how to use the app, see the User Guide.",
 };
 
-const ES_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const ES_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Auditorías de fidelidad",
-  lead:
-    "Verificamos textos del oráculo y reglas de líneas cambiantes contra ediciones clásicas nombradas. Esta página lista fechas, fuentes y resultados.",
-  lastUpdatedLabel: "Última actualización",
-  lastUpdated: "25 de junio de 2026",
-  introHeading: "Qué publicamos aquí",
-  introBody:
-    "Cada bloque a continuación documenta la comparación contra una sola fuente: qué edición verificamos, cuándo, cómo, qué campos textuales revisamos y el resultado exacto. El objetivo es mantener la fidelidad absoluta de los textos clásicos y aplicar el mismo estándar de verificación que usaría una edición académica seria.",
-  oracleTextsHeading: "Textos del oráculo (Wilhelm, Legge, Zhou Yi)",
-  oracleTextsBody: "Tres fuentes clásicas, cada una verificada de forma independiente y mostrada a continuación.",
-  mutationRulesHeading: "Reglas de lectura de líneas cambiantes",
-  mutationRulesIntro:
-    "La app ofrece dos sistemas clásicos. Cada uno se contrasta con su libro fuente indicado, mostrado a continuación.",
   blockSourceLabel: "Fuente",
-  blockDateLabel: "Fecha de verificación",
   blockMethodLabel: "Método",
   blockStandardLabel: "Estándar comparado",
   blockResultLabel: "Resultado",
   blockStatusLabel: "Estado",
-  reportsHeading: "Otras actualizaciones",
-  seeAlsoNotes:
-    "Para contexto histórico de los métodos de tirada, ver Notas de métodos. Para uso de la app, ver la Guía de uso.",
 };
 
-const PT_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const PT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Auditorias de fidelidade",
-  lead:
-    "Verificamos os textos do oráculo e as regras de linhas mutantes contra edições clássicas nomeadas. Esta página lista datas de auditoria, fontes e resultados.",
-  lastUpdatedLabel: "Última atualização",
-  lastUpdated: "24 de junho de 2026",
-  introHeading: "O que publicamos aqui",
-  introBody:
-    "Cada bloco abaixo documenta a comparação contra uma única fonte: qual edição verificámos, quando, como, quais campos textuais revisámos e o resultado exato. O objetivo é manter a fidelidade absoluta aos textos clássicos e aplicar o mesmo padrão de verificação que uma edição académica séria usaria.",
-  oracleTextsHeading: "Textos do oráculo (Wilhelm, Legge, Zhou Yi)",
-  oracleTextsBody: "Três fontes clássicas, cada uma verificada de forma independente e mostrada a seguir.",
-  mutationRulesHeading: "Regras de leitura de linhas mutantes",
-  mutationRulesIntro:
-    "A app oferece dois sistemas clássicos. Cada um é verificado contra o seu livro-fonte indicado, mostrado a seguir.",
   blockSourceLabel: "Fonte",
-  blockDateLabel: "Data de verificação",
   blockMethodLabel: "Método",
   blockStandardLabel: "Padrão comparado",
   blockResultLabel: "Resultado",
   blockStatusLabel: "Estado",
-  reportsHeading: "Outras atualizações",
-  seeAlsoNotes:
-    "Para o contexto histórico dos métodos de tiragem, ver Notas de método. Para saber como usar a app, ver o Guia do utilizador.",
 };
 
-const FR_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const FR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Audits de fidélité",
-  lead:
-    "Nous vérifions les textes de l'oracle et les règles de lignes changeantes par rapport à des éditions classiques nommées. Cette page liste les dates d'audit, les sources et les résultats.",
-  lastUpdatedLabel: "Dernière mise à jour",
-  lastUpdated: "24 juin 2026",
-  introHeading: "Ce que nous publions ici",
-  introBody:
-    "Chaque bloc ci-dessous documente une comparaison avec une seule source : quelle édition nous avons vérifiée, quand, comment, quels champs textuels nous avons contrôlés, et le résultat exact. L'objectif est de maintenir une fidélité absolue aux textes classiques et d'appliquer le même standard de vérification qu'une édition académique sérieuse.",
-  oracleTextsHeading: "Textes de l'oracle (Wilhelm, Legge, Zhou Yi)",
-  oracleTextsBody: "Trois sources classiques, chacune vérifiée indépendamment et présentée ci-dessous.",
-  mutationRulesHeading: "Règles de lecture des lignes changeantes",
-  mutationRulesIntro:
-    "L'app propose deux systèmes classiques. Chacun est vérifié par rapport à son livre source nommé, présenté ci-dessous.",
   blockSourceLabel: "Source",
-  blockDateLabel: "Date de vérification",
   blockMethodLabel: "Méthode",
   blockStandardLabel: "Norme comparée",
   blockResultLabel: "Résultat",
   blockStatusLabel: "Statut",
-  reportsHeading: "Autres mises à jour",
-  seeAlsoNotes:
-    "Pour le contexte historique des méthodes de tirage, voir les Notes sur les méthodes. Pour savoir comment utiliser l'app, voir le Guide de l'utilisateur.",
 };
 
-const DE_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const DE_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Fidelitätsprüfungen",
-  lead:
-    "Wir prüfen Orakeltexte und Regeln für wechselnde Linien gegen namentlich genannte klassische Ausgaben. Diese Seite listet Prüfdaten, Quellen und Ergebnisse auf.",
-  lastUpdatedLabel: "Zuletzt aktualisiert",
-  lastUpdated: "24. Juni 2026",
-  introHeading: "Was wir hier veröffentlichen",
-  introBody:
-    "Jeder Block unten dokumentiert einen Quellenvergleich: welche Ausgabe wir geprüft haben, wann, wie, welche Textfelder wir kontrolliert haben und das genaue Ergebnis. Das Ziel ist absolute Treue zu den klassischen Texten und die Anwendung desselben Prüfstandards, den eine seriöse wissenschaftliche Ausgabe anwenden würde.",
-  oracleTextsHeading: "Orakeltexte (Wilhelm, Legge, Zhou Yi)",
-  oracleTextsBody: "Drei klassische Quellen, jede unabhängig geprüft und unten dargestellt.",
-  mutationRulesHeading: "Regeln zum Lesen wechselnder Linien",
-  mutationRulesIntro:
-    "Die App bietet zwei klassische Systeme an. Jedes wird gegen sein benanntes Quellbuch geprüft, unten dargestellt.",
   blockSourceLabel: "Quelle",
-  blockDateLabel: "Prüfdatum",
   blockMethodLabel: "Methode",
   blockStandardLabel: "Verglichener Standard",
   blockResultLabel: "Ergebnis",
   blockStatusLabel: "Status",
-  reportsHeading: "Weitere Aktualisierungen",
-  seeAlsoNotes:
-    "Für den historischen Kontext der Orakelmethoden siehe die Methodenhinweise. Für die Nutzung der App siehe den Benutzerleitfaden.",
 };
 
-const IT_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const IT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Audit di fedeltà",
-  lead:
-    "Verifichiamo i testi dell'oracolo e le regole delle linee mutanti rispetto a edizioni classiche nominate. Questa pagina elenca date di audit, fonti e risultati.",
-  lastUpdatedLabel: "Ultimo aggiornamento",
-  lastUpdated: "24 giugno 2026",
-  introHeading: "Cosa pubblichiamo qui",
-  introBody:
-    "Ogni blocco qui sotto documenta il confronto con una singola fonte: quale edizione abbiamo verificato, quando, come, quali campi testuali abbiamo controllato e il risultato esatto. L'obiettivo è mantenere la fedeltà assoluta ai testi classici e applicare lo stesso standard di verifica che useresti per un'edizione accademica seria.",
-  oracleTextsHeading: "Testi dell'oracolo (Wilhelm, Legge, Zhou Yi)",
-  oracleTextsBody: "Tre fonti classiche, ciascuna verificata in modo indipendente e mostrata qui sotto.",
-  mutationRulesHeading: "Regole di lettura delle linee mutanti",
-  mutationRulesIntro:
-    "L'app offre due sistemi classici. Ciascuno è verificato rispetto al proprio libro fonte indicato, mostrato qui sotto.",
   blockSourceLabel: "Fonte",
-  blockDateLabel: "Data di verifica",
   blockMethodLabel: "Metodo",
   blockStandardLabel: "Standard confrontato",
   blockResultLabel: "Risultato",
   blockStatusLabel: "Stato",
-  reportsHeading: "Altri aggiornamenti",
-  seeAlsoNotes:
-    "Per il contesto storico dei metodi di consultazione, vedi le Note sui metodi. Per come usare l'app, vedi la Guida utente.",
 };
 
-const JA_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const JA_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "忠実度監査",
-  lead:
-    "神託文と変爻ルールを、明示された古典版と照合して検証します。このページには監査日、出典、結果を記載します。",
-  lastUpdatedLabel: "最終更新",
-  lastUpdated: "2026年6月24日",
-  introHeading: "ここに掲載する内容",
-  introBody:
-    "以下の各ブロックは、1つの出典との比較を記録します。どの版を参照に検証したか、いつ、どのように、どのテキストフィールドを確認したか、そして正確な結果です。目的は古典文献への絶対的な忠実性を保ち、本格的な学術版と同じ検証基準を適用することです。",
-  oracleTextsHeading: "神託文（Wilhelm、Legge、周易）",
-  oracleTextsBody: "3つの古典的出典、それぞれが独立して検証され、以下に示されています。",
-  mutationRulesHeading: "変爻の読み方ルール",
-  mutationRulesIntro:
-    "アプリは2つの古典的な体系を提供します。それぞれが指定された原典と照合され、以下に示されています。",
   blockSourceLabel: "出典",
-  blockDateLabel: "検証日",
   blockMethodLabel: "方法",
   blockStandardLabel: "比較基準",
   blockResultLabel: "結果",
   blockStatusLabel: "状態",
-  reportsHeading: "その他の更新",
-  seeAlsoNotes:
-    "占法の歴史的背景については方法ノートを参照してください。アプリの使い方についてはユーザーガイドを参照してください。",
 };
 
-const ZH_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const ZH_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "保真审计",
-  lead:
-    "我们将神谕文本和变爻规则与指定的经典版本进行核对。本页列出审计日期、来源和结果。",
-  lastUpdatedLabel: "最后更新",
-  lastUpdated: "2026年6月24日",
-  introHeading: "本页发布内容",
-  introBody:
-    "下面每个区块记录一次与单一来源的比对：我们核对了哪个版本、何时、如何核对、检查了哪些文本字段，以及确切的结果。目的是对经典文本保持绝对的忠实，并采用严肃学术版本会使用的同等核验标准。",
-  oracleTextsHeading: "神谕文本（卫礼贤、理雅各、周易）",
-  oracleTextsBody: "三个经典来源，各自独立核验，结果见下方。",
-  mutationRulesHeading: "变爻阅读规则",
-  mutationRulesIntro: "应用提供两种经典体系，每种均对照其指定的原始文献进行核对，结果见下方。",
   blockSourceLabel: "来源",
-  blockDateLabel: "核验日期",
   blockMethodLabel: "方法",
   blockStandardLabel: "比对标准",
   blockResultLabel: "结果",
   blockStatusLabel: "状态",
-  reportsHeading: "其他更新",
-  seeAlsoNotes: "占法的历史背景请参见方法说明。应用使用方法请参见用户指南。",
 };
 
-const KO_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const KO_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "충실도 감사",
-  lead:
-    "신탁문과 변효 규칙을 명시된 고전판과 대조하여 검증합니다. 이 페이지에는 감사 날짜, 출처, 결과가 나열됩니다.",
-  lastUpdatedLabel: "최종 업데이트",
-  lastUpdated: "2026년 6월 24일",
-  introHeading: "여기에 게시하는 내용",
-  introBody:
-    "아래 각 블록은 단일 출처와의 비교를 기록합니다. 어떤 판본을 대조했는지, 언제, 어떻게, 어떤 텍스트 필드를 확인했는지, 그리고 정확한 결과입니다. 목표는 고전 문헌에 대한 절대적 충실성을 유지하고, 정통 학술판이 사용할 동일한 검증 기준을 적용하는 것입니다.",
-  oracleTextsHeading: "신탁문(Wilhelm, Legge, 주역)",
-  oracleTextsBody: "세 가지 고전 출처, 각각 독립적으로 검증되어 아래에 표시됩니다.",
-  mutationRulesHeading: "변효 읽기 규칙",
-  mutationRulesIntro:
-    "앱은 두 가지 고전 체계를 제공합니다. 각각 지정된 원전과 대조하여 검증하며, 아래에 표시됩니다.",
   blockSourceLabel: "출처",
-  blockDateLabel: "검증 날짜",
   blockMethodLabel: "방법",
   blockStandardLabel: "비교 기준",
   blockResultLabel: "결과",
   blockStatusLabel: "상태",
-  reportsHeading: "기타 업데이트",
-  seeAlsoNotes:
-    "점법의 역사적 배경은 방법 노트를 참조하세요. 앱 사용법은 사용자 가이드를 참조하세요.",
 };
 
-const AR_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const AR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "تدقيقات المطابقة",
-  lead:
-    "نتحقق من نصوص العرافة وقواعد الخطوط المتغيرة مقابل إصدارات كلاسيكية محددة بالاسم. تسرد هذه الصفحة تواريخ التدقيق والمصادر والنتائج.",
-  lastUpdatedLabel: "آخر تحديث",
-  lastUpdated: "24 يونيو 2026",
-  introHeading: "ما ننشره هنا",
-  introBody:
-    "يوثّق كل بلوك أدناه مقارنة مع مصدر واحد: أي إصدار تحققنا منه، ومتى، وكيف، وأي حقول نصية راجعناها، والنتيجة الدقيقة. الهدف هو الحفاظ على المطابقة المطلقة للنصوص الكلاسيكية وتطبيق نفس معيار التحقق الذي تستخدمه طبعة أكاديمية جادة.",
-  oracleTextsHeading: "نصوص الأوراكل (Wilhelm، Legge، Zhou Yi)",
-  oracleTextsBody: "ثلاثة مصادر كلاسيكية، تم التحقق من كل منها بشكل مستقل، وتظهر أدناه.",
-  mutationRulesHeading: "قواعد قراءة الخطوط المتغيرة",
-  mutationRulesIntro:
-    "يقدم التطبيق نظامين كلاسيكيين. يتم التحقق من كل منهما مقابل كتابه المرجعي المحدد، ويظهر أدناه.",
   blockSourceLabel: "المصدر",
-  blockDateLabel: "تاريخ التحقق",
   blockMethodLabel: "الطريقة",
   blockStandardLabel: "المعيار المُقارَن",
   blockResultLabel: "النتيجة",
   blockStatusLabel: "الحالة",
-  reportsHeading: "تحديثات أخرى",
-  seeAlsoNotes:
-    "للسياق التاريخي لطرق العرافة، راجع ملاحظات المنهج. لمعرفة كيفية استخدام التطبيق، راجع دليل المستخدم.",
 };
 
-const HI_BASE: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks"> = {
+const HI_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "निष्ठा ऑडिट",
-  lead:
-    "हम Oracle पाठ और बदलती रेखाओं के नियमों को नामित शास्त्रीय संस्करणों के विरुद्ध सत्यापित करते हैं। इस पृष्ठ पर ऑडिट तिथियाँ, स्रोत और परिणाम सूचीबद्ध हैं।",
-  lastUpdatedLabel: "अंतिम अपडेट",
-  lastUpdated: "24 जून 2026",
-  introHeading: "हम यहाँ क्या प्रकाशित करते हैं",
-  introBody:
-    "नीचे दिया गया हर ब्लॉक एक स्रोत तुलना दर्ज करता है: हमने किस संस्करण के विरुद्ध सत्यापित किया, कब, कैसे, किन टेक्स्ट फ़ील्ड की जाँच की, और सटीक परिणाम। लक्ष्य शास्त्रीय ग्रंथों के प्रति पूर्ण निष्ठा बनाए रखना और वही सत्यापन मानक लागू करना है जो एक गंभीर अकादमिक संस्करण उपयोग करेगा।",
-  oracleTextsHeading: "Oracle पाठ (Wilhelm, Legge, Zhou Yi)",
-  oracleTextsBody: "तीन शास्त्रीय स्रोत, प्रत्येक स्वतंत्र रूप से सत्यापित और नीचे दर्शाए गए।",
-  mutationRulesHeading: "बदलती रेखाओं को पढ़ने के नियम",
-  mutationRulesIntro:
-    "ऐप दो शास्त्रीय प्रणालियाँ प्रदान करता है। प्रत्येक को उसकी नामित स्रोत पुस्तक के विरुद्ध जाँचा जाता है, नीचे दर्शाया गया।",
   blockSourceLabel: "स्रोत",
-  blockDateLabel: "सत्यापन तिथि",
   blockMethodLabel: "विधि",
   blockStandardLabel: "तुलना मानक",
   blockResultLabel: "परिणाम",
   blockStatusLabel: "स्थिति",
-  reportsHeading: "अन्य अपडेट",
-  seeAlsoNotes:
-    "तिरने की विधियों के ऐतिहासिक संदर्भ के लिए विधि नोट्स देखें। ऐप का उपयोग कैसे करें इसके लिए उपयोगकर्ता गाइड देखें।",
 };
 
-function withReports(
-  base: Omit<AuditsPageUiMessages, "reports" | "sourceBlocks">,
+function withTimeline(
+  base: Omit<AuditsPageUiMessages, "timeline">,
   reports: AuditReportEntry[],
   sourceBlocks: AuditSourceBlock[],
 ): AuditsPageUiMessages {
-  return { ...base, reports, sourceBlocks };
+  return { ...base, timeline: buildTimeline(sourceBlocks, reports) };
 }
 
 const AUDITS_PAGE_UI: Record<AppLocale, AuditsPageUiMessages> = {
-  en: withReports(EN_BASE, REPORTS_EN, BLOCKS_EN),
-  es: withReports(ES_BASE, REPORTS_ES, BLOCKS_ES),
-  pt: withReports(PT_BASE, REPORTS_PT, BLOCKS_PT),
-  fr: withReports(FR_BASE, REPORTS_FR, BLOCKS_FR),
-  de: withReports(DE_BASE, REPORTS_DE, BLOCKS_DE),
-  it: withReports(IT_BASE, REPORTS_IT, BLOCKS_IT),
-  ja: withReports(JA_BASE, REPORTS_JA, BLOCKS_JA),
-  zh: withReports(ZH_BASE, REPORTS_ZH, BLOCKS_ZH),
-  ko: withReports(KO_BASE, REPORTS_KO, BLOCKS_KO),
-  ar: withReports(AR_BASE, REPORTS_AR, BLOCKS_AR),
-  hi: withReports(HI_BASE, REPORTS_HI, BLOCKS_HI),
+  en: withTimeline(EN_BASE, REPORTS_EN, BLOCKS_EN),
+  es: withTimeline(ES_BASE, REPORTS_ES, BLOCKS_ES),
+  pt: withTimeline(PT_BASE, REPORTS_PT, BLOCKS_PT),
+  fr: withTimeline(FR_BASE, REPORTS_FR, BLOCKS_FR),
+  de: withTimeline(DE_BASE, REPORTS_DE, BLOCKS_DE),
+  it: withTimeline(IT_BASE, REPORTS_IT, BLOCKS_IT),
+  ja: withTimeline(JA_BASE, REPORTS_JA, BLOCKS_JA),
+  zh: withTimeline(ZH_BASE, REPORTS_ZH, BLOCKS_ZH),
+  ko: withTimeline(KO_BASE, REPORTS_KO, BLOCKS_KO),
+  ar: withTimeline(AR_BASE, REPORTS_AR, BLOCKS_AR),
+  hi: withTimeline(HI_BASE, REPORTS_HI, BLOCKS_HI),
 };
 
 export function getAuditsPageUiMessages(locale: AppLocale): AuditsPageUiMessages {
   return AUDITS_PAGE_UI[locale] ?? AUDITS_PAGE_UI[DEFAULT_LOCALE];
+}
+
+const LOCALE_BCP47: Record<AppLocale, string> = {
+  en: "en-GB",
+  es: "es",
+  pt: "pt",
+  fr: "fr",
+  de: "de",
+  it: "it",
+  ja: "ja",
+  zh: "zh-Hans",
+  ko: "ko",
+  ar: "ar",
+  hi: "hi",
+};
+
+/** Locale-aware long date for the public `/audits` timeline rail. */
+export function formatAuditTimelineDate(iso: string, locale: AppLocale): string {
+  return new Intl.DateTimeFormat(LOCALE_BCP47[locale], {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(`${iso}T12:00:00`));
 }

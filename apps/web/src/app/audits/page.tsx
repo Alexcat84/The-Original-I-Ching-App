@@ -2,68 +2,107 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 import {
+  formatAuditTimelineDate,
   getAuditsPageUiMessages,
   getDocNavUiMessages,
+  type AppLocale,
   type AuditsPageUiMessages,
-  type AuditSourceBlock,
+  type AuditTimelineEntry,
 } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
 
-function AuditBlockCard({
+function timelineDotClass(statusKind: AuditTimelineEntry["statusKind"]): string {
+  if (statusKind === "superseded") return "audit-timeline__dot audit-timeline__dot--muted";
+  return "audit-timeline__dot audit-timeline__dot--active";
+}
+
+function AuditTimelineRow({
   a,
-  block,
+  entry,
+  locale,
 }: {
   a: AuditsPageUiMessages;
-  block: AuditSourceBlock;
+  entry: AuditTimelineEntry;
+  locale: AppLocale;
 }) {
+  const dateLabel = formatAuditTimelineDate(entry.verificationDateIso, locale);
+
   return (
-    <div className="audit-block">
-      <div className="audit-block__head">
-        <h3 className="audit-block__title">{block.title}</h3>
-        <span className={`audit-block__status audit-block__status--${block.statusKind}`}>
-          {block.statusLabel}
-        </span>
+    <li className="audit-timeline__item">
+      <div className="audit-timeline__rail" aria-hidden="true">
+        <time className="audit-timeline__date" dateTime={entry.verificationDateIso}>
+          {dateLabel}
+        </time>
+        <span className={timelineDotClass(entry.statusKind)} />
       </div>
-      <dl className="audit-block__fields">
-        <dt>{a.blockSourceLabel}</dt>
-        <dd>
-          {block.source.citation}
-          <em>{block.source.title}</em>
-          {block.source.rest}
-        </dd>
-        <dt>{a.blockDateLabel}</dt>
-        <dd>{block.verificationDate}</dd>
-        <dt>{a.blockMethodLabel}</dt>
-        <dd>{block.method}</dd>
-        <dt>{a.blockStandardLabel}</dt>
-        <dd>{block.standardCompared}</dd>
-        <dt>{a.blockResultLabel}</dt>
-        <dd>{block.result}</dd>
-        <dt>{a.blockStatusLabel}</dt>
-        <dd>{block.currentStatusNote}</dd>
-      </dl>
-    </div>
+      <div className="audit-timeline__body">
+        <details className="audit-timeline__details">
+          <summary className="audit-timeline__summary">
+            <span className="audit-timeline__headline">{entry.headline}</span>
+            <span className="audit-timeline__status">{entry.statusLabel}</span>
+          </summary>
+          <dl className="audit-timeline__fields">
+            {entry.source ? (
+              <>
+                <dt>{a.blockSourceLabel}</dt>
+                <dd>
+                  {entry.source.citation}
+                  <em>{entry.source.title}</em>
+                  {entry.source.rest}
+                </dd>
+              </>
+            ) : null}
+            {entry.method ? (
+              <>
+                <dt>{a.blockMethodLabel}</dt>
+                <dd>{entry.method}</dd>
+              </>
+            ) : null}
+            {entry.standardCompared ? (
+              <>
+                <dt>{a.blockStandardLabel}</dt>
+                <dd>{entry.standardCompared}</dd>
+              </>
+            ) : null}
+            {entry.result ? (
+              <>
+                <dt>{a.blockResultLabel}</dt>
+                <dd>{entry.result}</dd>
+              </>
+            ) : null}
+            {entry.currentStatusNote && entry.kind === "verification" ? (
+              <>
+                <dt>{a.blockStatusLabel}</dt>
+                <dd>{entry.currentStatusNote}</dd>
+              </>
+            ) : null}
+          </dl>
+        </details>
+      </div>
+    </li>
   );
 }
 
-export const metadata: Metadata = {
-  title: "Fidelity Audits | The Original I Ching App",
-  description:
-    "Audit dates, reference editions, and pass outcomes for I Ching oracle texts and changing-line rules.",
-  openGraph: {
-    title: "Fidelity Audits | The Original I Ching App",
-    description: "Public audit log: dates, sources, and outcomes.",
-  },
-  ...buildCanonicalMetadata("/audits"),
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await resolveDocLocale();
+  const a = getAuditsPageUiMessages(locale);
+
+  return {
+    title: `${a.title} | The Original I Ching App`,
+    description:
+      "Audit dates, reference editions, and pass outcomes for I Ching oracle texts and changing-line rules.",
+    openGraph: {
+      title: `${a.title} | The Original I Ching App`,
+      description: "Public audit log: dates, sources, and outcomes.",
+    },
+    ...buildCanonicalMetadata("/audits"),
+  };
+}
 
 export default async function AuditsPage() {
   const locale = await resolveDocLocale();
   const nav = getDocNavUiMessages(locale);
   const a = getAuditsPageUiMessages(locale);
-
-  const statusClass = (status: string) =>
-    status === "closed" ? "audit-status audit-status--closed" : "audit-status audit-status--ongoing";
 
   return (
     <div className="oracle-shell doc-page">
@@ -74,51 +113,12 @@ export default async function AuditsPage() {
         <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
         <Link href="/terms">{nav.termsShort}</Link>
       </nav>
-      <article className="doc-article">
-        <h1>{a.title}</h1>
-        <p className="doc-lead">{a.lead}</p>
-        <p className="doc-meta">
-          <strong>{a.lastUpdatedLabel}:</strong> {a.lastUpdated}
-        </p>
-
-        <h2>{a.introHeading}</h2>
-        <p>{a.introBody}</p>
-
-        <h2>{a.oracleTextsHeading}</h2>
-        <p>{a.oracleTextsBody}</p>
-        <div className="audit-block-list">
-          {a.sourceBlocks
-            .filter((block) => block.category === "oracle-text")
-            .map((block) => (
-              <AuditBlockCard key={block.id} a={a} block={block} />
-            ))}
-        </div>
-
-        <h2>{a.mutationRulesHeading}</h2>
-        <p>{a.mutationRulesIntro}</p>
-        <div className="audit-block-list">
-          {a.sourceBlocks
-            .filter((block) => block.category === "mutation-rule")
-            .map((block) => (
-              <AuditBlockCard key={block.id} a={a} block={block} />
-            ))}
-        </div>
-
-        <h2>{a.reportsHeading}</h2>
-        <ul className="audit-log-list">
-          {a.reports.map((report) => (
-            <li key={report.id} className="audit-log-entry">
-              <div className="audit-log-entry__head">
-                <time dateTime={report.date}>{report.date}</time>
-                <span className={statusClass(report.status)}>{report.statusLabel}</span>
-              </div>
-              <h3 className="audit-log-entry__title">{report.title}</h3>
-              <p>{report.summary}</p>
-            </li>
+      <article className="doc-article doc-article--audits-timeline">
+        <ol className="audit-timeline">
+          {a.timeline.map((entry) => (
+            <AuditTimelineRow key={entry.id} a={a} entry={entry} locale={locale} />
           ))}
-        </ul>
-
-        <p className="doc-see-also">{a.seeAlsoNotes}</p>
+        </ol>
       </article>
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
