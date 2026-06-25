@@ -1,8 +1,50 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
-import { getAuditsPageUiMessages, getDocNavUiMessages } from "@iching-oracle/i18n";
+import {
+  getAuditsPageUiMessages,
+  getDocNavUiMessages,
+  type AuditsPageUiMessages,
+  type AuditSourceBlock,
+} from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
+
+function AuditBlockCard({
+  a,
+  block,
+}: {
+  a: AuditsPageUiMessages;
+  block: AuditSourceBlock;
+}) {
+  return (
+    <div className="audit-block">
+      <div className="audit-block__head">
+        <h3 className="audit-block__title">{block.title}</h3>
+        <span className={`audit-block__status audit-block__status--${block.statusKind}`}>
+          {block.statusLabel}
+        </span>
+      </div>
+      <dl className="audit-block__fields">
+        <dt>{a.blockSourceLabel}</dt>
+        <dd>
+          {block.source.citation}
+          <em>{block.source.title}</em>
+          {block.source.rest}
+        </dd>
+        <dt>{a.blockDateLabel}</dt>
+        <dd>{block.verificationDate}</dd>
+        <dt>{a.blockMethodLabel}</dt>
+        <dd>{block.method}</dd>
+        <dt>{a.blockStandardLabel}</dt>
+        <dd>{block.standardCompared}</dd>
+        <dt>{a.blockResultLabel}</dt>
+        <dd>{block.result}</dd>
+        <dt>{a.blockStatusLabel}</dt>
+        <dd>{block.currentStatusNote}</dd>
+      </dl>
+    </div>
+  );
+}
 
 export const metadata: Metadata = {
   title: "Fidelity Audits | The Original I Ching App",
@@ -44,13 +86,23 @@ export default async function AuditsPage() {
 
         <h2>{a.oracleTextsHeading}</h2>
         <p>{a.oracleTextsBody}</p>
+        <div className="audit-block-list">
+          {a.sourceBlocks
+            .filter((block) => block.category === "oracle-text")
+            .map((block) => (
+              <AuditBlockCard key={block.id} a={a} block={block} />
+            ))}
+        </div>
 
         <h2>{a.mutationRulesHeading}</h2>
         <p>{a.mutationRulesIntro}</p>
-        <h3>{a.mutationRulesHuangHeading}</h3>
-        <p>{a.mutationRulesHuangBody}</p>
-        <h3>{a.mutationRulesZhuxiHeading}</h3>
-        <p>{a.mutationRulesZhuxiBody}</p>
+        <div className="audit-block-list">
+          {a.sourceBlocks
+            .filter((block) => block.category === "mutation-rule")
+            .map((block) => (
+              <AuditBlockCard key={block.id} a={a} block={block} />
+            ))}
+        </div>
 
         <h2>{a.reportsHeading}</h2>
         <ul className="audit-log-list">
