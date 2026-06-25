@@ -25,7 +25,11 @@ export type AuditSourceCitation = {
 };
 
 export type AuditBlockStatusKind = "current" | "permanent" | "superseded";
-export type AuditBlockCategory = "oracle-text" | "library-commentary" | "mutation-rule";
+export type AuditBlockCategory =
+  | "oracle-text"
+  | "divination-method"
+  | "library-commentary"
+  | "mutation-rule";
 
 /**
  * One verification block = one source comparison. Each block documents a
@@ -71,6 +75,7 @@ export type AuditsPageUiMessages = {
   /** Page `<title>` / Open Graph only; not rendered in the article body. */
   title: string;
   oracleTextSectionHeading: string;
+  divinationMethodSectionHeading: string;
   libraryCommentarySectionHeading: string;
   mutationRulesSectionHeading: string;
   blockVerificationDateLabel: string;
@@ -84,6 +89,7 @@ export type AuditsPageUiMessages = {
 
 /** Sort metadata keyed by block/report id (ISO date is locale-neutral). */
 const TIMELINE_META: Record<string, { verificationDateIso: string; sortOrder: number }> = {
+  "wilhelm-appendix-casting-2026-06-25": { verificationDateIso: "2026-06-25", sortOrder: 0 },
   "zhouyi-ctext-2026-06-21": { verificationDateIso: "2026-06-23", sortOrder: 0 },
   "legge-oxford-pdf-2026-06-22": { verificationDateIso: "2026-06-23", sortOrder: 1 },
   "wilhelm-pantheon-pdf-2026-06-22": { verificationDateIso: "2026-06-23", sortOrder: 2 },
@@ -94,6 +100,7 @@ const TIMELINE_META: Record<string, { verificationDateIso: string; sortOrder: nu
   "wilhelm-parma-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 0 },
   "legge-sacred-texts-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 1 },
   "zhouyi-ctext-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 2 },
+  "divination-math-initial-2026-05-19": { verificationDateIso: "2026-05-19", sortOrder: 0 },
 };
 
 function timelineMetaFor(id: string): { verificationDateIso: string; sortOrder: number } {
@@ -362,6 +369,40 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     statusLabel: "Current production source",
     currentStatusNote: "Available via the Changing-line reading selector in Options.",
   },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "I Ching casting methods: initial verification",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "19 May 2026",
+    method:
+      "Mathematical verification of the engine's probability distributions and step-by-step manual yarrow wizard logic.",
+    standardCompared:
+      "Three-coin line distribution (values 6, 7, 8, 9); yarrow-stalk line distribution (1/16, 5/16, 7/16, 3/16); manual yarrow residue-to-line mapping; parity between automatic casting and manual line entry.",
+    result:
+      "All distribution checks passed. Manual three-coin face assignment was not verified against the published appendix in this pass.",
+    statusKind: "superseded",
+    statusLabel: "Superseded",
+    currentStatusNote:
+      "Reference pass before book-primary comparison against Appendix I of the published edition.",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "I Ching casting methods: verification (published edition)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 Jun 2026",
+    method:
+      "Automated verification of coin and yarrow casting procedures against Appendix I of the Wilhelm/Baynes (1950) published edition, for both automatic and manual consultation paths.",
+    standardCompared:
+      "Appendix I, section 1 (yarrow-stalk oracle): three-round procedure, residue-to-line mapping, and line probabilities. Appendix I, section 2 (coin oracle): inscribed and reverse face values and resulting lines 6, 7, 8, 9.",
+    result:
+      "Final: 7/7 verification checks passed (100%). Coin combinatorics exact; yarrow distribution matches the appendix residue table exactly.",
+    statusKind: "current",
+    statusLabel: "Current production procedures",
+    currentStatusNote:
+      "Both three-coin and yarrow-stalk methods, automatic and manual, follow this appendix today.",
+  },
 ];
 
 const BLOCKS_ES: AuditSourceBlock[] = [
@@ -518,6 +559,40 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     statusKind: "current",
     statusLabel: "Fuente de producción vigente",
     currentStatusNote: "Disponible mediante el selector «Lectura de líneas cambiantes» en Opciones.",
+  },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Métodos de tirada del I Ching: verificación inicial",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "19 may 2026",
+    method:
+      "Verificación matemática de las distribuciones de probabilidad del motor y de la lógica paso a paso del asistente manual de varas.",
+    standardCompared:
+      "Distribución de líneas con tres monedas (valores 6, 7, 8, 9); distribución con varas de milenrama (1/16, 5/16, 7/16, 3/16); mapeo manual de restos de varas a línea; paridad entre tirada automática e ingreso manual de líneas.",
+    result:
+      "Todas las comprobaciones de distribución aprobaron. La asignación manual de cara/reverso en tres monedas no se verificó contra el apéndice publicado en esta pasada.",
+    statusKind: "superseded",
+    statusLabel: "Reemplazada",
+    currentStatusNote:
+      "Pasada de referencia antes de la comparación book-primary contra el Apéndice I de la edición publicada.",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "Métodos de tirada del I Ching: verificación (edición publicada)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 jun 2026",
+    method:
+      "Verificación automatizada de los procedimientos de tirada con monedas y varas contra el Apéndice I de la edición publicada Wilhelm/Baynes (1950), en rutas automática y manual.",
+    standardCompared:
+      "Apéndice I, sección 1 (oráculo de varas): procedimiento de tres rondas, mapeo de restos a línea y probabilidades de línea. Apéndice I, sección 2 (oráculo de monedas): valores de cara inscrita y reverso y líneas resultantes 6, 7, 8, 9.",
+    result:
+      "Final: 7/7 comprobaciones aprobadas (100%). Combinatoria de monedas exacta; la distribución de varas coincide exactamente con la tabla de restos del apéndice.",
+    statusKind: "current",
+    statusLabel: "Procedimientos de producción vigentes",
+    currentStatusNote:
+      "Tres monedas y varas de milenrama, automático y manual, siguen este apéndice hoy.",
   },
 ];
 
@@ -676,6 +751,40 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     statusLabel: "Fonte de produção atual",
     currentStatusNote: "Disponível através do seletor «Leitura de linhas mutantes» em Opções.",
   },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Métodos de consulta do I Ching: verificação inicial",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "19 de maio de 2026",
+    method:
+      "Verificação matemática das distribuições de probabilidade do motor e da lógica passo a passo do assistente manual de varetas.",
+    standardCompared:
+      "Distribuição de linhas com três moedas (valores 6, 7, 8, 9); distribuição com varetas de mil-folhas (1/16, 5/16, 7/16, 3/16); mapeamento manual de restos de varetas para linha; paridade entre lançamento automático e entrada manual de linhas.",
+    result:
+      "Todas as verificações de distribuição passaram. A atribuição manual de face/reverso em três moedas não foi verificada contra o apêndice publicado nesta passagem.",
+    statusKind: "superseded",
+    statusLabel: "Substituída",
+    currentStatusNote:
+      "Passagem de referência antes da comparação book-primary contra o Apêndice I da edição publicada.",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "Métodos de consulta do I Ching: verificação (edição publicada)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 de junho de 2026",
+    method:
+      "Verificação automatizada dos procedimentos de consulta com moedas e varetas contra o Apêndice I da edição publicada Wilhelm/Baynes (1950), em percursos automático e manual.",
+    standardCompared:
+      "Apêndice I, secção 1 (oráculo de varetas): procedimento de três rondas, mapeamento de restos para linha e probabilidades de linha. Apêndice I, secção 2 (oráculo de moedas): valores de face inscrita e reverso e linhas resultantes 6, 7, 8, 9.",
+    result:
+      "Final: 7/7 verificações aprovadas (100%). Combinatória de moedas exacta; a distribuição de varetas coincide exactamente com a tabela de restos do apêndice.",
+    statusKind: "current",
+    statusLabel: "Procedimentos de produção actuais",
+    currentStatusNote:
+      "Três moedas e varetas de mil-folhas, automático e manual, seguem este apêndice hoje.",
+  },
 ];
 
 const BLOCKS_FR: AuditSourceBlock[] = [
@@ -833,6 +942,40 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     statusLabel: "Source de production actuelle",
     currentStatusNote: "Disponible via le sélecteur « Lecture des lignes changeantes » dans Options.",
   },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Méthodes de tirage du Yi King : vérification initiale",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "19 mai 2026",
+    method:
+      "Vérification mathématique des distributions de probabilité du moteur et de la logique pas à pas de l'assistant manuel des tiges d'achillée.",
+    standardCompared:
+      "Distribution des lignes à trois pièces (valeurs 6, 7, 8, 9) ; distribution des tiges d'achillée (1/16, 5/16, 7/16, 3/16) ; correspondance manuelle restes de tiges vers ligne ; parité entre tirage automatique et saisie manuelle des lignes.",
+    result:
+      "Toutes les vérifications de distribution ont réussi. L'attribution manuelle face/revers des trois pièces n'a pas été vérifiée contre l'appendice publié lors de cette passe.",
+    statusKind: "superseded",
+    statusLabel: "Remplacée",
+    currentStatusNote:
+      "Passe de référence avant la comparaison book-primary contre l'Appendice I de l'édition publiée.",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "Méthodes de tirage du Yi King : vérification (édition publiée)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 juin 2026",
+    method:
+      "Vérification automatisée des procédures de tirage à pièces et à tiges contre l'Appendice I de l'édition publiée Wilhelm/Baynes (1950), pour les parcours automatique et manuel.",
+    standardCompared:
+      "Appendice I, section 1 (oracle des tiges) : procédure en trois tours, correspondance restes-ligne et probabilités de ligne. Appendice I, section 2 (oracle des pièces) : valeurs face inscrite et revers et lignes résultantes 6, 7, 8, 9.",
+    result:
+      "Final : 7/7 vérifications réussies (100 %). Combinatoire des pièces exacte ; la distribution des tiges correspond exactement au tableau des restes de l'appendice.",
+    statusKind: "current",
+    statusLabel: "Procédures de production actuelles",
+    currentStatusNote:
+      "Trois pièces et tiges d'achillée, automatique et manuel, suivent cet appendice aujourd'hui.",
+  },
 ];
 
 const BLOCKS_DE: AuditSourceBlock[] = [
@@ -988,6 +1131,40 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     statusKind: "current",
     statusLabel: "Aktuelle Produktionsquelle",
     currentStatusNote: "Verfügbar über die Auswahl „Lesart wechselnder Linien“ in den Optionen.",
+  },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "I-Ching-Werfmethode: erste Verifikation",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "19. Mai 2026",
+    method:
+      "Mathematische Verifikation der Wahrscheinlichkeitsverteilungen der Engine und der schrittweisen Logik des manuellen Yarrow-Assistenten.",
+    standardCompared:
+      "Dreimünzen-Linienverteilung (Werte 6, 7, 8, 9); Yarrow-Stängel-Linienverteilung (1/16, 5/16, 7/16, 3/16); manuelle Yarrow-Rest-zu-Linie-Zuordnung; Parität zwischen automatischem Werfen und manueller Linieneingabe.",
+    result:
+      "Alle Verteilungsprüfungen bestanden. Die manuelle Zuordnung von Vorder-/Rückseite bei drei Münzen wurde in diesem Durchlauf nicht gegen den veröffentlichten Anhang geprüft.",
+    statusKind: "superseded",
+    statusLabel: "Ersetzt",
+    currentStatusNote:
+      "Referenzdurchlauf vor dem book-primary-Vergleich gegen Anhang I der veröffentlichten Ausgabe.",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "I-Ching-Werfmethode: Verifikation (veröffentlichte Ausgabe)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25. Juni 2026",
+    method:
+      "Automatisierte Verifikation der Münz- und Yarrow-Werfverfahren gegen Anhang I der veröffentlichten Ausgabe Wilhelm/Baynes (1950), für automatische und manuelle Konsultationswege.",
+    standardCompared:
+      "Anhang I, Abschnitt 1 (Yarrow-Stängel-Orakel): dreirundiges Verfahren, Rest-zu-Linie-Zuordnung und Linienwahrscheinlichkeiten. Anhang I, Abschnitt 2 (Münzorakel): Werte der eingeprägten und der Rückseite sowie resultierende Linien 6, 7, 8, 9.",
+    result:
+      "Final: 7/7 Verifikationsprüfungen bestanden (100 %). Münzkombinatorik exakt; Yarrow-Verteilung entspricht exakt der Resttabelle des Anhangs.",
+    statusKind: "current",
+    statusLabel: "Aktuelle Produktionsverfahren",
+    currentStatusNote:
+      "Dreimünzen- und Yarrow-Stängel-Methode, automatisch und manuell, folgen diesem Anhang heute.",
   },
 ];
 
@@ -1145,6 +1322,40 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     statusLabel: "Fonte di produzione attuale",
     currentStatusNote: "Disponibile tramite il selettore «Lettura delle linee mutanti» in Opzioni.",
   },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Metodi di consultazione dell'I Ching: verifica iniziale",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "19 maggio 2026",
+    method:
+      "Verifica matematica delle distribuzioni di probabilità del motore e della logica passo passo della procedura guidata manuale delle stoppie di achillea.",
+    standardCompared:
+      "Distribuzione delle linee con tre monete (valori 6, 7, 8, 9); distribuzione con stoppie di achillea (1/16, 5/16, 7/16, 3/16); mappatura manuale dei resti delle stoppie alla linea; parità tra lancio automatico e inserimento manuale delle linee.",
+    result:
+      "Tutti i controlli di distribuzione superati. L'assegnazione manuale faccia/retro delle tre monete non è stata verificata contro l'appendice pubblicata in questo passaggio.",
+    statusKind: "superseded",
+    statusLabel: "Sostituita",
+    currentStatusNote:
+      "Passaggio di riferimento prima del confronto book-primary contro l'Appendice I dell'edizione pubblicata.",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "Metodi di consultazione dell'I Ching: verifica (edizione pubblicata)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 giugno 2026",
+    method:
+      "Verifica automatizzata delle procedure di consultazione con monete e stoppie contro l'Appendice I dell'edizione pubblicata Wilhelm/Baynes (1950), per percorsi automatico e manuale.",
+    standardCompared:
+      "Appendice I, sezione 1 (oracolo delle stoppie): procedura in tre round, mappatura resti-linea e probabilità di linea. Appendice I, sezione 2 (oracolo delle monete): valori faccia incisa e retro e linee risultanti 6, 7, 8, 9.",
+    result:
+      "Finale: 7/7 controlli di verifica superati (100%). Combinatoria delle monete esatta; la distribuzione delle stoppie coincide esattamente con la tabella dei resti dell'appendice.",
+    statusKind: "current",
+    statusLabel: "Procedure di produzione attuali",
+    currentStatusNote:
+      "Tre monete e stoppie di achillea, automatico e manuale, seguono questo appendice oggi.",
+  },
 ];
 
 const BLOCKS_JA: AuditSourceBlock[] = [
@@ -1294,6 +1505,40 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     statusLabel: "現行の本番ソース",
     currentStatusNote: "オプション内の「変爻の読み方」セレクターから利用可能。",
   },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "I Ching 占い方法: 初回検証",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "2026年5月19日",
+    method:
+      "エンジンの確率分布と、手動蓍草ウィザードの段階的ロジックに対する数学的検証。",
+    standardCompared:
+      "三枚コインの爻分布（値6、7、8、9）；蓍草法の爻分布（1/16、5/16、7/16、3/16）；手動蓍草の余りから爻への対応；自動占いと手入力の一致。",
+    result:
+      "すべての分布チェックに合格。三枚コインの手動表裏割当は、この段階では刊行版付録との照合対象外。",
+    statusKind: "superseded",
+    statusLabel: "置換済み",
+    currentStatusNote:
+      "刊行版付録Iとの book-primary 比較の前の参照パス。",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "I Ching 占い方法: 検証（刊行版）",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "2026年6月25日",
+    method:
+      "Wilhelm/Baynes（1950）刊行版付録Iに対する、コインと蓍草の占い手順の自動検証（自動・手動の両経路）。",
+    standardCompared:
+      "付録I第1節（蓍草占）: 三回の手順、余りから爻への対応、爻の確率。付録I第2節（コイン占）: 表側・裏側の値と結果爻6、7、8、9。",
+    result:
+      "最終: 7/7の検証チェック合格（100%）。コインの組合せは厳密一致；蓍草分布は付録の余り表と完全一致。",
+    statusKind: "current",
+    statusLabel: "現行の本番手順",
+    currentStatusNote:
+      "三枚コインと蓍草法（自動・手動）は、いずれも本付録に従います。",
+  },
 ];
 
 const BLOCKS_ZH: AuditSourceBlock[] = [
@@ -1440,6 +1685,35 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     statusKind: "current",
     statusLabel: "当前生产来源",
     currentStatusNote: "可通过「选项」中的变爻读法选择器使用。",
+  },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "I Ching 占筮方法: 初次验证",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "2026年5月19日",
+    method: "对引擎概率分布与手动蓍草向导逐步逻辑进行数学验证。",
+    standardCompared:
+      "三枚钱币的爻分布（值6、7、8、9）；蓍草法的爻分布（1/16、5/16、7/16、3/16）；手动蓍草余数到爻的映射；自动占筮与手动录入的一致性。",
+    result: "所有分布检查通过。三枚钱币的手动正反面赋值在本轮未对照出版附录验证。",
+    statusKind: "superseded",
+    statusLabel: "已被取代",
+    currentStatusNote: "对照出版版附录I进行 book-primary 比较之前的参考轮次。",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "I Ching 占筮方法: 验证（出版版）",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "2026年6月25日",
+    method:
+      "对照 Wilhelm/Baynes（1950）出版版附录I，对钱币与蓍草占筮程序进行自动验证（自动与手动路径）。",
+    standardCompared:
+      "附录I第1节（蓍草占）: 三轮程序、余数到爻的映射与爻概率。附录I第2节（钱币占）: 字面与反面的值及结果爻6、7、8、9。",
+    result: "最终: 7/7项验证通过（100%）。钱币组合论精确；蓍草分布与附录余数表完全一致。",
+    statusKind: "current",
+    statusLabel: "当前生产程序",
+    currentStatusNote: "三枚钱币与蓍草法（自动与手动）均遵循本附录。",
   },
 ];
 
@@ -1589,6 +1863,38 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     statusLabel: "현재 운영 출처",
     currentStatusNote: "옵션의 「변효 읽기」 선택기를 통해 이용 가능.",
   },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "I Ching 점복 방법: 초기 검증",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "2026년 5월 19일",
+    method:
+      "엔진의 확률 분포와 수동 시초 마법사의 단계별 논리에 대한 수학적 검증.",
+    standardCompared:
+      "세 동전 효 분포(값 6, 7, 8, 9); 시초법 효 분포(1/16, 5/16, 7/16, 3/16); 수동 시초 나머지-효 매핑; 자동 점복과 수동 입력 간 일치.",
+    result:
+      "모든 분포 검사 통과. 세 동전의 수동 앞뒷면 할당은 이번 단계에서 출판 부록과 대조하지 않음.",
+    statusKind: "superseded",
+    statusLabel: "대체됨",
+    currentStatusNote: "출판판 부록 I과의 book-primary 비교 이전의 참조 단계.",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "I Ching 점복 방법: 검증(출판판)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "2026년 6월 25일",
+    method:
+      "Wilhelm/Baynes(1950) 출판판 부록 I에 대해 동전 및 시초 점복 절차를 자동·수동 경로 모두 검증.",
+    standardCompared:
+      "부록 I 제1절(시초 점복): 3라운드 절차, 나머지-효 매핑, 효 확률. 부록 I 제2절(동전 점복): 앞면·뒷면 값과 결과 효 6, 7, 8, 9.",
+    result:
+      "최종: 7/7 검증 항목 통과(100%). 동전 조합론 정확; 시초 분포는 부록 나머지 표와 정확히 일치.",
+    statusKind: "current",
+    statusLabel: "현재 운영 절차",
+    currentStatusNote: "세 동전과 시초법(자동·수동) 모두 이 부록을 따릅니다.",
+  },
 ];
 
 const BLOCKS_AR: AuditSourceBlock[] = [
@@ -1737,6 +2043,38 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     statusKind: "current",
     statusLabel: "مصدر الإنتاج الحالي",
     currentStatusNote: "متاح عبر محدد «قراءة الخطوط المتغيرة» في الخيارات.",
+  },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "طرق استخبار I Ching: التحقق الأولي",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "19 مايو 2026",
+    method:
+      "تحقق رياضي من توزيعات الاحتمال في المحرك ومن منطق معالج العصي اليدوي خطوة بخطوة.",
+    standardCompared:
+      "توزيع الخطوط بثلاث عملات (القيم 6 و7 و8 و9)؛ توزيع عصي الميلفويل (1/16 و5/16 و7/16 و3/16)؛ مطابقة بقايا العصي اليدوية إلى خط؛ تطابق بين الاستخبار التلقائي والإدخال اليدوي للخطوط.",
+    result:
+      "اجتازت جميع فحوص التوزيع. لم يُتحقق من تعيين الوجه/الظهر اليدوي لثلاث عملات مقابل الملحق المنشور في هذه الجولة.",
+    statusKind: "superseded",
+    statusLabel: "مستبدَل",
+    currentStatusNote: "جولة مرجعية قبل المقارنة book-primary مع الملحق I للطبعة المنشورة.",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "طرق استخبار I Ching: التحقق (الطبعة المنشورة)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 يونيو 2026",
+    method:
+      "تحقق آلي من إجراءات استخبار العملات والعصي مقابل الملحق I من طبعة Wilhelm/Baynes (1950) المنشورة، للمسارين التلقائي واليدوي.",
+    standardCompared:
+      "الملحق I، القسم 1 (oracle العصي): إجراء ثلاث جولات، مطابقة البقايا إلى خط، واحتمالات الخط. الملحق I، القسم 2 (oracle العملات): قيم الوجه المنقوش والظهر والخطوط الناتجة 6 و7 و8 و9.",
+    result:
+      "نهائي: 7/7 فحوص تحقق ناجحة (100%). تركيب العملات دقيق؛ توزيع العصي يطابق جدول البقايا في الملحق تمامًا.",
+    statusKind: "current",
+    statusLabel: "إجراءات الإنتاج الحالية",
+    currentStatusNote: "ثلاث عملات وعصي الميلفويل، تلقائيًا ويدويًا، تتبع هذا الملحق اليوم.",
   },
 ];
 
@@ -1888,11 +2226,46 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     statusLabel: "वर्तमान उत्पादन स्रोत",
     currentStatusNote: "विकल्पों में «बदलती-रेखा पठन» चयनकर्ता के माध्यम से उपलब्ध।",
   },
+  {
+    id: "divination-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "I Ching कास्टिंग विधियाँ: प्रारंभिक सत्यापन",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "19 मई 2026",
+    method:
+      "इंजन की संभाव्यता वितरण और चरण-दर-चरण मैन्युअल यैरो विज़ार्ड तर्क का गणितीय सत्यापन।",
+    standardCompared:
+      "तीन सिक्कों की रेखा वितरण (मान 6, 7, 8, 9); यैरो-स्टॉक रेखा वितरण (1/16, 5/16, 7/16, 3/16); मैन्युअल यैरो अवशेष-से-रेखा मैपिंग; स्वचालित कास्टिंग और मैन्युअल प्रविष्टि के बीच समानता।",
+    result:
+      "सभी वितरण जाँच पास। तीन सिक्कों का मैन्युअल अग्र/पृष्ठ असाइनमेंट इस दौर में प्रकाशित परिशिष्ट के विरुद्ध सत्यापित नहीं हुआ।",
+    statusKind: "superseded",
+    statusLabel: "प्रतिस्थापित",
+    currentStatusNote:
+      "प्रकाशित संस्करण के परिशिष्ट I के साथ book-primary तुलना से पहले का संदर्भ दौर।",
+  },
+  {
+    id: "wilhelm-appendix-casting-2026-06-25",
+    category: "divination-method",
+    title: "I Ching कास्टिंग विधियाँ: सत्यापन (प्रकाशित संस्करण)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 जून 2026",
+    method:
+      "Wilhelm/Baynes (1950) प्रकाशित संस्करण के परिशिष्ट I के विरुद्ध सिक्का और यैरो कास्टिंग प्रक्रियाओं का स्वचालित सत्यापन, स्वचालित और मैन्युअल दोनों मार्गों के लिए।",
+    standardCompared:
+      "परिशिष्ट I, अनुभाग 1 (यैरो-स्टॉक oracle): तीन-राउंड प्रक्रिया, अवशेष-से-रेखा मैपिंग, और रेखा संभावनाएँ। परिशिष्ट I, अनुभाग 2 (सिक्का oracle): अंकित और पृष्ठ मान और परिणामी रेखाएँ 6, 7, 8, 9।",
+    result:
+      "अंतिम: 7/7 सत्यापन जाँच पास (100%)। सिक्का संयोजनशास्त्र सटीक; यैरो वितरण परिशिष्ट अवशेष तालिका से बिल्कुल मेल खाता है।",
+    statusKind: "current",
+    statusLabel: "वर्तमान उत्पादन प्रक्रियाएँ",
+    currentStatusNote:
+      "तीन सिक्के और यैरो-स्टॉक विधि, स्वचालित और मैन्युअल, आज इस परिशिष्ट का पालन करती हैं।",
+  },
 ];
 
 const EN_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Fidelity Audits",
   oracleTextSectionHeading: "I Ching oracle texts",
+  divinationMethodSectionHeading: "I Ching casting methods",
   libraryCommentarySectionHeading: "Classical commentaries (Wilhelm, Legge, Confucius)",
   mutationRulesSectionHeading: "Changing-line mutation rules",
   blockVerificationDateLabel: "Date verified",
@@ -1906,6 +2279,7 @@ const EN_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const ES_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Auditorías de fidelidad",
   oracleTextSectionHeading: "Textos del oráculo del I Ching",
+  divinationMethodSectionHeading: "Métodos de tirada del I Ching",
   libraryCommentarySectionHeading: "Comentarios clásicos (Wilhelm, Legge, Confucio)",
   mutationRulesSectionHeading: "Reglas de mutación de líneas cambiantes",
   blockVerificationDateLabel: "Fecha de verificación",
@@ -1919,6 +2293,7 @@ const ES_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const PT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Auditorias de fidelidade",
   oracleTextSectionHeading: "Textos do oráculo do I Ching",
+  divinationMethodSectionHeading: "Métodos de consulta do I Ching",
   libraryCommentarySectionHeading: "Comentários clássicos (Wilhelm, Legge, Confúcio)",
   mutationRulesSectionHeading: "Regras de mutação de linhas móveis",
   blockVerificationDateLabel: "Data de verificação",
@@ -1932,6 +2307,7 @@ const PT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const FR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Audits de fidélité",
   oracleTextSectionHeading: "Textes oraculaires du I Ching",
+  divinationMethodSectionHeading: "Méthodes de tirage du Yi King",
   libraryCommentarySectionHeading: "Commentaires classiques (Wilhelm, Legge, Confucius)",
   mutationRulesSectionHeading: "Règles de mutation des lignes changeantes",
   blockVerificationDateLabel: "Date de vérification",
@@ -1945,6 +2321,7 @@ const FR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const DE_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Fidelitätsprüfungen",
   oracleTextSectionHeading: "I-Ching-Orakeltexte",
+  divinationMethodSectionHeading: "I-Ching-Werfmethode",
   libraryCommentarySectionHeading: "Klassische Kommentare (Wilhelm, Legge, Konfuzius)",
   mutationRulesSectionHeading: "Mutationsregeln für wechselnde Linien",
   blockVerificationDateLabel: "Prüfdatum",
@@ -1958,6 +2335,7 @@ const DE_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const IT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Audit di fedeltà",
   oracleTextSectionHeading: "Testi oracolari dell'I Ching",
+  divinationMethodSectionHeading: "Metodi di consultazione dell'I Ching",
   libraryCommentarySectionHeading: "Commenti classici (Wilhelm, Legge, Confucio)",
   mutationRulesSectionHeading: "Regole di mutazione delle linee mutanti",
   blockVerificationDateLabel: "Data di verifica",
@@ -1971,6 +2349,7 @@ const IT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const JA_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "忠実度監査",
   oracleTextSectionHeading: "I Ching オラクルテキスト",
+  divinationMethodSectionHeading: "I Ching 占い方法",
   libraryCommentarySectionHeading: "古典注釈（Wilhelm・Legge・孔子）",
   mutationRulesSectionHeading: "変爻の解釈規則",
   blockVerificationDateLabel: "検証日",
@@ -1984,6 +2363,7 @@ const JA_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const ZH_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "保真审计",
   oracleTextSectionHeading: "I Ching 卦辞文本",
+  divinationMethodSectionHeading: "I Ching 占筮方法",
   libraryCommentarySectionHeading: "古典注释（卫礼贤、理雅各、孔子）",
   mutationRulesSectionHeading: "变爻解读规则",
   blockVerificationDateLabel: "验证日期",
@@ -1997,6 +2377,7 @@ const ZH_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const KO_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "충실도 감사",
   oracleTextSectionHeading: "I Ching 오라클 텍스트",
+  divinationMethodSectionHeading: "I Ching 점복 방법",
   libraryCommentarySectionHeading: "고전 주석 (Wilhelm, Legge, 공자)",
   mutationRulesSectionHeading: "변효 해석 규칙",
   blockVerificationDateLabel: "검증 날짜",
@@ -2010,6 +2391,7 @@ const KO_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const AR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "تدقيقات المطابقة",
   oracleTextSectionHeading: "نصوص أوراكل I Ching",
+  divinationMethodSectionHeading: "طرق استخبار I Ching",
   libraryCommentarySectionHeading: "شروح تقليدية (Wilhelm، Legge، Confucius)",
   mutationRulesSectionHeading: "قواعد تحول الخطوط المتغيرة",
   blockVerificationDateLabel: "تاريخ التحقق",
@@ -2023,6 +2405,7 @@ const AR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const HI_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "निष्ठा ऑडिट",
   oracleTextSectionHeading: "I Ching ओरेकल पाठ",
+  divinationMethodSectionHeading: "I Ching कास्टिंग विधियाँ",
   libraryCommentarySectionHeading: "शास्त्रीय टिप्पणियाँ (Wilhelm, Legge, Confucius)",
   mutationRulesSectionHeading: "बदलती रेखाओं के परिवर्तन नियम",
   blockVerificationDateLabel: "सत्यापन तिथि",

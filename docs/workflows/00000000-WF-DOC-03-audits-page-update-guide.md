@@ -23,7 +23,7 @@ público**: copy, estructura, patrones de título y gates de regresión.
 | Sí | No |
 |----|-----|
 | Registro **público** de verificaciones de fidelidad (fechas, fuente APA, método, estándar, resultado, estado) | Informe técnico con logs, diffs, comandos internos, IDs de fixtures |
-| Tres **auditorías independientes** documentadas en secciones distintas | Una sola línea temporal que mezcle oráculo, comentarios de biblioteca y mutación |
+| Cuatro **auditorías independientes** documentadas en secciones distintas | Una sola línea temporal que mezcle oráculo, métodos de tirada, comentarios y mutación |
 | Títulos **autodescriptivos** sin referencias cruzadas («ver entrada anterior») | «Reconfirmación», «verificación final», «edición publicada» sueltos sin contexto |
 | Citas APA 7 en `CITATIONS` (no traducidas) | Decir «PDF Pantheon» o «Sacred Books» como título de entrada |
 
@@ -56,6 +56,7 @@ npm run build --workspace=@iching-oracle/i18n
 
 ```text
 oracle-text          → Textos del oráculo (514 campos: juicio/imagen/6 líneas/用九用六)
+divination-method    → Métodos de tirada I Ching (tres monedas y varas de milenrama, auto/manual)
 library-commentary   → Comentarios académicos de biblioteca W/L (auditoría independiente del oráculo)
 mutation-rule        → Reglas de reducción de líneas cambiantes (Huang / Zhu Xi)
 ```
@@ -68,8 +69,9 @@ auditoría interna cerró el día anterior.
 Orden de secciones en pantalla (fijo en `page.tsx`):
 
 1. `oracle-text`
-2. `library-commentary`
-3. `mutation-rule`
+2. `divination-method`
+3. `library-commentary`
+4. `mutation-rule`
 
 Dentro de cada sección, las filas siguen el **timeline global** ordenado por
 `verificationDateIso` descendente + `sortOrder` (§3.4).
@@ -117,6 +119,8 @@ Ejemplos vigentes:
 | `legge-commentary-txt-maestro-2026-06-23` | library-commentary |
 | `huang-mutation-pdf-2026-06-22` | mutation-rule |
 | `zhuxi-adler-mutation-pdf-2026-06-22` | mutation-rule |
+| `divination-math-initial-2026-05-19` | divination-method (superseded) |
+| `wilhelm-appendix-casting-2026-06-25` | divination-method (current) |
 
 **Nunca reutilizar un `id`** para otro alcance. Si la auditoría cambia de forma sustancial, crea
 entrada nueva y marca la anterior `superseded` (oráculo) o deja histórico según §5.
@@ -245,14 +249,28 @@ del algoritmo). Esos detalles viven en `docs/auditorias/` y en los harnesses, no
 | `Changing-line rules: Alfred Huang` | `Reglas de líneas cambiantes: Alfred Huang` |
 | `Changing-line rules: Zhu Xi (classical)` | `Reglas de líneas cambiantes: Zhu Xi (clásico)` |
 
+### 5.4 Métodos de tirada (`divination-method`)
+
+Gold público: **Apéndice I** de Wilhelm/Baynes (1950), misma cita APA que `wilhelmPantheon`.
+
+| Situación | Patrón EN | Patrón ES |
+|-----------|-----------|-----------|
+| Primera pasada (matemática, sin apéndice book-primary) | `I Ching casting methods: initial verification` | `Métodos de tirada del I Ching: verificación inicial` |
+| Verificación contra edición publicada (Apéndice I) | `I Ching casting methods: verification (published edition)` | `Métodos de tirada del I Ching: verificación (edición publicada)` |
+
+Encabezado de sección (11 locales): EN `I Ching casting methods` / ES `Métodos de tirada del I Ching`.
+
+**Copy público:** describir procedimiento de monedas y varas (auto y manual). No mencionar harnesses, TXT, `verify:*`, ni simuladores internos. Huesos de Oráculo (Keightley) queda fuera de esta sección hasta AU book-primary dedicada.
+
 ---
 
-## 6. Catálogo vigente (10 entradas)
+## 6. Catálogo vigente (12 entradas)
 
 Actualizar esta tabla cuando cambie el catálogo.
 
 | id | Categoría | ISO rail | Título EN (headline) | statusKind |
 |----|-----------|----------|----------------------|------------|
+| `wilhelm-appendix-casting-2026-06-25` | divination-method | 2026-06-25 | I Ching casting methods: verification (published edition) | current |
 | `wilhelm-commentary-txt-maestro-2026-06-23` | library-commentary | 2026-06-24 | Classical commentaries: Wilhelm/Baynes | current |
 | `legge-commentary-txt-maestro-2026-06-23` | library-commentary | 2026-06-24 | Classical commentaries: James Legge | current |
 | `zhouyi-ctext-2026-06-21` | oracle-text | 2026-06-23 | Zhou Yi: second verification | current |
@@ -263,8 +281,9 @@ Actualizar esta tabla cuando cambie el catálogo.
 | `wilhelm-parma-initial-2026-06-21` | oracle-text | 2026-06-21 | Wilhelm/Baynes: initial verification | superseded |
 | `legge-sacred-texts-initial-2026-06-21` | oracle-text | 2026-06-21 | James Legge: initial verification | superseded |
 | `zhouyi-ctext-initial-2026-06-21` | oracle-text | 2026-06-21 | Zhou Yi: initial verification | superseded |
+| `divination-math-initial-2026-05-19` | divination-method | 2026-05-19 | I Ching casting methods: initial verification | superseded |
 
-Conteos esperados por categoría: **6** oráculo, **2** biblioteca, **2** mutación.
+Conteos esperados por categoría: **6** oráculo, **2** métodos de tirada, **2** biblioteca, **2** mutación.
 
 ---
 
@@ -302,9 +321,10 @@ Cada `BLOCKS_XX` debe tener:
 En sección P2.3, revisar:
 
 ```javascript
-audits.timeline.length === 10;  // incrementar si añades entradas
-audits.timeline[0]?.id === "wilhelm-commentary-txt-maestro-2026-06-23";  // id más reciente
+audits.timeline.length === 12;  // incrementar si añades entradas
+audits.timeline[0]?.id === "wilhelm-appendix-casting-2026-06-25";  // id más reciente
 audits.timeline.filter((e) => e.category === "oracle-text").length === 6;
+audits.timeline.filter((e) => e.category === "divination-method").length === 2;
 audits.timeline.filter((e) => e.category === "library-commentary").length === 2;
 audits.timeline.filter((e) => e.category === "mutation-rule").length === 2;
 ```
@@ -448,6 +468,7 @@ npm run dev
 | `verify:wilhelm-all-gates` (comentarios) | `wilhelm-commentary-txt-maestro-*` |
 | `verify:legge-all-gates` (footnotes + Ap. II) | `legge-commentary-txt-maestro-*` |
 | `qa:mutation-output` / PDF gold mutación | `huang-mutation-*`, `zhuxi-adler-mutation-*` |
+| `verify:divination-wilhelm-appendix` (Apéndice I) | `divination-math-initial-*`, `wilhelm-appendix-casting-*` |
 
 El informe interno puede ser largo; la entrada pública resume **una fuente, una fecha, un
 resultado numérico**. Enlazar profundidad técnica vía `/notes`, FAQ o `docs/auditorias/` solo
@@ -455,4 +476,4 @@ cuando producto lo pida; no duplicar el informe entero en `/audits`.
 
 ---
 
-*Última revisión catálogo: 2026-06-25 · 10 entradas · post-separación comentarios biblioteca.*
+*Última revisión catálogo: 2026-06-25 · 12 entradas · métodos de tirada (Apéndice Wilhelm).*

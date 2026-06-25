@@ -124,7 +124,7 @@ Pending: an explicit coins-manual-vs-auto and yarrow-manual-vs-auto matrix in th
 ## What this document is *not*
 
 - Not a substitute for `00000000-RPT-DAT-FID-00-data-integrity-summary.md` (oracle text fidelity — judgment/image/lines) or the `library-commentary` audits (classical commentary fidelity). Those are textual; this is procedural (how a reading is cast and reduced, not what it says).
-- Not published on the public `/audits` page — by design (`20260625-AUD-DIV-02` §13/`H-DIV-02-05`): `/audits` covers oracle-text and mutation-rule fidelity already; casting-method procedural verification is internal engineering rigor, not a end-user-facing claim today.
+- Not published on the public `/audits` page for oracle-bones (Keightley gold pending); I Ching casting methods **are** on `/audits` under `divination-method` (see WF-DOC-03 §5.4).
 
 ---
 
