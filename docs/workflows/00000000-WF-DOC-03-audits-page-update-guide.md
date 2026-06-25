@@ -212,20 +212,21 @@ of the East` como headline, `published edition` sin paréntesis de contexto.
 Numeración futura: tercera verificación, cuarta verificación, … (documentar en `currentStatusNote`
 de Zhou Yi el criterio de mejora continua).
 
-### 5.2 Comentario clásico (`library-commentary`)
+### 5.2 Comentarios clásicos (`library-commentary`)
 
 Auditoría **independiente**. No usar «verificación inicial» (confunde con oráculo). Los textos
-auditados son el comentario de **Wilhelm**, **Legge** y la tradición **confuciana** (Diez Alas),
-no contenido editorial propio de la app.
+auditados son comentarios de **Wilhelm**, **Legge** y **Confucio** (Diez Alas de Confucio), no
+contenido editorial propio de la app.
 
 | Patrón EN | Patrón ES |
 |-----------|-----------|
-| `Classical commentary: Wilhelm/Baynes` | `Comentario clásico: Wilhelm/Baynes` |
-| `Classical commentary: James Legge` | `Comentario clásico: James Legge` |
+| `Classical commentaries: Wilhelm/Baynes` | `Comentarios clásicos: Wilhelm/Baynes` |
+| `Classical commentaries: James Legge` | `Comentarios clásicos: James Legge` |
 
-Encabezado de sección (11 locales): atribuir autores, p. ej. EN `Classical commentary (Wilhelm,
-Legge, Confucius)` / ES `Comentario clásico (Wilhelm, Legge, Confucio)`. **No** «comentarios de
-la biblioteca» ni formulaciones que suenen a contenido propio.
+Encabezado de sección (11 locales): plural y autores, p. ej. EN `Classical commentaries (Wilhelm,
+Legge, Confucius)` / ES `Comentarios clásicos (Wilhelm, Legge, Confucio)`. Al mencionar Diez Alas
+/ Ten Wings, atribuir siempre a Confucio (p. ej. «las Diez Alas de Confucio»). **No** «comentarios
+de la biblioteca» ni formulaciones que suenen a contenido propio.
 
 Estado recomendado: `statusLabel` = «Fuente actual de biblioteca» (no «fuente de producción» del
 oráculo). `currentStatusNote` = frase pública neutra (p. ej. «Comentarios académicos verificados
@@ -252,8 +253,8 @@ Actualizar esta tabla cuando cambie el catálogo.
 
 | id | Categoría | ISO rail | Título EN (headline) | statusKind |
 |----|-----------|----------|----------------------|------------|
-| `wilhelm-commentary-txt-maestro-2026-06-23` | library-commentary | 2026-06-24 | Classical commentary: Wilhelm/Baynes | current |
-| `legge-commentary-txt-maestro-2026-06-23` | library-commentary | 2026-06-24 | Classical commentary: James Legge | current |
+| `wilhelm-commentary-txt-maestro-2026-06-23` | library-commentary | 2026-06-24 | Classical commentaries: Wilhelm/Baynes | current |
+| `legge-commentary-txt-maestro-2026-06-23` | library-commentary | 2026-06-24 | Classical commentaries: James Legge | current |
 | `zhouyi-ctext-2026-06-21` | oracle-text | 2026-06-23 | Zhou Yi: second verification | current |
 | `legge-oxford-pdf-2026-06-22` | oracle-text | 2026-06-23 | James Legge: verification (published edition) | current |
 | `wilhelm-pantheon-pdf-2026-06-22` | oracle-text | 2026-06-23 | Wilhelm/Baynes: verification (published edition) | current |
@@ -373,7 +374,7 @@ Ejemplo: nueva verificación EPUB reemplaza mirror web.
 | Mezclar comentarios con oráculo en un solo bloque | Son harnesses y alcances distintos | Dos entradas, dos categorías |
 | «Verificación final» | Implica cierre; hay auditorías periódicas | `second verification`, `third verification`, … |
 | «Reconfirmación» | No dice de qué | Numeración o `(published edition)` |
-| Prefijo `Comentarios de biblioteca:` | Usuario cree que es contenido propio | `Comentario clásico:` + autores en encabezado de sección |
+| Prefijo `Comentarios de biblioteca:` | Usuario cree que es contenido propio | `Comentarios clásicos:` + autores en encabezado de sección |
 | Referencias cruzadas entre entradas | Rompe autonomía del bloque | Cada fila autocontenida |
 | Editar solo `BLOCKS_EN` | UI rota en otros idiomas | 11 bloques en paralelo |
 | Olvidar `TIMELINE_META` | Crash en runtime al cargar `/audits` | Añadir meta por id |
