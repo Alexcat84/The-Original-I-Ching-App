@@ -24,6 +24,7 @@
     "generate:sumi-fallback-glyphs": "node scripts/generate-sumi-fallback-glyph-samples.mjs",
     "generate:sumi-fallback-glyphs:quick": "node scripts/generate-sumi-fallback-glyph-samples.mjs -- --quick",
     "verify:docs-remediation": "node scripts/verify-docs-remediation.mjs",
+    "inject:qa-headers": "node scripts/inject-qa-headers.mjs",
     "verify:qa-registry": "node scripts/verify-qa-registry.mjs",
     "verify:hexagram-fidelity": "node scripts/verify-hexagram-fidelity.mjs --gold=books --translator=wilhelm,legge",
     "verify:hexagram-fidelity:mirrors-deprecated": "node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=all",

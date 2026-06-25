@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-L-002 legge-book-meta · v1.0.0
+ * Area: tools/audit-legge-book-meta-fidelity
+ * Family: FID-L
+ */
+
 /**
  * Legge book-primary meta fidelity: TXT header vs parsed fields vs canonical zhouyi glyphs.
  */

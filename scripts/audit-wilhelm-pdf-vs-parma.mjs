@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-W-006 wilhelm-pdf-vs-parma · v1.0.0
+ * Area: scripts/audit-wilhelm-pdf-vs-parma
+ * Family: FID-W
+ */
+
 /**
  * Non-gate cross-check: Wilhelm PDF gold vs Parma mirror (statement-only lines).
  *

@@ -390,7 +390,8 @@
       ],
       "relatedTests": [
         "TS-ENG-003 line-reading-systems",
-        "AU-MUT-002 zhuxi-rules-vs-adler-gold"
+        "AU-MUT-002 zhuxi-rules-vs-adler-gold",
+        "QA-LRS-001 line-reading-system"
       ]
     },
     {
@@ -693,7 +694,8 @@
       ],
       "relatedTests": [
         "TS-CLAUDE-004 judgment-image-gate",
-        "QA-RDG-001 reading-quality"
+        "QA-RDG-001 reading-quality",
+        "QA-RDG-002 master-synthesis"
       ]
     },
     {
@@ -747,6 +749,25 @@
         "TS-WEB-OVR-002 overlay-title-layout",
         "TS-WEB-OVR-003 sumi-fallback-glyphs",
         "GEN-WEB-OVR-001 sumi-fallback-samples"
+      ]
+    },
+    {
+      "code": "20260625-AUD-REPO-01 repo-root-inventory",
+      "title": "Repository root file inventory and residue cleanup",
+      "shortName": "repo-root-inventory",
+      "type": "AUD",
+      "family": "REPO",
+      "date": "2026-06-25",
+      "status": "closed",
+      "path": "docs/auditorias/20260625-AUD-REPO-01-repo-root-inventory.md",
+      "relatedCodes": [
+        "00000000-WF-DOC-02 mandatory-doc-qa-registration",
+        "00000000-WF-QA-01 test-lifecycle"
+      ],
+      "relatedTests": [
+        "VF-DOC-002 qa-registry-integrity",
+        "QA-LRS-001 line-reading-system",
+        "QA-RDG-002 master-synthesis"
       ]
     },
     {

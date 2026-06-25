@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-MUT-001 huang-rules-vs-pdf-gold · v1.0.0
+ * Area: tools/audit-huang-rules-vs-pdf-gold
+ * Family: MUT
+ */
+
 /**
  * Audit iching-engine Huang rules against Alfred Huang PDF gold.
  *

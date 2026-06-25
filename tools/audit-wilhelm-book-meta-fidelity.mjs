@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-W-002 wilhelm-book-meta · v1.0.0
+ * Area: tools/audit-wilhelm-book-meta-fidelity
+ * Family: FID-W
+ */
+
 /**
  * Book-primary meta fidelity: cabecera TXT vs campos parseados vs bundle runtime.
  *

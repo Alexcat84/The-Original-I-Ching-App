@@ -8,8 +8,8 @@
 
 | Colección | Entradas | Índice |
 |-----------|----------|--------|
-| Auditorías e incidentes | 56+ | [`auditorias/INDEX.md`](./auditorias/INDEX.md) |
-| Tests y gates QA | 52+ | [`qa/INDEX.md`](./qa/INDEX.md) |
+| Auditorías e incidentes | 57+ | [`auditorias/INDEX.md`](./auditorias/INDEX.md) |
+| Tests y gates QA | 54+ | [`qa/INDEX.md`](./qa/INDEX.md) |
 
 ---
 
@@ -43,6 +43,7 @@
 | `00000000-WF-I18N-02 i18n-standardization` | Estandarización i18n DoD | [00000000-WF-I18N-02-i18n-standardization.md](./workflows/00000000-WF-I18N-02-i18n-standardization.md) |
 | `00000000-WF-DOC-01 docs-content-update-guide` | Actualizar docs producto | [00000000-WF-DOC-01-docs-content-update-guide.md](./workflows/00000000-WF-DOC-01-docs-content-update-guide.md) |
 | `00000000-WF-DOC-02 mandatory-doc-qa-registration` | **Registro obligatorio docs/tests** | [00000000-WF-DOC-02-mandatory-doc-qa-registration.md](./workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md) |
+| `00000000-WF-QA-01 test-lifecycle` | Ciclo de vida tests (crear, actualizar, índice) | [00000000-WF-QA-01-test-lifecycle.md](./workflows/00000000-WF-QA-01-test-lifecycle.md) |
 | `00000000-WF-AUTH-01 legal-post-auth` | Legal post-auth | [00000000-WF-AUTH-01-legal-post-auth.md](./workflows/00000000-WF-AUTH-01-legal-post-auth.md) |
 
 ---
@@ -71,4 +72,5 @@
 | `node scripts/migrate-audit-docs.mjs` | Renombrar auditorías (ya ejecutado) |
 | `node scripts/migrate-other-docs.mjs` | Renombrar runbooks/planes/workflows |
 | `node scripts/fix-doc-headers.mjs` | Corregir posición del bloque **Código:** |
-| `npm run verify:qa-registry` | Validar integridad de registros |
+| `npm run inject:qa-headers` | Sincronizar cabeceras QA en archivos fuente |
+| `npm run verify:qa-registry` | Validar integridad de registros + orphans |

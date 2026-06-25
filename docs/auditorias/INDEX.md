@@ -161,6 +161,16 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 
 ---
 
+## Familia REPO — Inventario repositorio
+
+| Código | Fecha | Título | Estado | Documento |
+|--------|-------|--------|--------|-----------|
+| `20260625-AUD-REPO-01 repo-root-inventory` | 2026-06-25 | Inventario raíz + limpieza residuos patch JS | closed | [20260625-AUD-REPO-01-repo-root-inventory.md](./20260625-AUD-REPO-01-repo-root-inventory.md) |
+
+**Tests:** `VF-DOC-002`, `QA-LRS-001`, `QA-RDG-002`
+
+---
+
 ## Alta rápida
 
 1. Asignar código en [`registry.json`](./registry.json).

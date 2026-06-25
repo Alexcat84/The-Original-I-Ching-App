@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: VF-FID-W-001 wilhelm-all-gates · v1.0.0
+ * Area: tools/verify-wilhelm-all-gates
+ * Family: FID-W
+ */
+
 /**
  * Run all Wilhelm dataset gates (book-one + comments) for 100/100 verification.
  */

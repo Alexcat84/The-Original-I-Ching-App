@@ -3,7 +3,8 @@
 Fuente canónica: [`registry.json`](./registry.json).  
 Índice legible: [`INDEX.md`](./INDEX.md) — **columna `area` obligatoria en cada fila nueva.**
 
-**Reglas obligatorias:** [`../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md`](../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md)
+**Reglas obligatorias:** [`../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md`](../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md)  
+**Ciclo de vida (crear / actualizar / índice):** [`../workflows/00000000-WF-QA-01-test-lifecycle.md`](../workflows/00000000-WF-QA-01-test-lifecycle.md)
 
 ---
 
@@ -68,6 +69,7 @@ Identifica **qué superficie del producto** ejercita el test. Path repo-relative
 | `FID-L` | Legge maestro/runtime |
 | `FID-ZY` | Zhou Yi |
 | `MUT` | Reglas mutación / QA salida LLM |
+| `LRS` | Line reading system (Huang / Zhu Xi) |
 | `RDG` | Reading quality harness |
 | `PINYIN` | Gate pinyin gold |
 | `DOC` | Docs producto vs código |
@@ -124,7 +126,8 @@ Si cierra hallazgo de auditoría: `relatedAuditCodes` en registro y `relatedTest
 ## Ejecución rápida
 
 ```bash
-npm run verify:qa-registry                 # bloqueante — incluye validación de area
+npm run verify:qa-registry                 # bloqueante — incluye validación de area y cabeceras
+npm run inject:qa-headers                    # backfill cabeceras desde registry.json
 npm test
 npm run verify:hexagram-fidelity
 npm run verify:overlay-glyphs

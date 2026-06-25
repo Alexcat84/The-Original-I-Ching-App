@@ -1,4 +1,10 @@
 /**
+ * QA code: TS-ENG-003 line-reading-systems · v1.0.0
+ * Area: packages/iching-engine/src/engine.line-reading-systems
+ * Family: ENG
+ */
+
+/**
  * Line reading systems — full-coverage regression suite (Huang | Zhu Xi).
  *
  * Covers EVERY class of changing-line configuration (0,1,2yy,2same-yang,2same-yin,

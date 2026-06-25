@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-DATA-001 iching-data-index · v1.0.0
+ * Area: packages/iching-data/src/index
+ * Family: DATA
+ */
+
 import { describe, expect, it } from "vitest";
 import {
   getAllHexagramRecords,

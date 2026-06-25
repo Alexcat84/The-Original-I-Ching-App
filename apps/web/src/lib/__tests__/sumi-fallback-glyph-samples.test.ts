@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-OVR-003 sumi-fallback-glyphs · v1.0.0
+ * Area: apps/web/src/lib/sumi-fallback-glyph-samples
+ * Family: WEB-OVR
+ */
+
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import {
@@ -430,16 +436,16 @@ describe("sumi fallback glyph smoke", () => {
     expect(primary.number).toBe(32);
     expect(transformed).not.toBeNull();
     expect(transformed!.number).not.toBe(32);
-    expect(transformed.name.length).toBeGreaterThan(0);
+    expect(transformed!.name.length).toBeGreaterThan(0);
 
     const dataUrl = buildSumiHexagramSvgDataUrl({
       lines: toSumiDisplayLines(lineValues),
       primaryNumber: primary.number,
       primaryName: primary.name,
       primaryChinese: primary.chineseName,
-      transformedNumber: transformed.number,
-      transformedName: transformed.name,
-      transformedChinese: transformed.chineseName,
+      transformedNumber: transformed!.number,
+      transformedName: transformed!.name,
+      transformedChinese: transformed!.chineseName,
       artSeed: "smoke-legge-32-mutation-svg",
       category: "glyph-sample",
       changingLines: [],
@@ -450,7 +456,7 @@ describe("sumi fallback glyph smoke", () => {
     expect(embedded).toContain(transformed!.name);
     // Arrow renders as its own sibling <text>, never a <tspan> nested inside
     // a <text> \u2014 resvg-js can silently drop the whole node for that pattern
-    // for specific name pairs (see IMAGE_OVERLAY_MUTATION_TITLE_LAYOUT_AUDIT_2026-06-25.md \u00a713).
+    // for specific name pairs (see 20260625-AUD-IMG-OVR-02-mutation-title-layout.md \u00a713).
     expect(embedded).toMatch(/<text[^>]*font-family="'NotoSymbols2Overlay'"[^>]*>\u2192<\/text>/);
     expect(embedded).not.toMatch(/<tspan/);
     expect(embedded).not.toMatch(/class="overlay-title-en"[^>]*>[^<]*-&gt;/);

@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-L-001 legge-txt-g2 · v1.0.0
+ * Area: tools/audit-legge-txt-g2
+ * Family: FID-L
+ */
+
 /**
  * G2 gate: fresh Legge TXT parse vs stored legge-64hex-parsed.json
  *

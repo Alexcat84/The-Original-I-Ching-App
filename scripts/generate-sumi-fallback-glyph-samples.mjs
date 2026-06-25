@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: GEN-WEB-OVR-001 sumi-fallback-samples · v1.0.0
+ * Area: scripts/generate-sumi-fallback-glyph-samples
+ * Family: WEB-OVR
+ */
+
 /**
  * Generate local sumi-e fallback PNG samples for visual glyph QA (no Together tokens).
  *

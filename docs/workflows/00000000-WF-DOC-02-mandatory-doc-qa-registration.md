@@ -189,13 +189,14 @@ Actualizar **también** el comentario `vX.Y.Z` en el archivo.
 ### B8. Verificar
 
 ```bash
-npm run verify:qa-registry
-npm test   # o el npmScript concreto
+npm run inject:qa-headers    # si el archivo aún no tiene cabecera canónica
+npm run verify:qa-registry   # bloqueante — registry + cabeceras en fuente
+npm test                     # o el npmScript concreto
 ```
 
 ---
 
-## Checklist C — Modificar documento o test existente
+## Checklist C — Modificar documento existente
 
 | Cambio | Registro | Índice | Versión test |
 |--------|----------|--------|--------------|
@@ -203,6 +204,19 @@ npm test   # o el npmScript concreto
 | Nuevo hallazgo / nuevo gate | Sí (`relatedCodes` / `relatedTests`) | Sí si cambia estado o título | MINOR o MAJOR |
 | Renombrar archivo | Sí (`path`) | Sí (enlaces) | No |
 | Cerrar auditoría | Sí (`status`) | Sí (columna Estado) | No |
+
+## Checklist D — Modificar test o gate existente
+
+Detalle completo: [`00000000-WF-QA-01-test-lifecycle.md`](./00000000-WF-QA-01-test-lifecycle.md) §2–§4.
+
+| Cambio | `registry.json` | `INDEX.md` | Cabecera | Bump |
+|--------|-----------------|------------|----------|------|
+| Refactor, mismo pass/fail | PATCH opcional en history | No | `inject:qa-headers` | PATCH |
+| Nuevos casos / flags | Sí | Sí (v, notas) | Sí | MINOR |
+| Criterio pass/fail distinto | Sí | Sí | Sí | MAJOR |
+| Mover módulo (`area`) | Sí (`area`, `path`) | Sí (columna Area) | Sí | PATCH |
+
+Siempre cerrar con `npm run verify:qa-registry`.
 
 ---
 
@@ -223,7 +237,7 @@ npm test   # o el npmScript concreto
 npm run verify:qa-registry
 ```
 
-Comprueba: códigos únicos, paths existentes, `area` en tests, cross-refs audit↔test, entradas duplicadas.
+Comprueba: códigos únicos, paths existentes, `area` en tests, cross-refs audit↔test, cabeceras QA, **orphan tests**, **npm gates no registrados**. Exenciones: [`docs/qa/exempt-paths.json`](../qa/exempt-paths.json).
 
 ---
 
@@ -232,3 +246,4 @@ Comprueba: códigos únicos, paths existentes, `area` en tests, cross-refs audit
 - Índice global: [`docs/INDEX.md`](../INDEX.md)
 - Auditorías: [`docs/auditorias/INDEX.md`](../auditorias/INDEX.md)
 - Tests: [`docs/qa/INDEX.md`](../qa/INDEX.md)
+- Ciclo de vida tests: [`00000000-WF-QA-01-test-lifecycle.md`](./00000000-WF-QA-01-test-lifecycle.md)

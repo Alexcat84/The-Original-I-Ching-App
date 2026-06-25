@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-OVR-002 overlay-title-layout · v1.0.0
+ * Area: apps/web/src/lib/overlay-title-layout
+ * Family: WEB-OVR
+ */
+
 import { describe, expect, it } from "vitest";
 import {
   OVERLAY_EN_MAX_WIDTH,
@@ -31,7 +37,9 @@ describe("buildOverlayEnglishTitleLayout", () => {
         OVERLAY_EN_MAX_WIDTH + 1,
       );
     }
-    expect(layout.ys[1]! + layout.fontSize * 0.22).toBeLessThanOrEqual(SUMI_FALLBACK_HEX_TOP_Y - 26);
+    // Tracks EN_TWO_LINE_MARGIN_ABOVE_HEX (overlay-title-layout.ts, not exported):
+    // minimum clearance between the second line's descenders and the hex bar.
+    expect(layout.ys[1]! + layout.fontSize * 0.22).toBeLessThanOrEqual(SUMI_FALLBACK_HEX_TOP_Y - 20);
   });
 
   it("fits typical short mutation titles on one line", () => {

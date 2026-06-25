@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: VF-FID-L-001 legge-all-gates · v1.0.0
+ * Area: tools/verify-legge-all-gates
+ * Family: FID-L
+ */
+
 /**
  * Run Legge TXT dataset gates (book-one + appendix draft).
  */

@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-001 epub-verbatim-vs-runtime · v1.0.0
+ * Area: scripts/audit-epub-verbatim-vs-runtime
+ * Family: FID
+ */
+
 /**
  * Phase 1+3 gate: runtime bundles vs EPUB oracle text (verbatim parser, no post-strip heuristics).
  * Reports: reports/epub-verbatim-audit-{ts}.{json,md}

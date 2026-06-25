@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-W-001 wilhelm-txt-g2 · v1.0.0
+ * Area: tools/audit-wilhelm-txt-g2
+ * Family: FID-W
+ */
+
 /**
  * G2 gate: manual gold vs wilhelm-64hex-parsed.json
  *

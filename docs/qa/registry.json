@@ -607,6 +607,52 @@
       "area": "scripts/reading-quality-qa"
     },
     {
+      "code": "QA-LRS-001 line-reading-system",
+      "title": "Line reading system QA (Huang | Zhu Xi × fixtures × models)",
+      "shortName": "line-reading-system",
+      "type": "QA",
+      "family": "LRS",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-20",
+          "change": "Selector line_reading_system production parity"
+        }
+      ],
+      "path": "scripts/line-reading-system-qa.mjs",
+      "npmScript": "node scripts/line-reading-system-qa.mjs",
+      "consumesTokens": true,
+      "artifacts": "reports/line-reading-system-qa-*.json",
+      "relatedAuditCodes": [
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector"
+      ],
+      "area": "scripts/line-reading-system-qa"
+    },
+    {
+      "code": "QA-RDG-002 master-synthesis",
+      "title": "Master Combined triangulation QA (20 hexagrams, zero mutation)",
+      "shortName": "master-synthesis",
+      "type": "QA",
+      "family": "RDG",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-24",
+          "change": "Master (3) synthesis + Gate H7 verbatim"
+        }
+      ],
+      "path": "scripts/master-synthesis-qa.mjs",
+      "npmScript": "node scripts/master-synthesis-qa.mjs",
+      "consumesTokens": true,
+      "artifacts": "reports/master-synthesis-qa-*.json",
+      "relatedAuditCodes": [
+        "20260624-AUD-RDG-QA-02 verbatim-blockquote-gap"
+      ],
+      "area": "scripts/master-synthesis-qa"
+    },
+    {
       "code": "VF-FID-001 hexagram-fidelity-runtime",
       "title": "Hexagram fidelity vs runtime books gold (W+L)",
       "shortName": "hexagram-fidelity-runtime",
@@ -970,7 +1016,7 @@
       "type": "VF",
       "family": "DOC",
       "area": "scripts/verify-qa-registry",
-      "version": "1.1.0",
+      "version": "1.3.0",
       "versionHistory": [
         {
           "version": "1.0.0",
@@ -981,12 +1027,21 @@
           "version": "1.1.0",
           "date": "2026-06-25",
           "change": "Require area + versionHistory on all QA entries"
+        },
+        {
+          "version": "1.2.0",
+          "date": "2026-06-25",
+          "change": "Validate mandatory QA header blocks in source files"
+        },
+        {
+          "version": "1.3.0",
+          "date": "2026-06-25",
+          "change": "Orphan test files + unregistered npm gate scripts"
         }
       ],
       "path": "scripts/verify-qa-registry.mjs",
       "npmScript": "npm run verify:qa-registry",
-      "relatedAuditCodes": [],
-      "area": "scripts/verify-qa-registry"
+      "relatedAuditCodes": []
     },
     {
       "code": "AU-FID-W-002 wilhelm-book-meta",

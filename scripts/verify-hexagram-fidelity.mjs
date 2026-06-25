@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: VF-FID-001 hexagram-fidelity-runtime · v1.0.0
+ * Area: scripts/verify-hexagram-fidelity
+ * Family: FID
+ */
+
 /**
  * Verify @iching-oracle/iching-data bundles against Tier-0 gold from local books.
  *

@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-FID-W-004 wilhelm-trigram-parma · v1.0.0
+ * Area: tools/audit-wilhelm-trigram-parma
+ * Family: FID-W
+ */
+
 /**
  * Audit wilhelm_above/below vs Parma mirror (Wilhelm/Baynes print headers).
  *

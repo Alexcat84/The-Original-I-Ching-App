@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-ENG-001 engine-core · v1.0.0
+ * Area: packages/iching-engine/src/engine
+ * Family: ENG
+ */
+
 import { describe, expect, it } from "vitest";
 import {
   applyMutations,

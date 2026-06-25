@@ -1,4 +1,10 @@
 /**
+ * QA code: TS-ENG-002 mutation-rules · v1.1.0
+ * Area: packages/iching-engine/src/engine.mutation-rules
+ * Family: ENG
+ */
+
+/**
  * Comprehensive regression suite for the Zhu Xi mutation rule system.
  *
  * Scope:

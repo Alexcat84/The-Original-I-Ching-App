@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: QA-RDG-001 reading-quality · v1.1.0
+ * Area: scripts/reading-quality-qa
+ * Family: RDG
+ */
+
 /**
  * reading-quality-qa.mjs
  *

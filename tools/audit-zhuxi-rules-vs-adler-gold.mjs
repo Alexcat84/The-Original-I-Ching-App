@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: AU-MUT-002 zhuxi-rules-vs-adler-gold · v1.0.0
+ * Area: tools/audit-zhuxi-rules-vs-adler-gold
+ * Family: MUT
+ */
+
 /**
  * Audit iching-engine Zhu Xi rules against Adler PDF gold.
  *

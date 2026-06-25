@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-OVR-001 embed-svg-overlay-font · v1.2.0
+ * Area: apps/web/src/lib/embed-svg-overlay-font
+ * Family: WEB-OVR
+ */
+
 import { describe, expect, it } from "vitest";
 import {
   OVERLAY_TITLE_EN_CLASS,

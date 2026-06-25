@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * QA code: QA-RDG-002 master-synthesis · v1.0.0
+ * Area: scripts/master-synthesis-qa
+ * Family: RDG
+ */
+
 /**
  * master-synthesis-qa.mjs
  *

@@ -183,6 +183,23 @@
       "relatedTests": ["VF-DOC-002 qa-registry-integrity"]
     },
     {
+      "code": "00000000-WF-QA-01 test-lifecycle",
+      "title": "Workflow: QA test and gate lifecycle (create, update, index)",
+      "shortName": "test-lifecycle",
+      "type": "WF",
+      "family": "QA",
+      "collection": "workflows",
+      "date": null,
+      "status": "reference",
+      "path": "docs/workflows/00000000-WF-QA-01-test-lifecycle.md",
+      "relatedCodes": [
+        "00000000-WF-DOC-02 mandatory-doc-qa-registration"
+      ],
+      "relatedTests": [
+        "VF-DOC-002 qa-registry-integrity"
+      ]
+    },
+    {
       "code": "00000000-WF-AUTH-01 legal-post-auth",
       "title": "Workflow: legal acceptance post-auth",
       "shortName": "legal-post-auth",

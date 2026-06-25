@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-007 legal-consent-pending-meta · v1.0.0
+ * Area: apps/web/src/lib/legal-consent-pending-meta
+ * Family: AUTH
+ */
+
 import { describe, expect, it } from "vitest";
 import {
   createLegalConsentPayload,

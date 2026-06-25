@@ -1,4 +1,10 @@
 /**
+ * QA code: TS-WEB-009 token-refund · v1.0.0
+ * Area: apps/web/src/lib/token-refund
+ * Family: BILL
+ */
+
+/**
  * Token refund logic tests — audit CRIT-02
  *
  * These tests cover the refundCtx state-machine in /api/consult

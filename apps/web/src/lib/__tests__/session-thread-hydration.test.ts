@@ -1,3 +1,9 @@
+/**
+ * QA code: TS-WEB-013 session-thread-hydration · v1.0.0
+ * Area: apps/web/src/lib/session-thread-hydration
+ * Family: CHAT
+ */
+
 import { describe, expect, it } from "vitest";
 import {
   sessionHasFullThreadContent,
