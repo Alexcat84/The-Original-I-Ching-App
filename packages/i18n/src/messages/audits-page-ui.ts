@@ -224,7 +224,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: published edition",
+    title: "Wilhelm/Baynes: final verification",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 Jun 2026",
     method:
@@ -254,7 +254,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: final verification",
     source: CITATIONS.leggeOxford,
     verificationDate: "23 Jun 2026",
     method:
@@ -285,7 +285,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: re-confirmation",
+    title: "Zhou Yi: final verification",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 Jun 2026",
     method:
@@ -347,7 +347,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: edición publicada",
+    title: "Wilhelm/Baynes: verificación final",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 jun 2026",
     method:
@@ -377,7 +377,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: verificación final",
     source: CITATIONS.leggeOxford,
     verificationDate: "23 jun 2026",
     method:
@@ -407,7 +407,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: reconfirmación",
+    title: "Zhou Yi: verificación final",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 jun 2026",
     method:
@@ -470,7 +470,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: edição publicada",
+    title: "Wilhelm/Baynes: verificação final",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 de junho de 2026",
     method:
@@ -500,7 +500,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: verificação final",
     source: CITATIONS.leggeOxford,
     verificationDate: "23 de junho de 2026",
     method:
@@ -530,7 +530,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: reconfirmação",
+    title: "Zhou Yi: verificação final",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 de junho de 2026",
     method:
@@ -593,7 +593,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: édition publiée",
+    title: "Wilhelm/Baynes: vérification finale",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 juin 2026",
     method:
@@ -623,7 +623,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: vérification finale",
     source: CITATIONS.leggeOxford,
     verificationDate: "23 juin 2026",
     method:
@@ -638,7 +638,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-initial-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi : vérification initiale",
+    title: "Zhou Yi: vérification initiale",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "21 juin 2026",
     method:
@@ -653,7 +653,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi : reconfirmation",
+    title: "Zhou Yi: vérification finale",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 juin 2026",
     method:
@@ -716,7 +716,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: veröffentlichte Ausgabe",
+    title: "Wilhelm/Baynes: finale Verifikation",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23. Juni 2026",
     method:
@@ -746,7 +746,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: finale Verifikation",
     source: CITATIONS.leggeOxford,
     verificationDate: "23. Juni 2026",
     method:
@@ -776,7 +776,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: erneute Bestätigung",
+    title: "Zhou Yi: finale Verifikation",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23. Juni 2026",
     method:
@@ -838,7 +838,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: edizione pubblicata",
+    title: "Wilhelm/Baynes: verifica finale",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 giugno 2026",
     method:
@@ -868,7 +868,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: verifica finale",
     source: CITATIONS.leggeOxford,
     verificationDate: "23 giugno 2026",
     method:
@@ -898,7 +898,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: riconferma",
+    title: "Zhou Yi: verifica finale",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 giugno 2026",
     method:
@@ -960,7 +960,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: 出版版",
+    title: "Wilhelm/Baynes: 最終検証",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月23日",
     method:
@@ -988,7 +988,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: 最終検証",
     source: CITATIONS.leggeOxford,
     verificationDate: "2026年6月23日",
     method:
@@ -1017,7 +1017,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "周易: 再確認",
+    title: "周易: 最終検証",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "2026年6月23日",
     method:
@@ -1076,7 +1076,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "卫礼贤/贝恩斯: 出版版",
+    title: "卫礼贤/贝恩斯: 最终验证",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月23日",
     method:
@@ -1104,7 +1104,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "理雅各: Sacred Books of the East",
+    title: "理雅各: 最终验证",
     source: CITATIONS.leggeOxford,
     verificationDate: "2026年6月23日",
     method:
@@ -1133,7 +1133,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "周易: 再次确认",
+    title: "周易: 最终验证",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "2026年6月23日",
     method:
@@ -1191,7 +1191,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: 출판판",
+    title: "Wilhelm/Baynes: 최종 검증",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026년 6월 23일",
     method:
@@ -1219,7 +1219,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: 최종 검증",
     source: CITATIONS.leggeOxford,
     verificationDate: "2026년 6월 23일",
     method:
@@ -1248,7 +1248,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "주역: 재확인",
+    title: "주역: 최종 검증",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "2026년 6월 23일",
     method:
@@ -1308,7 +1308,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: النسخة المنشورة",
+    title: "Wilhelm/Baynes: التحقق النهائي",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 يونيو 2026",
     method:
@@ -1336,7 +1336,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: التحقق النهائي",
     source: CITATIONS.leggeOxford,
     verificationDate: "23 يونيو 2026",
     method:
@@ -1365,7 +1365,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: إعادة التأكيد",
+    title: "Zhou Yi: التحقق النهائي",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 يونيو 2026",
     method:
@@ -1425,7 +1425,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: प्रकाशित संस्करण",
+    title: "Wilhelm/Baynes: अंतिम सत्यापन",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 जून 2026",
     method:
@@ -1453,7 +1453,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
   {
     id: "legge-oxford-pdf-2026-06-22",
     category: "oracle-text",
-    title: "James Legge: Sacred Books of the East",
+    title: "James Legge: अंतिम सत्यापन",
     source: CITATIONS.leggeOxford,
     verificationDate: "23 जून 2026",
     method:
@@ -1482,7 +1482,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
   {
     id: "zhouyi-ctext-2026-06-21",
     category: "oracle-text",
-    title: "Zhou Yi: पुनः पुष्टि",
+    title: "Zhou Yi: अंतिम सत्यापन",
     source: CITATIONS.zhouyiCtext,
     verificationDate: "23 जून 2026",
     method:
