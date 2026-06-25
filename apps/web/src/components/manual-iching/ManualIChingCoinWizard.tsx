@@ -7,8 +7,13 @@ import { IChingCashCoin } from "./IChingCashCoin";
 
 type CoinFace = "H" | "T";
 
-function lineValueFromCoins(coins: CoinFace[]): 6 | 7 | 8 | 9 {
-  const sum = coins.reduce((s, c) => s + (c === "H" ? 3 : 2), 0);
+/**
+ * Wilhelm/Baynes (1950), Appendix I §2: "The inscribed side counts as yin, with
+ * the value 2, and the reverse side counts as yang, with the value 3." On this
+ * coin the inscribed (Han) face is "H"; the reverse (Manchu) face is "T".
+ */
+export function lineValueFromCoins(coins: CoinFace[]): 6 | 7 | 8 | 9 {
+  const sum = coins.reduce((s, c) => s + (c === "H" ? 2 : 3), 0);
   return sum as 6 | 7 | 8 | 9;
 }
 
@@ -203,7 +208,7 @@ export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, ques
                 }
                 aria-label={`${m.headsAria.replace("{{i}}", String(i + 1))} / ${m.tailsAria.replace("{{i}}", String(i + 1))}`}
               >
-                <IChingCashCoin face={side === "H" ? "yang" : "yin"} />
+                <IChingCashCoin face={side === "H" ? "han" : "manchu"} />
               </button>
             ))}
           </div>

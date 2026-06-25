@@ -42,11 +42,29 @@
       "status": "closed",
       "path": "docs/auditorias/00000000-AUD-DIV-01-divination-methods.md",
       "relatedCodes": [
-        "20260614-AUD-MUT-01 changing-lines"
+        "20260614-AUD-MUT-01 changing-lines",
+        "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods"
       ],
       "relatedTests": [
         "TS-ENG-001 engine-core",
         "TS-ENG-002 mutation-rules"
+      ]
+    },
+    {
+      "code": "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods",
+      "title": "Wilhelm appendix casting methods audit (book-primary TXT)",
+      "shortName": "wilhelm-appendix-casting-methods",
+      "type": "AUD",
+      "family": "DIV",
+      "date": "2026-06-25",
+      "status": "open",
+      "path": "docs/auditorias/20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md",
+      "relatedCodes": [
+        "00000000-AUD-DIV-01 divination-methods"
+      ],
+      "relatedTests": [
+        "TS-ENG-001 engine-core",
+        "TS-WEB-014 manual-coin-wizard"
       ]
     },
     {

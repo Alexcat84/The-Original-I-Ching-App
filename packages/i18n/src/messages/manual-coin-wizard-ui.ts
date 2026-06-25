@@ -47,7 +47,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "Tirada manual: tres monedas",
     closeAria: "Cerrar asistente de tirada",
     coinHint:
-      "Toca una moneda para cambiar Han ↔ manchú. Por moneda: Han suma 3, manchú suma 2. Total de tres monedas = 6, 7, 8 u 9.",
+      "Toca una moneda para cambiar Han ↔ manchú. Por moneda: Han suma 2, manchú suma 3. Total de tres monedas = 6, 7, 8 u 9.",
     lineStep: "Línea {{n}} de 6 (de abajo arriba)",
     registerLine: "Registrar línea",
     back: "Atrás",
@@ -84,7 +84,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "Manual cast: three coins",
     closeAria: "Close cast assistant",
     coinHint:
-      "Tap a coin to toggle Han ↔ Manchu. Per coin: Han adds 3, Manchu adds 2. Sum of three coins = 6, 7, 8, or 9.",
+      "Tap a coin to toggle Han ↔ Manchu. Per coin: Han adds 2, Manchu adds 3. Sum of three coins = 6, 7, 8, or 9.",
     lineStep: "Line {{n}} of 6 (bottom to top)",
     registerLine: "Record line",
     back: "Back",
@@ -121,7 +121,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "Tiragem manual: três moedas",
     closeAria: "Fechar assistente de tiragem",
     coinHint:
-      "Toque para alternar Han ↔ manchu. Por moeda: Han soma 3, manchu soma 2. Soma das três = 6, 7, 8 ou 9.",
+      "Toque para alternar Han ↔ manchu. Por moeda: Han soma 2, manchu soma 3. Soma das três = 6, 7, 8 ou 9.",
     lineStep: "Linha {{n}} de 6 (de baixo para cima)",
     registerLine: "Registrar linha",
     back: "Voltar",
@@ -158,7 +158,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "Tirage manuel: trois pièces",
     closeAria: "Fermer l’assistant de tirage",
     coinHint:
-      "Touchez pour basculer Han ↔ mandchou. Par pièce : Han +3, mandchou +2. Somme des trois = 6, 7, 8 ou 9.",
+      "Touchez pour basculer Han ↔ mandchou. Par pièce : Han +2, mandchou +3. Somme des trois = 6, 7, 8 ou 9.",
     lineStep: "Trait {{n}} sur 6 (du bas vers le haut)",
     registerLine: "Enregistrer le trait",
     back: "Retour",
@@ -195,7 +195,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "Manueller Wurf: drei Münzen",
     closeAria: "Wurf-Assistent schließen",
     coinHint:
-      "Tippen zum Wechsel Han ↔ mandschurisch. Pro Münze: Han +3, mandschurisch +2. Summe dreier Münzen = 6, 7, 8 oder 9.",
+      "Tippen zum Wechsel Han ↔ mandschurisch. Pro Münze: Han +2, mandschurisch +3. Summe dreier Münzen = 6, 7, 8 oder 9.",
     lineStep: "Linie {{n}} von 6 (unten nach oben)",
     registerLine: "Linie speichern",
     back: "Zurück",
@@ -232,7 +232,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "Lancio manuale: tre monete",
     closeAria: "Chiudi assistente di lancio",
     coinHint:
-      "Tocca per alternare Han ↔ manciù. Per moneta: Han +3, manciù +2. Somma delle tre = 6, 7, 8 o 9.",
+      "Tocca per alternare Han ↔ manciù. Per moneta: Han +2, manciù +3. Somma delle tre = 6, 7, 8 o 9.",
     lineStep: "Linea {{n}} di 6 (dal basso)",
     registerLine: "Registra linea",
     back: "Indietro",
@@ -269,7 +269,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "手動占い: 三銭",
     closeAria: "占い補助を閉じる",
     coinHint:
-      "タップで漢字表↔満州裏。各銭は漢字=3・満州=2。三銭の合計は6・7・8・9のいずれか。",
+      "タップで漢字表↔満州裏。各銭は漢字=2・満州=3。三銭の合計は6・7・8・9のいずれか。",
     lineStep: "{{n}} 爻目 / 全6爻（下から上）",
     registerLine: "この爻を記録",
     back: "戻る",
@@ -305,7 +305,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "手动起卦: 三钱",
     closeAria: "关闭起卦助手",
     coinHint:
-      "点击切换汉字面↔满文面。每枚：汉字=3，满文=2。三枚相加得 6、7、8 或 9。",
+      "点击切换汉字面↔满文面。每枚：汉字=2，满文=3。三枚相加得 6、7、8 或 9。",
     lineStep: "第 {{n}} 爻 / 共六爻（由下而上）",
     registerLine: "记录此爻",
     back: "返回",
@@ -341,7 +341,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "수동 점: 동전 세枚",
     closeAria: "점 보조 닫기",
     coinHint:
-      "탭으로 한자 앞면↔만주 뒷면. 매 동전 한자=3, 만주=2. 세 동전 합은 6·7·8·9.",
+      "탭으로 한자 앞면↔만주 뒷면. 매 동전 한자=2, 만주=3. 세 동전 합은 6·7·8·9.",
     lineStep: "{{n}}번째 효 / 총 6효 (아래에서 위로)",
     registerLine: "이 효 기록",
     back: "뒤로",
@@ -378,7 +378,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "قَسْم يدوي: ثلاث عملات",
     closeAria: "إغلاق مساعد القَسْم",
     coinHint:
-      "المس للتبديل هان ↔ مانشوري. لكل عملة: هان = ٣، مانشوري = ٢. مجموع الثلاث = ٦ أو ٧ أو ٨ أو ٩.",
+      "المس للتبديل هان ↔ مانشوري. لكل عملة: هان = ٢، مانشوري = ٣. مجموع الثلاث = ٦ أو ٧ أو ٨ أو ٩.",
     lineStep: "الخط {{n}} من 6 (من الأسفل إلى الأعلى)",
     registerLine: "تسجيل الخط",
     back: "رجوع",
@@ -415,7 +415,7 @@ const M: Record<AppLocale, ManualWizardMessages> = {
     title: "मैन्युअल कास्ट: तीन सिक्के",
     closeAria: "कास्ट सहायक बंद करें",
     coinHint:
-      "टैप से हान ↔ मन्चू बदलें। प्रति सिक्का: हान=3, मन्चू=2। तीनों का योग 6, 7, 8 या 9।",
+      "टैप से हान ↔ मन्चू बदलें। प्रति सिक्का: हान=2, मन्चू=3। तीनों का योग 6, 7, 8 या 9।",
     lineStep: "रेखा {{n}} / 6 (नीचे से ऊपर)",
     registerLine: "रेखा दर्ज करें",
     back: "पीछे",

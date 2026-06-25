@@ -264,6 +264,27 @@
       "area": "apps/web/src/lib/manual-iching-consult"
     },
     {
+      "code": "TS-WEB-014 manual-coin-wizard",
+      "title": "Manual coin wizard yin/yang value mapping",
+      "shortName": "manual-coin-wizard",
+      "type": "TS",
+      "family": "WEB",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-25",
+          "change": "Regression for H-DIV-02-01 fix: inscribed (Han) = yin 2, reverse (Manchu) = yang 3, per Wilhelm/Baynes 1950 Appendix I §2"
+        }
+      ],
+      "path": "apps/web/src/components/manual-iching/__tests__/manual-iching-coin-wizard.test.ts",
+      "npmScript": "npm run test --prefix apps/web",
+      "relatedAuditCodes": [
+        "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods"
+      ],
+      "area": "apps/web/src/components/manual-iching/ManualIChingCoinWizard"
+    },
+    {
       "code": "TS-WEB-003 response-clean",
       "title": "Oracle response cleaning",
       "shortName": "response-clean",

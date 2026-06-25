@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-06-22",
+  "updatedAt": "2026-06-25",
   "branch": "feat/pdf-gold-verification",
   "note": "PDF/EPUB files live in this directory locally; they are gitignored. Only this manifest is committed.",
   "sources": {
@@ -95,6 +95,19 @@
         "62:qian_all_nines": 62
       },
       "note": "Rules 1–7 verified 2026-06-22; Qian/Kun All Nines cross-ref in hexagram chapters."
+    },
+    "keightley": {
+      "file": "Sources of Shang History_ The Oracle-Bone Inscriptions of.pdf",
+      "title": "Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China",
+      "author": "David N. Keightley",
+      "publisher": "University of California Press",
+      "year": 1978,
+      "reprintYear": 1985,
+      "isbn13": "9780520054554",
+      "language": "en",
+      "role": "Tier-0 gold for Oracle Bones divination method (verdict taxonomy, crack reading, charge logic); AUD-DIV-03 follow-up",
+      "pageNumberBasis": "printed_book",
+      "note": "Ingested 2026-06-25 for re-audit vs packages/oracle-bones-engine. PDF gitignored locally; manifest tracked."
     }
   }
 }

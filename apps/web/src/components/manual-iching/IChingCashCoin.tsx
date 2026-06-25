@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-export type IChingCashCoinFace = "yang" | "yin";
+/** Which physical face of the coin is shown. Purely visual — yin/yang value mapping lives in the wizard. */
+export type IChingCashCoinFace = "han" | "manchu";
 
 type Props = {
-  /** Yang (heads): Han inscription face; Yin (tails): Manchu reverse */
   face: IChingCashCoinFace;
   className?: string;
 };
@@ -29,7 +29,7 @@ function usePrefersReducedMotion(): boolean {
  */
 export function IChingCashCoin({ face, className = "" }: Props) {
   const reduceMotion = usePrefersReducedMotion();
-  const showYin = face === "yin";
+  const showManchu = face === "manchu";
   const durationMs = reduceMotion ? 0 : 520;
 
   return (
@@ -38,7 +38,7 @@ export function IChingCashCoin({ face, className = "" }: Props) {
         className="iching-cash-coin__inner"
         data-face={face}
         style={{
-          transform: showYin ? "rotateY(180deg)" : "rotateY(0deg)",
+          transform: showManchu ? "rotateY(180deg)" : "rotateY(0deg)",
           transition: durationMs ? `transform ${durationMs}ms cubic-bezier(0.25, 0.1, 0.25, 1)` : undefined,
         }}
       >
