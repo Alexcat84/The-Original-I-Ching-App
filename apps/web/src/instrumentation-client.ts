@@ -16,3 +16,6 @@ Sentry.init({
     return event;
   },
 });
+
+// Required by @sentry/nextjs to instrument App Router client-side navigations.
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

@@ -16,3 +16,6 @@ export async function register() {
     });
   }
 }
+
+// Required by @sentry/nextjs to capture errors from nested Server Components.
+export const onRequestError = Sentry.captureRequestError;
