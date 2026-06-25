@@ -25,7 +25,11 @@ function timelineDateClass(statusKind: AuditTimelineEntry["statusKind"]): string
 function groupTimelineByCategory(
   timeline: AuditTimelineEntry[],
 ): { category: NonNullable<AuditTimelineEntry["category"]>; entries: AuditTimelineEntry[] }[] {
-  const order: NonNullable<AuditTimelineEntry["category"]>[] = ["oracle-text", "mutation-rule"];
+  const order: NonNullable<AuditTimelineEntry["category"]>[] = [
+    "oracle-text",
+    "library-commentary",
+    "mutation-rule",
+  ];
   return order
     .map((category) => ({
       category,
@@ -106,7 +110,18 @@ function sectionHeading(
   a: AuditsPageUiMessages,
   category: AuditBlockCategory,
 ): string {
-  return category === "oracle-text" ? a.oracleTextSectionHeading : a.mutationRulesSectionHeading;
+  switch (category) {
+    case "oracle-text":
+      return a.oracleTextSectionHeading;
+    case "library-commentary":
+      return a.libraryCommentarySectionHeading;
+    case "mutation-rule":
+      return a.mutationRulesSectionHeading;
+    default: {
+      const _exhaustive: never = category;
+      return _exhaustive;
+    }
+  }
 }
 
 export async function generateMetadata(): Promise<Metadata> {

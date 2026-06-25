@@ -172,26 +172,29 @@ for (const locale of SUPPORTED_LOCALES) {
 
   const audits = getAuditsPageUiMessages(locale);
   check(
-    `P2.3 [${locale}] audits timeline has 8 verification entries`,
-    audits.timeline.length === 8,
+    `P2.3 [${locale}] audits timeline has 10 verification entries`,
+    audits.timeline.length === 10,
   );
   check(
     `P2.3 [${locale}] audits timeline is sorted newest first`,
-    audits.timeline[0]?.id === "zhouyi-ctext-2026-06-21",
+    audits.timeline[0]?.id === "wilhelm-commentary-txt-maestro-2026-06-23",
   );
   check(
     `P2.3 [${locale}] audits timeline has zhouyi initial corruption-fix entry`,
     audits.timeline.some((entry) => entry.id === "zhouyi-ctext-initial-2026-06-21"),
   );
   check(
-    `P2.3 [${locale}] audits oracle and mutation sections are present`,
+    `P2.3 [${locale}] audits oracle, library commentary, and mutation sections are present`,
     audits.timeline.filter((e) => e.category === "oracle-text").length === 6 &&
+      audits.timeline.filter((e) => e.category === "library-commentary").length === 2 &&
       audits.timeline.filter((e) => e.category === "mutation-rule").length === 2,
   );
   check(
     `P2.3 [${locale}] audits section headings are defined`,
     typeof audits.oracleTextSectionHeading === "string" &&
       audits.oracleTextSectionHeading.length > 0 &&
+      typeof audits.libraryCommentarySectionHeading === "string" &&
+      audits.libraryCommentarySectionHeading.length > 0 &&
       typeof audits.mutationRulesSectionHeading === "string" &&
       audits.mutationRulesSectionHeading.length > 0 &&
       typeof audits.blockVerificationDateLabel === "string" &&
