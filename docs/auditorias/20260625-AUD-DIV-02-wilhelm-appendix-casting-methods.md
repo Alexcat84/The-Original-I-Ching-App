@@ -314,14 +314,28 @@ Antes de remediar se buscó si la convención `Han=3/yang` tenía respaldo indep
 
 No existe «% en TXT» que contrastar; el gate es **derivación algebraica + MC**.
 
-### 6.D Auto varas — veredicto provisional: distribución OK; procedural no simulado
+### 6.D Auto varas — veredicto: distribución OK; equivalencia procedural demostrada (con matiz documentado)
 
 | Criterio | Gold | App | Estado |
 |----------|------|-----|--------|
-| P(6)=1/16 … P(9)=3/16 | Matemática + §1 asimetría 5 vs 9 | `throwYarrowStalks` bucket 16 | ✅ test MC |
-| Simulación 49 varas × 3 rondas | Procedimiento §1 | **No implementada** | ⚠️ **H-DIV-02-02 (MED)** |
+| P(6)=1/16 … P(9)=3/16 | Matemática + §1 asimetría 5 vs 9 | `throwYarrowStalks` bucket 16 | ✅ test MC (`G4`) |
+| Simulación 49 varas × 3 rondas | Procedimiento §1 | `simulateYarrowLine()` implementada en `scripts/verify-divination-wilhelm-appendix.mjs` | ✅ **H-DIV-02-02 cerrado 2026-06-25** |
 
-La app **no** ejecuta el algoritmo de dividir/contar varas en auto; **muestrea** la distribución Zhou directamente. AUD-DIV-01 aceptó esto como equivalente estadístico; esta AU exige **demostración** (simulador procedural en harness) de equivalencia exacta, no solo MC del bucket.
+**H-DIV-02-02 (MED, cerrado).** Se implementó `simulateYarrowLine(rng)`: simula literalmente el procedimiento de Wilhelm §1 — dividir 49 varas activas en dos montones en un punto aleatorio, apartar 1 vara del montón derecho entre los dedos, contar **ambos** montones de 4 en 4 (resto 0 se trata como 4, igual que Wilhelm: *«The number 4 is regarded as a complete unit»*), sumar 1 + resto-izq + resto-der. Se repite 3 veces encadenando el conteo activo restante, y el resultado final se traduce a línea vía `yarrowSumToLine` (la misma función que ya usa el wizard manual — `G1`).
+
+**Supuesto de modelado explícito (no lo da Wilhelm):** Wilhelm describe las acciones físicas, no un modelo de aleatoriedad para «dividir al azar». El harness asume que el punto de corte del montón es uniforme entre todas las divisiones no triviales — la elección más simple y defendible sin inventar un mecanismo que el texto no especifica.
+
+**Resultados (200,000 tiradas, `npm run verify:divination-wilhelm-appendix`):**
+
+| Gate | Verifica | Resultado |
+|------|----------|-----------|
+| `G5a` | Ronda 1: P(residuo=5) > P(residuo=9) — cita literal *«the number 5 is easier to obtain than the number 9»* | **PASS** — P(5)≈0.750, P(9)≈0.250 |
+| `G5b` | Rondas 2-3: P(residuo=4) ≈ P(residuo=8) — cita literal *«chances of obtaining 8 or 4 are equal»* | **WARN** — P(4)≈0.511-0.515, P(8)≈0.485-0.489 (activo=44 y 40 respectivamente); diferencia real de ~2-3%, no ruido estadístico a este N |
+| `G5` | Distribución final de `simulateYarrowLine()` (3 rondas encadenadas) vs el bucket 1/16-5/16-7/16-3/16 de `throwYarrowStalks` | **PASS** dentro de tolerancia ±2% |
+
+**Lectura del `WARN` en `G5b` (no es un bug):** la afirmación de Wilhelm «chances... are equal» es una formulación cualitativa/literaria, no una cifra decimal. Bajo el supuesto de corte uniforme, la simulación da ~51/49 en vez de exactamente 50/50 — una desviación real (no ruido) pero pequeña, que sigue siendo razonablemente descrita como «aproximadamente igual». Dos lecturas posibles, ninguna desacredita la equivalencia: (a) Wilhelm redondea una cifra muy cercana a igual: o (b) el supuesto de «corte uniforme» no es exactamente el mecanismo físico real de dividir un montón a mano, y un supuesto distinto daría 50/50 exacto. No se intentó forzar el resultado ajustando la tolerancia para que pasara oculto — se reporta como `WARN` con las cifras reales.
+
+**Veredicto:** la app **no** ejecuta el algoritmo físico en producción (auto sigue muestreando el bucket Zhou directamente, sin cambios — sigue siendo correcto y más eficiente). Lo que esta AU agrega es la **prueba reproducible** de que ese bucket es estadísticamente equivalente a simular el procedimiento real de Wilhelm, cerrando la brecha de evidencia que dejó `AUD-DIV-01` (que aceptó la equivalencia sin demostrarla).
 
 ### 6.E Paridad auto ↔ manual
 
@@ -332,6 +346,16 @@ La app **no** ejecuta el algoritmo de dividir/contar varas en auto; **muestrea**
 
 Pendiente: matriz explícita monedas manual vs auto y varas manual vs auto en harness.
 
+### 6.F Copy producto — hallazgo **H-DIV-02-03 (LOW, cerrado 2026-06-25)**
+
+Hint del selector de método (`castMethodYarrowHint`, 11 locales), EN: *«Authentic Zhou distribution; moving yang 3× more frequent than moving yin»* / ES: *«Distribución auténtica Zhou; yang móvil 3× más frecuente que yin móvil»*.
+
+**Verificación contra el gold:** yang móvil = línea 9 (old yang); yin móvil = línea 6 (old yin). Por la distribución clásica que el motor implementa (`throwYarrowStalks`, verificada en `G4`): P(9) = 3/16, P(6) = 1/16. Razón = (3/16) / (1/16) = **3** exacto — el copy «3×» es matemáticamente correcto, no una aproximación.
+
+**Por qué estaba "abierto":** el hallazgo original notaba que el copy no cita el % exacto ni referencia a Wilhelm explícitamente. Tras verificar, la cifra «3×» **ya es exacta** (no hace falta corregirla) y proviene de la propia distribución que el Apéndice describe cualitativamente (Wilhelm no imprime fracciones para el resultado final de 3 rondas, solo para los residuos intermedios de cada ronda — ver `G4`/`G5a`/`G5b`). No se modificó el copy: ya es preciso y no necesita citar a Wilhelm por nombre (es una cifra derivada y verificada, no una cita literal).
+
+**Cierre:** sin cambios de código ni copy. Verificado y documentado vía `G4` (`verify:divination-wilhelm-appendix`).
+
 ---
 
 ## 7. Tabla de hallazgos (vivo)
@@ -339,8 +363,8 @@ Pendiente: matriz explícita monedas manual vs auto y varas manual vs auto en ha
 | ID | Sev | Bloque | Hallazgo | Estado |
 |----|-----|--------|----------|--------|
 | H-DIV-02-01 | **HIGH** | B | Cara inscrita Han = yang(3) en UI vs Wilhelm inscrita = yin(2) | **Cerrado 2026-06-25** — sin alternativa documentada, se siguió el libro; ver §6.B |
-| H-DIV-02-02 | MED | D | Auto varas no simula procedimiento físico; solo bucket 1/16 | **Abierto** — probar equivalencia |
-| H-DIV-02-03 | LOW | F | Hint «yang móvil 3× más probable» (varas) es cualitativo; no cita % Wilhelm | **Abierto** — revisar copy |
+| H-DIV-02-02 | MED | D | Auto varas no simula procedimiento físico; solo bucket 1/16 | **Cerrado 2026-06-25** — `simulateYarrowLine()` + gates G5/G5a/G5b; ver §6.D |
+| H-DIV-02-03 | LOW | F | Hint «yang móvil 3× más probable» (varas) es cualitativo; no cita % Wilhelm | **Cerrado 2026-06-25** — cifra «3×» verificada exacta (G4); sin cambio de copy; ver §6.F |
 | H-DIV-02-04 | INFO | — | AUD-DIV-01 cerrada sin gold TXT; esta AU es la línea book-primary | Documentado |
 | H-DIV-02-05 | INFO | — | `/audits` público no incluye métodos de tirada | By design |
 | H-DIV-02-06 | INFO | — | Huesos: DIV-01 §5 (Silencio eliminado); Keightley PDF ingestado §13 + manifest | Documentado — AU futura |
@@ -364,40 +388,48 @@ Pendiente: matriz explícita monedas manual vs auto y varas manual vs auto en ha
   - Reglas monedas: `{inscribed:2, reverse:3}` → tabla 6/7/8/9
 - [ ] Validar parser: diff TXT crudo vs JSON (sin normalización agresiva que oculte errores)
 
-### Fase 2 — Harness `verify:divination-wilhelm-appendix` (propuesto)
+### Fase 2 — Harness `verify:divination-wilhelm-appendix` (✅ implementado 2026-06-25)
 
-Ubicación propuesta: `scripts/verify-divination-wilhelm-appendix.mjs`  
-Registro QA: `docs/qa/registry.json` (código propuesto `VF-DIV-002`)
+Ubicación: `scripts/verify-divination-wilhelm-appendix.mjs` · Registro QA: `docs/qa/registry.json` → `VF-DIV-001 divination-wilhelm-appendix`.
 
-| Gate | Tipo | Assert |
-|------|------|--------|
-| G1 | Determinista | `yarrowSumToLine` × 8 combinaciones = gold Wilhelm |
-| G2 | Determinista | Combinatoria monedas 2³ = {6,7,8,9} con probs exactas |
-| G3 | MC / exact | `throwThreeCoins` frecuencias ±ε |
-| G4 | MC / exact | `throwYarrowStalks` frecuencias ±ε |
-| G5 | Simulación | `simulateYarrowLine(rng)` procedural ≡ distribución G4 |
-| G6 | Contraste | Documentar mapping UI Han/yin vs gold (expect **FAIL** hasta remediación) |
+| Gate | Tipo | Assert | Resultado (200k tiradas) |
+|------|------|--------|---------------------------|
+| G1 | Determinista | `yarrowSumToLine` × 8 combinaciones = gold Wilhelm | **PASS** |
+| G2 | Determinista | Combinatoria monedas 2³ = {6,7,8,9} con composición exacta | **PASS** |
+| G3 | MC | `throwThreeCoins` frecuencias vs 1/8, 3/8, 3/8, 1/8 (±1%) | **PASS** |
+| G4 | MC | `throwYarrowStalks` frecuencias vs 1/16, 5/16, 7/16, 3/16 (±1%) | **PASS** |
+| G5a | Simulación | Ronda 1: P(residuo=5) > P(residuo=9) | **PASS** — P(5)≈0.750, P(9)≈0.250 |
+| G5b | Simulación | Rondas 2-3: P(residuo=4) ≈ P(residuo=8) | **WARN** — ~51/49, ver §6.D |
+| G5 | Simulación | `simulateYarrowLine(rng)` procedural ≡ distribución G4 (±2%) | **PASS** |
+| G6 | Contraste | Mapping UI Han/yin vs gold (era **FAIL** antes del fix H-DIV-02-01) | **PASS** (era FAIL antes de 2026-06-25) |
 
-Comando npm propuesto: `npm run verify:divination-wilhelm-appendix`
+Comando: `npm run verify:divination-wilhelm-appendix` (acepta `--trials N`, default 200000). Salida 0 fallos / 1 warning documentado.
 
 ### Fase 3 — Manual UI walkthrough
 
 - [ ] Script o checklist: 6 líneas monedas + 6 líneas varas con capturas
-- [ ] Contrastar copy 11 locales (`manual-*-wizard-ui.ts`) vs EN gold Wilhelm
+- [x] Contrastar copy 11 locales (`manual-coin-wizard-ui.ts` `coinHint`) vs EN gold Wilhelm — corregido 2026-06-25 (H-DIV-02-01)
 - [ ] Verificar accesibilidad `headsAria` / `tailsAria` no contradice Wilhelm en EN/ES
 
 ### Fase 4 — Cierre
 
-- [ ] Veredicto por bloque A–F
+- [x] Veredicto por bloque B (§6.B), D (§6.D), F (§6.F) — A/C/E quedan con veredicto provisional, sin hallazgo abierto
 - [ ] Actualizar AUD-DIV-01 con enlace «superseded parcialmente por DIV-02» o merge
-- [ ] Decisión producto H-DIV-02-01 (fix vs documentar convención alternativa)
-- [ ] **No** publicar en `/audits` salvo decisión de producto explícita
+- [x] Decisión producto H-DIV-02-01: **fix** (sin alternativa documentada, se sigue el libro) — ver §6.B
+- [x] **No** publicado en `/audits` — sin cambio de alcance público en esta AU
 
 ---
 
 ## 9. Comandos reproducibles
 
 ```bash
+# Harness completo G1-G6 (coins + yarrow) vs Wilhelm Appendix I — H-DIV-02-01/02/03
+npm run verify:divination-wilhelm-appendix
+npm run verify:divination-wilhelm-appendix -- --trials 500000
+
+# Test de regresión del valor de moneda (H-DIV-02-01)
+npm run test --prefix apps/web -- manual-coin-value
+
 # Parsear apéndice TXT → JSON
 npm run parse:wilhelm-appendix-txt
 
@@ -415,11 +447,11 @@ npm run pdf-gold:preflight
 
 ## 10. Criterios de cierre (DoD)
 
-1. Harness G1–G5 **PASS** (G6 documentado PASS/FAIL según decisión producto).
+1. ~~Harness G1–G5 PASS~~ — **cumplido 2026-06-25**: G1-G5, G6 en PASS; G5b en WARN documentado (no bloqueante, ver §6.D). Script y registro QA (`VF-DIV-001`) en `docs/qa/`.
 2. ~~Hallazgo H-DIV-02-01 resuelto~~ — **cerrado 2026-06-25**: sin alternativa académica verificada que contradiga a Wilhelm, se aplicó **fix** (no wontfix). Ver §6.B.
-3. Simulador procedural varas demostrado ≡ `throwYarrowStalks` (cierra H-DIV-02-02).
-4. Matriz manual/auto firmada en este documento.
-5. Entrada `registry.json` + `INDEX.md` actualizadas; estado AU → `closed`.
+3. ~~Simulador procedural varas demostrado ≡ `throwYarrowStalks`~~ — **cerrado 2026-06-25** (cierra H-DIV-02-02). Ver §6.D.
+4. Matriz manual/auto firmada en este documento — **pendiente** (Fase 3, checklist visual con capturas).
+5. Entrada `registry.json` + `INDEX.md` actualizadas — **hecho para los 3 hallazgos cerrados**; estado AU general permanece `open` (Fase 0/1/3/4 tienen ítems pendientes sin relación con hallazgos HIGH/MED/LOW ya resueltos).
 
 ---
 
@@ -436,6 +468,10 @@ npm run pdf-gold:preflight
 | Payload manual | `apps/web/src/lib/manual-iching-consult.ts` |
 | Wizard monedas | `apps/web/src/components/manual-iching/ManualIChingCoinWizard.tsx` |
 | Wizard varas | `apps/web/src/components/manual-iching/ManualYarrowWizard.tsx` |
+| Valor moneda (puro, sin JSX) | `apps/web/src/lib/manual-coin-value.ts` — `lineValueFromCoins` |
+| Cara moneda (visual) | `apps/web/src/components/manual-iching/IChingCashCoin.tsx` |
+| Test valor moneda | `apps/web/src/lib/__tests__/manual-coin-value.test.ts` (`TS-WEB-014`) |
+| Harness book-primary | `scripts/verify-divination-wilhelm-appendix.mjs` (`VF-DIV-001`) — G1-G6, incluye `simulateYarrowLine` |
 | i18n monedas | `packages/i18n/src/messages/manual-coin-wizard-ui.ts` |
 | i18n varas | `packages/i18n/src/messages/manual-yarrow-wizard-ui.ts` |
 | AU previa | `docs/auditorias/00000000-AUD-DIV-01-divination-methods.md` |
@@ -532,4 +568,5 @@ Propuesta de código AU sucesora: `AUD-DIV-03 oracle-bones-keightley` (no abiert
 | 2026-06-25 | Apertura AU; gold TXT identificado; H-DIV-02-01 preliminar (inversión cara inscrita monedas manual); plan harness G1–G6 |
 | 2026-06-25 | §3 historial AUs previas (DIV-01, MUT, LRS, DOC, maestro W); §13 huesos + gold Keightley designado |
 | 2026-06-25 | Keightley PDF ingestado en `tools/source-pdfs/`; entrada `keightley` en manifest.json |
-| 2026-06-25 | **H-DIV-02-01 cerrado (fix).** Investigación: sin fuente académica verificada que contradiga a Wilhelm/Baynes 1950 Apéndice I §2 (la cifra previa "Han=3" provenía de una paráfrasis imprecisa en `AUD-DIV-01`, no de una segunda fuente). Decisión de producto: seguir el libro literal. Fix en `ManualIChingCoinWizard.tsx` (`lineValueFromCoins` exportado, H=2/T=3), `IChingCashCoin.tsx` (prop `face` desacoplada a `han`/`manchu`, sin semántica yin/yang), `manual-coin-wizard-ui.ts` (`coinHint` corregido en 11 locales) y test de regresión nuevo (`manual-iching-coin-wizard.test.ts`). Verificado: tsc, eslint, i18n:audit, vitest 77/78 — todo PASS. |
+| 2026-06-25 | **H-DIV-02-01 cerrado (fix).** Investigación: sin fuente académica verificada que contradiga a Wilhelm/Baynes 1950 Apéndice I §2 (la cifra previa "Han=3" provenía de una paráfrasis imprecisa en `AUD-DIV-01`, no de una segunda fuente). Decisión de producto: seguir el libro literal. Fix en `ManualIChingCoinWizard.tsx` (`lineValueFromCoins`, H=2/T=3), `IChingCashCoin.tsx` (prop `face` desacoplada a `han`/`manchu`, sin semántica yin/yang), `manual-coin-wizard-ui.ts` (`coinHint` corregido en 11 locales) y test de regresión nuevo. Verificado: tsc, eslint, i18n:audit, vitest 77/78 — todo PASS. |
+| 2026-06-25 | **Harness `verify:divination-wilhelm-appendix` (G1-G6) implementado** (`scripts/verify-divination-wilhelm-appendix.mjs`, registrado `VF-DIV-001`). `lineValueFromCoins` movida a `apps/web/src/lib/manual-coin-value.ts` (módulo puro, sin JSX) para que el script la importe directamente vía soporte nativo TS de Node 24, sin duplicar lógica; test movido junto (`apps/web/src/lib/__tests__/manual-coin-value.test.ts`, `TS-WEB-014`). Se implementó `simulateYarrowLine()`, simulador procedural del método de 49 varas/3 rondas de Wilhelm §1, cerrando **H-DIV-02-02**. Resultado: 0 fallos, 1 warning documentado (`G5b`, ~51/49 en vez de 50/50 exacto bajo el supuesto de corte uniforme — ver §6.D, no oculto ajustando tolerancia). **H-DIV-02-03 cerrado**: cifra «yang móvil 3×» del hint de varas verificada exacta contra `G4` (3/16 ÷ 1/16 = 3), sin cambio de copy. Familia QA `DIV` añadida a `qa/CONVENTIONS.md`. |

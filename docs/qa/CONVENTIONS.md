@@ -70,6 +70,7 @@ Identifica **qué superficie del producto** ejercita el test. Path repo-relative
 | `FID-ZY` | Zhou Yi |
 | `MUT` | Reglas mutación / QA salida LLM |
 | `LRS` | Line reading system (Huang / Zhu Xi) |
+| `DIV` | Divination casting methods (coins, yarrow stalks) vs book-primary appendix |
 | `RDG` | Reading quality harness |
 | `PINYIN` | Gate pinyin gold |
 | `DOC` | Docs producto vs código |

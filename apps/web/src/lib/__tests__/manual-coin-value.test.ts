@@ -1,10 +1,11 @@
 /**
- * QA code: TS-WEB-014 manual-coin-wizard · v1.0.0
- * Area: apps/web/src/components/manual-iching/ManualIChingCoinWizard
+ * QA code: TS-WEB-014 manual-coin-value · v1.0.0
+ * Area: apps/web/src/lib/manual-coin-value
  * Family: WEB
  */
+
 import { describe, expect, it } from "vitest";
-import { lineValueFromCoins } from "../ManualIChingCoinWizard";
+import { lineValueFromCoins } from "../manual-coin-value";
 
 describe("lineValueFromCoins", () => {
   it("matches Wilhelm/Baynes Appendix I §2: inscribed (Han) = yin 2, reverse (Manchu) = yang 3", () => {
