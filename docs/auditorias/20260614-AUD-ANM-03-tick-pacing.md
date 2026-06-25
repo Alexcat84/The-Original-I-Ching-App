@@ -1,6 +1,6 @@
 # Auditoría — Ajuste de pacing de animación ritual I Ching
-
 **Código:** `20260614-AUD-ANM-03 tick-pacing` · **Familia:** ANM · **Estado:** closed
+
 
 **Fecha:** 2026-06-14
 **Rama:** `feat/animation-tick-pacing`

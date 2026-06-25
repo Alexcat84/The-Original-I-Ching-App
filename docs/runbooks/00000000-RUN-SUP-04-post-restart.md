@@ -1,5 +1,4 @@
 # Runbook — Post-restart Supabase (The Original I Ching)
-
 **Código:** `00000000-RUN-SUP-04 post-restart` · **Familia:** SUP · **Estado:** reference
 
 **Proyecto prod:** `wgborqkfnxfarkdaotsd` (ca-central-1)

@@ -1,6 +1,6 @@
 # Auditoría — Estabilidad Supabase / PostgREST (Warp timeouts)
-
 **Código:** `00000000-AUD-SUP-01 supabase-db-stability` · **Familia:** SUP · **Estado:** open
+
 
 **Fecha:** 2026-06-07  
 **Alcance:** Proyecto producción `The Original I Ching` — Supabase `wgborqkfnxfarkdaotsd` (ca-central-1, Postgres 17.6, plan **Pro**)  

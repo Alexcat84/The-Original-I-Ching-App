@@ -1,6 +1,6 @@
 # WORKFLOW: Legal acceptance post-authentication gate
-
 **Código:** `00000000-WF-AUTH-01 legal-post-auth` · **Familia:** AUTH · **Estado:** reference
+
 
 **Version**: 1.0  
 **Status**: Approved (implementation)  

@@ -1,6 +1,6 @@
 # Manual de restauración — interpretaciones I Ching App
-
 **Código:** `00000000-RUN-REST-01 restoration-manual` · **Familia:** SUP-REST · **Estado:** reference
+
 
 **Proyecto prod:** Supabase `wgborqkfnxfarkdaotsd`  
 **Dominio web:** [theoriginaliching.com](https://theoriginaliching.com)  

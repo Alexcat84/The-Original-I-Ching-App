@@ -1,6 +1,6 @@
 # Auditoría y Resolución — Data Safety Form (Google Play)
-
 **Código:** `20260619-FIX-MOB-PLAY-01 play-data-safety` · **Familia:** MOB-PLAY · **Estado:** closed
+
 
 **App:** The Original I Ching (com.theoriginaliching.app)
 **Fecha del rechazo:** 18 Jun 2026 · **Version code afectado:** 49

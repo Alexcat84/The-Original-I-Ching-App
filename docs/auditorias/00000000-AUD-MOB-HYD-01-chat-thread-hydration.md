@@ -1,6 +1,6 @@
 # Auditoría — Hidratación incompleta de mensajes (5 en sidebar, 3 en hilo)
-
 **Código:** `00000000-AUD-MOB-HYD-01 chat-thread-hydration` · **Familia:** MOB-HYD · **Estado:** closed
+
 
 **Fecha:** 2026-05-26  
 **Cerrada:** 2026-06-06 — commit `75e71d4` en `staging`  

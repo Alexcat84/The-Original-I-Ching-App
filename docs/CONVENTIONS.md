@@ -2,7 +2,7 @@
 
 Registro maestro: [`registry.json`](./registry.json) · Índice: [`INDEX.md`](./INDEX.md)
 
-Este árbol agrupa **auditorías**, **runbooks**, **planes**, **workflows**, **setup**, **QA** y **ops**. Los sub-registros especializados siguen siendo canónicos para su dominio.
+**Reglas obligatorias (no negociables):** [`workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md`](./workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md)
 
 ---
 
@@ -35,6 +35,18 @@ Ejemplo: `00000000-RUN-SUP-01-migration-data-integrity.md`
 
 ---
 
+## Alta de documento (resumen — detalle en workflow obligatorio)
+
+1. Asignar código único (familia + secuencia).
+2. **`registry.json`** — entrada completa.
+3. **`INDEX.md`** — fila en la familia (mismo PR, no diferir).
+4. Crear archivo canónico; metadata `**Código:**` tras `# Título`.
+5. `npm run verify:qa-registry`.
+
+Sin pasos 2–3 el documento **no se considera registrado**.
+
+---
+
 ## Redirects legacy
 
 Tras renombrar, el **archivo antiguo** queda como stub `(renamed)` con enlace al canónico. No editar stubs; actualizar solo el path codificado.
@@ -44,15 +56,7 @@ Tras renombrar, el **archivo antiguo** queda como stub `(renamed)` con enlace al
 ## Validación
 
 ```bash
-npm run verify:qa-registry   # auditorías + QA + docs/registry.json
+npm run verify:qa-registry
 ```
 
----
-
-## Alta de documento
-
-1. Asignar código único en el registro correspondiente.
-2. Crear archivo con nombre codificado (o stub si migras legacy).
-3. Tras el `# Título`, insertar:  
-   `**Código:** \`…\` · **Familia:** … · **Estado:** …`
-4. Actualizar índice de la colección y, si aplica, `relatedTests` / `relatedCodes`.
+Fallo = bloqueante para merge.

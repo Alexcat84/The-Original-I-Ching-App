@@ -1,6 +1,6 @@
 # Estandarización i18n — Resumen del cambio completo
-
 **Código:** `00000000-WF-I18N-02 i18n-standardization` · **Familia:** I18N · **Estado:** reference
+
 
 Documento de referencia del trabajo en la rama `feat/i18n-standardization` (base: `staging`).
 

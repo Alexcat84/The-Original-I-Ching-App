@@ -1,6 +1,6 @@
 # Auditoría: Race condition en `__rnNavigateTo` × Next.js App Router
-
 **Código:** `20260619-AUD-MOB-NAV-01 router-navigate-race` · **Familia:** MOB-NAV · **Estado:** closed
+
 
 **Fecha de detección:** 2026-06-19  
 **Sentry Issue:** 7562273839  

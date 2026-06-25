@@ -1,5 +1,4 @@
 # Runbook — Recuperación PITR consultation_content (incidente 2026-06-07)
-
 **Código:** `00000000-RUN-SUP-05 recover-pitr` · **Familia:** SUP · **Estado:** reference
 
 **Objetivo:** Restaurar `interpretation` y `oracle_bones` en prod `wgborqkfnxfarkdaotsd` sin revertir migraciones 067/068 ni el código actual.

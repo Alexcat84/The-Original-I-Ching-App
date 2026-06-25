@@ -1,6 +1,6 @@
 # Selector de reglas de lectura de líneas cambiantes (Huang | Zhu Xi) — Plan + Auditoría
-
 **Código:** `20260620-AUD-LRS-01 zhuxi-line-reading-selector` · **Familia:** LRS · **Estado:** closed
+
 
 **Feature:** selector de UI para elegir entre el sistema de reducción de Alfred Huang (actual,
 default) y las reglas clásicas de Zhu Xi para casos de 2/3/4 líneas cambiantes.

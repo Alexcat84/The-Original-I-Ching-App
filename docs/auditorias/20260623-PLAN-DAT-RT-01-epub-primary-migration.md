@@ -1,6 +1,6 @@
 # Migración EPUB-primary — inyectores Wilhelm + Legge
-
 **Código:** `20260623-PLAN-DAT-RT-01 epub-primary-migration` · **Familia:** DAT-RT · **Estado:** shipped
+
 
 - **Fecha:** 2026-06-23
 - **Estado:** ✅ **EJECUTADO y cerrado** (inyectores W y L sincronizados desde EPUB; la duda de juicio del propietario sobre Legge hex 41 L2 se resolvió en §3 — RESUELTO, EPUB fiel al libro). Alcance: solo `judgment`/`image`/`lines`/`yong`. El campo `name` (título) quedó **fuera de este alcance** y se descubrió roto por separado — ver `20260623-FIX-LIB-02-library-title-fidelity.md`.

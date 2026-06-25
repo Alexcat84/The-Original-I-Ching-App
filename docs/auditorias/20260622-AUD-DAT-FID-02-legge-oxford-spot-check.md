@@ -1,6 +1,6 @@
 # Spot-check manual — Legge SBE XVI (escaneo Oxford) vs gold PDF OCR
-
 **Código:** `20260622-AUD-DAT-FID-02 legge-oxford-spot-check` · **Familia:** DAT-FID · **Estado:** closed
+
 
 **App:** The Original I Ching · **Rama:** `feat/pdf-gold-verification`  
 **Fecha:** 2026-06-22  

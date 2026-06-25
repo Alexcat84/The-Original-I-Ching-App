@@ -1,6 +1,6 @@
 # Gate de pinyin — derivado vs hardcodeado (chineseName + trigramas)
-
 **Código:** `20260623-GATE-DAT-FID-06 pinyin-gold-gate` · **Familia:** DAT-FID · **Estado:** closed
+
 
 - **Fecha:** 2026-06-23
 - **Estado:** ✅ Cerrada — gate nuevo en verde (72/72)

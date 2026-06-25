@@ -1,6 +1,6 @@
 # Play Store Changelog (What's New)
-
 **Código:** `00000000-OPS-PLAY-01 play-store-changelog` · **Familia:** MOB-PLAY · **Estado:** reference
+
 
 Release notes copy for the Google Play Store listing ("What's new" / notas de la versión).
 Keep each entry short, punchy, and user facing — lead with a hook, not a feature list. Use a

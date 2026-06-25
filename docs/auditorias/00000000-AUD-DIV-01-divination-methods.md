@@ -1,6 +1,6 @@
-**Código:** `00000000-AUD-DIV-01 divination-methods` · **Familia:** DIV · **Estado:** closed
+**Código:** `00000000-AUD-DIV-01 divination-methods**Código:** `00000000-AUD-DIV-01 divination-methods` · **Familia:** DIV · **Estado:** closed
 
-**Código:** `00000000-AUD-DIV-01 divination-methods` · **Familia:** DIV · **Estado:** closed
+` · **Familia:** DIV · **Estado:** closed
 
 # Divination Methods — Technical Audit & Reference
 *The Original I Ching App · v1.0 · Updated: 2026-05-20*

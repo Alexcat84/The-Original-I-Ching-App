@@ -1,6 +1,6 @@
 # Auditoría — SQLite / hidratación de chats (mobile)
-
 **Código:** `00000000-AUD-MOB-HYD-02 sqlite-chat-hydration` · **Familia:** MOB-HYD · **Estado:** closed
+
 
 **Fecha:** 2026-06-04  
 **Rama auditada:** `staging` @ `4ebafc3`  

@@ -1,6 +1,6 @@
 # Auditoría de Optimización de Performance — Prompt Caching + Streaming
-
 **Código:** `20260612-AUD-PERF-01 claude-image-performance` · **Familia:** PERF · **Estado:** closed
+
 
 ## Estado · Lifecycle
 

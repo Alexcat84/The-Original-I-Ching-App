@@ -1,6 +1,6 @@
 # Auditoría general de código — Pre-producción
-
 **Código:** `20260616-AUD-PRD-02 general-pre-production` · **Familia:** PRD · **Estado:** closed
+
 
 **Proyecto:** The Original I Ching App
 **Fecha:** 2026-06-16

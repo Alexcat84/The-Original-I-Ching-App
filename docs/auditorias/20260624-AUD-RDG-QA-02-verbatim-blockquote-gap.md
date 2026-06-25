@@ -1,6 +1,6 @@
 # Auditoría — Gap verbatim juicio/imagen en lecturas IA (prompt vs gates vs salida)
-
 **Código:** `20260624-AUD-RDG-QA-02 verbatim-blockquote-gap` · **Familia:** RDG-QA · **Estado:** mitigated
+
 
 - **Fecha:** 2026-06-24
 - **Estado:** 🟢 **Mitigada** — Gate H7 (warn + telemetría) implementado y verificado offline (§11); reintento automático diferido a decisión futura con datos reales de Sentry.

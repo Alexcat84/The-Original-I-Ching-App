@@ -1,6 +1,6 @@
 # Incident audit — Bottom gap in RN WebView chat (Release A)
-
 **Código:** `20260618-AUD-MOB-UI-01 webview-bottom-gap` · **Familia:** MOB-UI · **Estado:** closed
+
 
 **Project:** The Original I Ching App  
 **Date:** 2026-06-18  

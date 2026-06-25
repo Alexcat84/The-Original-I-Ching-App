@@ -1,5 +1,4 @@
 # Runbook oficial — Escalabilidad Supabase (The Original I Ching)
-
 **Código:** `00000000-RUN-SUP-02 supabase-scalability` · **Familia:** SUP · **Estado:** reference
 
 **Documento de referencia** para operaciones internas y tickets a **Supabase Support**.  

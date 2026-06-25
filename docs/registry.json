@@ -170,6 +170,19 @@
       ]
     },
     {
+      "code": "00000000-WF-DOC-02 mandatory-doc-qa-registration",
+      "title": "Mandatory doc and QA registration workflow",
+      "shortName": "mandatory-doc-qa-registration",
+      "type": "WF",
+      "family": "DOC",
+      "collection": "workflows",
+      "date": null,
+      "status": "reference",
+      "path": "docs/workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md",
+      "relatedCodes": ["00000000-WF-DOC-01 docs-content-update-guide"],
+      "relatedTests": ["VF-DOC-002 qa-registry-integrity"]
+    },
+    {
       "code": "00000000-WF-AUTH-01 legal-post-auth",
       "title": "Workflow: legal acceptance post-auth",
       "shortName": "legal-post-auth",

@@ -1,6 +1,6 @@
 # Biblioteca — capa de comentario opcional (Wilhelm + Legge)
-
 **Código:** `20260623-PLAN-LIB-01 library-commentary-layer` · **Familia:** LIB · **Estado:** closed
+
 
 - **Fecha:** 2026-06-23
 - **Estado:** **Implementado** · UI ribbon cerrada 2026-06-24 · tests en verde · `HexagramRecord`/motor/IA sin cambios (capa comentario)

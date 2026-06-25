@@ -1,6 +1,6 @@
 # Auditoría de fidelidad — Reglas de mutación vs fuentes primarias
-
 **Código:** `20260619-AUD-MUT-03 huang-rules-alignment` · **Familia:** MUT · **Estado:** closed
+
 
 **App:** The Original I Ching · **Motor:** `packages/iching-engine/src/engine.ts` (HEAD `59ea728`)
 **Fecha:** 19 jun 2026 · **Alcance:** las 10 reglas de selección de texto gobernante vs las fuentes primarias reales.

@@ -1,5 +1,4 @@
 # Smoke post-Small + PR1–PR3 — Checklist
-
 **Código:** `00000000-RUN-SUP-03 smoke-post-small` · **Familia:** SUP · **Estado:** reference
 
 **Proyecto:** The Original I Ching App (prod)  

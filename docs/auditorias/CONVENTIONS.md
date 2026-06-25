@@ -3,6 +3,8 @@
 Fuente canónica de metadatos: [`registry.json`](./registry.json).  
 Índice legible: [`INDEX.md`](./INDEX.md).
 
+**Reglas obligatorias:** [`../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md`](../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md) — **actualizar `registry.json` + `INDEX.md` es no negociable.**
+
 Los **nombres de archivo canónicos** siguen `{YYYYMMDD}-{TIPO}-{FAMILIA}-{NN}-{slug}.md`. Los paths legacy conservan un stub `(renamed)` con enlace al canónico.
 
 ---
@@ -90,18 +92,28 @@ Varios documentos **comparten familia** cuando rastrean el mismo hilo (p. ej. `I
 
 ---
 
-## Alta de documento nuevo
+## Alta de documento nuevo (OBLIGATORIO)
 
-1. Asignar código único en [`registry.json`](./registry.json) (fecha, tipo, familia, seq).
-2. Añadir fila en [`INDEX.md`](./INDEX.md) (o regenerar sección de la familia).
-3. Primera línea del `.md` (después del título H1):
+Seguir checklist completa en [`MANDATORY_DOC_AND_QA_REGISTRATION.md`](../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md).
 
-   ```markdown
-   **Código:** `20260625-AUD-IMG-OVR-02 mutation-title-layout` · **Familia:** IMG-OVR · **Estado:** open
-   ```
+Resumen mínimo — **los tres primeros pasos son bloqueantes:**
 
-4. Enlazar documentos relacionados por **código**, no solo por path.
-5. Si hay gate o test asociado, enlazar código QA en [`docs/qa/INDEX.md`](../qa/INDEX.md).
+| Paso | Acción | ¿Negociable? |
+|------|--------|--------------|
+| 1 | Código único (fecha, tipo, familia, seq) | No |
+| 2 | Entrada en [`registry.json`](./registry.json) | **No** |
+| 3 | Fila en [`INDEX.md`](./INDEX.md) (sección familia) | **No** |
+| 4 | Archivo canónico + metadata tras `# Título` | No |
+| 5 | Cross-refs (`relatedCodes`, `relatedTests`) | Si aplica |
+| 6 | `npm run verify:qa-registry` | No |
+
+Metadata tras el título:
+
+```markdown
+**Código:** `20260625-AUD-IMG-OVR-02 mutation-title-layout` · **Familia:** IMG-OVR · **Estado:** open
+```
+
+Enlazar documentos relacionados por **código**, no solo por path.
 
 ---
 

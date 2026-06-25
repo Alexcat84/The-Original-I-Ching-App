@@ -1,6 +1,6 @@
 # Legge SBE XVI TXT — auditoría AU y maestro book-primary
-
 **Código:** `20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro` · **Familia:** DAT-MAESTRO-L · **Estado:** closed
+
 
 - **Fecha:** 2026-06-23
 - **Rama:** `feature/wilhelm-txt-au-maestro-2026-06-23`

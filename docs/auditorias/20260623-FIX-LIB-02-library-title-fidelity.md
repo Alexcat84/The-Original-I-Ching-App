@@ -1,6 +1,6 @@
 # Biblioteca — fidelidad del campo `name` (título) + 3 hallazgos visuales
-
 **Código:** `20260623-FIX-LIB-02 library-title-fidelity` · **Familia:** LIB · **Estado:** closed
+
 
 - **Fecha:** 2026-06-23
 - **Estado:** ✅ **Cerrado** · fix aplicado y verificado en `staging` (pendiente merge a `main`)

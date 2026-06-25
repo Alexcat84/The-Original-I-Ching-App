@@ -1,6 +1,6 @@
 # Auditoría: Spike de 96+ requests a /login en producción
-
 **Código:** `20260619-AUD-OBS-02 axiom-login-spike` · **Familia:** OBS · **Estado:** closed
+
 
 **Fecha del incidente:** 2026-06-19 ~08:05–08:10 EDT (12:05–12:10 UTC)  
 **Dataset Axiom:** `iching-app-main`  

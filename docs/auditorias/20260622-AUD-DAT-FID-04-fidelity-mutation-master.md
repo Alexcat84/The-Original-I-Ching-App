@@ -1,6 +1,6 @@
 # Auditoría maestra — Fidelidad textos del oráculo + reglas de mutación
-
 **Código:** `20260622-AUD-DAT-FID-04 fidelity-mutation-master` · **Familia:** DAT-FID · **Estado:** closed
+
 
 **App:** The Original I Ching  
 **Fecha cierre documento:** 22 jun 2026  

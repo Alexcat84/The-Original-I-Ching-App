@@ -1,6 +1,6 @@
 # Overlay PNG — títulos mutación, flecha → y layout vertical (sumi fallback QA)
-
 **Código:** `20260625-AUD-IMG-OVR-02 mutation-title-layout` · **Familia:** IMG-OVR · **Estado:** closed
+
 
 - **Fecha:** 2026-06-25
 - **Estado:** ✅ **Cerrada (Claude Sonnet 4.6)** — causa raíz confirmada (bug de resvg-js con `<tspan>` dentro de `<text>`, no predecible por contenido) y corregida con elementos `<text>` independientes sin tspan; ver §10. **Pendiente exclusivamente: revisión visual del usuario antes de mergear `staging` → `main`** (a petición explícita del usuario, no se mergeó automáticamente).

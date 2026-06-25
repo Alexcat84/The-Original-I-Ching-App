@@ -1,5 +1,4 @@
 # Plan — Anti-Warp: serializar hidratación vs consulta
-
 **Código:** `00000000-PLAN-SUP-08 anti-warp-serialize-burst` · **Familia:** SUP · **Estado:** reference
 
 **Rama:** `fix/anti-warp-serialize-burst`  

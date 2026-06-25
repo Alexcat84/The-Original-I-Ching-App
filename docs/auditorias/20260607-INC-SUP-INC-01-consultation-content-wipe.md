@@ -1,6 +1,6 @@
 # Incidente P0 — Pérdida masiva de interpretaciones (consultation_content)
-
 **Código:** `20260607-INC-SUP-INC-01 consultation-content-wipe` · **Familia:** SUP-INC · **Estado:** closed
+
 
 **Severidad:** P0 — pérdida silenciosa de datos de usuario  
 **Fecha del incidente:** 2026-06-07 ~19:11 UTC  

@@ -1,6 +1,6 @@
 # Nueva Base de Datos — Guía de Inicialización Completa
-
 **Código:** `00000000-SETUP-DB-01 new-db-setup` · **Familia:** SUP · **Estado:** reference
+
 
 Guía canónica para inicializar un proyecto Supabase nuevo desde cero.
 Aplica a: entorno de staging nuevo, entorno de producción, o cualquier reset de DB.

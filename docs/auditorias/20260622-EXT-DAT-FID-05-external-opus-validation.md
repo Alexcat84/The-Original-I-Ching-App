@@ -1,6 +1,6 @@
 # Validación + plan ajustado: Fidelidad de datos y reglas de mutación (Zhu Xi 32 charts)
-
 **Código:** `20260622-EXT-DAT-FID-05 external-opus-validation` · **Familia:** DAT-FID · **Estado:** reference
+
 
 **Valida documentos:**  
 [`20260622-AUD-DAT-FID-04-fidelity-mutation-master.md`](20260622-AUD-DAT-FID-04-fidelity-mutation-master.md),  

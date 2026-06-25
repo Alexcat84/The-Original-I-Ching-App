@@ -1,6 +1,6 @@
 # Auditoría Pre-Producción — The Original I Ching App
-
 **Código:** `20260613-AUD-PRD-01 pre-production-jun13` · **Familia:** PRD · **Estado:** closed
+
 
 ## Estado · Lifecycle
 

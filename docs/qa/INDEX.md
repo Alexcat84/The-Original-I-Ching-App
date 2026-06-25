@@ -1,7 +1,10 @@
 # Índice maestro — tests y gates QA
 
 **Registro canónico:** [`registry.json`](./registry.json) · **Convenciones:** [`CONVENTIONS.md`](./CONVENTIONS.md)  
+**Reglas obligatorias:** [`../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md`](../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md)  
 **Auditorías enlazadas:** [`docs/auditorias/INDEX.md`](../auditorias/INDEX.md)
+
+Alta de test nuevo: **`registry.json` + `INDEX.md` + cabecera con `QA code`, `Area`, `Family`** — no negociable. Ver `area` en registro para cada entry.
 
 ---
 

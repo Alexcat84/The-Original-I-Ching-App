@@ -1,6 +1,6 @@
 # Overlay PNG — tofu en nombres Legge con diacríticos (Hăng, Ž…)
-
 **Código:** `20260624-AUD-IMG-OVR-01 legge-diacritics` · **Familia:** IMG-OVR · **Estado:** closed
+
 
 - **Fecha:** 2026-06-24
 - **Estado:** ✅ **Fix diacríticos aplicado** — gate `verify:overlay-glyphs` verde; **layout mutación / flecha → cerrado** → ver [`20260625-AUD-IMG-OVR-02-mutation-title-layout.md`](./20260625-AUD-IMG-OVR-02-mutation-title-layout.md) §10

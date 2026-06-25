@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Validates docs/auditorias/registry.json and docs/qa/registry.json:
- * - unique codes
- * - paths exist (when under repo)
- * - cross-ref audit ↔ test codes resolve
+ * Validates docs/auditorias/registry.json, docs/qa/registry.json, docs/registry.json:
+ * - unique codes, paths exist, cross-refs, mandatory `area` on QA entries
  *
- * QA code: VF-DOC-002 qa-registry-integrity · v1.0.0
+ * QA code: VF-DOC-002 qa-registry-integrity · v1.1.0
+ * Area: scripts/verify-qa-registry
+ * Family: DOC
  */
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -68,6 +68,12 @@ for (const entry of audits.entries) {
 }
 
 for (const entry of tests.entries) {
+  if (!entry.area || typeof entry.area !== 'string' || !entry.area.trim()) {
+    errors.push(`qa ${entry.code}: missing required field "area"`);
+  }
+  if (!entry.version || !Array.isArray(entry.versionHistory) || entry.versionHistory.length === 0) {
+    errors.push(`qa ${entry.code}: missing version or versionHistory`);
+  }
   for (const ref of entry.relatedAuditCodes ?? []) {
     const key = ref.split(' ')[0];
     if (!auditCodes.has(key)) {

@@ -1,6 +1,6 @@
 # Auditoría de fidelidad 1:1 — Datasets Wilhelm / Legge / Zhou Yi
-
 **Código:** `20260621-AUD-DAT-FID-01 translator-fidelity-reaudit` · **Familia:** DAT-FID · **Estado:** closed
+
 
 **App:** The Original I Ching · **Paquete:** `@iching-oracle/iching-data`  
 **Fecha apertura:** 2026-06-21  

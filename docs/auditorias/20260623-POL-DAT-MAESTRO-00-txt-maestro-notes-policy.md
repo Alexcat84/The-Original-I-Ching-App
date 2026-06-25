@@ -1,6 +1,6 @@
 # TXT maestro — notas por traductor y fidelidad book-primary
-
 **Código:** `20260623-POL-DAT-MAESTRO-00 txt-maestro-notes-policy` · **Familia:** DAT-MAESTRO · **Estado:** closed
+
 
 - **Fecha:** 2026-06-23
 - **Rama:** `feature/wilhelm-txt-au-maestro-2026-06-23` → `staging`

@@ -1,6 +1,6 @@
 # Biblioteca — plan de corrección UI acordeón ribbon (Juicio / Imagen / Líneas)
-
 **Código:** `20260624-PLAN-LIB-03 library-ribbon-ui-fix` · **Familia:** LIB · **Estado:** closed
+
 
 - **Fecha:** 2026-06-24
 - **Estado:** ✅ **Cerrada** — validada en staging, promovida a `main` (2026-06-24), y confirmada en dispositivo real (APK Android) tras un fix adicional (§11)

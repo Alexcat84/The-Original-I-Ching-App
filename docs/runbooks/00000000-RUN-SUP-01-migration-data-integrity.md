@@ -1,5 +1,4 @@
 # Runbook — Integridad de datos en migraciones Supabase
-
 **Código:** `00000000-RUN-SUP-01 migration-data-integrity` · **Familia:** SUP · **Estado:** reference
 
 **Aplica a:** cualquier migración que toque `consultations`, `consultation_content`, triggers de sync, o columnas TOAST.  

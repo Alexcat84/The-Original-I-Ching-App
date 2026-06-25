@@ -1,6 +1,6 @@
 # Arquitectura Completa — The Original I Ching App
-
 **Código:** `00000000-RPT-ARCH-01 architecture-fullstack` · **Familia:** ARCH · **Estado:** reference
+
 
 **Última actualización:** 2026-06-21  
 **Branch de referencia:** `main` (release 4.1.7 / versionCode 57)  

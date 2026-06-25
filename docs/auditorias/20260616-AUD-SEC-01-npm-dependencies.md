@@ -1,6 +1,6 @@
 # Auditoría npm — Pre-producción
-
 **Código:** `20260616-AUD-SEC-01 npm-dependencies` · **Familia:** SEC · **Estado:** open
+
 
 **Fecha:** 2026-06-16
 **HEAD auditado:** `970cf8e` → aplicados 3 parches → HEAD final `(ver commit de esta auditoría)`

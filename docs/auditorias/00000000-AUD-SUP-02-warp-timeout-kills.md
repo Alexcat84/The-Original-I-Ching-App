@@ -1,6 +1,6 @@
 # Auditoría de Análisis de Raíz — Warp "Thread killed by timeout manager"
-
 **Código:** `00000000-AUD-SUP-02 warp-timeout-kills` · **Familia:** SUP · **Estado:** open
+
 
 **Fecha:** 2026-06-10  
 **Actualización:** 2026-06-10 — Monitor identificado; P0 implementado en `feat/warp-connection-efficiency`  

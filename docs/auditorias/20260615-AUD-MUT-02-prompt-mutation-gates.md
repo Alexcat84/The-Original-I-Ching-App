@@ -1,6 +1,6 @@
 # Auditoría milimétrica — Reglas de mutación I Ching vs. Prompt
-
 **Código:** `20260615-AUD-MUT-02 prompt-mutation-gates` · **Familia:** MUT · **Estado:** closed
+
 
 **Fecha inicial:** 2026-06-15  
 **Commits:** `33eb879` (parche negativo inicial) → `HEAD` (remediación arquitectural completa)  

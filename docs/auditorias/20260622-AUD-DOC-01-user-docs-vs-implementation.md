@@ -1,6 +1,6 @@
 # Auditoría — Documentación de producto vs implementación (jun 2026)
-
 **Código:** `20260622-AUD-DOC-01 user-docs-vs-implementation` · **Familia:** DOC · **Estado:** closed
+
 
 - **Fecha:** 2026-06-22
 - **Estado:** ✅ **Cerrada (2026-06-24)** — remediación P0–P4 implementada y verificada; ver §12

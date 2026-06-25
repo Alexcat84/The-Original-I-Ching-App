@@ -1,6 +1,6 @@
 # Auditoría — Economía de reintentos LLM, cadena de fallback y entrega al usuario
-
 **Código:** `20260622-AUD-MUT-05 retry-fallback-economics` · **Familia:** MUT · **Estado:** decided
+
 
 - **Fecha:** 2026-06-22
 - **Estado:** 🟢 **Decidida (2026-06-24)** — Opción 1 (status quo, no se ejecuta Fase 1) con datos reales de Axiom; ver §15

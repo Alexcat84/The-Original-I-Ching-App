@@ -1,6 +1,6 @@
 # Mutation rules — PDF gold audit (Huang + Zhu Xi)
-
 **Código:** `20260622-AUD-MUT-04 mutation-rules-pdf-gold` · **Familia:** MUT · **Estado:** closed
+
 
 **Fecha:** 22 jun 2026  
 **Rama:** mergeada a `staging` (22 jun 2026) · `main` pendiente  

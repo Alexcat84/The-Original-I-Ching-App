@@ -10,10 +10,19 @@
       "type": "TS",
       "family": "ENG",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-01", "change": "Baseline engine tests" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-01",
+          "change": "Baseline engine tests"
+        }
+      ],
       "path": "packages/iching-engine/src/engine.test.ts",
       "npmScript": "npm run test --prefix packages/iching-engine",
-      "relatedAuditCodes": ["00000000-AUD-DIV-01 divination-methods"]
+      "relatedAuditCodes": [
+        "00000000-AUD-DIV-01 divination-methods"
+      ],
+      "area": "packages/iching-engine/src/engine"
     },
     {
       "code": "TS-ENG-002 mutation-rules",
@@ -23,12 +32,24 @@
       "family": "ENG",
       "version": "1.1.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-14", "change": "Aligned with changing-lines audit" },
-        { "version": "1.1.0", "date": "2026-06-20", "change": "Line reading systems coverage" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-14",
+          "change": "Aligned with changing-lines audit"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-06-20",
+          "change": "Line reading systems coverage"
+        }
       ],
       "path": "packages/iching-engine/src/engine.mutation-rules.test.ts",
       "npmScript": "npm run test --prefix packages/iching-engine",
-      "relatedAuditCodes": ["20260614-AUD-MUT-01 changing-lines", "20260615-AUD-MUT-02 prompt-mutation-gates"]
+      "relatedAuditCodes": [
+        "20260614-AUD-MUT-01 changing-lines",
+        "20260615-AUD-MUT-02 prompt-mutation-gates"
+      ],
+      "area": "packages/iching-engine/src/engine.mutation-rules"
     },
     {
       "code": "TS-ENG-003 line-reading-systems",
@@ -37,10 +58,19 @@
       "type": "TS",
       "family": "ENG",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-20", "change": "074 line_reading_system" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-20",
+          "change": "074 line_reading_system"
+        }
+      ],
       "path": "packages/iching-engine/src/engine.line-reading-systems.test.ts",
       "npmScript": "npm run test --prefix packages/iching-engine",
-      "relatedAuditCodes": ["20260620-AUD-LRS-01 zhuxi-line-reading-selector"]
+      "relatedAuditCodes": [
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector"
+      ],
+      "area": "packages/iching-engine/src/engine.line-reading-systems"
     },
     {
       "code": "TS-CLAUDE-001 line-gate",
@@ -49,10 +79,19 @@
       "type": "TS",
       "family": "CLAUDE",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-15", "change": "Phase 2 mutation gates" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-15",
+          "change": "Phase 2 mutation gates"
+        }
+      ],
       "path": "backend/claude/src/interpretation-line-gate.test.ts",
       "npmScript": "npm run test --prefix backend/claude",
-      "relatedAuditCodes": ["20260615-AUD-MUT-02 prompt-mutation-gates"]
+      "relatedAuditCodes": [
+        "20260615-AUD-MUT-02 prompt-mutation-gates"
+      ],
+      "area": "backend/claude/src/interpretation-line-gate"
     },
     {
       "code": "TS-CLAUDE-002 output-validator",
@@ -61,10 +100,19 @@
       "type": "TS",
       "family": "CLAUDE",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-15", "change": "Quality error detection" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-15",
+          "change": "Quality error detection"
+        }
+      ],
       "path": "backend/claude/src/interpretation-output-validator.test.ts",
       "npmScript": "npm run test --prefix backend/claude",
-      "relatedAuditCodes": ["20260615-AUD-MUT-02 prompt-mutation-gates"]
+      "relatedAuditCodes": [
+        "20260615-AUD-MUT-02 prompt-mutation-gates"
+      ],
+      "area": "backend/claude/src/interpretation-output-validator"
     },
     {
       "code": "TS-CLAUDE-003 interpretation-v2",
@@ -73,10 +121,19 @@
       "type": "TS",
       "family": "CLAUDE",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-10", "change": "Anthropic payload parity" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-10",
+          "change": "Anthropic payload parity"
+        }
+      ],
       "path": "backend/claude/src/interpretation.v2.test.ts",
       "npmScript": "npm run test --prefix backend/claude",
-      "relatedAuditCodes": ["20260615-AUD-MUT-02 prompt-mutation-gates"]
+      "relatedAuditCodes": [
+        "20260615-AUD-MUT-02 prompt-mutation-gates"
+      ],
+      "area": "backend/claude/src/interpretation.v2"
     },
     {
       "code": "TS-CLAUDE-004 judgment-image-gate",
@@ -85,10 +142,19 @@
       "type": "TS",
       "family": "CLAUDE",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-24", "change": "H7 Sentry telemetry, no retry" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-24",
+          "change": "H7 Sentry telemetry, no retry"
+        }
+      ],
       "path": "backend/claude/src/interpretation-judgment-image-gate.test.ts",
       "npmScript": "npm run test --prefix backend/claude",
-      "relatedAuditCodes": ["20260624-AUD-RDG-QA-02 verbatim-blockquote-gap"]
+      "relatedAuditCodes": [
+        "20260624-AUD-RDG-QA-02 verbatim-blockquote-gap"
+      ],
+      "area": "backend/claude/src/interpretation-judgment-image-gate"
     },
     {
       "code": "TS-DATA-001 iching-data-index",
@@ -97,10 +163,19 @@
       "type": "TS",
       "family": "DATA",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Library title field regression" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Library title field regression"
+        }
+      ],
       "path": "packages/iching-data/src/index.test.ts",
       "npmScript": "npm run test --prefix packages/iching-data",
-      "relatedAuditCodes": ["20260623-FIX-LIB-02 library-title-fidelity"]
+      "relatedAuditCodes": [
+        "20260623-FIX-LIB-02 library-title-fidelity"
+      ],
+      "area": "packages/iching-data/src/index"
     },
     {
       "code": "TS-DATA-002 commentary-schema",
@@ -109,10 +184,20 @@
       "type": "TS",
       "family": "DATA",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Maestro notes policy" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Maestro notes policy"
+        }
+      ],
       "path": "packages/iching-data/src/commentary.test.ts",
       "npmScript": "npm run test --prefix packages/iching-data",
-      "relatedAuditCodes": ["20260623-POL-DAT-MAESTRO-00 txt-maestro-notes-policy", "20260623-PLAN-LIB-01 library-commentary-layer"]
+      "relatedAuditCodes": [
+        "20260623-POL-DAT-MAESTRO-00 txt-maestro-notes-policy",
+        "20260623-PLAN-LIB-01 library-commentary-layer"
+      ],
+      "area": "packages/iching-data/src/commentary"
     },
     {
       "code": "TS-CTX-001 context-limits",
@@ -121,10 +206,17 @@
       "type": "TS",
       "family": "CTX",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-01", "change": "Token tier thread limits" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-01",
+          "change": "Token tier thread limits"
+        }
+      ],
       "path": "packages/context-engine/src/context-limits.test.ts",
       "npmScript": "npm run test --prefix packages/context-engine",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "packages/context-engine/src/context-limits"
     },
     {
       "code": "TS-WEB-001 detect-input-language",
@@ -134,12 +226,21 @@
       "family": "WEB",
       "version": "1.1.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-01", "change": "Shared client/server detector" },
-        { "version": "1.1.0", "date": "2026-06-21", "change": "Removed server false-positive FR heuristic" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-01",
+          "change": "Shared client/server detector"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-06-21",
+          "change": "Removed server false-positive FR heuristic"
+        }
       ],
       "path": "apps/web/src/lib/__tests__/detect-input-language.test.ts",
       "npmScript": "npm run test --prefix apps/web -- detect-input-language",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/detect-input-language"
     },
     {
       "code": "TS-WEB-002 manual-iching-consult",
@@ -148,10 +249,19 @@
       "type": "TS",
       "family": "WEB",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-15", "change": "Yarrow stalk distribution" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-15",
+          "change": "Yarrow stalk distribution"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/manual-iching-consult.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": ["00000000-AUD-DIV-01 divination-methods"]
+      "relatedAuditCodes": [
+        "00000000-AUD-DIV-01 divination-methods"
+      ],
+      "area": "apps/web/src/lib/manual-iching-consult"
     },
     {
       "code": "TS-WEB-003 response-clean",
@@ -160,10 +270,17 @@
       "type": "TS",
       "family": "WEB",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-01", "change": "SSE text normalization" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-01",
+          "change": "SSE text normalization"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/response-clean.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/response-clean"
     },
     {
       "code": "TS-WEB-004 chat-session-selection",
@@ -172,10 +289,17 @@
       "type": "TS",
       "family": "CHAT",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-01", "change": "Sidebar selection" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-01",
+          "change": "Sidebar selection"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/chat-session-selection.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/chat-session-selection"
     },
     {
       "code": "TS-WEB-005 db-idempotency",
@@ -184,10 +308,17 @@
       "type": "TS",
       "family": "WEB",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-01", "change": "Persist retry safety" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-01",
+          "change": "Persist retry safety"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/db-idempotency.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/db-idempotency"
     },
     {
       "code": "TS-WEB-006 post-auth-legal",
@@ -196,10 +327,17 @@
       "type": "TS",
       "family": "AUTH",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-20", "change": "Legal gate after OAuth" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-20",
+          "change": "Legal gate after OAuth"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/post-auth-legal.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/post-auth-legal"
     },
     {
       "code": "TS-WEB-007 legal-consent-pending-meta",
@@ -208,10 +346,17 @@
       "type": "TS",
       "family": "AUTH",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-20", "change": "Re-acceptance header logic" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-20",
+          "change": "Re-acceptance header logic"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/legal-consent-pending-meta.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/legal-consent-pending-meta"
     },
     {
       "code": "TS-WEB-008 token-packs",
@@ -220,10 +365,17 @@
       "type": "TS",
       "family": "BILL",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-01", "change": "Product ID hardening" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-01",
+          "change": "Product ID hardening"
+        }
+      ],
       "path": "apps/web/src/__tests__/token-packs.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/token-packs"
     },
     {
       "code": "TS-WEB-009 token-refund",
@@ -232,10 +384,17 @@
       "type": "TS",
       "family": "BILL",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-01", "change": "072 refund_token RPC" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-01",
+          "change": "072 refund_token RPC"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/token-refund.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/token-refund"
     },
     {
       "code": "TS-WEB-010 tier-transition-simulation",
@@ -244,10 +403,17 @@
       "type": "TS",
       "family": "BILL",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-15", "change": "Pack downgrade rules" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-15",
+          "change": "Pack downgrade rules"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/tier-transition-simulation.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/tier-transition-simulation"
     },
     {
       "code": "TS-WEB-011 revenuecat-webhook-auth",
@@ -256,10 +422,17 @@
       "type": "TS",
       "family": "BILL",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-10", "change": "Webhook secret" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-10",
+          "change": "Webhook secret"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/revenuecat-webhook-auth.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/revenuecat-webhook-auth"
     },
     {
       "code": "TS-WEB-012 revenuecat-webhook-idempotency",
@@ -268,10 +441,17 @@
       "type": "TS",
       "family": "BILL",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-10", "change": "039 grant_tokens_idempotent" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-10",
+          "change": "039 grant_tokens_idempotent"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/revenuecat-webhook-idempotency.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/revenuecat-webhook-idempotency"
     },
     {
       "code": "TS-WEB-013 session-thread-hydration",
@@ -280,10 +460,20 @@
       "type": "TS",
       "family": "CHAT",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-13", "change": "Per-session hydration" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-13",
+          "change": "Per-session hydration"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/session-thread-hydration.test.ts",
       "npmScript": "npm run test --prefix apps/web",
-      "relatedAuditCodes": ["20260613-AUD-MOB-HYD-03 hydration-gate", "00000000-AUD-MOB-HYD-01 chat-thread-hydration"]
+      "relatedAuditCodes": [
+        "20260613-AUD-MOB-HYD-03 hydration-gate",
+        "00000000-AUD-MOB-HYD-01 chat-thread-hydration"
+      ],
+      "area": "apps/web/src/lib/session-thread-hydration"
     },
     {
       "code": "TS-WEB-OVR-001 embed-svg-overlay-font",
@@ -293,13 +483,28 @@
       "family": "WEB-OVR",
       "version": "1.2.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-20", "change": "Single Noto stack" },
-        { "version": "1.1.0", "date": "2026-06-24", "change": "Dual CJK/Latin embed" },
-        { "version": "1.2.0", "date": "2026-06-24", "change": "NotoSymbols2 for arrow; TDZ fix" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-20",
+          "change": "Single Noto stack"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-06-24",
+          "change": "Dual CJK/Latin embed"
+        },
+        {
+          "version": "1.2.0",
+          "date": "2026-06-24",
+          "change": "NotoSymbols2 for arrow; TDZ fix"
+        }
       ],
       "path": "apps/web/src/lib/__tests__/embed-svg-overlay-font.test.ts",
       "npmScript": "npm run test --prefix apps/web -- embed-svg-overlay-font",
-      "relatedAuditCodes": ["20260624-AUD-IMG-OVR-01 legge-diacritics"]
+      "relatedAuditCodes": [
+        "20260624-AUD-IMG-OVR-01 legge-diacritics"
+      ],
+      "area": "apps/web/src/lib/embed-svg-overlay-font"
     },
     {
       "code": "TS-WEB-OVR-002 overlay-title-layout",
@@ -308,10 +513,19 @@
       "type": "TS",
       "family": "WEB-OVR",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-25", "change": "Adaptive width and mutation spacing" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-25",
+          "change": "Adaptive width and mutation spacing"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/overlay-title-layout.test.ts",
       "npmScript": "npm run test --prefix apps/web -- overlay-title-layout",
-      "relatedAuditCodes": ["20260625-AUD-IMG-OVR-02 mutation-title-layout"]
+      "relatedAuditCodes": [
+        "20260625-AUD-IMG-OVR-02 mutation-title-layout"
+      ],
+      "area": "apps/web/src/lib/overlay-title-layout"
     },
     {
       "code": "TS-WEB-OVR-003 sumi-fallback-glyphs",
@@ -320,10 +534,19 @@
       "type": "TS",
       "family": "WEB-OVR",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-25", "change": "292 PNG manifest parity" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-25",
+          "change": "292 PNG manifest parity"
+        }
+      ],
       "path": "apps/web/src/lib/__tests__/sumi-fallback-glyph-samples.test.ts",
       "npmScript": "npm run generate:sumi-fallback-glyphs:quick",
-      "relatedAuditCodes": ["20260625-AUD-IMG-OVR-02 mutation-title-layout"]
+      "relatedAuditCodes": [
+        "20260625-AUD-IMG-OVR-02 mutation-title-layout"
+      ],
+      "area": "apps/web/src/lib/sumi-fallback-glyph-samples"
     },
     {
       "code": "QA-MUT-001 mutation-output",
@@ -333,14 +556,26 @@
       "family": "MUT",
       "version": "2.0.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-15", "change": "Phase 2 gates baseline" },
-        { "version": "2.0.0", "date": "2026-06-22", "change": "Model traceability per row in JSON" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-15",
+          "change": "Phase 2 gates baseline"
+        },
+        {
+          "version": "2.0.0",
+          "date": "2026-06-22",
+          "change": "Model traceability per row in JSON"
+        }
       ],
       "path": "scripts/mutation-output-qa.mjs",
       "npmScript": "npm run qa:mutation-output",
       "consumesTokens": true,
       "artifacts": "reports/mutation-qa-*.json",
-      "relatedAuditCodes": ["20260615-AUD-MUT-02 prompt-mutation-gates", "20260622-AUD-DAT-FID-04 fidelity-mutation-master"]
+      "relatedAuditCodes": [
+        "20260615-AUD-MUT-02 prompt-mutation-gates",
+        "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
+      ],
+      "area": "scripts/mutation-output-qa"
     },
     {
       "code": "QA-RDG-001 reading-quality",
@@ -350,14 +585,26 @@
       "family": "RDG",
       "version": "1.1.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-23", "change": "Judgment/image regression harness" },
-        { "version": "1.1.0", "date": "2026-06-24", "change": "Verbatim blockquote gap cases" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Judgment/image regression harness"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-06-24",
+          "change": "Verbatim blockquote gap cases"
+        }
       ],
       "path": "scripts/reading-quality-qa.mjs",
       "npmScript": "npm run qa:reading-quality",
       "consumesTokens": true,
       "artifacts": "reports/reading-quality-qa-*.json",
-      "relatedAuditCodes": ["20260623-AUD-RDG-QA-01 judgment-regression", "20260624-AUD-RDG-QA-02 verbatim-blockquote-gap"]
+      "relatedAuditCodes": [
+        "20260623-AUD-RDG-QA-01 judgment-regression",
+        "20260624-AUD-RDG-QA-02 verbatim-blockquote-gap"
+      ],
+      "area": "scripts/reading-quality-qa"
     },
     {
       "code": "VF-FID-001 hexagram-fidelity-runtime",
@@ -366,19 +613,54 @@
       "type": "VF",
       "family": "FID",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-22", "change": "514/514 gate EPUB-primary" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-22",
+          "change": "514/514 gate EPUB-primary"
+        }
+      ],
       "path": "scripts/verify-hexagram-fidelity.mjs",
       "npmScript": "npm run verify:hexagram-fidelity",
       "artifacts": "reports/hexagram-fidelity-*.json",
       "variants": [
-        { "variantId": "pdf-wilhelm", "npmScript": "npm run verify:hexagram-fidelity:pdf-wilhelm", "version": "1.0.0" },
-        { "variantId": "epub-wilhelm", "npmScript": "npm run verify:hexagram-fidelity:epub-wilhelm", "version": "1.0.0" },
-        { "variantId": "pdf-legge", "npmScript": "npm run verify:hexagram-fidelity:pdf-legge", "version": "1.0.0" },
-        { "variantId": "epub-legge", "npmScript": "npm run verify:hexagram-fidelity:epub-legge", "version": "1.0.0" },
-        { "variantId": "zhouyi-ctext", "npmScript": "npm run verify:hexagram-fidelity:zhouyi-ctext", "version": "1.0.0" },
-        { "variantId": "mirrors-deprecated", "npmScript": "npm run verify:hexagram-fidelity:mirrors-deprecated", "version": "0.9.0", "deprecated": true }
+        {
+          "variantId": "pdf-wilhelm",
+          "npmScript": "npm run verify:hexagram-fidelity:pdf-wilhelm",
+          "version": "1.0.0"
+        },
+        {
+          "variantId": "epub-wilhelm",
+          "npmScript": "npm run verify:hexagram-fidelity:epub-wilhelm",
+          "version": "1.0.0"
+        },
+        {
+          "variantId": "pdf-legge",
+          "npmScript": "npm run verify:hexagram-fidelity:pdf-legge",
+          "version": "1.0.0"
+        },
+        {
+          "variantId": "epub-legge",
+          "npmScript": "npm run verify:hexagram-fidelity:epub-legge",
+          "version": "1.0.0"
+        },
+        {
+          "variantId": "zhouyi-ctext",
+          "npmScript": "npm run verify:hexagram-fidelity:zhouyi-ctext",
+          "version": "1.0.0"
+        },
+        {
+          "variantId": "mirrors-deprecated",
+          "npmScript": "npm run verify:hexagram-fidelity:mirrors-deprecated",
+          "version": "0.9.0",
+          "deprecated": true
+        }
       ],
-      "relatedAuditCodes": ["20260621-AUD-DAT-FID-01 translator-fidelity-reaudit", "00000000-RPT-DAT-FID-00 data-integrity-summary"]
+      "relatedAuditCodes": [
+        "20260621-AUD-DAT-FID-01 translator-fidelity-reaudit",
+        "00000000-RPT-DAT-FID-00 data-integrity-summary"
+      ],
+      "area": "scripts/verify-hexagram-fidelity"
     },
     {
       "code": "VF-PINYIN-001 pinyin-gold",
@@ -387,10 +669,19 @@
       "type": "VF",
       "family": "PINYIN",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "pinyin-pro vs hardcoded" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "pinyin-pro vs hardcoded"
+        }
+      ],
       "path": "scripts/verify-pinyin-gold.mjs",
       "npmScript": "npm run verify:pinyin-gold",
-      "relatedAuditCodes": ["20260623-GATE-DAT-FID-06 pinyin-gold-gate"]
+      "relatedAuditCodes": [
+        "20260623-GATE-DAT-FID-06 pinyin-gold-gate"
+      ],
+      "area": "scripts/verify-pinyin-gold"
     },
     {
       "code": "VF-WEB-OVR-001 overlay-glyphs",
@@ -400,12 +691,24 @@
       "family": "WEB-OVR",
       "version": "1.1.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-24", "change": "Legge diacritic tofu detection" },
-        { "version": "1.1.0", "date": "2026-06-25", "change": "Chained embed-svg-overlay-font test" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-24",
+          "change": "Legge diacritic tofu detection"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-06-25",
+          "change": "Chained embed-svg-overlay-font test"
+        }
       ],
       "path": "scripts/verify-overlay-glyphs.mjs",
       "npmScript": "npm run verify:overlay-glyphs",
-      "relatedAuditCodes": ["20260624-AUD-IMG-OVR-01 legge-diacritics", "20260625-AUD-IMG-OVR-02 mutation-title-layout"]
+      "relatedAuditCodes": [
+        "20260624-AUD-IMG-OVR-01 legge-diacritics",
+        "20260625-AUD-IMG-OVR-02 mutation-title-layout"
+      ],
+      "area": "scripts/verify-overlay-glyphs"
     },
     {
       "code": "VF-DOC-001 docs-remediation",
@@ -414,10 +717,19 @@
       "type": "VF",
       "family": "DOC",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-24", "change": "P0–P4 docs vs impl checks" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-24",
+          "change": "P0–P4 docs vs impl checks"
+        }
+      ],
       "path": "scripts/verify-docs-remediation.mjs",
       "npmScript": "npm run verify:docs-remediation",
-      "relatedAuditCodes": ["20260622-AUD-DOC-01 user-docs-vs-implementation"]
+      "relatedAuditCodes": [
+        "20260622-AUD-DOC-01 user-docs-vs-implementation"
+      ],
+      "area": "scripts/verify-docs-remediation"
     },
     {
       "code": "VF-FID-W-001 wilhelm-all-gates",
@@ -426,10 +738,19 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "100/100 TXT maestro" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "100/100 TXT maestro"
+        }
+      ],
       "path": "tools/verify-wilhelm-all-gates.mjs",
       "npmScript": "npm run verify:wilhelm-all-gates",
-      "relatedAuditCodes": ["20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"]
+      "relatedAuditCodes": [
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "area": "tools/verify-wilhelm-all-gates"
     },
     {
       "code": "VF-FID-L-001 legge-all-gates",
@@ -438,10 +759,19 @@
       "type": "VF",
       "family": "FID-L",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "4/4 TXT maestro gates" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "4/4 TXT maestro gates"
+        }
+      ],
       "path": "tools/verify-legge-all-gates.mjs",
       "npmScript": "npm run verify:legge-all-gates",
-      "relatedAuditCodes": ["20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro"]
+      "relatedAuditCodes": [
+        "20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro"
+      ],
+      "area": "tools/verify-legge-all-gates"
     },
     {
       "code": "AU-FID-001 epub-verbatim-vs-runtime",
@@ -450,10 +780,19 @@
       "type": "AU",
       "family": "FID",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "EPUB-primary shipped check" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "EPUB-primary shipped check"
+        }
+      ],
       "path": "scripts/audit-epub-verbatim-vs-runtime.mjs",
       "npmScript": "npm run audit:epub-verbatim",
-      "relatedAuditCodes": ["20260623-PLAN-DAT-RT-01 epub-primary-migration"]
+      "relatedAuditCodes": [
+        "20260623-PLAN-DAT-RT-01 epub-primary-migration"
+      ],
+      "area": "scripts/audit-epub-verbatim-vs-runtime"
     },
     {
       "code": "AU-FID-W-001 wilhelm-txt-g2",
@@ -462,14 +801,31 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Deterministic G2 gate" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Deterministic G2 gate"
+        }
+      ],
       "path": "tools/audit-wilhelm-txt-g2.mjs",
       "npmScript": "npm run audit:wilhelm-txt-g2:deterministic",
       "variants": [
-        { "variantId": "non-deterministic", "npmScript": "npm run audit:wilhelm-txt-g2", "version": "1.0.0" },
-        { "variantId": "hex1-3", "npmScript": "npm run audit:wilhelm-txt-g2-hex1-3", "version": "1.0.0" }
+        {
+          "variantId": "non-deterministic",
+          "npmScript": "npm run audit:wilhelm-txt-g2",
+          "version": "1.0.0"
+        },
+        {
+          "variantId": "hex1-3",
+          "npmScript": "npm run audit:wilhelm-txt-g2-hex1-3",
+          "version": "1.0.0"
+        }
       ],
-      "relatedAuditCodes": ["20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"]
+      "relatedAuditCodes": [
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "area": "tools/audit-wilhelm-txt-g2"
     },
     {
       "code": "AU-FID-L-001 legge-txt-g2",
@@ -478,10 +834,19 @@
       "type": "AU",
       "family": "FID-L",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Deterministic G2 gate" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Deterministic G2 gate"
+        }
+      ],
       "path": "tools/audit-legge-txt-g2.mjs",
       "npmScript": "npm run audit:legge-txt-g2:deterministic",
-      "relatedAuditCodes": ["20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro"]
+      "relatedAuditCodes": [
+        "20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro"
+      ],
+      "area": "tools/audit-legge-txt-g2"
     },
     {
       "code": "AU-FID-L-003 legge-pdf-vs-epub",
@@ -490,10 +855,19 @@
       "type": "AU",
       "family": "FID-L",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-22", "change": "500/514 intentional book-primary diffs" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-22",
+          "change": "500/514 intentional book-primary diffs"
+        }
+      ],
       "path": "scripts/audit-legge-pdf-vs-epub.mjs",
       "npmScript": "npm run audit:legge-pdf-vs-epub",
-      "relatedAuditCodes": ["20260622-AUD-DAT-FID-03 legge-pdf-book-primary"]
+      "relatedAuditCodes": [
+        "20260622-AUD-DAT-FID-03 legge-pdf-book-primary"
+      ],
+      "area": "scripts/audit-legge-pdf-vs-epub"
     },
     {
       "code": "AU-MUT-001 huang-rules-vs-pdf-gold",
@@ -502,10 +876,20 @@
       "type": "AU",
       "family": "MUT",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-19", "change": "Huang alignment audit" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-19",
+          "change": "Huang alignment audit"
+        }
+      ],
       "path": "tools/audit-huang-rules-vs-pdf-gold.mjs",
       "npmScript": "npm run audit:huang-rules-vs-pdf-gold",
-      "relatedAuditCodes": ["20260619-AUD-MUT-03 huang-rules-alignment", "20260622-AUD-MUT-04 mutation-rules-pdf-gold"]
+      "relatedAuditCodes": [
+        "20260619-AUD-MUT-03 huang-rules-alignment",
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold"
+      ],
+      "area": "tools/audit-huang-rules-vs-pdf-gold"
     },
     {
       "code": "AU-MUT-002 zhuxi-rules-vs-adler-gold",
@@ -514,10 +898,19 @@
       "type": "AU",
       "family": "MUT",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-20", "change": "LRS selector verification" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-20",
+          "change": "LRS selector verification"
+        }
+      ],
       "path": "tools/audit-zhuxi-rules-vs-adler-gold.mjs",
       "npmScript": "npm run audit:zhuxi-rules-vs-adler-gold",
-      "relatedAuditCodes": ["20260620-AUD-LRS-01 zhuxi-line-reading-selector"]
+      "relatedAuditCodes": [
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector"
+      ],
+      "area": "tools/audit-zhuxi-rules-vs-adler-gold"
     },
     {
       "code": "GEN-WEB-OVR-001 sumi-fallback-samples",
@@ -526,14 +919,27 @@
       "type": "GEN",
       "family": "WEB-OVR",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-25", "change": "Full manifest wilhelm/legge/trigrams/mutations" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-25",
+          "change": "Full manifest wilhelm/legge/trigrams/mutations"
+        }
+      ],
       "path": "scripts/generate-sumi-fallback-glyph-samples.mjs",
       "npmScript": "npm run generate:sumi-fallback-glyphs",
       "variants": [
-        { "variantId": "quick", "npmScript": "npm run generate:sumi-fallback-glyphs:quick", "version": "1.0.0" }
+        {
+          "variantId": "quick",
+          "npmScript": "npm run generate:sumi-fallback-glyphs:quick",
+          "version": "1.0.0"
+        }
       ],
       "artifacts": "reports/sumi-fallback-glyphs/",
-      "relatedAuditCodes": ["20260625-AUD-IMG-OVR-02 mutation-title-layout"]
+      "relatedAuditCodes": [
+        "20260625-AUD-IMG-OVR-02 mutation-title-layout"
+      ],
+      "area": "scripts/generate-sumi-fallback-glyph-samples"
     },
     {
       "code": "SEC-001 security-scan",
@@ -542,11 +948,20 @@
       "type": "SEC",
       "family": "SEC",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-16", "change": "HIGH/CRITICAL vuln + secret scan" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-16",
+          "change": "HIGH/CRITICAL vuln + secret scan"
+        }
+      ],
       "path": "package.json",
       "npmScript": "npm run security:scan",
       "artifacts": "security/trivy-report.json",
-      "relatedAuditCodes": ["20260616-AUD-SEC-01 npm-dependencies"]
+      "relatedAuditCodes": [
+        "20260616-AUD-SEC-01 npm-dependencies"
+      ],
+      "area": "monorepo/root"
     },
     {
       "code": "VF-DOC-002 qa-registry-integrity",
@@ -554,11 +969,24 @@
       "shortName": "qa-registry-integrity",
       "type": "VF",
       "family": "DOC",
-      "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-25", "change": "Cross-ref audit↔test codes and paths" }],
+      "area": "scripts/verify-qa-registry",
+      "version": "1.1.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-25",
+          "change": "Cross-ref audit↔test codes and paths"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-06-25",
+          "change": "Require area + versionHistory on all QA entries"
+        }
+      ],
       "path": "scripts/verify-qa-registry.mjs",
       "npmScript": "npm run verify:qa-registry",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "scripts/verify-qa-registry"
     },
     {
       "code": "AU-FID-W-002 wilhelm-book-meta",
@@ -567,10 +995,19 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Maestro book-level meta gate" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Maestro book-level meta gate"
+        }
+      ],
       "path": "tools/audit-wilhelm-book-meta-fidelity.mjs",
       "npmScript": "npm run audit:wilhelm-book-meta",
-      "relatedAuditCodes": ["20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"]
+      "relatedAuditCodes": [
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "area": "tools/audit-wilhelm-book-meta-fidelity"
     },
     {
       "code": "AU-FID-W-003 wilhelm-hex-meta",
@@ -579,10 +1016,19 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Per-hex meta fields" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Per-hex meta fields"
+        }
+      ],
       "path": "tools/audit-wilhelm-hex-meta-gate.mjs",
       "npmScript": "npm run audit:wilhelm-hex-meta",
-      "relatedAuditCodes": ["20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"]
+      "relatedAuditCodes": [
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "area": "tools/audit-wilhelm-hex-meta-gate"
     },
     {
       "code": "AU-FID-W-004 wilhelm-trigram-parma",
@@ -591,10 +1037,19 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-22", "change": "8 trigrams vs Parma" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-22",
+          "change": "8 trigrams vs Parma"
+        }
+      ],
       "path": "tools/audit-wilhelm-trigram-parma.mjs",
       "npmScript": "npm run audit:wilhelm-trigram-parma",
-      "relatedAuditCodes": ["20260621-AUD-DAT-FID-01 translator-fidelity-reaudit"]
+      "relatedAuditCodes": [
+        "20260621-AUD-DAT-FID-01 translator-fidelity-reaudit"
+      ],
+      "area": "tools/audit-wilhelm-trigram-parma"
     },
     {
       "code": "AU-FID-W-005 wilhelm-comments-txt-g2",
@@ -603,10 +1058,19 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Footnotes/comments layer" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Footnotes/comments layer"
+        }
+      ],
       "path": "tools/audit-wilhelm-comments-txt-g2.mjs",
       "npmScript": "npm run audit:wilhelm-comments-txt-g2:deterministic",
-      "relatedAuditCodes": ["20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"]
+      "relatedAuditCodes": [
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "area": "tools/audit-wilhelm-comments-txt-g2"
     },
     {
       "code": "AU-FID-W-006 wilhelm-pdf-vs-parma",
@@ -615,10 +1079,19 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-22", "change": "PDF Pantheon vs legacy mirror" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-22",
+          "change": "PDF Pantheon vs legacy mirror"
+        }
+      ],
       "path": "scripts/audit-wilhelm-pdf-vs-parma.mjs",
       "npmScript": "npm run audit:wilhelm-pdf-vs-parma",
-      "relatedAuditCodes": ["20260621-AUD-DAT-FID-01 translator-fidelity-reaudit"]
+      "relatedAuditCodes": [
+        "20260621-AUD-DAT-FID-01 translator-fidelity-reaudit"
+      ],
+      "area": "scripts/audit-wilhelm-pdf-vs-parma"
     },
     {
       "code": "AU-FID-W-007 wilhelm-pdf-vs-epub",
@@ -627,10 +1100,19 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Book-primary diff inventory" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Book-primary diff inventory"
+        }
+      ],
       "path": "scripts/audit-wilhelm-pdf-vs-epub.mjs",
       "npmScript": "npm run audit:wilhelm-pdf-vs-epub",
-      "relatedAuditCodes": ["20260623-PLAN-DAT-RT-01 epub-primary-migration"]
+      "relatedAuditCodes": [
+        "20260623-PLAN-DAT-RT-01 epub-primary-migration"
+      ],
+      "area": "scripts/audit-wilhelm-pdf-vs-epub"
     },
     {
       "code": "AU-FID-L-002 legge-book-meta",
@@ -639,10 +1121,19 @@
       "type": "AU",
       "family": "FID-L",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Maestro book-level meta gate" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Maestro book-level meta gate"
+        }
+      ],
       "path": "tools/audit-legge-book-meta-fidelity.mjs",
       "npmScript": "npm run audit:legge-book-meta",
-      "relatedAuditCodes": ["20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro"]
+      "relatedAuditCodes": [
+        "20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro"
+      ],
+      "area": "tools/audit-legge-book-meta-fidelity"
     },
     {
       "code": "VF-FID-W-002 wilhelm-64hex-txt-clean",
@@ -651,10 +1142,19 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-23", "change": "Pre-parse cleanliness gate" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-23",
+          "change": "Pre-parse cleanliness gate"
+        }
+      ],
       "path": "tools/verify-wilhelm-64hex-txt-clean.mjs",
       "npmScript": "npm run verify:wilhelm-64hex-txt-clean",
-      "relatedAuditCodes": ["20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"]
+      "relatedAuditCodes": [
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "area": "tools/verify-wilhelm-64hex-txt-clean"
     },
     {
       "code": "I18N-001 i18n-audit",
@@ -663,10 +1163,17 @@
       "type": "I18N",
       "family": "WEB",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-05-01", "change": "Record<AppLocale> parity" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-01",
+          "change": "Record<AppLocale> parity"
+        }
+      ],
       "path": "tools/i18n-audit.mjs",
       "npmScript": "npm run i18n:audit",
-      "relatedAuditCodes": []
+      "relatedAuditCodes": [],
+      "area": "tools/i18n-audit"
     }
   ]
 }

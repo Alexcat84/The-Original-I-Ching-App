@@ -3,7 +3,8 @@
 Ubicación canónica de auditorías, incidentes, planes y gates documentados.
 
 **Consulta principal:** [`INDEX.md`](./INDEX.md) — índice maestro con códigos, fechas, familias y trazabilidad a tests.  
-**Documentación global:** [`docs/INDEX.md`](../INDEX.md) · Archivos canónicos `{código}-{slug}.md`; stubs legacy `(renamed)`.  
+**Reglas obligatorias:** [`../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md`](../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md)  
+**Documentación global:** [`docs/INDEX.md`](../INDEX.md)  
 **Convenciones de codificación:** [`CONVENTIONS.md`](./CONVENTIONS.md) · registro machine-readable: [`registry.json`](./registry.json)  
 **Tests QA:** [`docs/qa/INDEX.md`](../qa/INDEX.md)
 

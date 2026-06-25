@@ -1,7 +1,9 @@
 # Convenciones de codificación — tests y gates QA
 
 Fuente canónica: [`registry.json`](./registry.json).  
-Índice legible: [`INDEX.md`](./INDEX.md).
+Índice legible: [`INDEX.md`](./INDEX.md) — **columna `area` obligatoria en cada fila nueva.**
+
+**Reglas obligatorias:** [`../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md`](../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md)
 
 ---
 
@@ -14,11 +16,26 @@ Fuente canónica: [`registry.json`](./registry.json).
 | Parte | Regla | Ejemplo |
 |-------|--------|---------|
 | `TIPO` | Clase de prueba (tabla abajo) | `TS` |
-| `FAMILIA` | Dominio (alineado con auditorías cuando aplique) | `WEB-OVR` |
-| `NNN` | Secuencia `001`…`999` | `003` |
+| `FAMILIA` | Dominio funcional | `WEB-OVR` |
+| `NNN` | Secuencia `001`…`999` en TIPO+FAMILIA | `003` |
 | `nombre-corto` | Slug kebab-case | `overlay-title-layout` |
+| **`area`** | Módulo bajo test (campo registro + comentario archivo) | `apps/web/src/lib/overlay-title-layout` |
 
-**Ejemplo:** `TS-WEB-OVR-003 overlay-title-layout`
+**Ejemplo completo:** código `TS-WEB-OVR-003 overlay-title-layout` · area `apps/web/src/lib/overlay-title-layout` · family `WEB-OVR`
+
+---
+
+## Campo `area` (OBLIGATORIO)
+
+Identifica **qué superficie del producto** ejercita el test. Path repo-relative, sin extensión, sin `__tests__`:
+
+| Test path | `area` |
+|-----------|--------|
+| `apps/web/src/lib/__tests__/foo.test.ts` | `apps/web/src/lib/foo` |
+| `packages/iching-engine/src/engine.test.ts` | `packages/iching-engine/src/engine` |
+| `scripts/verify-overlay-glyphs.mjs` | `scripts/verify-overlay-glyphs` |
+
+`area` ≠ `family`: la familia agrupa por dominio; el area apunta al módulo concreto.
 
 ---
 
@@ -37,8 +54,6 @@ Fuente canónica: [`registry.json`](./registry.json).
 ---
 
 ## Familias (`FAMILIA`)
-
-Alineadas con [`docs/auditorias/CONVENTIONS.md`](../auditorias/CONVENTIONS.md) donde tiene sentido:
 
 | Código | Ámbito |
 |--------|--------|
@@ -61,26 +76,13 @@ Alineadas con [`docs/auditorias/CONVENTIONS.md`](../auditorias/CONVENTIONS.md) d
 | `CHAT` | Sesiones / hidratación |
 | `SEC` | Vulnerabilidades dependencias |
 
+Nueva familia: proponer código en PR + fila en esta tabla + sección en [`INDEX.md`](./INDEX.md).
+
 ---
 
 ## Control de versiones del test
 
-Cada entrada en `registry.json` lleva:
-
-```json
-{
-  "version": "1.0.0",
-  "versionHistory": [
-    {
-      "version": "1.0.0",
-      "date": "2026-06-24",
-      "change": "Initial gate"
-    }
-  ]
-}
-```
-
-**Semver del test (convención del repo):**
+Cada entrada en `registry.json` lleva `version` + `versionHistory[]` (obligatorio).
 
 | Bump | Cuándo |
 |------|--------|
@@ -88,30 +90,44 @@ Cada entrada en `registry.json` lleva:
 | MINOR | Nuevos casos, flags, traductores o variantes npm |
 | PATCH | Refactor sin cambiar criterio (paths, mensajes, perf) |
 
-**Variantes:** mismo código base + sufijo en `npmScript` (p. ej. `verify:hexagram-fidelity:pdf-legge`) registradas como `variants[]` con `variantId` y `version` propia.
+**Variantes:** `variants[]` con `variantId`, `npmScript`, `version` propia.
 
 ---
 
-## Alta de test nuevo
+## Alta de test nuevo (OBLIGATORIO)
 
-1. Añadir entrada en [`registry.json`](./registry.json).
-2. Fila en [`INDEX.md`](./INDEX.md).
-3. Comentario en el archivo de test:
+Checklist completa: [`MANDATORY_DOC_AND_QA_REGISTRATION.md`](../workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md)
 
-   ```typescript
-   /** QA code: TS-WEB-OVR-003 overlay-title-layout · v1.0.0 */
-   ```
+| Paso | Acción | ¿Negociable? |
+|------|--------|--------------|
+| 1 | Código + familia + **`area`** | No |
+| 2 | [`registry.json`](./registry.json) con `version` / `versionHistory` | **No** |
+| 3 | Fila en [`INDEX.md`](./INDEX.md) (incluir `area`) | **No** |
+| 4 | Cabecera en archivo (código, versión, area, family) | No |
+| 5 | `npmScript` en `package.json` si VF/QA/AU/GEN | Si aplica |
+| 6 | `npm run verify:qa-registry` | No |
 
-4. Si cierra un hallazgo de auditoría, `relatedAuditCodes: ["20260625-AUD-IMG-OVR-02 ..."]`.
+Cabecera obligatoria en el archivo:
+
+```typescript
+/**
+ * QA code: TS-WEB-OVR-003 overlay-title-layout · v1.0.0
+ * Area: apps/web/src/lib/overlay-title-layout
+ * Family: WEB-OVR
+ */
+```
+
+Si cierra hallazgo de auditoría: `relatedAuditCodes` en registro y `relatedTests` en auditoría.
 
 ---
 
 ## Ejecución rápida
 
 ```bash
-npm test                                    # todos los Vitest (turbo)
-npm run verify:hexagram-fidelity            # gate W+L runtime
-npm run verify:overlay-glyphs               # gate overlay + vitest embed
-npm run qa:mutation-output                  # matriz mutación (consume API)
-npm run qa:reading-quality                  # lecturas reales (consume API)
+npm run verify:qa-registry                 # bloqueante — incluye validación de area
+npm test
+npm run verify:hexagram-fidelity
+npm run verify:overlay-glyphs
+npm run qa:mutation-output
+npm run qa:reading-quality
 ```

@@ -1,6 +1,6 @@
 # Reporte de Auditoría de Seguridad y Arquitectura
-
 **Código:** `00000000-RPT-LEG-01 legacy-general-report` · **Familia:** LEG · **Estado:** reference
+
 
 ## Estado · Changelog de cierre
 

@@ -1,6 +1,6 @@
 # I Ching Data Integrity & Reliability Audit
-
 **Código:** `00000000-RPT-DAT-FID-00 data-integrity-summary` · **Familia:** DAT-FID · **Estado:** reference
+
 
 This document records the 1:1 fidelity audits performed on the three translator bundles in `@iching-oracle/iching-data`.
 

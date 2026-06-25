@@ -1,6 +1,6 @@
 # Auditoría — Test de calidad de lectura (W + L, 64 hexagramas sin mutación) y regresión del campo `judgment`
-
 **Código:** `20260623-AUD-RDG-QA-01 judgment-regression` · **Familia:** RDG-QA · **Estado:** mitigated
+
 
 - **Fecha:** 2026-06-23
 - **Estado:** 🟡 **Hallazgo 1 resuelto** vía migración EPUB-primary (`20260623-PLAN-DAT-RT-01-epub-primary-migration.md`, gates 514/514 ambos traductores) · **Hallazgo 2 diferido** — decisión explícita del propietario de retomarlo en otra sesión, sin fecha fijada

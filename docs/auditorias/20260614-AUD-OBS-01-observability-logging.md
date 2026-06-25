@@ -1,6 +1,6 @@
 # Auditoría — Observabilidad, caché Claude y retry Together AI
-
 **Código:** `20260614-AUD-OBS-01 observability-logging` · **Familia:** OBS · **Estado:** closed
+
 
 **Fecha:** 2026-06-14  
 **Commit:** `d0d4650` (branch `feat/observability-together-retry`, mergeado a `staging`)  

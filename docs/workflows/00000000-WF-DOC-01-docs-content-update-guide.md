@@ -1,6 +1,6 @@
 # Guía para actualizar docs de usuario (FAQ, guía, notas, tour, audits)
-
 **Código:** `00000000-WF-DOC-01 docs-content-update-guide` · **Familia:** DOC · **Estado:** reference
+
 
 Documento operativo para cualquier cambio de copy explicativa de cara al usuario:
 `faq-page-ui.ts`, `guia-page-ui.ts`, `notes-page-ui.ts`, `home-tour-ui.ts`, `audits-page-ui.ts` y

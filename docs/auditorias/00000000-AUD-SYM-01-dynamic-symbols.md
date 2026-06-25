@@ -1,6 +1,6 @@
 # Auditoría — Símbolos Dinámicos en el Resultado del I Ching
-
 **Código:** `00000000-AUD-SYM-01 dynamic-symbols` · **Familia:** SYM · **Estado:** closed
+
 
 **Última actualización:** 2026-06-06
 **Branch de referencia:** `main` @ `e7cc89f`

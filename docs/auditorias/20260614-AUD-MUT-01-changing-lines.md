@@ -1,6 +1,6 @@
 # Auditoría — Líneas mutantes I Ching y calidad de interpretación
-
 **Código:** `20260614-AUD-MUT-01 changing-lines` · **Familia:** MUT · **Estado:** closed
+
 
 **Fecha inicial:** 2026-06-14 (Cursor)  
 **Actualizado:** 2026-06-14 (remediación completa aplicada)  

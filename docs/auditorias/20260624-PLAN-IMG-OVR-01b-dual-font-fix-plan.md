@@ -1,6 +1,6 @@
 # Plan — dual font-stack overlay PNG (Legge diacríticos)
-
 **Código:** `20260624-PLAN-IMG-OVR-01b dual-font-fix-plan` · **Familia:** IMG-OVR · **Estado:** closed
+
 
 - **Fecha:** 2026-06-24
 - **Estado:** ✅ **Implementado** — gate verde; pendiente smoke visual staging + deploy

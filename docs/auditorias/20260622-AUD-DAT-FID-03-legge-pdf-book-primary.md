@@ -1,6 +1,6 @@
 # Auditoría — Legge SBE XVI book-primary (PDF Oxford, sin EPUB repair)
-
 **Código:** `20260622-AUD-DAT-FID-03 legge-pdf-book-primary` · **Familia:** DAT-FID · **Estado:** closed
+
 
 **App:** The Original I Ching · **Paquete:** `@iching-oracle/iching-data`  
 **Rama:** `fix/legge-pdf-fidelity-100`  
