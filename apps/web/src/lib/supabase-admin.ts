@@ -29,7 +29,7 @@ const waitQueue: Array<() => void> = [];
 
 // ── Global Redis semaphore (cross-instance) ──────────────────────────────────
 // Caps the TOTAL concurrent PostgREST connections across all Vercel instances.
-// PostgREST pool confirmed ~10 (runbook SUPABASE_SCALABILITY.md 2026-06-07,
+// PostgREST pool confirmed ~10 (runbook 00000000-RUN-SUP-02-supabase-scalability.md 2026-06-07,
 // log: "Connection Pool initialized with a maximum size of 10 connections").
 // Cap 8 = pool − 2 slots margin (dashboard, pg_cron prewarm/vacuum, admin).
 // Raise ONLY after Supabase Support confirms db-pool increase in writing.

@@ -8,7 +8,7 @@ export const OVERLAY_EN_READABLE_MIN_FONT_SIZE = 24;
 export const OVERLAY_EN_MAX_WIDTH = 1000;
 export const OVERLAY_EN_LINE_HEIGHT = 1.38;
 /** Tighter leading when English title wraps to two lines. */
-export const OVERLAY_EN_TWO_LINE_HEIGHT = 1.26;
+export const OVERLAY_EN_TWO_LINE_HEIGHT = 1.18;
 export const OVERLAY_EN_SINGLE_Y = 178;
 export const OVERLAY_EN_MUTATION_SEP = " \u2192 ";
 
@@ -21,9 +21,9 @@ const ZH_TITLE_BASELINE = 125;
 const ZH_TITLE_SIZE = 92;
 const ZH_VISUAL_BOTTOM = ZH_TITLE_BASELINE + Math.round(ZH_TITLE_SIZE * 0.24);
 /** Min gap hanzi → English ascenders when block uses two lines. */
-const EN_TWO_LINE_GAP_BELOW_ZH = 16;
+const EN_TWO_LINE_GAP_BELOW_ZH = 12;
 /** Clearance between bottom English descenders and top hex bar (two-line mutations). */
-const EN_TWO_LINE_MARGIN_ABOVE_HEX = 30;
+const EN_TWO_LINE_MARGIN_ABOVE_HEX = 20;
 
 /** Rough serif width estimate for center-anchored single-line fit checks. */
 export function estimateOverlayEnTextWidth(text: string, fontSize: number): number {

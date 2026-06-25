@@ -1,6 +1,20 @@
 import type { AppLocale } from "../locales.js";
 import { DEFAULT_LOCALE } from "../locales.js";
 
+/**
+ * One APA 7 reference-list entry, split so the title can render italicized
+ * without a markdown parser. `citation` = author(s) + year; `title` = the
+ * work's title (rendered in <em>); `rest` = container/publisher info after
+ * the title. Citations are not translated per locale — APA entries keep the
+ * cited work's own language, same convention as proper nouns elsewhere in
+ * this package.
+ */
+export type AcademicSource = {
+  citation: string;
+  title: string;
+  rest: string;
+};
+
 export type NotesPageUiMessages = {
   title: string;
   lead: string;
@@ -45,8 +59,45 @@ export type NotesPageUiMessages = {
   interpretHeading: string;
   interpretBody: string;
   sourcesHeading: string;
-  sourcesList: string[];
+  sources: AcademicSource[];
 };
+
+/**
+ * Shared APA 7 reference list (alphabetical by author surname). Cited works
+ * are in English regardless of UI locale — see AcademicSource doc comment.
+ */
+const ACADEMIC_SOURCES: AcademicSource[] = [
+  {
+    citation: "Adler, J. A. (2002). ",
+    title: "Introduction to the study of the classic of change",
+    rest: " (I-hsüeh ch'i-meng). Global Scholarly Publications.",
+  },
+  {
+    citation: "Keightley, D. N. (1978). ",
+    title: "Sources of Shang history: The oracle-bone inscriptions of Bronze Age China",
+    rest: ". University of California Press.",
+  },
+  {
+    citation: "Nielsen, B. (2003). ",
+    title: "A companion to Yi Jing numerology and cosmology",
+    rest: ". Routledge.",
+  },
+  {
+    citation: "Rutt, R. (1996). ",
+    title: "The Book of Changes (Zhouyi): A Bronze Age document",
+    rest: ". Routledge.",
+  },
+  {
+    citation: "Shaughnessy, E. L. (1996). ",
+    title: "I Ching: The classic of changes",
+    rest: ". Ballantine Books.",
+  },
+  {
+    citation: "Wilhelm, R., & Baynes, C. F. (1950). ",
+    title: "The I Ching or Book of Changes",
+    rest: ". Princeton University Press.",
+  },
+];
 
 const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
   es: {
@@ -105,14 +156,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "La inteligencia artificial en esta app tiene una función específica y acotada: tomar el resultado del algoritmo (hexagramas, líneas en movimiento o veredicto de grietas) y articularlo en lenguaje natural con el contexto de la pregunta del usuario.\n\nLa IA no genera hexagramas, no decide veredictos, ni modifica los textos de Wilhelm, Legge ni del Zhou Yi. El algoritmo matemático realiza el proceso técnico-tradicional fielmente antes de que la IA intervenga. La IA es el intérprete; el oráculo es el método.",
     sourcesHeading: "Fuentes y Referencias Académicas",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   en: {
     title: "Method Notes and Origins",
@@ -172,14 +216,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "The artificial intelligence in this app has a specific and bounded function: to take the result of the algorithm (hexagrams, moving lines, or crack verdicts) and articulate it in natural language with the context of the user's question. The AI does not generate hexagrams, does not decide verdicts, and does not modify the texts of Wilhelm, Legge, or the Zhou Yi. The mathematical algorithm performs the technical-traditional process faithfully before the AI intervenes. The AI is the interpreter; the oracle is the method.",
     sourcesHeading: "Academic Sources and References",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   pt: {
     title: "Notas e Origem dos Métodos",
@@ -239,14 +276,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "A inteligência artificial nesta app tem uma função específica e delimitada: tomar o resultado do algoritmo (hexagramas, linhas em movimento ou veredicto de fissuras) e articulá-lo em linguagem natural com o contexto da pergunta do utilizador. A IA não gera hexagramas, não decide veredictos, nem modifica os textos de Wilhelm. O algoritmo matemático realiza o processo técnico-tradicional fielmente antes de a IA intervir. A IA é o intérprete; o oráculo é o método.",
     sourcesHeading: "Fontes e Referências Acadêmicas",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   fr: {
     title: "Notes et origine des méthodes",
@@ -307,14 +337,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "L'intelligence artificielle dans cette app a une fonction spécifique et délimitée : prendre le résultat de l'algorithme (hexagrammes, traits en mouvement ou verdict de fissures) et l'articuler en langage naturel avec le contexte de la question de l'utilisateur. L'IA ne génère pas d'hexagrammes, ne décide pas des verdicts, et ne modifie pas les textes de Wilhelm. L'algorithme mathématique réalise le processus technico-traditionnel fidèlement avant que l'IA n'intervienne. L'IA est l'interprète ; l'oracle est la méthode.",
     sourcesHeading: "Sources et références académiques",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   de: {
     title: "Methodennotizen und Ursprünge",
@@ -375,14 +398,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "Die künstliche Intelligenz in dieser App hat eine spezifische und begrenzte Funktion: das Ergebnis des Algorithmus (Hexagramm, bewegende Linien oder Riss-Befund) zu nehmen und es in natürlicher Sprache in den Kontext der Frage des Nutzers zu artikulieren. Die KI generiert keine Hexagramme, entscheidet nicht über Befunde und verändert Wilhelms Texte nicht. Der mathematische Algorithmus führt den technisch-traditionellen Prozess getreu aus, bevor die KI eingreift. Die KI ist der Interpret; das Orakel ist die Methode.",
     sourcesHeading: "Akademische Quellen und Referenzen",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   it: {
     title: "Note e Origine dei Metodi",
@@ -442,14 +458,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "L'intelligenza artificiale in questa app ha una funzione specifica e delimitata: prendere il risultato dell'algoritmo (esagrammi, linee in movimento o verdetto di crepe) e articolarlo in linguaggio naturale con il contesto della domanda dell'utente. L'IA non genera esagrammi, non decide verdetti e non modifica i testi di Wilhelm. L'algoritmo matematico esegue fedelmente il processo tecnico-tradizionale prima che l'IA intervenga. L'IA è l'interprete ; l'oracolo è il metodo.",
     sourcesHeading: "Fonti e Riferimenti Accademici",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   ja: {
     title: "手法の注記と起源",
@@ -513,14 +522,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "このアプリの人工知能には特定かつ限定的な機能があります：アルゴリズムの結果（卦、動爻、亀裂の神託）を受け取り、ユーザーの質問のコンテキストと共に、ユーザーの言語で自然言語として表現することです。AIは卦を生成せず、神託を決定せず、ヴィルヘルムのテキストも商の手法のパターンも改変しません。数学的アルゴリズムがそれを忠実に行い、その後AIが介入します。AIは解釈者です。神託は手法です。",
     sourcesHeading: "出典と参考文献",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   zh: {
     title: "方法注记与起源",
@@ -580,14 +582,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "本应用中的人工智能具有特定且有限的功能：获取算法结果（卦象、动爻、裂纹兆辞）并结合用户问题的语境，以用户的语言将其表述为自然语言。人工智能不生成卦象，不裁定兆辞，不修改卫礼贤的文本，也不改变商代方法的纹样。数学算法在人工智能介入之前，已忠实地完成了这一切。人工智能是解读者，神谕是方法本身。",
     sourcesHeading: "来源与参考文献",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   ko: {
     title: "방법 주석과 기원",
@@ -651,14 +646,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "이 앱의 인공지능은 특정하고 한정된 기능을 수행합니다: 알고리즘의 결과, 괘, 변효, 균열 신탁, 를 받아 사용자의 질문 맥락과 함께 사용자의 언어로 자연어로 표현하는 것입니다. AI는 괘를 생성하지 않고, 신탁을 결정하지 않으며, 빌헬름의 텍스트나 상 방법의 패턴을 수정하지 않습니다. 수학적 알고리즘이 AI가 개입하기 전에 충실히 그 역할을 합니다. AI는 해석자입니다. 신탁은 방법 그 자체입니다.",
     sourcesHeading: "출처 및 참고문헌",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   ar: {
     title: "ملاحظات وأصول الطرق",
@@ -723,14 +711,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "للذكاء الاصطناعي في هذا التطبيق وظيفة محددة ومحدودة: أخذ نتيجة الخوارزمية, الغرض، الخطوط المتحركة، حكم الشقوق, وصياغتها بلغة طبيعية في لغة المستخدم، مع سياق سؤاله. لا يُولّد الذكاء الاصطناعي أغراضاً، ولا يقرر أحكاماً، ولا يعدّل نصوص Wilhelm أو أنماط طريقة Shang. الخوارزمية الرياضية تفعل ذلك بأمانة قبل أن يتدخل الذكاء الاصطناعي. الذكاء الاصطناعي هو المفسر. العرافة هي الطريقة.",
     sourcesHeading: "المصادر والمراجع",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
   hi: {
     title: "विधि नोट्स और उत्पत्ति",
@@ -795,14 +776,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     interpretBody:
       "इस ऐप में कृत्रिम बुद्धिमत्ता की एक विशिष्ट और सीमित कार्य है: एल्गोरिदम का परिणाम, हेक्साग्राम, गतिशील रेखाएं, दरार निर्णय, लेना और उसे उपयोगकर्ता के प्रश्न के संदर्भ के साथ उपयोगकर्ता की भाषा में प्राकृतिक भाषा में व्यक्त करना। AI हेक्साग्राम उत्पन्न नहीं करता, निर्णय तय नहीं करता, Wilhelm के ग्रंथों या शांग विधि के पैटर्न को संशोधित नहीं करता। गणितीय एल्गोरिदम AI के हस्तक्षेप से पहले यह सब विश्वासपूर्वक करता है। AI दुभाषिया है। दैवज्ञ विधि है।",
     sourcesHeading: "स्रोत और संदर्भ",
-    sourcesList: [
-      "Keightley, David N. Sources of Shang History: The Oracle-Bone Inscriptions of Bronze Age China. University of California Press.",
-      "Shaughnessy, Edward L. I Ching: The Classic of Changes. Ballantine Books.",
-      "Adler, Joseph A. Introduction to the Study of the Classic of Change (I-hsüeh ch’i-meng). Global Scholarly Publications.",
-      "Nielsen, Bent. A Companion to Yi Jing Numerology and Cosmology. Routledge.",
-      "Wilhelm, Richard & Baynes, Cary F. The I Ching or Book of Changes. Princeton University Press.",
-      "Rutt, Richard. The Book of Changes (Zhouyi): A Bronze Age Document. Routledge.",
-    ],
+    sources: ACADEMIC_SOURCES,
   },
 };
 
