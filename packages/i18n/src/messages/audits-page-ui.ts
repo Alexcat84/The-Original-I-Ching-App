@@ -89,7 +89,8 @@ export type AuditsPageUiMessages = {
 
 /** Sort metadata keyed by block/report id (ISO date is locale-neutral). */
 const TIMELINE_META: Record<string, { verificationDateIso: string; sortOrder: number }> = {
-  "wilhelm-appendix-casting-2026-06-25": { verificationDateIso: "2026-06-25", sortOrder: 0 },
+  "wilhelm-appendix-coins-2026-06-25": { verificationDateIso: "2026-06-25", sortOrder: 0 },
+  "wilhelm-appendix-yarrow-2026-06-25": { verificationDateIso: "2026-06-25", sortOrder: 1 },
   "zhouyi-ctext-2026-06-21": { verificationDateIso: "2026-06-23", sortOrder: 0 },
   "legge-oxford-pdf-2026-06-22": { verificationDateIso: "2026-06-23", sortOrder: 1 },
   "wilhelm-pantheon-pdf-2026-06-22": { verificationDateIso: "2026-06-23", sortOrder: 2 },
@@ -100,7 +101,8 @@ const TIMELINE_META: Record<string, { verificationDateIso: string; sortOrder: nu
   "wilhelm-parma-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 0 },
   "legge-sacred-texts-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 1 },
   "zhouyi-ctext-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 2 },
-  "divination-math-initial-2026-05-19": { verificationDateIso: "2026-05-19", sortOrder: 0 },
+  "coins-math-initial-2026-05-19": { verificationDateIso: "2026-05-19", sortOrder: 0 },
+  "yarrow-math-initial-2026-05-19": { verificationDateIso: "2026-05-19", sortOrder: 1 },
 };
 
 function timelineMetaFor(id: string): { verificationDateIso: string; sortOrder: number } {
@@ -185,6 +187,11 @@ const CITATIONS = {
     title: "Introduction to the study of the classic of change",
     rest: " (I-hsüeh ch'i-meng). Global Scholarly Publications.",
   },
+  nielsen: {
+    citation: "Nielsen, B. (2003). ",
+    title: "A companion to Yi Jing numerology and cosmology",
+    rest: ". Routledge.",
+  },
 } satisfies Record<string, AuditSourceCitation>;
 
 const CANONICAL_CITATIONS = new Set<AuditSourceCitation>(Object.values(CITATIONS));
@@ -196,7 +203,6 @@ function assertCompleteVerificationBlock(block: AuditSourceBlock): void {
     "standardCompared",
     "result",
     "statusLabel",
-    "currentStatusNote",
     "verificationDate",
   ];
   for (const field of stringFields) {
@@ -228,8 +234,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     result:
       "Final: 514/514 fields matched (100%). Intermediate passes: 94.94% → 99.81% → 100%; the last 6 fields were completed from the printed edition where the web mirror had gaps.",
     statusKind: "superseded",
-    statusLabel: "Superseded",
-    currentStatusNote: "Historical cross-check against the University of Parma web mirror.",
+    statusLabel: "Obsolete.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -243,8 +249,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result: "Final: 514/514 fields matched (100%).",
     statusKind: "current",
-    statusLabel: "Current production source",
-    currentStatusNote: "This is the gold reference the app verifies against today.",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -258,8 +264,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     result:
       "Final: 514/514 fields matched (100%). Intermediate pass on 21 Jun: 77.19% → final: 100% after parser and gold corrections, verified directly against this published edition.",
     statusKind: "superseded",
-    statusLabel: "Superseded",
-    currentStatusNote: "Historical cross-check against the Internet Sacred Text Archive reproduction.",
+    statusLabel: "Obsolete.",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -273,8 +279,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result: "Final: 514/514 fields matched (100%).",
     statusKind: "current",
-    statusLabel: "Current production source",
-    currentStatusNote: "This is the gold reference the app verifies against today.",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -289,8 +295,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     result:
       "Final: 514/514 fields matched (100%). Intermediate pass on 21 Jun: 90.66% → final: 100% after re-ingestion and parser correction.",
     statusKind: "superseded",
-    statusLabel: "Superseded",
-    currentStatusNote: "First quality pass on this source.",
+    statusLabel: "Obsolete.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -304,9 +310,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "卦辭, 大象, and the 6 lines of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result: "514/514 fields matched (100%), with zero corruption flags.",
     statusKind: "current",
-    statusLabel: "Current production source",
-    currentStatusNote:
-      "Second independent pass on the same source; future audits will be numbered sequentially (third, fourth, …). Chinese Text Project remains the gold reference.",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -320,9 +325,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Wilhelm's own commentary and Confucius's Ten Wings notes on judgment, image, and each line; About this hexagram block; Words on the Text (hex 1-2 only); yong commentary (hex 1-2 only). 64 hexagrams.",
     result: "1920/1920 fields matched (100%).",
     statusKind: "current",
-    statusLabel: "Current classical source",
-    currentStatusNote:
-      "Scholarly commentaries verified for all 64 hexagrams.",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -337,9 +341,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     result:
       "Footnotes and Great Symbolism image gloss fully covered (64/64, 100%); Lesser Symbolism line notes verified for every hexagram where Legge's edition includes them. Verification PASS.",
     statusKind: "current",
-    statusLabel: "Current classical source",
-    currentStatusNote:
-      "Scholarly commentaries verified for all 64 hexagrams.",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -352,8 +355,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "The 9 published rule cases for reducing changing lines to a single governing line text (0 through 6 changing lines, plus 用九/用六).",
     result: "Final: 9/9 rule cases matched (100%).",
     statusKind: "current",
-    statusLabel: "Current production source",
-    currentStatusNote: "Default changing-line system in the app.",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -366,42 +369,68 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "The published rule cases for reducing changing lines to a single governing line text (0 through 6 changing lines, plus 用九/用六).",
     result: "Final: 10/10 rule snippets matched (100%).",
     statusKind: "current",
-    statusLabel: "Current production source",
-    currentStatusNote: "Available via the Changing-line reading selector in Options.",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "I Ching casting methods: initial verification",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "19 May 2026",
-    method:
-      "Mathematical verification of the engine's probability distributions and step-by-step manual yarrow wizard logic.",
-    standardCompared:
-      "Three-coin line distribution (values 6, 7, 8, 9); yarrow-stalk line distribution (1/16, 5/16, 7/16, 3/16); manual yarrow residue-to-line mapping; parity between automatic casting and manual line entry.",
-    result:
-      "All distribution checks passed. Manual three-coin face assignment was not verified against the published appendix in this pass.",
-    statusKind: "superseded",
-    statusLabel: "Superseded",
-    currentStatusNote:
-      "Reference pass before book-primary comparison against Appendix I of the published edition.",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "I Ching casting methods: verification (published edition)",
+    title: "Three coins: verification (published edition)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "25 Jun 2026",
     method:
-      "Automated verification of coin and yarrow casting procedures against Appendix I of the Wilhelm/Baynes (1950) published edition, for both automatic and manual consultation paths.",
+      "Automated verification against Appendix I, section 2, of the Wilhelm/Baynes (1950) published edition (automatic and manual paths).",
     standardCompared:
-      "Appendix I, section 1 (yarrow-stalk oracle): three-round procedure, residue-to-line mapping, and line probabilities. Appendix I, section 2 (coin oracle): inscribed and reverse face values and resulting lines 6, 7, 8, 9.",
-    result:
-      "Final: 7/7 verification checks passed (100%). Coin combinatorics exact; yarrow distribution matches the appendix residue table exactly.",
+      "Inscribed face = yin (2), reverse = yang (3); resulting lines 6, 7, 8, 9 and exact probabilities 1/8, 3/8, 3/8, 1/8.",
+    result: "Final: 3/3 checks passed (100%).",
     statusKind: "current",
-    statusLabel: "Current production procedures",
-    currentStatusNote:
-      "Both three-coin and yarrow-stalk methods, automatic and manual, follow this appendix today.",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "Yarrow stalks: verification (published edition)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 Jun 2026",
+    method:
+      "Automated verification against Appendix I, section 1, of the Wilhelm/Baynes (1950) published edition (automatic and manual paths).",
+    standardCompared:
+      "Three-round procedure, residue-to-line mapping, and line probabilities 1/16, 5/16, 7/16, 3/16.",
+    result: "Final: 4/4 checks passed (100%).",
+    statusKind: "current",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Three coins: initial verification",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 May 2026",
+    method:
+      "Combinatorial proof of the 6/7/8/9 distribution and Monte Carlo simulation in engine tests. Cross-checked against published standard accounts (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Fair three-coin model (each side 2 or 3): line values 6, 7, 8, 9 and probabilities 1/8, 3/8, 3/8, 1/8.",
+    result: "Distribution checks passed (combinatorics and Monte Carlo).",
+    statusKind: "superseded",
+    statusLabel: "Obsolete.",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Yarrow stalks: initial verification",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 May 2026",
+    method:
+      "Mathematical proof of residue-to-line mapping and Monte Carlo simulation (16,000 trials). Cross-checked against published probability tables (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Line distribution 1/16, 5/16, 7/16, 3/16; manual wizard accepts only 5/9 and 4/8 per round.",
+    result: "Distribution and manual mapping checks passed.",
+    statusKind: "superseded",
+    statusLabel: "Obsolete.",
+    currentStatusNote: "",
   },
 ];
 
@@ -419,8 +448,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     result:
       "Final: 514/514 campos coincidentes (100%). Pasadas intermedias: 94.94% → 99.81% → 100%; los últimos 6 campos se completaron desde la edición impresa donde el mirror web tenía vacíos.",
     statusKind: "superseded",
-    statusLabel: "Reemplazada",
-    currentStatusNote: "Verificación cruzada histórica contra el mirror web de la Universidad de Parma.",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -434,8 +463,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result: "Final: 514/514 campos coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fuente de producción vigente",
-    currentStatusNote: "Esta es la referencia gold contra la que la app se verifica hoy.",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -449,8 +478,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     result:
       "Final: 514/514 campos coincidentes (100%). Pasada intermedia el 21 jun: 77.19% → final: 100% tras correcciones del parser y gold, verificados directamente contra esta edición publicada.",
     statusKind: "superseded",
-    statusLabel: "Reemplazada",
-    currentStatusNote: "Verificación cruzada histórica contra la reproducción de Internet Sacred Text Archive.",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -464,8 +493,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result: "Final: 514/514 campos coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fuente de producción vigente",
-    currentStatusNote: "Esta es la referencia gold contra la que la app se verifica hoy.",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -479,8 +508,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     result:
       "Final: 514/514 campos coincidentes (100%). Pasada intermedia el 21 jun: 90.66% → final: 100% tras recarga y corrección del parser.",
     statusKind: "superseded",
-    statusLabel: "Reemplazada",
-    currentStatusNote: "Primer pase de calidad sobre esta fuente.",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -493,9 +522,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     standardCompared: "卦辭, 大象 y las 6 líneas de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result: "514/514 campos coincidentes (100%), con cero indicadores de corrupción.",
     statusKind: "current",
-    statusLabel: "Fuente de producción vigente",
-    currentStatusNote:
-      "Segunda pasada independiente sobre la misma fuente; las auditorías futuras se numerarán en secuencia (tercera, cuarta, …). Chinese Text Project sigue siendo la referencia gold.",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -509,9 +537,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Comentario propio de Wilhelm y notas de las Diez Alas de Confucio en juicio, imagen y cada línea; bloque Acerca de este hexagrama; Words on the Text (solo hex 1-2); comentario yong (solo hex 1-2). 64 hexagramas.",
     result: "1920/1920 campos coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fuente clásica vigente",
-    currentStatusNote:
-      "Comentarios académicos verificados para los 64 hexagramas.",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -526,9 +553,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     result:
       "Footnotes y glosa de imagen del Gran Simbolismo cubiertos por completo (64/64, 100%); notas de Simbolismo menor verificadas en cada hexagrama donde la edición de Legge las incluye. Verificación PASS.",
     statusKind: "current",
-    statusLabel: "Fuente clásica vigente",
-    currentStatusNote:
-      "Comentarios académicos verificados para los 64 hexagramas.",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -542,8 +568,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Los 9 casos de regla publicados para reducir líneas cambiantes a un único texto de línea gobernante (0 a 6 líneas cambiantes, más 用九/用六).",
     result: "Final: 9/9 casos de regla coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fuente de producción vigente",
-    currentStatusNote: "Sistema de líneas cambiantes por defecto en la app.",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -557,42 +583,68 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Los casos de regla publicados para reducir líneas cambiantes a un único texto de línea gobernante (0 a 6 líneas cambiantes, más 用九/用六).",
     result: "Final: 10/10 fragmentos de regla coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fuente de producción vigente",
-    currentStatusNote: "Disponible mediante el selector «Lectura de líneas cambiantes» en Opciones.",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "Métodos de tirada del I Ching: verificación inicial",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "19 may 2026",
-    method:
-      "Verificación matemática de las distribuciones de probabilidad del motor y de la lógica paso a paso del asistente manual de varas.",
-    standardCompared:
-      "Distribución de líneas con tres monedas (valores 6, 7, 8, 9); distribución con varas de milenrama (1/16, 5/16, 7/16, 3/16); mapeo manual de restos de varas a línea; paridad entre tirada automática e ingreso manual de líneas.",
-    result:
-      "Todas las comprobaciones de distribución aprobaron. La asignación manual de cara/reverso en tres monedas no se verificó contra el apéndice publicado en esta pasada.",
-    statusKind: "superseded",
-    statusLabel: "Reemplazada",
-    currentStatusNote:
-      "Pasada de referencia antes de la comparación book-primary contra el Apéndice I de la edición publicada.",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "Métodos de tirada del I Ching: verificación (edición publicada)",
+    title: "Tres monedas: verificación (edición publicada)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "25 jun 2026",
     method:
-      "Verificación automatizada de los procedimientos de tirada con monedas y varas contra el Apéndice I de la edición publicada Wilhelm/Baynes (1950), en rutas automática y manual.",
+      "Verificación automatizada contra el Apéndice I, sección 2, de la edición publicada Wilhelm/Baynes (1950), en rutas automática y manual.",
     standardCompared:
-      "Apéndice I, sección 1 (oráculo de varas): procedimiento de tres rondas, mapeo de restos a línea y probabilidades de línea. Apéndice I, sección 2 (oráculo de monedas): valores de cara inscrita y reverso y líneas resultantes 6, 7, 8, 9.",
-    result:
-      "Final: 7/7 comprobaciones aprobadas (100%). Combinatoria de monedas exacta; la distribución de varas coincide exactamente con la tabla de restos del apéndice.",
+      "Cara inscrita = yin (2), reverso = yang (3); líneas 6, 7, 8, 9 y probabilidades exactas 1/8, 3/8, 3/8, 1/8.",
+    result: "Final: 3/3 comprobaciones aprobadas (100%).",
     statusKind: "current",
-    statusLabel: "Procedimientos de producción vigentes",
-    currentStatusNote:
-      "Tres monedas y varas de milenrama, automático y manual, siguen este apéndice hoy.",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "Varas de milenrama: verificación (edición publicada)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 jun 2026",
+    method:
+      "Verificación automatizada contra el Apéndice I, sección 1, de la edición publicada Wilhelm/Baynes (1950), en rutas automática y manual.",
+    standardCompared:
+      "Procedimiento de tres rondas, mapeo de restos a línea y probabilidades 1/16, 5/16, 7/16, 3/16.",
+    result: "Final: 4/4 comprobaciones aprobadas (100%).",
+    statusKind: "current",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Tres monedas: verificación inicial",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 may 2026",
+    method:
+      "Demostración combinatoria de la distribución 6/7/8/9 y simulación Monte Carlo en tests del motor. Contrastado con cuentas estándar publicadas (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Modelo de tres monedas justas (cada lado 2 o 3): valores 6, 7, 8, 9 y probabilidades 1/8, 3/8, 3/8, 1/8.",
+    result: "Comprobaciones de distribución aprobadas (combinatoria y Monte Carlo).",
+    statusKind: "superseded",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Varas de milenrama: verificación inicial",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 may 2026",
+    method:
+      "Demostración matemática del mapeo restos-línea y simulación Monte Carlo (16.000 tiradas). Contrastado con tablas de probabilidad publicadas (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Distribución 1/16, 5/16, 7/16, 3/16; asistente manual acepta solo 5/9 y 4/8 por ronda.",
+    result: "Comprobaciones de distribución y mapeo manual aprobadas.",
+    statusKind: "superseded",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
 ];
 
@@ -610,8 +662,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     result:
       "Final: 514/514 campos correspondentes (100%). Passagens intermédias: 94.94% → 99.81% → 100%; os últimos 6 campos foram completados a partir da edição impressa onde o mirror web tinha lacunas.",
     statusKind: "superseded",
-    statusLabel: "Substituída",
-    currentStatusNote: "Verificação cruzada histórica contra o mirror web da Universidade de Parma.",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -625,8 +677,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result: "Final: 514/514 campos correspondentes (100%).",
     statusKind: "current",
-    statusLabel: "Fonte de produção atual",
-    currentStatusNote: "Esta é a referência gold contra a qual a app se verifica hoje.",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -640,8 +692,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     result:
       "Final: 514/514 campos correspondentes (100%). Passagem intermédia em 21 de junho: 77.19% → final: 100% após correções do parser e gold, verificados diretamente contra esta edição publicada.",
     statusKind: "superseded",
-    statusLabel: "Substituída",
-    currentStatusNote: "Verificação cruzada histórica contra a reprodução do Internet Sacred Text Archive.",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -655,8 +707,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result: "Final: 514/514 campos correspondentes (100%).",
     statusKind: "current",
-    statusLabel: "Fonte de produção atual",
-    currentStatusNote: "Esta é a referência gold contra a qual a app se verifica hoje.",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -670,8 +722,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     result:
       "Final: 514/514 campos correspondentes (100%). Passagem intermédia em 21 de junho: 90.66% → final: 100% após recarga e correção do parser.",
     statusKind: "superseded",
-    statusLabel: "Substituída",
-    currentStatusNote: "Primeira passagem de qualidade sobre esta fonte.",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -684,9 +736,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     standardCompared: "卦辭, 大象 e as 6 linhas dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result: "514/514 campos correspondentes (100%), com zero indicadores de corrupção.",
     statusKind: "current",
-    statusLabel: "Fonte de produção atual",
-    currentStatusNote:
-      "Segunda passagem independente sobre a mesma fonte; auditorias futuras serão numeradas em sequência (terceira, quarta, …). Chinese Text Project continua sendo a referência gold.",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -700,9 +751,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Comentário próprio de Wilhelm e notas das Dez Asas de Confúcio em juízo, imagem e cada linha; bloco Sobre este hexagrama; Words on the Text (apenas hex 1-2); comentário yong (apenas hex 1-2). 64 hexagramas.",
     result: "1920/1920 campos coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fonte clássica vigente",
-    currentStatusNote:
-      "Comentários acadêmicos verificados para os 64 hexagramas.",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -717,9 +767,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     result:
       "Footnotes e glosa de imagem do Grande Simbolismo totalmente cobertos (64/64, 100%); notas de Simbolismo menor verificadas em cada hexagrama onde a edição de Legge as inclui. Verificação PASS.",
     statusKind: "current",
-    statusLabel: "Fonte clássica vigente",
-    currentStatusNote:
-      "Comentários acadêmicos verificados para os 64 hexagramas.",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -733,8 +782,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Os 9 casos de regra publicados para reduzir linhas mutantes a um único texto de linha governante (0 a 6 linhas mutantes, mais 用九/用六).",
     result: "Final: 9/9 casos de regra correspondentes (100%).",
     statusKind: "current",
-    statusLabel: "Fonte de produção atual",
-    currentStatusNote: "Sistema de linhas mutantes padrão na app.",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -748,42 +797,68 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Os casos de regra publicados para reduzir linhas mutantes a um único texto de linha governante (0 a 6 linhas mutantes, mais 用九/用六).",
     result: "Final: 10/10 excertos de regra correspondentes (100%).",
     statusKind: "current",
-    statusLabel: "Fonte de produção atual",
-    currentStatusNote: "Disponível através do seletor «Leitura de linhas mutantes» em Opções.",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "Métodos de consulta do I Ching: verificação inicial",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "19 de maio de 2026",
-    method:
-      "Verificação matemática das distribuições de probabilidade do motor e da lógica passo a passo do assistente manual de varetas.",
-    standardCompared:
-      "Distribuição de linhas com três moedas (valores 6, 7, 8, 9); distribuição com varetas de mil-folhas (1/16, 5/16, 7/16, 3/16); mapeamento manual de restos de varetas para linha; paridade entre lançamento automático e entrada manual de linhas.",
-    result:
-      "Todas as verificações de distribuição passaram. A atribuição manual de face/reverso em três moedas não foi verificada contra o apêndice publicado nesta passagem.",
-    statusKind: "superseded",
-    statusLabel: "Substituída",
-    currentStatusNote:
-      "Passagem de referência antes da comparação book-primary contra o Apêndice I da edição publicada.",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "Métodos de consulta do I Ching: verificação (edição publicada)",
+    title: "Três moedas: verificação (edição publicada)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "25 de junho de 2026",
     method:
-      "Verificação automatizada dos procedimentos de consulta com moedas e varetas contra o Apêndice I da edição publicada Wilhelm/Baynes (1950), em percursos automático e manual.",
+      "Verificação automatizada contra o Apêndice I, secção 2, da edição publicada Wilhelm/Baynes (1950), em percursos automático e manual.",
     standardCompared:
-      "Apêndice I, secção 1 (oráculo de varetas): procedimento de três rondas, mapeamento de restos para linha e probabilidades de linha. Apêndice I, secção 2 (oráculo de moedas): valores de face inscrita e reverso e linhas resultantes 6, 7, 8, 9.",
-    result:
-      "Final: 7/7 verificações aprovadas (100%). Combinatória de moedas exacta; a distribuição de varetas coincide exactamente com a tabela de restos do apêndice.",
+      "Face inscrita = yin (2), reverso = yang (3); linhas 6, 7, 8, 9 e probabilidades exactas 1/8, 3/8, 3/8, 1/8.",
+    result: "Final: 3/3 verificações aprovadas (100%).",
     statusKind: "current",
-    statusLabel: "Procedimentos de produção actuais",
-    currentStatusNote:
-      "Três moedas e varetas de mil-folhas, automático e manual, seguem este apêndice hoje.",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "Varetas de mil-folhas: verificação (edição publicada)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 de junho de 2026",
+    method:
+      "Verificação automatizada contra o Apêndice I, secção 1, da edição publicada Wilhelm/Baynes (1950), em percursos automático e manual.",
+    standardCompared:
+      "Procedimento de três rondas, mapeamento de restos para linha e probabilidades 1/16, 5/16, 7/16, 3/16.",
+    result: "Final: 4/4 verificações aprovadas (100%).",
+    statusKind: "current",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Três moedas: verificação inicial",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 de maio de 2026",
+    method:
+      "Demonstração combinatória da distribuição 6/7/8/9 e simulação Monte Carlo nos testes do motor. Contrastado com relatos padrão publicados (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Modelo de três moedas justas (cada lado 2 ou 3): valores 6, 7, 8, 9 e probabilidades 1/8, 3/8, 3/8, 1/8.",
+    result: "Verificações de distribuição aprovadas (combinatória e Monte Carlo).",
+    statusKind: "superseded",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Varetas de mil-folhas: verificação inicial",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 de maio de 2026",
+    method:
+      "Demonstração matemática do mapeamento restos-linha e simulação Monte Carlo (16.000 tentativas). Contrastado com tabelas de probabilidade publicadas (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Distribuição 1/16, 5/16, 7/16, 3/16; assistente manual aceita apenas 5/9 e 4/8 por ronda.",
+    result: "Verificações de distribuição e mapeamento manual aprovadas.",
+    statusKind: "superseded",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
 ];
 
@@ -801,8 +876,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     result:
       "Final : 514/514 champs correspondants (100 %). Passes intermédiaires : 94.94 % → 99.81 % → 100 % ; les 6 derniers champs ont été complétés à partir de l'édition imprimée là où le mirror web avait des lacunes.",
     statusKind: "superseded",
-    statusLabel: "Remplacée",
-    currentStatusNote: "Vérification croisée historique contre le mirror web de l'Université de Parma.",
+    statusLabel: "Obsolète.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -816,8 +891,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result: "Final : 514/514 champs correspondants (100 %).",
     statusKind: "current",
-    statusLabel: "Source de production actuelle",
-    currentStatusNote: "C'est la référence gold par rapport à laquelle l'app se vérifie aujourd'hui.",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -831,8 +906,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     result:
       "Final : 514/514 champs correspondants (100 %). Passe intermédiaire le 21 juin : 77.19 % → final : 100 % après corrections du parser et du gold, vérifiés directement contre cette édition publiée.",
     statusKind: "superseded",
-    statusLabel: "Remplacée",
-    currentStatusNote: "Vérification croisée historique contre la reproduction Internet Sacred Text Archive.",
+    statusLabel: "Obsolète.",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -846,8 +921,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result: "Final : 514/514 champs correspondants (100 %).",
     statusKind: "current",
-    statusLabel: "Source de production actuelle",
-    currentStatusNote: "C'est la référence gold par rapport à laquelle l'app se vérifie aujourd'hui.",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -861,8 +936,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     result:
       "Final : 514/514 champs correspondants (100 %). Passe intermédiaire le 21 juin : 90.66 % → final : 100 % après rechargement et correction du parser.",
     statusKind: "superseded",
-    statusLabel: "Remplacée",
-    currentStatusNote: "Premier passage qualité sur cette source.",
+    statusLabel: "Obsolète.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -875,9 +950,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     standardCompared: "卦辭, 大象 et les 6 traits des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result: "Final : 514/514 champs correspondants (100 %), avec zéro indicateur de corruption.",
     statusKind: "current",
-    statusLabel: "Source de production actuelle",
-    currentStatusNote:
-      "Deuxième passe indépendante sur la même source; les audits futurs seront numérotés en séquence (troisième, quatrième, …). Chinese Text Project reste la référence gold.",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -891,9 +965,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Commentaire propre de Wilhelm et notes des Dix Ailes de Confucius sur jugement, image et chaque ligne; bloc À propos de cet hexagramme; Words on the Text (hex 1-2 seulement); commentaire yong (hex 1-2 seulement). 64 hexagrammes.",
     result: "1920/1920 champs concordants (100%).",
     statusKind: "current",
-    statusLabel: "Source classique actuelle",
-    currentStatusNote:
-      "Commentaires savants vérifiés pour les 64 hexagrammes.",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -908,9 +981,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     result:
       "Footnotes et glose d'image du Grand Symbolisme entièrement couverts (64/64, 100 %); notes de Petit Symbolisme vérifiées pour chaque hexagramme où l'édition de Legge les inclut. Vérification PASS.",
     statusKind: "current",
-    statusLabel: "Source classique actuelle",
-    currentStatusNote:
-      "Commentaires savants vérifiés pour les 64 hexagrammes.",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -924,8 +996,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Les 9 cas de règle publiés pour réduire les lignes changeantes à un seul texte de trait gouvernant (0 à 6 lignes changeantes, plus 用九/用六).",
     result: "Final : 9/9 cas de règle correspondants (100 %).",
     statusKind: "current",
-    statusLabel: "Source de production actuelle",
-    currentStatusNote: "Système de lignes changeantes par défaut dans l'app.",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -939,42 +1011,68 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Les cas de règle publiés pour réduire les lignes changeantes à un seul texte de trait gouvernant (0 à 6 lignes changeantes, plus 用九/用六).",
     result: "Final : 10/10 extraits de règle correspondants (100 %).",
     statusKind: "current",
-    statusLabel: "Source de production actuelle",
-    currentStatusNote: "Disponible via le sélecteur « Lecture des lignes changeantes » dans Options.",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "Méthodes de tirage du Yi King : vérification initiale",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "19 mai 2026",
-    method:
-      "Vérification mathématique des distributions de probabilité du moteur et de la logique pas à pas de l'assistant manuel des tiges d'achillée.",
-    standardCompared:
-      "Distribution des lignes à trois pièces (valeurs 6, 7, 8, 9) ; distribution des tiges d'achillée (1/16, 5/16, 7/16, 3/16) ; correspondance manuelle restes de tiges vers ligne ; parité entre tirage automatique et saisie manuelle des lignes.",
-    result:
-      "Toutes les vérifications de distribution ont réussi. L'attribution manuelle face/revers des trois pièces n'a pas été vérifiée contre l'appendice publié lors de cette passe.",
-    statusKind: "superseded",
-    statusLabel: "Remplacée",
-    currentStatusNote:
-      "Passe de référence avant la comparaison book-primary contre l'Appendice I de l'édition publiée.",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "Méthodes de tirage du Yi King : vérification (édition publiée)",
+    title: "Trois pièces : vérification (édition publiée)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "25 juin 2026",
     method:
-      "Vérification automatisée des procédures de tirage à pièces et à tiges contre l'Appendice I de l'édition publiée Wilhelm/Baynes (1950), pour les parcours automatique et manuel.",
+      "Vérification automatisée contre l'Annexe I, section 2, de l'édition publiée Wilhelm/Baynes (1950), sur les parcours automatique et manuel.",
     standardCompared:
-      "Appendice I, section 1 (oracle des tiges) : procédure en trois tours, correspondance restes-ligne et probabilités de ligne. Appendice I, section 2 (oracle des pièces) : valeurs face inscrite et revers et lignes résultantes 6, 7, 8, 9.",
-    result:
-      "Final : 7/7 vérifications réussies (100 %). Combinatoire des pièces exacte ; la distribution des tiges correspond exactement au tableau des restes de l'appendice.",
+      "Face inscrite = yin (2), revers = yang (3) ; traits 6, 7, 8, 9 et probabilités exactes 1/8, 3/8, 3/8, 1/8.",
+    result: "Final : 3/3 contrôles approuvés (100 %).",
     statusKind: "current",
-    statusLabel: "Procédures de production actuelles",
-    currentStatusNote:
-      "Trois pièces et tiges d'achillée, automatique et manuel, suivent cet appendice aujourd'hui.",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "Tiges de mil : vérification (édition publiée)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 juin 2026",
+    method:
+      "Vérification automatisée contre l'Annexe I, section 1, de l'édition publiée Wilhelm/Baynes (1950), sur les parcours automatique et manuel.",
+    standardCompared:
+      "Procédure en trois tours, correspondance restes-trait et probabilités 1/16, 5/16, 7/16, 3/16.",
+    result: "Final : 4/4 contrôles approuvés (100 %).",
+    statusKind: "current",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Trois pièces : vérification initiale",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 mai 2026",
+    method:
+      "Démonstration combinatoire de la distribution 6/7/8/9 et simulation Monte Carlo dans les tests du moteur. Comparé aux exposés standard publiés (Nielsen 2003 ; Rutt 1996)",
+    standardCompared:
+      "Modèle de trois pièces équitables (chaque face 2 ou 3) : valeurs 6, 7, 8, 9 et probabilités 1/8, 3/8, 3/8, 1/8.",
+    result: "Contrôles de distribution approuvés (combinatoire et Monte Carlo).",
+    statusKind: "superseded",
+    statusLabel: "Obsolète.",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Tiges de mil : vérification initiale",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 mai 2026",
+    method:
+      "Démonstration mathématique de la correspondance restes-trait et simulation Monte Carlo (16 000 tirages). Comparé aux tables de probabilité publiées (Nielsen 2003 ; Rutt 1996)",
+    standardCompared:
+      "Distribution 1/16, 5/16, 7/16, 3/16 ; l'assistant manuel n'accepte que 5/9 et 4/8 par tour.",
+    result: "Contrôles de distribution et de correspondance manuelle approuvés.",
+    statusKind: "superseded",
+    statusLabel: "Obsolète.",
+    currentStatusNote: "",
   },
 ];
 
@@ -992,8 +1090,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     result:
       "Final: 514/514 Felder übereinstimmend (100 %). Zwischenstände: 94.94 % → 99.81 % → 100 %; die letzten 6 Felder wurden aus der gedruckten Ausgabe ergänzt, wo der Web-Mirror Lücken hatte.",
     statusKind: "superseded",
-    statusLabel: "Abgelöst",
-    currentStatusNote: "Historischer Abgleich gegen den Web-Mirror der Universität Parma.",
+    statusLabel: "Obsolet.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1007,8 +1105,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result: "Final: 514/514 Felder übereinstimmend (100 %).",
     statusKind: "current",
-    statusLabel: "Aktuelle Produktionsquelle",
-    currentStatusNote: "Dies ist die Goldreferenz, gegen die die App sich heute verifiziert.",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1022,8 +1120,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     result:
       "Final: 514/514 Felder übereinstimmend (100 %). Zwischenstand am 21. Juni: 77.19 % → final: 100 % nach Parser- und Gold-Korrekturen, direkt gegen diese veröffentlichte Ausgabe verifiziert.",
     statusKind: "superseded",
-    statusLabel: "Abgelöst",
-    currentStatusNote: "Historischer Abgleich gegen die Internet Sacred Text Archive-Reproduktion.",
+    statusLabel: "Obsolet.",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1037,8 +1135,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result: "Final: 514/514 Felder übereinstimmend (100 %).",
     statusKind: "current",
-    statusLabel: "Aktuelle Produktionsquelle",
-    currentStatusNote: "Dies ist die Goldreferenz, gegen die die App sich heute verifiziert.",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -1052,8 +1150,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     result:
       "Final: 514/514 Felder übereinstimmend (100 %). Zwischenstand am 21. Juni: 90.66 % → final: 100 % nach Neuladen und Parser-Korrektur.",
     statusKind: "superseded",
-    statusLabel: "Abgelöst",
-    currentStatusNote: "Erster Qualitätsdurchlauf für diese Quelle.",
+    statusLabel: "Obsolet.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -1066,9 +1164,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     standardCompared: "卦辭, 大象 und die 6 Linien aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result: "514/514 Felder übereinstimmend (100 %), mit null Korruptionsflags.",
     statusKind: "current",
-    statusLabel: "Aktuelle Produktionsquelle",
-    currentStatusNote:
-      "Zweiter unabhängiger Durchlauf gegen dieselbe Quelle; künftige Audits werden fortlaufend nummeriert (dritte, vierte, …). Chinese Text Project bleibt die Goldreferenz.",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1082,9 +1179,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Wilhelms eigener Kommentar und Konfuzius' Zehn-Flügel-Noten zu Urteil, Bild und jeder Linie; Block Über dieses Hexagramm; Words on the Text (nur Hex 1-2); yong-Kommentar (nur Hex 1-2). 64 Hexagramme.",
     result: "1920/1920 Felder übereinstimmend (100%).",
     statusKind: "current",
-    statusLabel: "Aktuelle klassische Quelle",
-    currentStatusNote:
-      "Gelehrte Kommentare für alle 64 Hexagramme verifiziert.",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -1099,9 +1195,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     result:
       "Footnotes und Große-Symbolik-Bildglosse vollständig abgedeckt (64/64, 100 %); Kleinere-Symbolik-Liniennoten für jedes Hexagramm verifiziert, in dem Legges Ausgabe sie enthält. Verifikation PASS.",
     statusKind: "current",
-    statusLabel: "Aktuelle klassische Quelle",
-    currentStatusNote:
-      "Gelehrte Kommentare für alle 64 Hexagramme verifiziert.",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1114,8 +1209,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Die 9 veröffentlichten Regelfälle zur Reduktion wechselnder Linien auf einen einzigen maßgebenden Linientext (0 bis 6 wechselnde Linien, plus 用九/用六).",
     result: "Final: 9/9 Regelfälle übereinstimmend (100 %).",
     statusKind: "current",
-    statusLabel: "Aktuelle Produktionsquelle",
-    currentStatusNote: "Standardsystem für wechselnde Linien in der App.",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -1129,42 +1224,68 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Die veröffentlichten Regelfälle zur Reduktion wechselnder Linien auf einen einzigen maßgebenden Linientext (0 bis 6 wechselnde Linien, plus 用九/用六).",
     result: "Final: 10/10 Regelausschnitte übereinstimmend (100 %).",
     statusKind: "current",
-    statusLabel: "Aktuelle Produktionsquelle",
-    currentStatusNote: "Verfügbar über die Auswahl „Lesart wechselnder Linien“ in den Optionen.",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "I-Ching-Werfmethode: erste Verifikation",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "19. Mai 2026",
-    method:
-      "Mathematische Verifikation der Wahrscheinlichkeitsverteilungen der Engine und der schrittweisen Logik des manuellen Yarrow-Assistenten.",
-    standardCompared:
-      "Dreimünzen-Linienverteilung (Werte 6, 7, 8, 9); Yarrow-Stängel-Linienverteilung (1/16, 5/16, 7/16, 3/16); manuelle Yarrow-Rest-zu-Linie-Zuordnung; Parität zwischen automatischem Werfen und manueller Linieneingabe.",
-    result:
-      "Alle Verteilungsprüfungen bestanden. Die manuelle Zuordnung von Vorder-/Rückseite bei drei Münzen wurde in diesem Durchlauf nicht gegen den veröffentlichten Anhang geprüft.",
-    statusKind: "superseded",
-    statusLabel: "Ersetzt",
-    currentStatusNote:
-      "Referenzdurchlauf vor dem book-primary-Vergleich gegen Anhang I der veröffentlichten Ausgabe.",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "I-Ching-Werfmethode: Verifikation (veröffentlichte Ausgabe)",
+    title: "Drei Münzen: Verifikation (veröffentlichte Ausgabe)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "25. Juni 2026",
     method:
-      "Automatisierte Verifikation der Münz- und Yarrow-Werfverfahren gegen Anhang I der veröffentlichten Ausgabe Wilhelm/Baynes (1950), für automatische und manuelle Konsultationswege.",
+      "Automatisierte Verifikation gegen Anhang I, Abschnitt 2, der veröffentlichten Wilhelm/Baynes-Ausgabe (1950), automatisch und manuell.",
     standardCompared:
-      "Anhang I, Abschnitt 1 (Yarrow-Stängel-Orakel): dreirundiges Verfahren, Rest-zu-Linie-Zuordnung und Linienwahrscheinlichkeiten. Anhang I, Abschnitt 2 (Münzorakel): Werte der eingeprägten und der Rückseite sowie resultierende Linien 6, 7, 8, 9.",
-    result:
-      "Final: 7/7 Verifikationsprüfungen bestanden (100 %). Münzkombinatorik exakt; Yarrow-Verteilung entspricht exakt der Resttabelle des Anhangs.",
+      "Prägeseite = Yin (2), Rückseite = Yang (3); Linien 6, 7, 8, 9 und exakte Wahrscheinlichkeiten 1/8, 3/8, 3/8, 1/8.",
+    result: "Final: 3/3 Prüfungen bestanden (100 %).",
     statusKind: "current",
-    statusLabel: "Aktuelle Produktionsverfahren",
-    currentStatusNote:
-      "Dreimünzen- und Yarrow-Stängel-Methode, automatisch und manuell, folgen diesem Anhang heute.",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "Schafgarben-Stäbchen: Verifikation (veröffentlichte Ausgabe)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25. Juni 2026",
+    method:
+      "Automatisierte Verifikation gegen Anhang I, Abschnitt 1, der veröffentlichten Wilhelm/Baynes-Ausgabe (1950), automatisch und manuell.",
+    standardCompared:
+      "Dreirundiges Verfahren, Rest-zu-Linie-Zuordnung und Wahrscheinlichkeiten 1/16, 5/16, 7/16, 3/16.",
+    result: "Final: 4/4 Prüfungen bestanden (100 %).",
+    statusKind: "current",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Drei Münzen: Erstverifikation",
+    source: CITATIONS.nielsen,
+    verificationDate: "19. Mai 2026",
+    method:
+      "Kombinatorischer Beweis der 6/7/8/9-Verteilung und Monte-Carlo-Simulation in Engine-Tests. Abgeglichen mit veröffentlichten Standarddarstellungen (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Faires Drei-Münzen-Modell (jede Seite 2 oder 3): Linienwerte 6, 7, 8, 9 und Wahrscheinlichkeiten 1/8, 3/8, 3/8, 1/8.",
+    result: "Verteilungsprüfungen bestanden (Kombinatorik und Monte Carlo).",
+    statusKind: "superseded",
+    statusLabel: "Obsolet.",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Schafgarben-Stäbchen: Erstverifikation",
+    source: CITATIONS.nielsen,
+    verificationDate: "19. Mai 2026",
+    method:
+      "Mathematischer Beweis der Rest-zu-Linie-Zuordnung und Monte-Carlo-Simulation (16.000 Versuche). Abgeglichen mit veröffentlichten Wahrscheinlichkeitstabellen (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Verteilung 1/16, 5/16, 7/16, 3/16; manueller Assistent akzeptiert nur 5/9 und 4/8 pro Runde.",
+    result: "Verteilungs- und manuelle Zuordnungsprüfungen bestanden.",
+    statusKind: "superseded",
+    statusLabel: "Obsolet.",
+    currentStatusNote: "",
   },
 ];
 
@@ -1182,8 +1303,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     result:
       "Final: 514/514 campi corrispondenti (100%), passaggi intermedi: 94.94% → 99.81% → 100%; gli ultimi 6 campi sono stati completati dall'edizione stampata dove il mirror web aveva lacune.",
     statusKind: "superseded",
-    statusLabel: "Sostituita",
-    currentStatusNote: "Verifica incrociata storica contro il mirror web dell'Università di Parma.",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1197,8 +1318,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result: "Final: 514/514 campi corrispondenti (100%).",
     statusKind: "current",
-    statusLabel: "Fonte di produzione attuale",
-    currentStatusNote: "Questo è il riferimento gold rispetto al quale l'app si verifica oggi.",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1212,8 +1333,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     result:
       "Final: 514/514 campi corrispondenti (100%). Passaggio intermedio il 21 giugno: 77.19% → final: 100% dopo correzioni del parser e gold, verificati direttamente rispetto a questa edizione pubblicata.",
     statusKind: "superseded",
-    statusLabel: "Sostituita",
-    currentStatusNote: "Verifica incrociata storica contro la riproduzione Internet Sacred Text Archive.",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1227,8 +1348,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result: "Final: 514/514 campi corrispondenti (100%).",
     statusKind: "current",
-    statusLabel: "Fonte di produzione attuale",
-    currentStatusNote: "Questo è il riferimento gold rispetto al quale l'app si verifica oggi.",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -1242,8 +1363,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     result:
       "Final: 514/514 campi corrispondenti (100%). Passaggio intermedio il 21 giugno: 90.66% → final: 100% dopo ricaricamento e correzione del parser.",
     statusKind: "superseded",
-    statusLabel: "Sostituita",
-    currentStatusNote: "Primo passaggio qualità su questa fonte.",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -1256,9 +1377,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     standardCompared: "卦辭, 大象 e le 6 linee di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result: "514/514 campi corrispondenti (100%), con zero indicatori di corruzione.",
     statusKind: "current",
-    statusLabel: "Fonte di produzione attuale",
-    currentStatusNote:
-      "Secondo passaggio indipendente sulla stessa fonte; gli audit futuri saranno numerati in sequenza (terzo, quarto, …). Chinese Text Project resta il riferimento gold.",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1272,9 +1392,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Commento proprio di Wilhelm e note delle Dieci Ali di Confucio su giudizio, immagine e ogni linea; blocco Informazioni su questo esagramma; Words on the Text (solo hex 1-2); commento yong (solo hex 1-2). 64 esagrammi.",
     result: "1920/1920 campi coincidenti (100%).",
     statusKind: "current",
-    statusLabel: "Fonte classica attuale",
-    currentStatusNote:
-      "Commenti accademici verificati per tutti i 64 esagrammi.",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -1289,9 +1408,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     result:
       "Footnotes e glossa dell'immagine del Grande Simbolismo completamente coperti (64/64, 100%); note di Simbolismo minore verificate per ogni esagramma in cui l'edizione di Legge le include. Verifica PASS.",
     statusKind: "current",
-    statusLabel: "Fonte classica attuale",
-    currentStatusNote:
-      "Commenti accademici verificati per tutti i 64 esagrammi.",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1304,8 +1422,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "I 9 casi di regola pubblicati per ridurre le linee mutanti a un unico testo di linea governante (da 0 a 6 linee mutanti, più 用九/用六).",
     result: "Final: 9/9 casi di regola corrispondenti (100%).",
     statusKind: "current",
-    statusLabel: "Fonte di produzione attuale",
-    currentStatusNote: "Sistema di linee mutanti predefinito nell'app.",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -1319,42 +1437,68 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "I casi di regola pubblicati per ridurre le linee mutanti a un unico testo di linea governante (da 0 a 6 linee mutanti, più 用九/用六).",
     result: "Final: 10/10 estratti di regola corrispondenti (100%).",
     statusKind: "current",
-    statusLabel: "Fonte di produzione attuale",
-    currentStatusNote: "Disponibile tramite il selettore «Lettura delle linee mutanti» in Opzioni.",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "Metodi di consultazione dell'I Ching: verifica iniziale",
+    title: "Tre monete: verifica (edizione pubblicata)",
     source: CITATIONS.wilhelmPantheon,
-    verificationDate: "19 maggio 2026",
+    verificationDate: "25 giu 2026",
     method:
-      "Verifica matematica delle distribuzioni di probabilità del motore e della logica passo passo della procedura guidata manuale delle stoppie di achillea.",
+      "Verifica automatizzata contro l'Appendice I, sezione 2, dell'edizione pubblicata Wilhelm/Baynes (1950), su percorsi automatico e manuale.",
     standardCompared:
-      "Distribuzione delle linee con tre monete (valori 6, 7, 8, 9); distribuzione con stoppie di achillea (1/16, 5/16, 7/16, 3/16); mappatura manuale dei resti delle stoppie alla linea; parità tra lancio automatico e inserimento manuale delle linee.",
-    result:
-      "Tutti i controlli di distribuzione superati. L'assegnazione manuale faccia/retro delle tre monete non è stata verificata contro l'appendice pubblicata in questo passaggio.",
-    statusKind: "superseded",
-    statusLabel: "Sostituita",
-    currentStatusNote:
-      "Passaggio di riferimento prima del confronto book-primary contro l'Appendice I dell'edizione pubblicata.",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "Metodi di consultazione dell'I Ching: verifica (edizione pubblicata)",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "25 giugno 2026",
-    method:
-      "Verifica automatizzata delle procedure di consultazione con monete e stoppie contro l'Appendice I dell'edizione pubblicata Wilhelm/Baynes (1950), per percorsi automatico e manuale.",
-    standardCompared:
-      "Appendice I, sezione 1 (oracolo delle stoppie): procedura in tre round, mappatura resti-linea e probabilità di linea. Appendice I, sezione 2 (oracolo delle monete): valori faccia incisa e retro e linee risultanti 6, 7, 8, 9.",
-    result:
-      "Finale: 7/7 controlli di verifica superati (100%). Combinatoria delle monete esatta; la distribuzione delle stoppie coincide esattamente con la tabella dei resti dell'appendice.",
+      "Faccia incisa = yin (2), retro = yang (3); linee 6, 7, 8, 9 e probabilità esatte 1/8, 3/8, 3/8, 1/8.",
+    result: "Finale: 3/3 controlli approvati (100%).",
     statusKind: "current",
-    statusLabel: "Procedure di produzione attuali",
-    currentStatusNote:
-      "Tre monete e stoppie di achillea, automatico e manuale, seguono questo appendice oggi.",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "Steli di miglio: verifica (edizione pubblicata)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 giu 2026",
+    method:
+      "Verifica automatizzata contro l'Appendice I, sezione 1, dell'edizione pubblicata Wilhelm/Baynes (1950), su percorsi automatico e manuale.",
+    standardCompared:
+      "Procedura a tre round, mappatura resti-linea e probabilità 1/16, 5/16, 7/16, 3/16.",
+    result: "Finale: 4/4 controlli approvati (100%).",
+    statusKind: "current",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Tre monete: verifica iniziale",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 mag 2026",
+    method:
+      "Dimostrazione combinatoria della distribuzione 6/7/8/9 e simulazione Monte Carlo nei test del motore. Confrontato con resoconti standard pubblicati (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Modello di tre monete eque (ogni lato 2 o 3): valori 6, 7, 8, 9 e probabilità 1/8, 3/8, 3/8, 1/8.",
+    result: "Controlli di distribuzione approvati (combinatoria e Monte Carlo).",
+    statusKind: "superseded",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "Steli di miglio: verifica iniziale",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 mag 2026",
+    method:
+      "Dimostrazione matematica della mappatura resti-linea e simulazione Monte Carlo (16.000 prove). Confrontato con tabelle di probabilità pubblicate (Nielsen 2003; Rutt 1996)",
+    standardCompared:
+      "Distribuzione 1/16, 5/16, 7/16, 3/16; l'assistente manuale accetta solo 5/9 e 4/8 per round.",
+    result: "Controlli di distribuzione e mappatura manuale approvati.",
+    statusKind: "superseded",
+    statusLabel: "Obsoleto.",
+    currentStatusNote: "",
   },
 ];
 
@@ -1372,8 +1516,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     result:
       "最終: 514/514フィールドが一致（100%）。中間結果: 94.94% → 99.81% → 100%; Webミラーに欠けていた最後の6フィールドは印刷版で補完。",
     statusKind: "superseded",
-    statusLabel: "置き換え済み",
-    currentStatusNote: "パルマ大学Webミラーに対する過去の相互検証。",
+    statusLabel: "廃止。",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1386,8 +1530,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     standardCompared: "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、用九/用六を含む、合計514フィールド。",
     result: "最終: 514/514フィールドが一致（100%）。",
     statusKind: "current",
-    statusLabel: "現行の本番ソース",
-    currentStatusNote: "これは現在アプリが照合の基準とするゴールドリファレンスです。",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1400,8 +1544,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     result:
       "最終: 514/514フィールドが一致（100%）。6月21日の中間結果: 77.19% → 最終: 100%（パーサーとゴールドの修正後、この出版版に直接照合して検証）。",
     statusKind: "superseded",
-    statusLabel: "置き換え済み",
-    currentStatusNote: "Internet Sacred Text Archiveの複製に対する過去の相互検証。",
+    statusLabel: "廃止。",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1414,8 +1558,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     standardCompared: "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、用九/用六を含む、合計514フィールド。",
     result: "最終: 514/514フィールドが一致（100%）。",
     statusKind: "current",
-    statusLabel: "現行の本番ソース",
-    currentStatusNote: "これは現在アプリが照合の基準とするゴールドリファレンスです。",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -1429,8 +1573,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     result:
       "最終: 514/514フィールドが一致（100%）。6月21日の中間結果: 90.66% → 最終: 100%（再読み込みとパーサー修正後）。",
     statusKind: "superseded",
-    statusLabel: "置き換え済み",
-    currentStatusNote: "このソースに対する最初の品質パス。",
+    statusLabel: "廃止。",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -1443,8 +1587,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     standardCompared: "全64卦の卦辭、大象、6本の爻、用九/用六を含む、合計514フィールド。",
     result: "最終: 514/514フィールドが一致（100%）、破損フラグゼロ。",
     statusKind: "current",
-    statusLabel: "現行の本番ソース",
-    currentStatusNote: "同一ソースに対する第二回の独立検証。今後の監査は順番に番号付けされる（第三回、第四回…）。Chinese Text Projectはゴールドリファレンスのまま。"
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1458,8 +1602,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
       "ウィルヘルム自身の注釈と孔子の十翼による卦辞・象辞・各爻への注；この卦についてブロック；Words on the Text（卦1-2のみ）；用の注釈（卦1-2のみ）。64卦。",
     result: "1920/1920フィールド一致（100%）。",
     statusKind: "current",
-    statusLabel: "現行の古典注釈ソース",
-    currentStatusNote: "64卦すべての学術注釈を検証済み。",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -1474,8 +1618,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     result:
       "脚注と大象伝の象解は完全カバー（64/64、100%）；小象伝の各爻注はレッジ版に収録されている卦すべてで検証済み。検証PASS。",
     statusKind: "current",
-    statusLabel: "現行の古典注釈ソース",
-    currentStatusNote: "64卦すべての学術注釈を検証済み。",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1488,8 +1632,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
       "変爻を単一の支配的な爻テキストに還元するための、公開された9つのルールケース（変爻0本から6本、および用九/用六）。",
     result: "最終: 9/9のルールケースが一致（100%）。",
     statusKind: "current",
-    statusLabel: "現行の本番ソース",
-    currentStatusNote: "アプリのデフォルトの変爻体系。",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -1502,42 +1646,68 @@ const BLOCKS_JA: AuditSourceBlock[] = [
       "変爻を単一の支配的な爻テキストに還元するための公開ルールケース（変爻0本から6本、および用九/用六）。",
     result: "最終: 10/10のルール抜粋が一致（100%）。",
     statusKind: "current",
-    statusLabel: "現行の本番ソース",
-    currentStatusNote: "オプション内の「変爻の読み方」セレクターから利用可能。",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "I Ching 占い方法: 初回検証",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "2026年5月19日",
-    method:
-      "エンジンの確率分布と、手動蓍草ウィザードの段階的ロジックに対する数学的検証。",
-    standardCompared:
-      "三枚コインの爻分布（値6、7、8、9）；蓍草法の爻分布（1/16、5/16、7/16、3/16）；手動蓍草の余りから爻への対応；自動占いと手入力の一致。",
-    result:
-      "すべての分布チェックに合格。三枚コインの手動表裏割当は、この段階では刊行版付録との照合対象外。",
-    statusKind: "superseded",
-    statusLabel: "置換済み",
-    currentStatusNote:
-      "刊行版付録Iとの book-primary 比較の前の参照パス。",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "I Ching 占い方法: 検証（刊行版）",
+    title: "三枚コイン：検証（刊行版）",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月25日",
     method:
-      "Wilhelm/Baynes（1950）刊行版付録Iに対する、コインと蓍草の占い手順の自動検証（自動・手動の両経路）。",
+      "Wilhelm/Baynes（1950）刊行版付録I第2節に対する自動検証（自動・手動ルート）。",
     standardCompared:
-      "付録I第1節（蓍草占）: 三回の手順、余りから爻への対応、爻の確率。付録I第2節（コイン占）: 表側・裏側の値と結果爻6、7、8、9。",
-    result:
-      "最終: 7/7の検証チェック合格（100%）。コインの組合せは厳密一致；蓍草分布は付録の余り表と完全一致。",
+      "刻印面＝陰（2）、裏面＝陽（3）；爻6・7・8・9と確率1/8、3/8、3/8、1/8。",
+    result: "最終：3/3チェック合格（100%）。",
     statusKind: "current",
-    statusLabel: "現行の本番手順",
-    currentStatusNote:
-      "三枚コインと蓍草法（自動・手動）は、いずれも本付録に従います。",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "蓍草法：検証（刊行版）",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "2026年6月25日",
+    method:
+      "Wilhelm/Baynes（1950）刊行版付録I第1節に対する自動検証（自動・手動ルート）。",
+    standardCompared:
+      "三回の手順、余りから爻への対応、確率1/16、5/16、7/16、3/16。",
+    result: "最終：4/4チェック合格（100%）。",
+    statusKind: "current",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "三枚コイン：初回検証",
+    source: CITATIONS.nielsen,
+    verificationDate: "2026年5月19日",
+    method:
+      "6/7/8/9分布の組合せ論的証明とエンジンテストでのモンテカルロシミュレーション。公表された標準説明（Nielsen 2003；Rutt 1996）と照合",
+    standardCompared:
+      "公平な三枚コインモデル（各面2または3）：爻6・7・8・9と確率1/8、3/8、3/8、1/8。",
+    result: "分布チェック合格（組合せ論とモンテカルロ）",
+    statusKind: "superseded",
+    statusLabel: "廃止。",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "蓍草法：初回検証",
+    source: CITATIONS.nielsen,
+    verificationDate: "2026年5月19日",
+    method:
+      "余りから爻への対応の数学的証明とモンテカルロシミュレーション（16,000回）。公表された確率表（Nielsen 2003；Rutt 1996）と照合",
+    standardCompared:
+      "分布1/16、5/16、7/16、3/16；手動ウィザードは各ラウンド5/9と4/8のみ受理。",
+    result: "分布および手動対応チェック合格。",
+    statusKind: "superseded",
+    statusLabel: "廃止。",
+    currentStatusNote: "",
   },
 ];
 
@@ -1554,8 +1724,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     result:
       "最终: 514/514个字段一致（100%）。中间结果: 94.94% → 99.81% → 100%；最后6个字段从印刷版补全，因网页镜像存在空缺。",
     statusKind: "superseded",
-    statusLabel: "已被取代",
-    currentStatusNote: "针对帕尔马大学网页镜像的历史交叉核验。",
+    statusLabel: "已废止。",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1568,8 +1738,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
     result: "最终: 514/514个字段一致（100%）。",
     statusKind: "current",
-    statusLabel: "当前生产来源",
-    currentStatusNote: "这是应用目前用于核验的黄金参照。",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1582,8 +1752,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     result:
       "最终: 514/514个字段一致（100%）。6月21日中间结果: 77.19% → 最终: 100%（经解析器与黄金标准修正后，直接对照该出版版验证）。",
     statusKind: "superseded",
-    statusLabel: "已被取代",
-    currentStatusNote: "针对 Internet Sacred Text Archive 复刻版的历史交叉核验。",
+    statusLabel: "已废止。",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1596,8 +1766,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
     result: "最终: 514/514个字段一致（100%）。",
     statusKind: "current",
-    statusLabel: "当前生产来源",
-    currentStatusNote: "这是应用目前用于核验的黄金参照。",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -1611,8 +1781,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     result:
       "最终: 514/514个字段一致（100%）。6月21日中间结果: 90.66% → 最终: 100%（重新加载与解析器修正后）。",
     statusKind: "superseded",
-    statusLabel: "已被取代",
-    currentStatusNote: "针对该来源的首次质量检查。",
+    statusLabel: "已废止。",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -1625,8 +1795,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     standardCompared: "全部64卦的卦辭、大象，以及6条爻辭，包括用九/用六（共514个字段）。",
     result: "最终: 514/514个字段一致（100%），损坏标记为零。",
     statusKind: "current",
-    statusLabel: "当前生产来源",
-    currentStatusNote: "对同一来源的第二次独立验证；未来审计将按序编号（第三次、第四次…）。Chinese Text Project 仍是黄金参照。",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1640,8 +1810,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
       "卫礼贤本人注释与孔子十翼对卦辞、象辞及六爻的注；关于此卦块；Words on the Text（仅第1-2卦）；用九/用六注释（仅第1-2卦）。64卦。",
     result: "1920/1920 字段一致（100%）。",
     statusKind: "current",
-    statusLabel: "现行古典注释来源",
-    currentStatusNote: "64卦学术注释均已验证。",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -1656,8 +1826,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     result:
       "脚注与大象传象解已全覆盖（64/64，100%）；小象传各爻注已在理雅各版本收录的所有卦中验证。验证PASS。",
     statusKind: "current",
-    statusLabel: "现行古典注释来源",
-    currentStatusNote: "64卦学术注释均已验证。",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1669,8 +1839,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     standardCompared: "已发布的9种规则情形，用于将变爻简化为单一的主导爻文本（0至6条变爻，加上用九/用六）。",
     result: "最终: 9/9个规则情形一致（100%）。",
     statusKind: "current",
-    statusLabel: "当前生产来源",
-    currentStatusNote: "应用中默认的变爻体系。",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -1683,37 +1853,68 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
       "已发布的规则情形，用于将变爻简化为单一的主导爻文本（0至6条变爻，加上用九/用六）。",
     result: "最终: 10/10条规则摘录一致（100%）。",
     statusKind: "current",
-    statusLabel: "当前生产来源",
-    currentStatusNote: "可通过「选项」中的变爻读法选择器使用。",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "I Ching 占筮方法: 初次验证",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "2026年5月19日",
-    method: "对引擎概率分布与手动蓍草向导逐步逻辑进行数学验证。",
-    standardCompared:
-      "三枚钱币的爻分布（值6、7、8、9）；蓍草法的爻分布（1/16、5/16、7/16、3/16）；手动蓍草余数到爻的映射；自动占筮与手动录入的一致性。",
-    result: "所有分布检查通过。三枚钱币的手动正反面赋值在本轮未对照出版附录验证。",
-    statusKind: "superseded",
-    statusLabel: "已被取代",
-    currentStatusNote: "对照出版版附录I进行 book-primary 比较之前的参考轮次。",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "I Ching 占筮方法: 验证（出版版）",
+    title: "三枚铜钱：验证（出版版）",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月25日",
     method:
-      "对照 Wilhelm/Baynes（1950）出版版附录I，对钱币与蓍草占筮程序进行自动验证（自动与手动路径）。",
+      "对照 Wilhelm/Baynes（1950）出版版附录 I 第 2 节进行自动验证（自动与手动路径）。",
     standardCompared:
-      "附录I第1节（蓍草占）: 三轮程序、余数到爻的映射与爻概率。附录I第2节（钱币占）: 字面与反面的值及结果爻6、7、8、9。",
-    result: "最终: 7/7项验证通过（100%）。钱币组合论精确；蓍草分布与附录余数表完全一致。",
+      "字面＝阴（2），背面＝阳（3）；爻 6、7、8、9 及精确概率 1/8、3/8、3/8、1/8。",
+    result: "最终：3/3 项检查通过（100%）。",
     statusKind: "current",
-    statusLabel: "当前生产程序",
-    currentStatusNote: "三枚钱币与蓍草法（自动与手动）均遵循本附录。",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "蓍草法：验证（出版版）",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "2026年6月25日",
+    method:
+      "对照 Wilhelm/Baynes（1950）出版版附录 I 第 1 节进行自动验证（自动与手动路径）。",
+    standardCompared:
+      "三轮程序、余数到爻的映射及概率 1/16、5/16、7/16、3/16。",
+    result: "最终：4/4 项检查通过（100%）。",
+    statusKind: "current",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "三枚铜钱：初始验证",
+    source: CITATIONS.nielsen,
+    verificationDate: "2026年5月19日",
+    method:
+      "对 6/7/8/9 分布的组合证明及引擎测试中的蒙特卡罗模拟。对照已发表的标准论述（Nielsen 2003；Rutt 1996）",
+    standardCompared:
+      "公平三枚铜钱模型（每面 2 或 3）：爻值 6、7、8、9 及概率 1/8、3/8、3/8、1/8。",
+    result: "分布检查通过（组合论与蒙特卡罗）",
+    statusKind: "superseded",
+    statusLabel: "已废止。",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "蓍草法：初始验证",
+    source: CITATIONS.nielsen,
+    verificationDate: "2026年5月19日",
+    method:
+      "余数到爻映射的数学证明及蒙特卡罗模拟（16,000 次）。对照已发表的概率表（Nielsen 2003；Rutt 1996）",
+    standardCompared:
+      "分布 1/16、5/16、7/16、3/16；手动向导每轮仅接受 5/9 与 4/8。",
+    result: "分布与手动映射检查通过。",
+    statusKind: "superseded",
+    statusLabel: "已废止。",
+    currentStatusNote: "",
   },
 ];
 
@@ -1730,8 +1931,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     result:
       "최종: 514/514개 필드 일치(100%). 중간 결과: 94.94% → 99.81% → 100%; 웹 미러에 빠져 있던 마지막 6개 필드는 인쇄판으로 보완.",
     statusKind: "superseded",
-    statusLabel: "대체됨",
-    currentStatusNote: "파르마 대학 웹 미러에 대한 과거의 상호 검증입니다.",
+    statusLabel: "폐기됨.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1744,8 +1945,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%).",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
-    currentStatusNote: "이것이 오늘날 앱이 대조하는 기준 참조본입니다.",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1758,8 +1959,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     result:
       "최종: 514/514개 필드 일치(100%). 6월 21일 중간 결과: 77.19% → 최종: 100% (파서 및 골드 수정 후, 이 출판판에 직접 대조하여 검증).",
     statusKind: "superseded",
-    statusLabel: "대체됨",
-    currentStatusNote: "Internet Sacred Text Archive 복제본에 대한 과거의 상호 검증입니다.",
+    statusLabel: "폐기됨.",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1772,8 +1973,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%).",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
-    currentStatusNote: "이것이 오늘날 앱이 대조하는 기준 참조본입니다.",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -1787,8 +1988,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     result:
       "최종: 514/514개 필드 일치(100%). 6월 21일 중간 결과: 90.66% → 최종: 100% (재로드 및 파서 수정 후).",
     statusKind: "superseded",
-    statusLabel: "대체됨",
-    currentStatusNote: "이 출처에 대한 첫 품질 검사.",
+    statusLabel: "폐기됨.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -1801,8 +2002,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     standardCompared: "64개 괘 전체의 괘사(卦辭), 대상(大象), 6개 효, 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%), 손상 플래그 0건.",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
-    currentStatusNote: "동일 출처에 대한 두 번째 독립 검증. 향후 감사는 순차적으로 번호가 매겨집니다(세 번째, 네 번째, …). Chinese Text Project는 기준 참조본으로 유지됩니다.",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1816,8 +2017,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "Wilhelm 자신의 주석과 공자 십익의 괘사·상사·각 효 주석; 이 괘에 대하여 블록; Words on the Text(1-2괴만); 용 주석(1-2괴만). 64괴.",
     result: "1920/1920 필드 일치(100%).",
     statusKind: "current",
-    statusLabel: "현행 고전 주석 출처",
-    currentStatusNote: "64괴 학술 주석 검증 완료.",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -1832,8 +2033,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     result:
       "각주와 대상전 상 해설은 완전 커버(64/64, 100%); 소상전 효별 주석은 Legge판에 수록된 모든 괴에서 검증 완료. 검증 PASS.",
     statusKind: "current",
-    statusLabel: "현행 고전 주석 출처",
-    currentStatusNote: "64괴 학술 주석 검증 완료.",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1846,8 +2047,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "변효를 단일한 지배 효 텍스트로 축소하기 위한 9가지 공개 규칙 사례(변효 0개부터 6개까지, 그리고 용구/용육 포함).",
     result: "최종: 9/9개 규칙 사례 일치(100%).",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
-    currentStatusNote: "앱의 기본 변효 체계입니다.",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -1860,40 +2061,68 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "변효를 단일한 지배 효 텍스트로 축소하기 위한 공개 규칙 사례(변효 0개부터 6개까지, 그리고 용구/용육 포함).",
     result: "최종: 10/10 규칙 발췌 일치(100%).",
     statusKind: "current",
-    statusLabel: "현재 운영 출처",
-    currentStatusNote: "옵션의 「변효 읽기」 선택기를 통해 이용 가능.",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "I Ching 점복 방법: 초기 검증",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "2026년 5월 19일",
-    method:
-      "엔진의 확률 분포와 수동 시초 마법사의 단계별 논리에 대한 수학적 검증.",
-    standardCompared:
-      "세 동전 효 분포(값 6, 7, 8, 9); 시초법 효 분포(1/16, 5/16, 7/16, 3/16); 수동 시초 나머지-효 매핑; 자동 점복과 수동 입력 간 일치.",
-    result:
-      "모든 분포 검사 통과. 세 동전의 수동 앞뒷면 할당은 이번 단계에서 출판 부록과 대조하지 않음.",
-    statusKind: "superseded",
-    statusLabel: "대체됨",
-    currentStatusNote: "출판판 부록 I과의 book-primary 비교 이전의 참조 단계.",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "I Ching 점복 방법: 검증(출판판)",
+    title: "세 동전: 검증(출판판)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026년 6월 25일",
     method:
-      "Wilhelm/Baynes(1950) 출판판 부록 I에 대해 동전 및 시초 점복 절차를 자동·수동 경로 모두 검증.",
+      "Wilhelm/Baynes(1950) 출판판 부록 I 제2절에 대한 자동 검증(자동·수동 경로).",
     standardCompared:
-      "부록 I 제1절(시초 점복): 3라운드 절차, 나머지-효 매핑, 효 확률. 부록 I 제2절(동전 점복): 앞면·뒷면 값과 결과 효 6, 7, 8, 9.",
-    result:
-      "최종: 7/7 검증 항목 통과(100%). 동전 조합론 정확; 시초 분포는 부록 나머지 표와 정확히 일치.",
+      "앞면(음)=2, 뒷면(양)=3; 효 6·7·8·9 및 확률 1/8, 3/8, 3/8, 1/8.",
+    result: "최종: 3/3 검사 통과(100%).",
     statusKind: "current",
-    statusLabel: "현재 운영 절차",
-    currentStatusNote: "세 동전과 시초법(자동·수동) 모두 이 부록을 따릅니다.",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "서초법: 검증(출판판)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "2026년 6월 25일",
+    method:
+      "Wilhelm/Baynes(1950) 출판판 부록 I 제1절에 대한 자동 검증(자동·수동 경로).",
+    standardCompared:
+      "3라운드 절차, 나머지-효 매핑, 확률 1/16, 5/16, 7/16, 3/16.",
+    result: "최종: 4/4 검사 통과(100%).",
+    statusKind: "current",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "세 동전: 초기 검증",
+    source: CITATIONS.nielsen,
+    verificationDate: "2026년 5월 19일",
+    method:
+      "6/7/8/9 분포의 조합론적 증명 및 엔진 테스트 몬테카를로 시뮬레이션. 게재된 표준 서술(Nielsen 2003; Rutt 1996)과 대조",
+    standardCompared:
+      "공정한 세 동전 모델(각 면 2 또는 3): 효값 6·7·8·9 및 확률 1/8, 3/8, 3/8, 1/8.",
+    result: "분포 검사 통과(조합론·몬테카를로).",
+    statusKind: "superseded",
+    statusLabel: "폐기됨.",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "서초법: 초기 검증",
+    source: CITATIONS.nielsen,
+    verificationDate: "2026년 5월 19일",
+    method:
+      "나머지-효 매핑의 수학적 증명 및 몬테카를로 시뮬레이션(16,000회). 게재된 확률표(Nielsen 2003; Rutt 1996)와 대조",
+    standardCompared:
+      "분포 1/16, 5/16, 7/16, 3/16; 수동 마법사는 라운드당 5/9·4/8만 허용.",
+    result: "분포·수동 매핑 검사 통과.",
+    statusKind: "superseded",
+    statusLabel: "폐기됨.",
+    currentStatusNote: "",
   },
 ];
 
@@ -1911,8 +2140,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result:
       "نهائي: تطابق 514/514 حقلاً (100%)، مراحل وسيطة: 94.94% → 99.81% → 100%؛ اكتملت الحقول الستة الأخيرة من النسخة المطبوعة حيث كان للمرآة فراغات.",
     statusKind: "superseded",
-    statusLabel: "مستبدَل",
-    currentStatusNote: "تحقق تاريخي متبادل ضد مرآة الويب لجامعة Parma.",
+    statusLabel: "مهمل.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -1925,8 +2154,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
-    currentStatusNote: "هذا هو المرجع الذهبي الذي يتحقق التطبيق مقابله اليوم.",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1939,8 +2168,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result:
       "نهائي: تطابق 514/514 حقلاً (100%). مرحلة وسيطة في 21 يونيو: 77.19% → نهائي: 100% بعد تصحيحات المحلل والمرجع الذهبي، تم التحقق مباشرة مقابل هذه النسخة المنشورة.",
     statusKind: "superseded",
-    statusLabel: "مستبدَل",
-    currentStatusNote: "تحقق تاريخي متبادل ضد نسخة Internet Sacred Text Archive.",
+    statusLabel: "مهمل.",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -1953,8 +2182,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
-    currentStatusNote: "هذا هو المرجع الذهبي الذي يتحقق التطبيق مقابله اليوم.",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -1968,8 +2197,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result:
       "نهائي: تطابق 514/514 حقلاً (100%). مرحلة وسيطة في 21 يونيو: 90.66% → نهائي: 100% بعد إعادة التحميل وتصحيح المحلل.",
     statusKind: "superseded",
-    statusLabel: "مستبدَل",
-    currentStatusNote: "أول مرحلة جودة على هذا المصدر.",
+    statusLabel: "مهمل.",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -1982,8 +2211,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     standardCompared: "卦辭، 大象، والخطوط الستة لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%)، مع صفر مؤشرات فساد.",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
-    currentStatusNote: "المرور الثاني المستقل على نفس المصدر؛ ستُرقَّم عمليات التدقيق المستقبلية بالتسلسل (الثالث، الرابع، …). Chinese Text Project يبقى المرجع الذهبي.",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1997,8 +2226,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "شرح Wilhelm نفسه وملاحظات العشرة أجنحة لConfucius على الحكم والصورة وكل خط؛ كتلة حول هذا الHexagram؛ Words on the Text (Hexagram 1-2 فقط)؛ شرح yong (1-2 فقط). 64 hexagram.",
     result: "1920/1920 حقلاً متطابقاً (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الشرح التقليدي الحالي",
-    currentStatusNote: "شروح أكاديمية مُحققة لجميع الـ64 hexagram.",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -2013,8 +2242,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result:
       "Footnotes وشرح صورة الرمزية الكبرى مغطاة بالكامل (64/64، 100%)؛ ملاحظات الرمزية الصغرى مُحققة لكل hexagram تتضمنه نسخة Legge. تحقق PASS.",
     statusKind: "current",
-    statusLabel: "مصدر الشرح التقليدي الحالي",
-    currentStatusNote: "شروح أكاديمية مُحققة لجميع الـ64 hexagram.",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -2027,8 +2256,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "حالات القواعد المنشورة التسع لاختزال الخطوط المتغيرة إلى نص خط حاكم واحد (من 0 إلى 6 خطوط متغيرة، بالإضافة إلى 用九/用六).",
     result: "نهائي: تطابق 9/9 حالات القواعد (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
-    currentStatusNote: "نظام الخطوط المتغيرة الافتراضي في التطبيق.",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -2041,40 +2270,68 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "حالات القواعد المنشورة لاختزال الخطوط المتغيرة إلى نص خط حاكم واحد (من 0 إلى 6 خطوط متغيرة، بالإضافة إلى 用九/用六).",
     result: "نهائي: تطابق 10/10 مقتطفات القواعد (100%).",
     statusKind: "current",
-    statusLabel: "مصدر الإنتاج الحالي",
-    currentStatusNote: "متاح عبر محدد «قراءة الخطوط المتغيرة» في الخيارات.",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "طرق استخبار I Ching: التحقق الأولي",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "19 مايو 2026",
-    method:
-      "تحقق رياضي من توزيعات الاحتمال في المحرك ومن منطق معالج العصي اليدوي خطوة بخطوة.",
-    standardCompared:
-      "توزيع الخطوط بثلاث عملات (القيم 6 و7 و8 و9)؛ توزيع عصي الميلفويل (1/16 و5/16 و7/16 و3/16)؛ مطابقة بقايا العصي اليدوية إلى خط؛ تطابق بين الاستخبار التلقائي والإدخال اليدوي للخطوط.",
-    result:
-      "اجتازت جميع فحوص التوزيع. لم يُتحقق من تعيين الوجه/الظهر اليدوي لثلاث عملات مقابل الملحق المنشور في هذه الجولة.",
-    statusKind: "superseded",
-    statusLabel: "مستبدَل",
-    currentStatusNote: "جولة مرجعية قبل المقارنة book-primary مع الملحق I للطبعة المنشورة.",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "طرق استخبار I Ching: التحقق (الطبعة المنشورة)",
+    title: "ثلاث عملات: التحقق (الطبعة المنشورة)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "25 يونيو 2026",
     method:
-      "تحقق آلي من إجراءات استخبار العملات والعصي مقابل الملحق I من طبعة Wilhelm/Baynes (1950) المنشورة، للمسارين التلقائي واليدوي.",
+      "تحقق آلي مقابل الملحق I، القسم 2، من طبعة Wilhelm/Baynes (1950) المنشورة، في المسارات الآلية واليدوية.",
     standardCompared:
-      "الملحق I، القسم 1 (oracle العصي): إجراء ثلاث جولات، مطابقة البقايا إلى خط، واحتمالات الخط. الملحق I، القسم 2 (oracle العملات): قيم الوجه المنقوش والظهر والخطوط الناتجة 6 و7 و8 و9.",
-    result:
-      "نهائي: 7/7 فحوص تحقق ناجحة (100%). تركيب العملات دقيق؛ توزيع العصي يطابق جدول البقايا في الملحق تمامًا.",
+      "الوجه المُنقَش = yin (2)، الظهر = yang (3)；الخطوط 6 و7 و8 و9 والاحتمالات 1/8 و3/8 و3/8 و1/8.",
+    result: "النهائي: 3/3 فحوصات ناجحة (100%).",
     statusKind: "current",
-    statusLabel: "إجراءات الإنتاج الحالية",
-    currentStatusNote: "ثلاث عملات وعصي الميلفويل، تلقائيًا ويدويًا، تتبع هذا الملحق اليوم.",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "ساق العرقوس: التحقق (الطبعة المنشورة)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 يونيو 2026",
+    method:
+      "تحقق آلي مقابل الملحق I، القسم 1، من طبعة Wilhelm/Baynes (1950) المنشورة، في المسارات الآلية واليدوية.",
+    standardCompared:
+      "إجراء من ثلاث جولات، وتعيين الباقي إلى الخط، واحتمالات 1/16 و5/16 و7/16 و3/16.",
+    result: "النهائي: 4/4 فحوصات ناجحة (100%).",
+    statusKind: "current",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "ثلاث عملات: التحقق الأولي",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 مايو 2026",
+    method:
+      "برهان تركيبي لتوزيع 6/7/8/9 ومحاكاة Monte Carlo في اختبارات المحرك. مقارنة مع الحسابات المعيارية المنشورة (Nielsen 2003؛ Rutt 1996)",
+    standardCompared:
+      "نموذج ثلاث عملات عادلة (كل وجه 2 أو 3): قيم 6 و7 و8 و9 واحتمالات 1/8 و3/8 و3/8 و1/8.",
+    result: "فحوصات التوزيع ناجحة (تركيبي وMonte Carlo).",
+    statusKind: "superseded",
+    statusLabel: "مهمل.",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "ساق العرقوس: التحقق الأولي",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 مايو 2026",
+    method:
+      "برهان رياضي لتعيين الباقي إلى الخط ومحاكاة Monte Carlo (16,000 محاولة). مقارنة مع جداول الاحتمال المنشورة (Nielsen 2003؛ Rutt 1996)",
+    standardCompared:
+      "توزيع 1/16 و5/16 و7/16 و3/16؛ المعالج اليدوي يقبل 5/9 و4/8 فقط لكل جولة.",
+    result: "فحوصات التوزيع والتعيين اليدوي ناجحة.",
+    statusKind: "superseded",
+    statusLabel: "مهمل.",
+    currentStatusNote: "",
   },
 ];
 
@@ -2092,8 +2349,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     result:
       "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)। मध्यवर्ती चरण: 94.94% → 99.81% → 100%; अंतिम 6 फ़ील्ड मुद्रित संस्करण से पूरे किए गए जहाँ वेब मिरर में अंतराल थे।",
     statusKind: "superseded",
-    statusLabel: "प्रतिस्थापित",
-    currentStatusNote: "Parma विश्वविद्यालय वेब मिरर के विरुद्ध ऐतिहासिक क्रॉस-चेक।",
+    statusLabel: "अप्रचलित।",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
@@ -2106,8 +2363,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
-    statusLabel: "वर्तमान उत्पादन स्रोत",
-    currentStatusNote: "यह वह स्वर्ण संदर्भ है जिसके विरुद्ध ऐप आज सत्यापित होता है।",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -2120,8 +2377,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     result:
       "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)। 21 जून का मध्यवर्ती चरण: 77.19% → अंतिम: 100% पार्सर और गोल्ड सुधार के बाद, इस प्रकाशित संस्करण के विरुद्ध सीधे सत्यापित।",
     statusKind: "superseded",
-    statusLabel: "प्रतिस्थापित",
-    currentStatusNote: "Internet Sacred Text Archive प्रतिरूप के विरुद्ध ऐतिहासिक क्रॉस-चेक।",
+    statusLabel: "अप्रचलित।",
+    currentStatusNote: "",
   },
   {
     id: "legge-oxford-pdf-2026-06-22",
@@ -2134,8 +2391,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
-    statusLabel: "वर्तमान उत्पादन स्रोत",
-    currentStatusNote: "यह वह स्वर्ण संदर्भ है जिसके विरुद्ध ऐप आज सत्यापित होता है।",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-initial-2026-06-21",
@@ -2149,8 +2406,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     result:
       "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)। 21 जून का मध्यवर्ती चरण: 90.66% → अंतिम: 100% पुनः लोड और पार्सर सुधार के बाद।",
     statusKind: "superseded",
-    statusLabel: "प्रतिस्थापित",
-    currentStatusNote: "इस स्रोत पर पहला गुणवत्ता पास।",
+    statusLabel: "अप्रचलित।",
+    currentStatusNote: "",
   },
   {
     id: "zhouyi-ctext-2026-06-21",
@@ -2163,9 +2420,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     standardCompared: "सभी 64 हेक्साग्राम का 卦辭, 大象, और 6 रेखाएँ, जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%), शून्य भ्रष्टाचार ध्वज।",
     statusKind: "current",
-    statusLabel: "वर्तमान उत्पादन स्रोत",
-    currentStatusNote:
-      "एक ही स्रोत पर दूसरा स्वतंत्र पास; भविष्य के ऑडिट क्रमानुसार नंबर किए जाएँगे (तीसरा, चौथा, …)। Chinese Text Project स्वर्ण संदर्भ बना रहता है।",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -2179,8 +2435,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
       "Wilhelm का अपना टीका और Confucius के दस पंख की judgment/image/प्रत्येक रेखा पर टिप्पणियाँ; About this hexagram ब्लॉक; Words on the Text (केवल hex 1-2); yong टीका (1-2)। 64 हेक्साग्राम।",
     result: "1920/1920 फ़ील्ड मेल (100%)।",
     statusKind: "current",
-    statusLabel: "वर्तमान शास्त्रीय स्रोत",
-    currentStatusNote: "सभी 64 हेक्साग्राम के लिए शास्त्रीय टिप्पणियाँ सत्यापित।",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -2195,8 +2451,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     result:
       "Footnotes और Great Symbolism image-ग्लोस पूर्ण रूप से कवर (64/64, 100%); Lesser Symbolism रेखा-टिप्पणियाँ हर उस हेक्साग्राम के लिए सत्यापित जहाँ Legge का संस्करण उन्हें शामिल करता है। सत्यापन PASS।",
     statusKind: "current",
-    statusLabel: "वर्तमान शास्त्रीय स्रोत",
-    currentStatusNote: "सभी 64 हेक्साग्राम के लिए शास्त्रीय टिप्पणियाँ सत्यापित।",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -2209,8 +2465,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
       "बदलती रेखाओं को एक एकल शासक रेखा पाठ में समाहार करने के लिए प्रकाशित 9 नियम मामले (0 से 6 बदलती रेखाओं तक, साथ ही 用九/用六)।",
     result: "अंतिम: 9/9 नियम मामले मेल खाए (100%)।",
     statusKind: "current",
-    statusLabel: "वर्तमान उत्पादन स्रोत",
-    currentStatusNote: "ऐप में डिफ़ॉल्ट बदलती-रेखा प्रणाली।",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
   },
   {
     id: "zhuxi-adler-mutation-pdf-2026-06-22",
@@ -2223,42 +2479,68 @@ const BLOCKS_HI: AuditSourceBlock[] = [
       "बदलती रेखाओं को एक एकल शासक रेखा पाठ में समाहार करने के लिए प्रकाशित नियम मामले (0 से 6 बदलती रेखाओं तक, साथ ही 用九/用六)।",
     result: "अंतिम: 10/10 नियम अंश मेल खाए (100%)।",
     statusKind: "current",
-    statusLabel: "वर्तमान उत्पादन स्रोत",
-    currentStatusNote: "विकल्पों में «बदलती-रेखा पठन» चयनकर्ता के माध्यम से उपलब्ध।",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
   },
   {
-    id: "divination-math-initial-2026-05-19",
+    id: "wilhelm-appendix-coins-2026-06-25",
     category: "divination-method",
-    title: "I Ching कास्टिंग विधियाँ: प्रारंभिक सत्यापन",
-    source: CITATIONS.wilhelmPantheon,
-    verificationDate: "19 मई 2026",
-    method:
-      "इंजन की संभाव्यता वितरण और चरण-दर-चरण मैन्युअल यैरो विज़ार्ड तर्क का गणितीय सत्यापन।",
-    standardCompared:
-      "तीन सिक्कों की रेखा वितरण (मान 6, 7, 8, 9); यैरो-स्टॉक रेखा वितरण (1/16, 5/16, 7/16, 3/16); मैन्युअल यैरो अवशेष-से-रेखा मैपिंग; स्वचालित कास्टिंग और मैन्युअल प्रविष्टि के बीच समानता।",
-    result:
-      "सभी वितरण जाँच पास। तीन सिक्कों का मैन्युअल अग्र/पृष्ठ असाइनमेंट इस दौर में प्रकाशित परिशिष्ट के विरुद्ध सत्यापित नहीं हुआ।",
-    statusKind: "superseded",
-    statusLabel: "प्रतिस्थापित",
-    currentStatusNote:
-      "प्रकाशित संस्करण के परिशिष्ट I के साथ book-primary तुलना से पहले का संदर्भ दौर।",
-  },
-  {
-    id: "wilhelm-appendix-casting-2026-06-25",
-    category: "divination-method",
-    title: "I Ching कास्टिंग विधियाँ: सत्यापन (प्रकाशित संस्करण)",
+    title: "तीन सिक्के: सत्यापन (प्रकाशित संस्करण)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "25 जून 2026",
     method:
-      "Wilhelm/Baynes (1950) प्रकाशित संस्करण के परिशिष्ट I के विरुद्ध सिक्का और यैरो कास्टिंग प्रक्रियाओं का स्वचालित सत्यापन, स्वचालित और मैन्युअल दोनों मार्गों के लिए।",
+      "Wilhelm/Baynes (1950) प्रकाशित संस्करण के परिशिष्ट I, अनुभाग 2, के विरुद्ध स्वचालित सत्यापन (स्वचालित और मैन्युअल मार्ग)।",
     standardCompared:
-      "परिशिष्ट I, अनुभाग 1 (यैरो-स्टॉक oracle): तीन-राउंड प्रक्रिया, अवशेष-से-रेखा मैपिंग, और रेखा संभावनाएँ। परिशिष्ट I, अनुभाग 2 (सिक्का oracle): अंकित और पृष्ठ मान और परिणामी रेखाएँ 6, 7, 8, 9।",
-    result:
-      "अंतिम: 7/7 सत्यापन जाँच पास (100%)। सिक्का संयोजनशास्त्र सटीक; यैरो वितरण परिशिष्ट अवशेष तालिका से बिल्कुल मेल खाता है।",
+      "अंकित मुख = yin (2), पृष्ठ = yang (3); रेखाएँ 6, 7, 8, 9 और सटीक प्रायिकताएँ 1/8, 3/8, 3/8, 1/8।",
+    result: "अंतिम: 3/3 जाँचें उत्तीर्ण (100%)।",
     statusKind: "current",
-    statusLabel: "वर्तमान उत्पादन प्रक्रियाएँ",
-    currentStatusNote:
-      "तीन सिक्के और यैरो-स्टॉक विधि, स्वचालित और मैन्युअल, आज इस परिशिष्ट का पालन करती हैं।",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-appendix-yarrow-2026-06-25",
+    category: "divination-method",
+    title: "यैरो डंडियाँ: सत्यापन (प्रकाशित संस्करण)",
+    source: CITATIONS.wilhelmPantheon,
+    verificationDate: "25 जून 2026",
+    method:
+      "Wilhelm/Baynes (1950) प्रकाशित संस्करण के परिशिष्ट I, अनुभाग 1, के विरुद्ध स्वचालित सत्यापन (स्वचालित और मैन्युअल मार्ग)।",
+    standardCompared:
+      "तीन-राउंड प्रक्रिया, अवशेष-से-रेखा मैपिंग, और प्रायिकताएँ 1/16, 5/16, 7/16, 3/16।",
+    result: "अंतिम: 4/4 जाँचें उत्तीर्ण (100%)।",
+    statusKind: "current",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
+  },
+  {
+    id: "coins-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "तीन सिक्के: प्रारंभिक सत्यापन",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 मई 2026",
+    method:
+      "6/7/8/9 वितरण का संयोजक प्रमाण और इंजन परीक्षणों में Monte Carlo सिमुलेशन। प्रकाशित मानक विवरण (Nielsen 2003; Rutt 1996) से तुलना",
+    standardCompared:
+      "निष्पक्ष तीन-सिक्का मॉडल (प्रत्येक पक्ष 2 या 3): मान 6, 7, 8, 9 और प्रायिकताएँ 1/8, 3/8, 3/8, 1/8।",
+    result: "वितरण जाँचें उत्तीर्ण (संयोजक और Monte Carlo)।",
+    statusKind: "superseded",
+    statusLabel: "अप्रचलित।",
+    currentStatusNote: "",
+  },
+  {
+    id: "yarrow-math-initial-2026-05-19",
+    category: "divination-method",
+    title: "यैरो डंडियाँ: प्रारंभिक सत्यापन",
+    source: CITATIONS.nielsen,
+    verificationDate: "19 मई 2026",
+    method:
+      "अवशेष-से-रेखा मैपिंग का गणितीय प्रमाण और Monte Carlo सिमुलेशन (16,000 परीक्षण)। प्रकाशित प्रायिकता तालिकाओं (Nielsen 2003; Rutt 1996) से तुलना",
+    standardCompared:
+      "वितरण 1/16, 5/16, 7/16, 3/16; मैन्युअल विज़ार्ड प्रति राउंड केवल 5/9 और 4/8 स्वीकार करता है।",
+    result: "वितरण और मैन्युअल मैपिंग जाँचें उत्तीर्ण।",
+    statusKind: "superseded",
+    statusLabel: "अप्रचलित।",
+    currentStatusNote: "",
   },
 ];
 

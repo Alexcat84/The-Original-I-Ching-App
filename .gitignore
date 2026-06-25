@@ -1,4 +1,8 @@
 node_modules
+# npm workspaces: only root package-lock.json is canonical
+apps/*/package-lock.json
+packages/*/package-lock.json
+backend/*/package-lock.json
 # Editor / agent local rules — never commit
 .cursor
 .claude

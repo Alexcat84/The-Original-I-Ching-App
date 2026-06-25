@@ -172,12 +172,12 @@ for (const locale of SUPPORTED_LOCALES) {
 
   const audits = getAuditsPageUiMessages(locale);
   check(
-    `P2.3 [${locale}] audits timeline has 12 verification entries`,
-    audits.timeline.length === 12,
+    `P2.3 [${locale}] audits timeline has 14 verification entries`,
+    audits.timeline.length === 14,
   );
   check(
     `P2.3 [${locale}] audits timeline is sorted newest first`,
-    audits.timeline[0]?.id === "wilhelm-appendix-casting-2026-06-25",
+    audits.timeline[0]?.id === "wilhelm-appendix-coins-2026-06-25",
   );
   check(
     `P2.3 [${locale}] audits timeline has zhouyi initial corruption-fix entry`,
@@ -186,7 +186,7 @@ for (const locale of SUPPORTED_LOCALES) {
   check(
     `P2.3 [${locale}] audits oracle, divination, library commentary, and mutation sections are present`,
     audits.timeline.filter((e) => e.category === "oracle-text").length === 6 &&
-      audits.timeline.filter((e) => e.category === "divination-method").length === 2 &&
+      audits.timeline.filter((e) => e.category === "divination-method").length === 4 &&
       audits.timeline.filter((e) => e.category === "library-commentary").length === 2 &&
       audits.timeline.filter((e) => e.category === "mutation-rule").length === 2,
   );
@@ -214,8 +214,7 @@ for (const locale of SUPPORTED_LOCALES) {
           entry.method?.trim() &&
           entry.standardCompared?.trim() &&
           entry.result?.trim() &&
-          entry.statusLabel?.trim() &&
-          entry.currentStatusNote?.trim(),
+          entry.statusLabel?.trim(),
       ),
     );
   }

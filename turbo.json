@@ -33,6 +33,7 @@
     "ADMIN_PANEL_KEY",
     "REVENUECAT_WEBHOOK_SECRET",
     "REVENUECAT_SECRET_KEY",
+    "REVENUECAT_ALLOW_TEST_EVENTS",
     "NEXT_PUBLIC_REVENUECAT_API_KEY",
     "NEXT_PUBLIC_APP_URL",
     "UPSTASH_REDIS_REST_URL",
@@ -64,7 +65,13 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "generated/**"]
+      "outputs": [
+        "dist/**",
+        "generated/**",
+        ".next/**",
+        "!.next/cache/**",
+        "!.next/dev/**"
+      ]
     },
     "dev": {
       "cache": false,
