@@ -24,6 +24,8 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Monorepo root for serverless file tracing (single lockfile at repo root).
+  outputFileTracingRoot: path.join(__dirname, "../.."),
   serverExternalPackages: ["sharp", "@resvg/resvg-js"],
   outputFileTracingIncludes: {
     "/api/**": ["./fonts/**"],
