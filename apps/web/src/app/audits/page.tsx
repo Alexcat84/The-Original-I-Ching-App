@@ -27,8 +27,8 @@ function groupTimelineByCategory(
 ): { category: NonNullable<AuditTimelineEntry["category"]>; entries: AuditTimelineEntry[] }[] {
   const order: NonNullable<AuditTimelineEntry["category"]>[] = [
     "oracle-text",
-    "divination-method",
     "library-commentary",
+    "divination-method",
     "mutation-rule",
   ];
   return order

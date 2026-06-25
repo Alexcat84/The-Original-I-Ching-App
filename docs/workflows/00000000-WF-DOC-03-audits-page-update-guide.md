@@ -69,8 +69,8 @@ auditoría interna cerró el día anterior.
 Orden de secciones en pantalla (fijo en `page.tsx`):
 
 1. `oracle-text`
-2. `divination-method`
-3. `library-commentary`
+2. `library-commentary`
+3. `divination-method`
 4. `mutation-rule`
 
 Dentro de cada sección, las filas siguen el **timeline global** ordenado por
@@ -91,8 +91,8 @@ Cada entrada del timeline es un objeto en `BLOCKS_EN`, `BLOCKS_ES`, … `BLOCKS_
 | `standardCompared` | Sí | Campo «Estándar comparado» | Qué campos/casos entraron |
 | `result` | Sí | Campo «Resultado» | Cifra verificable (514/514, 9/9, etc.) |
 | `statusKind` | Sí | Color del círculo fecha | `current` \| `superseded` \| `permanent` |
-| `statusLabel` | Sí | Campo «Estado» (parte 1) | Traducido |
-| `currentStatusNote` | Sí | Campo «Estado» (parte 2) | Traducido; sin referencias a otras entradas |
+| `statusLabel` | Sí | Campo «Estado» (parte 1) | Traducido: vigentes → «Vigente a la fecha» (o equivalente locale); obsoletos → «Obsoleto» |
+| `currentStatusNote` | Sí | Campo «Estado» (parte 2) | Traducido; sin referencias a otras entradas ni auditorías futuras |
 
 Validación en runtime al construir el timeline: `assertCompleteVerificationBlock()` lanza si falta
 algún string o si `source` no es una entrada canónica de `CITATIONS`.
@@ -119,8 +119,10 @@ Ejemplos vigentes:
 | `legge-commentary-txt-maestro-2026-06-23` | library-commentary |
 | `huang-mutation-pdf-2026-06-22` | mutation-rule |
 | `zhuxi-adler-mutation-pdf-2026-06-22` | mutation-rule |
-| `divination-math-initial-2026-05-19` | divination-method (superseded) |
-| `wilhelm-appendix-casting-2026-06-25` | divination-method (current) |
+| `coins-math-initial-2026-05-19` | divination-method (superseded) |
+| `yarrow-math-initial-2026-05-19` | divination-method (superseded) |
+| `wilhelm-appendix-coins-2026-06-25` | divination-method (current) |
+| `wilhelm-appendix-yarrow-2026-06-25` | divination-method (current) |
 
 **Nunca reutilizar un `id`** para otro alcance. Si la auditoría cambia de forma sustancial, crea
 entrada nueva y marca la anterior `superseded` (oráculo) o deja histórico según §5.
@@ -251,26 +253,31 @@ del algoritmo). Esos detalles viven en `docs/auditorias/` y en los harnesses, no
 
 ### 5.4 Métodos de tirada (`divination-method`)
 
-Gold público: **Apéndice I** de Wilhelm/Baynes (1950), misma cita APA que `wilhelmPantheon`.
+**Una entrada por método** (tres monedas y varas de milenrama son auditorías separadas).
 
-| Situación | Patrón EN | Patrón ES |
-|-----------|-----------|-----------|
-| Primera pasada (matemática, sin apéndice book-primary) | `I Ching casting methods: initial verification` | `Métodos de tirada del I Ching: verificación inicial` |
-| Verificación contra edición publicada (Apéndice I) | `I Ching casting methods: verification (published edition)` | `Métodos de tirada del I Ching: verificación (edición publicada)` |
+Gold público (entradas `current`): **Apéndice I** de Wilhelm/Baynes (1950), misma cita APA que `wilhelmPantheon`.
+
+Fuente inicial (`superseded`): **Nielsen 2003** (`CITATIONS.nielsen`); verificación combinatoria y Monte Carlo contra cuentas publicadas (Nielsen; Rutt 1996 citado en método). **No** citar Wilhelm como fuente de la pasada inicial.
+
+| Situación | Patrón EN (monedas) | Patrón EN (varas) |
+|-----------|---------------------|-------------------|
+| Primera pasada (Monte Carlo, sin apéndice book-primary) | `Three coins: initial verification` | `Yarrow stalks: initial verification` |
+| Verificación contra edición publicada (Apéndice I §2 / §1) | `Three coins: verification (published edition)` | `Yarrow stalks: verification (published edition)` |
 
 Encabezado de sección (11 locales): EN `I Ching casting methods` / ES `Métodos de tirada del I Ching`.
 
-**Copy público:** describir procedimiento de monedas y varas (auto y manual). No mencionar harnesses, TXT, `verify:*`, ni simuladores internos. Huesos de Oráculo (Keightley) queda fuera de esta sección hasta AU book-primary dedicada.
+**Copy público:** describir procedimiento por método (auto y manual). No mencionar harnesses, TXT, `verify:*`, ni simuladores internos. Huesos de Oráculo (Keightley) queda fuera de esta sección hasta AU book-primary dedicada.
 
 ---
 
-## 6. Catálogo vigente (12 entradas)
+## 6. Catálogo vigente (14 entradas)
 
 Actualizar esta tabla cuando cambie el catálogo.
 
 | id | Categoría | ISO rail | Título EN (headline) | statusKind |
 |----|-----------|----------|----------------------|------------|
-| `wilhelm-appendix-casting-2026-06-25` | divination-method | 2026-06-25 | I Ching casting methods: verification (published edition) | current |
+| `wilhelm-appendix-coins-2026-06-25` | divination-method | 2026-06-25 | Three coins: verification (published edition) | current |
+| `wilhelm-appendix-yarrow-2026-06-25` | divination-method | 2026-06-25 | Yarrow stalks: verification (published edition) | current |
 | `wilhelm-commentary-txt-maestro-2026-06-23` | library-commentary | 2026-06-24 | Classical commentaries: Wilhelm/Baynes | current |
 | `legge-commentary-txt-maestro-2026-06-23` | library-commentary | 2026-06-24 | Classical commentaries: James Legge | current |
 | `zhouyi-ctext-2026-06-21` | oracle-text | 2026-06-23 | Zhou Yi: second verification | current |
@@ -281,9 +288,10 @@ Actualizar esta tabla cuando cambie el catálogo.
 | `wilhelm-parma-initial-2026-06-21` | oracle-text | 2026-06-21 | Wilhelm/Baynes: initial verification | superseded |
 | `legge-sacred-texts-initial-2026-06-21` | oracle-text | 2026-06-21 | James Legge: initial verification | superseded |
 | `zhouyi-ctext-initial-2026-06-21` | oracle-text | 2026-06-21 | Zhou Yi: initial verification | superseded |
-| `divination-math-initial-2026-05-19` | divination-method | 2026-05-19 | I Ching casting methods: initial verification | superseded |
+| `coins-math-initial-2026-05-19` | divination-method | 2026-05-19 | Three coins: initial verification | superseded |
+| `yarrow-math-initial-2026-05-19` | divination-method | 2026-05-19 | Yarrow stalks: initial verification | superseded |
 
-Conteos esperados por categoría: **6** oráculo, **2** métodos de tirada, **2** biblioteca, **2** mutación.
+Conteos esperados por categoría: **6** oráculo, **4** métodos de tirada, **2** biblioteca, **2** mutación.
 
 ---
 
@@ -321,10 +329,10 @@ Cada `BLOCKS_XX` debe tener:
 En sección P2.3, revisar:
 
 ```javascript
-audits.timeline.length === 12;  // incrementar si añades entradas
-audits.timeline[0]?.id === "wilhelm-appendix-casting-2026-06-25";  // id más reciente
+audits.timeline.length === 14;  // incrementar si añades entradas
+audits.timeline[0]?.id === "wilhelm-appendix-coins-2026-06-25";  // id más reciente
 audits.timeline.filter((e) => e.category === "oracle-text").length === 6;
-audits.timeline.filter((e) => e.category === "divination-method").length === 2;
+audits.timeline.filter((e) => e.category === "divination-method").length === 4;
 audits.timeline.filter((e) => e.category === "library-commentary").length === 2;
 audits.timeline.filter((e) => e.category === "mutation-rule").length === 2;
 ```
@@ -468,7 +476,7 @@ npm run dev
 | `verify:wilhelm-all-gates` (comentarios) | `wilhelm-commentary-txt-maestro-*` |
 | `verify:legge-all-gates` (footnotes + Ap. II) | `legge-commentary-txt-maestro-*` |
 | `qa:mutation-output` / PDF gold mutación | `huang-mutation-*`, `zhuxi-adler-mutation-*` |
-| `verify:divination-wilhelm-appendix` (Apéndice I) | `divination-math-initial-*`, `wilhelm-appendix-casting-*` |
+| `verify:divination-wilhelm-appendix` (Apéndice I) | `coins-math-initial-*`, `yarrow-math-initial-*`, `wilhelm-appendix-coins-*`, `wilhelm-appendix-yarrow-*` |
 
 El informe interno puede ser largo; la entrada pública resume **una fuente, una fecha, un
 resultado numérico**. Enlazar profundidad técnica vía `/notes`, FAQ o `docs/auditorias/` solo
@@ -476,4 +484,4 @@ cuando producto lo pida; no duplicar el informe entero en `/audits`.
 
 ---
 
-*Última revisión catálogo: 2026-06-25 · 12 entradas · métodos de tirada (Apéndice Wilhelm).*
+*Última revisión catálogo: 2026-06-25 · 14 entradas · métodos de tirada por monedas/varas (Apéndice Wilhelm).*
