@@ -38,10 +38,9 @@ function buildTimelineFields(
   a: AuditsPageUiMessages,
   entry: AuditTimelineEntry,
 ): TimelineField[] {
-  const fields: TimelineField[] = [];
-
-  if (entry.source) {
-    fields.push({
+  return [
+    { label: a.blockVerificationDateLabel, value: entry.verificationDate },
+    {
       label: a.blockSourceLabel,
       value: (
         <>
@@ -50,22 +49,15 @@ function buildTimelineFields(
           {entry.source.rest}
         </>
       ),
-    });
-  }
-  if (entry.method) {
-    fields.push({ label: a.blockMethodLabel, value: entry.method });
-  }
-  if (entry.standardCompared) {
-    fields.push({ label: a.blockStandardLabel, value: entry.standardCompared });
-  }
-  if (entry.result) {
-    fields.push({ label: a.blockResultLabel, value: entry.result });
-  }
-  if (entry.currentStatusNote && entry.kind === "verification") {
-    fields.push({ label: a.blockStatusLabel, value: entry.currentStatusNote });
-  }
-
-  return fields;
+    },
+    { label: a.blockMethodLabel, value: entry.method },
+    { label: a.blockStandardLabel, value: entry.standardCompared },
+    { label: a.blockResultLabel, value: entry.result },
+    {
+      label: a.blockStatusLabel,
+      value: `${entry.statusLabel}. ${entry.currentStatusNote}`,
+    },
+  ];
 }
 
 function AuditTimelineRow({
@@ -92,7 +84,7 @@ function AuditTimelineRow({
           <ul className="audit-timeline__tree">
             {fields.map((field, index) => (
               <li
-                key={field.label}
+                key={`${entry.id}-${field.label}`}
                 className={
                   index === fields.length - 1
                     ? "audit-timeline__tree-item is-last"

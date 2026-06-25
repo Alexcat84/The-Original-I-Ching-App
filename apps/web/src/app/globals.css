@@ -4992,7 +4992,8 @@ html[data-theme="dark"] .verdict-pill--silent {
   --audit-timeline-line: color-mix(in srgb, var(--accent) 38%, var(--bar-border));
   --audit-timeline-text: color-mix(in srgb, var(--card-title) 78%, var(--accent));
   --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 72%, var(--accent));
-  --audit-timeline-date-active: #0a7a6e;
+  /* Distinct from --accent (teal): forest green for active/permanent dates in light mode */
+  --audit-timeline-date-active: #1a7a34;
   list-style: none;
   margin: 0.35rem 0 0;
   padding: 0;
@@ -5002,7 +5003,8 @@ html[data-theme="dark"] .audit-timeline {
   --audit-timeline-line: color-mix(in srgb, var(--fg) 28%, transparent);
   --audit-timeline-text: color-mix(in srgb, var(--fg) 86%, var(--accent));
   --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 82%, var(--accent));
-  --audit-timeline-date-active: #4fd9c8;
+  /* Bright leaf green — readable on dark shell, not aqua/cyan */
+  --audit-timeline-date-active: #72e88a;
 }
 
 .audit-timeline-section + .audit-timeline-section {

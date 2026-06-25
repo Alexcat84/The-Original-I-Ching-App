@@ -193,8 +193,26 @@ for (const locale of SUPPORTED_LOCALES) {
     typeof audits.oracleTextSectionHeading === "string" &&
       audits.oracleTextSectionHeading.length > 0 &&
       typeof audits.mutationRulesSectionHeading === "string" &&
-      audits.mutationRulesSectionHeading.length > 0,
+      audits.mutationRulesSectionHeading.length > 0 &&
+      typeof audits.blockVerificationDateLabel === "string" &&
+      audits.blockVerificationDateLabel.length > 0,
   );
+  for (const entry of audits.timeline) {
+    check(
+      `P2.3 [${locale}] ${entry.id} has all six standard fields`,
+      Boolean(
+        entry.verificationDate?.trim() &&
+          entry.source?.citation?.trim() &&
+          entry.source.title?.trim() &&
+          entry.source.rest?.trim() &&
+          entry.method?.trim() &&
+          entry.standardCompared?.trim() &&
+          entry.result?.trim() &&
+          entry.statusLabel?.trim() &&
+          entry.currentStatusNote?.trim(),
+      ),
+    );
+  }
 }
 
 // ---------------------------------------------------------------------------
