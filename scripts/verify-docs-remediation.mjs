@@ -214,8 +214,7 @@ for (const locale of SUPPORTED_LOCALES) {
           entry.method?.trim() &&
           entry.standardCompared?.trim() &&
           entry.result?.trim() &&
-          entry.statusLabel?.trim() &&
-          entry.currentStatusNote?.trim(),
+          entry.statusLabel?.trim(),
       ),
     );
   }

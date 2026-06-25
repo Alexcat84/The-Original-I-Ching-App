@@ -60,7 +60,9 @@ function buildTimelineFields(
     { label: a.blockResultLabel, value: entry.result },
     {
       label: a.blockStatusLabel,
-      value: `${entry.statusLabel}. ${entry.currentStatusNote}`,
+      value: entry.currentStatusNote.trim()
+        ? `${entry.statusLabel}${entry.statusLabel.endsWith(".") ? " " : ". "}${entry.currentStatusNote}`
+        : entry.statusLabel,
     },
   ];
 }

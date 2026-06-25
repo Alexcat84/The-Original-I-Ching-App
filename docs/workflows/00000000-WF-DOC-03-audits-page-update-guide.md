@@ -91,8 +91,8 @@ Cada entrada del timeline es un objeto en `BLOCKS_EN`, `BLOCKS_ES`, … `BLOCKS_
 | `standardCompared` | Sí | Campo «Estándar comparado» | Qué campos/casos entraron |
 | `result` | Sí | Campo «Resultado» | Cifra verificable (514/514, 9/9, etc.) |
 | `statusKind` | Sí | Color del círculo fecha | `current` \| `superseded` \| `permanent` |
-| `statusLabel` | Sí | Campo «Estado» (parte 1) | Traducido: vigentes → «Vigente a la fecha» (o equivalente locale); obsoletos → «Obsoleto» |
-| `currentStatusNote` | Sí | Campo «Estado» (parte 2) | Traducido; sin referencias a otras entradas ni auditorías futuras |
+| `statusLabel` | Sí | Campo «Estado» | Traducido: exactamente «Vigente a la fecha.» o «Obsoleto.» (sin texto adicional) |
+| `currentStatusNote` | No (vacío) | — | Dejar `""`; el UI muestra solo `statusLabel` |
 
 Validación en runtime al construir el timeline: `assertCompleteVerificationBlock()` lanza si falta
 algún string o si `source` no es una entrada canónica de `CITATIONS`.
