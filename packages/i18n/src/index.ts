@@ -143,6 +143,7 @@ export { getNotesPageUiMessages, type NotesPageUiMessages } from "./messages/not
 export {
   getAuditsPageUiMessages,
   formatAuditTimelineDate,
+  formatAuditTimelineDateCompact,
   formatAuditTimelineDateShort,
   type AuditsPageUiMessages,
   type AuditReportEntry,

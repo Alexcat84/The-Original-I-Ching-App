@@ -1715,6 +1715,13 @@ export function formatAuditTimelineDate(iso: string, locale: AppLocale): string 
   }).format(new Date(`${iso}T12:00:00`));
 }
 
+/** Compact ISO date for the public `/audits` tree root nodes (YYYY.MM.DD). */
+export function formatAuditTimelineDateCompact(iso: string): string {
+  const [year, month, day] = iso.split("-");
+  if (!year || !month || !day) return iso;
+  return `${year}.${month}.${day}`;
+}
+
 /** Compact date for the timeline circle (short month). */
 export function formatAuditTimelineDateShort(iso: string, locale: AppLocale): string {
   return new Intl.DateTimeFormat(LOCALE_BCP47[locale], {

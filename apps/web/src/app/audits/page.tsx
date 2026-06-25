@@ -3,10 +3,9 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 import {
-  formatAuditTimelineDateShort,
+  formatAuditTimelineDateCompact,
   getAuditsPageUiMessages,
   getDocNavUiMessages,
-  type AppLocale,
   type AuditsPageUiMessages,
   type AuditTimelineEntry,
 } from "@iching-oracle/i18n";
@@ -59,36 +58,39 @@ function buildTimelineFields(
 function AuditTimelineRow({
   a,
   entry,
-  locale,
 }: {
   a: AuditsPageUiMessages;
   entry: AuditTimelineEntry;
-  locale: AppLocale;
 }) {
-  const dateLabel = formatAuditTimelineDateShort(entry.verificationDateIso, locale);
+  const dateLabel = formatAuditTimelineDateCompact(entry.verificationDateIso);
   const fields = buildTimelineFields(a, entry);
 
   return (
     <li className="audit-timeline__item">
       <details className="audit-timeline__details">
         <summary className="audit-timeline__summary">
+          <span className="audit-timeline__toggle" aria-hidden="true" />
           <time className={timelineDateClass(entry.statusKind)} dateTime={entry.verificationDateIso}>
             {dateLabel}
           </time>
           <span className="audit-timeline__headline">{entry.headline}</span>
-          <span className="audit-timeline__toggle" aria-hidden="true" />
         </summary>
         {fields.length > 0 ? (
-          <div className="audit-timeline__branch">
-            <ul className="audit-timeline__tree">
-              {fields.map((field) => (
-                <li key={field.label} className="audit-timeline__tree-item">
-                  <span className="audit-timeline__tree-label">{field.label}</span>
-                  <span className="audit-timeline__tree-value">{field.value}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="audit-timeline__tree">
+            {fields.map((field, index) => (
+              <li
+                key={field.label}
+                className={
+                  index === fields.length - 1
+                    ? "audit-timeline__tree-item is-last"
+                    : "audit-timeline__tree-item"
+                }
+              >
+                <span className="audit-timeline__tree-label">{field.label}</span>
+                <span className="audit-timeline__tree-value">{field.value}</span>
+              </li>
+            ))}
+          </ul>
         ) : null}
       </details>
     </li>
@@ -126,11 +128,11 @@ export default async function AuditsPage() {
         <Link href="/terms">{nav.termsShort}</Link>
       </nav>
       <article className="doc-article doc-article--audits-timeline">
-        <ol className="audit-timeline">
+        <ul className="audit-timeline">
           {a.timeline.map((entry) => (
-            <AuditTimelineRow key={entry.id} a={a} entry={entry} locale={locale} />
+            <AuditTimelineRow key={entry.id} a={a} entry={entry} />
           ))}
-        </ol>
+        </ul>
       </article>
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
