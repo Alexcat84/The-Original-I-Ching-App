@@ -4988,6 +4988,201 @@ html[data-theme="dark"] .verdict-pill--silent {
   color: var(--muted-fg, #666);
 }
 
+.audit-timeline {
+  --audit-timeline-line: color-mix(in srgb, var(--accent) 38%, var(--bar-border));
+  --audit-timeline-text: color-mix(in srgb, var(--card-title) 78%, var(--accent));
+  --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 72%, var(--accent));
+  /* Light mode: deep emerald chip — high contrast on pale shell, distinct from teal --accent */
+  --audit-timeline-date-active: #065f36;
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+}
+
+html[data-theme="dark"] .audit-timeline {
+  --audit-timeline-line: color-mix(in srgb, var(--fg) 28%, transparent);
+  --audit-timeline-text: color-mix(in srgb, var(--fg) 86%, var(--accent));
+  --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 82%, var(--accent));
+  /* Bright leaf green — readable on dark shell, not aqua/cyan */
+  --audit-timeline-date-active: #72e88a;
+}
+
+.audit-timeline-section + .audit-timeline-section {
+  margin-top: 1.35rem;
+}
+
+.audit-timeline-section__heading {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--audit-timeline-text-muted);
+}
+
+.doc-article--audits-timeline {
+  margin-top: 0.35rem;
+  max-width: 46rem;
+}
+
+.audit-timeline__item {
+  margin: 0;
+  padding: 0;
+}
+
+.audit-timeline__details {
+  border: none;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.audit-timeline__summary {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem 0.55rem;
+  cursor: pointer;
+  list-style: none;
+  margin: 0;
+  padding: 0.2rem 0;
+}
+
+.audit-timeline__summary::-webkit-details-marker {
+  display: none;
+}
+
+.audit-timeline__toggle {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--audit-timeline-line);
+  border-radius: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--audit-timeline-text-muted);
+  background: var(--bg);
+}
+
+.audit-timeline__toggle::before {
+  content: "+";
+  transform: translateY(-0.5px);
+}
+
+.audit-timeline__details[open] > .audit-timeline__summary .audit-timeline__toggle::before {
+  content: "−";
+}
+
+.audit-timeline__date {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.audit-timeline__date--active {
+  color: var(--audit-timeline-date-active);
+  font-weight: 700;
+}
+
+/* Light mode only: verification-date chip so active dates pop off the pale shell */
+html:not([data-theme="dark"]) .audit-timeline__date--active {
+  display: inline-block;
+  padding: 0.06rem 0.4rem;
+  border-radius: 0.22rem;
+  background: color-mix(in srgb, var(--audit-timeline-date-active) 13%, var(--bg));
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.audit-timeline__date--muted {
+  color: var(--audit-timeline-text-muted);
+}
+
+.audit-timeline__headline {
+  min-width: 0;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--audit-timeline-text);
+}
+
+.audit-timeline__tree {
+  list-style: none;
+  margin: 0.05rem 0 0.45rem 0.55rem;
+  padding: 0 0 0 0.95rem;
+  border-left: 1px dotted var(--audit-timeline-line);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.audit-timeline__tree-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(5.25rem, 8rem) minmax(0, 1fr);
+  gap: 0.3rem 0.65rem;
+  margin: 0;
+  padding: 0.18rem 0 0.18rem 0.85rem;
+}
+
+.audit-timeline__tree-item::before {
+  content: "";
+  position: absolute;
+  left: -0.95rem;
+  top: 0.72em;
+  width: 0.95rem;
+  border-top: 1px dotted var(--audit-timeline-line);
+}
+
+.audit-timeline__tree-item.is-last::after {
+  content: "";
+  position: absolute;
+  left: -0.95rem;
+  top: calc(0.72em + 1px);
+  bottom: 0;
+  width: 1px;
+  background: var(--bg);
+}
+
+.audit-timeline__tree-label {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--audit-timeline-text-muted);
+  text-align: start;
+  hyphens: manual;
+}
+
+.audit-timeline__tree-value {
+  margin: 0;
+  color: var(--audit-timeline-text);
+  text-align: justify;
+  hyphens: manual;
+}
+
+.audit-timeline__tree-value em {
+  font-style: italic;
+}
+
+/* /audits tree: labels left; values justified (override doc-article justify on li) */
+.oracle-shell.doc-page .doc-article .audit-timeline__tree-item {
+  text-align: start;
+  hyphens: manual;
+}
+
+@media (max-width: 640px) {
+  .audit-timeline__tree-item {
+    grid-template-columns: 1fr;
+    gap: 0.08rem;
+  }
+}
+
 .audit-log-list {
   list-style: none;
   margin: 0;

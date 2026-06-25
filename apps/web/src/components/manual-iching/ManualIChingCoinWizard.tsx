@@ -1,16 +1,10 @@
 "use client";
 
 import type { IchingManualLineTuple } from "@/lib/manual-iching-consult";
+import { lineValueFromCoins, type CoinFace } from "@/lib/manual-coin-value";
 import { getManualWizardMessages, type AppLocale } from "@iching-oracle/i18n";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IChingCashCoin } from "./IChingCashCoin";
-
-type CoinFace = "H" | "T";
-
-function lineValueFromCoins(coins: CoinFace[]): 6 | 7 | 8 | 9 {
-  const sum = coins.reduce((s, c) => s + (c === "H" ? 3 : 2), 0);
-  return sum as 6 | 7 | 8 | 9;
-}
 
 type Props = {
   open: boolean;
@@ -203,7 +197,7 @@ export function ManualIChingCoinWizard({ open, onClose, onComplete, locale, ques
                 }
                 aria-label={`${m.headsAria.replace("{{i}}", String(i + 1))} / ${m.tailsAria.replace("{{i}}", String(i + 1))}`}
               >
-                <IChingCashCoin face={side === "H" ? "yang" : "yin"} />
+                <IChingCashCoin face={side === "H" ? "han" : "manchu"} />
               </button>
             ))}
           </div>

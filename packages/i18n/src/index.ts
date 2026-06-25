@@ -142,12 +142,17 @@ export { getGuiaPageUiMessages, type GuiaPageUiMessages } from "./messages/guia-
 export { getNotesPageUiMessages, type NotesPageUiMessages } from "./messages/notes-page-ui.js";
 export {
   getAuditsPageUiMessages,
+  formatAuditTimelineDate,
+  formatAuditTimelineDateCompact,
+  formatAuditTimelineDateShort,
   type AuditsPageUiMessages,
   type AuditReportEntry,
   type AuditSourceBlock,
   type AuditSourceCitation,
   type AuditBlockStatusKind,
   type AuditBlockCategory,
+  type AuditTimelineEntry,
+  type AuditTimelineEntryKind,
 } from "./messages/audits-page-ui.js";
 export { getLibraryPageUiMessages, type LibraryPageUiMessages, type LibraryPageUiSerialized } from "./messages/library-page-ui.js";
 export { getPrivacyPageMessages, type PrivacyPageMessages } from "./messages/privacy-page-ui.js";

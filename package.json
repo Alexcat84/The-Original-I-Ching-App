@@ -26,6 +26,7 @@
     "verify:docs-remediation": "node scripts/verify-docs-remediation.mjs",
     "inject:qa-headers": "node scripts/inject-qa-headers.mjs",
     "verify:qa-registry": "node scripts/verify-qa-registry.mjs",
+    "verify:divination-wilhelm-appendix": "node scripts/verify-divination-wilhelm-appendix.mjs",
     "verify:hexagram-fidelity": "node scripts/verify-hexagram-fidelity.mjs --gold=books --translator=wilhelm,legge",
     "verify:hexagram-fidelity:mirrors-deprecated": "node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=all",
     "pdf-gold:preflight": "node scripts/pdf-gold-preflight.mjs",

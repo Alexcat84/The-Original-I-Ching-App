@@ -1,69 +1,150 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 import {
+  formatAuditTimelineDateCompact,
   getAuditsPageUiMessages,
   getDocNavUiMessages,
+  type AuditBlockCategory,
   type AuditsPageUiMessages,
-  type AuditSourceBlock,
+  type AuditTimelineEntry,
 } from "@iching-oracle/i18n";
 import { resolveDocLocale } from "@/lib/doc-locale";
 
-function AuditBlockCard({
+type TimelineField = {
+  label: string;
+  value: ReactNode;
+};
+
+function timelineDateClass(statusKind: AuditTimelineEntry["statusKind"]): string {
+  if (statusKind === "superseded") return "audit-timeline__date audit-timeline__date--muted";
+  return "audit-timeline__date audit-timeline__date--active";
+}
+
+function groupTimelineByCategory(
+  timeline: AuditTimelineEntry[],
+): { category: NonNullable<AuditTimelineEntry["category"]>; entries: AuditTimelineEntry[] }[] {
+  const order: NonNullable<AuditTimelineEntry["category"]>[] = [
+    "oracle-text",
+    "library-commentary",
+    "mutation-rule",
+  ];
+  return order
+    .map((category) => ({
+      category,
+      entries: timeline.filter((entry) => entry.category === category),
+    }))
+    .filter((section) => section.entries.length > 0);
+}
+
+function buildTimelineFields(
+  a: AuditsPageUiMessages,
+  entry: AuditTimelineEntry,
+): TimelineField[] {
+  return [
+    { label: a.blockVerificationDateLabel, value: entry.verificationDate },
+    {
+      label: a.blockSourceLabel,
+      value: (
+        <>
+          {entry.source.citation}
+          <em>{entry.source.title}</em>
+          {entry.source.rest}
+        </>
+      ),
+    },
+    { label: a.blockMethodLabel, value: entry.method },
+    { label: a.blockStandardLabel, value: entry.standardCompared },
+    { label: a.blockResultLabel, value: entry.result },
+    {
+      label: a.blockStatusLabel,
+      value: `${entry.statusLabel}. ${entry.currentStatusNote}`,
+    },
+  ];
+}
+
+function AuditTimelineRow({
   a,
-  block,
+  entry,
 }: {
   a: AuditsPageUiMessages;
-  block: AuditSourceBlock;
+  entry: AuditTimelineEntry;
 }) {
+  const dateLabel = formatAuditTimelineDateCompact(entry.verificationDateIso);
+  const fields = buildTimelineFields(a, entry);
+
   return (
-    <div className="audit-block">
-      <div className="audit-block__head">
-        <h3 className="audit-block__title">{block.title}</h3>
-        <span className={`audit-block__status audit-block__status--${block.statusKind}`}>
-          {block.statusLabel}
-        </span>
-      </div>
-      <dl className="audit-block__fields">
-        <dt>{a.blockSourceLabel}</dt>
-        <dd>
-          {block.source.citation}
-          <em>{block.source.title}</em>
-          {block.source.rest}
-        </dd>
-        <dt>{a.blockDateLabel}</dt>
-        <dd>{block.verificationDate}</dd>
-        <dt>{a.blockMethodLabel}</dt>
-        <dd>{block.method}</dd>
-        <dt>{a.blockStandardLabel}</dt>
-        <dd>{block.standardCompared}</dd>
-        <dt>{a.blockResultLabel}</dt>
-        <dd>{block.result}</dd>
-        <dt>{a.blockStatusLabel}</dt>
-        <dd>{block.currentStatusNote}</dd>
-      </dl>
-    </div>
+    <li className="audit-timeline__item">
+      <details className="audit-timeline__details">
+        <summary className="audit-timeline__summary">
+          <span className="audit-timeline__toggle" aria-hidden="true" />
+          <time className={timelineDateClass(entry.statusKind)} dateTime={entry.verificationDateIso}>
+            {dateLabel}
+          </time>
+          <span className="audit-timeline__headline">{entry.headline}</span>
+        </summary>
+        {fields.length > 0 ? (
+          <ul className="audit-timeline__tree">
+            {fields.map((field, index) => (
+              <li
+                key={`${entry.id}-${field.label}`}
+                className={
+                  index === fields.length - 1
+                    ? "audit-timeline__tree-item is-last"
+                    : "audit-timeline__tree-item"
+                }
+              >
+                <span className="audit-timeline__tree-label">{field.label}</span>
+                <span className="audit-timeline__tree-value">{field.value}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </details>
+    </li>
   );
 }
 
-export const metadata: Metadata = {
-  title: "Fidelity Audits | The Original I Ching App",
-  description:
-    "Audit dates, reference editions, and pass outcomes for I Ching oracle texts and changing-line rules.",
-  openGraph: {
-    title: "Fidelity Audits | The Original I Ching App",
-    description: "Public audit log: dates, sources, and outcomes.",
-  },
-  ...buildCanonicalMetadata("/audits"),
-};
+function sectionHeading(
+  a: AuditsPageUiMessages,
+  category: AuditBlockCategory,
+): string {
+  switch (category) {
+    case "oracle-text":
+      return a.oracleTextSectionHeading;
+    case "library-commentary":
+      return a.libraryCommentarySectionHeading;
+    case "mutation-rule":
+      return a.mutationRulesSectionHeading;
+    default: {
+      const _exhaustive: never = category;
+      return _exhaustive;
+    }
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await resolveDocLocale();
+  const a = getAuditsPageUiMessages(locale);
+
+  return {
+    title: `${a.title} | The Original I Ching App`,
+    description:
+      "Audit dates, reference editions, and pass outcomes for I Ching oracle texts and changing-line rules.",
+    openGraph: {
+      title: `${a.title} | The Original I Ching App`,
+      description: "Public audit log: dates, sources, and outcomes.",
+    },
+    ...buildCanonicalMetadata("/audits"),
+  };
+}
 
 export default async function AuditsPage() {
   const locale = await resolveDocLocale();
   const nav = getDocNavUiMessages(locale);
   const a = getAuditsPageUiMessages(locale);
-
-  const statusClass = (status: string) =>
-    status === "closed" ? "audit-status audit-status--closed" : "audit-status audit-status--ongoing";
+  const sections = groupTimelineByCategory(a.timeline);
 
   return (
     <div className="oracle-shell doc-page">
@@ -74,51 +155,17 @@ export default async function AuditsPage() {
         <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
         <Link href="/terms">{nav.termsShort}</Link>
       </nav>
-      <article className="doc-article">
-        <h1>{a.title}</h1>
-        <p className="doc-lead">{a.lead}</p>
-        <p className="doc-meta">
-          <strong>{a.lastUpdatedLabel}:</strong> {a.lastUpdated}
-        </p>
-
-        <h2>{a.introHeading}</h2>
-        <p>{a.introBody}</p>
-
-        <h2>{a.oracleTextsHeading}</h2>
-        <p>{a.oracleTextsBody}</p>
-        <div className="audit-block-list">
-          {a.sourceBlocks
-            .filter((block) => block.category === "oracle-text")
-            .map((block) => (
-              <AuditBlockCard key={block.id} a={a} block={block} />
-            ))}
-        </div>
-
-        <h2>{a.mutationRulesHeading}</h2>
-        <p>{a.mutationRulesIntro}</p>
-        <div className="audit-block-list">
-          {a.sourceBlocks
-            .filter((block) => block.category === "mutation-rule")
-            .map((block) => (
-              <AuditBlockCard key={block.id} a={a} block={block} />
-            ))}
-        </div>
-
-        <h2>{a.reportsHeading}</h2>
-        <ul className="audit-log-list">
-          {a.reports.map((report) => (
-            <li key={report.id} className="audit-log-entry">
-              <div className="audit-log-entry__head">
-                <time dateTime={report.date}>{report.date}</time>
-                <span className={statusClass(report.status)}>{report.statusLabel}</span>
-              </div>
-              <h3 className="audit-log-entry__title">{report.title}</h3>
-              <p>{report.summary}</p>
-            </li>
-          ))}
-        </ul>
-
-        <p className="doc-see-also">{a.seeAlsoNotes}</p>
+      <article className="doc-article doc-article--audits-timeline">
+        {sections.map((section) => (
+          <section key={section.category} className="audit-timeline-section">
+            <h2 className="audit-timeline-section__heading">{sectionHeading(a, section.category)}</h2>
+            <ul className="audit-timeline">
+              {section.entries.map((entry) => (
+                <AuditTimelineRow key={entry.id} a={a} entry={entry} />
+              ))}
+            </ul>
+          </section>
+        ))}
       </article>
       <nav className="doc-nav">
         <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}

@@ -42,11 +42,57 @@
       "status": "closed",
       "path": "docs/auditorias/00000000-AUD-DIV-01-divination-methods.md",
       "relatedCodes": [
-        "20260614-AUD-MUT-01 changing-lines"
+        "20260614-AUD-MUT-01 changing-lines",
+        "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods"
       ],
       "relatedTests": [
         "TS-ENG-001 engine-core",
         "TS-ENG-002 mutation-rules"
+      ]
+    },
+    {
+      "code": "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods",
+      "title": "Wilhelm appendix casting methods audit (book-primary TXT)",
+      "shortName": "wilhelm-appendix-casting-methods",
+      "type": "AUD",
+      "family": "DIV",
+      "date": "2026-06-25",
+      "status": "open",
+      "path": "docs/auditorias/20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md",
+      "relatedCodes": [
+        "00000000-AUD-DIV-01 divination-methods",
+        "00000000-RPT-DIV-00 procedural-integrity-summary"
+      ],
+      "relatedTests": [
+        "TS-ENG-001 engine-core",
+        "TS-WEB-014 manual-coin-value",
+        "VF-DIV-001 divination-wilhelm-appendix"
+      ]
+    },
+    {
+      "code": "00000000-RPT-DIV-00 procedural-integrity-summary",
+      "title": "Procedural integrity summary (casting methods + changing-line rules)",
+      "shortName": "procedural-integrity-summary",
+      "type": "RPT",
+      "family": "DIV",
+      "date": null,
+      "status": "reference",
+      "path": "docs/auditorias/00000000-RPT-DIV-00-procedural-integrity-summary.md",
+      "relatedCodes": [
+        "00000000-AUD-DIV-01 divination-methods",
+        "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods",
+        "20260619-AUD-MUT-03 huang-rules-alignment",
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector",
+        "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
+      ],
+      "relatedTests": [
+        "VF-DIV-001 divination-wilhelm-appendix",
+        "TS-WEB-014 manual-coin-value",
+        "AU-MUT-001 huang-rules-vs-pdf-gold",
+        "AU-MUT-002 zhuxi-rules-vs-adler-gold",
+        "TS-ENG-002 mutation-rules",
+        "TS-ENG-003 line-reading-systems"
       ]
     },
     {
@@ -859,6 +905,20 @@
       "path": "docs/plans/00000000-PLAN-SUP-07-scale-infrastructure.md",
       "relatedCodes": [
         "00000000-AUD-SUP-01 supabase-db-stability"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260625-PLAN-DOC-04 audits-timeline-ui",
+      "title": "Plan: /audits single timeline UI",
+      "shortName": "audits-timeline-ui",
+      "type": "PLAN",
+      "family": "DOC",
+      "date": "2026-06-25",
+      "status": "closed",
+      "path": "docs/auditorias/20260625-PLAN-DOC-04-audits-timeline-ui.md",
+      "relatedCodes": [
+        "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
       ],
       "relatedTests": []
     }

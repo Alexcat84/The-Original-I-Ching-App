@@ -13,6 +13,8 @@ This document records the exact mathematical, probabilistic, and procedural foun
 
 > **Estado:** ✅ CERRADA — documento de referencia estable; métodos verificados y bloqueados
 
+> **Seguimiento book-primary (2026-06-25):** la verificación contra el apéndice Wilhelm/Baynes en TXT Princeton continúa en [`20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md`](./20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md). Esta AU no contrastaba explícitamente el gold del apéndice.
+
 | Campo | Valor |
 |-------|-------|
 | **Creada** | 2026-05-19 (`60115a6`) |

@@ -71,6 +71,18 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 
 ---
 
+## Familia DIV — Métodos de tirada
+
+| Código | Fecha | Título | Estado | Documento |
+|--------|-------|--------|--------|-----------|
+| `00000000-AUD-DIV-01 divination-methods` | 2026-05-19 | Métodos adivinación (referencia matemática) | closed | [00000000-AUD-DIV-01-divination-methods.md](./00000000-AUD-DIV-01-divination-methods.md) |
+| `20260625-AUD-DIV-02 wilhelm-appendix-casting-methods` | 2026-06-25 | Métodos vs apéndice Wilhelm TXT (book-primary) | open | [20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md](./20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md) |
+| `00000000-RPT-DIV-00 procedural-integrity-summary` | — | **Fuentes de verdad procedurales** (monedas, varas, reglas Huang/Zhu Xi) | reference | [00000000-RPT-DIV-00-procedural-integrity-summary.md](./00000000-RPT-DIV-00-procedural-integrity-summary.md) |
+
+**Gold:** `tools/source-pdfs/The I Ching or Book of Changes - Wilhelm-Appendix.txt` · **Tests:** `TS-ENG-001`, `VF-DIV-001 divination-wilhelm-appendix` (G1-G7, exacto)
+
+---
+
 ## Familia RDG-QA — Calidad interpretación
 
 | Código | Fecha | Título | Estado | Documento |
@@ -139,9 +151,9 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `00000000-BRIEF-ANM-02 submit-reveal-redesign` | ANM | Brief submit/reveal | reference | [00000000-BRIEF-ANM-02-submit-reveal-redesign.md](./00000000-BRIEF-ANM-02-submit-reveal-redesign.md) |
 | `20260614-AUD-ANM-03 tick-pacing` | ANM | Tick pacing ritual | closed | [20260614-AUD-ANM-03-tick-pacing.md](./20260614-AUD-ANM-03-tick-pacing.md) |
 | `20260622-AUD-DOC-01 user-docs-vs-implementation` | DOC | Docs producto vs código | closed | [20260622-AUD-DOC-01-user-docs-vs-implementation.md](./20260622-AUD-DOC-01-user-docs-vs-implementation.md) |
+| `20260625-PLAN-DOC-04 audits-timeline-ui` | DOC | Plan timeline único `/audits` | closed | [20260625-PLAN-DOC-04-audits-timeline-ui.md](./20260625-PLAN-DOC-04-audits-timeline-ui.md) |
 | `20260616-AUD-SEC-01 npm-dependencies` | SEC | Dependencias npm | open | [20260616-AUD-SEC-01-npm-dependencies.md](./20260616-AUD-SEC-01-npm-dependencies.md) |
 | `00000000-RPT-ARCH-01 architecture-fullstack` | ARCH | Arquitectura full-stack | reference | [00000000-RPT-ARCH-01-architecture-fullstack.md](./00000000-RPT-ARCH-01-architecture-fullstack.md) |
-| `00000000-AUD-DIV-01 divination-methods` | DIV | Métodos adivinación | closed | [00000000-AUD-DIV-01-divination-methods.md](./00000000-AUD-DIV-01-divination-methods.md) |
 | `00000000-AUD-SYM-01 dynamic-symbols` | SYM | Símbolos dinámicos | closed | [00000000-AUD-SYM-01-dynamic-symbols.md](./00000000-AUD-SYM-01-dynamic-symbols.md) |
 | `00000000-RPT-LEG-01 legacy-general-report` | LEG | Reporte general legacy | reference | [00000000-RPT-LEG-01-legacy-general-report.md](./00000000-RPT-LEG-01-legacy-general-report.md) |
 

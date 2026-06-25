@@ -163,7 +163,26 @@
       "status": "reference",
       "path": "docs/workflows/00000000-WF-DOC-01-docs-content-update-guide.md",
       "relatedCodes": [
-        "20260622-AUD-DOC-01 user-docs-vs-implementation"
+        "20260622-AUD-DOC-01 user-docs-vs-implementation",
+        "00000000-WF-DOC-03 audits-page-update-guide"
+      ],
+      "relatedTests": [
+        "VF-DOC-001 docs-remediation"
+      ]
+    },
+    {
+      "code": "00000000-WF-DOC-03 audits-page-update-guide",
+      "title": "Workflow: update public /audits fidelity page",
+      "shortName": "audits-page-update-guide",
+      "type": "WF",
+      "family": "DOC",
+      "collection": "workflows",
+      "date": null,
+      "status": "reference",
+      "path": "docs/workflows/00000000-WF-DOC-03-audits-page-update-guide.md",
+      "relatedCodes": [
+        "00000000-WF-DOC-01 docs-content-update-guide",
+        "20260625-PLAN-DOC-04 audits-timeline-ui"
       ],
       "relatedTests": [
         "VF-DOC-001 docs-remediation"

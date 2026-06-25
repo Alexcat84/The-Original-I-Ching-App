@@ -264,6 +264,27 @@
       "area": "apps/web/src/lib/manual-iching-consult"
     },
     {
+      "code": "TS-WEB-014 manual-coin-value",
+      "title": "Manual coin wizard yin/yang value mapping",
+      "shortName": "manual-coin-value",
+      "type": "TS",
+      "family": "WEB",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-25",
+          "change": "Regression for H-DIV-02-01 fix: inscribed (Han) = yin 2, reverse (Manchu) = yang 3, per Wilhelm/Baynes 1950 Appendix I §2"
+        }
+      ],
+      "path": "apps/web/src/lib/__tests__/manual-coin-value.test.ts",
+      "npmScript": "npm run test --prefix apps/web",
+      "relatedAuditCodes": [
+        "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods"
+      ],
+      "area": "apps/web/src/lib/manual-coin-value"
+    },
+    {
       "code": "TS-WEB-003 response-clean",
       "title": "Oracle response cleaning",
       "shortName": "response-clean",
@@ -818,6 +839,32 @@
         "20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro"
       ],
       "area": "tools/verify-legge-all-gates"
+    },
+    {
+      "code": "VF-DIV-001 divination-wilhelm-appendix",
+      "title": "Coin and yarrow-stalk casting methods vs Wilhelm Appendix I",
+      "shortName": "divination-wilhelm-appendix",
+      "type": "VF",
+      "family": "DIV",
+      "version": "2.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-25",
+          "change": "G1-G6: yarrowSumToLine + lineValueFromCoins determinism, throwThreeCoins/throwYarrowStalks Monte Carlo, procedural yarrow simulator (simulateYarrowLine) vs bucket distribution, Han/Manchu contrast gate closing H-DIV-02-01"
+        },
+        {
+          "version": "2.0.0",
+          "date": "2026-06-25",
+          "change": "Replaced Monte Carlo with exact BigInt rational arithmetic for G5/G5a/G5b (closed-form proof, no sampling variance); added G7 (exact re-derivation of 1/16,5/16,7/16,3/16 from Wilhelm's own residue-tuple weighting, proving throwYarrowStalks matches the gold table exactly). G5b's prior WARN (MC ~51/49) became a documented exact PASS (22/43 vs 21/43, 20/39 vs 19/39 -- a real, fully-explained, non-noise gap that still satisfies Wilhelm's qualitative 'equal' claim). Net result: 0 failures, 0 warnings."
+        }
+      ],
+      "path": "scripts/verify-divination-wilhelm-appendix.mjs",
+      "npmScript": "verify:divination-wilhelm-appendix",
+      "relatedAuditCodes": [
+        "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods"
+      ],
+      "area": "scripts/verify-divination-wilhelm-appendix"
     },
     {
       "code": "AU-FID-001 epub-verbatim-vs-runtime",

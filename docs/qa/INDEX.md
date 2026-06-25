@@ -59,6 +59,7 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `TS-WEB-011 revenuecat-webhook-auth` | `apps/web/src/lib/revenuecat-webhook-auth` | 1.0.0 | `revenuecat-webhook-auth.test.ts` | Webhook secret |
 | `TS-WEB-012 revenuecat-webhook-idempotency` | `apps/web/src/lib/revenuecat-webhook-idempotency` | 1.0.0 | `revenuecat-webhook-idempotency.test.ts` | Idempotencia 039 |
 | `TS-WEB-013 session-thread-hydration` | `apps/web/src/lib/session-thread-hydration` | 1.0.0 | `session-thread-hydration.test.ts` | Hydration gate |
+| `TS-WEB-014 manual-coin-value` | `apps/web/src/lib/manual-coin-value` | 1.0.0 | `manual-coin-value.test.ts` | H-DIV-02-01 (`AUD-DIV-02`) |
 
 ### Overlay — `TS-WEB-OVR-*`
 
@@ -89,6 +90,7 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `VF-DOC-002 qa-registry-integrity` | `scripts/verify-qa-registry` | **1.3.0** | `verify:qa-registry` | Valida registry + cabeceras + orphans | — |
 | `VF-FID-W-001 wilhelm-all-gates` | `tools/verify-wilhelm-all-gates` | 1.0.0 | `verify:wilhelm-all-gates` | — | — |
 | `VF-FID-L-001 legge-all-gates` | `tools/verify-legge-all-gates` | 1.0.0 | `verify:legge-all-gates` | — | — |
+| `VF-DIV-001 divination-wilhelm-appendix` | `scripts/verify-divination-wilhelm-appendix` | **2.0.0** | `verify:divination-wilhelm-appendix` | — | G1-G7 exact arithmetic, `AUD-DIV-02` |
 | `VF-FID-W-002 wilhelm-64hex-txt-clean` | `tools/verify-wilhelm-64hex-txt-clean` | 1.0.0 | `verify:wilhelm-64hex-txt-clean` | — | pre-parse W |
 
 ---
