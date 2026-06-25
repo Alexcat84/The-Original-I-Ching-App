@@ -304,34 +304,34 @@ const BLOCKS_EN: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Library commentary: Wilhelm/Baynes",
+    title: "Classical commentary: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 Jun 2026",
     method:
-      "Standalone automated gate suite (verify:wilhelm-all-gates) on the Hexagram Library commentary bundle against the verified TXT maestro (book-one + Ten Wings comments datasets).",
+      "Automated verification of classical commentary against the Wilhelm/Baynes (1950) published edition, including Wilhelm's own notes and the Ten Wings commentary.",
     standardCompared:
       "Wilhelm's own commentary and Ten Wings notes on judgment, image, and each line; About this hexagram block; Words on the Text (hex 1-2 only); yong commentary (hex 1-2 only). 64 hexagrams.",
-    result: "1920/1920 deterministic fields matched (100%); full gate suite 12/12 PASS.",
+    result: "1920/1920 fields matched (100%).",
     statusKind: "current",
-    statusLabel: "Current library source",
+    statusLabel: "Current classical source",
     currentStatusNote:
-      "Hexagram Library display layer only; never sent to the AI oracle prompt.",
+      "Scholarly commentary verified for all 64 hexagrams.",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Library commentary: James Legge",
+    title: "Classical commentary: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "24 Jun 2026",
     method:
-      "Standalone automated gate suite (verify:legge-all-gates) on the Hexagram Library commentary bundle against the verified TXT maestro (book-one footnotes + Appendix II Great Symbolism).",
+      "Automated verification of classical commentary against the James Legge (1882) published edition, including footnotes and the Great Symbolism of Appendix II.",
     standardCompared:
-      "Footnotes and Lesser Symbolism line notes (book-one); Great Symbolism image and line gloses (Appendix II). 64 hexagrams.",
-    result: "Book-one and appendix gates 4/4 PASS; symbolism and footnotes fully covered.",
+      "Footnotes and Lesser Symbolism line notes; Great Symbolism image and line gloses (Appendix II). 64 hexagrams.",
+    result: "Footnotes and Appendix II symbolism fully covered; verification PASS.",
     statusKind: "current",
-    statusLabel: "Current library source",
+    statusLabel: "Current classical source",
     currentStatusNote:
-      "Hexagram Library display layer only; never sent to the AI oracle prompt.",
+      "Scholarly commentary verified for all 64 hexagrams.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -457,34 +457,34 @@ const BLOCKS_ES: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Comentarios de biblioteca: Wilhelm/Baynes",
+    title: "Comentario clásico: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 jun 2026",
     method:
-      "Suite de gates automatizada independiente (verify:wilhelm-all-gates) sobre el bundle de comentarios de la Biblioteca, comparado con el maestro TXT verificado (datasets book-one + comentarios Diez Alas).",
+      "Verificación automatizada del comentario clásico contra la edición publicada Wilhelm/Baynes (1950), incluido el comentario propio de Wilhelm y las Diez Alas.",
     standardCompared:
       "Comentario propio de Wilhelm y notas de las Diez Alas en juicio, imagen y cada línea; bloque Acerca de este hexagrama; Words on the Text (solo hex 1-2); comentario yong (solo hex 1-2). 64 hexagramas.",
-    result: "1920/1920 campos deterministas coincidentes (100%); suite completa 12/12 PASS.",
+    result: "1920/1920 campos coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fuente actual de biblioteca",
+    statusLabel: "Fuente clásica vigente",
     currentStatusNote:
-      "Capa de solo lectura en la Biblioteca de hexagramas; nunca se envía al prompt de IA del oráculo.",
+      "Comentarios académicos verificados para los 64 hexagramas.",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Comentarios de biblioteca: James Legge",
+    title: "Comentario clásico: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "24 jun 2026",
     method:
-      "Suite de gates automatizada independiente (verify:legge-all-gates) sobre el bundle de comentarios de la Biblioteca, comparado con el maestro TXT verificado (footnotes book-one + Gran Simbolismo del Apéndice II).",
+      "Verificación automatizada del comentario clásico contra la edición publicada de James Legge (1882), incluidas footnotes y el Gran Simbolismo del Apéndice II.",
     standardCompared:
-      "Footnotes y notas de Simbolismo menor por línea (book-one); imagen del Gran Simbolismo y glosas por línea (Apéndice II). 64 hexagramas.",
-    result: "Gates book-one y apéndice 4/4 PASS; simbolismo y footnotes cubiertos por completo.",
+      "Footnotes y notas de Simbolismo menor por línea; imagen del Gran Simbolismo y glosas por línea (Apéndice II). 64 hexagramas.",
+    result: "Footnotes y simbolismo del Apéndice II cubiertos por completo; verificación PASS.",
     statusKind: "current",
-    statusLabel: "Fuente actual de biblioteca",
+    statusLabel: "Fuente clásica vigente",
     currentStatusNote:
-      "Capa de solo lectura en la Biblioteca de hexagramas; nunca se envía al prompt de IA del oráculo.",
+      "Comentarios académicos verificados para los 64 hexagramas.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -612,34 +612,34 @@ const BLOCKS_PT: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Comentários de biblioteca: Wilhelm/Baynes",
+    title: "Comentário clássico: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 de junho de 2026",
     method:
-      "Suite de gates automatizada independente (verify:wilhelm-all-gates) sobre o bundle de comentários da Biblioteca, comparado com o mestre TXT verificado (datasets book-one + comentários Dez Asas).",
+      "Verificação automatizada do comentário clássico contra a edição publicada Wilhelm/Baynes (1950), incluindo o comentário próprio de Wilhelm e as Dez Asas.",
     standardCompared:
       "Comentário próprio de Wilhelm e notas das Dez Asas em juízo, imagem e cada linha; bloco Sobre este hexagrama; Words on the Text (apenas hex 1-2); comentário yong (apenas hex 1-2). 64 hexagramas.",
-    result: "1920/1920 campos determinísticos coincidentes (100%); suite completa 12/12 PASS.",
+    result: "1920/1920 campos coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fonte atual da biblioteca",
+    statusLabel: "Fonte clássica vigente",
     currentStatusNote:
-      "Camada apenas de leitura na Biblioteca de hexagramas; nunca enviada ao prompt de IA do oráculo.",
+      "Comentários acadêmicos verificados para os 64 hexagramas.",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Comentários de biblioteca: James Legge",
+    title: "Comentário clássico: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "24 de junho de 2026",
     method:
-      "Suite de gates automatizada independente (verify:legge-all-gates) sobre o bundle de comentários da Biblioteca, comparado com o mestre TXT verificado (footnotes book-one + Grande Simbolismo do Apêndice II).",
+      "Verificação automatizada do comentário clássico contra a edição publicada de James Legge (1882), incluindo footnotes e o Grande Simbolismo do Apêndice II.",
     standardCompared:
-      "Footnotes e notas de Simbolismo menor por linha (book-one); imagem do Grande Simbolismo e glosas por linha (Apêndice II). 64 hexagramas.",
-    result: "Gates book-one e apêndice 4/4 PASS; simbolismo e footnotes totalmente cobertos.",
+      "Footnotes e notas de Simbolismo menor por linha; imagem do Grande Simbolismo e glosas por linha (Apêndice II). 64 hexagramas.",
+    result: "Footnotes e simbolismo do Apêndice II totalmente cobertos; verificação PASS.",
     statusKind: "current",
-    statusLabel: "Fonte atual da biblioteca",
+    statusLabel: "Fonte clássica vigente",
     currentStatusNote:
-      "Camada apenas de leitura na Biblioteca de hexagramas; nunca enviada ao prompt de IA do oráculo.",
+      "Comentários acadêmicos verificados para os 64 hexagramas.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -767,34 +767,34 @@ const BLOCKS_FR: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Commentaires de bibliothèque: Wilhelm/Baynes",
+    title: "Commentaire classique: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 juin 2026",
     method:
-      "Suite de gates automatisée autonome (verify:wilhelm-all-gates) sur le bundle de commentaires de la Bibliothèque, comparée au maître TXT vérifié (datasets book-one + commentaires Dix Ailes).",
+      "Vérification automatisée du commentaire classique par rapport à l'édition publiée Wilhelm/Baynes (1950), y compris le commentaire propre de Wilhelm et les Dix Ailes.",
     standardCompared:
       "Commentaire propre de Wilhelm et notes des Dix Ailes sur jugement, image et chaque ligne; bloc À propos de cet hexagramme; Words on the Text (hex 1-2 seulement); commentaire yong (hex 1-2 seulement). 64 hexagrammes.",
-    result: "1920/1920 champs déterministes concordants (100%); suite complète 12/12 PASS.",
+    result: "1920/1920 champs concordants (100%).",
     statusKind: "current",
-    statusLabel: "Source bibliothèque actuelle",
+    statusLabel: "Source classique actuelle",
     currentStatusNote:
-      "Couche d'affichage Bibliothèque d'hexagrammes uniquement; jamais envoyée au prompt IA de l'oracle.",
+      "Commentaires savants vérifiés pour les 64 hexagrammes.",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Commentaires de bibliothèque: James Legge",
+    title: "Commentaire classique: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "24 juin 2026",
     method:
-      "Suite de gates automatisée autonome (verify:legge-all-gates) sur le bundle de commentaires de la Bibliothèque, comparée au maître TXT vérifié (footnotes book-one + Grand Symbolisme de l'Appendice II).",
+      "Vérification automatisée du commentaire classique par rapport à l'édition publiée de James Legge (1882), y compris footnotes et le Grand Symbolisme de l'Appendice II.",
     standardCompared:
-      "Footnotes et notes de Petit Symbolisme par ligne (book-one); image du Grand Symbolisme et gloses par ligne (Appendice II). 64 hexagrammes.",
-    result: "Gates book-one et appendice 4/4 PASS; symbolisme et footnotes entièrement couverts.",
+      "Footnotes et notes de Petit Symbolisme par ligne; image du Grand Symbolisme et gloses par ligne (Appendice II). 64 hexagrammes.",
+    result: "Footnotes et symbolisme de l'Appendice II entièrement couverts; vérification PASS.",
     statusKind: "current",
-    statusLabel: "Source bibliothèque actuelle",
+    statusLabel: "Source classique actuelle",
     currentStatusNote:
-      "Couche d'affichage Bibliothèque d'hexagrammes uniquement; jamais envoyée au prompt IA de l'oracle.",
+      "Commentaires savants vérifiés pour les 64 hexagrammes.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -922,34 +922,34 @@ const BLOCKS_DE: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Bibliothekskommentare: Wilhelm/Baynes",
+    title: "Klassischer Kommentar: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24. Juni 2026",
     method:
-      "Eigenständige automatisierte Gate-Suite (verify:wilhelm-all-gates) für das Hexagramm-Bibliotheks-Kommentar-Bundle gegen den verifizierten TXT-Maestro (book-one + Zehn Flügel).",
+      "Automatisierte Verifikation des klassischen Kommentars gegen die veröffentlichte Ausgabe Wilhelm/Baynes (1950), einschließlich Wilhelms eigener Anmerkungen und der Zehn Flügel.",
     standardCompared:
       "Wilhelms eigener Kommentar und Zehn-Flügel-Noten zu Urteil, Bild und jeder Linie; Block Über dieses Hexagramm; Words on the Text (nur Hex 1-2); yong-Kommentar (nur Hex 1-2). 64 Hexagramme.",
-    result: "1920/1920 deterministische Felder übereinstimmend (100%); volle Gate-Suite 12/12 PASS.",
+    result: "1920/1920 Felder übereinstimmend (100%).",
     statusKind: "current",
-    statusLabel: "Aktuelle Bibliotheksquelle",
+    statusLabel: "Aktuelle klassische Quelle",
     currentStatusNote:
-      "Nur Anzeige in der Hexagramm-Bibliothek; wird nie an den KI-Orakel-Prompt gesendet.",
+      "Gelehrte Kommentare für alle 64 Hexagramme verifiziert.",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Bibliothekskommentare: James Legge",
+    title: "Klassischer Kommentar: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "24. Juni 2026",
     method:
-      "Eigenständige automatisierte Gate-Suite (verify:legge-all-gates) für das Hexagramm-Bibliotheks-Kommentar-Bundle gegen den verifizierten TXT-Maestro (book-one-Footnotes + Anhang II Große Symbolik).",
+      "Automatisierte Verifikation des klassischen Kommentars gegen die veröffentlichte Ausgabe von James Legge (1882), einschließlich Footnotes und Große Symbolik des Anhangs II.",
     standardCompared:
-      "Footnotes und Kleinere-Symbolik-Liniennoten (book-one); Große-Symbolik-Bild und Linienglossen (Anhang II). 64 Hexagramme.",
-    result: "Book-one- und Anhang-Gates 4/4 PASS; Symbolik und Footnotes vollständig abgedeckt.",
+      "Footnotes und Kleinere-Symbolik-Liniennoten; Große-Symbolik-Bild und Linienglossen (Anhang II). 64 Hexagramme.",
+    result: "Footnotes und Symbolik des Anhangs II vollständig abgedeckt; Verifikation PASS.",
     statusKind: "current",
-    statusLabel: "Aktuelle Bibliotheksquelle",
+    statusLabel: "Aktuelle klassische Quelle",
     currentStatusNote:
-      "Nur Anzeige in der Hexagramm-Bibliothek; wird nie an den KI-Orakel-Prompt gesendet.",
+      "Gelehrte Kommentare für alle 64 Hexagramme verifiziert.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1076,34 +1076,34 @@ const BLOCKS_IT: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Commenti di biblioteca: Wilhelm/Baynes",
+    title: "Commento classico: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 giugno 2026",
     method:
-      "Suite di gate automatizzata autonoma (verify:wilhelm-all-gates) sul bundle di commenti della Biblioteca, confrontato con il maestro TXT verificato (datasets book-one + commenti Dieci Ali).",
+      "Verifica automatizzata del commento classico rispetto all'edizione pubblicata Wilhelm/Baynes (1950), inclusi il commento proprio di Wilhelm e le Dieci Ali.",
     standardCompared:
       "Commento proprio di Wilhelm e note delle Dieci Ali su giudizio, immagine e ogni linea; blocco Informazioni su questo esagramma; Words on the Text (solo hex 1-2); commento yong (solo hex 1-2). 64 esagrammi.",
-    result: "1920/1920 campi deterministici coincidenti (100%); suite completa 12/12 PASS.",
+    result: "1920/1920 campi coincidenti (100%).",
     statusKind: "current",
-    statusLabel: "Fonte biblioteca attuale",
+    statusLabel: "Fonte classica attuale",
     currentStatusNote:
-      "Solo visualizzazione nella Biblioteca degli esagrammi; mai inviato al prompt IA dell'oracolo.",
+      "Commenti accademici verificati per tutti i 64 esagrammi.",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Commenti di biblioteca: James Legge",
+    title: "Commento classico: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "24 giugno 2026",
     method:
-      "Suite di gate automatizzata autonoma (verify:legge-all-gates) sul bundle di commenti della Biblioteca, confrontato con il maestro TXT verificato (footnotes book-one + Grande Simbolismo dell'Appendice II).",
+      "Verifica automatizzata del commento classico rispetto all'edizione pubblicata di James Legge (1882), inclusi footnotes e Grande Simbolismo dell'Appendice II.",
     standardCompared:
-      "Footnotes e note di Simbolismo minore per linea (book-one); immagine del Grande Simbolismo e glosse per linea (Appendice II). 64 esagrammi.",
-    result: "Gate book-one e appendice 4/4 PASS; simbolismo e footnotes completamente coperti.",
+      "Footnotes e note di Simbolismo minore per linea; immagine del Grande Simbolismo e glosse per linea (Appendice II). 64 esagrammi.",
+    result: "Footnotes e simbolismo dell'Appendice II completamente coperti; verifica PASS.",
     statusKind: "current",
-    statusLabel: "Fonte biblioteca attuale",
+    statusLabel: "Fonte classica attuale",
     currentStatusNote:
-      "Solo visualizzazione nella Biblioteca degli esagrammi; mai inviato al prompt IA dell'oracolo.",
+      "Commenti accademici verificati per tutti i 64 esagrammi.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1226,32 +1226,32 @@ const BLOCKS_JA: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "ライブラリ注釈: Wilhelm/Baynes",
+    title: "古典注釈: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月24日",
     method:
-      "卦ライブラリ注釈バンドルと検証済みTXTマエストロ（book-one + 十翼コメント）を比較する独立した自動ゲートスイート（verify:wilhelm-all-gates）。",
+      "古典注釈を、出版版Wilhelm/Baynes（1950）と照合する自動検証。ウィルヘルム自身の注と十翼の注釈を含む。",
     standardCompared:
       "ウィルヘルム自身の注釈と十翼の卦辞・象辞・各爻への注；この卦についてブロック；Words on the Text（卦1-2のみ）；用の注釈（卦1-2のみ）。64卦。",
-    result: "1920/1920の決定論的フィールド一致（100%）；フルゲートスイート12/12 PASS。",
+    result: "1920/1920フィールド一致（100%）。",
     statusKind: "current",
-    statusLabel: "現行ライブラリソース",
-    currentStatusNote: "卦ライブラリの表示専用レイヤー。AIオラクルプロンプトには送られない。",
+    statusLabel: "現行の古典注釈ソース",
+    currentStatusNote: "64卦すべての学術注釈を検証済み。",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "ライブラリ注釈: James Legge",
+    title: "古典注釈: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "2026年6月24日",
     method:
-      "卦ライブラリ注釈バンドルと検証済みTXTマエストロ（book-one脚注 + 付録II大象伝）を比較する独立した自動ゲートスイート（verify:legge-all-gates）。",
+      "古典注釈を、出版版James Legge（1882）と照合する自動検証。脚注と付録II大象伝を含む。",
     standardCompared:
-      "脚注と小象伝の各爻注（book-one）；大象伝の象と各爻の解（付録II）。64卦。",
-    result: "book-oneおよび付録ゲート4/4 PASS；象伝と脚注を完全カバー。",
+      "脚注と小象伝の各爻注；大象伝の象と各爻の解（付録II）。64卦。",
+    result: "脚注と付録IIの象伝を完全カバー；検証PASS。",
     statusKind: "current",
-    statusLabel: "現行ライブラリソース",
-    currentStatusNote: "卦ライブラリの表示専用レイヤー。AIオラクルプロンプトには送られない。",
+    statusLabel: "現行の古典注釈ソース",
+    currentStatusNote: "64卦すべての学術注釈を検証済み。",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1372,32 +1372,32 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "图书馆注释: 卫礼贤/贝恩斯",
+    title: "古典注释: 卫礼贤/贝恩斯",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月24日",
     method:
-      "独立自动化门禁（verify:wilhelm-all-gates）：图书馆注释包与已验证 TXT 主数据集（book-one + 十翼注释）比对。",
+      "将古典注释与出版版卫礼贤/贝恩斯（1950）进行自动化验证，包括卫礼贤本人注释与十翼注释。",
     standardCompared:
       "卫礼贤本人注释与十翼对卦辞、象辞及六爻的注；关于此卦块；Words on the Text（仅第1-2卦）；用九/用六注释（仅第1-2卦）。64卦。",
-    result: "1920/1920 确定性字段一致（100%）；完整门禁 12/12 PASS。",
+    result: "1920/1920 字段一致（100%）。",
     statusKind: "current",
-    statusLabel: "当前图书馆来源",
-    currentStatusNote: "卦象图书馆的只读层。从不送入 AI 占断提示词。",
+    statusLabel: "现行古典注释来源",
+    currentStatusNote: "64卦学术注释均已验证。",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "图书馆注释: 理雅各",
+    title: "古典注释: 理雅各",
     source: CITATIONS.leggeOxford,
     verificationDate: "2026年6月24日",
     method:
-      "独立自动化门禁（verify:legge-all-gates）：图书馆注释包与已验证 TXT 主数据集（book-one 脚注 + 附录II大象传）比对。",
+      "将古典注释与出版版理雅各（1882）进行自动化验证，包括脚注与附录II大象传。",
     standardCompared:
-      "脚注与小象传各爻注（book-one）；大象传象与各爻解（附录II）。64卦。",
-    result: "book-one 与附录门禁 4/4 PASS；象传与脚注全覆盖。",
+      "脚注与小象传各爻注；大象传象与各爻解（附录II）。64卦。",
+    result: "脚注与附录II象传全覆盖；验证PASS。",
     statusKind: "current",
-    statusLabel: "当前图书馆来源",
-    currentStatusNote: "卦象图书馆的只读层。从不送入 AI 占断提示词。",
+    statusLabel: "现行古典注释来源",
+    currentStatusNote: "64卦学术注释均已验证。",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1517,32 +1517,32 @@ const BLOCKS_KO: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "도서관 주석: Wilhelm/Baynes",
+    title: "고전 주석: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026년 6월 24일",
     method:
-      "괘 도서관 주석 번들과 검증된 TXT 마에스트로(book-one + 십익 주석)를 비교하는 독립 자동 게이트 스위트(verify:wilhelm-all-gates).",
+      "고전 주석을 출판판 Wilhelm/Baynes(1950)과 대조하는 자동 검증. Wilhelm 자신의 주석과 십익 주석 포함.",
     standardCompared:
       "Wilhelm 자신의 주석과 십익의 괘사·상사·각 효 주석; 이 괘에 대하여 블록; Words on the Text(1-2괴만); 용 주석(1-2괴만). 64괴.",
-    result: "1920/1920 결정론적 필드 일치(100%); 전체 게이트 12/12 PASS.",
+    result: "1920/1920 필드 일치(100%).",
     statusKind: "current",
-    statusLabel: "현행 도서관 소스",
-    currentStatusNote: "괘 도서관의 표시 전용 계층. AI 오라클 프롬프트에는 전송되지 않음.",
+    statusLabel: "현행 고전 주석 출처",
+    currentStatusNote: "64괴 학술 주석 검증 완료.",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "도서관 주석: James Legge",
+    title: "고전 주석: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "2026년 6월 24일",
     method:
-      "괘 도서관 주석 번들과 검증된 TXT 마에스트로(book-one 각주 + 부록 II 대상전)를 비교하는 독립 자동 게이트 스위트(verify:legge-all-gates).",
+      "고전 주석을 출판판 James Legge(1882)와 대조하는 자동 검증. 각주와 부록 II 대상전 포함.",
     standardCompared:
-      "각주와 소상전 효별 주석(book-one); 대상전 상과 효별 해(부록 II). 64괴.",
-    result: "book-one 및 부록 게이트 4/4 PASS; 상전과 각주 완전 커버.",
+      "각주와 소상전 효별 주석; 대상전 상과 효별 해(부록 II). 64괴.",
+    result: "각주와 부록 II 상전 완전 커버; 검증 PASS.",
     statusKind: "current",
-    statusLabel: "현행 도서관 소스",
-    currentStatusNote: "괘 도서관의 표시 전용 계층. AI 오라클 프롬프트에는 전송되지 않음.",
+    statusLabel: "현행 고전 주석 출처",
+    currentStatusNote: "64괴 학술 주석 검증 완료.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1664,32 +1664,32 @@ const BLOCKS_AR: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "شروح المكتبة: Wilhelm/Baynes",
+    title: "شرح تقليدي: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 يونيو 2026",
     method:
-      "مجموعة gates آلية مستقلة (verify:wilhelm-all-gates) على حزمة شروح مكتبة الهيكساغرامات مقابل الملف TXT الرئيسي الموثّق (book-one + شروح العشرة أجنحة).",
+      "تحقق آلي من الشرح التقليدي مقابل النسخة المنشورة Wilhelm/Baynes (1950)، بما في ذلك شرح Wilhelm نفسه وشروح العشرة أجنحة.",
     standardCompared:
-      "شرح Wilhelm نفسه وملاحظات العشرة أجنحة على الحكم والصورة وكل خط؛ كتلة حول هذا الHexagram؛ Words on the Text (الHexagram 1-2 فقط)؛ شرح yong (1-2 فقط). 64 hexagram.",
-    result: "1920/1920 حقلاً حتمياً متطابقاً (100%)؛ مجموعة gates كاملة 12/12 PASS.",
+      "شرح Wilhelm نفسه وملاحظات العشرة أجنحة على الحكم والصورة وكل خط؛ كتلة حول هذا الHexagram؛ Words on the Text (Hexagram 1-2 فقط)؛ شرح yong (1-2 فقط). 64 hexagram.",
+    result: "1920/1920 حقلاً متطابقاً (100%).",
     statusKind: "current",
-    statusLabel: "مصدر المكتبة الحالي",
-    currentStatusNote: "طبقة عرض في مكتبة الهيكساغرامات فقط؛ لا تُرسل إلى prompt ذكاء الأوراكل.",
+    statusLabel: "مصدر الشرح التقليدي الحالي",
+    currentStatusNote: "شروح أكاديمية مُحققة لجميع الـ64 hexagram.",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "شروح المكتبة: James Legge",
+    title: "شرح تقليدي: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "24 يونيو 2026",
     method:
-      "مجموعة gates آلية مستقلة (verify:legge-all-gates) على حزمة الشروح مقابل الملف TXT الرئيسي (footnotes book-one + الرمزية الكبرى للملحق II).",
+      "تحقق آلي من الشرح التقليدي مقابل النسخة المنشورة James Legge (1882)، بما في ذلك footnotes والرمزية الكبرى للملحق II.",
     standardCompared:
-      "Footnotes وملاحظات الرمزية الصغرى لكل خط (book-one)؛ صورة الرمزية الكبرى وشروح الخطوط (الملحق II). 64 hexagram.",
-    result: "gates book-one والملحق 4/4 PASS؛ الرمزية والfootnotes مغطاة بالكامل.",
+      "Footnotes وملاحظات الرمزية الصغرى لكل خط؛ صورة الرمزية الكبرى وشروح الخطوط (الملحق II). 64 hexagram.",
+    result: "Footnotes ورمزية الملحق II مغطاة بالكامل؛ تحقق PASS.",
     statusKind: "current",
-    statusLabel: "مصدر المكتبة الحالي",
-    currentStatusNote: "طبقة عرض في مكتبة الهيكساغرامات فقط؛ لا tُرسل إلى prompt ذكاء الأوراكl.",
+    statusLabel: "مصدر الشرح التقليدي الحالي",
+    currentStatusNote: "شروح أكاديمية مُحققة لجميع الـ64 hexagram.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1812,32 +1812,32 @@ const BLOCKS_HI: AuditSourceBlock[] = [
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "पुस्तकालय टीका: Wilhelm/Baynes",
+    title: "शास्त्रीय टीका: Wilhelm/Baynes",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 जून 2026",
     method:
-      "स्वतंत्र स्वचालित gate सुइट (verify:wilhelm-all-gates): हेक्साग्राम पुस्तकालय टीका बंडल बनाम सत्यापित TXT मास्टर (book-one + दस पंख टिप्पणी)।",
+      "शास्त्रीय टीका का Wilhelm/Baynes (1950) प्रकाशित संस्करण के विरुद्ध स्वचालित सत्यापन, Wilhelm का अपना टीका और दस पंख टिप्पणी सहित।",
     standardCompared:
       "Wilhelm का अपना टीका और दस पंख की judgment/image/प्रत्येक रेखा पर टिप्पणियाँ; About this hexagram ब्लॉक; Words on the Text (केवल hex 1-2); yong टीका (1-2)। 64 हेक्साग्राम।",
-    result: "1920/1920 deterministic फ़ील्ड मेल (100%); पूर्ण gate सुइट 12/12 PASS।",
+    result: "1920/1920 फ़ील्ड मेल (100%)।",
     statusKind: "current",
-    statusLabel: "वर्तमान पुस्तकालय स्रोत",
-    currentStatusNote: "केवल हेक्साग्राम पुस्तकालय प्रदर्शन परत; AI ओरेकल prompt में कभी नहीं भेजी जाती।",
+    statusLabel: "वर्तमान शास्त्रीय स्रोत",
+    currentStatusNote: "सभी 64 हेक्साग्राम के लिए शास्त्रीय टीका सत्यापित।",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "पुस्तकालय टीका: James Legge",
+    title: "शास्त्रीय टीका: James Legge",
     source: CITATIONS.leggeOxford,
     verificationDate: "24 जून 2026",
     method:
-      "स्वतंत्र स्वचालित gate सुइट (verify:legge-all-gates): पुस्तकालय टीका बंडल बनाम सत्यापित TXT मास्टर (book-one footnotes + Appendix II Great Symbolism)।",
+      "शास्त्रीय टीका का James Legge (1882) प्रकाशित संस्करण के विरुद्ध स्वचालित सत्यापन, footnotes और Appendix II Great Symbolism सहित।",
     standardCompared:
-      "Footnotes और Lesser Symbolism रेखा-टिप्पणियाँ (book-one); Great Symbolism image और रेखा-ग्लोस (Appendix II)। 64 हेक्साग्राम।",
-    result: "Book-one और appendix gates 4/4 PASS; symbolism और footnotes पूर्ण कवर।",
+      "Footnotes और Lesser Symbolism रेखा-टिप्पणियाँ; Great Symbolism image और रेखा-ग्लोस (Appendix II)। 64 हेक्साग्राम।",
+    result: "Footnotes और Appendix II symbolism पूर्ण कवर; सत्यापन PASS।",
     statusKind: "current",
-    statusLabel: "वर्तमान पुस्तकालय स्रोत",
-    currentStatusNote: "केवल हेक्साग्राम पुस्तकालय प्रदर्शन परत; AI ओरेकल prompt में कभी नहीं भेजी जाती।",
+    statusLabel: "वर्तमान शास्त्रीय स्रोत",
+    currentStatusNote: "सभी 64 हेक्साग्राम के लिए शास्त्रीय टीका सत्यापित।",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1871,7 +1871,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
 const EN_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Fidelity Audits",
   oracleTextSectionHeading: "I Ching oracle texts",
-  libraryCommentarySectionHeading: "Hexagram Library commentary",
+  libraryCommentarySectionHeading: "Classical commentary (Wilhelm, Legge, Confucius)",
   mutationRulesSectionHeading: "Changing-line mutation rules",
   blockVerificationDateLabel: "Date verified",
   blockSourceLabel: "Source",
@@ -1884,7 +1884,7 @@ const EN_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const ES_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Auditorías de fidelidad",
   oracleTextSectionHeading: "Textos del oráculo del I Ching",
-  libraryCommentarySectionHeading: "Comentarios de la biblioteca de hexagramas",
+  libraryCommentarySectionHeading: "Comentario clásico (Wilhelm, Legge, Confucio)",
   mutationRulesSectionHeading: "Reglas de mutación de líneas cambiantes",
   blockVerificationDateLabel: "Fecha de verificación",
   blockSourceLabel: "Fuente",
@@ -1897,7 +1897,7 @@ const ES_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const PT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Auditorias de fidelidade",
   oracleTextSectionHeading: "Textos do oráculo do I Ching",
-  libraryCommentarySectionHeading: "Comentários da biblioteca de hexagramas",
+  libraryCommentarySectionHeading: "Comentário clássico (Wilhelm, Legge, Confúcio)",
   mutationRulesSectionHeading: "Regras de mutação de linhas móveis",
   blockVerificationDateLabel: "Data de verificação",
   blockSourceLabel: "Fonte",
@@ -1910,7 +1910,7 @@ const PT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const FR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Audits de fidélité",
   oracleTextSectionHeading: "Textes oraculaires du I Ching",
-  libraryCommentarySectionHeading: "Commentaires de la bibliothèque d'hexagrammes",
+  libraryCommentarySectionHeading: "Commentaire classique (Wilhelm, Legge, Confucius)",
   mutationRulesSectionHeading: "Règles de mutation des lignes changeantes",
   blockVerificationDateLabel: "Date de vérification",
   blockSourceLabel: "Source",
@@ -1923,7 +1923,7 @@ const FR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const DE_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Fidelitätsprüfungen",
   oracleTextSectionHeading: "I-Ching-Orakeltexte",
-  libraryCommentarySectionHeading: "Hexagramm-Bibliothek: Kommentare",
+  libraryCommentarySectionHeading: "Klassischer Kommentar (Wilhelm, Legge, Konfuzius)",
   mutationRulesSectionHeading: "Mutationsregeln für wechselnde Linien",
   blockVerificationDateLabel: "Prüfdatum",
   blockSourceLabel: "Quelle",
@@ -1936,7 +1936,7 @@ const DE_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const IT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "Audit di fedeltà",
   oracleTextSectionHeading: "Testi oracolari dell'I Ching",
-  libraryCommentarySectionHeading: "Commenti della biblioteca degli esagrammi",
+  libraryCommentarySectionHeading: "Commento classico (Wilhelm, Legge, Confucio)",
   mutationRulesSectionHeading: "Regole di mutazione delle linee mutanti",
   blockVerificationDateLabel: "Data di verifica",
   blockSourceLabel: "Fonte",
@@ -1949,7 +1949,7 @@ const IT_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const JA_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "忠実度監査",
   oracleTextSectionHeading: "I Ching オラクルテキスト",
-  libraryCommentarySectionHeading: "卦ライブラリの注釈",
+  libraryCommentarySectionHeading: "古典注釈（Wilhelm・Legge・孔子）",
   mutationRulesSectionHeading: "変爻の解釈規則",
   blockVerificationDateLabel: "検証日",
   blockSourceLabel: "出典",
@@ -1962,7 +1962,7 @@ const JA_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const ZH_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "保真审计",
   oracleTextSectionHeading: "I Ching 卦辞文本",
-  libraryCommentarySectionHeading: "卦象图书馆注释",
+  libraryCommentarySectionHeading: "古典注释（卫礼贤、理雅各、孔子）",
   mutationRulesSectionHeading: "变爻解读规则",
   blockVerificationDateLabel: "验证日期",
   blockSourceLabel: "来源",
@@ -1975,7 +1975,7 @@ const ZH_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const KO_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "충실도 감사",
   oracleTextSectionHeading: "I Ching 오라클 텍스트",
-  libraryCommentarySectionHeading: "괘 도서관 주석",
+  libraryCommentarySectionHeading: "고전 주석 (Wilhelm, Legge, 공자)",
   mutationRulesSectionHeading: "변효 해석 규칙",
   blockVerificationDateLabel: "검증 날짜",
   blockSourceLabel: "출처",
@@ -1988,7 +1988,7 @@ const KO_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const AR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "تدقيقات المطابقة",
   oracleTextSectionHeading: "نصوص أوراكل I Ching",
-  libraryCommentarySectionHeading: "تعليقات مكتبة الهيكساغرامات",
+  libraryCommentarySectionHeading: "شرح تقليدي (Wilhelm، Legge، Confucius)",
   mutationRulesSectionHeading: "قواعد تحول الخطوط المتغيرة",
   blockVerificationDateLabel: "تاريخ التحقق",
   blockSourceLabel: "المصدر",
@@ -2001,7 +2001,7 @@ const AR_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
 const HI_BASE: Omit<AuditsPageUiMessages, "timeline"> = {
   title: "निष्ठा ऑडिट",
   oracleTextSectionHeading: "I Ching ओरेकल पाठ",
-  libraryCommentarySectionHeading: "हेक्साग्राम पुस्तकालय टीका",
+  libraryCommentarySectionHeading: "शास्त्रीय टीका (Wilhelm, Legge, Confucius)",
   mutationRulesSectionHeading: "बदलती रेखाओं के परिवर्तन नियम",
   blockVerificationDateLabel: "सत्यापन तिथि",
   blockSourceLabel: "स्रोत",

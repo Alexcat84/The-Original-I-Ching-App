@@ -3,7 +3,7 @@
 
 - **Fecha:** 2026-06-25
 - **Estado:** ✅ **Cerrada** — implementado en rama de trabajo local; gates `i18n:audit` + `verify-docs-remediation` PASS
-- **Relacionado:** [`audits-page-ui.ts`](../../packages/i18n/src/messages/audits-page-ui.ts), [`apps/web/src/app/audits/page.tsx`](../../apps/web/src/app/audits/page.tsx), [`20260622-AUD-DAT-FID-04-fidelity-mutation-master.md`](./20260622-AUD-DAT-FID-04-fidelity-mutation-master.md)
+- **Relacionado:** [`audits-page-ui.ts`](../../packages/i18n/src/messages/audits-page-ui.ts), [`apps/web/src/app/audits/page.tsx`](../../apps/web/src/app/audits/page.tsx), [`00000000-WF-DOC-03-audits-page-update-guide.md`](../workflows/00000000-WF-DOC-03-audits-page-update-guide.md), [`20260622-AUD-DAT-FID-04-fidelity-mutation-master.md`](./20260622-AUD-DAT-FID-04-fidelity-mutation-master.md)
 - **Alcance:** UI pública `/audits` + i18n · sin cambios en datasets, motor de fidelidad ni billing
 
 ---

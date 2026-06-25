@@ -42,6 +42,7 @@
 | `00000000-WF-I18N-01 i18n-guide` | Agregar idioma | [00000000-WF-I18N-01-i18n-guide.md](./workflows/00000000-WF-I18N-01-i18n-guide.md) |
 | `00000000-WF-I18N-02 i18n-standardization` | Estandarización i18n DoD | [00000000-WF-I18N-02-i18n-standardization.md](./workflows/00000000-WF-I18N-02-i18n-standardization.md) |
 | `00000000-WF-DOC-01 docs-content-update-guide` | Actualizar docs producto | [00000000-WF-DOC-01-docs-content-update-guide.md](./workflows/00000000-WF-DOC-01-docs-content-update-guide.md) |
+| `00000000-WF-DOC-03 audits-page-update-guide` | **Actualizar página `/audits`** | [00000000-WF-DOC-03-audits-page-update-guide.md](./workflows/00000000-WF-DOC-03-audits-page-update-guide.md) |
 | `00000000-WF-DOC-02 mandatory-doc-qa-registration` | **Registro obligatorio docs/tests** | [00000000-WF-DOC-02-mandatory-doc-qa-registration.md](./workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md) |
 | `00000000-WF-QA-01 test-lifecycle` | Ciclo de vida tests (crear, actualizar, índice) | [00000000-WF-QA-01-test-lifecycle.md](./workflows/00000000-WF-QA-01-test-lifecycle.md) |
 | `00000000-WF-AUTH-01 legal-post-auth` | Legal post-auth | [00000000-WF-AUTH-01-legal-post-auth.md](./workflows/00000000-WF-AUTH-01-legal-post-auth.md) |

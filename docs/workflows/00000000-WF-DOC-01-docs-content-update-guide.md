@@ -7,6 +7,11 @@ Documento operativo para cualquier cambio de copy explicativa de cara al usuario
 equivalentes. No cubre `privacy-page-ui.ts` / `terms-page-ui.ts` (esos requieren revisión legal,
 no solo de producto).
 
+**¿Vas a tocar la página pública `/audits` (timeline de fidelidad)?** Usa la guía dedicada
+[`00000000-WF-DOC-03-audits-page-update-guide.md`](./00000000-WF-DOC-03-audits-page-update-guide.md):
+patrones de título, tres categorías separadas, `TIMELINE_META`, gate P2.3 y checklist completo.
+Esta guía (WF-DOC-01) sigue aplicando para APA 7, higiene de puntuación y reglas generales de copy.
+
 Para **agregar un idioma nuevo**, usa [`00000000-WF-I18N-01-i18n-guide.md`](./00000000-WF-I18N-01-i18n-guide.md). Esta guía es sobre
 **qué decir y cómo verificarlo**, no sobre la mecánica de añadir un locale.
 

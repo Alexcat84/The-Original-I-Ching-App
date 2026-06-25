@@ -5162,7 +5162,7 @@ html:not([data-theme="dark"]) .audit-timeline__date--active {
 .audit-timeline__tree-value {
   margin: 0;
   color: var(--audit-timeline-text);
-  text-align: start;
+  text-align: justify;
   hyphens: manual;
 }
 
@@ -5170,7 +5170,7 @@ html:not([data-theme="dark"]) .audit-timeline__date--active {
   font-style: italic;
 }
 
-/* /audits tree: left-aligned labels (override doc-article justify on li) */
+/* /audits tree: labels left; values justified (override doc-article justify on li) */
 .oracle-shell.doc-page .doc-article .audit-timeline__tree-item {
   text-align: start;
   hyphens: manual;
