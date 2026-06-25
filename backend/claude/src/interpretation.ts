@@ -343,7 +343,7 @@ ${zhouyiLines ? `LINE TEXTS:\n${zhouyiLines}` : ""}
 ${
   tr && t.transformedJudgment
     ? `
-TRANSFORMED HEXAGRAM (Reference): #${tr.number} — ${tr.name} (${tr.chineseName} · ${tr.pinyin})
+TRANSFORMED HEXAGRAM (Reference): #${tr.number} — ${tr.chineseName} · ${tr.pinyin} (${tr.name})
 WILHELM JUDGMENT: ${t.transformedJudgment}
 ${t.transformedImage ? `WILHELM IMAGE: ${t.transformedImage}` : ""}
 ${t.leggeTransformedJudgment ? `LEGGE JUDGMENT: ${t.leggeTransformedJudgment}` : ""}
@@ -365,7 +365,7 @@ ${t.specialYaoText ? `SPECIAL YAO (用九/用六): ${t.specialYaoText}` : ""}
 ${
   tr && t.transformedJudgment
     ? `
-TRANSFORMED HEXAGRAM: #${tr.number} — ${tr.name} (${tr.chineseName})
+TRANSFORMED HEXAGRAM: #${tr.number} — ${tr.chineseName} (${tr.name})
 JUDGMENT: ${t.transformedJudgment}`
     : ""
 }
@@ -458,7 +458,7 @@ NEW CONSULTATION${hasContext ? " (continues thematic session)" : ""}:
 SELECTED_TRANSLATOR: ${selectedTranslatorLabel}
 
 ═══════════════════════════════════
-PRIMARY HEXAGRAM: #${p.number} — ${p.name} (${p.chineseName} · ${p.pinyin})
+PRIMARY HEXAGRAM: #${p.number} — ${p.chineseName} · ${p.pinyin} (${p.name})
 ${p.upperTrigram} over ${p.lowerTrigram}
 
 MUTATION RULE: ${t.ruleExplanation}
