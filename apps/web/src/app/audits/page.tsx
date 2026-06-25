@@ -15,6 +15,7 @@ import { resolveDocLocale } from "@/lib/doc-locale";
 type TimelineField = {
   label: string;
   value: ReactNode;
+  valueClassName?: string;
 };
 
 function timelineDateClass(statusKind: AuditTimelineEntry["statusKind"]): string {
@@ -63,6 +64,8 @@ function buildTimelineFields(
       value: entry.currentStatusNote.trim()
         ? `${entry.statusLabel}${entry.statusLabel.endsWith(".") ? " " : ". "}${entry.currentStatusNote}`
         : entry.statusLabel,
+      valueClassName:
+        entry.statusKind === "superseded" ? "audit-timeline__tree-value--superseded" : undefined,
     },
   ];
 }
@@ -99,7 +102,16 @@ function AuditTimelineRow({
                 }
               >
                 <span className="audit-timeline__tree-label">{field.label}</span>
-                <span className="audit-timeline__tree-value">{field.value}</span>
+                <span
+                  className={[
+                    "audit-timeline__tree-value",
+                    field.valueClassName,
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {field.value}
+                </span>
               </li>
             ))}
           </ul>

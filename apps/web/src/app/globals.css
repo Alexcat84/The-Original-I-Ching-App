@@ -4994,6 +4994,7 @@ html[data-theme="dark"] .verdict-pill--silent {
   --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 72%, var(--accent));
   /* Light mode: deep emerald chip — high contrast on pale shell, distinct from teal --accent */
   --audit-timeline-date-active: #065f36;
+  --audit-timeline-status-superseded: #b91c1c;
   list-style: none;
   margin: 0.35rem 0 0;
   padding: 0;
@@ -5005,6 +5006,7 @@ html[data-theme="dark"] .audit-timeline {
   --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 82%, var(--accent));
   /* Bright leaf green — readable on dark shell, not aqua/cyan */
   --audit-timeline-date-active: #72e88a;
+  --audit-timeline-status-superseded: #f87171;
 }
 
 .audit-timeline-section + .audit-timeline-section {
@@ -5114,10 +5116,12 @@ html:not([data-theme="dark"]) .audit-timeline__date--active {
 }
 
 .audit-timeline__tree {
+  --audit-tree-indent: 0.95rem;
+  --audit-tree-branch-y: 0.72em;
+  --audit-tree-radius: 0.42rem;
   list-style: none;
   margin: 0.05rem 0 0.45rem 0.55rem;
-  padding: 0 0 0 0.95rem;
-  border-left: 1px dotted var(--audit-timeline-line);
+  padding: 0 0 0 var(--audit-tree-indent);
   font-size: 0.88rem;
   line-height: 1.45;
 }
@@ -5131,23 +5135,30 @@ html:not([data-theme="dark"]) .audit-timeline__date--active {
   padding: 0.18rem 0 0.18rem 0.85rem;
 }
 
+/* Rounded elbow at every branch: trunk down, then curve into the horizontal arm. */
 .audit-timeline__tree-item::before {
   content: "";
   position: absolute;
-  left: -0.95rem;
-  top: 0.72em;
-  width: 0.95rem;
-  border-top: 1px dotted var(--audit-timeline-line);
+  left: calc(-1 * var(--audit-tree-indent));
+  top: 0;
+  width: var(--audit-tree-indent);
+  height: calc(var(--audit-tree-branch-y) + var(--audit-tree-radius));
+  box-sizing: border-box;
+  border-left: 1px dotted var(--audit-timeline-line);
+  border-bottom: 1px dotted var(--audit-timeline-line);
+  border-bottom-left-radius: var(--audit-tree-radius);
+  pointer-events: none;
 }
 
-.audit-timeline__tree-item.is-last::after {
+/* Trunk continues below the elbow on all rows except the last field. */
+.audit-timeline__tree-item:not(.is-last)::after {
   content: "";
   position: absolute;
-  left: -0.95rem;
-  top: calc(0.72em + 1px);
+  left: calc(-1 * var(--audit-tree-indent));
+  top: calc(var(--audit-tree-branch-y) + var(--audit-tree-radius));
   bottom: 0;
-  width: 1px;
-  background: var(--bg);
+  border-left: 1px dotted var(--audit-timeline-line);
+  pointer-events: none;
 }
 
 .audit-timeline__tree-label {
@@ -5164,6 +5175,11 @@ html:not([data-theme="dark"]) .audit-timeline__date--active {
   color: var(--audit-timeline-text);
   text-align: justify;
   hyphens: manual;
+}
+
+.audit-timeline__tree-value--superseded {
+  color: var(--audit-timeline-status-superseded);
+  font-weight: 600;
 }
 
 .audit-timeline__tree-value em {
