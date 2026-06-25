@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 import {
-  formatAuditTimelineDate,
+  formatAuditTimelineDateShort,
   getAuditsPageUiMessages,
   getDocNavUiMessages,
   type AppLocale,
@@ -20,11 +20,6 @@ type TimelineField = {
 function timelineDateClass(statusKind: AuditTimelineEntry["statusKind"]): string {
   if (statusKind === "superseded") return "audit-timeline__date audit-timeline__date--muted";
   return "audit-timeline__date audit-timeline__date--active";
-}
-
-function timelineSpineDotClass(statusKind: AuditTimelineEntry["statusKind"]): string {
-  if (statusKind === "superseded") return "audit-timeline__spine-dot audit-timeline__spine-dot--muted";
-  return "audit-timeline__spine-dot audit-timeline__spine-dot--active";
 }
 
 function buildTimelineFields(
@@ -70,41 +65,32 @@ function AuditTimelineRow({
   entry: AuditTimelineEntry;
   locale: AppLocale;
 }) {
-  const dateLabel = formatAuditTimelineDate(entry.verificationDateIso, locale);
+  const dateLabel = formatAuditTimelineDateShort(entry.verificationDateIso, locale);
   const fields = buildTimelineFields(a, entry);
 
   return (
     <li className="audit-timeline__item">
-      <div className="audit-timeline__marker">
-        <span className={timelineSpineDotClass(entry.statusKind)} aria-hidden="true" />
-        <time className={timelineDateClass(entry.statusKind)} dateTime={entry.verificationDateIso}>
-          {dateLabel}
-        </time>
-      </div>
-      <div className="audit-timeline__panel">
-        <details className="audit-timeline__details">
-          <summary className="audit-timeline__summary">
-            <div className="audit-timeline__summary-main">
-              <span className="audit-timeline__headline">{entry.headline}</span>
-              <span className="audit-timeline__status">{entry.statusLabel}</span>
-            </div>
-            <span className="audit-timeline__toggle" aria-hidden="true" />
-          </summary>
-          {fields.length > 0 ? (
+      <details className="audit-timeline__details">
+        <summary className="audit-timeline__summary">
+          <time className={timelineDateClass(entry.statusKind)} dateTime={entry.verificationDateIso}>
+            {dateLabel}
+          </time>
+          <span className="audit-timeline__headline">{entry.headline}</span>
+          <span className="audit-timeline__toggle" aria-hidden="true" />
+        </summary>
+        {fields.length > 0 ? (
+          <div className="audit-timeline__branch">
             <ul className="audit-timeline__tree">
-              {fields.map((field, index) => (
-                <li
-                  key={field.label}
-                  className={index === fields.length - 1 ? "audit-timeline__tree-item is-last" : "audit-timeline__tree-item"}
-                >
+              {fields.map((field) => (
+                <li key={field.label} className="audit-timeline__tree-item">
                   <span className="audit-timeline__tree-label">{field.label}</span>
                   <span className="audit-timeline__tree-value">{field.value}</span>
                 </li>
               ))}
             </ul>
-          ) : null}
-        </details>
-      </div>
+          </div>
+        ) : null}
+      </details>
     </li>
   );
 }

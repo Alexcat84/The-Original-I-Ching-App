@@ -125,7 +125,6 @@ function reportToTimelineEntry(report: AuditReportEntry): AuditTimelineEntry & {
     statusKind: "current",
     statusLabel: report.statusLabel,
     result: report.summary,
-    currentStatusNote: report.summary,
   };
 }
 
@@ -1712,6 +1711,15 @@ export function formatAuditTimelineDate(iso: string, locale: AppLocale): string 
   return new Intl.DateTimeFormat(LOCALE_BCP47[locale], {
     day: "numeric",
     month: "long",
+    year: "numeric",
+  }).format(new Date(`${iso}T12:00:00`));
+}
+
+/** Compact date for the timeline circle (short month). */
+export function formatAuditTimelineDateShort(iso: string, locale: AppLocale): string {
+  return new Intl.DateTimeFormat(LOCALE_BCP47[locale], {
+    day: "numeric",
+    month: "short",
     year: "numeric",
   }).format(new Date(`${iso}T12:00:00`));
 }
