@@ -5,8 +5,8 @@
  * Tier-0 (Parma): http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html
  * Tier-2 (supplements): Wilhelm/Baynes print edition (1950), page-verified 2026-06-21.
  *
- * @see docs/auditorias/DATA_INTEGRITY_AUDIT.md
- * @see docs/auditorias/ICHING_TRANSLATOR_DATA_FIDELITY_AUDIT_2026-06-21.md §12.4
+ * @see docs/auditorias/00000000-RPT-DAT-FID-00-data-integrity-summary.md
+ * @see docs/auditorias/20260621-AUD-DAT-FID-01-translator-fidelity-reaudit.md §12.4
  */
 
 /** Primary print source for all six Parma gaps. */

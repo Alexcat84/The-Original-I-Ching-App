@@ -264,7 +264,7 @@ Herramientas locales de QA (no producción): `npm run generate:together:iching-s
 7. **Sellos/glifos en imágenes FLUX** — prompt positivo variado + `negative_prompt` dedicado y compactación (`image-engine`); ver tabla “Mitigación de glifos” arriba
 8. **WebView cross-origin guard** — `onShouldStartLoadWithRequest` bloquea cualquier URL fuera de `BASE_URL`; aplica igual en staging y producción
 9. **SQLite local cache mobile** — `expo-sqlite` en APK: historial de chats disponible offline vía `window.__rnCachedChats`; sincronización en background con stale-while-revalidate
-10. **P0 wipe interpretaciones (2026-06-07)** — 066 aplicada sin 068 previo; trigger sync propagó NULL a `consultation_content`. Fix: **068** + upsert defensivo. **NUNCA 066 sin 068.** Docs: `docs/auditorias/INCIDENT_2026-06-07_CONSULTATION_CONTENT_WIPE.md`, runbook `docs/runbooks/MIGRATION_DATA_INTEGRITY.md`
+10. **P0 wipe interpretaciones (2026-06-07)** — 066 aplicada sin 068 previo; trigger sync propagó NULL a `consultation_content`. Fix: **068** + upsert defensivo. **NUNCA 066 sin 068.** Docs: `docs/auditorias/20260607-INC-SUP-INC-01-consultation-content-wipe.md`, runbook `docs/runbooks/00000000-RUN-SUP-01-migration-data-integrity.md`
 11. **Idioma consulta false-positive FR (2026-06-21)** — eliminada heurística servidor `detectLanguageFromUserText`; lib compartida `detect-input-language.ts` respeta UI locale si pregunta ambigua
 12. **Resumen tirada Huang con Zhu Xi (2026-06-21)** — SSE `final_ready` ahora incluye `lineReadingSystem`; fallback UI desde estado del panel
 
@@ -385,7 +385,7 @@ Compatibles con Node.js 24 — deadline del 2 junio 2026 cubierto.
 - [ ] Data Safety Form en Play Console
 - [ ] APK final con todos los fixes verificados en dispositivo
 - [ ] i18n formal con next-intl (post-lanzamiento, Fase 2)
-- **Expansión de idiomas (hoy):** seguir checklist operativo en [`docs/workflows/I18N_GUIDE.md`](docs/workflows/I18N_GUIDE.md) — `@iching-oracle/i18n` + `Record<AppLocale, …>`, no `apps/web/messages/*.json`
-- **Actualizar contenido de FAQ/guía/notas existente (no agregar idioma):** seguir [`docs/workflows/DOCS_CONTENT_UPDATE_GUIDE.md`](docs/workflows/DOCS_CONTENT_UPDATE_GUIDE.md) — fuentes citables reales (nunca "PDF"), nivel de detalle por canal, y el chequeo de paridad de `id` de FAQ entre los 11 locales (`npm run i18n:audit`)
+- **Expansión de idiomas (hoy):** seguir checklist operativo en [`docs/workflows/00000000-WF-I18N-01-i18n-guide.md`](docs/workflows/00000000-WF-I18N-01-i18n-guide.md) — `@iching-oracle/i18n` + `Record<AppLocale, …>`, no `apps/web/messages/*.json`
+- **Actualizar contenido de FAQ/guía/notas existente (no agregar idioma):** seguir [`docs/workflows/00000000-WF-DOC-01-docs-content-update-guide.md`](docs/workflows/00000000-WF-DOC-01-docs-content-update-guide.md) — fuentes citables reales (nunca "PDF"), nivel de detalle por canal, y el chequeo de paridad de `id` de FAQ entre los 11 locales (`npm run i18n:audit`)
 - [ ] App Expo nativa completa (post-lanzamiento, Fase 2)
 - [ ] Animación ritual de hueso (Three.js + fuego) — pendiente integración

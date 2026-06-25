@@ -9,7 +9,7 @@
  *
  * No live I18n / API calls. All hexagram texts come from the bundled data package.
  *
- * Reference: docs/auditorias/ICHING_CHANGING_LINES_AUDIT_2026-06-14.md
+ * Reference: docs/auditorias/20260614-AUD-MUT-01-changing-lines.md
  */
 import { describe, it, expect } from "vitest";
 import {

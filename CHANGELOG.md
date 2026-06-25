@@ -589,7 +589,7 @@ Full project change history.
   - **Fix 6** — index.tsx `INJECTED_JS __rnSignOut`: clear `iching_chat_state_*` + `iching_chat_summaries_*` from both storages before postMessage — aligns native sign-out with web `signOut()` cleanup
 
 ### Docs
-- docs(audit): close CHAT_THREAD_HYDRATION_AUDIT.md — add cross-analysis Claude+Cursor, full fix implementation details, and coverage table H1–H7 | commit: baf72f0
+- docs(audit): close 00000000-AUD-MOB-HYD-01-chat-thread-hydration.md — add cross-analysis Claude+Cursor, full fix implementation details, and coverage table H1–H7 | commit: baf72f0
 
 ### Maintenance
 - chore(release): bump version 3.4.8 / versionCode 41 | commit: 89ecebc (previous release marker)
@@ -632,7 +632,7 @@ Full project change history.
 - fix(css): promote translator + binary toggle label layers to own GPU compositor layer (translateZ(0) + will-change: transform) — prevents text labels disappearing during scroll on Android WebView due to z-order collapse between the thumb's compositor layer and the main content layer | commit: af37871
 
 ### Docs (2026-06-06)
-- docs(audit): DYNAMIC_SYMBOLS_AUDIT.md — inventario completo de símbolos chinos en la cadena de respuesta (I Ching + Oracle Bones), verificación estático/dinámico, cadena de propagación y lección de CI | commit: 0833541
+- docs(audit): 00000000-AUD-SYM-01-dynamic-symbols.md — inventario completo de símbolos chinos en la cadena de respuesta (I Ching + Oracle Bones), verificación estático/dinámico, cadena de propagación y lección de CI | commit: 0833541
 
 ### Maintenance
 - chore(fallbacks): remove old PNG pool — WebP-only local fallbacks | commit: 307d60b
@@ -1060,9 +1060,9 @@ Full project change history.
 
 ### Docs
 - docs(legal): add permanent account deletion section to Privacy Policy and Terms | commit: 6bd2d30
-- docs: add DIVINATION_METHODS_AUDIT.md — technical reference for all oracle methods | commit: 60115a6
+- docs: add 00000000-AUD-DIV-01-divination-methods.md — technical reference for all oracle methods | commit: 60115a6
 - docs(claude): document Windows glob fix for expo prebuild and mobile cache feature | commit: 0c58c7e
-- docs: rewrite ARCHITECTURE_AUDIT.md — complete A-to-Z architecture reference | commit: 3b5fe41
+- docs: rewrite 00000000-RPT-ARCH-01-architecture-fullstack.md — complete A-to-Z architecture reference | commit: 3b5fe41
 
 ### Maintenance
 - test(images): FORCE_TOGETHER_FAIL env flag to bypass Together AI for fallback testing | commit: 5983171

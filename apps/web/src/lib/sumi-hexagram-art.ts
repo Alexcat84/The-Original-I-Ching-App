@@ -28,7 +28,7 @@ export type SumiLineInput = {
  * Renders one English title line as one or more sibling <text> elements,
  * never a <tspan> nested inside a <text>.
  *
- * Root cause (see IMAGE_OVERLAY_MUTATION_TITLE_LAYOUT_AUDIT_2026-06-25.md \u00a713):
+ * Root cause (see 20260625-AUD-IMG-OVR-02-mutation-title-layout.md \u00a713):
  * resvg-js can silently drop an entire <text> node that mixes plain text with
  * a <tspan> for the arrow glyph \u2014 reproduced for specific name pairs (e.g.
  * "#6 Conflict \u2192 #10 Treading [Conduct]") while structurally identical

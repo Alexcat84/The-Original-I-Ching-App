@@ -1,0 +1,121 @@
+# Auditoría npm — Pre-producción
+
+**Código:** `20260616-AUD-SEC-01 npm-dependencies` · **Familia:** SEC · **Estado:** open
+
+**Fecha:** 2026-06-16
+**HEAD auditado:** `970cf8e` → aplicados 3 parches → HEAD final `(ver commit de esta auditoría)`
+**Herramienta:** `npm audit` (monorepo raíz)
+**Artefactos:** `reports/npm-audit-raw.json` (pre-fix) · `reports/npm-audit-post-fix-raw.json` (post-fix)
+
+---
+
+## Resultado final
+
+| | Pre-fix | Post-fix |
+|-|---------|----------|
+| Total | 70 | 49 |
+| Crítico | 1 | 1 |
+| Alto | 13 | 12 |
+| Moderado | 54 | 34 |
+| Bajo | 2 | 2 |
+
+**Superficie web de producción (Vercel): 0 vulnerabilidades HIGH/CRITICAL restantes.**
+
+Todos los items HIGH/CRITICAL restantes (13 en total) están confinados a:
+- Tooling de build de la app móvil (expo-router → react-native → @expo/cli) — sólo activos en `eas build`, no en el servidor web.
+- Herramientas de test de desarrollo (vitest → vite → esbuild) — sólo activas localmente.
+
+---
+
+## Parches aplicados
+
+### 1. `next` 15.5.15 → 15.5.19 ✅ CRÍTICO
+
+13 advisories activos contra la versión instalada. Los más graves:
+
+| Advisory | Severidad | CVSS | Descripción |
+|----------|-----------|------|-------------|
+| GHSA-c4j6-fc7j-m34r | **HIGH** | 8.6 | SSRF via WebSocket upgrades (App Router) |
+| GHSA-492v-c6pp-mqqv | **HIGH** | 8.1 | Middleware bypass via dynamic route parameter injection |
+| GHSA-267c-6grr-h53f | **HIGH** | 7.5 | Middleware/Proxy bypass via segment-prefetch routes |
+| GHSA-26hh-7cqf-hhc6 | **HIGH** | 7.5 | Middleware/Proxy bypass — incomplete fix follow-up |
+| GHSA-8h8q-6873-q5fj | **HIGH** | 7.5 | DoS con Server Components |
+| GHSA-mg66-mrh9-m8jx | **HIGH** | 7.5 | DoS via connection exhaustion en Cache Components |
+| GHSA-36qx-fr4f-26g5 | **HIGH** | 7.5 | Middleware bypass en Pages Router con i18n |
+| GHSA-ffhc-5mcf-pf4q | moderate | 4.7 | XSS en App Router con CSP nonces |
+| GHSA-gx5p-jg67-6x7h | moderate | 6.1 | XSS en beforeInteractive scripts |
+| GHSA-h64f-5h5j-jqjh | moderate | 5.9 | DoS en Image Optimization API |
+| GHSA-wfc6-r584-vfw7 | moderate | 5.4 | Cache poisoning en RSC responses |
+
+**Fix:** `next@15.5.19` — patch puro dentro de la misma línea 15.5.x. Sin breaking changes.
+
+### 2. `@sentry/nextjs` 10.53.1 → 10.58.0 + `@sentry/node` 8.55.2 → 10.58.0 ✅
+
+**Vulnerabilidad:** `@opentelemetry/core <2.8.0` — unbounded memory allocation en W3C Baggage propagation (GHSA-8988-4f7v-96qf, moderate).
+
+- `@sentry/nextjs@10.53.1` → `10.58.0` en `apps/web`
+- `@sentry/node@8.55.2` → `10.58.0` en `backend/claude`
+
+**Nota:** `@sentry/node` saltó de `8.x` a `10.x`. La API de Sentry para captura de errores (`captureException`, `captureMessage`, `withScope`) es compatible. Verificar en staging que los eventos siguen llegando correctamente.
+
+### 3. `turbo` 2.8.20 → 2.9.18 ✅
+
+**Vulnerabilidades:**
+- GHSA-hcf7-66rw-9f5r: Login callback CSRF/session fixation
+- GHSA-3qcw-2rhx-2726: Local code execution inesperado durante Yarn Berry detection
+
+`turbo` es herramienta de build (monorepo), no runtime de producción. Riesgo real bajo; actualizado de todas formas.
+
+---
+
+## Vulnerabilidades restantes — análisis por superficie
+
+### HIGH/CRITICAL en tooling móvil (NO afectan producción web)
+
+| Paquete | Severidad | Descripción | Ruta raíz |
+|---------|-----------|-------------|-----------|
+| `shell-quote` | **CRITICAL** | Newline injection en .op values | `react-native@0.74.5` → `apps/mobile` |
+| `@remix-run/server-runtime` | HIGH | DoS en __manifest endpoint | `expo-router@3.5.24` → `apps/mobile` |
+| `@remix-run/node` | HIGH | (transitivo) | `expo-router` → `apps/mobile` |
+| `turbo-stream` | HIGH | React Router DoS via reflected input | `@remix-run` → `expo-router` → `apps/mobile` |
+| `form-data` | HIGH | CRLF injection | `@expo/cli@0.18.31` → `apps/mobile` |
+| `tar` | HIGH | Arbitrary file creation via hardlink | `@expo/cli` → `apps/mobile` |
+| `cacache` | HIGH | (transitivo de tar) | `@expo/cli` → `apps/mobile` |
+| `tmp` | HIGH | Path traversal | `patch-package` → `apps/mobile` dev |
+| `ws` | HIGH | Memory exhaustion DoS | `react-native/metro` → `apps/mobile` |
+
+**Impacto real:** estas vulnerabilidades afectan al tooling que corre durante `eas build`. EAS Build es un servicio gestionado de Expo (Linux en la nube) que no expone una superficie HTTP pública en nuestro entorno. El APK resultante no incluye estas dependencias.
+
+**Fix disponible:** requeriría `expo@56.0.12` (breaking change mayor). Evaluar en el ciclo de actualización de Expo post-lanzamiento.
+
+### HIGH en tooling de test (NO afectan producción web)
+
+| Paquete | Severidad | Descripción | Ruta raíz |
+|---------|-----------|-------------|-----------|
+| `esbuild` | HIGH | Missing binary integrity verification (Deno, NPM_CONFIG_REGISTRY) | `vite` → `vitest` (dev) → `backend/claude` |
+| `vite` | HIGH | NTLMv2 disclosure (Windows) + fs.deny bypass (Windows) | `vitest` (dev) → `backend/claude` |
+
+**Impacto real:** sólo activos durante `pnpm test` local en Windows. Producción corre en Vercel (Linux) y no ejecuta vitest. Las vulnerabilidades de vite específicas de Windows no aplican a Vercel.
+
+### MODERATE restantes en prod
+
+Las moderadas restantes en la superficie web son principalmente transitivas de `@opentelemetry` (ya resueltas vía upgrade de Sentry), `postcss` (build tool), `dompurify` (verificar uso — la app no usa DOMPurify en modo IN_PLACE), `brace-expansion` (regex DoS en build tools), y `uuid` (buffer bounds — transitivo de Expo).
+
+---
+
+## Plan de acción post-lanzamiento
+
+| Prioridad | Acción |
+|-----------|--------|
+| Inmediata (antes de deploy) | Verificar que `@sentry/node` 10.x no rompe captura de errores en staging |
+| Sprint 1 post-launch | Actualizar Expo a 56.x para cerrar las vulnerabilidades de mobile tooling |
+| Sprint 1 post-launch | Actualizar `vitest`/`vite` para cerrar esbuild/vite HIGH en test |
+| Ongoing | `npm audit` en cada PR con dependencias cambiadas |
+
+---
+
+## Veredicto
+
+**La superficie de producción web (Vercel / `apps/web` + `backend/claude`) está limpia de vulnerabilidades HIGH/CRITICAL** tras los 3 parches aplicados.
+
+Los 13 HIGH/CRITICAL restantes son exclusivos de tooling de build móvil y test local — ninguno corre en el servidor web de producción. Apto para lanzar.

@@ -11,7 +11,7 @@ import path from "node:path";
  * - Keep local Traditional Chinese font loading as primary path for overlay-title-zh.
  * - Embed a separate Latin Extended face for overlay-title-en (Legge diacritics: ă, Ž…).
  * - Do NOT replace the English line's font-family with the CJK face — that caused
- *   subtitle/watermark regressions (see IMAGE_OVERLAY_LEGGE_DIACRITICS_AUDIT_2026-06-24.md).
+ *   subtitle/watermark regressions (see 20260624-AUD-IMG-OVR-01-legge-diacritics.md).
  *
  * Google Fonts css2 API with `text=` remains fallback-only.
  */

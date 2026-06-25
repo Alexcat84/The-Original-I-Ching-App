@@ -10,7 +10,7 @@ import type { ValidationFailure } from "./interpretation-output-validator.js";
  * occasionally dropping real content (e.g. Legge's editorial parentheses);
  * blocking on this before production telemetry exists risks doubling API
  * cost and failing whole consultations over cosmetic drift. See
- * docs/auditorias/READING_QUALITY_QA_VERBATIM_BLOCKQUOTE_GAP_AUDIT_2026-06-24.md.
+ * docs/auditorias/20260624-AUD-RDG-QA-02-verbatim-blockquote-gap.md.
  *
  * Only meaningful in ritual mode — "directo"/"profundizar" use a different
  * 2-section structure with no "El juicio"/"La imagen" headings at all.

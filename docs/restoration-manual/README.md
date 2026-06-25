@@ -1,5 +1,7 @@
 # Manual de restauración — interpretaciones I Ching App
 
+**Código:** `00000000-RUN-REST-01 restoration-manual` · **Familia:** SUP-REST · **Estado:** reference
+
 **Proyecto prod:** Supabase `wgborqkfnxfarkdaotsd`  
 **Dominio web:** [theoriginaliching.com](https://theoriginaliching.com)  
 **Última revisión:** 2026-06-07 (incidente P0 + recovery validado)
@@ -111,8 +113,8 @@ WHERE interpretation IS NOT NULL AND length(interpretation) > 100;
 
 Documentación detallada:
 
-- [`docs/runbooks/MIGRATION_DATA_INTEGRITY.md`](../runbooks/MIGRATION_DATA_INTEGRITY.md)
-- [`docs/auditorias/INCIDENT_2026-06-07_CONSULTATION_CONTENT_WIPE.md`](../auditorias/INCIDENT_2026-06-07_CONSULTATION_CONTENT_WIPE.md)
+- [`docs/runbooks/00000000-RUN-SUP-01-migration-data-integrity.md`](../runbooks/00000000-RUN-SUP-01-migration-data-integrity.md)
+- [`docs/auditorias/20260607-INC-SUP-INC-01-consultation-content-wipe.md`](../auditorias/20260607-INC-SUP-INC-01-consultation-content-wipe.md)
 
 ---
 
@@ -371,10 +373,10 @@ No. Mantener hasta confirmar `consultation_content` y smoke app.
 |---------|-----------|
 | Scripts SQL recovery | [`backend/db/scripts/recover_consultation_content_2026-06-07.sql`](../../backend/db/scripts/recover_consultation_content_2026-06-07.sql) |
 | Import CSV → prod | [`backend/db/scripts/recover_import_csv_to_prod.sql`](../../backend/db/scripts/recover_import_csv_to_prod.sql) |
-| Runbook PITR (detalle) | [`docs/runbooks/RECOVER_CONSULTATION_CONTENT_PITR.md`](../runbooks/RECOVER_CONSULTATION_CONTENT_PITR.md) |
-| Gates migraciones | [`docs/runbooks/MIGRATION_DATA_INTEGRITY.md`](../runbooks/MIGRATION_DATA_INTEGRITY.md) |
-| Incidente P0 | [`docs/auditorias/INCIDENT_2026-06-07_CONSULTATION_CONTENT_WIPE.md`](../auditorias/INCIDENT_2026-06-07_CONSULTATION_CONTENT_WIPE.md) |
-| Estabilidad Supabase | [`docs/auditorias/SUPABASE_DB_STABILITY_AUDIT.md`](../auditorias/SUPABASE_DB_STABILITY_AUDIT.md) |
+| Runbook PITR (detalle) | [`docs/runbooks/00000000-RUN-SUP-05-recover-pitr.md`](../runbooks/00000000-RUN-SUP-05-recover-pitr.md) |
+| Gates migraciones | [`docs/runbooks/00000000-RUN-SUP-01-migration-data-integrity.md`](../runbooks/00000000-RUN-SUP-01-migration-data-integrity.md) |
+| Incidente P0 | [`docs/auditorias/20260607-INC-SUP-INC-01-consultation-content-wipe.md`](../auditorias/20260607-INC-SUP-INC-01-consultation-content-wipe.md) |
+| Estabilidad Supabase | [`docs/auditorias/00000000-AUD-SUP-01-supabase-db-stability.md`](../auditorias/00000000-AUD-SUP-01-supabase-db-stability.md) |
 
 ---
 

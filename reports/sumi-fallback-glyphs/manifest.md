@@ -1,6 +1,6 @@
 # Sumi fallback glyph samples
 
-- Generated: 2026-06-25T02:25:09.239Z
+- Generated: 2026-06-25T02:38:20.911Z
 - Total PNGs: 292
 - Wilhelm static: 64
 - Legge static: 64

@@ -1,0 +1,845 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-06-25",
+  "conventions": "./CONVENTIONS.md",
+  "entries": [
+    {
+      "code": "00000000-RPT-ARCH-01 architecture-fullstack",
+      "title": "Full-stack architecture audit",
+      "shortName": "architecture-fullstack",
+      "type": "RPT",
+      "family": "ARCH",
+      "date": null,
+      "status": "reference",
+      "path": "docs/auditorias/00000000-RPT-ARCH-01-architecture-fullstack.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-RPT-DAT-FID-00 data-integrity-summary",
+      "title": "Data integrity audit (public summary)",
+      "shortName": "data-integrity-summary",
+      "type": "RPT",
+      "family": "DAT-FID",
+      "date": null,
+      "status": "reference",
+      "path": "docs/auditorias/00000000-RPT-DAT-FID-00-data-integrity-summary.md",
+      "relatedCodes": [
+        "20260621-AUD-DAT-FID-01 translator-fidelity-reaudit",
+        "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
+      ],
+      "relatedTests": [
+        "VF-FID-001 hexagram-fidelity-runtime"
+      ]
+    },
+    {
+      "code": "00000000-AUD-DIV-01 divination-methods",
+      "title": "Divination methods audit",
+      "shortName": "divination-methods",
+      "type": "AUD",
+      "family": "DIV",
+      "date": null,
+      "status": "closed",
+      "path": "docs/auditorias/00000000-AUD-DIV-01-divination-methods.md",
+      "relatedCodes": [
+        "20260614-AUD-MUT-01 changing-lines"
+      ],
+      "relatedTests": [
+        "TS-ENG-001 engine-core",
+        "TS-ENG-002 mutation-rules"
+      ]
+    },
+    {
+      "code": "00000000-AUD-SYM-01 dynamic-symbols",
+      "title": "Dynamic symbols audit",
+      "shortName": "dynamic-symbols",
+      "type": "AUD",
+      "family": "SYM",
+      "date": null,
+      "status": "closed",
+      "path": "docs/auditorias/00000000-AUD-SYM-01-dynamic-symbols.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-AUD-MOB-HYD-01 chat-thread-hydration",
+      "title": "Chat thread hydration audit",
+      "shortName": "chat-thread-hydration",
+      "type": "AUD",
+      "family": "MOB-HYD",
+      "date": null,
+      "status": "closed",
+      "path": "docs/auditorias/00000000-AUD-MOB-HYD-01-chat-thread-hydration.md",
+      "relatedCodes": [
+        "20260613-AUD-MOB-HYD-03 hydration-gate",
+        "00000000-AUD-MOB-HYD-02 sqlite-chat-hydration"
+      ],
+      "relatedTests": [
+        "TS-WEB-012 session-thread-hydration"
+      ]
+    },
+    {
+      "code": "00000000-AUD-MOB-HYD-02 sqlite-chat-hydration",
+      "title": "Mobile SQLite chat hydration audit",
+      "shortName": "sqlite-chat-hydration",
+      "type": "AUD",
+      "family": "MOB-HYD",
+      "date": null,
+      "status": "closed",
+      "path": "docs/auditorias/00000000-AUD-MOB-HYD-02-sqlite-chat-hydration.md",
+      "relatedCodes": [
+        "00000000-AUD-MOB-HYD-01 chat-thread-hydration"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-AUD-SUP-01 supabase-db-stability",
+      "title": "Supabase DB stability audit (phased)",
+      "shortName": "supabase-db-stability",
+      "type": "AUD",
+      "family": "SUP",
+      "date": null,
+      "status": "open",
+      "path": "docs/auditorias/00000000-AUD-SUP-01-supabase-db-stability.md",
+      "relatedCodes": [
+        "00000000-AUD-SUP-02 warp-timeout-kills",
+        "20260607-INC-SUP-INC-01 consultation-content-wipe"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-AUD-SUP-02 warp-timeout-kills",
+      "title": "Warp timeout kills audit",
+      "shortName": "warp-timeout-kills",
+      "type": "AUD",
+      "family": "SUP",
+      "date": null,
+      "status": "open",
+      "path": "docs/auditorias/00000000-AUD-SUP-02-warp-timeout-kills.md",
+      "relatedCodes": [
+        "00000000-AUD-SUP-01 supabase-db-stability"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-RPT-LEG-01 legacy-general-report",
+      "title": "General I Ching app audit report (legacy)",
+      "shortName": "legacy-general-report",
+      "type": "RPT",
+      "family": "LEG",
+      "date": null,
+      "status": "reference",
+      "path": "docs/auditorias/00000000-RPT-LEG-01-legacy-general-report.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "20260607-INC-SUP-INC-01 consultation-content-wipe",
+      "title": "P0 incident: consultation_content wipe (066 without 068)",
+      "shortName": "consultation-content-wipe",
+      "type": "INC",
+      "family": "SUP-INC",
+      "date": "2026-06-07",
+      "status": "closed",
+      "path": "docs/auditorias/20260607-INC-SUP-INC-01-consultation-content-wipe.md",
+      "relatedCodes": [
+        "00000000-AUD-SUP-01 supabase-db-stability"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260612-AUD-PERF-01 claude-image-performance",
+      "title": "Claude and image performance optimization audit",
+      "shortName": "claude-image-performance",
+      "type": "AUD",
+      "family": "PERF",
+      "date": "2026-06-12",
+      "status": "closed",
+      "path": "docs/auditorias/20260612-AUD-PERF-01-claude-image-performance.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "20260613-AUD-PRD-01 pre-production-jun13",
+      "title": "Pre-production audit (June 2026)",
+      "shortName": "pre-production-jun13",
+      "type": "AUD",
+      "family": "PRD",
+      "date": "2026-06-13",
+      "status": "closed",
+      "path": "docs/auditorias/20260613-AUD-PRD-01-pre-production-jun13.md",
+      "relatedCodes": [
+        "20260616-AUD-PRD-02 general-pre-production"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260613-AUD-MOB-HYD-03 hydration-gate",
+      "title": "Per-session hydration gate audit",
+      "shortName": "hydration-gate",
+      "type": "AUD",
+      "family": "MOB-HYD",
+      "date": "2026-06-13",
+      "status": "closed",
+      "path": "docs/auditorias/20260613-AUD-MOB-HYD-03-hydration-gate.md",
+      "relatedCodes": [
+        "00000000-AUD-MOB-HYD-01 chat-thread-hydration"
+      ],
+      "relatedTests": [
+        "TS-WEB-012 session-thread-hydration"
+      ]
+    },
+    {
+      "code": "20260613-PLAN-ANM-01 animation-plan-v3",
+      "title": "Animation plan v3 (definitive)",
+      "shortName": "animation-plan-v3",
+      "type": "PLAN",
+      "family": "ANM",
+      "date": "2026-06-13",
+      "status": "reference",
+      "path": "docs/auditorias/20260613-PLAN-ANM-01-animation-plan-v3.md",
+      "relatedCodes": [
+        "00000000-BRIEF-ANM-02 submit-reveal-redesign",
+        "20260614-AUD-ANM-03 tick-pacing"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-BRIEF-ANM-02 submit-reveal-redesign",
+      "title": "Brief: Action 3 submit/reveal redesign",
+      "shortName": "submit-reveal-redesign",
+      "type": "BRIEF",
+      "family": "ANM",
+      "date": null,
+      "status": "reference",
+      "path": "docs/auditorias/00000000-BRIEF-ANM-02-submit-reveal-redesign.md",
+      "relatedCodes": [
+        "20260613-PLAN-ANM-01 animation-plan-v3"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260614-AUD-MUT-01 changing-lines",
+      "title": "I Ching changing lines audit",
+      "shortName": "changing-lines",
+      "type": "AUD",
+      "family": "MUT",
+      "date": "2026-06-14",
+      "status": "closed",
+      "path": "docs/auditorias/20260614-AUD-MUT-01-changing-lines.md",
+      "relatedCodes": [
+        "20260615-AUD-MUT-02 prompt-mutation-gates"
+      ],
+      "relatedTests": [
+        "TS-ENG-002 mutation-rules",
+        "TS-ENG-003 line-reading-systems"
+      ]
+    },
+    {
+      "code": "20260614-AUD-OBS-01 observability-logging",
+      "title": "Observability and logging audit (Axiom)",
+      "shortName": "observability-logging",
+      "type": "AUD",
+      "family": "OBS",
+      "date": "2026-06-14",
+      "status": "closed",
+      "path": "docs/auditorias/20260614-AUD-OBS-01-observability-logging.md",
+      "relatedCodes": [
+        "20260619-AUD-OBS-02 axiom-login-spike"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260614-AUD-ANM-03 tick-pacing",
+      "title": "Animation tick pacing audit",
+      "shortName": "tick-pacing",
+      "type": "AUD",
+      "family": "ANM",
+      "date": "2026-06-14",
+      "status": "closed",
+      "path": "docs/auditorias/20260614-AUD-ANM-03-tick-pacing.md",
+      "relatedCodes": [
+        "20260613-PLAN-ANM-01 animation-plan-v3"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260615-AUD-MUT-02 prompt-mutation-gates",
+      "title": "Prompt mutation rules audit (H1–H5 gates, Phase 2)",
+      "shortName": "prompt-mutation-gates",
+      "type": "AUD",
+      "family": "MUT",
+      "date": "2026-06-15",
+      "status": "closed",
+      "path": "docs/auditorias/20260615-AUD-MUT-02-prompt-mutation-gates.md",
+      "relatedCodes": [
+        "20260614-AUD-MUT-01 changing-lines",
+        "20260622-AUD-MUT-05 retry-fallback-economics"
+      ],
+      "relatedTests": [
+        "QA-MUT-001 mutation-output",
+        "TS-CLAUDE-001 line-gate",
+        "TS-CLAUDE-002 output-validator"
+      ]
+    },
+    {
+      "code": "20260616-AUD-PRD-02 general-pre-production",
+      "title": "General pre-production audit",
+      "shortName": "general-pre-production",
+      "type": "AUD",
+      "family": "PRD",
+      "date": "2026-06-16",
+      "status": "closed",
+      "path": "docs/auditorias/20260616-AUD-PRD-02-general-pre-production.md",
+      "relatedCodes": [
+        "20260613-AUD-PRD-01 pre-production-jun13"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260616-AUD-SEC-01 npm-dependencies",
+      "title": "npm dependencies audit",
+      "shortName": "npm-dependencies",
+      "type": "AUD",
+      "family": "SEC",
+      "date": "2026-06-16",
+      "status": "open",
+      "path": "docs/auditorias/20260616-AUD-SEC-01-npm-dependencies.md",
+      "relatedCodes": [],
+      "relatedTests": [
+        "SEC-001 security-scan"
+      ]
+    },
+    {
+      "code": "20260618-AUD-MOB-UI-01 webview-bottom-gap",
+      "title": "RN WebView chat bottom gap audit",
+      "shortName": "webview-bottom-gap",
+      "type": "AUD",
+      "family": "MOB-UI",
+      "date": "2026-06-18",
+      "status": "closed",
+      "path": "docs/auditorias/20260618-AUD-MOB-UI-01-webview-bottom-gap.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "20260619-AUD-MUT-03 huang-rules-alignment",
+      "title": "Mutation rules Huang alignment audit",
+      "shortName": "huang-rules-alignment",
+      "type": "AUD",
+      "family": "MUT",
+      "date": "2026-06-19",
+      "status": "closed",
+      "path": "docs/auditorias/20260619-AUD-MUT-03-huang-rules-alignment.md",
+      "relatedCodes": [
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector"
+      ],
+      "relatedTests": [
+        "AU-MUT-001 huang-rules-vs-pdf-gold"
+      ]
+    },
+    {
+      "code": "20260619-AUD-MOB-NAV-01 router-navigate-race",
+      "title": "RN navigateTo × App Router race audit",
+      "shortName": "router-navigate-race",
+      "type": "AUD",
+      "family": "MOB-NAV",
+      "date": "2026-06-19",
+      "status": "closed",
+      "path": "docs/auditorias/20260619-AUD-MOB-NAV-01-router-navigate-race.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "20260619-AUD-OBS-02 axiom-login-spike",
+      "title": "Axiom login traffic spike audit (Google WRS crawl)",
+      "shortName": "axiom-login-spike",
+      "type": "AUD",
+      "family": "OBS",
+      "date": "2026-06-19",
+      "status": "closed",
+      "path": "docs/auditorias/20260619-AUD-OBS-02-axiom-login-spike.md",
+      "relatedCodes": [
+        "20260614-AUD-OBS-01 observability-logging"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260619-FIX-MOB-PLAY-01 play-data-safety",
+      "title": "Play Console Data Safety resolution",
+      "shortName": "play-data-safety",
+      "type": "FIX",
+      "family": "MOB-PLAY",
+      "date": "2026-06-19",
+      "status": "closed",
+      "path": "docs/auditorias/20260619-FIX-MOB-PLAY-01-play-data-safety.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "20260620-AUD-LRS-01 zhuxi-line-reading-selector",
+      "title": "Line reading system Zhu Xi selector audit (074)",
+      "shortName": "zhuxi-line-reading-selector",
+      "type": "AUD",
+      "family": "LRS",
+      "date": "2026-06-20",
+      "status": "closed",
+      "path": "docs/auditorias/20260620-AUD-LRS-01-zhuxi-line-reading-selector.md",
+      "relatedCodes": [
+        "20260622-PLAN-LRS-02 zhuxi-32-charts-plan"
+      ],
+      "relatedTests": [
+        "TS-ENG-003 line-reading-systems",
+        "AU-MUT-002 zhuxi-rules-vs-adler-gold"
+      ]
+    },
+    {
+      "code": "20260621-AUD-DAT-FID-01 translator-fidelity-reaudit",
+      "title": "Translator data fidelity re-audit (Wilhelm/Legge/Zhou Yi)",
+      "shortName": "translator-fidelity-reaudit",
+      "type": "AUD",
+      "family": "DAT-FID",
+      "date": "2026-06-21",
+      "status": "closed",
+      "path": "docs/auditorias/20260621-AUD-DAT-FID-01-translator-fidelity-reaudit.md",
+      "relatedCodes": [
+        "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
+      ],
+      "relatedTests": [
+        "VF-FID-001 hexagram-fidelity-runtime"
+      ]
+    },
+    {
+      "code": "20260622-AUD-DAT-FID-02 legge-oxford-spot-check",
+      "title": "Legge SBE XVI Oxford scan spot check",
+      "shortName": "legge-oxford-spot-check",
+      "type": "AUD",
+      "family": "DAT-FID",
+      "date": "2026-06-22",
+      "status": "closed",
+      "path": "docs/auditorias/20260622-AUD-DAT-FID-02-legge-oxford-spot-check.md",
+      "relatedCodes": [
+        "20260622-AUD-DAT-FID-03 legge-pdf-book-primary"
+      ],
+      "relatedTests": [
+        "VF-FID-001 hexagram-fidelity-runtime"
+      ]
+    },
+    {
+      "code": "20260622-AUD-DAT-FID-03 legge-pdf-book-primary",
+      "title": "Legge SBE XVI PDF book-primary audit",
+      "shortName": "legge-pdf-book-primary",
+      "type": "AUD",
+      "family": "DAT-FID",
+      "date": "2026-06-22",
+      "status": "closed",
+      "path": "docs/auditorias/20260622-AUD-DAT-FID-03-legge-pdf-book-primary.md",
+      "relatedCodes": [
+        "20260622-AUD-DAT-FID-02 legge-oxford-spot-check"
+      ],
+      "relatedTests": [
+        "VF-FID-001 hexagram-fidelity-runtime",
+        "AU-FID-L-003 legge-pdf-vs-epub"
+      ]
+    },
+    {
+      "code": "20260622-AUD-DAT-FID-04 fidelity-mutation-master",
+      "title": "Fidelity and mutation master audit",
+      "shortName": "fidelity-mutation-master",
+      "type": "AUD",
+      "family": "DAT-FID",
+      "date": "2026-06-22",
+      "status": "closed",
+      "path": "docs/auditorias/20260622-AUD-DAT-FID-04-fidelity-mutation-master.md",
+      "relatedCodes": [
+        "20260621-AUD-DAT-FID-01 translator-fidelity-reaudit",
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold"
+      ],
+      "relatedTests": [
+        "VF-FID-001 hexagram-fidelity-runtime",
+        "QA-MUT-001 mutation-output"
+      ]
+    },
+    {
+      "code": "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
+      "title": "Mutation rules PDF gold audit",
+      "shortName": "mutation-rules-pdf-gold",
+      "type": "AUD",
+      "family": "MUT",
+      "date": "2026-06-22",
+      "status": "closed",
+      "path": "docs/auditorias/20260622-AUD-MUT-04-mutation-rules-pdf-gold.md",
+      "relatedCodes": [
+        "20260615-AUD-MUT-02 prompt-mutation-gates"
+      ],
+      "relatedTests": [
+        "AU-MUT-001 huang-rules-vs-pdf-gold",
+        "AU-MUT-002 zhuxi-rules-vs-adler-gold"
+      ]
+    },
+    {
+      "code": "20260622-EXT-DAT-FID-05 external-opus-validation",
+      "title": "External validation: fidelity mutation (Opus 4.8)",
+      "shortName": "external-opus-validation",
+      "type": "EXT",
+      "family": "DAT-FID",
+      "date": "2026-06-22",
+      "status": "reference",
+      "path": "docs/auditorias/20260622-EXT-DAT-FID-05-external-opus-validation.md",
+      "relatedCodes": [
+        "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260622-AUD-MUT-05 retry-fallback-economics",
+      "title": "Interpretation retry and fallback economics audit",
+      "shortName": "retry-fallback-economics",
+      "type": "AUD",
+      "family": "MUT",
+      "date": "2026-06-22",
+      "status": "decided",
+      "path": "docs/auditorias/20260622-AUD-MUT-05-retry-fallback-economics.md",
+      "relatedCodes": [
+        "20260615-AUD-MUT-02 prompt-mutation-gates"
+      ],
+      "relatedTests": [
+        "QA-MUT-001 mutation-output"
+      ]
+    },
+    {
+      "code": "20260622-AUD-DOC-01 user-docs-vs-implementation",
+      "title": "User-facing docs vs implementation audit",
+      "shortName": "user-docs-vs-implementation",
+      "type": "AUD",
+      "family": "DOC",
+      "date": "2026-06-22",
+      "status": "closed",
+      "path": "docs/auditorias/20260622-AUD-DOC-01-user-docs-vs-implementation.md",
+      "relatedCodes": [],
+      "relatedTests": [
+        "VF-DOC-001 docs-remediation"
+      ]
+    },
+    {
+      "code": "20260622-PLAN-LRS-02 zhuxi-32-charts-plan",
+      "title": "Zhu Xi 32 charts implementation plan",
+      "shortName": "zhuxi-32-charts-plan",
+      "type": "PLAN",
+      "family": "LRS",
+      "date": "2026-06-22",
+      "status": "open",
+      "path": "docs/auditorias/20260622-PLAN-LRS-02-zhuxi-32-charts-plan.md",
+      "relatedCodes": [
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260623-PLAN-DAT-RT-01 epub-primary-migration",
+      "title": "EPUB-primary runtime migration",
+      "shortName": "epub-primary-migration",
+      "type": "PLAN",
+      "family": "DAT-RT",
+      "date": "2026-06-23",
+      "status": "shipped",
+      "path": "docs/auditorias/20260623-PLAN-DAT-RT-01-epub-primary-migration.md",
+      "relatedCodes": [
+        "20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro",
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "relatedTests": [
+        "AU-FID-001 epub-verbatim-vs-runtime"
+      ]
+    },
+    {
+      "code": "20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro",
+      "title": "Legge TXT maestro AU (Princeton)",
+      "shortName": "legge-txt-maestro",
+      "type": "AUD",
+      "family": "DAT-MAESTRO-L",
+      "date": "2026-06-23",
+      "status": "closed",
+      "path": "docs/auditorias/20260623-AUD-DAT-MAESTRO-L-01-legge-txt-maestro.md",
+      "relatedCodes": [
+        "20260623-POL-DAT-MAESTRO-00 txt-maestro-notes-policy"
+      ],
+      "relatedTests": [
+        "VF-FID-L-001 legge-all-gates",
+        "AU-FID-L-001 legge-txt-g2"
+      ]
+    },
+    {
+      "code": "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro",
+      "title": "Wilhelm TXT maestro AU (Princeton + Sheets)",
+      "shortName": "wilhelm-txt-maestro",
+      "type": "AUD",
+      "family": "DAT-MAESTRO-W",
+      "date": "2026-06-23",
+      "status": "closed",
+      "path": "docs/auditorias/20260623-AUD-DAT-MAESTRO-W-01-wilhelm-txt-maestro.md",
+      "relatedCodes": [
+        "20260623-POL-DAT-MAESTRO-00 txt-maestro-notes-policy"
+      ],
+      "relatedTests": [
+        "VF-FID-W-001 wilhelm-all-gates",
+        "AU-FID-W-001 wilhelm-txt-g2"
+      ]
+    },
+    {
+      "code": "20260623-POL-DAT-MAESTRO-00 txt-maestro-notes-policy",
+      "title": "TXT maestro notes and fidelity policy (W+L only)",
+      "shortName": "txt-maestro-notes-policy",
+      "type": "POL",
+      "family": "DAT-MAESTRO",
+      "date": "2026-06-23",
+      "status": "closed",
+      "path": "docs/auditorias/20260623-POL-DAT-MAESTRO-00-txt-maestro-notes-policy.md",
+      "relatedCodes": [
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro",
+        "20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro"
+      ],
+      "relatedTests": [
+        "TS-DATA-002 commentary-schema"
+      ]
+    },
+    {
+      "code": "20260623-PLAN-LIB-01 library-commentary-layer",
+      "title": "Library commentary layer (W+L optional notes)",
+      "shortName": "library-commentary-layer",
+      "type": "PLAN",
+      "family": "LIB",
+      "date": "2026-06-23",
+      "status": "closed",
+      "path": "docs/auditorias/20260623-PLAN-LIB-01-library-commentary-layer.md",
+      "relatedCodes": [
+        "20260624-PLAN-LIB-03 library-ribbon-ui-fix"
+      ],
+      "relatedTests": [
+        "TS-DATA-002 commentary-schema"
+      ]
+    },
+    {
+      "code": "20260623-FIX-LIB-02 library-title-fidelity",
+      "title": "Library hexagram title fidelity fix",
+      "shortName": "library-title-fidelity",
+      "type": "FIX",
+      "family": "LIB",
+      "date": "2026-06-23",
+      "status": "closed",
+      "path": "docs/auditorias/20260623-FIX-LIB-02-library-title-fidelity.md",
+      "relatedCodes": [
+        "20260623-PLAN-LIB-01 library-commentary-layer"
+      ],
+      "relatedTests": [
+        "TS-DATA-001 iching-data-index"
+      ]
+    },
+    {
+      "code": "20260623-GATE-DAT-FID-06 pinyin-gold-gate",
+      "title": "Hexagram pinyin gold gate",
+      "shortName": "pinyin-gold-gate",
+      "type": "GATE",
+      "family": "DAT-FID",
+      "date": "2026-06-23",
+      "status": "closed",
+      "path": "docs/auditorias/20260623-GATE-DAT-FID-06-pinyin-gold-gate.md",
+      "relatedCodes": [],
+      "relatedTests": [
+        "VF-PINYIN-001 pinyin-gold"
+      ]
+    },
+    {
+      "code": "20260623-AUD-RDG-QA-01 judgment-regression",
+      "title": "Reading quality QA: judgment/image regression",
+      "shortName": "judgment-regression",
+      "type": "AUD",
+      "family": "RDG-QA",
+      "date": "2026-06-23",
+      "status": "mitigated",
+      "path": "docs/auditorias/20260623-AUD-RDG-QA-01-judgment-regression.md",
+      "relatedCodes": [
+        "20260624-AUD-RDG-QA-02 verbatim-blockquote-gap"
+      ],
+      "relatedTests": [
+        "QA-RDG-001 reading-quality"
+      ]
+    },
+    {
+      "code": "20260624-PLAN-LIB-03 library-ribbon-ui-fix",
+      "title": "Library commentary ribbon UI fix plan",
+      "shortName": "library-ribbon-ui-fix",
+      "type": "PLAN",
+      "family": "LIB",
+      "date": "2026-06-24",
+      "status": "closed",
+      "path": "docs/auditorias/20260624-PLAN-LIB-03-library-ribbon-ui-fix.md",
+      "relatedCodes": [
+        "20260623-PLAN-LIB-01 library-commentary-layer"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260624-AUD-RDG-QA-02 verbatim-blockquote-gap",
+      "title": "Reading quality QA: verbatim blockquote gap (Gate H7)",
+      "shortName": "verbatim-blockquote-gap",
+      "type": "AUD",
+      "family": "RDG-QA",
+      "date": "2026-06-24",
+      "status": "mitigated",
+      "path": "docs/auditorias/20260624-AUD-RDG-QA-02-verbatim-blockquote-gap.md",
+      "relatedCodes": [
+        "20260623-AUD-RDG-QA-01 judgment-regression"
+      ],
+      "relatedTests": [
+        "TS-CLAUDE-004 judgment-image-gate",
+        "QA-RDG-001 reading-quality"
+      ]
+    },
+    {
+      "code": "20260624-AUD-IMG-OVR-01 legge-diacritics",
+      "title": "Image overlay Legge diacritics (tofu in PNG titles)",
+      "shortName": "legge-diacritics",
+      "type": "AUD",
+      "family": "IMG-OVR",
+      "date": "2026-06-24",
+      "status": "closed",
+      "path": "docs/auditorias/20260624-AUD-IMG-OVR-01-legge-diacritics.md",
+      "relatedCodes": [
+        "20260624-PLAN-IMG-OVR-01b dual-font-fix-plan",
+        "20260625-AUD-IMG-OVR-02 mutation-title-layout"
+      ],
+      "relatedTests": [
+        "VF-WEB-OVR-001 overlay-glyphs",
+        "TS-WEB-OVR-001 embed-svg-overlay-font"
+      ]
+    },
+    {
+      "code": "20260624-PLAN-IMG-OVR-01b dual-font-fix-plan",
+      "title": "Image overlay dual font-stack fix plan",
+      "shortName": "dual-font-fix-plan",
+      "type": "PLAN",
+      "family": "IMG-OVR",
+      "date": "2026-06-24",
+      "status": "closed",
+      "path": "docs/auditorias/20260624-PLAN-IMG-OVR-01b-dual-font-fix-plan.md",
+      "relatedCodes": [
+        "20260624-AUD-IMG-OVR-01 legge-diacritics"
+      ],
+      "relatedTests": [
+        "VF-WEB-OVR-001 overlay-glyphs"
+      ]
+    },
+    {
+      "code": "20260625-AUD-IMG-OVR-02 mutation-title-layout",
+      "title": "Image overlay mutation title layout (resvg tspan, spacing)",
+      "shortName": "mutation-title-layout",
+      "type": "AUD",
+      "family": "IMG-OVR",
+      "date": "2026-06-25",
+      "status": "closed",
+      "path": "docs/auditorias/20260625-AUD-IMG-OVR-02-mutation-title-layout.md",
+      "relatedCodes": [
+        "20260624-AUD-IMG-OVR-01 legge-diacritics"
+      ],
+      "relatedTests": [
+        "VF-WEB-OVR-001 overlay-glyphs",
+        "TS-WEB-OVR-002 overlay-title-layout",
+        "TS-WEB-OVR-003 sumi-fallback-glyphs",
+        "GEN-WEB-OVR-001 sumi-fallback-samples"
+      ]
+    },
+    {
+      "code": "00000000-RUN-SUP-01 migration-data-integrity",
+      "title": "Runbook: migration data integrity",
+      "shortName": "migration-data-integrity",
+      "type": "RUN",
+      "family": "SUP",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-01-migration-data-integrity.md",
+      "relatedCodes": [
+        "20260607-INC-SUP-INC-01 consultation-content-wipe"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-RUN-SUP-02 supabase-scalability",
+      "title": "Runbook: Supabase scalability",
+      "shortName": "supabase-scalability",
+      "type": "RUN",
+      "family": "SUP",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-02-supabase-scalability.md",
+      "relatedCodes": [
+        "00000000-AUD-SUP-01 supabase-db-stability"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-RUN-SUP-03 smoke-post-small",
+      "title": "Runbook: smoke post-Small checklist",
+      "shortName": "smoke-post-small",
+      "type": "RUN",
+      "family": "SUP",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-03-smoke-post-small.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-RUN-SUP-04 post-restart",
+      "title": "Runbook: Supabase post-restart",
+      "shortName": "post-restart",
+      "type": "RUN",
+      "family": "SUP",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-04-post-restart.md",
+      "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-RUN-SUP-05 recover-pitr",
+      "title": "Runbook: recover consultation_content (PITR)",
+      "shortName": "recover-pitr",
+      "type": "RUN",
+      "family": "SUP",
+      "date": null,
+      "status": "reference",
+      "path": "docs/runbooks/00000000-RUN-SUP-05-recover-pitr.md",
+      "relatedCodes": [
+        "20260607-INC-SUP-INC-01 consultation-content-wipe"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-PLAN-SUP-08 anti-warp-serialize-burst",
+      "title": "Plan: anti-Warp serialize hydration vs consult",
+      "shortName": "anti-warp-serialize-burst",
+      "type": "PLAN",
+      "family": "SUP",
+      "date": null,
+      "status": "reference",
+      "path": "docs/plans/00000000-PLAN-SUP-08-anti-warp-serialize-burst.md",
+      "relatedCodes": ["00000000-AUD-SUP-02 warp-timeout-kills"],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-PLAN-SUP-07 scale-infrastructure",
+      "title": "Plan: scale infrastructure",
+      "shortName": "scale-infrastructure",
+      "type": "PLAN",
+      "family": "SUP",
+      "date": null,
+      "status": "reference",
+      "path": "docs/plans/00000000-PLAN-SUP-07-scale-infrastructure.md",
+      "relatedCodes": [
+        "00000000-AUD-SUP-01 supabase-db-stability"
+      ],
+      "relatedTests": []
+    }
+  ]
+}

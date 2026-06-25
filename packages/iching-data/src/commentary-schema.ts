@@ -3,7 +3,7 @@ import { z } from "zod";
 /**
  * Optional scholarly commentary layer for the hexagram library. Sourced from
  * the audited "TXT maestro" datasets (tools/datasets/wilhelm, tools/datasets/legge)
- * — see docs/auditorias/TXT_MAESTRO_NOTES_AND_FIDELITY_2026-06-23.md. This is
+ * — see docs/auditorias/20260623-POL-DAT-MAESTRO-00-txt-maestro-notes-policy.md. This is
  * intentionally separate from `schema.ts` (HexagramRecord/HexagramsBundle):
  * the engine (iching-engine), the image pipeline (image-engine), and the AI
  * prompt builder (backend/claude) must never see or depend on this data —
