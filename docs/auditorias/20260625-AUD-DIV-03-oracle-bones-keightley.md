@@ -1,11 +1,13 @@
 # Huesos de Oráculo vs Keightley (book-primary PDF)
-**Código:** `20260625-AUD-DIV-03 oracle-bones-keightley` · **Familia:** DIV · **Estado:** open (Fase 1)
+**Código:** `20260625-AUD-DIV-03 oracle-bones-keightley` · **Familia:** DIV · **Estado:** closed (decisión de negocio 2026-06-25)
 
-**Fecha apertura:** 2026-06-25  
+**Fecha apertura:** 2026-06-25 · **Fecha cierre:** 2026-06-25  
 **Auditoría anterior:** [`00000000-AUD-DIV-01 divination-methods`](./00000000-AUD-DIV-01-divination-methods.md) §5 (cerrada 2026-05-19; cita académica, sin gold parseado)  
-**Canal público `/audits`:** fuera de alcance hasta cierre AU + WF-DOC-03 (Huesos no entra en `divination-method` I Ching)  
+**Canal público `/audits`:** fuera de alcance, **permanente, por diseño** (no por pendiente) — ver §6 cierre  
 **Referencia procedimental (contexto libro):** [`20260625-BRIEF-DIV-04-keightley-procedural-reference.md`](./20260625-BRIEF-DIV-04-keightley-procedural-reference.md) — Ping-pien 8 (fig. 8) + Ping-pien 12–21 (§3.7)  
 **Matriz de respaldo producto (síntesis):** [`20260625-AUD-DIV-04-oracle-bones-product-support.md`](./20260625-AUD-DIV-04-oracle-bones-product-support.md)
+
+**Decisión de negocio (cierre definitivo):** el método Huesos de Oráculo es una **homenaje simbólico** a una tradición milenaria, no una reconstrucción literal — declarado así explícitamente en el copy público (`FAQ` + `/notes`, §4.J). Como el producto **no afirma** fidelidad 1:1 a Keightley, **no existe un patrón contra el cual auditar** book-primary la mecánica (4 veredictos, pesos, T/X/Y): no hay nada que verificar porque no hay claim de equivalencia que sostener o refutar. Por eso esta AU se cierra sin Fase 2 (sin harness `VF-DIV-002`, sin entrada en `/audits`) — no por falta de tiempo, sino porque, tras la corrección del copy, la pregunta que la Fase 2 intentaba responder dejó de aplicar.
 
 ---
 
@@ -100,14 +102,16 @@ Verificado: `tsc` (i18n + image-engine + web), `i18n:audit`, `verify:docs-remedi
 
 ---
 
-## 5. Fase 2
+## 5. Fase 2 — cancelada por decisión de negocio (2026-06-25)
 
-| ID | Entrega | Estado |
-|----|---------|--------|
-| F2-1 | Harness `verify:oracle-bones-keightley` (VF-DIV-002): citas gold JSON + reglas G/J automáticas | Pendiente — sin fecha, no bloqueante (hallazgos G/J ya cerrados manualmente, ver §4) |
-| F2-2 | Revisión humana juez (campo a campo gold ↔ FAQ ES/EN) | Pendiente — sin fecha |
-| F2-3 | Decisión producto: ¿ajustar copy solo, o también etiquetas 大吉/大凶? | **Resuelto 2026-06-25**: copy solo («fiel a» → «inspirado en», FAQ + `/notes`, 11 locales); etiquetas 大吉/吉/凶/大凶 sin cambio — son abstracción de producto, no afirman fidelidad. Ver §4.J y `00000000-RPT-DIV-00` §5. |
-| F2-4 | Entrada `/audits` sección dedicada (fuera `divination-method` I Ching) | Pendiente — sin fecha; bloqueada por F2-1/F2-2 (no publicar book-primary sin harness automatizado) |
+| ID | Entrega | Estado final |
+|----|---------|--------------|
+| F2-1 | Harness `verify:oracle-bones-keightley` (VF-DIV-002): citas gold JSON + reglas G/J automáticas | **No aplica.** Sin claim de fidelidad 1:1, no hay patrón book-primary contra el cual gatear el motor. Construir el harness habría sido auditar una equivalencia que el producto ya no afirma. |
+| F2-2 | Revisión humana juez (campo a campo gold ↔ FAQ ES/EN) | **No aplica**, misma razón — el FAQ ya no afirma fidelidad campo a campo; queda como nota cualitativa («inspirado en»), no como dato verificable 1:1. |
+| F2-3 | Decisión producto: ¿ajustar copy solo, o también etiquetas 大吉/大凶? | **Resuelto 2026-06-25**: copy solo («fiel a» → «inspirado en», FAQ + `/notes`, 11 locales); etiquetas 大吉/吉/凶/大凶 sin cambio — son abstracción de producto, declarada explícitamente como simbólica, no como reconstrucción literal. Ver §4.J y `00000000-RPT-DIV-00` §5. |
+| F2-4 | Entrada `/audits` sección dedicada (fuera `divination-method` I Ching) | **No aplica, permanente.** `/audits` es el canal de verificaciones de fidelidad; un método que se declara explícitamente simbólico (no literal) no tiene una verificación de fidelidad que publicar ahí. Esto no es una brecha pendiente — es la consecuencia correcta de la decisión F2-3. |
+
+**Cierre de la AU:** los 4 hallazgos originales (G, H, I, J) quedan resueltos: G y H documentados como diseño de producto reconocido (sin pretensión de derivación del libro); I y J corregidos en el copy público. No queda ningún ítem abierto en esta familia.
 
 ---
 
@@ -139,3 +143,4 @@ npm run extract:gold:keightley-procedural
 |-------|--------|
 | 2026-06-25 | Apertura AU; extract gold §2.5–2.7 + §4.3.1.11; hallazgos preliminares G–J (Fase 1) |
 | 2026-06-25 | **Hallazgos I y J cerrados.** Decisión de producto: copy público (FAQ + `/notes`, 11 locales) y comentario interno corregidos de «fiel a»/«arqueológicamente informado» a «inspirado en» — cambio mínimo, sin alterar la mecánica (4 estados, pesos, patrones T/X/Y). G y H permanecen abiertos (Fase 2: harness `VF-DIV-002`, decisión sobre topología de imagen y matriz/sets). |
+| 2026-06-25 | **AU cerrada por decisión de negocio.** El propietario confirma: el método es homenaje simbólico, no reconstrucción literal — ya declarado así en el copy. Sin claim de fidelidad, no aplica AU book-primary contra Keightley (nada que comparar). Fase 2 completa cancelada (F2-1/F2-2/F2-4 no aplican; F2-3 ya resuelto). Hallazgos G/H quedan documentados como diseño de producto reconocido, sin pendiente de remediación. |

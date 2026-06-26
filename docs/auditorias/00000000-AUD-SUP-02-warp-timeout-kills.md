@@ -1,12 +1,13 @@
 # Auditoría de Análisis de Raíz — Warp "Thread killed by timeout manager"
-**Código:** `00000000-AUD-SUP-02 warp-timeout-kills` · **Familia:** SUP · **Estado:** open
+**Código:** `00000000-AUD-SUP-02 warp-timeout-kills` · **Familia:** SUP · **Estado:** closed
 
 
 **Fecha:** 2026-06-10  
 **Actualización:** 2026-06-10 — Monitor identificado; P0 implementado en `feat/warp-connection-efficiency`  
+**Cierre confirmado:** 2026-06-25 — propietario confirma Fase 8 (fix OOM) desplegada y estable en producción (código en `main` desde `90a6650` + mejoras posteriores de hydration gate). No se re-verificó vía MCP en vivo en esta sesión (sin herramientas Supabase disponibles en este entorno); el cierre se basa en confirmación directa del propietario, quien tiene acceso operativo a Supabase/Play Console.  
 **Alcance:** Capa de PostgREST y Pool de Conexiones de Supabase / Concurrencia de la App  
 **Herramientas:** Scripts Supabase (Grok), análisis arquitectónico (antigravity Claude Opus), inspección de codebase  
-**Estado:** 🟡 P0+P1 implementados; **Phase 8 (OOM crash fix)** implementado — pendiente deploy + APK.  
+**Estado:** ✅ P0+P1+Phase 8 implementados, desplegados y confirmados en producción por el propietario (2026-06-25).  
 **Relacionado:** [00000000-AUD-SUP-01-supabase-db-stability.md](file:///c:/Users/AlexDesk/Documents/iching-app/docs/auditorias/00000000-AUD-SUP-01-supabase-db-stability.md), [00000000-AUD-MOB-HYD-02-sqlite-chat-hydration.md](./00000000-AUD-MOB-HYD-02-sqlite-chat-hydration.md)
 
 ---
@@ -282,10 +283,11 @@ Sigue válido: scripts `.tmp/smoke-monitor*.ps1` ya no amplifican PostgREST vía
 
 ---
 
-### Phase 8 — estado post-auditoría
+### Phase 8 — estado post-auditoría (cerrado 2026-06-25)
 
 - Fix A (two-phase sync) y Fix B (renderer recovery): presentes en repo.
-- **Evolución posterior al doc:** hydration gate per-session (`2e8044e`), attestKey fix, dist **54–55**. Constructor: enlazar a `docs/auditorias/00000000-AUD-MOB-HYD-01-chat-thread-hydration.md` y cerrar “pendiente deploy” con versión APK mínima verificada.
+- **Evolución posterior al doc:** hydration gate per-session (`2e8044e`), attestKey fix, dist **54–55**. Ver `docs/auditorias/00000000-AUD-MOB-HYD-01-chat-thread-hydration.md`.
+- **Cierre:** propietario confirma despliegue y estabilidad en producción (2026-06-25) — "pendiente deploy" ya no aplica. Sin smoke formal en dispositivo documentado en este repo para esta fecha específica; el cierre se apoya en la confirmación operativa directa del propietario, no en un nuevo log/MCP de esta sesión.
 
 ---
 
