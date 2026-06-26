@@ -83,6 +83,7 @@
         "00000000-AUD-DIV-01 divination-methods",
         "20260625-AUD-DIV-02 wilhelm-appendix-casting-methods",
         "20260625-BRIEF-DIV-04 keightley-procedural-reference",
+        "20260625-AUD-DIV-04 oracle-bones-product-support",
         "00000000-RPT-DIV-00 procedural-integrity-summary"
       ],
       "relatedTests": []
@@ -114,7 +115,26 @@
       "relatedCodes": [
         "20260625-BRIEF-DIV-04 keightley-procedural-reference",
         "20260625-AUD-DIV-03 oracle-bones-keightley",
+        "20260625-AUD-DIV-04 oracle-bones-product-support",
         "00000000-AUD-DIV-01 divination-methods"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260625-AUD-DIV-04 oracle-bones-product-support",
+      "title": "Oracle Bones — matriz de respaldo del producto actual vs fuentes",
+      "shortName": "oracle-bones-product-support",
+      "type": "AUD",
+      "family": "DIV",
+      "date": "2026-06-25",
+      "status": "closed",
+      "path": "docs/auditorias/20260625-AUD-DIV-04-oracle-bones-product-support.md",
+      "relatedCodes": [
+        "20260625-AUD-DIV-03 oracle-bones-keightley",
+        "20260625-BRIEF-DIV-04 keightley-procedural-reference",
+        "20260625-BRIEF-DIV-05 guia-bones-sources-trace",
+        "00000000-AUD-DIV-01 divination-methods",
+        "00000000-RPT-DIV-00 procedural-integrity-summary"
       ],
       "relatedTests": []
     },

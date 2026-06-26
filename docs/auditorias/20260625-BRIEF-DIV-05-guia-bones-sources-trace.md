@@ -3,7 +3,7 @@
 **Código:** `20260625-BRIEF-DIV-05 guia-bones-sources-trace` · **Familia:** DIV · **Estado:** reference
 
 **Alcance:** documentación únicamente — **sin** cambios a copy, motor ni FAQ.  
-**Relacionado:** [`20260625-BRIEF-DIV-04-keightley-procedural-reference.md`](./20260625-BRIEF-DIV-04-keightley-procedural-reference.md) §11 · [`20260625-AUD-DIV-03-oracle-bones-keightley.md`](./20260625-AUD-DIV-03-oracle-bones-keightley.md)
+**Relacionado:** [`20260625-BRIEF-DIV-04-keightley-procedural-reference.md`](./20260625-BRIEF-DIV-04-keightley-procedural-reference.md) §11 · [`20260625-AUD-DIV-03-oracle-bones-keightley.md`](./20260625-AUD-DIV-03-oracle-bones-keightley.md) · [`20260625-AUD-DIV-04-oracle-bones-product-support.md`](./20260625-AUD-DIV-04-oracle-bones-product-support.md)
 
 ---
 
@@ -20,6 +20,96 @@ La **guía de uso** (`/guia`, `packages/i18n/src/messages/guia-page-ui.ts`) **no
 | `/notes` | Bibliografía final (`ACADEMIC_SOURCES`) | Texto APA **sin hipervínculo** | **Parcial** — Keightley es la única entrada claramente huesos |
 
 **Conclusión navegación:** la cadena operativa del usuario es **Guía → Notas / FAQ → bibliografía APA**. No hay «enlace que salga» a un manual procedimental de 4 veredictos en otro sitio; hay **seis citas bibliográficas compartidas** (I Ching + contexto general), de las cuales **solo Keightley** trata la adivinación Shang de forma directa.
+
+---
+
+## 1b. Lo que había en `/notes` con «enlaces» (memoria correcta del usuario)
+
+**Sí hubo referencias a sitios externos en `/notes`**, pero **no en la sección de huesos** ni como `<a href>` clicables: eran **nombres de dominio en prosa** dentro de la sección **«Auditorías de fidelidad 1:1»** (`ichingDataAuditHeading` / `ichingDataAuditBody`), visible **~21–22 jun 2026** y **eliminada** al centralizar en `/audits`.
+
+| Commit | Cambio |
+|--------|--------|
+| `26469c9` / `0da877b` / `8c33479` (21 jun 2026) | Se añade `ichingDataAuditBody` con dominios en texto |
+| `86f6b2b` (22 jun 2026) | Se **quita** el bloque de `/notes`; nav gana enlace a `/audits`; contenido migra a `audits-page-ui.ts` |
+
+### Texto histórico EN (paráfrasis del commit `0da877b`)
+
+> Last audit: 21 June 2026. … James Legge (1882, Sacred Books of the East **via sacred-texts.com**), the canonical Zhou Yi (**Chinese Text Project, ctext.org**), and the Wilhelm/Baynes English rendering (**University of Parma academic mirror** of the Princeton 1950 edition). … hex 56 … verified against **wengu and iching-online** …
+
+Versión posterior (`8c33479`): sustituye wengu/iching-online por **páginas del libro físico** Princeton 1950 (hex 56 p. 231, etc.).
+
+### Tabla: dominios mencionados en `/notes` (histórico) → hacia dónde apuntan
+
+| Mención en `/notes` (prosa) | URL canónica hoy | Qué verifica | ¿Relacionado con huesos? |
+|-----------------------------|------------------|--------------|------------------------|
+| **sacred-texts.com** | https://sacred-texts.com/ich/index.htm | Textos oráculo **Legge** (ic01–ic64 + icap2) | **No** — I Ching |
+| **ctext.org** / Chinese Text Project | https://ctext.org/book-of-changes | **Zhou Yi** canónico (卦辞+爻辞+用九/六) | **No** — I Ching |
+| **Universidad de Parma** / Parma mirror | http://www2.unipr.it/~deyoung/I_Ching_Wilhelm_Translation.html | Traducción **Wilhelm** EN (secundario vs PDF Pantheon) | **No** — I Ching |
+| **wengu** / **iching-online** | (sitios de consulta Wilhelm; ya no citados en producto) | Contrastes auxiliares hex 56 / gaps Parma | **No** — I Ching |
+| **Princeton University Press, 1950** | Edición impresa Bollingen (sin URL en producto) | Suplementos Wilhelm donde Parma omite pasajes | **No** — I Ching |
+
+**Hoy:** esas URLs viven en **`/audits`** (`packages/i18n/src/messages/audits-page-ui.ts`, bloques `CITATIONS.wilhelmParma`, `leggeSacredTexts`, `zhouyiCtext`) con enlaces renderizados en la página pública de auditorías.
+
+### Sección huesos en `/notes` — nunca tuvo URLs
+
+| Época | Contenido huesos | Enlaces |
+|-------|------------------|---------|
+| `355f864` (may 2026) | 5 veredictos + «Silencio» + `bonesAuthBody` (150k fragmentos, museos) | **Ninguno** |
+| `f462f43` (may 2026) | Elimina silencio; queda 4 veredictos | **Ninguno** |
+| `169af00` (jun 2026) | Bibliografía APA estructurada (`ACADEMIC_SOURCES`) | **Ninguno** — solo texto |
+| **Hoy** | Mismo + nav a `/audits` | **Ninguno** en cuerpo huesos |
+
+### Otra cita histórica en `/notes` (yarrow, no huesos)
+
+En `355f864`, la sección varas citaba en prosa **«Edward Shaughnessy's *Sources of Western Zhou History* (1993)»** — obra distinta del Shaughnessy (1996) *I Ching* en la bibliografía actual. Esa frase ya **no está** en el copy vigente de varas.
+
+---
+
+## 1c. Enlaces Wikipedia históricos en `/notes` (eliminados 10 may 2026)
+
+Entre **`07f9d35`** (may 2026, bloque «Further reading» con `<a href>`) y **`fd1ce52`** (10 may 2026, «Remove Wikipedia links from notes page») la página `/notes` renderizaba **nueve** URLs de Wikipedia EN. Hoy **ninguna** permanece en producto.
+
+| URL Wikipedia (histórica) | Etiqueta en app | ¿Huesos Shang? | Estado URL (jun 2026) | Hacia dónde apunta el artículo |
+|---------------------------|-----------------|----------------|----------------------|--------------------------------|
+| https://en.wikipedia.org/wiki/I_Ching | I Ching (Zhouyi) | No | ✅ Activo | Hexagramas, 十翼, traducciones; puente a *I Ching divination* (varas/monedas) |
+| https://en.wikipedia.org/wiki/Oracle_bone_script | Oracle bone script (甲骨文) | **Sí** (contexto) | ✅ Activo | Escritura + piromancia; enlaza a **Oracle bone**, scapulimancy/plastromancy; bibliografía **Keightley 1978a/1985**, Qiu, Luo Zhenyu |
+| https://en.wikipedia.org/wiki/Chinese_pyromancy | Chinese pyromancy | **Sí** (temática) | ❌ **404** — artículo borrado | Sustitutos: **Oracle bone** (procedimiento completo), **Pyromancy** §China (cita Keightley 1985) |
+| https://en.wikipedia.org/wiki/Shang_dynasty | Shang dynasty | **Sí** (contexto) | ✅ Activo | Yinxu, rey como sumo sacerdote/divinador; múltiples citas **Keightley**; corpus óseo |
+| https://en.wikipedia.org/wiki/Zhu_Xi | Zhu Xi | No | ✅ Activo | Neo-confucianismo; selector lectura líneas Zhu Xi en app |
+| https://en.wikipedia.org/wiki/Richard_Wilhelm_(sinologist) | Richard Wilhelm | No | ✅ Activo | Biografía traductor; no procedimiento óseo |
+| https://en.wikipedia.org/wiki/I_Ching_divination | I Ching divination (yarrow) | No | ✅ Activo | **Solo** varas/monedas/dados; tras Shang la piromancia cede al milfoil → hexagramas |
+| https://en.wikipedia.org/wiki/Ten_Wings | Ten Wings / Dàzhuàn | No | ✅ Activo | Comentarios clásicos I Ching |
+| https://en.wikipedia.org/wiki/Edward_Shaughnessy | Shaughnessy (*Sources of Western Zhou History*, 1993) | No (desalineación) | ✅ Activo | Perfil del académico; la app etiquetaba obra **1993** distinta del Shaughnessy **1996** en bibliografía APA |
+
+**Commit `07f9d35`** también colocaba los tres primeros (I Ching, Oracle bone script, Chinese pyromancy) en el **panel de opciones** con notas explicativas en código — mismo retiro en `fd1ce52`.
+
+### Qué dice Wikipedia sobre procedimiento óseo (relevante al motor app)
+
+Artículo canónico hoy: **Oracle bone** (destino de *Oracle bone script* y sustituto de *Chinese pyromancy*).
+
+| Tema en Wikipedia | Contenido | Paridad con app / Keightley |
+|-------------------|-----------|----------------------------|
+| Preparación | Perforaciones, sangre, prefacio (fecha + adivino) | ✅ Alineado con Keightley §2 |
+| Carga (*charge*) | Tema en positivo/negativo, a veces repetido | ✅ Alineado |
+| Calor + grieta 卜 | Intensidad en foso; forma de grieta | ✅ Alineado |
+| Interpretación | «How exactly the cracks were interpreted is **not known**» | ⚠️ No respalda taxonomía cerrada |
+| Resultado grabado | A veces «auspicious» / «inauspicious»; rey añade *prognostication*; rara *verification* | ⚠️ Binario + grados en texto, **no** 4×4 simétrico jugable |
+| Post-Shang | Milfoil (yarrow) + hexagramas sustituyen piromancia inscrita | Coherente con separar huesos vs varas en producto |
+| Referencias bibliográficas del artículo | **Keightley 1978a** (pp. 33–35, 40–42, xiii, 185–187), Keightley 2000, Qiu 2000, Chou 1976 | Misma cadena académica que bibliografía `/notes`, **no** motor 4 veredictos |
+
+Artículo **Pyromancy**: menciona huesos chinos; referencia #8 = **Keightley 1985** (*Sources of Shang History* vol. supplementary).
+
+### Matriz Wikipedia → outbound → motor app
+
+| Enlace histórico en `/notes` | Referencias académicas que Wikipedia empuja | ¿Sustenta motor 4 veredictos (吉×2 / 凶×2)? |
+|------------------------------|-----------------------------------------------|---------------------------------------------|
+| Oracle bone script / Oracle bone | Keightley 1978a, Keightley 2000, Qiu, Wilkinson | **No** — describe ritual real; interpretación grieta explícitamente incierta |
+| Chinese pyromancy (roto) | (artículo ausente) | **No** — enlace muerto en versión histórica |
+| Shang dynasty | Keightley (múltiple), Fairbank, Xu | **No** — contexto político-religioso |
+| I Ching / I Ching divination / Ten Wings / Zhu Xi / Wilhelm | Tradición Zhou posterior | **No** — métodos monedas/varas |
+| Edward Shaughnessy | Obras del sinólogo (perfil WP) | **No** — etiqueta app mezclaba obra 1993 no listada en APA actual |
+
+**Conclusión documental:** los Wikipedia históricos **orientaban** al usuario hacia **Keightley vía artículos Oracle bone / Shang**, no hacia un manual de cuatro veredictos. Uno de los tres enlaces «de huesos» (**Chinese pyromancy**) ya **no existe**; restaurarlo sin sustituir por **Oracle bone** dejaría un 404. La cadena Wikipedia → Keightley **coincide** con la bibliografía APA actual; la cadena Wikipedia → motor 4×4 **no** está respaldada en ningún artículo revisado.
 
 ---
 
@@ -203,4 +293,7 @@ Para profundizar **sin cambiar producto**:
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-06-25 | §1c: inventario Wikipedia histórico `/notes` (9 URLs, `fd1ce52`); estado jun 2026 + cadena hacia Keightley vs motor 4×4 |
+| 2026-06-25 | Enlace a [`20260625-AUD-DIV-04-oracle-bones-product-support.md`](./20260625-AUD-DIV-04-oracle-bones-product-support.md) (matriz respaldo producto) |
+| 2026-06-25 | §1b: sección histórica `/notes` ichingDataAudit (sacred-texts, ctext, Parma) → migrada a `/audits`; huesos nunca tuvo URLs |
 | 2026-06-25 | Creación: trazabilidad guía/notas/FAQ → bibliografía → fuentes externas investigadas |
