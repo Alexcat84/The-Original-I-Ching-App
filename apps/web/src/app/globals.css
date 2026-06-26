@@ -4956,23 +4956,38 @@ html[data-theme="dark"] .verdict-pill--silent {
 .doc-article h1 {
   text-align: start;
   font-family: var(--font-oracle-display), Cinzel, Georgia, serif;
-  font-size: 1.55rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.25;
   margin: 0 0 0.75rem;
   color: var(--title-shell);
 }
 
 .doc-article h2 {
   text-align: start;
-  font-size: 1.05rem;
-  margin: 1.35rem 0 0.45rem;
-  color: var(--title-chat);
+  font-family: var(--font-oracle-display), Cinzel, Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--title-shell);
 }
 
 .doc-article h3 {
   text-align: start;
-  font-size: 0.98rem;
+  font-size: 1.02rem;
   font-weight: 600;
-  margin: 1.05rem 0 0.4rem;
+  line-height: 1.35;
+  margin: 1.1rem 0 0.4rem;
+  color: var(--title-chat);
+}
+
+.doc-article h4 {
+  text-align: start;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0.95rem 0 0.35rem;
   color: var(--title-chat);
 }
 
