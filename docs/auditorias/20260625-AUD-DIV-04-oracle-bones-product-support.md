@@ -21,7 +21,7 @@
 | ¿El motor concreto (4 veredictos, pesos, un tiro, T/X/Y) está respaldado? | **No** en sentido book-primary académico. Es **diseño de producto** desde el initial commit, con anclaje Keightley **posterior** (anti-Silence, carga ±). |
 | ¿Wikipedia añade respaldo independiente? | **No.** Redirige a la misma cadena (Keightley, Qiu, Chou). Un enlace histórico (`Chinese_pyromancy`) ya **404**. |
 | ¿La bibliografía `/notes` respalda el motor? | **Solo Keightley** trata procedimiento óseo directo; el resto es **contexto I Ching** o arqueología general. |
-| Formulación honesta recomendada (doc interna) | *Inspirado en la piromancia Shang documentada por Keightley; la mecánica de cuatro respuestas en un sorteo es una simplificación moderna para la app.* |
+| Formulación honesta — **aplicada 2026-06-25** | *Inspirado en la piromancia Shang documentada por Keightley; la mecánica de cuatro respuestas en un sorteo es una simplificación moderna para la app.* Ver F2-1 (§9). |
 
 ---
 
@@ -225,14 +225,14 @@ Inventario completo: `BRIEF-DIV-05` §1c.
 
 ---
 
-## 9. Fase 2 (pendiente aprobación)
+## 9. Fase 2
 
-| ID | Entrega | Depende de |
-|----|---------|------------|
-| F2-1 | Remediación copy FAQ/notas/guía (11 locales) | Decisión usuario |
-| F2-2 | Nota en `RPT-DIV-00` § huesos (PRODUCT vs Keightley) | F2-1 o cierre doc |
-| F2-3 | Entrada `/audits` huesos (WF-DOC-03) | AU book-primary cerrada |
-| F2-4 | Harness `VF-DIV-002` reglas G/J | `AUD-DIV-03` F2-1 |
+| ID | Entrega | Estado |
+|----|---------|--------|
+| F2-1 | Remediación copy FAQ/notas (11 locales) | **Cerrado 2026-06-25** — «fiel a»/«respeta» → «inspirado en»; nota de legado añadida en `/notes`. `guia-page-ui.ts` (`bonesPracticalBody`) revisado, sin claim de fidelidad, sin cambio necesario. |
+| F2-2 | Nota en `RPT-DIV-00` § huesos (PRODUCT vs Keightley) | **Cerrado 2026-06-25** — `00000000-RPT-DIV-00-procedural-integrity-summary.md` §5 actualizada |
+| F2-3 | Entrada `/audits` huesos (WF-DOC-03) | Pendiente — sin fecha; bloqueada por F2-4 (no publicar book-primary sin harness automatizado) |
+| F2-4 | Harness `VF-DIV-002` reglas G/J | Pendiente — sin fecha; depende de decisión de alcance (¿auditar 1 grieta o sets completos? ver `AUD-DIV-03` §4.G) |
 
 ---
 
@@ -260,3 +260,4 @@ git show f462f43 -- packages/oracle-bones-engine/
 | Fecha | Evento |
 |-------|--------|
 | 2026-06-25 | Apertura y cierre Fase 1 documental: matriz producto × fuentes (Keightley, Wikipedia, bibliografía, git); veredictos consolidados G–J + tabla resumen A–K |
+| 2026-06-25 | **Sweep de deuda documental**: F2-1 y F2-2 cerrados (copy FAQ/notas corregido; `RPT-DIV-00` §5 actualizada). F2-3/F2-4 confirmados pendientes, sin fecha, bloqueados por la decisión de alcance del harness book-primary. |
