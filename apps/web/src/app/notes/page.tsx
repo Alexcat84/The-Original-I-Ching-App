@@ -36,35 +36,6 @@ export default async function NotesPage() {
         <p className="doc-lead">{n.lead}</p>
         <p className="doc-auth-notice">{n.authNotice}</p>
 
-        {/* Oracle Bones (oldest) */}
-        {n.bonesHeading && <h2>{n.bonesHeading}</h2>}
-
-        {n.bonesOriginHeading && (
-          <>
-            <h3>{n.bonesOriginHeading}</h3>
-            <p>{n.bonesOriginBody}</p>
-          </>
-        )}
-
-        {n.bonesVerdictsHeading && (
-          <>
-            <h3>{n.bonesVerdictsHeading}</h3>
-            <ul>
-              {n.bonesVerdictAuspClear && <li>{n.bonesVerdictAuspClear}</li>}
-              {n.bonesVerdictAuspMod && <li>{n.bonesVerdictAuspMod}</li>}
-              {n.bonesVerdictInauspMod && <li>{n.bonesVerdictInauspMod}</li>}
-              {n.bonesVerdictInauspClear && <li>{n.bonesVerdictInauspClear}</li>}
-            </ul>
-          </>
-        )}
-
-        {n.bonesLegacyHeading && (
-          <>
-            <h3>{n.bonesLegacyHeading}</h3>
-            <p>{n.bonesLegacyBody}</p>
-          </>
-        )}
-
         {/* I Ching */}
         {n.ichingHeading && <h2>{n.ichingHeading}</h2>}
 
@@ -149,6 +120,35 @@ export default async function NotesPage() {
           <>
             <h3>{n.ichingZhouyiHeading}</h3>
             <p>{n.ichingZhouyiBody}</p>
+          </>
+        )}
+
+        {/* Oracle Bones */}
+        {n.bonesHeading && <h2>{n.bonesHeading}</h2>}
+
+        {n.bonesOriginHeading && (
+          <>
+            <h3>{n.bonesOriginHeading}</h3>
+            <p>{n.bonesOriginBody}</p>
+          </>
+        )}
+
+        {n.bonesVerdictsHeading && (
+          <>
+            <h3>{n.bonesVerdictsHeading}</h3>
+            <ul>
+              {n.bonesVerdictAuspClear && <li>{n.bonesVerdictAuspClear}</li>}
+              {n.bonesVerdictAuspMod && <li>{n.bonesVerdictAuspMod}</li>}
+              {n.bonesVerdictInauspMod && <li>{n.bonesVerdictInauspMod}</li>}
+              {n.bonesVerdictInauspClear && <li>{n.bonesVerdictInauspClear}</li>}
+            </ul>
+          </>
+        )}
+
+        {n.bonesLegacyHeading && (
+          <>
+            <h3>{n.bonesLegacyHeading}</h3>
+            <p>{n.bonesLegacyBody}</p>
           </>
         )}
 
