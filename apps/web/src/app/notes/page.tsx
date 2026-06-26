@@ -36,7 +36,24 @@ export default async function NotesPage() {
         <p className="doc-lead">{n.lead}</p>
         <p className="doc-auth-notice">{n.authNotice}</p>
 
-        {/* Oracle Bones (oldest) */}
+        {/* I Ching */}
+        {n.ichingHeading && <h2>{n.ichingHeading}</h2>}
+
+        {n.ichingOriginHeading && (
+          <>
+            <h3>{n.ichingOriginHeading}</h3>
+            <p>{n.ichingOriginBody}</p>
+          </>
+        )}
+
+        {n.ichingHexHeading && (
+          <>
+            <h3>{n.ichingHexHeading}</h3>
+            <p>{n.ichingHexBody}</p>
+          </>
+        )}
+
+        {/* Oracle Bones */}
         {n.bonesHeading && <h2>{n.bonesHeading}</h2>}
 
         {n.bonesOriginHeading && (
@@ -62,23 +79,6 @@ export default async function NotesPage() {
           <>
             <h3>{n.bonesLegacyHeading}</h3>
             <p>{n.bonesLegacyBody}</p>
-          </>
-        )}
-
-        {/* I Ching */}
-        {n.ichingHeading && <h2>{n.ichingHeading}</h2>}
-
-        {n.ichingOriginHeading && (
-          <>
-            <h3>{n.ichingOriginHeading}</h3>
-            <p>{n.ichingOriginBody}</p>
-          </>
-        )}
-
-        {n.ichingHexHeading && (
-          <>
-            <h3>{n.ichingHexHeading}</h3>
-            <p>{n.ichingHexBody}</p>
           </>
         )}
 
