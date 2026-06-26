@@ -98,15 +98,16 @@ npm run test --workspace=@iching-oracle/iching-engine
 
 ---
 
-## 5. Oracle Bones (Shang divination) — gold identified, procedural audit pending
+## 5. Oracle Bones (Shang divination) — gold identified; mechanic is a product abstraction, not a verified procedure
 
 | Field | Detail |
 |-------|--------|
 | **Gold** | Keightley, D. N. (1978). *Sources of Shang history: The oracle-bone inscriptions of Bronze Age China*. University of California Press. (Reprinted 1985). |
-| **Scope today** | The 4-verdict taxonomy (`auspicious_clear`/`moderate`, `inauspicious_moderate`/`clear`) was decided in `00000000-AUD-DIV-01` §5 (2026-05-19, removal of a 5th "Silence" verdict) citing Keightley as the academic basis for the decision — not a field-by-field book-primary verification of weights/patterns. |
-| **Status** | PDF ingested 2026-06-25 (`tools/source-pdfs/`, manifest key `keightley`); procedural gold + **AUD-DIV-03 Fase 1** open 2026-06-25. Harness VF-DIV-002 pending. |
+| **Scope today** | The 4-verdict taxonomy (`auspicious_clear`/`moderate`, `inauspicious_moderate`/`clear`) was decided in `00000000-AUD-DIV-01` §5 (2026-05-19, removal of a 5th "Silence" verdict) citing Keightley as the academic basis for the decision. The full support matrix (`20260625-AUD-DIV-04-oracle-bones-product-support.md`) confirms the ritual framework (heat, crack, paired charge, expert reading) is real and Keightley-backed; the playable mechanic itself (4 symmetric verdicts, fixed weights, one roll, T/X/Y image patterns) is **product design**, not derived from the book — this is unlike the I Ching casting methods in §1-§2 above, which ARE exactly verified against Wilhelm. |
+| **Public copy** | **Corrected 2026-06-25**: FAQ (`oracle-bones-method`) and `/notes` (`bonesOriginBody`, new `bonesLegacyHeading`/`bonesLegacyBody`) no longer claim the 4-state system is "faithful to"/"respects" the Shang tradition; both now say "inspired by," and `/notes` adds an explicit note that the full original ritual isn't known with certainty. Verdict labels (大吉/吉/凶/大凶) and weights were deliberately left unchanged — they're a legitimate product abstraction, not a fidelity claim. |
+| **Still open** | No automated book-primary gate exists yet for the engine's weights/verdicts/image patterns (`VF-DIV-002`, proposed, not built) and no public `/audits` entry for this method (deliberately, per `WF-DOC-03` §5.4, until that gate exists) — see `20260625-AUD-DIV-03-oracle-bones-keightley.md` §5 for the open Fase 2 items. |
 | **Tests** | None yet for book-primary verdict weights — `oracle-bones-engine`'s existing unit tests cover determinism only, not Keightley fidelity. |
-| **Audit** | `00000000-AUD-DIV-01-divination-methods.md` §5 (original decision) · `20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md` §13 (gold designated, scope drafted for the successor audit) |
+| **Audit** | `00000000-AUD-DIV-01-divination-methods.md` §5 (original decision) · `20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md` §13 (gold designated) · `20260625-AUD-DIV-03-oracle-bones-keightley.md` (findings G-J) · `20260625-AUD-DIV-04-oracle-bones-product-support.md` (full product-vs-source matrix) |
 
 ---
 

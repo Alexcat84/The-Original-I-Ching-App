@@ -100,14 +100,14 @@ Verificado: `tsc` (i18n + image-engine + web), `i18n:audit`, `verify:docs-remedi
 
 ---
 
-## 5. Fase 2 (pendiente)
+## 5. Fase 2
 
 | ID | Entrega | Estado |
 |----|---------|--------|
-| F2-1 | Harness `verify:oracle-bones-keightley` (VF-DIV-002): citas gold JSON + reglas G/J automáticas | Pendiente |
-| F2-2 | Revisión humana juez (campo a campo gold ↔ FAQ ES/EN) | Pendiente |
-| F2-3 | Decisión producto: ¿ajustar copy solo, o también etiquetas 大吉/大凶? | Pendiente usuario |
-| F2-4 | Entrada `/audits` sección dedicada (fuera `divination-method` I Ching) | Pendiente cierre |
+| F2-1 | Harness `verify:oracle-bones-keightley` (VF-DIV-002): citas gold JSON + reglas G/J automáticas | Pendiente — sin fecha, no bloqueante (hallazgos G/J ya cerrados manualmente, ver §4) |
+| F2-2 | Revisión humana juez (campo a campo gold ↔ FAQ ES/EN) | Pendiente — sin fecha |
+| F2-3 | Decisión producto: ¿ajustar copy solo, o también etiquetas 大吉/大凶? | **Resuelto 2026-06-25**: copy solo («fiel a» → «inspirado en», FAQ + `/notes`, 11 locales); etiquetas 大吉/吉/凶/大凶 sin cambio — son abstracción de producto, no afirman fidelidad. Ver §4.J y `00000000-RPT-DIV-00` §5. |
+| F2-4 | Entrada `/audits` sección dedicada (fuera `divination-method` I Ching) | Pendiente — sin fecha; bloqueada por F2-1/F2-2 (no publicar book-primary sin harness automatizado) |
 
 ---
 
