@@ -1,5 +1,5 @@
 # Plan de implementación — Zhu Xi 32 diagramas + regla clásica 3 líneas
-**Código:** `20260622-PLAN-LRS-02 zhuxi-32-charts-plan` · **Familia:** LRS · **Estado:** open
+**Código:** `20260622-PLAN-LRS-02 zhuxi-32-charts-plan` · **Familia:** LRS · **Estado:** closed
 
 
 **Fecha:** 22 jun 2026 · **Revisión:** v2.2 (Gate 0 cerrado definitivamente)  
