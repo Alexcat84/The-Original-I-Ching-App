@@ -4,17 +4,17 @@
 
 **Fecha:** 2026-06-10  
 **Actualización:** 2026-06-10 — Monitor identificado; P0 implementado en `feat/warp-connection-efficiency`  
-**Cierre confirmado:** 2026-06-25 — propietario confirma Fase 8 (fix OOM) desplegada y estable en producción (código en `main` desde `90a6650` + mejoras posteriores de hydration gate). No se re-verificó vía MCP en vivo en esta sesión (sin herramientas Supabase disponibles en este entorno); el cierre se basa en confirmación directa del propietario, quien tiene acceso operativo a Supabase/Play Console.  
+**Cierre confirmado:** 2026-06-25 — Warp/PostgREST (alcance original, puntos 1-3) verificado en vivo con dos fuentes independientes (Axiom 14d + MCP Supabase 24h contra prod `wgborqkfnxfarkdaotsd`), ver "Verificación en vivo" más abajo. Fase 8 / fix OOM Android (punto 4, hallazgo posterior) desplegada según confirmación del propietario; sin verificación de herramienta (Sentry no disponible en este workspace) — única pieza que sigue sin evidencia independiente.  
 **Alcance:** Capa de PostgREST y Pool de Conexiones de Supabase / Concurrencia de la App  
-**Herramientas:** Scripts Supabase (Grok), análisis arquitectónico (antigravity Claude Opus), inspección de codebase  
-**Estado:** ✅ P0+P1+Phase 8 implementados, desplegados y confirmados en producción por el propietario (2026-06-25).  
+**Herramientas:** Scripts Supabase (Grok), análisis arquitectónico (antigravity Claude Opus), inspección de codebase, **MCP Supabase (verificación en vivo 2026-06-25)**  
+**Estado:** ✅ P0+P1 verificados en vivo en prod (2026-06-25); Phase 8 desplegada, confirmada por el propietario, sin verificación de herramienta para el componente Android/Sentry.  
 **Relacionado:** [00000000-AUD-SUP-01-supabase-db-stability.md](file:///c:/Users/AlexDesk/Documents/iching-app/docs/auditorias/00000000-AUD-SUP-01-supabase-db-stability.md), [00000000-AUD-MOB-HYD-02-sqlite-chat-hydration.md](./00000000-AUD-MOB-HYD-02-sqlite-chat-hydration.md)
 
 ---
 
 ## Resumen Ejecutivo
 
-Los errores de Warp que resultan en `Thread killed by timeout manager` son el resultado de la **saturación del pool de conexiones PostgREST** (máximo 30 conexiones en el plan Pro). 
+Los errores de Warp que resultan en `Thread killed by timeout manager` son el resultado de la **saturación del pool de conexiones PostgREST** (~10 conexiones internas; el plan Pro no eleva este número — corregido 2026-06-25, ver §"Verificación en vivo" más abajo; la cifra "30" de una redacción anterior era un error material de diagnóstico). 
 
 Este incidente no se debe a consultas masivas de base de datos aisladas, sino a una **amplificación de requests simultáneos por cliente**, agravada por endpoints críticos que realizan llamadas secuenciales sin semáforo o que bypasean por completo el rate-limiting local. Cuando el pool se satura, las consultas se encolan, superan el timeout interno de Warp (~60s) y son terminadas de forma abrupta, provocando fallos en cadena y reintentos infinitos por parte del cliente web/móvil.
 
@@ -225,7 +225,7 @@ El usuario mantiene su sesión tras un OOM kill sin ver la pantalla de Google OA
 |--------------|--------------------|---------------------------------|-----------------|
 | Línea 7 “Estado” | P0+P1 implementados; Phase 8 pendiente deploy | P0+P1 en `main` (`e542d7a`, `a3e8ac3`); Phase 8 merge `90a6650` + fixes posteriores (hydration gate, dist 54–55) | Constructor: actualizar “Phase 8 pendiente deploy” → validar APK/dist en dispositivo |
 | Línea 4 “Actualización” | 2026-06-10, rama `feat/warp-connection-efficiency` | Rama mergeada; no usar nombre de rama como estado vigente | Actualizar fecha y quitar referencia a rama cerrada |
-| Resumen ejecutivo L14 | Pool máximo **30** conexiones Pro | Runbook + logs: pool PostgREST **~10** (`00000000-RUN-SUP-02-supabase-scalability.md`, `GLOBAL_MAX_CONCURRENT=8`) | Corregir cifra 30 → 10 en resumen (error material de diagnóstico) |
+| Resumen ejecutivo L14 | Pool máximo **30** conexiones Pro | Runbook + logs: pool PostgREST **~10** (`00000000-RUN-SUP-02-supabase-scalability.md`, `GLOBAL_MAX_CONCURRENT=8`) | **Corregido 2026-06-25** — confirmado en vivo vía MCP Supabase (log de arranque del pool), ver "Verificación en vivo" más abajo |
 
 ---
 
@@ -287,7 +287,62 @@ Sigue válido: scripts `.tmp/smoke-monitor*.ps1` ya no amplifican PostgREST vía
 
 - Fix A (two-phase sync) y Fix B (renderer recovery): presentes en repo.
 - **Evolución posterior al doc:** hydration gate per-session (`2e8044e`), attestKey fix, dist **54–55**. Ver `docs/auditorias/00000000-AUD-MOB-HYD-01-chat-thread-hydration.md`.
-- **Cierre:** propietario confirma despliegue y estabilidad en producción (2026-06-25) — "pendiente deploy" ya no aplica. Sin smoke formal en dispositivo documentado en este repo para esta fecha específica; el cierre se apoya en la confirmación operativa directa del propietario, no en un nuevo log/MCP de esta sesión.
+- **Cierre:** confirmado con dos fuentes de telemetría independientes (ver verificación en vivo abajo) para los puntos 1-3; el punto 4 (OOM Android, Sentry) sigue apoyado solo en confirmación del propietario — ver nota al final de esta sección.
+
+---
+
+### Verificación en vivo — Supabase MCP (2026-06-25, solo lectura, prod `wgborqkfnxfarkdaotsd`)
+
+Verificación cruzada pedida explícitamente para no cerrar el audit solo con confirmación verbal. Corrida vía MCP Supabase (Cursor) contra producción — Postgres 17.6.1.105, ca-central-1, ACTIVE_HEALTHY.
+
+**1. Warp / timeout kills — Supabase vs Axiom**
+
+| Patrón buscado | API (PostgREST), 24h | Postgres, 24h |
+|---|---|---|
+| `Thread killed by timeout manager` | 0 | 0 |
+| `57014` / `canceling statement` | 0 | 0 |
+| `warp` | 0 | 0 |
+| HTTP 500/502/503/504 en `/rest/v1/*` | 0 | n/a |
+| Pool agotado / connection exhausted | 0 | 0 |
+
+Muestra API 24h (~100 entradas): solo 200/204/302 en REST; errores = 403 auth + 429 rate-limit en `/auth/v1/recover` (esperado, no relacionado). RPC 071 (`get_user_session_summaries`) respondiendo 200 en vivo.
+
+**Correlación con Axiom** (consulta independiente, misma sesión, ventana de 14 días sobre `iching-app-main`): **0 eventos** de timeout/kill/57014 en esa ventana — confirmado en el turno anterior de esta misma conversación.
+
+**Limitación documentada:** `get_logs` del MCP Supabase solo cubre ~24h (límite del propio tool). La ventana de 14 días queda confirmada por **Axiom únicamente**; para que Supabase cubra los mismos 14 días haría falta una pasada manual en Dashboard → Logs → Logs Explorer. No bloqueante para el cierre — dos fuentes independientes ya coinciden en 0 para el periodo que ambas pueden cubrir.
+
+**2. Pool de conexiones — cifra real**
+
+| Capa | Valor medido en prod | Fuente |
+|---|---|---|
+| Pool interno PostgREST | **~10 conexiones** | Log de arranque: `Connection Pool initialized with a maximum size of 10 connections`; consistente con `00000000-RUN-SUP-02-supabase-scalability.md` §2. Pro no lo eleva. |
+| `max_connections` Postgres | 90 | `pg_settings`, prod |
+| `statement_timeout` | 120000 ms (120s) | Ya no son los 8s/30s de versiones anteriores del audit |
+
+Supavisor (puerto 6543, pooler de conexión) solo es visible en el Dashboard (Project Settings → Database → Connection pooling) — no expuesto vía MCP. No se verificó ese número específico; no afecta la conclusión porque el cuello de botella documentado siempre fue el pool **PostgREST** (~10), no Supavisor.
+
+**3. Migraciones 070, 071, 073 en prod**
+
+| # | Check | Estado |
+|---|-------|--------|
+| 070 | cron `weekly-vacuum-iching` | ✅ OK |
+| 071 | RPC `get_user_session_summaries` | ✅ OK |
+| 073 | revoke PUBLIC/anon/auth en 071 + RLS `token_refund_log` | ✅ OK |
+
+Cron jobs activos confirmados en prod: `prewarm-consultation-content` (`*/15 * * * *`) y `weekly-vacuum-iching` (`0 4 * * 0`).
+
+**4. OOM Android (Sentry #7542347795)** — confirmado fuera de alcance de Supabase: el crash ocurre en el proceso nativo del WebView, antes de que cualquier respuesta llegue al logging del servidor; no aparece ni puede aparecer en logs de API/Postgres. Cierre de este punto específico sigue pendiente de: (a) revisión directa en Sentry del issue (¿sin eventos nuevos desde el fix?), o (b) smoke en dispositivo real. Ninguna de las dos se hizo en esta sesión — el MCP de Cursor en este workspace no tiene Sentry conectado.
+
+**Veredicto consolidado:**
+
+| Punto | Veredicto | Evidencia |
+|-------|-----------|-----------|
+| 1. Warp/57014 | ✅ PASS | Axiom 14d = 0 + Supabase MCP 24h = 0, dos fuentes independientes |
+| 2. Pool de conexiones | ✅ PASS (corregido) | PostgREST ~10 confirmado en vivo; cifra "30" del resumen ejecutivo era error de diagnóstico, ya corregida arriba |
+| 3. Migraciones | ✅ PASS | 070/071/073 aplicadas y funcionando en prod |
+| 4. OOM Android | ⚠️ Sin verificación independiente | Descansa en confirmación del propietario; herramienta de verificación (Sentry) no disponible en este workspace |
+
+Los puntos 1-3, que son el alcance original de esta auditoría (Warp/PostgREST), quedan cerrados con evidencia reproducible de dos fuentes. El punto 4 es un hallazgo posterior (Phase 8) de un dominio distinto (crash nativo Android) y queda señalado explícitamente como la única pieza sin verificación de herramienta en este cierre.
 
 ---
 
