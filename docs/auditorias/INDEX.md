@@ -77,10 +77,10 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 |--------|-------|--------|--------|-----------|
 | `00000000-AUD-DIV-01 divination-methods` | 2026-05-19 | Métodos adivinación (referencia matemática) | closed | [00000000-AUD-DIV-01-divination-methods.md](./00000000-AUD-DIV-01-divination-methods.md) |
 | `20260625-AUD-DIV-02 wilhelm-appendix-casting-methods` | 2026-06-25 | Métodos vs apéndice Wilhelm TXT (book-primary) | open | [20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md](./20260625-AUD-DIV-02-wilhelm-appendix-casting-methods.md) |
-| `20260625-AUD-DIV-03 oracle-bones-keightley` | 2026-06-25 | Huesos vs Keightley PDF (procedimiento book-primary) | open (Fase 1) | [20260625-AUD-DIV-03-oracle-bones-keightley.md](./20260625-AUD-DIV-03-oracle-bones-keightley.md) |
+| `20260625-AUD-DIV-03 oracle-bones-keightley` | 2026-06-25 | Huesos vs Keightley PDF (cerrada: homenaje simbólico, no aplica book-primary) | closed | [20260625-AUD-DIV-03-oracle-bones-keightley.md](./20260625-AUD-DIV-03-oracle-bones-keightley.md) |
 | `20260625-BRIEF-DIV-04 keightley-procedural-reference` | 2026-06-25 | Referencia procedimental Keightley (Ping-pien 8 + §3.7 12–21) | reference | [20260625-BRIEF-DIV-04-keightley-procedural-reference.md](./20260625-BRIEF-DIV-04-keightley-procedural-reference.md) |
 | `20260625-BRIEF-DIV-05 guia-bones-sources-trace` | 2026-06-25 | Guía/notas: trazabilidad bibliografía huesos → fuentes externas | reference | [20260625-BRIEF-DIV-05-guia-bones-sources-trace.md](./20260625-BRIEF-DIV-05-guia-bones-sources-trace.md) |
-| `20260625-AUD-DIV-04 oracle-bones-product-support` | 2026-06-25 | Huesos: matriz respaldo producto actual vs Keightley/Wikipedia/bibliografía | closed (Fase 1 doc) | [20260625-AUD-DIV-04-oracle-bones-product-support.md](./20260625-AUD-DIV-04-oracle-bones-product-support.md) |
+| `20260625-AUD-DIV-04 oracle-bones-product-support` | 2026-06-25 | Huesos: matriz respaldo producto actual vs Keightley/Wikipedia/bibliografía (cerrada, decisión de negocio) | closed | [20260625-AUD-DIV-04-oracle-bones-product-support.md](./20260625-AUD-DIV-04-oracle-bones-product-support.md) |
 | `00000000-RPT-DIV-00 procedural-integrity-summary` | — | **Fuentes de verdad procedurales** (monedas, varas, reglas Huang/Zhu Xi) | reference | [00000000-RPT-DIV-00-procedural-integrity-summary.md](./00000000-RPT-DIV-00-procedural-integrity-summary.md) |
 
 **Gold:** `tools/source-pdfs/The I Ching or Book of Changes - Wilhelm-Appendix.txt` · **Tests:** `TS-ENG-001`, `VF-DIV-001 divination-wilhelm-appendix` (G1-G7, exacto)
@@ -123,7 +123,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 |--------|-------|--------|--------|-----------|
 | `20260607-INC-SUP-INC-01 consultation-content-wipe` | 2026-06-07 | **P0** wipe `consultation_content` | closed | [20260607-INC-SUP-INC-01-consultation-content-wipe.md](./20260607-INC-SUP-INC-01-consultation-content-wipe.md) |
 | `00000000-AUD-SUP-01 supabase-db-stability` | — | Estabilidad DB por fases | open | [00000000-AUD-SUP-01-supabase-db-stability.md](./00000000-AUD-SUP-01-supabase-db-stability.md) |
-| `00000000-AUD-SUP-02 warp-timeout-kills` | — | Warp / timeout PostgREST | open | [00000000-AUD-SUP-02-warp-timeout-kills.md](./00000000-AUD-SUP-02-warp-timeout-kills.md) |
+| `00000000-AUD-SUP-02 warp-timeout-kills` | — | Warp / timeout PostgREST (cerrada: Fase 8 confirmada en producción 2026-06-25) | closed | [00000000-AUD-SUP-02-warp-timeout-kills.md](./00000000-AUD-SUP-02-warp-timeout-kills.md) |
 
 **Runbooks:** `RUN-SUP-01`…`05` · **Planes:** [`PLAN-SUP-07`](../plans/00000000-PLAN-SUP-07-scale-infrastructure.md), [`PLAN-SUP-08`](../plans/00000000-PLAN-SUP-08-anti-warp-serialize-burst.md) · Índice global: [`docs/INDEX.md`](../INDEX.md)
 

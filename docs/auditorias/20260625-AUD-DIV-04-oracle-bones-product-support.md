@@ -1,9 +1,9 @@
 # Huesos de Oráculo — matriz de respaldo del producto actual
-**Código:** `20260625-AUD-DIV-04 oracle-bones-product-support` · **Familia:** DIV · **Estado:** closed (Fase 1 documental)
+**Código:** `20260625-AUD-DIV-04 oracle-bones-product-support` · **Familia:** DIV · **Estado:** closed (decisión de negocio 2026-06-25)
 
-**Fecha:** 2026-06-25  
+**Fecha:** 2026-06-25 · **Fecha cierre definitivo:** 2026-06-25  
 **Objetivo:** responder de forma reproducible **qué respalda y qué no respalda** el método Huesos de Oráculo tal como está hoy en la app (motor, copy, bibliografía, enlaces históricos).  
-**Política:** documentación únicamente — **sin** remediación de producto hasta pedido explícito (misma política que `AUD-DIV-03`).
+**Política:** documentación únicamente — remediación de copy ya aplicada (§9); sin más remediación pendiente — el propietario decidió que el método es homenaje simbólico, no reconstrucción literal, por lo que no aplica un harness book-primary contra Keightley (ver `AUD-DIV-03` §5).
 
 **Relacionado:**
 - [`20260625-AUD-DIV-03-oracle-bones-keightley.md`](./20260625-AUD-DIV-03-oracle-bones-keightley.md) — hallazgos G–J app ↔ Keightley PDF
@@ -225,14 +225,16 @@ Inventario completo: `BRIEF-DIV-05` §1c.
 
 ---
 
-## 9. Fase 2
+## 9. Fase 2 — cerrada (decisión de negocio 2026-06-25)
 
-| ID | Entrega | Estado |
-|----|---------|--------|
+| ID | Entrega | Estado final |
+|----|---------|--------------|
 | F2-1 | Remediación copy FAQ/notas (11 locales) | **Cerrado 2026-06-25** — «fiel a»/«respeta» → «inspirado en»; nota de legado añadida en `/notes`. `guia-page-ui.ts` (`bonesPracticalBody`) revisado, sin claim de fidelidad, sin cambio necesario. |
 | F2-2 | Nota en `RPT-DIV-00` § huesos (PRODUCT vs Keightley) | **Cerrado 2026-06-25** — `00000000-RPT-DIV-00-procedural-integrity-summary.md` §5 actualizada |
-| F2-3 | Entrada `/audits` huesos (WF-DOC-03) | Pendiente — sin fecha; bloqueada por F2-4 (no publicar book-primary sin harness automatizado) |
-| F2-4 | Harness `VF-DIV-002` reglas G/J | Pendiente — sin fecha; depende de decisión de alcance (¿auditar 1 grieta o sets completos? ver `AUD-DIV-03` §4.G) |
+| F2-3 | Entrada `/audits` huesos (WF-DOC-03) | **No aplica, permanente.** El método se declara explícitamente simbólico, no literal; `/audits` verifica fidelidad, y aquí no hay fidelidad que verificar. |
+| F2-4 | Harness `VF-DIV-002` reglas G/J | **No aplica.** Sin claim de equivalencia 1:1 con Keightley, no hay nada contra qué gatear el motor — construirlo habría sido auditar una afirmación que el producto ya no hace. |
+
+**Resultado:** las 4 entregas de Fase 2 quedan resueltas. No queda trabajo pendiente en esta familia de auditorías.
 
 ---
 
@@ -261,3 +263,4 @@ git show f462f43 -- packages/oracle-bones-engine/
 |-------|--------|
 | 2026-06-25 | Apertura y cierre Fase 1 documental: matriz producto × fuentes (Keightley, Wikipedia, bibliografía, git); veredictos consolidados G–J + tabla resumen A–K |
 | 2026-06-25 | **Sweep de deuda documental**: F2-1 y F2-2 cerrados (copy FAQ/notas corregido; `RPT-DIV-00` §5 actualizada). F2-3/F2-4 confirmados pendientes, sin fecha, bloqueados por la decisión de alcance del harness book-primary. |
+| 2026-06-25 | **Cierre definitivo por decisión de negocio.** El propietario confirma: homenaje simbólico, no reconstrucción literal. F2-3/F2-4 pasan de "pendiente" a "no aplica" — sin claim de fidelidad no hay patrón book-primary que auditar. AU completa cerrada. |
