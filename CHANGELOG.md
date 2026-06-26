@@ -1,8 +1,80 @@
-<!-- changelog:last-release:3a52d00 -->
+<!-- changelog:last-release:c31aeee -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.2.0] — 2026-06-25 | versionCode: 60 | Stage: Production
+
+### New
+- feat(oracle-bones): honest legacy framing in FAQ/notes + Keightley reprint citation | commit: e05f7d9
+- feat(audits): add I Ching casting methods section from DIV-01/DIV-02 | commit: 505d49d
+- feat(audits): replace /audits sections with single expandable timeline | commit: ac12836
+- feat(audits): redesign /audits as source-by-source verification blocks | commit: 16ac75e
+
+### Fix
+- fix(notes): restore APA 7 alphabetical order in ACADEMIC_SOURCES | commit: c31aeee
+- fix(notes): place Oracle Bones after full I Ching block, before AI section | commit: c7958e6
+- fix(notes): show I Ching before Oracle Bones; Keightley last in bibliography | commit: 9777bd9
+- fix(audits-ui): stronger timeline tree lines in light and dark mode | commit: e19f02b
+- fix(oracle-bones): replace fidelity claim with inspiration claim (H-DIV-03-J/I) | commit: a19dccd
+- fix(audits): correct yarrow gate count + disclose procedural nuance; restore wilhelm-pdf script | commit: c24f50c
+- fix(audits-ui): rounded tree connectors and red superseded status | commit: a9d6df0
+- fix(build): eliminate webpack critical dependency font warnings | commit: f76e60a
+- fix(build): remove nested web lockfile and set monorepo tracing root | commit: 76d0fa6
+- fix(turbo): declare REVENUECAT_ALLOW_TEST_EVENTS and trim remote cache outputs | commit: a31d88c
+- fix(audits-i18n): align KO/AR status labels with WF-DOC-03 standard | commit: c3ee581
+- fix(audits): status field is only Obsoleto./Vigente a la fecha. | commit: b449e4f
+- fix(audits): split casting methods per coin/yarrow with accurate sources | commit: 5a4a9f5
+- fix(divination): exact arithmetic for yarrow gates + procedural sources of truth doc | commit: de0e28d
+- fix(divination): correct manual coin yin/yang mapping to match Wilhelm/Baynes | commit: 262c3dc
+- fix(audits): remove internal jargon and correct overstated/understated claims | commit: d5c94e9
+- fix(audits): plural classical commentaries and Confucius Ten Wings | commit: bdfec45
+- fix(audits): classical commentary copy and public-facing hygiene | commit: 8cb06ba
+- fix(audits): separate library commentary and ongoing verification naming | commit: 0fc374f
+- fix(audits): standardize timeline entry titles to final verification | commit: 7c2fca8
+- fix(audits): light-mode date chip and left-aligned field labels | commit: eea0c93
+- fix(audits): truthful EPUB claims, standalone entries, green dates | commit: d993f1a
+- fix(audits): categorized timeline with historical fidelity detail | commit: 0d348f5
+- fix(audits): classic expandable tree with YYYY.MM.DD dates | commit: 6816bd0
+- fix(audits): collapsible tree with date circle outline only | commit: 826f31b
+- fix(audits): align timeline UI with version-history mockup | commit: a186d04
+- fix(build): resuelve warnings de Vercel — hooks Sentry + env vars en turbo.json | commit: 2752968
+- fix(images): restaura ajuste de margen vertical en mutaciones de 2 lineas + APA en notas | commit: 169af00
+- fix(images): elimina tspan en linea de mutacion EN, cierra bug resvg de texto ausente | commit: 804dbe0
+- fix(images): overlay mutation titles, arrow tspan, and sumi glyph QA harness | commit: 6c5711a
+- fix(ci): sync root lockfile for @fontsource/noto-serif | commit: 86f9f9d
+- fix(images): dual font-stack overlay for Legge diacritics | commit: 357fcf7
+- fix(faq): citas reales en lugar de PDF, separa traductores de tiers, agrega manual de docs | commit: 4a05589
+
+### Docs
+- docs(play): add 4.2.0 Play Store notes; refresh AGENTS.md memory | commit: cce9bcb
+- docs(divination): Oracle Bones vs Keightley audit (Fase 1) + procedural reference | commit: 89783ac
+- docs(qa): ciclo de vida tests, cabeceras QA y limpieza raíz repo | commit: eb8869e
+- docs(qa): reglas obligatorias de registro, area en tests y validación | commit: 8e6e076
+- docs(qa): codificar auditorías, tests y docs con registros e índices maestros | commit: 44ddab2
+
+### Maintenance
+- style(docs): clearer h1-h3 heading sizes on doc pages | commit: 2afe867
+- chore(mobile): bump 4.2.0 / versionCode 60 for Play production AAB | commit: 27c1d6b
+- merge: main — casting methods on /audits | commit: edc10ba
+- merge: staging — divination Wilhelm appendix, audits timeline, coin mapping fix | commit: 5d04304
+- test(divination): add coin/yarrow verification harness vs Wilhelm Appendix I | commit: 0726327
+- merge: staging — audits UI, Vercel build warnings, header order Claude | commit: c1019c6
+- refactor(claude): standardize hexagram header order across all translators | commit: 315d99c
+- merge: staging — fix overlay tspan/diacriticos, reestructuracion docs/QA, APA en notas | commit: 87cd687
+- merge(staging): fix CI lockfile for noto-serif | commit: 0ecf179
+- merge(staging): QA smoke reports 2026-06-24 | commit: d3838e5
+- chore(qa): publish reading-quality, LRS and literal fidelity smoke reports | commit: a0ee513
+- merge(staging): dual font-stack overlay Legge diacritics | commit: 212017c
+- merge: staging — smoke test 20/20 verificado + Play Store changelog ampliado | commit: ba37bf2
+- test(fidelity): smoke test 20/20 real con normalizacion correcta + Play Store changelog mas completo | commit: 47d3ff0
+- merge: staging — FAQ citas reales, fix harness, manual de docs, stage Production | commit: 42d9ec9
+- merge: staging — docs remediation P0-P4 + version 4.1.9/59 | commit: 65db037
+- release: bump version 4.1.9 / versionCode 59 (biblioteca comentario W+L, docs remediation) | commit: 12c0ac5
+- merge: staging — docs cierre auditoria biblioteca ribbon | commit: cf5b40e
+
+---
 
 ## [4.1.9] — 2026-06-24 | versionCode: 59 | Stage: Production
 
@@ -1843,7 +1915,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.1.9 | 59 | 2026-06-24 | Production | 56 | rediseno de la capa de comentario (orden, "+", titulos, color); Gate H7 verbatim juicio/imagen (warn + telemetria), cierra audit 2026-06-24; master-synthesis QA harness + confirma gap verbatim también en Wilhelm |
+| 4.2.0 | 60 | 2026-06-25 | Production | 60 | honest legacy framing in FAQ/notes + Keightley reprint citation; add I Ching casting methods section from DIV-01/DIV-02; replace /audits sections with single expandable timeline |
+| 4.1.9 | 59 | 2026-06-24 | Production | 0 | — |
 | 4.1.8 | 58 | 2026-06-22 | Production | 0 | — |
 | 4.1.7 | 57 | 2026-06-20 | Closed Testing | 0 | — |
 | 4.1.6 | 55 | 2026-06-19 | Closed Testing | 0 | — |

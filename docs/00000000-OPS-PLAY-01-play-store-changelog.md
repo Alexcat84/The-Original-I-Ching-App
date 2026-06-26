@@ -28,77 +28,77 @@ order — copy the whole block below in one paste.
 Version 4.2.0: open the audit trail.
 - Fidelity Audits now has four sections; commentaries, casting, and mutation each get a dated timeline.
 - Coin and yarrow casting: checked against Appendix I of the Wilhelm/Baynes Pantheon (1950) book.
-- Confucian footnote audits and Huang/Zhu Xi mutation scores are on the page, edition and date included.
+- Wilhelm's Confucian Ten Wings, Legge's footnotes, and Huang/Zhu Xi mutation scores are all audited on the page, with edition and date.
 </en-US>
 
 <ar>
 الإصدار 4.2.0: مسار التدقيق مفتوح.
 - أربع أقسام في تدقيقات المطابقة؛ التعليقات والإلقاء والتحول لكل منها خط زمني بتاريخ.
 - ثلاث عملات وبندق اليعقوب: مُقارَنان بالملحق I من كتاب Wilhelm/Baynes Pantheon (1950).
-- تدقيقات الحاشية الكونفوشيية ونتائج Huang/Zhu Xi منشورة في الصفحة مع الطبعة والتاريخ.
+- العشرة أجنحة لConfucius عند Wilhelm، حواشي Legge، ونتائج تحول Huang/Zhu Xi، كل ذلك مدقَّق في الصفحة، مع الطبعة والتاريخ.
 </ar>
 
 <de-DE>
 Version 4.2.0: der Prüfpfad liegt offen.
 - Vier Bereiche bei Fidelitätsprüfungen; Kommentare, Werfen und Mutation je mit datierter Zeitleiste.
 - Drei Münzen und Yarrow: gegen Anhang I des Buches Wilhelm/Baynes Pantheon (1950) geprüft.
-- Konfuzianische Fußnoten-Audits und Huang/Zhu-Xi-Ergebnisse auf der Seite, mit Ausgabe und Datum.
+- Wilhelms Konfuzius' Zehn Flügel, Legges Footnotes und Huang/Zhu-Xi-Mutationswerte, alles auf der Seite geprüft, mit Ausgabe und Datum.
 </de-DE>
 
 <es-419>
 Versión 4.2.0: la pista de auditoría, abierta.
 - Auditorías de fidelidad en cuatro secciones; comentarios, tirada y mutación tienen línea de tiempo propia.
 - Monedas y varas: contrastadas con el Apéndice I del libro Wilhelm/Baynes Pantheon (1950).
-- Auditorías de notas al pie confucianas y puntajes Huang/Zhu Xi en la página, con edición y fecha.
+- Las Diez Alas confucianas de Wilhelm, las notas de Legge y los puntajes de mutación Huang/Zhu Xi, todo auditado en la página, con edición y fecha.
 </es-419>
 
 <fr-FR>
 Version 4.2.0 : la piste d'audit est ouverte.
 - Quatre sections dans les Audits de fidélité ; commentaires, tirage et mutation ont chacun une chronologie datée.
 - Trois pièces et milfoil : comparés à l'Annexe I de l'ouvrage Wilhelm/Baynes Pantheon (1950).
-- Audits des notes confucéennes et scores Huang/Zhu Xi sur la page, édition et date incluses.
+- Les Dix Ailes de Confucius chez Wilhelm, les footnotes de Legge et les scores de mutation Huang/Zhu Xi, tout est audité sur la page, édition et date incluses.
 </fr-FR>
 
 <hi-IN>
 संस्करण 4.2.0: ऑडिट ट्रेल खुली है।
 - निष्ठा ऑडिट में चार खंड; टिप्पणी, कास्टिंग और म्यूटेशन की अलग दिनांकित समयरेखा।
 - तीन सिक्के और यैरो: Wilhelm/Baynes Pantheon (1950) पुस्तक के परिशिष्ट I से जाँच।
-- कन्फ्यूशियन फुटनोट ऑडिट और Huang/Zhu Xi स्कोर पृष्ठ पर, संस्करण और तिथि सहित।
+- Wilhelm के साथ Confucius के दस पंख, Legge के footnotes, और Huang/Zhu Xi म्यूटेशन स्कोर, सभी पृष्ठ पर ऑडिट किए गए, संस्करण और तिथि सहित।
 </hi-IN>
 
 <it-IT>
 Versione 4.2.0: il percorso di audit è aperto.
 - Quattro sezioni negli Audit di fedeltà; commenti, consultazione e mutazione hanno ciascuno una cronologia datata.
 - Tre monete e yarrow: verificati rispetto all'Appendice I del libro Wilhelm/Baynes Pantheon (1950).
-- Audit delle note confuciane e punteggi Huang/Zhu Xi sulla pagina, con edizione e data.
+- Le Dieci Ali di Confucio di Wilhelm, le footnotes di Legge e i punteggi di mutazione Huang/Zhu Xi, tutti verificati sulla pagina, con edizione e data.
 </it-IT>
 
 <ja-JP>
 バージョン4.2.0：監査の道筋を公開。
 - 忠実度監査を4分野に整理。注釈・筮法・変爻それぞれに日付付きタイムライン。
 - 三枚銭と蓍草：Wilhelm/Baynes Pantheon（1950）付録Iと照合。
-- 儒教脚注の監査とHuang/朱熹の変爻スコアをページ掲載。版と日付付き。
+- ウィルヘルムの孔子の十翼、Leggeの脚注、Huang/朱熹の変爻スコア、すべてページで監査済み。版と日付付き。
 </ja-JP>
 
 <ko-KR>
 버전 4.2.0: 감사 기록을 공개합니다.
 - 충실도 감사를 네 섹션으로 정리. 주석, 점법, 변효 각각 날짜가 있는 타임라인.
 - 세 동전과 점초: Wilhelm/Baynes Pantheon(1950) 부록 I과 대조.
-- 유교 각주 감사와 Huang/Zhu Xi 변효 점수를 페이지에 게시, 판본과 날짜 포함.
+- Wilhelm의 공자 십익, Legge의 각주, Huang/Zhu Xi 변효 점수, 모두 페이지에서 감사 완료, 판본과 날짜 포함.
 </ko-KR>
 
 <pt-BR>
 Versão 4.2.0: a trilha de auditoria aberta.
 - Quatro seções nas Auditorias de fidelidade; comentários, consulta e mutação com linha do tempo datada.
 - Três moedas e yarrow: conferidos com o Apêndice I do livro Wilhelm/Baynes Pantheon (1950).
-- Auditorias de notas de rodapé confucianas e pontuações Huang/Zhu Xi na página, com edição e data.
+- As Dez Asas de Confúcio de Wilhelm, as footnotes de Legge e as pontuações de mutação Huang/Zhu Xi, tudo auditado na página, com edição e data.
 </pt-BR>
 
 <zh-CN>
 版本 4.2.0：审计轨迹公开。
 - 保真审计分为四个板块；注释、起卦与变爻各有带日期的独立时间线。
 - 三枚铜钱与蓍草：对照 Wilhelm/Baynes Pantheon（1950）附录 I。
-- 儒家脚注审计与 Huang/朱熹变爻得分公开于页面，含版本与日期。
+- Wilhelm 的孔子十翼、Legge 的脚注与 Huang/朱熹变爻得分，均已在页面公开审计，含版本与日期。
 </zh-CN>
 
 ---
