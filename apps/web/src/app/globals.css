@@ -2503,7 +2503,11 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   left: 25%;
   width: 50%;
   height: 120%;
-  transform: translate(-50%, -50%);
+  /* translateZ(0) appended (not replacing the 2D centering translate) to give
+     this layer the same explicit GPU promotion af37871 gave .oracle-toggle-option —
+     without it, this animated-left layer can still momentarily lose z-order against
+     the now-reliably-promoted text layer during Android WebView scroll compositing. */
+  transform: translate(-50%, -50%) translateZ(0);
   background: radial-gradient(
     ellipse at center,
     color-mix(in srgb, var(--accent) 18%, transparent) 0%,
@@ -2513,6 +2517,7 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   z-index: 0;
   pointer-events: none;
   transition: left 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: left, transform;
 }
 
 .oracle-toggle-input:checked + .oracle-toggle-track .oracle-toggle-glow {
@@ -2543,7 +2548,12 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   transition: left 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   z-index: 2;
   overflow: hidden;
-  will-change: left;
+  /* Own GPU layer (matches the af37871 fix already applied to .oracle-toggle-option) —
+     will-change: left alone is not a reliable layer-promotion hint on its own; pairing
+     it with a static translateZ(0)/transform hint prevents this pill from intermittently
+     losing z-order against the text layer during Android WebView scroll compositing. */
+  transform: translateZ(0);
+  will-change: left, transform;
 }
 
 /* Thumb moves right when checked — mirrors the 2 px gap on the right side. */
