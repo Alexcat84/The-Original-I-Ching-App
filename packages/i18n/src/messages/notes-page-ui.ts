@@ -44,6 +44,9 @@ export type NotesPageUiMessages = {
   bonesVerdictAuspMod: string;
   bonesVerdictInauspMod: string;
   bonesVerdictInauspClear: string;
+  /** Honest framing: older than the I Ching, yin-yang root, full procedure not known with certainty, modern simplification offered as legacy. */
+  bonesLegacyHeading: string;
+  bonesLegacyBody: string;
   yarrowHeading: string;
   yarrowOriginHeading: string;
   yarrowOriginBody: string;
@@ -75,7 +78,7 @@ const ACADEMIC_SOURCES: AcademicSource[] = [
   {
     citation: "Keightley, D. N. (1978). ",
     title: "Sources of Shang history: The oracle-bone inscriptions of Bronze Age China",
-    rest: ". University of California Press.",
+    rest: ". University of California Press. (Reprinted 1985).",
   },
   {
     citation: "Nielsen, B. (2003). ",
@@ -130,12 +133,15 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesHeading: "Huesos de Oráculo (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origen histórico (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
-      "La práctica oracular documentada más antigua de China. Los chamanes reales aplicaban calor a huesos o caparazones para leer las grietas resultantes. Esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa y veredicto por patrón.",
+      "La práctica oracular documentada más antigua de China. Los chamanes reales aplicaban calor a huesos o caparazones para leer las grietas resultantes. Esta app se inspira en la lógica estructural del sistema Shang: carga positiva, carga negativa y veredicto por patrón.",
     bonesVerdictsHeading: "Los cuatro estados del veredicto:",
     bonesVerdictAuspClear: "吉. Favorable claro.",
     bonesVerdictAuspMod: "吉 moderado. Favorable con matices.",
     bonesVerdictInauspMod: "凶 moderado. Desfavorable con reservas.",
     bonesVerdictInauspClear: "凶. Desfavorable claro.",
+    bonesLegacyHeading: "Un legado vivo, no una reconstrucción literal",
+    bonesLegacyBody:
+      "La adivinación con Huesos de Oráculo es más antigua que el propio I Ching; muchos académicos sitúan su origen en la raíz misma del principio yin-yang que después dio forma a la cosmología china. El procedimiento completo del ritual, tal como se practicaba realmente en la época Shang, no se conoce hoy con certeza: lo que sobrevive son inscripciones oficiales y reconstrucciones académicas modernas, no un manual de instrucciones completo. El sistema de cuatro veredictos que usa esta app es una simplificación moderna, inspirada en esa tradición y construida para hacerla utilizable hoy. La ofrecemos aquí, descrita abiertamente como tal, para ayudar a mantener presente y honrar esta parte de la historia.",
     yarrowHeading: "Varillas de Milenrama (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origen histórico (~1000 a.C.)",
     yarrowOriginBody:
@@ -189,12 +195,15 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesHeading: "Oracle Bones (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Historical Origins (Shang Dynasty, ~1600-1046 BCE)",
     bonesOriginBody:
-      "The oldest documented oracular practice in China. Royal shamans applied heat to bones or shells to read the resulting cracks. This app respects the structural logic of the Shang system: positive charge, negative charge, and verdict by pattern.",
+      "The oldest documented oracular practice in China. Royal shamans applied heat to bones or shells to read the resulting cracks. This app is inspired by the structural logic of the Shang system: positive charge, negative charge, and verdict by pattern.",
     bonesVerdictsHeading: "The Four Verdict States:",
     bonesVerdictAuspClear: "吉. Clearly favorable.",
     bonesVerdictAuspMod: "吉 moderate. Favorable with nuance.",
     bonesVerdictInauspMod: "凶 moderate. Unfavorable with reservations.",
     bonesVerdictInauspClear: "凶. Clearly unfavorable.",
+    bonesLegacyHeading: "A Living Legacy, Not a Literal Reconstruction",
+    bonesLegacyBody:
+      "Oracle Bones divination is older than the I Ching itself; many scholars place its roots at the very origin of the yin-yang principle that later shaped Chinese cosmology. The ritual's full procedure, as it was actually practiced in Shang times, is not known with certainty today: what survives are official inscriptions and modern scholarly reconstructions, not a complete instruction manual. The four-verdict system used in this app is a modern simplification, inspired by that tradition and built to make it usable today. We offer it here, openly described as such, to help keep this part of history present and honored.",
     yarrowHeading: "Yarrow Stalks (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Historical Origins (~1000 BCE)",
     yarrowOriginBody:
@@ -249,12 +258,15 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesHeading: "Ossos Oraculares (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origem histórica (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
-      "A prática oracular documentada mais antiga da China. Os xamãs reais aplicavam calor a ossos ou carapaças para ler as fissuras resultantes. Esta app respeita a lógica estrutural do sistema Shang: carga positiva, carga negativa e veredicto por padrão.",
+      "A prática oracular documentada mais antiga da China. Os xamãs reais aplicavam calor a ossos ou carapaças para ler as fissuras resultantes. Esta app inspira-se na lógica estrutural do sistema Shang: carga positiva, carga negativa e veredicto por padrão.",
     bonesVerdictsHeading: "Os quatro estados do veredicto:",
     bonesVerdictAuspClear: "吉. Favorável claro.",
     bonesVerdictAuspMod: "吉 moderado. Favorável com nuances.",
     bonesVerdictInauspMod: "凶 moderado. Desfavorável com reservas.",
     bonesVerdictInauspClear: "凶. Desfavorável claro.",
+    bonesLegacyHeading: "Um legado vivo, não uma reconstrução literal",
+    bonesLegacyBody:
+      "A adivinação com Ossos Oraculares é mais antiga do que o próprio I Ching; muitos académicos situam as suas raízes na própria origem do princípio yin-yang que mais tarde deu forma à cosmologia chinesa. O procedimento completo do ritual, tal como era praticado na época Shang, não é conhecido hoje com certeza: o que sobrevive são inscrições oficiais e reconstruções académicas modernas, não um manual de instruções completo. O sistema de quatro veredictos usado nesta app é uma simplificação moderna, inspirada nessa tradição e construída para a tornar utilizável hoje. Apresentamo-la aqui, descrita abertamente como tal, para ajudar a manter esta parte da história presente e honrada.",
     yarrowHeading: "Varetas de Milenrama (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origem histórica (~1000 a.C.)",
     yarrowOriginBody:
@@ -310,12 +322,15 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesOriginHeading:
       "Origine historique (Dynastie Shang, ~1600-1046 av. J.-C.)",
     bonesOriginBody:
-      "La pratique oraculaire documentée la plus ancienne de Chine. Les chamanes royaux appliquaient de la chaleur sur des os ou des écailles pour lire les fissures résultantes. Cette app respecte la logique structurelle du système Shang : charge positive, charge négative et verdict par motif.",
+      "La pratique oraculaire documentée la plus ancienne de Chine. Les chamanes royaux appliquaient de la chaleur sur des os ou des écailles pour lire les fissures résultantes. Cette app s'inspire de la logique structurelle du système Shang : charge positive, charge négative et verdict par motif.",
     bonesVerdictsHeading: "Les quatre états du verdict :",
     bonesVerdictAuspClear: "吉. Clairement favorable.",
     bonesVerdictAuspMod: "吉 modéré. Favorable avec nuances.",
     bonesVerdictInauspMod: "凶 modéré. Défavorable avec réserves.",
     bonesVerdictInauspClear: "凶. Clairement défavorable.",
+    bonesLegacyHeading: "Un héritage vivant, pas une reconstitution littérale",
+    bonesLegacyBody:
+      "La divination par les Os Oraculaires est plus ancienne que le I Ching lui-même ; de nombreux chercheurs situent ses racines à l'origine même du principe du yin-yang qui a ensuite façonné la cosmologie chinoise. La procédure complète du rituel, telle qu'elle était réellement pratiquée à l'époque Shang, n'est pas connue avec certitude aujourd'hui : ce qui subsiste, ce sont des inscriptions officielles et des reconstitutions académiques modernes, non un manuel d'instructions complet. Le système à quatre verdicts utilisé dans cette app est une simplification moderne, inspirée de cette tradition et conçue pour la rendre utilisable aujourd'hui. Nous l'offrons ici, décrite ouvertement comme telle, pour aider à garder cette part de l'histoire présente et honorée.",
     yarrowHeading: "Tiges d'Achillée (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origine historique (~1000 av. J.-C.)",
     yarrowOriginBody:
@@ -371,12 +386,15 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesOriginHeading:
       "Historischer Ursprung (Shang-Dynastie, ~1600-1046 v. Chr.)",
     bonesOriginBody:
-      "Die älteste dokumentierte Orakelpraktik Chinas. Die königlichen Schamanen wendeten Hitze auf Knochen oder Panzer an, um die resultierenden Risse zu lesen. Diese App respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung und Befund nach Muster.",
+      "Die älteste dokumentierte Orakelpraktik Chinas. Die königlichen Schamanen wendeten Hitze auf Knochen oder Panzer an, um die resultierenden Risse zu lesen. Diese App ist von der strukturellen Logik des Shang-Systems inspiriert: positive Ladung, negative Ladung und Befund nach Muster.",
     bonesVerdictsHeading: "Die vier Befundzustände:",
     bonesVerdictAuspClear: "吉. Eindeutig günstig.",
     bonesVerdictAuspMod: "吉 mäßig. Günstig mit Nuancen.",
     bonesVerdictInauspMod: "凶 mäßig. Ungünstig mit Vorbehalten.",
     bonesVerdictInauspClear: "凶. Eindeutig ungünstig.",
+    bonesLegacyHeading: "Ein lebendiges Erbe, keine wörtliche Rekonstruktion",
+    bonesLegacyBody:
+      "Die Orakelknochen-Weissagung ist älter als das I Ging selbst; viele Gelehrte verorten ihre Wurzeln am eigentlichen Ursprung des Yin-Yang-Prinzips, das später die chinesische Kosmologie prägte. Der vollständige Ablauf des Rituals, wie er tatsächlich zur Shang-Zeit praktiziert wurde, ist heute nicht mit Sicherheit bekannt: Was überliefert ist, sind offizielle Inschriften und moderne wissenschaftliche Rekonstruktionen, kein vollständiges Anleitungshandbuch. Das in dieser App verwendete Vier-Urteile-System ist eine moderne Vereinfachung, inspiriert von dieser Tradition und entwickelt, um sie heute nutzbar zu machen. Wir bieten es hier offen als solches beschrieben an, um diesen Teil der Geschichte gegenwärtig und geehrt zu halten.",
     yarrowHeading: "Schafgarbenstäbe (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Historische Ursprünge (~1000 v. Chr.)",
     yarrowOriginBody:
@@ -431,12 +449,15 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesHeading: "Ossa Oracolari (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origine storica (Dinastia Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
-      "La pratica oracolare documentata più antica della Cina. Gli sciamani reali applicavano calore a ossa o gusci per leggere le crepe risultanti. Questa app rispetta la logica strutturale del sistema Shang : carica positiva, carica negativa e verdetto per motivo.",
+      "La pratica oracolare documentata più antica della Cina. Gli sciamani reali applicavano calore a ossa o gusci per leggere le crepe risultanti. Questa app si ispira alla logica strutturale del sistema Shang : carica positiva, carica negativa e verdetto per motivo.",
     bonesVerdictsHeading: "I quattro stati del verdetto :",
     bonesVerdictAuspClear: "吉. Chiaramente favorevole.",
     bonesVerdictAuspMod: "吉 moderato. Favorevole con sfumature.",
     bonesVerdictInauspMod: "凶 moderato. Sfavorevole con riserve.",
     bonesVerdictInauspClear: "凶. Chiaramente sfavorevole.",
+    bonesLegacyHeading: "Un'eredità viva, non una ricostruzione letterale",
+    bonesLegacyBody:
+      "La divinazione con le Ossa Oracolari è più antica dello stesso I Ching; molti studiosi collocano le sue radici all'origine stessa del principio yin-yang che in seguito ha plasmato la cosmologia cinese. La procedura completa del rituale, come era effettivamente praticata in epoca Shang, non è conosciuta oggi con certezza: ciò che sopravvive sono iscrizioni ufficiali e ricostruzioni accademiche moderne, non un manuale di istruzioni completo. Il sistema a quattro verdetti usato in questa app è una semplificazione moderna, ispirata a quella tradizione e costruita per renderla utilizzabile oggi. La offriamo qui, descritta apertamente come tale, per contribuire a mantenere questa parte della storia presente e onorata.",
     yarrowHeading: "Steli di Achillea (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "Origine storica (~1000 a.C.)",
     yarrowOriginBody:
@@ -501,6 +522,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "凶 中程度, やや凶：パターンは留保付きで否定に傾きます。",
     bonesVerdictInauspClear:
       "凶, 明確に凶：パターンは曖昧さなく肯定命題を否定します。",
+    bonesLegacyHeading: "生きた遺産であり、文字どおりの再現ではない",
+    bonesLegacyBody:
+      "甲骨占いは易経そのものよりも古く、多くの学者はその起源を、後に中国の宇宙観を形づくった陰陽思想の根源そのものに位置づけています。商代に実際に行われていた儀礼の完全な手順は、今日確実には分かっていません。残されているのは公式の刻文と現代の学術的な再構成であり、完全な手順書ではありません。このアプリで使われている四つの判定からなる体系は、その伝統に着想を得て今日でも使えるように作られた現代的な簡略化です。私たちはそれをそのようなものとして率直に示し、この歴史の一部を現在に残し、敬意を払うために提供しています。",
     yarrowHeading: "蓍草による占い (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "歴史的起源（紀元前約1000年）",
     yarrowOriginBody:
@@ -561,6 +585,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesVerdictAuspMod: "偏吉, 偏向为吉：有所确认，但带有条件或细微差别。",
     bonesVerdictInauspMod: "偏凶, 偏向为凶：纹样有所保留地倾向否定。",
     bonesVerdictInauspClear: "凶, 明显为凶：纹样明确否定正面命题，无歧义。",
+    bonesLegacyHeading: "活态传承，而非字面重建",
+    bonesLegacyBody:
+      "甲骨占卜比《易经》本身更为古老；许多学者认为它的根源就在阴阳原理的起点，而阴阳原理后来塑造了中国的宇宙观。这一仪式在商代实际操作的完整流程，如今已无法确定地知晓：留存下来的只是官方刻辞与现代学术重建，并非一部完整的操作手册。本应用所用的四种判定体系，是受这一传统启发、为使其在今天仍可使用而作的现代简化。我们在此公开如实呈现这一点，希望帮助让这部分历史得以留存并受到尊重。",
     yarrowHeading: "蓍草占法 (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "历史渊源（约公元前1000年）",
     yarrowOriginBody:
@@ -625,6 +652,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "凶 중간, 다소 흉함: 패턴이 유보적으로 부정 쪽으로 기웁니다.",
     bonesVerdictInauspClear:
       "凶, 명확히 흉함: 패턴이 긍정 명제를 모호함 없이 부정합니다.",
+    bonesLegacyHeading: "살아 있는 유산, 문자 그대로의 재현이 아님",
+    bonesLegacyBody:
+      "갑골 점복은 주역 자체보다도 오래되었으며, 많은 학자들은 그 뿌리를 훗날 중국의 우주론을 형성한 음양 원리의 기원 그 자체에 둡니다. 상나라 시대에 실제로 행해졌던 의례의 전체 절차는 오늘날 확실히 알려져 있지 않습니다. 남아 있는 것은 공식 갑골문과 현대 학자들의 재구성이며, 완전한 지침서는 아닙니다. 이 앱에서 사용하는 네 가지 판정 체계는 그 전통에서 영감을 받아 오늘날 사용할 수 있도록 만든 현대적 단순화입니다. 우리는 이를 있는 그대로 솔직하게 밝히며 제공함으로써, 이 역사의 한 부분을 지금도 존재하게 하고 기리고자 합니다.",
     yarrowHeading: "시초점법 (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "역사적 기원 (기원전 약 1000년)",
     yarrowOriginBody:
@@ -690,6 +720,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "凶 معتدل, غير مبشّر بدرجة معتدلة: يميل النمط نحو النفي مع تحفظات.",
     bonesVerdictInauspClear:
       "凶, غير مبشّر بوضوح: ينفي النمط الشحنة الإيجابية دون غموض.",
+    bonesLegacyHeading: "تراث حي، لا إعادة بناء حرفية",
+    bonesLegacyBody:
+      "التكهن بعظام العرافة أقدم من الـ I Ching نفسه؛ يضع كثير من الباحثين جذوره عند أصل مبدأ اليين واليانغ نفسه، الذي شكّل لاحقاً الكوزمولوجيا الصينية. لا يُعرف اليوم بشكل مؤكد الإجراء الكامل للطقس كما كان يُمارَس فعلياً في عصر أسرة Shang: ما تبقّى هو نقوش رسمية وإعادات بناء أكاديمية حديثة، لا دليل تعليمات كامل. نظام الأحكام الأربعة المستخدم في هذا التطبيق تبسيط حديث، مستوحى من ذلك التقليد ومصمم لجعله قابلاً للاستخدام اليوم. نقدمه هنا، موصوفاً بصراحة على هذا النحو، لمساعدة هذا الجزء من التاريخ على أن يبقى حاضراً ومحترماً.",
     yarrowHeading: "عيدان الزنبق (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "الأصول التاريخية (~1000 قبل الميلاد)",
     yarrowOriginBody:
@@ -755,6 +788,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "凶 मध्यम, मध्यम रूप से अशुभ: पैटर्न आरक्षणों के साथ नकारात्मकता की ओर झुकता है।",
     bonesVerdictInauspClear:
       "凶, स्पष्ट रूप से अशुभ: पैटर्न बिना किसी संदेह के सकारात्मक प्रस्ताव को नकारता है।",
+    bonesLegacyHeading: "एक जीवित विरासत, शब्दशः पुनर्निर्माण नहीं",
+    bonesLegacyBody:
+      "दैवज्ञ हड्डी भविष्यवाणी स्वयं I Ching से भी पुरानी है; कई विद्वान इसकी जड़ें यिन-यांग सिद्धांत की उस मूल उत्पत्ति में रखते हैं, जिसने बाद में चीनी ब्रह्मांड-दृष्टि को आकार दिया। यह अनुष्ठान शांग काल में वास्तव में जैसे किया जाता था, उसकी पूरी प्रक्रिया आज निश्चितता के साथ ज्ञात नहीं है: जो बचा है वह आधिकारिक शिलालेख और आधुनिक शैक्षणिक पुनर्निर्माण हैं, कोई पूर्ण निर्देश-पुस्तिका नहीं। इस ऐप में उपयोग की जाने वाली चार-निर्णय प्रणाली एक आधुनिक सरलीकरण है, जो उस परंपरा से प्रेरित है और इसे आज उपयोग योग्य बनाने के लिए बनाई गई है। हम इसे यहां खुलकर इस रूप में वर्णित करते हुए प्रस्तुत करते हैं, ताकि इतिहास के इस हिस्से को वर्तमान में बनाए रखने और सम्मानित करने में मदद मिल सके।",
     yarrowHeading: "यारो की छड़ें (蓍草 · Shīcǎo)",
     yarrowOriginHeading: "ऐतिहासिक उत्पत्ति (~1000 ईसा पूर्व)",
     yarrowOriginBody:

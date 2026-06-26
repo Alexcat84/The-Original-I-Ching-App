@@ -5,11 +5,11 @@ import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 export const metadata: Metadata = {
   title: "Origen e Historia de los Métodos | The Original I Ching App",
   description:
-    "Historia académica del I Ching (Zhouyi) y los Huesos de Oráculo Shang. Métodos auténticos, fuentes originales, sin invención.",
+    "Historia académica del I Ching (Zhouyi) y los Huesos de Oráculo Shang. Raíces históricas documentadas, fuentes citadas, sin invención.",
   openGraph: {
     title: "Origen e Historia de los Métodos | The Original I Ching App",
     description:
-      "Historia académica del I Ching (Zhouyi) y los Huesos de Oráculo Shang. Métodos auténticos, fuentes originales, sin invención.",
+      "Historia académica del I Ching (Zhouyi) y los Huesos de Oráculo Shang. Raíces históricas documentadas, fuentes citadas, sin invención.",
   },
   ...buildCanonicalMetadata("/notes"),
 };
@@ -55,6 +55,13 @@ export default async function NotesPage() {
               {n.bonesVerdictInauspMod && <li>{n.bonesVerdictInauspMod}</li>}
               {n.bonesVerdictInauspClear && <li>{n.bonesVerdictInauspClear}</li>}
             </ul>
+          </>
+        )}
+
+        {n.bonesLegacyHeading && (
+          <>
+            <h3>{n.bonesLegacyHeading}</h3>
+            <p>{n.bonesLegacyBody}</p>
           </>
         )}
 

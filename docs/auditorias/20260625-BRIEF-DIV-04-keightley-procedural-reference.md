@@ -321,7 +321,7 @@ npm run extract:gold:keightley-procedural
 
 **Pregunta:** ¿De dónde salió lo que construimos? ¿Hay otro autor además de Keightley?
 
-**Respuesta corta:** casi todo el **procedimiento jugable** (4 veredictos, pesos, un sorteo, patrones T/X/Y) es **diseño de producto desde el Initial commit** (`87c5c9b`, mayo 2026). Keightley entra **después**, en `AUD-DIV-01` / `f462f43`, solo para **anclar** carga ±, existencia del ritual Shang y **eliminar** el 5.º veredicto «Silencio». **No hay segundo autor citado** en el repo para la taxonomía 4×4 ni para topología T/X/Y.
+**Respuesta corta:** casi todo el **procedimiento jugable** (4 veredictos, pesos, un sorteo, patrones T/X/Y) es **diseño de producto desde el Initial commit** (`87c5c9b`, mayo 2026). Keightley entra **después**, en `AUD-DIV-01` / `f462f43`, solo para **anclar** carga ±, existencia del ritual Shang y **eliminar** el 5.º veredicto «Silencio». **No hay segundo autor citado** en el repo para la taxonomía 4×4 ni para topología T/X/Y. Matriz completa producto × fuentes: [`20260625-AUD-DIV-04-oracle-bones-product-support.md`](./20260625-AUD-DIV-04-oracle-bones-product-support.md).
 
 | Pieza del sistema | Origen documentado | Autor / evidencia |
 |-------------------|-------------------|-------------------|
