@@ -66,15 +66,19 @@ export type NotesPageUiMessages = {
 };
 
 /**
- * Shared APA 7 reference list. I Ching sources first (alphabetical by author
- * surname within that group); oracle-bone procedural source (Keightley) last.
- * Cited works are in English regardless of UI locale — see AcademicSource doc comment.
+ * Shared APA 7 reference list (alphabetical by author surname). Cited works
+ * are in English regardless of UI locale — see AcademicSource doc comment.
  */
 const ACADEMIC_SOURCES: AcademicSource[] = [
   {
     citation: "Adler, J. A. (2002). ",
     title: "Introduction to the study of the classic of change",
     rest: " (I-hsüeh ch'i-meng). Global Scholarly Publications.",
+  },
+  {
+    citation: "Keightley, D. N. (1978). ",
+    title: "Sources of Shang history: The oracle-bone inscriptions of Bronze Age China",
+    rest: ". University of California Press. (Reprinted 1985).",
   },
   {
     citation: "Nielsen, B. (2003). ",
@@ -95,11 +99,6 @@ const ACADEMIC_SOURCES: AcademicSource[] = [
     citation: "Wilhelm, R., & Baynes, C. F. (1950). ",
     title: "The I Ching or Book of Changes",
     rest: ". Princeton University Press.",
-  },
-  {
-    citation: "Keightley, D. N. (1978). ",
-    title: "Sources of Shang history: The oracle-bone inscriptions of Bronze Age China",
-    rest: ". University of California Press. (Reprinted 1985).",
   },
 ];
 
