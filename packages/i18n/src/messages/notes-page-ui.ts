@@ -130,7 +130,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesHeading: "Huesos de Oráculo (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origen histórico (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
-      "La práctica oracular documentada más antigua de China. Los chamanes reales aplicaban calor a huesos o caparazones para leer las grietas resultantes. Esta app respeta la lógica estructural del sistema Shang: carga positiva, carga negativa y veredicto por patrón.",
+      "La práctica oracular documentada más antigua de China. Los chamanes reales aplicaban calor a huesos o caparazones para leer las grietas resultantes. Esta app se inspira en la lógica estructural del sistema Shang: carga positiva, carga negativa y veredicto por patrón.",
     bonesVerdictsHeading: "Los cuatro estados del veredicto:",
     bonesVerdictAuspClear: "吉. Favorable claro.",
     bonesVerdictAuspMod: "吉 moderado. Favorable con matices.",
@@ -189,7 +189,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesHeading: "Oracle Bones (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Historical Origins (Shang Dynasty, ~1600-1046 BCE)",
     bonesOriginBody:
-      "The oldest documented oracular practice in China. Royal shamans applied heat to bones or shells to read the resulting cracks. This app respects the structural logic of the Shang system: positive charge, negative charge, and verdict by pattern.",
+      "The oldest documented oracular practice in China. Royal shamans applied heat to bones or shells to read the resulting cracks. This app is inspired by the structural logic of the Shang system: positive charge, negative charge, and verdict by pattern.",
     bonesVerdictsHeading: "The Four Verdict States:",
     bonesVerdictAuspClear: "吉. Clearly favorable.",
     bonesVerdictAuspMod: "吉 moderate. Favorable with nuance.",
@@ -249,7 +249,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesHeading: "Ossos Oraculares (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origem histórica (Dinastía Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
-      "A prática oracular documentada mais antiga da China. Os xamãs reais aplicavam calor a ossos ou carapaças para ler as fissuras resultantes. Esta app respeita a lógica estrutural do sistema Shang: carga positiva, carga negativa e veredicto por padrão.",
+      "A prática oracular documentada mais antiga da China. Os xamãs reais aplicavam calor a ossos ou carapaças para ler as fissuras resultantes. Esta app inspira-se na lógica estrutural do sistema Shang: carga positiva, carga negativa e veredicto por padrão.",
     bonesVerdictsHeading: "Os quatro estados do veredicto:",
     bonesVerdictAuspClear: "吉. Favorável claro.",
     bonesVerdictAuspMod: "吉 moderado. Favorável com nuances.",
@@ -310,7 +310,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesOriginHeading:
       "Origine historique (Dynastie Shang, ~1600-1046 av. J.-C.)",
     bonesOriginBody:
-      "La pratique oraculaire documentée la plus ancienne de Chine. Les chamanes royaux appliquaient de la chaleur sur des os ou des écailles pour lire les fissures résultantes. Cette app respecte la logique structurelle du système Shang : charge positive, charge négative et verdict par motif.",
+      "La pratique oraculaire documentée la plus ancienne de Chine. Les chamanes royaux appliquaient de la chaleur sur des os ou des écailles pour lire les fissures résultantes. Cette app s'inspire de la logique structurelle du système Shang : charge positive, charge négative et verdict par motif.",
     bonesVerdictsHeading: "Les quatre états du verdict :",
     bonesVerdictAuspClear: "吉. Clairement favorable.",
     bonesVerdictAuspMod: "吉 modéré. Favorable avec nuances.",
@@ -371,7 +371,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesOriginHeading:
       "Historischer Ursprung (Shang-Dynastie, ~1600-1046 v. Chr.)",
     bonesOriginBody:
-      "Die älteste dokumentierte Orakelpraktik Chinas. Die königlichen Schamanen wendeten Hitze auf Knochen oder Panzer an, um die resultierenden Risse zu lesen. Diese App respektiert die strukturelle Logik des Shang-Systems: positive Ladung, negative Ladung und Befund nach Muster.",
+      "Die älteste dokumentierte Orakelpraktik Chinas. Die königlichen Schamanen wendeten Hitze auf Knochen oder Panzer an, um die resultierenden Risse zu lesen. Diese App ist von der strukturellen Logik des Shang-Systems inspiriert: positive Ladung, negative Ladung und Befund nach Muster.",
     bonesVerdictsHeading: "Die vier Befundzustände:",
     bonesVerdictAuspClear: "吉. Eindeutig günstig.",
     bonesVerdictAuspMod: "吉 mäßig. Günstig mit Nuancen.",
@@ -431,7 +431,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     bonesHeading: "Ossa Oracolari (甲骨 · Jiǎgǔ)",
     bonesOriginHeading: "Origine storica (Dinastia Shang, ~1600-1046 a.C.)",
     bonesOriginBody:
-      "La pratica oracolare documentata più antica della Cina. Gli sciamani reali applicavano calore a ossa o gusci per leggere le crepe risultanti. Questa app rispetta la logica strutturale del sistema Shang : carica positiva, carica negativa e verdetto per motivo.",
+      "La pratica oracolare documentata più antica della Cina. Gli sciamani reali applicavano calore a ossa o gusci per leggere le crepe risultanti. Questa app si ispira alla logica strutturale del sistema Shang : carica positiva, carica negativa e verdetto per motivo.",
     bonesVerdictsHeading: "I quattro stati del verdetto :",
     bonesVerdictAuspClear: "吉. Chiaramente favorevole.",
     bonesVerdictAuspMod: "吉 moderato. Favorevole con sfumature.",

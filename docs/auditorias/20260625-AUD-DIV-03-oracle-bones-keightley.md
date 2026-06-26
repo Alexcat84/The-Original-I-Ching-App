@@ -4,7 +4,8 @@
 **Fecha apertura:** 2026-06-25  
 **Auditoría anterior:** [`00000000-AUD-DIV-01 divination-methods`](./00000000-AUD-DIV-01-divination-methods.md) §5 (cerrada 2026-05-19; cita académica, sin gold parseado)  
 **Canal público `/audits`:** fuera de alcance hasta cierre AU + WF-DOC-03 (Huesos no entra en `divination-method` I Ching)  
-**Referencia procedimental (contexto libro):** [`20260625-BRIEF-DIV-04-keightley-procedural-reference.md`](./20260625-BRIEF-DIV-04-keightley-procedural-reference.md) — Ping-pien 8 (fig. 8) + Ping-pien 12–21 (§3.7)
+**Referencia procedimental (contexto libro):** [`20260625-BRIEF-DIV-04-keightley-procedural-reference.md`](./20260625-BRIEF-DIV-04-keightley-procedural-reference.md) — Ping-pien 8 (fig. 8) + Ping-pien 12–21 (§3.7)  
+**Matriz de respaldo producto (síntesis):** [`20260625-AUD-DIV-04-oracle-bones-product-support.md`](./20260625-AUD-DIV-04-oracle-bones-product-support.md)
 
 ---
 
@@ -78,17 +79,24 @@ Keightley no define probabilidades 29.41/23.53/23.53/23.53. Los pesos son **dise
 
 `describeOracleBoneCrackTopology()` asigna T / bambú / X / Y a patrones 1–4. Keightley describe lectura de grietas desde huecos de perforación, ramas transversales y **sets** — **no** una tabla T/X/Y ↔ cuatro niveles de veredicto.
 
-**Veredicto I:** Metáfora visual aceptable para FLUX; **sin** cita book-primary por patrón. Requiere nota de auditoría en prompt o doc producto antes de afirmar «arqueológicamente informado» en copy externo.
+**Veredicto I (cerrado 2026-06-25):** metáfora visual aceptable para FLUX; sin cita book-primary por patrón. Se corrigió el comentario interno de `describeOracleBoneCrackTopology()` (`packages/image-engine/src/oracle-bones-prompt.ts`) de «Archaeologically informed crack topology» a «Stylized crack topology inspired by Shang-style pyromancy... not a documented archaeological taxonomy», con cita a esta sección — no público, pero evita que el overclaim se propague a futuras decisiones de ingeniería.
 
-### 4.J — Copy FAQ · **OVERCLAIM**
+### 4.J — Copy FAQ · **OVERCLAIM — cerrado 2026-06-25**
 
-FAQ EN (`oracle-bones-method`):
+FAQ EN (`oracle-bones-method`), estado previo:
 
 > «The verdict always falls into one of four possible states, **faithful to the original Shang tradition** …»
 
 Keightley documenta ritual burocrático multi-grieta, rey prognosticando, notaciones mayormente auspiciosas grabadas en hueso. La app comprime a **un** sorteo sintético + cuatro etiquetas modernas.
 
-**Veredicto J:** **FAIL** copy book-primary tal como está. Remediación propuesta (Fase 2, pendiente aprobación): matizar «inspirado en tradición Shang» / «cuatro respuestas posibles en la app» sin «faithful to the original Shang tradition».
+**Veredicto J (cerrado):** decisión de producto del propietario: cambio mínimo y quirúrgico, «fiel a»/«respeta» → «inspirado en»/«se inspira en», sin reescribir el resto de la frase ni añadir disclaimers nuevos. Aplicado en los 11 locales donde aplicaba:
+
+| Ubicación | Antes | Después |
+|-----------|-------|---------|
+| FAQ `oracle-bones-method` (11 locales) | «faithful to the original Shang tradition» / «fieles al método ancestral Shang» | «inspired by the Shang tradition» / «inspirados en el método ancestral Shang» |
+| `/notes` `bonesOriginBody` (solo EN/ES/PT/FR/DE/IT tenían el claim; JA/ZH/KO/AR/HI ya eran descriptivos, sin cambio) | «respects the structural logic» / «respeta la lógica estructural» | «is inspired by the structural logic» / «se inspira en la lógica estructural» |
+
+Verificado: `tsc` (i18n + image-engine + web), `i18n:audit`, `verify:docs-remediation`, vitest 77/78 — todo PASS. No se tocó la mecánica (4 estados, pesos, patrones T/X/Y) — solo el lenguaje de fidelidad, per decisión de producto.
 
 ---
 
@@ -130,3 +138,4 @@ npm run extract:gold:keightley-procedural
 | Fecha | Evento |
 |-------|--------|
 | 2026-06-25 | Apertura AU; extract gold §2.5–2.7 + §4.3.1.11; hallazgos preliminares G–J (Fase 1) |
+| 2026-06-25 | **Hallazgos I y J cerrados.** Decisión de producto: copy público (FAQ + `/notes`, 11 locales) y comentario interno corregidos de «fiel a»/«arqueológicamente informado» a «inspirado en» — cambio mínimo, sin alterar la mecánica (4 estados, pesos, patrones T/X/Y). G y H permanecen abiertos (Fase 2: harness `VF-DIV-002`, decisión sobre topología de imagen y matriz/sets). |

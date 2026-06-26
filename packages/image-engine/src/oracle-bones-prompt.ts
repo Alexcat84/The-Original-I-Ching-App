@@ -2,8 +2,10 @@ import type { ConsultationCategory } from "./categories.js";
 import { VISUAL_THEMES } from "./categories.js";
 
 /**
- * Archaeologically informed crack topology for Shang-style pyromancy (灼兆).
- * Each id matches engine verdict mapping; describes 兆 shape from drill + heat stress.
+ * Stylized crack topology inspired by Shang-style pyromancy (灼兆), for image generation only.
+ * Each id matches engine verdict mapping; the T/bamboo/X/Y shapes are a product design choice,
+ * not a documented archaeological taxonomy (Keightley 1978 describes no such mapping by verdict
+ * level — see docs/auditorias/20260625-AUD-DIV-03-oracle-bones-keightley.md §4.I).
  */
 export function describeOracleBoneCrackTopology(patternId: number): string {
   switch (patternId) {
