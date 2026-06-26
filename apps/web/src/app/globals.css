@@ -4989,7 +4989,8 @@ html[data-theme="dark"] .verdict-pill--silent {
 }
 
 .audit-timeline {
-  --audit-timeline-line: color-mix(in srgb, var(--accent) 38%, var(--bar-border));
+  --audit-timeline-line: color-mix(in srgb, var(--accent) 58%, var(--fg-muted));
+  --audit-tree-line-width: 1.5px;
   --audit-timeline-text: color-mix(in srgb, var(--card-title) 78%, var(--accent));
   --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 72%, var(--accent));
   /* Light mode: deep emerald chip — high contrast on pale shell, distinct from teal --accent */
@@ -5001,7 +5002,8 @@ html[data-theme="dark"] .verdict-pill--silent {
 }
 
 html[data-theme="dark"] .audit-timeline {
-  --audit-timeline-line: color-mix(in srgb, var(--fg) 28%, transparent);
+  --audit-timeline-line: color-mix(in srgb, var(--accent) 52%, var(--fg));
+  --audit-tree-line-width: 1.5px;
   --audit-timeline-text: color-mix(in srgb, var(--fg) 86%, var(--accent));
   --audit-timeline-text-muted: color-mix(in srgb, var(--fg-muted) 82%, var(--accent));
   /* Bright leaf green — readable on dark shell, not aqua/cyan */
@@ -5058,7 +5060,7 @@ html[data-theme="dark"] .audit-timeline {
   box-sizing: border-box;
   width: 11px;
   height: 11px;
-  border: 1px solid var(--audit-timeline-line);
+  border: var(--audit-tree-line-width, 1.5px) solid var(--audit-timeline-line);
   border-radius: 1px;
   display: inline-flex;
   align-items: center;
@@ -5144,8 +5146,8 @@ html:not([data-theme="dark"]) .audit-timeline__date--active {
   width: var(--audit-tree-indent);
   height: calc(var(--audit-tree-branch-y) + var(--audit-tree-radius));
   box-sizing: border-box;
-  border-left: 1px dotted var(--audit-timeline-line);
-  border-bottom: 1px dotted var(--audit-timeline-line);
+  border-left: var(--audit-tree-line-width, 1.5px) solid var(--audit-timeline-line);
+  border-bottom: var(--audit-tree-line-width, 1.5px) solid var(--audit-timeline-line);
   border-bottom-left-radius: var(--audit-tree-radius);
   pointer-events: none;
 }
@@ -5157,7 +5159,7 @@ html:not([data-theme="dark"]) .audit-timeline__date--active {
   left: calc(-1 * var(--audit-tree-indent));
   top: calc(var(--audit-tree-branch-y) + var(--audit-tree-radius));
   bottom: 0;
-  border-left: 1px dotted var(--audit-timeline-line);
+  border-left: var(--audit-tree-line-width, 1.5px) solid var(--audit-timeline-line);
   pointer-events: none;
 }
 
