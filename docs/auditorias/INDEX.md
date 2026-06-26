@@ -103,7 +103,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | Código | Fecha | Título | Estado | Documento |
 |--------|-------|--------|--------|-----------|
 | `20260620-AUD-LRS-01 zhuxi-line-reading-selector` | 2026-06-20 | Selector Huang/Zhu Xi (074) | closed | [20260620-AUD-LRS-01-zhuxi-line-reading-selector.md](./20260620-AUD-LRS-01-zhuxi-line-reading-selector.md) |
-| `20260622-PLAN-LRS-02 zhuxi-32-charts-plan` | 2026-06-22 | Plan 32 cartas Zhu Xi | open | [20260622-PLAN-LRS-02-zhuxi-32-charts-plan.md](./20260622-PLAN-LRS-02-zhuxi-32-charts-plan.md) |
+| `20260622-PLAN-LRS-02 zhuxi-32-charts-plan` | 2026-06-22 | Plan 32 cartas Zhu Xi | closed | [20260622-PLAN-LRS-02-zhuxi-32-charts-plan.md](./20260622-PLAN-LRS-02-zhuxi-32-charts-plan.md) |
 
 ---
 

@@ -645,7 +645,7 @@
       "type": "PLAN",
       "family": "LRS",
       "date": "2026-06-22",
-      "status": "open",
+      "status": "closed",
       "path": "docs/auditorias/20260622-PLAN-LRS-02-zhuxi-32-charts-plan.md",
       "relatedCodes": [
         "20260620-AUD-LRS-01 zhuxi-line-reading-selector"
