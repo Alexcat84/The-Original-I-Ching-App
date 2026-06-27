@@ -9,13 +9,17 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false
       }
     },
     "preview": {
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      }
+      },
+      "ios": {}
     },
     "staging-aab": {
       "distribution": "internal",
@@ -33,6 +37,9 @@
       "android": {
         "buildType": "app-bundle",
         "credentialsSource": "local"
+      },
+      "ios": {
+        "credentialsSource": "remote"
       }
     },
     "apk": {
@@ -49,6 +56,12 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "ascApiKeyPath": "./credentials/asc-api-key.json",
+        "ascApiKeyIssuerId": "PLACEHOLDER_POST_FASE1",
+        "ascApiKeyId": "PLACEHOLDER_POST_FASE1"
+      }
+    }
   }
 }

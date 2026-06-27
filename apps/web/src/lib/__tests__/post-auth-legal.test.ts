@@ -15,7 +15,7 @@ const legalConsentSchema = z.object({
   termsVersion: z.literal(CURRENT_TERMS_VERSION),
   privacyVersion: z.literal(CURRENT_PRIVACY_VERSION),
   acceptedAt: z.string().datetime(),
-  source: z.enum(["google_oauth", "post_login", "email_signup"]),
+  source: z.enum(["google_oauth", "apple_oauth", "post_login", "email_signup"]),
 });
 
 describe("post-auth-legal client", () => {

@@ -7431,6 +7431,21 @@ html[data-theme="dark"] .auth-pro-tab.active {
   border-color: var(--secondary-border);
 }
 
+.auth-pro-btn-apple {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.auth-pro-btn-apple:hover:not(:disabled) {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+}
+
+.auth-pro-apple-icon {
+  flex-shrink: 0;
+}
+
 .auth-pro-google-icon {
   flex-shrink: 0;
 }

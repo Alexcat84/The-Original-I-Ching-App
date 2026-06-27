@@ -523,7 +523,42 @@ cd apps/mobile && npx eas build --platform ios --profile preview
 |---------|-------|-------|--------|
 | v1.0 | 2026-06-27 | Cursor | Plan detallado Fase 2 §4.1–4.7 para revisión Claude; colección `docs/auditorias/mob-ios/` creada |
 | v1.1 | 2026-06-27 | Cursor | Incorpora 2 ajustes obligatorios auditoría Claude: §6.2/6.3 sin `Purchases.logIn` en persist session; §9.1 guard monotónico `buildNumber`. Notas menores §5.1/§8.3 |
-| | | | Estado: **ajustes incorporados — esperando luz verde Alex** |
+| v1.2 | 2026-06-27 | Cursor | **Implementación completada** §4.1–4.7 en rama `feature/ios-app-store-launch` (sin merge staging/main) |
+
+### Implementación completada (v1.2, 2026-06-27)
+
+Rama: `feature/ios-app-store-launch`. Items §4.1–4.7 implementados según matriz §11.
+
+| Item | Estado | Notas |
+|------|--------|-------|
+| 4.7 integrity iOS no-op | ✅ | `react-native.config.js`, `useIntegrityCheck.{ios,android}.ts`, bridge no-op |
+| 4.1 app.config + `__RN_APP_INFO` | ✅ | `platforms: ["android","ios"]`, bloque `ios`, plugin `expo-apple-authentication` |
+| 4.2 eas.json | ✅ | Perfiles iOS + `submit.production.ios` placeholders; `credentials/` gitignored |
+| 4.4 RC multi-key | ✅ | `Platform.select` + `EXPO_PUBLIC_REVENUECAT_API_KEY_IOS` |
+| 4.5 ícono 1024 | ✅ | `generate-ios-app-icon.mjs`, `sharp` devDep, `ios-app-icon-1024.png` |
+| 4.3 Sign in with Apple | ✅ | `sign-in-with-apple.ts`, `persist-native-session.ts` **sin** `Purchases.logIn`; bridge + login web + i18n + `apple_oauth` |
+| 4.6 changelog + OPS-IOS-01 | ✅ | `--buildNumber`, guard `maxExistingBn`, `pre-release-checklist.sh`, doc WF-DOC-02 |
+
+**Verificación §12 (2026-06-27):**
+
+| Gate | Resultado |
+|------|-----------|
+| `npm run verify:qa-registry` | PASS (20 docs) |
+| `npm run i18n:audit` | PASS |
+| `apps/web` `tsc --noEmit` | PASS (tipos `__RN_APP_INFO` centralizados en `src/types/rn-bridge.d.ts`) |
+| `update-changelog.js --dry-run --buildNumber 1` | PASS |
+| `update-changelog.js --buildNumber 0` | Warning monotónico emitido |
+| `npx expo config --type public` | PASS (`platforms` incluye `ios`, plugin Apple auth) |
+| `npm run generate:ios-icon` | PASS (1024×1024 sin alpha) |
+| `npm run typecheck` (turbo root) | Intermitente en Windows (fallo paralelo ~1s en builds deps; paquetes individuales OK) |
+
+**Pendiente humano / Fase 1+3+4:** credenciales Apple Developer, ASC API key real, Supabase Apple provider, `EXPO_PUBLIC_REVENUECAT_API_KEY_IOS`, deploy web staging, `eas build --platform ios --profile preview`, E2E Sign in with Apple.
+
+**Aprobación Alex:**
+
+```text
+(pendiente — validación en dispositivo / TestFlight tras Fase 1 credenciales)
+```
 
 ### Checklist revisión Claude
 

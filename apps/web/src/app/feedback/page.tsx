@@ -16,7 +16,6 @@ const SUPPORT_EMAIL = "support@theoriginaliching.com";
 
 declare global {
   interface Window {
-    __RN_APP_INFO?: { version: string; androidVersionCode: number | null };
     __rnBridgeInstalled?: boolean;
   }
 }

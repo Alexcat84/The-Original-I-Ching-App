@@ -11,6 +11,11 @@ const buildGradlePath = path.join(
   "build.gradle"
 );
 
+if (!fs.existsSync(buildGradlePath)) {
+  console.log("expo-app-integrity Android Gradle file not found — skipping patch.");
+  process.exit(0);
+}
+
 // Gradle 8 / AGP 8-compatible replacement.
 // The original build.gradle applied ExpoModulesCorePlugin inside buildscript {}
 // (wrong lifecycle), used the deprecated `classifier =` API, and tried

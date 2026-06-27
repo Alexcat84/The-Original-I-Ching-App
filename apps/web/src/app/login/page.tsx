@@ -40,6 +40,17 @@ declare global {
   }
 }
 
+function AppleGlyph() {
+  return (
+    <svg className="auth-pro-apple-icon" viewBox="0 0 24 24" width={20} height={20} aria-hidden>
+      <path
+        fill="currentColor"
+        d="M17.05 20.28c-.98.95-2.05 1.88-3.71 1.88-1.66 0-2.19-.99-4.09-.99-1.9 0-2.48.96-4.04.99-1.57.03-2.77-1.41-3.75-2.36C2.56 16.2 1.25 12.45 2.92 9.28c.83-1.52 2.36-2.48 4.01-2.51 1.57-.03 3.05 1.06 4.01 1.06.96 0 2.78-1.31 4.69-1.12.8.03 3.05.32 4.49 2.41-3.7 2.26-3.11 6.85.93 8.16-.73 1.89-1.71 3.73-3 5.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"
+      />
+    </svg>
+  );
+}
+
 function GoogleGlyph() {
   return (
     <svg className="auth-pro-google-icon" viewBox="0 0 24 24" width={20} height={20} aria-hidden>
@@ -93,7 +104,17 @@ export default function LoginPage() {
   const turnstileTokenRef = useRef("");
   const turnstileWidgetIdRef = useRef<string | null>(null);
   const turnstileHostRef = useRef<HTMLDivElement | null>(null);
+  const [showAppleSignIn, setShowAppleSignIn] = useState(false);
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+  useEffect(() => {
+    const info = window.__RN_APP_INFO;
+    setShowAppleSignIn(
+      typeof window !== "undefined" &&
+        "ReactNativeWebView" in window &&
+        info?.platform === "ios",
+    );
+  }, []);
 
   function switchMode(nextMode: "signin" | "signup") {
     setMode(nextMode);
@@ -243,6 +264,23 @@ export default function LoginPage() {
     // Google OAuth always goes through /auth/complete-legal post-auth for consent.
     // Pre-auth consent modal is skipped to avoid the user seeing it twice.
     await startGoogleOAuth(null);
+  }
+
+  function postAppleAuthToNative(consent: LegalConsentPayload | null) {
+    const bridge = window.ReactNativeWebView;
+    if (!bridge) return;
+    bridge.postMessage(
+      JSON.stringify({
+        type: "open_apple_auth",
+        ...(consent ? { legalConsent: consent } : {}),
+      }),
+    );
+  }
+
+  async function onApple() {
+    setErr(null);
+    setMsg(null);
+    postAppleAuthToNative(null);
   }
 
   async function startGoogleOAuth(consent: LegalConsentPayload | null) {
@@ -611,6 +649,18 @@ export default function LoginPage() {
             <GoogleGlyph />
             {L.continueGoogle}
           </button>
+
+          {showAppleSignIn ? (
+            <button
+              type="button"
+              className="auth-pro-btn auth-pro-btn-apple"
+              disabled={loading}
+              onClick={() => void onApple()}
+            >
+              <AppleGlyph />
+              {L.continueApple}
+            </button>
+          ) : null}
 
           {err ? <p className="auth-pro-err">{err}</p> : null}
           {msg ? <p className="auth-pro-msg">{msg}</p> : null}

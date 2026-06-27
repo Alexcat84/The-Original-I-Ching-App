@@ -12,10 +12,10 @@ Subcategoría **exclusiva** para documentación del lanzamiento en iOS App Store
 
 ```text
 PLAN-MOB-IOS-01 (maestro) → PLAN-MOB-IOS-02 v1.1 (ajustes Claude incorporados)
-  → luz verde Alex → implementación Cursor → auditoría post-implementación
+  → implementación Cursor (Fase 2 §4.1–4.7) → auditoría post-implementación
 ```
 
-**Regla:** sin luz verde explícita post-revisión, **no** se implementa código ni se mergea a `staging`/`main`.
+**Regla:** sin merge a `staging`/`main` hasta validación Alex (EAS preview + Sign in with Apple E2E tras deploy web staging).
 
 ---
 
@@ -24,7 +24,8 @@ PLAN-MOB-IOS-01 (maestro) → PLAN-MOB-IOS-02 v1.1 (ajustes Claude incorporados)
 | Código | Versión | Título | Estado | Documento |
 |--------|---------|--------|--------|-----------|
 | `20260627-PLAN-MOB-IOS-01 ios-app-store-launch` | — | Plan maestro lanzamiento iOS (fases 0–6) | open | [20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md](./20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) |
-| `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` | **v1.1** | Plan de implementación Fase 2 (§4.1–4.7) | **ajustes Claude OK — luz verde Alex pendiente** | [20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md](./20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md) |
+| `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` | **v1.2** | Plan de implementación Fase 2 (§4.1–4.7) | **implementación completada (Cursor 2026-06-27)** | [20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md](./20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md) |
+| `00000000-OPS-IOS-01 app-store-changelog` | — | Ops: App Store What's New template | reference | [00000000-OPS-IOS-01-app-store-changelog.md](../../00000000-OPS-IOS-01-app-store-changelog.md) |
 
 ---
 
@@ -34,7 +35,7 @@ PLAN-MOB-IOS-01 (maestro) → PLAN-MOB-IOS-02 v1.1 (ajustes Claude incorporados)
 |------|-------------|------------|
 | 0 — Decisiones negocio (D1–D6) | Alex | Cerradas en PLAN-01 §2 (D3–D6); D1–D2 pendientes humano |
 | 1 — Cuentas Apple / RC / Supabase | Alex (portales) | Fuera de alcance Cursor |
-| **2 — Código §4.1–4.7** | Cursor tras luz verde Alex | **PLAN-02 v1.1 listo para implementar** |
+| **2 — Código §4.1–4.7** | Cursor | **Completada en `feature/ios-app-store-launch` (2026-06-27)** |
 | 3 — Cumplimiento App Store | Alex + Cursor (copy) | Post Fase 2 |
 | 4 — Build / TestFlight / QA | Alex | Post Fase 1+2 |
 | 5 — Envío revisión | Alex | Post QA |
@@ -47,7 +48,6 @@ PLAN-MOB-IOS-01 (maestro) → PLAN-MOB-IOS-02 v1.1 (ajustes Claude incorporados)
 | Tipo previsto | Cuándo |
 |---------------|--------|
 | `AUD-MOB-IOS-*` | Auditoría post-implementación Fase 2 vs PLAN-02 |
-| `00000000-OPS-IOS-01 app-store-changelog` | Con item 4.6 (doc What's New App Store) |
 | `GATE-MOB-IOS-*` | Criterios TestFlight / revisión Apple |
 
 ---

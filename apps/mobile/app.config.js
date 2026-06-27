@@ -10,7 +10,7 @@ module.exports = ({ config }) => ({
   version: "4.2.0",
   scheme: "theoriginaliching",
   orientation: "portrait",
-  platforms: ["android"],
+  platforms: ["android", "ios"],
   userInterfaceStyle: "dark",
   backgroundColor: "#0c0f14",
   newArchEnabled: false,
@@ -71,9 +71,32 @@ module.exports = ({ config }) => ({
       },
     ],
   },
+  ios: {
+    bundleIdentifier: "com.theoriginaliching.app",
+    buildNumber: "1",
+    supportsTablet: false,
+    icon: "./assets/ios-app-icon-1024.png",
+    backgroundColor: "#0c0f14",
+    infoPlist: {
+      NSPhotoLibraryAddUsageDescription:
+        "Necesitamos permiso para guardar imágenes en tu galería.",
+      NSPhotoLibraryUsageDescription:
+        "Necesitamos permiso para guardar imágenes en tu galería.",
+      CFBundleURLTypes: [
+        {
+          CFBundleURLSchemes: ["rc-340e77bf41"],
+        },
+      ],
+      ITSAppUsesNonExemptEncryption: false,
+    },
+    config: {
+      usesNonExemptEncryption: false,
+    },
+  },
   plugins: [
     "expo-router",
     "expo-localization",
+    "expo-apple-authentication",
     [
       "react-native-edge-to-edge",
       {

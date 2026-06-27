@@ -67,6 +67,7 @@ Legacy stub: [`plans/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md`](./plans/
 |--------|--------|-----------|
 | `00000000-SETUP-DB-01 new-db-setup` | Nuevo proyecto Supabase | [00000000-SETUP-DB-01-new-db-setup.md](./setup/00000000-SETUP-DB-01-new-db-setup.md) |
 | `00000000-OPS-PLAY-01 play-store-changelog` | Changelog Play Store | [00000000-OPS-PLAY-01-play-store-changelog.md](./00000000-OPS-PLAY-01-play-store-changelog.md) |
+| `00000000-OPS-IOS-01 app-store-changelog` | Changelog App Store (iOS) | [00000000-OPS-IOS-01-app-store-changelog.md](./00000000-OPS-IOS-01-app-store-changelog.md) |
 
 ---
 

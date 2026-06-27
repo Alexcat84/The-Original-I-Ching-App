@@ -57,8 +57,9 @@ function parseLastReleaseHash(content) {
  * @param {string} content
  */
 function parseVersionHeaders(content) {
-  const re = /^## \[([\d.]+)\] — (\d{4}-\d{2}-\d{2}) \| versionCode: (\d+) \| Stage: ([^\n]+)/gm;
-  /** @type {Array<{ versionName: string, date: string, versionCode: number, stage: string }>} */
+  const re =
+    /^## \[([\d.]+)\] — (\d{4}-\d{2}-\d{2}) \| versionCode: (\d+)(?: \| buildNumber: (\d+))? \| Stage: ([^\n]+)/gm;
+  /** @type {Array<{ versionName: string, date: string, versionCode: number, buildNumber: number | null, stage: string }>} */
   const rows = [];
   let match;
   while ((match = re.exec(content)) !== null) {
@@ -66,7 +67,8 @@ function parseVersionHeaders(content) {
       versionName: match[1],
       date: match[2],
       versionCode: Number.parseInt(match[3], 10),
-      stage: match[4].trim(),
+      buildNumber: match[4] ? Number.parseInt(match[4], 10) : null,
+      stage: match[5].trim(),
     });
   }
   return rows;
@@ -94,13 +96,20 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   const versionName = String(args.version || "");
   const versionCode = Number.parseInt(String(args.versionCode || ""), 10);
+  const buildNumberRaw = args.buildNumber !== undefined ? String(args.buildNumber) : "";
+  const buildNumber = buildNumberRaw ? Number.parseInt(buildNumberRaw, 10) : null;
   const stage = String(args.stage || "");
   const since = args.since ? String(args.since) : null;
 
   if (!versionName || !Number.isFinite(versionCode) || !stage) {
     console.error(
-      "Usage: node scripts/update-changelog.js --version 3.3.2 --versionCode 26 --stage \"Closed Testing\" [--since HASH] [--dry-run]",
+      'Usage: node scripts/update-changelog.js --version 3.3.2 --versionCode 26 --stage "Closed Testing" [--buildNumber 1] [--since HASH] [--dry-run]',
     );
+    process.exit(1);
+  }
+
+  if (buildNumberRaw && !Number.isFinite(buildNumber)) {
+    console.error("Invalid --buildNumber (must be a positive integer).");
     process.exit(1);
   }
 
@@ -122,6 +131,18 @@ function main() {
     );
   }
 
+  if (Number.isFinite(buildNumber)) {
+    const maxExistingBn = existingVersions.reduce(
+      (max, v) => Math.max(max, v.buildNumber ?? 0),
+      0,
+    );
+    if (buildNumber <= maxExistingBn) {
+      console.warn(
+        `Warning: buildNumber ${buildNumber} is not greater than latest ${maxExistingBn}`,
+      );
+    }
+  }
+
   const sinceHash = since || parseLastReleaseHash(existing);
   const newCommits = sinceHash
     ? fetchGitLog({ since: sinceHash })
@@ -140,6 +161,7 @@ function main() {
   const releaseMeta = {
     versionName,
     versionCode,
+    buildNumber: Number.isFinite(buildNumber) ? buildNumber : null,
     date,
     stage: stage || resolveStage(versionCode, date),
   };
@@ -178,6 +200,7 @@ function main() {
     {
       versionName,
       versionCode,
+      buildNumber: releaseMeta.buildNumber,
       date,
       stage: releaseMeta.stage,
       commitCount: newCommits.length,
@@ -186,6 +209,7 @@ function main() {
     ...existingVersions.map((v) => ({
       versionName: v.versionName,
       versionCode: v.versionCode,
+      buildNumber: v.buildNumber,
       date: v.date,
       stage: v.stage,
       commitCount: countCommitsInSection(existing, v.versionName),

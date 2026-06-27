@@ -13,7 +13,8 @@
     "android:sync-native": "expo prebuild --platform android --no-install",
     "android:apk:release": "node ./scripts/assemble-android-release.js",
     "android:run:release": "expo run:android --variant release --no-bundler",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "generate:ios-icon": "node ./scripts/generate-ios-app-icon.mjs"
   },
   "dependencies": {
     "@iching-oracle/i18n": "file:../../packages/i18n",
@@ -22,6 +23,7 @@
     "eruda": "^3.4.3",
     "expo": "^53",
     "expo-app-integrity": "^0.3.0",
+    "expo-apple-authentication": "~7.2.4",
     "expo-application": "~6.1.5",
     "expo-build-properties": "~0.14.8",
     "expo-constants": "~17.1.8",
@@ -57,6 +59,7 @@
     "@babel/core": "^7.26.0",
     "@types/react": "~19.0.10",
     "patch-package": "^8.0.1",
+    "sharp": "^0.33.5",
     "typescript": "~5.8.3"
   }
 }

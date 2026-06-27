@@ -5,7 +5,7 @@ export const LEGAL_CONSENT_PENDING_STORAGE_KEY = "iching_legal_consent_pending_v
 /** Stored on auth.users.user_metadata at email sign-up when the session is created only after email confirmation. */
 export const PENDING_EMAIL_LEGAL_METADATA_KEY = "iching_pending_legal_consent_v1";
 
-export type LegalConsentSource = "email_signup" | "google_oauth" | "post_login";
+export type LegalConsentSource = "email_signup" | "google_oauth" | "apple_oauth" | "post_login";
 
 export type LegalConsentPayload = {
   accepted: true;
@@ -33,7 +33,10 @@ export function isCurrentLegalConsentPayload(value: unknown): value is LegalCons
     payload.termsVersion === CURRENT_TERMS_VERSION &&
     payload.privacyVersion === CURRENT_PRIVACY_VERSION &&
     typeof payload.acceptedAt === "string" &&
-    (payload.source === "email_signup" || payload.source === "google_oauth" || payload.source === "post_login")
+    (payload.source === "email_signup" ||
+      payload.source === "google_oauth" ||
+      payload.source === "apple_oauth" ||
+      payload.source === "post_login")
   );
 }
 

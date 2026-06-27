@@ -92,6 +92,16 @@ import {
   type WebViewNavigation,
 } from "react-native-webview";
 import { useIntegrityCheck, createIntegrityTraceId } from "@/src/hooks/useIntegrityCheck";
+import {
+  AppleSignInError,
+  isAppleSignInAvailable,
+  signInWithAppleSupabase,
+} from "@/src/auth/sign-in-with-apple";
+import {
+  persistNativeSession,
+  postNativeLegalConsent,
+  type NativeLegalConsentPayload,
+} from "@/src/auth/persist-native-session";
 import { SystemBars } from "react-native-edge-to-edge";
 import {
   DEFAULT_LOCALE,
@@ -246,20 +256,41 @@ function deepLinkToWebUrl(deepLink: string): string | null {
  * 11. Expose __RN_APP_INFO and fill /about trace cells (#rn-trace-*) from the native shell
  */
 /** Prefer manifest/Gradle values — `expoConfig` embedded in the JS bundle can stay stale after only editing build.gradle. */
-function resolveRnAppInfoForWeb(): { version: string; androidVersionCode: number | null } {
+function resolveRnAppInfoForWeb(): {
+  version: string;
+  androidVersionCode: number | null;
+  iosBuildNumber: number | null;
+  platform: "ios" | "android";
+} {
+  const platform = Platform.OS === "ios" ? "ios" : "android";
   const nativeVer = Application.nativeApplicationVersion?.trim();
   if (nativeVer && nativeVer.length > 0) {
     const buildStr = Application.nativeBuildVersion?.trim();
     const parsed = buildStr && buildStr.length > 0 ? parseInt(buildStr, 10) : NaN;
+    const iosBuildNumber =
+      platform === "ios" && Number.isFinite(parsed)
+        ? parsed
+        : platform === "ios"
+          ? parseInt(String(Constants.expoConfig?.ios?.buildNumber ?? ""), 10) || null
+          : null;
     return {
       version: nativeVer,
-      androidVersionCode: Number.isFinite(parsed) ? parsed : null,
+      androidVersionCode: platform === "android" && Number.isFinite(parsed) ? parsed : null,
+      iosBuildNumber,
+      platform,
     };
   }
+  const iosBnRaw = Constants.expoConfig?.ios?.buildNumber;
+  const iosBuildNumber =
+    iosBnRaw !== undefined && iosBnRaw !== null
+      ? parseInt(String(iosBnRaw), 10) || null
+      : null;
   return {
     version: String(Constants.expoConfig?.version ?? ""),
     androidVersionCode:
       (Constants.expoConfig?.android as { versionCode?: number } | undefined)?.versionCode ?? null,
+    iosBuildNumber,
+    platform,
   };
 }
 
@@ -1222,6 +1253,7 @@ type RNMessage =
   | { type: "auth_signout"; intentional?: boolean }
   | { type: "locale_changed"; locale: AppLocale }
   | { type: "open_google_auth" }
+  | { type: "open_apple_auth"; legalConsent?: NativeLegalConsentPayload }
   | { type: "pkce_verifier"; verifier: string }
   | { type: "download_file"; filename: string; dataUrl: string }
   | { type: "download_file_start"; transferId: string; filename: string; mimeType?: string }
@@ -2010,6 +2042,63 @@ export default function WebViewScreen() {
     []
   );
 
+  const handleAppleAuthRef = useRef<
+    (legalConsent?: NativeLegalConsentPayload) => Promise<void>
+  >(async () => {});
+
+  const handleAppleAuth = useCallback(
+    async (legalConsent?: NativeLegalConsentPayload) => {
+      if (Platform.OS !== "ios") return;
+      const available = await isAppleSignInAvailable();
+      if (!available) {
+        showNativeDialog({
+          title: nativeUi.purchaseErrorTitle,
+          message: nativeUi.identityCheckFailed,
+          buttons: [{ text: nativeUi.ok }],
+        });
+        return;
+      }
+      try {
+        const session = await signInWithAppleSupabase({
+          supabaseUrl: SUPABASE_URL,
+          supabaseAnonKey: SUPABASE_ANON_KEY,
+        });
+        if (legalConsent) {
+          try {
+            await postNativeLegalConsent(BASE_URL, session.access_token, legalConsent);
+          } catch {
+            // User may complete legal acceptance via /auth/complete-legal
+          }
+        }
+        await persistNativeSession({
+          accessToken: session.access_token,
+          refreshToken: session.refresh_token,
+          email: session.email,
+          secureTokenKey: SECURE_TOKEN_KEY,
+          accessTokenRef,
+          authTransitionRef,
+          setIsAuthenticated,
+          setUserEmail,
+          webViewRef,
+        });
+      } catch (err) {
+        if (err instanceof AppleSignInError && err.code === "ERR_REQUEST_CANCELED") {
+          return;
+        }
+        showNativeDialog({
+          title: nativeUi.purchaseErrorTitle,
+          message: nativeUi.identityCheckFailed,
+          buttons: [{ text: nativeUi.ok }],
+        });
+      }
+    },
+    [nativeUi, showNativeDialog],
+  );
+
+  useEffect(() => {
+    handleAppleAuthRef.current = handleAppleAuth;
+  }, [handleAppleAuth]);
+
   /* ── SQLite: initialize schema on mount, then pre-fetch cached chats into ref.
      Pre-fetching starts before onLoadEnd fires (WebView loading takes ~1-3s),
      so the ref is ready for synchronous injection when the page finishes loading.
@@ -2050,7 +2139,12 @@ export default function WebViewScreen() {
 
   /* ── Restore token + locale from storage on cold start ── */
   useEffect(() => {
-    const RC_API_KEY = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ?? '';
+    const RC_API_KEY =
+      Platform.select({
+        ios: process.env.EXPO_PUBLIC_REVENUECAT_API_KEY_IOS ?? "",
+        android: process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ?? "",
+        default: process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ?? "",
+      }) ?? "";
 
     // Set up purchase success listener synchronously — must not wait on async ops.
     const purchaseSub = DeviceEventEmitter.addListener('rnPurchaseSuccess', () => {
@@ -2730,6 +2824,10 @@ export default function WebViewScreen() {
             break;
           }
 
+          case "open_apple_auth":
+            void handleAppleAuth(msg.legalConsent);
+            break;
+
           case "download_file":
             handleFileDownload(msg.filename, msg.dataUrl);
             break;
@@ -2875,6 +2973,13 @@ export default function WebViewScreen() {
             break;
 
           case "integrity_token_request": {
+            if (Platform.OS !== "android") {
+              const escapedReqId = JSON.stringify(msg.reqId);
+              webViewRef.current?.injectJavaScript(
+                `window.__rnIntegrityTokenResponse && window.__rnIntegrityTokenResponse(${escapedReqId}, null, null); true;`
+              );
+              break;
+            }
             void (async () => {
               const traceId = createIntegrityTraceId();
               const freshToken = await refreshIntegrityTokenRef.current(traceId);
@@ -3066,7 +3171,7 @@ export default function WebViewScreen() {
         // Ignore non-JSON bridge noise
       }
     },
-    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog, injectCachedChats, handleNativePurchase, saveDownloadedFile, showDownloadTooLarge, schedulePostBootstrapSync, validateStoredToken]
+    [handleFileDownload, handleDeleteChat, nativeUi, showNativeDialog, injectCachedChats, handleNativePurchase, saveDownloadedFile, showDownloadTooLarge, schedulePostBootstrapSync, validateStoredToken, handleAppleAuth]
   );
 
   /* ── Intercept Google OAuth + internal doc navigation ── */
@@ -3090,6 +3195,13 @@ export default function WebViewScreen() {
         } catch {
           setTimeout(() => Linking.openURL(url), 50);
         }
+        return false;
+      }
+
+      if (url.includes('/auth/v1/authorize') && url.includes('provider=apple')) {
+        setTimeout(() => {
+          void handleAppleAuthRef.current();
+        }, 50);
         return false;
       }
 

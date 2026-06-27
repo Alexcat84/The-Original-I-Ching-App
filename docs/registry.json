@@ -293,6 +293,22 @@
       "relatedTests": []
     },
     {
+      "code": "00000000-OPS-IOS-01 app-store-changelog",
+      "title": "Ops: App Store release changelog template",
+      "shortName": "app-store-changelog",
+      "type": "OPS",
+      "family": "MOB-IOS",
+      "collection": "ops",
+      "date": null,
+      "status": "reference",
+      "path": "docs/00000000-OPS-IOS-01-app-store-changelog.md",
+      "relatedCodes": [
+        "20260627-PLAN-MOB-IOS-01 ios-app-store-launch",
+        "00000000-OPS-PLAY-01 play-store-changelog"
+      ],
+      "relatedTests": []
+    },
+    {
       "code": "00000000-RUN-REST-01 restoration-manual",
       "title": "Runbook: consultation content restoration manual",
       "shortName": "restoration-manual",

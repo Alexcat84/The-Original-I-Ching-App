@@ -5,6 +5,7 @@ dist/
 /ios
 *.jks
 credentials.json
+credentials/
 *.p8
 *.p12
 *.key

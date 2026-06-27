@@ -23,7 +23,7 @@ function renderGroupedSections(grouped) {
 }
 
 /**
- * @param {{ versionName: string, date: string, versionCode: number, stage?: string }} meta
+ * @param {{ versionName: string, date: string, versionCode: number, buildNumber?: number | null, stage?: string }} meta
  * @param {Array<{ hash: string, date: string, subject: string }>} commits
  * @returns {string}
  */
@@ -33,7 +33,11 @@ function renderVersionSection(meta, commits) {
   if (!body) return "";
 
   const stage = meta.stage ?? resolveStage(meta.versionCode, meta.date);
-  const header = `## [${meta.versionName}] — ${meta.date} | versionCode: ${meta.versionCode} | Stage: ${stage}`;
+  const buildSegment =
+    meta.buildNumber != null && Number.isFinite(meta.buildNumber)
+      ? ` | buildNumber: ${meta.buildNumber}`
+      : "";
+  const header = `## [${meta.versionName}] — ${meta.date} | versionCode: ${meta.versionCode}${buildSegment} | Stage: ${stage}`;
   return `${header}\n\n${body}\n\n---\n`;
 }
 
@@ -49,21 +53,23 @@ function renderUnreleasedSection(commits) {
 }
 
 /**
- * @param {Array<{ versionName: string, date: string, versionCode: number, stage: string, commitCount: number, highlights: string }>} rows
+ * @param {Array<{ versionName: string, date: string, versionCode: number, buildNumber?: number | null, stage: string, commitCount: number, highlights: string }>} rows
  * @returns {string}
  */
 function renderSummaryTable(rows) {
   const lines = [
     "## Version Summary",
     "",
-    "| Version | versionCode | Date | Stage | Commits | Notable changes |",
-    "|---------|-------------|------|-------|---------|-----------------|",
+    "| Version | versionCode | buildNumber | Date | Stage | Commits | Notable changes |",
+    "|---------|-------------|-------------|------|-------|---------|-----------------|",
   ];
 
   for (const row of rows) {
     const highlights = row.highlights.replace(/\|/g, "\\|");
+    const bn =
+      row.buildNumber != null && Number.isFinite(row.buildNumber) ? row.buildNumber : "—";
     lines.push(
-      `| ${row.versionName} | ${row.versionCode} | ${row.date} | ${row.stage} | ${row.commitCount} | ${highlights} |`,
+      `| ${row.versionName} | ${row.versionCode} | ${bn} | ${row.date} | ${row.stage} | ${row.commitCount} | ${highlights} |`,
     );
   }
 
@@ -96,6 +102,7 @@ function renderChangelog({ lastReleaseHash, versions, unreleased = [] }) {
   const summaryRows = versions.map((v) => ({
     versionName: v.versionName,
     versionCode: v.versionCode,
+    buildNumber: v.buildNumber ?? null,
     date: v.date,
     stage: v.stage,
     commitCount: v.commits.length,
@@ -106,6 +113,7 @@ function renderChangelog({ lastReleaseHash, versions, unreleased = [] }) {
     summaryRows.unshift({
       versionName: "Unreleased",
       versionCode: "—",
+      buildNumber: null,
       date: unreleased[unreleased.length - 1]?.date ?? "—",
       stage: "—",
       commitCount: unreleased.length,

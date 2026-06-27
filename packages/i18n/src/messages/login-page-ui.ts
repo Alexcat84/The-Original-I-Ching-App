@@ -24,6 +24,7 @@ export type LoginPageUiMessages = {
   registerSubmit: string;
   dividerOr: string;
   continueGoogle: string;
+  continueApple: string;
   legalConsentTitle: string;
   legalConsentIntro: string;
   /** Header shown on /auth/complete-legal when an existing user must re-accept updated policies. */
@@ -95,6 +96,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Registrarme",
     dividerOr: "o",
     continueGoogle: "Continuar con Google",
+    continueApple: "Continuar con Apple",
     legalConsentTitle: "Antes de crear tu cuenta",
     legalConsentIntro:
       "Para crear tu cuenta debes leer y aceptar la Política de Privacidad y los Términos del Servicio.",
@@ -179,6 +181,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Register",
     dividerOr: "or",
     continueGoogle: "Continue with Google",
+    continueApple: "Continue with Apple",
     legalConsentTitle: "Before you create your account",
     legalConsentIntro:
       "To create your account, you must read and accept the Privacy Policy and Terms of Service.",
@@ -260,6 +263,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Registar-me",
     dividerOr: "ou",
     continueGoogle: "Continuar com Google",
+    continueApple: "Continuar com Apple",
     legalConsentTitle: "Antes de criares a tua conta",
     legalConsentIntro:
       "Para criares a tua conta, deves ler e aceitar a Política de Privacidade e os Termos de Serviço.",
@@ -340,6 +344,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "M’inscrire",
     dividerOr: "ou",
     continueGoogle: "Continuer avec Google",
+    continueApple: "Continuer avec Apple",
     legalConsentTitle: "Avant de créer votre compte",
     legalConsentIntro:
       "Pour créer votre compte, vous devez lire et accepter la Politique de confidentialité et les Conditions d'utilisation.",
@@ -422,6 +427,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Registrieren",
     dividerOr: "oder",
     continueGoogle: "Mit Google fortfahren",
+    continueApple: "Mit Apple fortfahren",
     legalConsentTitle: "Bevor Sie Ihr Konto anlegen",
     legalConsentIntro:
       "Um Ihr Konto zu erstellen, müssen Sie die Datenschutzerklärung und die Nutzungsbedingungen lesen und akzeptieren.",
@@ -503,6 +509,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "Registrati",
     dividerOr: "oppure",
     continueGoogle: "Continua con Google",
+    continueApple: "Continua con Apple",
     legalConsentTitle: "Prima di creare il tuo account",
     legalConsentIntro:
       "Per creare il tuo account devi leggere e accettare l'Informativa sulla privacy e i Termini di servizio.",
@@ -586,6 +593,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "登録する",
     dividerOr: "または",
     continueGoogle: "Googleで続行",
+    continueApple: "Appleで続行",
     legalConsentTitle: "アカウント作成前の確認",
     legalConsentIntro:
       "アカウントを作成するには、プライバシーポリシーと利用規約を読んで同意する必要があります。",
@@ -669,6 +677,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "注册",
     dividerOr: "或",
     continueGoogle: "使用 Google 继续",
+    continueApple: "使用 Apple 继续",
     legalConsentTitle: "创建账户前的确认",
     legalConsentIntro: "创建账户前，你必须阅读并接受隐私政策和服务条款。",
     legalConsentUpdateTitle: "我们更新了相关政策",
@@ -740,6 +749,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "가입하기",
     dividerOr: "또는",
     continueGoogle: "Google로 계속",
+    continueApple: "Apple로 계속",
     legalConsentTitle: "계정을 만들기 전에",
     legalConsentIntro:
       "계정을 만들려면 개인정보 처리방침과 서비스 약관을 읽고 동의해야 합니다.",
@@ -818,6 +828,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "تسجيل",
     dividerOr: "أو",
     continueGoogle: "المتابعة مع Google",
+    continueApple: "المتابعة مع Apple",
     legalConsentTitle: "قبل إنشاء حسابك",
     legalConsentIntro:
       "لإنشاء حسابك، يجب عليك قراءة وقبول سياسة الخصوصية وشروط الخدمة.",
@@ -899,6 +910,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     registerSubmit: "खाता बनाएँ",
     dividerOr: "या",
     continueGoogle: "Google से जारी रखें",
+    continueApple: "Apple से जारी रखें",
     legalConsentTitle: "कानूनी सहमति",
     legalConsentIntro:
       "खाता बनाने से पहले सेवा की शर्तें और गोपनीयता नीति पढ़ें और स्वीकार करें।",
