@@ -55,6 +55,7 @@ Los **nombres de archivo canónicos** siguen `{YYYYMMDD}-{TIPO}-{FAMILIA}-{NN}-{
 | `MOB-UI` | UI WebView / layout APK |
 | `MOB-NAV` | Navegación RN ↔ App Router |
 | `MOB-PLAY` | Play Console / Data Safety |
+| `MOB-IOS` | App Store Connect / lanzamiento iOS |
 | `DAT-FID` | Fidelidad traductores / gold / gates |
 | `DAT-MAESTRO` | Maestros TXT Princeton (W/L) |
 | `DAT-MAESTRO-W` | Maestro Wilhelm |

@@ -104,6 +104,19 @@
       "relatedAuditRegistry": true
     },
     {
+      "code": "20260627-PLAN-MOB-IOS-01 ios-app-store-launch",
+      "title": "Plan: iOS App Store launch",
+      "shortName": "ios-app-store-launch",
+      "type": "PLAN",
+      "family": "MOB-IOS",
+      "collection": "plans",
+      "date": "2026-06-27",
+      "status": "open",
+      "path": "docs/plans/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md",
+      "relatedCodes": [],
+      "relatedAuditRegistry": false
+    },
+    {
       "code": "00000000-PLAN-SUP-08 anti-warp-serialize-burst",
       "title": "Plan: anti-Warp serialize hydration vs consult",
       "shortName": "anti-warp-serialize-burst",
