@@ -1,6 +1,6 @@
 # Plan de implementación Fase 2 — iOS App Store (código)
-**Código:** `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` · **Familia:** MOB-IOS · **Estado:** implementado — 2 fixes typecheck requeridos antes de merge  
-**Versión del documento:** v1.2 (implementación completada §4.1–4.7, auditoría post-implementación Claude)  
+**Código:** `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` · **Familia:** MOB-IOS · **Estado:** implementado — fixes typecheck aplicados, pendiente re-verificación Claude  
+**Versión del documento:** v1.3 (fixes post-auditoría §14 incorporados)  
 **Fecha:** 2026-06-27
 
 **Plan maestro:** [`20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md`](./20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) · **Índice colección:** [`INDEX.md`](./INDEX.md)
@@ -17,7 +17,7 @@
 | Autor implementación | Cursor (post-aprobación) |
 | Revisor | Claude (pre-implementación y post-implementación) |
 | Aprobador | Alex |
-| Estado | **v1.2 — implementado en `feature/ios-app-store-launch` (2026-06-27).** Auditoría post-implementación Claude: arquitectura y ajustes previos correctos; 2 fixes mecánicos de typecheck requeridos antes de merge (ver §14) |
+| Estado | **v1.3 — fixes typecheck post-auditoría aplicados (2026-06-27).** Pendiente re-verificación Claude antes de merge a `staging` |
 
 ### Decisiones cerradas (PLAN-01 §2, no reabrir)
 
@@ -524,6 +524,7 @@ cd apps/mobile && npx eas build --platform ios --profile preview
 | v1.0 | 2026-06-27 | Cursor | Plan detallado Fase 2 §4.1–4.7 para revisión Claude; colección `docs/auditorias/mob-ios/` creada |
 | v1.1 | 2026-06-27 | Cursor | Incorpora 2 ajustes obligatorios auditoría Claude: §6.2/6.3 sin `Purchases.logIn` en persist session; §9.1 guard monotónico `buildNumber`. Notas menores §5.1/§8.3 |
 | v1.2 | 2026-06-27 | Cursor | **Implementación completada** §4.1–4.7 en rama `feature/ios-app-store-launch` (sin merge staging/main) |
+| v1.3 | 2026-06-27 | Cursor | Fixes post-auditoría Claude: `moduleSuffixes` en `tsconfig.json`, `?? ""` en `signInWithAppleSupabase`, script `typecheck` en `apps/mobile/package.json` |
 
 ### Implementación completada (v1.2, 2026-06-27)
 
@@ -550,7 +551,7 @@ Rama: `feature/ios-app-store-launch`. Items §4.1–4.7 implementados según mat
 | `update-changelog.js --buildNumber 0` | Warning monotónico emitido |
 | `npx expo config --type public` | PASS (`platforms` incluye `ios`, plugin Apple auth) |
 | `npm run generate:ios-icon` | PASS (1024×1024 sin alpha) |
-| `npm run typecheck` (turbo root) | Intermitente en Windows (fallo paralelo ~1s en builds deps; paquetes individuales OK) |
+| `apps/mobile` `tsc --noEmit` | PASS (post v1.3: `moduleSuffixes` + `?? ""` + script `typecheck`) |
 
 **Pendiente humano / Fase 1+3+4:** credenciales Apple Developer, ASC API key real, Supabase Apple provider, `EXPO_PUBLIC_REVENUECAT_API_KEY_IOS`, deploy web staging, `eas build --platform ios --profile preview`, E2E Sign in with Apple.
 
@@ -620,6 +621,16 @@ reales pasaron la revisión sin que la tabla de verificación los reflejara con 
 `"typecheck": "tsc --noEmit"` a `apps/mobile/package.json` para que el gate exista hacia
 adelante — evita que esto se repita.
 
+**Incorporación Cursor (v1.3, 2026-06-27):**
+
+```text
+1. apps/mobile/tsconfig.json — "moduleSuffixes": [".ios", ".android", ""]
+2. apps/mobile/app/index.tsx — signInWithAppleSupabase({ supabaseUrl: SUPABASE_URL ?? "",
+   supabaseAnonKey: SUPABASE_ANON_KEY ?? "" })
+3. apps/mobile/package.json — "typecheck": "tsc --noEmit"
+Verificado: npm run typecheck en apps/mobile → exit 0
+```
+
 VEREDICTO AUDITORÍA POST-IMPLEMENTACIÓN: La arquitectura, los dos ajustes obligatorios de la
 ronda anterior, y el resto de items §4.1-4.7 están correctamente implementados — verificado
 independientemente, no solo leído. **2 fixes mecánicos requeridos antes de merge** (moduleSuffixes
@@ -630,8 +641,7 @@ end-to-end, eso no cambia).
 **Aprobación Alex:**
 
 ```text
-(pendiente — validación en dispositivo / TestFlight tras Fase 1 credenciales; y tras Cursor
-incorporar los 2 fixes de typecheck de la auditoría post-implementación Claude arriba)
+(pendiente — re-verificación Claude tras fixes v1.3; validación dispositivo / TestFlight tras Fase 1 credenciales)
 ```
 
 ### Checklist revisión Claude

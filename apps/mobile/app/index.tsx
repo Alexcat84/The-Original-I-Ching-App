@@ -2060,8 +2060,8 @@ export default function WebViewScreen() {
       }
       try {
         const session = await signInWithAppleSupabase({
-          supabaseUrl: SUPABASE_URL,
-          supabaseAnonKey: SUPABASE_ANON_KEY,
+          supabaseUrl: SUPABASE_URL ?? "",
+          supabaseAnonKey: SUPABASE_ANON_KEY ?? "",
         });
         if (legalConsent) {
           try {
