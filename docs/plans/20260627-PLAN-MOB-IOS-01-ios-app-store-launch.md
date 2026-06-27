@@ -21,6 +21,12 @@ La app ya ofrece Google OAuth como login de terceros. Si se ofrece un login de t
 
 **Decisión que falta tomar (te toca a ti):** confirmar que aceptas estos 3 puntos como costo de hacer negocio en iOS — no hay forma de evitarlos sin cambiar el modelo de producto. El resto del plan asume que sí.
 
+### Nota permanente — por qué NO se migra a un framework distinto (Capacitor, template WKWebView nativo)
+
+**Decisión cerrada 2026-06-27**, documentada aquí para que no se reabra por una recomendación genérica de IA/freelancer en el futuro: la app **ya es Expo + React Native**, que **ya soporta iOS como plataforma de build del mismo código** (`eas build --platform ios`). No hay "migración entre stacks" que hacer — es agregar `ios` a `platforms` en `app.config.js` (§4.1).
+
+Recomendaciones tipo "clona un template WKWebView en Swift" o "migra a Capacitor" parten de asumir que el Android actual es un WebView nativo puro (Kotlin/Java) que necesita una contraparte nativa separada en iOS. Eso describe un proyecto distinto al de este repo. Seguir ese consejo aquí significaría **reconstruir desde cero**, en un ecosistema sin compatibilidad con el código actual, todo lo que ya funciona en producción: caché SQLite offline (3 capas), puente nativo de autenticación con recuperación de sesión, integración completa de RevenueCat, deep linking, exportación de PDF/imagen nativa, y el guard de cross-origin del WebView. Sería semanas/meses de trabajo extra para terminar con **menos** funcionalidad que la actual, no más.
+
 ---
 
 ## 1. Inventario del estado actual (verificado en código, 2026-06-27)
@@ -49,6 +55,7 @@ La app ya ofrece Google OAuth como login de terceros. Si se ofrece un login de t
 | D3 | ¿Bundle identifier? | Recomendado `com.theoriginaliching.app` (igual al package Android) para consistencia de marca | Confirmar o elegir otro |
 | D4 | ¿Se lanza con soporte de iPad o solo iPhone? | iPad multiplica el QA de capturas/layout; si el producto es 100% uso personal en celular, limitar a iPhone reduce alcance de pruebas | Tu decisión (recomiendo solo iPhone para v1) |
 | D5 | ¿Se omite el equivalente de Play Integrity en la v1 de iOS? | No es requisito de Apple — es una protección anti-abuso que el equipo eligió para Android. Construir el equivalente (App Attest) añade semanas | Recomiendo: **sí, omitir en v1**, revisar post-lanzamiento |
+| D6 | ¿Se agregan push notifications (APNs) antes del envío? | **No existen hoy en ninguna plataforma** (ni Android ni iOS). No es requisito de Apple, pero es la única señal "app nativa" del checklist típico de revisión que falta — refuerza la defensa contra Riesgo 1 si el reviewer es estricto. Costo real: certificados APNs + `expo-notifications` + lógica de envío del lado servidor | Recomiendo: **omitir en v1** salvo que el primer envío sea rechazado citando 4.2 — entonces es la primera mejora a agregar antes de reenviar |
 
 ---
 
@@ -107,7 +114,7 @@ La app ya ofrece Google OAuth como login de terceros. Si se ofrece un login de t
 - [ ] **App Privacy ("nutrition label")** en App Store Connect: cuestionario de qué datos se recolectan (email, datos de auth, datos de pago vía RC/Stripe, datos de error vía Sentry) y si están vinculados a identidad / se usan para tracking — reusar la investigación ya hecha (o pendiente) para el "Data Safety Form" de Google Play, son preguntas equivalentes
 - [ ] Confirmar que Privacy Policy / Terms ya publicados (theoriginaliching.com) son válidos para iOS sin cambios — probablemente sí
 - [ ] Cuestionario de clasificación de edad (Age Rating) — contenido de adivinación/I Ching, sin violencia/contenido maduro, debería calificar en la categoría más baja
-- [ ] **Notas para el revisor de Apple** (texto libre en App Store Connect, no público): explicar explícitamente las capas nativas (SQLite offline, exportación PDF, auth nativo) para mitigar el Riesgo 1 (§0) antes de que el reviewer lo cuestione
+- [ ] **Notas para el revisor de Apple** (texto libre en App Store Connect, no público): explicar explícitamente las capas nativas (SQLite offline, exportación PDF, auth nativo) para mitigar el Riesgo 1 (§0) antes de que el reviewer lo cuestione. Redacción base sugerida (ajustar tono, no copiar literal): *"This app is a native container with an optimized mobile web layer: it includes offline local caching (SQLite), native authentication with session recovery, native PDF/image export, and deep linking — the embedded content is purpose-built for this app, not a generic website."*
 - [ ] **Cuenta de demo** para el reviewer (usuario + contraseña de prueba, ya que la app requiere login) — confirmar que tiene tokens suficientes para que el reviewer pueda probar una consulta real sin pagar
 
 ---
@@ -160,6 +167,7 @@ Fase 0 — Decisiones
 [ ] D3 bundle identifier confirmado
 [ ] D4 solo iPhone o + iPad
 [ ] D5 confirmar omitir App Attest en v1
+[ ] D6 confirmar omitir push notifications en v1 (agregar solo si hay rechazo 4.2)
 
 Fase 1 — Cuentas
 [ ] Apple Developer Program enrolado
@@ -214,3 +222,4 @@ Fase 5 — Envío
 | Fecha | Evento |
 |-------|--------|
 | 2026-06-27 | Apertura del plan. Inventario completo del estado actual (sin nada de iOS configurado); identificados los 3 riesgos críticos (4.2 Minimum Functionality, IAP obligatorio, Sign in with Apple obligatorio); fases 0-6 documentadas con checklist maestro. |
+| 2026-06-27 | Revisado un segundo input externo (Grok). Se descarta explícitamente su recomendación central (template WKWebView separado / migrar a Capacitor) — parte de la premisa equivocada de que Android es nativo puro; en realidad ya es Expo/RN, que ya soporta iOS del mismo código, así que esa ruta significaría reconstruir desde cero sin necesidad. Se incorpora lo útil: D6 (push notifications, opcional, solo si hay rechazo 4.2) y redacción base para las notas del reviewer. |
