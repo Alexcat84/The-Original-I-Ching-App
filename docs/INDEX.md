@@ -33,6 +33,12 @@
 | `00000000-PLAN-SUP-07 scale-infrastructure` | Escala infraestructura | [00000000-PLAN-SUP-07-scale-infrastructure.md](./plans/00000000-PLAN-SUP-07-scale-infrastructure.md) |
 | `00000000-PLAN-SUP-08 anti-warp-serialize-burst` | Anti-Warp: serializar burst | [00000000-PLAN-SUP-08-anti-warp-serialize-burst.md](./plans/00000000-PLAN-SUP-08-anti-warp-serialize-burst.md) |
 
+## Planes (`PLAN-MOB-IOS-*`)
+
+| Código | Título | Documento |
+|--------|--------|-----------|
+| `20260627-PLAN-MOB-IOS-01 ios-app-store-launch` | Lanzamiento iOS App Store | [20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md](./plans/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) |
+
 ---
 
 ## Workflows (`WF-*`)

@@ -13,6 +13,16 @@ Sentry.init({
     if (msg.includes("Lock broken by another request with the 'steal' option")) {
       return null;
     }
+    // Facebook's in-app browser (Android) injects its own navigation-performance
+    // bridge ("navigation_performance_logger_android") to report perf beacons back
+    // to native Facebook code. When the user navigates away before that async
+    // postMessage call resolves, the underlying Java bridge object is already torn
+    // down. This is a bug/lifecycle quirk in Facebook's own injected script, not in
+    // our code — we have no bridge object by that name and can't catch or prevent
+    // it. Non-actionable noise, suppress it.
+    if (msg.includes("Error invoking postMessage: Java object is gone")) {
+      return null;
+    }
     return event;
   },
 });
