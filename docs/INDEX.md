@@ -9,6 +9,7 @@
 | Colección | Entradas | Índice |
 |-----------|----------|--------|
 | Auditorías e incidentes | 57+ | [`auditorias/INDEX.md`](./auditorias/INDEX.md) |
+| **iOS App Store (MOB-IOS)** | 2 | [`auditorias/mob-ios/INDEX.md`](./auditorias/mob-ios/INDEX.md) |
 | Tests y gates QA | 54+ | [`qa/INDEX.md`](./qa/INDEX.md) |
 
 ---
@@ -33,11 +34,16 @@
 | `00000000-PLAN-SUP-07 scale-infrastructure` | Escala infraestructura | [00000000-PLAN-SUP-07-scale-infrastructure.md](./plans/00000000-PLAN-SUP-07-scale-infrastructure.md) |
 | `00000000-PLAN-SUP-08 anti-warp-serialize-burst` | Anti-Warp: serializar burst | [00000000-PLAN-SUP-08-anti-warp-serialize-burst.md](./plans/00000000-PLAN-SUP-08-anti-warp-serialize-burst.md) |
 
-## Planes (`PLAN-MOB-IOS-*`)
+## Colección MOB-IOS — Lanzamiento iOS App Store
+
+Índice dedicado: [`auditorias/mob-ios/INDEX.md`](./auditorias/mob-ios/INDEX.md)
 
 | Código | Título | Documento |
 |--------|--------|-----------|
-| `20260627-PLAN-MOB-IOS-01 ios-app-store-launch` | Lanzamiento iOS App Store | [20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md](./plans/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) |
+| `20260627-PLAN-MOB-IOS-01 ios-app-store-launch` | Plan maestro (fases 0–6) | [20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md](./auditorias/mob-ios/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) |
+| `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` | Implementación Fase 2 v1.0 (reviewed — ajustes requeridos) | [20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md](./auditorias/mob-ios/20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md) |
+
+Legacy stub: [`plans/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md`](./plans/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) (renamed)
 
 ---
 

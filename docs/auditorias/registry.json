@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-06-25",
+  "updatedAt": "2026-06-27",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -989,6 +989,35 @@
       "path": "docs/auditorias/20260625-PLAN-DOC-04-audits-timeline-ui.md",
       "relatedCodes": [
         "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260627-PLAN-MOB-IOS-01 ios-app-store-launch",
+      "title": "Plan: iOS App Store launch",
+      "shortName": "ios-app-store-launch",
+      "type": "PLAN",
+      "family": "MOB-IOS",
+      "date": "2026-06-27",
+      "status": "open",
+      "path": "docs/auditorias/mob-ios/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md",
+      "relatedCodes": [
+        "20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1",
+        "20260619-FIX-MOB-PLAY-01 play-data-safety"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1",
+      "title": "Plan: iOS App Store Fase 2 implementation (code) v1.0",
+      "shortName": "fase2-implementation-plan-v1",
+      "type": "PLAN",
+      "family": "MOB-IOS",
+      "date": "2026-06-27",
+      "status": "open",
+      "path": "docs/auditorias/mob-ios/20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md",
+      "relatedCodes": [
+        "20260627-PLAN-MOB-IOS-01 ios-app-store-launch"
       ],
       "relatedTests": []
     }

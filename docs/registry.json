@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-06-25",
+  "updatedAt": "2026-06-27",
   "conventions": "./CONVENTIONS.md",
   "subRegistries": [
     {
@@ -109,12 +109,29 @@
       "shortName": "ios-app-store-launch",
       "type": "PLAN",
       "family": "MOB-IOS",
-      "collection": "plans",
+      "collection": "mob-ios",
       "date": "2026-06-27",
       "status": "open",
-      "path": "docs/plans/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md",
-      "relatedCodes": [],
-      "relatedAuditRegistry": false
+      "path": "docs/auditorias/mob-ios/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md",
+      "relatedCodes": [
+        "20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1"
+      ],
+      "relatedAuditRegistry": true
+    },
+    {
+      "code": "20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1",
+      "title": "Plan: iOS App Store Fase 2 implementation (code)",
+      "shortName": "fase2-implementation-plan-v1",
+      "type": "PLAN",
+      "family": "MOB-IOS",
+      "collection": "mob-ios",
+      "date": "2026-06-27",
+      "status": "open",
+      "path": "docs/auditorias/mob-ios/20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md",
+      "relatedCodes": [
+        "20260627-PLAN-MOB-IOS-01 ios-app-store-launch"
+      ],
+      "relatedAuditRegistry": true
     },
     {
       "code": "00000000-PLAN-SUP-08 anti-warp-serialize-burst",

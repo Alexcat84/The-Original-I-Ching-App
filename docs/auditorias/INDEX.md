@@ -142,6 +142,19 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 
 ---
 
+## Familia MOB-IOS — Lanzamiento iOS App Store
+
+Colección dedicada: [`mob-ios/INDEX.md`](./mob-ios/INDEX.md) (todos los documentos de este hilo viven ahí).
+
+| Código | Fecha | Título | Estado | Documento |
+|--------|-------|--------|--------|-----------|
+| `20260627-PLAN-MOB-IOS-01 ios-app-store-launch` | 2026-06-27 | Plan maestro lanzamiento iOS (fases 0–6) | open | [20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md](./mob-ios/20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) |
+| `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` | 2026-06-27 | Plan implementación Fase 2 §4.1–4.7 (**v1.0**, reviewed — ajustes requeridos) | open | [20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md](./mob-ios/20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md) |
+
+**Rama:** `feature/ios-app-store-launch` · **Play (referencia):** [`00000000-OPS-PLAY-01`](../00000000-OPS-PLAY-01-play-store-changelog.md)
+
+---
+
 ## Familia PRD / PERF / OBS / ANM / DOC / SEC / ARCH
 
 | Código | Familia | Título | Estado | Documento |
