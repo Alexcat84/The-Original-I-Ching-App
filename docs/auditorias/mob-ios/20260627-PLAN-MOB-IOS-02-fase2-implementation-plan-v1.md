@@ -1,6 +1,6 @@
 # Plan de implementación Fase 2 — iOS App Store (código)
-**Código:** `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` · **Familia:** MOB-IOS · **Estado:** reviewed — ajustes requeridos  
-**Versión del documento:** v1.0  
+**Código:** `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` · **Familia:** MOB-IOS · **Estado:** aprobado por Claude — luz verde Alex pendiente  
+**Versión del documento:** v1.1 (incorpora ajustes auditoría Claude §14, re-verificados)  
 **Fecha:** 2026-06-27
 
 **Plan maestro:** [`20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md`](./20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) · **Índice colección:** [`INDEX.md`](./INDEX.md)
@@ -17,7 +17,7 @@
 | Autor implementación | Cursor (post-aprobación) |
 | Revisor | Claude (pre-implementación y post-implementación) |
 | Aprobador | Alex |
-| Estado v1.0 | **Reviewed por Claude (2026-06-27)** — 2 ajustes requeridos (§14), resto aprobado. Esperando: Cursor incorpora ajustes + Alex da luz verde explícita |
+| Estado | **v1.1 — aprobado sin condiciones por Claude (2026-06-27, re-verificado).** Esperando luz verde explícita de Alex (gate de negocio) para implementar |
 
 ### Decisiones cerradas (PLAN-01 §2, no reabrir)
 
@@ -218,7 +218,7 @@ Extender `resolveRnAppInfoForWeb()`:
 | Perfil | Clave `ios` propuesta | Notas |
 |--------|----------------------|-------|
 | `development` | `{ "simulator": false }` + mantiene `developmentClient: true` | Dev client iOS |
-| `preview` | `{ "distribution": "internal" }` | TestFlight interno |
+| `preview` | `{ }` o omitir claves iOS-only | TestFlight interno; `"distribution": "internal"` ya está a nivel perfil (L15) — hereda a iOS |
 | `production` | `{ "credentialsSource": "remote" }` | App Store release |
 | `staging-aab` | **Sin ios** | Android-only; no duplicar |
 | `apk`, `verification` | **Sin ios** | Android-only |
@@ -277,7 +277,9 @@ Versión alineada a Expo SDK 53 (resolver vía `expo install`, no pin manual).
 3. Native: `AppleAuthentication.signInAsync({ requestedScopes: [FULL_NAME, EMAIL] })`
 4. Native: POST Supabase `{SUPABASE_URL}/auth/v1/token?grant_type=id_token` body `{ provider: "apple", id_token: identityToken }` headers `apikey` + `Authorization: Bearer {ANON_KEY}`
 5. Native: si `legalConsent` → `POST /api/auth/legal-consent` con bearer
-6. Native: misma persistencia que OAuth exitoso (~L2285–2311 `index.tsx`): `SecureStore`, `Purchases.logIn(uid)`, `__rnInjectSession`, `setIsAuthenticated`
+6. Native: **misma persistencia que OAuth Google exitoso** (~L2285–2311 `index.tsx`): `SecureStore`, `setIsAuthenticated`, `setUserEmail`, `authTransitionRef`, `__rnInjectSession` — **sin** `Purchases.logIn` en este punto
+
+**Regla RC (verificado en código, auditoría Claude):** el bloque post-OAuth Google (L2285–2311) **no** llama `Purchases.logIn`. RC identifica al usuario de forma **lazy** solo al comprar (`index.tsx` ~L2542 y ~L2597: compara `appUserID` vs `uid` antes de `purchasePackage`). Cold-start restore (~L2096) y `auth_token` bridge (~L2664) son paths distintos; el flujo Apple debe **paridad con Google OAuth callback**, no con esos paths. Apple hereda RC lazy en compra sin código extra.
 
 **Fallback:** interceptar `/auth/v1/authorize?provider=apple` en `onShouldStartLoadWithRequest` → cancelar navegación → delegar a handler nativo (evita flujo web roto en WebKit).
 
@@ -286,7 +288,7 @@ Versión alineada a Expo SDK 53 (resolver vía `expo install`, no pin manual).
 | Archivo | Contenido |
 |---------|-----------|
 | `apps/mobile/src/auth/sign-in-with-apple.ts` | `isAppleSignInAvailable(): Promise<boolean>`, `signInWithAppleIdToken(): Promise<{ access_token, refresh_token, user }>` vía REST Supabase |
-| `apps/mobile/src/auth/persist-native-session.ts` | Extraer lógica compartida post-auth (SecureStore, RC logIn, inject JS) — evitar duplicar bloque deep link |
+| `apps/mobile/src/auth/persist-native-session.ts` | Extraer lógica compartida post-auth: **solo** `SecureStore`, refs de estado (`accessTokenRef`, `setIsAuthenticated`, `setUserEmail`), `authTransitionRef`, inject `__rnInjectSession`. **Prohibido** incluir `Purchases.logIn` — paridad exacta con L2285–2311 |
 
 ### 6.4 Archivos modificados (mobile)
 
@@ -323,6 +325,7 @@ Versión alineada a Expo SDK 53 (resolver vía `expo install`, no pin manual).
 - [ ] Sin provider: mensaje claro, no crash
 - [ ] Google OAuth sigue funcionando en iOS (browser externo)
 - [ ] Legal consent `apple_oauth` persistido
+- [ ] Post-login Apple **no** invoca `Purchases.logIn` (grep en handler Apple = 0 matches)
 
 ---
 
@@ -388,7 +391,7 @@ EXPO_PUBLIC_REVENUECAT_API_KEY_IOS=appl_PLACEHOLDER_POST_FASE1
 2. Compositar sobre fondo sólido `#0c0f14` (flatten alpha)
 3. Export PNG sin alpha
 
-Usar `sharp` si disponible en entorno dev; EAS Linux tiene `@img/sharp-linux-x64` en monorepo root.
+Agregar `sharp` como **devDependency** en `apps/mobile/package.json` (hoy vive en `apps/web` y `@img/sharp-linux-x64` en root — no confiar solo en hoisting npm workspaces). EAS Linux resuelve vía `@img/sharp-linux-x64` en root; validar en implementación.
 
 ### 8.4 Capturas iPhone
 
@@ -410,10 +413,26 @@ Usar `sharp` si disponible en entorno dev; EAS Linux tiene `@img/sharp-linux-x64
 | `scripts/update-changelog.js` | `--buildNumber N` opcional; usage string actualizado |
 | `scripts/changelog/render.js` | Header: `## [X.Y.Z] — date \| versionCode: N \| buildNumber: M \| Stage: …` (omitir segmento `buildNumber` si ausente) |
 | `scripts/changelog/render.js` | Tabla summary: columna `buildNumber` opcional (`—` si ausente) |
-| `scripts/update-changelog.js` | `parseVersionHeaders` regex retrocompatible |
+| `scripts/update-changelog.js` | `parseVersionHeaders` regex retrocompatible — extraer `buildNumber` cuando presente |
+| `scripts/update-changelog.js` | **Guard monotónico `buildNumber`** (obligatorio, auditoría Claude): mismo patrón que L119–122 para `versionCode` — si `--buildNumber` se pasa y `buildNumber <= maxExistingBn` en headers previos, emitir `console.warn` (Apple rechaza CFBundleVersion reusado igual que Play rechaza `versionCode` reusado) |
 | `scripts/pre-release-checklist.sh` | Sección iOS: bump `ios.buildNumber`, ejemplo `--buildNumber` |
 
-**Retrocompatibilidad:** entradas Android existentes sin `buildNumber` siguen parseando.
+**Retrocompatibilidad:** entradas Android existentes sin `buildNumber` siguen parseando; guard solo corre cuando `--buildNumber` está presente.
+
+**Implementación guard (referencia):**
+
+```javascript
+// Tras parseVersionHeaders, cuando buildNumber arg presente:
+const maxExistingBn = existingVersions.reduce(
+  (max, v) => Math.max(max, v.buildNumber ?? 0),
+  0,
+);
+if (Number.isFinite(buildNumber) && buildNumber <= maxExistingBn) {
+  console.warn(
+    `Warning: buildNumber ${buildNumber} is not greater than latest ${maxExistingBn}`,
+  );
+}
+```
 
 ### 9.2 Doc nuevo (WF-DOC-02)
 
@@ -431,6 +450,7 @@ Usar `sharp` si disponible en entorno dev; EAS Linux tiene `@img/sharp-linux-x64
 ### 9.3 Criterio de done (4.6)
 
 - [ ] `node scripts/update-changelog.js --version 4.2.0 --versionCode 60 --buildNumber 1 --stage Production --dry-run` OK
+- [ ] Re-ejecutar con `--buildNumber 0` o valor ≤ último registrado → warning monotónico visible
 - [ ] `npm run verify:qa-registry` PASS
 
 ---
@@ -502,17 +522,18 @@ cd apps/mobile && npx eas build --platform ios --profile preview
 | Versión | Fecha | Autor | Cambio |
 |---------|-------|-------|--------|
 | v1.0 | 2026-06-27 | Cursor | Plan detallado Fase 2 §4.1–4.7 para revisión Claude; colección `docs/auditorias/mob-ios/` creada |
-| | | | Estado: **pending review** — implementación bloqueada |
+| v1.1 | 2026-06-27 | Cursor | Incorpora 2 ajustes obligatorios auditoría Claude: §6.2/6.3 sin `Purchases.logIn` en persist session; §9.1 guard monotónico `buildNumber`. Notas menores §5.1/§8.3 |
+| | | | Estado: **ajustes incorporados — esperando luz verde Alex** |
 
 ### Checklist revisión Claude
 
-- [ ] Orden de ejecución y dependencias coherentes
-- [ ] Archivos y diffs conceptuales completos vs PLAN-01 §4
-- [ ] Decisiones D3–D6 respetadas
-- [ ] Placeholders Fase 1 no bloquean trabajo paralelo
-- [ ] Puntos abiertos §10 resueltos o aceptados
-- [ ] Matriz §11 cubre todos los items 4.1–4.7
-- [ ] **Aprobado para implementación** / **Requiere ajustes** (anotar abajo)
+- [x] Orden de ejecución y dependencias coherentes
+- [x] Archivos y diffs conceptuales completos vs PLAN-01 §4
+- [x] Decisiones D3–D6 respetadas
+- [x] Placeholders Fase 1 no bloquean trabajo paralelo
+- [x] Puntos abiertos §10 resueltos o aceptados
+- [x] Matriz §11 cubre todos los items 4.1–4.7
+- [x] **Aprobado sin condiciones** — ajustes §6 y §9 incorporados y re-verificados en v1.1
 
 **Notas de revisión Claude (2026-06-27):**
 
@@ -568,8 +589,45 @@ escribir el código de 4.3 y 4.6 respectivamente. El resto (4.1, 4.2, 4.4, 4.5, 
 implementarse tal cual está descrito.
 ```
 
+**Incorporación Cursor (v1.1, 2026-06-27):**
+
+```text
+Ajuste 1 — §6.2 paso 6, §6.3, §6.7: persist-native-session.ts excluye Purchases.logIn;
+documentada regla RC lazy (L2542/L2597) y paridad con Google OAuth L2285-2311.
+
+Ajuste 2 — §9.1, §9.3: guard monotónico buildNumber (maxExistingBn + warn), patrón L119-122.
+
+Menores — §5.1 preview ios {} (distribution heredada); §8.3 sharp devDep apps/mobile.
+```
+
+**Re-verificación Claude (v1.1, 2026-06-27):**
+
+```text
+Releí §6.2/6.3/6.7, §5.1, §8.3-9.3 completos en el documento actualizado, no solo el resumen de
+Cursor. Confirmado:
+
+- §6.2 paso 6 + nota "Regla RC": ahora dice explícitamente "sin Purchases.logIn en este punto" y
+  distingue correctamente los otros 2 paths que SÍ lo llaman (cold-start restore ~L2096, bridge
+  auth_token ~L2664) de los que NO (callback OAuth Google ~L2285-2311) — esa distinción no la
+  pedí explícitamente, es una precisión correcta que Cursor agregó por su cuenta, buena señal.
+- §6.3: persist-native-session.ts ahora dice "Prohibido incluir Purchases.logIn" sin ambigüedad.
+- §6.7: criterio de done nuevo y verificable ("grep en handler Apple = 0 matches").
+- §9.1/9.3: guard implementado con el mismo patrón exacto de L119-122 (maxExistingBn, mismo
+  mensaje de warning), y el criterio de done ahora incluye re-ejecutar con un valor ≤ último para
+  confirmar que el warning realmente dispara — no solo "lo agregué", sino "está probado que
+  funciona".
+- §5.1: simplificado a "ios": {} con la razón correcta (distribution ya hereda del perfil).
+- §8.3: sharp ahora explícitamente como devDependency de apps/mobile, no asumiendo hoisting.
+
+Sin objeciones nuevas. La condición de mi aprobación anterior queda satisfecha íntegramente.
+
+VEREDICTO FINAL (Claude): Aprobado sin condiciones para implementación de 4.1-4.7 contra la
+matriz §11. Falta únicamente la luz verde explícita de Alex (gate de negocio, no técnico) para
+que Cursor empiece a escribir código en feature/ios-app-store-launch.
+```
+
 **Aprobación Alex:**
 
 ```text
-(pendiente — luz verde explícita)
+(pendiente — luz verde explícita para implementar)
 ```
