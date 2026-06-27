@@ -1,6 +1,6 @@
 # Plan de implementación Fase 2 — iOS App Store (código)
-**Código:** `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` · **Familia:** MOB-IOS · **Estado:** implementado — fixes typecheck aplicados, pendiente re-verificación Claude  
-**Versión del documento:** v1.3 (fixes post-auditoría §14 incorporados)  
+**Código:** `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` · **Familia:** MOB-IOS · **Estado:** aprobado técnicamente por Claude — pendiente validación Alex (dispositivo/TestFlight)  
+**Versión del documento:** v1.3 (fixes post-auditoría §14 incorporados y re-verificados independientemente)  
 **Fecha:** 2026-06-27
 
 **Plan maestro:** [`20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md`](./20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) · **Índice colección:** [`INDEX.md`](./INDEX.md)
@@ -17,7 +17,7 @@
 | Autor implementación | Cursor (post-aprobación) |
 | Revisor | Claude (pre-implementación y post-implementación) |
 | Aprobador | Alex |
-| Estado | **v1.3 — fixes typecheck post-auditoría aplicados (2026-06-27).** Pendiente re-verificación Claude antes de merge a `staging` |
+| Estado | **v1.3 — aprobado técnicamente por Claude, re-verificado independientemente (2026-06-27).** Pendiente solo validación Alex en dispositivo/TestFlight (Fase 1 humana) antes de merge a `staging` |
 
 ### Decisiones cerradas (PLAN-01 §2, no reabrir)
 
@@ -638,10 +638,41 @@ independientemente, no solo leído. **2 fixes mecánicos requeridos antes de mer
 esos 2 fixes, sin objeciones para merge a `staging` (sigue pendiente Fase 1 humana para probar
 end-to-end, eso no cambia).
 
+**Re-verificación Claude (v1.3, 2026-06-27):**
+
+```text
+No confié en el reporte — re-ejecuté todo yo mismo contra el diff real del commit dc63112:
+
+- apps/mobile/tsconfig.json: confirmado "moduleSuffixes": [".ios", ".android", ""] agregado.
+- apps/mobile/app/index.tsx:2062-2065: confirmado supabaseUrl/supabaseAnonKey con "?? \"\"" en
+  el call site exacto que fallaba, sin tocar las constantes compartidas (blast radius mínimo,
+  como recomendé).
+- apps/mobile/package.json: confirmado "typecheck": "tsc --noEmit" agregado.
+- `npx tsc --noEmit -p apps/mobile/tsconfig.json` directo (no el script) → exit 0, 0 errores.
+- `cd apps/mobile && npm run typecheck` → exit 0, sin output (igual a lo reportado).
+- `npx tsc --noEmit -p apps/web/tsconfig.json` → exit 0 (confirmando que el fix no rompió web).
+- `verify:qa-registry` → PASS (20 docs) · `i18n:audit` → PASS.
+- Intenté `npm run typecheck` en la raíz (turbo): falla, pero en 3 paquetes que este PR NO
+  toca en absoluto (database-types, ui, auth-backend — confirmé con `git diff --stat` que el
+  diff completo de esta rama no incluye ni un archivo de esos 3 paquetes). Es la misma
+  flakiness de Windows/turbo que Cursor ya había señalado, preexistente y fuera de alcance —
+  no es una regresión de este PR ni bloquea este merge.
+
+Sin objeciones nuevas. Los 2 fixes están completos, verificados independientemente, y no
+introdujeron ninguna regresión en apps/web ni en los gates de registro/i18n.
+```
+
+VEREDICTO FINAL (Claude): Aprobado para merge a `staging` por el lado técnico. La arquitectura
+de los 7 items (§4.1-4.7), las 2 correcciones de la ronda de revisión, y los 2 fixes de
+typecheck de la auditoría post-implementación están todos verificados independientemente, no
+solo leídos. Lo único pendiente es la validación de Alex (gate de negocio/dispositivo: EAS
+preview, TestFlight, Sign in with Apple end-to-end — todo eso requiere la Fase 1 humana que
+nunca fue parte del alcance de este PR).
+
 **Aprobación Alex:**
 
 ```text
-(pendiente — re-verificación Claude tras fixes v1.3; validación dispositivo / TestFlight tras Fase 1 credenciales)
+(pendiente — validación dispositivo / TestFlight tras Fase 1 credenciales)
 ```
 
 ### Checklist revisión Claude

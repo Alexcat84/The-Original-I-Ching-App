@@ -15,7 +15,7 @@ PLAN-MOB-IOS-01 (maestro) → PLAN-MOB-IOS-02 v1.1 (ajustes Claude incorporados)
   → implementación Cursor (Fase 2 §4.1–4.7) → auditoría post-implementación
 ```
 
-**Regla:** sin merge a `staging`/`main` hasta re-verificación Claude post-fixes v1.3 y validación Alex (EAS preview + Sign in with Apple E2E tras deploy web staging).
+**Regla:** aprobado técnicamente por Claude (v1.3, re-verificado independientemente). Sin merge a `staging`/`main` hasta validación Alex (EAS preview + Sign in with Apple E2E tras deploy web staging) — ese es el único gate restante.
 
 ---
 
@@ -24,7 +24,7 @@ PLAN-MOB-IOS-01 (maestro) → PLAN-MOB-IOS-02 v1.1 (ajustes Claude incorporados)
 | Código | Versión | Título | Estado | Documento |
 |--------|---------|--------|--------|-----------|
 | `20260627-PLAN-MOB-IOS-01 ios-app-store-launch` | — | Plan maestro lanzamiento iOS (fases 0–6) | open | [20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md](./20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) |
-| `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` | **v1.3** | Plan de implementación Fase 2 (§4.1–4.7) | **fixes typecheck aplicados — re-verificación Claude pendiente** | [20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md](./20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md) |
+| `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` | **v1.3** | Plan de implementación Fase 2 (§4.1–4.7) | **aprobado técnicamente — pendiente validación Alex (dispositivo/TestFlight)** | [20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md](./20260627-PLAN-MOB-IOS-02-fase2-implementation-plan-v1.md) |
 | `00000000-OPS-IOS-01 app-store-changelog` | — | Ops: App Store What's New template | reference | [00000000-OPS-IOS-01-app-store-changelog.md](../../00000000-OPS-IOS-01-app-store-changelog.md) |
 
 ---
