@@ -1,6 +1,6 @@
 # Plan de implementación Fase 2 — iOS App Store (código)
-**Código:** `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` · **Familia:** MOB-IOS · **Estado:** aprobado por Claude — luz verde Alex pendiente  
-**Versión del documento:** v1.1 (incorpora ajustes auditoría Claude §14, re-verificados)  
+**Código:** `20260627-PLAN-MOB-IOS-02 fase2-implementation-plan-v1` · **Familia:** MOB-IOS · **Estado:** implementado — 2 fixes typecheck requeridos antes de merge  
+**Versión del documento:** v1.2 (implementación completada §4.1–4.7, auditoría post-implementación Claude)  
 **Fecha:** 2026-06-27
 
 **Plan maestro:** [`20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md`](./20260627-PLAN-MOB-IOS-01-ios-app-store-launch.md) · **Índice colección:** [`INDEX.md`](./INDEX.md)
@@ -17,7 +17,7 @@
 | Autor implementación | Cursor (post-aprobación) |
 | Revisor | Claude (pre-implementación y post-implementación) |
 | Aprobador | Alex |
-| Estado | **v1.1 — aprobado sin condiciones por Claude (2026-06-27, re-verificado).** Esperando luz verde explícita de Alex (gate de negocio) para implementar |
+| Estado | **v1.2 — implementado en `feature/ios-app-store-launch` (2026-06-27).** Auditoría post-implementación Claude: arquitectura y ajustes previos correctos; 2 fixes mecánicos de typecheck requeridos antes de merge (ver §14) |
 
 ### Decisiones cerradas (PLAN-01 §2, no reabrir)
 
@@ -554,10 +554,84 @@ Rama: `feature/ios-app-store-launch`. Items §4.1–4.7 implementados según mat
 
 **Pendiente humano / Fase 1+3+4:** credenciales Apple Developer, ASC API key real, Supabase Apple provider, `EXPO_PUBLIC_REVENUECAT_API_KEY_IOS`, deploy web staging, `eas build --platform ios --profile preview`, E2E Sign in with Apple.
 
+### Auditoría post-implementación Claude (2026-06-27)
+
+Verifiqué el commit `8e2bafb` archivo por archivo contra la matriz §11 (no solo la tabla de
+verificación de Cursor). Confirmado independientemente, no solo leído:
+
+- `persist-native-session.ts`: leído completo — **cero** referencia a `Purchases.logIn`, exacto
+  a lo requerido. `sign-in-with-apple.ts`, bridge `open_apple_auth` (`index.tsx:2827`), fallback
+  `onShouldStartLoadWithRequest` para `provider=apple` (`:3201`), `useIntegrityCheck.ios.ts` con
+  shape idéntico al `.android.ts` (mismo objeto `{ currentTokenRef, currentTraceIdRef,
+  tokenState, refreshToken }`, así que Metro resuelve ambos sin romper el contrato del hook),
+  bridge `integrity_token_request` con no-op en iOS (`:2976`) — todos correctos.
+- Re-ejecuté yo mismo (no solo leí el reporte): `update-changelog.js --buildNumber 0` → emite
+  el warning monotónico correctamente; `verify:qa-registry` → PASS (20 docs); `i18n:audit` →
+  PASS; tests `legal-consent`/`post-auth-legal` → 13/13 pass; ícono generado inspeccionado con
+  `sharp` directamente → 1024×1024, `hasAlpha: false`, 3 canales — exacto.
+- Legal consent: `apple_oauth` agregado correctamente a `legal-consent.ts`, la ruta API, y el
+  test que de verdad enumera el union (`post-auth-legal.test.ts`); confirmé que
+  `legal-consent-pending-meta.test.ts` no necesitaba el cambio (solo testea el caso
+  `google_oauth` puntual, no una lista exhaustiva). El flujo de Apple en `onApple()` (login
+  web) reusa el mismo patrón que `onGoogle()` — consentimiento siempre se resuelve post-auth en
+  `/auth/complete-legal`, que confirmé es agnóstico de provider (sin ninguna referencia a
+  `google_oauth`/`apple_oauth` en `post-auth-legal.ts` ni en la página `complete-legal`) — el
+  parámetro `legalConsent` que nunca se popula desde el botón web no es un bug, es plumbing
+  consistente con cómo Google ya funciona.
+
+**2 ERRORES REALES encontrados, no reportados en la tabla de verificación de Cursor** — la fila
+"`npm run typecheck` (turbo root) — Intermitente" oculta el problema real: corrí
+`npx tsc --noEmit -p apps/mobile/tsconfig.json` directamente (el comando que de verdad ejercita
+este paquete) y NO pasa:
+
+```text
+apps/mobile/app/index.tsx(94,59): error TS2307: Cannot find module '@/src/hooks/useIntegrityCheck'
+apps/mobile/app/index.tsx(2063,11): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+apps/mobile/app/index.tsx(2064,11): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+```
+
+Causa raíz de ambos:
+
+1. **Resolución de módulo `.ios.ts`/`.android.ts`** — `apps/mobile/tsconfig.json` no tiene
+   `moduleSuffixes`. Metro (el bundler) sí sabe resolver `useIntegrityCheck.ios.ts`/`.android.ts`
+   en runtime/build — por eso esto NO rompe el build de EAS — pero `tsc` (el compilador, usado
+   para typecheck) no tiene ese conocimiento sin configurarlo explícitamente. Este es el
+   **primer par** de archivos `.ios.ts`/`.android.ts` en todo el repo (confirmé con `find` — no
+   hay precedente), así que nadie había topado este gap antes. Fix: agregar
+   `"moduleSuffixes": [".ios", ".android", ""]` a `apps/mobile/tsconfig.json`.
+2. **`SUPABASE_URL`/`SUPABASE_ANON_KEY` sin fallback** (`index.tsx:171-172`:
+   `process.env.EXPO_PUBLIC_SUPABASE_URL` sin `?? ''`) — son `string | undefined` desde siempre,
+   pero ningún call site anterior los pasaba a una función con parámetro tipado estrictamente
+   `string`. `signInWithAppleSupabase({ supabaseUrl: string; supabaseAnonKey: string })` es el
+   primer call site que lo expone. Fix más simple y consistente con el patrón ya usado para
+   `RC_API_KEY` (`?? ''`): en la llamada (`index.tsx:2062-2065`), usar
+   `supabaseUrl: SUPABASE_URL ?? ''` / `supabaseAnonKey: SUPABASE_ANON_KEY ?? ''` — no tocar las
+   constantes compartidas (usadas en todo el archivo) para minimizar el blast radius.
+
+**Por qué esto no se detectó antes de mi auditoría:** `apps/mobile/package.json` no tiene script
+`"typecheck"` — confirmé con `grep` que solo aparece en `package.json` raíz (`turbo run
+typecheck`) y `turbo.json`, nunca en `apps/mobile/package.json`. Turbo solo corre `typecheck` en
+paquetes que lo definen, así que **`apps/mobile` nunca fue parte de la verificación "paquetes
+individuales pasan"** — ese paquete específico no tiene cobertura de typecheck en el pipeline
+del monorepo hoy. No es un problema introducido por este PR, pero sí explica cómo 2 errores
+reales pasaron la revisión sin que la tabla de verificación los reflejara con precisión.
+
+**Recomendación (no bloqueante para este PR, pero vale la pena):** agregar
+`"typecheck": "tsc --noEmit"` a `apps/mobile/package.json` para que el gate exista hacia
+adelante — evita que esto se repita.
+
+VEREDICTO AUDITORÍA POST-IMPLEMENTACIÓN: La arquitectura, los dos ajustes obligatorios de la
+ronda anterior, y el resto de items §4.1-4.7 están correctamente implementados — verificado
+independientemente, no solo leído. **2 fixes mecánicos requeridos antes de merge** (moduleSuffixes
++ `?? ''` en las 2 líneas de `signInWithAppleSupabase`), ambos triviales y de bajo riesgo. Tras
+esos 2 fixes, sin objeciones para merge a `staging` (sigue pendiente Fase 1 humana para probar
+end-to-end, eso no cambia).
+
 **Aprobación Alex:**
 
 ```text
-(pendiente — validación en dispositivo / TestFlight tras Fase 1 credenciales)
+(pendiente — validación en dispositivo / TestFlight tras Fase 1 credenciales; y tras Cursor
+incorporar los 2 fixes de typecheck de la auditoría post-implementación Claude arriba)
 ```
 
 ### Checklist revisión Claude
