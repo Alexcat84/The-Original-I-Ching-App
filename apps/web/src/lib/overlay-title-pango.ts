@@ -24,61 +24,44 @@
  * font file is still registered explicitly via `GlobalFonts.registerFromPath` (no
  * fontconfig/system-font fallback): same "no environment-dependent font resolution"
  * guarantee as the first version, just on a more capable renderer.
+ *
+ * Font paths: overlay-title-font-paths.ts (process.cwd() candidates — safe on Vercel).
  */
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { GlobalFonts, createCanvas, type SKRSContext2D } from "@napi-rs/canvas";
-import { FONTSOURCE_WOFF_PATHS } from "./fontsource-woff-paths";
+import {
+  CJK_FAMILY,
+  LATIN_BASIC_FAMILY,
+  LATIN_EXT_FAMILY,
+  assertOverlayTitleFontsRegistered,
+  latinFontKeyForChar,
+  resolveOverlayTitleFontPaths,
+  type OverlayTitleFontPaths,
+} from "./overlay-title-font-paths";
 
 export const OVERLAY_ARROW = "→";
 
-/**
- * Fontsource's "latin-ext" file only covers U+0100+ (verified via fontkit) — basic
- * letters/digits/punctuation and Latin-1 Supplement (â, î, û, ü, Î, …) live in the
- * separate "latin" (non-ext) file. A romanized name almost always needs both files in
- * the same word (e.g. "Khwăn": K/h/w/n from one file, ă from the other) — there is no
- * single Latin font file that covers everything used in the hexagram name data.
- */
-const LATIN_BASIC_FONT_FILE = FONTSOURCE_WOFF_PATHS.notoSerifLatin400;
-const LATIN_EXT_FONT_FILE = FONTSOURCE_WOFF_PATHS.notoSerifLatinExt400;
-/**
- * @fontsource/noto-serif-tc's pre-built "chinese-traditional-700" subset is missing 3
- * real characters used in production data (夬 #43, 姤 #44, 遯 Zhou Yi #33 — verified via
- * fontkit). This is a custom subset containing exactly the hanzi the real hexagram data
- * uses, fetched from Google's full upstream Noto Serif TC (which does have them) via
- * apps/web/scripts/generate-cjk-title-font-subset.mjs — re-run that script if a
- * translator's chineseName/name ever adds a character outside this set.
- */
-const CJK_FONT_FILE = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "..",
-  "..",
-  "fonts",
-  "noto-serif-tc-hexagram-titles.woff2",
-);
-
-const LATIN_BASIC_FAMILY = "IChingOverlayLatinBasic";
-const LATIN_EXT_FAMILY = "IChingOverlayLatinExt";
-const CJK_FAMILY = "IChingOverlayCJK";
+export {
+  CJK_FAMILY,
+  LATIN_BASIC_FAMILY,
+  LATIN_EXT_FAMILY,
+  latinFontKeyForChar,
+  resolveOverlayTitleFontPaths,
+  type OverlayTitleFontPaths,
+} from "./overlay-title-font-paths";
 
 let fontsRegistered = false;
-/** Registers every font file this module uses, once per process, by explicit path —
- * never relies on fontconfig/system-font discovery (see module doc comment). */
-function ensureFontsRegistered(): void {
-  if (fontsRegistered) return;
-  GlobalFonts.registerFromPath(LATIN_BASIC_FONT_FILE, LATIN_BASIC_FAMILY);
-  GlobalFonts.registerFromPath(LATIN_EXT_FONT_FILE, LATIN_EXT_FAMILY);
-  GlobalFonts.registerFromPath(CJK_FONT_FILE, CJK_FAMILY);
+let registeredPaths: OverlayTitleFontPaths | undefined;
+
+async function ensureFontsRegistered(): Promise<void> {
+  if (fontsRegistered && registeredPaths) return;
+  const paths = await resolveOverlayTitleFontPaths();
+  assertOverlayTitleFontsRegistered(paths);
+  registeredPaths = paths;
   fontsRegistered = true;
 }
 
-/** U+0000-U+00FF -> the "latin" file; U+0100+ -> "latin-ext" (exact boundary verified via fontkit). */
-function fontFileForLatinChar(ch: string): string {
-  return ch.codePointAt(0)! <= 0xff ? LATIN_BASIC_FONT_FILE : LATIN_EXT_FONT_FILE;
-}
-
 function familyForLatinChar(ch: string): string {
-  return ch.codePointAt(0)! <= 0xff ? LATIN_BASIC_FAMILY : LATIN_EXT_FAMILY;
+  return latinFontKeyForChar(ch) === "latinBasic" ? LATIN_BASIC_FAMILY : LATIN_EXT_FAMILY;
 }
 
 /** Splits a Latin run into the minimal number of contiguous chunks that each map to one font family. */
@@ -237,7 +220,7 @@ export type OverlayTitleLayerParams = {
 
 /** Renders one or more title lines to a single transparent PNG sized `width`x`height`. */
 export async function renderOverlayTitleLayer(params: OverlayTitleLayerParams): Promise<Buffer> {
-  ensureFontsRegistered();
+  await ensureFontsRegistered();
   const canvas = createCanvas(params.width, params.height);
   const ctx = canvas.getContext("2d");
   for (const line of params.lines) {
@@ -256,14 +239,3 @@ export function renderArrowGlyph(sizePx: number, colorHex: string): Buffer {
   drawArrow(ctx, w / 2, h / 2, sizePx, colorHex, undefined, 0);
   return canvas.toBuffer("image/png");
 }
-
-/** Exposed for the glyph-coverage test: every font file this module can render with, and
- * the exact selection rule the renderer itself uses (so the test can't drift from reality).
- * No "symbol" entry — the arrow is a drawn path, not a font glyph (see module doc comment). */
-export const OVERLAY_TITLE_FONT_FILES = {
-  latinBasic: LATIN_BASIC_FONT_FILE,
-  latinExt: LATIN_EXT_FONT_FILE,
-  cjk: CJK_FONT_FILE,
-} as const;
-
-export { fontFileForLatinChar };

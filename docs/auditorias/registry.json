@@ -885,7 +885,8 @@
         "TS-WEB-OVR-002 overlay-title-layout",
         "TS-WEB-OVR-003 sumi-fallback-glyphs",
         "TS-WEB-OVR-004 overlay-title-pango",
-        "TS-WEB-OVR-005 overlay-title-pango-exhaustive"
+        "TS-WEB-OVR-005 overlay-title-pango-exhaustive",
+        "TS-WEB-OVR-006 overlay-title-pango-e2e-samples"
       ]
     },
     {

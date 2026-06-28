@@ -2,7 +2,7 @@
 **Código:** `20260627-AUD-IMG-OVR-03 khwan-resvg-regression` · **Familia:** IMG-OVR · **Estado:** closed
 
 - **Fecha:** 2026-06-27
-- **Estado:** ✅ **Cerrada — fix implementado y verificado (Opción B — rama `fix/overlay-pango-title-render`)**: el título (CJK + EN + flecha) ya no se renderiza como `<text>` SVG vía `resvg-js`; se renderiza por separado con Pango (`sharp`) y se embebe como `<image>` PNG. Verificación exhaustiva completa: 8064 renders reales (64×63 pares × 2 traductores) en verde — ver §9. §10 documenta un hallazgo nuevo y separado (gap de cobertura CJK pre-existente, no corregido en este cierre).
+- **Estado:** ✅ **Cerrada — fix implementado y verificado (Opción B → revisión 2 `@napi-rs/canvas`/Skia)**: el título (CJK + EN + flecha) ya no se renderiza como `<text>` SVG vía `resvg-js`; se pre-renderiza a PNG transparente y se embebe como `<image>`. Motor final: `@napi-rs/canvas` (baseline compartido, `strokeText` nativo). Verificación: `TS-WEB-OVR-004`/`005` (8064 renders) + `TS-WEB-OVR-006` (4 muestras e2e Together). §10 documenta gap CJK pre-existente (corregido). §11 changelog incluye migración Pango→Canvas post-cierre visual. **Follow-up §12 (2026-06-28):** regresión staging Vercel «solo flechas» — rutas de fuente vía `import.meta.url`/`REPO_ROOT` rotas tras bundling; remedio en `overlay-title-font-paths.ts` + `TS-WEB-OVR-004` v1.1.0.
 - **Relacionado:** [`20260624-AUD-IMG-OVR-01-legge-diacritics.md`](./20260624-AUD-IMG-OVR-01-legge-diacritics.md), [`20260625-AUD-IMG-OVR-02-mutation-title-layout.md`](./20260625-AUD-IMG-OVR-02-mutation-title-layout.md)
 
 ---
@@ -97,16 +97,27 @@ apps/web/next.config.mjs                  # outputFileTracingIncludes (fonts →
 
 ---
 
-## 9. Implementación (Opción B, 2026-06-27, rama `fix/overlay-pango-title-render`)
+## 9. Implementación (Opción B, 2026-06-27)
 
-### 9.1 Qué cambió
+### 9.0 Historial del renderer (dos revisiones)
+
+| Revisión | Commit / fecha | Motor | Motivo del cambio |
+|----------|----------------|-------|-------------------|
+| **1** | `dfaf9c6` / 2026-06-27 | Pango vía `sharp({ text })` | Elimina `<text>` en SVG/resvg; ancho real por segmento |
+| **1b** | `4132614` / 2026-06-28 | Pango + dilatación alpha | Outline borroso con hack de 8 offsets — reemplazado por halo alpha-dilatado |
+| **2 (vigente)** | `c028668` / 2026-06-28 | **`@napi-rs/canvas` (Skia)** | Revisión visual en imagen Together real: segmentos Pango con alturas distintas desalineaban diacríticos; outline alpha seguía borroso. Canvas: `measureText` + baseline compartido + `strokeText` nativo |
+
+El módulo sigue llamándose `overlay-title-pango.ts` por continuidad del fix; el código **ya no usa Pango**.
+
+### 9.1 Qué cambió (revisión 2 vigente)
 
 | Archivo | Cambio |
 |---------|--------|
-| `apps/web/src/lib/overlay-title-pango.ts` (**nuevo**) | Renderiza el título completo (CJK + EN + flecha) a un PNG transparente vía Pango (`sharp({ text: {...} })`), no como `<text>` SVG. Cada segmento (nombre, flecha) se renderiza por separado con su propio archivo de fuente explícito y se posiciona con el **ancho medido real** (no estimado) — elimina de raíz tanto el tofu como el mal cálculo de espaciado de la flecha. |
-| `apps/web/src/lib/sumi-hexagram-art.ts` | `buildSumiHexagramOverlaySvgDataUrl` ahora es `async`; ya no emite `<text>` para el título — lo reemplaza por `<image href="data:image/png;base64,...">` con el PNG de Pango. `resvg` solo ve formas vectoriales puras (barras del hexagrama + filtro de brillo), que siempre renderizó bien. `buildSumiHexagramSvgDataUrl` (el fallback completo sin foto IA) **no se tocó** — se sirve como SVG crudo al navegador en su único camino de producción real, que usa el motor de fuentes del navegador, no `resvg`. |
-| `apps/web/src/lib/image-provider.ts` | 6 call sites actualizados con `await` por el cambio a async. |
-| `apps/web/src/lib/fontsource-woff-paths.ts`, `apps/web/next.config.mjs` | Nuevo `notoSerifLatin400` (ver 9.2) trazado para Vercel. |
+| `apps/web/src/lib/overlay-title-pango.ts` | Renderiza el título (CJK + EN + flecha) a PNG transparente vía **`@napi-rs/canvas` (Skia)**. Fuentes registradas con `GlobalFonts.registerFromPath` (sin fontconfig). Flecha = `<path>` vectorial rasterizado, no glifo de fuente. Outline = `strokeText` nativo. |
+| `apps/web/src/lib/sumi-hexagram-art.ts` | `buildSumiHexagramOverlaySvgDataUrl` es `async`; título = `<image href="data:image/png;base64,...">`. `resvg` solo rasteriza barras hexagrama + brillo. |
+| `apps/web/src/lib/image-provider.ts` | Call sites con `await` por async overlay. |
+| `apps/web/next.config.mjs` | `@napi-rs/canvas` en `serverExternalPackages`. |
+| `apps/web/fonts/noto-serif-tc-hexagram-titles.woff2` + `generate-cjk-title-font-subset.mjs` | Subset CJK propio (72 hanzi reales); ver §10. |
 
 ### 9.2 Dos hallazgos adicionales durante la implementación (ambos corregidos, ninguno era obvio de antemano)
 
@@ -116,11 +127,12 @@ apps/web/next.config.mjs                  # outputFileTracingIncludes (fonts →
 
 ### 9.3 Verificación
 
-- `TS-WEB-OVR-004` (corre por defecto): cobertura exhaustiva de glifos vía `fontkit` (cada carácter real de los 3 traductores × cada archivo de fuente que el renderer realmente usa) + render real (`buildSumiHexagramOverlaySvgDataUrl`) de las 64 nombres de cada traductor en solitario, los pares históricamente rotos (`#3↔#8`, `#6↔#10`), un par por cada uno de los 64 hexagramas Legge, y los pares de nombres más largos. **17/17 verde.**
-- `TS-WEB-OVR-004` exhaustivo (`apps/web/vitest.exhaustive.config.ts`, **no** en el `npm test` por defecto — corre como paso explícito en `.github/workflows/ci.yml`, deliberadamente NO detrás de una env var opcional, exactamente para no repetir el patrón que dejó pasar este bug): la grilla completa de 4032 pares × 2 traductores (Wilhelm + Legge) = **8064 renders reales, ejecutados localmente — 2/2 verde (≈299s, ~150s por traductor)**.
-- Caso exacto de producción (`#2 Khwăn → #1 Khien`, Legge) verificado visualmente vía la función real, sin tofu ni superposición.
-- Suite completa `apps/web` (vitest): 18 archivos, 94/94 tests verdes (1 skip esperado, gate de generación manual no relacionado), sin regresiones.
-- `npm run verify:overlay-glyphs`, `npm run i18n:audit`, `tsc --noEmit` en `apps/web`: todos verdes.
+- `TS-WEB-OVR-004` (corre por defecto): cobertura fontkit + render real — **17/17 verde**.
+- `TS-WEB-OVR-005` (`vitest.exhaustive.config.ts`, paso explícito en CI): **8064 renders — 2/2 verde**.
+- `TS-WEB-OVR-006` (`gen:overlay-e2e-samples`, requiere `TOGETHER_API_KEY`): 4 muestras pipeline completo Together + overlay + composite — ink-ratio > 0.4% en zona EN.
+- Caso producción `#2 Khwăn → #1 Khien` (Legge): verificado en OVR-004 y muestra `reports/overlay-pango-e2e-samples/khwan-to-khien.png`.
+- Suite `apps/web` vitest default: verde sin regresiones.
+- `npm run verify:overlay-glyphs`: verde.
 
 ---
 
@@ -164,3 +176,56 @@ El archivo viejo (`@fontsource/noto-serif-tc`, usado por `embed-svg-overlay-font
 | 2026-06-27 | Apertura. Diagnóstico completo: el bug es la misma clase de defecto "no predecible por contenido" de `resvg-js` ya documentada y parcialmente cerrada en `20260625-AUD-IMG-OVR-02`, manifestándose en un par de hexagramas (#2→#1 Legge) fuera de la muestra de QA visual revisada en esa sesión. Los 3 gates existentes no renderizan el píxel final, por lo que no pueden detectar esta clase de regresión. Sin fix aplicado — opciones de remediación documentadas en §6, pendiente decisión del usuario. |
 | 2026-06-27 | Implementada Opción B (§9) en `fix/overlay-pango-title-render`: título renderizado vía Pango/sharp, embebido como `<image>`, ya no como `<text>` resvg. Dos hallazgos adicionales corregidos en el camino (cobertura Latin dividida en 2 archivos; fuente de símbolos sin el glifo de flecha — reemplazada por un `<path>` vectorial). Nuevo test exhaustivo `TS-WEB-OVR-004` (corre por defecto) + companion exhaustivo de 8064 renders wired a CI. Hallazgo nuevo y separado documentado en §10 (gap CJK pre-existente, no corregido). |
 | 2026-06-27 | Follow-up: corregido también el gap CJK de §10 (no era el alcance original, pero se resolvió en la misma sesión). Aclarado el origen real (ctext.org = fuente del texto Zhou Yi, no de la fuente tipográfica — sin relación con ningún "repo CtCx"). Generado `apps/web/fonts/noto-serif-tc-hexagram-titles.woff2`, un subset propio con los 72 hanzi reales de los 3 traductores, vía script reproducible (`generate-cjk-title-font-subset.mjs`) que se auto-verifica con `fontkit`. `TS-WEB-OVR-004` ya no excluye ningún codepoint — 17/17 verde sin excepciones. |
+| 2026-06-28 | Revisión 1b: outline Pango con dilatación alpha (`4132614`) tras feedback visual en imagen Together real (outline borroso con hack 8-offset). |
+| 2026-06-28 | **Revisión 2 (vigente):** migración a `@napi-rs/canvas`/Skia (`c028668`) — baseline compartido CJK/Latin, `strokeText` nativo. Tests OVR-004/005 re-verificados en verde. |
+| 2026-06-28 | `TS-WEB-OVR-006`: generador e2e Together + pipeline prod completo (`3bf77fd`); registrado en QA registry (corrige gap WF-DOC-02). |
+| 2026-06-28 | **§12 follow-up:** regresión staging Vercel (solo flechas visibles, sin hanzi ni romanización). Causa: resolución de paths de fuente vía `import.meta.url`/`REPO_ROOT` inválida tras bundling Next; `GlobalFonts.registerFromPath` devolvía `null` silenciosamente en Linux sin fallback OS. El fix Canvas (§9) no estaba mal — los tests v1.0.0 daban falsa confianza (paths de source en Vitest + ink solo en banda EN). Remedio: `overlay-title-font-paths.ts` (candidatos `process.cwd()`, patrón `svg-to-png.ts`), refactor `overlay-title-pango.ts`, `noto-serif-latin-400-normal.woff` en `outputFileTracingIncludes`, `TS-WEB-OVR-004` v1.1.0 (resolver prod + gate `registerFromPath` + ink ZH+EN). Smoke post-fix: consulta Legge `#2 Khwăn → #1 Khien` en staging preview. |
+
+---
+
+## 12. Regresión staging Vercel (solo flechas)
+
+### 12.1 Síntoma
+
+Tras desplegar el fix Canvas (§9) a **staging**, una consulta real con traductor **Legge** y mutación **#2 → #1** (坤 → 乾) produjo un overlay con:
+
+- Barras del hexagrama correctas
+- **Dos flechas** visibles (path vectorial)
+- **Sin hanzi** (`坤`, `乾`) ni romanización (`#2 Khwăn → #1 Khien`)
+
+Es decir: el pipeline de imagen funcionaba, pero el título pre-renderizado llegaba vacío de texto.
+
+### 12.2 Causa raíz
+
+| Componente | Comportamiento |
+|------------|----------------|
+| Flecha `→` | Dibujada como `<path>` SVG / path en canvas — **no depende de fuentes** → siempre visible |
+| Texto CJK + Latin | `@napi-rs/canvas` + `GlobalFonts.registerFromPath` — **invisible si la fuente no carga** |
+
+La versión previa de `overlay-title-pango.ts` resolvía rutas de fuente con `import.meta.url` y `REPO_ROOT` + paths estáticos de `fontsource-woff-paths.ts`:
+
+| Entorno | Latin (`REPO_ROOT` + `node_modules`) | CJK (`../../../fonts`) |
+|---------|--------------------------------------|-------------------------|
+| Vitest (source) | OK | Roto (`apps/fonts/`) pero no se detectaba |
+| Vercel (chunk `.next/server/chunks/…`) | **Roto** | A veces OK si `./fonts/**` estaba traced |
+
+En Linux (Vercel lambda) no hay fallback a fuentes del sistema; `registerFromPath` devolvía `null` **sin throw** → render con canvas vacío de texto pero flechas intactas.
+
+### 12.3 Por qué los tests v1.0.0 no lo detectaron
+
+1. **Paths de test ≠ paths de producción:** importaban `OVERLAY_TITLE_FONT_FILES` estáticos derivados de `import.meta.url` en el módulo fuente — válidos en Vitest, inválidos en el chunk empaquetado.
+2. **Ink solo en banda EN:** la mayoría de asserts medían `EN_TITLE_REGION`; el fallo de CJK en dev tampoco saltaba.
+3. **Windows dev:** fallback OS puede enmascarar `registerFromPath` fallido en máquinas locales.
+
+### 12.4 Remedio
+
+| Pieza | Cambio |
+|-------|--------|
+| `apps/web/src/lib/overlay-title-font-paths.ts` (**nuevo**) | `resolveOverlayTitleFontPaths()` — candidatos desde `process.cwd()` + layouts monorepo/Vercel; `assertOverlayTitleFontsRegistered()` fail-fast si `registerFromPath === null` |
+| `apps/web/src/lib/overlay-title-pango.ts` | `ensureFontsRegistered()` async + cache; elimina paths estáticos `import.meta.url`/`REPO_ROOT` |
+| `apps/web/next.config.mjs` | Confirma `noto-serif-latin-400-normal.woff` en `outputFileTracingIncludes` (antes solo `latin-ext` explícito) |
+| `TS-WEB-OVR-004` v1.1.0 | Mismo resolver que prod; gate `registerFromPath`; fontkit vía paths resueltos; ink **ZH + EN** |
+
+### 12.5 Smoke post-fix
+
+Deploy staging → consulta manual Legge, mutación `#2 Khwăn → #1 Khien` (6 tiradas manual H/H/H). El overlay debe mostrar `坤 → 乾` y `#2 Khwăn → #1 Khien`, no solo flechas.
