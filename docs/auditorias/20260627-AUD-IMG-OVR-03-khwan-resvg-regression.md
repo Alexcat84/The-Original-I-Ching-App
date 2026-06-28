@@ -1,8 +1,8 @@
 # Overlay PNG — tofu + flecha superpuesta en producción (#2 Khwăn → #1 Khien, Legge)
-**Código:** `20260627-AUD-IMG-OVR-03 khwan-resvg-regression` · **Familia:** IMG-OVR · **Estado:** **open** (reabierta 2026-06-28)
+**Código:** `20260627-AUD-IMG-OVR-03 khwan-resvg-regression` · **Familia:** IMG-OVR · **Estado:** **closed** (2026-06-28)
 
 - **Fecha:** 2026-06-27
-- **Estado:** ⚠️ **Reabierta — §0 Zhou Yi (subtítulo `#N` tofu).** Cierres previos siguen válidos: migración resvg→Canvas (§9), gap CJK §10, rutas Vercel §12. W/L verificados en staging post-`dda9732`. **Pendiente:** subtítulo Zhou Yi (`#2 坤 → #1 乾`) — causa §0, opciones §14.
+- **Estado:** ✅ **Cerrada.** Migración resvg→Canvas (§9), gap CJK §10, rutas Vercel §12, segmentación mixta Zhou Yi §15 (Opción A). Smoke staging §15.5 PASS (W/L/Zhou Yi); muestras prod `reports/overlay-pango-random-samples/` + long-name two-line Wilhelm. Promovido `main` 2026-06-28.
 - **Relacionado:** [`20260624-AUD-IMG-OVR-01-legge-diacritics.md`](./20260624-AUD-IMG-OVR-01-legge-diacritics.md), [`20260625-AUD-IMG-OVR-02-mutation-title-layout.md`](./20260625-AUD-IMG-OVR-02-mutation-title-layout.md)
 
 ---
@@ -58,7 +58,7 @@ Wilhelm/Legge usan `enScript: "latin"` → `#N` + romanización van a Noto Latin
 
 ### 0.5 Estado
 
-**Implementación §15 Fase 1–3 en curso** (segmentación mixta + tests). Pendiente smoke staging §15 Fase 5 antes de cerrar AU.
+**Cerrado 2026-06-28.** Fix `splitTextByOverlayFont()` en `overlay-title-pango.ts` (`4f8dd2a`). Smoke staging: Legge/Wilhelm/Zhou Yi `#2→#1` sin regresión; Zhou Yi `#2 坤 → #1 乾` sin tofu. Gates OVR-004 v1.2.0 + OVR-005 v1.1.0 (12096 renders) PASS local. Generadores muestra prod: `gen:overlay-random-samples`, `gen:overlay-long-name-samples` vía `buildImageAsset` + `finalizeReadingImages`.
 
 ---
 
@@ -236,7 +236,8 @@ El archivo viejo (`@fontsource/noto-serif-tc`, usado por `embed-svg-overlay-font
 | 2026-06-28 | `TS-WEB-OVR-006`: generador e2e Together + pipeline prod completo (`3bf77fd`); registrado en QA registry (corrige gap WF-DOC-02). |
 | 2026-06-28 | **§12 follow-up:** regresión staging Vercel (solo flechas visibles, sin hanzi ni romanización). Causa: resolución de paths de fuente vía `import.meta.url`/`REPO_ROOT` inválida tras bundling Next; `GlobalFonts.registerFromPath` devolvía `null` silenciosamente en Linux sin fallback OS. Remedio: `overlay-title-font-paths.ts`, `TS-WEB-OVR-004` v1.1.0. Smoke W/L OK post-`dda9732`. |
 | 2026-06-28 | **§0 + §13–§14 — reapertura AU:** smoke staging Zhou Yi — subtítulo `#N` tofu. Causa: `enScript: "cjk"` fuerza ASCII a subset solo-hanzi. |
-| 2026-06-28 | **§15 plan + implementacion Opcion A:** `splitTextByOverlayFont` en `overlay-title-pango.ts`; `TS-WEB-OVR-004` v1.2.0; `TS-WEB-OVR-005` v1.1.0 (+4032 Zhou Yi, ZH+EN ink). Pendiente smoke §15.5. |
+| 2026-06-28 | **§15 plan + implementacion Opcion A:** `splitTextByOverlayFont` en `overlay-title-pango.ts`; `TS-WEB-OVR-004` v1.2.0; `TS-WEB-OVR-005` v1.1.0 (+4032 Zhou Yi, ZH+EN ink). |
+| 2026-06-28 | **Cierre AU:** smoke §15.5 PASS (W/L/Zhou Yi); generadores muestra prod (`renderProductionOverlaySample` → `buildImageAsset` + `finalizeReadingImages`); promocion `staging`→`main`. |
 
 ---
 
@@ -401,8 +402,8 @@ Comparar 1:1 `#n` → ䷀…䷿ y renderizar pictogramas en lugar de (o junto a)
 | **2** | `TS-WEB-OVR-004` v1.2.0: tests segmentacion + Zhou Yi `#2→#1` + gate fontkit por chunk | Hecho |
 | **3** | `TS-WEB-OVR-005` v1.1.0: grid **zhouyi** 4032 + ink ZH+EN (12096 renders total) | Hecho (local PASS 2026-06-28) |
 | **4** | Script `verify-overlay-title-glyphs.mjs` reproducible | **Diferido** (post-smoke) |
-| **5** | Smoke manual staging (checklist abajo) | Pendiente |
-| **6** | Cierre AU + promocion `main` | Pendiente Fase 5 |
+| **5** | Smoke manual staging (checklist abajo) | Hecho (2026-06-28) |
+| **6** | Cierre AU + promocion `main` | Hecho (2026-06-28) |
 
 ### 15.3 Cambios de codigo (Fase 1)
 
@@ -433,9 +434,9 @@ Comparar 1:1 `#n` → ䷀…䷿ y renderizar pictogramas en lugar de (o junto a)
 
 ### 15.6 Criterios de cierre AU
 
-- [ ] Smoke §15.5 PASS en staging
-- [ ] `npm run test --prefix apps/web -- overlay-title-pango` verde
-- [ ] `npm run test:overlay-exhaustive --prefix apps/web` verde (~12k renders)
-- [ ] §0 marcado cerrado; `status: closed` en registry
+- [x] Smoke §15.5 PASS en staging
+- [x] `npm run test --prefix apps/web -- overlay-title-pango` verde
+- [x] `npm run test:overlay-exhaustive --prefix apps/web` verde (~12k renders)
+- [x] §0 marcado cerrado; `status: closed` en registry
 
 ---

@@ -11,6 +11,8 @@ export default defineConfig({
       "**/node_modules/**",
       "src/lib/__tests__/overlay-title-pango.exhaustive.test.ts",
       "src/lib/__tests__/overlay-title-pango.e2e-samples.test.ts",
+      "src/lib/__tests__/overlay-title-pango.random-samples.test.ts",
+      "src/lib/__tests__/overlay-title-pango.long-name-samples.test.ts",
     ],
   },
   resolve: {
