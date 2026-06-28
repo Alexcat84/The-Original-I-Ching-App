@@ -25,6 +25,7 @@ type Props = {
   mutationRule: string;
   castIndex?: number;
   changingLines?: number[];
+  verifyRulesLocked?: boolean;
   translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
   lineReadingSystem?: "huang" | "zhuxi" | null;
   oracleType?: "iching" | "oracle_bones";
@@ -50,6 +51,7 @@ export function ConsultationRecordCard({
   mutationRule,
   castIndex,
   changingLines,
+  verifyRulesLocked = false,
   translator,
   lineReadingSystem,
   oracleType = "iching",
@@ -162,12 +164,22 @@ export function ConsultationRecordCard({
         ) : null}
         {castIndex != null ? (
           <p className="consultation-record-row consultation-record-verify-row">
-            <Link
-              href={`/mutation-explorer?cid=${encodeURIComponent(consultationId)}`}
-              className="consultation-record-verify-link"
-            >
-              {labels.verifyRulesLink}
-            </Link>
+            {verifyRulesLocked ? (
+              <span
+                className="consultation-record-verify-link consultation-record-verify-link--locked"
+                aria-disabled="true"
+                title={labels.verifyRulesLockedHint}
+              >
+                {labels.verifyRulesLink}
+              </span>
+            ) : (
+              <Link
+                href={`/mutation-explorer?cid=${encodeURIComponent(consultationId)}`}
+                className="consultation-record-verify-link"
+              >
+                {labels.verifyRulesLink}
+              </Link>
+            )}
           </p>
         ) : null}
         {translator && translatorDisplayName[translator] ? (

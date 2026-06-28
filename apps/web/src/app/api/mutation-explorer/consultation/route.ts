@@ -4,6 +4,7 @@ import {
   maskFromChangingLines,
 } from "@iching-oracle/iching-engine";
 import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
+import { getSeekerPlusAccess } from "@/lib/auth/seeker-plus-access";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import type { ConsultationExploreContext } from "@/lib/mutation-explorer/explore-mutation";
 
@@ -24,12 +25,18 @@ function parseLines(raw: unknown): number[] {
 
 /**
  * GET /api/mutation-explorer/consultation?cid={uuid}
- * Free tier allowed — ownership check only (not Seeker+).
+ * Seeker+ required (same gate as library) plus ownership check.
  */
 export async function GET(req: NextRequest) {
   const authUser = await getAuthenticatedUser(req);
   if (!authUser) {
     return NextResponse.json({ error: "auth_required" }, { status: 401 });
+  }
+
+  const access = await getSeekerPlusAccess(authUser);
+  if (!access.allowed) {
+    const status = access.reason === "upgrade_required" ? 403 : 500;
+    return NextResponse.json({ error: access.reason }, { status });
   }
 
   const cid = req.nextUrl.searchParams.get("cid");

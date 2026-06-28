@@ -4872,6 +4872,7 @@ export default function HomePage() {
                             maskFromChangingLines(entry.changingLines),
                           )}
                           changingLines={entry.changingLines}
+                          verifyRulesLocked={!isAdmin && tierAccessKey === "free"}
                           translator={entry.translator}
                           lineReadingSystem={entry.lineReadingSystem}
                           oracleType={entry.oracleType ?? "iching"}
@@ -4973,6 +4974,7 @@ export default function HomePage() {
                           maskFromChangingLines(manualCastPreview.changingLines),
                         )}
                         changingLines={manualCastPreview.changingLines}
+                        verifyRulesLocked={!isAdmin && tierAccessKey === "free"}
                         lineReadingSystem={ichingLineReadingSystem}
                         oracleType="iching"
                         locale={locale}

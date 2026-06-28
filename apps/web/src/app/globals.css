@@ -9072,6 +9072,13 @@ html.iching-rn-webview .oracle-toggle-track {
 .consultation-record-verify-link:hover {
   text-decoration: underline;
 }
+.consultation-record-verify-link--locked {
+  color: var(--text-muted, rgba(255, 255, 255, 0.35));
+  cursor: not-allowed;
+  opacity: 0.55;
+  font-weight: 600;
+  text-decoration: none;
+}
 
 /* ── Mutation explorer ── */
 .mutation-explorer-page .mutation-explorer {
