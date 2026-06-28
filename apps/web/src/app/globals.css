@@ -2794,6 +2794,21 @@ html[data-theme="light"] .oracle-toggle-wrap:hover .oracle-toggle-track {
   padding-right: clamp(2.75rem, 58%, 18rem);
 }
 
+.composer-panel-actions--pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  flex-wrap: nowrap;
+  justify-content: stretch;
+  padding-right: 0;
+  gap: 0.45rem;
+}
+
+.composer-panel-actions--pair .composer-reading-pill {
+  flex: 1 1 0;
+  width: 100%;
+  min-width: 0;
+}
+
 .token-center-actions {
   margin-top: 0.75rem;
   padding-left: 0;

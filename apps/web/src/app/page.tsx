@@ -5913,7 +5913,7 @@ export default function HomePage() {
                       <p className="meta-line tier-hint-line">
                         {chrome.libraryDescription}
                       </p>
-                      <div className="composer-panel-actions">
+                      <div className="composer-panel-actions composer-panel-actions--pair">
                         <button
                           id="tour-library-btn"
                           type="button"
