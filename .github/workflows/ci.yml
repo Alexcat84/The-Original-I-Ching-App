@@ -46,6 +46,14 @@ jobs:
       - name: Test
         run: npm test
 
+      # Full 64x63 (Wilhelm + Legge) overlay-title pair grid, ~4 min — deliberately not
+      # part of `npm test` (would slow down every local run). Always runs in CI as its
+      # own step, not behind an opt-in flag — see TS-WEB-OVR-004 /
+      # docs/auditorias/20260627-AUD-IMG-OVR-03-khwan-resvg-regression.md for why an
+      # env-var-gated render test is exactly the gap that let the original bug ship.
+      - name: Overlay title exhaustive render check
+        run: npm run test:overlay-exhaustive --prefix apps/web
+
       - name: Build
         run: npm run build
         env:

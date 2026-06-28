@@ -17,6 +17,7 @@ import {
   buildOverlayEnglishTitleLayout,
   estimateOverlayEnTextWidth,
 } from "@/lib/overlay-title-layout";
+import { OVERLAY_ARROW, renderOverlayTitleLayer } from "@/lib/overlay-title-pango";
 
 export type SumiLineInput = {
   position: 1 | 2 | 3 | 4 | 5 | 6;
@@ -419,7 +420,7 @@ ${subEnEls}
  * Meant to be composited over a remotely generated background so the lines and text
  * are always correct (independent of how well the image model follows the prompt).
  */
-export function buildSumiHexagramOverlaySvgDataUrl(params: {
+export async function buildSumiHexagramOverlaySvgDataUrl(params: {
   lines: SumiLineInput[];
   primaryNumber: number;
   primaryName: string;
@@ -431,7 +432,7 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
   /** Output pixel size used by the compositor (SVG will scale via viewBox). */
   outputWidth?: number;
   outputHeight?: number;
-}): string {
+}): Promise<string> {
   const W = 1344;
   const H = 768;
   const cx = W / 2;
@@ -467,21 +468,51 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
     }
   }
 
-  const subZh = escapeXml(
-    `${params.primaryChinese}${params.transformedChinese ? ` → ${params.transformedChinese}` : ""}`,
+  const zhText = `${params.primaryChinese}${params.transformedChinese ? ` ${OVERLAY_ARROW} ${params.transformedChinese}` : ""}`;
+  // Zhou Yi mode has no romanization — primaryName/transformedName are the bare hanzi
+  // (e.g. "乾"), so the "EN" subtitle line is Chinese text too. Pick the script per name
+  // content rather than assuming Latin, or it would render with the wrong font files.
+  const enScript: "cjk" | "latin" = /[㐀-鿿]/.test(params.primaryName) ? "cjk" : "latin";
+  const enLayout = buildOverlayEnglishTitleLayout(
+    {
+      primaryNumber: params.primaryNumber,
+      primaryName: params.primaryName,
+      transformedNumber: params.transformedNumber,
+      transformedName: params.transformedName,
+    },
+    { hexTopY: SUMI_OVERLAY_HEX_TOP_Y },
   );
-  const subEnEls = buildOverlayEnTextElements({
-    cx,
-    primaryNumber: params.primaryNumber,
-    primaryName: params.primaryName,
-    transformedNumber: params.transformedNumber,
-    transformedName: params.transformedName,
-    hexTopY: SUMI_OVERLAY_HEX_TOP_Y,
-    fill: "#2e2a22",
-    stroke: "rgba(255,248,242,0.9)",
-    strokeWidth: 3,
-    paintOrder: "stroke fill",
+
+  // Title text is rendered to a transparent PNG via Pango (overlay-title-pango.ts) and
+  // embedded as an <image>, not as SVG <text> — resvg-js has a font/glyph-shaping defect
+  // for mixed embedded-font text that isn't predictable from content alone (see
+  // docs/auditorias/20260627-AUD-IMG-OVR-03-khwan-resvg-regression.md). resvg only ever
+  // sees plain vector shapes here (bars + filter), which it renders correctly.
+  const titlePng = await renderOverlayTitleLayer({
+    width: W,
+    height: H,
+    lines: [
+      {
+        text: zhText,
+        script: "cjk",
+        fontSizePx: 92,
+        baselineY: 125,
+        fill: "#1c1a16",
+        stroke: "rgba(255,248,242,0.94)",
+        strokeWidthPx: 5,
+      },
+      ...enLayout.lines.map((line, index) => ({
+        text: line,
+        script: enScript,
+        fontSizePx: enLayout.fontSize,
+        baselineY: enLayout.ys[index]!,
+        fill: "#2e2a22",
+        stroke: "rgba(255,248,242,0.9)",
+        strokeWidthPx: 3,
+      })),
+    ],
   });
+  const titlePngBase64 = titlePng.toString("base64");
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${outputWidth}" height="${outputHeight}" viewBox="0 0 ${W} ${H}">
 <defs>
@@ -491,9 +522,8 @@ export function buildSumiHexagramOverlaySvgDataUrl(params: {
   </filter>
 </defs>
 <g>${lineEls.join("\n")}</g>
-<!-- primary titles: large, centered -->
-<text x="${cx}" y="125" text-anchor="middle" class="${OVERLAY_TITLE_ZH_CLASS}" fill="#1c1a16" stroke="rgba(255,248,242,0.94)" stroke-width="5" paint-order="stroke fill" font-size="92" font-family='${OVERLAY_TITLE_ZH_FONT}' font-weight="700">${subZh}</text>
-${subEnEls}
+<!-- primary titles: rendered separately via Pango, embedded as a raster layer -->
+<image x="0" y="0" width="${W}" height="${H}" href="data:image/png;base64,${titlePngBase64}"/>
 </svg>`;
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;

@@ -570,6 +570,48 @@
       "area": "apps/web/src/lib/sumi-fallback-glyph-samples"
     },
     {
+      "code": "TS-WEB-OVR-004 overlay-title-pango",
+      "title": "Overlay title Pango render: exhaustive glyph coverage + production-path pixel check",
+      "shortName": "overlay-title-pango",
+      "type": "TS",
+      "family": "WEB-OVR",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-27",
+          "change": "Initial: fontkit glyph coverage for all 64 hexagrams x 3 translators (no rendering needed) + real buildSumiHexagramOverlaySvgDataUrl render-and-pixel-check for every standalone name, all historically-broken pairs, one pair per hexagram, and the longest-name stress cases. Runs by default, no env-var skip."
+        }
+      ],
+      "path": "apps/web/src/lib/__tests__/overlay-title-pango.test.ts",
+      "npmScript": "npm run test --prefix apps/web -- overlay-title-pango",
+      "relatedAuditCodes": [
+        "20260627-AUD-IMG-OVR-03 khwan-resvg-regression"
+      ],
+      "area": "apps/web/src/lib/overlay-title-pango"
+    },
+    {
+      "code": "TS-WEB-OVR-005 overlay-title-pango-exhaustive",
+      "title": "Overlay title Pango render: full 64x63 pair grid, both translators (8064 renders)",
+      "shortName": "overlay-title-pango-exhaustive",
+      "type": "TS",
+      "family": "WEB-OVR",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-27",
+          "change": "Initial: companion to TS-WEB-OVR-004. Deliberately NOT in apps/web's default `npm test` (would add ~5 min to every local run) -- runs via its own vitest.exhaustive.config.ts and is wired as an explicit, always-run step in .github/workflows/ci.yml (not behind an opt-in env var, to avoid repeating the exact gap that let the Khwan regression ship)."
+        }
+      ],
+      "path": "apps/web/src/lib/__tests__/overlay-title-pango.exhaustive.test.ts",
+      "npmScript": "npm run test:overlay-exhaustive --prefix apps/web",
+      "relatedAuditCodes": [
+        "20260627-AUD-IMG-OVR-03 khwan-resvg-regression"
+      ],
+      "area": "apps/web/src/lib/overlay-title-pango"
+    },
+    {
       "code": "QA-MUT-001 mutation-output",
       "title": "Mutation output QA matrix (fixtures × translators × models)",
       "shortName": "mutation-output",

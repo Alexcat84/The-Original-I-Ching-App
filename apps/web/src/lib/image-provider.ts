@@ -839,7 +839,7 @@ export async function buildImageAsset(params: {
     const imageUrl =
       `https://image.pollinations.ai/prompt/${encoded}` +
       `?model=${encodeURIComponent(model)}&width=${width}&height=${height}&seed=${seed}&nologo=true`;
-    const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+    const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
       ...overlayBase,
       outputWidth: width,
       outputHeight: height,
@@ -850,7 +850,7 @@ export async function buildImageAsset(params: {
   if (provider === "fal") {
     const falImage = await generateWithFal(promptForRemote, tierWidth, tierHeight);
     if (falImage) {
-      const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+      const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
         ...overlayBase,
         outputWidth: tierWidth,
         outputHeight: tierHeight,
@@ -862,7 +862,7 @@ export async function buildImageAsset(params: {
   if (provider === "gpt-image") {
     const gptImage = await generateWithGptImage(promptForRemote, tierWidth, tierHeight);
     if (gptImage) {
-      const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+      const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
         ...overlayBase,
         outputWidth: tierWidth,
         outputHeight: tierHeight,
@@ -884,7 +884,7 @@ export async function buildImageAsset(params: {
     );
     debug.together = togetherDebug;
     if (url) {
-      const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+      const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
         ...overlayBase,
         outputWidth: tw,
         outputHeight: th,
@@ -896,7 +896,7 @@ export async function buildImageAsset(params: {
   // Together failed — cascade: R2 → local prebuilt → sumi SVG
   if (r2FallbackUrl) {
     debugLog("buildImageAsset: together failed, using R2 fallback", { r2FallbackUrl });
-    const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+    const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
       ...overlayBase,
       outputWidth: togetherFallbackW,
       outputHeight: togetherFallbackH,
@@ -912,7 +912,7 @@ export async function buildImageAsset(params: {
 
   if (localPrebuiltUrl) {
     debugLog("buildImageAsset: together failed, using local prebuilt fallback", { localPrebuiltUrl });
-    const overlaySvgDataUrl = buildSumiHexagramOverlaySvgDataUrl({
+    const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
       ...overlayBase,
       outputWidth: togetherFallbackW,
       outputHeight: togetherFallbackH,

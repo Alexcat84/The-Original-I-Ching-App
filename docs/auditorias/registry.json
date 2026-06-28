@@ -874,7 +874,7 @@
       "type": "AUD",
       "family": "IMG-OVR",
       "date": "2026-06-27",
-      "status": "open",
+      "status": "closed",
       "path": "docs/auditorias/20260627-AUD-IMG-OVR-03-khwan-resvg-regression.md",
       "relatedCodes": [
         "20260624-AUD-IMG-OVR-01 legge-diacritics",
@@ -883,7 +883,9 @@
       "relatedTests": [
         "VF-WEB-OVR-001 overlay-glyphs",
         "TS-WEB-OVR-002 overlay-title-layout",
-        "TS-WEB-OVR-003 sumi-fallback-glyphs"
+        "TS-WEB-OVR-003 sumi-fallback-glyphs",
+        "TS-WEB-OVR-004 overlay-title-pango",
+        "TS-WEB-OVR-005 overlay-title-pango-exhaustive"
       ]
     },
     {
