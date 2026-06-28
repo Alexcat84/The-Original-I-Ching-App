@@ -67,8 +67,10 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260619-AUD-MUT-03 huang-rules-alignment` | 2026-06-19 | Alineación reglas Huang | closed | [20260619-AUD-MUT-03-huang-rules-alignment.md](./20260619-AUD-MUT-03-huang-rules-alignment.md) |
 | `20260622-AUD-MUT-04 mutation-rules-pdf-gold` | 2026-06-22 | Reglas mutación vs PDF gold | closed | [20260622-AUD-MUT-04-mutation-rules-pdf-gold.md](./20260622-AUD-MUT-04-mutation-rules-pdf-gold.md) |
 | `20260622-AUD-MUT-05 retry-fallback-economics` | 2026-06-22 | Economía reintentos vs fallback | decided | [20260622-AUD-MUT-05-retry-fallback-economics.md](./20260622-AUD-MUT-05-retry-fallback-economics.md) |
+| `20260628-PLAN-MUT-06 mutation-explorer` | 2026-06-28 | Mapa de Mutaciones (Mutation Explorer) | open | [20260628-PLAN-MUT-06-mutation-explorer.md](./20260628-PLAN-MUT-06-mutation-explorer.md) |
+| `20260628-PLAN-MUT-07 mutation-explorer-implementation` | 2026-06-28 | Mutation Explorer — plan de implementación detallado | open | [20260628-PLAN-MUT-07-mutation-explorer-implementation.md](./20260628-PLAN-MUT-07-mutation-explorer-implementation.md) |
 
-**Tests:** `QA-MUT-001`, `TS-ENG-002`, `TS-CLAUDE-001`…`004`, `AU-MUT-001`…`002`
+**Tests:** `QA-MUT-001`, `TS-ENG-002`, `TS-ENG-004`, `TS-CLAUDE-001`…`004`, `AU-MUT-001`…`002`
 
 ---
 

@@ -73,6 +73,49 @@
       "area": "packages/iching-engine/src/engine.line-reading-systems"
     },
     {
+      "code": "TS-ENG-004 mutation-explore",
+      "title": "Mutation explorer castIndex motor and catalog parity",
+      "shortName": "mutation-explore",
+      "type": "TS",
+      "family": "ENG",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "castIndex 4096 + exploreMutation"
+        }
+      ],
+      "path": "packages/iching-engine/src/mutation-explore.test.ts",
+      "npmScript": "npm run test --prefix packages/iching-engine",
+      "relatedAuditCodes": [
+        "20260628-PLAN-MUT-06 mutation-explorer",
+        "20260628-PLAN-MUT-07 mutation-explorer-implementation"
+      ],
+      "area": "packages/iching-engine/src/mutation-explore"
+    },
+    {
+      "code": "VF-ENG-001 cast-catalog",
+      "title": "Cast catalog 4096 parity verify",
+      "shortName": "cast-catalog",
+      "type": "VF",
+      "family": "ENG",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "4096 entries vs mutation-explore motor"
+        }
+      ],
+      "path": "scripts/verify-cast-catalog.mjs",
+      "npmScript": "npm run verify:cast-catalog",
+      "relatedAuditCodes": [
+        "20260628-PLAN-MUT-07 mutation-explorer-implementation"
+      ],
+      "area": "scripts/verify-cast-catalog"
+    },
+    {
       "code": "TS-CLAUDE-001 line-gate",
       "title": "Interpretation line gate (H1/H3/H5 blocking)",
       "shortName": "line-gate",
@@ -1082,6 +1125,28 @@
         "20260620-AUD-LRS-01 zhuxi-line-reading-selector"
       ],
       "area": "tools/audit-zhuxi-rules-vs-adler-gold"
+    },
+    {
+      "code": "GEN-ENG-001 cast-catalog",
+      "title": "Generate cast catalog JSON (4096 entries)",
+      "shortName": "cast-catalog-generate",
+      "type": "GEN",
+      "family": "ENG",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Initial cast-catalog.json from mutation-explore"
+        }
+      ],
+      "path": "scripts/generate-cast-catalog.mjs",
+      "npmScript": "npm run generate:cast-catalog",
+      "artifacts": "packages/iching-data/src/generated/cast-catalog.json",
+      "relatedAuditCodes": [
+        "20260628-PLAN-MUT-07 mutation-explorer-implementation"
+      ],
+      "area": "scripts/generate-cast-catalog"
     },
     {
       "code": "GEN-WEB-OVR-001 sumi-fallback-samples",

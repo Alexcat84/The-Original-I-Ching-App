@@ -43,3 +43,22 @@ export {
   type MutationQaFixtureId,
   type MutationQaTranslator,
 } from "./mutation-qa-fixtures.js";
+export {
+  applyMaskToPrimary,
+  buildCastCatalogEntry,
+  buildSyntheticLinesFromMask,
+  changingLinesFromMask,
+  decodeCastIndex,
+  deriveChangingLinesFromHexPair,
+  encodeCastIndex,
+  exploreMutation,
+  lineValuesFromLines,
+  maskFromChangingLines,
+  MutationExploreError,
+  textsToSelections,
+  type CastCatalogEntry,
+  type CastCatalogSystemEntry,
+  type MutationExploreInput,
+  type MutationExploreResult,
+  type MutationTextSelection,
+} from "./mutation-explore.js";

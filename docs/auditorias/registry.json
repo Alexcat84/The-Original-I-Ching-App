@@ -625,6 +625,41 @@
       ]
     },
     {
+      "code": "20260628-PLAN-MUT-06 mutation-explorer",
+      "title": "Mutation Explorer (Mapa de Mutaciones) implementation plan",
+      "shortName": "mutation-explorer",
+      "type": "PLAN",
+      "family": "MUT",
+      "date": "2026-06-28",
+      "status": "open",
+      "path": "docs/auditorias/20260628-PLAN-MUT-06-mutation-explorer.md",
+      "relatedCodes": [
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector",
+        "20260619-AUD-MUT-03 huang-rules-alignment",
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
+        "20260628-PLAN-MUT-07 mutation-explorer-implementation"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260628-PLAN-MUT-07 mutation-explorer-implementation",
+      "title": "Mutation Explorer — plan de implementación detallado",
+      "shortName": "mutation-explorer-implementation",
+      "type": "PLAN",
+      "family": "MUT",
+      "date": "2026-06-28",
+      "status": "open",
+      "path": "docs/auditorias/20260628-PLAN-MUT-07-mutation-explorer-implementation.md",
+      "relatedCodes": [
+        "20260628-PLAN-MUT-06 mutation-explorer",
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector",
+        "20260619-AUD-MUT-03 huang-rules-alignment"
+      ],
+      "relatedTests": [
+        "TS-ENG-004 mutation-explore"
+      ]
+    },
+    {
       "code": "20260622-AUD-DOC-01 user-docs-vs-implementation",
       "title": "User-facing docs vs implementation audit",
       "shortName": "user-docs-vs-implementation",

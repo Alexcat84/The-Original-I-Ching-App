@@ -40,6 +40,7 @@ import {
   type AppLocale,
 } from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
+import { encodeCastIndex, maskFromChangingLines } from "@iching-oracle/iching-engine";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { detectInputLanguage } from "@/lib/detect-input-language";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
@@ -714,6 +715,7 @@ export default function HomePage() {
     primaryHexagramChinese: string;
     transformedHexagram: number | null;
     mutationRule: string;
+    changingLines: number[];
   } | null>(null);
   const {
     sessions,
@@ -3500,6 +3502,7 @@ export default function HomePage() {
           transformedHexagram:
             manualCastPreviewEngine.transformedHexagram?.number ?? null,
           mutationRule: manualCastPreviewEngine.mutationRule,
+          changingLines: manualCastPreviewEngine.changingLines,
         });
       } catch {
         manualCastPreviewEngine = null;
@@ -4864,6 +4867,11 @@ export default function HomePage() {
                           transformedHexagram={entry.transformedHexagram}
                           transformedHexagramChinese={entry.transformedHexagramChinese}
                           mutationRule={entry.mutationRule}
+                          castIndex={encodeCastIndex(
+                            entry.primaryHexagram,
+                            maskFromChangingLines(entry.changingLines),
+                          )}
+                          changingLines={entry.changingLines}
                           translator={entry.translator}
                           lineReadingSystem={entry.lineReadingSystem}
                           oracleType={entry.oracleType ?? "iching"}
@@ -4960,6 +4968,11 @@ export default function HomePage() {
                           manualCastPreview.transformedHexagram
                         }
                         mutationRule={manualCastPreview.mutationRule}
+                        castIndex={encodeCastIndex(
+                          manualCastPreview.primaryHexagram,
+                          maskFromChangingLines(manualCastPreview.changingLines),
+                        )}
+                        changingLines={manualCastPreview.changingLines}
                         lineReadingSystem={ichingLineReadingSystem}
                         oracleType="iching"
                         locale={locale}
@@ -5907,6 +5920,14 @@ export default function HomePage() {
                           disabled={!accessToken || (!isAdmin && tierAccessKey === "free")}
                         >
                           {chrome.openLibrary}
+                        </button>
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => router.push("/mutation-explorer")}
+                          disabled={!accessToken || (!isAdmin && tierAccessKey === "free")}
+                        >
+                          {chrome.openMutationExplorer}
                         </button>
                       </div>
                     </div>

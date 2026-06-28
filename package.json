@@ -26,6 +26,8 @@
     "verify:docs-remediation": "node scripts/verify-docs-remediation.mjs",
     "inject:qa-headers": "node scripts/inject-qa-headers.mjs",
     "verify:qa-registry": "node scripts/verify-qa-registry.mjs",
+    "generate:cast-catalog": "npm run build --prefix packages/iching-engine && node scripts/generate-cast-catalog.mjs",
+    "verify:cast-catalog": "npm run build --prefix packages/iching-engine && node scripts/verify-cast-catalog.mjs",
     "verify:divination-wilhelm-appendix": "node scripts/verify-divination-wilhelm-appendix.mjs",
     "verify:hexagram-fidelity": "node scripts/verify-hexagram-fidelity.mjs --gold=books --translator=wilhelm,legge",
     "verify:hexagram-fidelity:mirrors-deprecated": "node scripts/verify-hexagram-fidelity.mjs --gold=mirrors --translator=all",

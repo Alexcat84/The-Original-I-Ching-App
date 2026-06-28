@@ -32,6 +32,8 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `TS-ENG-001 engine-core` | `packages/iching-engine/src/engine` | 1.0.0 | `engine.test.ts` | `npm run test --prefix packages/iching-engine` | `AUD-DIV-01` |
 | `TS-ENG-002 mutation-rules` | `packages/iching-engine/src/engine.mutation-rules` | 1.1.0 | `engine.mutation-rules.test.ts` | idem | `AUD-MUT-01`, `AUD-MUT-02` |
 | `TS-ENG-003 line-reading-systems` | `packages/iching-engine/src/engine.line-reading-systems` | 1.0.0 | `engine.line-reading-systems.test.ts` | idem | `AUD-LRS-01` |
+| `TS-ENG-004 mutation-explore` | `packages/iching-engine/src/mutation-explore` | 1.0.0 | `mutation-explore.test.ts` | idem | `PLAN-MUT-06`, `PLAN-MUT-07` |
+| `VF-ENG-001 cast-catalog` | `scripts/verify-cast-catalog` | 1.0.0 | `verify:cast-catalog` | — | 4096 parity |
 
 ### Claude / interpretación — `TS-CLAUDE-*`
 
@@ -135,6 +137,7 @@ Detalle y versiones: [`registry.json`](./registry.json).
 
 | Código | Area | v | npm script | Artefactos |
 |--------|------|---|------------|------------|
+| `GEN-ENG-001 cast-catalog` | `scripts/generate-cast-catalog` | 1.0.0 | `generate:cast-catalog` | `packages/iching-data/src/generated/cast-catalog.json` |
 | `GEN-WEB-OVR-001 sumi-fallback-samples` | `scripts/generate-sumi-fallback-glyph-samples` | 1.0.0 | `generate:sumi-fallback-glyphs` | `reports/sumi-fallback-glyphs/` + manifest |
 | — | — | — | `generate:sumi-fallback-glyphs:quick` | variante `:quick` → vitest smoke |
 
