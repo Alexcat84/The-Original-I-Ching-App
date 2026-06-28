@@ -181,25 +181,22 @@ export function ConsultationRecordCard({
       </div>
       {castIndex != null ? (
         <p className="consultation-record-row consultation-record-row--verify">
-          <span className="consultation-record-key" aria-hidden="true" />
-          <span className="consultation-record-value">
-            {verifyRulesLocked ? (
-              <span
-                className="consultation-record-inline-link consultation-record-inline-link--locked"
-                aria-disabled="true"
-                title={labels.verifyReadingLockedHint}
-              >
-                {labels.verifyReadingLink}
-              </span>
-            ) : (
-              <Link
-                href={`/mutation-explorer?cid=${encodeURIComponent(consultationId)}`}
-                className="consultation-record-inline-link"
-              >
-                {labels.verifyReadingLink}
-              </Link>
-            )}
-          </span>
+          {verifyRulesLocked ? (
+            <span
+              className="consultation-record-verify-link consultation-record-verify-link--locked"
+              aria-disabled="true"
+              title={labels.verifyReadingLockedHint}
+            >
+              {labels.verifyReadingLink}
+            </span>
+          ) : (
+            <Link
+              href={`/mutation-explorer?cid=${encodeURIComponent(consultationId)}`}
+              className="consultation-record-verify-link"
+            >
+              {labels.verifyReadingLink}
+            </Link>
+          )}
         </p>
       ) : null}
       <p className="consultation-record-question">

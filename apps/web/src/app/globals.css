@@ -6777,22 +6777,22 @@ html[data-theme="dark"] .library-mutation__link {
   margin-top: 0.35rem;
   padding-top: 0.45rem;
   border-top: 1px dashed var(--record-divider);
+  display: block;
 }
 
-.consultation-record-inline-link {
-  font-size: inherit;
-  font-weight: inherit;
-  color: inherit;
+.consultation-record-verify-link {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ghost-link, #2a7a94);
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--fg) 30%, transparent);
   text-underline-offset: 2px;
 }
 
-.consultation-record-inline-link:hover {
-  text-decoration-color: color-mix(in srgb, var(--fg) 55%, var(--accent));
+.consultation-record-verify-link:hover {
+  text-decoration-thickness: 2px;
 }
 
-.consultation-record-inline-link--locked {
+.consultation-record-verify-link--locked {
   color: var(--fg-muted);
   cursor: not-allowed;
   opacity: 0.65;
@@ -9119,6 +9119,16 @@ html.iching-rn-webview .oracle-toggle-track {
 
 .mutation-explorer-cast-headers {
   margin-bottom: 0.55rem;
+}
+
+.mutation-explorer-cast-headers .mutation-explorer-cast-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  min-width: 0;
+  text-align: center;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .mutation-explorer-cast-col {

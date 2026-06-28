@@ -251,22 +251,25 @@ export function exploreMutation(input: MutationExploreInput): MutationExploreRes
   const stableLines = [1, 2, 3, 4, 5, 6].filter((p) => !changingLines.includes(p));
 
   const linesUsed = input.lines ?? buildSyntheticLinesFromMask(primary, mask);
-  const primaryHex = getHexagram(linesUsed);
-  const transformedHex =
+  const primaryHexForRules = getHexagram(linesUsed);
+  const transformedHexForRules =
     changingLines.length > 0 ? getHexagram(applyMutations(linesUsed)) : null;
 
   const mutationRule: AnyMutationRule =
     input.lineReadingSystem === "zhuxi"
-      ? determineMutationRuleZhuXi(primaryHex, changingLines)
-      : determineMutationRule(primaryHex, linesUsed, changingLines);
+      ? determineMutationRuleZhuXi(primaryHexForRules, changingLines)
+      : determineMutationRule(primaryHexForRules, linesUsed, changingLines);
 
   const huangRule =
     input.lineReadingSystem === "huang"
       ? (mutationRule as import("./types.js").MutationRule)
-      : determineMutationRule(primaryHex, linesUsed, changingLines);
+      : determineMutationRule(primaryHexForRules, linesUsed, changingLines);
 
-  const buildTexts = (translator: "wilhelm" | "legge" | "zhouyi") =>
-    selectTextsForClaude(
+  const buildTexts = (translator: "wilhelm" | "legge" | "zhouyi") => {
+    const primaryHex = getHexagram(linesUsed, translator);
+    const transformedHex =
+      changingLines.length > 0 ? getHexagram(applyMutations(linesUsed), translator) : null;
+    return selectTextsForClaude(
       primaryHex,
       transformedHex,
       linesUsed,
@@ -278,6 +281,7 @@ export function exploreMutation(input: MutationExploreInput): MutationExploreRes
         ? (mutationRule as import("./types.js").ZhuXiMutationRule)
         : undefined,
     );
+  };
 
   const textsByTranslator = {
     wilhelm: buildTexts("wilhelm"),
@@ -287,8 +291,8 @@ export function exploreMutation(input: MutationExploreInput): MutationExploreRes
 
   const selections = textsToSelections(
     textsByTranslator.wilhelm,
-    primaryHex,
-    transformedHex,
+    primaryHexForRules,
+    transformedHexForRules,
     changingLines,
     mutationRule,
     input.lineReadingSystem,

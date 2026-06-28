@@ -288,7 +288,7 @@ export function MutationExplorer({ locale }: Props) {
         <div className="mutation-explorer mutation-explorer--consultation">
           <p className="mutation-explorer-error">{loadError}</p>
           <p className="mutation-explorer-footer-nav">
-            <Link href="/" className="consultation-record-inline-link">
+            <Link href="/" className="consultation-record-verify-link">
               {ui.backToThread}
             </Link>
           </p>
@@ -381,7 +381,7 @@ export function MutationExplorer({ locale }: Props) {
             <span className="consultation-record-value">{consultationLineReadingLabel}</span>
           </p>
           <p className="consultation-record-row">
-            <span className="consultation-record-key">{ui.translatorAppliedLabel}:</span>
+            <span className="consultation-record-key">{ui.translatorAppliedLabel}</span>
             <span className="consultation-record-value">
               {TRANSLATOR_DISPLAY[consultation.translator]}
             </span>
@@ -408,7 +408,7 @@ export function MutationExplorer({ locale }: Props) {
         </section>
 
         <p className="mutation-explorer-footer-nav">
-          <Link href="/" className="consultation-record-inline-link">
+          <Link href="/" className="consultation-record-verify-link">
             {ui.backToThread}
           </Link>
         </p>
