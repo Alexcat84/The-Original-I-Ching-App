@@ -27,7 +27,7 @@
  *
  * Font paths: overlay-title-font-paths.ts (process.cwd() candidates — safe on Vercel).
  */
-import { GlobalFonts, createCanvas, type SKRSContext2D } from "@napi-rs/canvas";
+import { createCanvas, type SKRSContext2D } from "@napi-rs/canvas";
 import {
   CJK_FAMILY,
   LATIN_BASIC_FAMILY,
