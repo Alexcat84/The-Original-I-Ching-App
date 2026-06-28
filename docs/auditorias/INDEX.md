@@ -25,6 +25,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260624-AUD-IMG-OVR-01 legge-diacritics` | 2026-06-24 | Overlay PNG: tofu en nombres Legge con diacríticos | closed | [20260624-AUD-IMG-OVR-01-legge-diacritics.md](./20260624-AUD-IMG-OVR-01-legge-diacritics.md) |
 | `20260624-PLAN-IMG-OVR-01b dual-font-fix-plan` | 2026-06-24 | Plan dual font-stack CJK/Latin | closed | [20260624-PLAN-IMG-OVR-01b-dual-font-fix-plan.md](./20260624-PLAN-IMG-OVR-01b-dual-font-fix-plan.md) |
 | `20260625-AUD-IMG-OVR-02 mutation-title-layout` | 2026-06-25 | Título mutación: resvg tspan, layout 1/2 líneas | closed | [20260625-AUD-IMG-OVR-02-mutation-title-layout.md](./20260625-AUD-IMG-OVR-02-mutation-title-layout.md) |
+| `20260627-AUD-IMG-OVR-03 khwan-resvg-regression` | 2026-06-27 | Tofu + flecha superpuesta en producción, #2 Khwăn→#1 Khien (mismo bug resvg-js, par fuera de muestra QA) | open | [20260627-AUD-IMG-OVR-03-khwan-resvg-regression.md](./20260627-AUD-IMG-OVR-03-khwan-resvg-regression.md) |
 
 **Tests:** `VF-WEB-OVR-001`, `TS-WEB-OVR-001`…`003`, `GEN-WEB-OVR-001`
 
