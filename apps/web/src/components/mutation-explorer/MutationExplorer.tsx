@@ -27,6 +27,7 @@ import { getSupabaseBrowser } from "@/lib/supabase-browser";
 import {
   buildOracleTextBlocks,
   formatConsultRef,
+  getReadingRuleExplanation,
   runExploreFromConsultation,
   type ConsultationExploreContext,
 } from "@/lib/mutation-explorer/explore-mutation";
@@ -120,6 +121,34 @@ function HexLine({
     <div className={className} aria-label={labels.lineToggleLabel(position)}>
       {bar}
     </div>
+  );
+}
+
+function ReadingRulesSection({
+  ui,
+  ruleLocale,
+  result,
+  translator,
+}: {
+  ui: MutationExplorerUiMessages;
+  ruleLocale: ReturnType<typeof parseAppLocale>;
+  result: MutationExploreResult;
+  translator: TranslatorTab;
+}) {
+  const explanation = getReadingRuleExplanation(result, translator);
+  if (!explanation) return null;
+
+  return (
+    <section className="mutation-explorer-reading-rules-section">
+      <h2 className="mutation-explorer-section-title">{ui.readingRulesSectionTitle}</h2>
+      <p className="consultation-record-row mutation-explorer-reading-rules-row">
+        <span className="consultation-record-key">{ui.ruleApplied}:</span>
+        <span className="consultation-record-value">
+          {getIchingMutationRuleLabel(ruleLocale, result.mutationRule)}
+        </span>
+      </p>
+      <p className="mutation-explorer-reading-rules-detail">{explanation}</p>
+    </section>
   );
 }
 
@@ -316,35 +345,27 @@ export function MutationExplorer({ locale }: Props) {
           className="coins-stage ritual-coins-stage mutation-explorer-cast-stage"
           aria-label={ui.fromConsultationBanner}
         >
-          <div className="mutation-explorer-cast-headers ritual-line-row">
-            <div className="mutation-explorer-cast-col">
-              {consultationPrimaryHex ? (
-                <>
-                  <span className="mutation-explorer-cast-hex-title" lang="zh">
-                    #{consultationPrimaryHex.number} {consultationPrimaryHex.chineseName}
-                  </span>
-                  <span className="mutation-explorer-cast-hex-sub">
-                    {consultationPrimaryHex.name}
-                  </span>
-                </>
-              ) : null}
-            </div>
-            <div aria-hidden="true" />
-            <div className="mutation-explorer-cast-col">
-              {consultationTransformedHex ? (
-                <>
-                  <span className="mutation-explorer-cast-hex-title" lang="zh">
-                    #{consultationTransformedHex.number}{" "}
-                    {consultationTransformedHex.chineseName}
-                  </span>
-                  <span className="mutation-explorer-cast-hex-sub">
-                    {consultationTransformedHex.name}
-                  </span>
-                </>
-              ) : null}
-            </div>
-          </div>
-          <CastRitualDiagram lines={consultation.lines} />
+          <CastRitualDiagram
+            lines={consultation.lines}
+            primaryHeader={
+              consultationPrimaryHex
+                ? {
+                    number: consultationPrimaryHex.number,
+                    chineseName: consultationPrimaryHex.chineseName,
+                    name: consultationPrimaryHex.name,
+                  }
+                : null
+            }
+            transformedHeader={
+              consultationTransformedHex
+                ? {
+                    number: consultationTransformedHex.number,
+                    chineseName: consultationTransformedHex.chineseName,
+                    name: consultationTransformedHex.name,
+                  }
+                : null
+            }
+          />
         </section>
 
         <div
@@ -356,12 +377,6 @@ export function MutationExplorer({ locale }: Props) {
             <span className="consultation-record-key">{ui.verificationCodeLabel}:</span>
             <span className="consultation-record-value" translate="no">
               {result.castIndex}
-            </span>
-          </p>
-          <p className="consultation-record-row">
-            <span className="consultation-record-key">{ui.ruleApplied}:</span>
-            <span className="consultation-record-value">
-              {getIchingMutationRuleLabel(ruleLocale, result.mutationRule)}
             </span>
           </p>
           <p className="consultation-record-row">
@@ -387,6 +402,13 @@ export function MutationExplorer({ locale }: Props) {
             </span>
           </p>
         </div>
+
+        <ReadingRulesSection
+          ui={ui}
+          ruleLocale={ruleLocale}
+          result={result}
+          translator={activeTranslator}
+        />
 
         <section className="mutation-explorer-oracle-section">
           <h2 className="mutation-explorer-section-title">{ui.oracleTexts}</h2>
@@ -599,12 +621,6 @@ export function MutationExplorer({ locale }: Props) {
               </span>
             </p>
             <p className="consultation-record-row">
-              <span className="consultation-record-key">{ui.ruleApplied}:</span>
-              <span className="consultation-record-value">
-                {getIchingMutationRuleLabel(ruleLocale, result.mutationRule)}
-              </span>
-            </p>
-            <p className="consultation-record-row">
               <span className="consultation-record-key">{ui.changingLines}:</span>
               <span className="consultation-record-value" translate="no">
                 {result.changingLines.length > 0 ? result.changingLines.join(", ") : "—"}
@@ -652,6 +668,13 @@ export function MutationExplorer({ locale }: Props) {
             {ui.compareOtherSystem} (
             {otherSystem === "huang" ? ui.lineReadingHuang : ui.lineReadingZhuxi})
           </button>
+
+          <ReadingRulesSection
+            ui={ui}
+            ruleLocale={ruleLocale}
+            result={result}
+            translator={tab}
+          />
 
           <h3 className="mutation-explorer-section-title">{ui.oracleTexts}</h3>
           <div className="library-tablist mutation-explorer-translator-tabs" role="tablist">

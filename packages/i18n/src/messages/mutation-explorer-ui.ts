@@ -28,6 +28,7 @@ export type MutationExplorerUiMessages = {
   lineMutating: string;
   lineStable: string;
   interactiveHint: string;
+  readingRulesSectionTitle: string;
   ruleApplied: string;
   ruleExplanationHeading: string;
   verificationCodeLabel: string;
@@ -88,6 +89,7 @@ const EN: MutationExplorerUiMessages = {
   lineMutating: "Changing",
   lineStable: "Stable",
   interactiveHint: "Tap a line to toggle changing / stable. The transformed hexagram updates automatically.",
+  readingRulesSectionTitle: "Reading rules applied",
   ruleApplied: "Rule applied",
   ruleExplanationHeading: "How the reading rule selects texts",
   verificationCodeLabel: "Verification code",
@@ -156,6 +158,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     lineStable: "Estable",
     interactiveHint:
       "Toca cada línea para alternar mutante / estable. El hexagrama transformado se actualiza automáticamente.",
+    readingRulesSectionTitle: "Reglas de lectura aplicadas",
     ruleApplied: "Regla aplicada",
     ruleExplanationHeading: "Criterio de la regla de lectura",
     verificationCodeLabel: "Código de verificación",

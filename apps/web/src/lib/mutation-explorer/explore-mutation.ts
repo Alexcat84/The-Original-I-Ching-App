@@ -66,9 +66,7 @@ function pushBlock(
 }
 
 /**
- * Full verbatim oracle payload for the verifier — every non-empty field from
- * selectTextsForClaude (gold @iching-oracle/iching-data) plus any remaining
- * changing-line texts from the primary hexagram.
+ * Verbatim oracle texts only (gold bundle) — excludes engine ruleExplanation.
  */
 export function buildOracleTextBlocks(
   result: MutationExploreResult,
@@ -77,13 +75,6 @@ export function buildOracleTextBlocks(
 ): OracleTextBlock[] {
   const texts = textsForTranslator(result, translator);
   const blocks: OracleTextBlock[] = [];
-
-  pushBlock(blocks, {
-    id: "rule-explanation",
-    kind: "rule",
-    heading: ui.ruleExplanationHeading,
-    text: texts.ruleExplanation,
-  });
 
   pushBlock(blocks, {
     id: "judgment-primary",
@@ -154,6 +145,14 @@ export function buildOracleTextBlocks(
   }
 
   return blocks;
+}
+
+/** Engine ruleExplanation — reading rules, not literal oracle text. */
+export function getReadingRuleExplanation(
+  result: MutationExploreResult,
+  translator: "wilhelm" | "legge" | "zhouyi",
+): string {
+  return textsForTranslator(result, translator).ruleExplanation.trim();
 }
 
 export function formatConsultRef(id: string): string {
