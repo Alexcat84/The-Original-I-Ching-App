@@ -62,7 +62,7 @@ export function CastRitualDiagram({ lines }: Props) {
               <span className="ritual-arrow">→</span>
             </div>
             <div
-              className={`ritual-line-slot ritual-line-slot--transformed is-visible${changing ? " is-changing" : ""}`}
+              className={`ritual-line-slot ritual-line-slot--transformed is-visible`}
             >
               {transformedYang ? <YangBar /> : <YinBar />}
             </div>
