@@ -11,7 +11,7 @@ interface Props {
 }
 
 /**
- * Dual-tier gate: ?cid= → auth + ownership (free OK); manual → Seeker+.
+ * Seeker+ gate (same as library). With ?cid=, also verifies consultation ownership.
  */
 export function MutationExplorerAccessGate({ children }: Props) {
   const [state, setState] = useState<GateState>("checking");
@@ -36,13 +36,24 @@ export function MutationExplorerAccessGate({ children }: Props) {
           return;
         }
 
+        const authHeaders = {
+          Authorization: `Bearer ${session.access_token}`,
+        };
+
+        const accessRes = await fetch("/api/library/access", {
+          headers: authHeaders,
+          cache: "no-store",
+        });
+        if (!accessRes.ok) {
+          setState("denied");
+          router.replace("/");
+          return;
+        }
+
         if (cid) {
           const res = await fetch(
             `/api/mutation-explorer/consultation?cid=${encodeURIComponent(cid)}`,
-            {
-              headers: { Authorization: `Bearer ${session.access_token}` },
-              cache: "no-store",
-            },
+            { headers: authHeaders, cache: "no-store" },
           );
           if (res.ok) {
             setState("allowed");
@@ -53,17 +64,7 @@ export function MutationExplorerAccessGate({ children }: Props) {
           return;
         }
 
-        const res = await fetch("/api/library/access", {
-          headers: { Authorization: `Bearer ${session.access_token}` },
-          cache: "no-store",
-        });
-
-        if (res.ok) {
-          setState("allowed");
-        } else {
-          setState("denied");
-          router.replace("/");
-        }
+        setState("allowed");
       } catch {
         setState("denied");
         router.replace("/");
