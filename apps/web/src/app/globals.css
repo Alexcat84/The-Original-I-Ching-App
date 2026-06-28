@@ -9062,3 +9062,130 @@ html.iching-rn-webview .oracle-toggle-track {
   0%, 100% { stroke-opacity: 1; }
   50%       { stroke-opacity: 0.45; }
 }
+
+/* ── Consultation record verify link ── */
+.consultation-record-verify-link {
+  color: var(--accent-cyan, #22d3ee);
+  font-weight: 600;
+  text-decoration: none;
+}
+.consultation-record-verify-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Mutation explorer ── */
+.mutation-explorer-page .mutation-explorer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.mutation-explorer-banner {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
+  border-radius: 0.5rem;
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.04));
+}
+.mutation-explorer-back-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--accent-cyan, #22d3ee);
+}
+.mutation-explorer-panel,
+.mutation-explorer-results {
+  padding: 1rem;
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
+  border-radius: 0.5rem;
+}
+.mutation-explorer-tabs,
+.mutation-explorer-translator-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.mutation-explorer-tabs button,
+.mutation-explorer-translator-tabs button {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.15));
+  background: transparent;
+  cursor: pointer;
+}
+.mutation-explorer-tabs button.is-active,
+.mutation-explorer-translator-tabs button.is-active {
+  border-color: var(--accent-cyan, #22d3ee);
+  color: var(--accent-cyan, #22d3ee);
+}
+.mutation-explorer-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+.mutation-explorer-hex-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.mutation-explorer-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 12rem;
+  margin: 0.75rem 0;
+}
+.mutation-explorer-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+.mutation-explorer-line.is-interactive {
+  cursor: pointer;
+}
+.mutation-explorer-line.is-changing .ritual-hex-line--yang,
+.mutation-explorer-line.is-changing .ritual-hex-line--yin > span {
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.85);
+}
+.mutation-explorer-line__label {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+.mutation-explorer-verify-btn,
+.mutation-explorer-compare-btn {
+  margin-top: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--accent-cyan, #22d3ee);
+  background: transparent;
+  color: var(--accent-cyan, #22d3ee);
+  cursor: pointer;
+}
+.mutation-explorer-oracle-block {
+  margin-bottom: 1rem;
+}
+.mutation-explorer-oracle-block blockquote {
+  margin: 0.35rem 0 0;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--border-subtle, rgba(255, 255, 255, 0.2));
+  white-space: pre-wrap;
+}
+.mutation-explorer-badge {
+  margin-left: 0.35rem;
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+.mutation-explorer-error {
+  color: #f87171;
+}
+.mutation-explorer-hint,
+.mutation-explorer-note {
+  opacity: 0.85;
+  font-size: 0.9rem;
+}
+.mutation-explorer-meta p {
+  margin: 0.25rem 0;
+}

@@ -18,6 +18,10 @@ export type ConsultationRecordUiMessages = {
   charge: string;
   chargePositive: string;
   chargeNegative: string;
+  verificationCode: string;
+  changingLinesLabel: string;
+  changingLinesNone: string;
+  verifyRulesLink: string;
   /** BCP 47 locale tag passed to `toLocaleDateString`. */
   dateLocale: string;
 };
@@ -40,6 +44,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Cargo:",
     chargePositive: "Positivo 吉",
     chargeNegative: "Negativo 凶",
+    verificationCode: "Código de verificación:",
+    changingLinesLabel: "Líneas mutantes:",
+    changingLinesNone: "Ninguna",
+    verifyRulesLink: "Verificar reglas →",
     dateLocale: "es",
   },
   en: {
@@ -59,6 +67,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Charge:",
     chargePositive: "Positive 吉",
     chargeNegative: "Negative 凶",
+    verificationCode: "Verification code:",
+    changingLinesLabel: "Changing lines:",
+    changingLinesNone: "None",
+    verifyRulesLink: "Verify rules →",
     dateLocale: "en",
   },
   pt: {
@@ -78,6 +90,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Carga:",
     chargePositive: "Positivo 吉",
     chargeNegative: "Negativo 凶",
+    verificationCode: "Código de verificação:",
+    changingLinesLabel: "Linhas mutantes:",
+    changingLinesNone: "Nenhuma",
+    verifyRulesLink: "Verificar regras →",
     dateLocale: "pt",
   },
   fr: {
@@ -97,6 +113,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Charge :",
     chargePositive: "Positif 吉",
     chargeNegative: "Négatif 凶",
+    verificationCode: "Code de vérification :",
+    changingLinesLabel: "Lignes mutantes :",
+    changingLinesNone: "Aucune",
+    verifyRulesLink: "Vérifier les règles →",
     dateLocale: "fr",
   },
   de: {
@@ -116,6 +136,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Ladung:",
     chargePositive: "Positiv 吉",
     chargeNegative: "Negativ 凶",
+    verificationCode: "Verifizierungscode:",
+    changingLinesLabel: "Mutierende Linien:",
+    changingLinesNone: "Keine",
+    verifyRulesLink: "Regeln prüfen →",
     dateLocale: "de",
   },
   it: {
@@ -135,6 +159,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Carica:",
     chargePositive: "Positivo 吉",
     chargeNegative: "Negativo 凶",
+    verificationCode: "Codice di verifica:",
+    changingLinesLabel: "Linee mutanti:",
+    changingLinesNone: "Nessuna",
+    verifyRulesLink: "Verifica regole →",
     dateLocale: "it",
   },
   ja: {
@@ -154,6 +182,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "荷電:",
     chargePositive: "陽 吉",
     chargeNegative: "陰 凶",
+    verificationCode: "検証コード:",
+    changingLinesLabel: "変爻:",
+    changingLinesNone: "なし",
+    verifyRulesLink: "ルールを検証 →",
     dateLocale: "ja",
   },
   zh: {
@@ -173,6 +205,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "命：",
     chargePositive: "正命 吉",
     chargeNegative: "负命 凶",
+    verificationCode: "验证码:",
+    changingLinesLabel: "变爻:",
+    changingLinesNone: "无",
+    verifyRulesLink: "验证规则 →",
     dateLocale: "zh",
   },
   ko: {
@@ -192,6 +228,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "전하:",
     chargePositive: "양성 吉",
     chargeNegative: "음성 凶",
+    verificationCode: "검증 코드:",
+    changingLinesLabel: "변효:",
+    changingLinesNone: "없음",
+    verifyRulesLink: "규칙 검증 →",
     dateLocale: "ko",
   },
   ar: {
@@ -211,6 +251,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "الشحنة:",
     chargePositive: "موجب 吉",
     chargeNegative: "سالب 凶",
+    verificationCode: "رمز التحقق:",
+    changingLinesLabel: "الخطوط المتغيرة:",
+    changingLinesNone: "لا شيء",
+    verifyRulesLink: "التحقق من القواعد →",
     dateLocale: "ar",
   },
   hi: {
@@ -230,6 +274,10 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "आवेश:",
     chargePositive: "सकारात्मक 吉",
     chargeNegative: "नकारात्मक 凶",
+    verificationCode: "सत्यापन कोड:",
+    changingLinesLabel: "परिवर्तित रेखाएँ:",
+    changingLinesNone: "कोई नहीं",
+    verifyRulesLink: "नियम सत्यापित करें →",
     dateLocale: "hi",
   },
 };

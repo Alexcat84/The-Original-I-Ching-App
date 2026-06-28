@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   getConsultationRecordUiMessages,
   getIchingMutationRuleLabel,
@@ -22,6 +23,8 @@ type Props = {
   transformedHexagram: number | null;
   transformedHexagramChinese?: string | null;
   mutationRule: string;
+  castIndex?: number;
+  changingLines?: number[];
   translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
   lineReadingSystem?: "huang" | "zhuxi" | null;
   oracleType?: "iching" | "oracle_bones";
@@ -45,6 +48,8 @@ export function ConsultationRecordCard({
   transformedHexagram,
   transformedHexagramChinese,
   mutationRule,
+  castIndex,
+  changingLines,
   translator,
   lineReadingSystem,
   oracleType = "iching",
@@ -137,6 +142,34 @@ export function ConsultationRecordCard({
             {getIchingMutationRuleLabel(ruleLocale, mutationRule)}
           </span>
         </p>
+        {castIndex != null ? (
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.verificationCode}</span>
+            <span className="consultation-record-value" translate="no">
+              {castIndex}
+            </span>
+          </p>
+        ) : null}
+        {changingLines != null ? (
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.changingLinesLabel}</span>
+            <span className="consultation-record-value" translate="no">
+              {changingLines.length > 0
+                ? changingLines.join(", ")
+                : labels.changingLinesNone}
+            </span>
+          </p>
+        ) : null}
+        {castIndex != null ? (
+          <p className="consultation-record-row consultation-record-verify-row">
+            <Link
+              href={`/mutation-explorer?cid=${encodeURIComponent(consultationId)}`}
+              className="consultation-record-verify-link"
+            >
+              {labels.verifyRulesLink}
+            </Link>
+          </p>
+        ) : null}
         {translator && translatorDisplayName[translator] ? (
           <p className="consultation-record-row">
             <span className="consultation-record-key">{labels.translatorLabel}</span>
