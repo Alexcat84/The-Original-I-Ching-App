@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 
 import { getDocNavUiMessages, getMutationExplorerUiMessages } from "@iching-oracle/i18n";
 import { MutationExplorerAccessGate } from "@/components/mutation-explorer/MutationExplorerAccessGate";
+import { MutationExplorerDocNav } from "@/components/mutation-explorer/MutationExplorerDocNav";
 import { MutationExplorer } from "@/components/mutation-explorer/MutationExplorer";
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
@@ -32,9 +32,9 @@ export default async function MutationExplorerPage() {
 
   return (
     <div className="oracle-shell doc-page mutation-explorer-page">
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link>
-      </nav>
+      <Suspense fallback={null}>
+        <MutationExplorerDocNav backLabel={nav.backToOracle} />
+      </Suspense>
       <MutationExplorerAccessGate>
         <article className="doc-article">
           <h1>{messages.title}</h1>

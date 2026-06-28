@@ -162,26 +162,6 @@ export function ConsultationRecordCard({
             </span>
           </p>
         ) : null}
-        {castIndex != null ? (
-          <p className="consultation-record-row consultation-record-verify-row">
-            {verifyRulesLocked ? (
-              <span
-                className="consultation-record-verify-link consultation-record-verify-link--locked"
-                aria-disabled="true"
-                title={labels.verifyRulesLockedHint}
-              >
-                {labels.verifyRulesLink}
-              </span>
-            ) : (
-              <Link
-                href={`/mutation-explorer?cid=${encodeURIComponent(consultationId)}`}
-                className="consultation-record-verify-link"
-              >
-                {labels.verifyRulesLink}
-              </Link>
-            )}
-          </p>
-        ) : null}
         {translator && translatorDisplayName[translator] ? (
           <p className="consultation-record-row">
             <span className="consultation-record-key">{labels.translatorLabel}</span>
@@ -199,6 +179,29 @@ export function ConsultationRecordCard({
           </span>
         </p>
       </div>
+      {castIndex != null ? (
+        <p className="consultation-record-row consultation-record-row--verify">
+          <span className="consultation-record-key" aria-hidden="true" />
+          <span className="consultation-record-value">
+            {verifyRulesLocked ? (
+              <span
+                className="consultation-record-inline-link consultation-record-inline-link--locked"
+                aria-disabled="true"
+                title={labels.verifyReadingLockedHint}
+              >
+                {labels.verifyReadingLink}
+              </span>
+            ) : (
+              <Link
+                href={`/mutation-explorer?cid=${encodeURIComponent(consultationId)}`}
+                className="consultation-record-inline-link"
+              >
+                {labels.verifyReadingLink}
+              </Link>
+            )}
+          </span>
+        </p>
+      ) : null}
       <p className="consultation-record-question">
         <span className="consultation-record-question-label">{labels.question}</span>
         {question.length > 160 ? `${question.slice(0, 160)}…` : question}

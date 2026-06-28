@@ -33,6 +33,7 @@ export type MutationExplorerUiMessages = {
   changingLines: string;
   stableLines: string;
   oracleTexts: string;
+  translatorAppliedLabel: string;
   compareOtherSystem: string;
   tabWilhelm: string;
   tabLegge: string;
@@ -90,6 +91,7 @@ const EN: MutationExplorerUiMessages = {
   changingLines: "Changing lines",
   stableLines: "Stable lines",
   oracleTexts: "Oracle texts",
+  translatorAppliedLabel: "Translator",
   compareOtherSystem: "View rule under the other system",
   tabWilhelm: "Wilhelm / Baynes",
   tabLegge: "James Legge",
@@ -155,6 +157,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     changingLines: "Líneas mutantes",
     stableLines: "Líneas estables",
     oracleTexts: "Textos oráculo",
+    translatorAppliedLabel: "Traductor:",
     compareOtherSystem: "Ver regla bajo el otro sistema",
     tabWilhelm: "Wilhelm / Baynes",
     tabLegge: "James Legge",
