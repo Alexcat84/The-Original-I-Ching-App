@@ -11,6 +11,10 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:overlay-exhaustive": "vitest run --config vitest.exhaustive.config.ts",
+    "gen:overlay-e2e-samples": "vitest run --config vitest.overlay-samples.config.ts",
+    "gen:overlay-random-samples": "vitest run --config vitest.overlay-random.config.ts",
+    "gen:overlay-long-name-samples": "vitest run --config vitest.overlay-long-names.config.ts",
     "clean": "rimraf .next"
   },
   "dependencies": {
@@ -29,6 +33,7 @@
     "@iching-oracle/oracle-bones-engine": "file:../../packages/oracle-bones-engine",
     "@iching-oracle/sharing": "file:../../packages/sharing",
     "@iching-oracle/ui": "file:../../packages/ui",
+    "@napi-rs/canvas": "^1.0.1",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
     "@resvg/resvg-js": "^2.6.2",
@@ -54,11 +59,13 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@types/fontkit": "^2.0.9",
     "@types/node": "^22.13.10",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.5.14",
+    "fontkit": "^2.0.4",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.3",
     "vitest": "^3.0.5"

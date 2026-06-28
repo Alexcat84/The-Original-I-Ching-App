@@ -868,6 +868,28 @@
       ]
     },
     {
+      "code": "20260627-AUD-IMG-OVR-03 khwan-resvg-regression",
+      "title": "Production tofu + arrow overlap, Legge #2 Khwan -> #1 Khien (resvg-js)",
+      "shortName": "khwan-resvg-regression",
+      "type": "AUD",
+      "family": "IMG-OVR",
+      "date": "2026-06-27",
+      "status": "closed",
+      "path": "docs/auditorias/20260627-AUD-IMG-OVR-03-khwan-resvg-regression.md",
+      "relatedCodes": [
+        "20260624-AUD-IMG-OVR-01 legge-diacritics",
+        "20260625-AUD-IMG-OVR-02 mutation-title-layout"
+      ],
+      "relatedTests": [
+        "VF-WEB-OVR-001 overlay-glyphs",
+        "TS-WEB-OVR-002 overlay-title-layout",
+        "TS-WEB-OVR-003 sumi-fallback-glyphs",
+        "TS-WEB-OVR-004 overlay-title-pango",
+        "TS-WEB-OVR-005 overlay-title-pango-exhaustive",
+        "TS-WEB-OVR-006 overlay-title-pango-e2e-samples"
+      ]
+    },
+    {
       "code": "20260625-AUD-REPO-01 repo-root-inventory",
       "title": "Repository root file inventory and residue cleanup",
       "shortName": "repo-root-inventory",

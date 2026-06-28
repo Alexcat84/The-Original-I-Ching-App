@@ -26,11 +26,12 @@ const nextConfig = {
   },
   // Monorepo root for serverless file tracing (single lockfile at repo root).
   outputFileTracingRoot: path.join(__dirname, "../.."),
-  serverExternalPackages: ["sharp", "@resvg/resvg-js"],
+  serverExternalPackages: ["sharp", "@resvg/resvg-js", "@napi-rs/canvas"],
   outputFileTracingIncludes: {
     "/api/**": [
       "./fonts/**",
       "../../node_modules/@fontsource/noto-serif-tc/files/noto-serif-tc-chinese-traditional-700-normal.woff",
+      "../../node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-normal.woff",
       "../../node_modules/@fontsource/noto-serif/files/noto-serif-latin-ext-400-normal.woff",
       "../../node_modules/@fontsource/noto-sans-symbols-2/files/noto-sans-symbols-2-symbols-400-normal.woff",
     ],
