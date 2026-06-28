@@ -1,9 +1,64 @@
 # Overlay PNG — tofu + flecha superpuesta en producción (#2 Khwăn → #1 Khien, Legge)
-**Código:** `20260627-AUD-IMG-OVR-03 khwan-resvg-regression` · **Familia:** IMG-OVR · **Estado:** closed
+**Código:** `20260627-AUD-IMG-OVR-03 khwan-resvg-regression` · **Familia:** IMG-OVR · **Estado:** **open** (reabierta 2026-06-28)
 
 - **Fecha:** 2026-06-27
-- **Estado:** ✅ **Cerrada — fix implementado y verificado (Opción B → revisión 2 `@napi-rs/canvas`/Skia)**: el título (CJK + EN + flecha) ya no se renderiza como `<text>` SVG vía `resvg-js`; se pre-renderiza a PNG transparente y se embebe como `<image>`. Motor final: `@napi-rs/canvas` (baseline compartido, `strokeText` nativo). Verificación: `TS-WEB-OVR-004`/`005` (8064 renders) + `TS-WEB-OVR-006` (4 muestras e2e Together). §10 documenta gap CJK pre-existente (corregido). §11 changelog incluye migración Pango→Canvas post-cierre visual. **Follow-up §12 (2026-06-28):** regresión staging Vercel «solo flechas» — rutas de fuente vía `import.meta.url`/`REPO_ROOT` rotas tras bundling; remedio en `overlay-title-font-paths.ts` + `TS-WEB-OVR-004` v1.1.0.
+- **Estado:** ⚠️ **Reabierta — §0 Zhou Yi (subtítulo `#N` tofu).** Cierres previos siguen válidos: migración resvg→Canvas (§9), gap CJK §10, rutas Vercel §12. W/L verificados en staging post-`dda9732`. **Pendiente:** subtítulo Zhou Yi (`#2 坤 → #1 乾`) — causa §0, opciones §14.
 - **Relacionado:** [`20260624-AUD-IMG-OVR-01-legge-diacritics.md`](./20260624-AUD-IMG-OVR-01-legge-diacritics.md), [`20260625-AUD-IMG-OVR-02-mutation-title-layout.md`](./20260625-AUD-IMG-OVR-02-mutation-title-layout.md)
+
+---
+
+## 0. Hallazgo abierto — Zhou Yi (subtítulo `#N` tofu, 2026-06-28)
+
+### 0.1 Síntoma (smoke staging, post-fix §12)
+
+Tras validar **Wilhelm** y **Legge** en staging (overlay completo: hanzi/romanización + flecha), el usuario probó **Zhou Yi** (周易) en los tres traductores. Resultado:
+
+| Banda | Zhou Yi `#2 → #1` (坤 → 乾) | W / L |
+|-------|------------------------------|-------|
+| **Superior (ZH)** | `坤 → 乾` correcto | OK |
+| **Inferior (subtítulo)** | **Tofu** antes de cada hanzi: `☒☒坤 → ☒☒乾` | `#2 Khwăn → #1 Khien` OK |
+
+La flecha vectorial y los hanzi del subtítulo **sí** renderizan; fallan exactamente **dos glifos tofu por bloque** — el prefijo `#2` / `#1`.
+
+### 0.2 Causa raiz (confirmada con fontkit local, 2026-06-28)
+
+**No** es un gap de hanzi Zhou Yi en el subset CJK. **No** son los símbolos del bloque Unicode Yijing Hexagram (U+4DC0–U+4DFF, p. ej. ䷁/䷀). La app en Zhou Yi usa el carácter clásico **`坤`**, no el pictograma compuesto **`䷁`**.
+
+| Pieza | Comportamiento |
+|-------|----------------|
+| Línea ZH | Solo hanzi + flecha vectorial → fuente CJK subset (72 caracteres) → **OK** |
+| Línea subtítulo Zhou Yi | Texto real: `#2 坤 → #1 乾` (vía `buildOverlayEnglishTitleText`) |
+| Regla `enScript` | Si `primaryName` contiene hanzi → **`script: "cjk"`** para **toda** la línea (`sumi-hexagram-art.ts`) |
+| Renderer Canvas | Con `script: "cjk"`, el segmento completo `#2 坤` usa `CJK_FAMILY` — **incluidos `#` y dígitos** |
+| Subset `noto-serif-tc-hexagram-titles.woff2` | Solo los **72 hanzi** de datos reales — **sin** `#`, `0`–`9` |
+
+Verificación fontkit (repo local):
+
+| Carácter | En subset CJK | En Noto Latin basic |
+|----------|---------------|---------------------|
+| 72 hanzi Zhou Yi (`name` + `chineseName`) | **72/72 ✓** | — |
+| `#`, `0`–`9` | **✗** | **✓** |
+| U+4DC0, U+4DC1, U+4DFF (símbolos hexagrama) | **✗** | **✗** |
+
+Wilhelm/Legge usan `enScript: "latin"` → `#N` + romanización van a Noto Latin basic/ext → sin tofu.
+
+### 0.3 Por que los tests no lo detectaron
+
+1. **`TS-WEB-OVR-004` fontkit CJK:** excluye codepoints &lt; U+3400 — no exige `#`/dígitos en la fuente CJK.
+2. **Ink ratio banda EN:** 坤, 乾 y la flecha producen suficiente tinta aunque `#2`/`#1` sean tofu.
+3. **8064 renders (`TS-WEB-OVR-005`):** mismo criterio de ink; Zhou Yi pasa con subtítulo parcialmente roto.
+4. **Camino resvg antiguo:** `embed-svg-overlay-font.ts` separaba `collectLatinOverlayChars(enText)` y `collectCjkOverlayChars(zhText)` — el subtítulo Zhou Yi recibía **latin + CJK por separado**. Ese split **no se replicó** en Canvas al introducir `enScript: "cjk"` global.
+
+### 0.4 Aclaracion: Zhou Yi vs «simbolos» Unicode
+
+- **Datos runtime Zhou Yi** (`hexagrams.zhouyi.json`): `name` y `chineseName` son **hanzi** (經 clásico), p. ej. `"坤"`, `"乾"`. **Todos** están en el subset §10.
+- **Bloque U+4DC0–U+4DFF** (䷀…䷿): símbolos compuestos del estándar Unicode para el Yijing. **No** aparecen en el overlay de esta app hoy.
+- **Fuentes Noto Serif TC / CJK** ([especificacion Noto](https://notofonts.github.io/noto-docs/specimen/NotoSerifCJKtc/)): incluyen Basic Latin, CJK Unified Ideographs, etc., pero **no** listan el bloque Yijing Hexagram Symbols entre sus bloques soportados. Fuentes que sí suelen cubrir U+4DC0: Symbola, DejaVu Sans, BabelStone Han ([Alan Wood](https://www.alanwood.net/unicode/yijing_hexagram_symbols.html), [Unicode chart U+4DC0](https://www.unicode.org/charts/nameslist/n_4DC0.html)).
+- Conclusión: cambiar a «una fuente que tenga simbolos Zhou Yi» **no resuelve el bug actual** (que es ASCII `#N`), salvo que se **rediseñe el producto** para mostrar ䷁ en lugar de 坤 — scope distinto.
+
+### 0.5 Estado
+
+**Implementación §15 Fase 1–3 en curso** (segmentación mixta + tests). Pendiente smoke staging §15 Fase 5 antes de cerrar AU.
 
 ---
 
@@ -179,7 +234,9 @@ El archivo viejo (`@fontsource/noto-serif-tc`, usado por `embed-svg-overlay-font
 | 2026-06-28 | Revisión 1b: outline Pango con dilatación alpha (`4132614`) tras feedback visual en imagen Together real (outline borroso con hack 8-offset). |
 | 2026-06-28 | **Revisión 2 (vigente):** migración a `@napi-rs/canvas`/Skia (`c028668`) — baseline compartido CJK/Latin, `strokeText` nativo. Tests OVR-004/005 re-verificados en verde. |
 | 2026-06-28 | `TS-WEB-OVR-006`: generador e2e Together + pipeline prod completo (`3bf77fd`); registrado en QA registry (corrige gap WF-DOC-02). |
-| 2026-06-28 | **§12 follow-up:** regresión staging Vercel (solo flechas visibles, sin hanzi ni romanización). Causa: resolución de paths de fuente vía `import.meta.url`/`REPO_ROOT` inválida tras bundling Next; `GlobalFonts.registerFromPath` devolvía `null` silenciosamente en Linux sin fallback OS. El fix Canvas (§9) no estaba mal — los tests v1.0.0 daban falsa confianza (paths de source en Vitest + ink solo en banda EN). Remedio: `overlay-title-font-paths.ts` (candidatos `process.cwd()`, patrón `svg-to-png.ts`), refactor `overlay-title-pango.ts`, `noto-serif-latin-400-normal.woff` en `outputFileTracingIncludes`, `TS-WEB-OVR-004` v1.1.0 (resolver prod + gate `registerFromPath` + ink ZH+EN). Smoke post-fix: consulta Legge `#2 Khwăn → #1 Khien` en staging preview. |
+| 2026-06-28 | **§12 follow-up:** regresión staging Vercel (solo flechas visibles, sin hanzi ni romanización). Causa: resolución de paths de fuente vía `import.meta.url`/`REPO_ROOT` inválida tras bundling Next; `GlobalFonts.registerFromPath` devolvía `null` silenciosamente en Linux sin fallback OS. Remedio: `overlay-title-font-paths.ts`, `TS-WEB-OVR-004` v1.1.0. Smoke W/L OK post-`dda9732`. |
+| 2026-06-28 | **§0 + §13–§14 — reapertura AU:** smoke staging Zhou Yi — subtítulo `#N` tofu. Causa: `enScript: "cjk"` fuerza ASCII a subset solo-hanzi. |
+| 2026-06-28 | **§15 plan + implementacion Opcion A:** `splitTextByOverlayFont` en `overlay-title-pango.ts`; `TS-WEB-OVR-004` v1.2.0; `TS-WEB-OVR-005` v1.1.0 (+4032 Zhou Yi, ZH+EN ink). Pendiente smoke §15.5. |
 
 ---
 
@@ -229,3 +286,156 @@ En Linux (Vercel lambda) no hay fallback a fuentes del sistema; `registerFromPat
 ### 12.5 Smoke post-fix
 
 Deploy staging → consulta manual Legge, mutación `#2 Khwăn → #1 Khien` (6 tiradas manual H/H/H). El overlay debe mostrar `坤 → 乾` y `#2 Khwăn → #1 Khien`, no solo flechas.
+
+---
+
+## 13. Zhou Yi — analisis de cobertura 1:1 (datos vs fuentes)
+
+Inventario reproducible (2026-06-28, `fontkit` + `hexagrams.zhouyi.json`):
+
+| Conjunto | Cantidad | En subset CJK (18 KB) | En Noto Latin (overlay) | En overlay hoy |
+|----------|----------|------------------------|-------------------------|----------------|
+| Hanzi unicos Zhou Yi (`name` ∪ `chineseName`) | **72** | **72/72** | N/A | Linea ZH + parte hanzi subtítulo ✓ |
+| Prefijo subtítulo `#` + `0`–`9` | 11 codepoints | **0/11** | **11/11** | Forzado a CJK → **tofu** |
+| Bloque U+4DC0–U+4DFF (䷀…䷿) | 64 simbolos | **0/64** | **0/64** | **No usados** en strings overlay |
+
+Script de regeneracion del subset (`generate-cjk-title-font-subset.mjs`) ya fusiona hanzi de **Wilhelm + Legge + Zhou Yi** — la comparacion 1:1 Zhou Yi vs subset es **100% en hanzi**; el desajuste es **solo mezcla ASCII+hanzi en una linea `script: "cjk"`**.
+
+---
+
+## 14. Estrategias de remediacion (pendiente decision)
+
+Pregunta de producto: «Si la fuente nueva incluye simbolos Zhou Yi, migrar solo el pipe de imagenes?»
+
+### 14.1 Lo que dice la tipografia / Unicode (externo)
+
+| Fuente / fuente | Hanzi TC | Basic Latin `#0-9` | Bloque Yijing U+4DC0 |
+|-----------------|----------|--------------------|----------------------|
+| Subset propio (18 KB woff2) | 72 hanzi app | No | No |
+| `@fontsource/noto-serif-tc` chinese-traditional-700 (~1.9 MB woff) | Miles | Subsets latin aparte en npm | **No** (no en bloques Noto CJK TC) |
+| Noto Serif TC completo (Google) | ~43k caracteres | Si (Basic Latin en familia) | **No** |
+| Symbola / DejaVu / BabelStone Han | Variable | Parcial | **Si** (U+4DC0) |
+
+Referencias: [Noto Serif CJK TC specimen](https://notofonts.github.io/noto-docs/specimen/NotoSerifCJKtc/), [Unicode Yijing Hexagram Symbols](https://www.unicode.org/charts/nameslist/n_4DC0.html), [Alan Wood browser test U+4DC0](https://www.alanwood.net/unicode/yijing_hexagram_symbols.html).
+
+**Implicacion:** no existe una sola fuente Noto «serif TC + simbolos hexagrama» lista para vendorear. Mostrar ䷁ ademas de 坤 exigiria **segunda fuente** (Symbola) o **dibujo vectorial** (como la flecha), no solo ampliar el subset actual.
+
+### 14.2 Opcion A — Segmentacion mixta en Canvas (recomendada, minima)
+
+Replicar el split del camino resvg: en lineas Zhou Yi, `#N ` → `LATIN_BASIC_FAMILY`; hanzi → `CJK_FAMILY`. Ya existen las tres fuentes registradas (`overlay-title-font-paths.ts`).
+
+| Pros | Contras |
+|------|---------|
+| Diff pequeno; mismo peso bundle (~18 KB CJK) | Hay que implementar `splitMixedCjkLine` + test que detecte tofu en prefijo |
+| Paridad con W/L (misma logica de `#N`) | Segmentacion manual (no Pango fallback) |
+
+### 14.3 Opcion B — Ampliar subset con `#0-9` + espacio
+
+Anadir 11 codepoints al `text=` de `generate-cjk-title-font-subset.mjs`.
+
+| Pros | Contras |
+|------|---------|
+| Parche rapido; una familia por linea Zhou Yi | Fragil (puntuacion futura vuelve a romper) |
+| Subset sigue ~20 KB | No resuelve si algun dia se mezclan otros ASCII |
+
+### 14.4 Opcion C — Fuente Noto Serif TC «completa» solo en pipe imagen
+
+Sustituir el subset de 18 KB por `noto-serif-tc-chinese-traditional-700` (~1.9 MB woff) **solo** en `overlay-title-font-paths.ts` / trace Vercel.
+
+| Pros | Contras |
+|------|---------|
+| Una familia para toda linea hanzi (si incluye Latin en el mismo archivo — **no**: Fontsource TC chinese-traditional es **solo CJK**, Latin va en archivos separados) | **No elimina** la necesidad de multi-font: TC chinese file no trae `#` |
+| Cobertura hanzi futura sin regenerar subset | **~100×** mas peso en lambda; trace + cold start |
+| | **Sigue sin U+4DC0** |
+
+**Veredicto factibilidad:** factible tecnicamente para **hanzi** adicionales, pero **no sustituye** Latin para `#N` ni anade simbolos hexagrama Unicode. Peor relación costo/beneficio que Opcion A.
+
+### 14.5 Opcion D — Producto: simbolos U+4DC0 en overlay Zhou Yi
+
+Comparar 1:1 `#n` → ䷀…䷿ y renderizar pictogramas en lugar de (o junto a) hanzi.
+
+| Pros | Contras |
+|------|---------|
+| Estetica «clasica» Unicode Yijing | **Cambio de producto**; fuente extra (Symbola ~800 KB+) o SVG por hexagrama |
+| | Noto TC **no** los incluye; dataset actual no usa esos codepoints |
+| | Legge/Wilhelm no usarian lo mismo — inconsistencia entre traductores |
+
+### 14.6 Recomendacion del equipo (documentacion, sin implementar aun)
+
+1. **Cerrar bug actual:** Opcion **A** (segmentacion mixta) + test Zhou Yi que falle si `#` no tiene tinta en region prefijo.
+2. **Mantener subset 72 hanzi** — la comparacion 1:1 confirma que Zhou Yi **ya esta cubierto** en hanzi.
+3. **No** migrar a fuente completa solo por Zhou Yi — no arregla `#N` y penaliza bundle.
+4. **Simbolos U+4DC0:** decision de producto aparte; requiere fuente distinta a Noto Serif, no es el tofu observado.
+
+---
+
+## 15. Plan de verificación e implementación — Zhou Yi segmentación mixta (2026-06-28)
+
+**Decision:** Opcion **A** (§14.2). Auditoria estatica confirma **0 gaps** Wilhelm/Legge con el cambio; solo Zhou Yi subtitulo (`#N` + hanzi) se beneficia.
+
+### 15.1 Analisis exhaustivo previo (baseline confirmado)
+
+| Traductor | Gaps renderer **antes** | Gaps con segmentacion mixta | Pares mutacion |
+|-----------|-------------------------|----------------------------|----------------|
+| Wilhelm | 0 | 0 | 4032 OK |
+| Legge | 0 | 0 | 4032 OK |
+| Zhou Yi | **17 174** (`#`/digitos en CJK) | **0** | 4032 a cubrir en OVR-005 |
+
+**Huecos de tests identificados (pre-fix):**
+
+| Gate | Ciego a |
+|------|---------|
+| OVR-004 fontkit | ASCII en linea CJK (skip cp &lt; U+3400) |
+| OVR-004 ink | Prefijo `#N` tofu enmascarado por tinta hanzi |
+| OVR-005 | Sin Zhou Yi; solo banda EN |
+| OVR-005 | Wilhelm 110 layouts 2 lineas sin assert por linea |
+
+**No aplica:** simbolos U+4DC0 (app usa hanzi); fuente Noto TC completa (~1.9 MB) no sustituye Latin para `#N`.
+
+### 15.2 Fases
+
+| Fase | Entregable | Estado |
+|------|------------|--------|
+| **0** | AU §0–§14 + este §15 | Hecho |
+| **1** | `splitTextByOverlayFont()` + `splitOnArrow` script cjk usa segmentacion mixta (`overlay-title-pango.ts`) | Hecho |
+| **2** | `TS-WEB-OVR-004` v1.2.0: tests segmentacion + Zhou Yi `#2→#1` + gate fontkit por chunk | Hecho |
+| **3** | `TS-WEB-OVR-005` v1.1.0: grid **zhouyi** 4032 + ink ZH+EN (12096 renders total) | Hecho (local PASS 2026-06-28) |
+| **4** | Script `verify-overlay-title-glyphs.mjs` reproducible | **Diferido** (post-smoke) |
+| **5** | Smoke manual staging (checklist abajo) | Pendiente |
+| **6** | Cierre AU + promocion `main` | Pendiente Fase 5 |
+
+### 15.3 Cambios de codigo (Fase 1)
+
+- `splitTextByOverlayFont(text)`: hanzi → `CJK_FAMILY`; ASCII/Latin (mismos rangos que `collectLatinOverlayChars`) → basic/ext.
+- `splitOnArrow(..., script: "cjk")`: N chunks con familias correctas (antes: 1 chunk CJK).
+- Linea ZH pura hanzi: comportamiento identico (un chunk CJK).
+- W/L (`script: "latin"`): **sin cambio** — `splitLatinByFontCoverage` intacto.
+
+### 15.4 Tests nuevos (Fase 2–3)
+
+| Test | Atrapa |
+|------|--------|
+| `splitTextByOverlayFont("#2 坤")` | Latin + CJK |
+| Zhou Yi 64 standalone fontkit por chunk | `#N` en Latin |
+| `#2 坤 → #1 乾` ink + banda prefijo | Regresion §0 |
+| OVR-005 zhouyi 4032 | Mutaciones Zhou Yi |
+| OVR-005 ZH+EN bandas | Linea grande + subtitulo |
+
+### 15.5 Smoke manual (Fase 5 — checklist verificacion)
+
+| # | Traductor | Caso | Verificar |
+|---|-----------|------|-----------|
+| 1 | Legge | #2→#1, 6× H/H/H | Sin regresion W/L |
+| 2 | Wilhelm | #6→#10 mutacion | Subtitulo OK |
+| 3 | **Zhou Yi** | **#2→#1** | **`#2 坤 → #1 乾` sin tofu** |
+| 4 | Zhou Yi | #33→#34 | 遯/遁 |
+| 5 | Legge | #43→#44 | 夬/姤 |
+
+### 15.6 Criterios de cierre AU
+
+- [ ] Smoke §15.5 PASS en staging
+- [ ] `npm run test --prefix apps/web -- overlay-title-pango` verde
+- [ ] `npm run test:overlay-exhaustive --prefix apps/web` verde (~12k renders)
+- [ ] §0 marcado cerrado; `status: closed` en registry
+
+---

@@ -1,15 +1,10 @@
 /**
- * QA code: TS-WEB-OVR-005 overlay-title-pango-exhaustive · v1.0.0
+ * QA code: TS-WEB-OVR-005 overlay-title-pango-exhaustive · v1.1.0
  * Area: apps/web/src/lib/overlay-title-pango, sumi-hexagram-art (overlay variant)
  * Family: WEB-OVR
  *
- * The FULL 64x63 mutation-pair grid for both Wilhelm and Legge (8064 renders, ~4 min) —
- * deliberately NOT part of the default `vitest run` (see vitest.exhaustive.config.ts).
- * Run via `npm run test:overlay-exhaustive --prefix apps/web`, wired as its own explicit
- * step in .github/workflows/ci.yml so it always executes in CI, on every push/PR — not
- * an opt-in env var nobody sets (that exact pattern is why the Khwăn/resvg regression
- * shipped with a green suite; see
- * docs/auditorias/20260627-AUD-IMG-OVR-03-khwan-resvg-regression.md).
+ * Full 64×63 mutation-pair grid for Wilhelm, Legge, and Zhou Yi (12096 renders, ~6 min).
+ * Config: vitest.exhaustive.config.ts — explicit CI step, not default npm test.
  */
 import { describe, expect, it } from "vitest";
 import sharp from "sharp";
@@ -37,17 +32,20 @@ async function inkRatio(
   return opaque / (region.width * region.height);
 }
 
+const ZH_TITLE_REGION = { left: 0, top: 10, width: 1344, height: 170 };
 const EN_TITLE_REGION = { left: 0, top: 140, width: 1344, height: 95 };
 const MIN_INK_RATIO = 0.004;
 
-async function renderAndCheck(params: {
-  primaryNumber: number;
-  primaryName: string;
-  primaryChinese: string;
-  transformedNumber: number;
-  transformedName: string;
-  transformedChinese: string;
-}): Promise<void> {
+async function renderAndCheck(
+  params: {
+    primaryNumber: number;
+    primaryName: string;
+    primaryChinese: string;
+    transformedNumber: number;
+    transformedName: string;
+    transformedChinese: string;
+  },
+): Promise<void> {
   const dataUrl = await buildSumiHexagramOverlaySvgDataUrl({ lines: FIXTURE_LINES, ...params });
   const svg = decodeURIComponent(dataUrl.slice("data:image/svg+xml;charset=utf-8,".length));
   const match = svg.match(/href="data:image\/png;base64,([^"]+)"/);
@@ -57,14 +55,14 @@ async function renderAndCheck(params: {
     );
   }
   const png = Buffer.from(match[1]!, "base64");
-  const ratio = await inkRatio(png, EN_TITLE_REGION);
-  expect(
-    ratio,
-    `#${params.primaryNumber} ${params.primaryName} -> #${params.transformedNumber} ${params.transformedName}`,
-  ).toBeGreaterThan(MIN_INK_RATIO);
+  const label = `#${params.primaryNumber} ${params.primaryName} -> #${params.transformedNumber} ${params.transformedName}`;
+  const zh = await inkRatio(png, ZH_TITLE_REGION);
+  const en = await inkRatio(png, EN_TITLE_REGION);
+  expect(zh, `${label} ZH`).toBeGreaterThan(MIN_INK_RATIO);
+  expect(en, `${label} EN`).toBeGreaterThan(MIN_INK_RATIO);
 }
 
-describe.each(["wilhelm", "legge"] as const)("overlay title — full pair grid (%s)", (translator) => {
+describe.each(["wilhelm", "legge", "zhouyi"] as const)("overlay title — full pair grid (%s)", (translator) => {
   const hexagrams = getAllHexagramRecords({ translator });
 
   it(`renders all ${hexagrams.length * (hexagrams.length - 1)} primary/transformed pairs without a dropped or tofu'd title`, async () => {
@@ -81,5 +79,5 @@ describe.each(["wilhelm", "legge"] as const)("overlay title — full pair grid (
         });
       }
     }
-  }, 300_000);
+  }, 600_000);
 });

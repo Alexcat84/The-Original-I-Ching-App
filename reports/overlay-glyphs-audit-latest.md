@@ -1,6 +1,6 @@
 # Overlay glyph coverage gate
 
-- **Generated:** 2026-06-28T02:54:05.532Z
+- **Generated:** 2026-06-28T13:15:57.096Z
 - **Result:** PASS
 - **Overlay rows:** 128/128
 - **Unique hanzi (zh line):** 71

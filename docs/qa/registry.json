@@ -575,7 +575,7 @@
       "shortName": "overlay-title-pango",
       "type": "TS",
       "family": "WEB-OVR",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "versionHistory": [
         {
           "version": "1.0.0",
@@ -586,6 +586,11 @@
           "version": "1.1.0",
           "date": "2026-06-28",
           "change": "Production font path resolver (resolveOverlayTitleFontPaths + registerFromPath gate); fontkit via resolved paths; ink checks on ZH + EN bands; #43/#44 CJK regression case."
+        },
+        {
+          "version": "1.2.0",
+          "date": "2026-06-28",
+          "change": "Mixed CJK/Latin segmentation (splitTextByOverlayFont) for Zhou Yi #N subtitles; fontkit per-chunk gate; #2->#1 prefix ink region."
         }
       ],
       "path": "apps/web/src/lib/__tests__/overlay-title-pango.test.ts",
@@ -601,12 +606,17 @@
       "shortName": "overlay-title-pango-exhaustive",
       "type": "TS",
       "family": "WEB-OVR",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "versionHistory": [
         {
           "version": "1.0.0",
           "date": "2026-06-27",
           "change": "Initial: companion to TS-WEB-OVR-004. Deliberately NOT in apps/web's default `npm test` (would add ~5 min to every local run) -- runs via its own vitest.exhaustive.config.ts and is wired as an explicit, always-run step in .github/workflows/ci.yml (not behind an opt-in env var, to avoid repeating the exact gap that let the Khwan regression ship)."
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-06-28",
+          "change": "Adds zhouyi 4032 mutation pairs (12096 total renders); ZH+EN ink bands per pair."
         }
       ],
       "path": "apps/web/src/lib/__tests__/overlay-title-pango.exhaustive.test.ts",

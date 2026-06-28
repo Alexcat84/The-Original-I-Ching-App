@@ -1,6 +1,6 @@
 /**
 
- * QA code: TS-WEB-OVR-004 overlay-title-pango · v1.1.0
+ * QA code: TS-WEB-OVR-004 overlay-title-pango · v1.2.0
 
  * Area: apps/web/src/lib/overlay-title-pango, sumi-hexagram-art (overlay variant)
 
@@ -18,9 +18,7 @@
 
  * why the tofu/arrow-overlap regression shipped to production despite a green test
 
- * suite. v1.1.0: font paths via resolveOverlayTitleFontPaths (same as Vercel prod),
-
- * registerFromPath gate, ink checks on ZH + EN bands.
+ * suite. v1.2.0: mixed CJK/Latin segmentation (Zhou Yi #N); font assignment gate.
 
  */
 
@@ -46,7 +44,12 @@ import {
 
 } from "../overlay-title-font-paths";
 
-import { renderArrowGlyph } from "../overlay-title-pango";
+import {
+  CJK_FAMILY,
+  LATIN_BASIC_FAMILY,
+  renderArrowGlyph,
+  splitTextByOverlayFont,
+} from "../overlay-title-pango";
 
 import { buildSumiHexagramOverlaySvgDataUrl, type SumiLineInput } from "../sumi-hexagram-art";
 
@@ -109,6 +112,96 @@ describe("overlay title font paths (production resolver)", () => {
     const paths = await resolveOverlayTitleFontPaths();
 
     expect(() => assertOverlayTitleFontsRegistered(paths)).not.toThrow();
+
+  });
+
+});
+
+
+
+describe("overlay title mixed segmentation (Zhou Yi #N + hanzi, AUD-IMG-OVR-03 §15)", () => {
+
+  it("routes # and digits to Latin, hanzi to CJK", () => {
+
+    expect(splitTextByOverlayFont("#2 坤")).toEqual([
+
+      { text: "#2 ", family: LATIN_BASIC_FAMILY },
+
+      { text: "坤", family: CJK_FAMILY },
+
+    ]);
+
+  });
+
+
+
+  it("keeps pure hanzi on a single CJK chunk", () => {
+
+    expect(splitTextByOverlayFont("坤")).toEqual([{ text: "坤", family: CJK_FAMILY }]);
+
+  });
+
+
+
+  it("assigns every Zhou Yi subtitle char to a font that has the glyph", async () => {
+
+    const paths = await resolveOverlayTitleFontPaths();
+
+    const cjkFont = openSingleFont(paths.cjk);
+
+    const latinBasicFont = openSingleFont(paths.latinBasic);
+
+    const latinExtFont = openSingleFont(paths.latinExt);
+
+
+
+    function assertLineGlyphs(line: string, label: string) {
+
+      for (const { text, family } of splitTextByOverlayFont(line)) {
+
+        for (const ch of text) {
+
+          if (ch === " ") continue;
+
+          const cp = ch.codePointAt(0)!;
+
+          const font =
+
+            family === CJK_FAMILY
+
+              ? cjkFont
+
+              : latinFontKeyForChar(ch) === "latinBasic"
+
+                ? latinBasicFont
+
+                : latinExtFont;
+
+          expect(
+
+            font.hasGlyphForCodePoint(cp),
+
+            `${label}: missing ${ch} (U+${cp.toString(16)}) in ${family}`,
+
+          ).toBe(true);
+
+        }
+
+      }
+
+    }
+
+
+
+    for (const hex of zhouyi) {
+
+      assertLineGlyphs(`#${hex.number} ${hex.name}`, `zhouyi #${hex.number} standalone`);
+
+    }
+
+    assertLineGlyphs("#2 坤", "zhouyi mutation primary #2");
+
+    assertLineGlyphs("#1 乾", "zhouyi mutation transformed #1");
 
   });
 
@@ -355,6 +448,34 @@ function byNumber(records: readonly HexagramRecord[], number: number): HexagramR
   return found;
 
 }
+
+
+
+describe("overlay title rendering — Zhou Yi regression (§0 / §15)", () => {
+
+  it("renders #2 坤 -> #1 乾 with subtitle prefix and hanzi ink", async () => {
+
+    const png = await renderOverlayTitlePng({
+
+      primaryNumber: 2,
+
+      primaryName: "坤",
+
+      primaryChinese: "坤",
+
+      transformedNumber: 1,
+
+      transformedName: "乾",
+
+      transformedChinese: "乾",
+
+    });
+
+    await expectTitleInk(png, "zhouyi #2 坤 -> #1 乾");
+
+  });
+
+});
 
 
 

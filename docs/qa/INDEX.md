@@ -68,8 +68,8 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `TS-WEB-OVR-001 embed-svg-overlay-font` | `apps/web/src/lib/embed-svg-overlay-font` | **1.2.0** | 1.1 dual font · 1.2 symbols + TDZ fix | `npm run test --prefix apps/web -- embed-svg-overlay-font` |
 | `TS-WEB-OVR-002 overlay-title-layout` | `apps/web/src/lib/overlay-title-layout` | 1.0.0 | Layout 1/2 líneas mutación | `npm run test --prefix apps/web -- overlay-title-layout` |
 | `TS-WEB-OVR-003 sumi-fallback-glyphs` | `apps/web/src/lib/sumi-fallback-glyph-samples` | 1.0.0 | Smoke 292 PNG manifest | `npm run generate:sumi-fallback-glyphs:quick` |
-| `TS-WEB-OVR-004 overlay-title-pango` | `apps/web/src/lib/overlay-title-pango` | 1.1.0 | Cobertura fontkit vía `resolveOverlayTitleFontPaths` + gate `registerFromPath` + render real con ink ZH+EN (8064 pares en companion OVR-005). Corre por defecto | `npm run test --prefix apps/web -- overlay-title-pango` |
-| `TS-WEB-OVR-005 overlay-title-pango-exhaustive` | `apps/web/src/lib/overlay-title-pango` | 1.0.0 | Grilla completa 64×63 × 2 traductores (8064 renders, ~5 min). Config vitest separada, **no** en `npm test` — paso explícito en `ci.yml`, nunca detrás de env-var opcional | `npm run test:overlay-exhaustive --prefix apps/web` |
+| `TS-WEB-OVR-004 overlay-title-pango` | `apps/web/src/lib/overlay-title-pango` | 1.2.0 | Segmentacion mixta Zhou Yi + fontkit por chunk + render real ZH+EN | `npm run test --prefix apps/web -- overlay-title-pango` |
+| `TS-WEB-OVR-005 overlay-title-pango-exhaustive` | `apps/web/src/lib/overlay-title-pango` | 1.1.0 | Grilla 64×63 × **3** traductores (12096 renders, ~6 min). ZH+EN ink | `npm run test:overlay-exhaustive --prefix apps/web` |
 | `TS-WEB-OVR-006 overlay-title-pango-e2e-samples` | `apps/web/src/lib/overlay-title-pango` | 1.0.0 | 4 muestras e2e: Together FLUX + overlay prod + resvg + composite. Config `vitest.overlay-samples.config.ts`; skip sin `TOGETHER_API_KEY` | `npm run gen:overlay-e2e-samples --prefix apps/web` |
 
 ### Data / context — `TS-DATA-*`, `TS-CTX-*`

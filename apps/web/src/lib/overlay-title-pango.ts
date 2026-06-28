@@ -64,6 +64,44 @@ function familyForLatinChar(ch: string): string {
   return latinFontKeyForChar(ch) === "latinBasic" ? LATIN_BASIC_FAMILY : LATIN_EXT_FAMILY;
 }
 
+/** CJK hanzi ranges — same as collectCjkOverlayChars in embed-svg-overlay-font.ts. */
+export function isCjkOverlayHanzi(ch: string): boolean {
+  const cp = ch.codePointAt(0) ?? 0;
+  return (cp >= 0x4e00 && cp <= 0x9fff) || (cp >= 0x3400 && cp <= 0x4dbf);
+}
+
+/** Latin overlay chars (#, digits, Legge diacritics) — same as collectLatinOverlayChars. */
+export function isLatinOverlayChar(ch: string): boolean {
+  const cp = ch.codePointAt(0) ?? 0;
+  return (
+    (cp >= 0x20 && cp <= 0x7e) ||
+    (cp >= 0x00a0 && cp <= 0x024f) ||
+    (cp >= 0x0300 && cp <= 0x036f)
+  );
+}
+
+/**
+ * Splits a title run into font-family chunks (CJK subset vs Latin basic/ext).
+ * Zhou Yi subtitles mix `#N` (Latin) with hanzi (CJK) — mirrors the resvg embed path.
+ */
+export function splitTextByOverlayFont(text: string): Array<{ text: string; family: string }> {
+  const chunks: Array<{ text: string; family: string }> = [];
+  let current = "";
+  let currentFamily = "";
+
+  for (const ch of text) {
+    const family = isCjkOverlayHanzi(ch) ? CJK_FAMILY : familyForLatinChar(ch);
+    if (family !== currentFamily && current) {
+      chunks.push({ text: current, family: currentFamily });
+      current = "";
+    }
+    current += ch;
+    currentFamily = family;
+  }
+  if (current) chunks.push({ text: current, family: currentFamily });
+  return chunks;
+}
+
 /** Splits a Latin run into the minimal number of contiguous chunks that each map to one font family. */
 function splitLatinByFontCoverage(text: string): Array<{ text: string; family: string }> {
   const chunks: Array<{ text: string; family: string }> = [];
@@ -96,7 +134,9 @@ function splitOnArrow(text: string, script: "cjk" | "latin"): Array<{ segment: T
     const trimmed = part.trim();
     if (trimmed.length > 0) {
       if (script === "cjk") {
-        out.push({ segment: { kind: "text", text: trimmed, family: CJK_FAMILY }, gapBefore: true });
+        splitTextByOverlayFont(trimmed).forEach((chunk, j) => {
+          out.push({ segment: { kind: "text", text: chunk.text, family: chunk.family }, gapBefore: j === 0 });
+        });
       } else {
         splitLatinByFontCoverage(trimmed).forEach((chunk, j) => {
           out.push({ segment: { kind: "text", text: chunk.text, family: chunk.family }, gapBefore: j === 0 });
