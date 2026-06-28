@@ -6730,6 +6730,8 @@ html[data-theme="dark"] .library-mutation__link {
   border-radius: 12px;
   border: 1px solid var(--record-card-border);
   background: color-mix(in srgb, var(--fg-muted) 6%, var(--bubble-assistant));
+  text-align: start;
+  text-justify: auto;
 }
 
 .consultation-record-title {
@@ -6752,7 +6754,7 @@ html[data-theme="dark"] .library-mutation__link {
   display: grid;
   grid-template-columns: minmax(0, 8.35rem) 1fr;
   gap: 0.3rem;
-  align-items: start;
+  align-items: center;
 }
 
 .consultation-record-key {
@@ -6760,6 +6762,7 @@ html[data-theme="dark"] .library-mutation__link {
   font-weight: 700;
   color: color-mix(in srgb, var(--fg) 68%, var(--accent));
   letter-spacing: 0.01em;
+  text-align: start;
 }
 
 .consultation-record-value {
@@ -6767,6 +6770,33 @@ html[data-theme="dark"] .library-mutation__link {
   font-weight: 500;
   color: var(--fg);
   line-height: 1.35;
+  text-align: start;
+}
+
+.consultation-record-row--verify {
+  margin-top: 0.35rem;
+  padding-top: 0.45rem;
+  border-top: 1px dashed var(--record-divider);
+}
+
+.consultation-record-inline-link {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--fg) 30%, transparent);
+  text-underline-offset: 2px;
+}
+
+.consultation-record-inline-link:hover {
+  text-decoration-color: color-mix(in srgb, var(--fg) 55%, var(--accent));
+}
+
+.consultation-record-inline-link--locked {
+  color: var(--fg-muted);
+  cursor: not-allowed;
+  opacity: 0.65;
+  text-decoration: none;
 }
 
 .consultation-record-refs {
@@ -9063,77 +9093,106 @@ html.iching-rn-webview .oracle-toggle-track {
   50%       { stroke-opacity: 0.45; }
 }
 
-/* ── Consultation record verify link ── */
-.consultation-record-verify-link {
-  color: var(--accent-cyan, #22d3ee);
-  font-weight: 600;
-  text-decoration: none;
-}
-.consultation-record-verify-link:hover {
-  text-decoration: underline;
-}
-.consultation-record-verify-link--locked {
-  color: var(--text-muted, rgba(255, 255, 255, 0.35));
-  cursor: not-allowed;
-  opacity: 0.55;
-  font-weight: 600;
-  text-decoration: none;
-}
-
 /* ── Mutation explorer ── */
 .mutation-explorer-page .mutation-explorer {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  text-align: start;
+  text-justify: auto;
 }
-.mutation-explorer-banner {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
-  border-radius: 0.5rem;
-  background: var(--surface-elevated, rgba(255, 255, 255, 0.04));
+
+.mutation-explorer--consultation {
+  gap: 1rem;
 }
-.mutation-explorer-back-link {
-  display: inline-block;
-  margin-top: 0.5rem;
-  color: var(--accent-cyan, #22d3ee);
+
+.mutation-explorer-consult-lead {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
 }
+
+.mutation-explorer-cast-stage {
+  margin: 0;
+  padding: 0.85rem 0.75rem 1rem;
+}
+
+.mutation-explorer-cast-headers {
+  margin-bottom: 0.55rem;
+}
+
+.mutation-explorer-cast-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+.mutation-explorer-cast-hex-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--hex-heading);
+  line-height: 1.25;
+}
+
+.mutation-explorer-cast-hex-sub {
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+  line-height: 1.25;
+}
+
+.mutation-explorer-ritual-grid {
+  max-width: min(100%, 22rem);
+  margin: 0 auto;
+}
+
+.mutation-explorer-meta-grid {
+  margin: 0;
+}
+
 .mutation-explorer-panel,
 .mutation-explorer-results {
-  padding: 1rem;
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
-  border-radius: 0.5rem;
+  padding: 0;
 }
-.mutation-explorer-tabs,
+
+.mutation-explorer-mode-tabs,
 .mutation-explorer-translator-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
   margin-bottom: 1rem;
 }
-.mutation-explorer-tabs button,
-.mutation-explorer-translator-tabs button {
-  padding: 0.35rem 0.75rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.15));
-  background: transparent;
-  cursor: pointer;
-}
-.mutation-explorer-tabs button.is-active,
-.mutation-explorer-translator-tabs button.is-active {
-  border-color: var(--accent-cyan, #22d3ee);
-  color: var(--accent-cyan, #22d3ee);
-}
+
 .mutation-explorer-field {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   margin-bottom: 0.75rem;
 }
+
+.mutation-explorer-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 0.75rem;
+}
+
+.mutation-explorer-fieldset legend {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--fg) 68%, var(--accent));
+  margin-bottom: 0.35rem;
+}
+
+.mutation-explorer-radio-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  font-size: 0.85rem;
+}
+
 .mutation-explorer-hex-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
 }
+
 .mutation-explorer-diagram {
   display: flex;
   flex-direction: column;
@@ -9141,6 +9200,7 @@ html.iching-rn-webview .oracle-toggle-track {
   max-width: 12rem;
   margin: 0.75rem 0;
 }
+
 .mutation-explorer-line {
   display: flex;
   align-items: center;
@@ -9150,49 +9210,91 @@ html.iching-rn-webview .oracle-toggle-track {
   background: transparent;
   text-align: left;
 }
+
 .mutation-explorer-line.is-interactive {
   cursor: pointer;
 }
+
 .mutation-explorer-line.is-changing .ritual-hex-line--yang,
 .mutation-explorer-line.is-changing .ritual-hex-line--yin > span {
   box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.85);
 }
+
 .mutation-explorer-line__label {
   font-size: 0.75rem;
   opacity: 0.75;
 }
+
 .mutation-explorer-verify-btn,
 .mutation-explorer-compare-btn {
   margin-top: 0.5rem;
-  padding: 0.45rem 1rem;
-  border-radius: 999px;
-  border: 1px solid var(--accent-cyan, #22d3ee);
-  background: transparent;
-  color: var(--accent-cyan, #22d3ee);
-  cursor: pointer;
 }
+
+.mutation-explorer-section-title {
+  margin: 1rem 0 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--hex-heading);
+}
+
+.mutation-explorer-oracle-section {
+  margin-top: 0.25rem;
+}
+
+.mutation-explorer-translator-section + .mutation-explorer-translator-section {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--record-divider);
+}
+
+.mutation-explorer-translator-heading {
+  margin: 0 0 0.65rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--fg) 75%, var(--accent));
+}
+
 .mutation-explorer-oracle-block {
   margin-bottom: 1rem;
 }
-.mutation-explorer-oracle-block blockquote {
-  margin: 0.35rem 0 0;
-  padding-left: 0.75rem;
-  border-left: 2px solid var(--border-subtle, rgba(255, 255, 255, 0.2));
-  white-space: pre-wrap;
+
+.mutation-explorer-oracle-block h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--fg) 70%, var(--accent));
 }
+
+.mutation-explorer-oracle-block blockquote {
+  margin: 0;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--record-divider);
+  white-space: pre-wrap;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--fg);
+}
+
 .mutation-explorer-badge {
   margin-left: 0.35rem;
   font-size: 0.7rem;
-  opacity: 0.8;
+  font-weight: 600;
+  color: var(--fg-muted);
 }
+
 .mutation-explorer-error {
   color: #f87171;
 }
+
 .mutation-explorer-hint,
 .mutation-explorer-note {
   opacity: 0.85;
   font-size: 0.9rem;
+  color: var(--fg-muted);
 }
-.mutation-explorer-meta p {
-  margin: 0.25rem 0;
+
+.mutation-explorer-footer-nav {
+  margin: 0.75rem 0 0;
+  padding-top: 0.55rem;
+  border-top: 1px dashed var(--record-divider);
 }

@@ -21,8 +21,8 @@ export type ConsultationRecordUiMessages = {
   verificationCode: string;
   changingLinesLabel: string;
   changingLinesNone: string;
-  verifyRulesLink: string;
-  verifyRulesLockedHint: string;
+  verifyReadingLink: string;
+  verifyReadingLockedHint: string;
   /** BCP 47 locale tag passed to `toLocaleDateString`. */
   dateLocale: string;
 };
@@ -48,8 +48,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "Código de verificación:",
     changingLinesLabel: "Líneas mutantes:",
     changingLinesNone: "Ninguna",
-    verifyRulesLink: "Verificar reglas →",
-    verifyRulesLockedHint: "Disponible con pack Seeker o superior",
+    verifyReadingLink: "Verificar tirada",
+    verifyReadingLockedHint: "Disponible con pack Seeker o superior",
     dateLocale: "es",
   },
   en: {
@@ -72,8 +72,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "Verification code:",
     changingLinesLabel: "Changing lines:",
     changingLinesNone: "None",
-    verifyRulesLink: "Verify rules →",
-    verifyRulesLockedHint: "Available with Seeker pack or higher",
+    verifyReadingLink: "Verify reading",
+    verifyReadingLockedHint: "Available with Seeker pack or higher",
     dateLocale: "en",
   },
   pt: {
@@ -96,8 +96,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "Código de verificação:",
     changingLinesLabel: "Linhas mutantes:",
     changingLinesNone: "Nenhuma",
-    verifyRulesLink: "Verificar regras →",
-    verifyRulesLockedHint: "Disponível com pack Seeker ou superior",
+    verifyReadingLink: "Verificar tiragem",
+    verifyReadingLockedHint: "Disponível com pack Seeker ou superior",
     dateLocale: "pt",
   },
   fr: {
@@ -120,8 +120,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "Code de vérification :",
     changingLinesLabel: "Lignes mutantes :",
     changingLinesNone: "Aucune",
-    verifyRulesLink: "Vérifier les règles →",
-    verifyRulesLockedHint: "Disponible avec le pack Seeker ou supérieur",
+    verifyReadingLink: "Vérifier la lecture",
+    verifyReadingLockedHint: "Disponible avec le pack Seeker ou supérieur",
     dateLocale: "fr",
   },
   de: {
@@ -144,8 +144,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "Verifizierungscode:",
     changingLinesLabel: "Mutierende Linien:",
     changingLinesNone: "Keine",
-    verifyRulesLink: "Regeln prüfen →",
-    verifyRulesLockedHint: "Verfügbar ab Seeker-Pack oder höher",
+    verifyReadingLink: "Wurf prüfen",
+    verifyReadingLockedHint: "Verfügbar ab Seeker-Pack oder höher",
     dateLocale: "de",
   },
   it: {
@@ -168,8 +168,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "Codice di verifica:",
     changingLinesLabel: "Linee mutanti:",
     changingLinesNone: "Nessuna",
-    verifyRulesLink: "Verifica regole →",
-    verifyRulesLockedHint: "Disponibile con pack Seeker o superiore",
+    verifyReadingLink: "Verifica tirata",
+    verifyReadingLockedHint: "Disponibile con pack Seeker o superiore",
     dateLocale: "it",
   },
   ja: {
@@ -192,8 +192,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "検証コード:",
     changingLinesLabel: "変爻:",
     changingLinesNone: "なし",
-    verifyRulesLink: "ルールを検証 →",
-    verifyRulesLockedHint: "Seekerパック以上で利用可能",
+    verifyReadingLink: "占いを検証",
+    verifyReadingLockedHint: "Seekerパック以上で利用可能",
     dateLocale: "ja",
   },
   zh: {
@@ -216,8 +216,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "验证码:",
     changingLinesLabel: "变爻:",
     changingLinesNone: "无",
-    verifyRulesLink: "验证规则 →",
-    verifyRulesLockedHint: "Seeker 套餐及以上可用",
+    verifyReadingLink: "验证占卜",
+    verifyReadingLockedHint: "Seeker 套餐及以上可用",
     dateLocale: "zh",
   },
   ko: {
@@ -240,8 +240,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "검증 코드:",
     changingLinesLabel: "변효:",
     changingLinesNone: "없음",
-    verifyRulesLink: "규칙 검증 →",
-    verifyRulesLockedHint: "Seeker 팩 이상에서 이용 가능",
+    verifyReadingLink: "점괘 검증",
+    verifyReadingLockedHint: "Seeker 팩 이상에서 이용 가능",
     dateLocale: "ko",
   },
   ar: {
@@ -264,8 +264,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "رمز التحقق:",
     changingLinesLabel: "الخطوط المتغيرة:",
     changingLinesNone: "لا شيء",
-    verifyRulesLink: "التحقق من القواعد →",
-    verifyRulesLockedHint: "متاح مع حزمة Seeker أو أعلى",
+    verifyReadingLink: "التحقق من القراءة",
+    verifyReadingLockedHint: "متاح مع حزمة Seeker أو أعلى",
     dateLocale: "ar",
   },
   hi: {
@@ -288,8 +288,8 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     verificationCode: "सत्यापन कोड:",
     changingLinesLabel: "परिवर्तित रेखाएँ:",
     changingLinesNone: "कोई नहीं",
-    verifyRulesLink: "नियम सत्यापित करें →",
-    verifyRulesLockedHint: "Seeker पैक या उससे ऊपर उपलब्ध",
+    verifyReadingLink: "रीडिंग सत्यापित करें",
+    verifyReadingLockedHint: "Seeker पैक या उससे ऊपर उपलब्ध",
     dateLocale: "hi",
   },
 };
