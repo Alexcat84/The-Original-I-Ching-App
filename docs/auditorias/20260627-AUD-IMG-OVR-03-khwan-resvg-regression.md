@@ -1,8 +1,8 @@
 # Overlay PNG — tofu + flecha superpuesta en producción (#2 Khwăn → #1 Khien, Legge)
-**Código:** `20260627-AUD-IMG-OVR-03 khwan-resvg-regression` · **Familia:** IMG-OVR · **Estado:** open
+**Código:** `20260627-AUD-IMG-OVR-03 khwan-resvg-regression` · **Familia:** IMG-OVR · **Estado:** closed
 
 - **Fecha:** 2026-06-27
-- **Estado:** Causa raíz diagnosticada con alta confianza (consistente con el bug ya documentado y solo parcialmente mitigado en `20260625-AUD-IMG-OVR-02`) — **sin fix aplicado todavía**, pendiente decisión de remediación con el usuario.
+- **Estado:** ✅ **Cerrada — fix implementado y verificado (Opción B — rama `fix/overlay-pango-title-render`)**: el título (CJK + EN + flecha) ya no se renderiza como `<text>` SVG vía `resvg-js`; se renderiza por separado con Pango (`sharp`) y se embebe como `<image>` PNG. Verificación exhaustiva completa: 8064 renders reales (64×63 pares × 2 traductores) en verde — ver §9. §10 documenta un hallazgo nuevo y separado (gap de cobertura CJK pre-existente, no corregido en este cierre).
 - **Relacionado:** [`20260624-AUD-IMG-OVR-01-legge-diacritics.md`](./20260624-AUD-IMG-OVR-01-legge-diacritics.md), [`20260625-AUD-IMG-OVR-02-mutation-title-layout.md`](./20260625-AUD-IMG-OVR-02-mutation-title-layout.md)
 
 ---
@@ -97,8 +97,70 @@ apps/web/next.config.mjs                  # outputFileTracingIncludes (fonts →
 
 ---
 
-## 8. Changelog
+## 9. Implementación (Opción B, 2026-06-27, rama `fix/overlay-pango-title-render`)
+
+### 9.1 Qué cambió
+
+| Archivo | Cambio |
+|---------|--------|
+| `apps/web/src/lib/overlay-title-pango.ts` (**nuevo**) | Renderiza el título completo (CJK + EN + flecha) a un PNG transparente vía Pango (`sharp({ text: {...} })`), no como `<text>` SVG. Cada segmento (nombre, flecha) se renderiza por separado con su propio archivo de fuente explícito y se posiciona con el **ancho medido real** (no estimado) — elimina de raíz tanto el tofu como el mal cálculo de espaciado de la flecha. |
+| `apps/web/src/lib/sumi-hexagram-art.ts` | `buildSumiHexagramOverlaySvgDataUrl` ahora es `async`; ya no emite `<text>` para el título — lo reemplaza por `<image href="data:image/png;base64,...">` con el PNG de Pango. `resvg` solo ve formas vectoriales puras (barras del hexagrama + filtro de brillo), que siempre renderizó bien. `buildSumiHexagramSvgDataUrl` (el fallback completo sin foto IA) **no se tocó** — se sirve como SVG crudo al navegador en su único camino de producción real, que usa el motor de fuentes del navegador, no `resvg`. |
+| `apps/web/src/lib/image-provider.ts` | 6 call sites actualizados con `await` por el cambio a async. |
+| `apps/web/src/lib/fontsource-woff-paths.ts`, `apps/web/next.config.mjs` | Nuevo `notoSerifLatin400` (ver 9.2) trazado para Vercel. |
+
+### 9.2 Dos hallazgos adicionales durante la implementación (ambos corregidos, ninguno era obvio de antemano)
+
+**Hallazgo 1 — la fuente "latin-ext" NO cubre letras básicas.** Verificado con `fontkit` (no por renderizado, que puede mentir vía fallback): `noto-serif-latin-ext-400-normal.woff` solo cubre U+0100+ (`ă`, `Ž`...). Las letras básicas (K, h, w, n...) y Latin-1 Supplement (â, î, û, ü, Î) viven en un archivo **separado** (`noto-serif-latin-400-normal.woff`, sin "-ext"). Un nombre como "Khwăn" necesita **ambos** archivos en la misma palabra. El primer render de prueba "se veía perfecto" usando solo el archivo `-ext` — pero eso era el mismo tipo de espejismo que causó el bug original: Pango/fontconfig caía a una fuente del sistema para las letras básicas, en mi máquina de desarrollo, no garantizado en Vercel. Corregido: `overlay-title-pango.ts` divide cualquier texto latino carácter por carácter según cobertura real (verificada con `fontkit`) y usa el archivo correcto para cada fragmento, sin depender de fallback alguno.
+
+**Hallazgo 2 — la fuente "symbols" dedicada para la flecha tampoco tiene el glifo.** El propio código (`embed-svg-overlay-font.ts`, `svg-to-png.ts`) ya asumía que `noto-sans-symbols-2` cubría U+2192 ("Yi Jing hexagram symbols"). Verificado con `fontkit`: **no la tiene**. Cada render anterior de la flecha (incluyendo los de esta misma sesión antes de verificar con `fontkit`) funcionaba por el mismo motivo — fallback silencioso a una fuente del sistema. Corregido de raíz, no con otro archivo de fuente: la flecha ahora se dibuja como un **`<path>` SVG simple** (una forma vectorial, sin fuente ni texto involucrado) y se rasteriza con `sharp` — cero dependencia de fuente para ese glifo, para siempre.
+
+### 9.3 Verificación
+
+- `TS-WEB-OVR-004` (corre por defecto): cobertura exhaustiva de glifos vía `fontkit` (cada carácter real de los 3 traductores × cada archivo de fuente que el renderer realmente usa) + render real (`buildSumiHexagramOverlaySvgDataUrl`) de las 64 nombres de cada traductor en solitario, los pares históricamente rotos (`#3↔#8`, `#6↔#10`), un par por cada uno de los 64 hexagramas Legge, y los pares de nombres más largos. **17/17 verde.**
+- `TS-WEB-OVR-004` exhaustivo (`apps/web/vitest.exhaustive.config.ts`, **no** en el `npm test` por defecto — corre como paso explícito en `.github/workflows/ci.yml`, deliberadamente NO detrás de una env var opcional, exactamente para no repetir el patrón que dejó pasar este bug): la grilla completa de 4032 pares × 2 traductores (Wilhelm + Legge) = **8064 renders reales, ejecutados localmente — 2/2 verde (≈299s, ~150s por traductor)**.
+- Caso exacto de producción (`#2 Khwăn → #1 Khien`, Legge) verificado visualmente vía la función real, sin tofu ni superposición.
+- Suite completa `apps/web` (vitest): 18 archivos, 94/94 tests verdes (1 skip esperado, gate de generación manual no relacionado), sin regresiones.
+- `npm run verify:overlay-glyphs`, `npm run i18n:audit`, `tsc --noEmit` en `apps/web`: todos verdes.
+
+---
+
+## 10. Gap de cobertura CJK pre-existente — encontrado y corregido (2026-06-27, follow-up)
+
+El test exhaustivo de glifos (`TS-WEB-OVR-004`), al verificar **cada** carácter real en vez de una muestra, encontró 3 codepoints que la fuente CJK pre-construida de Fontsource (`@fontsource/noto-serif-tc`, subset `chinese-traditional-700`) **no cubre**, verificado con `fontkit`:
+
+| Hexagrama | Carácter | Codepoint | Dónde aparece |
+|-----------|----------|-----------|----------------|
+| #43 | 夬 | U+592C | `chineseName` (Wilhelm + Legge) |
+| #44 | 姤 | U+59E4 | `chineseName` (Wilhelm + Legge) |
+| #33 (Zhou Yi) | 遯 | U+906F | `name` (traductor Zhou Yi) |
+
+**Esto era pre-existente, no introducido por este fix** — la misma fuente, los mismos caracteres, ya estaban en uso antes de esta sesión. Con alta probabilidad, los títulos chinos de los hexagramas #43/#44 y el nombre de Zhou Yi #33 **ya mostraban tofu en producción**, de forma independiente a la regresión Khwăn.
+
+**Aclaración sobre el origen** (el usuario recordaba "lo tomamos de un repo CtCx o algo así"): no hay ningún repo con ese nombre en este proyecto. Lo que existe es **ctext.org** (Chinese Text Project), que es la fuente del **texto** Zhou Yi (`tools/ingest-zhouyi-ctext.mjs`) — un asunto completamente distinto de dónde viene la **fuente tipográfica** que dibuja esos caracteres en pantalla. El dato (`hexagrams.*.json`) siempre tuvo los caracteres correctos; el problema nunca fue el texto, fue que el archivo de fuente de Fontsource (un *subset* pre-armado por Google/Fontsource para optimizar peso web) no incluye estos 3 caracteres específicos, aunque sí son chinos estándar y comunes.
+
+### 10.1 Corrección aplicada
+
+Verificado con `fontkit` que la fuente **completa** Noto Serif TC (la que sirve la API `css2` de Google Fonts cuando se le pide un subset por `text=` específico) **sí** tiene los 3 caracteres. Se generó un subset propio, mínimo y completo, con exactamente los 72 hanzi únicos que la app necesita (derivados de los datos reales de los 3 traductores, no una lista genérica):
+
+| Archivo | Rol |
+|---------|-----|
+| `apps/web/scripts/generate-cjk-title-font-subset.mjs` (**nuevo**) | Deriva el set de caracteres desde `hexagrams.{wilhelm,legge,zhouyi}.json`, pide ese subset exacto a la API `css2` de Google Fonts, descarga el `.woff2`, y **se auto-verifica con `fontkit`** antes de terminar (falla si falta algún carácter). Re-ejecutar si algún `chineseName`/`name` cambia o se agrega un traductor. |
+| `apps/web/fonts/noto-serif-tc-hexagram-titles.woff2` (**nuevo**, vendored, 18.4 KB) | El resultado — reemplaza al subset de Fontsource como fuente CJK de `overlay-title-pango.ts`. Ya cubierto por el glob existente `outputFileTracingIncludes: ["./fonts/**"]` en `next.config.mjs` — sin cambios ahí. |
+| `apps/web/src/lib/overlay-title-pango.ts` | `CJK_FONT_FILE` ahora apunta al archivo nuevo en vez de `FONTSOURCE_WOFF_PATHS.notoSerifTc700`. |
+
+El archivo viejo (`@fontsource/noto-serif-tc`, usado por `embed-svg-overlay-font.ts`/`svg-to-png.ts` para el camino **no tocado** `buildSumiHexagramSvgDataUrl`) sigue como estaba — fuera de alcance de este cierre, igual que el resto de esa función.
+
+### 10.2 Verificación
+
+- `TS-WEB-OVR-004`: la exclusión `KNOWN_PRE_EXISTING_CJK_GAPS` se **eliminó** del test — ahora verifica los 72 caracteres reales sin excepciones, 17/17 verde.
+- Verificado visualmente (función de producción real, `buildSumiHexagramOverlaySvgDataUrl`): `#43 夬 → #44 姤` y `#33 遯` (Zhou Yi, en ambas líneas del título) renderizan correctamente, sin tofu.
+
+---
+
+## 11. Changelog
 
 | Fecha | Evento |
 |-------|--------|
 | 2026-06-27 | Apertura. Diagnóstico completo: el bug es la misma clase de defecto "no predecible por contenido" de `resvg-js` ya documentada y parcialmente cerrada en `20260625-AUD-IMG-OVR-02`, manifestándose en un par de hexagramas (#2→#1 Legge) fuera de la muestra de QA visual revisada en esa sesión. Los 3 gates existentes no renderizan el píxel final, por lo que no pueden detectar esta clase de regresión. Sin fix aplicado — opciones de remediación documentadas en §6, pendiente decisión del usuario. |
+| 2026-06-27 | Implementada Opción B (§9) en `fix/overlay-pango-title-render`: título renderizado vía Pango/sharp, embebido como `<image>`, ya no como `<text>` resvg. Dos hallazgos adicionales corregidos en el camino (cobertura Latin dividida en 2 archivos; fuente de símbolos sin el glifo de flecha — reemplazada por un `<path>` vectorial). Nuevo test exhaustivo `TS-WEB-OVR-004` (corre por defecto) + companion exhaustivo de 8064 renders wired a CI. Hallazgo nuevo y separado documentado en §10 (gap CJK pre-existente, no corregido). |
+| 2026-06-27 | Follow-up: corregido también el gap CJK de §10 (no era el alcance original, pero se resolvió en la misma sesión). Aclarado el origen real (ctext.org = fuente del texto Zhou Yi, no de la fuente tipográfica — sin relación con ningún "repo CtCx"). Generado `apps/web/fonts/noto-serif-tc-hexagram-titles.woff2`, un subset propio con los 72 hanzi reales de los 3 traductores, vía script reproducible (`generate-cjk-title-font-subset.mjs`) que se auto-verifica con `fontkit`. `TS-WEB-OVR-004` ya no excluye ningún codepoint — 17/17 verde sin excepciones. |

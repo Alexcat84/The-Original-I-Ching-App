@@ -22,6 +22,22 @@ export const FONTSOURCE_WOFF_PATHS = {
     "files",
     "noto-serif-latin-ext-400-normal.woff",
   ),
+  /**
+   * Fontsource splits Latin coverage into two non-overlapping subset files: this one
+   * covers basic ASCII + Latin-1 Supplement (verified via fontkit: U+0000-U+00FF), the
+   * "ext" file above covers Latin Extended-A/B (U+0100+, e.g. ă, Ž). Both are needed —
+   * a name like "Khwăn" has glyphs in both files, none in just one (see
+   * docs/auditorias/20260627-AUD-IMG-OVR-03-khwan-resvg-regression.md for how trusting
+   * a single file here looked correct in dev only via accidental fontconfig fallback).
+   */
+  notoSerifLatin400: path.join(
+    REPO_ROOT,
+    "node_modules",
+    "@fontsource",
+    "noto-serif",
+    "files",
+    "noto-serif-latin-400-normal.woff",
+  ),
   notoSansSymbols400: path.join(
     REPO_ROOT,
     "node_modules",
