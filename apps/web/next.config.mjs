@@ -26,7 +26,7 @@ const nextConfig = {
   },
   // Monorepo root for serverless file tracing (single lockfile at repo root).
   outputFileTracingRoot: path.join(__dirname, "../.."),
-  serverExternalPackages: ["sharp", "@resvg/resvg-js"],
+  serverExternalPackages: ["sharp", "@resvg/resvg-js", "@napi-rs/canvas"],
   outputFileTracingIncludes: {
     "/api/**": [
       "./fonts/**",

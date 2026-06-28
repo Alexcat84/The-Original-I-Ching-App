@@ -94,11 +94,11 @@ describe("overlay title font glyph coverage (exhaustive — all 64 hexagrams x 3
 
 describe("overlay title mutation arrow (drawn as a vector, not a font glyph)", () => {
   it("renders non-empty ink — no font/fallback dependency for U+2192 at all", async () => {
-    const { buffer, width, height } = await renderArrowGlyph(32, "#2e2a22");
+    const buffer = renderArrowGlyph(32, "#2e2a22");
     const { data, info } = await sharp(buffer).raw().toBuffer({ resolveWithObject: true });
     let opaque = 0;
     for (let i = 3; i < data.length; i += info.channels) if (data[i]! > 10) opaque++;
-    expect(opaque / (width * height)).toBeGreaterThan(0.05);
+    expect(opaque / (info.width * info.height)).toBeGreaterThan(0.05);
   });
 });
 
