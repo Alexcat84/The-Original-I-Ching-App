@@ -59,24 +59,10 @@ describe("overlay title font glyph coverage (exhaustive — all 64 hexagrams x 3
     }
   }
 
-  /**
-   * Pre-existing gap, NOT introduced by this fix and NOT specific to the Khwăn/arrow bug
-   * this test file targets — discovered as a side effect of testing every real character
-   * instead of a sample. The bundled CJK font (noto-serif-tc-chinese-traditional-700)
-   * genuinely lacks these 3 codepoints (verified with fontkit, not a fallback illusion),
-   * which were already in use before this change — hexagrams #43/#44's Chinese title and
-   * Zhou Yi #33's name likely already render as tofu in production today, independently
-   * of everything else in this file. Tracked separately, not fixed here (scope: this file
-   * is about the Latin-diacritic + arrow regression). Do not add to this set without a
-   * matching tracked finding — it exists to make a real gap visible, not to silence one.
-   */
-  const KNOWN_PRE_EXISTING_CJK_GAPS = new Set([0x592c, 0x59e4, 0x906f]); // 夬 姤 遯
-
   function expectCjkCoverage(text: string, source: string) {
     for (const ch of text) {
       const cp = ch.codePointAt(0)!;
       if (cp < 0x3400) continue; // shared punctuation/digits, not part of the CJK font's job
-      if (KNOWN_PRE_EXISTING_CJK_GAPS.has(cp)) continue;
       expect(
         cjkFont.hasGlyphForCodePoint(cp),
         `${source}: missing hanzi glyph for "${ch}" (U+${cp.toString(16)})`,

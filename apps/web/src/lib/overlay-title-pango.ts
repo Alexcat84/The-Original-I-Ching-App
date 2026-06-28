@@ -17,6 +17,8 @@
  * as a small hand-authored SVG path rasterized by sharp, not as a text glyph at all —
  * zero font/fallback dependency for it, ever.
  */
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { FONTSOURCE_WOFF_PATHS } from "./fontsource-woff-paths";
 
@@ -31,7 +33,21 @@ export const OVERLAY_ARROW = "→";
  */
 const LATIN_BASIC_FONT_FILE = FONTSOURCE_WOFF_PATHS.notoSerifLatin400;
 const LATIN_EXT_FONT_FILE = FONTSOURCE_WOFF_PATHS.notoSerifLatinExt400;
-const CJK_FONT_FILE = FONTSOURCE_WOFF_PATHS.notoSerifTc700;
+/**
+ * @fontsource/noto-serif-tc's pre-built "chinese-traditional-700" subset is missing 3
+ * real characters used in production data (夬 #43, 姤 #44, 遯 Zhou Yi #33 — verified via
+ * fontkit). This is a custom subset containing exactly the hanzi the real hexagram data
+ * uses, fetched from Google's full upstream Noto Serif TC (which does have them) via
+ * apps/web/scripts/generate-cjk-title-font-subset.mjs — re-run that script if a
+ * translator's chineseName/name ever adds a character outside this set.
+ */
+const CJK_FONT_FILE = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  "..",
+  "fonts",
+  "noto-serif-tc-hexagram-titles.woff2",
+);
 
 /** U+0000-U+00FF -> the "latin" file; U+0100+ -> "latin-ext" (exact boundary verified via fontkit). */
 function fontFileForLatinChar(ch: string): string {

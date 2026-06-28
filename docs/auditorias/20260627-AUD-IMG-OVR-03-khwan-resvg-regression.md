@@ -124,9 +124,9 @@ apps/web/next.config.mjs                  # outputFileTracingIncludes (fonts →
 
 ---
 
-## 10. Hallazgo nuevo y separado — gap de cobertura CJK pre-existente (NO corregido aquí)
+## 10. Gap de cobertura CJK pre-existente — encontrado y corregido (2026-06-27, follow-up)
 
-El test exhaustivo de glifos (`TS-WEB-OVR-004`), al verificar **cada** carácter real en vez de una muestra, encontró 3 codepoints que la fuente CJK ya en uso (`noto-serif-tc-chinese-traditional-700`) **no cubre**, verificado con `fontkit`:
+El test exhaustivo de glifos (`TS-WEB-OVR-004`), al verificar **cada** carácter real en vez de una muestra, encontró 3 codepoints que la fuente CJK pre-construida de Fontsource (`@fontsource/noto-serif-tc`, subset `chinese-traditional-700`) **no cubre**, verificado con `fontkit`:
 
 | Hexagrama | Carácter | Codepoint | Dónde aparece |
 |-----------|----------|-----------|----------------|
@@ -134,9 +134,26 @@ El test exhaustivo de glifos (`TS-WEB-OVR-004`), al verificar **cada** carácter
 | #44 | 姤 | U+59E4 | `chineseName` (Wilhelm + Legge) |
 | #33 (Zhou Yi) | 遯 | U+906F | `name` (traductor Zhou Yi) |
 
-**Esto es pre-existente, no introducido por este fix** — la misma fuente, los mismos caracteres, ya estaban en uso antes de esta sesión. Con alta probabilidad, los títulos chinos de los hexagramas #43/#44 (en cualquier traductor) y el nombre de Zhou Yi #33 **ya muestran tofu en producción hoy**, de forma independiente a todo lo demás en este documento.
+**Esto era pre-existente, no introducido por este fix** — la misma fuente, los mismos caracteres, ya estaban en uso antes de esta sesión. Con alta probabilidad, los títulos chinos de los hexagramas #43/#44 y el nombre de Zhou Yi #33 **ya mostraban tofu en producción**, de forma independiente a la regresión Khwăn.
 
-**No se corrige en este cierre** — está fuera del alcance de la regresión Khwăn/flecha (que es sobre diacríticos latinos), y arreglarlo implica una decisión que no es solo de renderizado: encontrar una fuente CJK más completa, construir un sistema de fuente-de-respaldo dual para CJK (análogo al de Latin), o normalizar el carácter a una variante cubierta (una decisión de **contenido/fidelidad textual**, no mía para tomar unilateralmente en un proyecto tan estricto con la fidelidad de fuentes). Documentado aquí para que el usuario decida cuándo y cómo abordarlo — el test `TS-WEB-OVR-004` excluye explícitamente estos 3 codepoints conocidos (con comentario y este enlace) para no bloquear el cierre de la regresión Khwăn, sin ocultar el hallazgo.
+**Aclaración sobre el origen** (el usuario recordaba "lo tomamos de un repo CtCx o algo así"): no hay ningún repo con ese nombre en este proyecto. Lo que existe es **ctext.org** (Chinese Text Project), que es la fuente del **texto** Zhou Yi (`tools/ingest-zhouyi-ctext.mjs`) — un asunto completamente distinto de dónde viene la **fuente tipográfica** que dibuja esos caracteres en pantalla. El dato (`hexagrams.*.json`) siempre tuvo los caracteres correctos; el problema nunca fue el texto, fue que el archivo de fuente de Fontsource (un *subset* pre-armado por Google/Fontsource para optimizar peso web) no incluye estos 3 caracteres específicos, aunque sí son chinos estándar y comunes.
+
+### 10.1 Corrección aplicada
+
+Verificado con `fontkit` que la fuente **completa** Noto Serif TC (la que sirve la API `css2` de Google Fonts cuando se le pide un subset por `text=` específico) **sí** tiene los 3 caracteres. Se generó un subset propio, mínimo y completo, con exactamente los 72 hanzi únicos que la app necesita (derivados de los datos reales de los 3 traductores, no una lista genérica):
+
+| Archivo | Rol |
+|---------|-----|
+| `apps/web/scripts/generate-cjk-title-font-subset.mjs` (**nuevo**) | Deriva el set de caracteres desde `hexagrams.{wilhelm,legge,zhouyi}.json`, pide ese subset exacto a la API `css2` de Google Fonts, descarga el `.woff2`, y **se auto-verifica con `fontkit`** antes de terminar (falla si falta algún carácter). Re-ejecutar si algún `chineseName`/`name` cambia o se agrega un traductor. |
+| `apps/web/fonts/noto-serif-tc-hexagram-titles.woff2` (**nuevo**, vendored, 18.4 KB) | El resultado — reemplaza al subset de Fontsource como fuente CJK de `overlay-title-pango.ts`. Ya cubierto por el glob existente `outputFileTracingIncludes: ["./fonts/**"]` en `next.config.mjs` — sin cambios ahí. |
+| `apps/web/src/lib/overlay-title-pango.ts` | `CJK_FONT_FILE` ahora apunta al archivo nuevo en vez de `FONTSOURCE_WOFF_PATHS.notoSerifTc700`. |
+
+El archivo viejo (`@fontsource/noto-serif-tc`, usado por `embed-svg-overlay-font.ts`/`svg-to-png.ts` para el camino **no tocado** `buildSumiHexagramSvgDataUrl`) sigue como estaba — fuera de alcance de este cierre, igual que el resto de esa función.
+
+### 10.2 Verificación
+
+- `TS-WEB-OVR-004`: la exclusión `KNOWN_PRE_EXISTING_CJK_GAPS` se **eliminó** del test — ahora verifica los 72 caracteres reales sin excepciones, 17/17 verde.
+- Verificado visualmente (función de producción real, `buildSumiHexagramOverlaySvgDataUrl`): `#43 夬 → #44 姤` y `#33 遯` (Zhou Yi, en ambas líneas del título) renderizan correctamente, sin tofu.
 
 ---
 
@@ -146,3 +163,4 @@ El test exhaustivo de glifos (`TS-WEB-OVR-004`), al verificar **cada** carácter
 |-------|--------|
 | 2026-06-27 | Apertura. Diagnóstico completo: el bug es la misma clase de defecto "no predecible por contenido" de `resvg-js` ya documentada y parcialmente cerrada en `20260625-AUD-IMG-OVR-02`, manifestándose en un par de hexagramas (#2→#1 Legge) fuera de la muestra de QA visual revisada en esa sesión. Los 3 gates existentes no renderizan el píxel final, por lo que no pueden detectar esta clase de regresión. Sin fix aplicado — opciones de remediación documentadas en §6, pendiente decisión del usuario. |
 | 2026-06-27 | Implementada Opción B (§9) en `fix/overlay-pango-title-render`: título renderizado vía Pango/sharp, embebido como `<image>`, ya no como `<text>` resvg. Dos hallazgos adicionales corregidos en el camino (cobertura Latin dividida en 2 archivos; fuente de símbolos sin el glifo de flecha — reemplazada por un `<path>` vectorial). Nuevo test exhaustivo `TS-WEB-OVR-004` (corre por defecto) + companion exhaustivo de 8064 renders wired a CI. Hallazgo nuevo y separado documentado en §10 (gap CJK pre-existente, no corregido). |
+| 2026-06-27 | Follow-up: corregido también el gap CJK de §10 (no era el alcance original, pero se resolvió en la misma sesión). Aclarado el origen real (ctext.org = fuente del texto Zhou Yi, no de la fuente tipográfica — sin relación con ningún "repo CtCx"). Generado `apps/web/fonts/noto-serif-tc-hexagram-titles.woff2`, un subset propio con los 72 hanzi reales de los 3 traductores, vía script reproducible (`generate-cjk-title-font-subset.mjs`) que se auto-verifica con `fontkit`. `TS-WEB-OVR-004` ya no excluye ningún codepoint — 17/17 verde sin excepciones. |
