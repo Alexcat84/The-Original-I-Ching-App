@@ -9117,25 +9117,59 @@ html.iching-rn-webview .oracle-toggle-track {
   padding: 0.85rem 0.75rem 1rem;
 }
 
-.mutation-explorer-cast-headers {
-  margin-bottom: 0.55rem;
+.mutation-explorer-cast-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1.4rem minmax(0, 1fr);
+  gap: 0.55rem;
+  max-width: min(100%, 24rem);
+  margin: 0 auto;
+  align-items: start;
 }
 
-.mutation-explorer-cast-headers .mutation-explorer-cast-col {
+.mutation-explorer-cast-column {
   display: flex;
   flex-direction: column;
-  gap: 0.12rem;
+  align-items: center;
   min-width: 0;
-  text-align: center;
+}
+
+.mutation-explorer-cast-header {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  text-align: center;
+  gap: 0.12rem;
+  margin-bottom: 0.45rem;
+  width: 100%;
+  min-height: 2.35rem;
 }
 
-.mutation-explorer-cast-col {
+.mutation-explorer-cast-lines {
   display: flex;
   flex-direction: column;
-  gap: 0.12rem;
-  min-width: 0;
+  gap: 0.24rem;
+  width: 100%;
+}
+
+.mutation-explorer-cast-lines .ritual-line-slot {
+  width: 100%;
+  min-height: 1.55rem;
+}
+
+.mutation-explorer-cast-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.24rem;
+}
+
+.mutation-explorer-cast-arrow-spacer {
+  min-height: 2.35rem;
+  margin-bottom: 0.45rem;
+}
+
+.mutation-explorer-cast-arrows .ritual-arrow-slot {
+  min-height: 1.55rem;
 }
 
 .mutation-explorer-cast-hex-title {
@@ -9151,9 +9185,25 @@ html.iching-rn-webview .oracle-toggle-track {
   line-height: 1.25;
 }
 
-.mutation-explorer-ritual-grid {
-  max-width: min(100%, 22rem);
-  margin: 0 auto;
+.mutation-explorer-reading-rules-section {
+  margin-top: 0.25rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed var(--record-divider);
+}
+
+.mutation-explorer-reading-rules-row {
+  display: grid;
+  grid-template-columns: minmax(0, 8.35rem) 1fr;
+  gap: 0.3rem;
+  align-items: center;
+  margin: 0 0 0.45rem;
+}
+
+.mutation-explorer-reading-rules-detail {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--fg-muted);
 }
 
 .mutation-explorer-meta-grid {
