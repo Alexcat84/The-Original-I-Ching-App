@@ -3,6 +3,7 @@
  */
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { readdirSync, statSync } from "node:fs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const W_GERMAN = join(ROOT, "tools/source-pdfs/W german");
@@ -23,7 +24,25 @@ export const WILHELM_DE_STITCHED = {
   bookThreePass04: join(W_GERMAN, "wilhelm-de-drittes-buch-pass04.txt"),
 };
 
-export const WILHELM_DE_PDF_PATH = join(W_GERMAN, "I Ging_ Das Buch der Wandlungen.pdf");
+export const WILHELM_DE_PDF_PATH = resolveWilhelmDePdfPath();
+
+function resolveWilhelmDePdfPath() {
+  const preferred = join(W_GERMAN, "I Ging_ Das Buch der Wandlungen.pdf");
+  try {
+    if (statSync(preferred).isFile()) return preferred;
+  } catch {
+    // fall through
+  }
+  try {
+    const pdfs = readdirSync(W_GERMAN).filter((name) => name.toLowerCase().endsWith(".pdf"));
+    const match = pdfs.find((name) => /I Ging.*Wandlungen/i.test(name));
+    if (match) return join(W_GERMAN, match);
+    if (pdfs.length === 1) return join(W_GERMAN, pdfs[0]);
+  } catch {
+    // missing folder
+  }
+  return preferred;
+}
 
 export const WILHELM_DE_DATASETS_ROOT = join(ROOT, "tools/datasets/wilhelm-de");
 

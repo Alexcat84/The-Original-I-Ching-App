@@ -45,7 +45,7 @@ const wilhelmCommentsPath = join(
   "datasets",
   "wilhelm-de",
   "comments",
-  "wilhelm-de-64hex-comments-parsed.json",
+  "wilhelm-de-64hex-comments-merged.json",
 );
 const leggeBookOnePath = join(
   root,

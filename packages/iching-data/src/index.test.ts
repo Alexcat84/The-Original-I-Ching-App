@@ -105,6 +105,6 @@ describe("translator bundles", () => {
 
   it("defaults to wilhelm when no translator option given", () => {
     const r = getHexagramRecordByNumber(1);
-    expect(r.name).toMatch(/Initiating|Creative/i);
+    expect(r.name).toMatch(/Schöpf/i);
   });
 });
