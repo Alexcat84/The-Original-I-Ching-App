@@ -363,7 +363,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     question:
       "Are the I Ching texts that appear in the reading authentic or AI-generated?",
     answer:
-      "They are authentic. The textual material (Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams) is drawn from three scholarly translations available in the app: Wilhelm/Baynes (public domain since 2020), James Legge, and the original Zhou Yi. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source.",
+      "They are authentic. The textual material (Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams) is drawn from three scholarly translations available in the app: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (public domain), and the original Zhou Yi. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source.",
     related: ["methodNotes"],
   },
   {
@@ -585,7 +585,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿Los textos del I Ching que aparecen en la lectura son auténticos o generados por IA?",
     answer:
-      "Son auténticos. El material textual (Juicios (卦辞), líneas en movimiento (爻辞) y hexagramas resultantes) proviene de tres traducciones académicas disponibles en la app: Wilhelm/Baynes (dominio público desde 2020), James Legge y el Zhou Yi original. La IA los cita y contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con la fuente original.",
+      "Son auténticos. El material textual (Juicios (卦辞), líneas en movimiento (爻辞) y hexagramas resultantes) proviene de tres traducciones académicas disponibles en la app: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (dominio público) y el Zhou Yi original. La IA los cita y contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con la fuente original.",
     related: ["methodNotes"],
   },
   {
@@ -754,7 +754,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     question:
       "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
-      "إنها أصيلة. المادة النصية، أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة، مستقاة من ثلاث ترجمات أكاديمية متاحة في التطبيق: Wilhelm/Baynes (في الملك العام منذ عام 2020)، وJames Legge، والتشو يي الأصلي. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
+      "إنها أصيلة. المادة النصية، أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة، مستقاة من ثلاث ترجمات أكاديمية متاحة في التطبيق: Wilhelm/Baynes (Princeton University Press، 1950)، وJames Legge (في الملك العام)، والتشو يي الأصلي. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
     related: ["methodNotes"],
   },
   {
@@ -950,7 +950,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     question:
       "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
     answer:
-      "वे प्रामाणिक हैं। पाठ्य सामग्री (निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम) ऐप में उपलब्ध तीन विद्वानों के अनुवादों से ली गई है: Wilhelm/Baynes (2020 से सार्वजनिक डोमेन), James Legge, और मूल Zhou Yi। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं।",
+      "वे प्रामाणिक हैं। पाठ्य सामग्री (निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम) ऐप में उपलब्ध तीन विद्वानों के अनुवादों से ली गई है: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (सार्वजनिक डोमेन), और मूल Zhou Yi। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं।",
     related: ["methodNotes"],
   },
   {
@@ -1145,7 +1145,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     question:
       "解釈に表示されるI Chingのテキストは本物ですか、それともAIが生成したものですか？",
     answer:
-      "本物です。テキスト素材（卦辞、動爻（爻辞）、変卦）はアプリで利用できる3つの学術的翻訳から引用されています：ヴィルヘルム/バインズ訳（2020年よりパブリックドメイン）、ジェームズ・レッグ訳、そして原典の周易。AIは関連するテキストをあなたの質問に合わせて引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原典と照合することができます。",
+      "本物です。テキスト素材（卦辞、動爻（爻辞）、変卦）はアプリで利用できる3つの学術的翻訳から引用されています：ヴィルヘルム/バインズ訳（Princeton University Press、1950年）、ジェームズ・レッグ訳（パブリックドメイン）、そして原典の周易。AIは関連するテキストをあなたの質問に合わせて引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原典と照合することができます。",
     related: ["methodNotes"],
   },
   {
@@ -1338,7 +1338,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "authentic-texts",
     question: "解读中出现的易经文本是真实的还是AI生成的？",
     answer:
-      "是真实的。文本素材（卦辞、动爻（爻辞）和变卦）来自应用中提供的三种学术译本：威廉/贝恩斯译本（2020年起属公共领域）、詹姆斯·理雅各译本和原典周易。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
+      "是真实的。文本素材（卦辞、动爻（爻辞）和变卦）来自应用中提供的三种学术译本：威廉/贝恩斯译本（普林斯顿大学出版社，1950年）、詹姆斯·理雅各译本（公有领域）和原典周易。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
     related: ["methodNotes"],
   },
   {
@@ -1530,7 +1530,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "authentic-texts",
     question: "해석에 나타나는 주역 텍스트는 진본인가요, AI가 생성한 것인가요?",
     answer:
-      "진본입니다. 텍스트 자료(괘사(卦辞), 동효의 효사(爻辞), 변괘)는 앱에서 제공하는 세 가지 학술 번역본에서 인용되었습니다: 빌헬름/베인스 번역본(2020년부터 공공 도메인), 제임스 레그 번역본, 그리고 원전 주역. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다.",
+      "진본입니다. 텍스트 자료(괘사(卦辞), 동효의 효사(爻辞), 변괘)는 앱에서 제공하는 세 가지 학술 번역본에서 인용되었습니다: 빌헬름/베인스 번역본(Princeton University Press, 1950), 제임스 레그 번역본(공공 도메인), 그리고 원전 주역. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다.",
     related: ["methodNotes"],
   },
   {
@@ -1724,7 +1724,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     question:
       "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
-      "São autênticos. O material textual (Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes) provém de três traduções académicas disponíveis na app: Wilhelm/Baynes (domínio público desde 2020), James Legge e o Zhou Yi original. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
+      "São autênticos. O material textual (Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes) provém de três traduções académicas disponíveis na app: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (domínio público) e o Zhou Yi original. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
     related: ["methodNotes"],
   },
   {
@@ -1924,7 +1924,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Sind die I-Ching-Texte in der Lesung authentisch oder KI-generiert?",
     answer:
-      "Sie sind authentisch. Das Textmaterial (Urteile (卦辞), sich bewegende Linien (爻辞) und resultierende Hexagramme) stammt aus drei wissenschaftlichen Übersetzungen, die in der App verfügbar sind: Wilhelm/Baynes (seit 2020 gemeinfrei), James Legge und das originale Zhou Yi. Die KI zitiert und kontextualisiert die relevanten Texte mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit der Originalquelle vergleichen.",
+      "Sie sind authentisch. Das Textmaterial (Urteile (卦辞), sich bewegende Linien (爻辞) und resultierende Hexagramme) stammt aus drei wissenschaftlichen Übersetzungen, die in der App verfügbar sind: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (gemeinfrei) und das originale Zhou Yi. Die KI zitiert und kontextualisiert die relevanten Texte mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit der Originalquelle vergleichen.",
     related: ["methodNotes"],
   },
   {
@@ -2124,7 +2124,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
-      "Sono autentici. Il materiale testuale (Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti) proviene da tre traduzioni accademiche disponibili nell'app: Wilhelm/Baynes (di pubblico dominio dal 2020), James Legge e lo Zhou Yi originale. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
+      "Sono autentici. Il materiale testuale (Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti) proviene da tre traduzioni accademiche disponibili nell'app: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (di pubblico dominio) e lo Zhou Yi originale. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
     related: ["methodNotes"],
   },
   {
@@ -2326,7 +2326,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
-      "Ils sont authentiques. Le matériel textuel (Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants) provient de trois traductions académiques disponibles dans l'app : Wilhelm/Baynes (dans le domaine public depuis 2020), James Legge et le Zhou Yi original. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
+      "Ils sont authentiques. Le matériel textuel (Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants) provient de trois traductions académiques disponibles dans l'app : Wilhelm/Baynes (Princeton University Press, 1950), James Legge (domaine public) et le Zhou Yi original. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
     related: ["methodNotes"],
   },
   {
