@@ -38,7 +38,6 @@ export default async function MutationExplorerPage() {
       <MutationExplorerAccessGate>
         <article className="doc-article">
           <h1>{messages.title}</h1>
-          <p className="doc-lead">{messages.subtitle}</p>
           <Suspense fallback={<p>{messages.loading}</p>}>
             <MutationExplorer locale={locale} />
           </Suspense>

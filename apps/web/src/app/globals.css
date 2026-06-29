@@ -9206,6 +9206,12 @@ html.iching-rn-webview .oracle-toggle-track {
   border-top: 1px dashed var(--record-divider);
 }
 
+.mutation-explorer-section-divider {
+  margin: 0.85rem 0 0.65rem;
+  border: none;
+  border-top: 1px dashed var(--record-divider);
+}
+
 .mutation-explorer-reading-rules-row {
   display: grid;
   grid-template-columns: minmax(0, 8.35rem) 1fr;
@@ -9356,7 +9362,63 @@ html.iching-rn-webview .oracle-toggle-track {
 }
 
 .mutation-explorer-oracle-block {
-  margin-bottom: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.mutation-explorer-oracle-details {
+  border: none;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.mutation-explorer-oracle-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem 0.55rem;
+  cursor: pointer;
+  list-style: none;
+  margin: 0;
+  padding: 0.28rem 0;
+}
+
+.mutation-explorer-oracle-summary::-webkit-details-marker {
+  display: none;
+}
+
+.mutation-explorer-oracle-toggle {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 11px;
+  height: 11px;
+  margin-top: 0.15rem;
+  border: var(--audit-tree-line-width, 1.5px) solid var(--audit-timeline-line, var(--record-divider));
+  border-radius: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--audit-timeline-text-muted, var(--fg-muted));
+  background: var(--bg);
+}
+
+.mutation-explorer-oracle-toggle::before {
+  content: "+";
+  transform: translateY(-0.5px);
+}
+
+.mutation-explorer-oracle-details[open] > .mutation-explorer-oracle-summary .mutation-explorer-oracle-toggle::before {
+  content: "−";
+}
+
+.mutation-explorer-oracle-heading {
+  min-width: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--fg) 70%, var(--accent));
 }
 
 .mutation-explorer-oracle-block h4 {
@@ -9366,8 +9428,9 @@ html.iching-rn-webview .oracle-toggle-track {
   color: color-mix(in srgb, var(--fg) 70%, var(--accent));
 }
 
+.mutation-explorer-oracle-body,
 .mutation-explorer-oracle-block blockquote {
-  margin: 0;
+  margin: 0.15rem 0 0.65rem 1.35rem;
   padding-left: 0.75rem;
   border-left: 2px solid var(--record-divider);
   white-space: pre-wrap;
