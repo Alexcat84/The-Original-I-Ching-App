@@ -1466,6 +1466,79 @@ export default function HomePage() {
       return y;
     };
 
+    /** Summary row: label column (serif + accent) + value column (sans), like ConsultationRecordCard grid. */
+    const drawSummaryField = (
+      ctx: CanvasRenderingContext2D,
+      label: string,
+      value: string,
+      x: number,
+      yStart: number,
+      maxWidth: number,
+      lineHeight: number,
+      fontSize: number,
+      labelColWidth: number,
+      maxValueLines: number,
+      accentColor: string,
+    ): number => {
+      const labelPlain = label.trimEnd();
+      const valueX = x + labelColWidth;
+      const valueMaxWidth = Math.max(80, maxWidth - labelColWidth);
+
+      ctx.fillStyle = accentColor;
+      ctx.font = `700 ${fontSize}px ${serifFont}`;
+      ctx.fillText(labelPlain, x, yStart);
+
+      ctx.fillStyle = "#22313f";
+      ctx.font = `500 ${fontSize}px ${cjkFont}`;
+      const wrapped = wrapText(ctx, value, valueMaxWidth);
+      const valueLines = wrapped.slice(0, maxValueLines);
+      const truncated = wrapped.length > maxValueLines;
+
+      if (valueLines.length === 0) {
+        return yStart + lineHeight + 6;
+      }
+
+      for (let i = 0; i < valueLines.length; i++) {
+        let line = valueLines[i]!;
+        if (truncated && i === valueLines.length - 1) {
+          line = `${line}…`;
+        }
+        ctx.fillText(line, valueX, yStart + i * lineHeight);
+      }
+
+      return yStart + valueLines.length * lineHeight + 6;
+    };
+
+    const measureSummaryLabelColWidth = (ctx: CanvasRenderingContext2D, fontSize: number) => {
+      const labels = [
+        recordLabels.trace,
+        explorerUi.readingRefLabel,
+        recordLabels.verificationCode,
+        recordLabels.changingLinesLabel,
+        recordLabels.translatorLabel,
+        recordLabels.lineReading,
+        recordLabels.rule,
+        recordLabels.thread,
+        pdfUi.verdict,
+        pdfUi.medium,
+        pdfUi.charge,
+        pdfUi.inThread,
+      ];
+      ctx.font = `700 ${fontSize}px ${serifFont}`;
+      const maxLabel = Math.max(...labels.map((l) => ctx.measureText(l.trimEnd()).width));
+      return Math.ceil(maxLabel + 14);
+    };
+
+    let summaryLabelColWidth = 200;
+    const summaryFontSize = 25;
+    {
+      const measureCanvas = document.createElement("canvas");
+      const measureCtx = measureCanvas.getContext("2d");
+      if (measureCtx) {
+        summaryLabelColWidth = measureSummaryLabelColWidth(measureCtx, summaryFontSize);
+      }
+    }
+
     for (let i = 0; i < activeThread.length; i++) {
       const entry = activeThread[i]!;
       if (i > 0) doc.addPage();
@@ -1537,12 +1610,24 @@ export default function HomePage() {
       ctx.font = `700 24px ${cjkFont}`;
       ctx.fillStyle = accent;
       ctx.fillText(pdfUi.summary, 84, cardY + 46);
-      ctx.font = `500 25px ${cjkFont}`;
-      ctx.fillStyle = "#22313f";
+      const summaryLineHeight = 34;
+      const summaryX = 84;
+      const summaryMaxWidth = leftW - 60;
       let sy = cardY + 92;
-      const summaryLine = (label: string, value: string) => {
-        sy =
-          drawWrapped(ctx, `${label} ${value}`, 84, sy, leftW - 60, 34, 2) + 6;
+      const summaryLine = (label: string, value: string, maxValueLines = 3) => {
+        sy = drawSummaryField(
+          ctx,
+          label,
+          value,
+          summaryX,
+          sy,
+          summaryMaxWidth,
+          summaryLineHeight,
+          summaryFontSize,
+          summaryLabelColWidth,
+          maxValueLines,
+          accent,
+        );
       };
       const pdfDateStr = new Date(entry.createdAt ?? Date.now()).toLocaleDateString(
         locale,
@@ -1608,7 +1693,7 @@ export default function HomePage() {
             locale,
           });
           if (ruleSummary) {
-            summaryLine(recordLabels.rule, ruleSummary);
+            summaryLine(recordLabels.rule, ruleSummary, 4);
           }
         }
         summaryLine(
