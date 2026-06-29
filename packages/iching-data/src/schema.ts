@@ -48,3 +48,34 @@ export const hexagramsBundleSchema = z.object({
 
 export type HexagramRecord = z.infer<typeof hexagramRecordSchema>;
 export type HexagramsBundle = z.infer<typeof hexagramsBundleSchema>;
+
+export const mutationRuleRecordSchema = z.object({
+  id: z.string(),
+  changingCount: z.number().int().nullable(),
+  systemCode: z.string(),
+  pdfPage: z.number().int().optional(),
+  printedPage: z.number().int().optional(),
+  bookText: z.string(),
+  readsFrom: z.string(),
+  textTypes: z.array(z.string()),
+  systemMatch: z.string(),
+  variant: z.string().optional(),
+  specialHexagrams: z.array(z.number()).nullable().optional(),
+  systemMatchNote: z.string().optional(),
+  engineChangeRequired: z.boolean().optional(),
+  rulerNote: z.string().nullable().optional(),
+  extrapolated: z.boolean().optional(),
+  extrapolationNote: z.string().optional(),
+});
+
+export const mutationRulesBundleSchema = z.object({
+  system: z.enum(["huang", "zhuxi"]),
+  source: z.string(),
+  edition: z.string().optional(),
+  generatedAt: z.string(),
+  pageMapping: z.any().optional(),
+  rules: z.array(mutationRuleRecordSchema),
+});
+
+export type MutationRuleRecord = z.infer<typeof mutationRuleRecordSchema>;
+export type MutationRulesBundle = z.infer<typeof mutationRulesBundleSchema>;

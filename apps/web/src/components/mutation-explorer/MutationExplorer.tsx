@@ -17,17 +17,16 @@ import {
   type MutationExploreResult,
 } from "@iching-oracle/iching-engine";
 import {
-  getIchingMutationRuleLabel,
   getManualWizardMessages,
   getMutationExplorerUiMessages,
   parseAppLocale,
   type MutationExplorerUiMessages,
 } from "@iching-oracle/i18n";
+import { formatMutationRuleForUi } from "@/lib/mutation-rule-display";
 import { getSupabaseBrowser } from "@/lib/supabase-browser";
 import {
   buildOracleTextBlocks,
   formatConsultRef,
-  getReadingRuleExplanation,
   runExploreFromConsultation,
   type ConsultationExploreContext,
 } from "@/lib/mutation-explorer/explore-mutation";
@@ -128,26 +127,29 @@ function ReadingRulesSection({
   ui,
   ruleLocale,
   result,
-  translator,
 }: {
   ui: MutationExplorerUiMessages;
   ruleLocale: ReturnType<typeof parseAppLocale>;
   result: MutationExploreResult;
-  translator: TranslatorTab;
 }) {
-  const explanation = getReadingRuleExplanation(result, translator);
-  if (!explanation) return null;
+  const { originalEn, translation } = formatMutationRuleForUi({
+    mutationRule: result.mutationRule,
+    lineReadingSystem: result.lineReadingSystem,
+    locale: ruleLocale,
+  });
+  if (!originalEn) return null;
 
   return (
     <section className="mutation-explorer-reading-rules-section">
       <h2 className="mutation-explorer-section-title">{ui.readingRulesSectionTitle}</h2>
-      <p className="consultation-record-row mutation-explorer-reading-rules-row">
-        <span className="consultation-record-key">{ui.ruleApplied}:</span>
-        <span className="consultation-record-value">
-          {getIchingMutationRuleLabel(ruleLocale, result.mutationRule)}
-        </span>
+      <p lang="en" className="mutation-explorer-reading-rules-detail">
+        {originalEn}
       </p>
-      <p className="mutation-explorer-reading-rules-detail">{explanation}</p>
+      {translation ? (
+        <p className="mutation-explorer-reading-rules-detail mutation-explorer-reading-rules-detail--muted">
+          {translation}
+        </p>
+      ) : null}
     </section>
   );
 }
@@ -407,7 +409,6 @@ export function MutationExplorer({ locale }: Props) {
           ui={ui}
           ruleLocale={ruleLocale}
           result={result}
-          translator={activeTranslator}
         />
 
         <section className="mutation-explorer-oracle-section">
@@ -673,7 +674,6 @@ export function MutationExplorer({ locale }: Props) {
             ui={ui}
             ruleLocale={ruleLocale}
             result={result}
-            translator={tab}
           />
 
           <h3 className="mutation-explorer-section-title">{ui.oracleTexts}</h3>

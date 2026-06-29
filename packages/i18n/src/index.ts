@@ -122,6 +122,7 @@ export {
 } from "./messages/site-meta-ui.js";
 export {
   getIchingMutationRuleLabel,
+  getMutationRuleTranslation,
   ICHING_MUTATION_RULE_IDS,
   type IchingMutationRuleId,
 } from "./messages/iching-mutation-ui.js";

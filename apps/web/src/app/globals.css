@@ -9221,6 +9221,32 @@ html.iching-rn-webview .oracle-toggle-track {
   color: var(--fg-muted);
 }
 
+.mutation-explorer-reading-rules-detail--muted {
+  margin-top: 0.5rem;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.consultation-record-row--rule .consultation-record-value {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.consultation-record-rule-en {
+  display: block;
+  font-size: inherit;
+  line-height: 1.45;
+}
+
+.consultation-record-rule-translation {
+  display: block;
+  font-size: 0.92em;
+  line-height: 1.45;
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
 .mutation-explorer-meta-grid {
   margin: 0;
 }

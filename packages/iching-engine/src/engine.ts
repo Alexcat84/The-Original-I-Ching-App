@@ -1,4 +1,4 @@
-import { getHexagramRecordByBinaryTopFirst, type HexagramRecord } from "@iching-oracle/iching-data";
+import { getHexagramRecordByBinaryTopFirst, getMutationRuleBookText, type HexagramRecord } from "@iching-oracle/iching-data";
 import {
   type AnyMutationRule,
   type CastingMethod,
@@ -180,7 +180,7 @@ export function selectTextsForClaude(
     transformedJudgment: transformed?.judgment ?? null,
     transformedImage: transformed?.image ?? null,
     specialYaoText: null,
-    ruleExplanation: "",
+    mutationRuleBookText: "",
   };
   const gl = (hex: Hexagram, pos: number) => hex.lines.find((l) => l.position === pos)?.text ?? "";
 
@@ -191,13 +191,15 @@ export function selectTextsForClaude(
     );
   }
 
+  const mutationRuleBookText = getMutationRuleBookText("huang", rule);
+
   switch (rule) {
     case "NO_CHANGING":
       return attachMasterTraditions({
         ...base,
         transformedJudgment: null,
         transformedImage: null,
-        ruleExplanation: "Sin mutaciones. Solo Juicio e Imagen del hexagrama primario.",
+        mutationRuleBookText,
       });
 
     case "ONE_CHANGING": {
@@ -205,7 +207,7 @@ export function selectTextsForClaude(
       return attachMasterTraditions({
         ...base,
         selectedLineTexts: [{ position: pos, text: gl(primary, pos), fromHexagram: "primary" }],
-        ruleExplanation: `Una mutación en línea ${pos}. Es el elemento más importante.`,
+        mutationRuleBookText,
       });
     }
 
@@ -216,7 +218,7 @@ export function selectTextsForClaude(
         selectedLineTexts: [
           { position: yin.position, text: gl(primary, yin.position), fromHexagram: "primary" },
         ],
-        ruleExplanation: `Dos mutaciones yin+yang. Solo se lee la línea Yin (pos ${yin.position}).`,
+        mutationRuleBookText,
       });
     }
 
@@ -227,7 +229,7 @@ export function selectTextsForClaude(
         selectedLineTexts: [
           { position: low, text: gl(primary, low), fromHexagram: "primary" },
         ],
-        ruleExplanation: `Dos mutaciones mismo tipo. Solo se lee la inferior (pos ${low}).`,
+        mutationRuleBookText,
       });
     }
 
@@ -238,7 +240,7 @@ export function selectTextsForClaude(
         selectedLineTexts: [
           { position: mid, text: gl(primary, mid), fromHexagram: "primary" },
         ],
-        ruleExplanation: `Tres mutaciones. Solo se lee la línea central (pos ${mid}).`,
+        mutationRuleBookText,
       });
     }
 
@@ -255,7 +257,7 @@ export function selectTextsForClaude(
         selectedLineTexts: [
           { position: high, text: gl(transformed, high), fromHexagram: "transformed" },
         ],
-        ruleExplanation: `Cuatro mutaciones. Línea estable superior del TRANSFORMADO (pos ${high}).`,
+        mutationRuleBookText,
       });
     }
 
@@ -267,7 +269,7 @@ export function selectTextsForClaude(
         selectedLineTexts: [
           { position: only, text: gl(transformed, only), fromHexagram: "transformed" },
         ],
-        ruleExplanation: `Cinco mutaciones. Único testigo estable del TRANSFORMADO (pos ${only}).`,
+        mutationRuleBookText,
       });
     }
 
@@ -276,7 +278,7 @@ export function selectTextsForClaude(
         ...base,
         primaryImage: "",
         selectedLineTexts: [],
-        ruleExplanation: "Mutación total. Solo Juicio del hexagrama transformado.",
+        mutationRuleBookText,
       });
 
     case "QIAN_ALL_NINE":
@@ -286,7 +288,7 @@ export function selectTextsForClaude(
         specialYaoText:
           primary.yongJiu ??
           'All Nines (用九): "A host of dragons without a head; good fortune."',
-        ruleExplanation: "Qian (1) con todos Yang Viejos. Séptimo Yao 用九.",
+        mutationRuleBookText,
       });
 
     case "KUN_ALL_SIX":
@@ -296,7 +298,7 @@ export function selectTextsForClaude(
         specialYaoText:
           primary.yongLiu ??
           'All Sixes (用六): "Perseverance brings advantage."',
-        ruleExplanation: "Kun (2) con todos Yin Viejos. Séptimo Yao 用六.",
+        mutationRuleBookText,
       });
 
     default:

@@ -1,4 +1,5 @@
 import { getHexagramRecordByNumber } from "@iching-oracle/iching-data";
+import { getMutationRuleBookText } from "@iching-oracle/iching-data";
 import {
   buildLine,
   exploreMutation,
@@ -147,12 +148,10 @@ export function buildOracleTextBlocks(
   return blocks;
 }
 
-/** Engine ruleExplanation — reading rules, not literal oracle text. */
-export function getReadingRuleExplanation(
-  result: MutationExploreResult,
-  translator: "wilhelm" | "legge" | "zhouyi",
-): string {
-  return textsForTranslator(result, translator).ruleExplanation.trim();
+/** Gold bookText EN for the active line-reading system — not oracle translator text. */
+export function getReadingRuleExplanation(result: MutationExploreResult): string {
+  const system = result.lineReadingSystem === "zhuxi" ? "zhuxi" : "huang";
+  return getMutationRuleBookText(system, result.mutationRule).trim();
 }
 
 export function formatConsultRef(id: string): string {
