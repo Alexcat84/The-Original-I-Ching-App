@@ -91,7 +91,7 @@ export interface TextsForClaude {
   transformedJudgment: string | null;
   transformedImage: string | null;
   specialYaoText: string | null;
-  ruleExplanation: string;
+  mutationRuleBookText: string;
   /** Zhu Xi 3-changing case: both judgments are read; which one leads. */
   judgmentEmphasis?: "primary" | "transformed" | null;
   /** Zhu Xi Qian/Kun all-changing: both hexagram judgments + 用九/用六 (Adler ch. IV). */

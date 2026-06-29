@@ -1419,6 +1419,63 @@
       "npmScript": "npm run i18n:audit",
       "relatedAuditCodes": [],
       "area": "tools/i18n-audit"
+    },
+    {
+      "code": "VF-FID-003 mutation-rules-fidelity",
+      "title": "Mutation rules text fidelity",
+      "shortName": "mutation-rules-fidelity",
+      "type": "VF",
+      "family": "FID",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Verify generated JSON matches API"
+        }
+      ],
+      "path": "scripts/verify-mutation-rules-fidelity.mjs",
+      "npmScript": "npm run verify:mutation-rules-fidelity",
+      "relatedAuditCodes": [],
+      "area": "scripts/verify-mutation-rules-fidelity"
+    },
+    {
+      "code": "TS-WEB-OVR-007 overlay-title-long-name-samples",
+      "title": "Overlay long name sample tests",
+      "shortName": "overlay-title-long-name-samples",
+      "type": "TS",
+      "family": "WEB-OVR",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Test samples for long names"
+        }
+      ],
+      "path": "apps/web/src/lib/__tests__/overlay-title-pango.long-name-samples.test.ts",
+      "npmScript": "npm run test --prefix apps/web",
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/overlay-title-pango"
+    },
+    {
+      "code": "TS-WEB-OVR-008 overlay-title-random-samples",
+      "title": "Overlay random sample tests",
+      "shortName": "overlay-title-random-samples",
+      "type": "TS",
+      "family": "WEB-OVR",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Test samples for random names"
+        }
+      ],
+      "path": "apps/web/src/lib/__tests__/overlay-title-pango.random-samples.test.ts",
+      "npmScript": "npm run test --prefix apps/web",
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/overlay-title-pango"
     }
   ]
 }

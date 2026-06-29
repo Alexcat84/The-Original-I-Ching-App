@@ -30,7 +30,6 @@ import {
   getRitualStatusUiMessages,
   getTokenPanelUiMessages,
   getTwoFactorUiMessages,
-  getIchingMutationRuleLabel,
   getOnboardingUiMessages,
   getOraclePresentationUiMessages,
   htmlLangFromAppLocale,
@@ -62,6 +61,7 @@ import {
   getSupabaseBrowser,
   isSupabaseBrowserConfigured,
 } from "@/lib/supabase-browser";
+import { formatMutationRuleForUi } from "@/lib/mutation-rule-display";
 import {
   buildCanvasReadingLines,
   drawPdfContinuationChrome,
@@ -1568,7 +1568,20 @@ export default function HomePage() {
           ? `#${entry.primaryHexagram} ${entry.primaryHexagramChinese} → #${entry.transformedHexagram} ${entry.transformedHexagramChinese ?? ""}`
           : `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`;
         summaryLine(pdfUi.trace, trace);
-        summaryLine(pdfUi.rule, getIchingMutationRuleLabel(locale, entry.mutationRule));
+        if (entry.mutationRule) {
+          const ruleDisplay = formatMutationRuleForUi({
+            mutationRule: entry.mutationRule,
+            lineReadingSystem: entry.lineReadingSystem ?? "huang",
+            locale,
+          });
+          const ruleValue = ruleDisplay.translation
+            ? `${ruleDisplay.originalEn}\n${ruleDisplay.translation}`
+            : ruleDisplay.originalEn;
+          if (ruleValue) {
+            summaryLine(pdfUi.rule, ruleValue);
+          }
+        }
+
         if (entry.translator && pdfTranslatorName[entry.translator]) {
           summaryLine(pdfUi.translator, pdfTranslatorName[entry.translator]!);
         }

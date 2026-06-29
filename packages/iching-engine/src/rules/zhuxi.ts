@@ -1,3 +1,4 @@
+import { getMutationRuleBookText } from "@iching-oracle/iching-data";
 import type { Hexagram, Line, TextsForClaude, ZhuXiMutationRule } from "../types.js";
 
 /**
@@ -43,6 +44,7 @@ export function selectTextsZhuXi(
   gl: (hex: Hexagram, pos: number) => string,
 ): TextsForClaude {
   const sorted = [...changing].sort((a, b) => a - b);
+  const mutationRuleBookText = getMutationRuleBookText("zhuxi", rule);
 
   switch (rule) {
     case "ZX_ZERO":
@@ -51,8 +53,7 @@ export function selectTextsZhuXi(
         transformedJudgment: null,
         transformedImage: null,
         judgmentEmphasis: null,
-        ruleExplanation:
-          "Zhu Xi: sin mutaciones. Solo Juicio e Imagen del hexagrama primario.",
+        mutationRuleBookText,
       };
 
     case "ZX_ONE": {
@@ -62,7 +63,7 @@ export function selectTextsZhuXi(
         selectedLineTexts: [
           { position: pos, text: gl(primary, pos), fromHexagram: "primary" },
         ],
-        ruleExplanation: `Zhu Xi: una mutación (línea ${pos}). La línea prima sobre el Juicio.`,
+        mutationRuleBookText,
       };
     }
 
@@ -75,7 +76,7 @@ export function selectTextsZhuXi(
           { position: low, text: gl(primary, low), fromHexagram: "primary", emphasis: "secondary" },
           { position: high, text: gl(primary, high), fromHexagram: "primary", emphasis: "primary" },
         ],
-        ruleExplanation: `Zhu Xi: dos mutaciones. Se leen ambas líneas; la superior (pos ${high}) es primaria.`,
+        mutationRuleBookText,
       };
     }
 
@@ -87,9 +88,7 @@ export function selectTextsZhuXi(
         ...base,
         selectedLineTexts: [],
         judgmentEmphasis: emphasis,
-        ruleExplanation: `Zhu Xi: tres mutaciones. Se leen los Juicios de ambos hexagramas; prima el ${
-          emphasis === "primary" ? "primario" : "transformado"
-        } (regla operativa equivalente a Adler, cap. IV).`,
+        mutationRuleBookText,
       };
     }
 
@@ -106,7 +105,7 @@ export function selectTextsZhuXi(
           { position: low, text: gl(transformed, low), fromHexagram: "transformed", emphasis: "primary" },
           { position: high, text: gl(transformed, high), fromHexagram: "transformed", emphasis: "secondary" },
         ],
-        ruleExplanation: `Zhu Xi: cuatro mutaciones. Dos estables del TRANSFORMADO; la inferior (pos ${low}) es primaria.`,
+        mutationRuleBookText,
       };
     }
 
@@ -118,7 +117,7 @@ export function selectTextsZhuXi(
         selectedLineTexts: [
           { position: only, text: gl(transformed, only), fromHexagram: "transformed" },
         ],
-        ruleExplanation: `Zhu Xi: cinco mutaciones. Única estable del TRANSFORMADO (pos ${only}).`,
+        mutationRuleBookText,
       };
     }
 
@@ -127,7 +126,7 @@ export function selectTextsZhuXi(
         ...base,
         primaryImage: "",
         selectedLineTexts: [],
-        ruleExplanation: "Zhu Xi: mutación total. Solo el Juicio del hexagrama transformado.",
+        mutationRuleBookText,
       };
 
     case "QIAN_ALL_NINE":
@@ -138,8 +137,7 @@ export function selectTextsZhuXi(
         specialYaoText:
           primary.yongJiu ??
           'All Nines (用九): "A host of dragons without a head; good fortune."',
-        ruleExplanation:
-          "Zhu Xi: Qian (1) con los seis Yang Viejos. 用九 más los juicios de ambos hexágramas y su interrelación (Adler, cap. IV).",
+        mutationRuleBookText,
       };
 
     case "KUN_ALL_SIX":
@@ -150,8 +148,7 @@ export function selectTextsZhuXi(
         specialYaoText:
           primary.yongLiu ??
           'All Sixes (用六): "Perseverance brings advantage."',
-        ruleExplanation:
-          "Zhu Xi: Kun (2) con los seis Yin Viejos. 用六 más los juicios de ambos hexágramas y su interrelación (Adler, cap. IV).",
+        mutationRuleBookText,
       };
   }
 }

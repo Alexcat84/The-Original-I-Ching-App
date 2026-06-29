@@ -1,0 +1,200 @@
+{
+  "system": "zhuxi",
+  "source": "Zhu Xi (1130–1200), Yixue Qimeng (易學啟蒙, 1186), ch. IV — Joseph Adler trans.",
+  "generatedAt": "2026-06-29T00:04:59.781Z",
+  "pageMapping": {
+    "chapter": "IV. Examining the Prognostications of the Changes",
+    "chapterZh": "占筮",
+    "printedToPdf": {
+      "48": 150,
+      "49": 152,
+      "50": 154,
+      "51": 156,
+      "52": 158,
+      "53": 160,
+      "54": 205,
+      "74": 215
+    },
+    "corePdfRange": [
+      150,
+      158
+    ],
+    "figuresPdfRange": [
+      159,
+      204
+    ],
+    "notesPdfRange": [
+      205,
+      215
+    ],
+    "notesPrintedRange": [
+      64,
+      74
+    ],
+    "calibrationNote": "Printed page 48 maps to PDF 150 in this scan (not PDF 113, which is ch. III milfoil). English + Chinese alternate on the same folio number. Notes for ch. IV footnotes 128–150 appear in PDF 205–215 (printed ~64–74)."
+  },
+  "rules": [
+    {
+      "id": "qian_kun_all_changing_preamble",
+      "changingCount": 6,
+      "specialHexagrams": [
+        1,
+        2
+      ],
+      "systemCode": "QIAN_ALL_NINE|KUN_ALL_SIX",
+      "printedPage": 48,
+      "pdfPage": 150,
+      "bookText": "When we get Ch'ien with all six lines as 9 [in divination], or K'un with all six lines as 6, we then use this as the prognostication. Thus \"a flight of dragons without heads\" is the image of yang completely changing to yin. \"It is beneficial to be eternally steady\" is the meaning of yin completely changing to yang.",
+      "readsFrom": "primary",
+      "textTypes": [
+        "yongJiu",
+        "yongLiu"
+      ],
+      "rulerNote": "用九 / 用六 appended texts for pure yang / pure yin hexagrams.",
+      "systemMatch": "exact",
+      "systemMatchNote": "Engine delivers 用九/用六 plus both hexagram judgments (readBothJudgments) per footnote 148."
+    },
+    {
+      "id": "zero_unchanging",
+      "changingCount": 0,
+      "systemCode": "ZX_ZERO",
+      "printedPage": 49,
+      "pdfPage": 152,
+      "bookText": "Any hexagram may have all unchanging lines. In that case we prognosticate on the basis of the original hexagram's T'uan statement, taking the inner hexagram as chen [the question, or present situation] and the outer hexagram as hui [the prognostication].",
+      "readsFrom": "primary",
+      "textTypes": [
+        "judgment"
+      ],
+      "rulerNote": null,
+      "systemMatch": "exact"
+    },
+    {
+      "id": "one_changing",
+      "changingCount": 1,
+      "systemCode": "ZX_ONE",
+      "printedPage": 50,
+      "pdfPage": 154,
+      "bookText": "When only one line changes, we take the statement of the original hexagram's changing line as the prognostication.",
+      "readsFrom": "primary",
+      "textTypes": [
+        "line"
+      ],
+      "rulerNote": "Single changing line governs.",
+      "systemMatch": "exact"
+    },
+    {
+      "id": "two_changing",
+      "changingCount": 2,
+      "systemCode": "ZX_TWO_UPPER",
+      "printedPage": 50,
+      "pdfPage": 154,
+      "bookText": "When two lines change, we take the statements of the two changing lines of the original hexagram as the prognostication, but we take the upper line [of the two] as ruler.",
+      "readsFrom": "primary",
+      "textTypes": [
+        "line",
+        "line"
+      ],
+      "rulerNote": "Upper of the two changing lines is chu (ruler). Footnote 141.",
+      "extrapolated": true,
+      "extrapolationNote": "Ts'ai Yuan-ting: 'In the Classic and the Appendices there is no [such] passage. Extrapolating from what is present yields this.'",
+      "systemMatch": "exact"
+    },
+    {
+      "id": "three_changing",
+      "changingCount": 3,
+      "systemCode": "ZX_THREE_JUDGMENTS",
+      "printedPage": 50,
+      "pdfPage": 154,
+      "bookText": "When three lines change, the prognostication is the T'uan statement of the original hexagram and the resulting hexagram, and we use the original hexagram as chen and the resulting hexagram as hui. In the first ten hexagrams [of this sort] we make chen the ruler; in the latter ten hexagrams we make hui the ruler.",
+      "readsFrom": "primary+transformed",
+      "textTypes": [
+        "judgment",
+        "judgment"
+      ],
+      "rulerNote": "20 three-changing cases; 32 charts (Fig. 19) refine which hexagram's lines apply.",
+      "systemMatch": "equivalent",
+      "systemMatchNote": "Book uses first-ten / latter-ten of 20 chart cases; engine uses bottom-line (pos 1) operational rule — documented equivalent per Adler ch. IV audit."
+    },
+    {
+      "id": "four_changing",
+      "changingCount": 4,
+      "systemCode": "ZX_FOUR_LOWER",
+      "printedPage": 51,
+      "pdfPage": 156,
+      "bookText": "When four lines change, we use the two unchanging lines in the resulting hexagram as the prognostication. But we take the lower line as ruler.",
+      "readsFrom": "transformed",
+      "textTypes": [
+        "line",
+        "line"
+      ],
+      "rulerNote": "Lower of the two stable lines in the transformed hexagram is chu.",
+      "extrapolated": true,
+      "extrapolationNote": "Ts'ai Yuan-ting: 'The Classic and the Appendices do not contain this line either. Extrapolating from what is present yields this.'",
+      "systemMatch": "exact"
+    },
+    {
+      "id": "five_changing",
+      "changingCount": 5,
+      "systemCode": "ZX_FIVE_ONLY",
+      "printedPage": 51,
+      "pdfPage": 156,
+      "bookText": "When five lines change, we use the unchanging line of the resulting hexagram as the prognostication.",
+      "readsFrom": "transformed",
+      "textTypes": [
+        "line"
+      ],
+      "rulerNote": "Mu Chiang / Gen→Sui example (footnote 144–145): stable line 2 of Sui is correct, not Sui judgment.",
+      "systemMatch": "exact"
+    },
+    {
+      "id": "six_changing_qian_kun",
+      "changingCount": 6,
+      "specialHexagrams": [
+        1,
+        2
+      ],
+      "systemCode": "QIAN_ALL_NINE|KUN_ALL_SIX",
+      "printedPage": 52,
+      "pdfPage": 158,
+      "bookText": "When six lines change, in the cases of Ch'ien and K'un, the prognostications of both are used.",
+      "readsFrom": "primary+transformed",
+      "textTypes": [
+        "judgment",
+        "judgment",
+        "yongJiu|yongLiu"
+      ],
+      "rulerNote": "Ts'ai Mo example: Qian→Kun interrelates both statements (footnotes 146–148).",
+      "systemMatch": "exact",
+      "systemMatchNote": "Engine readBothJudgments + 用九/用六 per footnotes 128 and 148."
+    },
+    {
+      "id": "six_changing_other",
+      "changingCount": 6,
+      "systemCode": "ZX_SIX_TRANSFORMED",
+      "printedPage": 52,
+      "pdfPage": 158,
+      "bookText": "For other hexagrams, the prognostication is the T'uan statement of the resulting hexagram.",
+      "readsFrom": "transformed",
+      "textTypes": [
+        "judgment"
+      ],
+      "rulerNote": null,
+      "systemMatch": "exact"
+    },
+    {
+      "id": "thirty_two_charts",
+      "changingCount": null,
+      "systemCode": "ZX_THREE_JUDGMENTS|ZX_FOUR_LOWER|ZX_FIVE_ONLY",
+      "printedPage": 52,
+      "pdfPage": 158,
+      "bookText": "The changes in the hexagrams up through the 32 use the lines of the original hexagram as prognostication. The changes of the hexagrams after the 32 use the lines of the changed hexagram as prognostication.",
+      "readsFrom": "chart-dependent",
+      "textTypes": [
+        "line"
+      ],
+      "rulerNote": "4096 combinations arranged in 32 charts (Fig. 19); reversed yields 64 charts.",
+      "systemMatch": "not_implemented",
+      "systemMatchNote": "32-chart line-source rule applies to 3/4/5 changing cases in full classical practice; engine uses count-based rules without chart lookup."
+    }
+  ]
+}

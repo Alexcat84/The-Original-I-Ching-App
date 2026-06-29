@@ -3,7 +3,6 @@
 import Link from "next/link";
 import {
   getConsultationRecordUiMessages,
-  getIchingMutationRuleLabel,
   getManualWizardMessages,
   parseAppLocale,
 } from "@iching-oracle/i18n";
@@ -14,6 +13,8 @@ type OracleBonesCardData = {
   verdict: string;
 };
 
+import { formatMutationRuleForUi } from "@/lib/mutation-rule-display";
+
 type Props = {
   consultationId: string;
   question: string;
@@ -22,9 +23,9 @@ type Props = {
   primaryHexagramChinese: string;
   transformedHexagram: number | null;
   transformedHexagramChinese?: string | null;
-  mutationRule: string;
   castIndex?: number;
   changingLines?: number[];
+  mutationRule?: string;
   verifyRulesLocked?: boolean;
   translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
   lineReadingSystem?: "huang" | "zhuxi" | null;
@@ -48,9 +49,9 @@ export function ConsultationRecordCard({
   primaryHexagramChinese,
   transformedHexagram,
   transformedHexagramChinese,
-  mutationRule,
   castIndex,
   changingLines,
+  mutationRule,
   verifyRulesLocked = false,
   translator,
   lineReadingSystem,
@@ -66,6 +67,15 @@ export function ConsultationRecordCard({
     lineReadingSystem === "zhuxi"
       ? wizardLabels.lineReadingSystemZhuxiShort
       : wizardLabels.lineReadingSystemHuangShort;
+
+  const mutationRuleDisplay =
+    mutationRule && oracleType === "iching"
+      ? formatMutationRuleForUi({
+          mutationRule,
+          lineReadingSystem: lineReadingSystem ?? "huang",
+          locale: ruleLocale,
+        })
+      : null;
 
   const translatorDisplayName: Record<string, string> = {
     wilhelm: "Wilhelm / Baynes",
@@ -138,12 +148,6 @@ export function ConsultationRecordCard({
             {trace}
           </span>
         </p>
-        <p className="consultation-record-row">
-          <span className="consultation-record-key">{labels.rule}</span>
-          <span className="consultation-record-value">
-            {getIchingMutationRuleLabel(ruleLocale, mutationRule)}
-          </span>
-        </p>
         {castIndex != null ? (
           <p className="consultation-record-row">
             <span className="consultation-record-key">{labels.verificationCode}</span>
@@ -172,6 +176,21 @@ export function ConsultationRecordCard({
           <span className="consultation-record-key">{labels.lineReading}</span>
           <span className="consultation-record-value">{lineReadingSystemName}</span>
         </p>
+        {mutationRuleDisplay?.originalEn ? (
+          <div className="consultation-record-row consultation-record-row--rule">
+            <span className="consultation-record-key">{labels.rule}</span>
+            <span className="consultation-record-value">
+              <span lang="en" className="consultation-record-rule-en">
+                {mutationRuleDisplay.originalEn}
+              </span>
+              {mutationRuleDisplay.translation ? (
+                <span className="consultation-record-rule-translation">
+                  {mutationRuleDisplay.translation}
+                </span>
+              ) : null}
+            </span>
+          </div>
+        ) : null}
         <p className="consultation-record-row">
           <span className="consultation-record-key">{labels.thread}</span>
           <span className="consultation-record-value">

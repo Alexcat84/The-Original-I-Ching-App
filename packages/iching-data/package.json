@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "npm run build:data && tsc && node ../../scripts/copy-generated.mjs",
-    "build:data": "node ../../scripts/build-hexagrams.mjs && node ../../scripts/build-hexagram-commentary.mjs && node ../../scripts/build-trigrams.mjs",
+    "build:data": "node ../../scripts/build-hexagrams.mjs && node ../../scripts/build-hexagram-commentary.mjs && node ../../scripts/build-trigrams.mjs && node ../../scripts/build-mutation-rules.mjs",
     "clean": "rimraf dist",
     "test": "vitest run"
   },

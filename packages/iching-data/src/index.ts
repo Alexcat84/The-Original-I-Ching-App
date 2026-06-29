@@ -92,3 +92,10 @@ export {
   type CastCatalogEntry,
   type CastCatalogSelection,
 } from "./cast-catalog.js";
+
+export {
+  getMutationRuleRecord,
+  getMutationRuleBookText,
+  type MutationSystem,
+} from "./mutation-rules.js";
+export type { MutationRuleRecord, MutationRulesBundle } from "./schema.js";
