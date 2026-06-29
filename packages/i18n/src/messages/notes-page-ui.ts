@@ -121,9 +121,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "El método de las tres monedas",
     ichingMethodBody:
       "El método clásico de monedas lanza tres monedas seis veces y construye el hexagrama línea a línea. Es más rápido que las varillas de milenrama y produce el mismo tipo de resultado: líneas enteras (yang) y partidas (yin), algunas en movimiento. Cómo se leen luego esas líneas en movimiento es una cuestión aparte, que se aborda en la siguiente sección.",
-    ichingWilhelmHeading: "La traducción Wilhelm/Baynes",
+    ichingWilhelmHeading: "La traducción Wilhelm",
     ichingWilhelmBody:
-      "Richard Wilhelm produjo en 1924 la traducción más completa y respetada del I Ching en lengua occidental. Cary Baynes la tradujo al inglés en 1950 (Princeton University Press). Esta app usa los pasajes del oráculo (juicio, imagen y líneas) como texto base, sin parafrasear ni reescribir.",
+      "Richard Wilhelm publicó en 1924 la traducción alemana definitiva del I Ching (Eugen Diederichs Verlag). Esta app usa ese texto oracular en alemán (juicio, imagen y líneas) como fuente de biblioteca, sin parafrasear ni reescribir. La versión en inglés de Cary Baynes (Princeton University Press, 1950) queda archivada solo como referencia.",
     ichingLeggeHeading: "La traducción de James Legge",
     ichingLeggeBody:
       "James Legge, un misionero y sinólogo escocés, tradujo el I Ching en 1882 como parte de su obra monumental 'The Sacred Books of the East'. Su enfoque fue estrictamente filológico y académico, buscando descifrar el significado literal de los textos confucianos y pre-confucianos. Su versión aporta un rigor interpretativo invaluable.",
@@ -183,9 +183,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "The Three-Coin Method",
     ichingMethodBody:
       "The classic coin method casts three coins six times, building the hexagram one line at a time. It is faster than the yarrow stalks and produces the same kind of result: solid (yang) and broken (yin) lines, some of them moving. How those moving lines are then read is a separate matter, addressed in the next section.",
-    ichingWilhelmHeading: "The Wilhelm/Baynes Translation",
+    ichingWilhelmHeading: "The Wilhelm Translation",
     ichingWilhelmBody:
-      "Richard Wilhelm produced in 1924 the most complete and respected translation of the I Ching in Western languages. Cary Baynes translated it into English in 1950 (Princeton University Press). This app uses the oracle passages (judgment, image, and line texts) as the base text, without paraphrase or editorial rewriting.",
+      "Richard Wilhelm published the definitive German translation of the I Ching in 1924 (Eugen Diederichs Verlag). This app uses that German oracle text (judgment, image, and lines) as the library source, without paraphrase or editorial rewriting. Cary Baynes's 1950 English rendering (Princeton University Press) is archived for reference only.",
     ichingLeggeHeading: "The James Legge Translation",
     ichingLeggeBody:
       "James Legge, a Scottish missionary and sinologist, translated the I Ching in 1882 as part of his monumental work 'The Sacred Books of the East'. His approach was strictly philological and academic, seeking to decipher the literal meaning of Confucian and pre-Confucian texts. His version brings an invaluable interpretive rigor.",
@@ -210,7 +210,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "This is the procedure described in the Great Commentary (Dàzhuàn). The method specifies: 'The number of the Great Expansion is 50, of which 49 are used.' This method predates the three-coin method by over a millennium. Richard Wilhelm documented the full procedure in his 1924 work, preserving a slower, more tactile, and deliberate ritual rhythm compared to coins.",
     yarrowProbHeading: "Character of the method",
     yarrowProbBody:
-      "The stalk method preserves a slower ritual tempo than the three-coin method. In this app, its value is not presented as a technical table, but as a different way of entering the same I Ching tradition: more tactile, more deliberate, and closer to the classical procedure documented by Wilhelm/Baynes. The three-coin method remains equally valid for a faster consultation.",
+      "The stalk method preserves a slower ritual tempo than the three-coin method. In this app, its value is not presented as a technical table, but as a different way of entering the same I Ching tradition: more tactile, more deliberate, and closer to the classical procedure documented by Wilhelm. The three-coin method remains equally valid for a faster consultation.",
     translationsHeading: "The Translations",
     lineReadingHeading: "Reading the Changing Lines",
     lineReadingIntroBody:
@@ -246,7 +246,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "O método das três moedas",
     ichingMethodBody:
       "O método clássico de moedas lança três moedas seis vezes e constrói o hexagrama linha a linha. É mais rápido do que as varetas de milenrama e produz o mesmo tipo de resultado: linhas inteiras (yang) e quebradas (yin), algumas em movimento. Como se leem depois essas linhas em movimento é uma questão à parte, abordada na secção seguinte.",
-    ichingWilhelmHeading: "A tradução Wilhelm/Baynes",
+    ichingWilhelmHeading: "A tradução Wilhelm",
     ichingWilhelmBody:
       "Richard Wilhelm produziu em 1924 a tradução mais completa e respeitada do I Ching em língua ocidental. Cary Baynes traduziu-a para inglês em 1950 (Princeton University Press). Esta obra é o texto base desta app, sem modificações nem simplificações.",
     ichingLeggeHeading: "A tradução de James Legge",
@@ -273,7 +273,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "É o procedimento descrito no Grande Comentário (Dàzhuàn). O método especifica: «O número da Grande Expansão é 50, dos quais 49 são usados». O método é anterior ao das três moedas em mais de um milénio. Richard Wilhelm documentou o procedimento completo na sua obra de 1924, resgatando um ritmo ritual mais lento, tátil e deliberado do que o das moedas.",
     yarrowProbHeading: "Caráter do método",
     yarrowProbBody:
-      "O método das varetas preserva um ritmo ritual mais lento do que o das três moedas. Nesta app, o seu valor não é apresentado como uma tabela técnica, mas como uma forma diferente de entrar na mesma tradição do I Ching: mais tátil, mais deliberada e mais próxima do procedimento clássico documentado por Wilhelm/Baynes. O método das três moedas continua igualmente válido para uma consulta mais rápida.",
+      "O método das varetas preserva um ritmo ritual mais lento do que o das três moedas. Nesta app, o seu valor não é apresentado como uma tabela técnica, mas como uma forma diferente de entrar na mesma tradição do I Ching: mais tátil, mais deliberada e mais próxima do procedimento clássico documentado por Wilhelm. O método das três moedas continua igualmente válido para uma consulta mais rápida.",
     translationsHeading: "As traduções",
     lineReadingHeading: "A leitura das linhas em movimento",
     lineReadingIntroBody:
@@ -309,7 +309,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "La méthode des trois pièces",
     ichingMethodBody:
       "La méthode classique des pièces lance trois pièces six fois et construit l'hexagramme trait par trait. Elle est plus rapide que les tiges d'achillée et produit le même type de résultat : des traits pleins (yang) et brisés (yin), certains en mouvement. La façon dont ces traits en mouvement sont ensuite lus est une question distincte, abordée dans la section suivante.",
-    ichingWilhelmHeading: "La traduction Wilhelm/Baynes",
+    ichingWilhelmHeading: "La traduction Wilhelm",
     ichingWilhelmBody:
       "Richard Wilhelm a produit en 1924 la traduction la plus complète et la plus respectée du I Ching en langue occidentale. Cary Baynes l'a traduite en anglais en 1950 (Princeton University Press). Cette œuvre constitue le texte base de cette app, sans modifications ni simplifications.",
     ichingLeggeHeading: "La traduction de James Legge",
@@ -337,7 +337,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "C'est le procédé décrit dans le Grand Commentaire (Dàzhuàn). Le méthode précise : « Le nombre de la Grande Expansion est 50, dont 49 sont utilisés ». Cette méthode est antérieure à celle des trois pièces de plus d'un millénaire. Richard Wilhelm a documenté le procédé complet dans son œuvre de 1924, préservant un rythme rituel plus lent, tactile et délibéré que celui des pièces.",
     yarrowProbHeading: "Caractère de la méthode",
     yarrowProbBody:
-      "La méthode des tiges conserve un rythme rituel plus lent que celle des trois pièces. Dans cette app, sa valeur n'est pas présentée comme un tableau technique, mais comme une autre façon d'entrer dans la même tradition du I Ching : plus tactile, plus délibérée et plus proche du procédé classique documenté par Wilhelm/Baynes. La méthode des trois pièces reste tout aussi valide pour une consultation plus rapide.",
+      "La méthode des tiges conserve un rythme rituel plus lent que celle des trois pièces. Dans cette app, sa valeur n'est pas présentée comme un tableau technique, mais comme une autre façon d'entrer dans la même tradition du I Ching : plus tactile, plus délibérée et plus proche du procédé classique documenté par Wilhelm. La méthode des trois pièces reste tout aussi valide pour une consultation plus rapide.",
     translationsHeading: "Les traductions",
     lineReadingHeading: "La lecture des traits en mouvement",
     lineReadingIntroBody:
@@ -373,7 +373,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "Die Drei-Münzen-Methode",
     ichingMethodBody:
       "Die klassische Münzmethode wirft sechsmal drei Münzen und baut das Hexagramm Linie für Linie auf. Sie ist schneller als die Schafgarbenstäbe und liefert dieselbe Art von Ergebnis: ganze (yang) und gebrochene (yin) Linien, einige davon bewegend. Wie diese bewegenden Linien dann gelesen werden, ist eine eigene Frage, die im nächsten Abschnitt behandelt wird.",
-    ichingWilhelmHeading: "Die Übersetzung Wilhelm/Baynes",
+    ichingWilhelmHeading: "Die Übersetzung Wilhelm",
     ichingWilhelmBody:
       "Richard Wilhelm erstellte 1924 die vollständigste und angesehenste Übersetzung des I Ching in westlicher Sprache. Cary Baynes übersetzte sie 1950 ins Englische (Princeton University Press). Dieses Werk ist der Grundtext dieser App, ohne Modifikationen oder Vereinfachungen.",
     ichingLeggeHeading: "Die Übersetzung von James Legge",
@@ -401,7 +401,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Dies ist das Verfahren, das im Großen Kommentar (Dàzhuàn) beschrieben wird. Die Methode präzisiert : «Die Zahl der Großen Expansion ist 50, von denen 49 verwendet werden». Die Methode ist mehr als ein Jahrtausend älter als die Drei-Münzen-Methode. Richard Wilhelm dokumentierte das vollständige Verfahren in seinem Werk von 1924 und bewahrte damit einen langsameren, taktilen und bewussteren rituellen Rhythmus im Vergleich zu Münzen.",
     yarrowProbHeading: "Charakter der Methode",
     yarrowProbBody:
-      "Die Stabmethode bewahrt einen langsameren rituellen Rhythmus als die Drei-Münzen-Methode. Ihr Wert wird in dieser App nicht als technische Tabelle dargestellt, sondern als ein anderer Weg, in dieselbe I Ching-Tradition einzutreten: taktiler, bewusster und näher am klassischen Verfahren, das von Wilhelm/Baynes dokumentiert wurde. Die Drei-Münzen-Methode bleibt für eine schnellere Beratung ebenso gültig.",
+      "Die Stabmethode bewahrt einen langsameren rituellen Rhythmus als die Drei-Münzen-Methode. Ihr Wert wird in dieser App nicht als technische Tabelle dargestellt, sondern als ein anderer Weg, in dieselbe I Ching-Tradition einzutreten: taktiler, bewusster und näher am klassischen Verfahren, das von Wilhelm dokumentiert wurde. Die Drei-Münzen-Methode bleibt für eine schnellere Beratung ebenso gültig.",
     translationsHeading: "Die Übersetzungen",
     lineReadingHeading: "Das Lesen der bewegenden Linien",
     lineReadingIntroBody:
@@ -437,7 +437,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "Il metodo delle tre monete",
     ichingMethodBody:
       "Il metodo classico delle monete lancia tre monete sei volte e costruisce l'esagramma linea per linea. È più rapido degli steli di achillea e produce lo stesso tipo di risultato: linee intere (yang) e spezzate (yin), alcune in movimento. Come si leggono poi quelle linee in movimento è una questione a parte, affrontata nella sezione successiva.",
-    ichingWilhelmHeading: "La traduzione Wilhelm/Baynes",
+    ichingWilhelmHeading: "La traduzione Wilhelm",
     ichingWilhelmBody:
       "Richard Wilhelm ha prodotto nel 1924 la traduzione più completa e rispettata dello I Ching in lingua occidentale. Cary Baynes l'ha tradotta in inglese nel 1950 (Princeton University Press). Quest'opera costituisce il testo base di questa app, senza modifiche né semplificazioni.",
     ichingLeggeHeading: "La traduzione di James Legge",
@@ -464,7 +464,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Questo è il procedimento descritto nel Grande Commento (Dàzhuàn). Il metodo precisa : «Il numero della Grande Espansione è 50, di cui 49 vengono usati». Questo metodo è anteriore a quello delle tre monete di oltre un millennio. Richard Wilhelm ha documentado il procedimento completo nella sua opera del 1924, preservando un ritmo rituale più lento, tattile e deliberato rispetto a quello delle monete.",
     yarrowProbHeading: "Carattere del metodo",
     yarrowProbBody:
-      "La procedura degli steli conserva un ritmo rituale più lento rispetto a quello delle monete. In questa app il suo valore non viene presentato come una tabella tecnica, ma come un modo diverso di entrare nella stessa tradizione dell'I Ching: più tattile, più deliberato e più vicino al procedimento classico documentato da Wilhelm/Baynes. Il metodo delle tre monete rimane altrettanto valido per una consultazione più rapida.",
+      "La procedura degli steli conserva un ritmo rituale più lento rispetto a quello delle monete. In questa app il suo valore non viene presentato come una tabella tecnica, ma come un modo diverso di entrare nella stessa tradizione dell'I Ching: più tattile, più deliberato e più vicino al procedimento classico documentato da Wilhelm. Il metodo delle tre monete rimane altrettanto valido per una consultazione più rapida.",
     translationsHeading: "Le traduzioni",
     lineReadingHeading: "La lettura delle linee in movimento",
     lineReadingIntroBody:
@@ -531,7 +531,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "蓍草による占いの方法は、易経そのものに記録されている卜占手順です。十翼のひとつである大伝（大传, Dàzhuàn）には「大衍之数五十、其用四十有九（大いなる展開の数は50、そのうち49を使う）」と明記されています。論語では孔子が易を学ぶために五十年欲しいと述べており、古典学者たちはその「50」という数への言及を蓍草の手順への直接的な示唆と理解しています。この方法は三枚硬貨法よりも千年以上古いものです。リヒャルト・ヴィルヘルムとケーリー・ベインズは1950年の翻訳の付録（プリンストン大学出版）に完全な手順を記録しています。",
     yarrowProbHeading: "方法の性格",
     yarrowProbBody:
-      "筮竹の方法は、三枚硬貨よりもゆっくりした儀礼的なリズムを保ちます。このアプリでは、その価値を技術的な表としてではなく、同じ易経伝統に入る別の方法として示しています。より触覚的で、より意識的で、Wilhelm/Baynes が記録した古典的手順に近いものです。より速い占いには三枚硬貨の方法も同じく有効です。",
+      "筮竹の方法は、三枚硬貨よりもゆっくりした儀礼的なリズムを保ちます。このアプリでは、その価値を技術的な表としてではなく、同じ易経伝統に入る別の方法として示しています。より触覚的で、より意識的で、Wilhelm が記録した古典的手順に近いものです。より速い占いには三枚硬貨の方法も同じく有効です。",
     translationsHeading: "翻訳",
     lineReadingHeading: "動爻の読み方",
     lineReadingIntroBody:
@@ -594,7 +594,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "蓍草占法是易经本身所记载的占卜程序。十翼之一的大传（大传, Dàzhuàn）明确指出：「大衍之数五十，其用四十有九。」孔子在《论语》中表示希望花五十年研习《周易》；古典学者将这一「五十」的引用理解为对蓍草程序的直接暗示。该方法比三枚铜钱法早一千余年。卫礼贤与贝恩斯在其1950年译本的附录（普林斯顿大学出版社）中记录了完整的操作步骤。",
     yarrowProbHeading: "方法的气质",
     yarrowProbBody:
-      "蓍草方法保留了比三枚铜钱更慢的仪式节奏。在本应用中，它的价值不以技术表格呈现，而是作为进入同一《易经》传统的另一种方式：更具触感，更审慎，也更接近 Wilhelm/Baynes 所记录的经典程序。若需要更快速的咨询，三枚铜钱方法同样有效。",
+      "蓍草方法保留了比三枚铜钱更慢的仪式节奏。在本应用中，它的价值不以技术表格呈现，而是作为进入同一《易经》传统的另一种方式：更具触感，更审慎，也更接近 Wilhelm 所记录的经典程序。若需要更快速的咨询，三枚铜钱方法同样有效。",
     translationsHeading: "各家译本",
     lineReadingHeading: "动爻的读法",
     lineReadingIntroBody:
@@ -661,7 +661,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "시초 방법은 역경 자체에 기록된 점술 절차입니다. 십익 중 하나인 대전(大传, Dàzhuàn)은 구체적으로 기술합니다: '대연지수오십, 기용사십유구(대연의 수는 50이며 그 중 49를 사용한다).' 공자는 논어에서 역을 오십 년간 공부하고 싶다고 밝혔으며, 고전학자들은 이 50이라는 숫자를 시초 절차에 대한 직접적인 암시로 해석합니다. 이 방법은 삼전법보다 천 년 이상 앞섭니다. 리하르트 빌헬름과 캐리 베인스는 1950년 번역본 부록(프린스턴 대학 출판부)에 전체 절차를 기록했습니다.",
     yarrowProbHeading: "방법의 성격",
     yarrowProbBody:
-      "시초 방법은 세 동전 방법보다 더 느린 의례적 리듬을 보존합니다. 이 앱에서 그 가치는 기술적인 표가 아니라 같은 주역 전통에 들어가는 다른 방식으로 제시됩니다. 더 촉각적이고, 더 신중하며, Wilhelm/Baynes가 기록한 고전적 절차에 더 가깝습니다. 빠른 상담에는 세 동전 방법도 똑같이 유효합니다.",
+      "시초 방법은 세 동전 방법보다 더 느린 의례적 리듬을 보존합니다. 이 앱에서 그 가치는 기술적인 표가 아니라 같은 주역 전통에 들어가는 다른 방식으로 제시됩니다. 더 촉각적이고, 더 신중하며, Wilhelm가 기록한 고전적 절차에 더 가깝습니다. 빠른 상담에는 세 동전 방법도 똑같이 유효합니다.",
     translationsHeading: "번역본",
     lineReadingHeading: "변효 읽기",
     lineReadingIntroBody:
@@ -697,7 +697,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "طريقة العملات الثلاث",
     ichingMethodBody:
       "طريقة العملات الكلاسيكية تقذف ثلاث عملات ست مرات وتبني الغرض خطاً بخط. وهي أسرع من عيدان الزنبق وتعطي النوع نفسه من النتيجة: خطوط كاملة (يانغ) ومكسورة (يين)، بعضها متحرك. أما كيف تُقرأ تلك الخطوط المتحركة بعد ذلك فمسألة منفصلة، يتناولها القسم التالي.",
-    ichingWilhelmHeading: "ترجمة Wilhelm/Baynes",
+    ichingWilhelmHeading: "ترجمة Wilhelm",
     ichingWilhelmBody:
       "ريتشارد فيلهلم أنتج عام 1924 الترجمة الأكثر اكتمالاً واحتراماً للـ I Ching في اللغات الغربية. ترجمتها كاري بينز إلى الإنجليزية عام 1950 (Princeton University Press). تستخدم هذه التطبيق مقاطع الأوراكل (الأحكام والصورة والخطوط) كنص أساسي، دون إعادة صياغة أو تحرير.",
     ichingLeggeHeading: "ترجمة جيمس ليغ",
@@ -765,7 +765,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "तीन सिक्कों की विधि",
     ichingMethodBody:
       "शास्त्रीय सिक्का विधि तीन सिक्कों को छह बार फेंककर हेक्साग्राम को एक-एक रेखा बनाती है। यह यारो की छड़ों से तेज़ है और उसी प्रकार का परिणाम देती है: अखंड (यांग) और टूटी हुई (यिन) रेखाएं, जिनमें कुछ गतिशील होती हैं। उन गतिशील रेखाओं को फिर कैसे पढ़ा जाता है, यह एक अलग विषय है, जिसे अगले खंड में देखा गया है।",
-    ichingWilhelmHeading: "Wilhelm/Baynes अनुवाद",
+    ichingWilhelmHeading: "Wilhelm अनुवाद",
     ichingWilhelmBody:
       "जर्मन चीनी विद्वान रिचर्ड विल्हेम ने 1924 में पश्चिमी भाषाओं में I Ching का सबसे पूर्ण और सम्मानित अनुवाद प्रस्तुत किया। Cary Baynes ने इसे 1950 में अंग्रेजी में अनुवाद किया (Princeton University Press)। यह ऐप ओरेकल के अंशों (निर्णय, छवि और रेखाएँ) को बिना पैराफ्रेज़ या संपादन के आधार पाठ के रूप में उपयोग करता है।",
     ichingLeggeHeading: "जेम्स लेग अनुवाद",
@@ -797,7 +797,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "यारो की छड़ों की विधि वह दिव्यज्ञान प्रक्रिया है जो स्वयं I Ching में प्रलेखित है। दस पंखों में से एक, महान टीका (大传, Dàzhuàn), स्पष्ट रूप से कहता है: 'महान विस्तार की संख्या 50 है, जिनमें से 49 उपयोग में लाई जाती हैं।' कन्फ्यूशियस ने एनालेक्ट्स में कहा कि वे पचास वर्षों तक परिवर्तनों का अध्ययन करना चाहते थे; शास्त्रीय विद्वान 50 की इस संदर्भ को छड़ों की प्रक्रिया की ओर प्रत्यक्ष संकेत के रूप में समझते हैं। यह विधि तीन सिक्कों की विधि से एक सहस्राब्दी से अधिक पुरानी है। रिचर्ड विल्हेम और कैरी बेनिस ने 1950 के अपने अनुवाद के परिशिष्ट (प्रिंसटन यूनिवर्सिटी प्रेस) में पूर्ण प्रक्रिया प्रलेखित की।",
     yarrowProbHeading: "विधि का स्वभाव",
     yarrowProbBody:
-      "डंठल विधि तीन सिक्कों की विधि की तुलना में धीमी अनुष्ठानिक लय रखती है। इस ऐप में इसका मूल्य किसी तकनीकी तालिका के रूप में नहीं, बल्कि उसी I Ching परंपरा में प्रवेश करने के दूसरे तरीके के रूप में प्रस्तुत है: अधिक स्पर्शनीय, अधिक सजग और Wilhelm/Baynes द्वारा दर्ज शास्त्रीय प्रक्रिया के निकट। तेज परामर्श के लिए तीन सिक्कों की विधि उतनी ही वैध रहती है।",
+      "डंठल विधि तीन सिक्कों की विधि की तुलना में धीमी अनुष्ठानिक लय रखती है। इस ऐप में इसका मूल्य किसी तकनीकी तालिका के रूप में नहीं, बल्कि उसी I Ching परंपरा में प्रवेश करने के दूसरे तरीके के रूप में प्रस्तुत है: अधिक स्पर्शनीय, अधिक सजग और Wilhelm द्वारा दर्ज शास्त्रीय प्रक्रिया के निकट। तेज परामर्श के लिए तीन सिक्कों की विधि उतनी ही वैध रहती है।",
     translationsHeading: "अनुवाद",
     lineReadingHeading: "गतिशील रेखाओं का पठन",
     lineReadingIntroBody:
