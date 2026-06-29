@@ -63,9 +63,14 @@ Textos oráculo W/L/Z **sí** siguen SSoT al 100% (`hexagrams.*.json` + `verify:
 | Canal | Contenido |
 |-------|-----------|
 | **Prompt / Claude** | Solo `bookText` EN del gold. Prohibido i18n localizado. |
-| **UI** (resumen, PDF, Explorer) | `bookText` EN + traducción fiel al locale (11 idiomas). |
-| **DB** | Solo `mutation_rule` enum. No persistir copy. |
+| **Resumen consulta + PDF** | **Una línea corta** localizada (`iching-mutation-summary-ui.ts`); fiel al sistema Huang/Zhu Xi elegido; no literal al gold (espacio limitado). |
+| **Mutation Explorer** | `bookText` EN completo + traducción literal completa al locale (11 idiomas) vía `iching-mutation-ui.ts`. |
+| **DB** | Solo `mutation_rule` enum + `line_reading_system`. No persistir copy. |
 | **Enum al usuario** | No mostrar códigos `THREE_MIDDLE` etc. |
+
+**Control Huang vs Zhu Xi:** selector «Lectura de líneas» (`lineReadingSystem`), **no** el traductor Wilhelm/Legge/Zhou Yi. Ver AUD-MUT-08 §8.
+
+**Display split (2026-06-28):** el plan original decía «bookText EN + i18n» en todas las superficies UI; tras smoke se acotó resumen/PDF a una línea. Explorer conserva texto completo.
 
 ---
 
@@ -109,10 +114,11 @@ packages/iching-data/src/mutation-rules.ts (getters Zod)
 
 ### Fase 3 — i18n
 
-- Reescribir `iching-mutation-ui.ts`: traducciones fieles al gold (eliminar viñetas inventadas)
-- Export `getMutationRuleTranslation(locale, code)`
-- UI: original EN + traducción muted debajo
-- Explorer: una sola sección reglas (sin duplicado)
+- Reescribir `iching-mutation-ui.ts`: traducciones literales fieles al gold (Explorer)
+- Nuevo `iching-mutation-summary-ui.ts`: resúmenes de una línea (card/PDF)
+- Export `getMutationRuleTranslation(locale, code, system)` y `getMutationRuleSummaryLabel(locale, code, system)`
+- Explorer: original EN + traducción muted debajo
+- Card/PDF: solo resumen corto vía `formatMutationRuleSummaryForUi`
 
 ### Fase 4 — Motor
 
@@ -171,10 +177,10 @@ Desalineación prompt vs UI si i18n llega a Claude. Mitigación: getter EN únic
 | Superficie | Hoy | Objetivo |
 |------------|-----|----------|
 | Prompt Claude | ruleExplanation ES | bookText EN (iching-data) |
-| Resumen tirada | getIchingMutationRuleLabel | bookText EN + i18n |
+| Resumen tirada | getIchingMutationRuleLabel | línea corta i18n (`getMutationRuleSummaryLabel` + `lineReadingSystem`) |
 | PDF | getIchingMutationRuleLabel | idem |
-| Mutation Explorer | label + ruleExplanation | bookText EN + i18n (una sección) |
-| DB | mutation_rule enum | sin cambio |
+| Mutation Explorer | label + ruleExplanation | bookText EN + traducción literal (`formatMutationRuleForUi` + `lineReadingSystem`) |
+| DB | mutation_rule enum | sin cambio; `line_reading_system` (074) |
 
 ---
 
@@ -186,3 +192,4 @@ Desalineación prompt vs UI si i18n llega a Claude. Mitigación: getter EN únic
 - [x] Fase 3: i18n fiel (11 locales)
 - [x] Fase 5: ConsultationRecordCard, PDF, MutationExplorer
 - [x] Fase 6: gates + AGENTS.md
+- [x] Post-cierre: display split resumen vs Explorer; Q/K summary con `lineReadingSystem` (AUD-MUT-08 §7–§9)

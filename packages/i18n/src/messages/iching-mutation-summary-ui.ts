@@ -5,6 +5,18 @@ import {
   type IchingMutationRuleId,
 } from "./iching-mutation-ui.js";
 
+/**
+ * One-line mutation rule summaries for consultation record + PDF (MUT-08 display split).
+ *
+ * NOT the full gold bookText — that lives in Explorer via `getMutationRuleBookText` +
+ * `getMutationRuleTranslation`. Summaries are concise, localized, and faithful to the
+ * selected line reading system (Huang vs Zhu Xi), not the oracle translator.
+ *
+ * Rule codes: Huang uses `NO_CHANGING`, `THREE_MIDDLE`, …; Zhu Xi uses `ZX_*` for
+ * count-based rules. Qian/Kun all-changing share `QIAN_ALL_NINE` / `KUN_ALL_SIX` —
+ * pass `system: "zhuxi"` to `getMutationRuleSummaryLabel` for Zhu Xi wording
+ * (both judgments + 用九/用六) vs Huang (seventh yao / 用九/用六 only).
+ */
 /** One-line summary for consultation record / PDF — not the full gold bookText. */
 type SummaryMap = Record<IchingMutationRuleId, string>;
 
@@ -242,11 +254,95 @@ const BY_LOCALE: Record<AppLocale, SummaryMap> = {
   hi: HI,
 };
 
+/** Shared Qian/Kun codes — Zhu Xi reads both judgments plus 用九/用六 (Adler p.48). */
+type QianKunSummaryMap = Pick<SummaryMap, "QIAN_ALL_NINE" | "KUN_ALL_SIX">;
+
+const QIAN_KUN_ZHUXI_ES: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "Seis mutantes en Qian: ambos dictámenes y 用九 (Todos los Nueves).",
+  KUN_ALL_SIX: "Seis mutantes en Kun: ambos dictámenes y 用六 (Todos los Seises).",
+};
+
+const QIAN_KUN_ZHUXI_EN: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "All six moving in Qian: read both judgments and All Nines (用九).",
+  KUN_ALL_SIX: "All six moving in Kun: read both judgments and All Sixes (用六).",
+};
+
+const QIAN_KUN_ZHUXI_PT: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "Seis móveis em Qian: ambos dictames e 用九 (Todos os Noves).",
+  KUN_ALL_SIX: "Seis móveis em Kun: ambos dictames e 用六 (Todos os Seises).",
+};
+
+const QIAN_KUN_ZHUXI_FR: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "Six mobiles en Qian : les deux jugements et Tous les Neuf (用九).",
+  KUN_ALL_SIX: "Six mobiles en Kun : les deux jugements et Tous les Six (用六).",
+};
+
+const QIAN_KUN_ZHUXI_DE: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "Alle sechs in Qian: beide Urteile und Alle Neun (用九).",
+  KUN_ALL_SIX: "Alle sechs in Kun: beide Urteile und Alle Sechs (用六).",
+};
+
+const QIAN_KUN_ZHUXI_IT: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "Sei mutanti in Qian: entrambi i giudizi e Tutti i Nove (用九).",
+  KUN_ALL_SIX: "Sei mutanti in Kun: entrambi i giudizi e Tutti i Sei (用六).",
+};
+
+const QIAN_KUN_ZHUXI_JA: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "乾で6本変化：両卦の彖辞と用九。",
+  KUN_ALL_SIX: "坤で6本変化：両卦の彖辞と用六。",
+};
+
+const QIAN_KUN_ZHUXI_ZH: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "乾六爻皆变：读本卦与变卦卦辞及用九。",
+  KUN_ALL_SIX: "坤六爻皆变：读本卦与变卦卦辞及用六。",
+};
+
+const QIAN_KUN_ZHUXI_KO: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "건 6획 변화: 본괘·변괘 판사와 용구.",
+  KUN_ALL_SIX: "곤 6획 변화: 본괘·변괘 판사와 용육.",
+};
+
+const QIAN_KUN_ZHUXI_AR: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "ستة في Qian: حكما الأصلي والناتج و用九.",
+  KUN_ALL_SIX: "ستة في Kun: حكما الأصلي والناتج و用六.",
+};
+
+const QIAN_KUN_ZHUXI_HI: QianKunSummaryMap = {
+  QIAN_ALL_NINE: "Qian में सभी छह: दोनों निर्णय और 用九.",
+  KUN_ALL_SIX: "Kun में सभी छह: दोनों निर्णय और 用六.",
+};
+
+const QIAN_KUN_ZHUXI_BY_LOCALE: Record<AppLocale, QianKunSummaryMap> = {
+  es: QIAN_KUN_ZHUXI_ES,
+  en: QIAN_KUN_ZHUXI_EN,
+  pt: QIAN_KUN_ZHUXI_PT,
+  fr: QIAN_KUN_ZHUXI_FR,
+  de: QIAN_KUN_ZHUXI_DE,
+  it: QIAN_KUN_ZHUXI_IT,
+  ja: QIAN_KUN_ZHUXI_JA,
+  zh: QIAN_KUN_ZHUXI_ZH,
+  ko: QIAN_KUN_ZHUXI_KO,
+  ar: QIAN_KUN_ZHUXI_AR,
+  hi: QIAN_KUN_ZHUXI_HI,
+};
+
+export type MutationRuleSummarySystem = "huang" | "zhuxi";
+
+function isQianKunSharedRule(rule: string): rule is keyof QianKunSummaryMap {
+  return rule === "QIAN_ALL_NINE" || rule === "KUN_ALL_SIX";
+}
+
 /** Short one-line label for consultation summary and PDF export. */
 export function getMutationRuleSummaryLabel(
   locale: AppLocale,
   rule: string,
+  system: MutationRuleSummarySystem = "huang",
 ): string {
+  if (system === "zhuxi" && isQianKunSharedRule(rule)) {
+    const zxMap =
+      QIAN_KUN_ZHUXI_BY_LOCALE[locale] ?? QIAN_KUN_ZHUXI_BY_LOCALE[DEFAULT_LOCALE];
+    return zxMap[rule];
+  }
   const map = BY_LOCALE[locale] ?? BY_LOCALE[DEFAULT_LOCALE];
   if (rule in map) return map[rule as IchingMutationRuleId];
   return rule;

@@ -1,6 +1,20 @@
 import type { AppLocale } from "../locales.js";
 import { DEFAULT_LOCALE } from "../locales.js";
 
+/**
+ * Full locale translations of mutation rule gold bookText (MUT-08).
+ *
+ * Used ONLY in Mutation Explorer (`formatMutationRuleForUi`). Prompt Claude reads EN
+ * directly from `@iching-oracle/iching-data`; never import these strings into backend.
+ *
+ * Two literal variants per scenario, selected by `system` (`huang` | `zhuxi`):
+ * - Huang rules: keys `NO_CHANGING`, `THREE_MIDDLE`, …
+ * - Zhu Xi rules: keys `ZX_ZERO`, `ZX_THREE_JUDGMENTS`, …
+ * - Shared codes `QIAN_ALL_NINE` / `KUN_ALL_SIX`: Huang → seventh-yao rule; Zhu Xi →
+ *   Adler p.48 preamble (`ZHUXI_QIAN_KUN_PREAMBLE`), not Huang copy.
+ *
+ * Short one-line summaries for card/PDF are in `iching-mutation-summary-ui.ts`.
+ */
 export const ICHING_MUTATION_RULE_IDS = [
   "NO_CHANGING",
   "ONE_CHANGING",

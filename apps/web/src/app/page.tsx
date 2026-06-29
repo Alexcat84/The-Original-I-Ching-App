@@ -1571,6 +1571,7 @@ export default function HomePage() {
         if (entry.mutationRule) {
           const ruleSummary = formatMutationRuleSummaryForUi({
             mutationRule: entry.mutationRule,
+            lineReadingSystem: entry.lineReadingSystem === "zhuxi" ? "zhuxi" : "huang",
             locale,
           });
           if (ruleSummary) {
