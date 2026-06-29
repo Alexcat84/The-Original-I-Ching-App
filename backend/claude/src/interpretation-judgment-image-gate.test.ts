@@ -51,7 +51,7 @@ function makeCast(overrides: {
       transformedJudgment: null,
       transformedImage: null,
       specialYaoText: null,
-      ruleExplanation: "",
+      mutationRuleBookText: "",
       ...overrides.textsForClaude,
     },
     timestamp: new Date("2026-01-01T00:00:00Z"),
