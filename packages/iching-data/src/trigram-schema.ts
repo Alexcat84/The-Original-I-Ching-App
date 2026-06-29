@@ -16,8 +16,10 @@ export const trigramRecordSchema = z.object({
   id: z.enum(TRIGRAM_IDS),
   chinese: z.string(),
   pinyin: z.string(),
-  /** Wilhelm's English label (join key from a hexagram's upperTrigram/lowerTrigram). */
+  /** Canonical Wilhelm DE label (join key from hexagram upperTrigram/lowerTrigram). */
   wilhelmLabel: z.string(),
+  /** Legacy Baynes EN + OCR variants accepted by trigramIdFromWilhelmLabel. */
+  aliases: z.array(z.string()).default([]),
 });
 export type TrigramRecord = z.infer<typeof trigramRecordSchema>;
 

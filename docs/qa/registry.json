@@ -200,6 +200,19 @@
       "area": "packages/iching-data/src/commentary"
     },
     {
+      "code": "TS-DATA-003 iching-data-trigrams",
+      "title": "Wilhelm DE trigram labels + legacy alias resolution",
+      "shortName": "iching-data-trigrams",
+      "type": "TS",
+      "family": "DATA",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "DE canonical labels + Baynes/OCR aliases" }],
+      "path": "packages/iching-data/src/trigrams.test.ts",
+      "npmScript": "npm run test --prefix packages/iching-data",
+      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "area": "packages/iching-data/src/trigrams"
+    },
+    {
       "code": "TS-CTX-001 context-limits",
       "title": "Context tier limits per pack",
       "shortName": "context-limits",
@@ -495,6 +508,19 @@
         "00000000-AUD-MOB-HYD-01 chat-thread-hydration"
       ],
       "area": "apps/web/src/lib/session-thread-hydration"
+    },
+    {
+      "code": "TS-WEB-LIB-001 library-data",
+      "title": "Library summaries + Wilhelm DE detail smoke",
+      "shortName": "library-data",
+      "type": "TS",
+      "family": "WEB-LIB",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "DE titles + trigram filter join" }],
+      "path": "apps/web/src/lib/library/__tests__/library-data.test.ts",
+      "npmScript": "npm run test --prefix apps/web -- library-data",
+      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "area": "apps/web/src/lib/library"
     },
     {
       "code": "TS-WEB-OVR-001 embed-svg-overlay-font",
@@ -1400,6 +1426,19 @@
       "npmScript": "npm run verify:wilhelm-de-all-gates",
       "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
       "area": "tools/verify-wilhelm-de-all-gates.mjs"
+    },
+    {
+      "code": "VF-FID-W-015 wilhelm-de-runtime-smoke",
+      "title": "Wilhelm DE runtime bundle names + trigram join keys",
+      "shortName": "wilhelm-de-runtime-smoke",
+      "type": "VF",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "Post-build overlay/library runtime smoke" }],
+      "path": "tools/wilhelm-de-runtime-smoke.mjs",
+      "npmScript": "node tools/wilhelm-de-runtime-smoke.mjs",
+      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "area": "tools/wilhelm-de-runtime-smoke.mjs"
     },
     {
       "code": "AU-FID-W-008 wilhelm-de-triangulation",

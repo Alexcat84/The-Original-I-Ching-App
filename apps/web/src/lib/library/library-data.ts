@@ -66,7 +66,7 @@ export interface LibraryDetail {
 /**
  * Wilhelm is the canonical structural source. All three bundles share the
  * same number/binary/Chinese-name layout, so we build summaries from the
- * Wilhelm bundle only (and read the English `name` from there too).
+ * Wilhelm bundle only (Wilhelm `name` is German on the DE edition).
  */
 export function getLibrarySummaries(): ReadonlyArray<LibrarySummary> {
   const records = getAllHexagramRecords();

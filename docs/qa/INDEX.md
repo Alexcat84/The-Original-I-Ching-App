@@ -78,7 +78,14 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 |--------|------|---|---------|-----------|
 | `TS-DATA-001 iching-data-index` | `packages/iching-data/src/index` | 1.0.0 | `index.test.ts` | `FIX-LIB-02` |
 | `TS-DATA-002 commentary-schema` | `packages/iching-data/src/commentary` | 1.0.0 | `commentary.test.ts` | `POL-DAT-MAESTRO-00` |
+| `TS-DATA-003 iching-data-trigrams` | `packages/iching-data/src/trigrams` | 1.0.0 | `trigrams.test.ts` | `AUD-DAT-W-02` |
 | `TS-CTX-001 context-limits` | `packages/context-engine/src/context-limits` | 1.0.0 | `context-limits.test.ts` | — |
+
+### Library — `TS-WEB-LIB-*`
+
+| Código | Area | v | Archivo | Auditoría |
+|--------|------|---|---------|-----------|
+| `TS-WEB-LIB-001 library-data` | `apps/web/src/lib/library` | 1.0.0 | `library-data.test.ts` | `AUD-DAT-W-02` |
 
 ---
 
@@ -100,6 +107,7 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `VF-FID-W-012 merge-wilhelm-de-dual-pass` | `scripts/merge-wilhelm-de-dual-pass.mjs` | 1.0.0 | `merge:wilhelm-de-dual-pass` | 20260628-AUD-DAT-W-02 | DE merge |
 | `VF-FID-W-013 sync-wilhelm-de-translation-module` | `scripts/sync-wilhelm-de-translation-module.mjs` | 1.0.0 | `sync:wilhelm-de-translation-module` | 20260628-AUD-DAT-W-02 | DE sync |
 | `VF-FID-W-014 wilhelm-de-all-gates` | `tools/verify-wilhelm-de-all-gates.mjs` | 1.0.0 | `verify:wilhelm-de-all-gates` | 20260628-AUD-DAT-W-02 | DE gates |
+| `VF-FID-W-015 wilhelm-de-runtime-smoke` | `tools/wilhelm-de-runtime-smoke.mjs` | 1.0.0 | `node tools/wilhelm-de-runtime-smoke.mjs` | 20260628-AUD-DAT-W-02 | Post-build names + trigrams |
 | `AU-FID-W-008 wilhelm-de-triangulation` | `scripts/wilhelm-de-triangulation-report.mjs` | 1.0.0 | `audit:wilhelm-de-triangulation` | 20260628-AUD-DAT-W-02 | DE triangulation |
 | `AU-FID-W-009 wilhelm-de-baynes-comparison` | `scripts/wilhelm-de-baynes-comparison-report.mjs` | 1.0.0 | `audit:wilhelm-de-baynes-comparison` | 20260628-AUD-DAT-W-02 | DE vs Baynes |
 

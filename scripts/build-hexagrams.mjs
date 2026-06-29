@@ -21,6 +21,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { canonicalWilhelmTrigramLabel } from "./lib/wilhelm-trigram-labels.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -51,7 +52,8 @@ function normalizeBinaryTopFirst(raw) {
 
 function trigramName(obj) {
   if (!obj || typeof obj !== "object") return "";
-  return String(obj.symbolic ?? obj.chinese ?? "").replace(/,$/, "").trim();
+  const raw = String(obj.symbolic ?? obj.chinese ?? "").replace(/,$/, "").trim();
+  return canonicalWilhelmTrigramLabel(raw);
 }
 
 // Per-hexagram chineseName overrides for font-subset compatibility.

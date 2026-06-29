@@ -38,6 +38,11 @@ async function main() {
 
   if (run("npm", ["run", "verify:hexagram-fidelity:wilhelm-de"]) !== 0) failed++;
 
+  if (run("npm", ["run", "build", "--prefix", "packages/iching-data"]) !== 0) failed++;
+
+  const runtimeCheck = run("node", ["tools/wilhelm-de-runtime-smoke.mjs"]);
+  if (runtimeCheck !== 0) failed++;
+
   console.log(failed === 0 ? "verify:wilhelm-de-all-gates PASS" : "verify:wilhelm-de-all-gates FAIL");
   process.exit(failed === 0 ? 0 : 1);
 }

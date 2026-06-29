@@ -81,6 +81,6 @@ export type {
   LeggeLineSymbolism,
 } from "./commentary.js";
 
-export { getAllTrigrams } from "./trigrams.js";
+export { getAllTrigrams, trigramIdFromWilhelmLabel } from "./trigrams.js";
 export type { TrigramRecord, TrigramId } from "./trigrams.js";
 export { TRIGRAM_IDS } from "./trigrams.js";
