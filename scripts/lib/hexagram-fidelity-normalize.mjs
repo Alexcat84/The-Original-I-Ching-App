@@ -61,9 +61,6 @@ export function normalizeHexText(text, translator = "wilhelm") {
   if (translator === "wilhelm" || translator === "legge") {
     out = repairWilhelmOcrText(out);
   }
-  if (translator === "wilhelm-de") {
-    out = out.replace(/[\u200b\uFEFF\u2060]/g, "");
-  }
 
   for (const [re, rep] of TYPOGRAPHIC_QUOTES) {
     out = out.replace(re, rep);

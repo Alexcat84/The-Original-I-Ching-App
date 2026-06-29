@@ -53,7 +53,6 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 |--------|-------|--------|--------|-----------|
 | `20260623-POL-DAT-MAESTRO-00 txt-maestro-notes-policy` | 2026-06-23 | Política notas W+L; Zhou Yi sin notas | closed | [20260623-POL-DAT-MAESTRO-00-txt-maestro-notes-policy.md](./20260623-POL-DAT-MAESTRO-00-txt-maestro-notes-policy.md) |
 | `20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro` | 2026-06-23 | Maestro Wilhelm TXT Princeton | closed | [20260623-AUD-DAT-MAESTRO-W-01-wilhelm-txt-maestro.md](./20260623-AUD-DAT-MAESTRO-W-01-wilhelm-txt-maestro.md) |
-| `20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth` | 2026-06-28 | Wilhelm DE 1924 fuente runtime (Baynes archivado) | closed | [20260628-AUD-DAT-W-02-wilhelm-de-source-of-truth.md](./20260628-AUD-DAT-W-02-wilhelm-de-source-of-truth.md) |
 | `20260623-AUD-DAT-MAESTRO-L-01 legge-txt-maestro` | 2026-06-23 | Maestro Legge TXT Princeton | closed | [20260623-AUD-DAT-MAESTRO-L-01-legge-txt-maestro.md](./20260623-AUD-DAT-MAESTRO-L-01-legge-txt-maestro.md) |
 | `20260623-PLAN-DAT-RT-01 epub-primary-migration` | 2026-06-23 | Migración EPUB-primary runtime | shipped | [20260623-PLAN-DAT-RT-01-epub-primary-migration.md](./20260623-PLAN-DAT-RT-01-epub-primary-migration.md) |
 

@@ -35,17 +35,17 @@ const wilhelmBookOnePath = join(
   root,
   "tools",
   "datasets",
-  "wilhelm-de",
+  "wilhelm",
   "book-one",
-  "wilhelm-de-64hex-merged.json",
+  "wilhelm-64hex-parsed.json",
 );
 const wilhelmCommentsPath = join(
   root,
   "tools",
   "datasets",
-  "wilhelm-de",
+  "wilhelm",
   "comments",
-  "wilhelm-de-64hex-comments-parsed.json",
+  "wilhelm-64hex-comments-parsed.json",
 );
 const leggeBookOnePath = join(
   root,

@@ -95,12 +95,6 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `VF-FID-L-001 legge-all-gates` | `tools/verify-legge-all-gates` | 1.0.0 | `verify:legge-all-gates` | — | — |
 | `VF-DIV-001 divination-wilhelm-appendix` | `scripts/verify-divination-wilhelm-appendix` | **2.0.0** | `verify:divination-wilhelm-appendix` | — | G1-G7 exact arithmetic, `AUD-DIV-02` |
 | `VF-FID-W-002 wilhelm-64hex-txt-clean` | `tools/verify-wilhelm-64hex-txt-clean` | 1.0.0 | `verify:wilhelm-64hex-txt-clean` | — | pre-parse W |
-| `VF-FID-W-010 stitch-wilhelm-de-txt` | `scripts/stitch-wilhelm-de-txt.mjs` | 1.0.0 | `stitch:wilhelm-de-txt` | 20260628-AUD-DAT-W-02 | DE stitch |
-| `VF-FID-W-011 parse-wilhelm-de-64hex-txt` | `scripts/parse-wilhelm-de-64hex-txt.mjs` | 1.0.0 | `parse:wilhelm-de-64hex-txt` | 20260628-AUD-DAT-W-02 | DE parse |
-| `VF-FID-W-012 merge-wilhelm-de-dual-pass` | `scripts/merge-wilhelm-de-dual-pass.mjs` | 1.0.0 | `merge:wilhelm-de-dual-pass` | 20260628-AUD-DAT-W-02 | DE merge |
-| `VF-FID-W-013 sync-wilhelm-de-translation-module` | `scripts/sync-wilhelm-de-translation-module.mjs` | 1.0.0 | `sync:wilhelm-de-translation-module` | 20260628-AUD-DAT-W-02 | DE sync |
-| `VF-FID-W-014 wilhelm-de-all-gates` | `tools/verify-wilhelm-de-all-gates.mjs` | 1.0.0 | `verify:wilhelm-de-all-gates` | 20260628-AUD-DAT-W-02 | DE gates |
-| `AU-FID-W-008 wilhelm-de-triangulation` | `scripts/wilhelm-de-triangulation-report.mjs` | 1.0.0 | `audit:wilhelm-de-triangulation` | 20260628-AUD-DAT-W-02 | DE triangulation |
 
 ---
 

@@ -24,7 +24,7 @@ import {
 
 export type { ResponseMode } from "./interpretation-context.js";
 
-const SYSTEM_PROMPT = `You are the Sage of the Oracle — an interpreter of the I Ching with deep knowledge of Richard Wilhelm (1924 German original), Zhu Xi, and the Confucian commentaries.
+const SYSTEM_PROMPT = `You are the Sage of the Oracle — an interpreter of the I Ching with deep knowledge of Wilhelm/Baynes, Zhu Xi, and the Confucian commentaries.
 
 ABSOLUTE RULES:
 1. Interpret ONLY with the classical texts provided.
@@ -56,7 +56,7 @@ ABSOLUTE RULES:
        > *眇能視，利幽人之貞。*
 
        Ver con un solo ojo sugiere visión parcial pero suficiente cuando se mantiene firmeza...
-   • CLASSICAL FIDELITY: Blockquotes always contain the verbatim source text in its original library language — German for Wilhelm (1924 Diederichs original), English for Legge, Classical Chinese 文言文 for Zhou Yi — never translated, never paraphrased inside the blockquote. All headings, labels, and interpretive prose are in the user's response language.
+   • CLASSICAL FIDELITY: Blockquotes always contain the verbatim source text in its original library language — English for Wilhelm/Baynes and Legge, Classical Chinese 文言文 for Zhou Yi — never translated, never paraphrased inside the blockquote. All headings, labels, and interpretive prose are in the user's response language.
    • LEGGE EDITORIAL PARENTHESES: Legge's source text uses parenthetical insertions, e.g. "(The trigram representing) the earth ... collects (from among them) the multitudes". These parentheses are part of the verbatim source, not optional punctuation — keep them exactly as supplied inside the blockquote. Never silently drop or unwrap them.
 6. Never present unverified real-world facts (numbers, identities, private or biographical details) as certain truth.
 7. If the user asks for factual external data that cannot be verified from the provided I Ching texts, explicitly say you cannot verify that fact and then continue with symbolic interpretation.
@@ -385,7 +385,7 @@ JUDGMENT: ${t.transformedJudgment}`
     2) Legge (literal)
     3) Zhou Yi (literal)
   - Quotes must be complete literal excerpts from the provided texts for that section (do NOT reduce to micro-quotes, fragments, single clauses, or select one verse from a multiline Wilhelm passage — every verse line must appear).
-  - Each literal source quote MUST be rendered as Markdown blockquote lines (prefix every line with "> "), and the quote text itself must be italic inside that blockquote. CRITICAL FOR WILHELM: Wilhelm (German) texts contain multiple verse lines separated by line breaks — each verse line must appear on its own "> *line*" blockquote row, never compressed into one line with "/" or any separator. Legge and Zhou Yi are prose/compact and render as single blockquote lines. Apply the MULTILINE BLOCKQUOTES rule from the typography section to every Wilhelm quote in this mode.
+  - Each literal source quote MUST be rendered as Markdown blockquote lines (prefix every line with "> "), and the quote text itself must be italic inside that blockquote. CRITICAL FOR WILHELM: Wilhelm/Baynes texts contain multiple verse lines separated by line breaks — each verse line must appear on its own "> *line*" blockquote row, never compressed into one line with "/" or any separator. Legge and Zhou Yi are prose/compact and render as single blockquote lines. Apply the MULTILINE BLOCKQUOTES rule from the typography section to every Wilhelm quote in this mode.
   - For "Lines in motion": when CHANGING_COUNT exceeds INTERPRETATION_LINE_COUNT (a mutation rule is filtering lines), open this section with one plain-language sentence drawn from the MUTATION RULE field explaining which line(s) are read and why — never echo the rule code, only its meaning. Then: (a) if INTERPRETED_LINES has entries, the INTERPRETED_LINES list is the COMPLETE and EXCLUSIVE set of lines to interpret — cover every entry and NO other position (do not quote, interpret, or invent text for any other changing position; the rule excluded it on purpose; a [transformed] entry is a STABLE line of the transformed hexagram, intentionally not among the changing positions). When an entry carries an emphasis tag ([primary]/[secondary], Zhu Xi 2- or 4-line cases), lead with the [primary] entry across all three traditions and let the [secondary] one qualify it. For each LINE TEXTS entry, show the full literal line text from each available source as a labeled Markdown blockquote in this exact format: a bold label line (e.g. **Wilhelm:**) immediately followed by a "> *italic blockquote*" block (multiline if Wilhelm) — in order Wilhelm → Legge → Zhou Yi — before the synthesis for that line; (b) if SPECIAL YAO fields are present and LINE TEXTS are empty (hexagram 1 用九 or hexagram 2 用六), render each tradition's special yao text as its own labeled blockquote block (Wilhelm / Legge / Zhou Yi in that order, skipping any absent) followed by a unified synthesis interpreting the seventh yao in the context of the question; (c) if neither LINE TEXTS nor SPECIAL YAO are present (total mutation — all six lines change in a hexagram other than 1 or 2), close the section after the explanation with one sentence noting that no individual line is singled out; (d) if a JUDGMENT_EMPHASIS field is present (no LINE TEXTS, no SPECIAL YAO; Zhu Xi 3-line case), do not claim the focus is entirely on the transformed hexagram, and do NOT quote either Judgment here — both already get their own mandatory labeled blockquote elsewhere ("The judgment" for the primary; the turning-pattern section for the transformed, since it always exists in this case). Write ONE sentence naming which hexagram's counsel takes precedence per JUDGMENT_EMPHASIS, without singling out any individual line. Never render source quotes as inline text or **bold** prose.
   - For "The turning pattern": quote transformed judgment/image only — never repeat individual line texts (爻辞) already shown in "Lines in motion"; for FOUR/FIVE changing-line rules the stable transformed line belongs ONLY in Lines in motion.
   - If any source text is unavailable for a specific subsection, state it explicitly and continue with the other two sources.
@@ -399,8 +399,8 @@ JUDGMENT: ${t.transformedJudgment}`
             ? "James Legge"
             : cast.interpretationMode === "zhouyi"
               ? "Zhou Yi"
-              : "Wilhelm";
-        const otherTranslators = ["Wilhelm", "James Legge", "Zhou Yi"]
+              : "Wilhelm/Baynes";
+        const otherTranslators = ["Wilhelm/Baynes", "James Legge", "Zhou Yi"]
           .filter((n) => n !== translatorDisplayName)
           .join(" and ");
         return `SELECTED TRANSLATOR: ${translatorDisplayName}.
@@ -415,12 +415,12 @@ HISTORICAL EXCEPTION (explicitly permitted):
       })();
 
   const selectedTranslatorLabel = isMasterCombined
-    ? "Master Combined (Wilhelm + James Legge + Zhou Yi — triangulate all three)"
+    ? "Master Combined (Wilhelm/Baynes + James Legge + Zhou Yi — triangulate all three)"
     : cast.interpretationMode === "legge"
       ? "James Legge"
       : cast.interpretationMode === "zhouyi"
         ? "Zhou Yi (Original Classical Chinese)"
-        : "Wilhelm";
+        : "Wilhelm/Baynes";
 
   const selectedPositions = new Set(
     t.selectedLineTexts.map((l) => l.position),
@@ -509,7 +509,7 @@ IMPORTANTE: el resumen estructurado de la sesión ya vive en [SNAPSHOT_START]…
 - ${mode === "ritual" ? "Follow the scroll structure; keep paragraphs visually compact (avoid stacking many one-line paragraphs)." : mode === "profundizar" ? "Max 2 sections as specified." : "Max 2 titled sections as specified."}
 - ${modeInstruction}
 - Length: ${targetWordCount} words
-- SOURCE FIDELITY (ALL TRANSLATORS, NON-NEGOTIABLE): Every text from the BIBLIOTECA must appear VERBATIM in its original library language inside the blockquote — Wilhelm texts in German (1924 original), Legge texts in English, Zhou Yi texts in Classical Chinese 文言文. Never translate, paraphrase, truncate, or alter the source text inside the blockquote. Legge's parenthetical insertions, e.g. "(The trigram representing) the earth", are part of the verbatim text — keep them, never unwrap or drop them. If length is tight, shorten interpretive prose between sections — never shorten classical quotes. Write the interpretive analysis in the response language.
+- SOURCE FIDELITY (ALL TRANSLATORS, NON-NEGOTIABLE): Every text from the BIBLIOTECA must appear VERBATIM in its original library language inside the blockquote — Wilhelm/Baynes and Legge texts in English, Zhou Yi texts in Classical Chinese 文言文. Never translate, paraphrase, truncate, or alter the source text inside the blockquote. Legge's parenthetical insertions, e.g. "(The trigram representing) the earth", are part of the verbatim text — keep them, never unwrap or drop them. If length is tight, shorten interpretive prose between sections — never shorten classical quotes. Write the interpretive analysis in the response language.
 - TYPOGRAPHY ENFORCEMENT: Hexagram text quotes (Judgment, Image, line texts) must be *italic only* — never **bold**, never ***bold-italic***. Section headings are ## only. Interpretation prose uses NO bold or bold-italic; bold is reserved exclusively for structural labels (changing-line names in the numbered list, source attributions like **Wilhelm:**). This rule is identical for three-coins and yarrow-stalks.
 - CLOSURE: Finish every section and every sentence (including the closing synthesis). If length is tight, shorten middle sections—never stop mid-paragraph or mid-quote.
 - ${castingMethodNote(castingMethod)}
