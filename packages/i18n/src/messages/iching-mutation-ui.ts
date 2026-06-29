@@ -427,7 +427,53 @@ const BY_LOCALE: Record<AppLocale, RuleMap> = {
   hi: HI,
 };
 
-function lookupTranslation(locale: AppLocale, rule: string): string | null {
+/** Locale translation of mutation rule bookText (null for en — use iching-data bundle). */
+export type MutationRuleTranslationSystem = "huang" | "zhuxi";
+
+/** Zhu Xi Qian/Kun all-changing preamble (Adler p.48) — distinct from Huang seventh-yao rule. */
+const ZHUXI_QIAN_KUN_PREAMBLE: Record<AppLocale, string> = {
+  en:
+    "When we get Ch'ien with all six lines as 9 [in divination], or K'un with all six lines as 6, we then use this as the prognostication. Thus \"a flight of dragons without heads\" is the image of yang completely changing to yin. \"It is beneficial to be eternally steady\" is the meaning of yin completely changing to yang.",
+  es:
+    "Cuando obtenemos Ch'ien con las seis líneas como 9 [en la adivinación], o K'un con las seis líneas como 6, usamos esto como pronóstico. Así, «un vuelo de dragones sin cabeza» es la imagen de yang cambiando completamente a yin. «Es beneficioso ser eternamente firme» es el significado de yin cambiando completamente a yang.",
+  pt:
+    "Quando obtemos Ch'ien com as seis linhas como 9 [na adivinhação], ou K'un com as seis linhas como 6, usamos isto como prognóstico. Assim, «um voo de dragões sem cabeça» é a imagem de yang mudando completamente para yin. «É benéfico ser eternamente firme» é o significado de yin mudando completamente para yang.",
+  fr:
+    "Lorsque nous obtenons Ch'ien avec les six lignes en 9 [à la divination], ou K'un avec les six lignes en 6, nous utilisons cela comme pronostic. Ainsi « une volée de dragons sans tête » est l'image du yang passant entièrement au yin. « Il est avantageux d'être éternellement constant » est le sens du yin passant entièrement au yang.",
+  de:
+    "Wenn wir Ch'ien mit allen sechs Linien als 9 [in der Wahrsagung] erhalten, oder K'un mit allen sechs Linien als 6, verwenden wir dies als Prognose. So ist « ein Flug Drachen ohne Köpfe » das Bild von Yang, das vollständig zu Yin wechselt. « Es ist vorteilhaft, ewig beständig zu sein » ist die Bedeutung von Yin, das vollständig zu Yang wechselt.",
+  it:
+    "Quando otteniamo Ch'ien con tutte e sei le linee come 9 [nella divinazione], o K'un con tutte e sei le linee come 6, usiamo questo come prognostico. Così « uno stormo di draghi senza testa » è l'immagine dello yang che passa completamente allo yin. « È benefico essere eternamente costanti » è il significato dello yin che passa completamente allo yang.",
+  ja:
+    "占いで乾の六爻がすべて9、または坤の六爻がすべて6のとき、これを占断とする。すなわち「首のない龍の群れ」は陽が完全に陰に変わる象、「永く正しきことが利ある」は陰が完全に陽に変わる意である。",
+  zh:
+    "占得乾六爻皆九，或坤六爻皆六，则以之为占断。故「群龙无首」为阳尽变阴之象，「永贞」为阴尽变阳之意。",
+  ko:
+    "점에서 건(乾)의 여섯 효가 모두 9이거나 곤(坤)의 여섯 효가 모두 6이면 이를 점断으로 삼는다. 따라서 「머리 없는 용의 무리」는 양이 완전히 음으로 변하는 상(象)이고, 「영정(永貞)이 이롭다」는 음이 완전히 양으로 변하는 뜻이다.",
+  ar:
+    "عندما نحصل على Ch'ien بستة خطوط كلها 9 [في العرافة], أو K'un بستة خطوط كلها 6, نستخدم هذا كتنجيم. فـ «سرب تنانين بلا رأس» صورة تحول yang بالكامل إلى yin. «الثبات الأبدي مفيد» معنى تحول yin بالكامل إلى yang.",
+  hi:
+    "जब divination में Ch'ien की सभी छह रेखाएं 9 हों, या K'un की सभी छह 6, तो हम इसे भविष्यवाणी मानते हैं। इस प्रकार «बिना सिर वाले dragons का झुंड» yang के पूर्ण yin में बदलने की छवि है; «स्थायी रहना लाभकारी» yin के पूर्ण yang में बदलने का अर्थ है।",
+};
+
+function isZhuxiQianKunPreambleRule(
+  system: MutationRuleTranslationSystem,
+  rule: string,
+): boolean {
+  return (
+    system === "zhuxi" &&
+    (rule === "QIAN_ALL_NINE" || rule === "KUN_ALL_SIX")
+  );
+}
+
+function lookupTranslation(
+  locale: AppLocale,
+  rule: string,
+  system: MutationRuleTranslationSystem,
+): string | null {
+  if (isZhuxiQianKunPreambleRule(system, rule)) {
+    return ZHUXI_QIAN_KUN_PREAMBLE[locale] ?? ZHUXI_QIAN_KUN_PREAMBLE[DEFAULT_LOCALE];
+  }
   const map = BY_LOCALE[locale] ?? BY_LOCALE[DEFAULT_LOCALE];
   if (rule in map) return map[rule as IchingMutationRuleId];
   return null;
@@ -437,7 +483,8 @@ function lookupTranslation(locale: AppLocale, rule: string): string | null {
 export function getMutationRuleTranslation(
   locale: AppLocale,
   rule: string,
+  system: MutationRuleTranslationSystem = "huang",
 ): string | null {
   if (locale === "en") return null;
-  return lookupTranslation(locale, rule);
+  return lookupTranslation(locale, rule, system);
 }
