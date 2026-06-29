@@ -17,12 +17,13 @@ import {
   type MutationExploreResult,
 } from "@iching-oracle/iching-engine";
 import {
+  getConsultationRecordUiMessages,
   getManualWizardMessages,
   getMutationExplorerUiMessages,
   parseAppLocale,
   type MutationExplorerUiMessages,
 } from "@iching-oracle/i18n";
-import { formatMutationRuleForUi } from "@/lib/mutation-rule-display";
+import { formatMutationRuleForUi, formatMutationRuleSummaryForUi } from "@/lib/mutation-rule-display";
 import { getSupabaseBrowser } from "@/lib/supabase-browser";
 import {
   buildOracleTextBlocks,
@@ -157,6 +158,7 @@ function ReadingRulesSection({
 export function MutationExplorer({ locale }: Props) {
   const ruleLocale = parseAppLocale(locale.slice(0, 2).toLowerCase());
   const ui = getMutationExplorerUiMessages(ruleLocale);
+  const recordLabels = getConsultationRecordUiMessages(ruleLocale);
   const wizardLabels = getManualWizardMessages(ruleLocale);
   const searchParams = useSearchParams();
   const cid = searchParams.get("cid");
@@ -334,18 +336,25 @@ export function MutationExplorer({ locale }: Props) {
       );
     }
 
+    const consultTrace =
+      consultation.transformedHexagram != null
+        ? `#${consultation.primaryHexagram} ${consultationPrimaryHex?.chineseName ?? ""} → #${consultation.transformedHexagram} ${consultationTransformedHex?.chineseName ?? ""}`
+        : `#${consultation.primaryHexagram} ${consultationPrimaryHex?.chineseName ?? ""}`;
+    const consultDateStr = new Date(consultation.createdAt).toLocaleDateString(
+      recordLabels.dateLocale,
+      { year: "numeric", month: "short", day: "numeric" },
+    );
+    const consultRuleSummary = formatMutationRuleSummaryForUi({
+      mutationRule: result.mutationRule,
+      lineReadingSystem: consultation.lineReadingSystem,
+      locale: ruleLocale,
+    });
+
     return (
       <div className="mutation-explorer mutation-explorer--consultation">
-        <p className="mutation-explorer-consult-lead">
-          {ui.fromConsultationBanner} · {ui.consultationRef}{" "}
-          <span translate="no">{formatConsultRef(consultation.consultationId)}</span>
-          {" · "}
-          {new Date(consultation.createdAt).toLocaleDateString(locale)}
-        </p>
-
         <section
           className="coins-stage ritual-coins-stage mutation-explorer-cast-stage"
-          aria-label={ui.fromConsultationBanner}
+          aria-label={recordLabels.summary}
         >
           <CastRitualDiagram
             lines={consultation.lines}
@@ -373,18 +382,32 @@ export function MutationExplorer({ locale }: Props) {
         <div
           className="consultation-record-grid mutation-explorer-meta-grid"
           role="group"
-          aria-label={ui.fromConsultationBanner}
+          aria-label={recordLabels.summary}
         >
           <p className="consultation-record-row">
-            <span className="consultation-record-key">{ui.verificationCodeLabel}:</span>
+            <span className="consultation-record-key">{recordLabels.trace}</span>
+            <span className="consultation-record-value" lang="zh">
+              {consultTrace}
+            </span>
+          </p>
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{ui.readingRefLabel}</span>
+            <span className="consultation-record-value" translate="no">
+              {formatConsultRef(consultation.consultationId)}
+            </span>
+          </p>
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{recordLabels.verificationCode}</span>
             <span className="consultation-record-value" translate="no">
               {result.castIndex}
             </span>
           </p>
           <p className="consultation-record-row">
-            <span className="consultation-record-key">{ui.changingLines}:</span>
+            <span className="consultation-record-key">{recordLabels.changingLinesLabel}</span>
             <span className="consultation-record-value" translate="no">
-              {resultChangingLines.length > 0 ? resultChangingLines.join(", ") : "—"}
+              {resultChangingLines.length > 0
+                ? resultChangingLines.join(", ")
+                : recordLabels.changingLinesNone}
             </span>
           </p>
           <p className="consultation-record-row">
@@ -394,13 +417,25 @@ export function MutationExplorer({ locale }: Props) {
             </span>
           </p>
           <p className="consultation-record-row">
-            <span className="consultation-record-key">{ui.lineReadingSystemLabel}:</span>
-            <span className="consultation-record-value">{consultationLineReadingLabel}</span>
-          </p>
-          <p className="consultation-record-row">
-            <span className="consultation-record-key">{ui.translatorAppliedLabel}</span>
+            <span className="consultation-record-key">{recordLabels.translatorLabel}</span>
             <span className="consultation-record-value">
               {TRANSLATOR_DISPLAY[consultation.translator]}
+            </span>
+          </p>
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{recordLabels.lineReading}</span>
+            <span className="consultation-record-value">{consultationLineReadingLabel}</span>
+          </p>
+          {consultRuleSummary ? (
+            <p className="consultation-record-row">
+              <span className="consultation-record-key">{recordLabels.rule}</span>
+              <span className="consultation-record-value">{consultRuleSummary}</span>
+            </p>
+          ) : null}
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{recordLabels.thread}</span>
+            <span className="consultation-record-value">
+              {recordLabels.reading} {consultation.sessionPosition} · {consultDateStr}
             </span>
           </p>
         </div>
@@ -410,6 +445,8 @@ export function MutationExplorer({ locale }: Props) {
           ruleLocale={ruleLocale}
           result={result}
         />
+
+        <hr className="mutation-explorer-section-divider" aria-hidden="true" />
 
         <section className="mutation-explorer-oracle-section">
           <h2 className="mutation-explorer-section-title">{ui.oracleTexts}</h2>
@@ -675,6 +712,8 @@ export function MutationExplorer({ locale }: Props) {
             ruleLocale={ruleLocale}
             result={result}
           />
+
+          <hr className="mutation-explorer-section-divider" aria-hidden="true" />
 
           <h3 className="mutation-explorer-section-title">{ui.oracleTexts}</h3>
           <div className="library-tablist mutation-explorer-translator-tabs" role="tablist">

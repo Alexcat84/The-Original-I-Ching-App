@@ -9,6 +9,7 @@ export type MutationExplorerUiMessages = {
   backToThread: string;
   fromConsultationBanner: string;
   consultationRef: string;
+  readingRefLabel: string;
   manualTitle: string;
   inputModeCode: string;
   inputModeHexPair: string;
@@ -61,15 +62,16 @@ export type MutationExplorerUiMessages = {
 };
 
 const EN: MutationExplorerUiMessages = {
-  title: "Mutation rules verifier",
+  title: "Reading verification",
   metaDescription:
-    "Verify Huang or Zhu Xi changing-line rules and read verbatim Wilhelm, Legge, and Zhou Yi oracle texts for any cast.",
+    "Review your full cast: line-reading rule, hexagram trace, and verbatim Wilhelm, Legge, or Zhou Yi oracle texts.",
   subtitle:
-    "Confirm which rule governs a reading and inspect the exact classical texts selected by the engine.",
+    "See the complete reading the engine selected — rule, hexagrams, and classical texts — not only the changing lines.",
   backToOracle: "Back to oracle",
   backToThread: "Back to thread",
   fromConsultationBanner: "Your reading",
   consultationRef: "Ref",
+  readingRefLabel: "Reference:",
   manualTitle: "Explore a cast manually",
   inputModeCode: "Verification code",
   inputModeHexPair: "Hexagram pair",
@@ -129,15 +131,16 @@ function L(partial: Partial<MutationExplorerUiMessages>): MutationExplorerUiMess
 
 const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
   es: L({
-    title: "Verificador de reglas de mutación",
+    title: "Verificación de lectura",
     metaDescription:
-      "Verifica las reglas Huang o Zhu Xi y consulta textos oráculo verbatim de Wilhelm, Legge y Zhou Yi para cualquier tirada.",
+      "Revisa la tirada completa: regla de lectura, traza de hexagramas y textos oráculo literales de Wilhelm, Legge o Zhou Yi.",
     subtitle:
-      "Confirma qué regla gobierna una lectura e inspecciona los textos clásicos exactos seleccionados por el motor.",
+      "Consulta la lectura íntegra que aplicó el motor — regla, hexagramas y textos clásicos —, no solo las líneas mutantes.",
     backToOracle: "Volver al oráculo",
     backToThread: "Volver al hilo",
     fromConsultationBanner: "Tu tirada",
     consultationRef: "Ref",
+    readingRefLabel: "Referencia:",
     manualTitle: "Explorar una tirada manualmente",
     inputModeCode: "Código de verificación",
     inputModeHexPair: "Par de hexagramas",
@@ -195,7 +198,12 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
   }),
   en: EN,
   pt: L({
-    title: "Verificador de regras de mutação",
+    title: "Verificação de leitura",
+    readingRefLabel: "Referência:",
+    metaDescription:
+      "Revise a tiragem completa: regra de leitura, hexagramas e textos oráculo literais de Wilhelm, Legge ou Zhou Yi.",
+    subtitle:
+      "Veja a leitura integral aplicada pelo motor — regra, hexagramas e textos clássicos.",
     backToOracle: "Voltar ao oráculo",
     backToThread: "Voltar ao fio",
     manualTitle: "Explorar uma tiragem manualmente",
@@ -205,7 +213,12 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     oracleTexts: "Textos oráculo",
   }),
   fr: L({
-    title: "Vérificateur de règles de mutation",
+    title: "Vérification de lecture",
+    readingRefLabel: "Référence :",
+    metaDescription:
+      "Consultez le tirage complet : règle de lecture, hexagrammes et textes oraculaires littéraux Wilhelm, Legge ou Zhou Yi.",
+    subtitle:
+      "La lecture intégrale appliquée par le moteur — règle, hexagrammes et textes classiques.",
     backToOracle: "Retour à l'oracle",
     backToThread: "Retour au fil",
     verifyButton: "Vérifier",
@@ -213,7 +226,12 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     stableLines: "Lignes stables",
   }),
   de: L({
-    title: "Mutationsregeln-Prüfer",
+    title: "Leseverifikation",
+    readingRefLabel: "Referenz:",
+    metaDescription:
+      "Vollständigen Wurf prüfen: Leseregel, Hexagrammverlauf und wörtliche Orakeltexte (Wilhelm, Legge, Zhou Yi).",
+    subtitle:
+      "Die vom Motor gewählte Gesamtlesung — Regel, Hexagramme und klassische Texte.",
     backToOracle: "Zurück zum Orakel",
     backToThread: "Zurück zum Thread",
     verifyButton: "Prüfen",
@@ -221,7 +239,12 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     stableLines: "Stabile Linien",
   }),
   it: L({
-    title: "Verificatore regole di mutazione",
+    title: "Verifica della lettura",
+    readingRefLabel: "Riferimento:",
+    metaDescription:
+      "Rivedi la tirata completa: regola di lettura, hexagrammi e testi oracolari letterali Wilhelm, Legge o Zhou Yi.",
+    subtitle:
+      "La lettura integrale selezionata dal motore — regola, hexagrammi e testi classici.",
     backToOracle: "Torna all'oracolo",
     backToThread: "Torna al thread",
     verifyButton: "Verifica",
@@ -229,7 +252,11 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     stableLines: "Linee stabili",
   }),
   ja: L({
-    title: "変爻ルール検証",
+    title: "読み取り検証",
+    readingRefLabel: "参照:",
+    metaDescription:
+      "占い全体を確認：読爻ルール、卦の推移、Wilhelm・Legge・周易の原文テキスト。",
+    subtitle: "エンジンが選んだ読み取り全体（ルール・卦・古典テキスト）を表示します。",
     backToOracle: "オラクルに戻る",
     backToThread: "スレッドに戻る",
     verifyButton: "検証",
@@ -237,7 +264,11 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     stableLines: "静爻",
   }),
   zh: L({
-    title: "变爻规则验证器",
+    title: "读解验证",
+    readingRefLabel: "参考编号：",
+    metaDescription:
+      "查看完整占断：读爻规则、卦象变化及 Wilhelm、Legge、周易原文。",
+    subtitle: "展示引擎选定的完整读解——规则、卦辞与经典原文。",
     backToOracle: "返回占卜",
     backToThread: "返回线程",
     verifyButton: "验证",
@@ -245,7 +276,11 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     stableLines: "静爻",
   }),
   ko: L({
-    title: "변효 규칙 검증기",
+    title: "점괘 검증",
+    readingRefLabel: "참조:",
+    metaDescription:
+      "전체 점괘 확인: 효 읽기 규칙, 괘 변화, Wilhelm·Legge·주역 원문.",
+    subtitle: "엔진이 선택한 전체 해석(규칙, 괘, 고전 원문)을 표시합니다.",
     backToOracle: "오라클로 돌아가기",
     backToThread: "스레드로 돌아가기",
     verifyButton: "검증",
@@ -253,7 +288,11 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     stableLines: "정효",
   }),
   ar: L({
-    title: "مدقق قواعد التغيير",
+    title: "التحقق من القراءة",
+    readingRefLabel: "المرجع:",
+    metaDescription:
+      "راجع القراءة كاملة: قاعدة القراءة والنصوص الأوراكلية الحرفية.",
+    subtitle: "القراءة الكاملة التي اختارها المحرك — القاعدة والنصوص الكلاسيكية.",
     backToOracle: "العودة إلى الأوراكل",
     backToThread: "العودة إلى الخيط",
     verifyButton: "تحقق",
@@ -261,7 +300,11 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     stableLines: "الخطوط الثابتة",
   }),
   hi: L({
-    title: "म्यूटेशन नियम सत्यापक",
+    title: "रीडिंग सत्यापन",
+    readingRefLabel: "संदर्भ:",
+    metaDescription:
+      "पूर्ण कास्ट देखें: पढ़ने का नियम और Wilhelm, Legge, Zhou Yi के शाब्दिक पाठ।",
+    subtitle: "इंजन द्वारा चुनी गई पूर्ण रीडिंग — नियम, हेक्साग्राम और शास्त्रीय पाठ।",
     backToOracle: "ओरेकल पर वापस",
     backToThread: "थ्रेड पर वापस",
     verifyButton: "सत्यापित करें",
