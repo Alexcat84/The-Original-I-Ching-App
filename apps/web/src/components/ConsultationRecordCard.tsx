@@ -13,7 +13,7 @@ type OracleBonesCardData = {
   verdict: string;
 };
 
-import { formatMutationRuleForUi } from "@/lib/mutation-rule-display";
+import { formatMutationRuleSummaryForUi } from "@/lib/mutation-rule-display";
 
 type Props = {
   consultationId: string;
@@ -68,14 +68,10 @@ export function ConsultationRecordCard({
       ? wizardLabels.lineReadingSystemZhuxiShort
       : wizardLabels.lineReadingSystemHuangShort;
 
-  const mutationRuleDisplay =
+  const ruleSummaryLabel =
     mutationRule && oracleType === "iching"
-      ? formatMutationRuleForUi({
-          mutationRule,
-          lineReadingSystem: lineReadingSystem ?? "huang",
-          locale: ruleLocale,
-        })
-      : null;
+      ? formatMutationRuleSummaryForUi({ mutationRule, locale: ruleLocale })
+      : "";
 
   const translatorDisplayName: Record<string, string> = {
     wilhelm: "Wilhelm / Baynes",
@@ -176,20 +172,11 @@ export function ConsultationRecordCard({
           <span className="consultation-record-key">{labels.lineReading}</span>
           <span className="consultation-record-value">{lineReadingSystemName}</span>
         </p>
-        {mutationRuleDisplay?.originalEn ? (
-          <div className="consultation-record-row consultation-record-row--rule">
+        {ruleSummaryLabel ? (
+          <p className="consultation-record-row">
             <span className="consultation-record-key">{labels.rule}</span>
-            <span className="consultation-record-value">
-              <span lang="en" className="consultation-record-rule-en">
-                {mutationRuleDisplay.originalEn}
-              </span>
-              {mutationRuleDisplay.translation ? (
-                <span className="consultation-record-rule-translation">
-                  {mutationRuleDisplay.translation}
-                </span>
-              ) : null}
-            </span>
-          </div>
+            <span className="consultation-record-value">{ruleSummaryLabel}</span>
+          </p>
         ) : null}
         <p className="consultation-record-row">
           <span className="consultation-record-key">{labels.thread}</span>

@@ -121,11 +121,16 @@ export {
   type SiteMetaUiMessages,
 } from "./messages/site-meta-ui.js";
 export {
-  getIchingMutationRuleLabel,
   getMutationRuleTranslation,
   ICHING_MUTATION_RULE_IDS,
   type IchingMutationRuleId,
 } from "./messages/iching-mutation-ui.js";
+export {
+  getMutationRuleSummaryLabel,
+} from "./messages/iching-mutation-summary-ui.js";
+
+/** @deprecated Use getMutationRuleSummaryLabel. */
+export { getMutationRuleSummaryLabel as getIchingMutationRuleLabel } from "./messages/iching-mutation-summary-ui.js";
 export {
   formatLoginConfigErrorBody,
   formatLoginRegisterApiError,

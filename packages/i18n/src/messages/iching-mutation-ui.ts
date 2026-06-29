@@ -441,13 +441,3 @@ export function getMutationRuleTranslation(
   if (locale === "en") return null;
   return lookupTranslation(locale, rule);
 }
-
-/** @deprecated Use getMutationRuleTranslation + formatMutationRuleForUi (web). */
-export function getIchingMutationRuleLabel(
-  locale: AppLocale,
-  rule: string,
-): string {
-  const translation = lookupTranslation(locale, rule);
-  if (translation) return translation;
-  return lookupTranslation("en", rule) ?? rule;
-}

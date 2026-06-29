@@ -61,7 +61,7 @@ import {
   getSupabaseBrowser,
   isSupabaseBrowserConfigured,
 } from "@/lib/supabase-browser";
-import { formatMutationRuleForUi } from "@/lib/mutation-rule-display";
+import { formatMutationRuleSummaryForUi } from "@/lib/mutation-rule-display";
 import {
   buildCanvasReadingLines,
   drawPdfContinuationChrome,
@@ -1569,16 +1569,12 @@ export default function HomePage() {
           : `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`;
         summaryLine(pdfUi.trace, trace);
         if (entry.mutationRule) {
-          const ruleDisplay = formatMutationRuleForUi({
+          const ruleSummary = formatMutationRuleSummaryForUi({
             mutationRule: entry.mutationRule,
-            lineReadingSystem: entry.lineReadingSystem ?? "huang",
             locale,
           });
-          const ruleValue = ruleDisplay.translation
-            ? `${ruleDisplay.originalEn}\n${ruleDisplay.translation}`
-            : ruleDisplay.originalEn;
-          if (ruleValue) {
-            summaryLine(pdfUi.rule, ruleValue);
+          if (ruleSummary) {
+            summaryLine(pdfUi.rule, ruleSummary);
           }
         }
 
