@@ -17,7 +17,6 @@ import { formatMutationRuleSummaryForUi } from "@/lib/mutation-rule-display";
 
 type Props = {
   consultationId: string;
-  question: string;
   sessionPosition: number;
   primaryHexagram: number;
   primaryHexagramChinese: string;
@@ -43,7 +42,6 @@ function formatConsultRef(id: string): string {
 
 export function ConsultationRecordCard({
   consultationId,
-  question,
   sessionPosition,
   primaryHexagram,
   primaryHexagramChinese,
@@ -122,10 +120,6 @@ export function ConsultationRecordCard({
             </span>
           </p>
         </div>
-        <p className="consultation-record-question">
-          <span className="consultation-record-question-label">{labels.question}</span>
-          {question.length > 160 ? `${question.slice(0, 160)}…` : question}
-        </p>
       </aside>
     );
   }
@@ -209,10 +203,6 @@ export function ConsultationRecordCard({
           )}
         </p>
       ) : null}
-      <p className="consultation-record-question">
-        <span className="consultation-record-question-label">{labels.question}</span>
-        {question.length > 160 ? `${question.slice(0, 160)}…` : question}
-      </p>
     </aside>
   );
 }

@@ -24,6 +24,8 @@ import {
   getOracleBonesVerdictLabel,
   getPackMarketingLine,
   getPdfExportUiMessages,
+  getConsultationRecordUiMessages,
+  getMutationExplorerUiMessages,
   formatPdfEntryLine,
   formatPdfThreadReadingLine,
   getPricingUiMessages,
@@ -62,6 +64,7 @@ import {
   isSupabaseBrowserConfigured,
 } from "@/lib/supabase-browser";
 import { formatMutationRuleSummaryForUi } from "@/lib/mutation-rule-display";
+import { formatConsultRef } from "@/lib/mutation-explorer/explore-mutation";
 import {
   buildCanvasReadingLines,
   drawPdfContinuationChrome,
@@ -1332,6 +1335,8 @@ export default function HomePage() {
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
     const pdfUi = getPdfExportUiMessages(locale);
+    const recordLabels = getConsultationRecordUiMessages(locale);
+    const explorerUi = getMutationExplorerUiMessages(locale);
     const isRnWebView =
       typeof window !== "undefined" &&
       "ReactNativeWebView" in window;
@@ -1512,7 +1517,7 @@ export default function HomePage() {
 
       // Summary + image cards
       const cardY = 394;
-      const cardH = 360;
+      const cardH = entry.oracleType === "oracle_bones" ? 360 : 520;
       const leftW = 560;
       const rightW = pageW - 54 - 54 - leftW - 24;
 
@@ -1567,7 +1572,35 @@ export default function HomePage() {
         const trace = entry.transformedHexagram != null
           ? `#${entry.primaryHexagram} ${entry.primaryHexagramChinese} → #${entry.transformedHexagram} ${entry.transformedHexagramChinese ?? ""}`
           : `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`;
-        summaryLine(pdfUi.trace, trace);
+        summaryLine(recordLabels.trace, trace);
+        summaryLine(
+          explorerUi.readingRefLabel,
+          formatConsultRef(entry.consultationId),
+        );
+        summaryLine(
+          recordLabels.verificationCode,
+          String(
+            encodeCastIndex(
+              entry.primaryHexagram,
+              maskFromChangingLines(entry.changingLines ?? []),
+            ),
+          ),
+        );
+        summaryLine(
+          recordLabels.changingLinesLabel,
+          entry.changingLines?.length
+            ? entry.changingLines.join(", ")
+            : recordLabels.changingLinesNone,
+        );
+        if (entry.translator && pdfTranslatorName[entry.translator]) {
+          summaryLine(recordLabels.translatorLabel, pdfTranslatorName[entry.translator]!);
+        }
+        summaryLine(
+          recordLabels.lineReading,
+          entry.lineReadingSystem === "zhuxi"
+            ? manualWizardChrome.lineReadingSystemZhuxiShort
+            : manualWizardChrome.lineReadingSystemHuangShort,
+        );
         if (entry.mutationRule) {
           const ruleSummary = formatMutationRuleSummaryForUi({
             mutationRule: entry.mutationRule,
@@ -1575,21 +1608,11 @@ export default function HomePage() {
             locale,
           });
           if (ruleSummary) {
-            summaryLine(pdfUi.rule, ruleSummary);
+            summaryLine(recordLabels.rule, ruleSummary);
           }
         }
-
-        if (entry.translator && pdfTranslatorName[entry.translator]) {
-          summaryLine(pdfUi.translator, pdfTranslatorName[entry.translator]!);
-        }
         summaryLine(
-          pdfUi.lineReading,
-          entry.lineReadingSystem === "zhuxi"
-            ? manualWizardChrome.lineReadingSystemZhuxiShort
-            : manualWizardChrome.lineReadingSystemHuangShort,
-        );
-        summaryLine(
-          pdfUi.inThread,
+          recordLabels.thread,
           formatPdfThreadReadingLine(pdfUi, entry.sessionPosition, pdfDateStr),
         );
       }
@@ -1614,7 +1637,7 @@ export default function HomePage() {
       }
 
       // Reading panel
-      const panelY = 786;
+      const panelY = cardY + cardH + 32;
       const panelH = pageH - panelY - 58;
       ctx.fillStyle = "rgba(255,255,255,0.96)";
       ctx.strokeStyle = "rgba(52,117,145,0.3)";
@@ -4870,7 +4893,6 @@ export default function HomePage() {
                       <div className="reading-record-visual-row">
                         <ConsultationRecordCard
                           consultationId={entry.consultationId}
-                          question={entry.question}
                           sessionPosition={entry.sessionPosition}
                           primaryHexagram={entry.primaryHexagram}
                           primaryHexagramChinese={entry.primaryHexagramChinese}
@@ -4904,7 +4926,6 @@ export default function HomePage() {
                       <div className="reading-record-visual-row">
                         <ConsultationRecordCard
                           consultationId={entry.consultationId}
-                          question={entry.question}
                           sessionPosition={entry.sessionPosition}
                           primaryHexagram={0}
                           primaryHexagramChinese=""
@@ -4969,7 +4990,6 @@ export default function HomePage() {
                     <div className="reading-record-visual-row">
                       <ConsultationRecordCard
                         consultationId="00000000-0000-4000-8000-000000000001"
-                        question={pendingUserQuestion}
                         sessionPosition={activeThread.length + 1}
                         primaryHexagram={manualCastPreview.primaryHexagram}
                         primaryHexagramChinese={
