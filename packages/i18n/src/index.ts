@@ -128,6 +128,7 @@ export {
 } from "./messages/iching-mutation-ui.js";
 export {
   getMutationRuleSummaryLabel,
+  type MutationRuleSummarySystem,
 } from "./messages/iching-mutation-summary-ui.js";
 
 /** @deprecated Use getMutationRuleSummaryLabel. */

@@ -70,7 +70,11 @@ export function ConsultationRecordCard({
 
   const ruleSummaryLabel =
     mutationRule && oracleType === "iching"
-      ? formatMutationRuleSummaryForUi({ mutationRule, locale: ruleLocale })
+      ? formatMutationRuleSummaryForUi({
+          mutationRule,
+          lineReadingSystem: lineReadingSystem === "zhuxi" ? "zhuxi" : "huang",
+          locale: ruleLocale,
+        })
       : "";
 
   const translatorDisplayName: Record<string, string> = {
