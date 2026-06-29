@@ -33,7 +33,9 @@ export function formatMutationRuleForUi(params: {
   const system = resolveSystem(lineReadingSystem);
   const originalEn = getMutationRuleBookText(system, mutationRule);
   const translation =
-    locale === "en" ? null : getMutationRuleTranslation(locale, mutationRule);
+    locale === "en"
+      ? null
+      : getMutationRuleTranslation(locale, mutationRule, system);
 
   return { originalEn, translation };
 }

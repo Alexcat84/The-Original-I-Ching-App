@@ -124,6 +124,7 @@ export {
   getMutationRuleTranslation,
   ICHING_MUTATION_RULE_IDS,
   type IchingMutationRuleId,
+  type MutationRuleTranslationSystem,
 } from "./messages/iching-mutation-ui.js";
 export {
   getMutationRuleSummaryLabel,
