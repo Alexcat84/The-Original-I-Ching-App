@@ -213,7 +213,8 @@ function splitWenYenSection(lines) {
 function normalizeCommentLabelLine(line) {
   return cleanLine(line)
     .replace(/^[●•·\-]\s*/, "")
-    .replace(/^O\s+(?=Anfangs|Oben|Neun|Sechs)/i, "")
+    .replace(/^O\s+(?=Anfangs|Oben|Obere|Oberste|Neun|Sechs)/i, "")
+    .replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]+/g, "")
     .trim();
 }
 
@@ -287,14 +288,19 @@ function parseCommentLinesSection(lines) {
     if (ab) {
       flushBuffer();
       phase = ab[1] === "b" ? "b" : "a";
-      buffer = ab[2] ? [ab[2]] : [];
+      const tail = (ab[2] ?? "").replace(/^,+/, "").trim();
+      buffer = tail ? [tail] : [];
+      continue;
+    }
+
+    if (phase === "label" && currentKey !== null) {
+      phase = "a";
+      buffer = [line];
       continue;
     }
 
     if (phase === "a" || phase === "b") {
       buffer.push(line);
-    } else if (ZUR_LINE_LABEL_RE.test(line)) {
-      // handled above
     }
   }
   flushBuffer();

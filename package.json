@@ -70,6 +70,7 @@
     "sync:wilhelm-de-translation-module": "node scripts/sync-wilhelm-de-translation-module.mjs",
     "extract:gold:wilhelm-de-pdf": "node tools/extract-wilhelm-de-pdf.mjs",
     "audit:wilhelm-de-triangulation": "node scripts/wilhelm-de-triangulation-report.mjs",
+    "audit:wilhelm-de-baynes-comparison": "node scripts/wilhelm-de-baynes-comparison-report.mjs",
     "verify:hexagram-fidelity:wilhelm-de": "node scripts/verify-hexagram-fidelity.mjs --gold=books --translator=wilhelm",
     "verify:wilhelm-de-all-gates": "node tools/verify-wilhelm-de-all-gates.mjs",
     "clean:legge-64hex-txt": "node scripts/clean-legge-64hex-txt.mjs",

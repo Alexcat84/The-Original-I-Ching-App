@@ -1415,6 +1415,19 @@
       "area": "scripts/wilhelm-de-triangulation-report.mjs"
     },
     {
+      "code": "AU-FID-W-009 wilhelm-de-baynes-comparison",
+      "title": "Wilhelm DE vs Baynes EN structural comparison",
+      "shortName": "wilhelm-de-baynes-comparison",
+      "type": "AU",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "DE vs Baynes oracle + Ten Wings" }],
+      "path": "scripts/wilhelm-de-baynes-comparison-report.mjs",
+      "npmScript": "npm run audit:wilhelm-de-baynes-comparison",
+      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "area": "scripts/wilhelm-de-baynes-comparison-report.mjs"
+    },
+    {
       "code": "I18N-001 i18n-audit",
       "title": "i18n key coverage audit",
       "shortName": "i18n-audit",

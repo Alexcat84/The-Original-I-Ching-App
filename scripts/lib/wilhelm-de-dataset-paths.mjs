@@ -93,3 +93,8 @@ export const WILHELM_BAYNES_ARCHIVE_BUNDLE = join(
   ROOT,
   "tools/output/archive/hexagrams.wilhelm.baynes-2026.json",
 );
+
+export const WILHELM_BAYNES_BOOK_ONE_PARSED = join(
+  ROOT,
+  "tools/datasets/wilhelm-baynes/book-one/wilhelm-64hex-parsed.json",
+);

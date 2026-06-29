@@ -101,6 +101,7 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `VF-FID-W-013 sync-wilhelm-de-translation-module` | `scripts/sync-wilhelm-de-translation-module.mjs` | 1.0.0 | `sync:wilhelm-de-translation-module` | 20260628-AUD-DAT-W-02 | DE sync |
 | `VF-FID-W-014 wilhelm-de-all-gates` | `tools/verify-wilhelm-de-all-gates.mjs` | 1.0.0 | `verify:wilhelm-de-all-gates` | 20260628-AUD-DAT-W-02 | DE gates |
 | `AU-FID-W-008 wilhelm-de-triangulation` | `scripts/wilhelm-de-triangulation-report.mjs` | 1.0.0 | `audit:wilhelm-de-triangulation` | 20260628-AUD-DAT-W-02 | DE triangulation |
+| `AU-FID-W-009 wilhelm-de-baynes-comparison` | `scripts/wilhelm-de-baynes-comparison-report.mjs` | 1.0.0 | `audit:wilhelm-de-baynes-comparison` | 20260628-AUD-DAT-W-02 | DE vs Baynes |
 
 ---
 

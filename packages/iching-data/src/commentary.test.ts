@@ -47,11 +47,11 @@ describe("wilhelm commentary", () => {
     }
   });
 
-  it("has per-line Ten Wings from hex 3 onward (≥5/6 lines; OCR gaps tolerated)", () => {
+  it("has per-line Ten Wings from hex 3 onward (6/6 lines)", () => {
     for (const c of getAllWilhelmCommentary()) {
       if (c.number <= 2) continue;
       const populated = c.lines.filter((line) => line.commentary.tenWings.length > 0).length;
-      expect(populated).toBeGreaterThanOrEqual(5);
+      expect(populated).toBe(6);
     }
   });
 
