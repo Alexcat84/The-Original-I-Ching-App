@@ -704,6 +704,23 @@
       ]
     },
     {
+      "code": "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
+      "title": "Wilhelm DE 1924 runtime source of truth (Baynes archived)",
+      "shortName": "wilhelm-de-source-of-truth",
+      "type": "AUD",
+      "family": "DAT-W",
+      "date": "2026-06-28",
+      "status": "closed",
+      "path": "docs/auditorias/20260628-AUD-DAT-W-02-wilhelm-de-source-of-truth.md",
+      "relatedCodes": [
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "relatedTests": [
+        "VF-FID-W-014 wilhelm-de-all-gates",
+        "VF-FID-W-011 parse-wilhelm-de-64hex-txt"
+      ]
+    },
+    {
       "code": "20260623-POL-DAT-MAESTRO-00 txt-maestro-notes-policy",
       "title": "TXT maestro notes and fidelity policy (W+L only)",
       "shortName": "txt-maestro-notes-policy",

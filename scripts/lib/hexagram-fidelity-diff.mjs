@@ -23,6 +23,9 @@ export function makeDiff(args) {
     expected = wilhelmImageOracleOnly(expected);
     actual = wilhelmImageOracleOnly(actual);
   }
+  if (translator === "wilhelm-de" && field === "image") {
+    // German 大象: compare full oracle stanza (no "Thus …" heuristic).
+  }
   const expEmpty = !String(expected ?? "").trim();
   const actEmpty = !String(actual ?? "").trim();
 

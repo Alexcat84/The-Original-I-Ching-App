@@ -2,7 +2,7 @@
  * Build the three translator bundles consumed by @iching-oracle/iching-data.
  *
  * Outputs (under packages/iching-data/src/generated/):
- *   - hexagrams.wilhelm.json   (Richard Wilhelm / Cary F. Baynes)
+ *   - hexagrams.wilhelm.json   (Richard Wilhelm, German 1924 / Diederichs)
  *   - hexagrams.legge.json     (James Legge, 1882/1899)
  *   - hexagrams.zhouyi.json    (周易 — Classical Chinese, Zhou Yi)
  *
@@ -24,7 +24,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
-const wilhelmModulePath = join(root, "scripts", "iching_wilhelm_translation.mjs");
+const wilhelmModulePath = join(root, "scripts", "iching_wilhelm_de_translation.mjs");
 const leggeModulePath = join(root, "scripts", "iching_legge_translation.mjs");
 const zhouyiModulePath = join(root, "scripts", "iching_zhouyi_translation.mjs");
 const outDir = join(root, "packages", "iching-data", "src", "generated");
@@ -39,7 +39,7 @@ const zhouyi = (await import(pathToFileURL(zhouyiModulePath).href)).default;
 // the 2026-06-21/23 oracle-field fidelity audits (judgment/image/lines), so
 // it is sourced from here instead of the legacy translation scripts above.
 const wilhelmMaestro = JSON.parse(
-  await readFile(join(root, "tools", "datasets", "wilhelm", "book-one", "wilhelm-64hex-parsed.json"), "utf8"),
+  await readFile(join(root, "tools", "datasets", "wilhelm-de", "book-one", "wilhelm-de-64hex-merged.json"), "utf8"),
 ).hexagrams;
 const leggeMaestro = JSON.parse(
   await readFile(join(root, "tools", "datasets", "legge", "book-one", "legge-64hex-parsed.json"), "utf8"),
@@ -185,11 +185,10 @@ const bundles = [
     bundle: {
       translator: "wilhelm",
       edition:
-        "The I Ching or Book of Changes, Richard Wilhelm / Cary F. Baynes, Princeton University Press, Bollingen Series XIX (digital EPUB, 2011; translation 1950, public domain since 2020).",
-      sourceUrl:
-        "https://press.princeton.edu/books/paperback/9780691097503/the-i-ching-or-book-of-changes",
+        "I Ging — Das Buch der Wandlungen, Richard Wilhelm (Diederichs, 1924; German original, public domain USA).",
+      sourceUrl: "https://archive.org/details/ichingdasbuchder0000rich",
       licenseNote:
-        `Public domain (Wilhelm 1950, Baynes English rendering). Oracle judgment, image (Great Image / 大象), line, and yong texts verified 1:1 against the Princeton Bollingen digital EPUB (2011) on 2026-06-23 (report hexagram-fidelity-2026-06-23T02-36-34-538Z; gate 514/514). Great Image extraction corrected to keep every oracle verse (prior OCR-era heuristic truncated standalone "The image of …" and "He furthers …" lines). Two EPUB digitization typos corrected in the judgment heading (hex 19 "APPPROACH" to APPROACH, hex 47 "OPPPRESSION" to OPPRESSION) — confirmed against the same hexagram's own Image text, which already had the correct spelling; intentional 2-row delta vs raw-EPUB cross-check (report hexagram-fidelity-2026-06-23T03-42-48-389Z). EPUB-primary gold: structured digital text replaces the OCR PDF and the Parma mirror.`,
+        "Public domain in the United States (1924 German edition). Oracle judgment, image (Das Bild), line, and yong texts verified against merged dual-pass OCR of the Diederichs scan (pass01+pass03) with PDF arbiter workflow; Baynes English (1950) archived for triangulation only.",
       generatedAt,
       build: buildWilhelmRecord,
     },
