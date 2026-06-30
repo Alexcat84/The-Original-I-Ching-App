@@ -45,4 +45,20 @@ const r27 = await parseWilhelmDeHexFromZeno(paths[26]);
 assert.ok(r27.fields.judgment_oraculo.includes("Mundwinkel"));
 assert.ok(r27.fields.judgment_comentario.includes("Zuwendung"));
 
-console.log("wilhelm-de-zeno-parse: PASS (64 links, hex 1+2+7+20+27 fields)");
+for (const [idx, hex] of [
+  [16, "17"],
+  [24, "25"],
+  [46, "47"],
+  [47, "48"],
+  [53, "54"],
+]) {
+  const fN = (await parseWilhelmDeHexFromZeno(paths[idx])).fields;
+  assert.ok(fN.trigrama_arriba.length < 90, `hex ${hex} trigrama_arriba too long`);
+  assert.ok(fN.trigrama_abajo.length < 90, `hex ${hex} trigrama_abajo too long`);
+  assert.ok(fN.trigrama_arriba.includes(","), `hex ${hex} trigrama_arriba canonical`);
+}
+assert.ok(
+  (await parseWilhelmDeHexFromZeno(paths[16])).fields.intro.includes("jüngste Tochter"),
+);
+
+console.log("wilhelm-de-zeno-parse: PASS (64 links, hex 1+2+7+17+20+27 fields)");

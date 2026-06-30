@@ -25,6 +25,28 @@ const LINE_LABEL_RE = new RegExp(
 
 const YONG_LABEL_RE = /^Wenn lauter (?:Neunen|Sechsen) erscheinen, bedeutet das:/i;
 
+/**
+ * Short trigram label lines only (not narrative "Oben ist…" intro paragraphs).
+ * @param {string} text
+ */
+export function isCanonicalTrigramLine(text) {
+  const t = String(text ?? "").trim();
+  if (!/^oben\s|^unten\s/i.test(t)) return false;
+  if (/^oben\s+ist\b|^unten\s+ist\b/i.test(t)) return false;
+  if (t.length > 90) return false;
+  return /^((oben|unten)\s+(das\s+)?[^,]{1,48},\s+das\s+)/i.test(t);
+}
+
+/**
+ * @param {string} text
+ */
+function normalizeTrigramLine(text) {
+  return String(text ?? "")
+    .trim()
+    .replace(/^oben\s/i, "oben ")
+    .replace(/^unten\s/i, "unten ");
+}
+
 let _injector = null;
 
 async function loadInjector() {
@@ -61,15 +83,19 @@ function parseHexHeaderFromMain(html, hexPath) {
   let trigramaAbajo = "";
   for (const m of content.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)) {
     const t = stripHtmlToText(m[1]);
-    if (/^oben\s/i.test(t)) trigramaArriba = t.replace(/^oben\s/i, "oben ");
-    if (/^unten\s/i.test(t)) trigramaAbajo = t.replace(/^unten\s/i, "unten ");
+    if (isCanonicalTrigramLine(t) && /^oben\s/i.test(t)) {
+      trigramaArriba = normalizeTrigramLine(t);
+    }
+    if (isCanonicalTrigramLine(t) && /^unten\s/i.test(t)) {
+      trigramaAbajo = normalizeTrigramLine(t);
+    }
   }
 
   /** @type {string[]} */
   const introParts = [];
   const blocks = parseZenoParagraphs(content.replace(/^[\s\S]*?<\/h4>/i, ""));
   for (const b of blocks) {
-    if (/^oben\s|^unten\s/i.test(b.text)) continue;
+    if (isCanonicalTrigramLine(b.text)) continue;
     introParts.push(b.text);
   }
   const introBody = introParts.join("\n\n").trim();
