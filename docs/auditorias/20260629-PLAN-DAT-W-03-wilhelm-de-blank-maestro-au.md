@@ -88,7 +88,9 @@ npm run verify:wilhelm-de-all-gates
 npm run audit:wilhelm-de-contamination
 npm run init:wilhelm-de-blank-maestro                 # scaffold AU (Zhou Yi symbols)
 npm run export:wilhelm-de-64hex-audit-csv
-npm run export:wilhelm-de-baynes-comparison-viewer
+npm run fill:wilhelm-de-book-one-au-pilot -- --hex=1,2,8   # bootstrap AU pilot Erstes Buch
+npm run compare:wilhelm-de-book-one-au-sources -- --hex=1,2,8
+npm run verify:wilhelm-de-book-one-au-pilot -- --hex=1
 ```
 
 | Artefacto | Ruta | runtimeIngest |
@@ -98,7 +100,8 @@ npm run export:wilhelm-de-baynes-comparison-viewer
 | Blank / zeno-gold AU | `wilhelm-de-64hex-blank.json` | **false** |
 | OCR merged archivado | `tools/output/archive/wilhelm-de-64hex-merged-ocr-*.json` | false |
 | Parser v2 (legacy) | `wilhelm-de-64hex-parsed-v2.json` | false |
-| Gold TSV Zeno | `tools/manual-gold/wilhelm-de-zeno-hex-*.tsv` | n/a |
+| Pilot TSV Erstes Buch | `tools/manual-gold/wilhelm-de-book-one-au/wilhelm-de-book-one-hex-{N}-pilot-au.tsv` | n/a |
+| AU contract Erstes Buch | `tools/manual-gold/wilhelm-de-book-one-au/au-contract.json` | n/a |
 
 ---
 
@@ -139,7 +142,7 @@ Formato TSV: `campo\tcontenido_de\tfuente_captura`
 | Fase 4 — marcadores DE + split + tests | **Implementado** |
 | Fase 5 — promote Zeno → merged | **Implementado** (2026-06-30) |
 | Fase 6 — ingest runtime (sync + build + gates) | **Implementado** en `feature/wilhelm-de-dataset` |
-| Fase 7 — AU PDF físico 64×33 | **Pendiente** (gold TSV Zeno = mirror extract, no juez final) |
+| Fase 7 — AU PDF/JPG físico 64×33 | **En curso** (piloto 1/2/8 bootstrap 2026-06-30) |
 | Fase 8 — `/audits` + merge staging | **Pendiente** |
 
 Ver hitos cerrados en `20260628-AUD-DAT-W-02` § Switch runtime (2026-06-30).
@@ -154,3 +157,42 @@ Ver hitos cerrados en `20260628-AUD-DAT-W-02` § Switch runtime (2026-06-30).
 | Gate 514/514 falsa confianza | G2-DE-field-split + comparador EN base |
 | Confundir Ten Wings con libro I | Solo 33 campos Baynes en este hilo |
 | Gold bootstrap ≠ capturas | Re-export TSV tras AU; gate G2 detecta drift |
+
+---
+
+## 10. Fase 7 — hallazgos (Erstes Buch AU)
+
+### H1 — Drift Zeno runtime vs pass03/JPG-anchor (CERRADO diagnóstico piloto)
+
+| Hex | Págs. | Coincide Zeno | Diff Zeno | Notas |
+|-----|-------|---------------|-----------|-------|
+| 1 | 23–27 | 19/33 | 14/33 | `judgment_comentario` +426 chars pass03 vs Zeno; intro −26 |
+| 2 | 28–31 | 16/33 | 17/33 | Capitalización `Fördernd` vs `fördernd` en `judgment_oraculo` |
+| 8 | 48–50 | 12/30* | 18/30 | `yong_*` vacío (3); `ob` vs `Ob` en `judgment_oraculo` |
+
+\*30 campos pasteables (sin yong vacío).
+
+**Implicación:** runtime `wilhelm-de-64hex-merged.json` (Zeno) **no** es attestation JPG. La AU Erstes Buch debe cerrar campo a campo contra JPG antes de re-promover merged.
+
+Report: `npm run compare:wilhelm-de-book-one-au-sources -- --hex=1,2,8`
+
+### H2 — Infraestructura AU Erstes Buch (CERRADO bootstrap)
+
+| Artefacto | Ruta |
+|-----------|------|
+| Contrato AU | `tools/manual-gold/wilhelm-de-book-one-au/au-contract.json` |
+| Pilot TSV | `wilhelm-de-book-one-hex-{N}-pilot-au.tsv` |
+| Fill | `npm run fill:wilhelm-de-book-one-au-pilot` (`AU-FID-W-042`) |
+| Verify | `npm run verify:wilhelm-de-book-one-au-pilot` (`AU-FID-W-043`) |
+| Compare | `npm run compare:wilhelm-de-book-one-au-sources` (`AU-FID-W-044`) |
+
+**Política bootstrap:** todos los campos no-vacíos arrancan `au_estado=pendiente`; `contenido_pdf` = pass03 anclado a páginas JPG (referencia OCR, **no** cierre AU).
+
+### H3 — Próximo ritual por hex (PENDIENTE)
+
+1. Transcribir/corregir `contenido_pdf` campo a campo vs JPG (`pp. 23–212` Erstes Buch).
+2. Marcar `au_estado=cerrado` o `vacio_en_libro`.
+3. `verify:wilhelm-de-book-one-au-pilot --hex=N` → PASS.
+4. Tras 64/64: apply AU gold → promote merged (sin tocar runtime hasta entonces).
+
+**Calibración piloto:** hex **1** (Wen Yen/yong), **2** (yong), **8** (sin yong, intro corta).

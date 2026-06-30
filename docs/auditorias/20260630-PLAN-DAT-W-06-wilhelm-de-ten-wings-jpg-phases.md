@@ -1,6 +1,6 @@
 # Wilhelm DE — fases JPG AU Ten Wings (Drittes Buch)
 
-**Código:** `20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases` · **Familia:** DAT-W · **Estado:** closed (estructural 64/64; attestation §5 pendiente)
+**Código:** `20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases` · **Familia:** DAT-W · **Estado:** closed (estructural + attestation §5 2026-06-30)
 
 - **Fecha:** 2026-06-30
 - **Rama:** `feature/wilhelm-de-dataset`
@@ -111,7 +111,7 @@ Ver `au-contract.json`:
 | 12 | 49–53 | cerrado (41 correcciones JPG) | 2026-06-30 |
 | 13 | 54–64 | cerrado (109 correcciones JPG) | 2026-06-30 |
 
-**Nota:** 64/64 hex `verify:wilhelm-de-comments-au-pilot` PASS; promote merged **1864/2176** fill. **422** correcciones JPG literal acumuladas en ledger (`AUD-DAT-W-07`). Attestation §5 sigue bloqueada: **1570** campos `verified` + **312** `vacio_en_libro` = 1882/2304 (barrido JPG campo-a-campo incompleto en hex tempranos).
+**Nota:** 64/64 hex `verify:wilhelm-de-comments-au-pilot` PASS; promote merged **1864/2176** fill. **422** correcciones JPG literal acumuladas en ledger (`AUD-DAT-W-07`). Attestation §5 **cerrada 2026-06-30**: ledger **1992 verified + 312 vacio = 2304/2304** tras promote `corrected`→`verified` (`finalize:wilhelm-de-jpg-literal-attestation`).
 
 ---
 

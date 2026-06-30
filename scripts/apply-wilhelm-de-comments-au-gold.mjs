@@ -76,10 +76,11 @@ async function main() {
     const key = String(parsed.hex);
     const jpgPages =
       loadCommentsHexJpgRange(WILHELM_DE_COMMENTS_HEX_STARTS_JSON, parsed.hex) || "";
+    // Pilot TSV is book-primary; disputes TSV only supplements pass02/04 metadata.
     hexagrams[key] = {
       hex: parsed.hex,
       jpgPages,
-      fields: { ...(hexagrams[key]?.fields ?? {}), ...parsed.fields },
+      fields: { ...parsed.fields, ...(hexagrams[key]?.fields ?? {}) },
       sourceTsv: path,
     };
     sources.push(path);

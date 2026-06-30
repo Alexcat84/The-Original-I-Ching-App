@@ -149,6 +149,8 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `AU-FID-W-030 run-wilhelm-de-jpg-literal-batch` | `scripts/run-wilhelm-de-jpg-literal-batch.mjs` | 1.0.0 | `node scripts/run-wilhelm-de-jpg-literal-batch.mjs` | 20260630-AUD-DAT-W-07 | Pilot/disputes JPG literal batch |
 | `AU-FID-W-039 generate-wilhelm-de-jpg-literal-corrections-hex49-53` | `scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex49-53.mjs` | 1.0.0 | `node scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex49-53.mjs` | 20260630-AUD-DAT-W-07 | Corrections module hex 49–53 |
 | `AU-FID-W-040 generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8` | `scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs` | 1.0.0 | `node scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs` | 20260630-AUD-DAT-W-07 | Corrections hex 54–64 + 1–2–8 |
+| `AU-FID-W-041 finalize-wilhelm-de-jpg-literal-attestation` | `scripts/finalize-wilhelm-de-jpg-literal-attestation.mjs` | 1.0.0 | `finalize:wilhelm-de-jpg-literal-attestation` | 20260630-AUD-DAT-W-07 | Ledger corrected → verified |
+| `AU-FID-W-045 reverify-wilhelm-de-comments-au` | `scripts/reverify-wilhelm-de-comments-au.mjs` | 1.1.0 | `reverify:wilhelm-de-comments-au` | 20260630-AUD-DAT-W-07 | Post-attestation 0-findings gate |
 
 ---
 

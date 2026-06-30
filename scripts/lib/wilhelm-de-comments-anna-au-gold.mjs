@@ -20,7 +20,26 @@ export const AU_ESTADO_CLOSED = /** @type {const} */ (["cerrado", "vacio_en_libr
 export function unescapeAuTsvCell(cell) {
   return String(cell ?? "")
     .replace(/\\n/g, "\n")
-    .replace(/\\t/g, "\t");
+    .replace(/\\t/g, "\t")
+    .replace(/\\(\n)/g, "$1");
+}
+
+/** Merged runtime overlays — not re-read from Drittes JPG at promote. */
+export const WILHELM_DE_COMMENTS_MERGED_META_OVERLAY_KEYS = new Set([
+  "chinese",
+  "hex_font",
+  "chinese_roman",
+]);
+
+/**
+ * @param {string | { contenido_pdf?: string } | undefined} fieldValue
+ */
+export function readAuGoldFieldText(fieldValue) {
+  if (typeof fieldValue === "string") return fieldValue;
+  if (fieldValue && typeof fieldValue === "object") {
+    return String(fieldValue.contenido_pdf ?? "");
+  }
+  return "";
 }
 
 /**
@@ -29,7 +48,8 @@ export function unescapeAuTsvCell(cell) {
  */
 export function normalizeWilhelmDeAuBookText(raw) {
   let t = unescapeAuTsvCell(raw);
-  t = t.replace(/-\r?\n(?=[a-zäöüß])/gi, "");
+  // Case-sensitive: only join OCR continuation hyphens (next char lowercase), not book layout "-\n-\nQuote".
+  t = t.replace(/-\r?\n(?=[a-zäöüß])/g, "");
   return normalizeWilhelmDeTxtText(t);
 }
 

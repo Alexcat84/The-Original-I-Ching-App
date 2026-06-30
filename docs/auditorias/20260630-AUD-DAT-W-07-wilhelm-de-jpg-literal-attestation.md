@@ -1,9 +1,10 @@
 # Wilhelm DE — attestation JPG literal (Drittes Buch / Diez Alas)
 
-**Código:** `20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation` · **Familia:** DAT-W · **Estado:** structural-closed (§5 attestation pendiente)
+**Código:** `20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation` · **Familia:** DAT-W · **Estado:** closed (attestation §5 emitida 2026-06-30)
 
 - **Fecha inicio:** 2026-06-30
 - **Fecha cierre estructural:** 2026-06-30
+- **Fecha cierre attestation:** 2026-06-30
 - **Rama:** `feature/wilhelm-de-dataset`
 - **Prioridad:** **P0 — auditoría de fidelidad más importante del proyecto Wilhelm DE**
 - **Relacionado:** `20260630-PLAN-DAT-W-06`, `20260630-AUD-DAT-W-04`, `20260628-PLAN-DAT-W-05`
@@ -85,44 +86,70 @@ npm run promote:wilhelm-de-comments-au-to-merged
 | 13 | 54–64 | 536–585 | `hex54-64-1-2-8` | 109 | PASS | OK |
 | (8 repr.) | 8 | 358–361 | `hex54-64-1-2-8` | 10 | PASS | OK |
 
-**Ledger al cierre estructural (2026-06-30T22:25:38Z):**
+**Ledger al cierre attestation (2026-06-30T23:09:05Z):**
 
 | Métrica | Valor |
 |---------|-------|
-| Hex completos (estructural) | **64 / 64** |
-| Campos corregidos JPG literal (acumulado) | **422** |
-| Campos verificados JPG (`verified`) | **1570 / 2304** |
+| Hex completos | **64 / 64** |
+| Campos verificados JPG (`verified`) | **1992 / 2304** |
+| Campos corregidos JPG (histórico, promovidos) | **422** → `verified` con `wasCorrectedFromJpg: true` |
 | Campos `vacio_en_libro` | **312** |
-| Campos pending | **0** |
+| Attestation total | **2304 / 2304** |
 | AU gold | 2368/2368 cerrado · disputas 551/551 |
 | Merged fill post-promote | **1864 / 2176** |
+| Paridad EN↔DE estructura | **2368/2368** PASS |
 
 **Hallazgos OCR recurrentes corregidos:** bleed hanzi al final de `L6_b`; split `image_oraculo` / `commentary_image` + líneas «Anfangs …»; `ruler_note` con trigramas basura; footer «Das Buch der Wandlungen II»; comillas `,,` → `„`; truncación `commentary_decision`; hex **58** L3 muy corrupto (etiqueta + `L3_b` + cierre `L4_b` desde pass04/JPG).
 
-**Commits en remoto (referencia):** `97153a4` (hex 3–43), `e510d4c` (hex 44–48); cierre 49–64 + 1–2–8 en commit de esta sesión.
+**Commits en remoto (referencia):** `97153a4` (hex 3–43), `e510d4c` (hex 44–48), `6af7349` (hex 49–64 + 1–2–8); attestation finalize en sesión 2026-06-30 (sin commit aún).
 
 ---
 
-## 5. Attestation (solo al cerrar verificación JPG 2304/2304)
+## 4b. Hallazgos cerrados (sesión attestation)
 
-> **BLOQUEADO** — `ledger.summary.fieldsVerified + fieldsVacio` = **1882 ≠ 2304**. Los 64 hex están **estructuralmente cerrados** (pilot PASS, promote OK), pero **422 campos** recibieron corrección JPG literal y **732 slots** aún no tienen marca `verified` campo-a-campo contra JPG en el ledger (muchos hex tempranos se cerraron vía AU/OCR antes del barrido JPG página a página).
+### H1 — Bloqueo contable `corrected` vs `verified` (CERRADO)
 
-Para emitir attestation §5 hace falta:
+| Item | Detalle |
+|------|---------|
+| **Síntoma** | Attestation §5 bloqueada en **1882/2304** (`fieldsVerified` 1570 + `fieldsVacio` 312). |
+| **Causa** | El ledger reservaba status `corrected` para campos leídos contra JPG cuyo texto pilot fue corregido; el criterio §5 solo sumaba `verified` + `vacio`. |
+| **Evidencia** | Exactamente **422** campos `corrected` = gap 2304−1882. Todos tenían `jpgPagesRead` (barrido JPG aplicado). Cifra «732 slots» en borrador §5 era incorrecta. |
+| **Resolución** | `npm run finalize:wilhelm-de-jpg-literal-attestation` promueve `corrected`→`verified` preservando `wasCorrectedFromJpg: true`. Report: `reports/wilhelm-de-jpg-literal-attestation-finalize-2026-06-30T23-09-05.json`. |
+| **Estado** | **CERRADO** — ledger **1992 + 312 = 2304**. |
 
-1. Revisar hexágonos con `verified` parcial en el ledger (priorizar los sin entrada `jpgPagesRead` explícita por campo).
-2. Alcanzar `fieldsVerified + fieldsVacio === fieldsTotal` (2304).
-3. Completar el bloque de certificación abajo.
+### H2 — Hex 3 único sin correcciones JPG (INFORMATIVO)
 
-<!-- Plantilla al cierre definitivo:
+| Item | Detalle |
+|------|---------|
+| **Hallazgo** | Hex **3** es el único hex con **0** campos `corrected` (31 verified + 5 vacio). |
+| **Implicación** | Pilot OCR + AU inicial ya coincidían con JPG para ese hex; no implica attestation inferior en otros hex. |
+| **Estado** | Documentado. |
+
+### H3 — Disputas Anna ≠ JPG (ESPERADO, no bloqueante)
+
+| Item | Detalle |
+|------|---------|
+| **Hallazgo** | Pilot hex 1 verify PASS con **9/9 disputas** `coincide_ninguno` vs pass02/04 (OCR Anna). |
+| **Implicación** | La fuente canónica attestation es **JPG físico**, no Anna. Disputas cerradas vía `contenido_pdf` JPG. |
+| **Estado** | Confirmado post-finalize (verify hex 1 PASS). |
+
+---
+
+## 5. Attestation (verificación JPG 2304/2304)
+
+> **CERRADA 2026-06-30** — `ledger.summary.fieldsVerified + fieldsVacio` = **2304/2304**. Los 422 campos corregidos contra JPG fueron promovidos a `verified` con trazabilidad `wasCorrectedFromJpg`.
 
 ## Attestation de fidelidad literal
 
-Yo, [agente/sesión], certifico que entre 2026-06-30 y [fecha cierre] revisé **uno a uno** los campos del Drittes Buch Wilhelm DE 1924 contra las **585 imágenes JPG 300 DPI** del ejemplar físico anclado en este repositorio. Las correcciones constan en pilot TSV, ledger, y `wilhelm-de-64hex-comments-merged.json`.
+Entre 2026-06-30T21:08Z y 2026-06-30T23:09Z se completó la attestation del Drittes Buch Wilhelm DE 1924 contra las **585 imágenes JPG 300 DPI** del ejemplar físico anclado en `tools/source-pdfs/source jpgs/`. Los **64 hexágramos** (37 slots × 64, menos Yong en hex ≥3) tienen cada campo en estado `verified` o `vacio_en_libro` confirmado en JPG. **422** campos requirieron corrección literal del pilot respecto a OCR previo; las correcciones constan en pilot TSV, módulos `wilhelm-de-jpg-literal-corrections-hex*.mjs`, ledger y `wilhelm-de-64hex-comments-merged.json`.
 
-**Resultado:** ALTA FIDELIDAD LITERAL confirmada para Drittes Buch / Ten Wings.
+**Resultado:** ALTA FIDELIDAD LITERAL confirmada para Drittes Buch / Ten Wings (comments DE).
 
-Firmante: · Ledger: `reports/wilhelm-de-jpg-literal-audit-ledger.json` · Promote: `reports/wilhelm-de-comments-au-promotion-*.json`
--->
+| Artefacto | Ruta |
+|-----------|------|
+| Ledger | `reports/wilhelm-de-jpg-literal-audit-ledger.json` |
+| Finalize report | `reports/wilhelm-de-jpg-literal-attestation-finalize-2026-06-30T23-09-05.json` |
+| Ritual finalize | `npm run finalize:wilhelm-de-jpg-literal-attestation` |
 
 ---
 
@@ -131,6 +158,7 @@ Firmante: · Ledger: `reports/wilhelm-de-jpg-literal-audit-ledger.json` · Promo
 | Artefacto | Ruta |
 |-----------|------|
 | Ledger | `reports/wilhelm-de-jpg-literal-audit-ledger.json` |
+| Finalize attestation | `scripts/finalize-wilhelm-de-jpg-literal-attestation.mjs` (`AU-FID-W-041`) |
 | Batch runner | `scripts/run-wilhelm-de-jpg-literal-batch.mjs` (`AU-FID-W-030`) |
 | Módulos correcciones | `scripts/lib/wilhelm-de-jpg-literal-corrections-hex*.mjs` |
 | Generadores | `scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex49-53.mjs` (`AU-FID-W-039`), `…hex54-64-1-2-8.mjs` (`AU-FID-W-040`) |
@@ -147,5 +175,5 @@ Firmante: · Ledger: `reports/wilhelm-de-jpg-literal-audit-ledger.json` · Promo
 | Nivel | Criterio | Estado 2026-06-30 |
 |-------|----------|-------------------|
 | **Estructural** | 64/64 hex pilot PASS; apply/validate/promote OK; ledger `hexComplete=64` | **CERRADO** |
-| **JPG literal total** | Cada slot `verified` o `vacio_en_libro` en ledger | **1882/2304** — pendiente |
-| **Attestation §5** | Bloque firmado en este doc | **NO emitida** |
+| **JPG literal total** | Cada slot `verified` o `vacio_en_libro` en ledger | **2304/2304** — **CERRADO** |
+| **Attestation §5** | Bloque firmado en este doc | **EMITIDA** |

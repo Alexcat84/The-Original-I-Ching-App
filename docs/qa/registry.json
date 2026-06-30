@@ -1827,6 +1827,35 @@
       "area": "scripts/lib/wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs"
     },
     {
+      "code": "AU-FID-W-041 finalize-wilhelm-de-jpg-literal-attestation",
+      "title": "Promote JPG literal ledger corrected → verified for attestation",
+      "shortName": "finalize-wilhelm-de-jpg-literal-attestation",
+      "type": "AU",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Ledger promote + attestationIssued flag" }],
+      "path": "scripts/finalize-wilhelm-de-jpg-literal-attestation.mjs",
+      "npmScript": "npm run finalize:wilhelm-de-jpg-literal-attestation",
+      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"],
+      "area": "scripts/finalize-wilhelm-de-jpg-literal-attestation.mjs"
+    },
+    {
+      "code": "AU-FID-W-045 reverify-wilhelm-de-comments-au",
+      "title": "Post-attestation reverify pilot vs gold vs merged vs ledger",
+      "shortName": "reverify-wilhelm-de-comments-au",
+      "type": "AU",
+      "family": "FID-W",
+      "version": "1.1.0",
+      "versionHistory": [
+        { "version": "1.0.0", "date": "2026-06-30", "change": "Pilot/gold/merged/ledger cross-check" },
+        { "version": "1.1.0", "date": "2026-06-30", "change": "Exclude meta overlay keys from merged diff" }
+      ],
+      "path": "scripts/reverify-wilhelm-de-comments-au.mjs",
+      "npmScript": "npm run reverify:wilhelm-de-comments-au",
+      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation", "20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases"],
+      "area": "scripts/reverify-wilhelm-de-comments-au.mjs"
+    },
+    {
       "code": "VF-FID-W-027 clean-wilhelm-de-zeno-dataset",
       "shortName": "clean-wilhelm-de-zeno-dataset",
       "type": "VF",
