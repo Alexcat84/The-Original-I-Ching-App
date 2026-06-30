@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	54	536-540		cerrado	na
 nombre		536-540	DAS HEIRATENDE MÄDCHEN	cerrado	na
 chinese	歸妹	536-540		cerrado	na
-chinese_roman	GUI ME	536-540	GUI ME	cerrado	na
+chinese_roman	GUI ME	536-540	Gui me	cerrado	na
 hex_font	䷵	536-540	䷵	cerrado	na
 trigrama_arriba	above DSCHEN das Erregende, DER DONNER	536-540	above DSCHEN das Erregende, DER DONNER	cerrado	na
 trigrama_abajo	below DUI das Heitere, DER SEE	536-540	below DUI das Heitere, DER SEE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		536-540		vacio_en_libro	na
 wen_yen		536-540		vacio_en_libro	na
 wen_yen_note		536-540		vacio_en_libro	na
 hex_fin	54				
+

@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	55	541-544		cerrado	na
 nombre	DIE FÜLLE	541-544	DIE FÜLLE	cerrado	na
 chinese	豐	541-544		cerrado	na
-chinese_roman	FONG	541-544	FONG	cerrado	na
+chinese_roman	FONG	541-544	Fong	cerrado	na
 hex_font	䷶	541-544	䷶	cerrado	na
 trigrama_arriba	above DSCHEN das Erregende, DER DONNER	541-544	above DSCHEN das Erregende, DER DONNER	cerrado	na
 trigrama_abajo	below LI das Haftende, DIE FLAMME	541-544	below LI das Haftende, DIE FLAMME	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		541-544		vacio_en_libro	na
 wen_yen		541-544		vacio_en_libro	na
 wen_yen_note		541-544		vacio_en_libro	na
 hex_fin	55				
+

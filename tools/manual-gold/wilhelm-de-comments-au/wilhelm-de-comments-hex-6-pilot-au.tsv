@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	6	351-353		cerrado	na
 nombre	DER STREIT	351-353	DER STREIT	cerrado	na
 chinese	訟	351-353		cerrado	na
-chinese_roman	SUNG	351-353	SUNG	cerrado	na
+chinese_roman	SUNG	351-353	Sung	cerrado	na
 hex_font	䷅	351-353	䷅	cerrado	na
 trigrama_arriba	above KIËN das Schöpferische, DER HIMMEL	351-353	above KIËN das Schöpferische, DER HIMMEL	cerrado	na
 trigrama_abajo	below KAN das Abgründige, DAS WASSER	351-353	below KAN das Abgründige, DAS WASSER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		351-353		vacio_en_libro	na
 wen_yen		351-353		vacio_en_libro	na
 wen_yen_note		351-353		vacio_en_libro	na
 hex_fin	6				
+

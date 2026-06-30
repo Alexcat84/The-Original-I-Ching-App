@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	11	369-373		cerrado	na
 nombre	DER FRIEDE	369-373	DER FRIEDE	cerrado	na
 chinese	泰	369-373		cerrado	na
-chinese_roman	TAI	369-373		cerrado	na
+chinese_roman	TAI	369-373	Tai	cerrado	na
 hex_font	䷊	369-373	䷊	cerrado	na
 trigrama_arriba	above KUN das Empfangende, DIE ERDE	369-373	above KUN das Empfangende, DIE ERDE	cerrado	na
 trigrama_abajo	below KIËN das Schöpferische, DER HIMMEL	369-373	below KIËN das Schöpferische, DER HIMMEL	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		369-373		vacio_en_libro	na
 wen_yen		369-373		vacio_en_libro	na
 wen_yen_note		369-373		vacio_en_libro	na
 hex_fin	11				
+

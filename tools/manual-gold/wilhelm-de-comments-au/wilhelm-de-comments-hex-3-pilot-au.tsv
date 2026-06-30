@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	3	337-342	3	cerrado	na
 nombre	DIE ANFANGSSCHWIERIGKEIT	337-342	DIE ANFANGSSCHWIERIGKEIT	cerrado	na
 chinese	屯	337-342	屯	cerrado	na
-chinese_roman	DSCHUN	337-342	DSCHUN	cerrado	na
+chinese_roman	DSCHUN	337-342	Dschun	cerrado	na
 hex_font	䷂	337-342	䷂	cerrado	na
 trigrama_arriba	above KAN das Abgründige, DAS WASSER	337-342	above KAN das Abgründige, DAS WASSER	cerrado	na
 trigrama_abajo	below DSCHEN das Erregende, DER DONNER	337-342	below DSCHEN das Erregende, DER DONNER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		337-342		vacio_en_libro	na
 wen_yen		337-342		vacio_en_libro	na
 wen_yen_note		337-342		vacio_en_libro	na
 hex_fin	3				
+

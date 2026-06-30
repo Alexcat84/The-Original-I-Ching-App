@@ -40,6 +40,8 @@ async function main() {
 
   if (run("npm", ["run", "verify:hexagram-fidelity:wilhelm-de"]) !== 0) failed++;
 
+  if (run("npm", ["run", "verify:wilhelm-de-en-structure-parity"]) !== 0) failed++;
+
   if (run("npm", ["run", "build", "--prefix", "packages/iching-data"]) !== 0) failed++;
 
   const runtimeCheck = run("node", ["tools/wilhelm-de-runtime-smoke.mjs"]);

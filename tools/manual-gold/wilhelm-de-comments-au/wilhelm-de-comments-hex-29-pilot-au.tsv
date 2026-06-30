@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	29	437-440		cerrado	na
 nombre	DAS ABGRÜNDIGE (DAS WASSER)	437-440	DAS ABGRÜNDIGE (DAS WASSER)	cerrado	na
 chinese	坎	437-440		cerrado	na
-chinese_roman	KAN	437-440		cerrado	na
+chinese_roman	KAN	437-440	Kan	cerrado	na
 hex_font	䷜	437-440	䷜	cerrado	na
 trigrama_arriba	above KAN das Abgründige, DAS WASSER	437-440	above KAN das Abgründige, DAS WASSER	cerrado	na
 trigrama_abajo	below KAN das Abgründige, DAS WASSER	437-440	below KAN das Abgründige, DAS WASSER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		437-440		vacio_en_libro	na
 wen_yen		437-440		vacio_en_libro	na
 wen_yen_note		437-440		vacio_en_libro	na
 hex_fin	29				
+

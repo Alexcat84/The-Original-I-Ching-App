@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "promotedAt": "2026-06-30T17:14:51.734Z",
+  "promotedAt": "2026-06-30T17:30:40.718Z",
   "source": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\output\\fidelity-gold\\wilhelm-de-64hex-comments-au-gold.json",
   "primarySource": {
     "citation": "Wilhelm, Richard (Übers.). I Ging. Das Buch der Wandlungen. Köln: Eugen Diederichs, 1924 (Erstausgabe).",
@@ -19,11 +19,11 @@
   "note": "Ten Wings from Diederichs 1924 Drittes Buch — AU book-primary JPG 64×37.",
   "hexCount": 64,
   "fillStats": {
-    "content": "1839/2176"
+    "content": "1864/2176"
   },
   "hexagrams": {
     "1": {
-      "bookChinese": "KIAN",
+      "bookChinese": "Kiën",
       "bookTitle": "DAS SCHÖPFERISCHE",
       "bookHanzi": "乾",
       "bookHexFont": "䷀",
@@ -31,7 +31,7 @@
         "hex": "1",
         "nombre": "DAS SCHÖPFERISCHE",
         "chinese": "乾",
-        "chinese_roman": "KIAN",
+        "chinese_roman": "Kiën",
         "hex_font": "䷀",
         "trigrama_arriba": "above KIËN das Schöpferische, DER HIMMEL",
         "trigrama_abajo": "below KIËN das Schöpferische, DER HIMMEL",
@@ -69,7 +69,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "2": {
-      "bookChinese": "KUN",
+      "bookChinese": "Kun",
       "bookTitle": "DAS EMPFANGENDE",
       "bookHanzi": "坤",
       "bookHexFont": "䷁",
@@ -77,7 +77,7 @@
         "hex": "2",
         "nombre": "DAS EMPFANGENDE",
         "chinese": "坤",
-        "chinese_roman": "KUN",
+        "chinese_roman": "Kun",
         "hex_font": "䷁",
         "trigrama_arriba": "above KUN das Empfangende, DIE ERDE",
         "trigrama_abajo": "below KUN das Empfangende, DIE ERDE",
@@ -115,7 +115,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "3": {
-      "bookChinese": "DSCHUN",
+      "bookChinese": "Dschun",
       "bookTitle": "DIE ANFANGSSCHWIERIGKEIT",
       "bookHanzi": "屯",
       "bookHexFont": "䷂",
@@ -123,7 +123,7 @@
         "hex": "3",
         "nombre": "DIE ANFANGSSCHWIERIGKEIT",
         "chinese": "屯",
-        "chinese_roman": "DSCHUN",
+        "chinese_roman": "Dschun",
         "hex_font": "䷂",
         "trigrama_arriba": "above KAN das Abgründige, DAS WASSER",
         "trigrama_abajo": "below DSCHEN das Erregende, DER DONNER",
@@ -161,7 +161,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "4": {
-      "bookChinese": "MONG",
+      "bookChinese": "Mong",
       "bookTitle": "DIE JUGENDTORHEIT",
       "bookHanzi": "蒙",
       "bookHexFont": "䷃",
@@ -169,7 +169,7 @@
         "hex": "4",
         "nombre": "DIE JUGENDTORHEIT",
         "chinese": "蒙",
-        "chinese_roman": "MONG",
+        "chinese_roman": "Mong",
         "hex_font": "䷃",
         "trigrama_arriba": "above GEN das Stillehalten, DER BERG",
         "trigrama_abajo": "below KAN das Abgründige, DAS WASSER",
@@ -207,7 +207,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "5": {
-      "bookChinese": "",
+      "bookChinese": "Sü",
       "bookTitle": "DAS WARTEN (DIE ERNÄHRUNG)",
       "bookHanzi": "需",
       "bookHexFont": "䷄",
@@ -215,7 +215,7 @@
         "hex": "5",
         "nombre": "DAS WARTEN (DIE ERNÄHRUNG)",
         "chinese": "需",
-        "chinese_roman": "",
+        "chinese_roman": "Sü",
         "hex_font": "䷄",
         "trigrama_arriba": "above DAS ABGRÜNDIGE das Wasser,",
         "trigrama_abajo": "below DAS SCHÖPFERISCHE der Himmel,",
@@ -253,7 +253,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "6": {
-      "bookChinese": "SUNG",
+      "bookChinese": "Sung",
       "bookTitle": "DER STREIT",
       "bookHanzi": "訟",
       "bookHexFont": "䷅",
@@ -261,7 +261,7 @@
         "hex": "6",
         "nombre": "DER STREIT",
         "chinese": "訟",
-        "chinese_roman": "SUNG",
+        "chinese_roman": "Sung",
         "hex_font": "䷅",
         "trigrama_arriba": "above KIËN das Schöpferische, DER HIMMEL",
         "trigrama_abajo": "below KAN das Abgründige, DAS WASSER",
@@ -299,7 +299,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "7": {
-      "bookChinese": "SCHÏ",
+      "bookChinese": "Schï",
       "bookTitle": "DAS HEER",
       "bookHanzi": "師",
       "bookHexFont": "䷆",
@@ -307,7 +307,7 @@
         "hex": "7",
         "nombre": "DAS HEER",
         "chinese": "師",
-        "chinese_roman": "SCHÏ",
+        "chinese_roman": "Schï",
         "hex_font": "䷆",
         "trigrama_arriba": "above KUN das Empfangende, DIE ERDE",
         "trigrama_abajo": "below KAN das Abgründige, DAS WASSER",
@@ -345,7 +345,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "8": {
-      "bookChinese": "",
+      "bookChinese": "Bi",
       "bookTitle": "DAS ZUSAMMENHALTEN",
       "bookHanzi": "比",
       "bookHexFont": "䷇",
@@ -353,7 +353,7 @@
         "hex": "8",
         "nombre": "DAS ZUSAMMENHALTEN",
         "chinese": "比",
-        "chinese_roman": "",
+        "chinese_roman": "Bi",
         "hex_font": "䷇",
         "trigrama_arriba": "above KAN das Abgründige, DAS WASSER",
         "trigrama_abajo": "below KUN das Empfangende, DIE ERDE",
@@ -391,7 +391,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "9": {
-      "bookChinese": "SIAU TSCHU",
+      "bookChinese": "Siau Tschu",
       "bookTitle": "DES KLEINEN ZÄHMUNGSKRAFT",
       "bookHanzi": "小畜",
       "bookHexFont": "䷈",
@@ -399,7 +399,7 @@
         "hex": "9",
         "nombre": "DES KLEINEN ZÄHMUNGSKRAFT",
         "chinese": "小畜",
-        "chinese_roman": "SIAU TSCHU",
+        "chinese_roman": "Siau Tschu",
         "hex_font": "䷈",
         "trigrama_arriba": "above SUN das Sanfte, DER WIND",
         "trigrama_abajo": "below KIËN das Schöpferische, DER HIMMEL",
@@ -437,7 +437,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "10": {
-      "bookChinese": "",
+      "bookChinese": "Lü",
       "bookTitle": "DAS AUFTRETEN",
       "bookHanzi": "履",
       "bookHexFont": "䷉",
@@ -445,7 +445,7 @@
         "hex": "10",
         "nombre": "DAS AUFTRETEN",
         "chinese": "履",
-        "chinese_roman": "",
+        "chinese_roman": "Lü",
         "hex_font": "䷉",
         "trigrama_arriba": "above KIËN das Schöpferische, DER HIMMEL",
         "trigrama_abajo": "below DUI das Heitere, DER SEE",
@@ -483,7 +483,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "11": {
-      "bookChinese": "",
+      "bookChinese": "Tai",
       "bookTitle": "DER FRIEDE",
       "bookHanzi": "泰",
       "bookHexFont": "䷊",
@@ -491,7 +491,7 @@
         "hex": "11",
         "nombre": "DER FRIEDE",
         "chinese": "泰",
-        "chinese_roman": "",
+        "chinese_roman": "Tai",
         "hex_font": "䷊",
         "trigrama_arriba": "above KUN das Empfangende, DIE ERDE",
         "trigrama_abajo": "below KIËN das Schöpferische, DER HIMMEL",
@@ -529,7 +529,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "12": {
-      "bookChinese": "",
+      "bookChinese": "Pi",
       "bookTitle": "DIE STOCKUNG",
       "bookHanzi": "否",
       "bookHexFont": "䷋",
@@ -537,7 +537,7 @@
         "hex": "12",
         "nombre": "DIE STOCKUNG",
         "chinese": "否",
-        "chinese_roman": "",
+        "chinese_roman": "Pi",
         "hex_font": "䷋",
         "trigrama_arriba": "above KIËN das Schöpferische, DER HIMMEL",
         "trigrama_abajo": "below KUN das Empfangende, DIE ERDE",
@@ -575,7 +575,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "13": {
-      "bookChinese": "TUNG JEN",
+      "bookChinese": "Tung Jen",
       "bookTitle": "GEMEINSCHAFT MIT MENSCHEN",
       "bookHanzi": "同人",
       "bookHexFont": "䷌",
@@ -583,7 +583,7 @@
         "hex": "13",
         "nombre": "GEMEINSCHAFT MIT MENSCHEN",
         "chinese": "同人",
-        "chinese_roman": "TUNG JEN",
+        "chinese_roman": "Tung Jen",
         "hex_font": "䷌",
         "trigrama_arriba": "above KIËN das Schöpferische, DER HIMMEL",
         "trigrama_abajo": "below LI das Haftende, DIE FLAMME",
@@ -621,7 +621,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "14": {
-      "bookChinese": "DA YU",
+      "bookChinese": "Da Yu",
       "bookTitle": "DER BESITZ VON GROSSEM",
       "bookHanzi": "大有",
       "bookHexFont": "䷍",
@@ -629,7 +629,7 @@
         "hex": "14",
         "nombre": "DER BESITZ VON GROSSEM",
         "chinese": "大有",
-        "chinese_roman": "DA YU",
+        "chinese_roman": "Da Yu",
         "hex_font": "䷍",
         "trigrama_arriba": "above LI das Haftende, DIE FLAMME",
         "trigrama_abajo": "below KIËN das Schöpferische, DER HIMMEL",
@@ -667,7 +667,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "15": {
-      "bookChinese": "KIAN",
+      "bookChinese": "Kiën",
       "bookTitle": "DIE BESCHEIDENHEIT",
       "bookHanzi": "謙",
       "bookHexFont": "䷎",
@@ -675,7 +675,7 @@
         "hex": "15",
         "nombre": "DIE BESCHEIDENHEIT",
         "chinese": "謙",
-        "chinese_roman": "KIAN",
+        "chinese_roman": "Kiën",
         "hex_font": "䷎",
         "trigrama_arriba": "above KUN das Empfangende, DIE ERDE",
         "trigrama_abajo": "below GEN das Stillehalten, DER BERG",
@@ -713,7 +713,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "16": {
-      "bookChinese": "",
+      "bookChinese": "Yü",
       "bookTitle": "DIE BEGEISTERUNG",
       "bookHanzi": "豫",
       "bookHexFont": "䷏",
@@ -721,7 +721,7 @@
         "hex": "16",
         "nombre": "DIE BEGEISTERUNG",
         "chinese": "豫",
-        "chinese_roman": "",
+        "chinese_roman": "Yü",
         "hex_font": "䷏",
         "trigrama_arriba": "above DSCHEN das Erregende, DER DONNER",
         "trigrama_abajo": "below KUN das Empfangende, DIE ERDE",
@@ -759,7 +759,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "17": {
-      "bookChinese": "",
+      "bookChinese": "Sui",
       "bookTitle": "DIE NACHFOLGE",
       "bookHanzi": "隨",
       "bookHexFont": "䷐",
@@ -767,7 +767,7 @@
         "hex": "17",
         "nombre": "DIE NACHFOLGE",
         "chinese": "隨",
-        "chinese_roman": "",
+        "chinese_roman": "Sui",
         "hex_font": "䷐",
         "trigrama_arriba": "above DUI das Heitere, DER SEE",
         "trigrama_abajo": "below DSCHEN das Erregende, DER DONNER",
@@ -805,7 +805,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "18": {
-      "bookChinese": "",
+      "bookChinese": "Gu",
       "bookTitle": "DIE ARBEIT AM VERDORBENEN",
       "bookHanzi": "蠱",
       "bookHexFont": "䷑",
@@ -813,7 +813,7 @@
         "hex": "18",
         "nombre": "DIE ARBEIT AM VERDORBENEN",
         "chinese": "蠱",
-        "chinese_roman": "",
+        "chinese_roman": "Gu",
         "hex_font": "䷑",
         "trigrama_arriba": "above GEN das Stillehalten, DER BERG",
         "trigrama_abajo": "below SUN das Sanfte, DER WIND",
@@ -851,7 +851,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "19": {
-      "bookChinese": "",
+      "bookChinese": "Lin",
       "bookTitle": "DIE ANNAHERUNG",
       "bookHanzi": "臨",
       "bookHexFont": "䷒",
@@ -859,7 +859,7 @@
         "hex": "19",
         "nombre": "DIE ANNAHERUNG",
         "chinese": "臨",
-        "chinese_roman": "",
+        "chinese_roman": "Lin",
         "hex_font": "䷒",
         "trigrama_arriba": "above KUN das Empfangende, DIE ERDE",
         "trigrama_abajo": "below DUI das Heitere, DER SEE",
@@ -897,7 +897,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "20": {
-      "bookChinese": "GUAN",
+      "bookChinese": "Guan",
       "bookTitle": "DIE BETRACHTUNG (DER ANBLICK)",
       "bookHanzi": "觀",
       "bookHexFont": "䷓",
@@ -905,7 +905,7 @@
         "hex": "20",
         "nombre": "DIE BETRACHTUNG (DER ANBLICK)",
         "chinese": "觀",
-        "chinese_roman": "GUAN",
+        "chinese_roman": "Guan",
         "hex_font": "䷓",
         "trigrama_arriba": "above SUN das Sanfte, DER WIND",
         "trigrama_abajo": "below KUN das Empfangende, DIE ERDE",
@@ -943,7 +943,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "21": {
-      "bookChinese": "SCHÏ HO",
+      "bookChinese": "Schï Ho",
       "bookTitle": "DAS DURCHBEISSEN",
       "bookHanzi": "噬嗑",
       "bookHexFont": "䷔",
@@ -951,7 +951,7 @@
         "hex": "21",
         "nombre": "DAS DURCHBEISSEN",
         "chinese": "噬嗑",
-        "chinese_roman": "SCHÏ HO",
+        "chinese_roman": "Schï Ho",
         "hex_font": "䷔",
         "trigrama_arriba": "above LI das Haftende, DAS FEUER",
         "trigrama_abajo": "below DSCHEN das Erregende, DER DONNER",
@@ -989,7 +989,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "22": {
-      "bookChinese": "",
+      "bookChinese": "Bi",
       "bookTitle": "DIE ANMUT",
       "bookHanzi": "賁",
       "bookHexFont": "䷕",
@@ -997,7 +997,7 @@
         "hex": "22",
         "nombre": "DIE ANMUT",
         "chinese": "賁",
-        "chinese_roman": "",
+        "chinese_roman": "Bi",
         "hex_font": "䷕",
         "trigrama_arriba": "above GEN das Stillehalten, DER BERG",
         "trigrama_abajo": "below LI das Haftende, DAS FEUER",
@@ -1035,7 +1035,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "23": {
-      "bookChinese": "",
+      "bookChinese": "Bo",
       "bookTitle": "DIE ZERSPLITTERUNG",
       "bookHanzi": "剝",
       "bookHexFont": "䷖",
@@ -1043,7 +1043,7 @@
         "hex": "23",
         "nombre": "DIE ZERSPLITTERUNG",
         "chinese": "剝",
-        "chinese_roman": "",
+        "chinese_roman": "Bo",
         "hex_font": "䷖",
         "trigrama_arriba": "above GEN das Stillehalten, DER BERG",
         "trigrama_abajo": "below KUN das Empfangende, DIE ERDE",
@@ -1081,7 +1081,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "24": {
-      "bookChinese": "",
+      "bookChinese": "Fu",
       "bookTitle": "DIE WIEDERKEHR (DIE WENDEZEIT)",
       "bookHanzi": "復",
       "bookHexFont": "䷗",
@@ -1089,7 +1089,7 @@
         "hex": "24",
         "nombre": "DIE WIEDERKEHR (DIE WENDEZEIT)",
         "chinese": "復",
-        "chinese_roman": "",
+        "chinese_roman": "Fu",
         "hex_font": "䷗",
         "trigrama_arriba": "above KUN das Empfangende, DIE ERDE",
         "trigrama_abajo": "below DSCHEN das Erregende, DER DONNER",
@@ -1127,7 +1127,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "25": {
-      "bookChinese": "WU WANG",
+      "bookChinese": "Wu Wang",
       "bookTitle": "DIE UNSCHULD",
       "bookHanzi": "無妄",
       "bookHexFont": "䷘",
@@ -1135,7 +1135,7 @@
         "hex": "25",
         "nombre": "DIE UNSCHULD",
         "chinese": "無妄",
-        "chinese_roman": "WU WANG",
+        "chinese_roman": "Wu Wang",
         "hex_font": "䷘",
         "trigrama_arriba": "above KIËN das Schöpferische, DER HIMMEL",
         "trigrama_abajo": "below DSCHEN das Erregende, DER DONNER",
@@ -1173,7 +1173,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "26": {
-      "bookChinese": "DA TSCHU",
+      "bookChinese": "Da Tschu",
       "bookTitle": "DES GROSSEN ZÄHMUNGSKRAFT",
       "bookHanzi": "大畜",
       "bookHexFont": "䷙",
@@ -1181,7 +1181,7 @@
         "hex": "26",
         "nombre": "DES GROSSEN ZÄHMUNGSKRAFT",
         "chinese": "大畜",
-        "chinese_roman": "DA TSCHU",
+        "chinese_roman": "Da Tschu",
         "hex_font": "䷙",
         "trigrama_arriba": "above GEN das Stillehalten, DER BERG",
         "trigrama_abajo": "below KIËN das Schöpferische, DER HIMMEL",
@@ -1219,7 +1219,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "27": {
-      "bookChinese": "",
+      "bookChinese": "I",
       "bookTitle": "DIE MUNDWINKEL (DIE ERNÄHRUNG)",
       "bookHanzi": "頤",
       "bookHexFont": "䷚",
@@ -1227,7 +1227,7 @@
         "hex": "27",
         "nombre": "DIE MUNDWINKEL (DIE ERNÄHRUNG)",
         "chinese": "頤",
-        "chinese_roman": "",
+        "chinese_roman": "I",
         "hex_font": "䷚",
         "trigrama_arriba": "above GEN das Stillehalten, DER BERG",
         "trigrama_abajo": "below DSCHEN das Erregende, DER DONNER",
@@ -1265,7 +1265,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "28": {
-      "bookChinese": "DA GO",
+      "bookChinese": "Da Go",
       "bookTitle": "DES GROSSEN ÜBERGEWICHT",
       "bookHanzi": "大過",
       "bookHexFont": "䷛",
@@ -1273,7 +1273,7 @@
         "hex": "28",
         "nombre": "DES GROSSEN ÜBERGEWICHT",
         "chinese": "大過",
-        "chinese_roman": "DA GO",
+        "chinese_roman": "Da Go",
         "hex_font": "䷛",
         "trigrama_arriba": "above DUI das Heitere, DER SEE",
         "trigrama_abajo": "below SUN das Sanfte, DER WIND, DAS HOLZ",
@@ -1311,7 +1311,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "29": {
-      "bookChinese": "",
+      "bookChinese": "Kan",
       "bookTitle": "DAS ABGRÜNDIGE (DAS WASSER)",
       "bookHanzi": "坎",
       "bookHexFont": "䷜",
@@ -1319,7 +1319,7 @@
         "hex": "29",
         "nombre": "DAS ABGRÜNDIGE (DAS WASSER)",
         "chinese": "坎",
-        "chinese_roman": "",
+        "chinese_roman": "Kan",
         "hex_font": "䷜",
         "trigrama_arriba": "above KAN das Abgründige, DAS WASSER",
         "trigrama_abajo": "below KAN das Abgründige, DAS WASSER",
@@ -1357,7 +1357,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "30": {
-      "bookChinese": "",
+      "bookChinese": "Li",
       "bookTitle": "DAS HAFTENDE, DAS FEUER",
       "bookHanzi": "離",
       "bookHexFont": "䷝",
@@ -1365,7 +1365,7 @@
         "hex": "30",
         "nombre": "DAS HAFTENDE, DAS FEUER",
         "chinese": "離",
-        "chinese_roman": "",
+        "chinese_roman": "Li",
         "hex_font": "䷝",
         "trigrama_arriba": "above LI das Haftende, DAS FEUER",
         "trigrama_abajo": "below LI das Haftende, DAS FEUER",
@@ -1403,7 +1403,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "31": {
-      "bookChinese": "HIAN",
+      "bookChinese": "Hiën",
       "bookTitle": "DIE EINWIRKUNG (DIE WERBUNG)",
       "bookHanzi": "咸",
       "bookHexFont": "䷞",
@@ -1411,7 +1411,7 @@
         "hex": "31",
         "nombre": "DIE EINWIRKUNG (DIE WERBUNG)",
         "chinese": "咸",
-        "chinese_roman": "HIAN",
+        "chinese_roman": "Hiën",
         "hex_font": "䷞",
         "trigrama_arriba": "above DUI das Heitere, DER SEE",
         "trigrama_abajo": "below GEN das Stillehalten, DER BERG",
@@ -1449,7 +1449,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "32": {
-      "bookChinese": "HONG",
+      "bookChinese": "Hong",
       "bookTitle": "DIE DAUER",
       "bookHanzi": "恆",
       "bookHexFont": "䷟",
@@ -1457,7 +1457,7 @@
         "hex": "32",
         "nombre": "DIE DAUER",
         "chinese": "恆",
-        "chinese_roman": "HONG",
+        "chinese_roman": "Hong",
         "hex_font": "䷟",
         "trigrama_arriba": "above DSCHEN das Erregende, DER DONNER",
         "trigrama_abajo": "below SUN das Sanfte, DER WIND",
@@ -1495,7 +1495,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "33": {
-      "bookChinese": "",
+      "bookChinese": "Dun",
       "bookTitle": "DER RÜCKZUG",
       "bookHanzi": "遯",
       "bookHexFont": "䷠",
@@ -1503,7 +1503,7 @@
         "hex": "33",
         "nombre": "DER RÜCKZUG",
         "chinese": "遯",
-        "chinese_roman": "",
+        "chinese_roman": "Dun",
         "hex_font": "䷠",
         "trigrama_arriba": "above KIËN das Schöpferische, DER HIMMEL",
         "trigrama_abajo": "below GEN das Stillehalten, DER BERG",
@@ -1541,7 +1541,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "34": {
-      "bookChinese": "DA DSCHUANG",
+      "bookChinese": "Da Dschuang",
       "bookTitle": "DES GROSSEN MACHT",
       "bookHanzi": "大壯",
       "bookHexFont": "䷡",
@@ -1549,7 +1549,7 @@
         "hex": "34",
         "nombre": "DES GROSSEN MACHT",
         "chinese": "大壯",
-        "chinese_roman": "DA DSCHUANG",
+        "chinese_roman": "Da Dschuang",
         "hex_font": "䷡",
         "trigrama_arriba": "above DSCHEN das Erregende, DER DONNER",
         "trigrama_abajo": "below KIËN das Schöpferische, DER HIMMEL",
@@ -1587,7 +1587,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "35": {
-      "bookChinese": "DSIN",
+      "bookChinese": "Dsin",
       "bookTitle": "DER FORTSCHRITT",
       "bookHanzi": "晉",
       "bookHexFont": "䷢",
@@ -1595,7 +1595,7 @@
         "hex": "35",
         "nombre": "DER FORTSCHRITT",
         "chinese": "晉",
-        "chinese_roman": "DSIN",
+        "chinese_roman": "Dsin",
         "hex_font": "䷢",
         "trigrama_arriba": "above LI das Haftende, DAS FEUER",
         "trigrama_abajo": "below KUN das Empfangende, DIE ERDE",
@@ -1633,7 +1633,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "36": {
-      "bookChinese": "MING I",
+      "bookChinese": "Ming I",
       "bookTitle": "DIE VERFINSTERUNG DES LICHTS",
       "bookHanzi": "明夷",
       "bookHexFont": "䷣",
@@ -1641,7 +1641,7 @@
         "hex": "36",
         "nombre": "DIE VERFINSTERUNG DES LICHTS",
         "chinese": "明夷",
-        "chinese_roman": "MING I",
+        "chinese_roman": "Ming I",
         "hex_font": "䷣",
         "trigrama_arriba": "above KUN das Empfangende, DIE ERDE",
         "trigrama_abajo": "below LI das Haftende, DAS FEUER",
@@ -1679,7 +1679,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "37": {
-      "bookChinese": "GIA JEN",
+      "bookChinese": "Gia Jen",
       "bookTitle": "DIE SIPPE",
       "bookHanzi": "家人",
       "bookHexFont": "䷤",
@@ -1687,7 +1687,7 @@
         "hex": "37",
         "nombre": "DIE SIPPE",
         "chinese": "家人",
-        "chinese_roman": "GIA JEN",
+        "chinese_roman": "Gia Jen",
         "hex_font": "䷤",
         "trigrama_arriba": "above SUN das Sanfte, DER WIND",
         "trigrama_abajo": "below LI das Haftende, DAS FEUER",
@@ -1725,7 +1725,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "38": {
-      "bookChinese": "",
+      "bookChinese": "Kui",
       "bookTitle": "DER GEGENSATZ",
       "bookHanzi": "睽",
       "bookHexFont": "䷥",
@@ -1733,7 +1733,7 @@
         "hex": "38",
         "nombre": "DER GEGENSATZ",
         "chinese": "睽",
-        "chinese_roman": "",
+        "chinese_roman": "Kui",
         "hex_font": "䷥",
         "trigrama_arriba": "above LI das Haftende, DIE FLAMME",
         "trigrama_abajo": "below DUI das Heitere, DER SEE",
@@ -1771,7 +1771,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "39": {
-      "bookChinese": "GIAN",
+      "bookChinese": "Giën",
       "bookTitle": "DAS HEMMNIS",
       "bookHanzi": "蹇",
       "bookHexFont": "䷦",
@@ -1779,7 +1779,7 @@
         "hex": "39",
         "nombre": "DAS HEMMNIS",
         "chinese": "蹇",
-        "chinese_roman": "GIAN",
+        "chinese_roman": "Giën",
         "hex_font": "䷦",
         "trigrama_arriba": "above KAN das Abgründige, DAS WASSER",
         "trigrama_abajo": "below GEN das Stillehalten, DER BERG",
@@ -1817,7 +1817,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "40": {
-      "bookChinese": "",
+      "bookChinese": "Hië",
       "bookTitle": "DIE BEFREIUNG",
       "bookHanzi": "解",
       "bookHexFont": "䷧",
@@ -1825,7 +1825,7 @@
         "hex": "40",
         "nombre": "DIE BEFREIUNG",
         "chinese": "解",
-        "chinese_roman": "",
+        "chinese_roman": "Hië",
         "hex_font": "䷧",
         "trigrama_arriba": "above DSCHEN das Erregende, DER DONNER",
         "trigrama_abajo": "below KAN das Abgründige, DAS WASSER",
@@ -1863,7 +1863,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "41": {
-      "bookChinese": "SUN DIE MINDERUNG",
+      "bookChinese": "Sun",
       "bookTitle": "DIE MINDERUNG",
       "bookHanzi": "損",
       "bookHexFont": "䷨",
@@ -1871,7 +1871,7 @@
         "hex": "41",
         "nombre": "DIE MINDERUNG",
         "chinese": "損",
-        "chinese_roman": "SUN DIE MINDERUNG",
+        "chinese_roman": "Sun",
         "hex_font": "䷨",
         "trigrama_arriba": "above GEN das Stillehalten, DER BERG",
         "trigrama_abajo": "below DUI das Heitere, DER SEE",
@@ -1909,7 +1909,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "42": {
-      "bookChinese": "I DIE MEHRUNG",
+      "bookChinese": "I",
       "bookTitle": "DIE MEHRUNG",
       "bookHanzi": "益",
       "bookHexFont": "䷩",
@@ -1917,7 +1917,7 @@
         "hex": "42",
         "nombre": "DIE MEHRUNG",
         "chinese": "益",
-        "chinese_roman": "I DIE MEHRUNG",
+        "chinese_roman": "I",
         "hex_font": "䷩",
         "trigrama_arriba": "above SUN das Sanfte, DER WIND",
         "trigrama_abajo": "below DSCHEN das Erregende, DER DONNER",
@@ -1955,7 +1955,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "43": {
-      "bookChinese": "GUAI",
+      "bookChinese": "Guai",
       "bookTitle": "DER DURCHBRUCH",
       "bookHanzi": "夬",
       "bookHexFont": "䷪",
@@ -1963,7 +1963,7 @@
         "hex": "43",
         "nombre": "DER DURCHBRUCH",
         "chinese": "夬",
-        "chinese_roman": "GUAI",
+        "chinese_roman": "Guai",
         "hex_font": "䷪",
         "trigrama_arriba": "above DUI das Heitere, DER SEE",
         "trigrama_abajo": "below KIËN das Schöpferische, DER HIMMEL",
@@ -2001,7 +2001,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "44": {
-      "bookChinese": "",
+      "bookChinese": "Gou",
       "bookTitle": "DAS ENTGEGENKOMMEN",
       "bookHanzi": "姤",
       "bookHexFont": "䷫",
@@ -2009,7 +2009,7 @@
         "hex": "44",
         "nombre": "DAS ENTGEGENKOMMEN",
         "chinese": "姤",
-        "chinese_roman": "",
+        "chinese_roman": "Gou",
         "hex_font": "䷫",
         "trigrama_arriba": "above KIËN das Schöpferische, DER HIMMEL",
         "trigrama_abajo": "below SUN das Sanfte, DER WIND",
@@ -2047,7 +2047,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "45": {
-      "bookChinese": "TSUI",
+      "bookChinese": "TSui",
       "bookTitle": "DIE SAMMLUNG",
       "bookHanzi": "萃",
       "bookHexFont": "䷬",
@@ -2055,7 +2055,7 @@
         "hex": "45",
         "nombre": "DIE SAMMLUNG",
         "chinese": "萃",
-        "chinese_roman": "TSUI",
+        "chinese_roman": "TSui",
         "hex_font": "䷬",
         "trigrama_arriba": "above DUI das Heitere, DER SEE",
         "trigrama_abajo": "below KUN das Empfangende, DIE ERDE",
@@ -2093,7 +2093,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "46": {
-      "bookChinese": "SCHONG",
+      "bookChinese": "Schong",
       "bookTitle": "DAS EMPORDRINGEN",
       "bookHanzi": "升",
       "bookHexFont": "䷭",
@@ -2101,7 +2101,7 @@
         "hex": "46",
         "nombre": "DAS EMPORDRINGEN",
         "chinese": "升",
-        "chinese_roman": "SCHONG",
+        "chinese_roman": "Schong",
         "hex_font": "䷭",
         "trigrama_arriba": "above KUN das Empfangende, DIE ERDE",
         "trigrama_abajo": "below SUN das Sanfte, DER WIND, DAS HOLZ",
@@ -2139,7 +2139,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "47": {
-      "bookChinese": "",
+      "bookChinese": "Kun",
       "bookTitle": "DIE BEDRANGNIS",
       "bookHanzi": "困",
       "bookHexFont": "䷮",
@@ -2147,7 +2147,7 @@
         "hex": "47",
         "nombre": "DIE BEDRANGNIS",
         "chinese": "困",
-        "chinese_roman": "",
+        "chinese_roman": "Kun",
         "hex_font": "䷮",
         "trigrama_arriba": "above DUI das Heitere, DER SEE",
         "trigrama_abajo": "below KAN das Abgründige, DAS WASSER",
@@ -2185,7 +2185,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "48": {
-      "bookChinese": "DSING",
+      "bookChinese": "Dsing",
       "bookTitle": "DER BRUNNEN",
       "bookHanzi": "井",
       "bookHexFont": "䷯",
@@ -2193,7 +2193,7 @@
         "hex": "48",
         "nombre": "DER BRUNNEN",
         "chinese": "井",
-        "chinese_roman": "DSING",
+        "chinese_roman": "Dsing",
         "hex_font": "䷯",
         "trigrama_arriba": "above KAN das Abgründige, DAS WASSER",
         "trigrama_abajo": "below SUN das Sanfte, DER WIND, DAS HOLZ",
@@ -2231,7 +2231,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "49": {
-      "bookChinese": "",
+      "bookChinese": "Go",
       "bookTitle": "DIE UMWALZUNG (DIE MAUSERUNG)",
       "bookHanzi": "革",
       "bookHexFont": "䷰",
@@ -2239,7 +2239,7 @@
         "hex": "49",
         "nombre": "DIE UMWALZUNG (DIE MAUSERUNG)",
         "chinese": "革",
-        "chinese_roman": "",
+        "chinese_roman": "Go",
         "hex_font": "䷰",
         "trigrama_arriba": "above DUI das Heitere, DER SEE.",
         "trigrama_abajo": "below LI das Haftende, DAS FEUER",
@@ -2277,7 +2277,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "50": {
-      "bookChinese": "DING",
+      "bookChinese": "Ding",
       "bookTitle": "DER TIEGEL",
       "bookHanzi": "鼎",
       "bookHexFont": "䷱",
@@ -2285,7 +2285,7 @@
         "hex": "50",
         "nombre": "DER TIEGEL",
         "chinese": "鼎",
-        "chinese_roman": "DING",
+        "chinese_roman": "Ding",
         "hex_font": "䷱",
         "trigrama_arriba": "above LI das Haßende, DAS FEUER",
         "trigrama_abajo": "below SUN das Sanfte, DER WIND, DAS HOLZ",
@@ -2323,7 +2323,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "51": {
-      "bookChinese": "DSCHEN",
+      "bookChinese": "Dschen",
       "bookTitle": "DAS ERREGENDE",
       "bookHanzi": "震",
       "bookHexFont": "䷲",
@@ -2331,7 +2331,7 @@
         "hex": "51",
         "nombre": "DAS ERREGENDE",
         "chinese": "震",
-        "chinese_roman": "DSCHEN",
+        "chinese_roman": "Dschen",
         "hex_font": "䷲",
         "trigrama_arriba": "above DSCHEN das Erregende, DER DONNER",
         "trigrama_abajo": "below DSCHEN das Erregende, DER DONNER",
@@ -2369,7 +2369,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "52": {
-      "bookChinese": "",
+      "bookChinese": "Gen",
       "bookTitle": "DAS STILLEHALTEN, DER BERG",
       "bookHanzi": "艮",
       "bookHexFont": "䷳",
@@ -2377,7 +2377,7 @@
         "hex": "52",
         "nombre": "DAS STILLEHALTEN, DER BERG",
         "chinese": "艮",
-        "chinese_roman": "",
+        "chinese_roman": "Gen",
         "hex_font": "䷳",
         "trigrama_arriba": "above GEN das Stillehalten, DER BERG",
         "trigrama_abajo": "below GEN das Stillehalten, DER BERG",
@@ -2415,7 +2415,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "53": {
-      "bookChinese": "DSIAN",
+      "bookChinese": "Dsien",
       "bookTitle": "DIE ENTWICKLUNG",
       "bookHanzi": "漸",
       "bookHexFont": "䷴",
@@ -2423,7 +2423,7 @@
         "hex": "53",
         "nombre": "DIE ENTWICKLUNG",
         "chinese": "漸",
-        "chinese_roman": "DSIAN",
+        "chinese_roman": "Dsien",
         "hex_font": "䷴",
         "trigrama_arriba": "above SUN das Sanfte, DER WIND, DAS HOLZ",
         "trigrama_abajo": "below GEN das Stillehalten, DER BERG",
@@ -2461,7 +2461,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "54": {
-      "bookChinese": "GUI ME",
+      "bookChinese": "Gui me",
       "bookTitle": "DAS HEIRATENDE MÄDCHEN",
       "bookHanzi": "歸妹",
       "bookHexFont": "䷵",
@@ -2469,7 +2469,7 @@
         "hex": "54",
         "nombre": "DAS HEIRATENDE MÄDCHEN",
         "chinese": "歸妹",
-        "chinese_roman": "GUI ME",
+        "chinese_roman": "Gui me",
         "hex_font": "䷵",
         "trigrama_arriba": "above DSCHEN das Erregende, DER DONNER",
         "trigrama_abajo": "below DUI das Heitere, DER SEE",
@@ -2507,7 +2507,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "55": {
-      "bookChinese": "FONG",
+      "bookChinese": "Fong",
       "bookTitle": "DIE FÜLLE",
       "bookHanzi": "豐",
       "bookHexFont": "䷶",
@@ -2515,7 +2515,7 @@
         "hex": "55",
         "nombre": "DIE FÜLLE",
         "chinese": "豐",
-        "chinese_roman": "FONG",
+        "chinese_roman": "Fong",
         "hex_font": "䷶",
         "trigrama_arriba": "above DSCHEN das Erregende, DER DONNER",
         "trigrama_abajo": "below LI das Haftende, DIE FLAMME",
@@ -2553,7 +2553,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "56": {
-      "bookChinese": "",
+      "bookChinese": "Lü",
       "bookTitle": "DER WANDERER",
       "bookHanzi": "旅",
       "bookHexFont": "䷷",
@@ -2561,7 +2561,7 @@
         "hex": "56",
         "nombre": "DER WANDERER",
         "chinese": "旅",
-        "chinese_roman": "",
+        "chinese_roman": "Lü",
         "hex_font": "䷷",
         "trigrama_arriba": "above LI das Haftende, DAS FEUER",
         "trigrama_abajo": "below GEN das Stillehalten, DER BERG",
@@ -2599,7 +2599,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "57": {
-      "bookChinese": "",
+      "bookChinese": "Sun",
       "bookTitle": "DAS SANFTE",
       "bookHanzi": "巽",
       "bookHexFont": "䷸",
@@ -2607,7 +2607,7 @@
         "hex": "57",
         "nombre": "DAS SANFTE",
         "chinese": "巽",
-        "chinese_roman": "",
+        "chinese_roman": "Sun",
         "hex_font": "䷸",
         "trigrama_arriba": "above SUN das Sanfte, DER WIND, DAS HOLZ",
         "trigrama_abajo": "below SUN das Sanfte, DER WIND, DAS HOLZ",
@@ -2645,7 +2645,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "58": {
-      "bookChinese": "",
+      "bookChinese": "Dui",
       "bookTitle": "DAS HEITERE, DER SEE",
       "bookHanzi": "兌",
       "bookHexFont": "䷹",
@@ -2653,7 +2653,7 @@
         "hex": "58",
         "nombre": "DAS HEITERE, DER SEE",
         "chinese": "兌",
-        "chinese_roman": "",
+        "chinese_roman": "Dui",
         "hex_font": "䷹",
         "trigrama_arriba": "above DUI das Heitere, DER SEE",
         "trigrama_abajo": "below DUI das Heitere, DER SEE",
@@ -2691,7 +2691,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "59": {
-      "bookChinese": "HUAN",
+      "bookChinese": "Huan",
       "bookTitle": "DIE AUFLÖSUNG",
       "bookHanzi": "渙",
       "bookHexFont": "䷺",
@@ -2699,7 +2699,7 @@
         "hex": "59",
         "nombre": "DIE AUFLÖSUNG",
         "chinese": "渙",
-        "chinese_roman": "HUAN",
+        "chinese_roman": "Huan",
         "hex_font": "䷺",
         "trigrama_arriba": "above SUN das Sanfte, DER WIND",
         "trigrama_abajo": "below KAN das Abgründige, DAS WASSER",
@@ -2737,7 +2737,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "60": {
-      "bookChinese": "DSIA",
+      "bookChinese": "Dsië",
       "bookTitle": "DIE BESCHRANKUNG",
       "bookHanzi": "節",
       "bookHexFont": "䷻",
@@ -2745,7 +2745,7 @@
         "hex": "60",
         "nombre": "DIE BESCHRANKUNG",
         "chinese": "節",
-        "chinese_roman": "DSIA",
+        "chinese_roman": "Dsië",
         "hex_font": "䷻",
         "trigrama_arriba": "above KAN das Abgründige, DAS WASSER",
         "trigrama_abajo": "below DUI das Heitere, DER SEE",
@@ -2783,7 +2783,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "61": {
-      "bookChinese": "DSCHUNG FU",
+      "bookChinese": "Dschung Fu",
       "bookTitle": "INNERE WAHRHEIT",
       "bookHanzi": "中孚",
       "bookHexFont": "䷼",
@@ -2791,7 +2791,7 @@
         "hex": "61",
         "nombre": "INNERE WAHRHEIT",
         "chinese": "中孚",
-        "chinese_roman": "DSCHUNG FU",
+        "chinese_roman": "Dschung Fu",
         "hex_font": "䷼",
         "trigrama_arriba": "above SUN das Sanfte, DER WIND",
         "trigrama_abajo": "below DUI das Heitere, DER SEE",
@@ -2829,7 +2829,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "62": {
-      "bookChinese": "SIAU GO",
+      "bookChinese": "Siau Go",
       "bookTitle": "DES KLEINEN ÜBERGEWICHT",
       "bookHanzi": "小過",
       "bookHexFont": "䷽",
@@ -2837,7 +2837,7 @@
         "hex": "62",
         "nombre": "DES KLEINEN ÜBERGEWICHT",
         "chinese": "小過",
-        "chinese_roman": "SIAU GO",
+        "chinese_roman": "Siau Go",
         "hex_font": "䷽",
         "trigrama_arriba": "above DSCHEN das Erregende, DER DONNER",
         "trigrama_abajo": "below GEN das Stillehalten, DER BERG",
@@ -2875,7 +2875,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "63": {
-      "bookChinese": "GI DSI",
+      "bookChinese": "Gi Dsi",
       "bookTitle": "NACH DER VOLLENDUNG",
       "bookHanzi": "既濟",
       "bookHexFont": "䷾",
@@ -2883,7 +2883,7 @@
         "hex": "63",
         "nombre": "NACH DER VOLLENDUNG",
         "chinese": "既濟",
-        "chinese_roman": "GI DSI",
+        "chinese_roman": "Gi Dsi",
         "hex_font": "䷾",
         "trigrama_arriba": "above KAN das Abgründige, DAS WASSER",
         "trigrama_abajo": "below LI das Haftende, DAS FEUER",
@@ -2921,7 +2921,7 @@
       "promoteSource": "au_jpg_closed"
     },
     "64": {
-      "bookChinese": "WE DSI",
+      "bookChinese": "We Dsi",
       "bookTitle": "VOR DER VOLLENDUNG",
       "bookHanzi": "未濟",
       "bookHexFont": "䷿",
@@ -2929,7 +2929,7 @@
         "hex": "64",
         "nombre": "VOR DER VOLLENDUNG",
         "chinese": "未濟",
-        "chinese_roman": "WE DSI",
+        "chinese_roman": "We Dsi",
         "hex_font": "䷿",
         "trigrama_arriba": "above LI das Haftende, DIE FLAMME",
         "trigrama_abajo": "below KAN das Abgründige, DAS WASSER",

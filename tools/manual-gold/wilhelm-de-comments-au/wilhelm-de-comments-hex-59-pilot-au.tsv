@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	59	555-558		cerrado	na
 nombre	DIE AUFLÖSUNG	555-558	DIE AUFLÖSUNG	cerrado	na
 chinese	渙	555-558		cerrado	na
-chinese_roman	HUAN	555-558	HUAN	cerrado	na
+chinese_roman	HUAN	555-558	Huan	cerrado	na
 hex_font	䷺	555-558	䷺	cerrado	na
 trigrama_arriba	above SUN das Sanfte, DER WIND	555-558	above SUN das Sanfte, DER WIND	cerrado	na
 trigrama_abajo	below KAN das Abgründige, DAS WASSER	555-558	below KAN das Abgründige, DAS WASSER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		555-558		vacio_en_libro	na
 wen_yen		555-558		vacio_en_libro	na
 wen_yen_note		555-558		vacio_en_libro	na
 hex_fin	59				
+

@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	48	511-515		cerrado	na
 nombre	DER BRUNNEN	511-515	DER BRUNNEN	cerrado	na
 chinese	井	511-515		cerrado	na
-chinese_roman	DSING	511-515	DSING	cerrado	na
+chinese_roman	DSING	511-515	Dsing	cerrado	na
 hex_font	䷯	511-515	䷯	cerrado	na
 trigrama_arriba	above KAN das Abgründige, DAS WASSER	511-515	above KAN das Abgründige, DAS WASSER	cerrado	na
 trigrama_abajo	below SUN das Sanfte, DER WIND, DAS HOLZ	511-515	below SUN das Sanfte, DER WIND, DAS HOLZ	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		511-515		vacio_en_libro	na
 wen_yen		511-515		vacio_en_libro	na
 wen_yen_note		511-515		vacio_en_libro	na
 hex_fin	48				
+

@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	5	347-350		cerrado	na
 nombre	DAS WARTEN (DIE ERNÄHRUNG)	347-350	DAS WARTEN (DIE ERNÄHRUNG)	cerrado	na
 chinese	需	347-350		cerrado	na
-chinese_roman	SU	347-350		cerrado	na
+chinese_roman	SU	347-350	Sü	cerrado	na
 hex_font	䷄	347-350	䷄	cerrado	na
 trigrama_arriba	above DAS ABGRÜNDIGE das Wasser,	347-350	above DAS ABGRÜNDIGE das Wasser,	cerrado	na
 trigrama_abajo	below DAS SCHÖPFERISCHE der Himmel,	347-350	below DAS SCHÖPFERISCHE der Himmel,	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		347-350		vacio_en_libro	na
 wen_yen		347-350		vacio_en_libro	na
 wen_yen_note		347-350		vacio_en_libro	na
 hex_fin	5				
+

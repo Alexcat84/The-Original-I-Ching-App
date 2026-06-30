@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	46	504-506		cerrado	na
 nombre	DAS EMPORDRINGEN	504-506	DAS EMPORDRINGEN	cerrado	na
 chinese	升	504-506		cerrado	na
-chinese_roman	SCHONG	504-506	SCHONG	cerrado	na
+chinese_roman	SCHONG	504-506	Schong	cerrado	na
 hex_font	䷭	504-506	䷭	cerrado	na
 trigrama_arriba	above KUN das Empfangende, DIE ERDE	504-506	above KUN das Empfangende, DIE ERDE	cerrado	na
 trigrama_abajo	below SUN das Sanfte, DER WIND, DAS HOLZ	504-506	below SUN das Sanfte, DER WIND, DAS HOLZ	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		504-506		vacio_en_libro	na
 wen_yen		504-506		vacio_en_libro	na
 wen_yen_note		504-506		vacio_en_libro	na
 hex_fin	46				
+

@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	64	574-585		cerrado	na
 nombre	VOR DER VOLLENDUNG	574-585	VOR DER VOLLENDUNG	cerrado	na
 chinese	未濟	574-585		cerrado	na
-chinese_roman	WE DSI	574-585	WE DSI	cerrado	na
+chinese_roman	WE DSI	574-585	We Dsi	cerrado	na
 hex_font	䷿	574-585	䷿	cerrado	na
 trigrama_arriba	above LI das Haftende, DIE FLAMME	574-585	above LI das Haftende, DIE FLAMME	cerrado	na
 trigrama_abajo	below KAN das Abgründige, DAS WASSER	574-585	below KAN das Abgründige, DAS WASSER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		574-585		vacio_en_libro	na
 wen_yen		574-585		vacio_en_libro	na
 wen_yen_note		574-585		vacio_en_libro	na
 hex_fin	64				
+

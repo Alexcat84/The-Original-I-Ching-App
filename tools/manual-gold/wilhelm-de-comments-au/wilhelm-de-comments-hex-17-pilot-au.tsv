@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	17	393-395		cerrado	na
 nombre	DIE NACHFOLGE	393-395	DIE NACHFOLGE	cerrado	na
 chinese	隨	393-395		cerrado	na
-chinese_roman	SUI	393-395		cerrado	na
+chinese_roman	SUI	393-395	Sui	cerrado	na
 hex_font	䷐	393-395	䷐	cerrado	na
 trigrama_arriba	above DUI das Heitere, DER SEE	393-395	above DUI das Heitere, DER SEE	cerrado	na
 trigrama_abajo	below DSCHEN das Erregende, DER DONNER	393-395	below DSCHEN das Erregende, DER DONNER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		393-395		vacio_en_libro	na
 wen_yen		393-395		vacio_en_libro	na
 wen_yen_note		393-395		vacio_en_libro	na
 hex_fin	17				
+

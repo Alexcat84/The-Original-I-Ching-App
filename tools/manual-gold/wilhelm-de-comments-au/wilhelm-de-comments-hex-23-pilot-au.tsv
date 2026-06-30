@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	23	414-416		cerrado	na
 nombre	DIE ZERSPLITTERUNG	414-416	DIE ZERSPLITTERUNG	cerrado	na
 chinese	剝	414-416		cerrado	na
-chinese_roman	BO	414-416		cerrado	na
+chinese_roman	BO	414-416	Bo	cerrado	na
 hex_font	䷖	414-416	䷖	cerrado	na
 trigrama_arriba	above GEN das Stillehalten, DER BERG	414-416	above GEN das Stillehalten, DER BERG	cerrado	na
 trigrama_abajo	below KUN das Empfangende, DIE ERDE	414-416	below KUN das Empfangende, DIE ERDE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		414-416		vacio_en_libro	na
 wen_yen		414-416		vacio_en_libro	na
 wen_yen_note		414-416		vacio_en_libro	na
 hex_fin	23				
+

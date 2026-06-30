@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	12	374-376		cerrado	na
 nombre	DIE STOCKUNG	374-376	DIE STOCKUNG	cerrado	na
 chinese	否	374-376		cerrado	na
-chinese_roman	PI	374-376		cerrado	na
+chinese_roman	PI	374-376	Pi	cerrado	na
 hex_font	䷋	374-376	䷋	cerrado	na
 trigrama_arriba	above KIËN das Schöpferische, DER HIMMEL	374-376	above KIËN das Schöpferische, DER HIMMEL	cerrado	na
 trigrama_abajo	below KUN das Empfangende, DIE ERDE	374-376	below KUN das Empfangende, DIE ERDE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		374-376		vacio_en_libro	na
 wen_yen		374-376		vacio_en_libro	na
 wen_yen_note		374-376		vacio_en_libro	na
 hex_fin	12				
+

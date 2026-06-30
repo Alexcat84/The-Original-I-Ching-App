@@ -1917,6 +1917,32 @@
       "area": "scripts/promote-wilhelm-de-comments-au-to-merged.mjs"
     },
     {
+      "code": "VF-FID-W-037 sync-wilhelm-de-comments-meta-from-erstes",
+      "title": "Sync Wilhelm DE comments chinese_roman from Erstes book-one",
+      "shortName": "sync-wilhelm-de-comments-meta-from-erstes",
+      "type": "VF",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Patch 64 pilot TSV meta from merged book-one" }],
+      "path": "scripts/sync-wilhelm-de-comments-meta-from-erstes.mjs",
+      "npmScript": "npm run sync:wilhelm-de-comments-meta-from-erstes",
+      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "area": "scripts/sync-wilhelm-de-comments-meta-from-erstes.mjs"
+    },
+    {
+      "code": "VF-FID-W-038 verify-wilhelm-de-en-structure-parity",
+      "title": "Verify Wilhelm DE vs EN comments fill parity (2368 slots)",
+      "shortName": "verify-wilhelm-de-en-structure-parity",
+      "type": "VF",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "EN Baynes vs DE vacío/lleno per field×hex" }],
+      "path": "scripts/verify-wilhelm-de-en-structure-parity.mjs",
+      "npmScript": "npm run verify:wilhelm-de-en-structure-parity",
+      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "area": "scripts/verify-wilhelm-de-en-structure-parity.mjs"
+    },
+    {
       "code": "I18N-001 i18n-audit",
       "title": "i18n key coverage audit",
       "shortName": "i18n-audit",

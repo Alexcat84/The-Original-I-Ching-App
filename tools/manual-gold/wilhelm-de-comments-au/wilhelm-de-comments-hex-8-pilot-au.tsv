@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	8	358-361		cerrado	na
 nombre	DAS ZUSAMMENHALTEN	358-361	DAS ZUSAMMENHALTEN	cerrado	na
 chinese	比	358-361		cerrado	na
-chinese_roman	BI	358-361		cerrado	na
+chinese_roman	BI	358-361	Bi	cerrado	na
 hex_font	䷇	358-361	䷇	cerrado	na
 trigrama_arriba	above KAN das Abgründige, DAS WASSER	358-361	above KAN das Abgründige, DAS WASSER	cerrado	na
 trigrama_abajo	below KUN das Empfangende, DIE ERDE	358-361	below KUN das Empfangende, DIE ERDE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		358-361		vacio_en_libro	na
 wen_yen		358-361		vacio_en_libro	na
 wen_yen_note		358-361		vacio_en_libro	na
 hex_fin	8				
+

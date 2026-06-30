@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	30	441-444		cerrado	na
 nombre	DAS HAFTENDE, DAS FEUER	441-444	DAS HAFTENDE, DAS FEUER	cerrado	na
 chinese	離	441-444		cerrado	na
-chinese_roman	LI	441-444		cerrado	na
+chinese_roman	LI	441-444	Li	cerrado	na
 hex_font	䷝	441-444	䷝	cerrado	na
 trigrama_arriba	above LI das Haftende, DAS FEUER	441-444	above LI das Haftende, DAS FEUER	cerrado	na
 trigrama_abajo	below LI das Haftende, DAS FEUER	441-444	below LI das Haftende, DAS FEUER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		441-444		vacio_en_libro	na
 wen_yen		441-444		vacio_en_libro	na
 wen_yen_note		441-444		vacio_en_libro	na
 hex_fin	30				
+

@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	52	528-531		cerrado	na
 nombre	DAS STILLEHALTEN, DER BERG	528-531	DAS STILLEHALTEN, DER BERG	cerrado	na
 chinese	艮	528-531		cerrado	na
-chinese_roman	GEN	528-531		cerrado	na
+chinese_roman	GEN	528-531	Gen	cerrado	na
 hex_font	䷳	528-531	䷳	cerrado	na
 trigrama_arriba	above GEN das Stillehalten, DER BERG	528-531	above GEN das Stillehalten, DER BERG	cerrado	na
 trigrama_abajo	below GEN das Stillehalten, DER BERG	528-531	below GEN das Stillehalten, DER BERG	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		528-531		vacio_en_libro	na
 wen_yen		528-531		vacio_en_libro	na
 wen_yen_note		528-531		vacio_en_libro	na
 hex_fin	52				
+

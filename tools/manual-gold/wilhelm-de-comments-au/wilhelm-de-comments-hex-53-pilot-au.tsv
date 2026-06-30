@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	53	532-535		cerrado	na
 nombre	DIE ENTWICKLUNG	532-535	DIE ENTWICKLUNG	cerrado	na
 chinese	漸	532-535		cerrado	na
-chinese_roman	DSIAN	532-535	DSIAN	cerrado	na
+chinese_roman	DSIAN	532-535	Dsien	cerrado	na
 hex_font	䷴	532-535	䷴	cerrado	na
 trigrama_arriba	above SUN das Sanfte, DER WIND, DAS HOLZ	532-535	above SUN das Sanfte, DER WIND, DAS HOLZ	cerrado	na
 trigrama_abajo	below GEN das Stillehalten, DER BERG	532-535	below GEN das Stillehalten, DER BERG	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		532-535		vacio_en_libro	na
 wen_yen		532-535		vacio_en_libro	na
 wen_yen_note		532-535		vacio_en_libro	na
 hex_fin	53				
+

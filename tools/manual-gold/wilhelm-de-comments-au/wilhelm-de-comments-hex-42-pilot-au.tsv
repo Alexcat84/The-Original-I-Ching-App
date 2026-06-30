@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	42	486-490		cerrado	na
 nombre		486-490	DIE MEHRUNG	cerrado	coincide_pass04
 chinese	益	486-490		cerrado	na
-chinese_roman	I DIE MEHRUNG	486-490	I DIE MEHRUNG	cerrado	coincide_pass02
+chinese_roman	I DIE MEHRUNG	486-490	I	cerrado	coincide_pass02
 hex_font	䷩	486-490	䷩	cerrado	na
 trigrama_arriba	above SUN das Sanfte, DER WIND	486-490	above SUN das Sanfte, DER WIND	cerrado	na
 trigrama_abajo	below DSCHEN das Erregende, DER DONNER	486-490	below DSCHEN das Erregende, DER DONNER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		486-490		vacio_en_libro	na
 wen_yen		486-490		vacio_en_libro	na
 wen_yen_note		486-490		vacio_en_libro	na
 hex_fin	42				
+

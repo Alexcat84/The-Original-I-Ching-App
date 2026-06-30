@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	41	482-485		cerrado	na
 nombre	DIE MINDERUNG	482-485	DIE MINDERUNG	cerrado	coincide_pass02
 chinese	損	482-485		cerrado	na
-chinese_roman	SUN	482-485	SUN DIE MINDERUNG	cerrado	coincide_pass04
+chinese_roman	SUN	482-485	Sun	cerrado	coincide_pass04
 hex_font	䷨	482-485	䷨	cerrado	na
 trigrama_arriba	above GEN das Stillehalten, DER BERG	482-485	above GEN das Stillehalten, DER BERG	cerrado	na
 trigrama_abajo	below DUI das Heitere, DER SEE	482-485	below DUI das Heitere, DER SEE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		482-485		vacio_en_libro	na
 wen_yen		482-485		vacio_en_libro	na
 wen_yen_note		482-485		vacio_en_libro	na
 hex_fin	41				
+

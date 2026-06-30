@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	26	425-428		cerrado	na
 nombre		425-428	DES GROSSEN ZÄHMUNGSKRAFT	cerrado	na
 chinese	大畜	425-428		cerrado	na
-chinese_roman	DA TSCHU	425-428	DA TSCHU	cerrado	na
+chinese_roman	DA TSCHU	425-428	Da Tschu	cerrado	na
 hex_font	䷙	425-428	䷙	cerrado	na
 trigrama_arriba	above GEN das Stillehalten, DER BERG	425-428	above GEN das Stillehalten, DER BERG	cerrado	na
 trigrama_abajo	below KIËN das Schöpferische, DER HIMMEL	425-428	below KIËN das Schöpferische, DER HIMMEL	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		425-428		vacio_en_libro	na
 wen_yen		425-428		vacio_en_libro	na
 wen_yen_note		425-428		vacio_en_libro	na
 hex_fin	26				
+

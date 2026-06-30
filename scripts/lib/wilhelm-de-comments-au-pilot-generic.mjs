@@ -30,6 +30,7 @@ import { hex1CommentaryImageFromBook } from "./wilhelm-de-comments-au-pilot-hex1
 import { HEX_OVERRIDES } from "./wilhelm-de-comments-au-pilot-hex-overrides.mjs";
 import { buildWilhelmDeCommentsAnnaCompareRows } from "./wilhelm-de-comments-anna-reconcile.mjs";
 import { normalizeWilhelmDeAuBookText } from "./wilhelm-de-comments-anna-au-gold.mjs";
+import { resolveCommentsChineseRoman } from "./wilhelm-de-comments-erstes-meta.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const PASS02 = join(
@@ -129,6 +130,7 @@ export function buildGenericHexJpgVerifiedFields(hex) {
   for (const key of metaKeys) {
     let pdf = resolve(key);
     if (key === "nombre" && !pdf.trim()) pdf = loadErstesField(hex, "nombre");
+    if (key === "chinese_roman") pdf = resolveCommentsChineseRoman(hex, pdf);
     out[key] = { contenido_pdf: pdf, au_estado: "cerrado", jpgPages: pages };
   }
 

@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	10	365-368		cerrado	na
 nombre	DAS AUFTRETEN	365-368	DAS AUFTRETEN	cerrado	na
 chinese	履	365-368		cerrado	na
-chinese_roman	LU	365-368		cerrado	na
+chinese_roman	LU	365-368	Lü	cerrado	na
 hex_font	䷉	365-368	䷉	cerrado	na
 trigrama_arriba	above KIËN das Schöpferische, DER HIMMEL	365-368	above KIËN das Schöpferische, DER HIMMEL	cerrado	na
 trigrama_abajo	below DUI das Heitere, DER SEE	365-368	below DUI das Heitere, DER SEE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		365-368		vacio_en_libro	na
 wen_yen		365-368		vacio_en_libro	na
 wen_yen_note		365-368		vacio_en_libro	na
 hex_fin	10				
+

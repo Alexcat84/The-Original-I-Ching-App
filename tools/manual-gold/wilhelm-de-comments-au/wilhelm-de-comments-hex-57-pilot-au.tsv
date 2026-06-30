@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	57	548-551		cerrado	na
 nombre	DAS SANFTE	548-551	DAS SANFTE	cerrado	na
 chinese	巽	548-551		cerrado	na
-chinese_roman	SUN	548-551		cerrado	na
+chinese_roman	SUN	548-551	Sun	cerrado	na
 hex_font	䷸	548-551	䷸	cerrado	na
 trigrama_arriba	above SUN das Sanfte, DER WIND, DAS HOLZ	548-551	above SUN das Sanfte, DER WIND, DAS HOLZ	cerrado	na
 trigrama_abajo	below SUN das Sanfte, DER WIND, DAS HOLZ	548-551	below SUN das Sanfte, DER WIND, DAS HOLZ	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		548-551		vacio_en_libro	na
 wen_yen		548-551		vacio_en_libro	na
 wen_yen_note		548-551		vacio_en_libro	na
 hex_fin	57				
+

@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	50	520-523		cerrado	na
 nombre	DER TIEGEL	520-523	DER TIEGEL	cerrado	na
 chinese	鼎	520-523		cerrado	na
-chinese_roman	DING	520-523	DING	cerrado	na
+chinese_roman	DING	520-523	Ding	cerrado	na
 hex_font	䷱	520-523	䷱	cerrado	na
 trigrama_arriba	above LI das Haßende, DAS FEUER	520-523	above LI das Haßende, DAS FEUER	cerrado	na
 trigrama_abajo	below SUN das Sanfte, DER WIND, DAS HOLZ	520-523	below SUN das Sanfte, DER WIND, DAS HOLZ	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		520-523		vacio_en_libro	na
 wen_yen		520-523		vacio_en_libro	na
 wen_yen_note		520-523		vacio_en_libro	na
 hex_fin	50				
+

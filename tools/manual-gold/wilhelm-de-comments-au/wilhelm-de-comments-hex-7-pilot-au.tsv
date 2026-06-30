@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	7	354-357		cerrado	na
 nombre	DAS HEER	354-357	DAS HEER	cerrado	na
 chinese	師	354-357		cerrado	na
-chinese_roman	SCHÏ	354-357	SCHÏ	cerrado	na
+chinese_roman	SCHÏ	354-357	Schï	cerrado	na
 hex_font	䷆	354-357	䷆	cerrado	na
 trigrama_arriba	above KUN das Empfangende, DIE ERDE	354-357	above KUN das Empfangende, DIE ERDE	cerrado	na
 trigrama_abajo	below KAN das Abgründige, DAS WASSER	354-357	below KAN das Abgründige, DAS WASSER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		354-357		vacio_en_libro	na
 wen_yen		354-357		vacio_en_libro	na
 wen_yen_note		354-357		vacio_en_libro	na
 hex_fin	7				
+

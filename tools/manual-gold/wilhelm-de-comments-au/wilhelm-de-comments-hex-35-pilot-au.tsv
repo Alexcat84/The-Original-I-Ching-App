@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	35	459-462		cerrado	na
 nombre	DER FORTSCHRITT	459-462	DER FORTSCHRITT	cerrado	na
 chinese	晉	459-462		cerrado	na
-chinese_roman	DSIN	459-462	DSIN	cerrado	na
+chinese_roman	DSIN	459-462	Dsin	cerrado	na
 hex_font	䷢	459-462	䷢	cerrado	na
 trigrama_arriba	above LI das Haftende, DAS FEUER	459-462	above LI das Haftende, DAS FEUER	cerrado	na
 trigrama_abajo	below KUN das Empfangende, DIE ERDE	459-462	below KUN das Empfangende, DIE ERDE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		459-462		vacio_en_libro	na
 wen_yen		459-462		vacio_en_libro	na
 wen_yen_note		459-462		vacio_en_libro	na
 hex_fin	35				
+

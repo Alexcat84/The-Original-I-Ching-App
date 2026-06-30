@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	13	377-381		cerrado	na
 nombre		377-381	GEMEINSCHAFT MIT MENSCHEN	cerrado	na
 chinese	同人	377-381		cerrado	na
-chinese_roman	TUNG JEN	377-381	TUNG JEN	cerrado	na
+chinese_roman	TUNG JEN	377-381	Tung Jen	cerrado	na
 hex_font	䷌	377-381	䷌	cerrado	na
 trigrama_arriba	above KIËN das Schöpferische, DER HIMMEL	377-381	above KIËN das Schöpferische, DER HIMMEL	cerrado	na
 trigrama_abajo	below LI das Haftende, DIE FLAMME	377-381	below LI das Haftende, DIE FLAMME	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		377-381		vacio_en_libro	na
 wen_yen		377-381		vacio_en_libro	na
 wen_yen_note		377-381		vacio_en_libro	na
 hex_fin	13				
+

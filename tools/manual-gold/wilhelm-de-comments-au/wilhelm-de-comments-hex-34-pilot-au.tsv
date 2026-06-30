@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	34	456-458		cerrado	na
 nombre		456-458	DES GROSSEN MACHT	cerrado	na
 chinese	大壯	456-458		cerrado	na
-chinese_roman	DA DSCHUANG	456-458	DA DSCHUANG	cerrado	na
+chinese_roman	DA DSCHUANG	456-458	Da Dschuang	cerrado	na
 hex_font	䷡	456-458	䷡	cerrado	na
 trigrama_arriba	above DSCHEN das Erregende, DER DONNER	456-458	above DSCHEN das Erregende, DER DONNER	cerrado	na
 trigrama_abajo	below KIËN das Schöpferische, DER HIMMEL	456-458	below KIËN das Schöpferische, DER HIMMEL	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		456-458		vacio_en_libro	na
 wen_yen		456-458		vacio_en_libro	na
 wen_yen_note		456-458		vacio_en_libro	na
 hex_fin	34				
+

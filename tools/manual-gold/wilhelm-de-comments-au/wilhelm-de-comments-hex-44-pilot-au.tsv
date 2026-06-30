@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	44	496-499		cerrado	na
 nombre	DAS ENTGEGENKOMMEN	496-499	DAS ENTGEGENKOMMEN	cerrado	na
 chinese	姤	496-499		cerrado	na
-chinese_roman	GOU	496-499		cerrado	na
+chinese_roman	GOU	496-499	Gou	cerrado	na
 hex_font	䷫	496-499	䷫	cerrado	na
 trigrama_arriba	above KIËN das Schöpferische, DER HIMMEL	496-499	above KIËN das Schöpferische, DER HIMMEL	cerrado	na
 trigrama_abajo	below SUN das Sanfte, DER WIND	496-499	below SUN das Sanfte, DER WIND	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		496-499		vacio_en_libro	na
 wen_yen		496-499		vacio_en_libro	na
 wen_yen_note		496-499		vacio_en_libro	na
 hex_fin	44				
+

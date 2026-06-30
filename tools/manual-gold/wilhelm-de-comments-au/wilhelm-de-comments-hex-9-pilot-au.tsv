@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	9	362-364		cerrado	na
 nombre		362-364	DES KLEINEN ZÄHMUNGSKRAFT	cerrado	na
 chinese	小畜	362-364		cerrado	na
-chinese_roman	SIAU TSCHU	362-364	SIAU TSCHU	cerrado	na
+chinese_roman	SIAU TSCHU	362-364	Siau Tschu	cerrado	na
 hex_font	䷈	362-364	䷈	cerrado	na
 trigrama_arriba	above SUN das Sanfte, DER WIND	362-364	above SUN das Sanfte, DER WIND	cerrado	na
 trigrama_abajo	below KIËN das Schöpferische, DER HIMMEL	362-364	below KIËN das Schöpferische, DER HIMMEL	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		362-364		vacio_en_libro	na
 wen_yen		362-364		vacio_en_libro	na
 wen_yen_note		362-364		vacio_en_libro	na
 hex_fin	9				
+

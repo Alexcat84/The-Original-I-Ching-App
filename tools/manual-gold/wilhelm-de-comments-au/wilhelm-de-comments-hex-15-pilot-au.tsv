@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	15	385-388		cerrado	na
 nombre	DIE BESCHEIDENHEIT	385-388	DIE BESCHEIDENHEIT	cerrado	na
 chinese	謙	385-388		cerrado	na
-chinese_roman	KIAN	385-388	KIAN	cerrado	na
+chinese_roman	KIAN	385-388	Kiën	cerrado	na
 hex_font	䷎	385-388	䷎	cerrado	na
 trigrama_arriba	above KUN das Empfangende, DIE ERDE	385-388	above KUN das Empfangende, DIE ERDE	cerrado	na
 trigrama_abajo	below GEN das Stillehalten, DER BERG	385-388	below GEN das Stillehalten, DER BERG	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		385-388		vacio_en_libro	na
 wen_yen		385-388		vacio_en_libro	na
 wen_yen_note		385-388		vacio_en_libro	na
 hex_fin	15				
+

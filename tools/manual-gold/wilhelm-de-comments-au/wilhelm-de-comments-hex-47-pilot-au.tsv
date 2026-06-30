@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	47	507-510		cerrado	na
 nombre	DIE BEDRANGNIS	507-510	DIE BEDRANGNIS	cerrado	na
 chinese	困	507-510		cerrado	na
-chinese_roman	KUN	507-510		cerrado	na
+chinese_roman	KUN	507-510	Kun	cerrado	na
 hex_font	䷮	507-510	䷮	cerrado	na
 trigrama_arriba	above DUI das Heitere, DER SEE	507-510	above DUI das Heitere, DER SEE	cerrado	na
 trigrama_abajo	below KAN das Abgründige, DAS WASSER	507-510	below KAN das Abgründige, DAS WASSER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		507-510		vacio_en_libro	na
 wen_yen		507-510		vacio_en_libro	na
 wen_yen_note		507-510		vacio_en_libro	na
 hex_fin	47				
+

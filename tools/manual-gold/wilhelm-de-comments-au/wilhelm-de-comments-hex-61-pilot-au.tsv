@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	61	562-565		cerrado	na
 nombre	INNERE WAHRHEIT	562-565	INNERE WAHRHEIT	cerrado	na
 chinese	中孚	562-565		cerrado	na
-chinese_roman	DSCHUNG FU	562-565	DSCHUNG FU	cerrado	na
+chinese_roman	DSCHUNG FU	562-565	Dschung Fu	cerrado	na
 hex_font	䷼	562-565	䷼	cerrado	na
 trigrama_arriba	above SUN das Sanfte, DER WIND	562-565	above SUN das Sanfte, DER WIND	cerrado	na
 trigrama_abajo	below DUI das Heitere, DER SEE	562-565	below DUI das Heitere, DER SEE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		562-565		vacio_en_libro	na
 wen_yen		562-565		vacio_en_libro	na
 wen_yen_note		562-565		vacio_en_libro	na
 hex_fin	61				
+

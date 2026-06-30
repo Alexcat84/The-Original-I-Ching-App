@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	24	417-420		cerrado	na
 nombre	DIE WIEDERKEHR (DIE WENDEZEIT)	417-420	DIE WIEDERKEHR (DIE WENDEZEIT)	cerrado	na
 chinese	復	417-420		cerrado	na
-chinese_roman	FU	417-420		cerrado	na
+chinese_roman	FU	417-420	Fu	cerrado	na
 hex_font	䷗	417-420	䷗	cerrado	na
 trigrama_arriba	above KUN das Empfangende, DIE ERDE	417-420	above KUN das Empfangende, DIE ERDE	cerrado	na
 trigrama_abajo	below DSCHEN das Erregende, DER DONNER	417-420	below DSCHEN das Erregende, DER DONNER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		417-420		vacio_en_libro	na
 wen_yen		417-420		vacio_en_libro	na
 wen_yen_note		417-420		vacio_en_libro	na
 hex_fin	24				
+

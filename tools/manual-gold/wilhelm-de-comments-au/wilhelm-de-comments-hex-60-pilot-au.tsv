@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	60	559-561		cerrado	na
 nombre	DIE BESCHRANKUNG	559-561	DIE BESCHRANKUNG	cerrado	na
 chinese	節	559-561		cerrado	na
-chinese_roman	DSIA	559-561	DSIA	cerrado	na
+chinese_roman	DSIA	559-561	Dsië	cerrado	na
 hex_font	䷻	559-561	䷻	cerrado	na
 trigrama_arriba	above KAN das Abgründige, DAS WASSER	559-561	above KAN das Abgründige, DAS WASSER	cerrado	na
 trigrama_abajo	below DUI das Heitere, DER SEE	559-561	below DUI das Heitere, DER SEE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		559-561		vacio_en_libro	na
 wen_yen		559-561		vacio_en_libro	na
 wen_yen_note		559-561		vacio_en_libro	na
 hex_fin	60				
+

@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	32	449-451		cerrado	na
 nombre	DIE DAUER	449-451	DIE DAUER	cerrado	na
 chinese	恆	449-451		cerrado	na
-chinese_roman	HONG	449-451	HONG	cerrado	na
+chinese_roman	HONG	449-451	Hong	cerrado	na
 hex_font	䷟	449-451	䷟	cerrado	na
 trigrama_arriba	above DSCHEN das Erregende, DER DONNER	449-451	above DSCHEN das Erregende, DER DONNER	cerrado	na
 trigrama_abajo	below SUN das Sanfte, DER WIND	449-451	below SUN das Sanfte, DER WIND	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		449-451		vacio_en_libro	na
 wen_yen		449-451		vacio_en_libro	na
 wen_yen_note		449-451		vacio_en_libro	na
 hex_fin	32				
+

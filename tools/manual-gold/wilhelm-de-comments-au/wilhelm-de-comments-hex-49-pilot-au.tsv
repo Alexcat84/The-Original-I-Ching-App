@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	49	516-519		cerrado	na
 nombre	DIE UMWALZUNG (DIE MAUSERUNG)	516-519	DIE UMWALZUNG (DIE MAUSERUNG)	cerrado	na
 chinese	革	516-519		cerrado	na
-chinese_roman	GO	516-519		cerrado	na
+chinese_roman	GO	516-519	Go	cerrado	na
 hex_font	䷰	516-519	䷰	cerrado	na
 trigrama_arriba	above DUI das Heitere, DER SEE.	516-519	above DUI das Heitere, DER SEE.	cerrado	na
 trigrama_abajo	below LI das Haftende, DAS FEUER	516-519	below LI das Haftende, DAS FEUER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		516-519		vacio_en_libro	na
 wen_yen		516-519		vacio_en_libro	na
 wen_yen_note		516-519		vacio_en_libro	na
 hex_fin	49				
+

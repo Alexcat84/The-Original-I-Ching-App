@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	39	474-477		cerrado	na
 nombre	DAS HEMMNIS	474-477	DAS HEMMNIS	cerrado	na
 chinese	蹇	474-477		cerrado	na
-chinese_roman	GIAN	474-477	GIAN	cerrado	na
+chinese_roman	GIAN	474-477	Giën	cerrado	na
 hex_font	䷦	474-477	䷦	cerrado	na
 trigrama_arriba	above KAN das Abgründige, DAS WASSER	474-477	above KAN das Abgründige, DAS WASSER	cerrado	na
 trigrama_abajo	below GEN das Stillehalten, DER BERG	474-477	below GEN das Stillehalten, DER BERG	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		474-477		vacio_en_libro	na
 wen_yen		474-477		vacio_en_libro	na
 wen_yen_note		474-477		vacio_en_libro	na
 hex_fin	39				
+

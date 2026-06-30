@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	62	566-569		cerrado	na
 nombre		566-569	DES KLEINEN ÜBERGEWICHT	cerrado	na
 chinese	小過	566-569		cerrado	na
-chinese_roman	SIAU GO	566-569	SIAU GO	cerrado	na
+chinese_roman	SIAU GO	566-569	Siau Go	cerrado	na
 hex_font	䷽	566-569	䷽	cerrado	na
 trigrama_arriba	above DSCHEN das Erregende, DER DONNER	566-569	above DSCHEN das Erregende, DER DONNER	cerrado	na
 trigrama_abajo	below GEN das Stillehalten, DER BERG	566-569	below GEN das Stillehalten, DER BERG	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		566-569		vacio_en_libro	na
 wen_yen		566-569		vacio_en_libro	na
 wen_yen_note		566-569		vacio_en_libro	na
 hex_fin	62				
+

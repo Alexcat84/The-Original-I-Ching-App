@@ -15,6 +15,7 @@ import {
   fixHyphens,
   loadErstesJudgmentEcho,
 } from "./wilhelm-de-comments-au-pilot-common.mjs";
+import { resolveCommentsChineseRoman } from "./wilhelm-de-comments-erstes-meta.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const PASS02 = join(
@@ -92,7 +93,9 @@ export function buildHex3JpgVerifiedFields() {
     "trigrama_abajo",
   ];
   for (const key of metaKeys) {
-    out[key] = { contenido_pdf: String(src[key] ?? ""), au_estado: "cerrado", jpgPages: pages };
+    const raw =
+      key === "chinese_roman" ? resolveCommentsChineseRoman(3, src[key]) : String(src[key] ?? "");
+    out[key] = { contenido_pdf: raw, au_estado: "cerrado", jpgPages: pages };
   }
 
   out.ruler_note = {

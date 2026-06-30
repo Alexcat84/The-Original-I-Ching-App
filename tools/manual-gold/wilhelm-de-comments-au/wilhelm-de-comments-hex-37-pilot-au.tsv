@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	37	467-469		cerrado	na
 nombre	DIE SIPPE	467-469	DIE SIPPE	cerrado	na
 chinese	家人	467-469		cerrado	na
-chinese_roman	GIA JEN	467-469	GIA JEN	cerrado	na
+chinese_roman	GIA JEN	467-469	Gia Jen	cerrado	na
 hex_font	䷤	467-469	䷤	cerrado	na
 trigrama_arriba	above SUN das Sanfte, DER WIND	467-469	above SUN das Sanfte, DER WIND	cerrado	na
 trigrama_abajo	below LI das Haftende, DAS FEUER	467-469	below LI das Haftende, DAS FEUER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		467-469		vacio_en_libro	na
 wen_yen		467-469		vacio_en_libro	na
 wen_yen_note		467-469		vacio_en_libro	na
 hex_fin	37				
+

@@ -35,6 +35,7 @@ import {
   WILHELM_DE_PRIMARY_SOURCE,
 } from "./lib/wilhelm-de-dataset-paths.mjs";
 import { applyZhouyiSymbolsToFields, loadWilhelmDeZhouyiSymbols } from "./lib/wilhelm-de-zhouyi-symbols.mjs";
+import { applyErstesChineseRomanToFields } from "./lib/wilhelm-de-comments-erstes-meta.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ARCHIVE_DIR = join(ROOT, "tools/output/archive");
@@ -61,6 +62,7 @@ function buildCommentsMergedFromPromoted(promotedHexagrams, blank, symbols) {
     /** @type {Record<string, string>} */
     const fields = { ...blankEntry.fields, ...promoted.fields };
     applyZhouyiSymbolsToFields(fields, n, symbols);
+    applyErstesChineseRomanToFields(fields, n);
 
     for (const pasteKey of WILHELM_DE_COMMENTS_PASTE_KEYS) {
       if (String(fields[pasteKey] ?? "").trim()) contentFilled++;

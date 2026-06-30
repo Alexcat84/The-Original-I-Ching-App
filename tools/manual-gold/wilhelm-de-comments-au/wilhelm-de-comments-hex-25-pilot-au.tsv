@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	25	421-424		cerrado	na
 nombre	DIE UNSCHULD	421-424	DIE UNSCHULD	cerrado	na
 chinese	無妄	421-424		cerrado	na
-chinese_roman	WU WANG	421-424	WU WANG	cerrado	na
+chinese_roman	WU WANG	421-424	Wu Wang	cerrado	na
 hex_font	䷘	421-424	䷘	cerrado	na
 trigrama_arriba	above KIËN das Schöpferische, DER HIMMEL	421-424	above KIËN das Schöpferische, DER HIMMEL	cerrado	na
 trigrama_abajo	below DSCHEN das Erregende, DER DONNER	421-424	below DSCHEN das Erregende, DER DONNER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		421-424		vacio_en_libro	na
 wen_yen		421-424		vacio_en_libro	na
 wen_yen_note		421-424		vacio_en_libro	na
 hex_fin	25				
+

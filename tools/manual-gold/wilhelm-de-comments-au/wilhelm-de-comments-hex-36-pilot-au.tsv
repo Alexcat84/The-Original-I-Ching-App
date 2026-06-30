@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	36	463-466		cerrado	na
 nombre		463-466	DIE VERFINSTERUNG DES LICHTS	cerrado	na
 chinese	明夷	463-466		cerrado	na
-chinese_roman	MING I	463-466	MING I	cerrado	na
+chinese_roman	MING I	463-466	Ming I	cerrado	na
 hex_font	䷣	463-466	䷣	cerrado	na
 trigrama_arriba	above KUN das Empfangende, DIE ERDE	463-466	above KUN das Empfangende, DIE ERDE	cerrado	na
 trigrama_abajo	below LI das Haftende, DAS FEUER	463-466	below LI das Haftende, DAS FEUER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		463-466		vacio_en_libro	na
 wen_yen		463-466		vacio_en_libro	na
 wen_yen_note		463-466		vacio_en_libro	na
 hex_fin	36				
+

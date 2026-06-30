@@ -254,6 +254,24 @@ Los ~286 `coincide_ninguno` del jpg-audit son **esperados**: texto limpio ≠ pa
 - Hex **1–2:** sin `sequence` (vacio en libro).
 - `image_oraculo`: 2 líneas eco DAS BILD (desde Erstes cuando aplica).
 - `commentary_image`: párrafos tras eco BILD, sin duplicar oracle ni bleed de hex siguiente.
+- **`chinese_roman`:** siempre desde Erstes Buch (`wilhelm-de-64hex-merged.fields.chinese_roman`); Drittes OCR no gana sobre Zeno.
+
+---
+
+## 13. Meta sync Erstes → Ten Wings (2026-06-30)
+
+Cierre paridad estructural EN↔DE en `chinese_roman` (25 hex vacíos + 8 drift OCR):
+
+```bash
+npm run sync:wilhelm-de-comments-meta-from-erstes -- --promote
+npm run verify:wilhelm-de-en-structure-parity   # 2368/2368 fill parity
+```
+
+| Artefacto | Rol |
+|-----------|-----|
+| `wilhelm-de-comments-erstes-meta.mjs` | `resolveCommentsChineseRoman` desde book-one |
+| `sync-wilhelm-de-comments-meta-from-erstes.mjs` | Patch pilot TSV + optional promote chain |
+| `verify-wilhelm-de-en-structure-parity.mjs` | Gate VF-FID-W-038 |
 
 ---
 

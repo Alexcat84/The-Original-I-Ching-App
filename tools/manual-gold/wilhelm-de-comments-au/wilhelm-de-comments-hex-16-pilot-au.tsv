@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	16	389-392		cerrado	na
 nombre	DIE BEGEISTERUNG	389-392	DIE BEGEISTERUNG	cerrado	na
 chinese	豫	389-392		cerrado	na
-chinese_roman	YU	389-392		cerrado	na
+chinese_roman	YU	389-392	Yü	cerrado	na
 hex_font	䷏	389-392	䷏	cerrado	na
 trigrama_arriba	above DSCHEN das Erregende, DER DONNER	389-392	above DSCHEN das Erregende, DER DONNER	cerrado	na
 trigrama_abajo	below KUN das Empfangende, DIE ERDE	389-392	below KUN das Empfangende, DIE ERDE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		389-392		vacio_en_libro	na
 wen_yen		389-392		vacio_en_libro	na
 wen_yen_note		389-392		vacio_en_libro	na
 hex_fin	16				
+

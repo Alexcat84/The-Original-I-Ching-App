@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	21	406-409		cerrado	na
 nombre	DAS DURCHBEISSEN	406-409	DAS DURCHBEISSEN	cerrado	na
 chinese	噬嗑	406-409		cerrado	na
-chinese_roman	SCHI HO	406-409	SCHÏ HO	cerrado	coincide_pass04
+chinese_roman	SCHI HO	406-409	Schï Ho	cerrado	coincide_pass04
 hex_font	䷔	406-409	䷔	cerrado	na
 trigrama_arriba	above LI das Haftende, DAS FEUER	406-409	above LI das Haftende, DAS FEUER	cerrado	na
 trigrama_abajo	below DSCHEN das Erregende, DER DONNER	406-409	below DSCHEN das Erregende, DER DONNER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		406-409		vacio_en_libro	na
 wen_yen		406-409		vacio_en_libro	na
 wen_yen_note		406-409		vacio_en_libro	na
 hex_fin	21				
+

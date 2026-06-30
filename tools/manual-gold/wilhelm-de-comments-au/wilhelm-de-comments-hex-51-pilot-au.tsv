@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	51	524-527		cerrado	na
 nombre	DAS ERREGENDE	524-527	DAS ERREGENDE	cerrado	na
 chinese	震	524-527		cerrado	na
-chinese_roman	DSCHEN	524-527	DSCHEN	cerrado	na
+chinese_roman	DSCHEN	524-527	Dschen	cerrado	na
 hex_font	䷲	524-527	䷲	cerrado	na
 trigrama_arriba	above DSCHEN das Erregende, DER DONNER	524-527	above DSCHEN das Erregende, DER DONNER	cerrado	na
 trigrama_abajo	below DSCHEN das Erregende, DER DONNER	524-527	below DSCHEN das Erregende, DER DONNER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		524-527		vacio_en_libro	na
 wen_yen		524-527		vacio_en_libro	na
 wen_yen_note		524-527		vacio_en_libro	na
 hex_fin	51				
+

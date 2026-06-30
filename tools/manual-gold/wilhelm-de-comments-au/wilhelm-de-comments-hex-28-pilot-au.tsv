@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	28	433-436		cerrado	na
 nombre		433-436	DES GROSSEN ÜBERGEWICHT	cerrado	na
 chinese	大過	433-436		cerrado	na
-chinese_roman	DA GO	433-436	DA GO	cerrado	na
+chinese_roman	DA GO	433-436	Da Go	cerrado	na
 hex_font	䷛	433-436	䷛	cerrado	na
 trigrama_arriba	above DUI das Heitere, DER SEE	433-436	above DUI das Heitere, DER SEE	cerrado	na
 trigrama_abajo	below SUN das Sanfte, DER WIND, DAS HOLZ	433-436	below SUN das Sanfte, DER WIND, DAS HOLZ	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		433-436		vacio_en_libro	na
 wen_yen		433-436		vacio_en_libro	na
 wen_yen_note		433-436		vacio_en_libro	na
 hex_fin	28				
+

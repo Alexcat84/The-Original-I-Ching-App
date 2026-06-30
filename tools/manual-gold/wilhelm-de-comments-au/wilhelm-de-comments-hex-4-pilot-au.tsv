@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	4	343-346		cerrado	na
 nombre	DIE JUGENDTORHEIT	343-346	DIE JUGENDTORHEIT	cerrado	na
 chinese	蒙	343-346		cerrado	na
-chinese_roman	MONG	343-346	MONG	cerrado	na
+chinese_roman	MONG	343-346	Mong	cerrado	na
 hex_font	䷃	343-346	䷃	cerrado	na
 trigrama_arriba	above GEN das Stillehalten, DER BERG	343-346	above GEN das Stillehalten, DER BERG	cerrado	na
 trigrama_abajo	below KAN das Abgründige, DAS WASSER	343-346	below KAN das Abgründige, DAS WASSER	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		343-346		vacio_en_libro	na
 wen_yen		343-346		vacio_en_libro	na
 wen_yen_note		343-346		vacio_en_libro	na
 hex_fin	4				
+

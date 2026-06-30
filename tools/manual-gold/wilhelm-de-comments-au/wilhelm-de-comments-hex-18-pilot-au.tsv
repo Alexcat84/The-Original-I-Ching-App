@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	18	396-399		cerrado	na
 nombre	DIE ARBEIT AM VERDORBENEN	396-399	DIE ARBEIT AM VERDORBENEN	cerrado	na
 chinese	蠱	396-399		cerrado	na
-chinese_roman	GU	396-399		cerrado	na
+chinese_roman	GU	396-399	Gu	cerrado	na
 hex_font	䷑	396-399	䷑	cerrado	na
 trigrama_arriba	above GEN das Stillehalten, DER BERG	396-399	above GEN das Stillehalten, DER BERG	cerrado	na
 trigrama_abajo	below SUN das Sanfte, DER WIND	396-399	below SUN das Sanfte, DER WIND	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		396-399		vacio_en_libro	na
 wen_yen		396-399		vacio_en_libro	na
 wen_yen_note		396-399		vacio_en_libro	na
 hex_fin	18				
+

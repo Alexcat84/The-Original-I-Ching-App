@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	58	552-554		cerrado	na
 nombre	DAS HEITERE, DER SEE	552-554	DAS HEITERE, DER SEE	cerrado	na
 chinese	兌	552-554		cerrado	na
-chinese_roman	DUI	552-554		cerrado	na
+chinese_roman	DUI	552-554	Dui	cerrado	na
 hex_font	䷹	552-554	䷹	cerrado	na
 trigrama_arriba	above DUI das Heitere, DER SEE	552-554	above DUI das Heitere, DER SEE	cerrado	na
 trigrama_abajo	below DUI das Heitere, DER SEE	552-554	below DUI das Heitere, DER SEE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		552-554		vacio_en_libro	na
 wen_yen		552-554		vacio_en_libro	na
 wen_yen_note		552-554		vacio_en_libro	na
 hex_fin	58				
+

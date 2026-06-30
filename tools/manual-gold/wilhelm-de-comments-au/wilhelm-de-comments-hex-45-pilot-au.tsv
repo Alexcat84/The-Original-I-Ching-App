@@ -2,7 +2,7 @@ campo	contenido_reconciliado	jpg_paginas	contenido_pdf	au_estado	resolucion_disp
 hex	45	500-503		cerrado	na
 nombre	DIE SAMMLUNG	500-503	DIE SAMMLUNG	cerrado	na
 chinese	萃	500-503		cerrado	na
-chinese_roman	TSUI	500-503	TSUI	cerrado	na
+chinese_roman	TSUI	500-503	TSui	cerrado	na
 hex_font	䷬	500-503	䷬	cerrado	na
 trigrama_arriba	above DUI das Heitere, DER SEE	500-503	above DUI das Heitere, DER SEE	cerrado	na
 trigrama_abajo	below KUN das Empfangende, DIE ERDE	500-503	below KUN das Empfangende, DIE ERDE	cerrado	na
@@ -37,3 +37,4 @@ yong_b_comentario		500-503		vacio_en_libro	na
 wen_yen		500-503		vacio_en_libro	na
 wen_yen_note		500-503		vacio_en_libro	na
 hex_fin	45				
+

@@ -11,6 +11,7 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeWilhelmDeAuBookText } from "./wilhelm-de-comments-anna-au-gold.mjs";
+import { resolveCommentsChineseRoman } from "./wilhelm-de-comments-erstes-meta.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const PASS02 = join(
@@ -117,8 +118,9 @@ export function buildHex1JpgVerifiedFields() {
     "trigrama_abajo",
   ];
   for (const key of metaKeys) {
+    const raw = key === "chinese_roman" ? resolveCommentsChineseRoman(1, src[key]) : String(src[key] ?? "");
     out[key] = {
-      contenido_pdf: String(src[key] ?? ""),
+      contenido_pdf: raw,
       au_estado: "cerrado",
       jpgPages: pages,
       note: "JPG p.316 (book p.1 header)",
