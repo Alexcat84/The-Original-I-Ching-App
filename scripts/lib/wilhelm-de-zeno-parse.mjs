@@ -147,8 +147,8 @@ export async function parseWilhelmDeHexFromZeno(hexPath) {
   const urteil = extractSectionByH4(urteilHtml, /^Das Urteil/i);
   const bild = extractSectionByH4(bildHtml, /^Das Bild/i);
   const linesSection = extractSectionByH4(linesHtml, /^Die einzelnen Linien/i);
-  const urteilSplit = splitZenoBlocks(urteil.blocks);
-  const bildSplit = splitZenoBlocks(bild.blocks);
+  const urteilSplit = splitZenoBlocks(urteil.blocks, { isJudgment: true });
+  const bildSplit = splitZenoBlocks(bild.blocks, { isImage: true });
   const { lines, yong } = parseLinesFromBlocks(linesSection.blocks);
 
   /** @type {Record<string, string>} */

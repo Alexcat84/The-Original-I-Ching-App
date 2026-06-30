@@ -3,7 +3,7 @@
  */
 import { isWilhelmDeCommentaryStart } from "./wilhelm-de-commentary-markers.mjs";
 
-/** @typedef {{ isYong?: boolean; isLine?: boolean }} SplitOptions */
+/** @typedef {{ isYong?: boolean; isLine?: boolean; isJudgment?: boolean; isImage?: boolean }} SplitOptions */
 
 const YONG_COMMENTARY_RE =
   /^Wenn lauter (?:Neunen|Sechsen) erscheinen,(?:\s|$)/i;
@@ -41,6 +41,17 @@ function shouldStartCommentary(text, options, oracleParts) {
       return true;
     }
     if (oracleParts.length >= 2 && t.length > 50) return true;
+  }
+
+  if (options.isJudgment || options.isImage) {
+    const maxOracleParts = options.isImage ? 4 : 3;
+    if (oracleParts.length >= maxOracleParts) return true;
+    if (oracleParts.length >= 1 && t.length > 100 && !looksLikeShortOracleLine(t)) {
+      return true;
+    }
+    if (oracleParts.length >= 2 && t.length > 55 && !looksLikeShortOracleLine(t)) {
+      return true;
+    }
   }
 
   if (!options.isLine && !options.isYong && oracleParts.length >= 1 && t.length > 100) {
@@ -84,8 +95,11 @@ export function splitZenoOracleCommentary(parts, options = {}) {
  * @param {SplitOptions} [options]
  */
 export function splitZenoBlocks(blocks, options = {}) {
+  const texts = blocks.map((b) => b.text);
   const hasCommentaryKind = blocks.some((b) => b.kind === "commentary");
-  if (hasCommentaryKind) {
+  const hasOracleKind = blocks.some((b) => b.kind === "oracle");
+
+  if (hasCommentaryKind && hasOracleKind) {
     /** @type {string[]} */
     const oracleParts = [];
     /** @type {string[]} */
@@ -98,11 +112,11 @@ export function splitZenoBlocks(blocks, options = {}) {
     }
     const oracle = oracleParts.join("\n").trim();
     const commentary = commentaryParts.join("\n\n").trim();
-    if (commentary) return { oracle, commentary };
-    return splitZenoOracleCommentary(oracleParts, options);
+    if (!oracle && commentary) {
+      return splitZenoOracleCommentary(texts, options);
+    }
+    return { oracle, commentary };
   }
-  return splitZenoOracleCommentary(
-    blocks.map((b) => b.text),
-    options,
-  );
+
+  return splitZenoOracleCommentary(texts, options);
 }

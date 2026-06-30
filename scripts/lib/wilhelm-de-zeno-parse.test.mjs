@@ -33,4 +33,16 @@ assert.ok(f2.L1_comentario.includes("Wie die lichte Kraft"));
 assert.ok(f2.L6_oraculo.includes("Drachen kämpfen"));
 assert.ok(f2.L6_comentario.includes("obersten Platz"));
 
-console.log("wilhelm-de-zeno-parse: PASS (64 links, hex 1+2 fields)");
+const r7 = await parseWilhelmDeHexFromZeno(paths[6]);
+assert.ok(r7.fields.image_oraculo.includes("Bild des Heeres"));
+assert.ok(r7.fields.image_comentario.includes("Grundwasser"));
+
+const r20 = await parseWilhelmDeHexFromZeno(paths[19]);
+assert.ok(r20.fields.judgment_oraculo.includes("Waschung"));
+assert.ok(r20.fields.judgment_comentario.includes("Opferhandlung"));
+
+const r27 = await parseWilhelmDeHexFromZeno(paths[26]);
+assert.ok(r27.fields.judgment_oraculo.includes("Mundwinkel"));
+assert.ok(r27.fields.judgment_comentario.includes("Zuwendung"));
+
+console.log("wilhelm-de-zeno-parse: PASS (64 links, hex 1+2+7+20+27 fields)");
