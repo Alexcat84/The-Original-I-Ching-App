@@ -2,14 +2,14 @@
   "schemaVersion": "1.0.0",
   "auditCode": "20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation",
   "startedAt": "2026-06-30T21:08:44.977Z",
-  "closedAt": "2026-06-30T22:09:54.099Z",
+  "closedAt": "2026-06-30T22:12:39.594Z",
   "attestationIssued": false,
   "summary": {
     "hexComplete": 64,
     "hexTotal": 64,
     "fieldsTotal": 2304,
-    "fieldsVerified": 1788,
-    "fieldsCorrected": 204,
+    "fieldsVerified": 1748,
+    "fieldsCorrected": 244,
     "fieldsVacio": 312,
     "fieldsPending": 0
   },
@@ -12839,289 +12839,289 @@
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 18,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "chinese": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "chinese_roman": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 3,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "hex_font": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 1,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "trigrama_arriba": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 40,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "trigrama_abajo": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 30,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "ruler_note": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "496-499",
           "contenidoLen": 456,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "sequence": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "496-499",
           "contenidoLen": 566,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "misc_notes": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 463,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "judgment_oraculo": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 89,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "commentary_decision": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "496-499",
           "contenidoLen": 2262,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "image_oraculo": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "496-499",
           "contenidoLen": 165,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "commentary_image": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "496-499",
           "contenidoLen": 285,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L1_etiqueta": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 14,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L1_a_oraculo": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 178,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L1_b_comentario": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 747,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L2_etiqueta": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L2_a_oraculo": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 64,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L2_b_comentario": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 697,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L3_etiqueta": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L3_a_oraculo": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 131,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L3_b_comentario": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 803,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L4_etiqueta": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L4_a_oraculo": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 54,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L4_b_comentario": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 611,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L5_etiqueta": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L5_a_oraculo": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 96,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L5_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "496-499",
           "contenidoLen": 963,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L6_etiqueta": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 11,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L6_a_oraculo": {
           "status": "verified",
           "jpgPages": "496-499",
           "contenidoLen": 61,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "L6_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "496-499",
           "contenidoLen": 430,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "yong_etiqueta": {
           "status": "vacio_en_libro",
           "jpgPages": "496-499",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "yong_a_oraculo": {
           "status": "vacio_en_libro",
           "jpgPages": "496-499",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "yong_b_comentario": {
           "status": "vacio_en_libro",
           "jpgPages": "496-499",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "wen_yen": {
           "status": "vacio_en_libro",
           "jpgPages": "496-499",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         },
         "wen_yen_note": {
           "status": "vacio_en_libro",
           "jpgPages": "496-499",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 44 pp.496-499",
+          "note": "JPG pp.496-499 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "496-499",
-          "verifiedAt": "2026-06-30T21:13:18.799Z"
+          "verifiedAt": "2026-06-30T22:12:39.528Z"
         }
       },
       "closedAt": "2026-06-30T21:13:18.799Z"
@@ -13137,289 +13137,289 @@
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 12,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "chinese": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "chinese_roman": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 4,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "hex_font": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 1,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "trigrama_arriba": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 30,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "trigrama_abajo": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 35,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "ruler_note": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "500-503",
           "contenidoLen": 156,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "sequence": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "500-503",
           "contenidoLen": 663,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "misc_notes": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 188,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "judgment_oraculo": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 227,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "commentary_decision": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "500-503",
           "contenidoLen": 1798,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "image_oraculo": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "500-503",
           "contenidoLen": 122,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "commentary_image": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "500-503",
           "contenidoLen": 525,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L1_etiqueta": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 14,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L1_a_oraculo": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 194,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L1_b_comentario": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 641,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L2_etiqueta": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 24,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L2_a_oraculo": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 133,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L2_b_comentario": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 415,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L3_etiqueta": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 24,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L3_a_oraculo": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "500-503",
           "contenidoLen": 64,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L3_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "500-503",
           "contenidoLen": 707,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L4_etiqueta": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L4_a_oraculo": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 24,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L4_b_comentario": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 250,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L5_etiqueta": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L5_a_oraculo": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 189,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L5_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "500-503",
           "contenidoLen": 573,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L6_etiqueta": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 12,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L6_a_oraculo": {
           "status": "verified",
           "jpgPages": "500-503",
           "contenidoLen": 50,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "L6_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "500-503",
           "contenidoLen": 538,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "yong_etiqueta": {
           "status": "vacio_en_libro",
           "jpgPages": "500-503",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "yong_a_oraculo": {
           "status": "vacio_en_libro",
           "jpgPages": "500-503",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "yong_b_comentario": {
           "status": "vacio_en_libro",
           "jpgPages": "500-503",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "wen_yen": {
           "status": "vacio_en_libro",
           "jpgPages": "500-503",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         },
         "wen_yen_note": {
           "status": "vacio_en_libro",
           "jpgPages": "500-503",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 45 pp.500-503",
+          "note": "JPG pp.500-503 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "500-503",
-          "verifiedAt": "2026-06-30T21:13:18.917Z"
+          "verifiedAt": "2026-06-30T22:12:39.548Z"
         }
       },
       "closedAt": "2026-06-30T21:13:18.917Z"
@@ -13435,289 +13435,289 @@
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 16,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "chinese": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "chinese_roman": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 6,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "hex_font": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 1,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "trigrama_arriba": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 35,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "trigrama_abajo": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 40,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "ruler_note": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "504-506",
           "contenidoLen": 533,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "sequence": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 89,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "misc_notes": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 540,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "judgment_oraculo": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 124,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "commentary_decision": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "504-506",
           "contenidoLen": 1279,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "image_oraculo": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "504-506",
           "contenidoLen": 146,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "commentary_image": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "504-506",
           "contenidoLen": 268,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L1_etiqueta": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 14,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L1_a_oraculo": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "504-506",
           "contenidoLen": 63,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L1_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "504-506",
           "contenidoLen": 416,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L2_etiqueta": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L2_a_oraculo": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 74,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L2_b_comentario": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 562,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L3_etiqueta": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L3_a_oraculo": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 37,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L3_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "504-506",
           "contenidoLen": 507,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L4_etiqueta": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 24,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L4_a_oraculo": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 56,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L4_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "504-506",
           "contenidoLen": 394,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L5_etiqueta": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 24,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L5_a_oraculo": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 56,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L5_b_comentario": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 539,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L6_etiqueta": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 12,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L6_a_oraculo": {
           "status": "verified",
           "jpgPages": "504-506",
           "contenidoLen": 72,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "L6_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "504-506",
           "contenidoLen": 339,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "yong_etiqueta": {
           "status": "vacio_en_libro",
           "jpgPages": "504-506",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "yong_a_oraculo": {
           "status": "vacio_en_libro",
           "jpgPages": "504-506",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "yong_b_comentario": {
           "status": "vacio_en_libro",
           "jpgPages": "504-506",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "wen_yen": {
           "status": "vacio_en_libro",
           "jpgPages": "504-506",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         },
         "wen_yen_note": {
           "status": "vacio_en_libro",
           "jpgPages": "504-506",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 46 pp.504-506",
+          "note": "JPG pp.504-506 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "504-506",
-          "verifiedAt": "2026-06-30T21:13:19.037Z"
+          "verifiedAt": "2026-06-30T22:12:39.564Z"
         }
       },
       "closedAt": "2026-06-30T21:13:19.037Z"
@@ -13733,289 +13733,289 @@
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 14,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "chinese": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "chinese_roman": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 3,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "hex_font": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 1,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "trigrama_arriba": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 30,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "trigrama_abajo": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 36,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "ruler_note": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "507-510",
           "contenidoLen": 359,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "sequence": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "507-510",
           "contenidoLen": 1037,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "misc_notes": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 882,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "judgment_oraculo": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 133,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "commentary_decision": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "507-510",
           "contenidoLen": 917,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "image_oraculo": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "507-510",
           "contenidoLen": 113,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "commentary_image": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "507-510",
           "contenidoLen": 367,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L1_etiqueta": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 14,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L1_a_oraculo": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 108,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L1_b_comentario": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 440,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L2_etiqueta": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L2_a_oraculo": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 169,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L2_b_comentario": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 816,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L3_etiqueta": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 24,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L3_a_oraculo": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 133,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L3_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "507-510",
           "contenidoLen": 609,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L4_etiqueta": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L4_a_oraculo": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 91,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L4_b_comentario": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 734,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L5_etiqueta": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L5_a_oraculo": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 164,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L5_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "507-510",
           "contenidoLen": 933,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L6_etiqueta": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 12,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L6_a_oraculo": {
           "status": "verified",
           "jpgPages": "507-510",
           "contenidoLen": 158,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "L6_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "507-510",
           "contenidoLen": 472,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "yong_etiqueta": {
           "status": "vacio_en_libro",
           "jpgPages": "507-510",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.169Z"
+          "verifiedAt": "2026-06-30T22:12:39.578Z"
         },
         "yong_a_oraculo": {
           "status": "vacio_en_libro",
           "jpgPages": "507-510",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.170Z"
+          "verifiedAt": "2026-06-30T22:12:39.579Z"
         },
         "yong_b_comentario": {
           "status": "vacio_en_libro",
           "jpgPages": "507-510",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.170Z"
+          "verifiedAt": "2026-06-30T22:12:39.579Z"
         },
         "wen_yen": {
           "status": "vacio_en_libro",
           "jpgPages": "507-510",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.170Z"
+          "verifiedAt": "2026-06-30T22:12:39.579Z"
         },
         "wen_yen_note": {
           "status": "vacio_en_libro",
           "jpgPages": "507-510",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 47 pp.507-510",
+          "note": "JPG pp.507-510 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "507-510",
-          "verifiedAt": "2026-06-30T21:13:19.170Z"
+          "verifiedAt": "2026-06-30T22:12:39.579Z"
         }
       },
       "closedAt": "2026-06-30T21:13:19.170Z"
@@ -14031,289 +14031,289 @@
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 11,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "chinese": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "chinese_roman": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 5,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "hex_font": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 1,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "trigrama_arriba": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 36,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "trigrama_abajo": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 40,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "ruler_note": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "511-515",
           "contenidoLen": 236,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "sequence": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 103,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "misc_notes": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "511-515",
           "contenidoLen": 1238,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "judgment_oraculo": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 307,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "commentary_decision": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "511-515",
           "contenidoLen": 1643,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "image_oraculo": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "511-515",
           "contenidoLen": 130,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "commentary_image": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "511-515",
           "contenidoLen": 606,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L1_etiqueta": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 14,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L1_a_oraculo": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 89,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L1_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "511-515",
           "contenidoLen": 389,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L2_etiqueta": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L2_a_oraculo": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 69,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L2_b_comentario": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 882,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L3_etiqueta": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L3_a_oraculo": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 175,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L3_b_comentario": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 771,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L4_etiqueta": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 24,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L4_a_oraculo": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 41,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L4_b_comentario": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 428,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L5_etiqueta": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 23,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L5_a_oraculo": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 62,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L5_b_comentario": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 394,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L6_etiqueta": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 12,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L6_a_oraculo": {
           "status": "verified",
           "jpgPages": "511-515",
           "contenidoLen": 79,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "L6_b_comentario": {
-          "status": "verified",
+          "status": "corrected",
           "jpgPages": "511-515",
           "contenidoLen": 373,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "yong_etiqueta": {
           "status": "vacio_en_libro",
           "jpgPages": "511-515",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "yong_a_oraculo": {
           "status": "vacio_en_libro",
           "jpgPages": "511-515",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "yong_b_comentario": {
           "status": "vacio_en_libro",
           "jpgPages": "511-515",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "wen_yen": {
           "status": "vacio_en_libro",
           "jpgPages": "511-515",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         },
         "wen_yen_note": {
           "status": "vacio_en_libro",
           "jpgPages": "511-515",
           "contenidoLen": 0,
-          "note": "JPG literal AUD-DAT-W-07 hex 48 pp.511-515",
+          "note": "JPG pp.511-515 — AUD-DAT-W-07 literal batch 44-48",
           "jpgPagesRead": "511-515",
-          "verifiedAt": "2026-06-30T21:13:19.328Z"
+          "verifiedAt": "2026-06-30T22:12:39.593Z"
         }
       },
       "closedAt": "2026-06-30T21:13:19.328Z"

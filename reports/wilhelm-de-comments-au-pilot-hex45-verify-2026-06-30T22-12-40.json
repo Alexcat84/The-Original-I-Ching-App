@@ -1,0 +1,416 @@
+{
+  "updatedAt": "2026-06-30T22:12:40.344Z",
+  "hex": 45,
+  "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-45-pilot-au.tsv",
+  "ok": true,
+  "closed": 37,
+  "pending": 0,
+  "fieldsTotal": 37,
+  "disputedClosed": 11,
+  "disputedTotal": 11,
+  "rows": [
+    {
+      "field": "hex",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "",
+        "otherSnippet": "45"
+      }
+    },
+    {
+      "field": "nombre",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "",
+        "otherSnippet": "萃"
+      }
+    },
+    {
+      "field": "chinese_roman",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 2,
+        "pdfSnippet": "TSui",
+        "otherSnippet": "TSUI"
+      }
+    },
+    {
+      "field": "hex_font",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_arriba",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_abajo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "ruler_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Die Herren des Zeichens sind die Neun auf fünftem Platz und die Yangstriche auf zweitem und viertem Platz, die sämtliche",
+        "otherSnippet": "Sun und Gen\nie Herren des Zeichens sind die Neun auf fünftem Platz und in zweiter\nden Yangstriche auf hohem Platz, die s"
+      }
+    },
+    {
+      "field": "sequence",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "misc_notes",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Sammlung bedeutet Anhäufung.\nDas Zeichen hat in den beiden lichten Strichen, von denen der eine auf dem\nPlatz des Fürste",
+        "otherSnippet": "Gen\nie Herren des Zeichens sind die Neun auf fünftem Platz und in zweiter\nPlatz. In dem Zeichen sind nur diese beiden Ya"
+      }
+    },
+    {
+      "field": "judgment_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Die Sammlung. Gelingen.\nDer König naht sich seinem Tempel.\nFördernd ist es, den großen Mann zu sehen.\nDas bringt Gelinge",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "commentary_decision",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 152,
+        "pdfSnippet": "e andern um ihn an.\n\"Der König naht sich seinem Tempel.\"\nDas bewirkt Ehrfurcht und Gelingen.\n\"Fördernd ist es, den große",
+        "otherSnippet": "e andern um ihn an.\n,,Der König naht sich seinem Tempel.\"\nDas bewirkt Ehrfurcht und Gelingen.\n,,Fördernd ist es, den gro"
+      }
+    },
+    {
+      "field": "image_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 30,
+        "pdfSnippet": "t oberhalb der Erde:\ndas Bild der Sammlung.\nSo erneuert der Edle seine Waffen,\num Unvorhergesehenem zu begegnen.",
+        "otherSnippet": "t oberhalb der Erde: das Bild der Sammlung. So\nerneuert der Edle seine Waffen, um Unvorhergesehenem zu\nbegegnen.\nDie bei"
+      }
+    },
+    {
+      "field": "commentary_image",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 1,
+        "pdfSnippet": "Die beiden Zeichen in ihrem Zusammensein geben das Bild der Sammlung.\nIndem der See oberhalb der Erde ist, also mit dem ",
+        "otherSnippet": "Der See ist oberhalb der Erde: das Bild der Sammlung. So\nerneuert der Edle seine Waffen, um Unvorhergesehenem zu\nbegegne"
+      }
+    },
+    {
+      "field": "L1_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass04",
+      "vs_pass02": "diff",
+      "vs_pass04": "match",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 220,
+        "pdfSnippet": "tet\nauf die Wahrheit, aber da die Linie mit den beiden andern schwachen\nLinien von Kun zusammen ist, so läßt sie sich vo",
+        "otherSnippet": "tet\nauf die Wahrheit -, aber da die Linie mit den beiden andern schwachen\nLinien von Kun zusammen ist, so läßt sie sich "
+      }
+    },
+    {
+      "field": "L2_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 23,
+        "pdfSnippet": "mlung unter Seufzen. Nichts, das fördernd wäre. Hingehen ist ohne Makel. Kleine Beschämung.",
+        "otherSnippet": "mlung unter Seufzen.\ngehen ist ohne Makel. Kleine Beschämung."
+      }
+    },
+    {
+      "field": "L3_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 675,
+        "pdfSnippet": "e Beschämung bleibt.",
+        "otherSnippet": "e Beschämung bleibt.\nNichts, das fördernd wäre. Hin-"
+      }
+    },
+    {
+      "field": "L4_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 573,
+        "pdfSnippet": " schwindet die Reue.",
+        "otherSnippet": " schwindet die Reue.\nD\ne\nh\ni"
+      }
+    },
+    {
+      "field": "L6_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 538,
+        "pdfSnippet": "roßen Mann zu sehen.",
+        "otherSnippet": "roßen Mann zu sehen.\n廾"
+      }
+    },
+    {
+      "field": "yong_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen_note",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    }
+  ]
+}
