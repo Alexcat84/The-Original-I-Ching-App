@@ -154,11 +154,23 @@ function hasBackMatterBleed(t) {
   return /\nVERZEICHNIS\b|\nNIFAL\b|\nRELIGIÖSE STIMMEN\b|\nINHALT\s*\n/i.test(String(t ?? ""));
 }
 
+/** pass04 Anna OCR noise — prefer pass02 when present (JPG batch 33–64). */
+function hasPass04Garbage(t) {
+  const s = String(t ?? "");
+  return (
+    /\nX\n|wow~+|\n:\n(?=\nDer )|\ni\nde\nd\n\?|\n大[\u200b\u2060]?壯\s*$/u.test(s) ||
+    /^ie Herren des/m.test(s) ||
+    /und zweiten Platz\. Sie zeigen das Schattige/m.test(s)
+  );
+}
+
 export function pickBestPassText(p2, p4) {
   const a = fixHyphens(String(p2 ?? "")).trim();
   const b = fixHyphens(String(p4 ?? "")).trim();
   if (!a) return hasBackMatterBleed(b) ? stripBackMatterBleed(b) : b;
   if (!b) return hasBackMatterBleed(a) ? stripBackMatterBleed(a) : a;
+  if (hasPass04Garbage(b) && !hasPass04Garbage(a)) return a;
+  if (hasPass04Garbage(a) && !hasPass04Garbage(b)) return b;
   const aBleed = hasBackMatterBleed(a);
   const bBleed = hasBackMatterBleed(b);
   if (aBleed && !bBleed) return b;
@@ -180,6 +192,14 @@ export function cleanRulerNote(raw) {
   t = t.replace(/^\([^)]+\)\s*\n?/m, "");
   t = t.replace(/^Kernzeichen:\s*[^\n]*\n(?:[^\n]{1,24}\n){0,4}/i, "");
   t = t.replace(/^(?:Sun|Gen|Li|Kan|Dui|Kiän)\s+und\s*\n(?:Sun|Gen|Li|Kan|Dui|Kiän)\s*\n/im, "");
+  t = t.replace(
+    /^(?:Kiän und\s*\n?Sun\s*\n?)?ie Herren des Zeichens, die die Lage konstituieren, sind die beiden\s*\n?(?:und zweiten Platz\. Sie zeigen das Schattige\s*\n?X\s*\n?wow~+\s*\n?)?im Vordringen/,
+    "Die Herren des Zeichens, die die Lage konstituieren, sind die beiden Yinstriche auf dem ersten und zweiten Platz. Sie zeigen das Schattige im Vordringen",
+  );
+  t = t.replace(
+    /^(?:Kiän und\s*\n?Sun\s*\n?)?ie Herren des Zeichens, die die Lage konstituieren, sind die beiden\s*\n?im Vordringen/,
+    "Die Herren des Zeichens, die die Lage konstituieren, sind die beiden Yinstriche auf dem ersten und zweiten Platz. Sie zeigen das Schattige im Vordringen",
+  );
   t = t.replace(/^err des Zeichens/, "Herr des Zeichens");
   t = t.replace(/^er Herr/, "Der Herr");
   t = t.replace(/^er Sinn/, "Der Sinn");
@@ -242,6 +262,8 @@ export function cleanCommentaryDecision(raw) {
     .replace(/beständig\.\ndie Einflüsse/, "beständig die Einflüsse")
     .replace(/\nWANAN\n/, "\n")
     .replace(/\n42\.\s*$/m, "")
+    .replace(/\n:\n(?=\nDer Erfolg)/, "\n")
+    .replace(/\n[A-Za-z]\s*\n(?:de|d)\s*\n\?\s*$/i, "")
     .trim();
 }
 
@@ -283,6 +305,11 @@ export function cleanLineBCommon(raw) {
     .replace(/ist ⚫ zehn/, "ist — zehn")
     .replace(/Indem dawird der/, "Indem dadurch wird der")
     .replace(/Guai "der Durchbruch"/, 'Guai „der Durchbruch"')
+    .replace(/schlimm nicht für den Edlen -,/g, "schlimm — nicht für den Edlen —,")
+    .replace(/schlimm - nicht für den Edlen -,/g, "schlimm — nicht für den Edlen —,")
+    .replace(/^Freundlicher Rückzug/, '„Freundlicher Rückzug')
+    .replace(/^Heiterer Rückzug/, '„Heiterer Rückzug')
+    .replace(/Dschou I Hong Giã/g, "Dschou I Hong Giä")
     .trim();
 }
 

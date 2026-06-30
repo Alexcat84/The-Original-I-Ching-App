@@ -41,6 +41,10 @@ export const HEX_OVERRIDES = {
     fixRulerNote: () =>
       'Die Herren des Zeichens sind die Anfangsneun und die Neun auf fünftem Platz. Die Anfangsneun ist der Anfang der Bewegung des Lichts wie die Anfangsbewegung des aufrichtigen Herzens der Menschen. Die Neun auf fünftem Platz ist die Essenz der Art des Schöpferischen wie die Unermüdlichkeit des höchst Wahrhaftigen. Darum heißt es im Kommentar zur Entscheidung: „Das Feste kommt von außen und wird zum Herrn im Innern." Das bezieht sich auf den Anfangsstrich. Ferner heißt es: „Das Feste ist in der Mitte und findet Entsprechung." Das bezieht sich auf den fünften Strich.',
   },
+  33: {
+    fixImageOracle: () =>
+      "Unter dem Himmel ist der Berg: das Bild des Rückzugs. So\nhält der Edle den Gemeinen fern: nicht zornig, sondern gemessen.",
+  },
   43: {
     fixRulerNote: () =>
       "Der Sinn des Zeichens geht daraus hervor, daß ein dunkler Strich am äußersten Platz ganz oben steht, darum ist die obere Sechs der konstituierende Herr des Zeichens. Aber die fünf lichten Striche wenden sich entschlossen gegen den dunklen. Der fünfte ist an ihrer Spitze und außerdem an geehrtem Platz, darum ist die Neun auf fünftem Platz der beherrschende Herr des Zeichens.",

@@ -5,6 +5,10 @@
 const OCR_NOISE_RE =
   /Das Buch der Wandlungen|\b\d+\*\s*$|^\d+\s+Das Buch/im;
 
+/** Non-Latin letters / stray scripts often from JPG OCR */
+const OCR_SCRIPT_NOISE_RE =
+  /[^\u0000-\u024F\u1E00-\u1EFF\s.,;:!?…"'«»()\[\]{}\-—–\n\r\t\d/\\]/;
+
 const EXACT_MATCH_FIELDS = new Set(["hex", "chinese", "hex_font"]);
 
 const LABEL_FIELDS = new Set([
@@ -149,6 +153,9 @@ export function compareWilhelmEnDeField(input) {
 
   if (OCR_NOISE_RE.test(de)) {
     notes.push("Posible ruido OCR en DE (footer / paginación).");
+  }
+  if (OCR_SCRIPT_NOISE_RE.test(de)) {
+    notes.push("Caracteres no latinos en DE — probable error OCR (revisar contra JPG).");
   }
 
   const lineDelta = Math.abs(enLines - deLines);

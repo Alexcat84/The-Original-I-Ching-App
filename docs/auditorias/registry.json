@@ -772,6 +772,44 @@
       ]
     },
     {
+      "code": "20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation",
+      "title": "Wilhelm DE JPG literal attestation — Drittes Buch / Ten Wings (P0 fidelity)",
+      "shortName": "wilhelm-de-jpg-literal-attestation",
+      "type": "AUD",
+      "family": "DAT-W",
+      "date": "2026-06-30",
+      "status": "open",
+      "path": "docs/auditorias/20260630-AUD-DAT-W-07-wilhelm-de-jpg-literal-attestation.md",
+      "relatedCodes": [
+        "20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases",
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy",
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
+      "relatedTests": [
+        "AU-FID-W-020 verify-wilhelm-de-comments-au-pilot"
+      ]
+    },
+    {
+      "code": "20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases",
+      "title": "Wilhelm DE Ten Wings JPG AU phases (Drittes Buch literal, 13 batches)",
+      "shortName": "wilhelm-de-ten-wings-jpg-phases",
+      "type": "PLAN",
+      "family": "DAT-W",
+      "date": "2026-06-30",
+      "status": "open",
+      "path": "docs/auditorias/20260630-PLAN-DAT-W-06-wilhelm-de-ten-wings-jpg-phases.md",
+      "relatedCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract",
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au",
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy"
+      ],
+      "relatedTests": [
+        "AU-FID-W-020 verify-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-015 apply-wilhelm-de-comments-au-gold",
+        "VF-FID-W-036 promote-wilhelm-de-comments-au-to-merged"
+      ]
+    },
+    {
       "code": "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy",
       "title": "Wilhelm DE 1924 fidelity policy — APA 7, literal German (Zhou Yi model)",
       "shortName": "wilhelm-de-fidelity-policy",

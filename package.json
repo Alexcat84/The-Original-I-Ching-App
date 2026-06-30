@@ -74,6 +74,7 @@
     "audit:wilhelm-de-baynes-mt-quality": "node scripts/wilhelm-de-baynes-mt-quality-report.mjs",
     "audit:wilhelm-de-contamination": "node scripts/audit-wilhelm-de-contamination.mjs",
     "export:wilhelm-de-baynes-comparison-viewer": "node scripts/export-wilhelm-de-baynes-comparison-viewer.mjs",
+    "export:wilhelm-en-de-comments-comparison-viewer": "node scripts/export-wilhelm-en-de-comments-comparison-viewer.mjs",
     "init:wilhelm-de-blank-maestro": "node scripts/init-wilhelm-de-blank-maestro.mjs",
     "export:wilhelm-de-64hex-audit-csv": "node scripts/export-wilhelm-de-64hex-audit-csv.mjs",
     "export:wilhelm-de-pilot-gold-tsv": "node scripts/export-wilhelm-de-pilot-gold-tsv.mjs",
