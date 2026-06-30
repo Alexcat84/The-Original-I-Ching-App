@@ -16,6 +16,8 @@ import { JPG_LITERAL_CORRECTIONS_29_33 } from "./lib/wilhelm-de-jpg-literal-corr
 import { JPG_LITERAL_CORRECTIONS_34_38 } from "./lib/wilhelm-de-jpg-literal-corrections-hex34-38.mjs";
 import { JPG_LITERAL_CORRECTIONS_39_43 } from "./lib/wilhelm-de-jpg-literal-corrections-hex39-43.mjs";
 import { JPG_LITERAL_CORRECTIONS_44_48 } from "./lib/wilhelm-de-jpg-literal-corrections-hex44-48.mjs";
+import { JPG_LITERAL_CORRECTIONS_49_53 } from "./lib/wilhelm-de-jpg-literal-corrections-hex49-53.mjs";
+import { JPG_LITERAL_CORRECTIONS_54_64_1_2_8 } from "./lib/wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs";
 import { JPG_LITERAL_CORRECTIONS_19_23 } from "./lib/wilhelm-de-jpg-literal-corrections-hex19-23.mjs";
 import { JPG_LITERAL_CORRECTIONS_14_18 } from "./lib/wilhelm-de-jpg-literal-corrections-hex14-18.mjs";
 import { JPG_LITERAL_CORRECTIONS_17_32 } from "./lib/wilhelm-de-jpg-literal-corrections-hex17-32.mjs";
@@ -130,6 +132,8 @@ function correctionsForHex(hex) {
     ...(JPG_LITERAL_CORRECTIONS_34_38[hex] ?? {}),
     ...(JPG_LITERAL_CORRECTIONS_39_43[hex] ?? {}),
     ...(JPG_LITERAL_CORRECTIONS_44_48[hex] ?? {}),
+    ...(JPG_LITERAL_CORRECTIONS_49_53[hex] ?? {}),
+    ...(JPG_LITERAL_CORRECTIONS_54_64_1_2_8[hex] ?? {}),
   };
 }
 

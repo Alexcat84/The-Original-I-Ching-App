@@ -146,6 +146,9 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `AU-FID-W-027 spot-check-wilhelm-de-comments-au-pilot` | `scripts/spot-check-wilhelm-de-comments-au-pilot.mjs` | 1.0.0 | `spot-check:wilhelm-de-comments-au-pilot` | 20260628-PLAN-DAT-W-05 | vs pass04 flags |
 | `AU-FID-W-028 jpg-audit-wilhelm-de-comments-au-pilot` | `scripts/jpg-audit-wilhelm-de-comments-au-pilot.mjs` | 1.0.0 | `jpg-audit:wilhelm-de-comments-au-pilot` | 20260628-PLAN-DAT-W-05 | pilot vs builder |
 | `AU-FID-W-029 scan-wilhelm-de-pilot-real-artifacts` | `scripts/scan-wilhelm-de-pilot-real-artifacts.mjs` | 1.0.0 | `scan:wilhelm-de-pilot-artifacts` | 20260628-PLAN-DAT-W-05 | OCR artifact scan |
+| `AU-FID-W-030 run-wilhelm-de-jpg-literal-batch` | `scripts/run-wilhelm-de-jpg-literal-batch.mjs` | 1.0.0 | `node scripts/run-wilhelm-de-jpg-literal-batch.mjs` | 20260630-AUD-DAT-W-07 | Pilot/disputes JPG literal batch |
+| `AU-FID-W-039 generate-wilhelm-de-jpg-literal-corrections-hex49-53` | `scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex49-53.mjs` | 1.0.0 | `node scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex49-53.mjs` | 20260630-AUD-DAT-W-07 | Corrections module hex 49–53 |
+| `AU-FID-W-040 generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8` | `scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs` | 1.0.0 | `node scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs` | 20260630-AUD-DAT-W-07 | Corrections hex 54–64 + 1–2–8 |
 
 ---
 

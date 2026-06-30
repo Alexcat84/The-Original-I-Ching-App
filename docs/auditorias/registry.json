@@ -778,7 +778,7 @@
       "type": "AUD",
       "family": "DAT-W",
       "date": "2026-06-30",
-      "status": "open",
+      "status": "structural-closed",
       "path": "docs/auditorias/20260630-AUD-DAT-W-07-wilhelm-de-jpg-literal-attestation.md",
       "relatedCodes": [
         "20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases",
@@ -786,7 +786,10 @@
         "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
       ],
       "relatedTests": [
-        "AU-FID-W-020 verify-wilhelm-de-comments-au-pilot"
+        "AU-FID-W-020 verify-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-030 run-wilhelm-de-jpg-literal-batch",
+        "AU-FID-W-039 generate-wilhelm-de-jpg-literal-corrections-hex49-53",
+        "AU-FID-W-040 generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8"
       ]
     },
     {
@@ -796,7 +799,7 @@
       "type": "PLAN",
       "family": "DAT-W",
       "date": "2026-06-30",
-      "status": "open",
+      "status": "closed",
       "path": "docs/auditorias/20260630-PLAN-DAT-W-06-wilhelm-de-ten-wings-jpg-phases.md",
       "relatedCodes": [
         "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract",

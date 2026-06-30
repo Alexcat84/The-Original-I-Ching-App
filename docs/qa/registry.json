@@ -1788,6 +1788,45 @@
       "area": "scripts/scan-wilhelm-de-pilot-real-artifacts.mjs"
     },
     {
+      "code": "AU-FID-W-030 run-wilhelm-de-jpg-literal-batch",
+      "title": "Apply JPG literal corrections to Wilhelm DE pilot TSV + ledger",
+      "shortName": "run-wilhelm-de-jpg-literal-batch",
+      "type": "AU",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Batch pilot/disputes + markHexComplete + report" }],
+      "path": "scripts/run-wilhelm-de-jpg-literal-batch.mjs",
+      "npmScript": "node scripts/run-wilhelm-de-jpg-literal-batch.mjs",
+      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"],
+      "area": "scripts/run-wilhelm-de-jpg-literal-batch.mjs"
+    },
+    {
+      "code": "AU-FID-W-039 generate-wilhelm-de-jpg-literal-corrections-hex49-53",
+      "title": "Generate JPG literal correction module hex 49–53",
+      "shortName": "generate-wilhelm-de-jpg-literal-corrections-hex49-53",
+      "type": "AU",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "FIXERS + pilot read → hex49-53 module" }],
+      "path": "scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex49-53.mjs",
+      "npmScript": "node scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex49-53.mjs",
+      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"],
+      "area": "scripts/lib/wilhelm-de-jpg-literal-corrections-hex49-53.mjs"
+    },
+    {
+      "code": "AU-FID-W-040 generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8",
+      "title": "Generate JPG literal correction module hex 54–64 + 1, 2, 8",
+      "shortName": "generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8",
+      "type": "AU",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Auto rules + FIXERS → hex54-64-1-2-8 module" }],
+      "path": "scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs",
+      "npmScript": "node scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs",
+      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"],
+      "area": "scripts/lib/wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs"
+    },
+    {
       "code": "VF-FID-W-027 clean-wilhelm-de-zeno-dataset",
       "shortName": "clean-wilhelm-de-zeno-dataset",
       "type": "VF",
