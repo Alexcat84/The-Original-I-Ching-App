@@ -55,6 +55,25 @@ export function stripHtmlToText(html) {
 }
 
 /**
+ * Book layout bullets (±, Û, O) — not part of the line label text.
+ * @param {string} label
+ */
+export function stripWilhelmDeLineLabelBullet(label) {
+  return String(label ?? "")
+    .trim()
+    .replace(/^(?:O\s+|Û\s+|û\s+|±\s*)/i, "");
+}
+
+/**
+ * @param {string} text
+ */
+export function sanitizeZenoExtractText(text) {
+  return String(text ?? "")
+    .replace(/\n+\s*Buchempfehlung\s*$/i, "")
+    .trim();
+}
+
+/**
  * @param {string} path
  */
 export function zenoUrl(path) {
@@ -112,6 +131,7 @@ export function parseZenoParagraphs(contentHtml) {
     if (/zenoIMFloat/i.test(inner) && !stripHtmlToText(inner).trim()) continue;
     const text = stripHtmlToText(inner);
     if (!text) continue;
+    if (/^Buchempfehlung\s*$/i.test(text)) continue;
     if (paragraphIsCommentary(inner) || /zenoPLm/i.test(attrs)) {
       blocks.push({ kind: "commentary", text });
       continue;

@@ -9,6 +9,8 @@ import {
   extractSectionByH4,
   parseZenoParagraphs,
   stripHtmlToText,
+  stripWilhelmDeLineLabelBullet,
+  sanitizeZenoExtractText,
   ZENO_ERSTES_BUCH,
   discoverRelativeLinks,
 } from "./wilhelm-de-zeno-html.mjs";
@@ -129,9 +131,9 @@ function parseLinesFromBlocks(blocks) {
     const isYong = YONG_LABEL_RE.test(cur.label);
     const split = splitZenoOracleCommentary(cur.parts, { isYong, isLine: !isYong });
     const entry = {
-      label: cur.label.replace(/^Û\s+|^û\s+|^±\s*/i, "O "),
+      label: stripWilhelmDeLineLabelBullet(cur.label),
       oracle: split.oracle,
-      commentary: split.commentary,
+      commentary: sanitizeZenoExtractText(split.commentary),
     };
     if (isYong) yong = entry;
     else if (typeof pos === "number") lines[pos] = entry;
@@ -141,6 +143,7 @@ function parseLinesFromBlocks(blocks) {
   for (const b of blocks) {
     const t = b.text.trim();
     if (!t) continue;
+    if (/^Buchempfehlung\s*$/i.test(t)) continue;
     if (LINE_LABEL_RE.test(t) || YONG_LABEL_RE.test(t)) {
       flush();
       cur = { label: t, parts: [] };
@@ -203,6 +206,10 @@ export async function parseWilhelmDeHexFromZeno(hexPath) {
   fields.yong_etiqueta = yong?.label ?? "";
   fields.yong_oraculo = yong?.oracle ?? "";
   fields.yong_comentario = yong?.commentary ?? "";
+
+  for (const key of Object.keys(fields)) {
+    fields[key] = sanitizeZenoExtractText(fields[key]);
+  }
 
   return {
     hex,

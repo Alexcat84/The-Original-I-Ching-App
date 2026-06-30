@@ -13,6 +13,8 @@ import { WILHELM_MANUAL_FIELDS, WILHELM_HEX_FIN } from "./lib/wilhelm-manual-fie
 import {
   WILHELM_DE_BOOK_ONE_DIR,
   WILHELM_DE_DATASETS_ROOT,
+  WILHELM_DE_PRIMARY_SOURCE,
+  WILHELM_DE_ZENO_INGEST,
   WILHELM_DE_ZENO_MATERIAL_JSON,
 } from "./lib/wilhelm-de-dataset-paths.mjs";
 import {
@@ -178,8 +180,10 @@ async function main() {
   const payload = {
     schemaVersion: "1.0.0",
     extractedAt: new Date().toISOString(),
+    primarySource: WILHELM_DE_PRIMARY_SOURCE,
+    ingestMirror: WILHELM_DE_ZENO_INGEST,
     method: "zeno.org-html",
-    license: "Gemeinfrei",
+    license: WILHELM_DE_ZENO_INGEST.zenoLicenseClaim,
     hexCount: Object.keys(hexagrams).length,
     commentaryFill: `${commentaryFilled}/${commentaryTotal}`,
     commentaryContentFill: `${commentaryContentFilled}/${commentaryContentTotal}`,

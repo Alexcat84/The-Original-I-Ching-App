@@ -44,6 +44,28 @@ function resolveWilhelmDePdfPath() {
   return preferred;
 }
 
+/** Canonical PD book — cite this in product/AU, not zeno.org. */
+export const WILHELM_DE_PRIMARY_SOURCE = {
+  citation:
+    "Wilhelm, Richard (Übers.). I Ging. Das Buch der Wandlungen. Köln: Eugen Diederichs, 1924 (Erstausgabe).",
+  shortTitle: "Wilhelm DE 1924 Erstausgabe (Diederichs)",
+  translator: "Richard Wilhelm",
+  publisher: "Eugen Diederichs Verlag",
+  place: "Köln",
+  year: 1924,
+  edition: "Erstausgabe",
+};
+
+/** HTML ingest mirror only — not the canonical citation. */
+export const WILHELM_DE_ZENO_INGEST = {
+  mirror: "http://www.zeno.org",
+  zenoTreePath: "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen",
+  zenoPermalinkRoot: "http://www.zeno.org/nid/20009134212",
+  /** Zeno footer typo; resolves to 1924 via Erstausgabe TOC + book pagination (S. N). */
+  zenoQuelleFieldTypo: "I Ging. Köln 141987",
+  zenoLicenseClaim: "Gemeinfrei",
+};
+
 export const WILHELM_DE_DATASETS_ROOT = join(ROOT, "tools/datasets/wilhelm-de");
 
 export const WILHELM_DE_BOOK_ONE_DIR = join(WILHELM_DE_DATASETS_ROOT, "book-one");

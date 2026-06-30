@@ -61,4 +61,17 @@ assert.ok(
   (await parseWilhelmDeHexFromZeno(paths[16])).fields.intro.includes("jüngste Tochter"),
 );
 
-console.log("wilhelm-de-zeno-parse: PASS (64 links, hex 1+2+7+17+20+27 fields)");
+const r54 = await parseWilhelmDeHexFromZeno(paths[53]);
+const f54 = r54.fields;
+assert.equal(f54.L3_etiqueta, "Sechs auf drittem Platz bedeutet:");
+assert.equal(f54.L5_etiqueta, "Sechs auf fünftem Platz bedeutet:");
+assert.equal(f54.L6_etiqueta, "Oben eine Sechs bedeutet:");
+assert.ok(f54.intro.includes("Bemerkung: In China herrscht formell die Einehe"));
+assert.ok(!f54.L6_comentario.includes("Buchempfehlung"));
+assert.ok(
+  !Object.values(f54).some(
+    (v) => typeof v === "string" && /^O (Neun|Sechs|Oben)/.test(v),
+  ),
+);
+
+console.log("wilhelm-de-zeno-parse: PASS (64 links, hex 1+2+7+17+20+27+54 fields)");
