@@ -10,6 +10,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadAndMergeWilhelmDeDualPass } from "./lib/wilhelm-de-dual-pass-merge.mjs";
+import { assertWilhelmDeOcrIngestAllowed } from "./lib/wilhelm-de-ocr-ingest-lock.mjs";
 import {
   WILHELM_DE_BOOK_ONE_DIR,
   WILHELM_DE_BOOK_ONE_MERGED,
@@ -22,6 +23,11 @@ const PASS03 = WILHELM_DE_BOOK_ONE_PARSED;
 const checkOnly = process.argv.includes("--check");
 
 async function main() {
+  await assertWilhelmDeOcrIngestAllowed({
+    script: "merge-wilhelm-de-dual-pass",
+    writes: WILHELM_DE_BOOK_ONE_MERGED,
+  });
+
   const merged = loadAndMergeWilhelmDeDualPass(PASS01, PASS03);
   await mkdir(WILHELM_DE_BOOK_ONE_DIR, { recursive: true });
   await writeFile(WILHELM_DE_BOOK_ONE_MERGED, `${JSON.stringify(merged, null, 2)}\n`, "utf8");

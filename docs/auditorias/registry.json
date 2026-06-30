@@ -741,6 +741,34 @@
       ]
     },
     {
+      "code": "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract",
+      "title": "Wilhelm DE Ten Wings extract from Anna TXT (isolated sandbox)",
+      "shortName": "wilhelm-de-comments-anna-extract",
+      "type": "PLAN",
+      "family": "DAT-W",
+      "date": "2026-06-28",
+      "status": "open",
+      "path": "docs/auditorias/20260628-PLAN-DAT-W-05-wilhelm-de-comments-anna-extract.md",
+      "relatedCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au",
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy"
+      ],
+      "relatedTests": [
+        "VF-FID-W-031 extract-wilhelm-de-comments-from-anna",
+        "VF-FID-W-032 validate-wilhelm-de-comments-anna-gate",
+        "VF-FID-W-034 reconcile-wilhelm-de-comments-from-anna",
+        "VF-FID-W-035 export-wilhelm-de-comments-anna-comparison-viewer",
+        "AU-FID-W-014 export-wilhelm-de-comments-anna-au-tsv",
+        "AU-FID-W-023 fill-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-020 verify-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-015 apply-wilhelm-de-comments-au-gold",
+        "AU-FID-W-016 validate-wilhelm-de-comments-au-gold",
+        "AU-FID-W-028 jpg-audit-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-029 scan-wilhelm-de-pilot-real-artifacts"
+      ]
+    },
+    {
       "code": "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy",
       "title": "Wilhelm DE 1924 fidelity policy — APA 7, literal German (Zhou Yi model)",
       "shortName": "wilhelm-de-fidelity-policy",

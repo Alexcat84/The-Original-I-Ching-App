@@ -124,8 +124,25 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `VF-FID-W-025 extract-wilhelm-de-from-zeno` | `scripts/extract-wilhelm-de-from-zeno.mjs` | 1.0.0 | `extract:wilhelm-de-from-zeno:all` | 20260629-PLAN-DAT-W-03 | zeno.org 64 hex + material |
 | `VF-FID-W-025 wilhelm-de-zeno-parse` | `scripts/lib/wilhelm-de-zeno-parse.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-zeno-parse.test.mjs` | 20260629-PLAN-DAT-W-03 | zeno HTML parser |
 | `VF-FID-W-026 promote-wilhelm-de-zeno-to-merged` | `scripts/promote-wilhelm-de-zeno-to-merged.mjs` | 1.0.0 | `promote:wilhelm-de-zeno-to-merged` | 20260628-AUD-DAT-W-02 | Zeno → merged maestro |
+| `VF-FID-W-027 clean-wilhelm-de-zeno-dataset` | `scripts/clean-wilhelm-de-zeno-dataset.mjs` | 1.0.0 | `clean:wilhelm-de-zeno-dataset` | 20260629-PLAN-DAT-W-03 | Zeno-only reset + empty Ten Wings |
+| `VF-FID-W-028 wilhelm-de-blank-comments-maestro` | `scripts/lib/wilhelm-de-blank-comments-maestro.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-blank-comments-maestro.test.mjs` | 20260629-PLAN-DAT-W-03 | 37-field comments blank G0 |
+| `VF-FID-W-029 extract-wilhelm-de-comments-from-zeno` | `scripts/extract-wilhelm-de-comments-from-zeno.mjs` | 1.0.0 | `extract:wilhelm-de-comments-from-zeno` | 20260629-PLAN-DAT-W-03 | Drittes Buch Zeno probe |
+| `VF-FID-W-030 wilhelm-de-ocr-ingest-lock` | `scripts/lib/wilhelm-de-ocr-ingest-lock.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-ocr-ingest-lock.test.mjs` | 20260629-PLAN-DAT-W-03 | OCR re-ingest guard |
+| `VF-FID-W-031 extract-wilhelm-de-comments-from-anna` | `scripts/extract-wilhelm-de-comments-from-anna.mjs` | 1.0.0 | `extract:wilhelm-de-comments-from-anna` | 20260628-PLAN-DAT-W-05 | Anna TXT → sandbox comments |
+| `VF-FID-W-032 validate-wilhelm-de-comments-anna-gate` | `scripts/validate-wilhelm-de-comments-anna-gate.mjs` | 1.0.0 | `validate:wilhelm-de-comments-anna-gate` | 20260628-PLAN-DAT-W-05 | G-anna structure + dual-pass |
+| `VF-FID-W-033 wilhelm-de-64hex-comments-txt` | `scripts/lib/wilhelm-de-64hex-comments-txt.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-64hex-comments-txt.test.mjs` | 20260628-PLAN-DAT-W-05 | Drittes Buch parser G0 pass02/04 |
+| `VF-FID-W-034 reconcile-wilhelm-de-comments-from-anna` | `scripts/lib/wilhelm-de-comments-anna-reconcile.test.mjs` | 1.0.0 | `reconcile:wilhelm-de-comments-from-anna` | 20260628-PLAN-DAT-W-05 | Anna dual-pass → reconciled sandbox |
+| `VF-FID-W-035 export-wilhelm-de-comments-anna-comparison-viewer` | `scripts/export-wilhelm-de-comments-anna-comparison-viewer.mjs` | 1.0.0 | `export:wilhelm-de-comments-anna-comparison-viewer` | 20260628-PLAN-DAT-W-05 | HTML pass02/04/reconciled |
 | `AU-FID-W-012 wilhelm-de-baynes-mt-quality` | `scripts/wilhelm-de-baynes-mt-quality-report.mjs` | 1.0.0 | `audit:wilhelm-de-baynes-mt-quality` | 20260629-PLAN-DAT-W-03 | DE→MT EN vs Baynes por campo |
 | `AU-FID-W-013 audit-wilhelm-de-contamination` | `scripts/audit-wilhelm-de-contamination.mjs` | 1.0.0 | `audit:wilhelm-de-contamination` | 20260630-AUD-DAT-W-04 | Contaminación línea a línea |
+| `AU-FID-W-014 export-wilhelm-de-comments-anna-au-tsv` | `scripts/export-wilhelm-de-comments-anna-au-tsv.mjs` | 1.0.0 | `export:wilhelm-de-comments-anna-au-tsv` | 20260628-PLAN-DAT-W-05 | TSV disputas Ten Wings AU |
+| `AU-FID-W-015 apply-wilhelm-de-comments-au-gold` | `scripts/apply-wilhelm-de-comments-au-gold.mjs` | 1.0.0 | `apply:wilhelm-de-comments-au-gold` | 20260628-PLAN-DAT-W-05 | Pilot → gold JSON |
+| `AU-FID-W-016 validate-wilhelm-de-comments-au-gold` | `scripts/validate-wilhelm-de-comments-au-gold.mjs` | 1.0.0 | `validate:wilhelm-de-comments-au-gold` | 20260628-PLAN-DAT-W-05 | Gate pre-promote |
+| `AU-FID-W-020 verify-wilhelm-de-comments-au-pilot` | `scripts/verify-wilhelm-de-comments-au-pilot.mjs` | 1.0.0 | `verify:wilhelm-de-comments-au-pilot` | 20260628-PLAN-DAT-W-05 | Per-hex 37-field gate |
+| `AU-FID-W-023 fill-wilhelm-de-comments-au-pilot` | `scripts/fill-wilhelm-de-comments-au-pilot.mjs` | 1.0.0 | `fill:wilhelm-de-comments-au-pilot` | 20260628-PLAN-DAT-W-05 | JPG builder → pilot TSV |
+| `AU-FID-W-027 spot-check-wilhelm-de-comments-au-pilot` | `scripts/spot-check-wilhelm-de-comments-au-pilot.mjs` | 1.0.0 | `spot-check:wilhelm-de-comments-au-pilot` | 20260628-PLAN-DAT-W-05 | vs pass04 flags |
+| `AU-FID-W-028 jpg-audit-wilhelm-de-comments-au-pilot` | `scripts/jpg-audit-wilhelm-de-comments-au-pilot.mjs` | 1.0.0 | `jpg-audit:wilhelm-de-comments-au-pilot` | 20260628-PLAN-DAT-W-05 | pilot vs builder |
+| `AU-FID-W-029 scan-wilhelm-de-pilot-real-artifacts` | `scripts/scan-wilhelm-de-pilot-real-artifacts.mjs` | 1.0.0 | `scan:wilhelm-de-pilot-artifacts` | 20260628-PLAN-DAT-W-05 | OCR artifact scan |
 
 ---
 

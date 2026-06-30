@@ -74,6 +74,11 @@ export const WILHELM_DE_ZENO_INGEST = {
 
 export const WILHELM_DE_DATASETS_ROOT = join(ROOT, "tools/datasets/wilhelm-de");
 
+export const WILHELM_DE_OCR_INGEST_LOCK = join(
+  WILHELM_DE_DATASETS_ROOT,
+  "ocr-ingest.lock.json",
+);
+
 export const WILHELM_DE_BOOK_ONE_DIR = join(WILHELM_DE_DATASETS_ROOT, "book-one");
 export const WILHELM_DE_BOOK_ONE_PARSED = join(
   WILHELM_DE_BOOK_ONE_DIR,
@@ -112,6 +117,14 @@ export const WILHELM_DE_ZENO_MATERIAL_DIR = join(
 );
 
 export const WILHELM_DE_COMMENTS_DIR = join(WILHELM_DE_DATASETS_ROOT, "comments");
+export const WILHELM_DE_COMMENTS_BLANK = join(
+  WILHELM_DE_COMMENTS_DIR,
+  "wilhelm-de-64hex-comments-blank.json",
+);
+export const WILHELM_DE_COMMENTS_ZENO_EXTRACT = join(
+  WILHELM_DE_COMMENTS_DIR,
+  "wilhelm-de-64hex-comments-zeno-extract-latest.json",
+);
 export const WILHELM_DE_COMMENTS_PARSED = join(
   WILHELM_DE_COMMENTS_DIR,
   "wilhelm-de-64hex-comments-parsed.json",
@@ -123,6 +136,68 @@ export const WILHELM_DE_COMMENTS_MERGED = join(
 export const WILHELM_DE_COMMENTS_MANIFEST = join(
   WILHELM_DE_COMMENTS_DIR,
   "manifest.json",
+);
+
+/** Isolated Anna's Archive Drittes Buch sandbox — never runtimeIngest until AU promote. */
+export const WILHELM_DE_COMMENTS_ANNA_DIR = join(
+  WILHELM_DE_COMMENTS_DIR,
+  "anna",
+);
+export const WILHELM_DE_COMMENTS_ANNA_PARSED_PASS02 = join(
+  WILHELM_DE_COMMENTS_ANNA_DIR,
+  "wilhelm-de-64hex-comments-anna-pass02.json",
+);
+export const WILHELM_DE_COMMENTS_ANNA_PARSED_PASS04 = join(
+  WILHELM_DE_COMMENTS_ANNA_DIR,
+  "wilhelm-de-64hex-comments-anna-pass04.json",
+);
+export const WILHELM_DE_COMMENTS_ANNA_MANIFEST = join(
+  WILHELM_DE_COMMENTS_ANNA_DIR,
+  "manifest.json",
+);
+export const WILHELM_DE_COMMENTS_ANNA_COVERAGE = join(
+  WILHELM_DE_COMMENTS_ANNA_DIR,
+  "coverage-latest.json",
+);
+export const WILHELM_DE_COMMENTS_ANNA_RECONCILED = join(
+  WILHELM_DE_COMMENTS_ANNA_DIR,
+  "wilhelm-de-64hex-comments-anna-reconciled.json",
+);
+export const WILHELM_DE_COMMENTS_ANNA_RECONCILE_REPORT = join(
+  WILHELM_DE_COMMENTS_ANNA_DIR,
+  "reconcile-report-latest.json",
+);
+export const WILHELM_DE_COMMENTS_ANNA_COMPARISON_HTML = join(
+  WILHELM_DE_COMMENTS_ANNA_DIR,
+  "comparison-viewer.html",
+);
+export const WILHELM_DE_COMMENTS_ANNA_AU_GOLD_DIR = join(
+  ROOT,
+  "tools/manual-gold/wilhelm-de-comments-au",
+);
+export const WILHELM_DE_COMMENTS_ANNA_DISPUTES_FLAT_TSV = join(
+  WILHELM_DE_COMMENTS_ANNA_AU_GOLD_DIR,
+  "wilhelm-de-comments-anna-disputes-flat-latest.tsv",
+);
+export const WILHELM_DE_COMMENTS_ANNA_DISPUTES_BY_HEX_DIR = join(
+  WILHELM_DE_COMMENTS_ANNA_AU_GOLD_DIR,
+  "by-hex",
+);
+export const WILHELM_DE_COMMENTS_AU_CONTRACT_JSON = join(
+  WILHELM_DE_COMMENTS_ANNA_AU_GOLD_DIR,
+  "au-contract.json",
+);
+export const WILHELM_DE_COMMENTS_AU_GOLD_JSON = join(
+  ROOT,
+  "tools/output/fidelity-gold/wilhelm-de-64hex-comments-au-gold.json",
+);
+export const WILHELM_DE_COMMENTS_HEX_STARTS_JSON = join(
+  WILHELM_DE_DATASETS_ROOT,
+  "wilhelm-de-comments-hex-starts.json",
+);
+export const WILHELM_DE_BOOK_SECTION_STARTS_JSON = join(
+  WILHELM_DE_DATASETS_ROOT,
+  "wilhelm-de-book-section-starts.json",
 );
 
 export const WILHELM_DE_APPENDIX_DIR = join(WILHELM_DE_DATASETS_ROOT, "appendix");

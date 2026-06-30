@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0.0",
-  "status": "zeno-gold",
-  "source": "init-wilhelm-de-blank-maestro",
+  "status": "zeno-only",
+  "source": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-de\\book-one\\wilhelm-de-64hex-zeno-extract-latest.json",
   "template": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-baynes\\book-one\\wilhelm-64hex-parsed.json",
-  "parsedAt": "2026-06-30T02:46:22.104Z",
+  "parsedAt": "2026-06-30T13:46:15.423Z",
   "fieldCount": 33,
   "hexCount": 64,
   "hexagrams": {
@@ -48,7 +48,9 @@
         "yong_etiqueta": "Wenn lauter Neunen erscheinen, bedeutet das:",
         "yong_oraculo": "Es erscheint eine Schar von Drachen ohne Haupt. Heil!",
         "yong_comentario": "Wenn alle Linien Neunen sind, so kommt das ganze Zeichen in Bewegung und verwandelt sich in das Zeichen Kun, das Empfangende, dessen Charakter die Hingebung ist. Die Stärke des Schöpferischen und die Milde des Empfangenden vereinen sich. Das Starke ist angedeutet durch die Schar der Drachen, das Milde durch den Umstand, daß ihre Häupter verborgen sind. Das bedeutet: Milde in der Handlungsweise verbunden mit Stärke des Entschlusses bringt Heil."
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/1.+Ki%C3%ABn+-+Das+Sch%C3%B6pferische",
+      "zenoPermalink": ""
     },
     "2": {
       "bookChinese": "",
@@ -91,7 +93,9 @@
         "yong_etiqueta": "Wenn lauter Sechsen erscheinen, bedeutet das:",
         "yong_oraculo": "Fördernd ist dauernde Beharrlichkeit.",
         "yong_comentario": "Wenn lauter Sechsen erscheinen, verwandelt sich das Zeichen des Empfangenden in das Zeichen des Schöpferischen. Es gewinnt so die Kraft der Dauer im Festhalten des Rechten. Es gibt zwar keinen Fortschritt, aber auch keinen Rückschritt."
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/2.+Kun+-+Das+Empfangende",
+      "zenoPermalink": ""
     },
     "3": {
       "bookChinese": "",
@@ -134,7 +138,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/3.+Dschun+-+Die+Anfangsschwierigkeit",
+      "zenoPermalink": ""
     },
     "4": {
       "bookChinese": "",
@@ -177,7 +183,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/4.+Mong+-+Die+Jugendtorheit",
+      "zenoPermalink": ""
     },
     "5": {
       "bookChinese": "",
@@ -220,7 +228,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/5.+S%C3%BC+-+Das+Warten+(Die+Ern%C3%A4hrung)",
+      "zenoPermalink": ""
     },
     "6": {
       "bookChinese": "",
@@ -263,7 +273,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/6.+Sung+-+Der+Streit",
+      "zenoPermalink": ""
     },
     "7": {
       "bookChinese": "",
@@ -306,7 +318,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/7.+Sch%C3%AF+-+Das+Heer",
+      "zenoPermalink": ""
     },
     "8": {
       "bookChinese": "",
@@ -349,7 +363,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/8.+Bi+-+Das+Zusammenhalten",
+      "zenoPermalink": ""
     },
     "9": {
       "bookChinese": "",
@@ -392,7 +408,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/9.+Siau+Tschu+-+Des+kleinen+Z%C3%A4hmungskraft",
+      "zenoPermalink": ""
     },
     "10": {
       "bookChinese": "",
@@ -435,7 +453,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/10.+L%C3%BC+-+Das+Auftreten",
+      "zenoPermalink": ""
     },
     "11": {
       "bookChinese": "",
@@ -478,7 +498,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/11.+Tai+-+Der+Friede",
+      "zenoPermalink": ""
     },
     "12": {
       "bookChinese": "",
@@ -521,7 +543,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/12.+Pi+-+Die+Stockung",
+      "zenoPermalink": ""
     },
     "13": {
       "bookChinese": "",
@@ -564,7 +588,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/13.+Tung+Jen+-+Gemeinschaft+mit+Menschen",
+      "zenoPermalink": ""
     },
     "14": {
       "bookChinese": "",
@@ -607,7 +633,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/14.+Da+Yu+-+Der+Besitz+von+Gro%C3%9Fem",
+      "zenoPermalink": ""
     },
     "15": {
       "bookChinese": "",
@@ -650,7 +678,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/15.+Ki%C3%ABn+-+Die+Bescheidenheit",
+      "zenoPermalink": ""
     },
     "16": {
       "bookChinese": "",
@@ -693,7 +723,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/16.+Y%C3%BC+-+Die+Begeisterung",
+      "zenoPermalink": ""
     },
     "17": {
       "bookChinese": "",
@@ -736,7 +768,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/17.+Sui+-+Die+Nachfolge",
+      "zenoPermalink": ""
     },
     "18": {
       "bookChinese": "",
@@ -779,7 +813,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/18.+Gu+-+Die+Arbeit+am+Verdorbenen",
+      "zenoPermalink": ""
     },
     "19": {
       "bookChinese": "",
@@ -822,7 +858,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/19.+Lin+-+Die+Ann%C3%A4herung",
+      "zenoPermalink": ""
     },
     "20": {
       "bookChinese": "",
@@ -865,7 +903,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/20.+Guan+-+Die+Betrachtung+(der+Anblick)",
+      "zenoPermalink": ""
     },
     "21": {
       "bookChinese": "",
@@ -908,7 +948,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/21.+Sch%C3%AF+Ho+-+Das+Durchbeissen",
+      "zenoPermalink": ""
     },
     "22": {
       "bookChinese": "",
@@ -951,7 +993,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/22.+Bi+-+Die+Anmut",
+      "zenoPermalink": ""
     },
     "23": {
       "bookChinese": "",
@@ -994,7 +1038,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/23.+Bo+-+Die+Zersplitterung",
+      "zenoPermalink": ""
     },
     "24": {
       "bookChinese": "",
@@ -1037,7 +1083,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/24.+Fu+-+Die+Wiederkehr+(die+Wendezeit)",
+      "zenoPermalink": ""
     },
     "25": {
       "bookChinese": "",
@@ -1080,7 +1128,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/25.+Wu+Wang+-+Die+Unschuld+(das+Unerwartete)",
+      "zenoPermalink": ""
     },
     "26": {
       "bookChinese": "",
@@ -1123,7 +1173,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/26.+Da+Tschu+-+Des+grossen+Z%C3%A4hmungskraft",
+      "zenoPermalink": ""
     },
     "27": {
       "bookChinese": "",
@@ -1166,7 +1218,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/27.+I+-+Die+Mundwinkel+(die+Ern%C3%A4hrung)",
+      "zenoPermalink": ""
     },
     "28": {
       "bookChinese": "",
@@ -1209,7 +1263,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/28.+Da+Go+-+Des+grossen+%C3%9Cbergewicht",
+      "zenoPermalink": ""
     },
     "29": {
       "bookChinese": "",
@@ -1252,7 +1308,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/29.+Kan+-+Das+Abgr%C3%BCndige,+das+Wasser",
+      "zenoPermalink": ""
     },
     "30": {
       "bookChinese": "",
@@ -1295,7 +1353,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/30.+Li+-+Das+Haftende,+das+Feuer",
+      "zenoPermalink": ""
     },
     "31": {
       "bookChinese": "",
@@ -1338,7 +1398,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/31.+Hi%C3%ABn+-+Die+Einwirkung+(die+Werbung)",
+      "zenoPermalink": ""
     },
     "32": {
       "bookChinese": "",
@@ -1381,7 +1443,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/32.+Hong+-+Die+Dauer",
+      "zenoPermalink": ""
     },
     "33": {
       "bookChinese": "",
@@ -1424,7 +1488,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/33.+Dun+-+Der+R%C3%BCckzug",
+      "zenoPermalink": ""
     },
     "34": {
       "bookChinese": "",
@@ -1467,7 +1533,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/34.+Da+Dschuang+-+Des+grossen+Macht",
+      "zenoPermalink": ""
     },
     "35": {
       "bookChinese": "",
@@ -1510,7 +1578,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/35.+Dsin+-+Der+Fortschritt",
+      "zenoPermalink": ""
     },
     "36": {
       "bookChinese": "",
@@ -1553,7 +1623,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/36.+Ming+I+-+Die+Verfinsterung+des+Lichts",
+      "zenoPermalink": ""
     },
     "37": {
       "bookChinese": "",
@@ -1596,7 +1668,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/37.+Gia+Jen+-+Die+Sippe",
+      "zenoPermalink": ""
     },
     "38": {
       "bookChinese": "",
@@ -1639,7 +1713,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/38.+Kui+-+Der+Gegensatz",
+      "zenoPermalink": ""
     },
     "39": {
       "bookChinese": "",
@@ -1682,7 +1758,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/39.+Gi%C3%ABn+-+Das+Hemmnis",
+      "zenoPermalink": ""
     },
     "40": {
       "bookChinese": "",
@@ -1725,7 +1803,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/40.+Hi%C3%AB+-+Die+Befreiung",
+      "zenoPermalink": ""
     },
     "41": {
       "bookChinese": "",
@@ -1768,7 +1848,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/41.+Sun+-+Die+Minderung",
+      "zenoPermalink": ""
     },
     "42": {
       "bookChinese": "",
@@ -1811,7 +1893,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/42.+I+-+Die+Mehrung",
+      "zenoPermalink": ""
     },
     "43": {
       "bookChinese": "",
@@ -1854,7 +1938,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/43.+Guai+-+Der+Durchbruch+(die+Entschlossenheit)",
+      "zenoPermalink": ""
     },
     "44": {
       "bookChinese": "",
@@ -1897,7 +1983,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/44.+Gou+-+Das+Entgegenkommen",
+      "zenoPermalink": ""
     },
     "45": {
       "bookChinese": "",
@@ -1940,7 +2028,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/45.+Tsui+-+Die+Sammlung",
+      "zenoPermalink": ""
     },
     "46": {
       "bookChinese": "",
@@ -1983,7 +2073,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/46.+Schong+-+Das+Empordringen",
+      "zenoPermalink": ""
     },
     "47": {
       "bookChinese": "",
@@ -2026,7 +2118,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/47.+Kun+-+Die+Bedr%C3%A4ngnis",
+      "zenoPermalink": ""
     },
     "48": {
       "bookChinese": "",
@@ -2069,7 +2163,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/48.+Dsing+-+Der+Brunnen",
+      "zenoPermalink": ""
     },
     "49": {
       "bookChinese": "",
@@ -2112,7 +2208,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/49.+Go+-+Die+Umw%C3%A4lzung+(die+Mauserung)",
+      "zenoPermalink": ""
     },
     "50": {
       "bookChinese": "",
@@ -2155,7 +2253,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/50.+Ding+-+Der+Tiegel",
+      "zenoPermalink": ""
     },
     "51": {
       "bookChinese": "",
@@ -2198,7 +2298,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/51.+Dschen+-+Das+Erregende",
+      "zenoPermalink": ""
     },
     "52": {
       "bookChinese": "",
@@ -2241,7 +2343,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/52.+Gen+-+Das+Stillehalten,+der+Berg",
+      "zenoPermalink": ""
     },
     "53": {
       "bookChinese": "",
@@ -2284,7 +2388,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/53.+Dsien+-+Die+Entwicklung",
+      "zenoPermalink": ""
     },
     "54": {
       "bookChinese": "",
@@ -2327,7 +2433,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/54.+Gui+me+-+Das+Heiratende+M%C3%A4dchen",
+      "zenoPermalink": ""
     },
     "55": {
       "bookChinese": "",
@@ -2370,7 +2478,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/55.+Fong+-+Die+F%C3%BClle",
+      "zenoPermalink": ""
     },
     "56": {
       "bookChinese": "",
@@ -2413,7 +2523,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/56.+L%C3%BC+-+Der+Wanderer",
+      "zenoPermalink": ""
     },
     "57": {
       "bookChinese": "",
@@ -2456,7 +2568,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/57.+Sun+-+Das+Sanfte",
+      "zenoPermalink": ""
     },
     "58": {
       "bookChinese": "",
@@ -2499,7 +2613,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/58.+Dui+-+Das+Heitere,+der+See",
+      "zenoPermalink": ""
     },
     "59": {
       "bookChinese": "",
@@ -2542,7 +2658,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/59.+Huan+-+Die+Aufl%C3%B6sung",
+      "zenoPermalink": ""
     },
     "60": {
       "bookChinese": "",
@@ -2585,7 +2703,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/60.+Dsi%C3%AB+-+Die+Beschr%C3%A4nkung",
+      "zenoPermalink": ""
     },
     "61": {
       "bookChinese": "",
@@ -2628,7 +2748,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/61.+Dschung+Fu+-+Innere+Wahrheit",
+      "zenoPermalink": ""
     },
     "62": {
       "bookChinese": "",
@@ -2671,7 +2793,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/62.+Siau+Go+-+Des+Kleinen+%C3%9Cbergewicht",
+      "zenoPermalink": ""
     },
     "63": {
       "bookChinese": "",
@@ -2714,7 +2838,9 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/63.+Gi+Dsi+-+Nach+der+Vollendung",
+      "zenoPermalink": ""
     },
     "64": {
       "bookChinese": "",
@@ -2757,9 +2883,11 @@
         "yong_etiqueta": "",
         "yong_oraculo": "",
         "yong_comentario": ""
-      }
+      },
+      "zenoPath": "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Zweite+Abteilung/64.+We+Dsi+-+Vor+der+Vollendung",
+      "zenoPermalink": ""
     }
   },
-  "pilotGoldAppliedAt": "2026-06-30T02:46:41.486Z",
-  "zenoGoldAppliedAt": "2026-06-30T04:18:17.909Z"
+  "cleanedAt": "2026-06-30T13:46:15.424Z",
+  "note": "Symbols from Zhou Yi; book-one text from Zeno Erstes Buch only. No OCR, no Baynes, no manual gold."
 }

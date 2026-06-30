@@ -53,6 +53,9 @@ export function parseWilhelmDeHexHeaderLine(line) {
   const chinese = m[2].trim();
   const title = (m[3] ?? "").trim();
   if (/^§\s*\d/.test(chinese)) return null;
+  if (/^\d+(?:\.\d+)?$/.test(chinese)) return null;
+  if (chinese.length < 2 && !title) return null;
+  if (/\bist:\s|Nr\.\s*\d|Haus des\s/i.test(chinese)) return null;
   return { n, chinese, title };
 }
 

@@ -8,6 +8,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadAndMergeWilhelmDeCommentsDualPass } from "./lib/wilhelm-de-comments-dual-pass-merge.mjs";
+import { assertWilhelmDeOcrIngestAllowed } from "./lib/wilhelm-de-ocr-ingest-lock.mjs";
 import {
   WILHELM_DE_COMMENTS_DIR,
   WILHELM_DE_COMMENTS_MERGED,
@@ -19,6 +20,11 @@ const PASS02 = WILHELM_DE_COMMENTS_PARSED;
 const PASS04 = join(WILHELM_DE_COMMENTS_DIR, "wilhelm-de-64hex-comments-parsed-pass04.json");
 
 async function main() {
+  await assertWilhelmDeOcrIngestAllowed({
+    script: "merge-wilhelm-de-comments-dual-pass",
+    writes: WILHELM_DE_COMMENTS_MERGED,
+  });
+
   const merged = loadAndMergeWilhelmDeCommentsDualPass(PASS02, PASS04);
   await mkdir(WILHELM_DE_COMMENTS_DIR, { recursive: true });
   await writeFile(WILHELM_DE_COMMENTS_MERGED, `${JSON.stringify(merged, null, 2)}\n`, "utf8");

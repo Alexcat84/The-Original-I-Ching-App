@@ -17,7 +17,7 @@ function normField(a, b) {
  * @param {string} a
  * @param {string} b
  */
-function pickBestField(a, b) {
+export function pickWilhelmDeCommentsDualPassField(a, b) {
   const [na, nb] = normField(a, b);
   if (na === nb) return { value: a ?? "", disputed: false, reason: "equal" };
   if (!na && nb) return { value: b ?? "", disputed: false, reason: "pass04_only" };
@@ -63,7 +63,7 @@ export function mergeWilhelmDeCommentsDualPass(pass02Payload, pass04Payload) {
     for (const fieldKey of WILHELM_DE_COMMENT_FIELD_KEYS) {
       const v02 = h02.fields?.[fieldKey] ?? "";
       const v04 = h04.fields?.[fieldKey] ?? "";
-      const picked = pickBestField(v02, v04);
+      const picked = pickWilhelmDeCommentsDualPassField(v02, v04);
       fields[fieldKey] = picked.value;
       if (picked.disputed) {
         const [na, nb] = normField(v02, v04);

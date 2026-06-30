@@ -1,0 +1,24 @@
+{
+  "blocked": true,
+  "since": "2026-06-30T13:46:17.560Z",
+  "reason": "Runtime maestro is Zeno-only book-one; comments Ten Wings scaffold empty until Drittes Buch extract.",
+  "blockedScripts": [
+    "parse:wilhelm-de-64hex-txt",
+    "parse:wilhelm-de-64hex-comments-txt",
+    "merge:wilhelm-de-dual-pass",
+    "merge:wilhelm-de-comments-dual-pass"
+  ],
+  "unlock": "Set WILHELM_DE_ALLOW_OCR_INGEST=1 or pass --allow-ocr-ingest",
+  "safeScripts": [
+    "extract:wilhelm-de-from-zeno:all",
+    "promote:wilhelm-de-zeno-to-merged",
+    "clean:wilhelm-de-zeno-dataset",
+    "extract:wilhelm-de-comments-from-anna",
+    "extract:wilhelm-de-comments-from-anna:pass02",
+    "extract:wilhelm-de-comments-from-anna:pass04",
+    "validate:wilhelm-de-comments-anna-gate",
+    "reconcile:wilhelm-de-comments-from-anna",
+    "export:wilhelm-de-comments-anna-comparison-viewer",
+    "export:wilhelm-de-comments-anna-au-tsv"
+  ]
+}

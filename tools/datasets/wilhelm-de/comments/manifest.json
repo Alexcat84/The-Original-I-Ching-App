@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "translator": "wilhelm",
+  "language": "de",
+  "edition": "Richard Wilhelm, I Ging — Das Buch der Wandlungen (Diederichs, 1924)",
+  "runtimeIngest": true,
+  "sourceMethod": "blank-scaffold",
+  "symbolStandard": "iching_zhouyi_translation.mjs (ctext.org 周易 hanzi + hex_font)",
+  "blankJson": {
+    "path": "wilhelm-de-64hex-comments-blank.json",
+    "runtimeIngest": false,
+    "status": "blank"
+  },
+  "mergedJson": "wilhelm-de-64hex-comments-merged.json",
+  "ocrDualPassArchive": {
+    "runtimeIngest": false,
+    "note": "Former pass02+04 OCR merged — archived on zeno-clean; never re-ingest without Drittes Buch extract",
+    "archivedAt": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\output\\archive\\wilhelm-de-64hex-comments-merged-pre-zeno-clean-2026-06-30T13-46-15-307Z.json"
+  },
+  "pendingExtract": "Drittes Buch (Ten Wings) — not on zeno.org; PDF maestro extract TBD",
+  "ocrIngestLock": "ocr-ingest.lock.json"
+}

@@ -17,24 +17,42 @@ export const WILHELM_DE_HEX_STARTS_JSON = join(
 /** @typedef {{ hex: number; segment: string; page: number }} HexStartRef */
 /** @typedef {{ hex: number; startBookPage: number; endBookPage: number; jpgPaths: string[]; sourceLabel: string }} HexPageRange */
 
+/** @type {ReadonlyArray<{ segment: string; start: number; end: number }>} */
+export const WILHELM_DE_JPG_BOOK_SEGMENTS = [
+  { segment: "1-100", start: 1, end: 100 },
+  { segment: "101-200", start: 101, end: 200 },
+  { segment: "201-300", start: 201, end: 300 },
+  { segment: "301-400", start: 301, end: 400 },
+  { segment: "401-500", start: 401, end: 500 },
+  { segment: "501-585", start: 501, end: 585 },
+];
+
+export const WILHELM_DE_JPG_MAX_BOOK_PAGE = 585;
+
 /**
  * @param {{ segment: string; page: number }} ref
  */
 export function segmentRefToBookPage(ref) {
   const p = Number(ref.page);
-  if (ref.segment === "1-100") return p;
-  if (ref.segment === "101-200") return 100 + p;
-  if (ref.segment === "201-300") return 200 + p;
-  throw new Error(`Unknown segment ${ref.segment}`);
+  const hit = WILHELM_DE_JPG_BOOK_SEGMENTS.find((s) => s.segment === ref.segment);
+  if (!hit) throw new Error(`Unknown segment ${ref.segment}`);
+  if (p < 1 || p > hit.end - hit.start + 1) {
+    throw new Error(`Page ${p} out of range for segment ${ref.segment}`);
+  }
+  return hit.start + p - 1;
 }
 
 /**
  * @param {number} bookPage
  */
 export function bookPageToSegmentRef(bookPage) {
-  if (bookPage <= 100) return { segment: "1-100", page: bookPage };
-  if (bookPage <= 200) return { segment: "101-200", page: bookPage - 100 };
-  return { segment: "201-300", page: bookPage - 200 };
+  const p = Number(bookPage);
+  if (!Number.isFinite(p) || p < 1 || p > WILHELM_DE_JPG_MAX_BOOK_PAGE) {
+    throw new Error(`Book page out of range: ${bookPage}`);
+  }
+  const hit = WILHELM_DE_JPG_BOOK_SEGMENTS.find((s) => p >= s.start && p <= s.end);
+  if (!hit) throw new Error(`No segment for book page ${bookPage}`);
+  return { segment: hit.segment, page: p - hit.start + 1 };
 }
 
 let _jpgCache = null;

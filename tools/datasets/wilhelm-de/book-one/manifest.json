@@ -11,8 +11,8 @@
   "blankJson": {
     "path": "wilhelm-de-64hex-blank.json",
     "runtimeIngest": false,
-    "status": "zeno-gold",
-    "note": "AU scaffold prefilled from Zeno extract; hanzi/hex_font from Zhou Yi"
+    "status": "zeno-only",
+    "note": "Zhou Yi symbols + Zeno Erstes Buch only; cleaned by clean-wilhelm-de-zeno-dataset"
   },
   "ocrMergedArchive": {
     "runtimeIngest": false,
@@ -29,5 +29,6 @@
     "jpgDir": "../../source-pdfs/source jpgs",
     "note": "300 DPI page anchors + pass03 v2 field split"
   },
-  "notes": "Baynes EN archived under tools/datasets/wilhelm-baynes/ (runtimeIngest: false)."
+  "notes": "Comments Ten Wings empty until Drittes Buch extract. Baynes EN diagnostic only.",
+  "ocrIngestLock": "ocr-ingest.lock.json"
 }

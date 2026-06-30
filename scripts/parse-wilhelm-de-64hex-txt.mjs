@@ -14,6 +14,7 @@ import {
   validateWilhelmDe64HexStructure,
   WILHELM_DE_64HEX_DEFAULT_PATH,
 } from "./lib/wilhelm-de-64hex-txt.mjs";
+import { assertWilhelmDeOcrIngestAllowed } from "./lib/wilhelm-de-ocr-ingest-lock.mjs";
 import { WILHELM_DE_BOOK_ONE_DIR, WILHELM_DE_BOOK_ONE_PARSED, WILHELM_DE_BOOK_ONE_PARSED_V2 } from "./lib/wilhelm-de-dataset-paths.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
@@ -39,6 +40,11 @@ function stamp() {
 }
 
 async function main() {
+  await assertWilhelmDeOcrIngestAllowed({
+    script: "parse-wilhelm-de-64hex-txt",
+    writes: outputPath,
+  });
+
   const parsed = await parseWilhelmDe64HexTxtFull(inputPath, { require64: pass !== "01" });
   const g0 = validateWilhelmDe64HexStructure(parsed);
   if (pass === "01") {

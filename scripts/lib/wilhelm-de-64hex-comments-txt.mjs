@@ -63,6 +63,48 @@ export function normalizeWilhelmDeCommentsTxtText(s) {
 }
 
 /** @param {string} line */
+function normalizeMarkerLine(line) {
+  return cleanLine(line).replace(/[\u200b\uFEFF\u2060\u180e\ufeff]/g, "").trim();
+}
+
+/** @param {string[]} lines @param {RegExp} re */
+function findMarker(lines, re) {
+  return lines.findIndex((l) => re.test(normalizeMarkerLine(l)));
+}
+
+/** @param {number} after @param {number[]} indices */
+function firstMarkerAfter(after, indices) {
+  const valid = indices.filter((n) => n > after).sort((a, b) => a - b);
+  return valid.length ? valid[0] : -1;
+}
+
+/** @param {string[]} lines */
+function findCommentsZoneStart(lines) {
+  let afterDrittes = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const t = String(lines[i] ?? "").trim();
+    if (/^DRITTES BUCH/i.test(t)) afterDrittes = i;
+    if (/^DIE KOMMENTARE/i.test(t) && afterDrittes > 0) return i;
+  }
+  for (let i = 0; i < lines.length; i++) {
+    if (/^DIE KOMMENTARE/i.test(String(lines[i] ?? "").trim())) return i;
+  }
+  return 0;
+}
+
+/** @param {string[]} lines @param {number} lineIndex */
+function isWilhelmDeCommentsHexHeaderAnchor(lines, lineIndex) {
+  const slice = lines
+    .slice(lineIndex, Math.min(lines.length, lineIndex + 80))
+    .map((l) => normalizeMarkerLine(l));
+  const hasKern = slice.some((l) => MARKERS.kernzeichen.test(l));
+  const hasTuan = slice.some((l) => MARKERS.commentaryDecision.test(l));
+  const hasSeq = slice.some((l) => MARKERS.sequence.test(l));
+  const hasUrteil = slice.some((l) => MARKERS.judgment.test(l));
+  return hasKern || (hasTuan && hasUrteil) || (hasSeq && hasUrteil);
+}
+
+/** @param {string} line */
 function cleanLine(line) {
   const t = stripWilhelmTxtFootnoteLine(line).trim();
   if (/^--- page \d+ ---$/.test(t)) return "";
@@ -107,11 +149,6 @@ function linesToText(lines) {
       .map((g) => g.lines.join("\n"))
       .join("\n"),
   );
-}
-
-/** @param {string[]} lines @param {RegExp} re */
-function findMarker(lines, re) {
-  return lines.findIndex((l) => re.test(cleanLine(l)));
 }
 
 /** @param {string[]} lines @param {number} start @param {number} end */
@@ -331,7 +368,7 @@ function parseHexChunk(lines, bookNumber, bookChinese, bookTitle) {
 
   const rulerStart = idx.kernzeichen >= 0 ? idx.kernzeichen + 1 : 0;
   const rulerEndCandidates = [idx.sequence, idx.misc, idx.judgment, idx.commentaryDecision].filter(
-    (n) => n >= 0,
+    (n) => n >= rulerStart,
   );
   const rulerEnd = rulerEndCandidates.length ? Math.min(...rulerEndCandidates) : 0;
   const ruler_note =
@@ -339,21 +376,34 @@ function parseHexChunk(lines, bookNumber, bookChinese, bookTitle) {
       ? linesToText(sliceLines(lines, rulerStart, rulerEnd))
       : linesToText(sliceLines(lines, 0, rulerEnd > 0 ? rulerEnd : idx.judgment >= 0 ? idx.judgment : 0));
 
-  const sequence =
+  const sequenceEnd =
     idx.sequence >= 0
-      ? linesToText(
-          sliceLines(
-            lines,
-            idx.sequence + 1,
-            [idx.misc, idx.judgment, idx.commentaryDecision].filter((n) => n >= 0).sort((a, b) => a - b)[0] ??
-              -1,
-          ),
-        )
-      : "";
+      ? firstMarkerAfter(idx.sequence, [
+          idx.misc,
+          idx.judgment,
+          idx.commentaryDecision,
+          idx.commentaryImages,
+          idx.image,
+          idx.lines,
+          idx.wenYen,
+        ])
+      : -1;
+  const sequence =
+    idx.sequence >= 0 ? linesToText(sliceLines(lines, idx.sequence + 1, sequenceEnd)) : "";
 
   const miscStart = idx.misc >= 0 ? idx.misc + 1 : -1;
   const miscEnd =
-    idx.judgment >= 0 ? idx.judgment : idx.commentaryDecision >= 0 ? idx.commentaryDecision : -1;
+    idx.misc >= 0
+      ? firstMarkerAfter(idx.misc, [
+          idx.sequence,
+          idx.judgment,
+          idx.commentaryDecision,
+          idx.commentaryImages,
+          idx.image,
+          idx.lines,
+          idx.wenYen,
+        ])
+      : -1;
   const misc_notes = miscStart >= 0 ? linesToText(sliceLines(lines, miscStart, miscEnd)) : "";
 
   const commentary_decision =
@@ -478,13 +528,7 @@ export function parseWilhelmDe64HexCommentsTxt(rawText) {
   const text = String(rawText ?? "").replace(/\r\n/g, "\n");
   const lines = text.split("\n");
 
-  let zoneStart = 0;
-  for (let i = 0; i < lines.length; i++) {
-    if (/DIE KOMMENTARE/i.test(cleanLine(lines[i]))) {
-      zoneStart = i;
-      break;
-    }
-  }
+  const zoneStart = findCommentsZoneStart(lines);
 
   /** @type {Array<{ number: number; chinese: string; title: string; lineStart: number }>} */
   const headers = [];
@@ -494,6 +538,7 @@ export function parseWilhelmDe64HexCommentsTxt(rawText) {
   for (let i = zoneStart; i < lines.length; i++) {
     const h = parseWilhelmDeHexHeaderLine(lines[i]);
     if (!h || seen.has(h.n)) continue;
+    if (!isWilhelmDeCommentsHexHeaderAnchor(lines, i)) continue;
     seen.add(h.n);
     headers.push({
       number: h.n,

@@ -11,6 +11,7 @@ import {
   parseWilhelmDe64HexCommentsTxtFull,
   validateWilhelmDe64HexCommentsStructure,
 } from "./lib/wilhelm-de-64hex-comments-txt.mjs";
+import { assertWilhelmDeOcrIngestAllowed } from "./lib/wilhelm-de-ocr-ingest-lock.mjs";
 import {
   WILHELM_DE_COMMENTS_DIR,
   WILHELM_DE_COMMENTS_PARSED,
@@ -30,6 +31,11 @@ const outJson =
     : WILHELM_DE_COMMENTS_PARSED;
 
 async function main() {
+  await assertWilhelmDeOcrIngestAllowed({
+    script: "parse-wilhelm-de-64hex-comments-txt",
+    writes: outJson,
+  });
+
   const parsed = await parseWilhelmDe64HexCommentsTxtFull(sourcePath);
   const g0 = validateWilhelmDe64HexCommentsStructure(parsed);
 
