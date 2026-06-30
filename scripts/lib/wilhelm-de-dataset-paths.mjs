@@ -55,9 +55,28 @@ export const WILHELM_DE_BOOK_ONE_MERGED = join(
   WILHELM_DE_BOOK_ONE_DIR,
   "wilhelm-de-64hex-merged.json",
 );
+export const WILHELM_DE_BOOK_ONE_BLANK = join(
+  WILHELM_DE_BOOK_ONE_DIR,
+  "wilhelm-de-64hex-blank.json",
+);
+export const WILHELM_DE_BOOK_ONE_PARSED_V2 = join(
+  WILHELM_DE_BOOK_ONE_DIR,
+  "wilhelm-de-64hex-parsed-v2.json",
+);
 export const WILHELM_DE_BOOK_ONE_MANIFEST = join(
   WILHELM_DE_BOOK_ONE_DIR,
   "manifest.json",
+);
+
+export const WILHELM_DE_ZENO_MATERIAL_JSON = join(
+  WILHELM_DE_DATASETS_ROOT,
+  "zeno",
+  "wilhelm-de-zeno-material-latest.json",
+);
+
+export const WILHELM_DE_ZENO_MATERIAL_DIR = join(
+  WILHELM_DE_DATASETS_ROOT,
+  "zeno",
 );
 
 export const WILHELM_DE_COMMENTS_DIR = join(WILHELM_DE_DATASETS_ROOT, "comments");

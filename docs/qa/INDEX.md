@@ -110,6 +110,19 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `VF-FID-W-015 wilhelm-de-runtime-smoke` | `tools/wilhelm-de-runtime-smoke.mjs` | 1.0.0 | `node tools/wilhelm-de-runtime-smoke.mjs` | 20260628-AUD-DAT-W-02 | Post-build names + trigrams |
 | `AU-FID-W-008 wilhelm-de-triangulation` | `scripts/wilhelm-de-triangulation-report.mjs` | 1.0.0 | `audit:wilhelm-de-triangulation` | 20260628-AUD-DAT-W-02 | DE triangulation |
 | `AU-FID-W-009 wilhelm-de-baynes-comparison` | `scripts/wilhelm-de-baynes-comparison-report.mjs` | 1.0.0 | `audit:wilhelm-de-baynes-comparison` | 20260628-AUD-DAT-W-02 | DE vs Baynes |
+| `AU-FID-W-010 export-wilhelm-de-baynes-comparison-viewer` | `scripts/export-wilhelm-de-baynes-comparison-viewer.mjs` | 1.0.0 | `export:wilhelm-de-baynes-comparison-viewer` | 20260628-AUD-DAT-W-02 | DE + MT + Baynes HTML |
+| `VF-FID-W-017 wilhelm-en-de-quality-compare` | `scripts/lib/wilhelm-en-de-quality-compare.test.mjs` | 2.0.0 | `node scripts/lib/wilhelm-en-de-quality-compare.test.mjs` | 20260628-AUD-DAT-W-02 | EN↔DE heuristics |
+| `VF-FID-W-018 wilhelm-de-blank-maestro` | `scripts/lib/wilhelm-de-blank-maestro.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-blank-maestro.test.mjs` | 20260629-PLAN-DAT-W-03 | G0 blank structure |
+| `VF-FID-W-023 init-wilhelm-de-blank-maestro` | `scripts/init-wilhelm-de-blank-maestro.mjs` | 1.0.0 | `init:wilhelm-de-blank-maestro` | 20260629-PLAN-DAT-W-03 | Blank JSON generator |
+| `AU-FID-W-011 export-wilhelm-de-64hex-audit-csv` | `scripts/export-wilhelm-de-64hex-audit-csv.mjs` | 1.0.0 | `export:wilhelm-de-64hex-audit-csv` | 20260629-PLAN-DAT-W-03 | Blank AU CSV |
+| `VF-FID-W-019 wilhelm-de-commentary-split` | `scripts/lib/wilhelm-de-commentary-split.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-commentary-split.test.mjs` | 20260629-PLAN-DAT-W-03 | DE marker split |
+| `VF-FID-W-020 apply-wilhelm-de-manual-gold` | `scripts/apply-wilhelm-de-manual-gold.mjs` | 1.0.0 | `apply:wilhelm-de-manual-gold` | 20260629-PLAN-DAT-W-03 | Pilot gold → blank |
+| `VF-FID-W-021 wilhelm-de-field-split-g2` | `scripts/lib/validate-wilhelm-de-field-split-g2.test.mjs` | 1.0.0 | `node scripts/lib/validate-wilhelm-de-field-split-g2.test.mjs` | 20260629-PLAN-DAT-W-03 | G2 pilot split |
+| `VF-FID-W-022 promote-wilhelm-de-parsed-v2` | `scripts/promote-wilhelm-de-parsed-v2.mjs` | 1.0.0 | `promote:wilhelm-de-parsed-v2` | 20260629-PLAN-DAT-W-03 | V2 promotion report |
+| `VF-FID-W-024 extract-wilhelm-de-from-jpg` | `scripts/extract-wilhelm-de-from-jpg.mjs` | 1.0.0 | `extract:wilhelm-de-from-jpg` | 20260629-PLAN-DAT-W-03 | JPG map + gold TSV |
+| `VF-FID-W-024 wilhelm-de-jpg-page-map` | `scripts/lib/wilhelm-de-jpg-page-map.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-jpg-page-map.test.mjs` | 20260629-PLAN-DAT-W-03 | JPG page resolver |
+| `VF-FID-W-025 extract-wilhelm-de-from-zeno` | `scripts/extract-wilhelm-de-from-zeno.mjs` | 1.0.0 | `extract:wilhelm-de-from-zeno:all` | 20260629-PLAN-DAT-W-03 | zeno.org 64 hex + material |
+| `VF-FID-W-025 wilhelm-de-zeno-parse` | `scripts/lib/wilhelm-de-zeno-parse.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-zeno-parse.test.mjs` | 20260629-PLAN-DAT-W-03 | zeno HTML parser |
 
 ---
 

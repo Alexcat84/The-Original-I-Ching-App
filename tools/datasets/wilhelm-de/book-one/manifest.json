@@ -6,5 +6,22 @@
   "runtimeIngest": true,
   "sourcePasses": ["01", "03"],
   "parsedJson": "wilhelm-de-64hex-merged.json",
+  "blankJson": {
+    "path": "wilhelm-de-64hex-blank.json",
+    "runtimeIngest": false,
+    "status": "blank",
+    "note": "AU scaffold — 33 fields × 64 hex; prefill hex/chinese/hex_font only"
+  },
+  "parsedV2Json": {
+    "path": "wilhelm-de-64hex-parsed-v2.json",
+    "runtimeIngest": false,
+    "note": "Marker-calibrated parser output; not promoted until G2-DE + AU closure"
+  },
+  "jpgExtractJson": {
+    "path": "wilhelm-de-64hex-jpg-extract-latest.json",
+    "runtimeIngest": false,
+    "jpgDir": "../../source-pdfs/source jpgs",
+    "note": "300 DPI page anchors + pass03 v2 field split"
+  },
   "notes": "Baynes EN archived under tools/datasets/wilhelm-baynes/ (runtimeIngest: false)."
 }

@@ -56,6 +56,90 @@ export function parseWilhelmDeHexHeaderLine(line) {
   return { n, chinese, title };
 }
 
+/** German book title line (often on its own line when OCR splits the hex header). */
+const DE_BOOK_TITLE_RE = /^(DES|DER|DIE|DAS)\s+/i;
+
+/** Standalone ALL-CAPS title when OCR splits header from title (e.g. hex 13). */
+const DE_ALT_TITLE_RE = /^[A-ZÄÖÜẞ][A-ZÄÖÜẞ\s,–—-]+$/;
+
+/**
+ * @param {string} line
+ * @returns {string}
+ */
+export function extractWilhelmDeBookTitleLine(line) {
+  const t = normalizeWilhelmDeHeaderLine(line);
+  if (!t || !DE_BOOK_TITLE_RE.test(t)) return "";
+  if (/^(oben|unten)\s/i.test(t)) return "";
+  return t.toUpperCase();
+}
+
+/**
+ * @param {string} line
+ * @returns {string}
+ */
+export function extractWilhelmDeAlternateTitleLine(line) {
+  const t = normalizeWilhelmDeHeaderLine(line);
+  if (!t || t.length < 8) return "";
+  if (/^(oben|unten)\s/i.test(t)) return "";
+  if (/^\(.+\)$/.test(t)) return "";
+  if (/^\d{1,2}\.\s/.test(t)) return "";
+  if (DE_BOOK_TITLE_RE.test(t)) return "";
+  if (!DE_ALT_TITLE_RE.test(t) || /[a-z]/.test(t)) return "";
+  return t.toUpperCase();
+}
+
+/**
+ * @param {string} intro
+ * @returns {string}
+ */
+export function extractWilhelmDeBookTitleFromIntro(intro) {
+  const lines = String(intro ?? "").split("\n").slice(0, 8);
+  for (const raw of lines) {
+    const fromHeader = parseWilhelmDeHexHeaderLine(raw)?.title;
+    if (fromHeader) return fromHeader.toUpperCase();
+  }
+  for (const raw of lines) {
+    const title = extractWilhelmDeBookTitleLine(raw);
+    if (title) return title;
+  }
+  for (const raw of lines) {
+    const title = extractWilhelmDeAlternateTitleLine(raw);
+    if (title) return title;
+  }
+  return "";
+}
+
+/**
+ * Prefer maestro nombre when clean; fall back to intro when OCR polluted the field.
+ *
+ * @param {string} nombre
+ * @param {string} intro
+ * @returns {string}
+ */
+export function resolveWilhelmDeBookTitle(nombre, intro) {
+  const raw = String(nombre ?? "").trim();
+  const fromIntro = extractWilhelmDeBookTitleFromIntro(String(intro ?? ""));
+  if (raw && !/[a-z]/.test(raw)) return raw;
+  return fromIntro || raw;
+}
+
+/**
+ * Trigram lines from DE book intro (`oben …` / `unten …`), not Baynes EN injector.
+ *
+ * @param {string} intro
+ * @returns {{ above: string; below: string }}
+ */
+export function extractWilhelmDeTrigramsFromIntro(intro) {
+  let above = "";
+  let below = "";
+  for (const raw of String(intro ?? "").split("\n")) {
+    const t = cleanLine(raw);
+    if (/^oben\s/i.test(t)) above = t;
+    if (/^unten\s/i.test(t)) below = t;
+  }
+  return { above, below };
+}
+
 const JUDGMENT_RE = /^DAS URTEIL\s*$/i;
 const IMAGE_RE = /^DAS BILD\s*$/i;
 const LINES_HEADER_RE = /^Die einzelnen Linien(?:[\u00b9\u00b2\u00b3\d])?\s*:\s*$/i;
@@ -66,6 +150,8 @@ const LINE_LABEL_RE =
 const YONG_LABEL_RE =
   /^Wenn lauter (?:Neunen|Sechsen) erscheinen/i;
 
+import { isWilhelmDeCommentaryStart } from "./wilhelm-de-commentary-markers.mjs";
+
 const COMMENTARY_GROUP_MIN = 120;
 const COMMENTARY_GAP_MIN = 5;
 
@@ -74,7 +160,11 @@ const COMMENTARY_GAP_MIN = 5;
  * @returns {number | null}
  */
 export function linePosFromGermanLabel(label) {
-  const s = String(label ?? "").toLowerCase().replace(/^o\s+/, "");
+  const s = String(label ?? "")
+    .toLowerCase()
+    .replace(/^û\s+/i, "")
+    .replace(/^±\s*/, "")
+    .replace(/^o\s+(?=neun|sechs|anfangs)/i, "");
   if (/anfangs/.test(s)) return 1;
   if (/zweitem/.test(s)) return 2;
   if (/drittem/.test(s)) return 3;
@@ -143,21 +233,49 @@ function paragraphGroups(lines) {
 /**
  * @param {Array<{ lines: string[]; blankBefore: number }>} groups
  */
-function splitOracleCommentaryGroups(groups) {
+function expandGroupsOnCommentaryMarkers(groups) {
+  /** @type {Array<{ lines: string[]; blankBefore: number }>} */
+  const out = [];
+  for (const group of groups) {
+    /** @type {string[]} */
+    let current = [];
+    let blankBefore = group.blankBefore;
+    for (let i = 0; i < group.lines.length; i++) {
+      const line = group.lines[i];
+      if (i > 0 && isWilhelmDeCommentaryStart(line)) {
+        if (current.length) {
+          out.push({ lines: current, blankBefore });
+          blankBefore = 0;
+        }
+        current = [line];
+      } else {
+        current.push(line);
+      }
+    }
+    if (current.length) out.push({ lines: current, blankBefore });
+  }
+  return out;
+}
+
+export function splitOracleCommentaryGroups(groups) {
+  const expanded = expandGroupsOnCommentaryMarkers(groups);
   /** @type {Array<{ lines: string[]; blankBefore: number }>} */
   const oracleGroups = [];
   /** @type {Array<{ lines: string[]; blankBefore: number }>} */
   const commentaryGroups = [];
   let phase = "oracle";
 
-  for (const group of groups) {
+  for (const group of expanded) {
     const text = group.lines.join("\n");
+    const firstLine = group.lines[0] ?? "";
     if (phase === "oracle") {
       const wideGap = group.blankBefore >= COMMENTARY_GAP_MIN;
-      const commentaryStart =
+      const markerStart = oracleGroups.length > 0 && isWilhelmDeCommentaryStart(firstLine);
+      const lengthHeuristic =
         oracleGroups.length > 0 &&
         (text.length >= COMMENTARY_GROUP_MIN ||
           (wideGap && group.lines.length === 1 && text.length >= 80));
+      const commentaryStart = markerStart || lengthHeuristic;
       if (commentaryStart) {
         phase = "commentary";
         commentaryGroups.push(group);
@@ -268,7 +386,7 @@ function findSectionLine(lines, re) {
  * @param {Record<string, unknown>} injectorRow
  * @param {{ chinese: string; title: string }} bookMeta
  */
-function parseHexBlock(n, lines, injectorRow, bookMeta) {
+export function parseWilhelmDeHexBlock(n, lines, injectorRow, bookMeta) {
   const jIdx = findSectionLine(lines, JUDGMENT_RE);
   const iIdx = findSectionLine(lines, IMAGE_RE);
   const lIdx = findSectionLine(lines, LINES_HEADER_RE);
@@ -288,18 +406,25 @@ function parseHexBlock(n, lines, injectorRow, bookMeta) {
   const image = splitOracleCommentary(imageBody);
   const { lines: parsedLines, yong } = parseLinesSection(linesBody);
 
+  const introText = normalizeWilhelmDeTxtText(
+    introGroups.map((g) => g.lines.join("\n")).join("\n"),
+  );
+  const deTrigrams = extractWilhelmDeTrigramsFromIntro(introText);
+
   /** @type {Record<string, string>} */
   const fields = {
     hex: String(n),
-    nombre: bookMeta.title,
+    nombre: bookMeta.title || extractWilhelmDeBookTitleFromIntro(introText),
     chinese: String(injectorRow.trad_chinese ?? ""),
     chinese_roman: bookMeta.chinese,
     hex_font: String(injectorRow.hex_font ?? ""),
-    trigrama_arriba: formatWilhelmTrigram(injectorRow.wilhelm_above, "above"),
-    trigrama_abajo: formatWilhelmTrigram(injectorRow.wilhelm_below, "below"),
-    intro: normalizeWilhelmDeTxtText(
-      introGroups.map((g) => g.lines.join("\n")).join("\n"),
-    ),
+    trigrama_arriba:
+      deTrigrams.above ||
+      formatWilhelmTrigram(injectorRow.wilhelm_above, "above"),
+    trigrama_abajo:
+      deTrigrams.below ||
+      formatWilhelmTrigram(injectorRow.wilhelm_below, "below"),
+    intro: introText,
     judgment_oraculo: judgment.oracle,
     judgment_comentario: judgment.commentary,
     image_oraculo: image.oracle,
@@ -365,11 +490,18 @@ export function findWilhelmDe64HexStarts(rawText) {
     if (!parsed) continue;
     if (!isWilhelmDeHexHeaderAnchor(zone, i)) continue;
     if (!firstByN.has(parsed.n)) {
+      let title = parsed.title;
+      if (!title) {
+        for (let j = i + 1; j < Math.min(i + 6, zone.length); j++) {
+          title = extractWilhelmDeBookTitleLine(zone[j]);
+          if (title) break;
+        }
+      }
       firstByN.set(parsed.n, {
         n: parsed.n,
         lineIndex: i,
         chinese: parsed.chinese,
-        title: parsed.title,
+        title,
       });
     }
   }
@@ -437,7 +569,7 @@ export async function parseWilhelmDe64HexTxtFull(
     parsed.hexagrams[n].bookHanzi = String(row.trad_chinese ?? "");
     parsed.hexagrams[n].bookHexFont = String(row.hex_font ?? "");
     try {
-      parsed.hexagrams[n].fields = parseHexBlock(n, block, row, { chinese, title });
+      parsed.hexagrams[n].fields = parseWilhelmDeHexBlock(n, block, row, { chinese, title });
     } catch (err) {
       if (opts.require64 !== false) throw err;
       parsed.hexagrams[n].parseError = String(err);
