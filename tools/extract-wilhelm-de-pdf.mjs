@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Build Wilhelm DE 1924 oracle gold JSON for fidelity gates.
- * Uses merged dual-pass OCR when PDF text extraction is unavailable.
+ * Uses wilhelm-de-64hex-merged.json (zeno extract promoted; PDF pdftotext when available).
  */
 import { mkdir, readFile, writeFile, stat } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
@@ -36,7 +36,7 @@ async function main() {
     source:
       pdfText != null
         ? "Richard Wilhelm, I Ging — Das Buch der Wandlungen (Diederichs, 1924), PDF pdftotext"
-        : "Richard Wilhelm, I Ging — Das Buch der Wandlungen (Diederichs, 1924), merged OCR pass01+03",
+        : "Richard Wilhelm, I Ging — Das Buch der Wandlungen (Diederichs, 1924), zeno.org maestro (promoted merged)",
     pdfTextAvailable: pdfText != null,
     pdfTextLength: pdfText?.length ?? 0,
     extractedAt: new Date().toISOString(),
@@ -46,7 +46,7 @@ async function main() {
   await writeFile(WILHELM_DE_PDF_GOLD_JSON, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
   console.log(`Wrote ${WILHELM_DE_PDF_GOLD_JSON} (${Object.keys(hexagrams).length} hexagrams)`);
   if (!pdfText) {
-    console.log("Note: PDF not found or pdftotext empty — gold from merged OCR (PDF arbiter via triangulation).");
+    console.log("Note: PDF not found or pdftotext empty — gold from zeno-promoted merged maestro.");
   }
 }
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
+
 /**
  * QA code: VF-FID-W-010 stitch-wilhelm-de-txt · v1.0.0
  * Area: scripts/stitch-wilhelm-de-txt.mjs
  * Family: FID-W
- *
- * Stitch per-page OCR TXT from tools/source-pdfs/W german/ into master files.
  */
+
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import {

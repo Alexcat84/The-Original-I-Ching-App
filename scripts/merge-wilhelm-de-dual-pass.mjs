@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+
 /**
  * QA code: VF-FID-W-012 merge-wilhelm-de-dual-pass · v1.0.0
  * Area: scripts/merge-wilhelm-de-dual-pass.mjs
  * Family: FID-W
  */
+
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";

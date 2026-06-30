@@ -48,12 +48,18 @@ function resolveWilhelmDePdfPath() {
 export const WILHELM_DE_PRIMARY_SOURCE = {
   citation:
     "Wilhelm, Richard (Übers.). I Ging. Das Buch der Wandlungen. Köln: Eugen Diederichs, 1924 (Erstausgabe).",
+  apa7:
+    "Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag.",
   shortTitle: "Wilhelm DE 1924 Erstausgabe (Diederichs)",
   translator: "Richard Wilhelm",
   publisher: "Eugen Diederichs Verlag",
   place: "Köln",
   year: 1924,
   edition: "Erstausgabe",
+  /** Product model: literal DE in blockquotes — same pattern as Zhou Yi 文言文. */
+  displayPolicy: "literal-german-blockquote",
+  /** Baynes EN is diagnostic only — not a fidelity target for this maestro. */
+  fidelityBaseline: "wilhelm-de-1924-print",
 };
 
 /** HTML ingest mirror only — not the canonical citation. */
@@ -80,6 +86,10 @@ export const WILHELM_DE_BOOK_ONE_MERGED = join(
 export const WILHELM_DE_BOOK_ONE_BLANK = join(
   WILHELM_DE_BOOK_ONE_DIR,
   "wilhelm-de-64hex-blank.json",
+);
+export const WILHELM_DE_BOOK_ONE_ZENO_EXTRACT = join(
+  WILHELM_DE_BOOK_ONE_DIR,
+  "wilhelm-de-64hex-zeno-extract-latest.json",
 );
 export const WILHELM_DE_BOOK_ONE_PARSED_V2 = join(
   WILHELM_DE_BOOK_ONE_DIR,

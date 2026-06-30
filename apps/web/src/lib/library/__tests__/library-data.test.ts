@@ -3,6 +3,7 @@
  * Area: apps/web/src/lib/library
  * Family: WEB-LIB
  */
+
 import { describe, expect, it } from "vitest";
 import { getLibrarySummaries, getLibraryDetail } from "@/lib/library/library-data";
 import { TRIGRAM_IDS } from "@/lib/library/trigram-meta";

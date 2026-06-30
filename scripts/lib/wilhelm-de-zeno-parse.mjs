@@ -49,16 +49,13 @@ function normalizeTrigramLine(text) {
     .replace(/^unten\s/i, "unten ");
 }
 
-let _injector = null;
+import { loadWilhelmDeZhouyiSymbols } from "./wilhelm-de-zhouyi-symbols.mjs";
 
-async function loadInjector() {
-  if (!_injector) {
-    const mod = await import(
-      pathToFileURL(join(ROOT, "scripts/iching_wilhelm_de_translation.mjs")).href
-    );
-    _injector = mod.default;
-  }
-  return _injector;
+let _symbols = null;
+
+async function loadSymbolRows() {
+  if (!_symbols) _symbols = await loadWilhelmDeZhouyiSymbols();
+  return _symbols;
 }
 
 /**
@@ -166,8 +163,8 @@ export async function parseWilhelmDeHexFromZeno(hexPath) {
   const hex = header.hex;
   if (hex < 1 || hex > 64) throw new Error(`invalid hex from ${hexPath}`);
 
-  const injector = await loadInjector();
-  const row = injector[String(hex)] ?? {};
+  const symbols = await loadSymbolRows();
+  const row = symbols[String(hex)] ?? {};
 
   const urteilHtml = await fetchZenoHtml(`${hexPath}/Das+Urteil`);
   const bildHtml = await fetchZenoHtml(`${hexPath}/Das+Bild`);
@@ -184,7 +181,7 @@ export async function parseWilhelmDeHexFromZeno(hexPath) {
   const fields = {
     hex: String(hex),
     nombre: header.nombre,
-    chinese: String(row.trad_chinese ?? ""),
+    chinese: String(row.chinese ?? ""),
     chinese_roman: header.chineseRoman,
     hex_font: String(row.hex_font ?? ""),
     trigrama_arriba: header.trigramaArriba,

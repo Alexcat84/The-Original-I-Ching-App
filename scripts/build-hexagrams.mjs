@@ -22,6 +22,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { canonicalWilhelmTrigramLabel } from "./lib/wilhelm-trigram-labels.mjs";
+import { resolveWilhelmDeBookTitle } from "./lib/wilhelm-de-64hex-txt.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -96,9 +97,13 @@ function buildWilhelmRecord(base, n) {
   const judgment = String(w.wilhelm_judgment?.text ?? "").trim();
   const image = String(w.wilhelm_image?.text ?? "").trim();
   const lines = buildLines(base.binaryTopFirst, w.wilhelm_lines);
+  const maestroNombre = resolveWilhelmDeBookTitle(
+    String(wMaestro.nombre ?? ""),
+    String(wMaestro.intro ?? ""),
+  );
   const entry = {
     number: base.number,
-    name: String(wMaestro.nombre ?? "").trim() || base.englishName,
+    name: maestroNombre || base.englishName,
     chineseName: base.chineseName,
     pinyin: base.pinyin,
     upperTrigram: base.upperTrigram,
@@ -190,7 +195,7 @@ const bundles = [
         "I Ging — Das Buch der Wandlungen, Richard Wilhelm (Diederichs, 1924; German original, public domain USA).",
       sourceUrl: "https://archive.org/details/ichingdasbuchder0000rich",
       licenseNote:
-        "Public domain in the United States (1924 German edition). Oracle judgment, image (Das Bild), line, and yong texts verified against merged dual-pass OCR of the Diederichs scan (pass01+pass03) with PDF arbiter workflow; Baynes English (1950) archived for triangulation only.",
+        "Public domain in the United States (1924 German edition). Oracle judgment, image (Das Bild), line, and yong texts from Wilhelm DE 1924 maestro (zeno.org HTML extract, split oracle/commentary; hanzi and hex glyphs from Zhou Yi ctext.org standard). Baynes English (1950) archived for triangulation only.",
       generatedAt,
       build: buildWilhelmRecord,
     },

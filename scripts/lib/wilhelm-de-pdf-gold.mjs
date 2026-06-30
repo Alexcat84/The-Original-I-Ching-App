@@ -1,7 +1,7 @@
 /**
  * Load Wilhelm DE 1924 oracle gold for fidelity gates.
  * Primary: tools/output/fidelity-gold/wilhelm-de-pdf-gold.json
- * Built by tools/extract-wilhelm-de-pdf.mjs from merged OCR (PDF arbiter when available).
+ * Built by tools/extract-wilhelm-de-pdf.mjs from zeno-promoted merged maestro (PDF when available).
  */
 import { readFile, stat } from "node:fs/promises";
 import { WILHELM_DE_PDF_GOLD_JSON, WILHELM_DE_BOOK_ONE_MERGED } from "./wilhelm-de-dataset-paths.mjs";

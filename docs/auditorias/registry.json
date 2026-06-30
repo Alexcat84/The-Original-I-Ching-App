@@ -705,19 +705,57 @@
     },
     {
       "code": "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
-      "title": "Wilhelm DE 1924 runtime source of truth (Baynes archived)",
+      "title": "Wilhelm DE 1924 runtime source of truth (Zeno maestro; Baynes archived)",
       "shortName": "wilhelm-de-source-of-truth",
       "type": "AUD",
       "family": "DAT-W",
       "date": "2026-06-28",
-      "status": "closed",
+      "status": "open",
       "path": "docs/auditorias/20260628-AUD-DAT-W-02-wilhelm-de-source-of-truth.md",
       "relatedCodes": [
         "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
       ],
       "relatedTests": [
         "VF-FID-W-014 wilhelm-de-all-gates",
-        "VF-FID-W-011 parse-wilhelm-de-64hex-txt"
+        "VF-FID-W-013 sync-wilhelm-de-translation-module",
+        "VF-FID-W-026 promote-wilhelm-de-zeno-to-merged"
+      ]
+    },
+    {
+      "code": "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au",
+      "title": "Wilhelm DE blank maestro + AU by book captures (W/L model)",
+      "shortName": "wilhelm-de-blank-maestro-au",
+      "type": "PLAN",
+      "family": "DAT-W",
+      "date": "2026-06-29",
+      "status": "open",
+      "path": "docs/auditorias/20260629-PLAN-DAT-W-03-wilhelm-de-blank-maestro-au.md",
+      "relatedCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy",
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "relatedTests": [
+        "VF-FID-W-018 wilhelm-de-blank-maestro",
+        "VF-FID-W-021 wilhelm-de-field-split-g2"
+      ]
+    },
+    {
+      "code": "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy",
+      "title": "Wilhelm DE 1924 fidelity policy — APA 7, literal German (Zhou Yi model)",
+      "shortName": "wilhelm-de-fidelity-policy",
+      "type": "AUD",
+      "family": "DAT-W",
+      "date": "2026-06-30",
+      "status": "open",
+      "path": "docs/auditorias/20260630-AUD-DAT-W-04-wilhelm-de-fidelity-policy.md",
+      "relatedCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
+      "relatedTests": [
+        "AU-FID-W-013 audit-wilhelm-de-contamination",
+        "VF-FID-W-025 extract-wilhelm-de-from-zeno"
       ]
     },
     {

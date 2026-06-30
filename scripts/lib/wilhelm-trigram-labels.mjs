@@ -49,7 +49,7 @@ export const WILHELM_TRIGRAMS = [
     id: "fire",
     chinese: "離",
     wilhelmLabel: "das Haftende",
-    aliases: ["THE CLINGING"],
+    aliases: ["THE CLINGING", "das Haßende"],
   },
 ];
 

@@ -4,18 +4,24 @@
   "language": "de",
   "edition": "Richard Wilhelm, I Ging — Das Buch der Wandlungen (Diederichs, 1924)",
   "runtimeIngest": true,
-  "sourcePasses": ["01", "03"],
+  "sourceMethod": "zeno.org-html",
+  "symbolStandard": "iching_zhouyi_translation.mjs (ctext.org 周易 hanzi + hex_font)",
   "parsedJson": "wilhelm-de-64hex-merged.json",
+  "zenoExtractJson": "wilhelm-de-64hex-zeno-extract-latest.json",
   "blankJson": {
     "path": "wilhelm-de-64hex-blank.json",
     "runtimeIngest": false,
-    "status": "blank",
-    "note": "AU scaffold — 33 fields × 64 hex; prefill hex/chinese/hex_font only"
+    "status": "zeno-gold",
+    "note": "AU scaffold prefilled from Zeno extract; hanzi/hex_font from Zhou Yi"
+  },
+  "ocrMergedArchive": {
+    "runtimeIngest": false,
+    "note": "Former pass01+03 dual-pass OCR merged — archived under tools/output/archive/ on zeno promotion"
   },
   "parsedV2Json": {
     "path": "wilhelm-de-64hex-parsed-v2.json",
     "runtimeIngest": false,
-    "note": "Marker-calibrated parser output; not promoted until G2-DE + AU closure"
+    "note": "Marker-calibrated parser output; superseded by zeno promotion"
   },
   "jpgExtractJson": {
     "path": "wilhelm-de-64hex-jpg-extract-latest.json",

@@ -1,21 +1,9 @@
 /**
  * QA code: TS-WEB-OVR-006 overlay-title-pango-e2e-samples · v1.0.0
- * Area: apps/web/src/lib/overlay-title-pango, sumi-hexagram-art (overlay variant)
+ * Area: apps/web/src/lib/overlay-title-pango
  * Family: WEB-OVR
- *
- * Genera 4 imágenes de muestra usando el pipeline de producción real:
- *   1. Together AI (FLUX.1-schnell) → background JPEG
- *   2. buildSumiHexagramOverlaySvgDataUrl() → overlay SVG con barras + título
- *      (internamente usa renderOverlayTitleLayer() con @napi-rs/canvas — el renderer nuevo)
- *   3. renderSvgToPng() → rasteriza el overlay SVG via resvg-js
- *   4. sharp composite → imagen final PNG
- *
- * Guarda resultados en reports/overlay-pango-e2e-samples/.
- * Se salta automáticamente si no hay TOGETHER_API_KEY en el entorno.
- *
- * Correr:
- *   npm run gen:overlay-e2e-samples --prefix apps/web
  */
+
 import { describe, it, expect, beforeAll } from "vitest";
 import path from "node:path";
 import fs from "node:fs/promises";

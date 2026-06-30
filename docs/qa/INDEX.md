@@ -123,6 +123,9 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `VF-FID-W-024 wilhelm-de-jpg-page-map` | `scripts/lib/wilhelm-de-jpg-page-map.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-jpg-page-map.test.mjs` | 20260629-PLAN-DAT-W-03 | JPG page resolver |
 | `VF-FID-W-025 extract-wilhelm-de-from-zeno` | `scripts/extract-wilhelm-de-from-zeno.mjs` | 1.0.0 | `extract:wilhelm-de-from-zeno:all` | 20260629-PLAN-DAT-W-03 | zeno.org 64 hex + material |
 | `VF-FID-W-025 wilhelm-de-zeno-parse` | `scripts/lib/wilhelm-de-zeno-parse.test.mjs` | 1.0.0 | `node scripts/lib/wilhelm-de-zeno-parse.test.mjs` | 20260629-PLAN-DAT-W-03 | zeno HTML parser |
+| `VF-FID-W-026 promote-wilhelm-de-zeno-to-merged` | `scripts/promote-wilhelm-de-zeno-to-merged.mjs` | 1.0.0 | `promote:wilhelm-de-zeno-to-merged` | 20260628-AUD-DAT-W-02 | Zeno → merged maestro |
+| `AU-FID-W-012 wilhelm-de-baynes-mt-quality` | `scripts/wilhelm-de-baynes-mt-quality-report.mjs` | 1.0.0 | `audit:wilhelm-de-baynes-mt-quality` | 20260629-PLAN-DAT-W-03 | DE→MT EN vs Baynes por campo |
+| `AU-FID-W-013 audit-wilhelm-de-contamination` | `scripts/audit-wilhelm-de-contamination.mjs` | 1.0.0 | `audit:wilhelm-de-contamination` | 20260630-AUD-DAT-W-04 | Contaminación línea a línea |
 
 ---
 

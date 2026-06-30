@@ -1,11 +1,11 @@
 #!/usr/bin/env node
+
 /**
  * QA code: VF-FID-W-013 sync-wilhelm-de-translation-module · v1.0.0
  * Area: scripts/sync-wilhelm-de-translation-module.mjs
  * Family: FID-W
- *
- * Generate scripts/iching_wilhelm_de_translation.mjs from merged DE maestro.
  */
+
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -53,8 +53,8 @@ async function main() {
 
   /** @type {string[]} */
   const lines = [
-    "// Oracle text synced from Wilhelm DE 1924 (Diederichs), merged OCR pass01+03.",
-    "// Structural metadata (binary, pinyin, hanzi) preserved from canonical gold.",
+    "// Oracle text synced from Wilhelm DE 1924 (Diederichs) maestro — zeno.org extract, oracle slots only.",
+    "// Hanzi + hex_font from Zhou Yi standard; binary/pinyin from Baynes structural archive.",
     "// Translator runtime id: wilhelm (German Wilhelm original, not Baynes EN).",
     "",
     "export default {",
@@ -71,8 +71,8 @@ async function main() {
 
     lines.push(`  "${key}": {`);
     lines.push(`    "hex": ${n},`);
-    lines.push(`    "hex_font": ${jsString(b.hex_font)},`);
-    lines.push(`    "trad_chinese": ${jsString(b.trad_chinese)},`);
+    lines.push(`    "hex_font": ${jsString(f.hex_font || b.hex_font)},`);
+    lines.push(`    "trad_chinese": ${jsString(f.chinese || b.trad_chinese)},`);
     lines.push(`    "pinyin": ${jsString(b.pinyin)},`);
     lines.push(`    "english": ${jsString(f.nombre || b.english)},`);
     lines.push(`    "binary": ${typeof b.binary === "number" ? b.binary : jsString(b.binary)},`);

@@ -1645,6 +1645,45 @@
       "area": "scripts/lib/wilhelm-de-zeno-parse.mjs"
     },
     {
+      "code": "VF-FID-W-026 promote-wilhelm-de-zeno-to-merged",
+      "title": "Promote Zeno extract to Wilhelm DE merged maestro",
+      "shortName": "promote-wilhelm-de-zeno-to-merged",
+      "type": "VF",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Zeno + Zhou Yi symbols → merged.json" }],
+      "path": "scripts/promote-wilhelm-de-zeno-to-merged.mjs",
+      "npmScript": "npm run promote:wilhelm-de-zeno-to-merged",
+      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "area": "scripts/promote-wilhelm-de-zeno-to-merged.mjs"
+    },
+    {
+      "code": "AU-FID-W-012 wilhelm-de-baynes-mt-quality",
+      "title": "Wilhelm DE MT EN vs Baynes field-by-field quality report",
+      "shortName": "wilhelm-de-baynes-mt-quality",
+      "type": "AU",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "DE→MT EN vs Baynes Jaccard per field" }],
+      "path": "scripts/wilhelm-de-baynes-mt-quality-report.mjs",
+      "npmScript": "npm run audit:wilhelm-de-baynes-mt-quality",
+      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "area": "scripts/wilhelm-de-baynes-mt-quality-report.mjs"
+    },
+    {
+      "code": "AU-FID-W-013 audit-wilhelm-de-contamination",
+      "title": "Wilhelm DE line-by-line contamination audit vs Baynes structure",
+      "shortName": "audit-wilhelm-de-contamination",
+      "type": "AU",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Oracle slot contamination + editorial tags" }],
+      "path": "scripts/audit-wilhelm-de-contamination.mjs",
+      "npmScript": "npm run audit:wilhelm-de-contamination",
+      "relatedAuditCodes": ["20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy"],
+      "area": "scripts/audit-wilhelm-de-contamination.mjs"
+    },
+    {
       "code": "I18N-001 i18n-audit",
       "title": "i18n key coverage audit",
       "shortName": "i18n-audit",

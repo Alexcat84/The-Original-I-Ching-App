@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+
 /**
  * QA code: VF-FID-W-014 wilhelm-de-all-gates · v1.0.0
  * Area: tools/verify-wilhelm-de-all-gates.mjs
  * Family: FID-W
  */
+
 import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";

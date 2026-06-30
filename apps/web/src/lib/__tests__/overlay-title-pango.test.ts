@@ -1,4 +1,10 @@
 /**
+ * QA code: TS-WEB-OVR-004 overlay-title-pango · v1.2.0
+ * Area: apps/web/src/lib/overlay-title-pango
+ * Family: WEB-OVR
+ */
+
+/**
 
  * QA code: TS-WEB-OVR-004 overlay-title-pango · v1.2.0
 

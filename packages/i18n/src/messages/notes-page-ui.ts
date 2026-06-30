@@ -96,9 +96,14 @@ const ACADEMIC_SOURCES: AcademicSource[] = [
     rest: ". Ballantine Books.",
   },
   {
+    citation: "Wilhelm, R. (1924). ",
+    title: "I Ging: Das Buch der Wandlungen",
+    rest: ". Eugen Diederichs Verlag.",
+  },
+  {
     citation: "Wilhelm, R., & Baynes, C. F. (1950). ",
     title: "The I Ching or Book of Changes",
-    rest: ". Princeton University Press.",
+    rest: ". Princeton University Press. (Archived English rendering; not the runtime oracle source.)",
   },
 ];
 

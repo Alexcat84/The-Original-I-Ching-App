@@ -3,6 +3,7 @@
  * Area: packages/iching-data/src/trigrams
  * Family: DATA
  */
+
 import { describe, expect, it } from "vitest";
 import {
   getAllHexagramRecords,

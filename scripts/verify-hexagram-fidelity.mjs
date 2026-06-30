@@ -118,7 +118,7 @@ async function compareWilhelm(bundle) {
     pdfGoldByHex = await parseAllWilhelmEpubOrThrow();
     goldLabel = "epub-wilhelm";
   } else if (wilhelmUsesDeBookGold(goldMode)) {
-    log("Wilhelm: loading DE 1924 book-primary gold (merged OCR / PDF when available)…");
+    log("Wilhelm: loading DE 1924 book-primary gold (zeno maestro / PDF when available)…");
     pdfGoldByHex = await loadWilhelmDePdfGoldOrThrow({ force: false });
     goldLabel = "wilhelm-de-books";
   } else if (goldMode === "pdf-wilhelm") {
@@ -377,7 +377,7 @@ async function main() {
     : [
         "Book-primary gold (2026-06-22+): local editions in tools/source-pdfs/.",
         wilhelmUsesDeBookGold(goldMode)
-          ? "Wilhelm: Richard Wilhelm DE 1924 (Diederichs) — merged OCR book-primary; PDF arbiter when local scan available."
+          ? "Wilhelm: Richard Wilhelm DE 1924 (Diederichs) — zeno.org maestro book-primary; PDF arbiter when local scan available."
           : wilhelmUsesPdfGold(goldMode)
             ? "Wilhelm: Pantheon 1950 PDF (Baynes EN legacy diagnostic)."
             : wilhelmUsesEpubGold(goldMode)

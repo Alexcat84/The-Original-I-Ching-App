@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+
 /**
  * QA code: AU-FID-W-008 wilhelm-de-triangulation · v1.0.0
  * Area: scripts/wilhelm-de-triangulation-report.mjs
  * Family: FID-W
  */
+
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";

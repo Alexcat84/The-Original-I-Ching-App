@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+
 /**
  * QA code: VF-FID-W-011 parse-wilhelm-de-64hex-txt · v1.0.0
  * Area: scripts/parse-wilhelm-de-64hex-txt.mjs
  * Family: FID-W
  */
+
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,13 +14,15 @@ import {
   validateWilhelmDe64HexStructure,
   WILHELM_DE_64HEX_DEFAULT_PATH,
 } from "./lib/wilhelm-de-64hex-txt.mjs";
-import { WILHELM_DE_BOOK_ONE_DIR, WILHELM_DE_BOOK_ONE_PARSED } from "./lib/wilhelm-de-dataset-paths.mjs";
+import { WILHELM_DE_BOOK_ONE_DIR, WILHELM_DE_BOOK_ONE_PARSED, WILHELM_DE_BOOK_ONE_PARSED_V2 } from "./lib/wilhelm-de-dataset-paths.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const REPORTS = join(ROOT, "reports");
 
 const passArg = process.argv.find((a) => a.startsWith("--pass="));
+const variantArg = process.argv.find((a) => a.startsWith("--variant="));
 const pass = passArg?.split("=")[1] ?? "03";
+const variant = variantArg?.split("=")[1] ?? "merged";
 const inputPath =
   pass === "01"
     ? join(ROOT, "tools/source-pdfs/W german/wilhelm-de-erstes-buch-pass01.txt")
@@ -26,7 +30,9 @@ const inputPath =
 const outputPath =
   pass === "01"
     ? join(WILHELM_DE_BOOK_ONE_DIR, "wilhelm-de-64hex-parsed-pass01.json")
-    : WILHELM_DE_BOOK_ONE_PARSED;
+    : variant === "v2"
+      ? WILHELM_DE_BOOK_ONE_PARSED_V2
+      : WILHELM_DE_BOOK_ONE_PARSED;
 
 function stamp() {
   return new Date().toISOString().replace(/[:.]/g, "-");
